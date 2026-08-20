@@ -1,0 +1,664 @@
+﻿año_inicio,presidente,decada,etiqueta,entidad,frecuencia
+1942,jorge eliecer gaitan,1940s,PER,eduardo santos,2
+1942,jorge eliecer gaitan,1940s,LOC,bogotá,3
+1942,jorge eliecer gaitan,1940s,LOC,colombia,8
+1942,jorge eliecer gaitan,1940s,PER,arango vélez,1
+1942,jorge eliecer gaitan,1940s,PER,doctor lópez,1
+1942,jorge eliecer gaitan,1940s,PER,turbay,1
+1942,jorge eliecer gaitan,1940s,PER,lópez,1
+1942,jorge eliecer gaitan,1940s,LOC,turbay,2
+1942,jorge eliecer gaitan,1940s,PER,señor gaitán,1
+1942,jorge eliecer gaitan,1940s,PER,gabriel turbay,1
+1942,jorge eliecer gaitan,1940s,LOC,gaitán,1
+1942,jorge eliecer gaitan,1940s,PER,ospina pérez,3
+1942,jorge eliecer gaitan,1940s,PER,jorge eliecer gaitán,1
+1942,jorge eliecer gaitan,1940s,PER,gaitán?,1
+1942,jorge eliecer gaitan,1940s,LOC,medellín,1
+1942,jorge eliecer gaitan,1940s,PER,gómez,1
+1942,jorge eliecer gaitan,1940s,LOC,barranquilla,1
+1946,mariano ospina perez,1940s,PER,lópez,1
+1946,mariano ospina perez,1940s,PER,jorge eliécer gaitán,1
+1946,mariano ospina perez,1940s,PER,gabriel turbay,1
+1946,mariano ospina perez,1940s,PER,alfonso lópez,1
+1946,mariano ospina perez,1940s,PER,herrera,1
+1946,mariano ospina perez,1940s,PER,uribe,1
+1946,mariano ospina perez,1940s,PER,eduardo santos,1
+1946,mariano ospina perez,1940s,PER,gómez,2
+1946,mariano ospina perez,1940s,LOC,bogotá,2
+1946,mariano ospina perez,1940s,LOC,colombia,10
+1946,mariano ospina perez,1940s,LOC,de colombia,2
+1946,mariano ospina perez,1940s,ORG,ejecutaré,1
+1946,mariano ospina perez,1940s,ORG,oficina general del trabajo,1
+1946,mariano ospina perez,1940s,PER,sanificación,1
+1946,mariano ospina perez,1940s,PER,presidente roosevelt,2
+1946,mariano ospina perez,1940s,LOC,tennessee,1
+1946,mariano ospina perez,1940s,LOC,los estados unidos,4
+1946,mariano ospina perez,1940s,PER,alejandro hamilton,1
+1946,mariano ospina perez,1940s,ORG,naciones unidas,2
+1946,mariano ospina perez,1940s,MISC,conferencia de chapultepec,1
+1946,mariano ospina perez,1940s,MISC,misión kemmerer,1
+1946,mariano ospina perez,1940s,LOC,departamento de antioquia,1
+1946,mariano ospina perez,1940s,ORG,liga de las naciones,1
+1946,mariano ospina perez,1940s,LOC,la argentina,1
+1946,mariano ospina perez,1940s,LOC,brasil,1
+1946,mariano ospina perez,1940s,LOC,cartagena,1
+1946,mariano ospina perez,1940s,LOC,puerto de buenaventura,1
+1946,mariano ospina perez,1940s,LOC,río magdalena,1
+1946,mariano ospina perez,1940s,PER,hacienda,1
+1946,mariano ospina perez,1940s,PER,bretton woods,1
+1946,mariano ospina perez,1940s,PER,chapultepec,1
+1946,mariano ospina perez,1940s,ORG,política internacional de colombia,1
+1946,mariano ospina perez,1940s,PER,laureano gómez,1
+1950,laureano gomez,1950s,PER,gómez castro,4
+1950,laureano gomez,1950s,PER,doctor gómez,1
+1950,laureano gomez,1950s,LOC,colombia,4
+1950,laureano gomez,1950s,PER,aristófanes,1
+1950,laureano gomez,1950s,LOC,roma,1
+1950,laureano gomez,1950s,PER,adriano,1
+1950,laureano gomez,1950s,PER,alfonso el sabio,1
+1950,laureano gomez,1950s,LOC,no-made ja-do,1
+1950,laureano gomez,1950s,LOC,sevilla,1
+1950,laureano gomez,1950s,PER,acerbía,1
+1950,laureano gomez,1950s,PER,ospina pérez,1
+1950,laureano gomez,1950s,PER,desidias,1
+1950,laureano gomez,1950s,ORG,salvajez,1
+1950,laureano gomez,1950s,LOC,de colombia,2
+1950,laureano gomez,1950s,PER,cervantes,1
+1950,laureano gomez,1950s,LOC,los estados unidos,1
+1950,laureano gomez,1950s,ORG,colombi,1
+1953,rojas pinilla,1950s,LOC,de colombia,4
+1953,rojas pinilla,1950s,PER,gustavo rojas pinilla,2
+1953,rojas pinilla,1950s,MISC,centrosur de,1
+1953,rojas pinilla,1950s,MISC,urdaneta arbelaez,1
+1953,rojas pinilla,1950s,LOC,valle lanzador simón bolívar,1
+1953,rojas pinilla,1950s,LOC,colombia,2
+1953,rojas pinilla,1950s,PER,portador simón,1
+1953,rojas pinilla,1950s,LOC,corea,1
+1953,rojas pinilla,1950s,ORG,naciones unidas,1
+1953,rojas pinilla,1950s,ORG,billboard,1
+1953,rojas pinilla,1950s,PER,menéndez,1
+1953,rojas pinilla,1950s,LOC,república de colombia,1
+1958,alberto lleras,1950s,PER,pérez millán,1
+1958,alberto lleras,1950s,PER,murad,1
+1958,alberto lleras,1950s,PER,pérez ronald,1
+1958,alberto lleras,1950s,PER,man dyer,1
+1958,alberto lleras,1950s,LOC,ohio,1
+1958,alberto lleras,1950s,MISC,action the telephone,1
+1958,alberto lleras,1950s,PER,castilla,1
+1958,alberto lleras,1950s,PER,dresden,1
+1958,alberto lleras,1950s,MISC,andate hulk boza explosion in terna,1
+1958,alberto lleras,1950s,LOC,colombia,5
+1958,alberto lleras,1950s,MISC,neri,1
+1958,alberto lleras,1950s,PER,king,1
+1958,alberto lleras,1950s,ORG,ten,1
+1958,alberto lleras,1950s,ORG,uh,1
+1958,alberto lleras,1950s,PER,walter,1
+1958,alberto lleras,1950s,MISC,nt,1
+1958,alberto lleras,1950s,PER,huh,1
+1958,alberto lleras,1950s,PER,gary,2
+1958,alberto lleras,1950s,MISC,ate,1
+1958,alberto lleras,1950s,ORG,eh,1
+1958,alberto lleras,1950s,MISC,cincuen,1
+1958,alberto lleras,1950s,LOC,ponce,1
+1958,alberto lleras,1950s,PER,elaine olivia,1
+1958,alberto lleras,1950s,MISC,baruta,1
+1958,alberto lleras,1950s,PER,sun bin,1
+1958,alberto lleras,1950s,LOC,mihai,1
+1958,alberto lleras,1950s,ORG,intel,1
+1958,alberto lleras,1950s,ORG,apple,1
+1958,alberto lleras,1950s,LOC,gales,1
+1958,alberto lleras,1950s,PER,perón,1
+1958,alberto lleras,1950s,LOC,inglaterra,1
+1958,alberto lleras,1950s,LOC,suiza,1
+1958,alberto lleras,1950s,LOC,estados unidos,1
+1958,alberto lleras,1950s,LOC,de colombia,5
+1958,alberto lleras,1950s,PER,tia,2
+1958,alberto lleras,1950s,PER,katia,1
+1958,alberto lleras,1950s,MISC,brígida,1
+1958,alberto lleras,1950s,PER,marat,1
+1958,alberto lleras,1950s,ORG,nissan,1
+1958,alberto lleras,1950s,PER,andrés cristo,1
+1958,alberto lleras,1950s,ORG,ins,1
+1958,alberto lleras,1950s,PER,martin,1
+1958,alberto lleras,1950s,PER,oprah gat,1
+1958,alberto lleras,1950s,PER,lawson,1
+1958,alberto lleras,1950s,PER,tom,1
+1958,alberto lleras,1950s,PER,héctor,1
+1958,alberto lleras,1950s,PER,tolstoi,1
+1958,alberto lleras,1950s,PER,bayamo,1
+1958,alberto lleras,1950s,PER,diego,1
+1958,alberto lleras,1950s,PER,bata,1
+1958,alberto lleras,1950s,PER,tyson,1
+1958,alberto lleras,1950s,LOC,abc,1
+1958,alberto lleras,1950s,PER,"diego nomi
+la sistemática",1
+1958,alberto lleras,1950s,PER,hernán,1
+1958,alberto lleras,1950s,PER,karen día,1
+1958,alberto lleras,1950s,LOC,miranda,1
+1958,alberto lleras,1950s,PER,edu,1
+1958,alberto lleras,1950s,LOC,burgo,1
+1958,alberto lleras,1950s,PER,altamira,1
+1958,alberto lleras,1950s,PER,bocelli baker,1
+1958,alberto lleras,1950s,LOC,villar tere,1
+1958,alberto lleras,1950s,PER,jabal,1
+1958,alberto lleras,1950s,ORG,comunidad de naciones,1
+1958,alberto lleras,1950s,PER,tian,1
+1958,alberto lleras,1950s,MISC,ulla,1
+1958,alberto lleras,1950s,ORG,the oral,1
+1958,alberto lleras,1950s,LOC,gan hun,1
+1958,alberto lleras,1950s,PER,cmc,1
+1958,alberto lleras,1950s,LOC,togo,1
+1958,alberto lleras,1950s,PER,bush,1
+1958,alberto lleras,1950s,PER,yago,1
+1958,alberto lleras,1950s,LOC,villar de guiado,1
+1958,alberto lleras,1950s,LOC,osa cogiera,1
+1958,alberto lleras,1950s,PER,yos,1
+1958,alberto lleras,1950s,LOC,república de colombia,1
+1958,alberto lleras,1950s,PER,señor doctor laureano,1
+1958,alberto lleras,1950s,PER,héctor alberto,1
+1958,alberto lleras,1950s,PER,alberto lleras,1
+1958,alberto lleras,1950s,PER,jorge manrique terán,1
+1962,guillermo leon,1960s,PER,diego,1
+1962,guillermo leon,1960s,MISC,únete la descubre mación de cunda,1
+1962,guillermo leon,1960s,LOC,colombia,16
+1962,guillermo leon,1960s,ORG,ee uu,1
+1962,guillermo leon,1960s,LOC,gramenet ministerial,1
+1962,guillermo leon,1960s,PER,dios billie,1
+1962,guillermo leon,1960s,MISC,gun,1
+1962,guillermo leon,1960s,PER,cristo,1
+1962,guillermo leon,1960s,PER,mozart,1
+1962,guillermo leon,1960s,PER,diaz duval,1
+1962,guillermo leon,1960s,LOC,almería,1
+1962,guillermo leon,1960s,LOC,de colombia,7
+1962,guillermo leon,1960s,PER,kennedy,3
+1962,guillermo leon,1960s,PER,von,1
+1962,guillermo leon,1960s,PER,nelly,1
+1962,guillermo leon,1960s,PER,inés guadalupe,1
+1962,guillermo leon,1960s,LOC,san juan,1
+1962,guillermo leon,1960s,MISC,nena raven,1
+1962,guillermo leon,1960s,PER,lizzie,1
+1962,guillermo leon,1960s,PER,kenneth,1
+1962,guillermo leon,1960s,PER,lucien,1
+1962,guillermo leon,1960s,PER,balad,1
+1962,guillermo leon,1960s,PER,méndez,1
+1962,guillermo leon,1960s,PER,esther mili,1
+1962,guillermo leon,1960s,PER,alberto lleras,2
+1962,guillermo leon,1960s,ORG,ehh,1
+1962,guillermo leon,1960s,LOC,diane,1
+1962,guillermo leon,1960s,PER,alfonso lópez jor fuerza,1
+1962,guillermo leon,1960s,PER,benedetti,1
+1962,guillermo leon,1960s,PER,gold,1
+1962,guillermo leon,1960s,LOC,ibiza,1
+1962,guillermo leon,1960s,ORG,young,1
+1962,guillermo leon,1960s,PER,homero,1
+1962,guillermo leon,1960s,LOC,alabama,1
+1962,guillermo leon,1960s,ORG,mcqueen,1
+1962,guillermo leon,1960s,LOC,vila,1
+1962,guillermo leon,1960s,PER,dion dion,1
+1962,guillermo leon,1960s,PER,john,1
+1962,guillermo leon,1960s,PER,bernardo,1
+1962,guillermo leon,1960s,ORG,naciones unidas,2
+1962,guillermo leon,1960s,ORG,"república
+ah de verdad",1
+1962,guillermo leon,1960s,PER,gillermo,1
+1962,guillermo leon,1960s,LOC,us,1
+1962,guillermo leon,1960s,PER,rubén,1
+1962,guillermo leon,1960s,LOC,oviedo,1
+1962,guillermo leon,1960s,LOC,washington,1
+1962,guillermo leon,1960s,LOC,los estados unidos,3
+1962,guillermo leon,1960s,MISC,hubble,1
+1962,guillermo leon,1960s,ORG,colombian,1
+1962,guillermo leon,1960s,LOC,nueva york,1
+1962,guillermo leon,1960s,MISC,moshé,1
+1962,guillermo leon,1960s,PER,tello de villas,1
+1962,guillermo leon,1960s,LOC,santa fe,1
+1962,guillermo leon,1960s,PER,davis ministerial,1
+1962,guillermo leon,1960s,PER,guedes,1
+1962,guillermo leon,1960s,LOC,mara,1
+1962,guillermo leon,1960s,LOC,ejército de colombia,1
+1962,guillermo leon,1960s,ORG,eh,1
+1962,guillermo leon,1960s,MISC,miss,1
+1962,guillermo leon,1960s,LOC,daria,1
+1962,guillermo leon,1960s,LOC,la india,1
+1962,guillermo leon,1960s,PER,birimbao,1
+1962,guillermo leon,1960s,PER,gaga,1
+1962,guillermo leon,1960s,LOC,medellín,1
+1962,guillermo leon,1960s,LOC,chicago,1
+1962,guillermo leon,1960s,LOC,olivia,1
+1962,guillermo leon,1960s,LOC,serranía del baudó,1
+1962,guillermo leon,1960s,PER,demi moore,1
+1962,guillermo leon,1960s,PER,david,1
+1962,guillermo leon,1960s,LOC,tallin,1
+1962,guillermo leon,1960s,LOC,capitolio nacional,1
+1962,guillermo leon,1960s,PER,lamartine,1
+1966,carlos lleras,1960s,PER,discurso,1
+1966,carlos lleras,1960s,LOC,de colombia,3
+1966,carlos lleras,1960s,LOC,colombia,6
+1966,carlos lleras,1960s,LOC,estados unidos de américa,1
+1966,carlos lleras,1960s,LOC,bogotá,1
+1966,carlos lleras,1960s,MISC,presidentes de chile,1
+1966,carlos lleras,1960s,LOC,ecuador,2
+1966,carlos lleras,1960s,LOC,perú,1
+1966,carlos lleras,1960s,LOC,venezuela,1
+1966,carlos lleras,1960s,PER,panamá,1
+1966,carlos lleras,1960s,LOC,san andrés,1
+1966,carlos lleras,1960s,PER,frei,1
+1966,carlos lleras,1960s,PER,don fernando belaúnde,1
+1966,carlos lleras,1960s,LOC,la guajira,2
+1966,carlos lleras,1960s,LOC,valle del magdalena,1
+1966,carlos lleras,1960s,LOC,caribe,1
+1966,carlos lleras,1960s,LOC,santa marta,1
+1966,carlos lleras,1960s,MISC,os,1
+1970,misael pastrana borrero,1970s,PER,augusto,1
+1970,misael pastrana borrero,1970s,LOC,de colombia,6
+1970,misael pastrana borrero,1970s,PER,misael pastrana,2
+1970,misael pastrana borrero,1970s,LOC,colegio de colombia,1
+1970,misael pastrana borrero,1970s,LOC,colombia,5
+1970,misael pastrana borrero,1970s,PER,misael pastrana borrero,1
+1970,misael pastrana borrero,1970s,LOC,francia,1
+1970,misael pastrana borrero,1970s,LOC,venezuela,1
+1970,misael pastrana borrero,1970s,PER,rafael caldera,1
+1974,alfonso lopez michelsen,1970s,PER,heyward isham,1
+1974,alfonso lopez michelsen,1970s,LOC,los estados unidos,1
+1974,alfonso lopez michelsen,1970s,PER,alfonso lopez michelsen,1
+1974,alfonso lopez michelsen,1970s,LOC,de colombia,3
+1974,alfonso lopez michelsen,1970s,PER,gravitará,1
+1974,alfonso lopez michelsen,1970s,PER,paradoj,1
+1974,alfonso lopez michelsen,1970s,PER,césar turbay ayala,1
+1974,alfonso lopez michelsen,1970s,PER,luis ángel arango del banco,7
+1974,alfonso lopez michelsen,1970s,LOC,colombia,12
+1974,alfonso lopez michelsen,1970s,LOC,la gran colombia,1
+1974,alfonso lopez michelsen,1970s,LOC,libertara,1
+1974,alfonso lopez michelsen,1970s,LOC,caracas,3
+1974,alfonso lopez michelsen,1970s,LOC,lima,1
+1974,alfonso lopez michelsen,1970s,LOC,venezuela,3
+1974,alfonso lopez michelsen,1970s,LOC,ecuador,1
+1974,alfonso lopez michelsen,1970s,LOC,perú,2
+1974,alfonso lopez michelsen,1970s,LOC,bolivia,1
+1974,alfonso lopez michelsen,1970s,LOC,chile,1
+1974,alfonso lopez michelsen,1970s,MISC,pacto de montevideo,1
+1974,alfonso lopez michelsen,1970s,LOC,"santa
+anna",1
+1974,alfonso lopez michelsen,1970s,LOC,mar caribe,1
+1974,alfonso lopez michelsen,1970s,LOC,"golfo de
+coquivacoa",1
+1974,alfonso lopez michelsen,1970s,LOC,golfo de venezuela,1
+1974,alfonso lopez michelsen,1970s,LOC,la guajira,1
+1974,alfonso lopez michelsen,1970s,LOC,francia,1
+1974,alfonso lopez michelsen,1970s,LOC,inglaterra,1
+1974,alfonso lopez michelsen,1970s,LOC,mar del norte,1
+1974,alfonso lopez michelsen,1970s,LOC,canal de la mancha,1
+1974,alfonso lopez michelsen,1970s,PER,pastrana,3
+1974,alfonso lopez michelsen,1970s,LOC,roma,1
+1974,alfonso lopez michelsen,1970s,PER,germán zea hernández,1
+1974,alfonso lopez michelsen,1970s,MISC,"ú1 democracia procurará
+desacreditarnos",1
+1974,alfonso lopez michelsen,1970s,LOC,bogotá,1
+1974,alfonso lopez michelsen,1970s,PER,césar turba,1
+1974,alfonso lopez michelsen,1970s,PER,aya la,1
+1974,alfonso lopez michelsen,1970s,PER,edilber to sanchez,1
+1974,alfonso lopez michelsen,1970s,LOC,comisaría del amazonas,1
+1974,alfonso lopez michelsen,1970s,LOC,brasil,1
+1974,alfonso lopez michelsen,1970s,LOC,río amazonas,1
+1974,alfonso lopez michelsen,1970s,LOC,del ooal,1
+1974,alfonso lopez michelsen,1970s,LOC,maine,1
+1978,julio cesar turbay,1970s,PER,guillermo plazas al cid,1
+1978,julio cesar turbay,1970s,PER,"jorge
+mario eastman",1
+1978,julio cesar turbay,1970s,PER,alfonso lópez michelsen,1
+1978,julio cesar turbay,1970s,PER,carlos andrés pérez,1
+1978,julio cesar turbay,1970s,LOC,venezuela,3
+1978,julio cesar turbay,1970s,PER,alfredo poveda bur~,1
+1978,julio cesar turbay,1970s,PER,juan pereda asbun,1
+1978,julio cesar turbay,1970s,LOC,bolivia,2
+1978,julio cesar turbay,1970s,PER,ornar torrijos herrera,1
+1978,julio cesar turbay,1970s,LOC,panamá,1
+1978,julio cesar turbay,1970s,PER,osear molina,1
+1978,julio cesar turbay,1970s,PER,kuznetsov,1
+1978,julio cesar turbay,1970s,PER,"aníbal
+muñoz duque",1
+1978,julio cesar turbay,1970s,PER,alberto lleras,1
+1978,julio cesar turbay,1970s,PER,misael pastrana borrero,1
+1978,julio cesar turbay,1970s,PER,darío echandía,1
+1978,julio cesar turbay,1970s,PER,rafael azuero manchola,1
+1978,julio cesar turbay,1970s,PER,lndalecio liévano aguirre,1
+1978,julio cesar turbay,1970s,PER,señor w.,1
+1978,julio cesar turbay,1970s,LOC,estados unidos de norte,1
+1978,julio cesar turbay,1970s,PER,alejandro orfila,1
+1978,julio cesar turbay,1970s,PER,"lópez
+michelsen",1
+1978,julio cesar turbay,1970s,PER,santander,1
+1978,julio cesar turbay,1970s,PER,deseo,1
+1978,julio cesar turbay,1970s,LOC,colombia,20
+1978,julio cesar turbay,1970s,PER,luis ángel arango del banco,10
+1978,julio cesar turbay,1970s,MISC,séame,1
+1978,julio cesar turbay,1970s,LOC,tl·ación,1
+1978,julio cesar turbay,1970s,MISC,la~,1
+1978,julio cesar turbay,1970s,PER,nose,1
+1978,julio cesar turbay,1970s,PER,v e-,1
+1978,julio cesar turbay,1970s,LOC,nezuela,1
+1978,julio cesar turbay,1970s,LOC,ecuador,2
+1978,julio cesar turbay,1970s,LOC,cartagena,1
+1978,julio cesar turbay,1970s,LOC,estados unidos,3
+1978,julio cesar turbay,1970s,PER,kennedy,1
+1978,julio cesar turbay,1970s,LOC,los estados unidos,1
+1978,julio cesar turbay,1970s,ORG,oea,1
+1978,julio cesar turbay,1970s,LOC,de colombia,4
+1978,julio cesar turbay,1970s,PER,lópez pumarejo,1
+1978,julio cesar turbay,1970s,LOC,vencet· la& dificultades,1
+1978,julio cesar turbay,1970s,PER,colabo't'ando,1
+1978,julio cesar turbay,1970s,LOC,río magdalena,1
+1978,julio cesar turbay,1970s,PER,belisat'ío betancur,1
+1978,julio cesar turbay,1970s,PER,belisario,1
+1978,julio cesar turbay,1970s,LOC,vaticano,1
+1978,julio cesar turbay,1970s,PER,señor doctor plazas alcid,1
+1978,julio cesar turbay,1970s,LOC,universidad del cauca,1
+1978,julio cesar turbay,1970s,LOC,huila,1
+1978,julio cesar turbay,1970s,PER,"doctor carlos
+andrés pérez",1
+1978,julio cesar turbay,1970s,PER,señor general juan pereda,1
+1978,julio cesar turbay,1970s,PER,alfredo poveda,1
+1978,julio cesar turbay,1970s,PER,torrij os,1
+1978,julio cesar turbay,1970s,PER,señor kuznetsov,1
+1978,julio cesar turbay,1970s,PER,señor osear molina,1
+1978,julio cesar turbay,1970s,PER,señor blumenthal,1
+1978,julio cesar turbay,1970s,ORG,aprestigian,1
+1982,belisario betancur,1980s,PER,belisario,1
+1982,belisario betancur,1980s,LOC,antioquia,1
+1982,belisario betancur,1980s,LOC,de colombia,2
+1982,belisario betancur,1980s,PER,santander,1
+1982,belisario betancur,1980s,LOC,colombia,10
+1982,belisario betancur,1980s,LOC,cartagena de indias,1
+1982,belisario betancur,1980s,LOC,jamaica,1
+1982,belisario betancur,1980s,MISC,conferencia de estocolmo,1
+1982,belisario betancur,1980s,ORG,orinoquia,1
+1982,belisario betancur,1980s,LOC,alborada,1
+1982,belisario betancur,1980s,PER,dijera carranza,1
+1982,belisario betancur,1980s,ORG,kdd,1
+1986,virgilio barco,1980s,LOC,colombia,4
+1986,virgilio barco,1980s,PER,virgilio barco,1
+1986,virgilio barco,1980s,LOC,bogotá,1
+1986,virgilio barco,1980s,ORG,naciones unidas,1
+1986,virgilio barco,1980s,LOC,de colombia,2
+1986,virgilio barco,1980s,LOC,caribe,1
+1986,virgilio barco,1980s,LOC,venezuela,1
+1986,virgilio barco,1980s,LOC,ecuador,1
+1986,virgilio barco,1980s,LOC,panamá,1
+1986,virgilio barco,1980s,LOC,república dominicana,1
+1986,virgilio barco,1980s,LOC,haití,1
+1986,virgilio barco,1980s,LOC,costa rica,1
+1986,virgilio barco,1980s,LOC,honduras,1
+1986,virgilio barco,1980s,ORG,adquirí,1
+1986,virgilio barco,1980s,PER,juan pablo ii,1
+1990,cesar gaviria,1990s,LOC,"república
+de colombia",1
+1990,cesar gaviria,1990s,PER,"césar gaviria
+trujillo",1
+1990,cesar gaviria,1990s,PER,"césar
+gaviria trujillo",1
+1990,cesar gaviria,1990s,LOC,proexpo,1
+1990,cesar gaviria,1990s,LOC,"instituto
+colombiano",1
+1990,cesar gaviria,1990s,LOC,colombia,4
+1990,cesar gaviria,1990s,LOC,de colombia,3
+1990,cesar gaviria,1990s,LOC,venezuela,1
+1990,cesar gaviria,1990s,PER,"presidente
+pérez",1
+1990,cesar gaviria,1990s,PER,carlos andrés pérez,1
+1990,cesar gaviria,1990s,LOC,europa,1
+1990,cesar gaviria,1990s,LOC,perú,2
+1990,cesar gaviria,1990s,LOC,bolivia,2
+1990,cesar gaviria,1990s,LOC,los estados unidos,1
+1990,cesar gaviria,1990s,LOC,estados unidos,2
+1990,cesar gaviria,1990s,PER,george bush,1
+1990,cesar gaviria,1990s,PER,bush,1
+1990,cesar gaviria,1990s,LOC,ecuador,1
+1990,cesar gaviria,1990s,LOC,españa,1
+1994,ernesto samper,1990s,PER,ernesto samper pizano,1
+1994,ernesto samper,1990s,LOC,cartagena de indias,1
+1994,ernesto samper,1990s,LOC,caribe,2
+1994,ernesto samper,1990s,PER,huntington,1
+1994,ernesto samper,1990s,PER,germán arciniegas,1
+1994,ernesto samper,1990s,LOC,cartagena,2
+1994,ernesto samper,1990s,PER,garcía márquez,1
+1994,ernesto samper,1990s,LOC,colombia,1
+1994,ernesto samper,1990s,PER,rubén darío,1
+1994,ernesto samper,1990s,PER,josé martí,1
+1994,ernesto samper,1990s,PER,pablo neruda,1
+1994,ernesto samper,1990s,LOC,senado de colombia,1
+1998,andres pastrana,1990s,PER,andrés pastrana arango,1
+1998,andres pastrana,1990s,LOC,de colombia,7
+1998,andres pastrana,1990s,LOC,la tierra,1
+1998,andres pastrana,1990s,LOC,colombia,11
+1998,andres pastrana,1990s,PER,abel,1
+1998,andres pastrana,1990s,LOC,nueva colombia,2
+1998,andres pastrana,1990s,PER,globabilización,1
+1998,andres pastrana,1990s,ORG,naciones unidas,1
+1998,andres pastrana,1990s,LOC,venezuela,1
+1998,andres pastrana,1990s,ORG,comunidad andina de naciones,1
+1998,andres pastrana,1990s,LOC,estados unidos,1
+1998,andres pastrana,1990s,LOC,europa,1
+1998,andres pastrana,1990s,PER,gustavo bell,2
+1998,andres pastrana,1990s,LOC,de santiago,1
+1998,andres pastrana,1990s,LOC,laura,1
+1998,andres pastrana,1990s,LOC,valentina,1
+1998,andres pastrana,1990s,PER,misael pastrana,1
+1998,andres pastrana,1990s,LOC,la colombia,1
+2002,alvaro uribe,2000s,LOC,bogotá,1
+2002,alvaro uribe,2000s,PER,simón rodríguez,1
+2002,alvaro uribe,2000s,LOC,cartagena de indias,1
+2002,alvaro uribe,2000s,LOC,rosario de san josé,1
+2002,alvaro uribe,2000s,LOC,cúcuta,1
+2002,alvaro uribe,2000s,LOC,provincia de pamplona,1
+2002,alvaro uribe,2000s,LOC,san bartolomé,1
+2002,alvaro uribe,2000s,PER,santander,2
+2002,alvaro uribe,2000s,ORG,eh,1
+2002,alvaro uribe,2000s,LOC,venezuela,1
+2002,alvaro uribe,2000s,LOC,alto perú,1
+2002,alvaro uribe,2000s,LOC,bolivia,1
+2002,alvaro uribe,2000s,LOC,estado del alma,1
+2002,alvaro uribe,2000s,LOC,inglaterra,1
+2002,alvaro uribe,2000s,LOC,colombia,3
+2002,alvaro uribe,2000s,PER,purgatorio,1
+2002,alvaro uribe,2000s,ORG,mercosur,1
+2002,alvaro uribe,2000s,LOC,canadá,1
+2002,alvaro uribe,2000s,LOC,alca,1
+2002,alvaro uribe,2000s,LOC,de colombia,3
+2002,alvaro uribe,2000s,ORG,naciones unidas,1
+2002,alvaro uribe,2000s,PER,señor kofi annan,1
+2002,alvaro uribe,2000s,LOC,los estados unidos,1
+2002,alvaro uribe,2000s,LOC,europa,1
+2002,alvaro uribe,2000s,LOC,asia,1
+2002,alvaro uribe,2000s,PER,andrés pastrana,1
+2002,alvaro uribe,2000s,PER,francisco santos calderón,1
+2006,alvaro uribe,2000s,PER,compatriotas,1
+2006,alvaro uribe,2000s,LOC,colombia,3
+2006,alvaro uribe,2000s,LOC,amazonas,1
+2006,alvaro uribe,2000s,LOC,vaupés,1
+2006,alvaro uribe,2000s,LOC,brasil,2
+2006,alvaro uribe,2000s,LOC,orinoco,1
+2006,alvaro uribe,2000s,LOC,casanare,1
+2006,alvaro uribe,2000s,LOC,arauca,1
+2006,alvaro uribe,2000s,PER,santander,2
+2006,alvaro uribe,2000s,PER,aurelio arturo,1
+2006,alvaro uribe,2000s,LOC,valle del cauca,1
+2006,alvaro uribe,2000s,LOC,cali,1
+2006,alvaro uribe,2000s,MISC,risaralda,1
+2006,alvaro uribe,2000s,LOC,san juan,1
+2006,alvaro uribe,2000s,LOC,truandó,1
+2006,alvaro uribe,2000s,LOC,atlántico,1
+2006,alvaro uribe,2000s,LOC,sucre,1
+2006,alvaro uribe,2000s,LOC,bolivia,3
+2006,alvaro uribe,2000s,LOC,mompós,1
+2006,alvaro uribe,2000s,LOC,cartagena,1
+2006,alvaro uribe,2000s,MISC,batalla de flores del carnaval,1
+2006,alvaro uribe,2000s,LOC,magdalena,1
+2006,alvaro uribe,2000s,LOC,vigía de santa marta,1
+2006,alvaro uribe,2000s,LOC,guajira,1
+2006,alvaro uribe,2000s,LOC,norte de santander,1
+2006,alvaro uribe,2000s,LOC,villa del rosario,1
+2006,alvaro uribe,2000s,PER,pedro pascasio martínez rojas,1
+2006,alvaro uribe,2000s,PER,timanco,1
+2006,alvaro uribe,2000s,LOC,tolima,1
+2006,alvaro uribe,2000s,LOC,castilla,1
+2006,alvaro uribe,2000s,PER,san andrés,1
+2006,alvaro uribe,2000s,LOC,providencia,1
+2006,alvaro uribe,2000s,PER,santa catalina,1
+2006,alvaro uribe,2000s,LOC,mar de limpia mirada,1
+2006,alvaro uribe,2000s,LOC,cundinamarca,1
+2006,alvaro uribe,2000s,LOC,bogotá,1
+2006,alvaro uribe,2000s,LOC,antioquia,1
+2006,alvaro uribe,2000s,LOC,medellín,1
+2006,alvaro uribe,2000s,LOC,perú,1
+2006,alvaro uribe,2000s,LOC,venezuela,1
+2006,alvaro uribe,2000s,LOC,ecuador,1
+2006,alvaro uribe,2000s,LOC,nueva granada,1
+2006,alvaro uribe,2000s,LOC,méxico,1
+2006,alvaro uribe,2000s,LOC,chile,1
+2006,alvaro uribe,2000s,LOC,argentina,1
+2006,alvaro uribe,2000s,LOC,los estados unidos,1
+2006,alvaro uribe,2000s,MISC,paz de colombia,1
+2006,alvaro uribe,2000s,PER,francisco santos calderón,1
+2010,juan manuel santos,2010s,PER,"juan manuel santos calderón
+¡",1
+2010,juan manuel santos,2010s,LOC,colombia,15
+2010,juan manuel santos,2010s,LOC,bogotá,2
+2010,juan manuel santos,2010s,PER,juan manuel santos calderón,1
+2010,juan manuel santos,2010s,MISC,dios,1
+2010,juan manuel santos,2010s,LOC,seiyua,1
+2010,juan manuel santos,2010s,LOC,sierra nevada de santa marta,1
+2010,juan manuel santos,2010s,LOC,arhuaco,1
+2010,juan manuel santos,2010s,LOC,wiwa,1
+2010,juan manuel santos,2010s,LOC,la colombia,2
+2010,juan manuel santos,2010s,LOC,república de colombia,1
+2010,juan manuel santos,2010s,PER,santander,1
+2010,juan manuel santos,2010s,PER,álvaro gómez hurtado,1
+2010,juan manuel santos,2010s,LOC,de colombia,12
+2010,juan manuel santos,2010s,PER,alberto lleras camargo,1
+2010,juan manuel santos,2010s,ORG,oea,1
+2010,juan manuel santos,2010s,ORG,agencia nacional de aguas,1
+2010,juan manuel santos,2010s,PER,uribe,5
+2010,juan manuel santos,2010s,PER,juan valdez,1
+2010,juan manuel santos,2010s,PER,jalone,1
+2010,juan manuel santos,2010s,PER,álvaro uribe vélez,1
+2010,juan manuel santos,2010s,PER,amartya sen,1
+2010,juan manuel santos,2010s,LOC,venezuela,3
+2010,juan manuel santos,2010s,LOC,ecuador,2
+2010,juan manuel santos,2010s,PER,carlos,1
+2010,juan manuel santos,2010s,LOC,europa,1
+2010,juan manuel santos,2010s,PER,angelino garzón,1
+2010,juan manuel santos,2010s,PER,martín,1
+2010,juan manuel santos,2010s,PER,maría antonia,1
+2010,juan manuel santos,2010s,PER,esteban,1
+2010,juan manuel santos,2010s,PER,eduardo santos,1
+2014,juan manuel santos,2010s,MISC,dios,1
+2014,juan manuel santos,2010s,LOC,colombia,20
+2014,juan manuel santos,2010s,PER,james rodríguez,1
+2014,juan manuel santos,2010s,PER,catherine ibargüen,1
+2014,juan manuel santos,2010s,PER,nairo quintana,1
+2014,juan manuel santos,2010s,MISC,mariana pajón,1
+2014,juan manuel santos,2010s,ORG,farc,4
+2014,juan manuel santos,2010s,MISC,eln,1
+2014,juan manuel santos,2010s,LOC,de colombia,4
+2014,juan manuel santos,2010s,LOC,la habana,1
+2014,juan manuel santos,2010s,LOC,granada,1
+2014,juan manuel santos,2010s,LOC,miranda,1
+2014,juan manuel santos,2010s,LOC,quibdó,1
+2014,juan manuel santos,2010s,MISC,internet,1
+2014,juan manuel santos,2010s,LOC,río magdalena,1
+2014,juan manuel santos,2010s,LOC,magdalena,1
+2014,juan manuel santos,2010s,LOC,tomé,1
+2014,juan manuel santos,2010s,MISC,sisbén 1,1
+2014,juan manuel santos,2010s,PER,martín,1
+2014,juan manuel santos,2010s,PER,maría antonia,1
+2014,juan manuel santos,2010s,PER,esteban,1
+2014,juan manuel santos,2010s,PER,germán vargas lleras,1
+2014,juan manuel santos,2010s,LOC,trabajar unidos,1
+2018,ivan duque,2010s,PER,simón bolívar,1
+2018,ivan duque,2010s,LOC,de colombia,7
+2018,ivan duque,2010s,PER,echandía,1
+2018,ivan duque,2010s,LOC,colombia,20
+2018,ivan duque,2010s,LOC,santander,1
+2018,ivan duque,2010s,LOC,sucre,1
+2018,ivan duque,2010s,LOC,córdoba,1
+2018,ivan duque,2010s,LOC,historia de colombia,2
+2018,ivan duque,2010s,LOC,los estados unidos,1
+2018,ivan duque,2010s,MISC,eln,1
+2018,ivan duque,2010s,ORG,naciones unidas,1
+2018,ivan duque,2010s,PER,francisco de paula santander,1
+2018,ivan duque,2010s,LOC,la guajira,1
+2018,ivan duque,2010s,LOC,orinoquía,1
+2018,ivan duque,2010s,PER,federico garcía lorca,1
+2018,ivan duque,2010s,PER,marta lucía ramírez,1
+2018,ivan duque,2010s,PER,álvaro uribe vélez,1
+2018,ivan duque,2010s,PER,juliana márquez,1
+2018,ivan duque,2010s,PER,matías,1
+2018,ivan duque,2010s,LOC,eloísa,1
+2018,ivan duque,2010s,PER,dios,1
+2022,gustavo petro urrego,2020s,PER,juan,1
+2022,gustavo petro urrego,2020s,PER,nicolás petro,1
+2022,gustavo petro urrego,2020s,PER,nicolás alcocer,1
+2022,gustavo petro urrego,2020s,PER,andrea,1
+2022,gustavo petro urrego,2020s,PER,andrés,1
+2022,gustavo petro urrego,2020s,LOC,de colombia,11
+2022,gustavo petro urrego,2020s,PER,gabriel garcía márquez,1
+2022,gustavo petro urrego,2020s,LOC,colombia,18
+2022,gustavo petro urrego,2020s,MISC,guerra perpetua de colombia,1
+2022,gustavo petro urrego,2020s,LOC,en estados unidos,1
+2022,gustavo petro urrego,2020s,ORG,naciones unidas,1
+2022,gustavo petro urrego,2020s,ORG,fmi,1
+2022,gustavo petro urrego,2020s,LOC,bogotá,1
+2022,gustavo petro urrego,2020s,LOC,cabo manglares,1
+2022,gustavo petro urrego,2020s,LOC,isla san josé,1
+2022,gustavo petro urrego,2020s,LOC,san martín,1
+2022,gustavo petro urrego,2020s,LOC,artigas,1
+2022,gustavo petro urrego,2020s,LOC,sucre,1
+2022,gustavo petro urrego,2020s,PER,simón bolívar,1
+2022,gustavo petro urrego,2020s,LOC,san andrés,2
+2022,gustavo petro urrego,2020s,LOC,antillas,1
+2022,gustavo petro urrego,2020s,LOC,la colombia,6
+2022,gustavo petro urrego,2020s,ORG,gobernaré,1
+2022,gustavo petro urrego,2020s,PER,von,1
+2022,gustavo petro urrego,2020s,LOC,francia,1
+2022,gustavo petro urrego,2020s,ORG,márquez,1
+2022,gustavo petro urrego,2020s,ORG,dialogaré,1
+2022,gustavo petro urrego,2020s,MISC,anserma,1
+2022,gustavo petro urrego,2020s,LOC,río magdalena,1
+2022,gustavo petro urrego,2020s,LOC,tolima,1
+2022,gustavo petro urrego,2020s,PER,paolo flores d’arcais,1
+2022,gustavo petro urrego,2020s,LOC,sierra nevada de santa marta,1
+2022,gustavo petro urrego,2020s,MISC,niña arhuaca,1
+2026,abelardo de la espriella,2020s,PER,jesucristo,1
+2026,abelardo de la espriella,2020s,LOC,colombia,25
+2026,abelardo de la espriella,2020s,PER,joaquín de cayzedo y cuero,1
+2026,abelardo de la espriella,2020s,LOC,pichincha,1
+2026,abelardo de la espriella,2020s,PER,cayzedo,1
+2026,abelardo de la espriella,2020s,PER,cuero,1
+2026,abelardo de la espriella,2020s,LOC,cali,1
+2026,abelardo de la espriella,2020s,PER,jamás,1
+2026,abelardo de la espriella,2020s,PER,doctor josé manuel restrepo,1
+2026,abelardo de la espriella,2020s,PER,rafael núñez,1
+2026,abelardo de la espriella,2020s,PER,núñez,1
+2026,abelardo de la espriella,2020s,LOC,"estado
+álvaro gómez hurtado",1
+2026,abelardo de la espriella,2020s,ORG,m-19,1
+2026,abelardo de la espriella,2020s,LOC,de colombia,6
+2026,abelardo de la espriella,2020s,PER,miguel uribe turbay,1
+2026,abelardo de la espriella,2020s,PER,álvaro uribe,1
+2026,abelardo de la espriella,2020s,PER,winston churchill,1
+2026,abelardo de la espriella,2020s,PER,adolfo suárez,1
+2026,abelardo de la espriella,2020s,ORG,gobernaré,2
+2026,abelardo de la espriella,2020s,PER,thomas jefferson,1
+2026,abelardo de la espriella,2020s,PER,marco fidel suárez,1
+2026,abelardo de la espriella,2020s,PER,luciano,1
+2026,abelardo de la espriella,2020s,PER,blockchain,1
+2026,abelardo de la espriella,2020s,ORG,ecopetrol,1
+2026,abelardo de la espriella,2020s,LOC,impulsaré,1
+2026,abelardo de la espriella,2020s,LOC,diversificaré,1
+2026,abelardo de la espriella,2020s,LOC,orinoquía colombiana,1
+2026,abelardo de la espriella,2020s,LOC,fortaleza de colombia,1
+2026,abelardo de la espriella,2020s,ORG,proyección internacional de colombia,1
+2026,abelardo de la espriella,2020s,PER,ana lucía,1
+2026,abelardo de la espriella,2020s,PER,salvador,1
+2026,abelardo de la espriella,2020s,PER,filippo,1
+2026,abelardo de la espriella,2020s,LOC,francesca,1
