@@ -1,0 +1,17 @@
+# Caches de Python
+__pycache__/
+*.pyc
+.ruff_cache/
+
+# Artefactos LaTeX
+*.aux
+*.log
+*.blg
+*.bbl
+
+# Entornos virtuales
+.venv/
+venv/
+
+# Sistema
+.DS_Store

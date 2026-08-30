@@ -1,0 +1,62 @@
+CRITERIO DE RELACIONES DE AFINIDAD (cev:relacionadoCon)
+=======================================================
+1. Nodos de nivel >= 2 (conceptos especificos, sin raices).
+2. Tokens: segmentos del path salvo la raiz, ASCII, sin stopwords
+   ni tokens genericos del dominio.
+3. Especificidad: frecuencia de documento <= 10 (IDF alto).
+4. Puntuacion: suma de IDF de los tokens compartidos.
+5. Se conservan los 45 mejores pares entre grupos distintos.
+
+RELACIONES RAIZ FIJAS (modelo conceptual CEV):
+- Hechos victimizantes <-> Actores armados y otros participantes en las dinámicas de la guerra
+- Armas <-> Actores armados y otros participantes en las dinámicas de la guerra
+- Armas <-> Hechos victimizantes
+- Impactos <-> Hechos victimizantes
+- Impactos <-> Poblaciones
+
+PARES HEURISTICOS (nodo A <-> nodo B | score | tokens):
+- [410.7] Actores armados y otros participantes en las dinámicas de la guerra - Accionar de los actores armados - Acciones bélicas <-> Hechos victimizantes - Reclutamiento, uso y utilización de niños, niñas y adolescentes - Utilización en acciones bélicas | acciones, belicas
+- [308.0] Impactos - Impactos comunitarios - Pérdida de prácticas y saberes culturales - Afectaciones de usos, costumbres, prácticas, saberes, tradiciones e historias colectivas <-> Afrontamientos y resistencias no violentas - cotidianas - Costumbres y tradiciones | costumbres, tradiciones
+- [308.0] Impactos - Impactos familiares - Cambios en las costumbres y tradiciones familiares <-> Afrontamientos y resistencias no violentas - cotidianas - Costumbres y tradiciones | costumbres, tradiciones
+- [205.3] Actores armados y otros participantes en las dinámicas de la guerra - Control y orden social a población civil - Órdenes y escenarios de terror <-> Impactos - Impactos comunitarios - Clima emocional del terror | terror
+- [205.3] Actores armados y otros participantes en las dinámicas de la guerra - Dinámicas espaciales de los actores armados - Relaciones entre terceros civiles y actores armados <-> Impactos - Formas de revictimización - Formas de revictimización asociadas al pago de terceros por procesos de reparación | terceros
+- [205.3] Actores armados y otros participantes en las dinámicas de la guerra - Vida intrafilas - Violencias intrafilas <-> Impactos - Impactos comunitarios - Incremento de las conflictividades, violencias y/o deshumanización de la vida | violencias
+- [205.3] Impactos - Formas de revictimización - Formas de revictimización asociadas al pago de terceros por procesos de reparación <-> Poblaciones - Sujetos de Reparación Colectiva | reparacion
+- [205.3] Impactos - Impactos a la democracia - Afectación a la libertad de prensa y derecho a la información <-> Poblaciones - Población privada de la libertad | libertad
+- [205.3] Impactos - Formas de revictimización - Formas de revictimización asociadas a la explotación de la imagen de las víctimas <-> Hechos victimizantes - Violencia sexual - Trata de personas con fines de explotación sexual | explotacion
+- [205.3] Impactos - Impactos comunitarios - Silencio <-> Afrontamientos y resistencias no violentas - cotidianas - Silencio como afrontamiento | silencio
+- [205.3] Impactos - Impactos en los Derechos Económicos, Sociales, Culturales y Ambientales - DESCA - Pérdida de la seguridad y soberanía alimentaria - Impactos en el acceso a alimentación y agua <-> Afrontamientos y resistencias no violentas - cotidianas - Alimentación | alimentacion
+- [205.3] Poblaciones - Agente del Estado <-> Hechos victimizantes - Detención arbitraria - Detención por agentes del Estado sin autoridad para hacerlo | estado
+- [205.3] Poblaciones - Víctimas del conflicto armado interno - Reclamantes de tierras <-> Hechos victimizantes - Despojo/abandono de tierras | tierras
+- [180.4] Poblaciones - Niños, niñas y adolescentes <-> Hechos victimizantes - Reclutamiento, uso y utilización de niños, niñas y adolescentes | adolescentes, ninas, ninos
+- [180.4] Poblaciones - Niños, niñas y adolescentes <-> Hechos victimizantes - Reclutamiento, uso y utilización de niños, niñas y adolescentes - Amenaza de reclutamiento | adolescentes, ninas, ninos
+- [180.4] Poblaciones - Niños, niñas y adolescentes <-> Hechos victimizantes - Reclutamiento, uso y utilización de niños, niñas y adolescentes - Reclutamiento forzado | adolescentes, ninas, ninos
+- [180.4] Poblaciones - Niños, niñas y adolescentes <-> Hechos victimizantes - Reclutamiento, uso y utilización de niños, niñas y adolescentes - Utilización en acciones bélicas | adolescentes, ninas, ninos
+- [180.4] Poblaciones - Niños, niñas y adolescentes <-> Hechos victimizantes - Reclutamiento, uso y utilización de niños, niñas y adolescentes - Utilización en actividades de vigilancia e inteligencia | adolescentes, ninas, ninos
+- [180.4] Poblaciones - Niños, niñas y adolescentes <-> Hechos victimizantes - Reclutamiento, uso y utilización de niños, niñas y adolescentes - Utilización en actividades logísticas y administrativas | adolescentes, ninas, ninos
+- [180.4] Poblaciones - Niños, niñas y adolescentes <-> Hechos victimizantes - Reclutamiento, uso y utilización de niños, niñas y adolescentes - Utilización en actividades relacionadas con el narcotráfico | adolescentes, ninas, ninos
+- [154.0] Actores armados y otros participantes en las dinámicas de la guerra - Entrenamiento y formación - Proceso de formación política/ideológica <-> Impactos - Impactos a la democracia - Desmotivación de participar en política y/o en movimientos sociales | politica
+- [154.0] Actores armados y otros participantes en las dinámicas de la guerra - Entrenamiento y formación - Proceso de formación política/ideológica <-> Impactos - Impactos comunitarios - Deterioro y/o ruptura del tejido social - Desintegración de la organización política | politica
+- [154.0] Actores armados y otros participantes en las dinámicas de la guerra - Accionar de los actores armados - Tácticas de inteligencia/contrainteligencia <-> Hechos victimizantes - Reclutamiento, uso y utilización de niños, niñas y adolescentes - Utilización en actividades de vigilancia e inteligencia | inteligencia
+- [154.0] Actores armados y otros participantes en las dinámicas de la guerra - Entrenamiento y formación - Proceso de entrenamiento militar y de inteligencia <-> Hechos victimizantes - Reclutamiento, uso y utilización de niños, niñas y adolescentes - Utilización en actividades de vigilancia e inteligencia | inteligencia
+- [154.0] Impactos - Impactos emocionales/salud mental/salud física - Discapacidad <-> Poblaciones - Población con discapacidad | discapacidad
+- [154.0] Impactos - Impactos en los Derechos Económicos, Sociales, Culturales y Ambientales - DESCA - Pérdida de beneficios de programas de asistencia social para la niñez, vejez o personas en condición de discapacidad <-> Poblaciones - Población con discapacidad | discapacidad
+- [154.0] Impactos - Formas de revictimización - Formas de revictimización asociadas a la discriminación <-> Hechos victimizantes - Homicidio - Muerte por discriminación o prejuicio | discriminacion
+- [154.0] Impactos - Formas de revictimización - Formas de revictimización asociadas a la discriminación <-> Hechos victimizantes - Prácticas de persecución o exterminio - Persecución por discriminación | discriminacion
+- [154.0] Impactos - Impactos familiares - Participación en actos delincuenciales por parte de un familiar <-> Hechos victimizantes - Violencia sexual - Obligación a presenciar actos sexuales | actos
+- [154.0] Impactos - Impactos familiares - Participación en actos delincuenciales por parte de un familiar <-> Hechos victimizantes - Violencia sexual - Obligación a realizar actos sexuales | actos
+- [154.0] Impactos - Impactos comunitarios - Clima emocional del terror <-> Afrontamientos y resistencias no violentas - cotidianas - Descarga emocional | emocional
+- [154.0] Impactos - Impactos comunitarios - Clima emocional del terror <-> Afrontamientos y resistencias no violentas - cotidianas - Descarga emocional - Movilización emocional | emocional
+- [123.2] Actores armados y otros participantes en las dinámicas de la guerra - Conflicto político armado <-> Impactos - Impactos individuales - Impactos en el proyecto político | politico
+- [123.2] Actores armados y otros participantes en las dinámicas de la guerra - Responsabilidad colectiva <-> Impactos - Impactos comunitarios - Desconfianza colectiva | colectiva
+- [123.2] Actores armados y otros participantes en las dinámicas de la guerra - Guerra contrainsurgente <-> Armas - Instrumentos - Armas blancas - Guadaña de guerra | guerra
+- [123.2] Actores armados y otros participantes en las dinámicas de la guerra - Guerra contrainsurgente <-> Armas - Instrumentos - Armas blancas - Hacha de guerra | guerra
+- [123.2] Actores armados y otros participantes en las dinámicas de la guerra - Conflicto político armado <-> Poblaciones - Activista - Activista político | politico
+- [123.2] Actores armados y otros participantes en las dinámicas de la guerra - Responsabilidad colectiva <-> Poblaciones - Sujetos de Reparación Colectiva | colectiva
+- [123.2] Actores armados y otros participantes en las dinámicas de la guerra - Conflicto político armado <-> Hechos victimizantes - Secuestro/toma de rehenes - Secuestro político | politico
+- [123.2] Actores armados y otros participantes en las dinámicas de la guerra - Guerra contrainsurgente <-> Hechos victimizantes - Crímenes de guerra | guerra
+- [123.2] Actores armados y otros participantes en las dinámicas de la guerra - Responsabilidad colectiva <-> Afrontamientos y resistencias no violentas - cotidianas - Memoria colectiva | colectiva
+- [123.2] Impactos - Impactos comunitarios - Afectación a la reputación del colectivo <-> Poblaciones - Sujeto colectivo | colectivo
+- [123.2] Impactos - Impactos comunitarios - Desconfianza colectiva <-> Poblaciones - Sujetos de Reparación Colectiva | colectiva
+- [123.2] Impactos - Impactos comunitarios - Pérdida de espacios de uso y aprovechamiento colectivo <-> Poblaciones - Sujeto colectivo | colectivo
+- [123.2] Impactos - Impactos en los Derechos Económicos, Sociales, Culturales y Ambientales - DESCA - Pérdida de beneficios de programas de asistencia social para la niñez, vejez o personas en condición de discapacidad <-> Poblaciones - Población de Lesbianas, Gays, Bisexuales, Trans e Intersexuales - LGBTI - Personas con Orientación Sexual e Identidad de Género Diversas | personas

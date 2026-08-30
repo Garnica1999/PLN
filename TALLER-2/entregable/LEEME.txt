@@ -1,0 +1,54 @@
+ENTREGABLE TALLER-2 — Construcción de Ontología y Análisis Semántico con WordNet
+Procesamiento de Lenguaje Natural · Pontificia Universidad Javeriana
+=============================================================================
+
+CONTENIDO DEL ZIP
+-----------------
+1. notebooks/Taller_Ontologias_WordNet.ipynb   -> ENTREGABLE 1: notebook (Colab)
+   Implementación de las funciones WordNet (9 relaciones) y las consultas
+   SPARQL documentadas (3 por cada uno de los 6 grupos + modelo semántico).
+   El notebook es AUTOCONTENIDO: incluye todo su código y no requiere
+   archivos adicionales de código para ejecutarse.
+2. ontologia/tesauro_cev.owl                   -> ENTREGABLE 2: ontología OWL
+   Construida con owlready2 (compatible Protégé 5.6.9), consistente según
+   HermiT: 623 clases, 534 individuos, 17 object properties y 6 clases
+   definidas con restricciones.
+3. informe/Taller_2_Informe_Final.pdf          -> ENTREGABLE 3: informe final
+   Incluye la reflexión: "¿Qué ventajas aporta representar conocimiento en
+   ontologías frente a un análisis plano de texto en PLN?" (sección central).
+4. data/tesauro_orginal_cev.xlsx               -> Tesauro de la Comisión de la
+   Verdad (fuente de datos necesaria para ejecutar el notebook).
+5. data/grupos_seleccionados.json, *_relaciones.csv  -> resultados generados.
+6. imagenes/                                   -> figuras del análisis (14 PNG).
+
+CÓMO EJECUTAR EL NOTEBOOK (cualquier máquina: Colab o local)
+------------------------------------------------------------
+Descomprima el ZIP completo (sin mover archivos de carpeta) y abra el
+notebook desde notebooks/.
+
+A) En Google Colab (recomendado):
+   1. Suba el ZIP a Colab (panel izquierdo) y descomprímalo:
+      !unzip -q ENTREGABLE_TALLER2.zip
+   2. Abra notebooks/Taller_Ontologias_WordNet.ipynb (File > Open notebook).
+   3. Ejecute todas las celdas: la sección sec00 instala automáticamente las
+      dependencias (owlready2, rdflib, nltk, pandas, matplotlib, networkx,
+      seaborn) y descarga los corpus de NLTK (wordnet + omw-1.4).
+
+B) En una máquina local (Python 3.10+):
+   1. Descomprima el ZIP en cualquier carpeta.
+   2. Abra el notebook con Jupyter (jupyter notebook / VS Code / nbviewer):
+      notebooks/Taller_Ontologias_WordNet.ipynb
+   3. Ejecute todas las celdas en orden; sec00 instala las dependencias
+      faltantes (requiere conexión a internet la primera vez, para pip y los
+      corpus NLTK) y descarga los corpus de WordNet en español.
+
+REQUISITOS
+----------
+- Python 3.10+ (el notebook fue probado con Python 3.14).
+- Conexión a internet la primera ejecución (pip install + nltk.download).
+- ~5 minutos de ejecución completa en CPU (sin GPU).
+
+INTEGRANTES
+-----------
+Erika Valeria Rivera Jiménez · Julián Guillermo Carrillo Meneses ·
+Carlos Andrés Garnica Salazar · Oscar Andrés Prieto Moreno
