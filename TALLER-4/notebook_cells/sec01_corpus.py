@@ -30,6 +30,7 @@ La celda siguiente carga la tabla por tomo desde
 `resultados/extraccion_libros_report.json` (reporte de la Fase 3).
 """
 
+
 # %%
 """Imports, rutas (respaldo standalone) y tabla por tomo de la Fase 3."""
 
@@ -96,6 +97,7 @@ print(
     f"TOTAL: {n_segmentos_total:,} segmentos | "
     f"entrevistas (coleccion de queries): 2.486 transcripciones completas"
 )
+
 
 # %%
 """Normalizacion de entrevistas: ejemplo real antes/despues (1 registro).
@@ -201,6 +203,7 @@ j = texto_normalizado.find("organizacion_publica")
 if j >= 0:
     print("normalizado: ...", " ".join(texto_normalizado[j - 100 : j + 40].split()), "...")
 
+
 # %%
 """Categorias de anonimizacion y volumenes globales de la normalizacion."""
 
@@ -234,6 +237,7 @@ print(
     f"{totales['n_brackets']:,}"
 )
 
+
 # %% [markdown]
 """## 2. El pipeline de preprocesado (codigo esencial, sin ejecutar spaCy)
 
@@ -246,6 +250,9 @@ El preprocesado completo tiene dos partes (scripts/02_preprocesar.py):
    anonimizacion a 8 categorias canonicas en minusculas (ADR-002:
    `organizacion_publica`, `organizacion_social`, `lugar`, `familiar`,
    `conocido`, `institucion_educativa`, `partido_politico` y `anonimo`).
+   El inventario completo de patrones aplicados (30+ reglas) se documento en
+   `resultados/preprocesado/inventario_patrones_entrevistas.json` (versionado)
+   y la celda de abajo lee la tabla de categorias desde ese archivo.
 2. **Preprocesado linguistico** (spaCy `es_core_news_md`, CPU): tokeniza,
    pasa a minusculas y lematiza con un pipeline unico para libros y
    entrevistas; elimina stopwords de spaCy y las muletillas del habla
@@ -254,38 +261,114 @@ El preprocesado completo tiene dos partes (scripts/02_preprocesar.py):
 
 **El corpus ya viene procesado** (data/corpus/preprocesado/: 917 + 2.486
 documentos en `*_lemas.txt`/`*_tokens.txt` con sus `*_docs.json` alineados),
-asi que el notebook NO vuelve a ejecutar spaCy. La celda siguiente importa el
-script real y muestra su codigo esencial: aplica la parte 1 (regex) sobre las
-3 lineas crudas del ejemplo y define (sin correrla) la parte 2.
+asi que el notebook NO vuelve a ejecutar spaCy ni reimporta el script de
+produccion. La celda siguiente define una **funcion local `normalizar_demo`**,
+un subset DEMOSTRATIVO y DOCUMENTADO de la parte 1 (las reglas mas visibles:
+etiquetas de hablante al inicio de linea, anotaciones entre corchetes,
+guiones >= 3 y el mapeo de anonimizados del ADR-002), y la aplica a las 3
+lineas crudas del ejemplo. El corpus real ya fue normalizado con el
+normalizador completo de scripts/02_preprocesar.py; esta funcion no es la
+produccion, solo muestra el mecanismo sobre un fragmento.
 """
 
+
 # %%
-"""Importa scripts/02_preprocesar.py y muestra/ejecuta su parte 1 (regex)."""
-import importlib.util
-import inspect
-import sys
+"""Normalizacion estructural (subset demostrativo) aplicada al ejemplo.
 
-ruta_script_02 = RUTA_SCRIPTS / "02_preprocesar.py"
-_espec = importlib.util.spec_from_file_location("preprocesar_02", ruta_script_02)
-assert _espec is not None and _espec.loader is not None
-modulo_preprocesar = importlib.util.module_from_spec(_espec)
-sys.modules["preprocesar_02"] = modulo_preprocesar
-_espec.loader.exec_module(modulo_preprocesar)
+`normalizar_demo` replica el criterio del ADR-002 sobre un SUBSET de reglas
+(no el normalizador completo de scripts/02_preprocesar.py, que ademas cubre
+codigos de sistema, lineas AUDIO, etiquetas aisladas y colapso de turnos):
+elimina etiquetas de hablante al inicio de linea, anotaciones entre
+corchetes, guiones separadores (>= 3) y mapea los anonimizados a las 8
+categorias canonicas (especificas primero y generico al final), dejando el
+resto en minusculas con sus tildes. Se aplica a las 3 primeras lineas crudas
+del ejemplo y a una linea dirigida que ejercita las categorias canonicas.
+"""
+import re
 
-print("=== normalizar_texto_entrevista() (parte 1: cabecera) ===")
-fuente = inspect.getsource(modulo_preprocesar.normalizar_texto_entrevista)
-print("\n".join(fuente.splitlines()[:30]))
-print("    ... (el cuerpo completo aplica las reglas del inventario de patrones)")
+_PATRONES_ANONIMIZADOS: list[tuple[str, re.Pattern[str]]] = []
+_e = r"[ \t\n]"
+_num = rf"(?:{_e}*[0-9]+)"
+_no_minuscula = r"(?![ \t]*[a-záéíóúñ])"
+_especificos = [
+    ("organizacion_publica", rf"ORGANIZACI[ÓO]N{_e}+P[ÚU]BLICA(?:{_num}|{_no_minuscula})"),
+    ("organizacion_social", rf"ORGANIZACI[ÓO]N{_e}+SOCIAL(?:{_num}|{_no_minuscula})"),
+    ("institucion_educativa", rf"INSTITUCI[ÓO]N{_e}+EDUCATIVA(?:{_num}|{_no_minuscula})"),
+    ("partido_politico", rf"PARTIDO{_e}+POLITICO(?:{_num}|{_no_minuscula})"),
+    ("lugar", r"\bLUGAR[ \t\n]*[0-9]+\b"),
+    ("familiar", r"\bFAMILIAR[ \t\n]*[0-9]+\b"),
+    ("conocido", r"\bCONOCIDO[ \t\n]*[0-9]+\b"),
+]
+_generico = (
+    r"(?<![A-ZÑÁÉÍÓÚa-zñáéíóú0-9])[A-ZÑÁÉÍÓÚ]{2,}[0-9]+"
+    r"(?![A-ZÑÁÉÍÓÚa-zñáéíóú0-9])"
+)
+_PATRONES_ANONIMIZADOS = [
+    (categoria, re.compile(patron)) for categoria, patron in _especificos
+] + [("anonimo", re.compile(_generico))]
 
-print("\n=== construir_nlp() (parte 2, spaCy: definicion, NO se ejecuta) ===")
-print(inspect.getsource(modulo_preprocesar.construir_nlp))
 
-print("\n=== Parte 1 aplicada a las 3 primeras lineas crudas del ejemplo ===")
+def normalizar_demo(texto: str) -> str:
+    """Subset demostrativo de la normalizacion estructural (ADR-002).
+
+    Aplica en orden: anotaciones entre corchetes -> etiquetas de hablante al
+    inicio de linea (`TEST:`, `ENT1:`...) -> anonimizados a categorias
+    canonicas (especificas primero: organizacion_publica, organizacion_social,
+    institucion_educativa, partido_politico, lugar, familiar, conocido; y al
+    final el generico `anonimo` para el resto de MAYUSCULAS+digitos) ->
+    guiones separadores (>= 3) -> colapso de espacios. Cierra en minusculas
+    conservando las tildes. Es un subset DOCUMENTADO con fines didacticos; el
+    corpus real se normalizo con scripts/02_preprocesar.py (30+ patrones en
+    resultados/preprocesado/inventario_patrones_entrevistas.json).
+
+    Args:
+        texto: transcripcion cruda (una o varias lineas).
+
+    Returns:
+        Texto normalizado del subset (una linea, minusculas con tildes).
+    """
+    t = texto.replace("\r\n", "\n").replace("\r", "\n").replace("\xa0", " ")
+    t = re.sub(r"\[[^\[\]]*\]", "", t)  # anotaciones entre corchetes
+    t = re.sub(r"(?m)^[ \t]*[A-ZÑ]{1,16}[0-9]{0,3}:[ \t]*", "", t)  # hablante
+    for categoria, patron in _PATRONES_ANONIMIZADOS:
+        t = patron.sub(categoria, t)
+    t = re.sub(r"[ \t]*[\-–—]{3,}[ \t]*", " ", t)  # guiones separadores
+    t = re.sub(r"\s+", " ", t).strip()
+    return t.lower()
+
+
 texto_prueba = "\n".join(lineas_crudas[:3])
-contadores = modulo_preprocesar._nuevos_contadores_normalizacion()
-normalizado = modulo_preprocesar.normalizar_texto_entrevista(texto_prueba, contadores)
+normalizado_demo = normalizar_demo(texto_prueba)
+print("=== normalizar_demo(): subset demostrativo de la parte 1 (regex) ===")
+print("Reglas del subset: corchetes, etiquetas de hablante en inicio de linea,")
+print("anonimizados ADR-002 (8 categorias), guiones >=3, minusculas con tildes.")
+print("(el normalizador completo de scripts/02_preprocesar.py usa 30+ patrones;")
+print(" ver inventario_patrones_entrevistas.json en resultados/preprocesado/)")
+print("\n=== Subset aplicado a las 3 primeras lineas crudas del ejemplo ===")
 print("ANTES :", " | ".join(texto_prueba.splitlines())[:220])
-print("DESPUES:", normalizado[:220])
+print("DESPUES:", normalizado_demo[:220])
+
+print("\n=== Linea dirigida: las marcas del subset y las categorias canonicas ===")
+oracion_demo = (
+    "TEST: la ORGANIZACIÓN PÚBLICA 1 ---- y la ORGANIZACION SOCIAL 2 "
+    "llegaron a LUGAR7 [emocion] donde vivía FAMILIAR3 con CONOCIDO4; "
+    "la INSTITUCION EDUCATIVA5 y el PARTIDO POLITICO6, y luego ANONIMO9."
+)
+# Las categorias canonicas del ADR-002 quedan SIN el numero del token de
+# anonimizacion original (el patron consume 'LUGAR7' -> 'lugar'), igual que
+# en el corpus normalizado de produccion.
+salida_esperada = (
+    "la organizacion_publica y la organizacion_social llegaron a lugar donde "
+    "vivía familiar con conocido; la institucion_educativa y el "
+    "partido_politico, y luego anonimo."
+)
+normalizado_verificacion = normalizar_demo(oracion_demo)
+print("ANTES :", oracion_demo)
+print("DESPUES:", normalizado_verificacion)
+print("Mapeo correcto de ORGANIZACIÓN PÚBLICA 1 -> organizacion_publica:",
+      "organizacion_publica" in normalizado_verificacion)
+print("Coincide con la salida esperada del subset:", normalizado_verificacion == salida_esperada)
+
 
 # %% [markdown]
 """## 3. Regeneracion opcional (solo si se quiere reconstruir el corpus)
@@ -309,9 +392,11 @@ desde el propio notebook. El flag `REGENERAR_PREPROCESADO_SPACY` permanece en
 False: el corpus ya procesado es la fuente de las secciones 02 y 03.
 """
 
+
 # %%
 """Rutina de instalacion de spaCy + modelo (solo si se activa el flag)."""
 import subprocess
+import sys
 
 REGENERAR_PREPROCESADO_SPACY = False  # cambiar a True solo para regenerar
 
@@ -343,3 +428,4 @@ else:
         "existe en data/corpus/preprocesado/ y es el insumo de las secciones "
         "02 (EDA) y 03 (IR)."
     )
+
