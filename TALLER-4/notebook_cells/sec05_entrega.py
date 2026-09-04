@@ -70,6 +70,8 @@
 La seccion 00 del notebook detecta la raiz del proyecto automaticamente
 (`buscar_raiz()`), por lo que puede abrirse en Jupyter desde `notebooks/`,
 desde la raiz de TALLER-4 o en Colab con la carpeta TALLER-4 completa
-subida; las figuras del EDA embebidas se resuelven con la ruta relativa
-`../imagenes/eda_*.png` respecto de `notebooks/`.
+subida. Las figuras del EDA se generan DENTRO del notebook (Sec 02, outputs
+PNG embebidos, visibles en GitHub/Colab); las tres figuras oficiales que
+requieren datos no versionados (chars y paginas de entrevistas,
+near-duplicates) se muestran desde `imagenes/` con el helper `mostrar_png()`.
 """
