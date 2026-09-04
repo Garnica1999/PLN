@@ -1,0 +1,21 @@
+# TALLER-4 — archivos NO versionados en git
+# Motivo: (a) exceden el límite de 100 MB por archivo de GitHub, o
+# (b) son intermedios regenerables con scripts/01-03 desde los inputs crudos.
+# Los inputs crudos (JSON de entrevistas, zip de libros, PDFs) se descargan de
+# los enlaces de Google Drive indicados en docs/"Taller recuperacion.pdf".
+
+# Inputs crudos pesados (>100 MB) — descargables del Drive del taller
+data/raw/*.zip
+data/raw/*.json
+data/raw/books/
+
+# Intermedios pesados (>100 MB, regenerables con scripts/02_preprocesar.py)
+data/corpus/entrevistas_normalizadas.jsonl
+data/corpus/preprocesado/entrevistas_tokens.txt
+data/corpus/preprocesado/validacion_*
+
+# Intermedio derivado (regenerable con scripts/01_extraer_libros.py)
+data/corpus/paginas/
+
+# Artefactos de edición de notebooks
+.ipynb_checkpoints/

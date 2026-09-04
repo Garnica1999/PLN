@@ -1,0 +1,275 @@
+{
+  "_comentario": "Config por tomo de scripts/01_extraer_libros.py. El pipeline escribe aqui los parametros efectivos usados en la ultima ejecucion (auto-detectados). Editar este archivo cambia el comportamiento de la siguiente ejecucion: 'niveles_segmento' fija que niveles TOC (1-based, por sangria x0) son limites de segmento; 'titulos_descartar' recibe titulos TOC normalizados (minusculas, sin acentos) a descartar como front/back matter; el campo '_comentario' documenta el motivo de cada ajuste manual.",
+  "tomo_params": {
+    "NNA": {
+      "niveles_segmento": [
+        1,
+        2
+      ],
+      "fusion_min_palabras": 300,
+      "techo_palabras": 4000,
+      "fragmento_max_palabras": 3500,
+      "ventana_mapeo_paginas": 1,
+      "blacklist_min_paginas": 3,
+      "titulos_descartar": [],
+      "patrones_back_matter": [
+        "referencias",
+        "bibliograf",
+        "fuentes",
+        "anexo",
+        "glosario",
+        "siglas",
+        "abreviaturas",
+        "creditos",
+        "colofon",
+        "contraportada",
+        "indice",
+        "nota editorial",
+        "acerca de este"
+      ]
+    },
+    "CONVOCATORIA": {
+      "niveles_segmento": [
+        1,
+        2
+      ],
+      "fusion_min_palabras": 300,
+      "techo_palabras": 4000,
+      "fragmento_max_palabras": 3500,
+      "ventana_mapeo_paginas": 1,
+      "blacklist_min_paginas": 3,
+      "titulos_descartar": [],
+      "patrones_back_matter": [
+        "referencias",
+        "bibliograf",
+        "fuentes",
+        "anexo",
+        "glosario",
+        "siglas",
+        "abreviaturas",
+        "creditos",
+        "colofon",
+        "contraportada",
+        "indice",
+        "nota editorial",
+        "acerca de este"
+      ]
+    },
+    "NARRATIVA": {
+      "niveles_segmento": [
+        1,
+        2
+      ],
+      "fusion_min_palabras": 300,
+      "techo_palabras": 4000,
+      "fragmento_max_palabras": 3500,
+      "ventana_mapeo_paginas": 1,
+      "blacklist_min_paginas": 3,
+      "titulos_descartar": [],
+      "patrones_back_matter": [
+        "referencias",
+        "bibliograf",
+        "fuentes",
+        "anexo",
+        "glosario",
+        "siglas",
+        "abreviaturas",
+        "creditos",
+        "colofon",
+        "contraportada",
+        "indice",
+        "nota editorial",
+        "acerca de este"
+      ]
+    },
+    "SUFRIR": {
+      "niveles_segmento": [
+        1,
+        2
+      ],
+      "fusion_min_palabras": 300,
+      "techo_palabras": 4000,
+      "fragmento_max_palabras": 3500,
+      "ventana_mapeo_paginas": 1,
+      "blacklist_min_paginas": 3,
+      "titulos_descartar": [],
+      "patrones_back_matter": [
+        "referencias",
+        "bibliograf",
+        "fuentes",
+        "anexo",
+        "glosario",
+        "siglas",
+        "abreviaturas",
+        "creditos",
+        "colofon",
+        "contraportada",
+        "indice",
+        "nota editorial",
+        "acerca de este"
+      ]
+    },
+    "CUERPO": {
+      "niveles_segmento": [
+        1,
+        2
+      ],
+      "fusion_min_palabras": 300,
+      "techo_palabras": 4000,
+      "fragmento_max_palabras": 3500,
+      "ventana_mapeo_paginas": 1,
+      "blacklist_min_paginas": 3,
+      "titulos_descartar": [],
+      "patrones_back_matter": [
+        "referencias",
+        "bibliograf",
+        "fuentes",
+        "anexo",
+        "glosario",
+        "siglas",
+        "abreviaturas",
+        "creditos",
+        "colofon",
+        "contraportada",
+        "indice",
+        "nota editorial",
+        "acerca de este"
+      ]
+    },
+    "FUERA": {
+      "niveles_segmento": [
+        1,
+        2
+      ],
+      "fusion_min_palabras": 300,
+      "techo_palabras": 4000,
+      "fragmento_max_palabras": 3500,
+      "ventana_mapeo_paginas": 1,
+      "blacklist_min_paginas": 3,
+      "titulos_descartar": [],
+      "patrones_back_matter": [
+        "referencias",
+        "bibliograf",
+        "fuentes",
+        "anexo",
+        "glosario",
+        "siglas",
+        "abreviaturas",
+        "creditos",
+        "colofon",
+        "contraportada",
+        "indice",
+        "nota editorial",
+        "acerca de este"
+      ]
+    },
+    "HALLAZGOS": {
+      "niveles_segmento": [
+        1,
+        2
+      ],
+      "fusion_min_palabras": 300,
+      "techo_palabras": 4000,
+      "fragmento_max_palabras": 3500,
+      "ventana_mapeo_paginas": 1,
+      "blacklist_min_paginas": 3,
+      "titulos_descartar": [],
+      "patrones_back_matter": [
+        "referencias",
+        "bibliograf",
+        "fuentes",
+        "anexo",
+        "glosario",
+        "siglas",
+        "abreviaturas",
+        "creditos",
+        "colofon",
+        "contraportada",
+        "indice",
+        "nota editorial",
+        "acerca de este"
+      ]
+    },
+    "VIOLACIONES": {
+      "niveles_segmento": [
+        1,
+        2
+      ],
+      "fusion_min_palabras": 300,
+      "techo_palabras": 4000,
+      "fragmento_max_palabras": 3500,
+      "ventana_mapeo_paginas": 1,
+      "blacklist_min_paginas": 3,
+      "titulos_descartar": [],
+      "patrones_back_matter": [
+        "referencias",
+        "bibliograf",
+        "fuentes",
+        "anexo",
+        "glosario",
+        "siglas",
+        "abreviaturas",
+        "creditos",
+        "colofon",
+        "contraportada",
+        "indice",
+        "nota editorial",
+        "acerca de este"
+      ]
+    },
+    "ETNICO": {
+      "niveles_segmento": [
+        1,
+        2
+      ],
+      "fusion_min_palabras": 300,
+      "techo_palabras": 4000,
+      "fragmento_max_palabras": 3500,
+      "ventana_mapeo_paginas": 1,
+      "blacklist_min_paginas": 3,
+      "titulos_descartar": [],
+      "patrones_back_matter": [
+        "referencias",
+        "bibliograf",
+        "fuentes",
+        "anexo",
+        "glosario",
+        "siglas",
+        "abreviaturas",
+        "creditos",
+        "colofon",
+        "contraportada",
+        "indice",
+        "nota editorial",
+        "acerca de este"
+      ]
+    },
+    "TESTIMONIAL": {
+      "niveles_segmento": [
+        1,
+        2
+      ],
+      "fusion_min_palabras": 300,
+      "techo_palabras": 4000,
+      "fragmento_max_palabras": 3500,
+      "ventana_mapeo_paginas": 1,
+      "blacklist_min_paginas": 3,
+      "titulos_descartar": [],
+      "patrones_back_matter": [
+        "referencias",
+        "bibliograf",
+        "fuentes",
+        "anexo",
+        "glosario",
+        "siglas",
+        "abreviaturas",
+        "creditos",
+        "colofon",
+        "contraportada",
+        "indice",
+        "nota editorial",
+        "acerca de este"
+      ]
+    }
+  }
+}

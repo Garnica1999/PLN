@@ -1,0 +1,137 @@
+{
+  "_comentario": "Informe del experimento 1 (base) de IR TF-IDF del TALLER-4 (Fase 6). Evaluacion P@1/P@3 proxy completada (etiquetado humano-proxy 2026-09-04); decision de iteracion registrada de resultados/evaluacion_muestra.csv ({relacionado, parcial, no}); no hay gold estandar (estado_del_arte).",
+  "experimento": "fase6_tfidf_base",
+  "script": "experimentos/experimento_1_tfidf_base.py",
+  "variante": "base",
+  "direccion_matching": "entrevistas = queries; segmentos de libro = coleccion (ADR-005)",
+  "fecha": "2026-09-04",
+  "config_vectorizador": {
+    "analyzer": "word",
+    "token_pattern": "(?u)\\b\\w+\\b",
+    "lowercase": true,
+    "ngram_range": [
+      1,
+      2
+    ],
+    "sublinear_tf": true,
+    "norm": "l2",
+    "use_idf": true,
+    "smooth_idf": true,
+    "min_df": 2,
+    "max_df": 0.85
+  },
+  "parada_en_consumo": {
+    "spacy_stop_words": 521,
+    "muletillas_habla": 51,
+    "ruido_libros": 42,
+    "total_efectiva": 611
+  },
+  "n_correcciones_lemas": 62,
+  "corpus": {
+    "coleccion_n_docs": 917,
+    "queries_n_docs": 2486,
+    "queries_vacias_tras_parada_n": 2,
+    "queries_vacias_tras_parada_ids": [
+      "5eb4ebabda6da3b502db5342.pdf",
+      "5f5513b106158f011e1e411a.pdf"
+    ],
+    "nota_vacias": "2 documentos de entrevista vacios legitimos (indices 717 y 1674 de entrevistas_lemas.txt); no generan filas de ranking.",
+    "lemas_coleccion_antes_parada": 970283,
+    "lemas_coleccion_despues_parada": 923912,
+    "lemas_queries_antes_parada": 10923423,
+    "lemas_queries_despues_parada": 9702400
+  },
+  "vocabulario": {
+    "n_features": 118748,
+    "n_unigramas": 18864,
+    "n_bigramas": 99884,
+    "densidad_matriz_tf_coleccion": 0.00818971722382036
+  },
+  "ranking": {
+    "top_k": 5,
+    "filas_ranking_top5": 12420,
+    "queries_con_al_menos_un_match": 2484,
+    "cobertura_pct": 99.92
+  },
+  "top1": {
+    "n_queries_con_top1": 2484,
+    "distribucion_tomos": [
+      {
+        "tomo": "TESTIMONIAL",
+        "n_queries": 1907,
+        "pct": 76.77
+      },
+      {
+        "tomo": "FUERA",
+        "n_queries": 129,
+        "pct": 5.19
+      },
+      {
+        "tomo": "NARRATIVA",
+        "n_queries": 108,
+        "pct": 4.35
+      },
+      {
+        "tomo": "ETNICO",
+        "n_queries": 95,
+        "pct": 3.82
+      },
+      {
+        "tomo": "VIOLACIONES",
+        "n_queries": 73,
+        "pct": 2.94
+      },
+      {
+        "tomo": "HALLAZGOS",
+        "n_queries": 53,
+        "pct": 2.13
+      },
+      {
+        "tomo": "CUERPO",
+        "n_queries": 50,
+        "pct": 2.01
+      },
+      {
+        "tomo": "SUFRIR",
+        "n_queries": 46,
+        "pct": 1.85
+      },
+      {
+        "tomo": "NNA",
+        "n_queries": 22,
+        "pct": 0.89
+      },
+      {
+        "tomo": "CONVOCATORIA",
+        "n_queries": 1,
+        "pct": 0.04
+      }
+    ],
+    "score": {
+      "min": 0.069556,
+      "p25": 0.124975,
+      "mediana": 0.138242,
+      "media": 0.146813,
+      "p75": 0.152874,
+      "max": 0.571748
+    }
+  },
+  "evaluacion_cualitativa": {
+    "archivo": "resultados/evaluacion_muestra.csv",
+    "n_filas": 30,
+    "semilla": 42,
+    "criterio": "muestra determinista estratificada por tomo del top-1: hasta 3 entrevistas por tomo (orden canonico de plan/PLAN.md) hasta 30 entrevistas con top-3 completo; fragmentos de ~500 chars; columna 'etiqueta' vacia para etiquetado humano posterior.",
+    "guia_etiquetado": "etiquetar cada fila segun la relacion de la entrevista (fragmento_entrevista) con el segmento r1 (fragmento_segmento_r1): 'relacionado' si trata el mismo tema/violencia/territorio, 'parcial' si hay solape parcial, 'no' si no hay relacion evidente."
+  },
+  "tiempo_total_s": 10.0,
+  "estado": "completado",
+  "decision_iteracion": {
+    "decision_iteracion": "no_crear_experimento_2",
+    "fecha": "2026-09-04",
+    "criterio_aplicado": "P@1 aceptable (relacionado+parcial) >= 0.6 sobre la muestra de 30 pares -> el modelo base es suficiente para el taller (punto 3: modelo funcional + observaciones); no se crea experimento_2.",
+    "p1_aceptable": 1.0,
+    "p1_estricto_solo_relacionado": 0.5333,
+    "justificacion": "Con el umbral del plan (P@1 aceptable >= 0.6) el base cumple holgadamente (1.0). Los errores diagnosticados NO son de registro oral: las muletillas coloquiales ya estan en parada (51 tokens + ruido) y el lexico oral residual (papa, hijo, mami...) es contenido tematico legitimo de los testimonios, no ruido. El problema real es de especificidad: en 7/30 queries el top-1 es 'parcial' y el match 'relacionado' quedo en r2-r3; pasar mas lexico a parada no discriminaria mejor el hecho o la poblacion especifica (afectaria por igual a todos los segmentos). Se evita sobre-ingenieria: crear exp2 no atacaria la causa y consumiria tiempo de taller sin mejora esperada de P@1 estricto.",
+    "fuente": "resultados/evaluacion_metricas.json (2026-09-04)"
+  }
+}
