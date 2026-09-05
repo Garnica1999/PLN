@@ -45,12 +45,67 @@ if "RUTA_RAIZ" not in globals():
     import os as _os
     from pathlib import Path as _Path
 
-    _candidato = _Path(_os.getcwd()).resolve()
-    while _candidato != _candidato.parent:
-        if (_candidato / "data" / "corpus" / "segmentos_libros.jsonl").exists():
-            break
-        _candidato = _candidato.parent
-    RUTA_RAIZ = _candidato
+    def _raiz_standalone() -> _Path:
+        """Localiza la raiz del proyecto TALLER-4 (respaldo standalone).
+
+        Copia del algoritmo robusto de sec00 (sin TALLER4_ROOT ni
+        auto-descarga, para no sorprender en ejecuciones sueltas): ancestros
+        desde el cwd, subcarpetas de hasta 3 niveles bajo el cwd y bajo cada
+        ancestro, y rutas tipicas de Colab. Nunca devuelve la raiz del
+        filesystem: si no encuentra, lanza un error claro.
+
+        Returns:
+            Path absoluto de la raiz del proyecto.
+
+        Raises:
+            FileNotFoundError: si falta data/corpus/segmentos_libros.jsonl.
+        """
+        marcador = _Path("data") / "corpus" / "segmentos_libros.jsonl"
+        excluidos = {".git", "drive", "sample_data", "venv", "node_modules"}
+        cwd = _Path(_os.getcwd()).resolve()
+
+        def cumple(directorio: _Path) -> bool:
+            """True si el directorio contiene el marcador de la raiz."""
+            return (directorio / marcador).exists()
+
+        def caminar(base: _Path, max_profundidad: int):
+            """Itera base y sus subcarpetas hasta la profundidad dada."""
+            nivel_base = len(_Path(base).parts)
+            for dir_actual, subdirs, _ in _os.walk(base):
+                nivel = len(_Path(dir_actual).parts) - nivel_base
+                if nivel >= max_profundidad:
+                    subdirs[:] = []
+                else:
+                    subdirs[:] = sorted(
+                        d
+                        for d in subdirs
+                        if not d.startswith(".") and d not in excluidos
+                    )
+                yield _Path(dir_actual)
+
+        ancestros = [cwd, *cwd.parents]
+        for ancestro in ancestros:
+            if cumple(ancestro):
+                return ancestro
+        for ancestro in ancestros:
+            for candidato in caminar(ancestro, 3):
+                if cumple(candidato):
+                    return candidato
+        for candidata in (
+            _Path("/content/TALLER-4"),
+            _Path("/content/drive/MyDrive/TALLER-4"),
+        ):
+            if cumple(candidata):
+                return candidata
+        raise FileNotFoundError(
+            "No se encontro la raiz del proyecto TALLER-4: falta "
+            "data/corpus/segmentos_libros.jsonl en el arbol de directorios "
+            "(sube la carpeta TALLER-4 completa a /content o descomprime ahi "
+            "el zip del repositorio; queda en /content/PLN-main/TALLER-4 y "
+            "tambien se detecta)."
+        )
+
+    RUTA_RAIZ = _raiz_standalone()
     RUTA_CORPUS = RUTA_RAIZ / "data" / "corpus"
     RUTA_RESULTADOS = RUTA_RAIZ / "resultados"
     RUTA_SCRIPTS = RUTA_RAIZ / "scripts"

@@ -68,10 +68,23 @@
 ```
 
 La seccion 00 del notebook detecta la raiz del proyecto automaticamente
-(`buscar_raiz()`), por lo que puede abrirse en Jupyter desde `notebooks/`,
-desde la raiz de TALLER-4 o en Colab con la carpeta TALLER-4 completa
-subida. Las figuras del EDA se generan DENTRO del notebook (Sec 02, outputs
-PNG embebidos, visibles en GitHub/Colab); las tres figuras oficiales que
-requieren datos no versionados (chars y paginas de entrevistas,
-near-duplicates) se muestran desde `imagenes/` con el helper `mostrar_png()`.
+(`buscar_raiz()`: ancestros, subcarpetas de hasta 3 niveles - cubre
+`/content/PLN-main/TALLER-4` al descomprimir el zip del repo en /content -,
+rutas tipicas de Colab y `TALLER4_ROOT`; opcionalmente auto-descarga el
+repositorio con `AUTO_DESCARGAR_REPO = True`), por lo que puede abrirse en
+Jupyter desde `notebooks/`, desde la raiz de TALLER-4 o en Colab con la
+carpeta TALLER-4 completa subida (celda de diagnostico con checklist de
+prerrequisitos en la sec 00). Las figuras del EDA se generan DENTRO del
+notebook (Sec 02, outputs PNG embebidos, visibles en GitHub/Colab); las tres
+figuras oficiales que requieren datos no versionados (chars y paginas de
+entrevistas, near-duplicates) se muestran desde `imagenes/` con el helper
+`mostrar_png()`.
+
+**Regeneracion opcional dentro del notebook** (Sec 0b): el codigo canonico
+de scripts/01-03 viaja embebido por el ensamblador (fuente unica en build) y
+solo se ejecuta si faltan archivos y activas los flags de la celda de
+configuracion (`REGEN_AUTOMATICO`, `FUERZAR_REGENERACION`,
+`DESCARGAR_FUENTES`, `RUTA_FUENTES`). Por defecto todo apagado: la seccion
+queda inerte porque el repositorio ya trae los derivados; la primera
+regeneracion completa toma 15-60 min en Colab y nunca reescribe `config/`.
 """

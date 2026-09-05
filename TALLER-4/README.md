@@ -51,9 +51,41 @@ TALLER-4/
 - Local: `notebooks/Taller_4_IR_CEV.ipynb` con el venv `/home/carlos/venv/bin/python`
   (pandas, scikit-learn, spacy + `es_core_news_md`, matplotlib, wordcloud,
   seaborn, nbclient; poppler-utils solo para regenerar la extracción de PDFs).
-- Colab: subir la carpeta `TALLER-4` y abrir el notebook; `buscar_raiz()`
-  localiza `data/corpus/` automáticamente. El corpus ya viene procesado;
-  la regeneración del preprocesado spaCy es opcional.
+- Colab: ver "Ejecución en Colab (paso a paso)" más abajo.
+
+## Ejecución en Colab (paso a paso)
+
+El notebook localiza solo la raíz del proyecto: busca el marcador
+`data/corpus/segmentos_libros.jsonl` en ancestros, subcarpetas (hasta 3
+niveles, cubre `/content/PLN-main/TALLER-4`), rutas típicas y la variable
+`TALLER4_ROOT`; si no lo encuentra lanza un error claro con estas opciones
+(la celda de diagnóstico de la Sec 00 imprime un checklist ✓/✗ de archivos):
+
+- **Opción A (subir la carpeta)**: descarga el zip del repositorio
+  (GitHub → Code → Download ZIP), súbelo a Colab y descomprímelo en
+  `/content` (deja la carpeta en `/content/PLN-main/TALLER-4`, que se
+  detecta automáticamente). Alternativa: subir directamente la carpeta
+  `TALLER-4` completa a `/content/TALLER-4`.
+- **Opción B (auto-descarga)**: abre `notebooks/Taller_4_IR_CEV.ipynb` con
+  "Open in Colab" y pon `AUTO_DESCARGAR_REPO = True` en la celda de
+  configuración de la Sec 00: si la raíz no aparece, el notebook descarga el
+  repositorio automáticamente y reintenta.
+- **Opción C (Drive)**: monta Google Drive y deja la carpeta en
+  `/content/drive/MyDrive/TALLER-4`, o define la variable de entorno
+  `TALLER4_ROOT` con la ruta exacta de la carpeta TALLER-4.
+
+### Regeneración opcional del corpus dentro del notebook (sección "Sec 0b — Regeneración")
+
+Los archivos derivados los producen `scripts/01-03` (producción); su código
+canónico viaja **embebido en el notebook** por el ensamblador (fuente única:
+si cambian los scripts, se re-ensambla). Las etapas solo se ejecutan si
+faltan archivos y activas los flags de su celda de configuración
+(`REGEN_AUTOMATICO`, `FUERZAR_REGENERACION`, `DESCARGAR_FUENTES` y
+`RUTA_FUENTES` para fuentes del Drive del taller); por defecto todo está en
+False y la sección queda inerte (imprime "sin acción"). La primera
+regeneración completa (extracción + normalizar + spaCy + EDA) toma 15-60
+minutos en Colab y **nunca reescribe `config/`** (la etapa "congelar" del EDA
+no se ejecuta desde el notebook).
 
 Alcance aprobado: puntos 1-3 del taller (Rocchio/BM25, heatmap e informe final
 completo quedan como mejoras futuras documentadas en el informe).
