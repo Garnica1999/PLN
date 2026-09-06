@@ -40,24 +40,48 @@ if "RUTA_RAIZ" not in globals():  # respaldo standalone robusto (ver sec00)
         Copia del algoritmo robusto de sec00 (sin TALLER4_ROOT ni
         auto-descarga, para no sorprender en ejecuciones sueltas): ancestros
         desde el cwd, subcarpetas de hasta 3 niveles bajo el cwd y bajo cada
-        ancestro, y rutas tipicas de Colab. Nunca devuelve la raiz del
-        filesystem: si no encuentra, lanza un error claro.
+        ancestro, y rutas tipicas de Colab. La raiz se reconoce por el cache
+        derivado data/corpus/segmentos_libros.jsonl o por cualquiera de los
+        3 insumos en data/raw/ (dataset de entrevistas, libros CEV o
+        tesauro), de modo que se resuelve antes de generar los caches. Nunca
+        devuelve la raiz del filesystem: si no encuentra, lanza un error
+        claro.
 
         Returns:
             Path absoluto de la raiz del proyecto.
 
         Raises:
-            FileNotFoundError: si falta data/corpus/segmentos_libros.jsonl.
+            FileNotFoundError: si no hay data/corpus/segmentos_libros.jsonl
+                ni ninguno de los 3 insumos en data/raw/.
         """
         import os as _os
 
-        marcador = _Path("data") / "corpus" / "segmentos_libros.jsonl"
         excluidos = {".git", "drive", "sample_data", "venv", "node_modules"}
         cwd = _Path(_os.getcwd()).resolve()
 
-        def cumple(directorio: _Path) -> bool:
-            """True si el directorio contiene el marcador de la raiz."""
-            return (directorio / marcador).exists()
+        def _es_raiz(candidato) -> bool:
+            """True si el candidato es la raiz del proyecto TALLER-4.
+
+            Un directorio es la raiz si contiene el cache derivado
+            data/corpus/segmentos_libros.jsonl o CUALQUIERA de los 3 insumos
+            permitidos en data/raw/ (dataset de entrevistas, libros CEV o
+            tesauro): asi la raiz se resuelve ANTES de generar los caches
+            derivados.
+
+            Args:
+                candidato: Directorio candidato a raiz del proyecto.
+
+            Returns:
+                True si contiene el cache derivado o algun insumo de
+                data/raw/.
+            """
+            return (
+                (candidato / "data" / "corpus" / "segmentos_libros.jsonl").exists()
+                or (candidato / "data" / "raw" / "entrevistas_all_2023-03-21_14-24_05.json").exists()
+                or (candidato / "data" / "raw" / "Resource-tesauro.rdf").exists()
+                or bool(list((candidato / "data" / "raw").glob("books-*.zip")))
+                or bool(list((candidato / "data" / "raw" / "books").glob("*.pdf")))
+            )
 
         def caminar(base: _Path, max_profundidad: int):
             """Itera base y sus subcarpetas hasta la profundidad dada."""
@@ -76,24 +100,25 @@ if "RUTA_RAIZ" not in globals():  # respaldo standalone robusto (ver sec00)
 
         ancestros = [cwd, *cwd.parents]
         for ancestro in ancestros:
-            if cumple(ancestro):
+            if _es_raiz(ancestro):
                 return ancestro
         for ancestro in ancestros:
             for candidato in caminar(ancestro, 3):
-                if cumple(candidato):
+                if _es_raiz(candidato):
                     return candidato
         for candidata in (
             _Path("/content/TALLER-4"),
             _Path("/content/drive/MyDrive/TALLER-4"),
         ):
-            if cumple(candidata):
+            if _es_raiz(candidata):
                 return candidata
         raise FileNotFoundError(
-            "No se encontro la raiz del proyecto TALLER-4: falta "
-            "data/corpus/segmentos_libros.jsonl en el arbol de directorios "
-            "(sube la carpeta TALLER-4 completa a /content o descomprime ahi "
-            "el zip del repositorio; queda en /content/PLN-main/TALLER-4 y "
-            "tambien se detecta)."
+            "No se encontro la raiz del proyecto TALLER-4: se busca la "
+            "carpeta con data/corpus/segmentos_libros.jsonl o alguno de los "
+            "3 insumos en data/raw/ (dataset de entrevistas, libros CEV o "
+            "tesauro) en el arbol de directorios (sube la carpeta TALLER-4 "
+            "completa a /content o descomprime ahi el zip del repositorio; "
+            "queda en /content/PLN-main/TALLER-4 y tambien se detecta)."
         )
 
     RUTA_RAIZ = _raiz_standalone()
