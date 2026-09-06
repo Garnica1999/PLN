@@ -13,5 +13,9 @@ __pycache__/
 .venv/
 venv/
 
+# Datos pesados (corpus 1.67 GB) y artefactos de notebooks
+PROYECTO/PRIMERA ENTREGA/data/
+.ipynb_checkpoints/
+
 # Sistema
 .DS_Store

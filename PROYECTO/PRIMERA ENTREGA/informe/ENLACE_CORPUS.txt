@@ -1,0 +1,17 @@
+CORPUS COMPLETO Y MUESTRA DE LA ENTREGA 1
+===========================================
+
+Dataset original (corpus completo):
+  Nombre:   Manuel/sentencias-corte-cons-colombia-1992-2021
+  URL:      https://huggingface.co/datasets/Manuel/sentencias-corte-cons-colombia-1992-2021
+  Licencia: CC-BY-4.0
+  Archivo:  Juris1992_2022.csv (UTF-8, 1,68 GB, 23.750 filas, columnas ID y Texto)
+  Cobertura real: sentencias de la Corte Constitucional de Colombia 1992-2021
+  (2021 es parcial, 20 documentos; no hay sentencias de 2022 pese al nombre del archivo).
+
+El corpus completo (1,68 GB) NO se adjunta en la entrega por su tamano; esta
+disponible para descarga en el enlace anterior. Se adjunta una muestra
+estratificada de 25 sentencias (17 T, 6 C, 2 SU) en el archivo
+anexo_corpus_muestra.csv, extraida de las 23.742 sentencias depuradas del
+corpus de analisis (T 17.099, C 6.246, SU 397; 8 filas excluidas del CSV
+original por no ser sentencias o por ser fragmentos HTML).
