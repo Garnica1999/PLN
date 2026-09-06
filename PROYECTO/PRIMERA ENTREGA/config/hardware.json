@@ -1,0 +1,8 @@
+{
+  "fecha": "2026-09-05",
+  "python": "/home/carlos/venv/bin/python",
+  "cpu": {"nombre": "AMD Ryzen 9 5950X", "nucleos_fisicos": 16, "hilos": 32},
+  "ram_gb": 31,
+  "gpu": {"nombre": "AMD Radeon RX 9070", "tipo": "dedicada", "vram_gb": 16, "torch_cuda": true},
+  "nota": "Tarea NLP textual (textometria) ejecutada en CPU. Dataset CSV 1.67 GB (23.750 filas, 2 columnas). Procesamiento por chunks/muestreo para caber en RAM (18 GB disponibles)."
+}
