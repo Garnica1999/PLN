@@ -37,8 +37,9 @@ aqui leyendo solo los archivos versionados de `config/` y `data/`, con la
 misma semantica que `scripts/03_eda.py` y
 `experimentos/experimento_1_tfidf_base.py` (paridad verificada en la
 ejecucion del notebook). La seccion de regeneracion (Sec 0b) es la unica que
-puede ejecutar codigo de `scripts/` (auto-embebido por el ensamblador como
-fuente unica) y solo cuando se activan sus flags; por defecto esta inerte.
+trae codigo de `scripts/` (expandido como celdas de codigo normales por el
+ensamblador, fuente unica en build) y esa seccion solo se ejecuta cuando se
+activan sus flags; por defecto esta inerte (sus celdas solo definen).
 
 **Como ejecutarlo en Colab**: (A) sube la carpeta `TALLER-4` completa a
 /content, o descomprime en /content el zip del repositorio (queda en

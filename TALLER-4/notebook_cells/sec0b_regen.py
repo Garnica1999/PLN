@@ -4,16 +4,19 @@
 Los archivos derivados del corpus (segmentos, normalizadas, lemas/tokens y
 los CSVs del EDA) los producen los scripts de produccion
 (`scripts/01_extraer_libros.py`, `scripts/02_preprocesar.py` y
-`scripts/03_eda.py`). Aqui su codigo canonico esta **embebido
-automaticamente por el ensamblador** (`scripts/ensamblar_notebook_t4.py`),
-que inserta el contenido literal de cada script en las celdas de esta
-seccion: fuente unica en el build, si cambian los scripts se re-ensambla el
-notebook y las celdas quedan al dia.
+`scripts/03_eda.py`). Aqui su codigo canonico viaja **expandido por el
+ensamblador** (`scripts/ensamblar_notebook_t4.py`) como **celdas de codigo
+normales** de esta seccion: fuente unica en el build, si cambian los scripts
+se re-ensambla el notebook y las celdas quedan al dia. El notebook no
+incrusta codigo-como-string ni lo ejecuta dinamicamente.
 
-Las etapas de regeneracion **solo se ejecutan si faltan archivos** en disco y
-si ademas activas los flags de la celda de configuracion (ver abajo). Por
-defecto TODO esta apagado: la seccion no hace nada pesado, solo imprime el
-estado (en el repositorio todo lo necesario ya esta presente).
+En Run all esas celdas expandidas solo **definen** funciones y constantes
+(la expansion elimina el bloque `if __name__ == "__main__"` de cada script,
+que en el kernel de Jupyter ejecutaria el pipeline completo): nada se
+ejecuta ni se escribe. La regeneracion real se activa SOLO con los flags de
+la celda de configuracion (ver abajo) y corre si faltan archivos en disco.
+Por defecto TODO esta apagado: la seccion no hace nada pesado, solo imprime
+el estado (en el repositorio todo lo necesario ya esta presente).
 
 Flags de la celda de configuracion:
 
@@ -30,14 +33,14 @@ Flags de la celda de configuracion:
   descargadas (carpeta con `entrevistas_all_2023-03-21_14-24_05.json` y el
   zip `books-*.zip` o la carpeta `books/` con los PDFs).
 
-Las 4 etapas y su codigo canónico:
+Las 4 etapas y su codigo canonico:
 
-| Etapa | Script embebido | Produce |
+| Etapa | Codigo expandido | Produce |
 |---|---|---|
-| `extraccion` | 01_extraer_libros.py | `data/corpus/segmentos_libros.jsonl`, `segmentos/<TOMO>.jsonl`, reporte |
-| `normalizar` | 02_preprocesar.py `normalizar` | `data/corpus/entrevistas_normalizadas.jsonl` |
-| `preprocesado_spacy` | 02_preprocesar.py `spacy` | `data/corpus/preprocesado/*_lemas.txt`, `*_tokens.txt`, `*_docs.json` |
-| `eda` | 03_eda.py (sin "congelar") | CSVs de `resultados/eda/` y figuras de `imagenes/` |
+| `extraccion` | celdas de 01_extraer_libros.py | `data/corpus/segmentos_libros.jsonl`, `segmentos/<TOMO>.jsonl`, reporte |
+| `normalizar` | celdas de 02_preprocesar.py (`normalizar`) | `data/corpus/entrevistas_normalizadas.jsonl` |
+| `preprocesado_spacy` | celdas de 02_preprocesar.py (`spacy`) | `data/corpus/preprocesado/*_lemas.txt`, `*_tokens.txt`, `*_docs.json` |
+| `eda` | celdas de 03_eda.py (sin "congelar") | CSVs de `resultados/eda/` y figuras de `imagenes/` |
 
 La primera regeneracion completa (extraccion + normalizar + spaCy + EDA) es
 lenta: 15-60 minutos en Colab (la normalizacion y spaCy dominan). El
@@ -125,7 +128,6 @@ _RUTA_CORPUS = RUTA_RAIZ / "data" / "corpus"
 _RUTA_PREPROCESADO = _RUTA_CORPUS / "preprocesado"
 _RUTA_RAW = RUTA_RAIZ / "data" / "raw"
 _RUTA_CONFIG = RUTA_RAIZ / "config"
-_RUTA_SCRIPTS = RUTA_RAIZ / "scripts"
 _RUTA_RESULTADOS = RUTA_RAIZ / "resultados"
 _RUTA_EDA = _RUTA_RESULTADOS / "eda"
 _RUTA_IMAGENES = RUTA_RAIZ / "imagenes"
@@ -237,10 +239,17 @@ print(
 
 `estado_faltantes()` comprueba contra el disco (sobre la raiz detectada) los
 archivos que produce cada etapa y devuelve los faltantes; `regen_etapa()`
-ejecuta el codigo embebido correspondiente (celdas marcadas con el codigo
-canonico de scripts/01-03) solo si faltan archivos (o si `forzar=True`) y
-descarga las fuentes crudas antes cuando hacen falta y estan habilitadas.
+ejecuta la etapa correspondiente (los mains expandidos de scripts/01-03 que
+definen las celdas de codigo de esta seccion, ver la tabla de arriba) solo
+si faltan archivos (o si `forzar=True`) y descarga las fuentes crudas antes
+cuando hacen falta y estan habilitadas. Si las celdas de codigo de la
+seccion no se han ejecutado, los wrappers avisan con un mensaje claro.
 """
+
+MENSAJE_SIN_CELDAS_EJECUTADAS = (
+    "Ejecuta primero las celdas de codigo de esta seccion (o Run all) antes "
+    "de activar la regeneracion."
+)
 
 
 def _inputs_disponibles(etapa: str) -> bool:
@@ -445,16 +454,37 @@ def descargar_fuentes(destino_data_raw: Path) -> dict[str, bool]:
 
 # %%
 """Etapa E1: extraccion y segmentacion de los libros (codigo canonico de
-scripts/01_extraer_libros.py, embebido por el ensamblador como fuente unica).
+scripts/01_extraer_libros.py, expandido por el ensamblador).
 
-El ensamblador reemplaza la linea siguiente por el contenido completo del
-script; esta celda sin ensamblar no ejecuta nada (aviso). Prerrequisitos:
-binario `pdftotext` (poppler-utils; si falta se intenta instalar con apt-get
-en Colab) y el zip de libros en data/raw (o los PDFs en data/raw/books, con
-los que el wrapper construye el zip canonico). El script usa sys.argv en su
-main(), asi que el wrapper parchea sys.argv temporalmente y lo restaura.
+La celda marcada abajo se convierte en el ensamblado en las celdas de codigo
+del script (partidas por sus banners de seccion, sin el bloque de '__main__'
+y con '__file__' sintetico) mas la celda de alias `main_extraccion`. En Run
+all esas celdas solo definen; la regeneracion real la dispara el wrapper de
+la celda siguiente cuando faltan archivos (o con `forzar`).
 """
-CODIGO_EMBED_01 = None  # [embed: scripts/01_extraer_libros.py]
+
+# Nombres que definen las celdas expandidas por el ensamblador (v4). Aqui se
+# declaran como None para el analisis estatico y como valor inicial seguro:
+# las celdas expandidas (ejecutadas despues de esta celda en Run all)
+# sobrescriben el alias con la funcion real antes de cualquier uso.
+main_extraccion = None  # [auto] lo define la expansion de scripts/01 (alias)
+reconstruir_global = None  # [auto] funcion del propio scripts/01
+
+
+# %%
+# %% [expand: scripts/01_extraer_libros.py]
+
+
+# %%
+"""Wrappers de la etapa E1 (ver el docstring de E1 unas celdas arriba).
+
+Prerrequisitos antes de ejecutar `main_extraccion()`: binario `pdftotext`
+(poppler-utils; si falta se intenta instalar con apt-get en Colab) y el zip
+de libros en data/raw (o los PDFs en data/raw/books, con los que el wrapper
+construye el zip canonico). El script usa argparse sobre sys.argv en su
+main(), asi que el wrapper parchea sys.argv temporalmente (try/finally) con
+los tomos faltantes y restaura el argv original al terminar.
+"""
 
 
 def _instalar_poppler_utils() -> bool:
@@ -514,21 +544,20 @@ def _preparar_zip_libros() -> str | None:
 
 
 def regen_extraccion_libros(forzar: bool = False) -> bool:
-    """Regenera la extraccion de segmentos de los libros (script 01 embebido).
+    """Regenera la extraccion de segmentos de los libros (script 01 expandido).
 
     Args:
         forzar: True re-extrae los tomos aunque sus JSONL existan (--force).
 
     Returns:
         True si la etapa quedo completa (o no habia nada que hacer); False
-        si faltan prerrequisitos (pdftotext, zip/PDFs) y no se pudieron
-        resolver.
+        si faltan prerrequisitos (pdftotext, zip/PDFs) o las celdas de
+        codigo de la seccion no se han ejecutado.
     """
-    if CODIGO_EMBED_01 is None:
-        print(
-            "[E1] Celda sin ensamblar: ejecuta "
-            "scripts/ensamblar_notebook_t4.py y vuelve a abrir el notebook."
-        )
+    if not callable(globals().get("main_extraccion")) or not callable(
+        globals().get("reconstruir_global")
+    ):
+        print(f"[E1] {MENSAJE_SIN_CELDAS_EJECUTADAS}")
         return False
     if shutil.which("pdftotext") is None and not _instalar_poppler_utils():
         print(
@@ -544,16 +573,19 @@ def regen_extraccion_libros(forzar: bool = False) -> bool:
         print(f"[E1] {error_zip}")
         return False
 
-    namespace = {
-        "__name__": "__embebido_01__",
-        "__file__": str(_RUTA_SCRIPTS / "01_extraer_libros.py"),
-    }
-    exec(compile(CODIGO_EMBED_01, "01_extraer_libros.py (embebido)", "exec"), namespace)  # noqa: S102 (uso intencional del codigo canonico embebido)
-    argv = ["regen_01"] + (["--force"] if forzar else [])
+    # argv del script: prog + (tomos faltantes) + (--force si forzar).
+    faltantes = [
+        tomo
+        for tomo in ORDEN_TOMOS
+        if not (_RUTA_CORPUS / "segmentos" / f"{tomo}.jsonl").exists()
+    ]
+    argv = ["regen_01"] + (["--libros", *faltantes] if faltantes else [])
+    if forzar:
+        argv.append("--force")
     argv_previo = list(sys.argv)
     try:
         sys.argv = argv
-        namespace["main"]()
+        main_extraccion()
     except SystemExit:
         pass  # el script usa sys.exit para errores de argumentos
     finally:
@@ -561,14 +593,14 @@ def regen_extraccion_libros(forzar: bool = False) -> bool:
     # Si no habia tomos que procesar pero falta el archivo global, se
     # reconstruye desde los JSONL por tomo (funcion del propio script).
     if not (_RUTA_CORPUS / "segmentos_libros.jsonl").exists():
-        namespace["reconstruir_global"]()
+        reconstruir_global()
     print("[E1] Etapa de extraccion terminada.")
     return True
 
 
 # %%
 """Etapa E2: normalizacion estructural y preprocesado spaCy (codigo canonico
-de scripts/02_preprocesar.py, embebido por el ensamblador como fuente unica).
+de scripts/02_preprocesar.py, expandido por el ensamblador).
 
 Dos subetapas: `normalizar` (JSON crudo de entrevistas ->
 entrevistas_normalizadas.jsonl, solo si el crudo existe en data/raw) y
@@ -578,7 +610,23 @@ internamente; los workers se limitan a N_PROCESOS_SPACY (4) para Colab. El
 modelo es_core_news_md debe estar descargado; si falta se intenta con
 `python -m spacy download`.
 """
-CODIGO_EMBED_02 = None  # [embed: scripts/02_preprocesar.py]
+
+# Alias [auto] que define la expansion de scripts/02 (ver nota en E1).
+main_preprocesar = None  # [auto] lo define la expansion de scripts/02 (alias)
+
+
+# %%
+# %% [expand: scripts/02_preprocesar.py]
+
+
+# %%
+"""Wrappers de la etapa E2 (ver el docstring de E2 unas celdas arriba).
+
+`main_preprocesar(argv)` es el alias [auto] que deja la expansion de
+scripts/02_preprocesar.py al final de su bloque; los wrappers lo invocan con
+la lista de argumentos del subcomando. Si las celdas de codigo de la seccion
+no se ejecutaron, avisan con un mensaje claro.
+"""
 
 
 def _verificar_modelo_spacy() -> bool:
@@ -615,27 +663,17 @@ def _verificar_modelo_spacy() -> bool:
         return False
 
 
-def _ejecutar_embebido_02(argv: list[str]) -> bool:
-    """Ejecuta el codigo embebido de 02_preprocesar.py con argv dado.
-
-    Args:
-        argv: Argumentos para main(["normalizar", ...]) de 02_preprocesar.
+def _main_preprocesar_definido() -> bool:
+    """True si las celdas expandidas de scripts/02 ya definieron el alias.
 
     Returns:
-        True si main devolvio 0 (sin errores).
+        True si `main_preprocesar` es llamable en el kernel; si no, imprime
+        el mensaje de celdas no ejecutadas y devuelve False.
     """
-    if CODIGO_EMBED_02 is None:
-        print(
-            "[E2] Celda sin ensamblar: ejecuta "
-            "scripts/ensamblar_notebook_t4.py y vuelve a abrir el notebook."
-        )
+    if not callable(globals().get("main_preprocesar")):
+        print(f"[E2] {MENSAJE_SIN_CELDAS_EJECUTADAS}")
         return False
-    namespace = {
-        "__name__": "__embebido_02__",
-        "__file__": str(_RUTA_SCRIPTS / "02_preprocesar.py"),
-    }
-    exec(compile(CODIGO_EMBED_02, "02_preprocesar.py (embebido)", "exec"), namespace)  # noqa: S102 (uso intencional del codigo canonico embebido)
-    return namespace["main"](["regen_02", *argv]) == 0
+    return True
 
 
 def regen_normalizar_entrevistas(forzar: bool = False) -> bool:
@@ -661,7 +699,10 @@ def regen_normalizar_entrevistas(forzar: bool = False) -> bool:
             "estatico)."
         )
         return False
-    ok = _ejecutar_embebido_02(["normalizar"] + (["--force"] if forzar else []))
+    if not _main_preprocesar_definido():
+        return False
+    codigo = main_preprocesar(["normalizar"] + (["--force"] if forzar else []))
+    ok = codigo == 0
     print("[E2] Subetapa normalizar terminada." if ok else "[E2] Error en normalizar.")
     return ok
 
@@ -691,28 +732,47 @@ def regen_preprocesado_spacy(forzar: bool = False, procesos: int = N_PROCESOS_SP
         )
     if not _verificar_modelo_spacy():
         return False
-    ok = _ejecutar_embebido_02(
+    if not _main_preprocesar_definido():
+        return False
+    codigo = main_preprocesar(
         ["spacy", "--corpus", "ambos", "--procesos", str(procesos)]
         + (["--force"] if forzar else [])
     )
+    ok = codigo == 0
     print("[E2] Subetapa spacy terminada." if ok else "[E2] Error en spacy.")
     return ok
 
 
 # %%
-"""Etapa E3: EDA (codigo canonico de scripts/03_eda.py, embebido por el
-ensamblador como fuente unica), ejecutado SIN la subetapa "congelar":
-config/ nunca se reescribe desde el notebook.
+"""Etapa E3: EDA (codigo canonico de scripts/03_eda.py, expandido por el
+ensamblador), ejecutado SIN la subetapa "congelar": config/ nunca se
+reescribe desde el notebook.
 
-El script fija matplotlib con backend "Agg" al importar; como la celda corre
-en el kernel del notebook, al terminar se restaura el backend inline. Las
-subetapas se eligen como la cadena canonica desde la primera con archivo
-faltante (estadisticas -> frecuencias -> ... -> tesauro), porque cada etapa
-requiere en contexto las anteriores. "tesauro" solo se incluye si su cache
-o los CSVs posteriores faltan (sin data/raw/Resource-tesauro.rdf la propia
-etapa avisa y omite el cruce).
+El script fija matplotlib con backend "Agg" a nivel de modulo; la celda de
+alias [auto] que cierra su bloque (y el wrapper de abajo al terminar)
+restauran el backend inline del notebook. Las subetapas se eligen como la
+cadena canonica desde la primera con archivo faltante (estadisticas ->
+frecuencias -> ... -> tesauro), porque cada etapa requiere en contexto las
+anteriores. "tesauro" solo se incluye si su cache o los CSVs posteriores
+faltan (sin data/raw/Resource-tesauro.rdf la propia etapa avisa y omite el
+cruce).
 """
-CODIGO_EMBED_03 = None  # [embed: scripts/03_eda.py]
+
+# Alias [auto] que define la expansion de scripts/03 (ver nota en E1).
+main_eda = None  # [auto] lo define la expansion de scripts/03 (alias)
+
+
+# %%
+# %% [expand: scripts/03_eda.py]
+
+
+# %%
+"""Wrappers de la etapa E3 (ver el docstring de E3 unas celdas arriba).
+
+`main_eda(argv)` es el alias [auto] de la expansion de scripts/03_eda.py;
+recibe la lista de argumentos reales (sin nombre de programa) y devuelve el
+codigo de salida.
+"""
 
 _ORDEN_SUBETAPAS_EDA = tuple(nombre for nombre, _ in CENTINELAS_EDA)
 
@@ -733,19 +793,17 @@ def _restaurar_backend_inline() -> None:
 
 
 def regen_eda(forzar: bool = False) -> bool:
-    """Regenera los CSVs y figuras del EDA (script 03 embebido, sin congelar).
+    """Regenera los CSVs y figuras del EDA (script 03 expandido, sin congelar).
 
     Args:
         forzar: True re-ejecuta toda la cadena aunque no falte nada.
 
     Returns:
-        True si la etapa quedo completa o no requeria accion; False si fallo.
+        True si la etapa quedo completa o no requeria accion; False si fallo
+        o las celdas de codigo de la seccion no se han ejecutado.
     """
-    if CODIGO_EMBED_03 is None:
-        print(
-            "[E3] Celda sin ensamblar: ejecuta "
-            "scripts/ensamblar_notebook_t4.py y vuelve a abrir el notebook."
-        )
+    if not callable(globals().get("main_eda")):
+        print(f"[E3] {MENSAJE_SIN_CELDAS_EJECUTADAS}")
         return False
     faltantes = [
         (i, nombre)
@@ -762,13 +820,8 @@ def regen_eda(forzar: bool = False) -> bool:
     etapas = list(_ORDEN_SUBETAPAS_EDA[indice_minimo:])
     print(f"[E3] Regenerando subetapas del EDA: {' '.join(etapas)}")
 
-    namespace = {
-        "__name__": "__embebido_03__",
-        "__file__": str(_RUTA_SCRIPTS / "03_eda.py"),
-    }
-    exec(compile(CODIGO_EMBED_03, "03_eda.py (embebido)", "exec"), namespace)  # noqa: S102 (uso intencional del codigo canonico embebido)
     try:
-        codigo = namespace["main"](["regen_03", "--solo", *etapas])
+        codigo = main_eda(["--solo", *etapas])
     finally:
         _restaurar_backend_inline()
     print("[E3] Etapa EDA terminada." if codigo == 0 else "[E3] Error en el EDA.")
