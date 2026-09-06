@@ -53,6 +53,40 @@ TALLER-4/
   seaborn, nbclient; poppler-utils solo para regenerar la extracción de PDFs).
 - Colab: ver "Ejecución en Colab (paso a paso)" más abajo.
 
+## Requisitos (independencia del notebook)
+
+El notebook es **independiente**: para correrlo solo necesitas **3 insumos**
+(descarga **manual** desde el Drive del taller a `data/raw/`):
+
+1. **Dataset de entrevistas**: `data/raw/entrevistas_all_2023-03-21_14-24_05.json`
+   (~231 MB; archivo de entrevistas del Drive del taller).
+2. **Libros**: `data/raw/books-*.zip` (zip del Drive) o la carpeta
+   `data/raw/books/` con los PDFs (~300 MB; carpeta de libros del Drive).
+3. **Tesauro**: `data/raw/Resource-tesauro.rdf` (solo lo usa el cruce de
+   vocabulario del EDA de producción; el resto del notebook no lo requiere).
+
+Todo lo demás (**caches derivados**: segmentos, normalizadas, lemas/tokens,
+docs y los CSVs/figuras del EDA) el notebook lo **genera automáticamente**
+en la sección "Sec 0b — Regeneración" (`REGEN_AUTOMATICO=True` por defecto)
+a partir de esos insumos con el código canónico de `scripts/01-03`
+(expandido como celdas de código normales). La config curada del pipeline
+(muletillas, correcciones de lemas, ruido tipográfico y parámetros TF-IDF)
+viaja **embebida** como constantes literales en la Sec 00; `config/`,
+`resultados/` e `imagenes/` son **opcionales** (si existen, el notebook los
+compara/verifica y los usa para las figuras oficiales con `mostrar_png`).
+
+- **Primera ejecución sin caches**: 15-60 minutos (libros ~5-15 min; spaCy
+  ~10-40 min). Si el insumo necesario no está en `data/raw/`, el notebook
+  avisa cómo descargarlo y sigue sin excepción (las secciones muestran
+  avisos `[aviso]/[info]` y los cálculos inline).
+- **Si descargas el repositorio completo**: los caches ya viajan en
+  `data/corpus/` (los 3 insumos >100 MB NO están versionados: descárgalos
+  una sola vez del Drive) y el Run all termina en ~1 minuto.
+- `config/`, `resultados/` e `imagenes/` pueden borrarse sin romper el
+  notebook: se usan solo como verificación opcional o respaldo visual
+  (evidencia: `tests/test_notebook_dependencias.py`, test sandbox (g), que
+  ejecuta el notebook sin esos directorios con 0 errores).
+
 ## Ejecución en Colab (paso a paso)
 
 El notebook localiza solo la raíz del proyecto: busca el marcador
@@ -80,14 +114,16 @@ Los archivos derivados los producen `scripts/01-03` (producción); su código
 canónico viaja **expandido como celdas de código normales** del notebook por
 el ensamblador (fuente única en build: si cambian los scripts, se
 re-ensambla; el notebook no incrusta código-como-string). En Run all esas
-celdas solo definen funciones; las etapas solo se ejecutan si faltan
-archivos y activas los flags de su celda de configuración
-(`REGEN_AUTOMATICO`, `FUERZAR_REGENERACION`, `DESCARGAR_FUENTES` y
-`RUTA_FUENTES` para fuentes del Drive del taller); por defecto todo está en
-False y la sección queda inerte (imprime "sin acción"). La primera
-regeneración completa (extracción + normalizar + spaCy + EDA) toma 15-60
-minutos en Colab y **nunca reescribe `config/`** (la etapa "congelar" del EDA
-no se ejecuta desde el notebook).
+celdas solo definen funciones. La regeneración real la dispara el driver de
+la sección con `REGEN_AUTOMATICO = True` (por defecto): recorre las etapas
+con caches faltantes y, si los insumos de los 3 permitidos están en
+`data/raw/`, ejecuta la etapa (primera ejecución 15-60 min); si falta un
+insumo, imprime cómo descargarlo manualmente y sigue sin excepción. Los
+flags `FUERZAR_REGENERACION`, `DESCARGAR_FUENTES` y `RUTA_FUENTES` permiten
+forzar la re-ejecución o apuntar a una carpeta local con las fuentes.
+**Nunca reescribe `config/`** (la etapa "congelar" del EDA no se ejecuta
+desde el notebook; la config curada del notebook está embebida en la
+Sec 00).
 
 Alcance aprobado: puntos 1-3 del taller (Rocchio/BM25, heatmap e informe final
 completo quedan como mejoras futuras documentadas en el informe).

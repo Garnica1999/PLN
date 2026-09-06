@@ -1,31 +1,48 @@
 # %% [markdown]
-"""# Sec 0b — Regeneracion del corpus dentro del notebook (opcional)
+"""# Sec 0b — Regeneracion automatica del corpus dentro del notebook
 
-Los archivos derivados del corpus (segmentos, normalizadas, lemas/tokens y
-los CSVs del EDA) los producen los scripts de produccion
+El notebook es **independiente**: sus unicas dependencias externas son los 3
+insumos permitidos, descargados manualmente del Drive del taller a
+`data/raw/` (ver README):
+
+1. **Dataset de entrevistas**: `data/raw/entrevistas_all_2023-03-21_14-24_05.json`
+   (~231 MB).
+2. **Libros**: `data/raw/books-*.zip` (zip del Drive) o la carpeta
+   `data/raw/books/` con los PDFs (~300 MB).
+3. **Tesauro**: `data/raw/Resource-tesauro.rdf` (solo lo usa el cruce de
+   vocabulario del EDA de produccion).
+
+Todo lo demas (segmentos, normalizadas, lemas/tokens/docs, CSVs y figuras
+del EDA) son **caches derivados** que esta seccion GENERA automaticamente a
+partir de esos insumos con el codigo canonico de los scripts de produccion
 (`scripts/01_extraer_libros.py`, `scripts/02_preprocesar.py` y
-`scripts/03_eda.py`). Aqui su codigo canonico viaja **expandido por el
-ensamblador** (`scripts/ensamblar_notebook_t4.py`) como **celdas de codigo
-normales** de esta seccion: fuente unica en el build, si cambian los scripts
-se re-ensambla el notebook y las celdas quedan al dia. El notebook no
-incrusta codigo-como-string ni lo ejecuta dinamicamente.
+`scripts/03_eda.py`). Ese codigo viaja **expandido por el ensamblador**
+(`scripts/ensamblar_notebook_t4.py`) como **celdas de codigo normales** de
+esta seccion: fuente unica en el build, si cambian los scripts se
+re-ensambla el notebook y las celdas quedan al dia. El notebook no incrusta
+codigo-como-string ni lo ejecuta dinamicamente.
 
-En Run all esas celdas expandidas solo **definen** funciones y constantes
-(la expansion elimina el bloque `if __name__ == "__main__"` de cada script,
-que en el kernel de Jupyter ejecutaria el pipeline completo): nada se
-ejecuta ni se escribe. La regeneracion real se activa SOLO con los flags de
-la celda de configuracion (ver abajo) y corre si faltan archivos en disco.
-Por defecto TODO esta apagado: la seccion no hace nada pesado, solo imprime
-el estado (en el repositorio todo lo necesario ya esta presente).
+En Run all las celdas expandidas solo **definen** funciones y constantes (la
+expansion elimina el bloque `if __name__ == "__main__"` de cada script): no
+ejecutan nada por si solas. La regeneracion real la dispara el dispatcher de
+la ultima celda de esta seccion: con `REGEN_AUTOMATICO = True` (default)
+recorre las etapas con caches faltantes y, si los insumos estan en
+`data/raw/`, ejecuta la etapa (primera ejecucion: ~15-60 min: libros ~5-15
+min y spaCy ~10-40 min). Si un insumo falta, indica como descargarlo
+manualmente y el notebook sigue (las secciones posteriores muestran avisos).
+Pon `REGEN_AUTOMATICO = False` para generar etapa por etapa con los
+wrappers, o `FUERZAR_REGENERACION = True` para re-ejecutar todo aunque los
+caches existan.
 
 Flags de la celda de configuracion:
 
-- `REGEN_AUTOMATICO = False`: si lo pones en True, la ultima celda de la
-  seccion ejecuta `regen_etapa()` sobre cada etapa con archivos faltantes
-  (o todas si `FUERZAR_REGENERACION = True`).
+- `REGEN_AUTOMATICO = True`: al final de la seccion, ejecuta cada etapa con
+  archivos faltantes (o todas si `FUERZAR_REGENERACION = True`) solo cuando
+  sus insumos estan presentes.
 - `FUERZAR_REGENERACION = False`: re-ejecuta la etapa aunque sus archivos ya
-  existan (reescribe los derivados; `config/` NUNCA se modifica: la etapa
-  "congelar" del EDA no se ejecuta desde el notebook).
+  existan (reescribe los derivados; `config/` NUNCA se modifica desde el
+  notebook: los scripts de produccion la usan como fuente, pero la config
+  curada del notebook esta embebida en sec00).
 - `DESCARGAR_FUENTES = False`: permite descargar las fuentes crudas del
   Drive del taller (JSON de entrevistas y zip/carpeta de libros) con gdown
   cuando una etapa las necesita y no estan en `data/raw/`.
@@ -33,20 +50,21 @@ Flags de la celda de configuracion:
   descargadas (carpeta con `entrevistas_all_2023-03-21_14-24_05.json` y el
   zip `books-*.zip` o la carpeta `books/` con los PDFs).
 
-Las 4 etapas y su codigo canonico:
+Las 4 etapas, sus insumos de los 3 permitidos y lo que producen:
 
-| Etapa | Codigo expandido | Produce |
-|---|---|---|
-| `extraccion` | celdas de 01_extraer_libros.py | `data/corpus/segmentos_libros.jsonl`, `segmentos/<TOMO>.jsonl`, reporte |
-| `normalizar` | celdas de 02_preprocesar.py (`normalizar`) | `data/corpus/entrevistas_normalizadas.jsonl` |
-| `preprocesado_spacy` | celdas de 02_preprocesar.py (`spacy`) | `data/corpus/preprocesado/*_lemas.txt`, `*_tokens.txt`, `*_docs.json` |
-| `eda` | celdas de 03_eda.py (sin "congelar") | CSVs de `resultados/eda/` y figuras de `imagenes/` |
+| Etapa | Codigo expandido | Insumos (de los 3) | Produce |
+|---|---|---|---|
+| `extraccion` | celdas de 01_extraer_libros.py | libros | `data/corpus/segmentos_libros.jsonl`, `segmentos/<TOMO>.jsonl`, reporte |
+| `normalizar` | celdas de 02_preprocesar.py (`normalizar`) | dataset | `data/corpus/entrevistas_normalizadas.jsonl` |
+| `preprocesado_spacy` | celdas de 02_preprocesar.py (`spacy`) | segmentos (E1) y normalizadas (E2, desde el dataset) | `data/corpus/preprocesado/*_lemas.txt`, `*_tokens.txt`, `*_docs.json` |
+| `eda` | celdas de 03_eda.py (sin "congelar") | lemas (E2); config/ del repo (solo el EDA oficial) | CSVs de `resultados/eda/` y figuras de `imagenes/` |
 
-La primera regeneracion completa (extraccion + normalizar + spaCy + EDA) es
-lenta: 15-60 minutos en Colab (la normalizacion y spaCy dominan). El
-repositorio ya trae todo lo derivado versionado (salvo 2 archivos > 100 MB
-opcionales con respaldo estatico en las secciones 01-03), asi que en el uso
-normal esta seccion queda inerte.
+En el repositorio (o tras una primera ejecucion completa) todos los caches
+derivados ya existen y esta seccion termina en segundos sin regenerar nada:
+las secciones 01-03 leen esos caches y calculan inline todo lo demas. La
+config de `config/`, `resultados/` e `imagenes/` son OPCIONALES para el
+notebook (embebida o recalculada inline); los scripts de produccion (v4)
+siguen usandolas como fuente.
 """
 
 
@@ -136,21 +154,26 @@ print(f"[regen] Raiz usada: {_RUTA_RAIZ}")
 
 
 # %%
-"""Configuracion de la seccion de regeneracion (flags, todo apagado).
+"""Configuracion de la seccion de regeneracion (flags).
 
-`_archivos_etapa()` declara, por etapa, los archivos que produce y los
-insumos que necesita (rutas absolutas sobre la raiz detectada); la usa el
-dispatcher para decidir si falta algo. `CENTINELAS_EDA` ordena las subetapas
-del EDA cuyo archivo representativo se comprueba (orden canonico de
-scripts/03_eda.py, sin "nubes" - solo produce figuras - y sin "congelar",
-que reescribiria config/).
+`REGEN_AUTOMATICO` (True por defecto) regenera en Run all las etapas con
+caches derivados faltantes cuando sus insumos de los 3 permitidos estan en
+data/raw; `_archivos_etapa()` declara, por etapa, los archivos que produce y
+los insumos que necesita (rutas absolutas sobre la raiz detectada).
+`insumos_faltantes_etapa()` describe los insumos crudos o caches previos que
+faltan (dataset, libros, tesauro o salidas de etapas anteriores) para que el
+dispatcher decida si una etapa puede ejecutarse o debe avisar de la descarga
+manual. `CENTINELAS_EDA` ordena las subetapas del EDA cuyo archivo
+representativo se comprueba (orden canonico de scripts/03_eda.py, sin
+"nubes" - solo produce figuras - y sin "congelar", que reescribiria
+config/).
 """
 import shutil
 import subprocess
 import sys
 from pathlib import Path
 
-REGEN_AUTOMATICO = False
+REGEN_AUTOMATICO = True
 DESCARGAR_FUENTES = False
 FUERZAR_REGENERACION = False
 RUTA_FUENTES = None  # ruta local opcional con las fuentes crudas (override)
@@ -172,6 +195,87 @@ CENTINELAS_EDA = (
     ("tesauro", _RUTA_EDA / "tesauro_cache_etiquetas.json"),
 )
 
+NOMBRE_JSON_ENTREVISTAS = "entrevistas_all_2023-03-21_14-24_05.json"
+_ZIP_LIBROS_CANONICO = "books-20260904T025322Z-1-001.zip"
+
+# Insumos crudos permitidos (descarga manual del Drive del taller a data/raw).
+RUTA_DATASET_CRUDO = _RUTA_RAW / NOMBRE_JSON_ENTREVISTAS
+RUTA_TESAURO_CRUDO = _RUTA_RAW / "Resource-tesauro.rdf"
+
+
+def _libros_crudos_disponibles() -> bool:
+    """True si hay zip canonico, cualquier books-*.zip o PDFs en data/raw/books.
+
+    Returns:
+        True si la etapa de extraccion puede ejecutarse con lo que hay.
+    """
+    if (_RUTA_RAW / _ZIP_LIBROS_CANONICO).exists():
+        return True
+    if sorted(_RUTA_RAW.glob("books-*.zip")):
+        return True
+    return (_RUTA_RAW / "books").is_dir() and bool(
+        sorted((_RUTA_RAW / "books").glob("*.pdf"))
+    )
+
+
+def insumos_faltantes_etapa(nombre_etapa: str) -> list[str]:
+    """Describe los insumos faltantes (de los 3 permitidos) de una etapa.
+
+    Args:
+        nombre_etapa: "extraccion", "normalizar", "preprocesado_spacy" o
+            "eda".
+
+    Returns:
+        Lista de mensajes de insumos faltantes; vacia si la etapa puede
+        ejecutarse con lo que hay en disco.
+    """
+    if nombre_etapa == "extraccion":
+        if not _libros_crudos_disponibles():
+            return [
+                ("libros: zip books-*.zip (o la carpeta books/ con los PDFs); "
+                "descarga manual del Drive del taller a data/raw/")
+            ]
+        return []
+    if nombre_etapa == "normalizar":
+        if not RUTA_DATASET_CRUDO.exists():
+            return [
+                (f"dataset: {NOMBRE_JSON_ENTREVISTAS}; descarga manual del "
+                "Drive del taller a data/raw/")
+            ]
+        return []
+    if nombre_etapa == "preprocesado_spacy":
+        mensajes: list[str] = []
+        if not (_RUTA_CORPUS / "segmentos_libros.jsonl").exists():
+            mensajes.append(
+                "segmentos de libros (los genera la etapa extraccion desde "
+                "el insumo libros)"
+            )
+        normalizadas = _RUTA_CORPUS / "entrevistas_normalizadas.jsonl"
+        if not normalizadas.exists() and not RUTA_DATASET_CRUDO.exists():
+            mensajes.append(
+                "dataset para generar entrevistas_normalizadas.jsonl "
+                "(descarga manual del Drive del taller a data/raw/)"
+            )
+        return mensajes
+    if nombre_etapa == "eda":
+        mensajes = []
+        for corpus in ("libros", "entrevistas"):
+            if not (_RUTA_PREPROCESADO / f"{corpus}_lemas.txt").exists():
+                mensajes.append(
+                    f"lemas de {corpus} (los genera la etapa preprocesado_spacy)"
+                )
+        # El EDA oficial (scripts/03_eda.py) congelo su config en config/; el
+        # notebook embebe esa config para sus propios calculos, pero el
+        # script de produccion la lee de disco (config/ viaja en el repo).
+        for nombre in ("stopwords_habla.txt", "lemas_correcciones.json", "tfidf_config.json"):
+            if not (_RUTA_CONFIG / nombre).exists():
+                mensajes.append(
+                    f"config/{nombre} (config congelada del EDA de produccion, "
+                    "incluida en el repositorio)"
+                )
+        return mensajes
+    return ["etapa desconocida"]
+
 
 def _archivos_etapa() -> dict[str, dict[str, list[Path]]]:
     """Declara los archivos que produce y los insumos de cada etapa.
@@ -179,7 +283,9 @@ def _archivos_etapa() -> dict[str, dict[str, list[Path]]]:
     Returns:
         Dict {etapa: {"produce": [Path...], "inputs": [Path...]}} con los
         archivos representativos de cada etapa (los que usan las secciones
-        01-03 del notebook).
+        01-03 del notebook). Los "inputs" son los insumos crudos o caches
+        derivados de otras etapas que el dispatcher comprueba antes de
+        ejecutar la etapa.
     """
     return {
         "extraccion": {
@@ -188,11 +294,11 @@ def _archivos_etapa() -> dict[str, dict[str, list[Path]]]:
                 _RUTA_RESULTADOS / "extraccion_libros_report.json",
                 *[_RUTA_CORPUS / "segmentos" / f"{tomo}.jsonl" for tomo in ORDEN_TOMOS],
             ],
-            "inputs": [_RUTA_RAW / "books-20260904T025322Z-1-001.zip"],
+            "inputs": [_RUTA_RAW / _ZIP_LIBROS_CANONICO],
         },
         "normalizar": {
             "produce": [_RUTA_CORPUS / "entrevistas_normalizadas.jsonl"],
-            "inputs": [_RUTA_RAW / "entrevistas_all_2023-03-21_14-24_05.json"],
+            "inputs": [RUTA_DATASET_CRUDO],
         },
         "preprocesado_spacy": {
             "produce": [
@@ -231,6 +337,11 @@ print(
 print(
     "[regen] Marcador de la raiz presente: "
     f"{(_RUTA_CORPUS / 'segmentos_libros.jsonl').exists()}"
+)
+print(
+    "[regen] Insumos de los 3 permitidos en data/raw -> dataset: "
+    f"{RUTA_DATASET_CRUDO.exists()} | libros: {_libros_crudos_disponibles()} | "
+    f"tesauro: {RUTA_TESAURO_CRUDO.exists()}"
 )
 
 
@@ -340,7 +451,7 @@ a mano en data/raw. NO se llama si la etapa no la necesita.
 # IDs de Google Drive del enunciado del taller (docs/).
 ID_ENTREVISTAS_DRIVE = "1XeFS_mQFmTLQ_VUiODTBO5eONWv-Ege5"
 ID_CARPETA_LIBROS_DRIVE = "1W9UOdkqnAcztnFZ8xresW4ZeZ2pqXe4v"
-NOMBRE_JSON_ENTREVISTAS = "entrevistas_all_2023-03-21_14-24_05.json"
+# NOMBRE_JSON_ENTREVISTAS ya se define en la celda de configuracion (flags).
 
 
 def _copiar_fuentes_locales(destino_data_raw: Path) -> list[str]:
@@ -707,35 +818,70 @@ def regen_normalizar_entrevistas(forzar: bool = False) -> bool:
     return ok
 
 
-def regen_preprocesado_spacy(forzar: bool = False, procesos: int = N_PROCESOS_SPACY) -> bool:
-    """Regenera lemas/tokens/docs de libros y entrevistas (spaCy, ambos).
+def regen_preprocesado_spacy(
+    forzar: bool = False,
+    procesos: int = N_PROCESOS_SPACY,
+    corpus: str = "ambos",
+) -> bool:
+    """Regenera lemas/tokens/docs con spaCy (subconjunto por corpus).
+
+    El wrapper decide el subconjunto real a procesar: "libros" requiere
+    data/corpus/segmentos_libros.jsonl (salida de la etapa extraccion);
+    "entrevistas" requiere entrevistas_normalizadas.jsonl (que se intenta
+    normalizar antes si el dataset crudo esta en data/raw). Si el insumo de
+    un subconjunto pedido falta, se omite con aviso (sin excepcion) y el
+    resto se procesa igual.
 
     Args:
         forzar: True ignora los checkpoints y reprocesa desde cero.
         procesos: Workers de spaCy (default 4, pensado para Colab).
+        corpus: Subconjunto pedido: "ambos" (default), "libros" o
+            "entrevistas".
 
     Returns:
-        True si la etapa quedo completa; False si faltan insumos o el modelo.
+        True si la etapa quedo completa o no requeria accion; False si no
+        quedo ningun subconjunto ejecutable o fallo el modelo.
     """
-    ruta_crudo_ent = _RUTA_RAW / "entrevistas_all_2023-03-21_14-24_05.json"
+    ruta_crudo_ent = _RUTA_RAW / NOMBRE_JSON_ENTREVISTAS
     ruta_normalizadas = _RUTA_CORPUS / "entrevistas_normalizadas.jsonl"
-    if not (_RUTA_CORPUS / "segmentos_libros.jsonl").exists():
-        print("[E2] Falta data/corpus/segmentos_libros.jsonl: ejecuta antes la etapa extraccion.")
+    candidatos = (
+        ["libros", "entrevistas"]
+        if corpus == "ambos"
+        else [corpus]
+        if corpus in ("libros", "entrevistas")
+        else []
+    )
+    ejecutar: list[str] = []
+    for nombre_corpus in candidatos:
+        if nombre_corpus == "libros":
+            if not (_RUTA_CORPUS / "segmentos_libros.jsonl").exists():
+                print(
+                    "[E2] Falta data/corpus/segmentos_libros.jsonl: ejecuta "
+                    "antes la etapa extraccion (insumo libros en data/raw)."
+                )
+                continue
+            ejecutar.append(nombre_corpus)
+        else:
+            if not ruta_normalizadas.exists() and ruta_crudo_ent.exists():
+                print("[E2] Falta entrevistas_normalizadas.jsonl; normalizando primero ...")
+                regen_normalizar_entrevistas(forzar=False)
+            if not ruta_normalizadas.exists():
+                print(
+                    "[E2] Falta entrevistas_normalizadas.jsonl (no esta el "
+                    "JSON crudo en data/raw): la subetapa de entrevistas se "
+                    "omite."
+                )
+                continue
+            ejecutar.append(nombre_corpus)
+    if not ejecutar:
         return False
-    if not ruta_normalizadas.exists() and ruta_crudo_ent.exists():
-        print("[E2] Falta entrevistas_normalizadas.jsonl; normalizando primero ...")
-        regen_normalizar_entrevistas(forzar=False)
-    if not ruta_normalizadas.exists():
-        print(
-            "[E2] Falta entrevistas_normalizadas.jsonl (no esta el JSON crudo "
-            "en data/raw): la subetapa de entrevistas se omite."
-        )
     if not _verificar_modelo_spacy():
         return False
     if not _main_preprocesar_definido():
         return False
+    corpus_efectivo = "ambos" if len(ejecutar) == 2 else ejecutar[0]
     codigo = main_preprocesar(
-        ["spacy", "--corpus", "ambos", "--procesos", str(procesos)]
+        ["spacy", "--corpus", corpus_efectivo, "--procesos", str(procesos)]
         + (["--force"] if forzar else [])
     )
     ok = codigo == 0
@@ -829,25 +975,148 @@ def regen_eda(forzar: bool = False) -> bool:
 
 
 # %%
-"""Ejecucion de la seccion: con REGEN_AUTOMATICO en False (default) no se
-regenera nada; con True se recorre cada etapa con faltantes (o todas si
-FUERZAR_REGENERACION) y se imprime el resumen final de estado_faltantes().
+"""Ejecucion de la seccion: regeneracion automatica al final de Run all.
+
+Con `REGEN_AUTOMATICO = True` (default) se recorren las etapas con salidas
+faltantes (o todas si `FUERZAR_REGENERACION = True`):
+
+- si los insumos estan presentes (`insumos_faltantes_etapa()` vacio) la
+  etapa se ejecuta, con mensaje de tiempo estimado por consola;
+- si falta un insumo de los 3 permitidos se imprime un mensaje claro de
+  descarga manual (Drive del taller a data/raw/) y la etapa queda
+  pendiente: el notebook NO lanza excepcion y las secciones 01-03 muestran
+  avisos suaves cuando un archivo requerido no existe.
+
+Para `preprocesado_spacy` el disparo es por subconjunto de corpus: se
+regeneran solo los corpus (libros/entrevistas) con caches spaCy faltantes
+cuyos insumos existan (segmentos para libros; normalizadas/dataset para
+entrevistas).
 """
+TIEMPOS_ESTIMADOS_ETAPAS = {
+    "extraccion": "~5-15 min (10 tomos PDF con pdftotext + PyMuPDF)",
+    "normalizar": "~2-5 min (dataset de entrevistas ~231 MB)",
+    "preprocesado_spacy": "~10-40 min (spaCy es_core_news_md, 4 procesos)",
+    "eda": "~2-5 min (CSVs del EDA y figuras)",
+}
+
+
+def _salidas_spacy_faltantes_por_corpus() -> list[str]:
+    """Corpus (libros/entrevistas) con caches spaCy faltantes.
+
+    Returns:
+        Lista de corpus con al menos una salida de la etapa spacy
+        (lemas/tokens/docs) faltante en disco.
+    """
+    pendientes: list[str] = []
+    for nombre_corpus in ("libros", "entrevistas"):
+        salidas = [
+            _RUTA_PREPROCESADO / f"{nombre_corpus}_{tipo}.txt"
+            for tipo in ("lemas", "tokens")
+        ] + [_RUTA_PREPROCESADO / f"{nombre_corpus}_docs.json"]
+        if any(not ruta.exists() for ruta in salidas):
+            pendientes.append(nombre_corpus)
+    return pendientes
+
+
+def _bloqueantes_spacy_corpus(nombre_corpus: str) -> list[str]:
+    """Insumos faltantes para el subconjunto spacy de un corpus.
+
+    Args:
+        nombre_corpus: "libros" o "entrevistas".
+
+    Returns:
+        Mensajes de insumo faltante (lista vacia = ejecutable).
+    """
+    if nombre_corpus == "libros":
+        if not (_RUTA_CORPUS / "segmentos_libros.jsonl").exists():
+            return [
+                ("segmentos de libros (los genera la etapa extraccion desde "
+                "el insumo libros; descarga manual del Drive del taller a "
+                "data/raw/)")
+            ]
+        return []
+    normalizadas = _RUTA_CORPUS / "entrevistas_normalizadas.jsonl"
+    if not normalizadas.exists() and not RUTA_DATASET_CRUDO.exists():
+        return [
+            (f"dataset {NOMBRE_JSON_ENTREVISTAS} para generar "
+            "entrevistas_normalizadas.jsonl (descarga manual del Drive del "
+            "taller a data/raw/)")
+        ]
+    return []
+
+
 if REGEN_AUTOMATICO:
-    for etapa in _archivos_etapa():
-        faltan = estado_faltantes().get(etapa, [])
-        if faltan or FUERZAR_REGENERACION:
-            print(f"[regen] Regenerando etapa {etapa} ...")
-            regen_etapa(etapa, forzar=FUERZAR_REGENERACION)
+    print("\n[regen] REGEN_AUTOMATICO=True: revisando caches derivados faltantes ...")
+    faltantes_global = estado_faltantes()
+    n_etapas_ejecutadas = 0
+    n_etapas_pendientes = 0
+    for etapa, faltan in faltantes_global.items():
+        if not faltan and not FUERZAR_REGENERACION:
+            continue
+        if etapa == "preprocesado_spacy":
+            for nombre_corpus in _salidas_spacy_faltantes_por_corpus():
+                bloqueantes = _bloqueantes_spacy_corpus(nombre_corpus)
+                if bloqueantes:
+                    n_etapas_pendientes += 1
+                    print(
+                        f"\n[regen] Etapa {etapa} (corpus {nombre_corpus}) "
+                        "NO ejecutada: para generar "
+                        f"{nombre_corpus}_lemas/tokens.txt y "
+                        f"{nombre_corpus}_docs.json se necesita: "
+                        f"{'; '.join(bloqueantes)}"
+                    )
+                    print(
+                        "        (descarga manual desde el Drive del taller; "
+                        "el notebook sigue y las secciones posteriores "
+                        "muestran avisos)"
+                    )
+                    continue
+                print(
+                    f"\n[regen] Ejecutando etapa {etapa} (corpus "
+                    f"{nombre_corpus}) ... tiempo estimado: "
+                    f"{TIEMPOS_ESTIMADOS_ETAPAS[etapa]}"
+                )
+                ok = regen_preprocesado_spacy(
+                    forzar=FUERZAR_REGENERACION, corpus=nombre_corpus
+                )
+                if ok:
+                    n_etapas_ejecutadas += 1
+            continue
+        bloqueantes = insumos_faltantes_etapa(etapa)
+        if bloqueantes:
+            n_etapas_pendientes += 1
+            salidas = ", ".join(sorted({p.name for p in faltan})) or "(todas)"
+            print(
+                f"\n[regen] Etapa {etapa} NO ejecutada: para generar "
+                f"{salidas} se necesita: {'; '.join(bloqueantes)}"
+            )
+            print(
+                "        (descarga manual desde el Drive del taller a "
+                "data/raw/ y vuelve a ejecutar Run all; el notebook sigue y "
+                "las secciones posteriores muestran avisos)"
+            )
+            continue
+        print(
+            f"\n[regen] Ejecutando etapa {etapa} ... tiempo estimado: "
+            f"{TIEMPOS_ESTIMADOS_ETAPAS[etapa]}"
+        )
+        ok = regen_etapa(etapa, forzar=FUERZAR_REGENERACION)
+        if ok:
+            n_etapas_ejecutadas += 1
+
     print("\n[regen] Resumen final de archivos faltantes:")
     for etapa, faltan in estado_faltantes().items():
         if faltan:
             print(f"  {etapa}: {len(faltan)} archivo(s) faltante(s)")
         else:
             print(f"  {etapa}: completo")
+    print(
+        f"[regen] Etapas ejecutadas: {n_etapas_ejecutadas} | etapas "
+        f"pendientes por insumos (descarga manual): {n_etapas_pendientes}"
+    )
 else:
     print(
-        "REGEN_AUTOMATICO=False: sin regeneracion (todo lo necesario ya esta "
-        "en el repo; los 2 archivos opcionales >100 MB usan respaldo "
-        "estatico)."
+        "REGEN_AUTOMATICO=False: sin regeneracion automatica (los caches "
+        "derivados presentes se usan tal cual; ejecuta los wrappers regen_* "
+        "a mano para regenerar etapa por etapa)."
     )

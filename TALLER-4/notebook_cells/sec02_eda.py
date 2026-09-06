@@ -125,13 +125,23 @@ if "RUTA_RAIZ" not in globals():  # respaldo standalone robusto (ver sec00)
     SEMILLA = 42
 
     def cargar_correcciones() -> dict[str, str]:
-        """Carga config/lemas_correcciones.json (respaldo standalone)."""
-        datos = json.loads((RUTA_CONFIG / "lemas_correcciones.json").read_text(encoding="utf-8"))
+        """Carga config/lemas_correcciones.json si existe (respaldo standalone).
+
+        Si config/ no esta (independencia total), devuelve vacio y avisa.
+        """
+        ruta = RUTA_CONFIG / "lemas_correcciones.json"
+        if not ruta.exists():
+            print("[aviso] config/ no presente en modo standalone; sin correcciones.")
+            return {}
+        datos = json.loads(ruta.read_text(encoding="utf-8"))
         return {str(k): str(v) for k, v in datos["correcciones"].items()}
 
     def cargar_muletillas() -> set[str]:
-        """Carga config/stopwords_habla.txt (respaldo standalone)."""
+        """Carga config/stopwords_habla.txt si existe (respaldo standalone)."""
         ruta = RUTA_CONFIG / "stopwords_habla.txt"
+        if not ruta.exists():
+            print("[aviso] config/ no presente en modo standalone; sin muletillas.")
+            return set()
         return {
             linea.strip()
             for linea in ruta.read_text(encoding="utf-8").splitlines()
@@ -140,7 +150,11 @@ if "RUTA_RAIZ" not in globals():  # respaldo standalone robusto (ver sec00)
 
     def cargar_ruido() -> set[str]:
         """Carga el ruido tipografico de config/tfidf_config.json (standalone)."""
-        datos = json.loads((RUTA_CONFIG / "tfidf_config.json").read_text(encoding="utf-8"))
+        ruta = RUTA_CONFIG / "tfidf_config.json"
+        if not ruta.exists():
+            print("[aviso] config/ no presente en modo standalone; sin ruido.")
+            return set()
+        datos = json.loads(ruta.read_text(encoding="utf-8"))
         return {str(t) for t in datos["ruido_tipografico_libros_excluido_en_eda"]}
 
     CORRECCIONES = cargar_correcciones()
@@ -152,7 +166,11 @@ if "RUTA_RAIZ" not in globals():  # respaldo standalone robusto (ver sec00)
         """Muestra un PNG de imagenes/ (respaldo standalone, igual que sec00)."""
         ruta = RUTA_IMAGENES / nombre
         if not ruta.exists():
-            print(f"[aviso] No existe la figura oficial {ruta.name} en imagenes/;")
+            print(
+                f"[aviso] Figura {nombre} no disponible (requiere datos >100 MB); "
+                "se genera automaticamente en la seccion Regeneracion (etapa E3) "
+                "cuando el insumo dataset este en data/raw."
+            )
             return
         try:
             from IPython.display import Image, display
@@ -902,30 +920,38 @@ fig.suptitle(
 fig.tight_layout()
 plt.show()
 
-# Verificacion contra el CSV oficial de la etapa 6 (top-1 por direccion).
-distintivos_csv = pd.read_csv(RUTA_EDA_RESULTADOS / "distintivos_logodds.csv")
 print("Top-5 distintivos de LIBROS:", " ".join(t for t, *_ in distintivos_libros[:5]))
 print("Top-5 distintivos de ENTREVISTAS:", " ".join(t for t, *_ in distintivos_entrevistas[:5]))
-for _direccion, _calculados in (
-    ("libros", distintivos_libros),
-    ("entrevistas", distintivos_entrevistas),
-):
-    _fila_oficial = distintivos_csv[distintivos_csv["direccion"] == _direccion]
-    _coinciden = sum(
-        1 for (t, _, _, _), (_t2, _s2) in zip(
-            _calculados,
-            zip(_fila_oficial["token"], _fila_oficial["log_odds"]),
-            strict=False,
+
+# Verificacion OPCIONAL contra el CSV oficial de la etapa 6 de produccion
+# (resultados/eda/distintivos_logodds.csv): si existe, compara top-1 y
+# posiciones; si no existe, el calculo inline de arriba es la fuente.
+ruta_distintivos_csv = RUTA_EDA_RESULTADOS / "distintivos_logodds.csv"
+if ruta_distintivos_csv.exists():
+    distintivos_csv = pd.read_csv(ruta_distintivos_csv)
+    for _direccion, _calculados in (
+        ("libros", distintivos_libros),
+        ("entrevistas", distintivos_entrevistas),
+    ):
+        _fila_oficial = distintivos_csv[distintivos_csv["direccion"] == _direccion]
+        _coinciden = sum(
+            1 for (t, _, _, _), (_t2, _s2) in zip(
+                _calculados,
+                zip(_fila_oficial["token"], _fila_oficial["log_odds"]),
+                strict=False,
+            )
+            if t == _t2
         )
-        if t == _t2
-    )
-    _top1_ok = _calculados[0][0] == _fila_oficial.iloc[0]["token"]
-    print(
-        f"Verificacion vs distintivos_logodds.csv [{_direccion}]: top-1 "
-        f"coincide: {_top1_ok} ({_calculados[0][0]} = oficial "
-        f"{_fila_oficial.iloc[0]['token']}) | tokens top-25 en misma posicion: "
-        f"{_coinciden}/25 (el resto son empates exactos de |log-odds|)"
-    )
+        _top1_ok = _calculados[0][0] == _fila_oficial.iloc[0]["token"]
+        print(
+            f"Verificacion vs distintivos_logodds.csv [{_direccion}]: top-1 "
+            f"coincide: {_top1_ok} ({_calculados[0][0]} = oficial "
+            f"{_fila_oficial.iloc[0]['token']}) | tokens top-25 en misma posicion: "
+            f"{_coinciden}/25 (el resto son empates exactos de |log-odds|)"
+        )
+else:
+    print("[info] baseline no presente (resultados/eda/distintivos_logodds.csv);")
+    print("       el calculo inline es la fuente.")
 
 
 # %% [markdown]

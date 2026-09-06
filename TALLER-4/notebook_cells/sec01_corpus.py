@@ -17,7 +17,7 @@ el **segmento**, construido con la regla ADR-001:
   (ej. `HALLAZGOS-p129-las-masacres`).
 - Resultado: **917 segmentos / 2.271.493 palabras** (extraccion sin solapes,
   sin huecos y con cobertura de pagina del 100 %; mapeo TOC 91-100 % por tomo,
-  verificado en `resultados/extraccion_libros_report.json`).
+  verificado en `resultados/extraccion_libros_report.json`, opcional).
 
 **Entrevistas** (CEV, archivo unico JSON): el documento es la
 **transcripcion completa** de la entrevista (id = nombre del PDF original,
@@ -26,13 +26,18 @@ transcripciones de victimas, testigos y excombatientes, con las marcas de
 sistema de la transcripcion (etiquetas de turno TEST/ENT, codigos de pagina,
 anotaciones entre corchetes y tokens de anonimizacion).
 
-La celda siguiente carga la tabla por tomo desde
-`resultados/extraccion_libros_report.json` (reporte de la Fase 3).
+La celda siguiente calcula la tabla por tomo INLINE desde el cache derivado
+`data/corpus/segmentos_libros.jsonl` (que la seccion Regeneracion genera
+desde el insumo libros): numero de segmentos y palabras (campo `n_palabras`
+del propio registro) por tomo. Las cifras coinciden con el reporte oficial
+de la Fase 3 (`resultados/extraccion_libros_report.json`, opcional): 917
+segmentos / 2.271.493 palabras, sin solapes, sin huecos y con cobertura de
+pagina del 100 % (sanity checks del informe, no lecturas obligatorias).
 """
 
 
 # %%
-"""Imports, rutas (respaldo standalone) y tabla por tomo de la Fase 3."""
+"""Imports, rutas (respaldo standalone) y tabla por tomo inline."""
 
 import json
 
@@ -107,8 +112,20 @@ if "RUTA_RAIZ" not in globals():
 
     RUTA_RAIZ = _raiz_standalone()
     RUTA_CORPUS = RUTA_RAIZ / "data" / "corpus"
-    RUTA_RESULTADOS = RUTA_RAIZ / "resultados"
     RUTA_SCRIPTS = RUTA_RAIZ / "scripts"
+
+    def aviso_archivo_faltante(nombre_archivo: str, ruta: object = None) -> None:
+        """Aviso suave de cache derivado faltante (respaldo standalone).
+
+        Args:
+            nombre_archivo: Nombre del archivo faltante.
+            ruta: Ruta completa (opcional; no se usa en el respaldo).
+        """
+        print(
+            f"[aviso] Falta {nombre_archivo}; ejecuta la seccion Regeneracion "
+            "con los insumos descargados (dataset/libros/tesauro) y vuelve a "
+            "ejecutar Run all."
+        )
 
 RUTA_RAW = RUTA_RAIZ / "data" / "raw"
 
@@ -125,33 +142,53 @@ ORDEN_TOMOS = (
     "ETNICO",
     "FUERA",
 )
-reporte_extraccion = json.loads(
-    (RUTA_RESULTADOS / "extraccion_libros_report.json").read_text(encoding="utf-8")
-)
-
-filas_tomos = []
-for tomo in ORDEN_TOMOS:
-    datos = reporte_extraccion["tomos"][tomo]
-    filas_tomos.append(
-        {
-            "tomo": tomo,
-            "segmentos": datos["n_segmentos"],
-            "palabras": f"{datos['palabras_totales']:,}",
-            "media_palabras": f"{datos['palabras_media']:,.0f}",
-            "min_palabras": datos["palabras_min"],
-            "max_palabras": datos["palabras_max"],
-        }
+# Tabla por tomo INLINE desde el cache derivado segmentos_libros.jsonl
+# (generado por la seccion Regeneracion desde el insumo libros): agrupa por
+# el campo "tomo" y suma "n_palabras" (palabras del texto del segmento).
+ruta_segmentos_libros = RUTA_CORPUS / "segmentos_libros.jsonl"
+if not ruta_segmentos_libros.exists():
+    aviso_archivo_faltante("segmentos_libros.jsonl")
+    tabla_tomos = pd.DataFrame(
+        columns=["tomo", "segmentos", "palabras", "media_palabras", "min_palabras", "max_palabras"]
     )
-tabla_tomos = pd.DataFrame(filas_tomos)
-print("Segmentos de libro por tomo (Fase 3, extraccion desde PDF):")
-print(tabla_tomos.to_string(index=False))
-n_segmentos_total = sum(
-    reporte_extraccion["tomos"][tomo]["n_segmentos"] for tomo in ORDEN_TOMOS
-)
-print(
-    f"TOTAL: {n_segmentos_total:,} segmentos | "
-    f"entrevistas (coleccion de queries): 2.486 transcripciones completas"
-)
+    n_segmentos_total = 0
+else:
+    palabras_por_tomo: dict[str, list[int]] = {tomo: [] for tomo in ORDEN_TOMOS}
+    with ruta_segmentos_libros.open(encoding="utf-8") as fh:
+        for linea in fh:
+            registro = json.loads(linea)
+            tomo_registro = registro.get("tomo")
+            if tomo_registro in palabras_por_tomo:
+                palabras_por_tomo[tomo_registro].append(int(registro.get("n_palabras", 0)))
+    filas_tomos = []
+    for tomo in ORDEN_TOMOS:
+        palabras = palabras_por_tomo[tomo]
+        if not palabras:
+            continue
+        filas_tomos.append(
+            {
+                "tomo": tomo,
+                "segmentos": len(palabras),
+                "palabras": f"{sum(palabras):,}",
+                "media_palabras": f"{sum(palabras) / len(palabras):,.0f}",
+                "min_palabras": min(palabras),
+                "max_palabras": max(palabras),
+            }
+        )
+    tabla_tomos = pd.DataFrame(filas_tomos)
+    print("Segmentos de libro por tomo (calculado inline desde segmentos_libros.jsonl):")
+    print(tabla_tomos.to_string(index=False))
+    n_segmentos_total = int(tabla_tomos["segmentos"].sum())
+    print(
+        f"TOTAL: {n_segmentos_total:,} segmentos | "
+        f"entrevistas (coleccion de queries): 2.486 transcripciones completas"
+    )
+    print(
+        "(Sanity del informe de la Fase 3: 917 segmentos / 2.271.493 palabras;"
+        " extraccion sin solapes, sin huecos y con cobertura de pagina del "
+        "100 %. El reporte oficial sigue en resultados/extraccion_libros_"
+        "report.json, opcional.)"
+    )
 
 
 # %%
@@ -260,37 +297,69 @@ if j >= 0:
 
 
 # %%
-"""Categorias de anonimizacion y volumenes globales de la normalizacion."""
+"""Categorias de anonimizacion y volumenes globales de la normalizacion.
 
-inventario = json.loads(
-    (RUTA_RESULTADOS / "preprocesado" / "inventario_patrones_entrevistas.json")
-    .read_text(encoding="utf-8")
-)
-totales = inventario["totales"]
+Cifras de produccion (Fase 4, scripts/02_preprocesar.py) EMBEBIDAS como
+literal para independencia total: los agregados exactos salen de
+`resultados/preprocesado/inventario_patrones_entrevistas.json` (opcional de
+consulta) y se congelan aqui tal cual.
+"""
+
+# Agregados oficiales de la normalizacion (Fase 4) embebidos.
+AGREGADOS_ANONIMIZACION: dict[str, object] = {
+    "conteos_categorias": {
+        "conocido": 58525,
+        "anonimo": 43262,
+        "organizacion_social": 25336,
+        "lugar": 24226,
+        "familiar": 21428,
+        "organizacion_publica": 18878,
+        "institucion_educativa": 5974,
+        "partido_politico": 1,
+    },
+    "chars_antes": 200518396,
+    "chars_despues": 188838879,
+    "reduccion_pct": 5.82,
+    "n_hablantes_linea": 653328,
+    "n_guiones": 291868,
+    "n_brackets": 138613,
+    "n_variantes_ortograficas": 420,
+}
+
 categorias = pd.DataFrame(
     [
         {"categoria": nombre, "ocurrencias": conteo}
         for nombre, conteo in sorted(
-            totales["anonimizados"].items(), key=lambda par: -par[1]
+            AGREGADOS_ANONIMIZACION["conteos_categorias"].items(),
+            key=lambda par: -par[1],
         )
     ]
 )
 print("Tokens anonimizados mapeados a categorias canonicas (ADR-002):")
 print(categorias.to_string(index=False))
-n_variantes = sum(len(v) for v in totales["variantes_anonimizados"].values())
 print(
-    f"Total mapeado: {sum(totales['anonimizados'].values()):,} tokens "
-    f"({n_variantes} variantes ortograficas distintas normalizadas)"
+    "Total mapeado: "
+    f"{sum(AGREGADOS_ANONIMIZACION['conteos_categorias'].values()):,} tokens "
+    f"({AGREGADOS_ANONIMIZACION['n_variantes_ortograficas']} variantes "
+    "ortograficas distintas normalizadas)"
 )
 print(
-    f"Chars: {totales['chars_antes']:,} -> {totales['chars_despues']:,} "
-    f"({inventario['reduccion_pct']:.2f} %)"
+    "Chars: "
+    f"{AGREGADOS_ANONIMIZACION['chars_antes']:,} -> "
+    f"{AGREGADOS_ANONIMIZACION['chars_despues']:,} "
+    f"({AGREGADOS_ANONIMIZACION['reduccion_pct']:.2f} %)"
 )
 print(
-    f"Etiquetas de hablante eliminadas: {totales['n_hablantes_linea']:,} | "
-    f"guiones: {totales['n_guiones']:,} | anotaciones entre corchetes: "
-    f"{totales['n_brackets']:,}"
+    "Etiquetas de hablante eliminadas: "
+    f"{AGREGADOS_ANONIMIZACION['n_hablantes_linea']:,} | guiones: "
+    f"{AGREGADOS_ANONIMIZACION['n_guiones']:,} | anotaciones entre "
+    f"corchetes: {AGREGADOS_ANONIMIZACION['n_brackets']:,}"
 )
+print(
+    "(Cifras embebidas de produccion; el inventario oficial sigue en "
+    "resultados/preprocesado/inventario_patrones_entrevistas.json, opcional.)"
+)
+
 
 
 # %% [markdown]
@@ -306,8 +375,8 @@ El preprocesado completo tiene dos partes (scripts/02_preprocesar.py):
    `organizacion_publica`, `organizacion_social`, `lugar`, `familiar`,
    `conocido`, `institucion_educativa`, `partido_politico` y `anonimo`).
    El inventario completo de patrones aplicados (30+ reglas) se documento en
-   `resultados/preprocesado/inventario_patrones_entrevistas.json` (versionado)
-   y la celda de abajo lee la tabla de categorias desde ese archivo.
+   `resultados/preprocesado/inventario_patrones_entrevistas.json` (opcional de
+   consulta) y la celda de abajo muestra los agregados oficiales EMBEBIDOS.
 2. **Preprocesado linguistico** (spaCy `es_core_news_md`, CPU): tokeniza,
    pasa a minusculas y lematiza con un pipeline unico para libros y
    entrevistas; elimina stopwords de spaCy y las muletillas del habla
