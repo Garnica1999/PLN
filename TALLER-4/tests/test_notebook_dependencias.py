@@ -1,6 +1,6 @@
 """test_notebook_dependencias.py
 
-Fecha: 2026-09-05 (v5)
+Fecha: 2026-09-05 (v6)
 Descripcion: Tests de independencia total y robustez del notebook entregable
     (notebooks/Taller_4_IR_CEV.ipynb, ensamblado desde notebook_cells/):
 
@@ -26,8 +26,9 @@ Descripcion: Tests de independencia total y robustez del notebook entregable
         unidad con sentido es el bloque completo: sus lecturas solo
         ocurren cuando el driver de regeneracion los invoca.
     (d) las celdas que resuelven la raiz (def buscar_raiz / _raiz_standalone)
-        lanzan FileNotFoundError con el marcador segmentos_libros.jsonl y no
-        contienen la asignacion silenciosa del ultimo candidato.
+        lanzan FileNotFoundError claro (menciona el cache
+        segmentos_libros.jsonl y los insumos de data/raw/) y no contienen la
+        asignacion silenciosa del ultimo candidato.
     (e) expansion v4/v5 completa: (e1) el ipynb NO contiene CODIGO_EMBED_ ni
         "exec("; (e2) hay celdas code con el codigo de scripts/01-03; (e3)
         estan los alias [auto] main_extraccion / main_preprocesar /
@@ -44,6 +45,12 @@ Descripcion: Tests de independencia total y robustez del notebook entregable
         resultado esperado es 0 errores, con los avisos "[aviso]/[info]"
         de archivos opcionales ausentes y los calculos inline completos
         (figuras PNG inline y auto-checks con valores).
+    (h) resolucion de la raiz con SOLO los 3 insumos: se ejecuta la celda
+        real de sec00 (la que define `buscar_raiz`) con cwd en un arbol
+        sintetico que contiene UNICAMENTE data/raw/entrevistas_all_2023-03-21_14-24_05.json
+        (o solo data/raw/books/libro.pdf, ambos archivos vacios bastan) y
+        debe resolver ese directorio como raiz del proyecto (sin ningun
+        cache derivado en data/corpus/).
 
 El notebook debe estar ensamblado (scripts/ensamblar_notebook_t4.py); si no
 existe, el modulo se omite con pytest.skip.
@@ -301,7 +308,8 @@ def test_c_politica_v5_de_lecturas_de_archivo() -> None:
 
 
 def test_d_resolucion_de_raiz_con_error_claro() -> None:
-    """(d) Las celdas que resuelven la raiz lanzan FileNotFoundError claro y
+    """(d) Las celdas que resuelven la raiz lanzan FileNotFoundError claro
+    (menciona el cache segmentos_libros.jsonl y los insumos de data/raw/) y
     no asignan silenciosamente el ultimo candidato sin verificar."""
     celdas_resolutoras = [
         celda
@@ -311,7 +319,9 @@ def test_d_resolucion_de_raiz_con_error_claro() -> None:
     assert celdas_resolutoras, "no se encontro ninguna celda que defina buscar_raiz"
     for celda in celdas_resolutoras:
         assert "FileNotFoundError" in celda, "falta FileNotFoundError en la celda"
-        assert "segmentos_libros.jsonl" in celda, "falta el marcador en la celda"
+        assert "segmentos_libros.jsonl" in celda, "falta el cache en la celda"
+        assert "data/raw/" in celda, "el error debe mencionar los insumos de data/raw/"
+        assert "_es_raiz" in celda, "falta la funcion de marcador valido _es_raiz"
         assert "raise FileNotFoundError" in celda, "la celda debe lanzar el error"
     for celda in _celdas_code():
         assert "RUTA_RAIZ = _candidato" not in celda, (
@@ -512,3 +522,107 @@ def test_g_sandbox_independencia(tmp_path: Path) -> None:
     except ImportError:
         pytest.skip("nbclient no esta instalado")
     _ejecutar_sandbox(tmp_path)
+
+
+# ---------------------------------------------------------------------------
+# (h) Resolucion de la raiz con SOLO los 3 insumos en data/raw/: se ejecuta
+# la celda real de sec00 (def buscar_raiz) con cwd en un arbol sintetico sin
+# caches derivados; la raiz debe resolverse por el dataset o por los libros.
+# ---------------------------------------------------------------------------
+
+_SCRIPT_RESOLVER_RAIZ = """
+import os
+import sys
+from pathlib import Path
+
+ruta_celda = Path(sys.argv[1])
+namespace = {"__name__": "__main__", "os": os, "Path": Path}
+fuente = ruta_celda.read_text(encoding="utf-8")
+exec(compile(fuente, str(ruta_celda), "exec"), namespace)
+print("RAIZ_RESUELTA:", namespace["buscar_raiz"]())
+sys.exit(0)
+"""
+
+
+def _celda_buscar_raiz() -> str:
+    """Source de la celda code de sec00 que define `buscar_raiz()`.
+
+    Returns:
+        Texto completo de la celda (funciones y constantes de la
+        resolucion robusta de la raiz; no invoca buscar_raiz).
+
+    Raises:
+        pytest.fail: si ninguna celda del notebook define buscar_raiz.
+    """
+    for celda in _celdas_code():
+        if "def buscar_raiz" in celda:
+            return celda
+    pytest.fail("no se encontro la celda que define buscar_raiz en el notebook")
+
+
+def _resolver_raiz_en_arbol(arbol: Path, fuente_celda: str, dir_celdas: Path) -> Path:
+    """Ejecuta la celda real de sec00 con cwd=arbol y devuelve la raiz.
+
+    Corre en un subproceso con cwd en el arbol sintetico (y sin la variable
+    TALLER4_ROOT) para que la busqueda parta exactamente de ese directorio.
+
+    Args:
+        arbol: Arbol sintetico (raiz esperada de la resolucion).
+        fuente_celda: Source de la celda code que define buscar_raiz.
+        dir_celdas: Directorio (fuera del arbol) para el archivo temporal.
+
+    Returns:
+        Path absoluto que la celda real resolvio como raiz del proyecto.
+
+    Raises:
+        AssertionError: si la celda falla o no imprime RAIZ_RESUELTA.
+    """
+    dir_celdas.mkdir(parents=True, exist_ok=True)
+    ruta_celda = dir_celdas / "celda_buscar_raiz.py"
+    ruta_celda.write_text(fuente_celda, encoding="utf-8")
+    env = dict(os.environ)
+    env.pop("TALLER4_ROOT", None)
+    proc = subprocess.run(
+        [sys.executable, "-c", _SCRIPT_RESOLVER_RAIZ, str(ruta_celda)],
+        cwd=arbol,
+        env=env,
+        capture_output=True,
+        text=True,
+        timeout=180,
+        check=False,
+    )
+    assert proc.returncode == 0, (
+        "la celda real de sec00 fallo al resolver la raiz en un arbol con "
+        f"solo insumos (rc={proc.returncode}):\n{proc.stdout[-3000:]}\n"
+        f"{proc.stderr[-3000:]}"
+    )
+    for linea in proc.stdout.splitlines():
+        if linea.startswith("RAIZ_RESUELTA:"):
+            return Path(linea.split(":", 1)[1].strip())
+    pytest.fail(
+        "la celda real de sec00 no imprimio RAIZ_RESUELTA:\n" + proc.stdout[-3000:]
+    )
+
+
+def test_h_resolucion_de_raiz_con_solo_insumos(tmp_path: Path) -> None:
+    """(h) La celda real de sec00 resuelve la raiz SIN caches derivados.
+
+    Con un arbol sintetico que contiene solo el dataset crudo
+    (data/raw/entrevistas_all_2023-03-21_14-24_05.json) o solo un PDF de
+    libros (data/raw/books/libro.pdf), ambos vacios, buscar_raiz debe
+    devolver ese directorio como raiz del proyecto.
+    """
+    fuente_celda = _celda_buscar_raiz()
+    casos = {
+        "solo_dataset": "data/raw/entrevistas_all_2023-03-21_14-24_05.json",
+        "solo_libro_pdf": "data/raw/books/libro.pdf",
+    }
+    for nombre, relativa in casos.items():
+        arbol = tmp_path / nombre
+        (arbol / relativa).parent.mkdir(parents=True)
+        (arbol / relativa).touch()
+        raiz = _resolver_raiz_en_arbol(arbol, fuente_celda, tmp_path / "celdas_h")
+        assert raiz == arbol.resolve(), (
+            f"con solo {relativa} la raiz resuelta es {raiz} y se esperaba "
+            f"{arbol.resolve()}"
+        )

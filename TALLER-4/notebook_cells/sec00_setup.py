@@ -12,7 +12,9 @@ Este bloque concentra al inicio del notebook:
 4. Configuracion del entorno: `AUTO_DESCARGAR_REPO` (False por defecto;
    activala en Colab si el repositorio aun no esta en /content).
 5. `buscar_raiz()`: localiza la raiz del proyecto TALLER-4 (el directorio que
-   contiene `data/corpus/segmentos_libros.jsonl`) con una estrategia robusta:
+   contiene el cache `data/corpus/segmentos_libros.jsonl` o CUALQUIERA de los
+   3 insumos en `data/raw/`: dataset de entrevistas, libros CEV o tesauro)
+   con una estrategia robusta:
    (1) variable de entorno `TALLER4_ROOT`, (2) ancestros desde el directorio
    actual, (3) subcarpetas de hasta 3 niveles bajo el cwd y bajo cada ancestro
    (cubre `/content/PLN-main/TALLER-4` cuando se descomprime el zip del
@@ -171,17 +173,21 @@ print(f"AUTO_DESCARGAR_REPO = {AUTO_DESCARGAR_REPO}")
 # %%
 """Funciones de localizacion de la raiz del proyecto (no se ejecutan aqui).
 
-`buscar_raiz()` busca el marcador `data/corpus/segmentos_libros.jsonl` con
-este orden: (1) variable de entorno `TALLER4_ROOT`; (2) ancestros desde
+`buscar_raiz()` reconoce la raiz por el cache derivado
+`data/corpus/segmentos_libros.jsonl` o por CUALQUIERA de los 3 insumos
+permitidos en `data/raw/` (dataset de entrevistas, libros CEV o tesauro),
+de modo que la raiz se resuelve ANTES de generar los caches derivados. La
+busqueda sigue este orden: (1) variable de entorno `TALLER4_ROOT`; (2)
+ancestros desde
 `os.getcwd()`; (3) subcarpetas de hasta 3 niveles bajo el cwd y bajo cada
 ancestro (os.walk podado: omite directorios ocultos y los de entorno/git);
 (4) rutas tipicas de Colab; (5) si `AUTO_DESCARGAR_REPO` esta activo,
 descarga y descomprime el repositorio y reintenta (2)-(4). Nunca devuelve la
-raiz del filesystem: si no encuentra, `raise FileNotFoundError` con el
-marcador buscado, los lugares inspeccionados (resumidos) y 3 opciones.
+raiz del filesystem: si no encuentra, `raise FileNotFoundError` con lo
+buscado (cache o insumos), los lugares inspeccionados (resumidos) y 3
+opciones.
 """
 
-MARCADOR_RAIZ = Path("data") / "corpus" / "segmentos_libros.jsonl"
 _MAX_PROFUNDIDAD_WALK = 3
 _URL_REPO_ZIP = "https://codeload.github.com/Garnica1999/PLN/zip/refs/heads/main"
 
@@ -197,16 +203,29 @@ _DIRS_SISTEMA_RAIZ = frozenset({
 })
 
 
-def _cumple_marcador(directorio: Path) -> bool:
-    """True si el directorio contiene el marcador de la raiz del proyecto.
+def _es_raiz(candidato) -> bool:
+    """True si el candidato es la raiz del proyecto TALLER-4.
+
+    Un directorio es la raiz si contiene el cache derivado
+    data/corpus/segmentos_libros.jsonl o CUALQUIERA de los 3 insumos
+    permitidos en data/raw/ (dataset de entrevistas, libros CEV o
+    tesauro): asi la raiz se resuelve ANTES de generar los caches
+    derivados.
 
     Args:
-        directorio: Candidato a raiz.
+        candidato: Directorio candidato a raiz del proyecto.
 
     Returns:
-        True si existe directorio/data/corpus/segmentos_libros.jsonl.
+        True si contiene el cache derivado o algun insumo de
+        data/raw/.
     """
-    return (directorio / MARCADOR_RAIZ).exists()
+    return (
+        (candidato / "data" / "corpus" / "segmentos_libros.jsonl").exists()
+        or (candidato / "data" / "raw" / "entrevistas_all_2023-03-21_14-24_05.json").exists()
+        or (candidato / "data" / "raw" / "Resource-tesauro.rdf").exists()
+        or bool(list((candidato / "data" / "raw").glob("books-*.zip")))
+        or bool(list((candidato / "data" / "raw" / "books").glob("*.pdf")))
+    )
 
 
 def _candidatos_por_walk(base: Path, max_profundidad: int):
@@ -280,8 +299,10 @@ def buscar_raiz(auto_descarga: bool | None = None) -> Path:
     Estrategia de resolucion (ver docstring de la celda): TALLER4_ROOT,
     ancestros desde el cwd, subcarpetas de hasta 3 niveles bajo el cwd y bajo
     cada ancestro, rutas tipicas de Colab y, opcionalmente, auto-descarga del
-    repositorio con reintento. El marcador es
-    `data/corpus/segmentos_libros.jsonl`.
+    repositorio con reintento. La raiz se reconoce por el cache derivado
+    `data/corpus/segmentos_libros.jsonl` o por CUALQUIERA de los 3 insumos
+    en `data/raw/` (dataset de entrevistas, libros CEV o tesauro), de modo
+    que se resuelve antes de generar los caches.
 
     Args:
         auto_descarga: Override del flag global AUTO_DESCARGAR_REPO (celda de
@@ -291,8 +312,8 @@ def buscar_raiz(auto_descarga: bool | None = None) -> Path:
         Ruta absoluta a la raiz del proyecto (contiene data/, config/, ...).
 
     Raises:
-        FileNotFoundError: Si el marcador no aparece en ningun lugar, con el
-            detalle de lo buscado y las opciones para resolverlo.
+        FileNotFoundError: Si no aparece el cache derivado ni ningun insumo,
+            con el detalle de lo buscado y las opciones para resolverlo.
     """
     if auto_descarga is None:
         auto_descarga = bool(globals().get("AUTO_DESCARGAR_REPO", False))
@@ -304,12 +325,12 @@ def buscar_raiz(auto_descarga: bool | None = None) -> Path:
         ancestros = [cwd, *cwd.parents]
         for ancestro in ancestros:
             lugares.append(str(ancestro))
-            if _cumple_marcador(ancestro):
+            if _es_raiz(ancestro):
                 return ancestro
         for ancestro in ancestros:
             lugares.append(f"subcarpetas (<=3 niveles) bajo {ancestro}")
             for candidato in _candidatos_por_walk(ancestro, _MAX_PROFUNDIDAD_WALK):
-                if _cumple_marcador(candidato):
+                if _es_raiz(candidato):
                     return candidato
         return None
 
@@ -319,13 +340,13 @@ def buscar_raiz(auto_descarga: bool | None = None) -> Path:
 
         for candidata in (Path("/content/TALLER-4"), Path("/content/drive/MyDrive/TALLER-4")):
             lugares.append(f"ruta tipica {candidata}")
-            if _cumple_marcador(candidata):
+            if _es_raiz(candidata):
                 return candidata
         for patron in ("/content/*/TALLER-4", "/content/*/*/TALLER-4"):
             for coincidencia in sorted(_glob.glob(patron)):
                 lugares.append(f"ruta tipica {coincidencia}")
                 candidata = Path(coincidencia)
-                if _cumple_marcador(candidata):
+                if _es_raiz(candidata):
                     return candidata
         return None
 
@@ -333,7 +354,7 @@ def buscar_raiz(auto_descarga: bool | None = None) -> Path:
     if env_root:
         lugares.append(f"TALLER4_ROOT={env_root}")
         candidato = Path(env_root).resolve()
-        if _cumple_marcador(candidato):
+        if _es_raiz(candidato):
             print(f"[raiz] Resuelta por TALLER4_ROOT: {candidato}")
             return candidato
 
@@ -354,8 +375,10 @@ def buscar_raiz(auto_descarga: bool | None = None) -> Path:
     if len(resumen) > 600:
         resumen = resumen[:600] + " ..."
     raise FileNotFoundError(
-        "No se encontro la raiz del proyecto TALLER-4: falta el marcador "
-        "data/corpus/segmentos_libros.jsonl en el arbol de directorios.\n"
+        "No se encontro la raiz del proyecto TALLER-4: se busca la carpeta "
+        "que contenga data/corpus/segmentos_libros.jsonl o alguno de los 3 "
+        "insumos en data/raw/ (dataset de entrevistas, libros CEV o "
+        "tesauro) en el arbol de directorios.\n"
         f"Lugares inspeccionados: {resumen}.\n"
         "Opciones:\n"
         "  A) Sube la carpeta TALLER-4 completa a /content (o descomprime en "
