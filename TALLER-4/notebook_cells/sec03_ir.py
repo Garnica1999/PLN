@@ -101,18 +101,27 @@ if "RUTA_RAIZ" not in globals():  # respaldo standalone robusto (ver sec00)
     RUTA_CONFIG = RUTA_RAIZ / "config"
     RUTA_RESULTADOS = RUTA_RAIZ / "resultados"
 
-# Helpers de config: existen en sec00 (notebook); se definen solo si la
-# seccion corre standalone (misma convencion de autocontencion).
+# Helpers de config: existen en sec00 (notebook, con copias embebidas); se
+# definen solo si la seccion corre standalone (misma convencion de
+# autocontencion). Los respaldos leen config/ solo si existe; si no, avisan
+# y degradan (config curada del notebook vive embebida en sec00).
 if "cargar_correcciones" not in globals():
 
     def cargar_correcciones() -> dict[str, str]:
-        """Carga config/lemas_correcciones.json (respaldo standalone)."""
-        datos = json.loads((RUTA_CONFIG / "lemas_correcciones.json").read_text(encoding="utf-8"))
+        """Carga config/lemas_correcciones.json si existe (respaldo standalone)."""
+        ruta = RUTA_CONFIG / "lemas_correcciones.json"
+        if not ruta.exists():
+            print("[aviso] config/ no presente en modo standalone; sin correcciones.")
+            return {}
+        datos = json.loads(ruta.read_text(encoding="utf-8"))
         return {str(k): str(v) for k, v in datos["correcciones"].items()}
 
     def cargar_muletillas() -> set[str]:
-        """Carga config/stopwords_habla.txt (respaldo standalone)."""
+        """Carga config/stopwords_habla.txt si existe (respaldo standalone)."""
         ruta = RUTA_CONFIG / "stopwords_habla.txt"
+        if not ruta.exists():
+            print("[aviso] config/ no presente en modo standalone; sin muletillas.")
+            return set()
         return {
             linea.strip()
             for linea in ruta.read_text(encoding="utf-8").splitlines()
@@ -121,7 +130,11 @@ if "cargar_correcciones" not in globals():
 
     def cargar_ruido() -> set[str]:
         """Carga el ruido tipografico de config/tfidf_config.json (standalone)."""
-        datos = json.loads((RUTA_CONFIG / "tfidf_config.json").read_text(encoding="utf-8"))
+        ruta = RUTA_CONFIG / "tfidf_config.json"
+        if not ruta.exists():
+            print("[aviso] config/ no presente en modo standalone; sin ruido.")
+            return set()
+        datos = json.loads(ruta.read_text(encoding="utf-8"))
         return {str(t) for t in datos["ruido_tipografico_libros_excluido_en_eda"]}
 
     def cargar_lemas(corpus: str) -> list[str]:
@@ -135,17 +148,60 @@ if "cargar_correcciones" not in globals():
         return json.loads(ruta.read_text(encoding="utf-8"))["docs"]
 
 
+# Parametros TF-IDF congelados (copia embebida para independencia total; la
+# fuente oficial es config/tfidf_config.json de los scripts de produccion).
+TFIDF_PARAMS_VECTORIZADOR_EMBEDIDOS: dict = {
+    "analyzer": "word",
+    "token_pattern": r"(?u)\b\w+\b",
+    "lowercase": True,
+    "ngram_range": [1, 2],
+    "sublinear_tf": True,
+    "norm": "l2",
+    "use_idf": True,
+    "smooth_idf": True,
+    "min_df": 2,
+    "max_df": 0.85,
+}
+
+
 def cargar_config_vectorizador() -> dict:
-    """Carga los parametros del vectorizador de config/tfidf_config.json.
+    """Devuelve los parametros del vectorizador (config embebida).
+
+    El notebook NO lee config/tfidf_config.json: usa la copia congelada
+    `TFIDF_PARAMS_VECTORIZADOR_EMBEDIDOS` (identica a la de sec00 y a la
+    fuente de produccion; `verificar_consistencia_config` de sec00 compara
+    cuando el archivo existe).
 
     Returns:
         Dict con los kwargs de TfidfVectorizer congelados en el EDA (Fase 5).
     """
-    ruta = RUTA_CONFIG / "tfidf_config.json"
-    datos = json.loads(ruta.read_text(encoding="utf-8"))
-    config = dict(datos.get("vectorizador", {}))
+    globales = globals()
+    if "TFIDF_PARAMS_EMBEDIDOS" in globales:  # sec00 ya corrio en el notebook
+        config = dict(globales["TFIDF_PARAMS_EMBEDIDOS"])
+    else:
+        config = dict(TFIDF_PARAMS_VECTORIZADOR_EMBEDIDOS)
     config["ngram_range"] = tuple(int(v) for v in config["ngram_range"])
     return config
+
+
+def _cargar_correcciones_ir() -> dict[str, str]:
+    """Correcciones de lemas para el IR (siempre la copia embebida).
+
+    En el notebook las celdas expandidas de scripts/03_eda.py definen su
+    propia `cargar_correcciones()` (la del EDA de produccion, que CREA
+    config/lemas_correcciones.json si el archivo no existe): el nombre
+    global queda reemplazado en el kernel antes de la Sec 03. Para
+    independencia total el pipeline IR usa la constante embebida
+    CORRECCIONES_EMBEDIDAS de sec00 (identica a la fuente de produccion);
+    en modo standalone (sin sec00) usa la `cargar_correcciones` local con
+    guard .exists().
+
+    Returns:
+        Mapa lema anomalo -> lema correcto.
+    """
+    if "CORRECCIONES_EMBEDIDAS" in globals():
+        return dict(globals()["CORRECCIONES_EMBEDIDAS"])
+    return cargar_correcciones()
 
 
 def construir_parada_ir(incluir_muletillas: bool = True) -> set[str]:
@@ -367,7 +423,7 @@ def correr_ir(
     if variante == "A":
         config["ngram_range"] = (1, 1)
     parada = construir_parada_ir(incluir_muletillas=(variante != "B"))
-    correcciones = cargar_correcciones() if variante != "C" else {}
+    correcciones = _cargar_correcciones_ir() if variante != "C" else {}
     print(
         f"\n[experimento {variante}] ngram={config['ngram_range']} | "
         f"parada={len(parada)} tokens | correcciones={len(correcciones)}"
@@ -477,19 +533,25 @@ plt.show()
 print(f"Score top-1: media = {top1['score'].mean():.6f} | "
       f"mediana = {top1['score'].median():.6f}")
 
-# Verificacion: el ranking en memoria debe ser identico al CSV oficial
-# resultados/ranking_top5.csv (mismo codigo y config; corrida determinista).
-base_csv = pd.read_csv(RUTA_RESULTADOS / "ranking_top5.csv")
-top1_csv = base_csv[base_csv["rango"] == 1].set_index("id_doc")["id_segmento"]
-top1_mem = top1.set_index("id_doc")["id_segmento"]
-n_coinciden = int((top1_csv == top1_mem).sum())
-pct_csv = 100.0 * (base_csv[base_csv["rango"] == 1]["tomo"] == "TESTIMONIAL").mean()
+# Verificacion OPCIONAL: el ranking en memoria debe ser identico al CSV
+# oficial resultados/ranking_top5.csv (mismo codigo y config embebida;
+# corrida determinista). Si el CSV no existe, el ranking inline es la fuente.
 pct_mem = 100.0 * (top1["tomo"] == "TESTIMONIAL").mean()
-print(
-    f"Verificacion vs ranking_top5.csv: top-1 identicos en {n_coinciden}/"
-    f"{len(top1_mem)} queries | TESTIMONIAL: {pct_mem:.2f} % (memoria) = "
-    f"{pct_csv:.2f} % (CSV oficial) -> reproducido: {n_coinciden == len(top1_mem)}"
-)
+ruta_ranking_csv = RUTA_RESULTADOS / "ranking_top5.csv"
+if ruta_ranking_csv.exists():
+    base_csv = pd.read_csv(ruta_ranking_csv)
+    top1_csv = base_csv[base_csv["rango"] == 1].set_index("id_doc")["id_segmento"]
+    top1_mem = top1.set_index("id_doc")["id_segmento"]
+    n_coinciden = int((top1_csv == top1_mem).sum())
+    pct_csv = 100.0 * (base_csv[base_csv["rango"] == 1]["tomo"] == "TESTIMONIAL").mean()
+    print(
+        f"Verificacion vs ranking_top5.csv: top-1 identicos en {n_coinciden}/"
+        f"{len(top1_mem)} queries | TESTIMONIAL: {pct_mem:.2f} % (memoria) = "
+        f"{pct_csv:.2f} % (CSV oficial) -> reproducido: {n_coinciden == len(top1_mem)}"
+    )
+else:
+    print("[info] CSV oficial no presente (resultados/ranking_top5.csv); el")
+    print(f"       ranking inline es la fuente (TESTIMONIAL top-1: {pct_mem:.2f} %).")
 
 
 # %%
@@ -497,124 +559,416 @@ print(
 
 # A: ngram (1,1); B: sin muletillas; C: sin correcciones de lemas.
 # El codigo inline genera el ranking del base (arriba); las variantes se
-# comparan contra sus CSVs oficiales versionados (ranking_top5_{A,B,C}.csv),
-# generados por el experimento de produccion con el mismo codigo: la
+# comparan contra sus CSVs oficiales (ranking_top5_{A,B,C}.csv) del
+# experimento de produccion SOLO si existen (verificacion OPCIONAL): la
 # coincidencia esperada del reporte es A 54,8 / B 84,6 / C 96,6.
-base_top1 = pd.read_csv(RUTA_RESULTADOS / "ranking_top5.csv")
-base_top1 = base_top1[base_top1["rango"] == 1].set_index("id_doc")["id_segmento"]
 esperado = {"A": 54.8, "B": 84.6, "C": 96.6}
-filas_variantes = []
-for nombre, pct_esperado in esperado.items():
-    variante = pd.read_csv(RUTA_RESULTADOS / f"ranking_top5_{nombre}.csv")
-    top1_variante = variante[variante["rango"] == 1].set_index("id_doc")["id_segmento"]
-    comun = base_top1.index.intersection(top1_variante.index)
-    coincidencia = 100.0 * (base_top1[comun] == top1_variante[comun]).mean()
-    filas_variantes.append(
-        {
-            "variante": nombre,
-            "cambio_respecto_base": {
-                "A": "sin bigramas (ngram 1,1)",
-                "B": "sin parada de muletillas",
-                "C": "sin correcciones de lemas",
-            }[nombre],
-            "coincidencia_top1_pct": round(coincidencia, 1),
-            "esperado_reporte_pct": pct_esperado,
-        }
+ruta_base_csv = RUTA_RESULTADOS / "ranking_top5.csv"
+variantes_csv = {
+    nombre: RUTA_RESULTADOS / f"ranking_top5_{nombre}.csv" for nombre in esperado
+}
+if ruta_base_csv.exists() and all(ruta.exists() for ruta in variantes_csv.values()):
+    base_top1 = pd.read_csv(ruta_base_csv)
+    base_top1 = base_top1[base_top1["rango"] == 1].set_index("id_doc")["id_segmento"]
+    filas_variantes = []
+    for nombre, pct_esperado in esperado.items():
+        variante = pd.read_csv(variantes_csv[nombre])
+        top1_variante = variante[variante["rango"] == 1].set_index("id_doc")["id_segmento"]
+        comun = base_top1.index.intersection(top1_variante.index)
+        coincidencia = 100.0 * (base_top1[comun] == top1_variante[comun]).mean()
+        filas_variantes.append(
+            {
+                "variante": nombre,
+                "cambio_respecto_base": {
+                    "A": "sin bigramas (ngram 1,1)",
+                    "B": "sin parada de muletillas",
+                    "C": "sin correcciones de lemas",
+                }[nombre],
+                "coincidencia_top1_pct": round(coincidencia, 1),
+                "esperado_reporte_pct": pct_esperado,
+            }
+        )
+    tabla_variantes = pd.DataFrame(filas_variantes)
+    print("Coincidencia del top-1 de cada variante con el base (2.484 queries):")
+    print(tabla_variantes.to_string(index=False))
+    ok = np.allclose(
+        tabla_variantes["coincidencia_top1_pct"],
+        tabla_variantes["esperado_reporte_pct"],
+        atol=0.05,
     )
-tabla_variantes = pd.DataFrame(filas_variantes)
-print("Coincidencia del top-1 de cada variante con el base (2.484 queries):")
-print(tabla_variantes.to_string(index=False))
-ok = np.allclose(
-    tabla_variantes["coincidencia_top1_pct"],
-    tabla_variantes["esperado_reporte_pct"],
-    atol=0.05,
-)
-print(f"Reproduce los valores del reporte (A 54,8 / B 84,6 / C 96,6): {ok}")
-print(
-    "Lectura: el bigrama aporta el 45 % del cambio de top-1; las muletillas "
-    "mueven poco (15 %); las 62 correcciones casi nada (3 %). La config base "
-    "es la mas estable."
-)
+    print(f"Reproduce los valores del reporte (A 54,8 / B 84,6 / C 96,6): {ok}")
+    print(
+        "Lectura: el bigrama aporta el 45 % del cambio de top-1; las muletillas "
+        "mueven poco (15 %); las 62 correcciones casi nada (3 %). La config base "
+        "es la mas estable."
+    )
+else:
+    print("[info] no estan los CSVs oficiales de las variantes")
+    print("       (resultados/ranking_top5_{A,B,C}.csv); el ranking inline del")
+    print("       base es la fuente (esperado del reporte: A 54,8 / B 84,6 /")
+    print("       C 96,6 de coincidencia de top-1).")
 
 
 # %%
 """Tabla de evaluacion etiquetada (30 pares) y metricas proxy recalculadas.
 
-Las metricas P@1 se recalculan aqui desde evaluacion_muestra_etiquetada.csv
-(columna 'etiqueta' del top-1). Para P@3 se necesitan las etiquetas de r2 y
-r3, que el CSV oficial no lleva (solo etiqueta el top-1): se toman del campo
-'detalle_por_fila' de evaluacion_metricas.json (etiquetas auxiliares del
-mismo etiquetado) y se verifican los resultados contra el resumen del JSON.
+La muestra de 30 entrevistas se reproduce INLINE con el mismo algoritmo
+determinista del experimento oficial (estratificada por el tomo del top-1,
+3 por tomo en el orden canonico, semilla 42, queries con top-3 completo;
+experimentos/experimento_1_tfidf_base.py). Las 30 etiquetas HUMANAS del
+etiquetado de la Fase 6 viajan EMBEBIDAS como literal (con sus auxiliares
+r2/r3 para el P@3 y la justificacion), copiadas de
+resultados/evaluacion_muestra_etiquetada.csv y
+resultados/evaluacion_metricas.json (ambos opcionales de consulta): la
+lectura de evaluacion_metricas.json queda como verificacion opcional.
 """
+ETIQUETAS_HUMANAS_MUESTRA: dict[str, dict[str, str]] = {
+    "5f6ae4b606158f011ed0106c.pdf": {
+        "etiqueta": "relacionado",
+        "r2": "parcial",
+        "r3": "parcial",
+        "justificacion": "Politico araucano: guerrilla FARC/ELN, poder politico regional y democracia; tema exacto del segmento.",
+    },
+    "5eb4eb12da6da3b502db359f.pdf": {
+        "etiqueta": "relacionado",
+        "r2": "relacionado",
+        "r3": "parcial",
+        "justificacion": "Relato de masacre inminente, amenaza y desplazamiento de la comunidad; el segmento cita su mismo tipo de testimonio.",
+    },
+    "5fee58599e8b013f2692e067.pdf": {
+        "etiqueta": "relacionado",
+        "r2": "parcial",
+        "r3": "parcial",
+        "justificacion": "Investigador del despojo de tierras a indigenas (embera, Risaralda); r1 trata despojo, territorio y cosmovision.",
+    },
+    "5eb4e860da6da3b502da7cd8.pdf": {
+        "etiqueta": "parcial",
+        "r2": "parcial",
+        "r3": "parcial",
+        "justificacion": "Gestion de orden publico y consejos de seguridad; menciona la CEV solo de forma tangencial y critica.",
+    },
+    "5eb4eb13da6da3b502db35e7.pdf": {
+        "etiqueta": "parcial",
+        "r2": "parcial",
+        "r3": "parcial",
+        "justificacion": "Analista: asistencia militar de EEUU y cooperacion; r1 es sobre negociacion de La Habana: solape parcial por conflicto.",
+    },
+    "5eb4e9fbda6da3b502dafa27.pdf": {
+        "etiqueta": "parcial",
+        "r2": "parcial",
+        "r3": "no",
+        "justificacion": "Dirigente politico de centro en Norte de Santander contra el bipartidismo; r1 (parapolitica) solo roza su experiencia.",
+    },
+    "5ef8d0a8f1cdbf68d095d559.pdf": {
+        "etiqueta": "relacionado",
+        "r2": "relacionado",
+        "r3": "relacionado",
+        "justificacion": "Abogado de DDHH, alertas tempranas y presos politicos; represion estatal y detenciones arbitrarias son su tema.",
+    },
+    "5eb4e861da6da3b502da7d1b.pdf": {
+        "etiqueta": "relacionado",
+        "r2": "parcial",
+        "r3": "parcial",
+        "justificacion": "Pescador: destruccion de 27 cienagas por guerrilla y autodefensas; daño ambiental del conflicto, tema exacto de r1.",
+    },
+    "5faa8396205391c03b5f1836.pdf": {
+        "etiqueta": "relacionado",
+        "r2": "relacionado",
+        "r3": "parcial",
+        "justificacion": "Experta en secuestro de ganaderos y empresarios con fines economicos; r1 y r2 tratan secuestro/extorsion.",
+    },
+    "625fd7b8755cba02e5b68d8f.pdf": {
+        "etiqueta": "parcial",
+        "r2": "relacionado",
+        "r3": "relacionado",
+        "justificacion": "Docente: escuela en el conflicto (amenazas, orden publico); r1 es educacion para la paz; r2/r3 ataques a escuelas.",
+    },
+    "5f09f4e4f1cdbf68d05da6fc.pdf": {
+        "etiqueta": "parcial",
+        "r2": "parcial",
+        "r3": "parcial",
+        "justificacion": "Lider social: toma de iglesia (1980) y estigmatizacion de jovenes; r1 (lenguaje que deshumaniza) solape solo especulativo.",
+    },
+    "5eb4eb43da6da3b502db3f52.pdf": {
+        "etiqueta": "parcial",
+        "r2": "relacionado",
+        "r3": "parcial",
+        "justificacion": "Comunidad indigena del Vaupes: presencia de actores armados desde 2002, zozobra; r1 (huida a Taraira) contexto afín pero no su caso.",
+    },
+    "5f040d37f1cdbf68d015a2fa.pdf": {
+        "etiqueta": "relacionado",
+        "r2": "parcial",
+        "r3": "parcial",
+        "justificacion": "Su historia (agresion a los 15, desplazamiento, vida precaria) aparece practicamente identica en el segmento r1.",
+    },
+    "5ececeaf215810782986e718.pdf": {
+        "etiqueta": "relacionado",
+        "r2": "relacionado",
+        "r3": "relacionado",
+        "justificacion": "Psicologa que acompana a mujeres victimas del conflicto (trauma y reparacion); los tres rangos tratan mujeres y conflicto.",
+    },
+    "603bab289e8b013f26f8c252.pdf": {
+        "etiqueta": "relacionado",
+        "r2": "relacionado",
+        "r3": "parcial",
+        "justificacion": "APRODEFA: acompana a victimas de violencia sexual del conflicto; r1 y r2 tratan violencia sexual contra mujeres/LGBTI.",
+    },
+    "5ec832c721581078294c4ad3.pdf": {
+        "etiqueta": "parcial",
+        "r2": "relacionado",
+        "r3": "parcial",
+        "justificacion": "Reconfiguracion del conflicto post-acuerdo en Cordoba (Caparros, disidencias); r1 enfoca ninas/mujeres; r2 post-AUC si encaja.",
+    },
+    "5f299d4a06158f011ec42f9b.pdf": {
+        "etiqueta": "parcial",
+        "r2": "parcial",
+        "r3": "parcial",
+        "justificacion": "Docente historico del Guaviare: educacion rural y violencia contra maestros; sin ataques directos a escuelas (el propio relato lo niega).",
+    },
+    "5ec832d421581078294c4c27.pdf": {
+        "etiqueta": "parcial",
+        "r2": "relacionado",
+        "r3": "parcial",
+        "justificacion": "Analisis del sistema educativo para NNA en el conflicto; r2 (que significo el conflicto para NNA) captura mejor el tema.",
+    },
+    "5f3f530e06158f011ef65cab.pdf": {
+        "etiqueta": "relacionado",
+        "r2": "parcial",
+        "r3": "no",
+        "justificacion": "Joven cuya madre fue asesinada por la guerrilla: orfandad y roles adultos; tema exacto del segmento NNA r1.",
+    },
+    "5f27003306158f011ea85482.pdf": {
+        "etiqueta": "relacionado",
+        "r2": "no",
+        "r3": "no",
+        "justificacion": "Lider del Huila sobre detenciones masivas (2002); r1 documenta capturas masivas autorizadas desde el alto gobierno.",
+    },
+    "5f08ae8df1cdbf68d04f6fc1.pdf": {
+        "etiqueta": "parcial",
+        "r2": "relacionado",
+        "r3": "parcial",
+        "justificacion": "Lider afro: asesinatos de opositores al despojo por Gaitanistas; r1 (torturas) solo roza; r2 despojo de tierras si es su tema.",
+    },
+    "5f0deb9df1cdbf68d08a0890.pdf": {
+        "etiqueta": "relacionado",
+        "r2": "no",
+        "r3": "no",
+        "justificacion": "Campesina atada, golpeada y con su casa quemada por la fuerza publica (2006); r1 trata torturas y tratos crueles.",
+    },
+    "5eb4e8f5da6da3b502dab502.pdf": {
+        "etiqueta": "parcial",
+        "r2": "relacionado",
+        "r3": "relacionado",
+        "justificacion": "Joven indigena gay: castigos y expulsion por su identidad; r1 (violencias etnicas del conflicto) tangencial; r2/r3 LGBTI exactos.",
+    },
+    "5eb4e9abda6da3b502dae721.pdf": {
+        "etiqueta": "relacionado",
+        "r2": "relacionado",
+        "r3": "relacionado",
+        "justificacion": "Programa de mujeres indigenas frente a violencias del conflicto agudizado; los tres rangos tratan pueblos etnicos.",
+    },
+    "5fee5bef9e8b013f26931324.pdf": {
+        "etiqueta": "relacionado",
+        "r2": "relacionado",
+        "r3": "parcial",
+        "justificacion": "Lider raizal: impacto del conflicto (narcotrafico) y racismo en San Andres; r1 cita el caso raizal y el informe DAS.",
+    },
+    "607edb88b5ef6a0c984f84f3.pdf": {
+        "etiqueta": "parcial",
+        "r2": "parcial",
+        "r3": "relacionado",
+        "justificacion": "Exmilitante colombiano exiliado en Brasil; r1 (proteccion internacional) cercano pero generico; r3 impacto del exilio si es su tema.",
+    },
+    "5ef4e445f1cdbf68d06e9f17.pdf": {
+        "etiqueta": "parcial",
+        "r2": "no",
+        "r3": "parcial",
+        "justificacion": "Joven santandereano que socializo los acuerdos de paz y fue amenazado; r1 (historia macro 2006-2016) solape solo de epoca.",
+    },
+    "5f5519b206158f011e1ec789.pdf": {
+        "etiqueta": "relacionado",
+        "r2": "relacionado",
+        "r3": "relacionado",
+        "justificacion": "Trabajador humanitario (ACNUR/ADRA) que atiende refugiados colombianos en Argentina; r1-r3 tratan proteccion internacional.",
+    },
+    "5eb4e80eda6da3b502da5187.pdf": {
+        "etiqueta": "relacionado",
+        "r2": "parcial",
+        "r3": "parcial",
+        "justificacion": "Retenido y humillado por las FARC (2003, acusado de sapo); r1 (vida bajo el control y el miedo de los armados) es su tema.",
+    },
+    "5f148660f1cdbf68d0e27e16.pdf": {
+        "etiqueta": "parcial",
+        "r2": "parcial",
+        "r3": "parcial",
+        "justificacion": "Indigena amazonica excombatiente de las FARC (fusilamientos, desmovilizacion); los top-3 TESTIMONIAL no capturan su vivencia; evidencia parcial.",
+    },
+}
 
-evaluacion = pd.read_csv(RUTA_RESULTADOS / "evaluacion_muestra_etiquetada.csv")
-print(f"Muestra etiquetada: {len(evaluacion)} pares query -> segmento top-1\n")
+"""End of literal"""
 
-tabla_eval = evaluacion[
-    ["id_doc", "r1_tomo", "r1_score", "etiqueta"]
-].copy()
-tabla_eval["id_doc"] = tabla_eval["id_doc"].str[:20] + ".."
-tabla_eval["r1_score"] = tabla_eval["r1_score"].round(4)
+
+def seleccionar_muestra_evaluacion(
+    ranking: pd.DataFrame,
+    semilla: int = 42,
+    objetivo: int = 30,
+    n_por_tomo: int = 3,
+) -> list[str]:
+    """Selecciona las entrevistas de la muestra (algoritmo oficial, semilla 42).
+
+    Replica `seleccionar_muestra_entrevistas()` de
+    experimentos/experimento_1_tfidf_base.py: candidatas = queries con top-3
+    completo (>= 3 matches); estratificacion por el tomo del top-1 en el
+    orden canonico de los 10 tomos (3 por tomo, rng.shuffle con
+    np.random.default_rng(semilla)) y completacion con el resto de
+    candidatas si no se llega al objetivo.
+
+    Args:
+        ranking: ranking top-5 inline (columnas id_doc, rango, tomo, ...).
+        semilla: semilla fija y documentada del muestreo (42).
+        objetivo: numero de entrevistas de la muestra (30).
+        n_por_tomo: entrevistas por tomo en la primera pasada (3).
+
+    Returns:
+        Lista de id_doc seleccionados (orden de la muestra).
+    """
+    rng = np.random.default_rng(semilla)
+    n_matches = ranking.groupby("id_doc")["rango"].max()
+    candidatas = set(n_matches.index[n_matches >= 3].tolist())
+    top1 = ranking[ranking["rango"] == 1]
+    tomo_por_query = dict(zip(top1["id_doc"], top1["tomo"], strict=True))
+    tomos_orden = [
+        "HALLAZGOS", "CONVOCATORIA", "NARRATIVA", "SUFRIR", "TESTIMONIAL",
+        "CUERPO", "NNA", "VIOLACIONES", "ETNICO", "FUERA",
+    ]
+    por_tomo: dict[str, list[str]] = {tomo: [] for tomo in tomos_orden}
+    for id_doc in sorted(candidatas):
+        por_tomo[tomo_por_query.get(id_doc, "")].append(id_doc)
+    seleccionadas: list[str] = []
+    for tomo in tomos_orden:
+        mezcladas = por_tomo[tomo]
+        rng.shuffle(mezcladas)
+        seleccionadas.extend(mezcladas[:n_por_tomo])
+    if len(seleccionadas) < objetivo:
+        resto = sorted(candidatas - set(seleccionadas))
+        rng.shuffle(resto)
+        seleccionadas.extend(resto[: objetivo - len(seleccionadas)])
+    return seleccionadas[:objetivo]
+
+
+ids_muestra = seleccionar_muestra_evaluacion(ranking_top5)
+print(f"Muestra determinista inline: {len(ids_muestra)} pares query -> segmento top-1\n")
+
+# Filas de la tabla: r1 (top-1) por id de la muestra, tomado del ranking
+# inline (identico al CSV oficial cuando este existe) + etiqueta embebida.
+filas_tabla = []
+for id_doc in ids_muestra:
+    fila_r1 = ranking_top5[
+        (ranking_top5["id_doc"] == id_doc) & (ranking_top5["rango"] == 1)
+    ].iloc[0]
+    filas_tabla.append(
+        {
+            "id_doc": id_doc[:20] + "..",
+            "r1_tomo": fila_r1["tomo"],
+            "r1_score": round(float(fila_r1["score"]), 4),
+            "etiqueta": ETIQUETAS_HUMANAS_MUESTRA[id_doc]["etiqueta"],
+        }
+    )
+tabla_eval = pd.DataFrame(filas_tabla)
 print("Las 30 filas etiquetadas (id truncado; r1 = segmento top-1):")
 print(tabla_eval.to_string(index=False))
 
-conteo = evaluacion["etiqueta"].value_counts()
+conteo = tabla_eval["etiqueta"].value_counts()
 print("\nConteo de etiquetas:", dict(conteo))
 
-metricas_eval = json.loads(
-    (RUTA_RESULTADOS / "evaluacion_metricas.json").read_text(encoding="utf-8")
-)
-n = len(evaluacion)
+n = len(ids_muestra)
 conteos = {
-    etiqueta: int((evaluacion["etiqueta"] == etiqueta).sum())
+    etiqueta: int((tabla_eval["etiqueta"] == etiqueta).sum())
     for etiqueta in ("relacionado", "parcial", "no")
 }
 p1_estricto = conteos["relacionado"] / n
 p1_aceptable = (conteos["relacionado"] + conteos["parcial"]) / n
 
-# P@3 proxy: por query, >=1 de los rangos 1-3 con la etiqueta (r2/r3 del
-# detalle_por_fila del JSON oficial, alineado por id_doc).
-detalle = {d["id_doc"]: d for d in metricas_eval["detalle_por_fila"]}
+# P@3 proxy desde las etiquetas auxiliares r2/r3 embebidas (mismo criterio
+# del etiquetado oficial registrado en evaluacion_metricas.json).
 n_ok3_estricto = 0
 n_ok3_aceptable = 0
-for _, fila in evaluacion.iterrows():
-    fila_detalle = detalle[fila["id_doc"]]
-    etiquetas_r = [
-        fila["etiqueta"],
-        fila_detalle["etiqueta_r2"],
-        fila_detalle["etiqueta_r3"],
-    ]
+ids_top1_parcial_con_relacionado_r23: list[str] = []
+ids_top1_no: list[str] = []
+for id_doc in ids_muestra:
+    datos = ETIQUETAS_HUMANAS_MUESTRA[id_doc]
+    etiquetas_r = [datos["etiqueta"], datos["r2"], datos["r3"]]
     if "relacionado" in etiquetas_r:
         n_ok3_estricto += 1
     if any(e != "no" for e in etiquetas_r):
         n_ok3_aceptable += 1
+    if datos["etiqueta"] == "no":
+        ids_top1_no.append(id_doc)
+    if datos["etiqueta"] == "parcial" and "relacionado" in (datos["r2"], datos["r3"]):
+        ids_top1_parcial_con_relacionado_r23.append(id_doc)
 p3_estricto = n_ok3_estricto / n
 p3_aceptable = n_ok3_aceptable / n
 
-print("\nMetricas proxy recalculadas en el notebook (verificacion contra")
-print("resultados/evaluacion_metricas.json):")
-print(f"  P@1 estricto (solo 'relacionado')         : {p1_estricto:.4f} "
-      f"(json {metricas_eval['p1_proxy']['estricto_solo_relacionado']:.4f})")
-print(f"  P@1 aceptable ('relacionado' o 'parcial') : {p1_aceptable:.4f} "
-      f"(json {metricas_eval['p1_proxy']['aceptable_relacionado_o_parcial']:.4f})")
-print(f"  P@3 aceptable (>=1 'relacionado')         : {p3_estricto:.4f} "
-      f"(json {metricas_eval['p3_proxy']['aceptable_al_menos_un_relacionado']:.4f})")
-print(f"  P@3 aceptable (>=1 no-'no')               : {p3_aceptable:.4f} "
-      f"(json {metricas_eval['p3_proxy']['aceptable_relacionado_o_parcial']:.4f})")
-recalculado_ok = (
-    abs(p1_estricto - metricas_eval["p1_proxy"]["estricto_solo_relacionado"]) < 1e-4
-    and abs(p1_aceptable - metricas_eval["p1_proxy"]["aceptable_relacionado_o_parcial"]) < 1e-4
-    and abs(p3_estricto - metricas_eval["p3_proxy"]["aceptable_al_menos_un_relacionado"]) < 1e-4
-)
-print(f"  Recalculado identico al JSON oficial: {recalculado_ok}")
-print(
-    f"  Top-1 'parcial' con match 'relacionado' en r2-r3: "
-    f"{metricas_eval['errores_top1']['n_top1_parcial_con_match_relacionado_r2_r3']}/30"
-)
-sesgo = metricas_eval["sesgo_testimonial"]
-print(f"  En la muestra, top-1 TESTIMONIAL: {sesgo['n_top1_testimonial_en_muestra']} "
-      f"({dict(sesgo['distribucion_top1_testimonial'])})")
+# Sesgo TESTIMONIAL en la muestra (tomo del top-1 inline de cada id).
+tomo_top1_muestra = {}
+for id_doc in ids_muestra:
+    fila_r1 = ranking_top5[
+        (ranking_top5["id_doc"] == id_doc) & (ranking_top5["rango"] == 1)
+    ].iloc[0]
+    tomo_top1_muestra[id_doc] = fila_r1["tomo"]
+ids_testimonial = [d for d in ids_muestra if tomo_top1_muestra[d] == "TESTIMONIAL"]
+sesgo = {
+    "n_top1_testimonial_en_muestra": len(ids_testimonial),
+    "distribucion_top1_testimonial": {
+        etiqueta: sum(
+            1 for d in ids_testimonial
+            if ETIQUETAS_HUMANAS_MUESTRA[d]["etiqueta"] == etiqueta
+        )
+        for etiqueta in ("relacionado", "parcial", "no")
+    },
+}
 
+print("\nMetricas proxy recalculadas en el notebook (etiquetas embebidas):")
+print(f"  P@1 estricto (solo 'relacionado')         : {p1_estricto:.4f}")
+print(f"  P@1 aceptable ('relacionado' o 'parcial') : {p1_aceptable:.4f}")
+print(f"  P@3 aceptable (>=1 'relacionado')         : {p3_estricto:.4f}")
+print(f"  P@3 aceptable (>=1 no-'no')               : {p3_aceptable:.4f}")
+print(
+    f"  Top-1 'no': {len(ids_top1_no)} | Top-1 'parcial' con match "
+    f"'relacionado' en r2-r3: "
+    f"{len(ids_top1_parcial_con_relacionado_r23)}/30"
+)
+print(
+    f"  En la muestra, top-1 TESTIMONIAL: {sesgo['n_top1_testimonial_en_muestra']} "
+    f"({dict(sesgo['distribucion_top1_testimonial'])})"
+)
+
+# Verificacion OPCIONAL contra el resumen oficial evaluacion_metricas.json.
+ruta_metricas_json = RUTA_RESULTADOS / "evaluacion_metricas.json"
+if ruta_metricas_json.exists():
+    metricas_eval = json.loads(ruta_metricas_json.read_text(encoding="utf-8"))
+    print("\nVerificacion contra resultados/evaluacion_metricas.json:")
+    print(f"  P@1 estricto: {p1_estricto:.4f} "
+          f"(json {metricas_eval['p1_proxy']['estricto_solo_relacionado']:.4f})")
+    print(f"  P@1 aceptable: {p1_aceptable:.4f} "
+          f"(json {metricas_eval['p1_proxy']['aceptable_relacionado_o_parcial']:.4f})")
+    print(f"  P@3 estricto: {p3_estricto:.4f} "
+          f"(json {metricas_eval['p3_proxy']['aceptable_al_menos_un_relacionado']:.4f})")
+    print(f"  P@3 aceptable: {p3_aceptable:.4f} "
+          f"(json {metricas_eval['p3_proxy']['aceptable_relacionado_o_parcial']:.4f})")
+    recalculado_ok = (
+        abs(p1_estricto - metricas_eval["p1_proxy"]["estricto_solo_relacionado"]) < 1e-4
+        and abs(p1_aceptable - metricas_eval["p1_proxy"]["aceptable_relacionado_o_parcial"]) < 1e-4
+        and abs(p3_estricto - metricas_eval["p3_proxy"]["aceptable_al_menos_un_relacionado"]) < 1e-4
+    )
+    print(f"  Recalculado identico al JSON oficial: {recalculado_ok}")
+else:
+    print(
+        "\n[info] resultados/evaluacion_metricas.json no presente; las "
+        "metricas proxy de arriba se calcularon desde las etiquetas "
+        "embebidas (P@1 estricto 0.5333, aceptable 1.0; P@3 estricto 0.7667, "
+        "aceptable 1.0)."
+    )
 
 # %% [markdown]
 """## Ejemplos curados de top-1 (seleccion de evaluacion_muestra_etiquetada.csv)

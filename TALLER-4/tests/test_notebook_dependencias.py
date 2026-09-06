@@ -1,7 +1,7 @@
 """test_notebook_dependencias.py
 
-Fecha: 2026-09-05 (v4)
-Descripcion: Tests de independencia y robustez del notebook entregable
+Fecha: 2026-09-05 (v5)
+Descripcion: Tests de independencia total y robustez del notebook entregable
     (notebooks/Taller_4_IR_CEV.ipynb, ensamblado desde notebook_cells/):
 
     (a) ninguna celda code importa scripts/ ni experimentos/ (ni usa
@@ -11,29 +11,39 @@ Descripcion: Tests de independencia y robustez del notebook entregable
         mera palabra.
     (b) ninguna celda markdown referencia ../imagenes/ (no renderiza en
         GitHub/Colab; las figuras van inline o via mostrar_png).
-    (c) todo literal de archivo (.jsonl/.txt/.csv/.json/.png) citado entre
-        comillas en celdas code es un archivo versionado en git o esta en la
-        lista blanca de archivos >100 MB con guard .exists() en la misma
-        celda. En los bloques expandidos de scripts/01-03 (celdas [auto] del
-        ensamblador, v4) el guard se exige a nivel de BLOQUE: el ensamblador
-        parte el script canonico en varias celdas, asi que la unidad con
-        sentido es el bloque completo (equivale a la celda unica de la v3).
-        Lista blanca (crece documentada): el JSON crudo de entrevistas y las
-        normalizadas/tokens (generados por scripts/02; >100 MB, no
-        versionables). Se ignoran literales con interpolacion (llaves) y con
-        espacios (nombres descriptivos).
+    (c) politica v5 de lecturas: lista blanca de lecturas directas SIN
+        guard = SOLO los archivos de data/ de los 3 insumos permitidos
+        (entrevistas_all_2023-03-21_14-24_05.json, zip/PDFs de libros,
+        Resource-tesauro.rdf) y los caches derivados de data/corpus
+        (segmentos_libros.jsonl, segmentos/<TOMO>.jsonl,
+        {libros,entrevistas}_{lemas,tokens}.txt, *_docs.json,
+        entrevistas_normalizadas.jsonl). TODO lo demas (config/,
+        resultados/, imagenes/) solo puede aparecer en contexto OPCIONAL:
+        una celda code (o su bloque expandido [auto]) que contenga
+        `.exists()`, `try:`, o las funciones con fallback documentado
+        `verificar_consistencia_config`/`mostrar_png`. En los bloques
+        expandidos de scripts/01-03 (celdas [auto] del ensamblador) la
+        unidad con sentido es el bloque completo: sus lecturas solo
+        ocurren cuando el driver de regeneracion los invoca.
     (d) las celdas que resuelven la raiz (def buscar_raiz / _raiz_standalone)
         lanzan FileNotFoundError con el marcador segmentos_libros.jsonl y no
         contienen la asignacion silenciosa del ultimo candidato.
-    (e) expansion v4 completa: (e1) el ipynb NO contiene CODIGO_EMBED_ ni
-        "exec(" (v3 embebia los scripts como cadenas ejecutadas con exec; v4
-        los expande como celdas de codigo normales); (e2) hay celdas code con
-        el codigo de scripts/01-03 (distintivos ORDEN_TOMOS de 01, def
-        construir_nlp / cargar_stopwords_habla de 02 y def etapa_estadisticas
-        de 03); (e3) estan los alias [auto] main_extraccion / main_preprocesar
-        / main_eda; (e4) REGEN_AUTOMATICO esta definido en False; (e5) no
+    (e) expansion v4/v5 completa: (e1) el ipynb NO contiene CODIGO_EMBED_ ni
+        "exec("; (e2) hay celdas code con el codigo de scripts/01-03; (e3)
+        estan los alias [auto] main_extraccion / main_preprocesar /
+        main_eda; (e4) REGEN_AUTOMATICO esta definido en True (v5: la
+        regeneracion automatica es el comportamiento por defecto); (e5) no
         quedan marcadores de expansion ni de embebido sin resolver.
-    (f) el ipynb contiene la celda de diagnostico de prerrequisitos.
+    (f) el ipynb contiene la celda de diagnostico de prerrequisitos con la
+        semantica v5 (caches REQUERIDOS autogenerables y opcionales).
+    (g) SANDBOX de independencia: se ejecuta el notebook con nbclient
+        (timeout 600 s/celda) desde un arbol temporal que contiene SOLO el
+        .ipynb + los caches derivados de data/corpus (symlinks a los
+        archivos reales, sin duplicar disco) y un data/raw VACIO: sin
+        config/, resultados/, imagenes/, scripts/ ni notebook_cells/. El
+        resultado esperado es 0 errores, con los avisos "[aviso]/[info]"
+        de archivos opcionales ausentes y los calculos inline completos
+        (figuras PNG inline y auto-checks con valores).
 
 El notebook debe estar ensamblado (scripts/ensamblar_notebook_t4.py); si no
 existe, el modulo se omite con pytest.skip.
@@ -42,8 +52,10 @@ existe, el modulo se omite con pytest.skip.
 from __future__ import annotations
 
 import json
+import os
 import re
 import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -51,21 +63,38 @@ import pytest
 RUTA_PROYECTO = Path(__file__).resolve().parents[1]
 RUTA_NOTEBOOK = RUTA_PROYECTO / "notebooks" / "Taller_4_IR_CEV.ipynb"
 
-# Archivos >100 MB no versionados con respaldo estatico o regenerables;
-# cualquier literal de estos exige guard .exists() en la misma celda.
-LISTA_BLANCA = {
-    "entrevistas_all_2023-03-21_14-24_05.json",  # JSON crudo (Drive del taller)
-    "entrevistas_normalizadas.jsonl",  # genera scripts/02 normalizar
-    "entrevistas_tokens.txt",  # genera scripts/02 spacy (191 MB)
-    "paginas.jsonl",  # intermedio de scripts/01 en data/corpus/paginas/ (.gitignore)
+# (c) Lista blanca v5: lecturas directas permitidas SIN guard. Solo
+# archivos de data/: los 3 insumos (descarga manual del Drive del taller) y
+# los caches derivados de data/corpus que el propio notebook genera en la
+# seccion Regeneracion. TODO lo demas exige contexto opcional.
+LISTA_BLANCA_DIRECTA = {
+    # --- 3 insumos permitidos (data/raw, descarga manual) ---
+    "entrevistas_all_2023-03-21_14-24_05.json",
+    "books-20260904T025322Z-1-001.zip",
+    "Resource-tesauro.rdf",
+    # --- caches derivados de data/corpus (autogenerados) ---
+    "segmentos_libros.jsonl",
+    "entrevistas_normalizadas.jsonl",
+    "libros_lemas.txt",
+    "libros_tokens.txt",
+    "entrevistas_lemas.txt",
+    "entrevistas_tokens.txt",
+    "libros_docs.json",
+    "entrevistas_docs.json",
+    "validacion_entrevistas_lemas.txt",
+    "validacion_entrevistas_tokens.txt",
+    "validacion_entrevistas_docs.json",
 }
+# Basenames bajo config/, resultados/ e imagenes/ (git): su literal en una
+# celda code SOLO puede aparecer en contexto opcional.
+_DIRS_OPCIONALES = ("config/", "resultados/", "imagenes/")
 
-_PATRON_LITERAL = re.compile(r"""(['"])([^'"\n]*?\.(?:jsonl|txt|csv|json|png))\1""")
+_PATRON_LITERAL = re.compile(r"""(['"])([^'"\n]*?\.(?:jsonl|txt|csv|json|png|rdf|zip))\1""")
 _PATRON_IMPORT_RELATIVO = re.compile(
     r"^\s*(?:import|from)\s+(?:scripts|experimentos)(?:\s|\.|$)", re.MULTILINE
 )
 
-EXTENSIONES = (".jsonl", ".txt", ".csv", ".json", ".png")
+EXTENSIONES = (".jsonl", ".txt", ".csv", ".json", ".png", ".rdf", ".zip")
 
 
 def _celdas_code() -> list[str]:
@@ -106,7 +135,7 @@ def _bloques_expandidos(celdas: list[str]) -> list[tuple[int, int]]:
     """Rangos de celdas de cada bloque expandido [auto] del ensamblador.
 
     Un bloque va desde la celda con el comentario [auto] del ensamblador
-    hasta la celda de alias ('main_<etapa> = main') que lo cierra (v4: los
+    hasta la celda de alias ('main_<etapa> = main') que lo cierra (los
     scripts/01-03 viajan partidos en varias celdas code normales).
 
     Args:
@@ -126,12 +155,12 @@ def _bloques_expandidos(celdas: list[str]) -> list[tuple[int, int]]:
     return bloques
 
 
-def _archivos_versionados() -> tuple[set[str], set[str]]:
-    """Consulta git ls-files y devuelve basenames y rutas relativas a TALLER-4.
+def _archivos_basename_bajo_dirs_opcionales() -> set[str]:
+    """Basenames versionados en git bajo config/, resultados/ e imagenes/.
 
     Returns:
-        Tupla (basenames, rutas sin el prefijo TALLER-4/) de archivos
-        versionados en el repositorio.
+        Conjunto de basenames; los literales con estos nombres en celdas
+        code exigen contexto opcional (politica v5).
     """
     proc = subprocess.run(
         ["git", "ls-files"],
@@ -140,10 +169,38 @@ def _archivos_versionados() -> tuple[set[str], set[str]]:
         text=True,
         check=False,
     )
-    rutas = [linea for linea in proc.stdout.splitlines() if linea.strip()]
-    basenames = {Path(ruta).name for ruta in rutas}
-    relativas = {ruta.removeprefix("TALLER-4/") for ruta in rutas}
-    return basenames, relativas
+    return {
+        Path(linea).name
+        for linea in proc.stdout.splitlines()
+        if linea.strip()
+        and linea.startswith(_DIRS_OPCIONALES)
+        and Path(linea).suffix in EXTENSIONES
+    }
+
+
+def _es_archivo_data_permitido(candidato: str) -> bool:
+    """True si el literal apunta a data/ (insumo o cache derivado).
+
+    Args:
+        candidato: literal de archivo citado en una celda code.
+
+    Returns:
+        True si el literal es un nombre de la lista blanca, un PDF suelto
+        de libros (data/raw/books/*.pdf) o un segmentos/<TOMO>.jsonl.
+    """
+    nombre = Path(candidato).name
+    if nombre in LISTA_BLANCA_DIRECTA:
+        return True
+    if candidato.endswith(".pdf"):
+        return True  # PDFs sueltos de libros en data/raw/books
+    if re.fullmatch(r"[A-Z]+\.jsonl", nombre) and candidato.endswith(".jsonl"):
+        # data/corpus/segmentos/<TOMO>.jsonl (celdas [auto] de scripts/01)
+        return nombre in {
+            "HALLAZGOS.jsonl", "CONVOCATORIA.jsonl", "NARRATIVA.jsonl",
+            "SUFRIR.jsonl", "TESTIMONIAL.jsonl", "CUERPO.jsonl", "NNA.jsonl",
+            "VIOLACIONES.jsonl", "ETNICO.jsonl", "FUERA.jsonl",
+        }
+    return False
 
 
 def test_a_sin_imports_de_scripts_ni_experimentos() -> None:
@@ -172,24 +229,23 @@ def test_b_sin_referencias_imagenes_relativas() -> None:
         assert "../imagenes/" not in celda, "referencia ../imagenes/ en markdown"
 
 
-def test_c_literales_de_archivo_versionados_o_lista_blanca() -> None:
-    """(c) Literales de archivo en celdas code: versionados o lista blanca
-    con guard .exists() (en la misma celda o en su bloque expandido [auto]).
+def test_c_politica_v5_de_lecturas_de_archivo() -> None:
+    """(c) Politica v5: solo data/ (insumos + caches) sin guard; todo lo
+    demas (config/, resultados/, imagenes/) en contexto OPCIONAL.
 
-    El ensamblador v4 parte cada script canonico (scripts/01-03) en varias
-    celdas code normales (bloque [auto] + alias); un literal de la lista
-    blanca citado en una de esas celdas (p. ej. en un docstring) se valida
-    contra el guard .exists() presente en CUALQUIER celda del MISMO bloque,
-    porque la unidad con sentido es el script completo (equivale a la celda
-    unica de la v3). Fuera de bloques [auto] la regla sigue siendo estricta
-    por celda.
+    Contexto opcional = la celda code (o su bloque expandido [auto])
+    contiene `.exists()`, `try:`, o las funciones con fallback documentado
+    `verificar_consistencia_config`/`mostrar_png`. Fuera de bloques [auto]
+    la regla se aplica por celda; dentro de un bloque [auto] se aplica al
+    bloque completo (sus lecturas solo ocurren si el driver de la seccion
+    Regeneracion los invoca).
     """
-    basenames, rutas_relativas = _archivos_versionados()
+    opcionales_por_nombre = _archivos_basename_bajo_dirs_opcionales()
     celdas = _celdas_code()
     bloques = _bloques_expandidos(celdas)
 
     def texto_para(indice: int) -> str:
-        """Devuelve el texto de la celda o el de su bloque expandido [auto].
+        """Texto de la celda o de su bloque expandido [auto] completo.
 
         Args:
             indice: Indice de la celda code en la lista de sources.
@@ -202,6 +258,15 @@ def test_c_literales_de_archivo_versionados_o_lista_blanca() -> None:
             if inicio <= indice <= fin:
                 return "\n".join(celdas[inicio : fin + 1])
         return celdas[indice]
+
+    def contexto_opcional(texto_bloque: str) -> bool:
+        """True si el bloque contiene un guard o funcion con fallback."""
+        return (
+            ".exists(" in texto_bloque
+            or "try:" in texto_bloque
+            or "verificar_consistencia_config" in texto_bloque
+            or "mostrar_png" in texto_bloque
+        )
 
     for indice, celda in enumerate(celdas):
         texto_validado = texto_para(indice)
@@ -217,17 +282,21 @@ def test_c_literales_de_archivo_versionados_o_lista_blanca() -> None:
                 or not candidato.endswith(EXTENSIONES)
             ):
                 continue  # interpolacion o no es un archivo
+            if _es_archivo_data_permitido(candidato):
+                continue  # lista blanca v5: data/ insumos + caches derivados
             nombre = Path(candidato).name
-            versionado = nombre in basenames or candidato in rutas_relativas
-            if versionado:
+            if nombre not in opcionales_por_nombre:
+                # Literal desconocido: exigir guard por prudencia.
+                assert ".exists()" in texto_validado, (
+                    f"literal de archivo fuera de la lista blanca y sin guard: "
+                    f"{candidato!r}"
+                )
                 continue
-            assert nombre in LISTA_BLANCA, (
-                f"literal de archivo no versionado y fuera de la lista blanca: "
-                f"{candidato!r}"
-            )
-            assert ".exists()" in texto_validado, (
-                f"literal en lista blanca {candidato!r} sin guard .exists() "
-                "en la misma celda ni en su bloque expandido [auto]"
+            assert contexto_opcional(texto_validado), (
+                f"literal de config/resultados/imagenes {candidato!r} sin "
+                "contexto opcional (.exists(), try:, verificar_consistencia_"
+                "config o mostrar_png con fallback) en la celda ni en su "
+                "bloque expandido [auto]"
             )
 
 
@@ -251,13 +320,13 @@ def test_d_resolucion_de_raiz_con_error_claro() -> None:
 
 
 def test_e_expansion_completa_sin_embebido() -> None:
-    """(e) Expansion v4: sin CODIGO_EMBED_ ni exec(; celdas con el codigo de
-    los scripts 01-03, aliases [auto] presentes, REGEN_AUTOMATICO en False y
-    sin marcadores de expansion/embebido sin resolver."""
+    """(e) Expansion v4/v5: sin CODIGO_EMBED_ ni exec(; celdas con el codigo
+    de los scripts 01-03, aliases [auto] presentes, REGEN_AUTOMATICO en True
+    y sin marcadores de expansion/embebido sin resolver."""
     code = _celdas_code()
     todas = code + _celdas_markdown()
     texto_total = "\n".join(todas)
-    # (e1) v4 expande los scripts como celdas normales: nada de codigo-como-
+    # (e1) los scripts viajan como celdas normales: nada de codigo-como-
     # string (CODIGO_EMBED_*) ni llamadas ejecutadas con exec().
     assert "CODIGO_EMBED_" not in texto_total, (
         "queda codigo-como-string (CODIGO_EMBED_*) en el notebook"
@@ -291,10 +360,10 @@ def test_e_expansion_completa_sin_embebido() -> None:
     assert any("main_eda = main" in celda for celda in code), (
         "falta el alias main_eda (scripts/03)"
     )
-    # (e4) flags de regeneracion apagados por defecto.
+    # (e4) v5: regeneracion automatica por defecto (REGEN_AUTOMATICO=True).
     assert any(
-        re.search(r"REGEN_AUTOMATICO\s*=\s*False", celda) for celda in code
-    ), "REGEN_AUTOMATICO debe estar definido en False"
+        re.search(r"REGEN_AUTOMATICO\s*=\s*True", celda) for celda in code
+    ), "REGEN_AUTOMATICO debe estar definido en True (v5)"
     # (e5) sin marcadores de expansion/embebido sin resolver.
     assert not any("[expand:" in celda or "[embed:" in celda for celda in todas), (
         "quedo un marcador [expand: o [embed: sin resolver en el notebook"
@@ -302,7 +371,144 @@ def test_e_expansion_completa_sin_embebido() -> None:
 
 
 def test_f_celda_de_diagnostico_de_prerrequisitos() -> None:
-    """(f) El notebook contiene la celda de diagnostico de prerrequisitos."""
-    assert any("prerrequisitos" in celda for celda in _celdas_code()), (
+    """(f) Celda de diagnostico con la semantica v5: checklist de caches
+    REQUERIDOS autogenerables y OPCIONALES (config embebida, resultados e
+    imagenes nunca requeridos)."""
+    code = _celdas_code()
+    assert any("prerrequisitos" in celda for celda in code), (
         "no aparece la celda de diagnostico de prerrequisitos"
     )
+    assert any("REQUERIDOS" in celda for celda in code), (
+        "el diagnostico debe listar los caches REQUERIDOS"
+    )
+    assert any("OPCIONALES" in celda for celda in code), (
+        "el diagnostico debe listar los OPCIONALES"
+    )
+    assert any("Regeneracion" in celda and "descarga manual" in celda for celda in code), (
+        "el aviso de regeneracion/descarga manual no aparece en el diagnostico"
+    )
+
+
+# ---------------------------------------------------------------------------
+# (g) Sandbox de independencia: ejecutar el notebook sin config/, resultados/,
+# imagenes/, scripts/ ni notebook_cells/, con un data/raw vacio.
+# ---------------------------------------------------------------------------
+
+_SCRIPT_EJECUTOR = """
+import json
+import sys
+import nbformat
+from nbclient import NotebookClient
+
+ruta = sys.argv[1]
+nb = nbformat.read(ruta, as_version=4)
+cliente = NotebookClient(nb, timeout=600, kernel_name="python3",
+                         resources={"metadata": {"path": "."}})
+try:
+    cliente.execute()
+except Exception as exc:  # noqa: BLE001
+    print("SANDBOX_EXCEPTION:", type(exc).__name__, exc)
+    sys.exit(3)
+errores = 0
+texto_salidas = []
+for celda in nb.cells:
+    for salida in celda.get("outputs", []):
+        if salida.get("output_type") == "error":
+            errores += 1
+            texto_salidas.append(
+                "ERROR " + "".join(salida.get("traceback", []))[:500]
+            )
+        elif salida.get("output_type") == "stream":
+            texto_salidas.append(salida.get("text", ""))
+nbformat.write(nb, ruta)
+print("SANDBOX_ERRORES:", errores)
+print("SANDBOX_TEXTO:")
+print("\\n".join(texto_salidas))
+sys.exit(0 if errores == 0 else 4)
+"""
+
+
+def _construir_arbol_sandbox(destino: Path) -> None:
+    """Construye el arbol temporal del sandbox (symlinks, sin copiar GB).
+
+    Solo se enlazan: el .ipynb y los caches derivados de data/corpus que la
+    seccion de pruebas necesita para los calculos inline (segmentos, lemas,
+    tokens y docs de ambos corpus, y las normalizadas). NO se enlazan
+    config/, resultados/, imagenes/, scripts/ ni notebook_cells/, y data/raw
+    queda VACIO (sin los 3 insumos).
+
+    Args:
+        destino: Raiz del arbol temporal (tmp_path de pytest).
+    """
+    destino.joinpath("data", "raw").mkdir(parents=True)
+    destino.joinpath("data", "corpus", "preprocesado").mkdir(parents=True)
+    enlaces = [
+        "data/corpus/segmentos_libros.jsonl",
+        "data/corpus/entrevistas_normalizadas.jsonl",
+        "data/corpus/preprocesado/libros_lemas.txt",
+        "data/corpus/preprocesado/libros_tokens.txt",
+        "data/corpus/preprocesado/libros_docs.json",
+        "data/corpus/preprocesado/entrevistas_lemas.txt",
+        "data/corpus/preprocesado/entrevistas_tokens.txt",
+        "data/corpus/preprocesado/entrevistas_docs.json",
+    ]
+    for relativa in enlaces:
+        origen = RUTA_PROYECTO / relativa
+        if not origen.exists():
+            pytest.skip(f"falta el cache {relativa} para el sandbox")
+        (destino / relativa).symlink_to(origen)
+    # Copia del .ipynb (pocos MB; evita problemas de lectura por symlink).
+    import shutil
+
+    shutil.copyfile(RUTA_NOTEBOOK, destino / "Taller_4_IR_CEV.ipynb")
+
+
+def _ejecutar_sandbox(tmp_path: Path) -> None:
+    """Ejecuta el notebook en el arbol temporal y verifica la salida.
+
+    Args:
+        tmp_path: Directorio temporal de pytest.
+    """
+    _construir_arbol_sandbox(tmp_path)
+    ruta_nb = tmp_path / "Taller_4_IR_CEV.ipynb"
+    env = dict(os.environ)
+    env.pop("TALLER4_ROOT", None)
+    proc = subprocess.run(
+        [sys.executable, "-c", _SCRIPT_EJECUTOR, str(ruta_nb)],
+        cwd=tmp_path,
+        env=env,
+        capture_output=True,
+        text=True,
+        timeout=3600,
+        check=False,
+    )
+    salida = proc.stdout + proc.stderr
+    assert proc.returncode in (0, 4), (
+        f"nbclient fallo (rc={proc.returncode}): {salida[-4000:]}"
+    )
+    if proc.returncode == 4:
+        pytest.fail(f"el notebook tuvo celdas con error en el sandbox: {salida[-4000:]}")
+    # Verificaciones de la salida esperada (independencia total).
+    esperados = [
+        "[aviso]",
+        "[info]",
+        "Config embebida (independencia total)",
+        "Muestra determinista inline: 30 pares",
+        "P@1 estricto (solo 'relacionado')         : 0.5333",
+        "Segmentos de libro por tomo (calculado inline",
+    ]
+    faltantes = [texto for texto in esperados if texto not in salida]
+    assert not faltantes, (
+        "el sandbox no produjo la salida esperada; faltan: "
+        f"{faltantes}. Salida:\n{salida[-6000:]}"
+    )
+
+
+def test_g_sandbox_independencia(tmp_path: Path) -> None:
+    """(g) Sandbox real (nbclient, ~1-2 min): 0 errores sin
+    config/resultados/imagenes/scripts y con avisos [aviso]/[info]."""
+    try:
+        import nbclient  # noqa: F401
+    except ImportError:
+        pytest.skip("nbclient no esta instalado")
+    _ejecutar_sandbox(tmp_path)
