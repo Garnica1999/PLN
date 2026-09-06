@@ -1,4 +1,4 @@
-"""Ensambla el notebook entregable del TALLER-4 a partir de las celdas fuente.
+r"""Ensambla el notebook entregable del TALLER-4 a partir de las celdas fuente.
 
 Cada archivo en notebook_cells/secXX_*.py contiene celdas separadas por lineas
 que contienen exactamente "# %%" (celdas de codigo) o "# %% [markdown]" (celdas
@@ -7,21 +7,45 @@ de markdown cuyo contenido es un docstring triple-comillado, o comentarios
 con rutas relativas al notebook (../imagenes/eda_*.png), porque el contenido
 se incrusta tal cual en la celda.
 
-Marcadores de embebido (celdas de codigo de sec0b_regen.py):
-    Una linea de la forma
-        CODIGO_EMBED_XX = None  # [embed: scripts/01_extraer_libros.py]
-    pide que el codigo canonico del script se incruste EN EL ENSAMBLADO como
-    un literal de cadena (fuente unica en build: si cambia el script, se
-    re-ensambla el notebook y la celda queda al dia). El ensamblador
-    reemplaza la linea completa por
-        CODIGO_EMBED_XX = r'''<contenido del script>'''
-    (literal r-triple si el contenido no contiene comillas simples triples;
-    repr() como respaldo seguro). El literal se define con el MISMO nombre de
-    variable de la linea fuente y el contenido NUNCA se ejecuta aqui.
+Marcadores de expansion (celdas de codigo de sec0b_regen.py):
+    Una celda code cuya unica linea es
+        # %% [expand: scripts/01_extraer_libros.py]
+    pide que el codigo canonico del script se EXPANDA EN EL ENSAMBLADO como
+    celdas de codigo normales (fuente unica en build: si cambia el script, se
+    re-ensambla el notebook y las celdas quedan al dia). El ensamblador
+    sustituye la celda marcador por las celdas generadas y NUNCA deja
+    codigo-como-string ejecutado con exec():
+
+    1. Preambulo en la primera celda del bloque: un comentario [auto] y un
+       '__file__' sintetico (str(RUTA_RAIZ / "scripts" / <nombre>)) para que
+       'parents[1]' del script resuelva a la raiz del proyecto detectada por
+       las celdas de sec00/sec0b. Si la celda empieza con un import
+       'from __future__', la asignacion de '__file__' se inserta DESPUES de
+       el (un 'from __future__' debe ser la primera sentencia del archivo o
+       celda: solo admiten delante docstring y comentarios).
+    2. Se elimina el bloque 'if __name__ == "__main__":' desde su primera
+       linea hasta el final del archivo: en el kernel de Jupyter
+       '__name__' == "__main__" en las celdas y el guard ejecutaria el
+       pipeline completo en Run all (los scripts terminan todos con el guard).
+    3. Particion en celdas por banners de seccion: lineas completas cuyo
+       primer caracter no-espaciado tras '#' son >=3 guiones (patron
+        '^#\s*-{3,}'), detectadas con tokenize (el escaner de estado del
+        propio Python) para NO partir dentro de docstrings triples (de
+        comillas simples o dobles); una celda nueva EMPIEZA en la linea del
+        banner. Los scripts sin banners quedan en una sola celda.
+    4. Celda final de alias tras el bloque de cada script: 'main_extraccion',
+       'main_preprocesar' o 'main_eda' (evita que la definicion de 'main' de
+       un script pise a la del anterior); para 03_eda.py ademas restaura el
+       backend inline de matplotlib (el script fija "Agg" a nivel de modulo).
 
 Uso (con el venv de Carlos):
     /home/carlos/venv/bin/python scripts/ensamblar_notebook_t4.py
 """
+from __future__ import annotations
+
+import io
+import re
+import tokenize
 from pathlib import Path
 
 import nbformat as nbf
@@ -65,75 +89,212 @@ SECUENCIA = [
     "sec05_entrega.py",
 ]
 
-# Patron de linea marcador:  NOMBRE_VAR = None  # [embed: ruta/relativa]
-PREFIJO_MARCADOR = "# [embed:"
-_REGEX_MARCADOR = __import__("re").compile(
-    r"^\s*([A-Za-z_][A-Za-z0-9_]*)\s*=\s*None\s*#\s*\[embed:\s*([^\]]+)\]\s*$"
+# Marcador de expansion: celda code cuya unica linea es
+#   # %% [expand: ruta/relativa/al/script.py]
+PREFIJO_EXPAND = "# %% [expand:"
+_REGEX_MARCA_EXPAND = re.compile(r"^# %% \[expand:\s*([^\]]+?)\s*\]\s*$")
+
+# Marcador antiguo de embebido (v3): prohibido dejar restos en el notebook.
+PREFIJO_EMBED = "# [embed:"
+PREFIJOS_MARCADOR = (PREFIJO_EXPAND, PREFIJO_EMBED)
+
+# Bloque guard 'if __name__ == "__main__":' desde su primera linea hasta EOF.
+_REGEX_GUARD_MAIN = re.compile(
+    r'^if __name__ == ["\']__main__["\']:.*', re.MULTILINE | re.DOTALL
 )
 
+# Banner de seccion: comentario cuyo primer caracter tras '#' y espacios son
+# >=3 guiones seguidos (los scripts 01 y 03 separan asi sus secciones).
+_REGEX_BANNER = re.compile(r"^#\s*-{3,}")
 
-def _literal_embebido(contenido: str) -> str:
-    """Convierte el contenido de un script en un literal Python valido.
+# Celdas de cierre (alias [auto]) por script expandido. 'main' colisiona
+# entre scripts en el mismo kernel: cada bloque termina con su alias.
+_CIERRES_SCRIPT: dict[str, str] = {
+    "01_extraer_libros.py": (
+        "main_extraccion = main  # [auto] alias (evita colision de 'main' entre scripts)"
+    ),
+    "02_preprocesar.py": "main_preprocesar = main  # [auto] alias",
+    "03_eda.py": (
+        "main_eda = main  # [auto] alias\n"
+        "# [auto] restaurar backend inline tras la expansion de 03_eda.py\n"
+        "try:\n"
+        "    import matplotlib\n"
+        '    matplotlib.use("module://matplotlib_inline.backend_inline")\n'
+        "except Exception:\n"
+        "    pass"
+    ),
+}
 
-    Se prefiere el literal crudo de comillas simples triples (legible, sin
-    re-escape de \\n); si el contenido contiene comillas simples triples o
-    termina en backslash se usa repr() (cadena de una linea, sin ambiguedad).
+
+def _lineas_banner(contenido: str) -> list[int]:
+    r"""Detecta las lineas de banner de seccion fuera de strings/docstrings.
+
+    Delega el estado de docstrings triples (de comillas simples o dobles, con
+    escapes) a tokenize, el escaner de estado del propio Python: solo los
+    tokens COMMENT
+    pueden ser banners, asi que una linea '#' dentro de un docstring jamas se
+    cuenta como banner. Una linea es banner si el comentario completo matchea
+    '^#\s*-{3,}' (comienza tras '#' y espacios con >=3 guiones seguidos).
 
     Args:
-        contenido: Texto completo del script (UTF-8).
+        contenido: Modulo Python completo (docstring y todo).
 
     Returns:
-        Literal Python que reconstruye exactamente el texto del script.
+        Numeros de linea 1-based donde empieza un banner (orden de lectura).
+
+    Raises:
+        ValueError: Si tokenize no puede escanear el contenido.
     """
-    if "'''" not in contenido and not contenido.endswith("\\"):
-        return "r'''" + contenido + "'''"
-    return repr(contenido)
+    numeros: list[int] = []
+    try:
+        for token in tokenize.generate_tokens(io.StringIO(contenido).readline):
+            if token.type == tokenize.COMMENT and _REGEX_BANNER.match(token.string):
+                numeros.append(token.start[0])
+    except (tokenize.TokenError, IndentationError) as exc:
+        raise ValueError(f"No se pudieron detectar los banners (tokenize): {exc}") from exc
+    return numeros
 
 
-def _resolver_marcadores(celda: dict, nombre_archivo: str) -> int:
-    """Resuelve los marcadores de embebido de una celda de codigo, in situ.
+def _aplicar_preambulo(texto: str, nombre_script: str) -> str:
+    """Antepone a la primera celda expandida el comentario [auto] y el
+    '__file__' sintetico.
 
-    Por cada linea `VAR = None  # [embed: <ruta>]` lee el archivo indicado
-    (relativo a la raiz del proyecto) y reemplaza la linea por
-    `VAR = <literal con el contenido>`.
+    El '__file__' apunta a RUTA_RAIZ / "scripts" / <nombre_script>: RUTA_RAIZ
+    es la raiz del proyecto detectada por las celdas de sec00/sec0b, de modo
+    que Path(__file__).resolve().parents[1] del script resuelve a esa raiz.
 
     Args:
-        celda: Dict {"tipo", "fuente"} de la celda (se modifica "fuente").
+        texto: Contenido de la primera celda expandida (bloque inicial).
+        nombre_script: Nombre del script expandido (ej. 01_extraer_libros.py).
+
+    Returns:
+        La celda con el preambulo antepuesto.
+    """
+    comentario = (
+        "# [auto] Codigo expandido desde "
+        f"scripts/{nombre_script} (ensamblador; fuente unica en build)."
+    )
+    asignacion = (
+        f'__file__ = str(RUTA_RAIZ / "scripts" / "{nombre_script}")  '
+        "# sintetico: parents[1] == raiz del proyecto"
+    )
+    resto = texto.splitlines()
+    # Un 'from __future__' debe ser la primera sentencia (solo docstring y
+    # comentarios pueden precederlo): si existe, la asignacion va despues de el.
+    indice_future = next(
+        (i for i, linea in enumerate(resto) if linea.startswith("from __future__ import")),
+        None,
+    )
+    if indice_future is None:
+        return "\n".join([comentario, asignacion, *resto])
+    return "\n".join([comentario, *resto[: indice_future + 1], asignacion, *resto[indice_future + 1 :]])
+
+
+def _celda_cierre_script(nombre_script: str) -> str:
+    """Devuelve la celda code de cierre (alias [auto]) del script expandido.
+
+    Args:
+        nombre_script: Nombre del script expandido.
+
+    Returns:
+        Texto de la celda de cierre.
+
+    Raises:
+        ValueError: Si no hay cierre definido para el script (no expandible).
+    """
+    try:
+        return _CIERRES_SCRIPT[nombre_script]
+    except KeyError as exc:
+        raise ValueError(f"Sin celda de cierre definida para expandir {nombre_script}") from exc
+
+
+def _celdas_desde_script(ruta_relativa: str, nombre_archivo: str) -> list[dict]:
+    """Expande un script en celdas code normales (transformaciones 1-4).
+
+    Lee el script, elimina su guard '__main__', lo parte por banners de
+    seccion (tokenize, nunca dentro de docstrings) y antepone el preambulo
+    con '__file__' sintetico en la primera celda; cierra el bloque con la
+    celda de alias del script.
+
+    Args:
+        ruta_relativa: Ruta del script relativa a la raiz del proyecto.
         nombre_archivo: Nombre del archivo de celdas (solo para mensajes).
 
     Returns:
-        Numero de marcadores resueltos.
+        Celdas {"tipo": "code", "fuente": texto} del bloque expandido.
 
     Raises:
-        ValueError: Si la ruta del marcador no existe o el archivo no se lee.
+        ValueError: Si la ruta no existe, no se puede escanear o el script
+            no tiene celda de cierre definida.
     """
-    if celda["tipo"] != "code":
-        return 0
-    lineas = celda["fuente"].splitlines()
-    salida: list[str] = []
-    n_resueltos = 0
-    for linea in lineas:
-        coincidencia = _REGEX_MARCADOR.match(linea)
-        if coincidencia is None:
-            salida.append(linea)
+    ruta = RUTA_PROYECTO / ruta_relativa
+    if not ruta.exists():
+        raise ValueError(
+            f"[expand] en {nombre_archivo}: no existe {ruta_relativa} "
+            f"(buscado en {ruta})"
+        )
+    nombre_script = ruta.name
+    sin_guard = _REGEX_GUARD_MAIN.sub("", ruta.read_text(encoding="utf-8"))
+    banners = _lineas_banner(sin_guard)
+    lineas = sin_guard.splitlines()
+
+    bloques: list[list[str]] = []
+    inicio = 0
+    for numero_linea in banners:
+        indice = numero_linea - 1
+        bloques.append(lineas[inicio:indice])
+        inicio = indice
+    bloques.append(lineas[inicio:])
+
+    celdas: list[dict] = []
+    primera_emitida = False
+    for bloque in bloques:
+        texto = "\n".join(bloque).strip()
+        if not texto:
             continue
-        nombre_var, ruta_script = coincidencia.group(1), coincidencia.group(2).strip()
-        ruta_script = ruta_script.strip()
-        ruta = RUTA_PROYECTO / ruta_script
-        if not ruta.exists():
-            raise ValueError(
-                f"[embed] en {nombre_archivo}: no existe {ruta_script} "
-                f"(buscado en {ruta})"
-            )
-        contenido = ruta.read_text(encoding="utf-8")
-        salida.append(f"{nombre_var} = {_literal_embebido(contenido)}")
-        n_resueltos += 1
-    celda["fuente"] = "\n".join(salida)
-    return n_resueltos
+        if not primera_emitida:
+            texto = _aplicar_preambulo(texto, nombre_script)
+            primera_emitida = True
+        celdas.append({"tipo": "code", "fuente": texto})
+    celdas.append({"tipo": "code", "fuente": _celda_cierre_script(nombre_script)})
+    return celdas
+
+
+def _resolver_expansiones(celdas: list[dict], nombre_archivo: str) -> list[dict]:
+    """Expande las celdas marcadas '# %% [expand: <ruta>]', in situ.
+
+    Args:
+        celdas: Celdas {"tipo", "fuente"} extraidas del archivo.
+        nombre_archivo: Nombre del archivo de celdas (solo para mensajes).
+
+    Returns:
+        Lista con las celdas originales salvo las marcadas, reemplazadas por
+        las celdas code expandidas del script indicado.
+
+    Raises:
+        ValueError: Si la ruta del marcador no existe (via _celdas_desde_script).
+    """
+    salida: list[dict] = []
+    n_expandidas = 0
+    for celda in celdas:
+        if celda["tipo"] != "code":
+            salida.append(celda)
+            continue
+        coincidencia = _REGEX_MARCA_EXPAND.match(celda["fuente"].strip())
+        if coincidencia is None:
+            salida.append(celda)
+            continue
+        salida.extend(
+            _celdas_desde_script(coincidencia.group(1).strip(), nombre_archivo)
+        )
+        n_expandidas += 1
+    if n_expandidas:
+        print(f"[expand] {nombre_archivo}: {n_expandidas} marcador(es) expandido(s)")
+    return salida
 
 
 def extraer_celdas(archivo: Path) -> list[dict]:
-    """Extrae las celdas de un archivo fuente y resuelve sus marcadores.
+    """Extrae las celdas de un archivo fuente y resuelve sus expansiones.
 
     Args:
         archivo: Ruta al archivo .py con las celdas separadas por "# %%".
@@ -200,12 +361,7 @@ def extraer_celdas(archivo: Path) -> list[dict]:
     if not celdas:
         raise ValueError(f"{archivo.name} no contiene celdas validas")
 
-    n_marcadores = 0
-    for celda in celdas:
-        n_marcadores += _resolver_marcadores(celda, archivo.name)
-    if n_marcadores:
-        print(f"[embed] {archivo.name}: {n_marcadores} marcador(es) resueltos")
-    return celdas
+    return _resolver_expansiones(celdas, archivo.name)
 
 
 def verificar_sin_marcadores_pendientes(nb: nbf.NotebookNode) -> None:
@@ -222,11 +378,31 @@ def verificar_sin_marcadores_pendientes(nb: nbf.NotebookNode) -> None:
         if celda.cell_type != "code":
             continue
         for linea in celda.source.splitlines():
-            if PREFIJO_MARCADOR in linea:
+            if any(prefijo in linea for prefijo in PREFIJOS_MARCADOR):
                 raise ValueError(
-                    "Marcador de embebido sin resolver en el notebook: "
-                    + linea.strip()
+                    "Marcador sin resolver en el notebook: " + linea.strip()
                 )
+
+
+def verificar_sin_codigo_como_string(nb: nbf.NotebookNode) -> None:
+    """Comprueba que el notebook no conserve codigo-como-string con exec().
+
+    La v4 expande los scripts en celdas de codigo normales: no debe quedar
+    ninguna variable CODIGO_EMBED_* ni llamadas 'exec(' en el ensamblado.
+
+    Args:
+        nb: Notebook ya construido.
+
+    Raises:
+        ValueError: Si alguna celda contiene CODIGO_EMBED_ o 'exec('.
+    """
+    for celda in nb.cells:
+        fuente = celda.source if isinstance(celda.source, str) else "".join(celda.source)
+        if "CODIGO_EMBED_" in fuente or "exec(" in fuente:
+            raise ValueError(
+                f"Queda codigo-como-string o exec( en la celda "
+                f"{celda.cell_type}: {fuente[:80]!r}"
+            )
 
 
 def ensamblar() -> None:
@@ -252,6 +428,7 @@ def ensamblar() -> None:
         print(f"[OK] {nombre}: {len(celdas)} celdas anadidas")
 
     verificar_sin_marcadores_pendientes(nb)
+    verificar_sin_codigo_como_string(nb)
 
     RUTA_SALIDA.parent.mkdir(exist_ok=True)
     nbf.write(nb, RUTA_SALIDA)

@@ -81,9 +81,10 @@ entrevistas, near-duplicates) se muestran desde `imagenes/` con el helper
 `mostrar_png()`.
 
 **Regeneracion opcional dentro del notebook** (Sec 0b): el codigo canonico
-de scripts/01-03 viaja embebido por el ensamblador (fuente unica en build) y
-solo se ejecuta si faltan archivos y activas los flags de la celda de
-configuracion (`REGEN_AUTOMATICO`, `FUERZAR_REGENERACION`,
+de scripts/01-03 viaja expandido por el ensamblador como celdas de codigo
+normales de la seccion (fuente unica en build); en Run all esas celdas solo
+definen y la regeneracion real solo corre si faltan archivos y activas los
+flags de su celda de configuracion (`REGEN_AUTOMATICO`, `FUERZAR_REGENERACION`,
 `DESCARGAR_FUENTES`, `RUTA_FUENTES`). Por defecto todo apagado: la seccion
 queda inerte porque el repositorio ya trae los derivados; la primera
 regeneracion completa toma 15-60 min en Colab y nunca reescribe `config/`.

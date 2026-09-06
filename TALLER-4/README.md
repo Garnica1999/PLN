@@ -77,9 +77,11 @@ niveles, cubre `/content/PLN-main/TALLER-4`), rutas típicas y la variable
 ### Regeneración opcional del corpus dentro del notebook (sección "Sec 0b — Regeneración")
 
 Los archivos derivados los producen `scripts/01-03` (producción); su código
-canónico viaja **embebido en el notebook** por el ensamblador (fuente única:
-si cambian los scripts, se re-ensambla). Las etapas solo se ejecutan si
-faltan archivos y activas los flags de su celda de configuración
+canónico viaja **expandido como celdas de código normales** del notebook por
+el ensamblador (fuente única en build: si cambian los scripts, se
+re-ensambla; el notebook no incrusta código-como-string). En Run all esas
+celdas solo definen funciones; las etapas solo se ejecutan si faltan
+archivos y activas los flags de su celda de configuración
 (`REGEN_AUTOMATICO`, `FUERZAR_REGENERACION`, `DESCARGAR_FUENTES` y
 `RUTA_FUENTES` para fuentes del Drive del taller); por defecto todo está en
 False y la sección queda inerte (imprime "sin acción"). La primera
