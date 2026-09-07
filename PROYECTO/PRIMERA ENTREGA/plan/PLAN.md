@@ -55,3 +55,9 @@ Entorno: `/home/carlos/venv` · Plan aprobado por Carlos el 2026-09-05.
 - Ajustes aplicados para autocontención (celda 3 de configuración): bootstrap NLTK stopwords (descarga automática si faltan), auto-instalación de wordcloud si no está, y descarga automática del CSV desde Hugging Face (~1,7 GB) si no existe en data/ (con mensaje de error accionable). Nueva celda markdown "0. Requisitos, datos y reproducibilidad".
 - PRUEBA DE INTEGRACIÓN LIMPIA: copia del notebook + solo el CSV en /tmp/opencode/test_e1/ (sin ninguna otra carpeta del proyecto) → ejecución nbclient completa en 327 s, 0 errores, carpeta figuras/, resultados/ y data/procesado/ auto-creadas, resultados idénticos (23.742 docs, 260.988.316 raw, top-1 'articulo'), anexo 25 filas.
 - Re-ejecución final en el proyecto: 24 celdas (13 code ejecutadas, 0 errores), metricas.json regenerado consistente. Figuras bit-idénticas a las del informe (mismos tamaños) → PDF/zip de la entrega siguen válidos.
+
+## Fase 6 (nueva): Informe APA 7 + diapositivas + commit/PR (aprobada 2026-09-05)
+- [ ] Tarea A: informe LaTeX APA 7 (informe_apa/) → Entrega_1_Informe_APA.pdf
+- [ ] Tarea B: diapositivas .pptx (python-pptx) → diapositivas/Entrega1_Diapositivas.pptx
+- [ ] Tarea C: empaquetado (PDFs raíz + zip regenerado)
+- [ ] Tarea D: commit + PR a main (sin auto-merge)

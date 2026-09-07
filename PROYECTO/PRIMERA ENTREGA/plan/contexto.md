@@ -27,3 +27,9 @@
 ## Verificación de independencia (orquestador, 2026-09-05)
 - Notebook autocontenido: bootstrap de recursos en celda de configuración (stopwords NLTK, wordcloud, descarga CSV HF si falta, carpetas auto-creadas), 0 rutas absolutas, 0 dependencias ocultas.
 - Prueba limpia OK (327 s, /tmp/opencode/test_e1, resultados idénticos) + re-ejecución en el proyecto OK (24 celdas, 13 code, 0 errores).
+
+## Fase 6 (2026-09-06): Informe APA 7 + diapositivas
+- Entorno: tlmgr instaló apa7, apacite, babel-spanish (+deps scalerel, fancyhdr, threeparttable, substr, enumitem, endfloat, grfext); python-pptx 1.0.2 en el venv.
+- Tarea A: informe_apa/Entrega_1_Informe_APA.tex (~640 líneas; apa7 stu 12pt spanish, floatsintext, natbib→apacite; precita silenciosa para et al. APA7 con 3+ autores; \BOthers→"et al."). PDF compilado: 19 páginas, 0 citas indefinidas, portada APA en español, 7 figuras con "Nota. Elaboración propia", Tabla 1, referencias apacite.
+- Tarea B: scripts/generar_diapositivas_entrega1.py → diapositivas/Entrega1_Diapositivas.pptx (14 slides 16:9, 7 imágenes, notas de orador, banda azul #1F3864; nubes anuales en fila 3 paneles). Validado reabriendo pptx y render.
+- Tarea C: raíz con Entrega_1_Informe_APA.pdf + Entrega1_Diapositivas.pptx; universitario renombrado a Entrega_1_Informe_universidad.pdf; Entrega_1_proyecto.zip regenerado (17 archivos planos, 48,5 MB).
