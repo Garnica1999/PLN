@@ -61,3 +61,10 @@ Entorno: `/home/carlos/venv` · Plan aprobado por Carlos el 2026-09-05.
 - [ ] Tarea B: diapositivas .pptx (python-pptx) → diapositivas/Entrega1_Diapositivas.pptx
 - [ ] Tarea C: empaquetado (PDFs raíz + zip regenerado)
 - [ ] Tarea D: commit + PR a main (sin auto-merge)
+
+## Fase 7: Validación cruzada + fusión deck compañero + vuelta al informe universitario (aprobada 2026-09-06)
+- [ ] Tarea 0: validación de consistencia de datos (notebook ↔ diapositivas ↔ informe) → plan/validacion_datos.md
+- [ ] Tarea 1: fusión en PLN_PROYECTO.pptx (estilo compañero; Justificación, Fragmentos, Formato, Nubes anuales, Estado del arte, agenda)
+- [ ] Tarea 2: informe universitario como principal (APA fuera de entrega); corregir datos si la validación lo exige
+- [ ] Tarea 3: zip regenerado + plan actualizado
+- [ ] Tarea 4: git SIN acciones (PR #10 queda abierto)

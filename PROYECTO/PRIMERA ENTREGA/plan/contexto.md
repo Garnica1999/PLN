@@ -34,3 +34,9 @@
 - Tarea B: scripts/generar_diapositivas_entrega1.py → diapositivas/Entrega1_Diapositivas.pptx (14 slides 16:9, 7 imágenes, notas de orador, banda azul #1F3864; nubes anuales en fila 3 paneles). Validado reabriendo pptx y render.
 - Tarea C: raíz con Entrega_1_Informe_APA.pdf + Entrega1_Diapositivas.pptx; universitario renombrado a Entrega_1_Informe_universidad.pdf; Entrega_1_proyecto.zip regenerado (17 archivos planos, 48,5 MB).
 - Tarea D: commit 7d23177 (rama proyecto-primera-entrega-apa) + push; **PR #10 abierto** hacia main (sin auto-merge): https://github.com/Garnica1999/PLN/pull/10. Pendiente de aprobación de Carlos. Se añadió "*.out" a .gitignore.
+
+## Fase 7 (2026-09-06): validación cruzada + fusión deck + vuelta al informe universitario
+- T0: scripts/validar_datos.py → plan/validacion_datos.md. 22 cifras validadas notebook↔decks↔informe: sin discrepancias. Fix real: informe "75 formas" dominio jurídico → 65 (como notebook); PDF recompilado. Ausencias no-discrepantes documentadas (prom_clean y top-1 exactos no están como texto en deck compañero; van en las figuras).
+- T1: scripts/fusionar_deck.py → PLN_PROYECTO.pptx 22 slides en estilo del compañero (banda+iconos+fuentes Arial+tarjetas EAF2F8/2F75B5). Backup original en plan/backup_original/. Entrega1_Diapositivas.pptx intacta (copia).
+- T2: Entrega_1_Informe.pdf (universitario, 8 págs, fix 65 formas) = documento principal; APA fuera de raíz/zip (informe_apa/ local).
+- T3: Entrega_1_proyecto.zip regenerado (15 archivos, 37,2 MB). T4: git sin acciones; PR #10 abierto.
