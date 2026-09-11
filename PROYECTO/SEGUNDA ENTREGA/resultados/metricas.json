@@ -1427,5 +1427,1502 @@
       "estado": "completado",
       "incidentes": []
     }
+  },
+  "ciclo_v3": {
+    "a1_diagnostico": {
+      "experimento": "12_evaluar_vinculo_cp_v2.py --diagnostico (run final)",
+      "fecha": "2026-09-11",
+      "salida": "resultados/c3_diagnostico_recall.json",
+      "version": "c3-a1",
+      "n_casos": 90,
+      "descripcion": "Sprint A1 'metricas honestas': diagnostico sobre los scores base ya calculados del run v8 (sin re-ejecutar BM25/E5/reranker; solo re-rank/re-muestreo). Curvas recall@k (10/20/50/100/200/384) por estrategia focal, recall de candidatos top-50 (techo del reranker), IC 95% bootstrap (1000 remuestreos, seed 42) para nDCG@10/MRR/F1@10 en dos contextos (sin_hubs alpha=0; con_hubs alphas adoptados v8: bm25/hibrido 0.75, rerank 1.5), desglose por periodo y por tercil de longitud, techo estructural del gold NER y figuras. Salidas estandar del script (benchmark/deriva/contaminacion) redirigidas a /tmp/opencode/*_diagnostico para no pisar v6/v8; md5 v2..v8 verificados intactos.",
+      "curvas_recall_sin_hubs": {
+        "bm25": {
+          "10": 0.241347,
+          "20": 0.282615,
+          "50": 0.413254,
+          "100": 0.548215,
+          "200": 0.704991,
+          "384": 1.0
+        },
+        "hibrido": {
+          "10": 0.312401,
+          "20": 0.389604,
+          "50": 0.508964,
+          "100": 0.618566,
+          "200": 0.765756,
+          "384": 1.0
+        },
+        "bm25_rerank_chunks_top50": {
+          "10": 0.3229,
+          "20": 0.381098,
+          "50": 0.413254,
+          "100": 0.413254,
+          "200": 0.413254,
+          "384": 0.413254
+        },
+        "hibrido_rerank_chunks_top50": {
+          "10": 0.368884,
+          "20": 0.446062,
+          "50": 0.508964,
+          "100": 0.508964,
+          "200": 0.508964,
+          "384": 0.508964
+        },
+        "nota": "En variantes rerank_chunks_top50 el recall@k>50 esta topado por los candidatos top-50 de la 1a etapa."
+      },
+      "recall_candidatos_top50": {
+        "bm25_top50": {
+          "media": 0.413254,
+          "por_periodo": {
+            "1992-2001": 0.447129,
+            "2002-2011": 0.401923,
+            "2012-2021": 0.39071
+          }
+        },
+        "hibrido_top50": {
+          "media": 0.508964,
+          "por_periodo": {
+            "1992-2001": 0.578138,
+            "2002-2011": 0.47959,
+            "2012-2021": 0.469164
+          }
+        },
+        "nota": "Techo maximo alcanzable por el reranker sobre candidatos top-50."
+      },
+      "ic_bootstrap_95_sin_hubs": {
+        "bm25": {
+          "ndcg_at_10": {
+            "media": 0.37984,
+            "p2_5": 0.337597,
+            "p97_5": 0.422064
+          },
+          "mrr": {
+            "media": 0.764705,
+            "p2_5": 0.686744,
+            "p97_5": 0.835195
+          },
+          "f1_at_5": {
+            "media": 0.233436,
+            "p2_5": 0.203928,
+            "p97_5": 0.26429
+          },
+          "f1_at_10": {
+            "media": 0.218216,
+            "p2_5": 0.192997,
+            "p97_5": 0.24313
+          }
+        },
+        "hibrido": {
+          "ndcg_at_10": {
+            "media": 0.419978,
+            "p2_5": 0.377554,
+            "p97_5": 0.460063
+          },
+          "mrr": {
+            "media": 0.750579,
+            "p2_5": 0.670452,
+            "p97_5": 0.82263
+          },
+          "f1_at_5": {
+            "media": 0.263212,
+            "p2_5": 0.231086,
+            "p97_5": 0.295256
+          },
+          "f1_at_10": {
+            "media": 0.267786,
+            "p2_5": 0.243301,
+            "p97_5": 0.291169
+          }
+        },
+        "bm25_rerank_chunks_top50": {
+          "ndcg_at_10": {
+            "media": 0.480531,
+            "p2_5": 0.43507,
+            "p97_5": 0.523057
+          },
+          "mrr": {
+            "media": 0.87601,
+            "p2_5": 0.819508,
+            "p97_5": 0.931481
+          },
+          "f1_at_5": {
+            "media": 0.323048,
+            "p2_5": 0.292977,
+            "p97_5": 0.354561
+          },
+          "f1_at_10": {
+            "media": 0.282308,
+            "p2_5": 0.254843,
+            "p97_5": 0.309785
+          }
+        },
+        "hibrido_rerank_chunks_top50": {
+          "ndcg_at_10": {
+            "media": 0.512465,
+            "p2_5": 0.470342,
+            "p97_5": 0.553684
+          },
+          "mrr": {
+            "media": 0.86638,
+            "p2_5": 0.808675,
+            "p97_5": 0.919447
+          },
+          "f1_at_5": {
+            "media": 0.339873,
+            "p2_5": 0.30904,
+            "p97_5": 0.372663
+          },
+          "f1_at_10": {
+            "media": 0.315791,
+            "p2_5": 0.289054,
+            "p97_5": 0.340268
+          }
+        }
+      },
+      "ic_bootstrap_95_con_hubs": {
+        "bm25": {
+          "ndcg_at_10": {
+            "media": 0.601291,
+            "p2_5": 0.561854,
+            "p97_5": 0.637494
+          },
+          "mrr": {
+            "media": 0.901455,
+            "p2_5": 0.851842,
+            "p97_5": 0.945923
+          },
+          "f1_at_5": {
+            "media": 0.395524,
+            "p2_5": 0.357625,
+            "p97_5": 0.431483
+          },
+          "f1_at_10": {
+            "media": 0.398361,
+            "p2_5": 0.368672,
+            "p97_5": 0.430799
+          }
+        },
+        "hibrido": {
+          "ndcg_at_10": {
+            "media": 0.578349,
+            "p2_5": 0.541479,
+            "p97_5": 0.613241
+          },
+          "mrr": {
+            "media": 0.902263,
+            "p2_5": 0.855957,
+            "p97_5": 0.944465
+          },
+          "f1_at_5": {
+            "media": 0.383085,
+            "p2_5": 0.351063,
+            "p97_5": 0.417697
+          },
+          "f1_at_10": {
+            "media": 0.369068,
+            "p2_5": 0.342407,
+            "p97_5": 0.397485
+          }
+        },
+        "bm25_rerank_chunks_top50": {
+          "ndcg_at_10": {
+            "media": 0.554851,
+            "p2_5": 0.511612,
+            "p97_5": 0.593433
+          },
+          "mrr": {
+            "media": 0.925309,
+            "p2_5": 0.877762,
+            "p97_5": 0.966667
+          },
+          "f1_at_5": {
+            "media": 0.367051,
+            "p2_5": 0.334481,
+            "p97_5": 0.402793
+          },
+          "f1_at_10": {
+            "media": 0.332455,
+            "p2_5": 0.302049,
+            "p97_5": 0.361773
+          }
+        },
+        "hibrido_rerank_chunks_top50": {
+          "ndcg_at_10": {
+            "media": 0.619796,
+            "p2_5": 0.58629,
+            "p97_5": 0.65171
+          },
+          "mrr": {
+            "media": 0.950463,
+            "p2_5": 0.912488,
+            "p97_5": 0.981481
+          },
+          "f1_at_5": {
+            "media": 0.424554,
+            "p2_5": 0.393028,
+            "p97_5": 0.454561
+          },
+          "f1_at_10": {
+            "media": 0.3793,
+            "p2_5": 0.355092,
+            "p97_5": 0.402428
+          }
+        },
+        "nota": "Alphas adoptados v8: bm25/hibrido 0.75; rerank_chunks_top50 1.5. Mejor estrategia global: hibrido_rerank_chunks_top50."
+      },
+      "por_periodo_ndcg_at_10_sin_hubs": {
+        "1992-2001": {
+          "bm25": 0.361734,
+          "hibrido": 0.358775,
+          "bm25_rerank": 0.476328,
+          "hibrido_rerank": 0.558519
+        },
+        "2002-2011": {
+          "bm25": 0.354524,
+          "hibrido": 0.405957,
+          "bm25_rerank": 0.452082,
+          "hibrido_rerank": 0.474051
+        },
+        "2012-2021": {
+          "bm25": 0.423263,
+          "hibrido": 0.495204,
+          "bm25_rerank": 0.513182,
+          "hibrido_rerank": 0.504825
+        },
+        "nota": "n=30 por periodo (IC orientativo)."
+      },
+      "por_longitud_ndcg_at_10_sin_hubs": {
+        "tercil_1_976_5420_palabras": {
+          "bm25": 0.330316,
+          "hibrido": 0.330091,
+          "bm25_rerank": 0.451095,
+          "hibrido_rerank": 0.520484
+        },
+        "tercil_2_5596_11940_palabras": {
+          "bm25": 0.352185,
+          "hibrido": 0.436175,
+          "bm25_rerank": 0.467661,
+          "hibrido_rerank": 0.469303
+        },
+        "tercil_3_11974_51664_palabras": {
+          "bm25": 0.457021,
+          "hibrido": 0.493669,
+          "bm25_rerank": 0.522836,
+          "hibrido_rerank": 0.547608
+        },
+        "nota": "Terciles equilibrados (30 casos); el patron es mas favorable en casos largos, no penaliza al hibrido."
+      },
+      "techo_gold_ner": {
+        "n_gold_medio": 11.4444,
+        "n_gold_mediana": 9.0,
+        "f1_at_5_maximo_media": 0.649016,
+        "f1_at_10_maximo_media": 0.742011,
+        "recall_universo": 1.0,
+        "nota": "Techo estructural del gold debil de M2 (NER): con orden perfecto del gold, F1@5 <= 0.649 y F1@10 <= 0.742 de media."
+      },
+      "artefactos": {
+        "json": "resultados/c3_diagnostico_recall.json",
+        "figuras": [
+          "figuras/c3_recall_curvas.png",
+          "figuras/c3_metricas_ic.png",
+          "figuras/c3_por_periodo.png"
+        ],
+        "stdout": "experimentos/c3_a1_diagnostico_stdout.log"
+      },
+      "tiempo_seg": 347.9,
+      "estado": "completado"
+    },
+    "a2_embeddings": {
+      "experimento": "12_evaluar_vinculo_cp_v2.py --embedding-model SINAI/ALIA-MrBERT-es-legal-administrative-embeddings --embedding-model wilfredomartel/BGE-M3-Legal-Spanish --embedding-model wilfredomartel/modernbert-embed-es-legal-v2 --k-candidatos-hybrid 100 --rerank (run final A2)",
+      "fecha": "2026-09-11",
+      "salida": "resultados/vinculo_cp_benchmark_v9.json",
+      "version": "v9-ciclo3-sprintA2",
+      "n_casos": 90,
+      "descripcion": "Sprint A2: matriz de embeddings legales ES en la 1a etapa hibrida (BM25+denso) con candidatos top-100 y rerank por chunks bge-reranker-v2-m3, dos contextos de hubs (sin_hubs alpha=0 para atribucion al embedding; con_hubs alpha=1.5 adoptado en v8), IC bootstrap pareado vs E5@100 (1000 remuestreos, seed 42) y recall de candidatos top-100. E5 se auto-incluye como referencia. v2..v8 verificados intactos (md5).",
+      "config": {
+        "k_candidatos_hybrid": 100,
+        "contextos": {
+          "sin_hubs": 0.0,
+          "con_hubs": 1.5
+        },
+        "referencia": "hibrido_e5_rerank_chunks_top100",
+        "bootstrap": {
+          "n_remuestreos": 1000,
+          "semilla": 42
+        }
+      },
+      "metricas_globales": {
+        "sin_hubs": {
+          "hibrido_e5_rerank_chunks_top100": {
+            "n": 90,
+            "ndcg_at_10": {
+              "media": 0.496268,
+              "p2_5": 0.454981,
+              "p97_5": 0.539976
+            },
+            "f1_at_10": {
+              "media": 0.306449,
+              "p2_5": 0.28017,
+              "p97_5": 0.334465
+            }
+          },
+          "hibrido_alia_rerank_chunks_top100": {
+            "n": 90,
+            "ndcg_at_10": {
+              "media": 0.508937,
+              "p2_5": 0.465955,
+              "p97_5": 0.551816
+            },
+            "f1_at_10": {
+              "media": 0.318897,
+              "p2_5": 0.292216,
+              "p97_5": 0.346198
+            }
+          },
+          "hibrido_bgem3_rerank_chunks_top100": {
+            "n": 90,
+            "ndcg_at_10": {
+              "media": 0.500934,
+              "p2_5": 0.460992,
+              "p97_5": 0.544707
+            },
+            "f1_at_10": {
+              "media": 0.313701,
+              "p2_5": 0.289264,
+              "p97_5": 0.338841
+            }
+          },
+          "hibrido_modernbert_rerank_chunks_top100": {
+            "n": 90,
+            "ndcg_at_10": {
+              "media": 0.516811,
+              "p2_5": 0.47401,
+              "p97_5": 0.558977
+            },
+            "f1_at_10": {
+              "media": 0.31007,
+              "p2_5": 0.285301,
+              "p97_5": 0.338236
+            }
+          }
+        },
+        "con_hubs": {
+          "hibrido_e5_rerank_chunks_top100": {
+            "n": 90,
+            "ndcg_at_10": {
+              "media": 0.62871,
+              "p2_5": 0.591108,
+              "p97_5": 0.663911
+            },
+            "f1_at_10": {
+              "media": 0.400611,
+              "p2_5": 0.374272,
+              "p97_5": 0.426765
+            }
+          },
+          "hibrido_alia_rerank_chunks_top100": {
+            "n": 90,
+            "ndcg_at_10": {
+              "media": 0.638115,
+              "p2_5": 0.598066,
+              "p97_5": 0.673537
+            },
+            "f1_at_10": {
+              "media": 0.417261,
+              "p2_5": 0.387303,
+              "p97_5": 0.445987
+            }
+          },
+          "hibrido_bgem3_rerank_chunks_top100": {
+            "n": 90,
+            "ndcg_at_10": {
+              "media": 0.630792,
+              "p2_5": 0.593392,
+              "p97_5": 0.666632
+            },
+            "f1_at_10": {
+              "media": 0.394664,
+              "p2_5": 0.370648,
+              "p97_5": 0.421341
+            }
+          },
+          "hibrido_modernbert_rerank_chunks_top100": {
+            "n": 90,
+            "ndcg_at_10": {
+              "media": 0.628266,
+              "p2_5": 0.590012,
+              "p97_5": 0.663616
+            },
+            "f1_at_10": {
+              "media": 0.393379,
+              "p2_5": 0.36683,
+              "p97_5": 0.421465
+            }
+          }
+        }
+      },
+      "estrategias_legacy_v8": {
+        "bm25": {
+          "alpha0": {
+            "ndcg_at_10": 0.37984,
+            "f1_at_10": 0.218216,
+            "mrr": 0.764705,
+            "f1_at_5": 0.233436
+          },
+          "alpha_elegido_full": 0.75,
+          "en_alpha_elegido": {
+            "ndcg_at_10": 0.601291,
+            "f1_at_10": 0.398361,
+            "mrr": 0.901455,
+            "f1_at_5": 0.395524
+          }
+        },
+        "hibrido": {
+          "alpha0": {
+            "ndcg_at_10": 0.419978,
+            "f1_at_10": 0.267786,
+            "mrr": 0.750579,
+            "f1_at_5": 0.263212
+          },
+          "alpha_elegido_full": 0.75,
+          "en_alpha_elegido": {
+            "ndcg_at_10": 0.578349,
+            "f1_at_10": 0.369068,
+            "mrr": 0.902263,
+            "f1_at_5": 0.383085
+          }
+        },
+        "hibrido_rerank_chunks_top50": {
+          "alpha0": {
+            "ndcg_at_10": 0.512465,
+            "f1_at_10": 0.315791,
+            "mrr": 0.864815,
+            "f1_at_5": 0.339873
+          },
+          "alpha_elegido_full": 1.5,
+          "en_alpha_elegido": {
+            "ndcg_at_10": 0.619796,
+            "f1_at_10": 0.3793,
+            "mrr": 0.950463,
+            "f1_at_5": 0.424554
+          }
+        },
+        "nota": "bm25/hibrido alpha adoptado 0.75; e5_top50 (hibrido_rerank_chunks_top50) alpha 1.5; A2 con_hubs usa alpha=1.5 para los 4 embeddings"
+      },
+      "pareado_vs_e5_top100": {
+        "sin_hubs": {
+          "hibrido_alia_rerank_chunks_top100": {
+            "ndcg_at_10": {
+              "n": 90,
+              "media_delta": 0.012668205563383545,
+              "p2_5": -0.0027859925150828997,
+              "p97_5": 0.028990823297753078,
+              "prob_mejora": 0.944,
+              "gana": false
+            },
+            "f1_at_10": {
+              "n": 90,
+              "media_delta": 0.012447864098444701,
+              "p2_5": -1.1924957717647661e-05,
+              "p97_5": 0.024793892484383812,
+              "prob_mejora": 0.974,
+              "gana": false
+            }
+          },
+          "hibrido_bgem3_rerank_chunks_top100": {
+            "ndcg_at_10": {
+              "n": 90,
+              "media_delta": 0.004665686876827573,
+              "p2_5": -0.013551354094421814,
+              "p97_5": 0.02111262750557134,
+              "prob_mejora": 0.697,
+              "gana": false
+            },
+            "f1_at_10": {
+              "n": 90,
+              "media_delta": 0.0072522235853732485,
+              "p2_5": -0.005212639488674708,
+              "p97_5": 0.02028785063477854,
+              "prob_mejora": 0.857,
+              "gana": false
+            }
+          },
+          "hibrido_modernbert_rerank_chunks_top100": {
+            "ndcg_at_10": {
+              "n": 90,
+              "media_delta": 0.020543170003089185,
+              "p2_5": 0.0003562600001662505,
+              "p97_5": 0.04004325994744347,
+              "prob_mejora": 0.976,
+              "gana": true
+            },
+            "f1_at_10": {
+              "n": 90,
+              "media_delta": 0.003620906118940504,
+              "p2_5": -0.013416160232905719,
+              "p97_5": 0.020533870806560894,
+              "prob_mejora": 0.655,
+              "gana": false
+            }
+          }
+        },
+        "con_hubs": {
+          "hibrido_alia_rerank_chunks_top100": {
+            "ndcg_at_10": {
+              "n": 90,
+              "media_delta": 0.009405609574996131,
+              "p2_5": -0.006814100619657988,
+              "p97_5": 0.02400246523473795,
+              "prob_mejora": 0.878,
+              "gana": false
+            },
+            "f1_at_10": {
+              "n": 90,
+              "media_delta": 0.016649410654235704,
+              "p2_5": 0.0008535287457430552,
+              "p97_5": 0.030929865596760683,
+              "prob_mejora": 0.981,
+              "gana": true
+            }
+          },
+          "hibrido_bgem3_rerank_chunks_top100": {
+            "ndcg_at_10": {
+              "n": 90,
+              "media_delta": 0.002082615586608605,
+              "p2_5": -0.0165518604174721,
+              "p97_5": 0.01946265099183046,
+              "prob_mejora": 0.575,
+              "gana": false
+            },
+            "f1_at_10": {
+              "n": 90,
+              "media_delta": -0.0059476373308411734,
+              "p2_5": -0.02325489624669762,
+              "p97_5": 0.01026574586313838,
+              "prob_mejora": 0.236,
+              "gana": false
+            }
+          },
+          "hibrido_modernbert_rerank_chunks_top100": {
+            "ndcg_at_10": {
+              "n": 90,
+              "media_delta": -0.00044352859290996353,
+              "p2_5": -0.02167583408006557,
+              "p97_5": 0.019632580866184263,
+              "prob_mejora": 0.489,
+              "gana": false
+            },
+            "f1_at_10": {
+              "n": 90,
+              "media_delta": -0.007232550557091202,
+              "p2_5": -0.02553935631529083,
+              "p97_5": 0.010963709199065011,
+              "prob_mejora": 0.223,
+              "gana": false
+            }
+          }
+        }
+      },
+      "consistencia_AB_mitades_impar_par": {
+        "sin_hubs": {
+          "hibrido_alia_rerank_chunks_top100": {
+            "ndcg_at_10": {
+              "media": 0.012668,
+              "mitad_A": 0.005101,
+              "mitad_B": 0.020236,
+              "casos_gana": 31,
+              "casos_pierde": 25,
+              "casos_empata": 34
+            },
+            "f1_at_10": {
+              "media": 0.012448,
+              "mitad_A": 0.009958,
+              "mitad_B": 0.014938,
+              "casos_gana": 19,
+              "casos_pierde": 10,
+              "casos_empata": 61
+            }
+          },
+          "hibrido_bgem3_rerank_chunks_top100": {
+            "ndcg_at_10": {
+              "media": 0.004666,
+              "mitad_A": -0.00342,
+              "mitad_B": 0.012751,
+              "casos_gana": 34,
+              "casos_pierde": 28,
+              "casos_empata": 28
+            },
+            "f1_at_10": {
+              "media": 0.007252,
+              "mitad_A": 0.010228,
+              "mitad_B": 0.004276,
+              "casos_gana": 20,
+              "casos_pierde": 12,
+              "casos_empata": 58
+            }
+          },
+          "hibrido_modernbert_rerank_chunks_top100": {
+            "ndcg_at_10": {
+              "media": 0.020543,
+              "mitad_A": 0.026206,
+              "mitad_B": 0.01488,
+              "casos_gana": 44,
+              "casos_pierde": 26,
+              "casos_empata": 20
+            },
+            "f1_at_10": {
+              "media": 0.003621,
+              "mitad_A": 0.007928,
+              "mitad_B": -0.000686,
+              "casos_gana": 19,
+              "casos_pierde": 19,
+              "casos_empata": 52
+            }
+          }
+        },
+        "con_hubs": {
+          "hibrido_alia_rerank_chunks_top100": {
+            "ndcg_at_10": {
+              "media": 0.009406,
+              "mitad_A": 0.010418,
+              "mitad_B": 0.008393,
+              "casos_gana": 34,
+              "casos_pierde": 29,
+              "casos_empata": 27
+            },
+            "f1_at_10": {
+              "media": 0.016649,
+              "mitad_A": 0.01831,
+              "mitad_B": 0.014989,
+              "casos_gana": 30,
+              "casos_pierde": 14,
+              "casos_empata": 46
+            }
+          },
+          "hibrido_bgem3_rerank_chunks_top100": {
+            "ndcg_at_10": {
+              "media": 0.002083,
+              "mitad_A": -0.003031,
+              "mitad_B": 0.007196,
+              "casos_gana": 33,
+              "casos_pierde": 30,
+              "casos_empata": 27
+            },
+            "f1_at_10": {
+              "media": -0.005948,
+              "mitad_A": -0.010963,
+              "mitad_B": -0.000932,
+              "casos_gana": 22,
+              "casos_pierde": 19,
+              "casos_empata": 49
+            }
+          },
+          "hibrido_modernbert_rerank_chunks_top100": {
+            "ndcg_at_10": {
+              "media": -0.000443,
+              "mitad_A": -0.00517,
+              "mitad_B": 0.004283,
+              "casos_gana": 36,
+              "casos_pierde": 33,
+              "casos_empata": 21
+            },
+            "f1_at_10": {
+              "media": -0.007233,
+              "mitad_A": -0.006919,
+              "mitad_B": -0.007546,
+              "casos_gana": 24,
+              "casos_pierde": 22,
+              "casos_empata": 44
+            }
+          }
+        }
+      },
+      "recall_candidatos_top100": {
+        "e5": {
+          "media": 0.618566,
+          "k_candidatos": 100,
+          "delta_vs_e5_top100_pp": 0.0
+        },
+        "alia": {
+          "media": 0.723306,
+          "k_candidatos": 100,
+          "delta_vs_e5_top100_pp": 10.47
+        },
+        "bgem3": {
+          "media": 0.630435,
+          "k_candidatos": 100,
+          "delta_vs_e5_top100_pp": 1.19
+        },
+        "modernbert": {
+          "media": 0.587587,
+          "k_candidatos": 100,
+          "delta_vs_e5_top100_pp": -3.1
+        },
+        "referencia_A1": {
+          "top50_hibrido_e5": 0.508964,
+          "top100_hibrido_e5": 0.618566,
+          "delta_pp": 10.96,
+          "nota": "A1 esperaba +11 pp al pasar top-50 -> top-100; el run A2 reproduce el valor exacto (0.6186) con e5"
+        }
+      },
+      "efecto_profundidad_e5_100_vs_50": {
+        "sin_hubs": {
+          "a100_ndcg": 0.496268,
+          "a50_ndcg": 0.512465,
+          "a100_f1_10": 0.306449,
+          "a50_f1_10": 0.315791,
+          "delta_ndcg": -0.016197,
+          "delta_f1_10": -0.009342
+        },
+        "con_hubs": {
+          "a100_ndcg": 0.62871,
+          "a50_ndcg": 0.619796,
+          "a100_f1_10": 0.400611,
+          "a50_f1_10": 0.3793,
+          "delta_ndcg": 0.008914,
+          "delta_f1_10": 0.021311
+        },
+        "nota": "E5@100 (A2, alpha contexto) vs E5@50 legacy v8 (hibrido_rerank_chunks_top50, alpha 0 / 1.5)"
+      },
+      "embeddings_a2": {
+        "e5": {
+          "hf_id": "intfloat/multilingual-e5-base",
+          "dim": 768,
+          "prefijo_query": "query: ",
+          "prefijo_pasaje": "passage: ",
+          "segundos_query": 89.5,
+          "chunks_query": 2909
+        },
+        "alia": {
+          "hf_id": "SINAI/ALIA-MrBERT-es-legal-administrative-embeddings",
+          "dim": 768,
+          "prefijo_query": "",
+          "prefijo_pasaje": "",
+          "segundos_query": 124.3,
+          "chunks_query": 2626
+        },
+        "bgem3": {
+          "hf_id": "wilfredomartel/BGE-M3-Legal-Spanish",
+          "dim": 1024,
+          "prefijo_query": "",
+          "prefijo_pasaje": "",
+          "segundos_query": 365.9,
+          "chunks_query": 2909
+        },
+        "modernbert": {
+          "hf_id": "wilfredomartel/modernbert-embed-es-legal-v2",
+          "dim": 768,
+          "prefijo_query": "",
+          "prefijo_pasaje": "",
+          "segundos_query": 173.5,
+          "chunks_query": 3696
+        }
+      },
+      "ganadora_global": "contexto producto (con_hubs alpha=1.5): alia@100 nDCG@10 0.6381 / F1@10 0.4173 (maximo de la matriz, no concluyente vs e5@100: IC nDCG [-0.0068,+0.0240], p=0.878); sin_hubs: modernbert@100 nDCG@10 0.5168 unico con gana=true vs e5@100 (IC [+0.0004,+0.0400]).",
+      "gate_a2": "NO superado (sin adopcion): ningun modelo bate a E5@100 en nDCG@10 con IC en ambos contextos. Victorias parciales con IC>0: modernbert sin_hubs nDCG@10 (+0.0205, A/B +0.026/+0.015) y alia con_hubs F1@10 (+0.0166, A/B +0.018/+0.015). alia es la mejor candidata a A3: mayor nDCG@10/F1@10 con hubs y mayor recall de candidatos (0.7233 vs 0.6186 e5).",
+      "tecnicas": [
+        "embeddings_legales_es",
+        "hibrido_bm25_denso",
+        "candidatos_top100",
+        "rerank_chunks_bge_v2_m3",
+        "hubs_alpha_1.5",
+        "bootstrap_pareado",
+        "consistencia_AB"
+      ],
+      "tiempos_segundos": {
+        "total": 1367.8,
+        "bm25": 86.9,
+        "embeddings_query": {
+          "e5": 89.5,
+          "alia": 124.3,
+          "bgem3": 365.9,
+          "modernbert": 173.5
+        },
+        "rerank_a2_k100": 314.8,
+        "rerank_legacy": 469.2
+      },
+      "md5_benchmarks_previos_intactos": {
+        "v2": "d8cf0cbde15eff34d6f57b702fb89868",
+        "v3": "7cc5fff3c65791ce2d5ee8aab29ee802",
+        "v3_limpio": "1d001ff9c83110b690fd2ef1aae5c30a",
+        "v4": "098caa105820ea8bd14ac3148921a6e4",
+        "v5": "793864a424d84f222fd252c8571281d2",
+        "v6": "b7774435888c8fc8eb920b42d5068a24",
+        "v7": "86eacf57c2a45c97ad70d9b574f610a4",
+        "v8": "746621a797fe109335e2a43367717a77"
+      },
+      "md5_salidas_v9": {
+        "vinculo_cp_benchmark_v9.json": "2d7bc19962eed50aafdbcfce1abc3219",
+        "figuras/c3_a2_embeddings.png": "ac639fe7fd2405eb4a121456e59f9959"
+      },
+      "estado": "completado",
+      "incidentes": "ninguno (setsid nohup; GPU RX 9070 XT ~5.8 GB pico VRAM)"
+    },
+    "a3_rerankers": {
+      "experimento": "12_evaluar_vinculo_cp_v2.py --a3 --rerank (run final A3)",
+      "fecha": "2026-09-11",
+      "salida": "resultados/vinculo_cp_benchmark_v10.json",
+      "version": "v10-ciclo3-sprintA3",
+      "n_casos": 90,
+      "descripcion": "Comparativa de rerankers legales ES sobre candidatos ALIA@100 (hibrido 0.5*bm25 + 0.5*ALIA-MrBERT legal): bge-reranker-v2-m3 (referencia v8, 568M) vs SINAI/ALIA-MrBERT-es-legal-administrative-reranker (150M) vs RRF k=60 entre ambos rankings. Dos contextos del prior de hubs (alpha=0 sin_hubs, alpha=1.5 con_hubs); IC 95% bootstrap pareado (1000 remuestreos, seed 42) de delta = variante - bge.",
+      "config": {
+        "candidatos": "alia@100 (hibrido 0.5*bm25 + 0.5*alia; recall documentado)",
+        "rerankers": {
+          "bge": "BAAI/bge-reranker-v2-m3",
+          "aliarerank": "SINAI/ALIA-MrBERT-es-legal-administrative-reranker",
+          "rrf": null
+        },
+        "rrf_k": 60,
+        "contextos": {
+          "sin_hubs": 0.0,
+          "con_hubs": 1.5
+        },
+        "bootstrap_pareado": {
+          "n_remuestreos": 1000,
+          "semilla": 42
+        },
+        "pares_por_caso": 300,
+        "max_tokens_par": {
+          "bge": 412,
+          "sinai": 374,
+          "limite": 512
+        },
+        "reutiliza_matriz_a2": false
+      },
+      "metricas_globales": {
+        "sin_hubs": {
+          "bge": {
+            "ndcg_at_10": {
+              "media": 0.508937,
+              "p2_5": 0.465955,
+              "p97_5": 0.551816
+            },
+            "f1_at_10": {
+              "media": 0.318897,
+              "p2_5": 0.292216,
+              "p97_5": 0.346198
+            }
+          },
+          "aliarerank": {
+            "ndcg_at_10": {
+              "media": 0.366024,
+              "p2_5": 0.323825,
+              "p97_5": 0.412162
+            },
+            "f1_at_10": {
+              "media": 0.241789,
+              "p2_5": 0.215606,
+              "p97_5": 0.269124
+            }
+          },
+          "rrf": {
+            "ndcg_at_10": {
+              "media": 0.50173,
+              "p2_5": 0.462365,
+              "p97_5": 0.541384
+            },
+            "f1_at_10": {
+              "media": 0.321185,
+              "p2_5": 0.295794,
+              "p97_5": 0.348937
+            }
+          }
+        },
+        "con_hubs": {
+          "bge": {
+            "ndcg_at_10": {
+              "media": 0.638115,
+              "p2_5": 0.598066,
+              "p97_5": 0.673537
+            },
+            "f1_at_10": {
+              "media": 0.417261,
+              "p2_5": 0.387303,
+              "p97_5": 0.445987
+            }
+          },
+          "aliarerank": {
+            "ndcg_at_10": {
+              "media": 0.583167,
+              "p2_5": 0.542685,
+              "p97_5": 0.619952
+            },
+            "f1_at_10": {
+              "media": 0.378983,
+              "p2_5": 0.349333,
+              "p97_5": 0.405209
+            }
+          },
+          "rrf": {
+            "ndcg_at_10": {
+              "media": 0.617724,
+              "p2_5": 0.581331,
+              "p97_5": 0.651898
+            },
+            "f1_at_10": {
+              "media": 0.405848,
+              "p2_5": 0.377765,
+              "p97_5": 0.434111
+            }
+          }
+        }
+      },
+      "pareado_vs_bge": {
+        "sin_hubs": {
+          "aliarerank": {
+            "ndcg_at_10": {
+              "n": 90,
+              "media_delta": -0.142913,
+              "p2_5": -0.182513,
+              "p97_5": -0.103555,
+              "prob_mejora": 0.0,
+              "gana": 0
+            },
+            "f1_at_10": {
+              "n": 90,
+              "media_delta": -0.077108,
+              "p2_5": -0.107548,
+              "p97_5": -0.047949,
+              "prob_mejora": 0.0,
+              "gana": 0
+            }
+          },
+          "rrf": {
+            "ndcg_at_10": {
+              "n": 90,
+              "media_delta": -0.007207,
+              "p2_5": -0.037123,
+              "p97_5": 0.022393,
+              "prob_mejora": 0.309,
+              "gana": 0
+            },
+            "f1_at_10": {
+              "n": 90,
+              "media_delta": 0.002288,
+              "p2_5": -0.018827,
+              "p97_5": 0.02335,
+              "prob_mejora": 0.587,
+              "gana": 0
+            }
+          }
+        },
+        "con_hubs": {
+          "aliarerank": {
+            "ndcg_at_10": {
+              "n": 90,
+              "media_delta": -0.054948,
+              "p2_5": -0.078127,
+              "p97_5": -0.031642,
+              "prob_mejora": 0.0,
+              "gana": 0
+            },
+            "f1_at_10": {
+              "n": 90,
+              "media_delta": -0.038277,
+              "p2_5": -0.062706,
+              "p97_5": -0.016266,
+              "prob_mejora": 0.0,
+              "gana": 0
+            }
+          },
+          "rrf": {
+            "ndcg_at_10": {
+              "n": 90,
+              "media_delta": -0.020391,
+              "p2_5": -0.038002,
+              "p97_5": -0.002621,
+              "prob_mejora": 0.011,
+              "gana": 0
+            },
+            "f1_at_10": {
+              "n": 90,
+              "media_delta": -0.011413,
+              "p2_5": -0.029162,
+              "p97_5": 0.005437,
+              "prob_mejora": 0.1,
+              "gana": 0
+            }
+          }
+        }
+      },
+      "recall_candidatos_top100": {
+        "estrategia": "scores_hibrido_alia",
+        "media": 0.723306,
+        "por_periodo": {
+          "1992-2001": 0.768131,
+          "2002-2011": 0.730182,
+          "2012-2021": 0.671606
+        },
+        "coincide_con_a2": true
+      },
+      "cuello_reranker": "NO se movio. bge@100 con_hubs nDCG@10 0.6381 / F1@10 0.4173 reproduce exactamente el alia@100 de A2 (0.638/0.417); el techo estructural sigue siendo el recall de candidatos ALIA@100=0.7233 (sin cambios vs A2). El reranker legal SINAI no amplia ni alcanza el techo (0.583 con_hubs); RRF queda por debajo de bge en ambos contextos.",
+      "gate_a3": "NO superado (sin adopcion): ninguna variante bate a bge en nDCG@10 con IC 95% (p2.5>0) en ningun contexto. aliarerank pierde significativamente: sin_hubs -0.1429 IC [-0.1825,-0.1036] prob_mejora=0.000; con_hubs -0.0549 IC [-0.0781,-0.0316] prob_mejora=0.000. rrf sin_hubs -0.0072 IC [-0.0371,+0.0224] prob_mejora=0.309 (indistinguible); con_hubs -0.0204 IC [-0.0380,-0.0026] prob_mejora=0.011 (bge gana). F1@10: aliarerank pierde en ambos (IC<0); rrf indistinguible (sin_hubs +0.0023 IC [-0.0188,+0.0234]; con_hubs -0.0114 IC [-0.0292,+0.0054]).",
+      "decision": "Documentar negativo y MANTENER bge-reranker-v2-m3 como reranker del producto (v2.1 SIN cambios por A3); NO adoptar SINAI/ALIA reranker ni RRF k=60; sin QA corta de adopcion. El smoke n=10 sugeria rrf +0.038 sin_hubs, pero el run final de 90 casos lo revierte a -0.007 (IC cruza 0) y confirma rrf <= bge en con_hubs: era ruido de muestra.",
+      "tecnicas": [
+        "reranker_legal_dominio_ES",
+        "rrf_k60_fusion_ranks",
+        "prior_hubs_alpha",
+        "bootstrap_pareado"
+      ],
+      "tiempos_segundos": {
+        "total": 613.7,
+        "bm25": 87.2,
+        "e5_query_chunks": 85.7,
+        "alia_query_chunks": 124.2,
+        "rerank_legacy_bge_4_estrategias": 153.2,
+        "rerank_a3_300_pares_2_rerankers": 136.0,
+        "comparacion_a3": 0.1
+      },
+      "artefactos": {
+        "benchmark": "resultados/vinculo_cp_benchmark_v10.json",
+        "derivado": "resultados/c3_a3_rerankers.json",
+        "figura": "figuras/c3_a3_rerankers.png",
+        "por_ano": "resultados/vinculo_cp_por_ano_v10.csv"
+      },
+      "md5": {
+        "vinculo_cp_benchmark_v10.json": "dca86449c67c7834ab5e75d42bde8987",
+        "c3_a3_rerankers.json": "3d03a0a7171486a3ee1dfa6070d302e4",
+        "figuras/c3_a3_rerankers.png": "51a156540314a611a3f87fff3a787806",
+        "v2..v9_intactos": true
+      },
+      "estado": "completado",
+      "incidentes": "ninguno funcional (setsid nohup; GPU RX 9070 XT fp16; total 613.7 s). Nota: bge@100 se recomputo (reutiliza_matriz_a2=False porque --a2 no iba activo) y reprodujo A2 exacto. El lanzamiento via bash tool espero al proceso y corto a los 120 s, pero setsid mantuvo el run intacto."
+    },
+      "a4_fusion_profundidad": {
+        "experimento": "12_evaluar_vinculo_cp_v2.py --a4 --rerank (run final, PID 3039803)",
+        "fecha": "2026-09-11",
+        "version": "v11-ciclo3-sprintA4",
+        "n_casos": 90,
+        "descripcion": "Sprint A4: fusion de PRIMERA ETAPA con embedding denso FIJO ALIA-MrBERT legal (mejor recall de A2) y bge rerank chunks sobre candidatos top-K. 4 fusiones a @100: w05 (referencia 0.5*BM25+0.5*denso), w03 (BM25 0.3/denso 0.7), w07 (BM25 0.7/denso 0.3) y rrf1a (RRF k=60 de rankings completos). Barrido de profundidad 50/100/200 sobre w05 (fusion_barrido=w05 por revision A4 del reviewer: el smoke n=10 favorecia w07 pero no es criterio robusto). Contextos alpha=0 (sin_hubs) y alpha=1.5 (con_hubs). Bootstrap PAREADO 1000 remuestreos seed 42; 'gana' exige extremo inferior del IC 95% > 0 (criterio ADR-16).",
+        "fusiones_100_nDCG10": {
+          "sin_hubs": {
+            "w05": 0.5089,
+            "w03": 0.5065,
+            "w07": 0.5217,
+            "rrf1a": 0.5088
+          },
+          "con_hubs": {
+            "w05": 0.6381,
+            "w03": 0.6366,
+            "w07": 0.6373,
+            "rrf1a": 0.6388
+          }
+        },
+        "fusiones_100_F1_10": {
+          "sin_hubs": {
+            "w05": 0.3189,
+            "w03": 0.3194,
+            "w07": 0.3269,
+            "rrf1a": 0.3228
+          },
+          "con_hubs": {
+            "w05": 0.4173,
+            "w03": 0.4159,
+            "w07": 0.415,
+            "rrf1a": 0.4145
+          }
+        },
+        "pareado_vs_w05_100_nDCG10": {
+          "w03": {
+            "sin_hubs": {
+              "delta": -0.0025,
+              "ic95": [
+                -0.0089,
+                0.0039
+              ],
+              "prob_mejora": 0.27,
+              "gana": false
+            },
+            "con_hubs": {
+              "delta": -0.0015,
+              "ic95": [
+                -0.0095,
+                0.0071
+              ],
+              "prob_mejora": 0.356,
+              "gana": false
+            }
+          },
+          "w07": {
+            "sin_hubs": {
+              "delta": 0.0128,
+              "ic95": [
+                -0.0002,
+                0.0257
+              ],
+              "prob_mejora": 0.969,
+              "gana": false
+            },
+            "con_hubs": {
+              "delta": -0.0008,
+              "ic95": [
+                -0.0103,
+                0.0099
+              ],
+              "prob_mejora": 0.45,
+              "gana": false
+            }
+          },
+          "rrf1a": {
+            "sin_hubs": {
+              "delta": -0.0002,
+              "ic95": [
+                -0.0087,
+                0.0077
+              ],
+              "prob_mejora": 0.498,
+              "gana": false
+            },
+            "con_hubs": {
+              "delta": 0.0007,
+              "ic95": [
+                -0.0083,
+                0.0107
+              ],
+              "prob_mejora": 0.557,
+              "gana": false
+            }
+          }
+        },
+        "pareado_vs_w05_100_F1_10": {
+          "w03": {
+            "sin_hubs": {
+              "delta": 0.0006,
+              "ic95": [
+                -0.0067,
+                0.0076
+              ],
+              "prob_mejora": 0.578,
+              "gana": false
+            },
+            "con_hubs": {
+              "delta": -0.0013,
+              "ic95": [
+                -0.0102,
+                0.0076
+              ],
+              "prob_mejora": 0.403,
+              "gana": false
+            }
+          },
+          "w07": {
+            "sin_hubs": {
+              "delta": 0.008,
+              "ic95": [
+                -0.003,
+                0.018
+              ],
+              "prob_mejora": 0.917,
+              "gana": false
+            },
+            "con_hubs": {
+              "delta": -0.0023,
+              "ic95": [
+                -0.0128,
+                0.0097
+              ],
+              "prob_mejora": 0.375,
+              "gana": false
+            }
+          },
+          "rrf1a": {
+            "sin_hubs": {
+              "delta": 0.0039,
+              "ic95": [
+                -0.0042,
+                0.012
+              ],
+              "prob_mejora": 0.834,
+              "gana": false
+            },
+            "con_hubs": {
+              "delta": -0.0027,
+              "ic95": [
+                -0.0111,
+                0.0068
+              ],
+              "prob_mejora": 0.292,
+              "gana": false
+            }
+          }
+        },
+        "profundidad_w05_nDCG10": {
+          "sin_hubs": {
+            "top50": 0.5356,
+            "top200": 0.4961
+          },
+          "con_hubs": {
+            "top50": 0.6401,
+            "top200": 0.6364
+          }
+        },
+        "profundidad_w05_F1_10": {
+          "sin_hubs": {
+            "top50": 0.3405,
+            "top200": 0.3113
+          },
+          "con_hubs": {
+            "top50": 0.4115,
+            "top200": 0.4181
+          }
+        },
+        "profundidad_w05_pareado_vs_top100_nDCG10": {
+          "top50": {
+            "sin_hubs": {
+              "delta": 0.0267,
+              "ic95": [
+                0.014,
+                0.039
+              ],
+              "prob_mejora": 0.999,
+              "gana": true
+            },
+            "con_hubs": {
+              "delta": 0.002,
+              "ic95": [
+                -0.0078,
+                0.0122
+              ],
+              "prob_mejora": 0.647,
+              "gana": false
+            }
+          },
+          "top200": {
+            "sin_hubs": {
+              "delta": -0.0129,
+              "ic95": [
+                -0.0225,
+                -0.0039
+              ],
+              "prob_mejora": 0.003,
+              "gana": false
+            },
+            "con_hubs": {
+              "delta": -0.0017,
+              "ic95": [
+                -0.0128,
+                0.0092
+              ],
+              "prob_mejora": 0.386,
+              "gana": false
+            }
+          }
+        },
+        "profundidad_w05_pareado_vs_top100_F1_10": {
+          "top50": {
+            "sin_hubs": {
+              "delta": 0.0216,
+              "ic95": [
+                0.0083,
+                0.0339
+              ],
+              "prob_mejora": 1.0,
+              "gana": true
+            },
+            "con_hubs": {
+              "delta": -0.0058,
+              "ic95": [
+                -0.0167,
+                0.0053
+              ],
+              "prob_mejora": 0.164,
+              "gana": false
+            }
+          },
+          "top200": {
+            "sin_hubs": {
+              "delta": -0.0076,
+              "ic95": [
+                -0.0171,
+                0.0011
+              ],
+              "prob_mejora": 0.043,
+              "gana": false
+            },
+            "con_hubs": {
+              "delta": 0.0009,
+              "ic95": [
+                -0.0104,
+                0.0121
+              ],
+              "prob_mejora": 0.539,
+              "gana": false
+            }
+          }
+        },
+        "recall_candidatos_por_k": {
+          "w05": {
+            "50": 0.6227,
+            "100": 0.7233,
+            "200": 0.8334
+          },
+          "w03": {
+            "50": 0.638,
+            "100": 0.7452,
+            "200": 0.8728
+          },
+          "w07": {
+            "50": 0.5812,
+            "100": 0.6854,
+            "200": 0.8029
+          },
+          "rrf1a": {
+            "50": 0.6023,
+            "100": 0.7076,
+            "200": 0.8481
+          }
+        },
+        "decision": "Gate A4: (1) FUSION: ninguna variante bate a w05@100 con IC en ningun contexto (w03 -0.0025/-0.0015; rrf1a -0.0002/+0.0007; w07 +0.0128 sin_hubs con IC [-0.0002;+0.0257] que roza 0 pero no gana, -0.0008 con_hubs) -> NO adoptar cambio de fusion; w05 0.5/0.5 se mantiene. (2) PROFUNDIDAD: sin_hubs top50 GANA a top100 con IC (nDCG@10 +0.0267 [+0.0140;+0.0390] prob 0.999; F1@10 +0.0216 [+0.0083;+0.0339]) y top200 PIERDE (-0.0129 IC<0); con_hubs top50 y top200 son indistinguibles de top100 (IC cruza 0: nDCG +0.0020/-0.0017). El recall de candidatos crece con k (w05 0.623/0.723/0.833) pero con hubs no se traduce en nDCG. (3) CONFIGURACION GANADORA PRODUCTO: fusion w05 0.5/0.5 + bge + hubs alpha=1.5 + salida k=10; candidatos top-50 recomendado (gana en sin_hubs con IC, no inferior en con_hubs y ~mitad de costo de rerank: 150 vs 300 pares/caso); top-200 rechazado. El producto v2.1 no cambia codigo (top-50 ya es default post-v6); la sustitucion E5->ALIA de A2 queda pendiente de Gate A (sin IC propio en contexto producto).",
+        "tecnicas": [
+          "fusion_primera_etapa_alia",
+          "rrf_k60",
+          "barrido_profundidad_50_100_200",
+          "bootstrap_pareado",
+          "prior_hubs_alpha_1.5"
+        ],
+        "tiempos_segundos": {
+          "total": 1020.1,
+          "bm25_pasajes": 85.8,
+          "e5_query_chunks": 85.3,
+          "alia_query_chunks": 125.3,
+          "rerank_legacy_4_estrategias": 160.1,
+          "rerank_a4_6_estrategias": 538.0,
+          "fusiones_a4": 0.0
+        },
+        "artefactos": {
+          "benchmark": "resultados/vinculo_cp_benchmark_v11.json",
+          "derivado": "resultados/c3_a4_fusion_profundidad.json",
+          "figura": "figuras/c3_a4_fusion_profundidad.png",
+          "por_ano": "resultados/vinculo_cp_por_ano_v11.csv"
+        },
+        "md5": {
+          "vinculo_cp_benchmark_v11.json": "98ed1034ffb02e5483c32c4979a6671e",
+          "c3_a4_fusion_profundidad.json": "64343628b067c92983139ecc3d302e0b",
+          "figuras/c3_a4_fusion_profundidad.png": "365be410cb7b44865969ff9b4056199f",
+          "v2..v10_intactos": true
+        },
+        "sanity_check": "w05@100 con_hubs 0.6381/0.4173 reproduce A2/A3 (alia@100) exacto; sin NaN/Inf; 90 casos; 0 transitorios top-k (indice permanentes). Nota menor: campo 'bm25' de tiempos_segundos del v11 (1017.2 s) es contabilidad acumulada erronea del script; el log reporta BM25 85.8 s.",
+        "estado": "completado",
+        "incidentes": "ninguno funcional (setsid nohup; GPU RX 9070 XT fp16; total 1020.1 s ~17 min; sin OOM/NaN/crash)."
+      },
+      "a5_clasificador": {
+        "experimento": "06_baseline_clasico.py --fase-a5 (run final, PID 3200478)",
+        "fecha": "2026-09-11",
+        "salida": "resultados/m4_clasificador_c3.json (version c3-a5)",
+        "version": "c3-a5",
+        "descripcion": "Sprint A5 (ciclo v3): repro de C calibrada desde artefacto congelado, BETO chunk-mean (completo/enmascarado) sobre cache, ensamble C+BETO con w elegido SOLO en validacion, y class weights balanced/sqrt_inv + calibracion de sesgos (val). Test evaluado una vez; bootstrap pareado (1000, seed 42) vs C; sanity exacto de C y de BETO (+-0.001); ninguna seleccion usa test.",
+        "tiempo_seg": 1294.9,
+        "splits": {
+          "train": 16557,
+          "val": 3549,
+          "test": 3548
+        },
+        "reproduccion_c": {
+          "val": 0.3791678032737843,
+          "test": 0.2980095633575616,
+          "sanity_test_ok": true,
+          "delta_vs_ref_fase_u": 0.0,
+          "artefacto": "modelos/m4_jerarquico/ganadora_C_calibracion.joblib",
+          "md5_artefacto": "9b23f67b103e1839e7740a3582ebe2e7"
+        },
+        "beto_chunk_mean": {
+          "completo": {
+            "val": 0.23125167605155178,
+            "test": 0.2433442600823086,
+            "sanity_banda_ok": true,
+            "reproduce_07": "20/20",
+            "tiempo_seg": 311.5
+          },
+          "enmascarado": {
+            "val": 0.22559786708539642,
+            "test": 0.23636472281786805,
+            "sanity_banda_ok": true,
+            "tiempo_seg": 298.6
+          }
+        },
+        "ensamble_c_beto": {
+          "w_elegido_val": 0.8,
+          "macro_f1_val_por_w": {
+            "0.5": 0.292346,
+            "0.6": 0.299218,
+            "0.7": 0.301791,
+            "0.8": 0.306585
+          },
+          "macro_f1_test_por_w": {
+            "0.5": 0.28761,
+            "0.6": 0.294766,
+            "0.7": 0.294258,
+            "0.8": 0.290067
+          },
+          "val_w_elegido": 0.3065850177950536,
+          "test_w_elegido": 0.2900671140178844,
+          "delta_test_vs_c": -0.007942449339677249,
+          "ic95_delta_test_vs_c": [
+            -0.022722126294669163,
+            0.004796645038006261
+          ],
+          "p_valor_bilateral": 0.2,
+          "adoptar": false,
+          "nota": "reproduce al reviewer: w=0.8 en val -> test 0.2901 < C 0.2980; IC cruza 0"
+        },
+        "class_weights": {
+          "balanced": {
+            "val_con_sesgos": 0.39600847765347313,
+            "test_con_sesgos": 0.28955387179055897,
+            "delta_test_vs_c": -0.008455691567002654,
+            "ic95": [
+              -0.03468092220251531,
+              0.006340202306834874
+            ],
+            "p_valor_bilateral": 0.266,
+            "adoptar": false
+          },
+          "sqrt_inv": {
+            "val_con_sesgos": 0.38537159249885466,
+            "test_con_sesgos": 0.2851123914634121,
+            "delta_test_vs_c": -0.012897171894149517,
+            "ic95": [
+              -0.040282045481968315,
+              0.0018087875787532104
+            ],
+            "p_valor_bilateral": 0.088,
+            "adoptar": false
+          },
+          "ganador_val": "class_weight_balanced (val 0.396008; test 0.289554)"
+        },
+        "decision": "sin adopcion: ningun candidato A5 supera a C con evidencia (IC 95% pareado de test cruza 0 en los 3 casos); C calibrada se mantiene como referencia del clasificador y el producto no cambia (v1 vigente)",
+        "delta_pareado_c_vs_v1_test": {
+          "script": "/tmp/opencode/bootstrap_pareado_c_vs_v1.py",
+          "salida": "/tmp/opencode/bootstrap_pareado_c_vs_v1.json",
+          "macro_f1_test_v1": 0.2870081504940973,
+          "macro_f1_test_c": 0.2980095633575616,
+          "delta_observado": 0.011001412863464344,
+          "media_bootstrap": 0.007131387747551358,
+          "ic95": [
+            -0.022755609449565006,
+            0.02995119060080188
+          ],
+          "prob_mejora": 0.717,
+          "p_valor_bilateral": 0.566,
+          "conclusion": "IC 95% cruza 0 (prob_mejora 0.717 < 0.95): C no supera a v1 mas alla del ruido bootstrap -> Gate A clasificador: documentar no adopcion y mantener v1 en el producto (criterio ADR-16 no cumplido)"
+        },
+        "artefactos": {
+          "json": "resultados/m4_clasificador_c3.json",
+          "figura": "figuras/c3_a5_clasificador.png",
+          "log": "experimentos/m4_clasificador_c3.log",
+          "stdout": "experimentos/m4_clasificador_c3_stdout.log",
+          "bootstrap_json": "/tmp/opencode/bootstrap_pareado_c_vs_v1.json"
+        },
+        "md5_intocables": {
+          "resultados/m4_baseline.json": "60f8fd1ce4c2edef086d8ee01aaad654",
+          "resultados/m4_jerarquico.json": "94425f6eab8ba03dd7b74d0f3962ca40",
+          "resultados/m4_eurovoc.json": "64496c31d330c6bca148561eaaa50cc7",
+          "resultados/m4_transformer.json": "566a6ecaff1af97d37f46c21f5e2f133",
+          "resultados/m4_transformer_chunks.json": "2a05a95d45440ba85d3c60bd9a056982"
+        },
+        "estado": "completado",
+        "incidentes": "ninguno funcional (setsid nohup; GPU RX 9070 XT fp16; total 1294.9 s ~21.6 min; sin OOM/NaN/crash; sanity C exacto y BETO en banda +-0.001)."
+      }
   }
 }

@@ -67,19 +67,43 @@ Mantenimiento: este archivo se actualiza paso a paso (checkboxes y secciones de 
 - [x] Commit local en rama `feature/e2-congelamiento-v2`.
 - [ ] Push + PR (requiere credenciales de Carlos).
 
-### Sprint A — "Base honesta + modelos legales ES + fusión" (~5-7 días)
-- [ ] A1 Métricas honestas: recall@k (10/20/50/100/200/384) por estrategia, IC 95% bootstrap
+### Sprint A — "Base honesta + modelos legales ES + fusión" — COMPLETADO 2026-09-11 (sin adopciones; ADR-17)
+- [x] A1 Métricas honestas: recall@k (10/20/50/100/200/384) por estrategia, IC 95% bootstrap
       (1000 remuestreos) para nDCG@10/MRR/F1@10, desglose por periodo y longitud de caso.
-      Salida `resultados/c3_diagnostico_recall.json` + figuras.
-- [ ] A2 Embeddings legales ES (parametrizar `--embedding-model`): E5 (ref) vs ALIA-MrBERT-legal (150M)
-      vs BGE-M3-Legal-Spanish (568M) vs modernbert-legal (149M) vs bge-m3-legal (568M);
-      + rerank chunks + hubs alpha=1.5, candidatos top-50. Salida `vinculo_cp_benchmark_v9.json`.
-- [ ] A3 Reranker legal ES (parametrizar `--reranker-model`): SINAI ALIA reranker (150M) vs
-      bge-reranker-v2-m3 (568M) vs RRF de ambos. Salida `c3_a3_rerankers.json`.
-- [ ] A4 Fusión y profundidad: RRF (k=60) vs mezcla 0.5/0.5; candidatos top-50 vs 100 vs 200 (según A1).
-- [ ] A5 Clasificador (secundario): calibración C + ensamble LogReg+BETO chunk-mean + class weights.
-      Salida `m4_clasificador_c3.json`.
-- Gate A: adoptar al producto (v2.1 + QA corta) todo ganador con Δ nDCG@10 > ruido bootstrap y consistente A/B.
+      Salida `resultados/c3_diagnostico_recall.json` + figuras. (2026-09-11: run final 90 casos,
+      347,9 s; mejor híbrido+rerank+hubs nDCG@10 0,620 IC [0,586;0,652]; recall candidatos top-50
+      híbrido 0,509 / bm25 0,413; sin caídas por periodo/tercil; md5 v2..v8 intactos.)
+- [x] A2 Embeddings legales ES (parametrizar `--embedding-model`): E5 (ref) vs ALIA-MrBERT-legal (150M)
+      vs BGE-M3-Legal-Spanish (568M) vs modernbert-legal (149M); + rerank chunks + hubs alpha=1.5,
+      candidatos top-100. Salida `vinculo_cp_benchmark_v9.json`. (2026-09-11: run final 90 casos,
+      1367,8 s; con_hubs alpha=1,5 nDCG@10 e5@100 0,629 (ref) / alia 0,638 / bgem3 0,631 / modernbert 0,628;
+      pareado vs e5@100: gana con IC solo modernbert sin_hubs nDCG (+0,021) y alia con_hubs F1@10 (+0,017,
+      A/B consistente) -> gate A2 NO superado, sin adopcion; ALIA mejor candidata a A3 (recall top-100 0,723
+      vs 0,619 e5, que reproduce el +11 pp de A1 vs top-50); profundidad @100 vs @50 con hubs +0,009 nDCG
+      /+0,021 F1@10, sin hubs -0,016; md5 v2..v8 intactos.)
+- [x] A3 Reranker legal ES (parametrizar `--reranker-model`): SINAI ALIA reranker (150M) vs
+      bge-reranker-v2-m3 (568M) vs RRF de ambos. Salida `c3_a3_rerankers.json`. (2026-09-11: run
+      final 90 casos, 613,7 s; nDCG@10 sin_hubs bge 0,509 / aliarerank 0,366 / rrf 0,502; con_hubs
+      α=1,5 bge 0,638 / aliarerank 0,583 / rrf 0,618; pareado vs bge: aliarerank −0,143/−0,055
+      (pierde con IC) y rrf −0,007 sin_hubs (IC cruza 0) / −0,020 con_hubs (pierde con IC) -> gate A3
+      NO superado, sin adopcion, bge se mantiene; recall candidatos ALIA@100 0,7233 (= A2); bge@100
+      reproduce A2 exacto (0,638/0,417); md5 v2..v9 intactos.)
+- [x] A4 Fusión y profundidad: RRF (k=60) vs mezcla 0.5/0.5; candidatos top-50 vs 100 vs 200 (según A1).
+      (2026-09-11: run final 90 casos, 1020,1 s; fusiones @100 nDCG@10 sin/con hubs: w05 0,509/0,638 /
+      w03 0,506/0,637 / w07 0,522/0,637 / rrf1a 0,509/0,639; pareado vs w05@100: NINGUNA gana con IC
+      (w07 sin_hubs +0,013 IC [−0,000;+0,026] roza 0); profundidad w05: sin_hubs top50 0,536 GANA a
+      top100 0,509 (Δ +0,027 IC [+0,014;+0,039]) y top200 0,496 pierde; con_hubs top50/top200
+      indistinguibles de top100 (IC cruza 0) -> gate de fusión no superado (w05 se mantiene), top-50
+      recomendado para producto por no-inferior con hubs y −50 % costo de rerank; md5 v2..v10 intactos.)
+- [x] A5 Clasificador (secundario): calibración C + ensamble LogReg+BETO chunk-mean + class weights.
+      Salida `m4_clasificador_c3.json`. (2026-09-11: run final PID 3200478, 1294,9 s; C test 0,2980095633575616
+      exacto val 0,3792; BETO completo test 0,2433443 / enmascarado 0,2363647; ensamble w=0,8 (val) test 0,2901
+      Δ −0,0079 IC [−0,0227;+0,0048]; class weights balanced test 0,2896 / sqrt_inv 0,2851, IC cruza 0 → sin
+      adopción; Δ pareado C vs v1 test +0,0110 IC95 [−0,0228;+0,0300] prob_mejora 0,717 → Gate A clasificador:
+      NO adoptar C, mantener v1 (ADR-10; ADR-16 no cumplido); md5 v1/v2 intactos.)
+- Gate A — CERRADO 2026-09-11: **sin adopciones** (ninguna variante superó el gate; ver ADR-17).
+  Candidatos documentados para Sprint B: ALIA embedding (F1@10 +1.7pp significativa), reranker fine-tuned de dominio,
+  C calibración. Producto permanece v2. Lección: smokes n=10 no deciden gates (fallaron 2/3).
 
 ### Sprint B — "Modelos de dominio entrenados con citas" (~1,5-2 semanas)
 - [ ] B1 Fine-tune reranker: pares (chunk sentencia -> pasaje CP citado) positivos; hard negatives

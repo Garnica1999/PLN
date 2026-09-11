@@ -172,3 +172,53 @@
 - ADR-16 (versionado ciclo v3: resultados v9+/c3_*; producto v2.1/2.2/v3; criterios de adopción con IC + A/B) y plan/REGISTRO_EXPERIMENTOS.md (retro-relleno COMPLETO v1+v2 con hipótesis/premisa/resultado/decisión/artefacto).
 - Congelamiento git: rama feature/e2-congelamiento-v2 con commit local (push/PR pendientes de credenciales de Carlos). .gitignore ampliado (data/, modelos/, lematizacion/, evidencia crash).
 - Siguiente: Sprint A1 (métricas honestas: recall@k + IC bootstrap + periodos) vía ml-coder.
+## Ciclo v3 — Sprint A1 (ml-trainer, 2026-09-11) — COMPLETADO
+- Run final `--diagnostico` sobre 90 casos (347,9 s; PID 2710786; GPU RX 9070 5,1 GB usados); salidas `resultados/c3_diagnostico_recall.json` + 3 figuras `c3_*.png`; estándar en /tmp/opencode; md5 v2..v8 intactos.
+- Curvas sin hubs (recall@10/50/200): bm25 0,241/0,413/0,705; híbrido 0,312/0,509/0,766; híbrido+rerank 0,369/0,509/0,509 (topado a candidatos).
+- Techo reranker = recall candidatos top-50: híbrido 0,509 vs bm25 0,413 → ampliar a top-100 (recall 0,619 híbrido) es la palanca de A2/A4.
+- Mejor estrategia (con_hubs, alpha adoptados): híbrido+rerank nDCG@10 0,620 IC [0,586;0,652] / MRR 0,950 / F1@5 0,424 / F1@10 0,379 (IC [0,355;0,402]) — reproduce v8.
+- Sin hubs: híbrido+rerank nDCG@10 0,512 IC [0,470;0,554] vs bm25 0,380; los hubs aportan +0,108. Por periodo híbrido+rerank sin hubs: 0,559/0,474/0,505 (sin caídas); por longitud: 0,520/0,469/0,548 (mejor en largos).
+- Techo gold NER: F1@5 ≤0,649 / F1@10 ≤0,742, n_gold medio 11,4 → la meta 0,70 nDCG exige gold graduado (Sprint B/C), no solo mejoras de modelo.
+- Registro: `metricas.json` → `ciclo_v3.a1_diagnostico`; fila A1 en REGISTRO_EXPERIMENTOS; checkbox A1 marcado.
+- Siguiente: A2 embeddings legales ES (E5 ref vs ALIA-MrBERT vs BGE-M3-Legal vs modernbert-legal), candidatos top-50 → top-100 según A1.
+
+## Ciclo v3 — Sprint A2 (ml-trainer, 2026-09-11) — COMPLETADO (gate A2: sin adopción; ALIA mejor en contexto producto)
+- Run final: PID 2808142, 1367,8 s (~23 min), GPU RX 9070 XT (pico ~5,8 GB VRAM), setsid nohup, sin incidentes. Salidas v9: `resultados/vinculo_cp_benchmark_v9.json` (v9-ciclo3-sprintA2) + `figuras/c3_a2_embeddings.png`; md5 v2..v8 intactos (8/8).
+- Con hubs (alpha=1,5) nDCG@10/F1@10: e5@100 0,629/0,401 (ref) / alia@100 0,638/0,417 / bgem3@100 0,631/0,395 / modernbert@100 0,628/0,393. Sin hubs: modernbert 0,517 único que gana a e5@100 (Δ +0,021, IC [+0,0004;+0,040]).
+- Pareado vs e5@100: ningún modelo bate nDCG@10 con IC en ambos contextos; victorias parciales: modernbert sin_hubs nDCG (+0,021) y alia con_hubs F1@10 (+0,017, A/B consistente) → gate A2 NO superado, sin adopción.
+- Recall candidatos top-100: alia 0,723 (+10,5 pp vs e5 0,619) / bgem3 0,630 / modernbert 0,588; e5 reproduce el 0,619 de A1 (+11 pp vs top-50, confirmado). Más recall NO se traduce en nDCG con el reranker genérico sin hubs.
+- Profundidad E5 @100 vs @50 legacy: sin hubs 0,496 vs 0,512 (-0,016); con hubs 0,629 vs 0,620 (+0,009) y F1@10 0,401 vs 0,379 (+0,021) → top-100 solo rentable con hubs.
+- Registro: `metricas.json` → `ciclo_v3.a2_embeddings`; fila A2 en REGISTRO_EXPERIMENTOS; checkbox A2 en PLAN_v3.
+- Siguiente A3: reranker legal ES (SINAI ALIA reranker / bge-reranker-v2-m3 / RRF) sobre candidatos top-100 de ALIA con hubs alpha=1,5, Δ pareado vs bge@100.
+- A4: RRF BM25+denso k=60 vs mezcla y rejilla de profundidad 50/100/200 sobre el ganador de A3.
+
+## Ciclo v3 — Sprint A3 (ml-trainer, 2026-09-11) — COMPLETADO (gate A3: sin adopción; bge se mantiene)
+- Run final `--a3 --rerank`: PID 2939850, 613,7 s (~10 min), GPU RX 9070 XT fp16, setsid nohup, sin incidentes; salidas v10 (`vinculo_cp_benchmark_v10.json`, md5 dca86449…) + `figuras/c3_a3_rerankers.png` + derivado `resultados/c3_a3_rerankers.json` (md5 3d03a0a7…); md5 v2..v9 intactos.
+- nDCG@10 sin_hubs: bge 0,509 / aliarerank 0,366 / rrf 0,502; con_hubs (α=1,5): bge 0,638 / aliarerank 0,583 / rrf 0,618. F1@10 con_hubs: 0,417 / 0,379 / 0,406.
+- Pareado vs bge (nDCG@10): aliarerank −0,143 sin_hubs y −0,055 con_hubs (pierde con IC 95 %); rrf −0,007 sin_hubs (IC [−0,037;+0,022] cruza 0) y −0,020 con_hubs (IC [−0,038;−0,003], pierde). Ninguna variante bate a bge → GATE A3 NO SUPERADO; sin adopción, producto v2.1 sin cambios.
+- Recall candidatos ALIA@100 = 0,7233 (idéntico a A2; por periodo 0,768/0,730/0,672); el cuello no se movió: bge@100 reproduce A2 exacto (0,638/0,417) y el reranker legal no alcanza el techo estructural.
+- Smoke n=10 de rrf (+0,038 sin_hubs) era ruido de muestra: el run final de 90 casos lo revierte a −0,007 (IC cruza 0) y confirma rrf ≤ bge con hubs.
+- Registro: `metricas.json` → `ciclo_v3.a3_rerankers`; fila A3 en REGISTRO_EXPERIMENTOS; checkbox A3 marcado en PLAN_v3.
+- Siguiente A4: RRF de embeddings/fusión a nivel de scores (no de rangos), profundidad 50/100/200 sobre la base ganadora (bge+ALIA@100 con hubs).
+
+## Ciclo v3 — Sprint A4 (ml-trainer, 2026-09-11) — COMPLETADO (gate A4: sin cambio de fusión; top-50 recomendado)
+- Run final `--a4 --rerank`: PID 3039803, 1020,1 s (~17 min), GPU RX 9070 XT fp16, setsid nohup, sin incidentes; salidas v11 (`vinculo_cp_benchmark_v11.json`, md5 98ed1034…) + derivado `c3_a4_fusion_profundidad.json` (md5 64343628…) + `figuras/c3_a4_fusion_profundidad.png`; md5 v2..v10 intactos (10/10).
+- Fusiones @100 (nDCG@10 / F1@10 sin_hubs | con_hubs): w05 0,509/0,319 | 0,638/0,417 (ref) · w03 0,506/0,319 | 0,637/0,416 · w07 0,522/0,327 | 0,637/0,415 · rrf1a 0,509/0,323 | 0,639/0,415.
+- Pareado vs w05@100: NINGUNA fusión gana con IC 95 %; w07 sin_hubs +0,013 IC [−0,000;+0,026] roza 0 pero no gana; con_hubs todas empatadas (|Δ|≤0,003, IC cruza 0) → gate de fusión NO superado, w05 0.5/0.5 se mantiene.
+- Profundidad w05: sin_hubs top50 0,536 GANA a top100 0,509 (Δ +0,027 IC [+0,014;+0,039]; F1@10 +0,022 IC>) y top200 0,496 PIERDE (Δ −0,013 IC<0); con_hubs top50 0,640 / top200 0,636 vs top100 0,638 indistinguibles (IC cruza 0). Recall w05 @50/100/200 = 0,623/0,723/0,833 (más recall ≠ más nDCG con hubs).
+- Ganadora producto: fusión w05 0.5/0.5 + bge + hubs α=1,5 + k=10 con candidatos **top-50** (mejor en sin_hubs con IC, no inferior con hubs, ~mitad de costo de rerank); top-200 rechazado. Sin cambio de código en v2.1 (top-50 ya es default); sustitución E5→ALIA pendiente de Gate A.
+- Smoke w07 n=10 no se replicó: a n=90 w07 empata con hubs y roza 0 sin ellos (mismo patrón que RRF en A3) → los smokes n=10 no deciden gates.
+- Registro: `metricas.json` → `ciclo_v3.a4_fusion_profundidad`; fila A4 en REGISTRO_EXPERIMENTOS; checkbox A4 marcado. Siguiente A5: calibración C + ensamble + class weights (`m4_clasificador_c3.json`).
+
+## Ciclo v3 — Sprint A5 (ml-trainer, 2026-09-11) — COMPLETADO (gate clasificador: sin adopción; producto mantiene v1)
+- Run final `--fase-a5`: PID 3200478, 1294,9 s (~21,6 min), GPU RX 9070 XT fp16, setsid nohup, sin incidentes; salidas NUEVAS `resultados/m4_clasificador_c3.json` + `figuras/c3_a5_clasificador.png`; md5 intocables intactos (5/5).
+- Repro C: val 0,3792 / test 0,2980095633575616 EXACTO (delta 0); BETO chunk-mean completo test 0,2433443 (val 0,2313; repro 07 20/20) y enmascarado 0,2363647 (val 0,2256), ambos en banda ±0,001.
+- Ensamble C+BETO: w=0,8 en val (0,3066) → test 0,2901 (Δ −0,0079 vs C; IC95 [−0,0227;+0,0048], p=0,20); class weights balanced val 0,3960 → test 0,2896 (Δ −0,0085; IC [−0,0347;+0,0063]) y sqrt_inv val 0,3854 → test 0,2851 (Δ −0,0129; IC [−0,0403;+0,0018]) → ningún candidato A5 adopta.
+- Δ pareado C vs v1 (test, bootstrap 1000 seed 42, `/tmp/opencode/bootstrap_pareado_c_vs_v1.py`): v1 0,2870082 / C 0,2980096; Δ +0,0110, media +0,0071, IC95 [−0,0228;+0,0300], prob_mejora 0,717 → IC cruza 0.
+- Gate A clasificador (ADR-16: Δ > ruido + consistente): **no se adopta C**; negativo documentado y producto mantiene v1 (LogReg enmascarado, ADR-10); meta 0,32 pendiente de Sprint B/C.
+- Registro: `metricas.json` → `ciclo_v3.a5_clasificador`; fila A5 en REGISTRO_EXPERIMENTOS; checkbox A5 marcado; bootstrap/log en `/tmp/opencode/`.
+- Siguiente: Sprint B — B1 fine-tune reranker con pares de citas (excluyendo las 90 del benchmark), B2 retriever denso de dominio, B3 mini-gold.
+## Ciclo v3 - Gate A (orquestador, 2026-09-11) — CERRADO SIN ADOPCIONES
+- Sprint A completo: A1 diagnostico (recall@k + IC + techo), A2 embeddings legales ES (ALIA/BGE-M3/modernbert: senales parciales; nDCG ns -> no adopcion), A3 reranker SINAI (negativo; bge se mantiene), A4 fusion/profundidad (w05 y top-50 se mantienen; 200 pierde), A5 clasificador (ensamble/cw no superan C; C vs v1 ns -> v1 se mantiene).
+- ADR-17 registra el gate con evidencia. Producto v2 intacto. Candidatos para Sprint B: ALIA embedding, reranker fine-tuned, C calibracion, profundidad con retriever mejorado.
+- Leccion empirica: smokes n=10 enganaron 2/3 veces; gates solo con n=90 + IC pareado. Siguiente: Sprint B1 (fine-tune reranker con citas, excluir las 90 del benchmark).

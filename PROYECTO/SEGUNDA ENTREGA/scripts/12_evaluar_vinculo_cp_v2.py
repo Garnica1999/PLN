@@ -242,7 +242,168 @@ Descripcion: Recalibracion (Fase K-2) del benchmark M7 del vinculo
          diagnostico), resultados/vinculo_cp_por_ano_v8.csv,
          figuras/deriva_retrieval_v8.png,
          figuras/contaminacion_transitorios_v8.png y
-         figuras/hubs_alpha_v8.png.
+          figuras/hubs_alpha_v8.png.
+
+    ciclo v3 - Sprint A1 (2026-09-11, plan/PLAN_v3_recuperacion_robusta.md):
+    "metricas honestas" SIN re-ejecutar modelos. Flag NUEVO --diagnostico
+    (default OFF: sin el flag el comportamiento y las salidas actuales
+    quedan identicos): reutiliza los scores base ya calculados y produce
+    (1) curvas recall@k (CONFIG['k_curvas_recall']) por estrategia focal,
+    (2) IC 95% bootstrap (1000 remuestreos de casos con reemplazo, semilla
+    42) de nDCG@10/MRR/F1@5/F1@10, (3) desglose por periodo y por terciles
+    de longitud del caso, (4) recall de los candidatos top-50 de la
+    primera etapa (techo del reranker) y (5) el techo teorico del gold
+    (F1@5/F1@10 maximos dado el numero de articulos gold por caso). Se
+    comparan dos contextos de scoring: sin hubs (alpha=0) y con los alphas
+    adoptados en el run v8 (bm25/hibrido 0.75, rerank top-50 1.5). Las
+    variantes de rerank quedan topadas por su set de candidatos para
+    k>50: se documenta como recall de candidatos. Salidas NUEVAS
+    (ADR-16, nada previo se sobrescribe):
+    resultados/c3_diagnostico_recall.json y figuras/c3_recall_curvas.png,
+    c3_metricas_ic.png y c3_por_periodo.png; con --limite N todo va a
+    /tmp/opencode y en modo diagnostico las salidas estandar del
+    benchmark se redirigen a /tmp para no pisar los v6/v8 canonicos.
+
+    ciclo v3 - Sprint A2 (2026-09-11, plan/PLAN_v3_recuperacion_robusta.md):
+    comparativa de EMBEDDINGS legales en espanol + profundidad de
+    candidatos del rerank. Adiciones:
+    (A2.1) flag --embedding-model HF_ID (repetible; acepta un HF id o un
+         slug corto e5/alia/bgem3/modernbert): carga modelos
+         sentence-transformers arbitrarios para la primera etapa densa.
+         E5 se calcula SIEMPRE (estrategias legacy + referencia del IC
+         pareado); --embedding-model anade modelos a la matriz. Sin el
+         flag y con --k-candidatos-hybrid 50 el comportamiento y las
+         salidas son identicos a A1;
+    (A2.2) convenciones de prefijos por modelo, verificadas en el
+         config_sentence_transformers.json y en la model card de cada
+         repo (2026-09-11): E5 publica "query: "/"passage: "; ALIA-
+         MrBERT-legal, BGE-M3-Legal-Spanish y modernbert-embed-es-
+         legal-v2 declaran prompts query/document VACIOS (la card usa
+         prompt_name="query"/encode_query que mapean al prompt vacio),
+         por lo que van SIN prefijo. Todos los embeddings se normalizan
+         (similitud coseno);
+    (A2.3) cache NUEVA de embeddings de pasajes de la CP por modelo en
+         data/cache_emb_cp/<slug>.joblib, con metadata de validacion
+         (hf_id, prefijos, chunking, n_pasajes y md5 del orden de
+         canones). La cache legacy del producto
+         (data/cache_e5_cp/pasajes_e5_base.joblib, Fase X) se MIGRA
+         para E5 previa validacion (modelo/chunking/n_pasajes + spot
+         check de 3 pasajes contra la matriz cacheada);
+    (A2.4) flag --k-candidatos-hybrid K (default 50 = top-50 actual):
+         profundidad de candidatos de las estrategias hibridas de la
+         matriz (la A2 usa 100; la maquinaria admite 200). El rerank
+         escala lineal (K x CONFIG['k_chunks_rerank'] pares/caso).
+         Nombres NUEVOS hibrido_<slug>_rerank_chunks_top<K>; la E5 a
+         K=50 reutiliza la estrategia legacy
+         hibrido_rerank_chunks_top50 (cross-check exacto contra v8, sin
+         recomputar);
+    (A2.5) la comparacion reporta cada estrategia en DOS contextos del
+         prior de hubs (alpha=0 sin hubs para atribuir la mejora al
+         embedding, y alpha=1.5 adoptado en v8), guarda las metricas
+         POR CASO (nDCG@10 y F1@10) y calcula el IC 95% bootstrap
+         PAREADO (mismos remuestreos de casos: 1000, seed 42) de
+         delta = estrategia_nueva - E5@K (referencia): media e IC de la
+         diferencia, mas prob_mejora y veredicto "gana" (p2.5 > 0);
+    (A2.6) salidas NUEVAS v9 (ADR-16: v2..v8 NUNCA se sobrescriben):
+         resultados/vinculo_cp_benchmark_v9.json (version
+         "v9-ciclo3-sprintA2" con las secciones comparacion_a2 y
+         embeddings_a2), resultados/vinculo_cp_por_ano_v9.csv,
+         figuras/deriva_retrieval_v9.png,
+         figuras/contaminacion_transitorios_v9.png y
+         figuras/c3_a2_embeddings.png (nDCG@10 por modelo/contexto con
+         IC); con --limite N todo va a /tmp/opencode y, si ademas hay
+         --diagnostico, sus salidas tambien (para no pisar el artefacto
+         A1 congelado).
+
+    ciclo v3 - Sprint A3 (2026-09-11, plan/PLAN_v3_recuperacion_robusta.md):
+    comparativa de RERANKERS legales en espanol sobre los candidatos de
+    ALIA@100 (el embedding con mayor recall de candidatos de A2: 0.723 vs
+    0.619 de E5). Adiciones:
+    (A3.1) flag --a3 (default OFF; requiere --rerank): fija la primera
+          etapa densa en ALIA-MrBERT legal y la profundidad en 100
+          candidatos (slug/k documentados en CONFIG['a3']), reutilizando
+          la maquinaria de embeddings de A2 (carga generica
+          SentenceTransformer y cache por slug data/cache_emb_cp/alia
+          .joblib) y el hibrido pre-registrado 0.5*bm25 + 0.5*alia;
+    (A3.2) tres variantes sobre los MISMOS candidatos: bge
+          (hibrido_alia_rerank_chunks_top100, referencia; reutiliza la
+          estrategia A2 homonima si la matriz A2 ya la calculo a k=100),
+          aliarerank (hibrido_alia_rerank_sinai_top100, cross-encoder
+          SINAI/ALIA-MrBERT-es-legal-administrative-reranker de 150M,
+          Apache-2.0) y rrf (hibrido_alia_rerank_rrf_top100, Reciprocal
+          Rank Fusion k=60 entre los rankings de ambos rerankers:
+          score_rrf = sum 1/(60+rank_i), normalizada min-max y con el
+          prior de hubs alpha como el resto de estrategias);
+    (A3.3) eficiencia: los pares (chunk, pasaje) de cada caso se
+          construyen UNA sola vez (misma derivacion de v5/A2: mejor
+          pasaje BM25 + top-3 chunks) y se puntuan con ambos rerankers,
+          evitando duplicar candidatos; el par se trunca a 512 tokens
+          (longest_first) con batch 16 fp16 y OOM-halving;
+    (A3.4) la comparacion reporta las 3 variantes en DOS contextos del
+          prior de hubs (alpha=0 sin hubs y alpha=1.5 adoptado en v8),
+          guarda nDCG@10 y F1@10 POR CASO y calcula el IC 95% bootstrap
+          PAREADO (1000 remuestreos, seed 42) de delta = variante - bge
+          con prob_mejora y veredicto "gana" (p2.5 > 0);
+    (A3.5) salidas NUEVAS v10 (ADR-16: v2..v9 NUNCA se sobrescriben):
+          resultados/vinculo_cp_benchmark_v10.json (version
+          "v10-ciclo3-sprintA3" con la seccion comparacion_a3),
+          resultados/vinculo_cp_por_ano_v10.csv,
+          figuras/deriva_retrieval_v10.png,
+          figuras/contaminacion_transitorios_v10.png y
+          figuras/c3_a3_rerankers.png (nDCG@10 y F1@10 por variante y
+          contexto con IC bootstrap); con --limite N todo va a
+          /tmp/opencode con sufijo _smoke.
+
+    ciclo v3 - Sprint A4 (2026-09-11, plan/PLAN_v3_recuperacion_robusta.md):
+    fusion de PRIMERA ETAPA (BM25 + denso) y barrido de profundidad de
+    candidatos. Adiciones:
+    (A4.1) flag --a4 (default OFF; requiere --rerank): fija el embedding
+          denso en ALIA-MrBERT legal (el de mayor recall de candidatos de
+          A2: 0.723) y compara 4 variantes de fusion de 1a etapa a 100
+          candidatos, TODAS con bge rerank chunks (misma derivacion de
+          pares que v5/A2/A3) y contextos alpha=0/1.5:
+          - w05 (referencia): hibrido min-max 0.5*BM25 + 0.5*denso, el
+            comportamiento actual; reutiliza la estrategia homonima
+            hibrido_alia_rerank_chunks_top100 si A2/A3 ya la calcularon;
+          - w03: fusion lineal con peso BM25 0.3 / denso 0.7;
+          - w07: fusion lineal con peso BM25 0.7 / denso 0.3;
+          - rrf1a: Reciprocal Rank Fusion k=60 a nivel de 1a etapa entre
+            los rankings COMPLETOS BM25 y denso ALIA (score = suma de
+            1/(60+rank), rank 1-based, empates por argsort estable);
+            candidatos = top-100 del score RRF.
+          CONVENCION documentada: el nombre w<NN> indica el peso de BM25
+          en la fusion lineal min-max por caso (peso denso = 1 - w).
+    (A4.2) barrido de profundidad 50/100/200 de la fusion elegida
+          (CONFIG['a4']['fusion_barrido']; revision A4 2026-09-11:
+          default w05, la referencia pre-registrada, NO w07). El smoke
+          n=10 favorecia a w07 (sin_hubs 0.514 vs 0.466; con_hubs 0.587
+          vs 0.556) con IC pareado que excluye 0, pero con extremos
+          inferiores minimos (+0.004/+0.001), sin mitades A/B evaluables
+          a n=10, con el precedente directo de A3 (RRF +0.038 a n=10 ->
+          -0.007 a n=90) y con MENOR recall de candidatos @100 (0.695 vs
+          0.744): no es un criterio robusto. El barrido se hace sobre
+          w05 y el IC pareado de las 4 fusiones a @100 del run de 90
+          decide; --a4-fusion {w05,w03,w07,rrf1a} permite barrer otra
+          sin tocar codigo. El rerank escala 3 pares/candidato: 150
+          pares/caso a top-50, 300 a top-100 y 600 a top-200.
+    (A4.3) seccion comparacion_a4 con: metricas globales y por caso
+          (nDCG@10, F1@10) por variante y contexto, recall de candidatos
+          de 1a etapa por fusion y profundidad (techo del rerank) y el IC
+          95% bootstrap PAREADO (1000 remuestreos, seed 42) de delta =
+          variante - w05@100 (referencia) con prob_mejora y veredicto
+          "gana" (p2.5 > 0), reutilizando bootstrap_ic_pareado.
+    (A4.4) salidas NUEVAS v11 (ADR-16: v2..v10 NUNCA se sobrescriben):
+          resultados/vinculo_cp_benchmark_v11.json (version
+          "v11-ciclo3-sprintA4" con la seccion comparacion_a4),
+          resultados/vinculo_cp_por_ano_v11.csv,
+          figuras/deriva_retrieval_v11.png,
+          figuras/contaminacion_transitorios_v11.png,
+          figuras/c3_a4_fusion_profundidad.png (fusiones @100 y barrido
+          de profundidad con IC bootstrap) y el derivado trazable
+          resultados/c3_a4_fusion_profundidad.json (seccion
+          comparacion_a4 + origen con archivo/version/md5, patron de
+          c3_a3_rerankers.json). Con --limite N todo va a /tmp/opencode
+          con sufijo _smoke.
 
     Estado del arte aplicado: BM25 por pasajes con agregacion max, max-pooling
     de chunks de query (cobertura completa), hibrido lexico-denso con
@@ -251,10 +412,19 @@ Descripcion: Recalibracion (Fase K-2) del benchmark M7 del vinculo
     cross-encoder bge-reranker-v2-m3 (Fase T), prior de hubs de
     co-citacion con rejilla alpha extendida (Fase W-a iter2,
     UA-StatuteRetrieval 2026), protocolo temporal de ADR-5 con P@k,
-    R@k, F1@k y MRR.
+    R@k, F1@k y MRR, IC 95% bootstrap no parametrico del promedio
+    (Efron-Tibshirani; Sprint A1 del ciclo v3), embeddings legales ES de
+    dominio (ALIA-MrBERT legal, BGE-M3-Legal-Spanish y modernbert-embed-
+    es-legal-v2; Sprint A2 del ciclo v3), reranker legal de dominio ES
+    (SINAI ALIA MrBERT cross-encoder), fusion RRF de rankings (Cormack
+    et al. 2009, k=60; Sprint A3 del ciclo v3), fusion lineal de scores
+    de 1a etapa con pesos BM25/denso y RRF de rangos a nivel de 1a etapa
+    con barrido de profundidad de candidatos (Sprint A4 del ciclo v3) y
+    bootstrap pareado de la diferencia para el gate de adopcion (ADR-16).
 """
 
 import argparse
+import hashlib
 import importlib.util
 import itertools
 import json
@@ -267,6 +437,7 @@ import unicodedata
 from datetime import datetime, timezone
 from pathlib import Path
 
+import joblib
 import matplotlib
 
 matplotlib.use("Agg")
@@ -503,7 +674,221 @@ CONFIG = {
         "v7 y anteriores quedan intactos (ADR-11)."
     ),
     "modo_hubs_activo": False,
+    # --- ciclo v3 - Sprint A1: diagnostico honesto (recall@k + IC) ---
+    # El modo --diagnostico reutiliza los scores base ya calculados; los
+    # alphas adoptados con hubs son los del run v8 (calibracion_hubs
+    # por_estrategia.*.alpha_elegido_full) para las 4 estrategias focales.
+    "version_diagnostico": "c3-a1",
+    "ruta_diagnostico": "resultados/c3_diagnostico_recall.json",
+    "ruta_figura_diagnostico_recall": "figuras/c3_recall_curvas.png",
+    "ruta_figura_diagnostico_ic": "figuras/c3_metricas_ic.png",
+    "ruta_figura_diagnostico_periodo": "figuras/c3_por_periodo.png",
+    "k_curvas_recall": [10, 20, 50, 100, 200, 384],
+    "diagnostico_bootstrap": 1000,
+    "diagnostico_seed": 42,
+    "alphas_adoptados_hubs": {
+        "bm25": 0.75,
+        "hibrido": 0.75,
+        "bm25_rerank_chunks_top50": 1.5,
+        "hibrido_rerank_chunks_top50": 1.5,
+    },
+    # --- ciclo v3 - Sprint A2: embeddings legales ES + profundidad ---
+    # Catalogo de modelos de la matriz A2 (slug corto -> configuracion).
+    # Prefijos VERIFICADOS el 2026-09-11 en el
+    # config_sentence_transformers.json y en la model card de cada repo:
+    # E5 publica "query: "/"passage: "; ALIA-MrBERT-legal, BGE-M3-Legal-
+    # Spanish y modernbert-embed-es-legal-v2 declaran prompts
+    # query/document VACIOS (sus cards usan prompt_name="query" /
+    # encode_query, que mapean al prompt vacio): van SIN prefijo. Todos
+    # los embeddings se normalizan para similitud coseno.
+    "modelos_embedding": {
+        "e5": {
+            "hf_id": "intfloat/multilingual-e5-base",
+            "prefijo_query": "query: ",
+            "prefijo_pasaje": "passage: ",
+            "carga": "e5_custom",
+            "nota": (
+                "Referencia v2..v8; prefijos oficiales E5; carga custom "
+                "backbone + mean pooling (identidad legacy intacta)."
+            ),
+        },
+        "alia": {
+            "hf_id": "SINAI/ALIA-MrBERT-es-legal-administrative-embeddings",
+            "prefijo_query": "",
+            "prefijo_pasaje": "",
+            "carga": "sentence_transformers",
+            "nota": (
+                "ModernBERT 150M, mean pooling; prompts vacios en "
+                "config_sentence_transformers.json y card con "
+                "prompt_name='query' (prompt vacio): sin prefijo."
+            ),
+        },
+        "bgem3": {
+            "hf_id": "wilfredomartel/BGE-M3-Legal-Spanish",
+            "prefijo_query": "",
+            "prefijo_pasaje": "",
+            "carga": "sentence_transformers",
+            "nota": (
+                "XLM-R/BGE-M3 568M, CLS pooling + Normalize; prompts "
+                "None en la card y vacios en config_sentence_transformers"
+                ".json: sin prefijo."
+            ),
+        },
+        "modernbert": {
+            "hf_id": "wilfredomartel/modernbert-embed-es-legal-v2",
+            "prefijo_query": "",
+            "prefijo_pasaje": "",
+            "carga": "sentence_transformers",
+            "nota": (
+                "ModernBERT 149M, mean pooling + Normalize; prompts "
+                "None en la card y vacios en config_sentence_transformers"
+                ".json: sin prefijo."
+            ),
+        },
+    },
+    "cache_emb_cp_dir": "data/cache_emb_cp",
+    "k_candidatos_hybrid": 50,
+    "a2_contextos": {"sin_hubs": 0.0, "con_hubs": 1.5},
+    "a2_slug_referencia": "e5",
+    "a2_bootstrap": 1000,
+    "a2_seed_pareado": 42,
+    "version_salida_v9": "v9-ciclo3-sprintA2",
+    "ruta_benchmark_v9": "resultados/vinculo_cp_benchmark_v9.json",
+    "ruta_por_ano_v9": "resultados/vinculo_cp_por_ano_v9.csv",
+    "ruta_figura_v9": "figuras/deriva_retrieval_v9.png",
+    "ruta_figura_contaminacion_v9": "figuras/contaminacion_transitorios_v9.png",
+    "ruta_figura_a2_embeddings": "figuras/c3_a2_embeddings.png",
+    "nota_v9": (
+        "Ciclo v3 - Sprint A2: comparativa de embeddings legales en "
+        "espanol (E5 referencia, ALIA-MrBERT-legal, BGE-M3-Legal-Spanish "
+        "y modernbert-embed-es-legal-v2; slugs e5/alia/bgem3/modernbert) "
+        "y profundidad de candidatos del rerank hibrido "
+        "(--k-candidatos-hybrid, default 50; la matriz A2 usa 100). Cada "
+        "estrategia nueva se reporta en dos contextos del prior de hubs "
+        "(alpha=0 sin hubs y alpha=1.5 adoptado en v8) con metricas por "
+        "caso (nDCG@10 y F1@10) y bootstrap PAREADO (1000 remuestreos de "
+        "casos, seed 42) de la diferencia contra la referencia E5@K. E5 "
+        "a top-50 reutiliza hibrido_rerank_chunks_top50 (cross-check "
+        "exacto contra v8). Salidas NUEVAS v9; v2..v8 quedan intactas "
+        "(ADR-16)."
+    ),
+    # Estado serializable de la matriz A2 (lo rellena aplicar_modo_a2).
+    "a2": {
+        "activa": False,
+        "modelos": [],
+        "estrategias": [],
+        "k": 50,
+        "referencia": None,
+        "tiempos": {},
+    },
+    # --- ciclo v3 - Sprint A3: comparativa de rerankers legales ES ---
+    # Los candidatos quedan FIJOS en ALIA@100 (mayor recall de candidatos
+    # de A2: 0.723 vs 0.619 de E5). El embedding ALIA reutiliza la carga
+    # generica y la cache por slug de A2; si la matriz A2 ya calculo la
+    # estrategia homonima a k=100, el vector bge se reutiliza (no se
+    # re-puntua). Las 3 variantes: bge (referencia), aliarerank (SINAI) y
+    # rrf (RRF k=60 entre los rankings de ambos rerankers). Contextos de
+    # hubs fijos alpha=0 y alpha=1.5 (el adoptado para el rerank top-50
+    # en v8), con IC bootstrap pareado de la diferencia vs bge.
+    "a3": {
+        "activa": False,
+        "slug_embedding": "alia",
+        "k": 100,
+        "modelo_reranker": (
+            "SINAI/ALIA-MrBERT-es-legal-administrative-reranker"
+        ),
+        "rrf_k": 60,
+        "contextos": {"sin_hubs": 0.0, "con_hubs": 1.5},
+        "estrategias": [],
+        "referencia": None,
+        "reutiliza_a2": False,
+        "clave_bge": None,
+    },
+    "a3_bootstrap": 1000,
+    "a3_seed_pareado": 42,
+    "version_salida_v10": "v10-ciclo3-sprintA3",
+    "ruta_benchmark_v10": "resultados/vinculo_cp_benchmark_v10.json",
+    "ruta_por_ano_v10": "resultados/vinculo_cp_por_ano_v10.csv",
+    "ruta_figura_v10": "figuras/deriva_retrieval_v10.png",
+    "ruta_figura_contaminacion_v10": "figuras/contaminacion_transitorios_v10.png",
+    "ruta_figura_a3_rerankers": "figuras/c3_a3_rerankers.png",
+    "nota_v10": (
+        "Ciclo v3 - Sprint A3: comparativa de RERANKERS legales en "
+        "espanol sobre los candidatos de ALIA@100 (el embedding con mayor "
+        "recall de candidatos de A2: 0.723 vs 0.619 de E5). Tres variantes "
+        "sobre los MISMOS pares (chunk, pasaje) construidos una sola vez: "
+        "bge (referencia, bge-reranker-v2-m3), aliarerank "
+        "(SINAI/ALIA-MrBERT-es-legal-administrative-reranker, cross-encoder "
+        "legal ES de 150M, Apache-2.0) y rrf (Reciprocal Rank Fusion k=60 "
+        "de los rankings de ambos rerankers). Cada variante se reporta en "
+        "dos contextos del prior de hubs (alpha=0 y alpha=1.5) con "
+        "metricas por caso y bootstrap PAREADO (1000 remuestreos, seed 42) "
+        "de la diferencia contra bge; en las estrategias de rerank el "
+        "universo es el set de candidatos top-100 del hibrido ALIA "
+        "(recall de candidatos documentado). Salidas NUEVAS v10; v2..v9 "
+        "quedan intactas (ADR-16)."
+    ),
+    # --- ciclo v3 - Sprint A4: fusion de 1a etapa + barrido de profundidad ---
+    # Embedding denso FIJO en ALIA-MrBERT legal (mayor recall de
+    # candidatos de A2: 0.723). Convencion de pesos: el nombre de la
+    # variante indica el peso de BM25 en la fusion lineal min-max por
+    # caso (w05 = 0.5/0.5, w03 = BM25 0.3 / denso 0.7, w07 = BM25 0.7 /
+    # denso 0.3; el denso recibe 1 - peso). rrf1a es RRF k=60 entre los
+    # rankings COMPLETOS BM25 y denso ALIA (candidatos = top-100 del
+    # RRF). El barrido de profundidad 50/100/200 usa
+    # CONFIG['a4']['fusion_barrido'] = w05 (revision A4 2026-09-11): el
+    # smoke n=10 favorecia a w07, pero el criterio NO es robusto
+    # (extremos inferiores +0.004/+0.001, sin A/B a n=10, precedente A3
+    # RRF +0.038 a n=10 -> -0.007 a n=90 y menor recall de candidatos
+    # @100: 0.695 vs 0.744), asi que el barrido se ancla en la referencia
+    # pre-registrada w05. El JSON v11 reporta las 4 fusiones a @100 y
+    # --a4-fusion permite fijar otra {w05,w03,w07,rrf1a} sin tocar
+    # codigo. El run final de 90 casos decide con el IC pareado completo.
+    "a4": {
+        "activa": False,
+        "slug_embedding": "alia",
+        "k_referencia": 100,
+        "profundidades": [50, 100, 200],
+        "rrf_k": 60,
+        "pesos_fusion": {"w05": 0.5, "w03": 0.3, "w07": 0.7},
+        "variantes_100": ["w05", "w03", "w07", "rrf1a"],
+        "fusion_barrido": "w05",
+        "contextos": {"sin_hubs": 0.0, "con_hubs": 1.5},
+        "estrategias": [],
+        "referencia": None,
+    },
+    "a4_bootstrap": 1000,
+    "a4_seed_pareado": 42,
+    "version_salida_v11": "v11-ciclo3-sprintA4",
+    "ruta_benchmark_v11": "resultados/vinculo_cp_benchmark_v11.json",
+    "ruta_por_ano_v11": "resultados/vinculo_cp_por_ano_v11.csv",
+    "ruta_figura_v11": "figuras/deriva_retrieval_v11.png",
+    "ruta_figura_contaminacion_v11": "figuras/contaminacion_transitorios_v11.png",
+    "ruta_figura_a4_fusion_profundidad": "figuras/c3_a4_fusion_profundidad.png",
+    "ruta_a4_fusion_profundidad": "resultados/c3_a4_fusion_profundidad.json",
+    "nota_v11": (
+        "Ciclo v3 - Sprint A4: fusion de PRIMERA ETAPA y barrido de "
+        "profundidad sobre la base ganadora ALIA+bge+hubs (A2/A3). "
+        "Embedding denso FIJO en ALIA-MrBERT legal; 4 variantes a 100 "
+        "candidatos con bge rerank chunks: w05 (referencia, hibrido "
+        "min-max 0.5*BM25 + 0.5*denso; reutiliza la estrategia homonima "
+        "de A2/A3 si existe), w03 (BM25 0.3 / denso 0.7), w07 (BM25 0.7 "
+        "/ denso 0.3) y rrf1a (RRF k=60 de los rankings completos BM25 y "
+        "denso ALIA, candidatos = top-100 del RRF). Barrido de "
+        "profundidad 50/100/200 de la fusion elegida (--a4-fusion; "
+        "default w05, la referencia pre-registrada por revision A4: "
+        "el smoke n=10 de w07 no es criterio robusto). Cada "
+        "variante se reporta en los contextos "
+        "alpha=0 y alpha=1.5 con metricas por caso y bootstrap PAREADO "
+        "(1000 remuestreos, seed 42) de la diferencia contra w05@100. "
+        "Salidas NUEVAS v11; v2..v10 quedan intactas (ADR-16)."
+    ),
 }
+
+# El hf_id de E5 en el catalogo A2 es el mismo del pipeline legacy
+# (fuente unica de verdad; se asigna aqui porque un dict literal no
+# puede referenciar sus propias claves).
+CONFIG["modelos_embedding"]["e5"]["hf_id"] = CONFIG["modelo_e5"]
 
 # Stopwords juridicas (mejora 3): terminos procesales de encabezado y de
 # citas que aparecen en casi todas las sentencias y no discriminan entre
@@ -550,6 +935,10 @@ ROOT = Path(__file__).resolve().parent.parent
 
 MEDIDAS = ("p_at_k", "r_at_k", "f1_at_k", "mrr", "ndcg_at_10")
 
+# ciclo v3 - Sprint A2: medidas guardadas POR CASO y con IC pareado en la
+# comparacion de embeddings (ademas del protocolo completo de MEDIDAS).
+MEDIDAS_A2 = ("ndcg_at_10", "f1_at_10")
+
 # Estrategias evaluadas en el diagnostico de contaminacion (Fase R): las
 # basadas en el indice BM25 sucio v1 (bm25 puro y su hibrido con E5). La
 # cita-exacta no consulta el indice y E5 no depende de los IDs.
@@ -558,8 +947,9 @@ ESTRATEGIAS_DIAGNOSTICO = ("bm25", "hibrido")
 # ciclo v2 - Fase W-a: estrategias que admiten el prior de hubs. La
 # cita-exacta queda fuera (mismo regex M2 que genera el gold: priorizarla
 # seria circular). El prior se aplica tras calcular los scores base y
-# antes de top-k/metricas (ver aplicar_prior_a_casos).
-ESTRATEGIAS_RANKEABLES = (
+# antes de top-k/metricas (ver aplicar_prior_a_casos). Es una LISTA
+# mutable: la matriz A2 (ciclo v3) anade sus estrategias al activarse.
+ESTRATEGIAS_RANKEABLES = [
     "bm25",
     "e5",
     "hibrido",
@@ -567,21 +957,23 @@ ESTRATEGIAS_RANKEABLES = (
     "bm25_rerank_chunks",
     "bm25_rerank_chunks_top50",
     "hibrido_rerank_chunks_top50",
-)
+]
 
 # Subconjunto de rerank: su ranking de producto esta truncado a
 # CONFIG['k_rerank_salida'] (10); al re-rankear con prior el resultado se
 # trunca igual para conservar la semantica de las metricas (el MRR solo
-# puede mirar ese top-10).
-ESTRATEGIAS_RERANK = (
+# puede mirar ese top-10). Lista mutable: la matriz A2 anade estrategias.
+ESTRATEGIAS_RERANK = [
     "bm25_rerank",
     "bm25_rerank_chunks",
     "bm25_rerank_chunks_top50",
     "hibrido_rerank_chunks_top50",
-)
+]
 
 # Clave del caso donde vive el vector de scores base de cada estrategia:
 # fuente unica para top10_por_caso y para la calibracion de hubs.
+# Diccionario mutable: la matriz A2 (ciclo v3) registra aqui sus
+# estrategias al activarse (aplicar_modo_a2).
 FUENTE_SCORES = {
     "bm25": "scores_bm25",
     "e5": "scores_e5",
@@ -590,6 +982,28 @@ FUENTE_SCORES = {
     "bm25_rerank_chunks": "scores_bm25_rerank_chunks",
     "bm25_rerank_chunks_top50": "scores_bm25_rerank_chunks_top50",
     "hibrido_rerank_chunks_top50": "scores_hibrido_rerank_chunks_top50",
+}
+
+# ciclo v3 - Sprint A1: contextos de scoring del diagnostico. sin_hubs es
+# el score base tal cual (alpha=0); con_hubs aplica el prior con los
+# alphas adoptados en v8 (CONFIG['alphas_adoptados_hubs']).
+CONTEXTO_SIN_HUBS = "sin_hubs"
+CONTEXTO_CON_HUBS = "con_hubs"
+
+# Etiquetas y colores de las estrategias focales del diagnostico A1 (los
+# mismos colores que graficar_deriva para las estrategias equivalentes).
+ETIQUETAS_FOCALES = {
+    "bm25": "BM25",
+    "hibrido": "hibrido 0.5/0.5",
+    "bm25_rerank_chunks_top50": "BM25 top-50 + rerank",
+    "hibrido_rerank_chunks_top50": "hibrido top-50 + rerank",
+}
+
+COLORES_FOCALES = {
+    "bm25": "#1f77b4",
+    "hibrido": "#2ca02c",
+    "bm25_rerank_chunks_top50": "#8c564b",
+    "hibrido_rerank_chunks_top50": "#e377c2",
 }
 
 # Medidas reportadas en la calibracion de hubs (incluye F1@10, pedido
@@ -646,6 +1060,32 @@ RUTAS_RELATIVAS = (
     "ruta_figura_v8",
     "ruta_figura_contaminacion_v8",
     "ruta_figura_hubs_v8",
+    # ciclo v3 - Sprint A1: diagnostico honesto (JSON y 3 figuras nuevas).
+    "ruta_diagnostico",
+    "ruta_figura_diagnostico_recall",
+    "ruta_figura_diagnostico_ic",
+    "ruta_figura_diagnostico_periodo",
+    # ciclo v3 - Sprint A2: cache de embeddings y salidas v9.
+    "cache_emb_cp_dir",
+    "ruta_benchmark_v9",
+    "ruta_por_ano_v9",
+    "ruta_figura_v9",
+    "ruta_figura_contaminacion_v9",
+    "ruta_figura_a2_embeddings",
+    # ciclo v3 - Sprint A3: salidas v10 y figura de rerankers.
+    "ruta_benchmark_v10",
+    "ruta_por_ano_v10",
+    "ruta_figura_v10",
+    "ruta_figura_contaminacion_v10",
+    "ruta_figura_a3_rerankers",
+    # ciclo v3 - Sprint A4: salidas v11, figura de fusion/profundidad y
+    # derivado trazable de la seccion comparacion_a4.
+    "ruta_benchmark_v11",
+    "ruta_por_ano_v11",
+    "ruta_figura_v11",
+    "ruta_figura_contaminacion_v11",
+    "ruta_figura_a4_fusion_profundidad",
+    "ruta_a4_fusion_profundidad",
 )
 
 
@@ -1393,6 +1833,100 @@ def ranking_bm25_rerank(
     return ranking, scores_rerank
 
 
+def construir_pares_rerank_chunks(
+    scores_candidatos: np.ndarray,
+    matriz_bm25: np.ndarray,
+    chunks: list[str],
+    grupos_indices: list[np.ndarray],
+    pasajes: pd.DataFrame,
+    k_candidatos: int,
+) -> dict:
+    """Construye UNA vez los pares (chunk, pasaje) de los top-k candidatos.
+
+    Derivacion comun de las estrategias de rerank por chunks (v5, top-50
+    de la Fase T y A2/A3): para cada articulo candidato (ordenado por
+    scores_candidatos): (1) su mejor pasaje es el de mayor score BM25 del
+    caso (maximo de la matriz chunk x pasaje); (2) los top-
+    CONFIG['k_chunks_rerank'] = 3 chunks de la query son los de mayor
+    score BM25 contra ese pasaje. ciclo v3 - Sprint A3: extraida de
+    ranking_rerank_chunks (misma logica, mismo orden) para que la
+    comparativa de rerankers puntue los MISMOS pares con bge y con el
+    reranker SINAI sin duplicarlos.
+
+    Args:
+        scores_candidatos: Scores que ordenan a los candidatos
+            (n_articulos,) alineados con los canones.
+        matriz_bm25: Matriz (n_chunks, n_pasajes) de scores BM25 del
+            caso (salida de scores_bm25_caso).
+        chunks: Chunks de la ventana de query (filas de matriz_bm25).
+        grupos_indices: Arrays de posiciones de pasajes por articulo.
+        pasajes: DataFrame con columnas canon y texto (un pasaje/fila).
+        k_candidatos: Numero de candidatos de la 1a etapa.
+
+    Returns:
+        Dict con candidatos (indices de articulo ordenados por score),
+        queries y pasajes (listas alineadas de los pares) y posiciones
+        (posicion del articulo candidato en candidatos, por par).
+    """
+    orden_candidatos = np.argsort(-scores_candidatos, kind="stable")
+    candidatos = orden_candidatos[:k_candidatos]
+    maximos_pasajes = matriz_bm25.max(axis=0)
+    textos_pasajes = pasajes["texto"].astype(str).tolist()
+    queries: list[str] = []
+    pasajes_lote: list[str] = []
+    posiciones: list[int] = []
+    for pos_articulo, indice in enumerate(candidatos):
+        indices_pasaje = grupos_indices[indice]
+        mejor_pasaje = int(
+            indices_pasaje[np.argmax(maximos_pasajes[indices_pasaje])]
+        )
+        scores_chunks = matriz_bm25[:, mejor_pasaje]
+        top_chunks = np.argsort(-scores_chunks, kind="stable")[
+            : CONFIG["k_chunks_rerank"]
+        ]
+        for fila_chunk in top_chunks:
+            queries.append(chunks[fila_chunk])
+            pasajes_lote.append(textos_pasajes[mejor_pasaje])
+            posiciones.append(pos_articulo)
+    return {
+        "candidatos": candidatos,
+        "queries": queries,
+        "pasajes": pasajes_lote,
+        "posiciones": posiciones,
+    }
+
+
+def scores_maxpool_por_candidato(
+    scores_pares: np.ndarray,
+    posiciones: list[int],
+    candidatos: np.ndarray,
+    n_canones: int,
+) -> np.ndarray:
+    """Agrega por max-pooling los scores de los pares al vector de articulos.
+
+    El score de cada articulo candidato es el MAXIMO de los scores de sus
+    pares (coherente con ADR-9); los articulos fuera del set de
+    candidatos quedan en -inf (no son resultados retornables del rerank).
+
+    Args:
+        scores_pares: Array (n_pares,) con el score de cada par en el
+            orden devuelto por construir_pares_rerank_chunks.
+        posiciones: Posicion del articulo candidato en candidatos por par.
+        candidatos: Indices de articulo del set de candidatos.
+        n_canones: Tamano del universo de articulos.
+
+    Returns:
+        Array (n_canones,) con el maximo por candidato y -inf en el resto.
+    """
+    maximos = np.full(len(candidatos), -np.inf, dtype=np.float64)
+    for posicion, score in zip(posiciones, scores_pares, strict=True):
+        maximos[posicion] = max(maximos[posicion], float(score))
+    scores = np.full(n_canones, -np.inf, dtype=np.float64)
+    for pos_articulo, indice in enumerate(candidatos):
+        scores[indice] = maximos[pos_articulo]
+    return scores
+
+
 def ranking_rerank_chunks(
     reranker: object,
     scores_candidatos: np.ndarray,
@@ -1426,6 +1960,12 @@ def ranking_rerank_chunks(
     la matriz BM25 chunk x pasaje del caso (mejor pasaje + top-3
     chunks), igual que en v5.
 
+    ciclo v3 - Sprint A3: la derivacion de los pares y el max-pooling se
+    delegan en construir_pares_rerank_chunks y
+    scores_maxpool_por_candidato (misma logica y mismo orden que antes;
+    extraidos para que A3 puntue los pares una sola vez con los dos
+    rerankers).
+
     Args:
         reranker: RerankerBGE ya cargado (scripts/lib/reranker_bge.py).
         scores_candidatos: Scores que ordenan a los candidatos (n_articulos,)
@@ -1448,34 +1988,24 @@ def ranking_rerank_chunks(
         - max_tokens_par: Maxima longitud en tokens (sin truncar) de
           los pares (chunk, pasaje) puntuados en este caso.
     """
-    orden_candidatos = np.argsort(-scores_candidatos, kind="stable")
-    candidatos = orden_candidatos[:k_candidatos]
-    maximos_pasajes = matriz_bm25.max(axis=0)
-    textos_pasajes = pasajes["texto"].astype(str).tolist()
-    queries: list[str] = []
-    pasajes_lote: list[str] = []
-    mapa_pares: list[tuple[int, int]] = []
-    for pos_articulo, indice in enumerate(candidatos):
-        indices_pasaje = grupos_indices[indice]
-        mejor_pasaje = int(indices_pasaje[np.argmax(maximos_pasajes[indices_pasaje])])
-        scores_chunks = matriz_bm25[:, mejor_pasaje]
-        top_chunks = np.argsort(-scores_chunks, kind="stable")[
-            : CONFIG["k_chunks_rerank"]
-        ]
-        for fila_chunk in top_chunks:
-            queries.append(chunks[fila_chunk])
-            pasajes_lote.append(textos_pasajes[mejor_pasaje])
-            mapa_pares.append((pos_articulo, fila_chunk))
-    scores_pares = reranker.puntuar(queries, pasajes_lote)
-    scores_rerank = np.full(len(canones), -np.inf, dtype=np.float64)
-    maximos = np.full(len(candidatos), -np.inf, dtype=np.float64)
-    for (pos_articulo, _), score in zip(mapa_pares, scores_pares, strict=True):
-        maximos[pos_articulo] = max(maximos[pos_articulo], float(score))
-    for pos_articulo, indice in enumerate(candidatos):
-        scores_rerank[indice] = maximos[pos_articulo]
-    orden_rerank = candidatos[np.argsort(-maximos, kind="stable")]
+    pares = construir_pares_rerank_chunks(
+        scores_candidatos,
+        matriz_bm25,
+        chunks,
+        grupos_indices,
+        pasajes,
+        k_candidatos,
+    )
+    scores_pares = reranker.puntuar(pares["queries"], pares["pasajes"])
+    scores_rerank = scores_maxpool_por_candidato(
+        scores_pares, pares["posiciones"], pares["candidatos"], len(canones)
+    )
+    maximos = scores_rerank[pares["candidatos"]]
+    orden_rerank = pares["candidatos"][
+        np.argsort(-maximos, kind="stable")
+    ]
     ranking = [canones[i] for i in orden_rerank[: CONFIG["k_rerank_salida"]]]
-    max_tokens_par = reranker.max_tokens_par(queries, pasajes_lote)
+    max_tokens_par = reranker.max_tokens_par(pares["queries"], pares["pasajes"])
     return ranking, scores_rerank, max_tokens_par
 
 
@@ -2118,6 +2648,11 @@ def graficar_deriva(por_caso: pd.DataFrame) -> None:
         "bm25_rerank_chunks_top50": "#8c564b",
         "hibrido_rerank_chunks_top50": "#e377c2",
     }
+    # ciclo v3 - Sprint A2: paleta adicional para estrategias nuevas
+    # (hibrido_<slug>_rerank_chunks_topK) sin romper las existentes.
+    paleta_extra = ["#17becf", "#bcbd22", "#aec7e8", "#ffbb78", "#98df8a", "#ff9896"]
+    for _i, _e in enumerate(e for e in CONFIG["estrategias"] if e not in colores):
+        colores[_e] = paleta_extra[_i % len(paleta_extra)]
     series = (
         por_caso.groupby(["ano", "estrategia"])[list(MEDIDAS)]
         .mean()
@@ -2136,8 +2671,8 @@ def graficar_deriva(por_caso: pd.DataFrame) -> None:
                 marker="o",
                 markersize=4,
                 linewidth=1.1,
-                color=colores[estrategia],
-                label=etiquetas[estrategia],
+                color=colores.get(estrategia, "#333333"),
+                label=etiquetas.get(estrategia, estrategia),
             )
         eje.set_ylabel(medida.upper())
         eje.set_title(titulo, fontsize=10)
@@ -2348,6 +2883,2579 @@ def graficar_contaminacion(diagnostico: dict) -> None:
     plt.close(figura)
 
 
+# ===== SECCION 8c: diagnostico honesto (ciclo v3 - Sprint A1) =====
+# El diagnostico A1 es SOLO inferencia sobre los scores ya calculados:
+# re-rankea y remuestrea, nunca re-ejecuta BM25/E5/reranker (ADR-16:
+# artefactos nuevos c3_*; los benchmarks previos quedan intactos).
+def recall_at_k(relevantes: list[str], ranking: list[str], k: int) -> float:
+    """Calcula el recall@k de un ranking frente al gold binario.
+
+    Args:
+        relevantes: Canones de articulos relevantes (weak labels M2).
+        ranking: Canones ordenados por el retrieval (mejor primero).
+        k: Profundidad de corte.
+
+    Returns:
+        Recall@k en [0.0, 1.0]; 0.0 defensivo si el caso no tiene gold.
+    """
+    rel = set(relevantes)
+    if not rel:
+        return 0.0
+    return sum(1 for canon in ranking[:k] if canon in rel) / len(rel)
+
+
+def metricas_diagnostico_caso(relevantes: list[str], ranking: list[str]) -> dict:
+    """Calcula las 4 medidas del IC bootstrap para un caso.
+
+    Args:
+        relevantes: Canones de articulos relevantes (weak labels M2).
+        ranking: Canones ordenados por el retrieval (mejor primero).
+
+    Returns:
+        Dict con ndcg_at_10, mrr, f1_at_5 y f1_at_10.
+    """
+    m5 = metricas_ranking(relevantes, ranking, CONFIG["k"])
+    m10 = metricas_ranking(relevantes, ranking, CONFIG["k_f1_10"])
+    return {
+        "ndcg_at_10": m5["ndcg_at_10"],
+        "mrr": m5["mrr"],
+        "f1_at_5": m5["f1_at_k"],
+        "f1_at_10": m10["f1_at_k"],
+    }
+
+
+def bootstrap_ic_media(
+    valores: np.ndarray, n_remuestreos: int, semilla: int
+) -> dict:
+    """IC 95% bootstrap del promedio por remuestreo de casos con reemplazo.
+
+    Args:
+        valores: Array (n,) con la medida por caso (orden de la muestra).
+        n_remuestreos: Numero de remuestreos bootstrap (1000 en A1).
+        semilla: Semilla del generador (42 en A1, reproducible).
+
+    Returns:
+        Dict {"n", "media", "p2_5", "p97_5"}; con n=0 todos los valores
+        son None y con n=1 los percentiles igualan a la media.
+    """
+    arreglo = np.asarray(valores, dtype=np.float64)
+    n = int(arreglo.size)
+    if n == 0:
+        return {"n": 0, "media": None, "p2_5": None, "p97_5": None}
+    media = float(arreglo.mean())
+    if n == 1:
+        return {"n": 1, "media": media, "p2_5": media, "p97_5": media}
+    generador = np.random.default_rng(semilla)
+    indices = generador.integers(0, n, size=(n_remuestreos, n))
+    medias = arreglo[indices].mean(axis=1)
+    return {
+        "n": n,
+        "media": media,
+        "p2_5": float(np.percentile(medias, 2.5)),
+        "p97_5": float(np.percentile(medias, 97.5)),
+    }
+
+
+def ranking_diagnostico(
+    caso: dict,
+    estrategia: str,
+    contexto: str,
+    prior: dict,
+    canones: list[str],
+) -> list[str]:
+    """Reconstruye el ranking de una estrategia focal en un contexto.
+
+    Args:
+        caso: Dict del caso con scores base (FUENTE_SCORES).
+        estrategia: Estrategia focal (clave de FUENTE_SCORES).
+        contexto: CONTEXTO_SIN_HUBS (alpha=0) o CONTEXTO_CON_HUBS.
+        prior: Dict {canon: valor} del prior de hubs.
+        canones: Canones alineados con el vector de scores.
+
+    Returns:
+        Lista de canones ordenados por score descendente; en las
+        variantes de rerank el ranking se restringe a los candidatos
+        (score finito), de modo que recall@k con k mayor que el numero
+        de candidatos queda topado por el recall de candidatos.
+    """
+    if contexto == CONTEXTO_CON_HUBS:
+        alpha = float(CONFIG["alphas_adoptados_hubs"].get(estrategia, 0.0))
+    else:
+        alpha = 0.0
+    return ranking_con_alpha(caso, estrategia, alpha, prior, canones)
+
+
+def asignar_terciles_longitud(casos: list[dict]) -> tuple[list[int], list[int]]:
+    """Asigna cada caso a un tercil de longitud en palabras (equilibrado).
+
+    Los terciles parten la muestra ordenada por (palabras, id) en tres
+    grupos lo mas iguales posible: con n multiplo de 3 son de n/3; en
+    otro caso los primeros reciben un caso extra. La longitud es la del
+    texto limpio que alimenta la query (documentado en el JSON).
+
+    Args:
+        casos: Lista de dicts con texto_limpio e id.
+
+    Returns:
+        Tupla (terciles, palabras): terciles[i] en {0,1,2} y numero de
+        palabras del texto limpio del caso i.
+    """
+    palabras = [len(caso["texto_limpio"].split()) for caso in casos]
+    n = len(casos)
+    orden = sorted(range(n), key=lambda i: (palabras[i], casos[i]["id"]))
+    terciles = [0] * n
+    for posicion, indice in enumerate(orden):
+        terciles[indice] = min(2, posicion * 3 // n) if n > 0 else 0
+    return terciles, palabras
+
+
+def techo_teorico_gold(casos: list[dict], canones: list[str]) -> dict:
+    """Techo estructural del gold actual (F1@5/F1@10 y universo).
+
+    El F1@k maximo por caso asume un orden perfecto del gold:
+    P@k = min(k, n_gold)/k y R@k = min(k, n_gold)/n_gold; la media
+    sobre casos es el techo que ningun modelo puede superar con este
+    gold. El recall del universo es la fraccion media del gold que el
+    indice activo puede recuperar (recall@384 devolviendo todo el
+    indice).
+
+    Args:
+        casos: Lista de dicts con arts (gold validado).
+        canones: Canones del indice activo.
+
+    Returns:
+        Dict con distribucion de n_gold, F1@5/F1@10 maximos medios y
+        recall del universo.
+    """
+    n_gold = [len(caso["arts"]) for caso in casos]
+    indice = set(canones)
+
+    def f1_maximo(gold: int, k: int) -> float:
+        """F1@k con orden perfecto del gold para un caso."""
+        aciertos = min(k, gold)
+        p = aciertos / k
+        r = aciertos / gold if gold > 0 else 0.0
+        return 2 * p * r / (p + r) if p + r > 0 else 0.0
+
+    histograma: dict[str, int] = {}
+    for gold in n_gold:
+        histograma[str(gold)] = histograma.get(str(gold), 0) + 1
+    alcanzables = [
+        len(set(caso["arts"]) & indice) / len(caso["arts"])
+        for caso in casos
+        if caso["arts"]
+    ]
+    return {
+        "n_gold_por_caso": {
+            "media": round(float(np.mean(n_gold)), 4),
+            "mediana": float(np.median(n_gold)),
+            "min": int(min(n_gold)),
+            "max": int(max(n_gold)),
+            "histograma": {
+                clave: histograma[clave]
+                for clave in sorted(histograma, key=int)
+            },
+        },
+        "f1_at_5_maximo": {
+            "media": round(
+                float(np.mean([f1_maximo(g, 5) for g in n_gold])), 6
+            )
+        },
+        "f1_at_10_maximo": {
+            "media": round(
+                float(np.mean([f1_maximo(g, 10) for g in n_gold])), 6
+            )
+        },
+        "recall_universo": {
+            "media": (
+                round(float(np.mean(alcanzables)), 6) if alcanzables else None
+            ),
+            "n_articulos_indice": len(canones),
+            "casos_con_gold_fuera_indice": sum(
+                1 for caso in casos if set(caso["arts"]) - indice
+            ),
+        },
+        "nota": (
+            "F1@k maximo por caso con orden perfecto del gold "
+            "(P=min(k,n_gold)/k, R=min(k,n_gold)/n_gold); la media es el "
+            "techo estructural del gold debil de M2. recall_universo = "
+            "fraccion media del gold alcanzable con el indice activo "
+            "(recall@384 si se devuelve el indice completo)."
+        ),
+    }
+
+
+def construir_diagnostico_a1(
+    casos: list[dict],
+    prior: dict,
+    canones: list[str],
+    limite: int | None = None,
+) -> dict:
+    """Construye el diagnostico A1 completo reutilizando scores base.
+
+    ciclo v3 - Sprint A1: sin re-ejecutar modelos, reconstruye los
+    rankings de las estrategias focales en dos contextos (sin hubs y con
+    los alphas adoptados en v8) y calcula curvas recall@k, IC 95%
+    bootstrap de nDCG@10/MRR/F1@5/F1@10, desglose por periodo y por
+    terciles de longitud, recall de candidatos de la primera etapa y el
+    techo teorico del gold.
+
+    Args:
+        casos: Lista de dicts con id, ano, arts, texto_limpio y scores.
+        prior: Dict {canon: valor} del prior de hubs de la CP.
+        canones: Canones alineados con los vectores de scores.
+        limite: Valor de --limite (None en el run final; documentado).
+
+    Returns:
+        Dict serializable con version "c3-a1", config, curvas_recall,
+        recall_candidatos_primera_etapa, ic_bootstrap, por_periodo,
+        por_longitud, techo_teorico y nota.
+    """
+    estrategias = [
+        estrategia
+        for estrategia in CONFIG["estrategias_focales_hubs"]
+        if estrategia in CONFIG["estrategias"] and estrategia in FUENTE_SCORES
+    ]
+    contextos = (CONTEXTO_SIN_HUBS, CONTEXTO_CON_HUBS)
+    ks = list(CONFIG["k_curvas_recall"])
+    periodos = [nombre for nombre, _, _ in CONFIG["periodos"]]
+    medidas = ("ndcg_at_10", "mrr", "f1_at_5", "f1_at_10")
+    n_bootstrap = CONFIG["diagnostico_bootstrap"]
+    semilla = CONFIG["diagnostico_seed"]
+
+    # Rankings reconstruidos una sola vez por (contexto, estrategia).
+    rankings = {
+        contexto: {
+            estrategia: [
+                ranking_diagnostico(caso, estrategia, contexto, prior, canones)
+                for caso in casos
+            ]
+            for estrategia in estrategias
+        }
+        for contexto in contextos
+    }
+
+    # (1) Curvas recall@k por contexto y estrategia.
+    curvas: dict = {}
+    for contexto in contextos:
+        curvas[contexto] = {}
+        for estrategia in estrategias:
+            valores_k = {}
+            for k in ks:
+                valores = [
+                    recall_at_k(caso["arts"], ranking, k)
+                    for caso, ranking in zip(
+                        casos, rankings[contexto][estrategia], strict=True
+                    )
+                ]
+                valores_k[str(k)] = round(float(np.mean(valores)), 6)
+            curvas[contexto][estrategia] = valores_k
+
+    # Medidas por caso (una vez) para IC, periodo y longitud.
+    valores_caso: dict = {}
+    for contexto in contextos:
+        valores_caso[contexto] = {}
+        for estrategia in estrategias:
+            filas_caso = [
+                metricas_diagnostico_caso(caso["arts"], ranking)
+                for caso, ranking in zip(
+                    casos, rankings[contexto][estrategia], strict=True
+                )
+            ]
+            valores_caso[contexto][estrategia] = {
+                medida: np.asarray(
+                    [fila[medida] for fila in filas_caso], dtype=np.float64
+                )
+                for medida in medidas
+            }
+
+    # (2) IC 95% bootstrap por estrategia focal (full).
+    ic_bootstrap = {
+        contexto: {
+            estrategia: {
+                medida: bootstrap_ic_media(
+                    valores_caso[contexto][estrategia][medida],
+                    n_bootstrap,
+                    semilla,
+                )
+                for medida in medidas
+            }
+            for estrategia in estrategias
+        }
+        for contexto in contextos
+    }
+
+    # (3) Desglose por periodo (n=30 en el run final).
+    por_periodo: dict = {}
+    for contexto in contextos:
+        por_periodo[contexto] = {}
+        for periodo in periodos:
+            indices = [
+                i
+                for i, caso in enumerate(casos)
+                if asignar_periodo(caso["ano"]) == periodo
+            ]
+            por_periodo[contexto][periodo] = {
+                "n_casos": len(indices),
+                "por_estrategia": {
+                    estrategia: {
+                        medida: bootstrap_ic_media(
+                            valores_caso[contexto][estrategia][medida][indices],
+                            n_bootstrap,
+                            semilla,
+                        )
+                        for medida in ("ndcg_at_10", "f1_at_10")
+                    }
+                    for estrategia in estrategias
+                },
+            }
+
+    # (4) Desglose por terciles de longitud del caso.
+    terciles, palabras = asignar_terciles_longitud(casos)
+    por_longitud: dict = {}
+    for contexto in contextos:
+        por_longitud[contexto] = {}
+        for tercil, nombre in enumerate(("tercil_1", "tercil_2", "tercil_3")):
+            indices = [i for i, valor in enumerate(terciles) if valor == tercil]
+            por_longitud[contexto][nombre] = {
+                "n_casos": len(indices),
+                "rango_palabras": (
+                    [
+                        int(min(palabras[i] for i in indices)),
+                        int(max(palabras[i] for i in indices)),
+                    ]
+                    if indices
+                    else None
+                ),
+                "ndcg_at_10": {
+                    estrategia: bootstrap_ic_media(
+                        valores_caso[contexto][estrategia]["ndcg_at_10"][
+                            indices
+                        ],
+                        n_bootstrap,
+                        semilla,
+                    )
+                    for estrategia in estrategias
+                },
+            }
+
+    # Recall de los candidatos top-50 de la primera etapa (techo del
+    # reranker): bm25 alimenta a bm25_rerank_chunks_top50 e hibrido a
+    # hibrido_rerank_chunks_top50.
+    k_candidatos = CONFIG["k_candidatos_rerank_top50"]
+    recall_candidatos: dict = {}
+    for base in ("bm25", "hibrido"):
+        if base not in CONFIG["estrategias"]:
+            continue
+        valores = [
+            recall_at_k(caso["arts"], caso["rankings"][base], k_candidatos)
+            for caso in casos
+        ]
+        por_periodo_candidatos = {}
+        for periodo in periodos:
+            indices = [
+                i
+                for i, caso in enumerate(casos)
+                if asignar_periodo(caso["ano"]) == periodo
+            ]
+            por_periodo_candidatos[periodo] = (
+                round(float(np.mean([valores[i] for i in indices])), 6)
+                if indices
+                else None
+            )
+        recall_candidatos[f"{base}_top{k_candidatos}"] = {
+            "estrategia_primera_etapa": base,
+            "k_candidatos": k_candidatos,
+            "media": round(float(np.mean(valores)), 6),
+            "por_periodo": por_periodo_candidatos,
+        }
+
+    return {
+        "version": CONFIG["version_diagnostico"],
+        "fecha": datetime.now(timezone.utc).isoformat(),
+        "smoke_test": limite is not None,
+        "casos": len(casos),
+        "config": {
+            "limite_casos": limite,
+            "muestra_por_ano": CONFIG["muestra_por_ano"],
+            "semilla_muestra": CONFIG["semilla"],
+            "indice": CONFIG["version_indice"],
+            "reranker": (
+                CONFIG["reranker"]
+                if "bm25_rerank_chunks_top50" in CONFIG["estrategias"]
+                else None
+            ),
+            "estrategias_focales": estrategias,
+            "k_curvas_recall": ks,
+            "n_remuestreos_bootstrap": n_bootstrap,
+            "semilla_bootstrap": semilla,
+            "contextos": [CONTEXTO_SIN_HUBS, CONTEXTO_CON_HUBS],
+            "alphas_adoptados_hubs": dict(CONFIG["alphas_adoptados_hubs"]),
+            "recall_topado_por_candidatos": {
+                estrategia: True
+                for estrategia in estrategias
+                if estrategia in ESTRATEGIAS_RERANK
+            },
+            "nota_terciles": (
+                "Terciles equilibrados por numero de palabras del texto "
+                "limpio (la query); rango_palabras documenta los cortes."
+            ),
+        },
+        "curvas_recall": curvas,
+        "recall_candidatos_primera_etapa": recall_candidatos,
+        "ic_bootstrap": ic_bootstrap,
+        "por_periodo": por_periodo,
+        "por_longitud": por_longitud,
+        "techo_teorico": techo_teorico_gold(casos, canones),
+        "nota": (
+            "ciclo v3 - Sprint A1 'metricas honestas': el diagnostico "
+            "reutiliza los scores base ya calculados (sin re-ejecutar "
+            "BM25/E5/reranker) y solo re-rankea/remuestrea. Contextos: "
+            "sin_hubs (alpha=0) y con_hubs (alphas adoptados del run v8: "
+            "bm25 0.75, hibrido 0.75 y variantes de rerank top-50 1.5). "
+            "En las variantes de rerank el recall@k para k>50 esta topado "
+            "por el set de candidatos de la primera etapa (recall de "
+            "candidatos), no por el universo. El IC 95% es un bootstrap "
+            "de casos con reemplazo (1000 remuestreos, seed 42); con n "
+            "pequeno (periodos de 30 casos) el IC es orientativo. El "
+            "gold es el debil de M2 (NER): el techo teorico documenta su "
+            "limite estructural."
+        ),
+    }
+
+
+def graficar_recall_curvas(diagnostico: dict) -> None:
+    """Genera la figura c3_recall_curvas.png (recall@k por estrategia).
+
+    Args:
+        diagnostico: Dict de construir_diagnostico_a1.
+    """
+    estrategias = diagnostico["config"]["estrategias_focales"]
+    ks = list(diagnostico["config"]["k_curvas_recall"])
+    figura, eje = plt.subplots(figsize=(9.5, 5.5))
+    for estrategia in estrategias:
+        color = COLORES_FOCALES.get(estrategia, "#333333")
+        etiqueta = ETIQUETAS_FOCALES.get(estrategia, estrategia)
+        for contexto, estilo, marcador, alpha in (
+            (CONTEXTO_CON_HUBS, "-", "o", 1.0),
+            (CONTEXTO_SIN_HUBS, "--", "s", 0.7),
+        ):
+            valores = [
+                diagnostico["curvas_recall"][contexto][estrategia][str(k)]
+                for k in ks
+            ]
+            eje.plot(
+                ks,
+                valores,
+                linestyle=estilo,
+                marker=marcador,
+                markersize=4,
+                linewidth=1.2,
+                color=color,
+                alpha=alpha,
+                label=f"{etiqueta} ({contexto.replace('_', ' ')})",
+            )
+    eje.axvline(
+        CONFIG["k_candidatos_rerank_top50"],
+        color="#7f7f7f",
+        linestyle=":",
+        linewidth=1.0,
+        label="techo de candidatos top-50 (rerank)",
+    )
+    eje.set_xlabel("k (profundidad del ranking)")
+    eje.set_ylabel("recall@k")
+    eje.set_title(
+        "ciclo v3 - Sprint A1: recall@k por estrategia focal "
+        "(benchmark sentencia->CP)",
+        fontsize=10,
+    )
+    eje.set_xticks(ks)
+    eje.set_ylim(0.0, 1.0)
+    eje.grid(True, alpha=0.3)
+    eje.legend(fontsize=7, loc="lower right", ncol=2)
+    figura.tight_layout()
+    Path(CONFIG["ruta_figura_diagnostico_recall"]).parent.mkdir(
+        parents=True, exist_ok=True
+    )
+    figura.savefig(
+        CONFIG["ruta_figura_diagnostico_recall"],
+        dpi=150,
+        bbox_inches="tight",
+    )
+    plt.close(figura)
+
+
+def graficar_metricas_ic(diagnostico: dict) -> None:
+    """Genera la figura c3_metricas_ic.png (media e IC 95% por estrategia).
+
+    Dos paneles (nDCG@10 y F1@10) con barras pareadas por contexto
+    (sin hubs y con los alphas adoptados) y barras de error = IC 95%
+    bootstrap.
+
+    Args:
+        diagnostico: Dict de construir_diagnostico_a1.
+    """
+    estrategias = diagnostico["config"]["estrategias_focales"]
+    posiciones = np.arange(len(estrategias))
+    ancho = 0.38
+    figura, ejes = plt.subplots(1, 2, figsize=(12, 5))
+    for eje, medida, titulo in (
+        (ejes[0], "ndcg_at_10", "nDCG@10"),
+        (ejes[1], "f1_at_10", "F1@10"),
+    ):
+        for desplazamiento, contexto, etiqueta_contexto, color in (
+            (-ancho / 2, CONTEXTO_SIN_HUBS, "sin hubs", "#7f7f7f"),
+            (
+                ancho / 2,
+                CONTEXTO_CON_HUBS,
+                "con hubs (alpha adoptado)",
+                "#1f77b4",
+            ),
+        ):
+            medias, errores_inf, errores_sup = [], [], []
+            for estrategia in estrategias:
+                datos = diagnostico["ic_bootstrap"][contexto][estrategia][
+                    medida
+                ]
+                media = datos["media"] if datos["media"] is not None else 0.0
+                p2_5 = datos["p2_5"] if datos["p2_5"] is not None else media
+                p97_5 = (
+                    datos["p97_5"] if datos["p97_5"] is not None else media
+                )
+                medias.append(media)
+                errores_inf.append(media - p2_5)
+                errores_sup.append(p97_5 - media)
+            eje.bar(
+                posiciones + desplazamiento,
+                medias,
+                width=ancho,
+                color=color,
+                alpha=0.85,
+                label=etiqueta_contexto,
+                yerr=[errores_inf, errores_sup],
+                capsize=3,
+            )
+        eje.set_xticks(posiciones)
+        eje.set_xticklabels(
+            [ETIQUETAS_FOCALES.get(e, e) for e in estrategias],
+            rotation=15,
+            ha="right",
+            fontsize=8,
+        )
+        eje.set_ylabel(titulo)
+        eje.set_title(
+            f"{titulo}: media e IC 95% bootstrap (1000 remuestreos)",
+            fontsize=10,
+        )
+        eje.set_ylim(0.0, 1.0)
+        eje.grid(True, axis="y", alpha=0.3)
+        eje.legend(fontsize=8)
+    figura.tight_layout()
+    Path(CONFIG["ruta_figura_diagnostico_ic"]).parent.mkdir(
+        parents=True, exist_ok=True
+    )
+    figura.savefig(
+        CONFIG["ruta_figura_diagnostico_ic"], dpi=150, bbox_inches="tight"
+    )
+    plt.close(figura)
+
+
+def graficar_por_periodo(diagnostico: dict) -> None:
+    """Genera la figura c3_por_periodo.png (nDCG@10 por periodo).
+
+    Barras agrupadas por periodo y estrategia focal en el contexto con
+    hubs adoptados; las barras de error son el IC 95% bootstrap del
+    subconjunto (30 casos por periodo en el run final).
+
+    Args:
+        diagnostico: Dict de construir_diagnostico_a1.
+    """
+    periodos = [nombre for nombre, _, _ in CONFIG["periodos"]]
+    estrategias = diagnostico["config"]["estrategias_focales"]
+    posiciones = np.arange(len(periodos))
+    ancho = 0.8 / max(len(estrategias), 1)
+    figura, eje = plt.subplots(figsize=(10, 5.5))
+    for posicion_estrategia, estrategia in enumerate(estrategias):
+        medias, errores_inf, errores_sup = [], [], []
+        for periodo in periodos:
+            datos = diagnostico["por_periodo"][CONTEXTO_CON_HUBS][periodo][
+                "por_estrategia"
+            ][estrategia]["ndcg_at_10"]
+            media = datos["media"] if datos["media"] is not None else 0.0
+            p2_5 = datos["p2_5"] if datos["p2_5"] is not None else media
+            p97_5 = datos["p97_5"] if datos["p97_5"] is not None else media
+            medias.append(media)
+            errores_inf.append(media - p2_5)
+            errores_sup.append(p97_5 - media)
+        eje.bar(
+            posiciones - 0.4 + ancho * (posicion_estrategia + 0.5),
+            medias,
+            width=ancho,
+            color=COLORES_FOCALES.get(estrategia, "#333333"),
+            label=ETIQUETAS_FOCALES.get(estrategia, estrategia),
+            yerr=[errores_inf, errores_sup],
+            capsize=3,
+        )
+    for posicion, periodo in enumerate(periodos):
+        n_casos = diagnostico["por_periodo"][CONTEXTO_CON_HUBS][periodo][
+            "n_casos"
+        ]
+        eje.text(
+            posicion,
+            -0.06,
+            f"n={n_casos}",
+            ha="center",
+            va="top",
+            fontsize=8,
+        )
+    eje.set_xticks(posiciones)
+    eje.set_xticklabels(periodos)
+    eje.set_ylabel("nDCG@10")
+    eje.set_xlabel("Periodo de la sentencia")
+    eje.set_title(
+        "ciclo v3 - Sprint A1: nDCG@10 por periodo y estrategia "
+        "(con hubs adoptados; barras = IC 95% bootstrap)",
+        fontsize=10,
+    )
+    eje.set_ylim(0.0, 1.0)
+    eje.grid(True, axis="y", alpha=0.3)
+    eje.legend(fontsize=8)
+    figura.tight_layout()
+    Path(CONFIG["ruta_figura_diagnostico_periodo"]).parent.mkdir(
+        parents=True, exist_ok=True
+    )
+    figura.savefig(
+        CONFIG["ruta_figura_diagnostico_periodo"],
+        dpi=150,
+        bbox_inches="tight",
+    )
+    plt.close(figura)
+
+
+# ===== SECCION 8d: matriz A2 de embeddings legales (ciclo v3 - Sprint A2) =====
+# La matriz A2 es ADITIVA: sin flags el script se comporta exactamente
+# como en A1. Con --embedding-model y/o --k-candidatos-hybrid != 50 se
+# activa (aplicar_modo_a2): se cargan los embeddings alternativos (E5
+# siempre como referencia), se cachean los embeddings de pasajes por
+# modelo en data/cache_emb_cp/<slug>.joblib y se comparan las estrategias
+# hibridas + rerank por chunks a la profundidad pedida en dos contextos
+# del prior de hubs (alpha=0 y alpha=1.5) con IC bootstrap de la media y
+# bootstrap PAREADO de la diferencia contra E5@K (ADR-16: v2..v8
+# intocables; salidas v9 y figura c3_a2_embeddings.png).
+#
+# Convenciones de prefijos (verificadas 2026-09-11 en el
+# config_sentence_transformers.json y la model card de cada repo):
+# - E5: "query: "/"passage: " (oficiales del modelo);
+# - ALIA-MrBERT-legal, BGE-M3-Legal-Spanish y modernbert-embed-es-legal-
+#   v2: prompts query/document VACIOS -> sin prefijo (se documenta en el
+#   campo prefijos del JSON v9).
+# El pooling lo fija cada repositorio (mean para ALIA/modernbert, CLS
+# para BGE-M3) y SentenceTransformer lo respeta; los embeddings se
+# normalizan (similitud coseno, igual que E5).
+def slug_modelo_embedding(nombre: str) -> str:
+    """Resuelve el slug corto de un modelo de embeddings.
+
+    Acepta un slug del catalogo (e5/alia/bgem3/modernbert) o un HF id
+    (tabulado o arbitrario). Para HF ids no tabulados deriva un slug
+    estable de la ultima parte del id (minusculas, caracteres no
+    alfanumericos a "_").
+
+    Args:
+        nombre: Slug corto o HF id del modelo.
+
+    Returns:
+        Slug corto del modelo.
+    """
+    if nombre in CONFIG["modelos_embedding"]:
+        return nombre
+    for slug, configuracion in CONFIG["modelos_embedding"].items():
+        if configuracion["hf_id"] == nombre:
+            return slug
+    base = nombre.split("/")[-1].lower()
+    return re.sub(r"[^a-z0-9]+", "_", base).strip("_")
+
+
+def config_modelo_embedding(nombre: str) -> dict:
+    """Devuelve la configuracion de carga de un modelo de embeddings.
+
+    Los modelos no tabulados se asumen sentence-transformers estandar
+    SIN prefijos (documentado): el pooling lo fija el repositorio.
+
+    Args:
+        nombre: Slug corto o HF id del modelo.
+
+    Returns:
+        Dict con slug, hf_id, prefijo_query, prefijo_pasaje, carga y nota.
+    """
+    slug = slug_modelo_embedding(nombre)
+    tabulado = CONFIG["modelos_embedding"].get(slug)
+    if tabulado is None:
+        tabulado = {
+            "hf_id": nombre,
+            "prefijo_query": "",
+            "prefijo_pasaje": "",
+            "carga": "sentence_transformers",
+            "nota": (
+                "Modelo no tabulado: SentenceTransformer estandar sin "
+                "prefijos (verificar la model card antes de adoptar)."
+            ),
+        }
+    return {"slug": slug, **tabulado}
+
+
+def cargar_modelo_embedding(configuracion: dict, dispositivo: str) -> tuple:
+    """Carga un modelo de embeddings (SentenceTransformer) en el dispositivo.
+
+    E5 conserva la carga legacy exacta (backbone + mean pooling) para
+    mantener la identidad con v2..v8; el resto se carga con
+    SentenceTransformer estandar y max_seq_length = tamano_chunk (512),
+    de modo que los chunks definidos por CONFIG['tamano_chunk'] quepan
+    completos (el pool lo fija el repositorio del modelo).
+
+    Args:
+        configuracion: Config de config_modelo_embedding.
+        dispositivo: "cuda"/"cpu" elegido por elegir_dispositivo.
+
+    Returns:
+        Tupla (modelo, tokenizer) listos para encode.
+    """
+    from sentence_transformers import SentenceTransformer
+
+    if configuracion["carga"] == "e5_custom":
+        from sentence_transformers import models as st_models
+
+        backbone = st_models.Transformer(
+            configuracion["hf_id"], max_seq_length=CONFIG["tamano_chunk"]
+        )
+        pooling = st_models.Pooling(
+            backbone.get_embedding_dimension(), pooling_mode="mean"
+        )
+        modelo = SentenceTransformer(
+            modules=[backbone, pooling], device=dispositivo
+        )
+    else:
+        modelo = SentenceTransformer(configuracion["hf_id"], device=dispositivo)
+        modelo.max_seq_length = CONFIG["tamano_chunk"]
+    modelo.eval()
+    return modelo, modelo.tokenizer
+
+
+def ruta_cache_emb_pasajes(slug: str) -> Path:
+    """Ruta de la cache de embeddings de pasajes de la CP de un modelo.
+
+    Args:
+        slug: Slug corto del modelo.
+
+    Returns:
+        Path data/cache_emb_cp/<slug>.joblib dentro del proyecto.
+    """
+    return Path(CONFIG["cache_emb_cp_dir"]) / f"{slug}.joblib"
+
+
+def _hash_canones(canones: list[str]) -> str:
+    """Huella md5 del orden y contenido de los canones indexados.
+
+    Args:
+        canones: Canones del indice activo, en orden.
+
+    Returns:
+        Digest md5 hexadecimal.
+    """
+    return hashlib.md5("|".join(canones).encode("utf-8")).hexdigest()
+
+
+def _cache_nueva_valida(
+    datos: object,
+    configuracion: dict,
+    pasajes: pd.DataFrame,
+    hash_canones: str,
+) -> np.ndarray | None:
+    """Valida una cache nueva de embeddings de pasajes.
+
+    Args:
+        datos: Contenido deserializado de la cache (o None).
+        configuracion: Config del modelo (hf_id, prefijos, slug).
+        pasajes: DataFrame de pasajes del indice activo.
+        hash_canones: md5 de los canones del indice activo.
+
+    Returns:
+        Matriz float32 (n_pasajes, dim) si la cache es compatible; None
+        si falta cualquier campo, no coincide la configuracion o el
+        shape no cuadra (en ese caso se recalcula).
+    """
+    if not isinstance(datos, dict) or datos.get("formato") != "cache_emb_cp_v1":
+        return None
+    if datos.get("hf_id") != configuracion["hf_id"]:
+        return None
+    if datos.get("prefijo_pasaje") != configuracion["prefijo_pasaje"]:
+        return None
+    if (
+        datos.get("tamano_chunk") != CONFIG["tamano_chunk"]
+        or datos.get("solape_chunk") != CONFIG["solape_chunk"]
+        or datos.get("pasaje_max_palabras") != CONFIG["pasaje_max_palabras"]
+    ):
+        return None
+    if datos.get("n_pasajes") != len(pasajes):
+        return None
+    if datos.get("hash_canones") != hash_canones:
+        return None
+    matriz = np.asarray(datos.get("matriz"))
+    if matriz.ndim != 2 or matriz.shape[0] != len(pasajes):
+        return None
+    return matriz.astype(np.float32)
+
+
+def _cache_legacy_e5(configuracion: dict, pasajes: pd.DataFrame) -> np.ndarray | None:
+    """Lee la cache legacy E5 del producto (data/cache_e5_cp) si es valida.
+
+    data/cache_e5_cp/pasajes_e5_base.joblib (Fase X del producto) guarda
+    la matriz agregada de los 685 pasajes permanentes con el mismo
+    modelo/chunking que este benchmark. Se valida modelo, tamano/solape
+    de chunk, pasaje_max_palabras y numero de pasajes; el contenido se
+    verifica ademas con un spot check contra el modelo vivo (ver
+    cargar_o_calcular_matriz_pasajes).
+
+    Args:
+        configuracion: Config del modelo E5.
+        pasajes: DataFrame de pasajes del indice activo.
+
+    Returns:
+        Matriz float32 (n_pasajes, dim) si la cache legacy es compatible;
+        None en caso contrario.
+    """
+    ruta = ROOT / "data" / "cache_e5_cp" / "pasajes_e5_base.joblib"
+    if not ruta.is_file():
+        return None
+    try:
+        datos = joblib.load(ruta)
+    except Exception:  # noqa: BLE001 - cache ilegible: recalcular
+        return None
+    if not isinstance(datos, dict):
+        return None
+    if datos.get("modelo") != configuracion["hf_id"]:
+        return None
+    if (
+        datos.get("tamano_chunk") != CONFIG["tamano_chunk"]
+        or datos.get("solape_chunk") != CONFIG["solape_chunk"]
+        or datos.get("n_pasajes") != len(pasajes)
+    ):
+        return None
+    matriz = np.asarray(datos.get("matriz"))
+    if matriz.ndim != 2 or matriz.shape[0] != len(pasajes):
+        return None
+    return matriz.astype(np.float32)
+
+
+def _spot_check_matriz(
+    modelo: object,
+    tokenizer: object,
+    configuracion: dict,
+    pasajes: pd.DataFrame,
+    matriz: np.ndarray,
+) -> bool:
+    """Verifica que una matriz cacheada este alineada con los pasajes.
+
+    Codifica 3 pasajes (primero, medio y ultimo) y compara el coseno
+    contra las filas cacheadas; si alguno baja de 0.99 se considera la
+    cache desalineada y se recalcula (defensa contra caches legacy sin
+    hash de pasajes).
+
+    Args:
+        modelo: SentenceTransformer cargado.
+        tokenizer: Tokenizer del modelo.
+        configuracion: Config del modelo (prefijo de pasaje).
+        pasajes: DataFrame de pasajes del indice activo.
+        matriz: Matriz cacheada (n_pasajes, dim).
+
+    Returns:
+        True si los 3 pasajes de control superan coseno 0.99.
+    """
+    n = len(pasajes)
+    indices = sorted({0, n // 2, n - 1})
+    grupos = [
+        chunkear_texto(pasajes["texto"].iloc[i], tokenizer) or [""]
+        for i in indices
+    ]
+    longitudes = [len(grupo) for grupo in grupos]
+    textos = [
+        configuracion["prefijo_pasaje"] + chunk
+        for grupo in grupos
+        for chunk in grupo
+    ]
+    planos = _codificar_con_fallback(modelo, textos)
+    vectores = media_por_grupos(planos, longitudes)
+    for posicion, indice in enumerate(indices):
+        referencia = matriz[indice].astype(np.float64)
+        vector = vectores[posicion].astype(np.float64)
+        norma = float(np.linalg.norm(referencia) * np.linalg.norm(vector))
+        coseno = float(np.dot(referencia, vector) / norma) if norma > 0 else 0.0
+        if coseno < 0.99:
+            print(
+                f"[aviso] spot check de cache fallido en pasaje {indice} "
+                f"(coseno {coseno:.4f} < 0.99): se recalcula la matriz"
+            )
+            return False
+    return True
+
+
+def cargar_o_calcular_matriz_pasajes(
+    modelo: object,
+    tokenizer: object,
+    configuracion: dict,
+    pasajes: pd.DataFrame,
+    canones: list[str],
+) -> tuple[np.ndarray, dict]:
+    """Carga o calcula la matriz de embeddings de los pasajes de la CP.
+
+    La cache es POR MODELO en data/cache_emb_cp/<slug>.joblib y guarda la
+    matriz AGREGADA (un vector unitario por pasaje: chunk-mean
+    renormalizado, igual que el pipeline E5) con metadata de validacion
+    (hf_id, prefijos, tamano/solape de chunk, pasaje_max_palabras,
+    n_pasajes, md5 del orden de canones y dimension). Si la cache nueva
+    no existe o no valida, para E5 se intenta MIGRAR la cache legacy del
+    producto (validada ademas con spot check de 3 pasajes) y, si no, se
+    recalcula desde cero con el modelo.
+
+    Args:
+        modelo: SentenceTransformer cargado en el dispositivo.
+        tokenizer: Tokenizer del modelo.
+        configuracion: Config de config_modelo_embedding.
+        pasajes: DataFrame con columna texto (un pasaje por fila).
+        canones: Canones del indice activo (orden del indice).
+
+    Returns:
+        Tupla (matriz float32 (n_pasajes, dim), stats) con stats de
+        origen ("cache", "cache_legacy_migrada" o "calculada"), numero
+        de chunks y segundos de codificacion.
+    """
+    slug = configuracion["slug"]
+    ruta = ruta_cache_emb_pasajes(slug)
+    hash_canones = _hash_canones(canones)
+    stats = {
+        "slug": slug,
+        "hf_id": configuracion["hf_id"],
+        "origen": None,
+        "n_pasajes": len(pasajes),
+        "n_chunks": None,
+        "segundos": None,
+    }
+    if ruta.is_file():
+        try:
+            datos = joblib.load(ruta)
+        except Exception:  # noqa: BLE001 - cache ilegible: recalcular
+            datos = None
+        matriz = _cache_nueva_valida(datos, configuracion, pasajes, hash_canones)
+        if matriz is not None:
+            stats["origen"] = "cache"
+            print(f"[info] embeddings pasajes {slug}: cache {ruta}")
+            return matriz, stats
+    if slug == "e5":
+        matriz = _cache_legacy_e5(configuracion, pasajes)
+        if matriz is not None and _spot_check_matriz(
+            modelo, tokenizer, configuracion, pasajes, matriz
+        ):
+            stats["origen"] = "cache_legacy_migrada"
+            stats["n_chunks"] = int(
+                sum(len(chunkear_texto(t, tokenizer) or [""]) for t in pasajes["texto"])
+            )
+            _guardar_cache_emb_pasajes(
+                ruta, configuracion, pasajes, hash_canones, matriz, stats
+            )
+            print(
+                f"[info] embeddings pasajes {slug}: cache legacy del "
+                f"producto migrada a {ruta} (spot check superado)"
+            )
+            return matriz, stats
+    inicio = time.time()
+    grupos = [
+        chunkear_texto(texto, tokenizer) or [""]
+        for texto in pasajes["texto"].tolist()
+    ]
+    longitudes = [len(grupo) for grupo in grupos]
+    textos = [
+        configuracion["prefijo_pasaje"] + chunk
+        for grupo in grupos
+        for chunk in grupo
+    ]
+    planos = _codificar_con_fallback(modelo, textos)
+    matriz = media_por_grupos(planos, longitudes)
+    stats.update(
+        {
+            "origen": "calculada",
+            "n_chunks": len(textos),
+            "segundos": round(time.time() - inicio, 1),
+        }
+    )
+    _guardar_cache_emb_pasajes(
+        ruta, configuracion, pasajes, hash_canones, matriz, stats
+    )
+    print(
+        f"[info] embeddings pasajes {slug}: calculados y cacheados en "
+        f"{ruta} ({stats['segundos']} s)"
+    )
+    return matriz, stats
+
+
+def _guardar_cache_emb_pasajes(
+    ruta: Path,
+    configuracion: dict,
+    pasajes: pd.DataFrame,
+    hash_canones: str,
+    matriz: np.ndarray,
+    stats: dict,
+) -> None:
+    """Serializa la cache nueva de embeddings de pasajes con su metadata.
+
+    Args:
+        ruta: Path de destino (<slug>.joblib).
+        configuracion: Config del modelo.
+        pasajes: DataFrame de pasajes (para n_pasajes).
+        hash_canones: md5 de los canones del indice.
+        matriz: Matriz (n_pasajes, dim) de embeddings unitarios.
+        stats: Stats del calculo (n_chunks, segundos) para trazabilidad.
+    """
+    ruta.parent.mkdir(parents=True, exist_ok=True)
+    joblib.dump(
+        {
+            "formato": "cache_emb_cp_v1",
+            "slug": configuracion["slug"],
+            "hf_id": configuracion["hf_id"],
+            "prefijo_query": configuracion["prefijo_query"],
+            "prefijo_pasaje": configuracion["prefijo_pasaje"],
+            "tamano_chunk": CONFIG["tamano_chunk"],
+            "solape_chunk": CONFIG["solape_chunk"],
+            "pasaje_max_palabras": CONFIG["pasaje_max_palabras"],
+            "n_pasajes": len(pasajes),
+            "hash_canones": hash_canones,
+            "dim": int(matriz.shape[1]),
+            "n_chunks": stats.get("n_chunks"),
+            "segundos": stats.get("segundos"),
+            "fecha": datetime.now(timezone.utc).isoformat(),
+            "matriz": np.asarray(matriz, dtype=np.float32),
+        },
+        ruta,
+    )
+
+
+def calcular_scores_embedding(
+    modelo: object,
+    tokenizer: object,
+    configuracion: dict,
+    casos: list[dict],
+    matriz_pasajes: np.ndarray,
+    grupos_indices: list[np.ndarray],
+) -> dict:
+    """Codifica los chunks de query y calcula el score denso por articulo.
+
+    Mismo pipeline que E5 (ADR-3/ADR-9): chunks de <= tamano_chunk tokens
+    de la ventana completa, prefijo de query del catalogo, max-pooling
+    entre chunks y entre pasajes del articulo. Los embeddings quedan en
+    caso[f"scores_emb_<slug>"] (n_articulos,).
+
+    Args:
+        modelo: SentenceTransformer cargado.
+        tokenizer: Tokenizer del modelo.
+        configuracion: Config de config_modelo_embedding.
+        casos: Lista de dicts con ventana y arts.
+        matriz_pasajes: Matriz (n_pasajes, dim) unitaria de pasajes.
+        grupos_indices: Arrays de posiciones de pasajes por articulo.
+
+    Returns:
+        Dict de stats: n_chunks_query, media_chunks_query,
+        longitudes_query (por caso) y segundos.
+    """
+    slug = configuracion["slug"]
+    inicio = time.time()
+    grupos_query = [
+        chunkear_texto(caso["ventana"], tokenizer) or [""] for caso in casos
+    ]
+    longitudes = [len(grupo) for grupo in grupos_query]
+    textos = [
+        configuracion["prefijo_query"] + chunk
+        for grupo in grupos_query
+        for chunk in grupo
+    ]
+    emb_query = _codificar_con_fallback(modelo, textos)
+    posicion = 0
+    for caso, n_chunks in zip(casos, longitudes, strict=True):
+        vectores = emb_query[posicion : posicion + n_chunks]
+        posicion += n_chunks
+        caso[f"scores_emb_{slug}"] = scores_e5_caso(
+            vectores, matriz_pasajes, grupos_indices
+        )
+    return {
+        "n_chunks_query": len(textos),
+        "media_chunks_query": (
+            round(float(np.mean(longitudes)), 2) if longitudes else 0.0
+        ),
+        "longitudes_query": longitudes,
+        "segundos": round(time.time() - inicio, 1),
+    }
+
+
+def ranking_con_alpha(
+    caso: dict,
+    estrategia: str,
+    alpha: float,
+    prior: dict,
+    canones: list[str],
+) -> list[str]:
+    """Reconstruye el ranking de una estrategia con un alpha explicito.
+
+    Generalizacion de ranking_diagnostico para la matriz A2 (alpha fijo
+    por contexto, p. ej. 1.5): aplica el prior solo entre los scores
+    finitos (los no candidatos de un rerank quedan en -inf y no son
+    retornables) y restringe el universo del rerank a sus candidatos.
+
+    Args:
+        caso: Dict del caso con scores base (FUENTE_SCORES).
+        estrategia: Nombre de la estrategia (clave de FUENTE_SCORES).
+        alpha: Peso del prior de hubs (0.0 = sin hubs).
+        prior: Dict {canon: valor} del prior de hubs.
+        canones: Canones alineados con el vector de scores.
+
+    Returns:
+        Lista de canones ordenados por score descendente.
+    """
+    scores = caso[FUENTE_SCORES[estrategia]]
+    if alpha:
+        scores = aplicar_prior_scores(scores, canones, prior, alpha)
+    if estrategia in ESTRATEGIAS_RERANK:
+        # El universo del reranker son SOLO sus candidatos: los no
+        # candidatos tienen -inf y no son resultados retornables (el
+        # ranking de producto ademas esta truncado a 10). Restringir el
+        # ranking a ellos es lo que topa recall@k para k>K.
+        finitos = np.flatnonzero(np.isfinite(scores))
+        orden = finitos[np.argsort(-scores[finitos], kind="stable")]
+        return [canones[i] for i in orden]
+    return ranking_desde_scores(scores, canones)
+
+
+def bootstrap_ic_pareado(
+    nuevo: np.ndarray,
+    referencia: np.ndarray,
+    n_remuestreos: int,
+    semilla: int,
+) -> dict:
+    """IC 95% bootstrap PAREADO de la diferencia nuevo - referencia.
+
+    Los dos arrays comparten el orden de casos y el mismo generador
+    (semilla y tamano muestral identicos) produce la misma matriz de
+    indices, de modo que el delta se calcula caso a caso: es la version
+    pareada del bootstrap de casos con reemplazo (mismos remuestreos
+    para todas las estrategias, requisito del gate ADR-16).
+
+    Args:
+        nuevo: Array (n,) con la medida por caso de la estrategia nueva.
+        referencia: Array (n,) con la medida por caso de la referencia.
+        n_remuestreos: Numero de remuestreos bootstrap (1000 en A2).
+        semilla: Semilla del generador (42 en A2, reproducible).
+
+    Returns:
+        Dict {"n", "media_delta", "p2_5", "p97_5", "prob_mejora",
+        "gana"}: media observada de la diferencia, IC 95% de la media
+        remuestreada, fraccion de remuestreos con delta > 0 y veredicto
+        "gana" (extremo inferior del IC > 0).
+    """
+    a = np.asarray(nuevo, dtype=np.float64)
+    b = np.asarray(referencia, dtype=np.float64)
+    if a.shape != b.shape:
+        raise ValueError(
+            f"arrays pareados con formas distintas: {a.shape} != {b.shape}"
+        )
+    n = int(a.size)
+    if n == 0:
+        return {
+            "n": 0,
+            "media_delta": None,
+            "p2_5": None,
+            "p97_5": None,
+            "prob_mejora": None,
+            "gana": False,
+        }
+    deltas = a - b
+    media = float(deltas.mean())
+    if n == 1:
+        return {
+            "n": 1,
+            "media_delta": media,
+            "p2_5": media,
+            "p97_5": media,
+            "prob_mejora": 1.0 if media > 0 else 0.0,
+            "gana": media > 0,
+        }
+    generador = np.random.default_rng(semilla)
+    indices = generador.integers(0, n, size=(n_remuestreos, n))
+    medias = deltas[indices].mean(axis=1)
+    p2_5 = float(np.percentile(medias, 2.5))
+    p97_5 = float(np.percentile(medias, 97.5))
+    return {
+        "n": n,
+        "media_delta": media,
+        "p2_5": p2_5,
+        "p97_5": p97_5,
+        "prob_mejora": float((medias > 0.0).mean()),
+        "gana": bool(p2_5 > 0.0),
+    }
+
+
+def construir_estrategias_a2(modelos: list[dict], k: int) -> list[dict]:
+    """Registra las estrategias hibridas de la matriz A2.
+
+    Nombres NUEVOS: hibrido_<slug>_rerank_chunks_top<k>. Excepcion de
+    compatibilidad: E5 a k=50 reutiliza la estrategia legacy
+    hibrido_rerank_chunks_top50 (cross-check exacto contra v8, sin
+    recomputar ni duplicar pares).
+
+    Args:
+        modelos: Lista de configs (config_modelo_embedding), E5 primero.
+        k: Profundidad de candidatos de la primera etapa.
+
+    Returns:
+        Lista de entradas {slug, estrategia, clave_scores, base_hibrido,
+        alias_legado, k}.
+    """
+    entradas = []
+    for configuracion in modelos:
+        slug = configuracion["slug"]
+        base_hibrido = f"scores_hibrido_{slug}"
+        if slug == "e5" and k == CONFIG["k_candidatos_rerank_top50"]:
+            entradas.append(
+                {
+                    "slug": slug,
+                    "estrategia": "hibrido_rerank_chunks_top50",
+                    "clave_scores": FUENTE_SCORES[
+                        "hibrido_rerank_chunks_top50"
+                    ],
+                    "base_hibrido": base_hibrido,
+                    "alias_legado": True,
+                    "k": k,
+                }
+            )
+            continue
+        estrategia = f"hibrido_{slug}_rerank_chunks_top{k}"
+        entradas.append(
+            {
+                "slug": slug,
+                "estrategia": estrategia,
+                "clave_scores": f"scores_{estrategia}",
+                "base_hibrido": base_hibrido,
+                "alias_legado": False,
+                "k": k,
+            }
+        )
+    return entradas
+
+
+def construir_modelos_a2(args: argparse.Namespace) -> list[dict]:
+    """Construye la lista de modelos de la matriz A2 sin duplicados.
+
+    E5 va SIEMPRE primero (estrategias legacy y referencia del IC
+    pareado); --embedding-model anade modelos (repetible, orden
+    preservado, deduplicado por slug).
+
+    Args:
+        args: Namespace de parsear_args.
+
+    Returns:
+        Lista de configs de config_modelo_embedding.
+    """
+    nombres = [CONFIG["modelo_e5"]] + list(args.embedding_model or [])
+    vistos: set[str] = set()
+    modelos = []
+    for nombre in nombres:
+        configuracion = config_modelo_embedding(nombre)
+        if configuracion["slug"] in vistos:
+            continue
+        vistos.add(configuracion["slug"])
+        modelos.append(configuracion)
+    return modelos
+
+
+def comparar_variantes_rerank(
+    casos: list[dict],
+    prior: dict,
+    canones: list[str],
+    estrategias: list[str],
+    contextos: dict[str, float],
+    referencia: str | None,
+    n_bootstrap: int,
+    semilla: int,
+) -> dict:
+    """Nucleo comun de las comparaciones de variantes de rerank (A2/A3).
+
+    Reconstruye los rankings de cada estrategia en cada contexto del
+    prior de hubs con ranking_con_alpha (alpha explicito por contexto;
+    en las variantes de rerank el universo queda restringido a sus
+    candidatos), calcula las medidas por caso (MEDIDAS_A2), su media con
+    IC 95% bootstrap y el IC 95% bootstrap PAREADO de delta =
+    estrategia - referencia (mismos remuestreos para todas: semilla y n
+    identicos). Lo comparten las comparaciones A2 (embeddings) y A3
+    (rerankers) para no duplicar la logica.
+
+    Args:
+        casos: Lista de dicts con arts, rankings y scores base.
+        prior: Dict {canon: valor} del prior de hubs.
+        canones: Canones alineados con los vectores de scores.
+        estrategias: Nombres de las estrategias a comparar (claves de
+            FUENTE_SCORES).
+        contextos: Dict {nombre_contexto: alpha} (alpha=0 sin hubs).
+        referencia: Estrategia de referencia del IC pareado; None o una
+            estrategia ausente desactiva el pareado.
+        n_bootstrap: Numero de remuestreos bootstrap.
+        semilla: Semilla del generador (compartida por todos).
+
+    Returns:
+        Dict con metricas_por_caso (medidas redondeadas a 6 decimales),
+        metricas_globales (media + IC 95% por contexto y estrategia) y
+        pareado_vs_referencia (delta + IC 95% + prob_mejora + "gana").
+    """
+    # Rankings reconstruidos una sola vez por (contexto, estrategia).
+    rankings = {
+        nombre: {
+            estrategia: [
+                ranking_con_alpha(caso, estrategia, alpha, prior, canones)
+                for caso in casos
+            ]
+            for estrategia in estrategias
+        }
+        for nombre, alpha in contextos.items()
+    }
+
+    # Medidas por caso (arrays crudos) para IC de la media y pareado.
+    valores: dict = {}
+    for nombre in contextos:
+        valores[nombre] = {}
+        for estrategia in estrategias:
+            filas = [
+                metricas_diagnostico_caso(caso["arts"], ranking)
+                for caso, ranking in zip(
+                    casos, rankings[nombre][estrategia], strict=True
+                )
+            ]
+            valores[nombre][estrategia] = {
+                medida: np.asarray(
+                    [fila[medida] for fila in filas], dtype=np.float64
+                )
+                for medida in MEDIDAS_A2
+            }
+
+    metricas_por_caso = {
+        nombre: {
+            estrategia: {
+                medida: [
+                    round(float(valor), 6)
+                    for valor in valores[nombre][estrategia][medida]
+                ]
+                for medida in MEDIDAS_A2
+            }
+            for estrategia in estrategias
+        }
+        for nombre in contextos
+    }
+    metricas_globales = {
+        nombre: {
+            estrategia: {
+                medida: bootstrap_ic_media(
+                    valores[nombre][estrategia][medida], n_bootstrap, semilla
+                )
+                for medida in MEDIDAS_A2
+            }
+            for estrategia in estrategias
+        }
+        for nombre in contextos
+    }
+
+    # Bootstrap PAREADO contra la referencia (mismos remuestreos para
+    # todas las estrategias: semilla y n identicos).
+    pareado: dict = {}
+    for nombre in contextos:
+        pareado[nombre] = {}
+        if referencia is None or referencia not in estrategias:
+            continue
+        for estrategia in estrategias:
+            if estrategia == referencia:
+                continue
+            pareado[nombre][estrategia] = {
+                medida: bootstrap_ic_pareado(
+                    valores[nombre][estrategia][medida],
+                    valores[nombre][referencia][medida],
+                    n_bootstrap,
+                    semilla,
+                )
+                for medida in MEDIDAS_A2
+            }
+    return {
+        "metricas_por_caso": metricas_por_caso,
+        "metricas_globales": metricas_globales,
+        "pareado_vs_referencia": pareado,
+    }
+
+
+def construir_comparacion_a2(
+    casos: list[dict],
+    prior: dict,
+    canones: list[str],
+) -> dict:
+    """Comparacion A2: 2 contextos + metricas por caso + IC pareado.
+
+    Reutiliza la maquinaria del diagnostico A1 (ranking_con_alpha,
+    metricas_diagnostico_caso, bootstrap_ic_media) y anade el bootstrap
+    PAREADO contra la referencia E5@K. Los rankings se reconstruyen en
+    los dos contextos de CONFIG['a2_contextos'] (sin_hubs alpha=0 y
+    con_hubs alpha=1.5, el alpha adoptado en v8): en las variantes de
+    rerank el universo queda restringido a los candidatos de la primera
+    etapa (recall topado, documentado).
+
+    Args:
+        casos: Lista de dicts con arts, rankings y scores base.
+        prior: Dict {canon: valor} del prior de hubs.
+        canones: Canones alineados con los vectores de scores.
+
+    Returns:
+        Dict serializable con version "c3-a2", config de la matriz,
+        recall de candidatos por modelo, metricas_por_caso (arrays
+        compactos), metricas_globales (media + IC 95%) y
+        pareado_vs_referencia (media delta + IC 95% + prob_mejora).
+    """
+    entradas = CONFIG["a2"]["estrategias"]
+    estrategias = [entrada["estrategia"] for entrada in entradas]
+    if not estrategias:
+        return {
+            "version": "c3-a2",
+            "nota": "sin estrategias A2 (la matriz requiere --rerank).",
+        }
+    contextos = dict(CONFIG["a2_contextos"])
+    k = CONFIG["a2"]["k"]
+    referencia = CONFIG["a2"]["referencia"]
+    n_bootstrap = CONFIG["a2_bootstrap"]
+    semilla = CONFIG["a2_seed_pareado"]
+
+    # Nucleo compartido con A3: rankings, metricas por caso/globales e IC
+    # pareado contra la referencia E5@K.
+    comparacion = comparar_variantes_rerank(
+        casos,
+        prior,
+        canones,
+        estrategias,
+        contextos,
+        referencia,
+        n_bootstrap,
+        semilla,
+    )
+
+    # Recall de los candidatos de la primera etapa por modelo (techo del
+    # rerank a la profundidad K); se mide SIN hubs (es la 1a etapa).
+    recall_candidatos = {}
+    for entrada in entradas:
+        valores_recall = [
+            recall_at_k(
+                caso["arts"],
+                ranking_desde_scores(caso[entrada["base_hibrido"]], canones),
+                k,
+            )
+            for caso in casos
+        ]
+        recall_candidatos[entrada["slug"]] = {
+            "estrategia_hibrida": entrada["base_hibrido"],
+            "estrategia_rerank": entrada["estrategia"],
+            "k_candidatos": k,
+            "media": round(float(np.mean(valores_recall)), 6),
+        }
+
+    hf_por_slug = {
+        configuracion["slug"]: configuracion["hf_id"]
+        for configuracion in CONFIG["a2"]["modelos"]
+    }
+    return {
+        "version": "c3-a2",
+        "n_casos": len(casos),
+        "k_candidatos_hybrid": k,
+        "referencia": referencia,
+        "contextos": contextos,
+        "n_remuestreos_bootstrap": n_bootstrap,
+        "semilla_bootstrap": semilla,
+        "modelos": [
+            {
+                "slug": entrada["slug"],
+                "hf_id": hf_por_slug.get(entrada["slug"]),
+                "estrategia": entrada["estrategia"],
+                "alias_legado": entrada["alias_legado"],
+            }
+            for entrada in entradas
+        ],
+        "recall_candidatos": recall_candidatos,
+        "metricas_por_caso": comparacion["metricas_por_caso"],
+        "metricas_globales": comparacion["metricas_globales"],
+        "pareado_vs_referencia": comparacion["pareado_vs_referencia"],
+        "nota": (
+            "Sprint A2: contextos sin_hubs (alpha=0, atribucion al "
+            "embedding) y con_hubs (alpha=1.5, adoptado en v8). En las "
+            "estrategias de rerank el universo es el set de candidatos "
+            "top-K del hibrido del modelo (recall_candidatos documenta "
+            "ese techo). metricas_por_caso guarda nDCG@10 y F1@10 por "
+            "caso para auditoria y para el test pareado."
+        ),
+        "nota_pareado": (
+            "Bootstrap PAREADO de delta = estrategia_nueva - E5@K "
+            "(referencia): las dos series comparten el orden de casos y "
+            "el generador (seed 42, 1000 remuestreos) produce la misma "
+            "matriz de indices, por lo que el IC es el de la diferencia "
+            "por caso. 'gana' exige el extremo inferior del IC > 0 "
+            "(criterio de ruido del gate ADR-16)."
+        ),
+    }
+
+
+def graficar_a2_embeddings(comparacion: dict) -> None:
+    """Genera figuras/c3_a2_embeddings.png (nDCG@10 por modelo/contexto).
+
+    Barras agrupadas por estrategia (modelo@K) y contexto del prior de
+    hubs; las barras de error son el IC 95% bootstrap de la media
+    (bootstrap_ic_media). La ruta sale de CONFIG
+    ('ruta_figura_a2_embeddings'), redirigida a /tmp en modo smoke.
+
+    Args:
+        comparacion: Dict de construir_comparacion_a2.
+    """
+    if "metricas_globales" not in comparacion:
+        print("[aviso] sin comparacion A2: no se genera la figura c3_a2")
+        return
+    modelos = comparacion["modelos"]
+    k = comparacion["k_candidatos_hybrid"]
+    etiquetas = [
+        f"{modelo['slug']}@{k}" + (" (legacy)" if modelo["alias_legado"] else "")
+        for modelo in modelos
+    ]
+    estrategias = [modelo["estrategia"] for modelo in modelos]
+    contextos = list(comparacion["contextos"].keys())
+    colores = {"sin_hubs": "#4c72b0", "con_hubs": "#dd8452"}
+    posiciones = np.arange(len(estrategias))
+    ancho = 0.8 / max(len(contextos), 1)
+    figura, eje = plt.subplots(figsize=(10.5, 5.5))
+    for posicion_contexto, contexto in enumerate(contextos):
+        medias, errores_inf, errores_sup = [], [], []
+        for estrategia in estrategias:
+            datos = comparacion["metricas_globales"][contexto][estrategia][
+                "ndcg_at_10"
+            ]
+            media = datos["media"] if datos["media"] is not None else 0.0
+            p2_5 = datos["p2_5"] if datos["p2_5"] is not None else media
+            p97_5 = datos["p97_5"] if datos["p97_5"] is not None else media
+            medias.append(media)
+            errores_inf.append(media - p2_5)
+            errores_sup.append(p97_5 - media)
+        etiqueta = (
+            "sin hubs (alpha=0)"
+            if contexto == "sin_hubs"
+            else f"hubs (alpha={comparacion['contextos'][contexto]})"
+        )
+        eje.bar(
+            posiciones - 0.4 + ancho * (posicion_contexto + 0.5),
+            medias,
+            width=ancho,
+            color=colores.get(contexto, "#333333"),
+            label=etiqueta,
+            yerr=[errores_inf, errores_sup],
+            capsize=3,
+        )
+    eje.set_xticks(posiciones)
+    eje.set_xticklabels(etiquetas, fontsize=9)
+    eje.set_ylabel("nDCG@10")
+    eje.set_xlabel("Embedding de la 1a etapa densa (hibrido + rerank por chunks)")
+    eje.set_title(
+        "ciclo v3 - Sprint A2: nDCG@10 por embedding legal y contexto de "
+        "hubs (barras = IC 95% bootstrap)",
+        fontsize=10,
+    )
+    eje.set_ylim(0.0, 1.0)
+    eje.grid(True, axis="y", alpha=0.3)
+    eje.legend(fontsize=9)
+    figura.tight_layout()
+    ruta = CONFIG["ruta_figura_a2_embeddings"]
+    Path(ruta).parent.mkdir(parents=True, exist_ok=True)
+    figura.savefig(ruta, dpi=150, bbox_inches="tight")
+    plt.close(figura)
+
+
+def redirigir_rutas_a_tmp(claves: tuple[str, ...], sufijo: str) -> None:
+    """Redirige rutas de CONFIG a /tmp/opencode con un sufijo.
+
+    Es idempotente: si la ruta ya apunta a /tmp/opencode no se vuelve a
+    sufijar (evita duplicar "_smoke_smoke").
+
+    Args:
+        claves: Claves de CONFIG con rutas a redirigir.
+        sufijo: Sufijo intercalado antes de la extension (p. ej. _smoke).
+    """
+    destino = Path("/tmp/opencode")
+    for clave in claves:
+        original = Path(CONFIG[clave])
+        if original.parent == destino:
+            continue
+        CONFIG[clave] = str(
+            destino / f"{original.stem}{sufijo}{original.suffix}"
+        )
+
+
+def aplicar_modo_a2(
+    modelos: list[dict],
+    k: int,
+    limite: int | None,
+    diagnostico: bool,
+) -> None:
+    """Activa la matriz A2 de embeddings (ciclo v3 - Sprint A2).
+
+    Registra las estrategias nuevas (hibrido_<slug>_rerank_chunks_top<k>)
+    en CONFIG['estrategias'], FUENTE_SCORES, ESTRATEGIAS_RANKEABLES y
+    ESTRATEGIAS_RERANK (listas mutables) y redirige las salidas a los
+    archivos v9 (ADR-16: v2..v8 nunca se sobrescriben). Con --limite todo
+    va a /tmp/opencode con sufijo _smoke; si ademas --diagnostico esta
+    activo, las salidas del diagnostico A1 tambien se redirigen (sufijo
+    _a2) para no pisar el artefacto A1 congelado. La figura del prior v8
+    se redirige de forma defensiva (solo se usaria con --calibrar-hubs).
+
+    Args:
+        modelos: Lista de configs (construir_modelos_a2), E5 primero.
+        k: Profundidad de candidatos (--k-candidatos-hybrid).
+        limite: Valor de --limite (None en el run final).
+        diagnostico: True si --diagnostico esta activo.
+    """
+    CONFIG["a2"]["activa"] = True
+    CONFIG["a2"]["k"] = k
+    CONFIG["a2"]["modelos"] = [dict(configuracion) for configuracion in modelos]
+    entradas = construir_estrategias_a2(modelos, k)
+    CONFIG["a2"]["estrategias"] = entradas
+    referencia = None
+    for entrada in entradas:
+        nombre = entrada["estrategia"]
+        if nombre not in CONFIG["estrategias"]:
+            CONFIG["estrategias"].append(nombre)
+        FUENTE_SCORES[nombre] = entrada["clave_scores"]
+        if nombre not in ESTRATEGIAS_RANKEABLES:
+            ESTRATEGIAS_RANKEABLES.append(nombre)
+        if nombre not in ESTRATEGIAS_RERANK:
+            ESTRATEGIAS_RERANK.append(nombre)
+        if entrada["slug"] == CONFIG["a2_slug_referencia"]:
+            referencia = nombre
+    CONFIG["a2"]["referencia"] = referencia
+    CONFIG["version_salida"] = CONFIG["version_salida_v9"]
+    CONFIG["ruta_benchmark"] = CONFIG["ruta_benchmark_v9"]
+    CONFIG["ruta_por_ano"] = CONFIG["ruta_por_ano_v9"]
+    CONFIG["ruta_figura"] = CONFIG["ruta_figura_v9"]
+    CONFIG["ruta_figura_contaminacion"] = CONFIG["ruta_figura_contaminacion_v9"]
+    rutas_diagnostico = (
+        "ruta_diagnostico",
+        "ruta_figura_diagnostico_recall",
+        "ruta_figura_diagnostico_ic",
+        "ruta_figura_diagnostico_periodo",
+    )
+    if diagnostico:
+        redirigir_rutas_a_tmp(rutas_diagnostico, "_a2")
+    if limite is not None:
+        redirigir_rutas_a_tmp(
+            (
+                "ruta_benchmark",
+                "ruta_por_ano",
+                "ruta_figura",
+                "ruta_figura_contaminacion",
+                "ruta_figura_a2_embeddings",
+            )
+            + rutas_diagnostico,
+            "_smoke",
+        )
+    else:
+        redirigir_rutas_a_tmp(("ruta_figura_hubs_v8",), "_a2")
+
+
+# ===== SECCION 8e: comparativa A3 de rerankers legales (ciclo v3 - Sprint A3) =====
+# La comparativa A3 es ADITIVA: sin --a3 nada cambia. Fija la primera
+# etapa densa en ALIA-MrBERT legal y la profundidad en 100 candidatos
+# (CONFIG['a3']); sobre los MISMOS pares (chunk, pasaje) construidos una
+# sola vez puntua bge (referencia), el reranker legal SINAI y la fusion
+# RRF k=60 de ambos rankings. Salidas NUEVAS v10 y figura c3_a3_rerankers
+# (ADR-16: v2..v9 intocables).
+def scores_rrf_entre_rerankers(
+    scores_a: np.ndarray,
+    scores_b: np.ndarray,
+    candidatos: np.ndarray,
+    n_canones: int,
+    rrf_k: int = 60,
+) -> np.ndarray:
+    """Fusiona dos rankings de rerankers con Reciprocal Rank Fusion k.
+
+    score_rrf(i) = 1/(k + rank_a(i)) + 1/(k + rank_b(i)) con rank
+    1-based del candidato i en cada ranking (orden por score descendente,
+    argsort estable). La normalizacion min-max y el prior de hubs alpha
+    se aplican despues, en ranking_con_alpha/aplicar_prior_scores, igual
+    que en el resto de estrategias (documentado en comparacion_a3). Los
+    articulos fuera del set de candidatos quedan en -inf (no son
+    resultados retornables del rerank).
+
+    Args:
+        scores_a: Scores del primer reranker (n_articulos,); solo se
+            leen las posiciones de candidatos.
+        scores_b: Scores del segundo reranker (n_articulos,).
+        candidatos: Indices de articulo del set de candidatos (top-K de
+            la primera etapa).
+        n_canones: Tamano del universo de articulos.
+        rrf_k: Constante de RRF (60, Cormack et al. 2009).
+
+    Returns:
+        Array (n_canones,) con el score RRF en los candidatos y -inf en
+        el resto.
+    """
+    orden_a = candidatos[np.argsort(-scores_a[candidatos], kind="stable")]
+    orden_b = candidatos[np.argsort(-scores_b[candidatos], kind="stable")]
+    fusion = np.zeros(n_canones, dtype=np.float64)
+    for rank, indice in enumerate(orden_a, start=1):
+        fusion[indice] += 1.0 / (rrf_k + rank)
+    for rank, indice in enumerate(orden_b, start=1):
+        fusion[indice] += 1.0 / (rrf_k + rank)
+    scores = np.full(n_canones, -np.inf, dtype=np.float64)
+    scores[candidatos] = fusion[candidatos]
+    return scores
+
+
+def construir_estrategias_a3() -> list[dict]:
+    """Registra las 3 variantes de la comparativa A3.
+
+    Nombres NUEVOS: hibrido_<slug>_rerank_chunks_top<k> (bge, referencia
+    y nombre homonimo al de la matriz A2 para poder reutilizarla),
+    hibrido_<slug>_rerank_sinai_top<k> (reranker legal SINAI) y
+    hibrido_<slug>_rerank_rrf_top<k> (fusion RRF). El slug y la
+    profundidad salen de CONFIG['a3'] (alia/100).
+
+    Returns:
+        Lista de entradas {variante, estrategia, clave_scores,
+        base_hibrido, hf_id, rol}.
+    """
+    slug = CONFIG["a3"]["slug_embedding"]
+    k = CONFIG["a3"]["k"]
+    base_hibrido = f"scores_hibrido_{slug}"
+    return [
+        {
+            "variante": "bge",
+            "estrategia": f"hibrido_{slug}_rerank_chunks_top{k}",
+            "clave_scores": f"scores_hibrido_{slug}_rerank_chunks_top{k}",
+            "base_hibrido": base_hibrido,
+            "hf_id": CONFIG["reranker"],
+            "rol": "referencia",
+        },
+        {
+            "variante": "aliarerank",
+            "estrategia": f"hibrido_{slug}_rerank_sinai_top{k}",
+            "clave_scores": f"scores_hibrido_{slug}_rerank_sinai_top{k}",
+            "base_hibrido": base_hibrido,
+            "hf_id": CONFIG["a3"]["modelo_reranker"],
+            "rol": "candidato",
+        },
+        {
+            "variante": "rrf",
+            "estrategia": f"hibrido_{slug}_rerank_rrf_top{k}",
+            "clave_scores": f"scores_hibrido_{slug}_rerank_rrf_top{k}",
+            "base_hibrido": base_hibrido,
+            "hf_id": None,
+            "rol": "fusion",
+        },
+    ]
+
+
+def construir_comparacion_a3(
+    casos: list[dict],
+    prior: dict,
+    canones: list[str],
+) -> dict:
+    """Comparacion A3: 3 rerankers sobre ALIA@100 en 2 contextos + IC pareado.
+
+    Reutiliza el nucleo comparar_variantes_rerank (el mismo de A2) y
+    anade el recall de los candidatos ALIA@100 (techo estructural del
+    rerank) con desglose por periodo. Referencia del IC pareado = bge.
+
+    Args:
+        casos: Lista de dicts con arts, rankings y scores base (incluye
+            scores_hibrido_alia y los scores de las 3 variantes).
+        prior: Dict {canon: valor} del prior de hubs.
+        canones: Canones alineados con los vectores de scores.
+
+    Returns:
+        Dict serializable con version "c3-a3", config de la comparativa,
+        recall de candidatos ALIA@100, metricas_por_caso, metricas_
+        globales y pareado_vs_referencia (delta + IC 95% + prob_mejora).
+    """
+    entradas = CONFIG["a3"]["estrategias"]
+    if not entradas:
+        return {
+            "version": "c3-a3",
+            "nota": "sin estrategias A3 (la comparativa requiere --a3).",
+        }
+    estrategias = [entrada["estrategia"] for entrada in entradas]
+    contextos = dict(CONFIG["a3"]["contextos"])
+    k = CONFIG["a3"]["k"]
+    referencia = CONFIG["a3"]["referencia"]
+    n_bootstrap = CONFIG["a3_bootstrap"]
+    semilla = CONFIG["a3_seed_pareado"]
+
+    comparacion = comparar_variantes_rerank(
+        casos,
+        prior,
+        canones,
+        estrategias,
+        contextos,
+        referencia,
+        n_bootstrap,
+        semilla,
+    )
+
+    # Recall de los candidatos ALIA@K: techo del rerank (la 1a etapa es
+    # el hibrido BM25+ALIA sin hubs); desglose por periodo como en A1.
+    slug = CONFIG["a3"]["slug_embedding"]
+    valores_recall = [
+        recall_at_k(
+            caso["arts"],
+            ranking_desde_scores(caso[f"scores_hibrido_{slug}"], canones),
+            k,
+        )
+        for caso in casos
+    ]
+    por_periodo_recall = {}
+    for periodo, _, _ in CONFIG["periodos"]:
+        indices = [
+            i
+            for i, caso in enumerate(casos)
+            if asignar_periodo(caso["ano"]) == periodo
+        ]
+        por_periodo_recall[periodo] = (
+            round(float(np.mean([valores_recall[i] for i in indices])), 6)
+            if indices
+            else None
+        )
+    recall_candidatos = {
+        "estrategia_hibrida": f"scores_hibrido_{slug}",
+        "k_candidatos": k,
+        "media": round(float(np.mean(valores_recall)), 6),
+        "por_periodo": por_periodo_recall,
+    }
+
+    return {
+        "version": "c3-a3",
+        "n_casos": len(casos),
+        "k_candidatos": k,
+        "rrf_k": CONFIG["a3"]["rrf_k"],
+        "referencia": referencia,
+        "contextos": contextos,
+        "n_remuestreos_bootstrap": n_bootstrap,
+        "semilla_bootstrap": semilla,
+        "rerankers": [
+            {
+                "variante": entrada["variante"],
+                "estrategia": entrada["estrategia"],
+                "hf_id": entrada["hf_id"],
+                "rol": entrada["rol"],
+            }
+            for entrada in entradas
+        ],
+        "reutiliza_matriz_a2": CONFIG["a3"]["reutiliza_a2"],
+        "recall_candidatos": recall_candidatos,
+        "metricas_por_caso": comparacion["metricas_por_caso"],
+        "metricas_globales": comparacion["metricas_globales"],
+        "pareado_vs_referencia": comparacion["pareado_vs_referencia"],
+        "nota": (
+            "Sprint A3: candidatos FIJOS = top-100 del hibrido "
+            f"0.5*bm25 + 0.5*{slug} (recall_candidatos documenta el "
+            "techo). Los pares (chunk, pasaje) se construyen UNA vez por "
+            "caso (mejor pasaje BM25 + top-3 chunks) y se puntuan con "
+            "los dos rerankers; bge reutiliza la estrategia A2 homonima "
+            "si la matriz A2 ya la calculo a k=100. La variante rrf "
+            "fusiona los rankings de ambos rerankers con Reciprocal "
+            "Rank Fusion k=60 (score = suma de 1/(60+rank)), y su score "
+            "se normaliza min-max y se prioriza con hubs alpha como el "
+            "resto de estrategias (ranking_con_alpha/aplicar_prior_"
+            "scores). metricas_por_caso guarda nDCG@10 y F1@10 por caso."
+        ),
+        "nota_pareado": (
+            "Bootstrap PAREADO de delta = variante - bge (referencia): "
+            "las dos series comparten el orden de casos y el generador "
+            f"(seed {semilla}, {n_bootstrap} remuestreos) produce la "
+            "misma matriz de indices, por lo que el IC es el de la "
+            "diferencia por caso. 'gana' exige el extremo inferior del "
+            "IC > 0 (criterio de ruido del gate ADR-16)."
+        ),
+    }
+
+
+def graficar_a3_rerankers(comparacion: dict) -> None:
+    """Genera figuras/c3_a3_rerankers.png (nDCG@10 y F1@10 por variante).
+
+    Dos paneles (nDCG@10 y F1@10) con barras agrupadas por variante de
+    reranker y contexto del prior de hubs (sin_hubs alpha=0 y con_hubs
+    alpha=1.5); las barras de error son el IC 95% bootstrap de la media
+    (bootstrap_ic_media). La ruta sale de CONFIG
+    ('ruta_figura_a3_rerankers'), redirigida a /tmp en modo smoke.
+
+    Args:
+        comparacion: Dict de construir_comparacion_a3.
+    """
+    if "metricas_globales" not in comparacion:
+        print("[aviso] sin comparacion A3: no se genera la figura c3_a3")
+        return
+    variantes = comparacion["rerankers"]
+    estrategias = [variante["estrategia"] for variante in variantes]
+    etiquetas = [
+        {
+            "bge": "bge (referencia)",
+            "aliarerank": "ALIA reranker (SINAI)",
+        }.get(variante["variante"], f"RRF k={comparacion['rrf_k']}")
+        for variante in variantes
+    ]
+    contextos = list(comparacion["contextos"].keys())
+    colores = {"sin_hubs": "#4c72b0", "con_hubs": "#dd8452"}
+    posiciones = np.arange(len(estrategias))
+    ancho = 0.8 / max(len(contextos), 1)
+    figura, ejes = plt.subplots(1, 2, figsize=(12, 5.2))
+    for eje, medida, titulo in (
+        (ejes[0], "ndcg_at_10", "nDCG@10"),
+        (ejes[1], "f1_at_10", "F1@10"),
+    ):
+        for posicion_contexto, contexto in enumerate(contextos):
+            medias, errores_inf, errores_sup = [], [], []
+            for estrategia in estrategias:
+                datos = comparacion["metricas_globales"][contexto][
+                    estrategia
+                ][medida]
+                media = datos["media"] if datos["media"] is not None else 0.0
+                p2_5 = datos["p2_5"] if datos["p2_5"] is not None else media
+                p97_5 = (
+                    datos["p97_5"] if datos["p97_5"] is not None else media
+                )
+                medias.append(media)
+                errores_inf.append(media - p2_5)
+                errores_sup.append(p97_5 - media)
+            etiqueta = (
+                "sin hubs (alpha=0)"
+                if contexto == "sin_hubs"
+                else f"hubs (alpha={comparacion['contextos'][contexto]})"
+            )
+            eje.bar(
+                posiciones - 0.4 + ancho * (posicion_contexto + 0.5),
+                medias,
+                width=ancho,
+                color=colores.get(contexto, "#333333"),
+                label=etiqueta,
+                yerr=[errores_inf, errores_sup],
+                capsize=3,
+            )
+        eje.set_xticks(posiciones)
+        eje.set_xticklabels(etiquetas, fontsize=9)
+        eje.set_ylabel(titulo)
+        eje.set_ylim(0.0, 1.0)
+        eje.grid(True, axis="y", alpha=0.3)
+        eje.legend(fontsize=8)
+    ejes[0].set_xlabel("Reranker sobre candidatos ALIA@100")
+    ejes[1].set_xlabel("Reranker sobre candidatos ALIA@100")
+    figura.suptitle(
+        "ciclo v3 - Sprint A3: rerankers legales sobre candidatos ALIA@100 "
+        "(barras = IC 95% bootstrap)",
+        fontsize=11,
+    )
+    figura.tight_layout()
+    ruta = CONFIG["ruta_figura_a3_rerankers"]
+    Path(ruta).parent.mkdir(parents=True, exist_ok=True)
+    figura.savefig(ruta, dpi=150, bbox_inches="tight")
+    plt.close(figura)
+
+
+def aplicar_modo_a3(limite: int | None) -> None:
+    """Activa la comparativa A3 de rerankers legales (ciclo v3 - Sprint A3).
+
+    Fija los candidatos en ALIA@100 (CONFIG['a3']) y registra las 3
+    variantes (bge referencia, aliarerank SINAI y rrf k=60) en
+    CONFIG['estrategias'], FUENTE_SCORES, ESTRATEGIAS_RANKEABLES y
+    ESTRATEGIAS_RERANK (listas mutables). Redirige las salidas a los
+    archivos v10 (ADR-16: v2..v9 nunca se sobrescriben). Si la matriz A2
+    ya calculo la estrategia homonima de bge (slug alia a k=100), el
+    vector bge se reutiliza y no se re-puntua (CONFIG['a3']['clave_bge']).
+    Con --limite todo va a /tmp/opencode con sufijo _smoke.
+
+    Args:
+        limite: Valor de --limite (None en el run final).
+    """
+    CONFIG["a3"]["activa"] = True
+    entradas = construir_estrategias_a3()
+    CONFIG["a3"]["estrategias"] = entradas
+    referencia = None
+    for entrada in entradas:
+        nombre = entrada["estrategia"]
+        if nombre not in CONFIG["estrategias"]:
+            CONFIG["estrategias"].append(nombre)
+        FUENTE_SCORES[nombre] = entrada["clave_scores"]
+        if nombre not in ESTRATEGIAS_RANKEABLES:
+            ESTRATEGIAS_RANKEABLES.append(nombre)
+        if nombre not in ESTRATEGIAS_RERANK:
+            ESTRATEGIAS_RERANK.append(nombre)
+        if entrada["rol"] == "referencia":
+            referencia = nombre
+    CONFIG["a3"]["referencia"] = referencia
+    # Reutilizacion de la matriz A2: solo si A2 esta activa a la misma
+    # profundidad (100) y con el mismo slug de embedding (alia).
+    clave_bge = None
+    if CONFIG["a2"]["activa"] and CONFIG["a2"]["k"] == CONFIG["a3"]["k"]:
+        for entrada in CONFIG["a2"]["estrategias"]:
+            if entrada["slug"] == CONFIG["a3"]["slug_embedding"]:
+                clave_bge = entrada["clave_scores"]
+                break
+    CONFIG["a3"]["reutiliza_a2"] = clave_bge is not None
+    CONFIG["a3"]["clave_bge"] = clave_bge
+    CONFIG["version_salida"] = CONFIG["version_salida_v10"]
+    CONFIG["ruta_benchmark"] = CONFIG["ruta_benchmark_v10"]
+    CONFIG["ruta_por_ano"] = CONFIG["ruta_por_ano_v10"]
+    CONFIG["ruta_figura"] = CONFIG["ruta_figura_v10"]
+    CONFIG["ruta_figura_contaminacion"] = CONFIG["ruta_figura_contaminacion_v10"]
+    if limite is not None:
+        redirigir_rutas_a_tmp(
+            (
+                "ruta_benchmark",
+                "ruta_por_ano",
+                "ruta_figura",
+                "ruta_figura_contaminacion",
+                "ruta_figura_a3_rerankers",
+            ),
+            "_smoke",
+        )
+
+
+# ===== SECCION 8f: fusion de 1a etapa y profundidad A4 (ciclo v3 - Sprint A4) =====
+# La comparativa A4 es ADITIVA: sin --a4 nada cambia. Fija el embedding
+# denso en ALIA-MrBERT legal (el de mayor recall de candidatos de A2) y
+# compara DOS familias con bge rerank chunks y contextos alpha=0/1.5:
+# (1) la fusion de la PRIMERA ETAPA a 100 candidatos en 4 variantes:
+#     w05 (referencia, hibrido min-max 0.5*BM25 + 0.5*denso; reutiliza la
+#     estrategia homonima de A2/A3 si ya existe), w03 (peso BM25 0.3 /
+#     denso 0.7), w07 (peso BM25 0.7 / denso 0.3) y rrf1a (Reciprocal
+#     Rank Fusion k=60 entre el ranking BM25 y el ranking denso ALIA);
+# (2) el barrido de profundidad top-50/100/200 de la fusion elegida
+#     (CONFIG['a4']['fusion_barrido'], default w05 por revision A4: el
+#     smoke n=10 de w07 no es criterio robusto). El IC bootstrap pareado
+#     (1000 remuestreos,
+#     seed 42) de
+#     cada variante se calcula contra w05@100 (la referencia vigente).
+# Salidas NUEVAS v11 y figuras/c3_a4_fusion_profundidad.png; ademas se
+# vuelca la seccion comparacion_a4 a
+# resultados/c3_a4_fusion_profundidad.json. Con --limite todo va a
+# /tmp/opencode con sufijo _smoke (ADR-16: v2..v10 intocables).
+def scores_fusion_lineal(
+    scores_bm25: np.ndarray,
+    scores_denso: np.ndarray,
+    peso_bm25: float,
+) -> np.ndarray:
+    """Combina BM25 y denso con peso explicito (min-max por caso).
+
+    Convencion A4: el nombre de la variante indica el peso de BM25
+    (w05 = 0.5/0.5, w03 = BM25 0.3 / denso 0.7, w07 = BM25 0.7 / denso
+    0.3); el peso del denso es 1 - peso_bm25. La normalizacion min-max
+    por caso es la del hibrido pre-registrado (scores_hibridos), de modo
+    que w05 reproduce exactamente el hibrido 0.5/0.5 de A2/A3.
+
+    Args:
+        scores_bm25: Scores BM25 del caso (n_articulos,).
+        scores_denso: Scores densos del caso (n_articulos,).
+        peso_bm25: Peso de BM25 en [0, 1] (el denso recibe 1 - peso).
+
+    Returns:
+        Array (n_articulos,) de scores fusionados.
+    """
+    return (
+        peso_bm25 * normalizar_min_max(scores_bm25)
+        + (1.0 - peso_bm25) * normalizar_min_max(scores_denso)
+    )
+
+
+def scores_rrf_primera_etapa(
+    scores_bm25: np.ndarray,
+    scores_denso: np.ndarray,
+    rrf_k: int = 60,
+) -> np.ndarray:
+    """Fusiona los rankings de 1a etapa BM25 y denso con RRF k.
+
+    Formula (Cormack et al. 2009): score_rrf(i) = 1/(k + rank_bm25(i)) +
+    1/(k + rank_denso(i)), con rank 1-based del articulo i en cada
+    ranking COMPLETO (ambos rankings cubren los mismos n articulos,
+    orden por score descendente con argsort estable). EMPATES: al ser
+    argsort estable, los scores iguales conservan el orden de los
+    canones en el vector (indice ascendente); si el propio RRF empata
+    dos articulos, el desempate final lo hace el argsort estable de
+    ranking_desde_scores. Los candidatos del rerank son el top-100 del
+    score RRF (CONFIG['a4']['k_referencia']).
+
+    Args:
+        scores_bm25: Scores BM25 del caso (n_articulos,).
+        scores_denso: Scores densos del caso (n_articulos,).
+        rrf_k: Constante de RRF (60).
+
+    Returns:
+        Array (n_articulos,) con el score RRF (mayor = mejor).
+    """
+    n = len(scores_bm25)
+    orden_bm25 = np.argsort(-scores_bm25, kind="stable")
+    orden_denso = np.argsort(-scores_denso, kind="stable")
+    fusion = np.zeros(n, dtype=np.float64)
+    for rank, indice in enumerate(orden_bm25, start=1):
+        fusion[indice] += 1.0 / (rrf_k + rank)
+    for rank, indice in enumerate(orden_denso, start=1):
+        fusion[indice] += 1.0 / (rrf_k + rank)
+    return fusion
+
+
+def nombre_estrategia_a4(variante: str, k: int) -> str:
+    """Nombre de la estrategia A4 de una fusion a profundidad k.
+
+    w05 conserva el nombre del hibrido 0.5/0.5 de A2/A3
+    (hibrido_alia_rerank_chunks_top<k>) para reutilizar el vector si la
+    matriz A2/A3 ya lo calculo; el resto usa
+    fusion_alia_<variante>_rerank_chunks_top<k>.
+
+    Args:
+        variante: w05, w03, w07 o rrf1a.
+        k: Profundidad de candidatos de la 1a etapa.
+
+    Returns:
+        Nombre unico de la estrategia.
+    """
+    slug = CONFIG["a4"]["slug_embedding"]
+    if variante == "w05":
+        return f"hibrido_{slug}_rerank_chunks_top{k}"
+    return f"fusion_{slug}_{variante}_rerank_chunks_top{k}"
+
+
+def base_fusion_a4(variante: str) -> str:
+    """Clave del vector de scores de 1a etapa de una fusion A4.
+
+    Args:
+        variante: w05, w03, w07 o rrf1a.
+
+    Returns:
+        Clave del caso con el vector de scores de la 1a etapa (w05 es el
+        hibrido 0.5/0.5 scores_hibrido_alia; el resto, los vectores
+        materializados en main: scores_fusion_alia_<variante>).
+    """
+    slug = CONFIG["a4"]["slug_embedding"]
+    if variante == "w05":
+        return f"scores_hibrido_{slug}"
+    return f"scores_fusion_{slug}_{variante}"
+
+
+def _entrada_a4(variante: str, k: int, familia: str) -> dict:
+    """Construye la entrada de registro de una variante A4 (helper).
+
+    Args:
+        variante: w05, w03, w07 o rrf1a.
+        k: Profundidad de candidatos de la 1a etapa.
+        familia: "fusion_100" o "profundidad".
+
+    Returns:
+        Dict con nombre de estrategia, clave de scores, base de la
+        fusion, profundidad, peso BM25, tipo de fusion y rol.
+    """
+    estrategia = nombre_estrategia_a4(variante, k)
+    return {
+        "variante": variante,
+        "familia": familia,
+        "estrategia": estrategia,
+        "clave_scores": f"scores_{estrategia}",
+        "base_fusion": base_fusion_a4(variante),
+        "k": k,
+        "peso_bm25": CONFIG["a4"]["pesos_fusion"].get(variante),
+        "tipo": "rrf" if variante == "rrf1a" else "lineal",
+        "rol": "referencia" if variante == "w05" else "candidata",
+    }
+
+
+def construir_estrategias_a4(fusion_barrido: str) -> list[dict]:
+    """Registra las variantes de fusion @100 y el barrido de profundidad.
+
+    Devuelve una lista DEDUPLICADA: las 4 fusiones a k=100 (w05, w03,
+    w07, rrf1a) mas las profundidades 50/100/200 de la fusion elegida
+    para el barrido (la profundidad 100 ya esta en la lista y no se
+    duplica). Cada entrada declara su familia para separar las dos
+    comparaciones: fusion_100 y profundidad.
+
+    Args:
+        fusion_barrido: Variante del barrido (w05/w03/w07/rrf1a).
+
+    Returns:
+        Lista de entradas de _entrada_a4 (fusion_100 primero).
+    """
+    entradas: list[dict] = []
+    for variante in CONFIG["a4"]["variantes_100"]:
+        entradas.append(
+            _entrada_a4(variante, CONFIG["a4"]["k_referencia"], "fusion_100")
+        )
+    nombres = {entrada["estrategia"] for entrada in entradas}
+    for k in CONFIG["a4"]["profundidades"]:
+        entrada = _entrada_a4(fusion_barrido, k, "profundidad")
+        if entrada["estrategia"] in nombres:
+            continue
+        entradas.append(entrada)
+    return entradas
+
+
+def construir_comparacion_a4(
+    casos: list[dict],
+    prior: dict,
+    canones: list[str],
+) -> dict:
+    """Comparacion A4: fusiones @100 + barrido de profundidad + IC pareado.
+
+    Reutiliza el nucleo comparar_variantes_rerank (el mismo de A2/A3) dos
+    veces: (1) las 4 fusiones de 1a etapa a 100 candidatos y (2) el
+    barrido top-50/100/200 de la fusion elegida, incluyendo w05@100 como
+    baseline para que el IC pareado contra la referencia w05@100 este
+    siempre disponible. Anade el recall de candidatos de 1a etapa de
+    cada fusion a 50/100/200 (techo del rerank) y las convenciones de
+    pesos/RRF documentadas en el JSON.
+
+    Args:
+        casos: Lista de dicts con arts, rankings y scores base.
+        prior: Dict {canon: valor} del prior de hubs.
+        canones: Canones alineados con los vectores de scores.
+
+    Returns:
+        Dict serializable con version "c3-a4", convenciones, recall de
+        candidatos, fusion_100 y profundidad (metricas_globales,
+        metricas_por_caso y pareado_vs_referencia en ambas familias).
+    """
+    entradas = CONFIG["a4"]["estrategias"]
+    if not entradas:
+        return {
+            "version": "c3-a4",
+            "nota": "sin estrategias A4 (la comparativa requiere --a4).",
+        }
+    contextos = dict(CONFIG["a4"]["contextos"])
+    n_bootstrap = CONFIG["a4_bootstrap"]
+    semilla = CONFIG["a4_seed_pareado"]
+    referencia = CONFIG["a4"]["referencia"]
+    k_ref = CONFIG["a4"]["k_referencia"]
+
+    por_estrategia = {entrada["estrategia"]: entrada for entrada in entradas}
+    estrategias_100 = [
+        entrada["estrategia"]
+        for entrada in entradas
+        if entrada["familia"] == "fusion_100"
+    ]
+    fusion_100 = comparar_variantes_rerank(
+        casos,
+        prior,
+        canones,
+        estrategias_100,
+        contextos,
+        referencia,
+        n_bootstrap,
+        semilla,
+    )
+
+    estrategias_prof: list[str] = []
+    for nombre in [referencia] + [
+        nombre_estrategia_a4(CONFIG["a4"]["fusion_barrido"], k)
+        for k in CONFIG["a4"]["profundidades"]
+    ]:
+        if nombre not in estrategias_prof:
+            estrategias_prof.append(nombre)
+    profundidad = comparar_variantes_rerank(
+        casos,
+        prior,
+        canones,
+        estrategias_prof,
+        contextos,
+        referencia,
+        n_bootstrap,
+        semilla,
+    )
+
+    recall_candidatos = {}
+    for variante in CONFIG["a4"]["variantes_100"]:
+        base = base_fusion_a4(variante)
+        recall_por_k = {}
+        for k in CONFIG["a4"]["profundidades"]:
+            valores = [
+                recall_at_k(
+                    caso["arts"], ranking_desde_scores(caso[base], canones), k
+                )
+                for caso in casos
+            ]
+            recall_por_k[str(k)] = round(float(np.mean(valores)), 6)
+        recall_candidatos[variante] = {
+            "estrategia_1a_etapa": base,
+            "tipo": "rrf" if variante == "rrf1a" else "lineal",
+            "peso_bm25": CONFIG["a4"]["pesos_fusion"].get(variante),
+            "recall_por_k": recall_por_k,
+        }
+
+    def _etiquetas(nombres: list[str]) -> list[dict]:
+        """Etiquetas serializables de una lista de estrategias A4."""
+        return [
+            {
+                "variante": por_estrategia[nombre]["variante"],
+                "estrategia": nombre,
+                "k": por_estrategia[nombre]["k"],
+                "peso_bm25": por_estrategia[nombre]["peso_bm25"],
+                "tipo": por_estrategia[nombre]["tipo"],
+                "rol": por_estrategia[nombre]["rol"],
+            }
+            for nombre in nombres
+        ]
+
+    return {
+        "version": "c3-a4",
+        "n_casos": len(casos),
+        "referencia": referencia,
+        "variante_referencia": "w05",
+        "k_referencia": k_ref,
+        "profundidades": list(CONFIG["a4"]["profundidades"]),
+        "fusion_barrido": CONFIG["a4"]["fusion_barrido"],
+        "criterio_seleccion_barrido": (
+            "El barrido de profundidad usa la fusion elegida "
+            f"'{CONFIG['a4']['fusion_barrido']}': default w05, la "
+            "referencia pre-registrada (revision A4 2026-09-11). El "
+            "smoke n=10 favorecia a w07 (sin_hubs 0.514 vs w05 0.466; "
+            "con_hubs 0.587 vs w05 0.556; IC pareado vs w05 que excluye "
+            "0 en ambos contextos), pero NO es un criterio robusto: los "
+            "extremos inferiores son minimos (+0.004/+0.001), a n=10 no "
+            "hay mitades A/B evaluables, A3 ya mostro que un lider de "
+            "smoke puede revertir (RRF +0.038 a n=10 -> -0.007 a n=90) y "
+            "w07 tiene menor recall de candidatos @100 (0.695 vs 0.744 "
+            "de w05). El JSON reporta las 4 fusiones a @100 y el run de "
+            "90 casos decide con el IC pareado completo; ml-trainer "
+            "puede barrer otra fusion sin tocar el codigo con "
+            "--a4-fusion {w05,w03,w07,rrf1a}."
+        ),
+        "pesos_fusion_bm25": dict(CONFIG["a4"]["pesos_fusion"]),
+        "rrf_k": CONFIG["a4"]["rrf_k"],
+        "convencion": (
+            "w05/w03/w07 son fusion lineal min-max por caso: score = "
+            "peso_bm25 * minmax(BM25) + (1 - peso_bm25) * minmax(denso "
+            "ALIA); el nombre indica el peso de BM25. rrf1a = RRF k=60 "
+            "de los rankings COMPLETOS BM25 y denso ALIA: score = "
+            "1/(60+rank_bm25) + 1/(60+rank_denso), empates por argsort "
+            "estable (orden de canones); candidatos = top-100 del RRF."
+        ),
+        "contextos": contextos,
+        "n_remuestreos_bootstrap": n_bootstrap,
+        "semilla_bootstrap": semilla,
+        "recall_candidatos": recall_candidatos,
+        "fusion_100": {
+            "etiquetas": _etiquetas(estrategias_100),
+            **fusion_100,
+        },
+        "profundidad": {
+            "fusion": CONFIG["a4"]["fusion_barrido"],
+            "etiquetas": _etiquetas(estrategias_prof),
+            **profundidad,
+        },
+        "nota": (
+            "Sprint A4: fusion de 1a etapa con embedding denso FIJO en "
+            "ALIA-MrBERT legal y bge rerank chunks (misma derivacion de "
+            "pares que v5/A2/A3: mejor pasaje BM25 + top-3 chunks). "
+            "fusion_100 compara las 4 variantes a 100 candidatos; "
+            "profundidad barre 50/100/200 de la fusion elegida e incluye "
+            "w05@100 como baseline. recall_candidatos documenta el techo "
+            "del rerank por fusion y profundidad. metricas_por_caso "
+            "guarda nDCG@10 y F1@10 por caso."
+        ),
+        "nota_pareado": (
+            "Bootstrap PAREADO de delta = variante - w05@100 (referencia "
+            f"vigente, estrategia {referencia}): las dos series comparten "
+            "el orden de casos y el generador "
+            f"(seed {semilla}, {n_bootstrap} remuestreos) produce la "
+            "misma matriz de indices, por lo que el IC es el de la "
+            "diferencia por caso. 'gana' exige el extremo inferior del "
+            "IC > 0 (criterio de ruido del gate ADR-16)."
+        ),
+    }
+
+
+def graficar_a4_fusion_profundidad(comparacion: dict) -> None:
+    """Genera figuras/c3_a4_fusion_profundidad.png (2 paneles).
+
+    Panel izquierdo: nDCG@10 de las 4 fusiones de 1a etapa a 100
+    candidatos (contextos sin_hubs alpha=0 y con_hubs alpha=1.5). Panel
+    derecho: nDCG@10 del barrido de profundidad 50/100/200 de la fusion
+    elegida (mas w05@100 como baseline si la elegida no es w05). Las
+    barras de error son el IC 95% bootstrap de la media
+    (bootstrap_ic_media). La ruta sale de CONFIG
+    ('ruta_figura_a4_fusion_profundidad'), redirigida a /tmp en smoke.
+
+    Args:
+        comparacion: Dict de construir_comparacion_a4.
+    """
+    if "fusion_100" not in comparacion:
+        print("[aviso] sin comparacion A4: no se genera la figura c3_a4")
+        return
+    contextos = list(comparacion["contextos"].keys())
+    colores = {"sin_hubs": "#4c72b0", "con_hubs": "#dd8452"}
+    figura, ejes = plt.subplots(1, 2, figsize=(12.5, 5.4))
+    for eje, seccion, titulo_x in (
+        (
+            ejes[0],
+            comparacion["fusion_100"],
+            "Fusion de 1a etapa @100 (BM25 + denso ALIA)",
+        ),
+        (
+            ejes[1],
+            comparacion["profundidad"],
+            "Profundidad de candidatos (fusion elegida)",
+        ),
+    ):
+        etiquetas_datos = seccion["etiquetas"]
+        estrategias = [fila["estrategia"] for fila in etiquetas_datos]
+        etiquetas = [
+            (
+                f"{fila['variante']}@{fila['k']}"
+                + (" (ref)" if fila["rol"] == "referencia" else "")
+            )
+            for fila in etiquetas_datos
+        ]
+        posiciones = np.arange(len(estrategias))
+        ancho = 0.8 / max(len(contextos), 1)
+        for posicion_contexto, contexto in enumerate(contextos):
+            medias, errores_inf, errores_sup = [], [], []
+            for estrategia in estrategias:
+                datos = seccion["metricas_globales"][contexto][estrategia][
+                    "ndcg_at_10"
+                ]
+                media = datos["media"] if datos["media"] is not None else 0.0
+                p2_5 = datos["p2_5"] if datos["p2_5"] is not None else media
+                p97_5 = (
+                    datos["p97_5"] if datos["p97_5"] is not None else media
+                )
+                medias.append(media)
+                errores_inf.append(media - p2_5)
+                errores_sup.append(p97_5 - media)
+            etiqueta = (
+                "sin hubs (alpha=0)"
+                if contexto == "sin_hubs"
+                else f"hubs (alpha={comparacion['contextos'][contexto]})"
+            )
+            eje.bar(
+                posiciones - 0.4 + ancho * (posicion_contexto + 0.5),
+                medias,
+                width=ancho,
+                color=colores.get(contexto, "#333333"),
+                label=etiqueta,
+                yerr=[errores_inf, errores_sup],
+                capsize=3,
+            )
+        eje.set_xticks(posiciones)
+        eje.set_xticklabels(etiquetas, fontsize=9)
+        eje.set_ylabel("nDCG@10")
+        eje.set_xlabel(titulo_x)
+        eje.set_ylim(0.0, 1.0)
+        eje.grid(True, axis="y", alpha=0.3)
+        eje.legend(fontsize=8)
+    figura.suptitle(
+        "ciclo v3 - Sprint A4: fusion de 1a etapa y profundidad "
+        "(barras = IC 95% bootstrap)",
+        fontsize=11,
+    )
+    figura.tight_layout()
+    ruta = CONFIG["ruta_figura_a4_fusion_profundidad"]
+    Path(ruta).parent.mkdir(parents=True, exist_ok=True)
+    figura.savefig(ruta, dpi=150, bbox_inches="tight")
+    plt.close(figura)
+
+
+def volcar_comparacion_a4(comparacion: dict) -> None:
+    """Vuelca la seccion comparacion_a4 a un JSON derivado trazable.
+
+    El derivado resultados/c3_a4_fusion_profundidad.json sigue el patron
+    de c3_a3_rerankers.json (A3): version, fecha, experimento, origen
+    con archivo/version/md5/seccion y todo el contenido de la
+    comparacion. Con --limite la ruta ya esta redirigida a /tmp/opencode
+    (sufijo _smoke).
+
+    Args:
+        comparacion: Dict de construir_comparacion_a4.
+    """
+    ruta_origen = Path(CONFIG["ruta_benchmark"])
+    try:
+        archivo = str(ruta_origen.relative_to(ROOT))
+    except ValueError:
+        archivo = str(ruta_origen)
+    contenido = {
+        "version": comparacion["version"],
+        "fecha": datetime.now(timezone.utc).isoformat(),
+        "experimento": (
+            "Ciclo v3 - Sprint A4: fusion de 1a etapa (BM25 + ALIA) y "
+            "barrido de profundidad 50/100/200 con bge rerank chunks "
+            f"({comparacion.get('n_casos', 0)} casos)"
+        ),
+        "origen": {
+            "archivo": archivo,
+            "version": CONFIG["version_salida"],
+            "md5": hashlib.md5(ruta_origen.read_bytes()).hexdigest(),
+            "seccion": "comparacion_a4",
+        },
+        **comparacion,
+    }
+    guardar_json(CONFIG["ruta_a4_fusion_profundidad"], contenido)
+
+
+def aplicar_modo_a4(
+    limite: int | None, fusion_barrido: str | None = None
+) -> None:
+    """Activa la fusion de 1a etapa y el barrido de profundidad (A4).
+
+    Fija el embedding denso en ALIA, registra las 4 fusiones @100 y las
+    profundidades 50/100/200 de la fusion elegida en CONFIG['estrategias'],
+    FUENTE_SCORES, ESTRATEGIAS_RANKEABLES y ESTRATEGIAS_RERANK (listas
+    mutables) y redirige las salidas a los archivos v11 (ADR-16: v2..v10
+    nunca se sobrescriben). Con --limite todo va a /tmp/opencode con
+    sufijo _smoke (benchmark, por_ano, figuras y derivado).
+
+    Args:
+        limite: Valor de --limite (None en el run final).
+        fusion_barrido: Variante del barrido (--a4-fusion); None conserva
+            el default de CONFIG (w05; revision A4: el smoke n=10 de w07
+            no es criterio robusto).
+    """
+    CONFIG["a4"]["activa"] = True
+    if fusion_barrido is not None:
+        CONFIG["a4"]["fusion_barrido"] = fusion_barrido
+    entradas = construir_estrategias_a4(CONFIG["a4"]["fusion_barrido"])
+    CONFIG["a4"]["estrategias"] = entradas
+    referencia = None
+    for entrada in entradas:
+        nombre = entrada["estrategia"]
+        if nombre not in CONFIG["estrategias"]:
+            CONFIG["estrategias"].append(nombre)
+        FUENTE_SCORES[nombre] = entrada["clave_scores"]
+        if nombre not in ESTRATEGIAS_RANKEABLES:
+            ESTRATEGIAS_RANKEABLES.append(nombre)
+        if nombre not in ESTRATEGIAS_RERANK:
+            ESTRATEGIAS_RERANK.append(nombre)
+        if entrada["familia"] == "fusion_100" and entrada["variante"] == "w05":
+            referencia = nombre
+    CONFIG["a4"]["referencia"] = referencia
+    CONFIG["version_salida"] = CONFIG["version_salida_v11"]
+    CONFIG["ruta_benchmark"] = CONFIG["ruta_benchmark_v11"]
+    CONFIG["ruta_por_ano"] = CONFIG["ruta_por_ano_v11"]
+    CONFIG["ruta_figura"] = CONFIG["ruta_figura_v11"]
+    CONFIG["ruta_figura_contaminacion"] = CONFIG[
+        "ruta_figura_contaminacion_v11"
+    ]
+    if limite is not None:
+        redirigir_rutas_a_tmp(
+            (
+                "ruta_benchmark",
+                "ruta_por_ano",
+                "ruta_figura",
+                "ruta_figura_contaminacion",
+                "ruta_figura_a4_fusion_profundidad",
+                "ruta_a4_fusion_profundidad",
+            ),
+            "_smoke",
+        )
+
+
 # ===== SECCION 9: guardado =====
 def guardar_json(ruta: str, contenido: dict) -> None:
     """Guarda un dict como JSON UTF-8 con indentacion.
@@ -2386,14 +5494,39 @@ def parsear_args() -> argparse.Namespace:
     --generar-prior construye data/prior_hubs_cp.json y termina.
     ciclo v2 - Fase W-a iter2: la rejilla de --calibrar-hubs se extiende
     hasta 2.0 (el optimo v7 quedo en el borde) y las salidas son v8.
+    ciclo v3 - Sprint A1: --diagnostico (default OFF) anade el
+    diagnostico honesto sobre los scores ya calculados (recall@k, IC 95%
+    bootstrap, periodos, longitud, techo del gold) y escribe los
+    artefactos c3_*; sin el flag nada cambia.
+    ciclo v3 - Sprint A2: --embedding-model HF_ID (repetible) anade
+    modelos de embeddings a la matriz A2 (E5 siempre como referencia) y
+    --k-candidatos-hybrid K cambia la profundidad de candidatos
+    (default 50 = comportamiento actual); con cualquiera de los dos la
+    matriz se activa y las salidas pasan a v9 + figura c3_a2_embeddings.
+    Ambos requieren --rerank (default ON).
+    ciclo v3 - Sprint A3: --a3 (default OFF) activa la comparativa de
+    rerankers legales sobre candidatos ALIA@100 fijos (bge referencia,
+    SINAI aliarerank y fusion RRF k=60) con IC bootstrap pareado de la
+    diferencia vs bge y salidas v10 + figura c3_a3_rerankers. Requiere
+    --rerank.
+    ciclo v3 - Sprint A4: --a4 (default OFF) activa la fusion de 1a
+    etapa (pesos BM25/denso w05/w03/w07 y RRF k=60) sobre denso ALIA
+    con bge rerank chunks a 100 candidatos, mas el barrido de
+    profundidad 50/100/200 de la fusion elegida (--a4-fusion, default
+    w05); salidas v11 + figura c3_a4_fusion_profundidad + derivado
+    c3_a4_fusion_profundidad.json. Requiere --rerank.
 
     Returns:
         Namespace con indice ("permanentes"/"completo"), rerank (bool),
-        limite (int | None), hubs_alpha (float), calibrar_hubs (bool) y
-        generar_prior (bool).
+        limite (int | None), hubs_alpha (float), calibrar_hubs (bool),
+        generar_prior (bool), diagnostico (bool), embedding_model
+        (list[str] | None), k_candidatos_hybrid (int), a3 (bool), a4
+        (bool) y a4_fusion (str | None).
 
     Raises:
-        SystemExit: Si --hubs-alpha es negativo (parser.error).
+        SystemExit: Si --hubs-alpha es negativo, --k-candidatos-hybrid
+            es menor que 1, --a3/--a4 se usan con --no-rerank o
+            --a4-fusion se usa sin --a4 (parser.error).
     """
     parser = argparse.ArgumentParser(
         description=(
@@ -2492,9 +5625,115 @@ def parsear_args() -> argparse.Namespace:
             "top-10 y termina sin ejecutar el benchmark."
         ),
     )
+    parser.add_argument(
+        "--diagnostico",
+        action="store_true",
+        help=(
+            "Modo diagnostico honesto (ciclo v3 - Sprint A1, default OFF): "
+            "reutiliza los scores base ya calculados (sin re-ejecutar "
+            "modelos) para generar curvas recall@k, IC 95%% bootstrap "
+            "(1000 remuestreos) de nDCG@10/MRR/F1@10/F1@5, desglose por "
+            "periodo y por terciles de longitud, techo teorico del gold y "
+            "comparacion sin/con hubs adoptados. Salidas NUEVAS: "
+            "resultados/c3_diagnostico_recall.json, figuras/c3_recall_"
+            "curvas.png, c3_metricas_ic.png y c3_por_periodo.png; con "
+            "--limite N van a /tmp/opencode y las salidas estandar del "
+            "benchmark tambien se redirigen a /tmp (no pisa v6/v8)."
+        ),
+    )
+    parser.add_argument(
+        "--embedding-model",
+        dest="embedding_model",
+        action="append",
+        default=None,
+        metavar="HF_ID",
+        help=(
+            "Modelo de embeddings de la matriz A2 (ciclo v3 - Sprint A2; "
+            "repetible para la matriz completa). Acepta un HF id o un "
+            "slug corto del catalogo (e5/alia/bgem3/modernbert). E5 se "
+            "calcula SIEMPRE como referencia del IC pareado; este flag "
+            "anade modelos. Requiere --rerank (default ON) y activa las "
+            "salidas v9 + figuras/c3_a2_embeddings.png. Sin el flag (y "
+            "con k=50) el comportamiento es identico al actual."
+        ),
+    )
+    parser.add_argument(
+        "--k-candidatos-hybrid",
+        type=int,
+        default=CONFIG["k_candidatos_hybrid"],
+        metavar="K",
+        help=(
+            "Profundidad de candidatos de las estrategias hibridas de la "
+            "matriz A2 (Sprint A2; default 50 = top-50 de v8). Crea "
+            "hibrido_<slug>_rerank_chunks_topK; el rerank escala lineal "
+            "(K x 3 pares/caso). La E5 a K=50 reutiliza la estrategia "
+            "legacy hibrido_rerank_chunks_top50 (cross-check con v8). "
+            "Valores usados en A2: 100 (y 200 como soporte)."
+        ),
+    )
+    parser.add_argument(
+        "--a3",
+        action="store_true",
+        help=(
+            "Comparativa A3 de rerankers legales (ciclo v3 - Sprint A3; "
+            "default OFF, requiere --rerank). Fija los candidatos en "
+            "ALIA@100 (el embedding con mayor recall de candidatos de A2) "
+            "y compara 3 variantes sobre los MISMOS pares (chunk, "
+            "pasaje): bge (bge-reranker-v2-m3, referencia), aliarerank "
+            "(SINAI/ALIA-MrBERT-es-legal-administrative-reranker, "
+            "cross-encoder legal ES de 150M) y rrf (Reciprocal Rank "
+            "Fusion k=60 de ambos rankings, con min-max + prior de hubs). "
+            "Reporta nDCG@10/F1@10 en contextos alpha=0 y alpha=1.5 con "
+            "IC 95%% bootstrap pareado de la diferencia vs bge. Salidas "
+            "NUEVAS: resultados/vinculo_cp_benchmark_v10.json (version "
+            "v10-ciclo3-sprintA3) y figuras/c3_a3_rerankers.png; con "
+            "--limite N todo va a /tmp/opencode."
+        ),
+    )
+    parser.add_argument(
+        "--a4",
+        action="store_true",
+        help=(
+            "Fusion de 1a etapa + barrido de profundidad (ciclo v3 - "
+            "Sprint A4; default OFF, requiere --rerank). Fija el "
+            "embedding denso en ALIA-MrBERT legal y compara con bge "
+            "rerank chunks 4 variantes a 100 candidatos: w05 "
+            "(referencia 0.5*BM25 + 0.5*denso), w03 (BM25 0.3 / denso "
+            "0.7), w07 (BM25 0.7 / denso 0.3) y rrf1a (RRF k=60 de los "
+            "rankings completos BM25 y denso). Barre ademas "
+            "top-50/100/200 de la fusion elegida y reporta nDCG@10/F1@10 "
+            "en contextos alpha=0/1.5 con IC 95%% bootstrap pareado de "
+            "la diferencia vs w05@100. Salidas NUEVAS: "
+            "vinculo_cp_benchmark_v11.json (version v11-ciclo3-sprintA4), "
+            "c3_a4_fusion_profundidad.json y "
+            "figuras/c3_a4_fusion_profundidad.png; con --limite N todo "
+            "va a /tmp/opencode."
+        ),
+    )
+    parser.add_argument(
+        "--a4-fusion",
+        dest="a4_fusion",
+        choices=["w05", "w03", "w07", "rrf1a"],
+        default=None,
+        metavar="VARIANTE",
+        help=(
+            "Fusion cuyo barrido de profundidad se ejecuta en modo --a4 "
+            "(w05/w03/w07/rrf1a; default w05, la referencia pre-"
+            "registrada: el smoke n=10 de w07 no es criterio robusto). "
+            "Las 4 fusiones se reportan a @100 de todos modos."
+        ),
+    )
     args = parser.parse_args()
     if args.hubs_alpha < 0:
         parser.error("--hubs-alpha debe ser >= 0")
+    if args.k_candidatos_hybrid < 1:
+        parser.error("--k-candidatos-hybrid debe ser >= 1")
+    if args.a3 and not args.rerank:
+        parser.error("--a3 requiere --rerank (default ON) para puntuar los pares")
+    if args.a4 and not args.rerank:
+        parser.error("--a4 requiere --rerank (default ON) para puntuar los pares")
+    if args.a4_fusion is not None and not args.a4:
+        parser.error("--a4-fusion requiere --a4")
     return args
 
 
@@ -2642,13 +5881,88 @@ def aplicar_modo_hubs(alpha: float, calibrar: bool, limite: int | None) -> None:
         )
 
 
+def aplicar_modo_diagnostico(activo: bool, limite: int | None) -> None:
+    """Ajusta CONFIG para el modo --diagnostico (ciclo v3 - Sprint A1).
+
+    El diagnostico es el artefacto del experimento A1; para no
+    sobrescribir NINGUN benchmark previo (v6/v8 son canonicos con md5,
+    ADR-16) las salidas estandar del benchmark se redirigen a
+    /tmp/opencode con sufijo _diagnostico cuando el flag esta activo.
+    Con --limite N las salidas nuevas del diagnostico tambien van a
+    /tmp/opencode con sufijo _smoke (mismo patron del resto del script).
+    Sin el flag la funcion no hace nada: el comportamiento actual queda
+    identico.
+
+    Args:
+        activo: True si el flag --diagnostico esta presente.
+        limite: Valor de --limite (None en el run final).
+    """
+    if not activo:
+        return
+    destino = Path("/tmp/opencode")
+    sufijo_estandar = "_smoke" if limite is not None else "_diagnostico"
+    for clave in (
+        "ruta_benchmark",
+        "ruta_por_ano",
+        "ruta_figura",
+        "ruta_figura_contaminacion",
+    ):
+        original = Path(CONFIG[clave])
+        # Idempotencia: aplicar_modo_rerank/aplicar_modo_hubs ya pueden
+        # haber redirigido estas rutas a /tmp/opencode (no duplicar sufijo).
+        if original.parent == destino:
+            continue
+        CONFIG[clave] = str(
+            destino
+            / f"{original.stem}{sufijo_estandar}{original.suffix}"
+        )
+    if limite is None:
+        return
+    for clave in (
+        "ruta_diagnostico",
+        "ruta_figura_diagnostico_recall",
+        "ruta_figura_diagnostico_ic",
+        "ruta_figura_diagnostico_periodo",
+    ):
+        original = Path(CONFIG[clave])
+        CONFIG[clave] = str(
+            destino / f"{original.stem}_smoke{original.suffix}"
+        )
+
+
 def main() -> None:
-    """Orquesta el benchmark M7 v3 (Fase T iter3 + Fase W-a iter2)."""
+    """Orquesta el benchmark M7 v3 (Fase T iter3 + W-a iter2 + A1/A2/A3/A4)."""
     inicio_total = time.time()
     args = parsear_args()
     incluir_transitorios = aplicar_modo_indice(args.indice)
     aplicar_modo_rerank(args.rerank, args.limite)
     aplicar_modo_hubs(args.hubs_alpha, args.calibrar_hubs, args.limite)
+    aplicar_modo_diagnostico(args.diagnostico, args.limite)
+    # ciclo v3 - Sprint A2: la matriz de embeddings se activa con
+    # --embedding-model o con una profundidad distinta de la default
+    # (50). Requiere reranking: sin el, se ignora con aviso.
+    modelos_a2: list[dict] = []
+    if args.embedding_model or args.k_candidatos_hybrid != CONFIG["k_candidatos_hybrid"]:
+        if not args.rerank:
+            print(
+                "[aviso] la matriz A2 requiere --rerank (default ON): se "
+                "ignoran --embedding-model y --k-candidatos-hybrid"
+            )
+        else:
+            modelos_a2 = construir_modelos_a2(args)
+            aplicar_modo_a2(
+                modelos_a2, args.k_candidatos_hybrid, args.limite, args.diagnostico
+            )
+    # ciclo v3 - Sprint A3: comparativa de rerankers sobre ALIA@100. Se
+    # activa DESPUES de A2 para poder reutilizar su estrategia homonima
+    # (bge a k=100 con slug alia) si la matriz ya la calculo.
+    if args.a3:
+        aplicar_modo_a3(args.limite)
+    # ciclo v3 - Sprint A4: fusion de 1a etapa y barrido de profundidad.
+    # Se activa DESPUES de A2/A3 para poder reutilizar sus estrategias
+    # homonimas (w05@100 sobre ALIA) si ya se calcularon.
+    if args.a4:
+        aplicar_modo_a4(args.limite, args.a4_fusion)
     resolver_rutas()
     if args.generar_prior:
         generar_prior_hubs()
@@ -2666,10 +5980,60 @@ def main() -> None:
         f"GPU disponible: {torch.cuda.is_available()} | "
         f"device E5: {dispositivo}"
     )
+    if CONFIG["a2"]["activa"]:
+        print(
+            "Matriz A2 activa: modelos="
+            + ", ".join(modelo["slug"] for modelo in modelos_a2)
+            + f" | k_candidatos_hybrid={CONFIG['a2']['k']} | referencia="
+            f"{CONFIG['a2']['referencia']} | salida "
+            f"{Path(CONFIG['ruta_benchmark']).name} | figura "
+            f"{Path(CONFIG['ruta_figura_a2_embeddings']).name}"
+        )
+    if CONFIG["a3"]["activa"]:
+        print(
+            "Comparativa A3 activa: candidatos="
+            f"{CONFIG['a3']['slug_embedding']}@{CONFIG['a3']['k']} | "
+            "variantes="
+            + ", ".join(
+                f"{entrada['variante']}->{entrada['estrategia']}"
+                for entrada in CONFIG["a3"]["estrategias"]
+            )
+            + f" | rrf_k={CONFIG['a3']['rrf_k']} | reutiliza_A2="
+            f"{CONFIG['a3']['reutiliza_a2']} | salida "
+            f"{Path(CONFIG['ruta_benchmark']).name} | figura "
+            f"{Path(CONFIG['ruta_figura_a3_rerankers']).name}"
+        )
+    if CONFIG["a4"]["activa"]:
+        print(
+            "Comparativa A4 activa: embedding="
+            f"{CONFIG['a4']['slug_embedding']} | fusiones@100="
+            + ", ".join(
+                entrada["estrategia"]
+                for entrada in CONFIG["a4"]["estrategias"]
+                if entrada["familia"] == "fusion_100"
+            )
+            + f" | barrido={CONFIG['a4']['fusion_barrido']} "
+            f"{CONFIG['a4']['profundidades']} | referencia="
+            f"{CONFIG['a4']['referencia']} | salida "
+            f"{Path(CONFIG['ruta_benchmark']).name} | figura "
+            f"{Path(CONFIG['ruta_figura_a4_fusion_profundidad']).name}"
+        )
 
     # --- ciclo v2 - Fase W-a: prior de hubs (se carga o construye una vez) ---
+    # ciclo v3 - Sprint A1: --diagnostico tambien necesita el prior (contexto
+    # con_hubs con los alphas adoptados) aunque no se aplique al benchmark.
+    # ciclo v3 - Sprint A2: la comparacion necesita el prior para el
+    # contexto con_hubs (alpha=1.5) aunque no se aplique al benchmark.
+    # ciclo v3 - Sprint A3: idem para las variantes de reranker en los
+    # contextos alpha=0/1.5.
     prior_hubs = None
-    if CONFIG["modo_hubs_activo"]:
+    if (
+        CONFIG["modo_hubs_activo"]
+        or args.diagnostico
+        or CONFIG["a2"]["activa"]
+        or CONFIG["a3"]["activa"]
+        or CONFIG["a4"]["activa"]
+    ):
         prior_hubs = cargar_o_construir_prior_hubs()
         print(
             "Top-10 hubs del prior: "
@@ -2782,59 +6146,117 @@ def main() -> None:
     print(f"BM25 por pasajes: {time.time() - inicio_bm25:.1f} s")
 
     # --- estrategia (c): E5-multilingual por pasajes en GPU (mejora 4) ---
-    from sentence_transformers import SentenceTransformer
-    from sentence_transformers import models as st_models
+    # ciclo v3 - Sprint A2: en modo matriz (CONFIG['a2']['activa']) los
+    # embeddings de TODOS los modelos de la matriz (E5 incluido) se
+    # cargan por la ruta generica cache-aware; sin la matriz el bloque
+    # legacy queda INTACTO (identidad con v2..v8).
+    stats_emb_a2: dict = {}
+    longitudes_query: list[int] = []
+    inicio_e5: float | None = None
+    inicio_query: float | None = None
+    if not CONFIG["a2"]["activa"]:
+        from sentence_transformers import SentenceTransformer
+        from sentence_transformers import models as st_models
 
-    backbone = st_models.Transformer(
-        CONFIG["modelo_e5"], max_seq_length=CONFIG["tamano_chunk"]
-    )
-    pooling = st_models.Pooling(
-        backbone.get_embedding_dimension(), pooling_mode="mean"
-    )
-    modelo_e5 = SentenceTransformer(modules=[backbone, pooling], device=dispositivo)
-    tokenizer = modelo_e5.tokenizer
+        backbone = st_models.Transformer(
+            CONFIG["modelo_e5"], max_seq_length=CONFIG["tamano_chunk"]
+        )
+        pooling = st_models.Pooling(
+            backbone.get_embedding_dimension(), pooling_mode="mean"
+        )
+        modelo_e5 = SentenceTransformer(
+            modules=[backbone, pooling], device=dispositivo
+        )
+        tokenizer = modelo_e5.tokenizer
 
-    # Pasajes: chunk-mean por pasaje si excede el limite de tokens.
-    grupos_pasajes = [
-        chunkear_texto(t, tokenizer) or [""] for t in pasajes["texto"].tolist()
-    ]
-    longitudes_pasajes = [len(g) for g in grupos_pasajes]
-    textos_pasajes = [
-        CONFIG["prefijo_pasaje"] + chunk
-        for grupo in grupos_pasajes
-        for chunk in grupo
-    ]
-    inicio_e5 = time.time()
-    emb_pasajes = _codificar_con_fallback(modelo_e5, textos_pasajes)
-    matriz_pasajes = media_por_grupos(emb_pasajes, longitudes_pasajes)
-    print(
-        f"E5: {len(textos_pasajes)} chunks de {len(pasajes)} pasajes "
-        f"codificados en {time.time() - inicio_e5:.1f} s ({dispositivo})"
-    )
+        # Pasajes: chunk-mean por pasaje si excede el limite de tokens.
+        grupos_pasajes = [
+            chunkear_texto(t, tokenizer) or [""] for t in pasajes["texto"].tolist()
+        ]
+        longitudes_pasajes = [len(g) for g in grupos_pasajes]
+        textos_pasajes = [
+            CONFIG["prefijo_pasaje"] + chunk
+            for grupo in grupos_pasajes
+            for chunk in grupo
+        ]
+        inicio_e5 = time.time()
+        emb_pasajes = _codificar_con_fallback(modelo_e5, textos_pasajes)
+        matriz_pasajes = media_por_grupos(emb_pasajes, longitudes_pasajes)
+        print(
+            f"E5: {len(textos_pasajes)} chunks de {len(pasajes)} pasajes "
+            f"codificados en {time.time() - inicio_e5:.1f} s ({dispositivo})"
+        )
 
-    # Queries: chunks del texto completo; el score usa max-pooling por
-    # chunk (scores_e5_caso), no chunk-mean.
-    grupos_query = [chunkear_texto(c["ventana"], tokenizer) or [""] for c in casos]
-    longitudes_query = [len(g) for g in grupos_query]
-    textos_query = [
-        CONFIG["prefijo_query"] + chunk
-        for grupo in grupos_query
-        for chunk in grupo
-    ]
-    inicio_query = time.time()
-    emb_query = _codificar_con_fallback(modelo_e5, textos_query)
-    print(
-        f"E5: {len(textos_query)} chunks de query codificados en "
-        f"{time.time() - inicio_query:.1f} s "
-        f"(media {np.mean(longitudes_query):.1f} chunks/sentencia)"
-    )
-    inicio = 0
-    for caso, n_chunks in zip(casos, longitudes_query, strict=True):
-        vectores_query = emb_query[inicio : inicio + n_chunks]
-        inicio += n_chunks
-        scores = scores_e5_caso(vectores_query, matriz_pasajes, grupos_indices)
-        caso["scores_e5"] = scores
-        caso["rankings"]["e5"] = ranking_desde_scores(scores, canones)
+        # Queries: chunks del texto completo; el score usa max-pooling por
+        # chunk (scores_e5_caso), no chunk-mean.
+        grupos_query = [
+            chunkear_texto(c["ventana"], tokenizer) or [""] for c in casos
+        ]
+        longitudes_query = [len(g) for g in grupos_query]
+        textos_query = [
+            CONFIG["prefijo_query"] + chunk
+            for grupo in grupos_query
+            for chunk in grupo
+        ]
+        inicio_query = time.time()
+        emb_query = _codificar_con_fallback(modelo_e5, textos_query)
+        print(
+            f"E5: {len(textos_query)} chunks de query codificados en "
+            f"{time.time() - inicio_query:.1f} s "
+            f"(media {np.mean(longitudes_query):.1f} chunks/sentencia)"
+        )
+        inicio = 0
+        for caso, n_chunks in zip(casos, longitudes_query, strict=True):
+            vectores_query = emb_query[inicio : inicio + n_chunks]
+            inicio += n_chunks
+            scores = scores_e5_caso(vectores_query, matriz_pasajes, grupos_indices)
+            caso["scores_e5"] = scores
+            caso["rankings"]["e5"] = ranking_desde_scores(scores, canones)
+    else:
+        # Matriz A2: un modelo a la vez (VRAM), cache de pasajes por slug.
+        for configuracion in CONFIG["a2"]["modelos"]:
+            slug = configuracion["slug"]
+            modelo, tokenizer = cargar_modelo_embedding(configuracion, dispositivo)
+            matriz_modelo, stats_pasajes = cargar_o_calcular_matriz_pasajes(
+                modelo, tokenizer, configuracion, pasajes, canones
+            )
+            stats_query = calcular_scores_embedding(
+                modelo,
+                tokenizer,
+                configuracion,
+                casos,
+                matriz_modelo,
+                grupos_indices,
+            )
+            if slug == "e5":
+                for caso in casos:
+                    caso["scores_e5"] = caso["scores_emb_e5"]
+                    caso["rankings"]["e5"] = ranking_desde_scores(
+                        caso["scores_e5"], canones
+                    )
+                longitudes_query = stats_query["longitudes_query"]
+            stats_emb_a2[slug] = {
+                "hf_id": configuracion["hf_id"],
+                "prefijo_query": configuracion["prefijo_query"],
+                "prefijo_pasaje": configuracion["prefijo_pasaje"],
+                "dim": int(matriz_modelo.shape[1]),
+                "n_pasajes": int(matriz_modelo.shape[0]),
+                "origen_pasajes": stats_pasajes["origen"],
+                "n_chunks_pasajes": stats_pasajes["n_chunks"],
+                "segundos_pasajes": stats_pasajes["segundos"],
+                "n_chunks_query": stats_query["n_chunks_query"],
+                "media_chunks_query": stats_query["media_chunks_query"],
+                "segundos_query": stats_query["segundos"],
+            }
+            print(
+                f"Embedding A2 {slug}: dim={matriz_modelo.shape[1]} | "
+                f"pasajes {stats_pasajes['origen']} | "
+                f"{stats_query['n_chunks_query']} chunks de query en "
+                f"{stats_query['segundos']} s ({dispositivo})"
+            )
+            del modelo
+            if dispositivo == "cuda":
+                torch.cuda.empty_cache()
 
     # --- estrategia (d): hibrido pre-registrado 0.5/0.5 (mejora 6) ---
     for caso in casos:
@@ -2842,9 +6264,114 @@ def main() -> None:
         caso["scores_hibrido"] = scores
         caso["rankings"]["hibrido"] = ranking_desde_scores(scores, canones)
 
+    # --- ciclo v3 - Sprint A2: hibridos por modelo (base de candidatos) ---
+    # El hibrido es siempre el mismo 0.5/0.5 pre-registrado; lo unico que
+    # cambia es el embedding denso (scores_emb_<slug>). Para E5 el vector
+    # es identico al de la estrategia (d), pero se materializa aparte
+    # para que la matriz A2 no dependa de claves legacy.
+    if CONFIG["a2"]["activa"]:
+        for configuracion in CONFIG["a2"]["modelos"]:
+            slug = configuracion["slug"]
+            clave_emb = f"scores_emb_{slug}"
+            for caso in casos:
+                caso[f"scores_hibrido_{slug}"] = scores_hibridos(
+                    caso["scores_bm25"], caso[clave_emb]
+                )
+
+    # --- ciclo v3 - Sprint A3/A4: embedding ALIA de la 1a etapa
+    # (candidatos @100 en A3; denso fijo de las fusiones en A4). Se
+    # calcula una sola vez: si la matriz A2 ya lo aporto (slug alia a
+    # k=100) o ya esta materializado, scores_hibrido_alia existe y la
+    # cache por slug data/cache_emb_cp/alia.joblib se reutiliza igual.
+    stats_emb_a3: dict = {}
+    falta_alia = "scores_emb_alia" not in casos[0]
+    if (CONFIG["a3"]["activa"] or CONFIG["a4"]["activa"]) and falta_alia:
+        slug_alia = (
+            CONFIG["a3"]["slug_embedding"]
+            if CONFIG["a3"]["activa"]
+            else CONFIG["a4"]["slug_embedding"]
+        )
+        configuracion_alia = config_modelo_embedding(slug_alia)
+        modelo_alia, tokenizer_alia = cargar_modelo_embedding(
+            configuracion_alia, dispositivo
+        )
+        matriz_alia, stats_pasajes_alia = cargar_o_calcular_matriz_pasajes(
+            modelo_alia,
+            tokenizer_alia,
+            configuracion_alia,
+            pasajes,
+            canones,
+        )
+        stats_query_alia = calcular_scores_embedding(
+            modelo_alia,
+            tokenizer_alia,
+            configuracion_alia,
+            casos,
+            matriz_alia,
+            grupos_indices,
+        )
+        for caso in casos:
+            caso["scores_hibrido_alia"] = scores_hibridos(
+                caso["scores_bm25"], caso["scores_emb_alia"]
+            )
+        stats_emb_a3 = {
+            "hf_id": configuracion_alia["hf_id"],
+            "prefijo_query": configuracion_alia["prefijo_query"],
+            "prefijo_pasaje": configuracion_alia["prefijo_pasaje"],
+            "dim": int(matriz_alia.shape[1]),
+            "n_pasajes": int(matriz_alia.shape[0]),
+            "origen_pasajes": stats_pasajes_alia["origen"],
+            "n_chunks_pasajes": stats_pasajes_alia["n_chunks"],
+            "segundos_pasajes": stats_pasajes_alia["segundos"],
+            "n_chunks_query": stats_query_alia["n_chunks_query"],
+            "media_chunks_query": stats_query_alia["media_chunks_query"],
+            "segundos_query": stats_query_alia["segundos"],
+        }
+        print(
+            f"Embedding A3 {configuracion_alia['slug']}: dim="
+            f"{matriz_alia.shape[1]} | pasajes "
+            f"{stats_pasajes_alia['origen']} | "
+            f"{stats_query_alia['n_chunks_query']} chunks de query en "
+            f"{stats_query_alia['segundos']} s ({dispositivo})"
+        )
+        del modelo_alia
+        if dispositivo == "cuda":
+            torch.cuda.empty_cache()
+
+    # --- ciclo v3 - Sprint A4: vectores de fusion de 1a etapa (ALIA) ---
+    # w05 reutiliza scores_hibrido_alia (0.5/0.5, materializado por el
+    # bloque ALIA o por la matriz A2); w03/w07/rrf1a se materializan aqui
+    # (baratos: normalizacion min-max/argsort por caso). Estos vectores
+    # solo ordenan a los candidatos del rerank y miden su recall.
+    if CONFIG["a4"]["activa"]:
+        inicio_fusion_a4 = time.time()
+        for caso in casos:
+            caso["scores_fusion_alia_w03"] = scores_fusion_lineal(
+                caso["scores_bm25"],
+                caso["scores_emb_alia"],
+                CONFIG["a4"]["pesos_fusion"]["w03"],
+            )
+            caso["scores_fusion_alia_w07"] = scores_fusion_lineal(
+                caso["scores_bm25"],
+                caso["scores_emb_alia"],
+                CONFIG["a4"]["pesos_fusion"]["w07"],
+            )
+            caso["scores_fusion_alia_rrf1a"] = scores_rrf_primera_etapa(
+                caso["scores_bm25"],
+                caso["scores_emb_alia"],
+                CONFIG["a4"]["rrf_k"],
+            )
+        print(
+            "Fusiones A4 de 1a etapa (w05 0.5/0.5 reutilizado + w03/w07/"
+            "rrf1a materializados): "
+            f"{time.time() - inicio_fusion_a4:.1f} s"
+        )
+
     # --- estrategias (e)-(h): reranking dos etapas (Fase T / iter2 / iter3) ---
     max_tokens_pares: list[int] = []
     max_tokens_pares_top50: list[int] = []
+    max_tokens_pares_a2: dict[str, list[int]] = {}
+    reranker = None
     if args.rerank:
         from lib.reranker_bge import RerankerBGE
 
@@ -2911,6 +6438,43 @@ def main() -> None:
             caso["scores_hibrido_rerank_chunks_top50"] = scores_rerank
             caso["rankings"]["hibrido_rerank_chunks_top50"] = ranking
             max_tokens_pares_top50.append(max_tokens)
+        # (i) ciclo v3 - Sprint A2: estrategias hibridas por modelo a la
+        # profundidad --k-candidatos-hybrid (matriz A2). Mismos pares
+        # (chunk, pasaje) derivados de la matriz BM25 (3 por candidato,
+        # escala lineal); E5 a k=50 es la estrategia legacy y no se
+        # recalcula (alias_legado).
+        if CONFIG["a2"]["activa"]:
+            inicio_rerank_a2 = time.time()
+            for entrada in CONFIG["a2"]["estrategias"]:
+                if entrada["alias_legado"]:
+                    continue
+                slug = entrada["slug"]
+                max_tokens_pares_a2[slug] = []
+                for caso in casos:
+                    ranking, scores_rerank, max_tokens = ranking_rerank_chunks(
+                        reranker,
+                        caso[entrada["base_hibrido"]],
+                        caso["matriz_bm25"],
+                        caso["chunks_bm25"],
+                        canones,
+                        pasajes,
+                        grupos_indices,
+                        CONFIG["a2"]["k"],
+                    )
+                    caso[entrada["clave_scores"]] = scores_rerank
+                    caso["rankings"][entrada["estrategia"]] = ranking
+                    max_tokens_pares_a2[slug].append(max_tokens)
+            print(
+                f"Rerank A2: {len(CONFIG['a2']['estrategias'])} estrategias "
+                f"({', '.join(e['slug'] for e in CONFIG['a2']['estrategias'])}) "
+                f"x {len(casos)} casos a k={CONFIG['a2']['k']} "
+                f"({CONFIG['a2']['k'] * CONFIG['k_chunks_rerank']} pares/caso) "
+                f"en {time.time() - inicio_rerank_a2:.1f} s | max tokens par: "
+                + ", ".join(
+                    f"{slug}={max(valores)}"
+                    for slug, valores in max_tokens_pares_a2.items()
+                )
+            )
         print(
             f"Rerank bge-reranker-v2-m3: {len(casos)} casos x 4 estrategias "
             f"(top-20 x2 + top-50 x2) en "
@@ -2918,6 +6482,346 @@ def main() -> None:
             f"max tokens par (chunk,pasaje) sin truncar: "
             f"top-20 {max(max_tokens_pares)} | top-50 "
             f"{max(max_tokens_pares_top50)}"
+        )
+
+    # --- ciclo v3 - Sprint A3: rerankers legales sobre ALIA@100 ---
+    # Eficiencia (A3.3): para cada caso los pares (chunk, pasaje) se
+    # construyen UNA sola vez (construir_pares_rerank_chunks) y se
+    # puntuan con AMBOS rerankers; el vector bge se reutiliza de la
+    # matriz A2 si ya se calculo (clave_bge). La variante rrf fusiona
+    # los rankings de los dos rerankers con k=60.
+    stats_rerank_a3: dict = {}
+    if CONFIG["a3"]["activa"]:
+        from lib.reranker_bge import RerankerBGE
+
+        if reranker is None:
+            reranker = RerankerBGE()
+        reranker_sinai = RerankerBGE(
+            modelo_id=CONFIG["a3"]["modelo_reranker"]
+        )
+        entradas_a3 = CONFIG["a3"]["estrategias"]
+        k_a3 = CONFIG["a3"]["k"]
+        clave_bge_a3 = CONFIG["a3"]["clave_bge"]
+        max_tokens_bge_a3: list[int] = []
+        max_tokens_sinai_a3: list[int] = []
+        n_chunks_a3 = CONFIG["a3"]["k"] * CONFIG["k_chunks_rerank"]
+        inicio_rerank_a3 = time.time()
+        for caso in casos:
+            pares_a3 = construir_pares_rerank_chunks(
+                caso["scores_hibrido_alia"],
+                caso["matriz_bm25"],
+                caso["chunks_bm25"],
+                grupos_indices,
+                pasajes,
+                k_a3,
+            )
+            candidatos_a3 = pares_a3["candidatos"]
+            if clave_bge_a3 and clave_bge_a3 in caso:
+                scores_bge_a3 = caso[clave_bge_a3]
+            else:
+                scores_bge_a3 = scores_maxpool_por_candidato(
+                    reranker.puntuar(pares_a3["queries"], pares_a3["pasajes"]),
+                    pares_a3["posiciones"],
+                    candidatos_a3,
+                    len(canones),
+                )
+            scores_sinai_a3 = scores_maxpool_por_candidato(
+                reranker_sinai.puntuar(pares_a3["queries"], pares_a3["pasajes"]),
+                pares_a3["posiciones"],
+                candidatos_a3,
+                len(canones),
+            )
+            scores_rrf_a3 = scores_rrf_entre_rerankers(
+                scores_bge_a3,
+                scores_sinai_a3,
+                candidatos_a3,
+                len(canones),
+                CONFIG["a3"]["rrf_k"],
+            )
+            scores_por_variante = {
+                "bge": scores_bge_a3,
+                "aliarerank": scores_sinai_a3,
+                "rrf": scores_rrf_a3,
+            }
+            for entrada in entradas_a3:
+                clave_a3 = entrada["clave_scores"]
+                caso[clave_a3] = scores_por_variante[entrada["variante"]]
+                caso["rankings"][entrada["estrategia"]] = ranking_desde_scores(
+                    caso[clave_a3], canones
+                )[: CONFIG["k_rerank_salida"]]
+            max_tokens_bge_a3.append(
+                reranker.max_tokens_par(pares_a3["queries"], pares_a3["pasajes"])
+            )
+            max_tokens_sinai_a3.append(
+                reranker_sinai.max_tokens_par(
+                    pares_a3["queries"], pares_a3["pasajes"]
+                )
+            )
+        stats_rerank_a3 = {
+            "nota": (
+                "Sprint A3: los pares (chunk, pasaje) se construyen una "
+                "sola vez por caso y se puntuan con los dos rerankers; "
+                "max_tokens_par se mide por tokenizer (bge y SINAI)."
+            ),
+            "pares_por_caso": n_chunks_a3,
+            "max_tokens_par_bge": int(max(max_tokens_bge_a3)),
+            "max_tokens_par_sinai": int(max(max_tokens_sinai_a3)),
+            "segundos": round(time.time() - inicio_rerank_a3, 1),
+            "reutiliza_bge_a2": clave_bge_a3 is not None,
+        }
+        print(
+            f"Rerank A3 (ALIA@{k_a3}): {len(casos)} casos x "
+            f"{n_chunks_a3} pares con bge y SINAI en "
+            f"{stats_rerank_a3['segundos']} s | max tokens par: bge "
+            f"{stats_rerank_a3['max_tokens_par_bge']} | sinai "
+            f"{stats_rerank_a3['max_tokens_par_sinai']} | rrf_k="
+            f"{CONFIG['a3']['rrf_k']} | bge reutilizado de A2: "
+            f"{clave_bge_a3 is not None}"
+        )
+        del reranker_sinai
+        if dispositivo == "cuda":
+            torch.cuda.empty_cache()
+
+    # --- ciclo v3 - Sprint A4: fusion de 1a etapa con bge rerank chunks ---
+    # Cada variante (4 fusiones @100 + profundidades 50/200 de la fusion
+    # elegida) construye sus pares (chunk, pasaje) con la MISMA derivacion
+    # de v5/A2/A3 (mejor pasaje BM25 + top-3 chunks) a partir de su vector
+    # de 1a etapa. Si la estrategia ya existe (reutilizacion de A2/A3, p.
+    # ej. w05@100) no se re-puntua: "reutiliza alias si aplica". El coste
+    # escala lineal: 3 pares por candidato (600 pares/caso a top-200).
+    stats_rerank_a4: dict = {}
+    if CONFIG["a4"]["activa"]:
+        if reranker is None:
+            from lib.reranker_bge import RerankerBGE
+
+            reranker = RerankerBGE()
+        entradas_a4 = CONFIG["a4"]["estrategias"]
+        max_tokens_a4: dict[str, list[int]] = {}
+        calculadas_a4: list[str] = []
+        reutilizadas_a4: list[str] = []
+        inicio_rerank_a4 = time.time()
+        for entrada in entradas_a4:
+            if entrada["clave_scores"] in casos[0]:
+                reutilizadas_a4.append(entrada["estrategia"])
+                continue
+            max_tokens_a4[entrada["estrategia"]] = []
+            for caso in casos:
+                ranking, scores_rerank, max_tokens = ranking_rerank_chunks(
+                    reranker,
+                    caso[entrada["base_fusion"]],
+                    caso["matriz_bm25"],
+                    caso["chunks_bm25"],
+                    canones,
+                    pasajes,
+                    grupos_indices,
+                    entrada["k"],
+                )
+                caso[entrada["clave_scores"]] = scores_rerank
+                caso["rankings"][entrada["estrategia"]] = ranking
+                max_tokens_a4[entrada["estrategia"]].append(max_tokens)
+            calculadas_a4.append(entrada["estrategia"])
+        stats_rerank_a4 = {
+            "nota": (
+                "Sprint A4: la fusion fija quienes son los candidatos "
+                "(top-k de su score de 1a etapa) y los pares (chunk, "
+                "pasaje) se derivan con la misma logica de v5/A2/A3 "
+                "(mejor pasaje BM25 + top-3 chunks, 3 pares/candidato)."
+            ),
+            "calculadas": calculadas_a4,
+            "reutilizadas": reutilizadas_a4,
+            "max_tokens_par": {
+                nombre: int(max(valores))
+                for nombre, valores in max_tokens_a4.items()
+            },
+            "segundos": round(time.time() - inicio_rerank_a4, 1),
+        }
+        print(
+            f"Rerank A4 (denso {CONFIG['a4']['slug_embedding']}): "
+            f"{len(calculadas_a4)} estrategias x {len(casos)} casos "
+            f"({CONFIG['a4']['k_referencia']} y "
+            f"{CONFIG['a4']['profundidades']} candidatos; 3 pares/candidato)"
+            f" en {stats_rerank_a4['segundos']} s | reutilizadas: "
+            f"{reutilizadas_a4 or 'ninguna'} | max tokens par: "
+            + (
+                ", ".join(
+                    f"{nombre.rsplit('_top', 1)[-1]}={valor}"
+                    for nombre, valor in stats_rerank_a4[
+                        "max_tokens_par"
+                    ].items()
+                )
+                if stats_rerank_a4["max_tokens_par"]
+                else "n/a"
+            )
+        )
+
+    # --- ciclo v3 - Sprint A1: diagnostico honesto (reutiliza scores base) ---
+    # Se ejecuta ANTES de aplicar el alpha efectivo a los casos para leer
+    # siempre los scores base intactos (el diagnostico reconstruye sus
+    # propios rankings sin mutar los casos).
+    diagnostico_a1 = None
+    if args.diagnostico:
+        inicio_diagnostico = time.time()
+        diagnostico_a1 = construir_diagnostico_a1(
+            casos, prior_hubs, canones, args.limite
+        )
+        guardar_json(CONFIG["ruta_diagnostico"], diagnostico_a1)
+        graficar_recall_curvas(diagnostico_a1)
+        graficar_metricas_ic(diagnostico_a1)
+        graficar_por_periodo(diagnostico_a1)
+        print(
+            f"Diagnostico A1: {len(casos)} casos, "
+            f"bootstrap {CONFIG['diagnostico_bootstrap']} remuestreos "
+            f"(seed {CONFIG['diagnostico_seed']}) en "
+            f"{time.time() - inicio_diagnostico:.1f} s -> "
+            f"{CONFIG['ruta_diagnostico']}"
+        )
+
+    # --- ciclo v3 - Sprint A2: comparacion de embeddings y pareado ---
+    # Se ejecuta ANTES de aplicar el alpha efectivo del benchmark (los
+    # contextos de la matriz usan alphas fijos 0.0/1.5 y no deben leer
+    # scores mutados); reutiliza la maquinaria del diagnostico A1.
+    comparacion_a2 = None
+    if CONFIG["a2"]["activa"]:
+        inicio_comparacion = time.time()
+        comparacion_a2 = construir_comparacion_a2(casos, prior_hubs, canones)
+        print(
+            f"Comparacion A2: k={CONFIG['a2']['k']}, "
+            f"{len(CONFIG['a2']['estrategias'])} estrategias x 2 contextos "
+            f"(referencia {CONFIG['a2']['referencia']}) en "
+            f"{time.time() - inicio_comparacion:.1f} s"
+        )
+        for contexto in comparacion_a2["contextos"]:
+            for entrada in CONFIG["a2"]["estrategias"]:
+                datos = comparacion_a2["metricas_globales"][contexto][
+                    entrada["estrategia"]
+                ]["ndcg_at_10"]
+                print(
+                    f"  A2 {contexto:8s} {entrada['slug']:11s} "
+                    f"nDCG@10={datos['media']:.3f} "
+                    f"[{datos['p2_5']:.3f}, {datos['p97_5']:.3f}]"
+                )
+        for contexto, por_estrategia in comparacion_a2[
+            "pareado_vs_referencia"
+        ].items():
+            for estrategia, medidas in por_estrategia.items():
+                delta = medidas["ndcg_at_10"]
+                veredicto = "gana" if delta["gana"] else "no concluyente"
+                print(
+                    f"  pareado {contexto:8s} {estrategia:38s} "
+                    f"d_nDCG@10={delta['media_delta']:+.3f} "
+                    f"[{delta['p2_5']:+.3f}, {delta['p97_5']:+.3f}] "
+                    f"{veredicto}"
+                )
+
+    # --- ciclo v3 - Sprint A3: comparacion de rerankers y pareado ---
+    # Igual que A2, se ejecuta ANTES de aplicar el alpha efectivo del
+    # benchmark (los contextos usan alphas fijos 0.0/1.5 y no deben leer
+    # scores mutados).
+    comparacion_a3 = None
+    if CONFIG["a3"]["activa"]:
+        inicio_comparacion_a3 = time.time()
+        comparacion_a3 = construir_comparacion_a3(casos, prior_hubs, canones)
+        print(
+            f"Comparacion A3: ALIA@{CONFIG['a3']['k']}, "
+            f"{len(CONFIG['a3']['estrategias'])} variantes x 2 contextos "
+            f"(referencia {CONFIG['a3']['referencia']}) en "
+            f"{time.time() - inicio_comparacion_a3:.1f} s"
+        )
+        for contexto in comparacion_a3["contextos"]:
+            for entrada in CONFIG["a3"]["estrategias"]:
+                datos = comparacion_a3["metricas_globales"][contexto][
+                    entrada["estrategia"]
+                ]["ndcg_at_10"]
+                f1_10 = comparacion_a3["metricas_globales"][contexto][
+                    entrada["estrategia"]
+                ]["f1_at_10"]
+                print(
+                    f"  A3 {contexto:8s} {entrada['variante']:11s} "
+                    f"nDCG@10={datos['media']:.3f} "
+                    f"[{datos['p2_5']:.3f}, {datos['p97_5']:.3f}] | "
+                    f"F1@10={f1_10['media']:.3f} "
+                    f"[{f1_10['p2_5']:.3f}, {f1_10['p97_5']:.3f}]"
+                )
+        for contexto, por_estrategia in comparacion_a3[
+            "pareado_vs_referencia"
+        ].items():
+            for estrategia, medidas in por_estrategia.items():
+                delta = medidas["ndcg_at_10"]
+                veredicto = "gana" if delta["gana"] else "no concluyente"
+                print(
+                    f"  pareado {contexto:8s} {estrategia:38s} "
+                    f"d_nDCG@10={delta['media_delta']:+.3f} "
+                    f"[{delta['p2_5']:+.3f}, {delta['p97_5']:+.3f}] "
+                    f"{veredicto} (prob_mejora="
+                    f"{delta['prob_mejora']:.3f})"
+                )
+        print(
+            "  recall candidatos ALIA@100="
+            f"{comparacion_a3['recall_candidatos']['media']:.3f} | "
+            "reutiliza A2="
+            f"{comparacion_a3['reutiliza_matriz_a2']}"
+        )
+
+    # --- ciclo v3 - Sprint A4: fusion de 1a etapa y barrido ---
+    # Igual que A2/A3, se ejecuta ANTES de aplicar el alpha efectivo del
+    # benchmark (los contextos usan alphas fijos 0.0/1.5 y no deben leer
+    # scores mutados).
+    comparacion_a4 = None
+    if CONFIG["a4"]["activa"]:
+        inicio_comparacion_a4 = time.time()
+        comparacion_a4 = construir_comparacion_a4(casos, prior_hubs, canones)
+        print(
+            f"Comparacion A4: {len(casos)} casos, "
+            f"{len(comparacion_a4['fusion_100']['etiquetas'])} fusiones@100 "
+            f"+ barrido {CONFIG['a4']['fusion_barrido']}"
+            f"{CONFIG['a4']['profundidades']} en "
+            f"{time.time() - inicio_comparacion_a4:.1f} s"
+        )
+        for contexto in comparacion_a4["contextos"]:
+            for fila in comparacion_a4["fusion_100"]["etiquetas"]:
+                datos = comparacion_a4["fusion_100"]["metricas_globales"][
+                    contexto
+                ][fila["estrategia"]]["ndcg_at_10"]
+                print(
+                    f"  A4 {contexto:8s} {fila['variante']:6s} "
+                    f"nDCG@10={datos['media']:.3f} "
+                    f"[{datos['p2_5']:.3f}, {datos['p97_5']:.3f}]"
+                )
+        for contexto, por_estrategia in comparacion_a4["fusion_100"][
+            "pareado_vs_referencia"
+        ].items():
+            for estrategia, medidas in por_estrategia.items():
+                delta = medidas["ndcg_at_10"]
+                print(
+                    f"  pareado {contexto:8s} {estrategia:44s} "
+                    f"d_nDCG@10={delta['media_delta']:+.3f} "
+                    f"[{delta['p2_5']:+.3f}, {delta['p97_5']:+.3f}] "
+                    f"prob_mejora={delta['prob_mejora']:.3f} "
+                    f"{'gana' if delta['gana'] else 'no concluyente'}"
+                )
+        for contexto in comparacion_a4["contextos"]:
+            for fila in comparacion_a4["profundidad"]["etiquetas"]:
+                datos = comparacion_a4["profundidad"]["metricas_globales"][
+                    contexto
+                ][fila["estrategia"]]["ndcg_at_10"]
+                print(
+                    f"  A4 profundidad {contexto:8s} "
+                    f"{fila['variante']}@{fila['k']:3d} "
+                    f"nDCG@10={datos['media']:.3f} "
+                    f"[{datos['p2_5']:.3f}, {datos['p97_5']:.3f}]"
+                )
+        print(
+            "  recall candidatos (50/100/200): "
+            + " | ".join(
+                f"{variante}="
+                + "/".join(
+                    f"{valor:.3f}"
+                    for valor in datos["recall_por_k"].values()
+                )
+                for variante, datos in comparacion_a4[
+                    "recall_candidatos"
+                ].items()
+            )
         )
 
     # --- evaluacion base (alpha=0) de referencia (solo en modo hubs) ---
@@ -2989,9 +6893,21 @@ def main() -> None:
         "indice": CONFIG["version_indice"],
         "reranker": CONFIG["reranker"] if args.rerank else None,
         "nota": (
-            CONFIG["nota_v8"]
-            if CONFIG["modo_hubs_activo"]
-            else (CONFIG["nota_v6"] if args.rerank else None)
+            CONFIG["nota_v11"]
+            if CONFIG["a4"]["activa"]
+            else (
+                CONFIG["nota_v10"]
+                if CONFIG["a3"]["activa"]
+                else (
+                    CONFIG["nota_v9"]
+                    if CONFIG["a2"]["activa"]
+                    else (
+                        CONFIG["nota_v8"]
+                        if CONFIG["modo_hubs_activo"]
+                        else (CONFIG["nota_v6"] if args.rerank else None)
+                    )
+                )
+            )
         ),
         "smoke_test": args.limite is not None,
         "descripcion": (
@@ -3049,6 +6965,55 @@ def main() -> None:
             "k_rerank_salida": CONFIG["k_rerank_salida"],
             "k_chunks_rerank": CONFIG["k_chunks_rerank"],
             "k_candidatos_rerank_top50": CONFIG["k_candidatos_rerank_top50"],
+            "k_candidatos_hybrid": CONFIG["a2"]["k"],
+            "modelos_embedding_a2": [
+                {
+                    "slug": modelo["slug"],
+                    "hf_id": modelo["hf_id"],
+                    "prefijo_query": modelo["prefijo_query"],
+                    "prefijo_pasaje": modelo["prefijo_pasaje"],
+                    "nota": modelo["nota"],
+                }
+                for modelo in CONFIG["a2"]["modelos"]
+            ],
+            "a2_contextos": dict(CONFIG["a2_contextos"]),
+            "a2_referencia": CONFIG["a2"]["referencia"],
+            "a3_k_candidatos": CONFIG["a3"]["k"],
+            "a3_slug_embedding": CONFIG["a3"]["slug_embedding"],
+            "a3_rrf_k": CONFIG["a3"]["rrf_k"],
+            "a3_contextos": dict(CONFIG["a3"]["contextos"]),
+            "a3_referencia": CONFIG["a3"]["referencia"],
+            "a3_reutiliza_matriz_a2": CONFIG["a3"]["reutiliza_a2"],
+            "a3_rerankers": [
+                {
+                    "variante": entrada["variante"],
+                    "estrategia": entrada["estrategia"],
+                    "hf_id": entrada["hf_id"],
+                    "rol": entrada["rol"],
+                }
+                for entrada in CONFIG["a3"]["estrategias"]
+            ],
+            "a4_slug_embedding": CONFIG["a4"]["slug_embedding"],
+            "a4_k_referencia": CONFIG["a4"]["k_referencia"],
+            "a4_profundidades": list(CONFIG["a4"]["profundidades"]),
+            "a4_rrf_k": CONFIG["a4"]["rrf_k"],
+            "a4_pesos_fusion_bm25": dict(CONFIG["a4"]["pesos_fusion"]),
+            "a4_variantes_100": list(CONFIG["a4"]["variantes_100"]),
+            "a4_fusion_barrido": CONFIG["a4"]["fusion_barrido"],
+            "a4_contextos": dict(CONFIG["a4"]["contextos"]),
+            "a4_referencia": CONFIG["a4"]["referencia"],
+            "a4_estrategias": [
+                {
+                    "variante": entrada["variante"],
+                    "familia": entrada["familia"],
+                    "estrategia": entrada["estrategia"],
+                    "k": entrada["k"],
+                    "peso_bm25": entrada["peso_bm25"],
+                    "tipo": entrada["tipo"],
+                    "rol": entrada["rol"],
+                }
+                for entrada in CONFIG["a4"]["estrategias"]
+            ],
             "limite_casos": args.limite,
             "nota_gold": (
                 "El gold (arts_cp de M2) se valida contra el parquet "
@@ -3129,11 +7094,23 @@ def main() -> None:
         "comparacion_v1_global": cargar_globales_v1(),
         "tiempos_segundos": {
             "bm25": round(time.time() - inicio_bm25, 1),
-            "e5_pasajes": round(time.time() - inicio_e5 - (time.time() - inicio_query), 1),
-            "e5_query": round(time.time() - inicio_query, 1),
+            "e5_pasajes": (
+                round(inicio_query - inicio_e5, 1)
+                if inicio_e5 is not None and inicio_query is not None
+                else None
+            ),
+            "e5_query": (
+                round(time.time() - inicio_query, 1)
+                if inicio_query is not None
+                else None
+            ),
+            "embeddings_a2": stats_emb_a2 or None,
+            "embeddings_a3": stats_emb_a3 or None,
             "rerank": (
                 round(time.time() - inicio_rerank, 1) if args.rerank else None
             ),
+            "rerank_a3": stats_rerank_a3.get("segundos"),
+            "rerank_a4": stats_rerank_a4.get("segundos"),
             "calibracion_hubs": (
                 round(time.time() - inicio_calibracion, 1)
                 if args.calibrar_hubs
@@ -3197,6 +7174,48 @@ def main() -> None:
         benchmark["global_alpha0"] = globales_alpha0
     if calibracion_hubs is not None:
         benchmark["calibracion_hubs"] = calibracion_hubs
+    # ciclo v3 - Sprint A2: comparativa de embeddings + IC pareado.
+    if comparacion_a2 is not None:
+        benchmark["comparacion_a2"] = comparacion_a2
+        # Seccion prometida en A2.6/descripcion: stats de carga y codificacion
+        # por modelo (hf_id, prefijos, dim, origen de cache, tiempos).
+        benchmark["embeddings_a2"] = stats_emb_a2 or None
+        benchmark["descripcion"] += (
+            " Sprint A2: comparativa de embeddings legales ES (E5 ref, "
+            "ALIA-MrBERT legal, BGE-M3-Legal, modernbert legal) en el "
+            "hibrido BM25+denso con rerank por chunks a k candidatos "
+            f"{CONFIG['a2']['k']} y 2 contextos de hubs (alpha=0 y 1.5), "
+            "con IC bootstrap pareado de la diferencia vs la referencia; "
+            "detalle en comparacion_a2 y embeddings_a2."
+        )
+    # ciclo v3 - Sprint A3: comparativa de rerankers legales + IC pareado.
+    if comparacion_a3 is not None:
+        benchmark["comparacion_a3"] = comparacion_a3
+        benchmark["rerank_chunks_stats"]["a3"] = stats_rerank_a3
+        benchmark["descripcion"] += (
+            " Sprint A3: comparativa de rerankers legales sobre los "
+            f"candidatos de {CONFIG['a3']['slug_embedding']}@"
+            f"{CONFIG['a3']['k']} (bge referencia, SINAI aliarerank y "
+            f"fusion RRF k={CONFIG['a3']['rrf_k']}) con los MISMOS pares "
+            "(chunk, pasaje) puntuados por ambos rerankers y 2 contextos "
+            "de hubs (alpha=0 y 1.5), con IC bootstrap pareado de la "
+            "diferencia vs bge; detalle en comparacion_a3 y "
+            "rerank_chunks_stats.a3."
+        )
+    # ciclo v3 - Sprint A4: fusion de 1a etapa + barrido de profundidad.
+    if comparacion_a4 is not None:
+        benchmark["comparacion_a4"] = comparacion_a4
+        benchmark["embeddings_a4_alia"] = stats_emb_a3 or None
+        benchmark["rerank_chunks_stats"]["a4"] = stats_rerank_a4
+        benchmark["descripcion"] += (
+            " Sprint A4: fusion de 1a etapa con denso FIJO ALIA "
+            "(w05 0.5/0.5, w03/w07 con peso BM25 0.3/0.7 y rrf1a RRF "
+            "k=60 de los rankings completos) y barrido de profundidad "
+            "50/100/200 de la fusion elegida, todos con bge rerank "
+            "chunks y 2 contextos de hubs (alpha=0 y 1.5), con IC "
+            "bootstrap pareado de la diferencia vs w05@100; detalle en "
+            "comparacion_a4 y rerank_chunks_stats.a4."
+        )
     guardar_json(CONFIG["ruta_benchmark"], benchmark)
 
     por_caso[["id", "ano", "estrategia", "n_relevantes", *MEDIDAS]].to_csv(
@@ -3204,6 +7223,13 @@ def main() -> None:
     )
     graficar_deriva(por_caso)
     graficar_contaminacion(diagnostico)
+    if comparacion_a2 is not None:
+        graficar_a2_embeddings(comparacion_a2)
+    if comparacion_a3 is not None:
+        graficar_a3_rerankers(comparacion_a3)
+    if comparacion_a4 is not None:
+        volcar_comparacion_a4(comparacion_a4)
+        graficar_a4_fusion_profundidad(comparacion_a4)
 
     # --- resumen final ---
     print(
@@ -3281,10 +7307,106 @@ def main() -> None:
                     f"{detalle['alpha_elegido_full']}, mejora full "
                     f"{detalle['mejora_full_pp']:+.1f} pp)"
                 )
+    if diagnostico_a1 is not None:
+        print("\n=== Diagnostico A1: IC 95% bootstrap (media [p2.5, p97.5]) ===")
+        for contexto in (CONTEXTO_SIN_HUBS, CONTEXTO_CON_HUBS):
+            for estrategia in diagnostico_a1["config"]["estrategias_focales"]:
+                fila = diagnostico_a1["ic_bootstrap"][contexto][estrategia]
+                ndcg = fila["ndcg_at_10"]
+                f1_10 = fila["f1_at_10"]
+                print(
+                    f"{contexto:8s} {estrategia:30s} "
+                    f"nDCG@10={ndcg['media']:.3f} "
+                    f"[{ndcg['p2_5']:.3f}, {ndcg['p97_5']:.3f}] | "
+                    f"F1@10={f1_10['media']:.3f} "
+                    f"[{f1_10['p2_5']:.3f}, {f1_10['p97_5']:.3f}]"
+                )
+        techo = diagnostico_a1["techo_teorico"]
+        print(
+            "techo teorico del gold: "
+            f"F1@5 max={techo['f1_at_5_maximo']['media']:.3f} | "
+            f"F1@10 max={techo['f1_at_10_maximo']['media']:.3f} | "
+            f"n_gold medio={techo['n_gold_por_caso']['media']:.1f} | "
+            f"recall universo={techo['recall_universo']['media']:.3f}"
+        )
+        candidatos = diagnostico_a1["recall_candidatos_primera_etapa"]
+        print(
+            "recall candidatos top-50: "
+            + " | ".join(
+                f"{nombre}={datos['media']:.3f}"
+                for nombre, datos in candidatos.items()
+            )
+        )
+    if comparacion_a3 is not None:
+        print(
+            "\n=== Sprint A3: rerankers legales sobre candidatos "
+            f"{CONFIG['a3']['slug_embedding']}@{CONFIG['a3']['k']} "
+            "(nDCG@10 [IC 95%]) ==="
+        )
+        for contexto in comparacion_a3["contextos"]:
+            for entrada in CONFIG["a3"]["estrategias"]:
+                datos = comparacion_a3["metricas_globales"][contexto][
+                    entrada["estrategia"]
+                ]["ndcg_at_10"]
+                print(
+                    f"{contexto:8s} {entrada['variante']:11s} "
+                    f"nDCG@10={datos['media']:.3f} "
+                    f"[{datos['p2_5']:.3f}, {datos['p97_5']:.3f}]"
+                )
+        for contexto, por_estrategia in comparacion_a3[
+            "pareado_vs_referencia"
+        ].items():
+            for estrategia, medidas in por_estrategia.items():
+                delta = medidas["ndcg_at_10"]
+                print(
+                    f"pareado {contexto:8s} {estrategia:38s} "
+                    f"d_nDCG@10={delta['media_delta']:+.3f} "
+                    f"[{delta['p2_5']:+.3f}, {delta['p97_5']:+.3f}] "
+                    f"prob_mejora={delta['prob_mejora']:.3f} | "
+                    f"{'gana' if delta['gana'] else 'no concluyente'}"
+                )
+    if comparacion_a4 is not None:
+        print(
+            "\n=== Sprint A4: fusion de 1a etapa @100 y profundidad "
+            "(nDCG@10 [IC 95%]) ==="
+        )
+        for contexto in comparacion_a4["contextos"]:
+            resumen_fusiones = " | ".join(
+                f"{fila['variante']}="
+                f"{comparacion_a4['fusion_100']['metricas_globales'][contexto][fila['estrategia']]['ndcg_at_10']['media']:.3f}"
+                for fila in comparacion_a4["fusion_100"]["etiquetas"]
+            )
+            print(f"fusiones {contexto:8s}: {resumen_fusiones}")
+            resumen_prof = " | ".join(
+                f"top{fila['k']}="
+                f"{comparacion_a4['profundidad']['metricas_globales'][contexto][fila['estrategia']]['ndcg_at_10']['media']:.3f}"
+                for fila in comparacion_a4["profundidad"]["etiquetas"]
+            )
+            print(
+                f"profundidad {contexto:8s} "
+                f"({comparacion_a4['fusion_barrido']}): {resumen_prof}"
+            )
+    salidas = (
+        f"{CONFIG['ruta_benchmark']}, {CONFIG['ruta_por_ano']}, "
+        f"{CONFIG['ruta_figura']}, {CONFIG['ruta_figura_contaminacion']}"
+    )
+    if args.diagnostico:
+        salidas += (
+            f", {CONFIG['ruta_diagnostico']}, "
+            f"{CONFIG['ruta_figura_diagnostico_recall']}, "
+            f"{CONFIG['ruta_figura_diagnostico_ic']}, "
+            f"{CONFIG['ruta_figura_diagnostico_periodo']}"
+        )
+    if comparacion_a3 is not None:
+        salidas += f", {CONFIG['ruta_figura_a3_rerankers']}"
+    if comparacion_a4 is not None:
+        salidas += (
+            f", {CONFIG['ruta_figura_a4_fusion_profundidad']}, "
+            f"{CONFIG['ruta_a4_fusion_profundidad']}"
+        )
     print(
         f"tiempo total: {time.time() - inicio_total:.1f} s | "
-        f"salidas: {CONFIG['ruta_benchmark']}, {CONFIG['ruta_por_ano']}, "
-        f"{CONFIG['ruta_figura']}, {CONFIG['ruta_figura_contaminacion']}"
+        f"salidas: {salidas}"
     )
 
 

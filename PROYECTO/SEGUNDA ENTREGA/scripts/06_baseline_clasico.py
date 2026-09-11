@@ -49,14 +49,39 @@ parcial anticipada por E1):
     adopcion por variante: solo se adopta si gana en validacion y su test no
     cae por debajo de C.
 
+Ciclo v3 - Sprint A5 (2026-09-11): modo --fase-a5 (flag NUEVO, default OFF),
+sobre las MISMAS features/splits canonicos y el mismo protocolo (seleccion
+por validacion, test una sola vez):
+    1. Reproduccion de la C calibrada de la Fase U desde su artefacto
+       (modelos/m4_jerarquico/ganadora_C_calibracion.joblib): sanity
+       obligatorio test=0.2980095633575616 +- 1e-6.
+    2. BETO chunk-mean (Fase V) sobre la cache de chunks: inferencia val/test
+       del checkpoint beto_completo reutilizando las funciones de
+       scripts/07_transformer.py (forward_doc_chunk_mean, ChunksDataset,
+       collate_chunks) y softmax fp32 sobre los logits. Sanity obligatorio
+       test=0.2433442600823086 +- 0.001; variante secundaria enmascarada
+       (0.23632401040291953 +- 0.001).
+    3. Ensamble C+BETO: p_ens = w*p_C + (1-w)*p_BETO, w en {0.5,0.6,0.7,0.8}
+       elegido por macro-F1 de VALIDACION; test del w elegido + bootstrap
+       pareado (1000, seed 42) de la diferencia de macro-F1 test vs C.
+    4. Class weights: LogReg class_weight='balanced' y 1/sqrt(frecuencia)
+       entrenados en train + la misma calibracion de sesgos por clase en
+       validacion (procedimiento de la Fase U).
+    Salida NUEVA: resultados/m4_clasificador_c3.json (version "c3-a5"); los
+    JSON y modelos de ciclos previos quedan INTOCABLES (md5 en el propio
+    JSON). Smoke: --fase-a5 --limite N escribe en /tmp/opencode/.
+
 Uso:
     /home/carlos/venv/bin/python scripts/06_baseline_clasico.py
     /home/carlos/venv/bin/python scripts/06_baseline_clasico.py --fase-u
     /home/carlos/venv/bin/python scripts/06_baseline_clasico.py --limite 1500
+    /home/carlos/venv/bin/python scripts/06_baseline_clasico.py --fase-a5
+    /home/carlos/venv/bin/python scripts/06_baseline_clasico.py --fase-a5 --limite 800
 """
 
 import argparse
 import hashlib
+import importlib
 import json
 import logging
 import re
@@ -116,6 +141,21 @@ CONFIG = {
     "ruta_fig_variantes": "figuras/fig_m4_eurovoc_variantes.png",
     "ruta_eurovoc_bloques": "config/eurovoc_bloques.json",
     "ruta_eurovoc_terminos": "config/eurovoc_terminos_es.json",
+    # --- ciclo v3 - Sprint A5 (clasificador C + BETO chunk-mean + class weights) ---
+    "ruta_artefacto_c": "modelos/m4_jerarquico/ganadora_C_calibracion.joblib",
+    "dir_beto_chunks": "modelos/m4_transformer_chunks",
+    "dir_cache_chunks": "data/cache_chunks_beto",
+    "ruta_json_c3": "resultados/m4_clasificador_c3.json",
+    "ruta_json_c3_smoke": "/tmp/opencode/m4_clasificador_c3_smoke.json",
+    "ruta_log_c3": "experimentos/m4_clasificador_c3.log",
+    "ruta_log_c3_smoke": "/tmp/opencode/m4_clasificador_c3_smoke.log",
+    "ruta_fig_c3": "figuras/c3_a5_clasificador.png",
+    "pesos_ensamble": [0.5, 0.6, 0.7, 0.8],
+    "bootstrap_n": 1000,
+    "bootstrap_seed": 42,
+    "tolerancia_sanity_beto": 0.001,
+    "sanity_n_repro_07": 20,
+    "modos_class_weight": ["balanced", "sqrt_inv"],
 }
 
 LOGGER = logging.getLogger("m4_baseline")
@@ -659,6 +699,20 @@ MACRO_F1_TEST_V1 = 0.2870081504940973
 # Macro-F1 test de la ganadora C de la Fase U (m4_jerarquico.json): referencia
 # de comparacion y adopcion de la Fase W(b).
 MACRO_F1_TEST_C_FASE_U = 0.2980095633575616
+# Macro-F1 test de BETO chunk-mean de la Fase V (m4_transformer_chunks.json):
+# sanity obligatorio de la inferencia sobre la cache de chunks en A5.
+MACRO_F1_TEST_BETO_COMPLETO_FASE_V = 0.2433442600823086
+MACRO_F1_TEST_BETO_ENMASCARADO_FASE_V = 0.23632401040291953
+# Tolerancia de los sanity checks de BETO (banda +-0.001 del plan A5).
+TOLERANCIA_SANITY_BETO = 0.001
+# JSON y modelos de ciclos previos que A5 NO debe modificar (md5 al final).
+RUTAS_INTOCABLES_A5 = (
+    "resultados/m4_baseline.json",
+    "resultados/m4_jerarquico.json",
+    "resultados/m4_eurovoc.json",
+    "resultados/m4_transformer.json",
+    "resultados/m4_transformer_chunks.json",
+)
 # Cota de n-gramas de los terminos EuroVoc (el lexico la respeta al construirse).
 EUROVOC_MAX_NGRAMA = 6
 
@@ -1708,6 +1762,819 @@ def ejecutar_fase_u(df: pd.DataFrame, ruta_json: str, limite: int | None) -> dic
     return resultados
 
 
+# ===== SECCION 8: ciclo v3 - Sprint A5 (clasificador C + BETO chunk-mean) =====
+# Protocolo (PLAN_v3, Sprint A5; ADR-16): VALIDACION para toda seleccion (w del
+# ensamble, sesgos de calibracion); TEST una sola vez al final; bootstrap
+# pareado (1000, seed 42) de la diferencia de macro-F1 test contra la C de la
+# Fase U. Salida NUEVA resultados/m4_clasificador_c3.json (version "c3-a5");
+# ningun JSON/modelo de fases previas se escribe desde aqui.
+
+
+def _softmax_filas(logits: np.ndarray) -> np.ndarray:
+    """Softmax numericamente estable por filas.
+
+    Args:
+        logits: Matriz (n, n_clases) de scores.
+
+    Returns:
+        Matriz (n, n_clases) de probabilidades que suma 1 por fila.
+    """
+    z = logits - logits.max(axis=1, keepdims=True)
+    exp = np.exp(z)
+    return exp / exp.sum(axis=1, keepdims=True)
+
+
+def cargar_artefacto_c() -> dict:
+    """Carga y valida la C calibrada de la Fase U (joblib congelado).
+
+    Returns:
+        Dict con modelo_base, sesgos, clases, ruta y md5.
+
+    Raises:
+        FileNotFoundError: Si falta el artefacto.
+        ValueError: Si la variante o la alineacion sesgos/clases no son las
+            esperadas.
+    """
+    ruta = CONFIG["ruta_artefacto_c"]
+    if not Path(ruta).exists():
+        raise FileNotFoundError(f"falta el artefacto C: {ruta}")
+    artefacto = joblib.load(ruta)
+    if artefacto.get("variante") != "C_calibracion":
+        raise ValueError(f"{ruta} no es C_calibracion: {artefacto.get('variante')}")
+    datos = artefacto.get("artefacto") or {}
+    if "modelo_base" not in datos or "sesgos" not in datos:
+        raise ValueError(f"artefacto C incompleto en {ruta}: claves {sorted(datos)}")
+    modelo = datos["modelo_base"]
+    sesgos = np.asarray(datos["sesgos"], dtype=float)
+    clases = [str(c) for c in artefacto["clases"]]
+    if len(sesgos) != len(clases) or [str(c) for c in modelo.classes_] != clases:
+        raise ValueError("sesgos/clases del artefacto C no estan alineados")
+    LOGGER.info("artefacto C cargado: %d clases", len(clases))
+    return {"modelo": modelo, "sesgos": sesgos, "clases": clases, "ruta": ruta, "md5": md5_archivo(ruta)}
+
+
+def probabilidades_c(artefacto_c: dict, X) -> np.ndarray:
+    """Probabilidades calibradas de C: softmax(logits + sesgos por clase).
+
+    Args:
+        artefacto_c: Dict de cargar_artefacto_c.
+        X: Matriz dispersa de features TF-IDF enmascaradas.
+
+    Returns:
+        Matriz (n, n_clases) de probabilidades en el orden de las clases del
+        artefacto.
+    """
+    logits = artefacto_c["modelo"].decision_function(X)
+    return _softmax_filas(logits + artefacto_c["sesgos"])
+
+
+def importar_modulo_07():
+    """Importa scripts/07_transformer.py para reutilizar su inferencia chunk-mean.
+
+    La importacion es perezosa (solo en --fase-a5) para que el baseline v1 y
+    las fases U/W(b) no dependan de torch/transformers. Se agrega el directorio
+    del script a sys.path para que el paquete lib.chunks_beto sea importable.
+
+    Returns:
+        Modulo 07_transformer.
+    """
+    directorio_scripts = str(Path(__file__).resolve().parent)
+    if directorio_scripts not in sys.path:
+        sys.path.insert(0, directorio_scripts)
+    return importlib.import_module("07_transformer")
+
+
+def cargar_modelo_beto(ruta_modelo: str, dispositivo) -> object:
+    """Carga un checkpoint BETO chunk-mean y lo deja en modo evaluacion.
+
+    Args:
+        ruta_modelo: Directorio del checkpoint (beto_completo o
+            beto_enmascarado).
+        dispositivo: cuda/cpu.
+
+    Returns:
+        BertForSequenceClassification en eval().
+
+    Raises:
+        FileNotFoundError: Si el directorio no existe.
+    """
+    if not Path(ruta_modelo).exists():
+        raise FileNotFoundError(f"falta el checkpoint BETO: {ruta_modelo}")
+    from transformers import AutoModelForSequenceClassification
+
+    modelo = AutoModelForSequenceClassification.from_pretrained(ruta_modelo).to(dispositivo)
+    modelo.eval()
+    return modelo
+
+
+def inferir_proba_beto(modelo, ids, cache: dict, dispositivo, modulo07) -> np.ndarray:
+    """Infiere probabilidades softmax por documento con BETO chunk-mean.
+
+    Replica el procedimiento de evaluacion de 07 (ChunksDataset + collate +
+    forward_doc_chunk_mean con autocast fp16 y micro_chunks_eval) y agrega un
+    softmax fp32 sobre los logits. El orden de salida es el de `ids`.
+
+    Args:
+        modelo: BETO chunk-mean en eval().
+        ids: Secuencia de ids de documentos (claves de la cache).
+        cache: Dict {id: chunks} de cargar_cache_chunks (07).
+        dispositivo: cuda/cpu.
+        modulo07: Modulo 07_transformer.
+
+    Returns:
+        Matriz (n_docs, n_clases) de probabilidades float32.
+    """
+    import torch
+
+    ids_serie = pd.Series([int(i) for i in ids])
+    etiquetas_falsas = pd.Series(np.zeros(len(ids_serie), dtype=int))
+    dataset = modulo07.ChunksDataset(ids_serie, etiquetas_falsas, {0: 0}, cache=cache)
+    cargador = modulo07.DataLoader(
+        dataset,
+        batch_size=modulo07.CONFIG["batch_eval"],
+        shuffle=False,
+        num_workers=0,
+        collate_fn=modulo07.collate_chunks,
+        pin_memory=False,
+    )
+    modelo.eval()
+    partes = []
+    with torch.no_grad():
+        for lote in cargador:
+            with torch.autocast(dispositivo.type, dtype=torch.float16, enabled=modulo07.CONFIG["amp"]):
+                logits, _ = modulo07.forward_doc_chunk_mean(
+                    modelo, lote, dispositivo, micro=modulo07.CONFIG["micro_chunks_eval"]
+                )
+            partes.append(torch.softmax(logits.float(), dim=-1).cpu().numpy())
+    return np.concatenate(partes, axis=0)
+
+
+def sanity_beto_reproduce_07(modelo, ids, cache: dict, dispositivo, modulo07, n: int) -> dict:
+    """Compara la inferencia propia contra `predecir_chunk_mean` de 07.
+
+    Verificacion de reproducibilidad del procedimiento (mismos chunks, mismos
+    lotes): obligatoria y barata. No sustituye al sanity de macro-F1 test.
+
+    Args:
+        modelo: BETO chunk-mean en eval().
+        ids: Secuencia de ids (se usan los primeros n).
+        cache: Dict {id: chunks}.
+        dispositivo: cuda/cpu.
+        modulo07: Modulo 07_transformer.
+        n: Numero de documentos a comparar.
+
+    Returns:
+        Dict con n_docs, n_coincidencias y coincide (bool).
+    """
+    muestra = [int(i) for i in ids][:n]
+    ids_serie = pd.Series(muestra)
+    etiquetas_falsas = pd.Series(np.zeros(len(muestra), dtype=int))
+    dataset = modulo07.ChunksDataset(ids_serie, etiquetas_falsas, {0: 0}, cache=cache)
+    cargador = modulo07.DataLoader(
+        dataset,
+        batch_size=modulo07.CONFIG["batch_eval"],
+        shuffle=False,
+        num_workers=0,
+        collate_fn=modulo07.collate_chunks,
+        pin_memory=False,
+    )
+    pred_07, _ = modulo07.predecir_chunk_mean(modelo, cargador, dispositivo)
+    probs = inferir_proba_beto(modelo, muestra, cache, dispositivo, modulo07)
+    pred_propio = np.argmax(probs, axis=1).tolist()
+    coincidencias = int(sum(a == b for a, b in zip(pred_07, pred_propio)))
+    resultado = {
+        "n_docs": len(muestra),
+        "n_coincidencias": coincidencias,
+        "coincide": bool(coincidencias == len(muestra)),
+    }
+    LOGGER.info("sanity BETO vs 07: %d/%d predicciones coinciden", coincidencias, len(muestra))
+    return resultado
+
+
+def bootstrap_pareado_macro_f1(
+    y_true,
+    y_pred_a,
+    y_pred_b,
+    n_bootstrap: int,
+    seed: int,
+) -> dict:
+    """IC 95% bootstrap pareado de la diferencia de macro-F1 entre dos modelos.
+
+    Remuestrea documentos con reemplazo (mismo indice para A y B) y calcula
+    macro-F1(a) - macro-F1(b). p-valor bilateral aproximado por proporcion de
+    deltas a cada lado de 0 (2*min(cola)).
+
+    Args:
+        y_true: Etiquetas reales.
+        y_pred_a: Predicciones del modelo A (candidato).
+        y_pred_b: Predicciones del modelo B (referencia C).
+        n_bootstrap: Numero de remuestreos.
+        seed: Semilla del generador.
+
+    Returns:
+        Dict con delta_observado, ic95, p_valor_bilateral, n_bootstrap y seed.
+    """
+    y_true = np.asarray(y_true)
+    pred_a = np.asarray(y_pred_a)
+    pred_b = np.asarray(y_pred_b)
+    rng = np.random.default_rng(seed)
+    n_docs = len(y_true)
+    deltas = np.empty(n_bootstrap, dtype=float)
+    for i in range(n_bootstrap):
+        idx = rng.integers(0, n_docs, size=n_docs)
+        deltas[i] = _macro_f1(y_true[idx], pred_a[idx]) - _macro_f1(y_true[idx], pred_b[idx])
+    inferior, superior = np.percentile(deltas, [2.5, 97.5])
+    p_valor = float(2.0 * min(float(np.mean(deltas <= 0.0)), float(np.mean(deltas >= 0.0))))
+    return {
+        "delta_observado": float(_macro_f1(y_true, pred_a) - _macro_f1(y_true, pred_b)),
+        "ic95": [float(inferior), float(superior)],
+        "p_valor_bilateral": p_valor,
+        "n_bootstrap": int(n_bootstrap),
+        "seed": int(seed),
+    }
+
+
+def pesos_sqrt_inv(y_train) -> dict:
+    """Pesos de clase proporcionales a 1/sqrt(frecuencia) en train.
+
+    Args:
+        y_train: Etiquetas de entrenamiento.
+
+    Returns:
+        Dict clase -> peso float.
+    """
+    clases, conteos = np.unique(y_train, return_counts=True)
+    return {str(clase): float(1.0 / np.sqrt(conteo)) for clase, conteo in zip(clases, conteos)}
+
+
+def entrenar_logreg_pesos(X_train, y_train, params_v1: dict, modo: str, nombre: str) -> LogisticRegression:
+    """Entrena un LogReg con pesos de clase (balanced o 1/sqrt(frecuencia)).
+
+    Args:
+        X_train: Matriz de features de train.
+        y_train: Etiquetas de train.
+        params_v1: Hiperparametros v1 (comparabilidad con C).
+        modo: "balanced" o "sqrt_inv".
+        nombre: Nombre de la variante para el log.
+
+    Returns:
+        LogisticRegression ajustado en train.
+
+    Raises:
+        ValueError: Si el modo no es soportado.
+    """
+    if modo == "balanced":
+        pesos = "balanced"
+    elif modo == "sqrt_inv":
+        pesos = pesos_sqrt_inv(y_train)
+    else:
+        raise ValueError(f"modo de class_weight no soportado: {modo}")
+    modelo = LogisticRegression(**params_v1, class_weight=pesos)
+    modelo.fit(X_train, y_train)
+    LOGGER.info(
+        "%s: base entrenada en train con class_weight=%s (%d iters)",
+        nombre, modo, int(modelo.n_iter_.max()),
+    )
+    return modelo
+
+
+def evaluar_logreg_calibrado(modelo, X_val, X_test, y_val, y_test, nombre: str) -> dict:
+    """Evalua un LogReg con la calibracion C (sesgos por clase en validacion).
+
+    Args:
+        modelo: LogisticRegression ajustado en train.
+        X_val: Features de validacion.
+        X_test: Features de test.
+        y_val: Etiquetas de validacion (para optimizar sesgos).
+        y_test: Etiquetas de test.
+        nombre: Nombre de la variante para el log.
+
+    Returns:
+        Dict con metricas val/test sin/con sesgos, sesgos y predicciones de
+        test/val (estas ultimas se usan para bootstrap y matriz de confusion).
+    """
+    clases_modelo = np.asarray(modelo.classes_)
+    logits_val = modelo.decision_function(X_val)
+    logits_test = modelo.decision_function(X_test)
+    sesgos, detalle = optimizar_sesgos_logits(logits_val, y_val, modelo.classes_, MAX_RONDAS_COORDENADA)
+    pred_val_sin = modelo.predict(X_val)
+    pred_test_sin = modelo.predict(X_test)
+    pred_val = clases_modelo[np.argmax(logits_val + sesgos, axis=1)]
+    pred_test = clases_modelo[np.argmax(logits_test + sesgos, axis=1)]
+    resultado = {
+        "modo": nombre,
+        "n_iter": int(modelo.n_iter_.max()),
+        "val_sin_sesgos": evaluar_single_label(y_val, pred_val_sin, list(clases_modelo)),
+        "val_con_sesgos": evaluar_single_label(y_val, pred_val, list(clases_modelo)),
+        "test_sin_sesgos": evaluar_single_label(y_test, pred_test_sin, list(clases_modelo)),
+        "test_con_sesgos": evaluar_single_label(y_test, pred_test, list(clases_modelo)),
+        "sesgos_por_clase": {str(c): float(b) for c, b in zip(clases_modelo, sesgos)},
+        "detalle_optimizacion": detalle,
+        "y_pred_val": pred_val,
+        "y_pred_test": pred_test,
+    }
+    LOGGER.info(
+        "%s: macro-F1 val %.4f -> %.4f | test %.4f -> %.4f",
+        nombre,
+        resultado["val_sin_sesgos"]["macro_f1"],
+        resultado["val_con_sesgos"]["macro_f1"],
+        resultado["test_sin_sesgos"]["macro_f1"],
+        resultado["test_con_sesgos"]["macro_f1"],
+    )
+    return resultado
+
+
+def evaluar_ensamble(
+    p_c_val,
+    p_beto_val,
+    p_c_test,
+    p_beto_test,
+    y_val,
+    y_test,
+    clases: list[str],
+    pesos: list[float],
+    n_bootstrap: int,
+    seed_bootstrap: int,
+) -> dict:
+    """Barre los pesos del ensamble C+BETO y elige por macro-F1 de validacion.
+
+    Args:
+        p_c_val: Probabilidades calibradas de C en validacion.
+        p_beto_val: Probabilidades de BETO en validacion.
+        p_c_test: Probabilidades calibradas de C en test.
+        p_beto_test: Probabilidades de BETO en test.
+        y_val: Etiquetas de validacion.
+        y_test: Etiquetas de test.
+        clases: Clases en el orden de las columnas.
+        pesos: Rejilla de w (peso de C; BETO usa 1-w).
+        n_bootstrap: Remuestreos del IC pareado vs C.
+        seed_bootstrap: Semilla del bootstrap.
+
+    Returns:
+        Dict con metricas por w, w elegido por validacion, test del elegido,
+        predicciones de test del elegido y bootstrap pareado vs C.
+    """
+    clases_arr = np.asarray(clases)
+    por_w = {}
+    for w in pesos:
+        pred_val = clases_arr[np.argmax(w * p_c_val + (1.0 - w) * p_beto_val, axis=1)]
+        pred_test = clases_arr[np.argmax(w * p_c_test + (1.0 - w) * p_beto_test, axis=1)]
+        por_w[f"{w:.2f}"] = {
+            "w": float(w),
+            "val": evaluar_single_label(y_val, pred_val, list(clases_arr)),
+            "test": evaluar_single_label(y_test, pred_test, list(clases_arr)),
+            "y_pred_val": pred_val,
+            "y_pred_test": pred_test,
+        }
+    w_elegido = max(por_w, key=lambda clave: por_w[clave]["val"]["macro_f1"])
+    elegido = por_w[w_elegido]
+    pred_c_test = clases_arr[np.argmax(p_c_test, axis=1)]
+    bootstrap = bootstrap_pareado_macro_f1(
+        y_test, elegido["y_pred_test"], pred_c_test, n_bootstrap, seed_bootstrap
+    )
+    LOGGER.info(
+        "ensamble: w=%.2f elegido por val (macro-F1 val=%.4f test=%.4f; delta test vs C=%+.4f)",
+        elegido["w"],
+        elegido["val"]["macro_f1"],
+        elegido["test"]["macro_f1"],
+        bootstrap["delta_observado"],
+    )
+    return {
+        "pesos_evaluados": [float(w) for w in pesos],
+        "metricas_por_w": {
+            clave: {"w": datos["w"], "val": datos["val"], "test": datos["test"]}
+            for clave, datos in por_w.items()
+        },
+        "w_elegido_val": elegido["w"],
+        "val_w_elegido": elegido["val"],
+        "test_w_elegido": elegido["test"],
+        "bootstrap_pareado_vs_c": bootstrap,
+        "y_pred_test_w_elegido": elegido["y_pred_test"],
+    }
+
+
+def matriz_confusion_serializable(y_true, y_pred, clases: list[str]) -> dict:
+    """Matriz de confusion (conteos) serializable a JSON.
+
+    Args:
+        y_true: Etiquetas reales.
+        y_pred: Predicciones.
+        clases: Orden fijo de filas/columnas.
+
+    Returns:
+        Dict con labels y matriz de enteros.
+    """
+    matriz = confusion_matrix(y_true, y_pred, labels=list(clases))
+    return {"labels": [str(c) for c in clases], "matriz": matriz.astype(int).tolist()}
+
+
+def figura_c3_a5(valores_val: dict, valores_test: dict, ruta: str) -> None:
+    """Figura comparativa de macro-F1 val/test del Sprint A5.
+
+    Args:
+        valores_val: Dict variante -> macro-F1 de validacion.
+        valores_test: Dict variante -> macro-F1 de test.
+        ruta: Ruta del PNG a guardar.
+    """
+    nombres = list(valores_val)
+    x = np.arange(len(nombres))
+    fig, ax = plt.subplots(figsize=(12, 5.5))
+    ax.bar(x - 0.2, [valores_val[n] for n in nombres], width=0.4, label="val", color="#2F75B5")
+    ax.bar(x + 0.2, [valores_test[n] for n in nombres], width=0.4, label="test", color="#ED7D31")
+    ax.axhline(0.32, color="#C00000", linestyle="--", linewidth=1.2, label="meta test 0.32")
+    ax.axhline(
+        MACRO_F1_TEST_C_FASE_U, color="#70AD47", linestyle=":", linewidth=1.2, label="C test 0.2980"
+    )
+    ax.set_xticks(x)
+    ax.set_xticklabels(nombres, rotation=25, ha="right", fontsize=8)
+    ax.set_ylabel("macro-F1")
+    ax.set_title("ciclo v3 - Sprint A5: macro-F1 val/test (v1, C, BETO, ensamble, class weights)")
+    ax.legend(fontsize=8)
+    fig.tight_layout()
+    Path(ruta).parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(ruta, dpi=150)
+    plt.close(fig)
+
+
+def _sanity_beto(resultados_beto: dict, referencia: float, etiqueta: str, smoke: bool) -> bool:
+    """Verifica la banda del sanity de macro-F1 test de un escenario BETO.
+
+    Args:
+        resultados_beto: Bloque del escenario con "test" -> "macro_f1".
+        referencia: Macro-F1 test congelado de la Fase V.
+        etiqueta: Nombre del escenario para los mensajes.
+        smoke: True si la corrida es un smoke (no aplica la banda completa).
+
+    Returns:
+        True si el valor cae dentro de la tolerancia (o si es smoke).
+
+    Raises:
+        RuntimeError: En run completo si el valor queda fuera de la banda.
+    """
+    valor = float(resultados_beto["test"]["macro_f1"])
+    delta = abs(valor - referencia)
+    dentro = delta <= CONFIG["tolerancia_sanity_beto"]
+    if smoke:
+        LOGGER.info(
+            "sanity BETO %s (smoke): test=%.4f ref=%.4f delta=%.4f (banda no aplica con subset)",
+            etiqueta, valor, referencia, delta,
+        )
+        return True
+    if not dentro:
+        raise RuntimeError(
+            f"sanity BETO {etiqueta} FALLA: macro-F1 test={valor:.6f} fuera de "
+            f"{referencia:.6f} +- {CONFIG['tolerancia_sanity_beto']} (delta={delta:.6f}); "
+            "investigar antes de continuar (cache de chunks / checkpoint / mapeo de clases)"
+        )
+    LOGGER.info("sanity BETO %s OK: test=%.6f reproduce la Fase V", etiqueta, valor)
+    return True
+
+
+def ejecutar_fase_a5(df: pd.DataFrame, clases_dataset: list[str], ruta_json: str, limite: int | None) -> dict:
+    """Ejecuta el Sprint A5: repro C, ensamble C+BETO y class weights.
+
+    Protocolo: los modelos base se entrenan/leen de train (C y v1 del artefacto;
+    class weights se ajustan en train); sesgos, w del ensamble y la seleccion se
+    deciden en validacion; test se evalua al final y solo alimenta los IC
+    pareados. La clase de BETO se reconstruye con el mismo criterio que 07
+    (sorted de las clases del dataset completo, `clases_dataset`).
+
+    Args:
+        df: DataFrame con lemas_mask, area_primaria y particion (en smoke,
+            submuestreado con particiones canonicas).
+        clases_dataset: Clases canonicas del dataset completo (espacio de
+            evaluacion y orden de BETO).
+        ruta_json: Ruta de salida (resultados/ o /tmp/opencode en smoke).
+        limite: Limite del smoke (None = run completo).
+
+    Returns:
+        Dict de resultados serializado a JSON.
+
+    Raises:
+        FileNotFoundError: Si faltan artefactos (C, v1, cache BETO).
+        ValueError: Si las clases del artefacto C no coinciden con el dataset.
+        RuntimeError: Si falla un sanity obligatorio (C, BETO) en run completo.
+    """
+    import torch
+
+    t0 = time.time()
+    smoke = limite is not None
+    LOGGER.info("fase A5: docs=%d clases=%d smoke=%s limite=%s", len(df), len(clases_dataset), smoke, limite)
+
+    tr = df[df["particion"] == "train"]
+    va = df[df["particion"] == "val"]
+    te = df[df["particion"] == "test"]
+    y_train = tr["area_primaria"].values
+    y_val = va["area_primaria"].values
+    y_test = te["area_primaria"].values
+
+    ruta_vec = f"{CONFIG['dir_modelo_v1']}/tfidf_enmascarado.joblib"
+    ruta_mod = f"{CONFIG['dir_modelo_v1']}/logreg_enmascarado.joblib"
+    if not Path(ruta_vec).exists() or not Path(ruta_mod).exists():
+        raise FileNotFoundError(f"faltan artefactos v1: {ruta_vec} / {ruta_mod}")
+    vec = joblib.load(ruta_vec)
+    modelo_v1 = joblib.load(ruta_mod)
+    params_v1 = cargar_hiperparametros_v1(ruta_mod)
+    artefacto_c = cargar_artefacto_c()
+    if artefacto_c["clases"] != [str(c) for c in clases_dataset]:
+        raise ValueError("las clases del artefacto C no coinciden con el dataset")
+    LOGGER.info("hiperparametros v1 reutilizados: %s", params_v1)
+
+    resultados: dict = {
+        "version": "c3-a5",
+        "fecha": pd.Timestamp.now().isoformat(),
+        "fase": "ciclo v3 - Sprint A5 (clasificador C + BETO chunk-mean + class weights)",
+        "modo": f"smoke_limite_{limite}" if smoke else "completo",
+        "splits": {"train": len(tr), "val": len(va), "test": len(te)},
+        "clases": [str(c) for c in clases_dataset],
+        "config_a5": {
+            clave: CONFIG[clave]
+            for clave in (
+                "ruta_artefacto_c", "dir_beto_chunks", "dir_cache_chunks",
+                "pesos_ensamble", "bootstrap_n", "bootstrap_seed",
+                "tolerancia_sanity_beto", "sanity_n_repro_07", "modos_class_weight",
+            )
+        },
+        "protocolo": (
+            "Seleccion (w del ensamble, sesgos) SOLO con validacion; test una vez al "
+            "final; bootstrap pareado (1000, seed 42) de macro-F1 test vs C; ningun "
+            "artefacto de fases previas se modifica (md5 al final)."
+        ),
+    }
+
+    # --- 1. Referencia v1 y reproduccion de C desde el artefacto ---
+    t_c = time.time()
+    X_val = vec.transform(va["lemas_mask"])
+    X_test = vec.transform(te["lemas_mask"])
+    pred_v1_val = modelo_v1.predict(X_val)
+    pred_v1_test = modelo_v1.predict(X_test)
+    resultados["referencia_v1_logreg_enmascarado"] = {
+        "val": evaluar_single_label(y_val, pred_v1_val, artefacto_c["clases"]),
+        "test": evaluar_single_label(y_test, pred_v1_test, artefacto_c["clases"]),
+        "nota": (
+            "v1 reentreno en train+val: su val esta contaminado (1.0) y no se usa "
+            "para calibrar/seleccionar; test esperado 0.2870081505 (run completo)."
+        ),
+    }
+    p_c_val = probabilidades_c(artefacto_c, X_val)
+    p_c_test = probabilidades_c(artefacto_c, X_test)
+    clases_arr = np.asarray(artefacto_c["clases"])
+    pred_c_val = clases_arr[np.argmax(p_c_val, axis=1)]
+    pred_c_test = clases_arr[np.argmax(p_c_test, axis=1)]
+    c_val = evaluar_single_label(y_val, pred_c_val, artefacto_c["clases"])
+    c_test = evaluar_single_label(y_test, pred_c_test, artefacto_c["clases"])
+    delta_c = abs(float(c_test["macro_f1"]) - MACRO_F1_TEST_C_FASE_U)
+    if not smoke and delta_c > 1e-6:
+        raise RuntimeError(
+            f"sanity C FALLA: macro-F1 test={c_test['macro_f1']:.16f} != "
+            f"{MACRO_F1_TEST_C_FASE_U:.16f} (delta={delta_c:.2e}); revisar el artefacto C"
+        )
+    resultados["reproduccion_c"] = {
+        "val": c_val,
+        "test": c_test,
+        "sesgos_por_clase": {
+            clase: float(sesgo) for clase, sesgo in zip(artefacto_c["clases"], artefacto_c["sesgos"])
+        },
+        "sanity_test_ok": bool(delta_c <= 1e-6),
+        "delta_vs_referencia_test": float(delta_c),
+        "ruta_artefacto": artefacto_c["ruta"],
+        "md5_artefacto": artefacto_c["md5"],
+        "tiempo_seg": time.time() - t_c,
+    }
+    LOGGER.info(
+        "repro C: val=%.6f test=%.6f (delta vs ref=%.2e)",
+        c_val["macro_f1"], c_test["macro_f1"], delta_c,
+    )
+
+    # --- 2. BETO chunk-mean sobre la cache (escenarios completo y enmascarado) ---
+    dispositivo = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    if dispositivo.type != "cuda":
+        raise RuntimeError("la fase A5 requiere GPU para la inferencia BETO (07 aborta sin CUDA)")
+    modulo07 = importar_modulo_07()
+    bloques_beto = {}
+    for escenario, columna, referencia, ruta_checkpoint in (
+        ("completo", "texto", MACRO_F1_TEST_BETO_COMPLETO_FASE_V, f"{CONFIG['dir_beto_chunks']}/beto_completo"),
+        ("enmascarado", "texto_mask", MACRO_F1_TEST_BETO_ENMASCARADO_FASE_V, f"{CONFIG['dir_beto_chunks']}/beto_enmascarado"),
+    ):
+        t_beto = time.time()
+        cache = modulo07.cargar_cache_chunks(columna, CONFIG["dir_cache_chunks"])
+        modelo_beto = cargar_modelo_beto(ruta_checkpoint, dispositivo)
+        p_val = inferir_proba_beto(modelo_beto, va["id"], cache, dispositivo, modulo07)
+        p_test = inferir_proba_beto(modelo_beto, te["id"], cache, dispositivo, modulo07)
+        pred_val = np.asarray(clases_dataset)[np.argmax(p_val, axis=1)]
+        pred_test = np.asarray(clases_dataset)[np.argmax(p_test, axis=1)]
+        bloque = {
+            "val": evaluar_single_label(y_val, pred_val, list(clases_dataset)),
+            "test": evaluar_single_label(y_test, pred_test, list(clases_dataset)),
+            "ruta_modelo": ruta_checkpoint,
+            "tiempo_seg": time.time() - t_beto,
+        }
+        _sanity_beto(bloque, referencia, escenario, smoke)
+        bloque["sanity_test_banda_ok"] = bool(
+            abs(float(bloque["test"]["macro_f1"]) - referencia) <= CONFIG["tolerancia_sanity_beto"]
+        )
+        if escenario == "completo":
+            bloque["sanity_reproduce_07"] = sanity_beto_reproduce_07(
+                modelo_beto, te["id"], cache, dispositivo, modulo07, CONFIG["sanity_n_repro_07"]
+            )
+        bloques_beto[escenario] = {"bloque": bloque, "p_val": p_val, "p_test": p_test}
+        del modelo_beto
+        if dispositivo.type == "cuda":
+            torch.cuda.empty_cache()
+        LOGGER.info(
+            "BETO %s: val=%.4f test=%.4f (%.1f s)",
+            escenario, bloque["val"]["macro_f1"], bloque["test"]["macro_f1"], bloque["tiempo_seg"],
+        )
+    resultados["beto_completo"] = bloques_beto["completo"]["bloque"]
+    resultados["beto_enmascarado"] = bloques_beto["enmascarado"]["bloque"]
+    resultados["beto_enmascarado"]["nota"] = (
+        "variante secundaria (escenario enmascarado); el ensamble se calcula con "
+        "beto_completo, el mejor checkpoint del escenario sin enmascarar."
+    )
+
+    # --- 3. Ensamble C + BETO completo (w elegido en validacion) ---
+    t_ens = time.time()
+    ensamble = evaluar_ensamble(
+        p_c_val,
+        bloques_beto["completo"]["p_val"],
+        p_c_test,
+        bloques_beto["completo"]["p_test"],
+        y_val,
+        y_test,
+        list(clases_dataset),
+        [float(w) for w in CONFIG["pesos_ensamble"]],
+        int(CONFIG["bootstrap_n"]),
+        int(CONFIG["bootstrap_seed"]),
+    )
+    pred_ens_test = ensamble.pop("y_pred_test_w_elegido")
+    ensamble["tiempo_seg"] = time.time() - t_ens
+    resultados["ensamble"] = ensamble
+
+    # --- 4. Class weights (balanced y 1/sqrt(frecuencia)) + calibracion C ---
+    t_cw = time.time()
+    X_train = vec.transform(tr["lemas_mask"])
+    modelos_pesos = {}
+    for modo in CONFIG["modos_class_weight"]:
+        modelo_pesos = entrenar_logreg_pesos(X_train, y_train, params_v1, modo, f"class_weight_{modo}")
+        evaluacion = evaluar_logreg_calibrado(
+            modelo_pesos, X_val, X_test, y_val, y_test, f"class_weight_{modo}"
+        )
+        pred_test_pesos = evaluacion.pop("y_pred_test")
+        evaluacion.pop("y_pred_val")
+        evaluacion["bootstrap_pareado_vs_c"] = bootstrap_pareado_macro_f1(
+            y_test, pred_test_pesos, pred_c_test, int(CONFIG["bootstrap_n"]), int(CONFIG["bootstrap_seed"])
+        )
+        modelos_pesos[modo] = {"evaluacion": evaluacion, "y_pred_test": pred_test_pesos}
+    resultados["class_weights"] = {modo: datos["evaluacion"] for modo, datos in modelos_pesos.items()}
+    resultados["class_weights"]["tiempo_seg"] = time.time() - t_cw
+
+    # --- 5. Seleccion por validacion, recomendacion y matrices de confusion ---
+    candidatos_val = {
+        "C_calibrada": float(c_val["macro_f1"]),
+        "ensamble_C_BETO": float(ensamble["val_w_elegido"]["macro_f1"]),
+    }
+    candidatos_test = {
+        "C_calibrada": float(c_test["macro_f1"]),
+        "ensamble_C_BETO": float(ensamble["test_w_elegido"]["macro_f1"]),
+    }
+    candidatos_bootstrap = {
+        "C_calibrada": None,
+        "ensamble_C_BETO": ensamble["bootstrap_pareado_vs_c"],
+    }
+    for modo, datos in modelos_pesos.items():
+        nombre = f"class_weight_{modo}"
+        candidatos_val[nombre] = float(datos["evaluacion"]["val_con_sesgos"]["macro_f1"])
+        candidatos_test[nombre] = float(datos["evaluacion"]["test_con_sesgos"]["macro_f1"])
+        candidatos_bootstrap[nombre] = datos["evaluacion"]["bootstrap_pareado_vs_c"]
+    ganador_val = max(candidatos_val, key=candidatos_val.get)
+    resultados["seleccion"] = {
+        "ganador_val": ganador_val,
+        "macro_f1_val_por_candidato": candidatos_val,
+        "macro_f1_test_por_candidato": candidatos_test,
+        "nota": "seleccion por macro-F1 de VALIDACION; test no participa en la eleccion.",
+    }
+    recomendacion = {
+        "regla": (
+            "adoptar un candidato solo si (a) supera en macro-F1 de validacion a C, "
+            "(b) su test no cae por debajo del test de C y (c) el IC 95% pareado de "
+            "la diferencia test (candidato - C) queda enteramente > 0."
+        ),
+        "ensamble": {"adoptar": False, "motivo": ""},
+        "class_weights": {"adoptar": False, "motivo": ""},
+        "por_candidato": {},
+    }
+    for nombre, valor_val in candidatos_val.items():
+        bootstrap = candidatos_bootstrap[nombre]
+        valor_test = candidatos_test[nombre]
+        if nombre == "C_calibrada":
+            adoptar = True
+            motivo = "referencia vigente (Fase U); se conserva salvo que un candidato la supere con evidencia."
+        else:
+            gana_val = valor_val > candidatos_val["C_calibrada"] + 1e-12
+            no_empeora_test = valor_test >= candidatos_test["C_calibrada"] - 1e-12
+            if bootstrap is None:
+                significativo = False
+                detalle_ic = "sin bootstrap"
+            else:
+                significativo = bootstrap["ic95"][0] > 0.0
+                detalle_ic = f"ic95_inferior={bootstrap['ic95'][0]:+.4f}"
+            adoptar = bool(gana_val and no_empeora_test and significativo)
+            motivo = f"gana_val={gana_val}, no_empeora_test={no_empeora_test}, {detalle_ic}"
+        recomendacion["por_candidato"][nombre] = {
+            "adoptar": bool(adoptar),
+            "macro_f1_val": float(valor_val),
+            "macro_f1_test": float(valor_test),
+            "delta_test_vs_c": float(valor_test - candidatos_test["C_calibrada"]),
+            "motivo": motivo,
+        }
+    ensamble_adoptar = recomendacion["por_candidato"]["ensamble_C_BETO"]["adoptar"]
+    pesos_adoptar = any(
+        recomendacion["por_candidato"][f"class_weight_{modo}"]["adoptar"]
+        for modo in CONFIG["modos_class_weight"]
+    )
+    recomendacion["ensamble"] = {
+        "adoptar": bool(ensamble_adoptar),
+        "motivo": (
+            "supera a C con IC pareado positivo en test"
+            if ensamble_adoptar
+            else "no supera a C en validacion o su IC pareado de test cruza 0; no adoptar en el producto"
+        ),
+    }
+    recomendacion["class_weights"] = {
+        "adoptar": bool(pesos_adoptar),
+        "motivo": (
+            "algun modo supera a C con IC pareado positivo en test"
+            if pesos_adoptar
+            else "ningun modo supera a C con evidencia (IC pareado); no adoptar en el producto"
+        ),
+    }
+    recomendacion["global"] = (
+        "adoptar el candidato ganador con evidencia"
+        if (ensamble_adoptar or pesos_adoptar)
+        else "mantener C calibrada de la Fase U; los candidatos A5 no superan el ruido bootstrap"
+    )
+    recomendacion["premisas_adr16"] = [
+        "resultado NUEVO en resultados/m4_clasificador_c3.json (version c3-a5); los JSON/modelos de ciclos previos quedan intactos",
+        "toda seleccion en validacion; test una sola vez al final",
+        "adopcion solo con IC 95% bootstrap pareado favorable (1000 remuestreos, seed 42)",
+        "si no hay evidencia, se documenta el negativo con igual rigor y no entra al producto",
+    ]
+    resultados["recomendacion"] = recomendacion
+    resultados["matrices_confusion_test"] = {
+        "C_calibrada": matriz_confusion_serializable(y_test, pred_c_test, list(clases_dataset)),
+        "ensamble_C_BETO": matriz_confusion_serializable(y_test, pred_ens_test, list(clases_dataset)),
+    }
+    for modo, datos in modelos_pesos.items():
+        resultados["matrices_confusion_test"][f"class_weight_{modo}"] = matriz_confusion_serializable(
+            y_test, datos["y_pred_test"], list(clases_dataset)
+        )
+    LOGGER.info(
+        "seleccion por val: ganador=%s (val=%.4f test=%.4f); recomendacion global=%s",
+        ganador_val,
+        candidatos_val[ganador_val],
+        candidatos_test[ganador_val],
+        recomendacion["global"],
+    )
+
+    # --- 6. Figuras (solo run completo), md5 de intocables y guardado ---
+    if not smoke:
+        valores_val = {
+            "v1_logreg": float(resultados["referencia_v1_logreg_enmascarado"]["val"]["macro_f1"]),
+            "C_calibrada": float(c_val["macro_f1"]),
+            "BETO_completo": float(resultados["beto_completo"]["val"]["macro_f1"]),
+            "BETO_enmascarado": float(resultados["beto_enmascarado"]["val"]["macro_f1"]),
+        }
+        valores_test = {
+            "v1_logreg": float(resultados["referencia_v1_logreg_enmascarado"]["test"]["macro_f1"]),
+            "C_calibrada": float(c_test["macro_f1"]),
+            "BETO_completo": float(resultados["beto_completo"]["test"]["macro_f1"]),
+            "BETO_enmascarado": float(resultados["beto_enmascarado"]["test"]["macro_f1"]),
+        }
+        for clave, datos in ensamble["metricas_por_w"].items():
+            valores_val[f"ens_w{clave}"] = float(datos["val"]["macro_f1"])
+            valores_test[f"ens_w{clave}"] = float(datos["test"]["macro_f1"])
+        for modo, datos in modelos_pesos.items():
+            valores_val[f"cw_{modo}"] = float(datos["evaluacion"]["val_con_sesgos"]["macro_f1"])
+            valores_test[f"cw_{modo}"] = float(datos["evaluacion"]["test_con_sesgos"]["macro_f1"])
+        figura_c3_a5(valores_val, valores_test, CONFIG["ruta_fig_c3"])
+        resultados["figura"] = CONFIG["ruta_fig_c3"]
+    resultados["md5_intocables"] = {ruta: md5_archivo(ruta) for ruta in RUTAS_INTOCABLES_A5 if Path(ruta).exists()}
+    resultados["md5_artefactos_reutilizados"] = {
+        ruta_vec: md5_archivo(ruta_vec),
+        ruta_mod: md5_archivo(ruta_mod),
+        CONFIG["ruta_artefacto_c"]: artefacto_c["md5"],
+    }
+    resultados["tiempo_total_seg"] = time.time() - t0
+    Path(ruta_json).parent.mkdir(parents=True, exist_ok=True)
+    with open(ruta_json, "w", encoding="utf-8") as f:
+        json.dump(resultados, f, ensure_ascii=False, indent=2, default=str)
+    LOGGER.info(
+        "fase A5 fin en %.1f s; ganador val=%s; guardado %s",
+        resultados["tiempo_total_seg"], ganador_val, ruta_json,
+    )
+    return resultados
+
+
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     """Parsea los argumentos CLI del script.
 
@@ -1715,10 +2582,10 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         argv: Lista de argumentos (None = sys.argv[1:]).
 
     Returns:
-        Namespace con fase_u y limite.
+        Namespace con fase_u, fase_a5 y limite.
     """
     parser = argparse.ArgumentParser(
-        description="Baseline clasico M4, Fase U y Fase W(b) EuroVoc (ciclo v2)."
+        description="Baseline clasico M4, Fase U/W(b) EuroVoc (ciclo v2) y Sprint A5 (ciclo v3)."
     )
     parser.add_argument(
         "--fase-u",
@@ -1729,35 +2596,65 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         ),
     )
     parser.add_argument(
+        "--fase-a5",
+        action="store_true",
+        help=(
+            "ciclo v3, Sprint A5: repro de C + ensamble C+BETO chunk-mean + class "
+            "weights; guarda resultados/m4_clasificador_c3.json (default OFF)"
+        ),
+    )
+    parser.add_argument(
         "--limite",
         type=int,
         default=None,
-        help="smoke: submuestra estratificada de N docs, salida en /tmp/opencode/m4_eurovoc_smoke.json",
+        help=(
+            "smoke: submuestra estratificada de N docs; con --fase-a5 la salida va a "
+            "/tmp/opencode/m4_clasificador_c3_smoke.json y sin ella a "
+            "/tmp/opencode/m4_eurovoc_smoke.json"
+        ),
     )
     args = parser.parse_args(argv)
     if args.limite is not None and args.limite < 50:
         parser.error("--limite debe ser >= 50 para que las variantes tengan senal")
+    if args.fase_u and args.fase_a5:
+        parser.error("--fase-u y --fase-a5 son mutuamente excluyentes")
     return args
 
 
 def main(argv: list[str] | None = None) -> None:
-    """Punto de entrada: baseline v1 (sin flags) o fases U/W(b) (--fase-u/--limite).
+    """Punto de entrada del script.
+
+    Despacho: baseline v1 (sin flags), fases U/W(b) (--fase-u o --limite solo) o
+    Sprint A5 (--fase-a5, con --limite opcional para smoke).
 
     Args:
         argv: Argumentos CLI (None = sys.argv[1:]).
     """
     args = parse_args(argv)
     smoke = args.limite is not None
-    if smoke:
+    if args.fase_a5:
+        configurar_logging(CONFIG["ruta_log_c3_smoke"] if smoke else CONFIG["ruta_log_c3"])
+    elif smoke:
         configurar_logging(CONFIG["ruta_log_smoke"])
     elif args.fase_u:
         configurar_logging(CONFIG["ruta_log_fase_u"])
     else:
         configurar_logging()
-    LOGGER.info("inicio proceso: fase_u=%s limite=%s", args.fase_u, args.limite)
+    LOGGER.info(
+        "inicio proceso: fase_u=%s fase_a5=%s limite=%s", args.fase_u, args.fase_a5, args.limite
+    )
     df = cargar_datos()
     df = crear_splits(df)
-    if smoke:
+    if args.fase_a5:
+        # El mapeo de clases de BETO usa el dataset COMPLETO (protocolo de 07);
+        # se captura antes del submuestreo del smoke.
+        clases_dataset = sorted(df["area_primaria"].unique())
+        if smoke:
+            df = submuestrear_estratificado(df, args.limite, CONFIG["semilla"])
+            ejecutar_fase_a5(df, clases_dataset, CONFIG["ruta_json_c3_smoke"], args.limite)
+        else:
+            ejecutar_fase_a5(df, clases_dataset, CONFIG["ruta_json_c3"], None)
+    elif smoke:
         df = submuestrear_estratificado(df, args.limite, CONFIG["semilla"])
         ejecutar_fase_u(df, CONFIG["ruta_json_smoke"], args.limite)
     elif args.fase_u:
