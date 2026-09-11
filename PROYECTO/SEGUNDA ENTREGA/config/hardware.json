@@ -1,0 +1,20 @@
+{
+  "fecha": "2026-09-08",
+  "python": "/home/carlos/venv/bin/python",
+  "python_version": "3.14.7",
+  "cpu": {"nombre": "AMD Ryzen 9 5950X", "nucleos_fisicos": 16, "hilos": 32},
+  "ram_gb": 31,
+  "ram_disponible_gb": 18,
+  "gpu": {"nombre": "AMD Radeon RX 9070 XT", "tipo": "dedicada", "vram_gb": 17.1, "torch_cuda": true, "torch_version": "2.14.0+rocm"},
+  "java": {"version": "26.0.2", "ruta": "/usr/bin/java"},
+  "disco_libre_gb": 519,
+  "librerias_clave": {
+    "pandas": "2.3.3", "nltk": "3.9.4", "spacy": "3.8.13",
+    "spacy_modelo": "es_core_news_md", "scikit-learn": "1.8.0",
+    "lightgbm": "instalado", "optuna": "instalado", "xgboost": "instalado",
+    "pyarrow": "24.0.0", "torch": "2.14.0+rocm7.2",
+    "python-pptx": "1.0.2", "pypdf": "instalado", "nbclient": "instalado", "ruff": "instalado"
+  },
+  "pendiente_instalar": ["pyspark", "transformers", "datasets", "networkx", "sentence-transformers"],
+  "nota": "E2 usa CPU (Spark/pandas/spaCy) + GPU (fine-tuning BETO/LEGAL-BERT y embeddings). Corpus CSV 1.67 GB se migra a Parquet particionado (ADR-7). Computos de horas en background con checkpoints."
+}

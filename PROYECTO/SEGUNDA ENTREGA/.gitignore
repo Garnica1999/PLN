@@ -1,0 +1,14 @@
+# SEGUNDA ENTREGA — artefactos pesados y locales (no versionar)
+data/
+modelos/
+*.parquet
+*.bin
+*.pt
+*.onnx
+__pycache__/
+*.pyc
+experimentos/*.log
+nohup.out
+.sparkStaging/
+derby.log
+metastore_db/

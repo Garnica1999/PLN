@@ -1,0 +1,362 @@
+{
+  "descripcion": "M0: validacion de entrada (heuristica anexo 25)",
+  "config": {
+    "positivas": 30,
+    "negativas": 22,
+    "semilla": 42,
+    "fuente_negativos": "open_corpus_co_es load_corpus('presidentes'): 22 discursos de posesion (corpus consumido por TALLER-1, sin .txt en el repo)"
+  },
+  "matriz": {
+    "tp": 30,
+    "fp": 0,
+    "tn": 22,
+    "fn": 0
+  },
+  "accuracy": 1.0,
+  "positivas_detalle": [
+    {
+      "id": "5986",
+      "tipo": "C",
+      "ano": 1999,
+      "reglas_cumplidas": 3,
+      "es_sentencia": true
+    },
+    {
+      "id": "7945",
+      "tipo": "C",
+      "ano": 2002,
+      "reglas_cumplidas": 2,
+      "es_sentencia": true
+    },
+    {
+      "id": "9092",
+      "tipo": "C",
+      "ano": 2003,
+      "reglas_cumplidas": 3,
+      "es_sentencia": true
+    },
+    {
+      "id": "10089",
+      "tipo": "C",
+      "ano": 2005,
+      "reglas_cumplidas": 3,
+      "es_sentencia": true
+    },
+    {
+      "id": "21913",
+      "tipo": "C",
+      "ano": 2016,
+      "reglas_cumplidas": 3,
+      "es_sentencia": true
+    },
+    {
+      "id": "17513",
+      "tipo": "C",
+      "ano": 2019,
+      "reglas_cumplidas": 3,
+      "es_sentencia": true
+    },
+    {
+      "id": "17078",
+      "tipo": "SU",
+      "ano": 2018,
+      "reglas_cumplidas": 3,
+      "es_sentencia": true
+    },
+    {
+      "id": "29",
+      "tipo": "T",
+      "ano": 1992,
+      "reglas_cumplidas": 2,
+      "es_sentencia": true
+    },
+    {
+      "id": "1114",
+      "tipo": "T",
+      "ano": 1993,
+      "reglas_cumplidas": 3,
+      "es_sentencia": true
+    },
+    {
+      "id": "1497",
+      "tipo": "T",
+      "ano": 1994,
+      "reglas_cumplidas": 2,
+      "es_sentencia": true
+    },
+    {
+      "id": "536",
+      "tipo": "T",
+      "ano": 1995,
+      "reglas_cumplidas": 3,
+      "es_sentencia": true
+    },
+    {
+      "id": "2980",
+      "tipo": "T",
+      "ano": 1996,
+      "reglas_cumplidas": 3,
+      "es_sentencia": true
+    },
+    {
+      "id": "2277",
+      "tipo": "T",
+      "ano": 1997,
+      "reglas_cumplidas": 3,
+      "es_sentencia": true
+    },
+    {
+      "id": "4572",
+      "tipo": "T",
+      "ano": 1998,
+      "reglas_cumplidas": 3,
+      "es_sentencia": true
+    },
+    {
+      "id": "3545",
+      "tipo": "T",
+      "ano": 2000,
+      "reglas_cumplidas": 3,
+      "es_sentencia": true
+    },
+    {
+      "id": "6891",
+      "tipo": "T",
+      "ano": 2001,
+      "reglas_cumplidas": 3,
+      "es_sentencia": true
+    },
+    {
+      "id": "10705",
+      "tipo": "T",
+      "ano": 2004,
+      "reglas_cumplidas": 3,
+      "es_sentencia": true
+    },
+    {
+      "id": "13692",
+      "tipo": "T",
+      "ano": 2006,
+      "reglas_cumplidas": 3,
+      "es_sentencia": true
+    },
+    {
+      "id": "12527",
+      "tipo": "T",
+      "ano": 2007,
+      "reglas_cumplidas": 3,
+      "es_sentencia": true
+    },
+    {
+      "id": "11153",
+      "tipo": "T",
+      "ano": 2008,
+      "reglas_cumplidas": 2,
+      "es_sentencia": true
+    },
+    {
+      "id": "14104",
+      "tipo": "T",
+      "ano": 2009,
+      "reglas_cumplidas": 3,
+      "es_sentencia": true
+    },
+    {
+      "id": "15126",
+      "tipo": "T",
+      "ano": 2010,
+      "reglas_cumplidas": 3,
+      "es_sentencia": true
+    },
+    {
+      "id": "23016",
+      "tipo": "T",
+      "ano": 2011,
+      "reglas_cumplidas": 3,
+      "es_sentencia": true
+    },
+    {
+      "id": "17938",
+      "tipo": "T",
+      "ano": 2012,
+      "reglas_cumplidas": 3,
+      "es_sentencia": true
+    },
+    {
+      "id": "19954",
+      "tipo": "T",
+      "ano": 2013,
+      "reglas_cumplidas": 3,
+      "es_sentencia": true
+    },
+    {
+      "id": "20994",
+      "tipo": "T",
+      "ano": 2014,
+      "reglas_cumplidas": 3,
+      "es_sentencia": true
+    },
+    {
+      "id": "18701",
+      "tipo": "T",
+      "ano": 2015,
+      "reglas_cumplidas": 3,
+      "es_sentencia": true
+    },
+    {
+      "id": "22264",
+      "tipo": "T",
+      "ano": 2017,
+      "reglas_cumplidas": 3,
+      "es_sentencia": true
+    },
+    {
+      "id": "16125",
+      "tipo": "T",
+      "ano": 2020,
+      "reglas_cumplidas": 3,
+      "es_sentencia": true
+    },
+    {
+      "id": "4",
+      "tipo": "T",
+      "ano": 2021,
+      "reglas_cumplidas": 3,
+      "es_sentencia": true
+    }
+  ],
+  "negativas_detalle": [
+    {
+      "nombre": "jorge eliecer gaitan",
+      "anio": "1942",
+      "reglas_cumplidas": 0,
+      "es_sentencia": false
+    },
+    {
+      "nombre": "mariano ospina perez",
+      "anio": "1946",
+      "reglas_cumplidas": 0,
+      "es_sentencia": false
+    },
+    {
+      "nombre": "laureano gomez",
+      "anio": "1950",
+      "reglas_cumplidas": 0,
+      "es_sentencia": false
+    },
+    {
+      "nombre": "rojas pinilla",
+      "anio": "1953",
+      "reglas_cumplidas": 0,
+      "es_sentencia": false
+    },
+    {
+      "nombre": "alberto lleras",
+      "anio": "1958",
+      "reglas_cumplidas": 0,
+      "es_sentencia": false
+    },
+    {
+      "nombre": "guillermo leon",
+      "anio": "1962",
+      "reglas_cumplidas": 0,
+      "es_sentencia": false
+    },
+    {
+      "nombre": "carlos lleras",
+      "anio": "1966",
+      "reglas_cumplidas": 0,
+      "es_sentencia": false
+    },
+    {
+      "nombre": "misael pastrana borrero",
+      "anio": "1970",
+      "reglas_cumplidas": 0,
+      "es_sentencia": false
+    },
+    {
+      "nombre": "alfonso lopez michelsen",
+      "anio": "1974",
+      "reglas_cumplidas": 0,
+      "es_sentencia": false
+    },
+    {
+      "nombre": "julio cesar turbay",
+      "anio": "1978",
+      "reglas_cumplidas": 0,
+      "es_sentencia": false
+    },
+    {
+      "nombre": "belisario betancur",
+      "anio": "1982",
+      "reglas_cumplidas": 0,
+      "es_sentencia": false
+    },
+    {
+      "nombre": "virgilio barco",
+      "anio": "1986",
+      "reglas_cumplidas": 0,
+      "es_sentencia": false
+    },
+    {
+      "nombre": "cesar gaviria",
+      "anio": "1990",
+      "reglas_cumplidas": 0,
+      "es_sentencia": false
+    },
+    {
+      "nombre": "ernesto samper",
+      "anio": "1994",
+      "reglas_cumplidas": 0,
+      "es_sentencia": false
+    },
+    {
+      "nombre": "andres pastrana",
+      "anio": "1998",
+      "reglas_cumplidas": 0,
+      "es_sentencia": false
+    },
+    {
+      "nombre": "alvaro uribe",
+      "anio": "2002",
+      "reglas_cumplidas": 0,
+      "es_sentencia": false
+    },
+    {
+      "nombre": "alvaro uribe",
+      "anio": "2006",
+      "reglas_cumplidas": 0,
+      "es_sentencia": false
+    },
+    {
+      "nombre": "juan manuel santos",
+      "anio": "2010",
+      "reglas_cumplidas": 0,
+      "es_sentencia": false
+    },
+    {
+      "nombre": "juan manuel santos",
+      "anio": "2014",
+      "reglas_cumplidas": 0,
+      "es_sentencia": false
+    },
+    {
+      "nombre": "ivan duque",
+      "anio": "2018",
+      "reglas_cumplidas": 0,
+      "es_sentencia": false
+    },
+    {
+      "nombre": "gustavo petro urrego",
+      "anio": "2022",
+      "reglas_cumplidas": 0,
+      "es_sentencia": false
+    },
+    {
+      "nombre": "abelardo de la espriella",
+      "anio": "2026",
+      "reglas_cumplidas": 1,
+      "es_sentencia": false
+    }
+  ]
+}

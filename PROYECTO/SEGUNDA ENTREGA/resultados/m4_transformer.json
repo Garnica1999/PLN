@@ -1,0 +1,37 @@
+{
+  "fecha": "2026-09-09T15:30:48.284168",
+  "config": {
+    "semilla": 42,
+    "modelo": "dccuchile/bert-base-spanish-wwm-cased",
+    "max_tokens": 512,
+    "batch_train": 8,
+    "batch_eval": 16,
+    "grad_accum": 4,
+    "epochs": 3,
+    "lr": 2e-05,
+    "vram_min_gb": 6.0,
+    "vram_espera_seg": 300,
+    "vram_max_esperas": 288,
+    "ruta_splits": "data/splits_m4.parquet",
+    "ruta_corpus": "data/corpus_sentencias.parquet",
+    "ruta_etiquetas": "data/etiquetas_areas.parquet",
+    "dir_modelos": "modelos/m4_transformer",
+    "ruta_metricas": "resultados/m4_transformer.json",
+    "ruta_log": "experimentos/m4_transformer.log"
+  },
+  "modelo": "dccuchile/bert-base-spanish-wwm-cased",
+  "completo": {
+    "macro_f1": 0.20801242103448261,
+    "accuracy": 0.5171927846674182,
+    "modelo": "modelos/m4_transformer/beto_completo",
+    "mejor_f1_val": 0.20695841609787238
+  },
+  "enmascarado": {
+    "macro_f1": 0.2041515566816437,
+    "accuracy": 0.5132468996617813,
+    "modelo": "modelos/m4_transformer/beto_enmascarado",
+    "mejor_f1_val": 0.20318606598841954
+  },
+  "gap_leakage": 0.0038608643528389164,
+  "tiempo_total_seg": 24039.683253765106
+}

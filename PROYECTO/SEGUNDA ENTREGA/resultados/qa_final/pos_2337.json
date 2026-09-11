@@ -1,0 +1,80 @@
+{
+  "es_sentencia": true,
+  "score_validacion": 1.0,
+  "id_detectado": "2337",
+  "ponente": "Hernando Herrera Vergara",
+  "area": {
+    "top3": [
+      {
+        "area": "derechos_fundamentales",
+        "prob": 0.9515
+      },
+      {
+        "area": "principios_fundamentales",
+        "prob": 0.0428
+      },
+      {
+        "area": "proteccion_aplicacion_derechos",
+        "prob": 0.0032
+      }
+    ],
+    "via": "clasificador_m4_logreg_enmascarado"
+  },
+  "articulos_cp": {
+    "extraidos": [
+      {
+        "numero": "86",
+        "texto_150chars": "Toda persona tendrá acción de tutela para reclamar ante los jueces, en todo momento y lugar, mediante un procedimiento preferente y sumario, por sí mi",
+        "bloque": "proteccion_aplicacion_derechos"
+      },
+      {
+        "numero": "241",
+        "texto_150chars": "A la Corte Constitucional se le confía la guarda de la integridad y supremacía de la Constitución, en los estrictos y precisos términos de este artícu",
+        "bloque": "rama_judicial"
+      },
+      {
+        "numero": "23",
+        "texto_150chars": "Toda persona tiene derecho a presentar peticiones respetuosas a las autoridades por motivos de interés general o particular y a obtener pronta resoluc",
+        "bloque": "derechos_fundamentales"
+      },
+      {
+        "numero": "209",
+        "texto_150chars": "La función administrativa está al servicio de los intereses generales y se desarrolla con fundamento en los principios de igualdad, moralidad, eficaci",
+        "bloque": "rama_ejecutiva"
+      }
+    ],
+    "recuperados_bm25": [
+      {
+        "numero": "250",
+        "score": 150.036
+      },
+      {
+        "numero": "234",
+        "score": 148.9775
+      },
+      {
+        "numero": "Transitorio 55",
+        "score": 147.3428
+      },
+      {
+        "numero": "Transitorio ACL01017-8",
+        "score": 142.8874
+      },
+      {
+        "numero": "241",
+        "score": 142.8398
+      }
+    ]
+  },
+  "sentencias_citadas": [
+    {
+      "id": "2258",
+      "resuelta": true,
+      "ano": 1997,
+      "pagerank": 4.9e-05,
+      "area": "principios_fundamentales"
+    }
+  ],
+  "resumen": "Providencia valida de la Corte Constitucional; area tematica derechos_fundamentales (prob 0.9515); 4 articulos CP extraidos y 5 recuperados por BM25; 1 de 1 sentencias citadas resueltas al corpus.",
+  "tiempo_segundos": 8.3
+}
