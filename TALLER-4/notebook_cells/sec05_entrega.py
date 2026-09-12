@@ -15,9 +15,13 @@
 | Modelo IR TF-IDF (base y variantes A/B/C) | `experimentos/experimento_1_tfidf_base.py` |
 | Figuras del EDA (14) | `imagenes/eda_*.png` |
 | Ranking, reportes, muestra etiquetada y metricas | `resultados/` (`ranking_top5*.csv`, `ir_tfidf_report.json`, `evaluacion_metricas.json`, `metricas.json`, `eda/`) |
-| Codigo fuente de este notebook | `notebook_cells/sec00_setup.py` ... `sec05_entrega.py`, `scripts/ensamblar_notebook_t4.py` |
+| Metricas manuales Okapi BM25 y Rocchio (punto 4) | `notebook_cells/sec03b_metricas.py` (funciones `puntuar_bm25`, `rankear_bm25`, `rocchio_expandir`, `rankear_rocchio` documentadas en el notebook) |
+| Rankings BM25 y Rocchio (salidas del notebook) | `resultados/ranking_bm25.csv`, `resultados/ranking_rocchio.csv` |
+| Comparacion de corpus y heatmap (punto 5) | `notebook_cells/sec03c_comparacion.py`; `imagenes/heatmap_entrevistas_libros.png`, `resultados/heatmap_tomos.csv`, `resultados/vinculos_entrevistas_libros.csv` |
+| Codigo fuente de este notebook | `notebook_cells/sec00_setup.py` ... `sec03b_metricas.py`, `sec03c_comparacion.py`, `sec05_entrega.py`, `scripts/ensamblar_notebook_t4.py` |
 | Notebook entregable (ejecutado) | `notebooks/Taller_4_IR_CEV.ipynb` |
-| Tests | `tests/` (`test_extraccion.py`, `test_preprocesado.py`, `test_ir_tfidf.py`) |
+| Informe final integrador (punto 6) | `informe/informe_taller4.md` |
+| Tests | `tests/` (`test_extraccion.py`, `test_preprocesado.py`, `test_ir_tfidf.py`, `test_notebook_dependencias.py`) |
 
 ## Como reproducir
 

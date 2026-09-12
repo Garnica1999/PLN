@@ -499,6 +499,17 @@ def correr_ir(
     return {
         "ranking_top5": ranking_top5,
         "similitudes": similitudes,
+        # Matrices, textos limpios y metadatos expuestos como contrato de la
+        # seccion: la Sec 03b (BM25/Rocchio) y la Sec 03c (heatmap) los
+        # reutilizan sin re-entrenar ni releer los corpus.
+        "x_coleccion": x_coleccion,
+        "x_queries": x_queries,
+        "libros_limpios": libros_limpios,
+        "entrevistas_limpios": entrevistas_limpios,
+        "ids_coleccion": ids_segmentos,
+        "ids_queries": ids_queries,
+        "docs_libros": docs_libros,
+        "docs_entrevistas": docs_entrevistas,
         "config": config,
         "parada_tokens": len(parada),
         "n_correcciones_lemas": len(correcciones),

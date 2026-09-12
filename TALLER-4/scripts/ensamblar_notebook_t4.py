@@ -85,6 +85,8 @@ SECUENCIA = [
     "sec01_corpus.py",
     "sec02_eda.py",
     "sec03_ir.py",
+    "sec03b_metricas.py",
+    "sec03c_comparacion.py",
     "sec04_observaciones.py",
     "sec05_entrega.py",
 ]
