@@ -1,6 +1,6 @@
 """test_notebook_dependencias.py
 
-Fecha: 2026-09-05 (v6)
+Fecha: 2026-09-05 (v6.1)
 Descripcion: Tests de independencia total y robustez del notebook entregable
     (notebooks/Taller_4_IR_CEV.ipynb, ensamblado desde notebook_cells/):
 
@@ -25,6 +25,11 @@ Descripcion: Tests de independencia total y robustez del notebook entregable
         expandidos de scripts/01-03 (celdas [auto] del ensamblador) la
         unidad con sentido es el bloque completo: sus lecturas solo
         ocurren cuando el driver de regeneracion los invoca.
+        Las SALIDAS escritas por el propio notebook (v6.1: ranking_bm25.csv,
+        ranking_rocchio.csv, heatmap_tomos.csv,
+        vinculos_entrevistas_libros.csv y heatmap_entrevistas_libros.png)
+        se aceptan si la celda las ESCRIBE (to_csv/savefig) y exigen guard
+        .exists() si ademas las lee (verificacion opcional de salida).
     (d) las celdas que resuelven la raiz (def buscar_raiz / _raiz_standalone)
         lanzan FileNotFoundError claro (menciona el cache
         segmentos_libros.jsonl y los insumos de data/raw/) y no contienen la
@@ -43,8 +48,9 @@ Descripcion: Tests de independencia total y robustez del notebook entregable
         archivos reales, sin duplicar disco) y un data/raw VACIO: sin
         config/, resultados/, imagenes/, scripts/ ni notebook_cells/. El
         resultado esperado es 0 errores, con los avisos "[aviso]/[info]"
-        de archivos opcionales ausentes y los calculos inline completos
-        (figuras PNG inline y auto-checks con valores).
+        de archivos opcionales ausentes, los calculos inline completos
+        (figuras PNG inline y auto-checks con valores) y las salidas
+        nuevas (rankings BM25/Rocchio y heatmap) escritas en el arbol.
     (h) resolucion de la raiz con SOLO los 3 insumos: se ejecuta la celda
         real de sec00 (la que define `buscar_raiz`) con cwd en un arbol
         sintetico que contiene UNICAMENTE data/raw/entrevistas_all_2023-03-21_14-24_05.json
@@ -95,6 +101,21 @@ LISTA_BLANCA_DIRECTA = {
 # Basenames bajo config/, resultados/ e imagenes/ (git): su literal en una
 # celda code SOLO puede aparecer en contexto opcional.
 _DIRS_OPCIONALES = ("config/", "resultados/", "imagenes/")
+
+# (c) v6.1: SALIDAS que el propio notebook escribe (no son insumos). Su
+# literal se acepta si la celda/bloque las escribe (to_csv/savefig); si
+# ademas las lee, la lectura exige guard .exists() (verificacion opcional).
+SALIDAS_NOTEBOOK = {
+    "ranking_bm25.csv",
+    "ranking_rocchio.csv",
+    "heatmap_tomos.csv",
+    "vinculos_entrevistas_libros.csv",
+    "heatmap_entrevistas_libros.png",
+}
+
+# Marcas de escritura/lectura de archivos para la clasificacion de salidas.
+_MARCAS_ESCRITURA = (".to_csv(", ".savefig(")
+_MARCAS_LECTURA = ("read_csv(", "read_text(", "imread(", "json.loads(")
 
 _PATRON_LITERAL = re.compile(r"""(['"])([^'"\n]*?\.(?:jsonl|txt|csv|json|png|rdf|zip))\1""")
 _PATRON_IMPORT_RELATIVO = re.compile(
@@ -292,6 +313,21 @@ def test_c_politica_v5_de_lecturas_de_archivo() -> None:
             if _es_archivo_data_permitido(candidato):
                 continue  # lista blanca v5: data/ insumos + caches derivados
             nombre = Path(candidato).name
+            if nombre in SALIDAS_NOTEBOOK:
+                # v6.1: salida del notebook -> la celda debe escribirla; si
+                # la lee (verificacion de paridad), exige guard .exists().
+                assert any(
+                    marca in texto_validado for marca in _MARCAS_ESCRITURA
+                ), (
+                    f"la salida {candidato!r} debe escribirse en la celda o "
+                    "bloque (to_csv/savefig)"
+                )
+                if any(marca in texto_validado for marca in _MARCAS_LECTURA):
+                    assert ".exists()" in texto_validado, (
+                        f"la celda lee la salida {candidato!r}: la lectura "
+                        "debe ser opcional con guard .exists()"
+                    )
+                continue
             if nombre not in opcionales_por_nombre:
                 # Literal desconocido: exigir guard por prudencia.
                 assert ".exists()" in texto_validado, (
@@ -506,6 +542,14 @@ def _ejecutar_sandbox(tmp_path: Path) -> None:
         "Muestra determinista inline: 30 pares",
         "P@1 estricto (solo 'relacionado')         : 0.5333",
         "Segmentos de libro por tomo (calculado inline",
+        # v6.1: puntos 4 y 5 calculados inline (auto-checks y salidas).
+        "Auto-check BM25 (calculo a mano, 3 docs): True",
+        "Auto-check Rocchio (vectores conocidos): True",
+        "[ok] resultados/ranking_bm25.csv",
+        "[ok] resultados/ranking_rocchio.csv",
+        "[ok] resultados/heatmap_tomos.csv",
+        "[ok] resultados/vinculos_entrevistas_libros.csv",
+        "[ok] imagenes/heatmap_entrevistas_libros.png",
     ]
     faltantes = [texto for texto in esperados if texto not in salida]
     assert not faltantes, (

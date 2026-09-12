@@ -1,21 +1,29 @@
 # TALLER-4 — Recuperación de Información sobre corpus de la Comisión de la Verdad (CEV)
 
 Taller del curso **Procesamiento de Lenguaje Natural** (Pontificia Universidad
-Javeriana). Proceso de IR (puntos 1-3 del enunciado) que relaciona **2.486
-entrevistas** de víctimas (CEV/JEP, formato JSON) con **segmentos de los 10
-tomos** del Informe Final de la Comisión de la Verdad (2022).
+Javeriana). Proceso de IR completo (puntos 1-6 del enunciado) que relaciona
+**2.486 entrevistas** de víctimas (CEV/JEP, formato JSON) con **segmentos de
+los 10 tomos** del Informe Final de la Comisión de la Verdad (2022), con
+TF-IDF base, Okapi BM25 y Rocchio implementados a mano dentro del notebook,
+y comparación de corpus con heatmap entrevistas ↔ libros.
 
 ## Entregables
 - `notebooks/Taller_4_IR_CEV.ipynb` — notebook único (Colab-compatible),
-  ejecutado de extremo a extremo (0 errores): corpus → EDA → modelo IR TF-IDF →
-  evaluación cualitativa → observaciones.
-- `informe/informe_taller4.md` — informe técnico (3.276 palabras, 5 tablas,
-  14 figuras).
+  ejecutado de extremo a extremo (0 errores): corpus → EDA → modelo IR TF-IDF
+  → evaluación cualitativa → BM25/Rocchio manuales → heatmap y cuadro de
+  vínculos entrevistas ↔ libros → observaciones y entregables.
+- `informe/informe_taller4.md` — informe técnico integrador (punto 6).
 - `data/corpus/` — corpus extraído y preprocesado: `segmentos_libros.jsonl`
   (917 segmentos), `entrevistas_normalizadas.jsonl` (2.486), `preprocesado/`
   (lemas y tokens por corpus).
 - `imagenes/eda_*.png` (14 figuras del EDA) + `resultados/` (18 CSVs EDA,
   rankings TF-IDF, evaluación etiquetada, `metricas.json` por fase).
+- `resultados/ranking_bm25.csv`, `resultados/ranking_rocchio.csv` —
+  rankings del punto 4 (salidas del notebook, 12.420 filas cada uno).
+- `imagenes/heatmap_entrevistas_libros.png`,
+  `resultados/heatmap_tomos.csv`,
+  `resultados/vinculos_entrevistas_libros.csv` — punto 5 (salidas del
+  notebook).
 
 ## Resultados principales
 - Extracción: 10/10 tomos, 917 segmentos (TOC niveles 1-2), mapeo 91-100%,
@@ -25,6 +33,12 @@ tomos** del Informe Final de la Comisión de la Verdad (2022).
 - IR TF-IDF: 118.748 features; cobertura 99,92%; p@1 estricto 0,533 / aceptable
   1,0 y p@3 estricto 0,767 sobre 30 pares etiquetados; sesgo top-1 TESTIMONIAL
   (76,8%) explicado como efecto de dominio (registro oral).
+- P4 (métricas manuales): Okapi BM25 (k1=1,5, b=0,75; avgdl 1.466 tokens) y
+  Rocchio (α=1, β=0,75, γ=0,15, pseudo-relevancia top-5/bottom-5); acuerdo de
+  top-1 57,0% base↔BM25 y 70,1% base↔Rocchio; los tres comparten el sesgo
+  TESTIMONIAL (76,8 / 75,0 / 78,4%).
+- P5: heatmap 10×10 (grupo por top-1 BM25 × tomo de libro) con diagonal media
+  0,0725 > fuera de diagonal 0,0608 y cuadro de 30 vínculos (3 por tomo).
 
 ## Estructura
 ```
@@ -35,13 +49,15 @@ TALLER-4/
 ├── data/corpus/     segmentos, entrevistas normalizadas, preprocesado spaCy
 ├── docs/            PDFs del taller y rúbrica
 ├── notebooks/       Taller_4_IR_CEV.ipynb (ENTREGABLE)
-├── notebook_cells/  celdas fuente por sección (sec00-sec05)
+├── notebook_cells/  celdas fuente por sección (sec00-sec03c, sec04-sec05)
 ├── scripts/         01_extraer_libros.py, 02_preprocesar.py, 03_eda.py,
 │                    ensamblar_notebook_t4.py
 ├── experimentos/    experimento_1_tfidf_base.py (modelo IR)
-├── imagenes/        figuras del EDA
+├── imagenes/        figuras del EDA + heatmap del punto 5
 ├── resultados/      CSVs, reportes JSON, metricas.json, evaluación etiquetada
-├── tests/           pytest (43 tests: extracción, preprocesado, IR)
+│                    y rankings BM25/Rocchio + heatmap/vínculos (puntos 4-5)
+├── tests/           pytest (51 tests: extracción, preprocesado, IR,
+│                    independencia del notebook)
 ├── informe/         informe_taller4.md (ENTREGABLE)
 └── plan/            PLAN.md, arquitectura.md, estado_del_arte.md, ADRs,
                      verificacion_requisitos.md, verificacion_rubrica.md
@@ -125,5 +141,10 @@ forzar la re-ejecución o apuntar a una carpeta local con las fuentes.
 desde el notebook; la config curada del notebook está embebida en la
 Sec 00).
 
-Alcance aprobado: puntos 1-3 del taller (Rocchio/BM25, heatmap e informe final
-completo quedan como mejoras futuras documentadas en el informe).
+Alcance: los **6 puntos del taller** están cubiertos — P1-P3 (corpus, EDA y
+modelo IR TF-IDF con evaluación cualitativa), P4 (Okapi BM25 y Rocchio
+implementados manualmente y comparados), P5 (heatmap entrevistas ↔ libros y
+cuadro de vínculos) y P6 (informe final integrador en
+`informe/informe_taller4.md`). El notebook es independiente: solo requiere
+los 3 insumos de `data/raw/` y escribe sus salidas (rankings BM25/Rocchio,
+heatmap y vínculos) sin leerlas como requisito.
