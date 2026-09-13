@@ -37,7 +37,7 @@ del Informe Final de la Comisión de la Verdad, cubriendo los 6 puntos del talle
 
 ESTRUCTURA DEL ZIP
 ------------------
-notebooks/Taller_4_IR_CEV.ipynb  Notebook único (127 celdas, 6 puntos, ejecutado
+notebooks/Taller_4_IR_CEV.ipynb  Notebook único (125 celdas, 6 puntos, ejecutado
                                  sin errores; autocontenido).
 informe/Informe_Final_Taller4.pdf  Informe final (23 páginas).
 data/raw/                        LOS 3 INSUMOS del notebook (descargables del
