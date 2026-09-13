@@ -35,7 +35,6 @@ resultados/    Rankings TF-IDF/BM25/Rocchio(+k3), evaluación de la muestra,
 scripts/       Pipeline de producción con CLI (01_extraer_libros, 02_preprocesar,
                03_eda, 04_evaluar_muestra, ensamblar_notebook_t4).
 experimentos/  experimento_1_tfidf_base.py (modelo IR TF-IDF y variantes).
-notebook_cells/ Celdas fuente del notebook (secciones sec00–sec05).
 tests/         51 pruebas pytest (extracción, preprocesado, IR, independencia).
 plan/          PLAN.md (historial v1–v8), arquitectura, estado del arte (17
                referencias), decisiones, verificaciones.

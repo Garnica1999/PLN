@@ -61,6 +61,11 @@ Motivo (Carlos): figura 11 algo más grande; eliminar brechas entre figuras/tabl
 - [x] **Prueba B (SOLO insumos: sin caches/resultados/imágenes/config)**: nbclient 0 errores en **971,9 s**; regeneración completa (E1 libros 10/10, E2 normalizar 57 s + spaCy 2.486 docs en 758 s); valores reproducidos en outputs: 76,77 %; P@1 0,5333; P@3 0,7667; TTR 0,609/0,514; Yule 31,8/38,7; BM25 top-1 1.863; Rocchio 1.947. (E3 oficial requiere `config/` incluida en el ZIP; el notebook funciona sin ella con avisos.)
 - [x] Git: rama `taller-4-final-v9` → PR → merge. ZIP y carpeta extraída se excluyen del versionado por tamaño (393 MB > 100 MB de GitHub); quedan locales + `entregable/LEEME.txt` versionado. Sin ingestas en graphiti (según instrucción de Carlos).
 
+## v9.1 (2026-09-12) — ZIP sin `notebook_cells/` (fuera del entregable) [COMPLETADO]
+Motivo (Carlos): `notebook_cells/` no es necesario para el entregable, ya que el notebook contiene el EDA y todo el código, y corre de forma independiente.
+- [x] Verificado: el notebook (127 celdas del zip, sin dependencias) no usa `notebook_cells/` ni el ensamblador en ejecución (solo menciones markdown); tests no los requieren (el sandbox ejecuta sin ellos).
+- [x] ZIP final re-generado: 393 MB, 127 archivos, 16 PNG, sin `notebook_cells/`; LEEME actualizado; integridad OK; re-ejecución del ZIP final: **0 errores en 159 s**.
+- [x] Se conserva `notebook_cells/` + `scripts/ensamblar_notebook_t4.py` en el repositorio como herramienta interna de mantenimiento (reensamblado del notebook); no forman parte del entregable.
 ## v8.2 (2026-09-12) — Corrección de layout del informe LaTeX y PDF final [COMPLETADO]
 Motivo (Carlos): inconsistencias en el PDF (saltos/espacios, referencias duplicadas con página casi vacía, figuras 6-7 enormes, huecos en secciones).
 - [x] Eliminadas las 16 menciones ADR del informe (texto final sin referencias internas de gestión).
