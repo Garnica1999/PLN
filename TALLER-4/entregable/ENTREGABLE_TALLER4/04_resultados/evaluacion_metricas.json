@@ -1,0 +1,254 @@
+{
+  "n_muestra": 30,
+  "conteos_por_etiqueta": {
+    "relacionado": 16,
+    "parcial": 14,
+    "no": 0
+  },
+  "p1_proxy": {
+    "estricto_solo_relacionado": 0.5333,
+    "aceptable_relacionado_o_parcial": 1.0
+  },
+  "p3_proxy": {
+    "aceptable_al_menos_un_relacionado": 0.7667,
+    "aceptable_relacionado_o_parcial": 1.0
+  },
+  "errores_top1": {
+    "n_top1_no": 0,
+    "ids_top1_no": [],
+    "n_falsos_negativos_top1": 0,
+    "ids_falsos_negativos_top1": [],
+    "n_top1_parcial_con_match_relacionado_r2_r3": 7,
+    "ids_top1_parcial_con_match_relacionado_r2_r3": [
+      "625fd7b8755cba02e5b68d8f.pdf",
+      "5eb4eb43da6da3b502db3f52.pdf",
+      "5ec832c721581078294c4ad3.pdf",
+      "5ec832d421581078294c4c27.pdf",
+      "5f08ae8df1cdbf68d04f6fc1.pdf",
+      "5eb4e8f5da6da3b502dab502.pdf",
+      "607edb88b5ef6a0c984f84f3.pdf"
+    ],
+    "nota": "Ningun top-1 se etiqueto 'no' (todo el corpus trata el conflicto colombiano y las entrevistas son de victimas/testigos, por lo que siempre hay solape minimo); el fenomeno del reviewer aparece como top-1 PARCIAL con match relacionado en r2-r3 (columna n_top1_parcial_con_match_relacionado_r2_r3), no como 'no'."
+  },
+  "sesgo_testimonial": {
+    "n_top1_testimonial_en_muestra": 5,
+    "distribucion_top1_testimonial": {
+      "relacionado": 2,
+      "parcial": 3,
+      "no": 0
+    }
+  },
+  "interpretacion": "El matching TF-IDF base es funcional pero impreciso: con criterio estricto (solo 'relacionado') P@1=0.53 y P@3=0.77, mientras que con criterio aceptable ('relacionado'+'parcial') ambos llegan a 1.0 porque todo el corpus versa sobre el conflicto colombiano y cualquier entrevista de victima solapa minimamente con casi cualquier segmento. El sesgo TESTIMONIAL no produce falsos positivos duros en top-1 (0 'no'), pero si top-1 genericos: en 7/30 queries (23%) el top-1 es 'parcial' y existe un match 'relacionado' en r2-r3, es decir, el primer resultado no es el mas especifico. El problema no es el registro oral (las muletillas ya estan en parada) sino la ausencia de discriminacion tematica fina: los matches compten por solape lexico amplio (todo el corpus habla de guerra, victimas y territorio), no por el hecho o la poblacion especifica. El registro oral produce rankings TESTIMONIAL plausibles pero de baja especificidad (en la muestra 2/5 TESTIMONIAL relacionados y 3/5 parciales), coherente con el 76.8% de top-1 TESTIMONIAL del reporte.",
+  "detalle_por_fila": [
+    {
+      "id_doc": "5f6ae4b606158f011ed0106c.pdf",
+      "r1_id_segmento": "HALLAZGOS-p232-las-guerrillas-disputas-por-el-poder-politico-regional-y-sus-afectaciones-a-la-d",
+      "etiqueta_top1": "relacionado",
+      "etiqueta_r2": "parcial",
+      "etiqueta_r3": "parcial"
+    },
+    {
+      "id_doc": "5eb4eb12da6da3b502db359f.pdf",
+      "r1_id_segmento": "HALLAZGOS-p129-las-masacres",
+      "etiqueta_top1": "relacionado",
+      "etiqueta_r2": "relacionado",
+      "etiqueta_r3": "parcial"
+    },
+    {
+      "id_doc": "5fee58599e8b013f2692e067.pdf",
+      "r1_id_segmento": "HALLAZGOS-p492-contexto-historico-desigualdad-disenos-institucionales-y-violencia",
+      "etiqueta_top1": "relacionado",
+      "etiqueta_r2": "parcial",
+      "etiqueta_r3": "parcial"
+    },
+    {
+      "id_doc": "5eb4e860da6da3b502da7cd8.pdf",
+      "r1_id_segmento": "CONVOCATORIA-p17-primer-paso-del-esclarecimiento-acoger-la-realidad-de-las-victimas",
+      "etiqueta_top1": "parcial",
+      "etiqueta_r2": "parcial",
+      "etiqueta_r3": "parcial"
+    },
+    {
+      "id_doc": "5eb4eb13da6da3b502db35e7.pdf",
+      "r1_id_segmento": "NARRATIVA-p547-86-negociar-como-si-no-hubiera-guerra-y-pelear-como-si-no-hubiera-negociacion",
+      "etiqueta_top1": "parcial",
+      "etiqueta_r2": "parcial",
+      "etiqueta_r3": "parcial"
+    },
+    {
+      "id_doc": "5eb4e9fbda6da3b502dafa27.pdf",
+      "r1_id_segmento": "NARRATIVA-p508-81-el-entramado-se-destapa",
+      "etiqueta_top1": "parcial",
+      "etiqueta_r2": "parcial",
+      "etiqueta_r3": "no"
+    },
+    {
+      "id_doc": "5ef8d0a8f1cdbf68d095d559.pdf",
+      "r1_id_segmento": "NARRATIVA-p149-17-una-democracia-represiva",
+      "etiqueta_top1": "relacionado",
+      "etiqueta_r2": "relacionado",
+      "etiqueta_r3": "relacionado"
+    },
+    {
+      "id_doc": "5eb4e861da6da3b502da7d1b.pdf",
+      "r1_id_segmento": "SUFRIR-p184-la-naturaleza-en-el-conflicto-armado-interno",
+      "etiqueta_top1": "relacionado",
+      "etiqueta_r2": "parcial",
+      "etiqueta_r3": "parcial"
+    },
+    {
+      "id_doc": "5faa8396205391c03b5f1836.pdf",
+      "r1_id_segmento": "SUFRIR-p133-lo-que-la-guerra-arrebato-la-dimension-material-y-economica-de-los-danos",
+      "etiqueta_top1": "relacionado",
+      "etiqueta_r2": "relacionado",
+      "etiqueta_r3": "parcial"
+    },
+    {
+      "id_doc": "625fd7b8755cba02e5b68d8f.pdf",
+      "r1_id_segmento": "SUFRIR-p408-educacion-para-la-paz-una-manera-de-tirar-la-mirada-para-otro-lado",
+      "etiqueta_top1": "parcial",
+      "etiqueta_r2": "relacionado",
+      "etiqueta_r3": "relacionado"
+    },
+    {
+      "id_doc": "5f09f4e4f1cdbf68d05da6fc.pdf",
+      "r1_id_segmento": "TESTIMONIAL-p331-enfrentados",
+      "etiqueta_top1": "parcial",
+      "etiqueta_r2": "parcial",
+      "etiqueta_r3": "parcial"
+    },
+    {
+      "id_doc": "5eb4eb43da6da3b502db3f52.pdf",
+      "r1_id_segmento": "TESTIMONIAL-p423-el-tiempo-pasa-sin-pasar",
+      "etiqueta_top1": "parcial",
+      "etiqueta_r2": "relacionado",
+      "etiqueta_r3": "parcial"
+    },
+    {
+      "id_doc": "5f040d37f1cdbf68d015a2fa.pdf",
+      "r1_id_segmento": "TESTIMONIAL-p300-lo-que-no-se-cuenta",
+      "etiqueta_top1": "relacionado",
+      "etiqueta_r2": "parcial",
+      "etiqueta_r3": "parcial"
+    },
+    {
+      "id_doc": "5ececeaf215810782986e718.pdf",
+      "r1_id_segmento": "CUERPO-p47-la-guerra-el-territorio-y-las-mujeres",
+      "etiqueta_top1": "relacionado",
+      "etiqueta_r2": "relacionado",
+      "etiqueta_r3": "relacionado"
+    },
+    {
+      "id_doc": "603bab289e8b013f26f8c252.pdf",
+      "r1_id_segmento": "CUERPO-p87-la-guerra-el-territorio-y-las-mujeres",
+      "etiqueta_top1": "relacionado",
+      "etiqueta_r2": "relacionado",
+      "etiqueta_r3": "parcial"
+    },
+    {
+      "id_doc": "5ec832c721581078294c4ad3.pdf",
+      "r1_id_segmento": "CUERPO-p293-factores-de-persistencia-del-conflicto-armado-violencias-que-se-repiten-en-la-vi",
+      "etiqueta_top1": "parcial",
+      "etiqueta_r2": "relacionado",
+      "etiqueta_r3": "parcial"
+    },
+    {
+      "id_doc": "5f299d4a06158f011ec42f9b.pdf",
+      "r1_id_segmento": "NNA-p165-ataques-a-comunidades-e-instituciones-educativas",
+      "etiqueta_top1": "parcial",
+      "etiqueta_r2": "parcial",
+      "etiqueta_r3": "parcial"
+    },
+    {
+      "id_doc": "5ec832d421581078294c4c27.pdf",
+      "r1_id_segmento": "NNA-p142-ataques-a-comunidades-e-instituciones-educativas",
+      "etiqueta_top1": "parcial",
+      "etiqueta_r2": "relacionado",
+      "etiqueta_r3": "parcial"
+    },
+    {
+      "id_doc": "5f3f530e06158f011ef65cab.pdf",
+      "r1_id_segmento": "NNA-p51-vivir-la-desaparicion-forzada-o-el-homicidio-de-los-padres",
+      "etiqueta_top1": "relacionado",
+      "etiqueta_r2": "parcial",
+      "etiqueta_r3": "no"
+    },
+    {
+      "id_doc": "5f27003306158f011ea85482.pdf",
+      "r1_id_segmento": "VIOLACIONES-p855-nos-toca-vivir-asi-porque-los-fusiles-no-son-como-las-palabras-hablar-entender-o",
+      "etiqueta_top1": "relacionado",
+      "etiqueta_r2": "no",
+      "etiqueta_r3": "no"
+    },
+    {
+      "id_doc": "5f08ae8df1cdbf68d04f6fc1.pdf",
+      "r1_id_segmento": "VIOLACIONES-p428-no-me-pregunten-porque-yo-no-les-se-darles-respuesta-por-eso-torturas-tratos-cru",
+      "etiqueta_top1": "parcial",
+      "etiqueta_r2": "relacionado",
+      "etiqueta_r3": "parcial"
+    },
+    {
+      "id_doc": "5f0deb9df1cdbf68d08a0890.pdf",
+      "r1_id_segmento": "VIOLACIONES-p314-no-me-pregunten-porque-yo-no-les-se-darles-respuesta-por-eso-torturas-tratos-cru",
+      "etiqueta_top1": "relacionado",
+      "etiqueta_r2": "no",
+      "etiqueta_r3": "no"
+    },
+    {
+      "id_doc": "5eb4e8f5da6da3b502dab502.pdf",
+      "r1_id_segmento": "ETNICO-p241-violencias-danos-y-resistencias-de-los-pueblos-etnicos-en-el-conflicto-armado",
+      "etiqueta_top1": "parcial",
+      "etiqueta_r2": "relacionado",
+      "etiqueta_r3": "relacionado"
+    },
+    {
+      "id_doc": "5eb4e9abda6da3b502dae721.pdf",
+      "r1_id_segmento": "ETNICO-p297-violencias-danos-y-resistencias-de-los-pueblos-etnicos-en-el-conflicto-armado",
+      "etiqueta_top1": "relacionado",
+      "etiqueta_r2": "relacionado",
+      "etiqueta_r3": "relacionado"
+    },
+    {
+      "id_doc": "5fee5bef9e8b013f26931324.pdf",
+      "r1_id_segmento": "ETNICO-p448-violencias-danos-y-resistencias-de-los-pueblos-etnicos-en-el-conflicto-armado",
+      "etiqueta_top1": "relacionado",
+      "etiqueta_r2": "relacionado",
+      "etiqueta_r3": "parcial"
+    },
+    {
+      "id_doc": "607edb88b5ef6a0c984f84f3.pdf",
+      "r1_id_segmento": "FUERA-p276-tendencias-globales-para-la-proteccion-efectiva-de-la-poblacion-colombiana-obsta",
+      "etiqueta_top1": "parcial",
+      "etiqueta_r2": "parcial",
+      "etiqueta_r3": "relacionado"
+    },
+    {
+      "id_doc": "5ef4e445f1cdbf68d06e9f17.pdf",
+      "r1_id_segmento": "FUERA-p99-de-la-guerra-total-a-la-paz-incompleta-2006-2016",
+      "etiqueta_top1": "parcial",
+      "etiqueta_r2": "no",
+      "etiqueta_r3": "parcial"
+    },
+    {
+      "id_doc": "5f5519b206158f011e1ec789.pdf",
+      "r1_id_segmento": "FUERA-p276-tendencias-globales-para-la-proteccion-efectiva-de-la-poblacion-colombiana-obsta",
+      "etiqueta_top1": "relacionado",
+      "etiqueta_r2": "relacionado",
+      "etiqueta_r3": "relacionado"
+    },
+    {
+      "id_doc": "5eb4e80eda6da3b502da5187.pdf",
+      "r1_id_segmento": "TESTIMONIAL-p222-lo-inhabitable",
+      "etiqueta_top1": "relacionado",
+      "etiqueta_r2": "parcial",
+      "etiqueta_r3": "parcial"
+    },
+    {
+      "id_doc": "5f148660f1cdbf68d0e27e16.pdf",
+      "r1_id_segmento": "TESTIMONIAL-p401-senderos-pedregosos",
+      "etiqueta_top1": "parcial",
+      "etiqueta_r2": "parcial",
+      "etiqueta_r3": "parcial"
+    }
+  ]
+}
