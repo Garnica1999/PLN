@@ -20,12 +20,11 @@ CONTENIDO DEL ZIP
     lo genera el propio notebook (sección "Regeneración", REGEN_AUTOMATICO).
 
 02_informe/
-    informe_taller4.md — Informe final integrador en Markdown (~5.000 palabras,
-    7 tablas, 16 figuras). Los enlaces a figuras usan ../imagenes/ (mantener la
-    estructura de carpetas del zip para que se visualicen).
-    latex/ — INFORME FINAL EN LaTeX (versión para entrega): main.tex,
-    references.bib, tg_usta.cls, figuras/, PDF compilado (main.pdf y
-    Taller_4_IR_CEV.pdf, 23 páginas) y README_COMPILAR.md con instrucciones.
+    Informe_Final_Taller4.pdf — INFORME FINAL DEL TALLER (documento compilado,
+    23 páginas). Integra los 6 puntos: corpus, EDA, modelo IR, métricas Rocchio
+    y Okapi BM25, comparación entrevistas↔libros y evaluación crítica.
+    Nota: las fuentes LaTeX (.tex/.bib/figuras) y su instructivo de compilación
+    están en el repositorio (carpeta TALLER-4/informe_latex/), no en este ZIP.
 
 03_corpus/
     libros/
