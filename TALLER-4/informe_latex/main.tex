@@ -257,7 +257,7 @@ Como el TTR depende de la longitud (el ``problema doble'' de Bestgen \cite{bestg
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.60\textwidth]{figuras/eda_diversidad_lexica.png}
+    \includegraphics[width=0.72\textwidth]{figuras/eda_diversidad_lexica.png}
     \caption{Diversidad léxica por documento: TTR con muestreo de n=1.000 y Yule K, libros vs. entrevistas. Conclusión: los libros son sistemáticamente más diversos incluso al controlar la longitud; la brecha de registro es una propiedad del corpus y no un artefacto de la asimetría de tamaños, lo que anticipa el desajuste léxico que enfrenta el modelo de IR.}
     \label{fig:diversidad}
 \end{figure}
@@ -284,7 +284,7 @@ La comparación por \textbf{log-odds} con prior informativo (Monroe et al. \cite
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.70\textwidth]{figuras/eda_comparacion_distintivos_logodds.png}
+    \includegraphics[width=0.82\textwidth]{figuras/eda_comparacion_distintivos_logodds.png}
     \caption{Términos más distintivos de cada corpus según log-odds (top-25 bidireccional). Conclusión: los distintivos de entrevistas son en buena parte categorías canónicas de anonimización, prueba de que la transformación estructural introdujo vocabulario útil; los de libros son institucionales, lo que anticipa que el solape temático fino dependerá de pocos términos compartidos.}
     \label{fig:logodds}
 \end{figure}
@@ -295,7 +295,7 @@ Con Jaccard de \textit{shingles} de 5 lemas se verificaron 368 pares candidatos 
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.55\textwidth]{figuras/eda_near_duplicates_entrevistas.png}
+    \includegraphics[width=0.66\textwidth]{figuras/eda_near_duplicates_entrevistas.png}
     \caption{Distribución de similitud de los pares candidatos a near-duplicate (shingles de 5 lemas). La masa a la derecha del umbral 0,85 concentra los 345 pares casi idénticos. Conclusión: el corpus contiene duplicación real (a menudo variantes de la misma declaración o reentrevistas) que se documenta como límite de la evaluación, no como error que deba limpiarse.}
     \label{fig:neardups}
 \end{figure}
@@ -519,7 +519,7 @@ El primer heatmap responde a una pregunta global: \textit{¿los grupos de entrev
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.60\textwidth]{figuras/heatmap_entrevistas_libros.png}
+    \includegraphics[width=0.72\textwidth]{figuras/heatmap_entrevistas_libros.png}
     \caption{Heatmap agregado 10$\times$10: filas = grupo de entrevistas por tomo del top-1 BM25; columnas = tomo de libro; celda = coseno TF-IDF medio. Conclusión: la diagonal media (0,0725) supera a la afinidad fuera de la diagonal (0,0608) y a la media de fila en 10/10 grupos, de modo que la asignación BM25 captura señal real; sin embargo, el máximo de fila cae fuera de la diagonal en 7/10 grupos (casi siempre en TESTIMONIAL), evidencia visual del sesgo de registro oral.}
     \label{fig:heatmap-agregado}
 \end{figure}
@@ -558,7 +558,7 @@ El segundo heatmap responde a otra pregunta: \textit{¿qué entrevistas concreta
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.62\textwidth]{figuras/heatmap_top25_entrevistas_tomos.png}
+    \includegraphics[width=0.72\textwidth]{figuras/heatmap_top25_entrevistas_tomos.png}
     \caption{Heatmap top-25 entrevistas $\times$ 10 tomos con el máximo score BM25 por celda. Las filas son las entrevistas con mayor suma de máximos por tomo. Conclusión: unas pocas entrevistas alcanzan afinidades muy altas (máximo 32.700,223 en TESTIMONIAL) y concentran su intensidad en pocos ejes temáticos; el patrón por documento hace visibles los vínculos fuertes que el promedio agregado 10$\times$10 difumina.}
     \label{fig:heatmap-top25}
 \end{figure}
@@ -617,41 +617,82 @@ El cuadro \texttt{resultados/vinculos\_entrevistas\_libros.csv} contiene \textbf
 (i) \textbf{BM25 tuneado} con búsqueda de $k_1\in[0{,}9;2{,}0]$ y $b\in[0{,}3;1{,}0]$, viable ahora que existe una implementación verificada, aunque requerirá un gold o al menos una muestra mayor para elegir la configuración sin sobreajustar. (ii) \textbf{Embeddings y \textit{reranking}} supervisado del top-$k$ para superar el techo del solape léxico \cite{valentini2024messirve}: los modelos densos permiten recuperar paráfrasis que TF-IDF no alcanza, a costa de perder la trazabilidad término a término. (iii) \textbf{Gold estándar externo} con acuerdo inter-etiquetador, que convertiría las métricas proxy en métricas comparables. (iv) \textbf{Eliminación o agrupación de near-duplicados} para no inflar la cobertura. (v) \textbf{Enrutamiento por tomo} (clasificador previo) para corregir el prior TESTIMONIAL. (vi) \textbf{Cambio de hablante, \textit{chunking}} de entrevistas largas y limpieza fina de \textit{running heads}. (vii) \textbf{Expansión semántica} con el tesauro CEV, hoy reservado para análisis cualitativo.
 
 
-\section{Entregables y reproducibilidad}\label{sec:entregables}
+\section{Arquitectura final de recuperación}\label{sec:arquitectura}
 
-\subsection{Entregables del taller}
+Los seis puntos anteriores no documentan experimentos aislados, sino la construcción incremental de un sistema de recuperación de información: P1 fija el corpus (Sección~\ref{sec:p1}), P2 describe su estructura (Sección~\ref{sec:p2}), P3 define el modelo base (Sección~\ref{sec:p3}), P4 añade dos métricas implementadas desde cero (Sección~\ref{sec:p4}) y P5 convierte el ranking en evidencia de comparación entre corpus (Sección~\ref{sec:p5}). Esta sección sintetiza esa construcción como una \textbf{arquitectura final por capas} y explicita qué configuración corresponde a los mejores resultados observados. La síntesis es necesaria porque, como se documenta a lo largo del informe, \textbf{no existe un gold estándar} para este tipo de vínculo: ninguna combinación puede declararse ganadora absoluta, y la elección se sustenta en tres indicadores objetivos ---cobertura, evaluación proxy sobre 30 pares y acuerdo entre rankings--- más la naturaleza complementaria de cada función de puntuación. La arquitectura que se describe es, por tanto, la lectura más consistente con la evidencia disponible \cite{sosa2025constructing,valentini2024messirve}, no el resultado de una comparación contra una referencia externa que no está disponible.
 
-La Tabla~\ref{tab:entregables} mapea cada entregable del enunciado con su artefacto y su ruta en el repositorio. El artefacto central es el \textbf{notebook único} \texttt{notebooks/Taller\_4\_IR\_CEV.ipynb} (125 celdas), que integra los seis puntos y fusiona los aportes de los dos desarrollos paralelos del equipo (el base y la versión 2, retirada al quedar integrada); se optó por una versión única para que exista una sola fuente de verdad reproducible y para que ninguna salida dependa de un cuaderno que ya no se mantiene. El informe markdown y este informe LaTeX son sus documentos acompañantes.
+\subsection{Vista de arquitectura por capas}
+
+La arquitectura final se organiza en cinco capas que van del dato crudo a la evidencia publicada; cada capa encapsula una decisión y expone artefactos verificables, de modo que cualquier resultado puede rastrearse hasta su origen.
+
+\textbf{(i) Capa de corpus.} Los 10 tomos del Informe Final \cite{cev2022informe} se convierten en \textbf{917 segmentos} correspondientes a secciones del TOC de niveles 1-2, en la banda de 300-4.000 palabras, tras descartar portada, catálogo, bibliografía, glosario y anexos; las 2.486 entrevistas se normalizan estructuralmente (anonimizados canónicos, anotaciones y marcas de hablante) y ambos corpus se lematizan con spaCy \cite{spacy2024model} y una parada en consumo que combina stopwords del modelo, 51 muletillas empíricas del habla \cite{moreno2024detection} y 42 tokens de ruido tipográfico de los libros. Esta capa entrega además la configuración curada ---muletillas, 62 correcciones de lemas y parámetros del modelo--- embebida en el notebook, de modo que el corpus completo se regenera desde los tres insumos crudos. La conservación de los 345 near-duplicados detectados con minhash/LSH \cite{broder1997resemblance} se documenta como límite de la cobertura y no como defecto del corpus: se prefirió la integridad del material oficial a un filtrado no solicitado.
+
+\textbf{(ii) Capa de representación.} Cada segmento se representa como un vector TF-IDF sobre lemas, con \texttt{ngram\_range=(1,2)}, \texttt{min\_df=2}, \texttt{max\_df=0,85}, tf sublineal y normalización l2 \cite{salton1988term,manning2008introduction,scikit2024tfidf}. El vocabulario resultante tiene \textbf{118.748 features} (18.864 unigramas y 99.884 bigramas) y el vectorizador se ajusta \emph{solo} sobre la colección para no introducir fuga de información desde las consultas. La parada se aplica en consumo: los textos conservan todos los tokens y el filtrado ocurre en cada uso, de modo que la capa puede recalcularse con o sin parada sin reprocesar el corpus.
+
+\textbf{(iii) Capa de recuperación.} La dirección del matching queda fija: \textbf{cada entrevista es una query y la colección son los 917 segmentos}. La relevancia se calcula como similitud coseno entre la consulta y todos los documentos, y el resultado es un ranking top-$k$ por entrevista. Esta capa produce el \emph{ranking base} que sirve de referencia para todas las comparaciones posteriores: cobertura del \textbf{99,92\,\%} (2.484 de 2.486 consultas) y evaluación proxy con P@1 de 0,533 (estricto) y 1,0 (aceptable) y P@3 de 0,7667 (estricto) y 1,0 (aceptable).
+
+\textbf{(iv) Capa de métricas y refinamiento.} Sobre el mismo vocabulario y las mismas matrices se incorporan dos scorers manuales. \textbf{Okapi BM25} \cite{robertson1994simple,robertson2009probabilistic} actúa como función de puntuación alternativa y complementaria: satura el tf ($k_1=1{,}5$), normaliza por longitud ($b=0{,}75$ sobre $avgdl=1.466{,}26$ términos del vocabulario) y usa un IDF que premia los términos raros, con lo que reordena la cola del ranking base sin reemplazar su inventario. \textbf{Rocchio con pseudo-relevancia} \cite{rocchio1971relevance} actúa como refinador: expande la consulta hacia el centroide del top-5 y la aleja del bottom-5 ($\alpha=1$, $\beta=0{,}75$, $\gamma=0{,}15$), y su efecto es un \emph{re-ranking} de la primera posición que conserva el conjunto top-5 del modelo base.
+
+\textbf{(v) Capa de análisis y evidencia.} El ranking alimenta tres instrumentos de lectura y validación: el EDA que fijó los parámetros de las capas anteriores, los heatmaps ---agregado 10$\times$10 y top-25 por documento--- que convierten el ranking en una matriz interpretable, y el cuadro de 30 vínculos con fragmentos que permite inspeccionar cualitativamente los pares recuperados. La evaluación proxy sobre 30 pares etiquetados por el equipo cierra el circuito: es la única medición humana de acierto con la que cuenta la arquitectura y, por su tamaño y origen, se declara como indicio de plausibilidad.
 
 \begin{table}[htbp]
     \centering
-    \caption{Entregables del enunciado y su ubicación en el repositorio.}
+    \caption{Arquitectura final de recuperación: capas, componentes y evidencia que fija cada decisión.}
     \footnotesize
     \setlength{\tabcolsep}{4pt}
-    \begin{tabular}{>{\raggedright\arraybackslash}p{3.0cm} >{\raggedright\arraybackslash}p{4.6cm} >{\raggedright\arraybackslash}p{7.0cm}}
+    \begin{tabular}{>{\raggedright\arraybackslash}p{2.1cm} >{\raggedright\arraybackslash}p{5.8cm} >{\raggedright\arraybackslash}p{6.4cm}}
     \toprule
-    Entregable & Artefacto & Ruta \\
+    Capa & Componente & Decisión final y evidencia \\
     \midrule
-    Corpus extraído y preprocesado & Crudo sin tocar y corpus limpios & \texttt{data/raw/}; \texttt{data/corpus/segmentos\_libros.jsonl} (917); \texttt{entrevistas\_normalizadas.jsonl} (2.486); \texttt{data/corpus/preprocesado/} \\
-    Análisis exploratorio & Informe, 18 CSV y 14 figuras & \texttt{resultados/eda/}; \texttt{imagenes/eda\_*.png} \\
-    Modelo de IR (código y reporte) & Script, notebook y reporte JSON & \texttt{experimentos/experimento\_1\_tfidf\_base.py}; \texttt{resultados/ir\_tfidf\_report.json}; \texttt{ranking\_top5.csv} \\
-    Funciones de métricas & BM25 y Rocchio manuales + rankings & Sección 03b del notebook; \texttt{ranking\_bm25.csv}; \texttt{ranking\_rocchio.csv}; \texttt{ranking\_rocchio\_k3.csv} \\
-    Comparación entrevistas--libros & Cuadro y heatmaps & \texttt{resultados/vinculos\_entrevistas\_libros.csv}; \texttt{heatmap\_tomos.csv}; \texttt{heatmap\_top25.csv}; figuras \texttt{heatmap\_*.png} \\
-    Informe final & Markdown y LaTeX & \texttt{informe/informe\_taller4.md}; \texttt{informe\_latex/main.tex} (este documento) \\
-    Notebook entregable & Flujo completo reproducible & \texttt{notebooks/Taller\_4\_IR\_CEV.ipynb} (125 celdas) \\
+    Corpus & 10 tomos $\rightarrow$ 917 segmentos TOC niveles 1-2 (300-4.000 palabras); 2.486 entrevistas normalizadas y lematizadas; configuración curada embebida & Cobertura de páginas 100\,\%, mapeo TOC 91,2-100\,\%, 0 solapes y 0 segmentos vacíos \\
+    Representación & TF-IDF sobre lemas; parada en consumo; \texttt{ngram\_range=(1,2)}; tf sublineal; norma l2 & 118.748 features; sin bigramas, el top-1 solo conserva el 54,8\,\% \\
+    Recuperación & Entrevista = \textit{query}; 917 segmentos = colección; similitud coseno top-$k$ & Cobertura 99,92\,\%; P@1 0,533/1,0 y P@3 0,7667/1,0 sobre 30 pares \\
+    Métricas y refinamiento & BM25 manual como scorer alternativo; Rocchio PRF ($k=5$) como reordenamiento del top-1 & Acuerdo con el base de top-1/top-5: 57,0/65,7 (BM25) y 70,1/\textbf{100,0} (Rocchio) \\
+    Análisis y evidencia & EDA; heatmap 10$\times$10; top-25 por documento; cuadro de 30 vínculos; evaluación proxy & Diagonal 0,0725 $>$ 0,0608; máximo BM25 32.700,223; etiquetas 16/14/0 \\
     \bottomrule
     \end{tabular}
-    \label{tab:entregables}
+    \label{tab:arquitectura}
 \end{table}
 
-\subsection{Cómo ejecutar el notebook con solo 3 insumos}
+\subsection{Configuración final recomendada y su justificación}
 
-El notebook es independiente: para ejecutarlo de extremo a extremo solo requiere \textbf{tres insumos descargados manualmente} a \texttt{data/raw/}: (1) el dataset de entrevistas \texttt{entrevistas\_all\_2023-03-21\_14-24\_05.json} ($\approx$231 MB); (2) el zip de libros de la CEV \texttt{books-*.zip} (o la carpeta \texttt{books/} con los PDF, $\approx$300 MB); y (3) el tesauro \texttt{Resource-tesauro.rdf} ($\approx$5 MB). Todo lo demás ---segmentos, entrevistas normalizadas, lemas, tokens, CSVs y figuras del EDA--- lo \textbf{genera} la sección ``Sec 0b --- Regeneración'' con \texttt{REGEN\_AUTOMATICO=True} (por defecto), porque la configuración curada (muletillas, correcciones, ruido y parámetros TF-IDF) viaja embebida como constantes. Esta decisión de diseño evita dos problemas frecuentes en la entrega de cuadernos: depender de rutas locales inexistentes y requerir datos derivados que no siempre se pueden redistribuir. \texttt{config/}, \texttt{resultados/} e \texttt{imagenes/} son opcionales: si existen, el notebook los usa como verificación o respaldo visual; si se borran, no se rompe.
+La configuración que mejor resiste el contraste con la evidencia es una combinación de tres piezas con roles distintos y no intercambiables.
 
-\textbf{Ejecución local.} Basta el entorno virtual del proyecto (\texttt{pandas}, \texttt{scikit-learn}, \texttt{spacy} con \texttt{es\_core\_news\_md}, \texttt{matplotlib}, \texttt{seaborn}, \texttt{wordcloud} y \texttt{nbclient}; \texttt{poppler-utils} solo para regenerar la extracción de PDF) y ejecutar todas las celdas. La primera corrida sin cachés tarda 15-60 minutos (libros 5-15 min; spaCy 10-40 min), tiempos compatibles con una sesión de trabajo y con la política de regeneración automática. \textbf{Ejecución en Colab.} Se sube la carpeta \texttt{TALLER-4} a \texttt{/content} (o se deja como \texttt{/content/PLN-main/TALLER-4}), o se activa \texttt{AUTO\_DESCARGAR\_REPO=True}; el notebook localiza la raíz por marcador, variable de entorno \texttt{TALLER4\_ROOT} o rutas típicas de Colab, de modo que el mismo cuaderno funciona en local y en la nube sin editar rutas. El pipeline por fases equivalente es \texttt{01\_extraer\_libros.py} $\rightarrow$ \texttt{02\_preprocesar.py} $\rightarrow$ \texttt{03\_eda.py} $\rightarrow$ \texttt{experimento\_1\_tfidf\_base.py} $\rightarrow$ \texttt{04\_evaluar\_muestra.py}.
+\textbf{Ranking base TF-IDF como recuperador primario.} Es el único componente con cobertura casi total (99,92\,\%), evaluación sobre pares etiquetados y regeneración determinista verificada; su orden es, además, la referencia de todas las comparaciones y el insumo del heatmap top-25. Las ablaciones confirman la elección: sin bigramas el top-1 solo coincide en el 54,8\,\%, sin la parada de muletillas en el 84,6\,\% y sin las correcciones en el 96,6\,\%, de modo que ninguna variante supera a la configuración base.
 
-\textbf{Evidencia de independencia.} La verificación se hizo en cuatro frentes, pensados para cubrir tanto la ejecución real como la reproducibilidad de la configuración: (i) ejecución aislada de extremo a extremo con solo el \texttt{.ipynb} y los 3 insumos, con 0 errores en 922 s ($\approx$15,4 min), que demuestra que no hay dependencia de caches; (ii) sandbox de pruebas sin \texttt{config/}, \texttt{resultados/}, \texttt{imagenes/} ni \texttt{scripts/} (65,8 s) con 51 pruebas pytest aprobadas; (iii) corrida completa en el repositorio en 61,7 s con 0 errores y modelo base idéntico al oficial en 2.484/2.484 top-1 (TESTIMONIAL 76,77\,\%; variantes 54,8/84,6/96,6; P@1 0,5333/1,0 y P@3 0,7667/1,0), que confirma la paridad entre el notebook y los artefactos publicados; y (iv) ruff 0. El detalle está en \texttt{plan/verificacion\_independencia\_notebook.md} y la autoevaluación de la rúbrica en \texttt{plan/verificacion\_rubrica.md}.
+\textbf{Rocchio PRF ($k=5$) como refinador opcional del top-1.} Reordena la primera posición en el 29,9\,\% de las consultas (743 de 2.484), pero conserva el \textbf{100,0\,\% del inventario top-5} del ranking base: es el mecanismo idóneo para ganar especificidad en el primer resultado sin costo de cobertura de conjunto, porque no sustituye documentos sino su orden. La variante $k=3$ demuestra que el efecto depende del tamaño del feedback (24,0\,\% de top-1 distinto del base y 22,7\,\% respecto de $k=5$), por lo que $k=5$ se declara configuración principal y $k=3$ control de sensibilidad. Su acierto no puede medirse sin gold; lo que sí se verifica es que el reordenamiento ocurre dentro del inventario que el modelo base ya consideraba relevante.
 
+\textbf{BM25 como segundo scorer de verificación y consenso.} Comparte el 57,0\,\% del top-1 y el 65,7\,\% del conjunto top-5 con el base, y es el scorer que alimenta los heatmaps: al saturar el tf y normalizar por longitud, su orden es complementario al coseno y permite triangular los vínculos fuertes (máximo 32.700,223 en TESTIMONIAL). La coincidencia de los tres métodos en 1.112 consultas y su discrepancia total en 296 delimita con precisión dónde la evidencia es estable y dónde depende de la función de puntuación.
+
+La recomendación no declara un ganador absoluto: sin gold, la elección se sostiene en el consenso (70,1\,\% de top-1 compartido entre base y Rocchio y 100,0\,\% del conjunto top-5), en la cobertura (99,92\,\%) y en las métricas proxy ya reportadas. En una lectura conservadora, el sistema final es el ranking base con Rocchio como refinador opcional y BM25 como verificador; en una lectura exploratoria, los tres rankings se conservan porque sus discrepancias son justamente la señal analítica de mayor interés.
+
+\subsection{Decisiones de diseño que fijan la arquitectura}
+
+Las decisiones que estructuran el sistema se resumen como un contrato técnico: cada una tiene una alternativa descartada, un valor final y una evidencia asociada en las secciones previas.
+
+\textbf{Segmento como unidad de recuperación.} Secciones del TOC de niveles 1-2 en la banda 300-4.000 palabras (media final 2.477): más finas que un tomo, más estables que un párrafo y suficientemente largas para estimar pesos; las secciones cortas se fusionan y las muy largas se fragmentan en límite de párrafo o de página.
+
+\textbf{Parada en consumo con muletillas y correcciones.} 611 tokens efectivos (521 stopwords de spaCy, 51 muletillas del habla y 42 de ruido tipográfico) y 62 correcciones de lemas; la variante sin muletillas cambia el 15,4\,\% de los top-1 y la ausencia de correcciones solo el 3,4\,\%, de modo que la parada aporta y las correcciones no estorban.
+
+\textbf{Bigramas.} \texttt{ngram\_range=(1,2)}: 18.864 unigramas y 99.884 bigramas; la variante (1,1) solo conserva el 54,8\,\% del top-1, el mayor efecto aislado observado en las ablaciones.
+
+\textbf{Umbrales documentales y ponderación.} \texttt{min\_df=2} (el 43,2\,\% del vocabulario es hapax), \texttt{max\_df=0,85} (solo 6 tipos superan el umbral), tf sublineal y normalización l2, siguiendo la formulación clásica \cite{salton1988term,manning2008introduction}.
+
+\textbf{Parámetros de BM25.} $k_1=1{,}5$ y $b=0{,}75$: valores medios de la literatura \cite{robertson2009probabilistic}, mantenidos sin optimización porque no hay gold con el cual ajustarlos y hacerlo contra el ranking base habría sesgado la comparación.
+
+\textbf{Parámetros de Rocchio.} $\alpha=1$, $\beta=0{,}75$, $\gamma=0{,}15$ con $k=5$ principal y $k=3$ reportado: $\alpha$ ancla la consulta original, $\beta<\alpha$ deja influir la expansión y $\gamma$ resta poco porque los negativos pseudo-relevantes son ruidosos.
+
+\textbf{Regeneración sin la subetapa \textquotedblleft congelar\textquotedblright.} El notebook regenera el EDA con \texttt{REGEN\_AUTOMATICO=True} ejecutando la cadena canónica sin la subetapa que reescribiría \texttt{config/}: la configuración curada viaja embebida como constantes y el sistema depende solo de los tres insumos crudos, de modo que la reproducibilidad no pasa por artefactos derivados.
+
+\textbf{Artefactos que materializan la arquitectura.} Rankings base (\texttt{ranking\_top5.csv} y \texttt{ranking\_top10.csv}), BM25 (\texttt{ranking\_bm25.csv}), Rocchio (\texttt{ranking\_rocchio.csv} y \texttt{ranking\_rocchio\_k3.csv}), heatmaps (\texttt{heatmap\_tomos.csv} y \texttt{heatmap\_top25.csv}), cuadro de vínculos (\texttt{vinculos\_entrevistas\_libros.csv}) y registro por fase \texttt{metricas.json}; la semilla 42 fija el determinismo.
+
+\subsection{Dónde mejora y dónde se rompería}
+
+La arquitectura mejora donde el vocabulario de ambos registros coincide y se degrada exactamente donde no lo hace. El desajuste \textit{far}/\textit{farc} es su punto más frágil: una misma entidad escrita distinto según el registro solo se alinea si el modelo comparte alguna forma, y el solapamiento de vocabulario es bajo (Jaccard 0,221) aunque cubra la mayoría de los tokens. Lo mismo ocurre con sinónimos y paráfrasis propias de la oralidad: si la entrevista evita el término institucional que domina el segmento, el coseno cae aunque el vínculo temático exista. Las categorías canónicas de anonimización mitigan parcialmente el problema porque introducen vocabulario oral real en el espacio compartido.
+
+El segundo punto de ruptura es el \textbf{sesgo TESTIMONIAL}: los tres rankings lo comparten (76,77\,\% / 75,0\,\% / 78,4\,\%) y el heatmap agregado lo hereda, de modo que mide coherencia y no corrección; su lectura como efecto de dominio del registro oral \cite{castillejo2023escuchar} es la interpretación que sostiene la evidencia. El tercer límite es el \textbf{techo del solape léxico}: con P@1 estricto de 0,533 y 7 de 30 consultas con un parcial en el primer puesto, una puntuación alta indica afinidad de vocabulario, no correspondencia factual verificada.
+
+De cara a una iteración futura, el orden de reemplazo se deduce de la causa de cada límite y no de la facilidad de implementación. Primero, \textbf{embeddings y \emph{reranking}} supervisado del top-$k$ \cite{valentini2024messirve}, que atacan el techo léxico y la paráfrasis; segundo, un \textbf{gold externo} con acuerdo inter-etiquetador, que convertiría las métricas proxy en métricas comparables y habilitaría el resto de comparaciones; tercero, \textbf{BM25 tuneado} ($k_1\in[0{,}9;2{,}0]$, $b\in[0{,}3;1{,}0]$), viable ahora que existe una implementación verificada; y cuarto, \textbf{enrutamiento por tomo} para corregir el prior TESTIMONIAL, o alternativamente la deduplicación de los 345 near-duplicados si lo que se busca es una cobertura comparable. Las piezas de corpus y representación son las que menos deberían moverse: son las que garantizan la trazabilidad de la que depende toda la evidencia anterior.
 
 \nocite{*}
 \bibliographystyle{apalike}

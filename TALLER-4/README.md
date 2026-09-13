@@ -12,7 +12,8 @@ y comparación de corpus con heatmap entrevistas ↔ libros.
   ejecutado de extremo a extremo (0 errores): corpus → EDA → modelo IR TF-IDF
   → evaluación cualitativa → BM25/Rocchio manuales → heatmap y cuadro de
   vínculos entrevistas ↔ libros → observaciones y entregables.
-- `informe/informe_taller4.md` — informe técnico integrador (punto 6).
+- `informe_latex/` — informe final LaTeX + PDF (23 páginas) y
+  `entregable/LEEME.txt` — guía única de la entrega (resumen + instrucciones).
 - `data/corpus/` — corpus extraído y preprocesado: `segmentos_libros.jsonl`
   (917 segmentos), `entrevistas_normalizadas.jsonl` (2.486), `preprocesado/`
   (lemas y tokens por corpus).
@@ -58,7 +59,7 @@ TALLER-4/
 │                    y rankings BM25/Rocchio + heatmap/vínculos (puntos 4-5)
 ├── tests/           pytest (51 tests: extracción, preprocesado, IR,
 │                    independencia del notebook)
-├── informe/         informe_taller4.md (ENTREGABLE)
+├── informe_latex/   informe final (.tex + PDF, ENTREGABLE)
 └── plan/            PLAN.md, arquitectura.md, estado_del_arte.md, ADRs,
                      verificacion_requisitos.md, verificacion_rubrica.md
 ```
@@ -145,7 +146,7 @@ Alcance: los **6 puntos del taller** están cubiertos — P1-P3 (corpus, EDA y
 modelo IR TF-IDF con evaluación cualitativa), P4 (Okapi BM25 y Rocchio
 implementados manualmente y comparados), P5 (heatmap entrevistas ↔ libros y
 cuadro de vínculos) y P6 (informe final integrador en
-`informe/informe_taller4.md`). El notebook es independiente: solo requiere
+`entregable/LEEME.txt`, que resume el trabajo y explica la ejecución). El notebook es independiente: solo requiere
 los 3 insumos de `data/raw/` y escribe sus salidas (rankings BM25/Rocchio,
 heatmap y vínculos) sin leerlas como requisito.
 
