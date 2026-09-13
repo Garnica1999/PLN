@@ -37,6 +37,14 @@ Objetivo: proceso de IR que relacione las entrevistas (JSON 2.486 transcripcione
 ## Estado final (2026-09-04)
 Proyecto puntos 1-3 COMPLETO: corpus extraído y preprocesado (917 segmentos de libros + 2.486 entrevistas), EDA con 14 figuras y 18 CSVs, modelo IR TF-IDF implementado/evaluado (p@1 aceptable 1,0), notebook entregable ejecutado sin errores, informe técnico redactado. Pendientes de usuario: (1) verificar integrantes en la portada del notebook, (2) revisar etiquetado proxy de los 30 pares (resultados/evaluacion_muestra_etiquetada.csv), (3) decidir si se crea zip de entrega estilo TALLER-2, (4) git add/commit si lo desea (repo sin versionar el taller).
 
+## v8 (2026-09-12) — Informe final en LaTeX + ZIP de entregables [COMPLETADO]
+Motivo (Carlos): informe en LaTeX tomando como plantilla la de talleres anteriores, con los mismos integrantes, figuras/tablas explicativas, referencias y citas; además, ZIP con todos los entregables organizados por carpetas.
+- [x] `informe_latex/` (copia adaptada de la plantilla del TALLER-2, clase `tg_usta`): `main.tex` (10 secciones P1-P6 + entregables/reproducibilidad; 11 tablas; 11 figuras con captions explicativos; 6 ecuaciones TF-IDF/BM25/Rocchio; 2 definiciones; listado de signaturas BM25/Rocchio), `references.bib` (16 referencias verificables; `\cite` en todo el texto; 0 citas huérfanas), `figuras/` (11), `tg_usta.cls` (rótulo Taller 4), logo; portada con los 4 integrantes actuales.
+- [x] **Compilación verificada sin sudo**: tectonic 0.15.0 (binario de usuario) → `main.pdf` **23 páginas, 2,1 MB, 0 errores** (único warning benigno: inputenc en motores utf8); copia `Taller_4_IR_CEV.pdf`; instrucciones en `README_COMPILAR.md` (Overleaf pdfLaTeX / local).
+- [x] **ZIP entregables** actualizado: `entregable/ENTREGABLE_TALLER4.zip` (57 MB, 154 archivos) con estructura por carpetas (notebook, informe md + latex con PDF, corpus, imágenes, resultados, código, plan, config) + `LEEME.txt` (exclusiones regenerables documentadas); integridad OK.
+- [x] Reporte explica por etapa/punto QUÉ se hizo y POR QUÉ (decisiones y parámetros: ADR-001..005, k1/b, α/β/γ, k=3 vs k=5, min_df/max_df, morfología, sesgo TESTIMONIAL…), con evaluación crítica y mejoras futuras.
+- [ ] Git: rama `taller-4-latex` → PR → merge.
+
 ## v7 (2026-09-12) — Fusión del aporte de Erika Rivera (V2) en el notebook canónico [COMPLETADO]
 Motivo (Carlos): una compañera (erivalrivera) había subido `Taller_4_IR_CEV_V2.ipynb` con los puntos 4-6; fusionar ambos notebooks en UNA sola versión integrando lo diferencial y válido.
 - [x] Auditoría del V2: base = nuestro v5.1 (106/108 celdas idénticas; solo 2 imports añadidos) + 14 celdas nuevas al final (P4 Rocchio PRF k=3 + BM25; P5 tabla por tomos con fragmentos y heatmap top-25 entrevistas×tomos con max BM25). Ejecutado por ella (2486×917), sin informe; defecto: `sns.heatmap` sin `import seaborn` (no re-ejecutaba limpio).
