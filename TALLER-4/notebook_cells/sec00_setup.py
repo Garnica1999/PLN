@@ -104,8 +104,8 @@ def instalar_si_falta(paquetes: list[str]) -> None:
 
 
 instalar_si_falta(
-    ["pandas", "numpy", "sklearn", "matplotlib", "spacy", "wordcloud",
-     "gdown", "pymupdf"]
+    ["pandas", "numpy", "sklearn", "matplotlib", "seaborn", "spacy",
+     "wordcloud", "gdown", "pymupdf"]
 )
 
 

@@ -49,7 +49,10 @@ unigramas + bigramas) y la limpieza son identicos a los del TF-IDF base:
 la unica diferencia de la comparacion es la funcion de puntuacion.
 
 El ranking se persiste en `resultados/ranking_bm25.csv` (salida del
-notebook, no un insumo: se escribe en cada corrida).
+notebook, no un insumo: se escribe en cada corrida). La matriz completa de
+puntuaciones (2.486 x 917) se conserva en float32 (~9 MB) y se expone en
+`contexto_base["matriz_bm25"]` para la Sec 03c (heatmap top-25, valor
+maximo por entrevista-tomo); el ranking persistido no cambia.
 
 ## 2. Rocchio y retroalimentacion por pseudo-relevancia
 
@@ -77,14 +80,23 @@ esta sesgado hacia un tomo, la expansion refuerza ese sesgo. El
 re-rankeo final usa similitud coseno entre q' (normalizado) y los 917
 segmentos (ya normalizados l2 por el vectorizador).
 
-El ranking se persiste en `resultados/ranking_rocchio.csv`.
+El ranking se persiste en `resultados/ranking_rocchio.csv`. La
+sensibilidad al tamano del feedback se documenta con la variante k=3
+(D_r = top-3, D_nr = bottom-3), persistida en
+`resultados/ranking_rocchio_k3.csv` (aporte integrado de Erika Rivera,
+Taller_4_IR_CEV_V2): con k menor el centroide depende de los primeros
+aciertos del base y el re-rankeo hereda menos su cola.
 
 ## 3. Comparacion (punto 4.3)
 
 Sin gold estandar la comparacion es de **acuerdo entre rankings** y
 cualitativa: solapamiento top-1 y top-5 entre los tres metodos,
 distribucion del top-1 por tomo y ejemplos donde coinciden o difieren,
-mas una discusion de las diferencias conceptuales.
+mas una discusion de las diferencias conceptuales. Se agrega una tabla
+top-5 lado a lado (TF-IDF base / Okapi BM25 / Rocchio k=5) para dos
+entrevistas de ejemplo (la primera y la ultima con match del ranking
+base), que reproduce el formato comparativo del aporte de Erika Rivera
+(Taller_4_IR_CEV_V2).
 """
 
 
@@ -362,10 +374,14 @@ def rankear_bm25(
         b: normalizacion por longitud.
 
     Returns:
-        Tupla (ranking, resumen): DataFrame con
-        [id_doc, rango, id_segmento, score, tomo, titulo_segmento] y dict
+        Tupla (ranking, resumen, matriz_bm25): DataFrame con
+        [id_doc, rango, id_segmento, score, tomo, titulo_segmento], dict
         con n_docs, n_terminos, avgdl, segundos de puntuacion y
-        distribucion del top-1 por tomo.
+        distribucion del top-1 por tomo, y la matriz completa de
+        puntuaciones (n_queries x n_docs) en float32 (~9 MB) que la
+        Sec 03c reutiliza para el heatmap por maximo sin re-puntuar. El
+        ranking se construye con los scores float64 originales: la
+        conversion a float32 es solo para exponer la matriz.
     """
     inicio = time.perf_counter()
     matriz_tf, vectorizador = construir_matriz_tf(docs_lemas)
@@ -391,18 +407,23 @@ def rankear_bm25(
         "segundos_total": time.perf_counter() - inicio,
         "top1_por_tomo": top1["tomo"].value_counts().to_dict(),
     }
-    return ranking, resumen
+    return ranking, resumen, scores.astype(np.float32)
 
 
 print("\n== Ranking BM25 top-5 (917 segmentos, 2.486 entrevistas) ==")
 inicio_bm25 = time.perf_counter()
-ranking_bm25, resumen_bm25 = rankear_bm25(
+ranking_bm25, resumen_bm25, matriz_bm25 = rankear_bm25(
     contexto_base["entrevistas_limpios"],
     contexto_base["libros_limpios"],
     contexto_base["docs_entrevistas"],
     contexto_base["docs_libros"],
 )
 tiempo_bm25_total = time.perf_counter() - inicio_bm25
+contexto_base["matriz_bm25"] = matriz_bm25
+print(
+    f"Matriz BM25 expuesta para la Sec 03c: {matriz_bm25.shape} | "
+    f"{matriz_bm25.nbytes / 1024**2:.1f} MB (float32)"
+)
 
 ruta_bm25 = RUTA_RESULTADOS / "ranking_bm25.csv"
 try:
@@ -688,6 +709,94 @@ if ruta_rocchio.exists():
 
 
 # %%
+"""Variante Rocchio k=3: sensibilidad al tamano del feedback de pseudo-relevancia.
+
+Aporte integrado del Taller_4_IR_CEV_V2 (Erika Rivera): re-rankea con
+D_r = top-3 y D_nr = bottom-3 en lugar de la configuracion 5/5 de la celda
+anterior. Se reutiliza `rankear_rocchio` (misma formula y mismo re-rankeo,
+solo cambia el parametro); la salida nueva
+`resultados/ranking_rocchio_k3.csv` se escribe con guard (salida del
+notebook) y no sustituye a `ranking_rocchio.csv` (k=5).
+"""
+
+print("\n== Sensibilidad de Rocchio al parametro k del feedback (k=3 vs k=5) ==")
+inicio_rocchio_k3 = time.perf_counter()
+ranking_rocchio_k3, resumen_rocchio_k3 = rankear_rocchio(
+    contexto_base["similitudes"],
+    contexto_base["x_queries"],
+    contexto_base["x_coleccion"],
+    contexto_base["docs_entrevistas"],
+    contexto_base["docs_libros"],
+    n_relevantes=3,
+    n_no_relevantes=3,
+)
+tiempo_rocchio_k3 = time.perf_counter() - inicio_rocchio_k3
+
+ruta_rocchio_k3 = RUTA_RESULTADOS / "ranking_rocchio_k3.csv"
+try:
+    ruta_rocchio_k3.parent.mkdir(parents=True, exist_ok=True)
+    ranking_rocchio_k3[COLUMNAS_RANKING].to_csv(ruta_rocchio_k3, index=False)
+    print(
+        f"[ok] resultados/{ruta_rocchio_k3.name}: "
+        f"{len(ranking_rocchio_k3):,} filas (salida del notebook)"
+    )
+except OSError as exc:
+    print(f"[aviso] no se pudo escribir resultados/{ruta_rocchio_k3.name}: {exc}")
+
+
+def top1_por_query(ranking: pd.DataFrame) -> pd.Series:
+    """Top-1 (id_segmento) por id_doc de un ranking ya enriquecido.
+
+    Args:
+        ranking: ranking con columnas id_doc, rango e id_segmento.
+
+    Returns:
+        Serie indexada por id_doc con el id_segmento del rango 1.
+    """
+    top1 = ranking[ranking["rango"] == 1]
+    return top1.set_index("id_doc")["id_segmento"]
+
+
+top1_k3 = top1_por_query(ranking_rocchio_k3)
+top1_k5 = top1_por_query(ranking_rocchio)
+top1_base_series = top1_por_query(contexto_base["ranking_top5"])
+comunes_k3_base = top1_k3.index.intersection(top1_base_series.index)
+cambios_k3_base = int(
+    (top1_k3[comunes_k3_base] != top1_base_series[comunes_k3_base]).sum()
+)
+comunes_k3_k5 = top1_k3.index.intersection(top1_k5.index)
+cambios_k3_k5 = int(
+    (top1_k3[comunes_k3_k5] != top1_k5[comunes_k3_k5]).sum()
+)
+print(
+    f"Top-1 k=3 vs TF-IDF base: cambia en {cambios_k3_base} de "
+    f"{len(comunes_k3_base)} queries "
+    f"({100.0 * cambios_k3_base / max(len(comunes_k3_base), 1):.1f} %); "
+    f"resumen de rankear_rocchio: {resumen_rocchio_k3['n_cambios_top1']}"
+)
+print(
+    f"Top-1 k=3 vs Rocchio k=5: cambia en {cambios_k3_k5} de "
+    f"{len(comunes_k3_k5)} queries "
+    f"({100.0 * cambios_k3_k5 / max(len(comunes_k3_k5), 1):.1f} %)"
+)
+print(f"Tiempo Rocchio k=3: {tiempo_rocchio_k3:.1f} s")
+
+
+# %% [markdown]
+"""## Sensibilidad al parametro k del feedback
+
+La variante k=3 (D_r = top-3, D_nr = bottom-3; aporte de Erika Rivera) usa
+un centroide mas pequeno y sensible a los primeros aciertos del ranking
+base. La comparacion de top-1 contra TF-IDF y contra Rocchio k=5 (celda
+anterior) mide cuanto del reordenamiento depende del tamano del feedback:
+k=3 conserva mas la cabeza del ranking base, mientras que k=5 incorpora mas
+vocabulario del tomo dominante. La salida
+`resultados/ranking_rocchio_k3.csv` es nueva y no sustituye a
+`ranking_rocchio.csv` (k=5).
+"""
+
+
+# %%
 """Comparacion P4.3: solapamiento de rankings, top-1 por tomo y ejemplos.
 
 Sin gold estandar la comparacion es de acuerdo entre metodos. Se reportan
@@ -911,6 +1020,74 @@ def _tabla_ejemplos(
 
 tabla_coinciden = _tabla_ejemplos(coinciden, "3 queries donde los 3 metodos coinciden")
 tabla_difieren = _tabla_ejemplos(difieren, "3 queries donde los 3 metodos difieren")
+
+
+# %%
+"""Tabla comparativa top-5 de las 3 metricas para entrevistas de ejemplo.
+
+Adaptado del aporte de Erika Rivera (Taller_4_IR_CEV_V2): para cada query
+de ejemplo se muestran lado a lado los top-5 de TF-IDF base, Okapi BM25 y
+Rocchio k=5 usando los rankings YA calculados en esta seccion (no se
+re-puntua nada). Las queries de ejemplo son la primera y la ultima
+entrevista con match del ranking base.
+"""
+
+
+def top5_metodo(ranking: pd.DataFrame, id_doc: str, n: int = 5) -> list[str]:
+    """Top-n de un ranking para una query como 'id_segmento (score)'.
+
+    Args:
+        ranking: ranking enriquecido (id_doc, rango, id_segmento, score).
+        id_doc: entrevista (query) a extraer.
+        n: profundidad del top (5).
+
+    Returns:
+        Lista de n cadenas; se rellena con "" si la query tiene menos
+        filas que n (queries con pocos matches).
+    """
+    top = ranking[ranking["id_doc"] == id_doc].nsmallest(n, "rango")
+    valores = [
+        f"{fila['id_segmento']} ({fila['score']:.3f})"
+        for _, fila in top.iterrows()
+    ]
+    return valores + [""] * (n - len(valores))
+
+
+def tabla_top5_entrevista(id_doc: str) -> pd.DataFrame:
+    """Tabla Top 1..Top 5 x [TF-IDF base, Okapi BM25, Rocchio k=5].
+
+    Args:
+        id_doc: entrevista de ejemplo (id presente en el ranking base).
+
+    Returns:
+        DataFrame con la columna Ranking y una columna por metodo con el
+        id_segmento y el score de cada posicion.
+    """
+    metodos = (
+        ("TF-IDF (base)", contexto_base["ranking_top5"]),
+        ("Okapi BM25", ranking_bm25),
+        ("Rocchio (PRF)", ranking_rocchio),
+    )
+    datos = {
+        nombre: top5_metodo(ranking, id_doc) for nombre, ranking in metodos
+    }
+    datos["Ranking"] = [f"Top {i}" for i in range(1, 6)]
+    return pd.DataFrame(datos)[["Ranking", *[n for n, _ in metodos]]]
+
+
+print("== Tabla comparativa top-5 (3 metricas) para entrevistas de ejemplo ==")
+for id_doc in (
+    contexto_base["ranking_top5"]["id_doc"].iloc[0],
+    contexto_base["ranking_top5"]["id_doc"].iloc[-1],
+):
+    print(f"\n=== Comparacion de ranking para la entrevista: {id_doc} ===")
+    tabla_metodos = tabla_top5_entrevista(id_doc)
+    try:
+        from IPython.display import display
+
+        display(tabla_metodos)
+    except ImportError:
+        print(tabla_metodos.to_string(index=False))
 
 
 # %% [markdown]

@@ -8,11 +8,11 @@ Fecha: 2026-09-12 | **Informe final integrador (puntos 1-6 del taller)**
 
 El taller propone un proceso de Recuperación de Información (IR) que determine qué entrevistas del registro oral de la Comisión de la Verdad (CEV) se relacionan con secciones de los libros del Informe Final, midiendo la relevancia de los vínculos: **2.486 entrevistas** (queries, CEV/JEP) contra **917 segmentos** de los **10 tomos** (colección).
 
-Los seis componentes están cubiertos: (P1) extracción y preparación del corpus; (P2) análisis exploratorio; (P3) modelo TF-IDF; (P4) implementación manual de Rocchio y Okapi BM25 con funciones propias documentadas; (P5) comparación de corpus con heatmap y cuadro de vínculos; y (P6) este informe final. El notebook `notebooks/Taller_4_IR_CEV.ipynb` (120 celdas) reproduce el pipeline completo y es el entregable ejecutable.
+Los seis componentes están cubiertos: (P1) extracción y preparación del corpus; (P2) análisis exploratorio; (P3) modelo TF-IDF; (P4) implementación manual de Rocchio y Okapi BM25 con funciones propias documentadas; (P5) comparación de corpus con heatmap y cuadro de vínculos; y (P6) este informe final. El notebook `notebooks/Taller_4_IR_CEV.ipynb` (125 celdas) reproduce el pipeline completo y es la **versión única** del entregable: integra en un solo flujo los aportes de ambos desarrollos (el base y el `Taller_4_IR_CEV_V2`, retirado del repositorio al fusionarse).
 
 Por ADR-005, **cada entrevista es una query y la colección son los 917 segmentos**, dirección del taller. No hay literatura computacional sobre el corpus CEV; lo más cercano es la minería de audiencias de la JEP (Sosa et al., 2025) y el análisis del tomo testimonial (Castillejo Cuéllar, 2023). **No existe gold estándar**: la evaluación es cualitativa sobre una muestra etiquetada por el equipo (proxy) y acuerdo entre rankings.
 
-**Resultados principales.** P1: 10/10 tomos, 917 segmentos, 2.271.493 palabras, mapeo TOC 91-100 %. P2: 2.486 entrevistas normalizadas (−5,82 %) y preprocesadas (40,35 M tokens → 10,92 M lemas); TTR_m1000 0,609 vs. 0,514; Jaccard 0,221; 345 near-duplicados (>0,85). P3: 118.748 features, cobertura 99,92 %, top-1 TESTIMONIAL 76,77 %, P@1 estricto 0,533 / aceptable 1,0 sobre 30 pares. P4: BM25 y Rocchio manuales con auto-checks en verde; acuerdo top-1 base–BM25 57,0 %, base–Rocchio 70,1 %, BM25–Rocchio 50,6 %. P5: heatmap 10×10 (diagonal media 0,0725 > 0,0608 fuera) y 30 vínculos.
+**Resultados principales.** P1: 10/10 tomos, 917 segmentos, 2.271.493 palabras, mapeo TOC 91-100 %. P2: 2.486 entrevistas normalizadas (−5,82 %) y preprocesadas (40,35 M tokens → 10,92 M lemas); TTR_m1000 0,609 vs. 0,514; Jaccard 0,221; 345 near-duplicados (>0,85). P3: 118.748 features, cobertura 99,92 %, top-1 TESTIMONIAL 76,77 %, P@1 estricto 0,533 / aceptable 1,0 sobre 30 pares. P4: BM25 y Rocchio manuales con auto-checks en verde; acuerdo top-1 base–BM25 57,0 %, base–Rocchio 70,1 %, BM25–Rocchio 50,6 %; la variante k=3 de Rocchio confirma la sensibilidad al parámetro (24,0 % de top-1 distinto del base; 22,7 % del k=5). P5: heatmap agregado 10×10 (diagonal media 0,0725 > 0,0608 fuera), heatmap top-25 por documento (máximo BM25) y 30 vínculos con fragmentos.
 
 ## 2. Datos y consideraciones éticas
 
@@ -143,6 +143,8 @@ q' = alpha * q + beta * (1/|D_r|) * sum_{d en D_r} d
 
 `alpha` ancla la consulta; `beta` expande hacia los relevantes; `gamma` resta los no relevantes. Sin gold, se usa **pseudo-relevance feedback**: top-5 del base = `D_r`, bottom-5 = `D_nr` (Manning et al., 2008, cap. 9); el re-rankeo usa coseno contra los 917 segmentos (`rocchio_expandir`, `rankear_rocchio`). Auto-check con vectores conocidos: `[1.375, 0.375, -0.15]` a mano = `[0.959464, 0.261672, -0.104669]` normalizado, con beta positivo y gamma negativo → **True**. Resultado: 2.484 queries re-rankeadas, top-1 cambia en **743 (29,9 %)**, nuevo top-1 **1.947 TESTIMONIAL (78,4 %)**, 18,3 s (`resultados/ranking_rocchio.csv`, 12.420 filas).
 
+**Sensibilidad al parámetro k (k=3).** Como control del tamaño del feedback se añadió la variante k=3 (`D_r` = top-3, `D_nr` = bottom-3; salida `resultados/ranking_rocchio_k3.csv`, 12.420 filas, 16,6 s). El top-1 cambia en **596 de 2.484 queries (24,0 %)** respecto al base y en **563 de 2.484 (22,7 %)** respecto al k=5, de modo que k=5 (29,9 % frente al base) es la configuración más agresiva: su centroide incorpora más vocabulario del tomo dominante, mientras que k=3 se mantiene más cerca del ranking base (TESTIMONIAL pasa de 1.947 a 1.933 top-1). La dirección no cambia, pero la magnitud confirma que el resultado depende del parámetro: cualquier uso del PRF debe reportar `k`. Variante adaptada del aporte de Erika Rivera (`Taller_4_IR_CEV_V2`, integrado).
+
 ### 6.3 Comparación y discusión
 
 Sin gold, la comparación es de **acuerdo**: solapamiento de **conjunto** del top-k (|A_k ∩ B_k|/k) y de **posición** k exacta (Tabla 4). De 2.484 queries, **1.112 coinciden en el top-1 de los tres métodos y 296 difieren en los tres** (Tabla 5).
@@ -178,9 +180,9 @@ Lectura:
 4. **Cualitativamente**, donde los tres coinciden hay solape específico; donde difieren, el base devuelve un testimonial genérico, BM25 premia términos raros y Rocchio reordena hacia el centroide (para una entrevista: *Algo me atravesó* vs. *¿Escuchaste eso?* vs. *Lo inhabitable*).
 5. **El acuerdo mide consistencia, no acierto**: sin gold no hay P@k real para BM25/Rocchio; la verificación humana son los 30 pares de la sección 5.3.
 
-## 7. P5 — Comparación de corpus: heatmap y cuadro de vínculos
+## 7. P5 — Comparación de corpus: heatmaps y cuadro de vínculos
 
-Se entregan un **heatmap 10×10** y un **cuadro de 30 vínculos** (3 por tomo). Las **filas** agrupan las 2.486 entrevistas por el tomo del top-1 **BM25**; las **columnas** son los 10 tomos; la **celda (g, T)** es la similitud coseno TF-IDF **media** entre las entrevistas del grupo g y los segmentos del tomo T (matriz del base, sin re-entrenar). No se normaliza por número de segmentos porque la media por par ya es intensiva (afinidad media, no masa total); el CSV guarda `n_entrevistas`. La **diagonal** mide la coherencia entre la asignación BM25 y la similitud TF-IDF. Figura: `../imagenes/heatmap_entrevistas_libros.png`; matriz: `resultados/heatmap_tomos.csv`; resumen: Tabla 6.
+Se entregan **dos heatmaps complementarios** y un **cuadro de 30 vínculos** (3 por tomo). El primero es un **heatmap agregado 10×10**: las **filas** agrupan las 2.486 entrevistas por el tomo del top-1 **BM25**; las **columnas** son los 10 tomos; la **celda (g, T)** es la similitud coseno TF-IDF **media** entre las entrevistas del grupo g y los segmentos del tomo T (matriz del base, sin re-entrenar). No se normaliza por número de segmentos porque la media por par ya es intensiva (afinidad media, no masa total); el CSV guarda `n_entrevistas`. La **diagonal** mide la coherencia entre la asignación BM25 y la similitud TF-IDF. Figura: `../imagenes/heatmap_entrevistas_libros.png`; matriz: `resultados/heatmap_tomos.csv`; resumen: Tabla 6.
 
 **Tabla 6. Resumen del heatmap por grupo** (coseno TF-IDF medio; media global fuera de diagonal 0,0608; fuente: `resultados/heatmap_tomos.csv`)
 
@@ -200,7 +202,9 @@ Se entregan un **heatmap 10×10** y un **cuadro de 30 vínculos** (3 por tomo). 
 
 **Interpretación.** La diagonal media (**0,0725**) supera a la media fuera (**0,0608**) y a la media de fila en 10/10 grupos: la asignación BM25 no es ruido. TESTIMONIAL concentra 1.863 entrevistas (74,9 %) y su diagonal es la mayor (0,0904). El **máximo de fila cae en la diagonal solo en 3/10** (TESTIMONIAL, ETNICO, FUERA); en 6 de los 7 restantes cae en TESTIMONIAL y en HALLAZGOS en VIOLACIONES (0,0711 vs. 0,0666): lectura visual del sesgo de registro oral. Fuera de la diagonal dominan TESTIMONIAL (0,066-0,079) y NARRATIVA (0,045-0,078); las celdas más bajas están en CONVOCATORIA.
 
-**Cuadro de vínculos.** `resultados/vinculos_entrevistas_libros.csv` contiene las **30 parejas** (3 por tomo) con mayor score BM25; la Tabla 7 muestra la mejor de cada tomo. Las afinidades altas corresponden a solapes temáticos reconocibles (masacres, secuestro, pueblos étnicos, violencia sexual, persecución).
+**Segundo heatmap: top-25 entrevistas × 10 tomos.** Se añade `../imagenes/heatmap_top25_entrevistas_tomos.png` (cmap YlOrRd; matriz `resultados/heatmap_top25.csv`, 25×10), una vista **por documento** construida desde la matriz BM25 de la sección 6.1: las **filas** son las 25 entrevistas con mayor suma de sus máximos BM25 por tomo y la **celda** es el **máximo BM25** de esa entrevista contra cualquier segmento del tomo, no la media. Los dos heatmaps responden preguntas distintas y se complementan: el **agregado 10×10** (media de coseno TF-IDF por grupo) resume la **visión global** del corpus —qué grupos de entrevistas se parecen en promedio a qué tomos— y valida la asignación BM25 → tomo; el **top-25** conserva la **intensidad individual** —qué entrevista concreta satura un eje temático—, información que el promedio por grupo disuelve. El máximo de la matriz (32.700,2) coincide con el mejor vínculo BM25 del tomo TESTIMONIAL (Tabla 7). Versión adaptada del aporte de Erika Rivera (`Taller_4_IR_CEV_V2`, integrado).
+
+**Cuadro de vínculos.** `resultados/vinculos_entrevistas_libros.csv` contiene las **30 parejas** (3 por tomo) con mayor score BM25 con el esquema ampliado `tomo, puesto, id_doc, id_segmento, score_bm25, titulo_segmento, fragmento_entrevista, fragmento_libro`: las dos últimas columnas añaden ~200 caracteres de lemas de contenido de la entrevista y del segmento de cada pareja, para verificar cada vínculo sin releer los rankings. La Tabla 7 muestra la mejor de cada tomo; las afinidades altas corresponden a solapes temáticos reconocibles (masacres, secuestro, pueblos étnicos, violencia sexual, persecución). Esquema ampliado del aporte de Erika Rivera (`Taller_4_IR_CEV_V2`, integrado).
 
 **Tabla 7. Mejor vínculo entrevista → segmento por tomo (BM25)** — fuente: `resultados/vinculos_entrevistas_libros.csv`
 
@@ -226,8 +230,8 @@ Se entregan un **heatmap 10×10** y un **cuadro de 30 vínculos** (3 por tomo). 
 1. **P1.** 917 segmentos y 2,27 M palabras (0 solapes/vacíos/fuera de banda) con morfología documentada (ADR-001); 2.486 entrevistas normalizadas (−5,82 %) y preprocesadas (40,35 M tokens → 10,92 M lemas), con 8 categorías canónicas y 62 correcciones.
 2. **P2.** Libros más diversos (TTR_m1000 0,609 vs. 0,514; Yule K 31,8 vs. 38,7), Jaccard 0,221 con cobertura asimétrica (95,7 %/98,3 %), desajustes relevantes (*far*/*farc*) y 345 near-duplicados sin eliminar.
 3. **P3.** Cobertura 99,92 % y P@1 aceptable 1,0, pero P@1 estricto 0,533 y P@3 0,767: el primer resultado no siempre es el más específico (7/30); el sesgo TESTIMONIAL (76,77 %) es efecto de dominio verificado.
-4. **P4.** BM25 y Rocchio funcionan con auto-checks en verde; BM25 comparte el 57,0 % del top-1 y el 65,7 % del conjunto top-5; Rocchio reordena el 29,9 % de los top-1 conservando el 100 % del inventario. Los tres comparten el sesgo TESTIMONIAL.
-5. **P5.** La diagonal (0,0725) supera a la afinidad fuera (0,0608) y a la media de fila en 10/10 grupos; el máximo de fila cae en la diagonal en 3/10, evidencia del sesgo de registro oral; los 30 vínculos muestran afinidades temáticas reconocibles.
+4. **P4.** BM25 y Rocchio funcionan con auto-checks en verde; BM25 comparte el 57,0 % del top-1 y el 65,7 % del conjunto top-5; Rocchio reordena el 29,9 % de los top-1 conservando el 100 % del inventario, y su variante k=3 (24,0 % de top-1 distinto del base; 22,7 % del k=5) confirma que el tamaño del feedback importa. Los tres comparten el sesgo TESTIMONIAL.
+5. **P5.** La diagonal (0,0725) supera a la afinidad fuera (0,0608) y a la media de fila en 10/10 grupos; el máximo de fila cae en la diagonal en 3/10, evidencia del sesgo de registro oral; los 30 vínculos —ahora con fragmentos de lemas de ambas partes— muestran afinidades temáticas reconocibles y el heatmap top-25 conserva la intensidad individual que el promedio agregado disuelve.
 6. **P6.** Trazabilidad completa (`resultados/metricas.json`, semilla 42, auditoría sin PII, 51 pruebas, ruff 0). Autoevaluación en `plan/verificacion_rubrica.md`; requisitos 10/10 en `plan/verificacion_requisitos.md`.
 
 ### 8.2 Limitaciones
@@ -246,13 +250,15 @@ Se entregan un **heatmap 10×10** y un **cuadro de 30 vínculos** (3 por tomo). 
 config/          config curada (toc, stopwords, correcciones, tf-idf)
 data/raw/        entrevistas JSON, libros (zip/PDF) y tesauro RDF (3 insumos, sin tocar)
 data/corpus/     segmentos_libros.jsonl (917), entrevistas_normalizadas.jsonl (2.486), preprocesado/
-notebooks/       Taller_4_IR_CEV.ipynb (ENTREGABLE, 120 celdas); notebook_cells/ (secciones fuente)
+notebooks/       Taller_4_IR_CEV.ipynb (ENTREGABLE, versión única, 125 celdas); notebook_cells/ (secciones fuente)
 scripts/         01_extraer_libros.py, 02_preprocesar.py, 03_eda.py, 04_evaluar_muestra.py, ensamblador
 experimentos/    experimento_1_tfidf_base.py (modelo IR base y variantes A/B/C)
-imagenes/        14 figuras eda_*.png + heatmap_entrevistas_libros.png
-resultados/      rankings TF-IDF/BM25/Rocchio, heatmap_tomos.csv, vinculos, reportes y métricas
+imagenes/        16 figuras: 14 eda_*.png + heatmap_entrevistas_libros.png (agregado) + heatmap_top25_entrevistas_tomos.png (por documento)
+resultados/      rankings TF-IDF/BM25/Rocchio (incl. ranking_rocchio_k3.csv), heatmap_tomos.csv y heatmap_top25.csv, vínculos, reportes y métricas
 tests/           pytest (51 pruebas); informe/ (este documento); plan/ (PLAN, ADRs, verificaciones)
 ```
+
+**Versión única del notebook.** El taller queda en un solo notebook entregable, `Taller_4_IR_CEV.ipynb` (125 celdas), que integra los aportes de ambos desarrollos: el heatmap top-25 por documento, la variante k=3 de Rocchio y el esquema ampliado del cuadro de vínculos con fragmentos (secciones 6-7). El archivo `Taller_4_IR_CEV_V2.ipynb` se retira del repositorio al quedar fusionado; todas sus salidas se regeneran desde el notebook canónico en cada corrida.
 
 **Ejecución local.** Con el venv del proyecto (`pandas`, `scikit-learn`, `spacy` + `es_core_news_md`, `matplotlib`, `seaborn`, `wordcloud`, `nbclient`; `poppler-utils` solo para regenerar PDFs) basta abrir el notebook y ejecutar todo. Pipeline por fases: `01_extraer_libros.py` → `02_preprocesar.py` → `03_eda.py` → `experimento_1_tfidf_base.py` (`--variante A|B|C`) → `04_evaluar_muestra.py`.
 
