@@ -21,7 +21,7 @@ CONTENIDO DEL ZIP
 
 02_informe/
     Informe_Final_Taller4.pdf — INFORME FINAL DEL TALLER (documento compilado,
-    23 páginas). Integra los 6 puntos: corpus, EDA, modelo IR, métricas Rocchio
+    19 páginas). Integra los 6 puntos: corpus, EDA, modelo IR, métricas Rocchio
     y Okapi BM25, comparación entrevistas↔libros y evaluación crítica.
     Nota: las fuentes LaTeX (.tex/.bib/figuras) y su instructivo de compilación
     están en el repositorio (carpeta TALLER-4/informe_latex/), no en este ZIP.
