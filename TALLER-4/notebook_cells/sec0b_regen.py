@@ -57,9 +57,9 @@ Las 4 etapas, sus insumos de los 3 permitidos y lo que producen:
 | `extraccion` | celdas de 01_extraer_libros.py | libros | `data/corpus/segmentos_libros.jsonl`, `segmentos/<TOMO>.jsonl`, reporte |
 | `normalizar` | celdas de 02_preprocesar.py (`normalizar`) | dataset | `data/corpus/entrevistas_normalizadas.jsonl` |
 | `preprocesado_spacy` | celdas de 02_preprocesar.py (`spacy`) | segmentos (E1) y normalizadas (E2, desde el dataset) | `data/corpus/preprocesado/*_lemas.txt`, `*_tokens.txt`, `*_docs.json` |
-| `eda` | celdas de 03_eda.py (sin "congelar") | lemas (E2); config/ del repo (solo el EDA oficial) | CSVs de `resultados/eda/` y figuras de `imagenes/` |
+| `eda` | celdas de 03_eda.py (sin "congelar") | lemas (E2); config/ del paquete (solo el EDA oficial) | CSVs de `resultados/eda/` y figuras de `imagenes/` |
 
-En el repositorio (o tras una primera ejecucion completa) todos los caches
+Con caches previos (o tras una primera ejecucion completa) todos los caches
 derivados ya existen y esta seccion termina en segundos sin regenerar nada:
 las secciones 01-03 leen esos caches y calculan inline todo lo demas. La
 config de `config/`, `resultados/` e `imagenes/` son OPCIONALES para el
@@ -82,8 +82,8 @@ from pathlib import Path
 def _raiz_standalone() -> Path:
     """Localiza la raiz del proyecto TALLER-4 (respaldo standalone robusto).
 
-    Copia autocontenida del algoritmo de sec00 (sin TALLER4_ROOT ni
-    auto-descarga, para no sorprender en ejecuciones sueltas): ancestros
+    Copia autocontenida del algoritmo de sec00 (sin TALLER4_ROOT, para no
+    sorprender en ejecuciones sueltas): ancestros
     desde el cwd, subcarpetas de hasta 3 niveles bajo el cwd y bajo cada
     ancestro, y rutas tipicas de Colab. La raiz se reconoce por el cache
     derivado data/corpus/segmentos_libros.jsonl o por cualquiera de los
@@ -157,8 +157,8 @@ def _raiz_standalone() -> Path:
         "carpeta con data/corpus/segmentos_libros.jsonl o alguno de los "
         "3 insumos en data/raw/ (dataset de entrevistas, libros CEV o "
         "tesauro) en el arbol de directorios (sube la carpeta TALLER-4 "
-        "completa a /content o descomprime ahi el zip del repositorio; "
-        "queda en /content/PLN-main/TALLER-4 y tambien se detecta)."
+        "completa a /content o descomprime ahi el ZIP del proyecto "
+        "(carpeta del taller); se detecta aunque quede en una subcarpeta)."
     )
 
 
@@ -292,12 +292,12 @@ def insumos_faltantes_etapa(nombre_etapa: str) -> list[str]:
                 )
         # El EDA oficial (scripts/03_eda.py) congelo su config en config/; el
         # notebook embebe esa config para sus propios calculos, pero el
-        # script de produccion la lee de disco (config/ viaja en el repo).
+        # script de produccion la lee de disco (config/ viaja en el paquete).
         for nombre in ("stopwords_habla.txt", "lemas_correcciones.json", "tfidf_config.json"):
             if not (_RUTA_CONFIG / nombre).exists():
                 mensajes.append(
                     f"config/{nombre} (config congelada del EDA de produccion, "
-                    "incluida en el repositorio)"
+                    "incluida en el paquete)"
                 )
         return mensajes
     return ["etapa desconocida"]

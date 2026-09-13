@@ -9,21 +9,18 @@ Este bloque concentra al inicio del notebook:
    (incluye `wordcloud` para las nubes de la Sec 02 e `IPython` para el
    helper `mostrar_png`).
 3. Semilla global (42) y estilo de las figuras matplotlib.
-4. Configuracion del entorno: `AUTO_DESCARGAR_REPO` (False por defecto;
-   activala en Colab si el repositorio aun no esta en /content).
-5. `buscar_raiz()`: localiza la raiz del proyecto TALLER-4 (el directorio que
+4. `buscar_raiz()`: localiza la raiz del proyecto TALLER-4 (el directorio que
    contiene el cache `data/corpus/segmentos_libros.jsonl` o CUALQUIERA de los
    3 insumos en `data/raw/`: dataset de entrevistas, libros CEV o tesauro)
    con una estrategia robusta:
    (1) variable de entorno `TALLER4_ROOT`, (2) ancestros desde el directorio
    actual, (3) subcarpetas de hasta 3 niveles bajo el cwd y bajo cada ancestro
-   (cubre `/content/PLN-main/TALLER-4` cuando se descomprime el zip del
-   repositorio en /content), (4) rutas tipicas de Colab
+   (cubre el ZIP del proyecto descomprimido en /content, p. ej. en
+   `/content/<carpeta>/TALLER-4`) y (4) rutas tipicas de Colab
    (`/content/TALLER-4`, `/content/drive/MyDrive/TALLER-4`,
-   `/content/*/TALLER-4`) y, si `AUTO_DESCARGAR_REPO=True`, (5) descarga el
-   zip del repositorio y reintenta. Si nada funciona, lanza un error claro con
-   las opciones (NUNCA cae a la raiz del filesystem).
-6. **Configuracion curada EMBEBIDA** (independencia total): la config del
+   `/content/*/TALLER-4`). Si nada funciona, lanza un error claro con las
+   opciones (NUNCA cae a la raiz del filesystem).
+5. **Configuracion curada EMBEBIDA** (independencia total): la config del
    pipeline (muletillas del habla, correcciones de lemas, ruido tipografico
    y parametros TF-IDF) viaja como constantes Python literales
    (`STOPWORDS_HABLA_EMBEDIDAS`, `CORRECCIONES_EMBEDIDAS`, `RUIDO_EMBEDIDO`
@@ -32,12 +29,12 @@ Este bloque concentra al inicio del notebook:
    para los scripts de produccion (v4) y, si existen, la funcion
    `verificar_consistencia_config()` los compara opcionalmente con las
    copias embebidas (no bloqueante).
-7. **Diagnostico de prerrequisitos**: checklist de los caches derivados
+6. **Diagnostico de prerrequisitos**: checklist de los caches derivados
    REQUERIDOS por las secciones 01-03 (se generan automaticamente en la
    seccion Regeneracion a partir de los 3 insumos permitidos: dataset de
    entrevistas, libros y tesauro) y de los OPCIONALES (config/ embebida,
    resultados/ e imagenes/: nunca requeridos).
-8. Funciones de carga y de parada reutilizables por las demas secciones:
+7. Funciones de carga y de parada reutilizables por las demas secciones:
    `cargar_lemas(corpus)`, `cargar_metadatos(corpus)`, `cargar_correcciones()`
    (usa CORRECCIONES_EMBEDIDAS), `cargar_muletillas()` (usa
    STOPWORDS_HABLA_EMBEDIDAS), `cargar_ruido()` (usa RUIDO_EMBEDIDO),
@@ -60,15 +57,16 @@ trae codigo de `scripts/` (expandido como celdas de codigo normales por el
 ensamblador, fuente unica en build) y corre bajo demanda o con su flag
 automatico cuando faltan caches derivados.
 
-**Como ejecutarlo en Colab**: (A) sube la carpeta `TALLER-4` completa a
-/content, o descomprime en /content el zip del repositorio (queda en
-`/content/PLN-main/TALLER-4` y tambien se detecta); (B) abre el notebook con
-"Open in Colab" y pon `AUTO_DESCARGAR_REPO = True` en la celda de
-configuracion (descarga el repositorio automaticamente); (C) ten la carpeta
-en Google Drive montado (`/content/drive/MyDrive/TALLER-4`) o define la
-variable de entorno `TALLER4_ROOT`. Localmente basta abrir el kernel desde
-`TALLER-4/notebooks/`, desde la raiz o desde cualquier subcarpeta. Todas las
-rutas se resuelven de forma relativa a la raiz detectada, nunca absolutas.
+**Como ejecutarlo en Colab**: (A) sube o descomprime en /content la carpeta
+(o el ZIP) del proyecto: la raiz se detecta aunque quede anidada en una
+subcarpeta (p. ej. `/content/<carpeta>/TALLER-4`); (B) define la variable de
+entorno `TALLER4_ROOT` con la ruta exacta de la carpeta del proyecto (o
+monta Google Drive y dejala en `/content/drive/MyDrive/TALLER-4`); (C)
+manten los 3 insumos en `data/raw/` (dataset de entrevistas, libros y
+tesauro) para que la raiz se reconozca por ellos. Localmente basta abrir el
+kernel desde `TALLER-4/notebooks/`, desde la raiz o desde cualquier
+subcarpeta. Todas las rutas se resuelven de forma relativa a la raiz
+detectada, nunca absolutas.
 """
 
 
@@ -157,20 +155,6 @@ print(f"Semilla fija: {SEMILLA}")
 
 
 # %%
-"""Configuracion del entorno (flags editables por el usuario).
-
-`AUTO_DESCARGAR_REPO` controla el paso 5 de `buscar_raiz()`: si la raiz no se
-encuentra en el arbol, se descarga el zip del repositorio
-(https://codeload.github.com/Garnica1999/PLN/zip/refs/heads/main) con urllib,
-se descomprime bajo /content (o el directorio actual) y se reintenta la
-busqueda. En False (default) no se descarga nada y la celda de resolucion
-lanza un error claro con las opciones para subir los datos.
-"""
-AUTO_DESCARGAR_REPO = False
-print(f"AUTO_DESCARGAR_REPO = {AUTO_DESCARGAR_REPO}")
-
-
-# %%
 """Funciones de localizacion de la raiz del proyecto (no se ejecutan aqui).
 
 `buscar_raiz()` reconoce la raiz por el cache derivado
@@ -181,15 +165,13 @@ busqueda sigue este orden: (1) variable de entorno `TALLER4_ROOT`; (2)
 ancestros desde
 `os.getcwd()`; (3) subcarpetas de hasta 3 niveles bajo el cwd y bajo cada
 ancestro (os.walk podado: omite directorios ocultos y los de entorno/git);
-(4) rutas tipicas de Colab; (5) si `AUTO_DESCARGAR_REPO` esta activo,
-descarga y descomprime el repositorio y reintenta (2)-(4). Nunca devuelve la
+(4) rutas tipicas de Colab. Nunca devuelve la
 raiz del filesystem: si no encuentra, `raise FileNotFoundError` con lo
 buscado (cache o insumos), los lugares inspeccionados (resumidos) y 3
 opciones.
 """
 
 _MAX_PROFUNDIDAD_WALK = 3
-_URL_REPO_ZIP = "https://codeload.github.com/Garnica1999/PLN/zip/refs/heads/main"
 
 # Directorios que nunca se exploran en los walks (ocultos + entornos).
 _DIRS_EXCLUIDOS_WALK = frozenset({
@@ -256,57 +238,15 @@ def _candidatos_por_walk(base: Path, max_profundidad: int):
         yield Path(dir_actual)
 
 
-def _descargar_repo_zip(destino: Path) -> Path:
-    """Descarga y descomprime el zip del repositorio (rama main) en destino.
-
-    Args:
-        destino: Carpeta donde se escribe PLN-main.zip y se extrae el arbol.
-
-    Returns:
-        Path de destino (contiene la carpeta PLN-main/ del repositorio).
-
-    Raises:
-        FileNotFoundError: Si la descarga o la descompresion fallan.
-    """
-    import shutil
-    import urllib.request
-    import zipfile
-
-    destino.mkdir(parents=True, exist_ok=True)
-    ruta_zip = destino / "PLN-main.zip"
-    print(f"[auto-descarga] Descargando {_URL_REPO_ZIP} ...")
-    try:
-        with (
-            urllib.request.urlopen(_URL_REPO_ZIP, timeout=180) as respuesta,
-            ruta_zip.open("wb") as salida,
-        ):
-            shutil.copyfileobj(respuesta, salida)
-    except Exception as exc:
-        raise FileNotFoundError(
-            "No se pudo descargar el repositorio (AUTO_DESCARGAR_REPO=True): "
-            f"{exc}. Descargalo manualmente desde GitHub (Code -> Download "
-            "ZIP) y descomprimelo en /content."
-        ) from exc
-    with zipfile.ZipFile(ruta_zip) as archivo_zip:
-        archivo_zip.extractall(destino)
-    print(f"[auto-descarga] Repositorio extraido en {destino}")
-    return destino
-
-
-def buscar_raiz(auto_descarga: bool | None = None) -> Path:
+def buscar_raiz() -> Path:
     """Directorio raiz del proyecto TALLER-4 (portatil: cualquier maquina).
 
     Estrategia de resolucion (ver docstring de la celda): TALLER4_ROOT,
     ancestros desde el cwd, subcarpetas de hasta 3 niveles bajo el cwd y bajo
-    cada ancestro, rutas tipicas de Colab y, opcionalmente, auto-descarga del
-    repositorio con reintento. La raiz se reconoce por el cache derivado
-    `data/corpus/segmentos_libros.jsonl` o por CUALQUIERA de los 3 insumos
-    en `data/raw/` (dataset de entrevistas, libros CEV o tesauro), de modo
-    que se resuelve antes de generar los caches.
-
-    Args:
-        auto_descarga: Override del flag global AUTO_DESCARGAR_REPO (celda de
-            configuracion). None = usar el flag global (default False).
+    cada ancestro, y rutas tipicas de Colab. La raiz se reconoce por el cache
+    derivado `data/corpus/segmentos_libros.jsonl` o por CUALQUIERA de los 3
+    insumos en `data/raw/` (dataset de entrevistas, libros CEV o tesauro), de
+    modo que se resuelve antes de generar los caches.
 
     Returns:
         Ruta absoluta a la raiz del proyecto (contiene data/, config/, ...).
@@ -315,8 +255,6 @@ def buscar_raiz(auto_descarga: bool | None = None) -> Path:
         FileNotFoundError: Si no aparece el cache derivado ni ningun insumo,
             con el detalle de lo buscado y las opciones para resolverlo.
     """
-    if auto_descarga is None:
-        auto_descarga = bool(globals().get("AUTO_DESCARGAR_REPO", False))
     cwd = Path(os.getcwd()).resolve()
     lugares: list[str] = []
 
@@ -362,15 +300,6 @@ def buscar_raiz(auto_descarga: bool | None = None) -> Path:
     if encontrada is not None:
         return encontrada
 
-    if auto_descarga:
-        base = Path("/content") if Path("/content").exists() else cwd
-        destino = _descargar_repo_zip(base)
-        lugares.append(f"auto-descarga extraida en {destino}")
-        encontrada = _ancestros_y_walks() or _rutas_tipicas()
-        if encontrada is not None:
-            print(f"[raiz] Resuelta tras la auto-descarga: {encontrada}")
-            return encontrada
-
     resumen = "; ".join(dict.fromkeys(lugares))
     if len(resumen) > 600:
         resumen = resumen[:600] + " ..."
@@ -381,14 +310,14 @@ def buscar_raiz(auto_descarga: bool | None = None) -> Path:
         "tesauro) en el arbol de directorios.\n"
         f"Lugares inspeccionados: {resumen}.\n"
         "Opciones:\n"
-        "  A) Sube la carpeta TALLER-4 completa a /content (o descomprime en "
-        "/content el zip del repositorio: queda en /content/PLN-main/TALLER-4 "
-        "y se detecta igual).\n"
-        "  B) Activa la auto-descarga: pon AUTO_DESCARGAR_REPO = True en la "
-        "celda de configuracion y vuelve a ejecutar esta celda.\n"
-        "  C) Ten la carpeta en Google Drive montado en "
-        "/content/drive/MyDrive/TALLER-4, o define la variable de entorno "
-        "TALLER4_ROOT con la ruta exacta de la carpeta TALLER-4.\n"
+        "  A) Sube o descomprime en /content la carpeta (o el ZIP) del "
+        "proyecto; la raiz se detecta igual si queda anidada en una "
+        "subcarpeta.\n"
+        "  B) Define la variable de entorno TALLER4_ROOT con la ruta exacta "
+        "de la carpeta del proyecto (o monta Google Drive y dejala en "
+        "/content/drive/MyDrive/TALLER-4).\n"
+        "  C) Manten los 3 insumos en data/raw/ (dataset de entrevistas, "
+        "libros y tesauro): la raiz se reconoce por ellos.\n"
         "Depuracion: ejecuta '!ls /content' para ver el contenido de /content "
         "y confirmar donde esta la carpeta."
     )

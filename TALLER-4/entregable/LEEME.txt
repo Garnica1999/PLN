@@ -3,7 +3,7 @@ TALLER 4 — RECUPERACIÓN DE INFORMACIÓN SOBRE EL CORPUS DE LA COMISIÓN DE LA
 Curso: Procesamiento de Lenguaje Natural — Pontificia Universidad Javeriana
 Integrantes: Erika Valeria Rivera Jiménez · Julián Guillermo Carrillo Meneses ·
              Carlos Andrés Garnica Salazar · Oscar Andrés Prieto Moreno
-Septiembre de 2026 · Repositorio: https://github.com/Garnica1999/PLN (TALLER-4)
+Septiembre de 2026
 
 CONTENIDO DEL ZIP (mínimo esencial)
 -----------------------------------
@@ -49,8 +49,7 @@ insumos:
   • Comparación entrevistas↔libros: resultados/vinculos_entrevistas_libros.csv
     (cuadro de 30 vínculos), resultados/heatmap_tomos.csv, heatmap_top25.csv y
     las figuras heatmap_*.png.
-  El código de cada componente vive en las celdas del notebook (y su versión LaTeX
-  en el repositorio, carpeta informe_latex/).
+  El código de cada componente vive en las celdas del notebook.
 
 CÓMO EJECUTAR
 -------------
@@ -66,8 +65,8 @@ NOTAS
 -----
 - El intermedio entrevistas_normalizadas.jsonl contiene PII hablada de las
   transcripciones: no debe distribuirse; el notebook lo genera localmente.
-- Las fuentes LaTeX del informe (main.tex, references.bib, figuras) y el
-  pipeline de producción con CLI están en el repositorio, no en este ZIP.
+- Las fuentes LaTeX del informe y el pipeline de producción con CLI no se
+  incluyen en este ZIP (el notebook contiene todo lo necesario para ejecutar).
 - Verificación: ejecución con SOLO los 3 insumos → 0 errores (regeneración
   completa) y valores idénticos al informe (TESTIMONIAL 76,77 %; P@1 0,5333/1,0;
   P@3 0,7667/1,0; TTR 0,609/0,514; BM25 top-1 1.863; Rocchio 1.947).

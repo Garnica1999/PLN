@@ -10,7 +10,7 @@ Descripcion: Tests de independencia total y robustez del notebook entregable
         detecta uso real (import_module/spec_from_file/append) y no la
         mera palabra.
     (b) ninguna celda markdown referencia ../imagenes/ (no renderiza en
-        GitHub/Colab; las figuras van inline o via mostrar_png).
+        Colab; las figuras van inline o via mostrar_png).
     (c) politica v5 de lecturas: lista blanca de lecturas directas SIN
         guard = SOLO los archivos de data/ de los 3 insumos permitidos
         (entrevistas_all_2023-03-21_14-24_05.json, zip/PDFs de libros,
