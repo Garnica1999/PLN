@@ -5,77 +5,64 @@ Integrantes: Erika Valeria Rivera Jiménez · Julián Guillermo Carrillo Meneses
              Carlos Andrés Garnica Salazar · Oscar Andrés Prieto Moreno
 Septiembre de 2026 · Repositorio: https://github.com/Garnica1999/PLN (TALLER-4)
 
-QUÉ SE HIZO (RESUMEN)
----------------------
-Se construyó un sistema de recuperación de información (IR) que relaciona las
-2.486 entrevistas de víctimas del conflicto colombiano (CEV/JEP) con los 10 tomos
-del Informe Final de la Comisión de la Verdad, cubriendo los 6 puntos del taller:
-  1. Extracción y preparación del corpus: 917 segmentos por títulos del índice
-     (niveles 1-2; fusión <300 palabras; techo 4.000), normalización estructural
-     de entrevistas (8 categorías canónicas de anonimización) y preprocesado
-     lingüístico con spaCy es_core_news_md (lemas, parada + 51 muletillas + 62
-     correcciones).
-  2. Análisis exploratorio: longitudes, diversidad léxica (TTR muestreado 0,609
-     vs 0,514; Yule K 31,8 vs 38,7), n-gramas y nubes uni/bi/tri, comparación
-     léxica por log-odds (Jaccard 0,221) y 345 pares near-duplicados (>0,85)
-     reportados sin eliminar.
-  3. Modelo de IR: TF-IDF sobre lemas (ngram 1-2, sublinear, l2; 118.748
-     features; cobertura 99,92 %); entrevistas = queries y segmentos = colección;
-     evaluación proxy sobre 30 pares (P@1 0,5333 estricto / 1,0 aceptable;
-     P@3 0,7667/1,0) y variantes A/B/C (54,8/84,6/96,6 % de coincidencia top-1).
-  4. Métricas manuales: Okapi BM25 (k1=1,5; b=0,75) y Rocchio con pseudo-
-     relevancia (α=1; β=0,75; γ=0,15) implementados desde cero, con
-     auto-verificaciones y comparación (solapamiento top-1/conjunto top-5:
-     base–BM25 57,0/65,7 %; base–Rocchio 70,1/100,0 %; sensibilidad k=3 vs k=5).
-  5. Comparación de corpus: heatmap agregado 10×10 (grupos de entrevistas por
-     tomo del top-1 BM25 × tomos; diagonal 0,0725 > 0,0608 fuera), heatmap
-     top-25 por documento (máximo BM25 32.700,223) y cuadro de 30 vínculos con
-     fragmentos.
-  6. Informe final: PDF de 23 páginas con metodología, justificación de cada
-     decisión y parámetros, resultados, arquitectura final de recuperación,
-     evaluación crítica y 17 referencias citadas.
+CONTENIDO DEL ZIP (mínimo esencial)
+-----------------------------------
+notebooks/Taller_4_IR_CEV.ipynb      Notebook único del taller: contiene TODO el
+                                     código de los 6 puntos (extracción, EDA,
+                                     modelo TF-IDF, métricas BM25/Rocchio,
+                                     comparación/heatmaps) y genera todos los
+                                     archivos derivados.
+data/raw/                            Los 3 insumos que recibe el notebook:
+                                       - entrevistas_all_2023-03-21_14-24_05.json
+                                         (dataset de entrevistas, ~231 MB)
+                                       - books-20260904T025322Z-1-001.zip
+                                         (libros CEV en PDF, ~269 MB)
+                                       - Resource-tesauro.rdf
+                                         (tesauro/ontología CEV, ~5 MB)
+informe/Informe_Final_Taller4.pdf    Informe final (23 páginas): metodología y
+                                     justificación por punto, resultados, EDA,
+                                     métricas, comparación, arquitectura final,
+                                     evaluación crítica y referencias.
+imagenes/                            16 figuras del taller (14 del EDA + heatmap
+                                     agregado entrevistas↔tomos + heatmap top-25).
+LEEME.txt                            Esta guía.
 
-ESTRUCTURA DEL ZIP
-------------------
-notebooks/Taller_4_IR_CEV.ipynb  Notebook único (125 celdas, 6 puntos, ejecutado
-                                 sin errores; autocontenido).
-informe/Informe_Final_Taller4.pdf  Informe final (23 páginas).
-data/raw/                        LOS 3 INSUMOS del notebook (descargables del
-                                 Drive del taller): dataset de entrevistas
-                                 (231 MB), libros CEV (269 MB) y tesauro (5 MB).
-data/corpus/                     Corpus derivado de conveniencia (917 segmentos;
-                                 lemas/tokens/docs de ambos corpus).
-imagenes/                        16 figuras del taller.
-resultados/                      Rankings TF-IDF/BM25/Rocchio(+k3), evaluación,
-                                 heatmaps, vínculos, métricas y 18 CSV del EDA.
-scripts/ · experimentos/ · tests/  Pipeline con CLI, experimento IR y 51 pruebas.
-plan/ · config/                  Documentación (PLAN v1-v9, estado del arte,
-                                 verificaciones) y configuración congelada.
+QUÉ GENERA EL NOTEBOOK AL EJECUTARSE (entregables del taller)
+-------------------------------------------------------------
+Al ejecutar "Run all" el notebook produce automáticamente, a partir de los 3
+insumos:
+  • Corpus extraído y preprocesado de los libros: data/corpus/segmentos_libros.jsonl
+    (917 segmentos, texto crudo) y data/corpus/preprocesado/libros_lemas.txt
+    (lemas) + tokens/docs.
+  • Entrevistas normalizadas y preprocesadas (2.486) en data/corpus/.
+  • Análisis exploratorio: resultados/eda/ (CSV + resumen) y figuras en imagenes/.
+  • Modelo de IR: rankings TF-IDF en resultados/ranking_top5*.csv y reporte en
+    resultados/ir_tfidf_report.json.
+  • Funciones de métricas (Okapi BM25 y Rocchio manuales, sección 03b) y sus
+    salidas: resultados/ranking_bm25.csv, ranking_rocchio.csv,
+    ranking_rocchio_k3.csv.
+  • Comparación entrevistas↔libros: resultados/vinculos_entrevistas_libros.csv
+    (cuadro de 30 vínculos), resultados/heatmap_tomos.csv, heatmap_top25.csv y
+    las figuras heatmap_*.png.
+  El código de cada componente vive en las celdas del notebook (y su versión LaTeX
+  en el repositorio, carpeta informe_latex/).
 
-CÓMO EJECUTAR EL NOTEBOOK (SOLO 3 INSUMOS)
-------------------------------------------
+CÓMO EJECUTAR
+-------------
 1. Descomprimir el ZIP y abrir notebooks/Taller_4_IR_CEV.ipynb.
 2. Local: entorno con pandas, numpy, scikit-learn, spacy (+es_core_news_md),
-   matplotlib, seaborn, wordcloud y nbclient. Colab: subir la carpeta y abrir;
-   el notebook localiza la raíz automáticamente (acepta los caches o los
-   insumos en data/raw/).
-3. Ejecutar todo ("Run all"). Con data/corpus presente termina en ~1-3 min; si
-   se borra data/corpus, regenera todo desde los insumos en 15-60 min
-   (libros 5-15 min; spaCy 10-40 min) mediante la sección "Regeneración"
-   (REGEN_AUTOMATICO=True, configuración embebida en el notebook).
+   matplotlib, seaborn, wordcloud y nbclient. Colab: subir la carpeta y abrir el
+   notebook (localiza la raíz automáticamente por los insumos en data/raw/).
+3. "Run all": la sección "Regeneración" (REGEN_AUTOMATICO=True) genera todo lo
+   demás. Primera corrida desde cero: 15–60 min (libros 5–15 min; spaCy 10–40
+   min). Las siguientes corridas reutilizan los cachés y tardan ~1–3 min.
 
-EXCLUSIONES (TAMAÑO / PRIVACIDAD)
----------------------------------
-No se incluyen entrevistas_normalizadas.jsonl (~186 MB) ni
-entrevistas_tokens.txt (~191 MB): el notebook los regenera desde el dataset si
-se necesitan. El intermedio normalizado contiene PII hablada de las
-transcripciones y no debe distribuirse. Las fuentes LaTeX del informe
-(main.tex, references.bib, figuras) están en el repositorio, no en el ZIP.
-
-VERIFICACIÓN
-------------
-- Ejecución aislada con SOLO los 3 insumos: 0 errores (regeneración completa;
-  valores idénticos al informe: TESTIMONIAL 76,77 %; P@1 0,5333/1,0;
+NOTAS
+-----
+- El intermedio entrevistas_normalizadas.jsonl contiene PII hablada de las
+  transcripciones: no debe distribuirse; el notebook lo genera localmente.
+- Las fuentes LaTeX del informe (main.tex, references.bib, figuras) y el
+  pipeline de producción con CLI están en el repositorio, no en este ZIP.
+- Verificación: ejecución con SOLO los 3 insumos → 0 errores (regeneración
+  completa) y valores idénticos al informe (TESTIMONIAL 76,77 %; P@1 0,5333/1,0;
   P@3 0,7667/1,0; TTR 0,609/0,514; BM25 top-1 1.863; Rocchio 1.947).
-- Ejecución del ZIP descomprimido (paquete completo): 0 errores en ~2,5 min.
-- 51 pruebas pytest aprobadas; ruff 0; sin fuga de datos fuera de data/raw.

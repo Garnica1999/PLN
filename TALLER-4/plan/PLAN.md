@@ -61,6 +61,14 @@ Motivo (Carlos): figura 11 algo más grande; eliminar brechas entre figuras/tabl
 - [x] **Prueba B (SOLO insumos: sin caches/resultados/imágenes/config)**: nbclient 0 errores en **971,9 s**; regeneración completa (E1 libros 10/10, E2 normalizar 57 s + spaCy 2.486 docs en 758 s); valores reproducidos en outputs: 76,77 %; P@1 0,5333; P@3 0,7667; TTR 0,609/0,514; Yule 31,8/38,7; BM25 top-1 1.863; Rocchio 1.947. (E3 oficial requiere `config/` incluida en el ZIP; el notebook funciona sin ella con avisos.)
 - [x] Git: rama `taller-4-final-v9` → PR → merge. ZIP y carpeta extraída se excluyen del versionado por tamaño (393 MB > 100 MB de GitHub); quedan locales + `entregable/LEEME.txt` versionado. Sin ingestas en graphiti (según instrucción de Carlos).
 
+## v9.4 (2026-09-12) — ZIP mínimo esencial (notebook + insumos + informe + imágenes + LEEME) [COMPLETADO]
+Motivo (Carlos): dejar en el ZIP solo los entregables esenciales (notebook, dataset, libros, ontología/tesauro, informe, imágenes y LEEME) y verificar contra el enunciado.
+- [x] ZIP reconstruido: **349 MB, 22 archivos** — `notebooks/Taller_4_IR_CEV.ipynb`, `informe/Informe_Final_Taller4.pdf` (23 págs), `imagenes/` (16 figuras), `data/raw/` (3 insumos) y `LEEME.txt`. Sin corpus/resultados/código/plan/config (el notebook los genera).
+- [x] LEEME reescrito para el paquete mínimo: contenido, qué genera el notebook al ejecutarse (mapeo a los 6 entregables del enunciado), cómo ejecutar, notas de PII y verificación.
+- [x] **Validación de ejecución del ZIP mínimo**: descomprimido en otra ruta, "Run all" con SOLO los insumos → **0 errores en 959,5 s**; 95/95 celdas ejecutadas; generó corpus (917 segmentos, 2.486 normalizadas, lemas/tokens/docs), rankings TF-IDF/BM25/Rocchio(+k3), heatmaps y vínculos; valores idénticos al informe (76,77 %; 0,5333; 0,7667; 0,609/0,514; BM25 1.863; Rocchio 1.947).
+- [x] Consistencia del ZIP verificada: solo los 22 archivos previstos, integridad OK.
+- [x] Git: rama `taller-4-zip-min` → PR → merge. Sin ingestas en graphiti (instrucción vigente).
+
 ## v9.3 (2026-09-12) — Figuras ampliadas, sección de Arquitectura final y guía única en el ZIP [COMPLETADO]
 Motivo (Carlos): agrandar figuras 5, 8, 9, 10 y 11; eliminar la sección 9 (entregables) y reemplazarla por una sección de arquitectura final (mejores resultados de recuperación); fusionar el markdown del informe y el LEEME del ZIP en un solo archivo breve.
 - [x] Figuras ampliadas: fig5 0.72, fig8 0.82, fig9 0.66, fig10 0.72, fig11 0.72 (sin reaparecer huecos en medio de página; 23 páginas, 0 overfull).
