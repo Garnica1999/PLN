@@ -61,6 +61,14 @@ Motivo (Carlos): figura 11 algo más grande; eliminar brechas entre figuras/tabl
 - [x] **Prueba B (SOLO insumos: sin caches/resultados/imágenes/config)**: nbclient 0 errores en **971,9 s**; regeneración completa (E1 libros 10/10, E2 normalizar 57 s + spaCy 2.486 docs en 758 s); valores reproducidos en outputs: 76,77 %; P@1 0,5333; P@3 0,7667; TTR 0,609/0,514; Yule 31,8/38,7; BM25 top-1 1.863; Rocchio 1.947. (E3 oficial requiere `config/` incluida en el ZIP; el notebook funciona sin ella con avisos.)
 - [x] Git: rama `taller-4-final-v9` → PR → merge. ZIP y carpeta extraída se excluyen del versionado por tamaño (393 MB > 100 MB de GitHub); quedan locales + `entregable/LEEME.txt` versionado. Sin ingestas en graphiti (según instrucción de Carlos).
 
+## v9.2 (2026-09-12) — Bibliografía a una columna (formato de plantilla) y limpieza de espacios [COMPLETADO]
+Motivo (Carlos): el PDF tenía espacios vacíos y la bibliografía estaba a 2 columnas cuando la plantilla exige una sola.
+- [x] Bibliografía devuelta a **una sola columna** (formato de la plantilla `tg_usta`), conservando compresión (`footnotesize`, itemsep 1pt).
+- [x] Hueco real de p9 (figuras 6 y 7 con media página vacía) resuelto reduciendo ambas nubes a 0.52\textwidth.
+- [x] Auditoría de espacios en las 21 páginas (render + análisis de bandas en blanco): sin huecos en medio de página; solo márgenes inferiores estándar y el cierre natural de la última página de referencias.
+- [x] PDF final recompilado (21 páginas, 0 overfull) y ZIP actualizado (393 MB); re-prueba del ZIP final: **0 errores en 155,8 s**.
+- [x] Git: rama `taller-4-latex-bib1col` → PR → merge.
+
 ## v9.1 (2026-09-12) — ZIP sin `notebook_cells/` (fuera del entregable) [COMPLETADO]
 Motivo (Carlos): `notebook_cells/` no es necesario para el entregable, ya que el notebook contiene el EDA y todo el código, y corre de forma independiente.
 - [x] Verificado: el notebook (127 celdas del zip, sin dependencias) no usa `notebook_cells/` ni el ensamblador en ejecución (solo menciones markdown); tests no los requieren (el sandbox ejecuta sin ellos).
