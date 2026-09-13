@@ -50,6 +50,17 @@ Motivo (Carlos): el informe del ZIP debe ser el PDF final, no el LaTeX.
 - [x] `entregable/ENTREGABLE_TALLER4.zip` reestructurado (53 MB, 153 archivos): `02_informe/` contiene únicamente **`Informe_Final_Taller4.pdf`** (se retiran del ZIP las fuentes LaTeX y el markdown; las fuentes quedan en el repositorio `informe_latex/`); `LEEME.txt` actualizado.
 - [x] Git: rama `taller-4-zip-pdf` → PR → merge.
 
+## v9 (2026-09-12) — Informe final pulido, ZIP con insumos y verificación end-to-end [COMPLETADO]
+Motivo (Carlos): figura 11 algo más grande; eliminar brechas entre figuras/tablas; redacción más explicativa y profesional (metodología y por qué por punto); revisar bibliografía; verificar valores notebook↔informe ANTES de empaquetar; ZIP con los archivos de entrada; descomprimir en otro lugar y ejecutar el notebook sin variaciones.
+- [x] Figura 11 a 0.62\textwidth; figs 2/3/4 y 9 ajustadas; fracciones de flotantes (top 0.9/text 0.07) + tabla 9 compacta; bibliografía a 2 columnas comprimida -> **21 páginas, 0 páginas con huecos >15 %** (solo el cierre natural de la última página) y figs 2, 3 y 4 juntas en p7.
+- [x] Redacción reforzada por `scientific-writer`: metodología + justificación (alternativas y compromisos) en todas las secciones; nueva subsección de síntesis en P1; tono técnico formal.
+- [x] Bibliografía final: 17 referencias verificadas (añadida Monroe et al. 2008 con DOI; corregidas Sosa 2025, Valentini 2024, Moreno-Sandoval 2024, Castillejo-Cuéllar 2023, Puertas 2018, Robertson & Walker 1994, Bestgen DOI); 17 claves `\cite` ↔ 17 entradas, sin huérfanas; 0 "ADR".
+- [x] Verificación de valores informe↔artefactos/notebook ANTES del empaquetado: 18/18 cifras clave presentes y consistentes (TTR 0,609/0,514; Yule 31,8/38,7; Jaccard 0,221; 345 near-dups; 118.748 features; 76,77 %; P@1 0,5333/1,0; P@3 0,7667/1,0; variantes 54,8/84,6/96,6; avgdl 1.466,26; Rocchio 743/29,9 %; k3 596/24,0 % y 563/22,7 %; heatmap 0,0725/0,0608; top-25 32.700,223).
+- [x] ZIP final `entregable/ENTREGABLE_TALLER4.zip` (**393 MB, 137 archivos**) con layout tipo repo e **incluye los 3 insumos** en `data/raw/` (dataset 231 MB, libros 269 MB, tesauro 5 MB); sin basura; integridad OK; LEEME detallado (exclusiones y cómo ejecutar).
+- [x] **Prueba A (paquete descomprimido tal cual)**: nbclient 0 errores en **91 s**; valores idénticos.
+- [x] **Prueba B (SOLO insumos: sin caches/resultados/imágenes/config)**: nbclient 0 errores en **971,9 s**; regeneración completa (E1 libros 10/10, E2 normalizar 57 s + spaCy 2.486 docs en 758 s); valores reproducidos en outputs: 76,77 %; P@1 0,5333; P@3 0,7667; TTR 0,609/0,514; Yule 31,8/38,7; BM25 top-1 1.863; Rocchio 1.947. (E3 oficial requiere `config/` incluida en el ZIP; el notebook funciona sin ella con avisos.)
+- [x] Git: rama `taller-4-final-v9` → PR → merge. ZIP y carpeta extraída se excluyen del versionado por tamaño (393 MB > 100 MB de GitHub); quedan locales + `entregable/LEEME.txt` versionado. Sin ingestas en graphiti (según instrucción de Carlos).
+
 ## v8.2 (2026-09-12) — Corrección de layout del informe LaTeX y PDF final [COMPLETADO]
 Motivo (Carlos): inconsistencias en el PDF (saltos/espacios, referencias duplicadas con página casi vacía, figuras 6-7 enormes, huecos en secciones).
 - [x] Eliminadas las 16 menciones ADR del informe (texto final sin referencias internas de gestión).

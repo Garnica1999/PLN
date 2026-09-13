@@ -148,3 +148,8 @@ cuadro de vínculos) y P6 (informe final integrador en
 `informe/informe_taller4.md`). El notebook es independiente: solo requiere
 los 3 insumos de `data/raw/` y escribe sus salidas (rankings BM25/Rocchio,
 heatmap y vínculos) sin leerlas como requisito.
+
+> **Nota de entrega.** El ZIP final (`entregable/ENTREGABLE_TALLER4.zip`) incluye
+> los 3 insumos del notebook (dataset, libros y tesauro) y el informe final en
+> PDF; se genera localmente y no se versiona en git por su tamaño (~393 MB).
+> Ver `entregable/LEEME.txt`.

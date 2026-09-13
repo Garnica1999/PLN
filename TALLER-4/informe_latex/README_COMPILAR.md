@@ -42,7 +42,7 @@ latexmk -pdf main.tex
   lo genera él mismo (sección "Regeneración").
 
 ---
-**Compilado y verificado el 2026-09-12**: `main.pdf` = **19 páginas, 2,1 MB**,
+**Compilado y verificado el 2026-09-12**: `main.pdf` = **21 páginas, 2,1 MB**,
 0 errores (único warning benigno: `inputenc` ignorado en motores utf8).
 Comando usado: `tectonic -X compile main.tex` (tectonic 0.15.0). Copia del PDF:
 `Taller_4_IR_CEV.pdf`.
