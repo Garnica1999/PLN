@@ -19,3 +19,7 @@ data/corpus/paginas/
 
 # Artefactos de edición de notebooks
 .ipynb_checkpoints/
+
+# ZIP de entrega con insumos (~393 MB): no versionar (limite GitHub 100 MB)
+entregable/ENTREGABLE_TALLER4/
+entregable/*.zip

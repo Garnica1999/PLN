@@ -1,3 +1,0 @@
-corpus,n_docs,tokens_crudos_spacy,lemas_emitidos_fase4,tipos_lemas_fase4,lemas_contenido_eda,tipos_contenido_eda,lemas_doc_media,lemas_doc_mediana,lemas_doc_p90,lemas_doc_p99,lemas_doc_min,lemas_doc_max,docs_vacios_contenido
-libros,917,2624040,970364,33393,928253,33277,1012.3,1124.0,1474.0,1663.6,117.0,1765.0,0
-entrevistas,2486,40346344,10925290,109639,9702534,109391,3902.9,3112.5,6805.0,20282.2,0.0,45278.0,2
