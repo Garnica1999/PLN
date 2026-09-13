@@ -50,6 +50,15 @@ Motivo (Carlos): el informe del ZIP debe ser el PDF final, no el LaTeX.
 - [x] `entregable/ENTREGABLE_TALLER4.zip` reestructurado (53 MB, 153 archivos): `02_informe/` contiene únicamente **`Informe_Final_Taller4.pdf`** (se retiran del ZIP las fuentes LaTeX y el markdown; las fuentes quedan en el repositorio `informe_latex/`); `LEEME.txt` actualizado.
 - [x] Git: rama `taller-4-zip-pdf` → PR → merge.
 
+## v8.2 (2026-09-12) — Corrección de layout del informe LaTeX y PDF final [COMPLETADO]
+Motivo (Carlos): inconsistencias en el PDF (saltos/espacios, referencias duplicadas con página casi vacía, figuras 6-7 enormes, huecos en secciones).
+- [x] Eliminadas las 16 menciones ADR del informe (texto final sin referencias internas de gestión).
+- [x] Referencias: se retiró el título manual duplicado + `\newpage` (apalike genera "Referencias" una sola vez; se eliminó la página casi vacía); bibliografía comprimida (`footnotesize`, itemsep) para cerrar en 19 páginas.
+- [x] Layout: figuras reducidas (nubes 0.60, heatmaps 0.60/0.52, histogramas 0.58, log-odds 0.70, near-dups 0.60); flotantes `[H]`→`[htbp]` + `\raggedbottom` + ajustes de separación: **0 páginas con huecos >18 % ni páginas vacías** (verificado renderizando las 19 páginas con pdftoppm); figuras 6 y 7 ahora comparten página (p8).
+- [x] Tabla 1 compactada para no dejar hueco antes de la sección 3; tabla de entregables con columnas `raggedright`/ensanchadas; `xurl`+`emergencystretch` para URLs/paths: **0 overfull hbox** en el log.
+- [x] PDF final: main.pdf / Taller_4_IR_CEV.pdf (**19 páginas**); ZIP actualizado (53 MB) con `02_informe/Informe_Final_Taller4.pdf` y LEEME a 19 páginas.
+- [x] Git: rama `taller-4-latex-fix` → PR → merge. (Sin ingestas en graphiti, según instrucción de Carlos.)
+
 ## v7 (2026-09-12) — Fusión del aporte de Erika Rivera (V2) en el notebook canónico [COMPLETADO]
 Motivo (Carlos): una compañera (erivalrivera) había subido `Taller_4_IR_CEV_V2.ipynb` con los puntos 4-6; fusionar ambos notebooks en UNA sola versión integrando lo diferencial y válido.
 - [x] Auditoría del V2: base = nuestro v5.1 (106/108 celdas idénticas; solo 2 imports añadidos) + 14 celdas nuevas al final (P4 Rocchio PRF k=3 + BM25; P5 tabla por tomos con fragmentos y heatmap top-25 entrevistas×tomos con max BM25). Ejecutado por ella (2486×917), sin informe; defecto: `sns.heatmap` sin `import seaborn` (no re-ejecutaba limpio).

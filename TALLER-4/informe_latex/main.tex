@@ -8,6 +8,11 @@
 \usepackage{anysize}
 \usepackage{cite} % para contraer referencias
 \marginsize{1in}{1in}{1in}{1in} %% Márgenes NO MODIFICAR
+\raggedbottom
+\setlength{\textfloatsep}{8pt plus 2pt minus 4pt}
+\setlength{\intextsep}{8pt plus 2pt minus 4pt}
+\setlength{\abovecaptionskip}{4pt}
+\setlength{\belowcaptionskip}{2pt}
 % Cargar los paquetes necesarios aquí
 \usepackage{amsmath,amsthm,amssymb}
 \usepackage{multicol}
@@ -18,6 +23,8 @@
 \usepackage{array}
 \usepackage{booktabs}
 \usetikzlibrary{trees}
+\usepackage{xurl}
+\setlength{\emergencystretch}{1.5em}
 \renewcommand{\tablename}{Tabla}
 \usepackage[utf8]{inputenc}
 \usepackage{subcaption}
@@ -46,6 +53,7 @@
     xleftmargin=1.5em
 }
 
+\sloppy
 \begin{document}
 \title[maintitle = Recuperación de Información aplicada a entrevistas y libros de la Comisión de la Verdad,
        secondtitle = Taller 4 - Procesamiento de Lenguaje Natural]
@@ -76,7 +84,7 @@
 
 \begin{mainabstract}
 
-Este informe final integra los seis puntos del taller de Recuperación de Información (IR) sobre el corpus de la Comisión de la Verdad (CEV). Se extrajeron \textbf{917 segmentos} de los 10 tomos del Informe Final (2.271.493 palabras; mapeo del TOC 91-100\,\%, cobertura 100\,\%) y se normalizaron y preprocesaron \textbf{2.486 entrevistas} CEV/JEP (200,5 M de caracteres $\rightarrow$ 188,8 M, $-5{,}82$\,\%; 40,35 M de tokens $\rightarrow$ 10,92 M de lemas). El análisis exploratorio evidenció un desajuste de registro (Jaccard de vocabulario 0,221; TTR$_{m1000}$ 0,609 libros vs. 0,514 entrevistas; Yule K 31,8 vs. 38,7) y 345 pares casi idénticos ($>$0,85) que se conservan por integridad del corpus. El modelo TF-IDF (118.748 features con bigramas, tf sublineal y norma l2) alcanza una cobertura del 99,92\,\% y, sobre una muestra etiquetada de 30 pares, P@1 de 0,533 (estricto) y 1,0 (aceptable). Okapi BM25 (k$_1$=1,5; b=0,75) y Rocchio (con retroalimentación por pseudo-relevancia, $\alpha$=1, $\beta$=0,75, $\gamma$=0,15), implementados manualmente desde cero con auto-verificaciones sintéticas en verde, comparten la señal del modelo base (57,0\,\% y 70,1\,\% de top-1 idéntico) y confirman el sesgo de dominio hacia el tomo TESTIMONIAL (76,77\,\%, 75,0\,\% y 78,4\,\%). La comparación de corpus mediante un heatmap agregado 10$\times$10 (diagonal media 0,0725 $>$ 0,0608 fuera de la diagonal), un heatmap top-25 por documento y un cuadro de 30 vínculos con fragmentos cierra el proceso con evidencia trazable y límites declarados.\\\\
+Este informe final integra los seis puntos del taller de Recuperación de Información (IR) sobre el corpus de la Comisión de la Verdad (CEV). Se extrajeron \textbf{917 segmentos} de los 10 tomos del Informe Final (2.271.493 palabras; mapeo del TOC 91-100\,\%, cobertura 100\,\%) y se normalizaron y preprocesaron \textbf{2.486 entrevistas} CEV/JEP (200,5 M de caracteres $\rightarrow$ 188,8 M, $-5{,}82$\,\%; 40,35 M de tokens $\rightarrow$ 10,92 M de lemas). El análisis exploratorio evidenció un desajuste de registro (Jaccard de vocabulario 0,221; TTR$_{m1000}$ 0,609 libros vs. 0,514 entrevistas; Yule K 31,8 vs. 38,7) y 345 pares casi idénticos ($>$0,85) que se conservan por integridad del corpus. El modelo TF-IDF (118.748 features con bigramas, tf sublineal y norma l2) alcanza una cobertura del 99,92\,\% y, sobre una muestra etiquetada de 30 pares, P@1 de 0,533 (estricto) y 1,0 (aceptable). Okapi BM25 (k$_1$=1,5; b=0,75) y Rocchio (con retroalimentación por pseudo-relevancia, $\alpha$=1, $\beta$=0,75, $\gamma$=0,15), implementados manualmente desde cero con auto-verificaciones sintéticas en verde, comparten la señal del modelo base (57,0\,\% y 70,1\,\% de top-1 idéntico) y confirman el sesgo de dominio hacia el tomo TESTIMONIAL (76,77\,\%, 75,0\,\% y 78,4\,\%). La comparación de corpus mediante un heatmap agregado 10$\times$10 (diagonal media 0,0725 $>$ 0,0608 fuera de la diagonal), un heatmap top-25 por documento y un cuadro de 30 vínculos con fragmentos cierra el proceso con evidencia trazable y límites declarados.
  \textit{\textbf{Palabras clave:}} Recuperación de Información, TF-IDF, Okapi BM25, Rocchio, Comisión de la Verdad, Procesamiento de Lenguaje Natural
  \end{mainabstract}
 
@@ -98,7 +106,7 @@ La literatura computacional sobre el corpus CEV es inexistente; el trabajo más 
 
 \textbf{Libros.} Los 10 tomos del Informe Final en PDF ocupan 301 MB extraídos y \textbf{6.144 páginas}: HALLAZGOS, CONVOCATORIA, NARRATIVA, SUFRIR, TESTIMONIAL, CUERPO, NNA, VIOLACIONES, ETNICO y FUERA. El tomo testimonial (680 páginas) reproduce el registro oral de las víctimas y resultó determinante en el comportamiento del modelo (Sección~\ref{sec:p3}).
 
-\textbf{Tesauro.} \texttt{data/raw/Resource-tesauro.rdf} ($\approx$5 MB, SKOS, 10.151 etiquetas en español) es el vocabulario controlado de la CEV. Siguiendo el ADR-004, \textbf{no se integra al modelo}: se descartó tanto filtrar el vocabulario del IR con términos controlados (el tesauro no cubre el habla oral) como expandir consultas con sinónimos SKOS (fuera del alcance del modelo léxico y sin gold para medir el beneficio). Su uso es cualitativo en el EDA (Sección~\ref{sec:p2}).
+\textbf{Tesauro.} \texttt{data/raw/Resource-tesauro.rdf} ($\approx$5 MB, SKOS, 10.151 etiquetas en español) es el vocabulario controlado de la CEV. \textbf{No se integra al modelo}: se descartó tanto filtrar el vocabulario del IR con términos controlados (el tesauro no cubre el habla oral) como expandir consultas con sinónimos SKOS (fuera del alcance del modelo léxico y sin gold para medir el beneficio). Su uso es cualitativo en el EDA (Sección~\ref{sec:p2}).
 
 \subsection{Ética y tratamiento de datos sensibles}
 
@@ -109,19 +117,19 @@ A lo anterior se suma una decisión de integridad: los 345 pares de entrevistas 
 
 \section{P1 --- Extracción y preparación del corpus}\label{sec:p1}
 
-\subsection{Morfología del documento a recuperar (ADR-001)}
+\subsection{Morfología del documento a recuperar}
 
-Antes de extraer nada hubo que decidir \textit{qué} es un documento. En IR vectorial esa decisión no está dada por el formato: si el documento fuera el tomo completo, la similitud se diluiría entre decenas de temas; si fuera la página, los vectores serían pobres y romperían unidades temáticas. El ADR-001 fijó una morfología en dos niveles. La \textbf{colección} son \textbf{segmentos de tomo}: secciones del TOC con granularidad de \textbf{niveles 1-2 según el tomo} (nivel 2 cuando existe; nivel 1 si el TOC es plano). Las secciones de menos de 300 palabras se fusionan con la siguiente (o la anterior si es la última de su padre); las de más de 4.000 palabras sin subsecciones se dividen en fragmentos de hasta 3.500 palabras cortando en límite de párrafo o de página; portada, catálogo editorial, comisionados, TOC, bibliografía, glosario, anexos y créditos se descartan. Cada segmento se identifica con el esquema \texttt{TOMO\_abrev-p<página\_inicio>-<titulo\_normalizado>} y conserva metadatos \texttt{\{id\_segmento, tomo, titulo, nivel\_toc, pagina\_inicio, pagina\_fin, n\_palabras, texto\}}. Las \textbf{queries} son la transcripción completa de cada \texttt{id\_doc} con sus metadatos \texttt{\{id\_doc, pages\}}. La banda objetivo de 300-4.000 palabras equilibra especificidad y robustez del vector; la media final fue de 2.477 palabras por segmento.
+Antes de extraer nada hubo que decidir \textit{qué} es un documento. En IR vectorial esa decisión no está dada por el formato: si el documento fuera el tomo completo, la similitud se diluiría entre decenas de temas; si fuera la página, los vectores serían pobres y romperían unidades temáticas. La morfología adoptada quedó fijada en dos niveles. La \textbf{colección} son \textbf{segmentos de tomo}: secciones del TOC con granularidad de \textbf{niveles 1-2 según el tomo} (nivel 2 cuando existe; nivel 1 si el TOC es plano). Las secciones de menos de 300 palabras se fusionan con la siguiente (o la anterior si es la última de su padre); las de más de 4.000 palabras sin subsecciones se dividen en fragmentos de hasta 3.500 palabras cortando en límite de párrafo o de página; portada, catálogo editorial, comisionados, TOC, bibliografía, glosario, anexos y créditos se descartan. Cada segmento se identifica con el esquema \texttt{TOMO\_abrev-p<página\_inicio>-<titulo\_normalizado>} y conserva metadatos \texttt{\{id\_segmento, tomo, titulo, nivel\_toc, pagina\_inicio, pagina\_fin, n\_palabras, texto\}}. Las \textbf{queries} son la transcripción completa de cada \texttt{id\_doc} con sus metadatos \texttt{\{id\_doc, pages\}}. La banda objetivo de 300-4.000 palabras equilibra especificidad y robustez del vector; la media final fue de 2.477 palabras por segmento.
 
 \subsection{Pipeline de extracción de libros}
 
 El script \texttt{scripts/01\_extraer\_libros.py} implementa cinco etapas: (i) conversión página a página con \texttt{pdftotext -layout} en 32 hilos; (ii) parser del TOC por tomo que combina sangrado, coordenadas \texttt{x0} de PyMuPDF y paridad de márgenes para reconstruir la jerarquía; (iii) calibración del desfase entre página impresa y página del PDF (verificado \textbf{offset = 0} en TESTIMONIAL); (iv) matching del título normalizado contra los encabezados del cuerpo en una ventana de página $\pm$1; y (v) \textit{blacklist} automática de encabezados y pies repetidos (\textit{running heads}) para no confundirlos con títulos. Los controles de sanidad exigidos por la arquitectura se cumplieron en los 10 tomos: mapeo del TOC $\geq$85\,\% (rango obtenido 91,2-100\,\%), cobertura de páginas de contenido $\geq$90\,\% (100\,\% en todos), 0 solapamientos, 0 segmentos vacíos y 0\,\% de segmentos fuera de banda.
 
-\begin{table}[H]
+\begin{table}[htbp]
     \centering
     \caption{Segmentos extraídos por tomo del Informe Final CEV. Fuente: \texttt{resultados/extraccion\_libros\_report.json}.}
-    \small
-    \setlength{\tabcolsep}{5pt}
+    \footnotesize
+    \setlength{\tabcolsep}{4pt}
     \begin{tabular}{l r r r r}
     \toprule
     Tomo & Páginas PDF & Segmentos & Palabras & Mapeo TOC \\
@@ -143,18 +151,18 @@ El script \texttt{scripts/01\_extraer\_libros.py} implementa cinco etapas: (i) c
     \label{tab:segmentos}
 \end{table}
 
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.82\textwidth]{figuras/eda_libros_lemas_por_tomo.png}
+    \includegraphics[width=0.62\textwidth]{figuras/eda_libros_lemas_por_tomo.png}
     \caption{Lemas de contenido por tomo tras el preprocesado. La distribución muestra que VIOLACIONES y HALLAZGOS concentran el mayor volumen léxico, mientras CONVOCATORIA es un tomo pequeño (14.157 palabras en 14 segmentos). Conclusión: la colección cubre el ciclo completo del conflicto con tamaños heterogéneos, lo que obliga a comparar afinidades medias por par y no masas totales en el heatmap (Sección~\ref{sec:p5}).}
     \label{fig:lemas-tomo}
 \end{figure}
 
-\subsection{Normalización estructural de entrevistas (ADR-002)}
+\subsection{Normalización estructural de entrevistas}
 
-Las transcripciones no son texto plano: contienen códigos de sistema, anotaciones y marcas de anonimización. La normalización regex por etapas (ADR-002) se ejecutó en 58,4 s con un pico de 679,9 MB de RAM y redujo el corpus de \textbf{200.518.396 a 188.838.879 caracteres} ($-5{,}82$\,\%). Se eliminaron 422 códigos líder, 604 líneas \texttt{AUDIO}, 896 códigos embebidos, 138.613 anotaciones entre corchetes (\texttt{[INTERRUP]}, \texttt{[DUD: ...]}, \texttt{[risas]}, \texttt{[llanto]}), 653.328 etiquetas de hablante y 291.868 guiones. La decisión central fue \textbf{mapear los anonimizados a 8 categorías canónicas} en minúsculas, en lugar de eliminarlos o dejarlos como estaban: eliminarlos habría borrado vocabulario con papel semántico relevante para el matching (``mi familiar desapareció'' conecta con las secciones sobre desaparición de familiares), mientras que conservar \texttt{LUGAR1}, \texttt{LUGAR2} o \texttt{FAMILIAR3} tal cual fragmenta el vocabulario en tipos triviales. Las categorías canónicas se comportan como un solo token léxico y se preservan a lo largo de todo el pipeline.
+Las transcripciones no son texto plano: contienen códigos de sistema, anotaciones y marcas de anonimización. La normalización regex por etapas se ejecutó en 58,4 s con un pico de 679,9 MB de RAM y redujo el corpus de \textbf{200.518.396 a 188.838.879 caracteres} ($-5{,}82$\,\%). Se eliminaron 422 códigos líder, 604 líneas \texttt{AUDIO}, 896 códigos embebidos, 138.613 anotaciones entre corchetes (\texttt{[INTERRUP]}, \texttt{[DUD: ...]}, \texttt{[risas]}, \texttt{[llanto]}), 653.328 etiquetas de hablante y 291.868 guiones. La decisión central fue \textbf{mapear los anonimizados a 8 categorías canónicas} en minúsculas, en lugar de eliminarlos o dejarlos como estaban: eliminarlos habría borrado vocabulario con papel semántico relevante para el matching (``mi familiar desapareció'' conecta con las secciones sobre desaparición de familiares), mientras que conservar \texttt{LUGAR1}, \texttt{LUGAR2} o \texttt{FAMILIAR3} tal cual fragmenta el vocabulario en tipos triviales. Las categorías canónicas se comportan como un solo token léxico y se preservan a lo largo de todo el pipeline.
 
-\begin{table}[H]
+\begin{table}[htbp]
     \centering
     \caption{Anonimizados de entrevistas normalizados a categorías canónicas (8 patrones, 420 variantes ortográficas). Fuente: \texttt{resultados/metricas.json}, fase 4.}
     \small
@@ -178,9 +186,9 @@ Las transcripciones no son texto plano: contienen códigos de sistema, anotacion
     \label{tab:anonimizados}
 \end{table}
 
-\subsection{Preprocesado lingüístico (ADR-003)}
+\subsection{Preprocesado lingüístico}
 
-El preprocesado aplica un pipeline único de spaCy \texttt{es\_core\_news\_md} \cite{spacy2024model} a ambos corpus: tokenización, minúsculas, lematización y parada \textit{en consumo}. Se eligió lematización sobre \textit{stemming} porque los stems del español sobre-fusionan formas (``paz/pacer'') y porque el lematizador de spaCy es el estándar práctico para español; además, el vocabulario unificado de lemas es lo que permite comparar el registro oral con el escrito. La lista de parada combina \textbf{521 stopwords de spaCy + 51 muletillas del habla colombiana + 42 tokens de ruido tipográfico de los libros} (p.~ej.\ palabras partidas por guion, \texttt{ibid.}), para un total efectivo de \textbf{611 tokens}; las muletillas (\textit{eh, mmm, este, o sea, pues}) se detectaron empíricamente en las frecuencias del corpus y su tratamiento se apoya en la caracterización del español colombiano de Moreno-Sandoval et al. \cite{moreno2024detection}. Adicionalmente se aplicaron \textbf{62 correcciones de lemas} en consumo (\texttt{atreveír}$\rightarrow$\texttt{atrever}, voseo, truncamientos orales), se conservaron los años de 4 dígitos en rango 1900-2025 y las categorías canónicas del ADR-002 como tokens únicos, y se descartaron tokens no alfabéticos y de un carácter.
+El preprocesado aplica un pipeline único de spaCy \texttt{es\_core\_news\_md} \cite{spacy2024model} a ambos corpus: tokenización, minúsculas, lematización y parada \textit{en consumo}. Se eligió lematización sobre \textit{stemming} porque los stems del español sobre-fusionan formas (``paz/pacer'') y porque el lematizador de spaCy es el estándar práctico para español; además, el vocabulario unificado de lemas es lo que permite comparar el registro oral con el escrito. La lista de parada combina \textbf{521 stopwords de spaCy + 51 muletillas del habla colombiana + 42 tokens de ruido tipográfico de los libros} (p.~ej.\ palabras partidas por guion, \texttt{ibid.}), para un total efectivo de \textbf{611 tokens}; las muletillas (\textit{eh, mmm, este, o sea, pues}) se detectaron empíricamente en las frecuencias del corpus y su tratamiento se apoya en la caracterización del español colombiano de Moreno-Sandoval et al. \cite{moreno2024detection}. Adicionalmente se aplicaron \textbf{62 correcciones de lemas} en consumo (\texttt{atreveír}$\rightarrow$\texttt{atrever}, voseo, truncamientos orales), se conservaron los años de 4 dígitos en rango 1900-2025 y las categorías canónicas como tokens únicos, y se descartaron tokens no alfabéticos y de un carácter.
 
 La producción fue determinista y reanudable (checkpoint por documento): libros 917 documentos en 30,5 s; entrevistas 2.486 en $\approx$509,5 s (4,88 documentos/s). El resultado son \textbf{40.346.344 tokens crudos y 10.923.423 lemas} en entrevistas (ratio 0,2707), de los cuales quedan 9.702.534 lemas de contenido tras la parada; 2 entrevistas quedan legítimamente vacías (sus textos normalizados de origen están vacíos) y se documentan sin eliminarlas. El corpus resultante es \texttt{data/corpus/segmentos\_libros.jsonl} (917), \texttt{entrevistas\_normalizadas.jsonl} (2.486) y \texttt{preprocesado/\{libros,entrevistas\}\_\{lemas,tokens\}.txt} más los \texttt{*\_docs.json}. La calidad técnica se verificó con ruff (0 errores) y 51 pruebas pytest aprobadas.
 
@@ -191,7 +199,7 @@ La producción fue determinista y reanudable (checkpoint por documento): libros 
 
 El EDA se ejecutó sobre 917 segmentos de libro y 2.486 entrevistas. La Tabla~\ref{tab:eda-stats} resume las cifras. La conclusión estructural es la \textbf{asimetría de longitudes}: las entrevistas promedian 3.902,9 lemas de contenido pero su mediana es 3.112,5 y su extremo superior supera los 45.000, mientras los segmentos de libro son mucho más homogéneos (media 1.012,3; máximo 1.765). Cualquier métrica de riqueza léxica sin control de longitud estaría midiendo el tamaño del documento, no su diversidad.
 
-\begin{table}[H]
+\begin{table}[htbp]
     \centering
     \caption{Estadísticas del corpus preprocesado (lemas de contenido, parada en consumo). Fuente: \texttt{resultados/eda/estadisticas\_corpus.csv} y \texttt{metricas.json}, fase 5.}
     \small
@@ -212,24 +220,24 @@ El EDA se ejecutó sobre 917 segmentos de libro y 2.486 entrevistas. La Tabla~\r
     \label{tab:eda-stats}
 \end{table}
 
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.78\textwidth]{figuras/eda_entrevistas_hist_lemas.png}
+    \includegraphics[width=0.58\textwidth]{figuras/eda_entrevistas_hist_lemas.png}
     \caption{Histograma de lemas de contenido por entrevista. La cola derecha (entrevistas de decenas de miles de lemas) convive con documentos cortos y 2 vacíos legítimos. Conclusión: la distribución es fuertemente asimétrica, por lo que el TTR se midió con muestras de tamaño fijo y la evaluación se reportó sobre medias y percentiles, no sobre totales.}
     \label{fig:hist-lemas-entrevistas}
 \end{figure}
 
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.78\textwidth]{figuras/eda_entrevistas_hist_chars.png}
-    \caption{Histograma de caracteres normalizados por entrevista (rango 0-824.072; el crudo llegaba a 850 mil). Conclusión: la normalización del ADR-002 redujo el 5,82\,\% de los caracteres sin tocar el contenido testimonial, y la asimetría extrema de origen se conserva, lo que justifica las decisiones de robustez (lemas, parada y evaluación por muestras) del resto del taller.}
+    \includegraphics[width=0.58\textwidth]{figuras/eda_entrevistas_hist_chars.png}
+    \caption{Histograma de caracteres normalizados por entrevista (rango 0-824.072; el crudo llegaba a 850 mil). Conclusión: la normalización estructural redujo el 5,82\,\% de los caracteres sin tocar el contenido testimonial, y la asimetría extrema de origen se conserva, lo que justifica las decisiones de robustez (lemas, parada y evaluación por muestras) del resto del taller.}
     \label{fig:hist-chars-entrevistas}
 \end{figure}
 
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.78\textwidth]{figuras/eda_libros_hist_lemas.png}
-    \caption{Histograma de lemas de contenido por segmento de libro. A diferencia de las entrevistas, la distribución es compacta y centrada en torno a 1.000 lemas. Conclusión: la granularidad TOC niveles 1-2 (ADR-001) produjo unidades de tamaño comparable, condición necesaria para que la similitud coseno no esté dominada por el tamaño del documento.}
+    \includegraphics[width=0.58\textwidth]{figuras/eda_libros_hist_lemas.png}
+    \caption{Histograma de lemas de contenido por segmento de libro. A diferencia de las entrevistas, la distribución es compacta y centrada en torno a 1.000 lemas. Conclusión: la granularidad TOC niveles 1-2 produjo unidades de tamaño comparable, condición necesaria para que la similitud coseno no esté dominada por el tamaño del documento.}
     \label{fig:hist-libros}
 \end{figure}
 
@@ -237,9 +245,9 @@ El EDA se ejecutó sobre 917 segmentos de libro y 2.486 entrevistas. La Tabla~\r
 
 Como el TTR depende de la longitud (el ``problema doble'' de Bestgen \cite{bestgen2023measuring}), la diversidad se midió con \textbf{TTR de muestra fija (n=1.000)} y con el índice \textbf{Yule K} sobre el documento completo, cuyo menor valor indica mayor diversidad. Los libros resultaron más diversos (\textbf{TTR$_{m1000}$ 0,609 vs. 0,514; Yule K 31,8 vs. 38,7}). La lectura es consistente con la naturaleza de cada registro: el texto académico explota un vocabulario institucional y analítico amplio, mientras la oralidad transcrita es más repetitiva, con alta frecuencia de verbos de narración y de referencias genéricas, algo esperable en habla espontánea y documentado para el español colombiano \cite{moreno2024detection}.
 
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.8\textwidth]{figuras/eda_diversidad_lexica.png}
+    \includegraphics[width=0.60\textwidth]{figuras/eda_diversidad_lexica.png}
     \caption{Diversidad léxica por documento: TTR con muestreo de n=1.000 y Yule K, libros vs. entrevistas. Conclusión: los libros son sistemáticamente más diversos incluso al controlar la longitud; la brecha de registro es una propiedad del corpus y no un artefacto de la asimetría de tamaños, lo que anticipa el desajuste léxico que enfrenta el modelo de IR.}
     \label{fig:diversidad}
 \end{figure}
@@ -248,26 +256,26 @@ Como el TTR depende de la longitud (el ``problema doble'' de Bestgen \cite{bestg
 
 Los vocabularios frecuentes confirman dos mundos léxicos. En libros dominan sustantivos institucionales (\textit{armado, víctima, grupo, persona, violencia, comisión, mujer, conflicto}); en entrevistas dominan verbos y formas de narración oral (\textit{gente, llegar, año, pasar, cosa, venir, salir, conocido, persona, querer}). Las nubes de uni/bi/trigramas construidas desde los top-30 de cada corpus ilustran el contraste, y el solapamiento de vocabulario es bajo: \textbf{Jaccard = 0,221} con 25.851 tipos compartidos, aunque la cobertura de tokens es asimétrica y alta (el vocabulario de libros cubre el 95,7\,\% de los tokens de las entrevistas y el de entrevistas el 98,3\,\% de los de libros).
 
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.85\textwidth]{figuras/eda_entrevistas_nube_unigramas.png}
+    \includegraphics[width=0.60\textwidth]{figuras/eda_entrevistas_nube_unigramas.png}
     \caption{Nube de unigramas de las entrevistas. Predominan verbos de narración y términos genéricos del relato oral. Conclusión: el vocabulario de consulta es funcional pero poco discriminativo por sí mismo, lo que explica que el matching léxico recupere segmentos plausibles aunque a menudo genéricos (Sección~\ref{sec:p3}).}
     \label{fig:nube-entrevistas}
 \end{figure}
 
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.85\textwidth]{figuras/eda_libros_nube_unigramas.png}
+    \includegraphics[width=0.60\textwidth]{figuras/eda_libros_nube_unigramas.png}
     \caption{Nube de unigramas de los libros. Predominan sustantivos institucionales y temáticos del conflicto. Conclusión: la intersección de ambos vocabularios es el espacio donde el TF-IDF puede conectar una entrevista con una sección; fuera de esa intersección, ni los términos orales ni los institucionales ayudan al matching.}
     \label{fig:nube-libros}
 \end{figure}
 
-La comparación por \textbf{log-odds} (Monroe et al.) confirma el patrón: en libros son distintivos términos institucionales y transmedia (\textit{transmedia} 8,0; \textit{externas} 7,8; \textit{microdato} 7,4); en entrevistas lo son las categorías canónicas del ADR-002 (\textit{anonimo} 9,1; \textit{organizacion\_social} 8,5; \textit{organizacion\_publica} 8,2), lo que constituye evidencia de que la normalización capturó vocabulario real del habla, y formas orales como \textit{far} (519 ocurrencias, ``las FAR'') frente a \textit{farc} en los libros. Ese desajuste (\textit{far/farc}) es relevante para el IR: una misma entidad se escribe distinto según el registro. El cruce cualitativo con el tesauro (ADR-004) mostró que 14 de los 50 términos distintivos tienen etiqueta SKOS, sin que ello justifique integrarlo al modelo.
+La comparación por \textbf{log-odds} (Monroe et al.) confirma el patrón: en libros son distintivos términos institucionales y transmedia (\textit{transmedia} 8,0; \textit{externas} 7,8; \textit{microdato} 7,4); en entrevistas lo son las categorías canónicas (\textit{anonimo} 9,1; \textit{organizacion\_social} 8,5; \textit{organizacion\_publica} 8,2), lo que constituye evidencia de que la normalización capturó vocabulario real del habla, y formas orales como \textit{far} (519 ocurrencias, ``las FAR'') frente a \textit{farc} en los libros. Ese desajuste (\textit{far/farc}) es relevante para el IR: una misma entidad se escribe distinto según el registro. El cruce cualitativo con el tesauro mostró que 14 de los 50 términos distintivos tienen etiqueta SKOS, sin que ello justifique integrarlo al modelo.
 
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.95\textwidth]{figuras/eda_comparacion_distintivos_logodds.png}
-    \caption{Términos más distintivos de cada corpus según log-odds (top-25 bidireccional). Conclusión: los distintivos de entrevistas son en buena parte categorías canónicas de anonimización, prueba de que la transformación del ADR-002 introdujo vocabulario útil; los de libros son institucionales, lo que anticipa que el solape temático fino dependerá de pocos términos compartidos.}
+    \includegraphics[width=0.70\textwidth]{figuras/eda_comparacion_distintivos_logodds.png}
+    \caption{Términos más distintivos de cada corpus según log-odds (top-25 bidireccional). Conclusión: los distintivos de entrevistas son en buena parte categorías canónicas de anonimización, prueba de que la transformación estructural introdujo vocabulario útil; los de libros son institucionales, lo que anticipa que el solape temático fino dependerá de pocos términos compartidos.}
     \label{fig:logodds}
 \end{figure}
 
@@ -275,9 +283,9 @@ La comparación por \textbf{log-odds} (Monroe et al.) confirma el patrón: en li
 
 Con Jaccard de \textit{shingles} de 5 lemas (minhash k=60 + LSH 20$\times$3 y verificación exacta, siguiendo a Broder \cite{broder1997resemblance}) se verificaron 368 pares candidatos y se detectaron \textbf{345 pares con similitud $>$0,85}, que involucran 526 documentos únicos en 242 grupos ($\approx$21\,\% de las entrevistas). Se conservan por integridad del corpus oficial: entrevistas casi idénticas producen rankings casi idénticos y sobreestiman la cobertura.
 
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.8\textwidth]{figuras/eda_near_duplicates_entrevistas.png}
+    \includegraphics[width=0.60\textwidth]{figuras/eda_near_duplicates_entrevistas.png}
     \caption{Distribución de similitud de los pares candidatos a near-duplicate (shingles de 5 lemas). La masa a la derecha del umbral 0,85 concentra los 345 pares casi idénticos. Conclusión: el corpus contiene duplicación real (a menudo variantes de la misma declaración o reentrevistas) que se documenta como límite de la evaluación, no como error que deba limpiarse.}
     \label{fig:neardups}
 \end{figure}
@@ -293,9 +301,9 @@ El EDA no solo describe: fija los parámetros del modelo con evidencia. Primero,
 
 \section{P3 --- Modelo de IR con TF-IDF}\label{sec:p3}
 
-\subsection{Dirección del matching y representación (ADR-005)}
+\subsection{Dirección del matching y representación}
 
-El ADR-005 fijó la dirección del matching: \textbf{cada entrevista es una query y la colección son los 917 segmentos de libro}. La alternativa transpuesta se descartó porque el entregable del taller pide, para cada entrevista, las secciones del Informe afines; además, la colección debe ser estable y de tamaño moderado, condición que cumplen los segmentos (ADR-001) y no las 2.486 transcripciones. La representación es TF-IDF con saturación sublineal y normalización l2 \cite{salton1988term,manning2008introduction}, implementada con \texttt{TfidfVectorizer} de scikit-learn \cite{scikit2024tfidf} sobre los textos lematizados:
+La dirección del matching quedó fija: \textbf{cada entrevista es una query y la colección son los 917 segmentos de libro}. La alternativa transpuesta se descartó porque el entregable del taller pide, para cada entrevista, las secciones del Informe afines; además, la colección debe ser estable y de tamaño moderado, condición que cumplen los segmentos y no las 2.486 transcripciones. La representación es TF-IDF con saturación sublineal y normalización l2 \cite{salton1988term,manning2008introduction}, implementada con \texttt{TfidfVectorizer} de scikit-learn \cite{scikit2024tfidf} sobre los textos lematizados:
 
 \begin{equation}\label{eq:tfidf}
 \widetilde{tf}(t,d) = 1+\ln tf(t,d), \qquad
@@ -325,9 +333,9 @@ Dados dos vectores no nulos $v_q, v_d \in \mathbb{R}^{F}$, la similitud coseno e
 
 La configuración congelada (Tabla~\ref{tab:config-tfidf}) produjo un vocabulario de \textbf{118.748 features} (18.864 unigramas y 99.884 bigramas) con densidad de 0,0082. La puntuación por lotes tardó 10,0 s (semilla 42) y generó \texttt{ranking\_top5.csv} y \texttt{ranking\_top10.csv} (12.420 filas el primero). El modelo recupera al menos un segmento para \textbf{2.484 de 2.486 entrevistas (cobertura 99,92\,\%)}; las 2 restantes son los documentos vacíos legítimos ya documentados. El score top-1 tiene media 0,1468, mediana 0,138 y rango 0,070-0,572.
 
-\begin{table}[H]
+\begin{table}[htbp]
     \centering
-    \caption{Parámetros del modelo TF-IDF y su justificación empírica (ADR-005; datos del EDA).}
+    \caption{Parámetros del modelo TF-IDF y su justificación empírica (datos del EDA).}
     \small
     \setlength{\tabcolsep}{5pt}
     \begin{tabular}{l l p{7.1cm}}
@@ -351,7 +359,7 @@ La distribución del top-1 por tomo revela un sesgo marcado: \textbf{76,77\,\% e
 
 Sin gold estándar, la evaluación se hizo sobre una \textbf{muestra determinista (semilla 42), estratificada por tomo, de 30 pares (entrevista, segmento top-1)} con el top-3 completo, etiquetados por el equipo en tres clases \{relacionado, parcial, no\}. La Tabla~\ref{tab:evaluacion} resume los resultados: 16 pares ``relacionado'', 14 ``parcial'' y \textbf{0 ``no''}. El matching léxico es funcional pero impreciso: con criterio estricto P@1 = 0,5333 y P@3 = 0,7667; con criterio aceptable (``relacionado''+``parcial'') ambos llegan a 1,0, porque todo el corpus versa sobre el conflicto y cualquier entrevista de víctima solapa mínimamente con casi cualquier segmento. El hallazgo fino es que en \textbf{7 de 30 consultas (23\,\%)} el top-1 es ``parcial'' y el match ``relacionado'' está en las posiciones 2-3: el primer resultado no siempre es el más específico. Hay aciertos nítidos cuando el léxico es específico (amenaza de masacre $\rightarrow$ \texttt{HALLAZGOS-p129-las-masacres}, 0,132) y fallos por solape genérico en testimonios (excombatiente indígena amazónica $\rightarrow$ \texttt{TESTIMONIAL-p401-senderos-pedregosos}). La decisión de iteración fue \textbf{no crear un experimento 2}: el criterio del plan (P@1 aceptable $\geq$ 0,6) ya se cumple con 1,0 y el problema diagnosticado no es el registro oral ---las muletillas ya están en parada--- sino la falta de discriminación temática fina.
 
-\begin{table}[H]
+\begin{table}[htbp]
     \centering
     \caption{Evaluación cualitativa sobre 30 pares (entrevista, top-1 con top-3 completo), semilla 42. Fuente: \texttt{resultados/evaluacion\_metricas.json}.}
     \small
@@ -375,7 +383,7 @@ Sin gold estándar, la evaluación se hizo sobre una \textbf{muestra determinist
 
 Para medir la contribución de cada decisión de preprocesado se compararon tres variantes contra el base: (A) solo unigramas (\texttt{ngram\_range=(1,1)}); (B) sin la parada de muletillas; (C) sin las 62 correcciones de lemas. La Tabla~\ref{tab:variantes} reporta la coincidencia del top-1 con el modelo base. La lectura es directa: los \textbf{bigramas aportan la mayor parte del cambio} (sin ellos el top-1 solo coincide en 54,8\,\%), las muletillas mueven poco (84,6\,\% de coincidencia) y las correcciones muy poco (96,6\,\%). La configuración base es, además, la más estable de las cuatro.
 
-\begin{table}[H]
+\begin{table}[htbp]
     \centering
     \caption{Variantes del modelo base y coincidencia del top-1 con el base (2.484 queries). Fuente: \texttt{resultados/ranking\_top5\_\{A,B,C\}.csv}.}
     \small
@@ -431,7 +439,7 @@ El re-rankeo afectó a 2.484 consultas y cambió el top-1 en \textbf{743 (29,9\,
 
 Sin gold, la comparación es de \textbf{acuerdo}: solapamiento de \textbf{conjunto} del top-$k$ y coincidencia de \textbf{posición} exacta (Tabla~\ref{tab:acuerdo}). De las 2.484 consultas comparables, \textbf{1.112 coinciden en el top-1 de los tres métodos y 296 difieren en los tres}.
 
-\begin{table}[H]
+\begin{table}[htbp]
     \centering
     \caption{Acuerdo entre métodos sobre 2.484 consultas. ``Conjunto top-1/top-5'' = fracción de elementos compartidos del conjunto; ``posición 5'' = identidad del ítem en la posición 5. Fuente: sección 03b del notebook.}
     \small
@@ -448,7 +456,7 @@ Sin gold, la comparación es de \textbf{acuerdo}: solapamiento de \textbf{conjun
     \label{tab:acuerdo}
 \end{table}
 
-\begin{table}[H]
+\begin{table}[htbp]
     \centering
     \caption{Top-1 por tomo para los tres métodos (cada columna suma 2.484 consultas con match). Fuente: \texttt{resultados/ranking\_bm25.csv}, \texttt{ranking\_rocchio.csv} e \texttt{ir\_tfidf\_report.json}.}
     \small
@@ -499,14 +507,14 @@ rankear_rocchio(similitudes_base, x_queries, x_coleccion,
 
 El primer heatmap responde a una pregunta global: \textit{¿los grupos de entrevistas asignados a cada tomo se parecen, en promedio, a ese tomo?} Las filas agrupan las 2.486 entrevistas por el tomo de su top-1 \textbf{BM25}; las columnas son los 10 tomos; la celda $(g,T)$ es la \textbf{similitud coseno TF-IDF media} entre las entrevistas del grupo $g$ y los segmentos del tomo $T$, calculada sobre la matriz del modelo base sin reentrenar nada. Se usa la media por par (medida intensiva de afinidad) y no una masa total, de modo que el distinto número de segmentos por tomo no sesga la comparación; el CSV conserva \texttt{n\_entrevistas} por grupo. La diagonal mide la \textbf{coherencia} entre la asignación BM25 y la similitud TF-IDF: si la asignación no fuera más que ruido, la diagonal no debería destacar.
 
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.95\textwidth]{figuras/heatmap_entrevistas_libros.png}
+    \includegraphics[width=0.60\textwidth]{figuras/heatmap_entrevistas_libros.png}
     \caption{Heatmap agregado 10$\times$10: filas = grupo de entrevistas por tomo del top-1 BM25; columnas = tomo de libro; celda = coseno TF-IDF medio. Conclusión: la diagonal media (0,0725) supera a la afinidad fuera de la diagonal (0,0608) y a la media de fila en 10/10 grupos, de modo que la asignación BM25 captura señal real; sin embargo, el máximo de fila cae fuera de la diagonal en 7/10 grupos (casi siempre en TESTIMONIAL), evidencia visual del sesgo de registro oral.}
     \label{fig:heatmap-agregado}
 \end{figure}
 
-\begin{table}[H]
+\begin{table}[htbp]
     \centering
     \caption{Resumen del heatmap por grupo (coseno TF-IDF medio). ``Máximo de fila'' indica el tomo con mayor afinidad media. Fuente: \texttt{resultados/heatmap\_tomos.csv}.}
     \small
@@ -538,9 +546,9 @@ La lectura de la Tabla~\ref{tab:heatmap} es matizada. La diagonal media (0,0725)
 
 El segundo heatmap responde a otra pregunta: \textit{¿qué entrevistas concretas saturan cada eje temático?} Sobre la matriz BM25 completa (2.486$\times$917) se seleccionaron las 25 entrevistas con mayor suma de sus máximos BM25 por tomo; la celda es el \textbf{máximo BM25} de esa entrevista contra cualquier segmento del tomo (no la media). El máximo de la matriz (32.700,223) coincide con el mejor vínculo BM25 del tomo TESTIMONIAL (Tabla~\ref{tab:vinculos}). Los dos heatmaps se complementan: el agregado resume la visión global y valida la asignación BM25 $\rightarrow$ tomo; el top-25 conserva la \textbf{intensidad individual}, información que el promedio por grupo disuelve.
 
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.95\textwidth]{figuras/heatmap_top25_entrevistas_tomos.png}
+    \includegraphics[width=0.52\textwidth]{figuras/heatmap_top25_entrevistas_tomos.png}
     \caption{Heatmap top-25 entrevistas $\times$ 10 tomos con el máximo score BM25 por celda. Las filas son las entrevistas con mayor suma de máximos por tomo. Conclusión: unas pocas entrevistas alcanzan afinidades muy altas (máximo 32.700,223 en TESTIMONIAL) y concentran su intensidad en pocos ejes temáticos; el patrón por documento hace visibles los vínculos fuertes que el promedio agregado 10$\times$10 difumina.}
     \label{fig:heatmap-top25}
 \end{figure}
@@ -549,7 +557,7 @@ El segundo heatmap responde a otra pregunta: \textit{¿qué entrevistas concreta
 
 El cuadro \texttt{resultados/vinculos\_entrevistas\_libros.csv} contiene \textbf{30 parejas} (3 por tomo) con el esquema \texttt{tomo, puesto, id\_doc, id\_segmento, score\_bm25, titulo\_segmento, fragmento\_entrevista, fragmento\_libro}: las dos últimas columnas incluyen $\approx$200 caracteres de lemas de contenido de cada parte para poder verificar cada vínculo sin releer los rankings completos. La Tabla~\ref{tab:vinculos} muestra la mejor pareja de cada tomo; las afinidades altas corresponden a solapes temáticos reconocibles (masacres, secuestro, pueblos étnicos, violencia sexual, persecución), lo que constituye la evidencia cualitativa de cierre del punto 5.
 
-\begin{table}[H]
+\begin{table}[htbp]
     \centering
     \caption{Mejor vínculo entrevista $\rightarrow$ segmento por tomo según BM25. Fuente: \texttt{resultados/vinculos\_entrevistas\_libros.csv}.}
     \small
@@ -578,7 +586,7 @@ El cuadro \texttt{resultados/vinculos\_entrevistas\_libros.csv} contiene \textbf
 
 \subsection{Conclusiones}
 
-\textbf{P1.} Se extrajeron 917 segmentos y 2,27 M de palabras de los 10 tomos (mapeo TOC 91-100\,\%, cobertura 100\,\%, 0 solapes, 0 vacíos, 0\,\% fuera de banda) con una morfología documental explícita y justificada (ADR-001), y se normalizaron y preprocesaron 2.486 entrevistas ($-5{,}82$\,\% de caracteres; 40,35 M de tokens $\rightarrow$ 10,92 M de lemas; 8 categorías canónicas; 62 correcciones de lemas; 51 muletillas).
+\textbf{P1.} Se extrajeron 917 segmentos y 2,27 M de palabras de los 10 tomos (mapeo TOC 91-100\,\%, cobertura 100\,\%, 0 solapes, 0 vacíos, 0\,\% fuera de banda) con una morfología documental explícita y justificada, y se normalizaron y preprocesaron 2.486 entrevistas ($-5{,}82$\,\% de caracteres; 40,35 M de tokens $\rightarrow$ 10,92 M de lemas; 8 categorías canónicas; 62 correcciones de lemas; 51 muletillas).
 
 \textbf{P2.} Los libros son más diversos que las entrevistas incluso al controlar la longitud (TTR$_{m1000}$ 0,609 vs. 0,514; Yule K 31,8 vs. 38,7), el solapamiento de vocabulario es bajo (Jaccard 0,221) con cobertura asimétrica (95,7\,\%/98,3\,\%), hay desajustes de registro relevantes (\textit{far/farc}) y 345 near-duplicados que se documentan sin eliminar.
 
@@ -596,7 +604,7 @@ El cuadro \texttt{resultados/vinculos\_entrevistas\_libros.csv} contiene \textbf
 
 \subsection{Mejoras futuras}
 
-(i) \textbf{BM25 tuneado} con búsqueda de $k_1\in[0{,}9;2{,}0]$ y $b\in[0{,}3;1{,}0]$. (ii) \textbf{Embeddings y \textit{reranking}} supervisado del top-$k$ para superar el techo del solape léxico \cite{valentini2024messirve}. (iii) \textbf{Gold estándar externo} con acuerdo inter-etiquetador. (iv) \textbf{Eliminación o agrupación de near-duplicados} para no inflar la cobertura. (v) \textbf{Enrutamiento por tomo} (clasificador previo) para corregir el prior TESTIMONIAL. (vi) \textbf{Cambio de hablante, \textit{chunking}} de entrevistas largas y limpieza fina de \textit{running heads}. (vii) \textbf{Expansión semántica} con el tesauro CEV, hoy reservado para análisis cualitativo por el ADR-004.
+(i) \textbf{BM25 tuneado} con búsqueda de $k_1\in[0{,}9;2{,}0]$ y $b\in[0{,}3;1{,}0]$. (ii) \textbf{Embeddings y \textit{reranking}} supervisado del top-$k$ para superar el techo del solape léxico \cite{valentini2024messirve}. (iii) \textbf{Gold estándar externo} con acuerdo inter-etiquetador. (iv) \textbf{Eliminación o agrupación de near-duplicados} para no inflar la cobertura. (v) \textbf{Enrutamiento por tomo} (clasificador previo) para corregir el prior TESTIMONIAL. (vi) \textbf{Cambio de hablante, \textit{chunking}} de entrevistas largas y limpieza fina de \textit{running heads}. (vii) \textbf{Expansión semántica} con el tesauro CEV, hoy reservado para análisis cualitativo.
 
 
 \section{Entregables y reproducibilidad}\label{sec:entregables}
@@ -605,12 +613,12 @@ El cuadro \texttt{resultados/vinculos\_entrevistas\_libros.csv} contiene \textbf
 
 La Tabla~\ref{tab:entregables} mapea cada entregable del enunciado con su artefacto y su ruta en el repositorio. El artefacto central es el \textbf{notebook único} \texttt{notebooks/Taller\_4\_IR\_CEV.ipynb} (125 celdas), que integra los seis puntos y fusiona los aportes de los dos desarrollos paralelos del equipo (el base y la versión 2, retirada al quedar integrada); el informe markdown y este informe LaTeX son sus documentos acompañantes.
 
-\begin{table}[H]
+\begin{table}[htbp]
     \centering
     \caption{Entregables del enunciado y su ubicación en el repositorio.}
-    \small
-    \setlength{\tabcolsep}{5pt}
-    \begin{tabular}{p{3.6cm} p{5.6cm} p{5.6cm}}
+    \footnotesize
+    \setlength{\tabcolsep}{4pt}
+    \begin{tabular}{>{\raggedright\arraybackslash}p{3.0cm} >{\raggedright\arraybackslash}p{4.6cm} >{\raggedright\arraybackslash}p{7.0cm}}
     \toprule
     Entregable & Artefacto & Ruta \\
     \midrule
@@ -635,11 +643,10 @@ El notebook es independiente: para ejecutarlo de extremo a extremo solo requiere
 \textbf{Evidencia de independencia.} La verificación se hizo en cuatro frentes: (i) ejecución aislada de extremo a extremo con solo el \texttt{.ipynb} y los 3 insumos, con 0 errores en 922 s ($\approx$15,4 min); (ii) sandbox de pruebas sin \texttt{config/}, \texttt{resultados/}, \texttt{imagenes/} ni \texttt{scripts/} (65,8 s) con 51 pruebas pytest aprobadas; (iii) corrida completa en el repositorio en 61,7 s con 0 errores y modelo base idéntico al oficial en 2.484/2.484 top-1 (TESTIMONIAL 76,77\,\%; variantes 54,8/84,6/96,6; P@1 0,5333/1,0 y P@3 0,7667/1,0); y (iv) ruff 0. El detalle está en \texttt{plan/verificacion\_independencia\_notebook.md} y la autoevaluación de la rúbrica en \texttt{plan/verificacion\_rubrica.md}.
 
 
-\section{Referencias}
-
 \nocite{*}
 \bibliographystyle{apalike}
-\newpage
-\bibliography{references}
+{\footnotesize\sloppy
+\setlength{\itemsep}{2pt plus 0.3ex}
+\bibliography{references}}
 
 \end{document}
