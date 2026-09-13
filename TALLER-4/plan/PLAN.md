@@ -61,6 +61,14 @@ Motivo (Carlos): figura 11 algo más grande; eliminar brechas entre figuras/tabl
 - [x] **Prueba B (SOLO insumos: sin caches/resultados/imágenes/config)**: nbclient 0 errores en **971,9 s**; regeneración completa (E1 libros 10/10, E2 normalizar 57 s + spaCy 2.486 docs en 758 s); valores reproducidos en outputs: 76,77 %; P@1 0,5333; P@3 0,7667; TTR 0,609/0,514; Yule 31,8/38,7; BM25 top-1 1.863; Rocchio 1.947. (E3 oficial requiere `config/` incluida en el ZIP; el notebook funciona sin ella con avisos.)
 - [x] Git: rama `taller-4-final-v9` → PR → merge. ZIP y carpeta extraída se excluyen del versionado por tamaño (393 MB > 100 MB de GitHub); quedan locales + `entregable/LEEME.txt` versionado. Sin ingestas en graphiti (según instrucción de Carlos).
 
+## v9.3 (2026-09-12) — Figuras ampliadas, sección de Arquitectura final y guía única en el ZIP [COMPLETADO]
+Motivo (Carlos): agrandar figuras 5, 8, 9, 10 y 11; eliminar la sección 9 (entregables) y reemplazarla por una sección de arquitectura final (mejores resultados de recuperación); fusionar el markdown del informe y el LEEME del ZIP en un solo archivo breve.
+- [x] Figuras ampliadas: fig5 0.72, fig8 0.82, fig9 0.66, fig10 0.72, fig11 0.72 (sin reaparecer huecos en medio de página; 23 páginas, 0 overfull).
+- [x] Sección 9 "Entregables y reproducibilidad" eliminada; nueva **Sección 9 "Arquitectura final de recuperación"** (capas corpus→representación→recuperación→métricas/refinamiento→análisis; configuración final recomendada: TF-IDF (1,2) primario + Rocchio PRF k=5 como refinador del top-1 conservando el 100 % del inventario top-5 + BM25 como verificador/consenso; sin ganador absoluto por ausencia de gold; contrato de decisiones; límites y orden de reemplazo futuro).
+- [x] **Guía única** `entregable/LEEME.txt` (fusiona el resumen del antiguo informe markdown + el LEEME operativo, en formato breve): qué se hizo por punto, estructura del ZIP, cómo ejecutar con los 3 insumos, exclusiones/PII, verificación y resultados clave. Se retiraron `informe/informe_taller4.md` y `informe_latex/LEEME.md` (fusionados); README actualizado.
+- [x] ZIP actualizado (393 MB, 127 archivos) con el informe PDF de 23 páginas y la guía única; **prueba del ZIP definitivo: 0 errores en 141,8 s**.
+- [x] Git: rama `taller-4-v9-3` → PR → merge.
+
 ## v9.2 (2026-09-12) — Bibliografía a una columna (formato de plantilla) y limpieza de espacios [COMPLETADO]
 Motivo (Carlos): el PDF tenía espacios vacíos y la bibliografía estaba a 2 columnas cuando la plantilla exige una sola.
 - [x] Bibliografía devuelta a **una sola columna** (formato de la plantilla `tg_usta`), conservando compresión (`footnotesize`, itemsep 1pt).

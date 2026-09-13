@@ -1,76 +1,81 @@
-ENTREGABLE — TALLER 4: RECUPERACIÓN DE INFORMACIÓN SOBRE EL CORPUS DE LA COMISIÓN DE LA VERDAD (CEV)
-=====================================================================================================
-
+TALLER 4 — RECUPERACIÓN DE INFORMACIÓN SOBRE EL CORPUS DE LA COMISIÓN DE LA VERDAD
+=====================================================================================
 Curso: Procesamiento de Lenguaje Natural — Pontificia Universidad Javeriana
-Integrantes: Erika Valeria Rivera Jiménez — Julián Guillermo Carrillo Meneses —
-             Carlos Andrés Garnica Salazar — Oscar Andrés Prieto Moreno
-Fecha: septiembre de 2026
-Repositorio: https://github.com/Garnica1999/PLN (carpeta TALLER-4)
+Integrantes: Erika Valeria Rivera Jiménez · Julián Guillermo Carrillo Meneses ·
+             Carlos Andrés Garnica Salazar · Oscar Andrés Prieto Moreno
+Septiembre de 2026 · Repositorio: https://github.com/Garnica1999/PLN (TALLER-4)
 
-ESTE ZIP INCLUYE LOS 3 ARCHIVOS DE ENTRADA DEL NOTEBOOK
--------------------------------------------------------
-En data/raw/ están los insumos requeridos por el notebook (descargables del
-Drive del taller):
-  - entrevistas_all_2023-03-21_14-24_05.json  (dataset de entrevistas, ~231 MB)
-  - books-20260904T025322Z-1-001.zip         (libros CEV en PDF, ~269 MB)
-  - Resource-tesauro.rdf                     (tesauro/ontología CEV, ~5 MB)
-Con solo estos tres archivos el notebook genera todo lo demás (configuración
-embebida, corpus segmentado, normalizado y lematizado, rankings, métricas y
-figuras) mediante su sección "Regeneración" (REGEN_AUTOMATICO=True).
+QUÉ SE HIZO (RESUMEN)
+---------------------
+Se construyó un sistema de recuperación de información (IR) que relaciona las
+2.486 entrevistas de víctimas del conflicto colombiano (CEV/JEP) con los 10 tomos
+del Informe Final de la Comisión de la Verdad, cubriendo los 6 puntos del taller:
+  1. Extracción y preparación del corpus: 917 segmentos por títulos del índice
+     (niveles 1-2; fusión <300 palabras; techo 4.000), normalización estructural
+     de entrevistas (8 categorías canónicas de anonimización) y preprocesado
+     lingüístico con spaCy es_core_news_md (lemas, parada + 51 muletillas + 62
+     correcciones).
+  2. Análisis exploratorio: longitudes, diversidad léxica (TTR muestreado 0,609
+     vs 0,514; Yule K 31,8 vs 38,7), n-gramas y nubes uni/bi/tri, comparación
+     léxica por log-odds (Jaccard 0,221) y 345 pares near-duplicados (>0,85)
+     reportados sin eliminar.
+  3. Modelo de IR: TF-IDF sobre lemas (ngram 1-2, sublinear, l2; 118.748
+     features; cobertura 99,92 %); entrevistas = queries y segmentos = colección;
+     evaluación proxy sobre 30 pares (P@1 0,5333 estricto / 1,0 aceptable;
+     P@3 0,7667/1,0) y variantes A/B/C (54,8/84,6/96,6 % de coincidencia top-1).
+  4. Métricas manuales: Okapi BM25 (k1=1,5; b=0,75) y Rocchio con pseudo-
+     relevancia (α=1; β=0,75; γ=0,15) implementados desde cero, con
+     auto-verificaciones y comparación (solapamiento top-1/conjunto top-5:
+     base–BM25 57,0/65,7 %; base–Rocchio 70,1/100,0 %; sensibilidad k=3 vs k=5).
+  5. Comparación de corpus: heatmap agregado 10×10 (grupos de entrevistas por
+     tomo del top-1 BM25 × tomos; diagonal 0,0725 > 0,0608 fuera), heatmap
+     top-25 por documento (máximo BM25 32.700,223) y cuadro de 30 vínculos con
+     fragmentos.
+  6. Informe final: PDF de 23 páginas con metodología, justificación de cada
+     decisión y parámetros, resultados, arquitectura final de recuperación,
+     evaluación crítica y 17 referencias citadas.
 
-CONTENIDO (organizado por carpetas)
------------------------------------
-notebooks/     Taller_4_IR_CEV.ipynb — NOTEBOOK ÚNICO ENTREGABLE (125 celdas),
-               ejecutado sin errores; cubre los 6 puntos del taller.
-informe/       Informe_Final_Taller4.pdf — INFORME FINAL (PDF compilado, 21
-               páginas). Las fuentes LaTeX y su instructivo están en el
-               repositorio (TALLER-4/informe_latex/).
-data/raw/      Los 3 insumos (ver arriba).
-data/corpus/   Corpus derivado ya generado (copia de conveniencia):
-               segmentos_libros.jsonl (917 segmentos), segmentos_por_tomo/,
-               y preprocesado/{libros,entrevistas}_{lemas,tokens}.txt + *_docs.json.
-imagenes/      16 figuras del taller (EDA + heatmap agregado + heatmap top-25).
-resultados/    Rankings TF-IDF/BM25/Rocchio(+k3), evaluación de la muestra,
-               heatmaps y vínculos, métricas por fase y 18 CSV del EDA.
-scripts/       Pipeline de producción con CLI (01_extraer_libros, 02_preprocesar,
-               03_eda, 04_evaluar_muestra, ensamblar_notebook_t4).
-experimentos/  experimento_1_tfidf_base.py (modelo IR TF-IDF y variantes).
-tests/         51 pruebas pytest (extracción, preprocesado, IR, independencia).
-plan/          PLAN.md (historial v1–v8), arquitectura, estado del arte (17
-               referencias), decisiones, verificaciones.
-config/        Configuración congelada (stopwords, correcciones, tfidf, TOC).
-README_TALLER4.md — descripción general del taller.
+ESTRUCTURA DEL ZIP
+------------------
+notebooks/Taller_4_IR_CEV.ipynb  Notebook único (127 celdas, 6 puntos, ejecutado
+                                 sin errores; autocontenido).
+informe/Informe_Final_Taller4.pdf  Informe final (23 páginas).
+data/raw/                        LOS 3 INSUMOS del notebook (descargables del
+                                 Drive del taller): dataset de entrevistas
+                                 (231 MB), libros CEV (269 MB) y tesauro (5 MB).
+data/corpus/                     Corpus derivado de conveniencia (917 segmentos;
+                                 lemas/tokens/docs de ambos corpus).
+imagenes/                        16 figuras del taller.
+resultados/                      Rankings TF-IDF/BM25/Rocchio(+k3), evaluación,
+                                 heatmaps, vínculos, métricas y 18 CSV del EDA.
+scripts/ · experimentos/ · tests/  Pipeline con CLI, experimento IR y 51 pruebas.
+plan/ · config/                  Documentación (PLAN v1-v9, estado del arte,
+                                 verificaciones) y configuración congelada.
 
-CÓMO EJECUTAR EL NOTEBOOK DESDE ESTE ZIP
------------------------------------------
-1. Descomprimir el ZIP en cualquier carpeta.
-2. Abrir notebooks/Taller_4_IR_CEV.ipynb (Jupyter/Colab).
-   - Local: usar un entorno con pandas, numpy, scikit-learn, spacy (+ modelo
-     es_core_news_md), matplotlib, seaborn, wordcloud y nbclient.
-   - Colab: subir la carpeta descomprimida y abrir el notebook; el detector de
-     raíz localiza data/ automáticamente.
-3. Ejecutar todas las celdas ("Run all"). Si data/corpus ya está presente, el
-   notebook usa los cachés y termina en ~1–2 min; si se desea probar la
-   regeneración desde cero, borre data/corpus y vuelva a ejecutar (la primera
-   corrida tarda 15–60 min: extracción de libros 5–15 min + spaCy 10–40 min).
+CÓMO EJECUTAR EL NOTEBOOK (SOLO 3 INSUMOS)
+------------------------------------------
+1. Descomprimir el ZIP y abrir notebooks/Taller_4_IR_CEV.ipynb.
+2. Local: entorno con pandas, numpy, scikit-learn, spacy (+es_core_news_md),
+   matplotlib, seaborn, wordcloud y nbclient. Colab: subir la carpeta y abrir;
+   el notebook localiza la raíz automáticamente (acepta los caches o los
+   insumos en data/raw/).
+3. Ejecutar todo ("Run all"). Con data/corpus presente termina en ~1-3 min; si
+   se borra data/corpus, regenera todo desde los insumos en 15-60 min
+   (libros 5-15 min; spaCy 10-40 min) mediante la sección "Regeneración"
+   (REGEN_AUTOMATICO=True, configuración embebida en el notebook).
 
-EXCLUSIÓN POR TAMAÑO (no requerida para ejecutar)
--------------------------------------------------
+EXCLUSIONES (TAMAÑO / PRIVACIDAD)
+---------------------------------
 No se incluyen entrevistas_normalizadas.jsonl (~186 MB) ni
-entrevistas_tokens.txt (~191 MB). La normalización se regenera automáticamente
-con el notebook (se observó en la prueba: 57 s); los tokens crudos no son
-necesarios para ninguna celda del taller y pueden regenerarse, si se desean,
-con: scripts/02_preprocesar.py spacy --corpus entrevistas --force.
-El intermedio normalizado contiene PII hablada y no debe distribuirse.
+entrevistas_tokens.txt (~191 MB): el notebook los regenera desde el dataset si
+se necesitan. El intermedio normalizado contiene PII hablada de las
+transcripciones y no debe distribuirse. Las fuentes LaTeX del informe
+(main.tex, references.bib, figuras) están en el repositorio, no en el ZIP.
 
-MÉTRICAS CLAVE
---------------
-- Corpus: 10/10 tomos, 917 segmentos, 2.271.493 palabras; 2.486 entrevistas.
-- EDA: TTR_m1000 0,609 (libros) vs 0,514 (entrevistas); Yule K 31,8 vs 38,7;
-  Jaccard 0,221; 345 pares near-duplicados (>0,85) reportados sin eliminar.
-- IR: TF-IDF 118.748 features, cobertura 99,92 %; P@1 0,5333/1,0 y P@3
-  0,7667/1,0; variantes A/B/C 54,8/84,6/96,6 % de coincidencia top-1.
-- P4: BM25 manual (k1=1,5; b=0,75) y Rocchio (α=1; β=0,75; γ=0,15), con
-  comparación cuantitativa entre métricas y sensibilidad k=3 vs k=5.
-- P5: heatmap agregado 10×10 (diagonal 0,0725 > 0,0608 fuera) + heatmap top-25
-  (máximo BM25 32.700,223) + cuadro de 30 vínculos con fragmentos.
+VERIFICACIÓN
+------------
+- Ejecución aislada con SOLO los 3 insumos: 0 errores (regeneración completa;
+  valores idénticos al informe: TESTIMONIAL 76,77 %; P@1 0,5333/1,0;
+  P@3 0,7667/1,0; TTR 0,609/0,514; BM25 top-1 1.863; Rocchio 1.947).
+- Ejecución del ZIP descomprimido (paquete completo): 0 errores en ~2,5 min.
+- 51 pruebas pytest aprobadas; ruff 0; sin fuga de datos fuera de data/raw.
