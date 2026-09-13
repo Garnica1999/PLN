@@ -96,7 +96,7 @@ compara/verifica y los usa para las figuras oficiales con `mostrar_png`).
   ~10-40 min). Si el insumo necesario no está en `data/raw/`, el notebook
   avisa cómo descargarlo y sigue sin excepción (las secciones muestran
   avisos `[aviso]/[info]` y los cálculos inline).
-- **Si descargas el repositorio completo**: los caches ya viajan en
+- **Si partes del paquete completo del proyecto**: los caches ya viajan en
   `data/corpus/` (los 3 insumos >100 MB NO están versionados: descárgalos
   una sola vez del Drive) y el Run all termina en ~1 minuto.
 - `config/`, `resultados/` e `imagenes/` pueden borrarse sin romper el
@@ -108,22 +108,21 @@ compara/verifica y los usa para las figuras oficiales con `mostrar_png`).
 
 El notebook localiza solo la raíz del proyecto: busca el marcador
 `data/corpus/segmentos_libros.jsonl` en ancestros, subcarpetas (hasta 3
-niveles, cubre `/content/PLN-main/TALLER-4`), rutas típicas y la variable
-`TALLER4_ROOT`; si no lo encuentra lanza un error claro con estas opciones
-(la celda de diagnóstico de la Sec 00 imprime un checklist ✓/✗ de archivos):
+niveles, cubre el ZIP del proyecto descomprimido en `/content` aunque quede
+anidado), rutas típicas y la variable `TALLER4_ROOT`; si no lo encuentra
+lanza un error claro con estas opciones (la celda de diagnóstico de la Sec 00
+imprime un checklist ✓/✗ de archivos):
 
-- **Opción A (subir la carpeta)**: descarga el zip del repositorio
-  (GitHub → Code → Download ZIP), súbelo a Colab y descomprímelo en
-  `/content` (deja la carpeta en `/content/PLN-main/TALLER-4`, que se
-  detecta automáticamente). Alternativa: subir directamente la carpeta
-  `TALLER-4` completa a `/content/TALLER-4`.
-- **Opción B (auto-descarga)**: abre `notebooks/Taller_4_IR_CEV.ipynb` con
-  "Open in Colab" y pon `AUTO_DESCARGAR_REPO = True` en la celda de
-  configuración de la Sec 00: si la raíz no aparece, el notebook descarga el
-  repositorio automáticamente y reintenta.
-- **Opción C (Drive)**: monta Google Drive y deja la carpeta en
-  `/content/drive/MyDrive/TALLER-4`, o define la variable de entorno
-  `TALLER4_ROOT` con la ruta exacta de la carpeta TALLER-4.
+- **Opción A (subir la carpeta o el ZIP)**: sube a Colab y descomprime en
+  `/content` la carpeta `TALLER-4` completa o el ZIP del proyecto; la raíz se
+  detecta automáticamente aunque quede anidada en una subcarpeta
+  (`/content/<carpeta>/TALLER-4`).
+- **Opción B (`TALLER4_ROOT` o Drive)**: define la variable de entorno
+  `TALLER4_ROOT` con la ruta exacta de la carpeta del proyecto, o monta
+  Google Drive y deja la carpeta en `/content/drive/MyDrive/TALLER-4`.
+- **Opción C (insumos en `data/raw/`)**: mantén los 3 insumos del taller
+  (dataset de entrevistas, libros y tesauro) en `data/raw/`: la raíz se
+  reconoce por ellos y las secciones muestran avisos `[aviso]/[info]`.
 
 ### Regeneración opcional del corpus dentro del notebook (sección "Sec 0b — Regeneración")
 

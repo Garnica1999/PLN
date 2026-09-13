@@ -61,6 +61,15 @@ Motivo (Carlos): figura 11 algo más grande; eliminar brechas entre figuras/tabl
 - [x] **Prueba B (SOLO insumos: sin caches/resultados/imágenes/config)**: nbclient 0 errores en **971,9 s**; regeneración completa (E1 libros 10/10, E2 normalizar 57 s + spaCy 2.486 docs en 758 s); valores reproducidos en outputs: 76,77 %; P@1 0,5333; P@3 0,7667; TTR 0,609/0,514; Yule 31,8/38,7; BM25 top-1 1.863; Rocchio 1.947. (E3 oficial requiere `config/` incluida en el ZIP; el notebook funciona sin ella con avisos.)
 - [x] Git: rama `taller-4-final-v9` → PR → merge. ZIP y carpeta extraída se excluyen del versionado por tamaño (393 MB > 100 MB de GitHub); quedan locales + `entregable/LEEME.txt` versionado. Sin ingestas en graphiti (según instrucción de Carlos).
 
+## v9.6 (2026-09-12) — Sin referencias al repositorio en documentos ni código [COMPLETADO]
+Motivo (Carlos): borrar el enlace al repositorio del LEEME y cualquier referencia al repositorio en documentos y código.
+- [x] LEEME: retirada la línea "Repositorio: https://github.com/..." y reescritas las menciones operativas a "repositorio" (ahora "ZIP/carpeta del proyecto" o "no se incluyen en este ZIP").
+- [x] Informe LaTeX: eliminadas las 3 menciones al repositorio (comentario de plantilla, trazabilidad "en el material de la entrega", caption del listado de funciones); PDF recompilado (23 páginas).
+- [x] Notebook y celdas fuente: eliminada por completo la funcionalidad de auto-descarga del repositorio (`AUTO_DESCARGAR_REPO`, URL codeload y función de descarga) y reescritas ~25 menciones textuales; `buscar_raiz()` conserva TALLER4_ROOT, ancestros/subcarpetas y rutas Colab con error claro (opciones A/B/C sin URLs). Notebook re-ensamblado (124 celdas) y re-ejecutado: 0 errores (83 s), 94/94 celdas con salida.
+- [x] Greps finales: "repositorio|github|codeload|Garnica1999|AUTO_DESCARGAR_REPO" = **0** en notebook_cells/, ipynb, LEEME, tex y PDF (las únicas coincidencias de "Garnica" son los nombres de los autores, que se conservan). ruff 0; pytest 51/51; README actualizado.
+- [x] ZIP re-sellado (357 MB) con notebook (124 celdas, ejecutado), PDF (23 págs), corpus (2 archivos), 16 imágenes, 3 insumos y LEEME; prueba de ejecución del ZIP final verificada: 0 errores en 961,8 s (94/94 celdas; rankings y valores idénticos al informe).
+- [x] Git: rama `taller-4-sin-repo-refs` → PR → merge. Sin ingestas en graphiti (instrucción vigente).
+
 ## v9.5 (2026-09-12) — Entregable 1 explícito en el ZIP: corpus raw + preprocesado de los libros [COMPLETADO]
 Motivo (Carlos): el corpus extraído/preprocesado debía estar explícitamente en el ZIP como dos archivos.
 - [x] Agregada la carpeta `corpus/` al ZIP: `libros_raw_segmentos.jsonl` (texto extraído en crudo; 917 segmentos con metadatos) y `libros_preprocesado_lemas.txt` (corpus preprocesado; 917 líneas de lemas). LEEME actualizado (mapeo al entregable 1).

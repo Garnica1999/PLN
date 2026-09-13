@@ -53,8 +53,8 @@ if "RUTA_RAIZ" not in globals():
     def _raiz_standalone() -> _Path:
         """Localiza la raiz del proyecto TALLER-4 (respaldo standalone).
 
-        Copia del algoritmo robusto de sec00 (sin TALLER4_ROOT ni
-        auto-descarga, para no sorprender en ejecuciones sueltas): ancestros
+        Copia del algoritmo robusto de sec00 (sin TALLER4_ROOT, para no
+        sorprender en ejecuciones sueltas): ancestros
         desde el cwd, subcarpetas de hasta 3 niveles bajo el cwd y bajo cada
         ancestro, y rutas tipicas de Colab. La raiz se reconoce por el cache
         derivado data/corpus/segmentos_libros.jsonl o por cualquiera de los
@@ -131,8 +131,8 @@ if "RUTA_RAIZ" not in globals():
             "carpeta con data/corpus/segmentos_libros.jsonl o alguno de los "
             "3 insumos en data/raw/ (dataset de entrevistas, libros CEV o "
             "tesauro) en el arbol de directorios (sube la carpeta TALLER-4 "
-            "completa a /content o descomprime ahi el zip del repositorio; "
-            "queda en /content/PLN-main/TALLER-4 y tambien se detecta)."
+            "completa a /content o descomprime ahi el ZIP del proyecto "
+            "(carpeta del taller); se detecta aunque quede en una subcarpeta)."
         )
 
     RUTA_RAIZ = _raiz_standalone()
