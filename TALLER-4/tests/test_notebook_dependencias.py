@@ -1,6 +1,6 @@
 """test_notebook_dependencias.py
 
-Fecha: 2026-09-05 (v6.1)
+Fecha: 2026-09-05 (v6.2 fusión V2)
 Descripcion: Tests de independencia total y robustez del notebook entregable
     (notebooks/Taller_4_IR_CEV.ipynb, ensamblado desde notebook_cells/):
 
@@ -25,9 +25,10 @@ Descripcion: Tests de independencia total y robustez del notebook entregable
         expandidos de scripts/01-03 (celdas [auto] del ensamblador) la
         unidad con sentido es el bloque completo: sus lecturas solo
         ocurren cuando el driver de regeneracion los invoca.
-        Las SALIDAS escritas por el propio notebook (v6.1: ranking_bm25.csv,
-        ranking_rocchio.csv, heatmap_tomos.csv,
-        vinculos_entrevistas_libros.csv y heatmap_entrevistas_libros.png)
+        Las SALIDAS escritas por el propio notebook (v6.2: ranking_bm25.csv,
+        ranking_rocchio.csv, ranking_rocchio_k3.csv, heatmap_tomos.csv,
+        heatmap_top25.csv, vinculos_entrevistas_libros.csv,
+        heatmap_entrevistas_libros.png y heatmap_top25_entrevistas_tomos.png)
         se aceptan si la celda las ESCRIBE (to_csv/savefig) y exigen guard
         .exists() si ademas las lee (verificacion opcional de salida).
     (d) las celdas que resuelven la raiz (def buscar_raiz / _raiz_standalone)
@@ -102,15 +103,18 @@ LISTA_BLANCA_DIRECTA = {
 # celda code SOLO puede aparecer en contexto opcional.
 _DIRS_OPCIONALES = ("config/", "resultados/", "imagenes/")
 
-# (c) v6.1: SALIDAS que el propio notebook escribe (no son insumos). Su
+# (c) v6.2: SALIDAS que el propio notebook escribe (no son insumos). Su
 # literal se acepta si la celda/bloque las escribe (to_csv/savefig); si
 # ademas las lee, la lectura exige guard .exists() (verificacion opcional).
 SALIDAS_NOTEBOOK = {
     "ranking_bm25.csv",
     "ranking_rocchio.csv",
+    "ranking_rocchio_k3.csv",
     "heatmap_tomos.csv",
+    "heatmap_top25.csv",
     "vinculos_entrevistas_libros.csv",
     "heatmap_entrevistas_libros.png",
+    "heatmap_top25_entrevistas_tomos.png",
 }
 
 # Marcas de escritura/lectura de archivos para la clasificacion de salidas.
@@ -550,6 +554,11 @@ def _ejecutar_sandbox(tmp_path: Path) -> None:
         "[ok] resultados/heatmap_tomos.csv",
         "[ok] resultados/vinculos_entrevistas_libros.csv",
         "[ok] imagenes/heatmap_entrevistas_libros.png",
+        # v6.2: aportes integrados del Taller_4_IR_CEV_V2 (Rocchio k=3 y
+        # heatmap top-25 por documento).
+        "[ok] resultados/ranking_rocchio_k3.csv",
+        "[ok] resultados/heatmap_top25.csv",
+        "[ok] imagenes/heatmap_top25_entrevistas_tomos.png",
     ]
     faltantes = [texto for texto in esperados if texto not in salida]
     assert not faltantes, (

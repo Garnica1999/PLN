@@ -29,13 +29,30 @@ libros. Esta seccion lo hace con dos salidas complementarias:
 ## 2. Cuadro de vinculos entrevista -> segmento (por tomo)
 
 Para cada tomo, las 3 mejores parejas entrevista -> segmento segun el
-score BM25 (id_doc, id_segmento, score, titulo del segmento): la evidencia
-concreta detras del heatmap, que responde "que entrevistas se vinculan a
-textos de cada libro".
+score BM25 (id_doc, id_segmento, score, titulo del segmento) mas los
+fragmentos lematizados de la pareja: la evidencia concreta detras del
+heatmap, que responde "que entrevistas se vinculan a textos de cada
+libro". Esquema del CSV: tomo, puesto, id_doc, id_segmento, score_bm25,
+titulo_segmento, fragmento_entrevista, fragmento_libro (los fragmentos son
+los primeros 200 caracteres de los textos lematizados limpios de esa
+pareja; aporte de Erika Rivera, Taller_4_IR_CEV_V2).
+
+## 3. Heatmap top-25 entrevistas x 10 tomos (maximo BM25)
+
+Vista por DOCUMENTO adaptada del aporte de Erika Rivera
+(Taller_4_IR_CEV_V2): filas = las 25 entrevistas con mayor suma de scores
+BM25, columnas = los 10 tomos en orden oficial, valor de la celda = score
+BM25 MAXIMO de esa entrevista con cualquier segmento del tomo. A
+diferencia del heatmap 10 x 10 (filas = grupos agregados, celda = coseno
+TF-IDF medio), aqui se conserva la intensidad individual de cada
+entrevista; usa `contexto_base["matriz_bm25"]` (float32) de la Sec 03b y
+se omite con aviso si esa matriz no esta disponible.
 
 Salidas: `resultados/heatmap_tomos.csv`,
-`imagenes/heatmap_entrevistas_libros.png` y
-`resultados/vinculos_entrevistas_libros.csv` (todas son salidas del
+`imagenes/heatmap_entrevistas_libros.png`,
+`resultados/vinculos_entrevistas_libros.csv`,
+`resultados/heatmap_top25.csv` e
+`imagenes/heatmap_top25_entrevistas_tomos.png` (todas son salidas del
 notebook; ningun insumo). La interpretacion esta al final de la seccion.
 """
 
@@ -214,7 +231,135 @@ plt.show()
 
 
 # %%
-"""Cuadro de vinculos: 3 mejores parejas entrevista -> segmento por tomo (BM25)."""
+"""Heatmap top-25 entrevistas x 10 tomos con el MAXIMO score BM25.
+
+Adaptado del aporte de Erika Rivera (Taller_4_IR_CEV_V2): filas = las 25
+entrevistas con mayor SUMA de scores BM25; columnas = los 10 tomos en
+orden oficial; celda = MAXIMO score BM25 de la entrevista contra cualquier
+segmento del tomo. La vista por documento contrasta con el heatmap 10 x 10
+de arriba (filas = grupos agregados, celda = coseno TF-IDF medio). La
+matriz completa `contexto_base["matriz_bm25"]` (float32) la expone la
+Sec 03b en cada corrida; si no esta disponible, la celda avisa y se omite.
+"""
+import seaborn as sns
+
+contexto_base = globals().get("contexto_base")
+RUTA_RESULTADOS = globals().get("RUTA_RESULTADOS")
+RUTA_IMAGENES = globals().get("RUTA_IMAGENES")
+matriz_bm25 = (
+    None if contexto_base is None else contexto_base.get("matriz_bm25")
+)
+if matriz_bm25 is None or RUTA_RESULTADOS is None or RUTA_IMAGENES is None:
+    print(
+        "[aviso] contexto_base['matriz_bm25'] no disponible (o rutas de la "
+        "Sec 00 ausentes): se omite el heatmap top-25. La matriz la expone "
+        "la Sec 03b en cada corrida."
+    )
+else:
+    docs_entrevistas = contexto_base["docs_entrevistas"]
+    docs_libros = contexto_base["docs_libros"]
+    tomos_por_segmento = np.array(
+        [registro["tomo"] for registro in docs_libros]
+    )
+    matriz_max_tomo = np.zeros(
+        (matriz_bm25.shape[0], len(TOMOS_ORDEN)), dtype=np.float32
+    )
+    for indice_tomo, tomo in enumerate(TOMOS_ORDEN):
+        indices_tomo = np.where(tomos_por_segmento == tomo)[0]
+        if indices_tomo.size:
+            matriz_max_tomo[:, indice_tomo] = matriz_bm25[
+                :, indices_tomo
+            ].max(axis=1)
+
+    suma_por_entrevista = matriz_max_tomo.sum(axis=1)
+    indices_top25 = np.argsort(-suma_por_entrevista, kind="stable")[:25]
+    ids_top25 = [docs_entrevistas[i]["id"] for i in indices_top25]
+    etiquetas_top25 = [id_doc[:15] + "..." for id_doc in ids_top25]
+    df_top25 = pd.DataFrame(
+        matriz_max_tomo[indices_top25],
+        index=etiquetas_top25,
+        columns=TOMOS_ORDEN,
+    )
+    print("\n== Heatmap top-25 entrevistas x 10 tomos (maximo BM25 por tomo) ==")
+    print(
+        f"Dimension: {df_top25.shape} | max BM25 = "
+        f"{float(df_top25.to_numpy().max()):.3f} | suma top-25 = "
+        f"{float(np.sort(suma_por_entrevista)[::-1][:25].sum()):,.1f}"
+    )
+
+    ruta_heatmap_top25 = RUTA_RESULTADOS / "heatmap_top25.csv"
+    try:
+        ruta_heatmap_top25.parent.mkdir(parents=True, exist_ok=True)
+        df_top25_csv = df_top25.copy()
+        df_top25_csv.index = ids_top25  # el CSV guarda los id_doc completos
+        df_top25_csv.to_csv(ruta_heatmap_top25, index_label="id_doc")
+        print(
+            f"[ok] resultados/{ruta_heatmap_top25.name}: "
+            f"{df_top25.shape[0]} x {df_top25.shape[1]} (salida del notebook)"
+        )
+    except OSError as exc:
+        print(
+            f"[aviso] no se pudo escribir resultados/"
+            f"{ruta_heatmap_top25.name}: {exc}"
+        )
+
+    plt.figure(figsize=(14, 8))
+    sns.heatmap(
+        df_top25, cmap="YlOrRd", annot=False, linewidths=0.5,
+        cbar_kws={"label": "Nivel de relevancia (BM25)"},
+    )
+    plt.title(
+        "Relacionamiento tematico: top-25 entrevistas vs. tomos de la CEV "
+        "(maximo BM25)",
+        fontsize=14, pad=15,
+    )
+    plt.xlabel("Tomos oficiales (ejes tematicos)", fontsize=12, labelpad=10)
+    plt.ylabel("ID del documento (entrevista)", fontsize=12, labelpad=10)
+    plt.xticks(rotation=45, ha="right")
+    plt.tight_layout()
+    ruta_heatmap_top25_png = (
+        RUTA_IMAGENES / "heatmap_top25_entrevistas_tomos.png"
+    )
+    try:
+        RUTA_IMAGENES.mkdir(parents=True, exist_ok=True)
+        plt.savefig(ruta_heatmap_top25_png, dpi=150, bbox_inches="tight")
+        print(
+            f"[ok] imagenes/{ruta_heatmap_top25_png.name}: "
+            f"{ruta_heatmap_top25_png.stat().st_size / 1024:.1f} KB "
+            "(salida del notebook)"
+        )
+    except OSError as exc:
+        print(
+            f"[aviso] no se pudo guardar imagenes/"
+            f"{ruta_heatmap_top25_png.name}: {exc}"
+        )
+    plt.show()
+
+
+# %% [markdown]
+"""## Lectura del heatmap top-25 (documento vs. agregado)
+
+Vista adaptada del aporte de Erika Rivera (`Taller_4_IR_CEV_V2`).
+Diferencia con el heatmap 10 x 10: alli cada fila es un GRUPO de
+entrevistas (agregado por el tomo del top-1 BM25) y la celda promedia el
+coseno TF-IDF grupo-tomo; aqui cada fila es UNA entrevista (las 25 con
+mayor suma de BM25) y la celda es el MAXIMO score BM25 de esa entrevista
+con cualquier segmento del tomo. La vista por documento conserva la
+intensidad individual (un testimonio puede saturar un eje tematico
+especifico) que el promedio por grupo disuelve; el agregado, en cambio,
+resume la afinidad media del corpus.
+"""
+
+
+# %%
+"""Cuadro de vinculos: 3 mejores parejas entrevista -> segmento por tomo (BM25).
+
+Esquema del CSV: tomo, puesto, id_doc, id_segmento, score_bm25,
+titulo_segmento, fragmento_entrevista, fragmento_libro. Los fragmentos son
+los primeros 200 caracteres de los textos lematizados limpios de la pareja
+(contexto_base["entrevistas_limpios"]/["libros_limpios"], indices de los
+metadatos); aporte de Erika Rivera (Taller_4_IR_CEV_V2).
+"""
 
 
 def tabla_markdown_simple(encabezados: list[str], filas: list[list[str]]) -> str:
@@ -249,6 +394,35 @@ def mostrar_markdown(texto: str) -> None:
     display(Markdown(texto))
 
 
+indice_entrevistas = {
+    registro["id"]: i
+    for i, registro in enumerate(contexto_base["docs_entrevistas"])
+}
+indice_libros = {
+    registro["id"]: i
+    for i, registro in enumerate(contexto_base["docs_libros"])
+}
+
+
+def fragmento_lematizado(
+    textos: list[str], indice: int, longitud: int = 200
+) -> str:
+    """Primeros `longitud` caracteres de un texto lematizado limpio.
+
+    Args:
+        textos: lista de textos de contexto_base (entrevistas_limpios o
+            libros_limpios).
+        indice: posicion del documento en esa lista.
+        longitud: caracteres a conservar (200).
+
+    Returns:
+        Fragmento sin saltos de linea ni espacios repetidos; agrega "..." si
+        el texto original es mas largo que `longitud`.
+    """
+    texto = " ".join(textos[indice].split())
+    return texto[:longitud] + ("..." if len(texto) > longitud else "")
+
+
 filas_vinculos: list[dict] = []
 for tomo in TOMOS_ORDEN:
     mejores = ranking_bm25[ranking_bm25["tomo"] == tomo].nlargest(3, "score")
@@ -261,6 +435,14 @@ for tomo in TOMOS_ORDEN:
                 "id_segmento": fila["id_segmento"],
                 "score_bm25": round(float(fila["score"]), 6),
                 "titulo_segmento": str(fila["titulo_segmento"]),
+                "fragmento_entrevista": fragmento_lematizado(
+                    contexto_base["entrevistas_limpios"],
+                    indice_entrevistas[fila["id_doc"]],
+                ),
+                "fragmento_libro": fragmento_lematizado(
+                    contexto_base["libros_limpios"],
+                    indice_libros[fila["id_segmento"]],
+                ),
             }
         )
 vinculos = pd.DataFrame(
@@ -272,6 +454,8 @@ vinculos = pd.DataFrame(
         "id_segmento",
         "score_bm25",
         "titulo_segmento",
+        "fragmento_entrevista",
+        "fragmento_libro",
     ],
 )
 print("== Cuadro de vinculos (top-3 entrevista -> segmento por tomo, BM25) ==")
@@ -297,12 +481,23 @@ for _, fila in vinculos.iterrows():
             fila["id_segmento"][:46] + (".." if len(fila["id_segmento"]) > 46 else ""),
             f"{fila['score_bm25']:.4f}",
             str(fila["titulo_segmento"]).replace("|", "/")[:52],
+            fila["fragmento_entrevista"].replace("|", "/"),
+            fila["fragmento_libro"].replace("|", "/"),
         ]
     )
 mostrar_markdown(
     "**Vinculos entrevista -> segmento por tomo (BM25, top-3)**\n\n"
     + tabla_markdown_simple(
-        ["tomo", "p.", "id_doc", "id_segmento", "score", "titulo_segmento"],
+        [
+            "tomo",
+            "p.",
+            "id_doc",
+            "id_segmento",
+            "score",
+            "titulo_segmento",
+            "frag. entrevista (200 car.)",
+            "frag. libro (200 car.)",
+        ],
         filas_tabla_md,
     )
 )
