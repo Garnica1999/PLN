@@ -61,6 +61,13 @@ Motivo (Carlos): figura 11 algo más grande; eliminar brechas entre figuras/tabl
 - [x] **Prueba B (SOLO insumos: sin caches/resultados/imágenes/config)**: nbclient 0 errores en **971,9 s**; regeneración completa (E1 libros 10/10, E2 normalizar 57 s + spaCy 2.486 docs en 758 s); valores reproducidos en outputs: 76,77 %; P@1 0,5333; P@3 0,7667; TTR 0,609/0,514; Yule 31,8/38,7; BM25 top-1 1.863; Rocchio 1.947. (E3 oficial requiere `config/` incluida en el ZIP; el notebook funciona sin ella con avisos.)
 - [x] Git: rama `taller-4-final-v9` → PR → merge. ZIP y carpeta extraída se excluyen del versionado por tamaño (393 MB > 100 MB de GitHub); quedan locales + `entregable/LEEME.txt` versionado. Sin ingestas en graphiti (según instrucción de Carlos).
 
+## v9.5 (2026-09-12) — Entregable 1 explícito en el ZIP: corpus raw + preprocesado de los libros [COMPLETADO]
+Motivo (Carlos): el corpus extraído/preprocesado debía estar explícitamente en el ZIP como dos archivos.
+- [x] Agregada la carpeta `corpus/` al ZIP: `libros_raw_segmentos.jsonl` (texto extraído en crudo; 917 segmentos con metadatos) y `libros_preprocesado_lemas.txt` (corpus preprocesado; 917 líneas de lemas). LEEME actualizado (mapeo al entregable 1).
+- [x] ZIP final: **357 MB, 24 archivos** (notebook, informe PDF, 16 imágenes, 3 insumos, 2 archivos de corpus, LEEME); integridad OK; sin archivos extra.
+- [x] Sin impacto en la ejecución: la carpeta `corpus/` no es leída por el notebook (0 referencias); la ejecución con solo insumos ya verificada (0 errores, 959,5 s; 95/95 celdas; valores idénticos al informe) se mantiene.
+- [x] Git: rama `taller-4-corpus-zip` → PR → merge. Sin ingestas en graphiti (instrucción vigente).
+
 ## v9.4 (2026-09-12) — ZIP mínimo esencial (notebook + insumos + informe + imágenes + LEEME) [COMPLETADO]
 Motivo (Carlos): dejar en el ZIP solo los entregables esenciales (notebook, dataset, libros, ontología/tesauro, informe, imágenes y LEEME) y verificar contra el enunciado.
 - [x] ZIP reconstruido: **349 MB, 22 archivos** — `notebooks/Taller_4_IR_CEV.ipynb`, `informe/Informe_Final_Taller4.pdf` (23 págs), `imagenes/` (16 figuras), `data/raw/` (3 insumos) y `LEEME.txt`. Sin corpus/resultados/código/plan/config (el notebook los genera).

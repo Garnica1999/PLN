@@ -23,6 +23,11 @@ informe/Informe_Final_Taller4.pdf    Informe final (23 páginas): metodología y
                                      justificación por punto, resultados, EDA,
                                      métricas, comparación, arquitectura final,
                                      evaluación crítica y referencias.
+corpus/                              Entregable 1 (corpus de los libros) en dos
+                                     archivos: libros_raw_segmentos.jsonl (texto
+                                     extraído en crudo; 917 segmentos con metadatos)
+                                     y libros_preprocesado_lemas.txt (corpus
+                                     preprocesado; 917 líneas de lemas de contenido).
 imagenes/                            16 figuras del taller (14 del EDA + heatmap
                                      agregado entrevistas↔tomos + heatmap top-25).
 LEEME.txt                            Esta guía.
