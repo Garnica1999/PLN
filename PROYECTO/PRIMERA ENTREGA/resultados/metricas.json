@@ -1,5 +1,5 @@
 {
-  "fecha": "2026-09-05",
+  "fecha": "2026-09-08",
   "dataset": "Manuel/sentencias-corte-cons-colombia-1992-2021",
   "n_docs_total_csv": 23750,
   "n_docs_parseados": 23742,
@@ -213,7 +213,7 @@
       335875
     ]
   ],
-  "tiempo_procesamiento_seg": 311.5,
-  "nucleo_ejecucion": "venv local",
-  "nota_raw_previo": "271.907.978 era extrapolacion de muestra de 1000 docs; el valor real sobre 23742 docs es 260.988.316"
+  "nota_raw_previo": "271.907.978 era extrapolacion de muestra de 1000 docs; el valor real sobre 23742 docs es 260.988.316",
+  "tiempo_procesamiento_seg": 282.2,
+  "nucleo_ejecucion": "venv local"
 }

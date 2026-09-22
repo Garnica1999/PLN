@@ -1,0 +1,918 @@
+{
+  "fecha": "2026-09-11T10:26:21.339411",
+  "fase": "ciclo v2 - Fase W(b) EuroVoc-es (variantes A/B/C/D/E)",
+  "modo": "completo",
+  "config": {
+    "semilla": 42,
+    "min_df": 3,
+    "max_features": 100000,
+    "ngram": [
+      1,
+      2
+    ],
+    "optuna_trials": 15,
+    "shap_muestra": 500,
+    "ruta_lemas": "data/lemas_por_doc.parquet",
+    "ruta_etiquetas": "data/etiquetas_areas.parquet",
+    "ruta_splits": "data/splits_m4.parquet",
+    "dir_modelo": "modelos/m4_baseline",
+    "ruta_metricas": "resultados/m4_baseline.json",
+    "ruta_fig_confusion": "figuras/fig_matriz_confusion_m4.png",
+    "ruta_fig_shap": "figuras/shap_lemas_m4.png",
+    "dir_modelo_v1": "modelos/m4_baseline",
+    "ruta_metricas_v1": "resultados/m4_baseline.json",
+    "ruta_json_fase_u": "resultados/m4_eurovoc.json",
+    "ruta_json_jerarquico_ref": "resultados/m4_jerarquico.json",
+    "ruta_json_smoke": "/tmp/opencode/m4_eurovoc_smoke.json",
+    "ruta_log_fase_u": "experimentos/m4_eurovoc.log",
+    "ruta_log_smoke": "/tmp/opencode/m4_eurovoc_smoke.log",
+    "dir_modelo_fase_u": "modelos/m4_eurovoc",
+    "ruta_fig_variantes": "figuras/fig_m4_eurovoc_variantes.png",
+    "ruta_eurovoc_bloques": "config/eurovoc_bloques.json",
+    "ruta_eurovoc_terminos": "config/eurovoc_terminos_es.json"
+  },
+  "hiperparametros_v1_usados": {
+    "C": 53.88253252984515,
+    "solver": "lbfgs",
+    "max_iter": 600,
+    "tol": 0.0001,
+    "fit_intercept": true,
+    "random_state": 42
+  },
+  "macro_grupos": {
+    "derechos": [
+      "derechos_fundamentales",
+      "derechos_sociales_economicos_culturales",
+      "derechos_colectivos_ambiente",
+      "proteccion_aplicacion_derechos"
+    ],
+    "principios": [
+      "principios_fundamentales"
+    ],
+    "ramas_poder_estado": [
+      "rama_legislativa",
+      "rama_ejecutiva",
+      "rama_judicial",
+      "organizacion_estado",
+      "organismos_control"
+    ],
+    "territorio_y_participacion": [
+      "organizacion_territorial",
+      "habitantes_territorio",
+      "participacion_democratica",
+      "elecciones"
+    ],
+    "regimen_economico": [
+      "regimen_economico"
+    ],
+    "reforma_constitucion": [
+      "reforma_constitucion"
+    ]
+  },
+  "macro_grupos_eurovoc": {
+    "derechos_persona": [
+      "derechos_fundamentales",
+      "proteccion_aplicacion_derechos"
+    ],
+    "derechos_sociales_colectivos": [
+      "derechos_sociales_economicos_culturales",
+      "derechos_colectivos_ambiente"
+    ],
+    "principios_constitucionales": [
+      "principios_fundamentales"
+    ],
+    "ramas_del_poder": [
+      "rama_legislativa",
+      "rama_ejecutiva",
+      "rama_judicial"
+    ],
+    "estado_y_control": [
+      "organizacion_estado",
+      "organismos_control"
+    ],
+    "territorio_y_participacion": [
+      "organizacion_territorial",
+      "habitantes_territorio",
+      "participacion_democratica",
+      "elecciones"
+    ],
+    "regimen_economico": [
+      "regimen_economico"
+    ],
+    "reforma_constitucional": [
+      "reforma_constitucion"
+    ]
+  },
+  "mapeo_eurovoc": {
+    "fecha": "2026-09-11T09:53:56.413952",
+    "fase": "ciclo v2 - Fase W(b) EuroVoc-es",
+    "fuente": {
+      "endpoint_sparql": "https://publications.europa.eu/webapi/rdf/sparql",
+      "esquema": "http://eurovoc.europa.eu/100141 (EuroVoc)",
+      "dominios_verificados": {
+        "100143": "08 RELACIONES INTERNACIONALES",
+        "100144": "10 UNION EUROPEA",
+        "100145": "12 DERECHO",
+        "100146": "16 ECONOMIA",
+        "100147": "20 INTERCAMBIOS ECONOMICOS Y COMERCIALES",
+        "100148": "24 ASUNTOS FINANCIEROS",
+        "100149": "28 ASUNTOS SOCIALES",
+        "100150": "32 EDUCACION Y COMUNICACION",
+        "100151": "36 CIENCIA",
+        "100152": "40 EMPRESA Y COMPETENCIA",
+        "100153": "44 TRABAJO Y EMPLEO",
+        "100154": "48 TRANSPORTES",
+        "100155": "52 MEDIO AMBIENTE",
+        "100156": "56 AGRICULTURA, SILVICULTURA Y PESCA",
+        "100157": "60 SECTOR AGROALIMENTARIO",
+        "100158": "64 PRODUCCION, TECNOLOGIA E INVESTIGACION",
+        "100159": "66 ENERGIA",
+        "100160": "68 INDUSTRIA",
+        "100161": "72 GEOGRAFIA",
+        "100184": "1236 DERECHOS Y LIBERTADES"
+      },
+      "metodo": "skos:prefLabel/skos:altLabel con FILTER(lang='es') y cierre de descendientes con skos:broader+ (consulta 2026-09-11); lematizacion identica a 05 (es_core_news_md, is_alpha, lemma_.lower().strip())",
+      "n_conceptos_raiz": 41
+    },
+    "viabilidad_terminos_es": {
+      "viable": true,
+      "n_terminos_lematizados": 1275,
+      "detalle": "EuroVoc publica SKOS en espanol en el endpoint oficial; el cierre de descendientes de los conceptos raiz del mapeo produjo terminos suficientes para features lexicas."
+    },
+    "cobertura": {
+      "anticipada": "E1 (nota_ontologias.md): EuroVoc cubre derecho de la UE, no la CP colombiana; varios bloques solo tienen correspondencia conceptual (p.ej. organismos_control, DESC, principios).",
+      "mapeo_clase_categoria": {
+        "derechos_fundamentales": {
+          "categorias": [
+            {
+              "id": "538",
+              "uri": "http://eurovoc.europa.eu/538",
+              "prefLabel_es": "derechos fundamentales",
+              "n_terminos_cierre": 56
+            },
+            {
+              "id": "584",
+              "uri": "http://eurovoc.europa.eu/584",
+              "prefLabel_es": "derechos humanos",
+              "n_terminos_cierre": 18
+            }
+          ],
+          "justificacion": "Titulo II de la CP (derechos de aplicacion inmediata y derechos humanos del bloque de constitucionalidad): EuroVoc 538 'derechos fundamentales' (dominio 12 DERECHO, microtesauro 1236) y 584 'derechos humanos'."
+        },
+        "derechos_sociales_economicos_culturales": {
+          "categorias": [
+            {
+              "id": "3899",
+              "uri": "http://eurovoc.europa.eu/3899",
+              "prefLabel_es": "derechos sociales",
+              "n_terminos_cierre": 35
+            },
+            {
+              "id": "3901",
+              "uri": "http://eurovoc.europa.eu/3901",
+              "prefLabel_es": "derechos económicos",
+              "n_terminos_cierre": 6
+            }
+          ],
+          "justificacion": "Titulo II, capitulos 2 y 3 de la CP (derechos economicos, sociales y culturales): EuroVoc 3899 'derechos sociales' y 3901 'derechos economicos' (dominio 28 ASUNTOS SOCIALES). Sin equivalente exacto a 'DESC' como descriptor unico."
+        },
+        "derechos_colectivos_ambiente": {
+          "categorias": [
+            {
+              "id": "2470",
+              "uri": "http://eurovoc.europa.eu/2470",
+              "prefLabel_es": "política de medio ambiente",
+              "n_terminos_cierre": 123
+            },
+            {
+              "id": "2825",
+              "uri": "http://eurovoc.europa.eu/2825",
+              "prefLabel_es": "protección del medio ambiente",
+              "n_terminos_cierre": 49
+            }
+          ],
+          "justificacion": "Capitulo 3 de la CP (derechos colectivos y ambiente): EuroVoc 2470 'politica de medio ambiente' y 2825 'proteccion del medio ambiente' (dominio 52 MEDIO AMBIENTE)."
+        },
+        "proteccion_aplicacion_derechos": {
+          "categorias": [
+            {
+              "id": "5400",
+              "uri": "http://eurovoc.europa.eu/5400",
+              "prefLabel_es": "acceso a la justicia",
+              "n_terminos_cierre": 9
+            },
+            {
+              "id": "5371",
+              "uri": "http://eurovoc.europa.eu/5371",
+              "prefLabel_es": "acción judicial",
+              "n_terminos_cierre": 41
+            },
+            {
+              "id": "151",
+              "uri": "http://eurovoc.europa.eu/151",
+              "prefLabel_es": "control de constitucionalidad",
+              "n_terminos_cierre": 0
+            }
+          ],
+          "justificacion": "Acciones constitucionales (tutela, cumplimiento, habeas corpus): EuroVoc 5400 'acceso a la justicia', 5371 'accion judicial' y 151 'control de constitucionalidad' (dominio 12 DERECHO)."
+        },
+        "principios_fundamentales": {
+          "categorias": [
+            {
+              "id": "5622",
+              "uri": "http://eurovoc.europa.eu/5622",
+              "prefLabel_es": "Estado de Derecho",
+              "n_terminos_cierre": 0
+            },
+            {
+              "id": "148",
+              "uri": "http://eurovoc.europa.eu/148",
+              "prefLabel_es": "Constitución",
+              "n_terminos_cierre": 4
+            }
+          ],
+          "justificacion": "Titulo I de la CP (principios y fines del Estado): EuroVoc 5622 'Estado de Derecho' y 148 'Constitucion' (dominio 12 DERECHO). No existen descriptores EuroVoc para 'Estado social de derecho' ni 'soberania popular'."
+        },
+        "rama_legislativa": {
+          "categorias": [
+            {
+              "id": "2242",
+              "uri": "http://eurovoc.europa.eu/2242",
+              "prefLabel_es": "Parlamento",
+              "n_terminos_cierre": 5
+            },
+            {
+              "id": "2702",
+              "uri": "http://eurovoc.europa.eu/2702",
+              "prefLabel_es": "procedimiento legislativo",
+              "n_terminos_cierre": 25
+            },
+            {
+              "id": "41",
+              "uri": "http://eurovoc.europa.eu/41",
+              "prefLabel_es": "competencias del Parlamento",
+              "n_terminos_cierre": 18
+            }
+          ],
+          "justificacion": "Titulo V, capitulo 1 (Congreso): EuroVoc 2242 'Parlamento', 2702 'procedimiento legislativo' y 41 'competencias del Parlamento' (dominio 04 POLITICA)."
+        },
+        "rama_ejecutiva": {
+          "categorias": [
+            {
+              "id": "3062",
+              "uri": "http://eurovoc.europa.eu/3062",
+              "prefLabel_es": "Ejecutivo",
+              "n_terminos_cierre": 48
+            },
+            {
+              "id": "77",
+              "uri": "http://eurovoc.europa.eu/77",
+              "prefLabel_es": "administración pública",
+              "n_terminos_cierre": 85
+            }
+          ],
+          "justificacion": "Titulo V, capitulos 2 y 3 (Presidente, Gobierno): EuroVoc 3062 'Ejecutivo' y 77 'administracion publica' (dominio 04 POLITICA)."
+        },
+        "rama_judicial": {
+          "categorias": [
+            {
+              "id": "5923",
+              "uri": "http://eurovoc.europa.eu/5923",
+              "prefLabel_es": "sistema judicial",
+              "n_terminos_cierre": 65
+            },
+            {
+              "id": "2701",
+              "uri": "http://eurovoc.europa.eu/2701",
+              "prefLabel_es": "procedimiento judicial",
+              "n_terminos_cierre": 102
+            },
+            {
+              "id": "2351",
+              "uri": "http://eurovoc.europa.eu/2351",
+              "prefLabel_es": "profesión jurídica",
+              "n_terminos_cierre": 35
+            }
+          ],
+          "justificacion": "Titulo V, capitulo 4 (jurisdiccion): EuroVoc 5923 'sistema judicial', 2701 'procedimiento judicial' y 2351 'profesion juridica' (dominio 12 DERECHO)."
+        },
+        "organizacion_estado": {
+          "categorias": [
+            {
+              "id": "883",
+              "uri": "http://eurovoc.europa.eu/883",
+              "prefLabel_es": "Estado",
+              "n_terminos_cierre": 22
+            },
+            {
+              "id": "2166",
+              "uri": "http://eurovoc.europa.eu/2166",
+              "prefLabel_es": "organización administrativa",
+              "n_terminos_cierre": 43
+            },
+            {
+              "id": "4304",
+              "uri": "http://eurovoc.europa.eu/4304",
+              "prefLabel_es": "estructura institucional",
+              "n_terminos_cierre": 11
+            }
+          ],
+          "justificacion": "Estructura del Estado (Titulo V y organos autonomos): EuroVoc 883 'Estado', 2166 'organizacion administrativa' y 4304 'estructura institucional' (dominio 04 POLITICA)."
+        },
+        "organismos_control": {
+          "categorias": [
+            {
+              "id": "2579",
+              "uri": "http://eurovoc.europa.eu/2579",
+              "prefLabel_es": "poder de control",
+              "n_terminos_cierre": 1
+            },
+            {
+              "id": "1448",
+              "uri": "http://eurovoc.europa.eu/1448",
+              "prefLabel_es": "instancia de control",
+              "n_terminos_cierre": 0
+            }
+          ],
+          "justificacion": "Contraloria, Procuraduria, Defensoria y control fiscal: EuroVoc 2579 'poder de control' y 1448 'instancia de control' (dominio 04 POLITICA). Cobertura solo conceptual: EuroVoc no tiene equivalentes de 'contraloria' o 'ministerio publico'."
+        },
+        "organizacion_territorial": {
+          "categorias": [
+            {
+              "id": "6034",
+              "uri": "http://eurovoc.europa.eu/6034",
+              "prefLabel_es": "entidad territorial",
+              "n_terminos_cierre": 30
+            },
+            {
+              "id": "2515",
+              "uri": "http://eurovoc.europa.eu/2515",
+              "prefLabel_es": "política regional",
+              "n_terminos_cierre": 42
+            }
+          ],
+          "justificacion": "Titulo XI (entidades territoriales): EuroVoc 6034 'entidad territorial' y 2515 'politica regional' (dominios 04 POLITICA y 72 GEOGRAFIA)."
+        },
+        "habitantes_territorio": {
+          "categorias": [
+            {
+              "id": "385",
+              "uri": "http://eurovoc.europa.eu/385",
+              "prefLabel_es": "demografía",
+              "n_terminos_cierre": 33
+            },
+            {
+              "id": "52",
+              "uri": "http://eurovoc.europa.eu/52",
+              "prefLabel_es": "composición de la población",
+              "n_terminos_cierre": 42
+            },
+            {
+              "id": "1909",
+              "uri": "http://eurovoc.europa.eu/1909",
+              "prefLabel_es": "migración",
+              "n_terminos_cierre": 58
+            }
+          ],
+          "justificacion": "Titulo III (nacionalidad, poblacion del territorio): EuroVoc 385 'demografia', 52 'composicion de la poblacion' y 1909 'migracion' (dominios 28 ASUNTOS SOCIALES y 72 GEOGRAFIA)."
+        },
+        "participacion_democratica": {
+          "categorias": [
+            {
+              "id": "3900",
+              "uri": "http://eurovoc.europa.eu/3900",
+              "prefLabel_es": "derechos políticos",
+              "n_terminos_cierre": 17
+            },
+            {
+              "id": "4750",
+              "uri": "http://eurovoc.europa.eu/4750",
+              "prefLabel_es": "votación",
+              "n_terminos_cierre": 39
+            },
+            {
+              "id": "2258",
+              "uri": "http://eurovoc.europa.eu/2258",
+              "prefLabel_es": "partidos políticos",
+              "n_terminos_cierre": 22
+            }
+          ],
+          "justificacion": "Titulo IV y mecanismos de participacion: EuroVoc 3900 'derechos politicos', 4750 'votacion' y 2258 'partidos politicos' (dominio 04 POLITICA)."
+        },
+        "elecciones": {
+          "categorias": [
+            {
+              "id": "695",
+              "uri": "http://eurovoc.europa.eu/695",
+              "prefLabel_es": "elecciones",
+              "n_terminos_cierre": 15
+            },
+            {
+              "id": "4367",
+              "uri": "http://eurovoc.europa.eu/4367",
+              "prefLabel_es": "sistema electoral",
+              "n_terminos_cierre": 13
+            },
+            {
+              "id": "558",
+              "uri": "http://eurovoc.europa.eu/558",
+              "prefLabel_es": "Derecho electoral",
+              "n_terminos_cierre": 0
+            },
+            {
+              "id": "2186",
+              "uri": "http://eurovoc.europa.eu/2186",
+              "prefLabel_es": "organización electoral",
+              "n_terminos_cierre": 29
+            }
+          ],
+          "justificacion": "Organizacion electoral (CNE, circunscripciones): EuroVoc 695 'elecciones', 4367 'sistema electoral', 558 'Derecho electoral' y 2186 'organizacion electoral' (dominio 04 POLITICA)."
+        },
+        "regimen_economico": {
+          "categorias": [
+            {
+              "id": "3013",
+              "uri": "http://eurovoc.europa.eu/3013",
+              "prefLabel_es": "régimen económico",
+              "n_terminos_cierre": 27
+            },
+            {
+              "id": "2497",
+              "uri": "http://eurovoc.europa.eu/2497",
+              "prefLabel_es": "política económica",
+              "n_terminos_cierre": 68
+            },
+            {
+              "id": "2448",
+              "uri": "http://eurovoc.europa.eu/2448",
+              "prefLabel_es": "política presupuestaria",
+              "n_terminos_cierre": 19
+            },
+            {
+              "id": "424",
+              "uri": "http://eurovoc.europa.eu/424",
+              "prefLabel_es": "deuda pública",
+              "n_terminos_cierre": 6
+            }
+          ],
+          "justificacion": "Titulo XII (regimen economico y hacienda publica): EuroVoc 3013 'regimen economico', 2497 'politica economica', 2448 'politica presupuestaria' y 424 'deuda publica' (dominios 16 ECONOMIA y 24 ASUNTOS FINANCIEROS)."
+        },
+        "reforma_constitucion": {
+          "categorias": [
+            {
+              "id": "3699",
+              "uri": "http://eurovoc.europa.eu/3699",
+              "prefLabel_es": "revisión de la Constitución",
+              "n_terminos_cierre": 0
+            },
+            {
+              "id": "148",
+              "uri": "http://eurovoc.europa.eu/148",
+              "prefLabel_es": "Constitución",
+              "n_terminos_cierre": 4
+            }
+          ],
+          "justificacion": "Titulo XIII (reforma de la Constitucion): EuroVoc 3699 'revision de la Constitucion' (altLabel 'reforma constitucional') y 148 'Constitucion' (dominio 12 DERECHO)."
+        }
+      }
+    },
+    "macro_grupos": {
+      "derechos_persona": {
+        "clases": [
+          "derechos_fundamentales",
+          "proteccion_aplicacion_derechos"
+        ],
+        "categorias_eurovoc": [
+          "12 DERECHO",
+          "1236 DERECHOS Y LIBERTADES",
+          "538 derechos fundamentales",
+          "584 derechos humanos",
+          "5400 acceso a la justicia",
+          "151 control de constitucionalidad"
+        ],
+        "justificacion": "Derechos de la persona y sus garantias judiciales comparten el dominio 12 DERECHO y el microtesauro 1236."
+      },
+      "derechos_sociales_colectivos": {
+        "clases": [
+          "derechos_sociales_economicos_culturales",
+          "derechos_colectivos_ambiente"
+        ],
+        "categorias_eurovoc": [
+          "28 ASUNTOS SOCIALES",
+          "52 MEDIO AMBIENTE",
+          "3899 derechos sociales",
+          "3901 derechos economicos",
+          "2470 politica de medio ambiente"
+        ],
+        "justificacion": "DESC y derechos colectivos/ambiente comparten la logica de derechos de segunda y tercera generacion (dominios 28 y 52)."
+      },
+      "principios_constitucionales": {
+        "clases": [
+          "principios_fundamentales"
+        ],
+        "categorias_eurovoc": [
+          "5622 Estado de Derecho",
+          "148 Constitucion"
+        ],
+        "justificacion": "Principios y fines del Estado se anclan al descriptor 'Estado de Derecho' y a 'Constitucion' (dominio 12 DERECHO)."
+      },
+      "ramas_del_poder": {
+        "clases": [
+          "rama_legislativa",
+          "rama_ejecutiva",
+          "rama_judicial"
+        ],
+        "categorias_eurovoc": [
+          "04 POLITICA",
+          "2242 Parlamento",
+          "3062 Ejecutivo",
+          "5923 sistema judicial"
+        ],
+        "justificacion": "Las tres ramas del poder publico se corresponden con los descriptores institucionales de EuroVoc (Parlamento, Ejecutivo, sistema judicial)."
+      },
+      "estado_y_control": {
+        "clases": [
+          "organizacion_estado",
+          "organismos_control"
+        ],
+        "categorias_eurovoc": [
+          "04 POLITICA",
+          "883 Estado",
+          "2166 organizacion administrativa",
+          "2579 poder de control"
+        ],
+        "justificacion": "Organizacion del Estado y organismos de control comparten los descriptores de estructura institucional y control publico."
+      },
+      "territorio_y_participacion": {
+        "clases": [
+          "organizacion_territorial",
+          "habitantes_territorio",
+          "participacion_democratica",
+          "elecciones"
+        ],
+        "categorias_eurovoc": [
+          "72 GEOGRAFIA",
+          "04 POLITICA",
+          "6034 entidad territorial",
+          "385 demografia",
+          "3900 derechos politicos",
+          "695 elecciones"
+        ],
+        "justificacion": "Territorio, poblacion y mecanismos de participacion electoral comparten los dominios 72 GEOGRAFIA y 04 POLITICA."
+      },
+      "regimen_economico": {
+        "clases": [
+          "regimen_economico"
+        ],
+        "categorias_eurovoc": [
+          "16 ECONOMIA",
+          "24 ASUNTOS FINANCIEROS",
+          "3013 regimen economico",
+          "2497 politica economica"
+        ],
+        "justificacion": "Regimen economico y hacienda publica se anclan a los dominios 16 ECONOMIA y 24 ASUNTOS FINANCIEROS."
+      },
+      "reforma_constitucional": {
+        "clases": [
+          "reforma_constitucion"
+        ],
+        "categorias_eurovoc": [
+          "3699 revision de la Constitucion",
+          "148 Constitucion"
+        ],
+        "justificacion": "Reforma constitucional tiene descriptor directo en EuroVoc (3699, altLabel 'reforma constitucional')."
+      }
+    },
+    "nota_uso": "Variante D: los macro-grupos de la cascada jerarquica usan estos grupos. Variante E: features de conteo normalizado de los terminos de config/eurovoc_terminos_es.json concatenadas al TF-IDF v1. La senal SOLO se adopta si gana en validacion/test (PLAN_v2 Fase W)."
+  },
+  "nota_targets_multietiqueta": "targets = bloques con n>=1 de top3_json binarizados sobre las 16 clases canonicas; el bloque 'deberes' (fuera del espacio de clases) se ignora y se cuenta en el log. Features SOLO del texto enmascarado de lemas.",
+  "referencia_v1_logreg_enmascarado": {
+    "val": {
+      "macro_f1": 1.0,
+      "macro_f1_espacio_fijo": 1.0,
+      "accuracy": 1.0
+    },
+    "test": {
+      "macro_f1": 0.2870081504940973,
+      "macro_f1_espacio_fijo": 0.2690701410882162,
+      "accuracy": 0.5935738444193912
+    },
+    "nota": "recalculo del joblib v1 (modelos/m4_baseline/logreg_enmascarado). v1 reentreno en train+val: su val=1.0 esta contaminado y no se usa para calibrar/seleccionar; solo su test es comparable (esperado 0.2870081505 en el run completo)."
+  },
+  "variante_a_jerarquica": {
+    "val": {
+      "macro_f1": 0.2784834924193308,
+      "macro_f1_espacio_fijo": 0.2784834924193308,
+      "accuracy": 0.5843899690053537
+    },
+    "test": {
+      "macro_f1": 0.2696734356327214,
+      "macro_f1_espacio_fijo": 0.2528188459056764,
+      "accuracy": 0.5837091319052987
+    },
+    "grueso_val": {
+      "macro_f1": 0.45532360937067445,
+      "macro_f1_espacio_fijo": 0.45532360937067445,
+      "accuracy": 0.6925894618202311
+    },
+    "grueso_test": {
+      "macro_f1": 0.4033257034221978,
+      "macro_f1_espacio_fijo": 0.4033257034221978,
+      "accuracy": 0.6857384441939121
+    },
+    "tiempo_seg": 138.9942181110382
+  },
+  "variante_b_multietiqueta": {
+    "val": {
+      "macro_f1_multietiqueta": 0.5333504647329876,
+      "micro_f1_multietiqueta": 0.7943643694674886,
+      "single_label_convertida": {
+        "macro_f1": 0.2882921303820598,
+        "macro_f1_espacio_fijo": 0.2882921303820598,
+        "accuracy": 0.4891518737672584
+      }
+    },
+    "test": {
+      "macro_f1_multietiqueta": 0.4791934636867494,
+      "micro_f1_multietiqueta": 0.7894638694638695,
+      "single_label_convertida": {
+        "macro_f1": 0.2500408361115685,
+        "macro_f1_espacio_fijo": 0.23441328385459545,
+        "accuracy": 0.5011273957158963
+      }
+    },
+    "macro_f1_multietiqueta_val_optimizado": 0.5333504647329876,
+    "umbrales_por_clase": {
+      "derechos_colectivos_ambiente": 0.1,
+      "derechos_fundamentales": 0.325,
+      "derechos_sociales_economicos_culturales": 0.425,
+      "elecciones": 0.5,
+      "habitantes_territorio": 0.25,
+      "organismos_control": 0.25,
+      "organizacion_estado": 0.125,
+      "organizacion_territorial": 0.15,
+      "participacion_democratica": 0.75,
+      "principios_fundamentales": 0.3,
+      "proteccion_aplicacion_derechos": 0.375,
+      "rama_ejecutiva": 0.4,
+      "rama_judicial": 0.275,
+      "rama_legislativa": 0.325,
+      "reforma_constitucion": 0.325,
+      "regimen_economico": 0.1
+    },
+    "iteraciones_por_clase": {
+      "derechos_colectivos_ambiente": 21,
+      "derechos_fundamentales": 54,
+      "derechos_sociales_economicos_culturales": 20,
+      "elecciones": 10,
+      "habitantes_territorio": 16,
+      "organismos_control": 14,
+      "organizacion_estado": 31,
+      "organizacion_territorial": 32,
+      "participacion_democratica": 14,
+      "principios_fundamentales": 74,
+      "proteccion_aplicacion_derechos": 37,
+      "rama_ejecutiva": 28,
+      "rama_judicial": 47,
+      "rama_legislativa": 37,
+      "reforma_constitucion": 19,
+      "regimen_economico": 30
+    },
+    "tiempo_seg": 110.23384046554565
+  },
+  "variante_c_calibracion": {
+    "val_sin_sesgos": {
+      "macro_f1": 0.26832979754734004,
+      "macro_f1_espacio_fijo": 0.26832979754734004,
+      "accuracy": 0.5891800507185122
+    },
+    "val_con_sesgos": {
+      "macro_f1": 0.3791678032737843,
+      "macro_f1_espacio_fijo": 0.3791678032737843,
+      "accuracy": 0.5934065934065934
+    },
+    "test_sin_sesgos": {
+      "macro_f1": 0.2742144257885268,
+      "macro_f1_espacio_fijo": 0.25707602417674386,
+      "accuracy": 0.5916009019165727
+    },
+    "test_con_sesgos": {
+      "macro_f1": 0.2980095633575616,
+      "macro_f1_espacio_fijo": 0.27938396564771406,
+      "accuracy": 0.5837091319052987
+    },
+    "sesgos_por_clase": {
+      "derechos_colectivos_ambiente": 1.75,
+      "derechos_fundamentales": -0.8,
+      "derechos_sociales_economicos_culturales": -0.3,
+      "elecciones": 0.0,
+      "habitantes_territorio": 0.0,
+      "organismos_control": 1.75,
+      "organizacion_estado": 1.55,
+      "organizacion_territorial": 0.0,
+      "participacion_democratica": 0.0,
+      "principios_fundamentales": -1.35,
+      "proteccion_aplicacion_derechos": -0.15,
+      "rama_ejecutiva": -0.4,
+      "rama_judicial": -0.3,
+      "rama_legislativa": -1.05,
+      "reforma_constitucion": 1.5,
+      "regimen_economico": 0.1
+    },
+    "detalle_optimizacion": {
+      "macro_f1_val_antes": 0.26832979754734004,
+      "macro_f1_val_despues": 0.3791678032737843
+    },
+    "nota": "base reentrenada SOLO con train usando hiperparametros v1; el joblib v1 incluye val en su entrenamiento final y contaminaria la calibracion.",
+    "tiempo_seg": 362.0179388523102
+  },
+  "variante_d_jerarquica_eurovoc": {
+    "val": {
+      "macro_f1": 0.2617419711144068,
+      "macro_f1_espacio_fijo": 0.2617419711144068,
+      "accuracy": 0.5812905043674275
+    },
+    "test": {
+      "macro_f1": 0.2624618261282417,
+      "macro_f1_espacio_fijo": 0.24605796199522662,
+      "accuracy": 0.5820180383314544
+    },
+    "grueso_val": {
+      "macro_f1": 0.38110540702329376,
+      "macro_f1_espacio_fijo": 0.38110540702329376,
+      "accuracy": 0.6134122287968442
+    },
+    "grueso_test": {
+      "macro_f1": 0.3671128625592498,
+      "macro_f1_espacio_fijo": 0.3671128625592498,
+      "accuracy": 0.6147125140924464
+    },
+    "macro_grupos_usados": {
+      "derechos_persona": [
+        "derechos_fundamentales",
+        "proteccion_aplicacion_derechos"
+      ],
+      "derechos_sociales_colectivos": [
+        "derechos_sociales_economicos_culturales",
+        "derechos_colectivos_ambiente"
+      ],
+      "principios_constitucionales": [
+        "principios_fundamentales"
+      ],
+      "ramas_del_poder": [
+        "rama_legislativa",
+        "rama_ejecutiva",
+        "rama_judicial"
+      ],
+      "estado_y_control": [
+        "organizacion_estado",
+        "organismos_control"
+      ],
+      "territorio_y_participacion": [
+        "organizacion_territorial",
+        "habitantes_territorio",
+        "participacion_democratica",
+        "elecciones"
+      ],
+      "regimen_economico": [
+        "regimen_economico"
+      ],
+      "reforma_constitucional": [
+        "reforma_constitucion"
+      ]
+    },
+    "nota": "cascada identica a A pero con los macro-grupos derivados del mapeo EuroVoc (config/eurovoc_bloques.json); es reestructuracion del target, sin features de entrada y sin leakage.",
+    "tiempo_seg": 189.2748565673828
+  },
+  "variante_e_eurovoc_features": {
+    "val": {
+      "macro_f1": 0.2770349444794662,
+      "macro_f1_espacio_fijo": 0.2770349444794662,
+      "accuracy": 0.5869258946182023
+    },
+    "test": {
+      "macro_f1": 0.27707436155468024,
+      "macro_f1_espacio_fijo": 0.2597572139575127,
+      "accuracy": 0.5910372040586246
+    },
+    "lexico": {
+      "n_terminos": 1268,
+      "max_tokens": 6,
+      "n_columnas": 16,
+      "clases": [
+        "derechos_colectivos_ambiente",
+        "derechos_fundamentales",
+        "derechos_sociales_economicos_culturales",
+        "elecciones",
+        "habitantes_territorio",
+        "organismos_control",
+        "organizacion_estado",
+        "organizacion_territorial",
+        "participacion_democratica",
+        "principios_fundamentales",
+        "proteccion_aplicacion_derechos",
+        "rama_ejecutiva",
+        "rama_judicial",
+        "rama_legislativa",
+        "reforma_constitucion",
+        "regimen_economico"
+      ],
+      "cobertura_docs_con_acierto": {
+        "train": 1.0,
+        "val": 1.0,
+        "test": 1.0
+      }
+    },
+    "nota": "TF-IDF v1 enmascarado + 16 columnas de proporcion de aciertos del lexico EuroVoc de cada clase (hstack); LogReg reentrenado con hiperparametros v1. La normalizacion por documento (suma 1 cuando hay aciertos) mantiene la escala comparable al TF-IDF L2 v1. Sin leakage: el lexico es externo y las features salen solo del texto enmascarado de lemas.",
+    "tiempo_seg": 1057.178859949112
+  },
+  "seleccion": {
+    "ganadora": "C_calibracion",
+    "macro_f1_val_por_variante": {
+      "A_jerarquica": 0.2784834924193308,
+      "B_multietiqueta": 0.2882921303820598,
+      "C_calibracion": 0.3791678032737843,
+      "D_jerarquica_eurovoc": 0.2617419711144068,
+      "E_eurovoc_features": 0.2770349444794662
+    },
+    "macro_f1_test_por_variante": {
+      "A_jerarquica": 0.2696734356327214,
+      "B_multietiqueta": 0.2500408361115685,
+      "C_calibracion": 0.2980095633575616,
+      "D_jerarquica_eurovoc": 0.2624618261282417,
+      "E_eurovoc_features": 0.27707436155468024
+    },
+    "macro_f1_test_ganadora": 0.2980095633575616,
+    "meta_macro_f1_test_0_32_cumplida": false,
+    "nota_seleccion": "Seleccion por macro-F1 single-label de VALIDACION (mismo protocolo v1, comparable entre variantes). Para B se usa su conversion a etiqueta unica; su metrica nativa (macro-F1 multietiqueta) se reporta aparte y NO se usa para seleccionar. Test no participa en ninguna decision.",
+    "ruta_artefacto_ganadora": "modelos/m4_eurovoc/ganadora_C_calibracion.joblib"
+  },
+  "comparacion_vs_c_referencia": {
+    "referencia": "resultados/m4_jerarquico.json",
+    "fecha_referencia": "2026-09-11T08:32:32.646883",
+    "C_val": 0.3791678032737843,
+    "C_test": 0.2980095633575616,
+    "delta_val_por_variante": {
+      "A_jerarquica": -0.10068431085445351,
+      "B_multietiqueta": -0.09087567289172449,
+      "C_calibracion": 0.0,
+      "D_jerarquica_eurovoc": -0.11742583215937752,
+      "E_eurovoc_features": -0.1021328587943181
+    },
+    "delta_test_por_variante": {
+      "A_jerarquica": -0.028336127724840232,
+      "B_multietiqueta": -0.047968727245993104,
+      "C_calibracion": 0.0,
+      "D_jerarquica_eurovoc": -0.03554773722931992,
+      "E_eurovoc_features": -0.020935201802881387
+    },
+    "nota": "C de referencia = ganadora de la Fase U (m4_jerarquico.json, test 0.2980). Los deltas se calculan contra ese valor congelado, no contra la C recalculada en esta corrida (que debe reproducirlo)."
+  },
+  "recomendacion_adopcion": {
+    "regla": "adoptar solo si la variante gana en macro-F1 de VALIDACION y su test no cae por debajo del test de la C de referencia (0.2980).",
+    "por_variante": {
+      "A_jerarquica": {
+        "adoptar": false,
+        "macro_f1_val": 0.2784834924193308,
+        "macro_f1_test": 0.2696734356327214,
+        "motivo": "no gana en validacion o su test queda por debajo de la C de referencia."
+      },
+      "B_multietiqueta": {
+        "adoptar": false,
+        "macro_f1_val": 0.2882921303820598,
+        "macro_f1_test": 0.2500408361115685,
+        "motivo": "no gana en validacion o su test queda por debajo de la C de referencia."
+      },
+      "C_calibracion": {
+        "adoptar": true,
+        "macro_f1_val": 0.3791678032737843,
+        "macro_f1_test": 0.2980095633575616,
+        "motivo": "C conserva el mejor val/test del run; D/E no la superan."
+      },
+      "D_jerarquica_eurovoc": {
+        "adoptar": false,
+        "macro_f1_val": 0.2617419711144068,
+        "macro_f1_test": 0.2624618261282417,
+        "motivo": "no gana en validacion o su test queda por debajo de la C de referencia."
+      },
+      "E_eurovoc_features": {
+        "adoptar": false,
+        "macro_f1_val": 0.2770349444794662,
+        "macro_f1_test": 0.27707436155468024,
+        "motivo": "no gana en validacion o su test queda por debajo de la C de referencia."
+      }
+    }
+  },
+  "nota_adopcion": "La senal EuroVoc (variantes D y E) es experimental: se registra gane o pierda. Si no gana en validacion y no mejora el test de C, queda como resultado NEGATIVO documentado (PLAN_v2, Fase W(b)); m4_jerarquico.json y m4_baseline.json permanecen INTOCABLES.",
+  "md5_artefactos_v1": {
+    "resultados/m4_baseline.json": "60f8fd1ce4c2edef086d8ee01aaad654",
+    "modelos/m4_baseline/logreg_enmascarado.joblib": "17b7adddc08160e2a942f8c70192703a",
+    "modelos/m4_baseline/tfidf_enmascarado.joblib": "d27899b78a0ead892b70b42021c36ea1",
+    "resultados/m4_jerarquico.json": "94425f6eab8ba03dd7b74d0f3962ca40"
+  },
+  "md5_config_eurovoc": {
+    "config/eurovoc_bloques.json": "d30e1410548e7b19cd719f4ed3749125",
+    "config/eurovoc_terminos_es.json": "bc7a94902329973bb7ad2839027a4bcc"
+  },
+  "tiempo_total_seg": 2022.7393350601196
+}

@@ -16,8 +16,15 @@ venv/
 # Datos pesados (corpus 1.67 GB) y artefactos de notebooks
 PROYECTO/PRIMERA ENTREGA/data/
 .ipynb_checkpoints/
+PROYECTO/PRIMERA ENTREGA/plan/backup_original/
 
 # Sistema
 .DS_Store
 *.out
 PROYECTO/PRIMERA ENTREGA/informe_apa/
+
+# SEGUNDA ENTREGA — datos, modelos y artefactos pesados (regenerables; fuera del repo)
+PROYECTO/SEGUNDA ENTREGA/data/
+PROYECTO/SEGUNDA ENTREGA/modelos/
+PROYECTO/SEGUNDA ENTREGA/resultados/lematizacion/
+PROYECTO/SEGUNDA ENTREGA/experimentos/evidencia_crash_chunks_epoch1/

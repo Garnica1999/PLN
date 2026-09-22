@@ -1,0 +1,121 @@
+tipo,medida,rank,ngrama,score,freq
+bigrama,freq,1,corte constitucional,0.001147,286786
+bigrama,freq,2,derechos fundamentales,0.000966,241467
+bigrama,freq,3,seguridad social,0.000524,131119
+bigrama,freq,4,derecho fundamental,0.000445,111146
+bigrama,freq,5,constitucion politica,0.000437,109220
+bigrama,freq,6,debido proceso,0.000422,105395
+bigrama,freq,7,primera instancia,0.000261,65203
+bigrama,freq,8,minimo vital,0.000254,63487
+bigrama,freq,9,caso concreto,0.000252,63089
+bigrama,freq,10,debe ser,0.000249,62378
+bigrama,freq,11,dos mil,0.000239,59727
+bigrama,freq,12,derechos humanos,0.000239,59694
+bigrama,freq,13,jurisprudencia constitucional,0.000220,54914
+bigrama,freq,14,corte suprema,0.000219,54741
+bigrama,freq,15,tribunal superior,0.000219,54678
+bigrama,freq,16,puede ser,0.000215,53746
+bigrama,freq,17,toda vez,0.000186,46389
+bigrama,freq,18,perjuicio irremediable,0.000185,46368
+bigrama,freq,19,secretaria general,0.000178,44473
+bigrama,freq,20,carta politica,0.000174,43547
+bigrama,pmi,1,aquaria eaza,25.575495,5
+bigrama,pmi,2,bohne helling,25.575495,5
+bigrama,pmi,3,capromyidae capromys,25.575495,5
+bigrama,pmi,4,carribean fruti,25.575495,5
+bigrama,pmi,5,consreg encabcum,25.575495,5
+bigrama,pmi,6,datiles higos,25.575495,5
+bigrama,pmi,7,deccy yanire,25.575495,5
+bigrama,pmi,8,demonstrationsfreiheit geschichte,25.575495,5
+bigrama,pmi,9,desnatadoras descremadoras,25.575495,5
+bigrama,pmi,10,encephalopathy lactic,25.575495,5
+bigrama,pmi,11,engrid jasbley,25.575495,5
+bigrama,pmi,12,flemyn mendelson,25.575495,5
+bigrama,pmi,13,folker kuester,25.575495,5
+bigrama,pmi,14,globe newspaper,25.575495,5
+bigrama,pmi,15,indro montanelli,25.575495,5
+bigrama,pmi,16,irrazo nable,25.575495,5
+bigrama,pmi,17,jonahtan pickhart,25.575495,5
+bigrama,pmi,18,kap farvel,25.575495,5
+bigrama,pmi,19,kritische jurisprudenz,25.575495,5
+bigrama,pmi,20,lijphart arend,25.575495,5
+bigrama,llr,1,derechos fundamentales,2717121.250123,241467
+bigrama,llr,2,corte constitucional,2514098.751480,286786
+bigrama,llr,3,seguridad social,1528073.463982,131119
+bigrama,llr,4,constitucion politica,1161999.849176,109220
+bigrama,llr,5,debido proceso,1139951.899564,105395
+bigrama,llr,6,derecho fundamental,1075294.639586,111146
+bigrama,llr,7,minimo vital,1011730.371965,63487
+bigrama,llr,8,primera instancia,789791.292543,65203
+bigrama,llr,9,dos mil,767260.616938,59727
+bigrama,llr,10,perjuicio irremediable,743664.138398,46368
+bigrama,llr,11,cosa juzgada,739345.612497,41288
+bigrama,llr,12,caso concreto,697264.403147,63089
+bigrama,llr,13,derechos humanos,651609.052573,59694
+bigrama,llr,14,corte suprema,618708.034979,54741
+bigrama,llr,15,tribunal superior,609550.266618,54678
+bigrama,llr,16,cepeda espinosa,574357.037860,30824
+bigrama,llr,17,magistrado ponente,558624.592213,40907
+bigrama,llr,18,toda vez,555048.501287,46389
+bigrama,llr,19,jose cepeda,513805.240961,33155
+bigrama,llr,20,segunda instancia,503982.335195,42244
+trigrama,freq,1,accion de tutela,0.001380,344893
+trigrama,freq,2,articulo del decreto,0.000357,89352
+trigrama,freq,3,suprema de justicia,0.000203,50638
+trigrama,freq,4,proyecto de ley,0.000174,43384
+trigrama,freq,5,juez de tutela,0.000169,42253
+trigrama,freq,6,corte constitucional sentencia,0.000155,38645
+trigrama,freq,7,articulo del codigo,0.000154,38620
+trigrama,freq,8,administracion de justicia,0.000145,36178
+trigrama,freq,9,derecho de peticion,0.000138,34429
+trigrama,freq,10,manuel jose cepeda,0.000132,33071
+trigrama,freq,11,pension de invalidez,0.000131,32678
+trigrama,freq,12,numeral del articulo,0.000123,30858
+trigrama,freq,13,jose cepeda espinosa,0.000123,30669
+trigrama,freq,14,sentencia de mp,0.000123,30635
+trigrama,freq,15,prestacion del servicio,0.000116,29091
+trigrama,freq,16,asi las cosas,0.000116,29038
+trigrama,freq,17,sala de revision,0.000116,28967
+trigrama,freq,18,sala de casacion,0.000113,28373
+trigrama,freq,19,pension de vejez,0.000113,28251
+trigrama,freq,20,social en salud,0.000113,28163
+trigrama,pmi,1,myopathy encephalopathy lactic,51.150989,5
+trigrama,pmi,2,nzeni yatsaca pjeuñ,51.150989,5
+trigrama,pmi,3,pjeuñ wajas yakñisa,51.150989,5
+trigrama,pmi,4,yatsaca pjeuñ wajas,51.150989,5
+trigrama,pmi,5,agra viantes tergiver,50.887955,5
+trigrama,pmi,6,ciclosporin sandimmun neoral,50.887955,5
+trigrama,pmi,7,viantes tergiver sadas,50.887955,5
+trigrama,pmi,8,pasterizadores desnatadoras descremadoras,50.665562,5
+trigrama,pmi,9,humr undervisningsmateriale lecture,50.624920,5
+trigrama,pmi,10,institutionalising socratic constestation,50.624920,6
+trigrama,pmi,11,nkpsguedplf vfpmjbfepxx jvynbwiveppdlwsxxq,50.624920,6
+trigrama,pmi,12,suum cuique tribuere,50.624920,5
+trigrama,pmi,13,zbgupehpzms bhflpdyk rgb,50.624920,6
+trigrama,pmi,14,hauptzollamt hamburg hafen,50.402528,6
+trigrama,pmi,15,mattias institutionalising socratic,50.402528,6
+trigrama,pmi,16,muridae peromyscus polionotus,50.402528,5
+trigrama,pmi,17,avc nkpsguedplf vfpmjbfepxx,50.209883,6
+trigrama,pmi,18,qsmlbedzfeovlcuw avc nkpsguedplf,50.209883,6
+trigrama,pmi,19,slq qsmlbedzfeovlcuw avc,50.209883,6
+trigrama,pmi,20,pharmaton nexian refucil,50.180136,7
+trigrama,llr,1,accion de tutela,5781998.115585,344893
+trigrama,llr,2,accion la tutela,3755937.255791,81
+trigrama,llr,3,accion del tutela,3688628.791617,5
+trigrama,llr,4,accion se tutela,3680409.275734,5
+trigrama,llr,5,accion e tutela,3663942.267096,5
+trigrama,llr,6,accion te tutela,3662383.354428,9
+trigrama,llr,7,principio de tutela,2249638.091822,5
+trigrama,llr,8,sentencia de tutela,2209259.662351,6596
+trigrama,llr,9,juez de tutela,2185948.354071,42253
+trigrama,llr,10,objeto de tutela,2049958.470726,657
+trigrama,llr,11,posibilidad de tutela,1998467.907748,49
+trigrama,llr,12,solicitud de tutela,1982457.905164,6518
+trigrama,llr,13,acciones de tutela,1973601.019541,14748
+trigrama,llr,14,via de tutela,1964343.820776,8589
+trigrama,llr,15,recurso de tutela,1948011.288908,55
+trigrama,llr,16,decreto de tutela,1947442.151225,17
+trigrama,llr,17,sede de tutela,1946334.425524,6538
+trigrama,llr,18,materia de tutela,1945694.031538,1984
+trigrama,llr,19,proceso de tutela,1944497.209988,10216
+trigrama,llr,20,necesidad de tutela,1943972.438162,9

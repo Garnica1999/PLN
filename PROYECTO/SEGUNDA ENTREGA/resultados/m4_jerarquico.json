@@ -1,0 +1,233 @@
+{
+  "fecha": "2026-09-11T08:32:32.646883",
+  "fase": "ciclo v2 - Fase U (jerarquico + multietiqueta + calibracion)",
+  "modo": "completo",
+  "config": {
+    "semilla": 42,
+    "min_df": 3,
+    "max_features": 100000,
+    "ngram": [
+      1,
+      2
+    ],
+    "optuna_trials": 15,
+    "shap_muestra": 500,
+    "ruta_lemas": "data/lemas_por_doc.parquet",
+    "ruta_etiquetas": "data/etiquetas_areas.parquet",
+    "ruta_splits": "data/splits_m4.parquet",
+    "dir_modelo": "modelos/m4_baseline",
+    "ruta_metricas": "resultados/m4_baseline.json",
+    "ruta_fig_confusion": "figuras/fig_matriz_confusion_m4.png",
+    "ruta_fig_shap": "figuras/shap_lemas_m4.png",
+    "dir_modelo_v1": "modelos/m4_baseline",
+    "ruta_metricas_v1": "resultados/m4_baseline.json",
+    "ruta_json_fase_u": "resultados/m4_jerarquico.json",
+    "ruta_json_smoke": "/tmp/opencode/m4_jerarquico_smoke.json",
+    "ruta_log_fase_u": "experimentos/m4_jerarquico.log",
+    "ruta_log_smoke": "/tmp/opencode/m4_jerarquico_smoke.log",
+    "dir_modelo_fase_u": "modelos/m4_jerarquico",
+    "ruta_fig_variantes": "figuras/fig_m4_jerarquico_variantes.png"
+  },
+  "hiperparametros_v1_usados": {
+    "C": 53.88253252984515,
+    "solver": "lbfgs",
+    "max_iter": 600,
+    "tol": 0.0001,
+    "fit_intercept": true,
+    "random_state": 42
+  },
+  "macro_grupos": {
+    "derechos": [
+      "derechos_fundamentales",
+      "derechos_sociales_economicos_culturales",
+      "derechos_colectivos_ambiente",
+      "proteccion_aplicacion_derechos"
+    ],
+    "principios": [
+      "principios_fundamentales"
+    ],
+    "ramas_poder_estado": [
+      "rama_legislativa",
+      "rama_ejecutiva",
+      "rama_judicial",
+      "organizacion_estado",
+      "organismos_control"
+    ],
+    "territorio_y_participacion": [
+      "organizacion_territorial",
+      "habitantes_territorio",
+      "participacion_democratica",
+      "elecciones"
+    ],
+    "regimen_economico": [
+      "regimen_economico"
+    ],
+    "reforma_constitucion": [
+      "reforma_constitucion"
+    ]
+  },
+  "nota_targets_multietiqueta": "targets = bloques con n>=1 de top3_json binarizados sobre las 16 clases canonicas; el bloque 'deberes' (fuera del espacio de clases) se ignora y se cuenta en el log. Features SOLO del texto enmascarado de lemas.",
+  "referencia_v1_logreg_enmascarado": {
+    "val": {
+      "macro_f1": 1.0,
+      "macro_f1_espacio_fijo": 1.0,
+      "accuracy": 1.0
+    },
+    "test": {
+      "macro_f1": 0.2870081504940973,
+      "macro_f1_espacio_fijo": 0.2690701410882162,
+      "accuracy": 0.5935738444193912
+    },
+    "nota": "recalculo del joblib v1 (modelos/m4_baseline/logreg_enmascarado). v1 reentreno en train+val: su val=1.0 esta contaminado y no se usa para calibrar/seleccionar; solo su test es comparable (esperado 0.2870081505 en el run completo)."
+  },
+  "variante_a_jerarquica": {
+    "val": {
+      "macro_f1": 0.2784834924193308,
+      "macro_f1_espacio_fijo": 0.2784834924193308,
+      "accuracy": 0.5843899690053537
+    },
+    "test": {
+      "macro_f1": 0.2696734356327214,
+      "macro_f1_espacio_fijo": 0.2528188459056764,
+      "accuracy": 0.5837091319052987
+    },
+    "grueso_val": {
+      "macro_f1": 0.45532360937067445,
+      "macro_f1_espacio_fijo": 0.45532360937067445,
+      "accuracy": 0.6925894618202311
+    },
+    "grueso_test": {
+      "macro_f1": 0.4033257034221978,
+      "macro_f1_espacio_fijo": 0.4033257034221978,
+      "accuracy": 0.6857384441939121
+    },
+    "tiempo_seg": 136.42709589004517
+  },
+  "variante_b_multietiqueta": {
+    "val": {
+      "macro_f1_multietiqueta": 0.5333504647329876,
+      "micro_f1_multietiqueta": 0.7943643694674886,
+      "single_label_convertida": {
+        "macro_f1": 0.2882921303820598,
+        "macro_f1_espacio_fijo": 0.2882921303820598,
+        "accuracy": 0.4891518737672584
+      }
+    },
+    "test": {
+      "macro_f1_multietiqueta": 0.4791934636867494,
+      "micro_f1_multietiqueta": 0.7894638694638695,
+      "single_label_convertida": {
+        "macro_f1": 0.2500408361115685,
+        "macro_f1_espacio_fijo": 0.23441328385459545,
+        "accuracy": 0.5011273957158963
+      }
+    },
+    "macro_f1_multietiqueta_val_optimizado": 0.5333504647329876,
+    "umbrales_por_clase": {
+      "derechos_colectivos_ambiente": 0.1,
+      "derechos_fundamentales": 0.325,
+      "derechos_sociales_economicos_culturales": 0.425,
+      "elecciones": 0.5,
+      "habitantes_territorio": 0.25,
+      "organismos_control": 0.25,
+      "organizacion_estado": 0.125,
+      "organizacion_territorial": 0.15,
+      "participacion_democratica": 0.75,
+      "principios_fundamentales": 0.3,
+      "proteccion_aplicacion_derechos": 0.375,
+      "rama_ejecutiva": 0.4,
+      "rama_judicial": 0.275,
+      "rama_legislativa": 0.325,
+      "reforma_constitucion": 0.325,
+      "regimen_economico": 0.1
+    },
+    "iteraciones_por_clase": {
+      "derechos_colectivos_ambiente": 21,
+      "derechos_fundamentales": 54,
+      "derechos_sociales_economicos_culturales": 20,
+      "elecciones": 10,
+      "habitantes_territorio": 16,
+      "organismos_control": 14,
+      "organizacion_estado": 31,
+      "organizacion_territorial": 32,
+      "participacion_democratica": 14,
+      "principios_fundamentales": 74,
+      "proteccion_aplicacion_derechos": 37,
+      "rama_ejecutiva": 28,
+      "rama_judicial": 47,
+      "rama_legislativa": 37,
+      "reforma_constitucion": 19,
+      "regimen_economico": 30
+    },
+    "tiempo_seg": 108.83528590202332
+  },
+  "variante_c_calibracion": {
+    "val_sin_sesgos": {
+      "macro_f1": 0.26832979754734004,
+      "macro_f1_espacio_fijo": 0.26832979754734004,
+      "accuracy": 0.5891800507185122
+    },
+    "val_con_sesgos": {
+      "macro_f1": 0.3791678032737843,
+      "macro_f1_espacio_fijo": 0.3791678032737843,
+      "accuracy": 0.5934065934065934
+    },
+    "test_sin_sesgos": {
+      "macro_f1": 0.2742144257885268,
+      "macro_f1_espacio_fijo": 0.25707602417674386,
+      "accuracy": 0.5916009019165727
+    },
+    "test_con_sesgos": {
+      "macro_f1": 0.2980095633575616,
+      "macro_f1_espacio_fijo": 0.27938396564771406,
+      "accuracy": 0.5837091319052987
+    },
+    "sesgos_por_clase": {
+      "derechos_colectivos_ambiente": 1.75,
+      "derechos_fundamentales": -0.8,
+      "derechos_sociales_economicos_culturales": -0.3,
+      "elecciones": 0.0,
+      "habitantes_territorio": 0.0,
+      "organismos_control": 1.75,
+      "organizacion_estado": 1.55,
+      "organizacion_territorial": 0.0,
+      "participacion_democratica": 0.0,
+      "principios_fundamentales": -1.35,
+      "proteccion_aplicacion_derechos": -0.15,
+      "rama_ejecutiva": -0.4,
+      "rama_judicial": -0.3,
+      "rama_legislativa": -1.05,
+      "reforma_constitucion": 1.5,
+      "regimen_economico": 0.1
+    },
+    "detalle_optimizacion": {
+      "macro_f1_val_antes": 0.26832979754734004,
+      "macro_f1_val_despues": 0.3791678032737843
+    },
+    "nota": "base reentrenada SOLO con train usando hiperparametros v1; el joblib v1 incluye val en su entrenamiento final y contaminaria la calibracion.",
+    "tiempo_seg": 350.45412373542786
+  },
+  "seleccion": {
+    "ganadora": "C_calibracion",
+    "macro_f1_val_por_variante": {
+      "A_jerarquica": 0.2784834924193308,
+      "B_multietiqueta": 0.2882921303820598,
+      "C_calibracion": 0.3791678032737843
+    },
+    "macro_f1_test_por_variante": {
+      "A_jerarquica": 0.2696734356327214,
+      "B_multietiqueta": 0.2500408361115685,
+      "C_calibracion": 0.2980095633575616
+    },
+    "macro_f1_test_ganadora": 0.2980095633575616,
+    "meta_macro_f1_test_0_32_cumplida": false,
+    "nota_seleccion": "Seleccion por macro-F1 single-label de VALIDACION (mismo protocolo v1, comparable entre variantes). Para B se usa su conversion a etiqueta unica; su metrica nativa (macro-F1 multietiqueta) se reporta aparte y NO se usa para seleccionar. Test no participa en ninguna decision.",
+    "ruta_artefacto_ganadora": "modelos/m4_jerarquico/ganadora_C_calibracion.joblib"
+  },
+  "md5_artefactos_v1": {
+    "resultados/m4_baseline.json": "60f8fd1ce4c2edef086d8ee01aaad654",
+    "modelos/m4_baseline/logreg_enmascarado.joblib": "17b7adddc08160e2a942f8c70192703a",
+    "modelos/m4_baseline/tfidf_enmascarado.joblib": "d27899b78a0ead892b70b42021c36ea1"
+  },
+  "tiempo_total_seg": 758.4988005161285
+}

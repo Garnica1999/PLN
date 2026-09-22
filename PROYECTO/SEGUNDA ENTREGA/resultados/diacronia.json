@@ -1,0 +1,998 @@
+{
+  "fecha": "2026-09-09",
+  "areas": {
+    "insight": {
+      "primer_trienio": "1992-1994",
+      "ultimo_trienio": "2019-2021",
+      "areas_mayor_crecimiento_pp": [
+        {
+          "area": "principios_fundamentales",
+          "delta_pp": 20.21
+        },
+        {
+          "area": "derechos_sociales_economicos_culturales",
+          "delta_pp": 5.62
+        },
+        {
+          "area": "rama_legislativa",
+          "delta_pp": 1.39
+        }
+      ],
+      "areas_mayor_caida_pp": [
+        {
+          "area": "derechos_fundamentales",
+          "delta_pp": -24.16
+        },
+        {
+          "area": "proteccion_aplicacion_derechos",
+          "delta_pp": -1.5
+        },
+        {
+          "area": "rama_judicial",
+          "delta_pp": -1.21
+        }
+      ]
+    },
+    "tabla_anual": {
+      "1992": {
+        "derechos_colectivos_ambiente": 0.0,
+        "derechos_fundamentales": 61.111,
+        "derechos_sociales_economicos_culturales": 5.556,
+        "elecciones": 0.0,
+        "habitantes_territorio": 0.0,
+        "organismos_control": 0.0,
+        "organizacion_estado": 0.0,
+        "organizacion_territorial": 1.282,
+        "participacion_democratica": 0.0,
+        "principios_fundamentales": 23.077,
+        "proteccion_aplicacion_derechos": 2.991,
+        "rama_ejecutiva": 2.137,
+        "rama_judicial": 2.564,
+        "rama_legislativa": 0.427,
+        "reforma_constitucion": 0.0,
+        "regimen_economico": 0.855,
+        "sin_area_definida": 0.0
+      },
+      "1993": {
+        "derechos_colectivos_ambiente": 0.336,
+        "derechos_fundamentales": 59.732,
+        "derechos_sociales_economicos_culturales": 5.369,
+        "elecciones": 0.0,
+        "habitantes_territorio": 0.0,
+        "organismos_control": 0.503,
+        "organizacion_estado": 0.168,
+        "organizacion_territorial": 0.839,
+        "participacion_democratica": 0.168,
+        "principios_fundamentales": 20.47,
+        "proteccion_aplicacion_derechos": 1.342,
+        "rama_ejecutiva": 2.685,
+        "rama_judicial": 3.523,
+        "rama_legislativa": 2.349,
+        "reforma_constitucion": 0.0,
+        "regimen_economico": 2.517,
+        "sin_area_definida": 0.0
+      },
+      "1994": {
+        "derechos_colectivos_ambiente": 0.347,
+        "derechos_fundamentales": 57.886,
+        "derechos_sociales_economicos_culturales": 7.799,
+        "elecciones": 0.0,
+        "habitantes_territorio": 0.0,
+        "organismos_control": 0.0,
+        "organizacion_estado": 0.347,
+        "organizacion_territorial": 0.52,
+        "participacion_democratica": 0.173,
+        "principios_fundamentales": 19.757,
+        "proteccion_aplicacion_derechos": 2.08,
+        "rama_ejecutiva": 1.04,
+        "rama_judicial": 4.159,
+        "rama_legislativa": 3.813,
+        "reforma_constitucion": 0.0,
+        "regimen_economico": 2.08,
+        "sin_area_definida": 0.0
+      },
+      "1995": {
+        "derechos_colectivos_ambiente": 0.322,
+        "derechos_fundamentales": 52.657,
+        "derechos_sociales_economicos_culturales": 7.568,
+        "elecciones": 0.161,
+        "habitantes_territorio": 0.161,
+        "organismos_control": 0.322,
+        "organizacion_estado": 1.61,
+        "organizacion_territorial": 2.415,
+        "participacion_democratica": 0.161,
+        "principios_fundamentales": 19.807,
+        "proteccion_aplicacion_derechos": 2.738,
+        "rama_ejecutiva": 1.771,
+        "rama_judicial": 4.187,
+        "rama_legislativa": 3.543,
+        "reforma_constitucion": 0.0,
+        "regimen_economico": 2.576,
+        "sin_area_definida": 0.0
+      },
+      "1996": {
+        "derechos_colectivos_ambiente": 0.281,
+        "derechos_fundamentales": 48.523,
+        "derechos_sociales_economicos_culturales": 10.127,
+        "elecciones": 0.0,
+        "habitantes_territorio": 0.141,
+        "organismos_control": 0.422,
+        "organizacion_estado": 0.985,
+        "organizacion_territorial": 2.25,
+        "participacion_democratica": 0.141,
+        "principios_fundamentales": 17.722,
+        "proteccion_aplicacion_derechos": 4.641,
+        "rama_ejecutiva": 1.969,
+        "rama_judicial": 4.219,
+        "rama_legislativa": 4.923,
+        "reforma_constitucion": 0.0,
+        "regimen_economico": 3.235,
+        "sin_area_definida": 0.422
+      },
+      "1997": {
+        "derechos_colectivos_ambiente": 0.294,
+        "derechos_fundamentales": 43.759,
+        "derechos_sociales_economicos_culturales": 8.076,
+        "elecciones": 0.0,
+        "habitantes_territorio": 0.294,
+        "organismos_control": 0.441,
+        "organizacion_estado": 0.294,
+        "organizacion_territorial": 1.615,
+        "participacion_democratica": 0.0,
+        "principios_fundamentales": 24.816,
+        "proteccion_aplicacion_derechos": 4.552,
+        "rama_ejecutiva": 1.175,
+        "rama_judicial": 6.608,
+        "rama_legislativa": 3.818,
+        "reforma_constitucion": 0.147,
+        "regimen_economico": 3.377,
+        "sin_area_definida": 0.734
+      },
+      "1998": {
+        "derechos_colectivos_ambiente": 0.0,
+        "derechos_fundamentales": 52.12,
+        "derechos_sociales_economicos_culturales": 8.229,
+        "elecciones": 0.0,
+        "habitantes_territorio": 0.0,
+        "organismos_control": 0.0,
+        "organizacion_estado": 0.873,
+        "organizacion_territorial": 1.496,
+        "participacion_democratica": 0.0,
+        "principios_fundamentales": 18.454,
+        "proteccion_aplicacion_derechos": 7.107,
+        "rama_ejecutiva": 0.623,
+        "rama_judicial": 3.865,
+        "rama_legislativa": 3.117,
+        "reforma_constitucion": 0.125,
+        "regimen_economico": 2.369,
+        "sin_area_definida": 1.621
+      },
+      "1999": {
+        "derechos_colectivos_ambiente": 0.0,
+        "derechos_fundamentales": 42.916,
+        "derechos_sociales_economicos_culturales": 10.858,
+        "elecciones": 0.0,
+        "habitantes_territorio": 0.103,
+        "organismos_control": 0.207,
+        "organizacion_estado": 1.138,
+        "organizacion_territorial": 0.724,
+        "participacion_democratica": 0.0,
+        "principios_fundamentales": 21.613,
+        "proteccion_aplicacion_derechos": 5.895,
+        "rama_ejecutiva": 1.655,
+        "rama_judicial": 5.481,
+        "rama_legislativa": 3.102,
+        "reforma_constitucion": 0.0,
+        "regimen_economico": 2.378,
+        "sin_area_definida": 3.93
+      },
+      "2000": {
+        "derechos_colectivos_ambiente": 0.0,
+        "derechos_fundamentales": 39.232,
+        "derechos_sociales_economicos_culturales": 11.426,
+        "elecciones": 0.0,
+        "habitantes_territorio": 0.101,
+        "organismos_control": 0.404,
+        "organizacion_estado": 0.607,
+        "organizacion_territorial": 1.213,
+        "participacion_democratica": 0.0,
+        "principios_fundamentales": 23.155,
+        "proteccion_aplicacion_derechos": 13.751,
+        "rama_ejecutiva": 1.213,
+        "rama_judicial": 4.146,
+        "rama_legislativa": 2.326,
+        "reforma_constitucion": 0.0,
+        "regimen_economico": 1.921,
+        "sin_area_definida": 0.506
+      },
+      "2001": {
+        "derechos_colectivos_ambiente": 0.0,
+        "derechos_fundamentales": 38.462,
+        "derechos_sociales_economicos_culturales": 9.109,
+        "elecciones": 0.0,
+        "habitantes_territorio": 0.0,
+        "organismos_control": 0.101,
+        "organizacion_estado": 0.607,
+        "organizacion_territorial": 1.113,
+        "participacion_democratica": 0.101,
+        "principios_fundamentales": 31.377,
+        "proteccion_aplicacion_derechos": 8.502,
+        "rama_ejecutiva": 0.709,
+        "rama_judicial": 3.745,
+        "rama_legislativa": 4.251,
+        "reforma_constitucion": 0.0,
+        "regimen_economico": 1.417,
+        "sin_area_definida": 0.506
+      },
+      "2002": {
+        "derechos_colectivos_ambiente": 0.101,
+        "derechos_fundamentales": 39.718,
+        "derechos_sociales_economicos_culturales": 10.383,
+        "elecciones": 0.0,
+        "habitantes_territorio": 0.0,
+        "organismos_control": 0.0,
+        "organizacion_estado": 0.504,
+        "organizacion_territorial": 1.109,
+        "participacion_democratica": 0.0,
+        "principios_fundamentales": 29.94,
+        "proteccion_aplicacion_derechos": 5.948,
+        "rama_ejecutiva": 0.907,
+        "rama_judicial": 5.544,
+        "rama_legislativa": 2.923,
+        "reforma_constitucion": 0.101,
+        "regimen_economico": 2.419,
+        "sin_area_definida": 0.403
+      },
+      "2003": {
+        "derechos_colectivos_ambiente": 0.0,
+        "derechos_fundamentales": 39.53,
+        "derechos_sociales_economicos_culturales": 9.602,
+        "elecciones": 0.0,
+        "habitantes_territorio": 0.102,
+        "organismos_control": 0.102,
+        "organizacion_estado": 0.613,
+        "organizacion_territorial": 0.613,
+        "participacion_democratica": 0.0,
+        "principios_fundamentales": 31.971,
+        "proteccion_aplicacion_derechos": 7.865,
+        "rama_ejecutiva": 0.613,
+        "rama_judicial": 4.086,
+        "rama_legislativa": 2.451,
+        "reforma_constitucion": 0.0,
+        "regimen_economico": 1.839,
+        "sin_area_definida": 0.613
+      },
+      "2004": {
+        "derechos_colectivos_ambiente": 0.0,
+        "derechos_fundamentales": 39.938,
+        "derechos_sociales_economicos_culturales": 10.78,
+        "elecciones": 0.0,
+        "habitantes_territorio": 0.0,
+        "organismos_control": 0.0,
+        "organizacion_estado": 0.616,
+        "organizacion_territorial": 0.821,
+        "participacion_democratica": 0.0,
+        "principios_fundamentales": 27.207,
+        "proteccion_aplicacion_derechos": 7.187,
+        "rama_ejecutiva": 0.411,
+        "rama_judicial": 5.544,
+        "rama_legislativa": 4.62,
+        "reforma_constitucion": 0.0,
+        "regimen_economico": 2.156,
+        "sin_area_definida": 0.719
+      },
+      "2005": {
+        "derechos_colectivos_ambiente": 0.0,
+        "derechos_fundamentales": 45.703,
+        "derechos_sociales_economicos_culturales": 15.066,
+        "elecciones": 0.0,
+        "habitantes_territorio": 0.0,
+        "organismos_control": 0.0,
+        "organizacion_estado": 0.202,
+        "organizacion_territorial": 0.607,
+        "participacion_democratica": 0.0,
+        "principios_fundamentales": 21.941,
+        "proteccion_aplicacion_derechos": 7.179,
+        "rama_ejecutiva": 0.303,
+        "rama_judicial": 5.46,
+        "rama_legislativa": 2.022,
+        "reforma_constitucion": 0.0,
+        "regimen_economico": 1.517,
+        "sin_area_definida": 0.0
+      },
+      "2006": {
+        "derechos_colectivos_ambiente": 0.0,
+        "derechos_fundamentales": 41.362,
+        "derechos_sociales_economicos_culturales": 13.415,
+        "elecciones": 0.0,
+        "habitantes_territorio": 0.102,
+        "organismos_control": 0.0,
+        "organizacion_estado": 0.305,
+        "organizacion_territorial": 0.711,
+        "participacion_democratica": 0.203,
+        "principios_fundamentales": 25.0,
+        "proteccion_aplicacion_derechos": 5.894,
+        "rama_ejecutiva": 0.203,
+        "rama_judicial": 7.622,
+        "rama_legislativa": 3.862,
+        "reforma_constitucion": 0.102,
+        "regimen_economico": 1.22,
+        "sin_area_definida": 0.0
+      },
+      "2007": {
+        "derechos_colectivos_ambiente": 0.101,
+        "derechos_fundamentales": 37.841,
+        "derechos_sociales_economicos_culturales": 18.466,
+        "elecciones": 0.0,
+        "habitantes_territorio": 0.0,
+        "organismos_control": 0.0,
+        "organizacion_estado": 0.505,
+        "organizacion_territorial": 0.505,
+        "participacion_democratica": 0.0,
+        "principios_fundamentales": 27.649,
+        "proteccion_aplicacion_derechos": 5.247,
+        "rama_ejecutiva": 0.202,
+        "rama_judicial": 5.045,
+        "rama_legislativa": 3.027,
+        "reforma_constitucion": 0.101,
+        "regimen_economico": 1.312,
+        "sin_area_definida": 0.0
+      },
+      "2008": {
+        "derechos_colectivos_ambiente": 0.0,
+        "derechos_fundamentales": 39.63,
+        "derechos_sociales_economicos_culturales": 14.066,
+        "elecciones": 0.0,
+        "habitantes_territorio": 0.205,
+        "organismos_control": 0.0,
+        "organizacion_estado": 0.719,
+        "organizacion_territorial": 0.103,
+        "participacion_democratica": 0.0,
+        "principios_fundamentales": 29.774,
+        "proteccion_aplicacion_derechos": 6.776,
+        "rama_ejecutiva": 0.103,
+        "rama_judicial": 4.312,
+        "rama_legislativa": 2.875,
+        "reforma_constitucion": 0.103,
+        "regimen_economico": 1.335,
+        "sin_area_definida": 0.0
+      },
+      "2009": {
+        "derechos_colectivos_ambiente": 0.0,
+        "derechos_fundamentales": 40.23,
+        "derechos_sociales_economicos_culturales": 13.375,
+        "elecciones": 0.0,
+        "habitantes_territorio": 0.0,
+        "organismos_control": 0.0,
+        "organizacion_estado": 0.418,
+        "organizacion_territorial": 0.522,
+        "participacion_democratica": 0.0,
+        "principios_fundamentales": 29.049,
+        "proteccion_aplicacion_derechos": 6.374,
+        "rama_ejecutiva": 1.045,
+        "rama_judicial": 4.911,
+        "rama_legislativa": 3.239,
+        "reforma_constitucion": 0.0,
+        "regimen_economico": 0.836,
+        "sin_area_definida": 0.0
+      },
+      "2010": {
+        "derechos_colectivos_ambiente": 0.0,
+        "derechos_fundamentales": 42.363,
+        "derechos_sociales_economicos_culturales": 14.358,
+        "elecciones": 0.0,
+        "habitantes_territorio": 0.0,
+        "organismos_control": 0.0,
+        "organizacion_estado": 0.0,
+        "organizacion_territorial": 0.509,
+        "participacion_democratica": 0.0,
+        "principios_fundamentales": 27.902,
+        "proteccion_aplicacion_derechos": 5.499,
+        "rama_ejecutiva": 0.509,
+        "rama_judicial": 5.499,
+        "rama_legislativa": 2.24,
+        "reforma_constitucion": 0.0,
+        "regimen_economico": 1.018,
+        "sin_area_definida": 0.102
+      },
+      "2011": {
+        "derechos_colectivos_ambiente": 0.209,
+        "derechos_fundamentales": 40.125,
+        "derechos_sociales_economicos_culturales": 15.778,
+        "elecciones": 0.209,
+        "habitantes_territorio": 0.0,
+        "organismos_control": 0.0,
+        "organizacion_estado": 0.418,
+        "organizacion_territorial": 0.313,
+        "participacion_democratica": 0.0,
+        "principios_fundamentales": 26.437,
+        "proteccion_aplicacion_derechos": 4.807,
+        "rama_ejecutiva": 1.254,
+        "rama_judicial": 5.538,
+        "rama_legislativa": 3.239,
+        "reforma_constitucion": 0.0,
+        "regimen_economico": 1.672,
+        "sin_area_definida": 0.0
+      },
+      "2012": {
+        "derechos_colectivos_ambiente": 0.103,
+        "derechos_fundamentales": 39.117,
+        "derechos_sociales_economicos_culturales": 13.244,
+        "elecciones": 0.0,
+        "habitantes_territorio": 0.0,
+        "organismos_control": 0.0,
+        "organizacion_estado": 0.513,
+        "organizacion_territorial": 0.924,
+        "participacion_democratica": 0.0,
+        "principios_fundamentales": 31.417,
+        "proteccion_aplicacion_derechos": 4.209,
+        "rama_ejecutiva": 0.308,
+        "rama_judicial": 5.544,
+        "rama_legislativa": 2.669,
+        "reforma_constitucion": 0.205,
+        "regimen_economico": 1.745,
+        "sin_area_definida": 0.0
+      },
+      "2013": {
+        "derechos_colectivos_ambiente": 0.0,
+        "derechos_fundamentales": 39.107,
+        "derechos_sociales_economicos_culturales": 14.453,
+        "elecciones": 0.0,
+        "habitantes_territorio": 0.0,
+        "organismos_control": 0.213,
+        "organizacion_estado": 0.531,
+        "organizacion_territorial": 0.425,
+        "participacion_democratica": 0.106,
+        "principios_fundamentales": 30.606,
+        "proteccion_aplicacion_derechos": 3.932,
+        "rama_ejecutiva": 0.213,
+        "rama_judicial": 6.482,
+        "rama_legislativa": 2.763,
+        "reforma_constitucion": 0.0,
+        "regimen_economico": 1.169,
+        "sin_area_definida": 0.0
+      },
+      "2014": {
+        "derechos_colectivos_ambiente": 0.104,
+        "derechos_fundamentales": 39.479,
+        "derechos_sociales_economicos_culturales": 13.438,
+        "elecciones": 0.0,
+        "habitantes_territorio": 0.0,
+        "organismos_control": 0.312,
+        "organizacion_estado": 0.625,
+        "organizacion_territorial": 0.625,
+        "participacion_democratica": 0.0,
+        "principios_fundamentales": 33.021,
+        "proteccion_aplicacion_derechos": 3.542,
+        "rama_ejecutiva": 0.208,
+        "rama_judicial": 5.312,
+        "rama_legislativa": 2.604,
+        "reforma_constitucion": 0.0,
+        "regimen_economico": 0.729,
+        "sin_area_definida": 0.0
+      },
+      "2015": {
+        "derechos_colectivos_ambiente": 0.131,
+        "derechos_fundamentales": 38.401,
+        "derechos_sociales_economicos_culturales": 14.548,
+        "elecciones": 0.0,
+        "habitantes_territorio": 0.0,
+        "organismos_control": 0.393,
+        "organizacion_estado": 0.131,
+        "organizacion_territorial": 0.524,
+        "participacion_democratica": 0.0,
+        "principios_fundamentales": 32.372,
+        "proteccion_aplicacion_derechos": 3.539,
+        "rama_ejecutiva": 1.048,
+        "rama_judicial": 4.98,
+        "rama_legislativa": 1.966,
+        "reforma_constitucion": 0.0,
+        "regimen_economico": 1.966,
+        "sin_area_definida": 0.0
+      },
+      "2016": {
+        "derechos_colectivos_ambiente": 0.0,
+        "derechos_fundamentales": 40.166,
+        "derechos_sociales_economicos_culturales": 14.681,
+        "elecciones": 0.0,
+        "habitantes_territorio": 0.0,
+        "organismos_control": 0.277,
+        "organizacion_estado": 0.277,
+        "organizacion_territorial": 0.139,
+        "participacion_democratica": 0.0,
+        "principios_fundamentales": 32.825,
+        "proteccion_aplicacion_derechos": 2.078,
+        "rama_ejecutiva": 0.277,
+        "rama_judicial": 4.986,
+        "rama_legislativa": 2.909,
+        "reforma_constitucion": 0.139,
+        "regimen_economico": 1.247,
+        "sin_area_definida": 0.0
+      },
+      "2017": {
+        "derechos_colectivos_ambiente": 0.273,
+        "derechos_fundamentales": 41.393,
+        "derechos_sociales_economicos_culturales": 13.934,
+        "elecciones": 0.0,
+        "habitantes_territorio": 0.0,
+        "organismos_control": 0.0,
+        "organizacion_estado": 0.0,
+        "organizacion_territorial": 1.093,
+        "participacion_democratica": 0.0,
+        "principios_fundamentales": 34.153,
+        "proteccion_aplicacion_derechos": 2.049,
+        "rama_ejecutiva": 0.683,
+        "rama_judicial": 3.415,
+        "rama_legislativa": 2.049,
+        "reforma_constitucion": 0.0,
+        "regimen_economico": 0.956,
+        "sin_area_definida": 0.0
+      },
+      "2018": {
+        "derechos_colectivos_ambiente": 0.177,
+        "derechos_fundamentales": 43.972,
+        "derechos_sociales_economicos_culturales": 12.234,
+        "elecciones": 0.0,
+        "habitantes_territorio": 0.0,
+        "organismos_control": 0.0,
+        "organizacion_estado": 0.355,
+        "organizacion_territorial": 0.709,
+        "participacion_democratica": 0.0,
+        "principios_fundamentales": 30.851,
+        "proteccion_aplicacion_derechos": 2.837,
+        "rama_ejecutiva": 0.355,
+        "rama_judicial": 4.787,
+        "rama_legislativa": 2.305,
+        "reforma_constitucion": 0.0,
+        "regimen_economico": 1.418,
+        "sin_area_definida": 0.0
+      },
+      "2019": {
+        "derechos_colectivos_ambiente": 0.162,
+        "derechos_fundamentales": 44.156,
+        "derechos_sociales_economicos_culturales": 9.903,
+        "elecciones": 0.0,
+        "habitantes_territorio": 0.0,
+        "organismos_control": 0.0,
+        "organizacion_estado": 0.325,
+        "organizacion_territorial": 0.974,
+        "participacion_democratica": 0.0,
+        "principios_fundamentales": 33.929,
+        "proteccion_aplicacion_derechos": 1.136,
+        "rama_ejecutiva": 1.461,
+        "rama_judicial": 3.247,
+        "rama_legislativa": 2.597,
+        "reforma_constitucion": 0.0,
+        "regimen_economico": 1.948,
+        "sin_area_definida": 0.162
+      },
+      "2020": {
+        "derechos_colectivos_ambiente": 0.198,
+        "derechos_fundamentales": 32.079,
+        "derechos_sociales_economicos_culturales": 10.693,
+        "elecciones": 0.0,
+        "habitantes_territorio": 0.0,
+        "organismos_control": 0.0,
+        "organizacion_estado": 0.594,
+        "organizacion_territorial": 1.386,
+        "participacion_democratica": 0.0,
+        "principios_fundamentales": 40.0,
+        "proteccion_aplicacion_derechos": 0.792,
+        "rama_ejecutiva": 4.356,
+        "rama_judicial": 3.366,
+        "rama_legislativa": 3.168,
+        "reforma_constitucion": 0.0,
+        "regimen_economico": 3.366,
+        "sin_area_definida": 0.0
+      },
+      "2021": {
+        "derechos_colectivos_ambiente": 0.0,
+        "derechos_fundamentales": 30.0,
+        "derechos_sociales_economicos_culturales": 15.0,
+        "elecciones": 0.0,
+        "habitantes_territorio": 0.0,
+        "organismos_control": 0.0,
+        "organizacion_estado": 0.0,
+        "organizacion_territorial": 0.0,
+        "participacion_democratica": 0.0,
+        "principios_fundamentales": 50.0,
+        "proteccion_aplicacion_derechos": 0.0,
+        "rama_ejecutiva": 0.0,
+        "rama_judicial": 0.0,
+        "rama_legislativa": 5.0,
+        "reforma_constitucion": 0.0,
+        "regimen_economico": 0.0,
+        "sin_area_definida": 0.0
+      }
+    }
+  },
+  "lexico": {
+    "min_frecuencia_lema": 50,
+    "transiciones": {
+      "1992-2001->2002-2011": {
+        "top_sube": [
+          {
+            "lema": "incoder",
+            "log_odds": 7.128
+          },
+          {
+            "lema": "rupd",
+            "log_odds": 7.04
+          },
+          {
+            "lema": "fonvivienda",
+            "log_odds": 6.744
+          },
+          {
+            "lema": "chaljub",
+            "log_odds": 6.697
+          },
+          {
+            "lema": "bancadas",
+            "log_odds": 6.686
+          },
+          {
+            "lema": "bariatrica",
+            "log_odds": 6.6
+          },
+          {
+            "lema": "cisa",
+            "log_odds": 6.513
+          },
+          {
+            "lema": "afrodescendientes",
+            "log_odds": 6.36
+          },
+          {
+            "lema": "colmedica",
+            "log_odds": 6.351
+          },
+          {
+            "lema": "indiciado",
+            "log_odds": 6.254
+          },
+          {
+            "lema": "eice",
+            "log_odds": 6.075
+          },
+          {
+            "lema": "humanavivir",
+            "log_odds": 6.013
+          },
+          {
+            "lema": "sgp",
+            "log_odds": 5.97
+          },
+          {
+            "lema": "spv",
+            "log_odds": 5.899
+          },
+          {
+            "lema": "gov",
+            "log_odds": 5.841
+          }
+        ],
+        "top_baja": [
+          {
+            "lema": "juzg",
+            "log_odds": -8.578
+          },
+          {
+            "lema": "trasladante",
+            "log_odds": -6.737
+          },
+          {
+            "lema": "sgpc",
+            "log_odds": -6.318
+          },
+          {
+            "lema": "indalpe",
+            "log_odds": -6.236
+          },
+          {
+            "lema": "asoga",
+            "log_odds": -6.226
+          },
+          {
+            "lema": "erfen",
+            "log_odds": -6.023
+          },
+          {
+            "lema": "dcho",
+            "log_odds": -6.011
+          },
+          {
+            "lema": "croydon",
+            "log_odds": -5.999
+          },
+          {
+            "lema": "febor",
+            "log_odds": -5.937
+          },
+          {
+            "lema": "cuo",
+            "log_odds": -5.87
+          },
+          {
+            "lema": "obtentor",
+            "log_odds": -5.856
+          },
+          {
+            "lema": "infipal",
+            "log_odds": -5.842
+          },
+          {
+            "lema": "kassab",
+            "log_odds": -5.828
+          },
+          {
+            "lema": "comoderna",
+            "log_odds": -5.738
+          },
+          {
+            "lema": "siei",
+            "log_odds": -5.722
+          }
+        ]
+      },
+      "2002-2011->2012-2021": {
+        "top_sube": [
+          {
+            "lema": "covid",
+            "log_odds": 9.511
+          },
+          {
+            "lema": "uariv",
+            "log_odds": 9.207
+          },
+          {
+            "lema": "jep",
+            "log_odds": 9.044
+          },
+          {
+            "lema": "coronavirus",
+            "log_odds": 8.968
+          },
+          {
+            "lema": "arl",
+            "log_odds": 7.888
+          },
+          {
+            "lema": "anla",
+            "log_odds": 7.652
+          },
+          {
+            "lema": "zidres",
+            "log_odds": 7.626
+          },
+          {
+            "lema": "unp",
+            "log_odds": 7.501
+          },
+          {
+            "lema": "cgp",
+            "log_odds": 7.498
+          },
+          {
+            "lema": "pcsja",
+            "log_odds": 7.433
+          },
+          {
+            "lema": "uspec",
+            "log_odds": 7.339
+          },
+          {
+            "lema": "cev",
+            "log_odds": 7.312
+          },
+          {
+            "lema": "cest",
+            "log_odds": 7.29
+          },
+          {
+            "lema": "sivjrnr",
+            "log_odds": 7.282
+          },
+          {
+            "lema": "fome",
+            "log_odds": 7.172
+          }
+        ],
+        "top_baja": [
+          {
+            "lema": "fomin",
+            "log_odds": -6.233
+          },
+          {
+            "lema": "superview",
+            "log_odds": -6.032
+          },
+          {
+            "lema": "sarai",
+            "log_odds": -5.974
+          },
+          {
+            "lema": "guingue",
+            "log_odds": -5.885
+          },
+          {
+            "lema": "capruis",
+            "log_odds": -5.871
+          },
+          {
+            "lema": "intelsat",
+            "log_odds": -5.856
+          },
+          {
+            "lema": "serpvir",
+            "log_odds": -5.849
+          },
+          {
+            "lema": "commsa",
+            "log_odds": -5.795
+          },
+          {
+            "lema": "cja",
+            "log_odds": -5.73
+          },
+          {
+            "lema": "vimarco",
+            "log_odds": -5.696
+          },
+          {
+            "lema": "dragacol",
+            "log_odds": -5.625
+          },
+          {
+            "lema": "pcpicc",
+            "log_odds": -5.615
+          },
+          {
+            "lema": "intervinente",
+            "log_odds": -5.606
+          },
+          {
+            "lema": "pallomari",
+            "log_odds": -5.596
+          },
+          {
+            "lema": "autocheco",
+            "log_odds": -5.596
+          }
+        ]
+      }
+    }
+  },
+  "mtld": {
+    "por_ano": {
+      "1992": {
+        "mtld_media": 64.88,
+        "n_docs": 234
+      },
+      "1993": {
+        "mtld_media": 64.89,
+        "n_docs": 596
+      },
+      "1994": {
+        "mtld_media": 64.64,
+        "n_docs": 577
+      },
+      "1995": {
+        "mtld_media": 64.91,
+        "n_docs": 621
+      },
+      "1996": {
+        "mtld_media": 64.31,
+        "n_docs": 711
+      },
+      "1997": {
+        "mtld_media": 66.07,
+        "n_docs": 681
+      },
+      "1998": {
+        "mtld_media": 65.32,
+        "n_docs": 802
+      },
+      "1999": {
+        "mtld_media": 64.32,
+        "n_docs": 967
+      },
+      "2000": {
+        "mtld_media": 63.67,
+        "n_docs": 989
+      },
+      "2001": {
+        "mtld_media": 61.89,
+        "n_docs": 988
+      },
+      "2002": {
+        "mtld_media": 61.14,
+        "n_docs": 992
+      },
+      "2003": {
+        "mtld_media": 61.7,
+        "n_docs": 979
+      },
+      "2004": {
+        "mtld_media": 60.8,
+        "n_docs": 974
+      },
+      "2005": {
+        "mtld_media": 60.98,
+        "n_docs": 989
+      },
+      "2006": {
+        "mtld_media": 59.81,
+        "n_docs": 984
+      },
+      "2007": {
+        "mtld_media": 60.43,
+        "n_docs": 991
+      },
+      "2008": {
+        "mtld_media": 60.26,
+        "n_docs": 974
+      },
+      "2009": {
+        "mtld_media": 59.65,
+        "n_docs": 957
+      },
+      "2010": {
+        "mtld_media": 59.48,
+        "n_docs": 982
+      },
+      "2011": {
+        "mtld_media": 59.39,
+        "n_docs": 957
+      },
+      "2012": {
+        "mtld_media": 58.99,
+        "n_docs": 974
+      },
+      "2013": {
+        "mtld_media": 59.96,
+        "n_docs": 941
+      },
+      "2014": {
+        "mtld_media": 60.31,
+        "n_docs": 960
+      },
+      "2015": {
+        "mtld_media": 59.0,
+        "n_docs": 763
+      },
+      "2016": {
+        "mtld_media": 59.08,
+        "n_docs": 722
+      },
+      "2017": {
+        "mtld_media": 58.09,
+        "n_docs": 732
+      },
+      "2018": {
+        "mtld_media": 56.66,
+        "n_docs": 564
+      },
+      "2019": {
+        "mtld_media": 56.24,
+        "n_docs": 616
+      },
+      "2020": {
+        "mtld_media": 55.69,
+        "n_docs": 505
+      },
+      "2021": {
+        "mtld_media": 56.77,
+        "n_docs": 20
+      }
+    },
+    "tendencia_mtld_por_ano": -0.319
+  },
+  "tiempos_seg": {
+    "stopwords": 0.6,
+    "areas": 0.3,
+    "lexico": 35.1,
+    "mtld": 0.2,
+    "total": 36.2
+  }
+}

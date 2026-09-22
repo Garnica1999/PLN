@@ -1,0 +1,84 @@
+{
+  "fecha": "2026-09-08",
+  "csv_bytes": 1675758001,
+  "csv_gb": 1.561,
+  "parquet_bytes": 1573196021,
+  "parquet_gb": 1.465,
+  "n_archivos_parquet": 341,
+  "nota_parquet": "Tamano medido tras retirar los 88 archivos del fallback previo (layout C/ano) que coexistian con el layout Hive Spark tipo=/ano=; dataset final solo Hive Spark con 341 archivos mas _SUCCESS y .crc.",
+  "filas_entrada": 23750,
+  "filas_salida": 23742,
+  "filas_excluidas": 8,
+  "excluidas_por_motivo": {
+    "auto": 6,
+    "basura_html": 2
+  },
+  "distribucion_tipo": {
+    "T": 17099,
+    "C": 6246,
+    "SU": 397
+  },
+  "rango_anos": {
+    "min": 1992,
+    "max": 2021
+  },
+  "distribucion_ano": {
+    "1992": 234,
+    "1993": 596,
+    "1994": 577,
+    "1995": 621,
+    "1996": 711,
+    "1997": 681,
+    "1998": 802,
+    "1999": 967,
+    "2000": 989,
+    "2001": 988,
+    "2002": 992,
+    "2003": 979,
+    "2004": 974,
+    "2005": 989,
+    "2006": 984,
+    "2007": 991,
+    "2008": 974,
+    "2009": 957,
+    "2010": 982,
+    "2011": 957,
+    "2012": 974,
+    "2013": 941,
+    "2014": 960,
+    "2015": 763,
+    "2016": 722,
+    "2017": 732,
+    "2018": 564,
+    "2019": 616,
+    "2020": 505,
+    "2021": 20
+  },
+  "tiempo_total_seg": 237.5,
+  "ram_pico_mb": 7966.5,
+  "ram_pico_gb": 7.78,
+  "motor": "spark",
+  "version_spark": "4.2.0",
+  "fallback": false,
+  "java": {
+    "java_default": "openjdk version \"26.0.2\" 2026-07-21",
+    "java17": "openjdk version \"17.0.19\" 2026-04-21",
+    "java_usado": "openjdk version \"17.0.19\" 2026-04-21"
+  },
+  "columnas": [
+    "id",
+    "tipo",
+    "numero",
+    "ano",
+    "texto",
+    "texto_limpio"
+  ],
+  "ruta_parquet": "data/corpus_sentencias.parquet",
+  "verificacion_limpieza_e1": {
+    "n_comparados": 23742,
+    "n_coincidentes": 23742,
+    "tasa_coincidencia": 1.0,
+    "divergencias_ejemplo": []
+  },
+  "stopwords_formas": 306
+}

@@ -1,0 +1,600 @@
+{
+  "fecha": "2026-09-09",
+  "grafo": {
+    "n_nodos": 23742,
+    "n_aristas": 456321,
+    "densidad": 0.00080957,
+    "citas_unicas_doc_canon": 540181,
+    "citas_resueltas": 456321,
+    "citas_no_resueltas": 60208,
+    "pct_resolucion_sobre_unicas": 84.48,
+    "self_loops_excluidos": 23652,
+    "docs_sin_citas": 14,
+    "coincide_con_ner": true
+  },
+  "scc": {
+    "n_componentes_fuertemente_conexas": 7688,
+    "tamano_componente_gigante": 16050,
+    "pct_nodos_en_gigante": 67.6,
+    "n_componentes_restantes": 7687
+  },
+  "pagerank_top20": [
+    {
+      "id": "224",
+      "ano": 1992,
+      "tipo": "C",
+      "area": "derechos_fundamentales",
+      "pagerank": 0.0040307
+    },
+    {
+      "id": "2716",
+      "ano": 1997,
+      "tipo": "SU",
+      "area": "derechos_fundamentales",
+      "pagerank": 0.00360253
+    },
+    {
+      "id": "985",
+      "ano": 1993,
+      "tipo": "T",
+      "area": "derechos_fundamentales",
+      "pagerank": 0.00301365
+    },
+    {
+      "id": "2725",
+      "ano": 1997,
+      "tipo": "SU",
+      "area": "derechos_fundamentales",
+      "pagerank": 0.00290142
+    },
+    {
+      "id": "1332",
+      "ano": 1993,
+      "tipo": "C",
+      "area": "derechos_fundamentales",
+      "pagerank": 0.00287977
+    },
+    {
+      "id": "3113",
+      "ano": 1996,
+      "tipo": "C",
+      "area": "derechos_sociales_economicos_culturales",
+      "pagerank": 0.00278363
+    },
+    {
+      "id": "130",
+      "ano": 1992,
+      "tipo": "T",
+      "area": "derechos_fundamentales",
+      "pagerank": 0.00276698
+    },
+    {
+      "id": "60",
+      "ano": 1992,
+      "tipo": "T",
+      "area": "principios_fundamentales",
+      "pagerank": 0.00269794
+    },
+    {
+      "id": "21",
+      "ano": 1992,
+      "tipo": "T",
+      "area": "derechos_fundamentales",
+      "pagerank": 0.00236616
+    },
+    {
+      "id": "2049",
+      "ano": 1997,
+      "tipo": "T",
+      "area": "derechos_fundamentales",
+      "pagerank": 0.00221917
+    },
+    {
+      "id": "1612",
+      "ano": 1994,
+      "tipo": "T",
+      "area": "principios_fundamentales",
+      "pagerank": 0.00217556
+    },
+    {
+      "id": "295",
+      "ano": 1995,
+      "tipo": "T",
+      "area": "principios_fundamentales",
+      "pagerank": 0.00174719
+    },
+    {
+      "id": "5042",
+      "ano": 1998,
+      "tipo": "C",
+      "area": "derechos_fundamentales",
+      "pagerank": 0.00167239
+    },
+    {
+      "id": "216",
+      "ano": 1992,
+      "tipo": "C",
+      "area": "derechos_sociales_economicos_culturales",
+      "pagerank": 0.00165601
+    },
+    {
+      "id": "1280",
+      "ano": 1993,
+      "tipo": "C",
+      "area": "rama_legislativa",
+      "pagerank": 0.00165045
+    },
+    {
+      "id": "6198",
+      "ano": 1999,
+      "tipo": "SU",
+      "area": "principios_fundamentales",
+      "pagerank": 0.00161053
+    },
+    {
+      "id": "1611",
+      "ano": 1994,
+      "tipo": "T",
+      "area": "derechos_sociales_economicos_culturales",
+      "pagerank": 0.00157939
+    },
+    {
+      "id": "2887",
+      "ano": 1996,
+      "tipo": "T",
+      "area": "derechos_fundamentales",
+      "pagerank": 0.00157679
+    },
+    {
+      "id": "1143",
+      "ano": 1993,
+      "tipo": "T",
+      "area": "principios_fundamentales",
+      "pagerank": 0.00154165
+    },
+    {
+      "id": "1897",
+      "ano": 1994,
+      "tipo": "C",
+      "area": "derechos_sociales_economicos_culturales",
+      "pagerank": 0.00154093
+    }
+  ],
+  "indegree_top10": [
+    {
+      "id": "224",
+      "ano": 1992,
+      "tipo": "C",
+      "area": "derechos_fundamentales",
+      "indegree": 1966.0
+    },
+    {
+      "id": "10062",
+      "ano": 2005,
+      "tipo": "C",
+      "area": "derechos_fundamentales",
+      "indegree": 1628.0
+    },
+    {
+      "id": "6196",
+      "ano": 1999,
+      "tipo": "SU",
+      "area": "derechos_fundamentales",
+      "indegree": 1152.0
+    },
+    {
+      "id": "985",
+      "ano": 1993,
+      "tipo": "T",
+      "area": "derechos_fundamentales",
+      "indegree": 1118.0
+    },
+    {
+      "id": "11705",
+      "ano": 2008,
+      "tipo": "T",
+      "area": "derechos_sociales_economicos_culturales",
+      "indegree": 1081.0
+    },
+    {
+      "id": "4431",
+      "ano": 1998,
+      "tipo": "T",
+      "area": "rama_judicial",
+      "indegree": 954.0
+    },
+    {
+      "id": "8481",
+      "ano": 2003,
+      "tipo": "T",
+      "area": "derechos_fundamentales",
+      "indegree": 929.0
+    },
+    {
+      "id": "3113",
+      "ano": 1996,
+      "tipo": "C",
+      "area": "derechos_sociales_economicos_culturales",
+      "indegree": 897.0
+    },
+    {
+      "id": "8176",
+      "ano": 2002,
+      "tipo": "SU",
+      "area": "derechos_fundamentales",
+      "indegree": 894.0
+    },
+    {
+      "id": "1612",
+      "ano": 1994,
+      "tipo": "T",
+      "area": "principios_fundamentales",
+      "indegree": 859.0
+    }
+  ],
+  "hits": {
+    "metodo": "grafo_completo",
+    "top_hubs": [
+      {
+        "id": "18668",
+        "ano": 2012,
+        "tipo": "SU",
+        "area": "principios_fundamentales",
+        "hub": 0.00115253
+      },
+      {
+        "id": "16011",
+        "ano": 2010,
+        "tipo": "SU",
+        "area": "rama_judicial",
+        "hub": 0.00111815
+      },
+      {
+        "id": "19754",
+        "ano": 2013,
+        "tipo": "T",
+        "area": "principios_fundamentales",
+        "hub": 0.001112
+      },
+      {
+        "id": "20370",
+        "ano": 2013,
+        "tipo": "SU",
+        "area": "derechos_fundamentales",
+        "hub": 0.00102953
+      },
+      {
+        "id": "22769",
+        "ano": 2017,
+        "tipo": "SU",
+        "area": "derechos_fundamentales",
+        "hub": 0.0010273
+      },
+      {
+        "id": "23747",
+        "ano": 2011,
+        "tipo": "SU",
+        "area": "derechos_fundamentales",
+        "hub": 0.0009591
+      },
+      {
+        "id": "18352",
+        "ano": 2012,
+        "tipo": "T",
+        "area": "principios_fundamentales",
+        "hub": 0.00094182
+      },
+      {
+        "id": "12168",
+        "ano": 2007,
+        "tipo": "T",
+        "area": "rama_legislativa",
+        "hub": 0.00093402
+      },
+      {
+        "id": "19991",
+        "ano": 2013,
+        "tipo": "T",
+        "area": "derechos_fundamentales",
+        "hub": 0.00092183
+      },
+      {
+        "id": "23748",
+        "ano": 2011,
+        "tipo": "SU",
+        "area": "proteccion_aplicacion_derechos",
+        "hub": 0.00092124
+      }
+    ],
+    "top_authorities": [
+      {
+        "id": "224",
+        "ano": 1992,
+        "tipo": "C",
+        "area": "derechos_fundamentales",
+        "authority": 0.0133284
+      },
+      {
+        "id": "10062",
+        "ano": 2005,
+        "tipo": "C",
+        "area": "derechos_fundamentales",
+        "authority": 0.0133182
+      },
+      {
+        "id": "8481",
+        "ano": 2003,
+        "tipo": "T",
+        "area": "derechos_fundamentales",
+        "authority": 0.00990985
+      },
+      {
+        "id": "4431",
+        "ano": 1998,
+        "tipo": "T",
+        "area": "rama_judicial",
+        "authority": 0.00948941
+      },
+      {
+        "id": "6591",
+        "ano": 2001,
+        "tipo": "T",
+        "area": "derechos_fundamentales",
+        "authority": 0.00932787
+      },
+      {
+        "id": "8176",
+        "ano": 2002,
+        "tipo": "SU",
+        "area": "derechos_fundamentales",
+        "authority": 0.00929971
+      },
+      {
+        "id": "1612",
+        "ano": 1994,
+        "tipo": "T",
+        "area": "principios_fundamentales",
+        "authority": 0.00823117
+      },
+      {
+        "id": "903",
+        "ano": 1993,
+        "tipo": "T",
+        "area": "principios_fundamentales",
+        "authority": 0.00598497
+      },
+      {
+        "id": "4792",
+        "ano": 1998,
+        "tipo": "T",
+        "area": "derechos_fundamentales",
+        "authority": 0.0057388
+      },
+      {
+        "id": "8826",
+        "ano": 2003,
+        "tipo": "T",
+        "area": "derechos_fundamentales",
+        "authority": 0.00476468
+      }
+    ]
+  },
+  "evolucion_pagerank": {
+    "1992-2001": [
+      {
+        "id": "224",
+        "ano": 1992,
+        "tipo": "C",
+        "area": "derechos_fundamentales",
+        "pagerank": 0.0040307
+      },
+      {
+        "id": "2716",
+        "ano": 1997,
+        "tipo": "SU",
+        "area": "derechos_fundamentales",
+        "pagerank": 0.00360253
+      },
+      {
+        "id": "985",
+        "ano": 1993,
+        "tipo": "T",
+        "area": "derechos_fundamentales",
+        "pagerank": 0.00301365
+      },
+      {
+        "id": "2725",
+        "ano": 1997,
+        "tipo": "SU",
+        "area": "derechos_fundamentales",
+        "pagerank": 0.00290142
+      },
+      {
+        "id": "1332",
+        "ano": 1993,
+        "tipo": "C",
+        "area": "derechos_fundamentales",
+        "pagerank": 0.00287977
+      },
+      {
+        "id": "3113",
+        "ano": 1996,
+        "tipo": "C",
+        "area": "derechos_sociales_economicos_culturales",
+        "pagerank": 0.00278363
+      },
+      {
+        "id": "130",
+        "ano": 1992,
+        "tipo": "T",
+        "area": "derechos_fundamentales",
+        "pagerank": 0.00276698
+      },
+      {
+        "id": "60",
+        "ano": 1992,
+        "tipo": "T",
+        "area": "principios_fundamentales",
+        "pagerank": 0.00269794
+      },
+      {
+        "id": "21",
+        "ano": 1992,
+        "tipo": "T",
+        "area": "derechos_fundamentales",
+        "pagerank": 0.00236616
+      },
+      {
+        "id": "2049",
+        "ano": 1997,
+        "tipo": "T",
+        "area": "derechos_fundamentales",
+        "pagerank": 0.00221917
+      }
+    ],
+    "2002-2011": [
+      {
+        "id": "10062",
+        "ano": 2005,
+        "tipo": "C",
+        "area": "derechos_fundamentales",
+        "pagerank": 0.00109021
+      },
+      {
+        "id": "10159",
+        "ano": 2004,
+        "tipo": "T",
+        "area": "derechos_fundamentales",
+        "pagerank": 0.00092375
+      },
+      {
+        "id": "11705",
+        "ano": 2008,
+        "tipo": "T",
+        "area": "derechos_sociales_economicos_culturales",
+        "pagerank": 0.00091937
+      },
+      {
+        "id": "8481",
+        "ano": 2003,
+        "tipo": "T",
+        "area": "derechos_fundamentales",
+        "pagerank": 0.0007248
+      },
+      {
+        "id": "8176",
+        "ano": 2002,
+        "tipo": "SU",
+        "area": "derechos_fundamentales",
+        "pagerank": 0.00053283
+      },
+      {
+        "id": "8772",
+        "ano": 2003,
+        "tipo": "T",
+        "area": "derechos_fundamentales",
+        "pagerank": 0.00045642
+      },
+      {
+        "id": "9415",
+        "ano": 2005,
+        "tipo": "T",
+        "area": "rama_judicial",
+        "pagerank": 0.00042222
+      },
+      {
+        "id": "9151",
+        "ano": 2003,
+        "tipo": "SU",
+        "area": "derechos_fundamentales",
+        "pagerank": 0.00040002
+      },
+      {
+        "id": "10688",
+        "ano": 2004,
+        "tipo": "T",
+        "area": "principios_fundamentales",
+        "pagerank": 0.00038159
+      },
+      {
+        "id": "9157",
+        "ano": 2003,
+        "tipo": "SU",
+        "area": "derechos_fundamentales",
+        "pagerank": 0.00037746
+      }
+    ],
+    "2012-2021": [
+      {
+        "id": "19764",
+        "ano": 2013,
+        "tipo": "T",
+        "area": "principios_fundamentales",
+        "pagerank": 0.00044349
+      },
+      {
+        "id": "22644",
+        "ano": 2017,
+        "tipo": "C",
+        "area": "derechos_fundamentales",
+        "pagerank": 0.00028927
+      },
+      {
+        "id": "21741",
+        "ano": 2016,
+        "tipo": "T",
+        "area": "derechos_fundamentales",
+        "pagerank": 0.0002262
+      },
+      {
+        "id": "18028",
+        "ano": 2012,
+        "tipo": "T",
+        "area": "derechos_fundamentales",
+        "pagerank": 0.00021142
+      },
+      {
+        "id": "19026",
+        "ano": 2015,
+        "tipo": "T",
+        "area": "principios_fundamentales",
+        "pagerank": 0.00018778
+      },
+      {
+        "id": "18923",
+        "ano": 2015,
+        "tipo": "T",
+        "area": "derechos_fundamentales",
+        "pagerank": 0.00015007
+      },
+      {
+        "id": "19309",
+        "ano": 2015,
+        "tipo": "C",
+        "area": "rama_judicial",
+        "pagerank": 0.00012917
+      },
+      {
+        "id": "17856",
+        "ano": 2012,
+        "tipo": "T",
+        "area": "derechos_fundamentales",
+        "pagerank": 0.00010195
+      },
+      {
+        "id": "20220",
+        "ano": 2013,
+        "tipo": "C",
+        "area": "derechos_fundamentales",
+        "pagerank": 9.977e-05
+      },
+      {
+        "id": "18860",
+        "ano": 2015,
+        "tipo": "T",
+        "area": "derechos_fundamentales",
+        "pagerank": 8.522e-05
+      }
+    ]
+  }
+}

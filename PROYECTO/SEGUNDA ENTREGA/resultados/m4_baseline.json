@@ -1,0 +1,73 @@
+{
+  "fecha": "2026-09-09T09:34:27.911882",
+  "config": {
+    "semilla": 42,
+    "min_df": 3,
+    "max_features": 100000,
+    "ngram": [
+      1,
+      2
+    ],
+    "optuna_trials": 15,
+    "shap_muestra": 500,
+    "ruta_lemas": "data/lemas_por_doc.parquet",
+    "ruta_etiquetas": "data/etiquetas_areas.parquet",
+    "ruta_splits": "data/splits_m4.parquet",
+    "dir_modelo": "modelos/m4_baseline",
+    "ruta_metricas": "resultados/m4_baseline.json",
+    "ruta_fig_confusion": "figuras/fig_matriz_confusion_m4.png",
+    "ruta_fig_shap": "figuras/shap_lemas_m4.png"
+  },
+  "completo": {
+    "linearsvc": {
+      "macro_f1": 0.26542539870111687,
+      "accuracy": 0.5918827508455468
+    },
+    "logreg": {
+      "macro_f1": 0.28517491996495337,
+      "accuracy": 0.5913190529875987
+    }
+  },
+  "enmascarado": {
+    "linearsvc": {
+      "macro_f1": 0.2657108907624217,
+      "accuracy": 0.5924464487034949
+    },
+    "logreg": {
+      "macro_f1": 0.2870081504940973,
+      "accuracy": 0.5935738444193912
+    }
+  },
+  "gap_leakage": {
+    "linearsvc": -0.0002854920613048484,
+    "logreg": -0.0018332305291439144
+  },
+  "shap_top20": {
+    "competente este": 1.6405352220456317,
+    "política en": 1.5139803613472715,
+    "política del": 1.4562022781054373,
+    "numeral de": 1.4037437281977931,
+    "inciso numeral": 1.3999720237472026,
+    "judicial mencionado": 1.3608386074307377,
+    "artículo inciso": 1.345197694503438,
+    "en concordancia": 1.2846120601956192,
+    "concordancia con": 1.2738429594855467,
+    "proferido dentro": 1.2453091346882277,
+    "competencia ser": 1.241677486049423,
+    "concordancia": 1.2392365085603436,
+    "artículo numeral": 1.2032390700317628,
+    "referencia con": 1.1690372874728632,
+    "el niño": 1.126183531937385,
+    "artículo de": 1.0623489607491883,
+    "dispuesto por": 1.0584204083399615,
+    "protección especial": 1.0472192890988703,
+    "él establecido": 1.019121323115339,
+    "administración de": 0.9717580186934934
+  },
+  "nota_shap": "Importancias |coef| medio del mejor modelo lineal (equivalente SHAP lineal); generado por el propio script (trazable).",
+  "mejor_modelo": {
+    "nombre": "logreg_enmascarado",
+    "macro_f1": 0.2870081504940973
+  },
+  "tiempo_total_seg": 9796.244743585587
+}

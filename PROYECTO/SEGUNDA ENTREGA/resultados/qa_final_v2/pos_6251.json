@@ -1,0 +1,177 @@
+{
+  "es_sentencia": true,
+  "score_validacion": 1.0,
+  "id_detectado": "6251",
+  "ponente": "Eduardo Montealegre Lynett",
+  "area": {
+    "top3": [
+      {
+        "area": "derechos_fundamentales",
+        "prob": 0.635
+      },
+      {
+        "area": "principios_fundamentales",
+        "prob": 0.2624
+      },
+      {
+        "area": "proteccion_aplicacion_derechos",
+        "prob": 0.0801
+      }
+    ],
+    "via": "clasificador_m4_logreg_enmascarado"
+  },
+  "articulos_cp": {
+    "extraidos": [
+      {
+        "numero": "21",
+        "texto_150chars": "Se garantiza el derecho a la honra. La ley señalará la forma de su protección",
+        "bloque": "derechos_fundamentales"
+      },
+      {
+        "numero": "209",
+        "texto_150chars": "La función administrativa está al servicio de los intereses generales y se desarrolla con fundamento en los principios de igualdad, moralidad, eficaci",
+        "bloque": "rama_ejecutiva"
+      }
+    ],
+    "recuperados_bm25": [
+      {
+        "numero": "86",
+        "score": 2.2044
+      },
+      {
+        "numero": "241",
+        "score": 1.8631
+      },
+      {
+        "numero": "242",
+        "score": 1.1604
+      },
+      {
+        "numero": "48",
+        "score": 1.0873
+      },
+      {
+        "numero": "186",
+        "score": 0.9498
+      },
+      {
+        "numero": "152",
+        "score": 0.7325
+      },
+      {
+        "numero": "65",
+        "score": 0.6267
+      },
+      {
+        "numero": "334",
+        "score": 0.5948
+      },
+      {
+        "numero": "264",
+        "score": 0.5754
+      },
+      {
+        "numero": "361",
+        "score": 0.5484
+      }
+    ],
+    "reranker_usado": true,
+    "hubs_usado": true,
+    "alpha_hubs": 1.5
+  },
+  "sentencias_citadas": [
+    {
+      "id": "3577",
+      "resuelta": true,
+      "ano": 2000,
+      "pagerank": 0.000426,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "5769",
+      "resuelta": true,
+      "ano": 1999,
+      "pagerank": 5.6e-05,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "4842",
+      "resuelta": true,
+      "ano": 1998,
+      "pagerank": 7.7e-05,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "2084",
+      "resuelta": true,
+      "ano": 1997,
+      "pagerank": 7.4e-05,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "2785",
+      "resuelta": true,
+      "ano": 1996,
+      "pagerank": 4.4e-05,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "2829",
+      "resuelta": true,
+      "ano": 1996,
+      "pagerank": 5e-05,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "2844",
+      "resuelta": true,
+      "ano": 1996,
+      "pagerank": 5e-05,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "3075",
+      "resuelta": true,
+      "ano": 1996,
+      "pagerank": 4.7e-05,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "999",
+      "resuelta": true,
+      "ano": 1993,
+      "pagerank": 0.000576,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "2247",
+      "resuelta": true,
+      "ano": 1997,
+      "pagerank": 6.8e-05,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "2289",
+      "resuelta": true,
+      "ano": 1997,
+      "pagerank": 8.3e-05,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "4648",
+      "resuelta": true,
+      "ano": 1998,
+      "pagerank": 9.9e-05,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "5444",
+      "resuelta": true,
+      "ano": 1999,
+      "pagerank": 2.5e-05,
+      "area": "rama_ejecutiva"
+    }
+  ],
+  "resumen": "Providencia valida de la Corte Constitucional; area tematica derechos_fundamentales (prob 0.635); 2 articulos CP extraidos y 10 recuperados por hibrido BM25/E5+reranker con prior de hubs (alpha=1.5); 13 de 13 sentencias citadas resueltas al corpus.",
+  "tiempo_segundos": 14.39
+}
