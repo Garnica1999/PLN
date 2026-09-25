@@ -651,3 +651,24 @@ Registro cronologico de ejecuciones. Formato:
   empeora y rompe 53 celdas por cada 5 que arregla: quinta vez que el stacking
   generico no aporta. **Estado: CANDIDATE, no adopted** (no cumple A ni B de la
   seccion 29). **0 sondas de LB, 0 usos de holdout, 0 submissions.**
+- 19:30 | v5 P4-P5 corpus web mC4-es y revision de la fusion | `experiments/embedding_04_corpus_mc4_v5.py`
+  (E-CORP-06/07) y `experiments/embedding_05_fasttext_web_v5.py` (EBD-10). Tramo de
+  40 MB del shard 0 de `allenai/c4` config `multilingual/c4-es` (13,9 % del shard,
+  sha256 `96ed39f4...`, licencia ODC-BY), con limpieza de boilerplate de Common
+  Crawl. Resultado de cobertura: web 10M alcanza **0.8256** por tipo y **0.9512** por
+  token frente a 0.6839 y 0.8833 de Wikipedia; la union 20M llega a **0.8413** y
+  0.9553, con `elongaciones` de 0.039 a 0.221, `coloquial` de 0.692 a 0.941 e
+  `insultos` de 0.778 a 0.983, y 1.346 tipos TOXIC nuevos. **Pero la fusion no
+  mejora**: FUSION-WEB 0.7812 (+0.0040), FUSION-MIXTO 0.7776 (+0.0004), frente a
+  FUSION-WIKI 0.7818 (+0.0046), todos con IC95 que toca el 0. El embedding **aislado**
+  si mejora (0.6530 -> 0.6658), lo que confirma que la cobertura sube pero no es la
+  palanca de la complementariedad. Varias variantes ortograficas (`callate`,
+  `arabe`, `estn`, `espaa`) pasan a estar en el vocabulario del corpus web.
+- 19:50 | v5 auditoria final y cierre | `experiments/embedding_06_auditoria_v5.py`
+  (**GO**): 0 usos de recursos prohibidos (la primera version de la auditoria daba
+  22 falsos positivos por buscar la palabra `word2vec` en vez del uso de gensim, y
+  por penalizar la llamada `holdout_v2()` que **excluye** el holdout; se reescribio
+  con comprobaciones semanticas), 0 fugas medidas, holdout 5/5 intacto, submission
+  de V03 verificada, los 6 hashes `.vec` coinciden con los informes y las 7 cifras
+  afirmadas en D-032 se releen de los informes. Informe de cierre en
+  `reports/embedding_phase_closeout_v5.md`. **0 submissions, 0 sondas de LB.**

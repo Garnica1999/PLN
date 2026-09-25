@@ -70,53 +70,46 @@ Leyenda: `[x]` hecho | `[~]` en curso | `[ ]` pendiente | `[!]` bloqueado.
       Escalar a 50M **no** esta justificado por la evidencia disponible y queda
       condicionado a la prueba de complementariedad.
 
-## P3-P6 - Complementariedad (ejecutada, resultado CANDIDATE)
+## P3-P5 - Complementariedad y corpus de registro (ejecutados)
 
 - [x] `EBD-07`: fusion hstack TF-IDF + 200d L2, umbrales congelados de V03
-      (control que reproduce 0.777211 exacto)
+      (el control reproduce 0.777211 exacto)
 - [x] `EBD-08`: fusion con bloque denso estandarizado (descartada: -0.0871)
 - [x] `EBD-09`: meta-modelo anidado Ridge (cerrado: -0.0094, IC95 negativo)
 - [x] Matriz de complementariedad 2x2 y metricas por 11 rebanadas
-- [x] Bootstrap pareado de cada variante frente a V03 (10.000 remuestreos)
-- [x] Decision registrada en **D-031**
-- [ ] Escalar a 50M/100M: **no justificado** por la evidencia (la deficiencia es
-      de registro, no de tamano). Condicionado a que el usuario autorice una
-      fuente de registro web.
+- [x] `E-CORP-06/07`: corpus web mC4-es 10M + mixto 20M, cobertura y contadores §31
+- [x] `EBD-10`: FastText sobre corpus web y mixto, y revision de la fusion
+- [x] Decision registrada en **D-031** y **D-032**
 
+**Resultado**: la cobertura sube mucho (0.6839 -> 0.8413 por tipo; elongaciones
+0.039 -> 0.221) y el embedding **aislado** mejora (0.6530 -> 0.6658), pero la
+aportacion complementaria **no crece** (+0.0046 wiki, +0.0040 web, +0.0004 mixto,
+todos con IC95 que toca el 0). La palanca de corpus queda **agotada** y la fase se
+cierra **sin adoptar** el candidato (D-032).
 
+## P7 - Cierre
 
-- [ ] `E-CORP-02` 50M y `E-CORP-03` 100M con arquitectura fija
-- [ ] 250M / 500M solo si se cumple una condicion de §30
-- [ ] Saturacion declarada solo con **dos** incrementos consecutivos sin mejora
+- [x] Estado por linea y condiciones de cierre de la §43 evaluadas en D-032
+- [x] Artefactos reproducibles: scripts, informes, CSV, figuras, manifiesto y
+      memoria actualizados
+- [x] Sin submissions y sin sondas de LB
+- [x] `RATIONALE_FOR_CORPUS_EXPANSION` **no** llega a redactarse: ninguna
+      expansion cumple las condiciones de la §30
+- [x] `experiments/embedding_06_auditoria_v5.py`: auditoria final de la fase
+- [x] Informe de cierre de la fase: `reports/embedding_phase_closeout_v5.md`
+- [ ] Seccion de la fase v5 en `FINAL_REPORT.md`: pendiente (se redacta al abrir el PR)
 
-## P4 - Composicion y normalizaciones (condicionada)
-
-- [ ] Wikipedia vs mC4-es vs mezcla, mediendo `tokens_added` y `new_types_added`
-- [ ] EMB-NORMAL vs EMB-ASCII
-
-## P5 - Arquitectura (condicionada)
-
-- [ ] `vector_size {100,200,300}`, `window {3,5,7}`, subwords `(3,5)/(3,6)/(3,7)`,
-      `negative {5,10}`, `min_count {2,3,5}` sin producto cartesiano
-
-## P6 - Fusion y complementariedad (condicionada)
-
-- [ ] `hstack` TF-IDF + vector de documento antes que stacking
-- [ ] Meta-modelo solo con OOF de V03
-- [ ] Matriz de complementariedad 2x2 y analisis de error por rebanadas
-
-## P7 - Cierre (condicionada)
-
-- [ ] Candidato `adopted` / `candidate` / `exploratory` segun §29
-- [ ] Audiencias finales: `experiments/embedding_*_auditoria_v5.py` (0 violaciones)
-- [ ] Informes, memoria, notebook y PR (sin merge automatico)
-
-## Fuera de alcance (decidido)
+## Fuera de alcance (cerrado en D-030, D-031 y D-032)
 
 - Corpus etiquetado externo, hate speech externo, labels externas, pseudo-labeling
   y ajuste de umbrales con datos externos (D-030).
+- Corpus etiquetado de HuggingFace con licence no revisada; OSCAR sigue gated.
 - GloVe salvo senal que lo justifique (spec 19); gensim (no hay wheel para 3.14);
   transformers y cualquier embedding preentrenado.
+- Escalar el corpus mas alla de 20M tokens: ninguna expansion cumple la §30
+  (D-031 y D-032).
+- Apilamiento (stacking) de probabilidades: cerrado tras cinco intentos
+  fallidos en el proyecto.
 - Uso del holdout (agotado 5/5), uso del test para entrenar o seleccionar,
   submissions automaticas, push/PR/merge sin autorizacion explicita.
 - Repetir estrategias cerradas en v2/v4 (ver `tasks/plan_v5.md`).

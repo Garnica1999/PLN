@@ -1071,3 +1071,58 @@ evidencia, experimento, resultado, conclusion final.
   v09-v11, candidato C de v4 y ahora esta).
 - **Sin submissions**: no se genera ninguna. El envio, si alguna vez, lo decide el
   usuario con evidencia externa, no con este numero.
+
+## D-032 - Cierre de la fase v5: la cobertura improves, la complementariedad no
+
+- **Contexto**: D-031 dejo una sola palanca abierta, el **registro** del corpus,
+  y fijo la condicion para cerrarla: repetir la fusion con un corpus de registro
+  web y comprobar si la mejora crece. P4 construyo el corpus de mC4-es (10M tokens,
+  tramo de 40 MB del shard 0, sha256 `96ed39f4...`, licencia ODC-BY) y P5 entreno
+  FastText sobre el y evaluo las fusiones. Esta decision registra el resultado.
+- **Lo que se confirma**: la cobertura del vocabulario TOXIC sube de forma amplia.
+  `web 10M` alcanza 0.8256 por tipo y 0.9512 por token frente a 0.6839 y 0.8833 de
+  Wikipedia; la `union 20M` llega a 0.8413 y 0.9553. Los grupos que P1 marco debiles
+  se Specifically: elongaciones 0.039 -> 0.221, coloquial 0.692 -> 0.941, insultos
+  0.778 -> 0.983. El corpus web anade 1.346 tipos TOXIC que la fuente enciclopedica
+  no tiene, y varias variantes ortograficas (`callate`, `arabe`, `estn`, `espaa`)
+  pasan a estar en el propio vocabulario.
+- **Lo que se refuta**: la mecanica causal que se hipotetizo. La mejora de
+  cobertura se ve con claridad en el embedding **aislado** (0.6530 -> 0.6638 web ->
+  0.6658 mixto, +0.0128), pero la **aportacion complementaria sobre V03 no crece**:
+  `FUSION-WIKI` 0.7818 (+0.0046), `FUSION-WEB` 0.7812 (+0.0040), `FUSION-MIXTO`
+  0.7776 (+0.0004). La contribution marginal del embedding es practicamente
+  constante (~+0.004) con cualquiera de los tres corpora, con IC95 que toca el 0 en
+  todos los casos. Las rebanadas tampoco se separan: elongaciones +0.037 (wiki),
+  +0.021 (web), +0.037 (mixto); el patron es el mismo.
+- **Lectura**: el ~+0.004 no proviene de la cobertura sino de una senal debil y
+  distinta que TF-IDF char(3,5) ya captura en su mayor parte. Un corpus mejor
+  afina esa misma senal y no anade una nueva. Por eso ni 2,5x mas de cobertura ni
+  un registro muy distinto cambian el resultado.
+- **Estado final de la fase v5**:
+  1. Sustituto de V03: **refutado** (0.6658 en el mejor caso frente a 0.777211).
+  2. Complementariedad: **CANDIDATE no adoptado**, senal constante de +0.004 con
+     IC95 que incluye el 0 y muy por debajo del +0.005 pre-registrado.
+  3. Palanca de corpus: **agotada**. Ni el tamano (D-031) ni el registro (esta
+     decision) mueven la aportacion complementaria.
+  4. Subpalabras: **si** aportan frente al control sin subpalabras (+0.0138 en P2,
+     +0.0050 en la fusion web) y cambian la geometria de forma medible.
+  5. Stacking: **cerrado** (cinquena vez que no aporta).
+  6. Escala de corpus: **no se baja de 10M a 50M/100M ni a 500M**. El techo de 500M
+     queda sin usar y no se usara sin una razon nueva.
+- **Condiciones de cierre de la seccion 43**: se cumple la condicion A (el
+  embedding es consistentemente inferior como sustituto), la B (hay senal pero no
+  alcanza el alcance exigido) y la E (la complementariedad no crece ni con mas
+  cobertura ni con otro registro). La fase se cierra **sin adoptar** el candidato.
+- **Lo que queda vivo**: `FUSION-FASTTEXT-WIKI-10M` (0.7818) queda registrado como
+  artefacto reproducible, con su matriz de complementariedad y sus rebanadas, por
+  si en el futuro se quisiera repetir la medida con evidencia externa. **No** se
+  genera submission: no hay holdout (agotado 5/5) y gastar una sonda del
+  leaderboard para +0.004 con IC95 tocando el 0 no esta justificado. Si el usuario
+  decide enviarla, se hace de forma expresa y se registra como tal.
+- **Leccion general para el proyecto**: la cobertura de vocabulario era el
+  parametro que toda la fase daba por relevante (secciones 7 a 9) y resulto ser
+  una condicion necesaria pero **no suficiente** para que una representacion
+  distribuida aporte sobre una representacion dispersa de char n-grams. Medir la
+  cobertura fue correcto; suponer que su mejora se traduria en mejora downstream
+  fue el error, y lo detecto un experimento de control (comparar el embedding solo
+  frente a su fusion) en lugar de la metrica.

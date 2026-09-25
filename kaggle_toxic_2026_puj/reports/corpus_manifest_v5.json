@@ -595,6 +595,67 @@
         "El corpus no contiene registro web informal; esa limitacion se mide en la cobertura por grupo (coloquial, hashtags, elongation).",
         "Wikipedia es texto enciclopedico: no es representativo de tweets."
       ]
+    },
+    {
+      "id": "E-CORP-06",
+      "source": "m_c4_es",
+      "url": "https://huggingface.co/datasets/allenai/c4",
+      "resource": "multilingual/c4-es.tfrecord-00000-of-02048.json.gz (rango 0-41943039)",
+      "version": "allenai/c4, config multilingual/c4-es, shard 0 de 2048",
+      "license": "ODC-BY 1.0 (declarada en la ficha del dataset; el contenido deriva de Common Crawl)",
+      "download_date": "2026-09-25",
+      "raw_file": "c4es_shard0_tramo_40MB.json.gz",
+      "raw_sha256": "96ed39f4c18e17ade9f7e2f2b07e6b7da3138408ced77d45385873578195053f",
+      "raw_size": 41943040,
+      "document_count": 16738,
+      "token_count": 10000239,
+      "vocabulary_size": 309131,
+      "shards": [
+        "data/external/corpora/mc4_es/emb_normal/tokens_shard_00.txt",
+        "data/external/corpora/mc4_es/emb_normal/tokens_shard_01.txt",
+        "data/external/corpora/mc4_es/emb_normal/tokens_shard_02.txt",
+        "data/external/corpora/mc4_es/emb_normal/tokens_shard_03.txt",
+        "data/external/corpora/mc4_es/emb_normal/tokens_shard_04.txt"
+      ],
+      "preprocessing": {
+        "version": "v5.0-EMB-NORMAL",
+        "variante": "EMB-NORMAL",
+        "limpieza_especifica_web": [
+          "lineas repetidas dentro del documento (boilerplate de C4)",
+          "lineas < 40 caracteres sin digitos",
+          "lineas con mas de una URL",
+          "documentos con > 30 % de URL o > 25 % de digitos"
+        ],
+        "minimo_tokens_documento": 20
+      },
+      "pipeline": {
+        "documentos_leidos": 17092,
+        "sin_cuerpo_util": 87,
+        "duplicados_descartados": 1,
+        "documentos_cortos_descartados": 266
+      },
+      "cobertura_toxic": {
+        "web_10M": {
+          "n_types": 8555,
+          "n_tokens": 48850,
+          "type_coverage": 0.8256,
+          "token_coverage": 0.9512,
+          "oov_rate_types": 0.1744,
+          "n_word_oov": 1492
+        },
+        "mixto_20M": {
+          "n_types": 8555,
+          "n_tokens": 48850,
+          "type_coverage": 0.8413,
+          "token_coverage": 0.9553,
+          "oov_rate_types": 0.1587,
+          "n_word_oov": 1358
+        }
+      },
+      "limitaciones": [
+        "Es un **tramo** del shard 0 (13,9 % de 303 MB), no el shard completo: C4 no reordena dentro del shard, por lo que el tema de los primeros documentos puede sesgar la muestra. Se mitiga con la limpieza de boilerplate y con la medicion de cobertura, que es el criterio de decision.",
+        "El contenido de Common Crawl incluye paginas comerciales y de spam; la cobertura sube, pero la calidad semantica del corpus no esta garantizada."
+      ]
     }
   ],
   "reglas": [
@@ -609,5 +670,15 @@
     "disco_libre_gb": 450.2,
     "fasttext_sha256": "0307cde9a9e9dc02f2b688e4645ffbb38b8be2f80c33530777d7abd8a031f167",
     "fasttext_commit": "1142dc4c4ecbc19cc16eee5cdd28472e689267e6"
+  },
+  "corpus_construidos_mixto": {
+    "id": "E-CORP-07",
+    "componentes": [
+      "wikipedia_10M",
+      "web_10M"
+    ],
+    "token_count": 20000045,
+    "ruta": "data/external/corpora/mixto/emb_normal/tokens_20M.txt",
+    "nota": "Union de los dos corpora a efectos de vocabulario; el archivo se construye concatenando los shards en el orden indicado."
   }
 }

@@ -188,6 +188,27 @@ def vocabulario_textos(textos: list[str]) -> Counter[str]:
 # ---------------------------------------------------------------------------
 # Envoltorio de fastText C++
 # ---------------------------------------------------------------------------
+def sha256_de(ruta: Path) -> str:
+    """Calcula el sha256 de un archivo.
+
+    Es la huella que se registra en el manifiesto de cada modelo de la fase
+    (seccion 36 de la spec): identifica el `.vec` de forma reproducible.
+
+    Args:
+        ruta: ruta del archivo.
+
+    Returns:
+        Hash hexadecimal.
+    """
+    import hashlib
+
+    digest = hashlib.sha256()
+    with ruta.open("rb") as archivo:
+        for bloque in iter(lambda: archivo.read(1 << 20), b""):
+            digest.update(bloque)
+    return digest.hexdigest()
+
+
 def entrenar_fasttext(
     binario: Path,
     corpus: Path,

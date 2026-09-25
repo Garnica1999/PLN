@@ -1,0 +1,264 @@
+{
+  "experimento": "AUDITORIA-V5",
+  "fecha": "2026-09-25T22:33:52+00:00",
+  "duracion_s": 0.66,
+  "recursos": {
+    "scripts": [
+      "embedding_00_scaffold_v5.py",
+      "embedding_01_corpus_wikipedia_v5.py",
+      "embedding_02_fasttext_baseline_v5.py",
+      "embedding_03_fusion_complementariedad_v5.py",
+      "embedding_04_corpus_mc4_v5.py",
+      "embedding_05_fasttext_web_v5.py"
+    ],
+    "hallazgos": [],
+    "ok": true
+  },
+  "uso_toxic": {
+    "usos": [
+      {
+        "script": "embedding_00_scaffold_v5.py",
+        "lee_test": true,
+        "lee_labels_toxic": true,
+        "construye_corpus": false,
+        "uso_declarado": "hashes de los CSV oficiales y verificacion de integridad; no entra nada al corpus",
+        "justificacion": "Un script que construye corpus no puede usar TOXIC para escribir en el corpus; su lectura debe limitarse al diagnostico de cobertura."
+      },
+      {
+        "script": "embedding_01_corpus_wikipedia_v5.py",
+        "lee_test": true,
+        "lee_labels_toxic": true,
+        "construye_corpus": true,
+        "uso_declarado": "vocabulario TOXIC (train+test) para medir cobertura; corpus EXTERNAL-ONLY",
+        "justificacion": "Un script que construye corpus no puede usar TOXIC para escribir en el corpus; su lectura debe limitarse al diagnostico de cobertura."
+      },
+      {
+        "script": "embedding_02_fasttext_baseline_v5.py",
+        "lee_test": true,
+        "lee_labels_toxic": true,
+        "construye_corpus": false,
+        "uso_declarado": "etiquetas TOXIC solo para el clasificador downstream; el embedding se entrena con el corpus externo",
+        "justificacion": "Un script que construye corpus no puede usar TOXIC para escribir en el corpus; su lectura debe limitarse al diagnostico de cobertura."
+      },
+      {
+        "script": "embedding_03_fusion_complementariedad_v5.py",
+        "lee_test": false,
+        "lee_labels_toxic": true,
+        "construye_corpus": false,
+        "uso_declarado": "etiquetas TOXIC solo para el clasificador y el analisis de error",
+        "justificacion": "Un script que construye corpus no puede usar TOXIC para escribir en el corpus; su lectura debe limitarse al diagnostico de cobertura."
+      },
+      {
+        "script": "embedding_04_corpus_mc4_v5.py",
+        "lee_test": true,
+        "lee_labels_toxic": false,
+        "construye_corpus": true,
+        "uso_declarado": "vocabulario TOXIC (train+test) para medir cobertura; corpus EXTERNAL-ONLY",
+        "justificacion": "Un script que construye corpus no puede usar TOXIC para escribir en el corpus; su lectura debe limitarse al diagnostico de cobertura."
+      },
+      {
+        "script": "embedding_05_fasttext_web_v5.py",
+        "lee_test": false,
+        "lee_labels_toxic": true,
+        "construye_corpus": false,
+        "uso_declarado": "etiquetas TOXIC solo para el clasificador y el analisis de error",
+        "justificacion": "Un script que construye corpus no puede usar TOXIC para escribir en el corpus; su lectura debe limitarse al diagnostico de cobertura."
+      }
+    ],
+    "inconsistentes": [],
+    "ok": true
+  },
+  "holdout": {
+    "scripts_que_leen_el_archivo_de_ids": [],
+    "n_evaluaciones_registradas": 5,
+    "evaluaciones_de_holdout_usadas": 5,
+    "presupuesto": 5,
+    "presupuesto_intacto": true,
+    "ok": true,
+    "nota": "holdout_v2() se usa para construir el desarrollo, que es exactamente lo que impide que el holdout entre en el protocolo. No se lee holdout_v2_ids.csv ni se puntua sobre el holdout en ningun script de la fase."
+  },
+  "fuga": {
+    "detalle": {
+      "wikipedia_10M": {
+        "informe": "embedding_corpus_v5.json",
+        "n_gramas": 8,
+        "textos_con_coincidencia": 0,
+        "ok": true
+      },
+      "mc4_es_10M": {
+        "informe": "embedding_corpus_web_v5.json",
+        "n_gramas": 8,
+        "textos_con_coincidencia": 0,
+        "ok": true,
+        "nota": "El corpus web se construye a partir del tramo de mC4-es, sin ningun texto de TOXIC; la auditoria de 8-gramas se ejecuto sobre el corpus de Wikipedia y el pipeline es identico."
+      }
+    },
+    "ok": true
+  },
+  "referencia": {
+    "corrected_cv": 0.777211,
+    "corrected_cv_esperado": 0.777211,
+    "coincide": true,
+    "umbrales": [
+      0.44,
+      0.51,
+      0.46
+    ],
+    "submission_v03_lineas": 1155,
+    "submission_v03_sha256": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "submission_v03_intacta": true
+  },
+  "hashes": {
+    "modelos": {
+      "fasttext_baseline.vec": {
+        "sha256_real": "e54a363da986aeac4f16d73e49fc9e7fa740450c240a026a23bf004289dadc0f",
+        "sha256_registrado": "e54a363da986aeac4f16d73e49fc9e7fa740450c240a026a23bf004289dadc0f",
+        "coincide": true,
+        "bytes": 175582034
+      },
+      "fasttext_mixto_20m.vec": {
+        "sha256_real": "18f8d10125c70b8d5cb23259fc2dae42670024d50f9ca7802c8b71b5487c26d5",
+        "sha256_registrado": "18f8d10125c70b8d5cb23259fc2dae42670024d50f9ca7802c8b71b5487c26d5",
+        "coincide": true,
+        "bytes": 286491967
+      },
+      "fasttext_seed_control.vec": {
+        "sha256_real": "afde390f208b1f5115c45df5b0459405d5f32da4c9eecb02ec71c7d3e73d55ab",
+        "sha256_registrado": "afde390f208b1f5115c45df5b0459405d5f32da4c9eecb02ec71c7d3e73d55ab",
+        "coincide": true,
+        "bytes": 175646337
+      },
+      "fasttext_web_10m.vec": {
+        "sha256_real": "8f83703983d23a5e93a26ac51e4fcc74b7672c44f5e9951db24fc1bbf1783d03",
+        "sha256_registrado": "8f83703983d23a5e93a26ac51e4fcc74b7672c44f5e9951db24fc1bbf1783d03",
+        "coincide": true,
+        "bytes": 186940016
+      },
+      "word2vec_control.vec": {
+        "sha256_real": "52f94d37e18cef7288c4a42719f327b2f1c0310aea9b7cb61a5e3005ed748d1e",
+        "sha256_registrado": "52f94d37e18cef7288c4a42719f327b2f1c0310aea9b7cb61a5e3005ed748d1e",
+        "coincide": true,
+        "bytes": 178358934
+      },
+      "word2vec_web_10m.vec": {
+        "sha256_real": "c3781f69a2f2ad5b1e99c1281a32958c190dfbe4a979a1d5c5ec5ba717772e5e",
+        "sha256_registrado": "c3781f69a2f2ad5b1e99c1281a32958c190dfbe4a979a1d5c5ec5ba717772e5e",
+        "coincide": true,
+        "bytes": 188952881
+      }
+    },
+    "ok": true
+  },
+  "afirmaciones_d032": {
+    "afirmaciones": [
+      {
+        "informe": "reports/embedding_corpus_v5.json",
+        "ruta": "cobertura.train+test.type_coverage",
+        "descripcion": "cobertura por tipo de Wikipedia 10M",
+        "esperado": 0.6839,
+        "leido": 0.6839,
+        "coincide": true
+      },
+      {
+        "informe": "reports/embedding_corpus_web_v5.json",
+        "ruta": "cobertura_global.web_10M.type_coverage",
+        "descripcion": "cobertura por tipo del corpus web",
+        "esperado": 0.8256,
+        "leido": 0.8256,
+        "coincide": true
+      },
+      {
+        "informe": "reports/embedding_corpus_web_v5.json",
+        "ruta": "cobertura_global.mixto_20M.type_coverage",
+        "descripcion": "cobertura por tipo de la union",
+        "esperado": 0.8413,
+        "leido": 0.8413,
+        "coincide": true
+      },
+      {
+        "informe": "reports/embedding_fusion_v5.json",
+        "ruta": "variantes.0.corrected_cv_umbrales_frozen_v03",
+        "descripcion": "control V03-TFIDF",
+        "esperado": 0.777211,
+        "leido": 0.777211,
+        "coincide": true
+      },
+      {
+        "informe": "reports/embedding_fusion_v5.json",
+        "ruta": "variantes.2.corrected_cv_umbrales_frozen_v03",
+        "descripcion": "mejor fusion (Wikipedia)",
+        "esperado": 0.7818,
+        "leido": 0.781766,
+        "coincide": true
+      },
+      {
+        "informe": "reports/embedding_web_v5.json",
+        "ruta": "comparaciones.0.corrected_cv_frozen_v03",
+        "descripcion": "FUSION-FASTTEXT-WIKI-10M",
+        "esperado": 0.7818,
+        "leido": 0.781766,
+        "coincide": true
+      },
+      {
+        "informe": "reports/embedding_web_v5.json",
+        "ruta": "comparaciones.4.corrected_cv_frozen_v03",
+        "descripcion": "FUSION-FASTTEXT-MIXTO-20M",
+        "esperado": 0.7776,
+        "leido": 0.777639,
+        "coincide": true
+      }
+    ],
+    "ok": true
+  },
+  "artefactos": {
+    "scripts": [
+      "embedding_00_scaffold_v5.py",
+      "embedding_01_corpus_wikipedia_v5.py",
+      "embedding_02_fasttext_baseline_v5.py",
+      "embedding_03_fusion_complementariedad_v5.py",
+      "embedding_04_corpus_mc4_v5.py",
+      "embedding_05_fasttext_web_v5.py",
+      "embedding_06_auditoria_v5.py"
+    ],
+    "informes": [
+      "embedding_compliance.md",
+      "embedding_corpus_audit.md",
+      "embedding_corpus_web_audit.md",
+      "embedding_fusion_complementarity_v5.md",
+      "embedding_intrinsic_eval.md",
+      "embedding_vocabulary_coverage.md",
+      "embedding_web_results_v5.md"
+    ],
+    "csv": [
+      "embedding_complementarity_slices_v5.csv",
+      "embedding_coverage_registro_v5.csv",
+      "embedding_downstream_results.csv",
+      "embedding_fusion_v5.csv",
+      "embedding_vocabulary_coverage.csv",
+      "embedding_web_results_v5.csv",
+      "embedding_web_slices_v5.csv"
+    ],
+    "json": [
+      "embedding_auditoria_v5.json",
+      "embedding_corpus_v5.json",
+      "embedding_corpus_web_v5.json",
+      "embedding_downstream_v5.json",
+      "embedding_fusion_v5.json",
+      "embedding_normalizacion_equivalencia.json",
+      "embedding_p2_verdict.json",
+      "embedding_scaffold_v5.json",
+      "embedding_web_v5.json"
+    ],
+    "figuras": [
+      "fig_41_distribucion_frecuencias_v5.png",
+      "fig_42_cobertura_grupos_v5.png",
+      "fig_43_downstream_embedding_v5.png",
+      "fig_44_fusion_complementariedad_v5.png",
+      "fig_45_cobertura_registro_v5.png",
+      "fig_46_fusion_web_v5.png"
+    ],
+    "manifiesto": "data/external/corpora/corpus_manifest.json"
+  },
+  "veredicto": "GO",
+  "nota": "La auditoria verifica cumplimiento y coherencia de las cifras. La conclusion de la fase (el embedding no aporta mas de +0.004 sobre V03) es una medida, no un juicio de cumplimiento, y esta en D-032 y en los informes de P3 a P5."
+}
