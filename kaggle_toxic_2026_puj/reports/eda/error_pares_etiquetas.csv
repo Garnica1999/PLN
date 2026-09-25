@@ -1,0 +1,4 @@
+par,n_ambos_correctos,n_solo_primera_mal,n_solo_segunda_mal,n_ambas_mal,n_ambas_falso_negativo,n_ambas_falso_positivo,n_ambas_mixto,errores_totales_primera,errores_totales_segunda
+HS-TR,1347,207,57,120,44,76,0,327,177
+HS-AG,1291,144,113,183,82,101,0,327,296
+TR-AG,1381,54,173,123,49,69,5,177,296

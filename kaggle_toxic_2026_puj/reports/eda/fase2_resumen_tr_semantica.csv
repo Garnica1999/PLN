@@ -1,0 +1,2 @@
+n_hs1,n_tr1,n_tr0,proporcion_tr1_en_hs1,v_mencion_inicial,v_mencion,v_referencia_colectiva,v_insulto,v_insulto_dirigido,v_segunda_persona,v_imperativo,v_url,p_tr0_con_colectivo,p_tr1_con_colectivo,n_tr0_con_colectivo,n_tr0_con_colectivo_y_mencion_inicial,p_tr1_con_mencion_inicial,p_tr0_con_mencion_inicial
+756,519,237,0.6865,0.512,0.4274,0.5037,0.2744,0.2998,0.2628,0.03,0.3455,0.5696,0.1002,135,13,0.6493,0.097

@@ -1,0 +1,151 @@
+{
+  "fecha": "2026-09-25",
+  "fase": "P7 - validacion en el holdout congelado y submission v08 (sonda v2)",
+  "script": "experiments/18_p7_holdout_y_submission_v08.py",
+  "protocolo": {
+    "holdout": "config/holdout_v2.json (particion congelada, sha256 verificado)",
+    "particion_csv": "data/processed/holdout_v2_ids.csv",
+    "n_dev": 1483,
+    "n_holdout": 248,
+    "evaluaciones_antes": 0,
+    "evaluaciones_consumidas": 2,
+    "evaluaciones_despues": 2,
+    "evaluaciones_restantes": 3
+  },
+  "referencias_desarrollo": {
+    "v03_umbrales": 0.7772,
+    "meta_ridge_alpha3": 0.7874
+  },
+  "paso_1_v03_holdout": {
+    "modelo": "M2_union_lr_c2 reajustado con todo el desarrollo (1483 filas)",
+    "umbrales_congelados": {
+      "HS": 0.44,
+      "TR": 0.51,
+      "AG": 0.46
+    },
+    "dimension_base": 24646,
+    "f1_media_columnas": 0.8284684313523535,
+    "f1_por_etiqueta": {
+      "HS": 0.8571428571428571,
+      "TR": 0.8493150684931506,
+      "AG": 0.7789473684210526
+    },
+    "f1_macro6": 0.8612743650692675,
+    "f1_micro": 0.8285714285714286,
+    "f1_samples": 0.3682795698924732,
+    "exact_match": 0.7459677419354839,
+    "positivos_predichos": {
+      "HS": 116,
+      "TR": 72,
+      "AG": 95
+    },
+    "positivos_reales": {
+      "HS": 108,
+      "TR": 74,
+      "AG": 95
+    },
+    "f1_a_0_5": 0.8260139028288912
+  },
+  "paso_2_meta_holdout": {
+    "descripcion": "meta Ridge alpha=3 (balanced) sobre 44 meta-features OOF del desarrollo; bases reajustados con todo el desarrollo; umbral 0.5",
+    "reproduccion_candidato_p6": {
+      "variante": "META-BASES-RIDGE",
+      "alpha": 3.0,
+      "n_features": 44,
+      "diferencia_maxima_dev": 0.0,
+      "reproduce": true
+    },
+    "f1_media_columnas": 0.8465093927479249,
+    "f1_por_etiqueta": {
+      "HS": 0.8623853211009175,
+      "TR": 0.8571428571428571,
+      "AG": 0.82
+    },
+    "f1_macro6": 0.874277567029548,
+    "f1_micro": 0.8461538461538461,
+    "f1_samples": 0.380241935483871,
+    "exact_match": 0.7903225806451613,
+    "positivos_predichos": {
+      "HS": 110,
+      "TR": 80,
+      "AG": 105
+    },
+    "positivos_reales": {
+      "HS": 108,
+      "TR": 74,
+      "AG": 95
+    }
+  },
+  "decision": {
+    "regla": "generar submission si meta_holdout >= v03_holdout - 0.005",
+    "v03_holdout_f1": 0.8284684313523535,
+    "meta_holdout_f1": 0.8465093927479249,
+    "delta_meta_vs_v03": 0.01804096139557143,
+    "objetivo": 0.8234684313523535,
+    "cumple": true,
+    "submission_generada": true,
+    "justificacion": "El meta (0.8465) alcanza el criterio pre-registrado (V03 - 0.005 = 0.8235); delta +0.0180. Se genera la submission v08 (sonda v2 del meta)."
+  },
+  "paso_3_submission": {
+    "archivo": "submissions/toxic_submission_v08_meta_v2.csv",
+    "n_filas": 1154,
+    "umbral": 0.5,
+    "validacion": "OK contra la plantilla oficial: columnas id,HS,TR,AG; 1154 filas; ids identicos y en el mismo orden; valores en {0,1}; sin nulos ni duplicados",
+    "positivos_test": {
+      "HS": 517,
+      "TR": 375,
+      "AG": 445
+    },
+    "tasa_positivos_test": {
+      "HS": 0.4480069324090121,
+      "TR": 0.32495667244367415,
+      "AG": 0.3856152512998267
+    },
+    "tasa_positivos_train": {
+      "HS": 0.43674176776429807,
+      "TR": 0.29982668977469673,
+      "AG": 0.3824378971692663
+    },
+    "tasa_test_estimada_e00": {
+      "HS": 0.406,
+      "TR": 0.279,
+      "AG": 0.356
+    },
+    "diferencia_vs_train": {
+      "HS": 0.011265164644714054,
+      "TR": 0.025129982668977424,
+      "AG": 0.003177354130560417
+    },
+    "diferencia_vs_test_estimado": {
+      "HS": 0.0420069324090121,
+      "TR": 0.04595667244367413,
+      "AG": 0.029615251299826728
+    },
+    "dimension_meta": 44,
+    "dimensiones_bases": {
+      "M1_word_lr": 4024,
+      "M2_union_lr_c2": 27431,
+      "M3_union_svc": 27431,
+      "M4_char_lr": 23407
+    }
+  },
+  "advertencia": "El holdout tiene 248 filas (1 evaluacion puntual; error estandar aproximado del orden de 0.03); la decision sigue la regla pre-registrada y NO se re-optimiza ningun umbral con el holdout. El gap local-LB de la familia union word+char es -0.013 a -0.016 (D-012).",
+  "evaluaciones_holdout": [
+    {
+      "fecha": "2026-09-25",
+      "experimento": "P7-01-V03",
+      "motivo": "Referencia V03 (M2 reajustado con todo el desarrollo + umbrales congelados 0.44/0.51/0.46)",
+      "resultado": "{\"holdout_f1_media_columnas\": 0.8285, \"holdout_f1_por_etiqueta\": {\"HS\": 0.8571, \"TR\": 0.8493, \"AG\": 0.7789}}"
+    },
+    {
+      "fecha": "2026-09-25",
+      "experimento": "P7-02-META",
+      "motivo": "Candidato meta Ridge alpha=3 (44 meta-features OOF del desarrollo; bases reajustados con el desarrollo)",
+      "resultado": "{\"holdout_f1_media_columnas\": 0.8465, \"holdout_f1_por_etiqueta\": {\"HS\": 0.8624, \"TR\": 0.8571, \"AG\": 0.82}}"
+    }
+  ],
+  "artefactos": {
+    "modelo_final": "models/v2_meta_final.joblib"
+  },
+  "duracion_segundos": 3.02
+}

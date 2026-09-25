@@ -1,0 +1,36 @@
+{
+  "fecha_deteccion": "2026-09-22",
+  "host": "maquina local de Carlos",
+  "cpu": {
+    "nucleos_logicos": 32,
+    "hilos_recomendados_para_paralelismo": 32
+  },
+  "ram": {
+    "total_gb": 31,
+    "disponible_gb_al_detectar": 18
+  },
+  "disco": {
+    "libre_gb": 451,
+    "punto_montaje": "/home"
+  },
+  "gpu": {
+    "presente": true,
+    "tipo": "dedicada (compartida con el escritorio)",
+    "modelo": "AMD Radeon RX 9070 XT",
+    "arquitectura": "gfx1201 (RDNA4)",
+    "vram_total_bytes": 17095983104,
+    "stack": "ROCm 7.2 + torch 2.14.0+rocm7.2",
+    "protocolo_de_acceso": "D-008 (chequeo previo obligatorio, modo espera si esta ocupada)"
+  },
+  "python": {
+    "interprete_obligatorio": "/home/carlos/venv/bin/python",
+    "version": "3.14.7",
+    "pip": "/home/carlos/venv/bin/pip"
+  },
+  "notas": [
+    "Todos los recursos (hilos, workers, batch) se derivan de este perfil.",
+    "La GPU es unica y controla el escritorio: su VRAM en reposo incluye el compositor.",
+    "El dataset es pequeno (2885 textos): la mayoria de fases son de CPU.",
+    "Para el entrenamiento DL se usaran workers moderados (4-8) por ser datos pequenos."
+  ]
+}

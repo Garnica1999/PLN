@@ -1,0 +1,4 @@
+archivo,bytes,bytes_esperados,encoding,bytes_no_utf8,lineas,sha256,texto_solo_ascii
+toxic_train.csv,205417,205417,utf-8,0,1733,3d40e7345b588860cf4744914be88ddc094e4f03591516c8176ab40b7f76d42f,True
+toxic_test.csv,127006,127006,cp1252,6,1156,e91ff8258dadbbcd57593273ff1babd805f00074ae755507d64fa00942785e83,False
+submission.csv,13860,13860,utf-8,0,1156,0dfb4d07dffc31d3d452f5e53508d259e6ab5c2ec0dcd67bd70e4b03c5016ecc,True

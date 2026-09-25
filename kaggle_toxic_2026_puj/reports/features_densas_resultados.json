@@ -1,0 +1,1584 @@
+{
+  "metadata": {
+    "fecha": "2026-09-22",
+    "script": "experiments/08_features_densas_h11_h12.py",
+    "competencia": "KAGGLE_TOXIC_2026_PUJ",
+    "fase": "Fases 6-8 (features densas H11/H12/H14, baseline denso B5 e hibrido)",
+    "metrica_primaria": "f1_media_columnas",
+    "referencia": "MOD-03b_BEST",
+    "referencia_f1": 0.792659,
+    "regla_decision": "adoptada si mejora >= +0.005 absoluto en f1_media_columnas y mejora en >= 3 de 5 pliegues; la familia union exige ademas >= +0.01 local (D-012)",
+    "validacion": "StratifiedGroupKFold(5, shuffle=True, random_state=42), grupos = near-duplicados, estratificado por combinacion HSxTRxAG",
+    "sin_fuga": "TF-IDF y StandardScaler por pliegue; lexicos inducidos y palabras frecuentes inducidos solo con el pliegue de entrenamiento; features deterministas anotadas una vez; el test no se leyo",
+    "idempotencia": "Determinista salvo las columnas de tiempo (ruido de maquina, redondeadas a 2 decimales)"
+  },
+  "verificacion_referencia": {
+    "etiquetas_identicas": true,
+    "f1_publicada_npz": 0.792659,
+    "f1_publicada_config": 0.792659,
+    "f1_recalculada": 0.792659,
+    "coincidencia_binaria": 1.0,
+    "diferencia_f1": 0.0,
+    "ok": true
+  },
+  "controles": {
+    "HIB-UNION_denso_cero": {
+      "descripcion": "HIB-UNION con las 46 columnas densas puestas a cero: misma ruta de codigo (StandardScaler + sparse_hstack), cero senal en el bloque",
+      "f1_media_columnas": 0.792659,
+      "diferencia_vs_MOD03b": 0.0,
+      "conclusion": "el pipeline reproduce el control con el bloque en ceros, por lo que las diferencias del hibrido son atribuibles a las features densas"
+    }
+  },
+  "bloques": {
+    "H11": {
+      "n_features": 22,
+      "columnas": [
+        "n_caracteres",
+        "texto_corto_40",
+        "n_risas",
+        "tiene_risa",
+        "n_afectivos",
+        "tiene_afectivo",
+        "n_diminutivos",
+        "tiene_diminutivo",
+        "cooc_primera_segunda",
+        "vocativo_posesivo",
+        "n_marcas_cita",
+        "tiene_comillas",
+        "n_emoticones",
+        "tiene_emoticon",
+        "n_exclamaciones",
+        "n_interrogaciones",
+        "n_puntuacion_repetida",
+        "insulto_x_risa",
+        "insulto_x_afectivo",
+        "insulto_x_vocativo",
+        "insulto_x_sin_colectiva",
+        "insulto_x_segunda_persona"
+      ]
+    },
+    "H12": {
+      "n_features": 15,
+      "columnas": [
+        "tiene_mencion_inicial",
+        "n_nombres_persona",
+        "tiene_nombre_persona",
+        "tiene_segunda_persona",
+        "tiene_imperativo",
+        "tiene_referencia_colectiva",
+        "n_lexico_colectivo",
+        "ratio_lexico_colectivo",
+        "tiene_lexico_colectivo",
+        "tiene_url",
+        "n_marcadores_atribucion",
+        "tiene_atribucion",
+        "tiene_tercera_persona_singular",
+        "tiene_tercera_persona_plural",
+        "mencion_multiple"
+      ]
+    },
+    "H14": {
+      "n_features": 9,
+      "columnas": [
+        "n_lexico_agresivo",
+        "ratio_lexico_agresivo",
+        "tiene_lexico_agresivo",
+        "n_lexico_agresivo_hs",
+        "ratio_lexico_agresivo_hs",
+        "tiene_lexico_agresivo_hs",
+        "n_lexico_agresivo_exclusivo",
+        "tiene_lexico_agresivo_exclusivo",
+        "lexico_agresivo_x_colectiva"
+      ]
+    }
+  },
+  "lexicos_inducidos": [
+    {
+      "pliegue": 1,
+      "n_agresivo": 150,
+      "n_agresivo_nucleo": 18,
+      "n_hs": 150,
+      "n_colectivo": 100,
+      "top_agresivo": [
+        "perra",
+        "zorra",
+        "cllate",
+        "puto",
+        "callate",
+        "novia",
+        "ser",
+        "callatir",
+        "pinche",
+        "trabajo",
+        "mantero",
+        "hija",
+        "eres",
+        "negro",
+        "guarra"
+      ],
+      "top_agresivo_nucleo": [
+        "callate",
+        "callatir",
+        "cllate",
+        "eres",
+        "guarra",
+        "hija",
+        "jajajaja",
+        "mantero",
+        "negro",
+        "novia",
+        "perra",
+        "pinche",
+        "puto",
+        "ser",
+        "sos"
+      ],
+      "top_colectivo": [
+        "todo",
+        "mucho",
+        "contra",
+        "inmigrante",
+        "rab",
+        "estn",
+        "ilegal",
+        "refugiado",
+        "para",
+        "aqu",
+        "mantero",
+        "acoso",
+        "pagar",
+        "africano",
+        "hacer"
+      ]
+    },
+    {
+      "pliegue": 2,
+      "n_agresivo": 150,
+      "n_agresivo_nucleo": 13,
+      "n_hs": 150,
+      "n_colectivo": 100,
+      "top_agresivo": [
+        "perra",
+        "zorra",
+        "cllate",
+        "callate",
+        "puto",
+        "callatir",
+        "guarra",
+        "negro",
+        "sos",
+        "novia",
+        "siempre",
+        "sevillista",
+        "ser",
+        "hija",
+        "africano"
+      ],
+      "top_agresivo_nucleo": [
+        "callate",
+        "callatir",
+        "cllate",
+        "guarra",
+        "negro",
+        "novia",
+        "perra",
+        "puto",
+        "ser",
+        "sevillista",
+        "siempre",
+        "sos",
+        "zorra"
+      ],
+      "top_colectivo": [
+        "todo",
+        "rab",
+        "este",
+        "venir",
+        "contra",
+        "mucho",
+        "refugiado",
+        "subsahariano",
+        "nuestro",
+        "estn",
+        "calle",
+        "pagar",
+        "con",
+        "espaol",
+        "africano"
+      ]
+    },
+    {
+      "pliegue": 3,
+      "n_agresivo": 150,
+      "n_agresivo_nucleo": 12,
+      "n_hs": 150,
+      "n_colectivo": 100,
+      "top_agresivo": [
+        "perra",
+        "zorra",
+        "cllate",
+        "callate",
+        "novia",
+        "hija",
+        "ser",
+        "guarra",
+        "sos",
+        "casa",
+        "bien",
+        "puto",
+        "callatir",
+        "pinche",
+        "siempre"
+      ],
+      "top_agresivo_nucleo": [
+        "bien",
+        "callate",
+        "casa",
+        "cllate",
+        "guarra",
+        "hija",
+        "novia",
+        "perra",
+        "puto",
+        "ser",
+        "sos",
+        "zorra"
+      ],
+      "top_colectivo": [
+        "todo",
+        "estn",
+        "con",
+        "hacer",
+        "contra",
+        "ilegal",
+        "rab",
+        "calle",
+        "aqu",
+        "mandar",
+        "ceuta",
+        "nuestro",
+        "poner",
+        "claro",
+        "medio"
+      ]
+    },
+    {
+      "pliegue": 4,
+      "n_agresivo": 150,
+      "n_agresivo_nucleo": 11,
+      "n_hs": 150,
+      "n_colectivo": 100,
+      "top_agresivo": [
+        "perra",
+        "zorra",
+        "cllate",
+        "callate",
+        "puto",
+        "ser",
+        "novia",
+        "trabajo",
+        "negro",
+        "siempre",
+        "sevillista",
+        "callatir",
+        "guarra",
+        "moro",
+        "eres"
+      ],
+      "top_agresivo_nucleo": [
+        "callate",
+        "cllate",
+        "negro",
+        "novia",
+        "perra",
+        "puto",
+        "ser",
+        "sevillista",
+        "siempre",
+        "trabajo",
+        "zorra"
+      ],
+      "top_colectivo": [
+        "todo",
+        "estn",
+        "contra",
+        "subsahariano",
+        "para",
+        "este",
+        "ilegal",
+        "mandar",
+        "venir",
+        "con",
+        "mucho",
+        "hacer",
+        "nuestro",
+        "rab",
+        "africano"
+      ]
+    },
+    {
+      "pliegue": 5,
+      "n_agresivo": 150,
+      "n_agresivo_nucleo": 13,
+      "n_hs": 150,
+      "n_colectivo": 100,
+      "top_agresivo": [
+        "perra",
+        "zorra",
+        "cllate",
+        "callate",
+        "ser",
+        "sos",
+        "puto",
+        "callatir",
+        "hija",
+        "guarra",
+        "novia",
+        "moro",
+        "negro",
+        "cllatar",
+        "mantero"
+      ],
+      "top_agresivo_nucleo": [
+        "callate",
+        "callatir",
+        "cllate",
+        "guarra",
+        "hija",
+        "moro",
+        "negro",
+        "novia",
+        "perra",
+        "puto",
+        "ser",
+        "sos",
+        "zorra"
+      ],
+      "top_colectivo": [
+        "todo",
+        "con",
+        "contra",
+        "ilegal",
+        "hacer",
+        "estn",
+        "espaol",
+        "calle",
+        "para",
+        "venir",
+        "ceuta",
+        "aqu",
+        "tratar",
+        "mantero",
+        "refugiado"
+      ]
+    }
+  ],
+  "configuraciones": [
+    {
+      "experiment_id": "MOD-03b_REF",
+      "descripcion": "control recalculado: union TF-IDF REP-05 + LR C=2.0 balanced (mismo split); no se registra en experiments.csv porque MOD-03b_BEST ya esta",
+      "familia": "referencia",
+      "bloques": "ninguno",
+      "usa_tfidf": true,
+      "C": 2.0,
+      "dimension": 27431,
+      "n_features_densas": 0,
+      "tiempo_segundos": 5.2,
+      "mejora_vs_MOD03b": 0.0,
+      "mejora_en_pliegues": 0,
+      "f1_train_medio": 0.9744,
+      "brecha_train_oof": 0.1818,
+      "decision": "referencia (control)",
+      "metricas_oof": {
+        "f1_media_columnas": 0.7926588861781015,
+        "f1_macro6": 0.8349033705135338,
+        "f1_micro": 0.7898358920063525,
+        "f1_samples": 0.32462930868476797,
+        "exact_match": 0.7313691507798961,
+        "f1_por_etiqueta": {
+          "HS": 0.7799174690508941,
+          "TR": 0.8287081339712918,
+          "AG": 0.7693510555121188
+        }
+      },
+      "metricas_pliegues": [
+        {
+          "f1_media_columnas": 0.8012933474593567,
+          "f1_macro6": 0.8421279647159198,
+          "f1_micro": 0.7967914438502673,
+          "f1_samples": 0.31738712776176753,
+          "exact_match": 0.723342939481268,
+          "f1_por_etiqueta": {
+            "HS": 0.7931034482758621,
+            "TR": 0.8627450980392157,
+            "AG": 0.7480314960629921
+          },
+          "pliegue": 1,
+          "n_validacion": 347
+        },
+        {
+          "f1_media_columnas": 0.7898597924054527,
+          "f1_macro6": 0.8293514749148782,
+          "f1_micro": 0.7882653061224489,
+          "f1_samples": 0.33776493256262036,
+          "exact_match": 0.7283236994219653,
+          "f1_por_etiqueta": {
+            "HS": 0.7759197324414716,
+            "TR": 0.8055555555555556,
+            "AG": 0.7881040892193308
+          },
+          "pliegue": 2,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7775283841161178,
+          "f1_macro6": 0.824485082130627,
+          "f1_micro": 0.7754010695187166,
+          "f1_samples": 0.318111753371869,
+          "exact_match": 0.7427745664739884,
+          "f1_por_etiqueta": {
+            "HS": 0.7746478873239436,
+            "TR": 0.8169014084507042,
+            "AG": 0.7410358565737052
+          },
+          "pliegue": 3,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7933831988833077,
+          "f1_macro6": 0.8367246691288468,
+          "f1_micro": 0.7914438502673797,
+          "f1_samples": 0.32360308285163775,
+          "exact_match": 0.7369942196531792,
+          "f1_por_etiqueta": {
+            "HS": 0.7820069204152249,
+            "TR": 0.8155339805825242,
+            "AG": 0.782608695652174
+          },
+          "pliegue": 4,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.8014490275429229,
+          "f1_macro6": 0.8417960314170531,
+          "f1_micro": 0.7973333333333333,
+          "f1_samples": 0.3263005780346821,
+          "exact_match": 0.7254335260115607,
+          "f1_por_etiqueta": {
+            "HS": 0.773972602739726,
+            "TR": 0.8446601941747572,
+            "AG": 0.7857142857142857
+          },
+          "pliegue": 5,
+          "n_validacion": 346
+        }
+      ],
+      "metricas_entrenamiento": [
+        {
+          "f1_media_columnas": 0.9731635998024507,
+          "f1_macro6": 0.9784448637211657,
+          "f1_micro": 0.9736591558235481,
+          "f1_samples": 0.44472543352601157,
+          "exact_match": 0.9624277456647399,
+          "f1_por_etiqueta": {
+            "HS": 0.9762878168438267,
+            "TR": 0.9682726204465335,
+            "AG": 0.9749303621169917
+          }
+        },
+        {
+          "f1_media_columnas": 0.9747347737137462,
+          "f1_macro6": 0.9797427121331924,
+          "f1_micro": 0.9751750477402928,
+          "f1_samples": 0.44351383874849576,
+          "exact_match": 0.9660649819494584,
+          "f1_por_etiqueta": {
+            "HS": 0.9778142974527527,
+            "TR": 0.9705535924617197,
+            "AG": 0.9758364312267658
+          }
+        },
+        {
+          "f1_media_columnas": 0.9741274658679178,
+          "f1_macro6": 0.9793816828813361,
+          "f1_micro": 0.9749285940971121,
+          "f1_samples": 0.4454632972322503,
+          "exact_match": 0.9653429602888086,
+          "f1_por_etiqueta": {
+            "HS": 0.9787234042553191,
+            "TR": 0.9659224441833137,
+            "AG": 0.9777365491651205
+          }
+        },
+        {
+          "f1_media_columnas": 0.9755644680077392,
+          "f1_macro6": 0.9804773626873143,
+          "f1_micro": 0.9761829152111782,
+          "f1_samples": 0.44712394705174485,
+          "exact_match": 0.9696750902527076,
+          "f1_por_etiqueta": {
+            "HS": 0.9811629811629812,
+            "TR": 0.9705535924617197,
+            "AG": 0.9749768303985171
+          }
+        },
+        {
+          "f1_media_columnas": 0.9745045576217256,
+          "f1_macro6": 0.9796538717550992,
+          "f1_micro": 0.9753164556962025,
+          "f1_samples": 0.447942238267148,
+          "exact_match": 0.9660649819494584,
+          "f1_por_etiqueta": {
+            "HS": 0.9788273615635179,
+            "TR": 0.9660023446658851,
+            "AG": 0.9786839666357738
+          }
+        }
+      ]
+    },
+    {
+      "experiment_id": "B5-DENSE",
+      "descripcion": "baseline denso B5: LR C=1.0 balanced sobre los bloques H11+H12+H14 escalados con StandardScaler (sin TF-IDF)",
+      "familia": "densa",
+      "bloques": "H11+H12+H14",
+      "usa_tfidf": false,
+      "C": 1.0,
+      "dimension": 46,
+      "n_features_densas": 46,
+      "tiempo_segundos": 0.26,
+      "mejora_vs_MOD03b": -0.131935,
+      "mejora_en_pliegues": 0,
+      "f1_train_medio": 0.7349,
+      "brecha_train_oof": 0.0742,
+      "decision": "descartada",
+      "metricas_oof": {
+        "f1_media_columnas": 0.6607240079056302,
+        "f1_macro6": 0.7235041794565428,
+        "f1_micro": 0.6599648152802211,
+        "f1_samples": 0.2949932601579049,
+        "exact_match": 0.5915655690352397,
+        "f1_por_etiqueta": {
+          "HS": 0.6567768037761295,
+          "TR": 0.6730601569311246,
+          "AG": 0.6523350630096367
+        }
+      },
+      "metricas_pliegues": [
+        {
+          "f1_media_columnas": 0.6911392562680406,
+          "f1_macro6": 0.7459010355408099,
+          "f1_micro": 0.6881987577639752,
+          "f1_samples": 0.30893371757925076,
+          "exact_match": 0.6109510086455331,
+          "f1_por_etiqueta": {
+            "HS": 0.6621160409556314,
+            "TR": 0.7350427350427351,
+            "AG": 0.6762589928057554
+          },
+          "pliegue": 1,
+          "n_validacion": 347
+        },
+        {
+          "f1_media_columnas": 0.6666576974447467,
+          "f1_macro6": 0.7326061620049057,
+          "f1_micro": 0.6666666666666666,
+          "f1_samples": 0.29132947976878615,
+          "exact_match": 0.5867052023121387,
+          "f1_por_etiqueta": {
+            "HS": 0.6551724137931034,
+            "TR": 0.6577777777777778,
+            "AG": 0.6870229007633588
+          },
+          "pliegue": 2,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.6361211703966932,
+          "f1_macro6": 0.7069261253851362,
+          "f1_micro": 0.6378653113087674,
+          "f1_samples": 0.2820809248554913,
+          "exact_match": 0.5809248554913294,
+          "f1_por_etiqueta": {
+            "HS": 0.6643835616438356,
+            "TR": 0.6180257510729614,
+            "AG": 0.6259541984732825
+          },
+          "pliegue": 3,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.6358151856242796,
+          "f1_macro6": 0.7020006738473937,
+          "f1_micro": 0.635,
+          "f1_samples": 0.2896917148362235,
+          "exact_match": 0.5751445086705202,
+          "f1_por_etiqueta": {
+            "HS": 0.6312292358803987,
+            "TR": 0.6493506493506493,
+            "AG": 0.6268656716417911
+          },
+          "pliegue": 4,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.6738427350555648,
+          "f1_macro6": 0.7297425764506862,
+          "f1_micro": 0.671604938271605,
+          "f1_samples": 0.30289017341040464,
+          "exact_match": 0.6040462427745664,
+          "f1_por_etiqueta": {
+            "HS": 0.6710097719869706,
+            "TR": 0.7053571428571429,
+            "AG": 0.6451612903225806
+          },
+          "pliegue": 5,
+          "n_validacion": 346
+        }
+      ],
+      "metricas_entrenamiento": [
+        {
+          "f1_media_columnas": 0.7286756220406024,
+          "f1_macro6": 0.7763021412592126,
+          "f1_micro": 0.72983747316774,
+          "f1_samples": 0.3324181117533719,
+          "exact_match": 0.6473988439306358,
+          "f1_por_etiqueta": {
+            "HS": 0.7376237623762376,
+            "TR": 0.7102212855637513,
+            "AG": 0.7381818181818182
+          }
+        },
+        {
+          "f1_media_columnas": 0.7419292813137613,
+          "f1_macro6": 0.7866107071676721,
+          "f1_micro": 0.7421036491873658,
+          "f1_samples": 0.3399037304452467,
+          "exact_match": 0.6693140794223826,
+          "f1_por_etiqueta": {
+            "HS": 0.7453213995117982,
+            "TR": 0.7411385606874329,
+            "AG": 0.7393278837420527
+          }
+        },
+        {
+          "f1_media_columnas": 0.7375065691203005,
+          "f1_macro6": 0.7842065779522063,
+          "f1_micro": 0.7370703004026015,
+          "f1_samples": 0.3303971119133574,
+          "exact_match": 0.6649819494584838,
+          "f1_por_etiqueta": {
+            "HS": 0.7296849087893864,
+            "TR": 0.7406616862326574,
+            "AG": 0.7421731123388582
+          }
+        },
+        {
+          "f1_media_columnas": 0.7328586049255993,
+          "f1_macro6": 0.7802388524951057,
+          "f1_micro": 0.7338262476894639,
+          "f1_samples": 0.33292418772563176,
+          "exact_match": 0.6599277978339351,
+          "f1_por_etiqueta": {
+            "HS": 0.7415914684167351,
+            "TR": 0.7204301075268817,
+            "AG": 0.7365542388331814
+          }
+        },
+        {
+          "f1_media_columnas": 0.733604724843802,
+          "f1_macro6": 0.7790067193587801,
+          "f1_micro": 0.7339225845778726,
+          "f1_samples": 0.336173285198556,
+          "exact_match": 0.6534296028880866,
+          "f1_por_etiqueta": {
+            "HS": 0.7277187244480785,
+            "TR": 0.7239915074309978,
+            "AG": 0.7491039426523297
+          }
+        }
+      ]
+    },
+    {
+      "experiment_id": "HIB-UNION",
+      "descripcion": "hibrido union: hstack(TF-IDF REP-05, bloques densos H11+H12+H14 escalados) + LR C=2.0 balanced",
+      "familia": "union",
+      "bloques": "H11+H12+H14",
+      "usa_tfidf": true,
+      "C": 2.0,
+      "dimension": 27477,
+      "n_features_densas": 46,
+      "tiempo_segundos": 20.72,
+      "mejora_vs_MOD03b": -0.031639,
+      "mejora_en_pliegues": 0,
+      "f1_train_medio": 0.9585,
+      "brecha_train_oof": 0.1975,
+      "decision": "descartada",
+      "metricas_oof": {
+        "f1_media_columnas": 0.7610202390088977,
+        "f1_macro6": 0.8086828396196714,
+        "f1_micro": 0.7588912133891214,
+        "f1_samples": 0.3242249181590603,
+        "exact_match": 0.7013287117273252,
+        "f1_por_etiqueta": {
+          "HS": 0.7518593644354293,
+          "TR": 0.7861936720997124,
+          "AG": 0.7450076804915514
+        }
+      },
+      "metricas_pliegues": [
+        {
+          "f1_media_columnas": 0.7847902283590016,
+          "f1_macro6": 0.8248356848198054,
+          "f1_micro": 0.7804878048780488,
+          "f1_samples": 0.33880883765609987,
+          "exact_match": 0.7204610951008645,
+          "f1_por_etiqueta": {
+            "HS": 0.76,
+            "TR": 0.8285714285714286,
+            "AG": 0.7657992565055762
+          },
+          "pliegue": 1,
+          "n_validacion": 347
+        },
+        {
+          "f1_media_columnas": 0.7430107157983387,
+          "f1_macro6": 0.7956508446738515,
+          "f1_micro": 0.7447916666666666,
+          "f1_samples": 0.3225433526011561,
+          "exact_match": 0.6705202312138728,
+          "f1_por_etiqueta": {
+            "HS": 0.7593220338983051,
+            "TR": 0.7264150943396226,
+            "AG": 0.7432950191570882
+          },
+          "pliegue": 2,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7458793548471627,
+          "f1_macro6": 0.800933105147544,
+          "f1_micro": 0.7449392712550608,
+          "f1_samples": 0.3076107899807322,
+          "exact_match": 0.6965317919075145,
+          "f1_por_etiqueta": {
+            "HS": 0.75,
+            "TR": 0.7669902912621359,
+            "AG": 0.7206477732793523
+          },
+          "pliegue": 3,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7606435987289762,
+          "f1_macro6": 0.8087954762252618,
+          "f1_micro": 0.7572559366754618,
+          "f1_samples": 0.31657032755298653,
+          "exact_match": 0.7196531791907514,
+          "f1_por_etiqueta": {
+            "HS": 0.726027397260274,
+            "TR": 0.7884615384615384,
+            "AG": 0.7674418604651163
+          },
+          "pliegue": 4,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7703352312279369,
+          "f1_macro6": 0.8128975529497274,
+          "f1_micro": 0.7660668380462725,
+          "f1_samples": 0.33554913294797684,
+          "exact_match": 0.6994219653179191,
+          "f1_por_etiqueta": {
+            "HS": 0.7631578947368421,
+            "TR": 0.821256038647343,
+            "AG": 0.7265917602996255
+          },
+          "pliegue": 5,
+          "n_validacion": 346
+        }
+      ],
+      "metricas_entrenamiento": [
+        {
+          "f1_media_columnas": 0.957568871258749,
+          "f1_macro6": 0.9656714548079179,
+          "f1_micro": 0.957764369641156,
+          "f1_samples": 0.43410404624277454,
+          "exact_match": 0.940028901734104,
+          "f1_por_etiqueta": {
+            "HS": 0.9605911330049262,
+            "TR": 0.9567251461988304,
+            "AG": 0.9553903345724907
+          }
+        },
+        {
+          "f1_media_columnas": 0.9615768710803744,
+          "f1_macro6": 0.9688383607299628,
+          "f1_micro": 0.9615017499204581,
+          "f1_samples": 0.4360770156438027,
+          "exact_match": 0.9436823104693141,
+          "f1_por_etiqueta": {
+            "HS": 0.961380443714051,
+            "TR": 0.9625292740046838,
+            "AG": 0.960820895522388
+          }
+        },
+        {
+          "f1_media_columnas": 0.9578588927334604,
+          "f1_macro6": 0.9659267588725357,
+          "f1_micro": 0.958148383005707,
+          "f1_samples": 0.4375210589651023,
+          "exact_match": 0.9415162454873646,
+          "f1_por_etiqueta": {
+            "HS": 0.9607201309328969,
+            "TR": 0.955607476635514,
+            "AG": 0.9572490706319703
+          }
+        },
+        {
+          "f1_media_columnas": 0.9564933848153627,
+          "f1_macro6": 0.9648815969522756,
+          "f1_micro": 0.9570977917981073,
+          "f1_samples": 0.4405776173285199,
+          "exact_match": 0.9371841155234657,
+          "f1_por_etiqueta": {
+            "HS": 0.9639934533551555,
+            "TR": 0.9524913093858632,
+            "AG": 0.9529953917050691
+          }
+        },
+        {
+          "f1_media_columnas": 0.9590213875637862,
+          "f1_macro6": 0.9670780864500065,
+          "f1_micro": 0.9597974042418487,
+          "f1_samples": 0.43790613718411553,
+          "exact_match": 0.9393501805054152,
+          "f1_por_etiqueta": {
+            "HS": 0.9656862745098039,
+            "TR": 0.9522700814901047,
+            "AG": 0.9591078066914498
+          }
+        }
+      ]
+    },
+    {
+      "experiment_id": "HIB-H11",
+      "descripcion": "ablacion H11: hstack(TF-IDF REP-05, bloque H11 escalado) + LR C=2.0",
+      "familia": "union",
+      "bloques": "H11",
+      "usa_tfidf": true,
+      "C": 2.0,
+      "dimension": 27453,
+      "n_features_densas": 22,
+      "tiempo_segundos": 11.98,
+      "mejora_vs_MOD03b": -0.021311,
+      "mejora_en_pliegues": 0,
+      "f1_train_medio": 0.9704,
+      "brecha_train_oof": 0.199,
+      "decision": "descartada",
+      "metricas_oof": {
+        "f1_media_columnas": 0.7713480985353045,
+        "f1_macro6": 0.8173305561246496,
+        "f1_micro": 0.7701149425287356,
+        "f1_samples": 0.32588099364529166,
+        "exact_match": 0.7105719237435009,
+        "f1_por_etiqueta": {
+          "HS": 0.7619047619047619,
+          "TR": 0.7845719661335842,
+          "AG": 0.7675675675675676
+        }
+      },
+      "metricas_pliegues": [
+        {
+          "f1_media_columnas": 0.7846419204634986,
+          "f1_macro6": 0.82636824651174,
+          "f1_micro": 0.7813712807244502,
+          "f1_samples": 0.33189241114313156,
+          "exact_match": 0.7175792507204611,
+          "f1_por_etiqueta": {
+            "HS": 0.7687074829931972,
+            "TR": 0.8294930875576036,
+            "AG": 0.7557251908396947
+          },
+          "pliegue": 1,
+          "n_validacion": 347
+        },
+        {
+          "f1_media_columnas": 0.7624573359867478,
+          "f1_macro6": 0.8089407652542538,
+          "f1_micro": 0.7631241997439181,
+          "f1_samples": 0.328131021194605,
+          "exact_match": 0.6994219653179191,
+          "f1_por_etiqueta": {
+            "HS": 0.7635135135135135,
+            "TR": 0.751131221719457,
+            "AG": 0.7727272727272727
+          },
+          "pliegue": 2,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7531239258122295,
+          "f1_macro6": 0.8059431294503702,
+          "f1_micro": 0.7523427041499331,
+          "f1_samples": 0.3134874759152216,
+          "exact_match": 0.6994219653179191,
+          "f1_por_etiqueta": {
+            "HS": 0.7464788732394366,
+            "TR": 0.7619047619047619,
+            "AG": 0.7509881422924901
+          },
+          "pliegue": 3,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7721383701965824,
+          "f1_macro6": 0.8186104237555262,
+          "f1_micro": 0.7716535433070866,
+          "f1_samples": 0.32784200385356455,
+          "exact_match": 0.7254335260115607,
+          "f1_por_etiqueta": {
+            "HS": 0.7661016949152543,
+            "TR": 0.7751196172248804,
+            "AG": 0.7751937984496124
+          },
+          "pliegue": 4,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7842968601604863,
+          "f1_macro6": 0.8266613529864352,
+          "f1_micro": 0.7816993464052288,
+          "f1_samples": 0.32803468208092484,
+          "exact_match": 0.7109826589595376,
+          "f1_por_etiqueta": {
+            "HS": 0.7641196013289037,
+            "TR": 0.8058252427184466,
+            "AG": 0.7829457364341085
+          },
+          "pliegue": 5,
+          "n_validacion": 346
+        }
+      ],
+      "metricas_entrenamiento": [
+        {
+          "f1_media_columnas": 0.9695429913911466,
+          "f1_macro6": 0.975735137995728,
+          "f1_micro": 0.9705042816365367,
+          "f1_samples": 0.4448217726396917,
+          "exact_match": 0.9602601156069365,
+          "f1_por_etiqueta": {
+            "HS": 0.9779231398201145,
+            "TR": 0.9614035087719298,
+            "AG": 0.9693023255813954
+          }
+        },
+        {
+          "f1_media_columnas": 0.9744227351179223,
+          "f1_macro6": 0.9794836046975942,
+          "f1_micro": 0.9749126706891077,
+          "f1_samples": 0.44608904933814675,
+          "exact_match": 0.9667870036101083,
+          "f1_por_etiqueta": {
+            "HS": 0.9787581699346405,
+            "TR": 0.9704840613931524,
+            "AG": 0.974025974025974
+          }
+        },
+        {
+          "f1_media_columnas": 0.9712692965193276,
+          "f1_macro6": 0.9770702523382928,
+          "f1_micro": 0.9721695129664769,
+          "f1_samples": 0.44637785800240676,
+          "exact_match": 0.9624548736462094,
+          "f1_por_etiqueta": {
+            "HS": 0.9788273615635179,
+            "TR": 0.9636576787807737,
+            "AG": 0.971322849213691
+          }
+        },
+        {
+          "f1_media_columnas": 0.9677445013955371,
+          "f1_macro6": 0.97438979814281,
+          "f1_micro": 0.9689873417721518,
+          "f1_samples": 0.44481347773766544,
+          "exact_match": 0.9581227436823104,
+          "f1_por_etiqueta": {
+            "HS": 0.9770491803278688,
+            "TR": 0.9558139534883721,
+            "AG": 0.9703703703703703
+          }
+        },
+        {
+          "f1_media_columnas": 0.9688210613210204,
+          "f1_macro6": 0.975348566300073,
+          "f1_micro": 0.9703282828282829,
+          "f1_samples": 0.4470998796630566,
+          "exact_match": 0.9574007220216606,
+          "f1_por_etiqueta": {
+            "HS": 0.9787928221859706,
+            "TR": 0.9535962877030162,
+            "AG": 0.9740740740740741
+          }
+        }
+      ]
+    },
+    {
+      "experiment_id": "HIB-H12",
+      "descripcion": "ablacion H12: hstack(TF-IDF REP-05, bloque H12 escalado) + LR C=2.0",
+      "familia": "union",
+      "bloques": "H12",
+      "usa_tfidf": true,
+      "C": 2.0,
+      "dimension": 27446,
+      "n_features_densas": 15,
+      "tiempo_segundos": 10.92,
+      "mejora_vs_MOD03b": -0.009096,
+      "mejora_en_pliegues": 1,
+      "f1_train_medio": 0.9724,
+      "brecha_train_oof": 0.1888,
+      "decision": "descartada",
+      "metricas_oof": {
+        "f1_media_columnas": 0.7835627818982994,
+        "f1_macro6": 0.8275304698522642,
+        "f1_micro": 0.7812335266209804,
+        "f1_samples": 0.3228384363566339,
+        "exact_match": 0.7221259387637204,
+        "f1_por_etiqueta": {
+          "HS": 0.7734428473648186,
+          "TR": 0.8158640226628895,
+          "AG": 0.7613814756671899
+        }
+      },
+      "metricas_pliegues": [
+        {
+          "f1_media_columnas": 0.8031703247336671,
+          "f1_macro6": 0.8427539506609575,
+          "f1_micro": 0.7994722955145118,
+          "f1_samples": 0.3265129682997118,
+          "exact_match": 0.7204610951008645,
+          "f1_por_etiqueta": {
+            "HS": 0.7891156462585034,
+            "TR": 0.8584905660377359,
+            "AG": 0.7619047619047619
+          },
+          "pliegue": 1,
+          "n_validacion": 347
+        },
+        {
+          "f1_media_columnas": 0.7846943998946695,
+          "f1_macro6": 0.8258918582202407,
+          "f1_micro": 0.7852604828462516,
+          "f1_samples": 0.33728323699421964,
+          "exact_match": 0.7109826589595376,
+          "f1_por_etiqueta": {
+            "HS": 0.785234899328859,
+            "TR": 0.776255707762557,
+            "AG": 0.7925925925925926
+          },
+          "pliegue": 2,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7663612737395065,
+          "f1_macro6": 0.8165712697843303,
+          "f1_micro": 0.7644683714670256,
+          "f1_samples": 0.3108863198458574,
+          "exact_match": 0.7225433526011561,
+          "f1_por_etiqueta": {
+            "HS": 0.7632508833922261,
+            "TR": 0.8093023255813954,
+            "AG": 0.726530612244898
+          },
+          "pliegue": 3,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7676587301587302,
+          "f1_macro6": 0.8161862314713985,
+          "f1_micro": 0.7653333333333333,
+          "f1_samples": 0.31194605009633913,
+          "exact_match": 0.7283236994219653,
+          "f1_por_etiqueta": {
+            "HS": 0.7569444444444444,
+            "TR": 0.8,
+            "AG": 0.746031746031746
+          },
+          "pliegue": 4,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7952403641391758,
+          "f1_macro6": 0.8358688024574725,
+          "f1_micro": 0.791005291005291,
+          "f1_samples": 0.32755298651252407,
+          "exact_match": 0.7283236994219653,
+          "f1_por_etiqueta": {
+            "HS": 0.7718120805369127,
+            "TR": 0.8374384236453202,
+            "AG": 0.7764705882352941
+          },
+          "pliegue": 5,
+          "n_validacion": 346
+        }
+      ],
+      "metricas_entrenamiento": [
+        {
+          "f1_media_columnas": 0.9717497579855695,
+          "f1_macro6": 0.9773615862492967,
+          "f1_micro": 0.9724247226624406,
+          "f1_samples": 0.4453516377649326,
+          "exact_match": 0.963150289017341,
+          "f1_por_etiqueta": {
+            "HS": 0.9755301794453507,
+            "TR": 0.9647887323943662,
+            "AG": 0.9749303621169917
+          }
+        },
+        {
+          "f1_media_columnas": 0.9758883021910862,
+          "f1_macro6": 0.9807336721528248,
+          "f1_micro": 0.9764331210191083,
+          "f1_samples": 0.4450541516245487,
+          "exact_match": 0.9682310469314079,
+          "f1_por_etiqueta": {
+            "HS": 0.9794576828266228,
+            "TR": 0.9705535924617197,
+            "AG": 0.9776536312849162
+          }
+        },
+        {
+          "f1_media_columnas": 0.9691560270469265,
+          "f1_macro6": 0.9754519019021323,
+          "f1_micro": 0.9702343255224826,
+          "f1_samples": 0.44438026474127557,
+          "exact_match": 0.9595667870036101,
+          "f1_por_etiqueta": {
+            "HS": 0.9754500818330606,
+            "TR": 0.9579439252336449,
+            "AG": 0.9740740740740741
+          }
+        },
+        {
+          "f1_media_columnas": 0.9733227621426379,
+          "f1_macro6": 0.97867141952258,
+          "f1_micro": 0.9739682539682539,
+          "f1_samples": 0.44601684717208184,
+          "exact_match": 0.9667870036101083,
+          "f1_por_etiqueta": {
+            "HS": 0.9795249795249795,
+            "TR": 0.9682726204465335,
+            "AG": 0.9721706864564007
+          }
+        },
+        {
+          "f1_media_columnas": 0.9719138151414121,
+          "f1_macro6": 0.9775799467853191,
+          "f1_micro": 0.972819216182048,
+          "f1_samples": 0.4471480144404332,
+          "exact_match": 0.9638989169675091,
+          "f1_por_etiqueta": {
+            "HS": 0.9771986970684039,
+            "TR": 0.9626168224299065,
+            "AG": 0.975925925925926
+          }
+        }
+      ]
+    },
+    {
+      "experiment_id": "HIB-H14",
+      "descripcion": "ablacion H14: hstack(TF-IDF REP-05, bloque H14 escalado) + LR C=2.0",
+      "familia": "union",
+      "bloques": "H14",
+      "usa_tfidf": true,
+      "C": 2.0,
+      "dimension": 27440,
+      "n_features_densas": 9,
+      "tiempo_segundos": 9.22,
+      "mejora_vs_MOD03b": -0.029701,
+      "mejora_en_pliegues": 0,
+      "f1_train_medio": 0.9612,
+      "brecha_train_oof": 0.1983,
+      "decision": "descartada",
+      "metricas_oof": {
+        "f1_media_columnas": 0.7629576258485652,
+        "f1_macro6": 0.8111872805249014,
+        "f1_micro": 0.7606747496046389,
+        "f1_samples": 0.31669555170421726,
+        "exact_match": 0.7024841132293472,
+        "f1_por_etiqueta": {
+          "HS": 0.757201646090535,
+          "TR": 0.7942583732057417,
+          "AG": 0.737412858249419
+        }
+      },
+      "metricas_pliegues": [
+        {
+          "f1_media_columnas": 0.7825139058726501,
+          "f1_macro6": 0.826027635745057,
+          "f1_micro": 0.7789473684210526,
+          "f1_samples": 0.3240153698366955,
+          "exact_match": 0.7002881844380403,
+          "f1_por_etiqueta": {
+            "HS": 0.782312925170068,
+            "TR": 0.8275862068965517,
+            "AG": 0.7376425855513308
+          },
+          "pliegue": 1,
+          "n_validacion": 347
+        },
+        {
+          "f1_media_columnas": 0.7463098220075599,
+          "f1_macro6": 0.7968870209976237,
+          "f1_micro": 0.7454545454545455,
+          "f1_samples": 0.31714836223506737,
+          "exact_match": 0.684971098265896,
+          "f1_por_etiqueta": {
+            "HS": 0.7389830508474576,
+            "TR": 0.7557603686635944,
+            "AG": 0.7441860465116279
+          },
+          "pliegue": 2,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7495119070909388,
+          "f1_macro6": 0.8024149353270956,
+          "f1_micro": 0.7496688741721854,
+          "f1_samples": 0.31213872832369943,
+          "exact_match": 0.7023121387283237,
+          "f1_por_etiqueta": {
+            "HS": 0.7735191637630662,
+            "TR": 0.7663551401869159,
+            "AG": 0.7086614173228346
+          },
+          "pliegue": 3,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7665856763632863,
+          "f1_macro6": 0.8157776227291965,
+          "f1_micro": 0.7634408602150538,
+          "f1_samples": 0.30770712909441233,
+          "exact_match": 0.7312138728323699,
+          "f1_por_etiqueta": {
+            "HS": 0.7368421052631579,
+            "TR": 0.7961165048543689,
+            "AG": 0.766798418972332
+          },
+          "pliegue": 4,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7711716899017897,
+          "f1_macro6": 0.8152225324099512,
+          "f1_micro": 0.7660130718954249,
+          "f1_samples": 0.3224470134874759,
+          "exact_match": 0.6936416184971098,
+          "f1_por_etiqueta": {
+            "HS": 0.7542087542087542,
+            "TR": 0.8292682926829268,
+            "AG": 0.7300380228136882
+          },
+          "pliegue": 5,
+          "n_validacion": 346
+        }
+      ],
+      "metricas_entrenamiento": [
+        {
+          "f1_media_columnas": 0.9583175150818343,
+          "f1_macro6": 0.9660505580275157,
+          "f1_micro": 0.9582278481012658,
+          "f1_samples": 0.43610308285163774,
+          "exact_match": 0.9393063583815029,
+          "f1_por_etiqueta": {
+            "HS": 0.9575163398692811,
+            "TR": 0.9590643274853801,
+            "AG": 0.9583718778908418
+          }
+        },
+        {
+          "f1_media_columnas": 0.9616011908224461,
+          "f1_macro6": 0.9688456591657918,
+          "f1_micro": 0.9615262321144674,
+          "f1_samples": 0.4366787003610108,
+          "exact_match": 0.9436823104693141,
+          "f1_por_etiqueta": {
+            "HS": 0.961380443714051,
+            "TR": 0.9625292740046838,
+            "AG": 0.9608938547486033
+          }
+        },
+        {
+          "f1_media_columnas": 0.9621943511195455,
+          "f1_macro6": 0.9693410824128983,
+          "f1_micro": 0.9622581668252458,
+          "f1_samples": 0.43879663056558366,
+          "exact_match": 0.9458483754512635,
+          "f1_por_etiqueta": {
+            "HS": 0.9639934533551555,
+            "TR": 0.9624413145539906,
+            "AG": 0.9601482854494903
+          }
+        },
+        {
+          "f1_media_columnas": 0.9613406853969657,
+          "f1_macro6": 0.9686015950388827,
+          "f1_micro": 0.961489898989899,
+          "f1_samples": 0.4403128760529482,
+          "exact_match": 0.9487364620938629,
+          "f1_por_etiqueta": {
+            "HS": 0.9648979591836735,
+            "TR": 0.9614035087719298,
+            "AG": 0.9577205882352942
+          }
+        },
+        {
+          "f1_media_columnas": 0.9626277109178102,
+          "f1_macro6": 0.9697917244431077,
+          "f1_micro": 0.9630798359103818,
+          "f1_samples": 0.4403850782190132,
+          "exact_match": 0.9501805054151624,
+          "f1_por_etiqueta": {
+            "HS": 0.967373572593801,
+            "TR": 0.959254947613504,
+            "AG": 0.9612546125461254
+          }
+        }
+      ]
+    }
+  ],
+  "rebanadas": [
+    {
+      "modelo": "MOD-03b_REF",
+      "rebanada": "tiene_hashtag",
+      "grupo": "1",
+      "n": 161,
+      "f1_HS": 0.5526,
+      "f1_TR": 0.5217,
+      "f1_AG": 0.5926,
+      "f1_media_columnas": 0.5557,
+      "delta_vs_global_modelo": -0.237
+    },
+    {
+      "modelo": "MOD-03b_REF",
+      "rebanada": "tiene_pregunta",
+      "grupo": "1",
+      "n": 158,
+      "f1_HS": 0.6349,
+      "f1_TR": 0.6531,
+      "f1_AG": 0.5588,
+      "f1_media_columnas": 0.6156,
+      "delta_vs_global_modelo": -0.1771
+    },
+    {
+      "modelo": "MOD-03b_REF",
+      "rebanada": "tiene_referencia_colectiva",
+      "grupo": "1",
+      "n": 418,
+      "f1_HS": 0.6805,
+      "f1_TR": 0.6364,
+      "f1_AG": 0.5494,
+      "f1_media_columnas": 0.6221,
+      "delta_vs_global_modelo": -0.1706
+    },
+    {
+      "modelo": "MOD-03b_REF",
+      "rebanada": "cuartil_longitud",
+      "grupo": "Q4",
+      "n": 432,
+      "f1_HS": 0.6645,
+      "f1_TR": 0.6286,
+      "f1_AG": 0.5691,
+      "f1_media_columnas": 0.6207,
+      "delta_vs_global_modelo": -0.1719
+    },
+    {
+      "modelo": "MOD-03b_REF",
+      "rebanada": "tiene_mencion",
+      "grupo": "0",
+      "n": 909,
+      "f1_HS": 0.6614,
+      "f1_TR": 0.7044,
+      "f1_AG": 0.6553,
+      "f1_media_columnas": 0.6737,
+      "delta_vs_global_modelo": -0.1189
+    },
+    {
+      "modelo": "MOD-03b_REF",
+      "rebanada": "region_regimen_noticia",
+      "grupo": "1",
+      "n": 599,
+      "f1_HS": 0.6599,
+      "f1_TR": 0.7143,
+      "f1_AG": 0.6628,
+      "f1_media_columnas": 0.679,
+      "delta_vs_global_modelo": -0.1137
+    },
+    {
+      "modelo": "MOD-03b_REF",
+      "rebanada": "region_no_responde_con_colectiva",
+      "grupo": "1",
+      "n": 318,
+      "f1_HS": 0.6718,
+      "f1_TR": 0.5366,
+      "f1_AG": 0.5311,
+      "f1_media_columnas": 0.5798,
+      "delta_vs_global_modelo": -0.2129
+    },
+    {
+      "modelo": "MOD-03b_REF",
+      "rebanada": "tiene_mencion_inicial",
+      "grupo": "1",
+      "n": 701,
+      "f1_HS": 0.8844,
+      "f1_TR": 0.8857,
+      "f1_AG": 0.8659,
+      "f1_media_columnas": 0.8787,
+      "delta_vs_global_modelo": 0.086
+    },
+    {
+      "modelo": "MOD-03b_REF",
+      "rebanada": "cuartil_longitud",
+      "grupo": "Q1",
+      "n": 435,
+      "f1_HS": 0.906,
+      "f1_TR": 0.9339,
+      "f1_AG": 0.8958,
+      "f1_media_columnas": 0.9119,
+      "delta_vs_global_modelo": 0.1192
+    },
+    {
+      "modelo": "HIB-H12",
+      "rebanada": "tiene_hashtag",
+      "grupo": "1",
+      "n": 161,
+      "f1_HS": 0.5316,
+      "f1_TR": 0.48,
+      "f1_AG": 0.5614,
+      "f1_media_columnas": 0.5243,
+      "delta_vs_global_modelo": -0.2592
+    },
+    {
+      "modelo": "HIB-H12",
+      "rebanada": "tiene_pregunta",
+      "grupo": "1",
+      "n": 158,
+      "f1_HS": 0.5806,
+      "f1_TR": 0.6154,
+      "f1_AG": 0.5373,
+      "f1_media_columnas": 0.5778,
+      "delta_vs_global_modelo": -0.2058
+    },
+    {
+      "modelo": "HIB-H12",
+      "rebanada": "tiene_referencia_colectiva",
+      "grupo": "1",
+      "n": 418,
+      "f1_HS": 0.6927,
+      "f1_TR": 0.6444,
+      "f1_AG": 0.5702,
+      "f1_media_columnas": 0.6358,
+      "delta_vs_global_modelo": -0.1478
+    },
+    {
+      "modelo": "HIB-H12",
+      "rebanada": "cuartil_longitud",
+      "grupo": "Q4",
+      "n": 432,
+      "f1_HS": 0.6583,
+      "f1_TR": 0.6606,
+      "f1_AG": 0.5837,
+      "f1_media_columnas": 0.6342,
+      "delta_vs_global_modelo": -0.1494
+    },
+    {
+      "modelo": "HIB-H12",
+      "rebanada": "tiene_mencion",
+      "grupo": "0",
+      "n": 909,
+      "f1_HS": 0.6584,
+      "f1_TR": 0.6818,
+      "f1_AG": 0.6358,
+      "f1_media_columnas": 0.6587,
+      "delta_vs_global_modelo": -0.1249
+    },
+    {
+      "modelo": "HIB-H12",
+      "rebanada": "region_regimen_noticia",
+      "grupo": "1",
+      "n": 599,
+      "f1_HS": 0.6715,
+      "f1_TR": 0.7119,
+      "f1_AG": 0.6455,
+      "f1_media_columnas": 0.6763,
+      "delta_vs_global_modelo": -0.1073
+    },
+    {
+      "modelo": "HIB-H12",
+      "rebanada": "region_no_responde_con_colectiva",
+      "grupo": "1",
+      "n": 318,
+      "f1_HS": 0.6763,
+      "f1_TR": 0.45,
+      "f1_AG": 0.5543,
+      "f1_media_columnas": 0.5602,
+      "delta_vs_global_modelo": -0.2234
+    },
+    {
+      "modelo": "HIB-H12",
+      "rebanada": "tiene_mencion_inicial",
+      "grupo": "1",
+      "n": 701,
+      "f1_HS": 0.8835,
+      "f1_TR": 0.8733,
+      "f1_AG": 0.8621,
+      "f1_media_columnas": 0.873,
+      "delta_vs_global_modelo": 0.0894
+    },
+    {
+      "modelo": "HIB-H12",
+      "rebanada": "cuartil_longitud",
+      "grupo": "Q1",
+      "n": 435,
+      "f1_HS": 0.9013,
+      "f1_TR": 0.9136,
+      "f1_AG": 0.8894,
+      "f1_media_columnas": 0.9014,
+      "delta_vs_global_modelo": 0.1179
+    }
+  ],
+  "comparacion_rebanadas": {
+    "mejor_candidato": "HIB-H12",
+    "referencia": "MOD-03b_REF",
+    "deltas": {
+      "tiene_hashtag|1": -0.0314,
+      "tiene_pregunta|1": -0.0378,
+      "tiene_referencia_colectiva|1": 0.0137,
+      "cuartil_longitud|Q4": 0.0135,
+      "tiene_mencion|0": -0.015,
+      "region_regimen_noticia|1": -0.0027,
+      "region_no_responde_con_colectiva|1": -0.0196,
+      "tiene_mencion_inicial|1": -0.0057,
+      "cuartil_longitud|Q1": -0.0105
+    },
+    "rebanadas_mejoradas": 2,
+    "rebanadas_empeoradas": 7
+  },
+  "limitaciones": [
+    "Los bloques densos se concatenan con ~23.400 features TF-IDF sin re-ajustar C ni seleccionar features: la perdida del hibrido es compatible con sobreajuste por capacidad anadida (la brecha train-OOF crece respecto del control) y no demuestra que las features sean inutiles, solo que no aportan con este contrato.",
+    "StandardScaler sobre banderas binarias raras produce valores estandarizados de magnitud alta; no se probo otra escala ni un escalado por bloque porque queda fuera del alcance pre-registrado de la fase.",
+    "Las rebanadas usan predicciones OOF con umbral 0.5; los umbrales por etiqueta de D-012 no se re-optimizan aqui.",
+    "Los rasgos de POS, lemas y morfologia dependen de spaCy es_core_news_md como anotador (D-003) sobre texto ASCII sin diacriticos: hay ruido de anotacion.",
+    "Los lexicos inducidos dentro del pliegue son mas pequenos que el lexico in-sample del EDA (150 lemas por pliegue, unos 18 en el nucleo), lo que reduce su cobertura frente a la version in-sample."
+  ],
+  "siguiente_paso": "Si el orquestador quiere insistir en la familia hibrida, el siguiente paso controlado es re-ajustar C y/o dar al bloque denso su propia regularizacion (escala reducida, seleccion de features o promedio de dos modelos), siempre con el mismo split y la misma regla de decision; con el contrato pre-registrado de esta fase la concatenacion directa no supera al single.",
+  "conclusion": {
+    "mejor_configuracion": "HIB-H12",
+    "f1_mejor": 0.7836,
+    "delta_vs_MOD03b": -0.009096,
+    "pliegues_mejorados": 1,
+    "decision": "descartada",
+    "rebanadas_mejoradas": 2,
+    "texto": "Mejor configuracion de las Fases 6-8: HIB-H12 con f1_media_columnas 0.7836 (delta -0.0091 frente a MOD-03b_BEST 0.7927, 1/5 pliegues): descartada. Rebanadas mejoradas del mejor candidato frente al control: 2 de 9."
+  }
+}

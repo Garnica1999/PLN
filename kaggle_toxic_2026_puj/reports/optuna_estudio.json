@@ -1,0 +1,437 @@
+{
+  "metadata": {
+    "fecha": "2026-09-22",
+    "script": "experiments/09_optuna_tfidf_lr.py",
+    "competencia": "KAGGLE_TOXIC_2026_PUJ",
+    "fase": "Fase 10/27 (optimizacion acotada de hiperparametros con Optuna)",
+    "metrica_primaria": "f1_media_columnas",
+    "validacion": "StratifiedGroupKFold(5, shuffle=True, random_state=42) agrupado por near-duplicado y estratificado por HSxTRxAG",
+    "sin_fuga": "Vectorizador ajustado dentro de cada pliegue; el test solo se uso para predecir cuando el mejor trial cumplio la regla; ni el trial ni los umbrales usan el test",
+    "idempotencia": "study_name, semilla, n_trials y timeout fijos; cada trial es determinista; unica columna no determinista: la duracion",
+    "segundos_estudio": 294.58,
+    "segundos_totales": 305.6
+  },
+  "espacio_busqueda": {
+    "word": {
+      "ngram_range": [
+        "1-1",
+        "1-2",
+        "1-3"
+      ],
+      "min_df": [
+        1,
+        2,
+        3,
+        5
+      ],
+      "max_df": [
+        0.9,
+        1.0
+      ],
+      "sublinear_tf": [
+        true,
+        false
+      ]
+    },
+    "char": {
+      "ngram_range": [
+        "3-5",
+        "3-6",
+        "2-5",
+        "4-6"
+      ],
+      "min_df": [
+        2,
+        3,
+        5
+      ],
+      "sublinear_tf": [
+        true,
+        false
+      ]
+    },
+    "modelo": {
+      "C": {
+        "tipo": "log-uniforme",
+        "minimo": 0.3,
+        "maximo": 10.0
+      },
+      "class_weight": [
+        "balanced",
+        "none"
+      ]
+    }
+  },
+  "estudio": {
+    "study_name": "opt01_tfidf_lr_union",
+    "direccion": "maximize",
+    "n_trials_solicitados": 50,
+    "timeout_segundos": 1200,
+    "n_trials_ejecutados": 50,
+    "n_completados": 28,
+    "n_podados": 22,
+    "n_fallidos": 0,
+    "duracion_seg": 294.58,
+    "sampler": "TPESampler(seed=42, n_startup_trials=10)",
+    "pruner": "MedianPruner(n_startup_trials=10, n_warmup_steps=1, n_min_trials=3)",
+    "metrica_objetivo": "f1_media_columnas out-of-fold con umbral 0.5",
+    "espacio_busqueda": {
+      "word": {
+        "ngram_range": [
+          "1-1",
+          "1-2",
+          "1-3"
+        ],
+        "min_df": [
+          1,
+          2,
+          3,
+          5
+        ],
+        "max_df": [
+          0.9,
+          1.0
+        ],
+        "sublinear_tf": [
+          true,
+          false
+        ]
+      },
+      "char": {
+        "ngram_range": [
+          "3-5",
+          "3-6",
+          "2-5",
+          "4-6"
+        ],
+        "min_df": [
+          2,
+          3,
+          5
+        ],
+        "sublinear_tf": [
+          true,
+          false
+        ]
+      },
+      "modelo": {
+        "C": {
+          "tipo": "log-uniforme",
+          "minimo": 0.3,
+          "maximo": 10.0
+        },
+        "class_weight": [
+          "balanced",
+          "none"
+        ]
+      }
+    },
+    "params_mejor_trial": {
+      "word": {
+        "ngram_range": [
+          1,
+          3
+        ],
+        "min_df": 5,
+        "max_df": 0.9,
+        "sublinear_tf": true
+      },
+      "char": {
+        "ngram_range": [
+          3,
+          6
+        ],
+        "min_df": 2,
+        "sublinear_tf": true
+      },
+      "modelo": {
+        "C": 3.2575442857761407,
+        "class_weight": "balanced"
+      }
+    },
+    "dimension_train": 32060,
+    "dimension_media_pliegues": 27030.0
+  },
+  "referencia_mod03b": {
+    "fuente": "features/oof_mod03b.npz",
+    "f1_media_columnas": 0.7926588861781015,
+    "f1_media_columnas_publicada": 0.7926588861781015,
+    "diferencia_vs_publicada": 0.0,
+    "f1_macro6": 0.8349033705135338,
+    "f1_por_etiqueta": {
+      "HS": 0.779917,
+      "TR": 0.828708,
+      "AG": 0.769351
+    },
+    "f1_por_pliegue": [
+      0.801293,
+      0.78986,
+      0.777528,
+      0.793383,
+      0.801449
+    ],
+    "umbral": 0.5
+  },
+  "mejor_trial": {
+    "numero": 24,
+    "params": {
+      "word": {
+        "ngram_range": [
+          1,
+          3
+        ],
+        "min_df": 5,
+        "max_df": 0.9,
+        "sublinear_tf": true
+      },
+      "char": {
+        "ngram_range": [
+          3,
+          6
+        ],
+        "min_df": 2,
+        "sublinear_tf": true
+      },
+      "modelo": {
+        "C": 3.2575442857761407,
+        "class_weight": "balanced"
+      }
+    },
+    "f1_media_columnas": 0.8012245462683599,
+    "f1_por_etiqueta": {
+      "HS": 0.788204,
+      "TR": 0.832861,
+      "AG": 0.782609
+    },
+    "f1_macro6": 0.8395188510990598,
+    "f1_por_pliegue": [
+      0.805707,
+      0.800985,
+      0.780485,
+      0.80334,
+      0.815442
+    ],
+    "dimension_train": 32060,
+    "dimension_media_pliegues": 27030.0,
+    "delta_vs_mod03b": 0.008565660090258387,
+    "pliegues_mejorados": 5,
+    "cumple_regla": true,
+    "mejora_realista_d012": false
+  },
+  "comparacion": {
+    "f1_mejor_trial": 0.8012245462683599,
+    "f1_referencia_mod03b": 0.7926588861781015,
+    "delta": 0.008565660090258387,
+    "pliegues_mejorados": 5,
+    "n_pliegues": 5,
+    "f1_por_pliegue_mejor": [
+      0.805707,
+      0.800985,
+      0.780485,
+      0.80334,
+      0.815442
+    ],
+    "f1_por_pliegue_referencia": [
+      0.801293,
+      0.78986,
+      0.777528,
+      0.793383,
+      0.801449
+    ],
+    "regla": "adoptar si delta >= +0.005 absoluto y mejora en >= 3/5 pliegues",
+    "cumple_regla": true,
+    "adoptado": true,
+    "mejora_realista_d012": false,
+    "advertencia_d012": "En la familia union word+char el gap local-LB medido es -0.013 a -0.016 (v02 -0.0128, v03 -0.0158, v04 -0.0234); D-012 exige >= +0.010 local para considerar una mejora realista en el leaderboard. Un delta entre +0.005 y +0.010 cumple la regla pre-registrada pero debe confirmarse con una sonda de LB antes de darla por real.",
+    "trial": 24
+  },
+  "umbrales": {
+    "rejilla": {
+      "inicio": 0.2,
+      "fin": 0.8,
+      "paso": 0.01
+    },
+    "por_etiqueta": {
+      "HS": {
+        "umbral_optimo": 0.48,
+        "f1_umbral_0.5": 0.7882037533512064,
+        "f1_umbral_optimo": 0.7933774834437086,
+        "ganancia": 0.005173730092502216
+      },
+      "TR": {
+        "umbral_optimo": 0.51,
+        "f1_umbral_0.5": 0.8328611898016998,
+        "f1_umbral_optimo": 0.8346007604562737,
+        "ganancia": 0.0017395706545739742
+      },
+      "AG": {
+        "umbral_optimo": 0.49,
+        "f1_umbral_0.5": 0.782608695652174,
+        "f1_umbral_optimo": 0.783661119515885,
+        "ganancia": 0.0010524238637110717
+      }
+    },
+    "umbrales_optimos": {
+      "HS": 0.48,
+      "TR": 0.51,
+      "AG": 0.49
+    },
+    "f1_media_columnas_umbral_0.5": 0.8012245462683599,
+    "f1_media_columnas_umbrales_optimos": 0.8038797878052891,
+    "macro6_umbral_0.5": 0.8395188510990598,
+    "macro6_umbrales_optimos": 0.8409932113174219,
+    "f1_por_etiqueta_umbrales_optimos": {
+      "HS": 0.793377,
+      "TR": 0.834601,
+      "AG": 0.783661
+    },
+    "ganancia": 0.002655241536929198,
+    "por_pliegue": [
+      {
+        "pliegue": 1,
+        "n_validacion": 347,
+        "f1_umbral_0.5": 0.8057072191385893,
+        "f1_umbrales_optimos": 0.8033970002192445,
+        "delta": -0.0023102189193447975
+      },
+      {
+        "pliegue": 2,
+        "n_validacion": 346,
+        "f1_umbral_0.5": 0.8009854656160517,
+        "f1_umbrales_optimos": 0.807118469811317,
+        "delta": 0.006133004195265301
+      },
+      {
+        "pliegue": 3,
+        "n_validacion": 346,
+        "f1_umbral_0.5": 0.7804845832173838,
+        "f1_umbrales_optimos": 0.785377077082563,
+        "delta": 0.004892493865179204
+      },
+      {
+        "pliegue": 4,
+        "n_validacion": 346,
+        "f1_umbral_0.5": 0.8033404399724192,
+        "f1_umbrales_optimos": 0.8029410289589038,
+        "delta": -0.00039941101351537167
+      },
+      {
+        "pliegue": 5,
+        "n_validacion": 346,
+        "f1_umbral_0.5": 0.8154415079981424,
+        "f1_umbrales_optimos": 0.8203647266574764,
+        "delta": 0.004923218659333983
+      }
+    ],
+    "pliegues_mejorados": 3,
+    "advertencia_sesgo_optimista": "Los umbrales y la metrica comparten el mismo OOF, asi que la ganancia es una cota optimista (la verificacion anidada de v03 la redujo de +0.0063 a +0.0014). Se registran los umbrales y el valor OOF, no una promesa."
+  },
+  "submission": {
+    "ruta": "submissions/toxic_submission_v05_optuna.csv",
+    "umbrales": {
+      "HS": 0.48,
+      "TR": 0.51,
+      "AG": 0.49
+    },
+    "modelo": "models/fase10_optuna_lr_union.joblib",
+    "prediccion_test": {
+      "positivos_test": {
+        "HS": 473,
+        "TR": 343,
+        "AG": 413
+      },
+      "tasa_positivos_test": {
+        "HS": 0.4099,
+        "TR": 0.2972,
+        "AG": 0.3579
+      },
+      "tasa_positivos_train": {
+        "HS": 0.4367,
+        "TR": 0.2998,
+        "AG": 0.3824
+      }
+    }
+  },
+  "top_trials": [
+    {
+      "numero": 24,
+      "f1_media_columnas": 0.8012245462683599,
+      "params": {
+        "word_ngram_range": "1-3",
+        "word_min_df": 5,
+        "word_max_df": 0.9,
+        "word_sublinear_tf": true,
+        "char_ngram_range": "3-6",
+        "char_min_df": 2,
+        "char_sublinear_tf": true,
+        "lr_C": 3.2575442857761407,
+        "lr_class_weight": "balanced"
+      }
+    },
+    {
+      "numero": 17,
+      "f1_media_columnas": 0.7978395535925701,
+      "params": {
+        "word_ngram_range": "1-3",
+        "word_min_df": 3,
+        "word_max_df": 0.9,
+        "word_sublinear_tf": true,
+        "char_ngram_range": "3-6",
+        "char_min_df": 2,
+        "char_sublinear_tf": true,
+        "lr_C": 2.7153418259355497,
+        "lr_class_weight": "balanced"
+      }
+    },
+    {
+      "numero": 44,
+      "f1_media_columnas": 0.7967650136097042,
+      "params": {
+        "word_ngram_range": "1-3",
+        "word_min_df": 3,
+        "word_max_df": 1.0,
+        "word_sublinear_tf": true,
+        "char_ngram_range": "3-6",
+        "char_min_df": 2,
+        "char_sublinear_tf": false,
+        "lr_C": 2.2622720174579634,
+        "lr_class_weight": "balanced"
+      }
+    },
+    {
+      "numero": 16,
+      "f1_media_columnas": 0.7959846941099077,
+      "params": {
+        "word_ngram_range": "1-3",
+        "word_min_df": 3,
+        "word_max_df": 0.9,
+        "word_sublinear_tf": true,
+        "char_ngram_range": "3-6",
+        "char_min_df": 2,
+        "char_sublinear_tf": true,
+        "lr_C": 3.838843644979357,
+        "lr_class_weight": "balanced"
+      }
+    },
+    {
+      "numero": 41,
+      "f1_media_columnas": 0.7956697856951106,
+      "params": {
+        "word_ngram_range": "1-3",
+        "word_min_df": 3,
+        "word_max_df": 0.9,
+        "word_sublinear_tf": true,
+        "char_ngram_range": "3-6",
+        "char_min_df": 2,
+        "char_sublinear_tf": true,
+        "lr_C": 3.747210771795635,
+        "lr_class_weight": "balanced"
+      }
+    }
+  ],
+  "artefactos": {
+    "trials_csv": "reports/optuna_trials.csv",
+    "figura": "reports/figuras/fig_25_optuna_historia.png"
+  },
+  "advertencia_d012": "En la familia union word+char el gap local-LB medido es -0.013 a -0.016 (v02 -0.0128, v03 -0.0158, v04 -0.0234); D-012 exige >= +0.010 local para considerar una mejora realista en el leaderboard. Un delta entre +0.005 y +0.010 cumple la regla pre-registrada pero debe confirmarse con una sonda de LB antes de darla por real."
+}

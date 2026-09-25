@@ -1,0 +1,10 @@
+variable,media_train,media_test,mediana_train,mediana_test,delta_cliff,u_mannwhitney,p_valor,p_valor_bh,descripcion
+n_caracteres,104.3125,101.7184,91.0,91.0,0.0111,1009838.0,0.6141369613365268,0.789605,"test: solo descriptivo, sin etiquetas y sin uso para ajustar"
+n_palabras,18.1161,17.5867,16.0,16.0,0.0164,1015165.0,0.4546773172569796,0.719644,"test: solo descriptivo, sin etiquetas y sin uso para ajustar"
+n_menciones,0.7256,0.6924,0.0,0.0,0.014,1012793.0,0.47976281620447403,0.719644,"test: solo descriptivo, sin etiquetas y sin uso para ajustar"
+n_hashtags,0.1658,0.2036,0.0,0.0,-0.0039,994861.5,0.723792452553436,0.814267,"test: solo descriptivo, sin etiquetas y sin uso para ajustar"
+n_urls,0.3345,0.3137,0.0,0.0,0.0255,1024275.0,0.14512011280407364,0.719644,"test: solo descriptivo, sin etiquetas y sin uso para ajustar"
+ratio_mayusculas,0.1309,0.1313,0.0617,0.0581,0.02,1018748.5,0.3624149608402122,0.719644,"test: solo descriptivo, sin etiquetas y sin uso para ajustar"
+ratio_puntuacion,0.0452,0.0453,0.0364,0.0355,0.0035,1002302.0,0.8724872042593244,0.872487,"test: solo descriptivo, sin etiquetas y sin uso para ajustar"
+n_exclamaciones,0.2501,0.2392,0.0,0.0,-0.0126,986233.0,0.2537298370095705,0.719644,"test: solo descriptivo, sin etiquetas y sin uso para ajustar"
+n_emoticones,0.0341,0.0381,0.0,0.0,-0.006,992767.0,0.379066067922157,0.719644,"test: solo descriptivo, sin etiquetas y sin uso para ajustar"

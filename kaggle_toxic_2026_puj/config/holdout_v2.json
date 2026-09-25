@@ -1,0 +1,33 @@
+{
+  "fecha": "2026-09-25",
+  "protocolo": "v2 (D-016)",
+  "grupos": "near-duplicado UNION pseudo-autor (primera mencion)",
+  "particion": "StratifiedGroupKFold(n_splits=7, shuffle=True, seed=42)",
+  "pliegue_congelado": 0,
+  "n_tweets_dev": 1483,
+  "n_tweets_holdout": 248,
+  "n_grupos_total": 1645,
+  "n_grupos_holdout": 230,
+  "distribucion_dev": {
+    "000": 813,
+    "001": 22,
+    "100": 79,
+    "101": 124,
+    "110": 24,
+    "111": 421
+  },
+  "distribucion_holdout": {
+    "000": 136,
+    "001": 4,
+    "100": 13,
+    "101": 21,
+    "110": 4,
+    "111": 70
+  },
+  "regla_de_uso": {
+    "maximo_evaluaciones": 5,
+    "solo_finalistas": true,
+    "registro": "RUNLOG.md"
+  },
+  "hash_ids_csv": "e5b62e5f22c4c63a8c43df4019969504d44c0baa5b503c19ba3560032f5ee6cd"
+}

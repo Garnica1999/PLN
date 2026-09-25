@@ -1,0 +1,223 @@
+{
+  "metadata": {
+    "fecha": "2026-09-22",
+    "script": "experiments/07_submission_v04_ens04.py",
+    "competencia": "KAGGLE_TOXIC_2026_PUJ",
+    "fase": "Fase 13c (sonda v04 con ENS-04 y umbrales medianos)",
+    "ensemble": "ENS-04",
+    "configuracion": "promedio simple de M2 (LR balanced C=2.0 x3) y M3 (LinearSVC balanced C=1.0 x3) sobre la union TF-IDF word (1,2)+char_wb (3,5)",
+    "validacion": "StratifiedGroupKFold(5, shuffle=True, random_state=42) agrupado por near-duplicado y estratificado por HSxTRxAG; evaluacion anidada leave-one-fold-out",
+    "sin_fuga_test": "el test solo se uso para predecir",
+    "envios_autorizados": 1,
+    "segundos_oof": 1.29,
+    "segundos_refit": 0.37
+  },
+  "referencia_fase_13b": {
+    "f1_anidada_0.5": 0.791609,
+    "estrategia_umbrales": "mediana_por_pliegue",
+    "f1_anidada_umbrales": 0.7984669995577933,
+    "umbrales_finales": {
+      "HS": 0.44,
+      "TR": 0.47,
+      "AG": 0.44
+    },
+    "combinacion_por_pliegue": [
+      {
+        "pliegue": 1,
+        "combinacion": [
+          "M2",
+          "M3"
+        ],
+        "pesos": [
+          0.0,
+          0.5,
+          0.5,
+          0.0
+        ]
+      },
+      {
+        "pliegue": 2,
+        "combinacion": [
+          "M2",
+          "M3"
+        ],
+        "pesos": [
+          0.0,
+          0.5,
+          0.5,
+          0.0
+        ]
+      },
+      {
+        "pliegue": 3,
+        "combinacion": [
+          "M2",
+          "M3"
+        ],
+        "pesos": [
+          0.0,
+          0.5,
+          0.5,
+          0.0
+        ]
+      },
+      {
+        "pliegue": 4,
+        "combinacion": [
+          "M2",
+          "M3"
+        ],
+        "pesos": [
+          0.0,
+          0.5,
+          0.5,
+          0.0
+        ]
+      },
+      {
+        "pliegue": 5,
+        "combinacion": [
+          "M2",
+          "M3"
+        ],
+        "pesos": [
+          0.0,
+          0.5,
+          0.5,
+          0.0
+        ]
+      }
+    ]
+  },
+  "verificacion": {
+    "f1_anidada_umbrales": 0.7984669995577933,
+    "f1_anidada_umbral_0.5": 0.7916093855387931,
+    "macro6_anidada_umbrales": 0.8318893388260696,
+    "f1_por_etiqueta_anidada": {
+      "HS": 0.7871939736346516,
+      "TR": 0.8298676748582231,
+      "AG": 0.7783393501805054
+    },
+    "diferencia_vs_referencia": 0.0,
+    "diferencia_f1_rapida_canonica": 0.0,
+    "tolerancia": 0.001,
+    "umbrales_finales": {
+      "HS": 0.44,
+      "TR": 0.47,
+      "AG": 0.44
+    },
+    "umbrales_por_pliegue": [
+      {
+        "pliegue": 1,
+        "umbrales": {
+          "HS": 0.435,
+          "TR": 0.48,
+          "AG": 0.445
+        }
+      },
+      {
+        "pliegue": 2,
+        "umbrales": {
+          "HS": 0.44,
+          "TR": 0.46499999999999997,
+          "AG": 0.44
+        }
+      },
+      {
+        "pliegue": 3,
+        "umbrales": {
+          "HS": 0.445,
+          "TR": 0.46499999999999997,
+          "AG": 0.445
+        }
+      },
+      {
+        "pliegue": 4,
+        "umbrales": {
+          "HS": 0.435,
+          "TR": 0.475,
+          "AG": 0.445
+        }
+      },
+      {
+        "pliegue": 5,
+        "umbrales": {
+          "HS": 0.445,
+          "TR": 0.48,
+          "AG": 0.44
+        }
+      }
+    ],
+    "umbrales_optimos_por_pliegue": [
+      {
+        "HS": 0.48,
+        "TR": 0.42,
+        "AG": 0.44
+      },
+      {
+        "HS": 0.44,
+        "TR": 0.49,
+        "AG": 0.45
+      },
+      {
+        "HS": 0.41,
+        "TR": 0.5,
+        "AG": 0.44
+      },
+      {
+        "HS": 0.45,
+        "TR": 0.47,
+        "AG": 0.38
+      },
+      {
+        "HS": 0.43,
+        "TR": 0.46,
+        "AG": 0.47
+      }
+    ],
+    "comparacion_oof_bases_npz": {
+      "disponible": true,
+      "ruta": "features/oof_bases.npz",
+      "diferencia_maxima": {
+        "M2": 8.316236588257198e-12,
+        "M3": 0.0
+      },
+      "tolerancia": 1e-06
+    }
+  },
+  "refit": {
+    "dimension_union": 27431,
+    "segundos": 0.37,
+    "umbrales": {
+      "HS": 0.44,
+      "TR": 0.47,
+      "AG": 0.44
+    }
+  },
+  "submission": {
+    "ruta": "submissions/toxic_submission_v04_ens04_mediana.csv",
+    "sha256": "c37cf1f5f9159b22c5d91200c5cff12c63c89c1ef3f49ac458b8307dc2a9e77e",
+    "prediccion_test": {
+      "positivos_test": {
+        "HS": 537,
+        "TR": 348,
+        "AG": 467
+      },
+      "tasa_positivos_test": {
+        "HS": 0.4653,
+        "TR": 0.3016,
+        "AG": 0.4047
+      },
+      "tasa_positivos_train": {
+        "HS": 0.4367,
+        "TR": 0.2998,
+        "AG": 0.3824
+      }
+    }
+  },
+  "artefactos": {
+    "oof_npz": "features/oof_ens04_v04.npz",
+    "modelo_joblib": "models/fase13c_ens04_m2m3.joblib",
+    "contexto_md": "reports/contexto.md"
+  }
+}

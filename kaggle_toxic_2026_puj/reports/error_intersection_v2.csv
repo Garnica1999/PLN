@@ -1,0 +1,18 @@
+referencia,base_desarrollo,patron,n,fraccion,ic_inferior_95,ic_superior_95,n_bootstrap,n_historico_las_3_mal,fraccion_historico_las_3_mal,base_historica,origen_historico,diferencia_vs_historico_puntos_pct,f1_referencia
+historico_spec,train completo n=1731 (protocolo historico),las_3_mal,101,0.058348,,,,101.0,0.058348,1731.0,"reports/error_analysis.md (lineas 8 y 115): V03 historico con umbrales sobre train completo n=1731 (protocolo historico, sin correccion D-016)",0.0,
+v03_base_M2_union_lr_c2,"desarrollo corregido v2, n=1483",las_3_correctas,1042,0.70263,0.679703,0.724225,2000,,,,,,0.777211
+v03_base_M2_union_lr_c2,"desarrollo corregido v2, n=1483",solo_HS_mal,120,0.080917,0.066757,0.095078,2000,,,,,,0.777211
+v03_base_M2_union_lr_c2,"desarrollo corregido v2, n=1483",solo_TR_mal,27,0.018206,0.012138,0.024949,2000,,,,,,0.777211
+v03_base_M2_union_lr_c2,"desarrollo corregido v2, n=1483",solo_AG_mal,76,0.051247,0.040459,0.062711,2000,,,,,,0.777211
+v03_base_M2_union_lr_c2,"desarrollo corregido v2, n=1483",HS_TR_mal,17,0.011463,0.006726,0.017532,2000,,,,,,0.777211
+v03_base_M2_union_lr_c2,"desarrollo corregido v2, n=1483",HS_AG_mal,81,0.054619,0.043156,0.066082,2000,,,,,,0.777211
+v03_base_M2_union_lr_c2,"desarrollo corregido v2, n=1483",TR_AG_mal,22,0.014835,0.008766,0.020904,2000,,,,,,0.777211
+v03_base_M2_union_lr_c2,"desarrollo corregido v2, n=1483",las_3_mal,98,0.066082,0.053945,0.078894,2000,101.0,0.058348,1731.0,"reports/error_analysis.md (lineas 8 y 115): V03 historico con umbrales sobre train completo n=1731 (protocolo historico, sin correccion D-016)",0.773,0.777211
+meta_META-BASES-RIDGE,"desarrollo corregido v2, n=1483",las_3_correctas,1067,0.719488,0.695887,0.741757,2000,,,,,,0.787357
+meta_META-BASES-RIDGE,"desarrollo corregido v2, n=1483",solo_HS_mal,96,0.064734,0.051922,0.077546,2000,,,,,,0.787357
+meta_META-BASES-RIDGE,"desarrollo corregido v2, n=1483",solo_TR_mal,34,0.022927,0.015509,0.031018,2000,,,,,,0.787357
+meta_META-BASES-RIDGE,"desarrollo corregido v2, n=1483",solo_AG_mal,66,0.044504,0.03439,0.054636,2000,,,,,,0.787357
+meta_META-BASES-RIDGE,"desarrollo corregido v2, n=1483",HS_TR_mal,16,0.010789,0.006069,0.016183,2000,,,,,,0.787357
+meta_META-BASES-RIDGE,"desarrollo corregido v2, n=1483",HS_AG_mal,84,0.056642,0.045179,0.06878,2000,,,,,,0.787357
+meta_META-BASES-RIDGE,"desarrollo corregido v2, n=1483",TR_AG_mal,17,0.011463,0.006743,0.016858,2000,,,,,,0.787357
+meta_META-BASES-RIDGE,"desarrollo corregido v2, n=1483",las_3_mal,103,0.069454,0.057316,0.08294,2000,101.0,0.058348,1731.0,"reports/error_analysis.md (lineas 8 y 115): V03 historico con umbrales sobre train completo n=1731 (protocolo historico, sin correccion D-016)",1.111,0.787357

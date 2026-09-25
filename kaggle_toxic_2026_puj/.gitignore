@@ -1,0 +1,13 @@
+# Python
+__pycache__/
+*.pyc
+.ruff_cache/
+.ipynb_checkpoints/
+
+# Datos oficiales de la competencia (no redistribuir)
+data/
+
+# Artefactos derivados pesados
+features/
+models/
+experiments/*.log

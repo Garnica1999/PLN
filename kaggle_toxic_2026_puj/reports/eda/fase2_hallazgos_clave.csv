@@ -1,0 +1,7 @@
+hallazgo,evidencia,artefacto,hipotesis
+El corpus no contiene emojis Unicode (normalizacion ASCII).,0 emojis en train y en test con la libreria emoji; 6 bytes no ASCII en test.,reports/eda/fase2_textometria_por_clase.csv,H6 (descarta la subfamilia de emojis)
+La mencion inicial es el fenomeno mas asociado con TR dentro de HS=1.,V de Cramer 0.512,reports/eda/fase2_rasgos_TR.csv,H3
+El odio con objetivo colectivo explicito es casi siempre TR=0.,57.0 % de TR=0 frente a 10.0 % de TR=1,reports/eda/fase2_tr0_con_referencia_colectiva.csv,D-005 (semantica de TR)
+La deduplicacion por near-duplicado no altera el orden de los efectos.,mismas magnitudes y significancias en los tests con y sin deduplicar,reports/eda/fase2_tests_categoricos.csv,Transversal (D-004)
+Desbalanceo moderado en las tres etiquetas (maximo 2.34:1).,"prevalencias 43.67 %, 29.98 % y 38.24 %",reports/eda/fase2_distribucion_etiquetas.csv,H9
+Existe estructura jerarquica fuerte: 0 violaciones de TR=1 con HS=0.,519 de 519 casos cumplen TR=1 => HS=1; 26 casos con AG=1 y HS=0,reports/eda/fase2_combinaciones_etiquetas.csv,H8

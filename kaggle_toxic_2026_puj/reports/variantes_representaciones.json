@@ -1,0 +1,3117 @@
+{
+  "metadata": {
+    "fecha": "2026-09-22",
+    "script": "experiments/03_variantes_representaciones.py",
+    "competencia": "KAGGLE_TOXIC_2026_PUJ",
+    "fase": "Fases 4-5 del plan (variantes de preprocesamiento, representaciones y modelos)",
+    "metrica_primaria": "f1_media_columnas",
+    "referencia": "PRE-00",
+    "referencia_f1_oof": 0.7587146098126788,
+    "referencia_b1_registrada": 0.7587146098126788,
+    "diferencia_vs_b1_registrada": 0.0,
+    "regla_decision": "adoptada si mejora >= 0.005 absoluto en f1_media_columnas y mejora en >= 3 de 5 pliegues",
+    "validacion": "StratifiedGroupKFold(5, shuffle=True, random_state=42), grupos = near-duplicados, estratificado por combinacion HSxTRxAG",
+    "tamano_pliegues": [
+      {
+        "pliegue": 1,
+        "n_train": 1384,
+        "n_validacion": 347
+      },
+      {
+        "pliegue": 2,
+        "n_train": 1385,
+        "n_validacion": 346
+      },
+      {
+        "pliegue": 3,
+        "n_train": 1385,
+        "n_validacion": 346
+      },
+      {
+        "pliegue": 4,
+        "n_train": 1385,
+        "n_validacion": 346
+      },
+      {
+        "pliegue": 5,
+        "n_train": 1385,
+        "n_validacion": 346
+      }
+    ],
+    "sin_fuga": "Vectorizadores ajustados dentro de cada pliegue; transformaciones de texto deterministas y sin parametros ajustados; el test solo se inspecciono para documentar la ausencia de emojis",
+    "idempotencia": "Determinista salvo la columna tiempo_segundos (ruido de maquina, redondeada a 2 decimales) en variantes_representaciones.csv"
+  },
+  "evidencia_emojis": {
+    "n_emojis_train": 0,
+    "n_emojis_test": 0,
+    "n_caracteres_no_ascii_train": 0,
+    "n_caracteres_no_ascii_test": 6,
+    "caracteres_no_ascii_test": {
+      "U+00BF": 6
+    },
+    "conclusion": "El corpus no contiene ningun emoji Unicode (0 en train y 0 en test); las variantes de emojis no aplican. Train es 100 % ASCII (D-010) y el test solo contiene el caracter '?' (U+00BF) heredado del cp1252."
+  },
+  "textos_modificados_por_variante": {
+    "PRE-00": 0,
+    "PRE-01": 0,
+    "PRE-02": 1581,
+    "PRE-03": 589,
+    "PRE-04": 956,
+    "PRE-05": 295,
+    "PRE-06": 334,
+    "PRE-07": 1522,
+    "PRE-08": 782,
+    "PRE-09": 1694
+  },
+  "comparacion_postproceso": {
+    "origen": "MOD-03b_BEST",
+    "f1_origen": 0.792659,
+    "f1_con_postproceso": 0.78701,
+    "delta": -0.005649,
+    "f1_por_etiqueta_origen": {
+      "HS": 0.7799174690508941,
+      "TR": 0.8287081339712918,
+      "AG": 0.7693510555121188
+    },
+    "f1_por_etiqueta_postproceso": {
+      "HS": 0.7799174690508941,
+      "TR": 0.8252714708785784,
+      "AG": 0.7558420628525383
+    },
+    "conclusion": "el post-proceso jerarquico empeora la mejor configuracion"
+  },
+  "mejor_representacion_parte_b": "REP-05",
+  "mejor_configuracion_global": "MOD-03b_BEST",
+  "configuraciones_adoptadas": [
+    "REP-05",
+    "REP-06",
+    "MOD-01_BEST",
+    "MOD-01_W12",
+    "MOD-03a_BEST",
+    "MOD-03b_BEST",
+    "MOD-03b_W12"
+  ],
+  "configuraciones": [
+    {
+      "experiment_id": "PRE-00",
+      "parte": "A - preprocesamiento",
+      "descripcion": "texto crudo (referencia = baseline B1) (transformacion unica sobre texto crudo; 0 textos modificados)",
+      "representacion": "TF-IDF word (1,2), min_df=2, sublinear_tf",
+      "modelo": "LogisticRegression(class_weight=balanced, C=1.0, liblinear) x3",
+      "grupo_features": "WORD_NGRAM",
+      "parametros_vectorizador": [
+        {
+          "min_df": 2,
+          "max_df": 1.0,
+          "sublinear_tf": true,
+          "lowercase": true,
+          "strip_accents": null,
+          "analyzer": "word",
+          "ngram_range": [
+            1,
+            2
+          ]
+        }
+      ],
+      "parametros_modelo": {
+        "C": 1.0,
+        "class_weight": "balanced",
+        "max_iter": 1000,
+        "solver": "liblinear",
+        "random_state": 42
+      },
+      "dimension": 4024,
+      "tiempo_segundos": 0.33,
+      "metricas_oof": {
+        "f1_media_columnas": 0.7587146098126788,
+        "f1_macro6": 0.8087327997573793,
+        "f1_micro": 0.7557211282597126,
+        "f1_samples": 0.30284999037165417,
+        "exact_match": 0.7013287117273252,
+        "f1_por_etiqueta": {
+          "HS": 0.7428967428967429,
+          "TR": 0.8026315789473685,
+          "AG": 0.7306155075939249
+        }
+      },
+      "metricas_pliegues": [
+        {
+          "f1_media_columnas": 0.7704160711847551,
+          "f1_macro6": 0.818080091791794,
+          "f1_micro": 0.7657295850066934,
+          "f1_samples": 0.3048991354466859,
+          "exact_match": 0.7089337175792507,
+          "f1_por_etiqueta": {
+            "HS": 0.7456445993031359,
+            "TR": 0.8325358851674641,
+            "AG": 0.7330677290836654
+          },
+          "pliegue": 1,
+          "n_validacion": 347
+        },
+        {
+          "f1_media_columnas": 0.7592791675244782,
+          "f1_macro6": 0.8052626980643058,
+          "f1_micro": 0.7580025608194623,
+          "f1_samples": 0.32052023121387274,
+          "exact_match": 0.6994219653179191,
+          "f1_por_etiqueta": {
+            "HS": 0.7524752475247525,
+            "TR": 0.7782805429864253,
+            "AG": 0.7470817120622568
+          },
+          "pliegue": 2,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7354731323722149,
+          "f1_macro6": 0.7913511489845924,
+          "f1_micro": 0.732620320855615,
+          "f1_samples": 0.28651252408477845,
+          "exact_match": 0.6907514450867052,
+          "f1_por_etiqueta": {
+            "HS": 0.7214285714285714,
+            "TR": 0.7889908256880734,
+            "AG": 0.696
+          },
+          "pliegue": 3,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7509879571847211,
+          "f1_macro6": 0.8045356777944263,
+          "f1_micro": 0.7493261455525606,
+          "f1_samples": 0.30028901734104047,
+          "exact_match": 0.7052023121387283,
+          "f1_por_etiqueta": {
+            "HS": 0.7526132404181185,
+            "TR": 0.782608695652174,
+            "AG": 0.717741935483871
+          },
+          "pliegue": 4,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7776594332985312,
+          "f1_macro6": 0.8243762450788826,
+          "f1_micro": 0.772972972972973,
+          "f1_samples": 0.3020231213872832,
+          "exact_match": 0.7023121387283237,
+          "f1_por_etiqueta": {
+            "HS": 0.7412587412587412,
+            "TR": 0.8325358851674641,
+            "AG": 0.7591836734693878
+          },
+          "pliegue": 5,
+          "n_validacion": 346
+        }
+      ],
+      "mejora_vs_B1": 0.0,
+      "mejora_en_pliegues": 0,
+      "decision": "referencia"
+    },
+    {
+      "experiment_id": "PRE-01",
+      "parte": "A - preprocesamiento",
+      "descripcion": "sin lowercase: se preserva el uso de mayusculas/minusculas (transformacion unica sobre texto crudo; 0 textos modificados)",
+      "representacion": "TF-IDF word (1,2), min_df=2, sublinear_tf [lowercase=False]",
+      "modelo": "LogisticRegression(class_weight=balanced, C=1.0, liblinear) x3",
+      "grupo_features": "WORD_NGRAM",
+      "parametros_vectorizador": [
+        {
+          "min_df": 2,
+          "max_df": 1.0,
+          "sublinear_tf": true,
+          "lowercase": false,
+          "strip_accents": null,
+          "analyzer": "word",
+          "ngram_range": [
+            1,
+            2
+          ]
+        }
+      ],
+      "parametros_modelo": {
+        "C": 1.0,
+        "class_weight": "balanced",
+        "max_iter": 1000,
+        "solver": "liblinear",
+        "random_state": 42
+      },
+      "dimension": 4028,
+      "tiempo_segundos": 0.26,
+      "metricas_oof": {
+        "f1_media_columnas": 0.7358590451686234,
+        "f1_macro6": 0.7901870191405028,
+        "f1_micro": 0.7322897320244096,
+        "f1_samples": 0.29568650105911803,
+        "exact_match": 0.6822645869439631,
+        "f1_por_etiqueta": {
+          "HS": 0.7181628392484343,
+          "TR": 0.7879924953095685,
+          "AG": 0.7014218009478673
+        }
+      },
+      "metricas_pliegues": [
+        {
+          "f1_media_columnas": 0.7311943706692312,
+          "f1_macro6": 0.7876358485942587,
+          "f1_micro": 0.7243243243243244,
+          "f1_samples": 0.29048991354466863,
+          "exact_match": 0.6657060518731989,
+          "f1_por_etiqueta": {
+            "HS": 0.6855123674911661,
+            "TR": 0.8173076923076923,
+            "AG": 0.6907630522088354
+          },
+          "pliegue": 1,
+          "n_validacion": 347
+        },
+        {
+          "f1_media_columnas": 0.7326384342399718,
+          "f1_macro6": 0.7846629925133125,
+          "f1_micro": 0.731016731016731,
+          "f1_samples": 0.3071290944123314,
+          "exact_match": 0.6936416184971098,
+          "f1_por_etiqueta": {
+            "HS": 0.7278911564625851,
+            "TR": 0.7623318385650224,
+            "AG": 0.7076923076923077
+          },
+          "pliegue": 2,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7285059463260873,
+          "f1_macro6": 0.784737460225195,
+          "f1_micro": 0.7272727272727273,
+          "f1_samples": 0.2955684007707129,
+          "exact_match": 0.6791907514450867,
+          "f1_por_etiqueta": {
+            "HS": 0.7368421052631579,
+            "TR": 0.7636363636363637,
+            "AG": 0.6850393700787402
+          },
+          "pliegue": 3,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.72622258960224,
+          "f1_macro6": 0.7817406870668239,
+          "f1_micro": 0.7214854111405835,
+          "f1_samples": 0.28805394990366084,
+          "exact_match": 0.6763005780346821,
+          "f1_por_etiqueta": {
+            "HS": 0.6941580756013745,
+            "TR": 0.780952380952381,
+            "AG": 0.7035573122529645
+          },
+          "pliegue": 4,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7619970227871292,
+          "f1_macro6": 0.8125290133431992,
+          "f1_micro": 0.7577807848443843,
+          "f1_samples": 0.2972061657032755,
+          "exact_match": 0.6965317919075145,
+          "f1_por_etiqueta": {
+            "HS": 0.7464788732394366,
+            "TR": 0.8195121951219512,
+            "AG": 0.72
+          },
+          "pliegue": 5,
+          "n_validacion": 346
+        }
+      ],
+      "mejora_vs_B1": -0.022856,
+      "mejora_en_pliegues": 0,
+      "decision": "descartada"
+    },
+    {
+      "experiment_id": "PRE-02",
+      "parte": "A - preprocesamiento",
+      "descripcion": "stopwords eliminadas (NLTK espanol sin diacriticos + lista de Twitter) (transformacion unica sobre texto crudo; 1581 textos modificados)",
+      "representacion": "TF-IDF word (1,2), min_df=2, sublinear_tf",
+      "modelo": "LogisticRegression(class_weight=balanced, C=1.0, liblinear) x3",
+      "grupo_features": "WORD_NGRAM",
+      "parametros_vectorizador": [
+        {
+          "min_df": 2,
+          "max_df": 1.0,
+          "sublinear_tf": true,
+          "lowercase": true,
+          "strip_accents": null,
+          "analyzer": "word",
+          "ngram_range": [
+            1,
+            2
+          ]
+        }
+      ],
+      "parametros_modelo": {
+        "C": 1.0,
+        "class_weight": "balanced",
+        "max_iter": 1000,
+        "solver": "liblinear",
+        "random_state": 42
+      },
+      "dimension": 2518,
+      "tiempo_segundos": 0.21,
+      "metricas_oof": {
+        "f1_media_columnas": 0.7562036793879366,
+        "f1_macro6": 0.8048876645577728,
+        "f1_micro": 0.7536610878661087,
+        "f1_samples": 0.3088388214904679,
+        "exact_match": 0.7007510109763143,
+        "f1_por_etiqueta": {
+          "HS": 0.7506811989100818,
+          "TR": 0.795880149812734,
+          "AG": 0.7220496894409938
+        }
+      },
+      "metricas_pliegues": [
+        {
+          "f1_media_columnas": 0.7791081296966705,
+          "f1_macro6": 0.8231668226954945,
+          "f1_micro": 0.774108322324967,
+          "f1_samples": 0.31296829971181556,
+          "exact_match": 0.7319884726224783,
+          "f1_por_etiqueta": {
+            "HS": 0.7661016949152543,
+            "TR": 0.8446601941747572,
+            "AG": 0.7265625
+          },
+          "pliegue": 1,
+          "n_validacion": 347
+        },
+        {
+          "f1_media_columnas": 0.7590929421377623,
+          "f1_macro6": 0.8008584722699226,
+          "f1_micro": 0.7568238213399504,
+          "f1_samples": 0.328131021194605,
+          "exact_match": 0.6820809248554913,
+          "f1_por_etiqueta": {
+            "HS": 0.749185667752443,
+            "TR": 0.7947598253275109,
+            "AG": 0.7333333333333333
+          },
+          "pliegue": 2,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7282048344221286,
+          "f1_macro6": 0.7862896349487792,
+          "f1_micro": 0.7272727272727273,
+          "f1_samples": 0.29104046242774567,
+          "exact_match": 0.684971098265896,
+          "f1_por_etiqueta": {
+            "HS": 0.7368421052631579,
+            "TR": 0.7570093457943925,
+            "AG": 0.6907630522088354
+          },
+          "pliegue": 3,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7659836617803167,
+          "f1_macro6": 0.81393999125209,
+          "f1_micro": 0.7629139072847683,
+          "f1_samples": 0.3096339113680154,
+          "exact_match": 0.7167630057803468,
+          "f1_por_etiqueta": {
+            "HS": 0.7482517482517482,
+            "TR": 0.8075117370892019,
+            "AG": 0.7421875
+          },
+          "pliegue": 4,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7483982364668552,
+          "f1_macro6": 0.7998082197477054,
+          "f1_micro": 0.7467018469656992,
+          "f1_samples": 0.3024084778420038,
+          "exact_match": 0.6878612716763006,
+          "f1_por_etiqueta": {
+            "HS": 0.752542372881356,
+            "TR": 0.7766990291262136,
+            "AG": 0.7159533073929961
+          },
+          "pliegue": 5,
+          "n_validacion": 346
+        }
+      ],
+      "mejora_vs_B1": -0.002511,
+      "mejora_en_pliegues": 2,
+      "decision": "descartada"
+    },
+    {
+      "experiment_id": "PRE-03",
+      "parte": "A - preprocesamiento",
+      "descripcion": "URLs sustituidas por el token 'url' (transformacion unica sobre texto crudo; 589 textos modificados)",
+      "representacion": "TF-IDF word (1,2), min_df=2, sublinear_tf",
+      "modelo": "LogisticRegression(class_weight=balanced, C=1.0, liblinear) x3",
+      "grupo_features": "WORD_NGRAM",
+      "parametros_vectorizador": [
+        {
+          "min_df": 2,
+          "max_df": 1.0,
+          "sublinear_tf": true,
+          "lowercase": true,
+          "strip_accents": null,
+          "analyzer": "word",
+          "ngram_range": [
+            1,
+            2
+          ]
+        }
+      ],
+      "parametros_modelo": {
+        "C": 1.0,
+        "class_weight": "balanced",
+        "max_iter": 1000,
+        "solver": "liblinear",
+        "random_state": 42
+      },
+      "dimension": 4024,
+      "tiempo_segundos": 0.27,
+      "metricas_oof": {
+        "f1_media_columnas": 0.7622627399727121,
+        "f1_macro6": 0.8115725441612395,
+        "f1_micro": 0.7595744680851064,
+        "f1_samples": 0.3054111303678029,
+        "exact_match": 0.7047949162333911,
+        "f1_por_etiqueta": {
+          "HS": 0.7496542185338866,
+          "TR": 0.8018867924528302,
+          "AG": 0.7352472089314195
+        }
+      },
+      "metricas_pliegues": [
+        {
+          "f1_media_columnas": 0.786473462681764,
+          "f1_macro6": 0.8304994524223736,
+          "f1_micro": 0.7823765020026703,
+          "f1_samples": 0.3172910662824207,
+          "exact_match": 0.723342939481268,
+          "f1_por_etiqueta": {
+            "HS": 0.7713310580204779,
+            "TR": 0.8461538461538461,
+            "AG": 0.7419354838709677
+          },
+          "pliegue": 1,
+          "n_validacion": 347
+        },
+        {
+          "f1_media_columnas": 0.7593328635189099,
+          "f1_macro6": 0.8059709065291333,
+          "f1_micro": 0.7583547557840618,
+          "f1_samples": 0.316281310211946,
+          "exact_match": 0.708092485549133,
+          "f1_por_etiqueta": {
+            "HS": 0.7533333333333333,
+            "TR": 0.7727272727272727,
+            "AG": 0.751937984496124
+          },
+          "pliegue": 2,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7402274995707628,
+          "f1_macro6": 0.7947003673901264,
+          "f1_micro": 0.7376830892143809,
+          "f1_samples": 0.29229287090558764,
+          "exact_match": 0.6878612716763006,
+          "f1_por_etiqueta": {
+            "HS": 0.7304964539007093,
+            "TR": 0.7889908256880734,
+            "AG": 0.701195219123506
+          },
+          "pliegue": 3,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7476857906595269,
+          "f1_macro6": 0.801613095221839,
+          "f1_micro": 0.7456258411843876,
+          "f1_samples": 0.29826589595375724,
+          "exact_match": 0.6994219653179191,
+          "f1_por_etiqueta": {
+            "HS": 0.7412587412587412,
+            "TR": 0.7766990291262136,
+            "AG": 0.7250996015936255
+          },
+          "pliegue": 4,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7779659436270476,
+          "f1_macro6": 0.8250902238604416,
+          "f1_micro": 0.774018944519621,
+          "f1_samples": 0.3028901734104046,
+          "exact_match": 0.7052023121387283,
+          "f1_por_etiqueta": {
+            "HS": 0.7508771929824561,
+            "TR": 0.8269230769230769,
+            "AG": 0.7560975609756098
+          },
+          "pliegue": 5,
+          "n_validacion": 346
+        }
+      ],
+      "mejora_vs_B1": 0.003548,
+      "mejora_en_pliegues": 4,
+      "decision": "descartada"
+    },
+    {
+      "experiment_id": "PRE-04",
+      "parte": "A - preprocesamiento",
+      "descripcion": "menciones @usuario sustituidas por el token 'usuario' (transformacion unica sobre texto crudo; 956 textos modificados)",
+      "representacion": "TF-IDF word (1,2), min_df=2, sublinear_tf",
+      "modelo": "LogisticRegression(class_weight=balanced, C=1.0, liblinear) x3",
+      "grupo_features": "WORD_NGRAM",
+      "parametros_vectorizador": [
+        {
+          "min_df": 2,
+          "max_df": 1.0,
+          "sublinear_tf": true,
+          "lowercase": true,
+          "strip_accents": null,
+          "analyzer": "word",
+          "ngram_range": [
+            1,
+            2
+          ]
+        }
+      ],
+      "parametros_modelo": {
+        "C": 1.0,
+        "class_weight": "balanced",
+        "max_iter": 1000,
+        "solver": "liblinear",
+        "random_state": 42
+      },
+      "dimension": 4019,
+      "tiempo_segundos": 0.27,
+      "metricas_oof": {
+        "f1_media_columnas": 0.7577138893583953,
+        "f1_macro6": 0.8070621449657885,
+        "f1_micro": 0.7542978048135414,
+        "f1_samples": 0.3039861351819757,
+        "exact_match": 0.7007510109763143,
+        "f1_por_etiqueta": {
+          "HS": 0.7370600414078675,
+          "TR": 0.804490177736202,
+          "AG": 0.7315914489311164
+        }
+      },
+      "metricas_pliegues": [
+        {
+          "f1_media_columnas": 0.7709105138682802,
+          "f1_macro6": 0.8170243121657988,
+          "f1_micro": 0.7655629139072848,
+          "f1_samples": 0.30999039385206534,
+          "exact_match": 0.7002881844380403,
+          "f1_por_etiqueta": {
+            "HS": 0.7379310344827587,
+            "TR": 0.839622641509434,
+            "AG": 0.7351778656126482
+          },
+          "pliegue": 1,
+          "n_validacion": 347
+        },
+        {
+          "f1_media_columnas": 0.7636544236544237,
+          "f1_macro6": 0.8086519921727623,
+          "f1_micro": 0.7621483375959079,
+          "f1_samples": 0.32186897880539495,
+          "exact_match": 0.708092485549133,
+          "f1_por_etiqueta": {
+            "HS": 0.7533333333333333,
+            "TR": 0.7837837837837838,
+            "AG": 0.7538461538461538
+          },
+          "pliegue": 2,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7330417795449721,
+          "f1_macro6": 0.7892782327745692,
+          "f1_micro": 0.7299465240641712,
+          "f1_samples": 0.28526011560693637,
+          "exact_match": 0.6936416184971098,
+          "f1_por_etiqueta": {
+            "HS": 0.7188612099644128,
+            "TR": 0.7870370370370371,
+            "AG": 0.6932270916334662
+          },
+          "pliegue": 3,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7398648427635927,
+          "f1_macro6": 0.7941636471462569,
+          "f1_micro": 0.7376830892143809,
+          "f1_samples": 0.29922928709055874,
+          "exact_match": 0.6907514450867052,
+          "f1_por_etiqueta": {
+            "HS": 0.7310344827586207,
+            "TR": 0.7714285714285715,
+            "AG": 0.7171314741035857
+          },
+          "pliegue": 4,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7810751116141609,
+          "f1_macro6": 0.8260998169182008,
+          "f1_micro": 0.7758389261744967,
+          "f1_samples": 0.3035645472061657,
+          "exact_match": 0.7109826589595376,
+          "f1_por_etiqueta": {
+            "HS": 0.7430555555555556,
+            "TR": 0.8421052631578947,
+            "AG": 0.7580645161290323
+          },
+          "pliegue": 5,
+          "n_validacion": 346
+        }
+      ],
+      "mejora_vs_B1": -0.001001,
+      "mejora_en_pliegues": 3,
+      "decision": "descartada"
+    },
+    {
+      "experiment_id": "PRE-05",
+      "parte": "A - preprocesamiento",
+      "descripcion": "hashtags partidos en camelCase conservando las palabras (transformacion unica sobre texto crudo; 295 textos modificados)",
+      "representacion": "TF-IDF word (1,2), min_df=2, sublinear_tf",
+      "modelo": "LogisticRegression(class_weight=balanced, C=1.0, liblinear) x3",
+      "grupo_features": "WORD_NGRAM",
+      "parametros_vectorizador": [
+        {
+          "min_df": 2,
+          "max_df": 1.0,
+          "sublinear_tf": true,
+          "lowercase": true,
+          "strip_accents": null,
+          "analyzer": "word",
+          "ngram_range": [
+            1,
+            2
+          ]
+        }
+      ],
+      "parametros_modelo": {
+        "C": 1.0,
+        "class_weight": "balanced",
+        "max_iter": 1000,
+        "solver": "liblinear",
+        "random_state": 42
+      },
+      "dimension": 4061,
+      "tiempo_segundos": 0.27,
+      "metricas_oof": {
+        "f1_media_columnas": 0.7607276326422886,
+        "f1_macro6": 0.8105038598071589,
+        "f1_micro": 0.7577937649880095,
+        "f1_samples": 0.30373579818987095,
+        "exact_match": 0.7053726169844021,
+        "f1_por_etiqueta": {
+          "HS": 0.7440890125173852,
+          "TR": 0.8022598870056498,
+          "AG": 0.7358339984038308
+        }
+      },
+      "metricas_pliegues": [
+        {
+          "f1_media_columnas": 0.7721327035537562,
+          "f1_macro6": 0.8198844177827554,
+          "f1_micro": 0.7671601615074024,
+          "f1_samples": 0.30403458213256485,
+          "exact_match": 0.7118155619596542,
+          "f1_por_etiqueta": {
+            "HS": 0.743859649122807,
+            "TR": 0.8365384615384616,
+            "AG": 0.736
+          },
+          "pliegue": 1,
+          "n_validacion": 347
+        },
+        {
+          "f1_media_columnas": 0.7628533123582629,
+          "f1_macro6": 0.808245088251288,
+          "f1_micro": 0.7621483375959079,
+          "f1_samples": 0.32437379576107894,
+          "exact_match": 0.708092485549133,
+          "f1_por_etiqueta": {
+            "HS": 0.759075907590759,
+            "TR": 0.7727272727272727,
+            "AG": 0.7567567567567568
+          },
+          "pliegue": 2,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7400209906731972,
+          "f1_macro6": 0.7958994559117007,
+          "f1_micro": 0.7375504710632571,
+          "f1_samples": 0.28747591522157995,
+          "exact_match": 0.6965317919075145,
+          "f1_por_etiqueta": {
+            "HS": 0.7266187050359713,
+            "TR": 0.7889908256880734,
+            "AG": 0.7044534412955465
+          },
+          "pliegue": 3,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7497866370133471,
+          "f1_macro6": 0.8035765031415466,
+          "f1_micro": 0.747638326585695,
+          "f1_samples": 0.29836223506743736,
+          "exact_match": 0.7052023121387283,
+          "f1_por_etiqueta": {
+            "HS": 0.743859649122807,
+            "TR": 0.782608695652174,
+            "AG": 0.7228915662650602
+          },
+          "pliegue": 4,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7787483335332107,
+          "f1_macro6": 0.8247331972947181,
+          "f1_micro": 0.7741935483870968,
+          "f1_samples": 0.3044315992292871,
+          "exact_match": 0.7052023121387283,
+          "f1_por_etiqueta": {
+            "HS": 0.7456445993031359,
+            "TR": 0.8325358851674641,
+            "AG": 0.7580645161290323
+          },
+          "pliegue": 5,
+          "n_validacion": 346
+        }
+      ],
+      "mejora_vs_B1": 0.002013,
+      "mejora_en_pliegues": 4,
+      "decision": "descartada"
+    },
+    {
+      "experiment_id": "PRE-06",
+      "parte": "A - preprocesamiento",
+      "descripcion": "elongaciones colapsadas: (.)\\1{2,} -> dos repeticiones (transformacion unica sobre texto crudo; 334 textos modificados)",
+      "representacion": "TF-IDF word (1,2), min_df=2, sublinear_tf",
+      "modelo": "LogisticRegression(class_weight=balanced, C=1.0, liblinear) x3",
+      "grupo_features": "WORD_NGRAM",
+      "parametros_vectorizador": [
+        {
+          "min_df": 2,
+          "max_df": 1.0,
+          "sublinear_tf": true,
+          "lowercase": true,
+          "strip_accents": null,
+          "analyzer": "word",
+          "ngram_range": [
+            1,
+            2
+          ]
+        }
+      ],
+      "parametros_modelo": {
+        "C": 1.0,
+        "class_weight": "balanced",
+        "max_iter": 1000,
+        "solver": "liblinear",
+        "random_state": 42
+      },
+      "dimension": 4027,
+      "tiempo_segundos": 0.27,
+      "metricas_oof": {
+        "f1_media_columnas": 0.758604260917442,
+        "f1_macro6": 0.8085868111170246,
+        "f1_micro": 0.7555200851290237,
+        "f1_samples": 0.3027537069131523,
+        "exact_match": 0.7007510109763143,
+        "f1_por_etiqueta": {
+          "HS": 0.7420249653259362,
+          "TR": 0.8037558685446009,
+          "AG": 0.7300319488817891
+        }
+      },
+      "metricas_pliegues": [
+        {
+          "f1_media_columnas": 0.7712995225190347,
+          "f1_macro6": 0.8184072167442454,
+          "f1_micro": 0.7663551401869159,
+          "f1_samples": 0.3063400576368876,
+          "exact_match": 0.7089337175792507,
+          "f1_por_etiqueta": {
+            "HS": 0.7456445993031359,
+            "TR": 0.8380952380952381,
+            "AG": 0.7301587301587301
+          },
+          "pliegue": 1,
+          "n_validacion": 347
+        },
+        {
+          "f1_media_columnas": 0.7592791675244782,
+          "f1_macro6": 0.8052626980643058,
+          "f1_micro": 0.7580025608194623,
+          "f1_samples": 0.32052023121387274,
+          "exact_match": 0.6994219653179191,
+          "f1_por_etiqueta": {
+            "HS": 0.7524752475247525,
+            "TR": 0.7782805429864253,
+            "AG": 0.7470817120622568
+          },
+          "pliegue": 2,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7354731323722149,
+          "f1_macro6": 0.7913511489845924,
+          "f1_micro": 0.732620320855615,
+          "f1_samples": 0.28651252408477845,
+          "exact_match": 0.6907514450867052,
+          "f1_por_etiqueta": {
+            "HS": 0.7214285714285714,
+            "TR": 0.7889908256880734,
+            "AG": 0.696
+          },
+          "pliegue": 3,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7495341264625978,
+          "f1_macro6": 0.8034702191829438,
+          "f1_micro": 0.747638326585695,
+          "f1_samples": 0.29836223506743736,
+          "exact_match": 0.7023121387283237,
+          "f1_por_etiqueta": {
+            "HS": 0.7482517482517482,
+            "TR": 0.782608695652174,
+            "AG": 0.717741935483871
+          },
+          "pliegue": 4,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7776594332985312,
+          "f1_macro6": 0.8243762450788826,
+          "f1_micro": 0.772972972972973,
+          "f1_samples": 0.3020231213872832,
+          "exact_match": 0.7023121387283237,
+          "f1_por_etiqueta": {
+            "HS": 0.7412587412587412,
+            "TR": 0.8325358851674641,
+            "AG": 0.7591836734693878
+          },
+          "pliegue": 5,
+          "n_validacion": 346
+        }
+      ],
+      "mejora_vs_B1": -0.00011,
+      "mejora_en_pliegues": 1,
+      "decision": "descartada"
+    },
+    {
+      "experiment_id": "PRE-07",
+      "parte": "A - preprocesamiento",
+      "descripcion": "puntuacion eliminada (solo letras, digitos y espacios) (transformacion unica sobre texto crudo; 1522 textos modificados)",
+      "representacion": "TF-IDF word (1,2), min_df=2, sublinear_tf",
+      "modelo": "LogisticRegression(class_weight=balanced, C=1.0, liblinear) x3",
+      "grupo_features": "WORD_NGRAM",
+      "parametros_vectorizador": [
+        {
+          "min_df": 2,
+          "max_df": 1.0,
+          "sublinear_tf": true,
+          "lowercase": true,
+          "strip_accents": null,
+          "analyzer": "word",
+          "ngram_range": [
+            1,
+            2
+          ]
+        }
+      ],
+      "parametros_modelo": {
+        "C": 1.0,
+        "class_weight": "balanced",
+        "max_iter": 1000,
+        "solver": "liblinear",
+        "random_state": 42
+      },
+      "dimension": 4024,
+      "tiempo_segundos": 0.27,
+      "metricas_oof": {
+        "f1_media_columnas": 0.7587146098126788,
+        "f1_macro6": 0.8087327997573793,
+        "f1_micro": 0.7557211282597126,
+        "f1_samples": 0.30284999037165417,
+        "exact_match": 0.7013287117273252,
+        "f1_por_etiqueta": {
+          "HS": 0.7428967428967429,
+          "TR": 0.8026315789473685,
+          "AG": 0.7306155075939249
+        }
+      },
+      "metricas_pliegues": [
+        {
+          "f1_media_columnas": 0.7704160711847551,
+          "f1_macro6": 0.818080091791794,
+          "f1_micro": 0.7657295850066934,
+          "f1_samples": 0.3048991354466859,
+          "exact_match": 0.7089337175792507,
+          "f1_por_etiqueta": {
+            "HS": 0.7456445993031359,
+            "TR": 0.8325358851674641,
+            "AG": 0.7330677290836654
+          },
+          "pliegue": 1,
+          "n_validacion": 347
+        },
+        {
+          "f1_media_columnas": 0.7592791675244782,
+          "f1_macro6": 0.8052626980643058,
+          "f1_micro": 0.7580025608194623,
+          "f1_samples": 0.32052023121387274,
+          "exact_match": 0.6994219653179191,
+          "f1_por_etiqueta": {
+            "HS": 0.7524752475247525,
+            "TR": 0.7782805429864253,
+            "AG": 0.7470817120622568
+          },
+          "pliegue": 2,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7354731323722149,
+          "f1_macro6": 0.7913511489845924,
+          "f1_micro": 0.732620320855615,
+          "f1_samples": 0.28651252408477845,
+          "exact_match": 0.6907514450867052,
+          "f1_por_etiqueta": {
+            "HS": 0.7214285714285714,
+            "TR": 0.7889908256880734,
+            "AG": 0.696
+          },
+          "pliegue": 3,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7509879571847211,
+          "f1_macro6": 0.8045356777944263,
+          "f1_micro": 0.7493261455525606,
+          "f1_samples": 0.30028901734104047,
+          "exact_match": 0.7052023121387283,
+          "f1_por_etiqueta": {
+            "HS": 0.7526132404181185,
+            "TR": 0.782608695652174,
+            "AG": 0.717741935483871
+          },
+          "pliegue": 4,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7776594332985312,
+          "f1_macro6": 0.8243762450788826,
+          "f1_micro": 0.772972972972973,
+          "f1_samples": 0.3020231213872832,
+          "exact_match": 0.7023121387283237,
+          "f1_por_etiqueta": {
+            "HS": 0.7412587412587412,
+            "TR": 0.8325358851674641,
+            "AG": 0.7591836734693878
+          },
+          "pliegue": 5,
+          "n_validacion": 346
+        }
+      ],
+      "mejora_vs_B1": 0.0,
+      "mejora_en_pliegues": 0,
+      "decision": "descartada"
+    },
+    {
+      "experiment_id": "PRE-08",
+      "parte": "A - preprocesamiento",
+      "descripcion": "digitos sustituidos por el token 'num' (transformacion unica sobre texto crudo; 782 textos modificados)",
+      "representacion": "TF-IDF word (1,2), min_df=2, sublinear_tf",
+      "modelo": "LogisticRegression(class_weight=balanced, C=1.0, liblinear) x3",
+      "grupo_features": "WORD_NGRAM",
+      "parametros_vectorizador": [
+        {
+          "min_df": 2,
+          "max_df": 1.0,
+          "sublinear_tf": true,
+          "lowercase": true,
+          "strip_accents": null,
+          "analyzer": "word",
+          "ngram_range": [
+            1,
+            2
+          ]
+        }
+      ],
+      "parametros_modelo": {
+        "C": 1.0,
+        "class_weight": "balanced",
+        "max_iter": 1000,
+        "solver": "liblinear",
+        "random_state": 42
+      },
+      "dimension": 4136,
+      "tiempo_segundos": 0.28,
+      "metricas_oof": {
+        "f1_media_columnas": 0.7584275853759004,
+        "f1_macro6": 0.8087019224604118,
+        "f1_micro": 0.7553304904051172,
+        "f1_samples": 0.30130945503562484,
+        "exact_match": 0.7030618139803582,
+        "f1_por_etiqueta": {
+          "HS": 0.7402234636871509,
+          "TR": 0.8030018761726079,
+          "AG": 0.7320574162679426
+        }
+      },
+      "metricas_pliegues": [
+        {
+          "f1_media_columnas": 0.7770203621503557,
+          "f1_macro6": 0.8232687553549161,
+          "f1_micro": 0.7721179624664879,
+          "f1_samples": 0.30672430355427477,
+          "exact_match": 0.7089337175792507,
+          "f1_por_etiqueta": {
+            "HS": 0.75,
+            "TR": 0.8421052631578947,
+            "AG": 0.7389558232931727
+          },
+          "pliegue": 1,
+          "n_validacion": 347
+        },
+        {
+          "f1_media_columnas": 0.7506705557158332,
+          "f1_macro6": 0.7989259774672187,
+          "f1_micro": 0.7483870967741936,
+          "f1_samples": 0.31146435452793836,
+          "exact_match": 0.6994219653179191,
+          "f1_por_etiqueta": {
+            "HS": 0.7315436241610739,
+            "TR": 0.7782805429864253,
+            "AG": 0.7421875
+          },
+          "pliegue": 2,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7405805254881274,
+          "f1_macro6": 0.7954632260563205,
+          "f1_micro": 0.7386666666666667,
+          "f1_samples": 0.29171483622350675,
+          "exact_match": 0.6878612716763006,
+          "f1_por_etiqueta": {
+            "HS": 0.7330960854092526,
+            "TR": 0.7818181818181819,
+            "AG": 0.7068273092369478
+          },
+          "pliegue": 3,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7434122078854898,
+          "f1_macro6": 0.7985149220694981,
+          "f1_micro": 0.7405405405405405,
+          "f1_samples": 0.2926782273603083,
+          "exact_match": 0.7023121387283237,
+          "f1_por_etiqueta": {
+            "HS": 0.7304964539007093,
+            "TR": 0.782608695652174,
+            "AG": 0.7171314741035857
+          },
+          "pliegue": 4,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7812465703572627,
+          "f1_macro6": 0.8274790449244344,
+          "f1_micro": 0.7773279352226721,
+          "f1_samples": 0.3039499036608863,
+          "exact_match": 0.7167630057803468,
+          "f1_por_etiqueta": {
+            "HS": 0.7561837455830389,
+            "TR": 0.8325358851674641,
+            "AG": 0.7550200803212851
+          },
+          "pliegue": 5,
+          "n_validacion": 346
+        }
+      ],
+      "mejora_vs_B1": -0.000287,
+      "mejora_en_pliegues": 3,
+      "decision": "descartada"
+    },
+    {
+      "experiment_id": "PRE-09",
+      "parte": "A - preprocesamiento",
+      "descripcion": "lematizado con spaCy es_core_news_md (exclude=['ner'], sin vectores) (transformacion unica sobre texto crudo; 1694 textos modificados)",
+      "representacion": "TF-IDF word (1,2), min_df=2, sublinear_tf",
+      "modelo": "LogisticRegression(class_weight=balanced, C=1.0, liblinear) x3",
+      "grupo_features": "WORD_NGRAM",
+      "parametros_vectorizador": [
+        {
+          "min_df": 2,
+          "max_df": 1.0,
+          "sublinear_tf": true,
+          "lowercase": true,
+          "strip_accents": null,
+          "analyzer": "word",
+          "ngram_range": [
+            1,
+            2
+          ]
+        }
+      ],
+      "parametros_modelo": {
+        "C": 1.0,
+        "class_weight": "balanced",
+        "max_iter": 1000,
+        "solver": "liblinear",
+        "random_state": 42
+      },
+      "dimension": 3989,
+      "tiempo_segundos": 0.26,
+      "metricas_oof": {
+        "f1_media_columnas": 0.7424947370409313,
+        "f1_macro6": 0.7952662245885039,
+        "f1_micro": 0.7394869082253372,
+        "f1_samples": 0.29460812632389755,
+        "exact_match": 0.683419988445985,
+        "f1_por_etiqueta": {
+          "HS": 0.7309292649098474,
+          "TR": 0.7879924953095685,
+          "AG": 0.7085624509033779
+        }
+      },
+      "metricas_pliegues": [
+        {
+          "f1_media_columnas": 0.757192288680178,
+          "f1_macro6": 0.8070026409111469,
+          "f1_micro": 0.753315649867374,
+          "f1_samples": 0.3023054755043228,
+          "exact_match": 0.7060518731988472,
+          "f1_por_etiqueta": {
+            "HS": 0.740484429065744,
+            "TR": 0.8095238095238095,
+            "AG": 0.7215686274509804
+          },
+          "pliegue": 1,
+          "n_validacion": 347
+        },
+        {
+          "f1_media_columnas": 0.7529344063991491,
+          "f1_macro6": 0.8016204505450243,
+          "f1_micro": 0.7506493506493507,
+          "f1_samples": 0.30346820809248554,
+          "exact_match": 0.6936416184971098,
+          "f1_por_etiqueta": {
+            "HS": 0.7465753424657534,
+            "TR": 0.7870370370370371,
+            "AG": 0.7251908396946565
+          },
+          "pliegue": 2,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7107368648438865,
+          "f1_macro6": 0.7690957158567779,
+          "f1_micro": 0.7069645203679369,
+          "f1_samples": 0.27861271676300575,
+          "exact_match": 0.6589595375722543,
+          "f1_por_etiqueta": {
+            "HS": 0.6923076923076923,
+            "TR": 0.7706422018348624,
+            "AG": 0.669260700389105
+          },
+          "pliegue": 3,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7382699708616164,
+          "f1_macro6": 0.7929563192393703,
+          "f1_micro": 0.7374005305039788,
+          "f1_samples": 0.29778420038535647,
+          "exact_match": 0.6676300578034682,
+          "f1_por_etiqueta": {
+            "HS": 0.7372013651877133,
+            "TR": 0.7547169811320755,
+            "AG": 0.7228915662650602
+          },
+          "pliegue": 4,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.753545423843296,
+          "f1_macro6": 0.8056482463163904,
+          "f1_micro": 0.7493261455525606,
+          "f1_samples": 0.2908477842003853,
+          "exact_match": 0.6907514450867052,
+          "f1_por_etiqueta": {
+            "HS": 0.7375886524822695,
+            "TR": 0.819047619047619,
+            "AG": 0.704
+          },
+          "pliegue": 5,
+          "n_validacion": 346
+        }
+      ],
+      "mejora_vs_B1": -0.01622,
+      "mejora_en_pliegues": 0,
+      "decision": "descartada"
+    },
+    {
+      "experiment_id": "REP-01",
+      "parte": "B - representacion",
+      "descripcion": "n-gramas de caracter char_wb 3-5 (H1: evasion ortografica); parametros TF-IDF comunes min_df=2, max_df=1.0, sublinear_tf",
+      "representacion": "TF-IDF char_wb (3,5), min_df=2, sublinear_tf",
+      "modelo": "LogisticRegression(class_weight=balanced, C=1.0, liblinear) x3",
+      "grupo_features": "CHAR_NGRAM",
+      "parametros_vectorizador": [
+        {
+          "min_df": 2,
+          "max_df": 1.0,
+          "sublinear_tf": true,
+          "lowercase": true,
+          "strip_accents": null,
+          "analyzer": "char_wb",
+          "ngram_range": [
+            3,
+            5
+          ]
+        }
+      ],
+      "parametros_modelo": {
+        "C": 1.0,
+        "class_weight": "balanced",
+        "max_iter": 1000,
+        "solver": "liblinear",
+        "random_state": 42
+      },
+      "dimension": 23407,
+      "tiempo_segundos": 4.13,
+      "metricas_oof": {
+        "f1_media_columnas": 0.756650803543833,
+        "f1_macro6": 0.8059026883283399,
+        "f1_micro": 0.755741127348643,
+        "f1_samples": 0.320893510494897,
+        "exact_match": 0.7059503177354131,
+        "f1_por_etiqueta": {
+          "HS": 0.7587628865979381,
+          "TR": 0.7761467889908257,
+          "AG": 0.7350427350427351
+        }
+      },
+      "metricas_pliegues": [
+        {
+          "f1_media_columnas": 0.7965386264299307,
+          "f1_macro6": 0.8388119562878368,
+          "f1_micro": 0.7936085219707057,
+          "f1_samples": 0.32334293948126797,
+          "exact_match": 0.7377521613832853,
+          "f1_por_etiqueta": {
+            "HS": 0.7847222222222222,
+            "TR": 0.8380952380952381,
+            "AG": 0.766798418972332
+          },
+          "pliegue": 1,
+          "n_validacion": 347
+        },
+        {
+          "f1_media_columnas": 0.7341587161032429,
+          "f1_macro6": 0.7856952794498412,
+          "f1_micro": 0.7360406091370558,
+          "f1_samples": 0.32032755298651255,
+          "exact_match": 0.684971098265896,
+          "f1_por_etiqueta": {
+            "HS": 0.7583892617449665,
+            "TR": 0.7168141592920354,
+            "AG": 0.7272727272727273
+          },
+          "pliegue": 2,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7339684099428613,
+          "f1_macro6": 0.7884435524269829,
+          "f1_micro": 0.7336814621409922,
+          "f1_samples": 0.3106936416184971,
+          "exact_match": 0.6878612716763006,
+          "f1_por_etiqueta": {
+            "HS": 0.7464788732394366,
+            "TR": 0.75,
+            "AG": 0.7054263565891473
+          },
+          "pliegue": 3,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7559705479490982,
+          "f1_macro6": 0.802621030699858,
+          "f1_micro": 0.7544757033248082,
+          "f1_samples": 0.3267822736030828,
+          "exact_match": 0.708092485549133,
+          "f1_por_etiqueta": {
+            "HS": 0.75,
+            "TR": 0.7802690582959642,
+            "AG": 0.7376425855513308
+          },
+          "pliegue": 4,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7650711499861673,
+          "f1_macro6": 0.8146286408553608,
+          "f1_micro": 0.7624161073825504,
+          "f1_samples": 0.32331406551059727,
+          "exact_match": 0.7109826589595376,
+          "f1_por_etiqueta": {
+            "HS": 0.754325259515571,
+            "TR": 0.8019323671497585,
+            "AG": 0.7389558232931727
+          },
+          "pliegue": 5,
+          "n_validacion": 346
+        }
+      ],
+      "mejora_vs_B1": -0.002064,
+      "mejora_en_pliegues": 2,
+      "decision": "descartada"
+    },
+    {
+      "experiment_id": "REP-02",
+      "parte": "B - representacion",
+      "descripcion": "n-gramas de caracter char_wb 2-5 (rango mas corto que REP-01); parametros TF-IDF comunes min_df=2, max_df=1.0, sublinear_tf",
+      "representacion": "TF-IDF char_wb (2,5), min_df=2, sublinear_tf",
+      "modelo": "LogisticRegression(class_weight=balanced, C=1.0, liblinear) x3",
+      "grupo_features": "CHAR_NGRAM",
+      "parametros_vectorizador": [
+        {
+          "min_df": 2,
+          "max_df": 1.0,
+          "sublinear_tf": true,
+          "lowercase": true,
+          "strip_accents": null,
+          "analyzer": "char_wb",
+          "ngram_range": [
+            2,
+            5
+          ]
+        }
+      ],
+      "parametros_modelo": {
+        "C": 1.0,
+        "class_weight": "balanced",
+        "max_iter": 1000,
+        "solver": "liblinear",
+        "random_state": 42
+      },
+      "dimension": 25036,
+      "tiempo_segundos": 3.76,
+      "metricas_oof": {
+        "f1_media_columnas": 0.7511263249515138,
+        "f1_macro6": 0.8020685289384414,
+        "f1_micro": 0.7503274823159549,
+        "f1_samples": 0.31769689967263626,
+        "exact_match": 0.7036395147313691,
+        "f1_por_etiqueta": {
+          "HS": 0.754325259515571,
+          "TR": 0.76993583868011,
+          "AG": 0.7291178766588603
+        }
+      },
+      "metricas_pliegues": [
+        {
+          "f1_media_columnas": 0.7936073780251153,
+          "f1_macro6": 0.8366960556664268,
+          "f1_micro": 0.7903871829105474,
+          "f1_samples": 0.3240153698366955,
+          "exact_match": 0.7406340057636888,
+          "f1_por_etiqueta": {
+            "HS": 0.7789473684210526,
+            "TR": 0.8380952380952381,
+            "AG": 0.7637795275590551
+          },
+          "pliegue": 1,
+          "n_validacion": 347
+        },
+        {
+          "f1_media_columnas": 0.722520187121957,
+          "f1_macro6": 0.776414358149809,
+          "f1_micro": 0.7242693773824651,
+          "f1_samples": 0.3182080924855491,
+          "exact_match": 0.684971098265896,
+          "f1_por_etiqueta": {
+            "HS": 0.7474747474747475,
+            "TR": 0.7079646017699115,
+            "AG": 0.7121212121212122
+          },
+          "pliegue": 2,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7205225257892511,
+          "f1_macro6": 0.7786703315411675,
+          "f1_micro": 0.7201051248357424,
+          "f1_samples": 0.30019267822736034,
+          "exact_match": 0.6734104046242775,
+          "f1_por_etiqueta": {
+            "HS": 0.7311827956989247,
+            "TR": 0.7377777777777778,
+            "AG": 0.6926070038910506
+          },
+          "pliegue": 3,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7513387389028922,
+          "f1_macro6": 0.7991753013967338,
+          "f1_micro": 0.7496790757381258,
+          "f1_samples": 0.3227360308285164,
+          "exact_match": 0.7023121387283237,
+          "f1_por_etiqueta": {
+            "HS": 0.7449664429530202,
+            "TR": 0.7782805429864253,
+            "AG": 0.7307692307692307
+          },
+          "pliegue": 4,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7704855407037692,
+          "f1_macro6": 0.8201424462879929,
+          "f1_micro": 0.7692307692307693,
+          "f1_samples": 0.3233140655105973,
+          "exact_match": 0.7167630057803468,
+          "f1_por_etiqueta": {
+            "HS": 0.7692307692307693,
+            "TR": 0.7942583732057417,
+            "AG": 0.7479674796747967
+          },
+          "pliegue": 5,
+          "n_validacion": 346
+        }
+      ],
+      "mejora_vs_B1": -0.007588,
+      "mejora_en_pliegues": 2,
+      "decision": "descartada"
+    },
+    {
+      "experiment_id": "REP-03",
+      "parte": "B - representacion",
+      "descripcion": "unigramas de palabra (control de n-gramas de orden 1); parametros TF-IDF comunes min_df=2, max_df=1.0, sublinear_tf",
+      "representacion": "TF-IDF word (1,1), min_df=2, sublinear_tf",
+      "modelo": "LogisticRegression(class_weight=balanced, C=1.0, liblinear) x3",
+      "grupo_features": "WORD_NGRAM",
+      "parametros_vectorizador": [
+        {
+          "min_df": 2,
+          "max_df": 1.0,
+          "sublinear_tf": true,
+          "lowercase": true,
+          "strip_accents": null,
+          "analyzer": "word",
+          "ngram_range": [
+            1,
+            1
+          ]
+        }
+      ],
+      "parametros_modelo": {
+        "C": 1.0,
+        "class_weight": "balanced",
+        "max_iter": 1000,
+        "solver": "liblinear",
+        "random_state": 42
+      },
+      "dimension": 1953,
+      "tiempo_segundos": 0.18,
+      "metricas_oof": {
+        "f1_media_columnas": 0.7416655000109945,
+        "f1_macro6": 0.7943478538722456,
+        "f1_micro": 0.739061676331049,
+        "f1_samples": 0.2987483150394762,
+        "exact_match": 0.681686886192952,
+        "f1_por_etiqueta": {
+          "HS": 0.7297857636489288,
+          "TR": 0.7790262172284644,
+          "AG": 0.7161845191555903
+        }
+      },
+      "metricas_pliegues": [
+        {
+          "f1_media_columnas": 0.7693489161810136,
+          "f1_macro6": 0.8152183161571059,
+          "f1_micro": 0.765399737876802,
+          "f1_samples": 0.3164265129682997,
+          "exact_match": 0.7146974063400576,
+          "f1_por_etiqueta": {
+            "HS": 0.7619047619047619,
+            "TR": 0.8301886792452831,
+            "AG": 0.7159533073929961
+          },
+          "pliegue": 1,
+          "n_validacion": 347
+        },
+        {
+          "f1_media_columnas": 0.7113919311350009,
+          "f1_macro6": 0.76776708317356,
+          "f1_micro": 0.711168164313222,
+          "f1_samples": 0.2972061657032755,
+          "exact_match": 0.6445086705202312,
+          "f1_por_etiqueta": {
+            "HS": 0.7205387205387206,
+            "TR": 0.7239819004524887,
+            "AG": 0.6896551724137931
+          },
+          "pliegue": 2,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7243223351437766,
+          "f1_macro6": 0.782134038080463,
+          "f1_micro": 0.7224435590969456,
+          "f1_samples": 0.28574181117533715,
+          "exact_match": 0.6791907514450867,
+          "f1_por_etiqueta": {
+            "HS": 0.7137809187279152,
+            "TR": 0.7579908675799086,
+            "AG": 0.701195219123506
+          },
+          "pliegue": 3,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7428689253591411,
+          "f1_macro6": 0.7957769362929236,
+          "f1_micro": 0.7400530503978779,
+          "f1_samples": 0.29778420038535647,
+          "exact_match": 0.6763005780346821,
+          "f1_por_etiqueta": {
+            "HS": 0.71280276816609,
+            "TR": 0.7677725118483413,
+            "AG": 0.7480314960629921
+          },
+          "pliegue": 4,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7618371049467537,
+          "f1_macro6": 0.8112688246270233,
+          "f1_micro": 0.7570469798657719,
+          "f1_samples": 0.2965317919075145,
+          "exact_match": 0.6936416184971098,
+          "f1_por_etiqueta": {
+            "HS": 0.7394366197183099,
+            "TR": 0.8195121951219512,
+            "AG": 0.7265625
+          },
+          "pliegue": 5,
+          "n_validacion": 346
+        }
+      ],
+      "mejora_vs_B1": -0.017049,
+      "mejora_en_pliegues": 0,
+      "decision": "descartada"
+    },
+    {
+      "experiment_id": "REP-04",
+      "parte": "B - representacion",
+      "descripcion": "n-gramas de palabra 1-3 (control de orden mayor que B1); parametros TF-IDF comunes min_df=2, max_df=1.0, sublinear_tf",
+      "representacion": "TF-IDF word (1,3), min_df=2, sublinear_tf",
+      "modelo": "LogisticRegression(class_weight=balanced, C=1.0, liblinear) x3",
+      "grupo_features": "WORD_NGRAM",
+      "parametros_vectorizador": [
+        {
+          "min_df": 2,
+          "max_df": 1.0,
+          "sublinear_tf": true,
+          "lowercase": true,
+          "strip_accents": null,
+          "analyzer": "word",
+          "ngram_range": [
+            1,
+            3
+          ]
+        }
+      ],
+      "parametros_modelo": {
+        "C": 1.0,
+        "class_weight": "balanced",
+        "max_iter": 1000,
+        "solver": "liblinear",
+        "random_state": 42
+      },
+      "dimension": 4795,
+      "tiempo_segundos": 0.37,
+      "metricas_oof": {
+        "f1_media_columnas": 0.7562053932872338,
+        "f1_macro6": 0.806178767036855,
+        "f1_micro": 0.7530471648118707,
+        "f1_samples": 0.3031966108222607,
+        "exact_match": 0.6995956094742923,
+        "f1_por_etiqueta": {
+          "HS": 0.7379310344827587,
+          "TR": 0.8003748828491096,
+          "AG": 0.7303102625298329
+        }
+      },
+      "metricas_pliegues": [
+        {
+          "f1_media_columnas": 0.7698942842840936,
+          "f1_macro6": 0.8172664873115981,
+          "f1_micro": 0.7647058823529411,
+          "f1_samples": 0.30288184438040344,
+          "exact_match": 0.6974063400576369,
+          "f1_por_etiqueta": {
+            "HS": 0.7361111111111112,
+            "TR": 0.8325358851674641,
+            "AG": 0.7410358565737052
+          },
+          "pliegue": 1,
+          "n_validacion": 347
+        },
+        {
+          "f1_media_columnas": 0.7618598665110293,
+          "f1_macro6": 0.8068473611250638,
+          "f1_micro": 0.7602040816326531,
+          "f1_samples": 0.32119460500963387,
+          "exact_match": 0.7023121387283237,
+          "f1_por_etiqueta": {
+            "HS": 0.7508305647840532,
+            "TR": 0.7857142857142857,
+            "AG": 0.749034749034749
+          },
+          "pliegue": 2,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7395182648401827,
+          "f1_macro6": 0.7931164870969459,
+          "f1_micro": 0.7371202113606341,
+          "f1_samples": 0.29585741811175337,
+          "exact_match": 0.7023121387283237,
+          "f1_por_etiqueta": {
+            "HS": 0.7291666666666666,
+            "TR": 0.7853881278538812,
+            "AG": 0.704
+          },
+          "pliegue": 3,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7426987458318445,
+          "f1_macro6": 0.7975426968468852,
+          "f1_micro": 0.7402422611036339,
+          "f1_samples": 0.2969171483622351,
+          "exact_match": 0.6994219653179191,
+          "f1_por_etiqueta": {
+            "HS": 0.7342657342657343,
+            "TR": 0.7766990291262136,
+            "AG": 0.7171314741035857
+          },
+          "pliegue": 4,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7671599545797235,
+          "f1_macro6": 0.8160320609735047,
+          "f1_micro": 0.7628032345013477,
+          "f1_samples": 0.2991329479768786,
+          "exact_match": 0.6965317919075145,
+          "f1_por_etiqueta": {
+            "HS": 0.7386759581881533,
+            "TR": 0.8229665071770335,
+            "AG": 0.7398373983739838
+          },
+          "pliegue": 5,
+          "n_validacion": 346
+        }
+      ],
+      "mejora_vs_B1": -0.002509,
+      "mejora_en_pliegues": 2,
+      "decision": "descartada"
+    },
+    {
+      "experiment_id": "REP-05",
+      "parte": "B - representacion",
+      "descripcion": "union de palabras y caracteres (H4: complementariedad); parametros TF-IDF comunes min_df=2, max_df=1.0, sublinear_tf",
+      "representacion": "union TF-IDF word (1,2) + char_wb (3,5), min_df=2, sublinear_tf",
+      "modelo": "LogisticRegression(class_weight=balanced, C=1.0, liblinear) x3",
+      "grupo_features": "WORD_NGRAM+CHAR_NGRAM",
+      "parametros_vectorizador": [
+        {
+          "min_df": 2,
+          "max_df": 1.0,
+          "sublinear_tf": true,
+          "lowercase": true,
+          "strip_accents": null,
+          "analyzer": "word",
+          "ngram_range": [
+            1,
+            2
+          ]
+        },
+        {
+          "min_df": 2,
+          "max_df": 1.0,
+          "sublinear_tf": true,
+          "lowercase": true,
+          "strip_accents": null,
+          "analyzer": "char_wb",
+          "ngram_range": [
+            3,
+            5
+          ]
+        }
+      ],
+      "parametros_modelo": {
+        "C": 1.0,
+        "class_weight": "balanced",
+        "max_iter": 1000,
+        "solver": "liblinear",
+        "random_state": 42
+      },
+      "dimension": 27431,
+      "tiempo_segundos": 4.47,
+      "metricas_oof": {
+        "f1_media_columnas": 0.7864682309977847,
+        "f1_macro6": 0.8306121839515933,
+        "f1_micro": 0.7842929158928098,
+        "f1_samples": 0.32041209320238784,
+        "exact_match": 0.7279029462738301,
+        "f1_por_etiqueta": {
+          "HS": 0.7767795438838977,
+          "TR": 0.8174077578051088,
+          "AG": 0.7652173913043478
+        }
+      },
+      "metricas_pliegues": [
+        {
+          "f1_media_columnas": 0.8051574601048991,
+          "f1_macro6": 0.8458085813938089,
+          "f1_micro": 0.8016085790884718,
+          "f1_samples": 0.3208453410182517,
+          "exact_match": 0.7377521613832853,
+          "f1_por_etiqueta": {
+            "HS": 0.7931034482758621,
+            "TR": 0.8543689320388349,
+            "AG": 0.768
+          },
+          "pliegue": 1,
+          "n_validacion": 347
+        },
+        {
+          "f1_media_columnas": 0.7763460468155511,
+          "f1_macro6": 0.8188550972690075,
+          "f1_micro": 0.7760814249363868,
+          "f1_samples": 0.333140655105973,
+          "exact_match": 0.7167630057803468,
+          "f1_por_etiqueta": {
+            "HS": 0.7774086378737541,
+            "TR": 0.7818181818181819,
+            "AG": 0.769811320754717
+          },
+          "pliegue": 2,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7746136854772553,
+          "f1_macro6": 0.8229446840033913,
+          "f1_micro": 0.7731543624161074,
+          "f1_samples": 0.31647398843930635,
+          "exact_match": 0.7283236994219653,
+          "f1_por_etiqueta": {
+            "HS": 0.7703180212014135,
+            "TR": 0.8055555555555556,
+            "AG": 0.7479674796747967
+          },
+          "pliegue": 3,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7831803613053614,
+          "f1_macro6": 0.8286077181562553,
+          "f1_micro": 0.7813333333333333,
+          "f1_samples": 0.31695568400770713,
+          "exact_match": 0.7312138728323699,
+          "f1_por_etiqueta": {
+            "HS": 0.7762237762237763,
+            "TR": 0.8076923076923077,
+            "AG": 0.765625
+          },
+          "pliegue": 4,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7937745937267028,
+          "f1_macro6": 0.8369540531958579,
+          "f1_micro": 0.7897574123989218,
+          "f1_samples": 0.31464354527938343,
+          "exact_match": 0.7254335260115607,
+          "f1_por_etiqueta": {
+            "HS": 0.7665505226480837,
+            "TR": 0.8405797101449275,
+            "AG": 0.7741935483870968
+          },
+          "pliegue": 5,
+          "n_validacion": 346
+        }
+      ],
+      "mejora_vs_B1": 0.027754,
+      "mejora_en_pliegues": 5,
+      "decision": "adoptada"
+    },
+    {
+      "experiment_id": "REP-06",
+      "parte": "B - representacion",
+      "descripcion": "union de palabras y caracteres con rango 3-6 (variante de REP-05); parametros TF-IDF comunes min_df=2, max_df=1.0, sublinear_tf",
+      "representacion": "union TF-IDF word (1,2) + char_wb (3,6), min_df=2, sublinear_tf",
+      "modelo": "LogisticRegression(class_weight=balanced, C=1.0, liblinear) x3",
+      "grupo_features": "WORD_NGRAM+CHAR_NGRAM",
+      "parametros_vectorizador": [
+        {
+          "min_df": 2,
+          "max_df": 1.0,
+          "sublinear_tf": true,
+          "lowercase": true,
+          "strip_accents": null,
+          "analyzer": "word",
+          "ngram_range": [
+            1,
+            2
+          ]
+        },
+        {
+          "min_df": 2,
+          "max_df": 1.0,
+          "sublinear_tf": true,
+          "lowercase": true,
+          "strip_accents": null,
+          "analyzer": "char_wb",
+          "ngram_range": [
+            3,
+            6
+          ]
+        }
+      ],
+      "parametros_modelo": {
+        "C": 1.0,
+        "class_weight": "balanced",
+        "max_iter": 1000,
+        "solver": "liblinear",
+        "random_state": 42
+      },
+      "dimension": 34991,
+      "tiempo_segundos": 4.69,
+      "metricas_oof": {
+        "f1_media_columnas": 0.7854665504884931,
+        "f1_macro6": 0.8297854831506788,
+        "f1_micro": 0.783461436522661,
+        "f1_samples": 0.3208549971114963,
+        "exact_match": 0.7267475447718083,
+        "f1_por_etiqueta": {
+          "HS": 0.7776243093922652,
+          "TR": 0.8143939393939394,
+          "AG": 0.764381402679275
+        }
+      },
+      "metricas_pliegues": [
+        {
+          "f1_media_columnas": 0.8027617444044689,
+          "f1_macro6": 0.843822084447274,
+          "f1_micro": 0.7994652406417112,
+          "f1_samples": 0.32132564841498557,
+          "exact_match": 0.7319884726224783,
+          "f1_por_etiqueta": {
+            "HS": 0.7931034482758621,
+            "TR": 0.8502415458937198,
+            "AG": 0.7649402390438247
+          },
+          "pliegue": 1,
+          "n_validacion": 347
+        },
+        {
+          "f1_media_columnas": 0.7765292017923597,
+          "f1_macro6": 0.8189297053242007,
+          "f1_micro": 0.7760814249363868,
+          "f1_samples": 0.3315028901734104,
+          "exact_match": 0.7138728323699421,
+          "f1_por_etiqueta": {
+            "HS": 0.7733333333333333,
+            "TR": 0.7818181818181819,
+            "AG": 0.7744360902255639
+          },
+          "pliegue": 2,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7726030202093123,
+          "f1_macro6": 0.8210842361645287,
+          "f1_micro": 0.7710843373493976,
+          "f1_samples": 0.3145472061657033,
+          "exact_match": 0.7254335260115607,
+          "f1_por_etiqueta": {
+            "HS": 0.7703180212014135,
+            "TR": 0.8055555555555556,
+            "AG": 0.7419354838709677
+          },
+          "pliegue": 3,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.781778381642512,
+          "f1_macro6": 0.8274614236616781,
+          "f1_micro": 0.7802929427430093,
+          "f1_samples": 0.3183044315992293,
+          "exact_match": 0.7283236994219653,
+          "f1_por_etiqueta": {
+            "HS": 0.7777777777777778,
+            "TR": 0.8019323671497585,
+            "AG": 0.765625
+          },
+          "pliegue": 4,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7942213894869475,
+          "f1_macro6": 0.8376808945729328,
+          "f1_micro": 0.7908232118758435,
+          "f1_samples": 0.3185934489402697,
+          "exact_match": 0.7341040462427746,
+          "f1_por_etiqueta": {
+            "HS": 0.7735191637630662,
+            "TR": 0.8349514563106796,
+            "AG": 0.7741935483870968
+          },
+          "pliegue": 5,
+          "n_validacion": 346
+        }
+      ],
+      "mejora_vs_B1": 0.026752,
+      "mejora_en_pliegues": 5,
+      "decision": "adoptada"
+    },
+    {
+      "experiment_id": "MOD-01_BEST",
+      "parte": "C - modelo",
+      "descripcion": "SVM lineal balanced; prediccion por decision_function > 0; representacion union TF-IDF word (1,2) + char_wb (3,5), min_df=2, sublinear_tf",
+      "representacion": "union TF-IDF word (1,2) + char_wb (3,5), min_df=2, sublinear_tf",
+      "modelo": "LinearSVC(class_weight=balanced, C=1.0) x3",
+      "grupo_features": "WORD_NGRAM+CHAR_NGRAM",
+      "parametros_vectorizador": [
+        {
+          "min_df": 2,
+          "max_df": 1.0,
+          "sublinear_tf": true,
+          "lowercase": true,
+          "strip_accents": null,
+          "analyzer": "word",
+          "ngram_range": [
+            1,
+            2
+          ]
+        },
+        {
+          "min_df": 2,
+          "max_df": 1.0,
+          "sublinear_tf": true,
+          "lowercase": true,
+          "strip_accents": null,
+          "analyzer": "char_wb",
+          "ngram_range": [
+            3,
+            5
+          ]
+        }
+      ],
+      "parametros_modelo": {
+        "C": 1.0,
+        "class_weight": "balanced",
+        "max_iter": 5000,
+        "random_state": 42
+      },
+      "dimension": 27431,
+      "tiempo_segundos": 1.29,
+      "metricas_oof": {
+        "f1_media_columnas": 0.7848727206049166,
+        "f1_macro6": 0.8279636279540866,
+        "f1_micro": 0.7812995245641838,
+        "f1_samples": 0.32759483920662424,
+        "exact_match": 0.7140381282495667,
+        "f1_por_etiqueta": {
+          "HS": 0.7694388100067613,
+          "TR": 0.8246816846229187,
+          "AG": 0.76049766718507
+        }
+      },
+      "metricas_pliegues": [
+        {
+          "f1_media_columnas": 0.8038722005450074,
+          "f1_macro6": 0.8427875505324307,
+          "f1_micro": 0.798941798941799,
+          "f1_samples": 0.3311239193083574,
+          "exact_match": 0.7089337175792507,
+          "f1_por_etiqueta": {
+            "HS": 0.7905405405405406,
+            "TR": 0.8613861386138614,
+            "AG": 0.7596899224806202
+          },
+          "pliegue": 1,
+          "n_validacion": 347
+        },
+        {
+          "f1_media_columnas": 0.768968996782685,
+          "f1_macro6": 0.8143335094091847,
+          "f1_micro": 0.767833981841764,
+          "f1_samples": 0.32919075144508664,
+          "exact_match": 0.7052023121387283,
+          "f1_por_etiqueta": {
+            "HS": 0.76,
+            "TR": 0.7788461538461539,
+            "AG": 0.7680608365019012
+          },
+          "pliegue": 2,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7569960499955389,
+          "f1_macro6": 0.8084333475256845,
+          "f1_micro": 0.7537012113055181,
+          "f1_samples": 0.31454720616570325,
+          "exact_match": 0.7138728323699421,
+          "f1_por_etiqueta": {
+            "HS": 0.7508771929824561,
+            "TR": 0.8058252427184466,
+            "AG": 0.7142857142857143
+          },
+          "pliegue": 3,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7941374170759478,
+          "f1_macro6": 0.8355616450394909,
+          "f1_micro": 0.7898936170212766,
+          "f1_samples": 0.32572254335260115,
+          "exact_match": 0.7254335260115607,
+          "f1_por_etiqueta": {
+            "HS": 0.7702702702702703,
+            "TR": 0.8374384236453202,
+            "AG": 0.7747035573122529
+          },
+          "pliegue": 4,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.8003446600391063,
+          "f1_macro6": 0.8386232089466225,
+          "f1_micro": 0.7958115183246073,
+          "f1_samples": 0.3373795761078998,
+          "exact_match": 0.7167630057803468,
+          "f1_por_etiqueta": {
+            "HS": 0.7748344370860927,
+            "TR": 0.8415841584158416,
+            "AG": 0.7846153846153846
+          },
+          "pliegue": 5,
+          "n_validacion": 346
+        }
+      ],
+      "mejora_vs_B1": 0.026158,
+      "mejora_en_pliegues": 5,
+      "decision": "adoptada"
+    },
+    {
+      "experiment_id": "MOD-01_W12",
+      "parte": "C - modelo",
+      "descripcion": "SVM lineal balanced; prediccion por decision_function > 0; representacion TF-IDF word (1,2), min_df=2, sublinear_tf",
+      "representacion": "TF-IDF word (1,2), min_df=2, sublinear_tf",
+      "modelo": "LinearSVC(class_weight=balanced, C=1.0) x3",
+      "grupo_features": "WORD_NGRAM",
+      "parametros_vectorizador": [
+        {
+          "min_df": 2,
+          "max_df": 1.0,
+          "sublinear_tf": true,
+          "lowercase": true,
+          "strip_accents": null,
+          "analyzer": "word",
+          "ngram_range": [
+            1,
+            2
+          ]
+        }
+      ],
+      "parametros_modelo": {
+        "C": 1.0,
+        "class_weight": "balanced",
+        "max_iter": 5000,
+        "random_state": 42
+      },
+      "dimension": 4024,
+      "tiempo_segundos": 0.27,
+      "metricas_oof": {
+        "f1_media_columnas": 0.7699153104797855,
+        "f1_macro6": 0.8146591975216019,
+        "f1_micro": 0.7661016949152543,
+        "f1_samples": 0.3205854034276911,
+        "exact_match": 0.6967071057192374,
+        "f1_por_etiqueta": {
+          "HS": 0.7645875251509054,
+          "TR": 0.8208092485549133,
+          "AG": 0.7243491577335375
+        }
+      },
+      "metricas_pliegues": [
+        {
+          "f1_media_columnas": 0.7716156871730249,
+          "f1_macro6": 0.8162383871146196,
+          "f1_micro": 0.7670157068062827,
+          "f1_samples": 0.31834774255523535,
+          "exact_match": 0.6685878962536023,
+          "f1_por_etiqueta": {
+            "HS": 0.7774086378737541,
+            "TR": 0.8374384236453202,
+            "AG": 0.7
+          },
+          "pliegue": 1,
+          "n_validacion": 347
+        },
+        {
+          "f1_media_columnas": 0.7646668236490174,
+          "f1_macro6": 0.8073939484471339,
+          "f1_micro": 0.7626262626262627,
+          "f1_samples": 0.3287090558766859,
+          "exact_match": 0.7109826589595376,
+          "f1_por_etiqueta": {
+            "HS": 0.760655737704918,
+            "TR": 0.7906976744186046,
+            "AG": 0.7426470588235294
+          },
+          "pliegue": 2,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.755954694167002,
+          "f1_macro6": 0.8056492148396682,
+          "f1_micro": 0.752317880794702,
+          "f1_samples": 0.30973025048169556,
+          "exact_match": 0.708092485549133,
+          "f1_por_etiqueta": {
+            "HS": 0.7491408934707904,
+            "TR": 0.8151658767772512,
+            "AG": 0.7035573122529645
+          },
+          "pliegue": 3,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7751041072374201,
+          "f1_macro6": 0.8208476418449756,
+          "f1_micro": 0.7718832891246684,
+          "f1_samples": 0.3190751445086705,
+          "exact_match": 0.7109826589595376,
+          "f1_por_etiqueta": {
+            "HS": 0.764505119453925,
+            "TR": 0.8137254901960784,
+            "AG": 0.7470817120622568
+          },
+          "pliegue": 4,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.782272444892978,
+          "f1_macro6": 0.8230779027628996,
+          "f1_micro": 0.7766233766233767,
+          "f1_samples": 0.32707129094412335,
+          "exact_match": 0.684971098265896,
+          "f1_por_etiqueta": {
+            "HS": 0.770764119601329,
+            "TR": 0.848780487804878,
+            "AG": 0.7272727272727273
+          },
+          "pliegue": 5,
+          "n_validacion": 346
+        }
+      ],
+      "mejora_vs_B1": 0.011201,
+      "mejora_en_pliegues": 5,
+      "decision": "adoptada"
+    },
+    {
+      "experiment_id": "MOD-02_BEST",
+      "parte": "C - modelo",
+      "descripcion": "ComplementNB alpha=1.0, umbral 0.5 (apto para TF-IDF no negativo); representacion union TF-IDF word (1,2) + char_wb (3,5), min_df=2, sublinear_tf",
+      "representacion": "union TF-IDF word (1,2) + char_wb (3,5), min_df=2, sublinear_tf",
+      "modelo": "ComplementNB(alpha=1.0) x3",
+      "grupo_features": "WORD_NGRAM+CHAR_NGRAM",
+      "parametros_vectorizador": [
+        {
+          "min_df": 2,
+          "max_df": 1.0,
+          "sublinear_tf": true,
+          "lowercase": true,
+          "strip_accents": null,
+          "analyzer": "word",
+          "ngram_range": [
+            1,
+            2
+          ]
+        },
+        {
+          "min_df": 2,
+          "max_df": 1.0,
+          "sublinear_tf": true,
+          "lowercase": true,
+          "strip_accents": null,
+          "analyzer": "char_wb",
+          "ngram_range": [
+            3,
+            5
+          ]
+        }
+      ],
+      "parametros_modelo": {
+        "alpha": 1.0
+      },
+      "dimension": 27431,
+      "tiempo_segundos": 1.12,
+      "metricas_oof": {
+        "f1_media_columnas": 0.6887653322283903,
+        "f1_macro6": 0.773833088413229,
+        "f1_micro": 0.6889235569422777,
+        "f1_samples": 0.2368380512227999,
+        "exact_match": 0.6874638937030618,
+        "f1_por_etiqueta": {
+          "HS": 0.7061574434918161,
+          "TR": 0.704093567251462,
+          "AG": 0.6560449859418932
+        }
+      },
+      "metricas_pliegues": [
+        {
+          "f1_media_columnas": 0.7392172733068335,
+          "f1_macro6": 0.8083358804082676,
+          "f1_micro": 0.7370030581039755,
+          "f1_samples": 0.2538904899135446,
+          "exact_match": 0.729106628242075,
+          "f1_por_etiqueta": {
+            "HS": 0.7470817120622568,
+            "TR": 0.7796610169491526,
+            "AG": 0.6909090909090909
+          },
+          "pliegue": 1,
+          "n_validacion": 347
+        },
+        {
+          "f1_media_columnas": 0.6691939021917456,
+          "f1_macro6": 0.7598406199068872,
+          "f1_micro": 0.671850699844479,
+          "f1_samples": 0.23766859344894023,
+          "exact_match": 0.6763005780346821,
+          "f1_por_etiqueta": {
+            "HS": 0.7,
+            "TR": 0.6627218934911243,
+            "AG": 0.6448598130841121
+          },
+          "pliegue": 2,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.648631126427179,
+          "f1_macro6": 0.7456689938487034,
+          "f1_micro": 0.6499215070643642,
+          "f1_samples": 0.21965317919075145,
+          "exact_match": 0.6589595375722543,
+          "f1_por_etiqueta": {
+            "HS": 0.671875,
+            "TR": 0.6549707602339181,
+            "AG": 0.6190476190476191
+          },
+          "pliegue": 3,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7032915965207632,
+          "f1_macro6": 0.7824615994403942,
+          "f1_micro": 0.7006172839506173,
+          "f1_samples": 0.24219653179190756,
+          "exact_match": 0.6936416184971098,
+          "f1_por_etiqueta": {
+            "HS": 0.6953125,
+            "TR": 0.7386363636363636,
+            "AG": 0.6759259259259259
+          },
+          "pliegue": 4,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.6809635913063202,
+          "f1_macro6": 0.771646423468405,
+          "f1_micro": 0.6837881219903692,
+          "f1_samples": 0.23073217726396916,
+          "exact_match": 0.6791907514450867,
+          "f1_por_etiqueta": {
+            "HS": 0.7165354330708661,
+            "TR": 0.6790123456790124,
+            "AG": 0.6473429951690821
+          },
+          "pliegue": 5,
+          "n_validacion": 346
+        }
+      ],
+      "mejora_vs_B1": -0.069949,
+      "mejora_en_pliegues": 0,
+      "decision": "descartada"
+    },
+    {
+      "experiment_id": "MOD-02_W12",
+      "parte": "C - modelo",
+      "descripcion": "ComplementNB alpha=1.0, umbral 0.5 (apto para TF-IDF no negativo); representacion TF-IDF word (1,2), min_df=2, sublinear_tf",
+      "representacion": "TF-IDF word (1,2), min_df=2, sublinear_tf",
+      "modelo": "ComplementNB(alpha=1.0) x3",
+      "grupo_features": "WORD_NGRAM",
+      "parametros_vectorizador": [
+        {
+          "min_df": 2,
+          "max_df": 1.0,
+          "sublinear_tf": true,
+          "lowercase": true,
+          "strip_accents": null,
+          "analyzer": "word",
+          "ngram_range": [
+            1,
+            2
+          ]
+        }
+      ],
+      "parametros_modelo": {
+        "alpha": 1.0
+      },
+      "dimension": 4024,
+      "tiempo_segundos": 0.24,
+      "metricas_oof": {
+        "f1_media_columnas": 0.7361690959562401,
+        "f1_macro6": 0.796672003009255,
+        "f1_micro": 0.7336122733612274,
+        "f1_samples": 0.27962642018101286,
+        "exact_match": 0.6978625072212594,
+        "f1_por_etiqueta": {
+          "HS": 0.7270094134685011,
+          "TR": 0.7778874629812438,
+          "AG": 0.7036104114189756
+        }
+      },
+      "metricas_pliegues": [
+        {
+          "f1_media_columnas": 0.7463304884388114,
+          "f1_macro6": 0.8058950582766887,
+          "f1_micro": 0.7429378531073446,
+          "f1_samples": 0.2770413064361191,
+          "exact_match": 0.7031700288184438,
+          "f1_por_etiqueta": {
+            "HS": 0.7340823970037453,
+            "TR": 0.801980198019802,
+            "AG": 0.702928870292887
+          },
+          "pliegue": 1,
+          "n_validacion": 347
+        },
+        {
+          "f1_media_columnas": 0.7428009915499131,
+          "f1_macro6": 0.7988677888413159,
+          "f1_micro": 0.7415426251691475,
+          "f1_samples": 0.2909441233140655,
+          "exact_match": 0.7167630057803468,
+          "f1_por_etiqueta": {
+            "HS": 0.743859649122807,
+            "TR": 0.7714285714285715,
+            "AG": 0.7131147540983607
+          },
+          "pliegue": 2,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7106463487699527,
+          "f1_macro6": 0.7778715136651909,
+          "f1_micro": 0.7086834733893558,
+          "f1_samples": 0.27157996146435454,
+          "exact_match": 0.684971098265896,
+          "f1_por_etiqueta": {
+            "HS": 0.7032967032967034,
+            "TR": 0.7450980392156863,
+            "AG": 0.6835443037974683
+          },
+          "pliegue": 3,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7247669912820047,
+          "f1_macro6": 0.7891298596127828,
+          "f1_micro": 0.7221438645980254,
+          "f1_samples": 0.27244701348747585,
+          "exact_match": 0.6965317919075145,
+          "f1_por_etiqueta": {
+            "HS": 0.7153284671532847,
+            "TR": 0.7722772277227723,
+            "AG": 0.6866952789699571
+          },
+          "pliegue": 4,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7562270298190198,
+          "f1_macro6": 0.8114588827722863,
+          "f1_micro": 0.7524475524475525,
+          "f1_samples": 0.2861271676300578,
+          "exact_match": 0.6878612716763006,
+          "f1_por_etiqueta": {
+            "HS": 0.7375886524822695,
+            "TR": 0.8,
+            "AG": 0.7310924369747899
+          },
+          "pliegue": 5,
+          "n_validacion": 346
+        }
+      ],
+      "mejora_vs_B1": -0.022546,
+      "mejora_en_pliegues": 0,
+      "decision": "descartada"
+    },
+    {
+      "experiment_id": "MOD-03a_BEST",
+      "parte": "C - modelo",
+      "descripcion": "LR balanced C=0.5 liblinear, umbral 0.5 (mas regularizado); representacion union TF-IDF word (1,2) + char_wb (3,5), min_df=2, sublinear_tf",
+      "representacion": "union TF-IDF word (1,2) + char_wb (3,5), min_df=2, sublinear_tf",
+      "modelo": "LogisticRegression(class_weight=balanced, C=0.5, liblinear) x3",
+      "grupo_features": "WORD_NGRAM+CHAR_NGRAM",
+      "parametros_vectorizador": [
+        {
+          "min_df": 2,
+          "max_df": 1.0,
+          "sublinear_tf": true,
+          "lowercase": true,
+          "strip_accents": null,
+          "analyzer": "word",
+          "ngram_range": [
+            1,
+            2
+          ]
+        },
+        {
+          "min_df": 2,
+          "max_df": 1.0,
+          "sublinear_tf": true,
+          "lowercase": true,
+          "strip_accents": null,
+          "analyzer": "char_wb",
+          "ngram_range": [
+            3,
+            5
+          ]
+        }
+      ],
+      "parametros_modelo": {
+        "C": 0.5,
+        "class_weight": "balanced",
+        "max_iter": 1000,
+        "solver": "liblinear",
+        "random_state": 42
+      },
+      "dimension": 27431,
+      "tiempo_segundos": 3.96,
+      "metricas_oof": {
+        "f1_media_columnas": 0.7722549088499302,
+        "f1_macro6": 0.8203138885470831,
+        "f1_micro": 0.7705442902881536,
+        "f1_samples": 0.310263816676295,
+        "exact_match": 0.7203928365106874,
+        "f1_por_etiqueta": {
+          "HS": 0.7658979734451432,
+          "TR": 0.8018691588785046,
+          "AG": 0.7489975942261428
+        }
+      },
+      "metricas_pliegues": [
+        {
+          "f1_media_columnas": 0.8012103806990671,
+          "f1_macro6": 0.8433733510119931,
+          "f1_micro": 0.7983870967741935,
+          "f1_samples": 0.3192122958693564,
+          "exact_match": 0.7463976945244957,
+          "f1_por_etiqueta": {
+            "HS": 0.794425087108014,
+            "TR": 0.8461538461538461,
+            "AG": 0.7630522088353414
+          },
+          "pliegue": 1,
+          "n_validacion": 347
+        },
+        {
+          "f1_media_columnas": 0.7617137927215447,
+          "f1_macro6": 0.8087086796290087,
+          "f1_micro": 0.7619047619047619,
+          "f1_samples": 0.32177263969171477,
+          "exact_match": 0.7023121387283237,
+          "f1_por_etiqueta": {
+            "HS": 0.7609427609427609,
+            "TR": 0.7567567567567568,
+            "AG": 0.7674418604651163
+          },
+          "pliegue": 2,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7544966610497411,
+          "f1_macro6": 0.8078812455830597,
+          "f1_micro": 0.7537012113055181,
+          "f1_samples": 0.298747591522158,
+          "exact_match": 0.7109826589595376,
+          "f1_por_etiqueta": {
+            "HS": 0.7571428571428571,
+            "TR": 0.7798165137614679,
+            "AG": 0.726530612244898
+          },
+          "pliegue": 3,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7626082985538295,
+          "f1_macro6": 0.8128098631355698,
+          "f1_micro": 0.7603748326639893,
+          "f1_samples": 0.30549132947976876,
+          "exact_match": 0.7196531791907514,
+          "f1_por_etiqueta": {
+            "HS": 0.7535211267605634,
+            "TR": 0.7962085308056872,
+            "AG": 0.7380952380952381
+          },
+          "pliegue": 4,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7821150998522263,
+          "f1_macro6": 0.8289847641396686,
+          "f1_micro": 0.7788331071913162,
+          "f1_samples": 0.3060693641618497,
+          "exact_match": 0.7225433526011561,
+          "f1_por_etiqueta": {
+            "HS": 0.7632508833922261,
+            "TR": 0.8341232227488151,
+            "AG": 0.7489711934156379
+          },
+          "pliegue": 5,
+          "n_validacion": 346
+        }
+      ],
+      "mejora_vs_B1": 0.01354,
+      "mejora_en_pliegues": 5,
+      "decision": "adoptada"
+    },
+    {
+      "experiment_id": "MOD-03a_W12",
+      "parte": "C - modelo",
+      "descripcion": "LR balanced C=0.5 liblinear, umbral 0.5 (mas regularizado); representacion TF-IDF word (1,2), min_df=2, sublinear_tf",
+      "representacion": "TF-IDF word (1,2), min_df=2, sublinear_tf",
+      "modelo": "LogisticRegression(class_weight=balanced, C=0.5, liblinear) x3",
+      "grupo_features": "WORD_NGRAM",
+      "parametros_vectorizador": [
+        {
+          "min_df": 2,
+          "max_df": 1.0,
+          "sublinear_tf": true,
+          "lowercase": true,
+          "strip_accents": null,
+          "analyzer": "word",
+          "ngram_range": [
+            1,
+            2
+          ]
+        }
+      ],
+      "parametros_modelo": {
+        "C": 0.5,
+        "class_weight": "balanced",
+        "max_iter": 1000,
+        "solver": "liblinear",
+        "random_state": 42
+      },
+      "dimension": 4024,
+      "tiempo_segundos": 0.26,
+      "metricas_oof": {
+        "f1_media_columnas": 0.7442357033468636,
+        "f1_macro6": 0.7988221513479185,
+        "f1_micro": 0.7413189771197847,
+        "f1_samples": 0.2905064509917196,
+        "exact_match": 0.6961294049682265,
+        "f1_por_etiqueta": {
+          "HS": 0.7291960507757405,
+          "TR": 0.7909604519774012,
+          "AG": 0.7125506072874493
+        }
+      },
+      "metricas_pliegues": [
+        {
+          "f1_media_columnas": 0.767693895050581,
+          "f1_macro6": 0.8173290543195298,
+          "f1_micro": 0.7631935047361299,
+          "f1_samples": 0.29731027857829007,
+          "exact_match": 0.7146974063400576,
+          "f1_por_etiqueta": {
+            "HS": 0.7402135231316725,
+            "TR": 0.8341232227488151,
+            "AG": 0.728744939271255
+          },
+          "pliegue": 1,
+          "n_validacion": 347
+        },
+        {
+          "f1_media_columnas": 0.7425724719615818,
+          "f1_macro6": 0.7951586567719325,
+          "f1_micro": 0.7418086500655308,
+          "f1_samples": 0.3022157996146435,
+          "exact_match": 0.6965317919075145,
+          "f1_por_etiqueta": {
+            "HS": 0.7440273037542662,
+            "TR": 0.7614678899082569,
+            "AG": 0.7222222222222222
+          },
+          "pliegue": 2,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7295288003749745,
+          "f1_macro6": 0.7876319134113182,
+          "f1_micro": 0.7267833109017496,
+          "f1_samples": 0.2797687861271676,
+          "exact_match": 0.6820809248554913,
+          "f1_por_etiqueta": {
+            "HS": 0.7075812274368231,
+            "TR": 0.7818181818181819,
+            "AG": 0.6991869918699187
+          },
+          "pliegue": 3,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.721758976798656,
+          "f1_macro6": 0.7808134146056557,
+          "f1_micro": 0.7187079407806191,
+          "f1_samples": 0.2834296724470135,
+          "exact_match": 0.6791907514450867,
+          "f1_por_etiqueta": {
+            "HS": 0.71280276816609,
+            "TR": 0.7669902912621359,
+            "AG": 0.6854838709677419
+          },
+          "pliegue": 4,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7599580414719608,
+          "f1_macro6": 0.8131470071894892,
+          "f1_micro": 0.7565337001375516,
+          "f1_samples": 0.28978805394990365,
+          "exact_match": 0.708092485549133,
+          "f1_por_etiqueta": {
+            "HS": 0.7410071942446043,
+            "TR": 0.8115942028985508,
+            "AG": 0.7272727272727273
+          },
+          "pliegue": 5,
+          "n_validacion": 346
+        }
+      ],
+      "mejora_vs_B1": -0.014479,
+      "mejora_en_pliegues": 0,
+      "decision": "descartada"
+    },
+    {
+      "experiment_id": "MOD-03b_BEST",
+      "parte": "C - modelo",
+      "descripcion": "LR balanced C=2.0 liblinear, umbral 0.5 (menos regularizado); representacion union TF-IDF word (1,2) + char_wb (3,5), min_df=2, sublinear_tf",
+      "representacion": "union TF-IDF word (1,2) + char_wb (3,5), min_df=2, sublinear_tf",
+      "modelo": "LogisticRegression(class_weight=balanced, C=2.0, liblinear) x3",
+      "grupo_features": "WORD_NGRAM+CHAR_NGRAM",
+      "parametros_vectorizador": [
+        {
+          "min_df": 2,
+          "max_df": 1.0,
+          "sublinear_tf": true,
+          "lowercase": true,
+          "strip_accents": null,
+          "analyzer": "word",
+          "ngram_range": [
+            1,
+            2
+          ]
+        },
+        {
+          "min_df": 2,
+          "max_df": 1.0,
+          "sublinear_tf": true,
+          "lowercase": true,
+          "strip_accents": null,
+          "analyzer": "char_wb",
+          "ngram_range": [
+            3,
+            5
+          ]
+        }
+      ],
+      "parametros_modelo": {
+        "C": 2.0,
+        "class_weight": "balanced",
+        "max_iter": 1000,
+        "solver": "liblinear",
+        "random_state": 42
+      },
+      "dimension": 27431,
+      "tiempo_segundos": 6.9,
+      "metricas_oof": {
+        "f1_media_columnas": 0.7926588861781015,
+        "f1_macro6": 0.8349033705135338,
+        "f1_micro": 0.7898358920063525,
+        "f1_samples": 0.32462930868476797,
+        "exact_match": 0.7313691507798961,
+        "f1_por_etiqueta": {
+          "HS": 0.7799174690508941,
+          "TR": 0.8287081339712918,
+          "AG": 0.7693510555121188
+        }
+      },
+      "metricas_pliegues": [
+        {
+          "f1_media_columnas": 0.8012933474593567,
+          "f1_macro6": 0.8421279647159198,
+          "f1_micro": 0.7967914438502673,
+          "f1_samples": 0.31738712776176753,
+          "exact_match": 0.723342939481268,
+          "f1_por_etiqueta": {
+            "HS": 0.7931034482758621,
+            "TR": 0.8627450980392157,
+            "AG": 0.7480314960629921
+          },
+          "pliegue": 1,
+          "n_validacion": 347
+        },
+        {
+          "f1_media_columnas": 0.7898597924054527,
+          "f1_macro6": 0.8293514749148782,
+          "f1_micro": 0.7882653061224489,
+          "f1_samples": 0.33776493256262036,
+          "exact_match": 0.7283236994219653,
+          "f1_por_etiqueta": {
+            "HS": 0.7759197324414716,
+            "TR": 0.8055555555555556,
+            "AG": 0.7881040892193308
+          },
+          "pliegue": 2,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7775283841161178,
+          "f1_macro6": 0.824485082130627,
+          "f1_micro": 0.7754010695187166,
+          "f1_samples": 0.318111753371869,
+          "exact_match": 0.7427745664739884,
+          "f1_por_etiqueta": {
+            "HS": 0.7746478873239436,
+            "TR": 0.8169014084507042,
+            "AG": 0.7410358565737052
+          },
+          "pliegue": 3,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7933831988833077,
+          "f1_macro6": 0.8367246691288468,
+          "f1_micro": 0.7914438502673797,
+          "f1_samples": 0.32360308285163775,
+          "exact_match": 0.7369942196531792,
+          "f1_por_etiqueta": {
+            "HS": 0.7820069204152249,
+            "TR": 0.8155339805825242,
+            "AG": 0.782608695652174
+          },
+          "pliegue": 4,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.8014490275429229,
+          "f1_macro6": 0.8417960314170531,
+          "f1_micro": 0.7973333333333333,
+          "f1_samples": 0.3263005780346821,
+          "exact_match": 0.7254335260115607,
+          "f1_por_etiqueta": {
+            "HS": 0.773972602739726,
+            "TR": 0.8446601941747572,
+            "AG": 0.7857142857142857
+          },
+          "pliegue": 5,
+          "n_validacion": 346
+        }
+      ],
+      "mejora_vs_B1": 0.033944,
+      "mejora_en_pliegues": 5,
+      "decision": "adoptada"
+    },
+    {
+      "experiment_id": "MOD-03b_W12",
+      "parte": "C - modelo",
+      "descripcion": "LR balanced C=2.0 liblinear, umbral 0.5 (menos regularizado); representacion TF-IDF word (1,2), min_df=2, sublinear_tf",
+      "representacion": "TF-IDF word (1,2), min_df=2, sublinear_tf",
+      "modelo": "LogisticRegression(class_weight=balanced, C=2.0, liblinear) x3",
+      "grupo_features": "WORD_NGRAM",
+      "parametros_vectorizador": [
+        {
+          "min_df": 2,
+          "max_df": 1.0,
+          "sublinear_tf": true,
+          "lowercase": true,
+          "strip_accents": null,
+          "analyzer": "word",
+          "ngram_range": [
+            1,
+            2
+          ]
+        }
+      ],
+      "parametros_modelo": {
+        "C": 2.0,
+        "class_weight": "balanced",
+        "max_iter": 1000,
+        "solver": "liblinear",
+        "random_state": 42
+      },
+      "dimension": 4024,
+      "tiempo_segundos": 0.28,
+      "metricas_oof": {
+        "f1_media_columnas": 0.7698751294762736,
+        "f1_macro6": 0.8160610059302279,
+        "f1_micro": 0.7666403578005788,
+        "f1_samples": 0.3132678605815521,
+        "exact_match": 0.706528018486424,
+        "f1_por_etiqueta": {
+          "HS": 0.7580095432856169,
+          "TR": 0.815515610217597,
+          "AG": 0.7361002349256069
+        }
+      },
+      "metricas_pliegues": [
+        {
+          "f1_media_columnas": 0.7864069829862793,
+          "f1_macro6": 0.8298643413824215,
+          "f1_micro": 0.7819148936170213,
+          "f1_samples": 0.31719500480307394,
+          "exact_match": 0.7175792507204611,
+          "f1_por_etiqueta": {
+            "HS": 0.7781569965870307,
+            "TR": 0.848780487804878,
+            "AG": 0.7322834645669292
+          },
+          "pliegue": 1,
+          "n_validacion": 347
+        },
+        {
+          "f1_media_columnas": 0.7685806527093986,
+          "f1_macro6": 0.8112830761647992,
+          "f1_micro": 0.7676767676767676,
+          "f1_samples": 0.330635838150289,
+          "exact_match": 0.7023121387283237,
+          "f1_por_etiqueta": {
+            "HS": 0.7712418300653595,
+            "TR": 0.7873303167420814,
+            "AG": 0.7471698113207547
+          },
+          "pliegue": 2,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7485691683656134,
+          "f1_macro6": 0.7991720851266068,
+          "f1_micro": 0.7454068241469817,
+          "f1_samples": 0.3031791907514451,
+          "exact_match": 0.708092485549133,
+          "f1_por_etiqueta": {
+            "HS": 0.7430555555555556,
+            "TR": 0.8073394495412844,
+            "AG": 0.6953125
+          },
+          "pliegue": 3,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7650879942534364,
+          "f1_macro6": 0.8151754926938497,
+          "f1_micro": 0.7628032345013477,
+          "f1_samples": 0.30799614643545276,
+          "exact_match": 0.7109826589595376,
+          "f1_por_etiqueta": {
+            "HS": 0.75,
+            "TR": 0.7902439024390244,
+            "AG": 0.7550200803212851
+          },
+          "pliegue": 4,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7812391103040298,
+          "f1_macro6": 0.8248489426279337,
+          "f1_micro": 0.7755644090305445,
+          "f1_samples": 0.3073217726396917,
+          "exact_match": 0.6936416184971098,
+          "f1_por_etiqueta": {
+            "HS": 0.7465753424657534,
+            "TR": 0.8461538461538461,
+            "AG": 0.7509881422924901
+          },
+          "pliegue": 5,
+          "n_validacion": 346
+        }
+      ],
+      "mejora_vs_B1": 0.011161,
+      "mejora_en_pliegues": 5,
+      "decision": "adoptada"
+    },
+    {
+      "experiment_id": "MOD-04",
+      "parte": "C - modelo",
+      "descripcion": "post-proceso jerarquico HS=0 => TR=0, AG=0 aplicado a la mejor configuracion global (MOD-03b_BEST); efecto -0.0056 frente a su origen (no supera al origen)",
+      "representacion": "post-proceso jerarquico sobre MOD-03b_BEST (union TF-IDF word (1,2) + char_wb (3,5), min_df=2, sublinear_tf)",
+      "modelo": "post-proceso jerarquico sobre LogisticRegression(class_weight=balanced, C=2.0, liblinear) x3",
+      "grupo_features": "WORD_NGRAM+CHAR_NGRAM",
+      "parametros_vectorizador": [
+        {
+          "min_df": 2,
+          "max_df": 1.0,
+          "sublinear_tf": true,
+          "lowercase": true,
+          "strip_accents": null,
+          "analyzer": "word",
+          "ngram_range": [
+            1,
+            2
+          ]
+        },
+        {
+          "min_df": 2,
+          "max_df": 1.0,
+          "sublinear_tf": true,
+          "lowercase": true,
+          "strip_accents": null,
+          "analyzer": "char_wb",
+          "ngram_range": [
+            3,
+            5
+          ]
+        }
+      ],
+      "parametros_modelo": {
+        "postproceso": "HS=0 => TR=0, AG=0",
+        "origen": "MOD-03b_BEST"
+      },
+      "dimension": 27431,
+      "tiempo_segundos": 0.05,
+      "metricas_oof": {
+        "f1_media_columnas": 0.7870103342606702,
+        "f1_macro6": 0.8321615035832148,
+        "f1_micro": 0.7842502696871629,
+        "f1_samples": 0.31178509532062393,
+        "exact_match": 0.7429231658001155,
+        "f1_por_etiqueta": {
+          "HS": 0.7799174690508941,
+          "TR": 0.8252714708785784,
+          "AG": 0.7558420628525383
+        }
+      },
+      "metricas_pliegues": [
+        {
+          "f1_media_columnas": 0.8051631908150317,
+          "f1_macro6": 0.8463166864054049,
+          "f1_micro": 0.8005427408412483,
+          "f1_samples": 0.313640730067243,
+          "exact_match": 0.7435158501440923,
+          "f1_por_etiqueta": {
+            "HS": 0.7931034482758621,
+            "TR": 0.864321608040201,
+            "AG": 0.7580645161290323
+          },
+          "pliegue": 1,
+          "n_validacion": 347
+        },
+        {
+          "f1_media_columnas": 0.7785440414358513,
+          "f1_macro6": 0.823040003667843,
+          "f1_micro": 0.7774869109947644,
+          "f1_samples": 0.319364161849711,
+          "exact_match": 0.7398843930635838,
+          "f1_por_etiqueta": {
+            "HS": 0.7759197324414716,
+            "TR": 0.7922705314009661,
+            "AG": 0.7674418604651163
+          },
+          "pliegue": 2,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7679509939154764,
+          "f1_macro6": 0.8192979145845828,
+          "f1_micro": 0.7667121418826739,
+          "f1_samples": 0.3033718689788054,
+          "exact_match": 0.7543352601156069,
+          "f1_por_etiqueta": {
+            "HS": 0.7746478873239436,
+            "TR": 0.8019323671497585,
+            "AG": 0.7272727272727273
+          },
+          "pliegue": 3,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7877135078846971,
+          "f1_macro6": 0.8335096631432558,
+          "f1_micro": 0.7853260869565217,
+          "f1_samples": 0.31213872832369943,
+          "exact_match": 0.7485549132947977,
+          "f1_por_etiqueta": {
+            "HS": 0.7820069204152249,
+            "TR": 0.82,
+            "AG": 0.7611336032388664
+          },
+          "pliegue": 4,
+          "n_validacion": 346
+        },
+        {
+          "f1_media_columnas": 0.7960667483387162,
+          "f1_macro6": 0.8386966320351207,
+          "f1_micro": 0.7913279132791328,
+          "f1_samples": 0.3104046242774567,
+          "exact_match": 0.7283236994219653,
+          "f1_por_etiqueta": {
+            "HS": 0.773972602739726,
+            "TR": 0.85,
+            "AG": 0.7642276422764228
+          },
+          "pliegue": 5,
+          "n_validacion": 346
+        }
+      ],
+      "mejora_vs_B1": 0.028296,
+      "mejora_en_pliegues": 5,
+      "decision": "descartada (empeora a su origen MOD-03b_BEST)"
+    }
+  ]
+}

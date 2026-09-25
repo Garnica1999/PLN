@@ -1,0 +1,895 @@
+{
+  "fecha": "2026-09-22",
+  "modelo": "MOD-03b_BEST",
+  "oof": "features/oof_mod03b.npz",
+  "escenarios": {
+    "umbral_0_5": {
+      "nombre": "umbral fijo 0.5",
+      "umbrales": [
+        0.5,
+        0.5,
+        0.5
+      ],
+      "f1_media_columnas": 0.792659,
+      "f1_por_etiqueta": {
+        "HS": 0.779917,
+        "TR": 0.828708,
+        "AG": 0.769351
+      },
+      "exact_match": 0.731369
+    },
+    "umbral_optimo": {
+      "nombre": "umbrales por etiqueta 0.44/0.51/0.46",
+      "umbrales": [
+        0.44,
+        0.51,
+        0.46
+      ],
+      "f1_media_columnas": 0.798933,
+      "f1_por_etiqueta": {
+        "HS": 0.789711,
+        "TR": 0.829644,
+        "AG": 0.777444
+      },
+      "exact_match": 0.725592
+    }
+  },
+  "evidencia": {
+    "modelo": "MOD-03b_BEST",
+    "f1_global_0_5": 0.7926588861781015,
+    "f1_global": 0.7989327027697396,
+    "f1_HS": 0.7897106109324759,
+    "f1_TR": 0.8296438883541867,
+    "f1_AG": 0.7774436090225564,
+    "exact_match_0_5": 0.7313691507798961,
+    "exact_match": 0.7255921432697863,
+    "fp_total_0_5": 349,
+    "fn_total_0_5": 445,
+    "fp_total": 425,
+    "fn_total": 375,
+    "n_ambos_correctos": 1256,
+    "n_una_mal": 251,
+    "n_dos_mal": 123,
+    "n_tres_mal": 101,
+    "pares_HS_TR_ambas_mal": 120,
+    "pares_HS_TR_ambas_fn": 44,
+    "pares_HS_TR_ambas_fp": 76,
+    "pares_HS_AG_ambas_mal": 183,
+    "pares_HS_AG_ambas_fn": 82,
+    "pares_HS_AG_ambas_fp": 101,
+    "pares_TR_AG_ambas_mal": 123,
+    "pares_TR_AG_ambas_fn": 49,
+    "pares_TR_AG_ambas_fp": 69,
+    "pares_TR_AG_mixto": 5,
+    "regla_tr_delta": -0.000395,
+    "regla_completa_delta": -0.004867,
+    "regla_casos_tr": 13,
+    "regla_casos_tr_true_1": 6,
+    "regla_casos_ag": 29,
+    "regla_casos_ag_true_1": 20,
+    "n_insulto_responde": 526,
+    "n_insulto_negativos": 213,
+    "pct_insulto_negativos": 40.49,
+    "fp_rate_HS_region": 0.0951,
+    "fp_rate_global_HS": 0.1897,
+    "tr_f1_responde": 0.8754729978049847,
+    "tr_f1_sin_mencion_sin_colectiva": 0.7280349885597547,
+    "tr_f1_con_colectiva": 0.5974196817857421,
+    "tr_errores_sin_mencion": 50,
+    "tr_errores_total": 94,
+    "ag_f1_colectiva": 0.5974196817857421,
+    "ag_f1_global": 0.7774436090225564,
+    "pct_ag_fn_colectiva": 45.5,
+    "pct_ag_tp_colectiva": 13.9,
+    "pct_ag_tn_colectiva": 26.1,
+    "f1_noticia": 0.7016172823880535,
+    "f1_sin_noticia": 0.8293835026730169,
+    "n_noticia": 599,
+    "f1_hashtag": 0.5859469007009991,
+    "f1_pregunta": 0.6326409958871394,
+    "f1_colectiva": 0.6389096997524474,
+    "f1_q4": 0.6452662053456493,
+    "f1_url": 0.7111651746717023,
+    "f1_corto": 0.9444444444444443,
+    "f1_q1": 0.9134423157185217,
+    "f1_insulto_ausente": 0.3675686954288649,
+    "n_insulto_ausente": 437,
+    "pct_fp_HS_mencion_inicial": 40.0,
+    "pct_fp_HS_insulto": 81.1,
+    "pct_fn_HS_url": 43.7,
+    "pct_fn_HS_colectiva": 40.1,
+    "pct_tr_fp_mencion_inicial": 58.4,
+    "pct_ag_fp_mencion_inicial": 44.4,
+    "n_lexico": 150,
+    "n_lexico_nucleo": 19
+  },
+  "rebanadas_mas_debiles": [
+    {
+      "posicion": 1,
+      "rebanada": "tiene_hashtag",
+      "grupo": "1",
+      "n": 161,
+      "f1_HS": 0.6222222222222222,
+      "f1_TR": 0.5454545454545454,
+      "f1_AG": 0.5901639344262295,
+      "f1_media": 0.5859469007009991,
+      "delta_vs_global": -0.212986,
+      "tasa_error_etiquetas": 0.14285714285714285,
+      "tasa_error_exacta": 0.024844720496894408
+    },
+    {
+      "posicion": 2,
+      "rebanada": "tiene_pregunta",
+      "grupo": "1",
+      "n": 158,
+      "f1_HS": 0.6814814814814815,
+      "f1_TR": 0.6530612244897959,
+      "f1_AG": 0.5633802816901409,
+      "f1_media": 0.6326409958871394,
+      "delta_vs_global": -0.166292,
+      "tasa_error_etiquetas": 0.19198312236286919,
+      "tasa_error_exacta": 0.056962025316455694
+    },
+    {
+      "posicion": 3,
+      "rebanada": "tiene_referencia_colectiva",
+      "grupo": "1",
+      "n": 418,
+      "f1_HS": 0.6970509383378016,
+      "f1_TR": 0.6436781609195402,
+      "f1_AG": 0.576,
+      "f1_media": 0.6389096997524474,
+      "delta_vs_global": -0.160023,
+      "tasa_error_etiquetas": 0.19936204146730463,
+      "tasa_error_exacta": 0.03110047846889952
+    },
+    {
+      "posicion": 4,
+      "rebanada": "cuartil_longitud",
+      "grupo": "Q4",
+      "n": 432,
+      "f1_HS": 0.695906432748538,
+      "f1_TR": 0.6285714285714286,
+      "f1_AG": 0.6113207547169811,
+      "f1_media": 0.6452662053456493,
+      "delta_vs_global": -0.153666,
+      "tasa_error_etiquetas": 0.18981481481481483,
+      "tasa_error_exacta": 0.04861111111111111
+    },
+    {
+      "posicion": 5,
+      "rebanada": "tiene_mencion",
+      "grupo": "0",
+      "n": 909,
+      "f1_HS": 0.7031700288184438,
+      "f1_TR": 0.7070063694267515,
+      "f1_AG": 0.6810035842293907,
+      "f1_media": 0.6970599941581953,
+      "delta_vs_global": -0.101873,
+      "tasa_error_etiquetas": 0.17455078841217456,
+      "tasa_error_exacta": 0.052805280528052806
+    }
+  ],
+  "rebanadas_mas_debiles_con_artefactos": [
+    {
+      "posicion": 1,
+      "rebanada": "tiene_insulto_lexico",
+      "grupo": "0",
+      "n": 437,
+      "f1_HS": 0.423728813559322,
+      "f1_TR": 0.2727272727272727,
+      "f1_AG": 0.40625,
+      "f1_media": 0.3675686954288649,
+      "delta_vs_global": -0.431364,
+      "tasa_error_etiquetas": 0.09305873379099924,
+      "tasa_error_exacta": 0.018306636155606407
+    },
+    {
+      "posicion": 2,
+      "rebanada": "tiene_insulto_nucleo",
+      "grupo": "0",
+      "n": 682,
+      "f1_HS": 0.5676567656765676,
+      "f1_TR": 0.5066666666666667,
+      "f1_AG": 0.4824120603015075,
+      "f1_media": 0.5189118308815805,
+      "delta_vs_global": -0.280021,
+      "tasa_error_etiquetas": 0.1324535679374389,
+      "tasa_error_exacta": 0.026392961876832845
+    },
+    {
+      "posicion": 3,
+      "rebanada": "tiene_hashtag",
+      "grupo": "1",
+      "n": 161,
+      "f1_HS": 0.6222222222222222,
+      "f1_TR": 0.5454545454545454,
+      "f1_AG": 0.5901639344262295,
+      "f1_media": 0.5859469007009991,
+      "delta_vs_global": -0.212986,
+      "tasa_error_etiquetas": 0.14285714285714285,
+      "tasa_error_exacta": 0.024844720496894408
+    },
+    {
+      "posicion": 4,
+      "rebanada": "tiene_pregunta",
+      "grupo": "1",
+      "n": 158,
+      "f1_HS": 0.6814814814814815,
+      "f1_TR": 0.6530612244897959,
+      "f1_AG": 0.5633802816901409,
+      "f1_media": 0.6326409958871394,
+      "delta_vs_global": -0.166292,
+      "tasa_error_etiquetas": 0.19198312236286919,
+      "tasa_error_exacta": 0.056962025316455694
+    },
+    {
+      "posicion": 5,
+      "rebanada": "tiene_referencia_colectiva",
+      "grupo": "1",
+      "n": 418,
+      "f1_HS": 0.6970509383378016,
+      "f1_TR": 0.6436781609195402,
+      "f1_AG": 0.576,
+      "f1_media": 0.6389096997524474,
+      "delta_vs_global": -0.160023,
+      "tasa_error_etiquetas": 0.19936204146730463,
+      "tasa_error_exacta": 0.03110047846889952
+    }
+  ],
+  "regiones": [
+    {
+      "region": "responde_mencion_inicial",
+      "condicion": "tiene_mencion_inicial == 1",
+      "n": 701,
+      "f1_HS": 0.874189364461738,
+      "f1_TR": 0.8869814020028612,
+      "f1_AG": 0.8652482269503546,
+      "f1_media": 0.8754729978049847,
+      "tasa_error_etiquetas": 0.1288635282929149,
+      "tasa_error_exacta": 0.07132667617689016,
+      "n_errores_etiqueta": 271,
+      "prevalencia_real_HS": 0.5135520684736091,
+      "prevalencia_real_TR": 0.48074179743223966,
+      "prevalencia_real_AG": 0.47503566333808844,
+      "prevalencia_predicha_HS": 0.5863052781740371,
+      "prevalencia_predicha_TR": 0.5164051355206848,
+      "prevalencia_predicha_AG": 0.5306704707560628,
+      "delta_vs_global": 0.07654
+    },
+    {
+      "region": "no_responde_sin_colectiva",
+      "condicion": "mencion_inicial == 0 y referencia_colectiva == 0",
+      "n": 712,
+      "f1_HS": 0.718052738336714,
+      "f1_TR": 0.7333333333333333,
+      "f1_AG": 0.7327188940092166,
+      "f1_media": 0.7280349885597547,
+      "tasa_error_etiquetas": 0.15683520599250936,
+      "tasa_error_exacta": 0.060393258426966294,
+      "n_errores_etiqueta": 335,
+      "prevalencia_real_HS": 0.34831460674157305,
+      "prevalencia_real_TR": 0.21910112359550563,
+      "prevalencia_real_AG": 0.3089887640449438,
+      "prevalencia_predicha_HS": 0.3441011235955056,
+      "prevalencia_predicha_TR": 0.20224719101123595,
+      "prevalencia_predicha_AG": 0.300561797752809,
+      "delta_vs_global": -0.070898
+    },
+    {
+      "region": "no_responde_con_colectiva",
+      "condicion": "mencion_inicial == 0 y referencia_colectiva == 1",
+      "n": 318,
+      "f1_HS": 0.6872852233676976,
+      "f1_TR": 0.55,
+      "f1_AG": 0.5549738219895288,
+      "f1_media": 0.5974196817857421,
+      "tasa_error_etiquetas": 0.20335429769392033,
+      "tasa_error_exacta": 0.025157232704402517,
+      "n_errores_etiqueta": 194,
+      "prevalencia_real_HS": 0.46540880503144655,
+      "prevalencia_real_TR": 0.08176100628930817,
+      "prevalencia_real_AG": 0.34276729559748426,
+      "prevalencia_predicha_HS": 0.449685534591195,
+      "prevalencia_predicha_TR": 0.0440251572327044,
+      "prevalencia_predicha_AG": 0.2578616352201258,
+      "delta_vs_global": -0.201513
+    },
+    {
+      "region": "insulto_responde_sin_colectiva",
+      "condicion": "insulto == 1, mencion_inicial == 1 y colectiva == 0",
+      "n": 526,
+      "f1_HS": 0.9066265060240963,
+      "f1_TR": 0.9051321928460342,
+      "f1_AG": 0.8958990536277602,
+      "f1_media": 0.9025525841659636,
+      "tasa_error_etiquetas": 0.11977186311787072,
+      "tasa_error_exacta": 0.0817490494296578,
+      "n_errores_etiqueta": 189,
+      "prevalencia_real_HS": 0.5950570342205324,
+      "prevalencia_real_TR": 0.5836501901140685,
+      "prevalencia_real_AG": 0.5703422053231939,
+      "prevalencia_predicha_HS": 0.6673003802281369,
+      "prevalencia_predicha_TR": 0.6387832699619772,
+      "prevalencia_predicha_AG": 0.6349809885931559,
+      "delta_vs_global": 0.10362
+    },
+    {
+      "region": "insulto_no_responde_sin_colectiva",
+      "condicion": "insulto == 1, mencion_inicial == 0 y colectiva == 0",
+      "n": 451,
+      "f1_HS": 0.7595505617977528,
+      "f1_TR": 0.754325259515571,
+      "f1_AG": 0.7587939698492462,
+      "f1_media": 0.7575565970541899,
+      "tasa_error_etiquetas": 0.2025129342202513,
+      "tasa_error_exacta": 0.08425720620842572,
+      "n_errores_etiqueta": 274,
+      "prevalencia_real_HS": 0.4811529933481153,
+      "prevalencia_real_TR": 0.3259423503325942,
+      "prevalencia_real_AG": 0.43680709534368073,
+      "prevalencia_predicha_HS": 0.5055432372505543,
+      "prevalencia_predicha_TR": 0.3148558758314856,
+      "prevalencia_predicha_AG": 0.44567627494456763,
+      "delta_vs_global": -0.041376
+    },
+    {
+      "region": "regimen_noticia",
+      "condicion": "url == 1 o hashtag == 1",
+      "n": 599,
+      "f1_HS": 0.7013574660633484,
+      "f1_TR": 0.718562874251497,
+      "f1_AG": 0.684931506849315,
+      "f1_media": 0.7016172823880535,
+      "tasa_error_etiquetas": 0.1636060100166945,
+      "tasa_error_exacta": 0.03672787979966611,
+      "n_errores_etiqueta": 294,
+      "prevalencia_real_HS": 0.3722871452420701,
+      "prevalencia_real_TR": 0.15358931552587646,
+      "prevalencia_real_AG": 0.31886477462437396,
+      "prevalencia_predicha_HS": 0.3656093489148581,
+      "prevalencia_predicha_TR": 0.12520868113522537,
+      "prevalencia_predicha_AG": 0.2904841402337229,
+      "delta_vs_global": -0.097315
+    },
+    {
+      "region": "sin_url_ni_hashtag",
+      "condicion": "url == 0 y hashtag == 0",
+      "n": 1132,
+      "f1_HS": 0.8247978436657682,
+      "f1_TR": 0.8509174311926605,
+      "f1_AG": 0.8124352331606217,
+      "f1_media": 0.8293835026730169,
+      "tasa_error_etiquetas": 0.14899882214369847,
+      "tasa_error_exacta": 0.06978798586572438,
+      "n_errores_etiqueta": 506,
+      "prevalencia_real_HS": 0.4708480565371025,
+      "prevalencia_real_TR": 0.37720848056537104,
+      "prevalencia_real_AG": 0.4160777385159011,
+      "prevalencia_predicha_HS": 0.5123674911660777,
+      "prevalencia_predicha_TR": 0.3931095406360424,
+      "prevalencia_predicha_AG": 0.4363957597173145,
+      "delta_vs_global": 0.030451
+    }
+  ],
+  "matrices_confusion": [
+    {
+      "escenario": "umbral_0_5",
+      "etiqueta": "HS",
+      "umbral": 0.5,
+      "positivos_reales": 756,
+      "positivos_predichos": 698,
+      "TP": 567.0,
+      "FP": 131.0,
+      "FN": 189.0,
+      "TN": 844.0,
+      "n": 1731.0,
+      "precision": 0.812321,
+      "recall": 0.75,
+      "especificidad": 0.865641,
+      "f1": 0.779917,
+      "fpr": 0.134359,
+      "fnr": 0.25,
+      "tasa_error_etiqueta": 0.184864,
+      "exactitud": 0.815136
+    },
+    {
+      "escenario": "umbral_0_5",
+      "etiqueta": "TR",
+      "umbral": 0.5,
+      "positivos_reales": 519,
+      "positivos_predichos": 526,
+      "TP": 433.0,
+      "FP": 93.0,
+      "FN": 86.0,
+      "TN": 1119.0,
+      "n": 1731.0,
+      "precision": 0.823194,
+      "recall": 0.834297,
+      "especificidad": 0.923267,
+      "f1": 0.828708,
+      "fpr": 0.076733,
+      "fnr": 0.165703,
+      "tasa_error_etiqueta": 0.103408,
+      "exactitud": 0.896592
+    },
+    {
+      "escenario": "umbral_0_5",
+      "etiqueta": "AG",
+      "umbral": 0.5,
+      "positivos_reales": 662,
+      "positivos_predichos": 617,
+      "TP": 492.0,
+      "FP": 125.0,
+      "FN": 170.0,
+      "TN": 944.0,
+      "n": 1731.0,
+      "precision": 0.797407,
+      "recall": 0.743202,
+      "especificidad": 0.883068,
+      "f1": 0.769351,
+      "fpr": 0.116932,
+      "fnr": 0.256798,
+      "tasa_error_etiqueta": 0.170422,
+      "exactitud": 0.829578
+    },
+    {
+      "escenario": "umbral_optimo",
+      "etiqueta": "HS",
+      "umbral": 0.44,
+      "positivos_reales": 756,
+      "positivos_predichos": 799,
+      "TP": 614.0,
+      "FP": 185.0,
+      "FN": 142.0,
+      "TN": 790.0,
+      "n": 1731.0,
+      "precision": 0.768461,
+      "recall": 0.812169,
+      "especificidad": 0.810256,
+      "f1": 0.789711,
+      "fpr": 0.189744,
+      "fnr": 0.187831,
+      "tasa_error_etiqueta": 0.188908,
+      "exactitud": 0.811092
+    },
+    {
+      "escenario": "umbral_optimo",
+      "etiqueta": "TR",
+      "umbral": 0.51,
+      "positivos_reales": 519,
+      "positivos_predichos": 520,
+      "TP": 431.0,
+      "FP": 89.0,
+      "FN": 88.0,
+      "TN": 1123.0,
+      "n": 1731.0,
+      "precision": 0.828846,
+      "recall": 0.830443,
+      "especificidad": 0.926568,
+      "f1": 0.829644,
+      "fpr": 0.073432,
+      "fnr": 0.169557,
+      "tasa_error_etiqueta": 0.102253,
+      "exactitud": 0.897747
+    },
+    {
+      "escenario": "umbral_optimo",
+      "etiqueta": "AG",
+      "umbral": 0.46,
+      "positivos_reales": 662,
+      "positivos_predichos": 668,
+      "TP": 517.0,
+      "FP": 151.0,
+      "FN": 145.0,
+      "TN": 918.0,
+      "n": 1731.0,
+      "precision": 0.773952,
+      "recall": 0.780967,
+      "especificidad": 0.858746,
+      "f1": 0.777444,
+      "fpr": 0.141254,
+      "fnr": 0.219033,
+      "tasa_error_etiqueta": 0.170999,
+      "exactitud": 0.829001
+    }
+  ],
+  "combinaciones": [
+    {
+      "combinacion_true": "0,0,0",
+      "n": 949,
+      "ejemplos_con_alguna_mal": 193,
+      "ejemplos_con_3_mal": 68,
+      "errores_HS": 178,
+      "errores_TR": 81,
+      "errores_AG": 110
+    },
+    {
+      "combinacion_true": "1,1,1",
+      "n": 491,
+      "ejemplos_con_alguna_mal": 84,
+      "ejemplos_con_3_mal": 33,
+      "errores_HS": 42,
+      "errores_TR": 76,
+      "errores_AG": 55
+    },
+    {
+      "combinacion_true": "1,0,1",
+      "n": 145,
+      "ejemplos_con_alguna_mal": 90,
+      "ejemplos_con_3_mal": 0,
+      "errores_HS": 50,
+      "errores_TR": 6,
+      "errores_AG": 81
+    },
+    {
+      "combinacion_true": "1,0,0",
+      "n": 92,
+      "ejemplos_con_alguna_mal": 65,
+      "ejemplos_con_3_mal": 0,
+      "errores_HS": 42,
+      "errores_TR": 0,
+      "errores_AG": 23
+    },
+    {
+      "combinacion_true": "1,1,0",
+      "n": 28,
+      "ejemplos_con_alguna_mal": 27,
+      "ejemplos_con_3_mal": 0,
+      "errores_HS": 8,
+      "errores_TR": 12,
+      "errores_AG": 18
+    },
+    {
+      "combinacion_true": "0,0,1",
+      "n": 26,
+      "ejemplos_con_alguna_mal": 16,
+      "ejemplos_con_3_mal": 0,
+      "errores_HS": 7,
+      "errores_TR": 2,
+      "errores_AG": 9
+    }
+  ],
+  "pares": [
+    {
+      "par": "HS-TR",
+      "n_ambos_correctos": 1347,
+      "n_solo_primera_mal": 207,
+      "n_solo_segunda_mal": 57,
+      "n_ambas_mal": 120,
+      "n_ambas_falso_negativo": 44,
+      "n_ambas_falso_positivo": 76,
+      "n_ambas_mixto": 0,
+      "errores_totales_primera": 327,
+      "errores_totales_segunda": 177
+    },
+    {
+      "par": "HS-AG",
+      "n_ambos_correctos": 1291,
+      "n_solo_primera_mal": 144,
+      "n_solo_segunda_mal": 113,
+      "n_ambas_mal": 183,
+      "n_ambas_falso_negativo": 82,
+      "n_ambas_falso_positivo": 101,
+      "n_ambas_mixto": 0,
+      "errores_totales_primera": 327,
+      "errores_totales_segunda": 296
+    },
+    {
+      "par": "TR-AG",
+      "n_ambos_correctos": 1381,
+      "n_solo_primera_mal": 54,
+      "n_solo_segunda_mal": 173,
+      "n_ambas_mal": 123,
+      "n_ambas_falso_negativo": 49,
+      "n_ambas_falso_positivo": 69,
+      "n_ambas_mixto": 5,
+      "errores_totales_primera": 177,
+      "errores_totales_segunda": 296
+    }
+  ],
+  "patrones_muestras": [
+    {
+      "patron": "broma_afiliacion",
+      "etiqueta": "AG",
+      "tipo_error": "falso_positivo",
+      "n": 6,
+      "n_grupo": 15,
+      "proporcion": 0.4
+    },
+    {
+      "patron": "broma_afiliacion",
+      "etiqueta": "AG",
+      "tipo_error": "falso_negativo",
+      "n": 0,
+      "n_grupo": 15,
+      "proporcion": 0.0
+    },
+    {
+      "patron": "broma_afiliacion",
+      "etiqueta": "HS",
+      "tipo_error": "falso_positivo",
+      "n": 6,
+      "n_grupo": 15,
+      "proporcion": 0.4
+    },
+    {
+      "patron": "broma_afiliacion",
+      "etiqueta": "HS",
+      "tipo_error": "falso_negativo",
+      "n": 1,
+      "n_grupo": 15,
+      "proporcion": 0.0667
+    },
+    {
+      "patron": "broma_afiliacion",
+      "etiqueta": "TR",
+      "tipo_error": "falso_positivo",
+      "n": 7,
+      "n_grupo": 15,
+      "proporcion": 0.4667
+    },
+    {
+      "patron": "broma_afiliacion",
+      "etiqueta": "TR",
+      "tipo_error": "falso_negativo",
+      "n": 0,
+      "n_grupo": 15,
+      "proporcion": 0.0
+    },
+    {
+      "patron": "cita_metalenguaje",
+      "etiqueta": "AG",
+      "tipo_error": "falso_positivo",
+      "n": 2,
+      "n_grupo": 15,
+      "proporcion": 0.1333
+    },
+    {
+      "patron": "cita_metalenguaje",
+      "etiqueta": "AG",
+      "tipo_error": "falso_negativo",
+      "n": 1,
+      "n_grupo": 15,
+      "proporcion": 0.0667
+    },
+    {
+      "patron": "cita_metalenguaje",
+      "etiqueta": "HS",
+      "tipo_error": "falso_positivo",
+      "n": 2,
+      "n_grupo": 15,
+      "proporcion": 0.1333
+    },
+    {
+      "patron": "cita_metalenguaje",
+      "etiqueta": "HS",
+      "tipo_error": "falso_negativo",
+      "n": 1,
+      "n_grupo": 15,
+      "proporcion": 0.0667
+    },
+    {
+      "patron": "cita_metalenguaje",
+      "etiqueta": "TR",
+      "tipo_error": "falso_positivo",
+      "n": 1,
+      "n_grupo": 15,
+      "proporcion": 0.0667
+    },
+    {
+      "patron": "cita_metalenguaje",
+      "etiqueta": "TR",
+      "tipo_error": "falso_negativo",
+      "n": 0,
+      "n_grupo": 15,
+      "proporcion": 0.0
+    },
+    {
+      "patron": "noticia_o_atribucion",
+      "etiqueta": "AG",
+      "tipo_error": "falso_positivo",
+      "n": 2,
+      "n_grupo": 15,
+      "proporcion": 0.1333
+    },
+    {
+      "patron": "noticia_o_atribucion",
+      "etiqueta": "AG",
+      "tipo_error": "falso_negativo",
+      "n": 8,
+      "n_grupo": 15,
+      "proporcion": 0.5333
+    },
+    {
+      "patron": "noticia_o_atribucion",
+      "etiqueta": "HS",
+      "tipo_error": "falso_positivo",
+      "n": 2,
+      "n_grupo": 15,
+      "proporcion": 0.1333
+    },
+    {
+      "patron": "noticia_o_atribucion",
+      "etiqueta": "HS",
+      "tipo_error": "falso_negativo",
+      "n": 8,
+      "n_grupo": 15,
+      "proporcion": 0.5333
+    },
+    {
+      "patron": "noticia_o_atribucion",
+      "etiqueta": "TR",
+      "tipo_error": "falso_positivo",
+      "n": 1,
+      "n_grupo": 15,
+      "proporcion": 0.0667
+    },
+    {
+      "patron": "noticia_o_atribucion",
+      "etiqueta": "TR",
+      "tipo_error": "falso_negativo",
+      "n": 9,
+      "n_grupo": 15,
+      "proporcion": 0.6
+    },
+    {
+      "patron": "sin_insulto_lexico",
+      "etiqueta": "AG",
+      "tipo_error": "falso_positivo",
+      "n": 0,
+      "n_grupo": 15,
+      "proporcion": 0.0
+    },
+    {
+      "patron": "sin_insulto_lexico",
+      "etiqueta": "AG",
+      "tipo_error": "falso_negativo",
+      "n": 7,
+      "n_grupo": 15,
+      "proporcion": 0.4667
+    },
+    {
+      "patron": "sin_insulto_lexico",
+      "etiqueta": "HS",
+      "tipo_error": "falso_positivo",
+      "n": 1,
+      "n_grupo": 15,
+      "proporcion": 0.0667
+    },
+    {
+      "patron": "sin_insulto_lexico",
+      "etiqueta": "HS",
+      "tipo_error": "falso_negativo",
+      "n": 8,
+      "n_grupo": 15,
+      "proporcion": 0.5333
+    },
+    {
+      "patron": "sin_insulto_lexico",
+      "etiqueta": "TR",
+      "tipo_error": "falso_positivo",
+      "n": 0,
+      "n_grupo": 15,
+      "proporcion": 0.0
+    },
+    {
+      "patron": "sin_insulto_lexico",
+      "etiqueta": "TR",
+      "tipo_error": "falso_negativo",
+      "n": 4,
+      "n_grupo": 15,
+      "proporcion": 0.2667
+    }
+  ],
+  "patrones_cualitativos_revisados": [
+    {
+      "patron": "Insulto interpersonal en registro de broma, afiliacion o vocativo",
+      "etiquetas": "HS, TR, AG (falsos positivos)",
+      "ejemplos": [
+        "23076",
+        "24006",
+        "23172",
+        "20504",
+        "21150",
+        "22524",
+        "21497",
+        "22924"
+      ]
+    },
+    {
+      "patron": "Uso metalinguistico: cita, mencion o reproduccion del insulto",
+      "etiquetas": "HS, AG (falsos positivos); HS, AG (falsos negativos)",
+      "ejemplos": [
+        "21362",
+        "23972",
+        "24061"
+      ]
+    },
+    {
+      "patron": "Regimen noticia o atribucion a terceros",
+      "etiquetas": "HS, TR, AG (falsos negativos)",
+      "ejemplos": [
+        "24269",
+        "20144",
+        "21733",
+        "21041",
+        "23631",
+        "20295"
+      ]
+    },
+    {
+      "patron": "Odio implicito contra un grupo sin insulto del lexico",
+      "etiquetas": "HS, AG (falsos negativos)",
+      "ejemplos": [
+        "21799",
+        "21408",
+        "23832",
+        "22174",
+        "23922",
+        "22678"
+      ]
+    },
+    {
+      "patron": "Texto corto cuyo sentido depende del contenido enlazado",
+      "etiquetas": "HS, TR, AG (falsos negativos)",
+      "ejemplos": [
+        "20082",
+        "20852",
+        "23283"
+      ]
+    },
+    {
+      "patron": "Frontera de anotacion no observable en el texto",
+      "etiquetas": "HS, TR, AG (falsos positivos y negativos)",
+      "ejemplos": [
+        "21892",
+        "24454",
+        "21865",
+        "20463"
+      ]
+    }
+  ],
+  "hipotesis": [
+    {
+      "id": "H11",
+      "enunciado": "Los falsos positivos de HS y AG se concentran en el registro de insulto interpersonal entre usuarios que la anotacion considera no odioso (broma, afiliacion, pelea entre conocidos); un bloque explicito de interacciones de registro reduce esos FP."
+    },
+    {
+      "id": "H12",
+      "enunciado": "El error de TR vive en los textos sin destinatario explicito: la frontera depende de si el objetivo es una persona identificable o un colectivo, y el modelo no tiene un bloque que represente esa distincion."
+    },
+    {
+      "id": "H13",
+      "enunciado": "El modelo es fuerte en el registro de respuesta y debil en el registro noticia/comentario (URL, hashtag, pregunta, textos largos), donde el texto cita o describe odio ajeno en lugar de producirlo."
+    },
+    {
+      "id": "H14",
+      "enunciado": "Los falsos negativos de AG son agresion implicita sin insulto del lexico (estigma, deshumanizacion, cosificacion de un grupo); los falsos positivos de AG vienen del registro bromista, no de la agresion implicita."
+    },
+    {
+      "id": "H15",
+      "enunciado": "Ajustar el umbral por etiqueta y por rebanada (corto frente a largo, noticia frente a respuesta) NO aporta una mejora explotable; es una via de cierre, no de mejora."
+    }
+  ],
+  "figuras": [
+    "reports/figuras/fig_20_matrices_confusion_umbral_05.png",
+    "reports/figuras/fig_21_matrices_confusion_umbrales_optimos.png",
+    "reports/figuras/fig_22_errores_por_etiqueta_y_por_ejemplo.png",
+    "reports/figuras/fig_23_rebanadas_mas_debiles.png",
+    "reports/figuras/fig_24_regiones_f1.png"
+  ],
+  "artefactos": [
+    "reports/eda/error_matrices_confusion.csv",
+    "reports/eda/error_etiquetas_erroneas.csv",
+    "reports/eda/error_combinaciones_etiquetas.csv",
+    "reports/eda/error_pares_etiquetas.csv",
+    "reports/eda/error_regla_estructural.csv",
+    "reports/eda/error_rebanadas.csv",
+    "reports/eda/error_regiones.csv",
+    "reports/eda/error_perfil_rasgos.csv",
+    "reports/eda/error_samples_para_revision.csv",
+    "reports/eda/error_resumen_muestras.csv",
+    "reports/eda/error_resumen_patrones.csv"
+  ]
+}
