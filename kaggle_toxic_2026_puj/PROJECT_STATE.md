@@ -36,6 +36,8 @@ archivada de la autorizacion; se registra solo lo comunicado por el usuario.
 | D-033 | **No se escala a 100M/500M**: 5x tokens no mueven la aportacion complementaria. El techo no es la representacion |
 | P9-P10 (tramo inferior 5M) | 5M tokens: la fusion **deja de aportar** (delta -0.0015) -> **10M es el suelo operativo**; curva del embedding plano |
 | D-034 | Corrige a D-033: la ventaja de las subpalabras no es monotone (joroba con maximo en 10M) |
+| v5.1 (arquitectura) | En curso. Baseline B0 = Wikipedia 10M / 200d / w5 / minC3 / sub3-6 / neg10 (ya entrenado, no se reentrena) |
+| D-035 | Identidad de entrenamiento por firma con corpus procesado y bucket; presupuesto 9+1 abierto, 0 colisiones |
 | GATE DE CIERRE | §29: A (+0.005 con estabilidad) / B (complementariedad robusta) / C (senal representacional fuerte) |
 
 ## Fase anterior: v4 «Advanced Research v4» (CERRADA el 2026-09-25)

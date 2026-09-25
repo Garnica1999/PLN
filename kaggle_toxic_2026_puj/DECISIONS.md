@@ -1220,3 +1220,47 @@ evidencia, experimento, resultado, conclusion final.
   entrenamiento respectivamente, porque el tiempo es lineal en tokens. Un corpus de 500M
   habria costado del orden de 1,5 h por modelo. El techo autorizado queda sin usar, y la
   decision no escalate se sostiene por evidencia y no por coste.
+
+## D-035 - Baseline arquitectonico de v5.1, identidad de entrenamiento y presupuesto
+
+- **Contexto**: v5 cerro con D-034. La lectura de esa fase es que la representacion no es
+  el techo: el embedding aislado esta plano entre 5M y 50M tokens (0.653-0.669, dentro del
+  ruido) y la aportacion complementaria a V03 se queda entre +0.0001 y +0.0046 en las cinco
+  configuraciones medidas, con el intervalo de bootstrap tocando el 0. Las tres dimensiones
+  del corpus quedan agotadas. La unica variable que la spec de v5.1 deja abierta es la
+  **arquitectura** del entrenamiento, con un presupuesto duro de 9()+1 unidades.
+- **Baseline arquitectonico (B0)**: Wikipedia 10M (E-CORP-01) / 200d / window 5 /
+  min_count 3 / subpalabras 3-6 / negative 10 / sample 1e-4 / epochs 5 / sg 1 / seed 42 /
+  bucket 200.000. Ya esta entrenado (sha256 `e54a363d`) y **no se reentrena**: se carga como
+  artefacto. Todas las propuestas de v5.1 son esta misma configuracion con **un** parametro
+  cambiado sobre el **mismo** corpus y la **misma** semilla, para que la comparacion sea
+  celda a celda.
+- **Identidad de entrenamiento** (seccion 34 de la spec, con dos desviaciones razonadas):
+  `training_signature = sha256(corpus_procesado | corpus_version | vector_size | window |
+  min_count | min_n | max_n | negative | sample | epochs | sg | seed | bucket)`.
+  1. Se usa el sha256 del **corpus procesado**, no el del dump. El dump es identico para
+     5M, 10M y 50M de Wikipedia, asi que con la huella del dump tres corpora distintos
+     compartiran identidad y la comprobacion de la seccion 34 seria falsa.
+  2. Se incluye `bucket`, que la spec no lista: determina parte de la matriz de subpalabras
+     y por tanto los pesos. Excluirlo permitiria declarar nueva una configuracion que en
+     realidad es otra. `hilos` queda fuera porque no cambia la configuracion, solo el orden
+     no determinista de actualizacion de pesos, y esa no determinismo ya esta medida.
+- **Resultado de la auditoria (EBD-17)**: los diez entrenamientos de v5 tienen **firmas
+  distintas** y las **nueve** propuestas de v5.1 **no colisionan** con ninguna. Presupuesto
+  abierto: 0 de 9 exploratorios y 0 de 1 reserva. Reglas de la seccion 36 limpias: 0
+  recursos prohibidos, 0 textos de test en los corpus, holdout intacto 5/5, V03 verificado
+  en 0.777211.
+- **Gap de trazabilidad detectado**: P5 no guardaba `minn`/`maxn` por modelo (solo dentro de
+  la etiqueta de texto), de modo que la firma de los tres modelos de esa corrida se declara
+  en el inventario de EBD-17 y se verifica contra el artefacto. Sin esa correccion, la firma
+  del control Word2Vec del corpus web coincidia con la de FastText. Los scripts de v5 no se
+  modifican: son evidencia historica.
+- **Contabilidad separada**: `EMBEDDING TRAINING UNIT` (cambia los pesos) !=
+  `DOWNSTREAM EVALUATION UNIT` (pooling, clasificador, umbral, analisis) !=
+  `AUDIT / REPRODUCTION`. Las 33 evaluaciones downstream historicas quedan en la Tabla B y
+  no consumen presupuesto.
+- **Nota de ubicacion**: el worktree `proyecto-kaggle-toxic-2026-v5` se migro de
+  `/home/carlos/Git/PLN-v5` a `/home/carlos/Git/PLN` a peticion del usuario. Se verificaron
+  los sha256 de los cinco corpus y de los diez `.vec`, y el control V03 reproduce
+  0.777211 exacto desde la nueva ubicacion. El trabajo sin commitear de KAGGLE_AGE_2026_PUJ
+  quedo aparcado en `git stash` (no es un commit) y sus datos no se tocaron.

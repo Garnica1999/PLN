@@ -701,3 +701,19 @@ Registro cronologico de ejecuciones. Formato:
   **corrige** la sobreafirmacion de D-033: la ventaja de las subpalabras (+0.0060 / +0.0138
   / +0.0030) tiene forma de joroba con maximo en 10M, no es monotone. **0 submissions,
   0 sondas de LB.**
+- 20:40 | v5.1 P0: migracion del worktree a PLN y auditoria de firmas (EBD-17) | `experiments/embedding_11_auditoria_firmas_v5_1.py`
+  **Migracion**: el worktree `proyecto-kaggle-toxic-2026-v5` paso de `/home/carlos/Git/PLN-v5`
+  a `/home/carlos/Git/PLN` a peticion del usuario. El WIP sin commitear de
+  KAGGLE_AGE_2026_PUJ quedo aparcado con `git stash` (autorizado expresamente; no es un
+  commit) y sus datos gitignored no se tocaron. Se copiaron `data/`, `tools/`,
+  `experiments/*.log`, `features/` y `models/`; se verificaron los sha256 de los cinco corpus
+  y de los diez `.vec`; y el control V03 reproduce **0.777211 exacto** desde la nueva
+  ubicacion.
+  **P0**: las diez firmas de v5 son distintas y las nueve propuestas de v5.1 no colisionan
+  con ninguna, asi que las nueve son Units de entrenamiento nuevas. Presupuesto abierto
+  0/9 + 0/1. Dos hallazgos de contabilidad: (1) el `raw_sha256` del manifiesto **no**
+  identifica la escala (5M, 10M y 50M de Wikipedia comparten dump), asi que la identidad
+  pasa a usar el sha256 del corpus procesado; (2) P5 no guardaba `minn`/`maxn` por modelo, por
+  lo que la firma de sus tres modelos se declara en el inventario y se verifica contra el
+  artefacto, en lugar de deducirse. Reglas de la seccion 36 limpias, holdout 5/5 intacto.
+  **D-035**. P0 no entreno nada:, 0 submissions, 0 sondas de LB.

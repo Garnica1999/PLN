@@ -594,7 +594,11 @@
         "Solo una parte del dump (paginas 1-159400): el orden del dump se respeta, por lo que la muestra se concentra en articulos antiguos.",
         "El corpus no contiene registro web informal; esa limitacion se mide en la cobertura por grupo (coloquial, hashtags, elongation).",
         "Wikipedia es texto enciclopedico: no es representativo de tweets."
-      ]
+      ],
+      "processed_sha256": "00b839da6fbc377ee5375acc9a236e831e46ecf92cc544188b81aef1a826e871",
+      "processed_ruta": "data/external/corpora/wikipedia_es/emb_normal/tokens_10M.txt",
+      "processed_bytes": 63152231,
+      "corpus_version": "v5.0-EMB-NORMAL"
     },
     {
       "id": "E-CORP-06",
@@ -655,7 +659,11 @@
       "limitaciones": [
         "Es un **tramo** del shard 0 (13,9 % de 303 MB), no el shard completo: C4 no reordena dentro del shard, por lo que el tema de los primeros documentos puede sesgar la muestra. Se mitiga con la limpieza de boilerplate y con la medicion de cobertura, que es el criterio de decision.",
         "El contenido de Common Crawl incluye paginas comerciales y de spam; la cobertura sube, pero la calidad semantica del corpus no esta garantizada."
-      ]
+      ],
+      "processed_sha256": "361498bf3eca104d527759de68980ea358002aeeb27e57d0de8562fac79b4f97",
+      "processed_ruta": "data/external/corpora/mc4_es/emb_normal/tokens_10M.txt",
+      "processed_bytes": 62000589,
+      "corpus_version": "v5.0-EMB-NORMAL"
     },
     {
       "id": "E-CORP-08",
@@ -759,7 +767,11 @@
         "tokens_10M": 10002400,
         "tokens_50M": 50000000,
         "los_10M_incluidos_son_identicos": true
-      }
+      },
+      "processed_sha256": "8088bce2a9283fbc835ab62efe3fb25f40af346f9a8003fe3d101619bbc32463",
+      "processed_ruta": "data/external/corpora/wikipedia_es_50M/emb_normal/tokens_50M.txt",
+      "processed_bytes": 310983187,
+      "corpus_version": "v5.0-EMB-NORMAL"
     },
     {
       "id": "E-CORP-09",
@@ -835,7 +847,11 @@
       "verificacion_prefijo": {
         "tokens_5M": 5011404,
         "es_prefijo_exacto_de_10M": true
-      }
+      },
+      "processed_sha256": "62aaa19af45c31f8fe9e48340cac91ab74ba0a6d19b45a1ef6b853a80b310b59",
+      "processed_ruta": "data/external/corpora/wikipedia_es_5M/emb_normal/tokens_5M.txt",
+      "processed_bytes": 31485618,
+      "corpus_version": "v5.0-EMB-NORMAL"
     }
   ],
   "reglas": [
@@ -859,7 +875,11 @@
     ],
     "token_count": 20000045,
     "ruta": "data/external/corpora/mixto/emb_normal/tokens_20M.txt",
-    "nota": "Union de los dos corpora a efectos de vocabulario; el archivo se construye concatenando los shards en el orden indicado."
+    "nota": "Union de los dos corpora a efectos de vocabulario; el archivo se construye concatenando los shards en el orden indicado.",
+    "processed_sha256": "1c562286dabe9dc4534c2acd4a313bcfa61329dfe73e5d30d35b8bf4c36d63c7",
+    "processed_ruta": "data/external/corpora/mixto/emb_normal/tokens_20M.txt",
+    "processed_bytes": 125137300,
+    "corpus_version": "v5.0-EMB-NORMAL"
   },
   "racionales_de_expansion": [
     {
