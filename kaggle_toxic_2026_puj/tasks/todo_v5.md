@@ -116,6 +116,21 @@ crece** (+0.0046 -> +0.0031). Queda confirmado que el techo no es la
 representacion: es el tamaño de los datos etiquetados y el bloque disperso de
 V03.
 
+## P9-P10 - Tramo inferior de la curva (5M, ejecutado a peticion del usuario)
+
+- [x] `REDUCCION_A_5M` registrada en el manifiesto (la §30 aplica a expansiones, no a
+      reducciones: se deja constancia del motivo)
+- [x] `E-CORP-09`: corpus de 5M tokens, **prefijo exacto** de los 10M verificado
+- [x] `EBD-15`: FastText 200d sobre 5M (43 s) y fusion contra V03
+- [x] `EBD-16`: control Word2Vec sobre 5M y forma de la ventaja de las subpalabras
+- [x] Decision registrada en **D-034**, que **corrige** una sobreafirmacion de D-033
+- [x] Curva completa en un informe: `reports/embedding_curve_5M_v5.md`
+
+**Resultado**: a 5M la fusion deja de aportar (delta -0.0015): **10M es el suelo
+operativo**. La curva del embedding aislado es plana en 5M-50M (0.653-0.669, dentro
+del ruido) y la ventaja de las subpalabras tiene forma de joroba con maximo en 10M,
+no monotona.
+
 ## Fuera de alcance (cerrado en D-030, D-031 y D-032)
 
 - Corpus etiquetado externo, hate speech externo, labels externas, pseudo-labeling

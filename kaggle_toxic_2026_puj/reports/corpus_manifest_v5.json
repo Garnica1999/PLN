@@ -760,6 +760,82 @@
         "tokens_50M": 50000000,
         "los_10M_incluidos_son_identicos": true
       }
+    },
+    {
+      "id": "E-CORP-09",
+      "source": "wikipedia_es",
+      "url": "https://dumps.wikimedia.org/eswiki/latest/eswiki-latest-pages-articles-multistream1.xml-p1p159400.bz2",
+      "resource": "mismo tramo del dump que E-CORP-01; sin descarga adicional",
+      "version": "eswiki latest (dump del 2026-09-25)",
+      "license": "CC BY-SA 4.0 y texto de MediaWiki bajo CC BY-SA/GFDL",
+      "download_date": "2026-09-25",
+      "raw_sha256": "3248f107590e6a00e458fdce09616bb22726d78fe3f40106f5a1a7b05d50dabc",
+      "token_count": 5011404,
+      "document_count": 1694,
+      "vocabulary_size": 173942,
+      "shards": [
+        "data/external/corpora/wikipedia_es_5M/emb_normal/tokens_shard_00.txt"
+      ],
+      "preprocessing": {
+        "version": "v5.0-EMB-NORMAL",
+        "nota": "pipeline identico al de E-CORP-01 y E-CORP-08, importado sin reimplementar"
+      },
+      "pipeline": {
+        "articulos_leidos": 1699,
+        "duplicados_descartados": 0,
+        "documentos_cortos_descartados": 5
+      },
+      "cobertura_toxic": {
+        "n_types": 8555,
+        "type_coverage": 0.6302,
+        "token_coverage": 0.8646,
+        "n_word_oov": 3164,
+        "por_grupo": {
+          "elongaciones": {
+            "n_types": 113,
+            "n_tokens": 127,
+            "type_coverage": 0.0177,
+            "token_coverage": 0.0236,
+            "oov_rate": 0.9823,
+            "frecuencia_media_corpus": 2.5
+          },
+          "coloquial": {
+            "n_types": 56,
+            "n_tokens": 461,
+            "type_coverage": 0.2143,
+            "token_coverage": 0.692,
+            "oov_rate": 0.7857,
+            "frecuencia_media_corpus": 275.4
+          },
+          "insultos": {
+            "n_types": 72,
+            "n_tokens": 2402,
+            "type_coverage": 0.1667,
+            "token_coverage": 0.7544,
+            "oov_rate": 0.8333,
+            "frecuencia_media_corpus": 4.0
+          },
+          "formas_raras": {
+            "n_types": 6518,
+            "n_tokens": 7618,
+            "type_coverage": 0.5786,
+            "token_coverage": 0.5975,
+            "oov_rate": 0.4214,
+            "frecuencia_media_corpus": 99.1
+          }
+        }
+      },
+      "reduccion": {
+        "id": "REDUCCION_A_5M",
+        "fecha": "2026-09-25",
+        "motivo": "Completar la curva de aprendizaje de la seccion 10 por debajo del punto de partida de 10M, a peticion del usuario, para comprobar si la curva es monotona y si existe un suelo de calidad de la representacion por debajo de 10M tokens.",
+        "gobernanza": "La seccion 30 exige RATIONALE_FOR_CORPUS_EXPANSION para expandir. Una reduccion no es una expansion, de modo que no le aplica; se registra el motivo. Ademas la reduccion es un subconjunto exacto de un corpus ya construido: no hay descarga adicional, ni coste irreversible, ni riesgo de perder un corpus existente.",
+        "coste": "Construccion ~10 s; entrenamiento ~1 min por modelo con 5 epocas."
+      },
+      "verificacion_prefijo": {
+        "tokens_5M": 5011404,
+        "es_prefijo_exacto_de_10M": true
+      }
     }
   ],
   "reglas": [
@@ -809,6 +885,15 @@
       "lo_que_no_se_afirma": "No se afirma que 50M tokens mejoren la aportacion complementaria. D-032 predice que no, y este experimento se lanza precisamente para medir esa prediccion en vez de suponerla.",
       "coste": "Construccion ~1 min; entrenamiento 5 epocas x 50M tokens a 641.584 palabras/s = ~6,5 min por modelo. Descarga adicional: 0 bytes.",
       "criterio_de_parada": "Si la aportacion complementaria no crece (IC95 tocando el 0) y el embedding aislado mejora solo marginalmente, no se escala a 100M: la conclusion de D-032 se confirma en la dimension de tamano y la fase se cierra."
+    }
+  ],
+  "reducciones_de_corpus": [
+    {
+      "id": "REDUCCION_A_5M",
+      "fecha": "2026-09-25",
+      "motivo": "Completar la curva de aprendizaje de la seccion 10 por debajo del punto de partida de 10M, a peticion del usuario, para comprobar si la curva es monotona y si existe un suelo de calidad de la representacion por debajo de 10M tokens.",
+      "gobernanza": "La seccion 30 exige RATIONALE_FOR_CORPUS_EXPANSION para expandir. Una reduccion no es una expansion, de modo que no le aplica; se registra el motivo. Ademas la reduccion es un subconjunto exacto de un corpus ya construido: no hay descarga adicional, ni coste irreversible, ni riesgo de perder un corpus existente.",
+      "coste": "Construccion ~10 s; entrenamiento ~1 min por modelo con 5 epocas."
     }
   ]
 }

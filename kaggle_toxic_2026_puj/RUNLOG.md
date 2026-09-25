@@ -688,3 +688,16 @@ Registro cronologico de ejecuciones. Formato:
   Las subpalabras aportan +0.0030 a 50M frente a +0.0138 a 10M. **D-033**: no se
   escala a 100M ni 500M; el techo no es la representacion sino el tamaño de los
   datos etiquetados y el bloque disperso de V03. **0 submissions, 0 sondas de LB.**
+- 21:20 | v5 P9-P10 tramo inferior de la curva (5M) | `experiments/embedding_09_corpus_5M_v5.py`
+  (E-CORP-09) y `experiments/embedding_10_fasttext_5M_v5.py` (EBD-15/16), a peticion del
+  usuario. `REDUCCION_A_5M` registrada: la §30 aplica a expansiones, no a reducciones.
+  Corpus de 5.011.404 tokens verificado como **prefijo exacto** de los 10M, sin descarga
+  adicional. FastText 200d entrenado en 43 s (vocabulario 64.839) y control Word2Vec en
+  29 s. **Resultado**: `FUSION-WIKI-5M` **0.7757** (delta **-0.0015**, IC95
+  [-0.0091, +0.0060]), es decir a 5M la fusion deja de aportar y cae por debajo de V03;
+  `EMB-WIKI-5M` 0.6670. La curva del embedding aislado (0.6670 / 0.6530 / 0.6687) es plana:
+  los IC95 de 5M y 10M se solapan casi por completo, de modo que la no monotonia del punto
+  de 10M no es distinguible del ruido. **D-034** registra el suelo operativo de 10M y
+  **corrige** la sobreafirmacion de D-033: la ventaja de las subpalabras (+0.0060 / +0.0138
+  / +0.0030) tiene forma de joroba con maximo en 10M, no es monotone. **0 submissions,
+  0 sondas de LB.**

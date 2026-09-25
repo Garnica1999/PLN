@@ -1,7 +1,7 @@
 {
   "experimento": "AUDITORIA-V5",
-  "fecha": "2026-09-25T23:15:45+00:00",
-  "duracion_s": 1.12,
+  "fecha": "2026-09-25T23:21:58+00:00",
+  "duracion_s": 1.48,
   "recursos": {
     "scripts": [
       "embedding_00_scaffold_v5.py",
@@ -11,7 +11,9 @@
       "embedding_04_corpus_mc4_v5.py",
       "embedding_05_fasttext_web_v5.py",
       "embedding_07_corpus_50M_v5.py",
-      "embedding_08_fasttext_50M_v5.py"
+      "embedding_08_fasttext_50M_v5.py",
+      "embedding_09_corpus_5M_v5.py",
+      "embedding_10_fasttext_5M_v5.py"
     ],
     "hallazgos": [],
     "ok": true
@@ -76,6 +78,22 @@
       },
       {
         "script": "embedding_08_fasttext_50M_v5.py",
+        "lee_test": false,
+        "lee_labels_toxic": true,
+        "construye_corpus": false,
+        "uso_declarado": "sin uso de TOXIC",
+        "justificacion": "Un script que construye corpus no puede usar TOXIC para escribir en el corpus; su lectura debe limitarse al diagnostico de cobertura."
+      },
+      {
+        "script": "embedding_09_corpus_5M_v5.py",
+        "lee_test": true,
+        "lee_labels_toxic": false,
+        "construye_corpus": true,
+        "uso_declarado": "sin uso de TOXIC",
+        "justificacion": "Un script que construye corpus no puede usar TOXIC para escribir en el corpus; su lectura debe limitarse al diagnostico de cobertura."
+      },
+      {
+        "script": "embedding_10_fasttext_5M_v5.py",
         "lee_test": false,
         "lee_labels_toxic": true,
         "construye_corpus": false,
@@ -158,6 +176,12 @@
         "coincide": true,
         "bytes": 434027140
       },
+      "fasttext_wiki_5m.vec": {
+        "sha256_real": "b7108b6877f8a6c85c6fc615f6e788b421feec55514d1fd9741d603f3048955e",
+        "sha256_registrado": "b7108b6877f8a6c85c6fc615f6e788b421feec55514d1fd9741d603f3048955e",
+        "coincide": true,
+        "bytes": 113968459
+      },
       "word2vec_control.vec": {
         "sha256_real": "52f94d37e18cef7288c4a42719f327b2f1c0310aea9b7cb61a5e3005ed748d1e",
         "sha256_registrado": "52f94d37e18cef7288c4a42719f327b2f1c0310aea9b7cb61a5e3005ed748d1e",
@@ -175,6 +199,12 @@
         "sha256_registrado": "53314bccc6c89369a83a08d6ee1cb7e5d8eb3976388c55b720aca4a788f73979",
         "coincide": true,
         "bytes": 437957369
+      },
+      "word2vec_wiki_5m.vec": {
+        "sha256_real": "4323c9fa94d12444ebfde87875a5e1db1f8cba1bafa1d7dfbcf0ce155fdfa84d",
+        "sha256_registrado": "4323c9fa94d12444ebfde87875a5e1db1f8cba1bafa1d7dfbcf0ce155fdfa84d",
+        "coincide": true,
+        "bytes": 115195128
       }
     },
     "ok": true
@@ -250,14 +280,18 @@
       "embedding_05_fasttext_web_v5.py",
       "embedding_06_auditoria_v5.py",
       "embedding_07_corpus_50M_v5.py",
-      "embedding_08_fasttext_50M_v5.py"
+      "embedding_08_fasttext_50M_v5.py",
+      "embedding_09_corpus_5M_v5.py",
+      "embedding_10_fasttext_5M_v5.py"
     ],
     "informes": [
       "embedding_compliance.md",
       "embedding_corpus_50M_audit.md",
+      "embedding_corpus_5M_audit.md",
       "embedding_corpus_audit.md",
       "embedding_corpus_web_audit.md",
       "embedding_curve_50M_v5.md",
+      "embedding_curve_5M_v5.md",
       "embedding_fusion_complementarity_v5.md",
       "embedding_intrinsic_eval.md",
       "embedding_phase_closeout_v5.md",
@@ -269,6 +303,8 @@
       "embedding_coverage_registro_v5.csv",
       "embedding_curve_50M_slices_v5.csv",
       "embedding_curve_50M_v5.csv",
+      "embedding_curve_5M_slices_v5.csv",
+      "embedding_curve_5M_v5.csv",
       "embedding_downstream_results.csv",
       "embedding_fusion_v5.csv",
       "embedding_vocabulary_coverage.csv",
@@ -278,9 +314,11 @@
     "json": [
       "embedding_auditoria_v5.json",
       "embedding_corpus_50M_v5.json",
+      "embedding_corpus_5M_v5.json",
       "embedding_corpus_v5.json",
       "embedding_corpus_web_v5.json",
       "embedding_curve_50M_v5.json",
+      "embedding_curve_5M_v5.json",
       "embedding_downstream_v5.json",
       "embedding_fusion_v5.json",
       "embedding_normalizacion_equivalencia.json",
@@ -296,7 +334,8 @@
       "fig_45_cobertura_registro_v5.png",
       "fig_46_fusion_web_v5.png",
       "fig_47_curva_cobertura_v5.png",
-      "fig_48_curva_aprendizaje_v5.png"
+      "fig_48_curva_aprendizaje_v5.png",
+      "fig_49_curva_completa_v5.png"
     ],
     "manifiesto": "data/external/corpora/corpus_manifest.json"
   },

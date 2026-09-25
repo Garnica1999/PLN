@@ -34,6 +34,8 @@ archivada de la autorizacion; se registra solo lo comunicado por el usuario.
 | CIERRE | **D-032**: la palanca de corpus (registro) agotada; fase cerrada **sin adoptar**. Auditoria final **GO** |
 | P8 (curva 10M->50M) | 50M tokens: cobertura por tipo 0.7703, embedding solo **0.6687** (+0.0157), fusion **0.7803** (+0.0031) |
 | D-033 | **No se escala a 100M/500M**: 5x tokens no mueven la aportacion complementaria. El techo no es la representacion |
+| P9-P10 (tramo inferior 5M) | 5M tokens: la fusion **deja de aportar** (delta -0.0015) -> **10M es el suelo operativo**; curva del embedding plano |
+| D-034 | Corrige a D-033: la ventaja de las subpalabras no es monotone (joroba con maximo en 10M) |
 | GATE DE CIERRE | §29: A (+0.005 con estabilidad) / B (complementariedad robusta) / C (senal representacional fuerte) |
 
 ## Fase anterior: v4 «Advanced Research v4» (CERRADA el 2026-09-25)

@@ -1175,3 +1175,48 @@ evidencia, experimento, resultado, conclusion final.
   datos etiquetados. Con 1.731 ejemplos, la mejora esperable de cualquier segunda
   fuente de senal es de milesimas, y el protocolo disponible no tiene evidencia
   externa para distinguirla del ruido.
+
+## D-034 - Tramo inferior de la curva (5M): existe un suelo, y la curva del embedding es plana
+
+- **Contexto**: D-033 midio la curva hacia arriba (10M -> 50M) y concluyo que quintuplicar
+  los tokens no aumenta la aportacion complementaria. Quedaba el tramo inferior de la §10,
+  que se midio a peticion del usuario. Bajar de escala no es una expansion, asi que la §30
+  no le aplica: se registro `REDUCCION_A_5M` en el manifiesto con el motivo y con la nota de
+  que los 5M tokens son un **prefijo exacto** de los 10M (`es_prefijo_exacto_de_10M: True`),
+  sin descarga adicional y sin tocar los corpus existentes.
+- **Curva completa** (arquitectura, semilla, protocolo, umbrales y bootstrap identicos; lo
+  unico que cambia es el corpus):
+
+  | corpus | cobertura por tipo | embedding solo | fusion con V03 | delta |
+  |---|---|---|---|---|
+  | Wikipedia 5M | 0.6302 | 0.6670 | 0.7757 | **-0.0015** |
+  | Wikipedia 10M | 0.6839 | 0.6530 | 0.7818 | +0.0046 |
+  | Wikipedia 50M | 0.7703 | 0.6687 | 0.7803 | +0.0031 |
+  | web mC4-es 10M | 0.8256 | 0.6638 | 0.7812 | +0.0040 |
+  | mixto 20M | 0.8413 | 0.6658 | 0.7776 | +0.0004 |
+
+- **Hallazgo 1 (suelo operativo)**: a 5M la fusion **deja de aportar** y cae por debajo de
+  V03 (delta -0.0015, IC95 [-0.0091, +0.0060]). 10M es el minimo que produce el efecto
+  marginal y, por encima, el efecto **no crece**. Queda un dato accionable: cualquier
+  corpus de menos de ~10M tokens se descarta por principio en esta linea.
+- **Hallazgo 2 (la curva del embedding aislado es plana)**: 0.6670 (5M), 0.6530 (10M),
+  0.6687 (50M). La no monotonia aparente del punto de 10M **no** significa que 10M sea
+  peor: los intervalos de bootstrap de 5M y 10M se solapan casi por completo, asi que la
+  diferencia de 0.014 no es distinguible del ruido. Leido bien, el embedding aislado esta
+  en la misma banda (0.653-0.669) en todo el rango 5M-50M: la representacion no mejora de
+  forma apreciable al multiplicar por diez los datos.
+- **Hallazgo 3 (correccion de D-033)**: D-033 afirmo que la ventaja de las subpalabras "se
+  reduce con la escala". El tramo inferior muestra que **no** es cierto de forma monotona:
+  +0.0060 a 5M, +0.0138 a 10M, +0.0030 a 50M, o sea una joroba con maximo en 10M, y los tres
+  valores dentro del ruido. La caida a 50M sigue siendo coherente con la mecanica de
+  fastText, pero la caida a 5M se explica por lo contrario (faltan ejemplos por palabra).
+  **Se corrige la afirmacion**: la ventaja de las subpalabras es pequena en todo el rango y
+  no depende de forma monotona de la escala.
+- **Estado final**: el embedding sigue siendo `CANDIDATE` no adoptado. Las tres
+  dimensiones explorables del corpus (tamano 5M/10M/50M, registro y composicion) estan
+  medidas y **ninguna** produce una aportacion complementaria por encima de +0.005 con IC95
+  que excluya el 0. V03 se mantiene.
+- **Nota de coste**: los tres puntos de la curva costaron 43 s, 577 s y (esta vez) 43 s de
+  entrenamiento respectivamente, porque el tiempo es lineal en tokens. Un corpus de 500M
+  habria costado del orden de 1,5 h por modelo. El techo autorizado queda sin usar, y la
+  decision no escalate se sostiene por evidencia y no por coste.
