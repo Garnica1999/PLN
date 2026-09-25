@@ -1,6 +1,6 @@
 # Screening de candidatos finales (FASE FINAL)
 
-Fecha: 2026-09-25. Registro: `experiments.csv` con 125 filas (118 previas + 7 filas `FIN-*` de esta fase).
+Fecha: 2026-09-25. Registro: `experiments.csv` con 125 filas (118 previas + 7 filas `FIN-*` de esta fase); el registro actual tiene 128 (se anadieron FIN-08..FIN-10 al generar las submissions).
 
 Objetivo: decidir si alguna linea de la investigacion v2 justifica cambiar
 el modelo final V03 (LB 0.78306) o gastar sondas de leaderboard. Las
