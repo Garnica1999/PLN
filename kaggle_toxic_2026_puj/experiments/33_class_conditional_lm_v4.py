@@ -166,7 +166,7 @@ def ajustar_modelos_de_lenguaje(textos: list[str], y: np.ndarray) -> list[dict[s
 
 
 def verosimilitud(
-    modelos: list[dict[str, Counter]], textos: list[str],_background: Counter
+    modelos: list[dict[str, Counter]], textos: list[str], background: Counter
 ) -> np.ndarray:
     """Calcula la verosimilitud logaritmica media por token para cada clase.
 
@@ -341,7 +341,8 @@ def main() -> None:
     oof_guardado: dict[str, np.ndarray] = {}
 
     # Features de verosimilitud (fold-local) y matrices TF-IDF.
-    features_lm = np.zeros((len(desarrollo), 15))
+    # 3 modelos x (3 verosimilitudes + 3 margenes + 3 perplejidades) = 27 columnas
+    features_lm = np.zeros((len(desarrollo), 27))
     margen_v03 = proba_v03 - 0.5
     entropia_v03 = -(proba_v03 * np.log(np.clip(proba_v03, 1e-9, 1))
                      + (1 - proba_v03) * np.log(np.clip(1 - proba_v03, 1e-9, 1)))
@@ -391,7 +392,7 @@ def main() -> None:
     log("   3/4 late fusion (meta de 9 features de V03 frente a meta + verosimilitud)")
     for nombre, matriz in (
         ("meta_v03_9feat", base_meta),
-        ("meta_v03_lm_24feat", np.column_stack([base_meta, features_lm])),
+        ("meta_v03_lm_36feat", np.column_stack([base_meta, features_lm])),
     ):
         proba_meta = np.zeros((len(desarrollo), len(ETIQUETAS)))
         for indice_fold, (entrenar, validar) in enumerate(pliegues):
@@ -445,7 +446,13 @@ def main() -> None:
                         n_estimators=300, class_weight="balanced", random_state=SEMILLA, n_jobs=8
                     )
                 modelo.fit(reducido_entrenar, y_dev[entrenar, posicion])
-                proba[validar, posicion] = modelo.predict_proba(reducido_validar)[:, 1]
+                if hasattr(modelo, "predict_proba"):
+                    proba[validar, posicion] = modelo.predict_proba(reducido_validar)[:, 1]
+                else:
+                    # SVC con kernel RBF solo expone decision_function; se aplica
+                    # la sigmoidal en lugar de `probability=True` (5 CV internas).
+                    decision = modelo.decision_function(reducido_validar)
+                    proba[validar, posicion] = 1.0 / (1.0 + np.exp(-decision))
         clave = f"svd:{nombre}"
         oof_guardado[clave] = proba
         resultados.append(evaluar(clave, proba, y_dev, pliegues, pred_ref))
@@ -457,7 +464,7 @@ def main() -> None:
 
     mejor = tabla.iloc[0]
     aporte_lm = float(
-        tabla.loc[tabla["variante"] == "meta_v03_lm_24feat", "corrected_cv_umbrales_v03"].iloc[0]
+        tabla.loc[tabla["variante"] == "meta_v03_lm_36feat", "corrected_cv_umbrales_v03"].iloc[0]
         - tabla.loc[tabla["variante"] == "meta_v03_9feat", "corrected_cv_umbrales_v03"].iloc[0]
     )
     cumple = bool(

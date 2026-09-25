@@ -321,7 +321,7 @@ def main() -> None:
         "textos_unicos": ~en_cluster_dev,
         "en_cluster_near_duplicado": en_cluster_dev,
     }
-   robustez = {}
+    robustez = {}
     for nombre, mascara in subconjuntos.items():
         if mascara.sum() == 0:
             continue
@@ -348,22 +348,22 @@ def main() -> None:
     delta_vecino, ic_bajo, ic_alto = bootstrap_pareado(
         y_dev, pred_dev, pred_dev.copy()
     )  # estructura comun; el delta se calcula sobre las mascaras
-   Global = error.mean(axis=1)
+    global_error = error.mean(axis=1)
     generador2 = np.random.default_rng(SEMILLA)
     deltas = np.empty(N_BOOTSTRAP)
     for indice in range(N_BOOTSTRAP):
         indices = generador2.integers(0, len(y_dev), len(y_dev))
         dentro = alta[indices]
         if dentro.any() and (~dentro).any():
-            deltas[indice] = Global[indices][dentro].mean() - Global[indices][~dentro].mean()
+            deltas[indice] = global_error[indices][dentro].mean() - global_error[indices][~dentro].mean()
         else:
             deltas[indice] = np.nan
     percentiles = np.percentile(deltas[~np.isnan(deltas)], [2.5, 97.5])
     vecindad_resumen = {
         "n_vecindario_discrepante": int(alta.sum()),
-        "error_medio_dentro": round(float(Global[alta].mean()), 4) if alta.any() else None,
-        "error_medio_fuera": round(float(Global[~alta].mean()), 4),
-        "delta": round(float(Global[alta].mean() - Global[~alta].mean()), 4)
+        "error_medio_dentro": round(float(global_error[alta].mean()), 4) if alta.any() else None,
+        "error_medio_fuera": round(float(global_error[~alta].mean()), 4),
+        "delta": round(float(global_error[alta].mean() - global_error[~alta].mean()), 4)
         if alta.any()
         else None,
         "ic95": [round(float(percentiles[0]), 4), round(float(percentiles[1]), 4)],
@@ -431,9 +431,7 @@ def main() -> None:
 
         nombres = list(mejores["model"])
         matriz = np.column_stack(
-            [
-                np.column_stack([pred_dev[:, j] for j in range(3)] + [canales[n] for n in nombres])
-            ]
+            [pred_dev[:, j] for j in range(3)] + [canales[n] for n in nombres]
         )
         proba_fusion = np.zeros((len(y_dev), 3))
         for entrada, validacion in _pliegues_desarrollo(y_dev):
@@ -513,10 +511,15 @@ def _cargar_canales_oof(y_dev: np.ndarray, ids_dev: np.ndarray) -> dict[str, np.
         datos = np.load(ruta, allow_pickle=True)
         if "ids" in datos.files and not np.array_equal(datos["ids"].astype(np.int64), ids_dev):
             continue
-        proba = datos[clave]
-        if indice is not None and proba.ndim == 3:
+        proba = datos[clave].astype(float)
+        n_ejemplos = int(len(ids_dev))
+        if proba.ndim == 3 and proba.shape[0] == n_ejemplos and proba.shape[1] != n_ejemplos:
+            # Disposicion (n_ejemplos, n_variantes, 3): se pasa a
+            # (n_variantes, n_ejemplos, 3) para poder elegir una variante.
+            proba = np.moveaxis(proba, 1, 0)
+        if proba.ndim == 3 and indice is not None:
             proba = proba[indice]
-        canales[archivo.replace(".npz", "")] = proba.astype(float)
+        canales[archivo.replace(".npz", "")] = proba
     return canales
 
 
