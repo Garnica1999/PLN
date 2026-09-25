@@ -672,3 +672,19 @@ Registro cronologico de ejecuciones. Formato:
   de V03 verificada, los 6 hashes `.vec` coinciden con los informes y las 7 cifras
   afirmadas en D-032 se releen de los informes. Informe de cierre en
   `reports/embedding_phase_closeout_v5.md`. **0 submissions, 0 sondas de LB.**
+- 20:40 | v5 P8 curva 10M -> 50M | `experiments/embedding_07_corpus_50M_v5.py` (E-CORP-08) y
+  `experiments/embedding_08_fasttext_50M_v5.py` (EBD-13/14), a peticion del usuario.
+  `RATIONALE_FOR_CORPUS_EXPANSION-50M` registrado antes de construir, con las
+  condiciones 1, 2 y 3 de la §30 y el criterio de parada declarado. El corpus de
+  50M se construyo **sin descarga adicional** (misma parte 1 del dump) y con el
+  pipeline de P1 **importado**, de modo que los 10M anteriores estan contenido
+  identicamente (verificado). 50.000.000 tokens, 21.529 documentos, 646.957 tipos;
+  cobertura por tipo 0.6839 -> **0.7703** y por token 0.8833 -> **0.9238**;
+  375.748 tipos nuevos (739 relevantes para TOXIC). FastText 200d entrenado en
+  577 s (vocab 247.863) y el control Word2Vec en 454 s. **Resultado**:
+  `FUSION-WIKI-50M` **0.7803** (delta +0.0031, IC95 [-0.0049, +0.0112]) frente a
+  0.7818 con 10M, y `EMB-WIKI-50M` **0.6687** frente a 0.6530 (+0.0157). Es decir,
+  5x tokens **mejoran la representacion** y **no** la aportacion complementaria.
+  Las subpalabras aportan +0.0030 a 50M frente a +0.0138 a 10M. **D-033**: no se
+  escala a 100M ni 500M; el techo no es la representacion sino el tamaño de los
+  datos etiquetados y el bloque disperso de V03. **0 submissions, 0 sondas de LB.**

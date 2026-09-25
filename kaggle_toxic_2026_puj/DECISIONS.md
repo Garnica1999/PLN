@@ -1126,3 +1126,52 @@ evidencia, experimento, resultado, conclusion final.
   cobertura fue correcto; suponer que su mejora se traduria en mejora downstream
   fue el error, y lo detecto un experimento de control (comparar el embedding solo
   frente a su fusion) en lugar de la metrica.
+
+## D-033 - Curva 10M -> 50M: el techo no es la representacion
+
+- **Contexto**: D-032 cerro la fase con la palanca de **registro** agotada. Quedaba
+  por medir la otra dimension de la §31, el **tamano** del corpus con arquitectura
+  fija (seccion 10 de la spec). El usuario lo solicito explicitamente, con lo que
+  esta decision no cambia el criterio de adopcion: mide una prediccion declarada.
+- **Razon de la expansion** (`RATIONALE_FOR_CORPUS_EXPANSION-50M`, registrada en
+  `corpus_manifest.json` antes de construir): condiciones 1, 2 y 3 de la §30, **sin
+  descarga adicional** (la parte 1 del dump, ya bajada en P1, contiene el material)
+  y con el pipeline de P1 **importado**, de modo que los 10M anteriores estan
+  contenido **identicamente** en los 50M (verificado: `True`). Costes: construccion
+  76 s, entrenamiento 577 s por modelo.
+- **Lo que se midio** (arquitectura, semilla, protocolo, umbrales y bootstrap
+  identicos; lo unico que cambia es el corpus):
+
+  | corpus | cobertura por tipo | embedding solo | fusion con V03 | delta |
+  |---|---|---|---|---|
+  | Wikipedia 10M | 0.6839 | 0.6530 | 0.7818 | +0.0046 |
+  | Wikipedia 50M | 0.7703 | **0.6687** | 0.7803 | +0.0031 |
+  | web mC4-es 10M | 0.8256 | 0.6638 | 0.7812 | +0.0040 |
+  | mixto 20M | 0.8413 | 0.6658 | 0.7776 | +0.0004 |
+
+- **Conclusion 1 (H-50M refutada)**: quintuplicar los tokens **no** aumenta la
+  aportacion complementaria; la fusion baja 0.0015. Sumado a D-032, las dos
+  dimensiones del corpus quedan medidas y ninguna mueve el resultado.
+- **Conclusion 2 (H-contra confirmada)**: el embedding **aislado** si mejora de
+  forma clara (+0.0157) y la cobertura sube (+0.0864 por tipo). La representacion
+  es genuinamente mejor con 5x datos; simplemente **no translates** en
+  complementariedad. Por tanto el techo **no es la calidad de la representacion**.
+- **Conclusion 3 (diagnostico del limite)**: el limite es estructural. Con 1.483
+  ejemplos de entrenamiento y un bloque de 27.431 char n-grams, un vector denso de
+  200 numeros no tiene espacio para aportar: mejora de 0.003 a 0.005 sobre V03 con
+  cualquier corpus, y el IC95 toca el 0 siempre. Un corpus de 500M tokens, mas
+  representacion o mejor registro solo se moverian dentro de ese margen.
+- **Conclusion 4 (subpalabras)**: su ventaja **se reduce** con la escala (+0.0138 a
+  10M, +0.0030 a 50M), de forma coherente con la mecanica de fastText: a mas
+  tokens, mas palabras tienen evidencia propia en el vocabulario y hay menos que
+  reconstruir con subpalabras.
+- **Decision**: **no se escala a 100M ni a 500M**. Se cumple el criterio de parada
+  declarado en la justificacion de la expansion. La fusion sigue siendo
+  `CANDIDATE` no adoptado (mejor resultado de toda la fase: +0.0046 a 10M de
+  Wikipedia, IC95 que toca el 0). **V03 se mantiene.**
+- **Lo que esta decision deja escrito para el futuro**: si algun dia se quisiera
+  volver a intentar esta linea, la variable que queda por explorar **no es el
+  corpus ni la representacion**, sino el techo del clasificador y el tamaño de los
+  datos etiquetados. Con 1.731 ejemplos, la mejora esperable de cualquier segunda
+  fuente de senal es de milesimas, y el protocolo disponible no tiene evidencia
+  externa para distinguirla del ruido.

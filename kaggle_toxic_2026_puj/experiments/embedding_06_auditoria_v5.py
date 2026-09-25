@@ -322,6 +322,23 @@ def verificar_referencia() -> dict[str, Any]:
     return resultado
 
 
+def informes_de_modelos() -> list[dict[str, Any]]:
+    """Carga todos los informes de la fase que registren modelos entrenados.
+
+    Returns:
+        Lista de diccionarios con la clave ``modelos``.
+    """
+    informes = []
+    for ruta in sorted((PROJECT_ROOT / "reports").glob("embedding_*.json")):
+        try:
+            datos = json.loads(ruta.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            continue
+        if isinstance(datos, dict) and isinstance(datos.get("modelos"), dict):
+            informes.append(datos)
+    return informes
+
+
 def verificar_hashes() -> dict[str, Any]:
     """Comprueba que los hashes de los modelos coinciden con los informes.
 
@@ -329,18 +346,19 @@ def verificar_hashes() -> dict[str, Any]:
         Diccionario con la comparacion por modelo.
     """
     log("3/6 reproducibilidad: hashes de los modelos")
-    informe = json.loads((PROJECT_ROOT / "reports" / "embedding_web_v5.json").read_text(encoding="utf-8"))
-    informe_p2 = json.loads(
-        (PROJECT_ROOT / "reports" / "embedding_downstream_v5.json").read_text(encoding="utf-8")
-    )
+    # Se recorren **todos** los informes de la fase que registren modelos, para
+    # que la verificacion de huellas cubra tambien los anadidos despues (50M).
     comparacion: dict[str, Any] = {}
     directorio = PROJECT_ROOT / "data" / "external" / "embeddings"
     for ruta in sorted(directorio.glob("*.vec")):
         hash_real = sha256_de(ruta)
         registrado = None
-        for nombre, datos in {**informe_p2["modelos"], **informe["modelos"]}.items():
-            if datos["embedding_hash_sha256"].startswith(hash_real[:16]):
-                registrado = datos["embedding_hash_sha256"]
+        for informe in informes_de_modelos():
+            datos = informe.get("modelos", {})
+            for nombre, ficha in datos.items():
+                hash_registrado = ficha.get("embedding_hash_sha256") or ficha.get("sha256")
+                if hash_registrado and hash_registrado.startswith(hash_real[:16]):
+                    registrado = hash_registrado
         comparacion[ruta.name] = {
             "sha256_real": hash_real,
             "sha256_registrado": registrado,

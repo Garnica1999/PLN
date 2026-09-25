@@ -99,6 +99,23 @@ cierra **sin adoptar** el candidato (D-032).
 - [x] Informe de cierre de la fase: `reports/embedding_phase_closeout_v5.md`
 - [ ] Seccion de la fase v5 en `FINAL_REPORT.md`: pendiente (se redacta al abrir el PR)
 
+## P8 - Curva 10M -> 50M (ejecutada a peticion del usuario)
+
+- [x] `RATIONALE_FOR_CORPUS_EXPANSION-50M` registrado antes de construir
+- [x] `E-CORP-08`: corpus de 50M tokens, **sin descarga adicional**, con el
+      pipeline de P1 importado y verificacion de que los 10M anteriores estan
+      contenido identicamente
+- [x] `EBD-13`: FastText 200d sobre 50M (577 s) y fusion contra V03
+- [x] `EBD-14`: control Word2Vec sobre 50M (454 s) y efecto de las subpalabras
+- [x] Curva completa 10M / 50M / web / mixto en un unico informe
+- [x] Decision registrada en **D-033**: no se escala a 100M ni 500M
+
+**Resultado**: 5x tokens suben la cobertura por tipo de 0.6839 a 0.7703 y el
+embedding **aislado** mejora +0.0157, pero la **aportacion complementaria no
+crece** (+0.0046 -> +0.0031). Queda confirmado que el techo no es la
+representacion: es el tamaño de los datos etiquetados y el bloque disperso de
+V03.
+
 ## Fuera de alcance (cerrado en D-030, D-031 y D-032)
 
 - Corpus etiquetado externo, hate speech externo, labels externas, pseudo-labeling
@@ -106,8 +123,8 @@ cierra **sin adoptar** el candidato (D-032).
 - Corpus etiquetado de HuggingFace con licence no revisada; OSCAR sigue gated.
 - GloVe salvo senal que lo justifique (spec 19); gensim (no hay wheel para 3.14);
   transformers y cualquier embedding preentrenado.
-- Escalar el corpus mas alla de 20M tokens: ninguna expansion cumple la §30
-  (D-031 y D-032).
+- Escalar el corpus mas alla de 50M tokens: ninguna expansion cumple la §30
+  (D-031, D-032 y D-033).
 - Apilamiento (stacking) de probabilidades: cerrado tras cinco intentos
   fallidos en el proyecto.
 - Uso del holdout (agotado 5/5), uso del test para entrenar o seleccionar,

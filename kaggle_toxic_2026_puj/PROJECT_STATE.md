@@ -1,6 +1,6 @@
 # PROJECT_STATE - KAGGLE_TOXIC_2026_PUJ
 
-Ultima actualizacion: 2026-09-25 (fase **v5** CERRADA; auditoria final GO).
+Ultima actualizacion: 2026-09-25 (fase **v5** CERRADA; curva 10M->50M ejecutada, D-033).
 
 ## Fase actual: v5 «Embedding from Scratch» (CERRADA el 2026-09-25)
 
@@ -31,7 +31,9 @@ archivada de la autorizacion; se registra solo lo comunicado por el usuario.
 | P2 | cerrado: embedding solo 0.6603 (-0.1169 vs V03, IC95 negativo); subpalabras +0.0138; suelo aleatorio 0.5404 |
 | P3 (complementariedad) | cerrado: `FUSION-HSTACK-L2` **0.7818** (+0.0046, IC95 [-0.0032, +0.0124]) = **CANDIDATE**; meta anidado 0.7678 (cerrado) |
 | P4-P5 (corpus web) | mC4-es 10M + mixto 20M: cobertura por tipo 0.6839 -> **0.8413**; la fusion NO mejora (+0.0040 web, +0.0004 mixto) |
-| CIERRE | **D-032**: la palanca de corpus queda agotada; la fase se cierra **sin adoptar** el candidato. Auditoria final **GO** |
+| CIERRE | **D-032**: la palanca de corpus (registro) agotada; fase cerrada **sin adoptar**. Auditoria final **GO** |
+| P8 (curva 10M->50M) | 50M tokens: cobertura por tipo 0.7703, embedding solo **0.6687** (+0.0157), fusion **0.7803** (+0.0031) |
+| D-033 | **No se escala a 100M/500M**: 5x tokens no mueven la aportacion complementaria. El techo no es la representacion |
 | GATE DE CIERRE | §29: A (+0.005 con estabilidad) / B (complementariedad robusta) / C (senal representacional fuerte) |
 
 ## Fase anterior: v4 «Advanced Research v4» (CERRADA el 2026-09-25)

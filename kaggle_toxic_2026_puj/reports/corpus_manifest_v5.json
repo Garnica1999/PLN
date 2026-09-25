@@ -656,6 +656,110 @@
         "Es un **tramo** del shard 0 (13,9 % de 303 MB), no el shard completo: C4 no reordena dentro del shard, por lo que el tema de los primeros documentos puede sesgar la muestra. Se mitiga con la limpieza de boilerplate y con la medicion de cobertura, que es el criterio de decision.",
         "El contenido de Common Crawl incluye paginas comerciales y de spam; la cobertura sube, pero la calidad semantica del corpus no esta garantizada."
       ]
+    },
+    {
+      "id": "E-CORP-08",
+      "source": "wikipedia_es",
+      "url": "https://dumps.wikimedia.org/eswiki/latest/eswiki-latest-pages-articles-multistream1.xml-p1p159400.bz2",
+      "resource": "misma parte 1 del dump que E-CORP-01; sin descarga adicional",
+      "version": "eswiki latest (dump del 2026-09-25)",
+      "license": "CC BY-SA 4.0 (atribucion obligatoria) y texto de MediaWiki bajo CC BY-SA/GFDL",
+      "download_date": "2026-09-25",
+      "raw_sha256": "3248f107590e6a00e458fdce09616bb22726d78fe3f40106f5a1a7b05d50dabc",
+      "token_count": 50000028,
+      "document_count": 21529,
+      "vocabulary_size": 646957,
+      "shards": [
+        "data/external/corpora/wikipedia_es_50M/emb_normal/tokens_shard_00.txt",
+        "data/external/corpora/wikipedia_es_50M/emb_normal/tokens_shard_01.txt",
+        "data/external/corpora/wikipedia_es_50M/emb_normal/tokens_shard_02.txt",
+        "data/external/corpora/wikipedia_es_50M/emb_normal/tokens_shard_03.txt",
+        "data/external/corpora/wikipedia_es_50M/emb_normal/tokens_shard_04.txt",
+        "data/external/corpora/wikipedia_es_50M/emb_normal/tokens_shard_05.txt",
+        "data/external/corpora/wikipedia_es_50M/emb_normal/tokens_shard_06.txt",
+        "data/external/corpora/wikipedia_es_50M/emb_normal/tokens_shard_07.txt",
+        "data/external/corpora/wikipedia_es_50M/emb_normal/tokens_shard_08.txt",
+        "data/external/corpora/wikipedia_es_50M/emb_normal/tokens_shard_09.txt"
+      ],
+      "preprocessing": {
+        "version": "v5.0-EMB-NORMAL",
+        "nota": "pipeline identico al de E-CORP-01, reutilizado por importacion"
+      },
+      "pipeline": {
+        "articulos_leidos": 21561,
+        "duplicados_descartados": 0,
+        "documentos_cortos_descartados": 32
+      },
+      "cobertura_toxic": {
+        "n_types": 8555,
+        "type_coverage": 0.7703,
+        "token_coverage": 0.9238,
+        "oov_rate_types": 0.2297,
+        "n_word_oov": 1965,
+        "por_grupo": {
+          "elongaciones": {
+            "n_types": 113,
+            "n_tokens": 127,
+            "type_coverage": 0.1062,
+            "token_coverage": 0.1417,
+            "oov_rate": 0.8938,
+            "frecuencia_media_corpus": 3.7
+          },
+          "coloquial": {
+            "n_types": 56,
+            "n_tokens": 461,
+            "type_coverage": 0.25,
+            "token_coverage": 0.7223,
+            "oov_rate": 0.75,
+            "frecuencia_media_corpus": 2099.6
+          },
+          "insultos": {
+            "n_types": 72,
+            "n_tokens": 2402,
+            "type_coverage": 0.4583,
+            "token_coverage": 0.9617,
+            "oov_rate": 0.5417,
+            "frecuencia_media_corpus": 32.4
+          },
+          "formas_raras": {
+            "n_types": 6518,
+            "n_tokens": 7618,
+            "type_coverage": 0.7301,
+            "token_coverage": 0.746,
+            "oov_rate": 0.2699,
+            "frecuencia_media_corpus": 799.7
+          }
+        }
+      },
+      "racional_de_expansion": {
+        "id": "RATIONALE_FOR_CORPUS_EXPANSION-50M",
+        "fecha": "2026-09-25",
+        "experimento": "E-CORP-08",
+        "escala_anterior": 10000000,
+        "escala_nueva": 50000000,
+        "condiciones_de_la_seccion_30_que_se_cumplen": [
+          {
+            "condicion": "1. Cobertura",
+            "evidencia": "A 10M tokens se consumieron 2.847 de los 159.400 articulos disponibles en la parte 1 del dump (1,8 %). Los 50M tokens usan del orden de 12.000 articulos, todos dentro del archivo ya descargado: no hay descarga nueva."
+          },
+          {
+            "condicion": "2. Ganancia marginal de vocabulario",
+            "evidencia": "El corpus de 10M tiene 271.209 tipos crudos y 100.098 tras min_count=3. Los 50M amplian el mismo rango de articulos del dump, que incluye articulos de dominios distintos (biografias, municipios, musica, deporte) que el corte anterior no alcanzo."
+          },
+          {
+            "condicion": "3. Mejora downstream (mecanismo plausible, no demostrado)",
+            "evidencia": "En P4-P5 se observo que una mejor cobertura **si** mejora el embedding aislado (0.6530 -> 0.6658). Ese mecanismo justifica medir si mas tokens, con arquitectura fija, mejora tambien el modelo aislado y, con el, la aportacion marginal."
+          }
+        ],
+        "lo_que_no_se_afirma": "No se afirma que 50M tokens mejoren la aportacion complementaria. D-032 predice que no, y este experimento se lanza precisamente para medir esa prediccion en vez de suponerla.",
+        "coste": "Construccion ~1 min; entrenamiento 5 epocas x 50M tokens a 641.584 palabras/s = ~6,5 min por modelo. Descarga adicional: 0 bytes.",
+        "criterio_de_parada": "Si la aportacion complementaria no crece (IC95 tocando el 0) y el embedding aislado mejora solo marginalmente, no se escala a 100M: la conclusion de D-032 se confirma en la dimension de tamano y la fase se cierra."
+      },
+      "verificacion_prefijo": {
+        "tokens_10M": 10002400,
+        "tokens_50M": 50000000,
+        "los_10M_incluidos_son_identicos": true
+      }
     }
   ],
   "reglas": [
@@ -680,5 +784,31 @@
     "token_count": 20000045,
     "ruta": "data/external/corpora/mixto/emb_normal/tokens_20M.txt",
     "nota": "Union de los dos corpora a efectos de vocabulario; el archivo se construye concatenando los shards en el orden indicado."
-  }
+  },
+  "racionales_de_expansion": [
+    {
+      "id": "RATIONALE_FOR_CORPUS_EXPANSION-50M",
+      "fecha": "2026-09-25",
+      "experimento": "E-CORP-08",
+      "escala_anterior": 10000000,
+      "escala_nueva": 50000000,
+      "condiciones_de_la_seccion_30_que_se_cumplen": [
+        {
+          "condicion": "1. Cobertura",
+          "evidencia": "A 10M tokens se consumieron 2.847 de los 159.400 articulos disponibles en la parte 1 del dump (1,8 %). Los 50M tokens usan del orden de 12.000 articulos, todos dentro del archivo ya descargado: no hay descarga nueva."
+        },
+        {
+          "condicion": "2. Ganancia marginal de vocabulario",
+          "evidencia": "El corpus de 10M tiene 271.209 tipos crudos y 100.098 tras min_count=3. Los 50M amplian el mismo rango de articulos del dump, que incluye articulos de dominios distintos (biografias, municipios, musica, deporte) que el corte anterior no alcanzo."
+        },
+        {
+          "condicion": "3. Mejora downstream (mecanismo plausible, no demostrado)",
+          "evidencia": "En P4-P5 se observo que una mejor cobertura **si** mejora el embedding aislado (0.6530 -> 0.6658). Ese mecanismo justifica medir si mas tokens, con arquitectura fija, mejora tambien el modelo aislado y, con el, la aportacion marginal."
+        }
+      ],
+      "lo_que_no_se_afirma": "No se afirma que 50M tokens mejoren la aportacion complementaria. D-032 predice que no, y este experimento se lanza precisamente para medir esa prediccion en vez de suponerla.",
+      "coste": "Construccion ~1 min; entrenamiento 5 epocas x 50M tokens a 641.584 palabras/s = ~6,5 min por modelo. Descarga adicional: 0 bytes.",
+      "criterio_de_parada": "Si la aportacion complementaria no crece (IC95 tocando el 0) y el embedding aislado mejora solo marginalmente, no se escala a 100M: la conclusion de D-032 se confirma en la dimension de tamano y la fase se cierra."
+    }
+  ]
 }

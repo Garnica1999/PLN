@@ -105,6 +105,36 @@ que se cambien las variables de entrada de una representacion.
 - Cumplimiento: 0 usos prohibidos, 0 fugas, holdout 5/5 intacto, 0 submissions,
   0 sondas de leaderboard.
 
+## 8-bis. Addendum posterior: curva 10M -> 50M (D-033)
+
+A peticion del usuario se midio la dimension que faltaba, el **tamano** del
+corpus, con `RATIONALE_FOR_CORPUS_EXPANSION-50M` registrado antes de construir
+(condiciones 1, 2 y 3 de la §30, sin descarga adicional y con el pipeline de P1
+importado, de modo que los 10M anteriores estan contenido identicamente).
+
+| corpus | cobertura por tipo | embedding solo | fusion con V03 | delta |
+|---|---|---|---|---|
+| Wikipedia 10M | 0.6839 | 0.6530 | 0.7818 | +0.0046 |
+| **Wikipedia 50M** | **0.7703** | **0.6687** | 0.7803 | +0.0031 |
+| web mC4-es 10M | 0.8256 | 0.6638 | 0.7812 | +0.0040 |
+| mixto 20M | 0.8413 | 0.6658 | 0.7776 | +0.0002 |
+
+Las dos dimensiones del corpus quedan medidas:
+
+- **Registro** (D-032): 2,5x mas cobertura -> aportacion sin cambio.
+- **Tamano** (D-033): 5x mas tokens -> aportacion sin cambio, incluso -0.0015.
+
+Y el dato que mas importa: el embedding **aislado** mejora con ambas
+(0.6530 -> 0.6658 -> 0.6687), es decir **la representacion es mejor y aun asi no
+aporta**. El limite de la fase no era la calidad del embedding; es el techo del
+clasificador y el numero de ejemplos etiquetados (1.483). Un corpus de 500M
+tokens solo se moveria dentro del margen de 0.003 a 0.005 que ya se observa.
+
+Coste real de esta dimension: 76 s de construccion, 577 s de entrenamiento por
+modelo. El techo autorizado de 500M habria costado ~1 h 35 min: la decision de no
+escalarlo se tomo por evidencia, no por coste. La auditoria final sigue en **GO**
+con los 8 modelos verificados por `sha256`.
+
 ## 9. Nota de trazabilidad: tiempos de entrenamiento
 
 En los informes de P2 y P5 el campo `segundos` de los modelos aparece como **0.0**.

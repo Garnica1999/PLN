@@ -1,7 +1,7 @@
 {
   "experimento": "AUDITORIA-V5",
-  "fecha": "2026-09-25T22:33:52+00:00",
-  "duracion_s": 0.66,
+  "fecha": "2026-09-25T23:15:45+00:00",
+  "duracion_s": 1.12,
   "recursos": {
     "scripts": [
       "embedding_00_scaffold_v5.py",
@@ -9,7 +9,9 @@
       "embedding_02_fasttext_baseline_v5.py",
       "embedding_03_fusion_complementariedad_v5.py",
       "embedding_04_corpus_mc4_v5.py",
-      "embedding_05_fasttext_web_v5.py"
+      "embedding_05_fasttext_web_v5.py",
+      "embedding_07_corpus_50M_v5.py",
+      "embedding_08_fasttext_50M_v5.py"
     ],
     "hallazgos": [],
     "ok": true
@@ -62,6 +64,22 @@
         "lee_labels_toxic": true,
         "construye_corpus": false,
         "uso_declarado": "etiquetas TOXIC solo para el clasificador y el analisis de error",
+        "justificacion": "Un script que construye corpus no puede usar TOXIC para escribir en el corpus; su lectura debe limitarse al diagnostico de cobertura."
+      },
+      {
+        "script": "embedding_07_corpus_50M_v5.py",
+        "lee_test": true,
+        "lee_labels_toxic": false,
+        "construye_corpus": true,
+        "uso_declarado": "sin uso de TOXIC",
+        "justificacion": "Un script que construye corpus no puede usar TOXIC para escribir en el corpus; su lectura debe limitarse al diagnostico de cobertura."
+      },
+      {
+        "script": "embedding_08_fasttext_50M_v5.py",
+        "lee_test": false,
+        "lee_labels_toxic": true,
+        "construye_corpus": false,
+        "uso_declarado": "sin uso de TOXIC",
         "justificacion": "Un script que construye corpus no puede usar TOXIC para escribir en el corpus; su lectura debe limitarse al diagnostico de cobertura."
       }
     ],
@@ -134,6 +152,12 @@
         "coincide": true,
         "bytes": 186940016
       },
+      "fasttext_wiki_50m.vec": {
+        "sha256_real": "1045aba32c6440e313da0c7d054d98efe17a96c6d01f24079e541ac309089836",
+        "sha256_registrado": "1045aba32c6440e313da0c7d054d98efe17a96c6d01f24079e541ac309089836",
+        "coincide": true,
+        "bytes": 434027140
+      },
       "word2vec_control.vec": {
         "sha256_real": "52f94d37e18cef7288c4a42719f327b2f1c0310aea9b7cb61a5e3005ed748d1e",
         "sha256_registrado": "52f94d37e18cef7288c4a42719f327b2f1c0310aea9b7cb61a5e3005ed748d1e",
@@ -145,6 +169,12 @@
         "sha256_registrado": "c3781f69a2f2ad5b1e99c1281a32958c190dfbe4a979a1d5c5ec5ba717772e5e",
         "coincide": true,
         "bytes": 188952881
+      },
+      "word2vec_wiki_50m.vec": {
+        "sha256_real": "53314bccc6c89369a83a08d6ee1cb7e5d8eb3976388c55b720aca4a788f73979",
+        "sha256_registrado": "53314bccc6c89369a83a08d6ee1cb7e5d8eb3976388c55b720aca4a788f73979",
+        "coincide": true,
+        "bytes": 437957369
       }
     },
     "ok": true
@@ -218,20 +248,27 @@
       "embedding_03_fusion_complementariedad_v5.py",
       "embedding_04_corpus_mc4_v5.py",
       "embedding_05_fasttext_web_v5.py",
-      "embedding_06_auditoria_v5.py"
+      "embedding_06_auditoria_v5.py",
+      "embedding_07_corpus_50M_v5.py",
+      "embedding_08_fasttext_50M_v5.py"
     ],
     "informes": [
       "embedding_compliance.md",
+      "embedding_corpus_50M_audit.md",
       "embedding_corpus_audit.md",
       "embedding_corpus_web_audit.md",
+      "embedding_curve_50M_v5.md",
       "embedding_fusion_complementarity_v5.md",
       "embedding_intrinsic_eval.md",
+      "embedding_phase_closeout_v5.md",
       "embedding_vocabulary_coverage.md",
       "embedding_web_results_v5.md"
     ],
     "csv": [
       "embedding_complementarity_slices_v5.csv",
       "embedding_coverage_registro_v5.csv",
+      "embedding_curve_50M_slices_v5.csv",
+      "embedding_curve_50M_v5.csv",
       "embedding_downstream_results.csv",
       "embedding_fusion_v5.csv",
       "embedding_vocabulary_coverage.csv",
@@ -240,8 +277,10 @@
     ],
     "json": [
       "embedding_auditoria_v5.json",
+      "embedding_corpus_50M_v5.json",
       "embedding_corpus_v5.json",
       "embedding_corpus_web_v5.json",
+      "embedding_curve_50M_v5.json",
       "embedding_downstream_v5.json",
       "embedding_fusion_v5.json",
       "embedding_normalizacion_equivalencia.json",
@@ -255,7 +294,9 @@
       "fig_43_downstream_embedding_v5.png",
       "fig_44_fusion_complementariedad_v5.png",
       "fig_45_cobertura_registro_v5.png",
-      "fig_46_fusion_web_v5.png"
+      "fig_46_fusion_web_v5.png",
+      "fig_47_curva_cobertura_v5.png",
+      "fig_48_curva_aprendizaje_v5.png"
     ],
     "manifiesto": "data/external/corpora/corpus_manifest.json"
   },
