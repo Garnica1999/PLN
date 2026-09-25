@@ -1,0 +1,31 @@
+# --- Credenciales (NUNCA versionar) ---
+kaggle.json
+.kaggle/
+*.token
+.env
+
+# --- Datos (se descargan con src/data.py) ---
+data/raw/
+data/interim/
+data/processed/
+data/external/
+
+# --- Artefactos derivados de features y modelos ---
+features/
+models/
+
+# --- Python ---
+__pycache__/
+*.pyc
+.ruff_cache/
+.pytest_cache/
+
+# --- Notebooks ---
+.ipynb_checkpoints/
+
+# --- Logs pesados ---
+experiments/*.out
+experiments/*.stdout
+
+# Sistema
+.DS_Store

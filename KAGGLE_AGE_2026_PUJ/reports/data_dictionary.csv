@@ -1,0 +1,8 @@
+column,type,missing,unique,description,role
+age_train.id,int64,0,169336,Identificador único del tweet dentro del archivo de train,id
+age_train.text,object,0,168091,Contenido del tweet (ancho fijo 140 con padding de espacios),feature
+age_train.age_range,category,0,6,Variable objetivo: rango de edad del autor del tweet,target
+age_test.id,int64,0,112892,Identificador único del tweet dentro del archivo de test,id
+age_test.text,object,0,112245,Contenido del tweet (ancho fijo 140 con padding de espacios),feature
+age_submission.id,int64,0,112892,Identificador del tweet a predecir (mismo orden que test),id
+age_submission.age_range,object,0,1,Etiqueta predicha; plantilla con el valor 13-17,prediction

@@ -1,0 +1,5 @@
+variante,macro_f1,std
+global LogReg (referencia v10),0.5906,0.0047
+global MLP (ponderación suave),0.5966,0.004
+segmentado por tipo de tweet,0.5899,0.004
+segmentado por banda de longitud,0.5891,0.0035

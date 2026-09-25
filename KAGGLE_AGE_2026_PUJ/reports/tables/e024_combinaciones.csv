@@ -1,0 +1,4 @@
+combinacion,n_features,macro_f1,std
+referencia (10 fuentes + densas),90,0.5851,0.0042
+mejor conocida (+ordinal+centroides),102,0.586,0.0045
++ especialistas de longitud,114,0.586,0.0037

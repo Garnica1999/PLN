@@ -1,0 +1,115 @@
+{
+  "n_features_densas": 38,
+  "top_kruskal": [
+    {
+      "feature": "n_chars",
+      "epsilon_sq": 0.12550992051299326
+    },
+    {
+      "feature": "unique_char_ratio",
+      "epsilon_sq": 0.06689337617317184
+    },
+    {
+      "feature": "cttr",
+      "epsilon_sq": 0.06641983136020597
+    },
+    {
+      "feature": "lexical_entropy",
+      "epsilon_sq": 0.065157820913289
+    },
+    {
+      "feature": "n_unique_words",
+      "epsilon_sq": 0.06446749103830333
+    },
+    {
+      "feature": "n_words",
+      "epsilon_sq": 0.06054215401250117
+    },
+    {
+      "feature": "n_mention",
+      "epsilon_sq": 0.05211643640778002
+    },
+    {
+      "feature": "max_word_len",
+      "epsilon_sq": 0.04685036659315994
+    },
+    {
+      "feature": "long_word_ratio",
+      "epsilon_sq": 0.03994207930557268
+    },
+    {
+      "feature": "n_sentences",
+      "epsilon_sq": 0.03969267162451217
+    }
+  ],
+  "top_mi": [
+    {
+      "feature": "avg_word_len",
+      "mi_normalized": 0.03165689108936283
+    },
+    {
+      "feature": "n_chars",
+      "mi_normalized": 0.0313120841072665
+    },
+    {
+      "feature": "std_word_len",
+      "mi_normalized": 0.03092459708467702
+    },
+    {
+      "feature": "punct_ratio",
+      "mi_normalized": 0.029418611471815837
+    },
+    {
+      "feature": "unique_char_ratio",
+      "mi_normalized": 0.02927003645627418
+    },
+    {
+      "feature": "long_word_ratio",
+      "mi_normalized": 0.02391013296448369
+    },
+    {
+      "feature": "upper_ratio",
+      "mi_normalized": 0.022301324077224686
+    },
+    {
+      "feature": "cttr",
+      "mi_normalized": 0.019678384156997995
+    },
+    {
+      "feature": "lexical_entropy",
+      "mi_normalized": 0.019391285117515325
+    },
+    {
+      "feature": "max_word_len",
+      "mi_normalized": 0.019153156556841945
+    }
+  ],
+  "redundancia_max": 0.9999857659319781,
+  "pares_redundantes": [
+    {
+      "feature_a": "n_emoticon",
+      "feature_b": "has_emoticon",
+      "|rho|": 0.9999857659319781
+    },
+    {
+      "feature_a": "ttr",
+      "feature_b": "hapax_ratio",
+      "|rho|": 0.998870430164855
+    },
+    {
+      "feature_a": "n_unique_words",
+      "feature_b": "lexical_entropy",
+      "|rho|": 0.9980570005152957
+    },
+    {
+      "feature_a": "stopword_ratio",
+      "feature_b": "content_ratio",
+      "|rho|": 0.9969568226145812
+    },
+    {
+      "feature_a": "cttr",
+      "feature_b": "lexical_entropy",
+      "|rho|": 0.9967256382393266
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "variantes": [
+    {
+      "variante": "v09 (267)",
+      "n_features": 267,
+      "macro_f1": 0.5897,
+      "std": 0.0043,
+      "per_fold": [
+        0.5923,
+        0.5925,
+        0.5916,
+        0.5908,
+        0.5812
+      ]
+    },
+    {
+      "variante": "+ incertidumbre",
+      "n_features": 318,
+      "macro_f1": 0.5898,
+      "std": 0.0037,
+      "per_fold": [
+        0.5915,
+        0.5915,
+        0.592,
+        0.5917,
+        0.5825
+      ]
+    },
+    {
+      "variante": "+ interacciones",
+      "n_features": 323,
+      "macro_f1": 0.5899,
+      "std": 0.0036,
+      "per_fold": [
+        0.5924,
+        0.5921,
+        0.5913,
+        0.5909,
+        0.5826
+      ]
+    }
+  ],
+  "mejor": "+ interacciones",
+  "mejor_macro_f1": 0.5899,
+  "aporte_incertidumbre": 0.0001,
+  "aporte_interacciones": 0.0001,
+  "aporte_total": 0.0002,
+  "segundos": 1437.1
+}

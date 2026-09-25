@@ -1,0 +1,26 @@
+{
+  "combinaciones": [
+    {
+      "combinacion": "referencia (10 fuentes + densas)",
+      "n_features": 90,
+      "macro_f1": 0.5851,
+      "std": 0.0042
+    },
+    {
+      "combinacion": "mejor conocida (+ordinal+centroides)",
+      "n_features": 102,
+      "macro_f1": 0.586,
+      "std": 0.0045
+    },
+    {
+      "combinacion": "+ especialistas de longitud",
+      "n_features": 114,
+      "macro_f1": 0.586,
+      "std": 0.0037
+    }
+  ],
+  "mejor": "mejor conocida (+ordinal+centroides)",
+  "mejor_macro_f1": 0.586,
+  "aporte_especialistas": 0.0,
+  "segundos": 413.9
+}

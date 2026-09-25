@@ -1,0 +1,45 @@
+name,group,description,formula,dtype,source,hypothesis,leakage_risk
+word_tfidf_1_2,A - contenido (word n-grams),"TF-IDF sublinear de unigramas y bigramas de palabra (min_df=3, 300k)",tf * (1 + log(tf)) * idf,sparse float32,src/representations (scripts/experimentos_representaciones.py),H7 (léxico temático),bajo: vectorizador ajustado en fold
+char_wb_tfidf_3_6,B - caracteres (char n-grams),"TF-IDF sublinear de n-gramas de carácter 3-6 con frontera de palabra (min_df=5, 300k). Representación principal tras la Etapa B.","tf * (1 + log(tf)) * idf sobre char_wb(3,6)",sparse float32,src/representations (scripts/experimentos_representaciones.py),H6 (ortografía/morfología),bajo: ajustado en fold
+n_chars,D - textometría,Número de caracteres del tweet sin padding,len(text),float64,src/textometry.py,H1,"nulo: local al documento, no aprende del corpus"
+n_words,D - textometría,Número de palabras separadas por espacios,len(text.split()),float64,src/textometry.py,H1,"nulo: local al documento, no aprende del corpus"
+n_unique_words,D - textometría,Tipos léxicos distintos en el tweet,|set(words)|,float64,src/textometry.py,H1,"nulo: local al documento, no aprende del corpus"
+ttr,D - textometría,Type-Token Ratio,n_unique_words / n_words,float64,src/textometry.py,H1,"nulo: local al documento, no aprende del corpus"
+cttr,D - textometría,TTR corregido por longitud,n_unique / sqrt(2 * n_words),float64,src/textometry.py,H1,"nulo: local al documento, no aprende del corpus"
+hapax_ratio,D - textometría,Proporción de palabras que aparecen una sola vez,hapax / n_words,float64,src/textometry.py,H1,"nulo: local al documento, no aprende del corpus"
+lexical_entropy,D - textometría,Entropía de Shannon del tweet,-sum(p log2 p) sobre frecuencias,float64,src/textometry.py,H1,"nulo: local al documento, no aprende del corpus"
+avg_word_len,D - textometría,Longitud media de palabra,mean(len(w)),float64,src/textometry.py,H1,"nulo: local al documento, no aprende del corpus"
+max_word_len,D - textometría,Longitud máxima de palabra,max(len(w)),float64,src/textometry.py,H1,"nulo: local al documento, no aprende del corpus"
+std_word_len,D - textometría,Desviación de la longitud de palabra,std(len(w)),float64,src/textometry.py,H1,"nulo: local al documento, no aprende del corpus"
+n_sentences,D - textometría,Número de oraciones,split por [.!?…],float64,src/textometry.py,H1,"nulo: local al documento, no aprende del corpus"
+avg_sentence_len_words,D - textometría,Palabras por oración,n_words / n_sentences,float64,src/textometry.py,H1,"nulo: local al documento, no aprende del corpus"
+stopword_ratio,D - textometría,Proporción de palabras funcionales,stopwords / n_words,float64,src/textometry.py,H1,"nulo: local al documento, no aprende del corpus"
+content_ratio,D - textometría,Proporción de palabras de contenido,1 - stopword_ratio,float64,src/textometry.py,H1,"nulo: local al documento, no aprende del corpus"
+long_word_ratio,D - textometría,Proporción de palabras de 8+ caracteres,palabras_largas / n_words,float64,src/textometry.py,H1,"nulo: local al documento, no aprende del corpus"
+upper_ratio,C - estilo,Proporción de letras mayúsculas,mayúsculas / letras,float64,src/textometry.py,H2,"nulo: local al documento, no aprende del corpus"
+digit_ratio,C - estilo,Proporción de dígitos,dígitos / n_chars,float64,src/textometry.py,H2,"nulo: local al documento, no aprende del corpus"
+punct_ratio,C - estilo,Proporción de signos de puntuación,puntuación / n_chars,float64,src/textometry.py,H2,"nulo: local al documento, no aprende del corpus"
+n_excl,C - estilo,Signos de exclamación,count('!'),float64,src/textometry.py,H2,"nulo: local al documento, no aprende del corpus"
+n_quest,C - estilo,Signos de interrogación,count('?'),float64,src/textometry.py,H2,"nulo: local al documento, no aprende del corpus"
+n_open_punct,C - estilo,Signos de apertura del español,count('¡') + count('¿'),float64,src/textometry.py,H2,"nulo: local al documento, no aprende del corpus"
+multi_punct_count,C - estilo,Secuencias de puntuación repetida,"count([!?.,;:]{2,})",float64,src/textometry.py,H2,"nulo: local al documento, no aprende del corpus"
+elongated_count,C - estilo,Palabras con 3+ letras repetidas,"count(\w*(\w)\1{2,}\w*)",float64,src/textometry.py,H8,"nulo: local al documento, no aprende del corpus"
+all_caps_count,C - estilo,Palabras completamente en mayúsculas,"count([A-ZÁÉÍÓÚÑ]{2,})",float64,src/textometry.py,H2,"nulo: local al documento, no aprende del corpus"
+has_all_caps,C - estilo,Indicador de palabra en mayúsculas,all_caps_count > 0,float64,src/textometry.py,H2,"nulo: local al documento, no aprende del corpus"
+n_emoji,G - emoción/emoji,Emojis (constante 0 en este corpus),count(emoji),float64,src/textometry.py,H9 (no medible),descartada por varianza nula (D-009)
+emoji_diversity,G - emoción/emoji,Emojis distintos (constante 0),|set(emojis)|,float64,src/textometry.py,H9 (no medible),descartada por varianza nula (D-009)
+has_emoji,G - emoción/emoji,Indicador de emoji (constante 0),n_emoji > 0,float64,src/textometry.py,H9 (no medible),descartada por varianza nula (D-009)
+n_emoticon,C - estilo,"Emoticonos textuales, contados sin URLs",count(emoticon) sobre texto sin URLs,float64,src/textometry.py,H2,"nulo: local al documento, no aprende del corpus"
+has_emoticon,C - estilo,Indicador de emoticono textual,n_emoticon > 0,float64,src/textometry.py,H2,"nulo: local al documento, no aprende del corpus"
+n_hashtag,C - estilo,Número de hashtags,count('#'),float64,src/textometry.py,H9,"nulo: local al documento, no aprende del corpus"
+n_mention,C - estilo,Número de menciones,count('@'),float64,src/textometry.py,H10,"nulo: local al documento, no aprende del corpus"
+n_url,C - estilo,Número de URLs,count(https?://|www\.),float64,src/textometry.py,H10,"nulo: local al documento, no aprende del corpus"
+is_rt,C - estilo,Indicador de retuit,text startswith RT,float64,src/textometry.py,H3,"nulo: local al documento, no aprende del corpus"
+starts_mention,C - estilo,El tweet empieza con mención (respuesta),text startswith @,float64,src/textometry.py,H10,"nulo: local al documento, no aprende del corpus"
+n_repeated_char_runs,C - estilo,Runs de caracteres repetidos,"count((\w)\1{1,})",float64,src/textometry.py,H8,"nulo: local al documento, no aprende del corpus"
+punct_per_word,C - estilo,Puntuación por palabra,puntuación / n_words,float64,src/textometry.py,H2,"nulo: local al documento, no aprende del corpus"
+unique_char_ratio,C - estilo,Diversidad de caracteres,|set(chars)| / n_chars,float64,src/textometry.py,H1,"nulo: local al documento, no aprende del corpus"
+mention_tfidf_1gram,H - léxico específico,"TF-IDF de unigramas sobre SOLO los tokens de mención (@cuenta). Aportó +0,0144 de macro-F1 sobre char n-grams (5/5 folds).",TF-IDF sobre tokens '@\w+' extraídos del tweet,sparse float32,src/representations (scripts/experimentos_representaciones.py),H10 (interacción social),bajo: ajustado en fold
+hashtag_tokens,H - léxico específico,Tokens de hashtag analizados con log-odds (EDA); candidatos a canal propio si la ablación lo respalda.,tokens de '#\w+',sparse float32,src/eda.py (análisis) — canal pendiente de evaluar,H9,bajo
+(sin features),E - POS/sintaxis,POS/sintaxis pendiente: el POS tagger de spaCy es un recurso preentrenado de zona gris (D-001) y el corpus ASCII degrada su calidad.,-,-,pendiente,-,no aplica
+(sin features),F - sentimiento,"Sentimiento: los lexicones externos en español no casan con el texto transliterado a ASCII; alternativa planificada: léxicos internos por regresión L2 (Sap et al. 2014, D-008).",-,-,pendiente (Fase 9),-,no aplica

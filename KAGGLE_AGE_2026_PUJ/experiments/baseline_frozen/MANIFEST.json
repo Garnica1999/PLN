@@ -1,0 +1,27 @@
+{
+  "fecha": "2026-09-24 09:41",
+  "baseline": "v08 — ensamble de 13 fuentes con meta-modelo enriquecido",
+  "cv_macro_f1_lofo": 0.5866,
+  "cv_std": 0.0038,
+  "leaderboard_publico": 0.60376,
+  "desviacion_vs_brief": "el brief asumía v06 (CV 0,5851 / LB 0,60273); el baseline real congelado es v08, estrictamente mejor",
+  "modelo": {
+    "representacion": "TF-IDF char_wb(3,6) sobre texto crudo + canales de menciones, hashtags y palabras",
+    "miembros": 13,
+    "meta_modelo": "StandardScaler + LogisticRegression (107 features: 72 scores + 35 densas)"
+  },
+  "validacion": "StratifiedGroupKFold 5 folds agrupado por clúster de near-duplicados; evaluación de ensambles con leave-one-fold-out",
+  "hashes_sha256": {
+    "src/pipeline.py": "fb2a1f33846dcaaa37ccabed05cc29ffe01b778d6bc297986926c156045ac630",
+    "src/config.py": "16c4538ba5a21c1fa265245f84536ec12d6c3664f82551f909fd60197bd76311",
+    "src/cv.py": "bde185fcf4336e428ebf2d22dc6a022e94f201faf9b44cdff15839ba2bf8732e",
+    "src/data.py": "246fa22c9fda0babe8bec20952f10a14b33e6717ccff0493fe0d67c65afec6da",
+    "src/textometry.py": "e5373007149dd0622d758531be20c98e5155b3702efe6eced150fef6096ab855",
+    "src/feature_catalog.py": "42f410d5ebddd74eac1652cab3599c2465b1075c5bf1bc21fbc38d8381dbe1af",
+    "submissions/age_submission_v08.csv": "3b0295a3860f04ad007730ca3425cec81feb28d64eeb862f0572198cc527d5ef",
+    "experiments/submission_v08_resumen.json": "d3dab6bde6a9fe275b498588e58a4c2fb186375a3d37b6aa1308074ac7336f3c",
+    "experiments/e028_en_ensamble.json": "9ff5f3a082de4efde2add0ebd4ade42129f6617aaa86c6248eb2651e89ff901b",
+    "reports/tables/fase17_matriz_confusion.csv": "d7e467ce912c154f7a588bc7f7febf01b508340acd75259b53ba36f173250e7b",
+    "reports/tables/fase17_pares_confundidos.csv": "fd7236c96636bf2081c931f08f8c808c464ca04a9bf24071dfb99f98897818ad"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "version": 3,
+  "modelo": "Stacking: LinearSVC(C=0.2) + LogReg(OvR) + SGD + ComplementNB -> LogReg meta",
+  "cv_macro_f1_lofo": 0.5656,
+  "cv_mejor_individual": 0.5628,
+  "checks": {
+    "columns_ok": true,
+    "columns_match_sample": true,
+    "rows_ok": true,
+    "ids_equal_test": true,
+    "ids_unique": true,
+    "ids_same_order": true,
+    "no_nan": true,
+    "labels_valid": true
+  },
+  "distribucion_predicha": {
+    "13-17": 17750,
+    "18-24": 22032,
+    "25-34": 17336,
+    "35-49": 16719,
+    "50-64": 20798,
+    "65-xx": 18257
+  },
+  "segundos": 333.4,
+  "archivo": "/home/carlos/Git/PLN/KAGGLE_AGE_2026_PUJ/submissions/age_submission_v03.csv",
+  "recordatorio": "Subida manual. Referencia: v02 = 0,57018 en el LB con CV 0,5557. Este ensamble tiene CV 0,5656, por lo que se espera un LB superior."
+}

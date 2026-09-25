@@ -1,0 +1,420 @@
+{
+  "variantes": [
+    {
+      "variante": "global LogReg (referencia v10)",
+      "macro_f1": 0.5906,
+      "std": 0.0047,
+      "per_fold": [
+        0.5932,
+        0.5941,
+        0.5924,
+        0.5919,
+        0.5813
+      ]
+    },
+    {
+      "variante": "global MLP (ponderación suave)",
+      "macro_f1": 0.5966,
+      "std": 0.004,
+      "per_fold": [
+        0.6012,
+        0.5984,
+        0.5968,
+        0.5973,
+        0.5891
+      ]
+    },
+    {
+      "variante": "segmentado por tipo de tweet",
+      "macro_f1": 0.5899,
+      "std": 0.004,
+      "per_fold": [
+        0.5934,
+        0.5912,
+        0.5915,
+        0.5913,
+        0.582
+      ]
+    },
+    {
+      "variante": "segmentado por banda de longitud",
+      "macro_f1": 0.5891,
+      "std": 0.0035,
+      "per_fold": [
+        0.5922,
+        0.5916,
+        0.59,
+        0.5894,
+        0.5824
+      ]
+    }
+  ],
+  "mejor": "global MLP (ponderación suave)",
+  "mejor_macro_f1": 0.5966,
+  "referencia_global": 0.5906,
+  "detalle_por_tipo": [
+    {
+      "segmento": "hashtag_alto",
+      "n_train": 2082,
+      "n_valid": 455,
+      "accuracy": 0.7714
+    },
+    {
+      "segmento": "mencion_alta",
+      "n_train": 4468,
+      "n_valid": 1026,
+      "accuracy": 0.7817
+    },
+    {
+      "segmento": "muy_corto",
+      "n_train": 2144,
+      "n_valid": 533,
+      "accuracy": 0.4221
+    },
+    {
+      "segmento": "rt_con_comentario",
+      "n_train": 39276,
+      "n_valid": 9934,
+      "accuracy": 0.6412
+    },
+    {
+      "segmento": "rt_puro",
+      "n_train": 9938,
+      "n_valid": 2438,
+      "accuracy": 0.598
+    },
+    {
+      "segmento": "solo_texto",
+      "n_train": 47589,
+      "n_valid": 11955,
+      "accuracy": 0.5583
+    },
+    {
+      "segmento": "solo_url",
+      "n_train": 6124,
+      "n_valid": 1537,
+      "accuracy": 0.3923
+    },
+    {
+      "segmento": "url_alta",
+      "n_train": 23847,
+      "n_valid": 5899,
+      "accuracy": 0.6013
+    },
+    {
+      "segmento": "hashtag_alto",
+      "n_train": 1991,
+      "n_valid": 546,
+      "accuracy": 0.7619
+    },
+    {
+      "segmento": "mencion_alta",
+      "n_train": 4375,
+      "n_valid": 1119,
+      "accuracy": 0.7676
+    },
+    {
+      "segmento": "muy_corto",
+      "n_train": 2179,
+      "n_valid": 498,
+      "accuracy": 0.4538
+    },
+    {
+      "segmento": "rt_con_comentario",
+      "n_train": 39436,
+      "n_valid": 9774,
+      "accuracy": 0.6324
+    },
+    {
+      "segmento": "rt_puro",
+      "n_train": 9908,
+      "n_valid": 2468,
+      "accuracy": 0.6228
+    },
+    {
+      "segmento": "solo_texto",
+      "n_train": 47675,
+      "n_valid": 11872,
+      "accuracy": 0.56
+    },
+    {
+      "segmento": "solo_url",
+      "n_train": 6135,
+      "n_valid": 1526,
+      "accuracy": 0.3938
+    },
+    {
+      "segmento": "url_alta",
+      "n_train": 23769,
+      "n_valid": 5977,
+      "accuracy": 0.5859
+    },
+    {
+      "segmento": "hashtag_alto",
+      "n_train": 2007,
+      "n_valid": 530,
+      "accuracy": 0.7226
+    },
+    {
+      "segmento": "mencion_alta",
+      "n_train": 4393,
+      "n_valid": 1101,
+      "accuracy": 0.7847
+    },
+    {
+      "segmento": "muy_corto",
+      "n_train": 2134,
+      "n_valid": 543,
+      "accuracy": 0.4825
+    },
+    {
+      "segmento": "rt_con_comentario",
+      "n_train": 39317,
+      "n_valid": 9893,
+      "accuracy": 0.6343
+    },
+    {
+      "segmento": "rt_puro",
+      "n_train": 9856,
+      "n_valid": 2520,
+      "accuracy": 0.6171
+    },
+    {
+      "segmento": "solo_texto",
+      "n_train": 47802,
+      "n_valid": 11746,
+      "accuracy": 0.5623
+    },
+    {
+      "segmento": "solo_url",
+      "n_train": 6124,
+      "n_valid": 1537,
+      "accuracy": 0.3988
+    },
+    {
+      "segmento": "url_alta",
+      "n_train": 23836,
+      "n_valid": 5910,
+      "accuracy": 0.5861
+    },
+    {
+      "segmento": "hashtag_alto",
+      "n_train": 2074,
+      "n_valid": 463,
+      "accuracy": 0.7603
+    },
+    {
+      "segmento": "mencion_alta",
+      "n_train": 4370,
+      "n_valid": 1124,
+      "accuracy": 0.7927
+    },
+    {
+      "segmento": "muy_corto",
+      "n_train": 2158,
+      "n_valid": 519,
+      "accuracy": 0.4663
+    },
+    {
+      "segmento": "rt_con_comentario",
+      "n_train": 39369,
+      "n_valid": 9841,
+      "accuracy": 0.6344
+    },
+    {
+      "segmento": "rt_puro",
+      "n_train": 9846,
+      "n_valid": 2530,
+      "accuracy": 0.5996
+    },
+    {
+      "segmento": "solo_texto",
+      "n_train": 47788,
+      "n_valid": 11778,
+      "accuracy": 0.5564
+    },
+    {
+      "segmento": "solo_url",
+      "n_train": 6103,
+      "n_valid": 1558,
+      "accuracy": 0.3819
+    },
+    {
+      "segmento": "url_alta",
+      "n_train": 23762,
+      "n_valid": 5984,
+      "accuracy": 0.5991
+    },
+    {
+      "segmento": "hashtag_alto",
+      "n_train": 1994,
+      "n_valid": 543,
+      "accuracy": 0.7311
+    },
+    {
+      "segmento": "mencion_alta",
+      "n_train": 4370,
+      "n_valid": 1124,
+      "accuracy": 0.7749
+    },
+    {
+      "segmento": "muy_corto",
+      "n_train": 2093,
+      "n_valid": 584,
+      "accuracy": 0.4606
+    },
+    {
+      "segmento": "rt_con_comentario",
+      "n_train": 39442,
+      "n_valid": 9768,
+      "accuracy": 0.6196
+    },
+    {
+      "segmento": "rt_puro",
+      "n_train": 9956,
+      "n_valid": 2420,
+      "accuracy": 0.6244
+    },
+    {
+      "segmento": "solo_texto",
+      "n_train": 47686,
+      "n_valid": 11870,
+      "accuracy": 0.5559
+    },
+    {
+      "segmento": "solo_url",
+      "n_train": 6158,
+      "n_valid": 1503,
+      "accuracy": 0.3852
+    },
+    {
+      "segmento": "url_alta",
+      "n_train": 23770,
+      "n_valid": 5976,
+      "accuracy": 0.5743
+    }
+  ],
+  "detalle_por_longitud": [
+    {
+      "segmento": "L1",
+      "n_train": 34364,
+      "n_valid": 8553,
+      "accuracy": 0.507
+    },
+    {
+      "segmento": "L2",
+      "n_train": 33763,
+      "n_valid": 8347,
+      "accuracy": 0.5766
+    },
+    {
+      "segmento": "L3",
+      "n_train": 34679,
+      "n_valid": 8765,
+      "accuracy": 0.6346
+    },
+    {
+      "segmento": "L4",
+      "n_train": 32662,
+      "n_valid": 8203,
+      "accuracy": 0.6518
+    },
+    {
+      "segmento": "L1",
+      "n_train": 34435,
+      "n_valid": 8482,
+      "accuracy": 0.5203
+    },
+    {
+      "segmento": "L2",
+      "n_train": 33709,
+      "n_valid": 8401,
+      "accuracy": 0.5718
+    },
+    {
+      "segmento": "L3",
+      "n_train": 34588,
+      "n_valid": 8856,
+      "accuracy": 0.6189
+    },
+    {
+      "segmento": "L4",
+      "n_train": 32736,
+      "n_valid": 8129,
+      "accuracy": 0.6547
+    },
+    {
+      "segmento": "L1",
+      "n_train": 34311,
+      "n_valid": 8606,
+      "accuracy": 0.5213
+    },
+    {
+      "segmento": "L2",
+      "n_train": 33634,
+      "n_valid": 8476,
+      "accuracy": 0.5656
+    },
+    {
+      "segmento": "L3",
+      "n_train": 34884,
+      "n_valid": 8560,
+      "accuracy": 0.6285
+    },
+    {
+      "segmento": "L4",
+      "n_train": 32640,
+      "n_valid": 8225,
+      "accuracy": 0.6495
+    },
+    {
+      "segmento": "L1",
+      "n_train": 34260,
+      "n_valid": 8657,
+      "accuracy": 0.5142
+    },
+    {
+      "segmento": "L2",
+      "n_train": 33635,
+      "n_valid": 8475,
+      "accuracy": 0.5732
+    },
+    {
+      "segmento": "L3",
+      "n_train": 34780,
+      "n_valid": 8664,
+      "accuracy": 0.6317
+    },
+    {
+      "segmento": "L4",
+      "n_train": 32795,
+      "n_valid": 8070,
+      "accuracy": 0.6452
+    },
+    {
+      "segmento": "L1",
+      "n_train": 34298,
+      "n_valid": 8619,
+      "accuracy": 0.5144
+    },
+    {
+      "segmento": "L2",
+      "n_train": 33699,
+      "n_valid": 8411,
+      "accuracy": 0.5664
+    },
+    {
+      "segmento": "L3",
+      "n_train": 34845,
+      "n_valid": 8599,
+      "accuracy": 0.6141
+    },
+    {
+      "segmento": "L4",
+      "n_train": 32627,
+      "n_valid": 8238,
+      "accuracy": 0.6431
+    }
+  ],
+  "segundos": 1638.8
+}

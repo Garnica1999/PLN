@@ -1,0 +1,3 @@
+file,raw_len_min,raw_len_median,raw_len_max,raw_len_eq_padded_width_pct,clean_len_min,clean_len_median,clean_len_mean,clean_len_max,clean_len_eq_padded_width,empty_texts
+train,0,93.0,140,2.487,0,93.0,90.11,140,4211,104
+test,0,93.0,140,2.537,0,93.0,90.15,140,2864,62

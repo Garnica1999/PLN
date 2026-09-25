@@ -1,0 +1,47 @@
+{
+  "individual": {
+    "E-013_svm": 0.5628,
+    "E-009_logreg": 0.5603,
+    "E-011_sgd": 0.558,
+    "E-010_cnb": 0.537
+  },
+  "mejor_individual": "E-013_svm",
+  "mejor_individual_macro_f1": 0.5628,
+  "voto_suave_macro_f1": 0.5628,
+  "stacking_macro_f1_lofo": 0.5656,
+  "mejor_individual_en_mismos_folds": 0.5628,
+  "folds_stacking_gana": "5/5",
+  "diversidad": [
+    {
+      "modelo_a": "E-013_svm",
+      "modelo_b": "E-009_logreg",
+      "desacuerdo": 0.0618
+    },
+    {
+      "modelo_a": "E-013_svm",
+      "modelo_b": "E-011_sgd",
+      "desacuerdo": 0.1099
+    },
+    {
+      "modelo_a": "E-013_svm",
+      "modelo_b": "E-010_cnb",
+      "desacuerdo": 0.2516
+    },
+    {
+      "modelo_a": "E-009_logreg",
+      "modelo_b": "E-011_sgd",
+      "desacuerdo": 0.0653
+    },
+    {
+      "modelo_a": "E-009_logreg",
+      "modelo_b": "E-010_cnb",
+      "desacuerdo": 0.2783
+    },
+    {
+      "modelo_a": "E-011_sgd",
+      "modelo_b": "E-010_cnb",
+      "desacuerdo": 0.2967
+    }
+  ],
+  "segundos": 186.6
+}

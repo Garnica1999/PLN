@@ -1,0 +1,47 @@
+{
+  "holdout": {
+    "resultados": {
+      "LogReg": {
+        "macro_f1": 0.5983,
+        "accuracy": 0.599
+      },
+      "MLP": {
+        "macro_f1": 0.6034,
+        "accuracy": 0.6037
+      },
+      "promedio 0,5/0,5": {
+        "macro_f1": 0.6077,
+        "accuracy": 0.6081
+      }
+    },
+    "delta_promedio_vs_mlp": 0.0043,
+    "criterio": "promedio ≥ 0,6024 + 0,003 = 0,6054",
+    "confirmado": true
+  },
+  "candidato": {
+    "version": 12,
+    "modelo": "14 fuentes + NB-SVM palabra (279 features) + promedio MLP/LogReg del meta",
+    "cv_promedio_combinadores": 0.6005,
+    "holdout_promedio": 0.6077,
+    "checks": {
+      "columns_ok": true,
+      "columns_match_sample": true,
+      "rows_ok": true,
+      "ids_equal_test": true,
+      "ids_unique": true,
+      "ids_same_order": true,
+      "no_nan": true,
+      "labels_valid": true
+    },
+    "distribucion_predicha": {
+      "13-17": 17673,
+      "18-24": 20715,
+      "25-34": 16543,
+      "35-49": 17531,
+      "50-64": 20763,
+      "65-xx": 19667
+    },
+    "archivo": "/home/carlos/Git/PLN/KAGGLE_AGE_2026_PUJ/submissions/age_submission_v12.csv",
+    "segundos": 932.2
+  }
+}

@@ -1,0 +1,302 @@
+{
+  "macro_f1_ensamble": 0.5906,
+  "interseccion": [
+    {
+      "categoria": "everyone_wrong",
+      "n": 26196,
+      "pct": 15.47,
+      "accuracy_ensamble": 0.0327,
+      "n_chars_medio": 86.8,
+      "pct_rt": 35.9,
+      "menciones_medio": 0.75,
+      "pct_solo_texto": 35.9
+    },
+    {
+      "categoria": "one_model_right",
+      "n": 20952,
+      "pct": 12.37,
+      "accuracy_ensamble": 0.14,
+      "n_chars_medio": 81.9,
+      "pct_rt": 31.6,
+      "menciones_medio": 0.69,
+      "pct_solo_texto": 38.0
+    },
+    {
+      "categoria": "few_models_right",
+      "n": 23993,
+      "pct": 14.17,
+      "accuracy_ensamble": 0.3599,
+      "n_chars_medio": 84.0,
+      "pct_rt": 29.7,
+      "menciones_medio": 0.7,
+      "pct_solo_texto": 40.5
+    },
+    {
+      "categoria": "many_models_right",
+      "n": 98195,
+      "pct": 57.99,
+      "accuracy_ensamble": 0.8927,
+      "n_chars_medio": 94.2,
+      "pct_rt": 39.2,
+      "menciones_medio": 1.19,
+      "pct_solo_texto": 32.7
+    }
+  ],
+  "ensemble_miss_pct": 25.94,
+  "modelos_que_rescatan": [
+    {
+      "modelo": "softmax_ordinal",
+      "veces_que_rescata": 15865,
+      "share_pct": 36.12
+    },
+    {
+      "modelo": "centroides",
+      "veces_que_rescata": 13652,
+      "share_pct": 31.09
+    },
+    {
+      "modelo": "MLP_densas_svd",
+      "veces_que_rescata": 13404,
+      "share_pct": 30.52
+    },
+    {
+      "modelo": "LogReg_palabra",
+      "veces_que_rescata": 12239,
+      "share_pct": 27.87
+    },
+    {
+      "modelo": "ComplementNB",
+      "veces_que_rescata": 11079,
+      "share_pct": 25.23
+    },
+    {
+      "modelo": "ordinal_acumulativo",
+      "veces_que_rescata": 10649,
+      "share_pct": 24.25
+    },
+    {
+      "modelo": "SGD",
+      "veces_que_rescata": 10584,
+      "share_pct": 24.1
+    },
+    {
+      "modelo": "LogReg",
+      "veces_que_rescata": 10269,
+      "share_pct": 23.38
+    },
+    {
+      "modelo": "SVM_300k",
+      "veces_que_rescata": 10004,
+      "share_pct": 22.78
+    },
+    {
+      "modelo": "SVM_hashtags",
+      "veces_que_rescata": 9795,
+      "share_pct": 22.3
+    },
+    {
+      "modelo": "NB_SVM",
+      "veces_que_rescata": 9729,
+      "share_pct": 22.15
+    },
+    {
+      "modelo": "SVM_700k",
+      "veces_que_rescata": 9715,
+      "share_pct": 22.12
+    }
+  ],
+  "perfil_miss_por_clase": {
+    "n": {
+      "13-17": 5594,
+      "18-24": 8927,
+      "25-34": 10241,
+      "35-49": 9067,
+      "50-64": 6119,
+      "65-xx": 3970
+    },
+    "share_pct": {
+      "13-17": 12.74,
+      "18-24": 20.33,
+      "25-34": 23.32,
+      "35-49": 20.65,
+      "50-64": 13.93,
+      "65-xx": 9.04
+    }
+  },
+  "pares_miss": {
+    "25-34->18-24": 4563,
+    "18-24->13-17": 4220,
+    "13-17->18-24": 4050,
+    "35-49->50-64": 3005,
+    "18-24->25-34": 2980,
+    "35-49->25-34": 2873,
+    "25-34->35-49": 2530,
+    "50-64->65-xx": 2390
+  },
+  "error_por_tipo": [
+    {
+      "tweet_type": "solo_texto",
+      "n": 59221,
+      "accuracy": 0.5557,
+      "error_rate": 0.4443,
+      "n_chars": 72.54413130477364
+    },
+    {
+      "tweet_type": "rt_con_comentario",
+      "n": 49210,
+      "accuracy": 0.6286,
+      "error_rate": 0.3714,
+      "n_chars": 126.37805324121113
+    },
+    {
+      "tweet_type": "url_alta",
+      "n": 29746,
+      "accuracy": 0.5918,
+      "error_rate": 0.4082,
+      "n_chars": 95.38280777247361
+    },
+    {
+      "tweet_type": "rt_puro",
+      "n": 12376,
+      "accuracy": 0.6163,
+      "error_rate": 0.3837,
+      "n_chars": 58.41620879120879
+    },
+    {
+      "tweet_type": "solo_url",
+      "n": 7661,
+      "accuracy": 0.3894,
+      "error_rate": 0.6106,
+      "n_chars": 30.264717399817258
+    },
+    {
+      "tweet_type": "mencion_alta",
+      "n": 5494,
+      "accuracy": 0.8076,
+      "error_rate": 0.1924,
+      "n_chars": 116.04550418638514
+    },
+    {
+      "tweet_type": "muy_corto",
+      "n": 2677,
+      "accuracy": 0.4841,
+      "error_rate": 0.5159,
+      "n_chars": 10.486738886813598
+    },
+    {
+      "tweet_type": "hashtag_alto",
+      "n": 2537,
+      "accuracy": 0.7962,
+      "error_rate": 0.2038,
+      "n_chars": 106.5675995270004
+    },
+    {
+      "tweet_type": "solo_mencion",
+      "n": 414,
+      "accuracy": 0.6522,
+      "error_rate": 0.3478,
+      "n_chars": 37.70289855072464
+    }
+  ],
+  "error_por_longitud": [
+    {
+      "length_bin": "(0, 10]",
+      "n": 974,
+      "accuracy": 0.4548,
+      "error_rate": 0.5451745379876797,
+      "share_ensemble_miss": 0.3686
+    },
+    {
+      "length_bin": "(10, 20]",
+      "n": 4116,
+      "accuracy": 0.5119,
+      "error_rate": 0.48809523809523814,
+      "share_ensemble_miss": 0.329
+    },
+    {
+      "length_bin": "(20, 30]",
+      "n": 11393,
+      "accuracy": 0.4523,
+      "error_rate": 0.5477047309751601,
+      "share_ensemble_miss": 0.3574
+    },
+    {
+      "length_bin": "(30, 40]",
+      "n": 10946,
+      "accuracy": 0.5337,
+      "error_rate": 0.4662890553626896,
+      "share_ensemble_miss": 0.3012
+    },
+    {
+      "length_bin": "(40, 50]",
+      "n": 11900,
+      "accuracy": 0.5371,
+      "error_rate": 0.4629411764705882,
+      "share_ensemble_miss": 0.3018
+    },
+    {
+      "length_bin": "(50, 60]",
+      "n": 11767,
+      "accuracy": 0.5663,
+      "error_rate": 0.43367043426531826,
+      "share_ensemble_miss": 0.2845
+    },
+    {
+      "length_bin": "(60, 70]",
+      "n": 10883,
+      "accuracy": 0.57,
+      "error_rate": 0.4300284847927961,
+      "share_ensemble_miss": 0.281
+    },
+    {
+      "length_bin": "(70, 80]",
+      "n": 10511,
+      "accuracy": 0.5836,
+      "error_rate": 0.4164208923984397,
+      "share_ensemble_miss": 0.2705
+    },
+    {
+      "length_bin": "(80, 90]",
+      "n": 9685,
+      "accuracy": 0.5862,
+      "error_rate": 0.41383582860092927,
+      "share_ensemble_miss": 0.2617
+    },
+    {
+      "length_bin": "(90, 100]",
+      "n": 8996,
+      "accuracy": 0.5997,
+      "error_rate": 0.4002890173410405,
+      "share_ensemble_miss": 0.2589
+    },
+    {
+      "length_bin": "(100, 110]",
+      "n": 8742,
+      "accuracy": 0.614,
+      "error_rate": 0.38595287119652255,
+      "share_ensemble_miss": 0.2445
+    },
+    {
+      "length_bin": "(110, 120]",
+      "n": 9839,
+      "accuracy": 0.6198,
+      "error_rate": 0.38022156723244227,
+      "share_ensemble_miss": 0.2369
+    },
+    {
+      "length_bin": "(120, 130]",
+      "n": 10685,
+      "accuracy": 0.6455,
+      "error_rate": 0.354515676181563,
+      "share_ensemble_miss": 0.2159
+    },
+    {
+      "length_bin": "(130, 141]",
+      "n": 48795,
+      "accuracy": 0.6489,
+      "error_rate": 0.35106055948355364,
+      "share_ensemble_miss": 0.211
+    }
+  ],
+  "segundos": 402.4
+}

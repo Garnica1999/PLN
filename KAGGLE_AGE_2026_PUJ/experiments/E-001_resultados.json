@@ -1,0 +1,91 @@
+{
+  "experiment_id": "E-001",
+  "macro_f1_mean": 0.5344444439380445,
+  "macro_f1_std": 0.005016705862427259,
+  "weighted_f1_mean": 0.533458780614616,
+  "micro_f1_mean": 0.5342513900698886,
+  "accuracy_mean": 0.5342513900698886,
+  "n_features": 336493,
+  "seconds_total": 231.9,
+  "config": {
+    "word_tfidf": {
+      "ngram_range": [
+        1,
+        2
+      ],
+      "min_df": 3,
+      "sublinear_tf": true,
+      "max_features": 300000,
+      "lowercase": true
+    },
+    "char_tfidf": {
+      "analyzer": "char_wb",
+      "ngram_range": [
+        3,
+        5
+      ],
+      "min_df": 5,
+      "sublinear_tf": true,
+      "max_features": 300000,
+      "lowercase": true
+    },
+    "model": {
+      "name": "LinearSVC",
+      "C": 1.0,
+      "max_iter": 3000
+    },
+    "cv": {
+      "scheme": "group",
+      "n_splits": 5,
+      "n_repeats": 1,
+      "seed": 42
+    }
+  },
+  "per_fold": [
+    {
+      "fold": 0,
+      "macro_f1": 0.5378325805890526,
+      "weighted_f1": 0.5368885946367555,
+      "micro_f1": 0.5377347348529585,
+      "accuracy": 0.5377347348529585,
+      "n_features": 336067,
+      "seconds": 39.5
+    },
+    {
+      "fold": 1,
+      "macro_f1": 0.5372666066266891,
+      "weighted_f1": 0.5362583240202687,
+      "micro_f1": 0.5372918389039801,
+      "accuracy": 0.5372918389039801,
+      "n_features": 335598,
+      "seconds": 38.5
+    },
+    {
+      "fold": 2,
+      "macro_f1": 0.5367725069872256,
+      "weighted_f1": 0.5357897384831772,
+      "micro_f1": 0.5365399946850917,
+      "accuracy": 0.5365399946850917,
+      "n_features": 336043,
+      "seconds": 39.9
+    },
+    {
+      "fold": 3,
+      "macro_f1": 0.5346111158143949,
+      "weighted_f1": 0.5336316260342238,
+      "micro_f1": 0.5341640583476053,
+      "accuracy": 0.5341640583476053,
+      "n_features": 335994,
+      "seconds": 39.6
+    },
+    {
+      "fold": 4,
+      "macro_f1": 0.5257394096728599,
+      "weighted_f1": 0.5247256198986553,
+      "micro_f1": 0.5255263235598074,
+      "accuracy": 0.5255263235598074,
+      "n_features": 336493,
+      "seconds": 42.6
+    }
+  ]
+}

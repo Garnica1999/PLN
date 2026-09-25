@@ -1,0 +1,44 @@
+{
+  "holdout": {
+    "resultados": {
+      "meta LogReg (v10)": {
+        "macro_f1": 0.5981,
+        "accuracy": 0.5989
+      },
+      "meta MLP (v11)": {
+        "macro_f1": 0.6024,
+        "accuracy": 0.6026
+      }
+    },
+    "delta": 0.0043,
+    "criterio": "Δ ≥ +0,003",
+    "confirmado": true
+  },
+  "candidato": {
+    "version": 11,
+    "modelo": "Ensamble de 14 fuentes + meta-modelo MLP(64) sobre 273 features",
+    "cv_macro_f1": 0.5966,
+    "cv_std": 0.004,
+    "holdout_macro_f1": 0.6024,
+    "checks": {
+      "columns_ok": true,
+      "columns_match_sample": true,
+      "rows_ok": true,
+      "ids_equal_test": true,
+      "ids_unique": true,
+      "ids_same_order": true,
+      "no_nan": true,
+      "labels_valid": true
+    },
+    "distribucion_predicha": {
+      "13-17": 16716,
+      "18-24": 21025,
+      "25-34": 17024,
+      "35-49": 16155,
+      "50-64": 22325,
+      "65-xx": 19647
+    },
+    "archivo": "/home/carlos/Git/PLN/KAGGLE_AGE_2026_PUJ/submissions/age_submission_v11.csv",
+    "segundos": 796.6
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "auditorias": {
+    "leakage": {
+      "ningun_fit_sobre_test": true,
+      "n_llamadas_fit_sobre_test": 0,
+      "n_canales_representacion": 6,
+      "vectorizadores_ok": true,
+      "meta_entrenado_con_oof": true,
+      "id_no_usado_como_feature": true,
+      "test_coverage_near_dup_pct": 4.2554,
+      "cv_agrupado_por_cluster": true,
+      "memorizacion_con_cv_agrupado": 0.0,
+      "sin_target_encoding": true,
+      "normalizacion_determinista": true,
+      "auditoria_ok": true
+    },
+    "reproducibilidad": {
+      "archivos_con_semilla_o_random_state": 54,
+      "semilla_global_definida": true,
+      "requirements_existe": true,
+      "n_paquetes_congelados": 312,
+      "pin_scikit-learn": true,
+      "pin_pandas": true,
+      "pin_numpy": true,
+      "pin_scipy": true,
+      "rutas_absolutas_en_codigo": [],
+      "coincidencia_pipeline_vs_v06": 1.0,
+      "auditoria_ok": true
+    },
+    "submission": {
+      "columns_ok": true,
+      "columns_match_sample": true,
+      "rows_ok": true,
+      "ids_equal_test": true,
+      "ids_unique": true,
+      "ids_same_order": true,
+      "no_nan": true,
+      "labels_valid": true,
+      "duplicados_id": 0,
+      "etiquetas_usadas": [
+        "13-17",
+        "18-24",
+        "25-34",
+        "35-49",
+        "50-64",
+        "65-xx"
+      ],
+      "nulos": 0,
+      "auditoria_ok": true
+    },
+    "academica": {
+      "n_experimentos_registrados": 48,
+      "todos_con_hipotesis": true,
+      "todos_con_resultado": true,
+      "n_decisiones": 27,
+      "n_referencias": 30,
+      "referencias_con_doi_o_url": 30,
+      "anios_cubiertos": [
+        2006,
+        2021
+      ],
+      "experimentos_negativos_registrados": 8,
+      "experimentos_negativos": [
+        "B0",
+        "B5",
+        "E-005a",
+        "E-005b",
+        "E-005d",
+        "E-015",
+        "E-019a",
+        "E-019b"
+      ],
+      "catalogo_features": true,
+      "hipotesis_gate_a": true,
+      "notebooks_entregables": [
+        "01_data_audit.ipynb",
+        "02_eda.ipynb",
+        "03_linguistic_analysis.ipynb",
+        "04_feature_engineering.ipynb",
+        "05_baselines.ipynb",
+        "06_classical_models.ipynb",
+        "07_modelos_densos.ipynb",
+        "08_error_analysis.ipynb",
+        "09_final_pipeline.ipynb",
+        "99_entrega_consolidado.ipynb"
+      ],
+      "auditoria_ok": true
+    }
+  },
+  "resultado_global": true,
+  "segundos": 0.2
+}

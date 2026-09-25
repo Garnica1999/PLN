@@ -1,0 +1,16 @@
+bucket,n,error_rate,corte
+Q1 (más cortos),34651,0.5251,longitud
+Q2,33708,0.4664,longitud
+Q3,33448,0.4243,longitud
+Q4,39721,0.38,longitud
+Q5 (más largos),27808,0.3716,longitud
+0,107741,0.4622,retuit
+1,61595,0.3854,retuit
+0,100774,0.4346,urls
+1,62993,0.441,urls
+2,5498,0.3532,urls
+3,64,0.2344,urls
+4,6,0.1667,urls
+5,1,0.0,urls
+False,161940,0.4415,near-duplicado
+True,7396,0.2749,near-duplicado

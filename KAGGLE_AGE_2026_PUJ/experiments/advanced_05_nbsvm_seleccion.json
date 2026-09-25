@@ -1,0 +1,44 @@
+{
+  "nbsvm_fold0": {
+    "macro_f1": 0.5672,
+    "referencia_svm": 0.5683
+  },
+  "nbsvm_cv": {
+    "macro_f1": 0.5641,
+    "per_fold": [
+      0.5672,
+      0.5669,
+      0.5661,
+      0.564,
+      0.5563
+    ]
+  },
+  "seleccion": [
+    {
+      "variante": "completo (267)",
+      "macro_f1": 0.5897,
+      "std": 0.0043
+    },
+    {
+      "variante": "top-50 por ANOVA F",
+      "macro_f1": 0.5731,
+      "std": 0.0036
+    },
+    {
+      "variante": "top-100 por ANOVA F",
+      "macro_f1": 0.5867,
+      "std": 0.0048
+    },
+    {
+      "variante": "top-150 por ANOVA F",
+      "macro_f1": 0.5896,
+      "std": 0.0042
+    },
+    {
+      "variante": "top-200 por ANOVA F",
+      "macro_f1": 0.589,
+      "std": 0.0046
+    }
+  ],
+  "segundos": 1466.4
+}

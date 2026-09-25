@@ -1,0 +1,39 @@
+{
+  "combinaciones": [
+    {
+      "combinacion": "referencia: 10 fuentes + densas (LogReg meta)",
+      "n_features": 90,
+      "meta": "LogReg",
+      "macro_f1": 0.5851,
+      "std": 0.0042
+    },
+    {
+      "combinacion": "+ modelo ordinal acumulativo",
+      "n_features": 96,
+      "meta": "LogReg",
+      "macro_f1": 0.5854,
+      "std": 0.0042
+    },
+    {
+      "combinacion": "+ ordinal + centroides",
+      "n_features": 102,
+      "meta": "LogReg",
+      "macro_f1": 0.586,
+      "std": 0.0045
+    },
+    {
+      "combinacion": "+ ordinal + centroides con meta LightGBM",
+      "n_features": 102,
+      "meta": "LightGBM",
+      "macro_f1": 0.5858,
+      "std": 0.0045
+    }
+  ],
+  "mejor": "+ ordinal + centroides",
+  "mejor_macro_f1": 0.586,
+  "referencia_e020": 0.5851,
+  "aporte_ordinal": 0.0003,
+  "aporte_centroides": 0.0006,
+  "aporte_meta_lightgbm": 0.0,
+  "segundos": 455.1
+}

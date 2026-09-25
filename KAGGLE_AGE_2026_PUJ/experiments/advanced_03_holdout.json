@@ -1,0 +1,46 @@
+{
+  "holdout_congelado": {
+    "share": 0.15,
+    "seed": 2026,
+    "n_holdout": 25204,
+    "n_clusters_holdout": 24602,
+    "resultados": {
+      "baseline": {
+        "macro_f1": 0.5914,
+        "accuracy": 0.5924,
+        "n_features": 107
+      },
+      "candidato": {
+        "macro_f1": 0.5966,
+        "accuracy": 0.5975,
+        "n_features": 267
+      }
+    },
+    "delta_macro_f1": 0.0052,
+    "confirmado": true
+  },
+  "candidato": {
+    "nombre": "AGE_ADVANCED_V01",
+    "meta_features": 267,
+    "checks": {
+      "columns_ok": true,
+      "columns_match_sample": true,
+      "rows_ok": true,
+      "ids_equal_test": true,
+      "ids_unique": true,
+      "ids_same_order": true,
+      "no_nan": true,
+      "labels_valid": true
+    },
+    "distribucion_predicha": {
+      "13-17": 18309,
+      "18-24": 20886,
+      "25-34": 16924,
+      "35-49": 17128,
+      "50-64": 19939,
+      "65-xx": 19706
+    },
+    "archivo": "/home/carlos/Git/PLN/KAGGLE_AGE_2026_PUJ/submissions/age_submission_v09.csv",
+    "segundos": 789.9
+  }
+}

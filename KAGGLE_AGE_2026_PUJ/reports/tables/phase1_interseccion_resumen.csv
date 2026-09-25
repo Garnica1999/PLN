@@ -1,0 +1,5 @@
+categoria,n,pct,accuracy_ensamble,n_chars_medio,pct_rt,menciones_medio,pct_solo_texto
+everyone_wrong,26196,15.47,0.0327,86.8,35.9,0.75,35.9
+one_model_right,20952,12.37,0.14,81.9,31.6,0.69,38.0
+few_models_right,23993,14.17,0.3599,84.0,29.7,0.7,40.5
+many_models_right,98195,57.99,0.8927,94.2,39.2,1.19,32.7

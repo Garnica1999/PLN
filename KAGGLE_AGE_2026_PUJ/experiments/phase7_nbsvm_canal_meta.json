@@ -1,0 +1,34 @@
+{
+  "nbsvm_palabra": {
+    "macro_f1": 0.5254,
+    "per_fold": [
+      0.5289,
+      0.5261,
+      0.5263,
+      0.5285,
+      0.5173
+    ],
+    "referencia_nbsvm_char_mencion": 0.5641,
+    "referencia_svm_300k": 0.5658
+  },
+  "aporte_nbsvm_palabra_al_meta": {
+    "mlp_base": 0.5967,
+    "mlp_con_nbsvm_palabra": 0.5976,
+    "delta": 0.0009,
+    "folds_con_mejora": 3,
+    "mejora_por_fold": [
+      -0.0012,
+      0.001,
+      0.0014,
+      0.0053,
+      -0.0019
+    ]
+  },
+  "combinadores": {
+    "mlp": 0.5978,
+    "logreg": 0.5915,
+    "promedio": 0.6005,
+    "delta_promedio_vs_mlp": 0.0027
+  },
+  "segundos": 931.5
+}

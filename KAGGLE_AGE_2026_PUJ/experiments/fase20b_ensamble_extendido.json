@@ -1,0 +1,173 @@
+{
+  "combinaciones": [
+    {
+      "combinacion": "5 base + hashtags + ordinal + word",
+      "n_features": 49,
+      "macro_f1_lofo": 0.5748,
+      "std": 0.0048
+    },
+    {
+      "combinacion": "5 base + hashtags + ordinal",
+      "n_features": 43,
+      "macro_f1_lofo": 0.5725,
+      "std": 0.0048
+    },
+    {
+      "combinacion": "5 base (+700k)",
+      "n_features": 30,
+      "macro_f1_lofo": 0.5703,
+      "std": 0.0049
+    },
+    {
+      "combinacion": "svm700k + hashtags + ordinal + word",
+      "n_features": 25,
+      "macro_f1_lofo": 0.5702,
+      "std": 0.004
+    },
+    {
+      "combinacion": "4 base + hashtags + ordinal",
+      "n_features": 37,
+      "macro_f1_lofo": 0.5682,
+      "std": 0.0043
+    },
+    {
+      "combinacion": "4 base + hashtags",
+      "n_features": 30,
+      "macro_f1_lofo": 0.5679,
+      "std": 0.0045
+    },
+    {
+      "combinacion": "4 base (Fase 20)",
+      "n_features": 24,
+      "macro_f1_lofo": 0.566,
+      "std": 0.0043
+    }
+  ],
+  "mejor_combinacion": "5 base + hashtags + ordinal + word",
+  "mejor_macro_f1_lofo": 0.5748,
+  "referencia_fase20": 0.5656,
+  "mejor_individual": 0.5628,
+  "detalle": {
+    "4 base (Fase 20)": {
+      "fuentes": [
+        "svm",
+        "logreg",
+        "sgd",
+        "cnb"
+      ],
+      "per_fold": [
+        0.5689319332977855,
+        0.5679675302187079,
+        0.5691991188780606,
+        0.5660783166769877,
+        0.557738123816896
+      ]
+    },
+    "4 base + hashtags": {
+      "fuentes": [
+        "svm",
+        "logreg",
+        "sgd",
+        "cnb",
+        "hashtags"
+      ],
+      "per_fold": [
+        0.5713993392442797,
+        0.5689224592013523,
+        0.5711900563074482,
+        0.5689390210276332,
+        0.5592393233438587
+      ]
+    },
+    "4 base + hashtags + ordinal": {
+      "fuentes": [
+        "svm",
+        "logreg",
+        "sgd",
+        "cnb",
+        "hashtags",
+        "ordinal",
+        "ordinal_soft"
+      ],
+      "per_fold": [
+        0.5722349530097035,
+        0.5691872147566494,
+        0.5711225512040911,
+        0.5684602475436501,
+        0.5600677266119901
+      ]
+    },
+    "5 base (+700k)": {
+      "fuentes": [
+        "svm",
+        "svm700k",
+        "logreg",
+        "sgd",
+        "cnb"
+      ],
+      "per_fold": [
+        0.5750351013785814,
+        0.5713730765912403,
+        0.5734456668721327,
+        0.5704372185947256,
+        0.561005149317758
+      ]
+    },
+    "5 base + hashtags + ordinal": {
+      "fuentes": [
+        "svm",
+        "svm700k",
+        "logreg",
+        "sgd",
+        "cnb",
+        "hashtags",
+        "ordinal",
+        "ordinal_soft"
+      ],
+      "per_fold": [
+        0.577750360153262,
+        0.574134668354558,
+        0.5747714777258783,
+        0.5722006438118868,
+        0.5636974233912104
+      ]
+    },
+    "5 base + hashtags + ordinal + word": {
+      "fuentes": [
+        "svm",
+        "svm700k",
+        "logreg",
+        "sgd",
+        "cnb",
+        "hashtags",
+        "ordinal",
+        "ordinal_soft",
+        "word"
+      ],
+      "per_fold": [
+        0.579913082636427,
+        0.5760632493121834,
+        0.5767276291924341,
+        0.5755380242187148,
+        0.5655975077466303
+      ]
+    },
+    "svm700k + hashtags + ordinal + word": {
+      "fuentes": [
+        "svm700k",
+        "hashtags",
+        "ordinal",
+        "ordinal_soft",
+        "word"
+      ],
+      "per_fold": [
+        0.5731962091339179,
+        0.5724261019713867,
+        0.5721503907326,
+        0.5706043592359554,
+        0.562413171442535
+      ]
+    }
+  },
+  "segundos": 261.3
+}

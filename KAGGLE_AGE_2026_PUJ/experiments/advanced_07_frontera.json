@@ -1,0 +1,111 @@
+{
+  "diagnostico": {
+    "macro_f1_ensamble": 0.5906,
+    "fronteras": {
+      "18-24|25-34": {
+        "n_filas": 57023,
+        "accuracy_ensamble": 0.486,
+        "confusion": {
+          "18-24->25-34": 0.15,
+          "25-34->18-24": 0.2026
+        },
+        "perfil_acierto": {
+          "n_chars": 77.261,
+          "n_words": 11.624,
+          "n_mention": 0.836,
+          "is_rt": 0.289,
+          "n_hashtag": 0.383,
+          "n_url": 0.312,
+          "ttr": 0.965,
+          "upper_ratio": 0.123
+        },
+        "perfil_error": {
+          "n_chars": 79.929,
+          "n_words": 12.037,
+          "n_mention": 0.651,
+          "is_rt": 0.312,
+          "n_hashtag": 0.238,
+          "n_url": 0.409,
+          "ttr": 0.96,
+          "upper_ratio": 0.131
+        }
+      },
+      "25-34|35-49": {
+        "n_filas": 56577,
+        "accuracy_ensamble": 0.4871,
+        "confusion": {
+          "25-34->35-49": 0.1262,
+          "35-49->25-34": 0.1387
+        },
+        "perfil_acierto": {
+          "n_chars": 94.933,
+          "n_words": 13.453,
+          "n_mention": 1.16,
+          "is_rt": 0.322,
+          "n_hashtag": 0.431,
+          "n_url": 0.473,
+          "ttr": 0.965,
+          "upper_ratio": 0.122
+        },
+        "perfil_error": {
+          "n_chars": 86.069,
+          "n_words": 12.789,
+          "n_mention": 0.751,
+          "is_rt": 0.326,
+          "n_hashtag": 0.226,
+          "n_url": 0.435,
+          "ttr": 0.96,
+          "upper_ratio": 0.128
+        }
+      },
+      "35-49|50-64": {
+        "n_filas": 56290,
+        "accuracy_ensamble": 0.6006,
+        "confusion": {
+          "35-49->50-64": 0.1361,
+          "50-64->35-49": 0.0953
+        },
+        "perfil_acierto": {
+          "n_chars": 104.919,
+          "n_words": 14.433,
+          "n_mention": 1.427,
+          "is_rt": 0.33,
+          "n_hashtag": 0.358,
+          "n_url": 0.51,
+          "ttr": 0.959,
+          "upper_ratio": 0.141
+        },
+        "perfil_error": {
+          "n_chars": 93.114,
+          "n_words": 13.593,
+          "n_mention": 0.858,
+          "is_rt": 0.359,
+          "n_hashtag": 0.239,
+          "n_url": 0.471,
+          "ttr": 0.959,
+          "upper_ratio": 0.13
+        }
+      }
+    }
+  },
+  "especialista": {
+    "macro_f1_con_especialista": 0.587,
+    "delta": -0.0036,
+    "filas_reclasificadas": 8951,
+    "errores_corregidos": 2587,
+    "errores_introducidos": 3217,
+    "compuertas_activadas_por_frontera": {
+      "18-24|25-34": 26089,
+      "25-34|35-49": 24126,
+      "35-49|50-64": 20553
+    },
+    "macro_f1_por_fold": [
+      0.5909,
+      0.5896,
+      0.5876,
+      0.5885,
+      0.5782
+    ]
+  },
+  "segundos": 881.5
+}
