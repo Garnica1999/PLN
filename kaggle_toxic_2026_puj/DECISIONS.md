@@ -778,3 +778,47 @@ evidencia, experimento, resultado, conclusion final.
   `reports/label_consistency_v4_ejemplos.md` (revision manual de los clusters),
   `reports/hardness_v4.json`, `reports/hardness_v4.csv`,
   `reports/figuras/fig_32_hardness_v4.png`.
+
+## D-027 - P2 (TRACK B): el hard example mining clasico empeora; solo funciona bajar el peso de los ejemplos que mas violan el umbral
+
+- **Contexto**: V4-B03, V4-B04 y V4-B05 del backlog v4, con el diseño sin fuga
+  exigido por la spec (§11): para cada pliegue externo se calcula la dureza con
+  un CV **anidado** de 4 pliegues sobre el entrenamiento, de modo que ningun peso
+  procede de un modelo que vio ese ejemplo. El control `lr:none` reproduce
+  exactamente la referencia (0.7772), lo que valida el pipeline.
+- **Observacion**: (a) subir el peso a los ejemplos difficiles **empeora** de
+  forma consistente: `mild_up` 0.7751, `medium_up` 0.7676, `clipped_extremos`
+  0.7736 frente a 0.7772, con IC bootstrap negativo para `medium_up`
+  ([-0.0166, -0.0038]); (b) `medium_down` 0.7590, es decir, bajar el peso a los
+  ejemplos mas cercanos a la frontera tambien empeora; (c) el unico esquema que
+  mejora es `down_violacion`, que baja el peso de los ejemplos que **mas violan**
+  el umbral: LR 0.7784 (+0.0036, IC95 [-0.0016, +0.0092]) y SVC 0.7801, que es
+  +0.0086 respecto de su propio control (0.7715); (d) la ponderacion
+  independiente por etiqueta empeora (0.7686); (e) las tres estrategias de la
+  spec §8 no mueven la metrica: downweight 0.7777 (+0.0005) y remove 0.7768
+  (-0.0004).
+- **Hipotesis**: dar mas peso a los ejemplos que el modelo falla (hard example
+  mining) y penalizar los que mas violan el umbral (descartar ruido) son la misma
+  familia de mecanismos con signo opuesto, y solo uno puede ayudar.
+- **Metodo**: `experiments/29_reweighting_v4.py` (6 esquemas x 2 modelos +
+  ponderacion por etiqueta + 2 estrategias de contradiccion; 5 pliegues; OOF
+  anidado; bootstrap pareado de 2.000 remuestreos).
+- **Resultado**: filas `V4-B03`, `V4-B04` y `V4-B05` de `experiments.csv`;
+  `reports/reweighting_v4.csv` (14 variantes) y `features/oof_reweight_v4.npz`.
+- **Interpretacion**: en este corpus los ejemplos que el modelo falla son, desde
+  el punto de vista del modelo, frontera irreductible con la representacion
+  disponible (insulto en registro de afiliacion, odio implicito, referencia
+  colectiva): subir su peso empuja la frontera y degrada el resto, mientras que
+  excluirlos del entrenamiento permite un limite de decision mas limpio. El
+  patron es coherente con D-026 (el ruido textual no explica el error) y con la
+  revision bibliografica (DiscrimLoss, `reports/estado_arte_v4.md` §4).
+- **Decision**: (1) V4-B03, V4-B04 y V4-B05 quedan **cerradas sin adopcion**
+  (ninguna variante cumple el criterio D-016 de +0.005 y 3/5 pliegues);
+  (2) el TRACK B se da por cerrado en su parte de reweighting; (3) el unico
+  mecanismo con señal positiva (`down_violacion`) se arrastra al TRACK C como
+  V4-C05 para comprobar si es **complementario** del barrido de class weights;
+  (4) no se borra ninguna etiqueta ni ejemplo (§8, §90).
+- **Razon**: se evita gastar mas LINEAs en una familia con evidencia negativa
+  consistente y se concentra el esfuerzo en el mecanismo que mostro senal.
+- **Evidencia**: `reports/reweighting_v4.json`,
+  `reports/figuras/fig_33_reweighting_v4.png`.

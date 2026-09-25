@@ -322,7 +322,7 @@ subword/simbolicas, verosimilitud class-conditional y espanol reciente.
 - **Transferible**: si, por el **hallazgo negativo**. El resultado central de la linea de
   resultados negativos es que la robustez frente al ruido en texto **no es una propiedad
   de la arquitectura sino del procedimiento de entrenamiento y de la severidad del
-  ruido**: con ruido suave aporta poco; con ruido fuerte las tecnicas(Client) rinden. La
+  ruido**: con ruido suave aporta poco; con ruido fuerte las tecnicas rinden. La
   consecuencia practica para nosotros es un **techo realista**: con 1.731 filas
   etiquetadas y una tasa de contradiccion medida del 2.77-2.89 % (`V4-A01`), el ruido es
   **suave**, luego las tecnicas de desruido tienen rendimiento esperado bajo.
@@ -593,7 +593,7 @@ ideas son **por etiqueta** o **probabilisticas**).
 
 - **DOI**: 10.1007/s11042-022-12538-3
 - **Problema**: revision de la familia completa de esquemas de ponderacion (basados en
-  frecuencia, supervised, basados en position, semanticos), con su comportamiento empirico.
+  frecuencia, supervisados, position-based y semanticos), con su comportamiento empirico.
 - **Metodo**: revision bibliografica con taxonomia y comparacion.
 - **Restriccion**: incluye esquemas semanticos basados en embeddings (prohibidos); solo se
   usa la parte de frecuencia y supervision.
@@ -877,7 +877,7 @@ Se registra como vacio.
   uso de "vosotros", "computadora", "celular", "chaval", "malparido" frente a "cabron",
   "hijoputa" con escritura particular, etc.), **todas derivadas de TRAIN y documentadas
   (D-007)**.
-- **Adaptacion (experimento v4)**: `V4-F03` - **diagnostico no supervised de shift
+- **Adaptacion (experimento v4)**: `V4-F03` - **diagnostico no supervisado de shift**
   train<->test** (secciones 52-53 de la spec): proyectar TRAIN y TEST con el mismo
   vectorizador (aprendido en TRAIN) en un espacio de baja dimension con `TruncatedSVD` de
   las char n-grams, y comparar las distribuciones marginales y la distancia al centroide
@@ -1105,7 +1105,15 @@ tiene fundamento y para cerrar honestamente la seccion 7 (HS implicito).
    un trabajo 2022-2026 los usa como base teorica (HateCheck en de Araujo & Roth 2022).
 6. **Preprints**: excluido `AlleNoise` (arXiv 2024, Rączkowska et al.) por no tener
    publicacion revisada por pares confirmada; y quedan fuera por la misma razon otras
-  candidatos que la busqueda devolvio en arXiv.
+   candidatos que la busqueda devolvio en arXiv.
+7. **HTTP 403 no significa DOI invalido**: 35 de las 38 URLs del CSV respondieron 200 en una
+   comprobacion automatica del 2026-09-25. Las 3 restantes
+   (`10.1093/comjnl/bxae068`, `10.1145/3726302.3729905`, `10.3390/app14199034`) devolvieron
+   403 al seguir la redireccion del DOI, que es un bloqueo anti-bot del editor (Oxford
+   University Press, ACM y MDPI respectivamente). Los tres DOIs se resolvieron con titulo,
+   autores, ano, revista y tipo de documento correctos contra la API de Crossref, y el
+   registro ACM confirma ademas que Robertson 2025 es un articulo completo de los
+   proceedings del SIGIR 48.
 
 ---
 

@@ -15,7 +15,7 @@ Leyenda: `[ ]` pendiente, `[~]` en curso, `[x]` hecho, `[!]` cerrado con evidenc
 - [x] Gap analysis con taxonomia de estados (`reports/v4_gap_analysis.md`)
 - [x] Backlog v4 pre-registrado (26 lineas) y matriz de cobertura (`reports/signal_coverage_v4.csv`)
 - [x] Memoria actualizada: D-025, RUNLOG, `experiments.csv` (fila V4-00), PROJECT_STATE
-- [~] Revision bibliografica 2022-2026 (`reports/estado_arte_v4.md`, en curso en paralelo)
+- [x] Revision bibliografica 2022-2026 (`reports/estado_arte_v4.md`: 38 papers verificados, 1127 lineas)
 
 ## P1 - TRACK A y B (diagnostico)
 
@@ -27,15 +27,15 @@ Leyenda: `[ ]` pendiente, `[~]` en curso, `[x]` hecho, `[!]` cerrado con evidenc
 
 ## P2 - TRACK B (experimento) y TRACK C
 
-- [ ] V4-B03 reweighting mild/medium/clipped en LR y LinearSVC
-- [ ] V4-B04 dureza por etiqueta
-- [ ] V4-B05 tres estrategias de manejo de contradicciones
+- [x] V4-B03 reweighting mild/medium/clipped en LR y LinearSVC
+- [x] V4-B04 dureza por etiqueta
+- [x] V4-B05 tres estrategias de manejo de contradicciones
 - [ ] V4-B06 perdidas robustas (si es viable sin hacks)
-- [ ] V4-C01 log-odds suavizado por clase aplicado a la matriz TF-IDF
-- [ ] V4-C02 chi2 y MI por etiqueta
-- [ ] V4-C03 BM25 (k1, b), binario y augmented TF
-- [ ] V4-C04 jilla de `class_weight` por etiqueta
-- [ ] V4-C05 interaccion sample weight x class weight
+- [~] V4-C01 log-odds suavizado por clase aplicado a la matriz TF-IDF
+- [~] V4-C02 chi2 y MI por etiqueta
+- [~] V4-C03 BM25 (k1, b), binario y augmented TF
+- [~] V4-C04 jilla de `class_weight` por etiqueta
+- [~] V4-C05 interaccion sample weight x class weight
 - [ ] Gate: cada linea con `corrected_cv`, pliegues, bootstrap y decision
 
 ## P3 - TRACK E (modelo conjunto de etiquetas)
