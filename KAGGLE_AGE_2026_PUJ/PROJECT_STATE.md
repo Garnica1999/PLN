@@ -16,8 +16,20 @@
   verificado con `grep`).
 
 ## Fase actual
-- **FASE AVANZADA (segunda generación)** ejecutada (2026-09-24): gap analysis, features nuevas,
-  holdout congelado y candidato `AGE_ADVANCED_V01` listo para envío (v09).
+- **BÚSQUEDA DE SEÑAL RESIDUAL (fases A-J) CONCLUIDA el 2026-09-25. LÍNEA SATURADA (D-033, D-035).**
+  El modelo final **no cambia**: v12 (CV 0,6004 · holdout 0,6077 · leaderboard 0,62182). **No se envió
+  nada a Kaggle.**
+- **Resultado**: 14 variantes evaluadas; ninguna cumple Δ ≥ +0,003 con ≥4/5 folds en CV. Única señal
+  positiva: la **vista estructural** (secuencia de tipos de token, sin contenido) con rescate del
+  18,17% de los errores del v12, **CV +0,0018 (4/5 folds)** y **holdout congelado +0,0031** (0,6108
+  frente a 0,6077). No adoptada por el gate pre-registrado; archivo candidato local disponible.
+- **Hallazgo de integridad (D-034)**: la submission v12 subida no se reconstruye al 100% (93,88%);
+  descartadas desalineación de matrices (fresca vs caché = 100,0000%), inestabilidad del ajuste
+  (100,0000%) y no reproducibilidad del holdout (0,6077 exacto). Es trazabilidad del artefacto, no
+  metodología; el candidato se regeneró con la matriz fresca verificada.
+- **Artefactos de la fase**: `reports/fase_residual_informe.md`, `experiments/phase1[2-9]*.json`,
+  `experiments/phase2[0-6]*.json`, `features/oof_ensemble_v12.npy`,
+  `features/meta_features_test_v12_fresca.npy`, `features/vista_*_margenes.npy`.
 
 ## Estado según el formato del brief §83
 - **CURRENT BEST CV**: **0,6005** (LOFO) — candidato v12 (promedio MLP+LogReg sobre 279 features).

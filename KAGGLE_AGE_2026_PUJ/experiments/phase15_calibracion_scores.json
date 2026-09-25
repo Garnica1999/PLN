@@ -1,0 +1,118 @@
+{
+  "fase": "D — calibración y transformaciones de score",
+  "fecha": "2026-09-25",
+  "baseline": {
+    "macro_f1": 0.6004,
+    "std": 0.0042,
+    "per_fold": [
+      0.6007,
+      0.605,
+      0.6032,
+      0.6004,
+      0.5928
+    ],
+    "origen": "fase 12"
+  },
+  "temperaturas_por_fold": [
+    {
+      "variante": "D1a log-prob (T=1)",
+      "media_por_miembro": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "variante": "D1b log-prob + T in-fold",
+      "media_por_miembro": [
+        0.5,
+        0.5,
+        1.0,
+        1.25,
+        1.0,
+        0.5,
+        2.5,
+        1.0,
+        1.25,
+        1.0,
+        0.25,
+        0.5
+      ]
+    }
+  ],
+  "variantes": [
+    {
+      "variante": "D1a log-prob (T=1) · promedio de combinadores",
+      "n_features": 279,
+      "macro_f1": 0.6005,
+      "std": 0.0041,
+      "per_fold": [
+        0.602,
+        0.6051,
+        0.6016,
+        0.601,
+        0.5928
+      ],
+      "delta_vs_v12": 0.0001,
+      "folds_positivos": 3
+    },
+    {
+      "variante": "D1a log-prob (T=1) · promedio de combinadores",
+      "n_features": 279,
+      "macro_f1": 0.6007,
+      "std": 0.004,
+      "per_fold": [
+        0.602,
+        0.605,
+        0.602,
+        0.6013,
+        0.5932
+      ],
+      "delta_vs_v12": 0.0003,
+      "folds_positivos": 3
+    },
+    {
+      "variante": "D1b log-prob + T in-fold · promedio de combinadores",
+      "n_features": 279,
+      "macro_f1": 0.6003,
+      "std": 0.0039,
+      "per_fold": [
+        0.6016,
+        0.6032,
+        0.6029,
+        0.6011,
+        0.5926
+      ],
+      "delta_vs_v12": -0.0001,
+      "folds_positivos": 2
+    },
+    {
+      "variante": "D1b log-prob + T in-fold · promedio de combinadores",
+      "n_features": 279,
+      "macro_f1": 0.6002,
+      "std": 0.0038,
+      "per_fold": [
+        0.6018,
+        0.6027,
+        0.6026,
+        0.6014,
+        0.5927
+      ],
+      "delta_vs_v12": -0.0002,
+      "folds_positivos": 2
+    }
+  ],
+  "mejor": "D1a log-prob (T=1) · promedio de combinadores",
+  "criterio": "Δ ≥ +0,003 y ≥4/5 folds positivos",
+  "adoptado": false,
+  "segundos": 1291.8
+}

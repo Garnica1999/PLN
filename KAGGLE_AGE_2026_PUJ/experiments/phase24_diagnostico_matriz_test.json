@@ -1,0 +1,210 @@
+{
+  "fase": "diagnóstico de la matriz de test",
+  "fecha": "2026-09-25",
+  "formas": {
+    "cache": [
+      112892,
+      273
+    ],
+    "fresco": [
+      112892,
+      273
+    ]
+  },
+  "comparacion_bloques": [
+    {
+      "bloque": "fuentes_pipeline",
+      "columnas": 72,
+      "max_diferencia_absoluta": 1e-05,
+      "correlacion_media_columnas": 1.0,
+      "coincide_exacto": false
+    },
+    {
+      "bloque": "nb_char_mencion",
+      "columnas": 6,
+      "max_diferencia_absoluta": 3.1e-05,
+      "correlacion_media_columnas": 1.0,
+      "coincide_exacto": false
+    },
+    {
+      "bloque": "densas",
+      "columnas": 35,
+      "max_diferencia_absoluta": 0.0,
+      "correlacion_media_columnas": 1.0,
+      "coincide_exacto": true
+    },
+    {
+      "bloque": "estructuradas",
+      "columnas": 87,
+      "max_diferencia_absoluta": 0.0,
+      "correlacion_media_columnas": 1.0,
+      "coincide_exacto": true
+    },
+    {
+      "bloque": "supervisadas",
+      "columnas": 73,
+      "max_diferencia_absoluta": 0.0,
+      "correlacion_media_columnas": NaN,
+      "coincide_exacto": true
+    }
+  ],
+  "permutaciones_fuentes": [
+    {
+      "sub_bloque_cache": [
+        0,
+        6
+      ],
+      "mejor_coincidencia_fresco": [
+        0,
+        6
+      ],
+      "correlacion": 1.0,
+      "es_su_posicion": true
+    },
+    {
+      "sub_bloque_cache": [
+        6,
+        12
+      ],
+      "mejor_coincidencia_fresco": [
+        6,
+        12
+      ],
+      "correlacion": 1.0,
+      "es_su_posicion": true
+    },
+    {
+      "sub_bloque_cache": [
+        12,
+        18
+      ],
+      "mejor_coincidencia_fresco": [
+        12,
+        18
+      ],
+      "correlacion": 1.0,
+      "es_su_posicion": true
+    },
+    {
+      "sub_bloque_cache": [
+        18,
+        24
+      ],
+      "mejor_coincidencia_fresco": [
+        18,
+        24
+      ],
+      "correlacion": 1.0,
+      "es_su_posicion": true
+    },
+    {
+      "sub_bloque_cache": [
+        24,
+        30
+      ],
+      "mejor_coincidencia_fresco": [
+        24,
+        30
+      ],
+      "correlacion": 1.0,
+      "es_su_posicion": true
+    },
+    {
+      "sub_bloque_cache": [
+        30,
+        36
+      ],
+      "mejor_coincidencia_fresco": [
+        30,
+        36
+      ],
+      "correlacion": 1.0,
+      "es_su_posicion": true
+    },
+    {
+      "sub_bloque_cache": [
+        36,
+        37
+      ],
+      "mejor_coincidencia_fresco": [
+        36,
+        37
+      ],
+      "correlacion": 1.0,
+      "es_su_posicion": true
+    },
+    {
+      "sub_bloque_cache": [
+        37,
+        43
+      ],
+      "mejor_coincidencia_fresco": [
+        37,
+        43
+      ],
+      "correlacion": 1.0,
+      "es_su_posicion": true
+    },
+    {
+      "sub_bloque_cache": [
+        43,
+        49
+      ],
+      "mejor_coincidencia_fresco": [
+        43,
+        49
+      ],
+      "correlacion": 1.0,
+      "es_su_posicion": true
+    },
+    {
+      "sub_bloque_cache": [
+        49,
+        55
+      ],
+      "mejor_coincidencia_fresco": [
+        49,
+        55
+      ],
+      "correlacion": 1.0,
+      "es_su_posicion": true
+    },
+    {
+      "sub_bloque_cache": [
+        55,
+        61
+      ],
+      "mejor_coincidencia_fresco": [
+        55,
+        61
+      ],
+      "correlacion": 1.0,
+      "es_su_posicion": true
+    },
+    {
+      "sub_bloque_cache": [
+        61,
+        67
+      ],
+      "mejor_coincidencia_fresco": [
+        61,
+        67
+      ],
+      "correlacion": 1.0,
+      "es_su_posicion": true
+    },
+    {
+      "sub_bloque_cache": [
+        67,
+        72
+      ],
+      "mejor_coincidencia_fresco": [
+        67,
+        72
+      ],
+      "correlacion": 1.0,
+      "es_su_posicion": true
+    }
+  ],
+  "segundos": 647.9
+}

@@ -427,3 +427,125 @@ ruido** — queda registrado como lección.
 ### Seguridad
 El token de GitHub compartido en el chat **debe revocarse** tras esta sesión; no quedó escrito en
 ningún archivo del repositorio (verificado con `grep`).
+
+## 2026-09-25 — Sesión 14 (búsqueda de señal residual: FASE A, auditoría del estado)
+
+| # | Acción | Artefacto | Resultado |
+|---|---|---|---|
+| 96 | Auditoría del estado real (FASE A) | `scripts/phase12_auditoria_estado.py` -> `experiments/phase12_auditoria_estado.json`, `reports/auditoria_estado_fase12.md` | 8 secciones, 607 s |
+| 97 | Envíos verificados por API de Kaggle (solo lectura) | `experiments/phase12_auditoria_estado.json` -> `envios_kaggle` | **15 registrados, 12 puntuados** |
+
+### Verificaciones de la FASE A (todas superadas)
+- Alineación: etiquetas == OOF; 282.228 filas de clústeres con normalizado coincidente al 100,0000%.
+- Matriz del meta de train **reconstruida exactamente** (169.336 x 273; diferencia máxima absoluta 0,0).
+- Firmas de bloque train/test: 273 columnas; invariante exp-suma = 1 en los 8 bloques logarítmicos; cero columnas de varianza nula; cero NaN/Inf.
+- CV LOFO del v12 reproducido: **0,6004 ± 0,0042** (por fold 0,6007 / 0,6050 / 0,6032 / 0,6004 / 0,5928, idénticos a `phase11`).
+- **End-to-end**: el modelo v11 reconstruido sobre las matrices cacheadas reproduce `age_submission_v11.csv` con **acuerdo 100,0000%** -> la alineación semántica del lado test (riesgo tipo D-021) queda verificada.
+- Holdout congelado: determinista (24.602 clústeres, 25.204 filas, 14,884%).
+- Submission v12: 8/8 checks formales; distribución no degenerada.
+- Envíos: 15 registrados (12 COMPLETE con puntaje, 3 ERROR de plataforma), incluido el degenerado 0,39563 del incidente D-021. D-004 (~10 envíos) queda obsoleto.
+
+## 2026-09-25 — Sesión 15 (búsqueda de señal residual: FASE B, errores y desacuerdo)
+
+| # | Acción | Artefacto | Resultado |
+|---|---|---|---|
+| 98 | OOF del v12 cacheado | `features/oof_ensemble_v12.npy` | macro-F1 0,6005 reproduciendo la referencia |
+| 99 | Análisis de errores y desacuerdo (FASE B) | `scripts/phase13_error_desacuerdo.py` -> `experiments/phase13_error_desacuerdo.json`, `reports/phase13_error_desacuerdo.md` | 640 s; 5 tablas + figura |
+| 100 | Corrección de bug de nombres `.npy.npy` en FASE B | `scripts/phase13_error_desacuerdo.py`, `scripts/phase15_calibracion_scores.py` | detectado por ejecución; corregido y re-ejecutado |
+
+### Hallazgos de la FASE B
+- **13,87%** de las filas: ningún miembro acierta (techo de la clase de modelos actual). **26,70%**: el ensamble falla y al menos un miembro acierta (rescatable).
+- Gradiente de consenso monótono: quintil más bajo error 60,2% (rescatable 47,0%) -> quintil más alto 18,1% (6,3%).
+- Familias que rescatan cuando el ensamble falla: ordinal 19,96%, prototipos 19,87%, denso 19,27%; el denso es el que más veces es **el único** que acierta (3,44%).
+- Fronteras: `18-24|25-34` 42,48% del error total (exactitud dentro de la pareja 0,4963) y `25-34|35-49` 42,06% (0,4974).
+- Peores segmentos: `solo_url` 59,9% de error, `muy_corto` 50,8%, sin menciones 51,0%.
+- F1 por clase: 13-17 0,671 | 18-24 0,506 | 25-34 0,486 | 35-49 0,559 | 50-64 0,655 | 65-xx 0,726.
+
+## 2026-09-25 — Sesión 16 (búsqueda de señal residual: FASE C, consenso y desacuerdo)
+
+| # | Acción | Artefacto | Resultado |
+|---|---|---|---|
+| 101 | Bloques de consenso/desacuerdo/gating (FASE C) | `scripts/phase14_consenso_familias.py` -> `experiments/phase14_consenso_familias.json` | 46 features nuevas, 3 variantes, LOFO |
+| 102 | Decisión D-028 | `DECISIONS.md` | Familia cerrada con evidencia |
+
+### Resultado de la FASE C (referencia v12 = 0,6004 ± 0,0042)
+| Variante | macro-F1 | Δ | folds positivos |
+|---|---|---|---|
+| +C1 acuerdo/entropía por familia (11) | 0,5986 | −0,0018 | 1/5 |
+| +C1+C2 divergencias JS (18) | **0,6002** | −0,0002 | 3/5 |
+| +C1+C2+C3 gating contextual (46) | 0,5998 | −0,0006 | 3/5 |
+
+**Interpretación**: el consenso de votos es una función determinista de los scores de los miembros que
+el combinador ya recibe; el MLP aproxima esas agregaciones por sí solo. Coherente con ADV-04 (+0,0002,
+cerrado) y con D-020 (las ganancias del segundo nivel vinieron de diversidad de sesgos y de una vista
+nueva, no de re-expresar los mismos scores).
+
+## 2026-09-25 — Sesión 17 (búsqueda de señal residual: fases D, E, F, G y multivista)
+
+| # | Acción | Artefacto | Resultado |
+|---|---|---|---|
+| 103 | Calibración y blending en logits (FASE D) | `scripts/phase15_calibracion_scores.py` | mejor +0,0003 (3/5) -> nulo (D-029) |
+| 104 | Diversidad de subconjuntos de features (FASE D5) | `scripts/phase15b_diversidad_subsets.py` | 3 vías -0,0017; 4 vías -0,0028; producción reproducida 0,6004 exacta |
+| 105 | Estructura v2: retuit, hashtag, extremos (FASE E) | `scripts/phase17_estructura_v2.py --bloque libres` | 25 features nuevas: +0,0002 (2/5) -> nulo (D-030) |
+| 106 | Limpieza selectiva (FASE F) | `scripts/phase18_limpieza_selectiva.py --variantes F2,F3` | F2 -0,0001; F3 +0,0009 (3/5) -> cerrada (D-031) |
+| 107 | Multivista con puerta de diversidad (§13) | `scripts/phase21_vista_estructural.py` | **estructura +0,0018 (4/5)**; extremos +0,0000; ambas pasan la puerta (rescate 18,2% y 18,8%) |
+| 108 | Refuerzo de la vista estructural | `scripts/phase22_estructura_ampliada.py` | en curso |
+
+### Bugs corregidos en la sesión
+- `phase13`/`phase15`: nombres `.npy.npy` al usar `MEMBER_FILES` (extensión incluida).
+- `phase16`: `probabilidad()` con extensión duplicada; `bloque` residual tras refactorizar G1.
+- `phase18`/`phase19`: concatenación de cadenas numpy (`np.char.add`) y `representantes()`
+  vectorizado (groupby por grupo era inviable: 120k grupos x 5 folds).
+- `phase21`: `f1_score` con etiquetas mixtas (índices frente a cadenas).
+- Nota metodológica: la concurrencia de procesos **no altera** los resultados (la referencia de
+  producción se reprodujo idéntica dos veces bajo carga: 0,6007/0,6050/0,6032/0,6004/0,5928).
+
+## 2026-09-25 — Sesión 18 (búsqueda de señal residual: multivista, holdout y candidato marginal)
+
+| # | Acción | Artefacto | Resultado |
+|---|---|---|---|
+| 109 | Vista estructural y de extremos (§13) | `scripts/phase21_vista_estructural.py` | estructura **+0,0018 (4/5 folds)**, rescate 18,17%; extremos +0,0000 |
+| 110 | Refuerzo de la vista (alfabeto ampliado) | `scripts/phase22_estructura_ampliada.py` | V1 +0,0005; V2 -0,0003; V3 +0,0006 -> la vista simple es el óptimo |
+| 111 | Señal ordinal in-fold y greedy de miembros | `scripts/phase16_ordinal_greedy.py --bloques g1g2` | G1 -0,0003 (1/5); G2 -0,0234 |
+| 112 | **Holdout congelado de la vista estructural** | `scripts/phase19_holdout_variante.py --variante VistaEstructura` | base 0,6077 (exacto) -> vista **0,6108 (+0,0031)** |
+| 113 | Candidato marginal (archivo, sin enviar) | `scripts/phase23_submission_candidato_estructura.py` | 112.892 filas, 8/8 checks; cambia 10,47% de las filas frente a la v12 |
+| 114 | Control de integridad del candidato | `scripts/phase24_diagnostico_matriz_test.py` | la reconstrucción del v12 desde la caché dio 93,88% -> **en diagnóstico** |
+
+### Hallazgo principal de la fase
+La **vista estructural** (secuencia de tipos de token, sin contenido) es la única fuente de señal nueva:
+F1 individual 0,2285, rescate del 18,17% de los errores del v12 (acuerdo 27,96%), **+0,0018 en CV
+(4/5 folds)** y **+0,0031 en el holdout congelado**. No cumple el gate pre-registrado de CV (+0,003),
+por lo que **no se adopta** y no se envía nada (D-032, D-033).
+
+## 2026-09-25 — Sesión 19 (cierre: integridad del artefacto, informe consolidado y veredicto)
+
+| # | Acción | Artefacto | Resultado |
+|---|---|---|---|
+| 115 | Diagnóstico de la matriz de test (¿desalineación?) | `scripts/phase24_diagnostico_matriz_test.py` | **sin desalineación**: todos los bloques coinciden (max|Δ| 1,5e-05) |
+| 116 | Control pareado en un proceso (fresca vs caché vs archivo) | `scripts/phase25_submission_fresca.py` | fresca vs caché **100,0000%**; ambas vs el archivo subido **93,8800%** |
+| 117 | Estabilidad del ajuste final | `scripts/phase26_estabilidad_ajuste.py` | **100,0000%** de acuerdo entre dos ajustes idénticos |
+| 118 | Candidato regenerado con la matriz fresca | `features/meta_features_test_v12_fresca.npy`, `submissions/age_submission_v13_candidato_estructura_NO_ADOPTADO.csv` | 112.892 filas, 8/8 checks |
+| 119 | Informe consolidado de la fase | `scripts/phase20_informe_fase_residual.py` -> `reports/fase_residual_informe.md` | tabla de variantes + veredicto |
+
+### Hallazgo de integridad (D-034)
+La submission v12 enviada **no se reconstruye al 100%** desde el repositorio (93,88%), pero el
+diagnóstico demuestra que **no** es por desalineación de matrices (fresca vs caché = 100,0000%) ni por
+inestabilidad del ajuste (dos ajustes idénticos = 100,0000%) ni por falta de reproducibilidad del
+protocolo (el holdout base se re-ajustó en 0,6077, idéntico a la fase 8). Es una diferencia entre el
+artefacto subido y el estado committeado: **problema de trazabilidad, no de metodología**. Todas las
+comparaciones de la fase son pareadas en el mismo proceso y quedan válidas.
+
+## 2026-09-25 — Sesión 20 (cierre de la entrega: v12 reproducible, notebook e informe)
+
+| # | Acción | Artefacto | Resultado |
+|---|---|---|---|
+| 120 | Artefacto v12 reproducible (cierre de D-034) | `scripts/phase27_reproduccion_v12.py` -> `submissions/age_submission_v12_reproducible.csv` | 112.892 filas, 8/8 checks; 93,88% de coincidencia con el archivo subido |
+| 121 | Notebook consolidado con la Parte II | `scripts/phase28_notebook_final_v2.py` -> `notebooks/99_entrega_consolidado.ipynb` | **46 celdas, 0 errores**; aserciones contra 17 artefactos de la fase |
+| 122 | Informe final ampliado (Parte II) | `scripts/phase29_amplia_reporte_final.py` -> `FINAL_REPORT.md` | 347 líneas (15-20: auditoría, errores, 27 variantes, vista estructural, integridad, cierre) |
+| 123 | Commit local | rama `kaggle-age-2026-residual` (desde `main`), commit `03b95de` | 55 archivos; datos/features/modelos fuera por `.gitignore`; pendiente de push (requiere token nuevo) |
+
+### Estado de la entrega
+- Modelo final **sin cambios** (v12): CV 0,6004 · holdout 0,6077 · leaderboard 0,62182.
+- **Nada enviado a Kaggle** en esta fase; el candidato marginal y el v12 reproducible quedan en
+  `submissions/` con nombres explícitos.
+- Pendiente: push/PR/merge a `main` con un token nuevo (el anterior quedó expuesto y debe estar revocado).

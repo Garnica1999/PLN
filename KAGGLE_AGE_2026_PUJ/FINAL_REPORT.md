@@ -11,7 +11,8 @@
 - **Tarea**: clasificación multiclase de tweets en 6 rangos de edad (`13-17`, `18-24`, `25-34`, `35-49`, `50-64`, `65-xx`) usando solo el texto.
 - **Resultado en el leaderboard**: **0.62182** de F1 (v12; línea base inicial 0.55235; mejora acumulada **+0.0695**).
 - **Validación interna honesta**: 0.6005 de macro-F1 (leave-one-fold-out sobre particiones agrupadas por clústeres de near-duplicados).
-- **Calibración validación↔leaderboard**: 11 envíos con brecha media **+0.0177 ± 0.0020**, explicada por la memorización de near-duplicados del test.
+- **Calibración validación↔leaderboard**: **15 envíos registrados (12 puntuados)** con brecha media **+0.0177 ± 0.0023**, explicada por la memorización de near-duplicados del test (el límite de ~10 envíos de D-004 era un supuesto erróneo).
+- **Fase de búsqueda de señal residual (2026-09-25)**: 27 variantes controladas evaluadas; ninguna supera el umbral pre-registrado (Δ ≥ +0,003 con ≥4/5 folds en CV). **Línea saturada**, modelo final sin cambios y **ninguna submission nueva enviada**. Única señal positiva: la vista estructural (CV +0,0018 con 4/5 folds; holdout +0,0031).
 - **Restricción cumplida**: sin transformers, sin LLMs y **sin ningún modelo de vectorización** (ni preentrenado ni entrenado desde cero): todo el desempeño proviene de representaciones estadísticas (TF-IDF), features artesanales y modelos clásicos.
 - **Auditorías**: APROBADO en leakage, reproducibilidad, formato de submission y trazabilidad académica.
 
@@ -250,3 +251,97 @@ Las 30 referencias completas, con DOI/URL verificado, están en `reports/state_o
 ---
 
 *Informe generado automáticamente desde los artefactos del proyecto por `scripts/fase_final_reporte.py`: las cifras provienen de `experiments.csv`, los JSON de resultados y las tablas de `reports/`, por lo que no pueden desincronizarse de la evidencia ejecutada.*
+
+---
+
+# Parte II — Búsqueda de señal residual (fases A-J, 2026-09-25)
+
+**Pregunta**: ¿queda alguna fuente de señal permitida que produzca una mejora real sobre el modelo
+final v12? **Criterio declarado de antemano**: Δ ≥ +0,003 de macro-F1 en CV agrupado, positivo en ≥4/5
+folds, sin leakage, con confirmación en el holdout congelado.
+
+## 15. Auditoría del estado real (fase A)
+
+- Reconstrucción **exacta** de la matriz del meta (diferencia máxima 0,0) y del CV LOFO
+  (**0.6004**, por fold
+  [0.6007, 0.605, 0.6032, 0.6004, 0.5928]).
+- El modelo v11 reconstruido reproduce `age_submission_v11.csv` con **acuerdo 100,0000%**: la
+  alineación semántica del lado test (riesgo tipo D-021) queda descartada.
+- Holdout congelado determinista: 25,204 filas
+  (14.884%).
+- Kaggle: **15 envíos registrados,
+  12 puntuados**.
+
+## 16. Análisis de errores y desacuerdo (fase B)
+
+- **13.869%** de las filas: ningún miembro acierta (techo de la clase
+  de modelos actual). **26.7%**: el ensamble falla y algún miembro
+  acierta.
+- F1 por clase: {'13-17': 0.671, '18-24': 0.5059, '25-34': 0.4858, '35-49': 0.5593, '50-64': 0.6549, '65-xx': 0.7261}. Elasticidad ordinal: el
+  23.836% de los casos falla a un paso ordinal.
+- Fronteras: `18-24|25-34` concentra el 42,48% del error total y `25-34|35-49` el 42,06%.
+- Peores segmentos: `solo_url` 59,9% de error, `muy_corto` 50,8%, sin menciones 51,0%.
+
+## 17. Las 27 variantes controladas (fases C-G y §13)
+
+| Fase | Variante | Δ vs v12 (CV) | folds + |
+|---|---|---|---|
+| §13 · Vista estructural y extremos | estructura | +0.0018 | 4/5 |
+| F · Limpieza selectiva | F3 clúster selectivo en clases centrales | +0.0009 | 3/5 |
+| §13 · Refuerzo de la vista | V3 ampliada + extremos | +0.0006 | 3/5 |
+| §13 · Refuerzo de la vista | V1 estructura ampliada | +0.0005 | 4/5 |
+| D · Calibración y logits | D1a log-prob (T=1) · promedio de combinadores | +0.0003 | 3/5 |
+| E · Estructura v2 (bloques libres) · libres | libres | +0.0002 | 2/5 |
+| D · Calibración y logits | D1a log-prob (T=1) · promedio de combinadores | +0.0001 | 3/5 |
+| D5 · Diversidad de subconjuntos | producción (MLP_full + LogReg_full) | +0.0000 | 2/5 |
+| §13 · Vista estructural y extremos | extremos | +0.0000 | 2/5 |
+| D · Calibración y logits | D1b log-prob + T in-fold · promedio de combinadores | -0.0001 | 2/5 |
+| F · Limpieza selectiva | F2 clúster de near-duplicados (un representante) | -0.0001 | 2/5 |
+| C · Consenso y gating | +C1+C2 | -0.0002 | 3/5 |
+
+Familias cerradas con evidencia: consenso/desacuerdo por familia y gating contextual (D-028),
+calibración de miembros y blending en logits (D-029), diversidad de subconjuntos de features (D-029),
+estructura v2 de retuit/hashtag/extremos (D-030), edad implícita y selección greedy (D-030), limpieza
+selectiva (D-031) y refuerzo de la vista estructural (D-032). **Ninguna alcanza el umbral.**
+
+## 18. La única señal nueva: la vista estructural (marginal, no adoptada)
+
+Secuencia de **tipos** de token (palabra, mención, hashtag, URL, número, puntuación, mayúsculas),
+TF-IDF de palabras 1-3 y un LinearSVC. Sin contenido: F1 individual
+**0.2285**, pero **rescata el
+18.17% de los errores del v12** (acuerdo
+27.96%).
+
+- **CV**: 0.6022 (+0.0018,
+  4/5 folds).
+- **Holdout congelado**: base 0.6077
+  reproducida exacta -> vista
+  0.6108
+  (**+0.0031**).
+- **No adoptada**: el gate primario (CV ≥ +0,003) no se cumple. Enriquecer el alfabeto no mejora
+  (V1 +0,0005), así que la vista simple es el óptimo de la familia.
+- **Candidato**: `submissions/age_submission_v13_candidato_estructura_NO_ADOPTADO.csv` (112.892 filas,
+  8/8 checks formales). **No enviado** (decisión de Carlos).
+
+## 19. Hallazgo de integridad (D-034) y artefacto v12 reproducible
+
+La submission v12 subida no se reconstruye al 100% desde el repositorio
+(93.88%). El diagnóstico descarta
+las tres causas posibles: matrices equivalentes (fresca vs caché
+100.0000%), ajuste determinista (dos ajustes
+idénticos: 100.0000%) y protocolo del holdout
+reproducible (0,6077 exacto). Es un problema de **trazabilidad del artefacto**, no de metodología:
+todas las comparaciones de la fase son pareadas en el mismo proceso y quedan válidas.
+El artefacto `submissions/age_submission_v12_reproducible.csv` deja una versión de la v12 reconstruible desde el repositorio (112892 filas, distribución idéntica a la registrada por la fase 8: False).
+
+## 20. Cierre de la fase
+
+- **Veredicto**: línea de señal residual **saturada** (D-033, D-035). El modelo final **no cambia**:
+  v12 con CV 0,6004, holdout 0,6077 y leaderboard **0,62182**.
+- **Trabajo futuro**: con reglas más laxas (embeddings), atacar primero la frontera `18-24|25-34` y el
+  segmento `solo_url`; la limpieza de duplicados (+0,0016) sigue siendo la mejora de coste nulo
+  recomendada si se reentrena el modelo por otro motivo; y la vista estructural merece una exploración
+  dedicada (es la única señal nueva con dirección positiva).
+- **Documentación**: `DECISIONS.md` (D-028…D-035), `RUNLOG.md` (sesiones 14-19), `experiments.csv`
+  (61 experimentos), `reports/fase_residual_informe.md`, `reports/auditorias.md` (APROBADO) y
+  `notebooks/99_entrega_consolidado.ipynb` (Parte I + Parte II).

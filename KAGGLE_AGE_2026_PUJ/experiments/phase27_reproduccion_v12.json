@@ -1,0 +1,37 @@
+{
+  "fase": "reproducción del v12",
+  "fecha": "2026-09-25",
+  "nota": "artefacto reproducible desde el repositorio; cierra D-034",
+  "checks": {
+    "columns_ok": true,
+    "columns_match_sample": true,
+    "rows_ok": true,
+    "ids_equal_test": true,
+    "ids_unique": true,
+    "ids_same_order": true,
+    "no_nan": true,
+    "labels_valid": true
+  },
+  "filas": 112892,
+  "distribucion": {
+    "13-17": 18423,
+    "18-24": 20013,
+    "25-34": 16473,
+    "35-49": 17479,
+    "50-64": 20505,
+    "65-xx": 19999
+  },
+  "distribucion_registrada_fase8": {
+    "13-17": 17673,
+    "18-24": 20715,
+    "25-34": 16543,
+    "35-49": 17531,
+    "50-64": 20763,
+    "65-xx": 19667
+  },
+  "distribucion_identica_a_fase8": false,
+  "acuerdo_con_v12_subida_pct": 93.88,
+  "predicciones_distintas_vs_subida": 6909,
+  "archivo": "/home/carlos/Git/PLN/KAGGLE_AGE_2026_PUJ/submissions/age_submission_v12_reproducible.csv",
+  "segundos": 161.0
+}

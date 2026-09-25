@@ -559,3 +559,189 @@ Tras declarar la saturación se probó la vía indicada como trabajo futuro:
   texto y **infló los conflictos de 643 a 12.989 filas** (7,67%). Se detectó, se corrigió la
   definición y se repitió; el resultado inflado (−0,0042) era un artefacto. Queda registrado como
   recordatorio de que la elección de la normalización cambia el diagnóstico del ruido.
+
+---
+
+## D-028 — El consenso y el desacuerdo por familia no superan el umbral (cierre con evidencia)
+- **Observation**: la fase B midió que en **26,70%** de las filas el ensamble falla y algún miembro
+  acierta, y que el consenso de votos tiene un gradiente fuerte (error 60,2% en el quintil más bajo
+  frente a 18,1% en el más alto). ADV-04 había medido el bloque **genérico** de incertidumbre por
+  miembro (confianza, margen, entropía, acuerdo) sobre el baseline v09 con meta LogReg: +0,0002.
+- **Experiment**: PH14 — 46 features nuevas en tres bloques: C1 acuerdo/entropía/margen **por familia**
+  (7 familias), C2 divergencias Jensen-Shannon entre familias, C3 gating contextual
+  (reparto de votos x banda de longitud y entropía x flags). LOFO con las mismas particiones y el
+  combinador de producción (promedio MLP + LogReg).
+- **Result**: +C1 **0,5986** (−0,0018, 1/5 folds); +C1+C2 **0,6002** (−0,0002, 3/5); +C1+C2+C3
+  **0,5998** (−0,0006, 3/5). Referencia 0,6004 ± 0,0042.
+- **Decision**: cerrar la familia. Ninguna variante se adopta.
+- **Reason**: el consenso es una **función determinista** de los scores que el combinador ya recibe y
+  el MLP los aproxima sin ayuda explícita. Es coherente con ADV-04 (+0,0002) y con D-020: las
+  ganancias del segundo nivel vinieron de **diversidad de sesgos** (MLP + LogReg, +0,0027) y de una
+  **vista nueva** (NB-SVM de palabra, +0,0009), no de re-expresar la misma información.
+- **Evidence**: `experiments/phase14_consenso_familias.json`.
+
+---
+
+## D-029 — Calibración de miembros, blending en logits y diversidad de subconjuntos: sin mejora
+- **Observation**: los miembros entran al meta en representaciones heterogéneas (márgenes SVM sin
+  normalizar, log-probabilidades, un score ordinal continuo) y el segundo nivel es un promedio de dos
+  combinadores. PH9 probó diversidad de **algoritmo** (Ridge/SGD) sobre las mismas features, pero nunca
+  se probó la calibración de los scores ni la diversidad de **vista de features**.
+- **Experiment**: PH15 — unificación de los bloques de 6 columnas a log-softmax (T=1) y temperatura por
+  miembro ajustada in-fold (rejilla 0,25-4,0 por NLL); promedio de combinadores en probabilidades y en
+  logits. PH15b — promedios de 2, 3 y 4 combinadores incluyendo uno entrenado solo con las 84 columnas
+  de *stacking puro* (78 scores + 6 NB-SVM de palabras).
+- **Result**:
+  - D1a (log-prob T=1): promedio **0,6005** (+0,0001, 3/5); logits **0,6007** (+0,0003, 3/5).
+  - D1b (temperatura in-fold): promedio 0,6003 (−0,0001, 2/5); logits 0,6002 (−0,0002, 2/5). La
+    rejilla eligió T=0,5 para la mayoría de los miembros (agudizar) y 2,5 para uno.
+  - D5: producción **0,6004 idéntico** (control de determinismo); MLP puro 0,5976; LogReg pura 0,5915;
+    MLP sobre 84 = 0,5851; LogReg sobre 84 = 0,5879; 3 vías 0,5987 (−0,0017); 4 vías 0,5976 (−0,0028).
+- **Decision**: cerrar ambas líneas. Ninguna se adopta.
+- **Reason**: (a) con estandarización por columna, la temperatura es una transformación afín por bloque
+  que el modelo lineal absorbe y que el MLP tampoco necesita; (b) el combinador de la vista reducida es
+  más débil (0,585) y muy correlacionado con el de la vista completa: la **diversidad sin calidad
+  comparable no compone** (coherente con D-025); (c) el máximo observado (+0,0003) está dentro del
+  error estándar pareado.
+- **Evidence**: `experiments/phase15_calibracion_scores.json`,
+  `experiments/phase15b_diversidad_subsets.json`.
+
+---
+
+## D-031 — Limpieza selectiva del entrenamiento: positiva pero acotada (sin adopción)
+- **Observation**: D-027 midió la limpieza global a nivel de combinador (+0,0001 contradictorias,
+  +0,0016 eliminando textos duplicados). Quedaban sin probar dos variantes: conservar **un
+  representante** por grupo repetido (en vez de eliminar todas las copias) y aplicar la limpieza solo
+  a las **clases centrales**, donde se concentra el 84,5% del error.
+- **Experiment**: PH18 — F2 (un representante por clúster de near-duplicados) y F3 (clúster selectivo
+  en 18-24, 25-34 y 35-49), aplicadas **solo al lado de entrenamiento** de cada fold.
+- **Result**: F2 = 0,6003 (−0,0001, 2/5 folds); F3 = **0,6013** (+0,0009, 3/5). Referencia
+  0,6004 ± 0,0042.
+- **Decision**: cerrar sin adopción. La familia completa (D-027 + PH18) queda en el rango
+  [+0,0001, +0,0016]: efecto real, consistente en dirección, pero por debajo del umbral.
+- **Reason**: el efecto está acotado por la fracción de filas afectada. Eliminar copias redundantes
+  ayuda algo más que conservar un representante, lo que confirma que el sesgo relevante es la
+  **sobre-representación de contenido**, no la falta de diversidad de copias.
+- **Consequences**: si en el futuro se reentrena el modelo final por otro motivo, la limpieza de
+  duplicados (+0,0016) sigue siendo la variante preferida; ninguna justifica un reentrenamiento por sí
+  sola.
+- **Evidence**: `experiments/phase18_limpieza_selectiva.json`.
+
+---
+
+## D-030 — Señal ordinal auxiliar y selección greedy de miembros: nulas
+- **Observation**: la familia ordinal es la que más rescata errores del ensamble (19,96% cuando el
+  ensamble falla) y el meta recibe el score ordinal continuo, pero no una **edad implícita agregada**
+  ni medidas de consistencia; la selección greedy con reemplazo (Caruana) es el estándar de *ensemble
+  selection* y nunca se había probado en este proyecto.
+- **Experiment**: PH16 — G1: 15 features de edad implícita por familia, dispersión y consistencia
+  ordinal (signo de la fuente continua decidido **in-fold**); G2: media greedy de miembros
+  seleccionados con reemplazo sobre las filas de entrenamiento (10 pasos; paso óptimo elegido en train,
+  nunca en validación).
+- **Result**: G1 = **0,6001** (−0,0003, 1/5 folds; reproducido idéntico en dos corridas). G2 = **0,5770**
+  (−0,0234): la media greedy queda 2,3 puntos por debajo del meta-modelo.
+- **Decision**: cerrar ambas.
+- **Reason**: (G1) la información ordinal ya está en las probabilidades de los miembros ordinales y el
+  combinador no lineal la explota; re-expresarla como esperanza no añade nada. (G2) la selección greedy
+  optimiza la media simple de probabilidades, muy por debajo del combinador que pondera según el
+  contexto (0,6004): **el combinador supera a la selección**, evidencia adicional de D-020.
+- **Evidence**: `experiments/phase16_ordinal_greedy.json`,
+  `experiments/phase16_ordinal_greedy_g2.log`.
+
+---
+
+## D-032 — Multivista: la vista estructural es la única señal nueva (marginal, no adoptada)
+- **Observation**: todas las representaciones vigentes comparten el **contenido** del texto. La fase 6
+  mostró que el estilo aislado es casi azar (0,2793), pero eso se midió enmascarando el contenido, no
+  **estructuralizando** el tweet.
+- **Experiment**: PH21 — dos vistas sin contenido: (a) **estructura**: secuencia de tipos de token
+  (palabra, mención, hashtag, URL, número, puntuación, mayúsculas); (b) **extremos**: primeras y últimas
+  palabras. Protocolo de dos pasos del brief §13: primero **diversidad de error** (puerta: rescate
+  ≥ 15% de los errores del v12), después valor en el ensemble (columnas añadidas al final del meta,
+  igual que el NB-SVM de palabras). PH22 — refuerzo: alfabeto ampliado (cubetas de longitud,
+  mayúsculas, clases de puntuación, marcadores de frontera) y combinaciones de vistas.
+- **Result**:
+  - **Puerta de diversidad**: estructura, F1 individual 0,2285 con **rescate 18,17%** y acuerdo 27,96%
+    (pasa); extremos, F1 0,4578 con rescate 18,75% y acuerdo 54,92% (pasa).
+  - **Ensemble (LOFO, referencia 0,6004)**: **estructura +0,0018 (4/5 folds)**; extremos +0,0000 (2/5);
+    ampliada +0,0005 (4/5); estructura+extremos −0,0003; ampliada+extremos +0,0006.
+  - **Holdout congelado** (25.204 filas, semilla 2026): base **0,6077** (reproducido exacto) ->
+    estructura **0,6108 (+0,0031)**.
+- **Decision**: **no se adopta**. El gate primario pre-registrado es el CV (Δ ≥ +0,003) y la vista se
+  queda en +0,0018. Se documenta como la única señal nueva con dirección positiva y se deja un archivo
+  candidato **local** (`submissions/age_submission_v13_candidato_estructura_NO_ADOPTADO.csv`) para
+  decisión de Carlos. **No se envía nada a Kaggle.**
+- **Reason**: (a) rigor de protocolo: el criterio se declaró antes de medir y no se mueve después;
+  (b) el efecto es del orden de +0,002-0,003 (t pareado ≈ 2,7 en CV; ≈1 error estándar en el holdout):
+  real pero pequeño; (c) mecanísticamente plausible —la vista abstrae la *forma* (longitudes,
+  mayúsculas, tipos de entidad) que los n-gramas de carácter ponderan de otro modo—, pero el sistema ya
+  extraía casi toda esa señal (13,87% de las filas no tienen ningún miembro correcto).
+- **Consequences**: si Carlos decide gastar un envío, la justificación es la confirmación en holdout
+  (no el CV) y debe quedar registrada como decisión suya. El refuerzo (alfabeto ampliado) **no** mejora
+  la vista simple, así que la vía de "hacer la vista más rica" queda cerrada.
+- **Evidence**: `experiments/phase21_vista_estructural.json`,
+  `experiments/phase22_estructura_ampliada.json`, `experiments/phase19_holdout_VistaEstructura.json`,
+  `experiments/phase23_submission_candidato.json`.
+
+---
+
+## D-033 — Cierre de la búsqueda de señal residual: línea saturada
+- **Decision**: la línea se declara **saturada** según el criterio pre-registrado. Catorce variantes
+  evaluadas sobre el modelo v12 en esta fase (consenso familiar, gating contextual, calibración de
+  miembros, blending en logits, diversidad de subconjuntos, estructura v2, limpieza selectiva, edad
+  implícita, selección greedy y cuatro variantes multivista): **ninguna cumple Δ ≥ +0,003 con ≥4/5
+  folds en el CV agrupado**. El modelo final **no cambia** (v12: CV 0,6004; holdout 0,6077; leaderboard
+  0,62182).
+- **Reason**: el sustrato quedó verificado (fase A: reconstrucción exacta, acuerdo 100% con la
+  submission v11), la validación es honesta (agrupada por clústeres, con control de determinismo
+  reproducido bajo concurrencia) y el análisis de errores acota el margen: **13,87% de las filas no
+  tienen ningún miembro correcto** y el 84,5% del error se concentra en las dos fronteras centrales.
+  Las únicas direcciones positivas son la limpieza de duplicados (D-027/D-031, +0,0016 máximo) y la
+  vista estructural (D-032, +0,0018 CV), ambas por debajo del umbral.
+- **Consequences**: (1) no se genera ni se envía submission nueva salvo decisión explícita de Carlos;
+  (2) cualquier trabajo futuro con reglas más laxas debe atacar primero la frontera `18-24|25-34`
+  (42,5% del error) y el segmento `solo_url` (59,9% de error); (3) la limpieza de duplicados sigue
+  siendo la mejora de coste nulo recomendada si alguna vez se reentrena el modelo por otro motivo.
+- **Evidence**: `reports/fase_residual_informe.md` (consolidado), `experiments/phase20_resumen.json`.
+
+---
+
+## D-034 — Hallazgo de integridad: la submission v12 enviada no es reconstruible al 100% (93,88%)
+- **Observation**: al preparar el candidato marginal se reconstruyó el modelo v12
+  (`scripts/phase8_holdout_v12.py`) y el acuerdo con `age_submission_v12.csv` fue del **93,88%**, cuando
+  la reconstrucción del v11 con la misma metodología dio **100,0000%** (fase A).
+- **Diagnóstico**: PH24-PH26, con evidencia convergente:
+  1. La **matriz de test cacheada** y una reconstrucción **fresca completa** (13 fuentes del pipeline +
+     NB-SVM + supervisadas) coinciden en todos los bloques (max|Δ| = 1,5e-05; densas/estructuradas 0,0)
+     y producen **predicciones idénticas (100,0000%)**. Los 13 sub-bloques de fuentes están en su
+     posición correcta (correlación 1,0): **no hay desalineación**.
+  2. El **ajuste final es determinista**: dos ajustes idénticos en el mismo proceso dan **0 filas
+     distintas** (LogReg 418 iteraciones y MLP 30 épocas en ambos).
+  3. El **protocolo del holdout sí se reproduce exacto**: la fase 19 re-ajustó la base v12 y obtuvo
+     **0,6077**, el mismo número registrado por la fase 8.
+- **Decision**: documentar la discrepancia y sus límites. **No afecta a ninguna conclusión de la fase**:
+  todas las comparaciones se hicieron pareadas en el mismo proceso (CV con las mismas particiones y
+  semillas; holdout con la base re-ajustada en la misma corrida). Afecta solo a la **reconstrucción
+  absoluta** del artefacto subido.
+- **Reason**: matrices equivalentes + ajuste determinista + receta idéntica ⇒ el archivo subido (o el
+  estado del código en el momento de generarlo) difiere del estado committeado que hoy se puede
+  reproducir. Es un problema de **trazabilidad del artefacto**, no de datos ni de metodología.
+- **Consequences**: (1) queda una matriz de test fresca verificada
+  (`features/meta_features_test_v12_fresca.npy`) y el candidato se regeneró con ella; (2) cualquier
+  comparación futura contra "v12" debe re-ajustar el modelo base en el mismo proceso (como hace la fase
+  19), no comparar contra el archivo subido; (3) se recomienda re-ejecutar `phase8_holdout_v12.py` si se
+  quiere dejar un artefacto v12 reproducible (~35 min, no cambia ningún resultado de la fase).
+- **Evidence**: `experiments/phase24_diagnostico_matriz_test.json`,
+  `experiments/phase25_submission_fresca.json`, `experiments/phase26_estabilidad_ajuste.json`.
+
+---
+
+## D-035 — Veredicto final de la fase: se mantiene la saturación
+- **Decision**: con el hallazgo de D-034 acotado (no afecta a las comparaciones pareadas), el veredicto de
+  D-033 se mantiene: **ninguna variante cumple el criterio pre-registrado** (Δ ≥ +0,003 en CV con ≥4/5
+  folds). La única señal positiva es la vista estructural (CV +0,0018 con 4/5 folds; holdout +0,0031) y
+  **no se adopta**. El modelo final sigue siendo el v12.
+- **Consequences**: el archivo `submissions/age_submission_v13_candidato_estructura_NO_ADOPTADO.csv`
+  queda disponible para decisión de Carlos, con la comparación hecha contra la v12 re-ajustada en el
+  mismo proceso (cambia 10,47% de las filas). **No se envía nada a Kaggle.**
+- **Evidence**: `reports/fase_residual_informe.md`, `experiments/phase20_resumen.json`.

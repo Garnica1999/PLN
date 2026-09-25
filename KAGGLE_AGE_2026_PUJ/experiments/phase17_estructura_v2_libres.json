@@ -1,0 +1,60 @@
+{
+  "fase": "E — estructura v2",
+  "bloque": "libres",
+  "fecha": "2026-09-25",
+  "baseline": {
+    "macro_f1": 0.6004,
+    "std": 0.0042,
+    "per_fold": [
+      0.6007,
+      0.605,
+      0.6032,
+      0.6004,
+      0.5928
+    ],
+    "origen": "fase 12"
+  },
+  "libres": {
+    "n_features_nuevas": 25,
+    "nombres": [
+      "e1_es_rt",
+      "e1_prefijo_chars",
+      "e1_prefijo_ratio",
+      "e1_prefijo_tokens",
+      "e1_prefijo_con_mencion",
+      "e1_prefijo_con_url",
+      "e1_prefijo_con_hashtag",
+      "e1_prefijo_termina_puntuacion",
+      "e1_prefijo_inicia_simbolo",
+      "e1_cuerpo_chars",
+      "e1_cuerpo_tokens",
+      "e2_hashtag_n",
+      "e2_hashtag_len_media",
+      "e2_hashtag_len_max",
+      "e2_hashtag_camel_media",
+      "e2_hashtag_digito_ratio",
+      "e2_hashtag_entropia",
+      "e4_izq_transiciones",
+      "e4_der_transiciones",
+      "e4_izq_digito",
+      "e4_der_digito",
+      "e4_izq_mayuscula",
+      "e4_der_puntuacion",
+      "e4_der_puntos_suspensivos",
+      "e4_izq_entidad"
+    ],
+    "macro_f1": 0.6006,
+    "std": 0.0049,
+    "per_fold": [
+      0.6039,
+      0.604,
+      0.6015,
+      0.6027,
+      0.591
+    ],
+    "delta_vs_v12": 0.0002,
+    "folds_positivos": 2,
+    "adoptado": false
+  },
+  "segundos": 761.0
+}

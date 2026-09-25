@@ -1,0 +1,29 @@
+{
+  "fase": "estabilidad del ajuste final",
+  "fecha": "2026-09-25",
+  "comparaciones": {
+    "logreg": {
+      "acuerdo": 1.0,
+      "filas_distintas": 0
+    },
+    "mlp": {
+      "acuerdo": 1.0,
+      "filas_distintas": 0
+    },
+    "promedio": {
+      "acuerdo": 1.0,
+      "filas_distintas": 0
+    }
+  },
+  "n_iter": {
+    "ronda_1": {
+      "logreg": 418,
+      "mlp": 30
+    },
+    "ronda_2": {
+      "logreg": 418,
+      "mlp": 30
+    }
+  },
+  "segundos": 681.6
+}
