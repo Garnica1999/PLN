@@ -681,3 +681,49 @@ evidencia, experimento, resultado, conclusion final.
   `reports/final_candidate_comparison.md` (resultados LB),
   `submissions/submission_manifest.csv` (estados actualizados), filas
   FIN-08..FIN-10 de `experiments.csv`.
+
+## D-025 - Apertura de la fase v4: protocolo, gates y presupuesto de control
+
+- **Contexto**: tras el cierre de la fase v2 (D-021) y de la fase final de
+  candidatos (D-024), Carlos abre una nueva fase de investigacion
+  (`ADVANCED RESEARCH v4`, 108 secciones) con el objetivo de encontrar
+  alternativas genuinamente nuevas a V03 (LB 0.78306) y no mas variantes de
+  modelo. La especificacion prohibe repetir lineas ya probadas (§84, §85-§89).
+- **Observacion**: (a) V03 esta congelada y verificada byte a byte; (b) el
+  protocolo v2 (D-016) sigue vigente; (c) el presupuesto de control esta
+  agotado en su mayor parte: 4/5 evaluaciones de holdout usadas y 12 sondas de
+  LB; (d) con n=1154 y EE ~0.013, 0.78306 es el maximo observado de una familia
+  cuyo nivel esperado es ~0.776-0.780 (winner's curse, D-014/D-020).
+- **Hipotesis**: las lineas nunca exploradas (consistencia de etiquetas, dureza
+  de ejemplos y reweighting, weighting supervisado, modelo conjunto de
+  etiquetas, calibracion de las entradas del meta) pueden o bien producir una
+  mejora transferible, o bien cerrar con evidencia la pregunta de cuanto del
+  error es ruido de etiqueta, informacion ausente o limitacion del modelo.
+- **Decision**:
+  1. **Protocolo identico a D-016** (grupos near-duplicado UNION pseudo-autor,
+     desarrollo 1.483, `corrected_cv` primaria, bootstrap pareado por tweet,
+     regla de adopcion >= +0.005 y >= 3/5 pliegues o complementariedad con
+     IC > 0). No se modifica ni V03 ni el holdout.
+  2. **Presupuesto**: la quinta (ultima) evaluacion de holdout se reserva para
+     el unico mejor finalista de v4. El envio al leaderboard es manual y solo
+     para candidatos que pasen todos los gates; se marca `READY_FOR_KAGGLE_PROBE`.
+  3. **Multiplicidad**: `reports/research_backlog_v4.md` se pre-registra antes de
+     experimentar; `reports/v4_gap_analysis.md` clasifica cada idea de la spec
+     como NEW / NOT_TESTED / TESTED_NEGATIVE / TESTED_BUT_BADLY_INTEGRATED /
+     TESTED_BUT_UNCERTAIN / TESTED_AND_CLOSED / TRANSFER_FAILED.
+  4. **Orden por valor esperado**: A/B (ruido y dureza) -> C/E (geometria y
+     modelo conjunto) -> H (calibracion de las entradas del meta) -> F/G
+     (diagnostico y modelos estadisticos) -> D (solo subtemas no cubiertos).
+  5. **Rama** `proyecto-kaggle-toxic-2026-v4` desde `main`, con PR al cierre.
+  6. **Entregable**: la fase v4 se documenta en `reports/advanced_research_v4.md`
+     y, al cerrar, se anade una seccion nueva a `FINAL_REPORT.md` y se actualiza
+     el notebook preservando las conclusiones previas.
+- **Razon**: con 128 experimentos y un plateau documentado, la fase debe
+  producir evidencia de generalizacion, no un maximo local; el presupuesto de
+  control se protege para que un unico finalista pueda verificarse.
+- **Evidencia**: `docs/advanced_research_v4_spec.md` (spec archivada),
+  `tasks/plan_v4.md`, `reports/v4_gap_analysis.md`,
+  `reports/research_backlog_v4.md`, `reports/signal_coverage_v4.csv`,
+  `experiments/26_scaffold_v4.py` y `reports/baseline_v03_v4_check.json`
+  (veredicto OK: 5/5 hashes, `corrected_cv` 0.777211 reproducida, 0 grupos
+  compartidos entre desarrollo y holdout).

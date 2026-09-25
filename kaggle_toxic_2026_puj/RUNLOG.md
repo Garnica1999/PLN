@@ -479,3 +479,34 @@ Registro cronologico de ejecuciones. Formato:
 - E00: sonda de submission para identificar la implementacion exacta de F1 en
   Kaggle (la envia Carlos; no automatizada).
 - Fase 1: investigacion del estado del arte (delegada a ml-architect).
+
+## 2026-09-25 (apertura de la fase v4: P0 scaffold)
+
+- 10:05 | Apertura | Rama `proyecto-kaggle-toxic-2026-v4` creada desde `main`
+  (bae7612). Spec maestra archivada en `docs/advanced_research_v4_spec.md`
+  (108 secciones, numeracion original conservada) y plan ejecutable en
+  `tasks/plan_v4.md` + `tasks/todo_v4.md`. D-025 registrada.
+- 10:20 | Verificacion | `experiments/26_scaffold_v4.py` (P0, sin entrenar):
+  **veredicto OK**. 5/5 hashes de la referencia congelada coinciden;
+  `corrected_cv` recalculada desde `features/oof_v03_final.npz` = **0.777211**
+  (delta 0 frente a la almacenada); M2 con umbral 0.5 = 0.771778; F1 por
+  pliegue [0.7960, 0.7940, 0.7789, 0.7386, 0.7791] (std 0.0161); protocolo v2
+  recalculado: 1.731 train = 1.483 desarrollo + 248 holdout, 1.645 grupos,
+  **0 grupos compartidos**; presupuesto: holdout 4/5, 12 sondas de LB, mejor
+  0.78306 (v03). Informe: `reports/baseline_v03_v4_check.json`.
+- 10:35 | Diagnostico | `reports/v4_gap_analysis.md`: cada idea de la spec v4
+  clasificada contra la evidencia en disco. Genuinamente nuevas: consistencia
+  de etiquetas, dureza/reweighting, weighting supervisado por clase, modelo
+  conjunto de etiquetas, calibracion de las entradas del meta, verosimilitud
+  class-conditional, sufijos/prefijos, subtipos de HS implicito. Cerradas y
+  prohibidas: POS/deps/cita/negacion/targeting/colectivo/emocion como bloque,
+  cadenas de etiquetas, concatenacion densa, Optuna, DL desde cero.
+- 10:45 | Pre-registro | `reports/research_backlog_v4.md` con 26 lineas
+  (V4-A01..V4-X01) y `reports/signal_coverage_v4.csv` (29 fenomenos). Toda linea
+  tiene hipotesis, metodo, validacion, senal esperada y criterio de cierre
+  **antes** de ejecutarse (control de multiplicidad con 128 experimentos
+  previos).
+- 10:50 | revision bibliografica | Delegada en paralelo (2022-2026: ruido de
+  etiquetas, reweighting, hard example mining, feature weighting supervisado,
+  BM25, modelos conjuntos, hate speech clasico, espanol) con restricciones
+  duras sin preentrenamiento; salida `reports/estado_arte_v4.md` + `.csv`.

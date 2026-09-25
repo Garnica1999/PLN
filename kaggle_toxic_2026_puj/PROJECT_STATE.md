@@ -1,8 +1,32 @@
 # PROJECT_STATE - KAGGLE_TOXIC_2026_PUJ
 
-Ultima actualizacion: 2026-09-25 (fase v2 cerrada + fase final de candidatos).
+Ultima actualizacion: 2026-09-25 (fase v4 abierta; P0 completado).
 
-## Fase actual
+## Fase actual: v4 «Advanced Research v4» (abierta 2026-09-25)
+
+Rama `proyecto-kaggle-toxic-2026-v4` (desde `main`). Spec archivada en
+`docs/advanced_research_v4_spec.md`; plan en `tasks/plan_v4.md`; backlog
+pre-registrado en `reports/research_backlog_v4.md` (26 lineas); diagnostico de
+ideas en `reports/v4_gap_analysis.md`; cobertura en
+`reports/signal_coverage_v4.csv`. Decision de gobierno: **D-025**.
+
+| Campo (§104) | Valor |
+|---|---|
+| CURRENT_BEST_MODEL | **V03** (sin cambios; verificada byte a byte en P0) |
+| CURRENT_BEST_CORRECTED_CV | **0.777211** (protocolo v2, desarrollo n=1.483) |
+| CURRENT_BEST_HOLDOUT | 0.8285 (V03, P7-01). Holdout 4/5 evaluaciones usadas |
+| CURRENT_BEST_KAGGLE | **0.78306** (v03, mejor de 12 sondas; nivel esperado de la familia ~0.776-0.780) |
+| NEW_SIGNALS | ninguna adoptada todavia;candidatos genuinamente nuevos identificados: consistencia de etiquetas, dureza/reweighting, weighting supervisado, modelo conjunto, calibracion de entradas del meta |
+| CLOSED_TRACKS | v2 completo (24/24, D-021) + fase final de candidatos (D-023, D-024) |
+| OPEN_TRACKS | A, B, C, D (subtemas), E, F, G, H (tracks v4) |
+| SUBMISSION_CANDIDATES | ninguno nuevo; v09/v10/v11 sondeados y descartados |
+| NEXT_STEP | P1 (TRACK A + B): clusters de consistencia de etiquetas y mapa de dureza OOF |
+
+Gobernanza: protocolo v2 intacto (D-016); la ultima evaluacion de holdout se
+reserva para el unico mejor finalista; el envio al LB es manual y solo para
+candidatos que pasen todos los gates.
+
+## Fase anterior: v2 cerrada + fase final de candidatos
 
 **FASE v2 (Advanced Research) CONCLUIDA el 2026-09-25 sin mejora transferible.
 BACKLOG v2 AL 100 % (24/24 lineas evaluadas y cerradas, D-021).**

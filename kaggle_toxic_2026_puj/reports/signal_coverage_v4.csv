@@ -1,0 +1,32 @@
+fenomeno;detectado;representado;testado;como;resultado;brecha_restante;track_v4;linea_v4
+insulto;Si;Indirecto (n-gramas word/char);Parcial;lexicos inducidos fold-local (37/36/33/36/36 lemas) y canal abstracto <INSULT>;cerrado sin mejora (E2-05);ninguna como canal de interaccion sparse;B/D;V4-D02
+target/mencion;Si;Indirecto;Parcial;densas concatenadas (-0.009 a -0.032) y scores de targeting;cerrado (0/5 pliegues);relacion distancia+orden como tokens;B/D;V4-D02
+colectivo;Si;Indirecto;Si;E2-06 colectivo + predicado negativo;recall mejoro en dev, no transfirio;score dedicado no construido;D;V4-D04
+cita/atribucion;Si;No como canal;Si;E2-07 in-quote/out-quote;cerrado (-0.0335);regimen noticia sin modelo dedicado;D;V4-D02
+negacion;Si;No como canal;Si;E2-08 advmod+Polarity=Neg;cerrado (-0.0115);ambito (distancia) no separado;B/D;V4-D02
+afiliacion/humor;Si;No;Si;E2-09-EST risa/afecto/vocativo;cerrado (0.5897);interaccion insulto+risa como token;B/D;V4-D02
+implicito (HS=1 sin insulto);Si (taxonomia);No;Parcial;FASE 70 = PARCIAL;brecha declarada;subtipos sin features;D;V4-D04
+emocion;Si;No;Si;E2-09 y variantes;cerrado (0.5897-0.6330);relacion emocion x target como canal;B/D;V4-D02
+agresion (AG);Si;Indirecto;Si;E2-06 y perfil lexico;cerrado;score de agresion dedicado no construido;B/D;V4-D02
+ortografia/evasion;Si;char_wb(3,5);Si;E2-10 multicanal;cerrado (-0.0238);canal de sufijos/prefijos; D;V4-D01
+rareza lexica;Si;No;Parcial;EDA descriptivo;E2-12 no ejecutado;fold-local no construido;F;V4-F01
+sintaxis (POS/deps);Si;No;Si;E2-03/E2-04 sparse;cerrado (-0.0116 a -0.2295);solo como tokens si hay hipotesis;D;V4-D03
+morfologia;Si;Parcial;Parcial;spaCy morfologia;FASE 13 = PARCIAL;canal de sufijos/prefijos;D;V4-D01
+dependencia entre etiquetas;Si;Meta/cadenas;Si;E2-01 cadenas y E2-02/E2-18 meta;cadenas cerradas; meta no transfirio (LB 0.78163);modelo conjunto no entrenado;E;V4-E01
+combinaciones raras (110/001);Si;No;No;--;nunca tratadas;smoothing o prior jerarquico;E;V4-E02
+ruido de etiquetas;No;No;No;--;nunca medido;clusters de contradiccion;A;V4-A01
+dureza de ejemplos;No;No;No;--;nunca medido;hardness_score OOF;B;V4-B01
+contradiccion vs dificultad;No;No;No;--;nunca medido;dos poblaciones;B;V4-B02
+reweighting;No;No;No;--;nunca probado;pesos OOF;B;V4-B03
+class weights por etiqueta;No;balanced fijo;No;--;nunca barri;jilla moderada;C;V4-C04
+weighting supervisado;Parcial (NB-SVM);No como geometria;Parcial;E2-15 log-count ratio;IC incluye 0;log-odds/chi2/MI por clase;C;V4-C01
+BM25/IR weighting;No;No;No;--;nunca probado;k1/b, binario, augmented;C;V4-C03
+shift de calibracion del meta;No;No;No;--;hipotesis abierta (v2 §4.3);alineacion de entradas;H;V4-H01
+shift train-test (no supervisado);No;No;No;--;nunca medido;estadisticos comparados;F;V4-F01
+robustez a duplicados;No;No;No;--;nunca medido;unicos vs repetidos;F;V4-F02
+vecindad/retrieval;No;No;No;--;nunca medido;acuerdo del vecino;F;V4-F03
+verosimilitud class-conditional;No;No;No;--;nunca probado;log P(text|clase) y perplejidad;G;V4-G01
+clasificadores alternativos;Parcial;--;Parcial;LinearSVC y NB barridos;Ridge/SGD/PA sin probar;G;V4-G02
+no lineal sobre SVD;No;--;No;--;solo MLP (DL-01) sobre SVD;arboles/RBF sin probar;G;V4-G03
+perfil de estilo;Si;No;Parcial;textometria densa negativa;familia densa cerrada;canal sparse sin probar;C;V4-C01
+interacciones sparse;No;No (solo densas);Si;hibridos densos -0.009 a -0.032;tokens de interaccion;D;V4-D02
