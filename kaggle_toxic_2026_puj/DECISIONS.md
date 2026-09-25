@@ -583,3 +583,38 @@ evidencia, experimento, resultado, conclusion final.
   final; la investigacion v2 queda documentada como evidencia negativa
   sistematica y como aportacion metodologica (protocolo de validacion
   corregido).
+
+---
+
+## D-022 - Cierre documental: la spec v2 queda archivada, auditada y con brechas acotadas
+
+- **Contexto**: la especificacion maestra de la fase v2 (113 secciones, FASES 0-99)
+  fue el contrato de investigacion; el proyecto la ejecuto con los paquetes P0-P8
+  pero no la tenia archivada ni auditada contra evidencia.
+- **Observacion**: (a) la spec no estaba en el repositorio; (b) seis artefactos
+  exigidos por las FASES 88/98/55/89 no existian; (c) `research_backlog_v2.md`
+  conservaba los estados "pendiente"; (d) el informe v2 decia "0 RT" cuando son 0
+  los retuits con prefijo canonico `RT @` y 8 los tweets con el token RT;
+  (e) las cifras de `experiments.csv` (118) y scripts (23) estaban desactualizadas
+  en notebook e informe.
+- **Hipotesis**: cerrar el ciclo spec -> evidencia -> auditoria deja la entrega
+  academica defendible, reproducible y sin discrepancias de trazabilidad.
+- **Decision**: (a) archivar la spec en `docs/advanced_research_v2_spec.md`;
+  (b) generar los artefactos faltantes con
+  `experiments/22_artefactos_auditoria_v2.py`; (c) escribir la matriz
+  `reports/spec_compliance_v2.md` y las auditorias `reports/rule_audit_v2.md` y
+  `reports/target_encoding_audit_v2.md`; (d) cerrar los estados del backlog y
+  corregir las cifras; (e) registrar las brechas acotadas (E2-12, E2-22, E2-24;
+  FASES 13/54/70/73/74/75/77) como evidencia negativa documentada, sin fabricar
+  resultados.
+- **Razon**: la condicion de finalizacion B (FASE 99) exige evaluar y documentar
+  las fuentes de senal razonables; la trazabilidad completa forma parte de la
+  entrega.
+- **Evidencia**: `docs/advanced_research_v2_spec.md`,
+  `reports/spec_compliance_v2.md`, `reports/rule_audit_v2.md`,
+  `reports/target_encoding_audit_v2.md`, `reports/error_intersection_v2.csv`,
+  `reports/error_by_label_combination_v2.csv`, `reports/model_complementarity_v2.csv`,
+  `reports/feature_catalog_v2.csv`, `features/v2_structured_features.parquet`,
+  filas AUD-01..AUD-03 de `experiments.csv`.
+- **Resultado**: cumplimiento auditado de FASES 0-99 con observaciones acotadas;
+  sin cambios en el modelo final (sigue V03, LB 0.78306).

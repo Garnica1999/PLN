@@ -26,6 +26,10 @@ Entregables (actualizados y verificados el 2026-09-25):
 - `FINAL_REPORT.md`: 26 secciones numeradas + resumen + referencias; seccion 26
   dedicada a la fase v2 (incluye el cierre del backlog).
 - `reports/advanced_research_v2.md`: informe de cierre de la fase v2.
+- `docs/advanced_research_v2_spec.md` + `reports/spec_compliance_v2.md`: spec
+  maestra archivada y matriz de cumplimiento FASE 0-99 con evidencia, mas
+  `reports/rule_audit_v2.md` (0 violaciones) y
+  `reports/target_encoding_audit_v2.md` (sin leakage de aprendizaje).
 
 ## Entregables finales
 

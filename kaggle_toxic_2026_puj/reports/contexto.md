@@ -279,3 +279,17 @@ E2-21 usa proxies estructurales por regex y lexicos inducidos fold-local (Monroe
 Regla de adopcion (D-016) aplicada al mecanismo de cada linea, con el aporte medido contra su comparador directo: solo el meta calibrado supera 0.7822 (0.7857, 5/5 pliegues), pero no aporta sobre el meta sin calibrar (-0.0017); ninguna otra variante alcanza +0.005 con 3/5 pliegues ni complementariedad con IC > 0.
 Cierre honesto: las 5 lineas se cierran sin mejora transferible; el backlog v2 queda al 100 % (24/24) y no se gasta ninguna evaluacion del holdout.
 Duracion: 27.2 s. Script: experiments/21_backlog_restante_v2.py. Artefactos: reports/backlog_restante_v2.csv y .json, reports/figuras/fig_32_backlog_restante_v2.png.
+
+## Artefactos de auditoria v2 (2026-09-25)
+Artefactos de las FASES 43/44/47/50/51/55/88/89/90 generados desde los OOF congelados del desarrollo (n=1483); sin entrenar modelos, sin submissions y sin usar el holdout ni el test.
+Interseccion (FASE 43/44): v03_base_M2_union_lr_c2 falla las 3 etiquetas en 98 tweets (6.61%, IC 95 % [5.39%, 7.89%]); meta_META-BASES-RIDGE en 103 (6.95%, IC 95 % [5.73%, 8.29%]).
+Contraste historico de FASE 43: 101 tweets (5.83 %) sobre train completo n=1731 con el protocolo historico (reports/error_analysis.md); el desarrollo corregido no es comparable 1:1.
+Tres etiquetas mal (FASE 43): 201 filas tweet x referencia (98 + 103); solo id y rasgos, sin texto crudo.
+Error por combinacion (FASE 47): 14 filas (2 referencias x 7 combinaciones) con precision/recall/F1 por etiqueta y medias estructurales; en las etiquetas constantes del subconjunto precision = recall por construccion.
+Complementariedad (FASE 50/51/91): 496 parejas de 32 canales OOF; el ensemble_gain solo se copia si ya estaba medido (media con M2 a 0.5) y no se recalculo ninguno.
+Mejor pareja por correccion mutua simetrica: emocion_EMO-ALL@C=1.0 / sintaxis_SYN-3 (57.8% y 60.5% de los errores del otro).
+Catalogo (FASE 55/88): cita_negacion=21, dependencia_etiquetas=71, emocion=71, entidades=12, nbsvm=3, ortografia=5, sintaxis=3, targeting=37, texto_base=2 (225 features leidas del codigo de experiments/14 a 21).
+Dataset estructurado (FASE 55/89): features/v2_structured_features.parquet con 2885 filas (dev+holdout+test) x 123 features deterministas sin etiquetas; manifest en reports/v2_structured_features_manifest.md con las exclusiones documentadas.
+Registro (FASE 90): filas AUD-01, AUD-02 y AUD-03 en experiments.csv (solo append) con decision 'artefacto de auditoria; sin modelo nuevo'.
+Honestidad: ninguna cifra se ajusto para cuadrar con lo documentado; las discrepancias se registran en el manifest. El holdout congelado sigue intacto y no se genero ninguna submission.
+Duracion: 2.8 s. Script: experiments/22_artefactos_auditoria_v2.py.

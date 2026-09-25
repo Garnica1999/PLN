@@ -72,7 +72,7 @@ Referencia v2 (desarrollo): V03 con umbrales = **0.7772** (M2 a 0.5 = 0.7718).
 - **Dos senales complementarias identificadas pero no transferidas**: el
   meta de dependencia de etiquetas (recall de AG en la rebanada de referencia
   colectiva de 0.452 a 0.574-0.589) y el canal de targeting (mismo efecto).
-- **Hallazgos del corpus**: comillas en solo 2 % de los tweets, 0 RT, marcadores
+- **Hallazgos del corpus**: comillas en solo 2 % de los tweets, 0 retuits con prefijo canonico `RT @` (8 tweets contienen el token RT), marcadores
   de atribucion en 6.9 %, negacion en 25.5 % (y `es_core_news_md` no emite
   `dep_=neg`, se detecto por `advmod`+`Polarity=Neg`).
 
@@ -83,9 +83,10 @@ Referencia v2 (desarrollo): V03 con umbrales = **0.7772** (M2 a 0.5 = 0.7718).
   `experiments/baseline_v03_frozen/` y reconstruible byte a byte.
 - Entregables academicos: `notebooks/10_final_pipeline.ipynb` y
   `FINAL_REPORT.md` (con la fase v2 documentada como investigacion posterior).
-- Backlog v2: 19 de 24 lineas evaluadas; las restantes (calibracion, encoder de
-  entidades, especialistas por rebanada, umbrales por rebanada, label-specific
-  features) quedan documentadas como trabajo futuro con su justificacion.
+- Backlog v2: **24 de 24 lineas evaluadas y cerradas**; el paquete P8 cerro las
+  cinco restantes (calibracion, encoder de entidades por sparsity 0.5 %,
+  especialistas por rebanada, umbrales por rebanada por shrinkage,
+  label-specific features -0.0253) sin mejora (D-021).
 
 ## 7. Artefactos de la fase v2
 
@@ -96,5 +97,9 @@ Referencia v2 (desarrollo): V03 con umbrales = **0.7772** (M2 a 0.5 = 0.7718).
 `reports/emocion_nbsvm_ortografia_v2.{csv,json}`, `reports/stacking_v2.{csv,json}`,
 `reports/p7_holdout_resultados.json`, `reports/holdout_evaluaciones_v2.csv`,
 `reports/figuras/fig_27..31_*.png` · `features/v2_*.npz` · scripts
-`experiments/13..20` · 100 filas en `experiments.csv` · D-016 a D-020 en
-`DECISIONS.md`.
+`experiments/13..22` · 118 filas en `experiments.csv` · D-016 a D-022 en
+`DECISIONS.md` · artefactos de auditoria (FASES 43/47/50/55/88):
+`reports/error_intersection_v2.csv`, `reports/error_by_label_combination_v2.csv`,
+`reports/model_complementarity_v2.csv`, `reports/feature_catalog_v2.csv`,
+`features/v2_structured_features.parquet`, `reports/spec_compliance_v2.md`,
+`reports/rule_audit_v2.md`, `reports/target_encoding_audit_v2.md`.

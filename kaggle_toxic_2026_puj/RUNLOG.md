@@ -400,6 +400,29 @@ Registro cronologico de ejecuciones. Formato:
 - 11:20 | Pendiente | `FINAL_REPORT.md` aun no incluye la fase v2 (se anadira
   antes de la entrega si Carlos lo pide).
 
+## 2026-09-25 (cierre documental: spec v2 archivada, artefactos FASES 88/98 y auditorias)
+
+- 13:30 | Especificacion | Archivada la spec maestra de la fase v2 en
+  `docs/advanced_research_v2_spec.md` (113 secciones, FASES 0-99) como contrato de
+  investigacion del proyecto.
+- 13:35 | Artefactos | Nuevo `experiments/22_artefactos_auditoria_v2.py` (7.1 s,
+  sin GPU, sin holdout/test) genero los artefactos exigidos por las FASES
+  43/47/50/51/55/88/89: `reports/error_intersection_v2.csv` (17 filas),
+  `reports/all_three_errors.csv` (201), `reports/error_by_label_combination_v2.csv`
+  (14), `reports/model_complementarity_v2.csv` (496 parejas de 32 canales),
+  `reports/feature_catalog_v2.csv` (225 features),
+  `features/v2_structured_features.parquet` (2.885 x 123, 0 nulos) y su manifest;
+  filas AUD-01..03 en `experiments.csv`. Cifra clave: las-3-mal 98 (V03, 6.61 %)
+  frente a 103 (meta, 6.95 %) con IC bootstrap.
+- 13:45 | Auditorias | Escritas `reports/spec_compliance_v2.md` (matriz FASE 0-99
+  con evidencia; veredicto FASE 99-B "cumplida con observaciones"; mapeo del
+  objetivo FASE 112), `reports/rule_audit_v2.md` (0 violaciones de reglas) y
+  `reports/target_encoding_audit_v2.md` (sin leakage de aprendizaje).
+- 13:55 | Correcciones | `research_backlog_v2.md` con los 24 estados cerrados;
+  informe v2 corregido ("0 RT" -> 0 con prefijo canonico y 8 con el token; 100 ->
+  118 filas; scripts 13..20 -> 13..22); notebook actualizado a 118 experimentos y
+  23 scripts; D-022 registrado.
+
 ## 2026-09-25 (P8 y cierre total del backlog v2)
 
 - 12:05 | P8 | Cinco lineas restantes del backlog | delegado a `ml-trainer`
