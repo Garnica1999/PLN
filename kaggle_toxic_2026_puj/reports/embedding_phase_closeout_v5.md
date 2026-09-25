@@ -104,3 +104,41 @@ que se cambien las variables de entrada de una representacion.
   `experiments.csv` (157 filas), `tasks/plan_v5.md`, `tasks/todo_v5.md`.
 - Cumplimiento: 0 usos prohibidos, 0 fugas, holdout 5/5 intacto, 0 submissions,
   0 sondas de leaderboard.
+
+## 9. Nota de trazabilidad: tiempos de entrenamiento
+
+En los informes de P2 y P5 el campo `segundos` de los modelos aparece como **0.0**.
+Eso **no** significa que no se entrenaran: significa que el script **reutilizo** modelos
+ya entrenados en una corrida anterior (el registro de those corridas se sobrescribio al
+relanzar con `tee`). La evidencia de que el entrenamiento ocurrio son las huellas en
+disco y la medicion directa:
+
+| Modelo | Corpus | `.bin` | `.vec` | Tipos aprendidos | Hora |
+|---|---|---|---|---|---|
+| `fasttext_baseline` | Wikipedia 10M | 307,1 MB | 167,4 MB | 100.098 | 16:55:19 |
+| `fasttext_seed_control` | Wikipedia 10M | 307,1 MB | 167,5 MB | 100.098 | 16:56:53 |
+| `word2vec_control` | Wikipedia 10M | 154,5 MB | 170,1 MB | 100.098 | 16:57:54 |
+| `fasttext_web_10m` | mC4-es 10M | 317,1 MB | 178,3 MB | 106.632 | 17:25:14 |
+| `fasttext_mixto_20m` | mixto 20M | 404,5 MB | 273,2 MB | 163.228 | 17:28:33 |
+| `word2vec_web_10m` | mC4-es 10M | 164,5 MB | 180,2 MB | 106.632 | 17:29:42 |
+
+Medicion directa del entrenamiento con los parametros exactos de la fase
+(200d, ws5, neg10, `minCount` 3, 5 epocas, 16 hilos, semilla 42, `bucket` 200.000),
+ejecutada aparte para no alterar las huellas registradas:
+
+- **tiempo real: 1 min 22 s** de reloj para 5 epocas sobre 10M tokens;
+- **rendimiento: 40.099 palabras/s por hilo x 16 hilos = 641.584 palabras/s**;
+- `avg.loss` converge a 2,149 y el vocabulario queda en **100.098 tipos** tras el
+  poda de `min_count=3` sobre los 271.209 tipos crudos del corpus.
+
+Que sea rapido es correcto y esperado: fastText es una de las implementaciones de
+embeddings mas rapidas que existen (C++ optimizada con muestreo negativo y SGD
+paralelo), y **10M tokens es un corpus diminuto** para esa herramienta. La rapidez
+tiene dos lecturas y conviene no confundir la buena con la mala:
+
+1. La buena: el techo autorizado de **500M tokens habria costado ~65 minutos** de
+   entrenamiento (500M x 5 epocas / 641k palabras/s). La decision de D-031 y D-032 de
+   **no** escalar el corpus se tomo por evidencia, **no** por coste de computo.
+2. La mala: 10M tokens son pocos para aprender embeddings de calidad, y eso forma
+   parte de por que los resultados downstream son debiles. La fase midio esa limitacion
+   en lugar de suponerla, pero conviene tenerla presente al leer los numeros.
