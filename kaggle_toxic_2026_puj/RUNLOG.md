@@ -633,3 +633,21 @@ Registro cronologico de ejecuciones. Formato:
   aleatorio) pero aporta la mitad de lo que aporta V03 (+0.237); como sustituto queda
   refutado, y la hipotesis de complementariedad (que exige P6) **sigue sin medir**.
   **0 sondas de LB, 0 usos de holdout, 0 submissions.**
+- 18:45 | v5 P3 complementariedad (fusion + meta anidado) | `experiments/embedding_03_fusion_complementariedad_v5.py`
+  (EBD-07..09). Todas las variantes se evalúan en el **mismo punto de operación**:
+  los umbrales congelados de V03 (0.44/0.51/0.46), para que nadie gane por ajustar
+  su propio umbral; el control `V03-TFIDF` reproduce **0.777211 exacto**, lo que
+  valida el protocolo celda a celda. Resultados: `V03-TFIDF` 0.7772 | `EMB-SOLO`
+  0.6530 | **`FUSION-HSTACK-L2` 0.7818 (delta +0.0046, IC95 [-0.0032, +0.0124])** |
+  `FUSION-HSTACK-STANDARD` 0.6901 | `META-ANIDADO` 0.7678 (delta -0.0094, IC95
+  negativo). Se detecto y corrigio un bug propio: en la primera version se
+  normalizaba L2 y despues se estandarizaba, de modo que el estandarizador
+  anulaba el L2 y el bloque denso (varianza unitaria) dominaba al disperso; con
+  los mismos datos la version estandarizada pierde 0.09 de F1. Queda fijado L2 por
+  documento como convencion de la fase. La ganancia de la fusion L2 se concentra
+  en las rebanadas que P1 marco debiles: elongaciones +0.0368, urls +0.0204,
+  hashtags +0.0151, colectivos +0.0150, afiliacion +0.0079. Complementariedad
+  2x2: 8 celdas solo de la fusion frente a 5 solo de V03. El apilamiento anidado
+  empeora y rompe 53 celdas por cada 5 que arregla: quinta vez que el stacking
+  generico no aporta. **Estado: CANDIDATE, no adopted** (no cumple A ni B de la
+  seccion 29). **0 sondas de LB, 0 usos de holdout, 0 submissions.**

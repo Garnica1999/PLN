@@ -70,7 +70,20 @@ Leyenda: `[x]` hecho | `[~]` en curso | `[ ]` pendiente | `[!]` bloqueado.
       Escalar a 50M **no** esta justificado por la evidencia disponible y queda
       condicionado a la prueba de complementariedad.
 
-## P3 - Curva de aprendizaje (condicionada)
+## P3-P6 - Complementariedad (ejecutada, resultado CANDIDATE)
+
+- [x] `EBD-07`: fusion hstack TF-IDF + 200d L2, umbrales congelados de V03
+      (control que reproduce 0.777211 exacto)
+- [x] `EBD-08`: fusion con bloque denso estandarizado (descartada: -0.0871)
+- [x] `EBD-09`: meta-modelo anidado Ridge (cerrado: -0.0094, IC95 negativo)
+- [x] Matriz de complementariedad 2x2 y metricas por 11 rebanadas
+- [x] Bootstrap pareado de cada variante frente a V03 (10.000 remuestreos)
+- [x] Decision registrada en **D-031**
+- [ ] Escalar a 50M/100M: **no justificado** por la evidencia (la deficiencia es
+      de registro, no de tamano). Condicionado a que el usuario autorice una
+      fuente de registro web.
+
+
 
 - [ ] `E-CORP-02` 50M y `E-CORP-03` 100M con arquitectura fija
 - [ ] 250M / 500M solo si se cumple una condicion de §30

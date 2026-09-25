@@ -27,8 +27,9 @@ archivada de la autorizacion; se registra solo lo comunicado por el usuario.
 | FUENTES | Wikipedia ES (principal) -> mC4-es (web) -> mixto -> HPLT/CEREAL/OSCAR solo con margen real; OSCAR esta gated (no se fuerza) |
 | ESCALA | 10M -> 50M -> 100M -> decidir -> 250M -> decidir -> 500M; cada expansion exige `RATIONALE_FOR_CORPUS_EXPANSION` |
 | P0 | **GO**: fastText entrena (~930k tok/s con 16 hilos), `corrected_cv` de V03 reproduce 0.777211, 0 violaciones de recursos |
-| P1 | en curso: corpus 10M de Wikipedia ES + cobertura TOXIC |
-| P2 | pendiente: baseline FastText + control + intrinseca + downstream |
+| P1 | cerrado: corpus 10M de Wikipedia ES (2.847 docs, 271.209 tipos), cobertura 0.6839 por tipo / 0.8833 por token, 0 fugas |
+| P2 | cerrado: embedding solo 0.6603 (-0.1169 vs V03, IC95 negativo); subpalabras +0.0138; suelo aleatorio 0.5404 |
+| P3 (complementariedad) | cerrado: `FUSION-HSTACK-L2` **0.7818** (+0.0046, IC95 [-0.0032, +0.0124]) = **CANDIDATE**; meta anidado 0.7678 (cerrado) |
 | GATE DE CIERRE | §29: A (+0.005 con estabilidad) / B (complementariedad robusta) / C (senal representacional fuerte) |
 
 ## Fase anterior: v4 «Advanced Research v4» (CERRADA el 2026-09-25)

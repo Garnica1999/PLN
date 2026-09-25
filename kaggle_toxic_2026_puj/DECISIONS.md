@@ -1014,3 +1014,60 @@ evidencia, experimento, resultado, conclusion final.
 - **Conclusión**: la autorización queda acotada a la representación
   distribuida; cualquier uso que exceda ese alcance se considera no autorizado y
   detiene el experimento correspondiente.
+
+## D-031 - Estado de la representacion distribuida y palanca de mejora
+
+- **Contexto**: P0 a P3 de la fase v5 (embedding desde cero sobre corpus espanol
+  externo no etiquetado, D-030) ya tienen veredicto. Esta decision fija el estado
+  de cada linea, lo que queda abierto y **que evidencia seria necesaria** para
+  cambiar de estado. No sustituye a D-030 y no altera ninguna decision anterior.
+- **Estado por linea**:
+  1. **Embedding como sustituto de V03: REFUTADO.** 0.6530 frente a 0.777211
+     (delta -0.1242, IC95 [-0.1481, -0.1006]) con el pooling A, el mejor de los
+     tres poolings. El suelo aleatorio de la misma dimension da 0.5404, de modo
+     que hay senal real (+0.113) pero la mitad de la que aporta V03.
+  2. **Subpalabras: CONFIRMADAS como geometria, no como mejora downstream.**
+     Los vecinos pasan de distribucionales a morfologicos (`violencia` ->
+     `violentas`, `violento` frente a `discriminacion`, `delincuencia`) y aportan
+     +0.0138 frente al control Word2Vec. La identidad del vecino de una variante
+     ortografica **no** es concluyente con 10M tokens y no se afirma.
+  3. **Fusion hstack con bloque L2: CANDIDATE.** 0.7818 (delta +0.0046,
+     IC95 [-0.0032, +0.0124]). Aporta, pero no alcanza el +0.005 pre-registrado ni
+     el IC95 que excluye el 0, y su mejora se concentra en elongaciones (+0.0368),
+     urls (+0.0204), hashtags (+0.0151) y colectivos (+0.0150): las rebanadas que
+     P1 identifico como peor cubiertas. Complementariedad 2x2: 8 celdas solo de la
+     fusion frente a 5 solo de V03.
+  4. **Fusion con bloque denso estandarizado: DESCARTADA.** 0.6901. La escala
+     relativa de los bloques decide que senal sobrevive en un LR regularizado con
+     L2; se fija la normalizacion L2 por documento como convencion de la fase.
+  5. **Apilamiento (meta-modelo anidado): CERRADO.** 0.7678, delta -0.0094 con
+     IC95 completamente negativo; rompe 53 celdas por cada 5 que arregla. Quinta
+     vez en el proyecto que el stacking generico no aporta.
+  6. **Pooling**: A (media simple) gana a B (TF-IDF-weighted, 0.6348) y a C
+     (media+max, 0.6388). Ponderar por IDF concentra el vector en pocas palabras,
+     que es justo lo que el averaging debia distribuir.
+  7. **LR gana a LinearSVC** por 0.0019, irrelevante frente al error del
+     protocolo (std de pliegues 0.0161).
+- **Por que NO se escala el corpus de Wikipedia a 50M/100M**: la seccion 30
+  exige que una expansion aporte cobertura, ganancia marginal de vocabulario,
+  mejora downstream o diversidad. El diagnostico de P1 senala que la deficiencia
+  es de **registro, no de tamano**: el 66.6 % de los tipos ausentes son
+  deformaciones ortograficas (que los subpalabras ya cubren) y el resto son formas
+  coloquiales y elongadas que un corpus enciclopedico no contiene. Mas paginas de
+  Wikipedia no las aportan. Ademas, la parte 1 del dump ya descargada contiene
+  material de sobra para 100M tokens, de modo que la decision no es de descarga
+  sino de/utilidad.
+- **Palanca que la evidencia si identifica**: un corpus de **registro web**
+  (mC4-es; OSCAR sigue gated) atacaria directamente `coloquial` (0.214) y
+  `elongaciones` (0.035), que son las rebanadas donde la fusion mejora mas.
+  Incorporar una fuente nueva **no** se hace de forma silenciosa (D-030, punto 6):
+  requiere registrar procedencia, licencia, version y hashes en
+  `corpus_manifest.json` y la autorizacion explicita del usuario.
+- **Evidencia que haria cambiar el estado de la fusion a `adopted`**: (a) repetir
+  la fusion sobre un corpus de registro web y comprobar que la mejora crece y se
+  concentra en las mismas rebanadas, o (b) mejora local que se mantenga tras
+  corregir el ruido del protocolo. **No** se considera evidencia suficiente: una
+  mejora del `corrected_cv` aislada, por cinco reasons acumulados (Optuna, meta v2,
+  v09-v11, candidato C de v4 y ahora esta).
+- **Sin submissions**: no se genera ninguna. El envio, si alguna vez, lo decide el
+  usuario con evidencia externa, no con este numero.
