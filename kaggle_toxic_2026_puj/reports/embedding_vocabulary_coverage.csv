@@ -1,0 +1,12 @@
+grupo,descripcion,n_types,n_tokens,type_coverage,token_coverage,oov_rate,frecuencia_media_corpus
+elongaciones,formas con caracteres repetidos ( elongation ortografica ),113,127,0.0354,0.0394,0.9646,2.5
+formas_raras,tipos TOXIC poco frecuentes (frecuencia <= 2) y de 4+ caracteres,6518,7618,0.6359,0.6565,0.3641,185.9
+coloquial,marcadores coloquiales y abreviaturas,56,461,0.2143,0.692,0.7857,463.2
+insultos,lexico de insulto explicito y variantes morfologicas,72,2402,0.2222,0.7777,0.7778,6.6
+targeting,marcas de segunda persona y de destinatario,11,1058,0.9091,0.9849,0.0909,7478.0
+colectivos,colectivos y gentilicos usados como categoria,19,177,0.9474,0.9944,0.0526,476.7
+negacion,operadores de negacion,10,1051,1.0,1.0,0.0,4805.4
+noticia,discurso de noticia y politica,15,234,1.0,1.0,0.0,1815.2
+hashtags,marcas de hashtag (normalizadas a `hashtag`),1,522,1.0,1.0,0.0,2.0
+menciones,marcas de mencion (normalizadas a `usuario`),1,2055,1.0,1.0,0.0,783.0
+marcadores_web,marcas de URL (normalizadas a `url`),2,1365,1.0,1.0,0.0,239807.5

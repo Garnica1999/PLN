@@ -593,3 +593,22 @@ Registro cronologico de ejecuciones. Formato:
   worktree `/home/carlos/Git/PLN-v5` para no interferir con la sesion paralela de
   `KAGGLE_AGE_2026_PUJ`. Fila `EBD-00-SCAFFOLD` en `experiments.csv` (144 filas).
   **0 sondas de LB, 0 usos de holdout.**
+- 17:40 | v5 P1 corpus 10M + cobertura TOXIC | `experiments/embedding_01_corpus_wikipedia_v5.py`
+  (E-CORP-01): se descargo **una sola parte** del dump de eswiki
+  (`eswiki-latest-pages-articles-multistream1.xml-p1p159400.bz2`, 305 MB, paginas
+  1-159400, sha256 `3248f107...`) en vez de los 5.19 GB completos, porque basta para
+  10M, 50M y 100M tokens y hace la fase reproducible con un solo artefacto
+  verificable. Pipeline `download -> raw -> clean -> dedup -> normalize ->
+  tokenize -> shards -> manifest` en streaming: **2.847 documentos, 10.002.400
+  tokens, 271.209 tipos**. **Auditoria de fuga: 0 textos de TOXIC (train y test)
+  con coincidencia de 8 o mas tokens**, indexados 9.737.490 8-gramas.
+  Cobertura del vocabulario TOXIC (train+test): **0.6839 por tipo**, **0.8833 por
+  token**, 2.704 word-OOV, **0 representation-OOV** (todo OOV recibe vector por
+  subpalabras). La hipotesis de que la brecha era ortografica por falta de tildes
+  quedo **refutada** (8.5% de los OOV son pliegues de acento); el 66.6% son
+  deformaciones con perdida de vocales (`cllate`, `violacin`, `espaa`) y el resto
+  son formas coloquiales y elongadas ausentes de un corpus enciclopedico
+  (elongaciones 0.035 por tipo, coloquial 0.214). Se documento tambien que el
+  vecindario de subpalabras con la sonda 50d/1 epoca **no** es interpretable
+  (varios vecinos son claramente erroneeos), por lo que la calidad solo se
+  juzgara en P2 con el modelo de 200d. **0 sondas de LB, 0 usos de holdout.**

@@ -1,7 +1,7 @@
 {
   "schema": "kaggle_toxic_2026_puj.corpus_manifest.v5",
   "creado": "2026-09-25T21:07:57+00:00",
-  "preprocessing_version": "v5.0 (sin aplicar; se define en P1)",
+  "preprocessing_version": "v5.0-EMB-NORMAL",
   "autorizacion": {
     "decision": "D-030",
     "alcance": "corpus externos no etiquetados solo para aprender la representacion distribuida",
@@ -112,7 +112,491 @@
       "nota": "No es requisito para continuar (D-030)."
     }
   ],
-  "corpus_construidos": [],
+  "corpus_construidos": [
+    {
+      "id": "E-CORP-01",
+      "source": "wikipedia_es",
+      "url": "https://dumps.wikimedia.org/eswiki/latest/eswiki-latest-pages-articles-multistream1.xml-p1p159400.bz2",
+      "resource": "eswiki-latest-pages-articles-multistream1.xml-p1p159400.bz2",
+      "version": "eswiki latest (dump del 2026-09-25)",
+      "license": "CC BY-SA 4.0 (atribucion obligatoria) y texto de MediaWiki bajo CC BY-SA/GFDL",
+      "download_date": "2026-09-25",
+      "raw_file": "eswiki-latest-pages-articles-multistream1.xml-p1p159400.bz2",
+      "raw_sha256": "3248f107590e6a00e458fdce09616bb22726d78fe3f40106f5a1a7b05d50dabc",
+      "raw_size": 320394578,
+      "document_count": 2847,
+      "token_count": 10002400,
+      "vocabulary_size": 271209,
+      "shards": [
+        "data/external/corpora/wikipedia_es/emb_normal/tokens_shard_00.txt",
+        "data/external/corpora/wikipedia_es/emb_normal/tokens_shard_01.txt",
+        "data/external/corpora/wikipedia_es/emb_normal/tokens_shard_02.txt",
+        "data/external/corpora/wikipedia_es/emb_normal/tokens_shard_03.txt",
+        "data/external/corpora/wikipedia_es/emb_normal/tokens_shard_04.txt"
+      ],
+      "clean_size": 63152231,
+      "preprocessing": {
+        "version": "v5.0-EMB-NORMAL",
+        "variante": "EMB-NORMAL",
+        "minusculas": true,
+        "tildes": "conservadas",
+        "corrector_ortografico": false,
+        "urls": "marcador `url`",
+        "menciones": "marcador `usuario`",
+        "hashtags": "marcador `hashtag`",
+        "numeros": "marcador `numero`",
+        "deduplicacion": "sha1 del texto limpio",
+        "minimo_tokens_documento": 20
+      },
+      "pipeline": {
+        "articulos_leidos": 2855,
+        "duplicados_descartados": 0,
+        "documentos_cortos_descartados": 8,
+        "sin_texto_util": 0
+      },
+      "auditoria_fuga": {
+        "n_gramas": 8,
+        "textos_con_coincidencia": 0,
+        "cumple": true
+      },
+      "cobertura_toxic": {
+        "train": {
+          "n_types": 6059,
+          "n_tokens": 29646,
+          "type_coverage": 0.7042,
+          "token_coverage": 0.8831,
+          "frequency_weighted_coverage": 0.8831,
+          "oov_rate_types": 0.2958,
+          "oov_rate_tokens": 0.1169,
+          "n_word_oov": 1792,
+          "n_representation_oov": 0,
+          "representation_oov_rate": 0.0,
+          "mediana_norma_probe": 2.972006,
+          "n_word_oov_resolubles_por_ascii": 155,
+          "tasa_oov_por_ascii": 0.0865,
+          "n_word_oov_resolubles_por_esqueleto": 1208,
+          "tasa_oov_por_esqueleto": 0.6741,
+          "type_coverage_proyeccion_ascii": 0.7298,
+          "type_coverage_proyeccion_esqueleto": 0.9036,
+          "ejemplos_oov_resolubles_por_ascii": [
+            {
+              "tipo": "ademas",
+              "ascii": "ademas"
+            },
+            {
+              "tipo": "afirmo",
+              "ascii": "afirmo"
+            },
+            {
+              "tipo": "agarro",
+              "ascii": "agarro"
+            },
+            {
+              "tipo": "agil",
+              "ascii": "agil"
+            },
+            {
+              "tipo": "alfonsin",
+              "ascii": "alfonsin"
+            },
+            {
+              "tipo": "algun",
+              "ascii": "algun"
+            },
+            {
+              "tipo": "apunto",
+              "ascii": "apunto"
+            },
+            {
+              "tipo": "arabe",
+              "ascii": "arabe"
+            },
+            {
+              "tipo": "arabes",
+              "ascii": "arabes"
+            },
+            {
+              "tipo": "arrastrara",
+              "ascii": "arrastrara"
+            },
+            {
+              "tipo": "atencion",
+              "ascii": "atencion"
+            },
+            {
+              "tipo": "atras",
+              "ascii": "atras"
+            },
+            {
+              "tipo": "biologa",
+              "ascii": "biologa"
+            },
+            {
+              "tipo": "cabron",
+              "ascii": "cabron"
+            },
+            {
+              "tipo": "callate",
+              "ascii": "callate"
+            }
+          ],
+          "ejemplos_oov_resolubles_por_esqueleto": [
+            {
+              "tipo": "aadidle",
+              "esqueleto": "ddl"
+            },
+            {
+              "tipo": "ablarme",
+              "esqueleto": "blrm"
+            },
+            {
+              "tipo": "abrazarte",
+              "esqueleto": "brzrt"
+            },
+            {
+              "tipo": "acabarn",
+              "esqueleto": "cbrn"
+            },
+            {
+              "tipo": "acabas",
+              "esqueleto": "cbs"
+            },
+            {
+              "tipo": "acmbaro",
+              "esqueleto": "cmbr"
+            },
+            {
+              "tipo": "acompaada",
+              "esqueleto": "cmpd"
+            },
+            {
+              "tipo": "acordais",
+              "esqueleto": "crds"
+            },
+            {
+              "tipo": "acosos",
+              "esqueleto": "css"
+            },
+            {
+              "tipo": "acostaria",
+              "esqueleto": "cstr"
+            },
+            {
+              "tipo": "acten",
+              "esqueleto": "ctn"
+            },
+            {
+              "tipo": "activist",
+              "esqueleto": "ctvst"
+            },
+            {
+              "tipo": "actuacin",
+              "esqueleto": "ctcn"
+            },
+            {
+              "tipo": "acusacin",
+              "esqueleto": "cscn"
+            },
+            {
+              "tipo": "ademas",
+              "esqueleto": "dms"
+            }
+          ]
+        },
+        "test": {
+          "n_types": 4503,
+          "n_tokens": 19204,
+          "type_coverage": 0.7213,
+          "token_coverage": 0.8837,
+          "frequency_weighted_coverage": 0.8837,
+          "oov_rate_types": 0.2787,
+          "oov_rate_tokens": 0.1163,
+          "n_word_oov": 1255,
+          "n_representation_oov": 0,
+          "representation_oov_rate": 0.0,
+          "mediana_norma_probe": 2.977799,
+          "n_word_oov_resolubles_por_ascii": 109,
+          "tasa_oov_por_ascii": 0.0869,
+          "n_word_oov_resolubles_por_esqueleto": 848,
+          "tasa_oov_por_esqueleto": 0.6757,
+          "type_coverage_proyeccion_ascii": 0.7455,
+          "type_coverage_proyeccion_esqueleto": 0.9096,
+          "ejemplos_oov_resolubles_por_ascii": [
+            {
+              "tipo": "abon",
+              "ascii": "abon"
+            },
+            {
+              "tipo": "aceptalo",
+              "ascii": "aceptalo"
+            },
+            {
+              "tipo": "ademas",
+              "ascii": "ademas"
+            },
+            {
+              "tipo": "aguila",
+              "ascii": "aguila"
+            },
+            {
+              "tipo": "ahi",
+              "ascii": "ahi"
+            },
+            {
+              "tipo": "albondigas",
+              "ascii": "albondigas"
+            },
+            {
+              "tipo": "amig",
+              "ascii": "amig"
+            },
+            {
+              "tipo": "arabe",
+              "ascii": "arabe"
+            },
+            {
+              "tipo": "arabes",
+              "ascii": "arabes"
+            },
+            {
+              "tipo": "baha",
+              "ascii": "baha"
+            },
+            {
+              "tipo": "basicamente",
+              "ascii": "basicamente"
+            },
+            {
+              "tipo": "bida",
+              "ascii": "bida"
+            },
+            {
+              "tipo": "biologa",
+              "ascii": "biologa"
+            },
+            {
+              "tipo": "cabron",
+              "ascii": "cabron"
+            },
+            {
+              "tipo": "callate",
+              "ascii": "callate"
+            }
+          ],
+          "ejemplos_oov_resolubles_por_esqueleto": [
+            {
+              "tipo": "abandononde",
+              "esqueleto": "bndnnd"
+            },
+            {
+              "tipo": "aburre",
+              "esqueleto": "brr"
+            },
+            {
+              "tipo": "aceptalo",
+              "esqueleto": "cptl"
+            },
+            {
+              "tipo": "aceptas",
+              "esqueleto": "cpts"
+            },
+            {
+              "tipo": "aclaren",
+              "esqueleto": "clrn"
+            },
+            {
+              "tipo": "acorralen",
+              "esqueleto": "crrln"
+            },
+            {
+              "tipo": "acosadores",
+              "esqueleto": "csdrs"
+            },
+            {
+              "tipo": "acosos",
+              "esqueleto": "css"
+            },
+            {
+              "tipo": "actuacin",
+              "esqueleto": "ctcn"
+            },
+            {
+              "tipo": "acueste",
+              "esqueleto": "cst"
+            },
+            {
+              "tipo": "ademas",
+              "esqueleto": "dms"
+            },
+            {
+              "tipo": "adems",
+              "esqueleto": "dms"
+            },
+            {
+              "tipo": "administracin",
+              "esqueleto": "dmnstrcn"
+            },
+            {
+              "tipo": "adrede",
+              "esqueleto": "drd"
+            },
+            {
+              "tipo": "agolpados",
+              "esqueleto": "glpds"
+            }
+          ]
+        },
+        "train+test": {
+          "n_types": 8555,
+          "n_tokens": 48850,
+          "type_coverage": 0.6839,
+          "token_coverage": 0.8833,
+          "frequency_weighted_coverage": 0.8833,
+          "oov_rate_types": 0.3161,
+          "oov_rate_tokens": 0.1167,
+          "n_word_oov": 2704,
+          "n_representation_oov": 0,
+          "representation_oov_rate": 0.0,
+          "mediana_norma_probe": 2.967605,
+          "n_word_oov_resolubles_por_ascii": 230,
+          "tasa_oov_por_ascii": 0.0851,
+          "n_word_oov_resolubles_por_esqueleto": 1802,
+          "tasa_oov_por_esqueleto": 0.6664,
+          "type_coverage_proyeccion_ascii": 0.7108,
+          "type_coverage_proyeccion_esqueleto": 0.8946,
+          "ejemplos_oov_resolubles_por_ascii": [
+            {
+              "tipo": "abon",
+              "ascii": "abon"
+            },
+            {
+              "tipo": "aceptalo",
+              "ascii": "aceptalo"
+            },
+            {
+              "tipo": "ademas",
+              "ascii": "ademas"
+            },
+            {
+              "tipo": "afirmo",
+              "ascii": "afirmo"
+            },
+            {
+              "tipo": "agarro",
+              "ascii": "agarro"
+            },
+            {
+              "tipo": "agil",
+              "ascii": "agil"
+            },
+            {
+              "tipo": "aguila",
+              "ascii": "aguila"
+            },
+            {
+              "tipo": "ahi",
+              "ascii": "ahi"
+            },
+            {
+              "tipo": "albondigas",
+              "ascii": "albondigas"
+            },
+            {
+              "tipo": "alfonsin",
+              "ascii": "alfonsin"
+            },
+            {
+              "tipo": "algun",
+              "ascii": "algun"
+            },
+            {
+              "tipo": "amig",
+              "ascii": "amig"
+            },
+            {
+              "tipo": "apunto",
+              "ascii": "apunto"
+            },
+            {
+              "tipo": "arabe",
+              "ascii": "arabe"
+            },
+            {
+              "tipo": "arabes",
+              "ascii": "arabes"
+            }
+          ],
+          "ejemplos_oov_resolubles_por_esqueleto": [
+            {
+              "tipo": "aadidle",
+              "esqueleto": "ddl"
+            },
+            {
+              "tipo": "abandononde",
+              "esqueleto": "bndnnd"
+            },
+            {
+              "tipo": "ablarme",
+              "esqueleto": "blrm"
+            },
+            {
+              "tipo": "abrazarte",
+              "esqueleto": "brzrt"
+            },
+            {
+              "tipo": "aburre",
+              "esqueleto": "brr"
+            },
+            {
+              "tipo": "acabarn",
+              "esqueleto": "cbrn"
+            },
+            {
+              "tipo": "acabas",
+              "esqueleto": "cbs"
+            },
+            {
+              "tipo": "aceptalo",
+              "esqueleto": "cptl"
+            },
+            {
+              "tipo": "aceptas",
+              "esqueleto": "cpts"
+            },
+            {
+              "tipo": "aclaren",
+              "esqueleto": "clrn"
+            },
+            {
+              "tipo": "acmbaro",
+              "esqueleto": "cmbr"
+            },
+            {
+              "tipo": "acompaada",
+              "esqueleto": "cmpd"
+            },
+            {
+              "tipo": "acordais",
+              "esqueleto": "crds"
+            },
+            {
+              "tipo": "acorralen",
+              "esqueleto": "crrln"
+            },
+            {
+              "tipo": "acosadores",
+              "esqueleto": "csdrs"
+            }
+          ]
+        }
+      },
+      "limitaciones": [
+        "Solo una parte del dump (paginas 1-159400): el orden del dump se respeta, por lo que la muestra se concentra en articulos antiguos.",
+        "El corpus no contiene registro web informal; esa limitacion se mide en la cobertura por grupo (coloquial, hashtags, elongation).",
+        "Wikipedia es texto enciclopedico: no es representativo de tweets."
+      ]
+    }
+  ],
   "reglas": [
     "Ningun corpus se usa para aprendizaje supervisado (D-030).",
     "Ningun texto de toxic_test.csv entra en el corpus.",

@@ -25,23 +25,23 @@ Leyenda: `[x]` hecho | `[~]` en curso | `[ ]` pendiente | `[!]` bloqueado.
 
 ## P1 - Corpus 10M (Wikipedia ES) y cobertura TOXIC
 
-- [ ] Descarga por tramo del dump multistream (rangos HTTP) sin bajar los 5.19 GB
+- [x] Descarga por tramo del dump multistream (rangos HTTP) sin bajar los 5.19 GB
       completos; registrar URL, fecha y sha256 del tramo
-- [ ] Extraccion de texto plano (parser iterativo del XML, sin cargar en RAM)
-- [ ] Limpieza y deduplicacion (exacta y por hash de shingles)
-- [ ] Normalizacion **EMB-NORMAL** (lowercase, URLs, menciones, hashtags,
+- [x] Extraccion de texto plano (parser iterativo del XML, sin cargar en RAM)
+- [x] Limpieza y deduplicacion (exacta y por hash de shingles)
+- [x] Normalizacion **EMB-NORMAL** (lowercase, URLs, menciones, hashtags,
       preservacion de elongaciones, **sin** correctores ortograficos)
-- [ ] Tokenizacion y escritura de **shards** hasta 10M tokens
-- [ ] `corpus_manifest.json` actualizado con `document_count`, `token_count`,
+- [x] Tokenizacion y escritura de **shards** hasta 10M tokens
+- [x] `corpus_manifest.json` actualizado con `document_count`, `token_count`,
       `vocabulary_size`, `sha256`, `preprocessing_version`
-- [ ] **Auditoria de fuga**: 0 textos de `toxic_test.csv` (y de test) en el corpus
-- [ ] Cobertura TOXIC (§7): `type_coverage`, `token_coverage`, `oov_rate`,
+- [x] **Auditoria de fuga**: 0 textos de `toxic_test.csv` (y de test) en el corpus
+- [x] Cobertura TOXIC (§7): `type_coverage`, `token_coverage`, `oov_rate`,
       `frequency_weighted_coverage` (+ OOV listado)
-- [ ] Cobertura por grupo (§8): insultos, targeting, colectivos, negacion,
+- [x] Cobertura por grupo (§8): insultos, targeting, colectivos, negacion,
       coloquial, elongaciones, hashtags, menciones, noticia, formas raras
-- [ ] Distinguir **word-OOV** de **representation-OOV** (§9) usando
+- [x] Distinguir **word-OOV** de **representation-OOV** (§9) usando
       `print-word-vectors` en modo subwords
-- [ ] Informes: `reports/embedding_corpus_audit.md`,
+- [x] Informes: `reports/embedding_corpus_audit.md`,
       `reports/embedding_vocabulary_coverage.md`
 
 ## P2 - Baseline FastText 10M + control + downstream
