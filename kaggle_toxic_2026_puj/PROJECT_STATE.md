@@ -2,29 +2,39 @@
 
 Ultima actualizacion: 2026-09-25 (fase v4 abierta; P0 completado).
 
-## Fase actual: v4 «Advanced Research v4» (abierta 2026-09-25)
+## Fase actual: v4 «Advanced Research v4» (CERRADA el 2026-09-25)
 
-Rama `proyecto-kaggle-toxic-2026-v4` (desde `main`). Spec archivada en
+Rama `proyecto-kaggle-toxic-2026-v4`. Spec archivada en
 `docs/advanced_research_v4_spec.md`; plan en `tasks/plan_v4.md`; backlog
-pre-registrado en `reports/research_backlog_v4.md` (26 lineas); diagnostico de
-ideas en `reports/v4_gap_analysis.md`; cobertura en
-`reports/signal_coverage_v4.csv`. Decision de gobierno: **D-025**.
+pre-registrado en `reports/research_backlog_v4.md`; informe de cierre en
+`reports/advanced_research_v4.md`; matriz de cumplimiento en
+`reports/spec_compliance_v4.md`. Decisiones D-025 a D-029.
+
+**Resultado: la fase se cierra con la condicion B de la spec (§102): hipotesis
+nuevas investigadas y cerradas con evidencia, sin mejora transferible.** El
+unico candidato que supero los tres gates de D-016 (C, `meta36_downweight`,
+corrected_cv 0.7882 = +0.0110, 4/5 pliegues, IC95 [+0.0054, +0.0200]) **fue
+rechazado por el holdout congelado: 0.8163 frente a 0.8285 de V03 (delta
+-0.0122)**. Su submission (v12) queda como artefacto reproducible marcado
+`DESCARTADO`; no se envio a Kaggle.
 
 | Campo (§104) | Valor |
 |---|---|
-| CURRENT_BEST_MODEL | **V03** (sin cambios; verificada byte a byte en P0) |
+| CURRENT_BEST_MODEL | **V03** (sin cambios; verificada byte a byte en P0 y en la auditoria final) |
 | CURRENT_BEST_CORRECTED_CV | **0.777211** (protocolo v2, desarrollo n=1.483) |
-| CURRENT_BEST_HOLDOUT | 0.8285 (V03, P7-01). Holdout 4/5 evaluaciones usadas |
-| CURRENT_BEST_KAGGLE | **0.78306** (v03, mejor de 12 sondas; nivel esperado de la familia ~0.776-0.780) |
-| NEW_SIGNALS | ninguna adoptada todavia;candidatos genuinamente nuevos identificados: consistencia de etiquetas, dureza/reweighting, weighting supervisado, modelo conjunto, calibracion de entradas del meta |
-| CLOSED_TRACKS | v2 completo (24/24, D-021) + fase final de candidatos (D-023, D-024) |
-| OPEN_TRACKS | A, B, C, D (subtemas), E, F, G, H (tracks v4) |
-| SUBMISSION_CANDIDATES | ninguno nuevo; v09/v10/v11 sondeados y descartados |
-| NEXT_STEP | P1 (TRACK A + B): clusters de consistencia de etiquetas y mapa de dureza OOF |
+| CURRENT_BEST_HOLDOUT | 0.8285 (V03, P7-01). **Holdout agotado: 5/5 evaluaciones usadas** |
+| CURRENT_BEST_KAGGLE | **0.78306** (v03, mejor de 12 sondas; 0 sondas nuevas en v4) |
+| NEW_SIGNALS | ninguna adoptada. Señales nuevas caracterizadas y **cerradas**: rareza del ruido de etiqueta (2.8 % de contradicciones, no explica el error); dureza util = distancia a la frontera (la BCE agregada no preserva el orden); reweighting con signo negativo; verosimilitud class-conditional aporta +0.0041 en fusion; SVC RBF sobre SVD 300 = 0.7904 con IC fragil |
+| CLOSED_TRACKS | A, B, C, D, E, F y H (TRACK G queda cerrado salvo el aporte documentado de la verosimilitud) |
+| OPEN_TRACKS | ninguno |
+| SUBMISSION_CANDIDATES | ninguno. `toxic_submission_v12_descartado_meta36_downweight.csv` conservado como artefacto, marcado DESCARTADO |
+| NEXT_STEP | integrar la seccion v4 en `FINAL_REPORT.md` y en el notebook, y abrir el PR de la rama v4 a `main` |
 
-Gobernanza: protocolo v2 intacto (D-016); la ultima evaluacion de holdout se
-reserva para el unico mejor finalista; el envio al LB es manual y solo para
-candidatos que pasen todos los gates.
+**Lectura metodologica que cierra la fase**: con 1.731 ejemplos de train, 1.154
+de test y sin modelos preentrenados, el corrected_cv de este protocolo **no es
+un selector fiable**: es el cuarto caso consecutivo de mejora local que no
+transfiere (Optuna, meta v2, candidatos v09-v11 y ahora C). El error estandar
+del test (~0.013) es del mismo orden que las mejoras que el protocolo selecciona.
 
 ## Fase anterior: v2 cerrada + fase final de candidatos
 

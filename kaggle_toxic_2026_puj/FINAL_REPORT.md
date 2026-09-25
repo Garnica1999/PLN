@@ -592,3 +592,88 @@ Las 45 referencias completas del estado del arte están en `references.bib` y `r
 - Resultados: `reports/variantes_representaciones.csv`, `reports/features_densas_resultados.csv`, `reports/ensembles_resultados.csv`, `reports/optuna_trials.csv`, `reports/dl_desde_cero_resultados.csv`, `reports/control_pseudo_autores.json`, `reports/fase13a_refit_umbral_metricas.json`, `reports/fase13d_sondas_robustez.json`.
 - Competencia: `submissions/leaderboard_log.csv`, 8 submissions en `submissions/`, reglas en `docs/competition_rules.md`.
 - Auditoría final y reproducibilidad: `reports/auditoria_final.md` (veredicto GO; scripts de verificación en `/tmp/opencode/` y copia aislada en `/tmp/opencode/repro_kaggle_toxic/`).
+
+---
+
+## 27. Investigación posterior (fase v4 «Advanced Research v4»)
+
+Esta sección documenta una fase de investigación posterior a la entrega, abierta
+el 2026-09-25 con una especificación de 108 secciones
+(`docs/advanced_research_v4_spec.md`) bajo la pregunta «qué propiedad de los
+datos, de las etiquetas, de la representación o del proceso de aprendizaje
+todavía no estamos explotando?». No modifica el modelo final: su valor es
+acotar con evidencia qué parte del error es ruido de anotación, qué parte es
+dificultad del modelo y qué parte es límite de la representación.
+
+### 27.1 Protocolo
+
+Se mantiene íntegro el protocolo v2 (D-016): grupos = near-duplicado ∪
+pseudo-autor, desarrollo de 1.483 tweets, holdout congelado de 248, `corrected_cv`
+como métrica primaria y bootstrap pareado por tweet (2.000 remuestreos). La
+referencia V03 se verificó byte a byte al abrir la fase (5/5 hashes, `corrected_cv`
+0.777211 reproducida exactamente) y de nuevo en la auditoría final (veredicto GO,
+0 violaciones de reglas en 12 scripts). Las 26 líneas del backlog se
+pre-registraron antes de experimentar para controlar la multiplicidad.
+
+### 27.2 Resultados por track
+
+| Track | Resultado | Cifra clave |
+|---|---|---|
+| A. Integridad de datos y ruido de etiqueta | Cerrado | 15 clusters de texto repetido (84 tweets, 4.85 %), solo **2 contradictorios**; el error OOF es **menor** dentro (HS 0.046 vs 0.218) |
+| B. Dureza de ejemplos y reweighting | Cerrado | El hard example mining **empeora** (−0.0101 con IC negativo); bajar el peso de los que más violan el umbral **mejora** (+0.0036 en LR, +0.0086 en SVC) |
+| C. Weighting de la representación | Cerrado | log-odds 0.7571, chi² 0.6622, MI 0.7378, BM25 0.7748-0.7755, binario 0.7738: **todas degradan** frente a 0.7772 |
+| D. Representaciones sparse nuevas | Cerrado | Afijos 0.7758, interacciones y ventanas por debajo: el canal de morfología (brecha FASE 13) queda cerrado |
+| E. Modelo conjunto de etiquetas | Cerrado | Label Powerset sobre 6 y 4 combinaciones: mejor 0.7713, **no supera** a los tres binarios independientes |
+| F. Robustez y shift | Cerrado | 2 de 10 variables no supervisadas con shift; V03 da **0.7568 en textos únicos** y **0.9769 en los 68 near-duplicados**; la propagación por near-duplicado tiene techo nulo |
+| G. Modelos estadísticos alternativos | Mixto | La verosimilitud class-conditional aporta **+0.0041** en fusión tardía; el **SVC RBF sobre SVD 300 llega a 0.7904** con IC frágil |
+| H. Fusión y calibración del meta | Cerrado | El shift entre regímenes de entrenamiento es pequeño (KS 0.062) y **no causa daño**; se refuta la hipótesis abierta de la fase v2 |
+
+### 27.3 Tres resultados que cambian la lectura del problema
+
+1. **El error no es ruido de anotación.** La contradicción textual es un
+   fenómeno escaso (2.8 % de los ejemplos) y concentrado en un único cluster de
+   48 tweets con el mismo patrón de insulto. El modelo clasifica bien los
+   ejemplos ambiguos, y las tres estrategias de la especificación (baseline,
+   downweight, eliminación de contradicciones extremas) mueven la F1 en ±0.0005.
+2. **La forma de medir la dureza importa, y la propuesta por la BCE no sirve en
+   este corpus.** La dificultad por etiqueta ordena bien el error (r ≈ −0.80),
+   pero **agregar las tres etiquetas rompe el orden** (r = −0.136) por
+   compensación: los ejemplos que fallan más tienen la BCE media *menor* (0.58
+   frente a 1.34). La distancia a la frontera de decisión sí es monótona
+   (r = +0.345) y es la que se usó.
+3. **La mejora local no es un predictor de lageneralización.** Por primera vez se
+   tenía un candidato que superaba los tres criterios de adopción *y* una
+   medición externa limpia: `meta36_downweight` (corrected_cv 0.7882 = +0.0110,
+   4/5 pliegues, IC95 del delta pareado [+0.0054, +0.0200], corrección neta +34
+   frente a V03). El holdout congelado, que no había participado en ninguna
+   decisión de la fase, lo rechazó: **0.8163 frente a 0.8285 de V03 (delta
+   −0.0122)**.
+
+### 27.4 Decisión y efectos sobre la entrega
+
+- **Ningún candidato de la fase v4 se adopta.** V03 sigue siendo el modelo y la
+  submission finales; no se generó ninguna sonda nueva de leaderboard (siguen
+  siendo 12) y la submission v12 se conserva como artefacto reproducible
+  marcado `DESCARTADO` en `submissions/submission_manifest.csv`.
+- El holdout queda agotado (5/5 evaluaciones) y su valor queda registrado en el
+  registro: es la única partición que no participó en ninguna decisión y es la
+  que detecta la falta de transferencia.
+- Se añade a `experiments.csv` un total de **15 experimentos nuevos** (143 filas) y
+  cinco decisiones (D-025 a D-029), con la misma trazabilidad que las fases
+  anteriores.
+- Los entregables se actualizan sin alterar lo ya validado: el notebook incorpora
+  la sección 17 (44 celdas, 0 errores, 36 comprobaciones [OK]) y este informe
+  incorpora la sección 27; los conteos verificados por el notebook pasan a 143
+  experimentos, 39 scripts y 12 sondas.
+
+### 27.5 Lo que la fase deja como evidencia reutilizable
+
+- La contradicción de etiquetas se puede cuantificar de forma barata y
+  automatizable (cuatro criterios de agrupamiento, 3 s de cómputo), y sirve para
+  descartar de entrada toda la familia de "reparar el ruido de anotación".
+- Cualquier reweighting futuro en este proyecto debe usar la distancia a la
+  frontera o la violación del umbral, con signo **negativo** sobre los ejemplos
+  que el modelo falla, y debe validarse con el holdout antes de cualquier sonda.
+- La descomposición del desempeño por subconjunto (0.7568 en textos únicos frente
+  a 0.9769 en near-duplicados) es la explicación más directa de por qué la F1
+  agregada es una métrica frágil en un corpus con repetición.

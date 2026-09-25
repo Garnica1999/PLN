@@ -1,0 +1,77 @@
+{
+  "experiment_id": "P8-REFIT-FINAL",
+  "candidato": "C_meta36_downweight",
+  "fecha": "2026-09-25T19:53:55+00:00",
+  "duracion_s": 12.79,
+  "multiplicadores_medianos": [
+    1.2,
+    1.5,
+    1.2
+  ],
+  "multiplicadores_por_fold": [
+    [
+      1.0,
+      1.5,
+      1.2
+    ],
+    [
+      1.0,
+      1.5,
+      1.5
+    ],
+    [
+      1.5,
+      1.2,
+      0.8
+    ],
+    [
+      1.2,
+      1.5,
+      1.2
+    ],
+    [
+      1.5,
+      1.2,
+      0.8
+    ]
+  ],
+  "pesos_ejemplo": {
+    "definicion": "clip(1 - 0.5 * z(error_score), 0.5, 1.5) con error_score OOF",
+    "media": 0.8634,
+    "minimo": 0.5,
+    "maximo": 1.0
+  },
+  "holdout": {
+    "n": 248,
+    "f1_media": 0.816296,
+    "f1_por_etiqueta": {
+      "HS": 0.862385,
+      "TR": 0.805755,
+      "AG": 0.780749
+    },
+    "referencia_v03": 0.8285,
+    "delta": -0.012204,
+    "evaluaciones_usadas": "5/5"
+  },
+  "submission": {
+    "archivo": "toxic_submission_v12_meta36_downweight.csv",
+    "sha256": "ec25354cacba3934b9ea1f295b33b5c05fe4a2fe2c302ce5f30ffdd8a9086f81",
+    "validacion": {
+      "columnas": true,
+      "n_filas": 1154,
+      "n_filas_esperado": 1154,
+      "ids_coinciden": true,
+      "valores_binarios": true,
+      "sin_nulos": true,
+      "ids_unicos": true,
+      "positivos": {
+        "HS": 495,
+        "TR": 302,
+        "AG": 391
+      },
+      "ok": true
+    }
+  },
+  "corrected_cv_candidato": 0.788173,
+  "referencia_v03_corrected_cv": 0.777211
+}

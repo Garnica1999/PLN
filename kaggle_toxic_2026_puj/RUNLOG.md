@@ -528,3 +528,53 @@ Registro cronologico de ejecuciones. Formato:
   r = +0.345; violacion del umbral r = +0.811). Ademas el error es **menor**
   dentro de los clusters contradictorios, luego el ruido de anotacion por
   duplicacion no explica el error de V03. D-026 registrada; backlog actualizado.
+
+## 2026-09-25 (cierre de la fase v4: P2-P8)
+
+- 14:10 | P2 TRACK C | `experiments/30_supervised_weighting_v4.py`: 16 variantes de
+  geometria y coste. **Todas las reponderaciones de features degradan**: log-odds
+  0.7571, chi2 0.6622, MI 0.7378, BM25 0.7748-0.7755, binario 0.7738 (control
+  V03 0.777211 exacto). El barrido **anidado** de `class_weight` da 0.7812
+  (3/5 pliegues) y la combinacion con downweight por violacion da **0.7854
+  (5/5 pliegues, IC95 del delta [-0.0002,+0.0117], el limite inferior toca 0)**.
+  V4-C06 (log-odds con C = 2/10/50/200) **refuta** la hipotesis del desajuste con
+  la penalizacion L2: 0.7571 -> 0.7435 al subir C.
+- 14:25 | P3 TRACK E | `experiments/31_joint_label_v4.py`: Label Powerset sobre 6 y
+  4 combinaciones, tres tratamientos de las rarezas y C en {0.5,1,2}. Mejor
+  variante 0.7713 (`lr4_mapeo_bal_C2.0`): **el modelo conjunto no supera a los tres
+  binarios independientes**. Cerrado como NO_SIGNAL.
+- 14:40 | P4 TRACK H | `experiments/32_meta_shift_v4.py`: el shift entre el regimen
+  de entrenamiento del meta y el de inferencia es **pequeno** (KS medio 0.0624) y
+  **no causa dano** (meta_shift 0.7828 > meta_control 0.7791); la alineacion por
+  cuantiles recupera +0.00005 y Platt empeora -0.0171. **Hipotesis abierta de
+  v2 §4.3 refutada** (D-028). El meta de 36 features cumple el nivel de D-016.
+- 15:00 | P5 TRACK G | `experiments/33_class_conditional_lm_v4.py`: la
+  verosimilitud class-conditional (unigram/bigram/char) vale 0.4876 sola pero
+  **aporta +0.0041** a la fusion tardia (0.7710 -> 0.7751). Ridge 0.7698, SGD
+  0.7454, PassiveAggressive 0.7626. En SVD 300: **RBF SVC 0.7904** (5/5
+  pliegues, neto +30, IC fragil), HistGB 0.7297, ExtraTrees 0.7033.
+- 15:20 | P6 TRACK D | `experiments/34_structural_sparse_v4.py`: canales de afijos
+  (0.7758), interacciones y ventanas locales como tokens, en version hstack y
+  standalone. Ninguno aporta. Diagnostico de masa de HS implicito ejecutado
+  (`reports/implicit_hate_diagnostic_v4.json`).
+- 15:35 | P7 TRACK F | `experiments/35_discovery_v4.py`: 2 de 10 variables no
+  supervisadas con shift; V03 rinde **0.7568 en textos unicos** frente a
+  **0.9769 en los 68 ejemplos con near-duplicado**; la vecindad discrepante no
+  explica el error (delta +0.018 con IC que cruza 0); la propagacion por
+  near-duplicado tiene **techo nulo** (0 coincidencias literales test-train); 0 de
+  5 canales corrigen mas de lo que rompen.
+- 16:00 | P8 candidatos | `experiments/36_candidatos_v4.py`: A 0.7854 (5/5, IC
+  toca 0), B 0.7828 (4/5, IC positivo, nivel menor), **C 0.7882 (4/5,
+  IC95 [+0.0054,+0.0200], correccion neta +34: unico que pasa los tres gates)**,
+  D 0.7904 (5/5, IC toca 0).
+- 16:20 | P8 refit y holdout | `experiments/38_refit_final_v4.py`: refit del
+  candidato C sobre todo el desarrollo (multiplicadores = mediana de los 5
+  pliegues 1.2/1.5/1.2, pesos de ejemplo OOF), prediccion sobre holdout y test.
+  **HOLDOUT 0.8163 vs 0.8285 de V03 (delta -0.0122): RECHAZADO**. Submission v12
+  generada y validada (sha256 `ec25354c...`) y marcada `DESCARTADO` en el manifest.
+  **5/5 evaluaciones de holdout usadas; 0 sondas de LB nuevas** (D-029).
+- 16:40 | Cierre documental | `reports/advanced_research_v4.md`,
+  `reports/spec_compliance_v4.md`, `experiments/37_auditoria_v4.py` (veredicto
+  **GO**: 0 violaciones en 12 scripts, doble ejecucion con SHA256 estable, 41
+  artefactos inventariados). Memoria actualizada: D-025..D-029, PROJECT_STATE,
+  experiments.csv (143 filas), tasks/todo_v4.md.

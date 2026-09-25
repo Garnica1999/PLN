@@ -861,3 +861,48 @@ evidencia, experimento, resultado, conclusion final.
   el presupuesto de control en una explicacion que ya se demostro insuficiente.
 - **Evidencia**: `reports/meta_shift_v4.json`,
   `reports/figuras/fig_36_meta_shift_v4.png`, `features/oof_meta_shift_v4.npz`.
+
+## D-029 - P8 (cierre de v4): el holdout rechaza al unico candidato que pasaba los gates; V03 sigue como modelo final
+
+- **Contexto**: cuatro candidatos evaluados con evidencia multiple
+  (`experiments/36_candidatos_v4.py`, `reports/v4_candidates.csv`). El unico que
+  superaba los tres criterios de D-016 a la vez era **C**
+  (``meta36_downweight``): corrected_cv 0.7882 (+0.0110), 4/5 pliegues mejorados,
+  IC95 del delta pareado [+0.0054, +0.0200] y la mayor correccion neta frente a
+  V03 (+34 ejemplos). Los otros tres fallaban el criterio de IC: A
+  (0.7854, 5/5 pliegues, IC [-0.0002, +0.0117]), D (0.7904, 5/5 pliegues, IC
+  [-0.0011, +0.0148]) y B (0.7828, IC [+0.0031, +0.0166], pero nivel menor).
+- **Observacion**: el holdout congelado de 248 tweets, que no se habia usado en
+  toda la fase y cuya quinta evaluacion estaba reservada para el mejor finalista
+  (D-025), da **0.8163 para el candidato C frente a 0.8285 de V03 en el mismo
+  holdout: delta -0.0122**. El candidato C empeora en la unica particion que no
+  participo en ninguna decision de la fase.
+- **Hipotesis**: la combinacion de downweight por violacion y class weights por
+  etiqueta, dentro de un meta Ridge, mejora la generalizacion y no solo el
+  corrected_cv.
+- **Metodo**: `experiments/38_refit_final_v4.py`: refit sobre todo el desarrollo
+  con los multiplicadores de clase (mediana de los 5 pliegues: 1.2/1.5/1.2) y los
+  pesos de ejemplo derivados del `error_score` OOF; prediccion sobre holdout y
+  test; submission generada y validada (sha256 `ec25354c...`).
+- **Resultado**: holdout 0.8163 (HS 0.8624, TR 0.8058, AG 0.7807) frente a 0.8285
+  de V03; submission v12 generada y validada pero **marcada como descartada** en
+  `submissions/submission_manifest.csv`.
+- **Interpretacion**: es el **cuarto caso consecutivo** en que una mejora clara en
+  corrected_cv no transfiere (Optuna, meta v2, candidatos v09-v11 y ahora C).
+  La evidencia acumulada es ya suficiente para afirmar que, con 1.731 ejemplos de
+  train, 1.154 de test y sin modelos preentrenados, el corrected_cv de este
+  protocolo **no es un selector fiable de candidatos**: su diferencia con el
+  error estandar del test (~0.013) es del mismo orden que las mejoras que
+  selecciona.
+- **Decision**: (1) **ningun candidato de v4 se adopta**; V03 se mantiene como
+  modelo y submission finales; (2) la submission v12 se conserva como artefacto
+  experimental reproducible y marcada `DESCARTADO` (no se envia); (3) el holdout
+  queda agotado (5/5) y no se gastan mas sondas de LB en v4; (4) la fase v4 se
+  cierra con la condicion de terminacion B de la spec (§102): hipotesis nuevas
+  investigadas y cerradas con evidencia, sin fabricar mejora.
+- **Razon**: el holdout es la unica evidencia externa disponible y contradicts
+  con el corrected_cv; con multiplicidad ya alta, descartar es la decision
+  metodologicamente correcta.
+- **Evidencia**: `reports/refit_final_v4.json`, `reports/v4_candidates.csv`,
+  `reports/v4_candidate_comparison.md`, `reports/holdout_evaluaciones_v2.csv`
+  (5/5), `submissions/submission_manifest.csv`.

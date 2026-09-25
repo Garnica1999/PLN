@@ -530,10 +530,39 @@ def main() -> None:
         log("   candidato B no disponible (falta el OOF del TRACK H)")
 
     # C: meta36 sobre bases reponderadas (combinacion nueva de esta fase).
-    log("   construyendo candidato C (meta36 sobre bases reponderadas)")
-    probas["C_meta36_downweight"] = construir_meta_downweight(
-        desarrollo, pliegues, grupos_dev, y_dev, pesos_ejemplo
-    )
+    cache_candidatos = PROJECT_ROOT / "features" / "oof_candidates_v4.npz"
+    if cache_candidatos.exists():
+        datos_cache = np.load(cache_candidatos, allow_pickle=True)
+        clave_cache = "C_meta36_downweight"
+        if (
+            clave_cache in datos_cache.files
+            and np.array_equal(datos_cache["ids"].astype(np.int64), ids_dev)
+        ):
+            probas[clave_cache] = datos_cache[clave_cache].astype(float)
+            log("   candidato C cargado de la cache")
+        else:
+            log("   construyendo candidato C (meta36 sobre bases reponderadas)")
+            probas[clave_cache] = construir_meta_downweight(
+                desarrollo, pliegues, grupos_dev, y_dev, pesos_ejemplo
+            )
+    else:
+        log("   construyendo candidato C (meta36 sobre bases reponderadas)")
+        probas["C_meta36_downweight"] = construir_meta_downweight(
+            desarrollo, pliegues, grupos_dev, y_dev, pesos_ejemplo
+        )
+
+    # D: SVC con kernel RBF sobre la compresion SVD de la union (linea §63).
+    ruta_g = PROJECT_ROOT / "features" / "oof_tracks_g_v4.npz"
+    if ruta_g.exists():
+        datos_g = np.load(ruta_g, allow_pickle=True)
+        clave_g = "svd__rbf_svc"
+        if clave_g in datos_g.files and np.array_equal(datos_g["ids"].astype(np.int64), ids_dev):
+            probas["D_svd300_rbf"] = datos_g[clave_g].astype(float)
+            log("   candidato D cargado del TRACK G")
+        else:
+            log(f"   candidato D no disponible en {ruta_g.name}")
+    else:
+        log("   candidato D no disponible (falta el OOF del TRACK G)")
 
     resultados = [
         evaluar_candidato(nombre, proba, y_dev, pliegues, pred_ref)
@@ -642,6 +671,7 @@ def _escribir_comparativa(
         "A_cost_sensitive_downweight": "bajo: mecanismo propio, coste marginal, no es stacking",
         "B_meta36": "alto: misma familia que el meta v2, que rindio 0.78163 en el LB",
         "C_meta36_downweight": "medio-alto: combines la familia de stacking con el mecanismo nuevo",
+        "D_svd300_rbf": "medio: modelo no lineal sobre compresion; el precedente DL-01 (0.7949) nunca se sondeo, y SVD + RBF puede depender de la estructura de los 300 componentes",
     }
     for _, fila in tabla.iterrows():
         lineas.append(

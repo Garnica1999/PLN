@@ -1,32 +1,32 @@
-fenomeno;detectado;representado;testado;como;resultado;brecha_restante;track_v4;linea_v4
-insulto;Si;Indirecto (n-gramas word/char);Parcial;lexicos inducidos fold-local (37/36/33/36/36 lemas) y canal abstracto <INSULT>;cerrado sin mejora (E2-05);ninguna como canal de interaccion sparse;B/D;V4-D02
-target/mencion;Si;Indirecto;Parcial;densas concatenadas (-0.009 a -0.032) y scores de targeting;cerrado (0/5 pliegues);relacion distancia+orden como tokens;B/D;V4-D02
-colectivo;Si;Indirecto;Si;E2-06 colectivo + predicado negativo;recall mejoro en dev, no transfirio;score dedicado no construido;D;V4-D04
-cita/atribucion;Si;No como canal;Si;E2-07 in-quote/out-quote;cerrado (-0.0335);regimen noticia sin modelo dedicado;D;V4-D02
-negacion;Si;No como canal;Si;E2-08 advmod+Polarity=Neg;cerrado (-0.0115);ambito (distancia) no separado;B/D;V4-D02
-afiliacion/humor;Si;No;Si;E2-09-EST risa/afecto/vocativo;cerrado (0.5897);interaccion insulto+risa como token;B/D;V4-D02
-implicito (HS=1 sin insulto);Si (taxonomia);No;Parcial;FASE 70 = PARCIAL;brecha declarada;subtipos sin features;D;V4-D04
-emocion;Si;No;Si;E2-09 y variantes;cerrado (0.5897-0.6330);relacion emocion x target como canal;B/D;V4-D02
-agresion (AG);Si;Indirecto;Si;E2-06 y perfil lexico;cerrado;score de agresion dedicado no construido;B/D;V4-D02
-ortografia/evasion;Si;char_wb(3,5);Si;E2-10 multicanal;cerrado (-0.0238);canal de sufijos/prefijos; D;V4-D01
-rareza lexica;Si;No;Parcial;EDA descriptivo;E2-12 no ejecutado;fold-local no construido;F;V4-F01
-sintaxis (POS/deps);Si;No;Si;E2-03/E2-04 sparse;cerrado (-0.0116 a -0.2295);solo como tokens si hay hipotesis;D;V4-D03
-morfologia;Si;Parcial;Parcial;spaCy morfologia;FASE 13 = PARCIAL;canal de sufijos/prefijos;D;V4-D01
-dependencia entre etiquetas;Si;Meta/cadenas;Si;E2-01 cadenas y E2-02/E2-18 meta;cadenas cerradas; meta no transfirio (LB 0.78163);modelo conjunto no entrenado;E;V4-E01
-combinaciones raras (110/001);Si;No;No;--;nunca tratadas;smoothing o prior jerarquico;E;V4-E02
-ruido de etiquetas;No;No;No;--;nunca medido;clusters de contradiccion;A;V4-A01
-dureza de ejemplos;No;No;No;--;nunca medido;hardness_score OOF;B;V4-B01
-contradiccion vs dificultad;No;No;No;--;nunca medido;dos poblaciones;B;V4-B02
-reweighting;No;No;No;--;nunca probado;pesos OOF;B;V4-B03
-class weights por etiqueta;No;balanced fijo;No;--;nunca barri;jilla moderada;C;V4-C04
-weighting supervisado;Parcial (NB-SVM);No como geometria;Parcial;E2-15 log-count ratio;IC incluye 0;log-odds/chi2/MI por clase;C;V4-C01
-BM25/IR weighting;No;No;No;--;nunca probado;k1/b, binario, augmented;C;V4-C03
-shift de calibracion del meta;No;No;No;--;hipotesis abierta (v2 §4.3);alineacion de entradas;H;V4-H01
-shift train-test (no supervisado);No;No;No;--;nunca medido;estadisticos comparados;F;V4-F01
-robustez a duplicados;No;No;No;--;nunca medido;unicos vs repetidos;F;V4-F02
-vecindad/retrieval;No;No;No;--;nunca medido;acuerdo del vecino;F;V4-F03
-verosimilitud class-conditional;No;No;No;--;nunca probado;log P(text|clase) y perplejidad;G;V4-G01
-clasificadores alternativos;Parcial;--;Parcial;LinearSVC y NB barridos;Ridge/SGD/PA sin probar;G;V4-G02
-no lineal sobre SVD;No;--;No;--;solo MLP (DL-01) sobre SVD;arboles/RBF sin probar;G;V4-G03
-perfil de estilo;Si;No;Parcial;textometria densa negativa;familia densa cerrada;canal sparse sin probar;C;V4-C01
-interacciones sparse;No;No (solo densas);Si;hibridos densos -0.009 a -0.032;tokens de interaccion;D;V4-D02
+fenomeno,detectado,representado,testado,como,resultado,brecha_restante,track_v4,linea_v4
+insulto,Si,Indirecto (n-gramas word/char),Si,lexicos inducidos fold-local y canal abstracto <INSULT>,cerrado sin mejora (E2-05); en v4 las interacciones como tokens tampoco aportan (0.7758),,B/D,V4-D02
+target/mencion,Si,Indirecto,Si,densas concatenadas (-0.009 a -0.032) y scores de targeting,cerrado (0/5 pliegues); sin version token en v4,,B/D,V4-D02
+colectivo,Si,Indirecto,Si,E2-06 colectivo mas predicado negativo,recall mejoro en dev y no transfirio; sin linea nueva en v4,,D,V4-D04
+cita/atribucion,Si,No como canal,Si,E2-07 in-quote/out-quote,cerrado (-0.0335); no se repite en v4,,D,V4-D02
+negacion,Si,No como canal,Si,E2-08 advmod con Polarity=Neg,cerrado (-0.0115); no se repite en v4,,B/D,V4-D02
+afiliacion/humor,Si,No,Si,E2-09-EST risa/afecto/vocativo,cerrado (0.5897); las interacciones como tokens tampoco aportan en v4,,B/D,V4-D02
+implicito (HS=1 sin insulto),Si (taxonomia),No,Parcial,FASE 70 = PARCIAL; diagnostico de masa ejecutado en v4,masa de FN sin insulto cuantificada en reports/implicit_hate_diagnostic_v4.json,,D,V4-D04
+emocion,Si,No,Si,E2-09 y sus variantes,cerrado (0.5897-0.6330); no se repite en v4,,B/D,V4-D02
+agresion (AG),Si,Indirecto,Si,E2-06 y perfil lexico,cerrado; sin score dedicado en v4,,B/D,V4-D02
+ortografia/evasion,Si,"char_wb(3,5)",Si,E2-10 multicanal,cerrado (-0.0238); el canal de afijos propio en v4 da 0.7758,,D,V4-D01
+rareza lexica,Si,No,Parcial,EDA descriptivo,E2-12 no ejecutado; el shift no supervisado de v4 no la detecta como problema,,F,V4-F01
+sintaxis (POS/deps),Si,No,Si,E2-03/E2-04 sparse,cerrado (-0.0116 a -0.2295); no se repite en v4,,D,V4-D03
+morfologia,Si,Parcial,Parcial,spaCy morfologia; FASE 13 = PARCIAL,"cerrada en v4: sufijos y prefijos 2/3/4 como canal sparse (0.7758, por debajo de V03)",,D,V4-D01
+dependencia entre etiquetas,Si,Meta y cadenas,Si,E2-01 cadenas y E2-02/E2-18 meta,cadenas cerradas; el meta de 44 features no transfirio; en v4 el meta de 36 features da 0.7828 y meta+downweight 0.7882 (rechazado por el holdout),,E/H,V4-H01
+combinaciones raras (110/001),Si,No,Si,Label Powerset con mapeo o smoothing,cerrada: 110 y 001 no son el problema (lr4_excluir 0.7687 frente a lr6 0.7674),,E,V4-E02
+ruido de etiquetas,"Si (2 clusters, 84 tweets, 2.8 %)",No,Si,cluster contradictorio y error OOF dentro/fuera,CERRADA: el error es MENOR dentro de los clusters (-0.172 en HS); el ruido textual no explica el error de V03,,A,V4-A01
+dureza de ejemplos,Si (hardness OOF),No,Si,hardness_score = 1-|margen al umbral|,CERRADA: r=+0.345 con el numero de errores; la BCE media no preserva el orden (r=-0.136),,B,V4-B01
+contradiccion vs dificultad,Si (dos poblaciones),No,Si,corte p80 con banderas de cluster y vecindad,CERRADA: 1.144 faciles; 296 dificil coherente (error 0.351); 43 posible ruido (error 0.054),,B,V4-B02
+reweighting,Si,No,Si,sample_weight derivado de OOF anidado,CERRADA: el hard example mining empeora (-0.0101); solo down_violacion mejora (+0.0036),,B,V4-B03
+class weights por etiqueta,No,Si (0.7812 con barrido anidado),Si,class_weight multiplicador por etiqueta,CERRADA sola (IC cruza 0); combinada con downweight da 0.7854 (5/5 pliegues),,C,V4-C04
+weighting supervisado,Parcial (NB-SVM),No como geometria,Si,log-odds; chi2 y MI sobre la matriz TF-IDF,CERRADA: 0.7571; 0.6622 y 0.7378; con C creciente empeora mas (0.7435),,C,V4-C01
+BM25/IR weighting,No,No,Si,BM25 con k1 por b sobre conteos,CERRADA: 0.7748-0.7755 frente a 0.7772,,C,V4-C03
+interacciones sparse,No (solo densas),No,Si,tokens de interaccion sobre lexicones fold-local,CERRADA: el hstack queda por debajo de V03,,D,V4-D02
+shift de calibracion del meta,No,No,Si,regimen 75 % (meta) frente a 100 % (inferencia),CERRADA: el shift es pequeno (KS 0.062) y no causa dano; la hipotesis abierta de v2 queda refutada,,H,V4-H01
+shift train-test (no supervisado),No,No,Si,10 variables no supervisadas,"CERRADA: solo 2 de 10 con desplazamiento, y es menor",,F,V4-F01
+robustez a duplicados,No,No,Si,F1 en textos unicos frente a near-duplicados,MEDIDO: 0.7568 frente a 0.9769 (n=68); la metrica agregada esta inflada por un 4.6 % de ejemplos,,F,V4-F02
+vecindad/retrieval,No,No,Si,vecino mas cercano por cosimilitud y coincidencia exacta,CERRADA: la vecindad discrepante no explica el error (IC cruzando 0) y la propagacion por near-duplicado tiene techo nulo,,F,V4-F03
+verosimilitud class-conditional,No,No,Si,log P(texto|clase) con unigram; bigram y char 3-4,APORTA +0.0041 en la fusion tardia; 0.4876 en solitario,,G,V4-G01
+clasificadores alternativos,Parcial,No,Si,Ridge; SGD y PassiveAggressive sobre la union,CERRADA: 0.7698; 0.7454 y 0.7626,,G,V4-G02
+no lineal sobre SVD,No,No,Si,SVD 300 con SVC RBF; HistGB o ExtraTrees,RBF SVC 0.7904 (5/5 pliegues pero con IC que toca 0); los arboles no aportan (0.7297 y 0.7033),,G,V4-G03
+correccion de errores entre modelos,No,No,Si,matriz de correccion de 5 canales y 4 candidatos,0 de 5 canales corrigen mas de lo que rompen; el candidato C corrige 34 mas de los que rompe (neto +34),,H,V4-X01

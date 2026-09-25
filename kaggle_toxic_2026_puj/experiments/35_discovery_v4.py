@@ -454,7 +454,7 @@ def main() -> None:
 
     # --- §95: taxonomia de errores ---------------------------------------
     taxonomia = construir_taxonomia(
-        y_dev, pred_dev, train["text"].astype(str).tolist()[indices_dev], ids_dev
+        y_dev, pred_dev, [str(texto) for texto in train["text"].iloc[indices_dev]], ids_dev
     )
     _escribir_taxonomia(taxonomia, robustez, vecindad_resumen)
 

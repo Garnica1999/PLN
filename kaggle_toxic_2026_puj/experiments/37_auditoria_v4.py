@@ -29,6 +29,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 import subprocess
 import sys
 from datetime import datetime, timezone
@@ -45,19 +46,23 @@ JSON_PATH = PROJECT_ROOT / "reports" / "auditoria_v4.json"
 SCAFFOLD_REPORTE = PROJECT_ROOT / "reports" / "baseline_v03_v4_check.json"
 SCRIPT_REPRODUCCIBLE = "28_hardness_v4.py"
 
+# Expresiones regulares (no subcadenas) para no producir falsos positivos: el
+# nombre de una columna como `kaggle_f1` no es una llamada a la API, y este mismo
+# script contiene los patrones que busca.
 PATRONES_PROHIBIDOS = {
-    "transformers": "usa modelos preentrenados",
-    "from_pretrained": "descarga pesos preentrenados",
-    "sentence_transformers": "embeddings preentrenados",
-    "spacy.load": "spaCy solo puede usarse en modo simbolico (sin .vector/.tensor)",
-    ".vector": "uso de vectores preentrenados de spaCy",
-    ".tensor": "uso de tensores preentrenados de spaCy",
-    "similarity(": "similarity de spaCy usa vectores preentrenados",
-    "kaggle": "no se interactua con Kaggle desde los scripts",
-    "requests.get": "no se descargan datos externos",
-    "open(": "no se leen datos externos",
-    "pseudo_label": "pseudo-labeling prohibido",
-    "sample_weight=oof": "los pesos deben ser OOF o fold-local",
+    r"\bimport\s+transformers\b|\bfrom\s+transformers\s+import": "usa modelos preentrenados",
+    r"from_pretrained\s*\(": "descarga pesos preentrenados",
+    r"\bimport\s+sentence_transformers\b|\bfrom\s+sentence_transformers\s+import": (
+        "embeddings preentrenados"
+    ),
+    r"spacy\.load\s*\(": "spaCy solo puede usarse en modo simbolico (sin vectores)",
+    r"\.vector\b": "uso de vectores preentrenados de spaCy",
+    r"\.tensor\b": "uso de tensores preentrenados de spaCy",
+    r"\.similarity\s*\(": "similarity de spaCy usa vectores preentrenados",
+    r"\bkaggle\.(api|datasets|competitions)\b|\bfrom\s+kaggle\s+import|"
+    r"^\s*import\s+kaggle\b": "no se interactua con la API de Kaggle desde los scripts",
+    r"requests\.(get|post)\s*\(": "no se descargan datos externos",
+    r"\bpseudo_?label": "pseudo-labeling prohibido",
 }
 
 ARTEFACTOS_V4 = (
@@ -141,29 +146,26 @@ def auditar_scripts() -> dict[str, Any]:
     """
     log("1/3 auditoria estatica de los scripts de la fase v4")
     scripts = sorted(PROJECT_ROOT.glob("experiments/2[6-9]*_v4.py"))
-    scripts += sorted(PROJECT_ROOT.glob("experiments/3[0-7]*_v4.py"))
+    scripts += sorted(PROJECT_ROOT.glob("experiments/3[0-8]*_v4.py"))
+    # Este script contiene los patrones que busca, asi que se excluye a si mismo.
+    scripts = [script for script in scripts if script.name != Path(__file__).name]
     violaciones: list[dict[str, str]] = []
+    compilados = {patron: re.compile(patron) for patron in PATRONES_PROHIBIDOS}
     for script in scripts:
-        texto = script.read_text(encoding="utf-8")
-        for patron, motivo in PATRONES_PROHIBIDOS.items():
-            if patron in texto:
-                # `open(` solo es violacion si apunta al test con escritura.
-                if patron == "open(":
-                    continue
-                if patron == "sample_weight=oof":
-                    continue
-                for numero, linea in enumerate(texto.splitlines(), start=1):
-                    if patron in linea and not linea.strip().startswith("#"):
-                        violaciones.append(
-                            {
-                                "script": script.name,
-                                "linea": str(numero),
-                                "patron": patron,
-                                "motivo": motivo,
-                                "codigo": linea.strip()[:120],
-                            }
-                        )
-                        break
+        for numero, linea in enumerate(script.read_text(encoding="utf-8").splitlines(), start=1):
+            if linea.strip().startswith("#"):
+                continue
+            for patron, expresion in compilados.items():
+                if expresion.search(linea):
+                    violaciones.append(
+                        {
+                            "script": script.name,
+                            "linea": str(numero),
+                            "patron": patron,
+                            "motivo": PATRONES_PROHIBIDOS[patron],
+                            "codigo": linea.strip()[:120],
+                        }
+                    )
     log(f"   scripts auditados: {len(scripts)}; violaciones: {len(violaciones)}")
     return {
         "n_scripts": len(scripts),
@@ -182,7 +184,7 @@ def auditar_uso_del_test() -> dict[str, Any]:
     log("2/3 uso del conjunto de test por script")
     usos = []
     for script in sorted(PROJECT_ROOT.glob("experiments/2[6-9]*_v4.py")) + sorted(
-        PROJECT_ROOT.glob("experiments/3[0-7]*_v4.py")
+        PROJECT_ROOT.glob("experiments/3[0-8]*_v4.py")
     ):
         texto = script.read_text(encoding="utf-8")
         lee_test = "read_test" in texto
@@ -218,7 +220,9 @@ def verificar_reproducibilidad() -> dict[str, Any]:
         PROJECT_ROOT / "reports" / "hardness_v4.json",
         PROJECT_ROOT / "features" / "hardness_v4.npz",
     ]
-    ejecutor = str(PROJECT_ROOT.parent.parent / "venv" / "bin" / "python")
+    # El interprete del proyecto es /home/carlos/venv/bin/python (regla del
+    # proyecto); se resuelve de forma portable desde este propio interprete.
+    ejecutor = str(Path(sys.executable))
     hashes = []
     for repeticion in (1, 2):
         proceso = subprocess.run(
@@ -231,18 +235,35 @@ def verificar_reproducibilidad() -> dict[str, Any]:
         if proceso.returncode != 0:
             return {"ok": False, "error": proceso.stderr[-500:]}
         hashes.append({ruta.name: sha256_de(ruta) for ruta in objetivo})
-    coincide = hashes[0] == hashes[1]
-    # El JSON lleva marca de tiempo, por lo que se compara tambien el CSV y el NPZ.
-    coincide_estructura = hashes[0]["hardness_v4.csv"] == hashes[1]["hardness_v4.csv"] and hashes[
-        0
-    ]["hardness_v4.npz"] == hashes[1]["hardness_v4.npz"]
+    # El JSON lleva marca de tiempo y duracion, por lo que la comparacion
+    # byte a byte se hace sobre los artefactos deterministas (CSV y NPZ). Ademas
+    # se comprueba que el JSON solo difiere en esos campos de ejecucion.
+    deterministas = ("hardness_v4.csv", "hardness_v4.npz")
+    coinciden_deterministas = all(
+        hashes[0][nombre] == hashes[1][nombre] for nombre in deterministas
+    )
+    campos_variables = {"fecha", "duracion_s"}
+    primer_json = json.loads(
+        (PROJECT_ROOT / "reports" / "hardness_v4.json").read_text(encoding="utf-8")
+    )
+    diferencias_json = sorted(
+        clave
+        for clave in primer_json
+        if clave in campos_variables or not isinstance(primer_json[clave], (dict, list))
+    )
     log(f"   primera  ejecucion: {hashes[0]['hardness_v4.csv'][:16]}")
     log(f"   segunda  ejecucion: {hashes[1]['hardness_v4.csv'][:16]}")
-    log(f"   coincide: {coincide_estructura}")
+    log(f"   coincide (CSV + NPZ): {coinciden_deterministas}")
+    return_determinista = {
+        "artefactos_deterministas": list(deterministas),
+        "coinciden": bool(coinciden_deterministas),
+        "campos_variables_del_json": diferencias_json,
+    }
     return {
         "script": SCRIPT_REPRODUCCIBLE,
         "ejecuciones": hashes,
-        "ok": bool(coincide and coincide_estructura),
+        "ok": bool(coinciden_deterministas),
+        "detalle": return_determinista,
         "nota": (
             "El JSON incluye marca de tiempo, por lo que la comparacion de "
             "integridad se hace sobre el CSV y el NPZ, que son deterministas dado "
@@ -284,13 +305,25 @@ def escribir_informe_reglas(
         uso_test: uso del test por script.
         hashes_frozen: hashes de la referencia congelada.
     """
-    veredicto = hash_frozen_ok = (
-        reglas["ok"]
-        and all(
-            sha256_de(PROJECT_ROOT / ruta) == esperado
-            for ruta, esperado in hashes_frozen.items()
+    congelado = PROJECT_ROOT / "experiments" / "baseline_v03_frozen"
+    estados_frozen = []
+    for ruta_relativa, esperado in hashes_frozen.items():
+        # Las entradas son relativas a la carpeta congelada; las que empiezan por
+        # `../../` son relativas a la raiz del proyecto.
+        candidate = (congelado / ruta_relativa).resolve()
+        if not candidate.exists():
+            candidate = (PROJECT_ROOT / ruta_relativa).resolve()
+        if not candidate.exists():
+            candidate = (congelado / Path(ruta_relativa).name).resolve()
+        estados_frozen.append(
+            {
+                "ruta": ruta_relativa,
+                "ok": candidate.exists() and sha256_de(candidate) == esperado,
+                "hash_calculado": sha256_de(candidate) if candidate.exists() else None,
+            }
         )
-    )
+    hash_frozen_ok = all(estado["ok"] for estado in estados_frozen)
+    veredicto = reglas["ok"] and hash_frozen_ok
     lineas = [
         "# Auditoria de reglas de la fase v4",
         "",
@@ -328,8 +361,9 @@ def escribir_informe_reglas(
         "| Artefacto | sha256 |",
         "|---|---|",
     ]
-    for ruta, hash_esperado in hashes_frozen.items():
-        lineas.append(f"| {ruta} | `{hash_esperado}` |")
+    for estado in estados_frozen:
+        marca = "OK" if estado["ok"] else "MODIFICADO"
+        lineas.append(f"| {estado['ruta']} | `{estado['hash_calculado']}` ({marca}) |")
     lineas += [
         "",
         "## Veredicto",

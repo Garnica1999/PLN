@@ -1,0 +1,13 @@
+{
+  "toxic_submission_v12_descartado_meta36_downweight.csv": {
+    "sha256": "ec25354cacba3934b9ea1f295b33b5c05fe4a2fe2c302ce5f30ffdd8a9086f81",
+    "generado": "2026-09-25T19:54:08+00:00",
+    "candidato": "C_meta36_downweight",
+    "umbrales": {
+      "HS": 0.44,
+      "TR": 0.51,
+      "AG": 0.46
+    },
+    "nota": "descartado por holdout 0.8163 vs 0.8285 de V03; no enviar"
+  }
+}
