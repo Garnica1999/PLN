@@ -1,0 +1,6 @@
+{
+  "textos_comparados": 2885,
+  "diferencias": 0,
+  "cumple": true,
+  "nota": "P1 conserva su copia historica; se verifica que coincide token a token con src/embedding_utils.py sobre los textos de train y test."
+}

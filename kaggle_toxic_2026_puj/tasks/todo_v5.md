@@ -46,21 +46,29 @@ Leyenda: `[x]` hecho | `[~]` en curso | `[ ]` pendiente | `[!]` bloqueado.
 
 ## P2 - Baseline FastText 10M + control + downstream
 
-- [ ] `E-CORP-01`: corpus 10M construido y auditado
-- [ ] `EBD-01`: FastText 200d / ws5 / 3-6 / neg10 / minCount3 / 5 epocas /
-      seed fija; doc vector = media de tokens in-vocab
-- [ ] `EBD-02`: Word2Vec-control identico con `-minn 0 -maxn 0`
-- [ ] `EBD-03`: pooling B (TF-IDF-weighted) y C (mean+max)
-- [ ] `EBD-04`: LinearSVC sobre los vectores de documento
-- [ ] `EBD-05`: cobertura sublexica (los tipos word-OOV reciben vector via subwords)
-- [ ] Intrinseca (§20): vecinos, cosenos, estabilidad entre 2 semillas, sin
-      afirmar \"correctitud\" con labels externos
-- [ ] Downstream con el protocolo corregido: `corrected_cv`, bootstrap pareado vs
-      V03, estabilidad por pliegue, y `metricas_multietiqueta` como metrica primaria
-- [ ] Informes: `reports/embedding_intrinsic_eval.md`,
+- [x] `E-CORP-01`: corpus 10M construido y auditado
+- [x] `EBD-01`: FastText 200d / ws5 / 3-6 / neg10 / minCount3 / 5 epocas /
+      seed fija; doc vector = media de tokens (pooling A)
+- [x] `EBD-02`: Word2Vec-control identico con `-minn 0 -maxn 0`
+- [x] `EBD-03`: pooling B (TF-IDF-weighted) y C (mean+max): **peores que A**
+- [x] `EBD-04`: LinearSVC: 0.6584 frente a 0.6603 de LR, sin diferencia relevante
+- [x] `EBD-05`: cobertura sublexica de los 14 tipos word-OOV mas frecuentes
+- [x] `EBD-06` (control no pre-registrado, justificado por P1/P2): **suelo
+      aleatorio** 0.5404 y **estabilidad entre semillas** (solapamiento top-10 0.792)
+- [x] Intrinseca (§20): vecinos de 12 palabras en ambos modelos y de 14 variantes
+      ortograficas, sin labels externos
+- [x] Downstream con el protocolo corregido: `corrected_cv`, IC95 pareado vs V03,
+      estabilidad por pliegue y `metricas_multietiqueta` como metrica primaria
+- [x] Equivalencia de la normalizacion con P1 verificada token a token (2.885
+      textos, 0 diferencias)
+- [x] Informes: `reports/embedding_intrinsic_eval.md`,
       `reports/embedding_downstream_results.csv`
-- [ ] **Veredicto de escala**: ¿se justifica 50M? Si si, escribir
-      `RATIONALE_FOR_CORPUS_EXPANSION` **antes** de descargar
+- [x] **Veredicto de escala**: el embedding por si solo queda **0.1169 por debajo de
+      V03** con el IC95 completamente negativo. Como sustituto esta refutado. La
+      hipotesis de **complementariedad** (que es la central de la fase) **sigue sin
+      medir**: exige la fusion de la seccion 24 (P6), no autorizada en esta sesion.
+      Escalar a 50M **no** esta justificado por la evidencia disponible y queda
+      condicionado a la prueba de complementariedad.
 
 ## P3 - Curva de aprendizaje (condicionada)
 

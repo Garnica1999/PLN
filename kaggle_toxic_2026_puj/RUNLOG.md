@@ -612,3 +612,24 @@ Registro cronologico de ejecuciones. Formato:
   vecindario de subpalabras con la sonda 50d/1 epoca **no** es interpretable
   (varios vecinos son claramente erroneeos), por lo que la calidad solo se
   juzgara en P2 con el modelo de 200d. **0 sondas de LB, 0 usos de holdout.**
+- 18:10 | v5 P2 baseline FastText + control + downstream | `experiments/embedding_02_fasttext_baseline_v5.py`
+  (EBD-01..06): tres modelos entrenados **desde cero** con fastText C++ sobre los
+  10M tokens de P1 (200d, ws5, neg10, minCount3, 5 epocas, 16 hilos): baseline con
+  subpalabras 3-6, control de semilla (7) y control Word2Vec (`minn=0,maxn=0`).
+  Se verifico que la normalizacion de P2 coincide token a token con la de P1 sobre
+  los 2.885 textos de TOXIC (`src/embedding_utils.py` extrae las funciones comunes y
+  deja constancia de que P1 conserva su copia historica).
+  **Downstream (corrected_cv v2, 5 pliegues, 3 modelos binarios por etiqueta):**
+  `FASTTEXT A_media LR` **0.6603** (delta vs V03 **-0.1169**, IC95 [-0.1397, -0.0942]),
+  `FASTTEXT A_media SVC` 0.6584, `WORD2VEC A_media LR` 0.6465, poolings B (0.6348) y
+  C (0.6388) peores que la media simple, y **suelo aleatorio 0.5404**.
+  **Intrinseca:** los subpalabras cambian la geometria de forma clara (FastText da
+  vecinos morfologicos: `violencia` -> `violentas`, `violento`; el control da vecinos
+  distribucionales: `violencia` -> `discriminacion`, `delincuencia`), y aportan
+  +0.0138 downstream. Entre semillas el coseno centrado es -0.034 (esperable: las
+  soluciones de word2vec/fastText solo son identicas salvo rotacion) pero el
+  solapamiento de los 10 vecinos es **0.792**, o sea la estructura relativa si se
+  reproduce. **Lectura**: el embedding tiene senal real (+0.120 sobre el suelo
+  aleatorio) pero aporta la mitad de lo que aporta V03 (+0.237); como sustituto queda
+  refutado, y la hipotesis de complementariedad (que exige P6) **sigue sin medir**.
+  **0 sondas de LB, 0 usos de holdout, 0 submissions.**

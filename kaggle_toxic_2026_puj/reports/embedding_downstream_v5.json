@@ -1,0 +1,1138 @@
+{
+  "experimentos": "EBD-01..05 (P2)",
+  "fecha": "2026-09-25T22:02:05+00:00",
+  "arquitectura": {
+    "dim": 200,
+    "ventana": 5,
+    "min_count": 3,
+    "negativos": 10,
+    "epocas": 5,
+    "hilos": 16,
+    "bucket": 200000,
+    "subpalabras": [
+      3,
+      6
+    ],
+    "muestreo": 0.0001,
+    "sg": 1
+  },
+  "modelos": {
+    "FASTTEXT-BASELINE": {
+      "id": "FASTTEXT-BASELINE",
+      "etiqueta": "FASTTEXT-SG-SUBWORDS-3-6",
+      "arquitectura": {
+        "dim": 200,
+        "ventana": 5,
+        "min_count": 3,
+        "negativos": 10,
+        "epocas": 5,
+        "hilos": 16,
+        "bucket": 200000,
+        "subpalabras": [
+          3,
+          6
+        ],
+        "muestreo": 0.0001,
+        "sg": 1,
+        "minn": 3,
+        "maxn": 6,
+        "semilla": 42
+      },
+      "corpus": "data/external/corpora/wikipedia_es/emb_normal/tokens_10M.txt",
+      "vocab_size": 100098,
+      "dim": 200,
+      "embedding_hash_sha256": "e54a363da986aeac4f16d73e49fc9e7fa740450c240a026a23bf004289dadc0f",
+      "bin_bytes": 321976775,
+      "segundos": 0.0,
+      "n_tipos_con_vector": 8555,
+      "n_tipos_consultados": 8555
+    },
+    "FASTTEXT-SEED-CONTROL": {
+      "id": "FASTTEXT-SEED-CONTROL",
+      "etiqueta": "FASTTEXT-SG-SUBWORDS-3-6",
+      "arquitectura": {
+        "dim": 200,
+        "ventana": 5,
+        "min_count": 3,
+        "negativos": 10,
+        "epocas": 5,
+        "hilos": 16,
+        "bucket": 200000,
+        "subpalabras": [
+          3,
+          6
+        ],
+        "muestreo": 0.0001,
+        "sg": 1,
+        "minn": 3,
+        "maxn": 6,
+        "semilla": 7
+      },
+      "corpus": "data/external/corpora/wikipedia_es/emb_normal/tokens_10M.txt",
+      "vocab_size": 100098,
+      "dim": 200,
+      "embedding_hash_sha256": "afde390f208b1f5115c45df5b0459405d5f32da4c9eecb02ec71c7d3e73d55ab",
+      "bin_bytes": 321976775,
+      "segundos": 0.0
+    },
+    "WORD2VEC-CONTROL": {
+      "id": "WORD2VEC-CONTROL",
+      "etiqueta": "WORD2VEC-CONTROL / FASTTEXT-SG-SUBWORDS-OFF",
+      "arquitectura": {
+        "dim": 200,
+        "ventana": 5,
+        "min_count": 3,
+        "negativos": 10,
+        "epocas": 5,
+        "hilos": 16,
+        "bucket": 200000,
+        "subpalabras": [
+          3,
+          6
+        ],
+        "muestreo": 0.0001,
+        "sg": 1,
+        "minn": 0,
+        "maxn": 0,
+        "semilla": 42
+      },
+      "corpus": "data/external/corpora/wikipedia_es/emb_normal/tokens_10M.txt",
+      "vocab_size": 100098,
+      "dim": 200,
+      "embedding_hash_sha256": "52f94d37e18cef7288c4a42719f327b2f1c0310aea9b7cb61a5e3005ed748d1e",
+      "bin_bytes": 161976775,
+      "segundos": 0.0,
+      "n_tipos_con_vector": 5134,
+      "n_tipos_consultados": 8555
+    }
+  },
+  "referencia_v03": {
+    "corrected_cv_umbrales_congelados": 0.7772114525165721,
+    "corrected_cv_umbral_0.5": 0.771778476256122,
+    "umbrales": [
+      0.44,
+      0.51,
+      0.46
+    ],
+    "f1_por_pliegue": [
+      0.7960101143044023,
+      0.7940339497874405,
+      0.7788600288600289,
+      0.738598013128522,
+      0.7790564997088775
+    ]
+  },
+  "equivalencia_normalizacion": {
+    "textos_comparados": 2885,
+    "diferencias": 0,
+    "cumple": true,
+    "nota": "P1 conserva su copia historica; se verifica que coincide token a token con src/embedding_utils.py sobre los textos de train y test."
+  },
+  "intrinseca": {
+    "vecinos": {
+      "FASTTEXT-BASELINE": {
+        "violencia": [
+          [
+            "violencias",
+            0.8
+          ],
+          [
+            "violento",
+            0.723
+          ],
+          [
+            "violenta",
+            0.704
+          ],
+          [
+            "violentos",
+            0.676
+          ],
+          [
+            "dolencia",
+            0.667
+          ]
+        ],
+        "inmigración": [
+          [
+            "emigración",
+            0.872
+          ],
+          [
+            "inmigraciones",
+            0.834
+          ],
+          [
+            "inmigratoria",
+            0.825
+          ],
+          [
+            "inmigrante",
+            0.821
+          ],
+          [
+            "inmigrantes",
+            0.815
+          ]
+        ],
+        "gobierno": [
+          [
+            "desgobierno",
+            0.753
+          ],
+          [
+            "autogobierno",
+            0.708
+          ],
+          [
+            "gobiernos",
+            0.703
+          ],
+          [
+            "gobierna",
+            0.696
+          ],
+          [
+            "gubernamental",
+            0.586
+          ]
+        ],
+        "mujer": [
+          [
+            "mujeres",
+            0.612
+          ],
+          [
+            "mujeriego",
+            0.565
+          ],
+          [
+            "hombría",
+            0.516
+          ],
+          [
+            "niña",
+            0.469
+          ],
+          [
+            "hombre",
+            0.457
+          ]
+        ],
+        "niño": [
+          [
+            "niñez",
+            0.576
+          ],
+          [
+            "niña",
+            0.544
+          ],
+          [
+            "niñera",
+            0.511
+          ],
+          [
+            "niños",
+            0.474
+          ],
+          [
+            "bebé",
+            0.41
+          ]
+        ],
+        "familia": [
+          [
+            "familiarde",
+            0.727
+          ],
+          [
+            "superfamilia",
+            0.718
+          ],
+          [
+            "familias",
+            0.713
+          ],
+          [
+            "familie",
+            0.692
+          ],
+          [
+            "subfamilia",
+            0.672
+          ]
+        ],
+        "iglesia": [
+          [
+            "anteiglesia",
+            0.772
+          ],
+          [
+            "iglesias",
+            0.752
+          ],
+          [
+            "católica",
+            0.725
+          ],
+          [
+            "ortodoxa",
+            0.662
+          ],
+          [
+            "apostólica",
+            0.635
+          ]
+        ],
+        "fútbol": [
+          [
+            "futbol",
+            0.693
+          ],
+          [
+            "baloncesto",
+            0.678
+          ],
+          [
+            "vóleibol",
+            0.66
+          ],
+          [
+            "softbol",
+            0.656
+          ],
+          [
+            "básquetbol",
+            0.642
+          ]
+        ],
+        "música": [
+          [
+            "musica",
+            0.718
+          ],
+          [
+            "músicas",
+            0.668
+          ],
+          [
+            "folclórica",
+            0.649
+          ],
+          [
+            "musical",
+            0.649
+          ],
+          [
+            "músicos",
+            0.618
+          ]
+        ],
+        "trabajo": [
+          [
+            "trabaje",
+            0.737
+          ],
+          [
+            "trabajen",
+            0.73
+          ],
+          [
+            "trabajos",
+            0.682
+          ],
+          [
+            "trabaja",
+            0.657
+          ],
+          [
+            "trabajado",
+            0.602
+          ]
+        ],
+        "ciudad": [
+          [
+            "ciudadela",
+            0.681
+          ],
+          [
+            "torreciudad",
+            0.628
+          ],
+          [
+            "ciudades",
+            0.577
+          ],
+          [
+            "localidad",
+            0.558
+          ],
+          [
+            "capital",
+            0.54
+          ]
+        ],
+        "guerra": [
+          [
+            "guerras",
+            0.672
+          ],
+          [
+            "esguerra",
+            0.65
+          ],
+          [
+            "postguerra",
+            0.6
+          ],
+          [
+            "civil",
+            0.564
+          ],
+          [
+            "guerrouj",
+            0.55
+          ]
+        ]
+      },
+      "WORD2VEC-CONTROL": {
+        "violencia": [
+          [
+            "discriminación",
+            0.55
+          ],
+          [
+            "delincuencia",
+            0.545
+          ],
+          [
+            "conflictividad",
+            0.528
+          ],
+          [
+            "lawfare",
+            0.52
+          ],
+          [
+            "abuso",
+            0.518
+          ]
+        ],
+        "inmigración": [
+          [
+            "emigración",
+            0.679
+          ],
+          [
+            "inmigrantes",
+            0.631
+          ],
+          [
+            "migratorio",
+            0.528
+          ],
+          [
+            "emigrantes",
+            0.513
+          ],
+          [
+            "mestizaje",
+            0.498
+          ]
+        ],
+        "gobierno": [
+          [
+            "convocando",
+            0.595
+          ],
+          [
+            "bukele",
+            0.595
+          ],
+          [
+            "abdelfatah",
+            0.593
+          ],
+          [
+            "semipresidencialista",
+            0.591
+          ],
+          [
+            "sisi",
+            0.59
+          ]
+        ],
+        "mujer": [
+          [
+            "mujeres",
+            0.483
+          ],
+          [
+            "ajusticiada",
+            0.462
+          ],
+          [
+            "niña",
+            0.457
+          ],
+          [
+            "dama",
+            0.428
+          ],
+          [
+            "sentada",
+            0.428
+          ]
+        ],
+        "niño": [
+          [
+            "niña",
+            0.467
+          ],
+          [
+            "prodigio",
+            0.455
+          ],
+          [
+            "niños",
+            0.434
+          ],
+          [
+            "adolescente",
+            0.431
+          ],
+          [
+            "infidelidad",
+            0.408
+          ]
+        ],
+        "familia": [
+          [
+            "winteráceas",
+            0.623
+          ],
+          [
+            "canellaceae",
+            0.615
+          ],
+          [
+            "myristicaceae",
+            0.592
+          ],
+          [
+            "passifloraceae",
+            0.591
+          ],
+          [
+            "winteraceae",
+            0.586
+          ]
+        ],
+        "iglesia": [
+          [
+            "católica",
+            0.754
+          ],
+          [
+            "ortodoxa",
+            0.681
+          ],
+          [
+            "luterana",
+            0.651
+          ],
+          [
+            "anglicana",
+            0.648
+          ],
+          [
+            "reformada",
+            0.632
+          ]
+        ],
+        "fútbol": [
+          [
+            "baloncesto",
+            0.673
+          ],
+          [
+            "balonmano",
+            0.665
+          ],
+          [
+            "voleibol",
+            0.601
+          ],
+          [
+            "americano",
+            0.589
+          ],
+          [
+            "futsal",
+            0.577
+          ]
+        ],
+        "música": [
+          [
+            "folclórica",
+            0.672
+          ],
+          [
+            "vallenata",
+            0.617
+          ],
+          [
+            "folk",
+            0.575
+          ],
+          [
+            "orquestal",
+            0.568
+          ],
+          [
+            "musical",
+            0.565
+          ]
+        ],
+        "trabajo": [
+          [
+            "asalariado",
+            0.428
+          ],
+          [
+            "trabajadores",
+            0.418
+          ],
+          [
+            "trabajos",
+            0.41
+          ],
+          [
+            "laboral",
+            0.397
+          ],
+          [
+            "improductivo",
+            0.391
+          ]
+        ],
+        "ciudad": [
+          [
+            "villa",
+            0.578
+          ],
+          [
+            "acámbaro",
+            0.566
+          ],
+          [
+            "irapuato",
+            0.555
+          ],
+          [
+            "tarata",
+            0.542
+          ],
+          [
+            "sintra",
+            0.536
+          ]
+        ],
+        "guerra": [
+          [
+            "civil",
+            0.6
+          ],
+          [
+            "ogaden",
+            0.577
+          ],
+          [
+            "bóer",
+            0.574
+          ],
+          [
+            "conflicto",
+            0.559
+          ],
+          [
+            "vencedores",
+            0.539
+          ]
+        ]
+      }
+    },
+    "variantes": [
+      {
+        "tipo": "callate",
+        "freq_toxic": 350,
+        "fasttext": "(sin vector: no esta en el vocabulario y no hay subpalabras)",
+        "word2vec": "(sin vector: no esta en el vocabulario y no hay subpalabras)"
+      },
+      {
+        "tipo": "cllate",
+        "freq_toxic": 279,
+        "fasttext": "(sin vector: no esta en el vocabulario y no hay subpalabras)",
+        "word2vec": "(sin vector: no esta en el vocabulario y no hay subpalabras)"
+      },
+      {
+        "tipo": "violacin",
+        "freq_toxic": 58,
+        "fasttext": "(sin vector: no esta en el vocabulario y no hay subpalabras)",
+        "word2vec": "(sin vector: no esta en el vocabulario y no hay subpalabras)"
+      },
+      {
+        "tipo": "espaa",
+        "freq_toxic": 52,
+        "fasttext": "(sin vector: no esta en el vocabulario y no hay subpalabras)",
+        "word2vec": "(sin vector: no esta en el vocabulario y no hay subpalabras)"
+      },
+      {
+        "tipo": "imbcil",
+        "freq_toxic": 31,
+        "fasttext": "(sin vector: no esta en el vocabulario y no hay subpalabras)",
+        "word2vec": "(sin vector: no esta en el vocabulario y no hay subpalabras)"
+      },
+      {
+        "tipo": "arabe",
+        "freq_toxic": 70,
+        "fasttext": "(sin vector: no esta en el vocabulario y no hay subpalabras)",
+        "word2vec": "(sin vector: no esta en el vocabulario y no hay subpalabras)"
+      },
+      {
+        "tipo": "estn",
+        "freq_toxic": 33,
+        "fasttext": "(sin vector: no esta en el vocabulario y no hay subpalabras)",
+        "word2vec": "(sin vector: no esta en el vocabulario y no hay subpalabras)"
+      },
+      {
+        "tipo": "mereces",
+        "freq_toxic": 135,
+        "fasttext": "(sin vector: no esta en el vocabulario y no hay subpalabras)",
+        "word2vec": "(sin vector: no esta en el vocabulario y no hay subpalabras)"
+      },
+      {
+        "tipo": "pinche",
+        "freq_toxic": 37,
+        "fasttext": "(sin vector: no esta en el vocabulario y no hay subpalabras)",
+        "word2vec": "(sin vector: no esta en el vocabulario y no hay subpalabras)"
+      },
+      {
+        "tipo": "inmigracin",
+        "freq_toxic": 46,
+        "fasttext": "(sin vector: no esta en el vocabulario y no hay subpalabras)",
+        "word2vec": "(sin vector: no esta en el vocabulario y no hay subpalabras)"
+      },
+      {
+        "tipo": "guarra",
+        "freq_toxic": 47,
+        "fasttext": "(sin vector: no esta en el vocabulario y no hay subpalabras)",
+        "word2vec": "(sin vector: no esta en el vocabulario y no hay subpalabras)"
+      },
+      {
+        "tipo": "mereca",
+        "freq_toxic": 37,
+        "fasttext": "(sin vector: no esta en el vocabulario y no hay subpalabras)",
+        "word2vec": "(sin vector: no esta en el vocabulario y no hay subpalabras)"
+      },
+      {
+        "tipo": "estupido",
+        "freq_toxic": 2,
+        "fasttext": "(sin vector: no esta en el vocabulario y no hay subpalabras)",
+        "word2vec": "(sin vector: no esta en el vocabulario y no hay subpalabras)"
+      },
+      {
+        "tipo": "perra",
+        "freq_toxic": 392,
+        "fasttext": "`perra` (1.000)",
+        "word2vec": "`perra` (1.000)"
+      }
+    ],
+    "estabilidad": {
+      "palabras_evaluadas": 12,
+      "coseno_centrado_medio_entre_semillas": -0.0342,
+      "solapamiento_medio_top10": 0.7917
+    }
+  },
+  "downstream": [
+    {
+      "modelo": "FASTTEXT-BASELINE",
+      "pooling": "A_media",
+      "clasificador": "LR",
+      "dim": 200,
+      "segundos_modelo": 0.0,
+      "corrected_cv_umbral_0.5": 0.648667,
+      "corrected_cv_umbrales_ajustados": 0.660313,
+      "delta_vs_v03_0.5": -0.123111,
+      "delta_vs_v03_ajustados": -0.116898,
+      "ic95_ajustados": [
+        -0.139683,
+        -0.094227
+      ],
+      "pliegues_mejorados": 108,
+      "filas_mejoradas": 108,
+      "filas_empeoradas": 121,
+      "std_pliegues_0.5": 0.0314,
+      "umbrales_ajustados": [
+        0.28,
+        0.52,
+        0.38
+      ],
+      "f1_HS": 0.6616,
+      "f1_TR": 0.6899,
+      "f1_AG": 0.6295
+    },
+    {
+      "modelo": "FASTTEXT-BASELINE",
+      "pooling": "A_media",
+      "clasificador": "SVC",
+      "dim": 200,
+      "segundos_modelo": 0.0,
+      "corrected_cv_umbral_0.5": 0.647712,
+      "corrected_cv_umbrales_ajustados": 0.658418,
+      "delta_vs_v03_0.5": -0.124066,
+      "delta_vs_v03_ajustados": -0.118793,
+      "ic95_ajustados": [
+        -0.141206,
+        -0.096674
+      ],
+      "pliegues_mejorados": 124,
+      "filas_mejoradas": 124,
+      "filas_empeoradas": 107,
+      "std_pliegues_0.5": 0.0228,
+      "umbrales_ajustados": [
+        0.41,
+        0.51,
+        0.39
+      ],
+      "f1_HS": 0.6599,
+      "f1_TR": 0.6866,
+      "f1_AG": 0.6288
+    },
+    {
+      "modelo": "FASTTEXT-BASELINE",
+      "pooling": "B_tfidf",
+      "clasificador": "LR",
+      "dim": 200,
+      "segundos_modelo": 0.0,
+      "corrected_cv_umbral_0.5": 0.611536,
+      "corrected_cv_umbrales_ajustados": 0.634806,
+      "delta_vs_v03_0.5": -0.160242,
+      "delta_vs_v03_ajustados": -0.142405,
+      "ic95_ajustados": [
+        -0.166334,
+        -0.118406
+      ],
+      "pliegues_mejorados": 128,
+      "filas_mejoradas": 128,
+      "filas_empeoradas": 125,
+      "std_pliegues_0.5": 0.0228,
+      "umbrales_ajustados": [
+        0.22,
+        0.61,
+        0.32
+      ],
+      "f1_HS": 0.6443,
+      "f1_TR": 0.6601,
+      "f1_AG": 0.6
+    },
+    {
+      "modelo": "FASTTEXT-BASELINE",
+      "pooling": "B_tfidf",
+      "clasificador": "SVC",
+      "dim": 200,
+      "segundos_modelo": 0.0,
+      "corrected_cv_umbral_0.5": 0.608303,
+      "corrected_cv_umbrales_ajustados": 0.629,
+      "delta_vs_v03_0.5": -0.163475,
+      "delta_vs_v03_ajustados": -0.148211,
+      "ic95_ajustados": [
+        -0.172512,
+        -0.124075
+      ],
+      "pliegues_mejorados": 125,
+      "filas_mejoradas": 125,
+      "filas_empeoradas": 127,
+      "std_pliegues_0.5": 0.0211,
+      "umbrales_ajustados": [
+        0.39,
+        0.51,
+        0.44
+      ],
+      "f1_HS": 0.6386,
+      "f1_TR": 0.6478,
+      "f1_AG": 0.6006
+    },
+    {
+      "modelo": "FASTTEXT-BASELINE",
+      "pooling": "C_media_max",
+      "clasificador": "LR",
+      "dim": 400,
+      "segundos_modelo": 0.0,
+      "corrected_cv_umbral_0.5": 0.615525,
+      "corrected_cv_umbrales_ajustados": 0.638849,
+      "delta_vs_v03_0.5": -0.156253,
+      "delta_vs_v03_ajustados": -0.138362,
+      "ic95_ajustados": [
+        -0.162984,
+        -0.114234
+      ],
+      "pliegues_mejorados": 125,
+      "filas_mejoradas": 125,
+      "filas_empeoradas": 128,
+      "std_pliegues_0.5": 0.0329,
+      "umbrales_ajustados": [
+        0.1,
+        0.12,
+        0.06
+      ],
+      "f1_HS": 0.6498,
+      "f1_TR": 0.6464,
+      "f1_AG": 0.6203
+    },
+    {
+      "modelo": "FASTTEXT-BASELINE",
+      "pooling": "C_media_max",
+      "clasificador": "SVC",
+      "dim": 400,
+      "segundos_modelo": 0.0,
+      "corrected_cv_umbral_0.5": 0.605453,
+      "corrected_cv_umbrales_ajustados": 0.6307,
+      "delta_vs_v03_0.5": -0.166325,
+      "delta_vs_v03_ajustados": -0.146511,
+      "ic95_ajustados": [
+        -0.170679,
+        -0.122289
+      ],
+      "pliegues_mejorados": 138,
+      "filas_mejoradas": 138,
+      "filas_empeoradas": 141,
+      "std_pliegues_0.5": 0.0289,
+      "umbrales_ajustados": [
+        0.18,
+        0.43,
+        0.16
+      ],
+      "f1_HS": 0.6471,
+      "f1_TR": 0.6307,
+      "f1_AG": 0.6143
+    },
+    {
+      "modelo": "WORD2VEC-CONTROL",
+      "pooling": "A_media",
+      "clasificador": "LR",
+      "dim": 200,
+      "segundos_modelo": 0.0,
+      "corrected_cv_umbral_0.5": 0.625315,
+      "corrected_cv_umbrales_ajustados": 0.646498,
+      "delta_vs_v03_0.5": -0.146463,
+      "delta_vs_v03_ajustados": -0.130713,
+      "ic95_ajustados": [
+        -0.152951,
+        -0.10975
+      ],
+      "pliegues_mejorados": 117,
+      "filas_mejoradas": 117,
+      "filas_empeoradas": 128,
+      "std_pliegues_0.5": 0.0381,
+      "umbrales_ajustados": [
+        0.23,
+        0.53,
+        0.43
+      ],
+      "f1_HS": 0.6527,
+      "f1_TR": 0.6653,
+      "f1_AG": 0.6216
+    },
+    {
+      "modelo": "WORD2VEC-CONTROL",
+      "pooling": "A_media",
+      "clasificador": "SVC",
+      "dim": 200,
+      "segundos_modelo": 0.0,
+      "corrected_cv_umbral_0.5": 0.625899,
+      "corrected_cv_umbrales_ajustados": 0.6447,
+      "delta_vs_v03_0.5": -0.145879,
+      "delta_vs_v03_ajustados": -0.132511,
+      "ic95_ajustados": [
+        -0.154745,
+        -0.111051
+      ],
+      "pliegues_mejorados": 123,
+      "filas_mejoradas": 123,
+      "filas_empeoradas": 125,
+      "std_pliegues_0.5": 0.0374,
+      "umbrales_ajustados": [
+        0.38,
+        0.51,
+        0.46
+      ],
+      "f1_HS": 0.6505,
+      "f1_TR": 0.6681,
+      "f1_AG": 0.6155
+    },
+    {
+      "modelo": "WORD2VEC-CONTROL",
+      "pooling": "B_tfidf",
+      "clasificador": "LR",
+      "dim": 200,
+      "segundos_modelo": 0.0,
+      "corrected_cv_umbral_0.5": 0.600883,
+      "corrected_cv_umbrales_ajustados": 0.627216,
+      "delta_vs_v03_0.5": -0.170895,
+      "delta_vs_v03_ajustados": -0.149995,
+      "ic95_ajustados": [
+        -0.174009,
+        -0.127659
+      ],
+      "pliegues_mejorados": 140,
+      "filas_mejoradas": 140,
+      "filas_empeoradas": 110,
+      "std_pliegues_0.5": 0.036,
+      "umbrales_ajustados": [
+        0.23,
+        0.37,
+        0.28
+      ],
+      "f1_HS": 0.639,
+      "f1_TR": 0.6452,
+      "f1_AG": 0.5975
+    },
+    {
+      "modelo": "WORD2VEC-CONTROL",
+      "pooling": "B_tfidf",
+      "clasificador": "SVC",
+      "dim": 200,
+      "segundos_modelo": 0.0,
+      "corrected_cv_umbral_0.5": 0.598389,
+      "corrected_cv_umbrales_ajustados": 0.626095,
+      "delta_vs_v03_0.5": -0.173389,
+      "delta_vs_v03_ajustados": -0.151116,
+      "ic95_ajustados": [
+        -0.175242,
+        -0.128554
+      ],
+      "pliegues_mejorados": 134,
+      "filas_mejoradas": 134,
+      "filas_empeoradas": 120,
+      "std_pliegues_0.5": 0.0342,
+      "umbrales_ajustados": [
+        0.39,
+        0.47,
+        0.42
+      ],
+      "f1_HS": 0.6375,
+      "f1_TR": 0.6426,
+      "f1_AG": 0.5981
+    },
+    {
+      "modelo": "WORD2VEC-CONTROL",
+      "pooling": "C_media_max",
+      "clasificador": "LR",
+      "dim": 400,
+      "segundos_modelo": 0.0,
+      "corrected_cv_umbral_0.5": 0.597885,
+      "corrected_cv_umbrales_ajustados": 0.627528,
+      "delta_vs_v03_0.5": -0.173893,
+      "delta_vs_v03_ajustados": -0.149683,
+      "ic95_ajustados": [
+        -0.174031,
+        -0.126895
+      ],
+      "pliegues_mejorados": 146,
+      "filas_mejoradas": 146,
+      "filas_empeoradas": 151,
+      "std_pliegues_0.5": 0.0257,
+      "umbrales_ajustados": [
+        0.07,
+        0.45,
+        0.05
+      ],
+      "f1_HS": 0.645,
+      "f1_TR": 0.6324,
+      "f1_AG": 0.6052
+    },
+    {
+      "modelo": "WORD2VEC-CONTROL",
+      "pooling": "C_media_max",
+      "clasificador": "SVC",
+      "dim": 400,
+      "segundos_modelo": 0.0,
+      "corrected_cv_umbral_0.5": 0.586771,
+      "corrected_cv_umbrales_ajustados": 0.6183,
+      "delta_vs_v03_0.5": -0.185007,
+      "delta_vs_v03_ajustados": -0.158911,
+      "ic95_ajustados": [
+        -0.182853,
+        -0.136311
+      ],
+      "pliegues_mejorados": 156,
+      "filas_mejoradas": 156,
+      "filas_empeoradas": 126,
+      "std_pliegues_0.5": 0.0183,
+      "umbrales_ajustados": [
+        0.16,
+        0.27,
+        0.18
+      ],
+      "f1_HS": 0.6444,
+      "f1_TR": 0.6113,
+      "f1_AG": 0.5992
+    },
+    {
+      "modelo": "SUELO-ALEATORIO",
+      "pooling": "A_media",
+      "clasificador": "LR",
+      "dim": 200,
+      "segundos_modelo": 0,
+      "corrected_cv_umbral_0.5": 0.411169,
+      "corrected_cv_umbrales_ajustados": 0.540397,
+      "delta_vs_v03_0.5": -0.360609,
+      "delta_vs_v03_ajustados": -0.236814,
+      "ic95_ajustados": [
+        -0.261989,
+        -0.212288
+      ],
+      "pliegues_mejorados": 218,
+      "filas_mejoradas": 218,
+      "filas_empeoradas": 9,
+      "std_pliegues_0.5": 0.0282,
+      "umbrales_ajustados": [
+        0.05,
+        0.05,
+        0.05
+      ],
+      "f1_HS": 0.608,
+      "f1_TR": 0.4596,
+      "f1_AG": 0.5536
+    },
+    {
+      "modelo": "SUELO-ALEATORIO",
+      "pooling": "A_media",
+      "clasificador": "SVC",
+      "dim": 200,
+      "segundos_modelo": 0,
+      "corrected_cv_umbral_0.5": 0.414492,
+      "corrected_cv_umbrales_ajustados": 0.541708,
+      "delta_vs_v03_0.5": -0.357286,
+      "delta_vs_v03_ajustados": -0.235503,
+      "ic95_ajustados": [
+        -0.2607,
+        -0.210906
+      ],
+      "pliegues_mejorados": 218,
+      "filas_mejoradas": 218,
+      "filas_empeoradas": 3,
+      "std_pliegues_0.5": 0.0291,
+      "umbrales_ajustados": [
+        0.21,
+        0.21,
+        0.21
+      ],
+      "f1_HS": 0.609,
+      "f1_TR": 0.4622,
+      "f1_AG": 0.5539
+    }
+  ]
+}
