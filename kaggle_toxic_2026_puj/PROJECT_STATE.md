@@ -1,8 +1,37 @@
 # PROJECT_STATE - KAGGLE_TOXIC_2026_PUJ
 
-Ultima actualizacion: 2026-09-25 (fase v4 abierta; P0 completado).
+Ultima actualizacion: 2026-09-25 (fase **v5** abierta; P0 completado, P1 en curso).
 
-## Fase actual: v4 «Advanced Research v4» (CERRADA el 2026-09-25)
+## Fase actual: v5 «Embedding from Scratch» (ABIERTA el 2026-09-25)
+
+Rama `proyecto-kaggle-toxic-2026-v5` (worktree `/home/carlos/Git/PLN-v5`, base
+v4 `5d06ce7`; PR #28 de v4 sigue abierto y sin mergear). Spec transcrita en
+`docs/embedding_from_scratch_v5_spec.md`; plan en `tasks/plan_v5.md`; checklist en
+`tasks/todo_v5.md`; compliance en `reports/embedding_compliance.md`. Decision de
+gobierno: **D-030**.
+
+**Alcance autorizado**: corpus externos **no etiquetados** solo para aprender la
+representacion distribuida desde cero. Prohibido: entrenamiento supervisado con
+datos externos, generacion de labels, pseudo-labeling, ajuste de umbrales y
+cualquier otro aprendizaje sobre HS/TR/AG. No existe evidencia documental
+archivada de la autorizacion; se registra solo lo comunicado por el usuario.
+
+| Campo | Valor |
+|---|---|
+| CURRENT_BEST_MODEL | **V03** (intacto; v5 no lo modifica) |
+| CURRENT_BEST_CORRECTED_CV | **0.777211** |
+| CURRENT_BEST_HOLDOUT | 0.8285 (holdout **agotado 5/5**: v5 no lo usa) |
+| CURRENT_BEST_KAGGLE | 0.78306 (0 sondas nuevas en v5) |
+| HIPOTESIS | H-EMB (el embedding desde cero aporta senal complementaria) / H0-EMB (no aporta) |
+| IMPLEMENTACION | fastText C++ compilado localmente (commit `1142dc4c4ecb`, MIT); control Word2Vec con `minn=0,maxn=0`; PyTorch solo de respaldo; **gensim descartado** (sin wheel para 3.14) |
+| FUENTES | Wikipedia ES (principal) -> mC4-es (web) -> mixto -> HPLT/CEREAL/OSCAR solo con margen real; OSCAR esta gated (no se fuerza) |
+| ESCALA | 10M -> 50M -> 100M -> decidir -> 250M -> decidir -> 500M; cada expansion exige `RATIONALE_FOR_CORPUS_EXPANSION` |
+| P0 | **GO**: fastText entrena (~930k tok/s con 16 hilos), `corrected_cv` de V03 reproduce 0.777211, 0 violaciones de recursos |
+| P1 | en curso: corpus 10M de Wikipedia ES + cobertura TOXIC |
+| P2 | pendiente: baseline FastText + control + intrinseca + downstream |
+| GATE DE CIERRE | §29: A (+0.005 con estabilidad) / B (complementariedad robusta) / C (senal representacional fuerte) |
+
+## Fase anterior: v4 «Advanced Research v4» (CERRADA el 2026-09-25)
 
 Rama `proyecto-kaggle-toxic-2026-v4`. Spec archivada en
 `docs/advanced_research_v4_spec.md`; plan en `tasks/plan_v4.md`; backlog

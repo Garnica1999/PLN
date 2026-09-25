@@ -906,3 +906,111 @@ evidencia, experimento, resultado, conclusion final.
 - **Evidencia**: `reports/refit_final_v4.json`, `reports/v4_candidates.csv`,
   `reports/v4_candidate_comparison.md`, `reports/holdout_evaluaciones_v2.csv`
   (5/5), `submissions/submission_manifest.csv`.
+
+## D-030 - Scope of external unlabeled data for from-scratch embeddings
+
+- **Contexto**: la fase v5 («Embedding from Scratch») introduce por primera vez en
+  el proyecto texto externo. Las fases anteriores trabajaron bajo D-002, que
+  prohibía usar corpus o etiquetas externos. La especificación v5 abre esa
+  posibilidad **con un alcance acotado**, y el usuario **(Carlos)** cerró el
+  alcance exacto antes de autorizar la ejecución.
+- **Autorización (transcripción literal de lo comunicado por el usuario)**:
+
+  > El profesor autorizó para esta competencia el uso de datos externos no
+  > etiquetados exclusivamente para entrenar desde cero una representación de
+  > embeddings/vectorización. Los datos externos no pueden utilizarse para
+  > entrenamiento supervisado, clasificación, generación de labels,
+  > pseudo-labeling, ajuste de thresholds ni ninguna otra forma de aprendizaje
+  > sobre HS/TR/AG.
+
+- **Alcance de la autorización** (límite explícito):
+  1. Los corpus externos se usan **exclusivamente** para aprender la
+     representación distribuida (pesos de embeddings/vectorización).
+  2. Queda **prohibido** cualquier uso de datos externos para: entrenamiento
+     supervisado del clasificador final, clasificación, generación de labels,
+     pseudo-labeling, ajuste de umbrales o cualquier otra forma de aprendizaje
+     sobre HS/TR/AG.
+  3. Toda supervisión del clasificador procede **solo** del train oficial de
+     TOXIC.
+  4. El embedding se entrena **completamente desde cero**; el vocabulario o
+     tokenizer, cuando corresponda, se construye desde cero.
+  5. Cada corpus externo debe documentar `source`, `url`, `version`, `license`,
+     `download_date` y `sha256` (§29 y §35 de la spec v5).
+  6. No se incorpora ninguna fuente nueva de forma silenciosa durante una
+     ejecución.
+- **Evidencia**: **NO existe** correo, foro ni captura formal archivada en el
+  repositorio que documente literalmente la autorización. Esta decisión registra
+  **únicamente** la información comunicada directamente por el usuario en la
+  sesión del 2026-09-25. No se inventa, reconstruye ni infiere ninguna evidencia
+  escrita. Queda como acción opcional del usuario incorporar el documento
+  original si dispone de él; no bloquea la fase.
+- **Regla ante ambigüedad**: si durante el desarrollo aparece una
+  interpretación ambigua sobre si una fuente concreta entra dentro de esta
+  autorización, **no se asume permitida**: se registra la duda en
+  `DECISIONS.md` y se detiene **únicamente esa fuente** hasta resolverla.
+- **Fuentes habilitadas por el usuario** (con sus límites):
+  - **Wikipedia ES**: fuente principal (P1); disponible, con procedencia clara,
+    poco ruido y cobertura general.
+  - **mC4 (`allenai/c4`, config `es`)**: fuente web principal (P2); accesible
+    sin el bloqueo manual que presenta OSCAR.
+  - **OSCAR**: opcional; solo con acceso legítimo y directo. No se retrasa la
+    investigación por OSCAR ni se usan mecanismos para saltar restricciones de
+    acceso.
+  - **HPLT / CEREAL**: opcionales y no obligatorios. Antes de incorporarse se
+    documenta procedencia, licencia, cobertura en español, tamaño, diversidad,
+    solapamiento con Wikipedia/mC4 y coste de procesamiento. No se dedica tiempo
+    desproporcionado a CEREAL.
+  - Prioridad de composición: `Wikipedia ES` → `mC4-es` → `mezcla` →
+    `HPLT/CEREAL/OSCAR` solo si aportan información marginal real. **No** se
+    construye una mezcla enorme antes de medir el aporte individual.
+- **Escala autorizada**: hasta **500M tokens** como techo de esta fase inicial,
+  con la secuencia obligatoria `10M → 50M → 100M → decidir → 250M → decidir →
+  500M → decidir`. No se supera 500M sin una nueva decisión explícita del
+  usuario. Antes de cada expansión se registra `RATIONALE_FOR_CORPUS_EXPANSION`
+  con al menos una condición de la §30 de la spec.
+- **Implementación autorizada**:
+  - **fastText C++ oficial** compilado localmente (g++, cmake, make): la
+    librería implementa el algoritmo, pero **los pesos se entrenan desde cero**
+    y no se descarga ningún modelo.
+  - **Word2Vec-control** mediante el mismo binario con `minn=0, maxn=0`,
+    registrado como `WORD2VEC-CONTROL / FASTTEXT-SG-SUBWORDS-OFF`.
+  - **PyTorch** solo como respaldo o control metodológico; no se reimplementa
+    fastText en PyTorch si la versión C++ resuelve el experimento.
+  - **gensim**: no se instala ni se depende de él (no hay wheel para Python
+    3.14 y la compilación desde source tiene riesgo alto).
+  - **GloVe**: no implementado por defecto; solo si FastText y Word2Vec muestran
+    una señal que justifique una tercera geometría.
+- **Anti-fuga y auditoría**: la auditoría debe comprobar 0 usos de
+  `transformers`, BERT, RoBERTa, `from_pretrained`, embeddings preentrenados,
+  labels externas, labels de test, inclusión de `toxic_test.csv` y de datasets
+  externos de hate speech; y debe distinguir **texto usado para el embedding** de
+  **labels usadas para supervisión**. La variante principal es
+  **EXTERNAL-ONLY**: no se añaden los 1.731 tweets de TOXIC al corpus. La
+  adaptación de dominio es secundaria y **in-fold** (`embedding_train_k` = corpus
+  externo + textos de train del fold `k`), nunca con validación, holdout ni test.
+- **Normalizaciones**: `EMB-NORMAL` y `EMB-ASCII` (lowercase, transliteración
+  reproducible, URLs, menciones, hashtags, formas informales y preservación de
+  elongaciones). **Sin** correctores ortográficos, **sin** reconstrucción de
+  tildes, **sin** información semántica externa y **sin** etiquetas.
+- **Protocolo de evaluación**: `corrected_cv` con grupos near-duplicado ∪
+  pseudo-autor (`src/splits.py`) y referencia V03 0.7772 (nunca 0.7989 como
+  referencia primaria). El **holdout está agotado (5/5)** y no se usa ni se crea
+  otro. Jerarquía de evidencia: `corrected_cv` → leaderboard.
+- **Criterios de adopción** (§29): **A** mejora ≥ +0.005 con estabilidad
+  razonable; **B** complementariedad robusta; **C** evidencia representacional
+  fuerte aunque la F1 sea marginal. Se distingue `adopted` / `candidate` /
+  `exploratory` y **no se presenta una mejora exploratoria como mejora final**.
+- **Entrega**: rama independiente `proyecto-kaggle-toxic-2026-v5`; V03 intacta;
+  no se borra evidencia histórica; no se modifica retrospectivamente D-024 ni
+  decisiones anteriores; **sin** submissions automáticas; **sin** push
+  automático sin autorización explícita en la sesión; PR al finalizar y **sin**
+  merge automático.
+- **Alcance autorizado en esta sesión**: **P0, P1 y P2**. No se descargan 500M
+  tokens antes de completar el diagnóstico de cobertura (P1) y el primer
+  resultado downstream (P2).
+- **Evidencia en disco**: `docs/embedding_from_scratch_v5_spec.md` (spec maestra
+  transcrita), `tasks/plan_v5.md`, `reports/embedding_compliance.md`,
+  `data/external/corpora/corpus_manifest.json` y scripts `embedding_*.py`.
+- **Conclusión**: la autorización queda acotada a la representación
+  distribuida; cualquier uso que exceda ese alcance se considera no autorizado y
+  detiene el experimento correspondiente.

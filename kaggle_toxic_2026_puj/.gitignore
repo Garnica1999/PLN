@@ -11,3 +11,8 @@ data/
 features/
 models/
 experiments/*.log
+
+# Codigo y binarios de terceros usados en la fase v5
+# Se documentan por commit y sha256 en data/external/corpora/corpus_manifest.json
+tools/
+models

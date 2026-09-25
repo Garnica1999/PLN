@@ -578,3 +578,18 @@ Registro cronologico de ejecuciones. Formato:
   **GO**: 0 violaciones en 12 scripts, doble ejecucion con SHA256 estable, 41
   artefactos inventariados). Memoria actualizada: D-025..D-029, PROJECT_STATE,
   experiments.csv (143 filas), tasks/todo_v4.md.
+- 17:05 | v5 P0 compliance y scaffold | `experiments/embedding_00_scaffold_v5.py`
+  (GO): fastText C++ compilado con `cmake -DCMAKE_POLICY_VERSION_MINIMUM=3.5` y
+  `make -j32` (commit `1142dc4c4ecb`, MIT, sha256 del binario en el manifiesto),
+  entrenado y validado (~930k tok/s con 16 hilos); control
+  `WORD2VEC-CONTROL / FASTTEXT-SG-SUBWORDS-OFF` verificado con `-minn 0 -maxn 0`
+  (el `NaN` inicial era del corpus de juguete de 25 tipos). `D-030` registrada con
+  la transcripcion literal de la autorizacion y **sin** inventar evidencia escrita.
+  Spec maestra transcrita en `docs/embedding_from_scratch_v5_spec.md`.
+  `data/external/corpora/corpus_manifest.json` creado con el esquema de la §35 y
+  copia declarativa en `reports/corpus_manifest_v5.json`. Auditoria de recursos:
+  0 usos de transformers / sentence-transformers / GloVe / `from_pretrained`.
+  `corrected_cv` de V03 reproduce **0.777211** desde el OOF canonico. Trabajo en
+  worktree `/home/carlos/Git/PLN-v5` para no interferir con la sesion paralela de
+  `KAGGLE_AGE_2026_PUJ`. Fila `EBD-00-SCAFFOLD` en `experiments.csv` (144 filas).
+  **0 sondas de LB, 0 usos de holdout.**

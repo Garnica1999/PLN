@@ -1,0 +1,72 @@
+{
+  "experiment_id": "EBD-00-SCAFFOLD",
+  "fase": "P0 - compliance y scaffold de la fase v5",
+  "fecha": "2026-09-25T21:07:57+00:00",
+  "duracion_s": 0.5,
+  "entorno": {
+    "nucleos_disponibles": 32,
+    "ram_total_gb": 31.2,
+    "ram_disponible_gb": 18.0,
+    "disco_libre_gb": 450.2,
+    "disco_total_gb": 931.0,
+    "python": "3.14.7",
+    "executable": "/home/carlos/venv/bin/python",
+    "plataforma": "Linux-7.2.6-1-cachyos-x86_64-with-glibc2.44",
+    "fasttext": {
+      "disponible": true,
+      "ruta": "tools/fastText/build/fasttext",
+      "sha256": "0307cde9a9e9dc02f2b688e4645ffbb38b8be2f80c33530777d7abd8a031f167",
+      "bytes": 500112,
+      "commit": "1142dc4c4ecbc19cc16eee5cdd28472e689267e6",
+      "fecha_commit": "2024-03-13T08:16:33-07:00",
+      "version_upstream": "facebookresearch/fastText",
+      "licencia_codigo": "MIT",
+      "uso": "implementa el algoritmo; los pesos se entrenan desde cero con nuestro corpus"
+    }
+  },
+  "compliance": {
+    "scripts": [],
+    "violaciones": [],
+    "ok": true
+  },
+  "uso_toxic": {
+    "usos": [
+      {
+        "script": "embedding_00_scaffold_v5.py",
+        "lee_test": true,
+        "lee_labels_toxic": true,
+        "lee_textos_train": true,
+        "uso_embedding": "EXTERNAL-ONLY salvo adaptacion in-fold registrada"
+      }
+    ],
+    "ok": true
+  },
+  "referencia": {
+    "n_train": 1731,
+    "n_test": 1154,
+    "n_dev": 1483,
+    "n_holdout": 248,
+    "corrected_cv_recalculada": 0.777211,
+    "corrected_cv_esperada": 0.777211,
+    "coincide": true,
+    "kaggle_lb_referencia": 0.78306,
+    "umbrales_referencia": {
+      "HS": 0.44,
+      "TR": 0.51,
+      "AG": 0.46,
+      "metodo": "rejilla 0.20-0.80 paso 0.01 sobre probabilidades OOF"
+    },
+    "hashes_datos_oficiales": {
+      "toxic_train.csv": "3d40e7345b588860cf4744914be88ddc094e4f03591516c8176ab40b7f76d42f",
+      "toxic_test.csv": "e91ff8258dadbbcd57593273ff1babd805f00074ae755507d64fa00942785e83",
+      "submission.csv": "0dfb4d07dffc31d3d452f5e53508d259e6ab5c2ec0dcd67bd70e4b03c5016ecc"
+    },
+    "hashes_esperados_prefijo": {
+      "toxic_train.csv": "3d40e734",
+      "toxic_test.csv": "e91ff825"
+    },
+    "holdout_usado_por_v5": false
+  },
+  "manifiesto": "data/external/corpora/corpus_manifest.json",
+  "veredicto": "GO"
+}

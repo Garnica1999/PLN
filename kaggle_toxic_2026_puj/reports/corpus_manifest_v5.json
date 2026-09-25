@@ -1,0 +1,129 @@
+{
+  "schema": "kaggle_toxic_2026_puj.corpus_manifest.v5",
+  "creado": "2026-09-25T21:07:57+00:00",
+  "preprocessing_version": "v5.0 (sin aplicar; se define en P1)",
+  "autorizacion": {
+    "decision": "D-030",
+    "alcance": "corpus externos no etiquetados solo para aprender la representacion distribuida",
+    "prohibido": [
+      "entrenamiento supervisado con datos externos",
+      "generacion de labels",
+      "pseudo-labeling",
+      "ajuste de thresholds"
+    ],
+    "evidencia_documental": "no existe documento escrito archivado; se registra solo lo comunicado por el usuario"
+  },
+  "referencia": {
+    "modelo": "V03",
+    "corrected_cv": 0.777211,
+    "kaggle_lb": 0.78306
+  },
+  "escalas_planificadas": [
+    {
+      "tokens": 10000000,
+      "estado": "planificada",
+      "id": "E-CORP-01"
+    },
+    {
+      "tokens": 50000000,
+      "estado": "condicionada",
+      "id": "E-CORP-02"
+    },
+    {
+      "tokens": 100000000,
+      "estado": "condicionada",
+      "id": "E-CORP-03"
+    },
+    {
+      "tokens": 250000000,
+      "estado": "condicionada",
+      "id": "E-CORP-04"
+    },
+    {
+      "tokens": 500000000,
+      "estado": "condicionada",
+      "id": "E-CORP-05"
+    }
+  ],
+  "fuentes": [
+    {
+      "nombre": "wikipedia_es",
+      "prioridad": 1,
+      "rol": "general",
+      "url": "https://dumps.wikimedia.org/eswiki/latest/",
+      "recurso": "eswiki-latest-pages-articles.xml.bz2 (y variante multistream)",
+      "licencia": "CC BY-SA 4.0 (atribucion obligatoria)",
+      "acceso": "publico, sin registro",
+      "tamano_comprimido_bytes": 5191883818,
+      "version": "latest (fecha del dump en la entrada de descarga)",
+      "estado": "verificada_disponible",
+      "nota": "Fuente principal de P1; se descargara por multistream solo el tramo necesario para 10M tokens."
+    },
+    {
+      "nombre": "m_c4_es",
+      "prioridad": 2,
+      "rol": "web",
+      "url": "https://huggingface.co/datasets/allenai/c4",
+      "recurso": "config `es`, shards .json.gz",
+      "licencia": "ODC-BY (Common Crawl); se documenta con el corpus",
+      "acceso": "publico, sin gating (verificado el 2026-09-25)",
+      "tamano_comprimido_bytes": null,
+      "version": "a fijar al descargar (commit del dataset)",
+      "estado": "verificada_disponible",
+      "nota": "Fuente web principal de P2, en sustitucion de OSCAR, que esta gated."
+    },
+    {
+      "nombre": "oscar_es",
+      "prioridad": 4,
+      "rol": "web",
+      "url": "https://huggingface.co/datasets/oscar-corpus/OSCAR-2301",
+      "recurso": "shards por idioma",
+      "licencia": "CC BY 4.0 (segun ficha del dataset)",
+      "acceso": "gated manual: requiere cuenta y aceptacion de terminos",
+      "tamano_comprimido_bytes": null,
+      "version": "OSCAR-2301",
+      "estado": "no_utilizable_sin_acceso_autorizado",
+      "nota": "Solo se usa si el usuario consigue acceso legitimo. No se aplican mecanismos para saltar el gating."
+    },
+    {
+      "nombre": "hplt_es",
+      "prioridad": 4,
+      "rol": "web",
+      "url": "https://huggingface.co/datasets/HPLT/HPLT2.0_cleaned",
+      "recurso": "config `es`",
+      "licencia": "a verificar antes de usar (no asumida)",
+      "acceso": "publico, sin gating (verificado el 2026-09-25)",
+      "tamano_comprimido_bytes": null,
+      "version": "HPLT 2.0 cleaned",
+      "estado": "candidata_requiere_evaluacion_previa",
+      "nota": "Solo se incorpora si aporta informacion marginal frente a Wikipedia y mC4."
+    },
+    {
+      "nombre": "cereal_es",
+      "prioridad": 4,
+      "rol": "web",
+      "url": "https://github.com/lang-uk/cereal",
+      "recurso": "distribucion web espanola",
+      "licencia": "a verificar",
+      "acceso": "no localizada en la auditoria inicial (404)",
+      "tamano_comprimido_bytes": null,
+      "version": "n/d",
+      "estado": "no_localizada",
+      "nota": "No es requisito para continuar (D-030)."
+    }
+  ],
+  "corpus_construidos": [],
+  "reglas": [
+    "Ningun corpus se usa para aprendizaje supervisado (D-030).",
+    "Ningun texto de toxic_test.csv entra en el corpus.",
+    "La adaptacion de dominio con textos de TOXIC es in-fold y secundaria (spec 27).",
+    "Toda expansion exige RATIONALE_FOR_CORPUS_EXPANSION previo (spec 30)."
+  ],
+  "entorno": {
+    "nucleos": 32,
+    "ram_disponible_gb": 18.0,
+    "disco_libre_gb": 450.2,
+    "fasttext_sha256": "0307cde9a9e9dc02f2b688e4645ffbb38b8be2f80c33530777d7abd8a031f167",
+    "fasttext_commit": "1142dc4c4ecbc19cc16eee5cdd28472e689267e6"
+  }
+}
