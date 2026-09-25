@@ -618,3 +618,39 @@ evidencia, experimento, resultado, conclusion final.
   filas AUD-01..AUD-03 de `experiments.csv`.
 - **Resultado**: cumplimiento auditado de FASES 0-99 con observaciones acotadas;
   sin cambios en el modelo final (sigue V03, LB 0.78306).
+
+---
+
+## D-023 - Fase final de candidatos: metas restringidos, submissions experimentales y decision de no sondear
+
+- **Contexto**: la fase "FINAL CANDIDATE" pidio convertir la evidencia v2 en
+  candidatos concretos y submissions reproducibles (maximo 3), sin gastar sondas
+  por defecto y conservando V03 como referencia.
+- **Observacion**: (a) screening de 125 experimentos (A=5, B=9, C=3, D=18, E=67,
+  F=8, G=15); (b) OOF canonico de V03 reconstruido y verificado
+  (`features/oof_v03_final.npz`, corrected_cv 0.777211); (c) metas restringidos
+  evaluados con protocolo anidado: C-EMO 0.7809 (+0.0037, 3/5), C-EMO-SYN 0.7797
+  (+0.0025, 3/5), C-SYN 0.7793 (+0.0021, 3/5), C-EMO-SYN-TGT-CYT 0.7777 (+0.0005,
+  2/5); (d) holdout: C-EMO 0.8364 (+0.0081, IC95 [-0.0075, +0.0228]) y C-EMO-SYN
+  0.8336 (+0.0052, IC95 [-0.0115, +0.0222]) - ambos IC cruzan 0; (e) el unico
+  candidato PROMISING sigue siendo el meta v08 (0.7874), ya no transferido al LB
+  (D-020).
+- **Hipotesis**: una fusion restringida (V03 + emocion/sintaxis) reduce la varianza
+  del meta de 44 features y podria transferir mejor.
+- **Experimento**: `experiments/23_candidatos_finales.py` (evaluacion) y
+  `experiments/25_submissions_candidatos.py` (refit y submissions v09/v10/v11).
+- **Resultado**: ningun candidato nuevo cumple el criterio PROMISING (delta
+  >= +0.005 o IC del holdout > 0); las tres submissions se generan como artefactos
+  experimentales validados y reproducibles (hashes estables en re-ejecucion).
+- **Decision**: mantener **V03 como referencia y submission principal**; no
+  recomendar sonda de leaderboard; conservar los candidatos documentados. Si se
+  decidiera sondear por decision explicita, el mejor justificado es C-EMO.
+- **Razon**: los deltas locales son del orden del error estandar del test
+  (n=1154, EE ~0.013) y los IC del holdout cruzan 0; el presupuesto D-016 deja 2
+  sondas y no hay evidencia que las justifique.
+- **Evidencia**: `reports/final_candidate_screening.md`,
+  `reports/final_candidate_comparison.md`, `reports/final_candidates.csv`,
+  `reports/canal_ranking_final.csv`, `reports/submission_validation_v2.md`,
+  `reports/submission_hashes_v2.json`, `submissions/submission_manifest.csv`,
+  `submissions/toxic_submission_v09..v11*.csv`, filas FIN-01..FIN-10 de
+  `experiments.csv`; holdout 4/5.

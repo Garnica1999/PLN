@@ -1,6 +1,6 @@
 # PROJECT_STATE - KAGGLE_TOXIC_2026_PUJ
 
-Ultima actualizacion: 2026-09-22 (Fases 0, 1 y 2 completadas).
+Ultima actualizacion: 2026-09-25 (fase v2 cerrada + fase final de candidatos).
 
 ## Fase actual
 
@@ -31,6 +31,26 @@ Entregables (actualizados y verificados el 2026-09-25):
   `reports/rule_audit_v2.md` (0 violaciones) y
   `reports/target_encoding_audit_v2.md` (sin leakage de aprendizaje).
 
+## Fase final de candidatos y submissions (2026-09-25)
+
+- CURRENT BEST LOCAL (corrected_cv): **0.7874** (meta de dependencia,
+  META-BASES-RIDGE; reproducido en `experiments/23_candidatos_finales.py`).
+- CURRENT BEST CORRECTED CV nuevo: **C-EMO 0.7809** (+0.0037 vs V03, 3/5 pliegues).
+- CURRENT BEST HOLDOUT: **0.8465** (meta v08, P7-02, no transferido al LB).
+  Entre los candidatos nuevos: C-EMO 0.8364 (IC95 del delta [-0.0075, +0.0228]).
+- CURRENT BEST SUBMISSION: **V03** (`submissions/toxic_submission_v03_lr_union_thr.csv`,
+  LB **0.78306**, hash congelado `7d7478f2...`).
+- CANDIDATE FILES: `submissions/toxic_submission_v09_candidate_a.csv` (C-EMO),
+  `v10_candidate_b.csv` (C-SYN), `v11_candidate_c.csv` (C-EMO-SYN); manifest en
+  `submissions/submission_manifest.csv`; validacion `reports/submission_validation_v2.md`;
+  hashes `reports/submission_hashes_v2.json` (reproducibilidad verificada).
+- DECISION (spec 39): **ningun candidato tiene evidencia suficiente para una sonda
+  de leaderboard; V03 sigue siendo la referencia** (holdout 4/5; deltas locales
+  < +0.005 con IC que cruza 0).
+- NEXT ACTION: (1) push de la rama `proyecto-kaggle-toxic-2026-v2`; (2) decision
+  de Carlos sobre sondas opcionales (presupuesto D-016: 2 restantes; el mejor
+  justificado seria C-EMO); (3) entrega del curso (deadline 2026-10-19).
+
 ## Entregables finales
 
 | Entregable | Ruta | Estado |
@@ -41,8 +61,8 @@ Entregables (actualizados y verificados el 2026-09-25):
 | Auditoria de rendimiento | informe de `ml-performance-auditor` | P1-P3 documentadas |
 | Modelo final | `models/mod03b_lr_union.joblib` | reconstruye v03 exacto |
 | Submission de respaldo | `submissions/toxic_submission_v03_lr_union_thr.csv` | LB 0.78306 |
-| Memoria | `PROJECT_STATE.md`, `RUNLOG.md`, `DECISIONS.md` (D-001..D-015), `experiments.csv` (51 filas) | al dia |
-| Evidencia | 13 scripts, 26 figuras, 53 tablas CSV, 9 submissions | en disco |
+| Memoria | `PROJECT_STATE.md`, `RUNLOG.md`, `DECISIONS.md` (D-001..D-023), `experiments.csv` (128 filas) | al dia |
+| Evidencia | 26 scripts, 32 figuras, 67 tablas CSV, 12 submissions | en disco |
 
 ## Fases 6-8 (features densas) - resultado negativo documentado
 

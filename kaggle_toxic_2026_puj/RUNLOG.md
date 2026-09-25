@@ -400,6 +400,26 @@ Registro cronologico de ejecuciones. Formato:
 - 11:20 | Pendiente | `FINAL_REPORT.md` aun no incluye la fase v2 (se anadira
   antes de la entrega si Carlos lo pide).
 
+## 2026-09-25 (fase final de candidatos: screening, metas restringidos y submissions)
+
+- 13:10 | Screening y evaluacion | `experiments/23_candidatos_finales.py`: OOF
+  canonico de V03 (`features/oof_v03_final.npz`, corrected_cv 0.777211 verificado)
+  y evaluacion anidada de metas restringidos: C-EMO 0.7809, C-EMO-SYN 0.7797,
+  C-SYN 0.7793, C-EMO-SYN-TGT-CYT 0.7777 (2-3/5 pliegues); el unico PROMISING
+  sigue siendo el meta v08 (0.7874, no transferido). Holdout: C-EMO 0.8364 y
+  C-EMO-SYN 0.8336 (IC95 del delta cruza 0); 4/5 evaluaciones usadas.
+- 13:25 | Informes | `reports/final_candidate_screening.md` (125 experimentos
+  clasificados A-G: A=5, B=9, C=3, D=18, E=67, F=8, G=15),
+  `reports/final_candidates.csv` (FIN-01..07) y
+  `reports/final_candidate_comparison.md`.
+- 13:29 | Submissions | `experiments/25_submissions_candidatos.py`: generadas y
+  validadas `submissions/toxic_submission_v09_candidate_a.csv` (C-EMO),
+  `v10_candidate_b.csv` (C-SYN) y `v11_candidate_c.csv` (C-EMO-SYN); hashes
+  estables en re-ejecucion; `reports/submission_validation_v2.md`,
+  `reports/submission_hashes_v2.json` y `submissions/submission_manifest.csv`
+  (5 filas: V03, v08 y los 3 candidatos). Decision (D-023): sin evidencia
+  suficiente para sonda; V03 sigue como referencia.
+
 ## 2026-09-25 (cierre documental: spec v2 archivada, artefactos FASES 88/98 y auditorias)
 
 - 13:30 | Especificacion | Archivada la spec maestra de la fase v2 en

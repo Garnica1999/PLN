@@ -1,0 +1,36 @@
+{
+  "fecha": "2026-09-25",
+  "script": "experiments/25_submissions_candidatos.py",
+  "hashes": {
+    "C-EMO": "8e5a95d3bd6a3e4e59de64f31739cf721a4237136ad92d3b09666e9d442d4927",
+    "C-SYN": "92caa41e379f10184c71a3d24775ca10d054297afb4a22f2c84933ec8f43d288",
+    "C-EMO-SYN": "066d46ca12e95fde01340300a0854768f2de83b65539dca82da1e60be2858a8d"
+  },
+  "hashes_congelados": {
+    "v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "v08": "b59852f6e71527d9d551156b2d974ac0232359bf3aef3360b5df84e123aa94b2",
+    "plantilla_v00": "0dfb4d07dffc31d3d452f5e53508d259e6ab5c2ec0dcd67bd70e4b03c5016ecc"
+  },
+  "tolerancia_meta": 0.5,
+  "reproducibilidad": {
+    "ejecucion_previa_detectada": true,
+    "hashes_identicos": true,
+    "detalle": {
+      "C-EMO": {
+        "sha256_actual": "8e5a95d3bd6a3e4e59de64f31739cf721a4237136ad92d3b09666e9d442d4927",
+        "sha256_previo": "8e5a95d3bd6a3e4e59de64f31739cf721a4237136ad92d3b09666e9d442d4927",
+        "identico": true
+      },
+      "C-SYN": {
+        "sha256_actual": "92caa41e379f10184c71a3d24775ca10d054297afb4a22f2c84933ec8f43d288",
+        "sha256_previo": "92caa41e379f10184c71a3d24775ca10d054297afb4a22f2c84933ec8f43d288",
+        "identico": true
+      },
+      "C-EMO-SYN": {
+        "sha256_actual": "066d46ca12e95fde01340300a0854768f2de83b65539dca82da1e60be2858a8d",
+        "sha256_previo": "066d46ca12e95fde01340300a0854768f2de83b65539dca82da1e60be2858a8d",
+        "identico": true
+      }
+    }
+  }
+}
