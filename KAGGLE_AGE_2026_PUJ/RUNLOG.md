@@ -413,3 +413,17 @@ tweets cortos distintos al mismo texto: los conflictos pasaron de **643 a 12.989
 resultado salió −0,0042. Se detectó el artefacto, se corrigió la definición al criterio del audit
 (minúsculas + espacios) y se repitió. **La elección de la normalización cambia el diagnóstico del
 ruido** — queda registrado como lección.
+
+## 2026-09-25 — Sesión 13 (entrega: notebook final, commit, PR y merge)
+
+| # | Acción | Artefacto | Resultado |
+|---|---|---|---|
+| 91 | Notebook consolidado regenerado con las 12 fases | `scripts/fase12_notebook_final.py` → `notebooks/99_entrega_consolidado.ipynb` | 27 celdas, **0 errores**; incluye aserciones que verifican cada cifra contra los artefactos |
+| 92 | Informe final regenerado | `FINAL_REPORT.md` | 252 líneas con las fases nuevas y las 15 líneas cerradas |
+| 93 | Auditorías re-ejecutadas | `reports/auditorias.md` | **APROBADO** (leakage, reproducibilidad, submission, trazabilidad) |
+| 94 | Commit y PR | rama `kaggle-age-2026-puj`, commit `3a518ac` | 255 archivos, 2,01 M líneas |
+| 95 | Merge a `main` | PR **#26** fusionado (merge `27238e7`) | datos/features/modelos excluidos por `.gitignore` |
+
+### Seguridad
+El token de GitHub compartido en el chat **debe revocarse** tras esta sesión; no quedó escrito en
+ningún archivo del repositorio (verificado con `grep`).

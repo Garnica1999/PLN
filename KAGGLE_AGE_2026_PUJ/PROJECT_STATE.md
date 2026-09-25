@@ -3,6 +3,18 @@
 > Memoria persistente del proyecto. Leer SIEMPRE al inicio de sesión o tras compactación.
 > Última actualización: 2026-09-22 (cierre del gate A — Etapa A completa).
 
+## Entrega del trabajo (2026-09-25)
+- **Commit y merge a `main`**: PR **#26** (`kaggle-age-2026-puj`) fusionado. Commit `3a518ac`,
+  merge `27238e7`. 255 archivos versionados; datos, features y modelos quedan fuera de git por
+  `.gitignore`.
+- **Notebook consolidado regenerado** (`99_entrega_consolidado.ipynb`): narra las 12 fases con
+  **aserciones de verificación** contra los artefactos, de modo que las cifras no pueden
+  desincronizarse de lo ejecutado (0 errores al ejecutar).
+- **Informe final** regenerado (252 líneas) y auditorías **APROBADAS** en las cuatro dimensiones.
+- **INCIDENCIA DE SEGURIDAD**: el token de GitHub se compartió en el chat; debe **revocarse y
+  regenerarse** en https://github.com/settings/tokens (no quedó escrito en ningún archivo del repo,
+  verificado con `grep`).
+
 ## Fase actual
 - **FASE AVANZADA (segunda generación)** ejecutada (2026-09-24): gap analysis, features nuevas,
   holdout congelado y candidato `AGE_ADVANCED_V01` listo para envío (v09).
