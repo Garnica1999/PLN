@@ -1,0 +1,48 @@
+{
+  "fecha": "2026-09-25",
+  "gate": "Δ ≥ +0,003 y ≥4/5 folds positivos",
+  "n_capas": 33,
+  "n_adoptadas": 0,
+  "mejor": {
+    "capa": "G desempate E[Y] (tau 0.05)",
+    "macro_f1": 0.6015,
+    "delta": 0.0011,
+    "folds_positivos": "4",
+    "neto": "-117"
+  },
+  "diagnostico_error_residual": {
+    "filas": 169336,
+    "errores_totales": 67616,
+    "techo_de_informacion_sin_miembro_correcto": 23485,
+    "pct_del_error": 34.7,
+    "errores_rescatables": 45213,
+    "pct_del_error_rescatable": 66.9,
+    "frontera_18_24_25_34_cruces": 10122,
+    "frontera_25_34_35_49_cruces": 7252,
+    "frontera_18_24_25_34_errores_en_el_par": 28721,
+    "frontera_25_34_35_49_errores_en_el_par": 28438,
+    "segmento_solo_url_error_pct": 59.89,
+    "segmento_muy_corto_error_pct": 50.8,
+    "segmento_sin_menciones_error_pct": 51.04,
+    "familias_que_rescatan_pct": {
+      "ordinal": 19.96,
+      "prototipos": 19.87,
+      "denso": 19.27,
+      "bayes": 16.07,
+      "prob_lineal": 15.32,
+      "svm_lineal": 14.5,
+      "nbsvm": 14.05
+    },
+    "error_ordinal_base": {
+      "0": 60.073,
+      "1": 23.836,
+      "2": 9.562,
+      "3": 4.086,
+      "4": 1.907,
+      "5": 0.535
+    }
+  },
+  "base_oof_macro_f1": 0.6005,
+  "leaderboard_actual": 0.62188,
+  "nota_d034": "el artefacto v12 reproducible puntuó 0,62188 en Kaggle (≥ 0,62182 del archivo subido): D-034 queda cerrado funcionalmente."
+}

@@ -16,20 +16,26 @@
   verificado con `grep`).
 
 ## Fase actual
-- **BÚSQUEDA DE SEÑAL RESIDUAL (fases A-J) CONCLUIDA el 2026-09-25. LÍNEA SATURADA (D-033, D-035).**
-  El modelo final **no cambia**: v12 (CV 0,6004 · holdout 0,6077 · leaderboard 0,62182). **No se envió
-  nada a Kaggle.**
-- **Resultado**: 14 variantes evaluadas; ninguna cumple Δ ≥ +0,003 con ≥4/5 folds en CV. Única señal
-  positiva: la **vista estructural** (secuencia de tipos de token, sin contenido) con rescate del
-  18,17% de los errores del v12, **CV +0,0018 (4/5 folds)** y **holdout congelado +0,0031** (0,6108
-  frente a 0,6077). No adoptada por el gate pre-registrado; archivo candidato local disponible.
-- **Hallazgo de integridad (D-034)**: la submission v12 subida no se reconstruye al 100% (93,88%);
-  descartadas desalineación de matrices (fresca vs caché = 100,0000%), inestabilidad del ajuste
-  (100,0000%) y no reproducibilidad del holdout (0,6077 exacto). Es trazabilidad del artefacto, no
-  metodología; el candidato se regeneró con la matriz fresca verificada.
-- **Artefactos de la fase**: `reports/fase_residual_informe.md`, `experiments/phase1[2-9]*.json`,
-  `experiments/phase2[0-6]*.json`, `features/oof_ensemble_v12.npy`,
-  `features/meta_features_test_v12_fresca.npy`, `features/vista_*_margenes.npy`.
+- **FASE DE CAPA DE DECISIÓN ORDINAL (2026-09-25) CERRADA — línea cerrada (D-037).** 33 capas de
+  decisión ajustadas con corrected CV sobre las probabilidades OOF congeladas de V12 (decodificación
+  acumulativa, proyección ordinal, coste ordinal, desempate por edad esperada, corrección residual de
+  fronteras, decodificación por matriz de transición, calibración por banda de confianza,
+  combinación Luce de márgenes adyacentes y corrector mínimo): **ninguna alcanza el gate**
+  (Δ ≥ +0,003 con ≥4/5 folds). La mejor (`G desempate E[Y]`, tau 0,05) da **+0,0011 con 4/5 folds**
+  y **neto de rescate −117**.
+- **Modelo final: V12 congelado.** Leaderboard de referencia **0,62188** (artefacto
+  `age_submission_v12_reproducible.csv`; el archivo histórico obtuvo 0,62182). **D-034 cerrada
+  funcionalmente** (D-036): la discrepancia de reconstrucción no afecta el desempeño. **No se generó
+  ni se envió ninguna submission nueva.**
+- **Diagnóstico del error residual**: techo de información 13,87% de filas (35% del error, ningún
+  miembro acierta) + 65% de agregación (26,70% de filas rescatables) que ninguna regla de decisión
+  convierte en aciertos. Fronteras centrales: 10.122 y 7.252 errores.
+- **Conclusión**: bajo las restricciones de AGE, la representación contiene la información disponible
+  y el límite está en la observabilidad de la edad, no en la regla de decisión.
+- **Entregables**: `reports/age_residual_decision_research.md`, `reports/age_residual_audit.md`,
+  `reports/age_boundary_models.csv`, `reports/age_probability_correction.csv`,
+  `reports/age_residual_candidates.csv`, `reports/age_boundary_confusion_matrices/`,
+  `reports/age_hypothesis_coverage.md`.
 
 ## Estado según el formato del brief §83
 - **CURRENT BEST CV**: **0,6005** (LOFO) — candidato v12 (promedio MLP+LogReg sobre 279 features).

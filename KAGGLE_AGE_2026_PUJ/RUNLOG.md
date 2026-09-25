@@ -549,3 +549,27 @@ comparaciones de la fase son pareadas en el mismo proceso y quedan válidas.
 - **Nada enviado a Kaggle** en esta fase; el candidato marginal y el v12 reproducible quedan en
   `submissions/` con nombres explícitos.
 - Pendiente: push/PR/merge a `main` con un token nuevo (el anterior quedó expuesto y debe estar revocado).
+
+## 2026-09-25 — Sesión 21 (capa de decisión ordinal: fases 30-35)
+
+| # | Acción | Artefacto | Resultado |
+|---|---|---|---|
+| 124 | Matriz de cobertura de hipótesis | `scripts/phase30_cobertura_hipotesis.py` | 9 líneas abiertas, 27 variantes previas confirmadas cerradas |
+| 125 | Decodificación/proyección/coste/desempate (A, E, G, F) | `scripts/phase31_decision_ordinal.py` | 14 capas; mejor G (tau 0,05) **+0,0011 (4/5)**; ninguna adopta |
+| 126 | Corrección suave, transición, confianza, Luce (C, D, H, B) | `scripts/phase32_correccion_probabilistica.py` | 14 capas; mejor H 5 bandas +0,0002; C4 **neto 0** |
+| 127 | Corrector mínimo (I) | `scripts/phase33_corrector_minimo.py` | 5 capas; todas <= 0 |
+| 128 | Informe y artefactos consolidados | `scripts/phase34_informe_capa_decision.py` | 33 capas, 0 adoptadas; 6 entregables en `reports/age_*` |
+| 129 | Cierre documental | `scripts/phase35_cierre_documentacion.py` | D-036 (D-034 cerrada) y D-037 (línea de decisión cerrada) |
+
+### Bugs corregidos en la sesión
+- `decision_layer`: convención de supervivencia frente a CDF (decodificación A degenerada a 0,026 ->
+  0,5887 tras corregir), indexado global/local en tres capas, `np.ix_` que sobrescribía las seis
+  columnas, y `del` sobre variables capturadas.
+- `phase31`: el LogReg de umbrales no convergía sin estandarizar (se añadió `StandardScaler`).
+
+### Resultado
+Ninguna de las **33 capas de decisión** alcanza el gate (Δ ≥ +0,003 con ≥4/5 folds). La mejor,
+`G desempate E[Y] (tau 0,05)`, da +0,0011 con 4/5 folds y **neto de rescate −117**: el argmax de V12 ya
+es la mejor decisión de su distribución de probabilidades. El error restante se reparte en un techo
+de información (35% del error: ninguna fuente acierta) y un 65% de agregación que ninguna regla de
+decisión convierte en aciertos. V12 permanece congelado; sin submission nueva.

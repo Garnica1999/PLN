@@ -345,3 +345,60 @@ El artefacto `submissions/age_submission_v12_reproducible.csv` deja una versión
 - **Documentación**: `DECISIONS.md` (D-028…D-035), `RUNLOG.md` (sesiones 14-19), `experiments.csv`
   (61 experimentos), `reports/fase_residual_informe.md`, `reports/auditorias.md` (APROBADO) y
   `notebooks/99_entrega_consolidado.ipynb` (Parte I + Parte II).
+
+---
+
+# Parte III — Capa de decisión ordinal y corrección de fronteras (2026-09-25)
+
+**Pregunta**: ¿existe una forma distinta de convertir las señales ya disponibles en una decisión
+ordinal de seis clases que reduzca el error en las fronteras `18-24|25-34` y `25-34|35-49`?
+**Gate pre-registrado**: Δ ≥ +0,003 con ≥4/5 folds. **Holdout agotado** (no se reutiliza).
+
+## 21. Cobertura: qué estaba ya hecho
+
+Los modelos ordinales (E-015, E-021a) y los márgenes adyacentes (E-028a) **ya existen como miembros**
+del ensamble, y el routing duro está cerrado. Lo que nunca existía era una **capa de decisión** sobre
+probabilidades congeladas: nueve líneas genuinamente abiertas (`reports/age_hypothesis_coverage.md`).
+
+## 22. Resultado: 33 capas, ninguna adopta
+
+| Hipótesis | Capas | Δ máximo | Veredicto |
+|---|---|---|---|
+| A umbrales acumulados | 2 | −0,0031 | el modelo de umbrales solo da 0,5887; la evidencia de fronteras ya está en el meta |
+| B combinación Luce de márgenes | 3 | −0,0034 | los márgenes de E-028a no forman una escala de Bradley-Terry válida (0,2947) |
+| C corrección residual de fronteras | 4 | −0,0000 | en su forma más suave, **neto 0**: el contexto no aporta más de lo ya usado |
+| D decodificación por transición | 5 | −0,0004 | empeora monótonamente al aumentar λ |
+| E proyección ordinal | 6 | −0,0033 | desplazar masa del top-1 siempre destruye más de lo que arregla |
+| F coste ordinal | 3 | +0,0004 | solo preserva la decisión con perfiles de coste casi planos |
+| G desempate por E[Y] | 3 | **+0,0011** | mejora el MAE ordinal (0,6552 → 0,6454) pero **empeora las fronteras centrales** |
+| H calibración por banda | 2 | +0,0002 | inerte: una transformación por fila no cambia el argmax |
+| I corrector mínimo | 5 | −0,0005 | reescribe aciertos a cambio de fallos nuevos |
+
+## 23. Tres hallazgos defendibles
+
+1. **El argmax de V12 ya es la mejor decisión** de su distribución de probabilidades: toda
+   redistribución (proyección, calibración por banda, decodificación por confusión) degrada de forma
+   monótona.
+2. **Minimizar el error ordinal no es mejorar macro-F1**: el desempate por edad esperada mejora el MAE
+   ordinal y las fronteras extremos, pero empeora `18-24|25-34` (+462 errores) y `25-34|35-49` (+534).
+3. **La evidencia de fronteras ya está dentro del meta-modelo**: un modelo de umbrales acumulados
+   ajustado sobre las features del meta alcanza 0,5887 por sí solo y su fusión con V12 no aporta.
+
+## 24. Dónde vive el error residual
+
+- **Techo de información**: 23,485 filas
+  (34.7% del error) donde **ningún miembro acierta**.
+- **Agregación**: 45,213 filas
+  (66.9% del error) donde algún miembro acierta y el ensamble no;
+  ninguna regla de decisión sobre las probabilidades convierte ese saber en aciertos.
+- **Fronteras centrales**: 10,122 cruces de frontera en
+  `18-24|25-34` (sobre 28,721 errores en las filas de
+  la pareja) y 7,252 en `25-34|35-49`
+  (28,438).
+
+## 25. Conclusión
+
+Bajo las restricciones de AGE, **la representación contiene la información disponible y el límite
+está en la observabilidad de la edad, no en la regla de decisión**. V12 permanece congelado, no se
+genera submission y la línea de decisión queda cerrada con 33 capas medidas (D-037). El leaderboard
+de referencia es **0,62188** (artefacto reproducible; D-036 cierra la discrepancia de reconstrucción).

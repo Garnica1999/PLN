@@ -745,3 +745,51 @@ Tras declarar la saturación se probó la vía indicada como trabajo futuro:
   queda disponible para decisión de Carlos, con la comparación hecha contra la v12 re-ajustada en el
   mismo proceso (cambia 10,47% de las filas). **No se envía nada a Kaggle.**
 - **Evidence**: `reports/fase_residual_informe.md`, `experiments/phase20_resumen.json`.
+
+---
+
+## D-036 — D-034 queda cerrada funcionalmente: el v12 reproducible puntúa 0,62188
+- **Observation**: el artefacto `age_submission_v12_reproducible.csv`, que solo coincide en el 93,88%
+  de las filas con el archivo enviado, se subió a Kaggle y obtuvo **0,62188**, ligeramente **por
+  encima** del 0,62182 del archivo histórico.
+- **Decision**: cerrar D-034. La discrepancia de reconstrucción existe pero **no tiene impacto en el
+  desempeño**: los dos artefactos son equivalentes a efectos de leaderboard. Ambos se conservan
+  intactos como artefactos distintos (el enviado 0,62182 y el reproducible 0,62188, ahora el mejor
+  registro del proyecto).
+- **Consequences**: el leaderboard de referencia del proyecto pasa a **0,62188**. V12 sigue congelado.
+
+---
+
+## D-037 — La capa de decisión ordinal no mejora a V12: cierre de las nueve hipótesis (A-I)
+- **Observation**: quedaba abierta la línea de **decisión** (no de representación): convertir las
+  señales ya disponibles en una decisión ordinal de seis clases. Los modelos ordinales (E-015, E-021a)
+  y los márgenes por pares (E-028a) ya existían como miembros, pero **nunca** se usó una capa de
+  decisión sobre probabilidades congeladas. La matriz de cobertura
+  (`reports/age_hypothesis_coverage.md`) dejó 9 líneas genuinamente abiertas.
+- **Experiment**: 33 capas ajustadas con **corrected CV** (LOFO sobre las OOF de V12; el holdout está
+  agotado y no se reutiliza), agrupadas en: A umbrales acumulados (2), B combinación Luce de márgenes
+  adyacentes (3), C corrección residual de fronteras (4), D decodificación por matriz de transición
+  (5), E proyección ordinal (6), F coste ordinal (3), G desempate por edad esperada (3),
+  H calibración por banda de confianza (2), I corrector mínimo (5).
+- **Result**: **ninguna alcanza el gate** (Δ ≥ +0,003 con ≥4/5 folds). La mejor es
+  **G desempate por edad esperada (tau=0,05): 0,6015 (+0,0011, 4/5 folds)** con rescate 2.705 y daño
+  2.822 (**neto −117**). En todas las capas el rescate es igual o menor que el daño; la corrección
+  residual más suave (C4) llega a **neto exactamente 0** con 1.397 filas modificadas.
+- **Decision**: **cerrar las nueve líneas**. V12 permanece congelado; no se genera submission.
+- **Reason**: tres hallazgos. (1) **El argmax de V12 ya es la mejor decisión** de esa distribución de
+  probabilidades: cualquier redistribución (proyección, calibración por banda, decodificación por
+  confusión) degrada de forma monótona. (2) **Minimizar el error ordinal no es mejorar macro-F1**:
+  el desempate por E[Y] mejora el MAE ordinal (0,6552 -> 0,6454) y las fronteras extremos, pero
+  empeora las dos fronteras centrales (+462 y +534 errores). (3) **La evidencia de fronteras ya está
+  dentro del meta-modelo**: un modelo de umbrales acumulados sobre las features del meta alcanza
+  0,5887 por sí solo y su fusión con V12 no aporta; los márgenes adyacentes de E-028a no forman una
+  escala de Bradley-Terry válida (0,2947 al decodificarlos).
+- **Consequences**: (1) la línea de decisión queda cerrada con 33 capas medidas; (2) el diagnóstico
+  (§36 del brief) queda establecido: el error restante se reparte en un **techo de información**
+  (13,87% de filas sin ningún miembro correcto, 35% del error) y un **65% de agregación** (26,70% de
+  filas rescatables) que ninguna regla de decisión sobre las probabilidades convierte en aciertos;
+  (3) cualquier trabajo futuro con reglas más laxas debe atacar la frontera, no la decisión.
+- **Evidence**: `experiments/phase31_decision_ordinal.json`,
+  `experiments/phase32_correccion_probabilistica.json`,
+  `experiments/phase33_corrector_minimo.json`, `reports/age_residual_decision_research.md`,
+  `reports/age_residual_audit.md`, `reports/age_boundary_models.csv`.
