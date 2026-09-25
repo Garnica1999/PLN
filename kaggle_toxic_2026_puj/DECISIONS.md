@@ -727,3 +727,54 @@ evidencia, experimento, resultado, conclusion final.
   `experiments/26_scaffold_v4.py` y `reports/baseline_v03_v4_check.json`
   (veredicto OK: 5/5 hashes, `corrected_cv` 0.777211 reproducida, 0 grupos
   compartidos entre desarrollo y holdout).
+
+## D-026 - P1 (TRACK A y B): el ruido de etiqueta por duplicacion es escaso y no explica el error; la dureza util es la distancia a la frontera
+
+- **Contexto**: primera linea de la fase v4 (P1). Objetivo: medir la
+  consistencia de etiquetas en clusters de texto repetido y construir un mapa de
+  dureza **out-of-fold** (spec §7-§13), antes de intentar reponderar ejemplos.
+- **Observacion**: (V4-A01) con cuatro criterios de agrupamiento (exacto,
+  normalizado, Jaccard 0.8, cosimilitud TF-IDF 0.85) hay **15 clusters con 2+
+  miembros** que cubren 84 tweets (4.85 %) y solo **2 son contradictorios**. No
+  hay duplicados exactos en train (los 5 exactos estaban en test). La
+  contradiccion afecta a HS 48 (2.77 %), TR 48 (2.77 %) y AG 50 (2.89 %)
+  tweets, y se concentra en **un solo cluster de 48 tweets** con el patron
+  "Cllate puta" (38 anotados 000 frente a 10 con 110/111). (V4-A02) la tasa de
+  error OOF de V03 es **menor** dentro de los clusters contradictorios
+  (HS 0.046 vs 0.218; TR 0.023 vs 0.113; AG 0.093 vs 0.190). (V4-B01) la
+  dificultad por etiqueta si ordena bien (`p_true` vs error: r = -0.795, -0.810,
+  -0.801) pero **agregar las tres etiquetas rompe el orden**: la BCE media
+  correlaciona -0.136 con el numero de errores, mientras la cercania a la
+  frontera correlaciona +0.345 y la violacion del umbral +0.811. (V4-B02) las
+  poblaciones quedan en 1.144 faciles, 296 "dificiles coherentes" (error medio
+  0.351 por etiqueta) y 43 "posible ruido" (error medio 0.054).
+- **Hipotesis**: (a) el ruido de anotacion es material y explica parte del
+  error; (b) la BCE OOF media es una buena medida de dureza para ponderar.
+  Ambas quedan **refutadas**.
+- **Metodo**: `experiments/27_label_consistency_v4.py` (4 criterios de
+  clustering, union-find, vecindario top-3 persistido) y
+  `experiments/28_hardness_v4.py` (dureza OOF, vecindad, desacuerdo de 20
+  canales OOF no redundantes, bootstrap pareado de 2.000 remuestreos).
+- **Resultado**: los numeros de las cuatro filas `V4-A01`, `V4-A02`, `V4-B01` y
+  `V4-B02` de `experiments.csv`; artefactos `reports/label_consistency_v4.csv`,
+  `reports/hardness_vs_noise_v4.md`, `features/hardness_v4.npz`.
+- **Interpretacion**: el error de V03 **no** es ruido de anotacion por
+  duplicacion, sino dificultad del modelo ante ejemplos coherentes. La ambiguedad
+  de anotacion existe (el cluster de insultos tiene 21 % de desacuerdo) pero el
+  modelo la resuelve bien porque sigue la anotacion mayoritaria. Ademas, la via
+  que la spec propone en §11 (ponderar por perdida OOF) es tecnicamente
+  defectuosa en este corpus: la BCE agregada no preserva el orden de dificultad
+  por compensacion entre etiquetas.
+- **Decision**: (1) V4-A01 y V4-A02 quedan cerradas con evidencia; (2) V4-B03
+  se reorienta a ponderar por **distancia a la frontera de decision** y por
+  `error_score`, nunca por BCE agregada; (3) V4-B05 (downweight/remove de
+  contradicciones) se mantiene con **expectativa baja** (actua sobre < 3 % de los
+  ejemplos) y se ejecuta solo como control negativo, no como candidata; (4) la
+  ambiguedad local del vecino mas cercano se conserva como variable de
+  analisis para V4-F03.
+- **Razon**: evita gastar las tres estrategias de la spec §8 en una via cuyo
+  techo de impacto ya esta cuantificado, y evita un reweighting mal definido.
+- **Evidencia**: `reports/label_consistency_v4.json`,
+  `reports/label_consistency_v4_ejemplos.md` (revision manual de los clusters),
+  `reports/hardness_v4.json`, `reports/hardness_v4.csv`,
+  `reports/figuras/fig_32_hardness_v4.png`.

@@ -510,3 +510,21 @@ Registro cronologico de ejecuciones. Formato:
   etiquetas, reweighting, hard example mining, feature weighting supervisado,
   BM25, modelos conjuntos, hate speech clasico, espanol) con restricciones
   duras sin preentrenamiento; salida `reports/estado_arte_v4.md` + `.csv`.
+- 11:20 | P1 TRACK A | `experiments/27_label_consistency_v4.py` (3.0 s): clusters de
+  consistencia con cuatro criterios (exacto, normalizado, Jaccard >= 0.8,
+  cosimilitud TF-IDF >= 0.85). Resultado: **0 duplicados exactos en train**,
+  15 clusters con 2+ miembros (84 tweets, 4.85 %), **2 clusters
+  contradictorios**; contradiccion por etiqueta HS 48 (2.77 %), TR 48, AG 50
+  (2.89 %), concentrada en un unico cluster de 48 tweets con el mismo patron de
+  insulto (38 anotados 000 frente a 10 con 110/111). 15 tweets de test tienen
+  texto normalizado identico a un tweet de train (conteo, sin usar etiquetas).
+  Artefactos: `reports/label_consistency_v4.csv/.json/_ejemplos.md` y
+  `features/label_consistency_v4.npz` (con vecindario top-3 reutilizado).
+- 11:35 | P1 TRACK B | `experiments/28_hardness_v4.py` (1.7 s): mapa de dureza
+  solo-OOF con vecindad, desacuerdo de 20 canales OOF no redundantes y bootstrap
+  pareado (2.000 remuestreos). Hallazgo metodologico: la dificultad por etiqueta
+  ordena bien (`p_true` vs error r = -0.795/-0.810/-0.801) pero **agregar las tres
+  etiquetas rompe el orden** (BCE media r = -0.136; cercania a la frontera
+  r = +0.345; violacion del umbral r = +0.811). Ademas el error es **menor**
+  dentro de los clusters contradictorios, luego el ruido de anotacion por
+  duplicacion no explica el error de V03. D-026 registrada; backlog actualizado.

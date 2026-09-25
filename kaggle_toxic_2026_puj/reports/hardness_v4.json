@@ -1,0 +1,105 @@
+{
+  "experiment_id": "V4-B01-B02",
+  "fecha": "2026-09-25T19:08:59+00:00",
+  "duracion_s": 0.2,
+  "n_dev": 1483,
+  "n_canales": 20,
+  "canales": [
+    "base:M1_word_lr",
+    "base:M2_union_lr_c2",
+    "base:M3_union_svc",
+    "base:M4_char_lr",
+    "synt:SYN-POS",
+    "synt:SYN-DEPS",
+    "synt:SYN-MORPH",
+    "synt:SYN-3",
+    "cita:CITA",
+    "cita:NEG",
+    "emoc:EMO-EST@C=2.0",
+    "emoc:EMO-LEX@C=1.0",
+    "emoc:EMO-ALL@C=1.0",
+    "emoc:NB-WORD-LR@C=1.0",
+    "emoc:NB-CHAR-LR@C=1.0",
+    "emoc:NB-UNION-LR@C=1.0",
+    "emoc:NB-UNION-SVC@C=1.0",
+    "emoc:ORT-A@C=1.0",
+    "emoc:ORT-ABCD@C=2.0",
+    "emoc:ORT-AE@C=2.0"
+  ],
+  "hardness_media": 0.7297699290754962,
+  "hardness_mediana": 0.7291611032182734,
+  "hardness_p90": 0.8910202907484815,
+  "corte_dureza": 0.8326726463284142,
+  "n_con_error": 441,
+  "porcentaje_con_error": 29.74,
+  "n_error_todas": 98,
+  "porcentaje_error_todas": 6.61,
+  "n_acerto_pos_bajo_conf": 0,
+  "n_cola_p_true_bajo_0_1": 34,
+  "porcentaje_bce_de_la_cola": 0.74,
+  "bce_mediana_por_num_errores": {
+    "0": 1.3408,
+    "1": 1.1625,
+    "2": 0.9974,
+    "3": 0.5768
+  },
+  "correlacion_p_true_por_etiqueta": {
+    "HS": -0.795,
+    "TR": -0.81,
+    "AG": -0.801
+  },
+  "correlacion_p_true_errores": -0.8405254834692822,
+  "correlacion_error_score_errores": 0.8107548045824196,
+  "correlacion_dureza_errores": -0.1359179059500335,
+  "correlacion_frontera_errores": 0.3448464829509489,
+  "metricas_v03_dev": {
+    "f1_media_columnas": 0.7772114525165721,
+    "f1_macro6": 0.8182213362740173,
+    "f1_micro": 0.773556685611726,
+    "f1_samples": 0.3343897505057316,
+    "exact_match": 0.7026298044504383,
+    "f1_por_etiqueta": {
+      "HS": 0.7616892911010558,
+      "TR": 0.8157303370786517,
+      "AG": 0.7542147293700089
+    }
+  },
+  "poblaciones": {
+    "Facil": 1144,
+    "Dificil coherente": 296,
+    "Posible ruido": 43
+  },
+  "bootstrap_cluster_contradictorio": {
+    "HS": {
+      "tasa_error_dentro": 0.0465,
+      "tasa_error_fuera": 0.2181,
+      "delta": -0.1715,
+      "ic95": [
+        0.0,
+        0.1163
+      ]
+    },
+    "TR": {
+      "tasa_error_dentro": 0.0233,
+      "tasa_error_fuera": 0.1132,
+      "delta": -0.0899,
+      "ic95": [
+        0.0,
+        0.0789
+      ]
+    },
+    "AG": {
+      "tasa_error_dentro": 0.093,
+      "tasa_error_fuera": 0.1896,
+      "delta": -0.0966,
+      "ic95": [
+        0.0222,
+        0.1905
+      ]
+    }
+  },
+  "n_cluster_contradictorio_dev": 43,
+  "media_model_disagreement_global": 0.24947179141380088,
+  "media_nn_disagreement_global": 0.4733648010788941,
+  "lectura": "El 43 de 1483 ejemplos de desarrollo (2.9 %) pertenece a un cluster de texto repetido con etiquetas contradictorias y se clasifican como posible ruido; 1144 ejemplos son faciles. En las tres etiquetas la tasa de error es **menor** dentro de los clusters contradictorios que fuera (deltas -0.172, -0.090, -0.097): el modelo clasifica bien los ejemplos ambiguos, probablemente porque la anotacion mayoritaria del cluster (000) es la que el lexicon del insulto aprende. En consecuencia, **el ruido de anotacion por duplicacion no es una componente material del error de V03** en este corpus. La via de reponderar o descontar ejemplos contradictorios tiene por tanto un techo de impacto pequeno sobre la F1 global: actua sobre menos del 3 % de los ejemplos. La via con recorrido real es la dificultad general (29.7 % de los ejemplos falla alguna etiqueta) y la ambiguedad local medida por el vecino mas cercano, que es dificultad del modelo y no ruido de anotacion."
+}

@@ -19,11 +19,11 @@ Leyenda: `[ ]` pendiente, `[~]` en curso, `[x]` hecho, `[!]` cerrado con evidenc
 
 ## P1 - TRACK A y B (diagnostico)
 
-- [ ] V4-A01 clusters de consistencia de etiquetas (exacto, normalizado, Jaccard, cosimilitud) -> `reports/label_consistency_v4.csv`
-- [ ] V4-A02 relacion contradiccion-error por etiqueta
-- [ ] V4-B01 `hardness_score` OOF por etiqueta y global
-- [ ] V4-B02 informe difficult-vs-noise (`reports/hardness_vs_noise_v4.md`)
-- [ ] Gate: cifras de contradicciones y de su asociacion con el error; sin tocar el test
+- [x] V4-A01 clusters de consistencia de etiquetas (exacto, normalizado, Jaccard, cosimilitud) -> `reports/label_consistency_v4.csv`
+- [x] V4-A02 relacion contradiccion-error por etiqueta
+- [x] V4-B01 `hardness_score` OOF por etiqueta y global
+- [x] V4-B02 informe difficult-vs-noise (`reports/hardness_vs_noise_v4.md`)
+- [x] Gate: cifras de contradicciones y de su asociacion con el error; sin tocar el test
 
 ## P2 - TRACK B (experimento) y TRACK C
 
