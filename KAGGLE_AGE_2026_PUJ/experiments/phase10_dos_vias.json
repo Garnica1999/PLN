@@ -1,0 +1,58 @@
+{
+  "base_v12_mlp": {
+    "macro_f1": 0.5976170460811187,
+    "std": 0.004603871265452875,
+    "per_fold": [
+      0.5981,
+      0.6008,
+      0.602,
+      0.5983,
+      0.5889
+    ]
+  },
+  "via_a_retrieval": {
+    "cobertura_pct": 0.0,
+    "exactos_pct": 1.36,
+    "acierto_exactos": 0.6151,
+    "como_features": {
+      "macro_f1": 0.5987,
+      "delta": 0.001,
+      "per_fold": [
+        0.6017,
+        0.6032,
+        0.6024,
+        0.5953,
+        0.5907
+      ]
+    },
+    "sobrescritura_dura": {
+      "macro_f1": 0.5967,
+      "delta": -0.0009
+    }
+  },
+  "via_b_pos": {
+    "n_features": 26,
+    "constantes": [],
+    "macro_f1": 0.5944,
+    "delta": -0.0032,
+    "per_fold": [
+      0.599,
+      0.5987,
+      0.5967,
+      0.5938,
+      0.5837
+    ]
+  },
+  "ambas": {
+    "macro_f1": 0.5963,
+    "delta": -0.0013,
+    "per_fold": [
+      0.5996,
+      0.5981,
+      0.5974,
+      0.597,
+      0.5896
+    ]
+  },
+  "segundos": 1131.2
+}

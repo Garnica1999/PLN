@@ -1,0 +1,31 @@
+{
+  "version": 4,
+  "modelo": "Ensamble extendido de 9 fuentes -> meta LogReg (StandardScaler)",
+  "cv_macro_f1_lofo": 0.5748,
+  "cv_macro_f1_std": 0.0048,
+  "referencia_v03": {
+    "cv": 0.5656,
+    "lb": 0.58081
+  },
+  "checks": {
+    "columns_ok": true,
+    "columns_match_sample": true,
+    "rows_ok": true,
+    "ids_equal_test": true,
+    "ids_unique": true,
+    "ids_same_order": true,
+    "no_nan": true,
+    "labels_valid": true
+  },
+  "distribucion_predicha": {
+    "13-17": 17554,
+    "18-24": 21820,
+    "25-34": 17306,
+    "35-49": 16981,
+    "50-64": 20463,
+    "65-xx": 18768
+  },
+  "segundos": 409.4,
+  "archivo": "/home/carlos/Git/PLN/KAGGLE_AGE_2026_PUJ/submissions/age_submission_v04.csv",
+  "recordatorio": "Subida manual. Con la brecha CV↔LB estable (≈ +0,015), el LB esperado ronda 0,59."
+}

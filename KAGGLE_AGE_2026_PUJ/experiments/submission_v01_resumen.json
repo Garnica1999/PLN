@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "modelo": "E-001 (TF-IDF word 1-2 + char_wb 3-5 + LinearSVC)",
+  "checks": {
+    "columns_ok": true,
+    "columns_match_sample": true,
+    "rows_ok": true,
+    "ids_equal_test": true,
+    "ids_unique": true,
+    "ids_same_order": true,
+    "no_nan": true,
+    "labels_valid": true
+  },
+  "distribucion_predicha": {
+    "13-17": 19245,
+    "18-24": 19404,
+    "25-34": 17921,
+    "35-49": 18042,
+    "50-64": 19639,
+    "65-xx": 18641
+  },
+  "distribucion_train": {
+    "13-17": 28863,
+    "18-24": 28676,
+    "25-34": 28347,
+    "35-49": 28230,
+    "50-64": 28060,
+    "65-xx": 27160
+  },
+  "segundos": 58.9,
+  "archivo": "/home/carlos/Git/PLN/KAGGLE_AGE_2026_PUJ/submissions/age_submission_v01.csv",
+  "recordatorio": "Subida manual. Al recibir el score público, comparar contra macro-F1=0,5344 y weighted-F1=0,5335 del CV agrupado para identificar la métrica oficial (D-002) y la brecha CV↔LB."
+}

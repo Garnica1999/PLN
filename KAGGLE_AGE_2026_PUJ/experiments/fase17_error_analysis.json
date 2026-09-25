@@ -1,0 +1,172 @@
+{
+  "oof_accuracy": 0.5658,
+  "oof_macro_f1": 0.5656,
+  "top_pares_confundidos": [
+    {
+      "real": "13-17",
+      "predicho": "18-24",
+      "casos": 6355,
+      "tasa_sobre_clase": 0.2202
+    },
+    {
+      "real": "25-34",
+      "predicho": "18-24",
+      "casos": 6119,
+      "tasa_sobre_clase": 0.2159
+    },
+    {
+      "real": "18-24",
+      "predicho": "13-17",
+      "casos": 5171,
+      "tasa_sobre_clase": 0.1803
+    },
+    {
+      "real": "18-24",
+      "predicho": "25-34",
+      "casos": 4381,
+      "tasa_sobre_clase": 0.1528
+    },
+    {
+      "real": "35-49",
+      "predicho": "25-34",
+      "casos": 4054,
+      "tasa_sobre_clase": 0.1436
+    },
+    {
+      "real": "35-49",
+      "predicho": "50-64",
+      "casos": 4011,
+      "tasa_sobre_clase": 0.1421
+    }
+  ],
+  "error_por_cortes": [
+    {
+      "bucket": "Q1 (más cortos)",
+      "n": 34651,
+      "error_rate": 0.5251,
+      "corte": "longitud"
+    },
+    {
+      "bucket": "Q2",
+      "n": 33708,
+      "error_rate": 0.4664,
+      "corte": "longitud"
+    },
+    {
+      "bucket": "Q3",
+      "n": 33448,
+      "error_rate": 0.4243,
+      "corte": "longitud"
+    },
+    {
+      "bucket": "Q4",
+      "n": 39721,
+      "error_rate": 0.38,
+      "corte": "longitud"
+    },
+    {
+      "bucket": "Q5 (más largos)",
+      "n": 27808,
+      "error_rate": 0.3716,
+      "corte": "longitud"
+    },
+    {
+      "bucket": 0,
+      "n": 107741,
+      "error_rate": 0.4622,
+      "corte": "retuit"
+    },
+    {
+      "bucket": 1,
+      "n": 61595,
+      "error_rate": 0.3854,
+      "corte": "retuit"
+    },
+    {
+      "bucket": 0,
+      "n": 100774,
+      "error_rate": 0.4346,
+      "corte": "urls"
+    },
+    {
+      "bucket": 1,
+      "n": 62993,
+      "error_rate": 0.441,
+      "corte": "urls"
+    },
+    {
+      "bucket": 2,
+      "n": 5498,
+      "error_rate": 0.3532,
+      "corte": "urls"
+    },
+    {
+      "bucket": 3,
+      "n": 64,
+      "error_rate": 0.2344,
+      "corte": "urls"
+    },
+    {
+      "bucket": 4,
+      "n": 6,
+      "error_rate": 0.1667,
+      "corte": "urls"
+    },
+    {
+      "bucket": 5,
+      "n": 1,
+      "error_rate": 0.0,
+      "corte": "urls"
+    },
+    {
+      "bucket": false,
+      "n": 161940,
+      "error_rate": 0.4415,
+      "corte": "near-duplicado"
+    },
+    {
+      "bucket": true,
+      "n": 7396,
+      "error_rate": 0.2749,
+      "corte": "near-duplicado"
+    }
+  ],
+  "confusion_adyacente_35_49_50_64": {
+    "13-17": {
+      "35-49": 0.0375,
+      "50-64": 0.0215
+    },
+    "18-24": {
+      "35-49": 0.0909,
+      "50-64": 0.0464
+    },
+    "25-34": {
+      "35-49": 0.1436,
+      "50-64": 0.0732
+    },
+    "35-49": {
+      "35-49": 0.4889,
+      "50-64": 0.0969
+    },
+    "50-64": {
+      "35-49": 0.1421,
+      "50-64": 0.6537
+    },
+    "65-xx": {
+      "35-49": 0.097,
+      "50-64": 0.1082
+    }
+  },
+  "f1_por_clase": {
+    "13-17": 0.6381,
+    "18-24": 0.4761,
+    "25-34": 0.4492,
+    "35-49": 0.5189,
+    "50-64": 0.6199,
+    "65-xx": 0.6911,
+    "accuracy": 0.5658,
+    "macro avg": 0.5656,
+    "weighted avg": 0.5647
+  },
+  "segundos": 164.4
+}

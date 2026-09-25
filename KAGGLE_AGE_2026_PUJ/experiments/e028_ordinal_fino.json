@@ -1,0 +1,90 @@
+{
+  "E-028a": {
+    "per_fold": [
+      {
+        "fold": 0,
+        "accuracy_promedio_en_fronteras": 0.7453484806685933,
+        "accuracy_por_frontera": {
+          "13-17|18-24": 0.7216,
+          "18-24|25-34": 0.6877,
+          "25-34|35-49": 0.7224,
+          "35-49|50-64": 0.777,
+          "50-64|65-xx": 0.818
+        }
+      },
+      {
+        "fold": 1,
+        "accuracy_promedio_en_fronteras": 0.7421567614273721,
+        "accuracy_por_frontera": {
+          "13-17|18-24": 0.7124,
+          "18-24|25-34": 0.6855,
+          "25-34|35-49": 0.7284,
+          "35-49|50-64": 0.7709,
+          "50-64|65-xx": 0.8136
+        }
+      },
+      {
+        "fold": 2,
+        "accuracy_promedio_en_fronteras": 0.746312601474681,
+        "accuracy_por_frontera": {
+          "13-17|18-24": 0.7237,
+          "18-24|25-34": 0.6856,
+          "25-34|35-49": 0.7227,
+          "35-49|50-64": 0.7811,
+          "50-64|65-xx": 0.8185
+        }
+      },
+      {
+        "fold": 3,
+        "accuracy_promedio_en_fronteras": 0.7421012831423154,
+        "accuracy_por_frontera": {
+          "13-17|18-24": 0.7163,
+          "18-24|25-34": 0.6875,
+          "25-34|35-49": 0.7243,
+          "35-49|50-64": 0.7699,
+          "50-64|65-xx": 0.8126
+        }
+      },
+      {
+        "fold": 4,
+        "accuracy_promedio_en_fronteras": 0.7380559235386481,
+        "accuracy_por_frontera": {
+          "13-17|18-24": 0.7153,
+          "18-24|25-34": 0.6856,
+          "25-34|35-49": 0.7112,
+          "35-49|50-64": 0.7683,
+          "50-64|65-xx": 0.8099
+        }
+      }
+    ],
+    "descripcion": "5 SVM de pares adyacentes (márgenes)",
+    "accuracy_fronteras_mean": 0.7427950100503219
+  },
+  "E-028b": {
+    "per_fold": [
+      {
+        "fold": 0,
+        "accuracy_grueso": 0.7139777961497579
+      },
+      {
+        "fold": 1,
+        "accuracy_grueso": 0.7164580134640368
+      },
+      {
+        "fold": 2,
+        "accuracy_grueso": 0.7149437505536362
+      },
+      {
+        "fold": 3,
+        "accuracy_grueso": 0.7121301600425205
+      },
+      {
+        "fold": 4,
+        "accuracy_grueso": 0.7065875335872679
+      }
+    ],
+    "descripcion": "clasificador grueso de 3 grupos (jóvenes/medios/mayores)",
+    "accuracy_grueso_mean": 0.7128194507594439
+  },
+  "segundos": 169.5
+}

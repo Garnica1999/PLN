@@ -1,0 +1,7 @@
+hito,cv_macro_f1,lb,brecha_lb_cv
+Baseline word+char (E-001),0.5344,0.55235,0.018
+char 3-6 + canal de menciones (E-008),0.5557,0.57018,0.0145
+Stacking de 4 modelos (Fase 20),0.5656,0.58081,0.0152
+Ensamble de 9 fuentes (Fase 20b),0.5748,0.59178,0.017
+Meta-modelo enriquecido (E-018),0.5784,0.59518,0.0168
+Ensamble de 10 fuentes con MLP (E-020),0.5851,0.60273,0.0176

@@ -1,0 +1,3 @@
+id,modelo,macro_f1,std,accuracy
+E-019a,MLP sobre 35 features densas,0.3381,0.004,0.3492
+E-019b,MLP sobre 35 densas + SVD(64) del espacio de caracteres,0.4071,0.006,0.4107

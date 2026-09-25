@@ -1,0 +1,34 @@
+{
+  "features_estructuradas": {
+    "n": 87,
+    "columnas_varianza_nula": []
+  },
+  "meta_logreg": {
+    "macro_f1": 0.5906,
+    "std": 0.0047,
+    "per_fold": [
+      0.5935,
+      0.5939,
+      0.5926,
+      0.5917,
+      0.5814
+    ]
+  },
+  "meta_mlp": {
+    "macro_f1": 0.5967,
+    "std": 0.004,
+    "per_fold": [
+      0.5993,
+      0.5998,
+      0.6006,
+      0.593,
+      0.5908
+    ]
+  },
+  "delta_mlp": 0.0061,
+  "referencia_previa": {
+    "logreg": 0.5906,
+    "mlp": 0.5966
+  },
+  "segundos": 935.9
+}

@@ -1,0 +1,87 @@
+{
+  "E-023a": {
+    "per_fold": [
+      {
+        "fold": 0,
+        "umbral_longitud": 93.0,
+        "macro_f1_global": 0.4857997218445584,
+        "macro_f1_en_su_subconjunto": 0.49583066304442475,
+        "accuracy_en_su_subconjunto": 0.497125748502994
+      },
+      {
+        "fold": 1,
+        "umbral_longitud": 93.0,
+        "macro_f1_global": 0.4825172022386661,
+        "macro_f1_en_su_subconjunto": 0.4954567311410518,
+        "accuracy_en_su_subconjunto": 0.49638309320260654
+      },
+      {
+        "fold": 2,
+        "umbral_longitud": 93.0,
+        "macro_f1_global": 0.48230798598444413,
+        "macro_f1_en_su_subconjunto": 0.49495908299012853,
+        "accuracy_en_su_subconjunto": 0.5010365456376237
+      },
+      {
+        "fold": 3,
+        "umbral_longitud": 93.0,
+        "macro_f1_global": 0.4803225576243834,
+        "macro_f1_en_su_subconjunto": 0.4884425466345031,
+        "accuracy_en_su_subconjunto": 0.49389704581638066
+      },
+      {
+        "fold": 4,
+        "umbral_longitud": 93.0,
+        "macro_f1_global": 0.477703309287006,
+        "macro_f1_en_su_subconjunto": 0.492107563237605,
+        "accuracy_en_su_subconjunto": 0.4932019236478062
+      }
+    ],
+    "descripcion": "SVM especialista en tweets cortos",
+    "macro_f1_global_mean": 0.48173015539581165,
+    "macro_f1_subconjunto_mean": 0.49335931740954264
+  },
+  "E-023b": {
+    "per_fold": [
+      {
+        "fold": 0,
+        "umbral_longitud": 93.0,
+        "macro_f1_global": 0.5002814685810476,
+        "macro_f1_en_su_subconjunto": 0.569647587684918,
+        "accuracy_en_su_subconjunto": 0.5994291705498602
+      },
+      {
+        "fold": 1,
+        "umbral_longitud": 93.0,
+        "macro_f1_global": 0.5020400398135779,
+        "macro_f1_en_su_subconjunto": 0.5713050756741928,
+        "accuracy_en_su_subconjunto": 0.6009567703167843
+      },
+      {
+        "fold": 2,
+        "umbral_longitud": 93.0,
+        "macro_f1_global": 0.5042708177913218,
+        "macro_f1_en_su_subconjunto": 0.5695000611266322,
+        "accuracy_en_su_subconjunto": 0.6005063589260481
+      },
+      {
+        "fold": 3,
+        "umbral_longitud": 93.0,
+        "macro_f1_global": 0.5016462293468295,
+        "macro_f1_en_su_subconjunto": 0.5700502158958688,
+        "accuracy_en_su_subconjunto": 0.5988643757023718
+      },
+      {
+        "fold": 4,
+        "umbral_longitud": 93.0,
+        "macro_f1_global": 0.4974801794115709,
+        "macro_f1_en_su_subconjunto": 0.56390209602825,
+        "accuracy_en_su_subconjunto": 0.5923989661654135
+      }
+    ],
+    "descripcion": "SVM especialista en tweets largos",
+    "macro_f1_global_mean": 0.5011437469888695,
+    "macro_f1_subconjunto_mean": 0.5688810072819723
+  },
+  "segundos": 167.6
+}

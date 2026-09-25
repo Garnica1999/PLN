@@ -1,0 +1,3 @@
+ensamble,macro_f1,std,delta
+"9 fuentes + densas (E-018, referencia)",0.5784,0.0044,
+9 fuentes + MLP densas+SVD + densas (E-020),0.5851,0.0042,0.0067

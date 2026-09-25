@@ -1,0 +1,302 @@
+% references.bib - KAGGLE_AGE_2026_PUJ (competencia tweet-age-2026-puj)
+% Estado del arte verificado el 2026-09-22 mediante Crossref API, arXiv API, ACL Anthology,
+% CEUR-WS, pan.webis.de, PLOS ONE, First Monday y paginas de autor.
+% Convencion de claves: autorAnio. El campo note indica el estado de verificacion y la
+% razon por la que el trabajo es (o no) aplicable bajo las reglas de la competencia
+% (D-001: prohibidos transformers/LLM y todo modelo de vectorizacion/embedding).
+
+% ---------------------------------------------------------------- Corriente A: author profiling / edad
+
+@inproceedings{schler2006,
+  author    = {Schler, Jonathan and Koppel, Moshe and Argamon, Shlomo and Pennebaker, James W.},
+  title     = {Effects of Age and Gender on Blogging},
+  booktitle = {Proceedings of the AAAI Spring Symposium on Computational Approaches to Analyzing Weblogs (SS-06-03)},
+  year      = {2006},
+  url       = {http://u.cs.biu.ac.il/~koppel/papers/springsymp-blogs-07.10.05-final.pdf},
+  note      = {PDF alojado por los autores (verificado via pan.webis.de). Usa el esquema de 6 rangos de edad identico al de esta competencia. Cifras del corpus NO verificadas en la fuente primaria}
+}
+
+@article{argamon2007,
+  author  = {Argamon, Shlomo and Koppel, Moshe and Pennebaker, James W. and Schler, Jonathan},
+  title   = {Mining the Blogosphere: Age, gender and the varieties of self-expression},
+  journal = {First Monday},
+  volume  = {12},
+  number  = {9},
+  year    = {2007},
+  doi     = {10.5210/fm.v12i9.2003},
+  url     = {https://firstmonday.org/ojs/index.php/fm/article/view/2003},
+  note    = {DOI y pagina verificados. Aplica a features de estilo; corpus ingles de blogs}
+}
+
+@inproceedings{mukherjee2010,
+  author    = {Mukherjee, Arjun and Liu, Bing},
+  title     = {Improving Gender Classification of Blog Authors},
+  booktitle = {Proceedings of the 2010 Conference on Empirical Methods in Natural Language Processing (EMNLP)},
+  pages     = {207--217},
+  year      = {2010},
+  url       = {https://aclanthology.org/D10-1021/},
+  note      = {Entrada BibTeX de ACL Anthology verificada. Aporta la normalizacion weighted log-count ratio}
+}
+
+@techreport{rosenthal2011,
+  author      = {Rosenthal, Sara and McKeown, Kathleen},
+  title       = {Age Prediction in Blogs: A Study of Online Social Networks, Style and Personality},
+  institution = {Columbia University},
+  year        = {2011},
+  note        = {NO VERIFICADO: no se localizo DOI ni URL confirmada en Crossref, ACL Anthology ni busqueda web; la existencia y el numero de informe son plausibles pero NO estan comprobados. No citar en la entrega final sin confirmar}
+}
+
+@inproceedings{nguyen2011,
+  author    = {Nguyen, Dong and Smith, Noah A. and Ros{\'e}, Carolyn P.},
+  title     = {Author Age Prediction from Text using Linear Regression},
+  booktitle = {Proceedings of the Workshop on Language Technology for Cultural Heritage, Social Sciences, and Humanities (LaTeCH) at ACL-HLT},
+  year      = {2011},
+  url       = {https://dongnguyen.nl/publications/nguyen-latech2011.pdf},
+  note      = {Verificado en el listado de publicaciones del autor. Inspira el modelo auxiliar de regresion ordinal}
+}
+
+@inproceedings{nguyen2013,
+  author    = {Nguyen, Dong and Gravel, Rilana and Trieschnigg, Dolf and Meder, Theo},
+  title     = {How Old Do You Think I Am? A Study of Language and Age in Twitter},
+  booktitle = {Proceedings of the International AAAI Conference on Web and Social Media (ICWSM)},
+  year      = {2013},
+  url       = {https://dongnguyen.nl/publications/nguyen-icwsm2013.pdf},
+  note      = {Verificado en el listado de publicaciones del autor. Catalogo de features de Twitter (RT, URL, hashtags, alargamientos) reutilizable}
+}
+
+@inproceedings{nguyen2014,
+  author    = {Nguyen, Dong and Trieschnigg, Dolf and Do{\u{g}}ru{\"o}z, A. Seza and Gravel, Rilana and Theune, Mari{\"e}t and Meder, Theo and de Jong, Franciska},
+  title     = {Why Gender and Age Prediction from Tweets is Hard: Lessons from a Crowdsourcing Experiment},
+  booktitle = {Proceedings of COLING 2014},
+  year      = {2014},
+  url       = {https://dongnguyen.nl/publications/nguyen-coling2014.pdf},
+  note      = {Verificado en el listado de publicaciones del autor. Aporta la cota de realismo del problema}
+}
+
+@inproceedings{sap2014,
+  author    = {Sap, Maarten and Park, Gregory and Eichstaedt, Johannes and Kern, Margaret and Stillwell, David and Kosinski, Michal and Ungar, Lyle and Schwartz, H. Andrew},
+  title     = {Developing Age and Gender Predictive Lexica over Social Media},
+  booktitle = {Proceedings of the 2014 Conference on Empirical Methods in Natural Language Processing (EMNLP)},
+  year      = {2014},
+  doi       = {10.3115/v1/D14-1121},
+  url       = {https://aclanthology.org/D14-1121/},
+  note      = {DOI verificado via Crossref. Inspira lexicones internos por regresion L2 sobre n-gramas (sin embeddings)}
+}
+
+@inproceedings{flekova2013,
+  author    = {Flekova, Lucie and Gurevych, Iryna},
+  title     = {Can We Hide in the Web? Large Scale Simultaneous Age and Gender Author Profiling in Social Media},
+  booktitle = {Notebook Papers of CLEF 2013 LABs and Workshops (PAN@CLEF 2013), CEUR-WS Vol-1179},
+  year      = {2013},
+  url       = {https://ceur-ws.org/Vol-1179/},
+  note      = {Verificado en el indice CEUR Vol-1179 (no es de 2015: aparece como notebook de PAN 2013). Accuracy media 0.2785}
+}
+
+@inproceedings{hovy2018,
+  author    = {Hovy, Dirk and Fornaciari, Tommaso},
+  title     = {Increasing In-Class Similarity by Retrofitting Embeddings with Demographic Information},
+  booktitle = {Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing (EMNLP)},
+  year      = {2018},
+  doi       = {10.18653/v1/D18-1070},
+  url       = {https://aclanthology.org/D18-1070/},
+  note      = {DOI verificado via Crossref. Idea trasladable sin embeddings (similitud intra-clase con SVD/LSA); su representacion original esta prohibida por D-001}
+}
+
+@article{morganlopez2017,
+  author  = {Morgan-Lopez, Antonio A. and Kim, Annice E. and Chew, Robert F. and Ruddle, Paul},
+  title   = {Predicting age groups of Twitter users based on language and metadata features},
+  journal = {PLOS ONE},
+  volume  = {12},
+  number  = {8},
+  pages   = {e0183537},
+  year    = {2017},
+  doi     = {10.1371/journal.pone.0183537},
+  note    = {DOI verificado via Crossref. Usa metadatos del usuario; este corpus carece de ellos}
+}
+
+@inproceedings{liu2021,
+  author    = {Liu, Yaguang and Singh, Lisa and Mneimneh, Zeina},
+  title     = {A Comparative Analysis of Classic and Deep Learning Models for Inferring Gender and Age of Twitter Users},
+  booktitle = {Proceedings of the 2nd International Conference on Deep Learning Theory and Applications (DeLTA)},
+  year      = {2021},
+  doi       = {10.5220/0010559500480058},
+  note      = {DOI verificado via Crossref (existe un deposito duplicado con DOI 10.5220/0010559500002996). Evidencia de competitividad de los modelos clasicos}
+}
+
+% ---------------------------------------------------------------- Corriente B: PAN Author Profiling 2013-2019
+
+@inproceedings{rangel2013,
+  author    = {Rangel, Francisco and Rosso, Paolo and Koppel, Moshe and Stamatatos, Efstathios and Inches, Giacomo},
+  title     = {Overview of the Author Profiling Task at PAN 2013},
+  booktitle = {Notebook Papers of CLEF 2013 LABs and Workshops, CEUR-WS Vol-1179},
+  year      = {2013},
+  url       = {https://ceur-ws.org/Vol-1179/CLEF2013wn-PAN-RangelEt2013.pdf},
+  note      = {URL verificada en pan.webis.de/publications.html. Esquema de 3 clases de edad (10s=13-17, 20s=23-27, 30s=33-47); ganador 0.3894, baseline 0.1650}
+}
+
+@inproceedings{rangel2014,
+  author    = {Rangel, Francisco and Rosso, Paolo and Chugur, Irina and Potthast, Martin and Trenkmann, Martin and Stein, Benno and Verhoeven, Ben and Daelemans, Walter},
+  title     = {Overview of the 2nd Author Profiling Task at PAN 2014},
+  booktitle = {Working Notes Papers of the CLEF 2014 Evaluation Labs, CEUR-WS Vol-1180},
+  year      = {2014},
+  url       = {https://ceur-ws.org/Vol-1180/CLEF2014wn-Pan-RangelEt2014.pdf},
+  note      = {URL verificada en pan.webis.de/publications.html. 5 clases de edad (18-24 ... 65-xx); ganador 0.2895, baseline 0.1404. Solo se distribuyen URL de los tweets}
+}
+
+@inproceedings{rangel2015,
+  author    = {Rangel, Francisco and Celli, Fabio and Rosso, Paolo and Potthast, Martin and Stein, Benno and Daelemans, Walter},
+  title     = {Overview of the 3rd Author Profiling Task at PAN 2015},
+  booktitle = {Working Notes Papers of the CLEF 2015 Evaluation Labs, CEUR-WS Vol-1391},
+  year      = {2015},
+  url       = {https://ceur-ws.org/Vol-1391/inv-pap12-CR.pdf},
+  note      = {URL verificada en pan.webis.de/publications.html. 4 clases de edad (18-24, 25-34, 35-49, 50-xx); ganador 0.8404 de accuracy media edad+genero}
+}
+
+@inproceedings{rangel2016,
+  author    = {Rangel, Francisco and Rosso, Paolo and Verhoeven, Ben and Daelemans, Walter and Potthast, Martin and Stein, Benno},
+  title     = {Overview of the 4th Author Profiling Task at PAN 2016: Cross-Genre Evaluations},
+  booktitle = {Working Notes Papers of the CLEF 2016 Evaluation Labs, CEUR-WS Vol-1609},
+  year      = {2016},
+  url       = {https://ceur-ws.org/Vol-1609/16090750.pdf},
+  note      = {URL verificada en pan.webis.de/publications.html. 5 clases de edad, evaluacion cross-genre; ganador 0.5258}
+}
+
+@inproceedings{rangel2017,
+  author    = {Rangel, Francisco and Rosso, Paolo and Potthast, Martin and Stein, Benno},
+  title     = {Overview of the 5th Author Profiling Task at PAN 2017: Gender and Language Variety Identification in Twitter},
+  booktitle = {Working Notes Papers of the CLEF 2017 Evaluation Labs, CEUR-WS Vol-1866},
+  year      = {2017},
+  url       = {https://ceur-ws.org/Vol-1866/invited_paper_11.pdf},
+  note      = {URL verificada en pan.webis.de/publications.html. Sin edad (genero y variedad de lengua)}
+}
+
+@inproceedings{rangel2018,
+  author    = {Rangel, Francisco and Rosso, Paolo and Montes-y-G{\'o}mez, Manuel and Potthast, Martin and Stein, Benno},
+  title     = {Overview of the 6th Author Profiling Task at PAN 2018: Multimodal Gender Identification in Twitter},
+  booktitle = {Working Notes Papers of the CLEF 2018 Evaluation Labs, CEUR-WS Vol-2125},
+  year      = {2018},
+  url       = {https://ceur-ws.org/Vol-2125/invited_paper_15.pdf},
+  note      = {URL verificada en pan.webis.de/publications.html. Sin edad (genero multimodal)}
+}
+
+@inproceedings{rangel2019,
+  author    = {Rangel, Francisco and Rosso, Paolo},
+  title     = {Overview of the 7th Author Profiling Task at PAN 2019: Bots and Gender Profiling},
+  booktitle = {CLEF 2019 Labs and Workshops, Notebook Papers, CEUR-WS Vol-2380},
+  year      = {2019},
+  url       = {https://ceur-ws.org/Vol-2380/},
+  note      = {Titulo y volumen verificados en pan.webis.de/publications.html y en la pagina de la tarea (pan.webis.de/clef19). Sin edad. Baselines oficiales: char n-grams + Random Forest}
+}
+
+% ---------------------------------------------------------------- Corriente C: representacion
+
+@inproceedings{sapkota2015,
+  author    = {Sapkota, Upendra and Bethard, Steven and Montes, Manuel and Solorio, Thamar},
+  title     = {Not All Character N-grams Are Created Equal: A Study in Authorship Attribution},
+  booktitle = {Proceedings of the 2015 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies (NAACL-HLT)},
+  pages     = {93--102},
+  year      = {2015},
+  doi       = {10.3115/v1/N15-1010},
+  url       = {https://aclanthology.org/N15-1010/},
+  note      = {Entrada BibTeX de ACL Anthology verificada. Justifica char n-grams 2-5 con marcado de espacios (char_wb)}
+}
+
+@inproceedings{sapkota2013,
+  author    = {Sapkota, Upendra and Solorio, Thamar and Montes-y-G{\'o}mez, Manuel and Ram{\'i}rez-de-la-Rosa, Gabriela},
+  title     = {Author Profiling for English and Spanish Text},
+  booktitle = {Notebook Papers of CLEF 2013 LABs and Workshops (PAN@CLEF 2013), CEUR-WS Vol-1179},
+  year      = {2013},
+  url       = {https://ceur-ws.org/Vol-1179/},
+  note      = {Verificado en el indice CEUR Vol-1179. N-gramas de caracter y palabra + SVM en ingles y espanol; accuracy 0.2471}
+}
+
+@inproceedings{lopezmonroy2013,
+  author    = {L{\'o}pez-Monroy, Adri{\'a}n Pastor and Montes-y-G{\'o}mez, Manuel and Escalante, Hugo Jair and Villase{\~n}or-Pineda, Luis and Villatoro-Tello, Esa{\'u}},
+  title     = {INAOE's Participation at PAN'13: Author Profiling Task},
+  booktitle = {Notebook Papers of CLEF 2013 LABs and Workshops (PAN@CLEF 2013), CEUR-WS Vol-1179},
+  year      = {2013},
+  url       = {https://ceur-ws.org/Vol-1179/},
+  note      = {Verificado en el indice CEUR Vol-1179. Segundo lugar con 0.3813 usando atributos de segundo orden}
+}
+
+@article{monroe2008,
+  author  = {Monroe, Burt L. and Colaresi, Michael P. and Quinn, Kevin M.},
+  title   = {Fightin' Words: Lexical Feature Selection and Evaluation for Identifying the Content of Political Conflict},
+  journal = {Political Analysis},
+  volume  = {16},
+  number  = {4},
+  pages   = {372--403},
+  year    = {2008},
+  doi     = {10.1093/pan/mpn018},
+  note    = {DOI verificado via Crossref. Log-odds con prior Dirichlet para seleccion e interpretacion de features}
+}
+
+% ---------------------------------------------------------------- Corriente D: optimizacion de F1 multiclase
+
+@inproceedings{parambath2014,
+  author    = {Puthiya Parambath, Shameem A. and Usunier, Nicolas and Grandvalet, Yves},
+  title     = {Optimizing F-Measures by Cost-Sensitive Classification},
+  booktitle = {Advances in Neural Information Processing Systems (NIPS)},
+  year      = {2014},
+  url       = {https://arxiv.org/abs/1505.00199},
+  note      = {Version extendida verificada en arXiv (1505.00199, indicada como version extendida del paper de NIPS 2014). Reduce F-measure a clasificacion cost-sensitive}
+}
+
+@article{waegeman2014,
+  author  = {Waegeman, Willem and Dembczynski, Krzysztof and Jachnik, Arkadiusz and Cheng, Weiwei and H{\"u}llermeier, Eyke},
+  title   = {On the Bayes-optimality of F-measure maximizers},
+  journal = {Journal of Machine Learning Research},
+  volume  = {15},
+  pages   = {3333--3388},
+  year    = {2014},
+  url     = {https://arxiv.org/abs/1310.4849},
+  note    = {Verificado en arXiv (1310.4849). Implementa y analiza el algoritmo GFM de Dembczynski et al. (NIPS 2011), referencia que este trabajo cita pero que no se verifico directamente}
+}
+
+@inproceedings{narasimhan2015,
+  author    = {Narasimhan, Harikrishna and Kar, Purushottam and Jain, Prateek},
+  title     = {Optimizing Non-decomposable Performance Measures: A Tale of Two Classes},
+  booktitle = {Proceedings of the 32nd International Conference on Machine Learning (ICML)},
+  year      = {2015},
+  url       = {https://arxiv.org/abs/1505.06812},
+  note      = {Verificado en arXiv (1505.06812). SPADE y STAMP: esquemas estocasticos para F-measure}
+}
+
+@techreport{lipton2014,
+  author      = {Lipton, Zachary C. and Elkan, Charles and Narayanaswamy, Balakrishnan},
+  title       = {Thresholding Classifiers to Maximize F1 Score},
+  institution = {arXiv},
+  number      = {1402.1892},
+  year        = {2014},
+  url         = {https://arxiv.org/abs/1402.1892},
+  note        = {Verificado en arXiv. Base teorica del ajuste de umbral: el umbral optimo es aproximadamente la mitad del F1 optimo con salidas calibradas}
+}
+
+@inproceedings{eban2017,
+  author    = {Eban, Elad and Schain, Mariano and Mackey, Alan and Gordon, Ariel and Saurous, Rif A. and Elidan, Gal},
+  title     = {Scalable Learning of Non-Decomposable Objectives},
+  booktitle = {Proceedings of the 20th International Conference on Artificial Intelligence and Statistics (AISTATS)},
+  year      = {2017},
+  url       = {https://arxiv.org/abs/1608.04802},
+  note      = {Verificado en arXiv (1608.04802). Cotas sobre la matriz de confusion para optimizar F directamente}
+}
+
+% ---------------------------------------------------------------- Datasets de referencia (solo inspeccion, no entrenamiento)
+
+@inproceedings{verhoeven2016,
+  author    = {Verhoeven, Ben and Daelemans, Walter and Plank, Barbara},
+  title     = {TwiSty: A Multilingual Twitter Stylometry Corpus for Gender and Personality Profiling},
+  booktitle = {Proceedings of the Tenth International Conference on Language Resources and Evaluation (LREC 2016)},
+  year      = {2016},
+  doi       = {10.63317/3yne5b7ve4p2},
+  note      = {DOI verificado via Crossref. Corpus multilingue (incluye espanol). NO usable para entrenar por D-001 (sin datos externos etiquetados); esquema exacto de rangos de edad no verificado}
+}
+
+@inproceedings{verhoeven2014,
+  author    = {Verhoeven, Ben and Daelemans, Walter},
+  title     = {CLiPS Stylometry Investigation (CSI) corpus: A Dutch corpus for the detection of age, gender, personality, sentiment and deception in text},
+  booktitle = {Proceedings of the Ninth International Conference on Language Resources and Evaluation (LREC 2014)},
+  year      = {2014},
+  doi       = {10.63317/5ihmqb5uqzzs},
+  note      = {DOI verificado via Crossref. Corpus con etiquetas de edad; solo referencia metodologica bajo D-001}
+}

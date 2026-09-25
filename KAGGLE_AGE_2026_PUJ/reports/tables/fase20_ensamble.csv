@@ -1,0 +1,7 @@
+modelo,macro_f1
+SVM C=0.2 (individual),0.5628
+LogReg (individual),0.5603
+SGD (individual),0.558
+ComplementNB (individual),0.537
+Voto suave (4 modelos),0.5628
+Stacking LOFO (LogReg meta),0.5656

@@ -1,0 +1,58 @@
+{
+  "filas_contradictorias": 643,
+  "filas_duplicadas": 2123,
+  "baseline": {
+    "macro_f1": 0.6004,
+    "std": 0.0042,
+    "per_fold": [
+      0.6007,
+      0.605,
+      0.6032,
+      0.6004,
+      0.5928
+    ]
+  },
+  "sin_contradictorias": {
+    "macro_f1": 0.6005,
+    "std": 0.0033,
+    "per_fold": [
+      0.6026,
+      0.6013,
+      0.6028,
+      0.602,
+      0.5941
+    ]
+  },
+  "sin_duplicadas": {
+    "macro_f1": 0.602,
+    "std": 0.0053,
+    "per_fold": [
+      0.6049,
+      0.6043,
+      0.6044,
+      0.6048,
+      0.5914
+    ]
+  },
+  "sin_ambas": {
+    "macro_f1": 0.602,
+    "std": 0.0053,
+    "per_fold": [
+      0.6049,
+      0.6043,
+      0.6044,
+      0.6048,
+      0.5914
+    ]
+  },
+  "delta_sin_contradictorias": 0.0001,
+  "folds_con_mejora": 3,
+  "mejora_por_fold": [
+    0.0019,
+    -0.0037,
+    -0.0004,
+    0.0016,
+    0.0013
+  ],
+  "segundos": 1742.3
+}

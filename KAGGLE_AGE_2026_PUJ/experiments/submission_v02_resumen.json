@@ -1,0 +1,28 @@
+{
+  "version": 2,
+  "modelo": "E-008 (TF-IDF char_wb 3-6 + canal de menciones) + LinearSVC(C=1)",
+  "cv_macro_f1": 0.5557,
+  "cv_macro_f1_std": 0.0052,
+  "cv_weighted_f1": 0.5548,
+  "checks": {
+    "columns_ok": true,
+    "columns_match_sample": true,
+    "rows_ok": true,
+    "ids_equal_test": true,
+    "ids_unique": true,
+    "ids_same_order": true,
+    "no_nan": true,
+    "labels_valid": true
+  },
+  "distribucion_predicha": {
+    "13-17": 19369,
+    "18-24": 20047,
+    "25-34": 17673,
+    "35-49": 17623,
+    "50-64": 19731,
+    "65-xx": 18449
+  },
+  "segundos": 63.4,
+  "archivo": "/home/carlos/Git/PLN/KAGGLE_AGE_2026_PUJ/submissions/age_submission_v02.csv",
+  "recordatorio": "Subida manual. Comparar el score contra 0,5557 (CV agrupado) y contra el 0,55235 de v01; la brecha esperada CV↔LB es ≈ +0,018 por los near-duplicados del test."
+}

@@ -1,0 +1,5 @@
+id,modelo,macro_f1,std,accuracy,segundos
+E-012,LinearSVC (C=0.3),0.5624,0.0036,0.5624,48.1
+E-009,"LogisticRegression (OvR, liblinear, C=4)",0.5603,0.0033,0.5591,541.0
+E-011,"SGDClassifier (log_loss, alpha=1e-6)",0.5579,0.0045,0.5567,21.8
+E-010,ComplementNB (alpha=0.3),0.537,0.0046,0.5408,2.0

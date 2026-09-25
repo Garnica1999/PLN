@@ -1,0 +1,92 @@
+{
+  "competition": "tweet-age-2026-puj",
+  "zip_sha256": "89a8d0586405e55ebbc4e04d2b4d2c68d7e9c4c7d890f4e6712ab8736ff9438e",
+  "train_rows": 169336,
+  "test_rows": 112892,
+  "classes": {
+    "13-17": 28863,
+    "18-24": 28676,
+    "25-34": 28347,
+    "35-49": 28230,
+    "50-64": 28060,
+    "65-xx": 27160
+  },
+  "empty_texts": {
+    "train": 104,
+    "test": 62
+  },
+  "padding": {
+    "train": {
+      "raw_len_min": 0,
+      "raw_len_median": 93.0,
+      "raw_len_max": 140,
+      "raw_len_eq_padded_width_pct": 2.487,
+      "clean_len_min": 0,
+      "clean_len_median": 93.0,
+      "clean_len_mean": 90.11,
+      "clean_len_max": 140,
+      "clean_len_eq_padded_width": 4211,
+      "empty_texts": 104
+    },
+    "test": {
+      "raw_len_min": 0,
+      "raw_len_median": 93.0,
+      "raw_len_max": 140,
+      "raw_len_eq_padded_width_pct": 2.537,
+      "clean_len_min": 0,
+      "clean_len_median": 93.0,
+      "clean_len_mean": 90.15,
+      "clean_len_max": 140,
+      "clean_len_eq_padded_width": 2864,
+      "empty_texts": 62
+    }
+  },
+  "id_leakage_max_deviation_pp": 1.247,
+  "label_conflicts": {
+    "texts_with_conflict": 203,
+    "rows_affected": 643,
+    "rows_affected_pct": 0.3797
+  },
+  "exact_duplicates": {
+    "train_exact_dup_rows": 1356,
+    "train_exact_dup_pct": 0.8008,
+    "train_unique_texts": 167980,
+    "test_unique_texts": 112174,
+    "test_rows_seen_in_train": 1364,
+    "test_rows_seen_in_train_pct": 1.2082,
+    "test_unique_texts_seen_in_train": 928
+  },
+  "cluster_leakage": {
+    "n_clusters_total": 271539,
+    "n_clusters_train": 164018,
+    "n_clusters_test": 109990,
+    "n_clusters_crossing": 2469,
+    "test_rows_covered": 4804,
+    "test_coverage_pct": 4.2554,
+    "covered_clusters_pure": 2291,
+    "covered_clusters": 2469,
+    "purity_pct": 92.791
+  },
+  "memorization_group": {
+    "coverage_pct": 0.0,
+    "accuracy_covered": 0.0,
+    "macro_f1_memorization_only_mean": 0.0,
+    "macro_f1_memorization_only_std": 0.0
+  },
+  "memorization_stratified": {
+    "coverage_pct": 3.9875,
+    "accuracy_covered": 0.7952,
+    "macro_f1_memorization_only_mean": 0.0608,
+    "macro_f1_memorization_only_std": 0.0014
+  },
+  "submission_format_ok": {
+    "columns_ok": true,
+    "columns_match_sample": true,
+    "rows_ok": true,
+    "ids_equal_test": true,
+    "ids_unique": true,
+    "ids_same_order": true,
+    "no_nan": true,
+    "labels_valid": true
+  }
+}

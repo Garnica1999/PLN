@@ -1,0 +1,15 @@
+id,representacion,texto,macro_f1,std,weighted,accuracy,features
+E-008,char_wb 3-6 + canal de menciones,crudo,0.5557,0.0052,0.5548,0.5553,314420
+E-003c,char_wb 3-6,crudo,0.5413,0.0049,0.5404,0.5418,300000
+E-003b,char_wb 3-5,crudo,0.5408,0.005,0.5399,0.5415,224628
+E-004b,char_wb 3-6 + word 1-gram,crudo,0.5354,0.0037,0.5345,0.5354,339409
+E-007a,union sin IDF (TF puro),crudo,0.5339,0.0046,0.533,0.5341,336493
+E-005c,solo quitar URLs + union,sin_urls,0.5277,0.0038,0.5267,0.5259,292170
+E-005e,solo quitar puntuación + union,sin_punct,0.5264,0.0043,0.5254,0.5261,292313
+E-003a,char_wb 2-4,crudo,0.5261,0.0048,0.5253,0.5273,121285
+E-002a,word 1-gram,crudo,0.5025,0.004,0.5015,0.5021,39409
+E-002b,word 1-2 gram,crudo,0.4971,0.0034,0.4961,0.4973,111865
+E-002c,word 1-3 gram,crudo,0.4941,0.0039,0.4931,0.4944,151431
+E-005b,marcadores <url>/<user> + union,marcadores,0.4107,0.0024,0.41,0.4121,218709
+E-005d,solo quitar menciones + union,sin_menciones,0.4094,0.0026,0.4088,0.4096,260025
+E-005a,union word 1-2 + char 3-5 (normalizado),normalizado,0.3902,0.0035,0.3896,0.3914,183263

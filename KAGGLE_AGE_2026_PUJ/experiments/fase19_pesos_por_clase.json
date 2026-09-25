@@ -1,0 +1,38 @@
+{
+  "protocolo": "leave-one-fold-out sobre predicciones out-of-fold",
+  "grid": [
+    0.7,
+    1.4
+  ],
+  "modelos": {
+    "E-009": {
+      "nombre": "LogisticRegression (OvR)",
+      "pesos_globales": [
+        0.86,
+        1.0,
+        1.1,
+        0.96,
+        1.02,
+        1.0
+      ],
+      "macro_f1_argmax": 0.5602697596411284,
+      "macro_f1_lofo": 0.5608986859846018,
+      "macro_f1_cota_optimista": 0.5616886224335395
+    },
+    "E-011": {
+      "nombre": "SGDClassifier (log_loss)",
+      "pesos_globales": [
+        0.9,
+        1.14,
+        1.06,
+        1.0,
+        1.0,
+        0.9
+      ],
+      "macro_f1_argmax": 0.5579280470636869,
+      "macro_f1_lofo": 0.5577630725216696,
+      "macro_f1_cota_optimista": 0.55913141155448
+    }
+  },
+  "segundos": 1400.9
+}

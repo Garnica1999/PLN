@@ -1,0 +1,10 @@
+submission_id,model_version,feature_version,local_cv,holdout_score,kaggle_score,delta_vs_v06,hypothesis,date
+1,E-001 word+char,v01,0.5344,,0.55235,-0.05037999999999998,ver RUNLOG.md,2026-09-24
+2,E-008 char+menciones,v02,0.5557,,0.57018,-0.03254999999999997,ver RUNLOG.md,2026-09-24
+3,Stacking 4 modelos,v03,0.5656,,0.58081,-0.02191999999999994,ver RUNLOG.md,2026-09-24
+4,Ensamble 9 fuentes,v04,0.5748,,0.59178,-0.010950000000000015,ver RUNLOG.md,2026-09-24
+5,Meta enriquecido,v05,0.5784,,0.59518,-0.007549999999999946,ver RUNLOG.md,2026-09-24
+6,Ensamble 10 fuentes + MLP,v06,0.5851,,0.60273,0.0,ver RUNLOG.md,2026-09-24
+7,+ ordinal + centroides,v07,0.586,,0.60372,0.0009900000000000464,ver RUNLOG.md,2026-09-24
+8,+ pares adyacentes,v08,0.5866,,0.60376,0.0010299999999999754,ver RUNLOG.md,2026-09-24
+9,AGE_ADVANCED_V01 (segunda generación),v09,0.5897,0.5966,,,ver RUNLOG.md,2026-09-24

@@ -1,0 +1,5 @@
+combinacion,n_features,meta,macro_f1,std
+referencia: 10 fuentes + densas (LogReg meta),90,LogReg,0.5851,0.0042
++ modelo ordinal acumulativo,96,LogReg,0.5854,0.0042
++ ordinal + centroides,102,LogReg,0.586,0.0045
++ ordinal + centroides con meta LightGBM,102,LightGBM,0.5858,0.0045

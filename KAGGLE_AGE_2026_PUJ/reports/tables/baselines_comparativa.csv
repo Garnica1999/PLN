@@ -1,0 +1,8 @@
+id,descripcion,macro_f1,std,vs_azar
+B0,DummyClassifier(prior),0.0485,0.0,-0.1182
+B1,TF-IDF word 1-2 + LogisticRegression (OvR),0.5015,0.0049,0.3348
+B2,TF-IDF word 1-2 + LinearSVC,0.4971,0.0034,0.3304
+B3,TF-IDF char_wb 3-5 + LinearSVC,0.5408,0.005,0.3741
+B4,TF-IDF word 1-2 + char_wb 3-5 + LinearSVC,0.5344,0.005,0.3677
+B5,35 features densas + LightGBM,0.3567,0.0036,0.19
+E-008,char_wb 3-6 + canal de menciones + LinearSVC (ganadora),0.5557,0.0052,0.389

@@ -1,0 +1,33 @@
+{
+  "version": 10,
+  "modelo": "v09 (AGE_ADVANCED_V01) + NB-SVM como miembro (273 features del meta)",
+  "cv_macro_f1_lofo": 0.5904,
+  "cv_std": 0.0047,
+  "referencia_v09": {
+    "cv": 0.5897,
+    "holdout": 0.5966,
+    "lb": 0.60807
+  },
+  "aporte_nbsvm": 0.0007,
+  "checks": {
+    "columns_ok": true,
+    "columns_match_sample": true,
+    "rows_ok": true,
+    "ids_equal_test": true,
+    "ids_unique": true,
+    "ids_same_order": true,
+    "no_nan": true,
+    "labels_valid": true
+  },
+  "distribucion_predicha": {
+    "13-17": 18265,
+    "18-24": 20930,
+    "25-34": 16930,
+    "35-49": 17150,
+    "50-64": 19985,
+    "65-xx": 19632
+  },
+  "segundos": 741.0,
+  "archivo": "/home/carlos/Git/PLN/KAGGLE_AGE_2026_PUJ/submissions/age_submission_v10.csv",
+  "decision_de_envio": "NO subir por ahora: +0,0007 está dentro del ruido y quedan ~1 envíos puntuados. Reservar para una mejora mayor o para el cierre."
+}

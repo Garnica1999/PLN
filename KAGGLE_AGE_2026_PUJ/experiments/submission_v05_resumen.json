@@ -1,0 +1,31 @@
+{
+  "version": 5,
+  "modelo": "Ensamble de 9 fuentes + meta-modelo enriquecido con 35 features densas",
+  "cv_macro_f1_lofo": 0.5784,
+  "cv_macro_f1_std": 0.0044,
+  "referencia_v04": {
+    "cv": 0.5748,
+    "lb": 0.59178
+  },
+  "checks": {
+    "columns_ok": true,
+    "columns_match_sample": true,
+    "rows_ok": true,
+    "ids_equal_test": true,
+    "ids_unique": true,
+    "ids_same_order": true,
+    "no_nan": true,
+    "labels_valid": true
+  },
+  "distribucion_predicha": {
+    "13-17": 17734,
+    "18-24": 21380,
+    "25-34": 17520,
+    "35-49": 17012,
+    "50-64": 20175,
+    "65-xx": 19071
+  },
+  "segundos": 361.4,
+  "archivo": "/home/carlos/Git/PLN/KAGGLE_AGE_2026_PUJ/submissions/age_submission_v05.csv",
+  "recordatorio": "Subida manual. Con brecha ≈ +0,017 el LB esperado ronda 0,595."
+}

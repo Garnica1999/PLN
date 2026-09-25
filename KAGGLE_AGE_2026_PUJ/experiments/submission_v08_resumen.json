@@ -1,0 +1,36 @@
+{
+  "modelo": "Ensamble de 13 fuentes (+ pares adyacentes) + meta enriquecido",
+  "cv_macro_f1_lofo": 0.5866,
+  "cv_macro_f1_std": 0.0038,
+  "lb_publico_v06": 0.60273,
+  "dimensiones": {
+    "char300+menciones": 317433,
+    "char700+menciones": 617926,
+    "char300+menciones+hashtags": 323251,
+    "word12": 136206
+  },
+  "meta_features": 107,
+  "svd_varianza_explicada": 0.0766,
+  "checks": {
+    "columns_ok": true,
+    "columns_match_sample": true,
+    "rows_ok": true,
+    "ids_equal_test": true,
+    "ids_unique": true,
+    "ids_same_order": true,
+    "no_nan": true,
+    "labels_valid": true
+  },
+  "distribucion_predicha": {
+    "13-17": 18321,
+    "18-24": 20719,
+    "25-34": 16915,
+    "35-49": 16804,
+    "50-64": 20345,
+    "65-xx": 19788
+  },
+  "archivo": "/home/carlos/Git/PLN/KAGGLE_AGE_2026_PUJ/submissions/age_submission_v08.csv",
+  "segundos": 563.3,
+  "version": 8,
+  "recordatorio": "Subida manual. CV LOFO 0,5866 vs 0,5860 de la v07 (LB 0,60372)."
+}

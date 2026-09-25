@@ -1,0 +1,13 @@
+modelo,veces_que_rescata,share_pct
+softmax_ordinal,15865,36.12
+centroides,13652,31.09
+MLP_densas_svd,13404,30.52
+LogReg_palabra,12239,27.87
+ComplementNB,11079,25.23
+ordinal_acumulativo,10649,24.25
+SGD,10584,24.1
+LogReg,10269,23.38
+SVM_300k,10004,22.78
+SVM_hashtags,9795,22.3
+NB_SVM,9729,22.15
+SVM_700k,9715,22.12

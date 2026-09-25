@@ -1,0 +1,13 @@
+id,hipotesis,evidencia,experimento,prioridad
+H1,"La textometría (longitud, riqueza léxica) aporta señal directa","Kruskal epsilon^2: n_chars 0,126; cttr 0,066; lexical_entropy 0,065",E-002/E-010 (ablación textometría),alta
+H2,El estilo informal separa sobre todo las clases extremas,"mayúsculas, exclamaciones y elongaciones máximas en 13-17",E-011 (ablación estilo) + Fase 17 (error analysis),media
+H3,El comportamiento de retuit es señal de actividad por edad,RT: 53% en 65-xx vs 30% en 18-24,E-011,media
+H4,"Parte de la ganancia al añadir features es redundancia, no señal","ttr~hapax_ratio rho=0,999; cttr~lexical_entropy 0,997",Fase 18 (ablación incremental obligatoria),alta
+H5,Los 166 textos vacíos deben predecirse por prior de clase,"104 vacíos en train, 62 en test",pipeline final,baja
+H6,Los char n-grams aportan señal ortográfica complementaria,"cuatrigramas distintivos con z alto (abreviaturas, terminaciones)",E-006 (word vs char vs union),alta
+H7,El léxico temático discrimina clases (deportes/música vs noticias),términos distintivos por clase con z > 5,E-004/E-005,alta
+H8,"La ortografía informal (tildes omitidas, letras repetidas) es señal",elongaciones y errores aparentes concentrados en 13-17,E-007 (variantes de normalización),media
+H9,Emojis y hashtags aportan sobre todo en clases extremas,emoji_diversity y has_emoji con chi2 alto; hashtags temáticos por clase,E-012 (ablación emojis/hashtags),media
+H10,URLs y menciones son marcadores de registro (más en mayores),"n_url 0,33 en 13-17 vs 0,51 en 65-xx",E-011,media
+H11,La validación agrupada por clúster es obligatoria,"CV estratificado regala 0,061 de macro-F1 por memorización de duplicados",todos (protocolo fijo),alta
+H12,El ajuste de prior/umbral por clase mejora macro-F1,clases balanceadas pero errores asimétricos (65-xx con más RT),Fase 19 (optimización de F1 multiclase),media

@@ -1,0 +1,8 @@
+combinacion,n_features,macro_f1_lofo,std
+5 base + hashtags + ordinal + word,49,0.5748,0.0048
+5 base + hashtags + ordinal,43,0.5725,0.0048
+5 base (+700k),30,0.5703,0.0049
+svm700k + hashtags + ordinal + word,25,0.5702,0.004
+4 base + hashtags + ordinal,37,0.5682,0.0043
+4 base + hashtags,30,0.5679,0.0045
+4 base (Fase 20),24,0.566,0.0043

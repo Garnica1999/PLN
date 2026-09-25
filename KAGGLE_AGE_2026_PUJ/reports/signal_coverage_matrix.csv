@@ -1,0 +1,19 @@
+fenomeno,eda_detectado,en_tfidf,feature_densa,representacion_supervisada,modelo_especializado,resultado,brecha_restante
+longitud,sí,sí,sí,parcial,sí,"0,5658",casi cerrada
+riqueza léxica,sí,sí,sí,no,sí,—,solo medias; faltan MATTR/Yule
+rareza de palabra,no,sí (IDF),no,no,no,—,ausente como feature
+menciones,sí,sí,parcial,no,sí,"+0,0144",falta versión supervisada
+retuits,sí,sí,parcial,no,sí,"+0,002",falta perfil de la fuente
+hashtags,sí,sí,parcial,no,sí,"+0,0019",falta versión supervisada
+URLs,sí,sí,parcial,no,sí,"−0,0067",solo presencia y conteo
+puntuación,sí,sí,sí,no,sí,"−0,0080",falta estructura/transiciones
+ortografía,sí,sí,parcial,no,sí,—,faltan detectores de forma
+repetición,sí,sí,parcial,no,parcial,—,faltan repeticiones de orden
+entropía,sí,no,parcial,no,parcial,—,faltan por tipo
+posición,sí,no,no,no,no,—,**ausente**
+OOV / novedad,no,sí (IDF),no,no,no,—,**ausente**
+información ordinal,sí,no,parcial,sí,sí,"+0,0006",modelos dedicados ya existen
+prototipos de clase,no,no,no,sí,sí,"+0,0009",Rocchio en el ensamble
+tipo de tweet,parcial,no,parcial,no,parcial,—,especialistas dieron 0
+near-duplicados,sí,no,no,no,sí (CV),—,"usado para agrupar CV, no como feature"
+léxico por clase,sí (EDA),sí,no,no,no,—,**ausente como feature**

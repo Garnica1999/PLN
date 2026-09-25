@@ -1,0 +1,7 @@
+modelo_a,modelo_b,desacuerdo
+E-013_svm,E-009_logreg,0.0618
+E-013_svm,E-011_sgd,0.1099
+E-013_svm,E-010_cnb,0.2516
+E-009_logreg,E-011_sgd,0.0653
+E-009_logreg,E-010_cnb,0.2783
+E-011_sgd,E-010_cnb,0.2967

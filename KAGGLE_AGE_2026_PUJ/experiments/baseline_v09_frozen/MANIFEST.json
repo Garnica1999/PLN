@@ -1,0 +1,42 @@
+{
+  "fecha": "2026-09-24 13:51",
+  "baseline": "v09 (AGE_ADVANCED_V01) — LB 0,60807",
+  "cv_lofo": 0.5897,
+  "cv_std": 0.0043,
+  "holdout_congelado": 0.5966,
+  "holdout_baseline": 0.5914,
+  "leaderboard": 0.60807,
+  "variante_lista_sin_enviar": {
+    "v10": {
+      "cv_lofo": 0.5904,
+      "delta": 0.0007
+    }
+  },
+  "presupuesto_envios": {
+    "usados": 9,
+    "disponibles": 1
+  },
+  "arquitectura": {
+    "miembros_base": 14,
+    "meta_modelo": "StandardScaler + LogisticRegression (273 features del candidato v10)",
+    "validacion": "StratifiedGroupKFold 5 folds agrupado por clúster de near-duplicados, evaluación leave-one-fold-out"
+  },
+  "hashes_sha256": {
+    "submissions/age_submission_v09.csv": "c55b0da9d6a21ff4caa90da1c6e82cd10c1727d40ff17f0ba7eb0f92b5f00a06",
+    "submissions/age_submission_v10.csv": "1194048aff0a0d471b32511e3705034134c63d1ddc2c6c6c5788c284cb17f0c1",
+    "experiments/submission_v06_resumen.json": "5a174908527e284761a9b833ac1bc19001764b1fd3beb875dab75d1d7ab4a764",
+    "experiments/advanced_02_resultados.json": "2cfcb49acc8f8eeb4bfdab1c0099ca8af837515d32636e3a090bcc69ea2895dd",
+    "experiments/advanced_03_holdout.json": "028a0861cdfb87b4bf3f6527512381fa4e39ff189f3e86dc0f7c99ea6d91c0cf",
+    "experiments/advanced_04_incertidumbre.json": "509a1929787ccdac9cc26ae0133026fb062dcf5c418b1f73aac3a713f5576ed2",
+    "experiments/advanced_05_nbsvm_seleccion.json": "5cd58d11ad1af7de251b282d1752afe87b6f6e79ba207cfff6072abd4ab6cede",
+    "experiments/advanced_07_frontera.json": "1f0ad2735b005e6449d71c18c7ac4aef136d89a5ab3145ad10cdc0539acd1095",
+    "experiments/e028_en_ensamble.json": "9ff5f3a082de4efde2add0ebd4ade42129f6617aaa86c6248eb2651e89ff901b",
+    "reports/tables/fase17_matriz_confusion.csv": "d7e467ce912c154f7a588bc7f7febf01b508340acd75259b53ba36f173250e7b",
+    "reports/tables/fase17_pares_confundidos.csv": "fd7236c96636bf2081c931f08f8c808c464ca04a9bf24071dfb99f98897818ad",
+    "reports/submissions_registry.csv": "d3df023573ffb3073761e35bd9f1c4eed30a0d729e73eb486a4bdccb4412b47e",
+    "src/pipeline.py": "fb2a1f33846dcaaa37ccabed05cc29ffe01b778d6bc297986926c156045ac630",
+    "src/advanced_features.py": "4ce491bc61b745fad5c5515325d841a044929900066d3e0d1b276556f0ad1982",
+    "src/cv.py": "bde185fcf4336e428ebf2d22dc6a022e94f201faf9b44cdff15839ba2bf8732e",
+    "src/config.py": "16c4538ba5a21c1fa265245f84536ec12d6c3664f82551f909fd60197bd76311"
+  }
+}

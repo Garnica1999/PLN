@@ -1,0 +1,32 @@
+{
+  "version": 6,
+  "modelo": "Ensamble de 10 fuentes (incluye MLP densas+SVD) + meta enriquecido",
+  "cv_macro_f1_lofo": 0.5851,
+  "cv_macro_f1_std": 0.0042,
+  "referencia_v05": {
+    "cv": 0.5784,
+    "lb": 0.59518
+  },
+  "entorno_mlp": "CPU (GPU ocupada por carga ajena; protocolo D-007)",
+  "checks": {
+    "columns_ok": true,
+    "columns_match_sample": true,
+    "rows_ok": true,
+    "ids_equal_test": true,
+    "ids_unique": true,
+    "ids_same_order": true,
+    "no_nan": true,
+    "labels_valid": true
+  },
+  "distribucion_predicha": {
+    "13-17": 17974,
+    "18-24": 20845,
+    "25-34": 17515,
+    "35-49": 16992,
+    "50-64": 20060,
+    "65-xx": 19506
+  },
+  "segundos": 511.2,
+  "archivo": "/home/carlos/Git/PLN/KAGGLE_AGE_2026_PUJ/submissions/age_submission_v06.csv",
+  "recordatorio": "Subida manual. Con brecha ≈ +0,016 el LB esperado ronda 0,60."
+}

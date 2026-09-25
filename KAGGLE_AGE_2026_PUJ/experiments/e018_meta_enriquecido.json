@@ -1,0 +1,40 @@
+{
+  "resultados": {
+    "scores (referencia)": {
+      "macro_f1_mean": 0.574767898621278,
+      "macro_f1_std": 0.004830746486897184,
+      "per_fold": [
+        0.5799,
+        0.5761,
+        0.5767,
+        0.5755,
+        0.5656
+      ]
+    },
+    "scores + densas": {
+      "macro_f1_mean": 0.5784230755028779,
+      "macro_f1_std": 0.004429239792306231,
+      "per_fold": [
+        0.5827,
+        0.5785,
+        0.5808,
+        0.5801,
+        0.57
+      ]
+    },
+    "scores + densas + interacciones": {
+      "macro_f1_mean": 0.578483628599742,
+      "macro_f1_std": 0.004791476551142132,
+      "per_fold": [
+        0.5831,
+        0.5787,
+        0.5807,
+        0.5805,
+        0.5693
+      ]
+    }
+  },
+  "mejor": "scores + densas + interacciones",
+  "referencia_fase20b": 0.5748,
+  "segundos": 313.4
+}
