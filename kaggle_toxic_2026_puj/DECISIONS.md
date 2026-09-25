@@ -1264,3 +1264,43 @@ evidencia, experimento, resultado, conclusion final.
   los sha256 de los cinco corpus y de los diez `.vec`, y el control V03 reproduce
   0.777211 exacto desde la nueva ubicacion. El trabajo sin commitear de KAGGLE_AGE_2026_PUJ
   quedo aparcado en `git stash` (no es un commit) y sus datos no se tocaron.
+
+## D-036 - vector_size se cierra como inerte y el gate de adopcion pasa a ser de dos niveles
+
+- **Contexto**: P1 es la primera familia arquitectonica de v5.1. Entrena 100d y 300d
+  manteniendo **todo lo demas fijo** (corpus E-CORP-01, ventana 5, min_count 3, subpalabras
+  3-6, negative 10, 5 epocas, sg skipgram, seed 42, bucket 200.000). El 200d no se
+  reentrena: se **reevalua** en la misma corrida, que es una `DOWNSTREAM EVALUATION UNIT` y
+  no consume presupuesto. Esa reevaluacion es ademas el control de comparabilidad, y
+  **reproduce v5 exacto** (FUSION 0.7818, embedding solo 0.6523 con umbrales congelados).
+- **Resultado** (9 evaluaciones downstream, 2 unidades de entrenamiento):
+
+  | variante | corrected_cv (frozen) | delta vs V03 | IC95 pareado |
+  |---|---|---|---|
+  | FUSION-VS-100 | 0.7823 | **+0.0050** | [-0.0028, +0.0130] |
+  | FUSION-B0-200 | 0.7818 | +0.0046 | [-0.0032, +0.0124] |
+  | FUSION-VS-300 | 0.7805 | +0.0033 | [-0.0043, +0.0109] |
+
+  Embedding aislado: 0.6420 (100d), 0.6523 (200d), 0.6516 (300d). Dispersion interna de la
+  familia: **0.0017**.
+- **Decision**: la familia `vector_size` se **CIERRA por inercia**. No se exploran 400d,
+  500d ni 768d.
+- **Gate de dos niveles (correccion de criterio)**: el mejor delta toca el umbral de
+  +0.005 por **cinco diezmilésimas** y su intervalo de confianza **incluye el 0**. La
+  seccion 20 pedia el gate "junto con estabilidad razonable entre pliegues", y la
+  complementariedad se exige con bootstrap. A partir de aqui una variante es **adoptable**
+  solo si `delta >= +0.005` **y** `IC95 no incluye 0`. Tratar el umbral como un test de
+  significacion y no como un criterio de magnitud fue el error que D-033 y D-034
+  corrigieron al final de v5: cinco configuraciones distintas dar un +0.004 con el
+  intervalo tocando el 0 es la senal de que la cifra no significa nada.
+- **Hallazgo**: la capacidad dimensional **no es la palanca**. Con 1.483 ejemplos
+  etiquetados, comprimir cada documento en 100, 200 o 300 coordenadas da lo mismo. Los
+  slices conservan la señal de v5 (elongaciones +0.0344, urls +0.0181, hashtags +0.0151),
+  es decir, es la misma aportacion de siempre y no una nueva.
+- **Correccion de metodo que hay que registrar**: los tipos que se consultan al modelo son
+  los **6.059 del train**, no los de train+test (8.855). Con el conjunto equivocado, 100d
+  salia con delta **-0.0065** y la familia aparecia "abierta por dispersion". La conclusion
+  (inerte) era la misma, pero los numeros no, y un error de universo de tipos es
+  exactamente el tipo de fallo que produce una conclusion falsa con apariencia solida.
+  La cobertura si se mide sobre train+test, como en v5 (0.6839 por tipo, 0.8833 por token).
+- **Presupuesto**: 2 de 9 unidades exploratorias gastadas, 0 de 1 de reserva.

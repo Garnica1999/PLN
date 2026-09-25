@@ -6,10 +6,10 @@
   "mejora_minima_gate": 0.005,
   "presupuesto": {
     "existing_v5_trainings": 10,
-    "new_v5_1_trainings": 0,
+    "new_v5_1_trainings": 2,
     "reserved_training_units": 0,
-    "total_new_budget_used": 0,
-    "budget_remaining": 10,
+    "total_new_budget_used": 2,
+    "budget_remaining": 8,
     "limite_exploratorio": 9,
     "limite_reserva": 1
   },
@@ -315,6 +315,56 @@
       "status": "EXISTING",
       "rol": "variante de composicion (union Wikipedia + web)",
       "config_verificada_contra_artefacto": "no"
+    },
+    {
+      "training_id": "FASTTEXT-WIKI-10M-VS-100",
+      "familia": "vector_size",
+      "corpus": "E-CORP-01",
+      "tokens": 10002400,
+      "vector_size": 100,
+      "window": 5,
+      "min_count": 3,
+      "min_n": 3,
+      "max_n": 6,
+      "negative": 10,
+      "sample": 0.0001,
+      "epochs": 5,
+      "sg": 1,
+      "seed": 42,
+      "bucket": 200000,
+      "vocabulary_size": 100098,
+      "training_time_s": 57.4,
+      "training_time_fuente": "",
+      "model_sha256": "f524b2db80b6174313e21b85f1fd14fc3fd1e4f6e771024a68bdf96719a5ed25",
+      "training_signature": "4c34b96681068cf06f8882bd66d106f9460067c6f6299d3d567dc1b1689d0738",
+      "status": "EXISTING",
+      "rol": "familia vector_size de v5.1",
+      "config_verificada_contra_artefacto": "si"
+    },
+    {
+      "training_id": "FASTTEXT-WIKI-10M-VS-300",
+      "familia": "vector_size",
+      "corpus": "E-CORP-01",
+      "tokens": 10002400,
+      "vector_size": 300,
+      "window": 5,
+      "min_count": 3,
+      "min_n": 3,
+      "max_n": 6,
+      "negative": 10,
+      "sample": 0.0001,
+      "epochs": 5,
+      "sg": 1,
+      "seed": 42,
+      "bucket": 200000,
+      "vocabulary_size": 100098,
+      "training_time_s": 171.3,
+      "training_time_fuente": "",
+      "model_sha256": "c5df34c5f0c6ff410baf4558c6090396a332f476d2655a9821425a20c6ca06fe",
+      "training_signature": "0cb764992107f9e7e378e7c9b0395245c67b3eb832d0f5d97f778b18785b6db0",
+      "status": "EXISTING",
+      "rol": "familia vector_size de v5.1",
+      "config_verificada_contra_artefacto": "si"
     }
   ],
   "propuestas": [
@@ -338,9 +388,9 @@
       "seed": 42,
       "bucket": 200000,
       "training_signature": "4c34b96681068cf06f8882bd66d106f9460067c6f6299d3d567dc1b1689d0738",
-      "status": "PENDING",
+      "status": "EXISTING",
       "equivale_a": "",
-      "presupuesto": "1/9",
+      "presupuesto": "gastada",
       "vocabulary_size": "",
       "training_time_s": "",
       "training_time_fuente": "",
@@ -368,9 +418,9 @@
       "seed": 42,
       "bucket": 200000,
       "training_signature": "0cb764992107f9e7e378e7c9b0395245c67b3eb832d0f5d97f778b18785b6db0",
-      "status": "PENDING",
+      "status": "EXISTING",
       "equivale_a": "",
-      "presupuesto": "2/9",
+      "presupuesto": "gastada",
       "vocabulary_size": "",
       "training_time_s": "",
       "training_time_fuente": "",
@@ -737,5 +787,20 @@
       "submission_v03_sha256": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
       "submission_v03_intacta": true
     }
-  }
+  },
+  "familias_evaluadas": [
+    {
+      "familia": "vector_size",
+      "unidades_gastadas": 2,
+      "dispersion_interna": 0.001747,
+      "mejor_fusion": "FUSION-VS-100",
+      "mejor_fusion_corrected_cv": 0.782257,
+      "mejor_delta": 0.005046,
+      "supera_gate_numerico": true,
+      "ic95_excluye_cero": false,
+      "adoptable": false,
+      "margen_sobre_el_umbral": 4.6e-05,
+      "decision": "CERRADA: inerte. Ninguna variante es adoptable y la dispersion interna es 0.0017 <= 0.005"
+    }
+  ]
 }

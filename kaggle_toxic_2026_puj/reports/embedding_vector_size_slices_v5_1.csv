@@ -1,0 +1,111 @@
+rebanada,variante,n_filas,f1_por_celda
+interpersonal (TR=1),V03-CONGELADO,445,0.9129
+interpersonal (TR=1),EMB-B0-200-LR,445,0.8514
+interpersonal (TR=1),EMB-B0-200-SVC,445,0.8646
+interpersonal (TR=1),FUSION-B0-200,445,0.9199
+interpersonal (TR=1),EMB-VS-100-LR,445,0.8584
+interpersonal (TR=1),EMB-VS-100-SVC,445,0.8832
+interpersonal (TR=1),FUSION-VS-100,445,0.9195
+interpersonal (TR=1),EMB-VS-300-LR,445,0.8499
+interpersonal (TR=1),EMB-VS-300-SVC,445,0.8491
+interpersonal (TR=1),FUSION-VS-300,445,0.9173
+afiliacion (AG=1),V03-CONGELADO,567,0.8846
+afiliacion (AG=1),EMB-B0-200-LR,567,0.8231
+afiliacion (AG=1),EMB-B0-200-SVC,567,0.8427
+afiliacion (AG=1),FUSION-B0-200,567,0.8925
+afiliacion (AG=1),EMB-VS-100-LR,567,0.8293
+afiliacion (AG=1),EMB-VS-100-SVC,567,0.8621
+afiliacion (AG=1),FUSION-VS-100,567,0.8925
+afiliacion (AG=1),EMB-VS-300-LR,567,0.8184
+afiliacion (AG=1),EMB-VS-300-SVC,567,0.8201
+afiliacion (AG=1),FUSION-VS-300,567,0.8918
+sin_hate_explicito (HS=0),V03-CONGELADO,835,0.0667
+sin_hate_explicito (HS=0),EMB-B0-200-LR,835,0.0175
+sin_hate_explicito (HS=0),EMB-B0-200-SVC,835,0.0152
+sin_hate_explicito (HS=0),FUSION-B0-200,835,0.0657
+sin_hate_explicito (HS=0),EMB-VS-100-LR,835,0.0161
+sin_hate_explicito (HS=0),EMB-VS-100-SVC,835,0.0149
+sin_hate_explicito (HS=0),FUSION-VS-100,835,0.069
+sin_hate_explicito (HS=0),EMB-VS-300-LR,835,0.021
+sin_hate_explicito (HS=0),EMB-VS-300-SVC,835,0.0241
+sin_hate_explicito (HS=0),FUSION-VS-300,835,0.068
+colectivos,V03-CONGELADO,93,0.574
+colectivos,EMB-B0-200-LR,93,0.4791
+colectivos,EMB-B0-200-SVC,93,0.5029
+colectivos,FUSION-B0-200,93,0.589
+colectivos,EMB-VS-100-LR,93,0.5436
+colectivos,EMB-VS-100-SVC,93,0.5534
+colectivos,FUSION-VS-100,93,0.5873
+colectivos,EMB-VS-300-LR,93,0.5444
+colectivos,EMB-VS-300-SVC,93,0.5251
+colectivos,FUSION-VS-300,93,0.5953
+insultos,V03-CONGELADO,855,0.8357
+insultos,EMB-B0-200-LR,855,0.7249
+insultos,EMB-B0-200-SVC,855,0.7221
+insultos,FUSION-B0-200,855,0.8389
+insultos,EMB-VS-100-LR,855,0.7138
+insultos,EMB-VS-100-SVC,855,0.7202
+insultos,FUSION-VS-100,855,0.8399
+insultos,EMB-VS-300-LR,855,0.7342
+insultos,EMB-VS-300-SVC,855,0.7262
+insultos,FUSION-VS-300,855,0.8377
+elongaciones,V03-CONGELADO,57,0.6853
+elongaciones,EMB-B0-200-LR,57,0.5545
+elongaciones,EMB-B0-200-SVC,57,0.5992
+elongaciones,FUSION-B0-200,57,0.7221
+elongaciones,EMB-VS-100-LR,57,0.6125
+elongaciones,EMB-VS-100-SVC,57,0.6214
+elongaciones,FUSION-VS-100,57,0.7197
+elongaciones,EMB-VS-300-LR,57,0.6278
+elongaciones,EMB-VS-300-SVC,57,0.6057
+elongaciones,FUSION-VS-300,57,0.7221
+coloquial,V03-CONGELADO,214,0.8177
+coloquial,EMB-B0-200-LR,214,0.6368
+coloquial,EMB-B0-200-SVC,214,0.6434
+coloquial,FUSION-B0-200,214,0.823
+coloquial,EMB-VS-100-LR,214,0.6668
+coloquial,EMB-VS-100-SVC,214,0.6739
+coloquial,FUSION-VS-100,214,0.828
+coloquial,EMB-VS-300-LR,214,0.6809
+coloquial,EMB-VS-300-SVC,214,0.6568
+coloquial,FUSION-VS-300,214,0.8242
+hashtags,V03-CONGELADO,144,0.5311
+hashtags,EMB-B0-200-LR,144,0.3493
+hashtags,EMB-B0-200-SVC,144,0.3616
+hashtags,FUSION-B0-200,144,0.5462
+hashtags,EMB-VS-100-LR,144,0.4359
+hashtags,EMB-VS-100-SVC,144,0.453
+hashtags,FUSION-VS-100,144,0.5462
+hashtags,EMB-VS-300-LR,144,0.3656
+hashtags,EMB-VS-300-SVC,144,0.3523
+hashtags,FUSION-VS-300,144,0.5462
+menciones,V03-CONGELADO,702,0.8462
+menciones,EMB-B0-200-LR,702,0.7374
+menciones,EMB-B0-200-SVC,702,0.7375
+menciones,FUSION-B0-200,702,0.8483
+menciones,EMB-VS-100-LR,702,0.7274
+menciones,EMB-VS-100-SVC,702,0.7258
+menciones,FUSION-VS-100,702,0.8491
+menciones,EMB-VS-300-LR,702,0.7371
+menciones,EMB-VS-300-SVC,702,0.7279
+menciones,FUSION-VS-300,702,0.847
+urls,V03-CONGELADO,458,0.6578
+urls,EMB-B0-200-LR,458,0.5304
+urls,EMB-B0-200-SVC,458,0.5488
+urls,FUSION-B0-200,458,0.6782
+urls,EMB-VS-100-LR,458,0.5154
+urls,EMB-VS-100-SVC,458,0.5342
+urls,FUSION-VS-100,458,0.6759
+urls,EMB-VS-300-LR,458,0.5149
+urls,EMB-VS-300-SVC,458,0.4962
+urls,FUSION-VS-300,458,0.6742
+cita,V03-CONGELADO,37,0.8449
+cita,EMB-B0-200-LR,37,0.6343
+cita,EMB-B0-200-SVC,37,0.6674
+cita,FUSION-B0-200,37,0.8393
+cita,EMB-VS-100-LR,37,0.6298
+cita,EMB-VS-100-SVC,37,0.6802
+cita,FUSION-VS-100,37,0.8557
+cita,EMB-VS-300-LR,37,0.583
+cita,EMB-VS-300-SVC,37,0.5794
+cita,FUSION-VS-300,37,0.8625

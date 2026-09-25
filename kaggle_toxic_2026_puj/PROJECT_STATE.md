@@ -38,6 +38,8 @@ archivada de la autorizacion; se registra solo lo comunicado por el usuario.
 | D-034 | Corrige a D-033: la ventaja de las subpalabras no es monotone (joroba con maximo en 10M) |
 | v5.1 (arquitectura) | En curso. Baseline B0 = Wikipedia 10M / 200d / w5 / minC3 / sub3-6 / neg10 (ya entrenado, no se reentrena) |
 | D-035 | Identidad de entrenamiento por firma con corpus procesado y bucket; presupuesto 9+1 abierto, 0 colisiones |
+| P1 vector_size | CERRADA por inercia: 100d 0.7823 (+0.0050), 200d 0.7818, 300d 0.7805; dispersion 0.0017 |
+| D-036 | Gate de dos niveles: adoptable exige delta >= +0.005 **y** IC95 que excluya el 0 |
 | GATE DE CIERRE | §29: A (+0.005 con estabilidad) / B (complementariedad robusta) / C (senal representacional fuerte) |
 
 ## Fase anterior: v4 «Advanced Research v4» (CERRADA el 2026-09-25)

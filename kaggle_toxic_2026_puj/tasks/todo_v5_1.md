@@ -14,13 +14,15 @@
 - [x] Auditoria de reglas de la seccion 36 delegada en el script de auditoria de v5
 - [x] **D-035** registrada
 
-## P1 - vector_size (pendiente)
+## P1 - vector_size (hecha, cerrada por inercia)
 
-- [ ] `experiments/embedding_12_vector_size_v5_1.py`: entrenar 100d y 300d (2/9)
-- [ ] embedding-only (mean+LR, mean+SVC) y fusion L2 con V03
-- [ ] bootstrap pareado, matriz de complementariedad y slices
-- [ ] cobertura por tipo y por token de cada configuracion
-- [ ] decision de cierre o apertura de la familia
+- [x] `experiments/embedding_12_vector_size_v5_1.py`: entrenados 100d y 300d (2/9)
+- [x] embedding-only (mean+LR, mean+SVC) y fusion L2 con V03, con el 200d reevaluado
+      como control (reproduce v5 exacto)
+- [x] bootstrap pareado, matriz de complementariedad y 11 slices
+- [x] cobertura: 0.6839 por tipo y 0.8833 por token (train+test, como en v5)
+- [x] **Decision: CERRADA** (inerte, dispersion 0.0017). No se exploran 400d, 500d, 768d
+- [x] **D-036**: el gate pasa a ser de dos niveles
 
 ## P2-P5 - window, min_count, subwords, negative (pendiente)
 

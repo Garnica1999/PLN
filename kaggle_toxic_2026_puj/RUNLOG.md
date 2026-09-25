@@ -717,3 +717,14 @@ Registro cronologico de ejecuciones. Formato:
   lo que la firma de sus tres modelos se declara en el inventario y se verifica contra el
   artefacto, en lugar de deducirse. Reglas de la seccion 36 limpias, holdout 5/5 intacto.
   **D-035**. P0 no entreno nada:, 0 submissions, 0 sondas de LB.
+- 21:20 | v5.1 P1: familia vector_size (EBD-18) | `experiments/embedding_12_vector_size_v5_1.py`
+  Entrenados FastText 100d (57 s) y 300d (171 s) sobre Wikipedia 10M con el resto de la
+  arquitectura fija; el 200d no se reentrena y se reevalua como control. **El control
+  reproduce v5 exacto** (FUSION 0.7818, embedding solo 0.6523 con umbrales congelados).
+  FUSION-VS-100 0.7823 (+0.0050, IC95 [-0.0028, +0.0130]), FUSION-VS-300 0.7805 (+0.0033),
+  dispersion interna 0.0017. **La dimension no es la palanca**: la familia se cierra por
+  inercia y no se exploran 400d, 500d ni 768d. El mejor delta toca el umbral por cinco
+  diezmilésimas con el intervalo incluyendo el 0, asi que **D-036** adopta un gate de dos
+  niveles (delta >= +0.005 **y** IC95 que excluya el 0). Correccion de metodo registrada: los
+  tipos consultados son los 6.059 del train y no los de train+test; con el conjunto
+  equivocado 100d salia -0.0065. **Presupuesto 2/9 + 0/1.** 0 submissions, 0 sondas de LB.

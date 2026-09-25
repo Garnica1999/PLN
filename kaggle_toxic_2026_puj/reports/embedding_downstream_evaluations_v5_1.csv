@@ -32,3 +32,48 @@ EVAL-V5-030,experiments/embedding_10_fasttext_5M_v5.py,FUSION-FASTTEXT-WIKI-5M,F
 EVAL-V5-031,experiments/embedding_10_fasttext_5M_v5.py,EMB-FASTTEXT-WIKI-5M,FASTTEXT-WIKI-5M,media,LR,l2,,-0.110248,"[-0.132739, -0.088014]","historico v5, no consume presupuesto"
 EVAL-V5-032,experiments/embedding_10_fasttext_5M_v5.py,FUSION-WORD2VEC-WIKI-5M,WORD2VEC-WIKI-5M,media,LR,l2,,-0.007527,"[-0.014403, -0.000677]","historico v5, no consume presupuesto"
 EVAL-V5-033,experiments/embedding_10_fasttext_5M_v5.py,EMB-WORD2VEC-WIKI-5M,WORD2VEC-WIKI-5M,media,LR,l2,,-0.15036,"[-0.174351, -0.126472]","historico v5, no consume presupuesto"
+EVAL-V51-034,experiments/embedding_12_vector_size_v5_1.py,EMB-B0-200-LR,FASTTEXT-WIKI-10M,media,LR,estandar,0.652338,-0.124873,"[, ]",P1 vector_size
+EVAL-V51-035,experiments/embedding_12_vector_size_v5_1.py,EMB-B0-200-SVC,FASTTEXT-WIKI-10M,media,SVC,estandar,0.655083,-0.122128,"[, ]",P1 vector_size
+EVAL-V51-036,experiments/embedding_12_vector_size_v5_1.py,FUSION-B0-200,FASTTEXT-WIKI-10M,media,LR + TF-IDF V03,l2,0.781766,0.004555,"[-0.003161, 0.012409]",P1 vector_size
+EVAL-V51-037,experiments/embedding_12_vector_size_v5_1.py,EMB-VS-100-LR,FASTTEXT-WIKI-10M-VS-100,media,LR,estandar,0.634548,-0.142663,"[, ]",P1 vector_size
+EVAL-V51-038,experiments/embedding_12_vector_size_v5_1.py,EMB-VS-100-SVC,FASTTEXT-WIKI-10M-VS-100,media,SVC,estandar,0.638601,-0.13861,"[, ]",P1 vector_size
+EVAL-V51-039,experiments/embedding_12_vector_size_v5_1.py,FUSION-VS-100,FASTTEXT-WIKI-10M-VS-100,media,LR + TF-IDF V03,l2,0.770698,-0.006513,"[-0.014555, 0.001529]",P1 vector_size
+EVAL-V51-040,experiments/embedding_12_vector_size_v5_1.py,EMB-VS-300-LR,FASTTEXT-WIKI-10M-VS-300,media,LR,estandar,0.648437,-0.128774,"[, ]",P1 vector_size
+EVAL-V51-041,experiments/embedding_12_vector_size_v5_1.py,EMB-VS-300-SVC,FASTTEXT-WIKI-10M-VS-300,media,SVC,estandar,0.644575,-0.132636,"[, ]",P1 vector_size
+EVAL-V51-042,experiments/embedding_12_vector_size_v5_1.py,FUSION-VS-300,FASTTEXT-WIKI-10M-VS-300,media,LR + TF-IDF V03,l2,0.778156,0.000945,"[-0.005973, 0.007966]",P1 vector_size
+EVAL-V51-043,experiments/embedding_12_vector_size_v5_1.py,EMB-B0-200-LR,FASTTEXT-WIKI-10M,media,LR,estandar,0.652338,-0.124873,"[, ]",P1 vector_size
+EVAL-V51-044,experiments/embedding_12_vector_size_v5_1.py,EMB-B0-200-SVC,FASTTEXT-WIKI-10M,media,SVC,estandar,0.655083,-0.122128,"[, ]",P1 vector_size
+EVAL-V51-045,experiments/embedding_12_vector_size_v5_1.py,FUSION-B0-200,FASTTEXT-WIKI-10M,media,LR + TF-IDF V03,l2,0.781766,0.004555,"[-0.003161, 0.012409]",P1 vector_size
+EVAL-V51-046,experiments/embedding_12_vector_size_v5_1.py,EMB-VS-100-LR,FASTTEXT-WIKI-10M-VS-100,media,LR,estandar,0.634548,-0.142663,"[, ]",P1 vector_size
+EVAL-V51-047,experiments/embedding_12_vector_size_v5_1.py,EMB-VS-100-SVC,FASTTEXT-WIKI-10M-VS-100,media,SVC,estandar,0.638601,-0.13861,"[, ]",P1 vector_size
+EVAL-V51-048,experiments/embedding_12_vector_size_v5_1.py,FUSION-VS-100,FASTTEXT-WIKI-10M-VS-100,media,LR + TF-IDF V03,l2,0.770698,-0.006513,"[-0.014555, 0.001529]",P1 vector_size
+EVAL-V51-049,experiments/embedding_12_vector_size_v5_1.py,EMB-VS-300-LR,FASTTEXT-WIKI-10M-VS-300,media,LR,estandar,0.648437,-0.128774,"[, ]",P1 vector_size
+EVAL-V51-050,experiments/embedding_12_vector_size_v5_1.py,EMB-VS-300-SVC,FASTTEXT-WIKI-10M-VS-300,media,SVC,estandar,0.644575,-0.132636,"[, ]",P1 vector_size
+EVAL-V51-051,experiments/embedding_12_vector_size_v5_1.py,FUSION-VS-300,FASTTEXT-WIKI-10M-VS-300,media,LR + TF-IDF V03,l2,0.778156,0.000945,"[-0.005973, 0.007966]",P1 vector_size
+EVAL-V51-052,experiments/embedding_12_vector_size_v5_1.py,EMB-B0-200-LR,FASTTEXT-WIKI-10M,media,LR,estandar,0.652338,-0.124873,"[, ]",P1 vector_size
+EVAL-V51-053,experiments/embedding_12_vector_size_v5_1.py,EMB-B0-200-SVC,FASTTEXT-WIKI-10M,media,SVC,estandar,0.655083,-0.122128,"[, ]",P1 vector_size
+EVAL-V51-054,experiments/embedding_12_vector_size_v5_1.py,FUSION-B0-200,FASTTEXT-WIKI-10M,media,LR + TF-IDF V03,l2,0.781766,0.004555,"[-0.003161, 0.012409]",P1 vector_size
+EVAL-V51-055,experiments/embedding_12_vector_size_v5_1.py,EMB-VS-100-LR,FASTTEXT-WIKI-10M-VS-100,media,LR,estandar,0.641955,-0.135256,"[, ]",P1 vector_size
+EVAL-V51-056,experiments/embedding_12_vector_size_v5_1.py,EMB-VS-100-SVC,FASTTEXT-WIKI-10M-VS-100,media,SVC,estandar,0.647345,-0.129866,"[, ]",P1 vector_size
+EVAL-V51-057,experiments/embedding_12_vector_size_v5_1.py,FUSION-VS-100,FASTTEXT-WIKI-10M-VS-100,media,LR + TF-IDF V03,l2,0.782257,0.005046,"[-0.00282, 0.013005]",P1 vector_size
+EVAL-V51-058,experiments/embedding_12_vector_size_v5_1.py,EMB-VS-300-LR,FASTTEXT-WIKI-10M-VS-300,media,LR,estandar,0.651601,-0.12561,"[, ]",P1 vector_size
+EVAL-V51-059,experiments/embedding_12_vector_size_v5_1.py,EMB-VS-300-SVC,FASTTEXT-WIKI-10M-VS-300,media,SVC,estandar,0.640966,-0.136245,"[, ]",P1 vector_size
+EVAL-V51-060,experiments/embedding_12_vector_size_v5_1.py,FUSION-VS-300,FASTTEXT-WIKI-10M-VS-300,media,LR + TF-IDF V03,l2,0.78051,0.003299,"[-0.004252, 0.010929]",P1 vector_size
+EVAL-V51-061,experiments/embedding_12_vector_size_v5_1.py,EMB-B0-200-LR,FASTTEXT-WIKI-10M,media,LR,estandar,0.652338,-0.124873,"[, ]",P1 vector_size
+EVAL-V51-062,experiments/embedding_12_vector_size_v5_1.py,EMB-B0-200-SVC,FASTTEXT-WIKI-10M,media,SVC,estandar,0.655083,-0.122128,"[, ]",P1 vector_size
+EVAL-V51-063,experiments/embedding_12_vector_size_v5_1.py,FUSION-B0-200,FASTTEXT-WIKI-10M,media,LR + TF-IDF V03,l2,0.781766,0.004555,"[-0.003161, 0.012409]",P1 vector_size
+EVAL-V51-064,experiments/embedding_12_vector_size_v5_1.py,EMB-VS-100-LR,FASTTEXT-WIKI-10M-VS-100,media,LR,estandar,0.641955,-0.135256,"[, ]",P1 vector_size
+EVAL-V51-065,experiments/embedding_12_vector_size_v5_1.py,EMB-VS-100-SVC,FASTTEXT-WIKI-10M-VS-100,media,SVC,estandar,0.647345,-0.129866,"[, ]",P1 vector_size
+EVAL-V51-066,experiments/embedding_12_vector_size_v5_1.py,FUSION-VS-100,FASTTEXT-WIKI-10M-VS-100,media,LR + TF-IDF V03,l2,0.782257,0.005046,"[-0.00282, 0.013005]",P1 vector_size
+EVAL-V51-067,experiments/embedding_12_vector_size_v5_1.py,EMB-VS-300-LR,FASTTEXT-WIKI-10M-VS-300,media,LR,estandar,0.651601,-0.12561,"[, ]",P1 vector_size
+EVAL-V51-068,experiments/embedding_12_vector_size_v5_1.py,EMB-VS-300-SVC,FASTTEXT-WIKI-10M-VS-300,media,SVC,estandar,0.640966,-0.136245,"[, ]",P1 vector_size
+EVAL-V51-069,experiments/embedding_12_vector_size_v5_1.py,FUSION-VS-300,FASTTEXT-WIKI-10M-VS-300,media,LR + TF-IDF V03,l2,0.78051,0.003299,"[-0.004252, 0.010929]",P1 vector_size
+EVAL-V51-070,experiments/embedding_12_vector_size_v5_1.py,EMB-B0-200-LR,FASTTEXT-WIKI-10M,media,LR,estandar,0.652338,-0.124873,"[, ]",P1 vector_size
+EVAL-V51-071,experiments/embedding_12_vector_size_v5_1.py,EMB-B0-200-SVC,FASTTEXT-WIKI-10M,media,SVC,estandar,0.655083,-0.122128,"[, ]",P1 vector_size
+EVAL-V51-072,experiments/embedding_12_vector_size_v5_1.py,FUSION-B0-200,FASTTEXT-WIKI-10M,media,LR + TF-IDF V03,l2,0.781766,0.004555,"[-0.003161, 0.012409]",P1 vector_size
+EVAL-V51-073,experiments/embedding_12_vector_size_v5_1.py,EMB-VS-100-LR,FASTTEXT-WIKI-10M-VS-100,media,LR,estandar,0.641955,-0.135256,"[, ]",P1 vector_size
+EVAL-V51-074,experiments/embedding_12_vector_size_v5_1.py,EMB-VS-100-SVC,FASTTEXT-WIKI-10M-VS-100,media,SVC,estandar,0.647345,-0.129866,"[, ]",P1 vector_size
+EVAL-V51-075,experiments/embedding_12_vector_size_v5_1.py,FUSION-VS-100,FASTTEXT-WIKI-10M-VS-100,media,LR + TF-IDF V03,l2,0.782257,0.005046,"[-0.00282, 0.013005]",P1 vector_size
+EVAL-V51-076,experiments/embedding_12_vector_size_v5_1.py,EMB-VS-300-LR,FASTTEXT-WIKI-10M-VS-300,media,LR,estandar,0.651601,-0.12561,"[, ]",P1 vector_size
+EVAL-V51-077,experiments/embedding_12_vector_size_v5_1.py,EMB-VS-300-SVC,FASTTEXT-WIKI-10M-VS-300,media,SVC,estandar,0.640966,-0.136245,"[, ]",P1 vector_size
+EVAL-V51-078,experiments/embedding_12_vector_size_v5_1.py,FUSION-VS-300,FASTTEXT-WIKI-10M-VS-300,media,LR + TF-IDF V03,l2,0.78051,0.003299,"[-0.004252, 0.010929]",P1 vector_size
