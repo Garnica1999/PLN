@@ -59,7 +59,7 @@ de hashes, configuración de seed y requisitos.
 | Congelamiento de V03 | `experiments/baseline_v03_frozen/hashes.txt`: `mod03b_lr_union.joblib` sha256 `263ed5bd…`, submission `7d7478f2…` (misma huella que `submissions/toxic_submission_v03_lr_union_thr.csv`). Reconstrucción byte a byte verificada. |
 | Holdout v2 | `config/holdout_v2.json`: 248 tweets, pliegue 0 congelado, sha256 `e5b62e5f22c4c63a8c43df4019969504d44c0baa5b503c19ba3560032f5ee6cd`; 2/5 evaluaciones usadas. |
 | Entorno | `requirements.txt` con versiones (Python 3.14.7, scikit-learn 1.8.0, spaCy 3.8.13, torch 2.14.0+rocm7.2 aparte). |
-| Cuaderno | 42 celdas, 26 comprobaciones `[OK]` / 0 fallos, digesto de salidas verificado en la sesión de cierre. |
+| Cuaderno | 42 celdas, 26 comprobaciones `[OK]` / 0 fallos; contenido de salidas reproducible (digesto normalizado `c3aa4198983c6aa7` estable entre ejecuciones; el kernel puede dividir los mensajes de stdout sin cambiar el texto). |
 
 ## Veredicto final
 
