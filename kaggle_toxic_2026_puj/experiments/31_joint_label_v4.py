@@ -115,9 +115,10 @@ def marginalizar(proba_combinaciones: np.ndarray, clases: list[str]) -> np.ndarr
     Returns:
         Matriz de probabilidades por etiqueta.
     """
+    posicion_etiqueta = {"HS": 0, "TR": 1, "AG": 2}
     salida = np.zeros((proba_combinaciones.shape[0], len(ETIQUETAS)))
     for posicion, etiqueta in enumerate(ETIQUETAS):
-        columna = int(etiqueta[1])
+        columna = posicion_etiqueta[etiqueta]
         for indice, clase in enumerate(clases):
             if clase[columna] == "1":
                 salida[:, posicion] += proba_combinaciones[:, indice]
@@ -318,6 +319,7 @@ def main() -> None:
 
     def ajustar_conjunto(
         indice_fold: int,
+        entrenar: np.ndarray,
         indices: np.ndarray,
         mapa: str,
         c: float,
@@ -327,7 +329,8 @@ def main() -> None:
 
         Args:
             indice_fold: posicion del pliegue en la cache de matrices.
-            indices: indices de entrenamiento dentro del desarrollo.
+            entrenar: indices absolutos del pliegue de entrenamiento.
+            indices: subconjunto de `entrenar` que se usa en esta variante.
             mapa: tratamiento de las combinaciones raras.
             c: fuerza de regularizacion.
             peso_clase: ``balanced`` o ``none``.
@@ -343,6 +346,7 @@ def main() -> None:
         elif mapa == "lr4_excluir":
             mascara = np.isin(combinaciones, COMBINACIONES_FRECUENTES)
             etiquetas = combinaciones[mascara]
+            indices = indices[mascara]
         else:
             raise ValueError(f"Tratamiento desconocido: {mapa}")
         modelo = LogisticRegression(
@@ -352,7 +356,11 @@ def main() -> None:
             solver="lbfgs",
             random_state=SEMILLA,
         )
-        modelo.fit(cache[indice_fold][0], etiquetas)
+        # En `lr4_excluir` se descartan filas: la matriz se recorta con las
+        # posiciones *relativas al pliegue* de las mismas filas, porque la cache
+        # esta indexada en el orden de `entrenar`.
+        posiciones = np.searchsorted(entrenar, indices)
+        modelo.fit(cache[indice_fold][0][posiciones], etiquetas)
         proba = modelo.predict_proba(cache[indice_fold][1])
         return proba, [str(clase) for clase in modelo.classes_]
 
@@ -366,7 +374,7 @@ def main() -> None:
             proba_oof = np.zeros((len(desarrollo), len(ETIQUETAS)))
             for indice_fold, (entrenar, validar) in enumerate(pliegues):
                 proba_combinaciones, clases = ajustar_conjunto(
-                    indice_fold, entrenar, mapa, C, peso_clase
+                    indice_fold, entrenar, entrenar, mapa, C, peso_clase
                 )
                 proba_oof[validar] = marginalizar(proba_combinaciones, clases)
             nombre = f"joint:{mapa}_{'bal' if peso_clase == 'balanced' else 'unb'}_C{C}"

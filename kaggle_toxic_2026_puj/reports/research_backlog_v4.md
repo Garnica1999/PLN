@@ -52,3 +52,10 @@ distinta de lo ya cerrado (`reports/v4_gap_analysis.md`).
 3. El holdout congelado no se toca hasta P8 y solo para el mejor finalista (D-025).
 4. La revision bibliografica (`reports/estado_arte_v4.md`) debe existir antes de
    cerrar V4-C01..C05, V4-E01..E03 y V4-G01..G03 (§92).
+
+## Anotaciones de P2 (TRACK B y C) que anaden lineas al pre-registro
+
+| ID | Track | Hipotesis | Por que es nueva | Evidencia que la motiva | Metodo | Validacion | Senal esperada | Criterio de cierre | Estado |
+|---|---|---|---|---|---|---|---|---|---|
+| V4-C06 | C | La degradacion de la reponderacion de features no es del peso en si, sino del desajuste con la penalizacion L2: al multiplicar la matriz por `w_j`, el coeficiente efectivo es `w_j * b_j` y la penalizacion sigue recayendo sobre `b_j` | Ningun experimento de v4 separo el efecto del peso del efecto de la escala | V4-C01/02/03 degradan de forma monotone con la agresividad del esquema (chi2 0.6622 < MI 0.7378 < log-odds 0.7571) | repetir `log_odds_por_etiqueta` con C creciente (2, 10, 50, 200) para reducir el peso de la penalizacion, sobre la geometria V03 | corrected_cv con umbrales V03 + 3/5 pliegues | si la caida se debe a la escala, C alto la reduce | se cierra si ninguna C recupera el nivel de la referencia | added (P2) |
+| V4-A03 | A | El confident learning por etiqueta (`s(x) = p(y_obs)` con OOF) confirma que los 43 ejemplos "posible ruido" son que se labelizan de forma distinta distinguibles | Es la unica forma estandar, agnostica al modelo, de medir ruido; la revision la prioriza (idea 1) | V4-A02 mostro que el ruido textual no explica el error; esta linea cierra el track con evidencia estandar | cleanlab-style: `s` por etiqueta sobre los 1.731 de TRAIN, histograma de dos grupos, cruce con las poblaciones de V4-B02 | descriptiva | distribuciones separables o no | se cierra con el histograma | added (P2, cierre de track) |

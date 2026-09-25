@@ -822,3 +822,42 @@ evidencia, experimento, resultado, conclusion final.
   consistente y se concentra el esfuerzo en el mecanismo que mostro senal.
 - **Evidencia**: `reports/reweighting_v4.json`,
   `reports/figuras/fig_33_reweighting_v4.png`.
+
+## D-028 - P4 (TRACK H): el shift de calibracion del meta se mide y se refuta; el meta de 36 features queda como candidato
+
+- **Contexto**: `advanced_research_v2.md` §4.3 dejo abierta la hipotesis de que
+  el meta v2 no transfirio al leaderboard porque sus entradas (scores OOF de
+  bases ajustadas sobre 4/5 del desarrollo) se undistribuyen al predecir con
+  bases ajustadas sobre el 100 % del train. V4-H01 mide ese efecto dentro del
+  desarrollo, sin usar el holdout ni el test, reproduciendo el mecanismo exacto.
+- **Observacion**: (a) el desplazamiento es **pequeno**: KS medio 0.0624 entre las
+  dos distribuciones; (b) `meta_shift` (bases al 100 %, sin alinear) = 0.7828
+  frente a `meta_control` (mismo regimen que el entrenamiento del meta) = 0.7791;
+  es decir, el shift **no causa dano**, el dano medido es de -0.0036 (a favor);
+  (c) la alineacion por cuantiles recupera +0.00005 (nula) y Platt empeora
+  -0.0171; (d) el meta de 36 features (4 bases x 3 etiquetas x [p, margen,
+  entropia], Ridge alpha=3) alcanza **0.7828 = +0.0056 sobre V03 con 4/5 pliegues
+  mejorados e IC95 del delta [+0.0036, +0.0169]**.
+- **Hipotesis**: el shift de calibracion es la causa de la no transferencia del
+  meta v2 (LB 0.78163 frente a 0.78306 de V03).
+- **Metodo**: `experiments/32_meta_shift_v4.py`; por pliegue externo se calculan
+  las features del meta en dos regimenes (CV interno de 4 pliegues sobre el
+  entrenamiento externo frente a bases al 100 %), y se comparan cuatro
+  situaciones (control, shift, cuantil y Platt) con la misma arquitectura.
+- **Resultado**: filas y artefactos de `V4-H01`; `reports/meta_shift_v4.csv` y
+  `.json`.
+- **Interpretacion**: la hipotesis queda **refutada**: el mecanismo medido es
+  demasiado pequeno para explicar la diferencia de LB, que ademas esta dentro
+  del error estandar del test. La lectura correcta es la de D-020: el meta y V03
+  son indistinguibles en el test, y la "mejora local" del meta era sobreestimada
+  por el mismo mecanismo de seleccion que la produjo.
+- **Decision**: (1) V4-H01 cierra la hipotesis abierta de v2 con evidencia
+  (queda registrada como cerrada, no como candidata a transferir); (2) el meta de
+  36 features **supera el criterio D-016** y pasa a la lista de candidatos de
+  v4, pero se marca con **riesgo de transferencia alto** por el precedente
+  D-020 (mismo mecanismo de stacking, LB 0.78163); (3) no se consume la ultima
+  evaluacion de holdout hasta cerrar la comparativa de P8.
+- **Razon**: separar el mecanismo (cerrado) del candidato (abierto) evita gastar
+  el presupuesto de control en una explicacion que ya se demostro insuficiente.
+- **Evidencia**: `reports/meta_shift_v4.json`,
+  `reports/figuras/fig_36_meta_shift_v4.png`, `features/oof_meta_shift_v4.npz`.

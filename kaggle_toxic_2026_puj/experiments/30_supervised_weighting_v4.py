@@ -40,6 +40,7 @@ import pandas as pd
 from scipy import sparse
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import StratifiedGroupKFold
 from sklearn.preprocessing import normalize
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -54,6 +55,7 @@ from src.data import read_train  # noqa: E402
 from src.evaluation import metricas_multietiqueta  # noqa: E402
 from src.splits import (  # noqa: E402
     ETIQUETAS,
+    combinaciones,
     grupos_fusionados,
     holdout_v2,
     pliegues_corregidos,
@@ -501,56 +503,156 @@ def main() -> None:
             ],
         )
 
-    # 4) Barrido de class weight por etiqueta (ascenso coordenado sobre V03).
-    log("   barrido de class weight por etiqueta (ascenso coordenado)")
-    multiplicadores = np.ones(len(ETIQUETAS))
-    mejor_config = multiplicadores.copy()
-    mejor_probabilidad = None
-    mejor_metrica = -np.inf
-    for ronda in range(RONDAS_COORDENADAS):
-        for posicion in range(len(ETIQUETAS)):
-            for valor in MULTIPLICADORES:
-                prueba = multiplicadores.copy()
-                prueba[posicion] = valor
-                proba_oof = np.zeros((len(desarrollo), len(ETIQUETAS)))
-                for indice, (entrenar, validar) in enumerate(pliegues):
-                    proba_oof[validar] = ajustar_predecir(
-                        cache_v03[indice], y_dev[entrenar], prueba
+    # 4) Barrido de class weight por etiqueta con seleccion **anidada**.
+    # La primera version de este script elegia los multiplicadores sobre el mismo
+    # corrected_cv que despues reportaba (0.7842 para el combo), lo que introduce
+    # sesgo de seleccion. Aqui los multiplicadores se eligen dentro del
+    # entrenamiento de cada pliegue, con un CV interno de 3 pliegues, y solo se
+    # evaluan despues sobre la validacion externa.
+    log("   barrido anidado de class weight (3 rondas x 3 etiquetas x 4 valores)")
+    proba_clase = np.zeros((len(desarrollo), len(ETIQUETAS)))
+    multiplicadores_por_fold: list[list[float]] = []
+
+    def puntuar_configuracion(
+        izquierda: sparse.csr_matrix,
+        pares: list[tuple[np.ndarray, np.ndarray]],
+        y_entrenar: np.ndarray,
+        n_entrenar: int,
+        candidatos: np.ndarray,
+    ) -> float:
+        """Calcula la F1 interna de una configuracion de multiplicadores.
+
+        Args:
+            izquierda: matriz de entrenamiento del pliegue externo (los pliegues
+                internos se particionan dentro de ella).
+            pares: pares de indices **relativos** al entrenamiento del pliegue
+                externo (los que devuelve ``StratifiedGroupKFold.split``).
+            y_entrenar: etiquetas del entrenamiento externo.
+            n_entrenar: numero de filas del entrenamiento externo.
+            candidatos: multiplicadores por etiqueta.
+
+        Returns:
+            F1 media de columnas con los umbrales de V03 en los pliegues internos.
+        """
+        acumuladas = np.zeros((n_entrenar, len(ETIQUETAS)))
+        for filas, columnas in pares:
+            # Los pliegues internos particionan el entrenamiento externo, asi que
+            # tanto `filas` como `columnas` son filas de `izquierda`; `derecha`
+            # (validacion externa) no participa en el CV interno.
+            acumuladas[columnas] = ajustar_predecir(
+                (izquierda[filas], izquierda[columnas]),
+                y_entrenar[filas],
+                candidatos,
+            )
+        return metricas_multietiqueta(
+            y_entrenar, (acumuladas >= UMBRALES_V03[None, :]).astype(int)
+        )["f1_media_columnas"]
+
+    for indice_fold, (entrenar, validar) in enumerate(pliegues):
+        interno = StratifiedGroupKFold(n_splits=3, shuffle=True, random_state=SEMILLA + indice_fold)
+        pares = list(
+            interno.split(
+                desarrollo.iloc[entrenar],
+                combinaciones(desarrollo.iloc[entrenar]).reset_index(drop=True),
+                groups=grupos_dev[entrenar],
+            )
+        )
+        izquierda, derecha = cache_v03[indice_fold]
+
+        candidatos = np.ones(len(ETIQUETAS))
+        mejor_interno = puntuar_configuracion(
+            izquierda, pares, y_dev[entrenar], len(entrenar), candidatos
+        )
+        for _ in range(RONDAS_COORDENADAS):
+            for posicion in range(len(ETIQUETAS)):
+                for valor in MULTIPLICADORES:
+                    prueba = candidatos.copy()
+                    prueba[posicion] = valor
+                    puntuacion = puntuar_configuracion(
+                        izquierda, pares, y_dev[entrenar], len(entrenar), prueba
                     )
-                metrica = metricas_multietiqueta(
-                    y_dev, (proba_oof >= UMBRALES_V03[None, :]).astype(int)
-                )["f1_media_columnas"]
-                if metrica > mejor_metrica:
-                    mejor_metrica = metrica
-                    mejor_config = prueba.copy()
-                    mejor_probabilidad = proba_oof
-        multiplicadores = mejor_config.copy()
-        log(f"      ronda {ronda + 1}: mejor F1 = {mejor_metrica:.4f} con {np.round(mejor_config, 2)}")
-    clave = "clase:barrio_por_etiqueta"
-    oof_guardado[clave] = mejor_probabilidad
-    fila = evaluar_variante(clave, mejor_probabilidad, y_dev, pliegues, pred_ref)
-    fila["multiplicadores"] = ";".join(f"{valor:.2f}" for valor in mejor_config)
+                    if puntuacion > mejor_interno + 1e-9:
+                        mejor_interno = puntuacion
+                        candidatos = prueba
+        multiplicadores_por_fold.append([round(float(valor), 2) for valor in candidatos])
+        proba_clase[validar] = ajustar_predecir(
+            cache_v03[indice_fold], y_dev[entrenar], candidatos
+        )
+        log(f"      pliegue {indice_fold + 1}/5: multiplicadores internos = {np.round(candidatos, 2)}")
+    clave = "clase:barrio_anidado_por_etiqueta"
+    oof_guardado[clave] = proba_clase
+    fila = evaluar_variante(clave, proba_clase, y_dev, pliegues, pred_ref)
+    fila["multiplicadores_por_fold"] = ";".join(
+        "/".join(str(valor) for valor in combo) for combo in multiplicadores_por_fold
+    )
     resultados.append(fila)
     log(
         f"   {clave:38s} corrected_cv={fila['corrected_cv_umbrales_v03']:.4f} "
-        f"multiplicadores={fila['multiplicadores']}"
+        f"pliegues_mejorados={fila['pliegues_mejorados']}/5"
     )
 
-    # 5) V4-C05: sample weight (downweight de la violacion) x class weight.
+    # 5) V4-C05: downweight de la violacion x class weight.
     # El signo es el que funciono en V4-B03: bajar el peso de los ejemplos que
     # mas violan el umbral mejoro a LR y a SVC, mientras que subirlo las empeoro.
+    log("   5/5 V4-C05: downweight de la violacion x class weight anidado")
     dureza = np.load(HARDNESS_PATH, allow_pickle=True)
     assert np.array_equal(dureza["ids"].astype(np.int64), ids_dev)
     violacion = dureza["error_score"].astype(float)
     escala = np.percentile(violacion, 75) - np.percentile(violacion, 25) or 1.0
     z = (violacion - np.median(violacion)) / escala
     pesos_dureza = np.clip(1.0 - 0.5 * z, 0.5, 1.5)
-    correr(
-        "combo:dureza_x_clase",
-        cache_v03,
-        mejor_config,
-        sample_weight=pesos_dureza,
+    proba_combo = np.zeros((len(desarrollo), len(ETIQUETAS)))
+    for indice_fold, (entrenar, validar) in enumerate(pliegues):
+        multiplicadores_fold = np.array(multiplicadores_por_fold[indice_fold])
+        izquierda, derecha = cache_v03[indice_fold]
+        salida = np.zeros((len(validar), len(ETIQUETAS)))
+        for posicion in range(len(ETIQUETAS)):
+            modelo = LogisticRegression(
+                C=2.0, max_iter=1000, solver="liblinear", random_state=SEMILLA
+            )
+            modelo.set_params(
+                class_weight=_pesos_de_clase(
+                    y_dev[entrenar, posicion], multiplicadores_fold[posicion]
+                )
+            )
+            modelo.fit(
+                izquierda, y_dev[entrenar, posicion], sample_weight=pesos_dureza[entrenar]
+            )
+            salida[:, posicion] = modelo.predict_proba(derecha)[:, 1]
+        proba_combo[validar] = salida
+    clave = "combo:downweight_violacion_x_clase"
+    oof_guardado[clave] = proba_combo
+    resultados.append(evaluar_variante(clave, proba_combo, y_dev, pliegues, pred_ref))
+    log(
+        f"   {clave:38s} corrected_cv={resultados[-1]['corrected_cv_umbrales_v03']:.4f} "
+        f"pliegues_mejorados={resultados[-1]['pliegues_mejorados']}/5"
     )
+
+    # 6) V4-C06: la caida del weighting se debe al desajuste con la penalizacion
+    # L2 (al multiplicar por w_j el coeficiente efectivo es w_j * b_j y la
+    # penalizacion sigue recayendo sobre b_j), no al peso en si. Se repite
+    # log_odds con C creciente para reducir el peso de la penalizacion.
+    log("   6/6 V4-C06: log_odds por etiqueta con C creciente")
+    for c in (2.0, 10.0, 50.0, 200.0):
+        proba = np.zeros((len(desarrollo), len(ETIQUETAS)))
+        for indice_fold, (entrenar, validar) in enumerate(pliegues):
+            izquierda, derecha = cache_v03[indice_fold]
+            for posicion in range(len(ETIQUETAS)):
+                pesos = pesos_por_clase(izquierda, y_dev[entrenar, posicion], "log_odds")
+                modelo = LogisticRegression(
+                    C=c, class_weight="balanced", max_iter=2000, solver="liblinear",
+                    random_state=SEMILLA,
+                )
+                modelo.fit(
+                    izquierda.multiply(pesos[None, :]).tocsr(), y_dev[entrenar, posicion]
+                )
+                proba[validar, posicion] = modelo.predict_proba(
+                    derecha.multiply(pesos[None, :]).tocsr()
+                )[:, 1]
+        clave = f"peso:log_odds_C{c:g}"
+        oof_guardado[clave] = proba
+        resultados.append(evaluar_variante(clave, proba, y_dev, pliegues, pred_ref))
+        log(f"   {clave:38s} corrected_cv={resultados[-1]['corrected_cv_umbrales_v03']:.4f}")
 
     tabla = pd.DataFrame(resultados).sort_values("corrected_cv_umbrales_v03", ascending=False)
     CSV_PATH.parent.mkdir(parents=True, exist_ok=True)
@@ -565,7 +667,7 @@ def main() -> None:
     resumen = {
         "experiment_id": "V4-C01..C05",
         "fecha": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-        "duracion_s": round(time.time() - inicio_tempo, 2),
+        "duracion_s": round(time.time() - inicio_tiempo, 2),
         "referencia_v03": referencia,
         "n_variantes": int(len(tabla)),
         "mejor_variante": str(mejor["variante"]),
