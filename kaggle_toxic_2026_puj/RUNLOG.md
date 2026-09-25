@@ -400,6 +400,19 @@ Registro cronologico de ejecuciones. Formato:
 - 11:20 | Pendiente | `FINAL_REPORT.md` aun no incluye la fase v2 (se anadira
   antes de la entrega si Carlos lo pide).
 
+## 2026-09-25 (sondeo LB de los candidatos finales v09/v10/v11)
+
+- 13:45 | Leaderboard | Carlos envio las 3 submissions experimentales.
+  Resultados: v09 (C-EMO) **0.77895**; v10 (C-SYN) **0.77978**; v11 (C-EMO-SYN)
+  **0.78150**. Los tres por debajo de V03 (0.78306); el mejor (v11) queda a
+  -0.00156, dentro del error estandar (~0.013). Gaps local-LB: -0.00199 /
+  +0.00047 / +0.00184. El ranking local no predijo el del LB (C-EMO mejor local,
+  peor LB).
+- 13:50 | Registros | `leaderboard_log.csv` con 12 sondas; estados actualizados
+  en `submission_manifest.csv`; resultados en `final_candidate_comparison.md`;
+  filas FIN-08..10 con el LB en `experiments.csv`; D-024 (cierre: V03 sigue como
+  referencia final).
+
 ## 2026-09-25 (fase final de candidatos: screening, metas restringidos y submissions)
 
 - 13:10 | Screening y evaluacion | `experiments/23_candidatos_finales.py`: OOF

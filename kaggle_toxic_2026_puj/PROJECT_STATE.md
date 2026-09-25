@@ -16,7 +16,7 @@ dependencia de etiquetas mejoro en desarrollo (+0.0081) y en el holdout (+0.0180
 pareado) pero **no transfirio**: LB v08 = 0.78163 vs 0.78306 de v03 (dentro del
 error estandar ~0.013). El paquete P8 cerro las cinco lineas restantes
 (calibracion, encoder de entidades por sparsity 0.5 %, umbrales por rebanada,
-especialistas y espacios por etiqueta) sin mejora. Lectura: con 9 sondas,
+especialistas y espacios por etiqueta) sin mejora. Lectura: con 12 sondas,
 0.78306 esta sesgado al alza por seleccion (winner's curse); el nivel esperado de
 la familia es ~0.776-0.780.
 
@@ -44,12 +44,13 @@ Entregables (actualizados y verificados el 2026-09-25):
   `v10_candidate_b.csv` (C-SYN), `v11_candidate_c.csv` (C-EMO-SYN); manifest en
   `submissions/submission_manifest.csv`; validacion `reports/submission_validation_v2.md`;
   hashes `reports/submission_hashes_v2.json` (reproducibilidad verificada).
-- DECISION (spec 39): **ningun candidato tiene evidencia suficiente para una sonda
-  de leaderboard; V03 sigue siendo la referencia** (holdout 4/5; deltas locales
-  < +0.005 con IC que cruza 0).
-- NEXT ACTION: (1) push de la rama `proyecto-kaggle-toxic-2026-v2`; (2) decision
-  de Carlos sobre sondas opcionales (presupuesto D-016: 2 restantes; el mejor
-  justificado seria C-EMO); (3) entrega del curso (deadline 2026-10-19).
+- **LB DE LOS CANDIDATOS (2026-09-25)**: v09 **0.77895** | v10 **0.77978** | v11
+  **0.78150**; los tres por debajo de V03 (el mejor, v11, a -0.00156, dentro del
+  error estandar ~0.013); el ranking local no predijo el del LB (D-024).
+- DECISION (spec 39, cerrada): **ningun candidato supero a V03; V03 sigue siendo
+  la referencia y la submission final** (12 sondas registradas; D-024).
+- NEXT ACTION: (1) push de la rama `proyecto-kaggle-toxic-2026-v2`; (2) entrega
+  del curso (deadline 2026-10-19); (3) opcional: presentacion.
 
 ## Entregables finales
 

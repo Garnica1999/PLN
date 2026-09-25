@@ -654,3 +654,30 @@ evidencia, experimento, resultado, conclusion final.
   `reports/submission_hashes_v2.json`, `submissions/submission_manifest.csv`,
   `submissions/toxic_submission_v09..v11*.csv`, filas FIN-01..FIN-10 de
   `experiments.csv`; holdout 4/5.
+
+---
+
+## D-024 - Sondeo LB de los candidatos finales: los tres por debajo de V03; cierre de la fase
+
+- **Contexto**: por decision explicita de Carlos se enviaron a Kaggle las tres
+  submissions experimentales de la fase final (v09, v10, v11; D-023).
+- **Observacion**: resultados del LB: v09 (C-EMO) **0.77895**; v10 (C-SYN)
+  **0.77978**; v11 (C-EMO-SYN) **0.78150**. Los tres por debajo de V03 (0.78306);
+  dif del mejor (v11) = -0.00156, muy dentro del error estandar del test
+  (n=1154, EE ~0.013). Gaps local-LB: v09 -0.00199, v10 +0.00047, v11 +0.00184.
+- **Hipotesis**: los metas restringidos (V03 + canales) podrian transferir mejor
+  que el meta de 44 features.
+- **Experimento**: sondas v09/v10/v11 (`submissions/toxic_submission_v09..v11*.csv`).
+- **Resultado**: ninguna supera a V03; el ranking local no predijo el ranking del
+  LB (C-EMO era el mejor local y obtuvo el peor LB; C-EMO-SYN, segundo local,
+  obtuvo el mejor). El par complementario emocion+sintaxis fue el que mejor
+  transfirio, sin alcanzar la referencia.
+- **Decision**: **V03 se mantiene como modelo y submission finales**; la fase
+  final queda cerrada con 12 sondas registradas; no se generan mas sondas.
+- **Razon**: los tres resultados caen dentro de la banda del LB documentada
+  (0.770-0.783) y son indistinguibles entre si y de V03; persistir seria
+  multiplicidad sin hipotesis nueva (condicion de cierre FASE 99-B).
+- **Evidencia**: `submissions/leaderboard_log.csv` (12 sondas),
+  `reports/final_candidate_comparison.md` (resultados LB),
+  `submissions/submission_manifest.csv` (estados actualizados), filas
+  FIN-08..FIN-10 de `experiments.csv`.

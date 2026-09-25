@@ -39,7 +39,7 @@ Referencia v2 (desarrollo): V03 con umbrales = **0.7772** (M2 a 0.5 = 0.7718).
 - El meta mejoro en el desarrollo (+0.0102) y en el holdout congelado (+0.0180),
   y **no transfirio al test**. Su gap dev-LB fue -0.0058, frente al +0.0059
   implicito de v03 (cuyo LB se obtuvo con el modelo entrenado con todo el train).
-- Lectura metodologica: con 9 sondas en total, el maximo observado (0.78306) esta
+- Lectura metodologica: con 12 sondas en total, el maximo observado (0.78306) esta
   sesgado hacia arriba por **seleccion (winner's curse)**. La media de la familia
   union es 0.7769 y el rango completo de sondas (0.77034-0.78306) cabe en ~1
   error estandar. Tratar 0.78306 como un objetivo reproducible seria un error.
@@ -97,7 +97,7 @@ Referencia v2 (desarrollo): V03 con umbrales = **0.7772** (M2 a 0.5 = 0.7718).
 `reports/emocion_nbsvm_ortografia_v2.{csv,json}`, `reports/stacking_v2.{csv,json}`,
 `reports/p7_holdout_resultados.json`, `reports/holdout_evaluaciones_v2.csv`,
 `reports/figuras/fig_27..31_*.png` · `features/v2_*.npz` · scripts
-`experiments/13..22` · 118 filas en `experiments.csv` · D-016 a D-022 en
+`experiments/13..22` · 128 filas en `experiments.csv` · D-016 a D-022 en
 `DECISIONS.md` · artefactos de auditoria (FASES 43/47/50/55/88):
 `reports/error_intersection_v2.csv`, `reports/error_by_label_combination_v2.csv`,
 `reports/model_complementarity_v2.csv`, `reports/feature_catalog_v2.csv`,

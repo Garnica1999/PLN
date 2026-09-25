@@ -3,7 +3,7 @@
 Fecha: 2026-09-25. La especificación maestra está archivada en
 `docs/advanced_research_v2_spec.md` (113 secciones; FASES 0–99). Esta auditoría
 verifica cada FASE contra evidencia en disco: scripts, reportes, `experiments.csv`
-(118 filas), `DECISIONS.md` (D-001…D-022) y los artefactos generados el 2026-09-25.
+(128 filas), `DECISIONS.md` (D-001…D-022) y los artefactos generados el 2026-09-25.
 
 Convención de estados:
 
@@ -75,7 +75,7 @@ Convención de estados:
 | 54 | Feature redundancy | NO EJECUTADA | — | Sin MI/Pearson/Spearman de features densas; la familia densa ya estaba cerrada (fase 1) y el catálogo v2 existe. Brecha documentada. |
 | 55 | Dataset final de features | COMPLETA | `features/v2_structured_features.parquet` (2.885 × 123) + `reports/feature_catalog_v2.csv` (225 features) | Generados y verificados el 2026-09-25 (script 22). |
 | 56 | Versiones | COMPLETA (variante) | Paquetes E2-* y canales (EMO/SYN/TGT/CYT/ORT/NBSVM/META) | Nomenclatura adaptada a los paquetes reales; V03 intacta. |
-| 57 | Research log | COMPLETA | `RUNLOG.md`; `experiments.csv` (118 filas) | Registro acumulativo por experimento y por paquete. |
+| 57 | Research log | COMPLETA | `RUNLOG.md`; `experiments.csv` (128 filas) | Registro acumulativo por experimento y por paquete. |
 | 58 | Decisions | COMPLETA | `DECISIONS.md` D-001…D-022 | Cada decisión con observación/hipótesis/resultado/decisión/evidencia. |
 | 59 | Research backlog | COMPLETA | `reports/research_backlog_v2.md` (estados cerrados 2026-09-25); D-021 | 24/24 líneas evaluadas y cerradas. |
 | 60 | Control computacional | COMPLETA | Reutilización de cachés (`reports/v2_structured_features_manifest.md`) | Sin matrices redundantes; el paquete de artefactos corrió en 7.1 s. |
@@ -102,7 +102,7 @@ Convención de estados:
 | 81 | Bootstrap del ensemble | COMPLETA | P6/P7 (IC 95 % del delta por tweet) | Mejora local con IC>0; no transfirió al LB. |
 | 82 | Criterio de adopción | COMPLETA | D-016 aplicada en P1–P8 | Regla ≥+0.005 y ≥3/5 pliegues (o complementariedad con IC>0) aplicada en cada adopción. |
 | 83 | Research holdout | COMPLETA | P0/P7; `config/holdout_v2.json` (sha256); `reports/holdout_evaluaciones_v2.csv` | 248 tweets congelados; 2/5 evaluaciones usadas. |
-| 84 | Leaderboard | COMPLETA | `submissions/leaderboard_log.csv` (9 sondas) | Envío solo con hipótesis + evidencia local + candidato distinto. |
+| 84 | Leaderboard | COMPLETA | `submissions/leaderboard_log.csv` (12 sondas) | Envío solo con hipótesis + evidencia local + candidato distinto. |
 | 85 | Gap local ↔ leaderboard | COMPLETA | `reports/advanced_research_v2.md`; `submissions/leaderboard_log.csv` | Gap dev-LB cuantificado; winner's curse documentado. |
 | 86 | Test prevalence | COMPLETA | Auditoría de uso del test | Solo `transform`/`predict`; sin pseudo-labeling ni calibración contra el test. |
 | 87 | Auditoría final | COMPLETA | `reports/leakage_audit.md`; `reports/auditoria_final.md`; `reports/rule_audit_v2.md`; `reports/target_encoding_audit_v2.md` | Leakage, reglas y reproducibilidad auditadas con evidencia. |
@@ -154,7 +154,7 @@ Ninguna brecha afecta al entregable (V03) ni a la conclusión de la fase.
 
 **CUMPLIDA CON OBSERVACIONES.** Las fuentes de señal razonables fueron evaluadas
 y documentadas: 24/24 líneas del backlog con resultado numérico y decisión
-(D-021), 9 sondas de leaderboard, 118 experimentos registrados. No se encontró
+(D-021), 12 sondas de leaderboard, 128 experimentos registrados. No se encontró
 mejora que transfiriera al test (V03 0.78306 vs. meta 0.78163, dentro del error
 estándar ≈0.013). Las observaciones son las cuatro brechas acotadas de arriba.
 

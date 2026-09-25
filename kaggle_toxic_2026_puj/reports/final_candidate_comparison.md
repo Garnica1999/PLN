@@ -51,3 +51,19 @@ Fecha: 2026-09-25. Fuente: `reports/final_candidates.csv` y
 - C-EMO-SYN: `submissions/toxic_submission_v11_candidate_c.csv` (sha256 066d46ca12e9...; positivos HS/TR/AG 456/348/428)
 - Artefactos experimentales sin sonda de LB: la decision documentada no cambia (V03 sigue siendo el modelo final y el screening no encontro evidencia para adoptar los candidatos).
 - No se re-evaluo nada: las definiciones y los hiperparametros congelados salen de `reports/final_candidates.csv` y se verifico que reproducen su corrected_cv.
+
+## Resultados en el leaderboard (2026-09-25)
+
+| Sonda | Modelo | Local (corrected) | Kaggle | Gap | Lectura |
+|---|---|---:|---:|---:|---|
+| v09 | C-EMO | 0.78094 | 0.77895 | -0.00199 | no supera a V03 |
+| v10 | C-SYN | 0.77931 | 0.77978 | +0.00047 | no supera a V03 |
+| v11 | C-EMO-SYN | 0.77966 | 0.78150 | +0.00184 | no supera a V03; el mejor de los tres |
+
+- Los tres candidatos caen dentro de la banda documentada del LB (0.770-0.783,
+  ~1 error estandar con n=1154) y por debajo de V03 (0.78306).
+- El ranking local no predijo el ranking del LB (coherente con D-014/D-020):
+  C-EMO fue el mejor local (0.78094) y obtuvo el peor LB (0.77895); C-EMO-SYN
+  fue el segundo local y obtuvo el mejor LB (0.78150).
+- Cierre: V03 se mantiene como referencia final (D-024); las 12 sondas quedan
+  registradas en `submissions/leaderboard_log.csv`.

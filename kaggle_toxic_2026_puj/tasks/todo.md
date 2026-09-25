@@ -58,7 +58,7 @@ Estados: pendiente / en curso / hecho / cerrado (sin mejora) / descartado.
 
 - [hecho] P7.1 Finalistas evaluados en el holdout congelado (2/5 evaluaciones, P7-01 V03 y P7-02 meta): V03 0.8285 vs meta 0.8465 (delta +0.0180; regla pre-registrada meta >= V03 - 0.005). Evidencia: `experiments/18_p7_holdout_y_submission_v08.py`, `reports/p7_holdout_resultados.json`, `reports/holdout_evaluaciones_v2.csv`
 - [pendiente] P7.2 Auditoria (leakage/reglas/reproducibilidad) del candidato final
-- [en curso] P7.3 2-3 sondas de LB con hipotesis: submission `submissions/toxic_submission_v08_meta_v2.csv` generada y validada (sonda v2 del meta Ridge alpha=3; la envia Carlos; hipotesis: superar el LB de v03 0.78306)
+- [hecho] P7.3 2-3 sondas de LB con hipotesis: submission `submissions/toxic_submission_v08_meta_v2.csv` generada y validada (sonda v2 del meta Ridge alpha=3; la envia Carlos; hipotesis: superar el LB de v03 0.78306) | CIERRE 2026-09-25: sondas v09/v10/v11 enviadas (LB 0.77895 / 0.77978 / 0.78150); ninguna supera a V03 (0.78306); V03 sigue como referencia (D-024)
 - [pendiente] P7.4 Actualizar notebook e informe si el candidato supera V03
 - [pendiente] P7.5 Actualizar memoria (PROJECT_STATE, RUNLOG, DECISIONS, experiments.csv)
 

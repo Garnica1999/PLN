@@ -486,6 +486,9 @@ Contexto: tras cerrar la fase competitiva (D-014), se ejecutó una segunda ronda
 | P6 | Stacking v2 (E2-17/18) | META-BASES-RIDGE alpha=3 | **0,7874** | **+0,0102** (3/5) | Adoptado por complementariedad (gain +0,0089, IC [+0,0019, +0,0160]); los canales no aportan (Δ −0,0006); recall de AG colectiva 0,452 → 0,574 |
 | P7 | Holdout congelado | meta Ridge alpha=3 | 0,8465 (V03 0,8285) | +0,0180 pareado | GO (IC [+0,0003, +0,0372]) |
 | P7 | Sonda de leaderboard | v08 meta v2 | — | LB 0,78163 | **No adoptada** (−0,0014 vs v03) |
+| v09 C-EMO | V03 + emoción (Ridge α=0,3) | 0,78094 | 0,77895 | −0,0020 |
+| v10 C-SYN | V03 + sintaxis (Ridge α=1) | 0,77931 | 0,77978 | +0,0005 |
+| v11 C-EMO-SYN | V03 + emoción + sintaxis (Ridge α=1) | 0,77966 | 0,78150 | +0,0018 |
 
 Lectura: las líneas de representación (targeting, sintaxis, cita/negación, emoción, NB-SVM, ortografía) se cerraron sin mejora, repitiendo el patrón histórico de que la concatenación de canales degrada; el único valor apareció en la **fusión tardía a nivel meta**, que mejoró en desarrollo y en el holdout congelado pero no en el test.
 
@@ -500,7 +503,7 @@ El candidato v2 es el **meta-modelo de dependencia de etiquetas** (RidgeClassifi
 
 ### 26.4 Lectura honesta del leaderboard
 
-La fase v2 dejó **9 sondas** en `submissions/leaderboard_log.csv`:
+La fase v2 y la fase final de candidatos dejaron **12 sondas** en `submissions/leaderboard_log.csv`:
 
 | Sonda | Modelo | Local (OOF) | Kaggle | Gap |
 |---|---|---:|---:|---:|
@@ -515,9 +518,10 @@ La fase v2 dejó **9 sondas** en `submissions/leaderboard_log.csv`:
 | v08 meta v2 | Meta Ridge alpha=3 (stacking v2) | 0,78740 | 0,78163 | −0,0058 |
 
 - **La media de las 7 sondas de la familia union (v02–v08) es 0,7769** y el rango completo de esas sondas (0,77034–0,78306) es de 0,0127, es decir **≈ 0,99 errores estándar** (SE ≈ 0,0129 con n = 1.154): el ranking del leaderboard a este nivel es, en gran parte, ruido de muestreo.
-- El máximo observado (0,78306 de v03) está **sesgado hacia arriba por selección (winner's curse)**: se eligió como máximo de 9 mediciones ruidosas, y tratarlo como objetivo reproducible sería un error.
+- El máximo observado (0,78306 de v03) está **sesgado hacia arriba por selección (winner's curse)**: se eligió como máximo de 12 mediciones ruidosas, y tratarlo como objetivo reproducible sería un error.
 - Los únicos contrastes pareados fiables son los que comparten casi todo el modelo: **v02 vs v03 (+0,0031** por umbrales) y **v03 vs v08 (−0,0014)**; ambos muy por debajo del error estándar.
 - La sonda v08 confirma que la ventaja local del meta (respaldada incluso por un holdout congelado) no predijo la transferencia; la única lectura que resiste es que **V03 y el meta son indistinguibles en el test**.
+- Las tres sondas de la fase final (v09–v11, metas restringidos sobre V03 + canales) obtuvieron 0,77895 / 0,77978 / 0,78150: las tres por debajo de V03 y dentro de la banda; el ranking local volvió a no predecir el del LB (C-EMO era el mejor local de los tres y obtuvo el peor LB; C-EMO-SYN, el segundo local, obtuvo el mejor).
 
 Nota de comparabilidad: el local de v08 es el `corrected_cv` del desarrollo (1.483 filas, protocolo D-016) y no es directamente comparable con el OOF histórico de v01–v07 (1.731 filas, solo near-duplicados); el gap de v08 se calcula contra ese local corregido, igual que el +0,0059 implícito de v03 en la misma base (0,78306 − 0,7772).
 
