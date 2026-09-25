@@ -1,0 +1,7 @@
+escenario,variante,f1_media_columnas,f1_HS,f1_TR,f1_AG,delta_vs_sin_regla,casos_TR1_con_HS0,casos_TR1_con_HS0_y_TR_true_1,casos_AG1_con_HS0,casos_AG1_con_HS0_y_AG_true_1
+umbral_0_5,sin regla,0.792659,0.779917,0.828708,0.769351,0.0,32,15,38,23
+umbral_0_5,HS=0 => TR=0,0.791513,0.779917,0.825271,0.769351,-0.001146,32,15,38,23
+umbral_0_5,HS=0 => TR=0 y AG=0,0.78701,0.779917,0.825271,0.755842,-0.005649,32,15,38,23
+umbral_optimo,sin regla,0.798933,0.789711,0.829644,0.777444,0.0,13,6,29,20
+umbral_optimo,HS=0 => TR=0,0.798538,0.789711,0.82846,0.777444,-0.000395,13,6,29,20
+umbral_optimo,HS=0 => TR=0 y AG=0,0.794066,0.789711,0.82846,0.764028,-0.004867,13,6,29,20

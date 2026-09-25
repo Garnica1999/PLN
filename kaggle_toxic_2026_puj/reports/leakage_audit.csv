@@ -1,0 +1,7 @@
+comparacion,metrica,valor
+train-train,pares_ge_0.90,3.0
+train-test,pares_ge_0.90,6.0
+train-train,pares_0.80_0.90,4.0
+train-test,pares_0.80_0.90,10.0
+train-train,similitud_maxima,1.0
+train-test,similitud_maxima,1.0

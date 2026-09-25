@@ -1,0 +1,91 @@
+etiqueta,tipo_error,probabilidad,umbral,HS_true,TR_true,AG_true,HS_pred,TR_pred,AG_pred,id,tiene_mencion_inicial,tiene_insulto_lexico,tiene_referencia_colectiva,tiene_risa,tiene_url,tiene_hashtag,tiene_segunda_persona,tiene_entidad_html,n_caracteres,texto_200
+HS,falso_positivo,0.9508,0.44,0,0,0,1,1,1,23076,1,1,0,0,0,0,1,0,52,@CamilaArvayo Cllate todo te queda bien zorra te amo
+HS,falso_positivo,0.9487,0.44,0,0,0,1,1,1,24829,1,1,1,0,0,0,0,0,68,@defays_mikael @rickcenturion cllate zorra ac los leprosos no opinan
+HS,falso_positivo,0.9466,0.44,0,0,0,1,1,1,21892,1,1,0,0,0,0,1,0,43,@saancisco Callate puta tu eres el traidor.
+HS,falso_positivo,0.9299,0.44,0,0,0,1,1,1,24006,1,1,0,0,0,0,1,0,49,@Troi_2_Tata que puta novia??? tu eres mi novia!!
+HS,falso_positivo,0.9113,0.44,0,0,0,1,1,1,21050,1,1,0,0,0,0,0,0,54,@GvyMC @Wismichu Callate puta rata ya estas llorando??
+HS,falso_positivo,0.9112,0.44,0,0,0,1,1,1,23172,1,1,0,0,0,0,0,0,33,@mariogigasanche Tu eres mi perra
+HS,falso_positivo,0.9103,0.44,0,0,0,1,1,1,24402,0,1,0,0,0,0,1,0,77,zorra eres tu que no te sientes hombre y no entiendes que toda mujer es bella
+HS,falso_positivo,0.9076,0.44,0,0,0,1,1,1,24929,0,1,0,0,0,0,0,0,34,la mujer es una perla no una perra
+HS,falso_positivo,0.897,0.44,0,0,0,1,0,1,21865,0,1,0,0,1,0,0,0,65,Y CHILEEE??? CUNDO VISITAN A LOS SUDACAS  https://t.co/OP6Tbw2mBk
+HS,falso_positivo,0.8847,0.44,0,0,0,1,0,1,20463,0,0,0,0,0,0,0,0,16,Y yo sin papeles
+HS,falso_positivo,0.8826,0.44,0,0,0,1,1,1,21362,0,1,0,0,0,0,0,0,48,Cllate Zorra' el 'cllate perro' de este semestre
+HS,falso_positivo,0.8797,0.44,0,0,0,1,1,1,20504,1,1,0,0,0,0,0,0,41,@AldoGarFer Tu eres mi perra en beer pong
+HS,falso_positivo,0.8788,0.44,0,0,0,1,1,1,21150,1,1,0,1,0,0,0,0,54,@agos_goroso CALLATE HIJA DE PUTA JAJAJAJAJAJAJAJAJAJA
+HS,falso_positivo,0.8729,0.44,0,0,0,1,1,1,23972,0,1,0,0,1,0,1,0,87,Es como 'maldita sea cllate ese maldito hocico perra de mierda' https://t.co/cdca5TXBnk
+HS,falso_positivo,0.8691,0.44,0,0,0,1,1,1,21497,0,1,0,0,0,0,1,0,48,Talvez quede como zorra pero te lo mereces Socia
+HS,falso_negativo,0.0621,0.44,1,1,1,0,0,0,20082,0,0,0,1,1,0,0,0,74,Comemela XDDD y la cara tambin!!   No nos pasemos  https://t.co/t3o5yHY0zb
+HS,falso_negativo,0.0713,0.44,1,0,1,0,0,0,23146,0,0,0,0,0,0,0,0,39,Indios hijos de puta. Soltad al gabacho
+HS,falso_negativo,0.0752,0.44,1,1,1,0,0,0,20852,0,1,1,0,1,0,1,0,59,Comemela mientras te meto los dedos https://t.co/R1gEttjD4S
+HS,falso_negativo,0.0943,0.44,1,1,1,0,0,0,22183,0,0,0,0,0,0,0,1,45,Nunca confes en el gordito gero orejon &gt;:(
+HS,falso_negativo,0.1138,0.44,1,0,0,0,0,0,21799,0,1,0,0,0,0,0,0,20,El Arabe es un flojo
+HS,falso_negativo,0.1261,0.44,1,1,0,0,0,0,21904,1,0,1,0,0,0,1,0,171,@EPN @JuanOrlandoH @sanchezceren @jimmymoralesgt Qu ests haciendo con respecto a tus nios ciudadanos indocumentados en mi pas? Debes asumir la responsabilidad de tu gente.
+HS,falso_negativo,0.127,0.44,1,0,0,0,0,0,24386,0,0,0,0,1,0,0,0,113,Pues si la verdad si yo enseo la polla por internet aceptara con resignacin una violacion https://t.co/n4mXClKBGJ
+HS,falso_negativo,0.1273,0.44,1,0,1,0,0,0,24061,0,0,1,0,1,0,0,0,73,"""""los estupidos """"""""rabes"""""""" de la universidad https://t.co/QhxBVSRmMx"""""
+HS,falso_negativo,0.1316,0.44,1,0,1,0,0,0,21408,0,0,0,0,0,0,1,0,34,m da miedo cuando me sigue un rabe
+HS,falso_negativo,0.1332,0.44,1,0,1,0,0,0,22174,0,1,0,0,0,1,1,0,88,#ChileParaLosChilenos fuera la escoria inmigrante! @sebastianpinera traidor vende patria
+HS,falso_negativo,0.144,0.44,1,1,1,0,0,0,23628,0,1,0,0,0,0,0,0,92,racismo es que en la fila del banco me pidan guardar el celular a m y no al gero de adelante
+HS,falso_negativo,0.1515,0.44,1,0,0,0,0,0,20413,0,0,1,0,1,0,0,0,75,En un descuido y los geros estn detrs de todo esto! https://t.co/p8IiBPxtHd
+HS,falso_negativo,0.1597,0.44,1,0,1,0,0,0,21733,0,1,1,0,1,0,0,0,299,"""""A nuestro pas llegan ya no solamente los migrantes tradicionales desde la fachada noroccidental africana. Ahora proceden de toda frica y de Asia. Somos la plataforma europea """"""""ideal"""""""" para refug..."
+HS,falso_negativo,0.1643,0.44,1,1,1,0,0,0,23664,1,1,0,0,0,0,1,0,205,@cohanxmcbride QUE LA RE PUTA MADRE QUE MICAELA LA CONCHA DE SU MADRE NO PUEDO CREERLO AY TE LO MERECES PENDEJA LA PUTA QUE ME PARIO VES LOCA POR ESO SOS TAN CRACK TE AMO TE IDOLATRO TE COJbueno eso n...
+HS,falso_negativo,0.1707,0.44,1,0,1,0,0,0,20144,0,1,0,0,1,0,0,0,121,La polica britnica permiti la violacin de 1.000 nias pobres por parte de rabes https://t.co/2uRICNLjO9 via @laotracara_co
+TR,falso_positivo,0.9663,0.51,0,0,0,1,1,1,21892,1,1,0,0,0,0,1,0,43,@saancisco Callate puta tu eres el traidor.
+TR,falso_positivo,0.9656,0.51,0,0,0,1,1,1,24006,1,1,0,0,0,0,1,0,49,@Troi_2_Tata que puta novia??? tu eres mi novia!!
+TR,falso_positivo,0.9537,0.51,0,0,0,1,1,1,23172,1,1,0,0,0,0,0,0,33,@mariogigasanche Tu eres mi perra
+TR,falso_positivo,0.9511,0.51,0,0,0,1,1,1,23076,1,1,0,0,0,0,1,0,52,@CamilaArvayo Cllate todo te queda bien zorra te amo
+TR,falso_positivo,0.9481,0.51,0,0,0,1,1,1,21050,1,1,0,0,0,0,0,0,54,@GvyMC @Wismichu Callate puta rata ya estas llorando??
+TR,falso_positivo,0.9475,0.51,0,0,0,1,1,1,20504,1,1,0,0,0,0,0,0,41,@AldoGarFer Tu eres mi perra en beer pong
+TR,falso_positivo,0.9467,0.51,0,0,0,1,1,1,21150,1,1,0,1,0,0,0,0,54,@agos_goroso CALLATE HIJA DE PUTA JAJAJAJAJAJAJAJAJAJA
+TR,falso_positivo,0.9295,0.51,0,0,0,1,1,1,21362,0,1,0,0,0,0,0,0,48,Cllate Zorra' el 'cllate perro' de este semestre
+TR,falso_positivo,0.9254,0.51,0,0,0,1,1,1,20273,1,1,0,0,0,0,1,0,66,@PedroArtZGFX @Smoshigames1999 Tu eres mio puta y te callas cabron
+TR,falso_positivo,0.9217,0.51,0,0,0,1,1,1,21497,0,1,0,0,0,0,1,0,48,Talvez quede como zorra pero te lo mereces Socia
+TR,falso_positivo,0.9036,0.51,0,0,0,1,1,1,24829,1,1,1,0,0,0,0,0,68,@defays_mikael @rickcenturion cllate zorra ac los leprosos no opinan
+TR,falso_positivo,0.9012,0.51,1,0,1,1,1,1,20458,1,1,1,0,0,0,0,0,140,@kanouted10S @kike57108578 Dice claramente mi novia es sevillista y es una puta ms ... Evidentemente se refiere a las sevillistas como putas
+TR,falso_positivo,0.8995,0.51,0,0,0,1,1,1,21660,0,1,0,0,1,0,1,0,79,tu te mereces mas que un escarnio publico hija de perra https://t.co/2mVpT5YoPt
+TR,falso_positivo,0.8883,0.51,0,0,0,1,1,1,23068,1,1,0,0,0,0,1,0,72,@ivan4bolivar Cllate que asustas a la perra. (Y a m tambin me das miedo)
+TR,falso_positivo,0.8698,0.51,0,0,0,1,1,1,24077,1,1,0,0,0,0,1,0,89,@Miriamsexxx Me parece que sera bueno hacerte eso y ms. Tu eres ms caliente que esa puta.
+TR,falso_negativo,0.0241,0.51,1,1,0,1,0,0,24269,0,1,0,0,1,1,0,0,226,El agressor de una mujer de 25 ha sido detenido. La agresin se produjo en la estacin de Miln. Es un inmigrante ilegal de origen Nigeriano con antecedentes #StopInvasion #CloseBorders #IllegalImmigrati...
+TR,falso_negativo,0.035,0.51,1,1,1,0,0,0,20082,0,0,0,1,1,0,0,0,74,Comemela XDDD y la cara tambin!!   No nos pasemos  https://t.co/t3o5yHY0zb
+TR,falso_negativo,0.036,0.51,1,1,1,0,0,0,20852,0,1,1,0,1,0,1,0,59,Comemela mientras te meto los dedos https://t.co/R1gEttjD4S
+TR,falso_negativo,0.0441,0.51,1,1,0,0,0,0,20295,1,1,1,0,0,0,0,0,270,@Victor_EstradaG seor presidente me robaron los tapones de mi auto. A las afueras de suburbano de lechera.  Llegu entre 9:30 pm y haba combis y el indocumentado de labios prominentes. El cual ya he vi...
+TR,falso_negativo,0.0454,0.51,1,1,0,0,0,0,24241,0,1,0,0,1,0,0,0,225,Estimados @FcpysUNCuyo quisiera saber por qu tienen a este antisemita dando clase en su universidad avalan este tipo de pensamientos? esto es lo que se ensea en la materia Estudios rabes Contemporneos...
+TR,falso_negativo,0.0518,0.51,1,1,1,1,0,0,23832,0,0,0,0,1,0,0,0,57,Al final un iletrado sin papeles. https://t.co/nQ4IptGJLd
+TR,falso_negativo,0.0533,0.51,1,1,0,1,0,1,20138,0,1,1,0,0,0,0,0,102,Ea pues ya solo falta que Albert Rivera vaya a Algeciras a abrazarte con los inmigrantes subsaharianos
+TR,falso_negativo,0.0607,0.51,1,1,0,0,0,0,21904,1,0,1,0,0,0,1,0,171,@EPN @JuanOrlandoH @sanchezceren @jimmymoralesgt Qu ests haciendo con respecto a tus nios ciudadanos indocumentados en mi pas? Debes asumir la responsabilidad de tu gente.
+TR,falso_negativo,0.0851,0.51,1,1,1,0,0,0,23628,0,1,0,0,0,0,0,0,92,racismo es que en la fila del banco me pidan guardar el celular a m y no al gero de adelante
+TR,falso_negativo,0.0873,0.51,1,1,1,0,0,0,22183,0,0,0,0,0,0,0,1,45,Nunca confes en el gordito gero orejon &gt;:(
+TR,falso_negativo,0.0922,0.51,1,1,1,0,0,0,20857,0,1,1,0,0,0,0,0,102,Mis vecinos estaban escuchando msica al palo y pasaron de rabe a Do I Wanna Know? Literal my two moods
+TR,falso_negativo,0.1059,0.51,1,1,1,0,0,0,23922,0,1,0,0,1,0,0,0,212,Pobre moromierda. Pues a mi me parece mas digna y respetable la vida de una linda gallina que acabar en un KFC que se semita culturizado en el pas de la violacin que acaban de  dejar libre https://t.c...
+TR,falso_negativo,0.1071,0.51,1,1,1,0,0,0,21996,0,1,1,0,1,0,1,0,217,Debera sacar un libro donde se cuente todas las veces que me han deseado la muerte por tonteras. (Esta puta payasa me deseo la muerte dos veces por un puto dibujo de mierda.Para echarse a rer.) https:...
+TR,falso_negativo,0.1265,0.51,1,1,0,0,0,0,23283,1,1,0,0,0,0,1,0,60,@TaigaDeLimon gritame y pisame la polla con una falda puesta
+TR,falso_negativo,0.1273,0.51,1,1,1,1,0,1,22200,0,1,1,0,1,0,0,0,177,Aqu podemos ver a un subsahariano (negro) azotando a un turista con la hebilla del cinturn. Que diran los medios de comunicacin si hubiera sido al revs.  https://t.co/hWbdXKgrHn
+AG,falso_positivo,0.965,0.46,1,1,0,1,1,1,22524,1,1,0,1,0,0,0,0,30,@DeenisseMb Jeje callate perra
+AG,falso_positivo,0.9539,0.46,0,0,0,1,1,1,21892,1,1,0,0,0,0,1,0,43,@saancisco Callate puta tu eres el traidor.
+AG,falso_positivo,0.939,0.46,0,0,0,1,1,1,24829,1,1,1,0,0,0,0,0,68,@defays_mikael @rickcenturion cllate zorra ac los leprosos no opinan
+AG,falso_positivo,0.9331,0.46,1,1,0,1,1,1,22628,1,1,0,0,0,0,1,0,30,@kleopatreus T eres bien perra
+AG,falso_positivo,0.9305,0.46,0,0,0,1,1,1,21150,1,1,0,1,0,0,0,0,54,@agos_goroso CALLATE HIJA DE PUTA JAJAJAJAJAJAJAJAJAJA
+AG,falso_positivo,0.9151,0.46,0,0,0,1,1,1,21050,1,1,0,0,0,0,0,0,54,@GvyMC @Wismichu Callate puta rata ya estas llorando??
+AG,falso_positivo,0.9142,0.46,0,0,0,1,1,1,23076,1,1,0,0,0,0,1,0,52,@CamilaArvayo Cllate todo te queda bien zorra te amo
+AG,falso_positivo,0.9138,0.46,0,0,0,1,1,1,21362,0,1,0,0,0,0,0,0,48,Cllate Zorra' el 'cllate perro' de este semestre
+AG,falso_positivo,0.8961,0.46,0,0,0,1,1,1,23972,0,1,0,0,1,0,1,0,87,Es como 'maldita sea cllate ese maldito hocico perra de mierda' https://t.co/cdca5TXBnk
+AG,falso_positivo,0.896,0.46,0,0,0,1,1,1,24006,1,1,0,0,0,0,1,0,49,@Troi_2_Tata que puta novia??? tu eres mi novia!!
+AG,falso_positivo,0.8916,0.46,0,0,0,1,1,1,21497,0,1,0,0,0,0,1,0,48,Talvez quede como zorra pero te lo mereces Socia
+AG,falso_positivo,0.8751,0.46,0,0,0,1,1,1,20273,1,1,0,0,0,0,1,0,66,@PedroArtZGFX @Smoshigames1999 Tu eres mio puta y te callas cabron
+AG,falso_positivo,0.8732,0.46,0,0,0,1,1,1,24454,0,1,0,0,1,1,1,0,203,Cllate negro Ql ! Cualquier numero 1!he sacado ms que VOH ! T anda cuidarle la zorra a la Gigi mejor mira que en cualquier momento te deja por otro cantante #PartyChilensisFtWebeo https://t.co/ciNKBP3...
+AG,falso_positivo,0.8697,0.46,1,1,0,1,1,1,22924,1,1,0,0,0,0,1,0,35,@emjuarez7 T eres mi favorita perra
+AG,falso_positivo,0.8634,0.46,0,0,0,1,1,1,23414,1,1,0,0,0,0,1,0,80,@Subaru_Saka5 @kingsonbra317 no es una zorra tu eres un maldito mocoso y un puto
+AG,falso_negativo,0.056,0.46,1,0,1,0,0,0,21408,0,0,0,0,0,0,1,0,34,m da miedo cuando me sigue un rabe
+AG,falso_negativo,0.081,0.46,1,1,1,0,0,0,20852,0,1,1,0,1,0,1,0,59,Comemela mientras te meto los dedos https://t.co/R1gEttjD4S
+AG,falso_negativo,0.1026,0.46,1,1,1,0,0,0,23628,0,1,0,0,0,0,0,0,92,racismo es que en la fila del banco me pidan guardar el celular a m y no al gero de adelante
+AG,falso_negativo,0.1169,0.46,0,0,1,0,0,0,21041,0,1,1,0,1,0,1,0,183,Trump arremete contra las mujeres que lo acusan de acoso sexual; asegura que las denuncias de las 16 mujeres son 'historias inventadas' https://t.co/5A4r7PPtYt https://t.co/UePk8310gP
+AG,falso_negativo,0.1224,0.46,1,0,1,0,0,0,23146,0,0,0,0,0,0,0,0,39,Indios hijos de puta. Soltad al gabacho
+AG,falso_negativo,0.1226,0.46,1,0,1,0,0,0,22424,0,1,0,0,0,0,1,0,120,Cuando decs que una mujer es guarra en la cama me la imagino lanzdoos caca y haciendo pis en vuestra cara y me ro mucho.
+AG,falso_negativo,0.1245,0.46,1,1,1,0,0,0,20082,0,0,0,1,1,0,0,0,74,Comemela XDDD y la cara tambin!!   No nos pasemos  https://t.co/t3o5yHY0zb
+AG,falso_negativo,0.1428,0.46,1,1,1,0,0,0,22183,0,0,0,0,0,0,0,1,45,Nunca confes en el gordito gero orejon &gt;:(
+AG,falso_negativo,0.1434,0.46,1,1,1,0,0,0,23922,0,1,0,0,1,0,0,0,212,Pobre moromierda. Pues a mi me parece mas digna y respetable la vida de una linda gallina que acabar en un KFC que se semita culturizado en el pas de la violacin que acaban de  dejar libre https://t.c...
+AG,falso_negativo,0.145,0.46,1,1,1,1,0,0,23832,0,0,0,0,1,0,0,0,57,Al final un iletrado sin papeles. https://t.co/nQ4IptGJLd
+AG,falso_negativo,0.1478,0.46,1,0,1,0,0,0,22596,0,0,0,0,1,0,1,0,131,Se quejan del 'acoso' y hacen este tipo de publicidad.... Y ah van tu todas a 'provocar atraccin masculina' https://t.co/btzgELFrn1
+AG,falso_negativo,0.1487,0.46,1,0,1,0,0,0,22174,0,1,0,0,0,1,1,0,88,#ChileParaLosChilenos fuera la escoria inmigrante! @sebastianpinera traidor vende patria
+AG,falso_negativo,0.1557,0.46,1,0,1,0,0,0,23631,0,0,1,0,1,1,1,0,225,El Estado terrorista de Israel cierra un hospital de campaa que instal para atender a los terroristas coincidiendo con que el Ejrcito rabe Sirio gana terreno en el Goln. #Siria  https://t.co/0u4XobScB...
+AG,falso_negativo,0.1639,0.46,1,0,1,0,0,0,22678,0,1,0,0,0,0,0,0,63,Quiero vivir en suecia lastima que no soy un arabe de mierda :(
+AG,falso_negativo,0.167,0.46,1,0,1,0,0,0,21410,0,1,1,0,1,0,1,0,302,este tipo es un complice d todos estos aos d bobolucion robolucion ahora ve al corrupto andres Izarra y no ve todos con los q anda desde los q estan en VTV y telesur q se robaron las antenas de RCTV t...

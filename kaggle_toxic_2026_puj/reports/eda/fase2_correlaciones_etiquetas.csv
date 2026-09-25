@@ -1,0 +1,11 @@
+variable_a,variable_b,tipo,phi,v_cramer,spearman,p_valor,n,coocurrencia_a1_b1,p_valor_bh,significativo_bh
+HS,TR,binaria,0.7431,0.743,,6.6810300250638e-210,1731,519,0.0,1
+HS,AG,binaria,0.8314,0.8313,,3.6773862106268564e-262,1731,636,0.0,1
+HS,n_caracteres,continua,,,-0.1207,4.714441727675004e-07,1731,0,0.0,1
+HS,n_palabras,continua,,,-0.1415,3.4057369571780878e-09,1731,0,0.0,1
+TR,AG,binaria,0.7589,0.7588,,8.192481129309445e-219,1731,491,0.0,1
+TR,n_caracteres,continua,,,-0.293,1.2934479788603328e-35,1731,0,0.0,1
+TR,n_palabras,continua,,,-0.308,2.2920046031090963e-39,1731,0,0.0,1
+AG,n_caracteres,continua,,,-0.1374,9.440304089861692e-09,1731,0,0.0,1
+AG,n_palabras,continua,,,-0.164,6.733220610812509e-12,1731,0,0.0,1
+n_caracteres,n_palabras,continua,,,0.9632,0.0,1731,0,0.0,1

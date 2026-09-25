@@ -1,0 +1,13 @@
+variable,archivo,tipo,dominio,descripcion_oficial,significado_verificado,nulos,notas
+id,toxic_train.csv / toxic_test.csv,entero,20001-24999,identificador unico del texto,identificador local reindexado (no es el id de Twitter); unico por archivo y disjunto entre train y test,0,orden no asociado a las etiquetas (Spearman p>0.49; chi2 p>0.20)
+text,toxic_train.csv / toxic_test.csv,texto,texto libre en espanol,contenido del tuit o comentario,texto normalizado a ASCII por los organizadores (sin tildes ni enye); longitud 6-306 caracteres (mediana 91),0,contiene URLs t.co; menciones @usuario; hashtags; 5 textos duplicados dentro de test
+HS,toxic_train.csv,entero,0/1,indica si hay discurso de odio (1 = si),discurso de odio contra un colectivo o persona,0,756 positivos (43.67%)
+TR,toxic_train.csv,entero,0/1,indica si el discurso esta dirigido contra una persona o grupo (1 = si),definicion oficial ambigua vs. esquema HatEval (individuo vs grupo); caracterizacion empirica en Fase 2,0,519 positivos (29.98%); TR=1 solo ocurre con HS=1 (0 violaciones)
+AG,toxic_train.csv,entero,0/1,indica si el texto es agresivo (1 = si),agresividad del autor,0,662 positivos (38.24%); 26 casos con AG=1 y HS=0
+HS,submission.csv,entero,0/1,columna a predecir,idem HS,0,plantilla oficial con todo 1
+TR,submission.csv,entero,0/1,columna a predecir,idem TR,0,plantilla oficial con todo 1
+AG,submission.csv,entero,0/1,columna a predecir,idem AG,0,plantilla oficial con todo 1
+METRICA,kaggle,F1 Score,-,F1 Score (leaderboard privado),etiqueta de metrica de Kaggle; implementacion exacta por confirmar (E00): hipotesis primaria = media column-wise de F1 binaria,-,tag oficial: https://scikit-learn.org/stable/modules/generated/sklearn.metrics.f1_score.html
+DEADLINE,kaggle,fecha,2026-10-19T23:00:00Z,fecha limite de la competencia,confirmada via API de Kaggle,-,max 10 envios por dia; equipo maximo 10
+FORMATO_SUBMISSION,submission.csv,csv,-,"id,HS,TR,AG",separador coma; 1154 filas + cabecera; ids identicos y en el mismo orden que toxic_test.csv; valores binarios,-,validado en experiments/00_auditoria_datos.py
+FUENTE,kaggle,-,-,competencia TweetToxic_2026_PUJ,organizacion JarvisLab_PUJ (antes NLP_Course_PUJ); id 167384; licencia MIT,-,descargado el 2026-09-22 con kaggle CLI 2.2.4

@@ -1,0 +1,1880 @@
+{
+  "metadata": {
+    "fecha": "2026-09-22",
+    "script": "experiments/05_ensembles.py",
+    "competencia": "KAGGLE_TOXIC_2026_PUJ",
+    "fase": "Fase 13b (ensembles con evaluacion anidada y umbrales robustos)",
+    "metrica_primaria": "f1_media_columnas",
+    "validacion": "StratifiedGroupKFold(5, shuffle=True, random_state=42) agrupado por near-duplicado y estratificado por HSxTRxAG; evaluacion anidada leave-one-fold-out",
+    "limitacion_anidado": "Las probabilidades base son OOF compartidas: la prediccion de un pliegue proviene de modelos entrenados con los otros pliegues, incluido el de evaluacion. La estimacion anidada del ensemble es por ello algo optimista frente a un refit real; el single se evalua con el mismo protocolo.",
+    "sin_fuga_test": "el test solo se usa para predecir si el ganador supera la regla",
+    "tolerancia_replicacion": 1e-06,
+    "segundos_oof": 23.16,
+    "segundos_refit": 0.0,
+    "regla_submission": "generar submission solo si el ganador supera a MOD-03b por >= +0.005 en la evaluacion anidada"
+  },
+  "verificacion_bases": {
+    "M1": {
+      "nombre": "TF-IDF word (1,2) + LR C=1.0 balanced (B1)",
+      "representacion": "WORD_12",
+      "conversion": "proba",
+      "experimento_referencia": "PRE-00",
+      "f1_oof_0.5": 0.7587146098126788,
+      "f1_referencia": 0.7587146098126788,
+      "diferencia": 0.0,
+      "tolerancia": 1e-06
+    },
+    "M2": {
+      "nombre": "union word (1,2) + char_wb (3,5) + LR C=2.0 balanced (MOD-03b)",
+      "representacion": "UNION",
+      "conversion": "proba",
+      "experimento_referencia": "MOD-03b_BEST",
+      "f1_oof_0.5": 0.7926588861781015,
+      "f1_referencia": 0.7926588861781015,
+      "diferencia": 0.0,
+      "tolerancia": 1e-06
+    },
+    "M3": {
+      "nombre": "union word (1,2) + char_wb (3,5) + LinearSVC C=1.0 balanced (MOD-01)",
+      "representacion": "UNION",
+      "conversion": "sigmoide",
+      "experimento_referencia": "MOD-01_BEST",
+      "f1_oof_0.5": 0.7848727206049166,
+      "f1_referencia": 0.7848727206049166,
+      "diferencia": 0.0,
+      "tolerancia": 1e-06
+    },
+    "M4": {
+      "nombre": "TF-IDF char_wb (3,5) + LR C=1.0 balanced (REP-01)",
+      "representacion": "CHAR_35",
+      "conversion": "proba",
+      "experimento_referencia": "REP-01",
+      "f1_oof_0.5": 0.756650803543833,
+      "f1_referencia": 0.756650803543833,
+      "diferencia": 0.0,
+      "tolerancia": 1e-06
+    }
+  },
+  "verificacion_dimensiones": {
+    "WORD_12": {
+      "dimension": 4024,
+      "experimento_referencia": "PRE-00",
+      "referencia": 4024,
+      "diferencia": 0
+    },
+    "CHAR_35": {
+      "dimension": 23407,
+      "experimento_referencia": "REP-01",
+      "referencia": 23407,
+      "diferencia": 0
+    },
+    "UNION": {
+      "dimension": 27431,
+      "experimento_referencia": "MOD-03b_BEST",
+      "referencia": 27431,
+      "diferencia": 0
+    }
+  },
+  "verificacion_f1_rapida": {
+    "f1_rapida": 0.7926588861781015,
+    "f1_canonica": 0.7926588861781015,
+    "diferencia": 0.0
+  },
+  "sincronizacion_oof_mod03b": {
+    "reutilizado": true,
+    "diferencia_max_abs": 0.0,
+    "motivo": "el recalculo coincide con el npz de la Fase 13a"
+  },
+  "resumen_bases": [
+    {
+      "identificador": "M1",
+      "nombre": "TF-IDF word (1,2) + LR C=1.0 balanced (B1)",
+      "f1_media_columnas_0.5": 0.7587146098126788,
+      "tasa_error_celdas": 0.176776
+    },
+    {
+      "identificador": "M2",
+      "nombre": "union word (1,2) + char_wb (3,5) + LR C=2.0 balanced (MOD-03b)",
+      "f1_media_columnas_0.5": 0.7926588861781015,
+      "tasa_error_celdas": 0.152898
+    },
+    {
+      "identificador": "M3",
+      "nombre": "union word (1,2) + char_wb (3,5) + LinearSVC C=1.0 balanced (MOD-01)",
+      "f1_media_columnas_0.5": 0.7848727206049166,
+      "tasa_error_celdas": 0.159445
+    },
+    {
+      "identificador": "M4",
+      "nombre": "TF-IDF char_wb (3,5) + LR C=1.0 balanced (REP-01)",
+      "f1_media_columnas_0.5": 0.756650803543833,
+      "tasa_error_celdas": 0.180243
+    }
+  ],
+  "diversidad": [
+    {
+      "modelo_a": "M1",
+      "modelo_b": "M2",
+      "correlacion_errores": 0.808809,
+      "tasa_desacuerdo": 0.053534,
+      "q_statistic": 0.989769,
+      "n_celdas": 5193,
+      "ambos_correctos": 4198,
+      "ambos_incorrectos": 717,
+      "solo_a_correcto": 77,
+      "solo_b_correcto": 201
+    },
+    {
+      "modelo_a": "M1",
+      "modelo_b": "M3",
+      "correlacion_errores": 0.684784,
+      "tasa_desacuerdo": 0.088581,
+      "q_statistic": 0.962044,
+      "n_celdas": 5193,
+      "ambos_correctos": 4090,
+      "ambos_incorrectos": 643,
+      "solo_a_correcto": 185,
+      "solo_b_correcto": 275
+    },
+    {
+      "modelo_a": "M1",
+      "modelo_b": "M4",
+      "correlacion_errores": 0.645499,
+      "tasa_desacuerdo": 0.103986,
+      "q_statistic": 0.946024,
+      "n_celdas": 5193,
+      "ambos_correctos": 3996,
+      "ambos_incorrectos": 657,
+      "solo_a_correcto": 279,
+      "solo_b_correcto": 261
+    },
+    {
+      "modelo_a": "M2",
+      "modelo_b": "M3",
+      "correlacion_errores": 0.842458,
+      "tasa_desacuerdo": 0.041594,
+      "q_statistic": 0.992457,
+      "n_celdas": 5193,
+      "ambos_correctos": 4274,
+      "ambos_incorrectos": 703,
+      "solo_a_correcto": 125,
+      "solo_b_correcto": 91
+    },
+    {
+      "modelo_a": "M2",
+      "modelo_b": "M4",
+      "correlacion_errores": 0.723687,
+      "tasa_desacuerdo": 0.077797,
+      "q_statistic": 0.97419,
+      "n_celdas": 5193,
+      "ambos_correctos": 4126,
+      "ambos_incorrectos": 663,
+      "solo_a_correcto": 273,
+      "solo_b_correcto": 131
+    },
+    {
+      "modelo_a": "M3",
+      "modelo_b": "M4",
+      "correlacion_errores": 0.626409,
+      "tasa_desacuerdo": 0.105912,
+      "q_statistic": 0.942353,
+      "n_celdas": 5193,
+      "ambos_correctos": 4036,
+      "ambos_incorrectos": 607,
+      "solo_a_correcto": 329,
+      "solo_b_correcto": 221
+    }
+  ],
+  "ensembles": [
+    {
+      "experiment_id": "ENS-01",
+      "nombre": "voto suave con pesos iguales (M1+M2+M3+M4)",
+      "descripcion": "promedio simple de las probabilidades OOF de los cuatro modelos base; sin parametros ajustados",
+      "f1_anidada_0.5": 0.790594,
+      "f1_por_etiqueta_0.5": {
+        "HS": 0.781768,
+        "TR": 0.824427,
+        "AG": 0.765588
+      },
+      "f1_por_pliegue_0.5": [
+        0.804795,
+        0.783649,
+        0.779261,
+        0.791548,
+        0.794098
+      ],
+      "std_pliegues_0.5": 0.008849,
+      "delta_vs_mod03b_0.5": -0.002064,
+      "delta_vs_single_anidado": -0.003621,
+      "pliegues_mejorados": 2,
+      "segundos": 0.16,
+      "detalle_pliegues": [
+        {
+          "pliegue": 1,
+          "n_ajuste": 1384,
+          "n_validacion": 347,
+          "parametros": {
+            "pesos": [
+              0.25,
+              0.25,
+              0.25,
+              0.25
+            ]
+          },
+          "f1_ajuste": null,
+          "f1_validacion_0.5": 0.804795
+        },
+        {
+          "pliegue": 2,
+          "n_ajuste": 1385,
+          "n_validacion": 346,
+          "parametros": {
+            "pesos": [
+              0.25,
+              0.25,
+              0.25,
+              0.25
+            ]
+          },
+          "f1_ajuste": null,
+          "f1_validacion_0.5": 0.783649
+        },
+        {
+          "pliegue": 3,
+          "n_ajuste": 1385,
+          "n_validacion": 346,
+          "parametros": {
+            "pesos": [
+              0.25,
+              0.25,
+              0.25,
+              0.25
+            ]
+          },
+          "f1_ajuste": null,
+          "f1_validacion_0.5": 0.779261
+        },
+        {
+          "pliegue": 4,
+          "n_ajuste": 1385,
+          "n_validacion": 346,
+          "parametros": {
+            "pesos": [
+              0.25,
+              0.25,
+              0.25,
+              0.25
+            ]
+          },
+          "f1_ajuste": null,
+          "f1_validacion_0.5": 0.791548
+        },
+        {
+          "pliegue": 5,
+          "n_ajuste": 1385,
+          "n_validacion": 346,
+          "parametros": {
+            "pesos": [
+              0.25,
+              0.25,
+              0.25,
+              0.25
+            ]
+          },
+          "f1_ajuste": null,
+          "f1_validacion_0.5": 0.794098
+        }
+      ],
+      "umbrales": {
+        "estrategias": {
+          "fijo_0.5": {
+            "anidada": true,
+            "descripcion": "umbral 0.5 por etiqueta, sin ajuste",
+            "f1_media_columnas": 0.7905944799580663,
+            "f1_por_etiqueta": {
+              "HS": 0.7817679558011049,
+              "TR": 0.8244274809160306,
+              "AG": 0.7655880031570639
+            },
+            "macro6": 0.8338920327493629,
+            "por_pliegue": [
+              0.8047947787436351,
+              0.7836485709687061,
+              0.7792614202475748,
+              0.7915479899608807,
+              0.7940983513907461
+            ],
+            "std_pliegues": 0.008848615615433016,
+            "umbrales": {
+              "HS": 0.5,
+              "TR": 0.5,
+              "AG": 0.5
+            }
+          },
+          "optimo_oof_completo": {
+            "anidada": false,
+            "descripcion": "optimo sobre el OOF completo; cota OPTIMISTA (umbral y metrica comparten los mismos datos)",
+            "f1_media_columnas": 0.794028142395259,
+            "f1_por_etiqueta": {
+              "HS": 0.7867790019442644,
+              "TR": 0.8244274809160306,
+              "AG": 0.7708779443254818
+            },
+            "macro6": 0.8297782154733816,
+            "por_pliegue": [
+              0.8042023482124071,
+              0.7898441587701955,
+              0.7768323208684195,
+              0.7888883645646118,
+              0.8105976398684517
+            ],
+            "std_pliegues": 0.011980584106357136,
+            "umbrales": {
+              "HS": 0.46,
+              "TR": 0.5,
+              "AG": 0.44
+            }
+          },
+          "optimo_anidado": {
+            "anidada": true,
+            "descripcion": "optimo ajustado en los 4 pliegues no evaluados",
+            "umbrales_por_pliegue": [
+              {
+                "pliegue": 1,
+                "umbrales": {
+                  "HS": 0.44,
+                  "TR": 0.5,
+                  "AG": 0.44
+                }
+              },
+              {
+                "pliegue": 2,
+                "umbrales": {
+                  "HS": 0.49,
+                  "TR": 0.5,
+                  "AG": 0.44
+                }
+              },
+              {
+                "pliegue": 3,
+                "umbrales": {
+                  "HS": 0.44,
+                  "TR": 0.5,
+                  "AG": 0.43
+                }
+              },
+              {
+                "pliegue": 4,
+                "umbrales": {
+                  "HS": 0.46,
+                  "TR": 0.51,
+                  "AG": 0.45
+                }
+              },
+              {
+                "pliegue": 5,
+                "umbrales": {
+                  "HS": 0.49,
+                  "TR": 0.51,
+                  "AG": 0.49
+                }
+              }
+            ],
+            "f1_media_columnas": 0.786057443565761,
+            "f1_por_etiqueta": {
+              "HS": 0.7759634225996082,
+              "TR": 0.8221797323135756,
+              "AG": 0.7600291757840992
+            },
+            "macro6": 0.8243694031040327,
+            "por_pliegue": [
+              0.7999825487213862,
+              0.7819859944706967,
+              0.7708495848881132,
+              0.7823227485806954,
+              0.7962783100460066
+            ],
+            "std_pliegues": 0.010582268229623694,
+            "umbrales": {
+              "HS": 0.46,
+              "TR": 0.5,
+              "AG": 0.44
+            }
+          },
+          "mediana_por_pliegue": {
+            "anidada": true,
+            "descripcion": "mediana de los umbrales optimos por pliegue",
+            "umbrales_por_pliegue": [
+              {
+                "pliegue": 1,
+                "umbrales": {
+                  "HS": 0.475,
+                  "TR": 0.5,
+                  "AG": 0.445
+                }
+              },
+              {
+                "pliegue": 2,
+                "umbrales": {
+                  "HS": 0.475,
+                  "TR": 0.5,
+                  "AG": 0.425
+                }
+              },
+              {
+                "pliegue": 3,
+                "umbrales": {
+                  "HS": 0.46,
+                  "TR": 0.505,
+                  "AG": 0.425
+                }
+              },
+              {
+                "pliegue": 4,
+                "umbrales": {
+                  "HS": 0.46,
+                  "TR": 0.505,
+                  "AG": 0.445
+                }
+              },
+              {
+                "pliegue": 5,
+                "umbrales": {
+                  "HS": 0.475,
+                  "TR": 0.505,
+                  "AG": 0.44
+                }
+              }
+            ],
+            "umbrales_optimos_por_pliegue": [
+              {
+                "HS": 0.46,
+                "TR": 0.52,
+                "AG": 0.42
+              },
+              {
+                "HS": 0.46,
+                "TR": 0.51,
+                "AG": 0.46
+              },
+              {
+                "HS": 0.49,
+                "TR": 0.5,
+                "AG": 0.49
+              },
+              {
+                "HS": 0.5,
+                "TR": 0.5,
+                "AG": 0.39
+              },
+              {
+                "HS": 0.44,
+                "TR": 0.5,
+                "AG": 0.43
+              }
+            ],
+            "f1_media_columnas": 0.7887043237269701,
+            "f1_por_etiqueta": {
+              "HS": 0.7780713342140027,
+              "TR": 0.822627037392138,
+              "AG": 0.7654145995747696
+            },
+            "macro6": 0.825960966295626,
+            "por_pliegue": [
+              0.798900278857861,
+              0.7852534104440531,
+              0.7694548707506245,
+              0.7834468047650774,
+              0.8073327887775137
+            ],
+            "std_pliegues": 0.013121880830219443,
+            "umbrales": {
+              "HS": 0.46,
+              "TR": 0.5,
+              "AG": 0.43
+            }
+          }
+        },
+        "estrategia_elegida": "fijo_0.5",
+        "umbrales_finales": {
+          "HS": 0.5,
+          "TR": 0.5,
+          "AG": 0.5
+        },
+        "f1_mejor_anidada": 0.7905944799580663,
+        "f1_mejor_anidada_por_pliegue": [
+          0.8047947787436351,
+          0.7836485709687061,
+          0.7792614202475748,
+          0.7915479899608807,
+          0.7940983513907461
+        ],
+        "f1_mejor_anidada_std_pliegues": 0.008848615615433016,
+        "f1_mejor_anidada_por_etiqueta": {
+          "HS": 0.7817679558011049,
+          "TR": 0.8244274809160306,
+          "AG": 0.7655880031570639
+        }
+      }
+    },
+    {
+      "experiment_id": "ENS-02",
+      "nombre": "voto suave con pesos en rejilla simplex (paso 0.1)",
+      "descripcion": "pesos del simplex {0, 0.1, ..., 1.0} elegidos maximizando la F1 media a 0.5 SOLO con los pliegues de ajuste",
+      "f1_anidada_0.5": 0.791898,
+      "f1_por_etiqueta_0.5": {
+        "HS": 0.779754,
+        "TR": 0.82659,
+        "AG": 0.769351
+      },
+      "f1_por_pliegue_0.5": [
+        0.802676,
+        0.786034,
+        0.77904,
+        0.793285,
+        0.79847
+      ],
+      "std_pliegues_0.5": 0.008497,
+      "delta_vs_mod03b_0.5": -0.000761,
+      "delta_vs_single_anidado": -0.002318,
+      "pliegues_mejorados": 2,
+      "segundos": 0.31,
+      "detalle_pliegues": [
+        {
+          "pliegue": 1,
+          "n_ajuste": 1384,
+          "n_validacion": 347,
+          "parametros": {
+            "pesos": [
+              0.0,
+              0.8,
+              0.2,
+              0.0
+            ]
+          },
+          "f1_ajuste": 0.791913,
+          "f1_validacion_0.5": 0.802676
+        },
+        {
+          "pliegue": 2,
+          "n_ajuste": 1385,
+          "n_validacion": 346,
+          "parametros": {
+            "pesos": [
+              0.1,
+              0.5,
+              0.2,
+              0.2
+            ]
+          },
+          "f1_ajuste": 0.795774,
+          "f1_validacion_0.5": 0.786034
+        },
+        {
+          "pliegue": 3,
+          "n_ajuste": 1385,
+          "n_validacion": 346,
+          "parametros": {
+            "pesos": [
+              0.0,
+              0.7,
+              0.3,
+              0.0
+            ]
+          },
+          "f1_ajuste": 0.798027,
+          "f1_validacion_0.5": 0.77904
+        },
+        {
+          "pliegue": 4,
+          "n_ajuste": 1385,
+          "n_validacion": 346,
+          "parametros": {
+            "pesos": [
+              0.0,
+              0.7,
+              0.3,
+              0.0
+            ]
+          },
+          "f1_ajuste": 0.79454,
+          "f1_validacion_0.5": 0.793285
+        },
+        {
+          "pliegue": 5,
+          "n_ajuste": 1385,
+          "n_validacion": 346,
+          "parametros": {
+            "pesos": [
+              0.1,
+              0.4,
+              0.4,
+              0.1
+            ]
+          },
+          "f1_ajuste": 0.792772,
+          "f1_validacion_0.5": 0.79847
+        }
+      ],
+      "umbrales": {
+        "estrategias": {
+          "fijo_0.5": {
+            "anidada": true,
+            "descripcion": "umbral 0.5 por etiqueta, sin ajuste",
+            "f1_media_columnas": 0.7918981376192485,
+            "f1_por_etiqueta": {
+              "HS": 0.7797537619699042,
+              "TR": 0.8265895953757225,
+              "AG": 0.7693510555121188
+            },
+            "macro6": 0.834216975330006,
+            "por_pliegue": [
+              0.8026758177362456,
+              0.786033732827519,
+              0.779039845606424,
+              0.7932849852269674,
+              0.7984703627831463
+            ],
+            "std_pliegues": 0.00849709075072108,
+            "umbrales": {
+              "HS": 0.5,
+              "TR": 0.5,
+              "AG": 0.5
+            }
+          },
+          "optimo_oof_completo": {
+            "anidada": false,
+            "descripcion": "optimo sobre el OOF completo; cota OPTIMISTA (umbral y metrica comparten los mismos datos)",
+            "f1_media_columnas": 0.7985809572475168,
+            "f1_por_etiqueta": {
+              "HS": 0.7902621722846442,
+              "TR": 0.8293612964728313,
+              "AG": 0.7761194029850746
+            },
+            "macro6": 0.8332566888912817,
+            "por_pliegue": [
+              0.8040403608432346,
+              0.7923784078830188,
+              0.7788902109656827,
+              0.8033426056686294,
+              0.8141969453321224
+            ],
+            "std_pliegues": 0.012021097636930635,
+            "umbrales": {
+              "HS": 0.43,
+              "TR": 0.49,
+              "AG": 0.46
+            }
+          },
+          "optimo_anidado": {
+            "anidada": true,
+            "descripcion": "optimo ajustado en los 4 pliegues no evaluados",
+            "umbrales_por_pliegue": [
+              {
+                "pliegue": 1,
+                "umbrales": {
+                  "HS": 0.43,
+                  "TR": 0.49,
+                  "AG": 0.46
+                }
+              },
+              {
+                "pliegue": 2,
+                "umbrales": {
+                  "HS": 0.43,
+                  "TR": 0.49,
+                  "AG": 0.46
+                }
+              },
+              {
+                "pliegue": 3,
+                "umbrales": {
+                  "HS": 0.43,
+                  "TR": 0.49,
+                  "AG": 0.46
+                }
+              },
+              {
+                "pliegue": 4,
+                "umbrales": {
+                  "HS": 0.47,
+                  "TR": 0.51,
+                  "AG": 0.45
+                }
+              },
+              {
+                "pliegue": 5,
+                "umbrales": {
+                  "HS": 0.47,
+                  "TR": 0.49,
+                  "AG": 0.43
+                }
+              }
+            ],
+            "f1_media_columnas": 0.7936999787174986,
+            "f1_por_etiqueta": {
+              "HS": 0.7833865814696486,
+              "TR": 0.8271251193887297,
+              "AG": 0.7705882352941177
+            },
+            "macro6": 0.8298364022966741,
+            "por_pliegue": [
+              0.8040403608432346,
+              0.7923784078830188,
+              0.7788902109656827,
+              0.791191892487332,
+              0.8014485294049586
+            ],
+            "std_pliegues": 0.008879968455399725,
+            "umbrales": {
+              "HS": 0.43,
+              "TR": 0.49,
+              "AG": 0.46
+            }
+          },
+          "mediana_por_pliegue": {
+            "anidada": true,
+            "descripcion": "mediana de los umbrales optimos por pliegue",
+            "umbrales_por_pliegue": [
+              {
+                "pliegue": 1,
+                "umbrales": {
+                  "HS": 0.43,
+                  "TR": 0.485,
+                  "AG": 0.435
+                }
+              },
+              {
+                "pliegue": 2,
+                "umbrales": {
+                  "HS": 0.43,
+                  "TR": 0.475,
+                  "AG": 0.445
+                }
+              },
+              {
+                "pliegue": 3,
+                "umbrales": {
+                  "HS": 0.43,
+                  "TR": 0.475,
+                  "AG": 0.45
+                }
+              },
+              {
+                "pliegue": 4,
+                "umbrales": {
+                  "HS": 0.43,
+                  "TR": 0.48,
+                  "AG": 0.45
+                }
+              },
+              {
+                "pliegue": 5,
+                "umbrales": {
+                  "HS": 0.43,
+                  "TR": 0.485,
+                  "AG": 0.435
+                }
+              }
+            ],
+            "umbrales_optimos_por_pliegue": [
+              {
+                "HS": 0.47,
+                "TR": 0.47,
+                "AG": 0.54
+              },
+              {
+                "HS": 0.43,
+                "TR": 0.49,
+                "AG": 0.44
+              },
+              {
+                "HS": 0.39,
+                "TR": 0.51,
+                "AG": 0.43
+              },
+              {
+                "HS": 0.43,
+                "TR": 0.48,
+                "AG": 0.36
+              },
+              {
+                "HS": 0.43,
+                "TR": 0.44,
+                "AG": 0.46
+              }
+            ],
+            "f1_media_columnas": 0.7949391725642462,
+            "f1_por_etiqueta": {
+              "HS": 0.7902621722846442,
+              "TR": 0.8234183191690274,
+              "AG": 0.7711370262390671
+            },
+            "macro6": 0.8293522882544201,
+            "por_pliegue": [
+              0.804920067985889,
+              0.7877064782552589,
+              0.7719303046889254,
+              0.8013639469165977,
+              0.8090482635739743
+            ],
+            "std_pliegues": 0.013576946552104242,
+            "umbrales": {
+              "HS": 0.43,
+              "TR": 0.48,
+              "AG": 0.44
+            }
+          }
+        },
+        "estrategia_elegida": "mediana_por_pliegue",
+        "umbrales_finales": {
+          "HS": 0.43,
+          "TR": 0.48,
+          "AG": 0.44
+        },
+        "f1_mejor_anidada": 0.7949391725642462,
+        "f1_mejor_anidada_por_pliegue": [
+          0.804920067985889,
+          0.7877064782552589,
+          0.7719303046889254,
+          0.8013639469165977,
+          0.8090482635739743
+        ],
+        "f1_mejor_anidada_std_pliegues": 0.013576946552104242,
+        "f1_mejor_anidada_por_etiqueta": {
+          "HS": 0.7902621722846442,
+          "TR": 0.8234183191690274,
+          "AG": 0.7711370262390671
+        }
+      }
+    },
+    {
+      "experiment_id": "ENS-03",
+      "nombre": "stacking por etiqueta con LR sobre las 4 probabilidades OOF",
+      "descripcion": "meta-modelo LogisticRegression(C=1.0) por etiqueta con las 4 probabilidades OOF como features; ajustado solo con los pliegues de ajuste",
+      "f1_anidada_0.5": 0.783649,
+      "f1_por_etiqueta_0.5": {
+        "HS": 0.778468,
+        "TR": 0.811189,
+        "AG": 0.76129
+      },
+      "f1_por_pliegue_0.5": [
+        0.80446,
+        0.778777,
+        0.764537,
+        0.783942,
+        0.786374
+      ],
+      "std_pliegues_0.5": 0.012881,
+      "delta_vs_mod03b_0.5": -0.00901,
+      "delta_vs_single_anidado": -0.010567,
+      "pliegues_mejorados": 1,
+      "segundos": 0.35,
+      "detalle_pliegues": [
+        {
+          "pliegue": 1,
+          "n_ajuste": 1384,
+          "n_validacion": 347,
+          "parametros": {
+            "coeficientes": {
+              "HS": [
+                1.949214,
+                3.654784,
+                1.902403,
+                0.347161
+              ],
+              "TR": [
+                2.377325,
+                3.421802,
+                3.01337,
+                -0.218362
+              ],
+              "AG": [
+                0.791207,
+                4.049858,
+                2.662971,
+                0.582
+              ]
+            },
+            "interceptos": {
+              "HS": -3.974356,
+              "TR": -4.706774,
+              "AG": -4.223937
+            }
+          },
+          "f1_ajuste": null,
+          "f1_validacion_0.5": 0.80446
+        },
+        {
+          "pliegue": 2,
+          "n_ajuste": 1385,
+          "n_validacion": 346,
+          "parametros": {
+            "coeficientes": {
+              "HS": [
+                1.561893,
+                3.688997,
+                2.052484,
+                0.929466
+              ],
+              "TR": [
+                2.184227,
+                3.579432,
+                3.255971,
+                0.034799
+              ],
+              "AG": [
+                0.53872,
+                3.913522,
+                2.623808,
+                1.039431
+              ]
+            },
+            "interceptos": {
+              "HS": -4.138064,
+              "TR": -4.88034,
+              "AG": -4.206311
+            }
+          },
+          "f1_ajuste": null,
+          "f1_validacion_0.5": 0.778777
+        },
+        {
+          "pliegue": 3,
+          "n_ajuste": 1385,
+          "n_validacion": 346,
+          "parametros": {
+            "coeficientes": {
+              "HS": [
+                2.245797,
+                3.463692,
+                1.878793,
+                0.894089
+              ],
+              "TR": [
+                2.520075,
+                3.581658,
+                2.811311,
+                0.151592
+              ],
+              "AG": [
+                0.835904,
+                3.920879,
+                2.465438,
+                1.099919
+              ]
+            },
+            "interceptos": {
+              "HS": -4.288928,
+              "TR": -4.911609,
+              "AG": -4.339029
+            }
+          },
+          "f1_ajuste": null,
+          "f1_validacion_0.5": 0.764537
+        },
+        {
+          "pliegue": 4,
+          "n_ajuste": 1385,
+          "n_validacion": 346,
+          "parametros": {
+            "coeficientes": {
+              "HS": [
+                1.887085,
+                3.68943,
+                1.674842,
+                1.147647
+              ],
+              "TR": [
+                2.498794,
+                3.497152,
+                2.885699,
+                0.191274
+              ],
+              "AG": [
+                0.974545,
+                3.879809,
+                2.259596,
+                1.075967
+              ]
+            },
+            "interceptos": {
+              "HS": -4.2404,
+              "TR": -4.943417,
+              "AG": -4.269633
+            }
+          },
+          "f1_ajuste": null,
+          "f1_validacion_0.5": 0.783942
+        },
+        {
+          "pliegue": 5,
+          "n_ajuste": 1385,
+          "n_validacion": 346,
+          "parametros": {
+            "coeficientes": {
+              "HS": [
+                1.638004,
+                3.571567,
+                2.065247,
+                0.656298
+              ],
+              "TR": [
+                1.831101,
+                3.446825,
+                3.035818,
+                0.255567
+              ],
+              "AG": [
+                0.550944,
+                3.722484,
+                2.605164,
+                1.140262
+              ]
+            },
+            "interceptos": {
+              "HS": -4.010699,
+              "TR": -4.722451,
+              "AG": -4.192678
+            }
+          },
+          "f1_ajuste": null,
+          "f1_validacion_0.5": 0.786374
+        }
+      ],
+      "umbrales": {
+        "estrategias": {
+          "fijo_0.5": {
+            "anidada": true,
+            "descripcion": "umbral 0.5 por etiqueta, sin ajuste",
+            "f1_media_columnas": 0.7836490142240492,
+            "f1_por_etiqueta": {
+              "HS": 0.7784679089026915,
+              "TR": 0.8111888111888111,
+              "AG": 0.7612903225806451
+            },
+            "macro6": 0.8302453640723885,
+            "por_pliegue": [
+              0.8044599637881978,
+              0.7787767724141,
+              0.7645368829905511,
+              0.7839419915716066,
+              0.7863743200696048
+            ],
+            "std_pliegues": 0.012881119798207996,
+            "umbrales": {
+              "HS": 0.5,
+              "TR": 0.5,
+              "AG": 0.5
+            }
+          },
+          "optimo_oof_completo": {
+            "anidada": false,
+            "descripcion": "optimo sobre el OOF completo; cota OPTIMISTA (umbral y metrica comparten los mismos datos)",
+            "f1_media_columnas": 0.7977130644426552,
+            "f1_por_etiqueta": {
+              "HS": 0.7864141084258655,
+              "TR": 0.8312439729990356,
+              "AG": 0.7754811119030649
+            },
+            "macro6": 0.8331075080586642,
+            "por_pliegue": [
+              0.8077837195484254,
+              0.7989285593926176,
+              0.7880342700424978,
+              0.7862889964450671,
+              0.8073440180630542
+            ],
+            "std_pliegues": 0.009163321223929021,
+            "umbrales": {
+              "HS": 0.42,
+              "TR": 0.41,
+              "AG": 0.33
+            }
+          },
+          "optimo_anidado": {
+            "anidada": true,
+            "descripcion": "optimo ajustado en los 4 pliegues no evaluados",
+            "umbrales_por_pliegue": [
+              {
+                "pliegue": 1,
+                "umbrales": {
+                  "HS": 0.36,
+                  "TR": 0.41,
+                  "AG": 0.37
+                }
+              },
+              {
+                "pliegue": 2,
+                "umbrales": {
+                  "HS": 0.32,
+                  "TR": 0.41,
+                  "AG": 0.33
+                }
+              },
+              {
+                "pliegue": 3,
+                "umbrales": {
+                  "HS": 0.33,
+                  "TR": 0.39,
+                  "AG": 0.36
+                }
+              },
+              {
+                "pliegue": 4,
+                "umbrales": {
+                  "HS": 0.42,
+                  "TR": 0.41,
+                  "AG": 0.37
+                }
+              },
+              {
+                "pliegue": 5,
+                "umbrales": {
+                  "HS": 0.42,
+                  "TR": 0.41,
+                  "AG": 0.33
+                }
+              }
+            ],
+            "f1_media_columnas": 0.7909073329999327,
+            "f1_por_etiqueta": {
+              "HS": 0.773989898989899,
+              "TR": 0.8280499519692603,
+              "AG": 0.7706821480406386
+            },
+            "macro6": 0.8260876338571158,
+            "por_pliegue": [
+              0.8020911709160021,
+              0.7896445231610066,
+              0.7693524025299726,
+              0.7856237695844822,
+              0.8073440180630542
+            ],
+            "std_pliegues": 0.013336584082825427,
+            "umbrales": {
+              "HS": 0.42,
+              "TR": 0.41,
+              "AG": 0.33
+            }
+          },
+          "mediana_por_pliegue": {
+            "anidada": true,
+            "descripcion": "mediana de los umbrales optimos por pliegue",
+            "umbrales_por_pliegue": [
+              {
+                "pliegue": 1,
+                "umbrales": {
+                  "HS": 0.39,
+                  "TR": 0.38,
+                  "AG": 0.35
+                }
+              },
+              {
+                "pliegue": 2,
+                "umbrales": {
+                  "HS": 0.385,
+                  "TR": 0.35,
+                  "AG": 0.315
+                }
+              },
+              {
+                "pliegue": 3,
+                "umbrales": {
+                  "HS": 0.385,
+                  "TR": 0.35,
+                  "AG": 0.33499999999999996
+                }
+              },
+              {
+                "pliegue": 4,
+                "umbrales": {
+                  "HS": 0.415,
+                  "TR": 0.35,
+                  "AG": 0.35
+                }
+              },
+              {
+                "pliegue": 5,
+                "umbrales": {
+                  "HS": 0.415,
+                  "TR": 0.38,
+                  "AG": 0.315
+                }
+              }
+            ],
+            "umbrales_optimos_por_pliegue": [
+              {
+                "HS": 0.41,
+                "TR": 0.25,
+                "AG": 0.3
+              },
+              {
+                "HS": 0.42,
+                "TR": 0.38,
+                "AG": 0.37
+              },
+              {
+                "HS": 0.46,
+                "TR": 0.41,
+                "AG": 0.33
+              },
+              {
+                "HS": 0.36,
+                "TR": 0.38,
+                "AG": 0.23
+              },
+              {
+                "HS": 0.33,
+                "TR": 0.32,
+                "AG": 0.38
+              }
+            ],
+            "f1_media_columnas": 0.793658292116478,
+            "f1_por_etiqueta": {
+              "HS": 0.7817128139085641,
+              "TR": 0.8249763481551561,
+              "AG": 0.7742857142857142
+            },
+            "macro6": 0.8288704403531698,
+            "por_pliegue": [
+              0.8057194226499064,
+              0.7925465838509317,
+              0.7786503167475155,
+              0.7877657968717572,
+              0.8037791397961893
+            ],
+            "std_pliegues": 0.010090524082421915,
+            "umbrales": {
+              "HS": 0.41,
+              "TR": 0.38,
+              "AG": 0.33
+            }
+          }
+        },
+        "estrategia_elegida": "mediana_por_pliegue",
+        "umbrales_finales": {
+          "HS": 0.41,
+          "TR": 0.38,
+          "AG": 0.33
+        },
+        "f1_mejor_anidada": 0.793658292116478,
+        "f1_mejor_anidada_por_pliegue": [
+          0.8057194226499064,
+          0.7925465838509317,
+          0.7786503167475155,
+          0.7877657968717572,
+          0.8037791397961893
+        ],
+        "f1_mejor_anidada_std_pliegues": 0.010090524082421915,
+        "f1_mejor_anidada_por_etiqueta": {
+          "HS": 0.7817128139085641,
+          "TR": 0.8249763481551561,
+          "AG": 0.7742857142857142
+        }
+      }
+    },
+    {
+      "experiment_id": "ENS-04",
+      "nombre": "mejor par/trio de bases seleccionado de forma anidada",
+      "descripcion": "voto suave con pesos iguales sobre el mejor par o trio (de los 10 candidatos) elegido con los pliegues de ajuste",
+      "f1_anidada_0.5": 0.791609,
+      "f1_por_etiqueta_0.5": {
+        "HS": 0.779522,
+        "TR": 0.829315,
+        "AG": 0.765991
+      },
+      "f1_por_pliegue_0.5": [
+        0.805822,
+        0.787421,
+        0.776063,
+        0.794333,
+        0.794516
+      ],
+      "std_pliegues_0.5": 0.009768,
+      "delta_vs_mod03b_0.5": -0.00105,
+      "delta_vs_single_anidado": -0.002606,
+      "pliegues_mejorados": 2,
+      "segundos": 0.11,
+      "detalle_pliegues": [
+        {
+          "pliegue": 1,
+          "n_ajuste": 1384,
+          "n_validacion": 347,
+          "parametros": {
+            "combinacion": [
+              "M2",
+              "M3"
+            ],
+            "pesos": [
+              0.0,
+              0.5,
+              0.5,
+              0.0
+            ]
+          },
+          "f1_ajuste": 0.78812,
+          "f1_validacion_0.5": 0.805822
+        },
+        {
+          "pliegue": 2,
+          "n_ajuste": 1385,
+          "n_validacion": 346,
+          "parametros": {
+            "combinacion": [
+              "M2",
+              "M3"
+            ],
+            "pesos": [
+              0.0,
+              0.5,
+              0.5,
+              0.0
+            ]
+          },
+          "f1_ajuste": 0.792702,
+          "f1_validacion_0.5": 0.787421
+        },
+        {
+          "pliegue": 3,
+          "n_ajuste": 1385,
+          "n_validacion": 346,
+          "parametros": {
+            "combinacion": [
+              "M2",
+              "M3"
+            ],
+            "pesos": [
+              0.0,
+              0.5,
+              0.5,
+              0.0
+            ]
+          },
+          "f1_ajuste": 0.795398,
+          "f1_validacion_0.5": 0.776063
+        },
+        {
+          "pliegue": 4,
+          "n_ajuste": 1385,
+          "n_validacion": 346,
+          "parametros": {
+            "combinacion": [
+              "M2",
+              "M3"
+            ],
+            "pesos": [
+              0.0,
+              0.5,
+              0.5,
+              0.0
+            ]
+          },
+          "f1_ajuste": 0.790931,
+          "f1_validacion_0.5": 0.794333
+        },
+        {
+          "pliegue": 5,
+          "n_ajuste": 1385,
+          "n_validacion": 346,
+          "parametros": {
+            "combinacion": [
+              "M2",
+              "M3"
+            ],
+            "pesos": [
+              0.0,
+              0.5,
+              0.5,
+              0.0
+            ]
+          },
+          "f1_ajuste": 0.790903,
+          "f1_validacion_0.5": 0.794516
+        }
+      ],
+      "umbrales": {
+        "estrategias": {
+          "fijo_0.5": {
+            "anidada": true,
+            "descripcion": "umbral 0.5 por etiqueta, sin ajuste",
+            "f1_media_columnas": 0.7916093855387931,
+            "f1_por_etiqueta": {
+              "HS": 0.7795221843003413,
+              "TR": 0.8293153326904532,
+              "AG": 0.765990639625585
+            },
+            "macro6": 0.8337468621791276,
+            "por_pliegue": [
+              0.8058224737418905,
+              0.787420635246615,
+              0.7760632267677258,
+              0.7943333719625091,
+              0.7945156982424063
+            ],
+            "std_pliegues": 0.009768366904200167,
+            "umbrales": {
+              "HS": 0.5,
+              "TR": 0.5,
+              "AG": 0.5
+            }
+          },
+          "optimo_oof_completo": {
+            "anidada": false,
+            "descripcion": "optimo sobre el OOF completo; cota OPTIMISTA (umbral y metrica comparten los mismos datos)",
+            "f1_media_columnas": 0.7998111015987202,
+            "f1_por_etiqueta": {
+              "HS": 0.7884741322855272,
+              "TR": 0.8328611898016998,
+              "AG": 0.7780979827089337
+            },
+            "macro6": 0.8350575014742195,
+            "por_pliegue": [
+              0.8136717211327958,
+              0.7949105531533496,
+              0.7807519640852973,
+              0.79942189697481,
+              0.8106112709358103
+            ],
+            "std_pliegues": 0.011799648753501195,
+            "umbrales": {
+              "HS": 0.47,
+              "TR": 0.47,
+              "AG": 0.44
+            }
+          },
+          "optimo_anidado": {
+            "anidada": true,
+            "descripcion": "optimo ajustado en los 4 pliegues no evaluados",
+            "umbrales_por_pliegue": [
+              {
+                "pliegue": 1,
+                "umbrales": {
+                  "HS": 0.43,
+                  "TR": 0.48,
+                  "AG": 0.44
+                }
+              },
+              {
+                "pliegue": 2,
+                "umbrales": {
+                  "HS": 0.48,
+                  "TR": 0.47,
+                  "AG": 0.44
+                }
+              },
+              {
+                "pliegue": 3,
+                "umbrales": {
+                  "HS": 0.44,
+                  "TR": 0.47,
+                  "AG": 0.44
+                }
+              },
+              {
+                "pliegue": 4,
+                "umbrales": {
+                  "HS": 0.47,
+                  "TR": 0.48,
+                  "AG": 0.44
+                }
+              },
+              {
+                "pliegue": 5,
+                "umbrales": {
+                  "HS": 0.47,
+                  "TR": 0.49,
+                  "AG": 0.44
+                }
+              }
+            ],
+            "f1_media_columnas": 0.7958449310759234,
+            "f1_por_etiqueta": {
+              "HS": 0.7816537467700259,
+              "TR": 0.8277830637488106,
+              "AG": 0.7780979827089337
+            },
+            "macro6": 0.8312272306759615,
+            "por_pliegue": [
+              0.8075752011682159,
+              0.790062577813571,
+              0.7785714285714286,
+              0.7988825600510338,
+              0.8045717819694921
+            ],
+            "std_pliegues": 0.010533331145918095,
+            "umbrales": {
+              "HS": 0.47,
+              "TR": 0.47,
+              "AG": 0.44
+            }
+          },
+          "mediana_por_pliegue": {
+            "anidada": true,
+            "descripcion": "mediana de los umbrales optimos por pliegue",
+            "umbrales_por_pliegue": [
+              {
+                "pliegue": 1,
+                "umbrales": {
+                  "HS": 0.435,
+                  "TR": 0.48,
+                  "AG": 0.445
+                }
+              },
+              {
+                "pliegue": 2,
+                "umbrales": {
+                  "HS": 0.44,
+                  "TR": 0.46499999999999997,
+                  "AG": 0.44
+                }
+              },
+              {
+                "pliegue": 3,
+                "umbrales": {
+                  "HS": 0.445,
+                  "TR": 0.46499999999999997,
+                  "AG": 0.445
+                }
+              },
+              {
+                "pliegue": 4,
+                "umbrales": {
+                  "HS": 0.435,
+                  "TR": 0.475,
+                  "AG": 0.445
+                }
+              },
+              {
+                "pliegue": 5,
+                "umbrales": {
+                  "HS": 0.445,
+                  "TR": 0.48,
+                  "AG": 0.44
+                }
+              }
+            ],
+            "umbrales_optimos_por_pliegue": [
+              {
+                "HS": 0.48,
+                "TR": 0.42,
+                "AG": 0.44
+              },
+              {
+                "HS": 0.44,
+                "TR": 0.49,
+                "AG": 0.45
+              },
+              {
+                "HS": 0.41,
+                "TR": 0.5,
+                "AG": 0.44
+              },
+              {
+                "HS": 0.45,
+                "TR": 0.47,
+                "AG": 0.38
+              },
+              {
+                "HS": 0.43,
+                "TR": 0.46,
+                "AG": 0.47
+              }
+            ],
+            "f1_media_columnas": 0.7984669995577933,
+            "f1_por_etiqueta": {
+              "HS": 0.7871939736346516,
+              "TR": 0.8298676748582231,
+              "AG": 0.7783393501805054
+            },
+            "macro6": 0.8318893388260696,
+            "por_pliegue": [
+              0.8056157671695026,
+              0.7953853869615166,
+              0.7782702682810609,
+              0.8019319861425124,
+              0.8115350395740286
+            ],
+            "std_pliegues": 0.011412768430903967,
+            "umbrales": {
+              "HS": 0.44,
+              "TR": 0.47,
+              "AG": 0.44
+            }
+          }
+        },
+        "estrategia_elegida": "mediana_por_pliegue",
+        "umbrales_finales": {
+          "HS": 0.44,
+          "TR": 0.47,
+          "AG": 0.44
+        },
+        "f1_mejor_anidada": 0.7984669995577933,
+        "f1_mejor_anidada_por_pliegue": [
+          0.8056157671695026,
+          0.7953853869615166,
+          0.7782702682810609,
+          0.8019319861425124,
+          0.8115350395740286
+        ],
+        "f1_mejor_anidada_std_pliegues": 0.011412768430903967,
+        "f1_mejor_anidada_por_etiqueta": {
+          "HS": 0.7871939736346516,
+          "TR": 0.8298676748582231,
+          "AG": 0.7783393501805054
+        }
+      }
+    }
+  ],
+  "ganador": "ENS-02",
+  "umbrales_single_mod03b": {
+    "estrategias": {
+      "fijo_0.5": {
+        "anidada": true,
+        "descripcion": "umbral 0.5 por etiqueta, sin ajuste",
+        "f1_media_columnas": 0.7926588861781015,
+        "f1_por_etiqueta": {
+          "HS": 0.7799174690508941,
+          "TR": 0.8287081339712918,
+          "AG": 0.7693510555121188
+        },
+        "macro6": 0.8349033705135338,
+        "por_pliegue": [
+          0.8012933474593567,
+          0.7898597924054527,
+          0.7775283841161178,
+          0.7933831988833077,
+          0.8014490275429229
+        ],
+        "std_pliegues": 0.008821593213378857,
+        "umbrales": {
+          "HS": 0.5,
+          "TR": 0.5,
+          "AG": 0.5
+        }
+      },
+      "optimo_oof_completo": {
+        "anidada": false,
+        "descripcion": "optimo sobre el OOF completo; cota OPTIMISTA (umbral y metrica comparten los mismos datos)",
+        "f1_media_columnas": 0.7989327027697396,
+        "f1_por_etiqueta": {
+          "HS": 0.7897106109324759,
+          "TR": 0.8296438883541867,
+          "AG": 0.7774436090225564
+        },
+        "macro6": 0.8355729797695343,
+        "por_pliegue": [
+          0.8114494086979857,
+          0.796127116816772,
+          0.7805739794785843,
+          0.7910414168726659,
+          0.8151976860061424
+        ],
+        "std_pliegues": 0.01287158909076814,
+        "umbrales": {
+          "HS": 0.44,
+          "TR": 0.51,
+          "AG": 0.46
+        }
+      },
+      "optimo_anidado": {
+        "anidada": true,
+        "descripcion": "optimo ajustado en los 4 pliegues no evaluados",
+        "umbrales_por_pliegue": [
+          {
+            "pliegue": 1,
+            "umbrales": {
+              "HS": 0.4,
+              "TR": 0.51,
+              "AG": 0.45
+            }
+          },
+          {
+            "pliegue": 2,
+            "umbrales": {
+              "HS": 0.44,
+              "TR": 0.51,
+              "AG": 0.41
+            }
+          },
+          {
+            "pliegue": 3,
+            "umbrales": {
+              "HS": 0.44,
+              "TR": 0.49,
+              "AG": 0.46
+            }
+          },
+          {
+            "pliegue": 4,
+            "umbrales": {
+              "HS": 0.45,
+              "TR": 0.51,
+              "AG": 0.46
+            }
+          },
+          {
+            "pliegue": 5,
+            "umbrales": {
+              "HS": 0.44,
+              "TR": 0.51,
+              "AG": 0.41
+            }
+          }
+        ],
+        "f1_media_columnas": 0.7942158117245618,
+        "f1_por_etiqueta": {
+          "HS": 0.7833333333333333,
+          "TR": 0.8272552783109405,
+          "AG": 0.7720588235294118
+        },
+        "macro6": 0.8305135003227871,
+        "por_pliegue": [
+          0.8041697496608707,
+          0.7921153751337974,
+          0.776720500274084,
+          0.7865257378310253,
+          0.8108684549683488
+        ],
+        "std_pliegues": 0.01221420588456952,
+        "umbrales": {
+          "HS": 0.44,
+          "TR": 0.51,
+          "AG": 0.46
+        }
+      },
+      "mediana_por_pliegue": {
+        "anidada": true,
+        "descripcion": "mediana de los umbrales optimos por pliegue",
+        "umbrales_por_pliegue": [
+          {
+            "pliegue": 1,
+            "umbrales": {
+              "HS": 0.44,
+              "TR": 0.45999999999999996,
+              "AG": 0.44
+            }
+          },
+          {
+            "pliegue": 2,
+            "umbrales": {
+              "HS": 0.44,
+              "TR": 0.425,
+              "AG": 0.44
+            }
+          },
+          {
+            "pliegue": 3,
+            "umbrales": {
+              "HS": 0.44,
+              "TR": 0.425,
+              "AG": 0.46
+            }
+          },
+          {
+            "pliegue": 4,
+            "umbrales": {
+              "HS": 0.45,
+              "TR": 0.45999999999999996,
+              "AG": 0.46
+            }
+          },
+          {
+            "pliegue": 5,
+            "umbrales": {
+              "HS": 0.45,
+              "TR": 0.45499999999999996,
+              "AG": 0.44
+            }
+          }
+        ],
+        "umbrales_optimos_por_pliegue": [
+          {
+            "HS": 0.45,
+            "TR": 0.39,
+            "AG": 0.54
+          },
+          {
+            "HS": 0.45,
+            "TR": 0.49,
+            "AG": 0.46
+          },
+          {
+            "HS": 0.49,
+            "TR": 0.51,
+            "AG": 0.42
+          },
+          {
+            "HS": 0.43,
+            "TR": 0.42,
+            "AG": 0.36
+          },
+          {
+            "HS": 0.39,
+            "TR": 0.43,
+            "AG": 0.46
+          }
+        ],
+        "f1_media_columnas": 0.792835245607283,
+        "f1_por_etiqueta": {
+          "HS": 0.7867790019442644,
+          "TR": 0.8170055452865065,
+          "AG": 0.774721189591078
+        },
+        "macro6": 0.8301236554619589,
+        "por_pliegue": [
+          0.8076364338872809,
+          0.7892630205721448,
+          0.7711791885546232,
+          0.7839026361283102,
+          0.8124570923221363
+        ],
+        "std_pliegues": 0.015268368675397683,
+        "umbrales": {
+          "HS": 0.45,
+          "TR": 0.43,
+          "AG": 0.46
+        }
+      }
+    },
+    "estrategia_elegida": "optimo_anidado",
+    "umbrales_finales": {
+      "HS": 0.44,
+      "TR": 0.51,
+      "AG": 0.46
+    },
+    "f1_mejor_anidada": 0.7942158117245618,
+    "f1_mejor_anidada_por_pliegue": [
+      0.8041697496608707,
+      0.7921153751337974,
+      0.776720500274084,
+      0.7865257378310253,
+      0.8108684549683488
+    ],
+    "f1_mejor_anidada_std_pliegues": 0.01221420588456952,
+    "f1_mejor_anidada_por_etiqueta": {
+      "HS": 0.7833333333333333,
+      "TR": 0.8272552783109405,
+      "AG": 0.7720588235294118
+    }
+  },
+  "decision": {
+    "delta_ganador_vs_mod03b": 0.00228,
+    "delta_ganador_vs_single_anidado": 0.000723,
+    "genera_submission": false,
+    "umbral_mejora_submission": 0.005,
+    "motivo": "el ganador no supera a MOD-03b por >= +0.005 en la evaluacion anidada; se mantienen v02/v03",
+    "decisiones_por_ensemble": {
+      "ENS-01": "descartada: F1 anidada 0.7906 por debajo del mejor ensemble (0.7919)",
+      "ENS-02": "descartada: mejor ensemble anidado (0.7949) pero no supera a MOD-03b por +0.005 (delta +0.0023); no se genera submission",
+      "ENS-03": "descartada: F1 anidada 0.7836 por debajo del mejor ensemble (0.7919)",
+      "ENS-04": "descartada: F1 anidada 0.7916 por debajo del mejor ensemble (0.7919)"
+    }
+  },
+  "submission": null,
+  "artefactos": {
+    "oof_bases_npz": "features/oof_bases.npz",
+    "diversidad_csv": "reports/ensembles_diversidad.csv",
+    "resultados_csv": "reports/ensembles_resultados.csv"
+  }
+}

@@ -1,0 +1,4 @@
+etiqueta,positivos,negativos,prevalencia,desbalanceo_neg_pos
+HS,756,975,0.4367,1.29
+TR,519,1212,0.2998,2.335
+AG,662,1069,0.3824,1.615

@@ -1,0 +1,23 @@
+{
+  "fecha_medicion": "2026-09-22",
+  "gpu": "AMD Radeon RX 9070 XT",
+  "vram_total_bytes": 17095983104,
+  "vram_usada_en_reposo_bytes": 2029953024,
+  "kfd_pids_en_reposo": 0,
+  "gpu_use_instantaneo_pct": 15,
+  "comando_chequeo": "rocm-smi --showuse --showmeminfo vram --showpids",
+  "muestras_por_chequeo": 5,
+  "intervalo_entre_muestras_s": 2,
+  "umbrales": {
+    "pid_ajeno_en_kfd_bloquea": true,
+    "vram_sobre_baseline_bytes_bloquea": 3221225472,
+    "gpu_use_pct_sostenido_bloquea": 50,
+    "min_muestras_sobre_umbral": 3
+  },
+  "notas": [
+    "El uso instantaneo del 15 % en reposo corresponde al compositor del escritorio;",
+    "por eso el criterio de uso exige sostenimiento en 3 de 5 muestras y VRAM elevada.",
+    "Si la GPU esta ocupada: detener todo, registrar evidencia y devolver el control",
+    "al usuario (D-008); nunca matar procesos ajenos."
+  ]
+}

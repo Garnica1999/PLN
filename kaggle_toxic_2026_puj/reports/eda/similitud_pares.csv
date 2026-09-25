@@ -1,0 +1,18 @@
+comparacion,id_a,id_b,similitud,texto_a,texto_b
+train-train,21262,22860,1.0,Les arabes  https://t.co/C74kOciSi6,Les arabes  https://t.co/YVoUG1SXHU
+train-train,23919,22860,1.0,Les arabes  https://t.co/L7esMJZmuz,Les arabes  https://t.co/YVoUG1SXHU
+train-train,23919,21262,1.0,Les arabes  https://t.co/L7esMJZmuz,Les arabes  https://t.co/C74kOciSi6
+train-train,22883,20862,0.8972,Mtete en tu vida negro indocumentado JAJAJAJAJJAJAJAJAJAJAJAJAJAJAJAJAJAJAJAJAJJAJAJAJAJAAJAJAJAJAJAJAJAJAJAJAJAJJA,nadie te quiere perra Mam: ya lo se Jajajajajjajajajajajajajaj esta mujer es lo mejor
+train-train,22883,21150,0.8583,Mtete en tu vida negro indocumentado JAJAJAJAJJAJAJAJAJAJAJAJAJAJAJAJAJAJAJAJAJJAJAJAJAJAAJAJAJAJAJAJAJAJAJAJAJAJJA,@agos_goroso CALLATE HIJA DE PUTA JAJAJAJAJAJAJAJAJAJA
+train-train,21913,21773,0.8374,Todas las cosas son posibles para los que creen . . . . . . .  #ABOGADO #immigration #immigrants #inmigrantes #inmigracion #inmigracin #jorgerivera #abogadodein,Rezo para que tengas un fin de semana INCREBLE y lleno de bendiciones  . . . . . . . . #ABOGADO #immigration #immigrants #inmigrantes #inmigracion #inmigracin #
+train-train,22883,21316,0.8107,Mtete en tu vida negro indocumentado JAJAJAJAJJAJAJAJAJAJAJAJAJAJAJAJAJAJAJAJAJJAJAJAJAJAAJAJAJAJAJAJAJAJAJAJAJAJJA,Todo tu eres bien perra mamaguevo JAJAJAJAJAJAJAJA. https://t.co/DQOZUpIGXv
+train-test,22860,20568,1.0,Les arabes  https://t.co/YVoUG1SXHU,les arabes https://t.co/93F49DMfQe
+train-test,21262,20568,1.0,Les arabes  https://t.co/C74kOciSi6,les arabes https://t.co/93F49DMfQe
+train-test,23919,20568,1.0,Les arabes  https://t.co/L7esMJZmuz,les arabes https://t.co/93F49DMfQe
+train-test,23245,22448,1.0,Los sin papeles te roban el trabajo. https://t.co/nBRl74eW8B https://t.co/Rxpx8kPrhK,Los sin papeles te roban el trabajo. https://t.co/OCAXJm4UH2
+train-test,22883,20496,0.9589,Mtete en tu vida negro indocumentado JAJAJAJAJJAJAJAJAJAJAJAJAJAJAJAJAJAJAJAJAJJAJAJAJAJAAJAJAJAJAJAJAJAJAJAJAJAJJA,@acciomalfxy JAJAJAJAJAJAJAJAJAJAJAJAJAJAJAJAJAJAJAJAJAJAJAJAJAJAJA LA PUTA MADRE TE LO MERECES POR USARME COMO MEME SIEMPRE
+train-test,22883,21178,0.9356,Mtete en tu vida negro indocumentado JAJAJAJAJJAJAJAJAJAJAJAJAJAJAJAJAJAJAJAJAJJAJAJAJAJAAJAJAJAJAJAJAJAJAJAJAJAJJA,@_E_Villalva Jajajajajajajajajajajajajjajajajajajaja cllate puta reventada. En 4 aos me recibo ahre yaki
+train-test,20862,20496,0.8805,nadie te quiere perra Mam: ya lo se Jajajajajjajajajajajajajaj esta mujer es lo mejor,@acciomalfxy JAJAJAJAJAJAJAJAJAJAJAJAJAJAJAJAJAJAJAJAJAJAJAJAJAJAJA LA PUTA MADRE TE LO MERECES POR USARME COMO MEME SIEMPRE
+train-test,21150,20496,0.8664,@agos_goroso CALLATE HIJA DE PUTA JAJAJAJAJAJAJAJAJAJA,@acciomalfxy JAJAJAJAJAJAJAJAJAJAJAJAJAJAJAJAJAJAJAJAJAJAJAJAJAJAJA LA PUTA MADRE TE LO MERECES POR USARME COMO MEME SIEMPRE
+train-test,20862,21178,0.8575,nadie te quiere perra Mam: ya lo se Jajajajajjajajajajajajajaj esta mujer es lo mejor,@_E_Villalva Jajajajajajajajajajajajajjajajajajajaja cllate puta reventada. En 4 aos me recibo ahre yaki
+train-test,22883,22464,0.8457,Mtete en tu vida negro indocumentado JAJAJAJAJJAJAJAJAJAJAJAJAJAJAJAJAJAJAJAJAJJAJAJAJAJAAJAJAJAJAJAJAJAJAJAJAJAJJA,@antu_cerevin @BornetVane Callate perra jajajajajajajajajaja

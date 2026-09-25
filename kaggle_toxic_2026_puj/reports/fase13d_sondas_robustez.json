@@ -1,0 +1,379 @@
+{
+  "metadata": {
+    "fecha": "2026-09-23",
+    "script": "experiments/10_sondas_robustez.py",
+    "competencia": "KAGGLE_TOXIC_2026_PUJ",
+    "fase": "Fase 13d (dos sondas de robustez pre-registradas, D-013)",
+    "validacion": "StratifiedGroupKFold(5, shuffle=True, random_state=42) con grupos de near-duplicado (D-004) y estratificacion por HSxTRxAG; vectorizador ajustado dentro de cada pliegue; umbrales y comparaciones solo con probabilidades OOF",
+    "regla_pre_registrada": "se adopta la sonda que supere el LB de v03 (0.78306); maximo 2 envios",
+    "control": "REF-MOD03b",
+    "verificacion_control": {
+      "f1_oof_reproducida": 0.7926588861781015,
+      "f1_oof_referencia": 0.7926588861781015,
+      "diferencia_f1": 0.0,
+      "tolerancia_f1": 1e-06,
+      "comparacion_probabilidades": {
+        "archivo": "features/oof_mod03b.npz",
+        "diferencia_maxima": 0.0,
+        "tolerancia": 1e-09,
+        "coincide": true
+      }
+    },
+    "gap_train_oof": "F1 in-sample media de los pliegues de entrenamiento (umbral 0.5) menos F1 OOF con 0.5",
+    "idempotencia": "Determinista salvo los tiempos; los registros se reescriben por id"
+  },
+  "control": {
+    "experiment_id": "REF-MOD03b",
+    "clave": "control",
+    "descripcion": "control MOD-03b_BEST (union word(1,2)+char_wb(3,5) min_df=2, LR C=2.0 balanced x3) para verificar el arnes y medir el gap train-OOF de referencia",
+    "representacion": "union TF-IDF word (1,2) + char_wb (3,5), min_df=2, sublinear_tf",
+    "modelo": "LogisticRegression(class_weight=balanced, C=2.0, liblinear) x3",
+    "parametros_vectorizador": [
+      {
+        "min_df": 2,
+        "max_df": 1.0,
+        "sublinear_tf": true,
+        "lowercase": true,
+        "strip_accents": null,
+        "analyzer": "word",
+        "ngram_range": [
+          1,
+          2
+        ]
+      },
+      {
+        "min_df": 2,
+        "max_df": 1.0,
+        "sublinear_tf": true,
+        "lowercase": true,
+        "strip_accents": null,
+        "analyzer": "char_wb",
+        "ngram_range": [
+          3,
+          5
+        ]
+      }
+    ],
+    "parametros_modelo": {
+      "C": 2.0,
+      "class_weight": "balanced",
+      "max_iter": 1000,
+      "solver": "liblinear",
+      "random_state": 42
+    },
+    "dimension": 27431,
+    "segundos_oof": 29.65,
+    "segundos_umbrales": 0.5,
+    "f1_media_columnas_umbral_0.5": 0.792659,
+    "f1_media_columnas_umbrales_optimos": 0.798933,
+    "ganancia_umbrales": 0.006274,
+    "macro6_umbral_0.5": 0.834903,
+    "macro6_umbrales_optimos": 0.835573,
+    "f1_por_etiqueta_umbral_0.5": {
+      "HS": 0.779917,
+      "TR": 0.828708,
+      "AG": 0.769351
+    },
+    "f1_por_etiqueta_umbrales_optimos": {
+      "HS": 0.789711,
+      "TR": 0.829644,
+      "AG": 0.777444
+    },
+    "f1_por_pliegue_umbral_0.5": [
+      0.801293,
+      0.78986,
+      0.777528,
+      0.793383,
+      0.801449
+    ],
+    "f1_por_pliegue_umbrales_optimos": [
+      0.811449,
+      0.796127,
+      0.780574,
+      0.791041,
+      0.815198
+    ],
+    "std_pliegues": 0.008822,
+    "umbrales_optimos": {
+      "HS": 0.44,
+      "TR": 0.51,
+      "AG": 0.46
+    },
+    "f1_train_media_columnas": 0.974419,
+    "f1_train_por_pliegue": [
+      0.973164,
+      0.974735,
+      0.974127,
+      0.975564,
+      0.974505
+    ],
+    "gap_train_oof": 0.18176
+  },
+  "sondas": [
+    {
+      "experiment_id": "R1-C1",
+      "clave": "v06",
+      "descripcion": "MOD-03b con C reducido de 2.0 a 1.0 (misma representacion min_df=2)",
+      "representacion": "union TF-IDF word (1,2) + char_wb (3,5), min_df=2, sublinear_tf",
+      "modelo": "LogisticRegression(class_weight=balanced, C=1.0, liblinear) x3",
+      "parametros_vectorizador": [
+        {
+          "min_df": 2,
+          "max_df": 1.0,
+          "sublinear_tf": true,
+          "lowercase": true,
+          "strip_accents": null,
+          "analyzer": "word",
+          "ngram_range": [
+            1,
+            2
+          ]
+        },
+        {
+          "min_df": 2,
+          "max_df": 1.0,
+          "sublinear_tf": true,
+          "lowercase": true,
+          "strip_accents": null,
+          "analyzer": "char_wb",
+          "ngram_range": [
+            3,
+            5
+          ]
+        }
+      ],
+      "parametros_modelo": {
+        "C": 1.0,
+        "class_weight": "balanced",
+        "max_iter": 1000,
+        "solver": "liblinear",
+        "random_state": 42
+      },
+      "dimension": 27431,
+      "segundos_oof": 25.21,
+      "segundos_umbrales": 0.45,
+      "f1_media_columnas_umbral_0.5": 0.786468,
+      "f1_media_columnas_umbrales_optimos": 0.792901,
+      "ganancia_umbrales": 0.006432,
+      "macro6_umbral_0.5": 0.830612,
+      "macro6_umbrales_optimos": 0.828713,
+      "f1_por_etiqueta_umbral_0.5": {
+        "HS": 0.77678,
+        "TR": 0.817408,
+        "AG": 0.765217
+      },
+      "f1_por_etiqueta_umbrales_optimos": {
+        "HS": 0.787072,
+        "TR": 0.819066,
+        "AG": 0.772563
+      },
+      "f1_por_pliegue_umbral_0.5": [
+        0.805157,
+        0.776346,
+        0.774614,
+        0.78318,
+        0.793775
+      ],
+      "f1_por_pliegue_umbrales_optimos": [
+        0.805366,
+        0.788447,
+        0.767039,
+        0.786413,
+        0.817484
+      ],
+      "std_pliegues": 0.011457,
+      "umbrales_optimos": {
+        "HS": 0.44,
+        "TR": 0.53,
+        "AG": 0.44
+      },
+      "f1_train_media_columnas": 0.949952,
+      "f1_train_por_pliegue": [
+        0.95098,
+        0.949563,
+        0.949624,
+        0.951275,
+        0.948316
+      ],
+      "gap_train_oof": 0.163483
+    },
+    {
+      "experiment_id": "R2-MINDF5",
+      "clave": "v07",
+      "descripcion": "MOD-03b con min_df=5 en ambos bloques y C=1.0 (vocabulario reducido)",
+      "representacion": "union TF-IDF word (1,2) + char_wb (3,5), min_df=5, sublinear_tf",
+      "modelo": "LogisticRegression(class_weight=balanced, C=1.0, liblinear) x3",
+      "parametros_vectorizador": [
+        {
+          "min_df": 5,
+          "max_df": 1.0,
+          "sublinear_tf": true,
+          "lowercase": true,
+          "strip_accents": null,
+          "analyzer": "word",
+          "ngram_range": [
+            1,
+            2
+          ]
+        },
+        {
+          "min_df": 5,
+          "max_df": 1.0,
+          "sublinear_tf": true,
+          "lowercase": true,
+          "strip_accents": null,
+          "analyzer": "char_wb",
+          "ngram_range": [
+            3,
+            5
+          ]
+        }
+      ],
+      "parametros_modelo": {
+        "C": 1.0,
+        "class_weight": "balanced",
+        "max_iter": 1000,
+        "solver": "liblinear",
+        "random_state": 42
+      },
+      "dimension": 10515,
+      "segundos_oof": 2.63,
+      "segundos_umbrales": 0.55,
+      "f1_media_columnas_umbral_0.5": 0.795341,
+      "f1_media_columnas_umbrales_optimos": 0.799341,
+      "ganancia_umbrales": 0.004,
+      "macro6_umbral_0.5": 0.835616,
+      "macro6_umbrales_optimos": 0.835128,
+      "f1_por_etiqueta_umbral_0.5": {
+        "HS": 0.782373,
+        "TR": 0.825188,
+        "AG": 0.778462
+      },
+      "f1_por_etiqueta_umbrales_optimos": {
+        "HS": 0.789141,
+        "TR": 0.829502,
+        "AG": 0.779378
+      },
+      "f1_por_pliegue_umbral_0.5": [
+        0.804483,
+        0.794674,
+        0.784391,
+        0.788367,
+        0.805089
+      ],
+      "f1_por_pliegue_umbrales_optimos": [
+        0.802117,
+        0.804859,
+        0.782064,
+        0.791359,
+        0.81638
+      ],
+      "std_pliegues": 0.008337,
+      "umbrales_optimos": {
+        "HS": 0.44,
+        "TR": 0.53,
+        "AG": 0.49
+      },
+      "f1_train_media_columnas": 0.922544,
+      "f1_train_por_pliegue": [
+        0.924078,
+        0.926895,
+        0.920917,
+        0.923194,
+        0.917637
+      ],
+      "gap_train_oof": 0.127203
+    }
+  ],
+  "comparativa_gap": {
+    "control": 0.18176,
+    "R1-C1": {
+      "gap_train_oof": 0.163483,
+      "delta_vs_control": -0.018277,
+      "veredicto": "baja 0.0183 frente al control"
+    },
+    "R2-MINDF5": {
+      "gap_train_oof": 0.127203,
+      "delta_vs_control": -0.054557,
+      "veredicto": "baja 0.0546 frente al control"
+    }
+  },
+  "submissions": {
+    "v06": {
+      "experiment_id": "S06",
+      "ruta": "submissions/toxic_submission_v06_robustez_c1.csv",
+      "umbrales": {
+        "HS": 0.44,
+        "TR": 0.53,
+        "AG": 0.44
+      },
+      "prediccion_test": {
+        "positivos_test": {
+          "HS": 514,
+          "TR": 326,
+          "AG": 446
+        },
+        "tasa_positivos_test": {
+          "HS": 0.4454,
+          "TR": 0.2825,
+          "AG": 0.3865
+        },
+        "tasa_positivos_train": {
+          "HS": 0.4367,
+          "TR": 0.2998,
+          "AG": 0.3824
+        },
+        "tasa_test_estimada": {
+          "HS": 0.4061,
+          "TR": 0.2788,
+          "AG": 0.3556
+        },
+        "diferencia_vs_estimado": {
+          "HS": 0.0393,
+          "TR": 0.0037,
+          "AG": 0.0309
+        },
+        "factor_test_estimado": 0.93
+      },
+      "modelo_joblib": "models/fase13d_sonda_v06.joblib"
+    },
+    "v07": {
+      "experiment_id": "S07",
+      "ruta": "submissions/toxic_submission_v07_robustez_mindf5.csv",
+      "umbrales": {
+        "HS": 0.44,
+        "TR": 0.53,
+        "AG": 0.49
+      },
+      "prediccion_test": {
+        "positivos_test": {
+          "HS": 521,
+          "TR": 337,
+          "AG": 408
+        },
+        "tasa_positivos_test": {
+          "HS": 0.4515,
+          "TR": 0.292,
+          "AG": 0.3536
+        },
+        "tasa_positivos_train": {
+          "HS": 0.4367,
+          "TR": 0.2998,
+          "AG": 0.3824
+        },
+        "tasa_test_estimada": {
+          "HS": 0.4061,
+          "TR": 0.2788,
+          "AG": 0.3556
+        },
+        "diferencia_vs_estimado": {
+          "HS": 0.0454,
+          "TR": 0.0132,
+          "AG": -0.002
+        },
+        "factor_test_estimado": 0.93
+      },
+      "modelo_joblib": "models/fase13d_sonda_v07.joblib"
+    }
+  }
+}

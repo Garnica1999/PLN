@@ -1,0 +1,65 @@
+{
+  "version": "V03_BASELINE",
+  "congelada": "2026-09-25",
+  "descripcion": "Mejor submission conocida (LB 0.78306). No se modifica; todos los experimentos de la fase v2 se comparan contra esta referencia.",
+  "script_original": "experiments/04_refit_submissions_v02_v03.py",
+  "modelo": "experiments/baseline_v03_frozen/model_v03.joblib",
+  "oof_historical": "experiments/baseline_v03_frozen/oof_v03_historical.npz",
+  "submission": "experiments/baseline_v03_frozen/submission_v03.csv",
+  "representacion": {
+    "word_tfidf": {
+      "analyzer": "word",
+      "ngram_range": [1, 2],
+      "min_df": 2,
+      "sublinear_tf": true,
+      "lowercase": true
+    },
+    "char_tfidf": {
+      "analyzer": "char_wb",
+      "ngram_range": [3, 5],
+      "min_df": 2,
+      "sublinear_tf": true,
+      "lowercase": true
+    },
+    "union": "scipy.sparse.hstack([word_tfidf, char_tfidf])",
+    "dimension_train_completo": 27431
+  },
+  "modelo_lr": {
+    "C": 2.0,
+    "class_weight": "balanced",
+    "max_iter": 1000,
+    "solver": "liblinear",
+    "random_state": 42,
+    "cabezas": ["HS", "TR", "AG"]
+  },
+  "umbrales": {
+    "HS": 0.44,
+    "TR": 0.51,
+    "AG": 0.46,
+    "metodo": "rejilla 0.20-0.80 paso 0.01 sobre probabilidades OOF"
+  },
+  "validacion_original": {
+    "protocolo": "StratifiedGroupKFold(5, shuffle=True, random_state=42)",
+    "grupos": "near-duplicado (data/processed/grupos_near_duplicados.csv)",
+    "estratificacion": "combinacion HS x TR x AG"
+  },
+  "referencias": {
+    "oof_umbral_0_5": 0.7926588861781015,
+    "oof_con_umbrales": 0.798933,
+    "kaggle_lb": 0.78306,
+    "gap_local_lb": -0.01584
+  },
+  "referencias_protocolo_v2": {
+    "n_dev": 1483,
+    "corrected_cv_m2_umbral_0_5": 0.7718,
+    "corrected_cv_m2_con_umbrales": 0.7772,
+    "std_pliegues": 0.0161,
+    "nota": "El desarrollo excluye el holdout congelado (248 tweets); el protocolo v2 es la metrica primaria desde D-016."
+  },
+  "reglas": [
+    "No modificar ningun archivo de esta carpeta.",
+    "La submission de referencia es submission_v03.csv (LB 0.78306).",
+    "Cualquier candidato nuevo se compara contra corrected_cv de esta referencia (0.7772).",
+    "El holdout solo puede evaluarse 5 veces en todo el proyecto."
+  ]
+}
