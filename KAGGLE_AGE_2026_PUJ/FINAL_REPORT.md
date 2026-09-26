@@ -402,3 +402,48 @@ Bajo las restricciones de AGE, **la representación contiene la información dis
 está en la observabilidad de la edad, no en la regla de decisión**. V12 permanece congelado, no se
 genera submission y la línea de decisión queda cerrada con 33 capas medidas (D-037). El leaderboard
 de referencia es **0,62188** (artefacto reproducible; D-036 cierra la discrepancia de reconstrucción).
+
+---
+
+# Parte IV — Lexicones lingüísticos (2026-09-25)
+
+## 26. Qué se construyó
+
+24 subcategorías léxicas de conocimiento general (6 de registro e informalidad, 6 de etapas de vida
+y contexto social, 12 de dominios temáticos), 1328 entradas efectivas tras
+cribado de aplicabilidad al corpus, y 72 features agregadas (conteo, ratio y presencia por
+subcategoría, más un agregado por familia). La transformación `tweet -> categorías` es determinista
+y **no usa etiquetas**, a diferencia del canal supervisado de entidades ya existente.
+
+## 27. Resultado por fase
+
+| Fase | Resultado |
+|---|---|
+| P0 cobertura | 0 experimentos previos con canal léxico: la línea es nueva |
+| P1 catálogo | 24 subcategorías, 1536 declaradas -> 1328 efectivas, SHA256 por fichero |
+| P2-P5 control | lexicon-only: temas 0,2033, registro 0,1520, vida 0,0731 (azar 0,1667) |
+| P5 redundancia | 3 de 72 columnas con \|ρ\| ≥ 0,8, las tres un proxy de longitud |
+| P6 fusión | ningún bloque alcanza el gate; ninguno aporta sobre su nula permutada más de +0,0021 |
+| P7 complementariedad | rescate ≈ daño; los candidatos mueven el 10-11% de las filas sin ganancia neta |
+
+## 28. Tres conclusiones defendibles
+
+1. **El bloque no es redundante**: salvo tres columnas que son un proxy de la longitud, la
+   correlación contra las 279 features de V12 es baja (mediana 0,105). La hipótesis de §12 (¿añade
+   una dimensión nueva?) se responde **sí** a nivel de variable.
+2. **La señal nueva no es utilizable**: solo la familia de temas supera el azar en aislamiento, y por
+   poco. Un contexto temático es real pero marginal para la edad, que es una combinación de muchos
+   factores débiles.
+3. **El control de permutación fue decisivo**: sin él, dos bloques con Δ nominal positivo (+0,0001 y
+   +0,0000) podrían haberse leído como mejora; al compararlos con su propia nula se ve que la señal
+   está dentro del ruido, y la unión de las tres familias es **peor que V12**.
+
+## 29. Conclusión
+
+Los lexicones **no** aportan una dimensión de edad explotable sobre V12. Junto con el resultado de la
+capa de decisión (33 capas, ninguna adopta), la evidencia converge: bajo las restricciones de AGE,
+el límite no está en la representación sino en la **observabilidad de la edad** (35% del error es
+techo de información). V12 permanece congelado (leaderboard 0,62188) y la línea queda cerrada con
+D-039.
+
+_Generado por `scripts/phase41_cierre_lexicones.py`._

@@ -1,0 +1,196 @@
+{
+  "fecha": "2026-09-25",
+  "v12": {
+    "errores": 67610
+  },
+  "candidatos": {
+    "registro": {
+      "aciertos": 101778,
+      "complementariedad": {
+        "candidato": "registro",
+        "ambos_correctos": 96237,
+        "solo_candidato": 5541,
+        "solo_v12": 5489,
+        "ambos_mal": 62069,
+        "neto": 52,
+        "acuerdo_pct": 89.726,
+        "desacuerdo_pct": 10.274,
+        "filas_modificadas": 17398,
+        "filas_modificadas_pct": 10.274,
+        "tasa_rescate_del_error_pct": 8.196
+      },
+      "fronteras": {
+        "13-17|18-24": {
+          "errores_v12": 10928,
+          "errores_candidato": 10986,
+          "delta": 58
+        },
+        "18-24|25-34": {
+          "errores_v12": 10122,
+          "errores_candidato": 9972,
+          "delta": -150
+        },
+        "25-34|35-49": {
+          "errores_v12": 7252,
+          "errores_candidato": 7246,
+          "delta": -6
+        },
+        "35-49|50-64": {
+          "errores_v12": 6397,
+          "errores_candidato": 6372,
+          "delta": -25
+        },
+        "50-64|65-xx": {
+          "errores_v12": 5664,
+          "errores_candidato": 5604,
+          "delta": -60
+        }
+      },
+      "fronteras_centrales_delta": {
+        "18-24|25-34": -150,
+        "25-34|35-49": -6
+      }
+    },
+    "registro___vida___temas": {
+      "aciertos": 101387,
+      "complementariedad": {
+        "candidato": "registro___vida___temas",
+        "ambos_correctos": 95605,
+        "solo_candidato": 5782,
+        "solo_v12": 6121,
+        "ambos_mal": 61828,
+        "neto": -339,
+        "acuerdo_pct": 88.9,
+        "desacuerdo_pct": 11.1,
+        "filas_modificadas": 18797,
+        "filas_modificadas_pct": 11.1,
+        "tasa_rescate_del_error_pct": 8.552
+      },
+      "fronteras": {
+        "13-17|18-24": {
+          "errores_v12": 10928,
+          "errores_candidato": 10809,
+          "delta": -119
+        },
+        "18-24|25-34": {
+          "errores_v12": 10122,
+          "errores_candidato": 10047,
+          "delta": -75
+        },
+        "25-34|35-49": {
+          "errores_v12": 7252,
+          "errores_candidato": 7445,
+          "delta": 193
+        },
+        "35-49|50-64": {
+          "errores_v12": 6397,
+          "errores_candidato": 6507,
+          "delta": 110
+        },
+        "50-64|65-xx": {
+          "errores_v12": 5664,
+          "errores_candidato": 5717,
+          "delta": 53
+        }
+      },
+      "fronteras_centrales_delta": {
+        "18-24|25-34": -75,
+        "25-34|35-49": 193
+      }
+    },
+    "temas": {
+      "aciertos": 101574,
+      "complementariedad": {
+        "candidato": "temas",
+        "ambos_correctos": 96178,
+        "solo_candidato": 5396,
+        "solo_v12": 5548,
+        "ambos_mal": 62214,
+        "neto": -152,
+        "acuerdo_pct": 89.656,
+        "desacuerdo_pct": 10.344,
+        "filas_modificadas": 17516,
+        "filas_modificadas_pct": 10.344,
+        "tasa_rescate_del_error_pct": 7.981
+      },
+      "fronteras": {
+        "13-17|18-24": {
+          "errores_v12": 10928,
+          "errores_candidato": 10843,
+          "delta": -85
+        },
+        "18-24|25-34": {
+          "errores_v12": 10122,
+          "errores_candidato": 10047,
+          "delta": -75
+        },
+        "25-34|35-49": {
+          "errores_v12": 7252,
+          "errores_candidato": 7325,
+          "delta": 73
+        },
+        "35-49|50-64": {
+          "errores_v12": 6397,
+          "errores_candidato": 6316,
+          "delta": -81
+        },
+        "50-64|65-xx": {
+          "errores_v12": 5664,
+          "errores_candidato": 5719,
+          "delta": 55
+        }
+      },
+      "fronteras_centrales_delta": {
+        "18-24|25-34": -75,
+        "25-34|35-49": 73
+      }
+    },
+    "vida": {
+      "aciertos": 101773,
+      "complementariedad": {
+        "candidato": "vida",
+        "ambos_correctos": 96346,
+        "solo_candidato": 5427,
+        "solo_v12": 5380,
+        "ambos_mal": 62183,
+        "neto": 47,
+        "acuerdo_pct": 89.871,
+        "desacuerdo_pct": 10.129,
+        "filas_modificadas": 17152,
+        "filas_modificadas_pct": 10.129,
+        "tasa_rescate_del_error_pct": 8.027
+      },
+      "fronteras": {
+        "13-17|18-24": {
+          "errores_v12": 10928,
+          "errores_candidato": 10858,
+          "delta": -70
+        },
+        "18-24|25-34": {
+          "errores_v12": 10122,
+          "errores_candidato": 9990,
+          "delta": -132
+        },
+        "25-34|35-49": {
+          "errores_v12": 7252,
+          "errores_candidato": 7283,
+          "delta": 31
+        },
+        "35-49|50-64": {
+          "errores_v12": 6397,
+          "errores_candidato": 6317,
+          "delta": -80
+        },
+        "50-64|65-xx": {
+          "errores_v12": 5664,
+          "errores_candidato": 5712,
+          "delta": 48
+        }
+      },
+      "fronteras_centrales_delta": {
+        "18-24|25-34": -132,
+        "25-34|35-49": 31
+      }
+    }
+  }
+}

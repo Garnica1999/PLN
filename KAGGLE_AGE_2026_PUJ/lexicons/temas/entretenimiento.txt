@@ -1,0 +1,73 @@
+# familia: temas
+# subcategoria: entretenimiento
+# descripcion: Dominio de entretenimiento general: cine, series, cultura popular y ocio, distinto del de televisión y de la música.
+# idioma: es
+# procedencia: elaborado en este proyecto (conocimiento linguistico general)
+# licencia: del proyecto; sin datos externos y sin etiquetas de edad
+# riesgo: ninguno
+# fecha: 2026-09-25
+# entradas_declaradas: 71
+# cribado_corpus: frecuencia minima 3 en el train
+acción
+actriz
+afición
+aventura
+bailarina
+bailarín
+batalla
+carnaval
+chiste
+chistes
+cine
+cines
+cinta
+circo
+comedia
+cuento
+cuentos
+director
+directora
+diversión
+drama
+ensayo
+ensayos
+entretenimiento
+escena
+espectáculo
+estreno
+estrenos
+farandula
+feria
+fiesta
+fiestas
+función
+hobby
+humor
+lectura
+leyenda
+libro
+libros
+mafalda
+magia
+mago
+misterio
+mito
+obra
+ocio
+pasatiempo
+payasada
+payaso
+payasos
+película
+películas
+poesía
+secreto
+show
+superhéroe
+taquilla
+teatro
+terror
+tráiler
+títeres
+villano
+épica

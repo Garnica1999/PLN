@@ -16,26 +16,27 @@
   verificado con `grep`).
 
 ## Fase actual
-- **FASE DE CAPA DE DECISIÓN ORDINAL (2026-09-25) CERRADA — línea cerrada (D-037).** 33 capas de
-  decisión ajustadas con corrected CV sobre las probabilidades OOF congeladas de V12 (decodificación
-  acumulativa, proyección ordinal, coste ordinal, desempate por edad esperada, corrección residual de
-  fronteras, decodificación por matriz de transición, calibración por banda de confianza,
-  combinación Luce de márgenes adyacentes y corrector mínimo): **ninguna alcanza el gate**
-  (Δ ≥ +0,003 con ≥4/5 folds). La mejor (`G desempate E[Y]`, tau 0,05) da **+0,0011 con 4/5 folds**
-  y **neto de rescate −117**.
-- **Modelo final: V12 congelado.** Leaderboard de referencia **0,62188** (artefacto
-  `age_submission_v12_reproducible.csv`; el archivo histórico obtuvo 0,62182). **D-034 cerrada
-  funcionalmente** (D-036): la discrepancia de reconstrucción no afecta el desempeño. **No se generó
-  ni se envió ninguna submission nueva.**
-- **Diagnóstico del error residual**: techo de información 13,87% de filas (35% del error, ningún
-  miembro acierta) + 65% de agregación (26,70% de filas rescatables) que ninguna regla de decisión
-  convierte en aciertos. Fronteras centrales: 10.122 y 7.252 errores.
-- **Conclusión**: bajo las restricciones de AGE, la representación contiene la información disponible
-  y el límite está en la observabilidad de la edad, no en la regla de decisión.
-- **Entregables**: `reports/age_residual_decision_research.md`, `reports/age_residual_audit.md`,
-  `reports/age_boundary_models.csv`, `reports/age_probability_correction.csv`,
-  `reports/age_residual_candidates.csv`, `reports/age_boundary_confusion_matrices/`,
-  `reports/age_hypothesis_coverage.md`.
+- **FASE DE LEXICONES (2026-09-25) CERRADA — línea cerrada (D-039).** 24 subcategorías léxicas
+  (registro, etapas de vida, dominios temáticos), 1328 entradas efectivas y
+  72 features agregadas, construidas como función determinista del texto (sin etiquetas). Control
+  *lexicon-only*: temas **0,2033**, registro **0,1520**, vida **0,0731** frente a un suelo de azar
+  de 0,1667. Redundancia contra las 279 features de V12: **3 de 72 columnas** (las tres de
+  `abreviaciones_internet`, un proxy de longitud). Fusión con V12: **ningún bloque alcanza el gate**
+  (Δ entre −0,0018 y +0,0001) y la complementariedad es nula (rescate ≈ daño, neto entre −339 y
+  +52).
+- **Modelo final: V12 congelado.** Leaderboard de referencia **0,62188**. **No se generó ni se
+  envió ninguna submission nueva.**
+- **D-038**: `transformers`, `sentence-transformers` y `torch` están instalados en el venv, pero su
+  uso en el camino de modelado es 0 (único import: detección de GPU). Se documenta sin maquillar.
+- **Conclusión**: bajo las restricciones de AGE, la línea de representación léxica está agotada. El
+  criterio que queda abierto es la **frontera** (18-24|25-34 y 25-34|35-49), no más señal.
+- **Reproducibilidad**: un cambio de rama concurrente perdió los ficheros no versionados de la fase
+  (`INCIDENTE_GIT_2026-09-25.md`). El resultado de P6 y el análisis de P7 están intactos; el bloque
+  `registro` se reconstruyó **idéntico bit a bit** y el `vida` con una diferencia documentada
+  (19 columnas frente a 16).
+- **Entregables**: `reports/age_lexicon_hypothesis_coverage.md`, `reports/age_lexicon_catalog.csv`,
+  `reports/age_lexicon_results.csv`, `reports/age_lexicon_complementarity.md`,
+  `reports/age_lexicon_error_analysis.md`, `reports/age_lexicon_audit.md`, `lexicons/**`.
 
 ## Estado según el formato del brief §83
 - **CURRENT BEST CV**: **0,6005** (LOFO) — candidato v12 (promedio MLP+LogReg sobre 279 features).

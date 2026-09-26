@@ -1,0 +1,30 @@
+{
+  "fase": "P1 — catalogo de lexicones y cribado de aplicabilidad",
+  "fecha": "2026-09-25",
+  "subcategorias": 24,
+  "entradas_declaradas": 1536,
+  "entradas_efectivas": 1328,
+  "descartadas": 208,
+  "min_frecuencia_corpus": 3,
+  "tokens_unicos_tras_ambiguedad": 1133,
+  "tokens_ambiguos_descartados": 93,
+  "cobertura_por_familia": {
+    "registro": {
+      "tokens_corpus": 97723,
+      "tokens_cubiertos": 5587,
+      "cobertura_pct": 5.7172
+    },
+    "vida": {
+      "tokens_corpus": 97723,
+      "tokens_cubiertos": 751,
+      "cobertura_pct": 0.7685
+    },
+    "temas": {
+      "tokens_corpus": 97723,
+      "tokens_cubiertos": 9782,
+      "cobertura_pct": 10.0099
+    }
+  },
+  "subcategorias_retiradas_por_minimo": {},
+  "nota_cribado": "el cribado de frecuencia minima usa el vocabulario del train completo: es seleccion no supervisada y transductiva, sin usar etiquetas en ningun punto"
+}

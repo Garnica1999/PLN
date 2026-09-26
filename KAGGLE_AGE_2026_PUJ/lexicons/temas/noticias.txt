@@ -1,0 +1,69 @@
+# familia: temas
+# subcategoria: noticias
+# descripcion: Dominio noticioso: redactores, medios, cobertura y la operación de la información periodística.
+# idioma: es
+# procedencia: elaborado en este proyecto (conocimiento linguistico general)
+# licencia: del proyecto; sin datos externos y sin etiquetas de edad
+# riesgo: ninguno
+# fecha: 2026-09-25
+# entradas_declaradas: 62
+# cribado_corpus: frecuencia minima 3 en el train
+boletín
+breaking
+cabecera
+columna
+comparecencia
+comunicado
+condena
+confirmado
+confirmar
+criminal
+crónica
+dato
+datos
+debate
+debates
+declaración
+delito
+denuncia
+denunciar
+detención
+detenido
+diario
+diarios
+editorial
+encuestas
+entrevista
+entrevistado
+escándalo
+estadística
+fiscalía
+fuente
+fuentes
+guardia
+información
+informe
+investigación
+juez
+juicio
+nota
+notas
+noticia
+noticias
+parlamento
+periodismo
+periodista
+periódico
+policía
+polémica
+portada
+prensa
+reportaje
+reportajes
+reportes
+sentencia
+sondeo
+testigo
+titular
+titulares
+tribunal

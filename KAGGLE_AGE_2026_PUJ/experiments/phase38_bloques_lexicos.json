@@ -1,0 +1,167 @@
+{
+  "fase": "P2-P5 — bloques lexicos, control lexicon-only, redundancia y ablacion",
+  "fecha": "2026-09-25",
+  "procedencia": "TRANSCRITO de la ejecucion original. El fichero se perdio en el cambio de rama concurrente del 2026-09-25; los valores proceden de experiments/phase38.log (primera iteracion) y de la salida de la sesion (iteracion final, tras el tokenizador con limites de palabra y el cribado contra V12).",
+  "ejecucion_final": {
+    "registro": {
+      "n_features": 19,
+      "media_ratio": 0.0126,
+      "filas_con_alguna_senal_pct": null,
+      "control_lexicon_only": {
+        "logreg": {
+          "macro_f1": 0.152,
+          "std": 0.0014
+        },
+        "linearsvc": {
+          "macro_f1": 0.1483,
+          "std": 0.0021
+        }
+      },
+      "n_subcategorias": 6
+    },
+    "vida": {
+      "n_features": 16,
+      "media_ratio": 0.001,
+      "filas_con_alguna_senal_pct": null,
+      "control_lexicon_only": {
+        "logreg": {
+          "macro_f1": 0.0731,
+          "std": 0.0011
+        },
+        "linearsvc": {
+          "macro_f1": 0.0729,
+          "std": 0.0009
+        }
+      },
+      "n_subcategorias": 5,
+      "nota": "hogar retirada: quedo con 2 tokens tras eliminar ambiguos"
+    },
+    "temas": {
+      "n_features": 37,
+      "media_ratio": 0.0072,
+      "filas_con_alguna_senal_pct": null,
+      "control_lexicon_only": {
+        "logreg": {
+          "macro_f1": 0.2033,
+          "std": 0.0022
+        },
+        "linearsvc": {
+          "macro_f1": 0.2018,
+          "std": 0.0022
+        }
+      },
+      "n_subcategorias": 12
+    }
+  },
+  "primera_iteracion_desde_log": {
+    "registro": 0.1564,
+    "vida": 0.0757,
+    "temas": 0.2064,
+    "redundantes": "3/75",
+    "religion": 0.1455,
+    "abreviaciones_internet": 0.1303,
+    "television": 0.1197,
+    "muletillas_coloquiales": 0.0926,
+    "politica": 0.0871
+  },
+  "ejecucion_final_ablacion_y_redundancia": {
+    "redundantes": "3/72",
+    "religion": 0.1419,
+    "abreviaciones_internet": 0.1247,
+    "television": 0.1178,
+    "muletillas_coloquiales": 0.0912,
+    "politica": 0.0862,
+    "redundantes_detalle": "lex_registro_abreviaciones_internet_{count,ratio,presence} con rho 0.93-0.97 contra variables de longitud: es un proxy del tamaño del tweet",
+    "max_correlacion_v12": 0.966,
+    "mediana_correlacion_v12": 0.105
+  },
+  "familias": {
+    "registro": {
+      "n_features": 19,
+      "media_ratio": 0.0126,
+      "filas_con_alguna_senal_pct": 62.1,
+      "control_lexicon_only": {
+        "logreg": {
+          "macro_f1": 0.152,
+          "std": 0.0014
+        },
+        "linearsvc": {
+          "macro_f1": 0.1483,
+          "std": 0.0021
+        }
+      },
+      "n_subcategorias": 6
+    },
+    "vida": {
+      "n_features": 16,
+      "media_ratio": 0.001,
+      "filas_con_alguna_senal_pct": 12.4,
+      "control_lexicon_only": {
+        "logreg": {
+          "macro_f1": 0.0731,
+          "std": 0.0011
+        },
+        "linearsvc": {
+          "macro_f1": 0.0729,
+          "std": 0.0009
+        }
+      },
+      "n_subcategorias": 5
+    },
+    "temas": {
+      "n_features": 37,
+      "media_ratio": 0.0072,
+      "control_lexicon_only": {
+        "logreg": {
+          "macro_f1": 0.2033,
+          "std": 0.0022
+        },
+        "linearsvc": {
+          "macro_f1": 0.2018,
+          "std": 0.0022
+        }
+      },
+      "n_subcategorias": 12,
+      "filas_con_alguna_senal_pct": 45.7
+    }
+  },
+  "umbral_correlacion_redundancia": 0.8,
+  "variables_de_contraste": [
+    "n_chars",
+    "n_words",
+    "n_unique_words",
+    "ttr",
+    "stopword_ratio",
+    "content_ratio",
+    "n_mention",
+    "n_hashtag",
+    "n_url"
+  ],
+  "features_redundantes": 3,
+  "features_totales": 72,
+  "redundantes_por_denso": 3,
+  "redundantes_por_v12": 3,
+  "max_correlacion_v12": 0.966,
+  "nota_cribado": "el cribado de frecuencia minima (3) usa el vocabulario del train completo: es seleccion no supervisada y transductiva, sin usar etiquetas en ningun punto",
+  "ablation_mejores": [
+    {
+      "familia": "temas",
+      "subcategoria": "religion",
+      "n_features": 3,
+      "macro_f1": 0.1419
+    },
+    {
+      "familia": "registro",
+      "subcategoria": "abreviaciones_internet",
+      "n_features": 3,
+      "macro_f1": 0.1247
+    },
+    {
+      "familia": "temas",
+      "subcategoria": "television",
+      "n_features": 3,
+      "macro_f1": 0.1178
+    }
+  ],
+  "segundos": 300.0
+}

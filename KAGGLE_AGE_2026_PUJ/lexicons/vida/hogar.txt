@@ -1,0 +1,57 @@
+# familia: vida
+# subcategoria: hogar
+# descripcion: Vivienda y administración doméstica: alquiler, servicios y mudanza, marcadores de independencia.
+# idioma: es
+# procedencia: elaborado en este proyecto (conocimiento linguistico general)
+# licencia: del proyecto; sin datos externos y sin etiquetas de edad
+# riesgo: ninguno
+# fecha: 2026-09-25
+# entradas_declaradas: 58
+# cribado_corpus: frecuencia minima 3 en el train
+adopción
+adoptar
+agua
+alquilar
+apartamento
+ascensor
+aseo
+baño
+cama
+casa
+casero
+casita
+cocina
+cocinar
+comunidad
+crédito
+cuota
+cuotas
+dueño
+dueños
+escritorio
+factura
+facturas
+gas
+gato
+hipoteca
+hogar
+independiente
+jardín
+lavar
+limpieza
+luz
+mascota
+mudanza
+patio
+perro
+piso
+plancha
+plantas
+portero
+recibo
+sofá
+terraza
+vecina
+vecino
+vecinos
+vivienda

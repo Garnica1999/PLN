@@ -1,0 +1,59 @@
+# familia: vida
+# subcategoria: empleo
+# descripcion: Contexto laboral asalariado: oficina, empresa, jerarquía y administración del salario.
+# idioma: es
+# procedencia: elaborado en este proyecto (conocimiento linguistico general)
+# licencia: del proyecto; sin datos externos y sin etiquetas de edad
+# riesgo: ninguno
+# fecha: 2026-09-25
+# entradas_declaradas: 53
+# cribado_corpus: frecuencia minima 3 en el train
+afp
+aguinaldo
+ascenso
+ascensos
+capacitación
+carta
+cobrar
+contrato
+contratos
+curso
+cursos
+desempeño
+empresa
+empresas
+entrevista
+estabilidad
+expediente
+horario
+horarios
+horas
+jefe
+jefes
+jornada
+liquidación
+liquidar
+logro
+logros
+meta
+metas
+nómina
+obra
+oficina
+planilla
+prestación
+puesto
+puestos
+referencias
+renovación
+reuniones
+reunión
+seguro
+sueldo
+sueldos
+trabajar
+trabajo
+trabajos
+vacaciones
+vacante
+vacantes

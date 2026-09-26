@@ -1,0 +1,47 @@
+# familia: vida
+# subcategoria: universidad
+# descripcion: Educación superior: léxico propio del campus, incluidas prácticas, beca y tesis.
+# idioma: es
+# procedencia: elaborado en este proyecto (conocimiento linguistico general)
+# licencia: del proyecto; sin datos externos y sin etiquetas de edad
+# riesgo: ninguno
+# fecha: 2026-09-25
+# entradas_declaradas: 46
+# cribado_corpus: frecuencia minima 3 en el train
+alumna
+alumno
+alumnos
+beca
+becas
+biblioteca
+campus
+carrera
+congreso
+créditos
+cátedra
+defensa
+docente
+docentes
+doctorado
+estudio
+estudios
+evaluación
+facultad
+grupos
+investigación
+investigador
+laboratorio
+master
+matrícula
+plan
+ponencia
+proyecto
+prácticas
+publicación
+ruta
+semestre
+seminario
+tesis
+universidad
+universitaria
+universitario

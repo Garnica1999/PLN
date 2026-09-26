@@ -1,0 +1,69 @@
+# familia: temas
+# subcategoria: television
+# descripcion: Dominio audiovisual televisivo: canales, programas, reality y ficción, y la experiencia de ver televisión como actividad.
+# idioma: es
+# procedencia: elaborado en este proyecto (conocimiento linguistico general)
+# licencia: del proyecto; sin datos externos y sin etiquetas de edad
+# riesgo: ninguno
+# fecha: 2026-09-25
+# entradas_declaradas: 63
+# cribado_corpus: frecuencia minima 3 en el train
+actor
+actores
+actriz
+actuación
+amazon
+anuncios
+argumento
+audiencia
+banda
+cadena
+canal
+canales
+cancelado
+capítulo
+comercial
+concurso
+créditos
+directo
+director
+disney
+documental
+edición
+elenco
+emisión
+en
+episodio
+espectador
+final
+grabado
+guion
+hbo
+masterchef
+max
+netflix
+novela
+premio
+premios
+programa
+programación
+programas
+protagonista
+publicidad
+reality
+reparto
+serie
+series
+sinopsis
+sonora
+talent
+talento
+tele
+telenovela
+televisión
+temporada
+temporadas
+tv
+ver
+viendo
+vivo

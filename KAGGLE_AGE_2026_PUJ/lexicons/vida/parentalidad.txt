@@ -1,0 +1,58 @@
+# familia: vida
+# subcategoria: parentalidad
+# descripcion: Vínculos familiares y parentalidad: ascendencia, descendencia y pareja.
+# idioma: es
+# procedencia: elaborado en este proyecto (conocimiento linguistico general)
+# licencia: del proyecto; sin datos externos y sin etiquetas de edad
+# riesgo: ninguno
+# fecha: 2026-09-25
+# entradas_declaradas: 53
+# cribado_corpus: frecuencia minima 3 en el train
+abuela
+abuelo
+adolescencia
+adolescente
+bebé
+boda
+carrito
+casarse
+crecer
+cumpleaños
+custodia
+cuñada
+cuñado
+esposa
+esposo
+familia
+flia
+hija
+hijas
+hijo
+hijos
+juguete
+madre
+mamá
+maternidad
+matrimonio
+navidad
+nieto
+nietos
+novia
+novio
+padre
+padres
+papá
+pareja
+prima
+primas
+primo
+primos
+pubertad
+regalo
+separación
+sobrina
+sobrino
+sobrinos
+suegra
+suegro
+yerno

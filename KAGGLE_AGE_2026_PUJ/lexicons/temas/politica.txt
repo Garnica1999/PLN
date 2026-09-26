@@ -1,0 +1,80 @@
+# familia: temas
+# subcategoria: politica
+# descripcion: Dominio político institucional: partidos, instituciones y procesos, redactado sin voto a partido concreto.
+# idioma: es
+# procedencia: elaborado en este proyecto (conocimiento linguistico general)
+# licencia: del proyecto; sin datos externos y sin etiquetas de edad
+# riesgo: ninguno
+# fecha: 2026-09-25
+# entradas_declaradas: 71
+# cribado_corpus: frecuencia minima 3 en el train
+acuerdo
+alcalde
+alcaldía
+altas
+artículo
+bancada
+bloque
+campaña
+candidata
+candidato
+ciudadano
+ciudadanía
+concesión
+congreso
+constitución
+decreto
+democracia
+dictadura
+diputada
+diputado
+elecciones
+elección
+electoral
+embajada
+estado
+estatal
+fiscal
+frontera
+gobernación
+gobierno
+gobiernos
+impuesto
+inmigración
+institución
+internacional
+ley
+leyes
+mayorista
+mayoría
+migración
+ministra
+ministro
+minoría
+municipal
+nacional
+nación
+negociación
+opción
+oposición
+opositor
+partido
+partidos
+patria
+país
+plebiscito
+político
+presidenta
+presidente
+privatización
+pública
+referendum
+reforma
+república
+régimen
+senado
+soberanía
+tratado
+votar
+voto
+votos

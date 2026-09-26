@@ -1,0 +1,97 @@
+# familia: temas
+# subcategoria: tecnologia
+# descripcion: Dominio tecnológico general: dispositivos, software y conectividad, sin marcas concretas.
+# idioma: es
+# procedencia: elaborado en este proyecto (conocimiento linguistico general)
+# licencia: del proyecto; sin datos externos y sin etiquetas de edad
+# riesgo: ninguno
+# fecha: 2026-09-25
+# entradas_declaradas: 89
+# cribado_corpus: frecuencia minima 3 en el train
+RAM
+actualizar
+android
+aplicación
+archivo
+audio
+base
+batería
+beta
+cable
+calidad
+cargador
+carpeta
+celular
+celulares
+chrome
+ciber
+claro
+clave
+cobertura
+computador
+configuración
+contraseña
+código
+datos
+descarga
+descargar
+disco
+dispositivo
+dominio
+duro
+error
+firefox
+gb
+hacker
+hardware
+imagen
+información
+instalar
+internet
+iphone
+laptop
+linux
+mac
+mb
+memoria
+mensaje
+monitor
+movistar
+móvil
+móviles
+navegador
+notificación
+nube
+online
+operador
+ordenador
+pantalla
+portátil
+problema
+programa
+programación
+publicación
+publicar
+página
+red
+redes
+resolución
+router
+samsung
+servidor
+señal
+sistema
+software
+streaming
+switch
+teclado
+tecnología
+telcel
+teléfono
+teléfonos
+usb
+usuario
+video
+web
+wifi
+windows

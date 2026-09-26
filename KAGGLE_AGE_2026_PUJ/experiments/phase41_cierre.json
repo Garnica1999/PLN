@@ -1,0 +1,13 @@
+{
+  "fase": "P8 — cierre de la fase de lexicones",
+  "fecha": "2026-09-25",
+  "adoptan": [],
+  "linea_cerrada": true,
+  "experimentos_registrados": [
+    "PH36-COBERTURA-LEX",
+    "PH37-CATALOGO-LEX",
+    "PH38-BLOQUES-LEX",
+    "PH39-FUSION-LEX",
+    "PH40-ANALISIS-ERROR-LEX"
+  ]
+}
