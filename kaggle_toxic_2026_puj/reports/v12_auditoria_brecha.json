@@ -1,0 +1,870 @@
+{
+  "experimento": "V12-00 (P0, auditoria de brecha)",
+  "fecha": "2026-09-26T22:27:50+00:00",
+  "commit": "039eae4",
+  "referencia_v03": 0.7772114525165721,
+  "lb_v03": 0.78306,
+  "v03_huella_intacta": true,
+  "modulos_analizados": 127,
+  "familias_por_estado": {
+    "CLOSED_VALID": 16,
+    "GENUINELY_UNTESTED": 3,
+    "PARTIALLY_TESTED": 5
+  },
+  "ejes_distinguidos": 9,
+  "v03_tiene_fila_en_registro": false,
+  "filas_registro": 228,
+  "sondas": [
+    {
+      "family": "LogisticRegression sobre TF-IDF, con barrido de C",
+      "sondas": [
+        "LogisticRegression"
+      ],
+      "encontradas": {
+        "LogisticRegression": [
+          "02_baseline_tfidf_lr.py",
+          "03_variantes_representaciones.py",
+          "04_refit_submissions_v02_v03.py",
+          "05_ensembles.py",
+          "07_submission_v04_ens04.py",
+          "08_features_densas_h11_h12.py",
+          "09_optuna_tfidf_lr.py",
+          "10_sondas_robustez.py",
+          "12_control_pseudo_autores.py",
+          "14_oof_corregido_v2.py",
+          "15_cadenas_etiquetas_v2.py",
+          "16_targeting_v2.py",
+          "17_stacking_v2.py",
+          "18_p7_holdout_y_submission_v08.py",
+          "19_sintaxis_cita_negacion_v2.py",
+          "20_emocion_nbsvm_ortografia_v2.py",
+          "21_backlog_restante_v2.py",
+          "29_reweighting_v4.py",
+          "30_supervised_weighting_v4.py",
+          "31_joint_label_v4.py",
+          "32_meta_shift_v4.py",
+          "33_class_conditional_lm_v4.py",
+          "34_structural_sparse_v4.py",
+          "36_candidatos_v4.py",
+          "38_refit_final_v4.py",
+          "embedding_02_fasttext_baseline_v5.py",
+          "embedding_03_fusion_complementariedad_v5.py",
+          "v10_01_holdout2.py",
+          "v10_02_ruido_particion.py",
+          "v10_03_arnes_evaluacion.py",
+          "v10_04_calibracion_fuerte.py",
+          "v10_07_shift_features.py",
+          "v10_09_correlacion_eliminacion.py",
+          "v10_10_regla_conservacion.py",
+          "v11_01_reproduccion_v9_02.py",
+          "v11_07_correccion_prior.py",
+          "v6_01_estructura_errores.py",
+          "v6_02_label_factorization.py",
+          "v6_03_ponderacion_grupo.py",
+          "v6_04_char_weight.py",
+          "v6_05_skipgrams.py",
+          "v6_06_bagging_grupos.py",
+          "v6_07_ruido_par.py",
+          "v6_08_aumento.py",
+          "v7_02_prior_grupo.py",
+          "v7_03_umbral_anidado.py",
+          "v8_01_ensamble_folds.py",
+          "v8_03_estabilidad_features.py",
+          "v8_04_log_count_ratio.py",
+          "v8_05_regularizacion_conjunta.py",
+          "v8_06_c_por_etiqueta.py",
+          "v8_07_peso_por_etiqueta.py",
+          "v8_08_corrector_margenes.py",
+          "v8_10_ensemble_cinco_modelos.py",
+          "v8_11_complejidad_idiosincrasias.py",
+          "v8_12_seleccion_por_grupo.py",
+          "v8_13_clasificadores_alternativos.py",
+          "v9_02_prior_shift_em.py",
+          "v9_04_dl_secuencial_fasttext.py",
+          "v9_05_proyecciones_supervisadas.py"
+        ]
+      },
+      "ficheros_analizados": 127
+    },
+    {
+      "family": "LinearSVC, es decir perdida hinge en lugar de logistica",
+      "sondas": [
+        "LinearSVC"
+      ],
+      "encontradas": {
+        "LinearSVC": [
+          "03_variantes_representaciones.py",
+          "05_ensembles.py",
+          "07_submission_v04_ens04.py",
+          "14_oof_corregido_v2.py",
+          "15_cadenas_etiquetas_v2.py",
+          "17_stacking_v2.py",
+          "18_p7_holdout_y_submission_v08.py",
+          "20_emocion_nbsvm_ortografia_v2.py",
+          "29_reweighting_v4.py",
+          "32_meta_shift_v4.py",
+          "36_candidatos_v4.py",
+          "38_refit_final_v4.py",
+          "embedding_02_fasttext_baseline_v5.py",
+          "v6_01_estructura_errores.py"
+        ]
+      },
+      "ficheros_analizados": 127
+    },
+    {
+      "family": "Modelos generativos: ComplementNB, y verosimilitud condicional de clase",
+      "sondas": [
+        "ComplementNB",
+        "MultinomialNB",
+        "BernoulliNB"
+      ],
+      "encontradas": {
+        "ComplementNB": [
+          "03_variantes_representaciones.py"
+        ]
+      },
+      "ficheros_analizados": 127
+    },
+    {
+      "family": "Clasificadores alternativos: discriminante lineal, arbol, bosque",
+      "sondas": [
+        "LinearDiscriminantAnalysis",
+        "DecisionTreeClassifier",
+        "RandomForestClassifier"
+      ],
+      "encontradas": {
+        "LinearDiscriminantAnalysis": [
+          "v8_13_clasificadores_alternativos.py"
+        ],
+        "DecisionTreeClassifier": [
+          "v8_13_clasificadores_alternativos.py"
+        ],
+        "RandomForestClassifier": [
+          "v8_13_clasificadores_alternativos.py"
+        ]
+      },
+      "ficheros_analizados": 127
+    },
+    {
+      "family": "Barrido de la representacion TF-IDF: ngram, min_df, ventana, subpalabras",
+      "sondas": [
+        "TfidfVectorizer"
+      ],
+      "encontradas": {
+        "TfidfVectorizer": [
+          "00_auditoria_datos.py",
+          "02_baseline_tfidf_lr.py",
+          "03_variantes_representaciones.py",
+          "04_refit_submissions_v02_v03.py",
+          "05_ensembles.py",
+          "07_submission_v04_ens04.py",
+          "08_features_densas_h11_h12.py",
+          "09_optuna_tfidf_lr.py",
+          "10_sondas_robustez.py",
+          "11_dl_desde_cero.py",
+          "12_control_pseudo_autores.py",
+          "14_oof_corregido_v2.py",
+          "16_targeting_v2.py",
+          "18_p7_holdout_y_submission_v08.py",
+          "19_sintaxis_cita_negacion_v2.py",
+          "20_emocion_nbsvm_ortografia_v2.py",
+          "21_backlog_restante_v2.py",
+          "27_label_consistency_v4.py",
+          "29_reweighting_v4.py",
+          "30_supervised_weighting_v4.py",
+          "31_joint_label_v4.py",
+          "32_meta_shift_v4.py",
+          "33_class_conditional_lm_v4.py",
+          "34_structural_sparse_v4.py",
+          "35_discovery_v4.py",
+          "36_candidatos_v4.py",
+          "38_refit_final_v4.py",
+          "embedding_02_fasttext_baseline_v5.py",
+          "embedding_03_fusion_complementariedad_v5.py",
+          "v10_01_holdout2.py",
+          "v10_02_ruido_particion.py",
+          "v10_03_arnes_evaluacion.py",
+          "v10_07_shift_features.py",
+          "v10_09_correlacion_eliminacion.py",
+          "v11_07_correccion_prior.py",
+          "v6_01_estructura_errores.py",
+          "v6_02_label_factorization.py",
+          "v6_03_ponderacion_grupo.py",
+          "v6_04_char_weight.py",
+          "v6_05_skipgrams.py",
+          "v6_06_bagging_grupos.py",
+          "v6_07_ruido_par.py",
+          "v6_08_aumento.py",
+          "v7_01_perdida_f1.py",
+          "v7_02_prior_grupo.py",
+          "v7_03_umbral_anidado.py",
+          "v8_01_ensamble_folds.py",
+          "v8_03_estabilidad_features.py",
+          "v8_04_log_count_ratio.py",
+          "v8_05_regularizacion_conjunta.py",
+          "v8_06_c_por_etiqueta.py",
+          "v8_07_peso_por_etiqueta.py",
+          "v8_08_corrector_margenes.py",
+          "v8_10_ensemble_cinco_modelos.py",
+          "v8_11_complejidad_idiosincrasias.py",
+          "v8_12_seleccion_por_grupo.py",
+          "v8_13_clasificadores_alternativos.py",
+          "v9_01_sensibilidad_fugas.py",
+          "v9_03_near_dup_test.py",
+          "v9_05_proyecciones_supervisadas.py"
+        ]
+      },
+      "ficheros_analizados": 127
+    },
+    {
+      "family": "NB-SVM y razon logaritmica de recuentos",
+      "sondas": [
+        "log_count_ratio"
+      ],
+      "encontradas": {
+        "log_count_ratio": [
+          "20_emocion_nbsvm_ortografia_v2.py"
+        ]
+      },
+      "ficheros_analizados": 127
+    },
+    {
+      "family": "Estabilidad supervisada de caracteristicas",
+      "sondas": [],
+      "encontradas": {},
+      "ficheros_analizados": 127
+    },
+    {
+      "family": "Poda por correlacion y eliminacion de caracteristicas",
+      "sondas": [],
+      "encontradas": {},
+      "ficheros_analizados": 127
+    },
+    {
+      "family": "Regularizacion conjunta entre etiquetas",
+      "sondas": [],
+      "encontradas": {},
+      "ficheros_analizados": 127
+    },
+    {
+      "family": "Cadenas y factorizacion condicional entre etiquetas",
+      "sondas": [],
+      "encontradas": {},
+      "ficheros_analizados": 127
+    },
+    {
+      "family": "Constante y peso de clase por etiqueta",
+      "sondas": [
+        "class_weight"
+      ],
+      "encontradas": {},
+      "ficheros_analizados": 127
+    },
+    {
+      "family": "Ponderacion por cercania a la frontera y por error_score",
+      "sondas": [
+        "sample_weight"
+      ],
+      "encontradas": {},
+      "ficheros_analizados": 127
+    },
+    {
+      "family": "Sospecha de instance-label y contradiccion",
+      "sondas": [],
+      "encontradas": {},
+      "ficheros_analizados": 127
+    },
+    {
+      "family": "Umbrales, decision layers y reglas F1-concientes",
+      "sondas": [],
+      "encontradas": {},
+      "ficheros_analizados": 127
+    },
+    {
+      "family": "Regimenes de error y rebanadas con modelo o umbral propio",
+      "sondas": [],
+      "encontradas": {},
+      "ficheros_analizados": 127
+    },
+    {
+      "family": "Calibracion y correccion de prior",
+      "sondas": [
+        "IsotonicRegression",
+        "em_saerens"
+      ],
+      "encontradas": {
+        "IsotonicRegression": [
+          "21_backlog_restante_v2.py",
+          "v10_04_calibracion_fuerte.py",
+          "v10_05_regla_f1_optima.py",
+          "v11_06_validacion_estimadores.py",
+          "v11_07_correccion_prior.py"
+        ],
+        "em_saerens": [
+          "v11_01_reproduccion_v9_02.py",
+          "v9_02_prior_shift_em.py"
+        ]
+      },
+      "ficheros_analizados": 127
+    },
+    {
+      "family": "Ensembles de cualquier tipo: voto, pesos, apilamiento, cinco modelos de pliegue",
+      "sondas": [
+        "VotingClassifier",
+        "StackingClassifier"
+      ],
+      "encontradas": {},
+      "ficheros_analizados": 127
+    },
+    {
+      "family": "Redes neuronales: MLP, CharCNN, BiGRU con y sin afinado",
+      "sondas": [
+        "MLPClassifier",
+        "BiLSTM",
+        "Conv1d"
+      ],
+      "encontradas": {
+        "Conv1d": [
+          "11_dl_desde_cero.py"
+        ]
+      },
+      "ficheros_analizados": 127
+    },
+    {
+      "family": "Embeddings y reduccion de dimension: fastText, SVD,_metrics",
+      "sondas": [
+        "fastText",
+        "TruncatedSVD"
+      ],
+      "encontradas": {
+        "TruncatedSVD": [
+          "11_dl_desde_cero.py",
+          "33_class_conditional_lm_v4.py",
+          "v9_05_proyecciones_supervisadas.py"
+        ]
+      },
+      "ficheros_analizados": 127
+    },
+    {
+      "family": "Corrector sobre margenes y desacuerdo entre pliegues",
+      "sondas": [],
+      "encontradas": {},
+      "ficheros_analizados": 127
+    },
+    {
+      "family": "Decision por edad esperada y proyeccion ordinal",
+      "sondas": [],
+      "encontradas": {},
+      "ficheros_analizados": 127
+    },
+    {
+      "family": "Funcion de perdida propia: objetivos de scoring proper, perdida asimetrica, perdida tolerante al ruido",
+      "sondas": [
+        "sample_weight"
+      ],
+      "encontradas": {},
+      "ficheros_analizados": 127
+    },
+    {
+      "family": "Entrenamiento contrastivo o por pares sobre TF-IDF disperso",
+      "sondas": [],
+      "encontradas": {},
+      "ficheros_analizados": 127
+    },
+    {
+      "family": "Regularizacion distinta por etiqueta Y por grupo de caracteristicas",
+      "sondas": [
+        "TfidfVectorizer",
+        "hstack"
+      ],
+      "encontradas": {
+        "TfidfVectorizer": [
+          "00_auditoria_datos.py",
+          "02_baseline_tfidf_lr.py",
+          "03_variantes_representaciones.py",
+          "04_refit_submissions_v02_v03.py",
+          "05_ensembles.py",
+          "07_submission_v04_ens04.py",
+          "08_features_densas_h11_h12.py",
+          "09_optuna_tfidf_lr.py",
+          "10_sondas_robustez.py",
+          "11_dl_desde_cero.py",
+          "12_control_pseudo_autores.py",
+          "14_oof_corregido_v2.py",
+          "16_targeting_v2.py",
+          "18_p7_holdout_y_submission_v08.py",
+          "19_sintaxis_cita_negacion_v2.py",
+          "20_emocion_nbsvm_ortografia_v2.py",
+          "21_backlog_restante_v2.py",
+          "27_label_consistency_v4.py",
+          "29_reweighting_v4.py",
+          "30_supervised_weighting_v4.py",
+          "31_joint_label_v4.py",
+          "32_meta_shift_v4.py",
+          "33_class_conditional_lm_v4.py",
+          "34_structural_sparse_v4.py",
+          "35_discovery_v4.py",
+          "36_candidatos_v4.py",
+          "38_refit_final_v4.py",
+          "embedding_02_fasttext_baseline_v5.py",
+          "embedding_03_fusion_complementariedad_v5.py",
+          "v10_01_holdout2.py",
+          "v10_02_ruido_particion.py",
+          "v10_03_arnes_evaluacion.py",
+          "v10_07_shift_features.py",
+          "v10_09_correlacion_eliminacion.py",
+          "v11_07_correccion_prior.py",
+          "v6_01_estructura_errores.py",
+          "v6_02_label_factorization.py",
+          "v6_03_ponderacion_grupo.py",
+          "v6_04_char_weight.py",
+          "v6_05_skipgrams.py",
+          "v6_06_bagging_grupos.py",
+          "v6_07_ruido_par.py",
+          "v6_08_aumento.py",
+          "v7_01_perdida_f1.py",
+          "v7_02_prior_grupo.py",
+          "v7_03_umbral_anidado.py",
+          "v8_01_ensamble_folds.py",
+          "v8_03_estabilidad_features.py",
+          "v8_04_log_count_ratio.py",
+          "v8_05_regularizacion_conjunta.py",
+          "v8_06_c_por_etiqueta.py",
+          "v8_07_peso_por_etiqueta.py",
+          "v8_08_corrector_margenes.py",
+          "v8_10_ensemble_cinco_modelos.py",
+          "v8_11_complejidad_idiosincrasias.py",
+          "v8_12_seleccion_por_grupo.py",
+          "v8_13_clasificadores_alternativos.py",
+          "v9_01_sensibilidad_fugas.py",
+          "v9_03_near_dup_test.py",
+          "v9_05_proyecciones_supervisadas.py"
+        ],
+        "hstack": [
+          "08_features_densas_h11_h12.py",
+          "12_control_pseudo_autores.py",
+          "14_oof_corregido_v2.py",
+          "15_cadenas_etiquetas_v2.py",
+          "16_targeting_v2.py",
+          "17_stacking_v2.py",
+          "18_p7_holdout_y_submission_v08.py",
+          "19_sintaxis_cita_negacion_v2.py",
+          "20_emocion_nbsvm_ortografia_v2.py",
+          "21_backlog_restante_v2.py",
+          "23_candidatos_finales.py",
+          "27_label_consistency_v4.py",
+          "29_reweighting_v4.py",
+          "30_supervised_weighting_v4.py",
+          "31_joint_label_v4.py",
+          "32_meta_shift_v4.py",
+          "33_class_conditional_lm_v4.py",
+          "34_structural_sparse_v4.py",
+          "36_candidatos_v4.py",
+          "38_refit_final_v4.py",
+          "embedding_02_fasttext_baseline_v5.py",
+          "embedding_03_fusion_complementariedad_v5.py",
+          "v10_01_holdout2.py",
+          "v10_02_ruido_particion.py",
+          "v10_03_arnes_evaluacion.py",
+          "v10_07_shift_features.py",
+          "v10_09_correlacion_eliminacion.py",
+          "v11_07_correccion_prior.py",
+          "v6_01_estructura_errores.py",
+          "v6_02_label_factorization.py",
+          "v6_03_ponderacion_grupo.py",
+          "v6_04_char_weight.py",
+          "v6_05_skipgrams.py",
+          "v6_06_bagging_grupos.py",
+          "v6_07_ruido_par.py",
+          "v6_08_aumento.py",
+          "v7_01_perdida_f1.py",
+          "v7_02_prior_grupo.py",
+          "v7_03_umbral_anidado.py",
+          "v8_01_ensamble_folds.py",
+          "v8_03_estabilidad_features.py",
+          "v8_04_log_count_ratio.py",
+          "v8_05_regularizacion_conjunta.py",
+          "v8_06_c_por_etiqueta.py",
+          "v8_07_peso_por_etiqueta.py",
+          "v8_08_corrector_margenes.py",
+          "v8_10_ensemble_cinco_modelos.py",
+          "v8_11_complejidad_idiosincrasias.py",
+          "v8_12_seleccion_por_grupo.py",
+          "v8_13_clasificadores_alternativos.py",
+          "v9_05_proyecciones_supervisadas.py"
+        ]
+      },
+      "ficheros_analizados": 127
+    }
+  ],
+  "autocomprobacion_del_escaner": {
+    "patron": "contrastive|contrastiv|pairwise|margin_loss",
+    "ficheros_que_lo_contienen_en_texto": [
+      "v12_00_auditoria_brecha.py"
+    ],
+    "nombres_del_indice_estructural_que_coinciden": [],
+    "conclusion": "El escaner textual encuentra el patron en el propio fichero de la auditoria, que lo nombra al describir la familia ausente. El indice estructural devuelve cero. Queda demostrado que el metodo textual es inservible aqui y que el estructural no lo es."
+  },
+  "familias": [
+    {
+      "family": "LogisticRegression sobre TF-IDF, con barrido de C",
+      "eje": "model family",
+      "hypothesis": "El rendimiento depende de la constante de regularizacion",
+      "experiment_ids": "MOD-01, MOD-01_BEST, MOD-01_W12, OPT-01, EBD-07",
+      "protocol": "StratifiedGroupKFold de 5 pliegues con grupos near-dup, C elegida en validacion interna",
+      "best_result": "C=2.0 balanced, que es V03, con 0.777211",
+      "reason_closed": "La constante se barro y el optimo quedo en 2.0, que es el valor congelado. MOD-01_BEST llega a 0.7849 pero R1-C1 Castle +0.0157 local y -0.0108 externo, el peor traslado medido",
+      "new_mechanism": "ninguno: es el mismo clasificador con otro valor de un hiperparametro",
+      "status": "CLOSED_VALID",
+      "evidencia_estructural": "LogisticRegression en 60 fichero(s)",
+      "coste": "nulo, ya esta medido",
+      "riesgo_leakage": "nulo",
+      "prioridad": "cerrada, no reabrir"
+    },
+    {
+      "family": "LinearSVC, es decir perdida hinge en lugar de logistica",
+      "eje": "loss",
+      "hypothesis": "Una perdida de margen lineal separa mejor que la logistica en texto disperso",
+      "experiment_ids": "E2-15-NBSVM-SVC, ENS-04, M3_union_svc",
+      "protocol": "Misma representacion y mismo split que el control, cambiando solo la funcion de perdida",
+      "best_result": "0.7429 en el contexto de NB-SVM; ENS-04 promedia bien pero no supera al control",
+      "reason_closed": "Se probo con control equivalente y no supero al clasificador logistico. Importa para V12: **la perdida hinge ya se probo**, asi que un objetivo basado en margen no es automaticamente nuevo",
+      "new_mechanism": "ninguno para la comparacion de perdidas; si lo seria un margen como termino auxiliar sobre el modelo logistico",
+      "status": "CLOSED_VALID",
+      "evidencia_estructural": "LinearSVC en 14 fichero(s)",
+      "coste": "nulo, ya esta medido",
+      "riesgo_leakage": "nulo",
+      "prioridad": "cerrada, no reabrir"
+    },
+    {
+      "family": "Modelos generativos: ComplementNB, y verosimilitud condicional de clase",
+      "eje": "model family",
+      "hypothesis": "Modelar P(X|Y) explicitamente aporta senal que el discriminador no expresa",
+      "experiment_ids": "MOD-02_BEST, MOD-02_W12, 33_class_conditional_lm_v4",
+      "protocol": "ComplementNB sobre TF-IDF, y verosimilitud condicional sobre la union, ambas con control de la misma arquitectura sin las features anadidas",
+      "best_result": "ComplementNB 0.6888 sobre la union y 0.7362 sobre solo palabra, frente a 0.777211 de V03",
+      "reason_closed": "El generativo sobre **TF-IDF** quedo mas de cuatro puntos por debajo. Y el codigo de 33_class_conditional_lm_v4 declara explicitamente que la revision bibliografica no encontro evidencia transferible",
+      "new_mechanism": "El generativo sobre **representacion de conteos** sigue sin probarse: ComplementNB solo se ejecuto sobre TF-IDF",
+      "status": "PARTIALLY_TESTED",
+      "evidencia_estructural": "ComplementNB en 1 fichero(s); ausentes: MultinomialNB, BernoulliNB",
+      "coste": "bajo",
+      "riesgo_leakage": "nulo",
+      "prioridad": "baja, la evidencia previa apunta en contra"
+    },
+    {
+      "family": "Clasificadores alternativos: discriminante lineal, arbol, bosque",
+      "eje": "model family",
+      "hypothesis": "Una geometria distinta de la lineal separara lo que V03 no separa",
+      "experiment_ids": "V8-13",
+      "protocol": "5 pliegues, grupos fusionados, control identico al de V03 en numero de repeticiones",
+      "best_result": "lda con 0.747157, la mejor de las alternativas",
+      "reason_closed": "Ninguna alternativa supera al control en numero de repeticiones, que es el criterio de comparacion declarado",
+      "new_mechanism": "ninguno",
+      "status": "CLOSED_VALID",
+      "evidencia_estructural": "LinearDiscriminantAnalysis en 1 fichero(s); DecisionTreeClassifier en 1 fichero(s); RandomForestClassifier en 1 fichero(s)",
+      "coste": "nulo, ya esta medido",
+      "riesgo_leakage": "nulo",
+      "prioridad": "cerrada, no reabrir"
+    },
+    {
+      "family": "Barrido de la representacion TF-IDF: ngram, min_df, ventana, subpalabras",
+      "eje": "representation",
+      "hypothesis": "Otra ventana de contexto o otro min_df mejora la exposicion de la senal",
+      "experiment_ids": "EBD-18, EBD-19, EBD-20, EBD-21, EBD-22, EBD-07",
+      "protocol": "Una variable por familia, control identico, 5 particiones",
+      "best_result": "Las tres familias de dimension dan practicamente lo mismo, con dispersion 0.0017, y ninguna es adoptable",
+      "reason_closed": "EBD-18 refuta que la dimension sea la palanca; EBD-20 cierra la familia min_count por inercia; EBD-22 cierra la de negativos",
+      "new_mechanism": "ninguno",
+      "status": "CLOSED_VALID",
+      "evidencia_estructural": "TfidfVectorizer en 60 fichero(s)",
+      "coste": "nulo, ya esta medido",
+      "riesgo_leakage": "nulo",
+      "prioridad": "cerrada, no reabrir"
+    },
+    {
+      "family": "NB-SVM y razon logaritmica de recuentos",
+      "eje": "representation",
+      "hypothesis": "Re ponderar cada termino por su evidencia de clase antes de clasificar separa mejor la evidencia lexica de cada etiqueta",
+      "experiment_ids": "E2-15-NB-WORD, E2-15-NB-CHAR, E2-15-NBSVM, E2-15-NBSVM-SVC, V8-04",
+      "protocol": "Control obligatorio: misma representacion, mismo split, cambiando solo la transformacion por razon logaritmica. V8-04 anadio el control con la constante 2.0 que E2-15 no midio",
+      "best_result": "E2-15: -0.0160 a -0.0392. V8-04: el suavizado mueve el resultado de -0.058496 a +0.004745, un salto de +0.063241 por un factor de mil en un solo parametro",
+      "reason_closed": "V8-04 lo dice sin rodeos: el positivo local **es un punto de una superficie no explorada, no una senal**, y barrer el suavizado seria el rescate por hiperparametro que las reglas prohiben desde v6. Ademas el filtro de detectabilidad de V8-02 lo rechaza",
+      "new_mechanism": "ninguno: el multiplicar el ratio sobre TF-IDF, que era la formulacion nueva, tambien se midio",
+      "status": "CLOSED_VALID",
+      "evidencia_estructural": "log_count_ratio en 1 fichero(s)",
+      "coste": "nulo, ya esta medido",
+      "riesgo_leakage": "nulo",
+      "prioridad": "cerrada, no reabrir"
+    },
+    {
+      "family": "Estabilidad supervisada de caracteristicas",
+      "eje": "representation",
+      "hypothesis": "Con 20.000 caracteristicas y 1.186 filas, muchas son ruido de esa muestra",
+      "experiment_ids": "V8-03",
+      "protocol": "Submuestreo repetido del peso de cada caracteristica, conservando las estables",
+      "best_result": "Negativo, con un techo declarado por el filtro de detectabilidad",
+      "reason_closed": "Cerrado sin variantes: reintentar con mas agresividad o con otra constante de submuestreo seria repetir la misma idea",
+      "new_mechanism": "ninguno",
+      "status": "CLOSED_VALID",
+      "evidencia_estructural": "sin sonda de codigo: el estado se apoya en los informes, no en una busqueda",
+      "coste": "nulo, ya esta medido",
+      "riesgo_leakage": "nulo",
+      "prioridad": "cerrada, no reabrir"
+    },
+    {
+      "family": "Poda por correlacion y eliminacion de caracteristicas",
+      "eje": "representation",
+      "hypothesis": "Quitar caracteristicas muy correladas entre etiqueta reduce la multicolinealidad y el ruido",
+      "experiment_ids": "V10-09, V10-10",
+      "protocol": "Correlacion calculada **dentro de la particion de entrenamiento**, con control",
+      "best_result": "V10-09: ningun umbral de correlacion mejora a V03. V10-10: la eliminacion se descarta de forma solida",
+      "reason_closed": "Cerrada en cuanto al umbral y en cuanto a la eliminacion, con control de que la diferencia viene del mecanismo y no de perder capacidad",
+      "new_mechanism": "ninguno",
+      "status": "CLOSED_VALID",
+      "evidencia_estructural": "sin sonda de codigo: el estado se apoya en los informes, no en una busqueda",
+      "coste": "nulo, ya esta medido",
+      "riesgo_leakage": "nulo",
+      "prioridad": "cerrada, no reabrir"
+    },
+    {
+      "family": "Regularizacion conjunta entre etiquetas",
+      "eje": "label structure",
+      "hypothesis": "Las tres etiquetas estan correlacionadas y pueden compartir estructura en la penalizacion",
+      "experiment_ids": "V8-05",
+      "protocol": "Penalizacion conjunta sobre las tres cabeceras, con el balanceo de clases aplicado dentro de la perdida",
+      "best_result": "Negativo",
+      "reason_closed": "El mecanismo esta descartado: no es que no se pueda compartir estructura, es que los tres predecesores ya fallaron. El informe remite al techo de la interseccion de errores medido por V8-02",
+      "new_mechanism": "ninguno",
+      "status": "CLOSED_VALID",
+      "evidencia_estructural": "sin sonda de codigo: el estado se apoya en los informes, no en una busqueda",
+      "coste": "nulo, ya esta medido",
+      "riesgo_leakage": "nulo",
+      "prioridad": "cerrada, no reabrir"
+    },
+    {
+      "family": "Cadenas y factorizacion condicional entre etiquetas",
+      "eje": "label structure",
+      "hypothesis": "Predecir una etiqueta condicionada a otra captura dependencia residual",
+      "experiment_ids": "cadenas HS-TR-AG, HS-AG-TR, AG-HS-TR",
+      "protocol": "Tres ordenes comparados con el control de V03",
+      "best_result": "Negativo en los tres ordenes",
+      "reason_closed": "Familia cerrada. Es ademas la misma forma que fallo en la regularizacion conjunta",
+      "new_mechanism": "ninguno",
+      "status": "CLOSED_VALID",
+      "evidencia_estructural": "sin sonda de codigo: el estado se apoya en los informes, no en una busqueda",
+      "coste": "nulo, ya esta medido",
+      "riesgo_leakage": "nulo",
+      "prioridad": "cerrada, no reabrir"
+    },
+    {
+      "family": "Constante y peso de clase por etiqueta",
+      "eje": "training objective",
+      "hypothesis": "El optimo de regularizacion y de balanceo puede diferir entre las tres etiquetas",
+      "experiment_ids": "V8-06, V8-07, R1-C1, R2-MINDF5",
+      "protocol": "Ajuste por etiqueta con validacion anidada, comparando contra el control de C=2.0 y balanced",
+      "best_result": "V8-06 se reporta sin recomendacion de envio; V8-07 es negativa con la tasa de acierto por debajo del filtro",
+      "reason_closed": "Es exactamente el patron que produjo el peor traslado medido, con R1-C1 dando +0.0157 local y -0.0108 externo",
+      "new_mechanism": "**Un C distinto por etiqueta Y por grupo de caracteristicas** sigue sin probarse: V8-06 varia el C de la etiqueta, no el del grupo dentro de la etiqueta",
+      "status": "PARTIALLY_TESTED",
+      "evidencia_estructural": "; ausentes: class_weight",
+      "coste": "medio",
+      "riesgo_leakage": "medio: exige validacion anidada scrupulosa para no ajustar en el exterior",
+      "prioridad": "media, con control obligatorio"
+    },
+    {
+      "family": "Ponderacion por cercania a la frontera y por error_score",
+      "eje": "sampling strategy",
+      "hypothesis": "La cercania al umbral es monotona en el numero de errores, y ponderar por ella ayuda",
+      "experiment_ids": "V4-B01, V4-B03, 28_hardness_v4",
+      "protocol": "Re-muestreo con sample_weight derivado de la distancia al umbral y del error aggregated, con hard example mining como comparacion",
+      "best_result": "El hard example mining clasico empeora de forma consistente, de -0.003 a -0.011 con intervalo negativo; el unico esquema que mejora es el de baja ponderacion",
+      "reason_closed": "Medida y adoptada para V4-B03 en su version de baja ponderacion. Ademas V4-B01 comprobo que la BCE agregado **no** sirve como dureza, que es la trampa que el enunciado advertia",
+      "new_mechanism": "ninguno en el espacio de las instance weights",
+      "status": "CLOSED_VALID",
+      "evidencia_estructural": "; ausentes: sample_weight",
+      "coste": "nulo, ya esta medido",
+      "riesgo_leakage": "nulo",
+      "prioridad": "cerrada, no reabrir"
+    },
+    {
+      "family": "Sospecha de instance-label y contradiccion",
+      "eje": "sampling strategy",
+      "hypothesis": "Si hay ruido de anotacion, el error OOF sera mayor dentro de los clusters contradictorios",
+      "experiment_ids": "V4-A02, V4-B05, 10_sondas_robustez",
+      "protocol": "Clusteres de anotacion contradictoria, downweight y eliminacion comparados; **ninguna etiqueta se borro**",
+      "best_result": "El techo de la via de downweight por contradiccion esta por debajo del 3 % de los ejemplos",
+      "reason_closed": "Cerrada. Y la leccion de v6 se conserva: **dificultad no es ruido**, y reducir puede eliminar senal util",
+      "new_mechanism": "una **funcion de perdida** robusta en lugar de una instance weight sigue sin probarse",
+      "status": "PARTIALLY_TESTED",
+      "evidencia_estructural": "sin sonda de codigo: el estado se apoya en los informes, no en una busqueda",
+      "coste": "bajo",
+      "riesgo_leakage": "bajo",
+      "prioridad": "media"
+    },
+    {
+      "family": "Umbrales, decision layers y reglas F1-concientes",
+      "eje": "decision layer",
+      "hypothesis": "Una capa de decision mejor que el umbral fijo mejora la metrica",
+      "experiment_ids": "MOD-01_W12, V10-05, V10-06, V8-09, many",
+      "protocol": "Regla plug-in, parametrizaciones de umbral, busqueda por etiqueta, con intervalos pareados",
+      "best_result": "V10-05 empeora -0.003921; V10-06 no supera su gate; la holgura de la capa de decision es declarada irreducible con estos datos",
+      "reason_closed": "La familia mas rodada del proyecto. Ademas V10-05 trajo un hallazgo de interpretacion importante: los umbrales de V03 ya estan **por encima** de los optimos plugin, luego la capa ya es conservadora",
+      "new_mechanism": "ninguno",
+      "status": "CLOSED_VALID",
+      "evidencia_estructural": "sin sonda de codigo: el estado se apoya en los informes, no en una busqueda",
+      "coste": "nulo, ya esta medido",
+      "riesgo_leakage": "nulo",
+      "prioridad": "cerrada, no reabrir"
+    },
+    {
+      "family": "Regimenes de error y rebanadas con modelo o umbral propio",
+      "eje": "decision layer",
+      "hypothesis": "Las rebanadas con distribucion distinta se benefician de un umbral o de un modelo propio",
+      "experiment_ids": "E2-16-LOCAL-SIN-SHRINKAGE, E2-16-SHRINK-M25, E2-16-SHRINK-M50, E2-16-SHRINK-M100, E2-16-MEJOR, E2-20-ESPECIALISTAS",
+      "protocol": "Umbral local por rebanada con shrinkage, y especialista por rebanada",
+      "best_result": "E2-16-MEJOR: CERRADA sin mejora. E2-20-ESPECIALISTAS: CERRADA sin mejora",
+      "reason_closed": "Las dos cerradas. El enunciado advertia de no suponer que una segmentacion descriptiva implica modelos distintos, y la advertencia era correcta",
+      "new_mechanism": "una perdida **consciente del regimen** sobre un modelo compartido sigue sin probarse, que es distinta de un modelo por rebanada",
+      "status": "PARTIALLY_TESTED",
+      "evidencia_estructural": "sin sonda de codigo: el estado se apoya en los informes, no en una busqueda",
+      "coste": "medio",
+      "riesgo_leakage": "medio: definir regimenes con datos de exterior es fuga",
+      "prioridad": "baja-media"
+    },
+    {
+      "family": "Calibracion y correccion de prior",
+      "eje": "training objective",
+      "hypothesis": "Una probabilidad bien calibrada y un prior corregido mejoran la metrica",
+      "experiment_ids": "V10-04, V11-06, V11-07, V9-02",
+      "protocol": "Calibracion isotonica anidada, correccion de odds con los umbrales congelados, shift simulado con el factor conocido por construccion",
+      "best_result": "V10-04 mejora el ECE de 0.0583 a 0.0174 y **no** la F1: NO ACCIONABLE. V11-07: macro medio -0.000293 con los tres intervalos incluyendo el cero",
+      "reason_closed": "La calibracion mejora la calidad probabilistica y no la metrica de la competicion, y la correccion de prior empeora en la direccion del shift medido porque los umbrales de V03 ya son conservadores",
+      "new_mechanism": "ninguno",
+      "status": "CLOSED_VALID",
+      "evidencia_estructural": "IsotonicRegression en 5 fichero(s); em_saerens en 2 fichero(s)",
+      "coste": "nulo, ya esta medido",
+      "riesgo_leakage": "nulo",
+      "prioridad": "cerrada, no reabrir"
+    },
+    {
+      "family": "Ensembles de cualquier tipo: voto, pesos, apilamiento, cinco modelos de pliegue",
+      "eje": "ensemble strategy",
+      "hypothesis": "Combinar bases distintas mejora la metrica",
+      "experiment_ids": "ENS-04, 05_ensembles, 17_stacking_v2, 23_candidatos_finales, V8-01, V8-10, V6-06",
+      "protocol": "Voto suave con pesos, rejilla simplex, apilamiento por etiqueta, ensemble de cinco modelos, todos con comparacion contra el control",
+      "best_result": "V6-06: el techo teorico de las categorias D y E esta por debajo del gate, y el ensemble de pliegues dio 0.78163 en el externo frente a 0.78306 de V03",
+      "reason_closed": "Cerrada por resultado negativo **y** por limitacion de protocolo. La interseccion de errores entre las bases es de **12 filas**, luego la complemento esta agotada",
+      "new_mechanism": "ninguno",
+      "status": "CLOSED_VALID",
+      "evidencia_estructural": "; ausentes: VotingClassifier, StackingClassifier",
+      "coste": "nulo, ya esta medido",
+      "riesgo_leakage": "nulo",
+      "prioridad": "cerrada, no reabrir"
+    },
+    {
+      "family": "Redes neuronales: MLP, CharCNN, BiGRU con y sin afinado",
+      "eje": "model family",
+      "hypothesis": "Una red captura dependencias que el clasificador lineal no alcanza",
+      "experiment_ids": "DL-MLP, DL-CHARCNN, DL-BILSTM, V10-11",
+      "protocol": "Embeddings desde cero o representacion TF-IDF comprimida, 5 pliegues, controles de subpalabras y de semilla",
+      "best_result": "V10-11: 0.711639, muy por debajo de 0.777211. Y el hallazgo que importa: el afinado funciona (+0.017645) pero el control de tasa unica da +0.005092, luego **+0.012553 los aporta la tasa de aprendizaje diferencial**, no el BiGRU",
+      "reason_closed": "Cerrada. El desglose delafinado es un ejemplo de por que un delta grande no prueba un mecanismo: buena parte venia de un parametro de optimizacion, no de la arquitectura",
+      "new_mechanism": "ninguno",
+      "status": "CLOSED_VALID",
+      "evidencia_estructural": "Conv1d en 1 fichero(s); ausentes: MLPClassifier, BiLSTM",
+      "coste": "nulo, ya esta medido",
+      "riesgo_leakage": "nulo",
+      "prioridad": "cerrada, no reabrir"
+    },
+    {
+      "family": "Embeddings y reduccion de dimension: fastText, SVD,_metrics",
+      "eje": "representation",
+      "hypothesis": "Una representacion densa capta generalizacion entre formas no vistas",
+      "experiment_ids": "embedding_03 a embedding_19, EBD-05, EBD-18",
+      "protocol": "Entrenamiento no supervisado desde cero sobre corpus externo no etiquetado, mas controles de subpalabras, ventana y tamano",
+      "best_result": "EBD-05: la representacion sola esta a 0.117 de V03 y su valor solo puede venir de la fusion",
+      "reason_closed": "Cerrada, y ademas **hoy prohibida**: los embeddings y los vectorizadores aprendidos no estan permitidos en V12. Se conservan como precedente historico, no como via",
+      "new_mechanism": "ninguno, y ninguna via nueva puede pasar por aqui",
+      "status": "CLOSED_VALID",
+      "evidencia_estructural": "TruncatedSVD en 3 fichero(s); ausentes: fastText",
+      "coste": "nulo, ya esta medido",
+      "riesgo_leakage": "nulo",
+      "prioridad": "cerrada y prohibida, no reabrir"
+    },
+    {
+      "family": "Corrector sobre margenes y desacuerdo entre pliegues",
+      "eje": "error correction",
+      "hypothesis": "Los margenes de V03 llevan informacion que su decision no ha usado",
+      "experiment_ids": "V8-08",
+      "protocol": "Segundo modelo de cuatro variables de entrada sobre margenes y desacuerdo, con las submission escritas y verificadas",
+      "best_result": "192 de 3462 celdas cambian, en 161 filas; por etiqueta HS 114, TR 19, AG 59",
+      "reason_closed": "Su techo lo acotan dos precedentes duros: el apilamiento con 44 columnas dio 0.78163 frente a 0.78306, y la fusion tardia de los candidatos v09 a v11 tampoco supero la referencia. Y con solo cuatro variables ya no es apilamiento, es corrector, asi que la forma nueva **si** se midio",
+      "new_mechanism": "interacciones **multiplicativas** entre margenes, que el corrector lineal no puede representar. Distinto de esto",
+      "status": "PARTIALLY_TESTED",
+      "evidencia_estructural": "sin sonda de codigo: el estado se apoya en los informes, no en una busqueda",
+      "coste": "bajo",
+      "riesgo_leakage": "medio: exige construir las interacciones despues del OOF, nunca con predicciones in-sample",
+      "prioridad": "media"
+    },
+    {
+      "family": "Decision por edad esperada y proyeccion ordinal",
+      "eje": "decision layer",
+      "hypothesis": "Las etiquetas tienen un orden natural que una proyeccion ordinal puede usar",
+      "experiment_ids": "capa de decision ordinal (rama kaggle-age es distinta; en TOXIC, V6 y V8-09",
+      "protocol": "Capa de decision sobre V03 sin entrenamiento, con busqueda de la proyeccion",
+      "best_result": "Negativo, y la tasa de positivos predicha resulto ser una dimension con relacion medida en las quince sondas",
+      "reason_closed": "Cerrada. V8-09 cierra expressamente la calibracion por tasa de positivos predichos",
+      "new_mechanism": "ninguno",
+      "status": "CLOSED_VALID",
+      "evidencia_estructural": "sin sonda de codigo: el estado se apoya en los informes, no en una busqueda",
+      "coste": "nulo, ya esta medido",
+      "riesgo_leakage": "nulo",
+      "prioridad": "cerrada, no reabrir"
+    },
+    {
+      "family": "Funcion de perdida propia: objetivos de scoring proper, perdida asimetrica, perdida tolerante al ruido",
+      "eje": "loss",
+      "hypothesis": "La entropia cruzada no es la unica perdida razonable para un F1 macro, y una perdida que tolere mejor el ruido de anotacion extraeria senal que la actual no ve",
+      "experiment_ids": "ninguno",
+      "protocol": "a definir: la perdida se ajusta dentro de la particion de entrenamiento y sus parametros por validacion interna",
+      "best_result": "nunca medido",
+      "reason_closed": "no se aplica: no esta cerrada",
+      "new_mechanism": "**No existe ni una sola clase de perdida propia en todo el proyecto.** La sonda AST sobre el arbol sintactico completo no encuentra ninguna definicion de clase que derive de una perdida, ni ninguna funcion de perdida propia. Todo el ajuste se ha hecho con instance weights, que es otra cosa: pesa ejemplos, no cambia la forma de la funcion",
+      "status": "GENUINELY_UNTESTED",
+      "evidencia_estructural": "; ausentes: sample_weight",
+      "coste": "medio: hay que implementar y validar la derivada",
+      "riesgo_leakage": "bajo si los parametros se eligen dentro del train",
+      "prioridad": "alta, es el hueco mas grande y mas barato de cerrar"
+    },
+    {
+      "family": "Entrenamiento contrastivo o por pares sobre TF-IDF disperso",
+      "eje": "training objective",
+      "hypothesis": "Separar explicitamente ejemplos de etiquetas distintas y acercar los de la misma, en el espacio disperso existente, expone estructura que el discriminador no codifica",
+      "experiment_ids": "ninguno",
+      "protocol": "a definir: pares dentro de la particion de entrenamiento, con la separabilidad medida ANTES de la metrica, como exige el enunciado",
+      "best_result": "nunca medido",
+      "reason_closed": "no se aplica: no esta cerrada",
+      "new_mechanism": "**Cero ocurrencias de contrastive, pairwise, margin_loss o hinge como objetivo propio en todo el codigo.** La sonda AST no encuentra ninguna clase ni ninguna llamada. Y conviene decirlo con precision: la perdida hinge **si** se probo, pero como clasificador completo, LinearSVC, no como termino auxiliar sobre el modelo logistico. Lo que no existe es el objetivo de pares",
+      "status": "GENUINELY_UNTESTED",
+      "evidencia_estructural": "sin sonda de codigo: el estado se apoya en los informes, no en una busqueda",
+      "coste": "medio-alto: pares implican una reformulacion del bucle de entrenamiento",
+      "riesgo_leakage": "bajo, pero la separabilidad debe medirse en validacion, no en el train",
+      "prioridad": "media-alta, con la condicion de medir separabilidad primero"
+    },
+    {
+      "family": "Regularizacion distinta por etiqueta Y por grupo de caracteristicas",
+      "eje": "representation",
+      "hypothesis": "La misma caracteristica puede tener utilidad diferente para HS, TR y AG, y compartir una sola estructura de penalizacion puede limitar una o mas etiquetas",
+      "experiment_ids": "ninguno equivalente",
+      "protocol": "a definir: la eleccion de las penalizaciones por grupo se hace por validacion anidada, nunca en el exterior",
+      "best_result": "nunca medido en esta forma",
+      "reason_closed": "no se aplica: no esta cerrada en esta forma",
+      "new_mechanism": "V8-06 varia el C **de la etiqueta** sobre el espacio entero. Aqui lo que se varia es el C **del grupo de caracteristicas dentro de la etiqueta**, sobre una union de word y char_wb que el codigo de V03 construye ya separada. Es un mecanismo distinto, y no aumenta la dimension",
+      "status": "GENUINELY_UNTESTED",
+      "evidencia_estructural": "TfidfVectorizer en 60 fichero(s); hstack en 51 fichero(s)",
+      "coste": "bajo: es el mismo pipeline con dos constantes en vez de una",
+      "riesgo_leakage": "medio: dos constantes por etiqueta Multiplican el riesgo de ajustar en el exterior, asi que exige anidacion estricta",
+      "prioridad": "alta, por ser la mas barata y con el control mas claro"
+    }
+  ]
+}
