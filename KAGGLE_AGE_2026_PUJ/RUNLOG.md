@@ -683,7 +683,7 @@ Después pide añadir además el paso de la **arquitectura del meta-modelo**.
 ### Resultado
 - **V15a**: 2 constantes · 402 pares >= 0,80 · 245 >= 0,90 · 15 duplicados exactos · **58 clusters
   sobre 171 de 310 variables** · 197 conservadas tras podar · eta2 mediana 0,0306 y máximo 0,5599 ·
-  **112 variables con eta2 < 0,01** · **Jaccard de pares entre folds 1,0000**.
+  **112 variables con eta2 < 0,01 (110 de las 310 analizables; el recuento de 112 sale sobre las 312 columnas de la matriz, e incluye las 2 constantes, que son 0 por definicion)** · **Jaccard de pares entre folds 1,0000**.
 - **V15b**: macro-F1 **0,5965** frente a 0,6005 de V12, **delta -0,0040, 0/5 folds**; segunda
   partición **0/4** con media -0,0065; IC95 pareado [-0,0054; -0,0027]. **NO ADOPTAR** (D-045).
 - **V16**: en curso.
@@ -714,3 +714,8 @@ Después pide añadir además el paso de la **arquitectura del meta-modelo**.
   de lectura con su nota de edicion, porque los generadores no la incluian; los scripts de
   experimento **no se han editado ni vuelto a ejecutar**.
 - `experiments.csv` pasa a **94 experimentos**. Auditoría de idioma sobre 336 ficheros: 0 errores.
+- **Precision de una cifra**: el recuento de "112 variables con eta2 < 0,01" sale sobre las **312**
+  columnas de la matriz e incluye las 2 columnas constantes (cero por definicion); sobre las **310
+  variables analizables** son **110**. Se precisó la cifra en DECISIONS.md, PROJECT_STATE.md,
+  RUNLOG.md y el plan. `experiments/v15a_correlacion.json` conserva el 112 original, que es
+  correcto para la base sobre la que se calculó.

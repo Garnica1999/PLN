@@ -1021,7 +1021,7 @@ Tras declarar la saturación se probó la vía indicada como trabajo futuro:
   - **V15a (estructura, in-fold)**: sobre las 312 variables (279 de V12 y 33 lingüísticas de V14),
     2 columnas constantes, 402 pares con |rho| >= 0,80, 245 con |rho| >= 0,90, 15 duplicados
     exactos, **58 clusters que cubren 171 de 310 variables**. Asociación con la salida por eta
-    cuadrado: mediana 0,0306, máximo 0,5599, y **112 variables con eta2 < 0,01**. El **Jaccard de
+    cuadrado: mediana 0,0306, máximo 0,5599, y **112 variables con eta2 < 0,01 (110 de las 310 analizables; el recuento de 112 sale sobre las 312 columnas de la matriz, e incluye las 2 constantes, que son 0 por definicion)**. El **Jaccard de
     la estructura de pares entre folds es 1,0000** (mínimo 1,0000): la redundancia es
     perfectamente reproducible y la poda no depende de la partición.
   - **V15b (poda evaluada)**: un representante por cluster, el de mayor eta2 **dentro del fold** →

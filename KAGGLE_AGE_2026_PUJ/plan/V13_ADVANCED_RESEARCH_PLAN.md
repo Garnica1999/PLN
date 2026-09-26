@@ -284,7 +284,7 @@ la asociacion se calculan in-fold** y el indice de variables conservadas se guar
 | Clusters | 58, que cubren 171 de 310 variables |
 | Variables conservadas tras podar | 197 de 312 |
 | eta2 mediana / maximo | 0,0306 / 0,5599 |
-| Variables con eta2 < 0,01 | 112 |
+| Variables con eta2 < 0,01 | 112 de 312 (110 de las 310 analizables) |
 | **Jaccard de la estructura de pares entre folds** | **1,0000** (minimo 1,0000) |
 
 El Jaccard de pares es 1,0000: la estructura de redundancia es **perfectamente reproducible** al
