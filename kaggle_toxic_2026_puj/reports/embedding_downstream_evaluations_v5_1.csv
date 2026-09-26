@@ -77,3 +77,12 @@ EVAL-V51-075,experiments/embedding_12_vector_size_v5_1.py,FUSION-VS-100,FASTTEXT
 EVAL-V51-076,experiments/embedding_12_vector_size_v5_1.py,EMB-VS-300-LR,FASTTEXT-WIKI-10M-VS-300,media,LR,estandar,0.651601,-0.12561,"[, ]",P1 vector_size
 EVAL-V51-077,experiments/embedding_12_vector_size_v5_1.py,EMB-VS-300-SVC,FASTTEXT-WIKI-10M-VS-300,media,SVC,estandar,0.640966,-0.136245,"[, ]",P1 vector_size
 EVAL-V51-078,experiments/embedding_12_vector_size_v5_1.py,FUSION-VS-300,FASTTEXT-WIKI-10M-VS-300,media,LR + TF-IDF V03,l2,0.78051,0.003299,"[-0.004252, 0.010929]",P1 vector_size
+EVAL-V51-079,experiments/ebd-19_(p2),EMB-B0-200-LR,FASTTEXT-WIKI-10M,media,LR,estandar,0.652338,-0.124873,,familia window
+EVAL-V51-080,experiments/ebd-19_(p2),EMB-B0-200-SVC,FASTTEXT-WIKI-10M,media,SVC,estandar,0.655083,-0.122128,,familia window
+EVAL-V51-081,experiments/ebd-19_(p2),FUSION-B0-200,FASTTEXT-WIKI-10M,media,LR + TF-IDF V03,l2,0.781766,0.004555,"[-0.003161, 0.012409]",familia window
+EVAL-V51-082,experiments/ebd-19_(p2),EMB-WS-3-LR,FASTTEXT-WIKI-10M-WS-3,media,LR,estandar,0.669411,-0.1078,,familia window
+EVAL-V51-083,experiments/ebd-19_(p2),EMB-WS-3-SVC,FASTTEXT-WIKI-10M-WS-3,media,SVC,estandar,0.66783,-0.109381,,familia window
+EVAL-V51-084,experiments/ebd-19_(p2),FUSION-WS-3,FASTTEXT-WIKI-10M-WS-3,media,LR + TF-IDF V03,l2,0.782959,0.005748,"[-0.002084, 0.013625]",familia window
+EVAL-V51-085,experiments/ebd-19_(p2),EMB-WS-7-LR,FASTTEXT-WIKI-10M-WS-7,media,LR,estandar,0.64979,-0.127421,,familia window
+EVAL-V51-086,experiments/ebd-19_(p2),EMB-WS-7-SVC,FASTTEXT-WIKI-10M-WS-7,media,SVC,estandar,0.651318,-0.125893,,familia window
+EVAL-V51-087,experiments/ebd-19_(p2),FUSION-WS-7,FASTTEXT-WIKI-10M-WS-7,media,LR + TF-IDF V03,l2,0.780581,0.00337,"[-0.00397, 0.011021]",familia window

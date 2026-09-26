@@ -728,3 +728,12 @@ Registro cronologico de ejecuciones. Formato:
   niveles (delta >= +0.005 **y** IC95 que excluya el 0). Correccion de metodo registrada: los
   tipos consultados son los 6.059 del train y no los de train+test; con el conjunto
   equivocado 100d salia -0.0065. **Presupuesto 2/9 + 0/1.** 0 submissions, 0 sondas de LB.
+- 21:45 | v5.1 P2: familia window (EBD-19) | `experiments/embedding_13_window_v5_1.py`
+  Entrenados FastText con ventana 3 (83 s) y 7 (148 s) sobre Wikipedia 10M. El control
+  B0 (ventana 5) reproduce v5 exacto (0.7818). FUSION-WS-3 0.7830 (+0.0057, IC95
+  [-0.0021, +0.0136]), FUSION-WS-7 0.7806 (+0.0034), dispersion 0.0024. El embedding
+  aislado con ventana 3 da **0.6694**, el mejor de toda la fase v5. **Familia CERRADA por
+  inercia** (D-037): no se exploran ventanas 1, 2, 9 ni 15. El orden 3 > 5 > 7 es
+  contraintuitivo y apunta a que el limite esta en los datos, no en la funcion objetivo.
+  El script de P2 define la maquinaria de familia reutilizable que usan P3, P4 y P5.
+  **Presupuesto 4/9 + 0/1.** 0 submissions, 0 sondas de LB.

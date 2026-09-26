@@ -24,9 +24,16 @@
 - [x] **Decision: CERRADA** (inerte, dispersion 0.0017). No se exploran 400d, 500d, 768d
 - [x] **D-036**: el gate pasa a ser de dos niveles
 
-## P2-P5 - window, min_count, subwords, negative (pendiente)
+## P2 - window (hecha, cerrada por inercia)
 
-- [ ] `embedding_13_window_v5_1.py` (2/9)
+- [x] `embedding_13_window_v5_1.py`: ventanas 3 y 7 (2/9), control B0 reproduce v5
+- [x] ws3 0.7830 (+0.0057), ws5 0.7818, ws7 0.7806; embedding solo 0.6694 (mejor de v5)
+- [x] **Decision: CERRADA**. No ventanas 1, 2, 9 ni 15 (**D-037**)
+- [x] El script define la maquinaria de familia que reutilizan P3, P4 y P5
+
+## P3-P5 - min_count, subwords, negative (pendiente)
+
+- [ ] `embedding_14_min_count_v5_1.py` (2/9)
 - [ ] `embedding_14_min_count_v5_1.py` (2/9)
 - [ ] `embedding_15_subwords_v5_1.py` (2/9)
 - [ ] `embedding_16_negative_v5_1.py` (1/9)

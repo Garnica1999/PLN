@@ -1304,3 +1304,38 @@ evidencia, experimento, resultado, conclusion final.
   exactamente el tipo de fallo que produce una conclusion falsa con apariencia solida.
   La cobertura si se mide sobre train+test, como en v5 (0.6839 por tipo, 0.8833 por token).
 - **Presupuesto**: 2 de 9 unidades exploratorias gastadas, 0 de 1 de reserva.
+
+## D-037 - La familia window se cierra por inercia y el orden de ventanas es contraintuitivo
+
+- **Contexto**: P2, segunda familia arquitectonica. Entrena ventana 3 y ventana 7 sobre
+  E-CORP-01 manteniendo el resto de la arquitectura fija. El baseline B0 (ventana 5) se
+  reevalua como control y **reproduce 0.7818 exacto**.
+- **Resultado**:
+
+  | variante | corrected_cv (frozen) | delta vs V03 | IC95 pareado | embedding solo |
+  |---|---|---|---|---|
+  | FUSION-WS-3 | **0.7830** | +0.0057 | [-0.0021, +0.0136] | **0.6694** |
+  | FUSION-B0-200 (ws 5) | 0.7818 | +0.0046 | [-0.0032, +0.0124] | 0.6523 |
+  | FUSION-WS-7 | 0.7806 | +0.0034 | [-0.0040, +0.0110] | 0.6498 |
+
+  Dispersion interna: **0.0024**.
+- **Decision**: familia `window` **CERRADA por inercia**. No se exploran ventanas 1, 2, 9
+  ni 15.
+- **Hallazgo que conviene no pasar por alto**: el orden es **3 > 5 > 7**, es decir, cuanto
+  **menos** contexto de vecindario, mejor. Es contraintuitivo y encaja con la lectura que
+  v5 dejo，设置: el limite no esta en la funcion objetivo sino en la cantidad de datos. Con
+  10M tokens, ampliar la ventana reparte la misma evidencia sobre mas pares y diluye la
+  senal de cada palabra. La ventana 3 produce ademas el **mejor embedding aislado de toda
+  la fase v5** (0.6694, por encima del 0.6687 de Wikipedia 50M) y la mejor fusion en valor
+  absoluto (0.7830).
+- **Por que no se adopta pese a ser el mejor numero absoluto**: el IC95 incluye el 0 y la
+  dispersion interna (0.0024) es tres veces menor que el umbral de poda. Un +0.0057 cuyo
+  intervalo es [-0.0021, +0.0136] no es evidencia de nada; es la octava configuracion de
+  v5 y v5.1 que cae en la banda +0.003..+0.006 con el intervalo tocando el 0. Adoptar la
+  octava seria exactamente el fallo que D-031 a D-034 evitaron.
+- **Advertencia operativa que se anade para P3-P5**: los dos mejores deltas de v5.1
+  (100d con +0.0050 y ventana 3 con +0.0057) son **variantes distintas del baseline**, y
+  en ambos casos el numero sube por la misma via que en los diez puntos de v5: dentro del
+  ruido. Si P3, P4 o P5 producen un delta mayor que +0.0057, hay que mirar su IC95 antes
+  que su punto estimate.
+- **Presupuesto**: 4 de 9 unidades exploratorias gastadas, 0 de 1 de reserva.

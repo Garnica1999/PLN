@@ -40,6 +40,8 @@ archivada de la autorizacion; se registra solo lo comunicado por el usuario.
 | D-035 | Identidad de entrenamiento por firma con corpus procesado y bucket; presupuesto 9+1 abierto, 0 colisiones |
 | P1 vector_size | CERRADA por inercia: 100d 0.7823 (+0.0050), 200d 0.7818, 300d 0.7805; dispersion 0.0017 |
 | D-036 | Gate de dos niveles: adoptable exige delta >= +0.005 **y** IC95 que excluya el 0 |
+| P2 window | CERRADA por inercia: ws3 0.7830 (+0.0057), ws5 0.7818, ws7 0.7806; mejor embedding aislado de v5 (0.6694) |
+| D-037 | La ventana no es la palanca y el orden es 3 > 5 > 7: menos contexto rinde mas con 10M tokens |
 | GATE DE CIERRE | §29: A (+0.005 con estabilidad) / B (complementariedad robusta) / C (senal representacional fuerte) |
 
 ## Fase anterior: v4 «Advanced Research v4» (CERRADA el 2026-09-25)
