@@ -114,6 +114,10 @@ def busca(patron: str) -> dict:
     ruta_csv = ROOT / "experiments.csv"
     if ruta_csv.exists():
         for fila in pd.read_csv(ruta_csv, dtype=str).fillna("").itertuples(index=False):
+            # Se excluyen los experimentos de la propia fase: la pregunta es si existia un canal
+            # lexico *antes* de esta fase, no si existe ahora (esta misma la crea).
+            if str(fila[0]).startswith(("PH36", "PH37", "PH38", "PH39", "PH40", "PH41")):
+                continue
             if any(expresion.search(str(valor)) for valor in fila):
                 experimentos.append(str(fila[0]))
     codigo: list[str] = []

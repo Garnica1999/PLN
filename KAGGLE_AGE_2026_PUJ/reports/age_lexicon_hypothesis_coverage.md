@@ -32,9 +32,9 @@ Experimentos registrados en el historial: **72**. Experimentos que mencionan un 
 
 | Familia | Coincidencias en `experiments.csv` | Coincidencias en el código | Veredicto |
 |---|---|---|---|
-| L2 | 5 | 0 | REVISAR |
-| L3 | 5 | 0 | REVISAR |
-| L4 | 5 | 0 | REVISAR |
+| L2 | 0 | 0 | **nunca evaluada** |
+| L3 | 0 | 0 | **nunca evaluada** |
+| L4 | 0 | 0 | **nunca evaluada** |
 
 **Nivel 2 (contextual, no decisivo)**: términos Lazarus del español, listados para no esconder coincidencias.
 
