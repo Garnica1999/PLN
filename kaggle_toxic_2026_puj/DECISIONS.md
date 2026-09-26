@@ -3127,3 +3127,90 @@ Se mantiene entonces el verificador propio de ASCII puro **ademas** de
 `tools/verificar_caracteres.py`, y se documenta que los dos son necesarios: el primero busca
 alfabetos no latinos y el segundo busca ASCII puro. Ninguno de los dos, por si solo, distingue el
 bloque propio del heredado, y esa distincion hay que hacerla por bloque de forma explicita.
+
+## D-086 - Escalar un bloque de caracteristicas ES regularizar ese bloque, y por tanto H1 no es un hiperparametro
+
+La implementacion de H1 es escalar las columnas del bloque de caracter antes de ajustar, y esa
+operacion tiene un efecto **exacto** sobre la penalizacion, no aproximado. Para una regresion
+logistica con penalizacion L2, sustituir `X` por `X * diag(s)` produce, en terminos de los
+coeficientes originales, una penalizacion
+
+    (1 / 2C) * sum_j s_j^2 * w_j^2
+
+Es decir, **multiplicar el bloque j por `s_j` multiplica su peso de penalizacion efectivo por
+`s_j^2`**. No cambia la clase de modelo, no cambia la dimension, no anade variables, y se hace con
+el `LogisticRegression` de la biblioteca sin tocar su optimizador. Por eso H1 es un mecanismo y no
+otro valor de un parametro, que es el criterio que la seccion 8 del enunciado exigia.
+
+**Y tiene exactamente UN grado de libertad, no dos.** Escalar el bloque de palabra por `a` y el de
+caracter por `b` es lo mismo, salvo una constante global, que fijar `a=1` y `b=s`. Y como la matriz
+se renormaliza para conservar su norma de Frobenius, esa constante global queda fijada. El
+resultado es un espacio de busqueda de **tres cocientes y cuatro constantes**, con el cociente
+neutro en 1.0, que no es una rejilla.
+
+**La renormalizacion resuelve un problema de comparacion que conviene registrar.** Sin ella,
+escalar el bloque desplaza la escala de salida y los umbrales de V03 estan congelados, de modo que
+un resultado negativo significaria dos cosas indistinguibles: que el mecanismo no ayuda, o que el
+punto de operacion se movio. Conservando la norma de Frobenius se mantiene la escala global. La
+tasa de positivos predicha de cada brazo se registro igual como diagnostico.
+
+Los cuatro brazos hacen falta porque **un solo brazo no permite atribuir nada**: si la variante
+gana, la pregunta inmediata es si gana por el ajuste por etiqueta o por la estructura de grupo. B
+responde a la primera, D a la tercera, y D con un unico cociente compartido permitio medir que la
+parte por etiqueta del cociente no aporta.
+
+## D-087 - H1 CERRADA: el optimo del mecanismo es el punto de no hacer nada
+
+**V12-01.** El brazo C llega a **+0.002738**, que supera el minimo exploratorio de +0.002, y sin
+embargo **no se adopta**, y el motivo no es un fallo de gate cualquiera.
+
+**El resultado lo sostenia un solo pliegue de cinco.** Sin el pliegue 4 el delta cae a
+**+0.000134**. Y en ese pliegue los brazos C y D tienen constantes identicas y difieren **solo** en
+el cociente de AG: +0.012705 contra -0.002670. Un volteo de 0.015 producido por una eleccion
+discreta. Ademas la deteccion de C es **0.5196** frente al umbral de 0.5166: de 102 celdas
+modificadas acertaria el 52 por ciento, es decir casi azar.
+
+**La prueba decisiva es la curva del cociente, y separa dos explicaciones que el gate por si solo
+no distingue.** Con la constante fija de V03, el maximo de la curva cae en el cociente **1.25** con
+**+0.000006** sobre el valor neutro, y solo **1 de 6** cocientes no neutros bate al neutro. El
+recorrido de la curva es de 0.012375, luego el mecanismo **si** tiene efecto real y grande sobre la
+metrica, pero ese efecto esta **enterrado en el punto de no hacer nada**, y alejarse del neutro
+empeora en cualquier direccion.
+
+La distincion importa porque las dos explicaciones conducen a cierres opuestos: si la curva
+tuviera un maximo separado del neutro, la conclusion seria que mi seleccion anidada fue ruidosa y
+que la idea podria funcionar; como el maximo cae **sobre** el neutro, la conclusion es que **no hay
+nada que seleccionar**. La estructura de penalizacion de V03 ya esta en su optimo.
+
+**Lo que el experimento deja, mas alla del cierre**: la comparacion entre brazos separa el
+reparto por primera vez. El ajuste por etiqueta aporta **+0.000417** y la estructura de grupo
+**+0.002738**, y D con un unico cociente compartido da **+0.000636**, luego la parte por etiqueta
+del cociente no aporta. Y queda contestada la parte de la hipotesis que decia que la dificultad
+estaba en la estructura de regularizacion entre bloques: para el reparto palabra/caracter, la
+estructura no era el cuello de botella.
+
+**Se cierra H1 sin segunda particion**, porque no hay candidata a la que aplicarla.
+
+## D-088 - El maximo de una curva diagnostica no es un resultado, y hay que decirlo en el informe
+
+La curva del cociente se calcula mirando los pliegues exteriores, asi que **su maximo no es
+adoptable**: proponerlo seria una busqueda sobre el conjunto de evaluacion, que es exactamente lo
+que el gate exploratorio existe para impedir. Se reporta **solo** como diagnostico del motivo del
+cierre, y el informe lo dice de forma expresa en la seccion que lo contiene.
+
+## D-089 - Un diagnostico con bug puede invertir la conclusion, y por eso hay que contrastarlo
+
+Un diagnostico intermedio mio concluyo que la constante de regularizacion **no tenia ningun efecto**
+sobre el criterio interno, porque las cuatro constantes darian un valor identico. Si ese
+diagnostico hubiera sido el que se reportara, la conclusion habria sido que el mecanismo entero es
+inerte, lo cual es falso.
+
+Se detecto porque el resultado era sospechoso: no puede dar predicciones identicas si la norma del peso pasa
+de 2,8 a 43,8 con la constante de 0,1 a 16,0. La comprobacion directa
+mostro que **C si cambia el modelo**, con 39 celdas que cambian entre C=0.1 y C=0.5. El bug estaba
+en el diagnostico, que imprimia el mismo maximo cuatro veces por un bucle mal construido, y no en
+el experimento.
+
+La leccion es general y ya se habia aprendido en otra forma en este proyecto: **un numero que sale
+demasiado redondo, o demasiado plano, es mas probablemente un bug que un hallazgo**. Por eso el
+informe de V12-01 registra el fallo del diagnostico y su comprobacion, y no solo el resultado.
