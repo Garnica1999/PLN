@@ -2206,3 +2206,65 @@ evidencia, experimento, resultado, conclusion final.
   umbral, de pesos ni de semilla antes de conocer el numero externo.** El resultado decide la
   bifurcacion: si mejora de forma material, se congela la arquitectura y se ejecutan como
   maximo P9 y P10; si no mejora, P1 se cierra sin variantes y se entra por P3.
+
+## D-059 - Resultado de P1 y adopcion de un filtro de detectabilidad: el limite esta en el leaderboard, no en el modelo
+
+- **Contexto**: P1 era la unica sonda externa autorizada en la fase. El techo de la linea
+  estaba declarado antes de enviarla, en el orden de milesimas, y el control de codigo habia
+  dado identidad de pipeline con una diferencia maxima por celda de 0.000e+00. La pregunta que
+  queda es que hacer con el numero, y si ese numero significa algo.
+- **Decision 1, P1 se cierra como linea negativa, sin variantes**. El externo dio **0.77470**
+  frente a los 0.78306 de V03, una diferencia de **-0.00836**. No se reajusta umbral, no se
+  alteran pesos y no se cambia la semilla. La causa mecanica estaba medida y era esperable: el
+  promedio contrae las probabilidades en +0.001334 y los umbrales congelados de V03 estan
+  calibrados para un modelo individual, de modo que el efecto de escala movio 100 celdas de
+  3462.
+- **Decision 2, el numero no es evidencia de nada, y eso hay que decirlo con claridad**. El
+  error estandar del leaderboard con 1154 filas es 0.01524 para la F1, y la sensibilidad de la
+  metrica primaria es de 7.93e-04 por acierto neto, de modo que **el ruido equivale a 19.2
+  aciertos netos**. La diferencia de P1 son -10.5 netos, es decir un doceavo del ruido, y
+  -10.5 por cada cien celdas que cambian: indistinguible de una moneda al aire. **No hay
+  evidencia de que el ensemble sea peor, hay evidencia de que no es mejor.** V03 sigue como
+  referencia **por no tener evidencia en contra, no por tener evidencia a favor**, y esa
+  distincion queda escrita porque cambia lo que cabe afirmar.
+- **Decision 3, se revisa una premisa propia, y es lo mas importante de esta decision**. El
+  proyecto venia sosteniendo, con el freno de transferencia heredado de la fase v7, que **el
+  unico movimiento positivo del leaderboard vino de la capa de decision**, el paso de v02 a
+  v03, que dio +0.0031. Al pasar esa cifra a la misma unidad que el ruido: **son +3.9
+  aciertos netos frente a un ruido de 19.2, o sea una senal cinco veces mas pequena que el
+  ruido que la rodea. Ese movimiento positivo tambien fue ruido.** No es evidencia de que la
+  capa de decision funcione. El freno de transferencia sigue siendo valido, pero su
+  justificacion se corrige: no era que la capa de decision tuviera un historial positivo, era
+  que el historial entero era indistinguible.
+- **Decision 4, ninguna de las tres maniobras exploradas produce senal por encima del
+  ruido**. De once sondas reales, **diez caen dentro de la banda y cero estan por encima de
+  V03**. La unica distinguible es v01, con -33.2 netos, que es el modelo de solo palabra con
+  constante 1.0, o sea el mas pobre de la familia, y se aleja para peor. La afirmacion
+  defendible es estrecha y se escribe asi: **de once maniobras, la unica con suficiente senal
+  es la que mas se aleja del mejor, y en la direccion equivocada**. Ni la capa de decision
+  (apilamiento, fusion tardia, Optuna, promedio de pliegues), ni los hiperparametros
+  (constante, minimo de apariciones), ni la representacion producen una diferencia que este
+  leaderboard pueda resolver.
+- **Decision 5, se adopta un filtro de detectabilidad previo, y es lo que gobierna la fase a
+  partir de ahora**. El limite esta en el instrumento y es cuantificable. Si una candidata
+  cambia C celdas de la referencia, su senal en el externo es `C por (2p - 1)`, donde p es la
+  fraccion de esas celdas que ella acierta y la referencia falla, y el externo solo la resuelve
+  si `2p - 1` supera 19.2 dividido por C. En tabla: con 50 celdas hace falta 0.692, con 100
+  hace falta 0.596, con 200 hace falta 0.548, con 400 hace falta 0.524 y con 800 hace falta
+  0.512. **Ninguna candidata cuya tasa de acierto entre las celdas modificadas alcance el
+  minimo de la tabla se envia.** No es que sea mala: es que el instrumento no puede
+  distinguirla, y gastar una sonda en eso es gastar presupuesto en ruido. La ventaja de este
+  filtro es que **es estimable en el desarrollo antes de enviar nada**, de modo que es previo
+  y gratis.
+- **Decision 6, la reordenacion que se deriva**. P5, P6 y P7 bajan de prioridad, porque las
+  tres mueven la capa de decision en la banda de cien a doscientas celdas, donde el minimo de
+  acierto exigido supera el 60 %. **P3, la estabilidad de features, sube a la primera
+  posicion**, porque reducir la dimension puede cambiar muchas celdas de golpe, que es la
+  unica forma de acercarse al minimo exigido. P2, la ponderacion por razon logaritmica de
+  recuentos, sigue con su precedente adverso ya medido en E2-15.
+- **Decision 7, el objetivo declarado queda anotado con su probabilidad, no con su deseo**.
+  Superar 0.80 esta a +0.01694 de la referencia, o sea **1.1 veces el ruido y 21 aciertos
+  netos de ventaja limpia, sobre once sondas de las que diez son indistinguibles entre si**.
+  No es imposible, pero no es algo que se alcance empujando la capa de decision, que es donde
+  se ha estado buscando durante varias fases. La honestidad con el objetivo importa mas que
+  el objetivo.

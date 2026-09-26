@@ -1050,3 +1050,26 @@ Registro cronologico de ejecuciones. Formato:
   **Nueve comprobaciones de integridad del fichero, todas correctas. Fichero escrito y
   PARADA OBLIGATORIA: no se envia automaticamente y no se crean variantes antes del numero.**
   **D-058. 1 Sonda externa preparada, 0 enviadas.**
+- v8 P1: resultado de la sonda externa | `v8_01_ensamble_folds.py` y registro
+  **LB 0.77470 frente a 0.78306 de V03, diferencia -0.00836. P1 se cierra como linea negativa,
+  sin variantes.** El techo de milesimas declarado antes del envio resulto correcto en magnitud
+  y equivocado en el signo. La causa mecanica estaba medida: contraccion de +0.001334 y 100
+  celdas de 3462. **D-059.** 0 submissions automaticas.
+- v8 A2: resolucion del leaderboard | `v8_02_resolucion_liderboard.py`
+  **El limite esta en el instrumento y es cuantificable.** Ruido del leaderboard 0.01524 para
+  la F1, sensibilidad 7.93e-04 por acierto neto, de modo que **el ruido equivale a 19.2
+  aciertos netos**. De las once sondas reales, **10 caen dentro de la banda y ninguna esta por
+  encima de V03**. La unica distinguible es v01, con -33.2 netos, que es la peor de todas.
+  **Se cae una premisa propia**: el paso de v02 a v03, que el proyecto citaba como el unico
+  movimiento positivo del leaderboard y como justificacion del freno de transferencia, son +3.9
+  aciertos netos frente a un ruido de 19.2. Fue ruido. El freno sigue valiendo, pero por otra
+  razon: no es que la capa de decision tuviera historial positivo, es que el historial entero
+  era indistinguible.
+  **Se adopta un filtro de detectabilidad previo**: una candidata que cambie C celdas solo es
+  resoluble si su tasa de acierto entre ellas supera 0,5 mas 19,2 dividido por C, es decir
+  0.60 con cien celdas, 0.55 con doscientas y 0.51 con ochocientas. Ese numero se estima en el
+  desarrollo antes de enviar, asi que el filtro es previo y gratis.
+  **Reordenacion**: P5, P6 y P7 bajan de prioridad por moverse en la banda de cien a doscientas
+  celdas. **P3 sube a la primera posicion.** El objetivo de superar 0.80 queda a 1.1 veces el
+  ruido y 21 aciertos netos de ventaja limpia sobre once sondas de las que diez son
+  indistinguibles entre si.

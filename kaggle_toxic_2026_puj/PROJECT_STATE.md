@@ -431,3 +431,24 @@ chequeo previo (D-008).
   `submissions/toxic_submission_v08_p1_fold_ensemble.csv` escrito y verificado con nueve
   comprobaciones. **No enviado. Parada obligatoria** hasta conocer el numero (D-058).
 - **Techo esperado de P1, declarado antes del envio**: orden de milesimas, no de centesimas.
+
+## Fase v8: estado tras la sonda P1
+
+- **P1 CERRADO, negativo** (D-059). Externo 0.77470 frente a 0.78306 de V03, diferencia
+  -0.00836. Sin variantes: ni umbral, ni pesos, ni semilla.
+- **Lectura correcta del numero**: el ruido del leaderboard es 0.01524 para la F1, que equivale
+  a **19.2 aciertos netos**. La diferencia de P1 son -10.5 netos, un doceavo del ruido. **No hay
+  evidencia de que el ensemble sea peor, hay evidencia de que no es mejor.** V03 sigue como
+  referencia por no tener evidencia en contra, no por tener evidencia a favor.
+- **Se cae una premisa propia** (D-059): el paso de v02 a v03, citado como el unico
+  movimiento positivo y como justificacion del freno de transferencia, son +3.9 netos frente a
+  un ruido de 19.2. Fue ruido. El freno sigue valiendo por otra razon.
+- **Filtro de detectabilidad adoptado**: una candidata que cambie C celdas solo es resoluble
+  por el externo si su tasa de acierto entre ellas supera `0,5 + 19,2/C`. Con 100 celdas hace
+  falta 0.60; con 200, 0.55; con 800, 0.51. **Ninguna candidata por debajo del minimo se
+  envia**, y el minimo se estima en el desarrollo antes de gastar la sonda.
+- **De once sondas reales, diez son indistinguibles entre si y ninguna supera a V03.** Ni la
+  capa de decision, ni los hiperparametros, ni la representacion producen una diferencia que
+  este leaderboard pueda resolver.
+- **Reordenacion**: P5, P6 y P7 bajan de prioridad. **P3, la estabilidad de features, sube a la
+  primera posicion** y es la siguiente linea a ejecutar.
