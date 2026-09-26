@@ -50,6 +50,8 @@ archivada de la autorizacion; se registra solo lo comunicado por el usuario.
 | D-040 | Presupuesto de v5.1 agotado: 9/9 exploratorias, reserva 0/1 intacta. La arquitectura cambia el embedding pero no aporta a V03 |
 | P6 comparacion final | 14 configuraciones, 0 adoptables | embedding aislado rango 0.0297 vs fusion 0.0063 |
 | D-041 | Conclusion v5.1: la arquitectura mejora la representacion pero no aporta a V03. No se escala el corpus |
+| P7 complementariedad | WS-3 arregla 8 filas y rompe 2 (el baseline 8 y 5): la ventaja esta en el damage, no en el salvage |
+| D-042 | El embedding aporta la misma informacion con mas ruido; correccion de vocabulario: la unidad son filas, no celdas |
 | variable abierta | El tamano de los datos etiquetados (1.483), unica palanca que deja la evidencia |
 | GATE DE CIERRE | §29: A (+0.005 con estabilidad) / B (complementariedad robusta) / C (senal representacional fuerte) |
 

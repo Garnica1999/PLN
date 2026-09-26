@@ -61,9 +61,14 @@
 - [x] 14 configuraciones, 0 adoptables; embedding aislado rango 0.0297 vs fusion 0.0063
 - [x] **D-041**: conclusion de representacion y de tarea, y no se escala el corpus
 
-## P7-P10 - cierre (pendiente)
+## P7 - complementariedad (hecha)
 
-- [ ] complementariedad: salvage, damage, slices, solapamiento con char_wb
+- [x] `embedding_18_complementariedad_v5_1.py`: salvage/damage de 4 variantes
+- [x] bootstrap pareado de la interaccion ortografica (sin significacion, con poca potencia)
+- [x] ejemplos de filas y slices consolidadas
+- [x] **D-042**: la ventaja de WS-3 esta en romper menos, no en arreglar mas
+
+## P8-P10 - cierre (pendiente)
 - [ ] seccion v5/v5.1 en `notebooks/10_final_pipeline.ipynb` con `TRAIN_FROM_SCRATCH=False`
 - [ ] validacion del notebook completo por ejecucion
 - [ ] `FINAL_REPORT.md`, `PROJECT_STATE.md`, `DECISIONS.md`

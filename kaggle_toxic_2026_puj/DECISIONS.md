@@ -1475,3 +1475,41 @@ evidencia, experimento, resultado, conclusion final.
   `reports/embedding_architecture_v5_1.md` sea el informe de resultados que pide la spec.
 - **Presupuesto**: 9 de 9 unidades exploratorias y 0 de 1 de reserva. El costo real de la
   fase son unos 15 minutos de entrenamiento repartidos en nueve modelos.
+
+## D-042 - Que aporta el embedding, con su poder real: mismo mecanismo, menos ruido, y una correccion de vocabulario
+
+- **Contexto**: P7 responde la pregunta que queda tras D-041: si nada es adoptable, **que**
+  hace el embedding y por que no hace mas. Reevalua cuatro configuraciones sin entrenar
+  nada (son `DOWNSTREAM EVALUATION UNIT`).
+- **salvage / damage** (unidad: filas, 1.483):
+
+  | variante | corrected_cv | salvage | damage | correccion neta |
+  |---|---|---|---|---|
+  | B0-200 (baseline) | 0.7818 | 8 | 5 | +3 |
+  | **WS-3** | **0.7830** | 8 | **2** | **+6** |
+  | VS-100 | 0.7823 | 7 | 4 | +3 |
+  | NEG-5 | 0.7811 | 8 | 6 | +2 |
+
+- **Lectura correcta**: WS-3 no arregla mas que el baseline (8 frente a 8). Arregla lo mismo y
+  **rompe menos** (2 frente a 5). Toda la diferencia de +0,0057 esta en el damage, no en el
+  salvage. Eso es lo que distingue una mejora real de un lucky draw: una configuracion que
+  solo sube porque acierta mas filas nuevas suele ser la que mas ruido mete, y aqui se ve al
+  reves.
+- **Interaccion ortografica**: el delta del embedding es **+0,0083** en las 1.289 filas que
+  contienen alguna forma de los grupos `elongaciones` o `formas_raras`, y **-0,0045** en las
+  194 restantes. La diferencia es +0,0128, la direccion es la esperada (el embedding aporta
+  donde la palabra esta deformada y resta donde no lo esta), pero el IC95 [-0,0024, +0,0292]
+  **incluye el 0**. No se puede concluir que no haya interaccion: **el test tiene poco
+  poder**, porque la mascara cubre el 87 % de las filas (el grupo `formas_raras` del
+  vocabulario TOXIC incluye tipos frecuentes del propio lexico de odio, asi que casi cualquier
+  fila contiene alguno). Un grupo mas estrecho (`elongaciones`, 57 filas) seria demasiado
+  ruidoso. Se registra como direccion consistente en las cuatro variantes, no como resultado.
+- **Correccion de vocabulario que hay que hacer**: ``src.evaluation._f1_por_celda`` se llama
+  asi y su docstring habla de celdas (fila, etiqueta), pero devuelve la media de las tres
+  etiquetas de **cada fila**. La unidad de analisis de toda la fase v5 y v5.1 son las **1.483
+  filas**, no las 4.449 celdas. Los conteos publicados en v5 no cambian, porque siempre se
+  contaron filas, pero la etiqueta estaba mal. Los scripts de v5 no se editan (son evidencia
+  historica); la correccion se aplica en P7 y en la documentacion de v5.1.
+- **Conclusion de este P7**: el embedding aporta **la misma informacion que V03, con mas
+  ruido**, y la unica palanca para reducir ese ruido (una ventana de contexto menor) reduces
+  el damage sin mover el salvage. Nada de eso cambia la conclusion de adopcion de D-041.

@@ -776,3 +776,13 @@ Registro cronologico de ejecuciones. Formato:
   aporta a V03). **No se escala el corpus**: fallan tres de las cinco condiciones de la
   seccion 12 y las que fallan son de evidencia, no de coste. El informe de P0 se renombra a
   `embedding_architecture_auditoria_v5_1.md`. 0 submissions, 0 sondas de LB.
+- 23:55 | v5.1 P7: complementariedad (EBD-24) | `experiments/embedding_18_complementariedad_v5_1.py`
+  Reevaluadas cuatro configuraciones sin entrenar. WS-3: salvage 8 filas, damage 2, neta +6;
+  el baseline 8/5/+3. **WS-3 no arregla mas: arregla lo mismo y rompe menos**, que es donde
+  esta toda su ventaja. La interaccion ortografica da delta +0.0083 dentro (n=1.289) y
+  -0.0045 fuera (n=194), diferencia +0.0128 con IC95 que incluye el 0: direccion esperada pero
+  sin significacion, y la mascara cubre el 87 % de las filas, asi que el test tiene poco
+  poder. **D-042**, que ademas corrige un nombre arrastrado desde v5: `_f1_por_celda`
+  devuelve la media de las tres etiquetas de cada fila, de modo que la unidad de analisis son
+  las 1.483 filas y no las 4.449 celdas. Los conteos de v5 no cambian; la etiqueta estaba mal.
+  0 submissions, 0 sondas de LB.
