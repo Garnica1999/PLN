@@ -51,7 +51,7 @@ especialista explícito)?
 | **P17** | Pronombres de persona (V14–V18 del artículo) | idem | **cerrada** (0,1918; pre-chequeo -64.075, sin fusión) |
 | **P19** | Árboles SFL (sin POS) | idem | - |
 | **P20** | Incertidumbre y modalidad | idem | **cerrada** (0,1270, bajo el azar; sin fusión) |
-| **P3** | Especialistas binarios de frontera | idem | - |
+| **P3** | Especialistas binarios de frontera | idem | **cerrada** (el especialista empeora: -0,0017 y -0,0029) |
 | **P24** | Forma de la distribución de evidencia | idem | - |
 | **P4** | Boundary gating | idem | - |
 | **P5** | Entrenamiento pairwise | idem | - |
@@ -190,6 +190,18 @@ tokens. Pero el **neto de rescate es negativo en todas las franjas** (-33.515 a 
 el maximo de las 90 combinaciones da **0,6005 con 0 filas desviadas**: la mejor puerta es no usar el
 bloque. Ambas mitades de folds eligen eso de forma independiente. El techo de +0,077 es inalcanzable
 porque las filas que el bloque acierta son en su mayoria filas que V12 ya acierta.
+
+**P3a · especialistas de frontera (cerrada).** Modelo **nuevo** por par, entrenado con las filas
+del par del train exterior y con las mismas 279 variables, aplicado en la forma
+`gate(especialista, V12)`: solo redecide entre las dos clases cuando V12 ya está en el par, así que por
+construcción no puede tocar las demás filas. No es la línea que D-037 cerró (allí, reglas a
+posteriori; aquí, un modelo con sus propios datos de entrenamiento).
+- `18-24|25-34`: exactitud en el par **0,4963 -> 0,4944** (LogReg) y 0,4946 (MLP). Neto -109 y -96.
+- `25-34|35-49`: **0,4974 -> 0,4942** y 0,4945. Neto -180 y -163.
+- Global: 0,6005 -> 0,5993 con 6.944 filas modificadas.
+
+Un clasificador binario dedicado al par es **peor** que la predicción de seis clases de V12 restringida
+a ese par. No queda estructura específica de frontera que explotar en ese espacio de variables.
 
 **Consecuencia operativa para P3.** Un especialista de frontera **no puede apoyarse en los
 miembros actuales**: hay poco rescate exclusivo, no hay señal de confianza que active la puerta y
