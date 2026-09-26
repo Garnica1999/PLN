@@ -1,0 +1,4 @@
+arquitectura,macro_f1,delta,folds_positivos
+"A0 promedio fijo 0,5+0,5 (produccion)",0.6005,0.0,-
+peso_aprendido,0.6002,-0.0003,0/5
+combinador_logistico,0.6011,0.0006,3/5

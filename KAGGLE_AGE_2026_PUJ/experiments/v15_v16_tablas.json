@@ -1,0 +1,20 @@
+{
+  "fase": "reparacion de tablas de fronteras en V15b y V16",
+  "fecha": "2026-09-26",
+  "informes": [
+    {
+      "informe": "v15_poda.md",
+      "seccion": "## 4.",
+      "filas_reparadas": 2,
+      "cifras_modificadas": 0
+    },
+    {
+      "informe": "v16_arquitectura.md",
+      "seccion": "## 4.",
+      "filas_reparadas": 2,
+      "cifras_modificadas": 0
+    }
+  ],
+  "motivo": "la etiqueta de frontera lleva un guion vertical, que Markdown interpreta como separador de columna y parte la tabla",
+  "alcance": "solo presentacion; ninguna cifra ni conclusion cambia"
+}

@@ -695,3 +695,22 @@ Después pide añadir además el paso de la **arquitectura del meta-modelo**.
   editó**, porque ya se ejecutó y su salida es el registro del experimento; lo que se corrigió fue el
   artefacto generado `reports/v15_poda.md`, con una nota de edición explícita y **sin tocar ninguna
   cifra**. Si en el futuro se vuelve a ejecutar ese script, la plantilla habrá que arreglarse antes.
+
+### Cierre de V16 (arquitectura del meta-modelo)
+- **A1 (peso aprendido por fold)**: 0,6002, delta -0,0003, 0 de 5 folds. Pesos elegidos
+  0,1 · 0,5 · 0,5 · 0,4 · 0,5: el 0,5 de producción se elige solo en tres de los cinco folds.
+  **Descartado.**
+- **A2 (combinador logístico sobre las doce probabilidades, apilamiento en dos niveles)**: 0,6011,
+  delta **+0,0006**, 3 de 5 folds, 3 de 4 en la segunda partición, IC95 pareado
+  **[-0,0003; +0,0015] que contiene el cero**. Falla el efecto mínimo y la significancia.
+  **NO ADOPTAR** (D-046).
+- **Lo que sí se queda**: las fronteras centrales mejoran **+0,0102** y **+0,0157**, tres a cinco
+  veces el efecto global. El problema del conjunto de datos está en las fronteras de edad y ahí el
+  meta-modelo tiene algo que aportar; lo que no tiene es magnitud para la métrica global.
+- **Dos defectos de presentacion corregidos sin tocar cifras**: las tablas de fronteras llevaban la
+  etiqueta con un guion vertical (`18-24|25-34`), que Markdown interpreta como separador de columna
+  y partia la tabla. Se reparan con `scripts/v15_v16_tablas.py`, que escapa la barra y es
+  idempotente; ninguna cifra cambia. A los informes de V15b y V16 se les anadio despues una seccion
+  de lectura con su nota de edicion, porque los generadores no la incluian; los scripts de
+  experimento **no se han editado ni vuelto a ejecutar**.
+- `experiments.csv` pasa a **94 experimentos**. Auditoría de idioma sobre 336 ficheros: 0 errores.

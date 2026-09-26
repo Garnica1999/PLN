@@ -72,7 +72,7 @@ especialista explícito)?
 | **P14** | Combinación (**solo** con dos positivos independientes) | idem | - |
 | **V15a** | Correlacion entrada-entrada y asociacion con la salida, **in-fold** | `reports/v15_correlacion.md` | **cerrada** (58 clusters, Jaccard de pares 1,0000) |
 | **V15b** | Poda de variables redundantes (1 representante por cluster) | `reports/v15_poda.md` | **cerrada, NO ADOPTAR** (delta -0,0040, 0/5 y 0/4) |
-| **V16** | Arquitectura del meta-modelo (peso aprendido y combinador logistico) | `reports/v16_arquitectura.md` | **en curso** |
+| **V16** | Arquitectura del meta-modelo (peso aprendido y combinador logistico) | `reports/v16_arquitectura.md` | **cerrada, NO ADOPTAR** (+0,0006, 3/5 y 3/4, IC95 contiene el cero) |
 | **Cierre** | Informes §31 + memoria | `reports/v13_final_research.md` | - |
 
 **Presupuesto**: ≤24 experimentos principales + 8 reservas.
@@ -305,7 +305,7 @@ duplicados exactos, cuesta entre 0,4 y 0,65 puntos de macro-F1 de forma reproduc
 colinealidad afecta a la interpretacion de los coeficientes, no a la prediccion, y esa idea ya
 habia aparecido en P0b; V15 la confirma con una evaluacion completa en vez de una inferencia.
 
-### V16 · Arquitectura del meta-modelo (en curso)
+### V16 · Arquitectura del meta-modelo (cerrada, no se adopta)
 
 Si el cuello de botella es arquitectónico, la palanca que queda es la **forma de combinar las dos
 cabezas**. V12 usa un promedio fijo 0,5 LogReg + 0,5 MLP, una decision de diseno de la primera
@@ -323,6 +323,19 @@ variables y el mismo protocolo:
 Ninguna introduce variables nuevas. La arquitectura que gane en la particion de 5 folds se
 confirma en la **segunda particion de 4 folds**, que es control de seleccion y no una medida mas.
 El test no se toca.
+
+**Lo que salio.** A1 (peso aprendido) queda **descartado**: 0,6002, delta -0,0003, 0 de 5 folds, y
+los pesos elegidos son 0,1 · 0,5 · 0,5 · 0,4 · 0,5, o sea que el 0,5 de produccion se elige solo en
+tres de los cinco folds. A2 (combinador logistico) da **0,6011**, delta **+0,0006**, **3 de 5
+folds** y **3 de 4** en la segunda particion, pero el **IC95 pareado [-0,0003; +0,0015] contiene el
+cero**: falla dos de los cinco criterios y **NO SE ADOPTA**.
+
+**El hallazgo que si queda, y es la leccion de la fase**: las dos fronteras centrales mejoran de
+**+0,0102** (`18-24|25-34`, de 0,4963 a 0,5065) y **+0,0157** (`25-34|35-49`, de 0,4974 a 0,5131),
+tres a cinco veces el efecto global y en el mismo sentido. Una mejora de ese tamano en la frontera
+`25-34|35-49` es **invisible** en la macro-F1 global, porque la media ponderada por clases la
+dominan las clases faciles. **Medir sobre las fronteras desde el principio, no como metrica
+secundaria.**
 
 ## Referencias
 

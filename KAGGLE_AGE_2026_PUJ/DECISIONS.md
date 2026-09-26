@@ -1047,3 +1047,44 @@ Tras declarar la saturación se probó la vía indicada como trabajo futuro:
   `reports/v15_poda_comparativa.csv`, `reports/v15_clusters.csv`,
   `reports/v15_asociacion_salida.csv`, `experiments/v15a_correlacion.json`,
   `experiments/v15b_poda.json`, `features/v15b_oof.npy`.
+
+## D-046 — V16: la arquitectura aporta en las fronteras, y no alcanza para la metrica global
+
+- **Observation**: con D-045 cerrado, la unica palanca que quedaba era la forma de combinar las dos
+  cabezas. V12 arrastra desde la primera version un promedio fijo 0,5 LogReg + 0,5 MLP que nunca se
+  optimizo, y todos los diagnosticos de V13, V14 y V15 senalaban al meta-modelo como cuello de
+  botella. Carlos pidio anadir este paso.
+- **Result** (mismas 279 variables, mismo protocolo, sin variables nuevas):
+  - **A0, promedio fijo (produccion)**: macro-F1 0,6005.
+  - **A1, peso aprendido por fold** (el peso se elige sobre una particion interior agrupada del
+    train exterior, sin mirar la validacion): macro-F1 **0,6002**, delta **-0,0003**, **0 de 5
+    folds**. Los pesos elegidos son **0,1 · 0,5 · 0,5 · 0,4 · 0,5**: el 0,5 de produccion se elige
+    solo en tres de los cinco folds.
+  - **A2, combinador logistico** sobre las doce probabilidades de las dos cabezas (apilamiento en
+    dos niveles): macro-F1 **0,6011**, delta **+0,0006**, **3 de 5 folds**. Segunda particion
+    **3 de 4**. IC95 pareado **[-0,0003; +0,0015]**, que **contiene el cero**.
+  - **Doble metrica (§36)**: la frontera `18-24|25-34` pasa de 0,4963 a **0,5065** y la
+    `25-34|35-49` de 0,4974 a **0,5131**. Son **+0,0102 y +0,0157**, tres a cinco veces el efecto
+    global, y en el mismo sentido.
+- **Decision**: **NO ADOPTAR**. Falla dos de los cinco criterios (efecto minimo y significacion) y el
+  gate manda. V12 sigue congelado en 0,6005 (CV) y 0,62188 (leaderboard), sin submission nueva.
+- **Reason**: (1) A1 descarta de golpe la version mas barata de la hipotesis arquitectonica: el 0,5
+  de produccion no era una decision desafortunada, era la correcta; (2) A2 es el primer delta
+  positivo del proyecto y aparece en la direccion que la hipotesis predecia, pero su magnitud esta
+  **por debajo del ruido de la estimacion**, asi que no puede sostenerse; (3) la mejora de las
+  fronteras es un hallazgo real, no un espejismo, y encaja con todo lo demas: **el problema de este
+  conjunto de datos esta en las fronteras de edad**, y ahi el meta-modelo tiene algo que aportar. Lo
+  que no tiene es magnitud suficiente para que la media ponderada por clases la registre.
+- **Consequences**: (1) **leccion operativa, la mas util de la fase**: una mejora de +0,0157 en la
+  frontera `25-34|35-49` es **invisible** en la macro-F1 global. Cualquier trabajo futuro que se
+  dirija a las fronteras tiene que medir sobre ellas desde el principio, no como metrica
+  secundaria; (2) el gate D-042 queda validado por un segundo caso difficile, y este es el
+  instructivo: la **intuicion** (las fronteras mejoran, luego el modelo mejora) y el **gate**
+  discrepan, y el gate gana porque el intervalo de confianza no excluye el cero; (3) V16 no cierra
+  del todo el problema arquitectonico: cierra el combinador de dos niveles sobre las dos cabezas.
+  Quedan sin medir la perdida de la propia combinacion (un objetivo distinto de un promedio) y las
+  arquitecturas de mas de dos niveles.
+- **Evidence**: `reports/v16_arquitectura.md`, `reports/v16_arquitectura_comparativa.csv`,
+  `experiments/v16_arquitectura.json`, `features/v16_oof_peso_aprendido.npy`,
+  `features/v16_oof_combinador_logistico.npy`, `plan/V13_ADVANCED_RESEARCH_PLAN.md`.
+

@@ -89,20 +89,36 @@
   `experiments/v15a_correlacion.json`, `experiments/v15b_poda.json`, `features/v15b_oof.npy`,
   `features/v15_conservadas_fold{0..4}.npy`. `experiments.csv` con 93 experimentos.
 
-## V16 · ARQUITECTURA DEL META-MODELO (2026-09-26) EN CURSO
-- Todos los diagnósticos de V13, V14 y V15 apuntan a lo mismo: **el cuello de botella no son los
-  datos, es la arquitectura**. La palanca que queda es la forma de combinar las dos cabezas, que
-  V12 hace con un promedio fijo 0,5 LogReg + 0,5 MLP, una decisión de diseño de la primera versión
-  que **nunca se optimizó**.
-- **Tres arquitecturas sobre las mismas 279 variables y el mismo protocolo**: A0 promedio fijo
-  (producción, su OOF ya estaba calculado y no se reentrena); A1 **peso aprendido** por fold sobre
-  una partición interior del train exterior (20 %, agrupada por duplicados, para no mirar la
-  validación); A2 **combinador logístico** sobre las doce probabilidades de las dos cabezas, es
-  decir apilamiento en dos niveles.
-- En la prueba de humo el peso óptimo de A1 fue **0,4**, no 0,5. La arquitectura que gane en la
-  partición de 5 folds se confirma en la **segunda partición de 4 folds**.
-- Entregables previstos: `reports/v16_arquitectura.md`, `experiments/v16_arquitectura.json`,
-  `features/v16_oof_*.npy`.
+## V16 · ARQUITECTURA DEL META-MODELO (2026-09-26) CERRADA — en las fronteras sí, en la global no (D-046)
+- **Petición de Carlos**: añadir el paso de la arquitectura del meta-modelo, después del de las
+  variables. Con todos los diagnósticos de V13, V14 y V15 apuntando al meta-modelo como cuello de
+  botella, la palanca que quedaba era la **forma de combinar** las dos cabezas, que V12 hace con un
+  promedio fijo 0,5 LogReg + 0,5 MLP, una decisión de diseño de la primera versión que **nunca se
+  optimizó**.
+- **Tres arquitecturas sobre las mismas 279 variables y el mismo protocolo, sin variables nuevas**:
+  | Arquitectura | macro-F1 | Delta | Folds positivos |
+  |---|---|---|---|
+  | A0 promedio fijo (producción) | 0,6005 | - | - |
+  | A1 peso aprendido por fold | 0,6002 | -0,0003 | 0/5 |
+  | A2 combinador logístico (apilamiento) | **0,6011** | **+0,0006** | **3/5** |
+- **A1 queda descartado**: los pesos que elige por fold son 0,1 · 0,5 · 0,5 · 0,4 · 0,5, así que el
+  0,5 de producción se elige solo en 3 de 5 folds. El promedio fijo no era una decisión
+  desafortunada, era la correcta.
+- **A2 es el primer delta positivo del proyecto**, en la partición de 5 folds (3/5) y en la segunda
+  partición (3/4), pero el **IC95 pareado [-0,0003; +0,0015] contiene el cero** y el efecto queda
+  bajo +0,001. **NO ADOPTAR**.
+- **El hallazgo que sí queda**: las dos fronteras centrales mejoran de forma notable,
+  `18-24|25-34` de 0,4963 a **0,5065** y `25-34|35-49` de 0,4974 a **0,5131**, es decir **+1,0 y
+  +1,6 puntos**, tres a cinco veces el efecto global. El problema de este conjunto de datos está en
+  las fronteras de edad, y ahí el meta-modelo tiene algo que aportar; lo que no tiene es magnitud
+  suficiente para que la media global la registre.
+- **Lección operativa**: una mejora de +0,0157 en la frontera `25-34|35-49` es **invisible** en la
+  macro-F1 global. Todo trabajo futuro dirigido a las fronteras tiene que medir sobre ellas desde el
+  principio, no como métrica secundaria.
+- **Entregables**: `reports/v16_arquitectura.md`, `reports/v16_arquitectura_comparativa.csv`,
+  `experiments/v16_arquitectura.json`, `features/v16_oof_*.npy`, y
+  `scripts/v15_v16_tablas.py` (repara la tabla de fronteras de V15b y V16, sin tocar cifras).
+  `experiments.csv` con **94 experimentos**. Auditoría de idioma: 0 errores.
 
 ## Fase actual
 - **FASE DE LEXICONES (2026-09-25) CERRADA — línea cerrada (D-039).** 24 subcategorías léxicas
