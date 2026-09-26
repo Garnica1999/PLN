@@ -1,0 +1,96 @@
+{
+  "fase": "V13 · P16c reconstruccion estable",
+  "fecha": "2026-09-25",
+  "parametrizacion": "grados de libertad efectivos",
+  "rejilla": [
+    2,
+    5,
+    10,
+    20,
+    50,
+    100
+  ],
+  "por_bloque": {
+    "P1 tokens": {
+      "mejor_r2_mediano": 0.5267,
+      "mejor_r2_maximo": 0.9675,
+      "columnas_por_encima_de_0_5": 21,
+      "columnas_por_encima_de_0_8": 2,
+      "columnas_totales": 36,
+      "grado_elegido": 2,
+      "control_original": 0.3997,
+      "control_reconstruido": 0.0485
+    },
+    "P17 pronombres": {
+      "mejor_r2_mediano": 0.2111,
+      "mejor_r2_maximo": 0.3816,
+      "columnas_por_encima_de_0_5": 0,
+      "columnas_por_encima_de_0_8": 0,
+      "columnas_totales": 26,
+      "grado_elegido": 2,
+      "control_original": 0.1918,
+      "control_reconstruido": 0.0485
+    },
+    "P20 modalidad": {
+      "mejor_r2_mediano": 0.0372,
+      "mejor_r2_maximo": 0.2681,
+      "columnas_por_encima_de_0_5": 0,
+      "columnas_por_encima_de_0_8": 0,
+      "columnas_totales": 23,
+      "grado_elegido": 2,
+      "control_original": 0.127,
+      "control_reconstruido": 0.0485
+    }
+  },
+  "controles": [
+    {
+      "bloque": "P1 tokens",
+      "modelo": "logreg",
+      "grados_de_libertad": 2,
+      "control_original": 0.3915,
+      "control_reconstruido": 0.0485,
+      "suelo_azar": 0.1667
+    },
+    {
+      "bloque": "P1 tokens",
+      "modelo": "linearsvc",
+      "grados_de_libertad": 2,
+      "control_original": 0.3841,
+      "control_reconstruido": 0.0485,
+      "suelo_azar": 0.1667
+    },
+    {
+      "bloque": "P17 pronombres",
+      "modelo": "logreg",
+      "grados_de_libertad": 2,
+      "control_original": 0.1918,
+      "control_reconstruido": 0.0485,
+      "suelo_azar": 0.1667
+    },
+    {
+      "bloque": "P17 pronombres",
+      "modelo": "linearsvc",
+      "grados_de_libertad": 2,
+      "control_original": 0.1881,
+      "control_reconstruido": 0.0485,
+      "suelo_azar": 0.1667
+    },
+    {
+      "bloque": "P20 modalidad",
+      "modelo": "logreg",
+      "grados_de_libertad": 2,
+      "control_original": 0.127,
+      "control_reconstruido": 0.0485,
+      "suelo_azar": 0.1667
+    },
+    {
+      "bloque": "P20 modalidad",
+      "modelo": "linearsvc",
+      "grados_de_libertad": 2,
+      "control_original": 0.1259,
+      "control_reconstruido": 0.0485,
+      "suelo_azar": 0.1667
+    }
+  ],
+  "segundos": 999.0
+}

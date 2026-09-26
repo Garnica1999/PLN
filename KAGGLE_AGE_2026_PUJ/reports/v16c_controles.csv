@@ -1,0 +1,7 @@
+bloque,modelo,grados_de_libertad,control_original,control_reconstruido,suelo_azar
+P1 tokens,logreg,2,0.3915,0.0485,0.1667
+P1 tokens,linearsvc,2,0.3841,0.0485,0.1667
+P17 pronombres,logreg,2,0.1918,0.0485,0.1667
+P17 pronombres,linearsvc,2,0.1881,0.0485,0.1667
+P20 modalidad,logreg,2,0.127,0.0485,0.1667
+P20 modalidad,linearsvc,2,0.1259,0.0485,0.1667

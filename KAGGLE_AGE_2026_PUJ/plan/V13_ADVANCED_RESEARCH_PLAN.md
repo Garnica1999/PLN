@@ -162,6 +162,35 @@ reconocimiento de cuentas. Pero la fusión con V12 da **-0,0002 con 3/5 folds**,
 de permutado da -0,0005: la mejora del bloque aislado se pierde al combinarla con V12. Los miembros
 de V12 son clasificadores de TF-IDF, es decir ya calculan una versión de `P(clase|token)`.
 
+**P1b · fusion (NO ADOPTAR).** Delta **-0,0002** con 3/5 folds. Los tres controles permutados
+(0,6000, 0,6003, 0,6000) son **indistinguibles del bloque real** (0,6003): la contribucion es ruido.
+Ninguna de las dos cabezas mejora (LogReg 0,5915 -> 0,5909; MLP 0,5978 -> 0,5973). Falla 5 de los 6
+criterios del gate. El unico sitio constructivo son las dos fronteras centrales (neto +294 y +248),
+que es donde el plan queria, pero muy por debajo del gate.
+
+**P16 · por que falla toda fusion (diagnostico, tres versiones).** P16 AttemptPlain salio
+inconcluyente por un fallo de diseno mio (ecuaciones normales sin tipificar columnas: la gramatica de
+V12 tiene una direccion que acapara la traza, 8,99e12 de 8,99e12, y el estimador se dispara). P16c lo
+corrige parametrizando el ajuste por **grados de libertad efectivos** con columnas tipificadas:
+- El **R2** (accesibilidad de varianza) es alto: mediana 0,522 en el bloque de tokens, maximo 0,959,
+  con 21 de 36 columnas por encima de 0,5. La varianza del bloque es en buena parte una funcion de
+  pocas direcciones de V12.
+- El **control** (informacion de clase) es 0,0485 en los tres bloques, por debajo del azar.
+
+Los dos指标 responden a preguntas distintas y divergen: **la redundancia lineal no explica el
+fracaso**. El bloque tiene R2 de 0,96 en su mejor columna y aun asi una reconstruccion con 5 grados de
+libertad clasifica por debajo del azar, porque la varianza que V12 reproduce no es la que discrimina.
+
+**P16b · donde es util.** El bloque sube de 0,4028 a 0,5194 de exactitud segun su actividad (tokens
+conocidos), y el techo con puerta perfecta llega a 0,677 global y 0,7221 en las filas con cinco o mas
+tokens. Pero el **neto de rescate es negativo en todas las franjas** (-33.515 a -1.202).
+
+**P16d · hay puerta realizable? No.** Regla sin oraculo: usar el bloque cuando su confianza supera
+`t_b` y la de V12 no supera `t_v`. La confianza del bloque **si** separa sus aciertos (AUC 0,7173), pero
+el maximo de las 90 combinaciones da **0,6005 con 0 filas desviadas**: la mejor puerta es no usar el
+bloque. Ambas mitades de folds eligen eso de forma independiente. El techo de +0,077 es inalcanzable
+porque las filas que el bloque acierta son en su mayoria filas que V12 ya acierta.
+
 **Consecuencia operativa para P3.** Un especialista de frontera **no puede apoyarse en los
 miembros actuales**: hay poco rescate exclusivo, no hay señal de confianza que active la puerta y
 aplicar cualquier miembro globalmente tiene neto muy negativo. P3 debe construirse sobre variables
