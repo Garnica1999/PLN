@@ -1,3 +1,9 @@
+> **Leia este documento primero.** La cuenta completa y actualizada del proyecto, que
+> incluye V12 y las cinco fases de busqueda posteriores (V13 a V17), esta en
+> **[`INFORME_COMPLETO.md`](INFORME_COMPLETO.md)**. Este `FINAL_REPORT.md` es el documento de
+> entrega del modelo V12 y se conserva como registro historico sin modificar: su alcance es el
+> modelo entregado, no las fases posteriores.
+
 # Informe final — Predicción de rango de edad a partir de tweets
 
 **Competencia**: `tweet-age-2026-puj` (Kaggle, host `NLP_Course_PUJ`) · Procesamiento de Lenguaje Natural · Maestría en Inteligencia Artificial, Pontificia Universidad Javeriana.

@@ -90,3 +90,12 @@ La salida es categórica con seis clases, así que se usa **eta cuadrado** (vari
 
 El criterio de poda será: **una variable por cluster**, y se queda la de mayor eta² **dentro del fold**, no la primera del cluster. Las variables que no están en ningún cluster se conservan todas. Con eso el número de variables pasa de 310 a 81 y la decisión se evalúa contra V12 con el gate D-042, incluida la segunda partición.
 
+> **Correccion de un campo (2026-09-26).** El campo `variables_tras_poda` del JSON de este
+> experimento vale 81 y **esta mal calculado**: la formula resta el numero de clusters una vez de mas,
+> porque un cluster de tamano k elimina k-1 variables, no k. El numero correcto es
+> 310 - (171 - 58) = **197**, que es el que se uso de verdad: el indice
+> `features/v15_conservadas_fold{0..4}.npy` tiene 197 columnas en los cinco folds, y V15b evaluo
+> exactamente ese conjunto. El script no se edita, porque ya se ejecuto y su salida es el registro del
+> experimento; lo que se hace es declarar el campo erroneo para que nadie lo cite. La conclusion de V15
+> no cambia: la poda se evaluo sobre las 197 variables reales y empeoro 0,0040.
+

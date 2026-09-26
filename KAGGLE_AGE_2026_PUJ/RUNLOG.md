@@ -830,3 +830,31 @@ Después pide añadir además el paso de la **arquitectura del meta-modelo**.
 - Se corrige tambien la plantilla de `scripts/v17_cierre.py`, que reintroducia la ruta `figuras/v17_*`
   en vez de `reports/figures/v17_*`, y la fila del compliance que declaraba el notebook como
   pendiente: ya no queda ninguno.
+
+### Correccion de un campo de V15 (2026-09-26)
+
+- Al verificar el informe completo contra los artefactos aparecio una discrepancia real: el campo
+  `variables_tras_poda` de `experiments/v15a_correlacion.json` vale **81** y esta **mal calculado**.
+  La formula es `310 - 171 - 58`, que resta el numero de clusters una vez de mas, cuando un cluster de
+  tamano k elimina k-1 variables y no k. El numero correcto es **197**.
+- **197 es el que se uso**: el indice `features/v15_conservadas_fold{0..4}.npy` tiene 197 columnas en
+  los cinco folds, y V15b evaluo exactamente ese conjunto, dando 0,5965 y delta -0,0040. La conclusion
+  de V15 no cambia.
+- No se edita `scripts/v15a_correlacion.py` porque ya se ejecuto y su salida es el registro. Se declara
+  el campo erroneo en `reports/v15_correlacion.md` y en `INFORME_COMPLETO.md` para que nadie lo cite.
+- La leccion sobre el proceso es que la verificacion contra artefactos funciono: el numero 81 nunca se
+  habia mirado porque nadie lo leia. Aparece por una lectura automatica de todos los campos.
+
+
+## 2026-09-26 · Informe completo del proyecto
+
+- **`INFORME_COMPLETO.md`** (519 lineas): la cuenta completa y legible de V12 y de las cinco fases de
+  busqueda. Catorce secciones: problema y datos, que se entrego, el protocolo de decision, V13, V14,
+  V15, V16, V17, tabla maestra, lecciones aprendidas, estado final e indice de artefactos.
+- **Todas las cifras se verificaron por script contra los artefactos**: 45 valores comprobados, y la
+  verificacion encontro **un error real de la fuente**, no del informe: el campo
+  `variables_tras_poda` del JSON de V15a vale 81 y esta mal calculado (resta los clusters una vez de
+  mas). Declarado en los tres sitios donde se podria citar. El 197 correcto es el que se uso.
+- `FINAL_REPORT.md` recibe una cabecera que apunta al informe completo y declara su propio alcance
+  (el modelo V12 entregado), sin modificar su contenido.
+- Auditoria de idioma: **0 errores sobre 372 ficheros**. Sin push.
