@@ -1,0 +1,54 @@
+{
+  "creado": "2026-09-26",
+  "experimento": "V10-01 (P0b, holdout2)",
+  "motivo": "El holdout v2 esta agotado con 5 de 5 evaluaciones, y la regla 5 de la fase v10 impide adoptar nada apoyandose solo en el OOF.",
+  "advertencia": "NO ES VIRGINAL. Sus filas salen del desarrollo actual, que ya participo en las decisiones de las fases v1 a v9. Su valor es detectar sobreajuste al gate de adopcion, no probar generalizacion sobre datos nunca vistos.",
+  "particion": {
+    "estrategia": "StratifiedGroupKFold",
+    "n_splits": 6,
+    "shuffle": true,
+    "random_state": 20260926,
+    "grupos": "near-duplicado UNION pseudo-autor, los mismos grupos fusionados de v2",
+    "estrategia_de_combinacion": "combinaciones de bits de las tres etiquetas"
+  },
+  "composicion": {
+    "filas_desarrollo_original": 1483,
+    "filas_holdout2": 247,
+    "filas_dev2": 1236,
+    "grupos_holdout2": 235,
+    "grupos_dev2": 1180,
+    "grupos_compartidos": 0
+  },
+  "prevalencias": {
+    "holdout2": {
+      "HS": 0.437247,
+      "TR": 0.299595,
+      "AG": 0.376518
+    },
+    "dev2": {
+      "HS": 0.436893,
+      "TR": 0.300162,
+      "AG": 0.383495
+    }
+  },
+  "referencias": {
+    "corrected_cv_desarrollo_original": 0.7772114525165721,
+    "corrected_cv2_dev2": 0.7634355768229403,
+    "desviacion": -0.013776,
+    "lb_v03": 0.78306,
+    "umbrales": {
+      "HS": 0.44,
+      "TR": 0.51,
+      "AG": 0.46
+    }
+  },
+  "regla_de_uso": {
+    "maximo_evaluaciones": 3,
+    "solo_para": "decisiones de adopcion pre-registradas",
+    "prohibido": "optimizar nada sobre holdout2, y usarlo mas de tres veces"
+  },
+  "artefactos": {
+    "ids": "data/processed/holdout2_ids.csv",
+    "sha256_de_los_ids": "f6c6ed958abf728b8210d15c26ec43fbd71659a0918d36089a9c6d6cef1639dc"
+  }
+}

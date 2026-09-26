@@ -1,0 +1,353 @@
+{
+  "experimento": "V10-07 (P2, shift de features)",
+  "fecha": "2026-09-26T08:00:19+00:00",
+  "protocolo": "El espacio de caracteristicas se ajusta dentro de cada pliegue de entrenamiento, la validacion cruzada es agrupada por los grupos fusionados del proyecto en las filas de entrenamiento y por identificador unico en las de prueba, y la particion es estratificada por la etiqueta de origen.",
+  "nombres": "27431",
+  "auc_global_fuera_de_muestra": 0.487717,
+  "auc_por_pliegue": [
+    0.462749,
+    0.525974,
+    0.495133,
+    0.490216,
+    0.464968
+  ],
+  "auc_minimo_por_pliegue": 0.462749,
+  "auc_maximo_por_pliegue": 0.525974,
+  "exactitud_global": 0.512305,
+  "exactitud_por_pliegue": [
+    0.492201,
+    0.530329,
+    0.514731,
+    0.514731,
+    0.509532
+  ],
+  "proporcion_de_prueba_real": 0.4,
+  "proporcion_de_prueba_predicha": 0.407279,
+  "umbral_para_cerrar": 0.55,
+  "umbral_para_shift_fuerte": 0.65,
+  "veredicto": "CERRADA",
+  "caracteristicas_mas_desplazadas": [
+    {
+      "lado": "mas_probables_de_ser_prueba",
+      "puesto": 1,
+      "caracteristica": "mereca estar",
+      "coeficiente": -0.14849,
+      "log_razon_de_odds": 1.904991,
+      "vez_que_mas_probable_prueba_que_entrenamiento": 6.7193
+    },
+    {
+      "lado": "mas_probables_de_ser_prueba",
+      "puesto": 2,
+      "caracteristica": "miln",
+      "coeficiente": -0.027437,
+      "log_razon_de_odds": 1.826179,
+      "vez_que_mas_probable_prueba_que_entrenamiento": 6.2101
+    },
+    {
+      "lado": "mas_probables_de_ser_prueba",
+      "puesto": 3,
+      "caracteristica": "lstima",
+      "coeficiente": 0.05708,
+      "log_razon_de_odds": 1.816283,
+      "vez_que_mas_probable_prueba_que_entrenamiento": 6.149
+    },
+    {
+      "lado": "mas_probables_de_ser_prueba",
+      "puesto": 4,
+      "caracteristica": "necesitas",
+      "coeficiente": -0.194822,
+      "log_razon_de_odds": 1.690866,
+      "vez_que_mas_probable_prueba_que_entrenamiento": 5.4242
+    },
+    {
+      "lado": "mas_probables_de_ser_prueba",
+      "puesto": 5,
+      "caracteristica": "morena",
+      "coeficiente": -0.315102,
+      "log_razon_de_odds": 1.637326,
+      "vez_que_mas_probable_prueba_que_entrenamiento": 5.1414
+    },
+    {
+      "lado": "mas_probables_de_ser_prueba",
+      "puesto": 6,
+      "caracteristica": "pablo",
+      "coeficiente": 0.395669,
+      "log_razon_de_odds": 1.6001,
+      "vez_que_mas_probable_prueba_que_entrenamiento": 4.9535
+    },
+    {
+      "lado": "mas_probables_de_ser_prueba",
+      "puesto": 7,
+      "caracteristica": "por ensear",
+      "coeficiente": 0.062157,
+      "log_razon_de_odds": 1.590247,
+      "vez_que_mas_probable_prueba_que_entrenamiento": 4.905
+    },
+    {
+      "lado": "mas_probables_de_ser_prueba",
+      "puesto": 8,
+      "caracteristica": "muro",
+      "coeficiente": -0.080188,
+      "log_razon_de_odds": 1.576339,
+      "vez_que_mas_probable_prueba_que_entrenamiento": 4.8372
+    },
+    {
+      "lado": "mas_probables_de_ser_prueba",
+      "puesto": 9,
+      "caracteristica": "los jubilados",
+      "coeficiente": -0.166772,
+      "log_razon_de_odds": 1.56451,
+      "vez_que_mas_probable_prueba_que_entrenamiento": 4.7803
+    },
+    {
+      "lado": "mas_probables_de_ser_prueba",
+      "puesto": 10,
+      "caracteristica": "nuestra",
+      "coeficiente": -0.239873,
+      "log_razon_de_odds": 1.558321,
+      "vez_que_mas_probable_prueba_que_entrenamiento": 4.7508
+    },
+    {
+      "lado": "mas_probables_de_ser_prueba",
+      "puesto": 11,
+      "caracteristica": "parece",
+      "coeficiente": 0.233773,
+      "log_razon_de_odds": 1.546469,
+      "vez_que_mas_probable_prueba_que_entrenamiento": 4.6949
+    },
+    {
+      "lado": "mas_probables_de_ser_prueba",
+      "puesto": 12,
+      "caracteristica": "mujer son",
+      "coeficiente": -0.268193,
+      "log_razon_de_odds": 1.539553,
+      "vez_que_mas_probable_prueba_que_entrenamiento": 4.6625
+    },
+    {
+      "lado": "mas_probables_de_ser_prueba",
+      "puesto": 13,
+      "caracteristica": "pedazo de",
+      "coeficiente": -0.383281,
+      "log_razon_de_odds": 1.539096,
+      "vez_que_mas_probable_prueba_que_entrenamiento": 4.6604
+    },
+    {
+      "lado": "mas_probables_de_ser_prueba",
+      "puesto": 14,
+      "caracteristica": "no https",
+      "coeficiente": 0.090045,
+      "log_razon_de_odds": 1.538082,
+      "vez_que_mas_probable_prueba_que_entrenamiento": 4.6557
+    },
+    {
+      "lado": "mas_probables_de_ser_prueba",
+      "puesto": 15,
+      "caracteristica": "paola5navarro",
+      "coeficiente": -0.129601,
+      "log_razon_de_odds": 1.533498,
+      "vez_que_mas_probable_prueba_que_entrenamiento": 4.6344
+    },
+    {
+      "lado": "mas_probables_de_ser_prueba",
+      "puesto": 16,
+      "caracteristica": "la comunidad",
+      "coeficiente": -0.163605,
+      "log_razon_de_odds": 1.499288,
+      "vez_que_mas_probable_prueba_que_entrenamiento": 4.4785
+    },
+    {
+      "lado": "mas_probables_de_ser_prueba",
+      "puesto": 17,
+      "caracteristica": "llor",
+      "coeficiente": -0.154903,
+      "log_razon_de_odds": 1.492974,
+      "vez_que_mas_probable_prueba_que_entrenamiento": 4.4503
+    },
+    {
+      "lado": "mas_probables_de_ser_prueba",
+      "puesto": 18,
+      "caracteristica": "las fotos",
+      "coeficiente": -0.236316,
+      "log_razon_de_odds": 1.485109,
+      "vez_que_mas_probable_prueba_que_entrenamiento": 4.4154
+    },
+    {
+      "lado": "mas_probables_de_ser_prueba",
+      "puesto": 19,
+      "caracteristica": "no pueden",
+      "coeficiente": 0.077809,
+      "log_razon_de_odds": 1.485109,
+      "vez_que_mas_probable_prueba_que_entrenamiento": 4.4154
+    },
+    {
+      "lado": "mas_probables_de_ser_prueba",
+      "puesto": 20,
+      "caracteristica": "mil",
+      "coeficiente": 0.37074,
+      "log_razon_de_odds": 1.485109,
+      "vez_que_mas_probable_prueba_que_entrenamiento": 4.4154
+    }
+  ],
+  "caracteristicas_mas_probables_de_entrenamiento": [
+    {
+      "lado": "mas_probables_de_ser_entrenamiento",
+      "puesto": 1,
+      "caracteristica": "el pais",
+      "coeficiente": -0.048172,
+      "log_razon_de_odds": -1.818465,
+      "vez_que_mas_probable_prueba_que_entrenamiento": 0.1623
+    },
+    {
+      "lado": "mas_probables_de_ser_entrenamiento",
+      "puesto": 2,
+      "caracteristica": "culo es",
+      "coeficiente": -0.089428,
+      "log_razon_de_odds": -1.78978,
+      "vez_que_mas_probable_prueba_que_entrenamiento": 0.167
+    },
+    {
+      "lado": "mas_probables_de_ser_entrenamiento",
+      "puesto": 3,
+      "caracteristica": "el da",
+      "coeficiente": 0.00196,
+      "log_razon_de_odds": -1.764576,
+      "vez_que_mas_probable_prueba_que_entrenamiento": 0.1713
+    },
+    {
+      "lado": "mas_probables_de_ser_entrenamiento",
+      "puesto": 4,
+      "caracteristica": "invasores",
+      "coeficiente": -0.171226,
+      "log_razon_de_odds": -1.762756,
+      "vez_que_mas_probable_prueba_que_entrenamiento": 0.1716
+    },
+    {
+      "lado": "mas_probables_de_ser_entrenamiento",
+      "puesto": 5,
+      "caracteristica": "eres puta",
+      "coeficiente": 0.537536,
+      "log_razon_de_odds": -1.753333,
+      "vez_que_mas_probable_prueba_que_entrenamiento": 0.1732
+    },
+    {
+      "lado": "mas_probables_de_ser_entrenamiento",
+      "puesto": 6,
+      "caracteristica": "haces",
+      "coeficiente": -0.381598,
+      "log_razon_de_odds": -1.735611,
+      "vez_que_mas_probable_prueba_que_entrenamiento": 0.1763
+    },
+    {
+      "lado": "mas_probables_de_ser_entrenamiento",
+      "puesto": 7,
+      "caracteristica": "deja",
+      "coeficiente": 0.590594,
+      "log_razon_de_odds": -1.704241,
+      "vez_que_mas_probable_prueba_que_entrenamiento": 0.1819
+    },
+    {
+      "lado": "mas_probables_de_ser_entrenamiento",
+      "puesto": 8,
+      "caracteristica": "enseando un",
+      "coeficiente": -0.23413,
+      "log_razon_de_odds": -1.627396,
+      "vez_que_mas_probable_prueba_que_entrenamiento": 0.1964
+    },
+    {
+      "lado": "mas_probables_de_ser_entrenamiento",
+      "puesto": 9,
+      "caracteristica": "de ellos",
+      "coeficiente": -0.24688,
+      "log_razon_de_odds": -1.577502,
+      "vez_que_mas_probable_prueba_que_entrenamiento": 0.2065
+    },
+    {
+      "lado": "mas_probables_de_ser_entrenamiento",
+      "puesto": 10,
+      "caracteristica": "datos",
+      "coeficiente": 0.03528,
+      "log_razon_de_odds": -1.5589,
+      "vez_que_mas_probable_prueba_que_entrenamiento": 0.2104
+    },
+    {
+      "lado": "mas_probables_de_ser_entrenamiento",
+      "puesto": 11,
+      "caracteristica": "en los",
+      "coeficiente": 0.147444,
+      "log_razon_de_odds": -1.52773,
+      "vez_que_mas_probable_prueba_que_entrenamiento": 0.217
+    },
+    {
+      "lado": "mas_probables_de_ser_entrenamiento",
+      "puesto": 12,
+      "caracteristica": "heridos",
+      "coeficiente": -0.007081,
+      "log_razon_de_odds": -1.523596,
+      "vez_que_mas_probable_prueba_que_entrenamiento": 0.2179
+    },
+    {
+      "lado": "mas_probables_de_ser_entrenamiento",
+      "puesto": 13,
+      "caracteristica": "at",
+      "coeficiente": -0.246832,
+      "log_razon_de_odds": -1.522302,
+      "vez_que_mas_probable_prueba_que_entrenamiento": 0.2182
+    },
+    {
+      "lado": "mas_probables_de_ser_entrenamiento",
+      "puesto": 14,
+      "caracteristica": "algo para",
+      "coeficiente": -0.195888,
+      "log_razon_de_odds": -1.518821,
+      "vez_que_mas_probable_prueba_que_entrenamiento": 0.219
+    },
+    {
+      "lado": "mas_probables_de_ser_entrenamiento",
+      "puesto": 15,
+      "caracteristica": "frijolero pinche",
+      "coeficiente": -0.070868,
+      "log_razon_de_odds": -1.50595,
+      "vez_que_mas_probable_prueba_que_entrenamiento": 0.2218
+    },
+    {
+      "lado": "mas_probables_de_ser_entrenamiento",
+      "puesto": 16,
+      "caracteristica": "algn",
+      "coeficiente": 0.217676,
+      "log_razon_de_odds": -1.496739,
+      "vez_que_mas_probable_prueba_que_entrenamiento": 0.2239
+    },
+    {
+      "lado": "mas_probables_de_ser_entrenamiento",
+      "puesto": 17,
+      "caracteristica": "esperando",
+      "coeficiente": 0.112816,
+      "log_razon_de_odds": -1.481662,
+      "vez_que_mas_probable_prueba_que_entrenamiento": 0.2273
+    },
+    {
+      "lado": "mas_probables_de_ser_entrenamiento",
+      "puesto": 18,
+      "caracteristica": "chile https",
+      "coeficiente": -0.170867,
+      "log_razon_de_odds": -1.469823,
+      "vez_que_mas_probable_prueba_que_entrenamiento": 0.23
+    },
+    {
+      "lado": "mas_probables_de_ser_entrenamiento",
+      "puesto": 19,
+      "caracteristica": "en rabe",
+      "coeficiente": -0.248338,
+      "log_razon_de_odds": -1.468542,
+      "vez_que_mas_probable_prueba_que_entrenamiento": 0.2303
+    },
+    {
+      "lado": "mas_probables_de_ser_entrenamiento",
+      "puesto": 20,
+      "caracteristica": "debe",
+      "coeficiente": -0.066656,
+      "log_razon_de_odds": -1.460031,
+      "vez_que_mas_probable_prueba_que_entrenamiento": 0.2322
+    }
+  ]
+}

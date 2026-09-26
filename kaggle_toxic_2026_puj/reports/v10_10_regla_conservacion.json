@@ -1,0 +1,105 @@
+{
+  "experimento": "V10-10 (regla de conservacion de caracteristicas correlacionadas)",
+  "fecha": "2026-09-26T08:17:31+00:00",
+  "motivo": "V10-09 elimino una de cada par correlacionado y empeoro -0.030626 con solo el 1,38 por ciento de las caracteristicas eliminadas. Ese numero es demasiado grande para atribuirlo al nivel de correlacion, y la sospecha es sobre la regla de conservacion.",
+  "protocolo": "La estructura de correlacion y los AUC se calculan una sola vez por pliegue, que es la parte cara, y despues se aplican las cuatro reglas sobre esos mismos numeros. Todo fold-local.",
+  "umbral_de_correlacion": 0.9,
+  "reglas": [
+    "fuerte_en_solitario",
+    "debil_en_solitario",
+    "menos_redundante",
+    "aleatoria"
+  ],
+  "agregados": {
+    "sin_eliminar": {
+      "metrica_media": 0.77591,
+      "dispersion": 0.003365,
+      "delta_medio": 0.0,
+      "particiones_que_mejoran": 0,
+      "total_particiones": 5,
+      "caracteristicas_eliminadas_en_el_primer_pliegue": 0
+    },
+    "fuerte_en_solitario": {
+      "metrica_media": 0.744657,
+      "dispersion": 0.004518,
+      "delta_medio": -0.031252,
+      "particiones_que_mejoran": 0,
+      "total_particiones": 5,
+      "caracteristicas_eliminadas_en_el_primer_pliegue": 317
+    },
+    "debil_en_solitario": {
+      "metrica_media": 0.744031,
+      "dispersion": 0.003188,
+      "delta_medio": -0.031879,
+      "particiones_que_mejoran": 0,
+      "total_particiones": 5,
+      "caracteristicas_eliminadas_en_el_primer_pliegue": 265
+    },
+    "menos_redundante": {
+      "metrica_media": 0.742025,
+      "dispersion": 0.00422,
+      "delta_medio": -0.033885,
+      "particiones_que_mejoran": 0,
+      "total_particiones": 5,
+      "caracteristicas_eliminadas_en_el_primer_pliegue": 275
+    },
+    "aleatoria": {
+      "metrica_media": 0.747023,
+      "dispersion": 0.001201,
+      "delta_medio": -0.028887,
+      "particiones_que_mejoran": 0,
+      "total_particiones": 5,
+      "caracteristicas_eliminadas_en_el_primer_pliegue": 273
+    }
+  },
+  "gate_a_el_control_decide_la_lectura": {
+    "delta_de_la_regla_fuerte": -0.031252,
+    "delta_de_la_regla_aleatoria": -0.028887,
+    "brecha_entre_ellas": 0.002365,
+    "la_regla_importa": false,
+    "criterio": "Si la regla aleatoria se parece a la regla fuerte, el efecto es de cuantas caracteristicas se quitan y no de cuales, y la via se cierra. Si la brecha supera 0.005, la regla importa de verdad y se evalua el gate B."
+  },
+  "gate_b_de_mejora": {
+    "mejor_regla": "aleatoria",
+    "delta_medio_al_menos_0.002": false,
+    "al_menos_4_de_5_particiones": false,
+    "superado": false
+  },
+  "detalle_por_semilla": {
+    "sin_eliminar": {
+      "42": 0.777211,
+      "7": 0.772647,
+      "123": 0.772021,
+      "2024": 0.778237,
+      "5150": 0.779432
+    },
+    "fuerte_en_solitario": {
+      "42": 0.743831,
+      "7": 0.745543,
+      "123": 0.749032,
+      "2024": 0.7475,
+      "5150": 0.737381
+    },
+    "debil_en_solitario": {
+      "42": 0.744288,
+      "7": 0.744026,
+      "123": 0.739521,
+      "2024": 0.748525,
+      "5150": 0.743794
+    },
+    "menos_redundante": {
+      "42": 0.741089,
+      "7": 0.737565,
+      "123": 0.74894,
+      "2024": 0.740406,
+      "5150": 0.742126
+    },
+    "aleatoria": {
+      "42": 0.747664,
+      "7": 0.746144,
+      "123": 0.748543,
+      "2024": 0.747235,
+      "5150": 0.745529
+    }
+  }
+}
