@@ -1,0 +1,202 @@
+{
+  "fase": "V13 · P17a pronombres de persona",
+  "fecha": "2026-09-25",
+  "categorias": {
+    "primera_singular": [
+      "yo",
+      "mi",
+      "mis",
+      "mio",
+      "mia",
+      "mios",
+      "mias",
+      "conmigo",
+      "me",
+      "nos"
+    ],
+    "primera_plural": [
+      "nosotros",
+      "nuestra",
+      "nuestros",
+      "nuestras"
+    ],
+    "segunda": [
+      "tu",
+      "tus",
+      "tuyo",
+      "tuya",
+      "tuyos",
+      "tuyas",
+      "contigo",
+      "usted",
+      "ustedes",
+      "te",
+      "ti",
+      "vos",
+      "otros"
+    ],
+    "tercera_singular": [
+      "su",
+      "sus",
+      "suyo",
+      "suya",
+      "suyos",
+      "suyas",
+      "consigo",
+      "ella",
+      "el"
+    ],
+    "tercera_plural": [
+      "ellos",
+      "ellas"
+    ]
+  },
+  "ambiguas": [
+    "el",
+    "los",
+    "las",
+    "una",
+    "un",
+    "este",
+    "esta",
+    "esto",
+    "ese",
+    "esa",
+    "aquel"
+  ],
+  "impersonal": [
+    "se",
+    "lo",
+    "le",
+    "les"
+  ],
+  "n_caracteristicas": 26,
+  "nombres": [
+    "primera_singular_conteo",
+    "primera_singular_ratio",
+    "primera_singular_presencia",
+    "primera_plural_conteo",
+    "primera_plural_ratio",
+    "primera_plural_presencia",
+    "segunda_conteo",
+    "segunda_ratio",
+    "segunda_presencia",
+    "tercera_singular_conteo",
+    "tercera_singular_ratio",
+    "tercera_singular_presencia",
+    "tercera_plural_conteo",
+    "tercera_plural_ratio",
+    "tercera_plural_presencia",
+    "impersonal_conteo",
+    "impersonal_ratio",
+    "impersonal_presencia",
+    "ambiguas_ratio",
+    "distancia_social",
+    "distancia_social_ratio",
+    "proporcion_tercera",
+    "proporcion_primera",
+    "indice_segunda_primera",
+    "n_pronombres",
+    "n_pronombres_por_token"
+  ],
+  "cobertura": [
+    {
+      "categoria": "primera_singular",
+      "formas": "yo mi mis mio mia mios mias conmigo me nos",
+      "documentos_con_la_categoria": 26399,
+      "apariciones_totales": 33594,
+      "formas_sobre_el_minimo": 7,
+      "formas_totales": 10,
+      "detalle": "yo:4,287 mi:8,153 mis:1,546 mio:327 mia:176 mios:42 mias:17 conmigo:310 me:12,625 nos:2,993"
+    },
+    {
+      "categoria": "primera_plural",
+      "formas": "nosotros nuestra nuestros nuestras",
+      "documentos_con_la_categoria": 2320,
+      "apariciones_totales": 2452,
+      "formas_sobre_el_minimo": 4,
+      "formas_totales": 4,
+      "detalle": "nosotros:504 nuestra:1,000 nuestros:631 nuestras:268"
+    },
+    {
+      "categoria": "segunda",
+      "formas": "tu tus tuyo tuya tuyos tuyas contigo usted ustedes te ti vos otros",
+      "documentos_con_la_categoria": 15406,
+      "apariciones_totales": 19615,
+      "formas_sobre_el_minimo": 9,
+      "formas_totales": 13,
+      "detalle": "tu:4,817 tus:938 tuyo:106 tuya:69 tuyos:33 tuyas:11 contigo:463 usted:642 ustedes:574 te:7,797 ti:1,123 vos:370 otros:464"
+    },
+    {
+      "categoria": "tercera_singular",
+      "formas": "su sus suyo suya suyos suyas consigo ella el",
+      "documentos_con_la_categoria": 40158,
+      "apariciones_totales": 50419,
+      "formas_sobre_el_minimo": 4,
+      "formas_totales": 9,
+      "detalle": "su:5,714 sus:2,247 suyo:43 suya:33 suyos:15 suyas:13 consigo:24 ella:608 el:34,240"
+    },
+    {
+      "categoria": "tercera_plural",
+      "formas": "ellos ellas",
+      "documentos_con_la_categoria": 743,
+      "apariciones_totales": 762,
+      "formas_sobre_el_minimo": 1,
+      "formas_totales": 2,
+      "detalle": "ellos:639 ellas:105"
+    },
+    {
+      "categoria": "impersonal",
+      "formas": "se lo le les",
+      "documentos_con_la_categoria": 29344,
+      "apariciones_totales": 0,
+      "formas_sobre_el_minimo": 4,
+      "formas_totales": 4,
+      "detalle": "se:15,400 lo:11,464 le:4,526 les:1,742"
+    },
+    {
+      "categoria": "ambigua",
+      "formas": "el los las una un este esta esto ese esa aquel",
+      "documentos_con_la_categoria": 74269,
+      "apariciones_totales": 0,
+      "formas_sobre_el_minimo": 10,
+      "formas_totales": 11,
+      "detalle": "el:34,240 los:17,245 las:10,540 una:9,100 un:14,305 este:4,288 esta:6,814 esto:1,603 ese:1,538 esa:1,507 aquel:85"
+    }
+  ],
+  "suelo_azar": 0.1667,
+  "redundantes_contra_v12": 0,
+  "correlacion_maxima_v12": 0.4757,
+  "control": [
+    {
+      "modelo": "logreg",
+      "macro_f1": 0.1918,
+      "std": 0.0013,
+      "per_fold": [
+        0.1925,
+        0.1928,
+        0.1895,
+        0.1911,
+        0.193
+      ],
+      "suelo_azar": 0.1667,
+      "supera_el_azar": true
+    },
+    {
+      "modelo": "linearsvc",
+      "macro_f1": 0.1881,
+      "std": 0.0021,
+      "per_fold": [
+        0.1895,
+        0.1894,
+        0.1849,
+        0.1864,
+        0.1903
+      ],
+      "suelo_azar": 0.1667,
+      "supera_el_azar": true
+    }
+  ],
+  "supera_el_azar": true,
+  "segundos": 161.2
+}
