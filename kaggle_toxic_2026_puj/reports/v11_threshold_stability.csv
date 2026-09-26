@@ -1,0 +1,2 @@
+Artefacto,Linea_del_plan,Estado,Motivo_de_vacio,Donde_esta_el_contenido_real
+v11_threshold_stability.csv,P8,VACIO CON MOTIVO DOCUMENTADO,"La parametrizacion estable de umbrales ya estaba medida y cerrada en v10 con V10-06, que no supero su gate: no hay parametrizacion a la vez igual de buena y mas estable. Sin experimento propio, no hay cifras",reports/v10_06_umbrales_estables.md y reports/v10_06_umbrales_estables.json

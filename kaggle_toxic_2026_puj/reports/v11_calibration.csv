@@ -1,0 +1,2 @@
+Artefacto,Linea_del_plan,Estado,Motivo_de_vacio,Donde_esta_el_contenido_real
+v11_calibration.csv,P4,VACIO CON MOTIVO DOCUMENTADO,"La linea de calibracion ya estaba medida y cerrada en v10 con V10-04, que dio NO ACCIONABLE porque la calibracion mejora el ECE de 0.0583 a 0.0174 y no la F1. En v11 no se ejecuto ningun experimento de calibracion, luego no hay cifras nuevas",reports/v10_04_calibracion_fuerte.md y reports/v10_04_calibracion_fuerte.json

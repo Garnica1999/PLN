@@ -1,6 +1,6 @@
 {
   "experimento": "V11-01 (P1, reproduccion exacta de V9-02)",
-  "fecha": "2026-09-26T21:32:58+00:00",
+  "fecha": "2026-09-26T22:09:00+00:00",
   "referencia_v03": 0.7772114525165721,
   "metodo": "Se importa el modulo de V9-02 y se llaman sus funciones, sin reimplementar el EM. Si se reimplementara, la reproduccion no probaria nada, porque dos implementaciones parecidas pueden diferir justo donde importa.",
   "uso_de_la_prueba": "Se predice sobre la prueba y se estima la prevalencia a partir de probabilidades NO etiquetadas. No se usa ninguna etiqueta de la prueba, no se entrena con su texto mas alla de predecir, y no se ajusta ningun umbral con el. La auditoria formal de legalidad es V11-02 y no se da por resuelta aqui.",

@@ -3061,3 +3061,43 @@ las restricciones actuales, y se ha podido demostrar con un factor conocido por 
 que **no** se ha podido demostrar, y queda escrito para que no se lea mas de lo que vale, es si el
 mismo mecanismo mejoraria en esta prueba concreta. El objetivo de superar 0.80 sigue a la distancia
 que midio la v10.
+
+## D-084 — Un entregable vacio con el motivo escrito es mas honesto que uno lleno de datos ajenos
+
+Al cerrar la fase con V11-08, **siete de los once entregables** pedidos tenian contenido real y
+cuatro no se produjeron. **V11-09 los completa documentando el motivo de cada vacio**, y la
+decision que importa es **lo que no se hizo**.
+
+**No se copiaron cifras de v10 a tablas de v11.** Habria creado trazabilidad falsa: el lector
+abriria un fichero `v11_calibration.csv` con resultados de V10-04 etiquetados como de la v11, sin
+forma de distinguirlo. Un entregable ausente se confunde con uno olvidado, pero un entregable
+**lleno de datos que no son suyos es peor que uno ausente**, porque no se detecta por la forma del
+fichero sino por leerlo con cuidado.
+
+Los tres CSV vacios, y la razon de cada uno:
+
+| Entregable | Linea | Por que no hay cifras |
+| --- | --- | --- |
+| `v11_calibration.csv` | P4 | La calibracion **ya estaba medida y cerrada en v10** con V10-04, NO ACCIONABLE: mejora el ECE de 0.0583 a 0.0174 y no la F1. En v11 no hubo experimento propio. |
+| `v11_threshold_stability.csv` | P8 | La parametrizacion estable **ya estaba cerrada en v10** con V10-06, que no supero su gate. Sin experimento propio. |
+| `v11_error_intersection.csv` | transversal | Es una medida **entre dos o mas candidatos**, y solo hay uno vivo, V03. La interseccion de un conjunto consigo mismo es el propio conjunto. |
+
+**`v11_gap_audit.md` es un PUNTERO, no una copia.** La auditoria de brechas **si se ejecuto**: es
+**V11-00**, con 25 de 25 superadas. Su informe canonico es `reports/v11_00_reconciliacion.md` y ahi
+estan las cinco secciones de detalle. Copiar el contenido crearia **dos fuentes de verdad para la
+misma observacion**, y dos fuentes de verdad divergen: cuando divergen, ya no se sabe cual es la
+verdadera.
+
+**Dos correcciones posteriores a la ejecucion, documentadas para que no se pasen por alto:**
+
+1. **V11-08 dejo su propia fila de registro sin escribir**, igual que le paso a V11-05. Lo
+   detecta el propio script de cierre, que avisa cuando un identificador de su tabla no esta en el
+   registro. El aviso funciona.
+2. **Un `F401` en `v11_01_reproduccion_v9_02.py` que yo mismo introduje**: al documentar como
+   comentario una variable muerta, deje su `import` huerfano. El import retirado **nunca fue
+   invocado**, luego es **inerte por construccion**; y la reproduccion **se re-ejecuto despues del
+   cambio** devolviendo **nivel R3 exacto**, con verificacion exacta True y denominador resuelto
+   True. **No se modifico ninguna cifra de ningun informe.**
+
+Los **14 avisos de ruff** que restan en los guiones de la v11 son todos `ISC004`, concatenacion
+implicita dentro de colecciones: es estetico y no afecta a la ejecucion.

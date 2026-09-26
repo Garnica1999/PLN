@@ -1374,3 +1374,20 @@ con una estimacion. Las tres lineas que no dependen del shift, P4, P6 y P8, ya e
 cerraron negativas en v10. **La v11 no deja ninguna linea abierta con expectativa razonable.**
 
 **Sin push, sin merge adicional, sin reset, sin rebase, sin modificar otras ramas.**
+
+### V11-09: cierre de entregables (2026-09-26)
+
+**Once entregables de once presentes.** Cuatro se completaron documentando su vacio, y lo
+relevante es **lo que no se hizo**: no se copiaron cifras de v10 a tablas de v11, porque habria
+sido trazabilidad falsa. Ver D-084 para el detalle entregable por entregable.
+
+`v11_gap_audit.md` es un **puntero** a `v11_00_reconciliacion.md`, no una copia: la auditoria de
+brechas si se ejecuto, fue V11-00 con 25 de 25 superadas, y dos copias de la misma observacion
+divergen.
+
+Correccion posterior a la ejecucion, documentada: retirado un `import` huerfano de
+`v11_01_reproduccion_v9_02.py` que yo mismo introduje al documentar una variable muerta como
+comentario. Inerte por construccion, nunca invocado, y la reproduccion re-ejecutada despues del
+cambio devuelve **R3 exacto**. Ninguna cifra de ningun informe se modifico.
+
+**Sin push, sin merge adicional, sin reset, sin rebase, sin modificar otras ramas.**

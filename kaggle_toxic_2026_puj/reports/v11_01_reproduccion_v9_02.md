@@ -63,4 +63,4 @@ verificada, y la ambiguedad del denominador queda cerrada a favor del desarrollo
 fase puede continuar con el audit de legalidad, V11-02, y despues con la simulacion de
 shift, V11-04.
 
-Fecha: 2026-09-26T21:32:58+00:00. Duracion: 1.2 s.
+Fecha: 2026-09-26T22:09:00+00:00. Duracion: 1.6 s.

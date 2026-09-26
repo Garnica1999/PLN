@@ -66,7 +66,7 @@ sys.path.insert(0, str(PROJECT_ROOT))
 
 from src import data as data_module
 from src.evaluation import ETIQUETAS
-from src.splits import grupos_fusionados, holdout_v2, pliegues_corregidos
+from src.splits import grupos_fusionados, holdout_v2
 
 _especificacion_v9 = util.spec_from_file_location(
     "v9_02", PROJECT_ROOT / "experiments" / "v9_02_prior_shift_em.py"
