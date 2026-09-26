@@ -50,10 +50,10 @@ def main() -> int:
         sorted(variantes, key=lambda fila: -float(fila.get("delta_vs_v12") or 0))[:12])
 
     texto = REPORTE.read_text(encoding="utf-8")
-    renglon_envios = ("- **Calibración validación↔leaderboard**: 11 envíos con brecha media "
+    renglon_envios = ("- **Calibración validación<->leaderboard**: 11 envíos con brecha media "
                       "**+0.0177 ± 0.0020**, explicada por la memorización de near-duplicados del test.")
     renglon_nuevo = (
-        "- **Calibración validación↔leaderboard**: **15 envíos registrados (12 puntuados)** con brecha "
+        "- **Calibración validación<->leaderboard**: **15 envíos registrados (12 puntuados)** con brecha "
         "media **+0.0177 ± 0.0023**, explicada por la memorización de near-duplicados del test (el "
         "límite de ~10 envíos de D-004 era un supuesto erróneo).\n"
         "- **Fase de búsqueda de señal residual (2026-09-25)**: 27 variantes controladas evaluadas; "

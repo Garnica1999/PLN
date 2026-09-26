@@ -2,7 +2,7 @@
 
 Motivación (Fase 17 y E-028a)
     Es la frontera más difícil del problema: un SVM entrenado **exclusivamente** con las dos clases
-    solo acierta **0,6856**, y la confusión 18-24↔25-34 es la mayor de la matriz (15,3% y 12,5%).
+    solo acierta **0,6856**, y la confusión 18-24<->25-34 es la mayor de la matriz (15,3% y 12,5%).
     Las clases implicadas tienen los F1 más bajos (`25-34` 0,449; `18-24` 0,476).
 
 Parte A — Diagnóstico
@@ -11,7 +11,7 @@ Parte A — Diagnóstico
     rareza léxica, tipo de tweet).
 
 Parte B — Especialista con compuerta (brief §73)
-    Arquitectura "modelo global → especialista local": cuando el top-2 del ensamble cae en un par
+    Arquitectura "modelo global -> especialista local": cuando el top-2 del ensamble cae en un par
     adyacente, un clasificador especializado —entrenado solo con las filas de ese par— decide entre
     los dos. La compuerta usa **solo la predicción** del modelo global (nunca la etiqueta).
 

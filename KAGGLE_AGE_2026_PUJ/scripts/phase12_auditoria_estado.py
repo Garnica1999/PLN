@@ -304,7 +304,7 @@ def main() -> int:
         f"- Diferencia máxima absoluta: {payload['matriz_train']['max_diferencia_absoluta']}"
         f" · exacta: {payload['matriz_train']['reconstruccion_exacta']}",
         "", "## 3. Firmas de bloque", "",
-        "| Bloque | Cols | exp-suma = 1 | Varianza cero | z máx train↔test |",
+        "| Bloque | Cols | exp-suma = 1 | Varianza cero | z máx train<->test |",
         "|---|---|---|---|---|",
     ]
     comparacion = {fila["bloque"]: fila for fila in payload["bloques_test"]["comparacion_train_test"]}

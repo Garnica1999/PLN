@@ -69,7 +69,7 @@ Fenómenos identificados en el EDA que **no** tienen representación estructurad
 
 ## 5. Fenómenos solo representados vía TF-IDF (no como features estructuradas)
 
-- **Identidad de menciones**: el canal TF-IDF las usa, pero sin agregar la probabilidad por clase → no se puede expresar '*esta cuenta mencionada es típica de 13-17*'.
+- **Identidad de menciones**: el canal TF-IDF las usa, pero sin agregar la probabilidad por clase -> no se puede expresar '*esta cuenta mencionada es típica de 13-17*'.
 - **Hashtags**: igual, solo bolsa de palabras.
 - **Cuenta fuente de retuits** (`RT @cuenta:`): solo como token de mención, sin tratar el evento estructurado.
 - **Dominios de URL**: los enlaces del corpus son acortadores `t.co` (verificado en el EDA), por lo que el dominio no aporta; la señal está en la *presencia y posición*.

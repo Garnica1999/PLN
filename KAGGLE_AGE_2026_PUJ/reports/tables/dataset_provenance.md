@@ -18,7 +18,7 @@
 | Superficie | 39,1 % contienen `t.co/` · 41,6 % contienen `http` · 63,9 % tienen `@` · 20,2 % tienen `#` | señal superficial muy rica (forma > contenido) |
 | Idioma | español latinoamericano + retuits en inglés; aparecen referencias a Argentina (`@LaPlataMLP`, `#BuenosAires`), Colombia y Venezuela | no es un corpus de un solo país |
 | Ventana temporal (inferida) | `colombia` 3,53 % · `venezuela` 1,55 % · `maduro` 1,14 % · `santos` 1,02 % · `uribe` 0,78 % · `farc` 0,64 % · `petro` 0,37 % · `chavez` 0,36 % · `odebrecht` 0,17 % · `zuluaga` 0,13 % · `duque` 0,09 %; **`pandemia` 2 casos, `covid` 1, `coronavirus` 0, `chatgpt` 0** | perfil léxico consistente con **≈2016-2017** (plebiscito FARC oct-2016, escándalo Odebrecht 2016-2017) y ausencia de eventos posteriores a 2019 |
-| Clases | 6 rangos casi uniformes: 13-17 17,0 % · 18-24 16,9 % · 25-34 16,7 % · 35-49 16,7 % · 50-64 16,6 % · 65-xx 16,0 % | balance casi perfecto: improbable en un muestreo orgánico de Twitter → **remuestreo/downsampling por clase o etiquetado de un panel curado** |
+| Clases | 6 rangos casi uniformes: 13-17 17,0 % · 18-24 16,9 % · 25-34 16,7 % · 35-49 16,7 % · 50-64 16,6 % · 65-xx 16,0 % | balance casi perfecto: improbable en un muestreo orgánico de Twitter -> **remuestreo/downsampling por clase o etiquetado de un panel curado** |
 | Metadatos | ninguno (sin `user_id`, fecha, bio, seguidores, geolocalización) | impide cualquier agrupación por autor (ver D-003) |
 | Duplicados | 1,26 % de filas de test aparecen literalmente en train; 4,24 % en clústeres de firma de 60 caracteres; 0,80 % de duplicados exactos intra-train | pool único de tweets **partido en train/test sin agrupar por autor** |
 
@@ -87,7 +87,7 @@ Lo que sí sostiene la evidencia:
 
 ## 4. Implicaciones para el proyecto
 
-**(i) Corpus no público ⇒ se confirma la decisión de no usar datos externos ni filtrar un test público.**
+**(i) Corpus no público => se confirma la decisión de no usar datos externos ni filtrar un test público.**
 No existe dataset público identificado del que provenga este corpus, y tampoco hay un conjunto de prueba público que "filtrar": el test de la competencia (112.892 filas) solo es accesible vía Kaggle. Por tanto, la decisión de D-001 (sin datos externos etiquetados) no sacrifica ninguna ventaja recuperable, y no hay atajo de fuga de información disponible. Además, cualquier espejo público de Twitter con **texto completo** (y no IDs) sería una redistribución contra las políticas de la plataforma: que la competencia provea texto completo refuerza que el organizador preparó el material por su cuenta.
 
 **(ii) Baselines publicados comparables para calibrar expectativas de macro-F1.**

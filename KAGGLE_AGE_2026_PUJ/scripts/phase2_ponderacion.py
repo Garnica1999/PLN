@@ -5,7 +5,7 @@ Observación (Fase 1)
     - Los modelos que más rescatan son los **débiles pero diversos**: softmax ordinal (36%),
       centroides (31%), MLP densas+SVD (30,5%), LogReg palabra (27,9%), ComplementNB (25,2%).
     - El error depende fuertemente del **tipo de tweet** (`solo_url` 61,1%; `mencion_alta` 19,2%;
-      `hashtag_alto` 20,4%) y de la **longitud** (54,5% en ≤10 caracteres → 35,1% en 130-141).
+      `hashtag_alto` 20,4%) y de la **longitud** (54,5% en ≤10 caracteres -> 35,1% en 130-141).
     Estas tres piezas apuntan a la misma hipótesis: el meta-modelo aplica **pesos globales** y no
     aprovecha que la fiabilidad de cada miembro depende del tipo de tweet.
 

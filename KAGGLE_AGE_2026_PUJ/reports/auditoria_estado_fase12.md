@@ -15,7 +15,7 @@ Generado por `scripts/phase12_auditoria_estado.py`. Sin escritura sobre artefact
 
 ## 3. Firmas de bloque
 
-| Bloque | Cols | exp-suma = 1 | Varianza cero | z máx train↔test |
+| Bloque | Cols | exp-suma = 1 | Varianza cero | z máx train<->test |
 |---|---|---|---|---|
 | oof_E013_margenes | 6 | — | 0 | 7.17 |
 | oof_E016_margenes | 6 | — | 0 | 6.92 |

@@ -22,7 +22,7 @@ Registro de decisiones de arquitectura y modelado (ADR). Formato:
     preservar la integridad académica y evitar ventaja no atribuible al modelado.
 - **Alternatives**: (a) consultar al profesor y esperar respuesta; (b) interpretación ultra
   conservadora sin TF-IDF. Descartadas por decisión explícita de Carlos (opción "amplia").
-- **Consequences**: la Fase de DL con embeddings queda cancelada (`07_deep_learning.ipynb` →
+- **Consequences**: la Fase de DL con embeddings queda cancelada (`07_deep_learning.ipynb` ->
   `07_modelos_densos.ipynb`). La tabla de ablación incluirá variantes **sin POS tagger** y
   **sin lexicones** de modo que, si el profesor objeta alguna zona gris, exista un modelo
   compliant ya medido y desplegable sin rehacer el proyecto.
@@ -37,7 +37,7 @@ Registro de decisiones de arquitectura y modelado (ADR). Formato:
 - **Decision**: **macro-F1** como métrica primaria de desarrollo (reportando también
   weighted-F1 y micro). El envío v01 (calibración) se usa para identificar empíricamente la
   métrica oficial comparando el LB público contra macro/weighted calculados localmente
-  (precisión de 5 decimales). Clases casi uniformes ⇒ la diferencia esperada es ~0,1-0,2 pp.
+  (precisión de 5 decimales). Clases casi uniformes => la diferencia esperada es ~0,1-0,2 pp.
 - **Alternatives**: asumir weighted; esperar respuesta del organizador.
 - **Consequences**: toda comparación de modelos se hace con macro-F1 y test pareado;
   `experiments.csv` guarda macro y weighted para recalcular el ranking si la métrica oficial
@@ -65,7 +65,7 @@ Registro de decisiones de arquitectura y modelado (ADR). Formato:
 - **Status**: Aceptada (2026-09-22)
 - **Context**: ~10 submissions puntuadas; la nota depende del LB privado (70%).
 - **Decision**: v01 = calibración (mejor baseline de la Etapa B: verifica métrica oficial y
-  brecha CV↔LB). v02..v0N = candidatos justificados por CV. Se reservan ≥3 envíos para el
+  brecha CV<->LB). v02..v0N = candidatos justificados por CV. Se reservan ≥3 envíos para el
   final. **El LB no se usa como conjunto de validación** ni para selección de modelo.
 - **Consequences**: cada envío se registra en `RUNLOG.md` con CV previa, fecha y score.
 
@@ -84,7 +84,7 @@ Registro de decisiones de arquitectura y modelado (ADR). Formato:
 
 ---
 
-## D-006 — Prohibición de embeddings ⇒ redefinición de la fase de deep learning
+## D-006 — Prohibición de embeddings => redefinición de la fase de deep learning
 - **Status**: Aceptada (2026-09-22)
 - **Context**: D-001 prohíbe todo modelo de vectorización, incluidos los entrenados desde
   cero por nosotros.
@@ -103,7 +103,7 @@ Registro de decisiones de arquitectura y modelado (ADR). Formato:
   de escritorio ≈7% de uso y ≈13% de VRAM retenida; varios procesos gráficos mantienen
   handles en `/dev/kfd`, por lo que la detección por handles da falsos positivos.
 - **Decision**: antes de **cualquier** paso que use GPU se ejecuta `src/gpu.require_gpu()`:
-  1. Señal primaria: `rocm-smi --showpids` → si hay un PID de cómputo ajeno, la GPU está
+  1. Señal primaria: `rocm-smi --showpids` -> si hay un PID de cómputo ajeno, la GPU está
      **ocupada**.
   2. Señal secundaria: `rocm-smi --showuse --showmemuse` con umbrales calibrados sobre la
      línea base (ocupada si uso ≥ 25% o VRAM ≥ 40% en 3 lecturas separadas 5 s).
@@ -176,7 +176,7 @@ Registro de decisiones de arquitectura y modelado (ADR). Formato:
   - **Quitar menciones cuesta −0,1251** (0/5 folds) y sustituirlas por `<user>` cuesta −0,1237:
     la identidad de las cuentas mencionadas es una de las señales más fuertes del corpus.
   - Un **canal TF-IDF dedicado a los tokens de mención** añade +0,0144 sobre char solo (5/5
-    folds) → **0,5557 ± 0,0052**, el mejor resultado de la Etapa B.
+    folds) -> **0,5557 ± 0,0052**, el mejor resultado de la Etapa B.
   - Quitar URLs (−0,0067) o puntuación (−0,0080) también degrada: la forma del tweet es señal.
   - Tras normalización completa, 7.240 tweets quedan vacíos (vs 104) y 13.137 con ≤1 token.
 - **Decision**: representación principal =
@@ -196,7 +196,7 @@ Registro de decisiones de arquitectura y modelado (ADR). Formato:
   Narasimhan et al., ver D-008) recomienda ajustar umbrales/prior por clase. Se implementó
   ascenso coordenado sobre pesos por clase aplicados a las probabilidades OOF, con protocolo
   **leave-one-fold-out** para medir la ganancia sin optimismo.
-- **Evidencia**: LogReg 0,5603 → **0,5609** (+0,0006, 4/5 folds); SGD 0,5579 → 0,5578 (−0,0002);
+- **Evidencia**: LogReg 0,5603 -> **0,5609** (+0,0006, 4/5 folds); SGD 0,5579 -> 0,5578 (−0,0002);
   cota optimista (ajustar y evaluar en el mismo OOF) apenas 0,5617.
 - **Decision**: **no** se adopta ajuste de decisión; se mantiene el argmax.
 - **Interpretación**: la técnica explota asimetrías de prior/errores entre clases, y aquí las
@@ -231,7 +231,7 @@ Registro de decisiones de arquitectura y modelado (ADR). Formato:
   probaron cuatro hipótesis derivadas de esa evidencia.
 - **Evidencia (todo con LOFO sobre las mismas particiones agrupadas)**:
   - Vocabulario de caracteres a 700k features (E-016): 0,5658 individual, mejor que el tope de
-    300k (0,5628) → el límite estaba truncando vocabulario útil.
+    300k (0,5628) -> el límite estaba truncando vocabulario útil.
   - Canal de hashtags (E-014): 0,5644 individual; +0,0019 en el ensamble.
   - Regresión ordinal (E-015): 0,3973 como clasificador directo (débil), pero aporta estructura
     ordinal al meta-modelo (+0,0003 con costo casi nulo).
@@ -270,7 +270,7 @@ Registro de decisiones de arquitectura y modelado (ADR). Formato:
   - MLP sobre las 35 features densas: 0,3381 ± 0,0040 (peor que LightGBM sobre densas, 0,3567).
   - MLP sobre densas + SVD(64) del espacio de caracteres: 0,4071 ± 0,0060. La SVD solo explica
     el **7,8%** de la varianza: la reducción lineal destruye la señal dispersa.
-  - **Pero** al añadirlo al meta-modelo del ensamble: 0,5784 → **0,5851 ± 0,0042 (+0,0066)**,
+  - **Pero** al añadirlo al meta-modelo del ensamble: 0,5784 -> **0,5851 ± 0,0042 (+0,0066)**,
     el mayor aporte individual desde el canal de menciones.
 - **Decision**: el deep learning **no** se usa como modelo principal (queda muy por debajo de los
   lineales dispersos), pero **sí** como miembro del ensamble por su diversidad de errores.
@@ -290,7 +290,7 @@ Registro de decisiones de arquitectura y modelado (ADR). Formato:
   - Modelo **ordinal acumulativo** (5 clasificadores binarios `P(y>k)`, Frank & Hall): 0,5527 como
     miembro individual, casi a la par del mejor lineal pero estructuralmente distinto.
   - Modelo de **centroides (Rocchio)**: 0,4017 individual, aporta diversidad.
-  - Añadidos al ensamble: 0,5851 → **0,5860** (+0,0009).
+  - Añadidos al ensamble: 0,5851 -> **0,5860** (+0,0009).
   - **Meta-modelo LightGBM**: 0,5858, no supera a la regresión logística.
   - **Especialistas por longitud** (SVM entrenados solo con tweets cortos/largos): **+0,0000**.
   - **BM25** (k1=1.2, b=0.75) sin normalización L2: 0,4688 individual y **−0,0002** en el ensamble
@@ -311,8 +311,8 @@ Tras declarar la saturación se probó la vía indicada como trabajo futuro:
 - **Pares adyacentes** (5 SVM entrenados solo con cada par de rangos contiguos): precisión media de
   **0,7428** en las fronteras, ordenándolas por dificultad (`18-24|25-34` 0,6856 es la más dura;
   `50-64|65-xx` 0,8099 la más fácil), coherente con la matriz de confusión. Aporte al ensamble:
-  **+0,0006** (0,5860 → 0,5866).
-- **Jerarquía gruesa→fina** (3 grupos jóvenes/medios/mayores, precisión 0,7128): aporte nulo por
+  **+0,0006** (0,5860 -> 0,5866).
+- **Jerarquía gruesa->fina** (3 grupos jóvenes/medios/mayores, precisión 0,7128): aporte nulo por
   encima de los pares (+0,0003 acumulado frente a +0,0006 solo con pares).
 - **Barrido del C del meta-modelo**: C=1.0 ya era óptimo (0,5862 / 0,5866 / 0,5865 para 0,3 / 1 / 3).
 - **Conclusión**: la saturación se confirma; el techo de esta línea está en ~0,587 de CV y las
@@ -329,8 +329,8 @@ Tras declarar la saturación se probó la vía indicada como trabajo futuro:
   confirmada fuera del CV de desarrollo.
 - **Experiment**: ADV-02 (160 features nuevas, 87 locales + 73 supervisadas in-fold, evaluadas con
   LOFO) y ADV-03 (holdout congelado del 15% de clústeres, semilla 2026).
-- **Result**: CV **0,5866 → 0,5897 (+0,0031)**, positiva en **5/5 folds**; holdout congelado
-  **0,5914 → 0,5966 (+0,0052)**, confirmado. Aportes: menciones supervisadas +0,0016 · fuente de
+- **Result**: CV **0,5866 -> 0,5897 (+0,0031)**, positiva en **5/5 folds**; holdout congelado
+  **0,5914 -> 0,5966 (+0,0052)**, confirmado. Aportes: menciones supervisadas +0,0016 · fuente de
   RT +0,0007 · rareza +0,0003 · léxico por clase +0,0001 · hashtags −0,0001.
 - **Decision**: adoptar el candidato `AGE_ADVANCED_V01` (267 features del meta) y generar la
   submission v09. Las features supervisadas se calculan **siempre in-fold** (regla §74).
@@ -340,7 +340,7 @@ Tras declarar la saturación se probó la vía indicada como trabajo futuro:
 - **Alternatives**: quedarse en el baseline congelado v08 (descartado por pérdida de señal
   medible).
 - **Consequences**: el catálogo de features pasa a 160 filas en 11 familias
-  (`reports/advanced_feature_catalog.csv`); el retrieval train→test queda **sin implementar** y
+  (`reports/advanced_feature_catalog.csv`); el retrieval train->test queda **sin implementar** y
   marcado REQUIERE_VERIFICACIÓN por riesgo de reglas.
 
 ---
@@ -356,7 +356,7 @@ Tras declarar la saturación se probó la vía indicada como trabajo futuro:
   - Incertidumbre e interacciones: **+0,0002** (dentro del ruido); la desviación entre folds baja
     de 0,0043 a 0,0036.
   - Selección de features: top-50 0,5731 · top-100 0,5867 · **top-150 0,5896** · top-200 0,5890
-    frente a **0,5897** del conjunto completo → no aporta.
+    frente a **0,5897** del conjunto completo -> no aporta.
   - NB-SVM: **0,5641** como modelo (por debajo del SVM TF-IDF 0,5658) pero **+0,0007** como miembro
     del ensamble (4/5 folds).
   - Candidato v10: **0,5904 ± 0,0047** (273 features del meta).
@@ -383,8 +383,8 @@ Tras declarar la saturación se probó la vía indicada como trabajo futuro:
   el margen del par-SVM con umbrales τ ∈ {0; 0,5; 1,0; 1,5}.
 - **Result**:
   - (a) especialista con compuerta: **−0,0036** (2.587 errores corregidos, 3.217 introducidos).
-  - (b) por margen del par-SVM: τ=0 → −0,0095; τ=0,5 → −0,0000 (41 corregidas / 43 introducidas);
-    **τ=1,0 → 3.571 filas activadas con 0 correcciones y 0 daños**; τ=1,5 → 301 activaciones, 0 cambios.
+  - (b) por margen del par-SVM: τ=0 -> −0,0095; τ=0,5 -> −0,0000 (41 corregidas / 43 introducidas);
+    **τ=1,0 -> 3.571 filas activadas con 0 correcciones y 0 daños**; τ=1,5 -> 301 activaciones, 0 cambios.
   - Es decir: cuando el par-SVM es lo bastante confiable para creerle, **coincide con el ensamble**;
     cuando discrepa, acierta tanto como falla.
 - **Perfil del error (n=57.023 en la frontera)**: los aciertos tienen más menciones (0,836 vs 0,651)
@@ -410,13 +410,13 @@ Tras declarar la saturación se probó la vía indicada como trabajo futuro:
 - **Observation**: el diagnóstico de intersección mostró que en el **25,94%** de los tweets algún
   modelo base acierta mientras el ensamble falla, y que los rescatadores son sistemáticamente los
   modelos diversos (softmax ordinal 36%, centroides 31%, MLP 31%). El error depende además del tipo
-  de tweet (`solo_url` 61,1%; `mencion_alta` 19,2%) y de la longitud (54,5% → 35,1%).
+  de tweet (`solo_url` 61,1%; `mencion_alta` 19,2%) y de la longitud (54,5% -> 35,1%).
 - **Hypothesis**: el meta-modelo lineal aplica pesos globales y no puede condicionar su confianza al
   contexto del tweet; un combinador que sí pueda hacerlo recuperará parte de esos casos.
 - **Experiment**: PH2-L6 — cuatro combinadores con LOFO: LogReg global (referencia), MLP global,
   segmentado por tipo de tweet, segmentado por banda de longitud.
 - **Result**: **MLP 0,5967 ± 0,0040 vs LogReg 0,5906 ± 0,0047 (+0,0061, 5/5 folds)**; segmentado
-  por tipo −0,0007; por longitud −0,0015. Holdout congelado: **0,5981 → 0,6024 (+0,0043)**.
+  por tipo −0,0007; por longitud −0,0015. Holdout congelado: **0,5981 -> 0,6024 (+0,0043)**.
 - **Decision**: adoptar el MLP superficial como meta-modelo (submission v11). Cerrar la
   segmentación dura — es el segundo fracaso de esa estrategia (antes con la compuerta de frontera,
   −0,0036).
@@ -456,7 +456,7 @@ Tras declarar la saturación se probó la vía indicada como trabajo futuro:
 - **Experiment**: PH7 — promedio 0,5/0,5 de las probabilidades out-of-fold del meta MLP y del meta
   LogReg, evaluado con LOFO y confirmado en el holdout congelado.
 - **Result**: CV **0,6005** (MLP solo 0,5978; LogReg 0,5915); holdout **0,6077** (MLP 0,6034;
-  LogReg 0,5983) → **Δ +0,0043** sobre el MLP, por encima del criterio de +0,003.
+  LogReg 0,5983) -> **Δ +0,0043** sobre el MLP, por encima del criterio de +0,003.
 - **Decision**: adoptar el promedio de combinadores como modelo final (submission v12).
 - **Reason**: es un promedio de ponderación **fija** (sin nada ajustado a los datos), luego no añade
   riesgo de sobreajuste, y su ganancia es consistente en ambas particiones (CV y holdout).
@@ -481,8 +481,8 @@ Tras declarar la saturación se probó la vía indicada como trabajo futuro:
 
 ---
 
-## D-024 — Nota sobre la brecha CV↔LB en las últimas dos versiones
-- **Observation**: las brechas CV↔LB de v11 (+0,0208) y v12 (+0,0213) quedan por encima del rango
+## D-024 — Nota sobre la brecha CV<->LB en las últimas dos versiones
+- **Observation**: las brechas CV<->LB de v11 (+0,0208) y v12 (+0,0213) quedan por encima del rango
   de las ocho mediciones anteriores (+0,0145 a +0,0184).
 - **Hypothesis**: el combinador no lineal (y su promedio) explota mejor la **memorización de
   near-duplicados** del test, precisamente el componente que el CV agrupado por clústeres bloquea
@@ -515,7 +515,7 @@ Tras declarar la saturación se probó la vía indicada como trabajo futuro:
 ---
 
 ## D-026 — Las dos vías autorizadas no pagan: retrieval y POS (cierre con evidencia)
-- **Observation**: quedaban dos líneas bloqueadas por reglas: retrieval train→test y POS tagger de
+- **Observation**: quedaban dos líneas bloqueadas por reglas: retrieval train->test y POS tagger de
   spaCy. Ambas fueron autorizadas explícitamente por Carlos.
 - **Experiment**: PH10 — (A) features de clúster de near-duplicados con etiquetas de train, más la
   etiqueta recuperada por duplicado exacto, en dos usos (features del combinador y sobrescritura
@@ -543,8 +543,8 @@ Tras declarar la saturación se probó la vía indicada como trabajo futuro:
 - **Experiment**: PH11 — exclusión de filas **solo en el lado de entrenamiento** (la validación se
   mantiene, porque el test contendrá casos igualmente ruidosos), evaluada con LOFO sobre el
   combinador promediado del modelo final.
-- **Result**: excluir las contradictorias (643 filas, 0,38%) → **+0,0001** (3/5 folds); excluir los
-  textos duplicados (2.123 filas, 1,25%) → **+0,0016** (3/5 folds, con std algo mayor); baseline
+- **Result**: excluir las contradictorias (643 filas, 0,38%) -> **+0,0001** (3/5 folds); excluir los
+  textos duplicados (2.123 filas, 1,25%) -> **+0,0016** (3/5 folds, con std algo mayor); baseline
   0,6004 ± 0,0042.
 - **Decision**: **no** se adopta como cambio del modelo final (por debajo del umbral de +0,003), pero
   se documenta como limpieza opcional con efecto positivo pequeño y consistente en la dirección.
@@ -723,7 +723,7 @@ Tras declarar la saturación se probó la vía indicada como trabajo futuro:
   todas las comparaciones se hicieron pareadas en el mismo proceso (CV con las mismas particiones y
   semillas; holdout con la base re-ajustada en la misma corrida). Afecta solo a la **reconstrucción
   absoluta** del artefacto subido.
-- **Reason**: matrices equivalentes + ajuste determinista + receta idéntica ⇒ el archivo subido (o el
+- **Reason**: matrices equivalentes + ajuste determinista + receta idéntica => el archivo subido (o el
   estado del código en el momento de generarlo) difiere del estado committeado que hoy se puede
   reproducir. Es un problema de **trazabilidad del artefacto**, no de datos ni de metodología.
 - **Consequences**: (1) queda una matriz de test fresca verificada
@@ -832,3 +832,36 @@ Tras declarar la saturación se probó la vía indicada como trabajo futuro:
 - **Evidence**: `reports/age_lexicon_audit.md`, `reports/age_lexicon_results.csv`,
   `reports/age_lexicon_ablation.csv`, `reports/age_lexicon_redundancy.csv`,
   `reports/age_lexicon_complementarity.md`, `reports/age_lexicon_error_analysis.md`.
+
+---
+
+## D-040 — Fallo del producto matricial en `X @ X.T`: documentado, contenido y con guard
+- **Observation**: la correlación de Spearman vectorizada daba `+0,0001` donde `scipy` daba
+  `+0,9985`. La causa no era el código: en este entorno (`numpy 1.26.4` sobre `Python 3.14.7`,
+  combinación no soportada, con numpy enlazado al BLAS de referencia del sistema) el producto
+  matricial devuelve **valores erróneos cuando los dos operandos son vistas de la misma
+  matriz**, es decir en el patrón `X @ X.T`: la diagonal de un Gram 2000x5 sale 0,7392 en lugar de
+  1.999,0, y en 5000x279 sale 298,64 en lugar de 4.962,39. Falla con 1 hilo y con 32, con matriz
+  C-contigua y F-contigua, y con datos enteros pequeños. `np.corrcoef` y `np.cov` con
+  `rowvar=True` caen en el mismo fallo (devuelven `(5000, 5000)` en lugar de `(6, 6)`) porque
+  internamente hacen la auto-transpuesta.
+- **Experiment**: auditoría de los 11 sitios del repositorio que usan producto matricial o
+  `corrcoef`, más prueba de que `MLPClassifier` da predicciones idénticas con la ruta parcheada.
+  Reproducción mínima en `reports/v13_entorno_numerico.md`.
+- **Result**: **ningún resultado del proyecto está afectado**. Los 10 sitios del proyecto usan
+  rutas sanas (`A @ B.T` con matrices distintas, `A.T @ z` matriz-vector, `corrcoef` con 1D), y el
+  único script con la ruta rota era el nuevo `v13_p0b_colinealidad.py`, ya corregido. V12
+  (CV 0,6004 / LB 0,62188) y todas las decisiones anteriores siguen vigentes. La primera ejecución
+  de P0b dio "0 pares correlacionados", que era un artefacto del fallo y se descartó.
+- **Decision**: **documentar sin maquillar** y añadir defensa permanente: `src/verificacion_numerica.py`
+  con `autotest_numerico()` (comprueba seis rutas en las que el proyecto se apoya y detiene el
+  experimento si alguna falla; enumera las tres rutas prohibidas) y `grama_exacta()` (productos
+  cruzados por sumas explícitas, que coincide con `spearmanr` con 1,2e-16). Todo experimento de
+  V13 llama al autotest en su primera línea.
+- **Reason**: un fallo silencioso de BLAS que devuelve ceros en vez de correlaciones es
+  especialmente peligroso en una investigación cuyo criterio de adopción es un Δ pequeño: habría
+  producido "no hay colinealidad" y, con ello, la conclusión opuesta.
+- **Consequences**: (1) ninguna métrica previa se revisa; (2) la colinealidad de V12 se vuelve a
+  medir con la ruta verificada; (3) el cribado de redundancia de todo bloque nuevo (P1, P17, P19,
+  P20, P21) debe pasar por `grama_exacta`, nunca por BLAS.
+- **Evidence**: `reports/v13_entorno_numerico.md`, `src/verificacion_numerica.py`.

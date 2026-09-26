@@ -251,7 +251,7 @@ probabilidades congeladas: nueve líneas genuinamente abiertas (`reports/age_hyp
 | D decodificación por transición | 5 | −0,0004 | empeora monótonamente al aumentar λ |
 | E proyección ordinal | 6 | −0,0033 | desplazar masa del top-1 siempre destruye más de lo que arregla |
 | F coste ordinal | 3 | +0,0004 | solo preserva la decisión con perfiles de coste casi planos |
-| G desempate por E[Y] | 3 | **+0,0011** | mejora el MAE ordinal (0,6552 → 0,6454) pero **empeora las fronteras centrales** |
+| G desempate por E[Y] | 3 | **+0,0011** | mejora el MAE ordinal (0,6552 -> 0,6454) pero **empeora las fronteras centrales** |
 | H calibración por banda | 2 | +0,0002 | inerte: una transformación por fila no cambia el argmax |
 | I corrector mínimo | 5 | −0,0005 | reescribe aciertos a cambio de fallos nuevos |
 

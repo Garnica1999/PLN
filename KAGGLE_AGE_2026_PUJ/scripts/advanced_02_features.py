@@ -4,10 +4,10 @@ Ejecuta en orden:
     1. **Tests unitarios** de robustez (brief §64): texto vacío, un token, solo URL, solo mención,
        RT, múltiples hashtags, solo puntuación, solo números, repetición.
     2. **Cálculo de features locales** (familias A, B, C, D, H, I, M, N, R, S, T, U) para train y
-       test → ``features/age_structured_features.parquet``.
-    3. **Catálogo** de las nuevas features → ``reports/advanced_feature_catalog.csv``.
+       test -> ``features/age_structured_features.parquet``.
+    3. **Catálogo** de las nuevas features -> ``reports/advanced_feature_catalog.csv``.
     4. **Evaluación del aporte** al meta-modelo del baseline congelado (LOFO), comparando:
-       baseline → +estructuradas → +supervisadas (menciones, hashtags, fuente RT, rareza, léxico).
+       baseline -> +estructuradas -> +supervisadas (menciones, hashtags, fuente RT, rareza, léxico).
 
 Salida: ``experiments/advanced_02_resultados.json``.
 """
@@ -160,7 +160,7 @@ def main() -> int:
     structured_test = build_local_features(test[cfg.TEXT_COL])
     structured_train.to_parquet(cfg.FEATURES / "age_structured_features.parquet", index=False)
     structured_test.to_parquet(cfg.FEATURES / "age_structured_features_test.parquet", index=False)
-    print(f"    train {structured_train.shape} | test {structured_test.shape} → "
+    print(f"    train {structured_train.shape} | test {structured_test.shape} -> "
           f"features/age_structured_features.parquet", flush=True)
     results["features_locales"] = {"n_features": int(structured_train.shape[1]),
                                    "segundos": round(time.time() - started, 1)}

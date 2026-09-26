@@ -16,7 +16,7 @@ Hipótesis
 Método
     - ``style_only``: se conservan palabras funcionales (lista cerrada en español), puntuación,
       dígitos, marcadores de entidad (``@USER``, ``#TAG``, ``<url>``) y la **forma** de las palabras
-      de contenido (letras → ``x``/``X`` según mayúsculas, dígitos → ``9``); se descarta su identidad.
+      de contenido (letras -> ``x``/``X`` según mayúsculas, dígitos -> ``9``); se descarta su identidad.
     - ``content_only``: se conservan todas las palabras de contenido y las identidades de entidades;
       se descartan las palabras funcionales.
     - Ambos se vectorizan con char_wb(3,6) + canal de menciones y se entrenan con LinearSVC(C=0.2).

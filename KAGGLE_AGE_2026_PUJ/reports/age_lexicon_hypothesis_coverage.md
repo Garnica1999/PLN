@@ -2,18 +2,18 @@
 
 Generada por `scripts/phase36_auditoria_lexicones.py` **antes** de construir o descargar cualquier recurso (§4: no ejecutar un experimento hasta comprobar que es nuevo).
 
-Experimentos registrados en el historial: **67**. Experimentos que mencionan un canal léxico implementado: **0**.
+Experimentos registrados en el historial: **72**. Experimentos que mencionan un canal léxico implementado: **15**.
 
 ## 1. Familias de señal léxica: qué existe ya y qué falta
 
 | # | Familia | Estado | Qué hay realmente | Evidencia | Implicación para esta fase |
 |---|---|---|---|---|---|
-| L1 | Lista léxica cerrada general (stopwords) | **EXISTE (mínima)** | SPANISH_STOPWORDS: ~140 entradas autoelaboradas en el propio proyecto. Alimenta dos features: stopword_ratio y content_ratio. | `src/textometry.py:38-49 (frozenset, comentario 'recurso léxico cerrado, sin parámetros aprendidos'); src/feature_catalog.py:43-44; features/dense_train.parquet (columnas stopword_ratio, content_ratio)` | Precedente aceptado: una lista fija autoelaborada es admisible. Ampliar de 1 lista a 24 subcategorías es genuinamente nuevo, pero el listón de redundancia es real: ~140 palabras funcionales cubren el高频 de cualquier texto español. |
+| L1 | Lista léxica cerrada general (stopwords) | **EXISTE (mínima)** | SPANISH_STOPWORDS: ~140 entradas autoelaboradas en el propio proyecto. Alimenta dos features: stopword_ratio y content_ratio. | `src/textometry.py:38-49 (frozenset, comentario 'recurso léxico cerrado, sin parámetros aprendidos'); src/feature_catalog.py:43-44; features/dense_train.parquet (columnas stopword_ratio, content_ratio)` | Precedente aceptado: una lista fija autoelaborada es admisible. Ampliar de 1 lista a 24 subcategorías es genuinamente nuevo, pero el listón de redundancia es real: ~140 palabras funcionales cubren el de cualquier texto español. |
 | L2 | Categorías temáticas de dominio | **NUNCA PROBADA como canal de features** | Solo evidencia **observacional**: el Gate A registra que el léxico temático diferencia (fandoms/MTV en 13-17 frente a política/noticias en 65-xx) y un análisis de términos por clase. Adicionalmente el contenido entra por TF-IDF word(1-2) y char_wb(3-5) de los 14 miembros, token a token. | `PROJECT_STATE.md (Gate A, punto 3 'Señal confirmada'); reports/tables/top_terms_by_class.csv; experiments.csv (fase 3, análisis lingüístico)` | La hipótesis fue confirmada por observación pero **nunca explotada** como agregado de baja dimensión. Esa es la brecha exacta que ataca esta fase. |
 | L3 | Registro / informalidad / slang | **NUNCA PROBADA como lexicon; parcialmente implícita** | TF-IDF char_wb(3-5) captura la forma ortográfica informal y las abreviaciones; las features de forma ya cubren mayúsculas, alargamientos, emoticonos y signos de exclamación/interrogación. | `features/age_structured_features.parquet (shape_allcaps_ratio, shape_repeated_letter_token_ratio, punct_excl_density, punct_quest_density); features/dense_train.parquet (elongated_count, n_emoticon, n_excl, n_quest)` | Máximo riesgo de redundancia de las tres familias: es la que más solapa con los n-gramas de carácter. Por eso la familia A es la primera en cribarse. |
 | L4 | Etapas de vida / contexto social | **NUNCA PROBADA** | Nada. Solo señales de longitud y estructura social indirectas (RT, menciones). | `reports/age_hypothesis_coverage.md (no figura ninguna hipótesis léxica de contexto vital); experiments.csv: 0 experimentos con 'lexicon|wordlist'` | La familia con más superficie nueva: vocabulario de escuela, universidad, empleo, parentalidad, hogar y juez de edad no es un concepto que los n-gramas representen como categoría. |
 | L5 | P(clase|palabra) supervisado | **FUERA DE ALCANCE por diseño** | Existe un canal léxico supervisado, pero solo para entidades: P(clase|mención), P(clase|hashtag) y P(clase|fuente de RT), aprendido in-fold con suavizado empírico-bayesiano. | `src/advanced_features.py:326-340 (supervised_entity_features, kind in {mention, hashtag, rt_source})` | No existe ningún canal por palabra libre, así que la fase no repite nada. Construirlo sería señal supervisada de la tarea y §5 lo prohíbe: se documenta como línea distinta, no como parte de esta fase. |
-| L6 | Embeddings / transformers / modelos de lenguaje | **PROHIBIDO (y sin uso)** | transformers, sentence-transformers y torch están instalados en el venv y listados en requirements.txt. Uso en el camino de modelado = 0: el único import del proyecto es una detección de capacidad de GPU. | `grep de imports en src/ y scripts/ → único match: src/gpu.py:130 ('import torch' dentro de una comprobación de disponibilidad)` | Auditoría §32: el entorno no está limpio de paquetes, pero el uso es cero. Se documenta explícitamente (D-038) en lugar de ocultarlo. |
+| L6 | Embeddings / transformers / modelos de lenguaje | **PROHIBIDO (y sin uso)** | transformers, sentence-transformers y torch están instalados en el venv y listados en requirements.txt. Uso en el camino de modelado = 0: el único import del proyecto es una detección de capacidad de GPU. | `grep de imports en src/ y scripts/ -> único match: src/gpu.py:130 ('import torch' dentro de una comprobación de disponibilidad)` | Auditoría §32: el entorno no está limpio de paquetes, pero el uso es cero. Se documenta explícitamente (D-038) en lugar de ocultarlo. |
 
 ## 2. Recursos externos: admisibilidad (§1 y §5)
 
@@ -32,9 +32,9 @@ Experimentos registrados en el historial: **67**. Experimentos que mencionan un 
 
 | Familia | Coincidencias en `experiments.csv` | Coincidencias en el código | Veredicto |
 |---|---|---|---|
-| L2 | 0 | 0 | **nunca evaluada** |
-| L3 | 0 | 0 | **nunca evaluada** |
-| L4 | 0 | 0 | **nunca evaluada** |
+| L2 | 5 | 0 | REVISAR: ['PH36-COBERTURA-LEX', 'PH37-CATALOGO-LEX', 'PH38-BLOQUES-LEX', 'PH39-FUSION-LEX', 'PH40-ANALISIS-ERROR-LEX'] |
+| L3 | 5 | 0 | REVISAR: ['PH36-COBERTURA-LEX', 'PH37-CATALOGO-LEX', 'PH38-BLOQUES-LEX', 'PH39-FUSION-LEX', 'PH40-ANALISIS-ERROR-LEX'] |
+| L4 | 5 | 0 | REVISAR: ['PH36-COBERTURA-LEX', 'PH37-CATALOGO-LEX', 'PH38-BLOQUES-LEX', 'PH39-FUSION-LEX', 'PH40-ANALISIS-ERROR-LEX'] |
 
 **Nivel 2 (contextual, no decisivo)**: términos Lazarus del español. Se listan para no esconder coincidencias, aunque ninguna constituye un canal de features.
 

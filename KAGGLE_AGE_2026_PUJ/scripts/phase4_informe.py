@@ -1,6 +1,6 @@
 """FASE 4 — Informe de la fase avanzada v2, decisiones y memoria actualizada.
 
-Resume la cadena completa: diagnóstico → hipótesis → experimento → resultado → decisión, con las
+Resume la cadena completa: diagnóstico -> hipótesis -> experimento -> resultado -> decisión, con las
 cifras reales de los artefactos, y actualiza ``PROJECT_STATE.md``, ``DECISIONS.md``, ``RUNLOG.md``
 y ``experiments.csv``.
 """
@@ -122,7 +122,7 @@ def main() -> int:
     for label, payload in hold["holdout"]["resultados"].items():
         add(f"| {label} | {payload['macro_f1']:.4f} | accuracy {payload['accuracy']:.4f} |")
     add("")
-    add(f"**Δ = {hold['holdout']['delta']:+.4f}** (criterio: Δ ≥ +0,003) → "
+    add(f"**Δ = {hold['holdout']['delta']:+.4f}** (criterio: Δ ≥ +0,003) -> "
         f"**{'CONFIRMADO' if hold['holdout']['confirmado'] else 'NO confirmado'}**.")
     add("")
     add("## 7. Candidato v11")
@@ -150,9 +150,9 @@ def main() -> int:
     add("- **L3 — Contenido vs estilo**: representación explícita de estilo (palabras funcionales, "
         "puntuación, estructura) frente a contenido; explicaría por qué las fronteras centrales "
         "resisten.")
-    add("- **L4 — Transiciones de carácter**: estadística de transición letra↔dígito↔puntuación.")
+    add("- **L4 — Transiciones de carácter**: estadística de transición letra<->dígito<->puntuación.")
     add("- **L7 — NB-SVM por canal**: word, hashtag y mención puros como miembros independientes.")
-    add("- **Retrieval train→test**: sigue **REQUIERE_VERIFICACIÓN** de reglas; no implementado.")
+    add("- **Retrieval train->test**: sigue **REQUIERE_VERIFICACIÓN** de reglas; no implementado.")
     add("")
     add("## 10. Conclusión de la fase")
     add("")
@@ -220,13 +220,13 @@ def main() -> int:
 - **Observation**: el diagnóstico de intersección mostró que en el **25,94%** de los tweets algún
   modelo base acierta mientras el ensamble falla, y que los rescatadores son sistemáticamente los
   modelos diversos (softmax ordinal 36%, centroides 31%, MLP 31%). El error depende además del tipo
-  de tweet (`solo_url` 61,1%; `mencion_alta` 19,2%) y de la longitud (54,5% → 35,1%).
+  de tweet (`solo_url` 61,1%; `mencion_alta` 19,2%) y de la longitud (54,5% -> 35,1%).
 - **Hypothesis**: el meta-modelo lineal aplica pesos globales y no puede condicionar su confianza al
   contexto del tweet; un combinador que sí pueda hacerlo recuperará parte de esos casos.
 - **Experiment**: PH2-L6 — cuatro combinadores con LOFO: LogReg global (referencia), MLP global,
   segmentado por tipo de tweet, segmentado por banda de longitud.
 - **Result**: **MLP 0,5967 ± 0,0040 vs LogReg 0,5906 ± 0,0047 (+0,0061, 5/5 folds)**; segmentado
-  por tipo −0,0007; por longitud −0,0015. Holdout congelado: **0,5981 → 0,6024 (+0,0043)**.
+  por tipo −0,0007; por longitud −0,0015. Holdout congelado: **0,5981 -> 0,6024 (+0,0043)**.
 - **Decision**: adoptar el MLP superficial como meta-modelo (submission v11). Cerrar la
   segmentación dura — es el segundo fracaso de esa estrategia (antes con la compuerta de frontera,
   −0,0036).
@@ -272,10 +272,10 @@ def main() -> int:
 |---|---|---|---|
 | 75 | Congelar v09/v10 y gap analysis v2 | `experiments/baseline_v09_frozen/`, `reports/advanced_gap_analysis_v2.md`, `research_backlog_v2.md` | 16 archivos con hash; 22 fenómenos auditados |
 | 76 | **L1 — intersección de errores** | `reports/error_intersection_analysis.csv`, `experiments/phase1_diagnostico.json` | **25,94%** de filas rescatables; rescatadores = modelos diversos |
-| 77 | **L5 — error por tipo y longitud** | `reports/tables/phase1_error_por_tipo.csv`, `phase1_error_por_longitud.csv` | `solo_url` 61,1% vs `mencion_alta` 19,2%; longitud 54,5% → 35,1% |
+| 77 | **L5 — error por tipo y longitud** | `reports/tables/phase1_error_por_tipo.csv`, `phase1_error_por_longitud.csv` | `solo_url` 61,1% vs `mencion_alta` 19,2%; longitud 54,5% -> 35,1% |
 | 78 | **L6 — ponderación condicional** | `experiments/phase2_ponderacion.json` | **MLP meta 0,5967 (+0,0061, 5/5 folds)**; segmentación dura negativa |
 | 79 | Corrección de dos defectos | `scripts/phase3b_recorregido.py`, `src/advanced_features.py` | 0 columnas degeneradas; alineación del meta corregida |
-| 80 | Confirmación y candidato v11 | `experiments/phase3_holdout_v11.json` → `submissions/age_submission_v11.csv` | Holdout **+0,0043** (> criterio +0,003); distribución sana |
+| 80 | Confirmación y candidato v11 | `experiments/phase3_holdout_v11.json` -> `submissions/age_submission_v11.csv` | Holdout **+0,0043** (> criterio +0,003); distribución sana |
 """, encoding="utf-8")
     print("[memoria] PROJECT_STATE, DECISIONS (D-020, D-021), RUNLOG y experiments.csv actualizados")
     return 0

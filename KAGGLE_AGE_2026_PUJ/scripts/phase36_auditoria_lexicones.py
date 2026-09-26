@@ -44,7 +44,7 @@ FAMILIAS = [
                      "features/dense_train.parquet (columnas stopword_ratio, content_ratio)",
         "implicacion": "Precedente aceptado: una lista fija autoelaborada es admisible. Ampliar de 1 "
                        "lista a 24 subcategorías es genuinamente nuevo, pero el listón de "
-                       "redundancia es real: ~140 palabras funcionales cubren el高频 de cualquier "
+                       "redundancia es real: ~140 palabras funcionales cubren el de cualquier "
                        "texto español.",
     },
     {
@@ -105,7 +105,7 @@ FAMILIAS = [
         "que_hay": "transformers, sentence-transformers y torch están instalados en el venv y "
                    "listados en requirements.txt. Uso en el camino de modelado = 0: el único "
                    "import del proyecto es una detección de capacidad de GPU.",
-        "evidencia": "grep de imports en src/ y scripts/ → único match: src/gpu.py:130 "
+        "evidencia": "grep de imports en src/ y scripts/ -> único match: src/gpu.py:130 "
                      "('import torch' dentro de una comprobación de disponibilidad)",
         "implicacion": "Auditoría §32: el entorno no está limpio de paquetes, pero el uso es cero. "
                        "Se documenta explícitamente (D-038) en lugar de ocultarlo.",

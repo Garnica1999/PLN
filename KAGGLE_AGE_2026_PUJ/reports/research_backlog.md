@@ -32,13 +32,13 @@ Ordenado por **contenido informativo esperado**, justificado con la evidencia de
 | RB-14 | BM25 sin normalización | −0,0002 (E-025) | cerrada |
 | RB-15 | kNN sobre SVD | 0,3088 individual, sin aporte (E-026) | cerrada |
 | RB-16 | Meta-modelo LightGBM | 0,5858 vs 0,5860 LogReg (E-022) | cerrada |
-| RB-17 | Jerarquía gruesa→fina | +0,0003 redundante (E-028b) | cerrada |
+| RB-17 | Jerarquía gruesa->fina | +0,0003 redundante (E-028b) | cerrada |
 | RB-18 | Deep learning denso como clasificador | 0,3381/0,4071 (E-019) | cerrada (se conserva solo como miembro diverso) |
 
 ## Líneas que REQUIEREN verificación de reglas (no iniciadas)
 
 | ID | Línea | Riesgo | Estado |
 |---|---|---|---|
-| RB-R1 | Retrieval train→test en inferencia (exact/near-duplicate lookup) | El brief lo autoriza solo si las reglas lo permiten; la competencia prohíbe usar el test para entrenar, pero un lookup train→test es inferencia, no entrenamiento | **REQUIERE_VERIFICACIÓN** |
+| RB-R1 | Retrieval train->test en inferencia (exact/near-duplicate lookup) | El brief lo autoriza solo si las reglas lo permiten; la competencia prohíbe usar el test para entrenar, pero un lookup train->test es inferencia, no entrenamiento | **REQUIERE_VERIFICACIÓN** |
 | RB-R2 | POS tagger preentrenado de spaCy | recurso preentrenado en zona gris (D-001) | **REQUIERE_VERIFICACIÓN** |
 | RB-R3 | Lexicones externos | no aportan con corpus ASCII y su licencia es dudosa | no iniciada |

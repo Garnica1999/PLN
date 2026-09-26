@@ -169,7 +169,7 @@ LISTAS: dict[str, dict[str, list[str]]] = {
             joystick gamepad fps puntaje vida muerte respawn cheat cheats lag ping servidor
             lanzamiento tráiler esports torneo competencia guild build daño ataque defensa
             mago guerrero aventurero botín tesoro aventura cueva bosque castillo dragón
-            survival creative hora horas grindear政策性 jugador jugadores partida partida
+            survival creative hora horas grindear jugador jugadores partida partida
             nivel niveles oro experiencia Items mundo mundo""".split(),
         "politica": """partido partidos político gobierno gobiernos presidente
             presidenta ministro ministra congreso senado diputado diputada ley leyes decreto
@@ -227,8 +227,7 @@ LISTAS: dict[str, dict[str, list[str]]] = {
             creer alma espiritual espíritu almas demonio diablo satán satanas pecador romería
             peregrinación procesión velación luto entierro funeral difunto cementerio
             eternidad cielo infierno padre nuestro dogma secta culto altar ofrenda diezmo
-            diezmos bendecir bendito maldito amparo milagroso santita accion de gracias
-           最主要的""".split(),
+            diezmos bendecir bendito maldito amparo milagroso santita accion de gracias""".split(),
         "salud": """salud saludable enfermo enferma enfermedad enfermedades virus
             gripe gripa covid influenza fiebre tos toser mocos dolor dolores doler cabeza
             estómago barriga espalda hueso huesos articulación músculo músculos piel granos

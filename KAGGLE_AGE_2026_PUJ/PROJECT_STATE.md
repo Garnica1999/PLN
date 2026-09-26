@@ -53,37 +53,37 @@
   supuesto inicial no se aplicó). La competencia conserva la mejor puntuación, así que enviar no
   perjudica; sí perjudica enviar candidatos sin confirmación previa.
 - **RULE RISKS**: ninguno pendiente. Las dos líneas bloqueadas por reglas se autorizaron y se
-  evaluaron (D-026): retrieval train→test **permitido pero descartado por evidencia** (la etiqueta de
+  evaluaron (D-026): retrieval train->test **permitido pero descartado por evidencia** (la etiqueta de
   los duplicados exactos solo coincide 61,5%, por debajo del modelo) y POS de spaCy **descartado**
   (−0,0032; el corpus ASCII degrada el etiquetado).
 
 ## Fases terminadas
 | Fase | Notebook | Estado | Evidencia |
 |---|---|---|---|
-| 0 — Auditoría de datos y leakage | `01_data_audit.ipynb` | ✅ | `experiments/audit_01_resumen.json`, 4 figuras, `reports/data_dictionary.csv` |
-| 1 — Estado del arte (2 corrientes) | — | ✅ | `reports/state_of_art.csv` (30 trabajos, 29 verificados), `references.bib`, `reports/tables/dataset_provenance.md` |
-| 2 — EDA cuantitativo | `02_eda.ipynb` | ✅ | `experiments/eda_02_resumen.json`, 4 figuras, 5 tablas |
-| 3 — Análisis lingüístico | `03_linguistic_analysis.ipynb` | ✅ | `reports/tables/top_terms_by_class.csv`, `reports/hipotesis_gate_a.md` |
-| 4-11 — Representaciones y features | `04_feature_engineering.ipynb` | ✅ | matriz de 14 configuraciones, descomposición de normalización, `reports/feature_catalog.csv` |
-| 12 — Baselines B0-B5 | `05_baselines.ipynb` | ✅ | `reports/tables/baselines_comparativa.csv` |
-| 22 (parcial) — Submission v01 | `submissions/age_submission_v01.csv` | ✅ | LB = 0,55235 |
-| 22 (parcial) — Submission v02 | `submissions/age_submission_v02.csv` | ⏳ pendiente subida | CV 0,5557 |
+| 0 — Auditoría de datos y leakage | `01_data_audit.ipynb` | OK | `experiments/audit_01_resumen.json`, 4 figuras, `reports/data_dictionary.csv` |
+| 1 — Estado del arte (2 corrientes) | — | OK | `reports/state_of_art.csv` (30 trabajos, 29 verificados), `references.bib`, `reports/tables/dataset_provenance.md` |
+| 2 — EDA cuantitativo | `02_eda.ipynb` | OK | `experiments/eda_02_resumen.json`, 4 figuras, 5 tablas |
+| 3 — Análisis lingüístico | `03_linguistic_analysis.ipynb` | OK | `reports/tables/top_terms_by_class.csv`, `reports/hipotesis_gate_a.md` |
+| 4-11 — Representaciones y features | `04_feature_engineering.ipynb` | OK | matriz de 14 configuraciones, descomposición de normalización, `reports/feature_catalog.csv` |
+| 12 — Baselines B0-B5 | `05_baselines.ipynb` | OK | `reports/tables/baselines_comparativa.csv` |
+| 22 (parcial) — Submission v01 | `submissions/age_submission_v01.csv` | OK | LB = 0,55235 |
+| 22 (parcial) — Submission v02 | `submissions/age_submission_v02.csv` | en curso pendiente subida | CV 0,5557 |
 
 ## Gate A — cerrado (2026-09-22)
 1. **Tarea**: clasificación multiclase (6 clases balanceadas) de tweets en español ASCII, grano
    tweet, sin metadatos, texto truncado a 140 caracteres.
 2. **Leakage cuantificado**: 4,26% de test con near-duplicado en train (92,8% de clústeres
-   puros); el CV estratificado regalaría **0,061 de macro-F1** por memorización → validación
+   puros); el CV estratificado regalaría **0,061 de macro-F1** por memorización -> validación
    agrupada por clúster obligatoria (D-003).
 3. **Señal confirmada**: textometría (ε² hasta 0,126 en `n_chars`), riqueza léxica, registro
    formal/informal, léxico temático (fandoms/MTV en 13-17 vs política/noticias en 65-xx),
    ortografía (char 4-grams: `foll`, `cion`, `ndro`).
-4. **Corpus ASCII puro**: 96 caracteres distintos, sin emojis ni tildes → features de emoji
+4. **Corpus ASCII puro**: 96 caracteres distintos, sin emojis ni tildes -> features de emoji
    descartadas por varianza nula (D-009).
 5. **Hipótesis**: 12 priorizadas en `reports/hipotesis_gate_a.md`, cada una con experimento.
 
 ## Expectativas calibradas con la literatura (Fase 1)
-- PAN/Twitter 5-6 clases: accuracy 0,29 (PAN 2014) → 0,53 (PAN 2016); humanos ≤ clasificador.
+- PAN/Twitter 5-6 clases: accuracy 0,29 (PAN 2014) -> 0,53 (PAN 2016); humanos ≤ clasificador.
 - **Rango realista de macro-F1: 0,30-0,45**. Un valor > 0,50 debe activar sospecha de leakage.
 - En PAN 2019 (ES), char n-grams + Random Forest superaron a embeddings (0,8972 vs 0,8444).
 - Procedencia del corpus: **irresoluble**; compatible con barrido propio del organizador
@@ -106,7 +106,7 @@
 ## Mejores resultados locales
 | Exp | Representación + modelo | macro-F1 (CV agrupado) | Notas |
 |---|---|---|---|
-| **Fase 20** | **Stacking (SVM C=0.2 + LogReg + SGD + ComplementNB → meta LogReg)** | **0,5656** | LOFO; gana al mejor individual 5/5 folds |
+| **Fase 20** | **Stacking (SVM C=0.2 + LogReg + SGD + ComplementNB -> meta LogReg)** | **0,5656** | LOFO; gana al mejor individual 5/5 folds |
 | E-013 | LinearSVC C=0.2 + char 3-6 + menciones | 0,5628 ± 0,0032 | mejor individual |
 | E-012 | LinearSVC C=0.3 | 0,5624 ± 0,0036 | |
 | E-009 | LogisticRegression (OvR, C=4) | 0,5603 ± 0,0033 | probabilidades para Fase 19 |
@@ -130,36 +130,36 @@ Referencias: azar = 0,1667 · memorización de duplicados = 0,061 · **leaderboa
 | v07 | Ensamble 12 fuentes (+ ordinal acumulativo + centroides) | 0,5860 | **0,60372** |
 | v08 | Ensamble 13 fuentes (+ pares adyacentes) | **0,5866** | **pendiente de subida manual** |
 
-Brechas CV↔LB (10 mediciones): +0,0179 · +0,0145 · +0,0152 · +0,0170 · +0,0168 · +0,0176 ·
-+0,0177 · +0,0184 · +0,0208 · **+0,0213** → media **+0,0177 ± 0,0023**. Las dos últimas están por
+Brechas CV<->LB (10 mediciones): +0,0179 · +0,0145 · +0,0152 · +0,0170 · +0,0168 · +0,0176 ·
++0,0177 · +0,0184 · +0,0208 · **+0,0213** -> media **+0,0177 ± 0,0023**. Las dos últimas están por
 encima del rango inicial: el combinador no lineal y su promedio aprovechan algo más en el test
 (probablemente mejor explotación de los near-duplicados, que el CV agrupado bloquea). El desplazamiento es estable y explicado (near-duplicados del test),
 por lo que el CV agrupado es un estimador insesgado del leaderboard.
-Progreso: 0,55235 → 0,57018 → 0,58081 → 0,59178 → 0,59518 → 0,60273 → 0,60372 → 0,60376 →
-0,60807 → 0,61744 → **0,62182** (mejora acumulada **+0,0695**).
+Progreso: 0,55235 -> 0,57018 -> 0,58081 -> 0,59178 -> 0,59518 -> 0,60273 -> 0,60372 -> 0,60376 ->
+0,60807 -> 0,61744 -> **0,62182** (mejora acumulada **+0,0695**).
 
 ## Análisis de errores (Fase 17, OOF del ensamble)
 - F1 por clase: `13-17` 0,638 · `18-24` **0,476** · `25-34` **0,449** · `35-49` 0,519 ·
   `50-64` 0,620 · `65-xx` 0,691. **Las clases medias son el cuello de botella.**
-- La confusión es casi toda **adyacente**: 18-24→25-34 15,3% · 35-49→25-34 14,4% ·
-  35-49→50-64 14,2% · 25-34→35-49 12,5% · 65-xx→50-64 12,7%.
+- La confusión es casi toda **adyacente**: 18-24->25-34 15,3% · 35-49->25-34 14,4% ·
+  35-49->50-64 14,2% · 25-34->35-49 12,5% · 65-xx->50-64 12,7%.
 - **La longitud domina el error**: quintil más corto 52,5% de error vs más largo 37,2%.
 - Retuits: 38,5% de error vs 46,2% en no retuits. Near-duplicados: 27,5% vs 44,2%.
 - Figuras: `reports/figures/fase17_matriz_confusion.png`, `fase17_error_longitud.png`.
 
-Barrido de C (LinearSVC): 0,1 → 0,5595 · **0,2 → 0,5628** · 0,3 → 0,5624 · 0,5 → 0,5606 ·
-1,0 → 0,5557. Fase 19 (ajuste de decisión por clase): ganancia LOFO de solo +0,0006 → **no se
+Barrido de C (LinearSVC): 0,1 -> 0,5595 · **0,2 -> 0,5628** · 0,3 -> 0,5624 · 0,5 -> 0,5606 ·
+1,0 -> 0,5557. Fase 19 (ajuste de decisión por clase): ganancia LOFO de solo +0,0006 -> **no se
 adopta** (D-011).
 
-- Mejora v01→v02 en el LB: **+0,01783** (CV: +0,0213). Brecha CV↔LB: +0,0179 (v01) y +0,0145 (v02):
+- Mejora v01->v02 en el LB: **+0,01783** (CV: +0,0213). Brecha CV<->LB: +0,0179 (v01) y +0,0145 (v02):
   estable en el rango que explica la memorización de near-duplicados del test.
-- Progreso acumulado del leaderboard: 0,55235 → **0,57018**.
+- Progreso acumulado del leaderboard: 0,55235 -> **0,57018**.
 
 ## Pendientes (ninguno crítico)
 
 ## Problemas detectados
 - Truncado a 140 chars y transliteración ASCII: limitan POS y lexicones con tildes.
-- Ruido de etiqueta: 643 filas (0,38%) con etiquetas contradictorias → techo práctico.
+- Ruido de etiqueta: 643 filas (0,38%) con etiquetas contradictorias -> techo práctico.
 - 166 textos vacíos (104 train, 62 test): predicción por prior.
 - Sin `user_id`: el control de leakage es por clústeres de near-duplicados, no por autor.
 

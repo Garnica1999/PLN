@@ -74,7 +74,7 @@ print("GPU requerida en esta fase: NO (pipeline CPU-first)")
 
 **MÉTODO:** `src.data.download_raw()` (streaming + SHA-256) y `src.data.verify()`, que
 revisa el número de campos por registro con `csv.reader` (detecta separadores embebidos y
-filas truncadas), unicidad de `id`, coincidencia de ids test↔submission y conteo de textos
+filas truncadas), unicidad de `id`, coincidencia de ids test<->submission y conteo de textos
 vacíos.
 """
     ),

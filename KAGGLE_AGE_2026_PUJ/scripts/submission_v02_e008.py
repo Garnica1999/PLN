@@ -84,7 +84,7 @@ def main() -> int:
         "segundos": round(time.time() - started, 1),
         "archivo": path,
         "recordatorio": ("Subida manual. Comparar el score contra 0,5557 (CV agrupado) y contra "
-                         "el 0,55235 de v01; la brecha esperada CV↔LB es ≈ +0,018 por los "
+                         "el 0,55235 de v01; la brecha esperada CV<->LB es ≈ +0,018 por los "
                          "near-duplicados del test."),
     }
     (cfg.EXPERIMENTS / "submission_v02_resumen.json").write_text(

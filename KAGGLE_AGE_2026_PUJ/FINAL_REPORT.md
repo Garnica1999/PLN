@@ -11,7 +11,7 @@
 - **Tarea**: clasificación multiclase de tweets en 6 rangos de edad (`13-17`, `18-24`, `25-34`, `35-49`, `50-64`, `65-xx`) usando solo el texto.
 - **Resultado en el leaderboard**: **0.62182** de F1 (v12; línea base inicial 0.55235; mejora acumulada **+0.0695**).
 - **Validación interna honesta**: 0.6005 de macro-F1 (leave-one-fold-out sobre particiones agrupadas por clústeres de near-duplicados).
-- **Calibración validación↔leaderboard**: **15 envíos registrados (12 puntuados)** con brecha media **+0.0177 ± 0.0023**, explicada por la memorización de near-duplicados del test (el límite de ~10 envíos de D-004 era un supuesto erróneo).
+- **Calibración validación<->leaderboard**: **15 envíos registrados (12 puntuados)** con brecha media **+0.0177 ± 0.0023**, explicada por la memorización de near-duplicados del test (el límite de ~10 envíos de D-004 era un supuesto erróneo).
 - **Fase de búsqueda de señal residual (2026-09-25)**: 27 variantes controladas evaluadas; ninguna supera el umbral pre-registrado (Δ ≥ +0,003 con ≥4/5 folds en CV). **Línea saturada**, modelo final sin cambios y **ninguna submission nueva enviada**. Única señal positiva: la vista estructural (CV +0,0018 con 4/5 folds; holdout +0,0031).
 - **Restricción cumplida**: sin transformers, sin LLMs y **sin ningún modelo de vectorización** (ni preentrenado ni entrenado desde cero): todo el desempeño proviene de representaciones estadísticas (TF-IDF), features artesanales y modelos clásicos.
 - **Auditorías**: APROBADO en leakage, reproducibilidad, formato de submission y trazabilidad académica.
@@ -68,7 +68,7 @@ Se revisaron **30 trabajos** (2006-2021) con DOI/URL verificado en `reports/stat
 
 | # | Observación | Evidencia | Consecuencia |
 |---|---|---|---|
-| E1 | La longitud y la riqueza léxica crecen con la edad | ε² = 0,126 en `n_chars`; 73 → 111 caracteres de media entre extremos | familia textométrica en el catálogo |
+| E1 | La longitud y la riqueza léxica crecen con la edad | ε² = 0,126 en `n_chars`; 73 -> 111 caracteres de media entre extremos | familia textométrica en el catálogo |
 | E2 | El léxico separa mundos sociales | `follow, justin, bieber` en `13-17` vs `venezuela, maduro, gobierno` en `65-xx` | representación léxica justificada |
 | E3 | El retuit es más frecuente en mayores | 53% en `65-xx` vs 30% en `18-24` | feature `is_rt` |
 | E4 | Alta redundancia entre features densas | ρ = 0,999 entre `ttr` y `hapax_ratio` | ablación incremental obligatoria |
@@ -142,7 +142,7 @@ F1 por clase del ensamble (out-of-fold): `65-xx` 0.691, `13-17` 0.638, `50-64` 0
 
 | # | Fenómeno | Evidencia | Hipótesis derivada | Resultado medido |
 |---|---|---|---|---|
-| F1 | Confusión entre rangos **contiguos** | 5 de los 6 pares más confundidos son adyacentes (18-24→25-34 15,3%) | señal ordinal (E-015) | +0,0003 en el ensamble |
+| F1 | Confusión entre rangos **contiguos** | 5 de los 6 pares más confundidos son adyacentes (18-24->25-34 15,3%) | señal ordinal (E-015) | +0,0003 en el ensamble |
 | F2 | Tweets **cortos** sin señal | 52,5% de error en el quintil más corto vs 37,2% en el más largo | meta-modelo condicionado por longitud (E-018) | **+0,0036** |
 | F3 | Clases **medias** débiles | `25-34` 0,449; `18-24` 0,476 | canal de hashtags (E-014) | +0,0019 |
 | F4 | **Identidad** de las cuentas mencionadas | quitar menciones cuesta −0,125 | canal dedicado de menciones (E-008) | **+0,0144** |
@@ -185,7 +185,7 @@ La brecha entre la validación interna y el leaderboard es **estable en 12 medic
 | NB-SVM por canal (PH7) | +0,0009 | por debajo del umbral de ruido |
 | Tercer combinador (PH9) | −0,0006 | la diversidad sin calidad comparable no compone |
 | Segmentación dura por tipo/longitud (PH2) | −0,0007 / −0,0015 | particionar pierde más de lo que gana |
-| **Retrieval train→test** (PH10) | etiqueta recuperada acierta **0,615** | **permitido por las reglas pero los datos lo desaconsejan**: el techo lo fija la consistencia de etiqueta de los duplicados, no la cobertura |
+| **Retrieval train->test** (PH10) | etiqueta recuperada acierta **0,615** | **permitido por las reglas pero los datos lo desaconsejan**: el techo lo fija la consistencia de etiqueta de los duplicados, no la cobertura |
 | **POS de spaCy** (PH10) | −0,0032 | el corpus transliterado a ASCII degrada el etiquetado y la señal es redundante con los char n-grams |
 | Exclusión de filas ruidosas (PH11) | +0,0001 / +0,0016 | mejora real pero bajo el umbral de cambio de modelo (D-027) |
 
@@ -370,7 +370,7 @@ probabilidades congeladas: nueve líneas genuinamente abiertas (`reports/age_hyp
 | D decodificación por transición | 5 | −0,0004 | empeora monótonamente al aumentar λ |
 | E proyección ordinal | 6 | −0,0033 | desplazar masa del top-1 siempre destruye más de lo que arregla |
 | F coste ordinal | 3 | +0,0004 | solo preserva la decisión con perfiles de coste casi planos |
-| G desempate por E[Y] | 3 | **+0,0011** | mejora el MAE ordinal (0,6552 → 0,6454) pero **empeora las fronteras centrales** |
+| G desempate por E[Y] | 3 | **+0,0011** | mejora el MAE ordinal (0,6552 -> 0,6454) pero **empeora las fronteras centrales** |
 | H calibración por banda | 2 | +0,0002 | inerte: una transformación por fila no cambia el argmax |
 | I corrector mínimo | 5 | −0,0005 | reescribe aciertos a cambio de fallos nuevos |
 

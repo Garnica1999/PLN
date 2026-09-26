@@ -14,8 +14,8 @@ Hipótesis
          enrutamiento implícito que pide el brief (§38, §73).
 
 Protocolo
-    Leave-one-fold-out sobre las mismas particiones agrupadas. Se evalúa: baseline v09 (267) →
-    +incertidumbre → +interacciones → todo. Sin reentrenar los modelos base.
+    Leave-one-fold-out sobre las mismas particiones agrupadas. Se evalúa: baseline v09 (267) ->
+    +incertidumbre -> +interacciones -> todo. Sin reentrenar los modelos base.
 
 Salida: ``experiments/advanced_04_incertidumbre.json``.
 """

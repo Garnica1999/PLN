@@ -8,7 +8,7 @@
       "estado": "EXISTE (mínima)",
       "que_hay": "SPANISH_STOPWORDS: ~140 entradas autoelaboradas en el propio proyecto. Alimenta dos features: stopword_ratio y content_ratio.",
       "evidencia": "src/textometry.py:38-49 (frozenset, comentario 'recurso léxico cerrado, sin parámetros aprendidos'); src/feature_catalog.py:43-44; features/dense_train.parquet (columnas stopword_ratio, content_ratio)",
-      "implicacion": "Precedente aceptado: una lista fija autoelaborada es admisible. Ampliar de 1 lista a 24 subcategorías es genuinamente nuevo, pero el listón de redundancia es real: ~140 palabras funcionales cubren el高频 de cualquier texto español."
+      "implicacion": "Precedente aceptado: una lista fija autoelaborada es admisible. Ampliar de 1 lista a 24 subcategorías es genuinamente nuevo, pero el listón de redundancia es real: ~140 palabras funcionales cubren el de cualquier texto español."
     },
     {
       "id": "L2",
@@ -85,21 +85,45 @@
   ],
   "verificacion_canal": {
     "L2": {
-      "experimentos": [],
+      "experimentos": [
+        "PH36-COBERTURA-LEX",
+        "PH37-CATALOGO-LEX",
+        "PH38-BLOQUES-LEX",
+        "PH39-FUSION-LEX",
+        "PH40-ANALISIS-ERROR-LEX"
+      ],
       "codigo": []
     },
     "L3": {
-      "experimentos": [],
+      "experimentos": [
+        "PH36-COBERTURA-LEX",
+        "PH37-CATALOGO-LEX",
+        "PH38-BLOQUES-LEX",
+        "PH39-FUSION-LEX",
+        "PH40-ANALISIS-ERROR-LEX"
+      ],
       "codigo": []
     },
     "L4": {
-      "experimentos": [],
+      "experimentos": [
+        "PH36-COBERTURA-LEX",
+        "PH37-CATALOGO-LEX",
+        "PH38-BLOQUES-LEX",
+        "PH39-FUSION-LEX",
+        "PH40-ANALISIS-ERROR-LEX"
+      ],
       "codigo": []
     }
   },
   "verificacion_prosa": {
     "L2": {
-      "experimentos": [],
+      "experimentos": [
+        "PH36-COBERTURA-LEX",
+        "PH37-CATALOGO-LEX",
+        "PH38-BLOQUES-LEX",
+        "PH39-FUSION-LEX",
+        "PH40-ANALISIS-ERROR-LEX"
+      ],
       "codigo": [
         "advanced_01_freeze_y_gap.py:336",
         "advanced_02_features.py:220",
@@ -110,7 +134,9 @@
       ]
     },
     "L3": {
-      "experimentos": [],
+      "experimentos": [
+        "PH38-BLOQUES-LEX"
+      ],
       "codigo": [
         "fase03_linguistic.py:76",
         "fase03_linguistic.py:97",
