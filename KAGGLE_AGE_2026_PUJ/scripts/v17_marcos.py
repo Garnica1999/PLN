@@ -46,6 +46,7 @@ EXPERIMENTOS = {
     "P1b": ("experiments/v17_p1b_curva_compuerta.json", "curva_de_compuerta", None),
     "P8": ("experiments/v17_p8_perfil_confianza.json", "perfil_de_confianza", None),
     "P1c": ("experiments/v17_p1c_regla_conjunta.json", "regla_conjunta", None),
+    "P9": ("experiments/v17_p9_arbitro.json", "arbitro_aprendido", None),
 }
 #: Pistas del brief que todavia no se han ejecutado, con su hipotesis y su riesgo declarados.
 PENDIENTES = {
@@ -134,6 +135,7 @@ def main() -> int:
     p1b = leer("v17_p1b_curva_compuerta.json")
     p8 = leer("v17_p8_perfil_confianza.json")
     p1c = leer("v17_p1c_regla_conjunta.json")
+    p9 = leer("v17_p9_arbitro.json")
 
     filas.append({
         "ID": "P0", "Track": "auditoria de brechas",
@@ -238,6 +240,28 @@ def main() -> int:
         "Decision": "cerrada: ninguna regla alcanza el gate exploratorio; el techo si lo supera",
         "Artifact": "reports/v17_p1c_regla_conjunta.md, reports/v17_p1c_regla_conjunta.csv",
     })
+    filas.append({
+        "ID": "P9", "Track": "experto selectivo con arbitro aprendido",
+        "Hypothesis": "que un arbitro entrenado sobre todas las columnas derivadas existentes "
+                      "localice las filas de frontera donde conviene el especialista",
+        "Mechanism": "LogReg binario por frontera sobre 47 columnas derivadas, con umbral "
+                     "elegido en un bloque interior que el arbitro no ve",
+        "Representation": "47 columnas ya existentes: votos y margenes de miembros, margenes de "
+                          "pares y de grupo, probabilidades de V12 y de A2, acuerdo entre miembros",
+        "Model": "V12 con sustitucion por el especialista de pares cuando el arbitro lo decide",
+        "Outer_Protocol": "CV agrupado de 5 folds",
+        "Inner_Protocol": "doble particion interior agrupada: una para ajustar el arbitro y otra "
+                          "para elegir el umbral",
+        "Seed": cfg.SEED,
+        "Global_MacroF1": p9["candidata"]["macro_f1"],
+        "Fold_1": p9["candidata"]["por_fold"][0], "Fold_2": p9["candidata"]["por_fold"][1],
+        "Fold_3": p9["candidata"]["por_fold"][2], "Fold_4": p9["candidata"]["por_fold"][3],
+        "Fold_5": p9["candidata"]["por_fold"][4],
+        "Delta_Global": p9["delta"],
+        "Bootstrap_CI95": f"[{p9['bootstrap_ic95'][0]}; {p9['bootstrap_ic95'][1]}]",
+        "Decision": "cerrada: NO ADOPTAR, 0 de 5 folds y delta negativo",
+        "Artifact": "reports/v17_p9_arbitro.md, features/v17_p9_oof.npy",
+    })
     for identificador in PENDIENTES:
         hipotesis, mecanismo, _, riesgo, coste = PENDIENTES[identificador]
         filas.append({
@@ -315,6 +339,22 @@ def main() -> int:
                   "+0,0000. El techo con arbitro perfecto si es +0,0107 y +0,0077, que supera el "
                   "gate de adopcion",
         "Decision": "cerrada: la senal no se traduce. P9 no esta indicado con estas entradas",
+    })
+    registros.append({
+        "ID": "H06",
+        "Hypothesis": "un arbitro aprendido sobre 47 columnas derivadas existentes localiza las "
+                      "filas de frontera donde el especialista conviene",
+        "Previous_Evidence": "P1b y P1c, con compuertas de umbral: +0,0002 y +0,0000",
+        "Why_New": "una regla fija no puede combinar señales; un arbitro si, y el protocolo "
+                   "anidado permite medirlo sin fuga",
+        "Expected_Mechanism": "aprender la frontera entre las filas que el especialista resuelve y "
+                              "las que rompe, dentro de la region de frontera",
+        "Risk": "que no haya frontera aprendible y el arbitro termine activando casi nada",
+        "Cost": "media: unos minutos de CPU, porque el arbitro es un LogReg pequeno",
+        "Protocol": "anidado en tres niveles: ajuste, eleccion de umbral y evaluacion",
+        "Result": "0,6004, delta -0,0001, 0 de 5 folds. El arbitro elige umbrales de 0,60 a 0,90, "
+                  "activa entre 327 y 1.256 filas, y cuando actua pierde: 4 rescates contra 22 danos",
+        "Decision": "cerrada: NO ADOPTAR. Confirma por falsacion la prediccion de P1c",
     })
     for identificador, (hipotesis, mecanismo, previo, riesgo, coste) in PENDIENTES.items():
         registros.append({

@@ -760,3 +760,31 @@ Después pide añadir además el paso de la **arquitectura del meta-modelo**.
 - **Tablas de fronteras**: la etiqueta `18-24|25-34` lleva un guion vertical que Markdown parte
   como separador de columna; `scripts/v15_v16_tablas.py` (ampliado a los informes de V17) escapa
   32 filas sin tocar ninguna cifra.
+
+## 2026-09-26 · V17 P9: el arbitro aprendido falsifica la prediccion de P1c
+
+- **Por que P9 y no mas compuertas**: un diagnostico posterior a P1c explico el fondo. En la region
+  de frontera hay 11.130 filas, el especialista **gana 1.830 y pierde 2.485**, y escucharle ahi sin
+  mas vale **-0,0080**. Fuera de esa region el especialista gana mucho mas, pero ahi V12 no duda:
+  esta seguro prediciendo otra clase. Y lo decisivo: **V12 esta mas confiado cuando se equivoca** en
+  la frontera (separacion 0,809 en las filas que el especialista arregla frente a 0,539 en las que
+  rompe), y solo el 12,7 % y el 8,0 % de las victorias del especialista caen dentro de la region de
+  frontera. Por eso toda compuerta por ambiguedad falla: no hay banda de confianza que discrimine.
+- **P9** (`scripts/v17_p9_arbitro.py`): arbitro binario LogReg por frontera sobre **47 columnas
+  derivadas que ya existian** (votos y margenes de los 13 miembros, 5 margenes de pares, 3 de grupo,
+  6 probabilidades de V12, 6 de A2 y el acuerdo entre miembros). **Ninguna representacion nueva.**
+  Protocolo anidado en tres niveles: ajuste en un bloque interior, **umbral elegido en otro bloque
+  que el arbitro no ve**, y reentrenamiento en todo el train exterior para la validacion exterior.
+- **Resultado**: macro-F1 **0,6004**, delta **-0,0001**, **0 de 5 folds** positivos, IC95 pareado
+  [-0,0002; -0,0001]. **NO ADOPTAR**. El arbitro elige umbrales de 0,60 a 0,90, activa entre 327 y
+  1.256 filas, y cuando activa **pierde**: 4 rescates contra 22 danos en toda la fase.
+- **Lo que significa**: no es un arbitro mal entrenado, es que la frontera que habria que aprender
+  **no existe con las señales disponibles**. Confirma por falsacion la prediccion que P1c
+  registro antes de mirar el resultado.
+- **Errores propios corregidos**: `np.where` con nombres de clase devuelve un array de texto, que
+  numpy no admite como indice (se devuelve directamente, sin indexar la lista de clases); la matriz
+  de salida se construia **transpuesta** (fila=clase en vez de fila=fila); `en_train` devolvia
+  posiciones locales en vez de indices globales; y varias etiquetas de frontera se tomaban del primer
+  elemento de la tupla en vez de componerse, lo que dejaba maximos en `nan`.
+- `experiments.csv` pasa a **101 experimentos**. `reports/v17_master_results.csv` con 19 filas y
+  `reports/v17_hypothesis_registry.csv` con 17. Auditoria de idioma: **0 errores sobre 362 ficheros**.

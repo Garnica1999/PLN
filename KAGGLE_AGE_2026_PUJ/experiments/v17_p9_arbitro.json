@@ -1,0 +1,191 @@
+{
+  "fase": "V17 · P9 arbitro aprendido del experto selectivo",
+  "fecha": "2026-09-26",
+  "n_entradas_arbitro": 47,
+  "entradas_nuevas": 0,
+  "arbitro": {
+    "modelo": "LogReg",
+    "C": 0.2,
+    "fraccion_umbral": 0.25,
+    "umbrales": [
+      0.1,
+      0.2,
+      0.3,
+      0.4,
+      0.5,
+      0.6,
+      0.7,
+      0.8,
+      0.9
+    ],
+    "protocolo": "anidado en tres niveles"
+  },
+  "referencia": {
+    "macro_f1": 0.6005,
+    "por_fold": [
+      0.6007,
+      0.605,
+      0.6032,
+      0.6004,
+      0.5928
+    ]
+  },
+  "candidata": {
+    "macro_f1": 0.6004,
+    "por_fold": [
+      0.6005,
+      0.605,
+      0.603,
+      0.6002,
+      0.5928
+    ]
+  },
+  "delta": -0.0001,
+  "folds_positivos": 0,
+  "bootstrap_ic95": [
+    -0.000172,
+    -5.5e-05,
+    0.0
+  ],
+  "criterios": {
+    "efecto_minimo": false,
+    "folds_positivos": false,
+    "significacion": false
+  },
+  "adopta": false,
+  "activacion": [
+    {
+      "Fase": "5 folds",
+      "Fold": 0,
+      "Frontera": "18-24|25-34",
+      "Umbral": 0.7,
+      "Activadas": 780,
+      "Rescate": 1,
+      "Dano": 5,
+      "Neto": -4,
+      "Neto_umbral_interno": 0,
+      "N_train_frontera": 20132,
+      "MacroF1_fold": 0.6005
+    },
+    {
+      "Fase": "5 folds",
+      "Fold": 0,
+      "Frontera": "25-34|35-49",
+      "Umbral": 0.9,
+      "Activadas": 1134,
+      "Rescate": 0,
+      "Dano": 1,
+      "Neto": -1,
+      "Neto_umbral_interno": 0,
+      "N_train_frontera": 19164,
+      "MacroF1_fold": 0.6005
+    },
+    {
+      "Fase": "5 folds",
+      "Fold": 1,
+      "Frontera": "18-24|25-34",
+      "Umbral": 0.9,
+      "Activadas": 334,
+      "Rescate": 0,
+      "Dano": 0,
+      "Neto": 0,
+      "Neto_umbral_interno": 0,
+      "N_train_frontera": 20200,
+      "MacroF1_fold": 0.605
+    },
+    {
+      "Fase": "5 folds",
+      "Fold": 1,
+      "Frontera": "25-34|35-49",
+      "Umbral": 0.9,
+      "Activadas": 1099,
+      "Rescate": 0,
+      "Dano": 0,
+      "Neto": 0,
+      "Neto_umbral_interno": 0,
+      "N_train_frontera": 18923,
+      "MacroF1_fold": 0.605
+    },
+    {
+      "Fase": "5 folds",
+      "Fold": 2,
+      "Frontera": "18-24|25-34",
+      "Umbral": 0.6,
+      "Activadas": 818,
+      "Rescate": 1,
+      "Dano": 9,
+      "Neto": -8,
+      "Neto_umbral_interno": 1,
+      "N_train_frontera": 20497,
+      "MacroF1_fold": 0.603
+    },
+    {
+      "Fase": "5 folds",
+      "Fold": 2,
+      "Frontera": "25-34|35-49",
+      "Umbral": 0.9,
+      "Activadas": 1256,
+      "Rescate": 0,
+      "Dano": 0,
+      "Neto": 0,
+      "Neto_umbral_interno": 0,
+      "N_train_frontera": 19128,
+      "MacroF1_fold": 0.603
+    },
+    {
+      "Fase": "5 folds",
+      "Fold": 3,
+      "Frontera": "18-24|25-34",
+      "Umbral": 0.7,
+      "Activadas": 609,
+      "Rescate": 1,
+      "Dano": 7,
+      "Neto": -6,
+      "Neto_umbral_interno": 0,
+      "N_train_frontera": 20573,
+      "MacroF1_fold": 0.6002
+    },
+    {
+      "Fase": "5 folds",
+      "Fold": 3,
+      "Frontera": "25-34|35-49",
+      "Umbral": 0.9,
+      "Activadas": 1221,
+      "Rescate": 0,
+      "Dano": 0,
+      "Neto": 0,
+      "Neto_umbral_interno": 0,
+      "N_train_frontera": 19313,
+      "MacroF1_fold": 0.6002
+    },
+    {
+      "Fase": "5 folds",
+      "Fold": 4,
+      "Frontera": "18-24|25-34",
+      "Umbral": 0.9,
+      "Activadas": 327,
+      "Rescate": 0,
+      "Dano": 0,
+      "Neto": 0,
+      "Neto_umbral_interno": 0,
+      "N_train_frontera": 20506,
+      "MacroF1_fold": 0.5928
+    },
+    {
+      "Fase": "5 folds",
+      "Fold": 4,
+      "Frontera": "25-34|35-49",
+      "Umbral": 0.9,
+      "Activadas": 1056,
+      "Rescate": 0,
+      "Dano": 0,
+      "Neto": 0,
+      "Neto_umbral_interno": -1,
+      "N_train_frontera": 19476,
+      "MacroF1_fold": 0.5928
+    }
+  ],
+  "linea_base_escuchar_siempre": -0.008,
+  "techo_teorico": 0.0107,
+  "segundos": 71.2
+}
