@@ -1,0 +1,209 @@
+{
+  "experimento": "V8-09 (analisis)",
+  "fecha": "2026-09-26T04:00:27+00:00",
+  "referencia_lb": 0.78306,
+  "sensibilidad_por_acierto": 0.000793,
+  "ruido_en_aciertos": 19.2,
+  "sondas": [
+    {
+      "id": "v01_baseline_tfidf_lr",
+      "lb": 0.75677,
+      "d_lb": -0.02629,
+      "aciertos_netos": -33.2,
+      "tasa": 0.3209,
+      "d_tasa": -0.0436,
+      "celdas": 231,
+      "local": "0.75778",
+      "cuartil": "baja"
+    },
+    {
+      "id": "v02_lr_union",
+      "lb": 0.77993,
+      "d_lb": -0.00313,
+      "aciertos_netos": -3.9,
+      "tasa": 0.3385,
+      "d_tasa": -0.026,
+      "celdas": 98,
+      "local": "0.7927",
+      "cuartil": "baja"
+    },
+    {
+      "id": "v05_optuna",
+      "lb": 0.77602,
+      "d_lb": -0.00704,
+      "aciertos_netos": -8.9,
+      "tasa": 0.355,
+      "d_tasa": -0.0095,
+      "celdas": 125,
+      "local": "0.8039",
+      "cuartil": "baja"
+    },
+    {
+      "id": "v11_candidate_c",
+      "lb": 0.7815,
+      "d_lb": -0.00156,
+      "aciertos_netos": -2.0,
+      "tasa": 0.3559,
+      "d_tasa": -0.0087,
+      "celdas": 142,
+      "local": "0.7797",
+      "cuartil": "baja"
+    },
+    {
+      "id": "v09_p5_c_por_etiqueta",
+      "lb": 0.77781,
+      "d_lb": -0.00525,
+      "aciertos_netos": -6.6,
+      "tasa": 0.3579,
+      "d_tasa": -0.0066,
+      "celdas": 123,
+      "local": "0.777518",
+      "cuartil": "media-baja"
+    },
+    {
+      "id": "v09_candidate_a",
+      "lb": 0.77895,
+      "d_lb": -0.00411,
+      "aciertos_netos": -5.2,
+      "tasa": 0.3582,
+      "d_tasa": -0.0064,
+      "celdas": 128,
+      "local": "0.7809",
+      "cuartil": "media-baja"
+    },
+    {
+      "id": "v08_p1_fold_ensemble",
+      "lb": 0.7747,
+      "d_lb": -0.00836,
+      "aciertos_netos": -10.5,
+      "tasa": 0.3588,
+      "d_tasa": -0.0058,
+      "celdas": 100,
+      "local": "0.777211",
+      "cuartil": "media-baja"
+    },
+    {
+      "id": "v10_candidate_b",
+      "lb": 0.77978,
+      "d_lb": -0.00328,
+      "aciertos_netos": -4.1,
+      "tasa": 0.359,
+      "d_tasa": -0.0055,
+      "celdas": 99,
+      "local": "0.7793",
+      "cuartil": "media-alta"
+    },
+    {
+      "id": "v12_p7_promedio_repeticiones",
+      "lb": 0.77122,
+      "d_lb": -0.01184,
+      "aciertos_netos": -14.9,
+      "tasa": 0.3608,
+      "d_tasa": -0.0038,
+      "celdas": 127,
+      "local": "0.782277",
+      "cuartil": "media-alta"
+    },
+    {
+      "id": "v03_lr_union_thr",
+      "lb": 0.78306,
+      "d_lb": 0.0,
+      "aciertos_netos": 0.0,
+      "tasa": 0.3645,
+      "d_tasa": 0.0,
+      "celdas": 0,
+      "local": "0.7989",
+      "cuartil": "media-alta"
+    },
+    {
+      "id": "v07_robustez_mindf5",
+      "lb": 0.77034,
+      "d_lb": -0.01272,
+      "aciertos_netos": -16.0,
+      "tasa": 0.3657,
+      "d_tasa": 0.0012,
+      "celdas": 108,
+      "local": "0.7993",
+      "cuartil": "alta"
+    },
+    {
+      "id": "v06_robustez_c1",
+      "lb": 0.77227,
+      "d_lb": -0.01079,
+      "aciertos_netos": -13.6,
+      "tasa": 0.3715,
+      "d_tasa": 0.0069,
+      "celdas": 68,
+      "local": "0.7929",
+      "cuartil": "alta"
+    },
+    {
+      "id": "v08_meta_v2",
+      "lb": 0.78163,
+      "d_lb": -0.00143,
+      "aciertos_netos": -1.8,
+      "tasa": 0.3862,
+      "d_tasa": 0.0217,
+      "celdas": 199,
+      "local": "0.7874",
+      "cuartil": "alta"
+    },
+    {
+      "id": "v04_ens04_mediana",
+      "lb": 0.7751,
+      "d_lb": -0.00796,
+      "aciertos_netos": -10.0,
+      "tasa": 0.3905,
+      "d_tasa": 0.026,
+      "celdas": 98,
+      "local": "0.7985",
+      "cuartil": "alta"
+    }
+  ],
+  "resumen_por_cuartil": [
+    {
+      "cuartil": "baja",
+      "n": 4,
+      "tasa_media": 0.342575,
+      "lb_medio": 0.773555,
+      "lb_minimo": 0.75677,
+      "lb_maximo": 0.7815
+    },
+    {
+      "cuartil": "media-baja",
+      "n": 3,
+      "tasa_media": 0.3583,
+      "lb_medio": 0.7771533333333333,
+      "lb_minimo": 0.7747,
+      "lb_maximo": 0.77895
+    },
+    {
+      "cuartil": "media-alta",
+      "n": 3,
+      "tasa_media": 0.36143333333333333,
+      "lb_medio": 0.77802,
+      "lb_minimo": 0.77122,
+      "lb_maximo": 0.78306
+    },
+    {
+      "cuartil": "alta",
+      "n": 4,
+      "tasa_media": 0.378475,
+      "lb_medio": 0.774835,
+      "lb_minimo": 0.77034,
+      "lb_maximo": 0.78163
+    }
+  ],
+  "correlacion_lineal": 0.4686,
+  "sondas_dentro_del_ruido": 13,
+  "total_sondas": 14,
+  "revision_error_diseno": {
+    "modelos_en_el_oof": 5,
+    "modelos_en_la_submission": 25,
+    "descripcion_de_la_submission": "identicas a V03",
+    "consecuencia": "El OOF mide el promedio de cinco modelos y la submission predice con veinticinco. Promediar mas modelos contrae mas las probabilidades, y con los umbrales congelados de V03 ese efecto de escala desplaza la decision. Es el mismo mecanismo que hacia perder a P1, medido alli en +0,001334 de contraccion.",
+    "tasa_de_la_submission": 0.3608,
+    "tasa_de_la_referencia": 0.364529,
+    "contraccion_observada": -0.0037
+  }
+}

@@ -2542,3 +2542,80 @@ evidencia, experimento, resultado, conclusion final.
   externo, y el filtro de V8-02 dice que la tasa de acierto no llega por poco. **Se generan las
   dos submissions y la del ensemble de repeticiones es la que tiene merits propio para
   enviar.** El envio es manual, por D-063, y el usuario decide.
+
+## D-065 - Las dos sondas de la fase v8 pierden, y el analisis de la curva de transferencia cierra la calibracion por tasa
+
+- **Contexto**: P5 dio 0,77781 y el promedio de cinco repeticiones dio 0,77122, frente a los
+  0,78306 de V03. La segunda era **la mejor linea local de la fase**, con +0,005066 y 4 de 5
+  pliegues a favor. Con ello son cinco los casos documentados de mejora local con perdida
+  externa: R1-C1, R2-MINDF5, OPT-01, P1 y este.
+- **Decision 1, ninguna de las dos sondas se distingue de V03**. Convertidas a aciertos netos
+  con la sensibilidad de V8-02, son **-6,6 y -14,9**, frente a una banda de ruido de 19,2. Es
+  decir, las dos caen dentro de la banda. **No hay evidencia de que sean peores: hay ausencia de
+  efecto**, y eso es un resultado distinto del que el orden local sugeria.
+- **Decision 2, se revisa un error de diseno mio en la sonda del ensemble, y no se esconde**. El
+  OOF que dio +0,005066 promedia **cinco** modelos, uno por repeticion, porque cada fila solo
+  puede recibir en cada repeticion la prediccion de un modelo que no la entreno. La submission
+  promedia el promedio de los cinco pliegues de cada repeticion, o sea **veinticinco** modelos.
+  **Se valido un ensemble de cinco y se envio uno de veinticinco.** Promediar mas modelos
+  contrae mas las probabilidades, y con los umbrales congelados de V03 ese efecto de escala
+  desplaza la decision: es el mismo mecanismo que hacia perder a P1, alli medido en +0,001334 de
+  contraccion, y aqui la contraccion observada es de -0,0037 en la tasa media. La correccion que
+  exige es que la submission promedia cinco modelos y no veinticinco.
+- **Decision 3, el analisis que de ahi sale cierra la calibracion por tasa, y es la conclusion
+  mas solida de quince sondas**. Ordenando las catorce sondas comparables por su tasa de
+  positivos predicha y agrupandolas en cuartiles, la relacion con el leaderboard es una
+  **curva con maximo**, no una recta:
+
+  | cuartil de tasa | sondas | tasa media | LB medio |
+  |---|---|---|---|
+  | baja | 4 | 0,3426 | 0,77355 |
+  | media-baja | 3 | 0,3583 | 0,77715 |
+  | media-alta | 3 | 0,3614 | 0,77802 |
+  | alta | 4 | 0,3785 | 0,77484 |
+
+  **El maximo esta en el cuartil de V03, y moverse en cualquier direccion cuesta.** La
+  correlacion lineal de +0,469 es espuria: resume con un coeficiente una campana.
+- **Decision 4, eso responde a la pregunta que llevaba P8 de la especificacion**. La
+  calibracion condicionada al resultado externo era la unica linea de decision que quedaba por
+  medir, y **no hay margen en la dimension de la tasa de positivos**. La F1 como funcion de esa
+  tasa es unimodal, y V03 se ajusto a su maximo. Se cierra la familia entera de
+  calibraciones, umbrales y pesos por etiqueta, que es donde el proyecto lleva varias fases
+  buscando.
+- **Decision 5, lo que el analisis no cierra, y conviene no cerrarlo**. Trece de catorce sondas
+  estan dentro de la banda de ruido y **V03 es el maximo de las quince**, sin que nada lo
+  supere. Hay dos explicaciones posibles y **con este tamano de conjunto no se pueden
+  distinguir**: que V03 sea genuinamente el mejor modelo, o que sea el maximo de ruido de una
+  serie de comparaciones. Elegir la hipotesis que mas gusta seria exactamente lo que el proyecto
+  lleva haciendo desde la fase v5, asi que se deja escrita la ambiguedad.
+- **Decision 6, sobre el objetivo de 0,80, con el numero delante**. Esta a **+0,01694** de la
+  referencia, o sea **1,1 veces el ruido**, y ninguna de las quince sondas se acerca: la
+  segunda mejor esta a -0,00143. Alcanzarlo exigiria un cambio de una magnitud que ninguna de
+  las lineas medidas del proyecto ha producido. **El objetivo sigue siendo legitimo y el
+  camino medido no lo alcanza**, y conviene que ambas cosas esten escritas a la vez.
+
+## D-066 - La hipotesis del error de diseno queda refutada por medicion directa
+
+- **Contexto**: D-065 afirmaba que la perdida de 0,01184 de la sonda del ensemble se debia al
+  desacople entre un OOF de cinco modelos y una submission de veinticinco, porque promediar mas
+  modelos contrae mas las probabilidades.
+- **Decision 1, se construye la version coherente y se mide, y la hipotesis es falsa**. Un
+  modelo por repeticion, que es lo que el OOF promedia, da una submission **identica** a la de
+  veinticinco: **cero celdas de diferencia**, y la misma tasa de positivos, 0,3608. La
+  contraccion de probabilidades al promediar cinco modelos es de **+0,000591**, de milésimas.
+  Promediar los cinco pliegues de cada repeticion no produce una decision distinta de promediar
+  uno por repeticion, porque los modelos de pliegues de una misma repeticion coinciden entre si.
+- **Decision 2, el desacople existia pero era inocuo, y eso hay que decirlo con precision**. El
+  error de diseno de D-065 era real en el procedimiento y falso en su consecuencia: se valido
+  un ensemble de cinco y se envio uno de veinticinco, pero la prediccion resultante es la misma.
+  **La perdida de 0,01184 no queda explicada por el efecto de escala**, y sigue siendo lo que
+  era: -14,9 aciertos netos dentro de una banda de ruido de 19,2.
+- **Decision 3, la recomendacion de no enviar se mantiene, pero por otra razon**. La version
+  corregida predice una tasa de positivos de 0,3608 frente a los 0,3645 de V03, es decir **por
+  debajo**, y la curva de transferencia de D-065 situa el maximo exactamente en la tasa de V03.
+  Enviarla seria gastar una sonda en la apuesta que la curva dice que pierde. **El envio es
+  manual por D-063.**
+- **Decision 4, que se sepa lo que se ha gastado**. Tres sondas en la fase v8: P1 dio 0,77470, P5
+  dio 0,77781 y el ensemble dio 0,77122, frente a los 0,78306 de V03. Quince sondas en total a lo
+  largo del proyecto, **trece de las catorce comparables dentro de la banda de ruido**, y V03
+  como maximo de las quince.

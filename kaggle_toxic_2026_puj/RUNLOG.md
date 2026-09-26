@@ -1148,3 +1148,23 @@ Registro cronologico de ejecuciones. Formato:
   milesimas**. Submission v12, 127 celdas. **El riesgo a ponderar antes de enviar: P1
   promediaba cinco modelos de la misma particion y perdio 0,00836 en el externo.**
   **D-064. 0 submissions automaticas, 4 disponibles para envio manual.**
+- v8 resultados de las dos sondas y su analisis | registro y dos scripts de analisis
+  **P5 dio 0,77781 y el ensemble dio 0,77122, frente a los 0,78306 de V03.** En aciertos netos
+  son -6,6 y -14,9, dentro de una banda de ruido de 19,2: **no hay evidencia de que sean peores,
+  hay ausencia de efecto.** El ensemble era la mejor linea local de la fase, con +0,005066 y 4
+  de 5 pliegues, y su intervalo de confianza incluia cero, que era la senal de aviso ignorada.
+  **A2 de la curva de transferencia (V8-09)**: ordenando las catorce sondas comparables por su
+  tasa de positivos predicha, la relacion con el leaderboard es una **curva con maximo**:
+  cuartil bajo 0,77355, medio-bajo 0,77715, medio-alto **0,77802**, alto 0,77484. **El maximo
+  esta en la tasa de V03.** La correlacion lineal de +0,469 es espuria. Eso cierra de raiz la
+  familia de calibraciones, umbrales y pesos por etiqueta, y responde a la pregunta que llevaba
+  P8: no hay margen en la dimension de la tasa de positivos.
+  **A3 de la correccion (V8-10)**: se construye el ensemble de cinco modelos, uno por repeticion,
+  que es lo que el OOF promedia, y **da una submission identica a la de veinticinco, cero celdas
+  de diferencia**. La hipotesis del error de diseno **queda refutada por medicion directa**: el
+  desacople existia en el procedimiento y era inocuo en su consecuencia, y la perdida de
+  0,01184 no queda explicada por el efecto de escala. La contraccion real es de +0,000591.
+  **Recomendacion: no enviar la v13**, porque predice una tasa de positivos por debajo de V03 y
+  la curva dice que ese lado pierde. Quedan 15 sondas, 13 de 14 comparables dentro del ruido, y
+  V03 como maximo.
+  **D-065 y D-066. 3 sondas en la fase v8, 6 submissions escritas, 0 automáticas.**
