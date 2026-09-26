@@ -39,6 +39,7 @@ import time
 from pathlib import Path
 
 import numpy as np
+import pandas as pd
 from sklearn.metrics import f1_score
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -63,7 +64,7 @@ RESULTADO = cfg.EXPERIMENTS / "v17_p17b_pronombres.json"
 DELTA_MINIMO = 0.003
 FOLDS_POSITIVOS_MINIMOS = 4
 RESCATE_MINIMO = 1000
-PORCETAJE_ERROR = 0.015
+PORCENTAJE_ERROR = 0.015  # 1,5 % de los errores de V12
 
 
 def f1(clase_true: np.ndarray, predicciones: np.ndarray) -> float:
@@ -140,7 +141,7 @@ def main() -> int:
                           f"· neto {medidas['neto']:+,}")
         lineas += ["", "## 2. Decision", "",
                    f"El neto {rescate - dano:+,} **no alcanza** el umbral de {umbral:,} "
-                   f"({PORCETAJE_ERROR:.1%} de los errores), y ademas "
+                   f"({PORCENTAJE_ERROR:.1%} de los errores), y ademas "
                    + ("ninguna" if not any(m["neto"] > 0 for m in rescate_frontera.values())
                       else "no todas") + " frontera central mejora. Un bloque que solo recupera "
                    f"{rescate:,} filas de {errores:,} no puede desplazar la macro-F1 tres decimales.",

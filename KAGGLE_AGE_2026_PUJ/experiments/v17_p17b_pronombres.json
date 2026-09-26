@@ -1,0 +1,27 @@
+{
+  "fase": "V13 · P17b pronombres",
+  "fecha": "2026-09-25",
+  "etapa": "1 (pre-chequeo) y cierre: no procede fusion",
+  "bloque_macro_f1": 0.1922,
+  "referencia_macro_f1": 0.6005,
+  "errores_v12": 67610,
+  "rescate": 12043,
+  "dano": 76118,
+  "neto": -64075,
+  "umbral": 1014,
+  "pasa_prechequeo": false,
+  "rescate_por_frontera": {
+    "18-24|25-34": {
+      "rescate": 2199,
+      "dano": 25281,
+      "neto": -23082
+    },
+    "25-34|35-49": {
+      "rescate": 2289,
+      "dano": 25627,
+      "neto": -23338
+    }
+  },
+  "adopta": false,
+  "segundos": 47.2
+}

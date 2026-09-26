@@ -149,7 +149,7 @@
       "categoria": "impersonal",
       "formas": "se lo le les",
       "documentos_con_la_categoria": 29344,
-      "apariciones_totales": 0,
+      "apariciones_totales": 36290,
       "formas_sobre_el_minimo": 4,
       "formas_totales": 4,
       "detalle": "se:15,400 lo:11,464 le:4,526 les:1,742"
@@ -158,7 +158,7 @@
       "categoria": "ambigua",
       "formas": "el los las una un este esta esto ese esa aquel",
       "documentos_con_la_categoria": 74269,
-      "apariciones_totales": 0,
+      "apariciones_totales": 114140,
       "formas_sobre_el_minimo": 10,
       "formas_totales": 11,
       "detalle": "el:34,240 los:17,245 las:10,540 una:9,100 un:14,305 este:4,288 esta:6,814 esto:1,603 ese:1,538 esa:1,507 aquel:85"
@@ -198,5 +198,5 @@
     }
   ],
   "supera_el_azar": true,
-  "segundos": 161.2
+  "segundos": 222.5
 }

@@ -17,8 +17,8 @@ El vocabulario es **cerrado y propio** (regla R-1): palabras funcionales del esp
 | segunda | 15,406 | 19,615 | 9/13 |
 | tercera_singular | 40,158 | 50,419 | 4/9 |
 | tercera_plural | 743 | 762 | 1/2 |
-| impersonal | 29,344 | 0 | 4/4 |
-| ambigua | 74,269 | 0 | 10/11 |
+| impersonal | 29,344 | 36,290 | 4/4 |
+| ambigua | 74,269 | 114,140 | 10/11 |
 
 Umbral de permanencia de una forma: 200 documentos. El detalle de cobertura forma por forma está en `reports/v17_pronombres_cobertura.csv`.
 
