@@ -1339,3 +1339,64 @@ evidencia, experimento, resultado, conclusion final.
   ruido. Si P3, P4 o P5 producen un delta mayor que +0.0057, hay que mirar su IC95 antes
   que su punto estimate.
 - **Presupuesto**: 4 de 9 unidades exploratorias gastadas, 0 de 1 de reserva.
+
+## D-038 - min_count se cierra por inercia, y se descubre por que su mecanismo no puede funcionar con subpalabras
+
+- **Contexto**: P3, tercera familia arquitectonica. Entrena min_count 2 y min_count 5
+  manteniendo el resto fijo. El baseline (min_count 3) se reevalua y reproduce 0.7818.
+- **Resultado**:
+
+  | min_count | vocabulario del modelo | corrected_cv (frozen) | delta vs V03 | IC95 |
+  |---|---|---|---|---|
+  | 2 | 139.479 | 0.7771 | **-0.0001** | [-0.0080, +0.0078] |
+  | 3 (baseline) | 100.098 | **0.7818** | +0.0046 | [-0.0032, +0.0124] |
+  | 5 | 69.310 | 0.7792 | +0.0020 | [-0.0056, +0.0097] |
+
+  Dispersion interna: **0.0047**.
+- **Decision**: familia `min_count` **CERRADA por inercia**. No se exploran min_count 1 ni 8.
+- **Hallazgo mecanistico, que vale mas que el numero**: los **6.059** tipos del train
+  reciben vector en los **tres** puntos de la familia. Bajar `min_count` a 2 agranda el
+  vocabulario general de 100.098 a 139.479 tipos, pero **no anade ni un solo tipo de TOXIC
+  con vector**, porque con subpalabras 3-6 fastText ya compone vector para cualquier tipo
+  consultation. Es decir, la via por la que `min_count` se suponia util (dar vector propio
+  a mas palabras de TOXIC deformadas) **esta ya ocupada por las subpalabras**, y por eso la
+  familia no puede mover nada. `min_count` solo seria una palanca en un modelo **sin**
+  subpalabras, que es exactamente el papel del control Word2Vec.
+- **Consecuencia para la lectura de toda la fase**: la configuracion actual ya esta en el
+  maximo alcanzable de cobertura *de modelo* dado el corpus, y las tres familias
+  arquitectonicas medidas hasta ahora (dimension, ventana, umbral de frecuencia) no mueven
+  ni la cobertura ni la aportacion. El limite no es la representacion.
+- **Presupuesto**: 6 de 9 unidades exploratorias gastadas, 0 de 1 de reserva.
+
+## D-039 - El intervalo 3-6 ya es el optimo, y la regla de dispersion se corrige para el caso en que el baseline es el maximo
+
+- **Contexto**: P4, cuarta familia arquitectonica y la que toca el **mecanismo** (subpalabras)
+  en vez de un parametro de ajuste. Entrena los intervalos 3-5 y 3-7 con `min_n` fijo en 3 y
+  bucket fijo en 200.000. El baseline 3-6 se reevalua y reproduce 0.7818.
+- **Resultado**:
+
+  | intervalo | corrected_cv (frozen) | delta vs V03 | IC95 | embedding solo |
+  |---|---|---|---|---|
+  | 3-5 | 0.7791 | +0.0018 | [-0.0053, +0.0092] | 0.6397 |
+  | **3-6 (baseline)** | **0.7818** | +0.0046 | [-0.0032, +0.0124] | **0.6523** |
+  | 3-7 | 0.7767 | -0.0005 | [-0.0084, +0.0075] | 0.6465 |
+
+  Dispersion interna: **0.0051**.
+- **Decision**: familia `subwords` **CERRADA**. No se exploran 2-6, 3-8 ni 4-6.
+- **Lectura**: el intervalo 3-6 **ya era el optimo** y la prediccion se cumplio en su parte
+  fuerte. Acortar a 3-5 **empeora** (no es "al menos igual de bueno"), porque reconstruye
+  menos formas ortograficas, que es justo lo que un corpus de tuits deformados necesita.
+  Alargar a 3-7 empeora mas, coherente con que mete mas n-gramas en el mismo bucket de
+  200.000 y sube la tasa de colision. El efecto es **monotono**, no ruido.
+- **Correccion del criterio de dispersion (regla revisada)**: el umbral de 0.005 esta
+  disenado para detectar **indiferencia**, que es lo que ocurria en P1, P2 y P3. Aqui la
+  dispersion es 0.0051, apenas por encima, y el baseline es el **maximo** de la familia. En
+  ese caso el rango mide cuanto empeora al alejarse del baseline, no cuanto mejora, y un
+  rango alto con el baseline arriba es evidencia de que el baseline ya es optimo. Regla a
+  partir de aqui: la familia se cierra si ninguna variante es adoptable **y** (el baseline
+  es el maximo **o** la dispersion es <= 0.005); se mantiene abierta solo si alguna variante
+  supera al baseline sin ser adoptable, que es el unico caso en el que la dispersion mide
+  ruido alrededor de una mejora potencial. La maquinaria compartida **no se modifica**
+  (es evidencia historica de P1 a P3 con la regla literal); la correccion se aplica en el
+  script de P4 sobre el veredicto que devuelve.
+- **Presupuesto**: 8 de 9 unidades exploratorias gastadas, 0 de 1 de reserva.

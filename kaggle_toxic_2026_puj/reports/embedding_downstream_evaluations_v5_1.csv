@@ -86,3 +86,48 @@ EVAL-V51-084,experiments/ebd-19_(p2),FUSION-WS-3,FASTTEXT-WIKI-10M-WS-3,media,LR
 EVAL-V51-085,experiments/ebd-19_(p2),EMB-WS-7-LR,FASTTEXT-WIKI-10M-WS-7,media,LR,estandar,0.64979,-0.127421,,familia window
 EVAL-V51-086,experiments/ebd-19_(p2),EMB-WS-7-SVC,FASTTEXT-WIKI-10M-WS-7,media,SVC,estandar,0.651318,-0.125893,,familia window
 EVAL-V51-087,experiments/ebd-19_(p2),FUSION-WS-7,FASTTEXT-WIKI-10M-WS-7,media,LR + TF-IDF V03,l2,0.780581,0.00337,"[-0.00397, 0.011021]",familia window
+EVAL-V51-088,experiments/ebd-20_(p3),EMB-B0-200-LR,FASTTEXT-WIKI-10M,media,LR,estandar,0.652338,-0.124873,,familia min_count
+EVAL-V51-089,experiments/ebd-20_(p3),EMB-B0-200-SVC,FASTTEXT-WIKI-10M,media,SVC,estandar,0.655083,-0.122128,,familia min_count
+EVAL-V51-090,experiments/ebd-20_(p3),FUSION-B0-200,FASTTEXT-WIKI-10M,media,LR + TF-IDF V03,l2,0.781766,0.004555,"[-0.003161, 0.012409]",familia min_count
+EVAL-V51-091,experiments/ebd-20_(p3),EMB-MC-2-LR,FASTTEXT-WIKI-10M-MC-2,media,LR,estandar,0.651566,-0.125645,,familia min_count
+EVAL-V51-092,experiments/ebd-20_(p3),EMB-MC-2-SVC,FASTTEXT-WIKI-10M-MC-2,media,SVC,estandar,0.652205,-0.125006,,familia min_count
+EVAL-V51-093,experiments/ebd-20_(p3),FUSION-MC-2,FASTTEXT-WIKI-10M-MC-2,media,LR + TF-IDF V03,l2,0.777062,-0.000149,"[-0.007988, 0.007831]",familia min_count
+EVAL-V51-094,experiments/ebd-20_(p3),EMB-MC-5-LR,FASTTEXT-WIKI-10M-MC-5,media,LR,estandar,0.654657,-0.122554,,familia min_count
+EVAL-V51-095,experiments/ebd-20_(p3),EMB-MC-5-SVC,FASTTEXT-WIKI-10M-MC-5,media,SVC,estandar,0.65546,-0.121751,,familia min_count
+EVAL-V51-096,experiments/ebd-20_(p3),FUSION-MC-5,FASTTEXT-WIKI-10M-MC-5,media,LR + TF-IDF V03,l2,0.779209,0.001998,"[-0.005623, 0.009722]",familia min_count
+EVAL-V51-097,experiments/ebd-21_(p4),EMB-B0-200-LR,FASTTEXT-WIKI-10M,media,LR,estandar,0.652338,-0.124873,,familia subwords
+EVAL-V51-098,experiments/ebd-21_(p4),EMB-B0-200-SVC,FASTTEXT-WIKI-10M,media,SVC,estandar,0.655083,-0.122128,,familia subwords
+EVAL-V51-099,experiments/ebd-21_(p4),FUSION-B0-200,FASTTEXT-WIKI-10M,media,LR + TF-IDF V03,l2,0.781766,0.004555,"[-0.003161, 0.012409]",familia subwords
+EVAL-V51-100,experiments/ebd-21_(p4),EMB-SW-3-5-LR,FASTTEXT-WIKI-10M-SW-3-5,media,LR,estandar,0.639703,-0.137508,,familia subwords
+EVAL-V51-101,experiments/ebd-21_(p4),EMB-SW-3-5-SVC,FASTTEXT-WIKI-10M-SW-3-5,media,SVC,estandar,0.643373,-0.133838,,familia subwords
+EVAL-V51-102,experiments/ebd-21_(p4),FUSION-SW-3-5,FASTTEXT-WIKI-10M-SW-3-5,media,LR + TF-IDF V03,l2,0.779056,0.001845,"[-0.005262, 0.009182]",familia subwords
+EVAL-V51-103,experiments/ebd-21_(p4),EMB-SW-3-7-LR,FASTTEXT-WIKI-10M-SW-3-7,media,LR,estandar,0.646482,-0.130729,,familia subwords
+EVAL-V51-104,experiments/ebd-21_(p4),EMB-SW-3-7-SVC,FASTTEXT-WIKI-10M-SW-3-7,media,SVC,estandar,0.647748,-0.129463,,familia subwords
+EVAL-V51-105,experiments/ebd-21_(p4),FUSION-SW-3-7,FASTTEXT-WIKI-10M-SW-3-7,media,LR + TF-IDF V03,l2,0.776707,-0.000504,"[-0.008431, 0.007485]",familia subwords
+EVAL-V51-106,experiments/ebd-21_(p4),EMB-B0-200-LR,FASTTEXT-WIKI-10M,media,LR,estandar,0.652338,-0.124873,,familia subwords
+EVAL-V51-107,experiments/ebd-21_(p4),EMB-B0-200-SVC,FASTTEXT-WIKI-10M,media,SVC,estandar,0.655083,-0.122128,,familia subwords
+EVAL-V51-108,experiments/ebd-21_(p4),FUSION-B0-200,FASTTEXT-WIKI-10M,media,LR + TF-IDF V03,l2,0.781766,0.004555,"[-0.003161, 0.012409]",familia subwords
+EVAL-V51-109,experiments/ebd-21_(p4),EMB-SW-3-5-LR,FASTTEXT-WIKI-10M-SW-3-5,media,LR,estandar,0.639703,-0.137508,,familia subwords
+EVAL-V51-110,experiments/ebd-21_(p4),EMB-SW-3-5-SVC,FASTTEXT-WIKI-10M-SW-3-5,media,SVC,estandar,0.643373,-0.133838,,familia subwords
+EVAL-V51-111,experiments/ebd-21_(p4),FUSION-SW-3-5,FASTTEXT-WIKI-10M-SW-3-5,media,LR + TF-IDF V03,l2,0.779056,0.001845,"[-0.005262, 0.009182]",familia subwords
+EVAL-V51-112,experiments/ebd-21_(p4),EMB-SW-3-7-LR,FASTTEXT-WIKI-10M-SW-3-7,media,LR,estandar,0.646482,-0.130729,,familia subwords
+EVAL-V51-113,experiments/ebd-21_(p4),EMB-SW-3-7-SVC,FASTTEXT-WIKI-10M-SW-3-7,media,SVC,estandar,0.647748,-0.129463,,familia subwords
+EVAL-V51-114,experiments/ebd-21_(p4),FUSION-SW-3-7,FASTTEXT-WIKI-10M-SW-3-7,media,LR + TF-IDF V03,l2,0.776707,-0.000504,"[-0.008431, 0.007485]",familia subwords
+EVAL-V51-115,experiments/ebd-21_(p4),EMB-B0-200-LR,FASTTEXT-WIKI-10M,media,LR,estandar,0.652338,-0.124873,,familia subwords
+EVAL-V51-116,experiments/ebd-21_(p4),EMB-B0-200-SVC,FASTTEXT-WIKI-10M,media,SVC,estandar,0.655083,-0.122128,,familia subwords
+EVAL-V51-117,experiments/ebd-21_(p4),FUSION-B0-200,FASTTEXT-WIKI-10M,media,LR + TF-IDF V03,l2,0.781766,0.004555,"[-0.003161, 0.012409]",familia subwords
+EVAL-V51-118,experiments/ebd-21_(p4),EMB-SW-3-5-LR,FASTTEXT-WIKI-10M-SW-3-5,media,LR,estandar,0.639703,-0.137508,,familia subwords
+EVAL-V51-119,experiments/ebd-21_(p4),EMB-SW-3-5-SVC,FASTTEXT-WIKI-10M-SW-3-5,media,SVC,estandar,0.643373,-0.133838,,familia subwords
+EVAL-V51-120,experiments/ebd-21_(p4),FUSION-SW-3-5,FASTTEXT-WIKI-10M-SW-3-5,media,LR + TF-IDF V03,l2,0.779056,0.001845,"[-0.005262, 0.009182]",familia subwords
+EVAL-V51-121,experiments/ebd-21_(p4),EMB-SW-3-7-LR,FASTTEXT-WIKI-10M-SW-3-7,media,LR,estandar,0.646482,-0.130729,,familia subwords
+EVAL-V51-122,experiments/ebd-21_(p4),EMB-SW-3-7-SVC,FASTTEXT-WIKI-10M-SW-3-7,media,SVC,estandar,0.647748,-0.129463,,familia subwords
+EVAL-V51-123,experiments/ebd-21_(p4),FUSION-SW-3-7,FASTTEXT-WIKI-10M-SW-3-7,media,LR + TF-IDF V03,l2,0.776707,-0.000504,"[-0.008431, 0.007485]",familia subwords
+EVAL-V51-124,experiments/ebd-21_(p4),EMB-B0-200-LR,FASTTEXT-WIKI-10M,media,LR,estandar,0.652338,-0.124873,,familia subwords
+EVAL-V51-125,experiments/ebd-21_(p4),EMB-B0-200-SVC,FASTTEXT-WIKI-10M,media,SVC,estandar,0.655083,-0.122128,,familia subwords
+EVAL-V51-126,experiments/ebd-21_(p4),FUSION-B0-200,FASTTEXT-WIKI-10M,media,LR + TF-IDF V03,l2,0.781766,0.004555,"[-0.003161, 0.012409]",familia subwords
+EVAL-V51-127,experiments/ebd-21_(p4),EMB-SW-3-5-LR,FASTTEXT-WIKI-10M-SW-3-5,media,LR,estandar,0.639703,-0.137508,,familia subwords
+EVAL-V51-128,experiments/ebd-21_(p4),EMB-SW-3-5-SVC,FASTTEXT-WIKI-10M-SW-3-5,media,SVC,estandar,0.643373,-0.133838,,familia subwords
+EVAL-V51-129,experiments/ebd-21_(p4),FUSION-SW-3-5,FASTTEXT-WIKI-10M-SW-3-5,media,LR + TF-IDF V03,l2,0.779056,0.001845,"[-0.005262, 0.009182]",familia subwords
+EVAL-V51-130,experiments/ebd-21_(p4),EMB-SW-3-7-LR,FASTTEXT-WIKI-10M-SW-3-7,media,LR,estandar,0.646482,-0.130729,,familia subwords
+EVAL-V51-131,experiments/ebd-21_(p4),EMB-SW-3-7-SVC,FASTTEXT-WIKI-10M-SW-3-7,media,SVC,estandar,0.647748,-0.129463,,familia subwords
+EVAL-V51-132,experiments/ebd-21_(p4),FUSION-SW-3-7,FASTTEXT-WIKI-10M-SW-3-7,media,LR + TF-IDF V03,l2,0.776707,-0.000504,"[-0.008431, 0.007485]",familia subwords

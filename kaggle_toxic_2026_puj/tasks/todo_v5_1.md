@@ -31,9 +31,23 @@
 - [x] **Decision: CERRADA**. No ventanas 1, 2, 9 ni 15 (**D-037**)
 - [x] El script define la maquinaria de familia que reutilizan P3, P4 y P5
 
-## P3-P5 - min_count, subwords, negative (pendiente)
+## P3 - min_count (hecha, cerrada por inercia)
 
-- [ ] `embedding_14_min_count_v5_1.py` (2/9)
+- [x] `embedding_14_min_count_v5_1.py`: min_count 2 y 5 (2/9), control B0 reproduce v5
+- [x] mc2 0.7771 (-0.0001), mc3 0.7818 (mejor), mc5 0.7792; dispersion 0.0047
+- [x] **Decision: CERRADA**. No min_count 1 ni 8 (**D-038**)
+- [x] Hallazgo: 6.059/6.059 tipos con vector en los tres puntos; las subpalabras ya cubren
+      el mecanismo de min_count
+
+## P4 - subwords (hecha, cerrada)
+
+- [x] `embedding_15_subwords_v5_1.py`: intervalos 3-5 y 3-7 (2/9), control 3-6 reproduce v5
+- [x] 3-5 0.7791, 3-6 0.7818 (optimo), 3-7 0.7767; orden monotono
+- [x] **Decision: CERRADA** con la regla de dispersion revisada (**D-039**)
+
+## P5 - negative sampling (pendiente)
+
+- [ ] `embedding_16_negative_v5_1.py` (1/9)
 - [ ] `embedding_14_min_count_v5_1.py` (2/9)
 - [ ] `embedding_15_subwords_v5_1.py` (2/9)
 - [ ] `embedding_16_negative_v5_1.py` (1/9)

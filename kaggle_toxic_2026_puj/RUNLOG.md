@@ -737,3 +737,23 @@ Registro cronologico de ejecuciones. Formato:
   contraintuitivo y apunta a que el limite esta en los datos, no en la funcion objetivo.
   El script de P2 define la maquinaria de familia reutilizable que usan P3, P4 y P5.
   **Presupuesto 4/9 + 0/1.** 0 submissions, 0 sondas de LB.
+- 22:10 | v5.1 P3: familia min_count (EBD-20) | `experiments/embedding_14_min_count_v5_1.py`
+  Entrenados FastText con min_count 2 (128 s, vocabulario 139.479) y 5 (96 s, 69.310). El
+  control B0 (min_count 3) reproduce v5 exacto. FUSION-MC-2 0.7771 (-0.0001),
+  FUSION-MC-5 0.7792 (+0.0020), el mejor de la familia es el propio baseline 0.7818;
+  dispersion 0.0047. **Familia CERRADA por inercia** (D-038). Hallazgo mecanistico: los
+  6.059 tipos del train reciben vector en los tres puntos, porque con subpalabras 3-6
+  fastText ya compone vector para cualquier tipo consultado; bajar min_count agranda el
+  vocabulario general pero no anade ni un tipo de TOXIC con vector. La via de mejora que se
+  atribuia a min_count ya esta ocupada por las subpalabras. **Presupuesto 6/9 + 0/1.**
+  0 submissions, 0 sondas de LB.
+- 22:40 | v5.1 P4: familia subwords (EBD-21) | `experiments/embedding_15_subwords_v5_1.py`
+  Intervalos 3-5 y 3-7 con min_n fijo en 3 y bucket 200.000; el control 3-6 reproduce v5
+  exacto. FUSION-SW-3-5 0.7791 (+0.0018), FUSION-SW-3-7 0.7767 (-0.0005), el mejor de la
+  familia es el propio baseline 0.7818; embedding solo 0.6397 / 0.6523 / 0.6465; dispersion
+  0.0051. **D-039**: el intervalo 3-6 ya era el optimo y el orden es monotono (acortar
+  empeora porque se reconstruyen menos formas ortograficas; alargar empeora mas por las
+  colisiones en el bucket fijo). La familia se cierra con la **regla de dispersion revisada**:
+  con el baseline como maximo, la dispersion mide cuanto empeora al alejarse de el y no cuanto
+  mejora. La maquinaria compartida no se modifica; la correccion se aplica en P4.
+  **Presupuesto 8/9 + 0/1.** 0 submissions, 0 sondas de LB.

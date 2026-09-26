@@ -42,6 +42,10 @@ archivada de la autorizacion; se registra solo lo comunicado por el usuario.
 | D-036 | Gate de dos niveles: adoptable exige delta >= +0.005 **y** IC95 que excluya el 0 |
 | P2 window | CERRADA por inercia: ws3 0.7830 (+0.0057), ws5 0.7818, ws7 0.7806; mejor embedding aislado de v5 (0.6694) |
 | D-037 | La ventana no es la palanca y el orden es 3 > 5 > 7: menos contexto rinde mas con 10M tokens |
+| P3 min_count | CERRADA por inercia: mc2 0.7771, mc3 0.7818 (el mejor), mc5 0.7792; 6.059/6.059 tipos con vector en los tres |
+| D-038 | El mecanismo de min_count ya esta ocupado por las subpalabras: con 3-6, todo tipo consultado tiene vector |
+| P4 subwords | CERRADA: 3-5 0.7791, 3-6 0.7818 (el optimo), 3-7 0.7767; orden monotono |
+| D-039 | 3-6 ya es el optimo; regla de dispersion revisada cuando el baseline es el maximo de la familia |
 | GATE DE CIERRE | §29: A (+0.005 con estabilidad) / B (complementariedad robusta) / C (senal representacional fuerte) |
 
 ## Fase anterior: v4 «Advanced Research v4» (CERRADA el 2026-09-25)

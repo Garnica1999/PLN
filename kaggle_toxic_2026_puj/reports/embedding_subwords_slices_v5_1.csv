@@ -1,0 +1,111 @@
+rebanada,variante,n_filas,f1_por_celda
+interpersonal (TR=1),V03-CONGELADO,445,0.9129
+interpersonal (TR=1),EMB-B0-200-LR,445,0.8514
+interpersonal (TR=1),EMB-B0-200-SVC,445,0.8646
+interpersonal (TR=1),FUSION-B0-200,445,0.9199
+interpersonal (TR=1),EMB-SW-3-5-LR,445,0.8551
+interpersonal (TR=1),EMB-SW-3-5-SVC,445,0.8784
+interpersonal (TR=1),FUSION-SW-3-5,445,0.9173
+interpersonal (TR=1),EMB-SW-3-7-LR,445,0.8551
+interpersonal (TR=1),EMB-SW-3-7-SVC,445,0.8687
+interpersonal (TR=1),FUSION-SW-3-7,445,0.9195
+afiliacion (AG=1),V03-CONGELADO,567,0.8846
+afiliacion (AG=1),EMB-B0-200-LR,567,0.8231
+afiliacion (AG=1),EMB-B0-200-SVC,567,0.8427
+afiliacion (AG=1),FUSION-B0-200,567,0.8925
+afiliacion (AG=1),EMB-SW-3-5-LR,567,0.8196
+afiliacion (AG=1),EMB-SW-3-5-SVC,567,0.8458
+afiliacion (AG=1),FUSION-SW-3-5,567,0.8903
+afiliacion (AG=1),EMB-SW-3-7-LR,567,0.8286
+afiliacion (AG=1),EMB-SW-3-7-SVC,567,0.8502
+afiliacion (AG=1),FUSION-SW-3-7,567,0.8924
+sin_hate_explicito (HS=0),V03-CONGELADO,835,0.0667
+sin_hate_explicito (HS=0),EMB-B0-200-LR,835,0.0175
+sin_hate_explicito (HS=0),EMB-B0-200-SVC,835,0.0152
+sin_hate_explicito (HS=0),FUSION-B0-200,835,0.0657
+sin_hate_explicito (HS=0),EMB-SW-3-5-LR,835,0.0138
+sin_hate_explicito (HS=0),EMB-SW-3-5-SVC,835,0.0133
+sin_hate_explicito (HS=0),FUSION-SW-3-5,835,0.0653
+sin_hate_explicito (HS=0),EMB-SW-3-7-LR,835,0.0206
+sin_hate_explicito (HS=0),EMB-SW-3-7-SVC,835,0.0198
+sin_hate_explicito (HS=0),FUSION-SW-3-7,835,0.0614
+colectivos,V03-CONGELADO,93,0.574
+colectivos,EMB-B0-200-LR,93,0.4791
+colectivos,EMB-B0-200-SVC,93,0.5029
+colectivos,FUSION-B0-200,93,0.589
+colectivos,EMB-SW-3-5-LR,93,0.3978
+colectivos,EMB-SW-3-5-SVC,93,0.4365
+colectivos,FUSION-SW-3-5,93,0.5869
+colectivos,EMB-SW-3-7-LR,93,0.5221
+colectivos,EMB-SW-3-7-SVC,93,0.5487
+colectivos,FUSION-SW-3-7,93,0.5802
+insultos,V03-CONGELADO,855,0.8357
+insultos,EMB-B0-200-LR,855,0.7249
+insultos,EMB-B0-200-SVC,855,0.7221
+insultos,FUSION-B0-200,855,0.8389
+insultos,EMB-SW-3-5-LR,855,0.721
+insultos,EMB-SW-3-5-SVC,855,0.7258
+insultos,FUSION-SW-3-5,855,0.8394
+insultos,EMB-SW-3-7-LR,855,0.7269
+insultos,EMB-SW-3-7-SVC,855,0.7223
+insultos,FUSION-SW-3-7,855,0.8372
+elongaciones,V03-CONGELADO,57,0.6853
+elongaciones,EMB-B0-200-LR,57,0.5545
+elongaciones,EMB-B0-200-SVC,57,0.5992
+elongaciones,FUSION-B0-200,57,0.7221
+elongaciones,EMB-SW-3-5-LR,57,0.5252
+elongaciones,EMB-SW-3-5-SVC,57,0.549
+elongaciones,FUSION-SW-3-5,57,0.7221
+elongaciones,EMB-SW-3-7-LR,57,0.6629
+elongaciones,EMB-SW-3-7-SVC,57,0.6719
+elongaciones,FUSION-SW-3-7,57,0.7106
+coloquial,V03-CONGELADO,214,0.8177
+coloquial,EMB-B0-200-LR,214,0.6368
+coloquial,EMB-B0-200-SVC,214,0.6434
+coloquial,FUSION-B0-200,214,0.823
+coloquial,EMB-SW-3-5-LR,214,0.6548
+coloquial,EMB-SW-3-5-SVC,214,0.6561
+coloquial,FUSION-SW-3-5,214,0.8209
+coloquial,EMB-SW-3-7-LR,214,0.6698
+coloquial,EMB-SW-3-7-SVC,214,0.6726
+coloquial,FUSION-SW-3-7,214,0.822
+hashtags,V03-CONGELADO,144,0.5311
+hashtags,EMB-B0-200-LR,144,0.3493
+hashtags,EMB-B0-200-SVC,144,0.3616
+hashtags,FUSION-B0-200,144,0.5462
+hashtags,EMB-SW-3-5-LR,144,0.3075
+hashtags,EMB-SW-3-5-SVC,144,0.3371
+hashtags,FUSION-SW-3-5,144,0.531
+hashtags,EMB-SW-3-7-LR,144,0.3944
+hashtags,EMB-SW-3-7-SVC,144,0.4062
+hashtags,FUSION-SW-3-7,144,0.5367
+menciones,V03-CONGELADO,702,0.8462
+menciones,EMB-B0-200-LR,702,0.7374
+menciones,EMB-B0-200-SVC,702,0.7375
+menciones,FUSION-B0-200,702,0.8483
+menciones,EMB-SW-3-5-LR,702,0.7368
+menciones,EMB-SW-3-5-SVC,702,0.7391
+menciones,FUSION-SW-3-5,702,0.8488
+menciones,EMB-SW-3-7-LR,702,0.7274
+menciones,EMB-SW-3-7-SVC,702,0.7182
+menciones,FUSION-SW-3-7,702,0.846
+urls,V03-CONGELADO,458,0.6578
+urls,EMB-B0-200-LR,458,0.5304
+urls,EMB-B0-200-SVC,458,0.5488
+urls,FUSION-B0-200,458,0.6782
+urls,EMB-SW-3-5-LR,458,0.4768
+urls,EMB-SW-3-5-SVC,458,0.4969
+urls,FUSION-SW-3-5,458,0.6676
+urls,EMB-SW-3-7-LR,458,0.5425
+urls,EMB-SW-3-7-SVC,458,0.5638
+urls,FUSION-SW-3-7,458,0.6726
+cita,V03-CONGELADO,37,0.8449
+cita,EMB-B0-200-LR,37,0.6343
+cita,EMB-B0-200-SVC,37,0.6674
+cita,FUSION-B0-200,37,0.8393
+cita,EMB-SW-3-5-LR,37,0.5438
+cita,EMB-SW-3-5-SVC,37,0.5972
+cita,FUSION-SW-3-5,37,0.8569
+cita,EMB-SW-3-7-LR,37,0.6597
+cita,EMB-SW-3-7-SVC,37,0.6774
+cita,FUSION-SW-3-7,37,0.8501
