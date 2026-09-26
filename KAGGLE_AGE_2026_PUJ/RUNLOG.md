@@ -788,3 +788,25 @@ Después pide añadir además el paso de la **arquitectura del meta-modelo**.
   elemento de la tupla en vez de componerse, lo que dejaba maximos en `nan`.
 - `experiments.csv` pasa a **101 experimentos**. `reports/v17_master_results.csv` con 19 filas y
   `reports/v17_hypothesis_registry.csv` con 17. Auditoria de idioma: **0 errores sobre 362 ficheros**.
+
+## 2026-09-26 · V17 P5 y cierre de fase
+
+- **P5, meta-combinador local** (`scripts/v17_p5_combinador_local.py`): la pregunta es de
+  **combinacion**, no de seleccion. Un LogReg por frontera redistribuye la masa que V12 ya pone en
+  las dos clases del par, conservando el total, de modo que no puede mejorar las clases faciles ni
+  danar a las vecinas, y actua en todas las filas. La fuerza (de 0 a 1) se elige en un bloque
+  interior agrupado. Resultado: **0,6003, delta -0,0002, 1/5 folds**, y **las fronteras empeoran a
+  0,4953 y 0,4968**. La fuerza elegida en el bloque interior fue 1,00 en tres folds, lo que dice que
+  la senal interior no generaliza. **NO ADOPTAR**.
+- **Cierre** (`scripts/v17_cierre.py`): comparativa de candidatos, informe final, reproducibilidad y
+  cumplimiento, mas las dos figuras que faltaban (rendimiento global por candidato y evolucion
+  V12 -> V16 -> V17). **10 figuras** en total.
+- **Punto importante del cierre**: P9 y P5 cierran **las dos formulaciones posibles** de la via
+  local. Ninguna pista queda PROMISING ni FINALIST, y eso se declara en vez de dejar una pista
+  abierta por prudencia.
+- **Lo que queda abierto no es un experimento**: los margenes de pares ya son entradas de V12 y V12
+  no los explota. Eso exige cambiar la funcion objetivo, no anadir otra compuerta.
+- **Entregable declarado pendiente**: los resultados no estan volcados al notebook consolidado. Es
+  trabajo de redaccion y queda dicho en `reports/v17_compliance.md`.
+- `experiments.csv` pasa a **102 experimentos**. **D-047** en `DECISIONS.md`. Auditoria de idioma:
+  **0 errores sobre 370 ficheros**. Sin push.

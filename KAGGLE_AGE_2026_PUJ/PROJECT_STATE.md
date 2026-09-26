@@ -120,6 +120,38 @@
   `scripts/v15_v16_tablas.py` (repara la tabla de fronteras de V15b y V16, sin tocar cifras).
   `experiments.csv` con **94 experimentos**. Auditoría de idioma: 0 errores.
 
+## V17 · ESPECIALISTAS DE FRONTERA Y DECISION LOCAL (2026-09-26) CERRADA — sin adopciones (D-047)
+- **Pregunta**: ¿la senal que V16 encontro en las dos fronteras centrales puede convertirse en
+  ganancia global con especialistas entrenados para esas fronteras?
+- **Respuesta: no, y el motivo esta medido.** La senal existe y es grande; lo que no existe es una
+  forma de identificarla.
+- **Referencia reconciliada**: 0,6004 y 0,6005 son **dos estimadores** del mismo macro-F1 (pooled
+  0,6005017473 frente a media de folds 0,6004103057; diferencia 9,14e-05, efecto Jensen).
+  **Canonico 0,6005 pooled.** A2 de V16 se reproduce.
+- **La complementariedad local es real y grande**: el especialista de pares **ya existia** (E-028a)
+  y saca **0,6864 y 0,7218** en las filas de cada frontera frente a **0,4963 y 0,4974** de V12.
+  Resuelve 14.356 y 15.571 filas, rompe 3.519 y 2.872. Techo con enrutamiento: **0,7481 y 0,7726**.
+- **El mecanismo**: los errores de V12 en la frontera son **errores confiados** (separacion 0,809
+  cuando el especialista acierta frente a 0,539 cuando acierta V12), y solo el 12,7 % y el 8,0 % de
+  las victorias del especialista caen dentro de la region de frontera. Por eso toda compuerta de
+  ambiguedad falla: no hay banda de confianza que discrimine.
+- **Ninguna formulacion funciona**: compuerta +0,0002 · regla conjunta +0,0000 · **P9** arbitro
+  aprendido (47 columnas existentes, protocolo anidado) **-0,0001 y 0/5 folds** · **P5**
+  combinador local **-0,0002, 1/5 folds, y las fronteras empeoran**. El techo con arbitro perfecto
+  seria **+0,0107**, que supera el gate de adopcion: el problema nunca fue el techo.
+- **Leccion accionable**: los margenes de pares **ya son entradas de V12** y V12 no los explota,
+  cuando por si solos valen 0,6864 y 0,7218 en las filas de su frontera. Eso no se arregla con otra
+  compuerta: **exige cambiar la funcion objetivo**, que hoy es macro-F1 sobre seis clases y no sobre
+  las fronteras.
+- **Entregables**: `reports/v17_final_research.md`, `v17_reproducibility.md`, `v17_compliance.md`,
+  `v17_candidate_comparison.csv`, `v17_master_results.csv`, `v17_hypothesis_registry.csv`,
+  `v17_gap_audit.{md,csv}`, `v17_member_boundary_matrix.csv`, `v17_error_intersection.csv`,
+  `v17_boundary_analysis.csv`, informes de cada fase y **10 figuras**.
+  `experiments.csv` con **102 experimentos**. Auditoria de idioma: 0 errores.
+- **Pendiente declarado**: los resultados no se han volcado al notebook consolidado. Es trabajo de
+  redaccion, no de medicion, y queda declarado en `reports/v17_compliance.md` en vez de darse por
+  hecho.
+
 ## Fase actual
 - **FASE DE LEXICONES (2026-09-25) CERRADA — línea cerrada (D-039).** 24 subcategorías léxicas
   (registro, etapas de vida, dominios temáticos), 1.369 entradas efectivas y 72 features

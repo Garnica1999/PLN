@@ -47,6 +47,7 @@ EXPERIMENTOS = {
     "P8": ("experiments/v17_p8_perfil_confianza.json", "perfil_de_confianza", None),
     "P1c": ("experiments/v17_p1c_regla_conjunta.json", "regla_conjunta", None),
     "P9": ("experiments/v17_p9_arbitro.json", "arbitro_aprendido", None),
+    "P5": ("experiments/v17_p5_combinador_local.json", "combinador_local", None),
 }
 #: Pistas del brief que todavia no se han ejecutado, con su hipotesis y su riesgo declarados.
 PENDIENTES = {
@@ -136,6 +137,7 @@ def main() -> int:
     p8 = leer("v17_p8_perfil_confianza.json")
     p1c = leer("v17_p1c_regla_conjunta.json")
     p9 = leer("v17_p9_arbitro.json")
+    p5 = leer("v17_p5_combinador_local.json")
 
     filas.append({
         "ID": "P0", "Track": "auditoria de brechas",
@@ -262,6 +264,27 @@ def main() -> int:
         "Decision": "cerrada: NO ADOPTAR, 0 de 5 folds y delta negativo",
         "Artifact": "reports/v17_p9_arbitro.md, features/v17_p9_oof.npy",
     })
+    filas.append({
+        "ID": "P5", "Track": "meta-combinador local por frontera",
+        "Hypothesis": "que combinar la evidencia dentro de la frontera rinda mas que seleccionarla",
+        "Mechanism": "LogReg local por frontera que redistribuye la masa que V12 ya pone en el par, "
+                     "conservando el total",
+        "Representation": "las mismas 47 columnas derivadas ya existentes",
+        "Model": "V12 con la masa del par redistribuida por el combinador local",
+        "Outer_Protocol": "CV agrupado de 5 folds",
+        "Inner_Protocol": "fuerza elegida en bloque interior agrupado por macro-F1 completa",
+        "Seed": cfg.SEED,
+        "Global_MacroF1": p5["candidata"]["macro_f1"],
+        "Fold_1": p5["candidata"]["por_fold"][0], "Fold_2": p5["candidata"]["por_fold"][1],
+        "Fold_3": p5["candidata"]["por_fold"][2], "Fold_4": p5["candidata"]["por_fold"][3],
+        "Fold_5": p5["candidata"]["por_fold"][4],
+        "Delta_Global": p5["delta"],
+        "Boundary_18_24_25_34": p5["fronteras_candidata"]["18-24|25-34"],
+        "Boundary_25_34_35_49": p5["fronteras_candidata"]["25-34|35-49"],
+        "Bootstrap_CI95": f"[{p5['bootstrap_ic95'][0]}; {p5['bootstrap_ic95'][1]}]",
+        "Decision": "cerrada: NO ADOPTAR, 1 de 5 folds y las fronteras empeoran",
+        "Artifact": "reports/v17_p5_combinador_local.md, features/v17_p5_oof.npy",
+    })
     for identificador in PENDIENTES:
         hipotesis, mecanismo, _, riesgo, coste = PENDIENTES[identificador]
         filas.append({
@@ -355,6 +378,22 @@ def main() -> int:
         "Result": "0,6004, delta -0,0001, 0 de 5 folds. El arbitro elige umbrales de 0,60 a 0,90, "
                   "activa entre 327 y 1.256 filas, y cuando actua pierde: 4 rescates contra 22 danos",
         "Decision": "cerrada: NO ADOPTAR. Confirma por falsacion la prediccion de P1c",
+    })
+    registros.append({
+        "ID": "H07",
+        "Hypothesis": "combinar la evidencia local dentro de la frontera rinde mas que seleccionar "
+                      "entre V12 y el especialista",
+        "Previous_Evidence": "P9, seleccion con arbitro aprendido: -0,0001 y 0 de 5 folds",
+        "Why_New": "P9 elegia entre dos modelos y P5 decide una sola clase; ademas el margen del par "
+                   "ya es entrada de V12 y no se explota",
+        "Expected_Mechanism": "repartir mejor la masa que V12 ya atribuye a las dos clases del par",
+        "Risk": "que repartir bien dentro del par no cambie nada global, porque el total del par ya "
+                "es pequeno",
+        "Cost": "baja: el combinador local es un LogReg pequeno",
+        "Protocol": "anidado: ajuste en las filas del par del train exterior, fuerza elegida en "
+                    "bloque interior",
+        "Result": "0,6003, delta -0,0002, 1 de 5 folds, y las fronteras empeoran a 0,4953 y 0,4968",
+        "Decision": "cerrada: NO ADOPTAR. Ni la seleccion ni la combinacion encuentran la senal",
     })
     for identificador, (hipotesis, mecanismo, previo, riesgo, coste) in PENDIENTES.items():
         registros.append({

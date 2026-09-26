@@ -1088,3 +1088,53 @@ Tras declarar la saturación se probó la vía indicada como trabajo futuro:
   `experiments/v16_arquitectura.json`, `features/v16_oof_peso_aprendido.npy`,
   `features/v16_oof_combinador_logistico.npy`, `plan/V13_ADVANCED_RESEARCH_PLAN.md`.
 
+## D-047 — V17 se cierra: la senal local es grande, y no es identificable
+
+- **Observation**: V16 mostraba que un combinador logistico mejora las dos fronteras centrales
+  (+0,0102 y +0,0157) sin mejorar la global. La pregunta de V17 era si esa senal se puede convertir
+  en ganancia global con especialistas de frontera y una compuerta. La referencia del proyecto
+  arrastraba ademas una discrepancia sin resolver entre 0,6004 y 0,6005.
+- **Result**:
+  - **Referencia reconciliada**: 0,6004 y 0,6005 son **dos estimadores** del mismo macro-F1, no el
+    mismo numero redondeado: pooled 0,6005017473 frente a media de folds 0,6004103057, con una
+    diferencia de 9,14416e-05 (efecto Jensen). **Canonico 0,6005 pooled.**
+  - **A2 de V16 se reproduce** desde sus artefactos, con las fronteras en 0,5065 y 0,5131.
+  - **La complementariedad local es real y grande**: el especialista de pares E-028a, que ya existia,
+    saca 0,6864 y 0,7218 en las filas de cada frontera frente a 0,4963 y 0,4974 de V12; resuelve
+    14.356 y 15.571 filas y rompe 3.519 y 2.872. Techo con enrutamiento perfecto 0,7481 y 0,7726.
+  - **El mecanismo, medido**: los errores de V12 en la frontera son **errores confiados**
+    (separacion 0,809 cuando el especialista acierta frente a 0,539 cuando acierta V12), y solo el
+    12,7 % y el 8,0 % de las victorias del especialista caen dentro de la region donde V12 tiene el
+    par arriba. Escuchar al especialista ahi sin mas vale **-0,0080**.
+  - **Ninguna formulacion funciona**: compuerta de ambiguedad +0,0002; regla conjunta +0,0000;
+    **P9** arbitro aprendido con protocolo anidado y 47 columnas existentes, **-0,0001 y 0 de 5
+    folds**; **P5** combinador local que redistribuye la masa del par, **-0,0002, 1 de 5 folds, y las
+    fronteras empeoran**.
+  - El techo con un **arbitro perfecto** seria +0,0107 y +0,0077, que **supera el gate de adopcion**.
+    El problema nunca fue el techo, fue la identificacion.
+- **Decision**: **V17 se cierra sin adopciones.** V12 sigue congelado en 0,6005 (pooled) y 0,62188
+  (leaderboard), sin submission nueva. Ninguna pista queda PROMISING ni FINALIST.
+- **Reason**: la respuesta a la pregunta cientifica de la fase es precisa y no es la que se
+  sospechaba. La senal local existe y es grande (opcion C cierta), el problema no es solo de
+  decision en el sentido de umbral (opciones D y E falsas), y no es un problema de metrica porque el
+  techo superaria el gate si fuera alcanzable. **Lo que no existe es una forma de identificar las
+  filas**, y eso no se arregla con mas compilaciones de la misma senal. Importa notar que las dos
+  formulaciones razonables (seleccion y combinacion) se midieron y fallaron, y que P9 falso de forma
+  explicita una prediccion registrada antes de mirar el resultado.
+- **Consequences**: (1) **leccion principal, y es la accionable**: los margenes de pares ya son
+  entradas de V12 (V15a lo midio al listar la matriz) y V12 no los explota, cuando por si solos valen
+  0,6864 y 0,7218 en las filas de su frontera. Hay informacion accesible en el espacio de entradas
+  que el combinador no usa, y eso **no se resuelve con una compuerta mas: exige cambiar la funcion
+  objetivo**, que hoy es macro-F1 sobre seis clases y no sobre las fronteras; (2) la compuerta por
+  ambiguedad queda cerrada con tres evidencia independientes (ADV-07 en 2025, P1b y P9 en V17);
+  (3) el perfil de confianza (P8) queda como contribution aunque no sea accionable: es la primera
+  medicion de que la confianza de V12 no identifica sus propios errores de frontera; (4) la
+  tercera frontera se diagnostico sin gastar CPU y muestra el mismo mecanismo, asi que no se abre.
+- **Evidence**: `reports/v17_final_research.md`, `reports/v17_reproducibility.md`,
+  `reports/v17_compliance.md`, `reports/v17_candidate_comparison.csv`,
+  `reports/v17_master_results.csv`, `reports/v17_hypothesis_registry.csv`,
+  `reports/v17_gap_audit.md`, `reports/v17_p0_reproduccion.md`, `reports/v17_p1_fronteras.md`,
+  `reports/v17_p1b_curva_compuerta.md`, `reports/v17_p1c_regla_conjunta.md`,
+  `reports/v17_p8_perfil_confianza.md`, `reports/v17_p9_arbitro.md`,
+  `reports/v17_p5_combinador_local.md`, 10 figuras, `experiments.csv` con 102 experimentos.
+
