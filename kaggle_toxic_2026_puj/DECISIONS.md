@@ -1995,3 +1995,59 @@ evidencia, experimento, resultado, conclusion final.
   indice global al pasar el array de grupos a la funcion de columnas, que rompia el
   emparejamiento, y una division entre cero cuando el grupo de una fila de entrenamiento
   tenia una sola fila en el entrenamiento, que habria metido un valor no finito en el modelo.
+
+## D-055 - P0 cerrado: los umbrales estan debilmente identificados, y por eso no hay nada que recalibrar
+
+- **Contexto**: la fase v6 dejo abierta la medicion del sesgo de umbrales, porque reajustar
+  umbrales sobre el mismo conjunto fuera de pliegue que se evalua infla la metrica en
+  +0.0036 sin cambiar el modelo. E2-16 ya habia medido un umbral global anidado en
+  0.776613, pero con un protocolo mas laxo: reutilizaba las probabilidades fuera de pliegue
+  de los otros cuatro pliegues como conjunto de calibracion.
+- **Decision 1, el protocolo tiene tres niveles que no se mezclan**: el modelo se ajusta
+  solo en el ajuste interior, el umbral se ajusta solo en la calibracion interior, y se
+  aplica una sola vez sobre la validacion exterior. La particion interna respeta los grupos y
+  estratifica por la **combinacion** de las tres etiquetas, que es mas informativa que
+  cualquier etiqueta suelta en un problema multilabel.
+- **Decision 2, hay que separar si el codigo esta bien de cuanto cuesta el protocolo, y son
+  dos efectos distintos**. Por eso hay tres brazos:
+  - **P0-0** ajusta sobre todo el entrenamiento exterior con umbrales congelados. Es el
+    brazo que valida el codigo y da **0.777211 exacto, delta +0.000000**.
+  - **P0-1-control** usa el pipeline de tres niveles con umbrales congelados, de modo que
+    ajusta sobre cinco sextos de las filas. Da 0.769123, es decir **-0.0081**, y ese delta
+    **no es un error: es el coste del protocolo**.
+  - **P0-1-anidado** comparte conjunto de ajuste con el control, de modo que el coste se
+    cancela y el delta **-0.0019** con IC95 [-0.0092, +0.0057] y 2/5 pliegues mide el
+    **efecto del umbral**. Comparar contra V03 seria mezclar dos cosas.
+- **Decision 3, el propio gate detecto un error de diseno, y la correccion tambien importa**.
+  La primera version fijaba una tolerancia de 0.002 sobre el control de tres niveles y se
+  detuvo al superarla. **La deteccion era correcta y la tolerancia estaba mal planteada**: el
+  error no era del codigo sino del protocolo, que necesariamente reduce el conjunto de
+  ajuste. Anadir el brazo P0-0 separo las dos cosas. Es exactamente el mismo error de
+  interpretacion que la fase v6 cometio al tratar la reoptimizacion de umbrales como una
+  mejora, y por eso el gate de §32 debe ir **acompañado de una reflexion sobre que mide**.
+- **Decision 4, el resultado principal es el informe de dispersion, que era lo que v6 dejo
+  pendiente**. Quince umbrales, cinco pliegues por tres etiquetas:
+  - HS: media 0.4120, mediana 0.4100, desviacion 0.0402, rango intercuartil 0.0500, rango 0.1000.
+  - TR: media 0.4900, mediana 0.4500, desviacion 0.0652, rango intercuartil 0.0500, rango 0.1500.
+  - AG: media 0.4560, mediana 0.4400, desviacion 0.0586, rango intercuartil 0.0800, rango 0.1400.
+- **Decision 5, conclusion: los umbrales estan DEBILMENTE IDENTIFICADOS**. Con desviaciones
+  de 0.04 a 0.065 sobre una rejilla de 0.20 a 0.80, el umbral de TR puede moverse de 0.37 a
+  0.60 sin que el dato lo impida. Los tres umbrales congelados de V03 **caen dentro del rango
+  por pliegue**, asi que **no son claramente sobreajuste**, pero las medianas calibradas son
+  sistematicamente **mas bajas** que ellos, y el anidado estricto termina **peor** que los
+  congelados. Las dos cosas juntas dicen que la eleccion de umbral es casi arbitraria y que
+  V03 eligio un punto razonable.
+- **Decision 6, eso explica los dos hechos medidos antes**: por que E2-16 dio -0.0006 y por que
+  reajustar umbrales sobre el mismo conjunto infla +0.0036. **No hay informacion en los datos
+  que identifique el umbral.** Cualquier diferencia que se le atribuya a "afinar umbrales" es
+  en buena parte ruido de una decision que los datos no determinan.
+- **Decision 7, P0.3 y P10 se cierran sin ejecutar, y por evidencia y no por presupuesto**.
+  Se ejecutaban solo si P0.1 mostraba margen, y la dispersion es alta. Pero la dispersion alta
+  **no implica upside**: un estimador robusto daria un valor mas cerca de la mediana, que
+  esta **mas lejos** de los umbrales congelados que la media, y el anidado, que es la
+  estimacion mas informada, ya es peor. Cerrarlas es una conclusion, no un recorte.
+- **Decision 8, con esto se cierra la capa de decision**, que era la unica via por la que el
+  proyecto habia movido alguna vez el leaderboard. V03 mantiene sus tres umbrales congelados
+  **por evidencia medida y no por inercia**: se ha medido cuanta dispersion tienen, se ha
+  medido que recalibrarlos no mejora, y se ha medido que el protocolo que permite medirlo
+  cuesta -0.0081 en exactitud por reducir el conjunto de ajuste.

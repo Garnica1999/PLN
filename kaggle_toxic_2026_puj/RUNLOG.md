@@ -970,3 +970,33 @@ Registro cronologico de ejecuciones. Formato:
   Ademas se corrige una afirmacion del propio informe que los datos refutaban: suponia que
   V03 ya acertaba mejor en las filas con evidencia, y el acierto resulto identico.
   **Track P8 cerrado (seccion 54). D-054.** 0 submissions.
+- v7 Track P0.1: umbral anidado estricto, y cierre de toda la capa de decision | `v7_03_umbral_anidado.py`
+  Protocolo de **tres niveles** que no se mezclan: ajuste, calibracion, evaluacion. La
+  particion interna respeta grupos y estratifica por la combinacion de etiquetas.
+  **Tres brazos, porque hay que separar si el codigo esta bien de cuanto cuesta el
+  protocolo**:
+  - **P0-0** ajusta sobre todo el entrenamiento exterior: **0.777211, delta +0.000000**,
+    con lo que el codigo del pipeline queda validado.
+  - **P0-1-control** con el pipeline de tres niveles y umbrales congelados: 0.769123,
+    **-0.0081**, y ese delta **no es un error: es el coste del protocolo**, que obliga a
+    ajustar sobre cinco sextos de las filas.
+  - **P0-1-anidado** comparte conjunto de ajuste con el control, asi que el coste se
+    cancela y el delta **-0.0019** (IC95 que incluye el 0, 2/5) mide el efecto del umbral.
+  **El producto principal es el informe de dispersion**, que era la tarea que v6 dejo
+  pendiente. HS: media 0.4120, mediana 0.4100, desviacion 0.0402, rango 0.1000. TR: media
+  0.4900, mediana 0.4500, desviacion 0.0652, rango 0.1500. AG: media 0.4560, mediana
+  0.4400, desviacion 0.0586, rango 0.1400.
+  **Conclusion: los umbrales estan debilmente identificados.** El de TR puede moverse de
+  0.37 a 0.60 sin que el dato lo impida. Los tres congelados de V03 caen dentro del rango,
+  asi que no son claramente sobreajuste, pero las medianas calibradas son sistematicamente
+  mas bajas y el anidado termina peor. Eso explica los dos hechos medidos antes: por que
+  E2-16 dio -0.0006 y por que reajustar umbrales infla +0.0036. **No hay informacion en los
+  datos que identifique el umbral.**
+  **P0.3 y P10 se cierran tambien sin ejecutar, y por evidencia**: la dispersion es alta
+  pero eso no implica upside, porque un estimador robusto daria un valor mas cerca de la
+  mediana, que esta mas lejos de los congelados que la media.
+  El gate detecto un error de diseno propio: la primera version fijaba la tolerancia sobre el
+  control de tres niveles y se detuvo al superarla. La deteccion era correcta y la
+  tolerancia estaba mal planteada, porque el error era del protocolo y no del codigo.
+  **P0 cerrado. D-055. V03 mantiene sus umbrales por evidencia medida y no por inercia.**
+  0 submissions.
