@@ -757,3 +757,22 @@ Registro cronologico de ejecuciones. Formato:
   con el baseline como maximo, la dispersion mide cuanto empeora al alejarse de el y no cuanto
   mejora. La maquinaria compartida no se modifica; la correccion se aplica en P4.
   **Presupuesto 8/9 + 0/1.** 0 submissions, 0 sondas de LB.
+- 23:05 | v5.1 P5: familia negative (EBD-22) | `experiments/embedding_16_negative_v5_1.py`
+  FastText con 5 negativos (73 s); el control con 10 reproduce v5 exacto. FUSION-NEG-5
+  0.7811 (+0.0039, IC95 [-0.0044, +0.0123]) frente a 0.7818 del control; embedding solo
+  0.6664 frente a 0.6523. Dispersion interna **0.0006**, la mas baja de las cinco familias.
+  **Familia CERRADA** (D-040). Se agotan las **9/9** unidades exploratorias y la **reserva
+  queda intacta (0/1)**: no hay ninguna mejora que confirmar con una repeticion, que es lo
+  unico para lo que existia la reserva. El informe de P0 pasa a llamarse
+  `reports/embedding_architecture_auditoria_v5_1.md` para dejar el nombre que pide la spec
+  al informe de resultados de arquitectura (P6). 0 submissions, 0 sondas de LB.
+- 23:30 | v5.1 P6: comparacion final y conclusiones (EBD-23) | `experiments/embedding_17_comparacion_final_v5_1.py`
+  No entrena: consolida las cinco familias. 14 configuraciones (9 nuevas + el baseline
+  reevaluado 5 veces, que reproduce v5 exacto en todas). Embedding aislado 0.6397-0.6694
+  (rango 0.0297) frente a fusion 0.7767-0.7830 (rango 0.0063): el rango del embedding
+  aislado es 4,7 veces mayor. 0 configura adoptables. **D-041**: conclusion de
+  representacion (la arquitectura si cambia la representacion, y el optimo esta en ventana 3
+  con subpalabras 3-6, o sea senal local y ortografica) y conclusion de tarea (ninguna
+  aporta a V03). **No se escala el corpus**: fallan tres de las cinco condiciones de la
+  seccion 12 y las que fallan son de evidencia, no de coste. El informe de P0 se renombra a
+  `embedding_architecture_auditoria_v5_1.md`. 0 submissions, 0 sondas de LB.

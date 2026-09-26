@@ -45,17 +45,24 @@
 - [x] 3-5 0.7791, 3-6 0.7818 (optimo), 3-7 0.7767; orden monotono
 - [x] **Decision: CERRADA** con la regla de dispersion revisada (**D-039**)
 
-## P5 - negative sampling (pendiente)
+## P5 - negative sampling (hecha, cerrada por inercia)
 
-- [ ] `embedding_16_negative_v5_1.py` (1/9)
+- [x] `embedding_16_negative_v5_1.py`: 5 negativos (1/9), control con 10 reproduce v5
+- [x] neg5 0.7811 (+0.0039) frente a 0.7818; dispersion 0.0006, la mas baja de las cinco
+- [x] **Decision: CERRADA** (**D-040**). Presupuesto 9/9 y **reserva 0/1 intacta**
 - [ ] `embedding_14_min_count_v5_1.py` (2/9)
 - [ ] `embedding_15_subwords_v5_1.py` (2/9)
 - [ ] `embedding_16_negative_v5_1.py` (1/9)
 - [ ] una decision registrada por familia
 
-## P6-P10 - cierre (pendiente)
+## P6 - comparacion final (hecha)
 
-- [ ] comparacion final y heatmap de arquitectura
+- [x] `embedding_17_comparacion_final_v5_1.py`: tabla maestra, heatmap, curva de escala
+- [x] 14 configuraciones, 0 adoptables; embedding aislado rango 0.0297 vs fusion 0.0063
+- [x] **D-041**: conclusion de representacion y de tarea, y no se escala el corpus
+
+## P7-P10 - cierre (pendiente)
+
 - [ ] complementariedad: salvage, damage, slices, solapamiento con char_wb
 - [ ] seccion v5/v5.1 en `notebooks/10_final_pipeline.ipynb` con `TRAIN_FROM_SCRATCH=False`
 - [ ] validacion del notebook completo por ejecucion

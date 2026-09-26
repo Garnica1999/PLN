@@ -131,3 +131,9 @@ EVAL-V51-129,experiments/ebd-21_(p4),FUSION-SW-3-5,FASTTEXT-WIKI-10M-SW-3-5,medi
 EVAL-V51-130,experiments/ebd-21_(p4),EMB-SW-3-7-LR,FASTTEXT-WIKI-10M-SW-3-7,media,LR,estandar,0.646482,-0.130729,,familia subwords
 EVAL-V51-131,experiments/ebd-21_(p4),EMB-SW-3-7-SVC,FASTTEXT-WIKI-10M-SW-3-7,media,SVC,estandar,0.647748,-0.129463,,familia subwords
 EVAL-V51-132,experiments/ebd-21_(p4),FUSION-SW-3-7,FASTTEXT-WIKI-10M-SW-3-7,media,LR + TF-IDF V03,l2,0.776707,-0.000504,"[-0.008431, 0.007485]",familia subwords
+EVAL-V51-133,experiments/ebd-22_(p5),EMB-B0-200-LR,FASTTEXT-WIKI-10M,media,LR,estandar,0.652338,-0.124873,,familia negative
+EVAL-V51-134,experiments/ebd-22_(p5),EMB-B0-200-SVC,FASTTEXT-WIKI-10M,media,SVC,estandar,0.655083,-0.122128,,familia negative
+EVAL-V51-135,experiments/ebd-22_(p5),FUSION-B0-200,FASTTEXT-WIKI-10M,media,LR + TF-IDF V03,l2,0.781766,0.004555,"[-0.003161, 0.012409]",familia negative
+EVAL-V51-136,experiments/ebd-22_(p5),EMB-NEG-5-LR,FASTTEXT-WIKI-10M-NEG-5,media,LR,estandar,0.666426,-0.110785,,familia negative
+EVAL-V51-137,experiments/ebd-22_(p5),EMB-NEG-5-SVC,FASTTEXT-WIKI-10M-NEG-5,media,SVC,estandar,0.667056,-0.110155,,familia negative
+EVAL-V51-138,experiments/ebd-22_(p5),FUSION-NEG-5,FASTTEXT-WIKI-10M-NEG-5,media,LR + TF-IDF V03,l2,0.781125,0.003914,"[-0.004356, 0.012308]",familia negative

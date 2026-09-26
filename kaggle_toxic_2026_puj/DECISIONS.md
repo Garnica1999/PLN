@@ -1400,3 +1400,78 @@ evidencia, experimento, resultado, conclusion final.
   (es evidencia historica de P1 a P3 con la regla literal); la correccion se aplica en el
   script de P4 sobre el veredicto que devuelve.
 - **Presupuesto**: 8 de 9 unidades exploratorias gastadas, 0 de 1 de reserva.
+
+## D-040 - negative sampling se cierra inerte y el presupuesto de v5.1 queda agotado sin tocar la reserva
+
+- **Contexto**: P5, quinta y ultima familia arquitectonica exploratoria. Entrena 5 negativos
+  manteniendo todo lo demas fijo. El baseline (10 negativos) se reevalua y reproduce 0.7818.
+- **Resultado**:
+
+  | negative | corrected_cv (frozen) | delta vs V03 | IC95 | embedding solo |
+  |---|---|---|---|---|
+  | 5 | 0.7811 | +0.0039 | [-0.0044, +0.0123] | 0.6664 |
+  | **10 (baseline)** | **0.7818** | +0.0046 | [-0.0032, +0.0124] | 0.6523 |
+
+  Dispersion interna: **0.0006**, la mas baja de las cinco familias medidas.
+- **Decision**: familia `negative` **CERRADA por inercia**. No se prueban 15 ni 20.
+- **Presupuesto cerrado**: **9 de 9** unidades exploratorias consumidas y **0 de 1** de
+  reserva. La reserva **no se gasta** porque su funcion era confirmar con una repeticion una
+  mejora ya observada, y no hay ninguna: ninguna de las nueve configuraciones nuevas es
+  adoptable. Gastar la reserva para abrir una familia nueva seria gastar por obligacion.
+- **Cuadro de las cinco familias**:
+
+  | familia | mejor fusion | delta | IC95 | dispersion | veredicto |
+  |---|---|---|---|---|---|
+  | vector_size | 0.7823 (100d) | +0.0050 | [-0.0028, +0.0130] | 0.0017 | cerrada |
+  | window | 0.7830 (ws 3) | +0.0057 | [-0.0021, +0.0136] | 0.0024 | cerrada |
+  | min_count | 0.7818 (baseline) | +0.0046 | [-0.0032, +0.0124] | 0.0047 | cerrada |
+  | subwords | 0.7818 (baseline) | +0.0046 | [-0.0032, +0.0124] | 0.0051 | cerrada |
+  | negative | 0.7818 (baseline) | +0.0046 | [-0.0032, +0.0124] | 0.0006 | cerrada |
+
+- **Conclusion de la fase, en sus dos mitades**:
+  1. **Calidad de la representacion**: la arquitectura **si** cambia la calidad del embedding
+     aislado (0.6397 a 0.6694 segun el intervalo de subpalabras, +0.030) pero **no** la
+     aportacion a V03. Ninguna de las 14 configuraciones medidas supera el gate con un
+     intervalo de confianza que lo respalde.
+  2. **Aporte a la tarea**: ninguna. V03 se mantiene.
+
+## D-041 - Conclusion de la evaluacion arquitectonica: la representacion mejora, la tarea no
+
+- **Contexto**: P6 consolida las cinco familias medidas en v5.1 (D-036 a D-040). 14
+  configuraciones: 9 nuevas y el baseline reevaluado en cada familia como control. El
+  control **reproduce v5 exacto en las cinco corridas**, que es lo que hace comparables las
+  celdas entre familias.
+- **Resultado global**:
+
+  | magnitud | minimo | maximo | rango |
+  |---|---|---|---|
+  | embedding aislado (media+LR) | 0.6397 | 0.6694 | **0.0297** |
+  | fusion con V03 | 0.7767 | 0.7830 | **0.0063** |
+
+  El rango del embedding aislado es **4,7 veces** el de la fusion. Configuraciones adoptables:
+  **0**.
+- **Conclusion 1, de representacion**: la arquitectura **si** cambia la calidad de la
+  representacion, y la forma del optimo es reveladora. La mejor celda es **WS-3**
+  (ventana 3) con 0.6694: gana **reduciendo la ventana de contexto**, no acortando el
+  intervalo de subpalabra, que se queda en el punto medio 3-6 (3-5 da 0.6397 y 3-7 da
+  0.6465, ambos peores). Es decir, la senal que el embedding aporta util es **local y
+  ortografica**, no una ventana de distribucion amplia. Los slices lo confirman: el efecto se
+  concentra en elongaciones, URLs y hashtags.
+- **Conclusion 2, de tarea**: ninguna configuracion aporta informacion adicional a V03 por
+  encima del gate. El mejor delta de toda la tabla es **+0.0057** (WS-3) con IC95
+  [-0.0021, +0.0136], que incluye el 0. Las 14 celdas se mueven en 0.0063, del orden del
+  ruido del protocolo. **V03 se mantiene** con `corrected_cv` 0.777211.
+- **Conclusion 3, sobre el corpus**: **no se escala**. La seccion 12 exige cinco condiciones a
+  la vez; fallan la 1 (ninguna arquitectura nueva mejora claramente), la 2 (no hay razon para
+  esperar que mas escala potencie una aportacion, no una cobertura) y la 3 (la curva de 5M a
+  50M no muestra tendencia: +0.0046 y +0.0031, es decir, multiplicar por diez los tokens
+  **reduce** el delta). Solo se cumple la 4 (queda la reserva). La decision no escala se
+  sostiene en evidencia y no en presupuesto: el techo autorizado de 500M queda sin usar.
+- **Variable que queda abierta**: el **tamano de los datos etiquetados** (1.483). No es de
+  esta fase y no se explora aqui; se documenta como la unica palanca que la evidencia deja
+  en pie.
+- **Nota de trazabilidad**: el informe de P0 pasa a llamarse
+  `reports/embedding_architecture_auditoria_v5_1.md` para que
+  `reports/embedding_architecture_v5_1.md` sea el informe de resultados que pide la spec.
+- **Presupuesto**: 9 de 9 unidades exploratorias y 0 de 1 de reserva. El costo real de la
+  fase son unos 15 minutos de entrenamiento repartidos en nueve modelos.

@@ -46,6 +46,11 @@ archivada de la autorizacion; se registra solo lo comunicado por el usuario.
 | D-038 | El mecanismo de min_count ya esta ocupado por las subpalabras: con 3-6, todo tipo consultado tiene vector |
 | P4 subwords | CERRADA: 3-5 0.7791, 3-6 0.7818 (el optimo), 3-7 0.7767; orden monotono |
 | D-039 | 3-6 ya es el optimo; regla de dispersion revisada cuando el baseline es el maximo de la familia |
+| P5 negative | CERRADA por inercia: neg5 0.7811 (+0.0039), neg10 0.7818; dispersion 0.0006 |
+| D-040 | Presupuesto de v5.1 agotado: 9/9 exploratorias, reserva 0/1 intacta. La arquitectura cambia el embedding pero no aporta a V03 |
+| P6 comparacion final | 14 configuraciones, 0 adoptables | embedding aislado rango 0.0297 vs fusion 0.0063 |
+| D-041 | Conclusion v5.1: la arquitectura mejora la representacion pero no aporta a V03. No se escala el corpus |
+| variable abierta | El tamano de los datos etiquetados (1.483), unica palanca que deja la evidencia |
 | GATE DE CIERRE | §29: A (+0.005 con estabilidad) / B (complementariedad robusta) / C (senal representacional fuerte) |
 
 ## Fase anterior: v4 «Advanced Research v4» (CERRADA el 2026-09-25)

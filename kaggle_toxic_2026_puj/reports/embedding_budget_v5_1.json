@@ -6,10 +6,10 @@
   "mejora_minima_gate": 0.005,
   "presupuesto": {
     "existing_v5_trainings": 10,
-    "new_v5_1_trainings": 8,
+    "new_v5_1_trainings": 9,
     "reserved_training_units": 0,
-    "total_new_budget_used": 8,
-    "budget_remaining": 2,
+    "total_new_budget_used": 9,
+    "budget_remaining": 1,
     "limite_exploratorio": 9,
     "limite_reserva": 1
   },
@@ -515,6 +515,31 @@
       "status": "EXISTING",
       "rol": "familia subwords de v5.1",
       "config_verificada_contra_artefacto": "si"
+    },
+    {
+      "training_id": "FASTTEXT-WIKI-10M-NEG-5",
+      "familia": "negative",
+      "corpus": "E-CORP-01",
+      "tokens": 10002400,
+      "vector_size": 200,
+      "window": 5,
+      "min_count": 3,
+      "min_n": 3,
+      "max_n": 6,
+      "negative": 5,
+      "sample": 0.0001,
+      "epochs": 5,
+      "sg": 1,
+      "seed": 42,
+      "bucket": 200000,
+      "vocabulary_size": 100098,
+      "training_time_s": 72.9,
+      "training_time_fuente": "",
+      "model_sha256": "3a3573eafbda73cddf21507032a33d2dcf185c4a4b66d5e203a4f348e2397d1c",
+      "training_signature": "5c59e4d54ee0fb41cebdfb8d1bffce45aca130ece60281a28b2b49ef2041077d",
+      "status": "EXISTING",
+      "rol": "familia negative de v5.1",
+      "config_verificada_contra_artefacto": "si"
     }
   ],
   "propuestas": [
@@ -778,9 +803,9 @@
       "seed": 42,
       "bucket": 200000,
       "training_signature": "5c59e4d54ee0fb41cebdfb8d1bffce45aca130ece60281a28b2b49ef2041077d",
-      "status": "PENDING",
+      "status": "EXISTING",
       "equivale_a": "",
-      "presupuesto": "9/9",
+      "presupuesto": "gastada",
       "vocabulary_size": "",
       "training_time_s": "",
       "training_time_fuente": "",
@@ -992,6 +1017,19 @@
       "decision": "CERRADA: inerte por la regla revisada. Ninguna variante es adoptable y el baseline es el maximo de la familia, de modo que la dispersion mide cuanto empeora al alejarse de el y no cuanto mejora",
       "regla_aplicada": "regla revisada: el baseline es el maximo",
       "decision_por_maquinaria_literal": "ABIERTA: dispersion interna por encima de 0.005 sin variante adoptable"
+    },
+    {
+      "familia": "negative",
+      "unidades_gastadas": 1,
+      "dispersion_interna": 0.000641,
+      "mejor_fusion": "FUSION-B0-200",
+      "mejor_fusion_corrected_cv": 0.781766,
+      "mejor_delta": 0.004555,
+      "supera_gate_numerico": false,
+      "ic95_excluye_cero": false,
+      "adoptable": false,
+      "margen_sobre_el_umbral": -0.000445,
+      "decision": "CERRADA: inerte. Ninguna variante es adoptable y la dispersion interna es 0.0006 <= 0.005"
     }
   ]
 }
