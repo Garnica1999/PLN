@@ -858,3 +858,41 @@ Después pide añadir además el paso de la **arquitectura del meta-modelo**.
 - `FINAL_REPORT.md` recibe una cabecera que apunta al informe completo y declara su propio alcance
   (el modelo V12 entregado), sin modificar su contenido.
 - Auditoria de idioma: **0 errores sobre 372 ficheros**. Sin push.
+
+## 2026-09-26 · V18 arranca: P0, P0' y la correccion de D-048
+
+- **Rama** `kaggle-age-2026-puj-v18` creada desde `46b32f9`. Perfil de maquina re-verificado, sin
+  cambios. Intencion registrada en `plan/00_intent_v18.md`.
+- **P0, auditoria de brechas** (`reports/v18_gap_audit.{md,csv}`, 28 familias): de las 8 pistas de
+  V18, 0 cerradas, 3 parcialmente probadas y 5 genuinamente nuevas. `sample_weight`, `class_weight`,
+  `cost_matrix`, `head`, `multitask` y destilacion tienen **cero coincidencias** en el proyecto: la
+  dimension que V18 abre no tiene ningun antecedente. Senalo tambien un handicap verificado para P1:
+  las clases estan balanceadas (16,04 % a 17,04 %, razon 1,062).
+- **P0', la pieza importante.** La auditoria concluyo que la ventaja del especialista venia de la
+  representacion, comparando P3a (0,4944 denso) con E-028a (0,7218 disperso), y senalo el confound de
+  que cambian las dos cosas a la vez. La rejilla de 2 x 2 lo cierra, y **la conclusion sale invertida**:
+
+  | especialista en las filas del par | 18-24\|25-34 | 25-34\|35-49 |
+  |---|---|---|
+  | 279 columnas de V12 | **0,7136** | **0,7493** |
+  | TF-IDF disperso (E-028a) | 0,6864 | 0,7218 |
+  | V12 global | 0,4963 | 0,4974 |
+
+- **El bug, encontrado**: el 0,4944 que P3a publico **no es la exactitud del especialista**, es una
+  mezcla. `filas_actuables: 57.019` es el recuento sobre todo el dataset (33,7 % de 169.336), no dentro
+  del par; dentro de las 57.023 filas del par solo 38.424 eran actuables y **18.599 quedaban
+  congeladas** con la prediccion de V12, donde V12 acierta el 4,2 %. La auditoria de P0 comparo un
+  recuento global con uno del par y concluyo que la compuerta congelaba cuatro filas. Ejecutando el
+  codigo y las variables exactos de P3a, con sus dos codificaciones de etiqueta, sale 0,7136.
+- **No hay fuga**: las 72 columnas supervisadas se construyen en `advanced_02_features.py:191` con
+  exactamente el mismo `make_folds(y, groups=cluster_ids, 5, 1, "group")`.
+- **Lo que sobrevive**: el resultado de sistema de P3a (delta -0,0012 con compuerta) se mantiene, porque
+  la compuerta era mala. Y el mecanismo de V17, de que los errores de frontera de V12 son errores
+  *confiados*, no se toca: es sobre enrutado, no sobre donde vive la informacion.
+- **D-048** escribe la correccion y sus consecuencias. La asimetria que D-047 dejo abierta es mayor y
+  mejor caracterizada: el hueco real es **0,4963 extraido contra 0,7136 disponible** en el propio
+  espacio de variables de V12.
+- **Defecto propio declarado**: la reconstruccion del TF-IDF de P0' **no reproduce** a E-028a (da
+  ~0,50). Sus dos celdas quedan marcadas **invalidas** y excluidas del veredicto; los numeros del
+  especialista disperso salen de la OOF guardada.
+- `experiments.csv` pasa a **104 experimentos**. Sin push.

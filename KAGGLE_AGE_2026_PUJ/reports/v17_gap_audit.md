@@ -605,3 +605,5 @@ interprete: lectura de artefactos existentes y calculo de metricas inertes sobre
 > como `\|` en las filas de tabla para que markdown no lo interprete como separador de columna
 > (mismo criterio que el que aplico `scripts/v15_v16_tablas.py` en V16). Fuera de las tablas se
 > escribe sin escapar. No se modifico ninguna cifra.
+
+> **Correccion posterior (D-048, 2026-09-26).** El numero de especialista que se cita aqui (0,4944 y 0,4942) **no es la exactitud del especialista en la frontera**: es una mezcla con la prediccion de V12 en las filas que la compuerta dejaba congeladas. Midiendo al especialista sin compuerta, con el codigo y las variables exactos de P3a, sale **0,7136 y 0,7493**. La conclusion de este informe sobre el especialista binario **queda corregida**: las 279 variables de V12 si contienen la senal de frontera, y mas que la representacion dispersa. El resultado de sistema con compuerta (delta negativo) se mantiene: el problema era la compuerta, no la informacion. Ver `reports/v18_p0_reproduccion.md` y D-048.

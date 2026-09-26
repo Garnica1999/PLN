@@ -210,3 +210,5 @@ permutado (P1b) son los caros: cuatro evaluaciones completas, unos 90 minutos. L
 | Control de permutación (DD-6) | OK 3 semillas en P1b |
 | Auditoría de idioma y de numeración | OK 0 errores en 301 ficheros; `autotest_numerico()` en la primera línea de cada script |
 | Sin push remoto | OK Todo son commits locales; el push está prohibido por indicación expresa |
+
+> **Correccion posterior (D-048, 2026-09-26).** El numero de especialista que se cita aqui (0,4944 y 0,4942) **no es la exactitud del especialista en la frontera**: es una mezcla con la prediccion de V12 en las filas que la compuerta dejaba congeladas. Midiendo al especialista sin compuerta, con el codigo y las variables exactos de P3a, sale **0,7136 y 0,7493**. La conclusion de este informe sobre el especialista binario **queda corregida**: las 279 variables de V12 si contienen la senal de frontera, y mas que la representacion dispersa. El resultado de sistema con compuerta (delta negativo) se mantiene: el problema era la compuerta, no la informacion. Ver `reports/v18_p0_reproduccion.md` y D-048.

@@ -1138,3 +1138,48 @@ Tras declarar la saturación se probó la vía indicada como trabajo futuro:
   `reports/v17_p8_perfil_confianza.md`, `reports/v17_p9_arbitro.md`,
   `reports/v17_p5_combinador_local.md`, 10 figuras, `experiments.csv` con 102 experimentos.
 
+
+## D-048 — Correccion: las 279 variables de V12 si contienen la senal de frontera
+
+- **Observation**: V13 P3a publico que un especialista binario entrenado sobre las 279 variables de V12
+  acertaba 0,4944 y 0,4942 en las filas de las dos fronteras centrales, frente a 0,4963 y 0,4974 de
+  V12. Sobre ese numero se construyo el diagnostico de que **la representacion** era la causa de la
+  ventaja del especialista disperso, y la auditoria de P0 de V18 lo confirmo y lo uso para reenfocar la
+  fase entera.
+- **Result**: el numero publicado **no es la exactitud del especialista**, es una mezcla. El campo
+  `filas_actuables` de P3a vale 57.019 y es el recuento sobre **todo** el dataset (el 33,7 % de
+  169.336 filas), no dentro del par. Dentro de las 57.023 filas de `18-24|25-34` solo **38.424** son
+  actuables y **18.599 quedan congeladas** con la prediccion de V12, donde V12 acierta el 4,2 %. La
+  mezcla da exactamente 0,4944. Ejecutando **el codigo y las variables exactos de P3a** con sus dos
+  codificaciones de etiqueta (indice de clase y binaria), la exactitud del especialista es:
+
+  | especialista binario en las filas del par | 18-24\|25-34 | 25-34\|35-49 |
+  |---|---|---|
+  | **279 variables de V12 (denso)** | **0,7136** | **0,7493** |
+  | TF-IDF disperso (E-028a) | 0,6864 | 0,7218 |
+  | V12 global de seis clases | 0,4963 | 0,4974 |
+  | *publicado por P3a (mezcla con la compuerta)* | *0,4944* | *0,4942* |
+
+- **No hay fuga**: las 72 columnas supervisadas se construyen en `advanced_02_features.py:191` con
+  exactamente el mismo `make_folds(y, groups=cluster_ids, n_splits=5, n_repeats=1, scheme="group")`,
+  asi que cada fila procede de modelos que no la vieron. El 0,7136 es una medida out of fold legitima.
+- **Decision**: **se corrige el diagnostico**. Las 279 variables de V12 contienen **mas** informacion de
+  frontera que la representacion dispersa, y el combinador de V12 no extrae casi nada de ella. El
+  resultado de sistema de P3a (delta -0,0012 con compuerta) **se mantiene**, porque la compuerta era
+  mala; lo que estaba mal era la lectura de por que fallaba.
+- **Reason**: el error es una **lectura de recuento**: comparar un numero global con uno del par y
+  concluir que la compuerta congelaba cuatro filas. Sobrevivio porque nadie midio al especialista sin
+  compuerta; la cifra que se volvio a medir durante cuatro fases fue la que P3a publico, que era
+  derivada y no medida.
+- **Consequences**: (1) **la premisa de V18 se invierte**: el objetivo de V18 deja de estar sin donde
+  tomar senal, porque la senal esta en el espacio de caracteristicas del propio estudiante. El hueco
+  real es 0,4963 extraido contra 0,7136 disponible; (2) la asimetria que D-047 dejo abierta es mayor y
+  mejor caracterizada de lo que se penso; (3) la hipotesis que V18 tiene que poner a prueba ya no es
+  "cambiar el objetivo" en abstracto, sino **capturar en un modelo de seis clases un 0,22 que ya esta
+  disponible en sus propias variables**; (4) una consecuencia futura que este hallazgo deja abierta y
+  que no es de V18: V12 comprime la salida de cada miembro a seis numeros, y esa compresion es
+  precisamente la que preserva o destruye la informacion de frontera, porque el especialista binario
+  la recupera desde esas mismas seis columnas por miembro.
+- **Evidence**: `reports/v18_p0_reproduccion.md`, `reports/v18_representacion_confound.csv`,
+  `experiments/v18_p0_reproduccion.json`, `reports/v18_gap_audit.md` (seccion 5.b, cuya conclusion se
+  corrige aqui), `experiments/v3_p3a_especialistas.json` (el campo mal interpretado).

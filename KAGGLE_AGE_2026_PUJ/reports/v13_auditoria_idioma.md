@@ -2,8 +2,8 @@
 
 Comprueba que el código, la documentación y los datos derivados están en español y sin caracteres de otros alfabetos. Motivo: en la fase de lexicones se colaron ideogramas CJK, cirílicos y puntuación china en listas de palabras y docstrings; en V13 eso se detecta de forma automática.
 
-- **Ficheros auditados**: 372 (`.py`, `.md`, `.txt`, `.csv`)
-- **Errores**: 0 · **Avisos**: 2
+- **Ficheros auditados**: 380 (`.py`, `.md`, `.txt`, `.csv`)
+- **Errores**: 0 · **Avisos**: 3
 
 **Sin errores**: no hay ideogramas, cirílicos, árabe, hebreo, devanagari, tailandés, coreano, puntuación CJK ni mojibake en el proyecto.
 
@@ -13,6 +13,7 @@ Comprueba que el código, la documentación y los datos derivados están en espa
 |---|---|---|---|
 | `DECISIONS.md` | 1027 | AVISO:flecha | - **V15b (poda evaluada)**: un representante por cluster, el de mayor eta2 **dentro del fo |
 | `PROJECT_STATE.md` | 79 | AVISO:flecha | dentro del fold → **197 variables**. Macro-F1 **0,5965** frente a 0,6005 de V12: **delta - |
+| `plan/00_intent_v18.md` | 58 | AVISO:flecha | exterior. Si depende de datos, se resuelve con `outer train → inner train → selección → ou |
 
 ## Regla aplicada en V13
 
