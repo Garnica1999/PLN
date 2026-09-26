@@ -42,6 +42,12 @@ Uso
     /home/carlos/venv/bin/python experiments/v6_07_ruido_par.py
 """
 
+# Nota de auditoria forense (B-06, 2026-09-26): los pesos de sospecha se calculan con
+# etiquetas de TODO el desarrollo, incluidas las del pliegue evaluado (mecanismo no
+# fold-local). Contrafactual medido: delta +0.000142 -> 0.000000 con deteccion
+# fold-local (audit/p04b_suspicion_foldlocal.json). Si se reabre la familia, calcular
+# densidad/estructural por pliegue con etiquetas solo del entrenamiento. No se modifico
+# la logica historica.
 from __future__ import annotations
 
 import csv

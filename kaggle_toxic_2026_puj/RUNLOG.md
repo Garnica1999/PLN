@@ -1189,3 +1189,18 @@ Registro cronologico de ejecuciones. Formato:
   del promediado, y el promediado ya esta medido en el externo con -0,01184.
   **D-067. 3 submissions mas escritas y verificadas, 0 recomendadas. 10 submissions escritas
   en la fase v8, 0 automaticas.**
+
+## Fase de correcciones de la auditoria forense (2026-09-26)
+
+Aplicadas en este arbol las correcciones B-01..B-14 de la auditoria (rama `proyecto-kaggle-toxic-2026-audit`):
+
+- B-01: bloque EBD-01..06 reconstruido en `experiments.csv` (202 filas, 202 claves unicas, 23 campos por fila). Contenido derivado de los artefactos v5 y marcado como reconstruccion en `notes`.
+- B-02: EBD-11 y EBD-12 no existen como experimentos (huecos de numeracion historicos); se documenta aqui y no se renumeran ids.
+- B-03: rutas `experiments/experiments/` corregidas en `reports/v6_reproducibility.md`.
+- B-04: conteo del holdout actualizado a 5/5 en `reports/target_encoding_audit_v2.md`.
+- B-05: conclusiones finales completadas en DECISIONS.md (D-001, D-003, D-004, D-005, D-007, D-008, D-010, D-017).
+- B-06/B-07/B-10: notas de auditoria en los scripts (sin cambiar la logica historica).
+- B-08: retirada la copia anidada `features/features/` (higiene).
+- B-12: columna `definicion_diferencia` en `submissions/leaderboard_log.csv`.
+- B-14: notebook corregido y re-ejecutado (ver commit).
+

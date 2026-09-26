@@ -20,7 +20,7 @@ evidencia, experimento, resultado, conclusion final.
 - **Evidencia**: crosstab HS x TR x AG (Fase 0, `reports/eda/combinaciones_etiquetas.csv`).
 - **Experimento**: E00b (post-proceso jerarquico) en Fase 9/10.
 - **Resultado**: pendiente.
-- **Conclusion final**: pendiente.
+- **Conclusion final**: formulacion multi-etiqueta adoptada; el post-proceso jerarquico se midio en las Fases 4-5 y se descarto (empeora -0.0056); el modelo final (V03) no lo aplica.
 
 ---
 
@@ -58,7 +58,7 @@ evidencia, experimento, resultado, conclusion final.
 - **Evidencia**: reglas del profesor (texto verbatim en `docs/competition_rules.md`).
 - **Experimento**: E05 (aporte de POS).
 - **Resultado**: pendiente.
-- **Conclusion final**: pendiente.
+- **Conclusion final**: se mantuvo sin excepciones: spaCy se uso solo como anotador simbolico (POS/dependencias) y las features no incorporaron vectores preentrenados; la auditoria forense lo verifico (P4).
 
 ---
 
@@ -77,7 +77,7 @@ evidencia, experimento, resultado, conclusion final.
 - **Evidencia**: `reports/leakage_audit.md` secciones 1 y 1b.
 - **Experimento**: protocolo aplicado desde E01.
 - **Resultado**: pendiente.
-- **Conclusion final**: pendiente.
+- **Conclusion final**: superada por D-015/D-016: agrupar solo por near-duplicado daba una estimacion optimista (0.7927 frente a 0.7838 al anadir pseudo-autor); el protocolo vigente usa grupos fusionados.
 
 ---
 
@@ -96,7 +96,7 @@ evidencia, experimento, resultado, conclusion final.
 - **Evidencia**: `reports/samples_por_clase.csv`; `docs/competition_rules.md`.
 - **Experimento**: E03 (features de targeting).
 - **Resultado**: pendiente.
-- **Conclusion final**: pendiente.
+- **Conclusion final**: caracterizacion confirmada con los datos finales (519/519 TR=>HS; 26 casos AG=1 con HS=0) y usada como base de la jerarquia y de los canales TR/AG.
 
 ---
 
@@ -132,7 +132,7 @@ evidencia, experimento, resultado, conclusion final.
 - **Evidencia**: instruccion del proyecto; reglas verbatim.
 - **Experimento**: E02b (profanity), E04 (sentimiento/emocion).
 - **Resultado**: pendiente.
-- **Conclusion final**: pendiente.
+- **Conclusion final**: cumplido: no se uso ningun recurso externo etiquetado ni lexicones externos (pysentimiento/VADER-es descartados por prohibicion); el unico corpus externo fue no etiquetado y solo para embeddings (D-030).
 
 ---
 
@@ -154,7 +154,7 @@ evidencia, experimento, resultado, conclusion final.
 - **Evidencia**: `config/gpu_baseline.json` (medido 2026-09-22).
 - **Experimento**: aplica desde Fase 11 (DL desde cero).
 - **Resultado**: pendiente.
-- **Conclusion final**: pendiente.
+- **Conclusion final**: protocolo aplicado en la fase 11 (preflight rocm-smi y limite de uso); el resto del proyecto es CPU; sin incidentes.
 
 ---
 
@@ -202,7 +202,7 @@ evidencia, experimento, resultado, conclusion final.
 - **Experimento**: variantes A-L de preprocesamiento (Fase 4) compararan
   normalizaciones explicitas.
 - **Resultado**: pendiente.
-- **Conclusion final**: pendiente.
+- **Conclusion final**: verificado (train sin bytes no ASCII; test con 6 bytes cp1252); las variantes de normalizacion se documentaron en v2 y no se intento reconstruir diacriticos.
 
 ---
 
@@ -423,7 +423,7 @@ evidencia, experimento, resultado, conclusion final.
 - **Experimento**: `experiments/15_cadenas_etiquetas_v2.py`.
 - **Resultado**: META 0.7853 (n=1.483, std entre pliegues 0.014); E2-01 cerrada
   sin mejora.
-- **Conclusion final**: pendiente de (a) integrar los canales de P2-P5 y
+- **Conclusion final**: cadenas cerradas sin mejora (0/5); el meta de dependencia no se adopto como modelo final (D-019 superada por D-024); los canales derivados quedan disponibles para metas restringidos. de (a) integrar los canales de P2-P5 y
   (b) validar el candidato final en el holdout congelado antes de gastar sonda
   de LB.
 

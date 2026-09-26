@@ -67,6 +67,10 @@ Ejecucion
     /home/carlos/venv/bin/python experiments/23_candidatos_finales.py
 """
 
+# Nota de auditoria forense (B-10, 2026-09-26): la columna delta_vs_v03 de
+# final_candidates.csv se calculo contra la referencia redondeada 0.7772 (desvios de
+# hasta 1.1e-5 frente a la canonica 0.777211). En futuras corridas usar 0.777211.
+# No se modifico la logica historica.
 from __future__ import annotations
 
 import importlib.util

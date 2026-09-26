@@ -14,7 +14,7 @@ Método: revisión de código con cita de función y línea.
 | Perfiles léxicos condicionales (P2) | `experiments/16_targeting_v2.py` | Sí | `log_odds_informativo` (l.808-846) y `inducir_lexicos` (l.863-953) usan solo documentos del pliegue de entrenamiento. | Ninguno: el canal targeting no superó al global (0/5). |
 | Umbrales anidados | `experiments/21_backlog_restante_v2.py` | Sí | `umbrales_anidados` (l.896-916) y `prediccion_con_umbrales_anidados` (l.919-937): el umbral se ajusta fuera del pliegue evaluado; E2-16 usa shrinkage `n/(n+m)` (l.1629-1673). | Sesgo optimista acotado y documentado; la variante global anidada fue la referencia. |
 | Meta-modelo / stacking (P6) | `experiments/17_stacking_v2.py` | Sí | `evaluar_meta_por_pliegue` (l.587-627) entrena el meta solo con OOF; `probas_bases_anidadas` (l.748-812) genera las probabilidades base sin ver el pliegue evaluado. | Multiplicidad/winner's curse documentado (D-014, D-020); sin contaminación in-sample. |
-| Holdout congelado | `config/holdout_v2.json`; `reports/holdout_evaluaciones_v2.csv` | Sí | 248 tweets (pliegue 0, sha256 `e5b62e5f…`); solo 2 de 5 evaluaciones usadas: P7-01 (V03, 0.8285) y P7-02 (meta, 0.8465); ninguna decisión de desarrollo lo consultó. | Dos evaluaciones restantes sin usar; sin impacto. |
+| Holdout congelado | `config/holdout_v2.json`; `reports/holdout_evaluaciones_v2.csv` | Sí | 248 tweets (pliegue 0, sha256 `e5b62e5f…`); 5 de 5 evaluaciones usadas en total (P7-01 V03 0.8285; P7-02 meta 0.8465; FIN-02 0.8364; FIN-04 0.8336; P8-C-meta36 0.8163, rechazado); todas con umbrales congelados y registradas en reports/holdout_evaluaciones_v2.csv. | Dos evaluaciones restantes sin usar; sin impacto. |
 
 ## Hallazgos
 
