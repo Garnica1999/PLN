@@ -1,0 +1,4 @@
+clave,metrica,diferencia,ic95_0,ic95_1,pliegues_positivos,gate_delta,gate_ic95,gate_pliegues,gate_supera,celdas,tasa_acierto,minimo_requerido,filtro_pasa
+corrector_margen,0.775148,-0.002063,-0.010892,0.007055,0,False,False,False,False,252,0.3611,0.5381,False
+corrector_margen_y_desacuerdo,0.775148,-0.002063,-0.010892,0.007055,0,False,False,False,False,252,0.3611,0.5381,False
+solo_desacuerdo,0.41794,-0.359271,-0.385283,-0.332905,0,False,False,False,False,2185,0.1648,0.5044,False

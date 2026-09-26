@@ -2449,3 +2449,96 @@ evidencia, experimento, resultado, conclusion final.
   todas las lineas medidas en esa banda han dado tasa de acierto por debajo del azar. Cerrar
   la fase o ejecutarlas es una decision del usuario y no tecnica, y conviene tomarla con el
   dato encima: tres lineas medidas, tres con el mismo sintoma.
+
+## D-063 - Cambio de presupuesto autorizado: se gastan sondas para experimentally llegar a 0,80 e incluso a 0,81
+
+- **Contexto**: al cierre de P4 quedaban P5, P6 y P7 sin ejecutar, y la recomendacion tecnica
+  era no ejecutarlas porque el filtro de detectabilidad las bloquea por construccion: las tres
+  mueven la capa de decision en la banda de cien a doscientas celdas, donde hace falta mas
+  del 60 % de acierto, y las tres lineas ya medidas en esa banda dieron tasa por debajo del
+  azar. El objetivo declarado es superar 0.80 en el externo, y el analisis de V8-02 lo situa
+  a 1,1 veces el ruido del leaderboard y a 21 aciertos netos de ventaja limpia.
+- **Decision 1, el usuario autoriza expresamente gastar el envio o los envios adicionales que
+  hagan falta, con el objetivo de llegar a 0.80 a toda costa e incluso superar 0.81**. Eso
+  cambia la regla de presupuesto que la especificacion de la fase fijaba en dos o tres
+  submissions para toda la fase. **A partir de aqui el filtro de detectabilidad deja de ser
+  un bloqueante y pasa a ser un criterio de priorizacion y una prediccion que se puede
+  contrastar**: sigue midiendo lo que mide, pero una linea que no lo supere ya no queda
+  descartada por defecto, sino que es una apuesta informada.
+- **Decision 2, el objetivo sube a 0,80 e incluye la posibilidad de 0,81, y se anota su
+  probabilidad con el numero a la vista**. Con la banda observada de 0.770 a 0.783 en once
+  sondas, llegar a 0.80 exige +0.017, que es 1,1 veces el ruido; llegar a 0.81 exige +0.027,
+  que son 1,8 veces el ruido. **Ninguna de las dos es imposible, y ninguna es esperable por
+  el camino que se ha seguido hasta ahora.** Se ejecuta porque el usuario lo decide y porque
+  un objetivo alto que se persigue produce lineas que un objetivo bajo no produce. Queda
+  escrito el numero para que, si llega, se sepa cuanto de lo que funciona se debe al cambio de
+  representacion y cuanto a haber gastado sondas.
+- **Decision 3, se ejecutan P5, P6 y P7, y despues el resto de la especificacion y las
+  tecnicas nuevas del material de clase**. Quedan P5, P6, P7, P8, P9 y P10 de las diez pistas
+  de la especificacion, mas seis de las nueve tecnicas nuevas del material de clase que no
+  se han ejecutado: asimetria y kurtosis, palabras inestables por traduccion, idiosincrasias y lexico
+  regional, seleccion de rasgos por grupo con criterio de informacion, correlacion entre
+  rasgos, analisis discriminante lineal, bosques aleatorios y arboles de decision, y
+  validacion cruzada repetida. **Cada linea se ejecuta con el filtro de detectabilidad
+  medido y reportado, y genera su submission si tiene merito local aunque no lo supere.**
+- **Decision 4, el protocolo de no entregar nada automaticamente se mantiene, y ahora es
+  todavia mas necesario**. Como se van a generar varias submissions, la entrega sigue siendo
+  manual y cada envio lleva su numero de version y su registro en el manifiesto. Enviar sin
+  saber que se esta midiendo es como se gasto el presupuesto en las fases anteriores.
+- **Decision 5, los controles no se relajan**. Que se gaste mas presupuesto no cambia nada de
+  lo que hace fiable una medicion: el control de codigo, la identidad de pipeline, la
+  verificacion de integridad del fichero y el registro de la cifra en
+  `experiments.csv` siguen siendo obligatorios en cada linea. Lo que se relaja es
+  unicamente la disposicion a pagar por una sonda, no la exigencia de que la cifra sea
+  atribuible.
+
+## D-064 - P5, P6 y P7 cerradas con un descubrimiento que reencuadra la fase: la estimacion es inestable entre particiones
+
+- **Contexto**: por D-063 el usuario autorizo gastar envios adicionales y ejecuto las tres
+  lineas de capa de decision que la recomendacion tecnica proponia no ejecutar.
+- **Decision 1, P5 es la primera linea de la fase que mueve la decision en la direccion
+  correcta**. Elegir la constante de regularizacion por etiqueta con validacion anidada estricta
+  da **+0,000306**, frente a **-0,002043** del brazo de control que usa una sola constante con
+  el mismo procedimiento interno. **La idea aporta +0,002349 sobre el protocolo**, y esa
+  diferencia si es atribuible a elegir por etiqueta. Lo relevante no es la magnitud, que es de
+  milésimas, sino la **tasa de acierto entre las celdas modificadas: 0,5185**, frente a 0,46 de
+  P1, de 0,39 a 0,44 de P3 y de 0,39 a 0,42 de P4. Es la primera vez por encima del azar.
+- **Decision 2, P6 vuelve al patron y ademas cuantifica cuanto depende el proyecto del
+  balanceo**. La rama por etiqueta da -0,005298 con tasa 0,3919, y el control -0,006857 con
+  0,3508. **Lo de P5 era una excepcion y no una tendencia.** El dato duro de la linea es el
+  tercer brazo: **sin ponderacion de clase la metrica es exactamente 0,000000**, porque el
+  modelo predice todo negativo. Es el reverso del hallazgo de P1, P3 y P4, donde los cambios
+  movian la decision hacia peor: aqui quitar el balanceo la destruye. Todo el proyecto depende
+  de una sola decision de balanceo, y conviene tenerlo escrito.
+- **Decision 3, P7 confirma el patron por cuarta vez con el corrector**. El corrector sobre el
+  margen de su etiqueta da **-0,002063** con tasa 0,3611, y anadir el desacuerdo no cambia
+  nada. Usar solo el desacuerdo es desastroso, -0,359271. La geometria de los margenes no lleva
+  informacion que la decision de V03 no haya usado.
+- **Decision 4, un error de fuga que el propio diseno exigia detectar**. Con una sola
+  particion, **cuatro de los cinco modelos habrian entrenado con cada fila**, de modo que el
+  desacuerdo entre ellos estaba contaminado por resubstitucion y habria sido una medida de
+  memoria, no de incertidumbre. Se resolvio con **cinco repeticiones de la particion con
+  semillas distintas**, de modo que cada fila recibe en cada repeticion la prediccion de un
+  modelo que no la entreno. Es exactamente la validacion cruzada repetida, que ademas era una
+  de las nueve tecnicas nuevas del material de clase, de modo que la linea la midio de paso.
+- **Decision 5, el descubrimiento que reencuadra toda la fase, y es el mas importante**. El
+  desacuerdo medio entre las cinco particiones es de **0,9175 en HS, 0,9671 en TR y 0,9256 en
+  AG**, y solo **2 de 1483 filas**, un 0,1 %, tienen las tres etiquetas con desacuerdo por
+  debajo de 0,4. **La estimacion es extremadamente inestable entre particiones.** Eso explica
+  por que casi todo falla: casi cualquier diferencia entre dos modelos es ruido de particion,
+  no senal. Y explica tambien por que el gate de +0,003 de la F1 local no ha detectado nada
+  desde la fase v5.
+- **Decision 6, y de ese descubrimiento sale la mejor linea de la fase**. Promediar las cinco
+  repeticiones da **+0,005066**, con IC95 [-0,00371, +0,01414], **4 de 5 pliegues a favor**,
+  182 celdas modificadas y **tasa de acierto 0,5495 frente a un minimo de 0,5527: falla el
+  filtro por tres milésimas.** Es la mayor mejora local de la fase, la unica con cuatro pliegues
+  a favor y la unica con tasa de acierto por encima de 0,55. El mecanismo es el mismo que P1,
+  que promedia cinco modelos, pero **aqui los modelos son de particiones distintas y no de la
+  misma particion**, y esa es la diferencia: la reduccion de varianza es real y no marginal.
+- **Decision 7, el riesgo que hay que pesar antes de enviar, y se escribe antes**. **P1
+  promediaba cinco modelos de la misma particion y perdio 0,00836 en el externo.** El
+  mecanismo de promediar tiene un precedente negativo directo, y esta linea es su version
+  mas diversiificada. Que la mejora local sea la mayor de la fase no garantiza nada en el
+  externo, y el filtro de V8-02 dice que la tasa de acierto no llega por poco. **Se generan las
+  dos submissions y la del ensemble de repeticiones es la que tiene merits propio para
+  enviar.** El envio es manual, por D-063, y el usuario decide.

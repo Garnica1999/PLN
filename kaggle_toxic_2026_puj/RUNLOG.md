@@ -1123,3 +1123,28 @@ Registro cronologico de ejecuciones. Formato:
   pesos** con la biblioteca, 0,06 frente a 23,3, una comparacion que la metrica sola no
   detecta.
   **D-062. 0 submissions.**
+- v8 P5, P6 y P7: las tres lineas de capa de decision | tres scripts
+  Ejecutadas por D-063, con autorizacion expresa de gastar envios. **P5 es la primera linea de
+  la fase que mueve la decision en la direccion correcta**: elegir la constante por etiqueta con
+  validacion anidada da +0,000306 frente a -0,002043 del control, o sea **+0,002349 atribuible a
+  la idea**, y una tasa de acierto de **0,5185, la primera por encima del azar**. Submission
+  v09, 123 celdas de 3462.
+  **P6 vuelve al patron**: -0,005298 por etiqueta, -0,006857 el control, tasa 0,3919. El dato
+  duro es el tercer brazo: **sin balanceo de clase la metrica es exactamente 0,000000**, porque
+  el modelo predice todo negativo. Todo el proyecto depende de esa sola decision. Submission
+  v10, 139 celdas.
+  **P7 confirma el patron por cuarta vez**: el corrector sobre el margen da -0,002063 con tasa
+  0,3611, y usar solo el desacuerdo es desastroso. Submission v11, 192 celdas.
+  **Error de fuga detectado antes de cifras**: con una sola particion, cuatro de los cinco
+  modelos habrian entrenado con cada fila, de modo que el desacuerdo estaba contaminado por
+  resubstitucion. Se resolvio con cinco repeticiones de la particion con semillas distintas,
+  que ademas mide la validacion cruzada repetida del material de clase.
+  **EL HALLAZGO DE LA FASE**: el desacuerdo medio entre las cinco particiones es de 0,9175, 0,9671
+  y 0,9256, y **solo 2 de 1483 filas** tienen las tres etiquetas por debajo de 0,4. **La
+  estimacion es extremadamente inestable entre particiones**, y por eso casi cualquier
+  diferencia entre dos modelos es ruido y no senal.
+  **Y de ahi sale la mejor linea de la fase**: promediar las cinco repeticiones da
+  **+0,005066 con 4 de 5 pliegues** y tasa de acierto **0,5495, que falla el filtro por tres
+  milesimas**. Submission v12, 127 celdas. **El riesgo a ponderar antes de enviar: P1
+  promediaba cinco modelos de la misma particion y perdio 0,00836 en el externo.**
+  **D-064. 0 submissions automaticas, 4 disponibles para envio manual.**

@@ -1,0 +1,228 @@
+{
+  "experimento": "V8-06 (P5)",
+  "fecha": "2026-09-26T03:40:56+00:00",
+  "referencia_v03_local": 0.777211,
+  "referencia_v03_externa": 0.78306,
+  "ruido_en_aciertos_netos": 19.2,
+  "rejilla_c": [
+    0.25,
+    0.5,
+    1.0,
+    2.0,
+    4.0,
+    8.0
+  ],
+  "variantes": [
+    {
+      "clave": "anidada_por_etiqueta",
+      "descripcion": "constante por etiqueta, elegida con validacion anidada",
+      "metrica": 0.777518,
+      "diferencia": 0.000306,
+      "ic95_0": -0.003454,
+      "ic95_1": 0.004077,
+      "pliegues_positivos": 2,
+      "f1_por_etiqueta": {
+        "HS": 0.7601809954751131,
+        "TR": 0.81859410430839,
+        "AG": 0.7537777777777778
+      },
+      "celdas": 54,
+      "tasa_acierto": 0.5185,
+      "minimo_requerido": 0.6778,
+      "filtro_pasa": false,
+      "gate_delta": false,
+      "gate_ic95": false,
+      "gate_pliegues": false,
+      "gate_supera": false
+    },
+    {
+      "clave": "control_global_anidado",
+      "descripcion": "una sola constante, elegida con el mismo procedimiento interno",
+      "metrica": 0.775168,
+      "diferencia": -0.002043,
+      "ic95_0": -0.006605,
+      "ic95_1": 0.002141,
+      "pliegues_positivos": 1,
+      "f1_por_etiqueta": {
+        "HS": 0.7591463414634146,
+        "TR": 0.81859410430839,
+        "AG": 0.7477638640429338
+      },
+      "celdas": 53,
+      "tasa_acierto": 0.4906,
+      "minimo_requerido": 0.6811,
+      "filtro_pasa": false,
+      "gate_delta": false,
+      "gate_ic95": false,
+      "gate_pliegues": false,
+      "gate_supera": false
+    }
+  ],
+  "constantes_finales": {
+    "HS": 4.0,
+    "TR": 2.0,
+    "AG": 8.0
+  },
+  "integridad": [
+    {
+      "comprobacion": "numero de filas",
+      "resultado": "correcto",
+      "detalle": "1154 frente a 1154 en la prueba"
+    },
+    {
+      "comprobacion": "nombres y orden de columnas",
+      "resultado": "correcto",
+      "detalle": "['id', 'HS', 'TR', 'AG']"
+    },
+    {
+      "comprobacion": "valores de etiqueta",
+      "resultado": "correcto",
+      "detalle": "[0, 1]"
+    },
+    {
+      "comprobacion": "sin valores ausentes",
+      "resultado": "correcto",
+      "detalle": "0 celdas ausentes"
+    },
+    {
+      "comprobacion": "sin identificadores duplicados",
+      "resultado": "correcto",
+      "detalle": "0 repetidos"
+    },
+    {
+      "comprobacion": "identificadores en el orden de la prueba",
+      "resultado": "correcto",
+      "detalle": "coinciden con el orden original"
+    },
+    {
+      "comprobacion": "filas distintas del entrenamiento",
+      "resultado": "correcto",
+      "detalle": "1731 frente a 1154"
+    }
+  ],
+  "integridad_correcta": true,
+  "comparacion_con_v03": {
+    "celdas_totales": 3462,
+    "celdas_que_cambian": 123,
+    "filas_que_cambian": 106,
+    "por_etiqueta": {
+      "HS": 59,
+      "TR": 20,
+      "AG": 44
+    }
+  },
+  "elecciones_por_pliegue": [
+    {
+      "pliegue": 1,
+      "c_global": 2.0,
+      "f1_global_interna": 0.790735,
+      "por_etiqueta": [
+        {
+          "etiqueta": "HS",
+          "c": 4.0,
+          "f1_interna": 0.743341
+        },
+        {
+          "etiqueta": "TR",
+          "c": 2.0,
+          "f1_interna": 0.790735
+        },
+        {
+          "etiqueta": "AG",
+          "c": 4.0,
+          "f1_interna": 0.743678
+        }
+      ]
+    },
+    {
+      "pliegue": 2,
+      "c_global": 4.0,
+      "f1_global_interna": 0.801839,
+      "por_etiqueta": [
+        {
+          "etiqueta": "HS",
+          "c": 2.0,
+          "f1_interna": 0.746042
+        },
+        {
+          "etiqueta": "TR",
+          "c": 4.0,
+          "f1_interna": 0.801839
+        },
+        {
+          "etiqueta": "AG",
+          "c": 1.0,
+          "f1_interna": 0.740809
+        }
+      ]
+    },
+    {
+      "pliegue": 3,
+      "c_global": 2.0,
+      "f1_global_interna": 0.793623,
+      "por_etiqueta": [
+        {
+          "etiqueta": "HS",
+          "c": 1.0,
+          "f1_interna": 0.758011
+        },
+        {
+          "etiqueta": "TR",
+          "c": 2.0,
+          "f1_interna": 0.793623
+        },
+        {
+          "etiqueta": "AG",
+          "c": 4.0,
+          "f1_interna": 0.737166
+        }
+      ]
+    },
+    {
+      "pliegue": 4,
+      "c_global": 8.0,
+      "f1_global_interna": 0.80498,
+      "por_etiqueta": [
+        {
+          "etiqueta": "HS",
+          "c": 1.0,
+          "f1_interna": 0.76033
+        },
+        {
+          "etiqueta": "TR",
+          "c": 8.0,
+          "f1_interna": 0.80498
+        },
+        {
+          "etiqueta": "AG",
+          "c": 1.0,
+          "f1_interna": 0.746818
+        }
+      ]
+    },
+    {
+      "pliegue": 5,
+      "c_global": 8.0,
+      "f1_global_interna": 0.786965,
+      "por_etiqueta": [
+        {
+          "etiqueta": "HS",
+          "c": 4.0,
+          "f1_interna": 0.759646
+        },
+        {
+          "etiqueta": "TR",
+          "c": 8.0,
+          "f1_interna": 0.786965
+        },
+        {
+          "etiqueta": "AG",
+          "c": 4.0,
+          "f1_interna": 0.738399
+        }
+      ]
+    }
+  ],
+  "fichero_de_envio": "submissions/toxic_submission_v09_p5_c_por_etiqueta.csv",
+  "nota": "La eleccion de la constante usa sub-pliegues de grupo propios dentro del tren de cada pliegue. El conjunto de ajuste de la eleccion y el de medicion quedan separados, que es la diferencia de protocolo respecto a R1-C1. Por D-063 el envio es manual y el filtro de detectabilidad es criterio de priorizacion, no bloqueante."
+}
