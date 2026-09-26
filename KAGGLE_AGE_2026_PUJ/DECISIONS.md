@@ -972,3 +972,42 @@ Tras declarar la saturación se probó la vía indicada como trabajo futuro:
   análisis lingüístico", que es una vía autorizada y no un modelo de clasificación.
 - **Evidence**: `python -c "import spacy; spacy.util.get_installed_models()"` ->
   `['es_core_news_md']`; D-026 en este mismo archivo; `plan/V13_ADVANCED_RESEARCH_PLAN.md`.
+
+---
+
+## D-044 — V14 se cierra: relajar §3 no cambia el mecanismo de V13
+- **Observation**: con D-043 se permitió un analizador morfosintáctico español externo y con D-042
+  se bajó el listón del gate a +0,001. V14 construyó 37 variables nuevas (morfología verbal y
+  nominal, lemas, entidades nombradas, sintaxis de dependencias) y las midió con el criterio más
+  favorable posible para ellas.
+- **Result**:
+  - **V14a (control aislado)**: LogReg **0,2409** y LinearSVC 0,2270 frente al suelo de azar 0,1667.
+    Es **el mejor bloque aislado de todo el proyecto** por encima de los lexicones (0,2033), los
+    pronombres (0,1918) y la modalidad (0,1270). El cribado marca solo 4 de 37 como redundantes, y
+    son las de longitud y diversidad, que es exactamente lo que P0b predijo para la textometría.
+  - **V14b (fusión)**: macro-F1 **0,5990**, delta **−0,0015**, **1 de 5 folds** positivos. Falla
+    cinco de los seis criterios del gate. Los tres controles de permutado (0,5962, 0,5975, 0,5986)
+    son **peores** que la candidata, o sea que la señal es real; y aun así **la segunda partición da
+    0 de 4 folds positivos con una media de −0,0031**, y el IC95 pareado es [−0,0027; −0,0002] con
+    solo un 0,9 % de resmuestras positivas. La frontera `18-24|25-34` empeora de 0,4963 a 0,4919.
+- **Decision**: **NO ADOPTAR**. Cerrar V14 y con él la vía de relajar §3. V12 sigue congelado en
+  0,6004 (CV) y 0,62188 (leaderboard).
+- **Reason**: es la conclusión de alcance más importante del proyecto, y va contra la intuición.
+  La restricción de recursos **no era el cuello de botella**. V14 tiene las mejores variables
+  disponibles: más fuertes en aislamiento que ninguna línea anterior, no redundantes, y procedente de una
+  fuente genuinamente externa. Y a pesar de eso degradan V12 de forma **reproducible** en dos
+  particiones independientes. El mecanismo que V13 identificó —el meta-modelo no puede explotar señal
+  nueva dentro de este espacio de variables— queda confirmado con un tratamiento experimental más
+  fuerte, no refutado. Bajar el gate tampoco lo cambia: con D-042, un Δ de +0,001 tendría que pasar
+  además el IC95 y la segunda partición, y −0,0015 falla los tres.
+- **Consequences**: (1) la conclusión de V13 se generaliza: **el cuello de botella es
+  arquitectónico, no de datos ni de restricciones**; (2) el gate revisado de D-042 queda validado
+  por su primer uso real: aceptó el caso difícil de distinguir señal de ruido (el bloque **supera**
+  a sus controles permutados) y aun así rechazó el candidato, que es exactamente el comportamiento
+  que se le pedía; (3) la segunda partición como criterio resultó ser la medida más informativa de
+  las seis, y conviene exigirla en cualquier trabajo futuro del proyecto; (4) no queda abierta la
+  lista léxica externa de una sola función (por ejemplo sentimiento): el precedente de V14 dice que
+  otro bloque del mismo tipo daría el mismo resultado, y abrirlo sería ejecutar por cantidad.
+- **Evidence**: `reports/v14_linguistico.md`, `reports/v14_fusion_linguistico.md`,
+  `experiments/v14a_linguistico.json`, `experiments/v14b_fusion_linguistico.json`,
+  `reports/v13_final_research.md` §4.

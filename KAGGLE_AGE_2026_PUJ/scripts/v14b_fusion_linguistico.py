@@ -134,7 +134,12 @@ def main() -> int:
     metricas_candidata = metricas_globales(candidata, clase)
     fronteras_candidata = metricas_frontera(candidata, clase, PARES)
     delta = metricas_candidata["macro_f1"] - metricas_referencia["macro_f1"]
-    folds_positivos = sum(1 for a, b in zip(por_fold_candidata, por_fold_referencia) if b > a)
+    # La comparacion es candidata contra referencia: se cuenta el numero de folds en los que
+    # la candidata supera a V12. La primera version invertia la condicion y contaba las veces
+    # que V12 ganaba, que es exactamente lo contrario.
+    folds_positivos = sum(1 for candidata_fold, referencia_fold
+                         in zip(por_fold_candidata, por_fold_referencia)
+                         if candidata_fold > referencia_fold)
     np.save(OOF, candidata)
     print(f"[candidata] {metricas_candidata['macro_f1']} | delta {delta:+.4f} | folds positivos "
           f"{folds_positivos}/5 | folds {[round(v, 4) for v in por_fold_candidata]}", flush=True)

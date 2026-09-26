@@ -1,0 +1,6 @@
+modelo,macro_f1,delta,folds,frontera_18_24_25_34,frontera_25_34_35_49
+V12 (referencia),0.6005,0.0,0/5,0.4963,0.4974
+V12 + linguisticas (33),0.599,-0.0015,1/5,0.4919,0.4975
+control permutado 1000,0.5962,-0.0043,-,,
+control permutado 1001,0.5975,-0.003,-,,
+control permutado 1002,0.5986,-0.0019,-,,

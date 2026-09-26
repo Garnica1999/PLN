@@ -15,6 +15,27 @@
   regenerarse** en https://github.com/settings/tokens (no quedó escrito en ningún archivo del repo,
   verificado con `grep`).
 
+## V14 (2026-09-26) CERRADA — relajar §3 no cambia el mecanismo (D-044)
+- **D-042**: gate revisado. El efecto baja a **≥ +0,001** y los folds a **≥3/5**, pero el IC95 del
+  bootstrap pareado **sigue teniendo que excluir el cero** y se añade la **segunda partición** (≥3/4
+  folds de una partición de 4 agrupados, independiente). Con 169.336 filas un Δ de +0,001 da un IC95
+  de ±0,0015, así que el listón de efecto no puede rebajarse sin el de significación.
+- **D-043**: §3 relajado para permitir un recurso lingüístico externo: el analizador español
+  `es_core_news_md` de spaCy (no transformer, no LLM, no embeddings de clasificación, sin etiquetas).
+- **V14a**: 37 variables nuevas (morfología verbal y nominal, lemas, entidades, sintaxis). Control
+  **LogReg 0,2409 / LinearSVC 0,2270**: el **mejor bloque aislado del proyecto**, por encima de los
+  lexicones (0,2033), los pronombres (0,1918) y la modalidad (0,1270). Cribado: 4 de 37 redundantes, y
+  son las de longitud y diversidad, como P0b predijo para la textometría.
+- **V14b**: fusión con 33 columnas -> **0,5990, Δ −0,0015, 1/5 folds**. Falla 5 de los 6 criterios.
+  Los tres controles permutados son **peores** que la candidata (señal real), y la **segunda
+  partición da 0/4 folds con media −0,0031**. La frontera `18-24|25-34` empeora de 0,4963 a 0,4919.
+- **Conclusión de alcance**: **la restricción de recursos no era el cuello de botella**. Las mejores
+  variables disponibles degradan V12 de forma reproducible en dos particiones. El cuello es
+  **arquitectónico**, y el gate revisado quedó validado por su primer uso: aceptó distinguir señal de
+  ruido (el bloque supera a sus controles) y rechazó al candidato.
+- **Decisión**: cerrar V14. No abrir la lista léxica externa de una sola función: el precedente dice
+  que otro bloque del mismo tipo daría lo mismo.
+
 ## V13 ADVANCED RESEARCH (2026-09-26) CERRADA — 0 adopciones (D-041)
 - **16 experimentos, 8 hipótesis pre-registradas, 0 candidatos adoptados.** V12 sigue congelado.
 - **Seis pistas de variables cerradas**: P1 evidencia por token (control 0,3997, el doble del mejor
