@@ -177,7 +177,7 @@ corrige parametrizando el ajuste por **grados de libertad efectivos** con column
   pocas direcciones de V12.
 - El **control** (informacion de clase) es 0,0485 en los tres bloques, por debajo del azar.
 
-Los dos指标 responden a preguntas distintas y divergen: **la redundancia lineal no explica el
+Los dos indicadores responden a preguntas distintas y divergen: **la redundancia lineal no explica el
 fracaso**. El bloque tiene R2 de 0,96 en su mejor columna y aun asi una reconstruccion con 5 grados de
 libertad clasifica por debajo del azar, porque la varianza que V12 reproduce no es la que discrimina.
 

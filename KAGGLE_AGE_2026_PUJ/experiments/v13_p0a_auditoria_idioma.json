@@ -2,15 +2,7 @@
   "fase": "V13 · P0a auditoria de idioma",
   "fecha": "2026-09-25",
   "ficheros_auditados": 304,
-  "errores": 1,
+  "errores": 0,
   "avisos": 0,
-  "hallazgos": [
-    {
-      "fichero": "plan/V13_ADVANCED_RESEARCH_PLAN.md",
-      "linea": 180,
-      "categoria": "ERROR:chino (han)",
-      "detalle": "CJK UNIFIED IDEOGRAPH-6307",
-      "contexto": "Los dos指标 responden a preguntas distintas y divergen: **la redundancia lineal no explica e"
-    }
-  ]
+  "hallazgos": []
 }

@@ -3,13 +3,9 @@
 Comprueba que el código, la documentación y los datos derivados están en español y sin caracteres de otros alfabetos. Motivo: en la fase de lexicones se colaron ideogramas CJK, cirílicos y puntuación china en listas de palabras y docstrings; en V13 eso se detecta de forma automática.
 
 - **Ficheros auditados**: 304 (`.py`, `.md`, `.txt`, `.csv`)
-- **Errores**: 1 · **Avisos**: 0
+- **Errores**: 0 · **Avisos**: 0
 
-## Errores (alfabeto no latino, mojibake o control)
-
-| Fichero | Línea | Categoría | Detalle | Contexto |
-|---|---|---|---|---|
-| `plan/V13_ADVANCED_RESEARCH_PLAN.md` | 180 | **ERROR:chino (han)** | CJK UNIFIED IDEOGRAPH-6307 | Los dos指标 responden a preguntas distintas y divergen: **la redundancia lineal no explica e |
+**Sin errores**: no hay ideogramas, cirílicos, árabe, hebreo, devanagari, tailandés, coreano, puntuación CJK ni mojibake en el proyecto.
 
 ## Regla aplicada en V13
 
