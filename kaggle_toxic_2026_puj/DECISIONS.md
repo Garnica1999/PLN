@@ -2336,3 +2336,57 @@ evidencia, experimento, resultado, conclusion final.
   adverso ya medido dentro de E2-15, cerrado entre -0.016 y -0.039, y que es el estimador de
   Mosteller y Wallace de 1964. P5, P6 y P7 siguen con la prioridad baja que les asigno el
   filtro de detectabilidad.
+
+## D-061 - P2 cerrado: una premisa propia era falsa, y el suavizado sostiene el metodo entero
+
+- **Contexto**: P2 era la razon logaritmica de recuentos, el estimador de Mosteller y Wallace
+  de 1964, la siguiente linea de la ordenacion. La auditoria de V8-00 la senalaba con
+  precedente adverso ya medido: E2-15 evaluo cuatro variantes cerradas entre -0.016 y -0.039.
+- **Decision 1, una premisa propia era falsa y se corrige antes de ejecutar nada**. La
+  auditoria de V8-00 afirmaba que el componente que el proyecto no habia probado era **la razon
+  logaritmica por etiqueta**. Al leer el codigo de E2-15 se comprueba que su bucle itera sobre
+  las tres etiquetas y calcula un ratio independiente para cada una. **Ya estaba hecho.** Lo
+  genuinamente no probado era otro: multiplicar el ratio sobre la **representacion TF-IDF de
+  V03** y con la **constante 2.0**, porque E2-15 uso conteos y la constante 1.0. La correccion
+  importa porque cambiar la pregunta es la unica forma de que la linea aporte algo.
+- **Decision 2, el suavizado sostiene el metodo entero, y se mide por que**. Con suavizado
+  1e-6 el ratio sobre la TF-IDF da **-0,058496**; con 1e-3 la misma linea da **+0,004745**. Un
+  salto de **+0,063241 por un factor de mil en un solo parametro**. El diagnostico lo explica:
+  con suavizado pequeno el ratio alcanza un rango de mas de veinte unidades y una desviacion
+  de mas de tres, porque en la TF-IDF las caracteristicas raras ya tienen valores pequenos y
+  dividir por una probabilidad de clase casi nula **explota**. Multiplicar la matriz por eso
+  destruye la escala relativa de las caracteristicas. El suavizado no es un detalle numerico:
+  es la parte que hace que el metodo no destruya la representacion.
+- **Decision 3, ninguna variante es admisible, y el filtro falla por poco pero falla**.
+  - `nb_tfidf` con suavizado 1e-6: -0,058496, IC95 [-0,07611, -0,04061], 0 de 5 pliegues,
+    tasa de acierto entre celdas 0,3266, muy por debajo del azar.
+  - `nb_tfidf_suavizado` con 1e-3: +0,004745, IC95 [-0,00708, +0,01714], 3 de 5 pliegues,
+    tasa 0,5281 frente a un minimo de 0,5317. **Falla por tres milesimas.**
+  - `nb_counts_c2`, el control: -0,075027, IC95 [-0,09423, -0,05561], 0 de 5 pliegues,
+    tasa 0,3217.
+  Que la variante suavizada quede a tres milesimas de superar el filtro **no cambia nada**: el
+  filtro se supera o no se supera. Y ademas su IC95 incluye cero y solo gana 3 de 5 pliegues.
+- **Decision 4, no se barre el suavizado, y el motivo es el que importa**. Que una sola linea
+  pase de -0,0585 a +0,0047 cambiando un parametro que nadie ha caracterizado significa que
+  **el resultado positivo local no es una senal: es un punto de una superficie que no se ha
+  explorado**. Barrer el suavizado seria el rescate por hiperparametro que las reglas del
+  proyecto prohiben desde la fase v6, y V8-02 acaba de medir que casi nada de lo que se ajusta
+  llega al externo. **No se gasta sonda.**
+- **Decision 5, el control aporta algo que las cuatro variantes de E2-15 no permitian
+  separar**. El control canonico con la constante 2.0 da -0,075027, frente a los -0,0160 que
+  E2-15 midio con la constante 1.0. **Subir la constante de 1.0 a 2.0 con el ratio empeora la
+  linea casi cinco veces.** La conclusion es que la constante y el ratio **no se pueden subir
+  a la vez**: el ratio ya introduce mucho ruido en la escala y subir la constante lo amplifica.
+  Ese control no existia en E2-15, y sin el ninguna diferencia observada podria atribuirse a la
+  representacion y no a la constante.
+- **Decision 6, el mecanismo actua, y eso tambien es un dato**. El ratio cambia 303 celdas
+  en el primer pliegue, un 8 %, al compararlo con el mismo modelo sin ponderar. No es un
+  multiplicador inerte. La pregunta no era si el mecanismo hace algo, sino si lo hace para
+  bien, y la respuesta es que no.
+- **Decision 7, como queda la ordenacion**. P2 cerrado. Quedan P4, P5, P6, P7 y las lineas de
+  reserva. **P5, P6 y P7 conservan la prioridad baja** que les asigno el filtro de
+  detectabilidad, porque las tres mueven la capa de decision en la banda de cien a doscientas
+  celdas. P4, la regularizacion conjunta entre etiquetas, es la unica que queda con mecanismo
+  propio, pero su techo lo acotan tres predecesores fallidos: cadenas, powerset y
+  apilamiento. Con el filtro de detectabilidad delante, ninguna de ellas pasa por defecto, y
+  por tanto la fase se acerca al punto en que hay que decidir si seguir buscando o cerrar la fase.

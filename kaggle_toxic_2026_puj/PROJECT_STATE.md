@@ -468,3 +468,23 @@ chequeo previo (D-008).
   del texto, no pertenencia a una clase.
 - **Siguiente linea: P2**, la ponderacion por razon logaritmica de recuentos, que conserva su
   precedente adverso de E2-15 (-0.016 a -0.039).
+
+### Tras P2 (V8-04)
+
+- **P2 CERRADO, negativo** (D-061). Con suavizado 1e-6 el ratio sobre la TF-IDF da -0,058496;
+  con 1e-3 da +0,004745. El control de conteos con constante 2.0 da -0,075027.
+- **Precedente adverso confirmado.** Ninguna variante es admisible; el filtro de detectabilidad
+  falla en las tres (0,3266, 0,5281 frente a 0,5317, y 0,3217). Sin submission, sin sonda.
+- **Prema propia corregida antes de ejecutar**: la auditoria V8-00 decia que el ratio por
+  etiqueta no se habia probado, y era falso. E2-15 ya lo calculaba por etiqueta. Lo no probado
+  era el ratio sobre la TF-IDF de V03 con la constante 2.0.
+- **El suavizado sostiene el metodo entero**: salto de +0,063241 por un factor de mil.
+- **No se barre el suavizado**: que la linea pase de -0,058 a +0,005 con un parametro sin
+  caracterizar significa que el resultado positivo es un punto de una superficie sin
+  explorar, no una senal.
+- **Dato colateral del control**: la constante y el ratio no se pueden subir a la vez
+  (-0,075 con 2.0 frente a -0,016 con 1.0).
+- **Estado de la ordenacion**: P1 cerrada, P3 cerrada, P2 cerrada. Quedan P4, P5, P6, P7 y las
+  lineas de reserva, **todas con la prioridad baja que les asigna el filtro de
+  detectabilidad**. P4 es la unica con mecanismo propio, y su techo lo acotan tres
+  predecesores fallidos.

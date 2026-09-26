@@ -38,5 +38,5 @@ empujando la capa de decision.
 | 2 | P1 promedio de los cinco modelos al predecir | **cerrada, negativa** (D-059) |
 | 3 | A2 resolucion del leaderboard y filtro de detectabilidad | **cerrada** (V8-02) |
 | 4 | P3 estabilidad de features | **cerrada, negativa** (D-060) |
-| 5 | P2 log-count ratio, con precedente adverso ya medido | **siguiente** |
-| 6 | P4 a P7 | en espera, baja prioridad por el filtro |
+| 5 | P2 log-count ratio, con precedente adverso ya medido | **cerrada, negativa** (D-061) |
+| 6 | P4 a P7 | en espera, todas con prioridad baja por el filtro |

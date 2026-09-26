@@ -1088,3 +1088,21 @@ Registro cronologico de ejecuciones. Formato:
   objetivo es la forma y no la clase. Traducir el criterio a clasificacion no conserva su
   sentido. La idea es buena y la fuente es buena; lo que falla es la traduccion al problema.
   **D-060. 0 submissions.**
+- v8 P2: ponderacion por razon logaritmica de recuentos | `v8_04_log_count_ratio.py`
+  **Precedente adverso confirmado y ninguna variante admisible.** Con suavizado 1e-6 el ratio
+  sobre la TF-IDF da -0,058496; con 1e-3 da +0,004745. **Salto de +0,063241 por un factor de
+  mil en un solo parametro.** El filtro de detectabilidad falla en las tres: 0,3266, 0,5281
+  frente a un minimo de 0,5317, y 0,3217. **No se genera submission y no se gasta sonda.**
+  **Correccion de premisa propia antes de ejecutar**: la auditoria de V8-00 decia que el ratio
+  por etiqueta no se habia probado, y era falso; el bucle de E2-15 ya lo hacia por etiqueta. Lo
+  no probado era el ratio sobre la TF-IDF de V03 con la constante 2.0.
+  **El suavizado sostiene el metodo entero**: con suavizado pequeno el ratio tiene desviacion
+  de mas de tres y rango de mas de veinte unidades, porque en la TF-IDF las caracteristicas
+  raras ya son pequenas y dividir por una probabilidad casi nula explota.
+  **No se barre el suavizado**, porque que la linea pase de -0,058 a +0,005 cambiando un
+  parametro sin caracterizar significa que el resultado positivo es un punto de una superficie
+  sin explorar, no una senal.
+  **El control faltaba en E2-15 y aporta una conclusion**: la constante 2.0 con ratio da
+  -0,075 frente a los -0,016 de la constante 1.0, o sea la constante y el ratio no se pueden
+  subir a la vez.
+  **D-061. 0 submissions.**

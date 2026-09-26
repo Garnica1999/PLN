@@ -20,7 +20,17 @@
 
 ## Siguiente
 
-- [ ] **P2, ponderacion por razon logaritmica de recuentos**, con el precedente de E2-15 ya
-      medido entre -0,016 y -0,039. Es el estimador de Mosteller y Wallace de 1964.
-- [ ] Aplicar el filtro de detectabilidad **antes** de considerar cualquier envio, siempre.
-- [ ] P4 a P7 solo si el filtro de detectabilidad dice que su cambio es resoluble.
+- [x] **P2, razon logaritmica de recuentos: cerrado, negativo.** -0,0585 con suavizado
+      pequeno y +0,0047 con el grande; el control de conteos da -0,075. Filtro falla en las
+      tres. Sin submission y sin sonda. Precedente adverso de E2-15 confirmado.
+- [x] Premisa propia corregida antes de ejecutar: el ratio por etiqueta ya estaba probado.
+- [x] No se barre el suavizado, porque el resultado positivo es un punto de una superficie
+      sin explorar y no una senal.
+
+## Siguiente
+
+- [ ] **Decidir si P4 a P7 merece ejecutarse.** Las cuatro mueven la capa de decision en la
+      banda de cien a doscientas celdas, donde el filtro de detectabilidad exige mas del 60 %
+      de acierto. P4 es la unica con mecanismo propio, pero su techo lo acotan tres
+      predecesores fallidos: cadenas, powerset y apilamiento.
+- [ ] Si se ejecuta alguna, aplicar el filtro de detectabilidad **antes** de cada envio.
