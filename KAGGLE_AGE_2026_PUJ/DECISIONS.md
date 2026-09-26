@@ -906,3 +906,69 @@ Tras declarar la saturación se probó la vía indicada como trabajo futuro:
 - **Evidence**: `reports/v13_final_research.md`, `reports/v13_reproducibility.md`,
   `reports/v13_hypothesis_registry.csv`, `reports/v16c_reconstruccion.md`,
   `reports/v16d_puerta.md`, `reports/v3_especialistas.md`, `experiments.csv` (89 experimentos).
+
+---
+
+## D-042 — Gate de adopción revisado: el efecto baja a +0,001, la significación no
+- **Observation**: el cierre de V13 (D-041) dejó abierta una vía de alcance, y Carlos la asume
+  explícitamente: el gate §24 exigía un Δ ≥ +0,003, muy por encima del ruido de las
+  variaciones medidas (los controles permutados de P1b se movían entre 0,6000 y 0,6003, es decir
+  ±0,0003, y el bootstrap de una diferencia de −0,0002 dio un IC95 de [−0,0015; +0,0010]). Con un
+  listón de +0,003, V13 cerró sin adopciones, pero también sin descartar que un efecto real de
+  +0,0015 esté pasando desapercibido.
+- **Decision**: **nuevo gate §24**, que sustituye al anterior a partir de ahora:
+  1. **Efecto**: Δ de macro-F1 **≥ +0,001**.
+  2. **Folds**: **≥ 3 de 5** folds positivos (antes 4 de 5). Con efectos más pequeños, exigir 4/5
+     penaliza la varianza del estimador, no la calidad del efecto.
+  3. **Significación**: el IC95 del bootstrap **pareado excluye el cero**. **Este punto no se toca**,
+     y es el que hace el trabajo: con 169.336 filas, un efecto de +0,001 tiene un intervalo de
+     confianza del orden de ±0,0015, de modo que un Δ de +0,001 **no puede aprobar el criterio 3** y
+     el gate sigue rechazando el ruido. Bajar el listón de efecto sin tocar el de significación
+     sería exactamente lo contrario de ser menos riguroso.
+  4. **Segunda partición**: el efecto debe reproducirse al menos en **3 de 4** espacios de
+     validación disjuntos (partición por grupos en cuatro partes, sin usar el OOF completo para
+     elegir nada). Esto es nuevo y es la consecuencia directa de bajar el efecto: la
+     re-ejecución sobre otra partición es la que distingue un efecto de +0,0015 de un máximo de la
+     rejilla de hiperparámetros.
+  5. Se mantiene la exigencia del control de permutación (DD-6) y la doble métrica (§36), y se
+     añade: **ningún candidato puede mejorar la global a costa de empeorar una frontera central**.
+- **Reason**: el gate antiguo estaba calibrado para un mundo donde el ruido de las medidas era de
+  ±0,0003 y el listón de +0,003 era defendible. Con V13 ya medido, se sabe que el listón de efecto
+  era el que excluía candidatos, no la significación. Bajarlo **y** añadir la segunda partición
+  mantiene el rigor y amplía la sensibilidad.
+- **Consequences**: (1) P1b **sigue sin adoptarse** (Δ = −0,0002); (2) cualquier candidato futuro se
+  juzga con este gate; (3) el cambio se aplica a V14 y no se reabre V13: los experimentos cerrados
+  con el gate viejo mantienen su veredicto, que sigue siendo el correcto con el criterio más estricto.
+- **Evidence**: `experiments/v13_p1b_fusion_tokens.json` (ruido de los controles), plan §24,
+  `reports/v13_final_research.md` §8.
+
+---
+
+## D-043 — Se relaja §3: se permite un recurso lingüístico externo, con procedencia documentada
+- **Observation**: la mayor limitación declarada en el cierre de V13 es que las tres listas de
+  vocabulario eran **propias** (R-1) y, por tanto, exhaustivas por construcción: 1.359 entradas en los
+  lexicones, 26 columnas de pronombres, 23 de modalidad, 36 de conjunciones. Carlos asume
+  explícitamente esta vía de alcance. El entorno ya tiene el recurso: **spaCy 3.8.13 con el modelo
+  español `es_core_news_md`**, que es un modelo de análisis lingüístico (**no** transformer, **no**
+  LLM, **no** embeddings preentrenados para clasificación), y que además de POS entrega
+  **análisis morfológico, lemas, entidades nombradas y dependencias**.
+- **Qué se mantiene prohibido**: embeddings, Word2Vec, FastText, GloVe, sentence embeddings,
+  BERT/RoBERTa, transformers, LLM, modelos externos de clasificación, corpus o datasets externos
+  con etiquetas, y **pseudo-etiquetas o labels de test**. Se mantiene R-5 (el test solo se
+  transforma), R-6 (gate completo) y R-7 (doble métrica).
+- **Qué se permite ahora**: un **analizador morfosintáctico** como fuente de variables
+  morfológicas, léxicas y sintácticas, y una lista léxica externa de**una sola función** (por
+  ejemplo sentimiento) si se documenta su procedencia y su SHA256, sin usarla para entrenar nada
+  externo. Se mantiene la prohibición de que el recurso externo aporte *etiquetas*: solo forma.
+- **Por qué no es la línea ya cerrada por D-026**: D-026 midió **26 recuentos de etiqueta POS** y
+  obtuvo −0,0032. Eso no es lo mismo que la información morfológica que el mismo modelo entrega
+  (tiempo, aspecto, persona, género, número, modo) ni que la estructura de dependencias. Son tipos de
+  variable distintos, y el gap audit ya habia marcado la morfología como cerrada solo en su versión
+  de rasgos por sufijo, que sí es redundante con `char_wb(3-5)`.
+- **Procedencia**: `es_core_news_md`, instalado en el venv, SHA256 del modelo registrado en el
+  informe de la fase. Ningún download: el recurso ya está en la máquina.
+- **Consequences**: (1) V14 es una fase nueva con su propio pre-registro de hipótesis; (2) V13 no se
+  reabre; (3) la auditoría de D-038 se actualiza: `spacy` pasa de "no usado" a "usado para
+  análisis lingüístico", que es una vía autorizada y no un modelo de clasificación.
+- **Evidence**: `python -c "import spacy; spacy.util.get_installed_models()"` ->
+  `['es_core_news_md']`; D-026 en este mismo archivo; `plan/V13_ADVANCED_RESEARCH_PLAN.md`.
