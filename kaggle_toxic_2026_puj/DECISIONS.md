@@ -3310,3 +3310,141 @@ experimento de este tipo: no un crash, sino un resultado que parece bueno.
 ajuste.** En V12-02 la verificacion pasaba mientras el optimizador fallaba, porque cada uno llamaba a
 la funcion con un orden de argumentos distinto. Arreglarlo no fue cosmetico: fue lo que permitio
 descubrir el segundo problema, el de la orientacion de la familia.
+
+## D-095 - H3 CERRADA, y su modo de fallo coincide con el de V6-02 medido por otra via
+
+**V12-03.** El control interno `lambda=0` da **+0.000053** con 3 celdas, lo que valida a la vez el
+objetivo, el optimizador, el pipeline y los pesos de clase. El mejor valor de lambda da
+**-0.002469** con deteccion **0,4915**, y el peor da **-0.007938** con deteccion **0,4523**: en ambos
+casos **peores que el azar**, y muy por debajo del umbral de 0,5166. La curva es **monotona
+decreciente** y su maximo cae en `lambda=0`, con un recorrido de 0,010311.
+
+**El dato instructivo es el efecto sobre la dependencia HS hacia TR y AG**, que es lo que hace
+especifica a esta hipotesis:
+
+| brazo | F1 TR donde esta definida | FP de TR en zona no definida | FP de AG en zona no definida |
+| --- | --- | --- | --- |
+| V03 | 0,8941 | 78 | 104 |
+| lambda=0,25 | 0,9024 | 84 | 121 |
+| lambda=1,0 | 0,9091 | 97 | 130 |
+
+El mecanismo **mejora la F1 de TR donde la etiqueta esta definida** y **empeora los falsos
+positivos en la zona no definida**, que son exactamente los que el oraculo de H2 corrigio. Es decir:
+hace bien lo que fue disenado para hacer **en local**, ordenar mejor las tres etiquetas dentro de
+la subpoblacion toxica, y mal lo que la fase necesita.
+
+**La causa es concreta y es una leccion sobre objetivos**: un objetivo de **orden** solo restringe
+diferencias entre logits y **no dice nada sobre su nivel absoluto**. Al desplazar la presion directa
+que la entropia cruzada ejerce sobre el nivel de `z_TR` y `z_AG` en las filas donde HS vale cero,
+empeora justo ahi. Y como la metrica se evalua con **umbrales fijos**, el nivel absoluto si importa.
+Un objetivo relativo no puede aportar la condicion que falta, porque la condicion que falta es
+justamente de nivel.
+
+**Y el modo de fallo coincide con el de V6-02**, que lo diagnostico como efecto de escala: el producto
+`p(HS) p(TR|HS=1)` atenua `p(TR)` en toda fila con `p(HS)` intermedia, y V03 acertaba justo ahi.
+Dos vias independientes, mismo mecanismo. Se cierra H3.
+
+## D-096 - Un objetivo a medida verifico su derivada, y eso encontro cuatro fallos propios
+
+En H3, **cuatro fallos** los detectaron las comprobaciones internas **antes de mirar un solo
+resultado**, y los cuatro habrian producido cifras plausibles y falsas:
+
+1. **La penalizacion L2 estaba en el gradiente y no en el valor del objetivo.** El residuo de la
+   verificacion fue de 5,7e-02, que es exactamente del orden de `w / C`, es decir la contribucion de
+   la penalizacion. Sin ese aviso, el ajuste habria optimizado una funcion cuyo valor no era el que
+   su gradiente decia.
+2. **El recorte del margen con `np.clip` rompia la regla de la cadena.** La funcion queda plana en la
+   region recortada mientras el gradiente analitico sigue asumiendo que el margen varia. Se
+   resolvio con dos formas estables **y exactas**: la probabilidad como
+   `0,5 * (1 + tanh(m/2))` y la perdida con `logaddexp`. Ninguna recorta nada.
+3. **La perdida por pares con `max(0, .)` tiene vertice**, y el optimizador abortaba con ABNORMAL en
+   la iteracion 19 con independencia de las tolerancias, porque una busqueda lineal no puede
+   funcionar sobre una funcion no derivable. Se sustituyo por el **surrogate logistico**, que es el
+   estandar para objectives de orden por pares, es derivable en todo el dominio y no descarta del
+   todo un par que viola, que es mejor aqui porque la estructura es suave.
+4. **La busqueda lineal por defecto de 20 pasos era demasiado corta.** Con `maxls=100` converge en
+   20 iteraciones y 48 evaluaciones, frente a 27 iteraciones y 165 evaluaciones del intento fallido.
+
+Ademas un **fallo de diseno**, que es el mas instructive: el termino por pares era una **media** sobre
+filas mientras la entropia cruzada era una **suma**, luego la razon entre ambos era de 1 a 3500 y
+**lambda era irreconciliable**. El barrido daba el mismo resultado para lambda de 0 a 0,5, lo que no
+es un resultado sino un termino despreciable. Igualada la escala, lambda vuelve a tener significado.
+**La leccion: un hiperparametro solo es interpretable si los terminos que pondera estan en la misma
+escala, y eso hay que comprobarlo antes de barrerlo, no despues.**
+
+**El gradiente verifica con residuo maximo de 3,6e-07** frente a 1e-06, en los tres valores de
+lambda y en dos puntos: uno aleatorio y otro **cerca de la solucion**, porque un gradiente puede
+coincidir con las diferencias finitas lejos del optimo y fallar en el.
+
+## D-097 - La hipotesis candidata NO es nueva: es V6-B, y V6-B esta cerrada con evidencia
+
+**V12-04**, auditoria previa a cualquier ejecucion, leyendo el codigo y no el nombre. El encabezado
+de `experiments/v6_02_label_factorization.py` dice literalmente **sin routing duro**, que no se
+impone TR=0 cuando HS=0 en la prediccion y que **la restriccion viene del producto, no de una
+regla**. El analisis estructural confirma **5 operaciones de producto y 0 condicionales cuya
+condicion menciona HS**: no hay llave dura en ninguna parte.
+
+- **B1** es `p(TR|X) = p(HS|X) * p(TR|HS=1, X)`, que es exactamente la formulacion candidata.
+- **B2** es una **mezcla** con la probabilidad de HS, `p(HS|X) * p(AG|HS=1, X) + (1 - p(HS|X)) * p(AG|HS=0, X)`.
+- Ademas V6-02 **tambien restringio el dominio de entrenamiento** del condicional a HS=1, que es
+  la misma restriccion que probo el brazo M de V12-02.
+
+Los cuatro resultados son negativos: B1 **-0.0107** con IC95 que excluye cero y 1 de 5 pliegues,
+**1 fila rescatada frente a 35 rotas**; B1 con AG **-0.0115**; B2 **-0.0008** con IC95 que incluye
+cero, 2 de 5, **0 rescatadas frente a 12 rotas**; B3 **-0.0115**. Ninguno supera ningun gate.
+
+**La reconciliacion que cierra el diagnostico de la fase**: V6-02 mide **20 filas** en las que V03
+predice TR=1 con HS **predicho** igual a 0, que es todo lo que una formulacion suave puede alcanzar,
+frente a **78 filas** en las que V03 predice TR=1 y en realidad son HS=0, que es el techo del
+oraculo. **Las 58 filas de diferencia son justamente las que `p(HS)` no puede identificar**, porque
+HS se predice mal en 143 filas del desarrollo.
+
+**La hipotesis candidata no se abre, porque no es nueva.** Abrirla seria repetir un experimento
+cerrado, que es lo que la seccion 43 del enunciado prohibe.
+
+## D-098 - La correccion conceptual que la fase conserva, y por que importa
+
+**H2 y H3 no demuestran que la funcion de perdida no sea el problema en sentido absoluto.** Un unico
+mecanismo positivo, el GCE de H2, **no autoriza a descartar la familia entera**, y descartar una
+familia entera con un solo resultado positivo seria exactamente el sobreajuste por conclusion que la
+fase ha querido evitar.
+
+Lo que si autorizan a decir es mas preciso y mas util: **las variaciones de objetivo evaluadas hasta
+ahora tienen un impacto pequeno comparado con el techo que introduce el error de la condicion de
+HS**. El mejor caso, el GCE con q=0,2, da +0.001616 frente a un techo de +0.046271, es decir captura
+el **3,5 por ciento**.
+
+**La distincion importa porque las dos afirmaciones llevan a decisiones distintas.** La primera
+cerraria una familia de forma definitiva y haria que nadie volviera a mirarla. La segunda establece
+que el margen recuperable por esa via es pequeno **frente a otro problema ya medido**, y deja la
+familia abierta para quien quiera explorarla con un mecanismo distinto. La segunda es la que se
+escribe en el informe final, y es la unica honesta.
+
+## D-099 - Cierre de la v12: 6 experimentos, 4 hipotesis, 0 candidatas, y un techo sin capturar
+
+| ID | via | mejor delta | decision |
+| --- | --- | --- | --- |
+| V12-00 | auditoria de brecha | no entrena | CLOSED |
+| V12-01 | H1 regularizacion por etiqueta y grupo | +0.002738 | CLOSED |
+| V12-02 | H2a perdida propia | +0.001616 | MARGINAL |
+| V12-02 | H2b restringir el dominio de entrenamiento | -0.116581 | CLOSED |
+| V12-03 | H3 entrenamiento por pares | -0.002469 | CLOSED |
+| V12-04 | auditoria de V6-B | no entrena | CLOSED |
+| V12-05 | informe final | no entrena | CLOSED |
+
+**El techo condicionado por la etiqueta verdadera de HS es de +0.046271**, y sigue sin capturar. Es
+**23 veces** el gate exploratorio y **300 veces** la mejor ganancia anidada de toda la historia del
+proyecto, que era de +0.000148.
+
+**Y el cuello de botella NO es la ausencia de capacidad predictiva para TR y AG**: su F1 donde la
+etiqueta esta definida es de 0,8941, muy alto. La dificultad es **inferir la condicion**, saber para
+cada fila si HS es cero. Las tres vias para superarla fallan por razones distintas y documentadas: la
+llave dura porque su llave se equivoca en 143 filas, la llave suave porque solo alcanza 20 de las 78,
+y el acoplamiento en el objetivo porque atenua el nivel absoluto que los umbrales fijos necesitan.
+
+**Los tres mecanismos del objetivo de entrenamiento son evidencia de rendimientos decrecientes**: no
+es que la primera idea fuera mala y las siguientes peores, es que el eje entero tiene poco margen
+recuperable frente a lo que queda disponible en otro sitio.
+
+**Estado**: 6 experimentos, 0 candidatas, 0 submissions, 0 de 3 evaluaciones de holdout2, segunda
+particion no ejecutada, V03 congelada e intacta. Registro en 234 filas con 234 claves y 23 campos.

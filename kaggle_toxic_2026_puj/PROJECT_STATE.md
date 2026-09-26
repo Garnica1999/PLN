@@ -604,3 +604,44 @@ chequeo previo (D-008).
 - **Pendiente**: no queda nada abierto de la v11. La v10 tiene tres ficheros con acentos que no
   se corrigen, por decision, porque modificarlos rompe la correspondencia entre codigo y resultado
   historico.
+
+### Tras la fase v12 completa (V12-00 a V12-05)
+
+- **V03 SIGUE SIENDO LA SUBMISSION RECOMENDADA**, con 0.7772114525165721 local y 0.78306 en el
+  externo. **Ninguna submission generada, ninguna enviada, ninguna recomendada** en la v12.
+  **holdout2 intacto, con 0 de 3 evaluaciones gastadas.** Segunda particion no ejecutada.
+- **La asimetria que reencuadro la fase**: de 24 familias de mecanismo, **17 de las 24 cerradas estan
+  en la representacion y el clasificador, y los 3 huecos que quedaban estan todos en el objetivo de
+  entrenamiento.** No se habia tocado nunca la funcion que se minimiza. La auditoria lo encontro con
+  una **sonda estructural sobre el arbol sintactico**, no con busqueda textual, y se autovalido con
+  un positivo conocido.
+- **Los tres mecanismos del objetivo de entrenamiento se cierran negativos o marginales**: H1
+  +0.002738 sostenido por un solo pliegue con el maximo de su curva **sobre el valor neutro**; H2a
+  +0.001616 con el intervalo incluyendo el cero; H3 **-0.002469** con deteccion 0.4915, peores que el
+  azar. Es **rendimientos decrecientes** en ese eje, no una succession de ideas malas.
+- **El techo con HS verdadero es de +0.046271** y sigue sin capturar. La premisa se midio por
+  primera vez: el **80,44 por ciento** de los negativos que ve TR en entrenamiento **no estan
+  definidos**, porque TR y AG solo existen cuando HS=1.
+- **El cuello de botella NO es la falta de capacidad para TR y AG**, cuya F1 donde la etiqueta esta
+  definida es de 0.8941: es **la inferencia de la condicion de HS**. Las tres vias fallan por
+  razones distintas: la llave dura porque su llave se equivoca en 143 filas; la llave suave, que es
+  V6-B y ya estaba cerrada, porque solo alcanza 20 de las 78 filas del techo; y el acoplamiento en
+  el objetivo porque un objetivo de orden no restringe el nivel absoluto que los umbrales fijos
+  necesitan.
+- **La hipotesis candidata de la siguiente fase NO se abre, porque no es nueva: es V6-B.** Leida del
+  codigo, la cabecera declara sin routing duro y hay 0 condicionales que anulen una etiqueta a
+  partir de HS.
+- **La correccion conceptual que la fase conserva**: H2 y H3 **no demuestran que la funcion de
+  perdida no sea el problema en sentido absoluto**. Un unico mecanismo positivo no autoriza a
+  descartar la familia. Lo que si se dice es que **las variaciones de objetivo evaluadas tienen un
+  impacto pequeno frente al techo que introduce el error de la condicion**, del 3,5 por ciento en el
+  mejor caso.
+- **Queda abierto un solo problema, que no es de esta fase**: conseguir que la condicion de HS se
+  estime mejor.
+- **Instrumento**: todo objetivo a medida verifica su derivada contra diferencias finitas antes de
+  mirar un resultado. En H3 eso detecto cuatro fallos propios que habrian dado cifras plausibles y
+  falsas, mas un fallo de diseno en el que el termino por pares estaba en otra escala que la
+  entropia cruzada y lambda era irreconciliable.
+- **Pendiente**: no queda nada abierto de la v12. La v10 conserva tres ficheros con acentos que no
+  se corrigen, por decision, porque modificarlos rompe la correspondencia entre codigo y resultado
+  historico.

@@ -1402,3 +1402,90 @@ D-078 si eran mios**, en los titulos de D-078 a D-084, y estan corregidos a guio
 **RUNLOG.md y PROJECT_STATE.mdtienen **0 caracteres no ASCII propios.** La distincion importa
 porque un recuento global habria hecho pasar por reformateo masivo lo que era un fallo de siete
 guiones, y habria hecho pasar por limpio un bloque mio que no lo estaba.
+
+## Fase v12: frontera, funcion de objetivo y estructura de etiquetas (2026-09-26)
+
+Worktree `/home/carlos/Git/PLN-v12`, rama `proyecto-kaggle-toxic-2026-v12`, desde `039eae4` que es
+el estado validado de v11. v11 no se modifica. **Seis experimentos, V12-00 a V12-05**, y el registro
+llega a **234 filas con 234 claves unicas y 23 campos, sin filas malformadas**.
+
+**Ninguna submission generada, ninguna enviada, ninguna recomendada. V03 se mantiene** con
+0.7772114525165721 local y 0.78306 en el externo. **holdout2 intacto, con 0 de 3 evaluaciones
+gastadas.** Segunda particion no ejecutada, porque no hay candidata.
+
+### La asimetria que reencuadro la fase
+
+V12-00, auditoria de brecha, con **sonda estructural sobre el arbol sintactico de 127 modulos** y no
+busqueda textual. 24 familias: **16 CLOSED_VALID, 5 PARTIALLY_TESTED, 3 GENUINELY_UNTESTED**.
+
+**17 de las 24 familias cerradas estan en el eje de la representacion y del clasificador, y los tres
+huecos que quedan estan todos en el objetivo de entrenamiento.** No se habia tocado nunca la funcion
+que se minimiza. Esa asimetria es lo que justificaba abrir la v12, y se sostiene a la vista de los
+tres negativos.
+
+La sonda **se autovalido con un positivo conocido**: el unico fichero del proyecto donde aparece la
+palabra `contrastive` es el propio script de la auditoria, que la nombra al describir la familia
+ausente. Un escaner textual concluiria que el mecanismo **si** se ha probado, con la maxima
+confianza, por coincidencia literal. El indice estructural devuelve cero.
+
+### Las tres hipotesis del objetivo de entrenamiento
+
+| ID | mecanismo | mejor delta | pliegues | deteccion | decision |
+| --- | --- | --- | --- | --- | --- |
+| H1 | regularizacion por etiqueta y grupo | +0.002738 | 3/5 | 0.5196 | CLOSED |
+| H2a | perdida propia, entropia cruzada generalizada | +0.001616 | 4/5 | 0.6667 | MARGINAL |
+| H2b | restringir el entrenamiento al dominio de la etiqueta | -0.116581 | 0/5 | 0.1420 | CLOSED |
+| H3 | objetivo por pares sobre TF-IDF disperso | -0.002469 | 2/5 | 0.4915 | CLOSED |
+
+**H1**: el maximo de la curva del cociente entre bloques cae **sobre el valor neutro** con +0.000006.
+No hay nada que extraer: la estructura de penalizacion de V03 ya esta en su optimo. El delta de
++0.002738 lo sostenia un solo pliegue de cinco, y sin el el delta cae a +0.000134.
+
+**H2a**: el techo con **HS verdadero** es de **+0.046271**, con deteccion 0.9286. La premisa se midio
+por primera vez: el **80,44 por ciento** de los negativos que ve TR en entrenamiento **no estan
+definidos**, porque TR solo existe cuando HS=1. El GCE da +0.001616, una **meseta y no un pico**, y
+captura el 3,5 por ciento del techo.
+
+**H2b**: negativo limpio. Descartar el 56 por ciento de los datos desplaza la escala de salida y los
+umbrales congelados dejan de tener significado para la subpoblacion con la que se ha entrenado.
+
+**H3**: el mecanismo **mejora la F1 de TR donde la etiqueta esta definida**, de 0.8941 a 0.9091, y
+**empeora los falsos positivos en la zona no definida**, de 78 a 97. Hace bien lo que fue disenado
+para hacer en local y mal lo que la fase necesita. La causa: un objetivo de **orden** no restringe
+el **nivel absoluto**, y los umbrales fijos si necesitan el nivel.
+
+### La auditoria de V6-B, y por que la hipotesis candidata no se abre
+
+V12-04, leyendo el codigo. El encabezado de `v6_02_label_factorization.py` dice literalmente **sin
+routing duro**, y el analisis estructural confirma **5 operaciones de producto y 0 condicionales
+cuya condicion menciona HS**. B1 es `p(TR|X) = p(HS|X) * p(TR|HS=1,X)`, que es exactamente la
+formulacion candidata, y V6-02 tambien restringio el dominio del condicional a HS=1, que es el
+brazo M de H2. **Los cuatro resultados son negativos y el cierre tiene el mecanismo identificado.**
+
+La reconciliacion que cierra el diagnostico: **20 filas** donde V03 predice TR=1 con HS **predicho**
+igual a 0, que es lo que la formulacion suave alcanza, frente a **78 filas** donde V03 predice TR=1 y
+en realidad son HS=0, que es el techo. **Las 58 de diferencia son las que `p(HS)` no puede
+identificar**, porque HS se predice mal en 143 filas.
+
+### La conclusion, con la correccion conceptual que hay que conservar
+
+**El techo condicionado por HS verdadera demuestra que hay senal estructural abundante. El cuello de
+botella no es la falta de capacidad predictiva para TR y AG, cuya F1 donde la etiqueta esta definida
+es de 0.8941: es la inferencia de la condicion.**
+
+**Y H2 y H3 NO demuestran que la funcion de perdida no sea el problema en sentido absoluto.** Un
+unico mecanismo positivo no autoriza a descartar la familia. Lo que si se dice es mas preciso: **las
+variaciones de objetivo evaluadas tienen un impacto pequeno comparado con el techo que introduce el
+error de la condicion de HS**, que es del 3,5 por ciento en el mejor caso.
+
+### Verificacion
+
+Cuatro fallos propios en H3 los detectaron las comprobaciones internas **antes de mirar un
+resultado**: la penalizacion L2 ausente del valor del objetivo, el recorte del margen rompiendo la
+regla de la cadena, el vertice de la bisagra, y la busqueda lineal demasiado corta. Ademas un **fallo
+de diseno**: el termino por pares era una media y la entropia cruzada una suma, luego lambda era
+irreconciliable con una razon de 1 a 3500, y el barrido daba el mismo resultado de 0 a 0,5.
+**El gradiente verifica con residuo maximo de 3,6e-07** frente a 1e-06, en tres valores de lambda y
+dos puntos.
+
+**Sin push, sin merge adicional, sin reset, sin rebase, sin modificar otras ramas.**

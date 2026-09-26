@@ -1,0 +1,105 @@
+{
+  "experimento": "V12-04 (auditoria puntual de V6-B)",
+  "fecha": "2026-09-26T23:35:27+00:00",
+  "guion_auditado": "experiments/v6_02_label_factorization.py",
+  "veredicto": "la hipotesis candidata NO es nueva: es V6-B, cerrada con evidencia",
+  "estructura": {
+    "operaciones_de_producto": 5,
+    "condicionales_que_mencionan_hs": 0,
+    "encabezado_declara_sin_llave_dura": true,
+    "encabezado_declara_restriccion_de_dominio": true,
+    "productos": [
+      {
+        "linea": 188,
+        "operador": "*",
+        "texto": "proba_tr[validacion] = proba_hs[validacion] * cond_tr_hs1[validacion]"
+      },
+      {
+        "linea": 208,
+        "operador": "*",
+        "texto": "proba_hs[validacion] * cond_ag_hs1[validacion]"
+      },
+      {
+        "linea": 209,
+        "operador": "*",
+        "texto": "+ (1 - proba_hs[validacion]) * cond_ag_hs0[validacion]"
+      },
+      {
+        "linea": 616,
+        "operador": "*",
+        "texto": "f\"({100 * violacion_v03 / n_filas:.2f} %).\","
+      },
+      {
+        "linea": 636,
+        "operador": "*",
+        "texto": "f\"{100 * violacion_v03 / n_filas:.2f} % del desarrollo) es demasiado pequena para pagar\","
+      }
+    ]
+  },
+  "resultados_de_v6_02": {
+    "decision_del_registro": "**Track B cerrado por resultado negativo (seccion 54). Sin ampliar rejilla.** La factorizacion condicional no se adopta para V03. Queda registrado que contra una referencia que violara la invariante mas, o con umbral TR mas alto, la linea tendria otro resultado",
+    "tabla": [
+      "| B0-control-marginales | 0.7772 | +0.0000 | [+0.0000, +0.0000] | 0.7617 | 0.8157 | 0.7542 | 0 | 0 |",
+      "| B1-TR-condicional | 0.7665 | -0.0107 | [-0.0184, -0.0033] | 0.7617 | 0.7836 | 0.7542 | 1 | 35 |",
+      "| B1-TR-AG-condicional | 0.7657 | -0.0115 | [-0.0231, -0.0005] | 0.7617 | 0.7836 | 0.7517 | 1 | 37 |",
+      "| B2-AG-dos-ramas | 0.7764 | -0.0008 | [-0.0075, +0.0057] | 0.7617 | 0.8157 | 0.7517 | 0 | 12 |",
+      "| B3-HS-propio | 0.7657 | -0.0115 | [-0.0231, -0.0005] | 0.7617 | 0.7836 | 0.7517 | 1 | 37 |",
+      "| B0-control-marginales | no (+0.0000) | no | 0/5 | no supera |",
+      "| B1-TR-condicional | no (-0.0107) | no | 1/5 | no supera |",
+      "| B1-TR-AG-condicional | no (-0.0115) | no | 1/5 | no supera |",
+      "| B2-AG-dos-ramas | no (-0.0008) | no | 2/5 | no supera |",
+      "| B3-HS-propio | no (-0.0115) | no | 1/5 | no supera |"
+    ],
+    "filas_con_hs_predicho_0_y_tr_1": 20,
+    "filas_verdaderamente_sin_hs_y_tr_predicho_1": 78
+  },
+  "preguntas": [
+    {
+      "pregunta": "V6-B uso dependencia suave o llave dura?",
+      "respuesta": "SUAVE, y lo declara explicitamente",
+      "evidencia": "El encabezado dice sin routing duro, que no se impone TR=0 cuando HS=0 en la prediccion, y que la restriccion viene del producto y no de una regla. El arbol sintactico confirma que hay operaciones de producto y que ningun condicional anula una etiqueta a partir de HS.",
+      "metodo": "Analisis estructural del arbol de v6_02_label_factorization.py, con recuento de productos y de condicionales cuya condicion menciona HS."
+    },
+    {
+      "pregunta": "Restringio el dominio de entrenamiento del condicional?",
+      "respuesta": "SI, a HS=1",
+      "evidencia": "El encabezado dice que el modelo de TR solo ve ejemplos con HS=1, que es su dominio natural. Eso es exactamente la restriccion que H2 probo en el brazo M.",
+      "metodo": "Encabezado del guion, y la coincidencia con el brazo M de V12-02."
+    },
+    {
+      "pregunta": "Que dio cada variante?",
+      "respuesta": "Negativo en las cuatro, con el mecanismo de fallo diagnosticado",
+      "evidencia": "B1 condicional de TR -0.0107 con IC95 que excluye cero, 1 de 5 pliegues, 1 fila rescatada frente a 35 rotas. B1 con AG -0.0115. B2 de AG con dos ramas -0.0008 con IC95 que incluye el cero, 2 de 5 pliegues, 0 rescatadas frente a 12 rotas. B3 -0.0115. Ninguna supera ningun gate.",
+      "metodo": "Tabla de resultados de reports/v6_label_factorization.md y decision en el registro."
+    },
+    {
+      "pregunta": "El cierre fue con evidencia o por abandono?",
+      "respuesta": "Con evidencia, y con el mecanismo identificado",
+      "evidencia": "El informe dice que el producto no solo prohibe TR=1 cuando HS=0, tambien atenua p(TR) en toda fila con p(HS) intermedia porque multiplica por un factor menor que 1, y que V03 acertaba justamente en esas filas. El saldo de B1 es 1 rescatada frente a 35 rotas.",
+      "metodo": "Seccion 4 del informe de V6-02, que se cita de forma literal."
+    },
+    {
+      "pregunta": "La hipotesis candidata sigue siendo nueva?",
+      "respuesta": "NO. Es V6-B",
+      "evidencia": "La formulacion de condicionamiento suave o conjunta, donde TR y AG aprovechan la probabilidad de HS sin convertirla en decision binaria previa, es exactamente B1, B2 y B2r. Y la restriccion de dominio es la misma que probo el brazo M de V12-02.",
+      "metodo": "Contraste directo entre la formulacion candidata y las tres variantes de V6-02."
+    },
+    {
+      "pregunta": "Coincide el fallo con el de H3?",
+      "respuesta": "SI, y en el mismo modo",
+      "evidencia": "V6-02 lo llamo efecto de escala sobre las filas que V03 acierta con p(HS) intermedia. H3 lo midio por otra via: el termino por pares mejoraba la F1 de TR donde la etiqueta esta definida, de 0,8941 a 0,9091, y empero los falsos positivos en la zona no definida, de 78 a 97. En ambos casos acoplar multiplicativamente la relacion entre etiquetas atenua el nivel absoluto y rompe filas que la referencia acertaba.",
+      "metodo": "Contraste de los dos informes, con las cifras de cada uno."
+    },
+    {
+      "pregunta": "Queda algo por abrir?",
+      "respuesta": "SI, pero no con esta formulacion",
+      "evidencia": "Los dos numeros de V6-02 se reconcilian con el techo del oraculo de H2. V03 predice TR=1 con HS PREDICHO igual a 0 en 20 filas, que es lo que la formulacion suave puede alcanzar, y predice TR=1 en 78 filas que en realidad son HS=0, que es el techo del oraculo. Las 58 filas de diferencia son justamente las que p(HS) no puede identificar, porque HS se predice mal. El cuello sigue siendo la inferencia de la condicion, no la ausencia de capacidad.",
+      "metodo": "Los dos numeros del informe de V6-02 contrastados con las 78 celdas que el oraculo de H2 corrigio."
+    }
+  ],
+  "reconciliacion_con_el_techo": {
+    "techo_hs_verdadero": 0.046271,
+    "diferencia_de_filas_no_alcanzables": 58,
+    "explicacion": "la formulacion suave cubre las filas donde HS se predice bien y no puede tocar las demas, porque HS se predice mal en 143 filas del desarrollo"
+  }
+}
