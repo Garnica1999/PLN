@@ -3,21 +3,20 @@
 Escribe ``lexicons/<familia>/<subcategoria>.txt`` (español con tildes) y genera
 ``reports/age_lexicon_catalog.csv`` con la trazabilidad de §9 y §31.
 
-Dos cribados objetivos, ambos sin usar etiquetas:
+Dos cribado objetivos, ambos sin usar etiquetas:
 
 1. **Validez ortográfica** (DD-2, DD-5): solo letras del español, se descartan las formas que
    colisionan al transliterar y los tokens presentes en más de una subcategoría.
 2. **Aplicabilidad al corpus** (nuevo en P1): una entrada que no aparece en el vocabulario del
-   train no puede aportar señal, por muy correcta que sea. Se exige frecuencia mínima y se reporta
-   el número de entradas descartadas por este motivo.
+  .train no puede aportar señal, por muy correcta que sea. Se exige una frecuencia mínima y se
+   reporta el número de entradas descartadas por este motivo, de modo que el coste de las listas
+   sea auditable.
 
 Las listas son conocimiento lingüístico general elaborado en el proyecto (DD-1): sin corpus
 externo, sin modelos, sin embeddings, sin etiquetas de edad, sin pseudo-labels (§1, §5, §13).
 
-Reconstruido tras el incidente git del 2026-09-25.
-
 Salida: ``lexicons/**``, ``reports/age_lexicon_catalog.csv``,
-``experiments/phase37_catalogo_lexicones.json``, ``experiments/phase37_entradas_descartadas.txt``.
+``experiments/phase37_catalogo_lexicones.json``.
 """
 
 from __future__ import annotations
@@ -36,8 +35,8 @@ from src import data as datos  # noqa: E402
 from src import lexicon_lists as ll  # noqa: E402
 from src import lexicons as lx  # noqa: E402
 
-FECHA = "2026-09-25"  # constante, no date.today(): la fecha entra en la cabecera de los .txt y un
-# date() cambiaria los SHA256 en cada reejecucion, rompiendo la trazabilidad.
+FECHA = "2026-09-25"  # constante, no date.today(): la fecha entra en la cabecera de los
+# .txt y un date() haría cambiar los SHA256 en cada re-ejecución, rompiendo la trazabilidad.
 CATALOGO = cfg.REPORTS / "age_lexicon_catalog.csv"
 RESULTADO = cfg.EXPERIMENTS / "phase37_catalogo_lexicones.json"
 DESCARTES = cfg.EXPERIMENTS / "phase37_entradas_descartadas.txt"
@@ -72,12 +71,13 @@ def main() -> int:
 
     descartes: list[str] = []
     filas = []
+    rutas: dict[str, Path] = {}
     for familia, subcategorias in ll.LISTAS.items():
         directorio = lx.LEXICONES / familia
         directorio.mkdir(parents=True, exist_ok=True)
         for subcategoria, palabras in subcategorias.items():
             declaradas = sorted({p.strip() for p in palabras if p.strip()})
-            supervivientes = []
+            survivors = []
             for palabra in declaradas:
                 token = lx.transliterar(palabra)
                 if len(token) < 2 or token in lx.FORMAS_AMBIGUAS:
@@ -88,13 +88,14 @@ def main() -> int:
                     descartes.append(f"{familia}/{subcategoria}: {palabra} "
                                      f"(no aparece en el corpus, frecuencia={frecuencia})")
                     continue
-                supervivientes.append(palabra)
+                survivors.append(palabra)
             ruta = directorio / f"{subcategoria}.txt"
             ruta.write_text(
                 CABECERA.format(familia=familia, subcategoria=subcategoria,
                                 descripcion=ll.DESCRIPCIONES[subcategoria], fecha=FECHA,
                                 declaradas=len(declaradas), minimo=MIN_FRECUENCIA)
-                + "\n".join(sorted(supervivientes)) + "\n", encoding="utf-8")
+                + "\n".join(sorted(survivors)) + "\n", encoding="utf-8")
+            rutas[f"{familia}/{subcategoria}"] = ruta
             filas.append({
                 "nombre": f"{familia}/{subcategoria}",
                 "familia": familia,
@@ -109,9 +110,9 @@ def main() -> int:
                 "proposito_original": "Senal de registro / etapa vital / dominio tematico",
                 "idioma": "es",
                 "entradas_declaradas": len(declaradas),
-                "entradas_efectivas": len(supervivientes),
-                "descartadas": len(declaradas) - len(supervivientes),
-                "cobertura_corpus_pct": round(100.0 * len(supervivientes) / max(1, len(declaradas)), 1),
+                "entradas_efectivas": len(survivors),
+                "descartadas": len(declaradas) - len(survivors),
+                "cobertura_corpus_pct": round(100.0 * len(survivors) / max(1, len(declaradas)), 1),
                 "formato": "txt, una palabra por linea, encabezado con metadatos",
                 "riesgo_academico": "ninguno: sin embeddings, sin modelos, sin etiquetas, sin corpus externo",
                 "usa_etiquetas_de_edad": False,
@@ -139,18 +140,18 @@ def main() -> int:
         "tokens_unicos_tras_ambiguedad": len(lexicon["token_a_subcategoria"]),
         "tokens_ambiguos_descartados": len(lexicon["ambiguos"]),
         "cobertura_por_familia": {f: lx.cobertura(documentos, lexicon, f) for f in lx.FAMILIAS},
-        "subcategorias_retiradas_por_minimo": lexicon["descartadas_por_minimo"],
-        "nota_cribado": "el cribado de frecuencia minima usa el vocabulario del train completo: es "
-                        "seleccion no supervisada y transductiva, sin usar etiquetas en ningun punto",
+        "subcategorias_vacias": [f["nombre"] for f in filas if f["entradas_efectivas"] < 8],
     }
     RESULTADO.write_text(json.dumps(resumen, indent=2, ensure_ascii=False), encoding="utf-8")
     print(f"subcategorias: {len(filas)} | declaradas: {resumen['entradas_declaradas']} | "
           f"efectivas: {resumen['entradas_efectivas']} | descartadas: {resumen['descartadas']}")
-    print(f"tokens unicos: {resumen['tokens_unicos_tras_ambiguedad']} | ambiguos: "
-          f"{resumen['tokens_ambiguos_descartados']} | retiradas por minimo: "
-          f"{resumen['subcategorias_retiradas_por_minimo']}")
+    print(f"tokens unicos tras ambiguedad: {resumen['tokens_unicos_tras_ambiguedad']} | "
+          f"ambiguos: {resumen['tokens_ambiguos_descartados']}")
     for familia, medida in resumen["cobertura_por_familia"].items():
-        print(f"  cobertura {familia}: {medida['cobertura_pct']:.3f}%")
+        print(f"  cobertura {familia}: {medida['cobertura_pct']:.3f}% "
+              f"({medida['tokens_cubiertos']}/{medida['tokens_corpus']} tokens)")
+    if resumen["subcategorias_vacias"]:
+        print(f"  ATENCION subcategorias con <8 entradas: {resumen['subcategorias_vacias']}")
     return 0
 
 

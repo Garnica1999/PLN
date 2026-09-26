@@ -6,7 +6,7 @@
 # licencia: del proyecto; sin datos externos y sin etiquetas de edad
 # riesgo: ninguno
 # fecha: 2026-09-25
-# entradas_declaradas: 71
+# entradas_declaradas: 72
 # cribado_corpus: frecuencia minima 3 en el train
 acuerdo
 alcalde
@@ -20,7 +20,6 @@ candidata
 candidato
 ciudadano
 ciudadanía
-concesión
 congreso
 constitución
 decreto
@@ -57,7 +56,6 @@ nación
 negociación
 opción
 oposición
-opositor
 partido
 partidos
 patria

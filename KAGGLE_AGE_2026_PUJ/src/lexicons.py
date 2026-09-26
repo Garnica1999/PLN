@@ -1,8 +1,9 @@
 """Núcleo de la fase de lexicones: carga, transliteración y agregados.
 
-Reconstruido tras el incidente git del 2026-09-25 (ver ``INCIDENTE_GIT_2026-09-25.md``). La lógica
-es la misma que se ejecutó en P1-P5; la reconstrucción se verifica comparando el hash de las
-matrices generadas con el de las matrices que sobrevivieron a la pérdida.
+Este módulo es la única fuente de verdad del pipeline léxico. No aprende nada de las etiquetas:
+la transformación ``tweet -> categorías léxicas`` es una función determinista del texto
+(§13 del brief), por lo que la matriz de features se calcula **una sola vez** y no necesita
+recalcularse in-fold como el canal supervisado de entidades.
 
 Decisiones de diseño que implementa (ver ``plan/AGE_LEXICON_PLAN.md``):
 
@@ -14,8 +15,18 @@ DD-4  Tres agregados por subcategoría (``count``, ``ratio``, ``presence``) y un
       estadísticas del §11 serían redundantes por construcción.
 DD-5  Un token presente en más de una subcategoría se **elimina**: evita el doble conteo.
 
-Pérdida por transliteración (documentada, medida y asumida): ``mas`` = "más"|"mas", ``esta`` =
-"esta"|"está", ``solo`` = "solo"|"sólo", ``sino`` = "sí no". Ninguna lista usa esas formas.
+Notas de compatibilidad con la transliteración
+---------------------------------------------
+La pérdida de tildes crea homófonos que se documentan aquí y se miden en P1:
+
+* ``mas``  = "más" | "mas" (conjunción) | "más" (macho)
+* ``esta`` = "esta" (demostrativo) | "está" (verbo)
+* ``solo`` = "solo" | "sólo"
+* ``sino`` = "sí no"
+* ``digo`` = "digo" | "di/go"
+
+Por eso ninguna lista usa esas formas ambiguas: se prefieren tokens inequívocos y se deja constancia
+del coste en el catálogo.
 """
 
 from __future__ import annotations
@@ -32,40 +43,43 @@ from . import config as cfg
 
 LEXICONES = cfg.ROOT / "lexicons"
 FAMILIAS = ("registro", "vida", "temas")
-#: Tokenizador de palabras: ASCII en minúscula, dos o más caracteres y con límites de palabra
-#: (convención de los vectorizadores del proyecto, ``\b\w\w+\b``, sobre el corpus transliterado).
+#: Tokenizador: el del proyecto para texto (``advanced_features.TOKEN_RE``) restringido a palabras
+#: de dos o más caracteres, que es la convención de los vectorizadores (``\\b\\w\\w+\\b``).
 TOKEN_RE = re.compile(r"\b[a-z]{2,}\b")
-#: Una subcategoría con menos entradas efectivas que esto se retira: emitir columnas con ratio ~0
-#: solo añade ruido y falsea el agregado de familia.
+#: Una subcategoría con menos entradas efectivas que esto se retira: emitir columnas
+#: con ratio ~0 solo añade ruido y falsea el agregado de familia.
 MIN_ENTRADAS_SUBCATEGORIA = 5
 COMENTARIO_RE = re.compile(r"^\s*#")
-ESTADISTICAS = ("count", "ratio", "presence")
-#: Formas ambiguas al transliterar: no se admiten en ninguna lista.
+
+#: Formas ambiguas al transliterar (documentadas arriba): no se admiten en ninguna lista.
 FORMAS_AMBIGUAS = frozenset({"mas", "esta", "estan", "estas", "solo", "sino", "digo", "alla",
                              "mio", "mia", "tuyo", "tia", "dia", "dias", "ves", "sera"})
+
+ESTADISTICAS = ("count", "ratio", "presence")
 
 
 def transliterar(texto: str) -> str:
     """Pasa un texto a ASCII minúsculo igual que hace el corpus (``ñ`` -> ``n``, sin tildes)."""
     descompuesto = unicodedata.normalize("NFD", texto.lower())
-    return "".join(caracter for caracter in descompuesto
-                   if unicodedata.category(caracter) != "Mn")
+    sin_acentos = "".join(caracter for caracter in descompuesto
+                          if unicodedata.category(caracter) != "Mn")
+    return sin_acentos.replace("ñ", "n").replace("Ñ", "n")
 
 
 def tokeniza(texto: str) -> list[str]:
-    """Tokens alfanuméricos en ASCII de longitud >= 2, con límites de palabra."""
+    """Tokens alfanuméricos en ASCII de longitud >= 2, como el vectorizador del proyecto."""
     return TOKEN_RE.findall(transliterar(texto))
 
 
 def sha256_de(ruta: Path) -> str:
     """Huella SHA256 de un fichero de lexicón."""
-    return hashlib.sha256(Path(ruta).read_bytes()).hexdigest()
+    return hashlib.sha256(ruta.read_bytes()).hexdigest()
 
 
 def lee_fichero(ruta: Path) -> tuple[list[str], dict[str, str]]:
     """Lee un ``.txt`` de lexicon: devuelve entradas y metadatos del encabezado."""
     entradas, metadatos = [], {}
-    for linea in Path(ruta).read_text(encoding="utf-8").splitlines():
+    for linea in ruta.read_text(encoding="utf-8").splitlines():
         if COMENTARIO_RE.match(linea):
             cuerpo = linea.lstrip("#").strip()
             if ":" in cuerpo:
@@ -78,19 +92,23 @@ def lee_fichero(ruta: Path) -> tuple[list[str], dict[str, str]]:
 
 
 def carga_lexicones(directorio: Path | None = None) -> dict:
-    """Carga los ``.txt`` de las tres familias y resuelve la ambigüedad (DD-5) y el mínimo.
+    """Carga todos los ``.txt`` de las tres familias y resuelve la ambigüedad (DD-5).
 
     Returns
     -------
     dict
-        ``familias``, ``token_a_subcategoria`` (un único destino por token), ``ambiguos``,
-        ``metadatos``, ``rutas`` y ``descartadas_por_minimo``.
+        ``familias``: ``{familia: {subcategoria: [tokens ascii]}}`` ya sin ambigüedades.
+        ``token_a_subcategoria``: ``{token: [(familia, subcategoria), ...]}`` con un único destino
+        por token (los ambiguos se descartan).
+        ``ambiguos``: tokens presentes en más de una subcategoría, con sus destinos.
+        ``metadatos``: encabezado de cada fichero.
+        ``rutas``: ruta de cada fichero de lexicon.
     """
     base = Path(directorio) if directorio is not None else LEXICONES
     familias: dict[str, dict[str, list[str]]] = {}
+    descartadas_minimo: dict[str, int] = {}
     metadatos: dict[str, dict[str, str]] = {}
     rutas: dict[str, Path] = {}
-    descartadas_minimo: dict[str, int] = {}
     apariciones: dict[str, set[tuple[str, str]]] = {}
     for familia in FAMILIAS:
         familias[familia] = {}
@@ -100,7 +118,11 @@ def carga_lexicones(directorio: Path | None = None) -> dict:
             tokens = []
             for palabra in entradas:
                 ascii_palabra = transliterar(palabra)
-                if len(ascii_palabra) < 2 or ascii_palabra in FORMAS_AMBIGUAS:
+                if len(ascii_palabra) < 2:
+                    continue
+                if ascii_palabra in FORMAS_AMBIGUAS:
+                    # Defensa en profundidad: el cribado principal está en el escritor, pero una
+                    # edición manual de un .txt no debe reintroducir formas que colisionan.
                     continue
                 tokens.append(ascii_palabra)
                 apariciones.setdefault(ascii_palabra, set()).add((familia, subcategoria))
@@ -109,12 +131,14 @@ def carga_lexicones(directorio: Path | None = None) -> dict:
             rutas[f"{familia}/{subcategoria}"] = ruta
     ambiguos = {token: sorted(destinos) for token, destinos in apariciones.items()
                 if len(destinos) > 1}
-    destino_unico = {token: list(destinos) for token, destinos in apariciones.items()
-                     if len(destinos) == 1}
+    destino_unico: dict[str, list[tuple[str, str]]] = {
+        token: list(destinos) for token, destinos in apariciones.items() if len(destinos) == 1}
     for token, destinos in ambiguos.items():
         for familia, subcategoria in destinos:
             familias[familia][subcategoria] = [t for t in familias[familia][subcategoria]
                                                if t != token]
+    # Una subcategoría que se queda sin vocabulario utilizable se retira: emitir columnas con
+    # ratio ~0 solo añade ruido al agregado de familia y falsea su media.
     for familia, subcategorias in familias.items():
         for subcategoria, lista in list(subcategorias.items()):
             if len(lista) < MIN_ENTRADAS_SUBCATEGORIA:
@@ -122,7 +146,8 @@ def carga_lexicones(directorio: Path | None = None) -> dict:
                 del subcategorias[subcategoria]
                 rutas.pop(f"{familia}/{subcategoria}", None)
     return {"familias": familias, "token_a_subcategoria": destino_unico, "ambiguos": ambiguos,
-            "metadatos": metadatos, "rutas": rutas, "descartadas_por_minimo": descartadas_minimo}
+            "metadatos": metadatos, "rutas": rutas,
+            "descartadas_por_minimo": descartadas_minimo}
 
 
 def _resuelve_destino(token_a_subcategoria: dict, familia: str, subcategoria: str) -> dict[str, int]:
@@ -131,12 +156,24 @@ def _resuelve_destino(token_a_subcategoria: dict, familia: str, subcategoria: st
             if destinos[0] == (familia, subcategoria)}
 
 
-def matriz_lexica(textos: pd.Series, lexicon: dict,
-                  familias: tuple[str, ...] = FAMILIAS) -> tuple[np.ndarray, list[str]]:
-    """Construye la matriz de agregados léxicos de los tweets (count, ratio, presence + familia).
+def matriz_lexica(textos: pd.Series, lexicon: dict, familias: tuple[str, ...] = FAMILIAS
+                  ) -> tuple[np.ndarray, list[str]]:
+    """Construye la matriz de agregados léxicos de los tweets.
 
-    La transformación es una función determinista del texto y **no usa etiquetas** (§13): por eso la
-    matriz se calcula una sola vez para todo el corpus, sin recalcular in-fold.
+    Parámetros
+    ----------
+    textos : pandas.Series
+        Texto crudo (se aplica ``clean_text`` si viene con padding).
+    lexicon : dict
+        Salida de :func:`carga_lexicones`.
+    familias : tuple of str
+        Familias a incluir.
+
+    Returns
+    -------
+    tuple
+        ``(matriz, nombres)`` con una columna por subcategoría y estadística más un agregado por
+        familia (media de ratios), en el orden de columnas de ``nombres``.
     """
     filas = textos.fillna("").astype(str).str.strip()
     documentos = [tokeniza(valor) for valor in filas]
@@ -163,7 +200,8 @@ def matriz_lexica(textos: pd.Series, lexicon: dict,
         if ratios_familia[familia]:
             nombres.append(f"lex_{familia}_ratio_medio")
             bloques.append(np.mean(np.column_stack(ratios_familia[familia]), axis=1)[:, None])
-    return np.column_stack(bloques).astype(np.float32), nombres
+    matriz = np.column_stack(bloques).astype(np.float32)
+    return matriz, nombres
 
 
 def cobertura(tokens_documento: list[list[str]], lexicon: dict, familia: str) -> dict:

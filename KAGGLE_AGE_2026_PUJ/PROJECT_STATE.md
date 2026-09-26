@@ -17,24 +17,20 @@
 
 ## Fase actual
 - **FASE DE LEXICONES (2026-09-25) CERRADA — línea cerrada (D-039).** 24 subcategorías léxicas
-  (registro, etapas de vida, dominios temáticos), 1328 entradas efectivas y
-  72 features agregadas, construidas como función determinista del texto (sin etiquetas). Control
-  *lexicon-only*: temas **0,2033**, registro **0,1520**, vida **0,0731** frente a un suelo de azar
-  de 0,1667. Redundancia contra las 279 features de V12: **3 de 72 columnas** (las tres de
-  `abreviaciones_internet`, un proxy de longitud). Fusión con V12: **ningún bloque alcanza el gate**
-  (Δ entre −0,0018 y +0,0001) y la complementariedad es nula (rescate ≈ daño, neto entre −339 y
-  +52).
+  (registro, etapas de vida, dominios temáticos), 1.369 entradas efectivas y 72 features
+  agregadas, construidas como función determinista del texto (sin etiquetas). Control *lexicon-only*:
+  temas **0,2033**, registro **0,1520**, vida **0,0731** frente a un suelo de azar de 0,1667.
+  Redundancia contra las 279 features de V12: **0 de 72 columnas**. Fusión con V12: **ningún bloque
+  alcanza el gate** (Δ ≥ +0,003 con ≥4/5 folds) ni supera a su control de permutación; la
+  complementariedad es nula o negativa (rescate ≤ daño).
 - **Modelo final: V12 congelado.** Leaderboard de referencia **0,62188**. **No se generó ni se
   envió ninguna submission nueva.**
 - **D-038**: `transformers`, `sentence-transformers` y `torch` están instalados en el venv, pero su
   uso en el camino de modelado es 0 (único import: detección de GPU). Se documenta sin maquillar.
-- **Conclusión**: bajo las restricciones de AGE, la línea de representación léxica está agotada. El
-  criterio que queda abierto es la **frontera** (18-24|25-34 y 25-34|35-49), no más señal.
-- **Reproducibilidad**: un cambio de rama concurrente perdió los ficheros no versionados de la fase
-  (`INCIDENTE_GIT_2026-09-25.md`). El resultado de P6 y el análisis de P7 están intactos; el bloque
-  `registro` se reconstruyó **idéntico bit a bit** y el `vida` con una diferencia documentada
-  (19 columnas frente a 16).
+- **Conclusión**: bajo las restricciones de AGE, la línea de representación léxica está agotada.
+  El criterio que queda abierto es la **frontera** (18-24|25-34 y 25-34|35-49), no más señal.
 - **Entregables**: `reports/age_lexicon_hypothesis_coverage.md`, `reports/age_lexicon_catalog.csv`,
+  `reports/age_lexicon_ablation.csv`, `reports/age_lexicon_redundancy.csv`,
   `reports/age_lexicon_results.csv`, `reports/age_lexicon_complementarity.md`,
   `reports/age_lexicon_error_analysis.md`, `reports/age_lexicon_audit.md`, `lexicons/**`.
 

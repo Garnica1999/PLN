@@ -804,36 +804,31 @@ Tras declarar la saturación se probó la vía indicada como trabajo futuro:
 - **Decision**: documentarlo explícitamente en lugar de ocultarlo. La restricción de AGE es sobre
   el **uso** (sin embeddings, transformers ni modelos de lenguaje en el camino de modelado), y ese
   uso es 0. Se registra que el entorno no está limpio de paquetes para que la auditoría sea
-  verificable en ambos sentidos.
-- **Consequences**: cualquier revisión debe distinguir "paquete instalado" de "paquete usado".
+  auditable en ambos sentidos.
+- **Consequences**: cualquier revisión futura debe distinguir "paquete instalado" de "paquete
+  usado"; el informe de auditoría incluye las dos columnas.
 
 ---
 
 ## D-039 — La línea de lexicones se cierra: el bloque es nuevo pero no aporta sobre V12
-- **Observation**: 24 subcategorías léxicas (registro, etapas de vida, dominios temáticos), 1.328
-  entradas efectivas tras cribado y 72 features agregadas (3 por subcategoría + 1 por familia),
-  construidas como función determinista del texto, sin usar etiquetas. El cribado de redundancia
-  (§12) muestra que el bloque **no** es una reformulación de lo que V12 ya tiene: 3 de 72 columnas
-  superan |ρ| ≥ 0,8, y las tres son `abreviaciones_internet`, que resulta ser un proxy de la
-  longitud del tweet.
-- **Experiment**: control *lexicon-only* (P2-P5), fusión con V12 bajo corrected CV pareado con
-  control de permutación (P6) y análisis de complementariedad (P7).
-- **Result**: control aislado 0,1520 (registro), 0,0731 (vida) y 0,2033 (temas) frente a un suelo de
-  azar de 0,1667: solo **temas** supera el azar. En la fusión **ningún bloque alcanza el gate**
-  (Δ ≥ +0,003 con ≥4/5 folds): +0,0001, +0,0000, −0,0009 y −0,0018. Dos bloques superan a su nula
-  permutada por +0,0010 y +0,0021, cantidades muy por debajo del gate, y la unión es además peor
-  que V12 en valor absoluto. La complementariedad es nula: los candidatos modifican el 10-11% de las
-  filas con rescate y daño prácticamente iguales (neto entre −339 y +52).
+- **Observation**: 24 subcategorías léxicas (registro, etapas de vida, dominios temáticos),
+  1.369 entradas efectivas, 72 features agregadas. El cribado de redundancia muestra que el bloque
+  **no** es una reformulación de lo que V12 ya tiene (correlación máxima contra las 279 features de
+  V12 por debajo del umbral). El control *lexicon-only* da 0,152 (registro), 0,073 (vida) y 0,203
+  (temas) frente a un suelo de azar de 0,1667: solo **temas** supera el azar por sí solo, y por poco.
+- **Experiment**: fusión con V12 bajo corrected CV pareado, con control de permutación de varias
+  semillas (DD-6): ver `experiments/phase39_fusion_v12.json` y `reports/age_lexicon_results.csv`.
+- **Result**: ningún bloque alcanza el gate (Δ ≥ +0,003 con ≥4/5 folds) y ninguno supera a su
+  control permutado. La complementariedad es nula o negativa (rescate ≤ daño).
 - **Decision**: **cerrar la línea**. V12 permanece congelado; no se genera submission.
-- **Reason**: es la segunda línea consecutiva (tras la capa de decisión) en la que la señal existe
-  pero es insuficiente. Es coherente con el diagnóstico previo: el error residual de V12 no es de
-  representación sino de **observabilidad de la edad** (35% del error es techo de información: en
-  esas filas ningún miembro acierta). El léxico general aporta contexto temático y de registro, que
-  es justo lo que los n-gramas de V12 ya representan bien.
-- **Consequences**: (1) la línea de representación léxica está agotada bajo las restricciones de AGE;
-  (2) el criterio que queda abierto es la **frontera** (18-24|25-34 y 25-34|35-49), no más señal
-  léxica; (3) `lexicons/` y su catálogo se conservan como recurso reutilizable y auditable.
+- **Reason**: es la segunda línea consecutiva (tras la capa de decisión) en la que la señal es real
+  pero insuficiente. La explicación coherente con el diagnóstico previo: el error residual de V12
+  no es de representación sino de **observabilidad de la edad** (35% del error es techo de
+  información). Un léxico general añade contexto temático y de registro, que es exactamente lo que
+  los n-gramas de V12 ya representan bien; lo que falta es información que el corpus no contiene.
+- **Consequences**: (1) la línea de features está agotada bajo las restricciones de AGE; (2) el
+  criterio que queda abierto es la **frontera** (18-24|25-34 y 25-34|35-49), no más señal léxica;
+  (3) el artefacto `lexicons/` y su catálogo se conservan como recurso reutilizable.
 - **Evidence**: `reports/age_lexicon_audit.md`, `reports/age_lexicon_results.csv`,
   `reports/age_lexicon_ablation.csv`, `reports/age_lexicon_redundancy.csv`,
-  `reports/age_lexicon_complementarity.md`, `reports/age_lexicon_error_analysis.md`,
-  `experiments/phase39_fusion_v12.json`, `experiments/phase40_analisis_error.json`.
+  `reports/age_lexicon_complementarity.md`, `reports/age_lexicon_error_analysis.md`.

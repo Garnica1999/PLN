@@ -6,11 +6,12 @@
 # licencia: del proyecto; sin datos externos y sin etiquetas de edad
 # riesgo: ninguno
 # fecha: 2026-09-25
-# entradas_declaradas: 89
+# entradas_declaradas: 91
 # cribado_corpus: frecuencia minima 3 en el train
 RAM
 actualizar
 android
+aplicacion
 aplicación
 archivo
 audio
@@ -45,7 +46,7 @@ gb
 hacker
 hardware
 imagen
-información
+informacion
 instalar
 internet
 iphone
@@ -69,7 +70,7 @@ pantalla
 portátil
 problema
 programa
-programación
+programacion
 publicación
 publicar
 página
@@ -85,6 +86,7 @@ software
 streaming
 switch
 teclado
+tecnologia
 tecnología
 telcel
 teléfono

@@ -6,7 +6,7 @@
 # licencia: del proyecto; sin datos externos y sin etiquetas de edad
 # riesgo: ninguno
 # fecha: 2026-09-25
-# entradas_declaradas: 82
+# entradas_declaradas: 81
 # cribado_corpus: frecuencia minima 3 en el train
 acorde
 acordes
@@ -22,13 +22,11 @@ batería
 bolero
 canciones
 canción
-cantada
 cantando
 cantar
 cantautor
 clip
 clásico
-compositor
 concierto
 conciertos
 corrido
@@ -38,7 +36,6 @@ disco
 discos
 duración
 electrónica
-escala
 estudio
 festival
 flamenco
@@ -79,7 +76,6 @@ techno
 teclado
 tono
 trap
-unplugged
 version
 verso
 violín

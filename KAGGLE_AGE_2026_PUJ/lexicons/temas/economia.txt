@@ -6,8 +6,9 @@
 # licencia: del proyecto; sin datos externos y sin etiquetas de edad
 # riesgo: ninguno
 # fecha: 2026-09-25
-# entradas_declaradas: 85
+# entradas_declaradas: 87
 # cribado_corpus: frecuencia minima 3 en el train
+Consumer
 IVA
 acciones
 ahorrar

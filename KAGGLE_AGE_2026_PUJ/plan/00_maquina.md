@@ -2,7 +2,7 @@
 
 - **Fecha**: 2026-09-25
 - **Intérprete canónico**: `/home/carlos/venv/bin/python` (Python 3.14.7)
-- **CPU**: AMD Ryzen 9 5950X 16-Core Processor — 0 núcleos físicos, 32 hilos lógicos
+- **CPU**: AMD Ryzen 9 5950X 16-Core Processor — 16 núcleos físicos, 32 hilos lógicos
 - **RAM**: 31.2 GB
 - **GPU**: AMD Radeon RX 9070 XT (dedicada, 15.9 GB, torch_cuda=True)
 - **Sistema**: Linux 7.2.6-1-cachyos

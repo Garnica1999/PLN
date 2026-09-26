@@ -4,10 +4,10 @@
     "errores": 67610
   },
   "candidatos": {
-    "registro": {
+    "__registro": {
       "aciertos": 101778,
       "complementariedad": {
-        "candidato": "registro",
+        "candidato": "__registro",
         "ambos_correctos": 96237,
         "solo_candidato": 5541,
         "solo_v12": 5489,
@@ -51,10 +51,10 @@
         "25-34|35-49": -6
       }
     },
-    "registro___vida___temas": {
+    "__registro___vida___temas": {
       "aciertos": 101387,
       "complementariedad": {
-        "candidato": "registro___vida___temas",
+        "candidato": "__registro___vida___temas",
         "ambos_correctos": 95605,
         "solo_candidato": 5782,
         "solo_v12": 6121,
@@ -98,10 +98,10 @@
         "25-34|35-49": 193
       }
     },
-    "temas": {
+    "__temas": {
       "aciertos": 101574,
       "complementariedad": {
-        "candidato": "temas",
+        "candidato": "__temas",
         "ambos_correctos": 96178,
         "solo_candidato": 5396,
         "solo_v12": 5548,
@@ -145,10 +145,10 @@
         "25-34|35-49": 73
       }
     },
-    "vida": {
+    "__vida": {
       "aciertos": 101773,
       "complementariedad": {
-        "candidato": "vida",
+        "candidato": "__vida",
         "ambos_correctos": 96346,
         "solo_candidato": 5427,
         "solo_v12": 5380,

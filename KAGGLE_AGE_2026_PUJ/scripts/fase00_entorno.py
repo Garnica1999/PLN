@@ -20,6 +20,7 @@ import re
 import shutil
 import subprocess
 import sys
+import unicodedata
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -38,35 +39,44 @@ def detector_python() -> str:
     return shutil.which("python3") or "python3"
 
 
+def _normaliza_etiqueta(etiqueta: str) -> str:
+    """Normaliza la etiqueta de ``lscpu``: minúsculas, sin acentos y sin comillas.
+
+    Necesario porque ``lscpu`` localize al español escribe «Núcleo(s) por «socket»».
+    """
+    limpia = etiqueta.replace("«", "").replace("»", "").replace('"', "").strip().lower()
+    return "".join(caracter for caracter in unicodedata.normalize("NFD", limpia)
+                   if unicodedata.category(caracter) != "Mn").strip()
+
+
 def informacion_cpu() -> dict:
     """Nombre del procesador, núcleos físicos e hilos lógicos.
 
-    ``lscpu`` puede venir en inglés o en español según el locale del sistema, así que se aceptan
-    ambas etiquetas para cada campo.
+    ``lscpu`` puede venir en inglés o en español (y entrecomilla los sockets), así que se comparan
+    las etiquetas ya normalizadas en lugar de literales exactos.
     """
     nombre, nucleos_fisicos, hilos = platform.processor() or "desconocido", None, None
-    etiquetas = {
-        "modelo": ("Model name", "Nombre del modelo"),
-        "nucleos_por_socket": ("Core(s) per socket", "Nucleo(s) por socket", "Núcleos por socket"),
-        "sockets": ("Socket(s)",),
-        "hilos_por_nucleo": ("Thread(s) per core", "Hilo(s) por nucleo", "Hilos por núcleo"),
-    }
     try:
         salida = subprocess.run(["lscpu"], capture_output=True, text=True, timeout=10).stdout
         valores: dict[str, int] = {}
         for linea in salida.splitlines():
             etiqueta, _, valor = linea.partition(":")
-            etiqueta = etiqueta.strip()
-            for clave, alias in etiquetas.items():
-                if etiqueta in alias and valor.strip():
-                    if clave == "modelo":
-                        nombre = valor.strip()
-                    else:
-                        valores[clave] = int(re.sub(r"[^0-9]", "", valor) or 0)
+            etiqueta, valor = _normaliza_etiqueta(etiqueta), valor.strip()
+            if not valor:
+                continue
+            if "model name" in etiqueta or "nombre del modelo" in etiqueta:
+                nombre = valor
+            elif "nucleo" in etiqueta and "socket" in etiqueta and "por" in etiqueta:
+                valores["nucleos_por_socket"] = int(re.sub(r"[^0-9]", "", valor) or 0)
+            elif "nucleo" in etiqueta and "por" in etiqueta:
+                valores["hilos_por_nucleo"] = int(re.sub(r"[^0-9]", "", valor) or 0)
+            elif etiqueta in {"socket(s)", "zocalo(s)"}:
+                valores["sockets"] = int(re.sub(r"[^0-9]", "", valor) or 0)
+            elif etiqueta == "cpu(s)":
+                valores["hilos"] = int(re.sub(r"[^0-9]", "", valor) or 0)
         nucleos_fisicos = valores.get("nucleos_por_socket", 0) * valores.get("sockets", 0)
-        hilos = (valores.get("nucleos_por_socket", 0) * valores.get("sockets", 0)
-                 * valores.get("hilos_por_nucleo", 1)) or None
-    except (OSError, ValueError, subprocess.SubprocessError, KeyError):
+        hilos = (nucleos_fisicos * valores.get("hilos_por_nucleo", 1)) or valores.get("hilos")
+    except (OSError, ValueError, subprocess.SubprocessError):
         pass
     hilos = hilos or os_cpu_count()
     if nucleos_fisicos is None and hilos:

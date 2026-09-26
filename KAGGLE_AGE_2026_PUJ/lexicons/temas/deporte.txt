@@ -6,9 +6,8 @@
 # licencia: del proyecto; sin datos externos y sin etiquetas de edad
 # riesgo: ninguno
 # fecha: 2026-09-25
-# entradas_declaradas: 65
+# entradas_declaradas: 61
 # cribado_corpus: frecuencia minima 3 en el train
-Ea
 afición
 americano
 atletismo
@@ -62,7 +61,7 @@ piloto
 portero
 rugby
 skate
-table
+tabla
 tenis
 tribuna
 técnico

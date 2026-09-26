@@ -3,6 +3,11 @@
   "fecha": "2026-09-25",
   "adoptan": [],
   "linea_cerrada": true,
+  "veredictos": {
+    "Registro": false,
+    "Vida": false,
+    "Temas": false
+  },
   "experimentos_registrados": [
     "PH36-COBERTURA-LEX",
     "PH37-CATALOGO-LEX",

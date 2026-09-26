@@ -17,6 +17,7 @@ carta
 cobrar
 contrato
 contratos
+currículum
 curso
 cursos
 desempeño

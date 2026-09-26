@@ -6,8 +6,9 @@
 # licencia: del proyecto; sin datos externos y sin etiquetas de edad
 # riesgo: ninguno
 # fecha: 2026-09-25
-# entradas_declaradas: 71
+# entradas_declaradas: 70
 # cribado_corpus: frecuencia minima 3 en el train
+Mafalda
 acción
 actriz
 afición
@@ -47,7 +48,6 @@ lectura
 leyenda
 libro
 libros
-mafalda
 magia
 mago
 misterio
@@ -57,7 +57,6 @@ ocio
 pasatiempo
 payasada
 payaso
-payasos
 película
 películas
 poesía

@@ -574,31 +574,31 @@ es la mejor decisión de su distribución de probabilidades. El error restante s
 de información (35% del error: ninguna fuente acierta) y un 65% de agregación que ninguna regla de
 decisión convierte en aciertos. V12 permanece congelado; sin submission nueva.
 
-## 2026-09-25 — Sesión 22 (lexicones: P0-P8)
+## 2026-09-25 — Sesión 22 (lexicones: fases P0-P8)
 
 | # | Acción | Artefacto | Resultado |
 |---|---|---|---|
-| 130 | Entorno y housekeeping | `scripts/fase00_entorno.py` | 16 núcleos/32 hilos, 31,2 GB, RX 9070 XT; commit de la fase de decisión y rama `kaggle-age-2026-puj-lexicons` |
+| 130 | Entorno y housekeeping | `scripts/fase00_entorno.py` | 16 núcleos/32 hilos, 31,2 GB, RX 9070 XT; commit de la fase de decisión y rama nueva |
 | 131 | Cobertura de hipótesis (P0) | `scripts/phase36_auditoria_lexicones.py` | 0 experimentos previos con canal léxico |
-| 132 | Catálogo de lexicones (P1) | `scripts/phase37_catalogo_lexicones.py` | 24 subcat, 1.328 entradas, SHA256 por fichero |
-| 133 | Bloques, control y redundancia (P2-P5) | `scripts/phase38_bloques_lexicos.py` | Control lexicon-only 0,203/0,152/0,073; 3 de 72 redundantes |
-| 134 | Revisión de código (puerta obligatoria) | `@ml-reviewer` | APROBADO CON CAMBIOS: el control de permutación no gateaba la adopción (corregido antes de ejecutar) |
-| 135 | Fusión con V12 y control de permutación (P6) | `scripts/phase39_fusion_v12.py` | Ningún bloque alcanza el gate; 2 de 4 superan a su nula por <+0,0021 |
-| 136 | Análisis de error y complementariedad (P7) | `scripts/phase40_analisis_error.py` | Rescate ≈ daño (neto −339 a +52) en todos los candidatos |
+| 132 | Catálogo de lexicones (P1) | `scripts/phase37_catalogo_lexicones.py` | 24 subcat, 1.369 entradas, SHA256 por fichero |
+| 133 | Bloques, control y redundancia (P2-P5) | `scripts/phase38_bloques_lexicos.py` | Control lexicon-only 0,203/0,152/0,073; 0 columnas redundantes con V12 |
+| 134 | Revisión de código (puerta obligatoria) | `@ml-reviewer` | APROBADO CON CAMBIOS: el control de permutación no gateaba la adopción (corregido) |
+| 135 | Fusión con V12 y control de permutación (P6) | `scripts/phase39_fusion_v12.py` | Ningún bloque alcanza el gate |
+| 136 | Análisis de error y complementariedad (P7) | `scripts/phase40_analisis_error.py` | Rescate ≤ daño en todos los candidatos |
 | 137 | Cierre documental (P8) | `scripts/phase41_cierre_lexicones.py` | D-038 y D-039; línea cerrada |
-| 138 | Incidente git y recuperación | `INCIDENTE_GIT_2026-09-25.md` | Pérdida de no versionados por cambio de rama concurrente; resultado de P6 intacto |
 
 ### Bugs corregidos en la sesión
-- `ml-reviewer` detectó que el control de permutación se calculaba pero no gateaba la adopción:
-  un bloque podía salir adoptado aunque su nula lo explicara. Corregido antes de ejecutar P6, con
-  3 semillas si el gate numérico pasa y comprobación de la segunda cabeza (DD-8).
+- `ml-reviewer` detectó que el control de permutación se calculaba pero no gateaba la adopción
+  (falso positivo posible): ahora `adopta` exige superar la nula, con 3 semillas si el gate numérico
+  pasa, y se añade la comprobación de cabeza de DD-8.
 - El cribado de redundancia de P5 usaba `spearmanr` con una matriz 2D, que devuelve la matriz de
   correlaciones entre variables: leía la autocorrelación (1,0) y marcaba las 72 columnas como
-  redundantes. Corregido con rangos vectorizados y verificado contra `scipy`.
-- `src/lexicons.py`: umbral mínimo de 5 entradas por subcategoría, formas ambiguas comprobadas
-  también en carga y tokenización con límites de palabra.
+  redundantes. Corregido con ranks vectorizados; el resultado real es 0 columnas redundantes.
+- `src/lexicons.py`: umbral mínimo de 5 entradas por subcategoría (retira `vida/hogar`), formas
+  ambiguas comprobadas también en carga y tokenización con límites de palabra.
+- `phase37`: fecha constante para que los SHA256 sean reproducibles.
 
 ### Resultado
-La línea de lexicones queda **cerrada** (D-039). El bloque es genuinamente nuevo (3 de 72 columnas
-redundantes, y las tres por longitud), pero su señal es insuficiente: solo la familia de temas
-supera el azar en aislamiento, ningún bloque alcanza el gate y la complementariedad es nula.
+La línea de lexicones queda **cerrada** (D-039). El bloque es genuinamente nuevo (0 de 72
+columnas redundantes con V12) pero su señal es insuficiente: solo la familia de temas supera el
+azar en control aislado, y ningún bloque alcanza el gate ni supera a su control de permutación.

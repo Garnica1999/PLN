@@ -62,30 +62,30 @@ def main() -> int:
     train = datos.load_train()
     y = train[cfg.TARGET].astype(str).to_numpy()
     reales = np.array([cfg.CLASSES.index(valor) for valor in y])
-
-    denso = pd.read_parquet(cfg.FEATURES / "dense_train.parquet")
-    contexto = pd.DataFrame({
-        "n_chars": denso["n_chars"].to_numpy(float),
-        "n_mention": denso["n_mention"].to_numpy(float),
-        "n_hashtag": denso["n_hashtag"].to_numpy(float),
-        "n_url": denso["n_url"].to_numpy(float),
-        "is_rt": denso["is_rt"].to_numpy(float),
-        dl.GRUPOS_SOLO_URL: ((denso["n_url"] >= 1) & (denso["n_words"] <= 3)).astype(float),
-        dl.GRUPOS_MUY_CORTO: (denso["n_chars"] <= 15).astype(float),
-        dl.GRUPOS_SIN_MENCIONES: (denso["n_mention"] == 0).astype(float),
-    })
+    contexto = datos.contexto_segmentos() if hasattr(datos, "contexto_segmentos") else None
+    if contexto is None:
+        denso = pd.read_parquet(cfg.FEATURES / "dense_train.parquet")
+        contexto = pd.DataFrame({
+            "n_chars": denso["n_chars"].to_numpy(float),
+            "n_mention": denso["n_mention"].to_numpy(float),
+            "n_hashtag": denso["n_hashtag"].to_numpy(float),
+            "n_url": denso["n_url"].to_numpy(float),
+            "is_rt": denso["is_rt"].to_numpy(float),
+            dl.GRUPOS_SOLO_URL: ((denso["n_url"] >= 1) & (denso["n_words"] <= 3)).astype(float),
+            dl.GRUPOS_MUY_CORTO: (denso["n_chars"] <= 15).astype(float),
+            dl.GRUPOS_SIN_MENCIONES: (denso["n_mention"] == 0).astype(float),
+        })
 
     base_indice = np.load(cfg.FEATURES / "oof_argmax_v12.npy")
     aciertos_base = base_indice == reales
     errores_base = int((~aciertos_base).sum())
-    print(f"[V12] argmax OOF | errores: {errores_base} "
-          f"| macro-F1OOF {dl.metricas(np.eye(6)[base_indice], reales)['macro_f1']}", flush=True)
+    print(f"[V12] OOF argmax cargado | errores: {errores_base}", flush=True)
 
-    candidatos = {ruta.stem.replace("oof_argmax_v12_", "").lstrip("_"): np.load(ruta)
-                  for ruta in sorted(cfg.FEATURES.glob("oof_argmax_v12__*.npy"))}
+    candidatos = {}
+    for ruta in sorted(cfg.FEATURES.glob("oof_argmax_v12_*.npy")):
+        candidatos[ruta.stem.replace("oof_argmax_v12_", "")] = np.load(ruta)
     if not candidatos:
         raise SystemExit("no hay candidatos: ejecuta phase39 antes")
-    print(f"candidatos: {list(candidatos)}", flush=True)
 
     informe = {"fecha": "2026-09-25", "v12": {"errores": errores_base}, "candidatos": {}}
     filas_complementaridad, filas_segmentos = [], []
@@ -94,20 +94,20 @@ def main() -> int:
         rescate = int((aciertos & ~aciertos_base).sum())
         danio = int((aciertos_base & ~aciertos).sum())
         cambio = int((predicciones != base_indice).sum())
-        acuerdo = round(100.0 * float((predicciones == base_indice).mean()), 3)
         filas_complementaridad.append({
             "candidato": nombre,
             "ambos_correctos": int((aciertos & aciertos_base).sum()),
-            "solo_candidato": rescate, "solo_v12": danio,
-            "ambos_mal": int((~aciertos & ~aciertos_base).sum()),
-            "neto": rescate - danio, "acuerdo_pct": acuerdo,
-            "desacuerdo_pct": round(100.0 - acuerdo, 3),
-            "filas_modificadas": cambio,
-            "filas_modificadas_pct": round(100.0 * cambio / len(y), 3),
-            "tasa_rescate_del_error_pct": round(100.0 * rescate / max(1, errores_base), 3)})
+            "solo_candidato": rescate, "solo_v12": danio, "ambos_mal": int((~aciertos & ~aciertos_base).sum()),
+            "neto": rescate - danio,
+            "acuerdo_pct": round(100.0 * float((predicciones == base_indice).mean()), 3),
+            "desacuerdo_pct": round(100.0 - round(100.0 * float((predicciones == base_indice).mean()), 3), 3),
+            "filas_modificadas": cambio, "filas_modificadas_pct": round(100.0 * cambio / len(y), 3),
+            "tasa_rescate_del_error_pct": round(100.0 * rescate / max(1, errores_base), 3),
+        })
         fronteras = {}
         for borde in range(len(cfg.CLASSES) - 1):
-            clave = f"{cfg.CLASSES[borde]}|{cfg.CLASSES[borde + 1]}"
+            izquierda, derecha = cfg.CLASSES[borde], cfg.CLASSES[borde + 1]
+            clave = f"{izquierda}|{derecha}"
             cruza_base = int((((base_indice == borde) & (reales == borde + 1))
                               | ((base_indice == borde + 1) & (reales == borde))).sum())
             cruza_nuevo = int((((predicciones == borde) & (reales == borde + 1))
@@ -115,21 +115,23 @@ def main() -> int:
             fronteras[clave] = {"errores_v12": cruza_base, "errores_candidato": cruza_nuevo,
                                 "delta": cruza_nuevo - cruza_base}
         for nombre_segmento, mascara in segmentos_extra(contexto).items():
-            filas_segmentos.append({
-                "candidato": nombre, "segmento": nombre_segmento, "filas": int(mascara.sum()),
-                "error_v12_pct": round(100.0 * float((~aciertos_base[mascara]).mean()), 2),
-                "error_candidato_pct": round(100.0 * float((~aciertos[mascara]).mean()), 2),
-                "delta_pp": round(100.0 * float((~aciertos[mascara]).mean())
-                                  - 100.0 * float((~aciertos_base[mascara]).mean()), 2)})
+            error_base = 100.0 * float((~aciertos_base[mascara]).mean())
+            error_nuevo = 100.0 * float((~aciertos[mascara]).mean())
+            filas_segmentos.append({"candidato": nombre, "segmento": nombre_segmento,
+                                    "filas": int(mascara.sum()),
+                                    "error_v12_pct": round(error_base, 2),
+                                    "error_candidato_pct": round(error_nuevo, 2),
+                                    "delta_pp": round(error_nuevo - error_base, 2)})
         informe["candidatos"][nombre] = {
             "aciertos": int(aciertos.sum()),
-            "complementariedad": filas_complementaridad[-1], "fronteras": fronteras,
+            "complementariedad": filas_complementaridad[-1],
+            "fronteras": fronteras,
             "fronteras_centrales_delta": {clave: fronteras[clave]["delta"]
-                                         for clave in FRONTERAS_CENTRALES}}
+                                         for clave in FRONTERAS_CENTRALES},
+        }
+        centrales = informe["candidatos"][nombre]["fronteras_centrales_delta"]
         print(f"[{nombre}] rescate {rescate} | daño {danio} | neto {rescate - danio:+d} | "
-              f"modificadas {cambio} ({filas_complementaridad[-1]['filas_modificadas_pct']:.3f}%) | "
-              f"fronteras centrales "
-              f"{informe['candidatos'][nombre]['fronteras_centrales_delta']}", flush=True)
+              f"modificadas {cambio} | fronteras centrales {centrales}", flush=True)
 
     pd.DataFrame(filas_complementaridad).to_csv(
         cfg.REPORTS / "age_lexicon_complementarity.csv", index=False)
@@ -140,7 +142,7 @@ def main() -> int:
     lineas = ["# Complementariedad de los candidatos léxicos con V12 (P7)", "",
               f"Errores de V12 en el OOF: **{errores_base:,}** filas.", "",
               "| Candidato | Ambos correctos | Solo candidato (rescate) | Solo V12 (daño) | Neto | "
-              "Acuerdo | Modificadas | Tasa de rescate del error |", "|---|---|---|---|---|---|---|---|"]
+              "Acuerdo | Modificadas | Tasa de rescate |", "|---|---|---|---|---|---|---|---|"]
     for fila in filas_complementaridad:
         lineas.append(f"| {fila['candidato']} | {fila['ambos_correctos']:,} | {fila['solo_candidato']} "
                       f"| {fila['solo_v12']} | {fila['neto']:+d} | {fila['acuerdo_pct']:.3f}% | "
@@ -148,31 +150,33 @@ def main() -> int:
                       f"{fila['tasa_rescate_del_error_pct']:.3f}% |")
     lineas += ["", f"**Mejor complementariedad**: `{mejor['candidato']}` con neto {mejor['neto']:+d} "
               f"(rescate {mejor['solo_candidato']} frente a daño {mejor['solo_v12']}).", "",
-              "Interpretación (§21): un bloque léxico solo aporta si el **rescate supera al daño**. Un "
-              "neto negativo significa que el lexicón destruye más aciertos de V12 de los que "
-              "construye. Ninguno de los cuatro candidatos cumple esa condición.", ""]
+              "Interpretación (§21): un bloque léxico solo aporta si el **rescate supera al daño**. "
+              "Un neto negativo significa que el lexicón destruye más aciertos de V12 de los que "
+              "construye, por mucho que eleve su propio acierto.", ""]
     COMPLEMENTARIEDAD.write_text("\n".join(lineas) + "\n", encoding="utf-8")
 
+    tabla_segmentos = pd.DataFrame(filas_segmentos)
     lineas = ["# Análisis de error por fronteras y segmentos (P7)", "",
               "## 1. Errores de cruce en las fronteras centrales (§19)", "",
               "| Candidato | 18-24|25-34 (V12 -> candidato) | 25-34|35-49 (V12 -> candidato) |",
               "|---|---|---|"]
     for nombre in candidatos:
         fronteras = informe["candidatos"][nombre]["fronteras"]
-        izquierda, derecha = fronteras["18-24|25-34"], fronteras["25-34|35-49"]
+        izquierda = fronteras["18-24|25-34"]
+        derecha = fronteras["25-34|35-49"]
         lineas.append(f"| {nombre} | {izquierda['errores_v12']:,} -> {izquierda['errores_candidato']:,} "
                       f"({izquierda['delta']:+d}) | {derecha['errores_v12']:,} -> "
-                      f"{derecha['errores_candidato']:,} ({derecha["delta"]:+d}) |")
+                      f"{derecha['errores_candidato']:,} ({derecha['delta']:+d}) |")
     lineas += ["", "## 2. Error por segmento (§20)", "",
               "| Candidato | Segmento | Filas | Error V12 | Error candidato | Δ pp |",
               "|---|---|---|---|---|---|"]
-    for fila in filas_segmentos:
+    for _, fila in tabla_segmentos.iterrows():
         lineas.append(f"| {fila['candidato']} | {fila['segmento']} | {fila['filas']:,} | "
                       f"{fila['error_v12_pct']:.2f}% | {fila['error_candidato_pct']:.2f}% | "
                       f"{fila['delta_pp']:+.2f} |")
     ERRORES.write_text("\n".join(lineas) + "\n", encoding="utf-8")
     print(f"\nartefactos: {COMPLEMENTARIEDAD.name}, {ERRORES.name}, "
-          "age_lexicon_complementarity.csv, age_lexicon_segments.csv")
+          f"age_lexicon_complementarity.csv, age_lexicon_segments.csv")
     return 0
 
 
