@@ -17,13 +17,13 @@
 - [x] TR implica HS de forma determinista: el track B tiene soporte empirico
 - [x] P(AG|HS=0) = 0.026 con 22 ejemplos: justifica B2r
 
-## B - Factorizacion condicional (pendiente)
+## B - Factorizacion condicional (cerrado negativo)
 
-- [ ] `v6_02_label_factorization.py`: B1 (p(TR|X) = p(HS|X)p(TR|HS=1,X))
-- [ ] B2: condicional de AG en las dos ramas de HS
-- [ ] B2r: rama HS=0 regularizada (22 ejemplos)
-- [ ] B3: comparacion contra V03
-- [ ] Gate 1 y, si lo supera, Gate 2
+- [x] `v6_02_label_factorization.py`: B0 control, B1, B1c, B2, B3
+- [x] B0 control reproduce V03 exacto (0.777211): deltas atribuibles
+- [x] B1 -0.0107, B2 -0.0008, B1c/B3 -0.0115: **0/5 pasan el Gate 1**
+- [x] Causa medida: solo 20 filas de prediccion (1.35 %) violan la invariante
+- [x] **Cerrado por la seccion 54. Sin ampliar rejilla.**
 
 ## A - Ponderacion por grupo (pendiente)
 

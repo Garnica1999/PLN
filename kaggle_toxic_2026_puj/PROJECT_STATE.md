@@ -58,6 +58,8 @@ archivada de la autorizacion; se registra solo lo comunicado por el usuario.
 | V6 P0 | C2, C3, C4 cerradas (V4-D, E2-10). C se reduce a C1. J no es duplicado de PRE |
 | V6 P0-bis | Interseccion de solo 9-12 filas (techo +0.0027 < gate): **D y E se cierran por presupuesto** |
 | D-044 | Gate de dos niveles (delta + IC95 + folds, luego segunda particion); TR implica HS es determinista |
+| V6 Track B | **Cerrado negativo**: B1 -0.0107, B2 -0.0008; 0/5 pasan el Gate 1 |
+| D-045 | El control B0 es obligatorio; la invariante es cierta pero solo 1.35 % de las predicciones la violan |
 | variable abierta | El tamano de los datos etiquetados (1.483), unica palanca que deja la evidencia |
 | GATE DE CIERRE | §29: A (+0.005 con estabilidad) / B (complementariedad robusta) / C (senal representacional fuerte) |
 

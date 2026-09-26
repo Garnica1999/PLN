@@ -821,3 +821,15 @@ Registro cronologico de ejecuciones. Formato:
   un clasificador independiente no puede expresar y que **si justifica el track B**. Ademas
   P(AG|HS=0)=0.026 con 22 ejemplos, que obliga a la forma regularizada B2r.
   **D-044**. 0 entrenamientos, 0 submissions, 0 sondas de LB.
+- 21:10 | v6 Track B: factorizacion condicional, resultado negativo | `v6_02_label_factorization.py`
+  **B0 control reproduce V03 exactamente** (0.777211, delta +0.0000, IC95 [0, 0], 0 salvage,
+  0 damage): el pipeline es valido y los deltas son atribuibles. Ese control no es un detalle,
+  es lo que hace legitima la comparacion.
+  **B1 TR condicional -0.0107** (IC95 [-0.0184, -0.0033], 1/5 pliegues, 1 rescatada / 35
+  rotas). B1c y B3 -0.0115. **B2 AG dos ramas -0.0008** con la rama HS=0 regularizada (22
+  positivos de 835). **Ninguna variante pasa el Gate 1.**
+  Causa medida: V03 solo viola la invariante en **20 filas de prediccion (1.35 %)**. La
+  restriccion **si se aplica** (0 violaciones en la variante factorizada), pero el producto
+  tambien atenua p(TR) en toda fila con p(HS) intermedia, que es donde V03 acertaba.
+  **Track B cerrado por resultado negativo (seccion 54), sin ampliar rejilla.**
+  **D-045**. 6 unidades de entrenamiento, 0 submissions, 0 sondas de LB.

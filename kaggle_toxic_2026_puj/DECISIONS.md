@@ -1600,3 +1600,42 @@ evidencia, experimento, resultado, conclusion final.
   evidencia muestre. **I** (ponderacion word/char) sigue ausente en el codigo y es la mas
   barata del proyecto, asi que entra en cuanto B y A esten medidos.
 - **Presupuesto**: 24 experimentos principales y 6 de reserva, sin obligacion de consumirlos.
+
+## D-045 - Track B cerrado: la invariante TR implica HS es cierta pero no accionable, y por que el control B0 es obligatorio
+
+- **Contexto**: el diagnostico V6-01 encontro que **TR=1 implica HS=1 de forma determinista**
+  (0 casos de TR=1 con HS=0 frente a 569 casos de TR=1). Eso es una invariante del corpus que
+  un clasificador TR independiente no puede expresar, y justificaba factorizar
+  `p(TR|X) = p(HS|X) * p(TR|HS=1, X)` con el condicional entrenado solo en su dominio natural,
+  que es genuinamente distinto de las cadenas (E2-01) y del label powerset (V4-E), ya cerrados.
+- **Decision 1, el grupo de control B0 es obligatorio en toda linea de factorizacion**: antes
+  de comparar, `v6_02_label_factorization.py` reentrena los tres marginales de V03 con su propio
+  codigo. B0 da **0.777211 exacto, delta +0.0000, IC95 [0, 0], 0 salvage y 0 damage**: el
+  pipeline reproduce V03 bit a bit. Sin ese control, cualquier delta posterior seria
+  inatribuible (podria ser un simple efecto de reentrenar con otra instancia) y la conclusion
+  sobre la factorizacion no seria valida. Es la misma razon por la que D-042 exigio corregir la
+  granularidad antes de comparar: **primero se demuestra que la vara mide lo que dice medir**.
+- **Decision 2, resultado negativo con Gate 1 incumplido en las cinco variantes**: B1 (TR
+  condicional) **-0.0107** con IC95 [-0.0184, -0.0033] y 1/5 pliegues; B1c y B3 -0.0115; B2
+  (AG en dos ramas, con la rama HS=0 regularizada por tener 22 positivos de 835) -0.0008 con
+  IC95 que incluye el 0 y 2/5 pliegues. **Ninguna pasa el Gate 1.** Por la seccion 54 el track
+  se **cierra** y no se abre rejilla nueva.
+- **Decision 3, el resultado negativo tiene causa mecanica medida, no es un "no se sabe"**: la
+  invariante es cierta, pero su magnitud accionable es minuscula. V03 solo predice TR=1 con
+  HS=0 en **20 filas de 1.483 (1.35 %)**. La restriccion **si funciona**: la variante
+  factorizada predice TR=1 con HS=0 en **0 filas**, que era el objetivo declarado. El problema
+  es que el producto no solo prohibe TR=1 con HS=0: tambien **atenua** p(TR) en toda fila con
+  p(HS) intermedia, y ahi es donde V03 acertaba. De ahi el saldo de **1 fila rescatada frente a
+  35 rotas**. Se registraban 78 filas predichas TR=1 sobre HS=0 real, que son falsos positivos
+  garantizados por la invariante, y corregirlos no compensa el coste de reescalar TR en todas
+  las filas. **La conclusion es cuantitativa: 1.35 % de incoherencia no pagan ese precio.**
+- **Decision 4, la lectura correcta no es "la factorizacion no sirve"**: es "no puede servir
+  para esta referencia". Contra un clasificador que violara la invariante en muchas mas filas,
+  o con un umbral de TR mas alto que hiciera subir la probabilidad de las filas coherentes, la
+  misma linea tendria otro resultado. Queda escrito para que nadie lo lea como refutacion
+  universal de la factorizacion probabilistica.
+- **Decision 5, los umbrales ajustados no son comparables**: reoptimizar un umbral por etiqueta
+  con barrido greedy sobre el mismo OOF que se evalua esta sesgado al alza (B0 sube a 0.7808
+  solo por reajustar umbrales, sin cambiar el modelo). **El gate se evalua siempre con los
+  umbrales congelados de V03**, y la columna de umbrales ajustados queda como diagnostico
+  בלבד.
