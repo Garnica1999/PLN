@@ -1,0 +1,154 @@
+{
+  "fase": "V18 · P1 peso de clases consciente de la frontera",
+  "fecha": "2026-09-26",
+  "pesos_pre_registrados": {
+    "nivel_0_base": 1.0,
+    "nivel_1_moderado": 1.5,
+    "nivel_2_fuerte": 2.5
+  },
+  "clases_centrales": [
+    "18-24",
+    "25-34",
+    "35-49"
+  ],
+  "control": "V12-equivalente: mismas variables, folds, modelos y promedio; solo cambian los pesos",
+  "referencia": {
+    "macro_f1": 0.6005,
+    "por_fold": [
+      0.6007,
+      0.605,
+      0.6032,
+      0.6004,
+      0.5928
+    ],
+    "f1_por_clase": {
+      "13-17": 0.671,
+      "18-24": 0.5059,
+      "25-34": 0.4858,
+      "35-49": 0.5593,
+      "50-64": 0.6549,
+      "65-xx": 0.7261
+    }
+  },
+  "resultados": [
+    {
+      "nivel": "nivel_0_base",
+      "peso_central": 1.0,
+      "macro_f1": 0.6005,
+      "accuracy": 0.6007,
+      "delta": 0.0,
+      "folds_positivos": 0,
+      "por_fold": [
+        0.6007,
+        0.605,
+        0.6032,
+        0.6004,
+        0.5928
+      ],
+      "f1_por_clase": {
+        "13-17": 0.671,
+        "18-24": 0.5059,
+        "25-34": 0.4858,
+        "35-49": 0.5593,
+        "50-64": 0.6549,
+        "65-xx": 0.7261
+      },
+      "frontera_18_24_25_34": 0.4963,
+      "frontera_25_34_35_49": 0.4974,
+      "bootstrap_ic95": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "criterios": {
+        "efecto_minimo": false,
+        "folds_positivos": false,
+        "significacion": false
+      },
+      "adopta": false
+    },
+    {
+      "nivel": "nivel_1_moderado",
+      "peso_central": 1.5,
+      "macro_f1": 0.6001,
+      "accuracy": 0.5947,
+      "delta": -0.0004,
+      "folds_positivos": 3,
+      "por_fold": [
+        0.6023,
+        0.5999,
+        0.6002,
+        0.6019,
+        0.5962
+      ],
+      "f1_por_clase": {
+        "13-17": 0.6544,
+        "18-24": 0.5229,
+        "25-34": 0.4844,
+        "35-49": 0.5568,
+        "50-64": 0.6562,
+        "65-xx": 0.7261
+      },
+      "frontera_18_24_25_34": 0.5441,
+      "frontera_25_34_35_49": 0.5341,
+      "bootstrap_ic95": [
+        -0.001626,
+        0.000879,
+        0.29225
+      ],
+      "criterios": {
+        "efecto_minimo": false,
+        "folds_positivos": false,
+        "significacion": false
+      },
+      "adopta": false
+    },
+    {
+      "nivel": "nivel_2_fuerte",
+      "peso_central": 2.5,
+      "macro_f1": 0.5841,
+      "accuracy": 0.5738,
+      "delta": -0.0164,
+      "folds_positivos": 0,
+      "por_fold": [
+        0.5876,
+        0.5824,
+        0.5804,
+        0.5877,
+        0.5818
+      ],
+      "f1_por_clase": {
+        "13-17": 0.6051,
+        "18-24": 0.5208,
+        "25-34": 0.4807,
+        "35-49": 0.5408,
+        "50-64": 0.637,
+        "65-xx": 0.7199
+      },
+      "frontera_18_24_25_34": 0.5786,
+      "frontera_25_34_35_49": 0.5699,
+      "bootstrap_ic95": [
+        -0.018187,
+        -0.014683,
+        0.0
+      ],
+      "criterios": {
+        "efecto_minimo": false,
+        "folds_positivos": false,
+        "significacion": false
+      },
+      "adopta": false
+    }
+  ],
+  "fidelidad_del_control": {
+    "diferencia": 0.0,
+    "tolerancia": 0.0005,
+    "cumple": true
+  },
+  "gate": {
+    "exploratorio": 0.0015,
+    "adopcion": 0.003,
+    "folds_positivos_minimos": 4
+  },
+  "segundos": 1959.8
+}

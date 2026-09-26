@@ -55,8 +55,8 @@ Presupuesto: **14 experimentos principales y 6 de reserva**, sin gastar por obli
   pseudo-autor), la misma de siempre. No se crean particiones nuevas salvo la segunda partición de
   los finalistas.
 - **Ningún** ajuste de pesos, pérdidas, lambdas, temperaturas o costes puede depender de la validación
-  exterior. Si depende de datos, se resuelve con `outer train → inner train → selección → outer
-  validation`.
+  exterior. Si depende de datos, se resuelve con `outer train`, luego `inner train`, luego `parameter selection`, luego
+  `outer validation`.
 - **Destilación**: la señal del teacher que entrena al student tiene que venir de **cross-fitting** —
   cada ejemplo predicho por un teacher que no lo usó en su entrenamiento. El teacher **nunca**
   reemplaza la etiqueta real: la etiqueta sigue siendo el objetivo principal y la del teacher es

@@ -896,3 +896,27 @@ Después pide añadir además el paso de la **arquitectura del meta-modelo**.
   ~0,50). Sus dos celdas quedan marcadas **invalidas** y excluidas del veredicto; los numeros del
   especialista disperso salen de la OOF guardada.
 - `experiments.csv` pasa a **104 experimentos**. Sin push.
+
+## 2026-09-26 · V18 P1: el peso de clases mueve la frontera y la global no lo sigue
+
+- **Fidelidad del control: 0,000000.** El nivel base, reentrenado con una reimplementacion local que
+  acepta `sample_weight` (la clase de produccion `EncodedMLP` no lo admite), reproduce **exactamente**
+  la OOF guardada de V12. Eso valida el montaje y hace atribuible cualquier diferencia a los pesos.
+- **Resultado de los tres niveles pre-registrados** (pesos 1,0 / 1,5 / 2,5 sobre `18-24`, `25-34`,
+  `35-49`): macro-F1 **0,6005 / 0,6001 / 0,5841**; fronteras `18-24|25-34`
+  **0,4963 / 0,5441 / 0,5786**; fronteras `25-34|35-49` **0,4974 / 0,5341 / 0,5699**.
+  **Ninguno adopta.** El gate exploratorio es +0,0015.
+- **La lectura que si vale, y es precisa**: la frontera sube de forma **monotona y enorme**
+  (+0,082 en la primera) mientras la global **baja**. El intercambio es de suma cero y su
+  localizacion es exacta. En el nivel moderado, `18-24` gana **+0,0170** y `13-17` paga **-0,0166**, y
+  las otras cuatro clases no se mueven. **El coste entero cae sobre la clase facil vecina de la
+  frontera.** En el nivel fuerte `13-17` paga -0,0659 y `18-24` solo gana +0,0149: sobrecorreccion.
+- **Por que la accuracy de frontera sube mas que el F1 de las clases centrales**: la accuracy de la
+  frontera esta restringida a las filas del par y no ve lo que se paga fuera. El F1 de la clase si lo
+  ve. Esa es la asimetria de metrica, medida esta vez con su coste exacto.
+- **Consecuencia para el rumbo**: el objetivo **si** mueve la frontera, luego la via del objetivo esta
+  viva, pero **reordenar el equilibrio entre clases no puede ganar en una media de seis clases**. Lo
+  que P1 descarta es el *re-peso*, no el objetivo. La pista mejor motivada ahora es un **objetivo de
+  margen**, porque penaliza confusiones con la vecina verdadera y no con el resto, que es
+  exactamente lo que evita el coste que P1 acaba de medir.
+- `experiments.csv` pasa a **105 experimentos**. Sin push.

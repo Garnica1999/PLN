@@ -3,7 +3,7 @@
   "fecha": "2026-09-25",
   "ficheros_auditados": 380,
   "errores": 0,
-  "avisos": 3,
+  "avisos": 2,
   "hallazgos": [
     {
       "fichero": "DECISIONS.md",
@@ -18,13 +18,6 @@
       "categoria": "AVISO:flecha",
       "detalle": "RIGHTWARDS ARROW",
       "contexto": "dentro del fold → **197 variables**. Macro-F1 **0,5965** frente a 0,6005 de V12: **delta -"
-    },
-    {
-      "fichero": "plan/00_intent_v18.md",
-      "linea": 58,
-      "categoria": "AVISO:flecha",
-      "detalle": "RIGHTWARDS ARROW",
-      "contexto": "exterior. Si depende de datos, se resuelve con `outer train → inner train → selección → ou"
     }
   ]
 }
