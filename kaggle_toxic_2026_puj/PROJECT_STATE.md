@@ -60,6 +60,8 @@ archivada de la autorizacion; se registra solo lo comunicado por el usuario.
 | D-044 | Gate de dos niveles (delta + IC95 + folds, luego segunda particion); TR implica HS es determinista |
 | V6 Track B | **Cerrado negativo**: B1 -0.0107, B2 -0.0008; 0/5 pasan el Gate 1 |
 | D-045 | El control B0 es obligatorio; la invariante es cierta pero solo 1.35 % de las predicciones la violan |
+| V6 Track A | **Cerrado negativo**: A1 +0.0006, A2 +0.0002, A3 -0.0149; 0/4 pasan el Gate 1 |
+| D-046 | Solo el 7.1 % de filas es repetible y penalizarlo empeora: la repeticion es señal |
 | variable abierta | El tamano de los datos etiquetados (1.483), unica palanca que deja la evidencia |
 | GATE DE CIERRE | §29: A (+0.005 con estabilidad) / B (complementariedad robusta) / C (senal representacional fuerte) |
 

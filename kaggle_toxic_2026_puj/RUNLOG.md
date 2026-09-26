@@ -833,3 +833,14 @@ Registro cronologico de ejecuciones. Formato:
   tambien atenua p(TR) en toda fila con p(HS) intermedia, que es donde V03 acertaba.
   **Track B cerrado por resultado negativo (seccion 54), sin ampliar rejilla.**
   **D-045**. 6 unidades de entrenamiento, 0 submissions, 0 sondas de LB.
+- 21:40 | v6 Track A: ponderacion por grupo, resultado negativo | `v6_03_ponderacion_grupo.py`
+  **A0 control reproduce V03 exactamente** (0.777211, delta +0.0000, IC95 [0,0]).
+  A1 1/sqrt(g) **+0.0006** (IC95 [-0.0029,+0.0040], 3/5), A2 1/g +0.0002 (2/5), A3 con tope
+  0.25 **-0.0149** (IC95 que excluye el 0, 1/5). **Ninguna pasa el Gate 1.**
+  Hallazgo de estructura que conviene antes que el resultado: **1378 de 1483 filas (92.9 %)
+  ya estan en grupos de tamano 1**, asi que solo el 7.1 % de las filas puede cambiar de
+  peso. Maximo 7 filas por grupo, 1415 grupos distintos.
+  Y el patron es monotono en la agresividad: **cuanto mas se penaliza a los repetidos, peor**
+  (A1 > A2 > A3). La lectura es que **un tuit repetido es señal, no ruido de recoleccion**,
+  y que no conviene reabrir esta linea ni en variantes mas suaves.
+  **Track A cerrado por resultado negativo (seccion 54). D-046.** 0 submissions.

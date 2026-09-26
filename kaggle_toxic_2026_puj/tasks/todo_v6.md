@@ -25,10 +25,15 @@
 - [x] Causa medida: solo 20 filas de prediccion (1.35 %) violan la invariante
 - [x] **Cerrado por la seccion 54. Sin ampliar rejilla.**
 
-## A - Ponderacion por grupo (pendiente)
+## A - Ponderacion por grupo (cerrado negativo)
 
-- [ ] A1 `w=1`, A2 `w=1/sqrt(g)`, A3 `w=1/g` y variante con tope
-- [ ] Grupos calculados **solo** sobre el train del pliegue
+- [x] `v6_03_ponderacion_grupo.py`: A0 control, A1 1/sqrt(g), A2 1/g, A3 con tope
+- [x] A0 control reproduce V03 exacto: deltas atribuibles
+- [x] Grupos contados **solo** sobre el train de cada pliegue (si no, leakage)
+- [x] A1 +0.0006, A2 +0.0002, A3 -0.0149: **0/4 pasan el Gate 1**
+- [x] Solo el 7.1 % de filas puede cambiar de peso
+- [x] Patron monotono: penalizar mas a los repetidos empeora (la repeticion es señal)
+- [x] **Cerrado por la seccion 54. No reabrir ni en variantes mas suaves.**
 
 ## C1 - Skip-grams (pendiente)
 

@@ -1639,3 +1639,41 @@ evidencia, experimento, resultado, conclusion final.
   solo por reajustar umbrales, sin cambiar el modelo). **El gate se evalua siempre con los
   umbrales congelados de V03**, y la columna de umbrales ajustados queda solo como
   dato de diagnostico.
+
+## D-046 - Track A cerrado: la ponderacion por grupo no se adopta, y la repeticion es señal, no ruido
+
+- **Contexto**: el gap analysis (V6-00) confirmo por busqueda en el codigo que la ponderacion
+  por tamano de grupo nunca se habia probado. Lo probado antes era ponderar por **dureza**
+  (V4-B03, -0.0101) y un downweight de frontera (D-027), que son fuentes de varianza
+  distintas: la dureza es una propiedad del texto, el tamano de grupo lo es de como se
+  construyo el corpus.
+- **Decision 1, los pesos se calculan dentro del pliegue**: el grupo es una propiedad de la
+  particion, no del texto. Contar los grupos una sola vez sobre todo el desarrollo haria que
+  cada pliegue arrastrase informacion de las filas con las que despues se valida, que es
+  leakage aunque el peso sea un entero. En `v6_03_ponderacion_grupo.py` los grupos se cuentan
+  solo sobre el tren de cada pliegue.
+- **Decision 2, el control A0 es obligatorio y se cumple**: con `w = 1` y el mismo codigo, el
+  resultado es **0.777211 exacto, delta +0.0000, IC95 [0, 0], 0 salvage y 0 damage**. Es el
+  mismo principio que el control B0 de D-045: primero se demuestra que la vara mide lo que
+  dice medir.
+- **Decision 3, resultado negativo**: A1 `1/sqrt(g)` +0.0006 (IC95 [-0.0029, +0.0040], 3/5
+  pliegues, 0 salvage y 2 damage), A2 `1/g` +0.0002 (IC95 que incluye el 0, 2/5), A3
+  `min(1/g, 0.25)` **-0.0149** (IC95 que excluye el 0 por el lado negativo, 1/5). **Ninguna
+  pasa el Gate 1** y por la seccion 54 el track se cierra sin ampliar rejilla.
+- **Decision 4, la estructura del corpus acota el track y conviene dejarlo escrito antes que
+  el resultado**: el desarrollo tiene **1415 grupos distintos con maximo 7 filas**, y
+  **1378 de 1483 filas (92.9 %) estan en grupos de tamano 1**, que ya tienen peso 1 en los
+  cuatro esquemas. Solo el **7.1 %** de las filas puede ver cambiado su peso. La hipotesis era
+  plausible, pero su alcance maximo lo fijaba el corpus y no el modelo.
+- **Decision 5, el patron monotono descarta la lectura de que la repeticion sea ruido**: los
+  tres esquemas se ordenan exactamente segun cuanto penalizan a los grupos repetidos (A1
+  +0.0006, A2 +0.0002, A3 -0.0149) y **empeoran al hacerlo**. Como el tope de A3 es mas
+  agresivo que `1/g` para todo `g >= 2`, la progresion no es un accidente de los parametros
+  sino una relacion monotona. La lectura es que **un tuit repetido es señal y no ruido de
+  recoleccion**: que el mismo texto ofensivo aparezca varias veces lo hace mas representativo
+  de la distribucion, no menos. Bajar su peso hasta la unidad basica confunde repeticion con
+  azar, y por eso A3 se lleva por delante las tres F1 a la vez. Esta conclusion es mas util que
+  el propio resultado negativo, porque dice que **no conviene abrir de nuevo esta linea** ni
+  en variantes mas suaves.
+- **Decision 6, A3 empeora con IC95 que excluye el 0**: no es ruido estadistico, es un
+  empeoramiento medible. Se descarta sin ambiguedad.
