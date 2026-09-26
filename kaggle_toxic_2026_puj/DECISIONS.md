@@ -1890,3 +1890,62 @@ evidencia, experimento, resultado, conclusion final.
 - **Decision 6, V03 sigue congelada y la rama sigue sin push**: `corrected_cv` 0.777211, LB
   0.78306, **0 submissions y 0 sondas de LB en toda la fase**. El push sigue pendiente de
   autorizacion expresa de Carlos.
+
+## D-053 - Apertura de la fase v7 y cierre del track P9: aproximar mejor el objetivo no es mejor
+
+### Apertura de la fase
+
+- **Contexto**: la fase v6 se cerro sin adopciones (D-052) y dejo trece restricciones
+  asumidas. La especificacion de v7 propone once tracks. El usuario fija el objetivo de superar
+  0.80 tanto en leaderboard como en metrica local, y delega la decision sobre el gate.
+- **Decision 1, la fase v7 se abre en un worktree aparte**, en `/home/carlos/Git/PLN-v7`, con
+  la rama `proyecto-kaggle-toxic-2026-v7` creada desde `proyecto-kaggle-toxic-2026-v6`. Motivo:
+  el arbol principal estaba en otra rama con trabajo sin versionar del proyecto
+  KAGGLE_AGE, y tocarlo habria arriesgado ese trabajo. `data/` (11 GB) se enlaza a la copia
+  unica y `features/` queda en el propio worktree. v6 no se borra ni se reescribe.
+- **Decision 2, se repara un defecto real de v6**: `.gitignore` ignoraba `tools/` entero, de
+  modo que `verificar_caracteres.py` se anunciaba en el commit de v6 pero **nunca llego al
+  repositorio**. El patron pasa a ser `tools/*` con la excepcion `!tools/verificar_*.py`,
+  porque git no vuelve a incluir un fichero cuyo directorio padre esta excluido. La puerta de
+  verificacion de caracteres queda versionada y da 0 errores.
+- **Decision 3, la auditoria de brecha cierra ocho tracks y deja dos abiertos**. Con
+  verificacion programatica y lectura de cifras: P0.2 y P0.5 (0.774954), P0.4 (+0.001831),
+  P2.1 (10 filas de interseccion), P2.3 (0.761203), P3 (0.741036), P4 (-0.023836), P5
+  (-0.250519), P6 y P7 (-0.002292). **Quedan P8 y P9 como mecanismos genuinamente nuevos**,
+  mas P0.1 y P0.3 que se ejecutan con reservas expresas. El orden deduced es **P9, P8,
+  P0.1, P0.3**, no el orden literal de la especificacion, porque los cuatro primeros tracks de
+  aquel orden ya estaban medidos.
+- **Decision 4, el freno de transferencia** que el usuario delego decidir. Se adopta:
+  `delta >= +0.003` con IC95 que excluye el 0 y 4/5 pliegues, **mas** la condicion de que por
+  encima de `+0.005` un candidato solo llega a la mesa de finales si no aumenta la dimension
+  ni la brecha entre ajuste y validacion. La justificacion no es teorica: R1-C1, R2-MINDF5 y
+  OPT-01 tuvieron los tres mejor OOF del proyecto (entre +0.015 y +0.025) y los tres
+  perdieron entre 0.007 y 0.013 de leaderboard, y los tres aumentaban capacidad. V03 no la
+  aumenta. La regla es la que incumplieron los tres fracasos y que V03 cumple.
+
+### Cierre del track P9
+
+- **Decision 5, el control es BCE con el mismo codigo y no los 0.777211 de V03**, porque un
+  modelo lineal ajustado de forma iterativa no es identico a la solucion dual exacta de
+  liblinear. Lo que se exige es que el control se acerque a la referencia, y ademas se
+  informa del hueco: **todo delta se mide contra el control**, que es la unica manera de que
+  sea atribuible a la perdida y no al cambio de optimizador.
+- **Decision 6, resultado**: el control BCE da **0.777165 frente a 0.777211**, un hueco de
+  **-0.000046**, dentro de la tolerancia declarada de 0.006. Focal da **-0.0024** e IC95 que
+  incluye el 0 con 2/5 pliegues; F1 suave da **-0.0033** con 3/5. **Ninguna pasa el gate** y
+  el track se cierra.
+- **Decision 7, el resultado negativo tiene lectura mecanica y no es un "no se sabe"**: las
+  dos perdidas orientadas quedan ligeramente por debajo y **la mas directa de las dos, la F1
+  suave, es la peor**. Optimizar el objetivo literalmente con 1.186 filas acopla el descenso a
+  la composicion de esa muestra y sobreajusta, que es exactamente lo que le paso a OPT-01,
+  donde buscar la metrica fuera de pliegue de forma directa dio el mejor OOF del proyecto y el
+  peor leaderboard. La conclusion que sobrevive al cierre es **que en este problema aproximar
+  mejor el objetivo no es mejor**: la entropia binaria ponderada es un campo de Kraft suave y
+  bien condicionado, y con esta cantidad de filas esa propiedad vale mas que la fidelidad al
+  objetivo.
+- **Decision 8, dos bugs reales detectados antes de que contaminaran el resultado**:
+  (a) el script predicia sobre la matriz de **entrenamiento** y guardaba esas probabilidades
+  como si fueran de validacion, lo que habria hecho el experimento entero sin sentido; lo
+  detecto el verificador de codigo variable no usada. (b) Los pesos se guardaban como vector
+  cuando el producto matricial disperso de torch exige una matriz. Ninguno llego a ningun
+  resultado publicado.

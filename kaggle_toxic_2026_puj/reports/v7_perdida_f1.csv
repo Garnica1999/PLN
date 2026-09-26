@@ -1,0 +1,4 @@
+variante,descripcion,referencia,corrected_cv,delta,ic95_0,ic95_1,f1_HS,f1_TR,f1_AG,salvage,damage,pliegues_positivos,gate_supera
+BCE-control,"entropia binaria con peso de clase balanceado, el objetivo de V03",V03,0.777165,-4.6e-05,-0.004639,0.004347,0.7603,0.8167,0.7544,1,4,,
+FOCAL,"perdida focal con decaimiento 2, que baja el peso de los ejemplos faciles",control BCE,0.77481,-0.002355,-0.00858,0.003933,0.7609,0.8105,0.753,6,4,2,False
+F1-SUAVE,sustituto directo de la F1 binaria sobre el conjunto entero,control BCE,0.773821,-0.003345,-0.009999,0.003219,0.7627,0.8104,0.7484,4,13,3,False

@@ -926,3 +926,30 @@ Registro cronologico de ejecuciones. Formato:
   v6_candidate_comparison.csv, v6_compliance.md, v6_reproducibility.md,
   v6_error_intersection.csv.
   **D-052. V03 congelada. 0 submissions. Rama sin push, pendiente de autorizacion.**
+- v7 apertura: worktree, rama y auditoria de brecha
+  Worktree en `/home/carlos/Git/PLN-v7` con rama `proyecto-kaggle-toxic-2026-v7` desde v6, para
+  no tocar el arbol principal ni el trabajo sin versionar de KAGGLE_AGE. `data/` enlazado.
+  Se repara un defecto de v6: `tools/` estaba ignorado entero, asi que
+  `verificar_caracteres.py` se anunciaba pero no estaba versionado. Ahora `tools/*` con
+  excepcion `!tools/verificar_*.py`, porque git no re-incluye ficheros con el directorio
+  padre excluido. Puerta versionada, 0 errores.
+  **V7-00 (v7_00_gap_audit.py)**: once tracks auditados con busqueda programatica y lectura de
+  cifras. **Cerrados por duplicado con numero**: P0.2 y P0.5 (0.774954), P0.4 (+0.001831),
+  P2.1 (10 filas de interseccion), P2.3 (0.761203), P3 (0.741036), P4 (-0.023836), P5
+  (-0.250519), P6, P7 (-0.002292). **Abiertos de verdad: P8 y P9.** Con reservas: P0.1 ya
+  medido en 0.776613 pero con protocolo mas laxo, y P1.1 cuya parte medible ya esta hecha
+  porque el OOF canonico ya es el promedio por pliegue.
+  **D-053 parte 1.**
+
+- v7 Track P9: perdida orientada a la F1, resultado negativo | `v7_01_perdida_f1.py`
+  Unico cambio respecto a la referencia: la funcion de perdida. Mismas features de V03, mismo
+  modelo lineal, mismo protocolo, mismos umbrales, mismo balanceo en las tres perdidas.
+  **Control BCE 0.777165 frente a 0.777211: hueco de -0.000046.** Con ese hueco el montaje
+  queda verificado y el negativo es atribuible a la perdida.
+  **FOCAL -0.0024** (IC95 que incluye el 0, 2/5) y **F1-SUAVE -0.0033** (3/5). Ninguna pasa
+  el gate.
+  **La mas directa de las dos es la peor.** Optimizar el objetivo literalmente con 1.186 filas
+  acopla el descenso a la composicion de esa muestra: es lo que le paso a OPT-01, que tuvo el
+  mejor OOF y el peor leaderboard. La conclusion que sobrevive: **en este problema, aproximar
+  mejor el objetivo no es mejor**.
+  **P9 cerrado. D-053 parte 2.** 0 submissions.
