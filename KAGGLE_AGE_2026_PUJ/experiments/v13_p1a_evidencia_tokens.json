@@ -1,0 +1,98 @@
+{
+  "fase": "V13 · P1a evidencia por token",
+  "fecha": "2026-09-25",
+  "n_tokens_vocabulario": 162143,
+  "n_ocurrencias": 2089404,
+  "n_caracteristicas": 36,
+  "caracteristicas_por_banda": 18,
+  "bandas": {
+    "especifica": [
+      20,
+      100
+    ],
+    "frecuente": [
+      100,
+      null
+    ]
+  },
+  "df_minimo": 20,
+  "suavizado": 20.0,
+  "suelo_azar": 0.1667,
+  "por_fold": [
+    {
+      "fold": 0,
+      "filas_train": 135468,
+      "filas_validacion": 33868,
+      "columnas_con_varianza": 36,
+      "tokens_vocabulario_banda_especifica": 5508,
+      "tokens_vocabulario_banda_frecuente": 1513
+    },
+    {
+      "fold": 1,
+      "filas_train": 135468,
+      "filas_validacion": 33868,
+      "columnas_con_varianza": 36,
+      "tokens_vocabulario_banda_especifica": 5457,
+      "tokens_vocabulario_banda_frecuente": 1526
+    },
+    {
+      "fold": 2,
+      "filas_train": 135469,
+      "filas_validacion": 33867,
+      "columnas_con_varianza": 36,
+      "tokens_vocabulario_banda_especifica": 5458,
+      "tokens_vocabulario_banda_frecuente": 1526
+    },
+    {
+      "fold": 3,
+      "filas_train": 135470,
+      "filas_validacion": 33866,
+      "columnas_con_varianza": 36,
+      "tokens_vocabulario_banda_especifica": 5509,
+      "tokens_vocabulario_banda_frecuente": 1524
+    },
+    {
+      "fold": 4,
+      "filas_train": 135469,
+      "filas_validacion": 33867,
+      "columnas_con_varianza": 36,
+      "tokens_vocabulario_banda_especifica": 5483,
+      "tokens_vocabulario_banda_frecuente": 1523
+    }
+  ],
+  "redundantes_contra_v12": 1,
+  "correlacion_maxima_v12": 0.8883,
+  "correlacion_mediana_v12": 0.4708,
+  "control": [
+    {
+      "modelo": "logreg",
+      "macro_f1": 0.3997,
+      "std": 0.0042,
+      "per_fold": [
+        0.3998,
+        0.4001,
+        0.4037,
+        0.4032,
+        0.392
+      ],
+      "suelo_azar": 0.1667,
+      "supera_el_azar": true
+    },
+    {
+      "modelo": "linearsvc",
+      "macro_f1": 0.3917,
+      "std": 0.0032,
+      "per_fold": [
+        0.3932,
+        0.3907,
+        0.3946,
+        0.3941,
+        0.3859
+      ],
+      "suelo_azar": 0.1667,
+      "supera_el_azar": true
+    }
+  ],
+  "supera_el_azar": true,
+  "segundos": 367.7
+}
