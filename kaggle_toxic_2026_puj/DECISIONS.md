@@ -3214,3 +3214,99 @@ el experimento.
 La leccion es general y ya se habia aprendido en otra forma en este proyecto: **un numero que sale
 demasiado redondo, o demasiado plano, es mas probablemente un bug que un hallazgo**. Por eso el
 informe de V12-01 registra el fallo del diagnostico y su comprobacion, y no solo el resultado.
+
+## D-090 - La estructura de etiquetas de TOXIC se midio por primera vez, y pesa mas de lo que sePensaba
+
+**V12-02.** En TOXIC, **TR y AG solo estan definidas cuando HS=1**. La convencion de anotacion es
+conocida, pero **nunca se habia medido cuanto pesa**:
+
+- **835 de 1483 filas tienen HS=0**, el 56,30 por ciento.
+- En esas 835 filas, **TR=0 en el 100 por ciento** de los casos.
+- Por tanto, **el 80,44 por ciento de todos los negativos que el modelo de TR ve en entrenamiento
+  son etiquetas que no estan definidas**, y el 88,76 por ciento para AG.
+
+Lo que el modelo aprende con eso **no es una etiqueta ruidosa: es un concepto equivocado**. Se le
+ensena que un tweet no toxico es "no insultante", que es un hecho trivial, y que un tweet no toxico
+es "no agresivo", que es una afirmacion sin contenido. Esa es exactamente la situacion para la que
+existe una perdida tolerante al ruido: **no se descarta el ejemplo, se le reduce la influencia
+mediante la forma de la funcion**, que es lo que el proyecto nunca habia probado.
+
+Ademenos se detectaron **22 filas con AG=1 y HS=0**, que son inconsistentes con la convencion y
+que conviene tener presentes al interpretar cualquier resultado de AG.
+
+## D-091 - El techo con oraculo es +0.046271, y localiza el problema con precision
+
+Con la mascara de HS **verdadero**, la metrica sube **+0.046271**, con 196 celdas y deteccion
+0,9286. Es **el techo mas alto medido en toda la historia del proyecto**, frente a una mejor ganancia
+anidada historica de **+0.000148**. Ese techo **no es adoptable**, porque usa la etiqueta verdadera
+de HS, y se reporta solo como limite de la via.
+
+**El contraste con el post-proceso duro es lo que mas informa.** La mascara con HS verdadero da
++0.046271; con HS **predicho** da **-0.004187**. La diferencia entre ambas es exactamente lo que
+cuesta usar la prediccion como llave, porque el HS predicho falla **143 filas** de 1483. Es decir:
+**el post-proceso no falla por ser una regla dura, falla porque su llave se equivoca**. Eso explica
+el -0.0056 historico con una mecanica que el cierre anterior no habia identificado.
+
+Y explica tambien por que **no vale la pena reintentar la regla dura con otro umbral**: el problema
+no es donde se pone el corte, es que la llave es una prediccion con 316 errores.
+
+## D-092 - H2 MARGINAL: la perdida propia hace algo real, pero no llega al gate
+
+**El brazo G, entropia cruzada generalizada, da +0.001616 en q=0,2**, con 4 de 5 pliegues a favor y
+deteccion 0,6667, holgadamente por encima del umbral de 0,5166. **No pasa el gate** porque el delta
+queda por debajo de +0,002 y el intervalo pareado incluye el cero.
+
+**La curva diagnostica demuestra que es una meseta y no un pico**, que es la distincion que separa
+"ruido no reproducible" de "efecto real pero pequeno": q en 0,15, 0,20 y 0,25 dan positivo, dos de
+ellos superan +0,001, y la region es negativa a ambos lados.
+
+**El contraste con H1 es el dato central de la fase.** En H1 el maximo de la curva caia **sobre** el
+valor neutro con +0,000006, es decir el mecanismo no tenia nada que aportar. Aqui el maximo esta
+**+0,001616 por encima** del neutro, un efecto **256 veces mayor**. La perdida propia **si hace
+algo**; lo que no hace es llegar al gate. Y captura el **3,5 por ciento** del techo disponible.
+
+**El brazo M, restringir el entrenamiento a las filas donde la etiqueta esta definida, es un
+negativo limpio: -0.116581.** El motivo es concreto y no un fallo de implementacion: descartar el
+56 por ciento de los datos **desplaza la escala de salida del modelo**, de modo que los umbrales
+congelados de V03 dejan de tener significado para la subpoblacion que ahora se ha entrenado. No es
+que la idea sea falsa: es que descartar datos no es un mecanismo de decision.
+
+**Se clasifica MARGINAL, no adoptada.** El enunciado dice que una mejora pequena pero reproducible y
+complementaria es evidencia cientifica, y esta lo es; pero el gate es el gate y no se adopta. No se
+genera submission y no se ejecuta segunda particion, porque no hay candidata.
+
+## D-093 - Dos correcciones propias durante V12-02, y por que la segunda importa mas
+
+**La primera es un fallo de interfaz**: la funcion de perdida tomaba el vector de coeficientes al
+final de la firma, de modo que la verificacion del gradiente pasaba mientras el optimizador recibia
+los argumentos desordenados y fallaba. Se corrigio poniendo el vector **primero**, que es como la
+invoca el optimizador, para que la verificacion y el ajuste **recorran el mismo camino de llamada**.
+Un control que ejercita un camino distinto del que se usa en produccion no es un control.
+
+**La segunda es un error de razonamiento, y es la importante**: yo afirmaba que en
+``L_q = (1 - p_y^q) / q`` el valor ``q=1`` era exactamente la entropia cruzada. **Es invertido.** El
+limite ``q -> 0`` es ``-log(p_y)``, la entropia cruzada, y ``q=1`` es ``1 - p_y``, el valor
+absoluto. La familia interpola entre las dos.
+
+**Lo detecto el control interno**, y de la manera mas util posible: ``q=1,0`` era el **peor** del
+barrido, que es exactamente lo que corresponde a la perdida menos informativa. Un resultado que no
+puede coincidir con su propia definicion es un aviso, no un dato. **El codigo estaba bien; mi
+lectura de la familia estaba al reves**, y eso habria llevado a concluir que la perdida propia no hace
+nada cuando en realidad hacia +0,0016.
+
+La identidad se verifico numericamente: la diferencia entre mi perdida y el objetivo de sklearn
+dividido por C cae de **3,21e-01 a 3,21e-05** al bajar q de 1e-2 a 1e-6. Y el control interno
+definitivo es que **q=0,01 reproduce V03 con 3 celdas de diferencia**, lo que valida a la vez el
+gradiente, el optimizador, el pipeline y los pesos de clase.
+
+## D-094 - La perdida a medida exige verificar la derivada, y el orden de los argumentos es parte de la verificacion
+
+El residuo maximo del gradiente analitico frente a diferencias finitas centrales es de **1,07e-07**
+frente a una tolerancia de 1e-06, en los cuatro valores de q. Sin esa comprobacion, un gradiente
+equivocado habria producido cifras plausibles y falsas, que es el peor fallo posible en un
+experimento de este tipo: no un crash, sino un resultado que parece bueno.
+
+**La leccion concreta es que la verificacion debe ejercitar el mismo camino de llamada que el
+ajuste.** En V12-02 la verificacion pasaba mientras el optimizador fallaba, porque cada uno llamaba a
+la funcion con un orden de argumentos distinto. Arreglarlo no fue cosmetico: fue lo que permitio
+descubrir el segundo problema, el de la orientacion de la familia.
