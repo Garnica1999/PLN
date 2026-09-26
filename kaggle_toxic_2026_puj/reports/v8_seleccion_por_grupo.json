@@ -1,0 +1,188 @@
+{
+  "experimento": "V8-12 (seleccion por grupo y por correlacion)",
+  "fecha": "2026-09-26T04:33:59+00:00",
+  "referencia_v03_local": 0.777211,
+  "referencia_v03_externa": 0.78306,
+  "fracciones_informacion": [
+    0.1,
+    0.25,
+    0.5
+  ],
+  "umbrales_correlacion": [
+    0.9,
+    0.95
+  ],
+  "variantes": [
+    {
+      "clave": "grupo_10",
+      "dimension_media": 2086,
+      "metrica": 0.768673,
+      "diferencia": -0.008538,
+      "ic95_0": -0.022008,
+      "ic95_1": 0.005427,
+      "repeticiones_que_mejoran": 0,
+      "metricas_por_repeticion": [
+        0.766995,
+        0.769503,
+        0.770197,
+        0.764745,
+        0.761141
+      ],
+      "celdas": 334,
+      "tasa_acierto": 0.4162,
+      "minimo_requerido": 0.5287,
+      "filtro_pasa": false
+    },
+    {
+      "clave": "grupo_25",
+      "dimension_media": 5217,
+      "metrica": 0.782535,
+      "diferencia": 0.005324,
+      "ic95_0": -0.005569,
+      "ic95_1": 0.017005,
+      "repeticiones_que_mejoran": 2,
+      "metricas_por_repeticion": [
+        0.776037,
+        0.778048,
+        0.777481,
+        0.773127,
+        0.777143
+      ],
+      "celdas": 263,
+      "tasa_acierto": 0.5057,
+      "minimo_requerido": 0.5365,
+      "filtro_pasa": false
+    },
+    {
+      "clave": "grupo_50",
+      "dimension_media": 10435,
+      "metrica": 0.77989,
+      "diferencia": 0.002679,
+      "ic95_0": -0.007021,
+      "ic95_1": 0.012546,
+      "repeticiones_que_mejoran": 2,
+      "metricas_por_repeticion": [
+        0.776303,
+        0.777623,
+        0.775098,
+        0.769266,
+        0.779303
+      ],
+      "celdas": 219,
+      "tasa_acierto": 0.5023,
+      "minimo_requerido": 0.5438,
+      "filtro_pasa": false
+    },
+    {
+      "clave": "correlacion_90",
+      "dimension_media": 251,
+      "metrica": 0.594095,
+      "diferencia": -0.183116,
+      "ic95_0": -0.209298,
+      "ic95_1": -0.157643,
+      "repeticiones_que_mejoran": 0,
+      "metricas_por_repeticion": [
+        0.59007,
+        0.575829,
+        0.570572,
+        0.577969,
+        0.589205
+      ],
+      "celdas": 1353,
+      "tasa_acierto": 0.201,
+      "minimo_requerido": 0.5071,
+      "filtro_pasa": false
+    },
+    {
+      "clave": "correlacion_95",
+      "dimension_media": 252,
+      "metrica": 0.590829,
+      "diferencia": -0.186382,
+      "ic95_0": -0.212891,
+      "ic95_1": -0.15998,
+      "repeticiones_que_mejoran": 0,
+      "metricas_por_repeticion": [
+        0.585007,
+        0.574238,
+        0.56502,
+        0.580933,
+        0.576515
+      ],
+      "celdas": 1321,
+      "tasa_acierto": 0.2006,
+      "minimo_requerido": 0.5073,
+      "filtro_pasa": false
+    },
+    {
+      "clave": "sin_seleccion",
+      "dimension_media": 20870,
+      "metrica": 0.781521,
+      "diferencia": 0.004309,
+      "ic95_0": -0.004817,
+      "ic95_1": 0.013307,
+      "repeticiones_que_mejoran": 0,
+      "metricas_por_repeticion": [
+        0.774589,
+        0.775298,
+        0.767069,
+        0.772996,
+        0.776803
+      ],
+      "celdas": 183,
+      "tasa_acierto": 0.5464,
+      "minimo_requerido": 0.5525,
+      "filtro_pasa": false
+    }
+  ],
+  "mejor": "grupo_25",
+  "integridad": [
+    {
+      "comprobacion": "numero de filas",
+      "resultado": "correcto",
+      "detalle": "1154 frente a 1154 en la prueba"
+    },
+    {
+      "comprobacion": "nombres y orden de columnas",
+      "resultado": "correcto",
+      "detalle": "['id', 'HS', 'TR', 'AG']"
+    },
+    {
+      "comprobacion": "valores de etiqueta",
+      "resultado": "correcto",
+      "detalle": "[0, 1]"
+    },
+    {
+      "comprobacion": "sin valores ausentes",
+      "resultado": "correcto",
+      "detalle": "0 celdas ausentes"
+    },
+    {
+      "comprobacion": "sin identificadores duplicados",
+      "resultado": "correcto",
+      "detalle": "0 repetidos"
+    },
+    {
+      "comprobacion": "identificadores en el orden de la prueba",
+      "resultado": "correcto",
+      "detalle": "coinciden con el orden original"
+    },
+    {
+      "comprobacion": "filas distintas del entrenamiento",
+      "resultado": "correcto",
+      "detalle": "1731 frente a 1154"
+    }
+  ],
+  "integridad_correcta": true,
+  "comparacion_con_v03": {
+    "celdas_totales": 3462,
+    "celdas_que_cambian": 172,
+    "filas_que_cambian": 144,
+    "por_etiqueta": {
+      "HS": 83,
+      "TR": 31,
+      "AG": 58
+    }
+  },
+  "fichero_de_envio": "submissions/toxic_submission_v15_seleccion_por_grupo.csv",
+  "nota": "La seleccion por grupo aplica el criterio de informacion dentro de cada grupo, que es la division del material de clase, y no sobre el espacio entero. La eliminacion por correlacion conserva el rasgo de mayor magnitud y descarta los que se le parecen. Ambas se calculan solo con el tren de cada pliegue."
+}

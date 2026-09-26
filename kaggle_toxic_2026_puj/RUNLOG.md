@@ -1168,3 +1168,24 @@ Registro cronologico de ejecuciones. Formato:
   la curva dice que ese lado pierde. Quedan 15 sondas, 13 de 14 comparables dentro del ruido, y
   V03 como maximo.
   **D-065 y D-066. 3 sondas en la fase v8, 6 submissions escritas, 0 automáticas.**
+- v8 seis tecnicas del material de clase | tres scripts
+  **Y un hallazgo que explica la fase entera. El brazo de control que es V03 sin cambiar nada,
+  medido con el protocolo de cinco repeticiones, da +0,004309 con 0 de 5 repeticiones que
+  mejoran**, y V8-13 lo confirma con +0,002824 con 1 de 3. Es decir: **la diferencia de +0,004 a
+  +0,005 que se atribuia a la tecnica de varias lineas de la fase es del promediado, no de la
+  tecnica.** Eso explica la sonda del ensemble, que gano +0,005066 local y perdio 0,01184.
+  **Criterio nuevo y mas informativo que el intervalo de confianza: cuantas repeticiones de la
+  particion mejoran.** La rama de complejidad dio +0,003493, que supera el gate, y **solo mejoro
+  en 1 de 5**. Eso es ruido de particion.
+  Resultados por linea: asimetria y kurtosis +0,003493 con 1 de 5; idiosincrasias internas
+  +0,000378 con 1 de 5 y tasa 0,4484; **seleccion por correlacion -0,183116, demoledora**, porque
+  reduce 20.870 rasgos a 251 y deja la metrica en 0,594; seleccion por grupo al 25 % +0,005324 con
+  2 de 5, al 10 % -0,008538; discriminante lineal -0,030054; arbol -0,073168; bosque -0,063937.
+  **Las tres familias de clasificador alternativas, estructuralmente distintas de la regresion
+  logistica, pierden las tres.** El problema no es el clasificador sino la tarea con esta
+  representacion.
+  **Ninguna de las seis supera al control en numero de repeticiones, y por tanto ninguna se
+  envia.** No es decision de presupuesto: es que la evidencia dice que la mejora no existe mas alla
+  del promediado, y el promediado ya esta medido en el externo con -0,01184.
+  **D-067. 3 submissions mas escritas y verificadas, 0 recomendadas. 10 submissions escritas
+  en la fase v8, 0 automaticas.**

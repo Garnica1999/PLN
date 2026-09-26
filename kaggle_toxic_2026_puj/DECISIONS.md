@@ -2619,3 +2619,55 @@ evidencia, experimento, resultado, conclusion final.
   dio 0,77781 y el ensemble dio 0,77122, frente a los 0,78306 de V03. Quince sondas en total a lo
   largo del proyecto, **trece de las catorce comparables dentro de la banda de ruido**, y V03
   como maximo de las quince.
+
+## D-067 - Las seis tecnicas del material de clase, y el hallazgo que explica la fase entera: la mejora local era el promediado
+
+- **Contexto**: quedaban seis de las nueve tecnicas nuevas que el inventario del material de clase
+  identifico. Tres no se ejecutan: la estabilidad de features se midio en P3, la validacion cruzada
+  repetida se midio dentro de P7, y las palabras inestables por traduccion no son operables porque
+  la traduccion automatica no esta disponible. Las otras abarcan seis lineas, agrupadas en tres scripts porque comparten la infraestructura de evaluacion, y cada linea conserva su hipotesis, su cifra y su fila propia en el registro.
+- **Decision 1, un criterio de lectura nuevo que resulta mas informativo que el intervalo de
+  confianza**. Al medir cada rama en **cinco repeticiones de la particion** se cuenta **cuantas
+  repeticiones mejoran**, no solo la cifra final. El motivo lo dio la propia linea: la rama de
+  rasgos de complejidad dio **+0,003493**, que supera el gate de +0,003, y **solo mejoro en una de
+  las cinco repeticiones**. Una mejora que aparece en una particion de cinco es ruido de
+  particion, y es exactamente lo que ocurrio con la sonda del ensemble, que gano +0,005066 local y
+  perdio 0,01184 en el externo.
+- **Decision 2, el hallazgo que explica la fase entera, y sale de un control que hacia falta**.
+  V8-12 incluyo un brazo que es **V03 sin cambiar nada**: misma representacion, mismos
+  hiperparametros, mismos umbrales, medido con el protocolo de cinco repeticiones. Ese control da
+  **+0,004309 con 0 de 5 repeticiones que mejoran**, y V8-13 lo confirma con **+0,002824 con 1
+  de 3**. Es decir, **la diferencia de +0,004 a +0,005 que se atribuia a la tecnica de varias
+  lineas de la fase es del promediado, no de la tecnica**. Eso explica la sonda del ensemble, la
+  seleccion por grupo al 25 % y los rasgos de complejidad, y es el mismo sintoma que la
+  estimacion inestable entre particiones de P7.
+- **Decision 3, por tanto el criterio de decision de la fase cambia de la cifra a la
+  consistencia**. Ninguna de las seis lineas supera al control en numero de repeticiones, y por
+  tanto **ninguna se envia**. No es una decision sobre el presupuesto: es que la evidencia dice que
+  la mejora no existe mas alla del promediado, y el promediado ya esta medido en el externo con
+  -0,01184.
+- **Decision 4, lo que si se aprende de las seis, linea por linea**.
+  - **Asimetria y kurtosis**: +0,003493 pero solo 1 de 5 repeticiones. El rasgo mide algo que la
+    media no mide, y aun asi no se sostiene. Las **idiosincrasias internas** dan +0,000378 con
+    1 de 5 y tasa 0,4484: la proporcion de tokens raros correlaciona con el tamano del documento
+    mas que con la toxicidad.
+  - **Seleccion por correlacion**: **-0,183116**, porque reducir 20.870 rasgos a 251 por magnitud y
+    redundancia deja la metrica en 0,594. El criterio de magnitud no distingue un rasgo
+    informativo de uno frecuente, y **queda descartada de raiz**.
+  - **Seleccion por grupo con informacion**: al 25 % da +0,005324 con 2 de 5, y al 10 % da
+    -0,008538 con 0 de 5. Aplicar el criterio por grupo evita que uno grande aniquile a uno
+    pequeno, pero no produce senal.
+  - **Discriminante lineal**: -0,030054 con 0 de 3. Sus supuestos de normalidad y covarianza
+    independiente no se cumplen sobre veinte mil caracteristicas dispersas, como se anticipaba.
+  - **Arbol de decision y bosque aleatorio**: -0,073168 y -0,063937, con 0 de 3 y tasas de acierto
+    de 0,3529 y 0,3393. Los arboles sobre un subespacio de 2.000 caracteristicas pierden la
+    estructura que hace util la union de palabra y caracter.
+- **Decision 5, la conclusion de la linea mas alla de estas seis**. **Las tres familias de
+  clasificador alternativas, estructuralmente distintas de la regresion logistica, pierden las
+  tres.** El problema no es el clasificador lineal sino la tarea con esta representacion, y eso
+  cierra la via de cambiar de modelo dentro del marco clasico.
+- **Decision 6, el balance de la fase**. P1, P3, P4, P2, P5, P6, P7 y las seis tecnicas del
+  material de clase: **ninguna aporta senal por encima del ruido**, y tres sondas externas
+  confirmaron que las mejoras locales no trasladan. El objetivo de 0,80 sigue a +0,01694 de la
+  referencia, que es 1,1 veces el ruido. **Se registry todo y no hay ninguna submission
+  recomendada.**
