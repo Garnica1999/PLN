@@ -844,3 +844,12 @@ Registro cronologico de ejecuciones. Formato:
   (A1 > A2 > A3). La lectura es que **un tuit repetido es señal, no ruido de recoleccion**,
   y que no conviene reabrir esta linea ni en variantes mas suaves.
   **Track A cerrado por resultado negativo (seccion 54). D-046.** 0 submissions.
+- 21:55 | v6 Track I: ponderacion word/char, resultado negativo | `v6_04_char_weight.py`
+  **I0 control reproduce V03 exactamente** (0.777211, delta +0.0000, IC95 [0,0]).
+  char_weight 0.5 **-0.0117**, 1.5 **+0.0016** (IC95 [-0.0048,+0.0078], 3/5), 2.0
+  **-0.0047**. **Ninguna pasa el Gate 1.**
+  El perfil tiene **optimo interior**: el peso heredado de `hstack` no era optimo y la
+  respuesta es que el balance deberia inclinarse algo hacia el bloque de caracteres. Pero el
+  techo es +0.0016, **menos de la mitad del gate**, con IC95 que incluye el 0 y 3/5 pliegues:
+  **la escala no era el cuello de botella**, que era la pregunta. No se afina alrededor de 1.5.
+  **Track I cerrado (seccion 54). D-047.** 0 submissions.

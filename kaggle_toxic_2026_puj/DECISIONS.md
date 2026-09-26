@@ -1677,3 +1677,32 @@ evidencia, experimento, resultado, conclusion final.
   en variantes mas suaves.
 - **Decision 6, A3 empeora con IC95 que excluye el 0**: no es ruido estadistico, es un
   empeoramiento medible. Se descarta sin ambiguedad.
+
+## D-047 - Track I cerrado: el optimo de la escala word/char es interior pero su techo es la mitad del gate
+
+- **Contexto**: el gap analysis (V6-00) confirmo por busqueda en el codigo que **no existe
+  ningun `char_weight` ni `word_weight` en el proyecto**. Lo medido antes fue el valor de cada
+  bloque por separado y su union (V2-BASE-M1, M4, M2/M3), es decir, **dos bloques y su union
+  sin escalar**, nunca con una escala explicita dentro de la union. Era la linea mas barata que
+  quedaba en v6.
+- **Decision 1, por que el peso heredado no es una decision del proyecto**: `hstack` da a los
+  dos bloques el mismo peso, pero ese peso no lo fija el criterio del proyecto sino la
+  normalizacion L2 de cada `TfidfVectorizer`: cada bloque se normaliza por su propia norma, de
+  modo que la escala relativa depende del numero de caracteristicas activas por documento. La
+  pregunta era si el optimo estaba en otro punto.
+- **Decision 2, el control I0 es obligatorio y se cumple**: con `char_weight = 1.0` la
+  multiplicacion es la identidad y el resultado es **0.777211 exacto, delta +0.0000, IC95
+  [0, 0], 0 salvage y 0 damage**. Tercer control de la fase (tras B0 de D-045 y A0 de D-046)
+  con la misma funcion: sin el, los otros tres puntos no serian comparables.
+- **Decision 3, resultado negativo con optimo interior**: `char_weight` 0.5 da -0.0117, 1.5 da
+  **+0.0016** (IC95 [-0.0048, +0.0078], 3/5 pliegues) y 2.0 da -0.0047. **Ninguna pasa el Gate
+  1.** El perfil es creciente de 0.5 a 1.5 y decreciente en 2.0, luego **el optimo es
+  interior y el peso heredado de `hstack` no era optimo**: el balance entre evidencia lexica y
+  sublexica deberia inclinarse algo hacia el bloque de caracteres. Esa es la respuesta a la
+  pregunta del track.
+- **Decision 4, no se afina alrededor de 1.5 pese al optimo interior**: el mejor delta es
+  +0.0016, **menos de la mitad del gate (+0.003)**, su IC95 **incluye el 0** y solo mejora
+  3/5 pliegues. Afinar costaria unos 25 segundos, pero con el techo estimado la conclusion
+  no cambia: **la escala no era el cuello de botella**. Se deja el numero escrito para que la
+  decision sea revisable, y no se gasta presupuesto en una linea cuyo techo es la mitad del
+  umbral de adopcion.

@@ -39,10 +39,13 @@
 
 - [ ] Solo C1. Hueco acotado 1, y 2 unicamente si el 1 aporta
 
-## I - Ponderacion word/char (pendiente)
+## I - Ponderacion word/char (cerrado negativo)
 
-- [ ] char_weight en {0.5, 1.0, 1.5, 2.0} con word_weight fijo en 1
-- [ ] Es la linea mas barata que queda: cuatro corridas
+- [x] `v6_04_char_weight.py`: char_weight en {1.0 control, 0.5, 1.5, 2.0}
+- [x] I0 control reproduce V03 exacto: deltas atribuibles
+- [x] Optimo **interior** en 1.5 (+0.0016), pero IC95 incluye el 0 y 3/5 pliegues
+- [x] Techo = mitad del gate: **la escala no era el cuello de botella**
+- [x] **Cerrado por la seccion 54. No se afina alrededor de 1.5.**
 
 ## H, F, J (pendiente, tras B y A)
 
