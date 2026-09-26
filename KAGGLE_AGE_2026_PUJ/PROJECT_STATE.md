@@ -1,7 +1,7 @@
 # PROJECT_STATE — KAGGLE_AGE_2026_PUJ
 
 > Memoria persistente del proyecto. Leer SIEMPRE al inicio de sesión o tras compactación.
-> Última actualización: 2026-09-22 (cierre del gate A — Etapa A completa).
+> Última actualización: 2026-09-26 (cierre de V13 ADVANCED RESEARCH).
 
 ## Entrega del trabajo (2026-09-25)
 - **Commit y merge a `main`**: PR **#26** (`kaggle-age-2026-puj`) fusionado. Commit `3a518ac`,
@@ -14,6 +14,33 @@
 - **INCIDENCIA DE SEGURIDAD**: el token de GitHub se compartió en el chat; debe **revocarse y
   regenerarse** en https://github.com/settings/tokens (no quedó escrito en ningún archivo del repo,
   verificado con `grep`).
+
+## V13 ADVANCED RESEARCH (2026-09-26) CERRADA — 0 adopciones (D-041)
+- **16 experimentos, 8 hipótesis pre-registradas, 0 candidatos adoptados.** V12 sigue congelado.
+- **Seis pistas de variables cerradas**: P1 evidencia por token (control 0,3997, el doble del mejor
+  bloque léxico; fusión −0,0002 con 3/5 folds y controles permutados indistinguibles), P17 pronombres
+  (0,1918; rescate neto −64.075), P20 modalidad (0,1270, bajo el azar; 1,6 % de cobertura), P19 árboles
+  de conjunciones (0,1539, bajo el azar; 0,64 conjunciones por documento), y las dos líneas anteriores
+  (D-037 capa de decisión, D-039 lexicones).
+- **P3a, el especialista binario de frontera, empeora**: 0,4963 -> 0,4944 y 0,4974 -> 0,4942; global
+  0,6005 -> 0,5993. No es la línea de D-037: aquí se entrena un modelo nuevo con sus propios datos.
+- **Tres mecanismos medidos que explican todos los fracasos**: (1) saturación del espacio de variables
+  (P0b: VIF mediano 18,87, 170 variables por encima de 10, 87 de 278 direcciones para el 95 % de la
+  varianza); (2) información nueva inaccesible al combinador (P16c: el R2 de la reconstrucción desde
+  V12 es 0,522 pero su control de clasificación es 0,0485, y P16d muestra que el máximo de 90 puertas
+  por confianza es 0,6005 con 0 filas desviadas); (3) el modelo está en el límite de su espacio (P3a).
+- **P0b, auditoría de idioma y D-040**: la matriz completa de 279 variables tiene 15 duplicados
+  exactos, 401 pares con |rho| >= 0,80 y 1 columna constante; `numpy 1.26.4` sobre `Python 3.14.7`
+  calcula mal `X @ X.T` (D-040), sin impacto en ninguna métrica del proyecto, con defensa permanente
+  en `src/verificacion_numerica.py`. Todo el proyecto está en español y sin alfabetos ajenos.
+- **Infraestructura que queda**: criba de redundancia contra la matriz completa (`criba_redundancia`),
+  autocomprobación numérica del entorno y protocolo de pre-chequeo de rescate, que evitó pagar unos
+  70 minutos de CPU en dos pistas.
+- **Entregables**: `reports/v13_final_research.md`, `reports/v13_reproducibility.md`,
+  `reports/v13_hypothesis_registry.csv` (las 8 hipótesis falsadas), `reports/v13_master_results.csv`,
+  `reports/v13_candidate_comparison.csv`. `experiments.csv` con 89 experimentos.
+- **Lo único que queda abierto es una decisión de alcance**, no un experimento: relaxing §3 para
+  permitir un recurso lingüístico externo, o cambiar la métrica y redefinir el gate §24.
 
 ## Fase actual
 - **FASE DE LEXICONES (2026-09-25) CERRADA — línea cerrada (D-039).** 24 subcategorías léxicas

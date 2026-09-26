@@ -602,3 +602,43 @@ decisión convierte en aciertos. V12 permanece congelado; sin submission nueva.
 La línea de lexicones queda **cerrada** (D-039). El bloque es genuinamente nuevo (0 de 72
 columnas redundantes con V12) pero su señal es insuficiente: solo la familia de temas supera el
 azar en control aislado, y ningún bloque alcanza el gate ni supera a su control de permutación.
+
+## 2026-09-26 — V13 ADVANCED RESEARCH: cierre sin adopciones (D-041)
+
+### Qué se hizo
+- **P0b** cambió de enfoque a petición del usuario: la colinealidad se midió sobre la **matriz
+  completa** de 279 variables, sin brazo reducido y sin reentrenar (la referencia se lee de
+  `phase39_fusion_v12.json`, verificada fold a fold). Resultado: 401 pares con |rho| >= 0,80, 229
+  redundantes, **15 duplicados exactos**, 54 clusters, 1 columna constante, rango efectivo 263/278 y
+  **87 de 278 direcciones para el 95 % de la varianza**.
+- **P1** evidencia `P(clase|token)` in-fold: control 0,3997 (el doble del mejor bloque léxico
+  cerrado), 1 de 36 variables redundante. P1c separó señal léxica de reconocimiento de cuentas: el
+  57 % de la mejora es léxica. La fusión (P1b) dio −0,0002 con 3/5 folds.
+- **P17** pronombres: control 0,1918, 0 de 26 redundantes, pero rescate neto −64.075.
+- **P20** modalidad: 0,1270, **por debajo del azar**; solo el 1,6 % de documentos tiene un marcador
+  de duda.
+- **P19** árboles de conjunciones: 0,1539, también bajo el azar, por falta de cobertura.
+- **P3a** especialista binario de frontera: **empeora** en ambas fronteras.
+- **P16, P16b, P16c, P16d** respondieron por qué fallan todas las fusiones.
+
+### Bugs y correcciones propias (documentados sin maquillar)
+- **D-040**: `numpy 1.26.4` sobre `Python 3.14.7` calcula mal `X @ X.T` (auto-transpuesta), con 1
+  hilo y con 32, en cualquier layout. `np.corrcoef` y `np.cov` con `rowvar=True` caen en el mismo
+  fallo. **Ninguna métrica del proyecto está afectada**: los 10 sitios que usan producto matricial
+  usan rutas sanas y el `MLPClassifier` de producción es idéntico al parcheado. Se añade
+  `src/verificacion_numerica.py` con `autotest_numerico()` y `grama_exacta()`.
+- El **bootstrap** remuestreaba las dos tablas de confusión por separado, de modo que una
+  diferencia nula daba un intervalo que no contenía el cero. Corregido a bootstrap **pareado** sobre
+  la tabla conjunta y validado contra el método clásico (difieren en 5e-5).
+- **P16 necesitó tres correcciones** antes de ser utilizable: ecuaciones normales sin término
+  independiente, columnas sin tipificar (una dirección acapara la traza: 8,99e12 de 8,99e12) y
+  penalización por alfa fijo en vez de por grados de libertad efectivos. Las dos medidas finales
+  divergen y ambas se publican.
+- Otros: `MLPClassifier` pelado en vez de `EncodedMLP`; `cfg.CLASES` en vez de `cfg.CLASSES`;
+  `frecuencia_de_documento` contando ocurrencias en lugar de documentos; `rankdata` importado del
+  módulo equivocado; vocabulario de conjunciones con una palabra en inglés.
+
+### Resultado
+Cierre de V13 con **0 adopciones** y con un diagnóstico causal de por qué. La única vía abierta es
+una decisión de alcance (relajar §3 o cambiar la métrica), no un experimento más. Details en
+`reports/v13_final_research.md` y D-041 en `DECISIONS.md`.
