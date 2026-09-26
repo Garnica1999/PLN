@@ -90,6 +90,7 @@ Durante la ejecución de P6, otra sesión del mismo repositorio (proyecto `KAGGL
 - **Intacto**: `experiments/phase39_fusion_v12.json`, `reports/age_lexicon_results.csv`, las predicciones OOF y las matrices de `features/` (protegidas por `.gitignore`). El veredicto de P6 y el análisis de P7 se calcularon con esos artefactos originales.
 - **Reconstruido y verificado**: el bloque `registro` regenerado es **idéntico bit a bit** a la matriz que consumió P6.
 - **Reconstruido con diferencia**: el bloque `vida` regenerado tiene 19 columnas frente a las 16 originales, porque la lista de `hogar` escrita de nuevo conserva más entradas válidas (la original quedaba en 2 tokens tras eliminar ambiguos y se retiraba).
+- **Perdidos sin copia**: `reports/age_lexicon_ablation.csv` y `reports/age_lexicon_redundancy.csv` (tablas de ablación por subcategoría y de correlaciones). Su contenido se conserva en el JSON transcrito y en `experiments/phase38.log`, y se regeneran en unos minutos con el código de P2-P5.
 - **Transcrito**: `experiments/phase38_bloques_lexicos.json` se reconstruyó con los valores medidos en la ejecución original, etiquetado como transcripción; la primera iteración queda además en `experiments/phase38.log`, que sobrevivió.
 - **Pendiente opcional**: reejecutar P6 con las listas reconstruidas (≈2,5 h) para que la traza sea byte a byte consistente. El veredicto no dependería de ello: los cuatro deltas están entre -0,0018 y +0,0001, muy lejos del gate de +0,003.
 
