@@ -18,7 +18,11 @@ sobre las superficies originales; los reentrenos corren en un worktree aislado
   midieron: near-duplicados train+test en la construccion de grupos (impacto
   demostrado 0.0 sobre particiones) y pesos de sospecha de v6-07 con etiquetas del
   pliegue evaluado (impacto medido +0.000142 -> 0 con version fold-local).
-- Reproducibilidad: [P6 - se integra al cierre].
+- Reproducibilidad: ALTA. 13 grupos R3 (incluidas las submissions v01-v03 byte a
+  byte y la cadena v4 completa), 2 familias R2 con tolerancia medida (DL-02
+  +-5.4e-4; FastText semantico con vecinos 0.833), 2 lineas R1 por presupuesto
+  (ejes v5.1; 21/23/25) y una excepcion: el notebook final NO ejecuta por una
+  asercion desactualizada (B-14).
 - Notebook: ejecutable y verificado (63 celdas, 0 errores) pero INCOMPLETO: cubre
   v1-v5.1; no tiene secciones de v6, v7 ni v8.
 - Documentacion: 4 inconsistencias reales (rutas duplicadas, '2/5' del holdout,
@@ -125,8 +129,27 @@ sobre las superficies originales; los reentrenos corren en un worktree aislado
 
 ## 10. Reproducibilidad (P6)
 
-[Se integra al cierre: matriz `audit_reproducibility_matrix.csv`; V03 y controles
-v6; re-ejecuciones v4/v7/v8/DL; determinismo FastText; submission v03; notebook.]
+Matriz completa: `audit_reproducibility_matrix.csv` (20 filas). Re-ejecucion en
+worktree aislado (`PLN-toxic-rerun`) con copia local de datos y corpora, sin red:
+
+- **R3 (exacto; solo cambian fecha/duracion en los JSON)**: V03 (14), control
+  pseudo-autor, los 7 controles v6, v7 completo (P9/P8/P0.1), v8 (01/03/05),
+  la cadena v4 completa (14->16->17->19->20->27..36; 15/15 scripts exit=0;
+  `v4_candidates.json` exacto: la tabla que sostiene D-029 se reproduce),
+  las submissions v01/v02/v03 REGENERADAS BYTE A BYTE (sha256 identico) y
+  DL-01/DL-03.
+- **R2 (tolerancia medida)**: DL-02 CharCNN +-5.4e-4 OOF (no determinismo GPU,
+  coherente con su multilla sigma=0.0011); una especificacion de stacking v2
+  (max 1.1e-3) y una variante de structural_sparse (max 6.4e-4); FastText
+  baseline (no byte-determinista con 16 hilos; vocabulario exacto 100098;
+  solapamiento de vecinos top-10 = 0.833; su propio control de semillas daba 0.792).
+- **R1 (no re-ejecutado por presupuesto; entorno completo)**: ejes v5.1 y
+  scripts 21/23/25.
+- **NO EJECUTA en el estado final**: el notebook (B-14: la celda 30 exige "12
+  sondas" y el log tiene 15; EBD-26 era previo a las sondas v8).
+- Matices documentados: cadena de dependencias v4 (stores intermedios no
+  retenidos; resuelta re-ejecutando la cadena completa) y `modo_anotacion`
+  'spacy-cache' vs 'spacy' (las anotaciones se regeneraron; las cifras no cambian).
 
 ## 11. Notebook (`audit_notebook.csv`, `audit_notebook_gaps.md`)
 
@@ -216,7 +239,9 @@ entregable completo.
 - Data leakage: NINGUNA DETECTADA (dos mecanismos potenciales medidos con impacto
   0.0 y 1.4e-4, ninguno adoptado)
 - Consistencia numerica: PASS (50 checks; 13 convenciones documentadas)
-- Reproducibilidad: [P6]
+- Reproducibilidad: ALTA (R3 en 13 grupos; R2 acotado en DL-02 y FastText con
+  tolerancia medida; R1 en presupuesto no re-ejecutado; notebook no ejecutable
+  en el estado final por B-14)
 - Completitud del notebook: PARCIAL (v6-v8 ausentes)
 - Consistencia documental: ISSUES (4 reales, ninguna cientifica)
 - Salud de modelos: PASS
@@ -226,7 +251,8 @@ entregable completo.
 
 ## Respuestas directas a las 12 preguntas del encargo
 
-1. V03 reproducible: SI desde sus artefactos; [re-ejecucion P6 al cierre].
+1. V03 reproducible: SI. Re-ejecucion completa R3 (0.777211 exacto) y la
+   submission v03 regenerada BYTE A BYTE (sha256 7d7478f2...).
 2. 184 experimentos trazados: el registro real es 197 claves (196 validas + 1
    corrupta); 47 commits de registro mapeados commit a commit.
 3. Discrepancias numericas: 0 en valores centrales; 13 convenciones/INFO.

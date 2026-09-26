@@ -19,7 +19,8 @@ historico se sustituye en silencio.
 | B-10 | `reports/final_candidates.csv` | `delta_vs_v03` calculado contra la referencia redondeada 0.7772 (desvio hasta 1.1e-5) | Usar 0.777211 (o documentar la referencia del redondeo) | fines v2 | F-17 | PROPUESTA (no aplicada) |
 | B-11 | historia git (commit ae0084e) | El mensaje afirma un "digesto normalizado c3aa4198 estable" del notebook que no existe en ningun artefacto | Documentar el metodo del digesto o retirar la afirmacion | documentacion v2 | F-31; `audit/p08_docs_decisions.py` | DOCUMENTADO (UNKNOWN) |
 | B-12 | `submissions/leaderboard_log.csv` | La columna `diferencia` significa "LB - local" en 12 filas y "LB - LB(V03)" en las 3 filas de v8 | Unificar semantica (columna extra o nota por fila) | analisis de transferencia | F-33; `audit/p11_submissions.py` | PROPUESTA (no aplicada) |
-| B-13 | `reports/audit_documentation.csv` (auditoria) | — | — | n/a | n/a | RESUELTO en la auditoria (D-013 verificado como actualizado) |
+| B-13 | `reports/audit_documentation.csv` (auditoria) | - | - | n/a | n/a | RESUELTO en la auditoria (D-013 verificado como actualizado) |
+| B-14 | `notebooks/10_final_pipeline.ipynb` (celdas 29-30) | La celda 30 afirma y comprueba '12 sondas de leaderboard'; el log final tiene 15 (v8 anadio 3) -> `AssertionError` y el notebook ya NO se ejecuta end-to-end | Esperar 15 sondas (o recuento dinamico) y actualizar la prosa de la celda 29 | entregable del curso; EBD-26 (GO) quedo desactualizado | audit/out_p06/wave2.log; celda 30 del notebook | PROPUESTA (no aplicada) |
 
 ## Notas de aplicacion
 

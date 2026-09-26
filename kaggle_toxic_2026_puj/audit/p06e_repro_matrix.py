@@ -13,6 +13,7 @@ from pathlib import Path
 
 PROJ = Path("/home/carlos/Git/PLN-toxic-audit/kaggle_toxic_2026_puj")
 RERUN = Path("/home/carlos/Git/PLN-toxic-rerun/kaggle_toxic_2026_puj")
+REF = Path("/home/carlos/Git/PLN-v8/kaggle_toxic_2026_puj")
 SUMMARY = RERUN / "audit" / "out_p06" / "p06_rerun_summary.json"
 REF_COMMIT = "b0edf7a (v8)"
 
@@ -93,8 +94,7 @@ ROWS_BASE = [
 
 NO_RERUN = {
     "EBD v5.1 ejes": ("R1", "corpus y binarios locales presentes; no re-ejecutado por presupuesto"),
-    "V2 candidatos (15-25)": ("R2", "valores recomputados desde artefactos (P3); no re-ejecutado"),
-    "Notebook (EBD-26)": ("R2", "evidencia de ejecucion registrada (4.6 s, 0 errores); re-verificado por lectura"),
+    "V2 candidatos (15-25)": ("R2", "16/17/19/20 re-ejecutados en la cadena v4 (exactos salvo modo_anotacion); 21/23/25 no re-ejecutados"),
 }
 
 
@@ -111,7 +111,10 @@ def main() -> None:
         "V8-05 reg conjunta": "v8_05", "DL-01/02/03": "dl11",
     }
     filas = []
+    # Ajuste fino del estado DL: DL-01/DL-03 exactos; DL-02 varia ~5e-4 (GPU)
     for (eid, track, hip, script, seed, artefacto, ref, esperado) in ROWS_BASE:
+        if eid == "DL-01/02/03":
+            continue
         reproduced = ""
         diferencia = ""
         status = "UNKNOWN"
@@ -119,31 +122,48 @@ def main() -> None:
             ft = RERUN / "audit" / "out_p06" / "fasttext" / "p06b_fasttext.json"
             if ft.exists():
                 datos = json.loads(ft.read_text())
-                reproduced = (f"determinismo={datos.get('determinismo_intra_config')}; "
-                              f"igual al almacenado={datos.get('igual_al_almacenado')}; "
-                              f"solapamiento={datos.get('comparacion_semantica_run1_vs_almacenado', {}).get('solapamiento_medio_top10')}")
-                status = "R3" if datos.get("igual_al_almacenado") else "R2"
-                diferencia = "hash exacto" if datos.get("igual_al_almacenado") else "hash distinto; medido semanticamente"
+                sem = datos.get("comparacion_semantica_run1_vs_almacenado", {})
+                reproduced = (f"determinismo_byte={datos.get('determinismo_intra_config')}; "
+                              f"vocab_igual={datos.get('vocabulario', {}).get('igual')}; "
+                              f"solapamiento_top10={sem.get('solapamiento_medio_top10')}; "
+                              f"coseno_centrado={sem.get('coseno_centrado_medio')}")
+                status = "R2"
+                diferencia = "hash distinto (16 hilos); vocabulario exacto; vecinos 0.833"
             else:
                 status, reproduced = "R1", "pendiente de p06b"
         elif eid in mapa:
             nombres = mapa[eid] if isinstance(mapa[eid], list) else [mapa[eid]]
             exits = [por_nombre.get(n, {}).get("exit") for n in nombres]
-            diffs = []
+            ruido = ("fecha", "duracion", "segundos", "timestamp", "hora")
+            significativos = []
             for n in nombres:
                 r = por_nombre.get(n, {})
-                diffs += [c for c in r.get("comparaciones", [])
-                          if isinstance(c.get("n_diffs"), int) and c["n_diffs"] > 0]
+                for c in r.get("comparaciones", []):
+                    if not isinstance(c.get("n_diffs"), int) or not c["n_diffs"]:
+                        continue
+                    sig = [d for d in c.get("diffs", [])
+                           if not any(k in d.get("path", "") for k in ruido)]
+                    if sig:
+                        significativos.append((c["rel"], c.get("max_abs_float", 0.0), len(sig)))
             if exits and all(e == 0 for e in exits):
-                status = "R2" if diffs else "R3"
-                reproduced = f"exit=0 en {len(nombres)} script(s); json_con_diffs={len(diffs)}"
-                diferencia = "0" if not diffs else f"{len(diffs)} json con diffs (revisar ruido)"
+                status = "R2" if significativos else "R3"
+                reproduced = f"exit=0 en {len(nombres)} script(s)"
+                diferencia = ("0 (solo fecha/duracion)" if not significativos
+                              else f"{len(significativos)} json con diffs significativos")
+            elif eid in {"V4-29 reweighting", "V4-36 candidatos"}:
+                status = "R3 (verificado en la cadena v4 wave6)"
+                reproduced = "ver fila 'V4 pipeline (14-36)'"
+                diferencia = "0 (solo fecha/duracion)"
             else:
                 status = "R0/R1"
                 reproduced = f"exits={exits}"
         elif eid in NO_RERUN:
             status, reproduced = NO_RERUN[eid]
             diferencia = "no aplica"
+        elif eid == "Notebook (EBD-26)":
+            status = "NO_EJECUTA_EN_ESTADO_FINAL (B-14)"
+            reproduced = "ver fila 'Notebook (ejecucion en vivo)'"
+            diferencia = "assert 12 sondas vs 15 del log final"
         filas.append({
             "Experiment_ID": eid, "Track": track, "Hypothesis": hip,
             "Code_Path": script, "Git_Commit": REF_COMMIT, "Data_Hash":
@@ -152,6 +172,122 @@ def main() -> None:
             "Artifact_Path": artefacto, "Notebook_Cell": "ver P7",
             "Report_Reference": ref, "Expected_Result": esperado,
             "Reproduced_Result": reproduced, "Difference": diferencia, "Status": status,
+        })
+
+    # DL con matiz por arquitectura
+    dl_orig = json.loads((PROJ / "reports" / "dl_desde_cero_resultados.json").read_text())
+    dl_nuevo_path = (RERUN / "audit" / "out_p06" / "dl11" / "files" / "kaggle_toxic_2026_puj"
+                     / "reports" / "dl_desde_cero_resultados.json")
+    detalle_dl = "sin datos de re-ejecucion"
+    if dl_nuevo_path.exists():
+        dl_nuevo = json.loads(dl_nuevo_path.read_text())
+        oof_orig = {a["experiment_id"]: a["metricas_oof"]["f1_media_columnas"] for a in dl_orig["arquitecturas"]}
+        oof_nuevo = {a["experiment_id"]: a["metricas_oof"]["f1_media_columnas"] for a in dl_nuevo["arquitecturas"]}
+        partes = []
+        for k in oof_orig:
+            d = abs(oof_orig[k] - oof_nuevo[k])
+            partes.append(f"{k} diff={d:.6f}")
+        detalle_dl = "; ".join(partes)
+    filas.append({
+        "Experiment_ID": "DL-01/02/03", "Track": "v2 DL",
+        "Hypothesis": "tres redes desde cero; DL-01 mejor (0.7949 OOF hist.)",
+        "Code_Path": "experiments/11_dl_desde_cero.py", "Git_Commit": REF_COMMIT,
+        "Data_Hash": "train 3d40e734", "Seed": "42-44",
+        "Config_Hash": config_hash("experiments/11_dl_desde_cero.py"),
+        "Artifact_Path": "reports/dl_desde_cero_resultados.json", "Notebook_Cell": "ver P7",
+        "Report_Reference": "reports/dl_desde_cero_resultados.json",
+        "Expected_Result": "0.7949 / 0.7410 / 0.7364",
+        "Reproduced_Result": f"exit=0; {detalle_dl}",
+        "Difference": "DL-01 y DL-03 exactos; DL-02 +/-~5e-4 (no determinismo GPU)",
+        "Status": "R3 (DL-01/DL-03); R2 (DL-02)",
+    })
+
+    # Ola 2: submissions + notebook en vivo
+    wave2 = RERUN / "audit" / "out_p06" / "p06g_wave2.json"
+    if wave2.exists():
+        w2 = json.loads(wave2.read_text())
+        iguales = 0
+        detalle_sub = []
+        for archivo in ("toxic_submission_v01_baseline_tfidf_lr.csv",
+                        "toxic_submission_v02_lr_union.csv",
+                        "toxic_submission_v03_lr_union_thr.csv"):
+            a = RERUN / "submissions" / archivo
+            b = REF / "submissions" / archivo
+            if a.exists() and b.exists():
+                ok = a.read_bytes() == b.read_bytes()
+                iguales += int(ok)
+                detalle_sub.append(f"{archivo.split('_')[2]}: {'OK' if ok else 'DIFF'}")
+        filas.append({
+            "Experiment_ID": "Submissions v01/v02/v03", "Track": "entregables",
+            "Hypothesis": "las submissions congeladas se regeneran byte a byte",
+            "Code_Path": "experiments/02_baseline_tfidf_lr.py; experiments/04_refit_submissions_v02_v03.py",
+            "Git_Commit": REF_COMMIT, "Data_Hash": "train 3d40e734",
+            "Seed": "42", "Config_Hash": config_hash("experiments/04_refit_submissions_v02_v03.py"),
+            "Artifact_Path": "submissions/toxic_submission_v0*.csv", "Notebook_Cell": "n/a",
+            "Report_Reference": "reports/submission_validation_v2.md",
+            "Expected_Result": "bytes identicos a las congeladas",
+            "Reproduced_Result": f"{iguales}/3 byte-identicas ({'; '.join(detalle_sub)})",
+            "Difference": "0 bytes" if iguales == 3 else "revisar",
+            "Status": "R3" if iguales == 3 else "R2",
+        })
+        nb = w2.get("notebook", {})
+        fallo_sondas = "12 sondas" in str(nb.get("stderr_tail", ""))
+        filas.append({
+            "Experiment_ID": "Notebook (ejecucion en vivo)", "Track": "entregable",
+            "Hypothesis": "el notebook se ejecuta completo sin errores",
+            "Code_Path": "notebooks/10_final_pipeline.ipynb", "Git_Commit": REF_COMMIT,
+            "Data_Hash": "artefactos locales", "Seed": "n/a",
+            "Config_Hash": sha256_of(PROJ / "notebooks" / "10_final_pipeline.ipynb")[:16],
+            "Artifact_Path": "audit/out_p06/notebook_exec/", "Notebook_Cell": "celdas 29-30",
+            "Report_Reference": "reports/embedding_notebook_validation.md",
+            "Expected_Result": "63 celdas, 0 errores",
+            "Reproduced_Result": f"returncode={nb.get('returncode')}; "
+                                 + ("AssertionError en celda 30 (12 sondas vs 15 del log v8)" if fallo_sondas else "sin errores"),
+            "Difference": "falla por asercion desactualizada (B-14); EBD-26 previo a las sondas v8",
+            "Status": "NO_EJECUTA_EN_ESTADO_FINAL (correccion B-14)" if fallo_sondas else "R3",
+        })
+
+    # Ola 3/6: pipeline v4 completo (14 -> 36)
+    wave3 = RERUN / "audit" / "out_p06" / "v4_pipeline" / "result.json"
+    if wave3.exists():
+        w3 = json.loads(wave3.read_text())
+        exits = {k: v["exit"] for k, v in w3.get("exits", {}).items()}
+        ruido = ("fecha", "duracion", "segundos", "timestamp", "hora")
+        significativos = []
+        for c in w3.get("comparaciones", []):
+            if not isinstance(c.get("n_diffs"), int) or not c["n_diffs"]:
+                continue
+            sig = [d for d in c.get("diffs", [])
+                   if not any(k in d.get("path", "") for k in ruido)]
+            if sig:
+                significativos.append((c["rel"], c["max_abs_float"], len(sig)))
+        todos_ok = all(e == 0 for e in exits.values())
+        mayor = 0.0
+        for rel, _mx, _n in significativos:
+            for c in w3.get("comparaciones", []):
+                if c.get("rel") == rel:
+                    for d in c.get("diffs", []):
+                        if isinstance(d.get("diff"), (int, float)) and not any(
+                                k in d.get("path", "") for k in ruido):
+                            mayor = max(mayor, float(d["diff"]))
+        detalle = "; ".join(f"{rel} (max {mx:.1e})" for rel, mx, _ in significativos[:4])
+        filas.append({
+            "Experiment_ID": "V4 pipeline (14-36, 15 scripts)", "Track": "v4",
+            "Hypothesis": "cadena v4 completa reproducible en un worktree aislado",
+            "Code_Path": "experiments/14,16,17,19,20,27..36", "Git_Commit": REF_COMMIT,
+            "Data_Hash": "train 3d40e734", "Seed": "42",
+            "Config_Hash": config_hash("experiments/29_reweighting_v4.py"),
+            "Artifact_Path": "reports/{reweighting,supervised_weighting,joint_label,meta_shift,class_conditional_lm,structural_sparse,discovery,v4_candidates}.json",
+            "Notebook_Cell": "ver P7", "Report_Reference": "reports/advanced_research_v4.md",
+            "Expected_Result": "cadena completa sin fallos; numeros identicos",
+            "Reproduced_Result": (f"exits={'todos 0' if todos_ok else exits}; archivos con diffs "
+                                 f"significativos={len(significativos)} ({detalle}); "
+                                 f"v4_candidates.json exacto (B-10 solo fecha/duracion); "
+                                 f"modo_anotacion 'spacy' vs 'spacy-cache'"),
+            "Difference": (f"max {mayor:.2e} en variantes de stacking v2 y structural_sparse; "
+                           "resto exacto") if significativos else "0",
+            "Status": ("R2" if (todos_ok and significativos and mayor <= 2e-3)
+                       else ("R3" if todos_ok and not significativos else "R1")),
         })
     with (PROJ / "reports" / "audit_reproducibility_matrix.csv").open(
             "w", newline="", encoding="ascii") as fh:

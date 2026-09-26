@@ -29,3 +29,12 @@
 
 ## Nota
 Estructura real: secciones 1-18 cubren v1, v2, v4 y v5/v5.1 con celdas de verificacion ejecutables (comprueban artefactos y cifras, no reentrenan modelos). NO existen secciones de v6, v7 ni v8: esas fases viven solo en reports/ (documentadas con cifras, sin celda de notebook). Estado global: 'documentado y verificable en sus cifras; no reproducible end-to-end desde el notebook; incompleto para v6-v8'.
+## Ejecucion en vivo (auditoria P6, worktree aislado)
+
+- `jupyter nbconvert --execute` sobre el notebook final: **FALLA** en la celda 30
+  (AssertionError: 'El proyecto declara 12 sondas de leaderboard'): el log final
+  tiene 15 filas (12 de v2 + 3 de v8). La validacion EBD-26 (GO, 4.6 s) es
+  ANTERIOR a las sondas de v8 y no se repitio tras anadirlas.
+- Consecuencia: el notebook no es ejecutable end-to-end en el estado final (si
+  lo era antes de v8). Correccion B-14.
+- La seccion 11 (markdown, celda 29) tambien declara '12 sondas' en prosa.
