@@ -60,9 +60,18 @@
 - [x] La hipotesis de techo se **refuto a si misma**; el cierre es de protocolo
 - [x] Reabrible solo con una particion de calibracion separada del OOF
 
-## F y J (pendiente)
+## F - Ruido por par (cerrado negativo)
+
+- [x] `v6_07_ruido_par.py`: deteccion en ronda separada, luego ponderacion
+- [x] F0 control reproduce V03 exacto
+- [x] F1 +0.0001, F2 -0.0010, F3 -0.0041: **ninguna pasa el Gate 1**
+- [x] La deteccion encuentra **dificultad** (V03 acierta 10.5 % vs 28.3 %), no ruido
+- [x] Senal estructural: 12 pares de 4449, **menos** que el duplicado exacto de V4-A
+- [x] Sirve como marcador de dificultad para analisis de errores, no para limpiar
+
+## J (pendiente)
 - [ ] F: score de sospecha por par instancia-etiqueta
-- [ ] J: aumento label-preserving, al final
+- [ ] J: aumento label-preserving, al final y con las restricciones de seguridad de etiqueta
 
 ## Cierre
 

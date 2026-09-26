@@ -1780,3 +1780,40 @@ evidencia, experimento, resultado, conclusion final.
   protocolo actual.** Se cierra con esa precision y se deja constancia de que podria
   reabrirse si se dispusiera de una particion de calibracion separada del OOF de
   evaluacion.
+
+## D-050 - Track F cerrado: la deteccion de sospecha encuentra dificultad, no ruido
+
+- **Contexto**: el gap analysis (V6-00) confirmo que el ruido nunca se midio a nivel de par.
+  V4-A lo habia medido por **duplicado exacto** y concluyo que era escaso: 2 clusters, 84
+  tuits, 4.85 % del corpus, con V03 acertando bien dentro (error 0.046 frente a 0.218 fuera).
+  Ese 0.046 se media por duplicado exacto, y la pregunta abierta era si hay ruido que **no**
+  es duplicado, es decir pares similares pero no identicos con etiqueta opuesta.
+- **Decision 1, detectar y ponderar van en rondas separadas por una razon concreta**: si el
+  entrenamiento se ponderara por una sospecha calculada con el mismo modelo que despues se
+  corrige, la sospecha se definiria a si misma y el resultado no significaria nada. La
+  deteccion usa el OOF **congelado** de V03, cuya prediccion de cada fila se hizo sin esa
+  fila, y solo despues se reentrena.
+- **Decision 2, control F0 y resultado**: F0 reproduce V03 **exacto: 0.777211, delta +0.0000,
+  IC95 [0, 0]**. Sexto control de la fase. F1 (cuatro senales, lambda 0.5) da **+0.0001**
+  con IC95 que incluye el 0 y 2/5 pliegues; F2 (solo la senal estructural, lambda 1.0) da
+  -0.0010; F3 (las cuatro, lambda 1.0) da **-0.0041**. **Ninguna pasa el Gate 1**.
+- **Decision 3, la hipotesis del informe se refuto y se corrige**: la version escrita antes
+  de ejecutar afirmaba que V03 ya clasificaba bien las filas marcadas, de modo que bajar su
+  peso no podria aportar nada. **Los datos dicen lo contrario**: V03 acierta **10.5 %** en las
+  449 filas sospechosas frente a **28.3 %** en las 1034 no sospechosas, mas del doble. La
+  deteccion **si** identifica filas donde el modelo falla.
+- **Decision 4, pero identificar el fallo no la convierte en senal de ruido, y esa distincion
+  es la que decide el track**: caben dos lecturas, y el comportamiento de `lambda` las
+  separa. Si la deteccion encontrara etiquetado erroneo, subir `lambda` deberia mejorar; como
+  empeora, encuentra **dificultad genuina en la frontera**. Bajar el peso de esas filas
+  **aleja al modelo de donde estan los errores**. Concluido: **lo que la deteccion marca es
+  donde hay que estar, no donde hay que limpiar.**
+- **Decision 5, la senal tiene valor como marcador de dificultad aunque no como correccion**:
+  es un producto secundario aprovechable para el analisis de errores, y no para limpiar el
+  entrenamiento. Se deja escrito para que el trabajo de deteccion no se descarte entero: sirve
+  para otra cosa.
+- **Decision 6, el ruido por par es mas escaso que el ruido por duplicado**: la senal
+  `estructural`, que generaliza el conflicto de V4-A a la similitud, marca **12 pares de
+  4449 (0.27 %)**, frente a los 84 tuits del duplicado exacto. **Al ampliar la definicion de
+  conflicto el ruido se hace mas escaso, no mas abundante.** El precedente de V4-A era ya
+  adverso y este resultado lo refuerza.

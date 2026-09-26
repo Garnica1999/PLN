@@ -881,3 +881,17 @@ Registro cronologico de ejecuciones. Formato:
   mecanismo, dejando constancia de que podria reabrirse con una particion de calibracion
   separada.
   **D-049.** 0 submissions.
+- 23:00 | v6 Track F: ruido por par, la deteccion encuentra dificultad | `v6_07_ruido_par.py`
+  Deteccion y ponderacion van en **rondas separadas** (sino la sospecha se define a si misma).
+  **F0 control reproduce V03 exactamente.** F1 cuatro senales lambda 0.5 **+0.0001**
+  (IC95 que incluye el 0, 2/5), F2 solo estructural lambda 1.0 **-0.0010**, F3 lambda 1.0
+  **-0.0041**. **Ninguna pasa el Gate 1.**
+  **La hipotesis del informe se refuto y se corrigio**: V03 acierta **10.5 %** en las 449
+  filas sospechosas frente a **28.3 %** en las 1034 no sospechosas, mas del doble. La
+  deteccion SI identifica filas donde el modelo falla, pero como subir lambda **empeora**,
+  encuentra **dificultad genuina** y no etiquetado erroneo: **lo que marca es donde hay que
+  estar, no donde hay que limpiar**. La senal sirve como marcador de dificultad para
+  analizar errores, no para limpiar el entrenamiento.
+  Y **el ruido por par es mas escaso que el ruido por duplicado**: la senal estructural
+  generaliza el conflicto de V4-A a la similitud y marca **12 pares de 4449** frente a los
+  84 tuits del duplicado exacto. **D-050.** 0 submissions.
