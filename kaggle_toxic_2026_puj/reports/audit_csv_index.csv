@@ -1,4 +1,6 @@
 csv,filas,sha256_16,bytes
+reports/audit_csv_index.csv,25,66beb2f14843f04a,1491
+reports/audit_document_consistency.csv,11,8d499bb3e1e94c14,1441
 reports/audit_documentation.csv,11,3816b90bb50e1d47,1463
 reports/audit_experiment_coverage.csv,202,a84b5b960e72b520,15676
 reports/audit_git_provenance.csv,539,904b729dbea20051,53380
