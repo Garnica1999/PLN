@@ -1,0 +1,32 @@
+{
+  "submissions_validadas": 47,
+  "todas_ids_ok": true,
+  "todas_binarias": true,
+  "con_nulos": 0,
+  "conteo_por_superficie": {
+    "A_actual": 12,
+    "B_v7": 13,
+    "C_v8": 22
+  },
+  "filas_log": 15,
+  "log_cuadra": 15,
+  "semantica_por_fila": {
+    "v00_plantilla": "sin_diferencia_declarada",
+    "v01_baseline_tfidf_lr": "LB - local",
+    "v02_lr_union": "LB - local",
+    "v03_lr_union_thr": "LB - local",
+    "v04_ens04_mediana": "LB - local",
+    "v05_optuna": "LB - local",
+    "v06_robustez_c1": "LB - local",
+    "v07_robustez_mindf5": "LB - local",
+    "v08_meta_v2": "LB - local",
+    "v09_candidate_a": "LB - local",
+    "v10_candidate_b": "LB - local",
+    "v11_candidate_c": "LB - local",
+    "v08_p1_fold_ensemble": "LB - LB(V03)",
+    "v09_p5_c_por_etiqueta": "LB - LB(V03)",
+    "v12_p7_promedio_repeticiones": "LB - LB(V03)"
+  },
+  "gap_local_min": -0.02896,
+  "gap_local_max": 0.0018
+}

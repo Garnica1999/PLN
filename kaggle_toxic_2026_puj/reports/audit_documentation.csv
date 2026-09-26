@@ -1,0 +1,12 @@
+Claim,Source,Expected,Actual,Consistent,Severity
+rutas de scripts en v6_reproducibility.md,reports/v6_reproducibility.md,experiments/<script>.py,9 rutas con prefijo duplicado,no,LOW
+evaluaciones del holdout usadas,reports/target_encoding_audit_v2.md,5/5 (log final),2/5 (texto desactualizado),no,LOW
+celdas del notebook,notebooks/10_final_pipeline.ipynb,63 celdas / 32 de codigo,63 / 32,si,INFO
+conclusiones pendientes en DECISIONS.md,DECISIONS.md,0 pendientes,"8 (D-001,D-003,D-004,D-005,D-007,D-008,D-010,D-017)",no,LOW
+conteo de filas del registro (superficie final),experiments.csv,202 filas (197 claves),202 filas,si,INFO
+sondeos de leaderboard,submissions/leaderboard_log.csv,12 en v2 + 3 en v8,15 filas,si,INFO
+numeracion de submissions v08-v12 (v2 vs v8),submissions/,sin colisiones,colision en v08..v12 (dos familias de nombre),no,MEDIUM
+filas EBD-01..06,experiments.csv,filas propias EBD-01..06,"faltan (presentes: ['EBD-00-SCAFFOLD', 'EBD-07', 'EBD-08', 'EBD-09', 'EBD-10', 'EBD-13']...)",no,HIGH
+dato del digesto c3aa4198,commit ae0084e (mensaje),verificacion reproducible en artefactos,no localizado en ningun artefacto,no,LOW
+D-013 marcada como refutada en v6/LB,DECISIONS.md,estado reflejado en el cuerpo de la decision,D-013 concluye 'refutada': el cuerpo refleja la refutacion de v6/LB,si,LOW
+spaCy como unico componente externo de anotacion,grep de imports,si (sin transformers/LLM),"confirmado (14 archivos, solo anotador)",si,INFO

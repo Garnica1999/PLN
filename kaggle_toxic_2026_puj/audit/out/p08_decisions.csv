@@ -1,0 +1,68 @@
+Decision,Titulo,Estado,Razon,Conclusion_pendiente,Tiene_evidencia,Tiene_resultado
+D-001,Formulacion multi-etiqueta jerarquica (no multiclase),VALIDATED,TR=>HS 0 violaciones verificado; postproceso medido y descartado (-0.0056),1,1,1
+D-002,Prohibicion absoluta de etiquetas/recursos externos de HatEval,VALIDATED,sin recursos externos de Hateval; corpus/test limpios (P4),0,1,1
+D-003,spaCy solo como anotador linguistico (sin vectores preentrenados),VALIDATED,spaCy solo anotador; sin vectores preentrenados en features,1,1,1
+D-004,Validacion: StratifiedGroupKFold con grupos de near-duplicados,SUPERSEDED,grupos solo near-duplicado; corregido por D-015/D-016,1,1,1
+D-005,"TR: discrepancia oficial vs HatEval, caracterizacion empirica",VALIDATED,519/519 TR=>HS y 26 AG sin HS reproducidos (P1),1,1,1
+D-006,Parser y encoding oficiales,VALIDATED,parsers y encoding verificados (utf-8/cp1252),0,1,1
+D-007,Sin datos externos de entrenamiento; lexicones documentados y opcionales,VALIDATED,sin datos externos supervisados; lexicones no usados,1,1,1
+D-008,Protocolo de acceso a GPU (tarjeta compartida con el escritorio),VALIDATED,preflight GPU documentado en DL,1,1,1
+D-009,Metrica oficial: hipotesis primaria y sonda E00,PARTIALLY_VALIDATED,sonda E00 apoya column-wise/micro; la familia exacta no es observable,0,1,1
+D-010,El corpus oficial no tiene diacriticos,VALIDATED,train sin diacriticos; test con 6 bytes no ASCII,1,1,1
+D-012,"Ajuste de umbral por etiqueta: adoptado como apuesta, con control",VALIDATED,umbrales adoptados con control; optimismo medido +0.0036,0,1,1
+D-013,La capacidad del modelo modula el gap local-LB (seleccion por OOF),INVALIDATED,v6/LB: reducir capacidad no redujo el gap (referencia stale en el doc),0,1,1
+D-014,Cierre de la exploracion del leaderboard: plateau y modelo final,SUPERSEDED,cierre de exploracion LB revocado por el presupuesto de D-063,0,1,1
+D-015,El control por pseudo-autor calibra la validacion con el LB,VALIDATED,0.783825 vs 0.792659 reproducidos (P3),0,1,1
+D-011,Entregable y estilo del codigo,VALIDATED,estilo de codigo,0,1,1
+D-016,"Protocolo de validacion v2: desarrollo/holdout, OOF corregido y regla de adopcion",VALIDATED,holdout y OOF corregidos reproducidos (P1/P6),0,1,1
+D-017,P1: cadenas cerradas sin mejora; meta-modelo de dependencia adoptado,VALIDATED,cadenas sin mejora; meta v2 no transfirio (nota),1,1,1
+D-018,P2: targeting estructural sin mejora standalone; canales preservados para el stacking y reordenamiento del plan,VALIDATED,targeting sin mejora; encoding fold-local verificado,0,1,1
+D-019,P6: el stacking adopta el meta por complementariedad; los canales adicionales no aportan,SUPERSEDED,adopcion del meta revocada por D-024 (LB 0.78163 < 0.78306),0,1,1
+D-020,P7: el holdout confirma el candidato (delta pareado +0.018) y se autoriza una sonda de LB,PARTIALLY_VALIDATED,holdout +0.018 verificado; no transfirio al LB,0,1,1
+D-021,P8: backlog v2 cerrado al 100 % (24/24) sin mejora adicional,VALIDATED,backlog 24/24,0,1,1
+D-022,"Cierre documental: la spec v2 queda archivada, auditada y con brechas acotadas",VALIDATED,cierre documental v2,0,1,1
+D-023,"Fase final de candidatos: metas restringidos, submissions experimentales y decision de no sondear",VALIDATED,decision de no sondear,0,1,1
+D-024,Sondeo LB de los candidatos finales: los tres por debajo de V03; cierre de la fase,VALIDATED,3 sondas por debajo de V03 (log LB),0,1,1
+D-025,"Apertura de la fase v4: protocolo, gates y presupuesto de control",VALIDATED,apertura v4 con protocolo,0,1,0
+D-026,P1 (TRACK A y B): el ruido de etiqueta por duplicacion es escaso y no explica el error; la dureza util es la distancia a la frontera,VALIDATED,duplicacion escasa; dureza por frontera (v6 lo re-mide),0,1,1
+D-027,P2 (TRACK B): el hard example mining clasico empeora; solo funciona bajar el peso de los ejemplos que mas violan el umbral,VALIDATED,reweighting: mejora solo bajando violadores del umbral,0,1,1
+D-028,P4 (TRACK H): el shift de calibracion del meta se mide y se refuta; el meta de 36 features queda como candidato,VALIDATED,shift medido y refutado,0,1,1
+D-029,P8 (cierre de v4): el holdout rechaza al unico candidato que pasaba los gates; V03 sigue como modelo final,VALIDATED,holdout rechaza al candidato; V03 final,0,1,1
+D-030,Scope of external unlabeled data for from-scratch embeddings,VALIDATED,scope externo cumplido y escaneado (P4),0,1,0
+D-031,Estado de la representacion distribuida y palanca de mejora,VALIDATED,estado de la representacion y palanca,0,0,0
+D-032,"Cierre de la fase v5: la cobertura improves, la complementariedad no",VALIDATED,"cobertura sube, complementariedad no (nota: titulo con palabra en ingles)",0,0,0
+D-033,Curva 10M -> 50M: el techo no es la representacion,VALIDATED,curva 10M-50M plana; techo no es la representacion,0,0,0
+D-034,"Tramo inferior de la curva (5M): existe un suelo, y la curva del embedding es plana",VALIDATED,tramo 5M; suelo de la curva,0,0,0
+D-035,"Baseline arquitectonico de v5.1, identidad de entrenamiento y presupuesto",VALIDATED,baseline v5.1 y presupuesto,0,0,0
+D-036,vector_size se cierra como inerte y el gate de adopcion pasa a ser de dos niveles,VALIDATED,vector_size inerte; gate de dos niveles,0,0,1
+D-037,La familia window se cierra por inercia y el orden de ventanas es contraintuitivo,VALIDATED,window inercia,0,0,1
+D-038,"min_count se cierra por inercia, y se descubre por que su mecanismo no puede funcionar con subpalabras",VALIDATED,min_count inercia con subpalabras,0,0,1
+D-039,"El intervalo 3-6 ya es el optimo, y la regla de dispersion se corrige para el caso en que el baseline es el maximo",VALIDATED,intervalo 3-6 optimo; regla de dispersion corregida,0,0,1
+D-040,negative sampling se cierra inerte y el presupuesto de v5.1 queda agotado sin tocar la reserva,VALIDATED,negative inerte; presupuesto agotado,0,0,1
+D-041,"Conclusion de la evaluacion arquitectonica: la representacion mejora, la tarea no",VALIDATED,conclusion arquitectonica,0,0,0
+D-042,"Que aporta el embedding, con su poder real: mismo mecanismo, menos ruido, y una correccion de vocabulario",VALIDATED,"mismo mecanismo, menos ruido; correccion de vocabulario",0,0,0
+D-043,"Cierre de la fase v5.1: auditoria GO, V03 se mantiene y el limite es el tamano de los datos etiquetados",PARTIALLY_VALIDATED,"cierre v5.1 GO; 'limite = datos etiquetados' es cota empirica, no prueba",0,0,0
+D-044,"Apertura de la fase v6: gap analysis con verificacion programatica, gate de dos niveles y cierre preventivo de D y E",VALIDATED,apertura v6 con verificacion programatica,0,0,0
+D-045,"Track B cerrado: la invariante TR implica HS es cierta pero no accionable, y por que el control B0 es obligatorio",VALIDATED,TR=>HS cierta pero no accionable; control B0 exacto,0,0,0
+D-046,"Track A cerrado: la ponderacion por grupo no se adopta, y la repeticion es senal, no ruido",VALIDATED,ponderacion por grupo no adopta; repeticion es senal,0,0,0
+D-047,Track I cerrado: el optimo de la escala word/char es interior pero su techo es la mitad del gate,VALIDATED,optimo interior; techo mitad del gate,0,0,0
+D-048,"Track C1 cerrado: los skip-grams son neutros, y el control destino un bug de tokenizacion",VALIDATED,skip-grams neutros; bug de tokenizacion detectado por control,0,0,0
+D-049,"Track H cerrado: el bagging no se refuta, el protocolo de evaluacion no lo deja medir",VALIDATED,bagging no refutable con el protocolo,0,0,0
+D-050,"Track F cerrado: la deteccion de sospecha encuentra dificultad, no ruido",PARTIALLY_VALIDATED,conclusion se mantiene; componente de pesos no fold-local (auditoria P4),0,0,0
+D-051,"Track J cerrado: el aumento empeora y doblar las copias no empeora mas, luego el problema es el sesgo y no la cantidad",VALIDATED,aumento empeora; sesgo no cantidad,0,0,0
+D-052,"Cierre de la fase v6: ninguna adopcion, y por que el presupuesto sin gastar es un resultado",VALIDATED,cierre v6 sin adopciones,0,0,0
+D-053,Apertura de la fase v7 y cierre del track P9: aproximar mejor el objetivo no es mejor,VALIDATED,P9 focal no mejora,0,0,0
+D-054,"Track P8 cerrado: la repeticion es senal, pero no es senal nueva, y esa distincion no la podia hacer v6",VALIDATED,"repeticion es senal, no senal nueva",0,0,0
+D-055,"P0 cerrado: los umbrales estan debilmente identificados, y por eso no hay nada que recalibrar",VALIDATED,umbrales debilmente identificados (medido),0,0,0
+D-056,"Cierre de la fase v7: sin adopciones, con dos mecanismos nuevos refutados y una medicion que v6 dejo pendiente",VALIDATED,cierre v7,0,0,0
+D-057,"Apertura de la fase v8: rama y worktree aislados, prohibicion de modelos preentrenados ratificada y freno de transferencia heredado",VALIDATED,apertura v8 en rama aislada,0,0,0
+D-058,"P1: identidad de pipeline verificada celda a celda, alcance del cambio pequeno y parada obligatoria antes del envio",VALIDATED,identidad de pipeline y parada,0,0,0
+D-059,"Resultado de P1 y adopcion de un filtro de detectabilidad: el limite esta en el leaderboard, no en el modelo",VALIDATED,limite en el externo (observado),0,0,0
+D-060,P3 cerrado: la estabilidad de features es el mecanismo correcto para el problema del que viene y el equivocado para este,VALIDATED,estabilidad de features cerrada,0,0,0
+D-061,"P2 cerrado: una premisa propia era falsa, y el suavizado sostiene el metodo entero",VALIDATED,premisa propia falsa; suavizado,0,0,0
+D-062,"P4 cerrado: el mecanismo de compartir estructura funciona y empeora, y eso unifica P3 y P4 en una sola conclusion",VALIDATED,compartir estructura empeora,0,0,0
+D-063,"Cambio de presupuesto autorizado: se gastan sondas para experimentally llegar a 0,80 e incluso a 0,81",PARTIALLY_VALIDATED,gasto de sondas autorizado; resultados LB por debajo de V03,0,0,0
+D-064,"P5, P6 y P7 cerradas con un descubrimiento que reencuadra la fase: la estimacion es inestable entre particiones",VALIDATED,estimacion inestable entre particiones,0,0,0
+D-065,"Las dos sondas de la fase v8 pierden, y el analisis de la curva de transferencia cierra la calibracion por tasa",VALIDATED,dos sondas pierden; curva de transferencia cierra calibracion,0,0,0
+D-066,La hipotesis del error de diseno queda refutada por medicion directa,VALIDATED,hipotesis de error de diseno refutada,0,0,0
+D-067,"Las seis tecnicas del material de clase, y el hallazgo que explica la fase entera: la mejora local era el promediado",VALIDATED,promediado explicaba la mejora local,0,0,0

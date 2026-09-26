@@ -1,0 +1,193 @@
+archivo,categoria,conteo,fuente,contexto
+DECISIONS.md,acentos_latinos,98,generado, E2-14 (calibracion Platt/isotonica anidadas): mejora la cali
+DECISIONS.md,flechas,11,generado,e composicion: `Wikipedia ES` ? `mC4-es` ? `mezcla` ?     `HP
+DECISIONS.md,otro_no_ascii,25,generado,"e repetir lineas ya probadas (?84, ?85-?89). - **Observacion*"
+DECISIONS.md,otros_simbolos,1,generado,cv` con grupos near-duplicado ?   pseudo-autor (`src/splits.p
+FINAL_REPORT.md,acentos_latinos,1072,generado,# Informe final - Clasificacion multi-etiqueta de discurso d
+FINAL_REPORT.md,box_drawing,5,generado,sculas   ? FeatureUnion       ?? TfidfVectorizer(analyzer='wo
+FINAL_REPORT.md,flechas,30,generado,"timizacion Optuna (OOF 0.8039 ? LB 0.77602), el control de ca"
+FINAL_REPORT.md,otro_no_ascii,51,generado,do oficial pone el enfasis en ?el procesamiento y representac
+FINAL_REPORT.md,otros_simbolos,97,generado,# Informe final - Clasificacion multi-etiqueta 
+PROJECT_STATE.md,acentos_latinos,2,generado,o empeora: la repeticion es senal | | V6 Track I | **Cerrado 
+PROJECT_STATE.md,otro_no_ascii,7,generado,", D-033).  ## Fase actual: v5 ?Embedding from Scratch? (CERRA"
+RUNLOG.md,acentos_latinos,6,generado,). Todas las variantes se evaluan en el **mismo punto de oper
+RUNLOG.md,otro_no_ascii,4,generado,. **Hipotesis abierta de   v2 ?4.3 refutada** (D-028). El met
+audit/p04_leakage_audit.py,acentos_latinos,1,generado,"     ""Severity"": ""MEDIUM (historico, corregido por D-016)"", """
+docs/advanced_research_v2_spec.md,acentos_latinos,334,generado,# Especificacion maestra - Fase v2 ?Advanced 
+docs/advanced_research_v2_spec.md,flechas,35,generado,encia debe ser:  OBSERVACION  ? HIPOTESIS  ? FEATURE / REPRES
+docs/advanced_research_v2_spec.md,otro_no_ascii,16,generado,ecificacion maestra - Fase v2 ?Advanced Research?  Documento 
+docs/advanced_research_v2_spec.md,otros_simbolos,111,generado,# Especificacion maestra - Fase v2 ?Advanced Research?  
+docs/advanced_research_v4_spec.md,acentos_latinos,122,generado,# Especificacion maestra - Fase v4 ?Advanced 
+docs/advanced_research_v4_spec.md,flechas,15,generado,ission generation | P | refit ? transform ? predict ? thresho
+docs/advanced_research_v4_spec.md,otro_no_ascii,36,generado,ecificacion maestra - Fase v4 ?Advanced Research v4?  Proyect
+docs/advanced_research_v4_spec.md,otros_simbolos,7,generado,# Especificacion maestra - Fase v4 ?Advanced Research v4
+docs/competition_rules.md,acentos_latinos,45,generado,im del organizador)  Fuente: pagina Overview de https://www.k
+docs/competition_rules.md,otros_simbolos,3,generado, Overview  Competencia Kaggle - Prediccion de Rango de Edad a
+docs/embedding_from_scratch_v5_spec.md,acentos_latinos,155,generado,# Especificacion maestra - Fase v5 ?Embedding
+docs/embedding_from_scratch_v5_spec.md,flechas,41,generado,etas muy relacionadas y `TR=1 ? HS=1` | | Referencia congelad
+docs/embedding_from_scratch_v5_spec.md,otro_no_ascii,43,generado,ecificacion maestra - Fase v5 ?Embedding from Scratch?  Proye
+docs/embedding_from_scratch_v5_spec.md,otros_simbolos,5,generado,# Especificacion maestra - Fase v5 ?Embedding from Scrat
+experiments.csv,acentos_latinos,50,generado,"racciones, ventanas) anaden senal?"",""Sufijos/prefijos (brecha"
+experiments.csv,otro_no_ascii,75,generado," TH-01,KAGGLE_TOXIC_2026_PUJ,""?Un umbral de decision por etiq"
+experiments/00_auditoria_datos.py,acentos_latinos,58,generado,"""""""Fase 0 - Auditoria de datos de KAGGLE_TOXIC_202"
+experiments/00_auditoria_datos.py,otro_no_ascii,1,generado,esponde --------------------- ?Los tres archivos oficiales so
+experiments/01_eda_linguistico.py,acentos_latinos,12,generado,"s*(?:rt\s+)?@\w+[\s,:\-]+([A-ZAEIOUN][a-zaeioun]{2,})"" ) SYMB"
+experiments/02_baseline_tfidf_lr.py,otro_no_ascii,1,generado,esponde --------------------- ?Que F1 local se obtiene con la
+experiments/03_variantes_representaciones.py,acentos_latinos,1,generado,   acumulativas: la ablacion aisla el efecto de cada decision
+experiments/03_variantes_representaciones.py,otro_no_ascii,1,generado,  Convierte alargamientos voca?licos y de signos (``jajajajaj
+experiments/04_refit_submissions_v02_v03.py,otro_no_ascii,6,generado,"onde --------------------- 1. ?Reproduce el codigo, bit a bit"
+experiments/05_ensembles.py,acentos_latinos,2,generado," """"""Enumera los pares y los trios de modelos base.      Args:"
+experiments/07_submission_v04_ens04.py,otro_no_ascii,1,generado,"   ""question"": (             ""?Generaliza al leaderboard el e"
+experiments/09_optuna_tfidf_lr.py,otro_no_ascii,3,generado,olumnas`` out-of-fold 0.7927. ?Existe alguna combinacion de h
+experiments/10_sondas_robustez.py,otro_no_ascii,5,generado,"-01 (32.060, C=3.26) -0.0279. ?Reducir la capacidad de la rep"
+experiments/11_dl_desde_cero.py,otro_no_ascii,5,generado,", OOF 0.7927; B1 OOF 0.7587), ?alguna red neuronal desde cero"
+experiments/12_control_pseudo_autores.py,otro_no_ascii,1,generado,esponde --------------------- ?Cambia la estimacion out-of-fo
+experiments/13_holdout_v2.py,otro_no_ascii,1,generado,esponde --------------------- ?Cual es la particion desarroll
+experiments/14_oof_corregido_v2.py,otro_no_ascii,1,generado,esponde --------------------- ?Cual es el rendimiento out-of-
+experiments/15_cadenas_etiquetas_v2.py,otro_no_ascii,1,generado,"0, AG=0) que degrado -0.0056. ?Aporta algo explotarla con sco"
+experiments/17_stacking_v2.py,otro_no_ascii,1,generado,a fusion tardia regularizada. ?Aportan los canales de targeti
+experiments/18_p7_holdout_y_submission_v08.py,otro_no_ascii,2,generado,aciones en todo el proyecto). ?Confirma el holdout la mejora 
+experiments/19_sintaxis_cita_negacion_v2.py,otro_no_ascii,8,generado," '""': '""',     ""'"": ""'"",     ""?"": ""?"",     ""?"": ""?"",     """""":"
+experiments/19_sintaxis_cita_negacion_v2.py,otros_simbolos,4,generado," ""?"": ""?"",     ""?"": ""?"",     """""": """""",     ""'"": ""'"", }  VARIA"
+experiments/26_scaffold_v4.py,acentos_latinos,1,generado,"      Diccionario con los tamanos de desarrollo y holdout, el"
+experiments/27_label_consistency_v4.py,otro_no_ascii,2,generado,egunta central de la spec v4 (?106): cuanto del error es ruid
+experiments/28_hardness_v4.py,acentos_latinos,3,generado,"emplo, por lo que todas las senales de este script proceden d"
+experiments/28_hardness_v4.py,otro_no_ascii,7,generado,Contexto -------- La spec v4 (?9-?13) pide un ``hardness_scor
+experiments/29_reweighting_v4.py,otro_no_ascii,2,generado,rueba la mecanica de la spec (?10-?12): ponderar los ejemplos
+experiments/30_supervised_weighting_v4.py,otro_no_ascii,4,generado,"Contexto -------- La spec v4 (?15-?19, ?42-?43) pide reponder"
+experiments/31_joint_label_v4.py,acentos_latinos,1,generado,la clase mas positiva (asimetria de la metrica F1). 3. ``join
+experiments/31_joint_label_v4.py,otro_no_ascii,2,generado,es lo que propone la spec v4 (?35-?39): un **modelo conjunto*
+experiments/32_meta_shift_v4.py,otro_no_ascii,1,generado,orts/advanced_research_v2.md` ?4.3): el meta-modelo se entren
+experiments/33_class_conditional_lm_v4.py,acentos_latinos,1,generado,xto enMinusculas sin acentos anadidos.      Args:         tex
+experiments/33_class_conditional_lm_v4.py,otro_no_ascii,2,generado,-- Dos lineas que la spec v4 (?59-?63) declara nunca probadas
+experiments/34_structural_sparse_v4.py,otro_no_ascii,5,generado,izaron como canal propio; - **?44**: las interacciones (insul
+experiments/35_discovery_v4.py,otro_no_ascii,16,generado,odelos nuevos:  - **V4-F01** (?52-?53): ?existe un shift no s
+experiments/36_candidatos_v4.py,otro_no_ascii,7,generado,Contexto -------- La spec v4 (?97-?99) permite como maximo tr
+experiments/37_auditoria_v4.py,otro_no_ascii,2,generado,Contexto -------- La spec v4 (?91) exige que **cada candidato
+experiments/38_refit_final_v4.py,otro_no_ascii,1,generado,cadena de entrega de la spec (?100):  1. **Refit** sobre todo
+experiments/embedding_00_scaffold_v5.py,acentos_latinos,1,generado,"sca (diccionario y documentacion),     # asi que se excluye a"
+experiments/embedding_00_scaffold_v5.py,flechas,7,generado,"da"",         """",         ""10M ? 50M ? 100M ? decidir ? 250M ?"
+experiments/embedding_00_scaffold_v5.py,otro_no_ascii,2,generado,"  ""# Compliance de la fase v5 ?Embedding from Scratch?"",     "
+experiments/embedding_01_corpus_wikipedia_v5.py,acentos_latinos,24,generado,vo|File|Imagen|Image|Categor[ii]a|Category|Wikipedia|Plantill
+experiments/embedding_02_fasttext_baseline_v5.py,acentos_latinos,10,generado," [     ""violencia"", ""inmigracion"", ""gobierno"", ""mujer"", ""nino"
+experiments/embedding_02_fasttext_baseline_v5.py,otro_no_ascii,1,generado,nder la pregunta que importa: ?esa representacion distribuida
+experiments/embedding_06_auditoria_v5.py,acentos_latinos,1,generado,"paracion afirmacion / valor leido.     """"""     log(""4/6 coher"
+experiments/embedding_06_auditoria_v5.py,otro_no_ascii,2,generado,n # diagnostico de cobertura (?7-?9 de la spec) y la verifica
+experiments/embedding_07_corpus_50M_v5.py,otro_no_ascii,2,generado,medir la otra dimension de la ?31: **el tamano keeping la arq
+experiments/embedding_08_fasttext_50M_v5.py,otro_no_ascii,2,generado,"elos (arquitectura fija de la ?4 de la spec)"",         """",   "
+experiments/embedding_09_corpus_5M_v5.py,acentos_latinos,1,generado,epresentacion depende del tamano de forma   suave y la conclu
+experiments/embedding_09_corpus_5M_v5.py,otro_no_ascii,3,generado,La curva de aprendizaje de la ?10 se midio hasta ahora hacia 
+experiments/embedding_10_fasttext_5M_v5.py,acentos_latinos,1,generado,"ja de las subpalabras es pequena en todo el rango y no ""     "
+experiments/embedding_10_fasttext_5M_v5.py,otro_no_ascii,2,generado,"       ""Cierra la curva de la ?10 por debajo del punto de par"
+experiments/embedding_11_auditoria_firmas_v5_1.py,acentos_latinos,1,generado,"negativos"": 5}}, ]  # Resolucion de nombres de variante a ent"
+experiments/embedding_12_vector_size_v5_1.py,acentos_latinos,2,generado, toca +0.005 por cinco diezmilesimas mientras su intervalo de
+experiments/embedding_13_window_v5_1.py,acentos_latinos,1,generado,"ta arquitectonica es el **tamano de ventana**, que controla c"
+experiments/embedding_17_comparacion_final_v5_1.py,acentos_latinos,1,generado,"e la ventana: la"",         ""senal util es local y ortografica"
+experiments/embedding_17_comparacion_final_v5_1.py,otro_no_ascii,1,generado, que responde este informe: **?la configuracion arquitectonic
+experiments/embedding_18_complementariedad_v5_1.py,otro_no_ascii,3,generado,"regunta de la spec que no es ""?cuanto mejora?"" sino ""**que** "
+experiments/embedding_19_notebook_v5_1.py,acentos_latinos,169,generado,miento desde cero queda **detras de un interruptor** (``TRAIN
+experiments/embedding_19_notebook_v5_1.py,otro_no_ascii,1,generado,"bz2`, 305 MB, sha256 `3248f107...`). Los corpus web y mixto reu"
+experiments/embedding_19_notebook_v5_1.py,otros_simbolos,4,generado,ributiva entrenada desde cero -vectores que si agrupan palabr
+experiments/embedding_21_documentacion_v5_1.py,acentos_latinos,105,generado, v5.1.  Que hace -------- 1. Anade a `FINAL_REPORT.md` la sec
+experiments/embedding_21_documentacion_v5_1.py,flechas,7,generado,os y no de receta: `download` ? `raw` ? `clean` ? `dedup` ? `
+experiments/embedding_21_documentacion_v5_1.py,otro_no_ascii,2,generado, ya. Cubre dos fases: **v5** (?de donde salen los datos y que
+experiments/embedding_21_documentacion_v5_1.py,otros_simbolos,3,generado,# 28. Investigacion posterior - Embedding From Scratch (v5 y 
+experiments/embedding_22_auditoria_final_v5_1.py,acentos_latinos,1,generado,intacto y que la fase no genero submissions.      Returns:   
+experiments/v6_01_estructura_errores.py,otro_no_ascii,3,generado,e condicionan el gasto:  1. **?Hay informacion disponible que
+experiments/v6_03_ponderacion_grupo.py,acentos_latinos,7,generado,on `tope = 0.25`: limita el dano de A2 en los grupos   enorme
+experiments/v6_06_bagging_grupos.py,acentos_latinos,2,generado,si la repeticion es ruido o senal.      Args:         grupos_
+experiments/v6_06_bagging_grupos.py,otro_no_ascii,1,generado,"muestras de grupos distintos, ?aporta algo?  Por que el techo"
+experiments/v6_07_ruido_par.py,acentos_latinos,9,generado,"nota"": ""media de las cuatro senales, lambda 0.5"",     },     "
+experiments/v6_08_aumento.py,acentos_latinos,11,generado,"tate"": 42, }  VOCALES = ""aeiouaeiouAEIOUAEIOU"" PATRON_PALABRA"
+experiments/v6_09_entregables.py,acentos_latinos,2,generado,"ro escrito a     # mano: si manana se anade una hipotesis, el"
+experiments/v7_02_prior_grupo.py,acentos_latinos,9,generado,la con el diccionario de diagnostico y la mascara booleana de
+experiments/v7_03_umbral_anidado.py,acentos_latinos,1,generado,"ero. Si la diferencia es pequena, la eleccion del umbral es u"
+experiments/v8_08_corrector_margenes.py,otro_no_ascii,2,generado,"argenes de V03, y solo ellos, ?llevan informacion que la deci"
+experiments/v8_09_curva_transferencia.py,acentos_latinos,4,generado,"nce sondas y V03 sigue en el maximo, y ademas la mayor mejora"
+experiments/v8_09_curva_transferencia.py,otro_no_ascii,1,generado,de a la pregunta que queda: **?existe alguna dimension de la 
+experiments/v8_10_ensemble_cinco_modelos.py,acentos_latinos,1,generado,"esta familia, y aqui es de milesimas, que"",         ""es mucho"
+experiments/v8_13_clasificadores_alternativos.py,acentos_latinos,3,generado,"se mida con este protocolo y de mas que el control no esta"", "
+notebooks/10_final_pipeline.ipynb,acentos_latinos,1201,generado,"""source"": [     ""# Clasificacion multi-etiqueta de discurso d"
+notebooks/10_final_pipeline.ipynb,otro_no_ascii,4,generado,"s `0xBF` correspondientes a \""?\""); `submission.csv` usa coma"
+notebooks/10_final_pipeline.ipynb,otros_simbolos,5,generado,"entrenada desde cero\n"",     ""-vectores que si agrupan palabr"
+reports/advanced_gap_analysis_v2.md,acentos_latinos,3,generado,mentario | E2-15 | | 23 | Fusion tardia (late fusion) | Conce
+reports/advanced_research_v2.md,otro_no_ascii,6,generado,"sks/plan.md`, `tasks/todo.md` ? `reports/advanced_gap_analysi"
+reports/advanced_research_v4.md,acentos_latinos,2,generado,D 300 alcanza 0.7904 con IC fragil | `reports/class_condition
+reports/advanced_research_v4.md,otro_no_ascii,4,generado,e terminacion B** de la spec (?102): las hipotesis nuevas raz
+reports/auditoria_final.md,otro_no_ascii,1,generado,"  identicos dentro de test (""#?nombre?"", ids 22557/20477/2499"
+reports/discovery_v4.json,otro_no_ascii,1,generado, impacto despreciable; ademas ?58 pide separarlo en un canal 
+reports/eda/fase2_inventario_caracteres.csv,otro_no_ascii,1,generado,",1 ],12,0.0918,1 &,8,0.0612,1 ?,6,0.0459,0 +,5,0.0382,1 ~,5,0"
+reports/eda/fase2_lexico_inducido_agresividad.csv,acentos_latinos,3,generado,"5,10,5,0.5776,0.914,180,0 millon,5,5,10,5,0.5776,0.914,181,0 "
+reports/eda/fase2_tr0_con_referencia_colectiva.csv,acentos_latinos,1,generado,"eHbKPEsJS,3,2,""['ojo', 'eleccion', 'pase']"",0,0,1 22665,1,0,0"
+reports/embedding_architecture_v5_1.md,acentos_latinos,1,generado, **bajo** de la ventana: la senal util es local y ortografica
+reports/embedding_capacity_analysis_v5_1.md,otro_no_ascii,1,generado, que responde este informe: **?la configuracion arquitectonic
+reports/embedding_complementarity.md,otro_no_ascii,1,generado, en ambas direcciones.  ## 2. ?De donde viene lo que aporta: 
+reports/embedding_compliance.md,flechas,7,generado, ## 7. Escala autorizada  10M ? 50M ? 100M ? decidir ? 250M ?
+reports/embedding_compliance.md,otro_no_ascii,2,generado,# Compliance de la fase v5 ?Embedding from Scratch?  Gener
+reports/embedding_corpus_50M_audit.md,otro_no_ascii,1,generado,ma fuente.  | Condicion de la ?30 | Evidencia | |---|---| | 1
+reports/embedding_corpus_50M_v5.json,acentos_latinos,2,generado,"   ""Argentina"",       ""Geografia de Andorra"",       ""Demograf"
+reports/embedding_corpus_5M_v5.json,acentos_latinos,2,generado,"   ""Argentina"",       ""Geografia de Andorra"",       ""Demograf"
+reports/embedding_corpus_audit.md,acentos_latinos,2,generado,"s: Andorra, Argentina, Geografia de Andorra, Demografia de An"
+reports/embedding_corpus_v5.json,acentos_latinos,2,generado,"   ""Argentina"",       ""Geografia de Andorra"",       ""Demograf"
+reports/embedding_corpus_web_v5.json,acentos_latinos,8,generado,"   ""Comprar Zapatillas para nina en chancla con goma por detr"
+reports/embedding_curve_50M_v5.md,otro_no_ascii,2,generado,elos (arquitectura fija de la ?4 de la spec)  | modelo | corp
+reports/embedding_curve_5M_v5.md,acentos_latinos,1,generado,ja de las subpalabras es pequena en todo el rango y no depend
+reports/embedding_curve_5M_v5.md,otro_no_ascii,2,generado,(P10)). Cierra la curva de la ?10 por debajo del punto de par
+reports/embedding_downstream_v5.json,acentos_latinos,33,generado,"         ],         ""inmigracion"": [           [             "
+reports/embedding_intrinsic_eval.md,acentos_latinos,39,generado,"olencia` (0.667) | | inmigracion | `emigracion` (0.872), `inm"
+reports/embedding_phase_closeout_v5.md,acentos_latinos,20,generado,le un embedding desde cero aqui? (?42.1) | **No como sustitut
+reports/embedding_phase_closeout_v5.md,otro_no_ascii,26,generado,# Cierre de la fase v5 ?Embedding from Scratch?  Proye
+reports/embedding_vector_size_v5_1.md,acentos_latinos,1,generado,ar el umbral por cinco diezmilesimas no es una mejora: es una
+reports/embedding_vocabulary_coverage.md,acentos_latinos,11,generado,.726) | | `mereces` (135) | `lo` | 0.620 | `merecumbe` (0.613
+reports/embedding_vocabulary_coverage.md,alfabetos_no_latinos,6,generado, (70) | `alharabe` | 0.747 | `?????????` (0.740) | | `ensear`
+reports/embedding_vocabulary_coverage.md,otro_no_ascii,2,generado,79) | `lechuck's` | 0.758 | `son` (0.726) | | `mereces` (135)
+reports/estado_arte_v4.csv,acentos_latinos,1,generado,icacion barata de contenido danino sin depender de promptings
+reports/estado_arte_v4.csv,otro_no_ascii,5,generado,vel;Sin experimento. Refuerza ?72 MULTIPLICIDAD y la redaccio
+reports/estado_arte_v4.md,acentos_latinos,13,generado,on de expectativas y como diseno de comparacion | | 2. Ruido 
+reports/estado_arte_v4.md,otro_no_ascii,5,generado," reintentar la familia en v4, ?84 NO_REPEATING).  ### 2.3 [V4"
+reports/hardness_vs_noise_v4.md,acentos_latinos,2,generado,y` el 2026-09-25. Todas las senales son **out-of-fold**: la p
+reports/hardness_vs_noise_v4.md,otro_no_ascii,3,generado,e no lo vio en entrenamiento (?9).  ## 1. Variables calculada
+reports/label_consistency_v4_ejemplos.md,otro_no_ascii,1,generado,"a auditable, no automatizada (?8).  Total de clusters con 2+ "
+reports/leakage_audit.md,acentos_latinos,17,generado,# Auditoria de fuga de datos - KAGGLE_TO
+reports/research_backlog_v2.md,acentos_latinos,3,generado," H: ""no evaluada"" | spaCy simbolico -> secuencias POS -> TF-I"
+reports/research_backlog_v4.md,acentos_latinos,2,generado,"B 0.78163 | simulacion de tamano de entrenamiento (64 %, 80 %"
+reports/research_backlog_v4.md,otro_no_ascii,21,generado,edad de anotacion sospechada (?3.12) | clusters por texto exa
+reports/rule_audit_v2.md,acentos_latinos,28,generado,# Auditoria de reglas (FASE 87) - KAGGLE
+reports/rule_audit_v2.md,otro_no_ascii,3,generado," es spaCy (uso simbolico, ver ?2). |  **Veredicto**: cumplido"
+reports/rule_audit_v2.md,otros_simbolos,4,generado,Auditoria de reglas (FASE 87) - KAGGLE_TOXIC_2026_PUJ  Fecha:
+reports/spec_compliance_v2.md,acentos_latinos,196,generado,umplimiento de la especificacion v2 ?Advanced Research? - KAG
+reports/spec_compliance_v2.md,flechas,16,generado,ysis_v2.md` | Matriz fenomeno ? representacion ? brecha ? hip
+reports/spec_compliance_v2.md,otro_no_ascii,19,generado,iento de la especificacion v2 ?Advanced Research? - KAGGLE_TO
+reports/spec_compliance_v2.md,otros_simbolos,19,generado,cacion v2 ?Advanced Research? - KAGGLE_TOXIC_2026_PUJ  Fecha:
+reports/spec_compliance_v4.md,acentos_latinos,90,generado,umplimiento de la especificacion v4 ?Advanced Research v4?  F
+reports/spec_compliance_v4.md,otro_no_ascii,18,generado,iento de la especificacion v4 ?Advanced Research v4?  Fecha: 
+reports/spec_compliance_v4.md,otros_simbolos,1,generado,"12 variantes (6 y 4 clases, C ? {0.5,1,2}, balanced y unbalan"
+reports/target_encoding_audit_v2.md,acentos_latinos,28,generado,# Auditoria de target encoding y aprendi
+reports/target_encoding_audit_v2.md,flechas,1,generado,: cobertura informativa 0.5 % ? linea cerrada por dispersion.
+reports/target_encoding_audit_v2.md,otro_no_ascii,1,generado,"s (pliegue 0, sha256 `e5b62e5f...`); solo 2 de 5 evaluaciones u"
+reports/target_encoding_audit_v2.md,otros_simbolos,1,generado,endizaje fold-local (FASE 87) - KAGGLE_TOXIC_2026_PUJ  Fecha:
+reports/v4_candidate_comparison.md,otro_no_ascii,1,generado,a y no un ranking**: la spec (?99) prohibe ordenar mecanicame
+reports/v4_gap_analysis.md,flechas,1,generado,s/27_label_consistency_v4.py` ? `reports/label_consistency_v4
+reports/v4_gap_analysis.md,otro_no_ascii,12,generado,etir lineas bajo otro nombre (?84) y para separar lo genuinam
+reports/v4_gap_analysis.md,otros_simbolos,8,generado,ciones textuales** (spec 7-8) - nunca    medida; ataca direct
+reports/v6_error_structure.md,otro_no_ascii,1,generado,# 2. Interseccion de errores: ?hay informacion que V03 no usa
+reports/v6_ponderacion_grupo.md,acentos_latinos,5,generado,"tintos** en 1483 filas. - tamano mediano 1, maximo 7. - 1378 "
+reports/v7_prior_grupo.json,acentos_latinos,1,generado,"os_distintos"": 1415,     ""tamano_maximo"": 7,     ""filas_con_g"
+reports/v7_prior_grupo.md,acentos_latinos,1,generado,upos distintos | 1415 | | tamano maximo de grupo | 7 | | **fi
+reports/v8_clasificadores_alternativos.md,acentos_latinos,3,generado,se mida con este protocolo y de mas que el control no esta mi
+reports/v8_corrector_margenes.md,otro_no_ascii,1,generado,"argenes de V03, y solo ellos, ?llevan informacion que la deci"
+reports/v8_curva_transferencia.md,acentos_latinos,1,generado,"il bajo cuesta unos cuatro milesimos, y subirla al cuartil al"
+reports/v8_ensemble_cinco_modelos.md,acentos_latinos,1,generado,"esta familia, y aqui es de milesimas, que es mucho menor que "
+src/data.py,acentos_latinos,23,generado,"""""""Carga, descarga y validacion de los datos de KAGGLE_TOXIC"
+src/data.py,otro_no_ascii,1,generado,"`0xBF``   correspondientes a ""?""). Separador ``;``, quoting e"
+src/embedding_utils.py,acentos_latinos,14,generado,"np  VOCALES = frozenset(""aeiouaeiouuAEIOUAEIOUU"")  RE_COMENTA"
+src/embedding_utils.py,otros_simbolos,1,generado,"_TOKEN = re.compile(r""\w+(?:['']\w+)*"", re.UNICODE)   def lim"
+submissions/leaderboard_log.csv,acentos_latinos,2,generado,-0.0058 frente al +0.0059 implicito de v03 (cuyo LB se obtuvo
+tasks/plan_v4.md,acentos_latinos,49,generado,o   (std actual 0.0161). - **Metrica primaria**: `f1_media_co
+tasks/plan_v4.md,otro_no_ascii,3,generado,"all, media y std por pliegue (?68). - **Regla de adopcion (D-"
+tasks/plan_v5.md,acentos_latinos,2,generado,C) | primer veredicto: ?hay senal? ?se justifica 50M? | | **P
+tasks/plan_v5.md,otro_no_ascii,16,generado,auditoria de cobertura TOXIC (?7-?9) | cobertura medida con n
+tasks/todo_v4.md,acentos_latinos,1,generado,1 simulacion de shift por tamano de entrenamiento y alineacio
+tasks/todo_v5.md,acentos_latinos,1,generado, la representacion: es el tamano de los datos etiquetados y e
+tasks/todo_v5.md,otro_no_ascii,11,generado,ing_from_scratch_v5_spec.md` (?0-?44) - [x] **D-030** registr
+tasks/todo_v6.md,acentos_latinos,1,generado,s empeora (la repeticion es senal) - [x] **Cerrado por la sec

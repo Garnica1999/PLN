@@ -1,0 +1,16 @@
+archivo,emoticones
+DECISIONS.md,T_T
+RUNLOG.md,xD
+audit/p09_charscan.py,-_-|:)|:-)|:-D|:-P|:D|:P|;)|;-)|<3|T_T|XD|^_^|u_u|xD
+config/gpu_baseline.json,u_u
+data/raw/toxic_train.csv,:)|:D|<3|XD|xD
+docs/advanced_research_v4_spec.md,T_T
+experiments/06_error_analysis.py,XD
+experiments/11_dl_desde_cero.py,u_u
+notebooks/10_final_pipeline.ipynb,XD|xD
+reports/eda/error_samples_para_revision.csv,XD
+reports/error_analysis.md,XD
+reports/feature_catalog_v2.csv,T_T
+reports/spec_compliance_v4.md,T_T
+reports/stacking_v2.json,T_T
+reports/v4_gap_analysis.md,T_T

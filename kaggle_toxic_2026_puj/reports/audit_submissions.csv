@@ -1,0 +1,48 @@
+surface,archivo,filas,columnas_ok,ids_orden_ok,binario_ok,nulos,sha256_16,filas_unicas_id,enlace_manifiesto
+A_actual,toxic_submission_v00_plantilla.csv,1154,1,1,1,0,0dfb4d07dffc31d3,1,
+A_actual,toxic_submission_v01_baseline_tfidf_lr.csv,1154,1,1,1,0,0c02c8aad81a8458,1,
+A_actual,toxic_submission_v02_lr_union.csv,1154,1,1,1,0,228068c6ce0475e8,1,
+A_actual,toxic_submission_v03_lr_union_thr.csv,1154,1,1,1,0,7d7478f271e6edfd,1,
+A_actual,toxic_submission_v04_ens04_mediana.csv,1154,1,1,1,0,c37cf1f5f9159b22,1,
+A_actual,toxic_submission_v05_optuna.csv,1154,1,1,1,0,a7f68a8679dadb13,1,
+A_actual,toxic_submission_v06_robustez_c1.csv,1154,1,1,1,0,fc943e688259c89c,1,
+A_actual,toxic_submission_v07_robustez_mindf5.csv,1154,1,1,1,0,4ba99f4daa62a9c0,1,
+A_actual,toxic_submission_v08_meta_v2.csv,1154,1,1,1,0,b59852f6e71527d9,1,
+A_actual,toxic_submission_v09_candidate_a.csv,1154,1,1,1,0,8e5a95d3bd6a3e4e,1,"v09_candidate_a v09_candidate_a RidgeClassifier(alpha=0.3, balanced) x3 sobre probabilidades OOF de V03 + canales probab"
+A_actual,toxic_submission_v10_candidate_b.csv,1154,1,1,1,0,92caa41e379f1018,1,"v10_candidate_b v10_candidate_b RidgeClassifier(alpha=1, balanced) x3 sobre probabilidades OOF de V03 + canales probabil"
+A_actual,toxic_submission_v11_candidate_c.csv,1154,1,1,1,0,066d46ca12e95fde,1,"v11_candidate_c v11_candidate_c RidgeClassifier(alpha=1, balanced) x3 sobre probabilidades OOF de V03 + canales probabil"
+B_v7,toxic_submission_v00_plantilla.csv,1154,1,1,1,0,0dfb4d07dffc31d3,1,
+B_v7,toxic_submission_v01_baseline_tfidf_lr.csv,1154,1,1,1,0,0c02c8aad81a8458,1,
+B_v7,toxic_submission_v02_lr_union.csv,1154,1,1,1,0,228068c6ce0475e8,1,
+B_v7,toxic_submission_v03_lr_union_thr.csv,1154,1,1,1,0,7d7478f271e6edfd,1,
+B_v7,toxic_submission_v04_ens04_mediana.csv,1154,1,1,1,0,c37cf1f5f9159b22,1,
+B_v7,toxic_submission_v05_optuna.csv,1154,1,1,1,0,a7f68a8679dadb13,1,
+B_v7,toxic_submission_v06_robustez_c1.csv,1154,1,1,1,0,fc943e688259c89c,1,
+B_v7,toxic_submission_v07_robustez_mindf5.csv,1154,1,1,1,0,4ba99f4daa62a9c0,1,
+B_v7,toxic_submission_v08_meta_v2.csv,1154,1,1,1,0,b59852f6e71527d9,1,
+B_v7,toxic_submission_v09_candidate_a.csv,1154,1,1,1,0,8e5a95d3bd6a3e4e,1,"v09_candidate_a v09_candidate_a RidgeClassifier(alpha=0.3, balanced) x3 sobre probabilidades OOF de V03 + canales probab"
+B_v7,toxic_submission_v10_candidate_b.csv,1154,1,1,1,0,92caa41e379f1018,1,"v10_candidate_b v10_candidate_b RidgeClassifier(alpha=1, balanced) x3 sobre probabilidades OOF de V03 + canales probabil"
+B_v7,toxic_submission_v11_candidate_c.csv,1154,1,1,1,0,066d46ca12e95fde,1,"v11_candidate_c v11_candidate_c RidgeClassifier(alpha=1, balanced) x3 sobre probabilidades OOF de V03 + canales probabil"
+B_v7,toxic_submission_v12_descartado_meta36_downweight.csv,1154,1,1,1,0,ec25354cacba3934,1,
+C_v8,toxic_submission_v00_plantilla.csv,1154,1,1,1,0,0dfb4d07dffc31d3,1,
+C_v8,toxic_submission_v01_baseline_tfidf_lr.csv,1154,1,1,1,0,0c02c8aad81a8458,1,
+C_v8,toxic_submission_v02_lr_union.csv,1154,1,1,1,0,228068c6ce0475e8,1,
+C_v8,toxic_submission_v03_lr_union_thr.csv,1154,1,1,1,0,7d7478f271e6edfd,1,
+C_v8,toxic_submission_v04_ens04_mediana.csv,1154,1,1,1,0,c37cf1f5f9159b22,1,
+C_v8,toxic_submission_v05_optuna.csv,1154,1,1,1,0,a7f68a8679dadb13,1,
+C_v8,toxic_submission_v06_robustez_c1.csv,1154,1,1,1,0,fc943e688259c89c,1,
+C_v8,toxic_submission_v07_robustez_mindf5.csv,1154,1,1,1,0,4ba99f4daa62a9c0,1,
+C_v8,toxic_submission_v08_meta_v2.csv,1154,1,1,1,0,b59852f6e71527d9,1,
+C_v8,toxic_submission_v08_p1_fold_ensemble.csv,1154,1,1,1,0,3bbcc6bb1c7e58ca,1,
+C_v8,toxic_submission_v09_candidate_a.csv,1154,1,1,1,0,8e5a95d3bd6a3e4e,1,"v09_candidate_a v09_candidate_a RidgeClassifier(alpha=0.3, balanced) x3 sobre probabilidades OOF de V03 + canales probab"
+C_v8,toxic_submission_v09_p5_c_por_etiqueta.csv,1154,1,1,1,0,610abaa16d03c13d,1,
+C_v8,toxic_submission_v10_candidate_b.csv,1154,1,1,1,0,92caa41e379f1018,1,"v10_candidate_b v10_candidate_b RidgeClassifier(alpha=1, balanced) x3 sobre probabilidades OOF de V03 + canales probabil"
+C_v8,toxic_submission_v10_p6_peso_por_etiqueta.csv,1154,1,1,1,0,cc850d9dd3606c29,1,
+C_v8,toxic_submission_v11_candidate_c.csv,1154,1,1,1,0,066d46ca12e95fde,1,"v11_candidate_c v11_candidate_c RidgeClassifier(alpha=1, balanced) x3 sobre probabilidades OOF de V03 + canales probabil"
+C_v8,toxic_submission_v11_p7_corrector_margenes.csv,1154,1,1,1,0,47d8252d65a28768,1,
+C_v8,toxic_submission_v12_descartado_meta36_downweight.csv,1154,1,1,1,0,ec25354cacba3934,1,
+C_v8,toxic_submission_v12_p7_promedio_repeticiones.csv,1154,1,1,1,0,6157ef15e2da21db,1,
+C_v8,toxic_submission_v13_p10_ensemble_cinco_modelos.csv,1154,1,1,1,0,6157ef15e2da21db,1,
+C_v8,toxic_submission_v14_complejidad_idiosincrasias.csv,1154,1,1,1,0,b5830069732a0fa3,1,
+C_v8,toxic_submission_v15_seleccion_por_grupo.csv,1154,1,1,1,0,6dc95fa3ca171376,1,
+C_v8,toxic_submission_v16_clasificadores_alternativos.csv,1154,1,1,1,0,61e11c2035561e43,1,

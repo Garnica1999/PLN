@@ -1,0 +1,12 @@
+representacion,modelo,loss,features,regimen,mejor_resultado,transfer_gap
+"TF-IDF word (1,2) min_df2 sublinear",LR C=1 balanced,BCE,~4k,1731 filas,0.7578 OOF / 0.75677 LB,-0.0010
+union word+char_wb,LR C=2 balanced,BCE,24646,1731 filas,0.7927 OOF his / 0.777211 corr / 0.78306 LB,-0.0158 (historico)
+union word+char_wb,LR C=3.26 (optuna),BCE,~32k,1731 filas,0.8012-0.8039 OOF / 0.77602 LB,-0.0279
+union + 44 meta features,Ridge alpha=3,L2 (clasificacion),44,1483 dev OOF,0.7874 dev / 0.78163 LB,-0.0058
+union + canales EMO/SYN,Ridge alpha=0.3-1,L2,restringido,1483 dev,0.7793-0.7815 LB,+0.0005 a +0.0018
+TF-IDF union,LinearSVC C=1,hinge,24646,1731,0.7809 dev (M3),n/a
+FastText propio 10M-50M (media de tokens),LR/Ridge,BCE/L2,200 dims,1483 dev,sin mejora,n/a
+SVD(300) de TF-IDF union,MLP 256-128 (torch),BCE,300,1731 (hist.),0.7949 OOF his,no sondo
+chars desde cero (CharCNN),CNN embeddings propios,BCE,vocab char,1731,0.741 OOF his,n/a
+words desde cero (BiLSTM),BiLSTM 96,BCE,vocab palabra,1731,0.736 OOF his,n/a
+union (5 particiones),promedio de modelos,BCE,24646,1483 dev,+0.0051 OOF,-0.0111 (v12 LB)

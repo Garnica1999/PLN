@@ -1,0 +1,36 @@
+{
+  "archivos_escaneados": 487,
+  "generados": {
+    "acentos_latinos": 4148,
+    "flechas": 171,
+    "otro_no_ascii": 550,
+    "otros_simbolos": 274,
+    "box_drawing": 5,
+    "alfabetos_no_latinos": 6
+  },
+  "dataset": {
+    "acentos_latinos": 0,
+    "flechas": 0,
+    "otro_no_ascii": 0,
+    "otros_simbolos": 0,
+    "box_drawing": 0,
+    "alfabetos_no_latinos": 0
+  },
+  "archivos_con_emoticones": [
+    "DECISIONS.md",
+    "RUNLOG.md",
+    "audit/p09_charscan.py",
+    "config/gpu_baseline.json",
+    "data/raw/toxic_train.csv",
+    "docs/advanced_research_v4_spec.md",
+    "experiments/06_error_analysis.py",
+    "experiments/11_dl_desde_cero.py",
+    "notebooks/10_final_pipeline.ipynb",
+    "reports/eda/error_samples_para_revision.csv",
+    "reports/error_analysis.md",
+    "reports/feature_catalog_v2.csv",
+    "reports/spec_compliance_v4.md",
+    "reports/stacking_v2.json",
+    "reports/v4_gap_analysis.md"
+  ]
+}
