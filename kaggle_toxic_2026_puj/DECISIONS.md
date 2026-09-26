@@ -2268,3 +2268,71 @@ evidencia, experimento, resultado, conclusion final.
   No es imposible, pero no es algo que se alcance empujando la capa de decision, que es donde
   se ha estado buscando durante varias fases. La honestidad con el objetivo importa mas que
   el objetivo.
+
+## D-060 - P3 cerrado: la estabilidad de features es el mecanismo correcto para el problema del que viene y el equivocado para este
+
+- **Contexto**: P3 era la primera posicion de la reordenacion que imponen el filtro de
+  detectabilidad de D-059, porque reducir la dimension puede cambiar muchas celdas de golpe.
+  La idea es el capitulo 8 de Mosteller y Wallace, que el material de clase resume como
+  palabras inestables y que el profesor midio traduciendo documentos de ida y vuelta a cinco
+  idiomas. La traduccion no esta disponible, asi que la operacionalizacion es por submuestreo
+  de las filas de entrenamiento.
+- **Decision 1, el protocolo queda sin fuga y eso se construye asi, no por descuido**.
+  El vectorizador se ajusta **una vez por pliegue sobre su tren completo**, de
+  modo que el espacio de caracteristicas es fijo y solo varian las filas de cada submuestra.
+  Las filas de validacion se **transforman** con ese mismo vectorizador y nunca se vuelven a
+  ajustar. La funcion que mide la estabilidad recibe la matriz del tren y las etiquetas del
+  tren, y no admite ningun indice exterior, de modo que no puede ver la validacion ni por
+  error. En los cinco pliegues el protocolo cubre las 1483 filas exactamente una vez, sin
+  solape y sin indices fuera de rango.
+- **Decision 2, tres umbrales de estabilidad, los tres negativos y monotonos**.
+  - Umbral 0,5: 1636 caracteristicas de 20.441, metrica 0,773904, diferencia **-0,003308**,
+    IC95 [-0,01218, +0,00558], 1 de 5 pliegues.
+  - Umbral 0,7: 927 caracteristicas, 0,772583, diferencia **-0,004628**, IC95 [-0,01533,
+    +0,00631], 1 de 5 pliegues.
+  - Umbral 0,9: 455 caracteristicas, 0,758321, diferencia **-0,018890**, IC95 [-0,03154,
+    -0,00610], 0 de 5 pliegues.
+  Cuanto mas agresiva es la seleccion, peor. La tendencia no es ruido: es monotona.
+- **Decision 3, el filtro de detectabilidad falla en los tres, y con holgura**. La tasa de
+  acierto entre las celdas modificadas es de 0,4402, 0,4436 y 0,3930, frente a minimos
+  exigidos de 0,5522, 0,5361 y 0,5257. **Ninguna se envia**, y por tanto **no se gasta ninguna
+  sonda**. El filtro creado en V8-02 acaba de demostrar su valor en su primer uso: sin el,
+  esta linea habria ocupado una de las dos o tres sondas de la fase para devolver un numero
+  sin informacion.
+- **Decision 4, el hallazgo importante es como pierde, no que pierde**. En las celdas que
+  toca, la linea acierta del 39 % al 44 %, es decir **por debajo del 50 % que daria una moneda
+  al aire**. La seleccion por estabilidad mueve la decision de forma sistematica hacia peor.
+  La explicacion es coherente con lo que hace el metodo: un rasgo que mantiene peso alto bajo
+  siete submuestras es un rasgo de magnitud grande y muy repetida, no necesariamente uno que
+  separa las clases, y es mas probable que sea frecuente y neutro que discriminante y
+  especifico. Al conservar solo esos rasgos se pierde la senal minoritaria que separa el
+  insulto de la toxicidad.
+- **Decision 5, la conclusion que sobrevive a la fase, y que reencuadra la idea de origen**.
+  El capitulo 8 de Mosteller y Wallace mide estabilidad **para atribuir autoria**, donde un
+  rasgo frecuente y neutro si es informativo, porque el objetivo es la **forma** del texto y no
+  su pertenencia a una clase. **Traducir ese criterio a un problema de clasificacion no
+  conserva su sentido.** El mecanismo es el correcto para el problema del que viene y el
+  equivocado para este. La idea era buena, la fuente es buena, y la traduccion al problema es
+  lo que falla: conviene separar las tres cosas, porque descartar la idea sin el matiz
+  habria cerrado una puerta que en otro problema si funciona.
+- **Decision 6, dos afirmaciones que no se contradicen y que hay que no mezclar**. El IC95
+  del umbral 0,9 **excluye cero**: la perdida es detectable en el desarrollo. Y a la vez el
+  filtro dice que no se veria en el externo. No es contradiccion: la primera afirmacion es
+  sobre la metrica de validacion agrupada, con mil veces mas filas; la segunda es sobre si el
+  leaderboard de 1154 filas puede distinguir un movimiento de esa magnitud.
+- **Decision 7, dos errores de implementacion se detectaron antes de obtener cifras, y ambos
+  los detecto el propio control del script**. El primero: un mapa de indices locales
+  construido sobre el entrenamiento que se consultaba con las filas de validacion, que por
+  definicion no estan ahi; ademas la prediccion de la validacion no puede salir de una matriz
+  ajustada solo en el entrenamiento, hay que **transformar** esas filas. El segundo: un conteo
+  de caracteristicas que recibia indices globales del entrenamiento completo donde esperaba
+  las filas del desarrollo. Ninguno llego a producir una cifra, y ambos los atrapo el RuntimeError
+  de seguridad que el propio script escribe, lo que confirma que un control de fuga explicito
+  vale mas que un comentario que lo diga.
+- **Decision 8, la ordenacion que fijaba P3 como primera posicion queda agotada**. P3 se
+  cierra sin variantes y **sin reintento con mas agresividad ni con otra constante de
+  submuestreo**, porque la tendencia es monotona y va en la direccion contraria. La fase pasa
+  a **P2, la ponderacion por razon logaritmica de recuentos**, que conserva su precedente
+  adverso ya medido dentro de E2-15, cerrado entre -0.016 y -0.039, y que es el estimador de
+  Mosteller y Wallace de 1964. P5, P6 y P7 siguen con la prioridad baja que les asigno el
+  filtro de detectabilidad.

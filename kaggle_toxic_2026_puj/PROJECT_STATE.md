@@ -452,3 +452,19 @@ chequeo previo (D-008).
   este leaderboard pueda resolver.
 - **Reordenacion**: P5, P6 y P7 bajan de prioridad. **P3, la estabilidad de features, sube a la
   primera posicion** y es la siguiente linea a ejecutar.
+
+### Tras P3 (V8-03)
+
+- **P3 CERRADO, negativo** (D-060). Tres umbrales de estabilidad, los tres monotonos a peor:
+  -0,003308, -0,004628 y -0,018890, este ultimo con el IC95 excluyendo cero.
+- **El filtro de detectabilidad fallo en los tres** (0,4402, 0,4436 y 0,3930 frente a
+  minimos de 0,55, 0,54 y 0,53). **No se genero submission y no se gasto sonda.** El filtro
+  de V8-02 cumple su funcion en su primer uso.
+- **Como pierde es el hallazgo**: acierta del 39 % al 44 % en las celdas que toca, por debajo
+  del azar. Conserva rasgos de magnitud grande y repetida, que son mas probablemente
+  frecuentes y neutros que discriminantes, y con ello pierde la senal minoritaria.
+- **Conclusion que sobrevive**: la estabilidad de features es el mecanismo correcto para
+  atribuir autoria y el equivocado para clasificacion de tres etiquetas. El criterio mide forma
+  del texto, no pertenencia a una clase.
+- **Siguiente linea: P2**, la ponderacion por razon logaritmica de recuentos, que conserva su
+  precedente adverso de E2-15 (-0.016 a -0.039).

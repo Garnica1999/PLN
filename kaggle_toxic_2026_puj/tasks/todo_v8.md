@@ -14,10 +14,13 @@
 - [x] A2: filtro de detectabilidad adoptado, estimable antes de enviar.
 - [x] `experiments.csv` llega a 191 filas. D-057, D-058 y D-059 escritas.
 
+- [x] **P3, estabilidad de features: negativo y monotono.** -0,0033, -0,0046 y -0,0189. El
+      filtro de detectabilidad falla en los tres. Sin submission y sin sonda.
+- [x] Conclusion registrada: el criterio mide forma del texto, no pertenencia a una clase.
+
 ## Siguiente
 
-- [ ] **P3, estabilidad de features**, primera posicion. Es la unica linea que puede cambiar
-      muchas celdas de golpe y acercarse al minimo de acierto exigido por el filtro.
-- [ ] Aplicar el filtro de detectabilidad **antes** de considerar cualquier envio.
-- [ ] P2 (log-count ratio) con el precedente de E2-15 ya medido.
+- [ ] **P2, ponderacion por razon logaritmica de recuentos**, con el precedente de E2-15 ya
+      medido entre -0,016 y -0,039. Es el estimador de Mosteller y Wallace de 1964.
+- [ ] Aplicar el filtro de detectabilidad **antes** de considerar cualquier envio, siempre.
 - [ ] P4 a P7 solo si el filtro de detectabilidad dice que su cambio es resoluble.

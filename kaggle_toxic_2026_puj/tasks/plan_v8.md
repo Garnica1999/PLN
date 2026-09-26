@@ -37,6 +37,6 @@ empujando la capa de decision.
 | 1 | P0 auditoria de brecha y del material de clase | **cerrada** (D-057) |
 | 2 | P1 promedio de los cinco modelos al predecir | **cerrada, negativa** (D-059) |
 | 3 | A2 resolucion del leaderboard y filtro de detectabilidad | **cerrada** (V8-02) |
-| 4 | P3 estabilidad de features | **siguiente, primera posicion** |
-| 5 | P2 log-count ratio, con precedente adverso ya medido | en espera |
+| 4 | P3 estabilidad de features | **cerrada, negativa** (D-060) |
+| 5 | P2 log-count ratio, con precedente adverso ya medido | **siguiente** |
 | 6 | P4 a P7 | en espera, baja prioridad por el filtro |

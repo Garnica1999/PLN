@@ -1073,3 +1073,18 @@ Registro cronologico de ejecuciones. Formato:
   celdas. **P3 sube a la primera posicion.** El objetivo de superar 0.80 queda a 1.1 veces el
   ruido y 21 aciertos netos de ventaja limpia sobre once sondas de las que diez son
   indistinguibles entre si.
+- v8 P3: estabilidad de features entre submuestras | `v8_03_estabilidad_features.py`
+  **Negativo y monotono en los tres umbrales.** 0,5 deja 1636 rasgos de 20.441 y da
+  -0,003308; 0,7 deja 927 y da -0,004628; 0,9 deja 455 y da -0,018890 con el IC95 excluyendo
+  cero. Cuanto mas agresiva la seleccion, peor. **El filtro de detectabilidad falla en los tres**
+  con tasa de acierto entre celdas modificadas de 0,4402, 0,4436 y 0,3930. **No se genera
+  submission y no se gasta sonda.**
+  **El hallazgo es como pierde, no que pierde**: acierta del 39 % al 44 % en las celdas que
+  toca, por debajo del azar. Un rasgo estable bajo submuestras es de magnitud grande y
+  repetida, mas probablemente frecuente y neutro que discriminante. Se conserva el ruido
+  frecuente y se pierde la senal minoritaria.
+  **Conclusion que sobrevive a la fase**: el capitulo 8 de Mosteller y Wallace mide
+  estabilidad para atribuir autoria, donde un rasgo frecuente y neutro si informa porque el
+  objetivo es la forma y no la clase. Traducir el criterio a clasificacion no conserva su
+  sentido. La idea es buena y la fuente es buena; lo que falla es la traduccion al problema.
+  **D-060. 0 submissions.**
