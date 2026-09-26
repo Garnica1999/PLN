@@ -1949,3 +1949,49 @@ evidencia, experimento, resultado, conclusion final.
   detecto el verificador de codigo variable no usada. (b) Los pesos se guardaban como vector
   cuando el producto matricial disperso de torch exige una matriz. Ninguno llego a ningun
   resultado publicado.
+
+## D-054 - Track P8 cerrado: la repeticion es senal, pero no es senal nueva, y esa distincion no la podia hacer v6
+
+- **Contexto**: la auditoria (V7-00) dejo P8 como la ultima senal nueva. La distincion con
+  la fase v6 era mecanica: alli se **reponderon** filas por tamano de grupo, aqui el grupo se
+  convierte en una **caracteristica** que aporta la distribucion de etiquetas de las otras
+  observaciones del mismo grupo, informacion que el texto no puede dar porque requiere
+  etiquetas de vecinos.
+- **Decision 1, el techo se mide antes de entrenar, y esa decision es la que hace el track
+  barato**: el diagnostico se ejecuta antes de ajustar ningun modelo y ya acota la linea.
+  Resultado: **solo 105 de 1483 filas (7.08 %) tienen grupo repetido**, y de los pares de
+  grupo y etiqueta, **80 son uniformes frente a 31 contradictorios**.
+- **Decision 2, diseno de la caracteristica para que no tenga valores ausentes**: la variable
+  es la **desviacion de la prior del grupo respecto a la prior global** del pliegue. Si el
+  grupo tiene una sola fila, la desviacion es exactamente cero: neutral, sin imputacion y
+  sin columna muerta. Para una fila de entrenamiento el prior se calcula **dejando fuera la
+  propia fila**; para una de validacion se usan las filas de su grupo que esten en el
+  entrenamiento, que por construccion no incluyen su etiqueta. Una cuarta columna con el
+  soporte distingue "sin evidencia" de "evidencia nula".
+- **Decision 3, control**: P8-0 reproduce V03 **exacto: 0.777211, hueco +0.000000**, con
+  tolerancia declarada de 0.0005. Octavo control de las fases v6 y v7.
+- **Decision 4, resultado**: P8-1 **-0.0011** e IC95 que incluye el 0 con 1/5 pliegues;
+  P8-2 **-0.0017** con 1/5. **Ninguna pasa el gate.**
+- **Decision 5, la conclusion que sobrevive al cierre es una distincion que v6 no podia
+  hacer**. La fase v6 concluyo que "un tuit repetido es senal, no ruido de recoleccion", y es
+  cierto. Aqui se separa un paso mas: **ser senal y ser senal nueva son dos cosas
+  distintas**. La repeticion es senal que **V03 ya captura**, porque dos filas del mismo grupo
+  son casi el mismo texto, el modelo lineal ya les da la misma representacion y ya las
+  predice igual. Por eso el prior, que es casi determinista (80 de 111 pares son
+  uniformes), **no aporta nada que el texto no tenga ya**.
+- **Decision 6, tres hechos que acotan la linea y que se pueden medir sin entrenar**:
+  (a) solo el 7.08 % de las filas tiene la informacion que la caracteristica puede aportar;
+  (b) donde existe, es casi siempre redundante; (c) **el error de V03 no se concentra en esas
+  filas**, porque su acierto es identico con y sin evidencia (22.9 % en ambos casos). Y el
+  dato que remata el diagnostico: **la caracteristica no arregla ni una sola fila de las que
+  tiene evidencia**. No estorba: es inerte exactamente donde se aplica.
+- **Decision 7, una afirmacion del informe fue refutada por los datos y se corrigio**: la
+  primera version de `v7_02_prior_grupo.py` afirmaba que V03 ya acertaba mejor en las filas
+  con evidencia de grupo. Al ejecutarse, el acierto resulto **identico** (22.9 % frente a
+  22.9 %). Se corrigio el texto. Es la segunda vez en la fase que una afirmacion previa
+  escrita sin datos queda desmentida al medirlos, y por eso los informes de este proyecto se
+  generan desde los scripts y no al reves.
+- **Decision 8, dos bugs corregidos antes de contaminar ningun resultado**: un desajuste de
+  indice global al pasar el array de grupos a la funcion de columnas, que rompia el
+  emparejamiento, y una division entre cero cuando el grupo de una fila de entrenamiento
+  tenia una sola fila en el entrenamiento, que habria metido un valor no finito en el modelo.

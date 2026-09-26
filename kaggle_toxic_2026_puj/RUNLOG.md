@@ -953,3 +953,20 @@ Registro cronologico de ejecuciones. Formato:
   mejor OOF y el peor leaderboard. La conclusion que sobrevive: **en este problema, aproximar
   mejor el objetivo no es mejor**.
   **P9 cerrado. D-053 parte 2.** 0 submissions.
+- v7 Track P8: prior de etiqueta del grupo, cerrado negativo | `v7_02_prior_grupo.py`
+  El techo se mide ANTES de entrenar y ya acota la linea: **solo 105 de 1483 filas (7.08 %)
+  tienen grupo repetido**, y de los pares grupo-etiqueta **80 son uniformes frente a 31
+  contradictorios**, o sea que el prior es casi determinista.
+  **Control P8-0 reproduce V03 exactamente** (0.777211, hueco +0.000000). P8-1 con las tres
+  desviaciones **-0.0011** (IC95 que incluye el 0, 1/5) y P8-2 con soporte **-0.0017**
+  (1/5). **Ninguna pasa el gate.**
+  El dato que remata el diagnostico: V03 acierta **22.9 %** de las filas con evidencia y
+  **22.9 %** del resto, y la caracteristica **no arregla ni una sola fila** de las que tiene
+  evidencia. Es inerte exactamente donde se aplica.
+  La distincion que sobrevive: la fase v6 concluyo que la repeticion es senal, y es cierto,
+  pero **ser senal y ser senal nueva son dos cosas distintas**. Aqui se separan: la
+  repeticion es senal que V03 ya captura, porque dos filas del mismo grupo son casi el mismo
+  texto y el modelo ya les da la misma prediccion.
+  Ademas se corrige una afirmacion del propio informe que los datos refutaban: suponia que
+  V03 ya acertaba mejor en las filas con evidencia, y el acierto resulto identico.
+  **Track P8 cerrado (seccion 54). D-054.** 0 submissions.
