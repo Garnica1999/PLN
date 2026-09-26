@@ -1,0 +1,10 @@
+{
+  "fecha": "2026-09-26",
+  "notebook": "notebooks/10_final_pipeline.ipynb",
+  "celdas_totales": 65,
+  "celdas_codigo": 33,
+  "returncode": 0,
+  "errores": [],
+  "duracion_s": 4.6,
+  "stderr_tail": "[NbConvertApp] Converting notebook notebooks/10_final_pipeline.ipynb to notebook\n/home/carlos/venv/lib/python3.14/site-packages/nbformat/__init__.py:96: MissingIDFieldWarning: Cell is missing an id field, this will become a hard error in future nbformat versions. You may want to use `normalize()` on your notebooks before validations (available since nbformat 5.1.4). Previous versions of nbformat are fixing this issue transparently, and will stop doing so in the future.\n  validate(nb)\n[NbConvertApp] Writing 2929342 bytes to notebooks/10_final_pipeline.ipynb\n"
+}

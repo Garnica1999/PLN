@@ -1202,5 +1202,5 @@ Aplicadas en este arbol las correcciones B-01..B-14 de la auditoria (rama `proye
 - B-06/B-07/B-10: notas de auditoria en los scripts (sin cambiar la logica historica).
 - B-08: retirada la copia anidada `features/features/` (higiene).
 - B-12: columna `definicion_diferencia` en `submissions/leaderboard_log.csv`.
-- B-14: notebook corregido y re-ejecutado (ver commit).
+- B-14: notebook corregido y re-ejecutado. Cambios: recuentos actualizados (15 sondas, 207 filas), 3 sondas de v8 anadidas a las tablas, filtro explicito de la familia union, nueva seccion 19 (fase v9 y cierre post-auditoria) con verificacion ejecutable, y artefactos requeridos restaurados en `features/` y `models/` (faltaban en el worktree v8). Ejecucion completa: 65 celdas (33 de codigo), 0 errores, 4.6 s; registro en `reports/notebook_ejecucion_v9.json`.
 
