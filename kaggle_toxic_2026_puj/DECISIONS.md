@@ -1706,3 +1706,38 @@ evidencia, experimento, resultado, conclusion final.
   no cambia: **la escala no era el cuello de botella**. Se deja el numero escrito para que la
   decision sea revisable, y no se gasta presupuesto en una linea cuyo techo es la mitad del
   umbral de adopcion.
+
+## D-048 - Track C1 cerrado: los skip-grams son neutros, y el control destino un bug de tokenizacion
+
+- **Contexto**: el gap analysis (V6-00) confirmo que no hay ninguna implementacion de
+  skip-grams en el proyecto: el `ngram_range=(1, 2)` de V03 solo produce unigramas y bigramas
+  **contiguos**. V4-D habia cerrado "interacciones como tokens" y E2-10 "forma x token", pero
+  como **canales anadidos** sobre una representacion ya construida, con sus propios pesos.
+- **Decision 1, por que no es repeticion de V4-D**: aqui se modifica el **analizador del
+  bloque de palabras**, de modo que las relaciones con hueco **compiten con las palabras por
+  el mismo presupuesto de regularizacion**. No se puede "anadir sin dao": el termino tiene que
+  merecer su peso. Esa es la diferencia que hace la prueba informativa en vez de redundante.
+- **Decision 2, el control destino un bug real y por eso estaba puesto**: la primera version
+  del tokenizador propio emitia **solo unigramas**, y el control dio 0.7554 en lugar de
+  0.777211, con 1407 caracteristicas en lugar de las miles de V03. Los deltas de esa version
+  comparaban "V03" contra "V03 sin bigramas" y no eran atribuibles, asi que se descartaron
+  enteros. Corregido para emitir tambien los bigramas contiguos, unidos con espacio igual que
+  `TfidfVectorizer` por defecto: el control da **0.777211 exacto, delta +0.0000, IC95 [0, 0],
+  0 salvage, 0 damage, 2744 caracteristicas**. Cuarto control de la fase con la misma funcion
+  que B0, A0 e I0. **Ninguno de los cuatro ha fallado desde que existen**, y este habria
+  pasado desapercibido sin el.
+- **Decision 3, resultado: los skip-grams son NEUTROS, no dañinos**: hueco 1 da -0.0022
+  (IC95 [-0.0084, +0.0039], 2/5) y huecos 1 y 2 da -0.0001 (IC95 [-0.0085, +0.0082], 2/5),
+  con el bloque de palabras pasando de 2744 a 5025 caracteristicas, un **+83 %**. Anadir
+  dimensionalidad no cuesta nada y no aporta nada. Es un resultado **distinto del de V4-D**,
+  donde las interacciones como tokens costaron -0.0346.
+- **Decision 4, lo que neutraliza la hipotesis es la premisa, no la intuicion**: que la
+  relacion con hueco ni anade senal aprovechable ni resta capacidad **confirma que la
+  intuicion de partida era razonable** (insulto, luego risa, luego marcador, con palabras en
+  medio) y que no era una repeticion de V4-D. Lo que falla es la premisa de que quede senal
+  por representar en 1.483 filas. El intercambio por etiqueta lo confirma: con un hueco HS
+  sube de 0.7617 a 0.7648 mientras TR baja de 0.8157 a 0.8103. No es una ganancia, es un
+  reparto.
+- **Decision 5, C queda cerrada por completo**: C2, C3 y C4 estaban cerradas por
+  duplicacion (V4-D y E2-10) y C1 se cierra aqui por resultado negativo. **La sub-linea C
+  queda sin nada abierto** tras haber sido la propuesta central de la especificacion de v6.

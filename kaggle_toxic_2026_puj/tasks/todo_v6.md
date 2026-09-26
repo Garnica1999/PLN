@@ -35,9 +35,13 @@
 - [x] Patron monotono: penalizar mas a los repetidos empeora (la repeticion es señal)
 - [x] **Cerrado por la seccion 54. No reabrir ni en variantes mas suaves.**
 
-## C1 - Skip-grams (pendiente)
+## C1 - Skip-grams (cerrado negativo neutro)
 
-- [ ] Solo C1. Hueco acotado 1, y 2 unicamente si el 1 aporta
+- [x] `v6_05_skipgrams.py`: sin hueco (control), hueco 1, huecos 1 y 2
+- [x] El control detecto un bug de tokenizacion y lo corrigio (emitia solo unigramas)
+- [x] Control ya reproduce V03 exacto: 0.777211
+- [x] Vocabulario +83 % con resultado -0.0001: **neutro**, ni anade ni resta
+- [x] **C cerrada entera**: C2, C3, C4 por duplicacion y C1 aqui
 
 ## I - Ponderacion word/char (cerrado negativo)
 

@@ -853,3 +853,16 @@ Registro cronologico de ejecuciones. Formato:
   techo es +0.0016, **menos de la mitad del gate**, con IC95 que incluye el 0 y 3/5 pliegues:
   **la escala no era el cuello de botella**, que era la pregunta. No se afina alrededor de 1.5.
   **Track I cerrado (seccion 54). D-047.** 0 submissions.
+- 22:10 | v6 Track C1: skip-grams, resultado negativo neutro | `v6_05_skipgrams.py`
+  **El control destino un bug real**: la primera version del tokenizador emitia solo
+  unigramas y el control daba 0.7554 en vez de 0.777211 (1407 caracteristicas). Los deltas de
+  esa version no eran atribuibles y se descartaron enteros. Corregido para emitir tambien los
+  bigramas contiguos: el control da **0.777211 exacto**.
+  Resultado real: hueco 1 **-0.0022** (IC95 [-0.0084,+0.0039], 2/5) y huecos 1 y 2
+  **-0.0001** (IC95 [-0.0085,+0.0082], 2/5), con el bloque de palabras de 2744 a 5025
+  caracteristicas (+83 %). **Los skip-grams son NEUTROS**: ni anaden senal ni restan
+  capacidad, a diferencia de las interacciones de V4-D (-0.0346). No es una repeticion de
+  V4-D porque los pares compiten con las palabras en la misma matriz, no en un canal aparte.
+  Con C cerrada (C2, C3, C4 por duplicacion y C1 aqui), **la sub-linea C queda sin nada
+  abierto**, siendo la propuesta central de la spec de v6.
+  **Track C1 cerrado (seccion 54). D-048.** 0 submissions.
