@@ -1,0 +1,51 @@
+Regla,Frontera,Regla_texto,Filas_activadas,Fraccion_activada,Rescate,Dano,Neto,MacroF1_global,Delta_global
+techo (oracle),18-24|25-34,,1830,0.01081,1830,0,1830,0.611234,0.010732
+univariada: acuerdo < 0.20,18-24|25-34,las dos clases mas probables de V12 son las de la frontera y el acuerdo entre miembros es menor que 0.20,3754,0.02217,852,1077,-225,0.599182,-0.001319
+univariada: acuerdo < 0.35,18-24|25-34,las dos clases mas probables de V12 son las de la frontera y el acuerdo entre miembros es menor que 0.35,6788,0.04009,1388,1805,-417,0.598043,-0.002459
+univariada: acuerdo < 0.50,18-24|25-34,las dos clases mas probables de V12 son las de la frontera y el acuerdo entre miembros es menor que 0.50,8569,0.0506,1600,2099,-499,0.597566,-0.002935
+univariada: acuerdo < 0.65,18-24|25-34,las dos clases mas probables de V12 son las de la frontera y el acuerdo entre miembros es menor que 0.65,11531,0.0681,1737,2336,-599,0.596984,-0.003518
+univariada: margen > 0.00,18-24|25-34,las dos clases mas probables de V12 son las de la frontera y el margen del especialista es mayor que 0.00,25477,0.15045,1830,2485,-655,0.596646,-0.003856
+univariada: margen > 0.15,18-24|25-34,las dos clases mas probables de V12 son las de la frontera y el margen del especialista es mayor que 0.15,15635,0.09233,681,930,-249,0.599025,-0.001477
+univariada: margen > 0.35,18-24|25-34,las dos clases mas probables de V12 son las de la frontera y el margen del especialista es mayor que 0.35,6569,0.03879,103,166,-63,0.600128,-0.000374
+univariada: margen > 0.80,18-24|25-34,las dos clases mas probables de V12 son las de la frontera y el margen del especialista es mayor que 0.80,819,0.00484,1,0,1,0.600508,6e-06
+conjunta: acuerdo < 0.20 y margen > 0.00,18-24|25-34,"contexto de frontera, acuerdo menor que 0.20 y margen mayor que 0.00",3754,0.02217,852,1077,-225,0.599182,-0.001319
+conjunta: acuerdo < 0.20 y margen > 0.15,18-24|25-34,"contexto de frontera, acuerdo menor que 0.20 y margen mayor que 0.15",1832,0.01082,458,608,-150,0.599613,-0.000888
+conjunta: acuerdo < 0.20 y margen > 0.35,18-24|25-34,"contexto de frontera, acuerdo menor que 0.20 y margen mayor que 0.35",329,0.00194,83,122,-39,0.600268,-0.000234
+conjunta: acuerdo < 0.20 y margen > 0.80,18-24|25-34,"contexto de frontera, acuerdo menor que 0.20 y margen mayor que 0.80",1,1e-05,1,0,1,0.600508,6e-06
+conjunta: acuerdo < 0.35 y margen > 0.00,18-24|25-34,"contexto de frontera, acuerdo menor que 0.35 y margen mayor que 0.00",6788,0.04009,1388,1805,-417,0.598043,-0.002459
+conjunta: acuerdo < 0.35 y margen > 0.15,18-24|25-34,"contexto de frontera, acuerdo menor que 0.35 y margen mayor que 0.15",2841,0.01678,637,871,-234,0.599114,-0.001388
+conjunta: acuerdo < 0.35 y margen > 0.35,18-24|25-34,"contexto de frontera, acuerdo menor que 0.35 y margen mayor que 0.35",463,0.00273,103,164,-61,0.600139,-0.000363
+conjunta: acuerdo < 0.35 y margen > 0.80,18-24|25-34,"contexto de frontera, acuerdo menor que 0.35 y margen mayor que 0.80",1,1e-05,1,0,1,0.600508,6e-06
+conjunta: acuerdo < 0.50 y margen > 0.00,18-24|25-34,"contexto de frontera, acuerdo menor que 0.50 y margen mayor que 0.00",8569,0.0506,1600,2099,-499,0.597566,-0.002935
+conjunta: acuerdo < 0.50 y margen > 0.15,18-24|25-34,"contexto de frontera, acuerdo menor que 0.50 y margen mayor que 0.15",3306,0.01952,671,907,-236,0.599103,-0.001399
+conjunta: acuerdo < 0.50 y margen > 0.35,18-24|25-34,"contexto de frontera, acuerdo menor que 0.50 y margen mayor que 0.35",514,0.00304,103,166,-63,0.600128,-0.000374
+conjunta: acuerdo < 0.50 y margen > 0.80,18-24|25-34,"contexto de frontera, acuerdo menor que 0.50 y margen mayor que 0.80",1,1e-05,1,0,1,0.600508,6e-06
+conjunta: acuerdo < 0.65 y margen > 0.00,18-24|25-34,"contexto de frontera, acuerdo menor que 0.65 y margen mayor que 0.00",11531,0.0681,1737,2336,-599,0.596984,-0.003518
+conjunta: acuerdo < 0.65 y margen > 0.15,18-24|25-34,"contexto de frontera, acuerdo menor que 0.65 y margen mayor que 0.15",4587,0.02709,678,923,-245,0.599049,-0.001453
+conjunta: acuerdo < 0.65 y margen > 0.35,18-24|25-34,"contexto de frontera, acuerdo menor que 0.65 y margen mayor que 0.35",835,0.00493,103,166,-63,0.600128,-0.000374
+conjunta: acuerdo < 0.65 y margen > 0.80,18-24|25-34,"contexto de frontera, acuerdo menor que 0.65 y margen mayor que 0.80",6,4e-05,1,0,1,0.600508,6e-06
+techo (oracle),25-34|35-49,,1239,0.00732,1239,0,1239,0.608223,0.007721
+univariada: acuerdo < 0.20,25-34|35-49,las dos clases mas probables de V12 son las de la frontera y el acuerdo entre miembros es menor que 0.20,2663,0.01573,539,796,-257,0.598975,-0.001527
+univariada: acuerdo < 0.35,25-34|35-49,las dos clases mas probables de V12 son las de la frontera y el acuerdo entre miembros es menor que 0.35,4804,0.02837,906,1286,-380,0.59829,-0.002212
+univariada: acuerdo < 0.50,25-34|35-49,las dos clases mas probables de V12 son las de la frontera y el acuerdo entre miembros es menor que 0.50,6186,0.03653,1070,1549,-479,0.597699,-0.002803
+univariada: acuerdo < 0.65,25-34|35-49,las dos clases mas probables de V12 son las de la frontera y el acuerdo entre miembros es menor que 0.65,8338,0.04924,1191,1789,-598,0.596969,-0.003533
+univariada: margen > 0.00,25-34|35-49,las dos clases mas probables de V12 son las de la frontera y el margen del especialista es mayor que 0.00,24001,0.14174,1239,1947,-708,0.596299,-0.004203
+univariada: margen > 0.15,25-34|35-49,las dos clases mas probables de V12 son las de la frontera y el margen del especialista es mayor que 0.15,16861,0.09957,475,718,-243,0.599095,-0.001407
+univariada: margen > 0.35,25-34|35-49,las dos clases mas probables de V12 son las de la frontera y el margen del especialista es mayor que 0.35,10110,0.0597,79,101,-22,0.600382,-0.000119
+univariada: margen > 0.80,25-34|35-49,las dos clases mas probables de V12 son las de la frontera y el margen del especialista es mayor que 0.80,3528,0.02083,0,0,0,0.600502,0.0
+conjunta: acuerdo < 0.20 y margen > 0.00,25-34|35-49,"contexto de frontera, acuerdo menor que 0.20 y margen mayor que 0.00",2663,0.01573,539,796,-257,0.598975,-0.001527
+conjunta: acuerdo < 0.20 y margen > 0.15,25-34|35-49,"contexto de frontera, acuerdo menor que 0.20 y margen mayor que 0.15",1350,0.00797,297,441,-144,0.599663,-0.000839
+conjunta: acuerdo < 0.20 y margen > 0.35,25-34|35-49,"contexto de frontera, acuerdo menor que 0.20 y margen mayor que 0.35",247,0.00146,61,86,-25,0.600362,-0.000139
+conjunta: acuerdo < 0.20 y margen > 0.80,25-34|35-49,"contexto de frontera, acuerdo menor que 0.20 y margen mayor que 0.80",0,0.0,0,0,0,0.600502,0.0
+conjunta: acuerdo < 0.35 y margen > 0.00,25-34|35-49,"contexto de frontera, acuerdo menor que 0.35 y margen mayor que 0.00",4804,0.02837,906,1286,-380,0.59829,-0.002212
+conjunta: acuerdo < 0.35 y margen > 0.15,25-34|35-49,"contexto de frontera, acuerdo menor que 0.35 y margen mayor que 0.15",2121,0.01253,429,625,-196,0.599377,-0.001125
+conjunta: acuerdo < 0.35 y margen > 0.35,25-34|35-49,"contexto de frontera, acuerdo menor que 0.35 y margen mayor que 0.35",335,0.00198,76,99,-23,0.600377,-0.000125
+conjunta: acuerdo < 0.35 y margen > 0.80,25-34|35-49,"contexto de frontera, acuerdo menor que 0.35 y margen mayor que 0.80",0,0.0,0,0,0,0.600502,0.0
+conjunta: acuerdo < 0.50 y margen > 0.00,25-34|35-49,"contexto de frontera, acuerdo menor que 0.50 y margen mayor que 0.00",6186,0.03653,1070,1549,-479,0.597699,-0.002803
+conjunta: acuerdo < 0.50 y margen > 0.15,25-34|35-49,"contexto de frontera, acuerdo menor que 0.50 y margen mayor que 0.15",2521,0.01489,464,675,-211,0.599288,-0.001213
+conjunta: acuerdo < 0.50 y margen > 0.35,25-34|35-49,"contexto de frontera, acuerdo menor que 0.50 y margen mayor que 0.35",389,0.0023,79,101,-22,0.600382,-0.000119
+conjunta: acuerdo < 0.50 y margen > 0.80,25-34|35-49,"contexto de frontera, acuerdo menor que 0.50 y margen mayor que 0.80",0,0.0,0,0,0,0.600502,0.0
+conjunta: acuerdo < 0.65 y margen > 0.00,25-34|35-49,"contexto de frontera, acuerdo menor que 0.65 y margen mayor que 0.00",8338,0.04924,1191,1789,-598,0.596969,-0.003533
+conjunta: acuerdo < 0.65 y margen > 0.15,25-34|35-49,"contexto de frontera, acuerdo menor que 0.65 y margen mayor que 0.15",3415,0.02017,475,709,-234,0.59915,-0.001352
+conjunta: acuerdo < 0.65 y margen > 0.35,25-34|35-49,"contexto de frontera, acuerdo menor que 0.65 y margen mayor que 0.35",619,0.00366,79,101,-22,0.600382,-0.000119
+conjunta: acuerdo < 0.65 y margen > 0.80,25-34|35-49,"contexto de frontera, acuerdo menor que 0.65 y margen mayor que 0.80",5,3e-05,0,0,0,0.600502,0.0

@@ -45,6 +45,7 @@ EXPERIMENTOS = {
     "P1.1": ("experiments/v17_p1_fronteras.json", "complementariedad", "25-34|35-49"),
     "P1b": ("experiments/v17_p1b_curva_compuerta.json", "curva_de_compuerta", None),
     "P8": ("experiments/v17_p8_perfil_confianza.json", "perfil_de_confianza", None),
+    "P1c": ("experiments/v17_p1c_regla_conjunta.json", "regla_conjunta", None),
 }
 #: Pistas del brief que todavia no se han ejecutado, con su hipotesis y su riesgo declarados.
 PENDIENTES = {
@@ -132,6 +133,7 @@ def main() -> int:
     p1 = leer("v17_p1_fronteras.json")
     p1b = leer("v17_p1b_curva_compuerta.json")
     p8 = leer("v17_p8_perfil_confianza.json")
+    p1c = leer("v17_p1c_regla_conjunta.json")
 
     filas.append({
         "ID": "P0", "Track": "auditoria de brechas",
@@ -220,6 +222,22 @@ def main() -> int:
                     "especialista (0,7294 y 0,7539) son aprovechables; las probabilidades de V12 no",
         "Artifact": "reports/v17_p8_perfil_confianza.md, reports/v17_p8_perfil_confianza.csv",
     })
+    filas.append({
+        "ID": "P1c", "Track": "regla conjunta de las dos senales",
+        "Hypothesis": "que leer las dos senales a la vez, y en sentido contrario, convierta la "
+                      "separabilidad de P8 en ganancia global",
+        "Mechanism": "compuerta dura con la conjuncion de acuerdo bajo y margen alto, mas la "
+                     "condicion de contexto de frontera",
+        "Representation": "votos de los miembros y margen del especialista, sin reentrenar",
+        "Model": "V12 mas E-028a, enrutado", "Outer_Protocol": "inerte (optimo sesgado)",
+        "Inner_Protocol": "no aplica", "Seed": cfg.SEED,
+        "Global_MacroF1": round(p1c["referencia_pooled"] + p1c["mejor_conjunta"], REDONDEO),
+        "Delta_Global": p1c["mejor_conjunta"],
+        "Boundary_18_24_25_34": p1c["mejor_por_frontera"]["18-24|25-34"],
+        "Boundary_25_34_35_49": p1c["mejor_por_frontera"]["25-34|35-49"],
+        "Decision": "cerrada: ninguna regla alcanza el gate exploratorio; el techo si lo supera",
+        "Artifact": "reports/v17_p1c_regla_conjunta.md, reports/v17_p1c_regla_conjunta.csv",
+    })
     for identificador in PENDIENTES:
         hipotesis, mecanismo, _, riesgo, coste = PENDIENTES[identificador]
         filas.append({
@@ -282,6 +300,22 @@ def main() -> int:
                    "invertida",
          "Decision": "abierta y favorable: hay senal aprovechable, pero no es la de V12"},
     ]
+    registros.append({
+        "ID": "H05",
+        "Hypothesis": "las dos senales que P8 separo, leidas a la vez y en sentido contrario, "
+                      "localizan las filas donde el especialista conviene",
+        "Previous_Evidence": "P1b con la sola confianza de V12 dio +0,0002",
+        "Why_New": "el acuerdo entre miembros y el margen del especialista no forman parte de las "
+                   "probabilidades de V12, y apuntan en sentidos opuestos",
+        "Expected_Mechanism": "conjugar dispersión del ensemble con seguridad del especialista",
+        "Risk": "que la separabilidad no se traduzca en macro-F1 global",
+        "Cost": "baja, inerte", "Protocol": "rejilla gruesa 4x4 por frontera, con techo de "
+                                           "referencia",
+        "Result": "ninguna regla llega al gate exploratorio: la mejor uni y la mejor conjunta dan "
+                  "+0,0000. El techo con arbitro perfecto si es +0,0107 y +0,0077, que supera el "
+                  "gate de adopcion",
+        "Decision": "cerrada: la senal no se traduce. P9 no esta indicado con estas entradas",
+    })
     for identificador, (hipotesis, mecanismo, previo, riesgo, coste) in PENDIENTES.items():
         registros.append({
             "ID": f"H-{identificador}", "Hypothesis": hipotesis, "Previous_Evidence": previo,
