@@ -1,0 +1,52 @@
+family,hypothesis,novel_mechanism,tested_before,experiment_ids,best_result,why_still_open,expected_complementarity,cost,leakage_risk,priority
+P0,Gap audit,inventario verificable de lo cerrado y lo nuevo,no aplica,-,-,-,define el resto,15 min,ninguno,0
+P15,Matriz de error por miembro,diagnostico de que miembro sabe y donde,parcial,"PH13, phase20",diagnostico existente sin desglose por miembro,nunca se respondio que miembro concentra el conocimiento complementario,"ALTO: 66,9% de los errores tienen algun miembro correcto",20 min,ninguno,1
+P1,Evidencia de edad por token (P(clase|token) in-fold),supervision dentro del train fold,no,-,-,"las fases previas solo usaron P(clase|entidad) para mention/hashtag/RT, nunca por palabra",ALTO: el unico canal supervisado por palabra que no existe,45 min,"ALTO si se calcula antes de los folds (§5, §38)",1
+P17,Pronombres de persona (V14-V18),categoria sintactica sin POS,no,-,-,V12 no tiene ninguna variable de pronombres; el articulo los declara predictivos,MEDIO-ALTO: correlaciona con edad y es ortogonal a los n-gramas de caracter,20 min,ninguno (determinista),1
+P19,Arboles SFL (conjunciones por funcion),funcion gramatical sin POS,no,-,-,"unico camino de sintaxis que no necesita etiquetado POS, que si esta cerrado",MEDIO: la funcion gramatical de las conjunciones varia con la edad,25 min,ninguno (determinista),1
+P20,Incertidumbre y modalidad,vocabulario cerrado propio,no,-,-,no existe ningun bloque de marcadores de modalidad,MEDIO: la incertidumbre verbal cambia con la edad,20 min,ninguno (determinista),1
+P3,Especialistas binarios de frontera,modelo binario por par adyacente,parcial,"E-028a, advanced_07","routing duro 0,0000; compuerta -0,0036","se evaluo el enrutamiento sobre probabilidades ya entrenadas, no un especialista binario nuevo",MUY ALTO: 10.122 + 7.252 cruces de frontera,60 min,MEDIO: el especialista debe entrenarse dentro del fold,1
+P24,Forma de la distribucion de evidencia,medidas de tendencia y dispersion sobre P1,no,-,-,"V12 solo aplica esas medidas a longitudes, no a la evidencia por token",MEDIO: distingue evidencia concentrada de evidencia difusa,25 min,ALTO: hereda el de P1,2
+P4,Boundary gating,compuerta entrenada sobre la proximidad a la frontera,parcial,"phase33-C4, advanced_07",correccion de frontera neta 0,se modifico la salida de V12; no se entreno una compuerta con especialista nuevo,ALTO si P3 aporta,40 min,"MEDIO: umbral aprendido, no fijo sobre la validacion",2
+P5,Entrenamiento pairwise,objetivo pairwise en vez de post-proceso,no,-,-,"Luce, Bradley-Terry y projection ordinal fueron capas de decision sobre probabilidades",ALTO: entrena el modelo con la estructura ordinal en vez de corregirla despues,60 min,ninguno extra,2
+P18,Palabras funcionales (vector de tasas),vocabulario cerrado propio,parcial,PH7 (stopword_ratio),stopword_ratio y content_ratio,solo 2 agregados; falta el vector de tasas que usa authorship attribution clasico,MEDIO-ALTO: es el metodo canonico y V12 no lo tiene,30 min,ninguno (determinista),2
+P21,Subjetividad y especificidad,vocabulario cerrado propio,no,-,-,no existe,MEDIO,30 min,ninguno (determinista),2
+P2,Evidencia supervisada de hashtag y URL,P(clase|hashtag|dominio) in-fold,parcial,"PH7, phase14","menciones supervisadas +0,0016 (familia J/K/L)",se aprendio P(clase|entidad) para mention/hashtag/RT pero sin estructura de URL ni soporte,MEDIO: solo_url tiene 58-59% de error,40 min,ALTO si se calcula antes de los folds,3
+P6,CentROIDES de clase en el espacio TF-IDF,geometria de proximidad a prototipos,no,-,-,nunca se calcularon centroides de clase en el espacio de V12,MEDIO: la decision lineal no es la misma que la proximidad al prototipo,25 min,ALTO: los centroides deben salir del train fold,3
+P22,Queismo y dequeismo,bigramas deterministas,no,-,-,el curso lo señala como patron de escritura; nunca se midio,BAJO-MEDIO,20 min,ninguno (determinista),3
+P26,PCA in-fold del bloque nuevo,reduccion de dimensionalidad antes del modelo,parcial,fase 4-11,SVD en el meta,"se aplico SVD a representaciones, no al bloque de features nuevas",BAJO (metodo),15 min,ALTO: el PCA debe ajustarse dentro del fold,3
+P8,Topologia de menciones,posiciones y distancias entre menciones,parcial,estructuradas pos_mention_*,posiciones first/last/mean ya existen,"faltan densidad, distancia entre menciones y fraccion previa",BAJO-MEDIO,20 min,ninguno (determinista),4
+P9,Topologia de URL y hashtag,estructura de composicion del tweet,parcial,estructuradas pos_url_*/pos_hashtag_*,posiciones ya existen,falta la proporcion de texto ocupada por URL/hashtag/mencion,BAJO-MEDIO,20 min,ninguno (determinista),4
+P10,Estilometria residual,"solo features ausentes, <=30",parcial,E-001..E-028,familia completa ya construida (35+87),debe abrirse solo con lo que P0 demuestre ausente,BAJO,20 min,ninguno (determinista),4
+P11,Vista dual con menciones normalizadas,canal complementario,no,-,-,"el canal de menciones existe, pero no una vista con @usuario -> @MENTION",MEDIO,40 min,ALTO: un vectorizador para la vista nueva esta prohibido,4
+P12,Micro-lexicon derivado del target,seleccion supervisada de tokens in-fold,no,-,-,distinto de los lexicones generales cerrados en D-039: aqui la evidencia sale del train,MEDIO-ALTO,45 min,ALTO: la seleccion debe usar OOF interno,5
+P23,Legibilidad en espanol,indices clasicos con heuristica de silabas,no,-,-,no existe,BAJO,20 min,ninguno (determinista),5
+P16,Tipologia de error en fronteras,slices deterministas,parcial,PH13,segmentos,falta el cruce de slices con las dos fronteras centrales,diagnostico,20 min,ninguno,diagnostico
+P25,Significancia por atributo,que variable explica que grupo de edad,no,-,-,nunca se hizo,diagnostico,20 min,"ninguno (supervisado, solo train)",diagnostico
+P13,Hard-boundary training,especialista sobre ejemplos difficulties del train,no,-,-,nunca se intento,CONDICIONAL: solo si P3 da senal,90 min,MUY ALTO: exige OOF interno; con diagnostico R-2,condicional
+P14,Combinacion de positivos independientes,V12 + evidencia + especialista,no,-,-,-,CONDICIONAL: solo con dos positivos independientes,60 min,MEDIO,condicional
+articulo::V1,Avg_character (media de caracteres por palabra),variable del articulo de referencia,si,-,EXISTE,ya cubierta en V12,nula,-,ninguno,ver seccion 5
+articulo::V2,Kurtosis_character (curtosis de la longitud de palabra),variable del articulo de referencia,si,-,EXISTE,ya cubierta en V12,nula,-,ninguno,ver seccion 5
+articulo::V3,Lexical_diversity,variable del articulo de referencia,si,-,EXISTE,ya cubierta en V12,nula,-,ninguno,ver seccion 5
+articulo::V4,Label_word (media de palabras por publicacion),variable del articulo de referencia,si,-,EXISTE,ya cubierta en V12,nula,-,ninguno,ver seccion 5
+articulo::V5,Kurtosis_avg_character,variable del articulo de referencia,si,-,EXISTE,ya cubierta en V12,nula,-,ninguno,ver seccion 5
+articulo::V6,Kurtosis_label_word,variable del articulo de referencia,si,-,PARCIAL,ya cubierta en V12,nula,-,ninguno,ver seccion 5
+articulo::V7,Skew_avg_character (asimetria de la longitud),variable del articulo de referencia,si,-,EXISTE,ya cubierta en V12,nula,-,ninguno,ver seccion 5
+articulo::V8,Skew_label_word,variable del articulo de referencia,si,-,PARCIAL,ya cubierta en V12,nula,-,ninguno,ver seccion 5
+articulo::V9,Label_emoji,variable del articulo de referencia,si,-,INERTE,ya cubierta en V12,nula,-,ninguno,ver seccion 5
+articulo::V10,Label_hashtag,variable del articulo de referencia,si,-,EXISTE,ya cubierta en V12,nula,-,ninguno,ver seccion 5
+articulo::V11,Label_mention,variable del articulo de referencia,si,-,EXISTE,ya cubierta en V12,nula,-,ninguno,ver seccion 5
+articulo::V12,URL (informacion complementaria),variable del articulo de referencia,si,-,EXISTE,ya cubierta en V12,nula,-,ninguno,ver seccion 5
+articulo::V13,Label_retweets,variable del articulo de referencia,si,-,EXISTE,ya cubierta en V12,nula,-,ninguno,ver seccion 5
+articulo::V14,Person_1_singular (yo),variable del articulo de referencia,si,-,AUSENTE,-,-,-,ninguno,ver seccion 5
+articulo::V15,Person_2_singular (tu),variable del articulo de referencia,si,-,AUSENTE,-,-,-,ninguno,ver seccion 5
+articulo::V16,Person_3_singular (el/ella),variable del articulo de referencia,si,-,AUSENTE,-,-,-,ninguno,ver seccion 5
+articulo::V17,Person_1_plural (nosotros),variable del articulo de referencia,si,-,AUSENTE,-,-,-,ninguno,ver seccion 5
+articulo::V18,Person_3_plural (ellos/ellas),variable del articulo de referencia,si,-,AUSENTE,-,-,-,ninguno,ver seccion 5
+curso::Palabras funcionales,Palabras funcionales,solo stopword_ratio y content_ratio; falta el vector de tasas,PARCIAL,-,PARCIAL,P18,-,-,-,P18
+curso::Sintaxis: n-gramas de POS,Sintaxis: n-gramas de POS,"D-026: corpus ASCII degrada el etiquetado (-0,0032)",CERRADO,-,CERRADO,-,-,-,-,-
+curso::Arboles SFL (conjunciones por funcion),Arboles SFL (conjunciones por funcion),el curso indica que NO requiere POS; es la via no cerrada tras D-026,AUSENTE,-,AUSENTE,P19,-,-,-,P19
+"curso::Morfologia (prefijos, sufijos)","Morfologia (prefijos, sufijos)",redundante: char_wb(3-5) ya lo cubre,CERRADO,-,CERRADO,-,-,-,-,-
+"curso::Medidas de complejidad (longitud, entropias)","Medidas de complejidad (longitud, entropias)",wlen_* y *_entropy,EXISTE,-,EXISTE,-,-,-,-,-
+curso::Palabras inestables (traduccion ida-vuelta),Palabras inestables (traduccion ida-vuelta),requiere modelos de traduccion externos (§3),PROHIBIDO,-,PROHIBIDO,-,-,-,-,-
+curso::Idiosincrasias,Idiosincrasias,D-039: fase de lexicones cerrada,CERRADO,-,CERRADO,-,-,-,-,-
