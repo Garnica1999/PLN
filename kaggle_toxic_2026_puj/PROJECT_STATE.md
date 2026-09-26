@@ -70,6 +70,8 @@ archivada de la autorizacion; se registra solo lo comunicado por el usuario.
 | D-049 | La hipotesis de techo del track se refuto a si misma midiendo; el cierre es de protocolo, no de mecanismo |
 | V6 Track F | **Cerrado negativo**: +0.0001 con las cuatro senales; la deteccion encuentra dificultad, no ruido |
 | D-050 | V03 acierta 10.5 % en las filas sospechosas frente a 28.3 %: marcar es estar donde hay que estar |
+| V6 Track J | **Cerrado negativo**: -0.0061 y -0.0063; doblar copias no empeora mas (es sesgo, no cantidad) |
+| D-051 | **v6 sin lineas ejecutables**: B, A, C, I, H, F, J negativas; D, E por techo; G no ejecutar |
 | variable abierta | El tamano de los datos etiquetados (1.483), unica palanca que deja la evidencia |
 | GATE DE CIERRE | §29: A (+0.005 con estabilidad) / B (complementariedad robusta) / C (senal representacional fuerte) |
 

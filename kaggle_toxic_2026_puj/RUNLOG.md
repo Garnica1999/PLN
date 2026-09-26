@@ -895,3 +895,18 @@ Registro cronologico de ejecuciones. Formato:
   Y **el ruido por par es mas escaso que el ruido por duplicado**: la senal estructural
   generaliza el conflicto de V4-A a la similitud y marca **12 pares de 4449** frente a los
   84 tuits del duplicado exacto. **D-050.** 0 submissions.
+- 23:25 | v6 Track J: aumento de datos, resultado negativo | `v6_08_aumento.py`
+  **J0 control reproduce V03 exactamente** (0.777211, delta +0.0000, IC95 [0,0]), septimo
+  control de la fase. J1 una copia (1.186 -> 2.372 filas) **-0.0061** (IC95
+  [-0.0141,+0.0018], 1/5). J2 dos copias (-> 3.558 filas) **-0.0063** (IC95
+  [-0.0145,+0.0016], 1/5). **Ninguna pasa el Gate 1.**
+  El dato que va mas alla del signo: **doblar las copias casi no cambia nada**. Si el
+  problema fuera la cantidad, duplicarla deberia empeorar mas. Apunta a **sesgo de las
+  copias, no a exceso de ellas**: las variantes deformadas forman un patron coherente que el
+  modelo aprende, y da igual que haya una o dos copias.
+  Las transformaciones preservan la etiqueta por construccion (espaciado, elongacion,
+  puntuacion); no se tocan sinonimos, reordenacion, negacion ni objetivo.
+  **Track J cerrado (seccion 54). D-051.**
+  **Con esto v6 se queda SIN LINEAS EJECUTABLES**: B, A, C, I, H, F, J cerradas por
+  resultado negativo; D y E por techo teorico; G marcada "no ejecutar" desde el gap
+  analysis. 0 submissions en toda la fase.

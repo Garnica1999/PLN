@@ -1817,3 +1817,35 @@ evidencia, experimento, resultado, conclusion final.
   4449 (0.27 %)**, frente a los 84 tuits del duplicado exacto. **Al ampliar la definicion de
   conflicto el ruido se hace mas escaso, no mas abundante.** El precedente de V4-A era ya
   adverso y este resultado lo refuerza.
+
+## D-051 - Track J cerrado: el aumento empeora y doblar las copias no empeora mas, luego el problema es el sesgo y no la cantidad
+
+- **Contexto**: el gap analysis (V6-00) distinguio que **J no es una repeticion de PRE-00 a
+  PRE-09**: esas diez variantes eran *normalizacion* (sustituyen el texto) y el aumento crea
+  filas nuevas aplicando la variacion **solo al tren**. El precedente de superficie era
+  adverso, con un mejor de 0.7623 frente a 0.7587.
+- **Decision 1, las transformaciones preservan la etiqueta por construccion**: `espaciado`
+  (separa las letras de una palabra), `elongacion` (alarga la ultima letra) y `puntuacion`
+  (duplica un signo). **No** se sustituyen palabras por sinonimos, **no** se reordena, **no**
+  se toca negacion ni objetivo. Cualquier transformacion que toque el significado es una
+  fuente de etiquetas falsas, y el proyecto tiene una restriccion de seguridad al respecto
+  desde v2.
+- **Decision 2, resultado**: J0 (control) reproduce V03 **exacto: 0.777211, delta +0.0000,
+  IC95 [0, 0]**. Septimo control de la fase. J1 (una copia, 1.186 -> 2.372 filas de train)
+  da **-0.0061** con IC95 [-0.0141, +0.0018] y 1/5 pliegues. J2 (dos copias, hasta 3.558
+  filas) da **-0.0063** con IC95 [-0.0145, +0.0016] y 1/5. **Ninguna pasa el Gate 1.**
+- **Decision 3, el dato que va mas alla del signo**: doblar las copias de una a dos **casi no
+  cambia nada** (-0.0061 frente a -0.0063, con el IC95 estrechandose). Si el problema fuera la
+  cantidad de datos sinteticos, duplicarla deberia empeorar de forma apreciable. Un efecto
+  praticamente constante al cambiar el tamano apunta a un **sesguase de las copias y no a
+  un exceso de ellas**: las variantes deformadas forman un patron coherente que el modelo
+  aprende, y da igual que haya una o dos copias de ese patron.
+- **Decision 4, este cierre abarca mas que el track**: cierra a la vez el aumento y la
+  superficie, porque el mecanismo de superficie era el unico que quedaba sin explorar tras
+  las diez normalizaciones. Un resultado negativo aqui es un cierre mas solido, no mas debil.
+- **Decision 5, v6 se queda sin lineas ejecutables**: **B, A, C, I, H, F y J** estan cerradas
+  por resultado negativo y **D y E** lo estaban por techo teorico (D-044 decision 5). **G** se
+  cera "muy baja: no ejecutar" desde el gap analysis, con el score y su margen ya presentes
+  en chains y en el meta desde E2-01 y E2-18. **No queda ninguna linea de la especificacion
+  de v6 sin ejecutar**, lo que convierte el cierre de la fase en un cierre de verdad y no en
+  una pausa.

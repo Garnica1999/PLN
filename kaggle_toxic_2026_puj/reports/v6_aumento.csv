@@ -1,0 +1,4 @@
+variante,filas_entrenamiento,corrected_cv,delta_vs_V03,ic95_0,ic95_1,f1_HS,f1_TR,f1_AG,salvage,damage,pliegues_positivos,gate_1_supera
+J0-control,1186,0.777211,0.0,0.0,0.0,0.7617,0.8157,0.7542,0,0,0,False
+J1-una-copia,2372,0.771128,-0.006083,-0.01406,0.001809,0.76,0.8054,0.748,4,9,1,False
+J2-dos-copias,3558,0.770898,-0.006313,-0.014472,0.001601,0.7607,0.8063,0.7457,3,10,1,False
