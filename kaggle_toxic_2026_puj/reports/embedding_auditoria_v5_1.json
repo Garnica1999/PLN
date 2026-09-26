@@ -1,7 +1,7 @@
 {
   "experimento": "EBD-28 (P11, AUDIT)",
   "tipo": "AUDIT / REPRODUCTION UNIT (no cuenta como experimento nuevo)",
-  "fecha": "2026-09-26T00:45:12+00:00",
+  "fecha": "2026-09-26T00:45:24+00:00",
   "duracion_s": 4.0,
   "reglas_seccion_36": {
     "transformers": 0,
@@ -67,8 +67,8 @@
   "git": {
     "rama": "proyecto-kaggle-toxic-2026-v5",
     "rama_correcta": true,
-    "arbol_limpio": false,
-    "commits_locales": 89,
+    "arbol_limpio": true,
+    "commits_locales": 90,
     "rama_en_remoto": false,
     "pusheada": false,
     "nota": "La rama v5 no se ha pusheado: queda local por decision del usuario."
