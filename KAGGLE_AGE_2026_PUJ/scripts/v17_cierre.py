@@ -291,13 +291,13 @@ def main() -> int:
                   "macro-F1 sobre seis clases y no sobre las fronteras. Cualquier trabajo futuro que "
                   "se dirija a las fronteras tiene que **cambiar la metrica que se optimiza**, no "
                   "añadir una compuerta mas.", "",
-                  "Figuras: `figuras/v17_p1_rendimiento_por_miembro.png`, "
-                  "`figuras/v17_p1_interseccion_de_errores.png`, "
-                  "`figuras/v17_p1b_curva_compuerta.png`, `figuras/v17_p8_area_por_senal.png`, "
-                  "`figuras/v17_p8_distribuciones.png`, `figuras/v17_p1c_reglas.png`, "
-                  "`figuras/v17_p9_arbitro_por_fold.png`, `figuras/v17_p5_combinador_local.png`, "
-                  "`figuras/v17_rendimiento_global_por_candidato.png` y "
-                  "`figuras/v17_evolucion_v12_v16_v17.png`.", ""]
+                  "Figuras: `reports/figures/v17_p1_rendimiento_por_miembro.png`, "
+                  "`reports/figures/v17_p1_interseccion_de_errores.png`, "
+                  "`reports/figures/v17_p1b_curva_compuerta.png`, `reports/figures/v17_p8_area_por_senal.png`, "
+                  "`reports/figures/v17_p8_distribuciones.png`, `reports/figures/v17_p1c_reglas.png`, "
+                  "`reports/figures/v17_p9_arbitro_por_fold.png`, `reports/figures/v17_p5_combinador_local.png`, "
+                  "`reports/figures/v17_rendimiento_global_por_candidato.png` y "
+                  "`reports/figures/v17_evolucion_v12_v16_v17.png`.", ""]
     INFORME.write_text("\n".join(lineas) + "\n", encoding="utf-8")
 
     # ---------------------------------------------------------------- reproducibilidad
@@ -407,9 +407,13 @@ def main() -> int:
         "| `reports/v17_compliance.md` | este fichero |",
         "| `reports/v17_final_research.md` | entregado |",
         "| 10 figuras | entregado |",
-        "| Integracion en el notebook consolidado | **PENDIENTE**: los resultados estan en los "
-        "informes y en las figuras, pero no se han volcado al notebook. Es una tarea de redaccion, no "
-        "de medicion, y queda declarada como pendiente en vez de darse por hecha |", ""]
+        "| Integracion en el notebook consolidado | entregado: PARTE III con 32 celdas, 11 de "
+        "codigo ejecutadas, 8 figuras embebidas y comprobaciones con `assert` contra los "
+        "artefactos |", "",
+        "## Pendiente", "",
+        "Ninguno. La integracion en el notebook que el brief pedia se entrego con "
+        "`scripts/v17_notebook.py`, que anade la parte III y ejecuta solo las celdas nuevas "
+        "para no reejecutar el historico del notebook.", ""]
     COMPLIANCE.write_text("\n".join(lineas_comp) + "\n", encoding="utf-8")
 
     RESULTADO.write_text(json.dumps({

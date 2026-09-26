@@ -777,7 +777,7 @@ Después pide añadir además el paso de la **arquitectura del meta-modelo**.
   que el arbitro no ve**, y reentrenamiento en todo el train exterior para la validacion exterior.
 - **Resultado**: macro-F1 **0,6004**, delta **-0,0001**, **0 de 5 folds** positivos, IC95 pareado
   [-0,0002; -0,0001]. **NO ADOPTAR**. El arbitro elige umbrales de 0,60 a 0,90, activa entre 327 y
-  1.256 filas, y cuando activa **pierde**: 4 rescates contra 22 danos en toda la fase.
+  1.256 filas, y cuando activa **pierde**: 3 rescates contra 22 danos en toda la fase.
 - **Lo que significa**: no es un arbitro mal entrenado, es que la frontera que habria que aprender
   **no existe con las señales disponibles**. Confirma por falsacion la prediccion que P1c
   registro antes de mirar el resultado.
@@ -810,3 +810,23 @@ Después pide añadir además el paso de la **arquitectura del meta-modelo**.
   trabajo de redaccion y queda dicho en `reports/v17_compliance.md`.
 - `experiments.csv` pasa a **102 experimentos**. **D-047** en `DECISIONS.md`. Auditoria de idioma:
   **0 errores sobre 370 ficheros**. Sin push.
+
+## 2026-09-26 · V17 pasa al notebook consolidado
+
+- **PARTE III anadida** a `notebooks/99_entrega_consolidado.ipynb`: **32 celdas**, 11 de codigo, **8
+  figuras embebidas** y las comprobaciones con `assert` que el notebook ya usaba, de modo que si un
+  artefacto cambia sin reejecutar su experimento, el notebook falla en vez de mentir.
+- Se ejecuta con `scripts/v17_notebook.py`, que construye un notebook temporal con la celda de
+  configuracion mas las celdas nuevas y copia despues las salidas. **No se reejecuta el historico**:
+  las 19 celdas de codigo anteriores leen artefactos de septiembre y no volverian a correr igual.
+- Contenido: reconciliacion de la referencia y reproduccion de A2 de V16, analisis de miembros en
+  las fronteras, especialista de pares, interseccion de errores, el mecanismo de los errores
+  confiados, gating, perfil de confianza, P9 y P5, figuras y comparacion final. Es la lista que pide
+  la seccion 43 del brief.
+- **Correccion de una cifra**: el total de la activacion del arbitro de P9 es **3 rescates y 22
+  danos**, no 4 rescates. La cifra la calcula el script y el informe de P9 la tenia bien; el error
+  estaba en el texto que escribi a mano en `RUNLOG.md`, `experiments.csv` y el registro de hipotesis.
+  Corregido en los tres. Este error lo detecto la celda del notebook, que recomputa la suma.
+- Se corrige tambien la plantilla de `scripts/v17_cierre.py`, que reintroducia la ruta `figuras/v17_*`
+  en vez de `reports/figures/v17_*`, y la fila del compliance que declaraba el notebook como
+  pendiente: ya no queda ninguno.

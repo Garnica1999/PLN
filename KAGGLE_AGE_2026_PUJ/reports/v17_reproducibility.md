@@ -2,7 +2,7 @@
 
 - **Rama**: `kaggle-age-2026-puj-v17`
 - **Commit base**: `a818349`
-- **Commit de la fase**: `ccdbcfae9d37e738cc2f331008ed969fb8d2943d`
+- **Commit de la fase**: `66be95da0f0821f8a66bfd55f3a6113c622f979f`
 - **Semilla**: `cfg.SEED`
 - **Interprete**: `/home/carlos/venv/bin/python` (Python 3.14.7)
 - **Hardware**: AMD Ryzen 9 5950X (32 hilos), 31,2 GB de RAM, RX 9070 XT. **CPU pura**: ninguna fase de V17 usa GPU, porque solo hay un LogReg o un LinearSVC por fold.

@@ -50,5 +50,9 @@
 | `reports/v17_compliance.md` | este fichero |
 | `reports/v17_final_research.md` | entregado |
 | 10 figuras | entregado |
-| Integracion en el notebook consolidado | **PENDIENTE**: los resultados estan en los informes y en las figuras, pero no se han volcado al notebook. Es una tarea de redaccion, no de medicion, y queda declarada como pendiente en vez de darse por hecha |
+| Integracion en el notebook consolidado | entregado: PARTE III con 32 celdas, 11 de codigo ejecutadas, 8 figuras embebidas y comprobaciones con `assert` contra los artefactos |
+
+## Pendiente
+
+Ninguno. La integracion en el notebook que el brief pedia se entrego con `scripts/v17_notebook.py`, que anade la parte III y ejecuta solo las celdas nuevas para no reejecutar el historico del notebook.
 

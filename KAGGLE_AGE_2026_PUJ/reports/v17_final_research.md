@@ -1,6 +1,6 @@
 # V17 — Informe final de fase: especialistas de frontera y decision local
 
-**Rama** `kaggle-age-2026-puj-v17` · **commit** `ccdbcfa` · **fecha** 2026-09-26 · **experimentos** 8 de 16 previstos, todos por debajo de los 20 minutos de CPU
+**Rama** `kaggle-age-2026-puj-v17` · **commit** `66be95d` · **fecha** 2026-09-26 · **experimentos** 8 de 16 previstos, todos por debajo de los 20 minutos de CPU
 
 ## 1. La pregunta y la respuesta
 
