@@ -193,6 +193,14 @@ worktree aislado (`PLN-toxic-rerun`) con copia local de datos y corpora, sin red
 - Mejor LB: V03 0.78306. Mejor sin V03: meta v08 0.78163; candidato c 0.78150.
 - Gaps local-LB: -0.0290 (v07) a +0.0018 (v11); patron: menos capacidad y metas
   restringidos transfieren mejor; la union con mayor capacidad transfiere peor.
+- **Regeneracion de submissions (P6j, `audit_submission_regeneration.csv`)**: se
+  re-ajustaron los modelos en el worktree aislado y se regeneraron 16/16
+  submissions historicas **byte a byte identicas** (v01-v04, v06-v07,
+  v08_p1_fold_ensemble, v09-v11, v11_corrector, v12-v16; 17/17 scripts exit=0).
+  Excluidos con motivo: v05 (re-busqueda Optuna = experimentacion nueva) y
+  v08_meta (script 18 evalua el holdout). Observacion: v12 y v13 son
+  byte-identicos entre si (el ensemble de cinco modelos produce el mismo
+  etiquetado que el promedio de repeticiones; coherente con D-067).
 
 ## 16. Decisiones
 

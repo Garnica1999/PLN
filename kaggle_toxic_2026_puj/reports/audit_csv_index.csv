@@ -1,5 +1,5 @@
 csv,filas,sha256_16,bytes
-reports/audit_csv_index.csv,25,66beb2f14843f04a,1491
+reports/audit_csv_index.csv,27,48d5e73f13076a6d,1610
 reports/audit_document_consistency.csv,11,8d499bb3e1e94c14,1441
 reports/audit_documentation.csv,11,3816b90bb50e1d47,1463
 reports/audit_experiment_coverage.csv,202,a84b5b960e72b520,15676
@@ -10,6 +10,7 @@ reports/audit_model_health.csv,22,54f0ce506ecc3405,8237
 reports/audit_new_hypotheses.csv,5,2b39222262fcef1c,2210
 reports/audit_notebook.csv,9,d691411a460df18f,1396
 reports/audit_reproducibility_matrix.csv,20,ffe1ad8d213573f5,7695
+reports/audit_submission_regeneration.csv,16,3db75d7439e8b8b6,2457
 reports/audit_submissions.csv,47,271d249f41438cd3,4955
 reports/audit_transfer_analysis.csv,15,2f7fa4f8feaccece,4402
 audit/out/p01_grupos_mixtos_train_test.csv,3,bde375422004147e,46
