@@ -1323,7 +1323,7 @@ evidencia, experimento, resultado, conclusion final.
   ni 15.
 - **Hallazgo que conviene no pasar por alto**: el orden es **3 > 5 > 7**, es decir, cuanto
   **menos** contexto de vecindario, mejor. Es contraintuitivo y encaja con la lectura que
-  v5 dejo，设置: el limite no esta en la funcion objetivo sino en la cantidad de datos. Con
+  v5 dejo, con esta lectura: el limite no esta en la funcion objetivo sino en la cantidad de datos. Con
   10M tokens, ampliar la ventana reparte la misma evidencia sobre mas pares y diluye la
   senal de cada palabra. La ventana 3 produce ademas el **mejor embedding aislado de toda
   la fase v5** (0.6694, por encima del 0.6687 de Wikipedia 50M) y la mejor fusion en valor
@@ -1637,5 +1637,5 @@ evidencia, experimento, resultado, conclusion final.
 - **Decision 5, los umbrales ajustados no son comparables**: reoptimizar un umbral por etiqueta
   con barrido greedy sobre el mismo OOF que se evalua esta sesgado al alza (B0 sube a 0.7808
   solo por reajustar umbrales, sin cambiar el modelo). **El gate se evalua siempre con los
-  umbrales congelados de V03**, y la columna de umbrales ajustados queda como diagnostico
-  בלבד.
+  umbrales congelados de V03**, y la columna de umbrales ajustados queda solo como
+  dato de diagnostico.

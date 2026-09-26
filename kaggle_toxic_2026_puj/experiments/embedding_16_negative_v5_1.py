@@ -19,7 +19,7 @@ Hipotesis de la familia
 ``negative`` no deberia mover la aportacion a V03, porque el bloque de V03 que decide la
 etiqueta es disperso y ortografico (char n-grams 3-5), no un vector de 200 numeros. Es la
 familia con menos probabilidades de Surprise del plan, y se mide precisamente para cerrar
-la lista y no dejarlo por最安.
+la lista y no dejarlo para el final.
 
 Si apareciera una mejora clara, la unidad de **reserva** queda disponible para
 confirmarla con una repeticion; si no, la fase se cierra con 8 de 9 unidades consumidas y
