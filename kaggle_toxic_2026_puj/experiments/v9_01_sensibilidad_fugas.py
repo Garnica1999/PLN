@@ -50,6 +50,7 @@ from src.splits import (
 )
 
 REFERENCIA_V03 = 0.777211
+REFERENCIA_V03_PRECISION = 0.7772114525165721
 UMBRALES_V03 = {"HS": 0.44, "TR": 0.51, "AG": 0.46}
 REPORTE_JSON = PROJECT_ROOT / "reports" / "v9_01_sensibilidad_fugas.json"
 REPORTE_MD = PROJECT_ROOT / "reports" / "v9_01_sensibilidad_fugas.md"
@@ -168,7 +169,8 @@ def main() -> None:
     resumen = metricas_multietiqueta(y, pred)
     corrected = float(resumen["f1_media_columnas"])
     diferencia = corrected - REFERENCIA_V03
-    veredicto = "REPRODUCE EXACTO" if abs(diferencia) < 1e-9 else (
+    diferencia_precisa = corrected - REFERENCIA_V03_PRECISION
+    veredicto = "REPRODUCE EXACTO" if abs(diferencia_precisa) < 1e-12 else (
         "DENTRO DE TOLERANCIA (1e-4)" if abs(diferencia) < 1e-4 else "DIFIERE")
 
     # grupos del protocolo vigente para el contraste ARI
@@ -183,6 +185,7 @@ def main() -> None:
         "referencia_v03": REFERENCIA_V03,
         "corrected_cv_solo_train": corrected,
         "delta": diferencia,
+        "delta_preciso_vs_canon": diferencia_precisa,
         "veredicto": veredicto,
         "ari_vs_grupos_vigentes": ari,
         "n_grupos_solo_train": len(set(grupos.tolist())),

@@ -1,0 +1,172 @@
+{
+  "experimento": "V9-03 (H2)",
+  "fecha": "2026-09-26",
+  "umbrales": {
+    "nivel_A": 0.85,
+    "nivel_B": 0.8
+  },
+  "n_pares_nivel_A": 8,
+  "n_pares_nivel_B": 3,
+  "tuits_test_afectados_A": 4,
+  "acuerdo_global_celdas": 0.6364,
+  "acuerdo_nivel_A_celdas": 0.75,
+  "celdas_que_cambian_vs_v03": 0,
+  "submission_sonda": "submissions/toxic_submission_v18_near_dup_propagacion.csv",
+  "integridad_submission": {
+    "filas": 1154,
+    "columnas": [
+      "id",
+      "HS",
+      "TR",
+      "AG"
+    ],
+    "ids_iguales": true,
+    "binario": true
+  },
+  "pares": [
+    {
+      "id_train": 23919,
+      "id_test": 20568,
+      "similitud": 1.0,
+      "nivel": "A",
+      "y_train_HS": 0,
+      "y_train_TR": 0,
+      "y_train_AG": 0,
+      "pred_v03_HS": 0,
+      "pred_v03_TR": 0,
+      "pred_v03_AG": 0,
+      "celdas_acuerdo": 3
+    },
+    {
+      "id_train": 21262,
+      "id_test": 20568,
+      "similitud": 1.0,
+      "nivel": "A",
+      "y_train_HS": 0,
+      "y_train_TR": 0,
+      "y_train_AG": 0,
+      "pred_v03_HS": 0,
+      "pred_v03_TR": 0,
+      "pred_v03_AG": 0,
+      "celdas_acuerdo": 3
+    },
+    {
+      "id_train": 23245,
+      "id_test": 22448,
+      "similitud": 1.0,
+      "nivel": "A",
+      "y_train_HS": 1,
+      "y_train_TR": 0,
+      "y_train_AG": 1,
+      "pred_v03_HS": 1,
+      "pred_v03_TR": 0,
+      "pred_v03_AG": 1,
+      "celdas_acuerdo": 3
+    },
+    {
+      "id_train": 22860,
+      "id_test": 20568,
+      "similitud": 1.0,
+      "nivel": "A",
+      "y_train_HS": 0,
+      "y_train_TR": 0,
+      "y_train_AG": 0,
+      "pred_v03_HS": 0,
+      "pred_v03_TR": 0,
+      "pred_v03_AG": 0,
+      "celdas_acuerdo": 3
+    },
+    {
+      "id_train": 22883,
+      "id_test": 20496,
+      "similitud": 0.9475,
+      "nivel": "A",
+      "y_train_HS": 1,
+      "y_train_TR": 1,
+      "y_train_AG": 1,
+      "pred_v03_HS": 0,
+      "pred_v03_TR": 0,
+      "pred_v03_AG": 0,
+      "celdas_acuerdo": 0
+    },
+    {
+      "id_train": 22883,
+      "id_test": 21178,
+      "similitud": 0.9119,
+      "nivel": "A",
+      "y_train_HS": 1,
+      "y_train_TR": 1,
+      "y_train_AG": 1,
+      "pred_v03_HS": 1,
+      "pred_v03_TR": 1,
+      "pred_v03_AG": 1,
+      "celdas_acuerdo": 3
+    },
+    {
+      "id_train": 20862,
+      "id_test": 20496,
+      "similitud": 0.871,
+      "nivel": "A",
+      "y_train_HS": 1,
+      "y_train_TR": 1,
+      "y_train_AG": 1,
+      "pred_v03_HS": 0,
+      "pred_v03_TR": 0,
+      "pred_v03_AG": 0,
+      "celdas_acuerdo": 0
+    },
+    {
+      "id_train": 21150,
+      "id_test": 20496,
+      "similitud": 0.8526,
+      "nivel": "A",
+      "y_train_HS": 0,
+      "y_train_TR": 0,
+      "y_train_AG": 0,
+      "pred_v03_HS": 0,
+      "pred_v03_TR": 0,
+      "pred_v03_AG": 0,
+      "celdas_acuerdo": 3
+    },
+    {
+      "id_train": 20862,
+      "id_test": 21178,
+      "similitud": 0.837,
+      "nivel": "B",
+      "y_train_HS": 1,
+      "y_train_TR": 1,
+      "y_train_AG": 1,
+      "pred_v03_HS": 1,
+      "pred_v03_TR": 1,
+      "pred_v03_AG": 1,
+      "celdas_acuerdo": 3
+    },
+    {
+      "id_train": 21150,
+      "id_test": 21178,
+      "similitud": 0.8129,
+      "nivel": "B",
+      "y_train_HS": 0,
+      "y_train_TR": 0,
+      "y_train_AG": 0,
+      "pred_v03_HS": 1,
+      "pred_v03_TR": 1,
+      "pred_v03_AG": 1,
+      "celdas_acuerdo": 0
+    },
+    {
+      "id_train": 21316,
+      "id_test": 20496,
+      "similitud": 0.8051,
+      "nivel": "B",
+      "y_train_HS": 1,
+      "y_train_TR": 1,
+      "y_train_AG": 1,
+      "pred_v03_HS": 0,
+      "pred_v03_TR": 0,
+      "pred_v03_AG": 0,
+      "celdas_acuerdo": 0
+    }
+  ],
+  "duracion_segundos": 0.15
+}
