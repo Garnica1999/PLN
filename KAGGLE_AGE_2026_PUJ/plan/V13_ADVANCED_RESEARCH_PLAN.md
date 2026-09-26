@@ -47,10 +47,10 @@ especialista explícito)?
 | **P0a** | Auditoría de idioma: todo el proyecto en español y sin alfabetos ajenos | `reports/v13_auditoria_idioma.md` | **cerrada** (0 errores, 0 avisos) |
 | **P0b** | Prueba de colinealidad de las 279 variables + criba reutilizable | `reports/v13_colinealidad.md` | **cerrada** (matriz completa, sin reentrenar) |
 | **P15** | Diagnóstico: matriz de error por miembro (**antes** de P3/P4) | `reports/v13_member_error_matrix.csv` | **cerrada** |
-| **P1** | Evidencia de edad por token, in-fold | `reports/v13_hypothesis_registry.csv` | - |
-| **P17** | Pronombres de persona (V14–V18 del artículo) | idem | - siguiente |
+| **P1** | Evidencia de edad por token, in-fold | idem | **cerrada** (0,3997 aislado; fusión -0,0002, 3/5 folds) |
+| **P17** | Pronombres de persona (V14–V18 del artículo) | idem | **cerrada** (0,1918; pre-chequeo -64.075, sin fusión) |
 | **P19** | Árboles SFL (sin POS) | idem | - |
-| **P20** | Incertidumbre y modalidad | idem | - |
+| **P20** | Incertidumbre y modalidad | idem | **cerrada** (0,1270, bajo el azar; sin fusión) |
 | **P3** | Especialistas binarios de frontera | idem | - |
 | **P24** | Forma de la distribución de evidencia | idem | - |
 | **P4** | Boundary gating | idem | - |
@@ -141,6 +141,26 @@ descartó.**
 - La criba quedo **validada de forma cruzada**: aplicada a las 72 variables lexicas de la fase
   cerrada reproduce el resultado ya calculado por otra ruta de codigo (3 redundantes en ambos
   casos, diferencia maxima 0,0005), lo que confirma D-040 por segunda via.
+
+**P17 · pronombres de persona (cerrada).** Bloque de 26 columnas con vocabulario cerrado y
+propio (R-1), solo con formas no ambiguas: `el` y `los` se declaran aparte por ser artículo o
+pronombre, y `el` es la palabra más frecuente del corpus. Cribado **0 de 26 redundantes**
+(máximo 0,4757): ocupa direcciones libres. Pero el control da 0,1918 (suelo 0,1667) y el
+pre-chequeo de rescate da **neto -64.075** (rescate 12.043, daño 76.118), negativo también en las
+dos fronteras. El bloque no es solo débil: es mucho peor que V12. La pista se cierra sin fusionar.
+
+**P20 · incertidumbre y modalidad (cerrada).** 23 columnas, vocabulario cerrado y propio, cribado
+0 de 23 redundantes (máximo 0,4067). El control da **0,1270, por debajo del suelo de azar**, y la
+cobertura lo explica: solo el 1,6 % de los documentos tiene algún marcador de duda y el 0,4 % alguno
+de certeza. No es que la variable no discrimine, es que **el corpus no contiene la variable**: son
+tweets de 140 caracteres sobre noticias y televisión, no comentarios de fans como el artículo de
+referencia. Pre-chequeo: neto -70.023. Pista cerrada sin fusionar.
+
+**P1 · evidencia por token (cerrada tras la fusión).** El control dio 0,3997, el doble que el
+mejor bloque léxico cerrado, y P1c mostró que el 57 % de esa mejora es evidencia léxica y no
+reconocimiento de cuentas. Pero la fusión con V12 da **-0,0002 con 3/5 folds**, y el primer control
+de permutado da -0,0005: la mejora del bloque aislado se pierde al combinarla con V12. Los miembros
+de V12 son clasificadores de TF-IDF, es decir ya calculan una versión de `P(clase|token)`.
 
 **Consecuencia operativa para P3.** Un especialista de frontera **no puede apoyarse en los
 miembros actuales**: hay poco rescate exclusivo, no hay señal de confianza que active la puerta y

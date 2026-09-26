@@ -1,0 +1,6 @@
+categoria,formas,documentos_con_la_categoria,apariciones_totales,formas_sobre_el_minimo,formas_totales,detalle
+duda,creo quiza quizas acaso parece imagino supongo dudo ojala creeria pienso supos quedo,2775,2853,4,13,creo:810 quiza:35 quizas:56 acaso:68 parece:618 imagino:90 supongo:34 dudo:36 ojala:560 creeria:2 pienso:155 supos:0 quedo:341
+certeza,seguro seguramente totalmente completamente claramente obviamente exactamente precisamente indiscutible evidente,734,742,1,10,seguro:301 seguramente:46 totalmente:154 completamente:52 claramente:28 obviamente:40 exactamente:51 precisamente:25 indiscutible:5 evidente:33
+modalidad,puede pueden podria deberia debe deben tendria haria habria suele solian habia hara,4689,4877,7,13,"puede:1,616 pueden:494 podria:267 deberia:295 debe:996 deben:341 tendria:56 haria:65 habria:116 suele:56 solian:3 habia:327 hara:136"
+negacion,no nunca jamas nada nadie ninguno ningun ninguna tampoco imposible,27431,34058,7,10,"no:24,241 nunca:1,465 jamas:328 nada:2,192 nadie:1,060 ninguno:80 ningun:278 ninguna:163 tampoco:210 imposible:188"
+grado,muy mucho poco bastante demasiado super total mas menos tanto tan demasiados,16866,18946,10,12,"muy:2,616 mucho:1,531 poco:615 bastante:111 demasiado:242 super:385 total:367 mas:8,355 menos:1,079 tanto:882 tan:1,875 demasiados:18"
