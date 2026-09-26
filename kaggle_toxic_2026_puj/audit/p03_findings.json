@@ -1,0 +1,123 @@
+{
+  "v03_oof": {
+    "n_filas": 1483,
+    "umbrales": [
+      0.44,
+      0.51,
+      0.46
+    ],
+    "corrected_cv_guardado": 0.7772114525165721,
+    "f1_pliegues_guardados": [
+      0.7960101143044023,
+      0.7940339497874405,
+      0.7788600288600289,
+      0.738598013128522,
+      0.7790564997088775
+    ],
+    "f1_por_etiqueta_guardado": [
+      0.7616892911010558,
+      0.8157303370786517,
+      0.7542147293700089
+    ],
+    "fuente": "features/v2_oof_base_corrected.npz, modelo 'M2_union_lr_c2' (fila 2 de 4; mismos ids, grupos y pliegues corregidos v2)",
+    "nota_mapeo": "proba = v2_oof_base_corrected.npz['proba'][:, posicion_M2, :] reordenada por su clave 'ids'; pred = proba >= [0.44, 0.51, 0.46] en el orden HS, TR, AG",
+    "pliegues_tamano": {
+      "1": 297,
+      "2": 297,
+      "3": 296,
+      "4": 296,
+      "5": 297
+    }
+  },
+  "v03_recomputado": {
+    "f1_media_columnas": 0.7772114525165721,
+    "f1_por_etiqueta": {
+      "HS": 0.7616892911010558,
+      "TR": 0.8157303370786517,
+      "AG": 0.7542147293700089
+    },
+    "f1_pliegues": [
+      0.79601,
+      0.794034,
+      0.77886,
+      0.738598,
+      0.779056
+    ]
+  },
+  "historico_oof": {
+    "n_filas": 1731,
+    "f1_umbral_0_5": 0.792659,
+    "f1_umbrales_congelados": 0.798933
+  },
+  "controles_v6": {
+    "B0-control-marginales": {
+      "cv": "0.777211",
+      "delta": "0.0"
+    },
+    "A0-control": {
+      "cv": "0.777211",
+      "delta": "0.0"
+    },
+    "I0-control": {
+      "cv": "0.777211",
+      "delta": "0.0"
+    },
+    "C1-0-control": {
+      "cv": "0.777211",
+      "delta": "0.0"
+    },
+    "H0-control": {
+      "cv": "0.777211",
+      "delta": "0.0"
+    },
+    "F0-control": {
+      "cv": "0.777211",
+      "delta": "0.0"
+    },
+    "J0-control": {
+      "cv": "0.777211",
+      "delta": "0.0"
+    }
+  },
+  "n_controles_v6": 7,
+  "v6_deltas": {
+    "ok": 25,
+    "fail": 0
+  },
+  "v7_deltas": {
+    "ok": 9,
+    "fail": 0
+  },
+  "v7_convenciones": {
+    "V7-01": "deltas vs control BCE (0.777165) excepto el control, que va vs V03 (documentado en v7_perdida_f1.md)",
+    "V7-03": "P0-1-anidado va vs su control frozen 0.769123 (documentado)"
+  },
+  "fins": {
+    "ok": 15,
+    "fail": 0
+  },
+  "v4_netos": {
+    "ok": 5,
+    "fail": 0
+  },
+  "bootstrap_umbral_vs_05": {
+    "metrica_a": 0.7730240460463583,
+    "metrica_b": 0.771778476256122,
+    "diferencia_observada": 0.001246,
+    "ic95": [
+      -0.006663,
+      0.009122
+    ]
+  },
+  "holdout_p7": {
+    "paso_1_v03_holdout": "{'modelo': 'M2_union_lr_c2 reajustado con todo el desarrollo (1483 filas)', 'umbrales_congelados': {'HS': 0.44, 'TR': 0.51, 'AG': 0.46}, 'dimension_base': 24646, 'f1_media_columnas': 0.8284684313523535, 'f1_por_etiqueta': {'HS': 0.8571428571428571, 'TR': 0.8493150684931506, 'AG': 0.7789473684210526}, 'f1_macro6': 0.8612743650692675, 'f1_micro': 0.8285714285714286, 'f1_samples': 0.3682795698924732,",
+    "paso_2_meta_holdout": "{'descripcion': 'meta Ridge alpha=3 (balanced) sobre 44 meta-features OOF del desarrollo; bases reajustados con todo el desarrollo; umbral 0.5', 'reproduccion_candidato_p6': {'variante': 'META-BASES-RIDGE', 'alpha': 3.0, 'n_features': 44, 'diferencia_maxima_dev': 0.0, 'reproduce': True}, 'f1_media_columnas': 0.8465093927479249, 'f1_por_etiqueta': {'HS': 0.8623853211009175, 'TR': 0.8571428571428571",
+    "decision": "{'regla': 'generar submission si meta_holdout >= v03_holdout - 0.005', 'v03_holdout_f1': 0.8284684313523535, 'meta_holdout_f1': 0.8465093927479249, 'delta_meta_vs_v03': 0.01804096139557143, 'objetivo': 0.8234684313523535, 'cumple': True, 'submission_generada': True, 'justificacion': 'El meta (0.8465"
+  },
+  "n_evaluaciones_holdout_en_log": 5,
+  "menciones_0_777211_en_json": 79,
+  "resumen_checks": {
+    "PASS": 50,
+    "INFO": 13
+  }
+}
