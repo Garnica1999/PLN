@@ -1,0 +1,10 @@
+comprobacion,resultado,detalle
+numero de filas,correcto,1154 filas en el fichero frente a 1154 en la prueba
+nombres y orden de columnas,correcto,"columnas ['id', 'HS', 'TR', 'AG'] frente a las esperadas ['id', 'HS', 'TR', 'AG']"
+valores de etiqueta,correcto,"valores distintos: [0, 1]"
+sin valores ausentes,correcto,0 celdas ausentes
+sin identificadores duplicados,correcto,0 identificadores repetidos
+identificadores en el orden del conjunto de prueba,correcto,coinciden con el orden original
+numero de filas distinto del entrenamiento,correcto,entrenamiento 1731 frente a prueba 1154
+etiquetas dentro de cero y uno,correcto,todas las celdas de etiqueta estan en el intervalo
+sin cadenas vacias,correcto,0 identificadores vacios

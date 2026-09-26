@@ -1014,3 +1014,39 @@ Registro cronologico de ejecuciones. Formato:
   umbrales, por evidencia medida y no por inercia. Queda abierto solo P1 en su formulacion
   de solo prediccion, que no se puede medir en local, y la verificacion de transferencia de
   un finalista.
+- v8 apertura: auditoria de brecha y del material de clase | `v8_00_gap_audit.py`
+  **Diez pistas experimentales auditadas, cinco sin probar y cinco con precedente; veintidos
+  tecnicas del material de clase, nueve genuinamente nuevas y trece cerradas.** El control de
+  calidad de la auditoria encontro y corrigio **tres falsos positivos propios**: la asimetria
+  casaba con la prosa de un informe anterior, la traduccion con el metodo de conversion de
+  jerga, y las idiosincrasias con un comentario sobre cobertura de lexico. Los tres patrones
+  se endurecieron para exigir asignacion o llamada. Ademas el conteo simple resulto
+  genuinamente usado en la linea ortografica de E2-10 y su cierre se corrigio para citarlo.
+  **Dos hallazgos que reencuadran la especificacion**: P2, la ponderacion por razon logaritmica
+  de recuentos, **es el estimador de Mosteller y Wallace de 1964** y el proyecto ya la midio en
+  cuatro variantes cerradas entre -0.016 y -0.039, de modo que no es una idea nueva sino una
+  reejecucion; P3, la estabilidad de features, es el capitulo 8 de ese mismo libro y si tiene
+  respaldo doble, con la traduccion de ida y vuelta sustituida por submuestreo.
+  Queda escrito que las reglas de la competencia permiten modelos preentrenados y que el
+  proyecto mantiene su prohibicion como decision consciente. **D-057. 0 Experiments de
+  entrenamiento, 0 submissions.**
+- v8 P1: promedio de los cinco modelos al predecir | `v8_01_ensamble_folds.py`
+  **Control de identidad perfecto: diferencia maxima por celda de 0.000e+00 frente al OOF
+  canonico de V03, y metrica 0.777211 exacta.** Esa comprobacion es mas fuerte que cualquier
+  tolerancia de metrica: si las probabilidades coinciden celda a celda, el pipeline es el de
+  V03. **La metrica local de esta linea no es informativa y no puede serlo**: la columna de
+  desarrollo es el promedio por pliegue, que es la definicion del OOF, asi que tiene que
+  coincidir con V03. Lo unico nuevo es el promedio sobre la prueba.
+  **Error de control documentado**: la primera version tomaba como control el modelo completo
+  medido sobre si mismo y devolvio 0.969085. La causa es que esa cifra es resubstitucion y no
+  validacion. El script ahora etiqueta esa cifra como no comparable.
+  **Alcance del cambio pequeno y techo pequeno en consecuencia**: contraccion de
+  probabilidades de +0.001334, tasas de positivos que se mueven en la tercera cifra decimal, y
+  **92 filas de 1154 y 100 celdas de 3462 diferentes de la submission de V03, un 2.9 %**, menos
+  que las 126 celdas del cambio v02 a v03 que dio +0.0031 externo. El techo razonable de la
+  linea se escribe antes del envio: **orden de milesimas**.
+  Dispersion entre pliegues registrada: de 0.7386 a 0.7960 en el rango, de modo que el
+  promedio pesa igual un pliegue mas debil.
+  **Nueve comprobaciones de integridad del fichero, todas correctas. Fichero escrito y
+  PARADA OBLIGATORIA: no se envia automaticamente y no se crean variantes antes del numero.**
+  **D-058. 1 Sonda externa preparada, 0 enviadas.**

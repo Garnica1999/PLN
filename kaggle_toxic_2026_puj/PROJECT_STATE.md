@@ -411,3 +411,23 @@ chequeo previo (D-008).
 | v7 (Advanced Research) | **Cerrada sin adopciones**: P9, P8 y P0.1 negativos con causa medida; 8 tracks cerrados por duplicacion en la auditoria |
 | V7 auditoria | 11 tracks candidatos auditados: **8 cerrados con cifra**, 2 nuevos ejecutados, 1 aplazado por no medible en local |
 | D-056 | **V03 mantiene sus umbrales por evidencia medida**: desviacion de 0.04 a 0.065, recalibrarlos empeora |
+
+## Fase v8 (Transfer Gap + Supervised Sparse Reweighting) - en curso
+
+- **Aislamiento**: worktree `/home/carlos/Git/PLN-v8`, rama
+  `proyecto-kaggle-toxic-2026-v8`, desde el cierre de v7 (`2f8fac8`). `data/` enlazado,
+  `tools/` copiado. v7 intacta.
+- **Prohibicion de modelos preentrenados ratificada** (D-057), aunque las reglas de la
+  competencia los permitan. Decision consciente, no olvido.
+- **Freno de transferencia heredado**: por encima de +0.005 local, un candidato solo llega a
+  finales si no aumenta dimension ni brecha entre ajuste y validacion.
+- **P0 cerrado** (`v8_00_gap_audit.py`): de diez pistas, cinco sin probar y cinco con
+  precedente; del material de clase, 22 tecnicas, **9 nuevas** y 13 cerradas. Tres falsos
+  positivos propios corregidos. P2 llega con precedente adverso (es el estimador de
+  Mosteller y Wallace, ya medido en E2-15). P3 tiene respaldo doble.
+- **P1 ejecutado, ficha, en espera de sonda** (`v8_01_ensamble_folds.py`): identidad de
+  pipeline verificada celda a celda frente al OOF canonico (**0.000e+00**). El cambio sobre la
+  prediccion de V03 es de **100 celdas de 3462 (2.9 %)**. Fichero
+  `submissions/toxic_submission_v08_p1_fold_ensemble.csv` escrito y verificado con nueve
+  comprobaciones. **No enviado. Parada obligatoria** hasta conocer el numero (D-058).
+- **Techo esperado de P1, declarado antes del envio**: orden de milesimas, no de centesimas.

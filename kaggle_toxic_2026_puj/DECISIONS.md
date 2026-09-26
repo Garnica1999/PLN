@@ -2113,3 +2113,96 @@ evidencia, experimento, resultado, conclusion final.
   los cinco modelos al predecir el test y **no se puede medir en local**, y la verificacion de
   transferencia de un finalista en el leaderboard, que es el unico lugar donde queda por
   medir si una mejora local se transfiere. Todo lo demas esta cerrado con cifra.
+
+## D-057 - Apertura de la fase v8: rama y worktree aislados, prohibicion de modelos preentrenados ratificada y freno de transferencia heredado
+
+- **Contexto**: la fase v7 cerro todas sus lineas salvo una, el promedio de los cinco modelos
+  de pliegue en el momento de la prediccion. Su hipotesis es genuina pero su comportamiento
+  externo no lo captura el protocolo local, de modo que la fase v8 nace con una sola sonda
+  externa autorizada. A la vez, el material de clase sobre clasificacion de texto y
+  atribucion de autoria aporta tecnicas que el proyecto nunca ha probado.
+- **Decision 1, aislamiento del trabajo**. La fase v8 vive en el worktree
+  `/home/carlos/Git/PLN-v8`, en la rama `proyecto-kaggle-toxic-2026-v8`, creada desde el
+  cierre de v7 (`2f8fac8`). El arbol principal ya estaba en `kaggle-age-2026-puj-v13`, de
+  modo que el worktree aparte protege tambien el trabajo del otro proyecto. El directorio
+  `data/` queda enlazado al del arbol principal y `tools/` copiado, con el verificador de
+  caracteres dando 0 errores. **v7 no se borra ni se modifica.**
+- **Decision 2, se mantiene la prohibicion de modelos preentrenados aunque las reglas de la
+  competencia los permitan**. Las reglas de la competencia del material de clase admiten
+  transformers, BERT, RoBERTa, spacy, nltk y modelos preentrenados. El proyecto **no los
+  usa** desde la fase v5. Es una decision consciente y no un olvido: el marco de trabajo es
+  el clasico, y por eso las tecnicas del material se explotan **dentro** de ese marco. Queda
+  escrito para que nadie lo lea despues como una restriccion pendiente de levantar.
+- **Decision 3, el freno de transferencia de la fase v7 se hereda sin cambios**. Por encima
+  de +0.005 de mejora local, un candidato solo llega a la mesa de finales si **no** aumenta
+  la dimension ni la brecha entre ajuste y validacion. El fundamento son tres mediciones
+  independientes: R1-C1 gano +0.0157 local y perdio 0.0108 externo, R2-MINDF5 gano +0.0221 y
+  perdio 0.0127, y OPT-01 gano +0.0240 y perdio 0.0070. Los tres perdiaron en el externo y los
+  tres aumentaban capacidad. El unico movimiento positivo de leaderboard vino de la capa de
+  decision, que no aumenta capacidad.
+- **Decision 4, la auditoria de brecha pasa a ser programatica y con evidencia**. El script
+  `v8_00_gap_audit.py` busca en el codigo real, exige **implementacion** y no mencion, y
+  excluye los scripts de la propia fase para no autoinferirse. Resultado: de las diez pistas
+  experimentales, cinco no se han probado y cinco tienen precedente; del material de clase,
+  veintidos tecnicas de las cuales **nueve son genuinamente nuevas** y trece cerradas. Tres
+  falsos positivos del propio inventario quedaron corregidos: la asimetria casaba con la
+  prosa de un informe anterior, la traduccion con el metodo de conversion de jerga, y las
+  idiosincrasias con un comentario sobre cobertura de lexico. El conteo simple resulto
+  genuinamente usado en la linea ortografica de E2-10 y su cierre se corrigio para citarlo.
+- **Decision 5, dos lineas de la especificacion llegan con precedente que hay que decir antes
+  de ejecutarlas**. **P2, la ponderacion por razon logaritmica de recuentos, es el estimador
+  de Mosteller y Wallace de 1964**, el metodo fundacional de la atribucion de autoria, y el
+  proyecto ya la midio en cuatro variantes dentro de E2-15, cerradas entre -0.016 y -0.039. No
+  es una idea nueva con otro nombre: es una reejecucion. **P3, la estabilidad de features, si
+  tiene respaldo doble**: es el capitulo 8 de ese mismo libro, que el material de clase resume
+  como palabras inestables y que se mide traduciendo documentos de ida y vuelta a cinco
+  idiomas. La traduccion no esta disponible por las restricciones, pero la pregunta es la
+  misma y la operacionalizacion por submuestreo de la especificacion es legitima.
+- **Decision 6, orden de ejecucion que impone la auditoria, no la especificacion**. Primero P1
+  con su unica sonda externa, porque de su resultado depende toda la bifurcacion. Si no mejora,
+  se cierra sin variantes y se entra por P3, que es la forma barata de reducir la dimension
+  sin perder senal, y despues P2 con el precedente ya medido. Si mejora, se congela la
+  arquitectura y se ejecutan como maximo dos lineas mas, P9 y P10.
+
+## D-058 - P1: identidad de pipeline verificada celda a celda, alcance del cambio pequeno y parada obligatoria antes del envio
+
+- **Contexto**: P1 promedia las cinco probabilidades de los cinco modelos de pliegue para
+  predecir la prueba, con la representacion, los hiperparametros y los umbrales congelados de
+  V03. Es la unica linea de la fase cuyo resultado no se puede medir en local.
+- **Decision 1, el control se hace contra el artefacto, no solo contra la cifra**. El
+  promedio por pliegue reconstruido coincide con el OOF canonico de V03 con una diferencia
+  maxima por celda de **0.000e+00**, y la metrica es 0.777211 exacto. Eso es una
+  comprobacion de identidad de entrenamiento mas fuerte que cualquier tolerancia: si las
+  probabilidades coinciden celda a celda, el pipeline **es** el de V03 y ninguna cifra
+  posterior puede deberse al codigo.
+- **Decision 2, se documenta el error de control que casi cuela y su causa**. La primera
+  version del script tomaba como control el modelo completo ajustado sobre todo el desarrollo
+  y medido sobre si mismo, y devolvio 0.969085 en vez de 0.777211. La causa es que esa cifra
+  es **resubstitucion**, no validacion: un modelo evaluado sobre las mismas filas con las que
+  se ajusto tiene el numero inflado por construccion. La referencia de V03 es el OOF, es decir
+  el promedio por pliegue. El script ahora lo dice en el informe y etiqueta esa cifra como no
+  comparable, porque el error no era del codigo sino de la lectura de que valida el codigo.
+- **Decision 3, la metrica local de esta linea no es informativa y el script lo dice**. La
+  columna de desarrollo es el promedio por pliegue, que **es** la definicion del OOF canonico,
+  asi que tiene que coincidir con V03 y coincide. Intentar medir la hipotesis en local seria
+  medir el OOF contra si mismo. Por eso la parte local se usa solo para validar el codigo y la
+  unica cifra nueva es la del promedio sobre la prueba.
+- **Decision 4, el alcance del cambio es pequeno, y por tanto tambien su techo**. Tres
+  medidas se alinean: la contraccion media de las probabilidades al promediar es de
+  **+0.001334**, las tasas de positivos sobre la prueba se mueven en la tercera cifra decimal
+  (HS de 0.4428 a 0.4376, TR de 0.2842 a 0.2834, AG de 0.3605 a 0.3553), y la submission
+  difiere de la de V03 en **92 filas de 1154 y 100 celdas de 3462, un 2.9 %**. Como
+  referencia, el unico movimiento positivo de leaderboard del proyecto, de v02 a v03, cambio
+  126 celdas y dio +0.0031. **La prediccion razonable es que el ensemble se mueva en el orden
+  de milésimas, y ese es el techo que hay que tener presente al leer el numero.** Se escribe
+  antes del envio y no despues, porque un techo declarado despues del resultado no sirve.
+- **Decision 5, la dispersion entre pliegues es apreciable y conviene registrarla**. Las
+  metricas en su propio pliegue van de 0.7386 (pliegue 4) a 0.7960 (pliegue 1), un rango de
+  0.057. El promedio da el mismo peso a un pliegue mas débil, lo que es correcto en media pero
+  significa que la reduccion de varianza no es uniforme entre pliegues.
+- **Decision 6, parada obligatoria antes del envio**. El fichero
+  `submissions/toxic_submission_v08_p1_fold_ensemble.csv` esta escrito y pasa las nueve
+  comprobaciones de integridad, y **no se envia automaticamente**. **No se crean variantes de
+  umbral, de pesos ni de semilla antes de conocer el numero externo.** El resultado decide la
+  bifurcacion: si mejora de forma material, se congela la arquitectura y se ejecutan como
+  maximo P9 y P10; si no mejora, P1 se cierra sin variantes y se entra por P3.
