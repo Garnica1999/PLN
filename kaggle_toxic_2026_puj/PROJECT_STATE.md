@@ -54,6 +54,10 @@ archivada de la autorizacion; se registra solo lo comunicado por el usuario.
 | D-042 | El embedding aporta la misma informacion con mas ruido; correccion de vocabulario: la unidad son filas, no celdas |
 | P8-P11 cierre | Notebook 63 celdas validado GO | FINAL_REPORT seccion 28 | auditoria final 11/11 GO |
 | D-043 | **Cierre v5.1**: V03 se mantiene, embedding CANDIDATE no adoptado, auditoria GO, rama sin push |
+| v6 (mecanismos) | Abierta. Gap analysis hecho: 11 lineas ejecutables, 3 cerradas por duplicacion |
+| V6 P0 | C2, C3, C4 cerradas (V4-D, E2-10). C se reduce a C1. J no es duplicado de PRE |
+| V6 P0-bis | Interseccion de solo 9-12 filas (techo +0.0027 < gate): **D y E se cierran por presupuesto** |
+| D-044 | Gate de dos niveles (delta + IC95 + folds, luego segunda particion); TR implica HS es determinista |
 | variable abierta | El tamano de los datos etiquetados (1.483), unica palanca que deja la evidencia |
 | GATE DE CIERRE | §29: A (+0.005 con estabilidad) / B (complementariedad robusta) / C (senal representacional fuerte) |
 

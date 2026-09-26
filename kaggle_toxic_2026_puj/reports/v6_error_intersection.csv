@@ -1,0 +1,4 @@
+candidato,filas,v03_acierta_candidato_falla,v03_falla_candidato_acierta,ambos_aciertan,ninguno_acierta,correccion_neta,info_disponible_pct
+M3-SVC,1483,13,10,327,1133,-3,0.87
+M4-CHAR-LR,1483,20,12,320,1131,-8,1.05
+M1-WORD-LR,1483,6,9,334,1134,3,0.79

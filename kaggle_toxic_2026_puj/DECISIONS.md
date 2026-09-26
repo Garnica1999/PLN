@@ -1553,3 +1553,50 @@ evidencia, experimento, resultado, conclusion final.
   automatica, ningun PR. El trabajo sin commitear de KAGGLE_AGE_2026_PUJ sigue aparcado en
   `git stash` (no es un commit) y sus datos no se tocaron; se restaura al terminar esta
   linea de trabajo, como quedo acordado.
+
+## D-044 - Apertura de la fase v6: gap analysis con verificacion programatica, gate de dos niveles y cierre preventivo de D y E
+
+- **Contexto**: la fase v6 se abre con un objetivo concreto: buscar mecanismos que no se hayan
+  evaluado de verdad, sin repetir familias cerradas ni gastar presupuesto en lineas cuya
+  evidencia previa ya las refute. El proyecto acumula 168 experimentos bien formados (174
+  filas, 6 de ellas con las columnas desplazadas) y 43 decisiones.
+- **Decision 1, identificacion de duplicaciones con evidencia programatica**: en vez de
+  escribir el gap analysis de memoria, `experiments/v6_00_gap_analysis.py` **busca cada
+  mecanismo en el codigo real** con 15 patrones que exigen implementacion (una asignacion o
+  una llamada, no una palabra en un comentario) y excluyendo los scripts de la propia fase,
+  que se detectarian a si mismos. Resultado: **C2, C3 y C4 estan cerradas** por V4-D
+  (interacciones 0.7426, ventanas 0.7734) y por E2-10 (linea ortografica entre -0.028 y
+  -0.039). **C queda reducida a C1 (skip-grams)**, que si es genuinamente nuevo.
+- **Decision 2, matiz sobre D**: la arquitectura convolucional 1D **ya existe** (DL-02,
+  CharCNN), pero sobre **embeddings aleatorios**. La propuesta de v6 es la misma familia de
+  convulsion sobre una representacion aprendida, que es un input distinto. D se conserva
+  como linea, marcada "arquitectura si, input no".
+- **Decision 3, J no es duplicado de PRE**: PRE-00..09 fueron diez transformaciones
+  deterministas de superficie, y todas fueron **descartadas**. Eso es *normalizacion* (quitar
+  ruido), no *aumento* (crear instancias). El precedente de superficie es adverso y J queda
+  para el final, pero no se considera cerrada.
+- **Decision 4, criterio de adopcion en dos niveles** (por indicacion del usuario): la
+  especificacion proponia `delta >= +0.003` y "4/5 folds **o** complementariedad robusta", que
+  es mas laxo que el criterio vigente desde D-036, y D-029 ya registro que un candidato que
+  paso los gates fue rechazado por el holdout. Queda: **Gate 1** = `delta >= +0.003` **y**
+  `IC95 que excluya el 0` **y** `>= 4/5 pliegues positivos`; **Gate 2** = segunda particion
+  agrupada con otra semilla, solo para finalistas; **adopcion** = superar ambos. El holdout no
+  se usa: esta agotado (5/5).
+- **Decision 5, cierre preventivo de D y E por techo teorico** (P0-bis): la interseccion de
+  errores muestra que el mejor candidato existente acierta **9 a 12 filas de 1.483** donde V03
+  falla, frente a 1.133 donde nadie acierta. Si esas 12 filas cambiasen una sola etiqueta
+  cada una y ninguna se rompiera, la metrica subiria como mucho **+0.0027**, por debajo del
+  gate de +0.003. Como combinar dos clasificadores **elige** entre sus aciertos y no los
+  suma, **ninguna linea cuyo techo sea recuperar filas ajenas puede superar el gate**. D
+  (TextCNN) y E (kNN) se cierran **por presupuesto y no por resultado negativo**, que es una
+  distincion importante: no se ejecutan porque su techo esta por debajo del umbral.
+- **Decision 6, el track B tiene soporte empirico y no solo teorico**: **TR=1 implica HS=1 de
+  forma determinista** en el desarrollo (0 casos de TR=1 con HS=0 frente a 569 con HS=1). No
+  es una tendencia, es una invariante del corpus, y un clasificador TR independiente no puede
+  expresarla. Ademas P(AG=HS=1) = 0.841 frente a P(AG|HS=0) = 0.0263 con solo 22 ejemplos, lo
+  que justifica la forma regularizada B2r: la rama HS=0 no tiene datos para aprenderla.
+- **Decision 7, orden de ejecucion**: se sigue el orden de la especificacion (B, A, C, D) con
+  C reducida a C1, y las lineas que quedan (E, F, G, H, I, J) se priorizan por lo que la
+  evidencia muestre. **I** (ponderacion word/char) sigue ausente en el codigo y es la mas
+  barata del proyecto, asi que entra en cuanto B y A esten medidos.
+- **Presupuesto**: 24 experimentos principales y 6 de reserva, sin obligacion de consumirlos.

@@ -803,3 +803,21 @@ Registro cronologico de ejecuciones. Formato:
   modelos con hash verificado, 0 recursos prohibidos, 0 fugas, holdout intacto, presupuesto
   9/9 + 0/1, V03 intacto, 0 submissions nuevas, rama correcta y sin push. **D-043**, que cierra
   la fase. 0 submissions, 0 sondas de LB.
+- 20:30 | v6 P0: apertura de la fase, gap analysis y diagnostico | `v6_00_gap_analysis.py`, `v6_01_estructura_errores.py`
+  Rama `proyecto-kaggle-toxic-2026-v6` creada desde el cierre de v5.1.
+  **P0 (V6-00)**: 15 verificaciones programaticas sobre el codigo real (patrones de
+  implementacion, con exclusion de la auto-referencia). **C2, C3 y C4 quedan CERRADAS**: ya
+  se ejecutaron en V4-D (interacciones 0.7426, ventanas 0.7734) y E2-10 (-0.028 a -0.039).
+  C se reduce a C1 (skip-grams), que si es nuevo. J no es duplicado de PRE: PRE fue
+  normalizacion, no aumento. D conserva la arquitectura (ya existe en DL-02) pero cambia el
+  input (embeddings aprendidos en vez de aleatorios). **Hallazgo de integridad**: 6 de las
+  174 filas de experiments.csv tienen las columnas desplazadas; el numero real de
+  experimentos es 168, no 170. Las filas no se tocan por ser evidencia historica.
+  **P0-bis (V6-01)**: interseccion de errores y estructura de etiquetas. **La interseccion es
+  de solo 9 a 12 filas de 1.483 (0.8 %)** frente a 1.133 donde nadie acierta, lo que fija el
+  techo de cualquier linea que anada otro modelo en **+0.0027, por debajo del gate de
+  +0.003**: **D y E se cierran preventivamente por presupuesto, no por resultado negativo**.
+  Y **TR=1 implica HS=1 de forma determinista** (0 casos de TR=1 con HS=0), invariante que
+  un clasificador independiente no puede expresar y que **si justifica el track B**. Ademas
+  P(AG|HS=0)=0.026 con 22 ejemplos, que obliga a la forma regularizada B2r.
+  **D-044**. 0 entrenamientos, 0 submissions, 0 sondas de LB.
