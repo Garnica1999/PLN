@@ -719,3 +719,44 @@ Después pide añadir además el paso de la **arquitectura del meta-modelo**.
   variables analizables** son **110**. Se precisó la cifra en DECISIONS.md, PROJECT_STATE.md,
   RUNLOG.md y el plan. `experiments/v15a_correlacion.json` conserva el 112 original, que es
   correcto para la base sobre la que se calculó.
+
+## 2026-09-26 · V17 arranca: rama nueva, P0, P0', P1, P1b y P8
+
+- **Rama** `kaggle-age-2026-puj-v17` creada desde `a818349` con el arbol limpio. Perfil de maquina
+  re-verificado en vivo (`scripts/fase00_entorno.py`): sin cambios. Intencion registrada en
+  `plan/00_intent.md` a partir del brief de 53 secciones, sin entrevista de requisitos porque el
+  brief ya fija objetivo, restricciones, orden y presupuesto.
+- **P0, auditoria de brechas** (`reports/v17_gap_audit.{md,csv}`, 42 familias): de las 10 pistas,
+  3 cerradas, 5 parcialmente probadas y 2 genuinamente nuevas. La forma de 279 variables del
+  especialista de frontera ya estaba cerrada por V13 P3a (-0,0017 y -0,0029); la rejilla de
+  umbrales de la compuerta ya se habia medido con 90 combinaciones en P16d.
+- **P0', reconciliacion de la referencia** (`scripts/v17_p0_reproduccion.py`): 0,6004 y 0,6005 **no
+  son el mismo numero redondeado**, son dos estimadores (pooled frente a media de folds, efecto
+  Jensen). Diferencia 9,14416e-05, mayor que la unidad de redondeo. **Canonico 0,6005 pooled**,
+  porque el umbral de D-042 y el IC95 del bootstrap viven en esa escala y las cinco fases modernas
+  miden alli. **A2 de V16 se reproduce** (0,6011, fronteras 0,5065 y 0,5131). No hay STOP.
+- **P1 y P1.1** (`scripts/v17_p1_fronteras.py`): el especialista de pares E-028a, entrenado solo
+  con las dos clases de la frontera sobre el TF-IDF disperso y con folds agrupados, alcanza
+  **0,6864 y 0,7218** en las filas de cada frontera, frente a **0,4963 y 0,4974** de V12. Rescata
+  **14.356 y 15.571** filas y rompe **3.519 y 2.872**. Techo con enrutamiento perfecto: **0,7481 y
+  0,7726**. En un 23 a un 25 % de las filas ambos fallan.
+- **P1b** (`scripts/v17_p1b_curva_compuerta.py`): la compuerta sobre la confianza de V12, con seis
+  umbrales, da como mucho **+0,0002** global y a partir de 0,20 de margen se vuelve **negativa**.
+  Rescate y dano se compensan en las filas activadas. Es la segunda vez que una compuerta de
+  frontera no rinde, como en D-019.
+- **P8, perfil de confianza** (`scripts/v17_p8_perfil_confianza.py`): area bajo la curva para
+  distinguir las filas que el especialista ARREGLA de las que ROMPE. **Las probabilidades de V12 no
+  sirven** (separacion 0,5780 y 0,5268; entropia 0,4323 y 0,4230, es decir invertida). **Dos senales
+  que V12 no expone si sirven**: el **acuerdo entre miembros** (0,7070 y 0,7300) y el **margen del
+  propio especialista** (0,7294 y 0,7539). Eso reabre la via con un arbitro aprendido.
+- **Entregables de registro**: `reports/v17_master_results.csv` (17 filas) y
+  `reports/v17_hypothesis_registry.csv` (15 filas), generados desde los artefactos por
+  `scripts/v17_marcos.py` para no teclear cifras a mano. `experiments.csv` pasa a **99
+  experimentos**.
+- **Auditoria**: `v13_p0a_auditoria_idioma.py` da **0 errores sobre 356 ficheros**. El
+  `tools/verificar_caracteres.py` que nombra el brief **no existe en este proyecto**; el segundo
+  escaneo independiente se hizo sobre los 21 ficheros nuevos de V17 buscando controles,
+  invisibles, emojis y CJK: **0 problemas**.
+- **Tablas de fronteras**: la etiqueta `18-24|25-34` lleva un guion vertical que Markdown parte
+  como separador de columna; `scripts/v15_v16_tablas.py` (ampliado a los informes de V17) escapa
+  32 filas sin tocar ninguna cifra.

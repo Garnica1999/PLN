@@ -1,0 +1,152 @@
+{
+  "fase": "V17 · P8 perfil de confianza de los errores de frontera",
+  "fecha": "2026-09-26",
+  "entrenamiento": "ninguno (inerte)",
+  "criterios": {
+    "auc_minima_aprovechable": 0.62,
+    "auc_minima_debil": 0.55
+  },
+  "perfil": [
+    {
+      "Frontera": "18-24|25-34",
+      "Senal": "Separacion_V12",
+      "Media_rescate": 0.9814,
+      "Media_dano": 0.6545,
+      "Media_irrecuperable": 0.8653,
+      "AUC_rescate_contra_dano": 0.578,
+      "AUC_irrecuperable_contra_rescate": 0.4873,
+      "Aprovéchable": false,
+      "Debil": true
+    },
+    {
+      "Frontera": "18-24|25-34",
+      "Senal": "Entropia_V12",
+      "Media_rescate": 0.7202,
+      "Media_dano": 0.7806,
+      "Media_irrecuperable": 0.7628,
+      "AUC_rescate_contra_dano": 0.4323,
+      "AUC_irrecuperable_contra_rescate": 0.5523,
+      "Aprovéchable": false,
+      "Debil": true
+    },
+    {
+      "Frontera": "18-24|25-34",
+      "Senal": "Masa_dos_primeras",
+      "Media_rescate": 0.716,
+      "Media_dano": 0.6731,
+      "Media_irrecuperable": 0.682,
+      "AUC_rescate_contra_dano": 0.5746,
+      "AUC_irrecuperable_contra_rescate": 0.4403,
+      "Aprovéchable": false,
+      "Debil": true
+    },
+    {
+      "Frontera": "18-24|25-34",
+      "Senal": "Acuerdo_miembros",
+      "Media_rescate": 0.4868,
+      "Media_dano": 0.2647,
+      "Media_irrecuperable": 0.5761,
+      "AUC_rescate_contra_dano": 0.707,
+      "AUC_irrecuperable_contra_rescate": 0.5849,
+      "Aprovéchable": true,
+      "Debil": true
+    },
+    {
+      "Frontera": "18-24|25-34",
+      "Senal": "Margen_especialista",
+      "Media_rescate": 0.3298,
+      "Media_dano": 0.1343,
+      "Media_irrecuperable": 0.2627,
+      "AUC_rescate_contra_dano": 0.7294,
+      "AUC_irrecuperable_contra_rescate": 0.4515,
+      "Aprovéchable": true,
+      "Debil": true
+    },
+    {
+      "Frontera": "18-24|25-34",
+      "Senal": "Desacuerdo",
+      "Media_rescate": 1.0,
+      "Media_dano": 1.0,
+      "Media_irrecuperable": 1.0,
+      "AUC_rescate_contra_dano": 0.5,
+      "AUC_irrecuperable_contra_rescate": 0.5,
+      "Aprovéchable": false,
+      "Debil": false
+    },
+    {
+      "Frontera": "25-34|35-49",
+      "Senal": "Separacion_V12",
+      "Media_rescate": 0.8084,
+      "Media_dano": 0.7268,
+      "Media_irrecuperable": 0.8281,
+      "AUC_rescate_contra_dano": 0.5268,
+      "AUC_irrecuperable_contra_rescate": 0.5031,
+      "Aprovéchable": false,
+      "Debil": false
+    },
+    {
+      "Frontera": "25-34|35-49",
+      "Senal": "Entropia_V12",
+      "Media_rescate": 0.746,
+      "Media_dano": 0.7824,
+      "Media_irrecuperable": 0.7729,
+      "AUC_rescate_contra_dano": 0.423,
+      "AUC_irrecuperable_contra_rescate": 0.5673,
+      "Aprovéchable": false,
+      "Debil": true
+    },
+    {
+      "Frontera": "25-34|35-49",
+      "Senal": "Masa_dos_primeras",
+      "Media_rescate": 0.6969,
+      "Media_dano": 0.6681,
+      "Media_irrecuperable": 0.6682,
+      "AUC_rescate_contra_dano": 0.5673,
+      "AUC_irrecuperable_contra_rescate": 0.4332,
+      "Aprovéchable": false,
+      "Debil": true
+    },
+    {
+      "Frontera": "25-34|35-49",
+      "Senal": "Acuerdo_miembros",
+      "Media_rescate": 0.5215,
+      "Media_dano": 0.2793,
+      "Media_irrecuperable": 0.5603,
+      "AUC_rescate_contra_dano": 0.73,
+      "AUC_irrecuperable_contra_rescate": 0.5326,
+      "Aprovéchable": true,
+      "Debil": true
+    },
+    {
+      "Frontera": "25-34|35-49",
+      "Senal": "Margen_especialista",
+      "Media_rescate": 0.3267,
+      "Media_dano": 0.1302,
+      "Media_irrecuperable": 0.2662,
+      "AUC_rescate_contra_dano": 0.7539,
+      "AUC_irrecuperable_contra_rescate": 0.4348,
+      "Aprovéchable": true,
+      "Debil": true
+    },
+    {
+      "Frontera": "25-34|35-49",
+      "Senal": "Desacuerdo",
+      "Media_rescate": 1.0,
+      "Media_dano": 1.0,
+      "Media_irrecuperable": 1.0,
+      "AUC_rescate_contra_dano": 0.5,
+      "AUC_irrecuperable_contra_rescate": 0.5,
+      "Aprovéchable": false,
+      "Debil": false
+    }
+  ],
+  "mejor_senal": {
+    "Frontera": "18-24|25-34",
+    "Senal": "Margen_especialista",
+    "auc": 0.7294
+  },
+  "senales_aprovechables": 4,
+  "senales_debiles": 9,
+  "maximo_area": 0.7539,
+  "segundos": 15.9
+}

@@ -5,13 +5,31 @@
     {
       "informe": "v15_poda.md",
       "seccion": "## 4.",
-      "filas_reparadas": 2,
+      "filas_reparadas": 0,
       "cifras_modificadas": 0
     },
     {
       "informe": "v16_arquitectura.md",
       "seccion": "## 4.",
-      "filas_reparadas": 2,
+      "filas_reparadas": 0,
+      "cifras_modificadas": 0
+    },
+    {
+      "informe": "v17_p1_fronteras.md",
+      "seccion": "seccion 1 y 3",
+      "filas_reparadas": 4,
+      "cifras_modificadas": 0
+    },
+    {
+      "informe": "v17_p1b_curva_compuerta.md",
+      "seccion": "seccion 2",
+      "filas_reparadas": 16,
+      "cifras_modificadas": 0
+    },
+    {
+      "informe": "v17_p8_perfil_confianza.md",
+      "seccion": "seccion de resultados",
+      "filas_reparadas": 12,
       "cifras_modificadas": 0
     }
   ],

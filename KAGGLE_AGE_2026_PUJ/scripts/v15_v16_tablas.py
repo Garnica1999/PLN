@@ -39,6 +39,10 @@ from src.verificacion_numerica import autotest_numerico  # noqa: E402
 INFORMES = (
     (cfg.REPORTS / "v15_poda.md", "## 4."),
     (cfg.REPORTS / "v16_arquitectura.md", "## 4."),
+    # Los informes de V17 tambien llevan las etiquetas de frontera en tablas, por el mismo motivo.
+    (cfg.REPORTS / "v17_p1_fronteras.md", "seccion 1 y 3"),
+    (cfg.REPORTS / "v17_p1b_curva_compuerta.md", "seccion 2"),
+    (cfg.REPORTS / "v17_p8_perfil_confianza.md", "seccion de resultados"),
 )
 #: Etiquetas de frontera, tal y como las escriben los scripts de experimento.
 FRONTERAS = ("18-24|25-34", "25-34|35-49")
