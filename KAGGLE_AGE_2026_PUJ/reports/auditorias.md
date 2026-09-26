@@ -19,7 +19,7 @@ Generado por `scripts/fase23_auditorias.py` · resultado global: **APROBADO**
 
 ## 2. Auditoría de reproducibilidad
 
-- `archivos_con_semilla_o_random_state`: 73
+- `archivos_con_semilla_o_random_state`: 75
 - `semilla_global_definida`: True
 - `requirements_existe`: True
 - `n_paquetes_congelados`: 312
@@ -48,10 +48,10 @@ Generado por `scripts/fase23_auditorias.py` · resultado global: **APROBADO**
 
 ## 4. Auditoría académica
 
-- `n_experimentos_registrados`: 67
+- `n_experimentos_registrados`: 72
 - `todos_con_hipotesis`: True
 - `todos_con_resultado`: True
-- `n_decisiones`: 37
+- `n_decisiones`: 39
 - `n_referencias`: 30
 - `referencias_con_doi_o_url`: 30
 - `anios_cubiertos`: [2006, 2021]
