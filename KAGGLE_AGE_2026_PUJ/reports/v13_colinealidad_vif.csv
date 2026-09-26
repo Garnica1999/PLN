@@ -1,0 +1,279 @@
+variable,vif,familia,vif_indefinido_por_duplicado,vif_alto
+miembro07_5,75306557309.035,scores de miembros,True,False
+miembro07_0,75306422797.172,scores de miembros,True,False
+densa::content_ratio,3630329.17,densas,False,True
+densa::stopword_ratio,3628477.989,densas,False,True
+estruct::char_hhi,3008737.732,estructuradas,False,True
+estruct::char_simpson,3008247.844,estructuradas,False,True
+densa::n_emoticon,32269.623,densas,False,True
+densa::has_emoticon,32266.867,densas,False,True
+estruct::yule_k,18013.708,estructuradas,False,True
+miembro06_0,17347.289,scores de miembros,False,True
+estruct::simpson_d,17019.014,estructuradas,False,True
+densa::n_unique_words,2983.384,densas,False,True
+densa::lexical_entropy,2615.998,densas,False,True
+estruct::pos_url_mean,1788.34,estructuradas,False,True
+densa::ttr,1743.119,densas,False,True
+densa::hapax_ratio,1686.599,densas,False,True
+estruct::pos_hashtag_mean,1573.223,estructuradas,False,True
+estruct::repeated_token_ratio,1555.142,estructuradas,False,True
+estruct::pos_mention_mean,1502.454,estructuradas,False,True
+estruct::pos_mention_last,1461.631,estructuradas,False,True
+estruct::pos_hashtag_last,1439.706,estructuradas,False,True
+estruct::maas,1432.019,estructuradas,False,True
+estruct::mattr_25,1225.139,estructuradas,False,True
+densa::cttr,844.603,densas,False,True
+miembro02_0,797.11,scores de miembros,False,True
+estruct::punct_quest_density,761.749,estructuradas,False,True
+densa::n_quest,758.159,densas,False,True
+estruct::pos_url_first,705.512,estructuradas,False,True
+supervisada_33,698.031,supervisadas,False,True
+miembro02_5,684.647,scores de miembros,False,True
+estruct::char_consonant_ratio,682.755,estructuradas,False,True
+estruct::char_vowel_ratio,682.151,estructuradas,False,True
+miembro00_4,643.688,scores de miembros,False,True
+miembro00_5,620.728,scores de miembros,False,True
+miembro00_0,609.162,scores de miembros,False,True
+supervisada_29,573.542,supervisadas,False,True
+estruct::pos_url_last,571.535,estructuradas,False,True
+densa::n_words,563.692,densas,False,True
+supervisada_31,528.876,supervisadas,False,True
+miembro01_4,528.598,scores de miembros,False,True
+supervisada_30,500.85,supervisadas,False,True
+miembro01_0,495.364,scores de miembros,False,True
+miembro01_5,486.388,scores de miembros,False,True
+miembro00_1,477.774,scores de miembros,False,True
+estruct::punct_excl_density,432.331,estructuradas,False,True
+densa::n_excl,430.792,densas,False,True
+miembro02_4,414.116,scores de miembros,False,True
+miembro00_3,390.994,scores de miembros,False,True
+miembro01_1,380.564,scores de miembros,False,True
+miembro02_1,368.696,scores de miembros,False,True
+miembro00_2,365.968,scores de miembros,False,True
+miembro03_0,357.119,scores de miembros,False,True
+miembro03_5,309.468,scores de miembros,False,True
+miembro01_3,305.921,scores de miembros,False,True
+miembro01_2,297.233,scores de miembros,False,True
+miembro02_2,286.454,scores de miembros,False,True
+miembro02_3,275.479,scores de miembros,False,True
+supervisada_46,220.769,supervisadas,False,True
+miembro03_4,189.404,scores de miembros,False,True
+supervisada_47,188.945,supervisadas,False,True
+supervisada_50,170.958,supervisadas,True,False
+supervisada_48,170.958,supervisadas,True,False
+miembro03_1,166.12,scores de miembros,False,True
+miembro10_0,152.715,scores de miembros,False,True
+miembro03_2,129.281,scores de miembros,False,True
+densa::punct_per_word,122.676,densas,False,True
+supervisada_06,122.103,supervisadas,False,True
+supervisada_00,119.776,supervisadas,False,True
+miembro03_3,119.294,scores de miembros,False,True
+miembro05_5,109.839,scores de miembros,False,True
+estruct::pos_hashtag_first,105.229,estructuradas,False,True
+miembro10_5,95.973,scores de miembros,False,True
+miembro05_0,95.137,scores de miembros,False,True
+estruct::root_ttr,90.445,estructuradas,False,True
+miembro05_4,85.049,scores de miembros,False,True
+estruct::wlen_std,77.671,estructuradas,False,True
+miembro05_1,75.894,scores de miembros,False,True
+densa::n_hashtag,71.724,densas,False,True
+estruct::char_entropy,71.598,estructuradas,False,True
+estruct::token_entropy,70.745,estructuradas,False,True
+estruct::punct_type_diversity,64.416,estructuradas,False,True
+supervisada_07,63.506,supervisadas,False,True
+supervisada_01,62.34,supervisadas,False,True
+supervisada_16,58.763,supervisadas,False,True
+estruct::wlen_mad,58.245,estructuradas,False,True
+miembro05_3,58.151,scores de miembros,False,True
+densa::avg_word_len,57.149,densas,False,True
+supervisada_23,54.603,supervisadas,False,True
+supervisada_17,54.401,supervisadas,False,True
+densa::n_url,52.29,densas,False,True
+miembro05_2,49.234,scores de miembros,False,True
+supervisada_12,48.153,supervisadas,False,True
+supervisada_14,46.718,supervisadas,False,True
+miembro07_1,46.197,scores de miembros,False,True
+estruct::punct_entropy,44.658,estructuradas,False,True
+supervisada_28,42.755,supervisadas,False,True
+supervisada_22,42.412,supervisadas,False,True
+supervisada_26,40.72,supervisadas,False,True
+supervisada_13,40.33,supervisadas,False,True
+supervisada_20,40.314,supervisadas,False,True
+estruct::first_word_is_word,39.279,estructuradas,False,True
+miembro10_1,38.296,scores de miembros,False,True
+densa::n_mention,38.167,densas,False,True
+densa::avg_sentence_len_words,35.972,densas,False,True
+supervisada_08,34.623,supervisadas,False,True
+supervisada_21,34.111,supervisadas,False,True
+supervisada_27,34.056,supervisadas,False,True
+supervisada_02,33.223,supervisadas,False,True
+densa::n_chars,33.204,densas,False,True
+estruct::log_ttr,32.566,estructuradas,False,True
+supervisada_25,31.157,supervisadas,False,True
+estruct::entity_count,31.113,estructuradas,False,True
+supervisada_19,31.019,supervisadas,False,True
+estruct::char_space_ratio,29.764,estructuradas,False,True
+miembro07_4,29.458,scores de miembros,False,True
+miembro10_4,28.621,scores de miembros,False,True
+estruct::wlen_mean,27.955,estructuradas,False,True
+supervisada_24,27.807,supervisadas,False,True
+supervisada_18,27.338,supervisadas,False,True
+estruct::wlen_p75,26.289,estructuradas,False,True
+densa::all_caps_count,25.784,densas,False,True
+densa::punct_ratio,25.514,densas,True,False
+estruct::char_symbol_ratio,25.514,estructuradas,True,False
+estruct::pos_mention_first,24.988,estructuradas,False,True
+miembro10_2,24.099,scores de miembros,False,True
+miembro13_0,23.298,scores de miembros,False,True
+supervisada_10,22.741,supervisadas,False,True
+supervisada_04,22.628,supervisadas,False,True
+miembro10_3,22.251,scores de miembros,False,True
+supervisada_11,22.129,supervisadas,False,True
+supervisada_05,21.519,supervisadas,False,True
+densa::n_sentences,21.485,densas,False,True
+estruct::wlen_iqr,21.262,estructuradas,False,True
+estruct::first_token_is_hashtag,20.614,estructuradas,False,True
+densa::has_all_caps,20.258,densas,False,True
+estruct::dis_legomena_ratio,19.518,estructuradas,False,True
+miembro13_4,19.49,scores de miembros,False,True
+estruct::last_token_is_url,19.1,estructuradas,False,True
+miembro13_1,19.079,scores de miembros,False,True
+supervisada_09,18.658,supervisadas,False,True
+supervisada_03,17.993,supervisadas,False,True
+densa::is_rt,17.989,densas,False,True
+miembro13_5,17.892,scores de miembros,False,True
+estruct::wlen_range,17.721,estructuradas,False,True
+supervisada_69,16.567,supervisadas,False,True
+supervisada_72,16.189,supervisadas,False,True
+estruct::top_token_concentration,15.865,estructuradas,False,True
+miembro11_5,15.737,scores de miembros,False,True
+miembro11_1,14.03,scores de miembros,False,True
+miembro11_0,14.009,scores de miembros,False,True
+densa::std_word_len,13.797,densas,False,True
+miembro11_4,13.638,scores de miembros,False,True
+estruct::wlen_cv,13.573,estructuradas,False,True
+miembro13_3,13.306,scores de miembros,False,True
+estruct::shape_allcaps_ratio,13.21,estructuradas,False,True
+nbsvm_13-17,13.174,nb_svm,False,True
+estruct::first_token_is_mention,12.579,estructuradas,True,False
+densa::max_word_len,12.574,densas,False,True
+densa::starts_mention,12.564,densas,True,False
+estruct::punct_transitions,12.514,estructuradas,False,True
+miembro13_2,12.469,scores de miembros,False,True
+nbsvm_50-64,12.296,nb_svm,False,True
+nbsvm_65-xx,11.976,nb_svm,False,True
+miembro08_0,11.962,scores de miembros,False,True
+estruct::wlen_p90,11.936,estructuradas,False,True
+densa::digit_ratio,11.864,densas,False,True
+miembro08_5,11.56,scores de miembros,False,True
+densa::long_word_ratio,11.546,densas,False,True
+miembro08_4,11.167,scores de miembros,False,True
+estruct::first_token_is_url,10.981,estructuradas,False,True
+estruct::char_unique_ratio,10.763,estructuradas,True,False
+densa::unique_char_ratio,10.763,densas,True,False
+miembro12_2,10.751,scores de miembros,False,True
+estruct::wlen_skew,10.679,estructuradas,False,True
+miembro12_3,10.67,scores de miembros,False,True
+estruct::entity_entropy,10.562,estructuradas,False,True
+nbsvm_18-24,10.371,nb_svm,False,True
+estruct::last_word_len,10.182,estructuradas,False,True
+estruct::char_alpha_ratio,10.129,estructuradas,False,True
+miembro04_0,10.052,scores de miembros,False,True
+estruct::prop_len_ge8,9.88,estructuradas,False,False
+supervisada_55,9.539,supervisadas,False,False
+densa::multi_punct_count,9.257,densas,False,False
+miembro12_1,9.196,scores de miembros,False,False
+estruct::char_dominant_ratio,9.174,estructuradas,False,False
+estruct::prop_len1,9.106,estructuradas,False,False
+miembro04_1,8.823,scores de miembros,False,False
+miembro08_1,8.646,scores de miembros,False,False
+miembro04_5,8.584,scores de miembros,False,False
+miembro04_4,8.58,scores de miembros,False,False
+miembro11_2,8.295,scores de miembros,False,False
+miembro04_2,8.171,scores de miembros,False,False
+miembro12_0,8.056,scores de miembros,False,False
+estruct::shape_alphanumeric_ratio,8.022,estructuradas,False,False
+estruct::punct_colon_density,8.017,estructuradas,False,False
+miembro11_3,7.938,scores de miembros,False,False
+estruct::adjacent_repeat_ratio,7.814,estructuradas,False,False
+miembro12_4,7.791,scores de miembros,False,False
+estruct::wlen_kurtosis,7.67,estructuradas,False,False
+supervisada_53,7.463,supervisadas,False,False
+supervisada_70,7.327,supervisadas,False,False
+nbsvm_35-49,7.28,nb_svm,False,False
+miembro04_3,7.175,scores de miembros,False,False
+estruct::wlen_p25,7.034,estructuradas,False,False
+nbsvm_25-34,6.877,nb_svm,False,False
+supervisada_56,6.678,supervisadas,False,False
+estruct::prop_len_ge10,6.623,estructuradas,False,False
+estruct::first_word_is_upper,6.606,estructuradas,False,False
+supervisada_71,6.576,supervisadas,False,False
+supervisada_58,6.508,supervisadas,False,False
+estruct::punct_period_density,6.445,estructuradas,False,False
+miembro08_3,6.393,scores de miembros,False,False
+estruct::wlen_p10,6.248,estructuradas,False,False
+supervisada_52,6.231,supervisadas,False,False
+miembro08_2,6.176,scores de miembros,False,False
+estruct::compression_gain,6.054,estructuradas,True,False
+estruct::compression_ratio,6.053,estructuradas,True,False
+supervisada_59,5.985,supervisadas,False,False
+miembro07_2,5.57,scores de miembros,False,False
+estruct::shape_lower_ratio,5.552,estructuradas,False,False
+estruct::prop_len2,5.446,estructuradas,False,False
+estruct::first_word_len,5.363,estructuradas,False,False
+densa::upper_ratio,5.105,densas,False,False
+miembro07_3,4.929,scores de miembros,False,False
+estruct::repeat_token_ratio,4.923,estructuradas,False,False
+supervisada_68,4.687,supervisadas,False,False
+estruct::last_word_is_word,4.507,estructuradas,False,False
+miembro09_0,4.399,scores de miembros,False,False
+miembro09_1,4.397,scores de miembros,False,False
+densa::n_repeated_char_runs,3.629,densas,False,False
+miembro09_4,3.324,scores de miembros,False,False
+supervisada_67,3.29,supervisadas,False,False
+miembro09_5,3.236,scores de miembros,False,False
+estruct::repeat_bigram_ratio,3.235,estructuradas,False,False
+supervisada_62,3.13,supervisadas,True,False
+supervisada_51,3.13,supervisadas,True,False
+estruct::last_token_is_hashtag,3.096,estructuradas,False,False
+estruct::shape_capitalized_ratio,3.07,estructuradas,False,False
+estruct::last_token_is_mention,3.004,estructuradas,False,False
+supervisada_63,2.958,supervisadas,False,False
+supervisada_54,2.946,supervisadas,False,False
+estruct::shape_numeric_ratio,2.886,estructuradas,False,False
+supervisada_15,2.865,supervisadas,False,False
+supervisada_32,2.778,supervisadas,False,False
+estruct::prop_len3,2.692,estructuradas,False,False
+estruct::wlen_head_ratio,2.682,estructuradas,False,False
+estruct::punct_comma_density,2.63,estructuradas,False,False
+estruct::shape_repeated_letter_token_ratio,2.451,estructuradas,False,False
+supervisada_60,2.446,supervisadas,False,False
+supervisada_64,2.438,supervisadas,False,False
+miembro09_2,2.423,scores de miembros,False,False
+supervisada_61,2.415,supervisadas,True,False
+supervisada_57,2.415,supervisadas,True,False
+miembro09_3,2.345,scores de miembros,False,False
+supervisada_66,2.223,supervisadas,False,False
+estruct::wlen_tail_ratio,2.076,estructuradas,False,False
+estruct::punct_parenthesis_density,1.978,estructuradas,False,False
+supervisada_65,1.973,supervisadas,False,False
+estruct::repeat_trigram_ratio,1.699,estructuradas,False,False
+estruct::wlen_median,1.604,estructuradas,True,False
+estruct::wlen_p50,1.59,estructuradas,True,False
+estruct::punct_dash_density,1.485,estructuradas,False,False
+estruct::punct_semicolon_density,1.411,estructuradas,False,False
+supervisada_34,1.343,supervisadas,True,False
+supervisada_40,1.335,supervisadas,True,False
+densa::elongated_count,1.296,densas,False,False
+densa::n_open_punct,1.276,densas,False,False
+estruct::punct_quote_density,1.264,estructuradas,False,False
+supervisada_42,1.068,supervisadas,True,False
+supervisada_36,1.068,supervisadas,True,False
+supervisada_41,1.0,supervisadas,True,False
+supervisada_35,0.997,supervisadas,True,False
+supervisada_38,0.771,supervisadas,True,False
+supervisada_44,0.771,supervisadas,True,False
+supervisada_43,0.77,supervisadas,True,False
+supervisada_37,0.77,supervisadas,True,False
+supervisada_39,0.76,supervisadas,True,False
+supervisada_45,0.76,supervisadas,True,False

@@ -1,0 +1,94 @@
+{
+  "fase": "V13 · P0b prueba de colinealidad de la matriz completa",
+  "fecha": "2026-09-25",
+  "matriz": "completa de produccion (279 variables, sin reducir)",
+  "n_variables": 279,
+  "filas_muestra": 20000,
+  "umbral_alto": 0.8,
+  "umbral_redundante": 0.9,
+  "pares": 401,
+  "pares_redundantes": 229,
+  "duplicados_exactos": 15,
+  "clusters": 54,
+  "rango_efectivo": 263,
+  "autovalores_por_encima": {
+    "1e-2": 217,
+    "1e-4": 259,
+    "1e-6": 262,
+    "1e-8": 263
+  },
+  "direcciones_95_varianza": 87,
+  "direcciones_99_varianza": 146,
+  "correlacion_intra_clase_miembros": {
+    "mediana": 0.7014,
+    "minima": -1.0,
+    "maxima": 0.9987
+  },
+  "direcciones_redundantes": 15,
+  "columnas_constantes": [
+    "supervisada_49"
+  ],
+  "vif_alto": 170,
+  "vif_indefinido_por_duplicado": 30,
+  "vif_mediano": 18.869,
+  "referencia_v12": {
+    "macro_f1": 0.6004,
+    "std": 0.0042,
+    "per_fold": [
+      0.6007,
+      0.605,
+      0.6032,
+      0.6004,
+      0.5928
+    ]
+  },
+  "validacion_criba_lexicon": {
+    "variables": 72,
+    "redundantes_previo": 3,
+    "redundantes_criba": 3,
+    "diferencia_maxima": 0.0005
+  },
+  "por_familia": [
+    {
+      "familia": "densas",
+      "variables": 35,
+      "en_pares_correlacionados": 89,
+      "vif_mediano": 42.755,
+      "vif_maximo": 71.598,
+      "vif_alto": 35
+    },
+    {
+      "familia": "estructuradas",
+      "variables": 87,
+      "en_pares_correlacionados": 128,
+      "vif_mediano": 12.579,
+      "vif_maximo": 29.764,
+      "vif_alto": 61
+    },
+    {
+      "familia": "nb_svm",
+      "variables": 6,
+      "en_pares_correlacionados": 16,
+      "vif_mediano": 0.77,
+      "vif_maximo": 0.771,
+      "vif_alto": 0
+    },
+    {
+      "familia": "scores de miembros",
+      "variables": 78,
+      "en_pares_correlacionados": 203,
+      "vif_mediano": 528.737,
+      "vif_maximo": 75306557309.035,
+      "vif_alto": 74
+    },
+    {
+      "familia": "supervisadas",
+      "variables": 72,
+      "en_pares_correlacionados": 47,
+      "vif_mediano": 3.113,
+      "vif_maximo": 7.327,
+      "vif_alto": 0
+    }
+  ],
+  "segundos": 2.5
+}

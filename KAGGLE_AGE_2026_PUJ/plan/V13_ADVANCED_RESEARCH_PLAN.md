@@ -45,7 +45,7 @@ especialista explícito)?
 |---|---|---|---|
 | **P0** | Gap audit: inventario, cerradas, nuevas, nested, reutilizables, potencial, coste, leakage, orden | `reports/v13_gap_audit.md` + `.csv` | **cerrada** (commit 3c473e9) |
 | **P0a** | Auditoría de idioma: todo el proyecto en español y sin alfabetos ajenos | `reports/v13_auditoria_idioma.md` | **cerrada** (0 errores, 0 avisos) |
-| **P0b** | Prueba de colinealidad de las 279 variables + criba reutilizable | `reports/v13_colinealidad.md` | en ejecución |
+| **P0b** | Prueba de colinealidad de las 279 variables + criba reutilizable | `reports/v13_colinealidad.md` | **cerrada** (matriz completa, sin reentrenar) |
 | **P15** | Diagnóstico: matriz de error por miembro (**antes** de P3/P4) | `reports/v13_member_error_matrix.csv` | **cerrada** |
 | **P1** | Evidencia de edad por token, in-fold | `reports/v13_hypothesis_registry.csv` | - |
 | **P17** | Pronombres de persona (V14–V18 del artículo) | idem | - siguiente |
@@ -119,6 +119,28 @@ descartó.**
 - En las fronteras, `E015_softmax` resuelve el 37,99 % de los cruces `18-24|25-34` y el 36,29 % de
   `25-34|35-49`, pero daña 15.232 y 10.137 filas del par respectivamente: de ahí la necesidad
   obligatoria de la forma `gate(especialista, V12)` y de no aplicarlo globalmente.
+
+**P0b · colinealidad de la matriz completa (sin reentrenar).** La referencia de V12 se lee de
+`phase39_fusion_v12.json` y una comprobacion independiente reprodujo sus cinco folds uno a uno
+(0,6007/0,6050/0,6032/0,6004/0,5928), asi que la matriz medida es exactamente la de produccion:
+- 401 pares con |rho| >= 0,80; 229 redundantes; **15 duplicados exactos** (`punct_ratio` =
+  `char_symbol_ratio`, `wlen_median` = `wlen_p50`, `compression_ratio` = -`compression_gain`, 9
+  pares de supervisadas); 54 clusters.
+- **1 columna constante**: `supervisada_49` nunca varia.
+- Rango efectivo estricto 263 de 278: las 15 direcciones que faltan son exactamente los 15
+  duplicados, no hay mas degeneracion estructural. Pero **87 de 278 direcciones bastan para el
+  95 % de la varianza**.
+- **170 variables con VIF >= 10** y VIF mediano 18,87: la interpretacion de coeficientes es
+  inservible, la prediccion no se resiente (0,6004 con 15 pares identicos).
+- Reparto: `scores de miembros` VIF mediano 528,7 (catorce modelos coinciden en que clase dan como
+  mas probable: correlacion intra-clase mediana 0,7014, hasta 0,9987), `densas` 42,8,
+  `estructuradas` 12,6, `supervisadas` 3,1, `nb_svm` 0,77.
+- **Consecuencia para el orden de fases**: las familias de textometria estan saturadas; las de
+  evidencia supervisada in-fold y NB-SVM son las unicas con margen. Esto refuerza poner P1
+  (evidencia `P(class|token)` in-fold) por delante de mas variables deterministas.
+- La criba quedo **validada de forma cruzada**: aplicada a las 72 variables lexicas de la fase
+  cerrada reproduce el resultado ya calculado por otra ruta de codigo (3 redundantes en ambos
+  casos, diferencia maxima 0,0005), lo que confirma D-040 por segunda via.
 
 **Consecuencia operativa para P3.** Un especialista de frontera **no puede apoyarse en los
 miembros actuales**: hay poco rescate exclusivo, no hay señal de confianza que active la puerta y
