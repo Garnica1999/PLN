@@ -72,6 +72,9 @@ archivada de la autorizacion; se registra solo lo comunicado por el usuario.
 | D-050 | V03 acierta 10.5 % en las filas sospechosas frente a 28.3 %: marcar es estar donde hay que estar |
 | V6 Track J | **Cerrado negativo**: -0.0061 y -0.0063; doblar copias no empeora mas (es sesgo, no cantidad) |
 | D-051 | **v6 sin lineas ejecutables**: B, A, C, I, H, F, J negativas; D, E por techo; G no ejecutar |
+| V6 Track J | **Cerrado negativo**: -0.0061 y -0.0063; doblar copias no empeora mas (es sesgo, no cantidad) |
+| V6 entrega | 25 variantes, 7 controles, **0 adopciones**; 7 de 24 experimentos gastados |
+| D-052 | **Fase v6 CERRADA**: no queda ninguna linea ejecutable de la especificacion |
 | variable abierta | El tamano de los datos etiquetados (1.483), unica palanca que deja la evidencia |
 | GATE DE CIERRE | §29: A (+0.005 con estabilidad) / B (complementariedad robusta) / C (senal representacional fuerte) |
 

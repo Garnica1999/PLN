@@ -1,0 +1,4 @@
+experiment_id,track,tipo,variante,corrected_cv,delta_vs_V03,distancia_al_gate,ic95_0,ic95_1,pliegues_positivos,gate_1_supera,observacion
+V6-04,track I,EXPERIMENTO,I2-char1.5,0.778779,0.001568,0.0014320000000000001,-0.004777,0.007779,3,False,track I: ponderacion word/char
+V6-03,track A,EXPERIMENTO,A1-sqrt,0.777768,0.000557,0.002443,-0.0029,0.004046,3,False,track A: ponderacion por grupo
+V6-03,track A,EXPERIMENTO,A2-inversa,0.777415,0.000204,0.002796,-0.004486,0.005122,2,False,track A: ponderacion por grupo

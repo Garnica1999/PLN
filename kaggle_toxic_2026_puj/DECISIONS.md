@@ -1849,3 +1849,44 @@ evidencia, experimento, resultado, conclusion final.
   en chains y en el meta desde E2-01 y E2-18. **No queda ninguna linea de la especificacion
   de v6 sin ejecutar**, lo que convierte el cierre de la fase en un cierre de verdad y no en
   una pausa.
+
+## D-052 - Cierre de la fase v6: ninguna adopcion, y por que el presupuesto sin gastar es un resultado
+
+- **Contexto**: la fase v6 se abrio (D-044) para buscar mecanismos que el proyecto no hubiera
+  evaluado de verdad, con un presupuesto autorizado de 24 experimentos principales y 6 de
+  reserva, y un criterio de adopcion en dos niveles.
+- **Decision 1, la fase se cierra sin ninguna adopcion**: de los 14 tracks y sub-tracks de
+  la especificacion, **7 se midieron (B, A, I, C1, H, F, J) y ninguno supero el Gate 1**; 2
+  quedaron cerrados **sin gastar una unidad** (D y E, por techo teorico); 1 se marco como no
+  ejecutable (G); y C2, C3 y C4 ya estaban cerrados por duplicacion. **No queda ninguna
+  linea ejecutable.**
+- **Decision 2, se gastaron 7 de 24 experimentos y eso no es un incumplimiento**: el
+  presupuesto es un techo autorizado, no una obligacion. Dos decisiones de D-044
+  redujeron el gasto antes de empezar (cerrar D y E por techo, y cerrar C2, C3 y C4 por
+  duplicacion), y los tracks ejecutados se cerraron uno a uno por resultado negativo. **Gastar
+  por gastar seria exactamente el error que D-044 intenta evitar**, porque las
+  multinacionales que la fase compro (tracks D, E, C2, C3, C4) ya eran 0 unidades.
+- **Decision 3, los 7 controles de reproduccion son el resultado mas importante**: B0, A0, I0,
+  C1-0, H0, F0 y J0 dieron **0.777211 exacto** cada uno. La fase se ejecuto con una red de
+  seguridad que hacia imposible publicar un delta sin atribuible, y **la red funciono**: el
+  control C1-0 detecto que su tokenizador emitia solo unigramas y daba 0.7554, lo que
+  invalido los deltas de esa primera version antes de publicarlos. Sin ese control, un
+  resultado falso se habria registrado como evidencia. Es la razon por la que todo track
+  nuevo de este proyecto debe llevar control.
+- **Decision 4, los entregables se generan, no se escriben**: `v6_09_entregables.py` lee los
+  JSON y CSV que los experimentos ya escribieron y **falla si falta alguno**, en vez de
+  rellenar huecos con ceros. Un entregable que rellena lo que no encuentra es peor que uno
+  que no existe, porque parece completo.
+- **Decision 5, cinco conclusiones sobreviven al cierre**, y son el resultado que hace que
+  la fase valiera la pena: (a) **un tuit repetido es senal, no ruido de recoleccion**, y no
+  conviene reabrir el track A ni en variantes mas suaves; (b) **la interseccion de errores
+  da un techo de +0.0027** para cualquier linea cuya unica via sea recuperar filas ajenas a
+  V03, y combinar modelos **elige** entre sus aciertos en vez de sumarlos; (c) **la deteccion
+  de sospecha sirve para medir dificultad, no para limpiar entrenamiento**; (d) **la escala
+  entre word y char no era el cuello de botella**, aunque su optimo este en 1.5; (e) **no hay
+  forma limpia de medir un promedio de modelos con umbrales calibrados para uno**, y queda
+  planteada la condicion que lo resolveria: una particion de calibracion separada del OOF de
+  evaluacion.
+- **Decision 6, V03 sigue congelada y la rama sigue sin push**: `corrected_cv` 0.777211, LB
+  0.78306, **0 submissions y 0 sondas de LB en toda la fase**. El push sigue pendiente de
+  autorizacion expresa de Carlos.

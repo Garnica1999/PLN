@@ -73,9 +73,13 @@
 - [ ] F: score de sospecha por par instancia-etiqueta
 - [ ] J: aumento label-preserving, al final y con las restricciones de seguridad de etiqueta
 
-## Cierre
+## Cierre (hecho)
 
-- [ ] `reports/v6_master_results.csv` y `reports/v6_hypothesis_registry.csv`
-- [ ] Seccion v6 en el notebook consolidado
-- [ ] `reports/v6_final_research.md` y el resto de entregables
-- [ ] Auditoria final de reglas
+- [x] `experiments/v6_09_entregables.py` genera los entregables leyendo los JSON, sin rellenar huecos
+- [x] `reports/v6_master_results.csv` (25 variantes) y `reports/v6_hypothesis_registry.csv` (11 hipotesis)
+- [x] `reports/v6_candidate_comparison.csv` con los tres mas cercanos al gate
+- [x] `reports/v6_final_research.md`, `v6_compliance.md` y `v6_reproducibility.md`
+- [x] `reports/v6_error_intersection.csv` canonizada
+- [x] **D-052**: fase cerrada sin ninguna adopcion
+- [ ] Seccion v6 en el notebook consolidado (pendiente de integracion)
+- [x] `tools/verificar_caracteres.py` como puerta de la auditoria: 0 errores

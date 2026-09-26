@@ -910,3 +910,19 @@ Registro cronologico de ejecuciones. Formato:
   **Con esto v6 se queda SIN LINEAS EJECUTABLES**: B, A, C, I, H, F, J cerradas por
   resultado negativo; D y E por techo teorico; G marcada "no ejecutar" desde el gap
   analysis. 0 submissions en toda la fase.
+- 23:50 | v6 cierre: entregables y cierre de fase | `v6_09_entregables.py`
+  **25 variantes medidas en 7 tracks, 7 controles de reproduccion, 0 superan el Gate 1.**
+  De los 14 tracks y sub-tracks de la especificacion: 7 medidos (B, A, I, C1, H, F, J), 2
+  cerrados sin gastar (D, E por techo), 1 no ejecutable (G) y C2, C3, C4 por duplicacion.
+  **No queda ninguna linea ejecutable.**
+  Los mas cercanos al gate: I2-char1.5 (+0.0016, a 0.0014 del gate), A1-sqrt (+0.0006),
+  A2-inversa (+0.0002). Ninguno tiene senal estadistica.
+  **7 de 24 experimentos gastados.** El presupuesto es un techo, no una obligacion, y dos
+  decisiones de D-044 ya habian reducido el gasto antes de empezar.
+  **Los 7 controles dieron 0.777211 exacto**, y eso es lo mas importante: la red de seguridad
+  funciono. El control C1-0 detecto el bug de tokenizacion y evito que se publicara un delta
+  falso.
+  Entregables: v6_final_research.md, v6_master_results.csv, v6_hypothesis_registry.csv,
+  v6_candidate_comparison.csv, v6_compliance.md, v6_reproducibility.md,
+  v6_error_intersection.csv.
+  **D-052. V03 congelada. 0 submissions. Rama sin push, pendiente de autorizacion.**

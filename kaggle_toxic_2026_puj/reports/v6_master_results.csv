@@ -1,0 +1,28 @@
+experiment_id,track,tipo,variante,corrected_cv,delta_vs_V03,ic95_0,ic95_1,pliegues_positivos,gate_1_supera,observacion
+V6-00,gap analysis,ANALYSIS,no aplica,,,,,,no aplica,gap analysis
+V6-01,interseccion de errores y estructura de etiquetas,ANALYSIS,no aplica,,,,,,no aplica,interseccion de errores y estructura de etiquetas
+V6-02,track B,EXPERIMENTO,B0-control-marginales,0.777211,0.0,0.0,0.0,0,False,track B: factorizacion condicional
+V6-02,track B,EXPERIMENTO,B1-TR-condicional,0.766495,-0.010716,-0.01843,-0.003339,1,False,track B: factorizacion condicional
+V6-02,track B,EXPERIMENTO,B1-TR-AG-condicional,0.765663,-0.011548,-0.023119,-0.00053,1,False,track B: factorizacion condicional
+V6-02,track B,EXPERIMENTO,B2-AG-dos-ramas,0.776379,-0.000832,-0.007475,0.005724,2,False,track B: factorizacion condicional
+V6-02,track B,EXPERIMENTO,B3-HS-propio,0.765663,-0.011548,-0.023119,-0.00053,1,False,track B: factorizacion condicional
+V6-03,track A,EXPERIMENTO,A0-control,0.777211,0.0,0.0,0.0,0,False,track A: ponderacion por grupo
+V6-03,track A,EXPERIMENTO,A1-sqrt,0.777768,0.000557,-0.0029,0.004046,3,False,track A: ponderacion por grupo
+V6-03,track A,EXPERIMENTO,A2-inversa,0.777415,0.000204,-0.004486,0.005122,2,False,track A: ponderacion por grupo
+V6-03,track A,EXPERIMENTO,A3-tope,0.762334,-0.014877,-0.024033,-0.005747,1,False,track A: ponderacion por grupo
+V6-04,track I,EXPERIMENTO,I0-control,0.777211,0.0,0.0,0.0,0,False,track I: ponderacion word/char
+V6-04,track I,EXPERIMENTO,I1-char0.5,0.765493,-0.011718,-0.019853,-0.003741,0,False,track I: ponderacion word/char
+V6-04,track I,EXPERIMENTO,I2-char1.5,0.778779,0.001568,-0.004777,0.007779,3,False,track I: ponderacion word/char
+V6-04,track I,EXPERIMENTO,I3-char2.0,0.772508,-0.004703,-0.014176,0.004425,2,False,track I: ponderacion word/char
+V6-05,track C1,EXPERIMENTO,C1-0-control,0.777211,0.0,0.0,0.0,0,False,track C1: skip-grams
+V6-05,track C1,EXPERIMENTO,C1-1-hueco1,0.775055,-0.002156,-0.008362,0.003932,2,False,track C1: skip-grams
+V6-05,track C1,EXPERIMENTO,C1-2-huecos12,0.777107,-0.000104,-0.008523,0.008235,2,False,track C1: skip-grams
+V6-06,track H,EXPERIMENTO,H0-control,0.777211,0.0,0.0,0.0,0,False,track H: bagging por grupos
+V6-06,track H,EXPERIMENTO,H1-bagging5,0.766688,-0.010523,-0.018318,-0.003035,0,False,track H: bagging por grupos
+V6-07,track F,EXPERIMENTO,F0-control,0.777211,0.0,0.0,0.0,0,False,track F: ruido por par
+V6-07,track F,EXPERIMENTO,F1-completo,0.777353,0.000142,-0.003279,0.003549,2,False,track F: ruido por par
+V6-07,track F,EXPERIMENTO,F2-estructural,0.776179,-0.001032,-0.002576,0.000373,1,False,track F: ruido por par
+V6-07,track F,EXPERIMENTO,F3-agresivo,0.773089,-0.004122,-0.011144,0.002659,1,False,track F: ruido por par
+V6-08,track J,EXPERIMENTO,J0-control,0.777211,0.0,0.0,0.0,0,False,track J: aumento de datos
+V6-08,track J,EXPERIMENTO,J1-una-copia,0.771128,-0.006083,-0.01406,0.001809,1,False,track J: aumento de datos
+V6-08,track J,EXPERIMENTO,J2-dos-copias,0.770898,-0.006313,-0.014472,0.001601,1,False,track J: aumento de datos
