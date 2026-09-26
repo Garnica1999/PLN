@@ -2923,7 +2923,7 @@ regresion lineal, es decir captura la redundancia de forma directa, mientras que
 lineal aprovecha mejor los datos. No es que las redes no sirvan: es que **este** problema, con
 **estos** datos, no las necesita.
 
-## D-078 — Apertura de la v11 en worktree propio, y por que antes que un commit de v10
+## D-078 - Apertura de la v11 en worktree propio, y por que antes que un commit de v10
 
 La v11 se abre en `/home/carlos/Git/PLN-v11`, rama `proyecto-kaggle-toxic-2026-v11`, trayendo el
 estado commiteado de la v10. **v10 no se modifica.** Se verificaron las 40 copias de ficheros de
@@ -2935,7 +2935,7 @@ paradas son el resultado real.** Dos eran errores de mi propia comprobacion: bus
 en el informe y en el registro, y en V10-05 y V10-10 no se llaman igual, ademas de que en V10-10 el
 informe anida el veredicto. La tercera era un problema de verdad, tratada en D-079.
 
-## D-079 — El campo factor_vs_train de V9-02 no significa lo que dice
+## D-079 - El campo factor_vs_train de V9-02 no significa lo que dice
 
 El campo ``factor_vs_train`` de `reports/v9_02_prior_shift_em.json` **no** es la prevalencia de
 prueba dividida por la del train completo de 1731 filas, sino por la del **desarrollo** de 1483. Se
@@ -2949,7 +2949,7 @@ Se decide que la v11 use la **prevalencia absoluta** de la prueba, que es la mag
 ambiguedad, y no el factor. La reproduccion, V11-01, da nivel **R3** con diferencias de -4.51e-07 a
 +3.29e-07, que es el redondeo a seis decimales del JSON, e iteraciones del EM identicas: 26, 16 y 24.
 
-## D-080 — El uso de la prueba para estimar prevalencia queda PROHIBIDO, y con el se cae P10
+## D-080 - El uso de la prueba para estimar prevalencia queda PROHIBIDO, y con el se cae P10
 
 La auditoria de legalidad, **V11-02**, clasifico los once pasos de la metodologia contra el texto
 verbatim de `docs/competition_rules.md`, con las cuatro citas verificadas literalmente. Reparto:
@@ -2970,7 +2970,7 @@ prueba concreta **no tiene respuesta verificable dentro de las reglas**. Se pued
 version metodologica, que es si el mecanismo recupera un desplazamiento conocido. **La v11 no
 termina en una submission, y no por falta de calculo sino por una limitacion de las reglas.**
 
-## D-081 — Los estimadores de prevalencia funcionan, y por que uno da error exactamente cero
+## D-081 - Los estimadores de prevalencia funcionan, y por que uno da error exactamente cero
 
 **V11-06, con shift simulado y conocida la verdad.** Dos estimadores conceptualmente distintos:
 EM de Saerens ponderado, y clasificar-y-contar ajustado de Forman y Crawford. La comparacion es
@@ -2992,7 +2992,7 @@ y nada mas. Hay un apoyo inesperado: **V10-07** midio un AUC de **0.487717** ent
 prueba, por debajo del azar, luego no hay shift de covariables medido dentro de este proyecto. Eso
 apoya el supuesto pero **no lo prueba con datos reales, y no se presenta como si lo probara**.
 
-## D-082 — La correccion de prior NO mejora la metrica, y la causa esta medida
+## D-082 - La correccion de prior NO mejora la metrica, y la causa esta medida
 
 **V11-07, con el factor conocido por construccion, que es el caso en el que el mecanismo se puede
 comprobar.** La correccion desplaza el logit de forma constante en
@@ -3021,7 +3021,7 @@ el mecanismo es el unico posible. **Con ella caen P5**, calibracion mas shift, y
 condicionada por la prevalencia: ambas presuponen que el shift es explotable, y se ha medido que no
 lo es. No es una decision de gesto, es consecuencia logica.
 
-## D-083 — Cierre de la v11: nueve lineas, ningun candidato, y el limite escrito
+## D-083 - Cierre de la v11: nueve lineas, ningun candidato, y el limite escrito
 
 **Nueve experimentos de la v11, V11-00 a V11-08**, con el registro en 227 filas y 227 claves
 unicas. **Ninguna submission generada, ninguna enviada, ninguna recomendada.** **V03 se mantiene**
@@ -3062,7 +3062,7 @@ que **no** se ha podido demostrar, y queda escrito para que no se lea mas de lo 
 mismo mecanismo mejoraria en esta prueba concreta. El objetivo de superar 0.80 sigue a la distancia
 que midio la v10.
 
-## D-084 — Un entregable vacio con el motivo escrito es mas honesto que uno lleno de datos ajenos
+## D-084 - Un entregable vacio con el motivo escrito es mas honesto que uno lleno de datos ajenos
 
 Al cerrar la fase con V11-08, **siete de los once entregables** pedidos tenian contenido real y
 cuatro no se produjeron. **V11-09 los completa documentando el motivo de cada vacio**, y la
@@ -3101,3 +3101,29 @@ verdadera.
 
 Los **14 avisos de ruff** que restan en los guiones de la v11 son todos `ISC004`, concatenacion
 implicita dentro de colecciones: es estetico y no afecta a la ejecucion.
+
+## D-085 - Un escaneo que cuenta no basta: tiene que separar lo heredado de lo propio
+
+El segundo escaneo de caracteres, el estricto de ASCII puro, reporto **173 hallazgos globales** en
+`DECISIONS.md`, `RUNLOG.md` y `PROJECT_STATE.md`. La cifra, por si sola, era inutil: invita a dos
+errores opuestos a la vez, **reformatear 147 caracteres heredados** de las fases previas o
+**dar la v11 por limpia** porque el total parece pequeno.
+
+**La distincion util es por bloque, y la hace el marcador de inicio de la v11.** Resultado:
+
+| Bloque | Caracteres no ASCII | Decision |
+| --- | --- | --- |
+| Antes de `## D-078`, heredado de v10 y previas | 147 | **No se toca**, es la desviacion ya documentada; modificarlo rompe la correspondencia entre codigo y resultado historico. |
+| Desde `## D-078`, propio de la v11 en `DECISIONS.md` | 7, todos em-dashes U+2014 en titulos | **Corregidos** a guion. |
+| Bloque propio en `RUNLOG.md` y `PROJECT_STATE.md` | 0 | Sin accion. |
+
+**Por que importa el numero pequeno tambien es un error.** Un recuento global habria hecho pasar
+por limpio un bloque mio que no lo estaba, porque 7 sobre 173 parece poco. El criterio correcto no
+es cuanto, sino **de quien**: los caracteres heredados son una desviacion conocida y aceptada con
+motivo, y los propios son un fallo mio corregible. Tratarlos igual habria exigido tocar v10, o
+habria dejado pasar los mios.
+
+Se mantiene entonces el verificador propio de ASCII puro **ademas** de
+`tools/verificar_caracteres.py`, y se documenta que los dos son necesarios: el primero busca
+alfabetos no latinos y el segundo busca ASCII puro. Ninguno de los dos, por si solo, distingue el
+bloque propio del heredado, y esa distincion hay que hacerla por bloque de forma explicita.

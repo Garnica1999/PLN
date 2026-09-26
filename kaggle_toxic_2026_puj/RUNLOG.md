@@ -1391,3 +1391,14 @@ comentario. Inerte por construccion, nunca invocado, y la reproduccion re-ejecut
 cambio devuelve **R3 exacto**. Ninguna cifra de ningun informe se modifico.
 
 **Sin push, sin merge adicional, sin reset, sin rebase, sin modificar otras ramas.**
+
+### Correccion de caracteres en el bloque propio de la v11 (2026-09-26)
+
+El segundo escaneo ASCII, el estricto de ASCII puro, distinguisho entre lo heredado y lo propio
+en lugar de contar global: **147 caracteres no ASCII antes de D-078** son la desviacion ya
+documentada de las fases previas, que **no se toca por decision**, porque modificar esos ficheros rompe la correspondencia entre codigo y resultado historico. **7 em-dashes U+2014 despues de
+D-078 si eran mios**, en los titulos de D-078 a D-084, y estan corregidos a guion.
+
+**RUNLOG.md y PROJECT_STATE.mdtienen **0 caracteres no ASCII propios.** La distincion importa
+porque un recuento global habria hecho pasar por reformateo masivo lo que era un fallo de siete
+guiones, y habria hecho pasar por limpio un bloque mio que no lo estaba.
