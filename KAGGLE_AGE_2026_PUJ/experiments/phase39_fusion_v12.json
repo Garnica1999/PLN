@@ -1,0 +1,341 @@
+{
+  "fase": "P6 — fusion con V12 y control de permutacion",
+  "fecha": "2026-09-25",
+  "gate": "delta >= +0.003 y >= 4/5 folds positivos",
+  "referencia_v12": {
+    "macro_f1": 0.6004,
+    "std": 0.0042,
+    "per_fold": [
+      0.6007,
+      0.605,
+      0.6032,
+      0.6004,
+      0.5928
+    ]
+  },
+  "n_columnas_base": 279,
+  "candidatos": {
+    "V12 + Registro": {
+      "real": {
+        "macro_f1": 0.6005,
+        "std": 0.0055,
+        "per_fold": [
+          0.6021,
+          0.6061,
+          0.6037,
+          0.6007,
+          0.59
+        ]
+      },
+      "controles_permutados": [
+        {
+          "macro_f1": 0.6005,
+          "std": 0.0031,
+          "per_fold": [
+            0.6026,
+            0.5989,
+            0.6041,
+            0.6015,
+            0.5952
+          ]
+        }
+      ],
+      "delta": 0.0001,
+      "folds_positivos": 4,
+      "gate_numerico": false,
+      "media_control": 0.6005,
+      "mejor_control": 0.6005,
+      "ventaja_sobre_control_medio": 0.0,
+      "ventaja_sobre_control_maximo": 0.0,
+      "supera_control": false
+    },
+    "V12 + Vida": {
+      "real": {
+        "macro_f1": 0.6004,
+        "std": 0.0048,
+        "per_fold": [
+          0.6056,
+          0.6014,
+          0.6019,
+          0.6018,
+          0.5912
+        ]
+      },
+      "controles_permutados": [
+        {
+          "macro_f1": 0.5994,
+          "std": 0.0041,
+          "per_fold": [
+            0.6027,
+            0.6011,
+            0.6016,
+            0.6003,
+            0.5915
+          ]
+        }
+      ],
+      "delta": 0.0,
+      "folds_positivos": 2,
+      "gate_numerico": false,
+      "media_control": 0.5994,
+      "mejor_control": 0.5994,
+      "ventaja_sobre_control_medio": 0.001,
+      "ventaja_sobre_control_maximo": 0.001,
+      "supera_control": true
+    },
+    "V12 + Temas": {
+      "real": {
+        "macro_f1": 0.5995,
+        "std": 0.005,
+        "per_fold": [
+          0.6034,
+          0.6016,
+          0.6015,
+          0.6014,
+          0.5896
+        ]
+      },
+      "controles_permutados": [
+        {
+          "macro_f1": 0.5997,
+          "std": 0.0054,
+          "per_fold": [
+            0.6008,
+            0.605,
+            0.5992,
+            0.6038,
+            0.5898
+          ]
+        }
+      ],
+      "delta": -0.0009,
+      "folds_positivos": 2,
+      "gate_numerico": false,
+      "media_control": 0.5997,
+      "mejor_control": 0.5997,
+      "ventaja_sobre_control_medio": -0.0002,
+      "ventaja_sobre_control_maximo": -0.0002,
+      "supera_control": false
+    },
+    "V12 + Registro + Vida + Temas": {
+      "real": {
+        "macro_f1": 0.5986,
+        "std": 0.0054,
+        "per_fold": [
+          0.6041,
+          0.6022,
+          0.5964,
+          0.6013,
+          0.5891
+        ]
+      },
+      "controles_permutados": [
+        {
+          "macro_f1": 0.5965,
+          "std": 0.0043,
+          "per_fold": [
+            0.6014,
+            0.5978,
+            0.594,
+            0.5996,
+            0.5895
+          ]
+        }
+      ],
+      "delta": -0.0018,
+      "folds_positivos": 2,
+      "gate_numerico": false,
+      "media_control": 0.5965,
+      "mejor_control": 0.5965,
+      "ventaja_sobre_control_medio": 0.0021,
+      "ventaja_sobre_control_maximo": 0.0021,
+      "supera_control": true
+    }
+  },
+  "tabla": [
+    {
+      "candidato": "V12 (referencia)",
+      "tipo": "referencia",
+      "n_columnas_anadidas": 0,
+      "macro_f1": 0.6004,
+      "std": 0.0042,
+      "delta": 0.0,
+      "folds_positivos": 0,
+      "per_fold": [
+        0.6007,
+        0.605,
+        0.6032,
+        0.6004,
+        0.5928
+      ],
+      "supera_gate_numerico": false,
+      "supera_control_permutado": false,
+      "adopta": false
+    },
+    {
+      "candidato": "V12 + Registro",
+      "tipo": "bloque real",
+      "n_columnas_anadidas": 16,
+      "macro_f1": 0.6005,
+      "std": 0.0055,
+      "delta": 0.0001,
+      "folds_positivos": 4,
+      "per_fold": [
+        0.6021,
+        0.6061,
+        0.6037,
+        0.6007,
+        0.59
+      ],
+      "supera_gate_numerico": false,
+      "supera_control_permutado": false,
+      "adopta": false
+    },
+    {
+      "candidato": "CONTROL permutado[0] de V12 + Registro",
+      "tipo": "permutado",
+      "n_columnas_anadidas": 16,
+      "macro_f1": 0.6005,
+      "std": 0.0031,
+      "delta": 0.0001,
+      "folds_positivos": 4,
+      "per_fold": [
+        0.6026,
+        0.5989,
+        0.6041,
+        0.6015,
+        0.5952
+      ],
+      "supera_gate_numerico": false,
+      "supera_control_permutado": false,
+      "adopta": false
+    },
+    {
+      "candidato": "V12 + Vida",
+      "tipo": "bloque real",
+      "n_columnas_anadidas": 16,
+      "macro_f1": 0.6004,
+      "std": 0.0048,
+      "delta": 0.0,
+      "folds_positivos": 2,
+      "per_fold": [
+        0.6056,
+        0.6014,
+        0.6019,
+        0.6018,
+        0.5912
+      ],
+      "supera_gate_numerico": false,
+      "supera_control_permutado": true,
+      "adopta": false
+    },
+    {
+      "candidato": "CONTROL permutado[0] de V12 + Vida",
+      "tipo": "permutado",
+      "n_columnas_anadidas": 16,
+      "macro_f1": 0.5994,
+      "std": 0.0041,
+      "delta": -0.001,
+      "folds_positivos": 1,
+      "per_fold": [
+        0.6027,
+        0.6011,
+        0.6016,
+        0.6003,
+        0.5915
+      ],
+      "supera_gate_numerico": false,
+      "supera_control_permutado": false,
+      "adopta": false
+    },
+    {
+      "candidato": "V12 + Temas",
+      "tipo": "bloque real",
+      "n_columnas_anadidas": 37,
+      "macro_f1": 0.5995,
+      "std": 0.005,
+      "delta": -0.0009,
+      "folds_positivos": 2,
+      "per_fold": [
+        0.6034,
+        0.6016,
+        0.6015,
+        0.6014,
+        0.5896
+      ],
+      "supera_gate_numerico": false,
+      "supera_control_permutado": false,
+      "adopta": false
+    },
+    {
+      "candidato": "CONTROL permutado[0] de V12 + Temas",
+      "tipo": "permutado",
+      "n_columnas_anadidas": 37,
+      "macro_f1": 0.5997,
+      "std": 0.0054,
+      "delta": -0.0007,
+      "folds_positivos": 2,
+      "per_fold": [
+        0.6008,
+        0.605,
+        0.5992,
+        0.6038,
+        0.5898
+      ],
+      "supera_gate_numerico": false,
+      "supera_control_permutado": false,
+      "adopta": false
+    },
+    {
+      "candidato": "V12 + Registro + Vida + Temas",
+      "tipo": "bloque real",
+      "n_columnas_anadidas": 69,
+      "macro_f1": 0.5986,
+      "std": 0.0054,
+      "delta": -0.0018,
+      "folds_positivos": 2,
+      "per_fold": [
+        0.6041,
+        0.6022,
+        0.5964,
+        0.6013,
+        0.5891
+      ],
+      "supera_gate_numerico": false,
+      "supera_control_permutado": true,
+      "adopta": false
+    },
+    {
+      "candidato": "CONTROL permutado[0] de V12 + Registro + Vida + Temas",
+      "tipo": "permutado",
+      "n_columnas_anadidas": 69,
+      "macro_f1": 0.5965,
+      "std": 0.0043,
+      "delta": -0.0039,
+      "folds_positivos": 1,
+      "per_fold": [
+        0.6014,
+        0.5978,
+        0.594,
+        0.5996,
+        0.5895
+      ],
+      "supera_gate_numerico": false,
+      "supera_control_permutado": false,
+      "adopta": false
+    }
+  ],
+  "adoptan": [],
+  "familias_con_señal_sobre_control": [
+    "V12 + Vida",
+    "V12 + Registro + Vida + Temas"
+  ],
+  "semillas_permutacion": [
+    1000,
+    1001,
+    1002
+  ],
+  "criterio_adopcion": "gate numerico Y superar al control de permutacion (DD-6)",
+  "hipotesis_independientes_para_combinacion": true,
+  "segundos": 9221.7
+}

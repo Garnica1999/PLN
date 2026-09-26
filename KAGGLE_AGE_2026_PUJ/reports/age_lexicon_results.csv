@@ -1,0 +1,10 @@
+candidato,tipo,n_columnas_anadidas,macro_f1,std,delta,folds_positivos,per_fold,supera_gate_numerico,supera_control_permutado,adopta
+V12 (referencia),referencia,0,0.6004,0.0042,0.0,0,"[0.6007, 0.605, 0.6032, 0.6004, 0.5928]",False,False,False
+V12 + Registro,bloque real,16,0.6005,0.0055,0.0001,4,"[0.6021, 0.6061, 0.6037, 0.6007, 0.59]",False,False,False
+CONTROL permutado[0] de V12 + Registro,permutado,16,0.6005,0.0031,0.0001,4,"[0.6026, 0.5989, 0.6041, 0.6015, 0.5952]",False,False,False
+V12 + Vida,bloque real,16,0.6004,0.0048,0.0,2,"[0.6056, 0.6014, 0.6019, 0.6018, 0.5912]",False,True,False
+CONTROL permutado[0] de V12 + Vida,permutado,16,0.5994,0.0041,-0.001,1,"[0.6027, 0.6011, 0.6016, 0.6003, 0.5915]",False,False,False
+V12 + Temas,bloque real,37,0.5995,0.005,-0.0009,2,"[0.6034, 0.6016, 0.6015, 0.6014, 0.5896]",False,False,False
+CONTROL permutado[0] de V12 + Temas,permutado,37,0.5997,0.0054,-0.0007,2,"[0.6008, 0.605, 0.5992, 0.6038, 0.5898]",False,False,False
+V12 + Registro + Vida + Temas,bloque real,69,0.5986,0.0054,-0.0018,2,"[0.6041, 0.6022, 0.5964, 0.6013, 0.5891]",False,True,False
+CONTROL permutado[0] de V12 + Registro + Vida + Temas,permutado,69,0.5965,0.0043,-0.0039,1,"[0.6014, 0.5978, 0.594, 0.5996, 0.5895]",False,False,False
