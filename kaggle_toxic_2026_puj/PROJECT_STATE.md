@@ -488,3 +488,24 @@ chequeo previo (D-008).
   lineas de reserva, **todas con la prioridad baja que les asigna el filtro de
   detectabilidad**. P4 es la unica con mecanismo propio, y su techo lo acotan tres
   predecesores fallidos.
+
+### Tras P4 (V8-05)
+
+- **P4 CERRADO, negativo** (D-062). Peso conjunto 0,5 da -0,001471 y peso 2,0 da -0,006781.
+  Sin submission y sin sonda.
+- **El mecanismo funciona y empeora**: el coseno entre las tres cabeceras sube de 0,7380 a
+  0,8265 a 0,9216. Compartir estructura entre las tres etiquetas es posible, y resta.
+- **Identidad confirmada por el metodo correcto**: el objetivo propio (2,928125) es menor que
+  el de la biblioteca (3,359072) y la superficie es estrictamente convexa, luego la solucion
+  propia es la optima. El criterio de identidad paso del coseno al valor del objetivo, porque
+  exigir el coseno pide que las dos implementaciones convergieran igual de bien.
+- **El patron que unifica P1, P3 y P4**: la tasa de acierto entre las celdas modificadas es
+  de 0,46, de 0,39 a 0,44 y de 0,42 a 0,39, respectivamente. **Tres mecanismos distintos y el
+  mismo sintoma: en las filas que tocan, todas mueven la decision hacia peor.** El limite no es
+  de mecanismo sino de representacion.
+- **Cinco errores de escala detectados antes de obtener cifra**, dos de ellos por comparar la
+  norma de los pesos con la biblioteca, comparacion que se anade al repertorio porque la
+  metrica sola no detecta un error de escala.
+- **Estado de la ordenacion**: P1, P3, P2 y P4 cerradas. Quedan **P5, P6 y P7**, las tres
+  solo de capa de decision, con la prioridad baja del filtro de detectabilidad y **sin
+  razon para esperar que alguna pase** a la luz del patron.

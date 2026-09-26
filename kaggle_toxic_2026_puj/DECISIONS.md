@@ -2390,3 +2390,62 @@ evidencia, experimento, resultado, conclusion final.
   propio, pero su techo lo acotan tres predecesores fallidos: cadenas, powerset y
   apilamiento. Con el filtro de detectabilidad delante, ninguna de ellas pasa por defecto, y
   por tanto la fase se acerca al punto en que hay que decidir si seguir buscando o cerrar la fase.
+
+## D-062 - P4 cerrado: el mecanismo de compartir estructura funciona y empeora, y eso unifica P3 y P4 en una sola conclusion
+
+- **Contexto**: P4 era la unica de las lineas restantes que toca el modelo y no la capa de
+  decision, y por eso la unica que podia cambiar muchas celdas de golpe. Anade a las tres
+  cabeceras de V03 un termino que penaliza su dispersion alrededor de su media, que es
+  regularizacionconjunta blanda: no dice que sean iguales, solo que alejarse cuesta.
+- **Decision 1, la comparacion de la linea es interna y no contra el OOF canonico**. Con el
+  peso del termino nuevo en cero, esta implementacion es **una reimplementacion de V03**,
+  porque usa un optimizador propio: la biblioteca no admite varias salidas binarias con una
+  penalizacion compartida. Medir contra el OOF canonico mezclaria el efecto de la
+  regularizacion conjunta con el de haber cambiado de optimizador, y no se podrian separar.
+  El OOF canonico sirve para una sola cosa, que es comprobar que la reimplementacion reproduce
+  la cifra conocida.
+- **Decision 2, el control interno reproduce V03 y la identidad se confirma por el metodo
+  correcto**. El control da 0,775652 frente a los 0,777211 de V03, diferencia -0,001559, con
+  tolerancia declarada de 0,004, mas ancha que en otras lineas porque aqui se compara una
+  reimplementacion contra el original. La identidad se comprueba con el **valor del objetivo**:
+  el propio es 2,928125 y el de la biblioteca 3,359072, y con la regularizacion cuadrada la
+  superficie es estrictamente convexa, de modo que la solucion propia es la optima. Los cosenos
+  con la biblioteca son 0,9994, 0,9870 y 0,9944, y la diferencia se explica por la convergencia
+  laxa del resolvedor, no por un error. **El criterio de identidad cambio por esto**: exigir el
+  coseno es pedir que las dos implementaciones convergieran igual de bien, y el valor del
+  objetivo no lo pide.
+- **Decision 3, el resultado es negativo y monotono, y el mecanismo actua**. Peso 0,5:
+  -0,001471, IC95 [-0,00503, +0,00234], 0 de 5 pliegues. Peso 2,0: -0,006781, IC95
+  [-0,01242, -0,00096], 0 de 5 pliegues. Al tiempo, el coseno medio entre las tres cabeceras
+  sube de **0,7380 a 0,8265 a 0,9216**. **El mecanismo hace exactamente lo que dice y por eso
+  empeora.** Parejar las tres cabeceras es lo que haria un modelo mas simple, y V03 ya ocupa
+  ese sitio con la constante 2,0 sobre la representacion completa. Compartir estructura solo
+  tendria sentido si el techo no estuviera en la representacion, y V8-02 lo situa ahi.
+- **Decision 4, el hallazgo que unifica P3 y P4, y que vale mas que las dos cifras**. La tasa
+  de acierto entre las celdas modificadas es de **0,4186 y 0,3925**, por debajo del 0,50 que
+  daria una moneda al aire. En P3 fue de 0,39 a 0,44. En P1 fue de 0,46 sobre cien celdas.
+  **Tres lineas independientes, tres mecanismos distintos, el mismo sintoma: en las filas que
+  tocan, todas mueven la decision hacia peor de forma sistematica.** Reducir la dimension,
+  compartir estructura y promediar modelos degradan las mismas filas. Eso apunta a que el
+  limite no es de mecanismo sino de representacion, y a que cualquier cambio, por pequeno que
+  sea, actua sobre las filas de decision limite como ruido con sesgo negativo.
+- **Decision 5, cinco errores de escala, todos antes de obtener cifra, y como se detectaron
+  cada uno**. Un factor dos sobrante en el gradiente de la penalizacion, detectado comparando
+  contra diferencias finitas con un error maximo de 1,6 frente a 2,99e-9 sin el factor. Un
+  fallo de dimensiones en la transposicion del gradiente, detectado por el propio error. Una
+  normalizacion de la perdida por el numero de filas efectivas de las tres etiquetas en vez de
+  por el numero de filas. Un factor en la escala de la penalizacion que sobre-regularizaba
+  **tres veces y media**. Y un recorte de probabilidad en la perdida. Los dos ultimos se
+  detectaron comparando la **norma de los pesos** con la biblioteca, que era 0,06 frente a 23,3:
+  una comparacion de norma detecta un error de escala cuando la metrica sola no lo hacia, y
+  por eso se anade al repertorio.
+- **Decision 6, P4 cerrado sin variantes y sin submission**. No se reintenta con mas pesos
+  porque la tendencia es monotona y en la direccion contraria, y porque el filtro de
+  detectabilidad habria bloqueado el envio de todos modos.
+- **Decision 7, lo que queda y por que la decision no es tecnica**. Quedan P5, P6 y P7, las
+  tres solo de capa de decision y con la prioridad baja que les asigno el filtro de
+  detectabilidad de D-059. **A la luz del patron de la Decision 4 no hay razon para esperar
+  que ninguna pase**, porque las tres se mueven en la banda de cien a doscientas celdas y
+  todas las lineas medidas en esa banda han dado tasa de acierto por debajo del azar. Cerrar
+  la fase o ejecutarlas es una decision del usuario y no tecnica, y conviene tomarla con el
+  dato encima: tres lineas medidas, tres con el mismo sintoma.

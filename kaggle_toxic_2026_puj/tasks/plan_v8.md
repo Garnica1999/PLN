@@ -39,4 +39,5 @@ empujando la capa de decision.
 | 3 | A2 resolucion del leaderboard y filtro de detectabilidad | **cerrada** (V8-02) |
 | 4 | P3 estabilidad de features | **cerrada, negativa** (D-060) |
 | 5 | P2 log-count ratio, con precedente adverso ya medido | **cerrada, negativa** (D-061) |
-| 6 | P4 a P7 | en espera, todas con prioridad baja por el filtro |
+| 6 | P4 regularizacion conjunta | **cerrada, negativa** (D-062) |
+| 7 | P5, P6 y P7 | sin razon para esperar que pasen; la decision es del usuario |

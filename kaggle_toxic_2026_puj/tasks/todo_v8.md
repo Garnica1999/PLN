@@ -27,10 +27,16 @@
 - [x] No se barre el suavizado, porque el resultado positivo es un punto de una superficie
       sin explorar y no una senal.
 
-## Siguiente
+- [x] **P4, regularizacion conjunta: cerrado, negativo.** -0,0015 y -0,0068, con el mecanismo
+      funcionando: el coseno entre cabeceras sube de 0,738 a 0,922. Compartir estructura entre
+      las tres etiquetas es posible y resta.
+- [x] Identidad de la solucion confirmada por el valor del objetivo, no por el coseno.
+- [x] **Patron de fase documentado**: P1, P3 y P4 mueven la decision hacia peor en las filas
+      que tocan, con tasa de acierto de 0,46, de 0,39 a 0,44 y de 0,42 a 0,39.
 
-- [ ] **Decidir si P4 a P7 merece ejecutarse.** Las cuatro mueven la capa de decision en la
-      banda de cien a doscientas celdas, donde el filtro de detectabilidad exige mas del 60 %
-      de acierto. P4 es la unica con mecanismo propio, pero su techo lo acotan tres
-      predecesores fallidos: cadenas, powerset y apilamiento.
-- [ ] Si se ejecuta alguna, aplicar el filtro de detectabilidad **antes** de cada envio.
+## Siguiente, y es una decision del usuario
+
+- [ ] **P5, P6 y P7 quedan sin razon para ejecutarse.** Las tres solo mueven la capa de
+      decision en la banda de cien a doscientas celdas, donde el filtro exige mas del 60 % de
+      acierto, y las tres lineas medidas en esa banda han dado tasa por debajo del azar. La
+      decision es cerrar la fase o ejecutarlas, y conviene tomarla con el dato encima.

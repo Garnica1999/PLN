@@ -1,0 +1,4 @@
+peso_conjunto,metrica,diferencia,ic95_0,ic95_1,pliegues_positivos,gate_delta,gate_ic95,gate_pliegues,gate_supera,celdas,tasa_acierto,minimo_requerido,filtro_pasa,admisible
+0.0,0.775652,0.0,0.0,0.0,0,False,False,False,False,0,nan,nan,False,False
+0.5,0.774181,-0.001471,-0.005031,0.002337,0,False,False,False,False,43,0.4186,0.7233,False,False
+2.0,0.768872,-0.006781,-0.012417,-0.000961,0,False,False,False,False,107,0.3925,0.5897,False,False

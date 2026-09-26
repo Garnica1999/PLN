@@ -1,0 +1,247 @@
+{
+  "experimento": "V8-05 (P4)",
+  "fecha": "2026-09-26T03:31:47+00:00",
+  "referencia_v03_local": 0.777211,
+  "referencia_v03_externa": 0.78306,
+  "metrica_control_interno": 0.775652,
+  "ruido_en_aciertos_netos": 19.2,
+  "constante_propia": 2.0,
+  "pesos_conjuntos": [
+    0.0,
+    0.5,
+    2.0
+  ],
+  "variantes": [
+    {
+      "peso_conjunto": 0.0,
+      "metrica": 0.775652,
+      "diferencia": 0.0,
+      "ic95_0": 0.0,
+      "ic95_1": 0.0,
+      "pliegues_positivos": 0,
+      "aciertos_por_pliegue": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "f1_por_etiqueta": {
+        "HS": 0.7646176911544228,
+        "TR": 0.8169642857142857,
+        "AG": 0.745374449339207
+      },
+      "celdas": 0,
+      "tasa_acierto": NaN,
+      "minimo_requerido": NaN,
+      "filtro_pasa": false,
+      "gate_delta": false,
+      "gate_ic95": false,
+      "gate_pliegues": false,
+      "gate_supera": false,
+      "admisible": false
+    },
+    {
+      "peso_conjunto": 0.5,
+      "metrica": 0.774181,
+      "diferencia": -0.001471,
+      "ic95_0": -0.005031,
+      "ic95_1": 0.002337,
+      "pliegues_positivos": 0,
+      "aciertos_por_pliegue": [
+        0,
+        0,
+        -2,
+        -5,
+        0
+      ],
+      "f1_por_etiqueta": {
+        "HS": 0.7586206896551724,
+        "TR": 0.8165548098434005,
+        "AG": 0.7473684210526316
+      },
+      "celdas": 43,
+      "tasa_acierto": 0.4186,
+      "minimo_requerido": 0.7233,
+      "filtro_pasa": false,
+      "gate_delta": false,
+      "gate_ic95": false,
+      "gate_pliegues": false,
+      "gate_supera": false,
+      "admisible": false
+    },
+    {
+      "peso_conjunto": 2.0,
+      "metrica": 0.768872,
+      "diferencia": -0.006781,
+      "ic95_0": -0.012417,
+      "ic95_1": -0.000961,
+      "pliegues_positivos": 0,
+      "aciertos_por_pliegue": [
+        -2,
+        -6,
+        -9,
+        -4,
+        -2
+      ],
+      "f1_por_etiqueta": {
+        "HS": 0.7532075471698113,
+        "TR": 0.81214848143982,
+        "AG": 0.7412587412587412
+      },
+      "celdas": 107,
+      "tasa_acierto": 0.3925,
+      "minimo_requerido": 0.5897,
+      "filtro_pasa": false,
+      "gate_delta": false,
+      "gate_ic95": false,
+      "gate_pliegues": false,
+      "gate_supera": false,
+      "admisible": false
+    }
+  ],
+  "similitud_cabeceras": [
+    {
+      "peso_conjunto": 0.0,
+      "coseno_medio": 0.738,
+      "coseno_minimo": 0.6977,
+      "norma_media": 22.8045
+    },
+    {
+      "peso_conjunto": 0.5,
+      "coseno_medio": 0.8265,
+      "coseno_minimo": 0.8014,
+      "norma_media": 22.1164
+    },
+    {
+      "peso_conjunto": 2.0,
+      "coseno_medio": 0.9216,
+      "coseno_minimo": 0.9064,
+      "norma_media": 21.4552
+    }
+  ],
+  "identidad_pesos": [
+    {
+      "etiqueta": "HS",
+      "objetivo_propio": 0.976041778,
+      "objetivo_biblioteca": 1.030258742,
+      "coseno": 0.9993764505969095,
+      "norma_propia": 23.3275,
+      "norma_biblioteca": 23.3332,
+      "diferencia_probabilidades": 0.031669236263
+    },
+    {
+      "etiqueta": "TR",
+      "objetivo_propio": 0.976041778,
+      "objetivo_biblioteca": 1.254161731,
+      "coseno": 0.987004620617185,
+      "norma_propia": 21.8567,
+      "norma_biblioteca": 21.8042,
+      "diferencia_probabilidades": 0.139917916588
+    },
+    {
+      "etiqueta": "AG",
+      "objetivo_propio": 0.976041778,
+      "objetivo_biblioteca": 1.074651651,
+      "coseno": 0.9944229677618224,
+      "norma_propia": 23.2293,
+      "norma_biblioteca": 23.2497,
+      "diferencia_probabilidades": 0.094970492765
+    }
+  ],
+  "registro_ajuste": [
+    {
+      "pliegue": 1,
+      "peso_conjunto": 0.0,
+      "iteraciones": 34,
+      "objetivo": 0.976042
+    },
+    {
+      "pliegue": 1,
+      "peso_conjunto": 0.5,
+      "iteraciones": 35,
+      "objetivo": 0.998571
+    },
+    {
+      "pliegue": 1,
+      "peso_conjunto": 2.0,
+      "iteraciones": 37,
+      "objetivo": 1.033067
+    },
+    {
+      "pliegue": 2,
+      "peso_conjunto": 0.0,
+      "iteraciones": 35,
+      "objetivo": 0.978336
+    },
+    {
+      "pliegue": 2,
+      "peso_conjunto": 0.5,
+      "iteraciones": 33,
+      "objetivo": 1.000721
+    },
+    {
+      "pliegue": 2,
+      "peso_conjunto": 2.0,
+      "iteraciones": 36,
+      "objetivo": 1.034878
+    },
+    {
+      "pliegue": 3,
+      "peso_conjunto": 0.0,
+      "iteraciones": 34,
+      "objetivo": 0.984924
+    },
+    {
+      "pliegue": 3,
+      "peso_conjunto": 0.5,
+      "iteraciones": 34,
+      "objetivo": 1.007377
+    },
+    {
+      "pliegue": 3,
+      "peso_conjunto": 2.0,
+      "iteraciones": 37,
+      "objetivo": 1.041742
+    },
+    {
+      "pliegue": 4,
+      "peso_conjunto": 0.0,
+      "iteraciones": 34,
+      "objetivo": 0.96302
+    },
+    {
+      "pliegue": 4,
+      "peso_conjunto": 0.5,
+      "iteraciones": 34,
+      "objetivo": 0.985314
+    },
+    {
+      "pliegue": 4,
+      "peso_conjunto": 2.0,
+      "iteraciones": 36,
+      "objetivo": 1.019473
+    },
+    {
+      "pliegue": 5,
+      "peso_conjunto": 0.0,
+      "iteraciones": 35,
+      "objetivo": 0.982507
+    },
+    {
+      "pliegue": 5,
+      "peso_conjunto": 0.5,
+      "iteraciones": 34,
+      "objetivo": 1.004796
+    },
+    {
+      "pliegue": 5,
+      "peso_conjunto": 2.0,
+      "iteraciones": 36,
+      "objetivo": 1.038952
+    }
+  ],
+  "elegida": null,
+  "submission_generada": false,
+  "nota": "La comparacion de la linea es interna, de peso cero contra peso mayor, porque el peso cero es una reimplementacion de V03 con un optimizador propio. Medir contra el OOF canonico mezclaria el efecto de la regularizacion conjunta con el de haber cambiado de optimizador."
+}

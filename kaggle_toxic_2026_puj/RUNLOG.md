@@ -1106,3 +1106,20 @@ Registro cronologico de ejecuciones. Formato:
   -0,075 frente a los -0,016 de la constante 1.0, o sea la constante y el ratio no se pueden
   subir a la vez.
   **D-061. 0 submissions.**
+- v8 P4: regularizacion conjunta entre las tres etiquetas | `v8_05_regularizacion_conjunta.py`
+  **Negativo y monotono, y el mecanismo funciona.** El control interno reproduce V03 con
+  diferencia -0,001559. La identidad de la solucion se confirma por el **valor del objetivo**:
+  2,928 propio frente a 3,359 de la biblioteca, y con la regularizacion cuadrada la superficie
+  es estrictamente convexa, luego la solucion propia es la optima. Peso 0,5 da -0,001471 y
+  peso 2,0 da -0,006781. Al tiempo, el coseno entre las tres cabeceras sube de 0,7380 a 0,8265
+  a 0,9216: **compartir estructura funciona y por eso empeora.**
+  **El hallazgo que unifica la fase**: la tasa de acierto entre las celdas modificadas es de
+  0,4186 y 0,3925, por debajo del azar, igual que P3 (0,39 a 0,44) y P1 (0,46). Tres lineas,
+  tres mecanismos, mismo sintoma: en las filas que tocan, todas mueven la decision hacia peor.
+  **Cinco errores de escala detectados antes de obtener cifra**: factor dos en el gradiente
+  (contra diferencias finitas), fallo de dimensiones en la transposicion, normalizacion de la
+  perdida por filas efectivas en vez de filas, escala de la penalizacion tres veces y media
+  mayor, y recorte de probabilidad. Los dos ultimos se detectaron comparando la **norma de los
+  pesos** con la biblioteca, 0,06 frente a 23,3, una comparacion que la metrica sola no
+  detecta.
+  **D-062. 0 submissions.**
