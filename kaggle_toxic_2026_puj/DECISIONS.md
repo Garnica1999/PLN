@@ -2671,3 +2671,254 @@ evidencia, experimento, resultado, conclusion final.
   confirmaron que las mejoras locales no trasladan. El objetivo de 0,80 sigue a +0,01694 de la
   referencia, que es 1,1 veces el ruido. **Se registry todo y no hay ninguna submission
   recomendada.**
+
+## D-068 — Apertura de la fase v10 en worktree propio
+
+Se abre `/home/carlos/Git/PLN-v10` en la rama `proyecto-kaggle-toxic-2026-v10` desde `23aac93`,
+con `data/` enlazado a la copia compartida y `features/` y `models/` copiados, porque son
+artefactos derivados que los scripts necesitan y la auditoria demostro que sin ellos fallan.
+
+**Se elige worktree propio y no trabajar en el v8** por dos razones: el v8 ya acumula catorce
+scripts de la fase v8 mas los de la auditoria, y mezclar ahi haria imposible rastrear que cambio
+pertenece a que fase; y el plan pide commits con prefijo de fase, que en una rama compartida se
+mezclarian.
+
+**Sin commit hasta peticion expresa del usuario.** El arbol queda limpio pero sin commitear.
+
+Verificacion de partida, `V10-00`: `corrected_cv` reconstruido 0.7772114525165721 con
+coincidencia exacta, `sha256` de la submission v03 identico, 207 filas de registro, 15 sondas.
+
+## D-069 — Holdout2 congelado, su gate NO se supero, y por que se creo antes de la via A
+
+Se crea `holdout2` con `StratifiedGroupKFold(n_splits=6, semilla=20260926)` sobre las 1483 filas
+del desarrollo: 247 filas en 235 grupos para holdout2, 1236 en 1180 para dev2, **cero grupos
+compartidos**, particion reproducible y cero solape con el holdout v2. Se congelan
+`config/holdout2.json` y `data/processed/holdout2_ids.csv` con `sha256`.
+
+**El gate NO se supero**: la referencia de V03 recalculada en dev2 con cinco pliegues propios
+quedo en **0.763436**, una desviacion de **-0.013776** frente a la tolerancia declarada de 0.005.
+
+**Se creo antes de la via A, y no despues, por una razon concreta**: si se creara despues, las
+candidatas de la via A se elegirian sobre las mismas filas que luego se usarian para juzgarlas, y
+el juez dejaria de ser independiente de la seleccion.
+
+**Advertencia escrita antes de ver resultados y que queda vigente**: holdout2 **no es virginal**.
+Sus filas salen del desarrollo actual, que ya participo en las decisiones de las fases v1 a v9.
+Su valor es **detectar que un candidato esta sobreajustado a su gate**, no probar generalizacion
+sobre datos nunca vistos.
+
+Por la regla pre-registrada, **dev2 no se usa para ninguna decision de adopcion**. Holdout2 si
+sigue pudiendo servir como juez, pero solo por comparacion pareada dentro de sus 247 filas.
+
+## D-070 — V10-02: el ruido de la metrica corregida es de mas de 0.017, y eso obliga a cambiar el protocolo
+
+La desviacion de D-069 admite tres explicaciones separables. El **control de equivalencia da
+diferencia exactamente 0.0**: el codigo de P0b reproduce los 0.7772114525165721 al ultimo
+digito, asi que **no es un fallo de implementacion**.
+
+- Con **ocho semillas de particion** y sin cambiar nada mas, la metrica recorre de 0.772021 a
+  0.789205: recorrido **0.017184**, desviacion tipica **0.005302**.
+- Con **ocho subconjuntos de 1236 filas**, recorre de 0.762169 a 0.782417: recorrido **0.020248**,
+  desviacion tipica **0.007134**. El 0.763436 de dev2 cae dentro de esa banda.
+
+**La causa es ruido de tamano y de particion, no un defecto del conjunto.** Y aparece un
+resultado de fondo: **la metrica corregida tiene una banda de mas de 0.017 entre particiones
+equivalentes**, lo que confirma por una via independiente y sin gastar una sola sonda el ruido de
+0.01524 que V8-02 medico en el externo. Dos instrumentos, misma magnitud.
+
+**Consecuencia, y es una correccion de protocolo, no un relaxation**: el gate de la via A estaba
+escrito como "mejora anidada de al menos +0.002 en un solo calculo", y eso es **inoperante** con
+esta banda. Se escribe un **addendum fechado antes de ejecutar la via A** que exige tres cifras
+para toda candidata: delta medio sobre `K = 5` particiones, intervalo pareado al 95 por ciento, y
+**recuento de particiones que mejoran**, con adopcion solo si se cumplen las tres: delta de
++0.002, al menos 4 de 5 particiones, e intervalo que no incluye el cero. Los gates por sub-linea
+siguen vigentes sin relajar.
+
+El criterio mas informativo sigue siendo **cuantas repeticiones mejoran**, como en D-067.
+
+## D-071 — Arnes de evaluacion validado en los dos sentidos, y los cuatro gates de la via A
+
+**D-071a, el arnes (V10-03) se valida antes de usarse para juzgar.** Con el control nulo, la
+candidata identidad, da delta exactamente 0.0 en las cinco particiones e intervalo [0.0, 0.0]. Con
+el control positivo, una candidata oraculo que peina el 2 por ciento de celdas de menor margen
+usando la etiqueta verdadera, da **+0.011781, 5 de 5 particiones** e intervalo
+[+0.007530, +0.014556] que no incluye el cero. Un gate que solo sabe rechazar es tan inutil como
+uno que solo sabe aprobar.
+
+**D-071b, V10-04 calibracion fuerte: NO ACCIONABLE.** La isotonica recortada reduce el ECE medio
+un **29.94 por ciento** frente a Platt, muy por encima del 20 exigido, asi que la calibracion
+funciona. Pero **no se traslada a la metrica**: mejor delta medio anidado **+0.000148** con
+**3 de 5** particiones, y los tres intervalos pareados incluyen el cero. Es una mejora real de
+calibracion, del ECE de 0.0583 a 0.0174, que mueve la F1 treinta veces menos que la banda de
+ruido. Se cierra sin sonda. Se midio ademas, en vez de suponerlo, que la calibracion beta sale
+peor porque su rejilla **no contiene a Platt**: el desplazamiento de Platt es libre y la rejilla
+limita la asimetria a [0.7, 1.3], y se comprobo con verosimilitud en las tres etiquetas.
+
+**D-071c, V10-05 regla F1 optima: CERRADA, y la hipotesis era incorrecta.** El mecanismo se
+comporto **exactamente** como se derivo: con el shift de prevalencia la regla bajo sus umbrales
+entre 0.0029 y 0.0073, que es la adaptacion automatica que V03 no puede hacer. Pero los umbrales
+congelados de V03, 0.44, 0.51 y 0.46, son ya **mas altos** que el optimo plug-in con prior
+natural, 0.3841, 0.4093 y 0.3789. V03 ya esta por encima del optimo esperado y la regla se aleja
+de el al bajar mas. Gate A fallido con **-0.003921** en prior simulado, gate B fallido porque el
+shift empeora en vez de ayudar, y 1 de 5 particiones. La leccion: los umbrales elegidos empiricamente
+ganan a la regla optima **en esperada** bajo el modelo, porque la metrica de la competencia premia
+un punto empirico de la superficie y no el maximo de la expectativa del clasificador.
+
+**D-071d, V10-06 umbrales estables: la holgura es irreducible.** La parametrizacion mas restringida
+no mantiene la ganancia de la de tres umbrales libres: la de desplazamiento y escala es casi igual
+de mala y algo mas dispersa, y la de encogimiento es la mas estable pero con media mas baja. Gate
+1 no superado, y los umbrales congelados se quedan porque no existe version a la vez igual de
+buena y mas robusta.
+
+## D-072 — CORRECCION: la cifra de +0.0036 no es el efecto de optimizar umbrales
+
+**La fase v6 atribuyo a la reoptimizacion de umbrales un inflado de +0.0036, y esa cita era
+incorrecta.** El informe `reports/v7_umbral_anidado.md` ya lo habia demostrado y asi lo explica:
+el control de tres niveles con umbrales congelados da **-0.0081** solo por ajustar sobre cinco
+sextos de las filas, y al comparar contra un brazo que comparte conjunto de ajuste, el efecto
+aislado del umbral queda en **-0.0019**. El +0.0036 era un error de comparacion entre brazos con
+distinto conjunto de ajuste, que es el mismo error de interpretacion que la propia fase v7 senalo.
+
+**Medicion propia de V10-06**: reestimar los tres umbrales por pliegue da **+0.000131** frente a
+V03. Las tres cifras miden cosas distintas y **las tres coinciden en lo substancial: el efecto del
+umbral es pequeno**. Lo que no cabe es citar +0.0036 como si fuera el efecto del umbral, y esa
+correccion se aplica a la documentacion de V10-04 y V10-06, que la habian repetido.
+
+Ademas, las dispersiones de las tres parametrizaciones, de 0.0052 a 0.0054, son casi iguales a la
+banda de particion de 0.0053 de D-070, lo que indica que la dispersion observada es **ruido y no
+una propiedad de la parametrizacion**.
+
+## D-073 — Shift de features: la via se CIERRA porque el discriminador esta por debajo del azar
+
+Un discriminador que separa entrenamiento de prueba con las 24.646 caracteristicas de V03 da un
+**AUC global fuera de muestra de 0.487717**, con los cinco pliegues entre 0.462749 y 0.525974, y
+una exactitud de 0.512305. El AUC esta **por debajo de 0.5**: el discriminador es incapaz de
+distinguir las dos poblaciones y en promedio va algo por detras del azar.
+
+El gate pre-registrado de 0.55 se cumple con holgura y **la via de shift de caracteristicas se
+cierra**. Las caracteristicas mas desplazadas tienen coeficientes de signo inesperado, sintoma de
+colinealidad y no de desplazamiento real. La lectura de conjunto es coherente con V9-02: **el
+unico desplazamiento medido entre las dos poblaciones es el de prevalencia, de factor 0.94**, y
+D-071c ya mostro que adaptarle la capa de decision empeora. Diagnostico solo: no se entrena nada
+con la prueba.
+
+## D-074 — Integridad de holdout2 y filtro de detectabilidad: nada enviable, y una correccion de criterio
+
+La integridad se confirma: los identificadores conservan su `sha256`, se localizan las 247 filas,
+cero solape y cero grupos compartidos. **Las tres evaluaciones de holdout2 siguen sin gastar**,
+porque las tres lineas de la via A se cerraron en sus propios gates y ninguna llega a la mesa de
+finales.
+
+El filtro de detectabilidad de V8-02 aporta un dato que no es un tecnicismo: con 124 celdas
+cambiadas una candidata necesitaria acertar mas del **0.6548** de ellas para que el leaderboard la
+separara del azar, y con 134 celdas mas del **0.6433**. Ninguna llega a ese punto.
+
+**Correccion de un criterio propio**: la prueba de mejora era "delta mayor que cero", lo que daba
+por buena una candidata con **+0.000131** y contradecia el propio veredicto del guion. Se sustituye
+por los dos criterios del addendum, delta minimo y particiones que mejoran. Con la banda de
+D-070, un delta positivo por si solo no significa nada.
+
+## D-075 — Correlacion entre caracteristicas: la conclusion de la v8 era correcta pero su prueba no la sostenia
+
+**D-075a, por que V10-09 no repite la v8.** La v8 cerro la seleccion por correlacion asi: "reducir
+20.870 rasgos a 251 por magnitud y redundancia deja la metrica en 0,594, el criterio de magnitud
+no distingue un rasgo informativo de uno frecuente, y **queda descartada de raiz**". Eso tiene dos
+problemas: **colapsaba el 99 por ciento de las caracteristicas**, lo que no permite distinguir quitar
+una de cada par de quitar casi toda la senal; y el criterio era **magnitud**, no redundancia, como
+la propia conclusion reconocia. El veredicto era correcto y la prueba no lo sostenia.
+
+**D-075b, bloque A, estructura de correlacion (lo que nunca se habia medido).** Las 20.441
+caracteristicas ajustadas en un pliegue estan **poco correlacionadas**: la correlacion maxima por
+caracteristica tiene **mediana 0.1704**, percentil 90 de 0.5608, y solo unos 1.203 pares de 0.90,
+973 de 0.95 y 835 de 0.99. **La redundancia alta es rara y muy localizada, no un problema
+general.**
+
+**D-075c, bloque B, correlacion con la etiqueta.** Medida con el AUC de la caracteristica sola, que
+es medida de rango. El AUC mediano es **0.5133, 0.5198 y 0.5147** para HS, TR y AG, y solo el
+**0.29, 0.80 y 0.35 por ciento** de las caracteristicas se sale de la banda [0.45, 0.55]. Las
+mejores llegan a **0.6717, 0.7569 y 0.6844**. La conclusion es que **el modelo lo construye
+combinando miles de rasgos debiles, no apoyandose en unos pocos fuertes**, y eso explica por que
+quitar unos pocos duela mas de lo que parece.
+
+**D-075d, bloque C, eliminar una de cada par: EMPEORA, y el gate C no se supera.** Los tres
+umbrales pre-registrados empeoran con **0 de 5 particiones** a favor: **-0.030626** a 0.90 con 283
+caracteristicas eliminadas, **-0.027661** a 0.95 con 215, y **-0.027129** a 0.99 con 192. El dano
+es desproporcionado para lo que se quita: el 1.38 por ciento de las caracteristicas cuesta 0.0306
+de F1. Ese desproporcion abrio la duda que resolvio D-076.
+
+**D-075e, lo que se cierra y lo que no.** Se cierra que **elegir que descartar por nivel de
+correlacion no mejora a V03**, con tres umbrales y sin reintentar mas. **NO** se cierra que exista
+mejor regla de cual conservar, porque esa regla no estaba pre-registrada, y afirmar lo contrario
+seria hacer exactamente lo que hizo la v8.
+
+## D-076 — El control refute la hipotesis de la complementariedad: la REGLA es irrelevante
+
+V10-09 empeoraba tanto que la explicacion obvia era la **regla de conservacion**: se conservaba de
+cada par la caracteristica mas informativa **en solitario**, y para un modelo lineal lo que vale
+es lo que cada una aporta de lo que la otra no aporta. La contraprueba era conservar la mas
+**debil**, y el control decisivo era conservar **al azar**.
+
+**El control desconfirma la hipotesis.** Las cuatro reglas dan, con umbral 0.90:
+
+| regla | eliminadas | media | delta | mejoran |
+|---|---|---|---|---|
+| sin eliminar | 0 | 0.775910 | 0 | - |
+| fuerte en solitario | 317 | 0.744657 | **-0.031252** | 0/5 |
+| debil en solitario | 265 | 0.744031 | **-0.031879** | 0/5 |
+| menos redundante | 275 | 0.742025 | **-0.033885** | 0/5 |
+| **aleatoria** | 273 | **0.747023** | **-0.028887** | 0/5 |
+
+**La regla aleatoria es la mejor de las cuatro**, y la brecha entre la mejor y la peor es de
+**0.005**, menos que la banda de ruido de 0.0053 de D-070. Es decir: **la regla de conservacion es
+irrelevante**, y lo que cuesta 0.03 es **cuantas** caracteristicas se quitan, no cuales. Quitar
+unas 270 de 20.441, de cualquier forma razonable, cuesta lo mismo.
+
+**La eliminacion de caracteristicas correlacionadas queda descartada de forma solida**, y esta vez
+con el control que faltaba en la v8: cuatro reglas, tres informadas y una ciega, todas con el mismo
+resultado. Ademas significa que esas caracteristicas correlacionadas **llevan senal real y no
+sustituible**, y que en la estructura de correlacion **no hay nada que explotar**.
+
+## D-077 — P4, BiGRU con afinamiento: afinar funciona, y la tasa diferencial es lo que lo hace funcionar. H1 cerrada
+
+La fase v9 dejo H1 con una sola variante: V9-04, con los embeddings **congelados**, dio **0.6943**,
+frente a 0.6636 del control de media mas regresion lineal y 0.777211 de V03. Quedaba probar si
+**afinar** los embeddings cambia el panorama.
+
+**Afinar si funciona, y es la mejora mas grande entre dos variantes de la misma arquitectura que
+ha producido el proyecto**: la variante afinada da **0.711639**, es decir **+0.017645** sobre la
+congelada.
+
+**Pero el control es lo que da valor al resultado, y es la variante que el plan no habia pedido.**
+Se añadio una tercera variante, la misma red afinada pero con **una sola tasa de aprendizaje para
+todo** en vez de la diferencial. Da **0.699086**, o sea solo **+0.005092** sobre la congelada. De los
++0.017645 del afinamiento, **+0.012553 los aporta la tasa de aprendizaje diferencial y no el
+hecho de mover el embebido**. Sin ese control, la conclusion would've sido que afinar aporta
++0.0176, cuando la version ingenua aporta +0.0051. **El mecanismo esta identificado.**
+
+**Las mejores epocas confirman el mecanismo**: la variante de tasa unica para siempre entre 7 y 8,
+muy por debajo del tope de 14, porque una tasa alta destruye la representacion preentrenada antes
+de que la red pueda aprovecharla. Congelado y afinado llegan a 8-13 y aprovechan el entrenamiento
+completo.
+
+**Control interno del protocolo**: el congelado reproduce V9-04 en **0.693994** frente a su 0.6943,
+con tope de epocas y semillas ligeramente distintos. El protocolo es reproducible.
+
+**Decision de sobreentrenamiento: early stopping estricto, y la fijo el pre-registrado** de
+`tasks/plan_v10.md` antes de ejecutar nada, con paciencia 3 sobre la perdida de validacion y tope
+de 14 epocas. Se anota un limite honesto: **la mejor epoca se elige por la perdida de validacion,
+que es la misma senal que se usa para las curvas de aprendizaje**. Para estimar un techo eso no es
+fuga, y la metrica de la competencia se evalua una sola vez al final y no se usa para ajustar; pero
+si alguien quisiera usar este mismo protocolo para elegir una variante, si lo seria.
+
+**H1 QUEDA CERRADA con dos variantes, congelada y afinada.** La mejor queda a **-0.065572** de V03,
+que era el criterio de cierre pre-registrado para P4, sin gate de envio. **Sin submission y sin
+sonda.**
+
+**La via de representacion secuencial queda cerrada** y no se abre con mas capas, mas unidades o
+mas epocas, porque el criterio de cierre estaba escrito antes de ejecutar y ya se cumplio.
+
+La lectura de fondo: V03 es una union **explicita** de TF-IDF word(1,2) y char_wb(3,5) con una
+regresion lineal, es decir captura la redundancia de forma directa, mientras que una red tiene que
+**descubrirla** por su cuenta. Con mil y pico filas y 24.646 rasgos explicitos, la regresion
+lineal aprovecha mejor los datos. No es que las redes no sirvan: es que **este** problema, con
+**estos** datos, no las necesita.

@@ -509,3 +509,54 @@ chequeo previo (D-008).
 - **Estado de la ordenacion**: P1, P3, P2 y P4 cerradas. Quedan **P5, P6 y P7**, las tres
   solo de capa de decision, con la prioridad baja del filtro de detectabilidad y **sin
   razon para esperar que alguna pase** a la luz del patron.
+
+### Tras la fase v10 completa (V10-00 a V10-10)
+
+- **V03 SIGUE SIENDO LA SUBMISSION RECOMENDADA**, con 0.7772114525165721 local y 0.78306 en el
+  externo, umbrales 0.44, 0.51 y 0.46, y `corrected_cv`. No se ha tocado ninguno de sus
+  artefactos y su referencia se verifica exacta en la entrada de cada sub-via.
+- **0 submissions escritas, 0 enviadas, 0 recomendadas** en toda la fase. v17 y v18 no las
+  respalda ningun gate, y v19 no se genero porque ninguna candidata llego a la mesa de finales.
+- **El hallazgo que reencuadra todo el proyecto**: la metrica corregida tiene una **banda de
+  ruido de mas de 0.017 entre particiones equivalentes**, con desviacion tipica de 0.0053, medida
+  en V10-02 por una via independiente del ruido de 0.01524 que V8-02 medico en el externo. **El
+  proyecto opera por debajo de su propio suelo de medicion.** El objetivo de superar 0.80 esta a
+  1.1 veces el ruido del leaderboard, y la mayor ganancia anidada de toda la fase es de +0.000148.
+- **El protocolo cambio por esa medicion, no por los resultados**: el addendum de `tasks/plan_v10.md`
+  se escribio **antes** de ejecutar la via A y exige tres cifras para toda candidata, con el
+  **recuento de particiones que mejoran** como criterio decisivo. Los gates por sub-linea no se
+  relajaron, solo se dijo con que instrumento se miden.
+- **Las tres sub-vias de la via A cerradas**: calibracion **no accionable** (mejora el ECE un
+  29.94 por ciento y mueve la F1 en +0.000148), regla F1 optima **cerrada** (-0.003921 con prior
+  simulado, porque los umbrales de V03 ya estan por encima del optimo plug-in natural), umbrales
+  estables **cerrados** (la holgura es irreducible con estos datos).
+- **La via de shift de features se CERRO porque el discriminador esta por debajo del azar**, con AUC
+  de 0.487717. No hay shift de covariables; el unico desplazamiento medido es el de prevalencia de
+  factor 0.94, y V10-05 mostro que adaptarle la capa de decision empeora.
+- **holdout2 creado, congelado y con su gate NO superado**: la referencia de dev2 quedo en
+  0.763436, desviacion -0.013776, explicada despues como ruido de tamano y de particion. Se creo
+  **antes** de la via A para que el juez existiera, y las tres evaluaciones disponibles siguen
+  **sin gastar**. No es virginal, y eso quedo escrito antes de ver resultados.
+- **Correlacion: la conclusion de la v8 era correcta y su prueba no la sostenia.** Colapsaba el
+  99 por ciento de las caracteristicas y usaba un criterio de magnitud, no de redundancia. Ahora
+  esta medido y con el control que faltaba: las caracteristicas estan **poco correlacionadas**
+  (mediana 0.1704 de correlacion maxima), **casi todas aportan poco por si solas** (AUC mediano
+  0.51 a 0.52, y el modelo combina miles de rasgos debiles), y **eliminar una de cada par empeora
+  en los tres umbrales con 0 de 5 particiones**. La regla de conservacion es **irrelevante**: la
+  aleatoria es la mejor de las cuatro y la brecha es menor que la banda de ruido.
+- **Correccion de documentacion, D-072**: la cifra de **+0.0036 no es el efecto de optimizar
+  umbrales**. Era un error de comparacion entre brazos con distinto conjunto de ajuste, ya
+  demostrado por la fase v7. El efecto aislado es -0.0019 y la medicion propia de V10-06 da
+  +0.000131. Las tres coinciden en que el efecto del umbral es pequeno.
+- **Lo que queda abierto y es deliberado**: que V03 sea el maximo de 18 sondas puede ser que sea
+  genuinamente el mejor o el maximo de ruido de una serie de comparaciones, y con este tamano de
+  conjunto no se puede distinguir. La fase v10 no ha anadido el dato que lo resolveria.
+- **P4 ejecutado y H1 cerrada** (D-077): el afinamiento de embeddings **funciona** y es la mayor
+  mejora entre dos variantes de la misma arquitectura del proyecto, de **+0.017645** sobre la
+  congelada. Pero el control con tasa de aprendizaje unica, que el plan no habia pedido, da solo
+  **+0.005092**, asi que **+0.012553 de los +0.017645 los aporta la tasa diferencial** y no el
+  hecho de mover el embebido. Sigue a **-0.065572** de V03, de modo que **la via de representacion
+  secuencial queda cerrada** y no se abre con mas capas, mas unidades o mas epocas.
+- **Notebook re-ejecutado con la seccion 20**: 67 celdas, 34 de codigo, **0 errores**, 4.1 s.
+  Registro en `reports/notebook_ejecucion_v10.json`.
+- **La fase v10 esta completa**: no queda ninguna tarea abierta del plan.

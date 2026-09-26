@@ -1204,3 +1204,106 @@ Aplicadas en este arbol las correcciones B-01..B-14 de la auditoria (rama `proye
 - B-12: columna `definicion_diferencia` en `submissions/leaderboard_log.csv`.
 - B-14: notebook corregido y re-ejecutado. Cambios: recuentos actualizados (15 sondas, 207 filas), 3 sondas de v8 anadidas a las tablas, filtro explicito de la familia union, nueva seccion 19 (fase v9 y cierre post-auditoria) con verificacion ejecutable, y artefactos requeridos restaurados en `features/` y `models/` (faltaban en el worktree v8). Ejecucion completa: 65 celdas (33 de codigo), 0 errores, 4.6 s; registro en `reports/notebook_ejecucion_v9.json`.
 
+
+## Fase v10: calibracion, distribucion y gobierno (2026-09-26)
+
+Worktree `/home/carlos/Git/PLN-v10`, rama `proyecto-kaggle-toxic-2026-v10` desde `23aac93`.
+Once experimentos, V10-00 a V10-10. El registro pasa de 207 a **218 filas con 218 claves unicas**.
+Sin commit, por indicacion expresa del usuario.
+
+**Pre-registro escrito antes de ejecutar nada**, en `tasks/plan_v10.md`, con los gates de las cinco
+sub-vias, la regla de adopcion de cinco condiciones y la regla de envio de una sola sonda. Y un
+**addendum de protocolo** escrito despues de P0b y V10-02 pero **antes de la via A**.
+
+- **V10-00 verificacion**: `corrected_cv` reconstruido 0.7772114525165721 con coincidencia exacta,
+  `sha256` de la submission v03 identico, 207 filas, 15 sondas. Todo correcto.
+- **V10-01 holdout2** (D-069): 247 filas en 235 grupos, dev2 con 1236 en 1180, cero grupos
+  compartidos, particion reproducible, cero solape con el holdout v2. **Gate NO superado**:
+  la referencia de dev2 quedo en 0.763436, desviacion **-0.013776** frente a la tolerancia de 0.005.
+  Se creo **antes** de la via A para que el juez existiera cuando se buscaran candidatas, y se
+  escribio antes de ver resultados que **no es virginal**: sus filas salen del desarrollo actual,
+  que ya participo en las decisiones de v1 a v9. Su valor es detectar sobreajuste al gate, no
+  probar generalizacion.
+- **V10-02 ruido de particion** (D-070): la causa de la desviacion de V10-01 queda identificada.
+  Control de equivalencia con diferencia **exactamente 0.0**, asi que no era un fallo de codigo.
+  Banda de ruido por particion sobre el desarrollo completo: recorrido **0.017184**, desviacion
+  tipica **0.005302**. Banda de subconjuntos de 1236 filas: recorrido **0.020248**, desviacion
+  tipica **0.007134**, dentro de la cual cae el 0.763436. **Es ruido de tamano y de particion.**
+  Y aparece el hallazgo de gobierno: la metrica corregida tiene una banda de mas de 0.017 entre
+  particiones equivalentes, lo que confirma por una via independiente el ruido de 0.01524 de V8-02.
+- **Addendum de protocolo**: el gate de +0.002 en un solo calculo es **inoperante** con esa banda, y
+  es el mismo mecanismo por el que D-067 concluyo que la mejora local era el promediado. Toda
+  candidata pasa a medirse con delta medio sobre 5 particiones, intervalo pareado y **recuento de
+  particiones que mejoran**, exigiendose las tres a la vez. Los gates por sub-linea no se relajaron.
+- **V10-03 arnes** (D-071a): validado en los dos sentidos antes de usarse para juzgar. El control
+  nulo da delta exactamente 0.0 y 0 de 5 particiones; el control positivo, una candidata oraculo,
+  da **+0.011781 y 5 de 5** con intervalo que no incluye el cero. Reproduce las cifras de V10-02.
+- **V10-04 calibracion fuerte** (D-071b): **NO ACCIONABLE**. La isotonica recortada reduce el ECE
+  medio un **29.94 por ciento** frente a Platt, muy por encima del 20 exigido, asi que la
+  calibracion funciona. Pero **no se traslada a la metrica**: mejor delta medio **+0.000148** con
+  **3 de 5** particiones y los tres intervalos pareados incluyendo el cero. Se midio, en vez de
+  suponerlo, que la calibracion beta sale peor porque su rejilla **no contiene a Platt**.
+- **V10-05 regla F1 optima** (D-071c): **CERRADA**, y la hipotesis era incorrecta. El mecanismo si
+  funciono como se derivo, con el shift bajando los umbrales entre 0.0029 y 0.0073, pero los
+  umbrales de V03, 0.44, 0.51 y 0.46, son ya **mas altos** que el optimo plug-in natural, 0.3841,
+  0.4093 y 0.3789, de modo que la regla se aleja de V03. Delta **-0.003921** con prior simulado,
+  1 de 5 particiones, y el gate B fallido porque el shift empeora en vez de ayudar.
+- **V10-06 umbrales estables** (D-071d): **CERRADA**. Ninguna parametrizacion mas restringida mantiene
+  la ganancia de tres umbrales libres con menor dispersion. La holgura de la capa de decision es
+  **irreducible con estos datos**.
+- **V10-07 shift de features** (D-073): **VIA CERRADA**. El discriminador da un AUC global fuera de
+  muestra de **0.487717**, por debajo de 0.5, con los cinco pliegues entre 0.462749 y 0.525974 y
+  exactitud 0.512305. No hay shift de covariables. Diagnostico unicamente, sin entrenar con la
+  prueba. 40 caracteristicas mas desplazadas en `reports/v10_07_shift_features.csv`.
+- **V10-08 integridad y filtro** (D-074): artefactos de holdout2 con `sha256` intactos, 247 filas
+  localizadas, cero solape, particion limpia. **0 de 3 evaluaciones de holdout2 gastadas.** Con el
+  filtro de V8-02, una candidata de 124 celdas necesitaria acertar mas del **0.6548** de ellas para
+  que el externo la separara del azar, y una de 134 celdas mas del **0.6433**.
+- **V10-09 correlacion** (D-075): tres bloques. **Estructura**: las 20441 caracteristicas estan
+  **poco correlacionadas**, con correlacion maxima por caracteristica de mediana **0.1704** y solo
+  1203 pares por encima de 0.90. **Etiqueta**: AUC mediano de 0.5133, 0.5198 y 0.5147, con solo
+  entre el 0.29 y el 0.80 por ciento de caracteristicas fuera de [0.45, 0.55], y mejores de 0.6717,
+  0.7569 y 0.6844; el modelo combina **miles de rasgos debiles**. **Eliminacion**: los tres
+  umbrales empeoran con **0 de 5** particiones, -0.030626, -0.027661 y -0.027129, y el dano es
+  desproporcionado: el 1.38 por ciento de las caracteristicas cuesta 0.0306 de F1.
+- **V10-10 regla de conservacion** (D-076): **CERRADA con el control que faltaba en la v8**. La
+  sospecha era que la regla de V10-09, quedarse con la mas informativa en solitario, descartaba la
+  pieza que desambiguaba. **El control la refuta**: fuerte -0.031252, debil -0.031879, menos
+  redundante -0.033885 y **aleatoria -0.028887**, la mejor de las cuatro, con una brecha de 0.005,
+  menor que la banda de ruido. **La regla es irrelevante: lo que cuesta 0.03 es cuantas
+  caracteristicas se quitan, no cuales.**
+
+**Correccion registrada, D-072**: la cifra de **+0.0036 no es el efecto de optimizar umbrales**. La
+fase v6 la atribuyo ahi, y la repetian V10-04 y V10-06. El informe de la v7 ya lo habia
+demostrado: el control de tres niveles con umbrales congelados da **-0.0081** solo por el coste del
+protocolo, y el efecto aislado del umbral es **-0.0019**. La medicion propia de V10-06 da
+**+0.000131**. Las tres cifras miden cosas distintas y las tres coinciden en que el efecto del
+umbral es pequeno; lo que no cabe es citar +0.0036 como si lo fuera.
+
+**Balance**: 0 submissions escritas, 0 enviadas, 0 recomendadas. **V03 se mantiene** con 0.777211
+local y 0.78306 en el externo. Ninguna candidata cumple mas de dos de las cinco condiciones de
+adopcion, y las dos que fallan son las determinantes. El objetivo de superar 0.80 sigue a 1.1
+veces el ruido del leaderboard, y la mayor ganancia anidada de toda la fase es de +0.000148.
+
+- **V10-11 P4, BiGRU con afinamiento** (D-077): **H1 CERRADA con dos variantes**. El congelado da
+  0.693994, que reproduce el 0.6943 de V9-04 como control interno. El afinado da **0.711639**, con
+  **+0.017645**, que es la mejora mas grande entre dos variantes de la misma arquitectura que ha
+  producido el proyecto. Pero el resultado que importa es el **control**, una tercera variante con
+  una sola tasa de aprendizaje: da 0.699086, solo **+0.005092**. De los +0.017645, **+0.012553 los
+  aporta la tasa de aprendizaje diferencial** y no el hecho de mover el embebido. Las mejores
+  epocas confirman el mecanismo: la tasa unica para siempre entre 7 y 8, muy por debajo del tope de
+  14, porque destruye la representacion preentrenada. Sigue a **-0.065572** de V03. Decision de
+  sobreentrenamiento: **early stopping estricto, fijada por el pre-registro antes de ejecutar**, con
+  la salvedad anotada de que la mejor epoca se elige por la perdida de validacion. Sin sonda.
+
+**Notebook**: seccion 20 anadida con la sintesis de la fase y una celda de verificacion con
+aserciones sobre las 219 filas, V10-00 a V10-11, la huella de V03, la de holdout2, la banda de
+particion, los dos controles del arnes, el AUC del shift, la brecha entre reglas de conservacion y
+las tres variantes del BiGRU. **Re-ejecutado completo: 67 celdas, 34 de codigo, 0 errores, 4.1 s.**
+Habia tres recuentos de 207 que hubo que actualizar a 219 en las celdas 38 y 64, porque si no el
+propio helper `verificar` del notebook falla y el entregable no seria ejecutable. Y la primera
+version de la celda pedia un JSON del arnes que no existe, porque V10-03 es una libreria y sus
+controles viven en la fila del registro; se corrigio antes de ejecutar. Registro en
+`reports/notebook_ejecucion_v10.json`.
+
+**Sin push, sin merge, sin rebase, sin commit.**
