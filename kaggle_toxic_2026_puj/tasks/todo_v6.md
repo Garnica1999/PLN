@@ -51,9 +51,16 @@
 - [x] Techo = mitad del gate: **la escala no era el cuello de botella**
 - [x] **Cerrado por la seccion 54. No se afina alrededor de 1.5.**
 
-## H, F, J (pendiente, tras B y A)
+## H - Bagging por grupos (cerrado por protocolo)
 
-- [ ] H: bagging por grupos
+- [x] `v6_06_bagging_grupos.py`: H0 control y H1 promedio de 5 con remuestreo de grupos
+- [x] H0 control reproduce V03 exacto
+- [x] **Diversidad medida: correlacion 0.9573**, o sea hay cinco modelos distintos
+- [x] -0.0105 con IC95 que excluye el 0 y 0/5 pliegues
+- [x] La hipotesis de techo se **refuto a si misma**; el cierre es de protocolo
+- [x] Reabrible solo con una particion de calibracion separada del OOF
+
+## F y J (pendiente)
 - [ ] F: score de sospecha por par instancia-etiqueta
 - [ ] J: aumento label-preserving, al final
 

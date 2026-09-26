@@ -1741,3 +1741,42 @@ evidencia, experimento, resultado, conclusion final.
 - **Decision 5, C queda cerrada por completo**: C2, C3 y C4 estaban cerradas por
   duplicacion (V4-D y E2-10) y C1 se cierra aqui por resultado negativo. **La sub-linea C
   queda sin nada abierto** tras haber sido la propuesta central de la especificacion de v6.
+
+## D-049 - Track H cerrado: el bagging no se refuta, el protocolo de evaluacion no lo deja medir
+
+- **Contexto**: el gap analysis (V6-00) confirmo que no existe ningun bagging en el proyecto.
+  Los ensembles previos (ENS-01 a ENS-04) mezclaban representaciones distintas, que es otra
+  pregunta; aqui se promedian **V03-equivalentes** sobre remuestreos de grupos. El track A
+  (D-046) habia avisado de un techo: con 92.9 % de las filas en grupos de tamano 1,
+  **remuestrar por grupos y por filas son practicamente lo mismo**.
+- **Decision 1, el techo se mide en vez de suponerlo**: por eso el script no solo informa un
+  delta, sino que **mide la diversidad de los cinco modelos que promedia**: correlacion media
+  entre pares, correlacion minima y diferencia media absoluta de probabilidad. Sin esa
+  medicion un delta negativo seria un misterio; con ella, es una consecuencia medida.
+- **Decision 2, dos bugs corregidos durante la ejecucion, ambos reales**: (a) el
+  remuestreo usaba `np.isin`, que incluye las filas de un grupo **una sola vez** aunque el
+  grupo saliera dos veces, de modo que lo que se llamaba bootstrap era en realidad una
+  submuestra sin reemplazo; ahora la multiplicidad se respeta con `np.repeat` sobre los
+  bloques de cada grupo. (b) La agrupacion de los modelos por modulo del indice emparejaba
+  modelos de **pliegues distintos**, que se validan sobre filas distintas, y producia un
+  error de forma; ahora se indexan por el indice real del pliegue.
+- **Decision 3, resultado**: H0 (control, un modelo con el tren completo) reproduce V03
+  **exacto: 0.777211, delta +0.0000, IC95 [0, 0]**. Quinto control de la fase con la misma
+  funcion. H1 (promedio de 5) da **-0.0105** con IC95 [-0.0183, -0.0030] que **excluye el 0**,
+  **0/5 pliegues mejoran**, 1 fila rescatada frente a 11 rotas.
+- **Decision 4, el resultado NO es por falta de diversidad, y esto es lo importante**: la
+  correlacion media entre pares es **0.9573** (minima 0.9379) y la diferencia media absoluta
+  es 0.0606. Hay **diversidad real**: los cinco modelos no son el mismo. La hipotesis que el
+  track se probo a si mismo (que el techo de la estructura de grupos haria que el bagging no
+  tuviera nada que promediar) queda **refutada por la medicion**, y a pesar de eso el
+  promedio empeora. Esa distincion importa: el track no fallo por la razon que anticipaba.
+- **Decision 5, el cierre es de protocolo, no de mecanismo**: la explicacion coherente con
+  los numeros es un **efecto de escala**: promediar cinco modelos contrae las probabilidades
+  hacia el centro, y los umbrales congelados de V03 estan calibrados para **un** modelo
+  individual. Para evaluar el bagging con justicia habria que reoptimizar los umbrales para
+  el promedio, pero eso **rompe la comparabilidad con V03** y reproduce el sesgo ya
+  documentado en D-045 (reoptimizar sobre el mismo OOF que se evalua dio a B0 un 0.7808
+  frente a 0.7772 sin cambiar el modelo). **No hay forma limpia de medir esta linea con el
+  protocolo actual.** Se cierra con esa precision y se deja constancia de que podria
+  reabrirse si se dispusiera de una particion de calibracion separada del OOF de
+  evaluacion.

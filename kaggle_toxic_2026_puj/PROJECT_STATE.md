@@ -66,6 +66,8 @@ archivada de la autorizacion; se registra solo lo comunicado por el usuario.
 | D-047 | El peso heredado de hstack no era optimo, pero la escala no era el cuello de botella |
 | V6 Track C1 | **Cerrado negativo y neutro**: -0.0001 con IC95 que incluye el 0; **C queda cerrada entera** |
 | D-048 | El control de C1 detecto un bug de tokenizacion que hacia los deltas inatribuibles |
+| V6 Track H | **Cerrado por protocolo**: -0.0105 con diversidad real (corr. 0.957); los umbrales de V03 no son validos para un promedio |
+| D-049 | La hipotesis de techo del track se refuto a si misma midiendo; el cierre es de protocolo, no de mecanismo |
 | variable abierta | El tamano de los datos etiquetados (1.483), unica palanca que deja la evidencia |
 | GATE DE CIERRE | §29: A (+0.005 con estabilidad) / B (complementariedad robusta) / C (senal representacional fuerte) |
 

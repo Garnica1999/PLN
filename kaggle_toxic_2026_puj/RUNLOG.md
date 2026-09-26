@@ -866,3 +866,18 @@ Registro cronologico de ejecuciones. Formato:
   Con C cerrada (C2, C3, C4 por duplicacion y C1 aqui), **la sub-linea C queda sin nada
   abierto**, siendo la propuesta central de la spec de v6.
   **Track C1 cerrado (seccion 54). D-048.** 0 submissions.
+- 22:35 | v6 Track H: bagging por grupos, cerrado por protocolo | `v6_06_bagging_grupos.py`
+  **H0 control reproduce V03 exactamente** (0.777211, delta +0.0000, IC95 [0,0]).
+  H1 promedio de 5 **-0.0105** (IC95 [-0.0183,-0.0030] que EXCLUYE el 0, **0/5 pliegues**).
+  **La clave: no es por falta de diversidad.** Correlacion media entre pares **0.9573**
+  (minima 0.9379), diferencia media absoluta 0.0606: hay cinco modelos genuinamente
+  distintos. La hipotesis que el track se probo a si mismo (que el 92.9 % de filas en grupos
+  unicos dejaria el bagging sin nada que promediar) queda **refutada por la medicion**, y a
+  pesar de eso empeora.
+  Explicacion coherente: **efecto de escala**. Promediar contrae las probabilidades y los
+  umbrales congelados de V03 estan calibrados para un modelo individual. Reoptimizarlos
+  romperia la comparabilidad y reproduciria el sesgo de D-045. **No hay forma limpia de
+  medir esta linea con el protocolo actual**, asi que se cierra por protocolo y no por
+  mecanismo, dejando constancia de que podria reabrirse con una particion de calibracion
+  separada.
+  **D-049.** 0 submissions.
