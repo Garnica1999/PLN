@@ -786,3 +786,20 @@ Registro cronologico de ejecuciones. Formato:
   devuelve la media de las tres etiquetas de cada fila, de modo que la unidad de analisis son
   las 1.483 filas y no las 4.449 celdas. Los conteos de v5 no cambian; la etiqueta estaba mal.
   0 submissions, 0 sondas de LB.
+- 19:45 | v5.1 P8-P11: notebook, documentacion, validacion y auditoria final | `embedding_19`, `embedding_21`, `embedding_20`, `embedding_22`
+  **P8 (EBD-25)**: seccion 18 generada por script en el notebook consolidado (44 -> 63
+  celdas), con `TRAIN_FROM_SCRATCH=False` y el mecanismo de entrenamiento a la vista.
+  **P9 (EBD-27)**: seccion 28 del informe final con las diez entradas de la seccion 38 de la
+  spec, generada leyendo los artefactos (173 experimentos, 22 scripts del embedding, 138
+  evaluaciones downstream, 42 decisiones).
+  **P10 (EBD-26)**: validacion del notebook por **ejecucion completa** con nbconvert. Primer
+  intento NO-GO: una celda previa fijaba el numero de filas de experiments.csv en 143, que
+  esta fase deja obsoleto; segunda falla por un `NameError` mio en la celda de contabilidad;
+  ambas correcciones aplicadas en el generador (que ahora es idempotente con
+  `--reemplazar`). Resultado final: **GO**, 32/32 celdas, 0 errores, seccion 18 ejecutada y
+  aserciones de presupuesto cumplidas, V03 verificado en 0.777211. El notebook se guarda
+  ejecutado con sus salidas.
+  **P11 (EBD-28, AUDIT)**: auditoria final, **11/11 comprobaciones OK, veredicto GO**. 19/19
+  modelos con hash verificado, 0 recursos prohibidos, 0 fugas, holdout intacto, presupuesto
+  9/9 + 0/1, V03 intacto, 0 submissions nuevas, rama correcta y sin push. **D-043**, que cierra
+  la fase. 0 submissions, 0 sondas de LB.

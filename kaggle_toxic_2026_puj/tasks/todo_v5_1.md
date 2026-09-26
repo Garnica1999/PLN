@@ -69,10 +69,10 @@
 - [x] **D-042**: la ventaja de WS-3 esta en romper menos, no en arreglar mas
 
 ## P8-P10 - cierre (pendiente)
-- [ ] seccion v5/v5.1 en `notebooks/10_final_pipeline.ipynb` con `TRAIN_FROM_SCRATCH=False`
-- [ ] validacion del notebook completo por ejecucion
-- [ ] `FINAL_REPORT.md`, `PROJECT_STATE.md`, `DECISIONS.md`
-- [ ] auditoria final y veredicto GO / NO-GO
+- [x] seccion 18 del notebook generada con `TRAIN_FROM_SCRATCH=False` (63 celdas)
+- [x] validacion del notebook completo por ejecucion
+- [x] `FINAL_REPORT.md` (seccion 28), `PROJECT_STATE.md` y `DECISIONS.md` (D-035..D-042)
+- [x] auditoria final (P11) y veredicto registrado
 
 ## Fuera de alcance
 

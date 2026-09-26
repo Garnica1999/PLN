@@ -1,0 +1,17 @@
+{
+  "experimento": "EBD-26 (P10)",
+  "fecha": "2026-09-26T00:42:56+00:00",
+  "notebook": "notebooks/10_final_pipeline.ipynb",
+  "celdas_totales": 63,
+  "duracion_s": 4.6,
+  "returncode": 0,
+  "n_errores": 0,
+  "errores": [],
+  "hallazgos": {
+    "seccion_18_ejecutada": true,
+    "aserciones_ok": true,
+    "v03_verificado": true,
+    "presupuesto_impreso": true
+  },
+  "veredicto": "GO"
+}

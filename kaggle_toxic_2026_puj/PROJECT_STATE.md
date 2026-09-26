@@ -52,6 +52,8 @@ archivada de la autorizacion; se registra solo lo comunicado por el usuario.
 | D-041 | Conclusion v5.1: la arquitectura mejora la representacion pero no aporta a V03. No se escala el corpus |
 | P7 complementariedad | WS-3 arregla 8 filas y rompe 2 (el baseline 8 y 5): la ventaja esta en el damage, no en el salvage |
 | D-042 | El embedding aporta la misma informacion con mas ruido; correccion de vocabulario: la unidad son filas, no celdas |
+| P8-P11 cierre | Notebook 63 celdas validado GO | FINAL_REPORT seccion 28 | auditoria final 11/11 GO |
+| D-043 | **Cierre v5.1**: V03 se mantiene, embedding CANDIDATE no adoptado, auditoria GO, rama sin push |
 | variable abierta | El tamano de los datos etiquetados (1.483), unica palanca que deja la evidencia |
 | GATE DE CIERRE | §29: A (+0.005 con estabilidad) / B (complementariedad robusta) / C (senal representacional fuerte) |
 

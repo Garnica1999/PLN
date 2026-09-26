@@ -1,0 +1,91 @@
+{
+  "experimento": "EBD-28 (P11, AUDIT)",
+  "tipo": "AUDIT / REPRODUCTION UNIT (no cuenta como experimento nuevo)",
+  "fecha": "2026-09-26T00:45:12+00:00",
+  "duracion_s": 4.0,
+  "reglas_seccion_36": {
+    "transformers": 0,
+    "bert_roberta_llm": 0,
+    "embeddings_preentrenados": 0,
+    "from_pretrained": 0,
+    "etiquetas_externas": 0,
+    "textos_de_test_en_corpus": 0,
+    "uso_del_holdout": 0
+  },
+  "recursos_detalle": [],
+  "modelos": {
+    "n_modelos_en_la_tabla": 19,
+    "n_verificados": 19,
+    "firmas_unicas": true,
+    "discrepancias": [],
+    "cumple": true
+  },
+  "presupuesto": {
+    "contadores": {
+      "existing_v5_trainings": 10,
+      "new_v5_1_trainings": 9,
+      "reserved_training_units": 0,
+      "total_new_budget_used": 9,
+      "budget_remaining": 1,
+      "limite_exploratorio": 9,
+      "limite_reserva": 1
+    },
+    "aserciones": {
+      "nuevas_configuraciones_no_reexisten": true,
+      "presupuesto_exploratorio_no_superado": true,
+      "presupuesto_total_no_superado": true
+    },
+    "propuestas_pendientes": [],
+    "cumple": true
+  },
+  "v03": {
+    "corrected_cv": 0.777211,
+    "corrected_cv_esperado": 0.777211,
+    "coincide": true,
+    "submission_v03_lineas": 1155,
+    "submission_v03_esperadas": 1155,
+    "submission_intacta": true,
+    "sondas_de_leaderboard": 12,
+    "sondas_esperadas": 12,
+    "submissions_nuevas_en_la_fase": 0
+  },
+  "notebook": {
+    "n_celdas": 63,
+    "tiene_seccion_18": true,
+    "celdas_con_salida": 32,
+    "veredicto_validacion": "GO",
+    "n_errores_validacion": 0,
+    "cumple": true
+  },
+  "artefactos": {
+    "exigidos": 10,
+    "faltan": [],
+    "figuras_esperadas": 9,
+    "figuras_faltantes": [],
+    "cumple": true
+  },
+  "git": {
+    "rama": "proyecto-kaggle-toxic-2026-v5",
+    "rama_correcta": true,
+    "arbol_limpio": false,
+    "commits_locales": 89,
+    "rama_en_remoto": false,
+    "pusheada": false,
+    "nota": "La rama v5 no se ha pusheado: queda local por decision del usuario."
+  },
+  "comprobaciones": {
+    "recursos_prohibidos": true,
+    "uso_toxic_declarado": true,
+    "holdout_intacto": true,
+    "sin_fuga_de_test": true,
+    "modelos_verificados": true,
+    "presupuesto_respetado": true,
+    "v03_intacto": true,
+    "sin_submissions_nuevas": true,
+    "notebook_validado": true,
+    "artefactos_completos": true,
+    "rama_correcta": true
+  },
+  "comprobaciones_fallidas": [],
+  "veredicto": "GO"
+}

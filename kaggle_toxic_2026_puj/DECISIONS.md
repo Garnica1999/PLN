@@ -1513,3 +1513,43 @@ evidencia, experimento, resultado, conclusion final.
 - **Conclusion de este P7**: el embedding aporta **la misma informacion que V03, con mas
   ruido**, y la unica palanca para reducir ese ruido (una ventana de contexto menor) reduces
   el damage sin mover el salvage. Nada de eso cambia la conclusion de adopcion de D-041.
+
+## D-043 - Cierre de la fase v5.1: auditoria GO, V03 se mantiene y el limite es el tamano de los datos etiquetados
+
+- **Contexto**: P11 es la auditoria final de la fase. Por la regla de contabilidad de la
+  seccion 2 de la spec es una ``AUDIT / REPRODUCTION UNIT`` y **no** cuenta como experimento
+  nuevo: por eso no añade fila a `experiments.csv` y su resultado vive en
+  `reports/embedding_auditoria_v5_1.json` y en esta decision.
+- **Resultado de la auditoria (11/11 comprobaciones OK, veredicto GO)**:
+
+  | comprobacion | resultado |
+  |---|---|
+  | recursos prohibidos (transformers, BERT, RoBERTa, LLM, preentrenados) | 0 usos |
+  | textos de test en los corpus | 0 coincidencias (8-gramas, 9,7 millones) |
+  | uso del holdout | 0 (agotado 5/5, intacto) |
+  | modelos con hash verificado | 19 de 19, firmas unicas |
+  | presupuesto | 9 de 9 exploratorios, 0 de 1 de reserva |
+  | V03 | 0.777211, submission de 1.155 lineas intacta |
+  | submissions nuevas en la fase | 0 |
+  | notebook validado por ejecucion | GO, 32/32 celdas, 0 errores |
+  | artefactos y figuras | completos |
+  | rama | `proyecto-kaggle-toxic-2026-v5`, **sin push** |
+
+- **Decision de cierre**: la fase v5.1 se **cierra**. El embedding sigue siendo un
+  `CANDIDATE` no adoptado y **V03 se mantiene** como modelo final (`corrected_cv` 0.777211,
+  LB 0.78306). No se genera ninguna submission nueva ni ninguna sonda de leaderboard.
+- **Conclusion de la fase, en sus dos mitades, que es lo que la fase pretendia separar**:
+  1. **Representacion**: la arquitectura si cambia la calidad del embedding (rango 0,0297)
+     y su forma revela que la señal util es local y ortografica (gana reduciendo la ventana,
+     con el intervalo de subpalabras en el punto medio 3-6). Resultado positivo.
+  2. **Tarea**: ninguna de las 14 configuraciones aporta a V03 por encima del ruido (mejor
+     delta +0,0057 con IC95 que incluye el 0). Resultado negativo.
+  Ninguno de los dos anula al otro, y confundirlos fue el error que la fase v5 cometio una
+  vez y que v5.1 deja corregido.
+- **El limite que la evidencia deja en pie**: el **tamano de los datos etiquetados**
+  (1.483). Ni la representacion ni su arquitectura son el techo. Es la unica variable que
+  queda abierta y **no** es de esta linea.
+- **Integridad del proceso**: 13 commits locales, ninguna rama pusheada, ninguna fusion
+  automatica, ningun PR. El trabajo sin commitear de KAGGLE_AGE_2026_PUJ sigue aparcado en
+  `git stash` (no es un commit) y sus datos no se tocaron; se restaura al terminar esta
+  linea de trabajo, como quedo acordado.
