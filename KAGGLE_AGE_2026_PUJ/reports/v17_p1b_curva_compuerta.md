@@ -42,5 +42,5 @@ El umbral de **0.05** es el mejor de esta tabla y por eso **esta sesgado hacia a
 **La curva no llega ni al gate exploratorio en ninguna frontera.** El techo de P1 era real pero la confianza de V12 no alcanza para cobrarlo. Eso apuntaria a que el problema no es de enrutamiento sino de informacion, y P3 deberia empezar por medir si algun otro indicador separa mejor.
 
 
-Figura: `figuras/v17_p1b_curva_compuerta.png`.
+Figura: `reports/figures/v17_p1b_curva_compuerta.png`.
 

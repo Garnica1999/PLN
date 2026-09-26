@@ -51,5 +51,5 @@ La tabla completa esta en `reports/v17_member_boundary_matrix.csv`, con una fila
 
 Todas las accuracies de este informe estan **restringidas al par**: se evalua solo sobre filas cuya etiqueta real cae en las dos clases de la frontera. **No** son macro-F1 de seis clases y **no** se comparan con el 0,6005 de referencia. Convertir una correccion de +10.000 filas dentro de 57.000 en ganancia de macro-F1 global exige contar ademas el efecto sobre las otras cuatro clases, y eso es trabajo de P11, no una promesa de este script.
 
-Figuras: `figuras/v17_p1_rendimiento_por_miembro.png` y `figuras/v17_p1_interseccion_de_errores.png`.
+Figuras: `reports/figures/v17_p1_rendimiento_por_miembro.png` y `reports/figures/v17_p1_interseccion_de_errores.png`.
 

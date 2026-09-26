@@ -88,4 +88,4 @@ Alguno de los dos valores no llega al area util, asi que la tercera frontera **n
 
 **La regla no llega ni al gate exploratorio con el optimo sesgado.** Con esta formulacion, P9 no esta indicado: la separabilidad de P8 no se traduce en macro-F1 global. Antes de pagar el protocolo anidado habria que buscar una señal mas, no afinar la que hay.
 
-Figura: `figuras/v17_p1c_reglas.png`.
+Figura: `reports/figures/v17_p1c_reglas.png`.

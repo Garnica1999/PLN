@@ -27,5 +27,5 @@ En cada frontera, las filas que el especialista de pares **rescata** (V12 falla 
 
 **4 señales superan el area de 0.62**: quedan vias abiertas para P9 (experto selectivo) y P3 (compuerta blanda). El nombre de la mejor es `Margen_especialista` en la frontera `18-24|25-34`, con area 0.7294.
 
-Figuras: `figuras/v17_p8_area_por_senal.png` y `figuras/v17_p8_distribuciones.png`.
+Figuras: `reports/figures/v17_p8_area_por_senal.png` y `reports/figures/v17_p8_distribuciones.png`.
 
