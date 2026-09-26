@@ -2051,3 +2051,65 @@ evidencia, experimento, resultado, conclusion final.
   **por evidencia medida y no por inercia**: se ha medido cuanta dispersion tienen, se ha
   medido que recalibrarlos no mejora, y se ha medido que el protocolo que permite medirlo
   cuesta -0.0081 en exactitud por reducir el conjunto de ajuste.
+
+## D-056 - Cierre de la fase v7: sin adopciones, con dos mecanismos nuevos refutados y una medicion que v6 dejo pendiente
+
+- **Contexto**: el objetivo declarado es superar 0.80 tanto en leaderboard como en metrica
+  local. La fase ejecuto tres tracks (P9, P8 y P0.1) mas dos scripts de analisis, con un
+  presupuesto autorizado de 25 mas 10 experimentos.
+- **Decision 1, la auditoria de brecha cerro ocho de los once tracks candidatos con su
+  cifra**, y eso es el resultado que mas presupuesto ahorro: P0.2 y P0.5 (0.774954), P0.4
+  (+0.001831), P2.1 (10 filas de interseccion), P2.3 (0.761203), P3 (0.741036), P4
+  (-0.023836), P5 (-0.250519), P6 y P7 (-0.002292). **El orden que se ejecuto no fue el de
+  la especificacion sino el que la auditoria impuso**, y fue correcto porque los cuatro
+  primeros tracks de aquel orden ya estaban medidos.
+- **Decision 2, dos mecanismos genuinamente nuevos se refutan con su causa medida**:
+  - **P9, perdida orientada a la F1**: -0.0022 frente a un control BCE que da 0.777165
+    contra los 0.777211 de V03, o sea un hueco de 0.000046 que hace atribuible el negativo a
+    la perdida. La **F1 suave, que es el sustituto literal del objetivo, fue la peor de las
+    tres**. Con 1.186 filas, optimizar el objetivo directamente acopla el descenso a la
+    composicion de esa muestra. Conclusion que sobrevive: **aproximar mejor el objetivo no es
+    mejor**.
+  - **P8, prior de etiqueta del grupo**: -0.0011 frente a un control exacto. El techo medido
+    antes de entrenar ya lo acotaba: solo el 7.08 % de las filas tiene evidencia de grupo, de
+    los pares grupo-etiqueta 80 son uniformes frente a 31 contradictorios, y el acierto de V03
+    es **identico** con y sin evidencia. Conclusion que sobrevive: **ser senal y ser senal
+    nueva son dos cosas distintas**, y la repeticion es senal que V03 ya captura.
+- **Decision 3, P0.1 resuelve la medicion que v6 dejo pendiente y cierra la capa de
+  decision**. El producto es el informe de dispersion de los quince umbrales: desviaciones
+  de 0.0402 (HS), 0.0652 (TR) y 0.0586 (AG), con rangos de 0.10 a 0.15 sobre una rejilla de
+  0.20 a 0.80. **Los umbrales estan debilmente identificados.** Los congelados de V03 caen
+  dentro del rango por pliegue, asi que no son sobreajuste, pero las medianas calibradas son
+  sistematicamente mas bajas y el anidado estricto termina **peor** (-0.0019 frente a su
+  control). Eso explica los dos hechos medidos antes: por que E2-16 dio -0.0006 y por que
+  reajustar umbrales sobre el mismo conjunto infla +0.0036. **No hay informacion en los datos
+  que identifique el umbral.** V03 mantiene los suyos **por evidencia medida y no por
+  inercia**, que es la diferencia entre un congelado justificado y uno que nadie revisó.
+- **Decision 4, hay que separar si el codigo esta bien de cuanto cuesta el protocolo, y son
+  dos efectos distintos**. Por eso P0.1 tiene tres brazos: P0-0 valida el codigo y da
+  0.777211 exacto; P0-1-control tiene -0.0081, que **no es un error** sino el coste de
+  ajustar sobre cinco sextos de las filas; y P0-1-anidado comparte conjunto de ajuste con el
+  control, de modo que el coste se cancela y su -0.0019 mide el efecto del umbral. El propio
+  gate de la seccion 32 detecto que la tolerancia estaba mal planteada, y esa es exactamente
+  la clase de error que la fase v6 cometio al tratar la reoptimizacion de umbrales como una
+  mejora: **por eso un gate debe ir acompanado de una reflexion sobre que mide**.
+- **Decision 5, la correccion de expectativas sobre 0.80 queda con tres medidas, no con
+  opiniones**: (a) los tres mejores modelos locales de la historia del proyecto
+  (R1-C1, R2-MINDF5 y OPT-01, con entre +0.015 y +0.025) perdieron entre 0.007 y 0.013 de
+  leaderboard, de modo que una mejora local de +0.02 **no es evidencia de mejora externa**;
+  (b) los tres aumentaban capacidad, de donde sale el freno de transferencia adoptado en
+  D-053; (c) el unico movimiento positivo del leaderboard vino de la capa de decision, y esta
+  fase acaba de medir cuanto cabe ahi, que es poco y con alta dispersion.
+- **Decision 6, el cumplimiento se comprueba por recuento, no por declaracion**. Los nueve
+  recuentos dan cero infracciones. Dos fallos de la propia auditoria se corrigieron en el
+  proceso: (a) se contaba a si misma, porque contiene los nombres de las prohibiciones que
+  busca, el mismo problema de auto-referencia que resolvio la auditoria de brecha con el
+  filtro por prefijo; (b) el patron del holdout marcaba como infraccion el uso legitimo de
+  `holdout_v2`, que devuelve el desarrollo en el primer valor y el holdout en el segundo, y la
+  fase solo usa el primero. El patron se redujo a la infraccion real y **se verifico con tres
+  casos de prueba, uno de ellos el uso legitimo**, porque un patron de auditoria que no se
+  prueba no es una garantia.
+- **Decision 7, que queda abierto**: **P1** en su formulacion de solo prediccion, que promedia
+  los cinco modelos al predecir el test y **no se puede medir en local**, y la verificacion de
+  transferencia de un finalista en el leaderboard, que es el unico lugar donde queda por
+  medir si una mejora local se transfiere. Todo lo demas esta cerrado con cifra.

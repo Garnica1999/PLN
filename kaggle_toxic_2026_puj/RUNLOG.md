@@ -1000,3 +1000,17 @@ Registro cronologico de ejecuciones. Formato:
   tolerancia estaba mal planteada, porque el error era del protocolo y no del codigo.
   **P0 cerrado. D-055. V03 mantiene sus umbrales por evidencia medida y no por inercia.**
   0 submissions.
+- v7 cierre: entregables y auditoria de cumplimiento | `v7_04_entregables.py`
+  **10 filas en la tabla maestra, 9 variantes medidas, 4 controles de calidad, 0 superan el
+  gate.** Los tres mas cercanos al gate: P8-1-desviacion (-0.0011, a 0.0041), P8-2
+  (-0.0017) y P0-1-anidado (-0.0019).
+  **Auditoria de cumplimiento programatica: 9 prohibiciones, 0 infracciones.** Dos fallos de
+  la propia auditoria corregidos: se contaba a si misma (contiene los nombres que busca) y el
+  patron del holdout marcaba como infraccion el uso legitimo de `holdout_v2`. El patron se
+  redujo a la infraccion real y se verifico con tres casos de prueba, uno de ellos el uso
+  legitimo.
+  Puerta de caracteres: **0 errores**. Rama con commits locales, **sin push**.
+  **D-056. FASE v7 CERRADA sin adopciones.** V03 sigue congelada en 0.777211 con sus tres
+  umbrales, por evidencia medida y no por inercia. Queda abierto solo P1 en su formulacion
+  de solo prediccion, que no se puede medir en local, y la verificacion de transferencia de
+  un finalista.

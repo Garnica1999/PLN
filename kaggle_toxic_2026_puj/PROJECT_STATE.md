@@ -407,3 +407,7 @@ n-gramas de caracter (evasion ortografica), lexico de agresividad,
 catboost 1.2.10, nltk 3.9.4, spacy 3.8.13 + es_core_news_md, torch 2.14+rocm7.2,
 kaggle 2.2.4, emoji 2.16.0, tabulate. GPU RX 9070 XT (ROCm) con protocolo de
 chequeo previo (D-008).
+
+| v7 (Advanced Research) | **Cerrada sin adopciones**: P9, P8 y P0.1 negativos con causa medida; 8 tracks cerrados por duplicacion en la auditoria |
+| V7 auditoria | 11 tracks candidatos auditados: **8 cerrados con cifra**, 2 nuevos ejecutados, 1 aplazado por no medible en local |
+| D-056 | **V03 mantiene sus umbrales por evidencia medida**: desviacion de 0.04 a 0.065, recalibrarlos empeora |
