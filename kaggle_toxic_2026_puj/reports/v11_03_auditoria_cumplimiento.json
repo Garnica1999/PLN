@@ -1,0 +1,283 @@
+{
+  "experimento": "V11-03 (auditoria de cumplimiento y condiciones de parada)",
+  "fecha": "2026-09-26T21:46:46+00:00",
+  "ficheros_examinados": [
+    "experiments/v11_00_reconciliacion.py",
+    "experiments/v11_01_reproduccion_v9_02.py",
+    "experiments/v11_02_auditoria_legalidad.py",
+    "experiments/v11_03_auditoria_cumplimiento.py",
+    "experiments/v11_ayudas.py",
+    "reports/v11_00_reconciliacion.json",
+    "reports/v11_00_reconciliacion.md",
+    "reports/v11_01_reproduccion_v9_02.json",
+    "reports/v11_01_reproduccion_v9_02.md",
+    "reports/v11_02_auditoria_legalidad.json",
+    "reports/v11_02_auditoria_legalidad.md",
+    "reports/v11_compliance.md"
+  ],
+  "puntos_seccion_18_estructurales": 12,
+  "puntos_seccion_18_declarados": 4,
+  "condiciones_parada_revisadas": 13,
+  "verificaciones": [
+    {
+      "categoria": "seccion 18",
+      "comprobacion": "seccion 18, transformers (import de 'transformers')",
+      "cumple": true,
+      "evidencia": "ningun import"
+    },
+    {
+      "categoria": "seccion 18",
+      "comprobacion": "seccion 18, transformers (import de 'sentence_transformers')",
+      "cumple": true,
+      "evidencia": "ningun import"
+    },
+    {
+      "categoria": "seccion 18",
+      "comprobacion": "seccion 18, transformers (import de 'roberta')",
+      "cumple": true,
+      "evidencia": "ningun import"
+    },
+    {
+      "categoria": "seccion 18",
+      "comprobacion": "seccion 18, transformers (import de 'bert')",
+      "cumple": true,
+      "evidencia": "ningun import"
+    },
+    {
+      "categoria": "seccion 18",
+      "comprobacion": "seccion 18, external_classifier (import de 'xgboost')",
+      "cumple": true,
+      "evidencia": "ningun import"
+    },
+    {
+      "categoria": "seccion 18",
+      "comprobacion": "seccion 18, external_classifier (import de 'lightgbm')",
+      "cumple": true,
+      "evidencia": "ningun import"
+    },
+    {
+      "categoria": "seccion 18",
+      "comprobacion": "seccion 18, external_classifier (import de 'catboost')",
+      "cumple": true,
+      "evidencia": "ningun import"
+    },
+    {
+      "categoria": "seccion 18",
+      "comprobacion": "seccion 18, third_party_pretrained_embeddings (import de 'gensim')",
+      "cumple": true,
+      "evidencia": "ningun import"
+    },
+    {
+      "categoria": "seccion 18",
+      "comprobacion": "seccion 18, third_party_pretrained_embeddings (import de 'torchtext')",
+      "cumple": true,
+      "evidencia": "ningun import"
+    },
+    {
+      "categoria": "seccion 18",
+      "comprobacion": "test_training (firma de uso)",
+      "cumple": true,
+      "evidencia": "ninguna firma de ajuste con datos de prueba o holdout"
+    },
+    {
+      "categoria": "seccion 18",
+      "comprobacion": "test_threshold_tuning (firma de uso)",
+      "cumple": true,
+      "evidencia": "ninguna firma de ajuste con datos de prueba o holdout"
+    },
+    {
+      "categoria": "seccion 18",
+      "comprobacion": "holdout_reuse (firma de uso)",
+      "cumple": true,
+      "evidencia": "ninguna firma de ajuste con datos de prueba o holdout"
+    },
+    {
+      "categoria": "seccion 18",
+      "comprobacion": "external_labels, external_labeled_dataset, new_unauthorized_corpus",
+      "cumple": true,
+      "evidencia": "no se ha introducido ningun recurso externo; el unico corpus de embeddings es el propio, entrenado desde cero, y sus reglas no aportan etiquetas"
+    },
+    {
+      "categoria": "seccion 18",
+      "comprobacion": "third_party_pretrained_embeddings",
+      "cumple": true,
+      "evidencia": "los 19 .bin de FastText son artefactos propios ya entrenados por el proyecto, reutilizables segun la seccion 6, y no hay descarga de terceros"
+    },
+    {
+      "categoria": "seccion 18",
+      "comprobacion": "test_calibration, test_feature_selection, test_decision_rule_optimization",
+      "cumple": true,
+      "evidencia": "ningun calibrador, selector ni regla de decision se ajusta con datos de prueba; el uso que hubo en V11-01 quedo en cuarentena"
+    },
+    {
+      "categoria": "seccion 18",
+      "comprobacion": "leaderboard_tuning",
+      "cumple": true,
+      "evidencia": "el leaderboard no se ha consultado en la v11, y el registro de sondas no ha crecido"
+    },
+    {
+      "categoria": "seccion 17",
+      "comprobacion": "ASCII puro en todo el contenido generado de la v11",
+      "cumple": true,
+      "evidencia": "sin caracteres no permitidos"
+    },
+    {
+      "categoria": "seccion 17",
+      "comprobacion": "ASCII puro en el contenido heredado de v10 (no se corrige, se documenta)",
+      "cumple": false,
+      "evidencia": "3 ficheros heredados con acentos: experiments/v10_02_ruido_particion.py, experiments/v10_08_confirmacion_dev2.py, experiments/v10_10_regla_conservacion.py"
+    },
+    {
+      "categoria": "seccion 19",
+      "comprobacion": "unexpected baseline change",
+      "cumple": true,
+      "evidencia": "V03 reproduce 0.7772114525165721 con coincidencia exacta"
+    },
+    {
+      "categoria": "seccion 19",
+      "comprobacion": "unexpected baseline change, huella de la submission",
+      "cumple": true,
+      "evidencia": "sha256 7d7478f271e6edfd... frente a 7d7478f271e6edfd..."
+    },
+    {
+      "categoria": "seccion 19",
+      "comprobacion": "holdout contamination",
+      "cumple": true,
+      "evidencia": "los identificadores de holdout2 conservan su huella, ninguna evaluacion gastada"
+    },
+    {
+      "categoria": "seccion 19",
+      "comprobacion": "missing experiment provenance",
+      "cumple": true,
+      "evidencia": "3 filas V11, todas con script y decision: True"
+    },
+    {
+      "categoria": "seccion 16",
+      "comprobacion": "secret exposure",
+      "cumple": true,
+      "evidencia": "sin credenciales en el contenido generado"
+    },
+    {
+      "categoria": "seccion 13",
+      "comprobacion": "coherencia entre el registro y el codigo",
+      "cumple": true,
+      "evidencia": "todas las filas V11 apuntan a codigo existente"
+    },
+    {
+      "categoria": "seccion 19",
+      "comprobacion": "unexpected baseline change",
+      "cumple": true,
+      "evidencia": "no detectado en esta auditoria"
+    },
+    {
+      "categoria": "seccion 19",
+      "comprobacion": "control no reproducible",
+      "cumple": true,
+      "evidencia": "no detectado en esta auditoria"
+    },
+    {
+      "categoria": "seccion 19",
+      "comprobacion": "validation leakage",
+      "cumple": true,
+      "evidencia": "no detectado en esta auditoria"
+    },
+    {
+      "categoria": "seccion 19",
+      "comprobacion": "test contamination",
+      "cumple": true,
+      "evidencia": "no se ha contaminado el test: el uso de sus predicciones en V11-01 quedo clasificado como ambiguo y por tanto en cuarentena, sin uso en ningun candidato"
+    },
+    {
+      "categoria": "seccion 19",
+      "comprobacion": "holdout contamination",
+      "cumple": true,
+      "evidencia": "no detectado en esta auditoria"
+    },
+    {
+      "categoria": "seccion 19",
+      "comprobacion": "non-convergence",
+      "cumple": true,
+      "evidencia": "no detectado en esta auditoria"
+    },
+    {
+      "categoria": "seccion 19",
+      "comprobacion": "missing artifact",
+      "cumple": true,
+      "evidencia": "no detectado en esta auditoria"
+    },
+    {
+      "categoria": "seccion 19",
+      "comprobacion": "missing experiment provenance",
+      "cumple": true,
+      "evidencia": "no detectado en esta auditoria"
+    },
+    {
+      "categoria": "seccion 19",
+      "comprobacion": "numeric discrepancy",
+      "cumple": true,
+      "evidencia": "no detectado en esta auditoria"
+    },
+    {
+      "categoria": "seccion 19",
+      "comprobacion": "notebook output mismatch",
+      "cumple": true,
+      "evidencia": "no detectado en esta auditoria"
+    },
+    {
+      "categoria": "seccion 19",
+      "comprobacion": "unexpected external resource",
+      "cumple": true,
+      "evidencia": "no detectado en esta auditoria"
+    },
+    {
+      "categoria": "seccion 19",
+      "comprobacion": "secret exposure",
+      "cumple": true,
+      "evidencia": "no detectado en esta auditoria"
+    },
+    {
+      "categoria": "seccion 19",
+      "comprobacion": "invalid generated characters",
+      "cumple": true,
+      "evidencia": "ya corregido: los 4 caracteres acentuados de la v11 se transliteraron"
+    }
+  ],
+  "conformes": 36,
+  "total": 37,
+  "violaciones_ascii_v11": [],
+  "violaciones_ascii_heredadas_de_v10": [
+    {
+      "fichero": "experiments/v10_02_ruido_particion.py",
+      "caracteres": [
+        {
+          "codigo": "U+00F3",
+          "nombre_unicode": "LATIN SMALL LETTER O WITH ACUTE",
+          "veces": 1
+        }
+      ]
+    },
+    {
+      "fichero": "experiments/v10_08_confirmacion_dev2.py",
+      "caracteres": [
+        {
+          "codigo": "U+00BF",
+          "nombre_unicode": "INVERTED QUESTION MARK",
+          "veces": 1
+        }
+      ]
+    },
+    {
+      "fichero": "experiments/v10_10_regla_conservacion.py",
+      "caracteres": [
+        {
+          "codigo": "U+00F3",
+          "nombre_unicode": "LATIN SMALL LETTER O WITH ACUTE",
+          "veces": 1
+        }
+      ]
+    }
+  ],
+  "decision_sobre_v10_heredado": "Los acentos del contenido heredado de v10 NO se corrigen en v11. Modificar un script ya ejecutado rompe la correspondencia entre codigo y resultado historico, que prohibe la seccion 14, y ademas v10 debe quedar intacto. Se corrige solo si la fase que lo produjo se reabre, y mientras tanto se documenta como desviacion conocida.",
+  "todas_conformes": false,
+  "fase_puede_continuar": false
+}

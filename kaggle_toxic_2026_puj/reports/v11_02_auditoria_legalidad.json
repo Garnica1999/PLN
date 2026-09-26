@@ -1,0 +1,129 @@
+{
+  "experimento": "V11-02 (P1.1, auditoria de legalidad del uso de la prueba)",
+  "fecha": "2026-09-26T21:36:56+00:00",
+  "fuente_normativa": {
+    "ruta": "docs/competition_rules.md",
+    "caracteres": 3595,
+    "captura": "2026-09-22, texto pegado por el organizador del curso"
+  },
+  "citas_verificadas": {
+    "prohibir_entrenamiento": true,
+    "librerias_permitidas": true,
+    "restriccion_profesor": true,
+    "notebook": true
+  },
+  "todas_las_citas_localizadas": true,
+  "criterio": {
+    "A": "una linea de las reglas lo autoriza de forma expresa",
+    "B": "ninguna linea lo prohibe de forma expresa, pero tampoco lo autoriza, y hay dos lecturas razonables",
+    "C": "una linea de las reglas lo prohibe de forma expresa"
+  },
+  "pasos": [
+    {
+      "paso": "Entrenar el clasificador sobre texto y etiquetas de entrenamiento",
+      "clasificacion": "A",
+      "motivo": "Es la tarea de la competencia. Ninguna regla lo restringe mas alla de lo academico.",
+      "regla_relacionada": "ninguna restriccion; es el objeto de la competencia"
+    },
+    {
+      "paso": "Predecir probabilidades sobre el texto de la prueba con el modelo congelado",
+      "clasificacion": "A",
+      "motivo": "Es literalmente lo que se pide: generar un submission para el test.",
+      "regla_relacionada": "formato de submission definido por la competencia"
+    },
+    {
+      "paso": "Usar las ETIQUETAS de la prueba en cualquier forma",
+      "clasificacion": "C",
+      "motivo": "Las etiquetas estan ocultas en Kaggle y no estan en el dataset entregado. Ademas seria contaminacion en cualquier sentido, y el propio enunciado de la v11 lo prohibe.",
+      "regla_relacionada": "las columnas HS, TR y AG estan ocultas en Kaggle"
+    },
+    {
+      "paso": "Usar el texto de la prueba para construir caracteristicas, entrenar el vectorizador o ajustar el modelo",
+      "clasificacion": "C",
+      "motivo": "Las reglas dicen que no se debe usar el dataset de prueba para entrenamiento, y un vectorizador ajustado sobre el texto de la prueba es entrenamiento.",
+      "regla_relacionada": "El dataset de prueba no debe ser usado para entrenamiento."
+    },
+    {
+      "paso": "Estimar la prevalencia de la prueba con EM sobre probabilidades NO etiquetadas",
+      "clasificacion": "B",
+      "motivo": "AQUI ESTA LA AMBIGUEDAD. El modelo esta congelado y no se entrena con nada: el EM es una correccion de decision posterior, no un ajuste de parametros, y no usa ninguna etiqueta. A favor de A: la regla prohibe entrenamiento, y aqui no hay entrenamiento, y la correccion de prior es tecnica estandar. A favor de C: la intencion de la regla es que el test no participe del desarrollo del sistema, y usar sus predicciones para recalibrar la decision es participar. **Ninguna de las dos lecturas es descabellada**, y las reglas no mencionan la transduccion ni para permitirla ni para prohibirla, de modo que el silencio es el dato relevante.",
+      "regla_relacionada": "El dataset de prueba no debe ser usado para entrenamiento."
+    },
+    {
+      "paso": "Generar un submission usando la prevalencia estimada con EM sobre la prueba real",
+      "clasificacion": "C",
+      "motivo": "Es el paso que depende del anterior. Si el paso previo es ambiguo, el plan obliga a NO usarlo para generar submission. Aqui se apoya en la instruccion expresa de la v11, no en una lectura propia de las reglas.",
+      "regla_relacionada": "plan v11, seccion 6: si es ambiguo, no usarlo para generar submission"
+    },
+    {
+      "paso": "Simular un desplazamiento de prevalencia sobre el OOF y estudiar alli la metodologia completa: estimador, correccion de prior, calibracion y regla de decision",
+      "clasificacion": "A",
+      "motivo": "No toca la prueba en absoluto. Todo ocurre sobre el OOF del desarrollo, con etiquetas propias. Es el unico camino que el plan autoriza cuando el uso real es ambiguo.",
+      "regla_relacionada": "plan v11, seccion 6: puede estudiarse mediante simulated shift sobre OOF"
+    },
+    {
+      "paso": "Ajustar la regla de decision sobre el OOF con validacion anidada",
+      "clasificacion": "A",
+      "motivo": "Usa solo datos etiquetados de desarrollo, y en regimen anidado que no evalua sobre lo que ajusta. Es metodologia interna, no uso de la prueba.",
+      "regla_relacionada": "ninguna restriccion; es metodologia interna"
+    },
+    {
+      "paso": "Evaluar un candidato final en holdout2, que sale del desarrollo",
+      "clasificacion": "A",
+      "motivo": "Son filas de entrenamiento con etiqueta, nunca vistas como validacion. Es un conjunto de evaluacion interno.",
+      "regla_relacionada": "ninguna restriccion; es metodologia interna"
+    },
+    {
+      "paso": "Usar transformers, RoBERTa o BERT",
+      "clasificacion": "C",
+      "motivo": "Prohibido de forma expresa por el profesor, y vigente en toda la v11.",
+      "regla_relacionada": "No se pueden usar transformers ni modelos LLM para la clasificacion del texto; no se pueden usar modelos como RoBERTa o BERT. Se pueden usar modelos de vectorizacion, pero deben entrenarse desde cero y hacer todo desde cero."
+    },
+    {
+      "paso": "Usar recursos externos etiquetados, pseudoetiquetado o embeddings de terceros",
+      "clasificacion": "C",
+      "motivo": "Prohibido por la restriccion del profesor, que exige hacer todo desde cero. Los 19 .bin de FastText son reutilizables solo porque son propios y no preentrenados de otro.",
+      "regla_relacionada": "No se pueden usar transformers ni modelos LLM para la clasificacion del texto; no se pueden usar modelos como RoBERTa o BERT. Se pueden usar modelos de vectorizacion, pero deben entrenarse desde cero y hacer todo desde cero."
+    }
+  ],
+  "conteo": {
+    "A": 5,
+    "B": 1,
+    "C": 5
+  },
+  "permitidos": [
+    "Entrenar el clasificador sobre texto y etiquetas de entrenamiento",
+    "Predecir probabilidades sobre el texto de la prueba con el modelo congelado",
+    "Simular un desplazamiento de prevalencia sobre el OOF y estudiar alli la metodologia completa: estimador, correccion de prior, calibracion y regla de decision",
+    "Ajustar la regla de decision sobre el OOF con validacion anidada",
+    "Evaluar un candidato final en holdout2, que sale del desarrollo"
+  ],
+  "ambiguos": [
+    "Estimar la prevalencia de la prueba con EM sobre probabilidades NO etiquetadas"
+  ],
+  "prohibidos": [
+    "Usar las ETIQUETAS de la prueba en cualquier forma",
+    "Usar el texto de la prueba para construir caracteristicas, entrenar el vectorizador o ajustar el modelo",
+    "Generar un submission usando la prevalencia estimada con EM sobre la prueba real",
+    "Usar transformers, RoBERTa o BERT",
+    "Usar recursos externos etiquetados, pseudoetiquetado o embeddings de terceros"
+  ],
+  "uso_de_la_previa_para_submission": false,
+  "conclusion": "El uso de la prueba para estimar la prevalencia con EM es AMBIGUO, de modo que **no se usa para generar ningun submission**. La metodologia se estudia unicamente mediante shift simulado sobre el OOF, y las tres lineas centrales de la v11, que son la correccion de prior, la calibracion y la regla de decision, se evaluan bajo prevalencias simuladas. La pregunta de la transferencia al externo queda sin poder responderse con honestidad dentro de las reglas, y eso hay que decirlo en el informe final en vez de disimularlo.",
+  "alcance_de_la_fase": {
+    "se_puede": [
+      "simular desplazamiento de prevalencia sobre el OOF del desarrollo",
+      "estimar y comparar estimadores de prevalencia con shift artificial conocido",
+      "calibrar con validacion anidada sobre el desarrollo",
+      "ajustar reglas de decision con validacion anidada sobre el desarrollo",
+      "evaluar candidatos finales en holdout2, que son filas de entrenamiento",
+      "medir todo lo anterior con las tres cifras del addendum de v10"
+    ],
+    "no_se_puede": [
+      "usar la prevalencia estimada sobre la prueba real para generar un submission",
+      "usar el texto de la prueba para construir caracteristicas o entrenar el vectorizador",
+      "usar cualquier etiqueta de la prueba, que ademas no estan disponibles",
+      "afirmar que una metodo mejora en el leaderboard sin haberlo medido ahi"
+    ]
+  }
+}

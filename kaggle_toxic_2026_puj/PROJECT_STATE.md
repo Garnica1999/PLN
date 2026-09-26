@@ -560,3 +560,47 @@ chequeo previo (D-008).
 - **Notebook re-ejecutado con la seccion 20**: 67 celdas, 34 de codigo, **0 errores**, 4.1 s.
   Registro en `reports/notebook_ejecucion_v10.json`.
 - **La fase v10 esta completa**: no queda ninguna tarea abierta del plan.
+
+### Tras la fase v11 completa (V11-00 a V11-08)
+
+- **V03 SIGUE SIENDO LA SUBMISSION RECOMENDADA**, con 0.7772114525165721 local y 0.78306 en el
+  externo. **Ninguna submission generada, ninguna enviada, ninguna recomendada** en la v11.
+  **holdout2 intacto, con 0 de 3 evaluaciones gastadas.**
+- **La respuesta a la pregunta central de la v11 es NO**: el desplazamiento de prevalencia **no es
+  una fuente real de mejora** bajo las restricciones actuales. Se ha podido demostrar con un
+  factor **conocido por construccion**, que es el caso en el que el mecanismo se puede comprobar.
+- **El mecanismo esta cerrado y la causa esta medida.** La correccion de prior da -0.001032 en HS
+  con 1 de 5 particiones, +0.000000 en TR con 0 de 5, y +0.000154 en AG con 1 de 5; macro medio
+  **-0.000293** y los tres intervalos incluyen el cero. La direccion del efecto es sistematica:
+  empeora cuando la prevalencia baja y ayuda cuando sube, y el shift medido es hacia abajo. La
+  causa de fondo la midio V10-05: los umbrales de V03 estan ya **por encima** de los optimos de
+  F1, luego la capa de decision ya es conservadora y la correccion corrige dos veces.
+- **Con el cierre caen P5 y P7**, no por decision de gesto sino por consecuencia logica: ambas
+  presuponen que el shift es explotable. **P10 no tiene objeto** por la auditoria de legalidad.
+  Las tres lineas que no dependen del shift, **P4, P6 y P8**, ya estaban medidas y cerraron
+  negativas en v10. **No queda ninguna linea abierta con expectativa razonable.**
+- **El uso de la prueba para estimar prevalencia queda PROHIBIDO.** La auditoria de legalidad
+  clasifico once pasos contra el texto verbatim de las reglas: 5 permitidos, 1 ambiguo, 5
+  prohibidos. El ambiguo era precisamente ese uso, porque la regla prohibe entrenamiento y aqui no
+  hay entrenamiento, pero la intencion de la regla es que el test no participe del desarrollo, y
+  las reglas **no mencionan la transduccion ni para permitirla ni para prohibirla**. Con la decision
+  de NIVEL 2 pasa a prohibido y **v17 transductiva queda en cuarentena**.
+- **La consecuencia de alcance esta escrita sin adornos**: la pregunta de si el mecanismo
+  transfiere a esta prueba concreta **no tiene respuesta verificable dentro de las reglas**. Se
+  respondio la version metodologica, que es si el mecanismo recupera un desplazamiento conocido.
+  La v11 no termina en una submission, y no por falta de calculo sino por las reglas.
+- **Lo que si se aprende en la v11**: los estimadores de prevalencia funcionan, y el error
+  exactamente cero de clasificar-y-contar se explica como un **teorema** bajo shift puro, no como
+  una propiedad favorable. El punto ciego se declara: el resultado vale dentro del supuesto de
+  shift puro y nada mas.
+- **Se arrastro una ambiguedad de un artefacto historico**: el campo `factor_vs_train` de V9-02
+  usa como denominador la prevalencia del **desarrollo** y no la del train completo. V9-02 es
+  internamente consistente y su reproduccion es exacta, con nivel R3.
+- **Dos correcciones al instrumento de auditoria**: la politica de caracteres de la seccion 17 es
+  **mas estricta** que `verificar_caracteres.py`, que busca alfabetos no latinos mientras que la
+  seccion 17 pide ASCII puro; y un escaner de cumplimiento por palabras es **inservible**, porque
+  marca sus propias citas de prohibicion, por lo que se sustituyo por analisis estructural de
+  imports.
+- **Pendiente**: no queda nada abierto de la v11. La v10 tiene tres ficheros con acentos que no
+  se corrigen, por decision, porque modificarlos rompe la correspondencia entre codigo y resultado
+  historico.

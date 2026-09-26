@@ -1,0 +1,390 @@
+{
+  "experimento": "V11-00 (P0, reconciliacion de referencias)",
+  "fecha": "2026-09-26T21:31:30+00:00",
+  "worktree": "/home/carlos/Git/PLN-v11/kaggle_toxic_2026_puj",
+  "rama": "proyecto-kaggle-toxic-2026-v11",
+  "commit_base": "23aac939fdab41e22ea1dd1639ee10ab21a420ef",
+  "referencia_v03": {
+    "valor_reconstruido": 0.7772114525165721,
+    "valor_publicado": 0.7772114525165721,
+    "diferencia": 0.0,
+    "coincide_exacto": true,
+    "f1_por_etiqueta": {
+      "HS": 0.761689,
+      "TR": 0.81573,
+      "AG": 0.754215
+    },
+    "umbrales": {
+      "HS": 0.44,
+      "TR": 0.51,
+      "AG": 0.46
+    },
+    "submission_sha256": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "submission_identica": true
+  },
+  "registro": {
+    "filas": 219,
+    "claves_unicas": 219,
+    "campos": 23,
+    "filas_v10": [
+      "V10-00",
+      "V10-01",
+      "V10-02",
+      "V10-03",
+      "V10-04",
+      "V10-05",
+      "V10-06",
+      "V10-07",
+      "V10-08",
+      "V10-09",
+      "V10-10",
+      "V10-11"
+    ]
+  },
+  "holdout2": {
+    "ids_sin_cambios": true,
+    "grupos_compartidos": 0,
+    "filas": 247,
+    "evaluaciones_disponibles": 3,
+    "advertencia_presente": true
+  },
+  "contrastes_informe_registro": [
+    {
+      "experiment_id": "V10-04",
+      "informe": "v10_04_calibracion_fuerte.json",
+      "clave_informe": "gate_1_superado",
+      "clave_registro": "gate_1_superado",
+      "valor_informe": true,
+      "valor_registro": true,
+      "coincide": true
+    },
+    {
+      "experiment_id": "V10-05",
+      "informe": "v10_05_regla_f1_optima.json",
+      "clave_informe": "gate_a_superado",
+      "clave_registro": "gate_a",
+      "valor_informe": false,
+      "valor_registro": false,
+      "coincide": true
+    },
+    {
+      "experiment_id": "V10-06",
+      "informe": "v10_06_umbrales_estables.json",
+      "clave_informe": "gate_1_superado",
+      "clave_registro": "gate_1_superado",
+      "valor_informe": false,
+      "valor_registro": false,
+      "coincide": true
+    },
+    {
+      "experiment_id": "V10-07",
+      "informe": "v10_07_shift_features.json",
+      "clave_informe": "veredicto",
+      "clave_registro": "veredicto",
+      "valor_informe": "CERRADA",
+      "valor_registro": "CERRADA",
+      "coincide": true
+    },
+    {
+      "experiment_id": "V10-10",
+      "informe": "v10_10_regla_conservacion.json",
+      "clave_informe": "gate_b_de_mejora.superado",
+      "clave_registro": "gate_b_superado",
+      "valor_informe": false,
+      "valor_registro": false,
+      "coincide": true
+    },
+    {
+      "experiment_id": "V10-11",
+      "informe": "v10_11_bigru_finetuning.json",
+      "clave_informe": "gana_a_v03",
+      "clave_registro": "gana_a_v03",
+      "valor_informe": false,
+      "valor_registro": false,
+      "coincide": true
+    }
+  ],
+  "v9_02": {
+    "factores_esperados_a_3_decimales": {
+      "HS": 0.936,
+      "TR": 0.955,
+      "AG": 0.938
+    },
+    "factores_leidos_del_informe": {
+      "HS": 0.9365,
+      "TR": 0.9546,
+      "AG": 0.9381
+    },
+    "factores_redondeados_a_3_decimales": {
+      "HS": 0.936,
+      "TR": 0.955,
+      "AG": 0.938
+    },
+    "diferencias_contra_el_prompt": {
+      "HS": 0.0,
+      "TR": 0.0,
+      "AG": 0.0
+    },
+    "prevalencias_test_leidas": {
+      "HS": 0.409192,
+      "TR": 0.286452,
+      "AG": 0.358669
+    },
+    "prevalencias_test_esperadas_a_4_decimales": {
+      "HS": 0.4092,
+      "TR": 0.2865,
+      "AG": 0.3587
+    },
+    "auditoria_del_denominador": [
+      {
+        "etiqueta": "HS",
+        "factor_guardado": 0.9365,
+        "prevalencia_test_em": 0.409192,
+        "prevalencia_implicita": 0.436938,
+        "prevalencia_train_completo": 0.436742,
+        "prevalencia_desarrollo": 0.436952,
+        "diferencia_contra_completo": 0.000196,
+        "diferencia_contra_desarrollo": -1.5e-05,
+        "explica_el_desarrollo": true
+      },
+      {
+        "etiqueta": "TR",
+        "factor_guardado": 0.9546,
+        "prevalencia_test_em": 0.286452,
+        "prevalencia_implicita": 0.300075,
+        "prevalencia_train_completo": 0.299827,
+        "prevalencia_desarrollo": 0.300067,
+        "diferencia_contra_completo": 0.000249,
+        "diferencia_contra_desarrollo": 8e-06,
+        "explica_el_desarrollo": true
+      },
+      {
+        "etiqueta": "AG",
+        "factor_guardado": 0.9381,
+        "prevalencia_test_em": 0.358669,
+        "prevalencia_implicita": 0.382336,
+        "prevalencia_train_completo": 0.382438,
+        "prevalencia_desarrollo": 0.382333,
+        "diferencia_contra_completo": -0.000102,
+        "diferencia_contra_desarrollo": 2e-06,
+        "explica_el_desarrollo": true
+      }
+    ],
+    "el_denominador_es_el_desarrollo": true,
+    "hallazgo": "El campo factor_vs_train de V9-02 es p_test_EM dividida por la prevalencia del DESARROLLO de 1483 filas, no por la del train completo de 1731. Con el train completo el factor queda unos 0.0004 mas alto en HS y TR. El nombre del campo induce a error y la v11 debe usar el denominador correcto."
+  },
+  "git": {
+    "rama": "proyecto-kaggle-toxic-2026-v11",
+    "commit": "23aac939fdab41e22ea1dd1639ee10ab21a420ef",
+    "commit_corto": "23aac93",
+    "arbol_sucio": true,
+    "ficheros_sin_commitear": 48,
+    "ultimo_mensaje": "KAGGLE_TOXIC_2026_PUJ: B-14 notebook corregido y re-ejecutado (65 celdas, 0 errores) + seccion 19 (v9 y auditoria) + artefactos v2 restaurados",
+    "ramas_v10_y_v11": "+ proyecto-kaggle-toxic-2026-v10\n* proyecto-kaggle-toxic-2026-v11"
+  },
+  "verificaciones": [
+    {
+      "comprobacion": "V03 reproduce la referencia canonica",
+      "valor": 0.7772114525165721,
+      "esperado": 0.7772114525165721,
+      "cumple": true,
+      "detalle": "diferencia +0.000e+00, tolerancia 1e-12"
+    },
+    {
+      "comprobacion": "numero de filas del OOF",
+      "valor": 1483,
+      "esperado": 1483,
+      "cumple": true,
+      "detalle": "el OOF canonico cubre el desarrollo de 1483 filas"
+    },
+    {
+      "comprobacion": "umbrales que se usaron",
+      "valor": [
+        0.44,
+        0.51,
+        0.46
+      ],
+      "esperado": "0.44/0.51/0.46",
+      "cumple": true,
+      "detalle": "los tres umbrales congelados de V03"
+    },
+    {
+      "comprobacion": "sha256 de la submission v03",
+      "valor": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+      "esperado": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+      "cumple": true,
+      "detalle": "la referencia congelada no puede cambiar"
+    },
+    {
+      "comprobacion": "filas de la submission v03",
+      "valor": 1154,
+      "esperado": 1154,
+      "cumple": true,
+      "detalle": "una fila por cada tuit de la prueba"
+    },
+    {
+      "comprobacion": "filas de experiments.csv",
+      "valor": 219,
+      "esperado": 219,
+      "cumple": true,
+      "detalle": "207 heredadas mas 12 de la fase v10"
+    },
+    {
+      "comprobacion": "claves unicas del registro",
+      "valor": 219,
+      "esperado": 219,
+      "cumple": true,
+      "detalle": "ninguna fila repetida"
+    },
+    {
+      "comprobacion": "campos por fila",
+      "valor": 23,
+      "esperado": 23,
+      "cumple": true,
+      "detalle": "el esquema historico del registro"
+    },
+    {
+      "comprobacion": "filas de la fase v10",
+      "valor": [
+        "V10-00",
+        "V10-01",
+        "V10-02",
+        "V10-03",
+        "V10-04",
+        "V10-05",
+        "V10-06",
+        "V10-07",
+        "V10-08",
+        "V10-09",
+        "V10-10",
+        "V10-11"
+      ],
+      "esperado": "V10-00 a V10-11",
+      "cumple": true,
+      "detalle": "doce filas de la fase v10, sin huecos"
+    },
+    {
+      "comprobacion": "los identificadores de holdout2 conservan su huella",
+      "valor": "f6c6ed958abf728b8210d15c26ec43fbd71659a0918d36089a9c6d6cef1639dc",
+      "esperado": "f6c6ed958abf728b...",
+      "cumple": true,
+      "detalle": "nadie toco lo congelado"
+    },
+    {
+      "comprobacion": "grupos compartidos entre holdout2 y dev2",
+      "valor": 0,
+      "esperado": 0,
+      "cumple": true,
+      "detalle": "la particion es de grupo y no solo de fila"
+    },
+    {
+      "comprobacion": "holdout2 declara que no es virginal",
+      "valor": "NO ES VIRGIN",
+      "esperado": "NO ES VIRGINAL",
+      "cumple": true,
+      "detalle": "la advertencia previa a resultados se conserva"
+    },
+    {
+      "comprobacion": "evaluaciones de holdout2 disponibles",
+      "valor": 3,
+      "esperado": 3,
+      "cumple": true,
+      "detalle": "ninguna gastada todavia, segun el registro de v10"
+    },
+    {
+      "comprobacion": "identificadores de holdout2 que estan en el desarrollo",
+      "valor": 247,
+      "esperado": 247,
+      "cumple": true,
+      "detalle": "el conjunto sigue siendo localizable dentro de los datos etiquetados"
+    },
+    {
+      "comprobacion": "filas del fichero de identificadores frente a la configuracion",
+      "valor": 247,
+      "esperado": 247,
+      "cumple": true,
+      "detalle": "el fichero y la configuracion no se han desincronizado"
+    },
+    {
+      "comprobacion": "gate_1_superado de V10-04 coincide entre informe y registro",
+      "valor": true,
+      "esperado": true,
+      "cumple": true,
+      "detalle": "informe v10_04_calibracion_fuerte.json, clave de registro 'gate_1_superado'"
+    },
+    {
+      "comprobacion": "gate_a_superado de V10-05 coincide entre informe y registro",
+      "valor": false,
+      "esperado": false,
+      "cumple": true,
+      "detalle": "informe v10_05_regla_f1_optima.json, clave de registro 'gate_a'"
+    },
+    {
+      "comprobacion": "gate_1_superado de V10-06 coincide entre informe y registro",
+      "valor": false,
+      "esperado": false,
+      "cumple": true,
+      "detalle": "informe v10_06_umbrales_estables.json, clave de registro 'gate_1_superado'"
+    },
+    {
+      "comprobacion": "veredicto de V10-07 coincide entre informe y registro",
+      "valor": "CERRADA",
+      "esperado": "CERRADA",
+      "cumple": true,
+      "detalle": "informe v10_07_shift_features.json, clave de registro 'veredicto'"
+    },
+    {
+      "comprobacion": "gate_b_de_mejora.superado de V10-10 coincide entre informe y registro",
+      "valor": false,
+      "esperado": false,
+      "cumple": true,
+      "detalle": "informe v10_10_regla_conservacion.json, clave de registro 'gate_b_superado'"
+    },
+    {
+      "comprobacion": "gana_a_v03 de V10-11 coincide entre informe y registro",
+      "valor": false,
+      "esperado": false,
+      "cumple": true,
+      "detalle": "informe v10_11_bigru_finetuning.json, clave de registro 'gana_a_v03'"
+    },
+    {
+      "comprobacion": "la rama de la v11 es la correcta",
+      "valor": "proyecto-kaggle-toxic-2026-v11",
+      "esperado": "proyecto-kaggle-toxic-2026-v11",
+      "cumple": true,
+      "detalle": "aislamiento respecto de v10"
+    },
+    {
+      "comprobacion": "las ramas v10 y v11 coexisten",
+      "valor": 2,
+      "esperado": 2,
+      "cumple": true,
+      "detalle": "v10 no se borro ni se modifico"
+    },
+    {
+      "comprobacion": "el factor de V9-02 usa la prevalencia del desarrollo como denominador",
+      "valor": true,
+      "esperado": true,
+      "cumple": true,
+      "detalle": "auditado: el nombre del campo sugiere train completo y no lo es"
+    },
+    {
+      "comprobacion": "factores de V9-02 redondeados a 3 decimales",
+      "valor": {
+        "HS": 0.936,
+        "TR": 0.955,
+        "AG": 0.938
+      },
+      "esperado": {
+        "HS": 0.936,
+        "TR": 0.955,
+        "AG": 0.938
+      },
+      "cumple": true,
+      "detalle": "el plan los cita a 3 decimales; HS aparece truncado, no redondeado"
+    }
+  ],
+  "todas_superadas": true,
+  "supercadas": 25,
+  "total": 25
+}

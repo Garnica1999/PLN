@@ -1307,3 +1307,70 @@ controles viven en la fila del registro; se corrigio antes de ejecutar. Registro
 `reports/notebook_ejecucion_v10.json`.
 
 **Sin push, sin merge, sin rebase, sin commit.**
+
+## Fase v11: shift de prevalencia, calibracion y regla de decision (2026-09-26)
+
+Worktree `/home/carlos/Git/PLN-v11`, rama `proyecto-kaggle-toxic-2026-v11`, desde `a30a467` que es
+el commit de la fase v10. v10 no se modifica. Nueve experimentos, V11-00 a V11-08, y el registro
+llega a **227 filas con 227 claves unicas y 23 campos, sin filas malformadas**.
+
+**Ninguna submission generada, ninguna enviada, ninguna recomendada. V03 se mantiene** con
+0.7772114525165721 local y 0.78306 en el externo. **holdout2 intacto, con 0 de 3 evaluaciones
+gastadas.**
+
+### El hallazgo que reencuadra la fase
+
+- **V11-00, P0 reconciliacion**: 25 de 25 superadas, pero la primera ejecucion dio **21 de 25** y
+  las tres paradas son el resultado real. Dos eran errores de mi propia comprobacion, que buscaba
+  la misma clave en el informe y en el registro. La tercera era un problema de verdad.
+- **D-079**: el campo `factor_vs_train` de V9-02 **no** es la prevalencia de test dividida por la
+  del train completo, sino por la del **desarrollo**: el codigo define
+  `prevalencia_train = y_dev.mean(axis=0)`. Con el train completo el factor queda 0.0002 mas alto
+  en HS y TR. **V9-02 no tiene defecto; el nombre del campo no significa lo que dice.**
+- **V11-01, P1 reproduccion**: **EXACTA, nivel R3**, con diferencias de -4.51e-07 a +3.29e-07 que
+  son el redondeo del JSON, e iteraciones del EM identicas: 26, 16 y 24. **Su resultado queda en
+  cuarentena**: el uso de la prueba no alimenta ningun candidato.
+
+### El limite que decidio el alcance
+
+- **V11-02, P1.1 auditoria de legalidad**: clasifica once pasos contra el texto verbatim de
+  `docs/competition_rules.md`, con las cuatro citas verificadas una a una. Reparto **5 permitidos,
+  1 ambiguo, 5 prohibidos**. El ambiguo es estimar la prevalencia con EM sobre probabilidades no
+  etiquetadas, y lo es porque la regla prohibe entrenamiento y aqui no hay entrenamiento, pero la
+  intencion de la regla es que el test no participe del desarrollo. **Lo decisivo es que las reglas
+  no mencionan la transduccion ni para permitirla ni para prohibirla.**
+- Consecuencia: **el uso no se emplea para generar submission**, **v17 transductiva queda en
+  cuarentena**, y **P10 no tiene objeto**. La pregunta de transferencia **no tiene respuesta
+  verificable dentro de las reglas**. No es falta de calculo: es una limitacion de las reglas.
+
+### La validacion metodologica, que si es nueva
+
+- **V11-06**: los estimadores de prevalencia **funcionan** bajo shift simulado. EM de Saerens con
+  error relativo medio **0.0069**; clasificar-y-contar ajustado con error **0.0000**, y ese cero se
+  explica antes de aceptarlo: bajo shift **puro** la sensibilidad y la especificidad son
+  invariantes, luego el estimador esta **exactamente identificado**. Es un teorema, no una
+  propiedad favorable. **Se declara el punto ciego**: el resultado vale dentro del supuesto de shift
+  puro y nada mas.
+- **V11-07, el mecanismo central, CERRADO**: la correccion de prior **no mejora** la metrica. En el
+  factor verdadero, HS da **-0.001032** con **1 de 5** particiones, TR **+0.000000** con **0 de 5**,
+  AG **+0.000154** con **1 de 5**; macro medio **-0.000293**, y los tres intervalos incluyen el
+  cero. Gates A y B no superados.
+- **La direccion del efecto explica el fallo**: la correccion empeora cuando la prevalencia baja y
+  ayuda cuando sube, a 1.05 da +0.001095 en TR y +0.001194 en AG. El shift medido es hacia **abajo**,
+  luego el mecanismo actua en la direccion contraria. Y la causa de fondo la midio V10-05: los
+  umbrales de V03, 0.44, 0.51 y 0.46, estan ya **por encima** de los optimos de F1, 0.3841, 0.4093
+  y 0.3789. La capa de decision **ya es conservadora** y la correccion **corrige dos veces**.
+
+### Dos hallazgos metodologicos que valen mas que los resultados
+
+- **La seccion 17 es mas estricta que la herramienta del proyecto.** `verificar_caracteres.py`
+  busca alfabetos no latinos; la seccion 17 pide **ASCII puro**.
+- **Un escaner de cumplimiento por palabras es inservible.** Daba doce falsos positivos, porque
+  encontraba las citas de la prohibicion y su propia lista de patrones. Sustituido por analisis
+  estructural de imports.
+
+**Cierre**: 10 de las 12 preguntas de la revision respondidas y 2 con UNKNOWN, que no se rellenan
+con una estimacion. Las tres lineas que no dependen del shift, P4, P6 y P8, ya estaban medidas y
+cerraron negativas en v10. **La v11 no deja ninguna linea abierta con expectativa razonable.**
+
+**Sin push, sin merge adicional, sin reset, sin rebase, sin modificar otras ramas.**

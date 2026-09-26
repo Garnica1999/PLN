@@ -1,0 +1,4 @@
+Candidato,Delta_macro_vs_V03,Particiones_mejoran,IC95,Simulated_Shift,Holdout2,Cumple_5_condiciones,Veredicto
+V03 congelado,0.0,referencia,n/a,n/a,no usado,es la referencia,"FINALISTA por defecto, ninguna linea lo supera"
+V11-06 estimadores de prevalencia,"no aplica, no es un modelo",no aplica,no aplica,"positivo, recuperan el shift con error relativo 0.0069",no usado,no aplica,"COMPLEMENTARY, metodologia validada"
+V11-07 correccion de odds con prior shift,-0.000293,"1/5, 0/5, 1/5",los tres incluyen el cero,"NEGATIVO, empeora en la direccion del shift medido",no usado,no,CLOSED

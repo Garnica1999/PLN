@@ -2922,3 +2922,142 @@ regresion lineal, es decir captura la redundancia de forma directa, mientras que
 **descubrirla** por su cuenta. Con mil y pico filas y 24.646 rasgos explicitos, la regresion
 lineal aprovecha mejor los datos. No es que las redes no sirvan: es que **este** problema, con
 **estos** datos, no las necesita.
+
+## D-078 — Apertura de la v11 en worktree propio, y por que antes que un commit de v10
+
+La v11 se abre en `/home/carlos/Git/PLN-v11`, rama `proyecto-kaggle-toxic-2026-v11`, trayendo el
+estado commiteado de la v10. **v10 no se modifica.** Se verificaron las 40 copias de ficheros de
+v10 byte a byte antes de eliminar las de v11 y traerlas por merge, y las 5 modificadas por
+`git status --short` tambien, para no perder trabajo propio por un descuido de rutas.
+
+**P0, V11-00, 25 de 25 comprobaciones superadas, pero la primera ejecucion dio 21 de 25 y las tres
+paradas son el resultado real.** Dos eran errores de mi propia comprobacion: buscaba la misma clave
+en el informe y en el registro, y en V10-05 y V10-10 no se llaman igual, ademas de que en V10-10 el
+informe anida el veredicto. La tercera era un problema de verdad, tratada en D-079.
+
+## D-079 — El campo factor_vs_train de V9-02 no significa lo que dice
+
+El campo ``factor_vs_train`` de `reports/v9_02_prior_shift_em.json` **no** es la prevalencia de
+prueba dividida por la del train completo de 1731 filas, sino por la del **desarrollo** de 1483. Se
+comprobo en el codigo: `prevalencia_train = y_dev.mean(axis=0)`.
+
+Con el train completo el factor queda 0.000196 mas alto en HS y 0.000249 en TR; contra el
+desarrollo coincide a 1.5e-5, 8e-6 y 2e-6. **V9-02 es internamente consistente y no tiene
+defecto; lo que no significa lo que dice es el nombre del campo.**
+
+Se decide que la v11 use la **prevalencia absoluta** de la prueba, que es la magnitud sin
+ambiguedad, y no el factor. La reproduccion, V11-01, da nivel **R3** con diferencias de -4.51e-07 a
++3.29e-07, que es el redondeo a seis decimales del JSON, e iteraciones del EM identicas: 26, 16 y 24.
+
+## D-080 — El uso de la prueba para estimar prevalencia queda PROHIBIDO, y con el se cae P10
+
+La auditoria de legalidad, **V11-02**, clasifico los once pasos de la metodologia contra el texto
+verbatim de `docs/competition_rules.md`, con las cuatro citas verificadas literalmente. Reparto:
+**5 permitidos, 1 ambiguo, 5 prohibidos**.
+
+El paso ambiguo es **estimar la prevalencia de la prueba con EM sobre probabilidades no
+etiquetadas**, y lo es de verdad: la regla prohibe entrenamiento y aqui no hay entrenamiento,
+porque el modelo esta congelado y no se usa ninguna etiqueta; pero la intencion de la regla es que
+el test no participe del desarrollo del sistema. **Lo decisivo es que las reglas no mencionan la
+transduccion ni para permitirla ni para prohibirla**, y ese silencio es lo que hace el caso ambiguo.
+
+La consecuencia es la que fija el plan: **el uso no se emplea para generar submission**. Y con la
+decision explicita de NIVEL 2, "no usar test real para prior correction", el paso pasa de ambiguo a
+**prohibido**, y **v17 transductiva queda en cuarentena**.
+
+**Consecuencia de alcance, escrita sin adornos**: la pregunta de si el mecanismo transfiere a esta
+prueba concreta **no tiene respuesta verificable dentro de las reglas**. Se puede y se respondio la
+version metodologica, que es si el mecanismo recupera un desplazamiento conocido. **La v11 no
+termina en una submission, y no por falta de calculo sino por una limitacion de las reglas.**
+
+## D-081 — Los estimadores de prevalencia funcionan, y por que uno da error exactamente cero
+
+**V11-06, con shift simulado y conocida la verdad.** Dos estimadores conceptualmente distintos:
+EM de Saerens ponderado, y clasificar-y-contar ajustado de Forman y Crawford. La comparacion es
+justa porque si los dos fallaran el problema seria la idea, y si fallara solo uno seria el
+estimador.
+
+Resultados: EM con error relativo medio **0.0069**; clasificar-y-contar con error **0.0000**.
+
+El cero de clasificar-y-contar **no es casualidad y se explica antes de aceptarlo**: la simulacion
+repondera filas por clase y no toca probabilidades ni predicciones, luego P(pred|y) es identica en
+origen y destino, luego **la sensibilidad y la especificidad son invariantes** y la identidad que
+el estimador despeja se cumple de forma **exacta**. Bajo un shift **puro** de prevalencia,
+clasificar-y-contar esta exactamente identificado. Es un teorema, no una propiedad empirica
+favorable.
+
+**Se declara el punto ciego**: los dos estimadores asumen que el shift es puro, y la simulacion lo
+cumple por construccion, luego el resultado demuestra que son correctos **dentro** de ese supuesto
+y nada mas. Hay un apoyo inesperado: **V10-07** midio un AUC de **0.487717** entre entrenamiento y
+prueba, por debajo del azar, luego no hay shift de covariables medido dentro de este proyecto. Eso
+apoya el supuesto pero **no lo prueba con datos reales, y no se presenta como si lo probara**.
+
+## D-082 — La correccion de prior NO mejora la metrica, y la causa esta medida
+
+**V11-07, con el factor conocido por construccion, que es el caso en el que el mecanismo se puede
+comprobar.** La correccion desplaza el logit de forma constante en
+`logit(pi_destino) - logit(pi_origen)`, y se mide con los **umbrales congelados de V03**, sin tocar
+la capa de decision, para que la ganancia se atribuya a una causa y no a la otra. V9-02 mezclaba
+correccion de probabilidades con eleccion de umbral.
+
+**Gates A y B no superados.** En el factor verdadero de cada etiqueta: HS a **-0.001032** con
+**1 de 5** particiones, TR a **+0.000000** con **0 de 5**, AG a **+0.000154** con **1 de 5**. Macro
+medio **-0.000293**. Los tres intervalos pareados incluyen el cero.
+
+**La direccion del efecto es sistematica y explica el fallo**: la correccion **empeora cuando la
+prevalencia baja** y **ayuda cuando sube**. A factor 1.05 da +0.001095 en TR y +0.001194 en AG; a
+0.85 da -0.001997 en HS. El desplazamiento medido por V9-02 es hacia **abajo**, de factor 0.94,
+luego el mecanismo actua en la direccion contraria a la que se necesita.
+
+**La causa de fondo, medida en V10-05**: los umbrales congelados de V03, 0.44, 0.51 y 0.46, estan ya
+**por encima** de los umbrales optimos de F1, que V10-05 midio en 0.3841, 0.4093 y 0.3789. La capa
+de decision **ya es conservadora**, como si estuviera pre-compensando una caida de prevalencia.
+Aplicar la correccion de prior encima **corrige dos veces** y se pierde exhaustividad. Es el mismo
+mecanismo que hizo perder a la regla plugin de V10-05, medido por otra via, y ambos convergen en
+la misma causa.
+
+**Cierre: la via de la correccion de prior se cierra con protocolo valido y no se reintenta**, porque
+el mecanismo es el unico posible. **Con ella caen P5**, calibracion mas shift, y **P7**, decision
+condicionada por la prevalencia: ambas presuponen que el shift es explotable, y se ha medido que no
+lo es. No es una decision de gesto, es consecuencia logica.
+
+## D-083 — Cierre de la v11: nueve lineas, ningun candidato, y el limite escrito
+
+**Nueve experimentos de la v11, V11-00 a V11-08**, con el registro en 227 filas y 227 claves
+unicas. **Ninguna submission generada, ninguna enviada, ninguna recomendada.** **V03 se mantiene**
+con 0.7772114525165721 local y 0.78306 en el externo. **holdout2 intacto, con 0 de 3
+evaluaciones gastadas.**
+
+Las doce preguntas de la revision final: **10 respondidas, 2 con respuesta UNKNOWN**, que no se
+rellenan con una estimacion. La mayor laguna es si la calibracion mas el shift supera al shift
+solo, y no es que falte medirla: **el shift solo ya es negativo**, luego la combinacion no tiene
+una base desde la que mejorar, y medirla exigiria ademas usar la prueba.
+
+Las tres lineas que no dependen del shift, **P4, P6 y P8**, ya estan medidas y las tres cerraron
+negativas en v10: P4 NO ACCIONABLE porque la calibracion mejora el ECE de 0.0583 a 0.0174 y no la
+F1; P6 empeoro -0.003921; P8 no supero su gate. **La v11 no deja ninguna linea abierta con
+expectativa razonable.**
+
+**Sobre la reproduccion**: se declara **R3** para V03, V9-02 y la mejor candidata de calibracion, y
+**R2** con limitaciones para el holdout2. **No se declara R4 en ningun caso**, porque no hay segundo
+ejecutor ni segundo entorno, y el enunciado dice que un output cacheado no cuenta como
+reproduccion independiente. Declarar R4 seria el tipo de afirmacion que la seccion 22 prohibe.
+
+**Dos hallazgos metodologicos de la fase, que valen mas que sus resultados**:
+
+1. **La politica de caracteres de la seccion 17 es MAS ESTRICTA que la herramienta del proyecto.**
+   `tools/verificar_caracteres.py` busca alfabetos no latinos y da veredicto correcto sobre un texto
+   con acentos; la seccion 17 pide **ASCII puro**. La diferencia eran 4 caracteres en la v11 y 3
+   ficheros heredados de v10.
+2. **Un escaner de cumplimiento que busca palabras prohibidas en texto es inservible.** Daba doce
+   falsos positivos, porque las coincidencias eran las citas de la prohibicion, su propia lista de
+   patrones y la tabla que dice que no se usa. Se sustituyo por **analisis estructural de
+   imports**, donde un nombre en un `import` es un uso y en un comentario no lo es. Ademas el
+   informe del escaner imprimia los caracteres que violaba, violando el mismo la politica que
+   auditaba, y ahora se citan solo por codigo.
+
+**Conclusion de la fase**: el desplazamiento de prevalencia **no es una fuente real de mejora** bajo
+las restricciones actuales, y se ha podido demostrar con un factor conocido por construccion. Lo
+que **no** se ha podido demostrar, y queda escrito para que no se lea mas de lo que vale, es si el
+mismo mecanismo mejoraria en esta prueba concreta. El objetivo de superar 0.80 sigue a la distancia
+que midio la v10.
