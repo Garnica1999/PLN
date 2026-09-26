@@ -70,6 +70,9 @@ especialista explícito)?
 | **P25** | Significancia por atributo (diagnóstico) | idem | - |
 | **P13** | Hard-boundary training (**condicional**, con diagnóstico R-2) | idem | - |
 | **P14** | Combinación (**solo** con dos positivos independientes) | idem | - |
+| **V15a** | Correlacion entrada-entrada y asociacion con la salida, **in-fold** | `reports/v15_correlacion.md` | **cerrada** (58 clusters, Jaccard de pares 1,0000) |
+| **V15b** | Poda de variables redundantes (1 representante por cluster) | `reports/v15_poda.md` | **cerrada, NO ADOPTAR** (delta -0,0040, 0/5 y 0/4) |
+| **V16** | Arquitectura del meta-modelo (peso aprendido y combinador logistico) | `reports/v16_arquitectura.md` | **en curso** |
 | **Cierre** | Informes §31 + memoria | `reports/v13_final_research.md` | - |
 
 **Presupuesto**: ≤24 experimentos principales + 8 reservas.
@@ -255,6 +258,71 @@ nuevas (P1, P17, P19, P20), no sobre una recombinación de las existentes.
 | Tendencia central y dispersión (media, mediana, moda, skew, std, curtosis) | **P24 ABIERTA** aplicadas a la distribución de evidencia por token | en V12 solo sobre longitudes |
 | PCA / MCA sobre el bloque nuevo | **P26 ABIERTA** | in-fold |
 | Modelo de significancia por atributo | **P25 ABIERTA** | diagnóstico de interpretabilidad |
+
+## Fases V15 y V16 (peticion de Carlos, 2026-09-26)
+
+V13 y V14 cerraron con la misma conclusion: el cuello de botella **no son los datos**. Carlos pidio
+entonces dos cosas que cierran el circulo por los dos extremos.
+
+### V15 · Correlacion de entrada y poda (cerrada)
+
+**Lo que se midio.** Sobre la matriz completa de **312 variables** (279 de V12 y 33 linguisticas de
+V14), y **dentro de cada fold**: la correlacion de Spearman entrada-entrada, agrupada en clusters por
+union-find con umbral |rho| >= 0,90; y la asociacion de cada variable con la salida mediante eta
+cuadrado, que es la medida adecuada cuando la salida es categorica. Elegir variables por su
+correlacion con la etiqueta sobre todo el train seria una fuga, asi que **toda la estructura y toda
+la asociacion se calculan in-fold** y el indice de variables conservadas se guarda por fold.
+
+**Lo que salio.**
+
+| Medida | Valor |
+|---|---|
+| Columnas constantes | 2 (`v12_supervisada_49`, `v14_pasiva_ratio`) |
+| Pares con \|rho\| >= 0,80 | 402 |
+| Pares con \|rho\| >= 0,90 | 245 |
+| Duplicados exactos | 15 |
+| Clusters | 58, que cubren 171 de 310 variables |
+| Variables conservadas tras podar | 197 de 312 |
+| eta2 mediana / maximo | 0,0306 / 0,5599 |
+| Variables con eta2 < 0,01 | 112 |
+| **Jaccard de la estructura de pares entre folds** | **1,0000** (minimo 1,0000) |
+
+El Jaccard de pares es 1,0000: la estructura de redundancia es **perfectamente reproducible** al
+cambiar de fold, asi que podar no es una decision dependiente de la particion. (El Jaccard sobre
+los **miembros** de cada cluster da 0,0157, pero es un criterio tan estricto que no informa:
+exige que el cluster tenga exactamente los mismos miembros, y un solo par que cambie reordena el
+cluster entero por la transitividad de union-find.)
+
+**La poda, evaluada con el gate de D-042.** Un representante por cluster, el de mayor eta2 dentro del
+fold. Resultado: macro-F1 **0,5965** frente a 0,6005 de V12, **delta -0,0040, 0 de 5 folds
+positivos**; segunda particion **0 de 4** con media -0,0065; IC95 pareado [-0,0054; -0,0027].
+**NO ADOPTAR** (ver D-045).
+
+**Lo que el resultado afirma.** La redundancia existe y se mide con precision, pero **es funcional,
+no cosmetica**. Las variables casi identicas forman un conjunto de estimadores debiles
+parcialmente independientes cuyo promedio reduce la varianza: quitar 115 variables, entre ellas 15
+duplicados exactos, cuesta entre 0,4 y 0,65 puntos de macro-F1 de forma reproducible. La
+colinealidad afecta a la interpretacion de los coeficientes, no a la prediccion, y esa idea ya
+habia aparecido en P0b; V15 la confirma con una evaluacion completa en vez de una inferencia.
+
+### V16 · Arquitectura del meta-modelo (en curso)
+
+Si el cuello de botella es arquitectónico, la palanca que queda es la **forma de combinar las dos
+cabezas**. V12 usa un promedio fijo 0,5 LogReg + 0,5 MLP, una decision de diseno de la primera
+version del proyecto que **nunca se optimizo**. V16 mide tres arquitecturas sobre las mismas 279
+variables y el mismo protocolo:
+
+- **A0**: promedio fijo 0,5 + 0,5 (produccion; su OOF ya estaba calculado, no se reentrena).
+- **A1, peso aprendido**: sigue siendo un promedio, pero el peso se elige por fold sobre una
+  particion **interior** del train exterior (20 %, agrupada por duplicados), de modo que la
+  eleccion no ve la validacion. En la prueba de humo el peso optimo fue 0,4, no 0,5.
+- **A2, combinador logistico**: las doce probabilidades de las dos cabezas alimentan una LogReg,
+  es decir apilamiento en dos niveles. Es la que puede dar peso distinto a cada clase y a cada
+  cabeza, y la que de verdad cambia la arquitectura y no solo un parametro.
+
+Ninguna introduce variables nuevas. La arquitectura que gane en la particion de 5 folds se
+confirma en la **segunda particion de 4 folds**, que es control de seleccion y no una medida mas.
+El test no se toca.
 
 ## Referencias
 

@@ -1,8 +1,23 @@
 {
   "fase": "V13 · P0a auditoria de idioma",
   "fecha": "2026-09-25",
-  "ficheros_auditados": 323,
+  "ficheros_auditados": 333,
   "errores": 0,
-  "avisos": 0,
-  "hallazgos": []
+  "avisos": 2,
+  "hallazgos": [
+    {
+      "fichero": "DECISIONS.md",
+      "linea": 1027,
+      "categoria": "AVISO:flecha",
+      "detalle": "RIGHTWARDS ARROW",
+      "contexto": "- **V15b (poda evaluada)**: un representante por cluster, el de mayor eta2 **dentro del fo"
+    },
+    {
+      "fichero": "PROJECT_STATE.md",
+      "linea": 79,
+      "categoria": "AVISO:flecha",
+      "detalle": "RIGHTWARDS ARROW",
+      "contexto": "dentro del fold → **197 variables**. Macro-F1 **0,5965** frente a 0,6005 de V12: **delta -"
+    }
+  ]
 }

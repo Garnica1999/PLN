@@ -642,3 +642,56 @@ azar en control aislado, y ningún bloque alcanza el gate ni supera a su control
 Cierre de V13 con **0 adopciones** y con un diagnóstico causal de por qué. La única vía abierta es
 una decisión de alcance (relajar §3 o cambiar la métrica), no un experimento más. Details en
 `reports/v13_final_research.md` y D-041 en `DECISIONS.md`.
+
+## 2026-09-26 · V15 (correlacion de entrada y poda) y arranque de V16 (arquitectura)
+
+### Petición
+Carlos pide el paso de variables que faltaba: medir la correlación entre variables de entrada,
+identificar cuáles se asocian con la salida, y **eliminar las variables de entrada redundantes**.
+Después pide añadir además el paso de la **arquitectura del meta-modelo**.
+
+### Qué se hizo
+- **V15a** (`scripts/v15a_correlacion.py`): sobre la matriz completa de 312 variables, correlación
+  de Spearman con gram exacta (`grama_exacta`, nunca `A @ B.T` por D-040) y asociación con la
+  salida por **eta cuadrado** (la salida es categórica). Todo **in-fold**: la estructura de pares, la
+  asociación y el índice de variables conservadas se calculan dentro de cada fold y se guardan en
+  `features/v15_conservadas_fold{0..4}.npy`.
+- **V15b** (`scripts/v15b_poda.py`): evaluación de la poda con el gate de D-042 completo más la
+  segunda partición de 4 folds.
+- **V16** (`scripts/v16_arquitectura.py`): tres arquitecturas de combinación de las dos cabezas.
+
+### Errores propios encontrados y corregidos
+- Línea con indentación rota (`   .print_sizes = ...`) y un `representatives` construido dos veces
+  con una expresión sin sentido; se rehízo el bloque para que la elección de representante sea
+  enteramente in-fold.
+- **La aserción estructural del diagnóstico falló** porque hay columnas constantes: su diagonal no
+  puede ser 1. Se detectan y se excluyen del análisis en lugar de forzar la aserción; son
+  `v12_supervisada_49` y `v14_pasiva_ratio`, y se podan por definición.
+- `zip` de tres elementos desempaquetado como dos; `len(grupo) | len(otro)` con listas en vez de
+  conjuntos; y **el más importante**: la lista de paresmarked por fold se pasaba **acumulada** en
+  vez de local a `clusters_por_union`, lo que concatenaba los pares de todos los folds anteriores.
+- **La medida de estabilidad que elegí primero (Jaccard sobre los miembros de cada cluster) dio
+  0 de 58 y era engañosa**: exigir que un cluster tenga exactamente los mismos miembros es un
+  criterio tan estricto que no informa, porque un solo par que cambie reordena el cluster entero por
+  transitividad de union-find. La medida correcta es el Jaccard de la **estructura de pares**, que
+  da **1,0000**: la redundancia es perfectamente estable entre folds. Las dos se publican, con su
+  lectura explícita.
+- En V16 el `f1_score` interno comparaba **etiquetas string contra índices numéricos** (el error
+  "Mix of label input types"). Corregido convirtiendo a nombres de clase, y esta vez con prueba de
+  humo antes de la pasada larga.
+
+### Resultado
+- **V15a**: 2 constantes · 402 pares >= 0,80 · 245 >= 0,90 · 15 duplicados exactos · **58 clusters
+  sobre 171 de 310 variables** · 197 conservadas tras podar · eta2 mediana 0,0306 y máximo 0,5599 ·
+  **112 variables con eta2 < 0,01** · **Jaccard de pares entre folds 1,0000**.
+- **V15b**: macro-F1 **0,5965** frente a 0,6005 de V12, **delta -0,0040, 0/5 folds**; segunda
+  partición **0/4** con media -0,0065; IC95 pareado [-0,0054; -0,0027]. **NO ADOPTAR** (D-045).
+- **V16**: en curso.
+- `experiments.csv` con **93 experimentos**. Todo en español, sin alfabetos ajenos.
+
+- **Nota de trazabilidad**: la plantilla de la sección 6 de `scripts/v15b_poda.py` tiene dos defectos
+  de redacción (palabras en inglés que se colaron) y una rama de lectura que afirma que las
+  diferencias están dentro del ruido de la estimación, lo que contradice al IC95. **El script no se
+  editó**, porque ya se ejecutó y su salida es el registro del experimento; lo que se corrigió fue el
+  artefacto generado `reports/v15_poda.md`, con una nota de edición explícita y **sin tocar ninguna
+  cifra**. Si en el futuro se vuelve a ejecutar ese script, la plantilla habrá que arreglarse antes.

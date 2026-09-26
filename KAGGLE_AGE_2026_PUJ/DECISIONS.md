@@ -1011,3 +1011,39 @@ Tras declarar la saturación se probó la vía indicada como trabajo futuro:
 - **Evidence**: `reports/v14_linguistico.md`, `reports/v14_fusion_linguistico.md`,
   `experiments/v14a_linguistico.json`, `experiments/v14b_fusion_linguistico.json`,
   `reports/v13_final_research.md` §4.
+
+## D-045 — V15: la redundancia de entrada es funcional; podar empeora y no se adopta
+
+- **Observation**: P0b midió colinealidad sobre la matriz de 279 variables y lo dejó como
+  diagnóstico, sin evaluación. Carlos pidió el paso completo: medir qué variables de entrada están
+  correlacionadas entre sí, cuáles se asocian con la salida, y **eliminar las redundantes**.
+- **Result**:
+  - **V15a (estructura, in-fold)**: sobre las 312 variables (279 de V12 y 33 lingüísticas de V14),
+    2 columnas constantes, 402 pares con |rho| >= 0,80, 245 con |rho| >= 0,90, 15 duplicados
+    exactos, **58 clusters que cubren 171 de 310 variables**. Asociación con la salida por eta
+    cuadrado: mediana 0,0306, máximo 0,5599, y **112 variables con eta2 < 0,01**. El **Jaccard de
+    la estructura de pares entre folds es 1,0000** (mínimo 1,0000): la redundancia es
+    perfectamente reproducible y la poda no depende de la partición.
+  - **V15b (poda evaluada)**: un representante por cluster, el de mayor eta2 **dentro del fold** →
+    197 variables. Macro-F1 **0,5965** frente a 0,6005 de V12: **delta -0,0040 con 0 de 5 folds
+    positivos**; segunda partición **0 de 4** con media -0,0065; IC95 pareado [-0,0054; -0,0027].
+- **Decision**: **NO ADOPTAR la poda**. V12 se queda con sus 279 variables. La poda queda documentada
+  como medición, no como técnica.
+- **Reason**: es un resultado con contenido y va contra la intuición de partida. La intuición dice
+  que las variables casi idénticas sobran; la medición dice que **estaban cargando con algo**. La
+  explicación coherente con todo lo demás es la del conjunto de estimadores débiles: variables
+  |rho| >= 0,90 entre sí no son la misma variable, son lecturas ligeramente distintas del mismo
+  phenomenon, y promediarlas reduce la varianza igual que reduce el ruido en cualquier promedio. Quitar 15 duplicados *exactos* sí debería ser inofensivo, y el resultado muestra que
+  el coste no está en los duplicados sino en el conjunto de las casi idénticas.
+  La lección metodológica también es real: **la colinealidad afecta a la interpretación de
+  coeficientes, no a la predicción**, que es lo que P0b insinuaba y V15 confirma con evaluación
+  completa.
+- **Consequences**: (1) no se vuelve a intentar poda de variables como vía de mejora; (2) queda
+  registrado que la estructura de redundancia es estable (Jaccard 1,0000), lo que la hace un buen
+  material para **interpretabilidad**, no para rendimiento; (3) el trabajo de variables continues
+  en la línea de V16, que ataca la arquitectura, que es donde siguen apuntando todos los
+  diagnósticos de V13, V14 y V15.
+- **Evidence**: `reports/v15_correlacion.md`, `reports/v15_poda.md`,
+  `reports/v15_poda_comparativa.csv`, `reports/v15_clusters.csv`,
+  `reports/v15_asociacion_salida.csv`, `experiments/v15a_correlacion.json`,
+  `experiments/v15b_poda.json`, `features/v15b_oof.npy`.

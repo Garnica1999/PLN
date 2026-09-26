@@ -63,6 +63,47 @@
 - **Lo único que queda abierto es una decisión de alcance**, no un experimento: relaxing §3 para
   permitir un recurso lingüístico externo, o cambiar la métrica y redefinir el gate §24.
 
+## V15 · CORRELACION DE ENTRADA Y PODA (2026-09-26) CERRADA — la redundancia es funcional (D-045)
+- **Petición de Carlos**: medir qué variables de entrada están correlacionadas entre sí, cuáles se
+  asocian con la salida, y **eliminar las redundantes**.
+- **V15a (estructura y asociación, in-fold sobre las 312 variables = 279 de V12 + 33 de V14)**:
+  2 columnas constantes, **402 pares** con |rho| >= 0,80, **245** con |rho| >= 0,90, **15
+  duplicados exactos**, **58 clusters que cubren 171 de 310 variables**. Asociación con la salida
+  por eta cuadrado: mediana 0,0306, máximo 0,5599, y **112 variables con eta2 < 0,01**. La
+  estructura se calculó **dentro de cada fold** y el índice de variables conservadas se guarda por
+  fold, porque elegir variables por su correlación con la etiqueta sobre todo el train sería una
+  fuga de información.
+- **La redundancia es perfectamente reproducible**: el **Jaccard de la estructura de pares entre
+  folds es 1,0000** (mínimo 1,0000), así que podar no es una decisión dependiente de la partición.
+- **V15b (poda evaluada con el gate de D-042)**: un representante por cluster, el de mayor eta2
+  dentro del fold → **197 variables**. Macro-F1 **0,5965** frente a 0,6005 de V12: **delta -0,0040
+  con 0 de 5 folds positivos**; segunda partición **0 de 4** con media -0,0065; IC95 pareado
+  [-0,0054; -0,0027]. **NO ADOPTAR**.
+- **Lectura**: las variables casi idénticas no sobran; funcionan como un conjunto de estimadores
+  débiles parcialmente independientes cuyo promedio reduce la varianza. La colinealidad afecta a la
+  **interpretación** de los coeficientes, no a la predicción, que es lo que P0b insinuaba y V15
+  confirma con evaluación completa en vez de una inferencia.
+- **Entregables**: `reports/v15_correlacion.md`, `reports/v15_poda.md`,
+  `reports/v15_correlacion_entradas.csv`, `reports/v15_clusters.csv`,
+  `reports/v15_asociacion_salida.csv`, `reports/v15_estabilidad.csv`,
+  `experiments/v15a_correlacion.json`, `experiments/v15b_poda.json`, `features/v15b_oof.npy`,
+  `features/v15_conservadas_fold{0..4}.npy`. `experiments.csv` con 93 experimentos.
+
+## V16 · ARQUITECTURA DEL META-MODELO (2026-09-26) EN CURSO
+- Todos los diagnósticos de V13, V14 y V15 apuntan a lo mismo: **el cuello de botella no son los
+  datos, es la arquitectura**. La palanca que queda es la forma de combinar las dos cabezas, que
+  V12 hace con un promedio fijo 0,5 LogReg + 0,5 MLP, una decisión de diseño de la primera versión
+  que **nunca se optimizó**.
+- **Tres arquitecturas sobre las mismas 279 variables y el mismo protocolo**: A0 promedio fijo
+  (producción, su OOF ya estaba calculado y no se reentrena); A1 **peso aprendido** por fold sobre
+  una partición interior del train exterior (20 %, agrupada por duplicados, para no mirar la
+  validación); A2 **combinador logístico** sobre las doce probabilidades de las dos cabezas, es
+  decir apilamiento en dos niveles.
+- En la prueba de humo el peso óptimo de A1 fue **0,4**, no 0,5. La arquitectura que gane en la
+  partición de 5 folds se confirma en la **segunda partición de 4 folds**.
+- Entregables previstos: `reports/v16_arquitectura.md`, `experiments/v16_arquitectura.json`,
+  `features/v16_oof_*.npy`.
+
 ## Fase actual
 - **FASE DE LEXICONES (2026-09-25) CERRADA — línea cerrada (D-039).** 24 subcategorías léxicas
   (registro, etapas de vida, dominios temáticos), 1.369 entradas efectivas y 72 features

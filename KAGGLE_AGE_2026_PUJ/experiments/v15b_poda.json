@@ -1,0 +1,113 @@
+{
+  "fase": "V15 · B poda de variables redundantes",
+  "fecha": "2026-09-26",
+  "n_entradas": 312,
+  "n_conservadas": 197,
+  "referencia": {
+    "macro_f1": 0.6005,
+    "per_fold": [
+      0.6007,
+      0.605,
+      0.6032,
+      0.6004,
+      0.5928
+    ]
+  },
+  "poda": {
+    "macro_f1": 0.5965,
+    "accuracy": 0.5967,
+    "per_fold": [
+      0.5973,
+      0.5978,
+      0.6002,
+      0.5976,
+      0.5894
+    ]
+  },
+  "delta": -0.004,
+  "folds_positivos": 0,
+  "segunda_particion": {
+    "por_fold_poda": [
+      0.5944,
+      0.5954,
+      0.5968,
+      0.5971
+    ],
+    "por_fold_referencia": [
+      0.6013,
+      0.5998,
+      0.6039,
+      0.6048
+    ],
+    "positivos": 0
+  },
+  "bootstrap_ic95": [
+    -0.0054,
+    -0.0027,
+    0.0
+  ],
+  "criterios": {
+    "efecto_minimo": false,
+    "folds_positivos": false,
+    "significacion": false,
+    "segunda_particion": false,
+    "fronteras": false
+  },
+  "adopta": false,
+  "complementariedad": {
+    "global": {
+      "rescate": 6093,
+      "dano": 6772,
+      "neto": -679
+    },
+    "18-24|25-34": {
+      "rescate": 2909,
+      "dano": 2888,
+      "neto": 21
+    },
+    "25-34|35-49": {
+      "rescate": 2213,
+      "dano": 2471,
+      "neto": -258
+    }
+  },
+  "fronteras": {
+    "referencia": {
+      "18-24|25-34": {
+        "filas": 57023,
+        "accuracy": 0.4963,
+        "macro_f1": 0.5923,
+        "cruces": 10122,
+        "cruces_resueltos": 0,
+        "pct_cruces_resueltos": 0.0
+      },
+      "25-34|35-49": {
+        "filas": 56577,
+        "accuracy": 0.4974,
+        "macro_f1": 0.6115,
+        "cruces": 7252,
+        "cruces_resueltos": 0,
+        "pct_cruces_resueltos": 0.0
+      }
+    },
+    "poda": {
+      "18-24|25-34": {
+        "filas": 57023,
+        "accuracy": 0.4967,
+        "macro_f1": 0.5919,
+        "cruces": 10243,
+        "cruces_resueltos": 0,
+        "pct_cruces_resueltos": 0.0
+      },
+      "25-34|35-49": {
+        "filas": 56577,
+        "accuracy": 0.4928,
+        "macro_f1": 0.6074,
+        "cruces": 7315,
+        "cruces_resueltos": 0,
+        "pct_cruces_resueltos": 0.0
+      }
+    }
+  },
+  "segundos": 860.4
+}
