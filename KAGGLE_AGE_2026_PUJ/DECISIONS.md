@@ -865,3 +865,44 @@ Tras declarar la saturación se probó la vía indicada como trabajo futuro:
   medir con la ruta verificada; (3) el cribado de redundancia de todo bloque nuevo (P1, P17, P19,
   P20, P21) debe pasar por `grama_exacta`, nunca por BLAS.
 - **Evidence**: `reports/v13_entorno_numerico.md`, `src/verificacion_numerica.py`.
+
+---
+
+## D-041 — V13 se cierra sin adopciones: tres mecanismos medidos, no conjeturas
+- **Observation**: seis pistas de variables, dos diagnósticos de estructura de decisión y cuatro
+  diagnósticos de causa, 16 experimentos en total, con 8 hipótesis pre-registradas. Ninguna se
+  confirma en forma accionable. El control *block-only* más alto fue el de P1 (evidencia por token,
+  0,3997 frente a un suelo de 0,1667, el doble del mejor bloque léxico cerrado) y aun así su fusión
+  con V12 da −0,0002 con 3/5 folds, con controles permutados (0,6000/0,6003/0,6000) indistinguibles del
+  bloque real. P17 (pronombres) dio 0,1918 con rescate neto −64.075; P20 (modalidad) 0,1270, por
+  debajo del azar, porque solo el 1,6 % del corpus tiene un marcador de duda; P19 (árboles de
+  conjunciones) 0,1539, también bajo el azar, por la misma razón de cobertura. P3a, el especialista
+  binario de frontera entrenado con las mismas 279 variables, **empeora** en ambos pares
+  (0,4963 -> 0,4944 y 0,4974 -> 0,4942) y deja el global en 0,5993.
+- **Experiment**: `reports/v13_final_research.md` y las tres tablas agregadas
+  (`v13_master_results.csv`, `v13_hypothesis_registry.csv`, `v13_candidate_comparison.csv`).
+- **Result**: tres mecanismos, todos medidos. (1) **Saturación del espacio de variables**: P0b
+  medió un VIF mediano de 18,87 con 170 variables por encima de 10 y 87 de 278 direcciones
+  explicando el 95 % de la varianza, así que añadir señal no es una apuesta neutral; y no es
+  redundancia, porque la criba da 0 de 36, 0 de 26 y 0 de 23 variables redundantes. (2)
+  **Información nueva inaccesible al combinador**: la regresión desde V12 reproduce la varianza del
+  bloque de P1 (R² mediano 0,522, máximo 0,959) pero la información de clase no (control de la
+  reconstrucción 0,0485); y no hay puerta que la alcance, porque el máximo de 90 combinaciones de
+  umbrales es 0,6005 con 0 filas desviadas. (3) **El modelo está en el límite de su espacio**: un
+  modelo nuevo y dedicado a la frontera es peor que V12 restringido al par.
+- **Decision**: **cerrar V13 con V12 congelado**. No abrir P2, P6, P18, P21, P24 (más variables del
+  mismo tipo), ni P4 y P5 (más estructura de decisión, ya refutada por P3a). V12 conserva la
+  referencia congelada de 0,6004 en CV y 0,62188 en leaderboard. Ninguna submission nueva.
+- **Reason**: el §28 del plan prohíbe ejecutar por cantidad, y aquí la evidencia acumulada dice que el
+  espacio está agotado, no que falten ideas. Cerrar con un diagnóstico causal es más útil que
+  acumular más filas en la tabla de experimentos.
+- **Consequences**: (1) la única vía que queda abierta es una **decisión de alcance**, no un
+  experimento: relaxing la restricción §3 para permitir un recurso lingüístico externo, o cambiar la
+  métrica y redefinir el gate §24; (2) se conservan como infraestructura reutilizable la criba de
+  redundancia contra la matriz completa, `src/verificacion_numerica.py` y el protocolo de
+  pre-chequeo de rescate, que evitó pagar ~70 minutos de CPU en dos pistas; (3) la predicción
+  pre-registrada de que un bloque lingüístico sube la rama LogReg y se diluye en la MLP **no se
+  confirma ni se refuta en su alternativa**: ninguna de las dos cabezas mejora.
+- **Evidence**: `reports/v13_final_research.md`, `reports/v13_reproducibility.md`,
+  `reports/v13_hypothesis_registry.csv`, `reports/v16c_reconstruccion.md`,
+  `reports/v16d_puerta.md`, `reports/v3_especialistas.md`, `experiments.csv` (89 experimentos).

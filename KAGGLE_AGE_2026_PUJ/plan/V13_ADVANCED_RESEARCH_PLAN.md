@@ -49,7 +49,7 @@ especialista explícito)?
 | **P15** | Diagnóstico: matriz de error por miembro (**antes** de P3/P4) | `reports/v13_member_error_matrix.csv` | **cerrada** |
 | **P1** | Evidencia de edad por token, in-fold | idem | **cerrada** (0,3997 aislado; fusión -0,0002, 3/5 folds) |
 | **P17** | Pronombres de persona (V14–V18 del artículo) | idem | **cerrada** (0,1918; pre-chequeo -64.075, sin fusión) |
-| **P19** | Árboles SFL (sin POS) | idem | - |
+| **P19** | Árboles SFL (sin POS) | idem | **cerrada** (árbol 0,1539, bajo el azar) |
 | **P20** | Incertidumbre y modalidad | idem | **cerrada** (0,1270, bajo el azar; sin fusión) |
 | **P3** | Especialistas binarios de frontera | idem | **cerrada** (el especialista empeora: -0,0017 y -0,0029) |
 | **P24** | Forma de la distribución de evidencia | idem | - |
