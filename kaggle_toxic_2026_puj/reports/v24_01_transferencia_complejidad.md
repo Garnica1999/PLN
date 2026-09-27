@@ -51,7 +51,7 @@ informes historicos no son.
 | LR L2 C=20.0 | 0.771989 | 1.0000 | +0.2280 | 1.0000 | 0.0000 | 54.6480 | 142 | 69 | 73 | -4 |
 | LinearSVC C=1.0 | 0.771508 | 0.9968 | +0.2253 | 0.9838 | 0.0162 | 15.7537 | 276 | 105 | 171 | -66 |
 | RidgeClassifier a=3.0 | 0.773301 | 0.7651 | -0.0082 | 1.0000 | 0.0000 | 8.2778 | 306 | 113 | 193 | -80 |
-| V23 svd_rbf_sigmoid | 0.790409 | n/d | +0.0000 | n/d | 0.0000 | n/d | 240 | 136 | 104 | n/d |
+| V23 svd_rbf_sigmoid | 0.790409 | n/d | n/d | n/d | n/d | n/d | 240 | 136 | 104 | n/d |
 
 La fila de V23 tiene `fraccion_no_nula` y `norma_coeficientes` en nan porque no
 son recalculables sin reentrenar el kernel, y su indicador propio es la fraccion de
@@ -80,5 +80,5 @@ vectores de soporte: **70.9%** de las muestras.
    modo que la direccion complejidad alta -> peor transferencia se apoya en un
    solo caso, que es exactamente el caso que motiva el analisis.
 
-Completado en 5.7 s.
+Completado en 5.6 s.
 

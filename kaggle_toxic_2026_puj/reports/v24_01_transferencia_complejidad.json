@@ -1,6 +1,6 @@
 {
   "experimento": "V24-01 (P1: modelo de transferencia de complejidad sobre el historial real)",
-  "fecha": "2026-09-27T06:14:37+00:00",
+  "fecha": "2026-09-27T06:14:59+00:00",
   "n_submissions": 22,
   "n_con_delta_oof_calculable": 19,
   "historial": [
@@ -283,9 +283,9 @@
       "modelo": "V23 svd_rbf_sigmoid",
       "delta_oof": 0.013198,
       "delta_lb": -0.00368,
-      "gap_train_oof": 0.0,
+      "gap_train_oof": NaN,
       "fraccion_vectores_soporte": 0.7090313884074716,
-      "sparsity": 0.0,
+      "sparsity": NaN,
       "norma_coeficientes": NaN,
       "n_parametros": NaN,
       "corrected_cv": 0.7904094525165721,

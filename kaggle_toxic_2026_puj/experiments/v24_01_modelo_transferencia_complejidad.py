@@ -83,9 +83,12 @@ V23 = {
     "modelo": "V23 svd_rbf_sigmoid",
     "delta_oof": 0.013198,
     "delta_lb": -0.00368,
-    "gap_train_oof": 0.0,
+    # El gap train-OOF y la sparsity no se midieron para esta candidata: un kernel no tiene
+    # coeficientes. Se dejan en nan para que la tabla los marque como no disponibles en
+    # lugar de imprimir un 0.0000 que pareceria una medida.
+    "gap_train_oof": np.nan,
     "fraccion_vectores_soporte": float(np.mean([1321, 1044, 1317]) / 1731),
-    "sparsity": 0.0,
+    "sparsity": np.nan,
     "norma_coeficientes": np.nan,
     "n_parametros": np.nan,
     "corrected_cv": 0.7772114525165721 + 0.013198,
