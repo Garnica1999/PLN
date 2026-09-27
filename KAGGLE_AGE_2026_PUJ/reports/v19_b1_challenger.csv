@@ -1,0 +1,4 @@
+candidato,cv,cv_5folds,cv_4folds,delta,cambios,estado
+V12 (envio actual),0.6005017473,,,0.0,0.0,CHAMPION ACTUAL
+arbol solo,0.6072312,0.6072312,,0.006729,,"disponible, no enviado"
+LogReg + MLP + arbol a partes iguales,0.6079388,0.6079388,0.6090431,0.007437,11392.0,CHALLENGER PREPARADO

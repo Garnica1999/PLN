@@ -1,0 +1,102 @@
+{
+  "fase": "V19 · B1 verificacion",
+  "fecha": "2026-09-26",
+  "referencia_v12": 0.6005017473,
+  "composicion": {
+    "miembros": 78,
+    "densas": 35,
+    "estructuradas": 87,
+    "supervisadas": 73,
+    "corte": 200,
+    "coincidencia_del_bloque_supervisado": 0.0
+  },
+  "bloques_5_folds": [
+    {
+      "bloque": "las 279 completas",
+      "columnas": 279,
+      "macro_f1": 0.6072312,
+      "media_folds": 0.607225,
+      "por_fold": [
+        0.6111,
+        0.6118,
+        0.607,
+        0.6077,
+        0.5985
+      ],
+      "frontera_1": 0.5072,
+      "frontera_2": 0.4977
+    },
+    {
+      "bloque": "sin las 73 supervisadas",
+      "columnas": 200,
+      "macro_f1": 0.586956,
+      "media_folds": 0.586937,
+      "por_fold": [
+        0.5899,
+        0.591,
+        0.5883,
+        0.5864,
+        0.579
+      ],
+      "frontera_1": 0.4823,
+      "frontera_2": 0.4776
+    },
+    {
+      "bloque": "solo las 78 de miembros",
+      "columnas": 78,
+      "macro_f1": 0.5842464,
+      "media_folds": 0.584236,
+      "por_fold": [
+        0.5876,
+        0.5874,
+        0.5883,
+        0.5831,
+        0.5748
+      ],
+      "frontera_1": 0.4805,
+      "frontera_2": 0.4751
+    },
+    {
+      "bloque": "solo las 73 supervisadas",
+      "columnas": 73,
+      "macro_f1": 0.5597155,
+      "media_folds": 0.559717,
+      "por_fold": [
+        0.5645,
+        0.5596,
+        0.5621,
+        0.5597,
+        0.5528
+      ],
+      "frontera_1": 0.5021,
+      "frontera_2": 0.4443
+    }
+  ],
+  "segunda_particion_4_folds": {
+    "bloque": "las 279 completas, segunda particion",
+    "columnas": 279,
+    "macro_f1": 0.6082295,
+    "media_folds": 0.608222,
+    "por_fold": [
+      0.6072,
+      0.6065,
+      0.6089,
+      0.6103
+    ],
+    "frontera_1": 0.508,
+    "frontera_2": 0.4996
+  },
+  "individuales": {
+    "LogReg (cabeza de V12)": 0.5915679,
+    "MLP(64) (cabeza de V12)": 0.5989481,
+    "promedio de las dos (V12 reconstruido)": 0.6011711,
+    "arbol solo": 0.6072312
+  },
+  "veredicto": {
+    "ventaja_de_las_73_supervisadas": 0.0202752,
+    "el_efecto_sobrevive_sin_supervisadas": false,
+    "segunda_particion_supera_el_gate": true,
+    "arbol_aislado_supera_el_promedio_de_cabezas": true
+  },
+  "segundos": 291.9
+}

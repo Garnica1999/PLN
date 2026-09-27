@@ -1,0 +1,5 @@
+combinacion,macro_f1,delta_v12,folds_positivos,frontera_1,frontera_2,f1_25_34,neto,adopta
+V12 (referencia),0.6011711,0.0007,2/5,0.4929,0.4965,0.4831,171,False
+sustituye MLP por arbol,0.607221,0.0067,5/5,0.5065,0.5012,0.495,1167,True
+tercero a partes iguales,0.6079388,0.0074,5/5,0.5038,0.5013,0.4935,1311,True
+arbol con peso bajo,0.6059151,0.0054,5/5,0.5004,0.5004,0.4904,970,True

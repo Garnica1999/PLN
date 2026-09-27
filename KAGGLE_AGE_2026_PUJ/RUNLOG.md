@@ -1109,3 +1109,88 @@ dataset.
 
 `experiments.csv` pasa a **111 experimentos**. Auditoria de idioma: **0 errores** sobre 405 ficheros.
 Sin push, sin PR, sin merge, sin reescritura de historia. V12 intacto. Sin submission nueva.
+
+## 2026-09-27 · V19 · B1 — El combinador de V12 desperdiciaba un bloque de 73 variables (D-051)
+
+**Cambio de objetivo**: AGE se reabre con criterio competitivo. El objetivo es maximizar el leaderboard,
+no cerrar familias. D-050 queda superado y asi se documenta: su veredicto era correcto sobre las cuatro
+familias que se propusieron, y falso como veredicto general, porque ninguna era boosting sobre las 279.
+
+**Revision de las cuatro familias, por el agente especialista**: tres se descartan con numero y una se
+ejecuta.
+- **Retrieval**: fuera. La cobertura de cluster in-fold es **0,00 %** por diseno del CV agrupado, luego
+  **no existe numero CV que certificar**; y la etiqueta de duplicado exacto acierta **61,5 %** (PH10,
+  D-026). Techo aritmetico del pool literal completo: **+0,0010**.
+- **Label cleaning**: fuera. PH11 dio **+0,0016** y PH18 **+0,0009**, ambos bajo el gate, y el criterio
+  propuesto selecciona filas que el modelo no puede acertar, no etiquetas falsas.
+- **Cascada ordinal**: fuera. Es D-037 con otro nombre: ORD-1 dio **-0,0118** y ORD-B **-0,3057**, el
+  peor numero del proyecto.
+- **Boosting**: dentro. E-022 probo meta LightGBM sobre **102** columnas de la era V10 con aporte
+  **0,0000**, y nunca se probo sobre las **279** de la era V12. Ademas V12 no contiene ningun arbol.
+
+**La premisa de la familia 2 estava falsificada antes de empezar, y el falsador es un artefacto
+nuestro**: en P0' el especialista de frontera sobre las mismas 279 variables sale **0,7136 con
+`LogisticRegression`** y **0,7075 con `LinearSVC(0.2)`**. Dos clases lineales, mismo resultado. Si un
+modelo lineal extrae la frontera, un arbol no tiene ventaja mecanica sobre el.
+
+**B1, un solo disparo, sin busqueda de hiperparametros**: LightGBM pre-registrado (`depth=3`, 300
+arboles, `lr=0,05`, `min_child_samples=200`, `colsample=0,5`, `reg_lambda=1,0`) como tercer miembro, con
+pesos pre-registrados, meta siempre ajustado fuera de su fold, y control de ruido con las filas de las
+variables barajadas.
+
+| Combinacion | macro-F1 | Delta | Folds | IC95 |
+|---|---|---|---|---|
+| V12 reconstruido (control de fidelidad) | 0,6011711 | +0,0007 | 2/5 | [-0,0002, +0,0016] |
+| **CONTROL, filas barajadas** | 0,5909687 | **-0,0095** | **0/5** | - |
+| arbol solo | 0,6072312 | +0,0067 | - | - |
+| **tres partes iguales** | **0,6079388** | **+0,0074** | **5/5** | **[+0,0064, +0,0085]** |
+
+**Bateria de falsacion, porque un +0,0074 en este proyecto es sospechoso por magnitud**:
+
+| Bloque | Columnas | macro-F1 |
+|---|---|---|
+| las 279 completas | 279 | **0,6072** |
+| sin las 73 supervisadas | 200 | 0,5870 |
+| solo las 78 de miembros | 78 | 0,5842 |
+| solo las 73 supervisadas | 73 | 0,5597 |
+| 2a particion, 4 folds | 279 | **0,6082** |
+
+El efecto **desaparece** sin el bloque supervisado. El hallazgo se reformula: no es que el arbol sea
+mejor, es que **el combinador de V12 estaba desperdiciando un bloque de 73 variables que ya estaban
+dentro de sus propias 279**. Ese bloque no son probabilidades sino agregados label-informed
+(`mention_mean_c0` a `c5` y familia, con valores de hasta 59.439), y necesita combinacion no lineal: el
+promedio lineal no puede darla. La 2a particion, con la combinacion ya fijada, da **0,6090431
+(+0,0085)** con los cuatro folds por encima del gate.
+
+**Sin fuga**: el bloque aislado da 0,5597 y su media de folds coincide con el pooled en **1,5e-06**. Si
+estuviera in-sample, la media de folds se separaria del pooled de forma apreciable.
+
+**Alineacion verificada por firma, no por comparacion de submissions**: la columna de mayor magnitud del
+bloque supervisado ocupa el **mismo indice 255** en train y en test, con rangos [-6,29; 59.439] y
+[-6,39; 50.673]. Este proyecto ya sufrio un bug de desplazamiento de 6 columnas entre train y test, asi
+que la pregunta era obligatoria.
+
+**Challenger construido y validado**: `submissions/age_submission_v19_challenger_boosting.csv`, 8 de 8
+checks, 112.892 filas, identificadores identicos y en el mismo orden. Cambia **11.392 filas (10,09 %)**,
+con **rescate 4.622, dano 3.311 y neto +1.311**. La primera frontera sube **+0,0120** y esta vez **sin
+intercambio de suma cero**, que era el fallo que hundia la global en P1.
+
+**NO ENVIADO**: la subida es manual en este proyecto y la decision es de Carlos. LB previsto por la
+calibracion verificada: **0,62734** frente al **0,62182** del envio de V12. Es una prediccion, no una
+medida. **Riesgo declarado y no medible**: el bloque supervisado tiene firma distinta entre train
+(cross-fitted) y test (ajustado sobre todo el train), y un arbol puede ser mas sensible a esa diferencia
+que un promedio lineal. El supervisor de V12 comparto ese mismo sesgo, luego **solo el leaderboard puede
+resolverlo**.
+
+**Cinco fallos de ejecucion propios, todos antes del resultado y ninguno afectandolo**: (1) un
+`StandardScaler` suelto mas un `Pipeline` con su propio escalador, aplicados ambos, es decir doble
+estandarizacion, que dio 22 % de acuerdo en el control de alineacion; (2) `CANDIDATA` escrito con
+llaves, luego un conjunto sin indice; (3) la permutacion de filas del control generada en el espacio
+global y aplicada a un bloque de 135.468 filas; (4) un `assert` que detecto que el corte del bloque
+supervisado estaba desplazado 6 columnas, lo que habria contaminado la propia prueba de falsacion; (5) el
+criterio de alineacion usando la metrica debil despues de cambiar la umbralia. El mas instructivo fue el
+(4): un `assert` de composicion que resulto ser la unica defensa contra contaminar la prueba que
+intentaba demostrar que no habia contaminacion.
+
+`experiments.csv` pasa a **115 experimentos**. Auditoria de idioma: **0 errores** sobre 415 ficheros. Sin
+push.

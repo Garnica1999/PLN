@@ -1,0 +1,285 @@
+{
+  "fase": "V19 · B1 boosting como tercer miembro de V12",
+  "fecha": "2026-09-26",
+  "pre_registro": {
+    "objective": "multiclass",
+    "num_class": 6,
+    "n_estimators": 300,
+    "learning_rate": 0.05,
+    "num_leaves": 8,
+    "max_depth": 3,
+    "min_child_samples": 200,
+    "colsample_bytree": 0.5,
+    "subsample": 0.8,
+    "subsample_freq": 1,
+    "reg_lambda": 1.0,
+    "n_jobs": 32,
+    "random_state": 42,
+    "verbose": -1
+  },
+  "combinaciones": {
+    "V12 (referencia)": [
+      0.5,
+      0.5,
+      0.0
+    ],
+    "sustituye MLP por arbol": [
+      0.5,
+      0.0,
+      0.5
+    ],
+    "tercero a partes iguales": [
+      0.3333333333333333,
+      0.3333333333333333,
+      0.3333333333333333
+    ],
+    "arbol con peso bajo": [
+      0.4,
+      0.4,
+      0.2
+    ]
+  },
+  "matriz_279": {
+    "origen": "meta_features_train_v11.npy (273, verificada identica a build_features()) + oof_ADV07_nbsvm_word.npy (6)",
+    "columnas": 279
+  },
+  "target": "las seis clases verdaderas; las 279 variables son features auxiliares",
+  "validacion": "LOFO agrupado de 5 folds; el meta nunca predice sus propias filas",
+  "control": {
+    "tipo": "mismo arbol con las filas de las variables barajadas",
+    "macro_control": 0.5909687,
+    "delta_control": -0.009533
+  },
+  "arbol_aislado": 0.6072312,
+  "arbol_aislado_control": 0.1576842,
+  "ventaja_del_arbol_sobre_su_gemelo": 0.449547,
+  "delta_mejor_sobre_control": 0.01697,
+  "fidelidad_reconstruccion_v12": {
+    "reconstruido": 0.6011711,
+    "artefacto": 0.6005017,
+    "brecha": 0.0006694
+  },
+  "referencia": {
+    "macro_f1": 0.6005,
+    "f1_por_clase": {
+      "13-17": 0.671,
+      "18-24": 0.5059,
+      "25-34": 0.4858,
+      "35-49": 0.5593,
+      "50-64": 0.6549,
+      "65-xx": 0.7261
+    },
+    "fronteras": {
+      "18-24|25-34": 0.4963,
+      "25-34|35-49": 0.4974
+    }
+  },
+  "resultados": [
+    {
+      "combinacion": "V12 (referencia)",
+      "macro_f1": 0.6011711,
+      "delta_v12": 0.000669,
+      "media_folds": 0.60117,
+      "media_folds_v12": 0.60041,
+      "folds_positivos": 2,
+      "por_fold": [
+        0.6047,
+        0.6033,
+        0.6022,
+        0.6,
+        0.5957
+      ],
+      "bootstrap_ic95": [
+        -0.000243,
+        0.001562,
+        0.9295
+      ],
+      "f1_por_clase": {
+        "13-17": 0.6732,
+        "18-24": 0.5079,
+        "25-34": 0.4831,
+        "35-49": 0.5606,
+        "50-64": 0.6573,
+        "65-xx": 0.7248
+      },
+      "accuracy": 0.6017,
+      "frontera_18_24_25_34": 0.4929,
+      "frontera_25_34_35_49": 0.4965,
+      "delta_frontera_1": -0.0034,
+      "delta_frontera_2": -0.0009,
+      "f1_25_34": 0.4831,
+      "f1_25_34_v12": 0.4858,
+      "rescate": 3149,
+      "dano": 2978,
+      "neto": 171,
+      "criterios": {
+        "efecto_minimo": false,
+        "folds_positivos": false,
+        "ic95_excluye_cero": false
+      },
+      "adopta": false,
+      "pesos": {
+        "logreg": 0.5,
+        "mlp": 0.5,
+        "arbol": 0.0
+      }
+    },
+    {
+      "combinacion": "sustituye MLP por arbol",
+      "macro_f1": 0.607221,
+      "delta_v12": 0.006719,
+      "media_folds": 0.607221,
+      "media_folds_v12": 0.60041,
+      "folds_positivos": 5,
+      "por_fold": [
+        0.6092,
+        0.6112,
+        0.6086,
+        0.6081,
+        0.5991
+      ],
+      "bootstrap_ic95": [
+        0.005522,
+        0.007917,
+        1.0
+      ],
+      "f1_por_clase": {
+        "13-17": 0.6796,
+        "18-24": 0.5146,
+        "25-34": 0.495,
+        "35-49": 0.5662,
+        "50-64": 0.6604,
+        "65-xx": 0.7275
+      },
+      "accuracy": 0.6076,
+      "frontera_18_24_25_34": 0.5065,
+      "frontera_25_34_35_49": 0.5012,
+      "delta_frontera_1": 0.0102,
+      "delta_frontera_2": 0.0038,
+      "f1_25_34": 0.495,
+      "f1_25_34_v12": 0.4858,
+      "rescate": 6014,
+      "dano": 4847,
+      "neto": 1167,
+      "criterios": {
+        "efecto_minimo": true,
+        "folds_positivos": true,
+        "ic95_excluye_cero": true
+      },
+      "adopta": true,
+      "pesos": {
+        "logreg": 0.5,
+        "mlp": 0.0,
+        "arbol": 0.5
+      }
+    },
+    {
+      "combinacion": "tercero a partes iguales",
+      "macro_f1": 0.6079388,
+      "delta_v12": 0.007437,
+      "media_folds": 0.607945,
+      "media_folds_v12": 0.60041,
+      "folds_positivos": 5,
+      "por_fold": [
+        0.6107,
+        0.6101,
+        0.6095,
+        0.608,
+        0.6015
+      ],
+      "bootstrap_ic95": [
+        0.00644,
+        0.008472,
+        1.0
+      ],
+      "f1_por_clase": {
+        "13-17": 0.6804,
+        "18-24": 0.5153,
+        "25-34": 0.4935,
+        "35-49": 0.5676,
+        "50-64": 0.662,
+        "65-xx": 0.7288
+      },
+      "accuracy": 0.6085,
+      "frontera_18_24_25_34": 0.5038,
+      "frontera_25_34_35_49": 0.5013,
+      "delta_frontera_1": 0.0075,
+      "delta_frontera_2": 0.0039,
+      "f1_25_34": 0.4935,
+      "f1_25_34_v12": 0.4858,
+      "rescate": 4622,
+      "dano": 3311,
+      "neto": 1311,
+      "criterios": {
+        "efecto_minimo": true,
+        "folds_positivos": true,
+        "ic95_excluye_cero": true
+      },
+      "adopta": true,
+      "pesos": {
+        "logreg": 0.3333333333333333,
+        "mlp": 0.3333333333333333,
+        "arbol": 0.3333333333333333
+      }
+    },
+    {
+      "combinacion": "arbol con peso bajo",
+      "macro_f1": 0.6059151,
+      "delta_v12": 0.005413,
+      "media_folds": 0.605915,
+      "media_folds_v12": 0.60041,
+      "folds_positivos": 5,
+      "por_fold": [
+        0.6091,
+        0.6082,
+        0.6073,
+        0.605,
+        0.6
+      ],
+      "bootstrap_ic95": [
+        0.004477,
+        0.00637,
+        1.0
+      ],
+      "f1_por_clase": {
+        "13-17": 0.6781,
+        "18-24": 0.5131,
+        "25-34": 0.4904,
+        "35-49": 0.5656,
+        "50-64": 0.6608,
+        "65-xx": 0.7275
+      },
+      "accuracy": 0.6065,
+      "frontera_18_24_25_34": 0.5004,
+      "frontera_25_34_35_49": 0.5004,
+      "delta_frontera_1": 0.0041,
+      "delta_frontera_2": 0.003,
+      "f1_25_34": 0.4904,
+      "f1_25_34_v12": 0.4858,
+      "rescate": 3900,
+      "dano": 2930,
+      "neto": 970,
+      "criterios": {
+        "efecto_minimo": true,
+        "folds_positivos": true,
+        "ic95_excluye_cero": true
+      },
+      "adopta": true,
+      "pesos": {
+        "logreg": 0.4,
+        "mlp": 0.4,
+        "arbol": 0.2
+      }
+    }
+  ],
+  "criterios": {
+    "supera_control": true,
+    "efecto_minimo": true,
+    "folds_positivos": true,
+    "ic95_excluye_cero": true
+  },
+  "adopta": true,
+  "lb_oficial_referencia": 0.62182,
+  "dispositivo": "cuda",
+  "segundos": 182.5
+}

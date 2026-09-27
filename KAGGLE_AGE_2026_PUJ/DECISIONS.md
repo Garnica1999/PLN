@@ -1296,3 +1296,66 @@ Tras declarar la saturación se probó la vía indicada como trabajo futuro:
 - **Evidence**: `reports/age_cierre_auditoria.md`, `reports/age_cierre_auditoria.csv`,
   `reports/age_lb_calibracion.csv`, `figures/age_elasticidad_frontera.png`,
   `experiments/age_cierre_auditoria.json`, `scripts/age_cierre_auditoria.py`.
+
+## D-051 — V19: el combinador de V12 desperdiciaba un bloque de 73 variables (ADOPTAR, sin enviar)
+
+- **Observation**: Carlos reabrio AGE con objetivo competitivo y cuatro familias por revisar. La
+  revision del agente `kaggle specialist` descarto **tres** con numero y dejo **una**: retrieval tiene
+  cobertura de cluster in-fold **0,00 %** por diseno del CV agrupado y su techo aritmetico es
+  **+0,0010**; label cleaning ya se ejecuto en PH11 (+0,0016) y PH18 (+0,0009); y la cascada ordinal
+  probabilistica ya se midio en ORD-1 (-0,0118) y ORD-B (-0,3057). La premisa de la familia 2
+  ("las combinaciones relevantes son no lineales") **esta falsificada** por P0': el especialista de
+  frontera sobre las mismas 279 variables sale **0,7136 con `LogisticRegression`** y **0,7075 con
+  `LinearSVC(0.2)`**, dos clases lineales con el mismo resultado.
+- **Experiment**: un boosted tree **pequeno y pre-registrado** (`depth=3`, `n_estimators=300`,
+  `lr=0,05`, `min_child_samples=200`, `colsample_bytree=0,5`, `reg_lambda=1,0`) como **tercer miembro**
+  de V12, con los pesos de combinacion pre-registrados, LOFO agrupado de 5 folds, meta siempre
+  ajustado fuera de su fold, y **control de ruido** con el mismo arbol y las filas de las variables
+  barajadas.
+- **Result**:
+  - El control de ruido queda **0,5909687 (delta -0,0095, 0 de 5 folds)**, por debajo de V12, luego se
+    comporta como debe. La ventaja del arbol real sobre su gemelo barajado es **+0,4495**.
+  - **El arbol aislado da 0,6072312** y la combinacion de tres partes iguales **0,6079388 (delta
+    +0,0074, 5 de 5 folds, IC95 [+0,0064, +0,0085])**, con IC95 que excluye el cero. El MLP(64) solo
+    da 0,5989481 y la LogReg sola 0,5915679, luego **el combinador de V12 promedia algo peor que su
+    mejor parte**.
+  - **La bateria de falsacion acoto el origen**: las 279 dan 0,6072, **sin las 73 columnas
+    supervisadas bajan a 0,5870** (por debajo de V12), solo las 78 de miembros dan 0,5842 y solo las 73
+    supervisadas dan 0,5597.
+  - **La segunda particion de 4 folds, con la combinacion ya fijada, da 0,6090431 (+0,0085)** con los
+    cuatro folds por encima del gate (0,6077 / 0,6060 / 0,6102 / 0,6122).
+  - Sin fuga: el bloque supervisado aislado da 0,5597 y su media de folds coincide con el pooled en
+    **1,5e-06**. Si estuviera in-sample, la media de folds se separaria del pooled.
+  - Alineacion verificada por **firma**: la columna de mayor magnitud del bloque supervisado ocupa el
+    **mismo indice 255** en train y en test, con rangos [-6,29; 59.439] y [-6,39; 50.673]. El 0,9057 de
+    acuerdo al reconstruir la submission de V12 esta junto al **0,9388** que registro la fase 25 con
+    esta misma matriz fresca, y corresponde a que el re-ajuste es otro modelo.
+  - **Sin leakage, sin colision de plataformas, sin busqueda de hiperparametros**: una sola
+    configuracion, sin tuning.
+- **Decision**: **ADOPTAR como challenger**. Submission construida y validada con 8 de 8 checks en
+  `submissions/age_submission_v19_challenger_boosting.csv`. **NO ENVIADA**: la subida de este proyecto
+  es manual y la decision es de Carlos.
+- **Reason**: el hallazgo **no** es que los arboles sean mejores, y la formulacion importa. Es que **el
+  combinador de V12 estaba desperdiciando un bloque de 73 variables que ya estaban dentro de sus
+  propias 279**. Ese bloque no son probabilidades sino agregados label-informed (`mention_mean_c0` a
+  `c5` y familia, con valores de hasta 59.439), y necesita combinacion no lineal: el promedio lineal
+  no puede darla, y por eso el arbol gana donde las dos cabezas lineales pierden. La primera frontera
+  sube **+0,0120** y esta vez **sin intercambio de suma cero**, que era el fallo que hundia la global
+  en P1. El cambio respecto a V12 es de **11.392 filas (10,09 %)** con **rescate 4.622, dano 3.311 y
+  neto +1.311**.
+- **Consequences**: (1) **D-050 queda superado**: su veredicto de cierre era correcto **sobre las cuatro
+  familias que el brief propuso**, y era falso como veredicto general, porque no contenia boosting sobre las 279 variables; (2) la accion recomendada por D-050 ("optimizar sobre las fronteras") **no era la
+  unica via**: aqui la frontera mejora como **consecuencia** de arreglar el combinador, no como
+  objetivo; (3) **riesgo declarado y no medible**: el bloque supervisado tiene firma distinta entre
+  train (cross-fitted) y test (ajustado sobre todo el train), un combinador lineal promedia esa
+  diferencia sin quejarse y un arbol puede ser mas sensible. El supervisor de V12 se ajusto tambien
+  sobre el train completo, luego comparte el sesgo y **el riesgo solo lo resuelve el leaderboard**;
+  (4) el LB previsto por la calibracion verificada es **0,62734** frente al **0,62182** del envio, y es
+  una **prediccion, no una medida**; (5) si el envio confirma, la linea correcta no es buscar mas
+  arboles sino **rehacer el combinador** con el bloque supervisado como variable de primer orden.
+- **Evidence**: `experiments/v19_b1_boosting.json`, `experiments/v19_b1_verificacion.json`,
+  `experiments/v19_b1_confirmacion.json`, `experiments/v19_b1_challenger.json`,
+  `reports/v19_b1_boosting.md`, `reports/v19_b1_verificacion.md`, `reports/v19_b1_confirmacion.md`,
+  `reports/v19_b1_challenger.md`, `reports/v19_b1_challenger.csv`,
+  `figures/v19_b1_boosting.png`, `figures/v19_b1_control.png`,
+  `submissions/age_submission_v19_challenger_boosting.csv`.

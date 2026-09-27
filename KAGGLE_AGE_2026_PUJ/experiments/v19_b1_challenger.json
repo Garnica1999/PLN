@@ -1,0 +1,78 @@
+{
+  "fase": "V19 · B1 challenger",
+  "fecha": "2026-09-27",
+  "enviado": false,
+  "candidato": {
+    "combinacion": "LogReg + MLP(64) + arbol, un tercio cada uno",
+    "pesos": [
+      0.3333333333333333,
+      0.3333333333333333,
+      0.3333333333333333
+    ],
+    "arbol": {
+      "objective": "multiclass",
+      "num_class": 6,
+      "n_estimators": 300,
+      "learning_rate": 0.05,
+      "num_leaves": 8,
+      "max_depth": 3,
+      "min_child_samples": 200,
+      "colsample_bytree": 0.5,
+      "subsample": 0.8,
+      "subsample_freq": 1,
+      "reg_lambda": 1.0,
+      "n_jobs": 32,
+      "random_state": 42,
+      "verbose": -1
+    },
+    "matriz_train": "meta_features_train_v11.npy (273) + oof_ADV07_nbsvm_word.npy (6) = 279",
+    "matriz_test": "meta_features_test_v12_fresca.npy (112892 x 279)"
+  },
+  "cv_5_folds": 0.6079388,
+  "cv_4_folds": 0.6090431,
+  "cv_arbol_solo_5_folds": 0.6072312,
+  "referencia_v12": 0.6005017473,
+  "delta": 0.007437,
+  "lb_oficial_v12": 0.62182,
+  "lb_replica_v12": 0.62188,
+  "lb_previsto": 0.62734,
+  "lb_previsto_por_calibracion": "LB = +0.00223 + 1.02825 x CV",
+  "cambios_respecto_a_v12": 11392,
+  "fraccion_cambiada": 0.100911,
+  "rescate_oof": 4622,
+  "dano_oof": 3311,
+  "neto_oof": 1311,
+  "distribucion": {
+    "13-17": 18521,
+    "18-24": 20263,
+    "25-34": 17430,
+    "35-49": 16412,
+    "50-64": 20599,
+    "65-xx": 19667
+  },
+  "distribucion_v12": {
+    "13-17": 17673,
+    "18-24": 20715,
+    "25-34": 16543,
+    "35-49": 17531,
+    "50-64": 20763,
+    "65-xx": 19667
+  },
+  "checks": {
+    "columns_ok": true,
+    "rows_ok": true,
+    "ids_equal_test": true,
+    "ids_unique": true,
+    "ids_same_order": true,
+    "no_nan": true,
+    "labels_valid": true,
+    "padded_width_ok": true
+  },
+  "firma_bloque_supervisado": {
+    "train": 255,
+    "test": 255
+  },
+  "riesgo_no_medible": "el bloque supervisado tiene firma distinta entre train (cross-fitted) y test (ajustado sobre todo el train), y el supervisor de V12 comparte ese sesgo, de modo que el riesgo solo lo resuelve el leaderboard",
+  "archivo": "/home/carlos/Git/PLN/KAGGLE_AGE_2026_PUJ/submissions/age_submission_v19_challenger_boosting.csv",
+  "segundos": 233.7
+}

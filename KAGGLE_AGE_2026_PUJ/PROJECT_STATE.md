@@ -152,7 +152,42 @@
   redaccion, no de medicion, y queda declarado en `reports/v17_compliance.md` en vez de darse por
   hecho.
 
-## AGE CERRADO (2026-09-26) — V12 permanece champion (D-050)
+## V19 · B1 (2026-09-27) — EL COMBINADOR DE V12 DESPERDICIABA UN BLOQUE DE 73 VARIABLES (D-051)
+
+- **ADOPTADO como challenger. Submission construida y validada, NO ENVIADA.** V12 sigue siendo el
+  champion hasta que el leaderboard diga otra cosa.
+- **El hallazgo**: un boosted tree pequeno y regularizado sobre las **279 variables de V12** da
+  **0,6072312** en OOF, y combinado a partes iguales con las dos cabezas de V12 da **0,6079388
+  (delta +0,0074, 5 de 5 folds, IC95 [+0,0064, +0,0085])**, frente a los **0,6005017** de V12. El
+  MLP(64) solo da 0,5989481 y la LogReg sola 0,5915679: **el combinador de V12 promedia algo peor que
+  su mejor parte**.
+- **El origen, acotado por bateria de falsacion**: el efecto **desaparece sin las 73 columnas
+  supervisadas** (0,5870, por debajo de V12). No es que el arbol sea mejor: es que ese bloque,
+  **agregados label-informed** (`mention_mean_c0` a `c5`, con valores de hasta 59.439) y no
+  probabilidades, necesita combinacion no lineal, y el promedio lineal no puede darla.
+- **Confirmado en particion independiente**: la de **4 folds**, con la combinacion ya fijada, da
+  **0,6090431 (+0,0085)** con los cuatro folds sobre el gate y las fronteras en 0,5083 y 0,5018
+  frente a las 0,4963 y 0,4974 de V12.
+- **Sin fuga**: el bloque aislado da 0,5597 y su media de folds coincide con el pooled en **1,5e-06**.
+  **Alineacion verificada por firma**: el indice 255 es el de mayor magnitud del bloque en train y en
+  test.
+- **Lo que cambia**: **11.392 filas (10,09 %)** de la submission, con **rescate 4.622, dano 3.311 y
+  neto +1.311**. La primera frontera sube **+0,0120** y esta vez **sin intercambio de suma cero**, que
+  era el fallo que hundia la global en P1.
+- **Las otras tres familias se descartaron con numero antes de ejecutar**: retrieval (cobertura in-fold
+  0,00 % y techo +0,0010), label cleaning (PH11 +0,0016 y PH18 +0,0009), cascada ordinal (ORD-1
+  -0,0118 y ORD-B -0,3057).
+- **Riesgo declarado y no medible**: el bloque supervisado tiene firma distinta entre train
+  (cross-fitted) y test (ajustado sobre todo el train). El supervisor de V12 comparto ese sesgo, luego
+  **solo el leaderboard puede resolverlo**. LB previsto **0,62734** frente a **0,62182**: prediccion,
+  no medida.
+- **D-050 queda superado**: su veredicto de cierre era correcto sobre las cuatro familias propuestas y
+  falso como veredicto general. Y su accion recomendada ("optimizar sobre las fronteras") **no era la
+  unica via**: aqui la frontera mejora como consecuencia de arreglar el combinador.
+- **Entregables**: `submissions/age_submission_v19_challenger_boosting.csv`, 4 scripts `v19_b1_*`, 4
+  JSON, 4 informes, 2 figuras. `experiments.csv` pasa a **115**.
+
+## AGE CERRADO (2026-09-26), SUPERADO POR V19 (2026-09-27) — V12 permanece champion (D-050)
 
 - **Decision**: `CLOSE AGE - V12 REMAINS CHAMPION`. **Sin experimento adicional y sin submission
   nueva.** V12 intacto en **0,6005017473** pooled, **0,62182** en el envio `age_submission_v12.csv` y
@@ -401,8 +436,14 @@ adopta** (D-011).
   matriz de confusión, **sin colapsar etiquetas** en la submission.
 
 ## Próxima acción recomendada
-- **Ninguna. AGE está cerrado** con V12 como champion (D-050, 2026-09-26). La decisión y su evidencia
-  están en `reports/age_decision_ejecutiva.md`.
+- **Subir la submission del challenger y leer el leaderboard.** El fichero
+  `submissions/age_submission_v19_challenger_boosting.csv` esta construida, validada con 8 de 8 checks
+  y pendiente unicamente de subida manual. El unico riesgo que queda abierto, el contraste de la firma
+  del bloque supervisado entre train y test, **no se puede medir con los artefactos**: solo lo
+  resuelve el leaderboard. Compara el resultado contra **0,62182** (envio oficial de V12), no contra
+  0,62188 (replica).
+- Si el envio confirma, la linea correcta **no** es buscar mas arboles: es rehacer el combinador con el
+  bloque supervisado como variable de primer orden.
 - Históricamente, y solo como registro de lo que se descartó: V12, V15, V16, V17 y V18 estan cerradas con medicion, y
   ninguna de las cinco ha dejado una pista que supere su propio gate. Reanudar solo tiene sentido
   **cambiando el marco**: optimizar o seleccionar **sobre las fronteras directamente**, en lugar de
