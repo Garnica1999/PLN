@@ -152,6 +152,34 @@
   redaccion, no de medicion, y queda declarado en `reports/v17_compliance.md` en vez de darse por
   hecho.
 
+## V21 · PRIMERA FRONTERA ORDINAL (2026-09-27) CERRADA — B1 no se puede mejorar (D-056)
+
+- **`B1_SPECIALIST = NO_SIGNAL`.** La unica via que quedaba abierta en la familia ordinal esta cerrada,
+  y con ella las **tres subfamilias**: reconstruccion (D-054), pesos (D-055) y **clasificadores de B1**.
+- **Auditoria historica hecha buscando codigo**: ningun experimento habia sustituido especificamente B1,
+  entrenado un modelo dedicado a `13-17` frente a `>=18`, ni usado una representacion especifica para B1.
+  El antecedente cercano **E-028 no es equivalente**: entrena un `LinearSVC` sobre el **par adyacente**
+  (dos clases, 57.539 filas), no sobre el umbral **anidado** (todas las filas, 17/83).
+- **V20 como control exacto**: reconstruido desde sus artefactos, da **0,6097782 frente a 0,6097782**, con
+  SHA256 `69b574f737c8cf43...`. El script se aborta si no cuadra.
+
+  | Candidato | macro-F1 | Delta vs V20 | B1 balanceada | B1 AUC | Neto | Estado |
+  |---|---|---|---|---|---|---|
+  | **V20 (control)** | **0,6097782** | +0,0000 | **0,7632** | 0,9284 | 0 | CONTROL |
+  | LinearSVC C 0,2 | 0,5992098 | **−0,0106** | 0,6782 | 0,9178 | −2.457 | `NO_SIGNAL` |
+  | LinearSVC C 1,0 | 0,5992058 | **−0,0106** | 0,6784 | 0,9178 | −2.457 | `NO_SIGNAL` |
+  | boosting especializado | 0,6097377 | **−0,0000** | 0,7606 | 0,9272 | −6 | `NO_SIGNAL` |
+
+- **La razon es estructural, no estadistica**: el `LinearSVC` pierde **0,085** de exactitud balanceada y
+  el boosting especializado queda **por debajo** del B1 de V20 (0,7606 contra 0,7632). **El B1 del
+  LightGBM multiclase de V20 ya esta a su nivel**, porque las cinco CDF comparten las 279 features y el
+  mismo modelo, y la primera sale de un ajuste multiclase que ya la resuelve.
+- **Respuesta a la pregunta central de V21**: **no.** Mejorar especificamente `13-17` frente a `>=18`
+  **no produce una mejora real en el objetivo final de seis clases**, medido con control exacto y dos
+  mecanismos distintos.
+- **Sin submission**: ningun candidato mejora el OOF de V20.
+- **Entregables**: `scripts/v21_b1.py`, 1 informe, 3 CSV, 1 figura. `experiments.csv` pasa a **124**.
+
 ## V20 · PESOS ORDINALES (2026-09-27) CERRADA — mejorar la frontera debil destruye la global (D-055)
 
 - **`ORDINAL_WEIGHTS` cerrada con numero.** Se probo **una sola configuracion** (`class_weight` balanced
@@ -573,13 +601,13 @@ adopta** (D-011).
   matriz de confusión, **sin colapsar etiquetas** en la submission.
 
 ## Próxima acción recomendada
-- **Cambiar el primer discriminador por un modelo distinto.** Es la unica via abierta dentro de la
-  familia ordinal: la reconstruccion esta cerrada (D-054), los pesos estan cerrados (D-055), y reponderar
-  fronteras no funciona porque **la exactitud de una frontera y el macro-F1 global no estan alineadas**.
-  Un cambio de **mecanismo** en el primer umbral (el de mayor impacto, -0,0129, y menor exactitud
-  balanceada, 0,7632) es lo que queda, y no es un ajuste de hiperparametro.
-- **No volver a ORDINAL_RECONSTRUCTION ni a ORDINAL_WEIGHTS**: ambas cerradas con numero.
-- **No abrir otra familia** mientras la ordinal tenga un challenger confirmado por leaderboard.
+- **La familia ordinal esta cerrada en sus tres subfamilias** (D-054 reconstruccion, D-055 pesos, D-056
+  clasificadores de B1). No queda ningun eje dentro de ella, y **V20 sigue en 0,62689** como champion.
+- **Lo que queda abierto ya no es un eje de la familia ordinal**: la unica pregunta que sobrevive es de
+  **analisis**, no de modelo: **por que el primer umbral tiene la menor metrica y el mayor impacto en el
+  blend**. No se responde con otro experimento de B1, porque los dos mecanismos posibles ya fallaron.
+- **Antes de abrir otra familia** convendria resolver esa pregunta, porque indicaria si la senal de la
+  primera frontera esta ya agotada o si hay una lectura distinta por hacer.
 - **No enviar nada sin mejora local previa.**: las dos unicas configuraciones de bajo riesgo autorizadas no llegaban ni al gate
   de adopcion, y el eje de parametros resulto plano. El detalle esta en `CHAMPION.md` y en
   `reports/v19_x1_explotacion.md`.

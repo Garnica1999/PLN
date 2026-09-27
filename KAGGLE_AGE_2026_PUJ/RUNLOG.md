@@ -1485,3 +1485,46 @@ Un incidente de ejecucion: falto definir `matriz = matriz_279()` en el `main` de
 
 `experiments.csv` pasa a **123 experimentos**. Auditoria de idioma: **0 errores** sobre 444 ficheros. Sin
 push.
+
+## 2026-09-27 · V21 — B1 no se puede mejorar cambiando de clasificador (D-056)
+
+**Auditoria historica hecha buscando codigo, no nombres en `experiments.csv`.** Se busco si algun
+experimento habia **sustituido especificamente B1**, entrenado un modelo dedicado a `13-17` frente a
+`>=18`, usado boosting/SVM/arboles solo en esa frontera, o usado una representacion especifica unicamente
+para B1. **Ninguno existia.** El unico antecedente cercano es **E-028**, y **no es equivalente**: entrena
+un `LinearSVC` sobre las filas del **par adyacente** `("13-17", "18-24")`, es decir **dos clases y
+57.539 filas**, mientras que B1 es el umbral **anidado** sobre **todas las 169.336 filas** y un desbalance
+17/83. Los dos experimentos de la fase son genuinamente nuevos.
+
+**V20 como control exacto**: reconstruido desde sus artefactos ya medidos, da **0,6097782 frente a
+0,6097782**, con SHA256 `69b574f737c8cf43...`. El script **se aborta si no cuadra**, porque sin ese
+control ninguna variante seria interpretable.
+
+| Candidato | macro-F1 | Delta vs V20 | Folds | B1 balanceada | B1 AUC | Hueco | Neto | Estado |
+|---|---|---|---|---|---|---|---|---|---|
+| **V20 (control exacto)** | **0,6097782** | +0,0000 | 0/5 | **0,7632** | 0,9284 | - | 0 | CONTROL |
+| LinearSVC C 0,2 | 0,5992098 | **-0,0106** | 0/5 | 0,6782 | 0,9178 | +0,002055 | -2.457 | NO_SIGNAL |
+| LinearSVC C 1,0 | 0,5992058 | **-0,0106** | 0/5 | 0,6784 | 0,9178 | +0,002102 | -2.457 | NO_SIGNAL |
+| boosting especializado B1 | 0,6097377 | **-0,0000** | 3/5 | 0,7606 | 0,9272 | +0,000249 | -6 | NO_SIGNAL |
+
+**`B1_SPECIALIST = NO_SIGNAL`, y con el se cierran las tres subfamilias de la ordinal.**
+
+**La razon es estructural y responde a la pregunta que el propio plan planteaba en el paso 3**: el
+problema de B1 **no es del estimador lineal ni de la falta de un boosting dedicado**. El `LinearSVC`
+pierde **0,085** de exactitud balanceada (0,7632 a 0,6782) y el boosting especializado queda **por
+debajo** del B1 de V20 (0,7606 contra 0,7632), con un hueco train a OOF de apenas +0,000249. Luego **el
+B1 del LightGBM multiclase de V20 ya esta a su nivel**, porque las cinco CDF comparten las 279 features y
+el mismo modelo, y la primera sale de un ajuste multiclase que ya la resuelve. **Cambiar el clasificador
+de B1 no es una mejora, es una regresion.**
+
+**Respuesta a la pregunta central de V21**: **no.** Mejorar especificamente `13-17` frente a `>=18` **no
+produce una mejora real en el objetivo final de seis clases**, medido con control exacto y dos mecanismos
+distantos. Sin submission.
+
+Cuatro incidentes de ejecucion propios, todos anteriores al resultado: una cadena multilinea del informe sin
+comillas en las lineas intermedias; una variable de bucle con un ideograma que no se renombro en los tres
+sitios que la usaban; un `KeyError` de `neto` por estar dentro de `complementariedad`; y un `NameError` de
+figura por usar `figura` en un sitio y `fig` en otro.
+
+`experiments.csv` pasa a **124 experimentos**. Auditoria de idioma: **0 errores** sobre 449 ficheros. Sin
+push.

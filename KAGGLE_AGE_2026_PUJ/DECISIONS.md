@@ -1583,3 +1583,49 @@ Tras declarar la saturación se probó la vía indicada como trabajo futuro:
   familia** mientras la ordinal tenga un challenger confirmado por leaderboard.
 - **Evidence**: `experiments/v20_p2_pesos.json`, `reports/v20_p2_pesos.md`, `reports/v20_p2_pesos.csv`,
   `figures/v20_p2_pesos.png`.
+
+## D-056 — V21: B1 no se puede mejorar cambiando de clasificador (NO_SIGNAL, y la razon es estructural)
+
+- **Observation**: la familia ordinal seguia abierta **unicamente** en este eje: sustituir el discriminador
+  de B1 (`13-17` frente a `>=18`) manteniendo las otras cuatro fronteras y la reconstruccion de V20
+  **completamente congeladas**. V20 sigue en LB **0,62689** y OOF **0,6097782**.
+- **Auditoria historica, hecha buscando codigo y no nombres.** Se busco si algun experimento habia
+  sustituido especificamente B1, entrenado un modelo dedicado a `13-17` frente a `>=18`, usado
+  boosting/SVM/arboles solo en esa frontera, o usado una representacion especifica unicamente para B1.
+  **Ninguno existia.** El unico antecedente cercano es **E-028**, y **no es equivalente**: entrena un
+  `LinearSVC` sobre las filas del **par adyacente** `("13-17", "18-24")`, es decir **dos clases y 57.539
+  filas**, mientras que B1 es el umbral **anidado** sobre **todas las 169.336 filas** y un desbalance
+  17/83. Ambos experimentos de esta fase son genuinamente nuevos.
+- **V20 como control exacto**: reconstruido desde sus artefactos ya medidos, da **0,6097782 frente a
+  0,6097782**, con SHA256 `69b574f737c8cf43...`. **Sin ese control ninguna variante seria
+  interpretable**, y el script se aborta si no cuadra.
+- **Result**:
+
+  | Candidato | macro-F1 | Delta vs V20 | Folds | B1 balanceada | B1 AUC | Hueco train->OOF | Neto | Estado |
+  |---|---|---|---|---|---|---|---|---|
+  | **V20 (control exacto)** | **0,6097782** | +0,0000 | 0/5 | **0,7632** | 0,9284 | - | 0 | CONTROL |
+  | LinearSVC C 0,2 | 0,5992098 | **-0,0106** | 0/5 | 0,6782 | 0,9178 | +0,002055 | -2.457 | `NO_SIGNAL` |
+  | LinearSVC C 1,0 | 0,5992058 | **-0,0106** | 0/5 | 0,6784 | 0,9178 | +0,002102 | -2.457 | `NO_SIGNAL` |
+  | boosting especializado B1 | 0,6097377 | **-0,0000** | 3/5 | 0,7606 | 0,9272 | +0,000249 | -6 | `NO_SIGNAL` |
+
+- **Decision**: **`B1_SPECIALIST = NO_SIGNAL`.** Los tres candidatos fallan, y los dos mecanismos
+  evaluados (control lineal y boosting especializado) **cierran la unica via abierta de la familia
+  ordinal**, porque no hay un tercer mecanismo de B1 en el plan.
+- **Reason**: la lectura es estructural y no estadistica, y responde a la pregunta que el propio plan
+  planteaba en el paso 3: **el problema de B1 no es del estimador lineal ni de la falta de un boosting
+  dedicado**. El `LinearSVC` pierde **0,085** de exactitud balanceada (0,7632 a 0,6782) y el boosting
+  especializado queda **por debajo** del B1 de V20 (0,7606 contra 0,7632), con un hueco train a OOF de
+  apenas +0,000249. Luego **el B1 del LightGBM multiclase de V20 ya esta a su nivel**, y la razon por la
+  que un clasificador binario dedicado no lo mejora es la misma que en D-052: **las cinco CDF comparten
+  las 279 features y el mismo modelo, y la primera sale de un ajuste multiclase que ya la resuelve.**
+  Cambiar el clasificador de B1 no es una mejora, es una regresion.
+- **Consequences**: (1) **la familia ordinal queda cerrada en sus tres subfamilias**: reconstruccion
+  (D-054), pesos (D-055) y ahora **clasificadores de B1**; (2) **la respuesta a la pregunta central de V21
+  es negativa**: mejorar especificamente `13-17` frente a `>=18` **no produce una mejora real en el objetivo
+  final de seis clases**, y eso esta medido con el control exacto y con dos mecanismos distintos; (3) **no se
+  propone submission**, porque ningun candidato mejora el OOF de V20 y el criterio exige mejora local
+  antes de enviar; (4) **lo que queda abierto ya no es un eje de la familia ordinal**: si se quiere seguir,
+  el siguiente paso seria volver a la comprension de **por que** el primer umbral tiene el menor impacto en
+  metrica y el mayor en blend, que es una pregunta de analisis y no de modelo.
+- **Evidence**: `experiments/v21_b1.json`, `reports/v21_b1.md`, `reports/v21_b1_comparativa.csv`,
+  `reports/v21_b1_complementariedad.csv`, `reports/v21_b1_ordinal.csv`, `figures/v21_b1.png`.
