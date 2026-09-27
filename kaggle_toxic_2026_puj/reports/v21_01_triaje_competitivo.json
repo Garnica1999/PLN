@@ -1,0 +1,174 @@
+{
+  "experimento": "V21-01 (triaje competitivo de las configuraciones de embedding ya entrenadas)",
+  "fecha": "2026-09-27T05:22:55+00:00",
+  "champion": {
+    "version": "V03",
+    "corrected_cv": 0.7772114525165721
+  },
+  "protocolo": {
+    "pliegues": "src.splits.pliegues_corregidos, StratifiedGroupKFold(5, shuffle, 42) sobre grupos de near-duplicado",
+    "filas": 1483,
+    "alineacion": "por identificador contra features/oof_v03_final.npz",
+    "pooling": "A (media), reutilizado de V5",
+    "bloque_denso": "L2 por documento",
+    "clasificador": "PARAMETROS_LR de V5 (C=2.0, balanced, liblinear)",
+    "umbrales": "congelados de V03"
+  },
+  "controles_de_cordura": [
+    {
+      "configuracion": "FUSION-B0-200",
+      "corrected_cv": 0.7817662818999719,
+      "publicado": 0.7818,
+      "desviacion": 3.371810002816833e-05,
+      "dentro_de_tolerancia": true
+    },
+    {
+      "configuracion": "FUSION-WS-3",
+      "corrected_cv": 0.7829585537918872,
+      "publicado": 0.783,
+      "desviacion": 4.1446208112860816e-05,
+      "dentro_de_tolerancia": true
+    },
+    {
+      "configuracion": "FUSION-VS-100",
+      "corrected_cv": 0.7822573748663734,
+      "publicado": 0.7823,
+      "desviacion": 4.262513362662812e-05,
+      "dentro_de_tolerancia": true
+    }
+  ],
+  "perfiles": {
+    "FUSION-WS-3": {
+      "nombre": "FUSION-WS-3",
+      "corrected_cv": 0.7829585537918872,
+      "delta_f1": 0.005747101275315081,
+      "celdas": 137,
+      "rescates": 74,
+      "danios": 63,
+      "neto": 11,
+      "filas_afectadas": 119,
+      "por_etiqueta": {
+        "HS": {
+          "cambios": 64,
+          "rescates": 33,
+          "danios": 31,
+          "neto": 2,
+          "tasa_positiva_v03": 0.4571813890761969,
+          "tasa_positiva_candidata": 0.46931894807821983
+        },
+        "TR": {
+          "cambios": 26,
+          "rescates": 17,
+          "danios": 9,
+          "neto": 8,
+          "tasa_positiva_v03": 0.3000674308833446,
+          "tasa_positiva_candidata": 0.30411328388401887
+        },
+        "AG": {
+          "cambios": 47,
+          "rescates": 24,
+          "danios": 23,
+          "neto": 1,
+          "tasa_positiva_v03": 0.37761294672960216,
+          "tasa_positiva_candidata": 0.38233310856372216
+        }
+      }
+    },
+    "FUSION-VS-100": {
+      "nombre": "FUSION-VS-100",
+      "corrected_cv": 0.7822573748663734,
+      "delta_f1": 0.0050459223498012795,
+      "celdas": 144,
+      "rescates": 77,
+      "danios": 67,
+      "neto": 10,
+      "filas_afectadas": 123,
+      "por_etiqueta": {
+        "HS": {
+          "cambios": 58,
+          "rescates": 30,
+          "danios": 28,
+          "neto": 2,
+          "tasa_positiva_v03": 0.4571813890761969,
+          "tasa_positiva_candidata": 0.4652730950775455
+        },
+        "TR": {
+          "cambios": 29,
+          "rescates": 16,
+          "danios": 13,
+          "neto": 3,
+          "tasa_positiva_v03": 0.3000674308833446,
+          "tasa_positiva_candidata": 0.3074848280512475
+        },
+        "AG": {
+          "cambios": 57,
+          "rescates": 31,
+          "danios": 26,
+          "neto": 5,
+          "tasa_positiva_v03": 0.37761294672960216,
+          "tasa_positiva_candidata": 0.38233310856372216
+        }
+      }
+    },
+    "L1 C=4.0": {
+      "nombre": "L1 C=4.0",
+      "corrected_cv": 0.7836424412648496,
+      "delta_f1": 0.006430988748277522,
+      "celdas": 413,
+      "rescates": 208,
+      "danios": 205,
+      "neto": 3,
+      "filas_afectadas": 296,
+      "por_etiqueta": {
+        "HS": {
+          "cambios": 164,
+          "rescates": 84,
+          "danios": 80,
+          "neto": 4,
+          "tasa_positiva_v03": 0.4571813890761969,
+          "tasa_positiva_candidata": 0.46257585974376264
+        },
+        "TR": {
+          "cambios": 103,
+          "rescates": 50,
+          "danios": 53,
+          "neto": -3,
+          "tasa_positiva_v03": 0.3000674308833446,
+          "tasa_positiva_candidata": 0.33580579905596764
+        },
+        "AG": {
+          "cambios": 146,
+          "rescates": 74,
+          "danios": 72,
+          "neto": 2,
+          "tasa_positiva_v03": 0.37761294672960216,
+          "tasa_positiva_candidata": 0.39649359406608226
+        }
+      }
+    }
+  },
+  "solapes": {
+    "FUSION-WS-3 vs FUSION-VS-100": {
+      "celdas_comunes": 110,
+      "solo_primera": 27,
+      "solo_segunda": 34,
+      "proporcion_de_solape": 0.8029197080291971
+    },
+    "FUSION-WS-3 vs L1 C=4.0": {
+      "celdas_comunes": 67,
+      "solo_primera": 70,
+      "solo_segunda": 346,
+      "proporcion_de_solape": 0.48905109489051096
+    },
+    "FUSION-VS-100 vs L1 C=4.0": {
+      "celdas_comunes": 73,
+      "solo_primera": 71,
+      "solo_segunda": 340,
+      "proporcion_de_solape": 0.5069444444444444
+    }
+  },
+  "gastos": {
+    "modelos_entrenados": 0,
+    "submissions": 0
+  }
+}
