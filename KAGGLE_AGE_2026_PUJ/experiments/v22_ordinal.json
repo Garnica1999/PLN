@@ -1,0 +1,113 @@
+{
+  "fase": "V22 forense de V20 y ordinal compartido",
+  "fecha": "2026-09-27",
+  "champion_congelado": {
+    "nombre": "V20 cadena de umbrales anidados",
+    "lb": 0.62689,
+    "cv": 0.6097782,
+    "intacto": true
+  },
+  "auditoria_forense": {
+    "labels_de_cada_frontera": "binarios, clase <= k-1 contra clase >= k",
+    "clases_del_target": 2,
+    "objective_declarado": "multiclass con num_class 6",
+    "objective_efectivo": "binario; el booster tiene seis clases y las columnas 2 a 5 son cero exacto",
+    "columnas_de_predict_proba": "seis: la 0 es P(lado alto) y la 1 es P(lado bajo)",
+    "como_se_obtiene_cada_cdf": "directamente de la salida del clasificador binario",
+    "cinco_binarios_independientes": true,
+    "multiclase_transformado": false,
+    "caso": "A",
+    "probabilidades": "acumuladas, P(Y <= k)",
+    "monotonia_garantizada_por_construccion": false,
+    "violaciones_en_V20": 18927
+  },
+  "cuantificacion_de_la_especificacion": {
+    "declarada": {
+      "macro_f1": 0.6097782,
+      "violaciones": 18927
+    },
+    "binaria_correcta": {
+      "macro_f1": 0.6091232,
+      "violaciones": 17099
+    },
+    "correlacion_entre_las_dos_cdf": 0.998,
+    "diferencia_maxima_de_calibracion": 0.3312,
+    "declarada_es_mejor_en": 0.000655,
+    "conclusion": "no es un bug: se documenta y se conserva"
+  },
+  "auditoria_historica_compartida": {
+    "shared_ordinal": false,
+    "cumulative_link": false,
+    "coral": false,
+    "ordinal_con_pesos_compartidos": false,
+    "multi_task_ordinal": false,
+    "five_head_shared": false,
+    "antecedente": "E-021a es el modelo ordinal de Frank y Hall: K-1 binarios INDEPENDIENTES, cada uno sobre un subconjunto. No comparte pesos"
+  },
+  "control_A": {
+    "macro_f1": 0.6097782,
+    "reproducido": true
+  },
+  "candidato_B": {
+    "candidato": "B: un solo LightGBM multiclase, cinco CDF por suma",
+    "macro_f1": 0.609615,
+    "delta_contra_v20": -0.000163,
+    "media_folds": 0.609617,
+    "desviacion_folds": 0.003206,
+    "delta_por_fold": [
+      -0.002028,
+      0.000678,
+      0.000345,
+      0.001039,
+      -0.00087
+    ],
+    "folds_positivos": 3,
+    "bootstrap_ic95_contra_v20": [
+      -0.00078,
+      0.00045
+    ],
+    "proporcion_positiva_del_bootstrap": 0.2985,
+    "f1_por_clase": {
+      "13-17": 0.6823,
+      "18-24": 0.5177,
+      "25-34": 0.4961,
+      "35-49": 0.5686,
+      "50-64": 0.663,
+      "65-xx": 0.7299
+    },
+    "b1": {
+      "exactitud_balanceada": 0.7632,
+      "f1_binario": 0.9444,
+      "auc": 0.9284,
+      "brier": 0.070318,
+      "hueco_train_oof": null
+    },
+    "monotonia": {
+      "violaciones_de_la_cdf_compartida": 0,
+      "violaciones_en_V20": 18927,
+      "garantizada_por_construccion": true
+    },
+    "complementariedad": {
+      "ambos_correctos": 101943,
+      "ambos_incorrectos": 64630,
+      "solo_candidato": 1375,
+      "solo_v20": 1388,
+      "neto": -13,
+      "cambios": 4451,
+      "cambios_por_clase": {
+        "13-17": 346,
+        "18-24": 960,
+        "25-34": 1256,
+        "35-49": 838,
+        "50-64": 747,
+        "65-xx": 304
+      }
+    },
+    "rescates": 1375,
+    "danos": 1388,
+    "neto": -13,
+    "estado": "WRONG_OBJECTIVE"
+  },
+  "submission_generada": false,
+  "segundos": 33.7
+}

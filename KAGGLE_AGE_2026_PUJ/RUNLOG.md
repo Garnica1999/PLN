@@ -1528,3 +1528,68 @@ figura por usar `figura` en un sitio y `fig` en otro.
 
 `experiments.csv` pasa a **124 experimentos**. Auditoria de idioma: **0 errores** sobre 449 ficheros. Sin
 push.
+
+## 2026-09-27 · V22 — Forense de V20 y cierre de B1_SPECIALIST (D-057)
+
+**Carlos detecto una inconsistencia real en el informe de V21**: afirmaba
+`LightGBMClassifier(objective="multiclass")`, objetivo binario `clase <= 0` contra `clase >= 1`, y
+`scores = predict_proba[:, 1] = P(lado bajo)`. Pedio auditar el **codigo**, no el informe.
+
+**El codigo real** (`scripts/v20_f3_umbrales.py`):
+```python
+objetivo = (clase <= k - 1).astype(int)          # target BINARIO
+modelo = lgb.LGBMClassifier(**HIERBA)            # HIERBA declara multiclass, num_class 6
+acumuladas[validacion, k - 1] = modelo.predict_proba(matriz[validacion])[:, 1]
+```
+
+**Las diez preguntas, respondidas contra el codigo y verificadas:**
+
+| Pregunta | Respuesta |
+|---|---|
+| 1. Labels | binarios, `clase <= k-1` contra `clase >= k` |
+| 2. Clases del target | **2** en cada entrenamiento |
+| 3. `objective` real | **declara** `multiclass` con `num_class 6`, pero el booster tiene seis clases y las columnas 2 a 5 son **cero exacto**. Declarado multiclase, efectivo binario |
+| 4. Columnas de `predict_proba` | **seis**, no dos. La 0 es `P(lado alto)`, la 1 es `P(lado bajo)` |
+| 5. Como se obtiene cada CDF | **directamente**, `acumuladas[:, k-1] = P(Y <= k-1)`, porque el target binario es exactamente esa probabilidad |
+| 6. Cinco binarios independientes | **SI** |
+| 7. Multiclase transformado | **NO** |
+| 8. Caso | **A, confirmado** |
+| 9. Probabilidades | **ACUMULADAS**, `P(Y <= k)` |
+| 10. Monotonia garantizada | **NO**, el 11,18 % de las filas la viola; V20 la impone despues |
+
+**La especificacion declarada cuantificada, que es lo que la hace importante**: sobre las mismas 279
+features y los mismos cinco folds, la especificacion declarada da **0,6097782** y una binaria
+correctamente especificada da **0,6091232**. La correlacion entre las dos CDF es de **0,998** en las
+cinco fronteras, luego el *ranking* es el mismo, pero la **calibracion** difiere hasta **0,33**. Y la
+especificacion declarada es **0,00066 mejor**. **No es un bug que haya que arreglar**: es una version que
+funciona mejor, y se documenta y conserva.
+
+**Paso 5, el modelo compartido**: un **unico LightGBM multiclase** del que se derivan las cinco CDF **por
+suma**. Al ser una suma de probabilidades no negativas, **las cinco CDF son monotonicas siempre**: se
+miden **0 violaciones** de 169.336, frente a las 18.927 de V20. Blend **0,6096150**, delta **-0,000163**,
+3 de 5 folds, IC95 [-0,00078, +0,00045], neto **-13**, **4.451 cambios**. **`WRONG_OBJECTIVE`.**
+
+**Paso 3, el control lineal**: `LinearSVC` C 0,2 da **0,5992098** (-0,0106) con B1 **0,6782**; C 1,0 da
+**0,5992058** con B1 **0,6784**. **B1 empeora 0,085** y el final se hunde. **`NO_SIGNAL`: B1 no mejora.**
+
+**Paso 4, el boosting especializado**: LightGBM binario, pequeno y regularizado, da **0,6097377**
+(-0,0000) con B1 **0.7606**, **por debajo** del B1 de V20 (0,7632), neto **-6**. **`NO_SIGNAL`.**
+
+**Decision**: **`B1_SPECIALIST = NO_SIGNAL`.** Las tres vias posibles de esta fase fallan por la misma
+razon estructural: **las cinco CDF comparten las 279 features y el mismo modelo, y la primera sale de un
+ajuste multiclase que ya la resuelve.** Cambiarla por un lineal la empeora 0,085, por un binario dedicado
+la empeora 0,003, o compartirla con las otras cuatro resta 0,0002 al final. Es la **leccion de D-052 repetida
+por cuarta vez**: **la exactitud de una frontera y el macro-F1 de seis clases no estan alineadas.**
+
+**El hallazgo que vale mas que el resultado**: compartir representacion **si elimina el problema de
+monotonia por construccion** (0 violaciones frente a 18.927), pero **no mejora el macro-F1 final**. Luego
+la consistencia ordinal **no era el cuello de botella**, y eso es lo que esta fase deja cerrado.
+
+Cinco incidentes de ejecucion propios, todos anteriores al resultado: una cadena multilinea del informe sin
+comillas en las lineas intermedias; un diccionario al que le faltaba la llave de cierre; una variable de bucle
+con un ideograma que no se renombro en los tres sitios que la usaban; un `KeyError` de `cambios` por estar
+dentro de `complementariedad`; y un `NameError` de `constructor` por evaluar un unico candidato como si
+fuera un bucle.
+
+`experiments.csv` pasa a **125 experimentos**. Auditoria de idioma: **0 errores** sobre 456 ficheros. Sin
+push.

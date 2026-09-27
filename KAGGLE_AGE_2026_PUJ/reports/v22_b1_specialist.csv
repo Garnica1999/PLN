@@ -1,0 +1,5 @@
+candidato,macro_f1,delta_contra_v20,media_folds,desviacion_folds,folds_positivos,bootstrap_ic95_contra_v20,f1_13_17,f1_18_24,rescates,danos,neto,estado
+V20 (control exacto),0.6097782,0.0,0.609785,0.003092,0,"[0.0, 0.0]",0.6818,0.517,0,0,0,CONTROL
+LinearSVC C 0.2,0.5992098,-0.010568,0.599195,0.003024,0,"[-0.011865, -0.009163]",0.6446,0.5161,6226,8683,-2457,"NO_SIGNAL: B1 no mejora, mecanismo cerrado"
+LinearSVC C 1.0,0.5992058,-0.010572,0.599191,0.00305,0,"[-0.011826, -0.009236]",0.6447,0.5162,6228,8685,-2457,"NO_SIGNAL: B1 no mejora, mecanismo cerrado"
+boosting especializado B1,0.6097377,-4.1e-05,0.609744,0.003402,3,"[-0.0003, 0.000229]",0.6815,0.517,276,282,-6,"NO_SIGNAL: B1 no mejora, mecanismo cerrado"

@@ -1629,3 +1629,53 @@ Tras declarar la saturación se probó la vía indicada como trabajo futuro:
   metrica y el mayor en blend, que es una pregunta de analisis y no de modelo.
 - **Evidence**: `experiments/v21_b1.json`, `reports/v21_b1.md`, `reports/v21_b1_comparativa.csv`,
   `reports/v21_b1_complementariedad.csv`, `reports/v21_b1_ordinal.csv`, `figures/v21_b1.png`.
+
+## D-057 — V22: forense de V20 resuelto (Caso A) y B1_SPECIALIST cerrada
+
+- **Observation**: el informe de V21 afirmaba `LightGBMClassifier(objective="multiclass")`, objetivo binario
+  `clase <= 0` contra `clase >= 1`, y `scores = predict_proba[:, 1] = P(lado bajo)`. Carlos detecto que
+  las tres no pueden aceptarse sin explicacion y pidio auditar el **codigo**, no el informe.
+- **Result del forense, verificando y no asumiendo**:
+  1. **Labels**: binarios, `(clase <= k-1).astype(int)` contra `clase >= k`. **Dos clases** por entrenamiento.
+  2. **Target**: `num_class = 2`, porque el vector de etiquetas solo contiene 0 y 1.
+  3. **`objective`**: HIERBA **declara** `"multiclass"` con `num_class = 6`, pero LightGBM construye un
+     booster de **seis** clases y las columnas 2 a 5 de `predict_proba` son **cero exacto**. El objetivo
+     *declarado* es multiclase y el *efectivo* es binario: ambas cosas son ciertas a la vez.
+  4. **Columnas de `predict_proba`**: **seis**, no dos. La 0 es `P(lado alto)` y la 1 es `P(lado bajo)`.
+  5. **Como se obtiene cada CDF**: **directamente**, `acumuladas[:, k-1] = P(Y <= k-1)`, porque el target
+     binario es exactamente esa probabilidad. No es una derivacion.
+  6. **Cinco binarios independientes**: **SI**, el bucle `for k in range(1, 6)` ajusta cinco instancias.
+  7. **Multiclase transformado**: **NO**. No existe ningun modelo multiclase del que se deriven.
+  8. **V20 es una cadena de cinco independientes**: **CASO A, confirmado**.
+  9. **Las probabilidades son ACUMULADAS**, `P(Y <= k)`, no de clase.
+  10. **La monotonia NO esta garantizada**: cada modelo es independiente y el **11,18 %** de las filas la
+      viola. V20 la impone **despues**, con el maximo acumulado.
+- **La especificacion declarada cuantificada, que es lo que la hace importante**: sobre las mismas 279
+  features y los mismos cinco folds, la especificacion declarada da **0,6097782** y una binaria
+  correctamente especificada da **0,6091232**. La correlacion entre las dos CDF es de **0,998** en las cinco
+  fronteras, luego el *ranking* es el mismo, pero la **calibracion** difiere hasta **0,33**. Y la
+  especificacion declarada es **0,00066 mejor**. **No es un bug que haya que arreglar**: es una version que
+  funciona mejor, y se documenta y conserva.
+- **Paso 5, el modelo compartido**: un **unico LightGBM multiclase** del que se derivan las cinco CDF **por
+  suma**. Al ser una suma de probabilidades no negativas, **las cinco CDF son monotonicas siempre**: se
+  miden **0 violaciones** de 169.336, frente a las 18.927 de V20. Blend **0,6096150**, delta **-0,000163**,
+  3 de 5 folds, IC95 [-0,00078, +0,00045], neto **-13**, **4.451 cambios**. **`WRONG_OBJECTIVE`.**
+- **Paso 3, el control lineal**: `LinearSVC` C 0,2 da **0,5992098** (-0,0106) con B1 **0,6782**; C 1,0 da
+  **0,5992058** con B1 **0,6784**. **B1 empeora 0,085** y el final se hunde. **`NO_SIGNAL`: B1 no mejora.**
+- **Paso 4, el boosting especializado**: LightGBM binario, pequeno y regularizado, da **0,6097377**
+  (-0,0000) con B1 **0,7606**, **por debajo** del B1 de V20 (0,7632), neto **-6**. **`NO_SIGNAL`.**
+- **Decision**: **`B1_SPECIALIST = NO_SIGNAL`, y con el se cierra la sustitucion de B1.** Y el modelo
+  compartido **no mejora el macro-F1 final**, luego la respuesta a la tercera pregunta es también negativa.
+- **Reason**: **las tres vias posibles de esta fase fallan por la misma razon estructural.** Las cinco CDF
+  comparten las 279 features y el mismo modelo; la primera sale de un ajuste multiclase que ya la resuelve, y
+  cambiarla por un lineal la empeora 0,085, por un binario dedicado la empeora 0,003, o compartirla con las
+  otras cuatro resta 0,0002 al final. **B1 del LightGBM multiclase de V20 ya esta a su nivel**, y la
+  leccion de D-052 se confirma por cuarta vez: **la exactitud de una frontera y el macro-F1 de seis clases
+  no estan alineadas.**
+- **Consequences**: (1) **V20 queda congelado sin tocar**, y su especificacion declarada se documenta en lugar
+  de corregirse, porque es 0,00066 mejor; (2) **la familia ordinal queda cerrada en sus cuatro subfamilias**:
+  reconstruccion (D-054), pesos (D-055), clasificadores de B1 (D-056) y **ahora representacion compartida**;
+  (3) **no se propone submission**: ningun candidato mejora el OOF de V20; (4) **lo que queda abierto es de
+  analisis, no de modelo**: por que el primer umbral tiene la menor metrica y el mayor impacto en el blend.
+- **Evidence**: `experiments/v22_ordinal.json`, `experiments/v22_b1_specialist.json`,
+  `reports/v22_ordinal.md`, `reports/v22_b1_specialist.md`, `reports/v22_b1_specialist.csv`.

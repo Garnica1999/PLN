@@ -1,0 +1,206 @@
+{
+  "fase": "V22 B1_SPECIALIST",
+  "fecha": "2026-09-27",
+  "champion_congelado": {
+    "nombre": "V20",
+    "lb": 0.62689,
+    "cv": 0.6097782,
+    "intacto": true
+  },
+  "control_exacto": {
+    "reproducido": true,
+    "macro_f1": 0.6097782
+  },
+  "candidatos": [
+    {
+      "candidato": "V20 (control exacto)",
+      "macro_f1": 0.6097782,
+      "delta_contra_v20": 0.0,
+      "media_folds": 0.609785,
+      "desviacion_folds": 0.003092,
+      "delta_por_fold": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "folds_positivos": 0,
+      "bootstrap_ic95_contra_v20": [
+        0.0,
+        0.0
+      ],
+      "f1_por_clase": {
+        "13-17": 0.6818,
+        "18-24": 0.517,
+        "25-34": 0.4965,
+        "35-49": 0.5687,
+        "50-64": 0.6637,
+        "65-xx": 0.731
+      },
+      "f1_13_17": 0.6818,
+      "f1_18_24": 0.517,
+      "b1": {
+        "exactitud_balanceada": 0.7632,
+        "f1_binario": 0.9444,
+        "auc": 0.9284,
+        "brier": 0.070318
+      },
+      "complementariedad": {
+        "ambos_correctos": 103331,
+        "ambos_incorrectos": 66005,
+        "solo_candidato": 0,
+        "solo_v20": 0,
+        "neto": 0,
+        "cambios": 0
+      },
+      "rescates": 0,
+      "danos": 0,
+      "neto": 0,
+      "estado": "CONTROL"
+    },
+    {
+      "candidato": "LinearSVC C 0.2",
+      "macro_f1": 0.5992098,
+      "delta_contra_v20": -0.010568,
+      "media_folds": 0.599195,
+      "desviacion_folds": 0.003024,
+      "delta_por_fold": [
+        -0.010477,
+        -0.011691,
+        -0.010727,
+        -0.009293,
+        -0.010761
+      ],
+      "folds_positivos": 0,
+      "bootstrap_ic95_contra_v20": [
+        -0.011865,
+        -0.009163
+      ],
+      "f1_por_clase": {
+        "13-17": 0.6446,
+        "18-24": 0.5161,
+        "25-34": 0.4653,
+        "35-49": 0.5686,
+        "50-64": 0.6662,
+        "65-xx": 0.7343
+      },
+      "f1_13_17": 0.6446,
+      "f1_18_24": 0.5161,
+      "b1": {
+        "exactitud_balanceada": 0.6782,
+        "f1_binario": 0.9361,
+        "auc": 0.9178,
+        "brier": 1.736827
+      },
+      "complementariedad": {
+        "ambos_correctos": 94648,
+        "ambos_incorrectos": 59779,
+        "solo_candidato": 6226,
+        "solo_v20": 8683,
+        "neto": -2457,
+        "cambios": 24075
+      },
+      "rescates": 6226,
+      "danos": 8683,
+      "neto": -2457,
+      "estado": "NO_SIGNAL: B1 no mejora, mecanismo cerrado"
+    },
+    {
+      "candidato": "LinearSVC C 1.0",
+      "macro_f1": 0.5992058,
+      "delta_contra_v20": -0.010572,
+      "media_folds": 0.599191,
+      "desviacion_folds": 0.00305,
+      "delta_por_fold": [
+        -0.010485,
+        -0.011644,
+        -0.010657,
+        -0.00936,
+        -0.010823
+      ],
+      "folds_positivos": 0,
+      "bootstrap_ic95_contra_v20": [
+        -0.011826,
+        -0.009236
+      ],
+      "f1_por_clase": {
+        "13-17": 0.6447,
+        "18-24": 0.5162,
+        "25-34": 0.4653,
+        "35-49": 0.5686,
+        "50-64": 0.6662,
+        "65-xx": 0.7343
+      },
+      "f1_13_17": 0.6447,
+      "f1_18_24": 0.5162,
+      "b1": {
+        "exactitud_balanceada": 0.6784,
+        "f1_binario": 0.9361,
+        "auc": 0.9178,
+        "brier": 1.740526
+      },
+      "complementariedad": {
+        "ambos_correctos": 94646,
+        "ambos_incorrectos": 59777,
+        "solo_candidato": 6228,
+        "solo_v20": 8685,
+        "neto": -2457,
+        "cambios": 24076
+      },
+      "rescates": 6228,
+      "danos": 8685,
+      "neto": -2457,
+      "estado": "NO_SIGNAL: B1 no mejora, mecanismo cerrado"
+    },
+    {
+      "candidato": "boosting especializado B1",
+      "macro_f1": 0.6097377,
+      "delta_contra_v20": -4.1e-05,
+      "media_folds": 0.609744,
+      "desviacion_folds": 0.003402,
+      "delta_por_fold": [
+        4.6e-05,
+        3.1e-05,
+        0.000667,
+        -0.000279,
+        -0.000665
+      ],
+      "folds_positivos": 3,
+      "bootstrap_ic95_contra_v20": [
+        -0.0003,
+        0.000229
+      ],
+      "f1_por_clase": {
+        "13-17": 0.6815,
+        "18-24": 0.517,
+        "25-34": 0.4967,
+        "35-49": 0.5686,
+        "50-64": 0.6636,
+        "65-xx": 0.731
+      },
+      "f1_13_17": 0.6815,
+      "f1_18_24": 0.517,
+      "b1": {
+        "exactitud_balanceada": 0.7606,
+        "f1_binario": 0.9441,
+        "auc": 0.9272,
+        "brier": 0.070854
+      },
+      "complementariedad": {
+        "ambos_correctos": 103049,
+        "ambos_incorrectos": 65729,
+        "solo_candidato": 276,
+        "solo_v20": 282,
+        "neto": -6,
+        "cambios": 805
+      },
+      "rescates": 276,
+      "danos": 282,
+      "neto": -6,
+      "estado": "NO_SIGNAL: B1 no mejora, mecanismo cerrado"
+    }
+  ],
+  "submission_generada": false,
+  "segundos": 33.7
+}
