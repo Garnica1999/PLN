@@ -1,0 +1,5 @@
+brazo,lambda,tipo,parametros_extra,macro_cabeza,frontera_1_cabeza,frontera_2_cabeza,macro_combinada,delta,frontera_1_combinada,frontera_2_combinada
+A_control,0.0,objetivo,0,0.5874,0.4858,0.4829,0.5982,-0.0023,0.4955,0.4948
+B_arquitectura,0.0,arquitectura,558,0.5893,0.4842,0.4868,0.5993,-0.0012,0.4955,0.4962
+C1_objetivo,0.1,objetivo,0,0.5879,0.4847,0.4808,0.599,-0.0015,0.496,0.4948
+C2_objetivo,0.5,objetivo,0,0.5887,0.4896,0.4889,0.599,-0.0015,0.498,0.498

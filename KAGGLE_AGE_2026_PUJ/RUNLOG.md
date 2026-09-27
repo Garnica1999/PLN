@@ -920,3 +920,25 @@ Después pide añadir además el paso de la **arquitectura del meta-modelo**.
   margen**, porque penaliza confusiones con la vecina verdadera y no con el resto, que es
   exactamente lo que evita el coste que P1 acaba de medir.
 - `experiments.csv` pasa a **105 experimentos**. Sin push.
+
+## 2026-09-26 · V18 P4: multi-objetivo, sin adopciones
+
+- Cuatro brazos que separan arquitectura de objetivo, con las mismas 279 variables de V12 y todo
+  pre-registrado (30 epocas fijas sin early stopping, lote 512, Adam 1e-3, lambda 0,0 / 0,1 / 0,5):
+  **A** control, **B** arquitectura (dos cabezas binarias que reparten la masa que la global ya pone
+  en cada par, 558 parametros extra), **C** objetivo (un termino binario de frontera sobre los
+  **mismos** logit, **cero** parametros extra).
+- Resultado: **A 0,5982** (-0,0023) · **B 0,5993** (-0,0012) · **C1 0,5990** (-0,0015) ·
+  **C2 0,5990** (-0,0015). Ninguno adopta.
+- **Lo que dice**: los cuatro brazos quedan a menos de 0,0011 entre si, y la frontera se mueve como
+  mucho +0,0038 frente a las +0,08 que movia el re-peso de P1. El termino **aditivo** no anade
+  parametros y **no hace nada**: la frontera no mejora. Anadir una cabeza auxiliar tampoco.
+- **Handicap de montaje, declarado**: la cabeza lineal de PyTorch no iguala a la LogReg de sklearn
+  (A_control queda 0,0023 por debajo de V12), y ese handicap es del mismo orden que los efectos que
+  se miden. Este experimento **no puede resolver efectos por debajo de 0,002**, asi que la ausencia
+  de diferencia entre brazos es compatible con efectos pequenos, no los descarta. Se registra porque
+  la honestidad del resultado depende de ese limite.
+- Con P1, P3 y P4 cerrados, **la pista del objetivo no da senal adoptable** en ninguna de sus tres
+  formulaciones. Segun la propia condicion del brief para P5 ("solo si P1-P4 demuestran que cambiar el
+  objetivo tiene senal"), P5 queda **no indicada** salvo decision explicita en contra.
+- `experiments.csv` pasa a **107 experimentos**. Sin push.

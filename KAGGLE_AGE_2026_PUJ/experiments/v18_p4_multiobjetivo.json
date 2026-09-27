@@ -1,0 +1,244 @@
+{
+  "fase": "V18 · P4 entrenamiento multi-objetivo",
+  "fecha": "2026-09-26",
+  "pre_registrado": {
+    "epocas": 30,
+    "lote": 512,
+    "tasa_aprendizaje": 0.001,
+    "lambda": [
+      0.0,
+      0.1,
+      0.5
+    ]
+  },
+  "brazos": [
+    {
+      "nombre": "A_control",
+      "lambda": 0.0,
+      "tipo": "objetivo"
+    },
+    {
+      "nombre": "B_arquitectura",
+      "lambda": 0.0,
+      "tipo": "arquitectura"
+    },
+    {
+      "nombre": "C1_objetivo",
+      "lambda": 0.1,
+      "tipo": "objetivo"
+    },
+    {
+      "nombre": "C2_objetivo",
+      "lambda": 0.5,
+      "tipo": "objetivo"
+    }
+  ],
+  "representacion": "las 279 variables de V12, ninguna nueva",
+  "referencia": {
+    "macro_f1": 0.6005,
+    "fronteras": {
+      "18-24|25-34": 0.4963,
+      "25-34|35-49": 0.4974
+    },
+    "f1_por_clase": {
+      "13-17": 0.671,
+      "18-24": 0.5059,
+      "25-34": 0.4858,
+      "35-49": 0.5593,
+      "50-64": 0.6549,
+      "65-xx": 0.7261
+    }
+  },
+  "resultados": [
+    {
+      "brazo": "A_control",
+      "lambda": 0.0,
+      "tipo": "objetivo",
+      "parametros_extra": 0,
+      "macro_cabeza_global": 0.5874,
+      "fronteras_cabeza_global": {
+        "18-24|25-34": 0.4858,
+        "25-34|35-49": 0.4829
+      },
+      "macro_combinada": 0.5982,
+      "accuracy": 0.5985,
+      "delta": -0.0023,
+      "frontera_18_24_25_34": 0.4955,
+      "frontera_25_34_35_49": 0.4948,
+      "bootstrap_ic95": [
+        -0.003052,
+        -0.001472,
+        0.0
+      ],
+      "f1_por_clase": {
+        "13-17": 0.6667,
+        "18-24": 0.5042,
+        "25-34": 0.4845,
+        "35-49": 0.5561,
+        "50-64": 0.6549,
+        "65-xx": 0.723
+      },
+      "por_fold": [
+        0.5995,
+        0.6029,
+        0.6016,
+        0.5978,
+        0.5884
+      ],
+      "folds_positivos": 0,
+      "f1_train_cabeza": 0.5916,
+      "f1_validacion_cabeza": 0.5874,
+      "brecha_train_validacion": 0.0042,
+      "epocas": 30,
+      "criterios": {
+        "efecto_minimo": false,
+        "folds_positivos": false,
+        "significacion": false
+      },
+      "adopta": false
+    },
+    {
+      "brazo": "B_arquitectura",
+      "lambda": 0.0,
+      "tipo": "arquitectura",
+      "parametros_extra": 558,
+      "macro_cabeza_global": 0.5893,
+      "fronteras_cabeza_global": {
+        "18-24|25-34": 0.4842,
+        "25-34|35-49": 0.4868
+      },
+      "macro_combinada": 0.5993,
+      "accuracy": 0.5997,
+      "delta": -0.0012,
+      "frontera_18_24_25_34": 0.4955,
+      "frontera_25_34_35_49": 0.4962,
+      "bootstrap_ic95": [
+        -0.001931,
+        -0.000359,
+        0.002
+      ],
+      "f1_por_clase": {
+        "13-17": 0.6684,
+        "18-24": 0.505,
+        "25-34": 0.4867,
+        "35-49": 0.5577,
+        "50-64": 0.6544,
+        "65-xx": 0.7239
+      },
+      "por_fold": [
+        0.6003,
+        0.6033,
+        0.6024,
+        0.5993,
+        0.5909
+      ],
+      "folds_positivos": 0,
+      "f1_train_cabeza": 0.5919,
+      "f1_validacion_cabeza": 0.5893,
+      "brecha_train_validacion": 0.0026,
+      "epocas": 30,
+      "criterios": {
+        "efecto_minimo": false,
+        "folds_positivos": false,
+        "significacion": false
+      },
+      "adopta": false
+    },
+    {
+      "brazo": "C1_objetivo",
+      "lambda": 0.1,
+      "tipo": "objetivo",
+      "parametros_extra": 0,
+      "macro_cabeza_global": 0.5879,
+      "fronteras_cabeza_global": {
+        "18-24|25-34": 0.4847,
+        "25-34|35-49": 0.4808
+      },
+      "macro_combinada": 0.599,
+      "accuracy": 0.5991,
+      "delta": -0.0015,
+      "frontera_18_24_25_34": 0.496,
+      "frontera_25_34_35_49": 0.4948,
+      "bootstrap_ic95": [
+        -0.002334,
+        -0.000794,
+        0.0
+      ],
+      "f1_por_clase": {
+        "13-17": 0.6689,
+        "18-24": 0.5065,
+        "25-34": 0.4833,
+        "35-49": 0.5581,
+        "50-64": 0.6535,
+        "65-xx": 0.7235
+      },
+      "por_fold": [
+        0.5996,
+        0.6041,
+        0.6016,
+        0.5984,
+        0.5903
+      ],
+      "folds_positivos": 0,
+      "f1_train_cabeza": 0.5927,
+      "f1_validacion_cabeza": 0.5879,
+      "brecha_train_validacion": 0.0048,
+      "epocas": 30,
+      "criterios": {
+        "efecto_minimo": false,
+        "folds_positivos": false,
+        "significacion": false
+      },
+      "adopta": false
+    },
+    {
+      "brazo": "C2_objetivo",
+      "lambda": 0.5,
+      "tipo": "objetivo",
+      "parametros_extra": 0,
+      "macro_cabeza_global": 0.5887,
+      "fronteras_cabeza_global": {
+        "18-24|25-34": 0.4896,
+        "25-34|35-49": 0.4889
+      },
+      "macro_combinada": 0.599,
+      "accuracy": 0.5989,
+      "delta": -0.0015,
+      "frontera_18_24_25_34": 0.498,
+      "frontera_25_34_35_49": 0.498,
+      "bootstrap_ic95": [
+        -0.0023,
+        -0.000781,
+        0.0
+      ],
+      "f1_por_clase": {
+        "13-17": 0.6683,
+        "18-24": 0.5044,
+        "25-34": 0.485,
+        "35-49": 0.5575,
+        "50-64": 0.6549,
+        "65-xx": 0.7238
+      },
+      "por_fold": [
+        0.5995,
+        0.6027,
+        0.6016,
+        0.5998,
+        0.5908
+      ],
+      "folds_positivos": 0,
+      "f1_train_cabeza": 0.5927,
+      "f1_validacion_cabeza": 0.5887,
+      "brecha_train_validacion": 0.004,
+      "epocas": 30,
+      "criterios": {
+        "efecto_minimo": false,
+        "folds_positivos": false,
+        "significacion": false
+      },
+      "adopta": false
+    }
+  ],
+  "dispositivo": "cuda",
+  "segundos": 376.4
+}
