@@ -253,13 +253,13 @@ Y el motivo de cierre que registro v5 (EBD-13) es explicito:
 > n-grams, un vector denso de 200 numeros no tiene espacio para aportar.
 
 Esto no se responde con un hiperparametro mejor. Se responde con un bloque denso que
-sea mas pequeño y mas informativo, o con una fuente que cambie la geometria. Las
+sea mas pequeno y mas informativo, o con una fuente que cambie la geometria. Las
 hipotesis 4 a 10 atacan lo segundo; solo la 9 ataca lo primero.
 
 Una lectura honesta del patron: 14 cambios de arquitectura produjeron un `deltaOOF`
 maximo de **+0.0057**, y el mejor `fusion_cv` de toda la fase fue **0.7830** frente al
 **0.7772** de V03 en local. Son metricas distintas, pero el orden de magnitud es el que
-es: el embedding mueve la metrica de la tarea en milésimas.
+es: el embedding mueve la metrica de la tarea en milesimas.
 
 ---
 
