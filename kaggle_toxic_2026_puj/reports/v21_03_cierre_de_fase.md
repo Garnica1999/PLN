@@ -96,12 +96,12 @@ referencias verificadas una a una):
 
 - El techo medido de **todo** el programa de embeddings es **+0.005748**. Y casi iguala al
   DeltaOOF de la sonda v05 Optuna (+0.0050), que perdio 0.00704 en el leaderboard. Es decir,
-  el máximo de la familia más trabajada del proyecto es del orden de lo que ya se sabe que
+  el maximo de la familia mas trabajada del proyecto es del orden de lo que ya se sabe que
   no transfiere.
-- La **regresión** (con las salvedades de §4.2) situaba el punto de equilibrio en un DeltaOOF
+- La **regresion** (con las salvedades de seccion 4.2) situaba el punto de equilibrio en un DeltaOOF
   de +0.033: seis veces el techo.
-- La matriz de evidencia publicada por idioma es dura: en persa con 6.000 filas gana la línea
-  clásica (+0.03 a +0.21 macro-F1), pero **en espanol toda la evidencia publicada favorece al
+- La matriz de evidencia publicada por idioma es dura: en persa con 6.000 filas gana la linea
+  clasica (+0.03 a +0.21 macro-F1), pero **en espanol toda la evidencia publicada favorece al
   modelo con embeddings**, porque no se pueden usar y porque el ensemble con word y char
   n-grams es mas de lo que aporta un vector de 200 numeros.
 - La **unica** palanca con evidencia solida y reproducible en espanol es el
@@ -136,9 +136,8 @@ Tres hallazgos que corrigen el registro y que no existian antes:
 
 - **No se gasto ninguna submission.** La instruccion era no gastar sin evidencia
   competitiva, y ninguna candidata la tiene.
-- **No se abrio V22.** Tres familias quedan sin medir por decision informada, no por
- Nh agotamiento de ideas.
+- **No se abrio V22.** Tres familias quedan sin medir por decision informada, no por agotamiento de ideas.
 - **No se toco V03.** Su sha256 sigue siendo
   `7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e`.
-- **No se groomaron familias para rellenar el presupuesto.** El encargo permitia 8
+- **No se formaron familias para rellenar el presupuesto.** El encargo permitia 8
   experimentos; se gastaron 0 de entrenamiento y 2 de reevaluacion.
