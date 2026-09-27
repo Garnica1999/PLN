@@ -1,0 +1,115 @@
+{
+  "experimento": "V23-01 (auditoria competitiva de svd:rbf_svc y su calibracion Platt)",
+  "fecha": "2026-09-27T05:55:30+00:00",
+  "mecanismo": "SVC con kernel RBF sobre la compresion TruncatedSVD(300) de la union TF-IDF de V03. Es la unica diferencia algoritmica real no cerrada: V03 es lineal sobre matriz dispersa de 27.431 features, esto es no lineal sobre 300 componentes densas, con regularizacion implicita por kernel en vez de por norma L2",
+  "control_de_cordura": {
+    "sigmoid": 0.7904096156415222,
+    "publicado": 0.79041,
+    "desviacion": 3.8435847771189913e-07,
+    "dentro_de_tolerancia": true
+  },
+  "sin_leakage": "el TruncatedSVD se ajusta dentro de cada pliegue con fit_transform sobre el entrenamiento y transform sobre la validacion; el SVC se ajusta sobre el bloque reducido de entrenamiento",
+  "configuraciones": [
+    {
+      "configuracion": "svd_rbf_sigmoid",
+      "corrected_cv": 0.7904096156415222,
+      "delta_vs_v03": 0.013198163124950146,
+      "corrected_cv_umbral_05": 0.7790886649978201,
+      "tasa_positiva": [
+        0.480782198246797,
+        0.30411328388401887,
+        0.38907619689817935
+      ],
+      "media_probabilidad": [
+        0.4593435690565424,
+        0.40890806265212526,
+        0.44146060148939636
+      ],
+      "celdas": 240,
+      "rescates": 136,
+      "danios": 104,
+      "neto": 32,
+      "filas_afectadas": 196,
+      "mcnemar_p": 0.04516241775449297,
+      "por_etiqueta": {
+        "HS": {
+          "cambios": 97,
+          "rescates": 55,
+          "danios": 42,
+          "neto": 13,
+          "tasa_positiva_v03": 0.4571813890761969,
+          "tasa_positiva_candidata": 0.480782198246797
+        },
+        "TR": {
+          "cambios": 48,
+          "rescates": 29,
+          "danios": 19,
+          "neto": 10,
+          "tasa_positiva_v03": 0.3000674308833446,
+          "tasa_positiva_candidata": 0.30411328388401887
+        },
+        "AG": {
+          "cambios": 95,
+          "rescates": 52,
+          "danios": 43,
+          "neto": 9,
+          "tasa_positiva_v03": 0.37761294672960216,
+          "tasa_positiva_candidata": 0.38907619689817935
+        }
+      }
+    },
+    {
+      "configuracion": "svd_rbf_platt",
+      "corrected_cv": 0.7859583230304507,
+      "delta_vs_v03": 0.008746870513878569,
+      "corrected_cv_umbral_05": 0.7776703891143987,
+      "tasa_positiva": [
+        0.4315576534052596,
+        0.3081591368846932,
+        0.35805799055967635
+      ],
+      "media_probabilidad": [
+        0.42133626548934056,
+        0.3269077151034834,
+        0.3794800714185657
+      ],
+      "celdas": 221,
+      "rescates": 131,
+      "danios": 90,
+      "neto": 41,
+      "filas_afectadas": 182,
+      "mcnemar_p": 0.00699472939295214,
+      "por_etiqueta": {
+        "HS": {
+          "cambios": 92,
+          "rescates": 52,
+          "danios": 40,
+          "neto": 12,
+          "tasa_positiva_v03": 0.4571813890761969,
+          "tasa_positiva_candidata": 0.4315576534052596
+        },
+        "TR": {
+          "cambios": 50,
+          "rescates": 29,
+          "danios": 21,
+          "neto": 8,
+          "tasa_positiva_v03": 0.3000674308833446,
+          "tasa_positiva_candidata": 0.3081591368846932
+        },
+        "AG": {
+          "cambios": 79,
+          "rescates": 50,
+          "danios": 29,
+          "neto": 21,
+          "tasa_positiva_v03": 0.37761294672960216,
+          "tasa_positiva_candidata": 0.35805799055967635
+        }
+      }
+    }
+  ],
+  "veredicto": "CANDIDATA_CON_EVIDENCIA",
+  "gastos": {
+    "modelos_entrenados": 0,
+    "submissions": 0
+  }
+}
