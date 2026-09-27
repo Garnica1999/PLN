@@ -1,0 +1,6 @@
+mecanismo,delta_macro,fraccion_del_techo,distancia_al_techo_restante,nota
+V03 referencia,0.0,0.0,0.046271,punto de partida
+V4-E conjunto,-0.005922,-0.128,0.052193,ya cerrado como NO_SIGNAL
+E2-18 meta Ridge,0.010189,0.2202,0.036082,"adoptado en su gate, rechazado en el externo"
+V6-B condicional suave B1,-0.0107,-0.2312,0.056971,"cerrado, es la formulacion prohibida"
+orculo con HS verdadera,0.046271,1.0,0.0,"techo diagnostico, no adoptable"

@@ -1489,3 +1489,73 @@ irreconciliable con una razon de 1 a 3500, y el barrido daba el mismo resultado 
 dos puntos.
 
 **Sin push, sin merge adicional, sin reset, sin rebase, sin modificar otras ramas.**
+
+## Fase v13: estimacion de HS e inferencia estructurada de etiquetas (2026-09-26)
+
+Worktree `/home/carlos/Git/PLN-v13`, rama `proyecto-kaggle-toxic-2026-v13`, desde `ce774bc` que es
+el estado validado de v12. v12 y v11 no se modifican. **Dos experimentos, V13-00 y V13-01**, mas el
+informe final V13-02, y el registro llega a **237 filas con 237 claves unicas y 23 campos, sin filas
+malformadas**.
+
+**Ninguna submission generada, ninguna enviada, ninguna recomendada. V03 se mantiene** con
+0.7772114525165721 local y 0.78306 en el externo. **holdout2 intacto, con 0 de 3 evaluaciones
+gastadas.** Segunda particion no ejecutada, porque no hay candidata. Test no utilizado.
+
+### La auditoria va primera y salva la fase antes de gastar nada
+
+El enunciado exigia ejecutar la auditoria historica antes de gastar presupuesto, y el resultado es
+que **tres de los cuatro mecanismos propuestos no eran nuevos**. P1 es V4-E literal, cerrado como
+NO_SIGNAL con 0.771289. **P2 ya se habia ejecutado y adoptado**: E2-02 dio 0.7853 y E2-18 dio 0.7874,
+ambos por encima del gate de candidato, y ninguno se envio porque el leaderboard fue 0.78163 frente
+a 0.78306 de V03. P3 es el mismo meta y V8-08. P4 tiene su version dura en H2 y su version de ranking
+en H3. La auditoria inventaria 11 mecanismos: 8 ya cerrados, 3 genuinamente nuevos.
+
+**Un error mio, corregido y documentado**: mi conteo de invariantes sumo los estados 011 y 001 como
+si ambos violaran TR=1 con HS=0, y eso contaba las violaciones de AG como si fueran de TR. El
+conteo correcto es **0 para TR y 22 para AG**, verificado con un guion independiente antes de tocar
+el codigo. La asimetria que revelo es la que hace util la medicion: **la invariante de TR es dura y
+la de AG no lo es**, y por eso P4 no puede imponerse a mano.
+
+### La medicion nueva, y lo que decide la fase
+
+El meta historico siempreuvo el score propio de HS entre sus features, porque las 12 probabilidades
+OOF son 4 bases por 3 etiquetas. Eso hacia **inobservable** cuanto aportan TR y AG. Con el score
+propio excluido, el meta alcanza **0.8433 de AUC para predecir HS**, frente a 0.8677 de V03 con el
+suyo, luego el score propio solo aporta **+0.0244**.
+
+**TR y AG SI llevan informacion sobre los errores de HS. Y no es utilizable**: ese mismo brazo
+**pierde 0.007541** en el macro-F1, con la F1 de HS cayendo 0.022624, porque el umbral esta
+congelado y un AUC alto no es una buena decision en el punto de corte. El brazo con el score propio
+rescata 20 filas y dana 1, y solo mueve +0.000534 en el macro, por debajo del gate exploratorio.
+
+### El reencuadre: el techo no esta en HS
+
+**El techo de +0.046271 no proviene de mejorar la estimacion de HS.** El oraculo que lo produce no
+cambia **ni una sola celda** de la columna HS: pone TR y AG a cero en las 835 filas donde el HS
+verdadero es cero, borrando 196 falsos positivos, 78 de TR y 118 de AG. Es un efecto **aguas abajo**
+de la condicion de HS, y ningun metodo que mejore la columna HS puede alcanzarlo.
+
+El corolario medido no admite matiz: **corregir la etiqueta de HS deja TR y AG con delta exactamente
+cero**. Y los 143 falsos negativos de HS, donde 107 filas tienen TR o AG verdadera a uno, **no los
+toca el oraculo en ninguna celda**.
+
+### Dos correcciones mas, antes de mirar resultados
+
+`ajustar_base` abortaba ante cualquier warning, y con veinte ajustes por pliegue eso convertia un
+aviso benigno en un fallo del experimento. Y el veredicto del informe decidia con un umbral de AUC de
+0.52 **que me habia inventado**, en lugar del gate real del proyecto. Ademas mi primera verificacion
+de donde viene el techo comprobaba la columna 0 del oraculo, que nunca modifica.
+
+### Estado
+
+**2 experimentos de 8 principales y 0 de 4 de reserva. 0 adoptables, 1 marginal, 1 rechazada.
+0 submissions, 0 de 3 evaluaciones de holdout2, segunda particion no ejecutada, test no utilizado,
+V03 congelada e intacta con identidad verificada en cada ejecucion.**
+
+**La linea de inferencia estructurada de etiquetas queda CERRADA FORMALMENTE.** No se afirma que
+TOXIC no pueda mejorar. Se afirma que la inferencia estructurada condicionada por HS no es una via
+rentable con los mecanismos permitidos, porque el techo no esta en la estimacion de HS sino en la
+aplicacion de la condicion de HS a las decisiones de TR y AG, via que ya estaba cerrada por
+medicion desde v12.
+
+**Sin push, sin merge adicional, sin reset, sin rebase, sin modificar otras ramas.**

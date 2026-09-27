@@ -1,0 +1,7 @@
+hipotesis,mecanismo,historico_equivalente,delta_macro,fraccion_del_techo,supera_gate,estado
+P1 clasificacion conjunta de estados,label powerset marginalizado a las tres etiquetas,"V4-E, 7 variantes",-0.005922,-0.128,False,"CERRADA por la auditoria, sin ejecutar. V4-E dio 0.771289"
+P2 meta-modelo de HS con scores OOF de TR y AG,regresion logistica por etiqueta sobre scores OOF,"E2-02 y E2-18, con un conjunto de features mas rico",0.010189,0.2202,True,"CERRADA por la auditoria, sin ejecutar. Alcanzo el gate en local y perdio en el externo, 0.78163 frente a 0.78306"
+P3 inferencia conjunta continua por scores,combinacion de margenes en inferencia,el mismo meta y V8-08,,,False,"CERRADA por la auditoria, sin ejecutar"
+P4 perdida de coherencia,perdida que acopla las etiquetas,"H2 para la version dura, H3 para la de ranking",-0.004187,-0.0905,False,"CERRADA por la auditoria, sin ejecutar. Ademas la invariante de AG NO es dura, con 22 filas reales que la rompen, luego no puede imponerse a mano"
+Aislacion: TR y AG solos,"meta de HS con features OOF, y su macro-F1 final",NINGUNO. Es lo unico genuinamente nuevo de la fase,-0.007541,-0.163,False,RECHAZADA
+Aislacion: propio mas TR y AG,"meta de HS con features OOF, y su macro-F1 final",NINGUNO. Es lo unico genuinamente nuevo de la fase,0.000534,0.0115,False,"MARGINAL, no adoptada"

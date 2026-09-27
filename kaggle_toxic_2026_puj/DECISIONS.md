@@ -3448,3 +3448,136 @@ recuperable frente a lo que queda disponible en otro sitio.
 
 **Estado**: 6 experimentos, 0 candidatas, 0 submissions, 0 de 3 evaluaciones de holdout2, segunda
 particion no ejecutada, V03 congelada e intacta. Registro en 234 filas con 234 claves y 23 campos.
+
+## D-100 - La auditoria historica precede a la fase: 8 de los 11 mecanismos ya estaban cerrados
+
+La fase de estimacion de HS se abrio con cuatro mecanismos propuestos, P1 a P4, y con la instruccion
+de ejecutar la auditoria historica **antes de gastar presupuesto experimental**. La auditoria V13-00
+es el primer experimento de la fase y no entrena nada, y su resultado es que **tres de los cuatro
+mecanismos no eran nuevos**.
+
+| mecanismo propuesto | historico | resultado historico |
+| --- | --- | --- |
+| P1 clasificacion conjunta de estados | V4-E, 7 variantes | 0.771289 frente a 0.777211, NO_SIGNAL |
+| P2 meta de HS con scores OOF de TR y AG | E2-02 y E2-18 | 0.7853 y 0.7874, ambos ADOPTADOS y ambos rechazados por transferencia |
+| P3 inferencia conjunta continua por scores | el mismo meta y V8-08 | 192 de 3462 celdas, sin superar el techo |
+| P4 perdida de coherencia | H2 para la version dura, H3 para la de ranking | -0.004187 y -0.002469 |
+
+**El hallazgo que mas condiciona la fase es que P2 ya se habia ejecutado y adoptado**: E2-02 dio
+0.7853 y E2-18 dio 0.7874, ambos por encima del gate de candidato de +0.003, y ninguno se envio
+porque el leaderboard fue **0.78163 frente a 0.78306** de V03. Reejecutar ese mecanismo habria sido
+una violacion de la clausula de no reabrir familias cerradas, con el riesgo de transferencia ya
+medido.
+
+**Decision**: no se ejecutan P1 a P4. Se ejecutan los tres diagnosticos que la auditoria declara
+genuinamente nuevos, que no son mecanismos sino mediciones ausentes del registro: el aislamiento de
+la contribucion de TR y AG a HS, la descomposicion de errores por regimen, y la fraccion del techo
+por mecanismo.
+
+## D-101 - La invariante de TR es dura y la de AG no lo es, y el proyecto lo tenia al reves
+
+La auditoria media por primera vez los estados conjuntos observados en el desarrollo, que es lo que
+el enunciado exige antes de imponer ninguna regla logica a mano. Hay **6 estados** en 1483 filas:
+000 con 813, 001 con 22, 100 con 79, 101 con 124, 110 con 24 y 111 con 421.
+
+| invariante | violaciones | veredicto |
+| --- | --- | --- |
+| TR=1 implica HS=1 | **0** | DURA |
+| AG=1 implica HS=0, es decir AG=1 con HS=0 | **22** | NO dura |
+
+V6-01 reporto la invariante de TR como determinista con cero casos, y el registro de hoy lo confirma.
+Lo que **no** era cierto era la lectura implicita de que ambas invariantes se comportaban igual. La
+de AG tiene 22 filas reales que la rompen, y son estados del problema, no ruido.
+
+**Consecuencia para P4**: una perdida de coherencia podria imponer legitimamente la invariante de
+TR y **no** la de AG, porque hacerlo con la de AG seria tratar estados reales como si fueran ruido,
+que es exactamente el tipo de decision que este proyecto ha rechazado siempre.
+
+**Correccion propia, documentada**: mi primer codigo conto `violaciones_tr = estados["011"] +
+estados["001"] = 0 + 22 = 22`, es decir sumo los estados 011 y 001 como si ambos violaran TR=1 con
+HS=0, y eso contaba las violaciones de AG como si fueran de TR. Se verifico el conteo correcto con un
+guion independiente **antes** de tocar el codigo de la auditoria. El error no era de los datos sino
+mio, y la asimetria que revelo es la que hace util la medicion.
+
+## D-102 - TR y AG SI llevan informacion sobre los errores de HS, y NO es utilizable
+
+La medicion nueva de la fase. E2-02 y E2-18 entrenaron el meta por etiqueta sobre 12 probabilidades
+OOF de 4 bases, que son 4 bases por 3 etiquetas, luego **el score propio de HS estaba siempre entre
+las features** cuando se predicia HS. Eso hacia inobservable cuanto aportan TR y AG: el meta podia
+predecir HS con su propio score y el efecto de las otras dos etiquetas quedaba mezclado.
+
+Con el score propio excluido deliberadamente:
+
+| sistema de puntuacion de HS | AUC | desviacion entre pliegues |
+| --- | --- | --- |
+| V03 con su propio score | 0.8677 | - |
+| meta con su propio score mas TR y AG | 0.8710 | 0.0150 |
+| meta **solo** con TR y AG | **0.8433** | 0.0096 |
+
+**El aporte del score propio es de +0.0244 de AUC**, y el meta sin el score propio sigue muy lejos
+del azar. Es decir: **TR y AG llevan informacion sobre los errores de HS**, y esa cifra no existia
+en el registro historico.
+
+**Pero no es utilizable.** El mismo brazo que alcanza 0.8433 de AUC **pierde 0.007541** en el
+macro-F1, con la F1 de HS cayendo 0.022624. El brazo con el score propio rescata 20 filas de HS y
+dana 1, y aun asi solo mueve +0.001603 en la columna HS y +0.000534 en el macro, por debajo del gate
+exploratorio de +0.002 y muy lejos del gate de candidato de +0.003.
+
+**La leccion es sobre la metrica, no sobre el mecanismo**: un AUC alto no es una buena decision en
+el punto de corte, y en esta fase el umbral esta congelado en 0.44. La separacion entre capacidad de
+discriminar y calidad de la decision es justo lo que el AUC oculta y lo que el gate mide.
+
+## D-103 - El techo de +0.046271 NO esta en la estimacion de HS, y eso reencuadra la fase
+
+El techo se ha leido durante dos fases como evidencia de que a HS le falta informacion. **Es falso**, y
+lo demuestra el propio oraculo que lo produce:
+
+| donde actua el oraculo | celdas | nota |
+| --- | --- | --- |
+| columna HS | **0** | no cambia ni una sola celda |
+| columna TR | 78 | falsos positivos borrados |
+| columna AG | 118 | falsos positivos borrados |
+| filas afectadas | 134 | todas con HS verdadero igual a cero |
+
+El techo proviene de **poner TR y AG a cero en las 835 filas donde el HS verdadero es cero**. Es un
+efecto **aguas abajo** de la condicion de HS, y **ningun metodo que mejore la columna HS puede
+alcanzarlo**, por mas bien calibrado que este.
+
+**El corolario medido no admite matiz**: corregir la etiqueta de HS deja TR y AG con delta
+**exactamente cero** en los dos brazos. El meta produce una probabilidad para HS y no altera lo que
+el sistema decide sobre las otras dos etiquetas. Estimar mejor HS y mejorar el sistema son cosas
+distintas en este problema.
+
+**Y el regimen de los falsos negativos de HS, que es donde una correccion de HS pareceria funcionar bien, esta
+fuera del techo por completo**: 143 filas con HS real uno y HS predicho cero, de las cuales 107 tienen
+TR o AG verdadera a uno, y el oraculo **no toca ninguna de esas celdas**. Su regla dice algo de los
+negativos de HS y nada de los positivos mal clasificados.
+
+**Decision adoptada**: henceforth, ninguna hipotesis de mejora de HS se justifica por el techo de
++0.046271, porque ese techo no es alcanzable por ese eje. El techo solo se cita como diagnostico del
+coste de la condicion, que es lo que es.
+
+## D-104 - Cierre de la v13: 2 experimentos, 0 candidatas, y una linea cerrada formalmente
+
+| ID | via | mejor delta | decision |
+| --- | --- | --- | --- |
+| V13-00 | auditoria historica de HS | no entrena | CLOSED |
+| V13-01 | aislamiento de la evidencia de TR y AG sobre HS | +0.000534 | NO ADOPTADA, marginal |
+| V13-02 | informe final y cierre de linea | no entrena | CLOSED |
+
+**La linea de inferencia estructurada de etiquetas queda CERRADA FORMALMENTE**, con la formulacion
+que el propio enunciado preve para este caso. No se afirma que TOXIC no pueda mejorar. Se afirma,
+mas estrecho: que la inferencia estructurada condicionada por HS no es una via rentable con los
+mecanismos permitidos, porque el techo no esta en la estimacion de HS sino en la aplicacion de la
+condicion de HS a las decisiones de TR y AG, y esa via ya estaba cerrada por medicion desde v12, con
+el post-proceso duro en -0.004187 porque su llave se equivoca en 143 filas.
+
+**Lo que la fase aporta y no era mecanica son tres diagnosticos que no estaban en el registro**: la
+separacion del aporte del score propio de HS, que es +0.0244 de AUC; la descomposicion de los
+errores en los cuatro regimenes de verdad y predicha, con el conteo de falsos positivos de TR y AG en
+cada uno; y la procedencia del techo, que reencuadra dos fases de trabajo previo.
+
+**Estado**: 2 experimentos de 8 principales y 0 de 4 de reserva, 0 adoptables, 1 marginal, 1
+rechazada, 0 submissions, 0 de 3 evaluaciones de holdout2, segunda particion no ejecutada, test no
+utilizado, V03 congelada e intacta con identidad verificada en cada ejecucion. Registro en 237 filas
+con 237 claves y 23 campos.

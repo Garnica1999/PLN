@@ -1,6 +1,41 @@
 # PROJECT_STATE - KAGGLE_TOXIC_2026_PUJ
 
-Ultima actualizacion: 2026-09-25 (fase **v5** CERRADA; curva 10M->50M ejecutada, D-033).
+Ultima actualizacion: 2026-09-26 (fases **v6** a **v13** CERRADAS; v13 cierra la linea de
+inferencia estructurada de etiquetas, D-100 a D-104). La seccion de detalle mas reciente que
+habia aqui era la de v5; las de v6 a v12 se registran en DECISIONS.md, RUNLOG.md y en los
+informes de fase de reports/.
+
+## Fase v13 "Estimacion de HS e inferencia estructurada de etiquetas" (CERRADA el 2026-09-26)
+
+Rama `proyecto-kaggle-toxic-2026-v13` (worktree `/home/carlos/Git/PLN-v13`, base v12 `ce774bc`).
+**Dos experimentos, V13-00 y V13-01, mas el informe final V13-02.** Decisiones D-100 a D-104.
+
+**Resultado: 0 candidatas adoptables.** El mejor delta es **+0.000534** frente a un gate de
++0.003. 0 submissions, 0 de 3 evaluaciones de holdout2, segunda particion no ejecutada, test no
+utilizado, V03 congelada e intacta.
+
+**Lo que la fase deja establecido, y reencuadra dos fases anteriores**:
+
+1. **El techo de +0.046271 NO esta en la estimacion de HS.** El oraculo que lo produce no cambia ni
+   una sola celda de la columna HS: pone TR y AG a cero en las 835 filas donde el HS verdadero es
+   cero. Es un efecto aguas abajo de la condicion de HS, y ningun metodo que mejore HS puede
+   alcanzarlo.
+2. **Corregir la etiqueta de HS deja TR y AG con delta exactamente cero.** El meta produce una
+   probabilidad para HS y no altera lo que el sistema decide sobre las otras dos etiquetas.
+3. **TR y AG SI llevan informacion sobre los errores de HS, y no es utilizable.** Con el score propio
+   de HS excluido, el meta alcanza 0.8433 de AUC frente a 0.8677 de V03 con el suyo, luego el score
+   propio solo aporta +0.0244. Pero ese mismo brazo pierde 0.007541 en el macro-F1, porque el umbral
+   esta congelado y un AUC alto no es una buena decision en el punto de corte.
+4. **La invariante de TR=1 implica HS=1 es dura, con cero violaciones, y la de AG=1 con HS=0 no lo
+   es, con 22 filas reales que la rompen.** El proyecto la tenia registrada como uniforme.
+5. **La formulacion prohibida por el enunciado, p(TR|X) = p(HS|X) * p(TR|HS=1,X), es exactamente
+   V6-B**, ya evaluada y cerrada. No se ha repetido.
+
+**Decision de gobierno: la linea de inferencia estructurada de etiquetas queda CERRADA FORMALMENTE.**
+No se afirma que TOXIC no pueda mejorar; se afirma que esa via no es rentable con los mecanismos
+permitidos. La unica pregunta que sigue abierta, y que **no** es una hipotesis de esta linea, es
+conseguir que la condicion de HS se estime mejor, porque de ella dependen los tres caminos y el
+proyecto ya cerro las familias que podrian atacarla.
 
 ## Fase actual: v5 «Embedding from Scratch» (CERRADA el 2026-09-25)
 
