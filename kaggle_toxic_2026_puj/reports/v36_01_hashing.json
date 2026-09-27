@@ -1,0 +1,277 @@
+{
+  "familia": "HASHING_TRICK",
+  "experimento": "V36-01 (Hashing trick con TF-IDF sobre la representacion de V03)",
+  "fecha": "2026-09-27T20:11:07+00:00",
+  "estado": "OOF_EVALUATED",
+  "pregunta": "eliminar el vocabulario explicito y reemplazarlo por una representacion hashed, manteniendo aproximadamente el mismo TF-IDF y los mismos n-grams, encuentra una frontera lineal que generaliza mejor o aporta errores complementarios que V03 no captura",
+  "alcance": "solo cambia la representacion de vocabulario explicito a hashing. No se introducen nuevas n-grams, BM25, features, URL, embeddings ni kernels",
+  "configuracion": {
+    "word": "HashingVectorizer(analyzer=word, ngram_range=(1,2), n_features=2**18, alternate_sign=False)",
+    "char": "HashingVectorizer(analyzer=char_wb, ngram_range=(3,5), n_features=2**18, alternate_sign=False)",
+    "tfidf": "TfidfTransformer(use_idf=True, smooth_idf=True, sublinear_tf=True, norm=l2)",
+    "ajuste_del_tfidf": "dentro de cada training fold, nunca con validacion"
+  },
+  "control": {
+    "corrected_cv": 0.7772114525165721,
+    "f1_por_etiqueta": {
+      "HS": 0.7616892911010558,
+      "TR": 0.8157303370786517,
+      "AG": 0.7542147293700089
+    },
+    "train_f1": 0.970864604949201,
+    "gap_train_oof": 0.19365315243262893,
+    "metricas_por_pliegue": [
+      {
+        "f1_media_columnas": 0.7960101143044023,
+        "f1_macro6": 0.8355934550524347,
+        "f1_micro": 0.7926829268292683,
+        "f1_samples": 0.3383838383838384,
+        "exact_match": 0.734006734006734,
+        "f1_por_etiqueta": {
+          "HS": 0.7786259541984732,
+          "TR": 0.8275862068965517,
+          "AG": 0.7818181818181819
+        },
+        "pliegue": 1
+      },
+      {
+        "f1_media_columnas": 0.7940339497874405,
+        "f1_macro6": 0.8299584761236635,
+        "f1_micro": 0.7912408759124088,
+        "f1_samples": 0.3489337822671156,
+        "exact_match": 0.7104377104377104,
+        "f1_por_etiqueta": {
+          "HS": 0.7835820895522388,
+          "TR": 0.8279569892473119,
+          "AG": 0.7705627705627706
+        },
+        "pliegue": 2
+      },
+      {
+        "f1_media_columnas": 0.7788600288600289,
+        "f1_macro6": 0.815470061805838,
+        "f1_micro": 0.7756874095513748,
+        "f1_samples": 0.3466216216216216,
+        "exact_match": 0.6993243243243243,
+        "f1_por_etiqueta": {
+          "HS": 0.7681159420289855,
+          "TR": 0.8152173913043478,
+          "AG": 0.7532467532467533
+        },
+        "pliegue": 3
+      },
+      {
+        "f1_media_columnas": 0.738598013128522,
+        "f1_macro6": 0.7854431411794273,
+        "f1_micro": 0.7348148148148148,
+        "f1_samples": 0.3233108108108108,
+        "exact_match": 0.6587837837837838,
+        "f1_por_etiqueta": {
+          "HS": 0.7293233082706767,
+          "TR": 0.7821229050279329,
+          "AG": 0.7043478260869566
+        },
+        "pliegue": 4
+      },
+      {
+        "f1_media_columnas": 0.7790564997088775,
+        "f1_macro6": 0.8244089783905003,
+        "f1_micro": 0.7735849056603774,
+        "f1_samples": 0.31470258136924806,
+        "exact_match": 0.7104377104377104,
+        "f1_por_etiqueta": {
+          "HS": 0.7480314960629921,
+          "TR": 0.8263473053892215,
+          "AG": 0.7627906976744186
+        },
+        "pliegue": 5
+      }
+    ]
+  },
+  "controles_de_implementacion": {
+    "dimension_por_bloque": 262144,
+    "dimension_total": 524288,
+    "no_negativo_por_bloque": [
+      true,
+      true
+    ],
+    "sin_nan": true,
+    "sin_inf": true,
+    "reproducible": true,
+    "sparsity_muestra": 99.95514742533366,
+    "nnz_muestra": 70547,
+    "porcentaje_features_no_vacias": 0.04485257466634115
+  },
+  "colisiones": {
+    "word": {
+      "n_ngrams_en_vocabulario": 3435,
+      "buckets_unicos": 3408,
+      "colisiones": 27,
+      "proporcion_de_buckets_con_mas_de_un_ngram": 0.007860262008733625,
+      "dimension": 262144
+    },
+    "char": {
+      "n_ngrams_en_vocabulario": 21211,
+      "buckets_unicos": 20363,
+      "colisiones": 848,
+      "proporcion_de_buckets_con_mas_de_un_ngram": 0.03997925604639102,
+      "dimension": 262144
+    }
+  },
+  "hashing": {
+    "corrected_cv": 0.7484267737875343,
+    "delta_vs_v03": -0.028784678729037783,
+    "f1_por_etiqueta": {
+      "HS": 0.7430207587687903,
+      "TR": 0.767816091954023,
+      "AG": 0.7344434706397897
+    },
+    "train_f1": 0.9603462759163202,
+    "gap_train_oof": 0.21191950212878585,
+    "metricas_por_pliegue": [
+      {
+        "f1_media_columnas": 0.7704288710349999,
+        "f1_macro6": 0.8125448900125599,
+        "f1_micro": 0.7683109118086696,
+        "f1_samples": 0.337037037037037,
+        "exact_match": 0.6767676767676768,
+        "f1_por_etiqueta": {
+          "HS": 0.7445255474452555,
+          "TR": 0.7738095238095238,
+          "AG": 0.7929515418502202
+        },
+        "pliegue": 1
+      },
+      {
+        "f1_media_columnas": 0.773526440742279,
+        "f1_macro6": 0.8101170537213598,
+        "f1_micro": 0.7687861271676301,
+        "f1_samples": 0.34051627384960714,
+        "exact_match": 0.6767676767676768,
+        "f1_por_etiqueta": {
+          "HS": 0.7455197132616488,
+          "TR": 0.8111111111111111,
+          "AG": 0.7639484978540773
+        },
+        "pliegue": 2
+      },
+      {
+        "f1_media_columnas": 0.7396263668231141,
+        "f1_macro6": 0.782363849865984,
+        "f1_micro": 0.7392550143266475,
+        "f1_samples": 0.34177927927927926,
+        "exact_match": 0.6385135135135135,
+        "f1_por_etiqueta": {
+          "HS": 0.7508771929824561,
+          "TR": 0.7555555555555555,
+          "AG": 0.7124463519313304
+        },
+        "pliegue": 3
+      },
+      {
+        "f1_media_columnas": 0.7341202975875717,
+        "f1_macro6": 0.777059922934148,
+        "f1_micro": 0.7317073170731707,
+        "f1_samples": 0.33975225225225225,
+        "exact_match": 0.6554054054054054,
+        "f1_por_etiqueta": {
+          "HS": 0.7420494699646644,
+          "TR": 0.770949720670391,
+          "AG": 0.6893617021276596
+        },
+        "pliegue": 4
+      },
+      {
+        "f1_media_columnas": 0.7231418206044303,
+        "f1_macro6": 0.7787012866254525,
+        "f1_micro": 0.7239263803680982,
+        "f1_samples": 0.31503928170594836,
+        "exact_match": 0.632996632996633,
+        "f1_por_etiqueta": {
+          "HS": 0.7318840579710145,
+          "TR": 0.7239263803680982,
+          "AG": 0.7136150234741784
+        },
+        "pliegue": 5
+      }
+    ]
+  },
+  "complementariedad": {
+    "rescates": 131,
+    "danios": 238,
+    "neto": -107,
+    "celdas_modificadas": 369,
+    "por_label": {
+      "HS": {
+        "rescates": 46,
+        "danios": 89,
+        "neto": -43,
+        "celdas_modificadas": 135
+      },
+      "TR": {
+        "rescates": 24,
+        "danios": 62,
+        "neto": -38,
+        "celdas_modificadas": 86
+      },
+      "AG": {
+        "rescates": 61,
+        "danios": 87,
+        "neto": -26,
+        "celdas_modificadas": 148
+      }
+    },
+    "correlacion_de_decisiones": 0.9170600134861767
+  },
+  "efecto_de_dimensionalidad": {
+    "2^18": {
+      "corrected_cv": 0.7484267737875343,
+      "delta": -0.028784678729037783
+    }
+  },
+  "fairness": {
+    "representacion": [
+      "vocabulario explicito",
+      "hashing"
+    ],
+    "word_ngrams": [
+      "(1,2)",
+      "(1,2)"
+    ],
+    "char_ngrams": [
+      "(3,5)",
+      "(3,5)"
+    ],
+    "tfidf": [
+      "si",
+      "si"
+    ],
+    "sublinear_tf": [
+      "si",
+      "si"
+    ],
+    "min_df": [
+      "2",
+      "no aplica"
+    ],
+    "dimensionalidad": [
+      "~27k",
+      "2x2^18"
+    ],
+    "vocabulario": [
+      "si",
+      "no"
+    ],
+    "colisiones": [
+      "no",
+      "si"
+    ]
+  },
+  "decision": "OVERFIT",
+  "gastos": {
+    "submissions": 0,
+    "modelos_entrenados": 3,
+    "memoria_pico_mb": 1417.2,
+    "segundos": 7.3
+  }
+}

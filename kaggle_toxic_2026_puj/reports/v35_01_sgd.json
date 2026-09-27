@@ -1,0 +1,272 @@
+{
+  "familia": "SGD_LOSS",
+  "experimento": "V35-01 (SGD hinge y modified_huber sobre la representacion exacta de V03)",
+  "fecha": "2026-09-27T13:07:37+00:00",
+  "estado": "OOF_EVALUATED",
+  "pregunta": "una perdida lineal distinta, particularmente Modified Huber, puede encontrar una solucion que generalice mejor que la regresion logistica de V03 sobre la misma representacion",
+  "correccion_conceptual": "SGDClassifier NO es una nueva clase de funcion de decision. Sigue siendo lineal. Lo que cambia es la perdida (hinge = control SVM, modified_huber = objetivo distinto de la logistica) y el procedimiento de optimizacion estocastico",
+  "hiperparametros": {
+    "penalty": "l2",
+    "alpha": 0.0001,
+    "max_iter": 2000,
+    "tol": 0.001,
+    "class_weight": "balanced",
+    "random_state": 42
+  },
+  "control": {
+    "corrected_cv": 0.7772114525165721,
+    "f1_por_etiqueta": {
+      "HS": 0.7616892911010558,
+      "TR": 0.8157303370786517,
+      "AG": 0.7542147293700089
+    },
+    "train_f1": 0.970864604949201,
+    "gap_train_oof": 0.19365315243262893,
+    "metricas_por_pliegue": [
+      {
+        "f1_media_columnas": 0.7960101143044023,
+        "f1_macro6": 0.8355934550524347,
+        "f1_micro": 0.7926829268292683,
+        "f1_samples": 0.3383838383838384,
+        "exact_match": 0.734006734006734,
+        "f1_por_etiqueta": {
+          "HS": 0.7786259541984732,
+          "TR": 0.8275862068965517,
+          "AG": 0.7818181818181819
+        },
+        "pliegue": 1
+      },
+      {
+        "f1_media_columnas": 0.7940339497874405,
+        "f1_macro6": 0.8299584761236635,
+        "f1_micro": 0.7912408759124088,
+        "f1_samples": 0.3489337822671156,
+        "exact_match": 0.7104377104377104,
+        "f1_por_etiqueta": {
+          "HS": 0.7835820895522388,
+          "TR": 0.8279569892473119,
+          "AG": 0.7705627705627706
+        },
+        "pliegue": 2
+      },
+      {
+        "f1_media_columnas": 0.7788600288600289,
+        "f1_macro6": 0.815470061805838,
+        "f1_micro": 0.7756874095513748,
+        "f1_samples": 0.3466216216216216,
+        "exact_match": 0.6993243243243243,
+        "f1_por_etiqueta": {
+          "HS": 0.7681159420289855,
+          "TR": 0.8152173913043478,
+          "AG": 0.7532467532467533
+        },
+        "pliegue": 3
+      },
+      {
+        "f1_media_columnas": 0.738598013128522,
+        "f1_macro6": 0.7854431411794273,
+        "f1_micro": 0.7348148148148148,
+        "f1_samples": 0.3233108108108108,
+        "exact_match": 0.6587837837837838,
+        "f1_por_etiqueta": {
+          "HS": 0.7293233082706767,
+          "TR": 0.7821229050279329,
+          "AG": 0.7043478260869566
+        },
+        "pliegue": 4
+      },
+      {
+        "f1_media_columnas": 0.7790564997088775,
+        "f1_macro6": 0.8244089783905003,
+        "f1_micro": 0.7735849056603774,
+        "f1_samples": 0.31470258136924806,
+        "exact_match": 0.7104377104377104,
+        "f1_por_etiqueta": {
+          "HS": 0.7480314960629921,
+          "TR": 0.8263473053892215,
+          "AG": 0.7627906976744186
+        },
+        "pliegue": 5
+      }
+    ]
+  },
+  "V35_01_hinge": {
+    "loss": "hinge",
+    "penalty": "l2",
+    "alpha": 0.0001,
+    "max_iter": 2000,
+    "tol": 0.001,
+    "class_weight": "balanced",
+    "random_state": 42,
+    "corrected_cv": 0.7610346707187201,
+    "delta_vs_v03": -0.01617678179785198,
+    "f1_por_etiqueta": {
+      "HS": 0.7408491947291361,
+      "TR": 0.8126410835214447,
+      "AG": 0.7296137339055794
+    },
+    "train_f1": 1.0,
+    "gap_train_oof": 0.2389653292812799,
+    "convergencia": {
+      "n_iter": {
+        "1": [
+          22,
+          18,
+          22
+        ],
+        "2": [
+          15,
+          23,
+          13
+        ],
+        "3": [
+          24,
+          18,
+          17
+        ],
+        "4": [
+          21,
+          11,
+          18
+        ],
+        "5": [
+          19,
+          14,
+          21
+        ]
+      },
+      "max_iter_alcanzado": {
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false
+      },
+      "warnings": []
+    }
+  },
+  "V35_02_modified_huber": {
+    "loss": "modified_huber",
+    "penalty": "l2",
+    "alpha": 0.0001,
+    "max_iter": 2000,
+    "tol": 0.001,
+    "class_weight": "balanced",
+    "random_state": 42,
+    "corrected_cv": 0.7435661249893974,
+    "delta_vs_v03": -0.03364532752717464,
+    "f1_por_etiqueta": {
+      "HS": 0.7195685670261941,
+      "TR": 0.7953216374269005,
+      "AG": 0.7158081705150977
+    },
+    "train_f1": 1.0,
+    "gap_train_oof": 0.25643387501060255,
+    "convergencia": {
+      "n_iter": {
+        "1": [
+          18,
+          17,
+          11
+        ],
+        "2": [
+          15,
+          21,
+          20
+        ],
+        "3": [
+          15,
+          20,
+          16
+        ],
+        "4": [
+          16,
+          22,
+          17
+        ],
+        "5": [
+          18,
+          15,
+          17
+        ]
+      },
+      "max_iter_alcanzado": {
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false
+      },
+      "warnings": []
+    }
+  },
+  "complementariedad": {
+    "hinge": {
+      "rescates": 116,
+      "danios": 194,
+      "neto": -78,
+      "celdas_modificadas": 310,
+      "cobertura_celdas": 0.06967857945605754,
+      "por_label": {
+        "HS": {
+          "rescates": 49,
+          "danios": 87,
+          "neto": -38,
+          "celdas_modificadas": 136
+        },
+        "TR": {
+          "rescates": 31,
+          "danios": 33,
+          "neto": -2,
+          "celdas_modificadas": 64
+        },
+        "AG": {
+          "rescates": 36,
+          "danios": 74,
+          "neto": -38,
+          "celdas_modificadas": 110
+        }
+      }
+    },
+    "modified_huber": {
+      "rescates": 139,
+      "danios": 241,
+      "neto": -102,
+      "celdas_modificadas": 380,
+      "cobertura_celdas": 0.08541245223645763,
+      "por_label": {
+        "HS": {
+          "rescates": 55,
+          "danios": 103,
+          "neto": -48,
+          "celdas_modificadas": 158
+        },
+        "TR": {
+          "rescates": 31,
+          "danios": 42,
+          "neto": -11,
+          "celdas_modificadas": 73
+        },
+        "AG": {
+          "rescates": 53,
+          "danios": 96,
+          "neto": -43,
+          "celdas_modificadas": 149
+        }
+      }
+    }
+  },
+  "sensibilidad": {
+    "max_iter_500": 0.7435661249893974,
+    "max_iter_5000": 0.7435661249893974,
+    "tol_1e-2": 0.7458725074599135,
+    "tol_1e-4": 0.7516747004513792
+  },
+  "decision": "SGD = CLOSED. hinge -0.016177, modified_huber -0.033645. ",
+  "gastos": {
+    "submissions": 0,
+    "modelos_entrenados": 3,
+    "memoria_pico_mb": 230.7,
+    "segundos": 12.2
+  }
+}

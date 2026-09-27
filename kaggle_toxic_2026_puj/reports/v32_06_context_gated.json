@@ -1,0 +1,210 @@
+{
+  "familia": "STRUCTURAL_TEXT_FEATURES",
+  "experimento": "V32-06 (Fase 7 de V32: context-gated n-grams)",
+  "fecha": "2026-09-27T11:59:18+00:00",
+  "estado": "OOF_EVALUATED",
+  "fase": "7_CONTEXT_GATED_NGRAMS",
+  "pregunta": "un mismo n-grama tiene distinto valor segun la longitud del tweet",
+  "alcance": "version controlada de n-grama x length_bin para los K n-gramas mas frecuentes y estables del training fold",
+  "medicion_previa": {
+    "k_top": 100,
+    "min_df": 5,
+    "n_bins": 3,
+    "nuevas_columnas": 300,
+    "vocabulario_training": 2673,
+    "porcentaje_del_vocabulario": 11.22334455667789,
+    "cortes_de_longitud": [
+      11.0,
+      20.0
+    ]
+  },
+  "regla_de_seleccion": "los n-gramas aparecen en al menos MIN_DF documentos y en documentos de mas de un tramo de longitud",
+  "control": {
+    "corrected_cv": 0.7772114525165721,
+    "f1_por_etiqueta": {
+      "HS": 0.7616892911010558,
+      "TR": 0.8157303370786517,
+      "AG": 0.7542147293700089
+    },
+    "train_f1": 0.970864604949201,
+    "gap_train_oof": 0.19365315243262893,
+    "metricas_por_pliegue": [
+      {
+        "f1_media_columnas": 0.7960101143044023,
+        "f1_macro6": 0.8355934550524347,
+        "f1_micro": 0.7926829268292683,
+        "f1_samples": 0.3383838383838384,
+        "exact_match": 0.734006734006734,
+        "f1_por_etiqueta": {
+          "HS": 0.7786259541984732,
+          "TR": 0.8275862068965517,
+          "AG": 0.7818181818181819
+        },
+        "pliegue": 1
+      },
+      {
+        "f1_media_columnas": 0.7940339497874405,
+        "f1_macro6": 0.8299584761236635,
+        "f1_micro": 0.7912408759124088,
+        "f1_samples": 0.3489337822671156,
+        "exact_match": 0.7104377104377104,
+        "f1_por_etiqueta": {
+          "HS": 0.7835820895522388,
+          "TR": 0.8279569892473119,
+          "AG": 0.7705627705627706
+        },
+        "pliegue": 2
+      },
+      {
+        "f1_media_columnas": 0.7788600288600289,
+        "f1_macro6": 0.815470061805838,
+        "f1_micro": 0.7756874095513748,
+        "f1_samples": 0.3466216216216216,
+        "exact_match": 0.6993243243243243,
+        "f1_por_etiqueta": {
+          "HS": 0.7681159420289855,
+          "TR": 0.8152173913043478,
+          "AG": 0.7532467532467533
+        },
+        "pliegue": 3
+      },
+      {
+        "f1_media_columnas": 0.738598013128522,
+        "f1_macro6": 0.7854431411794273,
+        "f1_micro": 0.7348148148148148,
+        "f1_samples": 0.3233108108108108,
+        "exact_match": 0.6587837837837838,
+        "f1_por_etiqueta": {
+          "HS": 0.7293233082706767,
+          "TR": 0.7821229050279329,
+          "AG": 0.7043478260869566
+        },
+        "pliegue": 4
+      },
+      {
+        "f1_media_columnas": 0.7790564997088775,
+        "f1_macro6": 0.8244089783905003,
+        "f1_micro": 0.7735849056603774,
+        "f1_samples": 0.31470258136924806,
+        "exact_match": 0.7104377104377104,
+        "f1_por_etiqueta": {
+          "HS": 0.7480314960629921,
+          "TR": 0.8263473053892215,
+          "AG": 0.7627906976744186
+        },
+        "pliegue": 5
+      }
+    ]
+  },
+  "challenger": {
+    "corrected_cv": 0.7622554418159698,
+    "f1_por_etiqueta": {
+      "HS": 0.7486871717929482,
+      "TR": 0.7986425339366516,
+      "AG": 0.7394366197183099
+    },
+    "train_f1": 0.9763205692204917,
+    "metricas_por_pliegues": [
+      {
+        "f1_media_columnas": 0.7758401906186796,
+        "f1_macro6": 0.8181190429535242,
+        "f1_micro": 0.7736131934032984,
+        "f1_samples": 0.34051627384960714,
+        "exact_match": 0.7037037037037037,
+        "f1_por_etiqueta": {
+          "HS": 0.769811320754717,
+          "TR": 0.8,
+          "AG": 0.7577092511013216
+        },
+        "pliegue": 1
+      },
+      {
+        "f1_media_columnas": 0.7783238900092831,
+        "f1_macro6": 0.8206634536612912,
+        "f1_micro": 0.77526395173454,
+        "f1_samples": 0.3286195286195286,
+        "exact_match": 0.696969696969697,
+        "f1_por_etiqueta": {
+          "HS": 0.7615384615384615,
+          "TR": 0.8089887640449438,
+          "AG": 0.7644444444444445
+        },
+        "pliegue": 2
+      },
+      {
+        "f1_media_columnas": 0.7605401844532279,
+        "f1_macro6": 0.8010616706308288,
+        "f1_micro": 0.7569141193595342,
+        "f1_samples": 0.3334459459459459,
+        "exact_match": 0.6891891891891891,
+        "f1_por_etiqueta": {
+          "HS": 0.75,
+          "TR": 0.8043478260869565,
+          "AG": 0.7272727272727273
+        },
+        "pliegue": 3
+      },
+      {
+        "f1_media_columnas": 0.7396787855133082,
+        "f1_macro6": 0.7822535429386329,
+        "f1_micro": 0.7351664254703328,
+        "f1_samples": 0.3287162162162162,
+        "exact_match": 0.6621621621621622,
+        "f1_por_etiqueta": {
+          "HS": 0.7226277372262774,
+          "TR": 0.7821229050279329,
+          "AG": 0.7142857142857143
+        },
+        "pliegue": 4
+      },
+      {
+        "f1_media_columnas": 0.7576535946054852,
+        "f1_macro6": 0.8063222536285227,
+        "f1_micro": 0.7534883720930232,
+        "f1_samples": 0.31672278338945004,
+        "exact_match": 0.6801346801346801,
+        "f1_por_etiqueta": {
+          "HS": 0.7404580152671756,
+          "TR": 0.7976190476190477,
+          "AG": 0.7348837209302326
+        },
+        "pliegue": 5
+      }
+    ],
+    "gap_train_oof": 0.21406512740452188
+  },
+  "delta_oof": -0.014956010700602262,
+  "comparacion": {
+    "rescates": 120,
+    "danios": 172,
+    "neto": -52,
+    "celdas_modificadas": 292,
+    "cobertura_celdas": 0.06563272645538323,
+    "por_label": {
+      "HS": {
+        "rescates": 51,
+        "danios": 70,
+        "neto": -19,
+        "celdas_modificadas": 121
+      },
+      "TR": {
+        "rescates": 19,
+        "danios": 33,
+        "neto": -14,
+        "celdas_modificadas": 52
+      },
+      "AG": {
+        "rescates": 50,
+        "danios": 69,
+        "neto": -19,
+        "celdas_modificadas": 119
+      }
+    }
+  },
+  "gastos": {
+    "submissions": 0,
+    "modelos_entrenados": 3,
+    "memoria_pico_mb": 238.1,
+    "segundos": 15.8
+  }
+}

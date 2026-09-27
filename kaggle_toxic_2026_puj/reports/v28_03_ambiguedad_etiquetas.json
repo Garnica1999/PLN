@@ -1,0 +1,264 @@
+{
+  "familia": "ERROR_DIAGNOSTIC",
+  "experimento": "V28-03 (ambiguedad de etiqueta estratificada por la region donde V03 falla: el margen residual es reducible?)",
+  "fecha": "2026-09-27T10:02:02+00:00",
+  "estado": "DIAGNOSTIC_ONLY",
+  "pregunta": "el error residual de V03 en la region de texto largo y con URL es senal reducible que una fuente de informacion nueva podria capturar, o ambiguedad irreducible de las etiquetas",
+  "alcance": "no se entrena ningun modelo ni se construye ninguna feature. Se usa la estructura de grupos fusionados que ya existe en el proyecto para medir el desacuerdo entre anotaciones",
+  "tamanos_de_grupo": {
+    "n_grupos": 1415,
+    "n_grupos_con_2_o_mas": 37,
+    "filas_en_grupos_con_2_o_mas": 105,
+    "filas_en_grupos_contradictorios": 43,
+    "fraccion_de_filas_que_aporta_informacion": 0.07080242751180041
+  },
+  "desacuerdo_por_region": {
+    "texto largo (>= 25 tokens)": {
+      "n_filas": 301,
+      "fraccion": 0.20296695886716115,
+      "n_filas_en_grupos_multimember": 32,
+      "fraccion_en_grupos_multimember": 0.10631229235880399,
+      "por_etiqueta": {
+        "HS": {
+          "n_filas_ambiguas": 11,
+          "tasa_de_ambiguedad": 0.34375,
+          "tasa_de_error_v03": 0.24916943521594684,
+          "error_en_filas_ambiguas": 0.18181818181818182,
+          "error_en_filas_no_ambiguas": 0.14285714285714285
+        },
+        "TR": {
+          "n_filas_ambiguas": 6,
+          "tasa_de_ambiguedad": 0.1875,
+          "tasa_de_error_v03": 0.09634551495016612,
+          "error_en_filas_ambiguas": 0.0,
+          "error_en_filas_no_ambiguas": 0.0
+        },
+        "AG": {
+          "n_filas_ambiguas": 15,
+          "tasa_de_ambiguedad": 0.46875,
+          "tasa_de_error_v03": 0.24584717607973422,
+          "error_en_filas_ambiguas": 0.3333333333333333,
+          "error_en_filas_no_ambiguas": 0.11764705882352941
+        }
+      }
+    },
+    "texto no largo (< 25 tokens)": {
+      "n_filas": 1182,
+      "fraccion": 0.7970330411328388,
+      "n_filas_en_grupos_multimember": 73,
+      "fraccion_en_grupos_multimember": 0.06175972927241963,
+      "por_etiqueta": {
+        "HS": {
+          "n_filas_ambiguas": 26,
+          "tasa_de_ambiguedad": 0.3561643835616438,
+          "tasa_de_error_v03": 0.2038917089678511,
+          "error_en_filas_ambiguas": 0.3076923076923077,
+          "error_en_filas_no_ambiguas": 0.1702127659574468
+        },
+        "TR": {
+          "n_filas_ambiguas": 20,
+          "tasa_de_ambiguedad": 0.273972602739726,
+          "tasa_de_error_v03": 0.11421319796954314,
+          "error_en_filas_ambiguas": 0.4,
+          "error_en_filas_no_ambiguas": 0.07547169811320754
+        },
+        "AG": {
+          "n_filas_ambiguas": 26,
+          "tasa_de_ambiguedad": 0.3561643835616438,
+          "tasa_de_error_v03": 0.17174280879864637,
+          "error_en_filas_ambiguas": 0.34615384615384615,
+          "error_en_filas_no_ambiguas": 0.0851063829787234
+        }
+      }
+    },
+    "con URL": {
+      "n_filas": 458,
+      "fraccion": 0.3088334457181389,
+      "n_filas_en_grupos_multimember": 35,
+      "fraccion_en_grupos_multimember": 0.07641921397379912,
+      "por_etiqueta": {
+        "HS": {
+          "n_filas_ambiguas": 13,
+          "tasa_de_ambiguedad": 0.37142857142857144,
+          "tasa_de_error_v03": 0.2445414847161572,
+          "error_en_filas_ambiguas": 0.15384615384615385,
+          "error_en_filas_no_ambiguas": 0.18181818181818182
+        },
+        "TR": {
+          "n_filas_ambiguas": 6,
+          "tasa_de_ambiguedad": 0.17142857142857143,
+          "tasa_de_error_v03": 0.0851528384279476,
+          "error_en_filas_ambiguas": 0.16666666666666666,
+          "error_en_filas_no_ambiguas": 0.0
+        },
+        "AG": {
+          "n_filas_ambiguas": 19,
+          "tasa_de_ambiguedad": 0.5428571428571428,
+          "tasa_de_error_v03": 0.22270742358078602,
+          "error_en_filas_ambiguas": 0.3684210526315789,
+          "error_en_filas_no_ambiguas": 0.125
+        }
+      }
+    },
+    "sin URL": {
+      "n_filas": 1025,
+      "fraccion": 0.6911665542818611,
+      "n_filas_en_grupos_multimember": 70,
+      "fraccion_en_grupos_multimember": 0.06829268292682927,
+      "por_etiqueta": {
+        "HS": {
+          "n_filas_ambiguas": 24,
+          "tasa_de_ambiguedad": 0.34285714285714286,
+          "tasa_de_error_v03": 0.19902439024390245,
+          "error_en_filas_ambiguas": 0.3333333333333333,
+          "error_en_filas_no_ambiguas": 0.15217391304347827
+        },
+        "TR": {
+          "n_filas_ambiguas": 20,
+          "tasa_de_ambiguedad": 0.2857142857142857,
+          "tasa_de_error_v03": 0.12195121951219512,
+          "error_en_filas_ambiguas": 0.35,
+          "error_en_filas_no_ambiguas": 0.08
+        },
+        "AG": {
+          "n_filas_ambiguas": 22,
+          "tasa_de_ambiguedad": 0.3142857142857143,
+          "tasa_de_error_v03": 0.17073170731707318,
+          "error_en_filas_ambiguas": 0.3181818181818182,
+          "error_en_filas_no_ambiguas": 0.08333333333333333
+        }
+      }
+    }
+  },
+  "concentracion_del_error_en_filas_ambiguas": {
+    "texto largo (>= 25 tokens)": {
+      "HS": {
+        "n_ambiguas": 11,
+        "n_no_ambiguas": 21,
+        "error_si_ambigua": 0.18181818181818182,
+        "error_si_no_ambigua": 0.14285714285714285,
+        "razon_de_razones": 1.272727272727273,
+        "razon_de_odds_fisher": 1.3333333333333333,
+        "p_fisher": 1.0
+      },
+      "TR": {
+        "n_ambiguas": 6,
+        "n_no_ambiguas": 26,
+        "error_si_ambigua": 0.0,
+        "error_si_no_ambigua": 0.0,
+        "razon_de_razones": null,
+        "razon_de_odds_fisher": NaN,
+        "p_fisher": 1.0
+      },
+      "AG": {
+        "n_ambiguas": 15,
+        "n_no_ambiguas": 17,
+        "error_si_ambigua": 0.3333333333333333,
+        "error_si_no_ambigua": 0.11764705882352941,
+        "razon_de_razones": 2.833333333333333,
+        "razon_de_odds_fisher": 3.75,
+        "p_fisher": 0.20946112965022867
+      }
+    },
+    "texto no largo (< 25 tokens)": {
+      "HS": {
+        "n_ambiguas": 26,
+        "n_no_ambiguas": 47,
+        "error_si_ambigua": 0.3076923076923077,
+        "error_si_no_ambigua": 0.1702127659574468,
+        "razon_de_razones": 1.807692307692308,
+        "razon_de_odds_fisher": 2.1666666666666665,
+        "p_fisher": 0.2383274046925196
+      },
+      "TR": {
+        "n_ambiguas": 20,
+        "n_no_ambiguas": 53,
+        "error_si_ambigua": 0.4,
+        "error_si_no_ambigua": 0.07547169811320754,
+        "razon_de_razones": 5.300000000000001,
+        "razon_de_odds_fisher": 8.166666666666666,
+        "p_fisher": 0.0022346556790955536
+      },
+      "AG": {
+        "n_ambiguas": 26,
+        "n_no_ambiguas": 47,
+        "error_si_ambigua": 0.34615384615384615,
+        "error_si_no_ambigua": 0.0851063829787234,
+        "razon_de_razones": 4.0673076923076925,
+        "razon_de_odds_fisher": 5.6911764705882355,
+        "p_fisher": 0.009191218122567462
+      }
+    },
+    "con URL": {
+      "HS": {
+        "n_ambiguas": 13,
+        "n_no_ambiguas": 22,
+        "error_si_ambigua": 0.15384615384615385,
+        "error_si_no_ambigua": 0.18181818181818182,
+        "razon_de_razones": 0.8461538461538461,
+        "razon_de_odds_fisher": 0.8181818181818182,
+        "p_fisher": 1.0
+      },
+      "TR": {
+        "n_ambiguas": 6,
+        "n_no_ambiguas": 29,
+        "error_si_ambigua": 0.16666666666666666,
+        "error_si_no_ambigua": 0.0,
+        "razon_de_razones": null,
+        "razon_de_odds_fisher": Infinity,
+        "p_fisher": 0.17142857142857143
+      },
+      "AG": {
+        "n_ambiguas": 19,
+        "n_no_ambiguas": 16,
+        "error_si_ambigua": 0.3684210526315789,
+        "error_si_no_ambigua": 0.125,
+        "razon_de_razones": 2.9473684210526314,
+        "razon_de_odds_fisher": 4.083333333333333,
+        "p_fisher": 0.13540297300030335
+      }
+    },
+    "sin URL": {
+      "HS": {
+        "n_ambiguas": 24,
+        "n_no_ambiguas": 46,
+        "error_si_ambigua": 0.3333333333333333,
+        "error_si_no_ambigua": 0.15217391304347827,
+        "razon_de_razones": 2.1904761904761902,
+        "razon_de_odds_fisher": 2.7857142857142856,
+        "p_fisher": 0.12350814175343663
+      },
+      "TR": {
+        "n_ambiguas": 20,
+        "n_no_ambiguas": 50,
+        "error_si_ambigua": 0.35,
+        "error_si_no_ambigua": 0.08,
+        "razon_de_razones": 4.375,
+        "razon_de_odds_fisher": 6.1923076923076925,
+        "p_fisher": 0.00949099638689763
+      },
+      "AG": {
+        "n_ambiguas": 22,
+        "n_no_ambiguas": 48,
+        "error_si_ambigua": 0.3181818181818182,
+        "error_si_no_ambigua": 0.08333333333333333,
+        "razon_de_razones": 3.8181818181818183,
+        "razon_de_odds_fisher": 5.133333333333334,
+        "p_fisher": 0.028608005308809307
+      }
+    }
+  },
+  "cota_por_voto_mayoritario": {
+    "HS": 0.9905596763317599,
+    "TR": 0.9939312204989885,
+    "AG": 0.9905596763317599,
+    "macro": 0.9916835243875027
+  },
+  "gastos": {
+    "filas": 1483,
+    "submissions": 0,
+    "modelos_entrenados": 0,
+    "memoria_pico_mb": 196.9,
+    "segundos": 0.1
+  }
+}

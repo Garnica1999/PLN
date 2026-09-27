@@ -69,7 +69,7 @@ hiperparametro. Los ejes que quedan son: (a) la geometria post-entrenamiento,
 
 ### FICHA 1. Post-procesado del espacio: centrado + eliminacion de las D primeras componentes principales
 
-- **Referencia principal**: Mu, J., Viswanath, P. (2018). *All-but-the-Top:
+- **Referencia principal**: Mu, J., Viswanath, P., & Bhat, S. (2018). *All-but-the-Top:
   Simple and Effective Postprocessing for Word Representations*. ICLR 2018.
   arXiv:1702.01417. DOI 10.48550/arXiv.1702.01417.
 - **Referencia complementaria**: Arora, S., Liang, Y., Ma, T. (2017). *A Simple
@@ -1067,7 +1067,7 @@ presentarse como si lo tuvieran:
    DOI 10.18653/v1/d16-1157.
 8. Arora, S., Liang, Y., Ma, T. (2017). A Simple but Tough-to-Beat Baseline for
    Sentence Embeddings. ICLR 2017. arXiv:1703.11175.
-9. Mu, J., Viswanath, P. (2018). All-but-the-Top: Simple and Effective
+9. Mu, J., Viswanath, P., & Bhat, S. (2018). All-but-the-Top: Simple and Effective
    Postprocessing for Word Representations. ICLR 2018. arXiv:1702.01417.
    DOI 10.48550/arXiv.1702.01417.
 10. Pagliardini, M., Gupta, P., Jaggi, M. (2018). Unsupervised Learning of

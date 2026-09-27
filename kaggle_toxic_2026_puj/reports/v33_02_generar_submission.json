@@ -1,0 +1,69 @@
+{
+  "familia": "STRUCTURAL_TEXT_FEATURES",
+  "experimento": "V33-02 (generar la submission de V32-05 y verificar los checks)",
+  "fecha": "2026-09-27T12:36:56+00:00",
+  "estado": "SUBMISSION_GENERATED",
+  "pregunta": "generar la submission de V32-05 con el pipeline reproducible congelado",
+  "alcance": "fases 9 a 11 de la directiva V33. No se envia a Kaggle en este script",
+  "pipeline": {
+    "vocabulario": "word(1,2) + char_wb(3,5) TF-IDF ajustado sobre el train completo",
+    "bins": "3 bins con cuantiles del train: (11.0, 19.391000000000076)",
+    "interacciones": [
+      "url_x_b0",
+      "url_x_b1",
+      "url_x_b2",
+      "url_query_x_largo",
+      "url_corta_x_corto"
+    ],
+    "modelo": "3x LogisticRegression C=2.0 balanced liblinear max_iter=1000 random_state=42",
+    "umbrales": {
+      "HS": 0.44,
+      "TR": 0.51,
+      "AG": 0.46
+    }
+  },
+  "anti_leakage": {
+    "vocabulario_ajustado_solo_con_train": true,
+    "bins_derivados_solo_del_train": true,
+    "interacciones_sin_labels": true,
+    "test_no_usado_para_seleccion": true
+  },
+  "checks": {
+    "exactamente_1154_filas": true,
+    "ids_unicos": true,
+    "sin_duplicados": true,
+    "sin_nan_en_predicciones": true,
+    "solo_valores_0_o_1": true,
+    "columnas_exactas": true,
+    "orden_correcto": true
+  },
+  "fichero": "submissions/toxic_submission_v32_05_url_length.csv",
+  "filas": 1154,
+  "sha256": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+  "tamano_bytes": 13860,
+  "comparacion_test_vs_v03": {
+    "filas_cambiadas": 0,
+    "porcentaje_del_test": 0.0,
+    "por_label": {
+      "HS": 0,
+      "TR": 0,
+      "AG": 0
+    },
+    "cero_a_uno": {
+      "HS": 0,
+      "TR": 0,
+      "AG": 0
+    },
+    "uno_a_cero": {
+      "HS": 0,
+      "TR": 0,
+      "AG": 0
+    }
+  },
+  "gastos": {
+    "submissions": 0,
+    "modelos_entrenados": 3,
+    "memoria_pico_mb": 229.3,
+    "segundos": 0.4
+  }
+}

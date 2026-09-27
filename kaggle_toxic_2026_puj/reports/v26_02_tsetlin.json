@@ -1,0 +1,235 @@
+{
+  "experimento": "V26-02 (Tsetlin Machine binaria con control lineal de la misma matriz)",
+  "fecha": "2026-09-27T08:51:49+00:00",
+  "pregunta": "las conjunciones booleanas encuentran errores de V03 que un modelo lineal sobre la misma informacion no puede capturar",
+  "controles": {
+    "matriz_binaria_igual_a_mascara_de_tfidf": [
+      {
+        "representacion": "word12",
+        "binaria_igual_a_tfidf_nonzero": true
+      },
+      {
+        "representacion": "word11",
+        "binaria_igual_a_tfidf_nonzero": true
+      },
+      {
+        "representacion": "charwb35",
+        "binaria_igual_a_tfidf_nonzero": true
+      }
+    ],
+    "tsetlin": [
+      {
+        "nombre": "aritmetica de clausulas",
+        "esperado": "conteo manual 4, prob 1.000000",
+        "obtenido": "conteo 4, prob 1.000000",
+        "ok": true
+      },
+      {
+        "nombre": "literal negativo saca la clausula positiva",
+        "esperado": "conteo 4.0 -> 3.0",
+        "obtenido": "conteo 4.0 -> 3.0",
+        "ok": true
+      },
+      {
+        "nombre": "polaridad en la clausula, no en los literales",
+        "esperado": "conteo positivo 4.0 sin cambio",
+        "obtenido": "conteo positivo 4.0",
+        "ok": true
+      },
+      {
+        "nombre": "entrada vacia -> probabilidad 1",
+        "esperado": "1.0",
+        "obtenido": "1.000000",
+        "ok": true
+      },
+      {
+        "nombre": "determinismo misma semilla",
+        "esperado": "modelos identicos",
+        "obtenido": "identicos",
+        "ok": true
+      },
+      {
+        "nombre": "K clausulas de cada polaridad",
+        "esperado": "4 y 4",
+        "obtenido": "4 y 4",
+        "ok": true
+      }
+    ],
+    "determinismo": {
+      "nombre": "K clausulas de cada polaridad",
+      "esperado": "4 y 4",
+      "obtenido": "4 y 4",
+      "ok": true
+    }
+  },
+  "control_lineal_sobre_la_misma_matriz": [
+    {
+      "representacion": "word12",
+      "k": 0,
+      "n_features": 2744,
+      "corrected_cv": 0.7513932906767762,
+      "delta_vs_v03": -0.025818161839795906,
+      "f1_train": 0.9902671700591854,
+      "gap_train_oof": 0.23887387938240923,
+      "clausulas_activas": 0,
+      "literales_activos": 0,
+      "celdas": 319,
+      "rescates": 111,
+      "danos": 208,
+      "neto": -97,
+      "segundos": 0.0,
+      "por_etiqueta": {
+        "HS": {
+          "f1": 0.7364457831325302,
+          "f1_v03": 0.7616892911010558,
+          "celdas": 132,
+          "rescates": 49,
+          "danos": 83
+        },
+        "TR": {
+          "f1": 0.8146503884572697,
+          "f1_v03": 0.8157303370786517,
+          "celdas": 59,
+          "rescates": 28,
+          "danos": 31
+        },
+        "AG": {
+          "f1": 0.7030837004405286,
+          "f1_v03": 0.7542147293700089,
+          "celdas": 128,
+          "rescates": 34,
+          "danos": 94
+        }
+      }
+    },
+    {
+      "representacion": "word11",
+      "k": 0,
+      "n_features": 1407,
+      "corrected_cv": 0.7325088208177593,
+      "delta_vs_v03": -0.044702631698812834,
+      "f1_train": 0.9632306425759417,
+      "gap_train_oof": 0.23072182175818245,
+      "clausulas_activas": 0,
+      "literales_activos": 0,
+      "celdas": 433,
+      "rescates": 125,
+      "danos": 308,
+      "neto": -183,
+      "segundos": 0.0,
+      "por_etiqueta": {
+        "HS": {
+          "f1": 0.7232472324723247,
+          "f1_v03": 0.7616892911010558,
+          "celdas": 159,
+          "rescates": 50,
+          "danos": 109
+        },
+        "TR": {
+          "f1": 0.7822318526543879,
+          "f1_v03": 0.8157303370786517,
+          "celdas": 97,
+          "rescates": 30,
+          "danos": 67
+        },
+        "AG": {
+          "f1": 0.6920473773265652,
+          "f1_v03": 0.7542147293700089,
+          "celdas": 177,
+          "rescates": 45,
+          "danos": 132
+        }
+      }
+    },
+    {
+      "representacion": "charwb35",
+      "k": 0,
+      "n_features": 18238,
+      "corrected_cv": 0.7331279194664756,
+      "delta_vs_v03": -0.04408353305009649,
+      "f1_train": 1.0,
+      "gap_train_oof": 0.2668720805335244,
+      "clausulas_activas": 0,
+      "literales_activos": 0,
+      "celdas": 460,
+      "rescates": 157,
+      "danos": 303,
+      "neto": -146,
+      "segundos": 0.0,
+      "por_etiqueta": {
+        "HS": {
+          "f1": 0.7050796057619408,
+          "f1_v03": 0.7616892911010558,
+          "celdas": 191,
+          "rescates": 59,
+          "danos": 132
+        },
+        "TR": {
+          "f1": 0.7659090909090909,
+          "f1_v03": 0.8157303370786517,
+          "celdas": 106,
+          "rescates": 32,
+          "danos": 74
+        },
+        "AG": {
+          "f1": 0.7283950617283951,
+          "f1_v03": 0.7542147293700089,
+          "celdas": 163,
+          "rescates": 66,
+          "danos": 97
+        }
+      }
+    }
+  ],
+  "resultados_tsetlin": [
+    {
+      "representacion": "word12",
+      "k": 200,
+      "n_features": 2744,
+      "corrected_cv": 0.2925472714946567,
+      "delta_vs_v03": -0.4846641810219154,
+      "f1_train": 0.22164068313099877,
+      "gap_train_oof": -0.07090658836365793,
+      "clausulas_activas": 200,
+      "literales_activos": 221627,
+      "celdas": 1952,
+      "rescates": 387,
+      "danos": 1565,
+      "neto": -1178,
+      "segundos": 140.0,
+      "por_etiqueta": {
+        "HS": {
+          "f1": 0.2791666666666667,
+          "f1_v03": 0.7616892911010558,
+          "celdas": 724,
+          "rescates": 174,
+          "danos": 550
+        },
+        "TR": {
+          "f1": 0.3056872037914692,
+          "f1_v03": 0.8157303370786517,
+          "celdas": 584,
+          "rescates": 81,
+          "danos": 503
+        },
+        "AG": {
+          "f1": 0.29278794402583425,
+          "f1_v03": 0.7542147293700089,
+          "celdas": 644,
+          "rescates": 132,
+          "danos": 512
+        }
+      }
+    }
+  ],
+  "cierre": {
+    "k": 200,
+    "motivo": "gap -0.0709 o neto -1178"
+  },
+  "gastos": {
+    "submissions": 0,
+    "epochs": 30,
+    "memoria_pico_mb": 752.9,
+    "segundos_totales": 13.1
+  }
+}
