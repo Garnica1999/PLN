@@ -1,0 +1,24 @@
+{
+  "fase": "V18 · cierre",
+  "fecha": "2026-09-26",
+  "commit": "8163215a2c7bd7ac50a1eb0d2c57343cc926ddfb",
+  "referencia_pooled": 0.6005017473,
+  "experimentos": 8,
+  "adopciones": 0,
+  "vias_cerradas": [
+    "P1 re-peso",
+    "P3 margen",
+    "P4 multi-objetivo",
+    "P5 destilacion"
+  ],
+  "pistas_no_ejecutadas": [
+    "P2 coste ordinal",
+    "P6",
+    "P7",
+    "P9"
+  ],
+  "correccion_de_registro": "D-048",
+  "transferencia_del_teacher": "0,8 % de lo disponible en la primera frontera",
+  "veredicto": "la senal existe y es grande en las 279 variables, y ninguna funcion objetivo  la cobra: la macro-F1 de seis clases es una media y la frontera es una minoria de la masa",
+  "segundos": 0.2
+}

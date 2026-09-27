@@ -1,0 +1,8 @@
+Candidato,Via,MacroF1,Delta,Folds_Pos,Frontera_1,Frontera_2,Frontera_1_CabezaLineal,Frontera_2_CabezaLineal,Decision,Nota
+V12 (referencia congelada),-,0.6005,0.0,-,0.4963,0.4974,0.4865,0.4833,REFERENCIA,"pooled 0,6005017473"
+P1 nivel_1_moderado,re-peso de clases,0.6001,-0.0004,3/5,0.5441,0.5341,,,NO ADOPTAR,"movio la frontera +0,082 y la global bajo"
+P3 C1_central,margen de adyacencia,0.599,-0.0015,-,0.5172,0.4706,0.5257,0.4281,NO ADOPTAR,las dos fronteras compiten por 25-34
+P4 B_arquitectura,termino auxiliar aditivo,0.5993,-0.0012,-,0.4955,0.4962,0.4842,0.4868,NO ADOPTAR,cero parametros extra y no movio la frontera
+P5 control sin destilacion,student sin senal auxiliar,0.5983,-0.0022,0/5,0.4957,0.495,,,NO ADOPTAR,el control de la propia P5
+P5 destilado lambda 0.3 T 2,destilacion cross-fitted,0.5991,-0.0014,0/5,0.4969,0.4973,,,NO ADOPTAR,"recupera el 0,8 % de lo que el teacher tiene"
+especialista de frontera (no es un candidato global),referencia,,,-,0.7136,0.7493,,,"COTA, NO RESULTADO",lo que hay disponible y no se ha podido cobrar

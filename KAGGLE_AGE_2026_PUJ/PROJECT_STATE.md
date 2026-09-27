@@ -152,6 +152,59 @@
   redaccion, no de medicion, y queda declarado en `reports/v17_compliance.md` en vez de darse por
   hecho.
 
+## V18 · FUNCION DE ENTRENAMIENTO (2026-09-26) CERRADA — la senal esta disponible y no se cobra (D-049)
+
+- **La premisa de la fase quedo invertida, y fue el hallazgo mas importante de V18.** P0 concluyo que
+  la ventaja del especialista de frontera venia de la **representacion**, apoyandose en el 0,4944 que
+  V13 P3a publico. **Ese numero no era la exactitud del especialista**: `filas_actuables: 57.019` es el
+  recuento sobre todo el dataset, y dentro de las 57.023 filas del par solo 38.424 eran actuables
+  mientras 18.599 quedaban congeladas con la prediccion de V12. La mezcla daba exactamente 0,4944.
+  Ejecutando el codigo y las variables exactos de P3a, el especialista sobre las **279 variables de
+  V12** saca **0,7136** y **0,7493**, mas que el **0,6864** y **0,7218** del TF-IDF disperso, y sin
+  fuga (las 72 columnas supervisadas usan el mismo `make_folds` agrupado). **D-048**: la senal de
+  frontera estaba en el propio espacio de variables del modelo todo el tiempo, y el combinador de
+  V12 extrae 0,4963 de 0,7136 disponibles.
+- **Cuatro vias de funcion objetivo, cuatro mecanismos distintos, cuatro negativos**:
+
+  | Via | Mecanismo | Resultado |
+  |---|---|---|
+  | P1 | `sample_weight` en las tres clases centrales | nivel moderado 0,6001 (-0,0004, 3 de 5 folds); nivel fuerte con frontera hasta 0,5786 (**+0,082**) y global **0,5841** (-0,0164); intercambio de suma cero exacto: `18-24` +0,0170, `13-17` -0,0166 |
+  | P3 | margen de adyacencia en el objetivo | frontera 1 **+0,0392** y frontera 2 **-0,0552** en la cabeza lineal (+0,0209 y -0,0268 en el combinado): estan acopladas por la clase `25-34` |
+  | P4 | termino auxiliar **aditivo, cero parametros** | la frontera se mueve **+0,0038** como maximo en la cabeza global y +0,0017 en el combinado: dos ordenes de magnitud menos que P1 con el mismo numero de parametros |
+  | P5 | destilacion del teacher, **cross-fitted** | mejora sobre su propio control **+0,0008**, 0 de 5 folds, y la frontera recupera el **0,8 %** de lo disponible |
+
+- **P5 en detalle**: teacher = el especialista sobre las 279 variables (el de la misma representacion
+  que el student, que es la condicion para que pueda expresar lo que se le ensena); `teacher_OOF`
+  obtenido en cinco inner folds **agrupados por duplicados**, con cada ejemplo predicho por un teacher
+  que no lo uso para entrenarse; predicciones del teacher sobre `outer_validation` **solo para
+  diagnostico**; cuadrica de seis combinaciones de lambda y temperatura **seleccionada dentro del
+  train exterior**; etiqueta verdadera siempre como objetivo principal, sin pseudo-etiqueta dura.
+  Los seis brazos destilados superan a su propio control, luego **la senal no es inerte**, pero no
+  llega al gate exploratorio ni de lejos.
+- **La explicacion comun de los cinco negativos** (P1, P3, P4, P5 y el caso de V17) es una sola y es
+  medible: **la macro-F1 de seis clases es una media, y la frontera es una minororia de la masa**.
+  Todo mecanismo que la mejore pagando fuera de ella pierde; todo mecanismo que la mejore sin pagar
+  fuera no consigue moverla. No es un problema de informacion (D-048 lo descarto) ni de arquitectura
+  (P4 lo descarto al no anadir parametros y tampoco rendir).
+- **Veredicto por opcion**: A. cuello del objetivo, **parcial** (mueve la frontera pero no la cobra);
+  B. cuello de informacion, **falso**; C. cuello de arquitectura, **no**; D. el conocimiento del
+  especialista se destila, **marginal** (0,8 %); E. la senal sigue siendo local, **cierto**;
+  F. no queda senal explotable, **cierto en la practica**.
+- **Lo que este trabajo recomienda no es un experimento**: cambiar la funcion objetivo **a la que se
+  optimise**, no la que se informa, o trenear y seleccionar **sobre las fronteras directamente**.
+- **Consecuencia que queda a mano y tiene nombre propio**: **V12 comprime la salida de cada miembro a
+  seis numeros, y el especialista binario recupera 0,7136 de esas mismas seis columnas por miembro**.
+  Esa compresion es en si misma un objeto de estudio.
+- **Entregables**: `reports/v18_final_research.md`, `reports/v18_compliance.md`,
+  `reports/v18_reproducibility.md`, `reports/v18_master_results.csv` (21 filas),
+  `reports/v18_hypothesis_registry.csv` (9 hipotesis), `reports/v18_candidate_comparison.csv` (7
+  candidatos), `reports/v18_gap_audit.md`, `reports/v18_p0_reproduccion.md`,
+  `reports/v18_p1_peso_clases.md`, `reports/v18_p3_margen.md`, `reports/v18_p4_multiobjetivo.md`,
+  `reports/v18_p5_destilacion.md`, `reports/v18_distillation.csv`, 7 figuras.
+- **8 de 14 experimentos previstos, 0 adopciones.** P2, P6, P7 y P9 no ejecutados: la condicion del
+  brief para P5 era que P1-P4 demostraran senal del objetivo, y no se cumplio.
+- **V12 intacto**: 0,6005017473 pooled, 0,62188 en el leaderboard, sin submission nueva.
+
 ## Fase actual
 - **FASE DE LEXICONES (2026-09-25) CERRADA — línea cerrada (D-039).** 24 subcategorías léxicas
   (registro, etapas de vida, dominios temáticos), 1.369 entradas efectivas y 72 features
@@ -306,9 +359,14 @@ adopta** (D-011).
   matriz de confusión, **sin colapsar etiquetas** en la submission.
 
 ## Próxima acción recomendada
-- Iniciar Etapa B: `04_feature_engineering.ipynb` con el experimento de representaciones
-  (word 1-3 vs char_wb 3-5 vs unión) y el baseline fuerte sugerido por el SOTA
-  (TF-IDF char_wb 3-5 + LinearSVC) para llegar al envío v01 de calibración.
+- **Ninguna dentro del marco actual.** V12, V15, V16, V17 y V18 estan cerradas con medicion, y
+  ninguna de las cinco ha dejado una pista que supere su propio gate. Reanudar solo tiene sentido
+  **cambiando el marco**: optimizar o seleccionar **sobre las fronteras directamente**, en lugar de
+  la macro-F1 de seis clases que las diluye. Esa es la accion que `reports/v18_final_research.md`
+  recomienda, y es una decision de diseno, no un experimento mas.
+- Antes de esa, un objeto de estudio con nombre propio que este trabajo deja medido y sin explotar:
+  **la compresion a seis probabilidades por miembro**. El especialista binario saca 0,7136 de esas
+  mismas seis columnas por miembro que el combinador de V12 promedia.
 
 ## Entregables finales (verificados 2026-09-24)
 - Notebooks: `01_data_audit` · `02_eda` · `03_linguistic_analysis` · `04_feature_engineering` ·

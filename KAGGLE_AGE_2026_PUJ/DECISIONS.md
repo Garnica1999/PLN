@@ -1183,3 +1183,63 @@ Tras declarar la saturación se probó la vía indicada como trabajo futuro:
 - **Evidence**: `reports/v18_p0_reproduccion.md`, `reports/v18_representacion_confound.csv`,
   `experiments/v18_p0_reproduccion.json`, `reports/v18_gap_audit.md` (seccion 5.b, cuya conclusion se
   corrige aqui), `experiments/v3_p3a_especialistas.json` (el campo mal interpretado).
+
+## D-049 — V18 se cierra: la senal esta disponible y ninguna funcion objetivo la cobra
+
+- **Observation**: la auditoria de P0 de V18 concluyo que la ventaja del especialista de frontera
+  venia de la **representacion**, y la premisa de la fase era: cambiar el objetivo de
+  entrenamiento en vez del decision layer. La evidencia que sostenia esa conclusion era el 0,4944
+  que V13 P3a publico.
+- **Result**:
+  - **D-048 corrige la premisa**: ese 0,4944 no era la exactitud del especialista sino una mezcla con
+    la prediccion de V12 en las 18.599 filas del par que la compuerta dejaba congeladas. El
+    especialista sobre las **279 variables de V12** saca **0,7136** y **0,7493**, mas que el
+    **0,6864** y **0,7218** del TF-IDF disperso, sin fuga. **La senal estaba en el propio espacio de
+    variables del modelo todo el tiempo**, y V12 extrae 0,4963 de 0,7136 disponibles.
+  - **P1, re-peso de clases** (tres niveles pre-registrados, fidelidad del control 0,000000): el
+    nivel moderado deja 0,6001 (-0,0004, 3 de 5 folds) y el nivel fuerte sube la frontera **+0,082**
+    hasta 0,5786 mientras la global **baja** a 0,5841 (-0,0164). El intercambio es de suma
+    cero con localizacion exacta: `18-24` gana +0,0170 y `13-17` paga -0,0166.
+  - **P3, margen de adyacencia** (cinco brazos, PyTorch, todo pre-registrado): el margen central sube
+    `18-24|25-34` **+0,0392** (0,4865 a 0,5257) y baja `25-34|35-49` **-0,0552** (0,4833 a 0,4281)
+    con lambda 0,1. Estas dos cifras son de la **cabeza lineal sola**, que es donde actua la perdida
+    de margen; en el sistema combinado el mismo efecto se amortigua a +0,0209 y -0,0268, y con
+    lambda 0,5 la segunda frontera se desploma hasta 0,4013. Las dos fronteras **estan acopladas por
+    la clase `25-34`**. Se declaran las dos medidas porque responder a preguntas distintas y
+    confundirlas seria repetir el error que D-048 corrige.
+  - **P4, multi-objetivo** (cuatro brazos que separan arquitectura de objetivo): el termino auxiliar
+    **aditivo, con cero parametros extra**, mueve la frontera **+0,0038** como maximo, y esa cifra es de
+    la **cabeza global** (0,4858 a 0,4896 en el brazo C2); en el sistema combinado el movimiento es de
+    +0,0017. El mejor brazo queda en -0,0012. Handicap de montaje declarado: la cabeza lineal de PyTorch no iguala a la
+    `LogReg` de sklearn y el control queda 0,0022-0,0023 bajo V12, handicap del mismo orden que los
+    efectos medidos.
+  - **P5, destilacion** (teacher cross-fitted en cinco inner folds agrupados, cuadricula de lambda y
+    temperatura seleccionada dentro del train exterior): **todos** los brazos destilados superan a su
+    propio control, luego **la senal del teacher no es inerte**, pero la mejora maxima es de
+    **+0,0008** con **0 de 5 folds** positivos, y la frontera recupera el **0,8 %** de lo que el
+    teacher tiene.
+  - **Ninguna adopcion** en toda la fase. V12 sigue en 0,6005017473 pooled y 0,62188 en el
+    leaderboard, sin submission nueva.
+- **Decision**: **V18 se cierra sin adopciones.** P1, P3, P4 y P5 quedan cerradas. P2, P6, P7 y P9 no se
+  ejecutan: la condicion que el brief puso para P5 era que P1-P4 demostraran senal del objetivo, y no
+  se cumplio; y el brief ordeno cerrar tras P5 salvo razon experimental extraordinaria.
+- **Reason**: la explicacion comun de los cinco negativos es precisa y medible: **la macro-F1 de seis
+  clases es una media, y la frontera es una minororia de la masa**. Todo mecanismo que la mejore pagando
+  fuera de ella pierde (P1 lo paga en `13-17`, P3 lo paga en la otra frontera), y todo mecanismo que
+  la mejore sin pagar fuera no consigue moverla (P4 y P5). No es un problema de informacion, que D-048
+  descarto, ni de arquitectura, que P4 descarto al no anadir parametros y tampoco rendir. Es un
+  problema de la magnitud que la funcion objetivo da a la region donde vive el error.
+- **Consequences**: (1) **la accion que este trabajo recomienda no es un experimento**: cambiar la
+  funcion objetivo **a la que se optimise**, no la que se informa, o trenear y seleccionar sobre las
+  fronteras directamente; (2) una consecuencia que queda a mano y tiene nombre propio: **V12 comprime
+  la salida de cada miembro a seis numeros, y el especialista binario recupera 0,7136 de esas mismas
+  seis columnas por miembro**, luego la compresion es en si misma un objeto de estudio; (3) el
+  precedente de D-048 se generaliza como metodo: **un numero derivado puede pasar cuatro fases sin que
+  nadie lo mida**, y la unica forma de detectinglo es releer todos los artefactos y recalcular, no
+  confiar en el informe que los resumen; (4) la destilacion se midio con el protocolo que el brief exigio
+  y dio un resultado informativo y no nulo: la senal se transfiere, con una eficiencia del 0,8 %.
+- **Evidence**: `reports/v18_final_research.md`, `reports/v18_candidate_comparison.csv`,
+  `reports/v18_master_results.csv`, `reports/v18_hypothesis_registry.csv`,
+  `reports/v18_p0_reproduccion.md`, `reports/v18_p1_peso_clases.md`, `reports/v18_p3_margen.md`,
+  `reports/v18_p4_multiobjetivo.md`, `reports/v18_p5_destilacion.md`, `reports/v18_distillation.csv`,
+  `reports/v18_reproducibility.md`, `reports/v18_compliance.md`, 7 figuras de V18.

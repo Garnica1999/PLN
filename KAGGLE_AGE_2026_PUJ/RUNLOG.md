@@ -775,7 +775,13 @@ Después pide añadir además el paso de la **arquitectura del meta-modelo**.
   6 probabilidades de V12, 6 de A2 y el acuerdo entre miembros). **Ninguna representacion nueva.**
   Protocolo anidado en tres niveles: ajuste en un bloque interior, **umbral elegido en otro bloque
   que el arbitro no ve**, y reentrenamiento en todo el train exterior para la validacion exterior.
-- **Resultado**: macro-F1 **0,6004**, delta **-0,0001**, **0 de 5 folds** positivos, IC95 pareado
+- **Las dos medidas de frontera de P3, y por que las dos**: los +0,0392 y -0,0552 del acoplamiento
+son de la **cabeza lineal sola** (`fronteras_lineal_solo`), que es donde actua la perdida de margen.
+En el **sistema combinado** el mismo efecto se amortigua a +0,0209 y -0,0268. Las dos medidas son
+correctas y responder a preguntas distintas, y declararlas por separado es lo contrario de lo que
+D-048 corrige.
+
+**Resultado**: macro-F1 **0,6004**, delta **-0,0001**, **0 de 5 folds** positivos, IC95 pareado
   [-0,0002; -0,0001]. **NO ADOPTAR**. El arbitro elige umbrales de 0,60 a 0,90, activa entre 327 y
   1.256 filas, y cuando activa **pierde**: 3 rescates contra 22 danos en toda la fase.
 - **Lo que significa**: no es un arbitro mal entrenado, es que la frontera que habria que aprender
@@ -942,3 +948,89 @@ Después pide añadir además el paso de la **arquitectura del meta-modelo**.
   formulaciones. Segun la propia condicion del brief para P5 ("solo si P1-P4 demuestran que cambiar el
   objetivo tiene senal"), P5 queda **no indicada** salvo decision explicita en contra.
 - `experiments.csv` pasa a **107 experimentos**. Sin push.
+
+## 2026-09-26 · V18 P5 — Destilacion del conocimiento de frontera (cierre de la fase)
+
+**Decision previa**: el gate que impedia P5 se levanto **solo para P5**, con la justificacion de que
+no repite P1, P3 ni P4. En efecto, los tres fallaron por mecanismos distintos y P5 plantea un cuarto:
+transferir el conocimiento del especialista al modelo general **sin routing en inferencia**, con la
+senal descargada durante el entrenamiento.
+
+**Teacher**: el especialista binario sobre las **279 variables de V12**, ya validado en P0' con el
+protocolo completo (0,7136 en `18-24|25-34` y 0,7493 en `25-34|35-49`), y no el de TF-IDF disperso
+(0,6864 y 0,7218) por dos razones medidas: es mejor, y esta en la **misma representacion que el
+student**, que es la condicion necesaria para que el student pueda expresar lo que se le ensena.
+
+**Cross-fitting, que es donde este tipo de experimento se contamina**: el teacher se cross-fita en
+cinco inner folds **agrupados por duplicados** sobre el train exterior, y solo predice su
+`inner_validation`. Al concatenar, `teacher_OOF` cubre **todo** `outer_train` y cada ejemplo fue
+predicho por un teacher que no lo uso para entrenarse. El teacher ajustado sobre todo `outer_train`
+si predice `outer_validacion`, y esas predicciones se usan **solo para diagnostico**: nunca entran en
+el entrenamiento del student.
+
+**Senales**: la probabilidad de la clase superior de cada pareja, equivalente a su margen por la
+sigmoida, aplicada **solo a las filas de esa pareja** porque fuera de ella el teacher extrapola. Sin
+pseudo-etiqueta dura en ningun punto, y la etiqueta verdadera es siempre el objetivo principal.
+
+**La diferencia tecnica con P4, que es la que hace el experimento nuevo**: en P4 el termino auxiliar
+se media contra la **etiqueta verdadera**, que ya esta en la entropia cruzada, y por eso era
+redundante. Aqui el objetivo auxiliar es la **prediccion suave del teacher**, que es informacion
+nueva.
+
+**Cuadrica**: seis combinaciones de peso y temperatura, **seleccionadas dentro del train exterior**
+en una particion interior agrupada del 25 %, por macro-F1 de seis clases. La validacion exterior no
+participa en la eleccion ni en el entrenamiento. Sin tuning sobre outer validation, sin leaderboard,
+sin test.
+
+**Las dos medidas de frontera de P3, y por que las dos**: los +0,0392 y -0,0552 del acoplamiento
+son de la **cabeza lineal sola** (`fronteras_lineal_solo`), que es donde actua la perdida de margen.
+En el **sistema combinado** el mismo efecto se amortigua a +0,0209 y -0,0268. Las dos medidas son
+correctas y responder a preguntas distintas, y declararlas por separado es lo contrario de lo que
+D-048 corrige.
+
+**Resultado**:
+
+| Brazo | Lambda | T | macro-F1 | Delta | Folds pos. | IC95 | 18-24\|25-34 | 25-34\|35-49 |
+|---|---|---|---|---|---|---|---|---|
+| control sin destilacion | - | - | 0,5983 | -0,0022 | 0/5 | [-0,0029, -0,0014] | 0,4957 | 0,4950 |
+| destilado | 0,3 | 1 | 0,5990 | -0,0015 | 0/5 | [-0,0023, -0,0008] | 0,4980 | 0,4966 |
+| destilado | 0,3 | 2 | **0,5991** | **-0,0014** | 0/5 | [-0,0022, -0,0007] | 0,4969 | 0,4973 |
+| destilado | 0,3 | 4 | 0,5988 | -0,0017 | 0/5 | [-0,0024, -0,0009] | 0,4960 | 0,4943 |
+| destilado | 1,0 | 1 | 0,5986 | -0,0019 | 0/5 | [-0,0027, -0,0012] | 0,4956 | 0,4949 |
+| destilado | 1,0 | 2 | 0,5991 | -0,0014 | 0/5 | [-0,0022, -0,0006] | 0,4964 | 0,4937 |
+| destilado | 1,0 | 4 | 0,5986 | -0,0019 | 0/5 | [-0,0027, -0,0012] | 0,4936 | 0,4950 |
+| **V12** | - | - | **0,6005** | - | - | - | 0,4963 | 0,4974 |
+
+**Que dice, en tres puntos**:
+1. **Los seis brazos destilados superan a su propio control** (+0,0003 a +0,0008). La senal del
+   teacher **no es inerte**: hay informacion que se transfiere. Esto no es un resultado nulo.
+2. Pero ninguno adopta: 0 de 5 folds positivos en los siete brazos, y el mejor queda -0,0014 de V12.
+   La mejora sobre el control es de **+0,0008** como maximo.
+3. **La frontera recupera el 0,8 % de lo disponible** (0,4980 contra los 0,7136 del teacher) y en la
+   segunda frontera la recuperacion es **negativa**.
+
+**Veredicto: caso B** de la taxonomia del brief. Student casi igual a V12 pero reproduce solo en parte
+al teacher: **la senal existe pero no puede transferirse eficazmente al modelo global bajo esta
+representacion y esta arquitectura**. Y conforme al brief, **no se reinterpreta como evidencia de que
+el especialista careciera de informacion**: V17 y D-048 ya demostraron lo contrario.
+
+**V18 se cierra sin adopciones** (D-049). P2, P6, P7 y P9 no se ejecutan: la condicion del brief para
+P5 era que P1-P4 demostraran senal del objetivo, y no se cumplio.
+
+**Cinco incidentes de ejecucion documentados**, todos antes del resultado y ninguno afecta al
+numero: (1) la senal del teacher del 75 % con un student del 100 %, dimensiones incompatibles;
+(2) `FRONTERAS_INDICE` son indices y `y` son cadenas, luego la comparacion daba falso siempre y
+dejaba al teacher sin filas; (3) `np.searchsorted` sobre `entrenamiento`, que es una concatenacion
+**no ordenada** de folds; (4) en la seleccion de la cuadricula se pasaba la senal del bloque de
+**evaluacion** como senal de **entrenamiento**; (5) `filas` sombreado entre la lista de resultados y
+la mascara del diagnostico. La causa de que los cinco salieran fue que no se hizo **prueba de humo**
+antes de la pasada larga: la prueba de humo encontro (4) y (5) en minutos, y habrian costado dos
+pasadas de 30 minutos cada una. La prueba de humo se hizo despues y recorrer todo el camino, incluidos
+informes, figuras y artefactos.
+
+**Ademas**: la cabeza lineal de PyTorch no iguala a la `LogReg` de sklearn, handicap de **-0,0023**
+del mismo orden que los efectos medidos, ya declarado en P4. Se ejecuto **en CPU de forma explicita**,
+porque un producto de 279 por 6 no gana nada con la GPU y asi no se depende de la estabilidad de
+ROCm, que lanzo una excepcion durante la prueba de humo.
+
+`experiments.csv` pasa a **109 experimentos**. Auditoria de idioma: **0 errores**. Sin push.
