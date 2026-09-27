@@ -1,0 +1,198 @@
+{
+  "fase": "V19 · P0-P1-P2 auditoria del champion",
+  "fecha": "2026-09-27",
+  "champion": {
+    "nombre": "V19 boosting",
+    "lb": 0.62578,
+    "lb_anterior_v12_oficial": 0.62182,
+    "delta_lb": 0.00396
+  },
+  "p0_configuracion": {
+    "configuracion_leida_del_codigo": {
+      "objective": "multiclass",
+      "num_class": 6,
+      "n_estimators": 300,
+      "learning_rate": 0.05,
+      "num_leaves": 8,
+      "max_depth": 3,
+      "min_child_samples": 200,
+      "colsample_bytree": 0.5,
+      "subsample": 0.8,
+      "subsample_freq": 1,
+      "reg_lambda": 1.0,
+      "n_jobs": 32,
+      "random_state": 42,
+      "verbose": -1
+    },
+    "combinacion": {
+      "logreg": 0.3333333333333333,
+      "mlp": 0.3333333333333333,
+      "arbol": 0.3333333333333333
+    },
+    "semilla_del_arbol": 42,
+    "semilla_global": 42,
+    "n_splits": 5,
+    "esquema_de_folds": "group",
+    "n_repeats": 1,
+    "columnas": 279,
+    "dtype": "float32",
+    "bloque_label_informed": {
+      "inicio": 200,
+      "columnas": 73,
+      "coincide_con_el_artefacto": 0.0
+    },
+    "target": "las seis clases verdaderas; las 279 variables son features auxiliares",
+    "preprocessing": "StandardScaler dentro de cada fold en las dos cabezas lineales; el arbol no requiere escalado",
+    "normalizacion": "ninguna adicional; las 73 label-informed llegan en escala de 59439",
+    "seleccion_de_columnas": "ninguna: las 279 entran enteras",
+    "coincide_con_el_artefacto": true
+  },
+  "p0_atribucion_por_bloque": {
+    "las_279": 0.6072312,
+    "las_206_sin_supervisadas": 0.586956,
+    "solo_las_73": 0.5597155,
+    "solo_las_78_miembros": 0.5842464,
+    "aportacion_de_las_73_sobre_las_206": 0.0202752,
+    "aportacion_de_las_206_sobre_las_73": 0.0475157,
+    "es_interaccion_y_no_suma": true
+  },
+  "p1_importancia": {
+    "cuota_ganancia_bloque_73": 0.09081,
+    "cuota_ganancia_resto": 0.90919,
+    "cortes_bloque_73": 3508,
+    "cortes_resto": 8772,
+    "columnas_con_uso": 271,
+    "cuota_top10": 0.392852,
+    "cuota_top20": 0.599438,
+    "variable_dominante": true,
+    "top10": [
+      {
+        "nombre": "miembro:oof_E014_margenes_0",
+        "bloque": "resto",
+        "ganancia_relativa": 0.079881
+      },
+      {
+        "nombre": "miembro:oof_E014_margenes_4",
+        "bloque": "resto",
+        "ganancia_relativa": 0.039281
+      },
+      {
+        "nombre": "miembro:oof_ADV05_nbsvm_5",
+        "bloque": "resto",
+        "ganancia_relativa": 0.03822
+      },
+      {
+        "nombre": "miembro:oof_E-009_4",
+        "bloque": "resto",
+        "ganancia_relativa": 0.03585
+      },
+      {
+        "nombre": "miembro:oof_E021a_ordinal_1",
+        "bloque": "resto",
+        "ganancia_relativa": 0.034853
+      },
+      {
+        "nombre": "miembro:oof_E016_margenes_5",
+        "bloque": "resto",
+        "ganancia_relativa": 0.034458
+      },
+      {
+        "nombre": "miembro:oof_ADV05_nbsvm_0",
+        "bloque": "resto",
+        "ganancia_relativa": 0.034023
+      },
+      {
+        "nombre": "miembro:oof_ADV05_nbsvm_4",
+        "bloque": "resto",
+        "ganancia_relativa": 0.0329
+      },
+      {
+        "nombre": "miembro:oof_E-011_5",
+        "bloque": "resto",
+        "ganancia_relativa": 0.031912
+      },
+      {
+        "nombre": "miembro:oof_E-009_5",
+        "bloque": "resto",
+        "ganancia_relativa": 0.031474
+      }
+    ]
+  },
+  "p2_complejidad": {
+    "hueco_train_oof": 0.007781,
+    "hueco_medido_en": "fold 0 de 5; el hueco es propiedad del modelo",
+    "train_fold_0": 0.618911,
+    "oof_fold_0": 0.611131,
+    "nota_oof": "el OOF de los cinco folds lo aporta el experimento v19_b1_boosting, ya en disco",
+    "arboles": 1800,
+    "hojas": 14080,
+    "bytes": 1841063,
+    "sha256": "22221d1802c1ec4495f393f27f884b9119763a30d47072a0a1205ad671c50619",
+    "cambios_respecto_a_v12": 12169,
+    "rescate": 4622,
+    "dano": 3311,
+    "neto": 1311,
+    "perfil": [
+      {
+        "combinador": "V12 (champion anterior)",
+        "cv": 0.6005017473,
+        "hueco_train_oof": null,
+        "arboles": 0,
+        "hojas": 0,
+        "bytes": null,
+        "cambios": 0,
+        "rescate": 0,
+        "dano": 0,
+        "neto": 0
+      },
+      {
+        "combinador": "V16 A2 apilamiento logistico",
+        "cv": 0.6011,
+        "hueco_train_oof": null,
+        "arboles": 0,
+        "hojas": 0,
+        "bytes": null,
+        "cambios": null,
+        "rescate": null,
+        "dano": null,
+        "neto": null
+      },
+      {
+        "combinador": "V18 P4 multi-objetivo",
+        "cv": 0.5993,
+        "hueco_train_oof": null,
+        "arboles": 0,
+        "hojas": 0,
+        "bytes": null,
+        "cambios": null,
+        "rescate": null,
+        "dano": null,
+        "neto": null
+      },
+      {
+        "combinador": "V19 boosting (champion actual)",
+        "cv": 0.6079388,
+        "hueco_train_oof": 0.007781,
+        "arboles": 1800,
+        "hojas": 14080,
+        "bytes": 1841063,
+        "cambios": 12169,
+        "rescate": 4622,
+        "dano": 3311,
+        "neto": 1311
+      }
+    ]
+  },
+  "cv_v19_5_folds": 0.6079388,
+  "cv_v19_4_folds": 0.6090431,
+  "cv_recalculado_esta_pasada": 0.6079388,
+  "fronteras": {
+    "18-24|25-34": 0.5038,
+    "25-34|35-49": 0.5013
+  },
+  "fronteras_v12": {
+    "18-24|25-34": 0.4963,
+    "25-34|35-49": 0.4974
+  },
+  "segundos": 166.2
+}

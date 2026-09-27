@@ -1,0 +1,5 @@
+combinador,cv,hueco_train_oof,arboles,hojas,bytes,cambios,rescate,dano,neto
+V12 (champion anterior),0.6005017473,,0,0,,0.0,0.0,0.0,0.0
+V16 A2 apilamiento logistico,0.6011,,0,0,,,,,
+V18 P4 multi-objetivo,0.5993,,0,0,,,,,
+V19 boosting (champion actual),0.6079388,0.007781,1800,14080,1841063.0,12169.0,4622.0,3311.0,1311.0

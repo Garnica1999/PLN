@@ -1194,3 +1194,89 @@ intentaba demostrar que no habia contaminacion.
 
 `experiments.csv` pasa a **115 experimentos**. Auditoria de idioma: **0 errores** sobre 415 ficheros. Sin
 push.
+
+## 2026-09-27 · V19.x — Auditoria del champion y cierre de la explotacion (D-052)
+
+**Punto de partida**: V19subido y puntuado en **0,62578**, un delta de **+0,00396** sobre el envio
+oficial de V12 (0,62182). Eso valida el mecanismo completo, incluido el riesgo de la firma del bloque
+supervisado que estaba marcado como no medible: la prediccion de 0,62734 era una estimacion, y el
+resultado real quedo 0,0016 por debajo, que es justo el residuo que el especialista cuantifico despues.
+
+**P0, configuracion leida del codigo y no del informe**: coincide byte a byte con el artefacto JSON.
+LightGBM `multiclass`, 300 arboles, `learning_rate` 0,05, `num_leaves` 8, `max_depth` 3,
+`min_child_samples` 200, `colsample` 0,5, `subsample` 0,8, `reg_lambda` 1,0, semilla 42. Combinacion a
+un tercio con la LogReg y el MLP(64), pre-registrada y nunca ajustada sobre la validacion.
+
+**P0, atribucion por bloque**:
+
+| Bloque | Columnas | macro-F1 |
+|---|---|---|
+| las 279 | 279 | **0,6072312** |
+| sin el bloque label-informed | 200 | 0,586956 |
+| solo el bloque label-informed | 73 | 0,5597155 |
+| solo las 78 de miembros | 78 | 0,5842464 |
+
+Anadir las 73 a las 206 aporta **+0,0203** y anadir las 206 a las 73 aporta **+0,0475**: es
+**interaccion y no suma**.
+
+**P1, donde esta la senal**: el bloque de 73 aporta el **9,1 % de la ganancia con el 28,6 % de los
+cortes**, luego cada corte suyo vale **4,0 veces menos** que uno del bloque de 206. Se usan **271 de
+279** columnas y el top 10 concentra el **39,3 %**. La variable dominante es `oof_E014_margenes_0` con
+el **7,99 %**, y **las 12 mas importantes son todas margenes de miembros del ensemble**. Correccion de la
+interpretacion de D-051: el bloque label-informed no es una variable primaria que el arbol todavia no
+explotaba, es un **socio de interaccion** con poco valor por corte.
+
+**P2, complejidad y transferencia**: hueco train a OOF de **+0,007781** en el fold 0 y **+0,012609** en
+la media de 5 folds. 1.800 arboles, 2.400 hojas, 1.841.063 bytes. Ese hueco es la magnitud que haria
+perder leaderboard a cualquier aumento de capacidad, y es el numero que hace útil la leccion de TOXIC
+V23.
+
+**El champion queda persistido** en `models/v19_champion_lightgbm.txt` con SHA256 `22221d18...`, de modo
+que V19 es reproducible sin reajustar nada. El OOF del arbol queda cacheado en
+`features/v19_oof_arbol_5folds.npy`.
+
+**Consulta al especialista**: recomienda **cerrar la explotacion** y, en el mejor de los casos, dos
+configuraciones diagnosticas. Sus tres argumentos, que son los que cierran el caso:
+1. **Tasa base del subespacio de parametros = +0,0008** frente a un gate de +0,0030. Las 14
+   formulaciones de V15 a V18 se movieron en [-0,0040, +0,0008]. Todo lo que movio la aguja fue un
+   cambio de mecanismo, nunca un parametro.
+2. **Resolucion del aparato = +0,0011**: 0,6090431 en 4 folds contra 0,6079388 en 5, **sin cambiar
+   nada**. Un efecto menor que +0,001 no se distingue de elegir particion.
+3. **Residuo de la calibracion sobre V19 = -0,0016**, frente a +0,0019 en V12: oscilacion de 0,0034
+   entre modelos vecinos. Un +0,002 en CV puede aterrizar entre -0,000 y +0,004 en LB.
+
+Ademas descarto con numeros seis dimensiones mas: `num_leaves` 8 a 16 con profundidad 3 es un **no-op
+exacto** porque 2^3 = 8; `reg_lambda` 1 a 10 es inerte a esta escala de hojas; `min_child_weight` es
+una reparametrizacion de `min_child_samples` porque la hessiana multiclase por fila es 0,5-0,8; bajar
+`colsample` mata el bloque de interaccion; los pesos del blend se sondearon dos veces (V16 A1 -0,0003 y
+A2 +0,0006 con el IC95 contemplando el cero); y `label_smoothing` o `class_weight` son eje de objetivo
+cerrado por V18.
+
+**Puerta de coste cero, superada**: la ocupacion del techo de cortes es del **97,5 %**, con 1519 de
+1800 arboles llegando a los 7 cortes que permiten 8 hojas. Luego **la profundidad es el limite real y no
+las hojas**, que es la premisa de la configuracion A. El especialista habia avisado de que si la
+ocupacion hubiera sido del 70 % el eje de capacidad reabriria; se midio y no reabre.
+
+**Las dos configuraciones y sus resultados**:
+
+| Configuracion | CV | Delta contra V19 | Folds pos. | IC95 | 4 folds | Neto de error | Submission |
+|---|---|---|---|---|---|---|---|
+| A, `max_depth` 4 con `num_leaves` 8 | 0,6079208 | **-0,0000** | 3/5 | [-0,0004, +0,0004] | -0,0000 | **+3** | **no** |
+| B, `min_child_samples` 800 | 0,6076698 | **-0,0003** | **0/5** | [-0,0006, +0,0001] | -0,0002 | **-50** | **no** |
+
+**0 de 2** cumplen el criterio, que exige los cuatro puntos: delta CV >= +0,003, 5 de 5 folds, IC95 que
+excluya el cero y confirmacion >= +0,002 en 4 folds.
+
+**Decision**: **V19.x se cierra. V19 permanece champion con LB 0,62578.** Sin submission nueva y sin
+volver a V12.
+
+**Dos incidentes de ejecucion**: el `assert` de nombres de columna detecto que `MEMBER_FILES` son 14
+ficheros que suman 78 columnas y yo generaba 14 nombres; y `oof_E015_ordinal.npy` es un vector, luego
+`shape[1]` no existe. Ademas un proceso de **otro** proyecto (`v25_01_factorization_machine.py`) estuvo
+usando 25 de los 32 hilos durante casi una hora, y por eso la primera version, que media el hueco en
+los cinco folds, tardaba mas de una hora: se recorto a **un fold**, porque el hueco es propiedad del
+modelo y no del fold. Esa decision se registro como tal.
+
+`CHAMPION.md` creado con los tres scores separados, la configuracion congelada y el hash del modelo.
+`experiments.csv` pasa a **117 experimentos**. Auditoria de idioma: **0 errores** sobre 424 ficheros. Sin
+push.

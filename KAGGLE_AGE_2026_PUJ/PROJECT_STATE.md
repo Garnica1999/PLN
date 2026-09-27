@@ -152,6 +152,49 @@
   redaccion, no de medicion, y queda declarado en `reports/v17_compliance.md` en vez de darse por
   hecho.
 
+## V19.x · EXPLOTACION DEL CHAMPION (2026-09-27) CERRADA — el eje de parametros es plano (D-052)
+
+- **`V19 PERMANECE CHAMPION` con LB 0,62578.** Sin submission nueva y **sin volver a V12**.
+- **P0, configuracion congelada y verificada por el codigo**, no por el informe: LightGBM multiclass,
+  300 arboles, `lr` 0,05, `num_leaves` 8, `max_depth` 3, `min_child_samples` 200, `colsample` 0,5,
+  `subsample` 0,8, `reg_lambda` 1,0, semilla 42; combinacion a un tercio con LogReg y MLP(64),
+  pre-registrada. Las 279 variables de V12, sin ninguna nueva y sin seleccion.
+- **Atribucion**: las 279 dan 0,6072312, sin las 73 quedan en 0,586956 y las 73 solas dan 0,5597155.
+  Anadir las 73 a las 206 aporta **+0,0203** y a la inversa **+0,0475**: es **interaccion y no suma**.
+- **P1 corrige la lectura de D-051**: el bloque label-informed aporta el **9,1 % de la ganancia con el
+  28,6 % de los cortes**, luego cada corte suyo vale **4,0 veces menos** que uno del bloque de 206. Se
+  usan **271 de 279** columnas, el top 10 concentra el **39,3 %**, y **las 12 variables mas importantes
+  son todas margenes de miembros del ensemble**, con `oof_E014_margenes_0` al 7,99 %. El bloque de 73 es
+  un **socio de interaccion**, no una variable primaria.
+- **P2**: hueco train a OOF de **+0,007781** (fold 0) y **+0,012609** (media de 5 folds); 1.800
+  arboles, 2.400 hojas, 1.841.063 bytes. Modelo **persistido con SHA256** en
+  `models/v19_champion_lightgbm.txt`, luego V19 es reproducible sin reajustar.
+- **Consulta al especialista: cerrar**. Tres argumentos medidos: la **tasa base del subespacio de
+  parametros es +0,0008** frente a un gate de +0,0030; la **resolucion del aparato es +0,0011**
+  (0,6090431 en 4 folds contra 0,6079388 en 5, sin cambiar nada); y el **residuo de la calibracion sobre
+  V19 es -0,0016**, con oscilacion de 0,0034 entre modelos vecinos, luego un +0,002 en CV puede
+  aterrizar entre -0,000 y +0,004 en LB.
+- **Puerta de coste cero superada**: la ocupacion del techo de cortes es del **97,5 %** (1519 de 1800
+  arboles), luego la profundidad es el limite real y no las hojas. El eje de capacidad **no reabre**.
+- **Las dos unicas configuraciones autorizadas, y ninguna adopta**:
+
+  | Configuracion | CV | Delta contra V19 | Folds pos. | 4 folds | Neto de error | Submission |
+  |---|---|---|---|---|---|---|
+  | A, `max_depth` 4 con `num_leaves` 8 | 0,6079208 | **-0,0000** | 3/5 | -0,0000 | **+3** | **no** |
+  | B, `min_child_samples` 800 | 0,6076698 | **-0,0003** | **0/5** | -0,0002 | **-50** | **no** |
+
+- **0 de 2** cumplen el criterio de submission, que exige los cuatro puntos: delta CV >= +0,003, 5 de 5
+  folds, IC95 que excluya el cero y confirmacion >= +0,002 en 4 folds.
+- **`CHAMPION.md` creado**, con los tres scores separados: V12 official 0,62182, V12 reproducible
+  0,62188, **V19 0,62578**. No volver a llamar 0,62188 "LB oficial".
+- **Lo que reabre AGE**, y es solo tres cosas: fuente de informacion nueva, regla nueva del concurso o
+  evidencia externa. La unica linea que el registro dejaba abierta, E-022 sobre las 279 de la era V12
+  con regularizacion explicita, es exactamente lo que V19 ya cobro.
+- **Entregables**: `CHAMPION.md`, `scripts/v19_p0_auditoria.py`, `scripts/v19_x1_explotacion.py`,
+  `reports/v19_p0_auditoria.md`, `reports/v19_x1_explotacion.md`, `reports/v19_importancia.csv`,
+  `reports/v19_complejidad.csv`, `reports/v19_x1_comparativa.csv`,
+  `reports/v19_x1_complementariedad.csv`, 3 figuras. `experiments.csv` pasa a **117**.
+
 ## V19 · B1 (2026-09-27) — EL COMBINADOR DE V12 DESPERDICIABA UN BLOQUE DE 73 VARIABLES (D-051)
 
 - **ADOPTADO como challenger. Submission construida y validada, NO ENVIADA.** V12 sigue siendo el
@@ -436,14 +479,12 @@ adopta** (D-011).
   matriz de confusión, **sin colapsar etiquetas** en la submission.
 
 ## Próxima acción recomendada
-- **Subir la submission del challenger y leer el leaderboard.** El fichero
-  `submissions/age_submission_v19_challenger_boosting.csv` esta construida, validada con 8 de 8 checks
-  y pendiente unicamente de subida manual. El unico riesgo que queda abierto, el contraste de la firma
-  del bloque supervisado entre train y test, **no se puede medir con los artefactos**: solo lo
-  resuelve el leaderboard. Compara el resultado contra **0,62182** (envio oficial de V12), no contra
-  0,62188 (replica).
-- Si el envio confirma, la linea correcta **no** es buscar mas arboles: es rehacer el combinador con el
-  bloque supervisado como variable de primer orden.
+- **Ninguna dentro del marco actual.** V19 es champion con **LB 0,62578** y su explotacion esta
+  **cerrada** (D-052): las dos unicas configuraciones de bajo riesgo autorizadas no llegaban ni al gate
+  de adopcion, y el eje de parametros resulto plano. El detalle esta en `CHAMPION.md` y en
+  `reports/v19_x1_explotacion.md`.
+- Lo que reabre AGE son solo tres cosas, ninguna de ellas un experimento: **fuente de informacion
+  nueva**, **regla nueva del concurso** o **evidencia externa** que cambie el espacio de busqueda.
 - Históricamente, y solo como registro de lo que se descartó: V12, V15, V16, V17 y V18 estan cerradas con medicion, y
   ninguna de las cinco ha dejado una pista que supere su propio gate. Reanudar solo tiene sentido
   **cambiando el marco**: optimizar o seleccionar **sobre las fronteras directamente**, en lugar de

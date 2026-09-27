@@ -1359,3 +1359,67 @@ Tras declarar la saturación se probó la vía indicada como trabajo futuro:
   `reports/v19_b1_challenger.md`, `reports/v19_b1_challenger.csv`,
   `figures/v19_b1_boosting.png`, `figures/v19_b1_control.png`,
   `submissions/age_submission_v19_challenger_boosting.csv`.
+
+## D-052 — V19.x se cierra: el eje de parametros del champion es plano (V19 PERMANECE CHAMPION)
+
+- **Observation**: con V19 en **0,62578** de leaderboard, el objetivo paso a maximizar el score sobre
+  un mecanismo que ya funciona, y no a abrir familias nuevas. Antes de tocar un hiperparametro se
+  auditio el champion y se consulto al agente `kaggle specialist`, que **recomendo cerrar la
+  explotacion** y, en el mejor de los casos, gastar dos configuraciones diagnosticas.
+- **Audit P0-P1-P2** (sin entrenar ninguna configuracion nueva):
+  - **P0**: la configuracion leida de la constante del modulo coincide **byte a byte** con el artefacto
+    JSON. La matriz es la de V12, sin seleccion. Semilla del arbol 42.
+  - **P0, atribucion**: las 279 dan **0,6072312**, sin las 73 quedan en **0,586956** y las 73 solas dan
+    **0,5597155**. Anadir las 73 a las 206 aporta **+0,0203** y anadir las 206 a las 73 aporta **+0,0475**:
+    es **interaccion y no suma**.
+  - **P1**: el bloque de 73 aporta solo el **9,1 % de la ganancia** con el **28,6 % de los cortes**,
+    luego cada corte suyo vale **4,0 veces menos** que uno del bloque de 206. Se usan **271 de 279**
+    columnas, el top 10 concentra el **39,3 %**, y la variable dominante es `oof_E014_margenes_0` con
+    el **7,99 %**. **Las 12 variables mas importantes son todas margenes de miembros del ensemble.** El
+    bloque label-informed es un **socio de interaccion**, no una variable primaria.
+  - **P2**: hueco train a OOF de **+0,007781** en el fold 0 (+0,012609 en la media de 5 folds).
+    1.800 arboles, 2.400 hojas, 1.841.063 bytes.
+- **Los tres argumentos del especialista, que son los que cierran el caso**:
+  1. **Tasa base del subespacio de parametros = +0,0008** frente a un gate de +0,0030. Las 14
+     formulaciones cerradas de V15 a V18 se movieron en [-0,0040, +0,0008]. Todo lo que alguna vez movio
+     la aguja fue un **cambio de mecanismo**, nunca un parametro.
+  2. **Resolucion del aparato = +0,0011**: 0,6090431 en 4 folds contra 0,6079388 en 5, **sin cambiar
+     nada**. Un efecto real menor que +0,001 no es distinguible de elegir particion.
+  3. **Residuo de la calibracion sobre V19 = -0,0016**: el CV 0,6079388 predecía 0,62735 y el LB real
+     es 0,62578. En V12 el residuo fue +0,0019, luego la oscilacion entre modelos vecinos es de
+     0,0034. **Un +0,002 en CV puede aterrizar en cualquier punto entre -0,000 y +0,004 en LB.**
+- **Experiment**: las dos unicas configuraciones autorizadas, con la delta medida **contra V19** y no
+  contra V12, y con confirmacion en la particion de 4 folds.
+- **Result**:
+  - **Puerta de coste cero, superada**: la ocupacion del techo de cortes es del **97,5 %** (1519 de
+    1800 arboles llegan a los 7 cortes que permiten 8 hojas), luego **la profundidad es el limite real y
+    no las hojas**, que es la premisa de la configuracion A. Si hubiera sido del 70 %, el eje de
+    capacidad reabriria; no lo esta.
+  - **A, `max_depth` 4 con `num_leaves` 8**: CV 0,6079208, **delta -0,0000**, 3 de 5 folds, IC95
+    [-0,0004, +0,0004], 4 folds -0,0000, neto de error **+3** filas. **No merece submission.**
+  - **B, `min_child_samples` 800**: CV 0,6076698, **delta -0,0003**, **0 de 5 folds**, IC95
+    [-0,0006, +0,0001], 4 folds -0,0002, neto de error **-50** filas. **No merece submission.**
+  - **0 de 2 configuraciones** cumplen el criterio de submission, que exige los cuatro puntos: delta
+    CV >= +0,003, 5 de 5 folds, IC95 que excluya el cero y confirmacion >= +0,002 en 4 folds.
+- **Decision**: **V19.x se cierra. V19 permanece champion con LB 0,62578.** No se genera ninguna
+  submission y **no se vuelve a V12**, porque cualquier `LB > 0,62578` es el unico criterio valido y
+  V19 ya lo supera.
+- **Reason**: el eje de parametros alrededor del champion es **plano**, y la razon de que sea plano
+  esta medida: la profundidad ya esta al 97,5 % de su techo, luego no queda un tercer nivel que
+  capturar, y subir el suelo de filas solo poda los cortes de peor ratio ganancia por corte. Y el ruido
+  del aparato de medicion es del mismo orden que cualquier efecto plausible, de modo que **una
+  diferencia de CV pequeña aqui no es evidencia de nada**, sino la distancia entre dos particiones de
+  lo mismo.
+- **Consequences**: (1) **`CHAMPION.md` creado**, con los tres scores separados y sin volver a llamar
+  0,62188 "LB oficial"; (2) el modelo champion queda **persistido con SHA256** en
+  `models/v19_champion_lightgbm.txt`, de modo que V19 es reproducible sin reajustar; (3) el OOF del
+  arbol queda cacheado en `features/v19_oof_arbol_5folds.npy` para cualquier trabajo futuro; (4) **AGE
+  queda cerrado tambien en su segunda vertiente**: no queda ni un parametro que tocar; (5) lo que
+  reabre AGE queda anotado y es solo tres cosas: fuente de informacion nueva, regla nueva del concurso
+  o evidencia externa. La unica linea que el registro dejaba abierta, **E-022 aplicado a las 279 de la
+  era V12 con regularizacion explicita**, es exactamente lo que V19 ya cobro, asi que esta cerrada.
+- **Evidence**: `experiments/v19_p0_auditoria.json`, `experiments/v19_x1_explotacion.json`,
+  `reports/v19_p0_auditoria.md`, `reports/v19_importancia.csv`, `reports/v19_complejidad.csv`,
+  `reports/v19_x1_explotacion.md`, `reports/v19_x1_comparativa.csv`,
+  `reports/v19_x1_complementariedad.csv`, `figures/v19_importancia.png`, `figures/v19_complejidad.png`,
+  `figures/v19_x1_explotacion.png`, `CHAMPION.md`.

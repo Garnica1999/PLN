@@ -1,7 +1,7 @@
 {
   "fase": "V19 · B1 challenger",
   "fecha": "2026-09-27",
-  "enviado": false,
+  "enviado": true,
   "candidato": {
     "combinacion": "LogReg + MLP(64) + arbol, un tercio cada uno",
     "pesos": [
@@ -74,5 +74,10 @@
   },
   "riesgo_no_medible": "el bloque supervisado tiene firma distinta entre train (cross-fitted) y test (ajustado sobre todo el train), y el supervisor de V12 comparte ese sesgo, de modo que el riesgo solo lo resuelve el leaderboard",
   "archivo": "/home/carlos/Git/PLN/KAGGLE_AGE_2026_PUJ/submissions/age_submission_v19_challenger_boosting.csv",
-  "segundos": 233.7
+  "segundos": 233.7,
+  "nota_de_envio": "Correccion de registro del 2026-09-27. En el momento de construir el fichero, `enviado` era false porque la subida de este proyecto es manual. Carlos subio despues `submissions/age_submission_v19_challenger_boosting.csv` a Kaggle y puntuo 0,62578, con un delta de +0,00396 sobre el envio oficial de V12 (0,62182) y +0,00390 sobre la replica (0,62188). El campo se corrige para que el registro no afirme lo contrario de lo que ocurrio. No se modifica ninguna metrica: el CV previsto de 0,62734 quedo 0,0016 por debajo del real, que es el residuo de la calibracion medido en D-052.",
+  "lb_real_tras_la_subida": 0.62578,
+  "delta_lb_vs_v12_oficial": 0.00396,
+  "delta_lb_vs_v12_replica": 0.0039,
+  "residuo_de_la_prediccion": -0.00156
 }
