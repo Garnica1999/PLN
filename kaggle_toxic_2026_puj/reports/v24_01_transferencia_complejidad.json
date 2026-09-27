@@ -1,0 +1,313 @@
+{
+  "experimento": "V24-01 (P1: modelo de transferencia de complejidad sobre el historial real)",
+  "fecha": "2026-09-27T06:14:01+00:00",
+  "n_submissions": 22,
+  "n_con_delta_oof_calculable": 19,
+  "historial": [
+    {
+      "submission": "v00_plantilla",
+      "archivo": "submissions/toxic_submission_v00_plantilla.csv",
+      "delta_lb": NaN,
+      "delta_oof": NaN,
+      "nota": "sin local_f1 numerico: dOOF no calculable"
+    },
+    {
+      "submission": "v01_baseline_tfidf_lr",
+      "archivo": "toxic_submission_v01_baseline_tfidf_lr.csv",
+      "local": 0.75778,
+      "lb": 0.75677,
+      "delta_lb": -0.026289999999999925,
+      "delta_oof": -0.01943145251657208,
+      "nota": ""
+    },
+    {
+      "submission": "v02_lr_union",
+      "archivo": "toxic_submission_v02_lr_union.csv",
+      "local": 0.7927,
+      "lb": 0.77993,
+      "delta_lb": -0.003129999999999966,
+      "delta_oof": 0.015488547483427872,
+      "nota": ""
+    },
+    {
+      "submission": "v03_lr_union_thr",
+      "archivo": "toxic_submission_v03_lr_union_thr.csv",
+      "local": 0.7989,
+      "lb": 0.78306,
+      "delta_lb": 0.0,
+      "delta_oof": 0.021688547483427967,
+      "nota": ""
+    },
+    {
+      "submission": "v04_ens04_mediana",
+      "archivo": "toxic_submission_v04_ens04_mediana.csv",
+      "local": 0.7985,
+      "lb": 0.7751,
+      "delta_lb": -0.007959999999999967,
+      "delta_oof": 0.0212885474834279,
+      "nota": ""
+    },
+    {
+      "submission": "v05_optuna",
+      "archivo": "toxic_submission_v05_optuna.csv",
+      "local": 0.8039,
+      "lb": 0.77602,
+      "delta_lb": -0.007039999999999935,
+      "delta_oof": 0.02668854748342786,
+      "nota": ""
+    },
+    {
+      "submission": "v06_robustez_c1",
+      "archivo": "toxic_submission_v06_robustez_c1.csv",
+      "local": 0.7929,
+      "lb": 0.77227,
+      "delta_lb": -0.010789999999999966,
+      "delta_oof": 0.01568854748342796,
+      "nota": ""
+    },
+    {
+      "submission": "v07_robustez_mindf5",
+      "archivo": "toxic_submission_v07_robustez_mindf5.csv",
+      "local": 0.7993,
+      "lb": 0.77034,
+      "delta_lb": -0.012719999999999954,
+      "delta_oof": 0.022088547483427923,
+      "nota": ""
+    },
+    {
+      "submission": "v08_meta_v2",
+      "archivo": "toxic_submission_v08_meta_v2.csv",
+      "local": 0.7874,
+      "lb": 0.78163,
+      "delta_lb": -0.0014299999999999313,
+      "delta_oof": 0.010188547483427901,
+      "nota": ""
+    },
+    {
+      "submission": "v09_candidate_a",
+      "archivo": "toxic_submission_v09_candidate_a.csv",
+      "local": 0.7809,
+      "lb": 0.77895,
+      "delta_lb": -0.004109999999999947,
+      "delta_oof": 0.003688547483427951,
+      "nota": ""
+    },
+    {
+      "submission": "v10_candidate_b",
+      "archivo": "toxic_submission_v10_candidate_b.csv",
+      "local": 0.7793,
+      "lb": 0.77978,
+      "delta_lb": -0.0032799999999999496,
+      "delta_oof": 0.002088547483427905,
+      "nota": ""
+    },
+    {
+      "submission": "v11_candidate_c",
+      "archivo": "toxic_submission_v11_candidate_c.csv",
+      "local": 0.7797,
+      "lb": 0.7815,
+      "delta_lb": -0.0015600000000000058,
+      "delta_oof": 0.002488547483427861,
+      "nota": ""
+    },
+    {
+      "submission": "v08_p1_fold_ensemble",
+      "archivo": "toxic_submission_v08_p1_fold_ensemble.csv",
+      "local": 0.777211,
+      "lb": 0.7747,
+      "delta_lb": -0.008359999999999923,
+      "delta_oof": -4.525165721025459e-07,
+      "nota": ""
+    },
+    {
+      "submission": "v09_p5_c_por_etiqueta",
+      "archivo": "toxic_submission_v09_p5_c_por_etiqueta.csv",
+      "local": 0.777518,
+      "lb": 0.77781,
+      "delta_lb": -0.005249999999999977,
+      "delta_oof": 0.0003065474834279547,
+      "nota": ""
+    },
+    {
+      "submission": "v12_p7_promedio_repeticiones",
+      "archivo": "toxic_submission_v12_p7_promedio_repeticiones.csv",
+      "local": 0.782277,
+      "lb": 0.77122,
+      "delta_lb": -0.011839999999999962,
+      "delta_oof": 0.005065547483427912,
+      "nota": ""
+    },
+    {
+      "submission": "v16_ch5_tasa_optima_absoluta",
+      "archivo": "submissions/toxic_submission_v16_ch5_tasa_optima_absoluta.csv",
+      "delta_lb": -0.00811,
+      "delta_oof": NaN,
+      "nota": "sin local_f1 numerico: dOOF no calculable"
+    },
+    {
+      "submission": "v16_ch1_tasa_optima_transportada",
+      "archivo": "submissions/toxic_submission_v16_ch1_tasa_optima_transportada.csv",
+      "delta_lb": -0.00478,
+      "delta_oof": NaN,
+      "nota": "sin local_f1 numerico: dOOF no calculable"
+    },
+    {
+      "submission": "v16_ch7_C1p5",
+      "archivo": "toxic_submission_v16_ch7_C1p5.csv",
+      "local": 0.776653,
+      "lb": 0.77296,
+      "delta_lb": -0.010099999999999998,
+      "delta_oof": -0.00055845251657205,
+      "nota": ""
+    },
+    {
+      "submission": "v16_ch8_C2p5",
+      "archivo": "toxic_submission_v16_ch8_C2p5.csv",
+      "local": 0.776752,
+      "lb": 0.77707,
+      "delta_lb": -0.00598999999999994,
+      "delta_oof": -0.00045945251657208974,
+      "nota": ""
+    },
+    {
+      "submission": "v16_ch9_mindf1",
+      "archivo": "toxic_submission_v16_ch9_mindf1.csv",
+      "local": 0.765532,
+      "lb": 0.76978,
+      "delta_lb": -0.013279999999999959,
+      "delta_oof": -0.011679452516572097,
+      "nota": ""
+    },
+    {
+      "submission": "56597267",
+      "archivo": "toxic_submission_v20_01_regla_hs_interaccion.csv",
+      "local": 0.777998,
+      "lb": 0.77663,
+      "delta_lb": -0.006429999999999936,
+      "delta_oof": 0.0007865474834278796,
+      "nota": ""
+    },
+    {
+      "submission": "56599802",
+      "archivo": "toxic_submission_v23_01_svd_rbf_sigmoid.csv",
+      "local": 0.79041,
+      "lb": 0.77938,
+      "delta_lb": -0.0036800000000000166,
+      "delta_oof": 0.013198547483427858,
+      "nota": ""
+    }
+  ],
+  "indicadores_recalculados": [
+    {
+      "modelo": "V03 LR L2 C=2.0",
+      "corrected_cv": 0.7772114525165721,
+      "delta_oof": 0.0,
+      "f1_train": 0.9614341756185656,
+      "gap_train_oof": 0.1842227231019935,
+      "n_parametros": 62583,
+      "fraccion_no_nula": 1.0,
+      "sparsity": 0.0,
+      "norma_coeficientes": 22.800708707299698,
+      "n_features": 20861,
+      "celdas": 0,
+      "rescates": 0,
+      "danios": 0,
+      "neto": 0
+    },
+    {
+      "modelo": "LR L1 C=4.0",
+      "corrected_cv": 0.7836424412648496,
+      "delta_oof": 0.006430988748277522,
+      "f1_train": 0.9291584728211418,
+      "gap_train_oof": 0.14551603155629222,
+      "n_parametros": 816,
+      "fraccion_no_nula": 0.013057608789438867,
+      "sparsity": 0.9869423912105612,
+      "norma_coeficientes": 65.88763164794382,
+      "n_features": 20861,
+      "celdas": 413,
+      "rescates": 208,
+      "danios": 205,
+      "neto": 3
+    },
+    {
+      "modelo": "LR L2 C=20.0",
+      "corrected_cv": 0.7719890852354188,
+      "delta_oof": -0.005222367281153328,
+      "f1_train": 1.0,
+      "gap_train_oof": 0.22801091476458124,
+      "n_parametros": 62583,
+      "fraccion_no_nula": 1.0,
+      "sparsity": 0.0,
+      "norma_coeficientes": 54.64804867770946,
+      "n_features": 20861,
+      "celdas": 142,
+      "rescates": 69,
+      "danios": 73,
+      "neto": -4
+    },
+    {
+      "modelo": "LinearSVC C=1.0",
+      "corrected_cv": 0.7715076419495347,
+      "delta_oof": -0.005703810567037393,
+      "f1_train": 0.9968203671009248,
+      "gap_train_oof": 0.22531272515139011,
+      "n_parametros": 61569,
+      "fraccion_no_nula": 0.9837818490929019,
+      "sparsity": 0.016218150907098106,
+      "norma_coeficientes": 15.753716223293937,
+      "n_features": 20861,
+      "celdas": 276,
+      "rescates": 105,
+      "danios": 171,
+      "neto": -66
+    },
+    {
+      "modelo": "RidgeClassifier a=3.0",
+      "corrected_cv": 0.7733013906381307,
+      "delta_oof": -0.00391006187844134,
+      "f1_train": 0.7651485847237898,
+      "gap_train_oof": -0.008152805914340977,
+      "n_parametros": 62583,
+      "fraccion_no_nula": 1.0,
+      "sparsity": 0.0,
+      "norma_coeficientes": 8.27776694469356,
+      "n_features": 20861,
+      "celdas": 306,
+      "rescates": 113,
+      "danios": 193,
+      "neto": -80
+    },
+    {
+      "nombre": "V23 svd_rbf_sigmoid",
+      "modelo": "V23 svd_rbf_sigmoid",
+      "delta_oof": 0.013198,
+      "delta_lb": -0.00368,
+      "gap_train_oof": 0.0,
+      "fraccion_vectores_soporte": 0.7090313884074716,
+      "sparsity": 0.0,
+      "norma_coeficientes": NaN,
+      "n_parametros": NaN,
+      "celdas": 240,
+      "rescates": 136,
+      "danios": 104,
+      "origen": "reportes de v23_01 y v23_02",
+      "nota": "el gap train-OOF no se midio para esta candidata; se deja como nan"
+    }
+  ],
+  "correlacion_delta_oof_delta_lb": {
+    "r": 0.4875649324967052,
+    "p": 0.03421585695749882,
+    "n": 19,
+    "recta": {
+      "intercepto": -0.009196240245227423,
+      "pendiente": 0.24483113053798367
+    },
+    "delta_oof_para_empatar": 0.03756156427093203,
+    "aviso": "`local_f1` no significa lo mismo en todas las fases: V16 optimizo la tasa predicha, luego su dOOF no es comparable con el corrected_cv de V03. Los puntos de V16 estan contaminados y sesgan la correlacion hacia el eje"
+  },
+  "gastos": {
+    "modelos_competencia": 0,
+    "submissions": 0
+  }
+}
