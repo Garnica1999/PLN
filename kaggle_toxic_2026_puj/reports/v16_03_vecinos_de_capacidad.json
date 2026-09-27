@@ -1,0 +1,94 @@
+{
+  "experimento": "V16-03 (tres sondas de capacidad y regularizacion alrededor de V03)",
+  "fecha": "2026-09-27T01:53:25+00:00",
+  "correccion_al_encargo": "El encargo tomaba V03 con min_df=1 y proponia min_df=2 como tercera sonda. V03 tiene min_df=2, verificado en las constantes PARAMS_WORD y PARAMS_CHAR del arnes validado, en el manifiesto de la submission campeona y en el pipeline congelado. Ademas el proyecto ya envio V03 hoy, ref 56571480, y obtuvo 0.78306. La tercera sonda habria sido V03 misma. Se corrige a min_df=1, que es el vecino inmediato por debajo del valor real y el mismo salto de una muesca que el encargo pretendia",
+  "identidad_control": {
+    "metrica_v03": 0.7772114525165721,
+    "diferencia": 0.0,
+    "parametros_v03": {
+      "word": {
+        "analyzer": "word",
+        "ngram_range": [
+          1,
+          2
+        ],
+        "min_df": 2,
+        "sublinear_tf": true
+      },
+      "char": {
+        "analyzer": "char_wb",
+        "ngram_range": [
+          3,
+          5
+        ],
+        "min_df": 2,
+        "sublinear_tf": true
+      },
+      "C": 2.0
+    }
+  },
+  "lb_v03": 0.78306,
+  "sondas": [
+    {
+      "id": "v16_ch7_C1p5",
+      "descripcion": "V03 exacta salvo C=1.5",
+      "unico_parametro": "C, de 2.0 a 1.5",
+      "C": 1.5,
+      "min_df": 2,
+      "umbrales": "0.44/0.51/0.46, los de V03 sin cambio",
+      "corrected_cv": 0.7766532665707371,
+      "delta_cv": -0.0005581859458350102,
+      "celdas_modificadas": 101,
+      "neto_0a1_menos_1a0": 5,
+      "fichero": "toxic_submission_v16_ch7_C1p5.csv",
+      "sha256": "197feee3a4b6a64a3def249b0b0265491172da521e98c4b25bbd40e7d9530456",
+      "pregunta": "V03 esta en el pico de la curva LB contra capacidad, con v01 en 4k features y C=1 dando 0.75677 y v05 en 32k y C=3.26 dando 0.77602. El pico esta en C=2.0. Esta sonda pregunta si el pico es ancho o agudo, reduciendo la regularizacion un paso",
+      "submission_id": "",
+      "kaggle_f1": "",
+      "delta_lb": ""
+    },
+    {
+      "id": "v16_ch8_C2p5",
+      "descripcion": "V03 exacta salvo C=2.5",
+      "unico_parametro": "C, de 2.0 a 2.5",
+      "C": 2.5,
+      "min_df": 2,
+      "umbrales": "0.44/0.51/0.46, los de V03 sin cambio",
+      "corrected_cv": 0.7767521531575442,
+      "delta_cv": -0.0004592993590278871,
+      "celdas_modificadas": 115,
+      "neto_0a1_menos_1a0": -17,
+      "fichero": "toxic_submission_v16_ch8_C2p5.csv",
+      "sha256": "2a533a442ab0a8a30b4ba46f56b6a32386baf848730da02e0a5a2bc286c3fb90",
+      "pregunta": "La direccion contraria de la misma sonda. Si el pico fuese agudo, subir C empeoraria de forma medida y la curva quedaria cerrada por los dos lados",
+      "submission_id": "",
+      "kaggle_f1": "",
+      "delta_lb": ""
+    },
+    {
+      "id": "v16_ch9_mindf1",
+      "descripcion": "V03 exacta salvo min_df=1",
+      "unico_parametro": "min_df, de 2 a 1",
+      "C": 2.0,
+      "min_df": 1,
+      "umbrales": "0.44/0.51/0.46, los de V03 sin cambio",
+      "corrected_cv": 0.7655315158596597,
+      "delta_cv": -0.01167993665691236,
+      "celdas_modificadas": 140,
+      "neto_0a1_menos_1a0": -22,
+      "fichero": "toxic_submission_v16_ch9_mindf1.csv",
+      "sha256": "827da9e7f695b7b69c6cc03558d796d18670f47227a8916cc663c42eb9b94449",
+      "pregunta": "El corte de frecuencias controla el tamaño del vocabulario y por tanto la capacidad de forma distinta de C. Con min_df=2 el espacio tiene 24646 dimensiones; con min_df=1 crecera. Esta sonda separa 'mas capacidad' de 'mas regularizacion', que hasta ahora solo se han explorado juntas",
+      "submission_id": "",
+      "kaggle_f1": "",
+      "delta_lb": ""
+    }
+  ],
+  "invariantes": [
+    "Los thresholds son los de V03 en las tres sondas, sin cambio",
+    "Un solo hiperparametro cambia por sonda",
+    "Ninguna feature nueva, ningun modelo nuevo",
+    "El test se usa solo para transformar; ningun modelo se ajusta con el",
+    "Mismo protocolo de generacion: ajuste sobre todo el desarrollo y prediccion del test"
+  ]
+}

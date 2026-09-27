@@ -1,0 +1,192 @@
+{
+  "ch1": {
+    "clave": "ch1",
+    "archivo": "toxic_submission_v16_ch1_tasa_optima_transportada.csv",
+    "sha256": "a1b91806f7201aa14a16d4b6d95f8032f04bb36812e417cd9e1c481a5a1ac032",
+    "pregunta": "Si el unico aumento de tasa controlado del proyecto (V02 -> V03, +0.026 de tasa por +0.00313 de LB) extrapola a un paso de la mitad de su tamano.",
+    "mecanismo": "cuantil",
+    "tasa_candidata": 0.3835932986712883,
+    "delta_tasa": 0.019064124783362224,
+    "tasa_HS": 0.4610051993067591,
+    "tasa_TR": 0.3050259965337955,
+    "tasa_AG": 0.3847487001733102,
+    "celdas_distintas": 66,
+    "celdas_por_etiqueta": [
+      26,
+      18,
+      22
+    ],
+    "acierto_entre_modificadas_oof": 0.5,
+    "aciertos_netos_oof": 0,
+    "corrected_cv_oof": 0.778830934474367,
+    "delta_corrected_cv": 0.0016194819577949326,
+    "lb_predicho_causal": 0.785349815894723,
+    "lb_predicho_descriptivo": 0.786570849220104,
+    "lb_techo_si_todo_acierta": 0.7849104672897196,
+    "supera_presupuesto_de_107_celdas": false,
+    "detalle_regla": {
+      "umbrales": [
+        0.42059728890585346,
+        0.4660138759535102,
+        0.43717979268002105
+      ],
+      "tasa_objetivo": 0.3824520991702824,
+      "tasa_objetivo_por_etiqueta": [
+        0.4600335075598167,
+        0.3036584812746616,
+        0.38366430867636886
+      ]
+    }
+  },
+  "ch2": {
+    "clave": "ch2",
+    "archivo": "toxic_submission_v16_ch2_prior_shift_em.csv",
+    "sha256": "118817f26703fcb8385241a39ac885eae74a37643789f770871732f178a25efe",
+    "pregunta": "Si la correccion de prior shift transfiere cuando se aplica a los scores y no a la regla de decision, con los factores por etiqueta del EM sin etiquetas.",
+    "mecanismo": "logit_prior",
+    "tasa_candidata": 0.3752166377816291,
+    "delta_tasa": 0.010687463893703064,
+    "tasa_HS": 0.4558058925476603,
+    "tasa_TR": 0.292894280762565,
+    "tasa_AG": 0.37694974003466203,
+    "celdas_distintas": 37,
+    "celdas_por_etiqueta": [
+      20,
+      4,
+      13
+    ],
+    "acierto_entre_modificadas_oof": 0.4423076923076923,
+    "aciertos_netos_oof": -6,
+    "corrected_cv_oof": 0.7791816894652833,
+    "delta_corrected_cv": 0.0019702369487112348,
+    "lb_predicho_causal": 0.7843436846682538,
+    "lb_predicho_descriptivo": 0.7850282033506644,
+    "lb_techo_si_todo_acierta": 0.78409738317757,
+    "supera_presupuesto_de_107_celdas": false,
+    "detalle_regla": {
+      "umbrales": [
+        0.44,
+        0.51,
+        0.46
+      ],
+      "k": [
+        0.936,
+        0.955,
+        0.938
+      ]
+    }
+  },
+  "ch3": {
+    "clave": "ch3",
+    "archivo": "toxic_submission_v16_ch3_peso_char_070.csv",
+    "sha256": "d0d5e42e2b3ec5125721e801deb52206d904bb5bd41d506a547928893dec20a8",
+    "pregunta": "Que bloque de la union word+char carga con la senal que transfiere, sin tocar ni el numero de features ni la constante de regularizacion.",
+    "mecanismo": "peso_bloques",
+    "tasa_candidata": 0.3873483535528596,
+    "delta_tasa": 0.022819179664933575,
+    "tasa_HS": 0.46880415944540726,
+    "tasa_TR": 0.30589254766031193,
+    "tasa_AG": 0.3873483535528596,
+    "celdas_distintas": 183,
+    "celdas_por_etiqueta": [
+      79,
+      43,
+      61
+    ],
+    "acierto_entre_modificadas_oof": 0.3299319727891156,
+    "aciertos_netos_oof": -100,
+    "corrected_cv_oof": 0.7545928559399407,
+    "delta_corrected_cv": -0.022618596576631345,
+    "lb_predicho_causal": 0.785800840237623,
+    "lb_predicho_descriptivo": 0.7872623801270942,
+    "lb_techo_si_todo_acierta": 0.7881908411214953,
+    "supera_presupuesto_de_107_celdas": true,
+    "detalle_regla": {
+      "umbrales": [
+        0.44,
+        0.51,
+        0.46
+      ],
+      "peso_word": 0.3,
+      "peso_char": 0.7
+    }
+  },
+  "ch4": {
+    "clave": "ch4",
+    "archivo": "toxic_submission_v16_ch4_control_tasa_baja.csv",
+    "sha256": "e0d6bb1cd71e0b49e8e14beb585779b8dc3eb8300892899db4ec21a4f8739d9c",
+    "pregunta": "La hipotesis del encargo (bajar la tasa para igualar la prevalencia) sometida a control: mismo modelo, misma regla por cuantil, solo baja la tasa.",
+    "mecanismo": "cuantil",
+    "tasa_candidata": 0.35759676487579434,
+    "delta_tasa": -0.006932409012131713,
+    "tasa_HS": 0.42980935875216636,
+    "tasa_TR": 0.28422876949740034,
+    "tasa_AG": 0.3587521663778163,
+    "celdas_distintas": 24,
+    "celdas_por_etiqueta": [
+      10,
+      6,
+      8
+    ],
+    "acierto_entre_modificadas_oof": 0.5376344086021505,
+    "aciertos_netos_oof": 7,
+    "corrected_cv_oof": 0.7723766831851678,
+    "delta_corrected_cv": -0.004834769331404254,
+    "lb_predicho_causal": 0.7822273396746462,
+    "lb_predicho_descriptivo": 0.7817833275563258,
+    "lb_techo_si_todo_acierta": 0.7837328971962617,
+    "supera_presupuesto_de_107_celdas": false,
+    "detalle_regla": {
+      "umbrales": [
+        0.4468321923662218,
+        0.5174297925443172,
+        0.4700977439950167
+      ],
+      "tasa_objetivo": 0.3567,
+      "tasa_objetivo_por_etiqueta": [
+        0.429057527733756,
+        0.28321188589540414,
+        0.35783058637084
+      ]
+    }
+  },
+  "ch5": {
+    "clave": "ch5",
+    "archivo": "toxic_submission_v16_ch5_tasa_optima_absoluta.csv",
+    "sha256": "dac0d815465ada1df4b1c554deeb1b4a39d863226e0d8154dd3349d5cd0492d9",
+    "pregunta": "Si la respuesta de la tasa continua mas alla del paso controlado, es decir si el optimum esta en la tasa optima de F1 medida y no en la que V03 alcanza.",
+    "mecanismo": "cuantil",
+    "tasa_candidata": 0.3980358174465627,
+    "delta_tasa": 0.03350664355863664,
+    "tasa_HS": 0.4783362218370884,
+    "tasa_TR": 0.31629116117850953,
+    "tasa_AG": 0.39948006932409014,
+    "celdas_distintas": 116,
+    "celdas_por_etiqueta": [
+      46,
+      31,
+      39
+    ],
+    "acierto_entre_modificadas_oof": 0.3793103448275862,
+    "aciertos_netos_oof": -21,
+    "corrected_cv_oof": 0.7768467466741863,
+    "delta_corrected_cv": -0.00036470584238579296,
+    "lb_predicho_causal": 0.7870845249058768,
+    "lb_predicho_descriptivo": 0.7892305834777585,
+    "lb_techo_si_todo_acierta": 0.7863123364485981,
+    "supera_presupuesto_de_107_celdas": true,
+    "detalle_regla": {
+      "umbrales": [
+        0.4052763714264685,
+        0.448445949518685,
+        0.4221820498884164
+      ],
+      "tasa_objetivo": 0.3969,
+      "tasa_objetivo_por_etiqueta": [
+        0.47741220285261493,
+        0.315129793977813,
+        0.3981580031695721
+      ]
+    }
+  }
+}
