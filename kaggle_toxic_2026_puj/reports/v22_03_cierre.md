@@ -29,7 +29,7 @@ V03 = 0.7772114525165721 OOF, **0.78306 LB**.
 ## 3. Hipotesis 1: REFUTADA
 
 La hipotesis era que el embedding se usaba sobre un texto de tarea con preprocessing
-incompatible con el del corpus. **Falsa, y por una razon que。 el propio proyecto ya la
+incompatible con el del corpus. **Falsa, y por una razon que el propio proyecto ya la
 habia resuelto**: `embedding_13_window_v5_1.py` linea 226 aplica `normalizar_emb_normal` al
 texto de la tarea antes de construir los vectores de documento. La normalizacion del corpus y
 la del texto de la tarea son la misma funcion.
