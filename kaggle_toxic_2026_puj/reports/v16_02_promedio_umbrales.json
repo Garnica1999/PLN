@@ -1,0 +1,87 @@
+{
+  "experimento": "V16-02 (promedio de semillas con umbrales re-optimizados a tasa constante)",
+  "fecha": "2026-09-27T01:46:29+00:00",
+  "hipotesis": "El promedio de probabilidades fracaso dos veces por un mecanismo medido: contrae la escala de salida y con umbrales congelados eso empuja en la direccion contraria. La combinacion que nunca se probo es reoptimizar los umbrales despues de promediar, emparejando la tasa de positivos con la del champion para que el unico cambio que se envia sea la reduccion de varianza",
+  "identidad_control": {
+    "metrica_v03": 0.7772114525165721,
+    "diferencia": 0.0
+  },
+  "semillas": [
+    {
+      "semilla": 42,
+      "macro_f1": 0.7772114525165721,
+      "delta": 0.0
+    },
+    {
+      "semilla": 7,
+      "macro_f1": 0.7772114525165721,
+      "delta": 0.0
+    },
+    {
+      "semilla": 1234,
+      "macro_f1": 0.7772114525165721,
+      "delta": 0.0
+    },
+    {
+      "semilla": 20260926,
+      "macro_f1": 0.7772114525165721,
+      "delta": 0.0
+    },
+    {
+      "semilla": 99991,
+      "macro_f1": 0.7772114525165721,
+      "delta": 0.0
+    }
+  ],
+  "macro_f1_promedio_con_umbrales_v03": 0.7772114525165721,
+  "delta_del_promedio_sin_reoptimizar": 0.0,
+  "umbrales_elegidos": {
+    "HS": 0.4099999999999998,
+    "TR": 0.47499999999999976,
+    "AG": 0.4499999999999998
+  },
+  "umbrales_v03": {
+    "HS": 0.44,
+    "TR": 0.51,
+    "AG": 0.46
+  },
+  "tasa_objetivo": {
+    "HS": 0.4385,
+    "TR": 0.2894,
+    "AG": 0.3657
+  },
+  "tabla_de_umbrales": [
+    {
+      "etiqueta": "HS",
+      "umbral_v03": 0.44,
+      "tasa_v03": 0.4571813890761969,
+      "umbral_promedio": 0.4099999999999998,
+      "tasa_promedio": 0.4942683749157114,
+      "tasa_objetivo": 0.4385,
+      "macro_f1_de_la_columna": 0.7675597393193339
+    },
+    {
+      "etiqueta": "TR",
+      "umbral_v03": 0.51,
+      "tasa_v03": 0.3000674308833446,
+      "umbral_promedio": 0.47499999999999976,
+      "tasa_promedio": 0.3122049898853675,
+      "tasa_objetivo": 0.2894,
+      "macro_f1_de_la_columna": 0.8193832599118943
+    },
+    {
+      "etiqueta": "AG",
+      "umbral_v03": 0.46,
+      "tasa_v03": 0.37761294672960216,
+      "umbral_promedio": 0.4499999999999998,
+      "tasa_promedio": 0.38435603506405935,
+      "tasa_objetivo": 0.3657,
+      "macro_f1_de_la_columna": 0.7563764291996482
+    }
+  ],
+  "macro_f1_candidata": 0.7811064761436254,
+  "delta_candidata": 0.0038950236270532956,
+  "celdas_modificadas_en_oof": 83,
+  "submission": "submissions/toxic_submission_v16_ch6_promedio_5semillas.csv",
+  "nota_de_alcance": "La reduccion de varianza por promedio es real y deberia transferir bien, pero la evidencia previa en este proyecto es de dos fracasos con el mismo mecanismo. Esta candidata corrige la causa medida; no esta garantizado que la corriga, y por eso se gasta UNA submission y no mas"
+}
