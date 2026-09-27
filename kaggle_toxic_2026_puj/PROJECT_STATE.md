@@ -749,3 +749,43 @@ chequeo previo (D-008).
 - **Pendiente**: no queda nada abierto de la v12. La v10 conserva tres ficheros con acentos que no
   se corrigen, por decision, porque modificarlos rompe la correspondencia entre codigo y resultado
   historico.
+
+
+---
+
+## Fase P45 (2026-09-27) - METRIC_MATCH = TRUE, JOINT_LABEL_STRUCTURE = CLOSED
+
+**Que se respondio.**
+
+1. La metrica local `corrected_cv` **si** es exactamente
+   `f1_score(average="macro")` sobre entrada multilabel: diferencia `0.000e+00` y 0
+   discrepancias en 600 casos aleatorios.
+2. `corrected_cv = 0.7772114525165721` se reproduce exactamente desde el OOF canonico.
+3. La media de pliegues (`0.7773117212`) y el global (`0.7772114525`) no son intercambiables;
+   el proyecto reporta el global.
+4. El parametro `average` del host sigue sin ser legible, pero `samples` queda **excluido**
+   por el discriminante de escala del leaderboard. Las tres hipotesis restantes estan a menos
+   de 0.0036 entre si y ordenan los candidatos igual (spearman >= 0.98).
+
+5. La estructura conjunta `HS x TR x AG` es **real y medible**: los errores de las tres
+   etiquetas no son independientes dado el estado verdadero (chi2 343.156, gl 20, p < 1e-6).
+6. Pero **no es explotable**: la correccion estructural dura es negativa en las dos formas
+   (-0.000646 y -0.003542), y todos los mecanismos de aprendizaje conjunto estan ya
+   registrados con resultado negativo o sin transferencia.
+
+**Lo que queda abierto.** Solo una resolucion menor: distinguir `macro` de `micro` y
+`weighted`. Es inmaterial para el ranking de candidatos, asi que no bloquea nada.
+
+**Lo que queda cerrado.** `JOINT_LABEL_STRUCTURE = CLOSED`. No se abre ninguna familia
+conjunta nueva.
+
+**Estado del campeon.** Sin cambios. V03 sigue con `corrected_cv = 0.7772114525165721`,
+LB 0.78306, sha256 `7d7478f2`, intacta. 0 submissions en esta fase. 3 submissions reservadas.
+
+**Reconciliacion documental de V44 (misma fecha).** Antes de P45 se reconcilio V44 contra
+sus artefactos. Se corrigieron tres filas de `experiments.csv` (V44-01 declaraba una config
+de VW que el script nunca tuvo; V44-02 decia "CANDIDATO UNICO / REPENDIENTE DE CORRER"
+cuando ya estaba medido y era negativo; V44-03 declaraba 173->176 celdas cuando el paso real
+fue 177->181), una celda del notebook cuya tabla no producia ningun script, y un fallback
+copy-pegado en `v44_02_pls_correcto.py` que devolvia la decision de V44-01. Ninguna cifra
+experimental cambio. Commit `2285423`.

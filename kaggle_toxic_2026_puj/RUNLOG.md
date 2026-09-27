@@ -1715,3 +1715,59 @@ existe una fuente de senal permitida y genuinamente nueva identificada en el inp
 se abre una V16 para buscar microganancias.**
 
 **Sin push, sin merge adicional, sin reset, sin rebase, sin modificar otras ramas.**
+
+
+---
+
+## 2026-09-27 - Fase P45: auditoria de metrica y estructura conjunta
+
+**Recuperacion forense previa (sin cambios en artefactos).** Se determino el estado real: rama
+`v25`, HEAD `e1ad0bf`, `experiments.csv` con 311 filas, notebook con 181 celdas, V44 persistido
+en el working tree pero no commiteado. Se determino que la cifra de 258 filas de mi memoria
+conversacional no existia en ningun worktree ni commit: era una alucinacion, no un estado real.
+Se determino tambien que la fase V46 citada en esa misma memoria **no existe**: 0 archivos.
+
+**Reconciliacion documental de V44** (commit `2285423`). Fuentes de verdad segun jerarquia:
+script ejecutado, JSON producido, artefactos, notebook, `experiments.csv`,
+`plan/contexto.md`. Hallazgos y correcciones:
+
+- `v44_01_vw_optimizers.py` **calcula** sus resultados; el JSON y el MD se generan de la misma
+  ejecucion. La tabla del notebook (FTRL 0.597823) no la produce ningun script y sus
+  rescates/danos no coinciden con el JSON. **El JSON gana.**
+- La fila V44-01 de `experiments.csv` declaraba "VW 9.11.0, 10 hilos, 32 passes", config que
+  el script nunca tuvo. La real es 9.11.8 con `passes=10`.
+- La fila V44-02 decia "CANDIDATO UNICO / REPENDIENTE DE CORRER" cuando el informe ya existia
+  con PLS en -0.040430.
+- `v44_02_pls_correcto.py:290` tenia un fallback copy-pegado de V44-01 que devolvia
+  `SPARSE_ONLINE_OPTIMIZATION = CLOSED`. Corregido a `PLS = CLOSED` y propagado al JSON y al
+  MD **sin tocar ninguna cifra**.
+- `plan/contexto.md` rotulaba como V44 resultados de V40 y V42. Rehecho; el prefijo historico
+  quedo intacto.
+- La seccion 37 del notebook la deberia escribir `v42_02_integrar_notebook.py`, pero su guard
+  buscaba una cadena que ya estaba en la seccion 36 (escrita por `v40_02`), asi que aborto sin
+  escribir. Por eso no hay seccion propia de V42 y la 37 contiene V44. No se renumero nada.
+- Limitacion registrada: `v44_01` no fija los hilos de VW, asi que la corrida no es
+  bit-reproducible. El JSON es el registro de la corrida efectuada. El veredicto no depende de
+  ello.
+
+**P45-A** (`experiments/v45_00_metrica_audit.py`, 10.9 s): `corrected_cv` reproducido con
+diferencia `+0.000e+00`. Identidad con `f1_score(average="macro")` demostrada. Media de
+pliegues frente a global reconciliada. `samples` excluido por escala. Ranking de umbrales
+estable entre las tres hipotesis restantes. `METRIC_MATCH = TRUE`.
+
+**P45-B** (`experiments/v45_01_joint_label_structure.py`, 0.4 s): distribucion de los ocho
+estados, matriz 8x8, categorias de error, contraste de independencia (chi2 343.156, gl 20,
+p < 1e-6) y correccion estructural dura negativa en las dos formas. Inventario de mecanismos
+conjuntos leido del registro. `JOINT_LABEL_STRUCTURE = CLOSED`.
+
+**Integracion** (`experiments/v45_02_integrar_notebook.py`): secciones 40 y 41 anadidas, 181 ->
+185 celdas. Ambas celdas de codigo se ejecutaron con returncode 0. `reports/p45_results.csv`
+con 49 filas.
+
+**Errores propios durante la fase, corregidos antes de cerrar**: nombres de variable no ASCII
+(CJK) en dos scripts; `average="macro_3"` pasado a sklearn; `e` indefinido en el generador de
+MD; un bucle que **redefinia** `matriz` y hacia que la matriz 8x8 se guardara como un array de
+1483x3; un `c` de bucle reutilizado como diccionario. Todos detectados por asercion o por
+verificacion explicita del artefacto, no por el informe final.
+
+**Sin push, sin merge, sin reset, sin rebase, sin PR. 0 submissions. V03 intacto.**

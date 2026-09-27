@@ -1,0 +1,146 @@
+{
+  "familia": "P45_METRIC_AUDIT",
+  "experimento": "V45-00 (P0 auditoria de la metrica de la competicion)",
+  "fecha": "2026-09-27T23:49:14+00:00",
+  "estado": "AUDIT_ONLY",
+  "pregunta": "corrected_cv coincide exactamente con la metrica que usa Kaggle?",
+  "reproduccion_v03": {
+    "corrected_cv_calculado": 0.7772114525165721,
+    "corrected_cv_objetivo": 0.7772114525165721,
+    "diferencia": 0.0,
+    "tolerancia": 1e-12,
+    "reproduce": true,
+    "f1_por_etiqueta": {
+      "HS": 0.7616892911010558,
+      "TR": 0.8157303370786517,
+      "AG": 0.7542147293700089
+    },
+    "conteos": {
+      "HS": {
+        "TP": 505,
+        "FP": 173,
+        "FN": 143,
+        "TN": 662
+      },
+      "TR": {
+        "TP": 363,
+        "FP": 82,
+        "FN": 82,
+        "TN": 956
+      },
+      "AG": {
+        "TP": 425,
+        "FP": 135,
+        "FN": 142,
+        "TN": 781
+      }
+    }
+  },
+  "agregacion": {
+    "media_de_pliegues": 0.7773117211578542,
+    "global_oof": 0.7772114525165721,
+    "diferencia": 0.00010026864128209745,
+    "por_pliegue": [
+      {
+        "pliegue": 1,
+        "n": 297,
+        "macro_f1": 0.7960101143044023
+      },
+      {
+        "pliegue": 2,
+        "n": 297,
+        "macro_f1": 0.7940339497874405
+      },
+      {
+        "pliegue": 3,
+        "n": 296,
+        "macro_f1": 0.7788600288600289
+      },
+      {
+        "pliegue": 4,
+        "n": 296,
+        "macro_f1": 0.738598013128522
+      },
+      {
+        "pliegue": 5,
+        "n": 297,
+        "macro_f1": 0.7790564997088775
+      }
+    ],
+    "nota": "No son intercambiables. El corrected_cv reportado es el global."
+  },
+  "identidad_macro": {
+    "f1_score_macro": 0.7772114525165721,
+    "f1_media_columnas": 0.7772114525165721,
+    "diferencia": 0.0,
+    "casos_aleatorios": 600,
+    "discrepancias": 0,
+    "max_diferencia": 0.0,
+    "coincide": true,
+    "nota": "f1_score(average='macro') sobre entrada multilabel promedia la F1 de la clase positiva de cada etiqueta, no las seis clases"
+  },
+  "hipotesis_average": {
+    "valores": {
+      "macro_3": 0.7772114525165721,
+      "micro": 0.773556685611726,
+      "samples": 0.3343897505057316,
+      "weighted": 0.7736231398712526
+    },
+    "diagnosticas": {
+      "macro_6_clases": 0.8182213362740173,
+      "muestra_por_fila_exact_match": 0.7026298044504383
+    },
+    "dispersion": 0.4428217020108405,
+    "candidato_kaggle": "metric/f1-score (kernelId 39244216). El parametro average esta sobrescrito por el host y no es legible.",
+    "metrica_del_proyecto": "macro_3 (f1_media_columnas)"
+  },
+  "discriminante_escala_lb": {
+    "n_submissions": 19,
+    "pearson_local_vs_kaggle": 0.48756493249670496,
+    "kaggle_f1_de_v03": 0.78306,
+    "muestra_oof_de_v03": 0.3343897505057316,
+    "macro_3_oof_de_v03": 0.7772114525165721,
+    "brecha_samples": 0.44867024949426837,
+    "brecha_macro_3": 0.0058485474834278905
+  },
+  "samples_excluido_por_escala": true,
+  "test_de_impacto": {
+    "configuraciones": 1000,
+    "spearman": {
+      "micro": {
+        "spearman_vs_macro3": 0.9835913046714941,
+        "mejor_config_identica": false,
+        "top10_identico": false,
+        "mejor_valor": 0.7758570172868444
+      },
+      "samples": {
+        "spearman_vs_macro3": 0.4896350643004784,
+        "mejor_config_identica": false,
+        "top10_identico": false,
+        "mejor_valor": 0.3915261856596987
+      },
+      "weighted": {
+        "spearman_vs_macro3": 0.9921053361053362,
+        "mejor_config_identica": true,
+        "top10_identico": false,
+        "mejor_valor": 0.7760793520722146
+      }
+    },
+    "optimo_macro3": {
+      "u_hs": 0.4,
+      "u_tr": 0.5,
+      "u_ag": 0.44
+    },
+    "umbrales_congelados_v03": [
+      0.44,
+      0.51,
+      0.46
+    ]
+  },
+  "METRIC_MATCH": true,
+  "gastos": {
+    "submissions": 0,
+    "modelos_entrenados": 0,
+    "segundos": 11.0
+  }
+}

@@ -849,3 +849,74 @@ como el denso podrían aportar más de lo que aportan hoy.
 
 *Sección generada por `experiments/embedding_21_documentacion_v5_1.py` (EBD-27 (P9)) el
 2026-09-26. Sin push: la rama sigue local.*
+
+
+---
+
+## Addendum P45 (2026-09-27) - La metrica, verificada; la estructura conjunta, cerrada
+
+Este addendum responde a las dos preguntas que quedaban abiertas antes de abrir cualquier
+otra familia de modelos.
+
+### 1. La metrica local es exactamente la que se optimizo, y queda demonstrated
+
+`corrected_cv = 0.7772114525165721` se reproduce con diferencia `+0.000e+00` desde el OOF
+canonico. La magnitud del proyecto, `f1_media_columnas`, es **identica** a
+`sklearn.metrics.f1_score(..., average="macro")` sobre entrada multilabel: diferencia
+`0.000e+00` y **0 discrepancias en 600 casos aleatorios**.
+
+Un detalle que conviene no pasar por alto: la media de los cinco pliegues da `0.7773117212`
+y el global sobre el OOF da `0.7772114525`. No son la misma cifra. El proyecto reporta el
+global, que es el correcto, pero cualquier lectura que promovie las dos como intercambiables
+introduce un error de `+0.0001002686`.
+
+El parametro `average` que aplica el host no es legible. Eso motivo un discriminante de
+escala: `samples` da `0.334` sobre el OOF de V03, mientras el host reporto `0.78306` para la
+submission de V03. Una brecha de `0.449` no se explica por desplazamiento de prevalencia, de
+modo que **`samples` queda excluido**. Las tres hipotesis restantes (`macro`, `micro`,
+`weighted`) estan a menos de `0.0036` entre si y ordenan los candidatos de umbrales igual
+(spearman `>= 0.98` sobre 1000 configuraciones).
+
+**`METRIC_MATCH = TRUE`**, con la salvedad escrita: esto demuestra la igualdad con `macro`, no
+una lectura directa del host.
+
+### 2. La estructura conjunta existe, y no se puede explotar
+
+`LABEL_STATE = 4*HS + 2*TR + AG`. Los estados `010` y `011` **nunca se observan**:
+`TR=1` implica `HS=1` en los 265 casos de train con `TR=1`. Es una restriccion estructural
+fuerte y exacta.
+
+Y hay estructura de error conjunto, de verdad. El contraste de independencia de los tres
+indicadores de error, dado el estado verdadero, da **chi2 343.156 con 20 grados de libertad,
+p < 1e-6**, con desviaciones de hasta 116 casos en una sola celda. Los errores de HS, TR y AG
+**no** son independientes.
+
+La pregunta es si eso se traduce en senal. No. La extraccion mas directa, la correccion
+estructural dura, es **negativa en las dos formas**: `-0.000646` al forzar `TR=0` si `HS=0`, y
+`-0.003542` al forzar `AG=0` si `HS=0`. Y las formulaciones de aprendizaje conjunto ya estan
+todas en el registro con resultado negativo o sin transferencia: Label Powerset
+(`V4-E01-E03`, 12 variantes, todas bajo V03), classifier chains en ambos ordenes
+(`E2-01-HS-TR-AG` 0.773674 y `E2-01-HS-AG-TR` 0.774429, ambos bajo 0.777211), espacio
+separado por etiqueta, acoplamiento suave entre cabeceras, meta-modelos.
+
+**`JOINT_LABEL_STRUCTURE = CLOSED`.** No se implementa ningun decoder estructurado: su unica
+diferencia respecto a la correccion dura es el peso, y la version de peso infinito ya es
+negativa.
+
+### 3. Lo que cambia y lo que no
+
+No cambia el campeon. **V03 sigue con `corrected_cv = 0.7772114525165721`, LB 0.78306,
+sha256 `7d7478f2`, intacta.** 0 submissions en esta fase; las 3 reservadas siguen reservadas.
+
+Lo que si cambia es la confianza en las 311 filas de registro que hay detras de esa cifra: la
+base de comparacion esta verificada, asi que cualquier delta futuro es interpretable.
+
+### 4. Advertencia sobre la transferencia
+
+El pearson entre `local_f1` y `kaggle_f1` es **0.4876**, no alto. La transferencia
+local->leaderboard es ruidosa, y es coherente con el hecho historico de que **0 de 22
+submissions superaron a V03** pese a metricas locales altas. Conviene tenerlo presente antes de
+interpretar cualquier mejora local pequena como promesa de mejora en el externo.
+
+*Seccion generada por `experiments/v45_00_metrica_audit.py` y
+`experiments/v45_01_joint_label_structure.py` el 2026-09-27. Sin push: la rama sigue local.*

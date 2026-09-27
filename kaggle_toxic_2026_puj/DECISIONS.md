@@ -3805,3 +3805,54 @@ acierto cero, que es el caso mas limpio de ese patron.
 **Estado**: 3 experimentos, 0 adoptables, 0 marginales, 3 rechazadas, 0 submissions, 0 de 3
 evaluaciones de holdout2, segunda particion no ejecutada, test no utilizado, V03 congelada e intacta
 con identidad verificada. Registro en 242 filas con 242 claves unicas y 23 campos.
+
+
+### D-030. La metrica local es la macro de 3 etiquetas, y `samples` queda excluido
+
+**Contexto.** P45 abria con la pregunta de si `corrected_cv` coincide con la metrica del
+host. Sin resolverlo, todo delta comparativo posterior carecia de base.
+
+**Evidencia.** `f1_media_columnas` es identico a `f1_score(average="macro")` sobre entrada
+multilabel: diferencia `0.000e+00`, 0 discrepancias en 600 casos aleatorios. `corrected_cv`
+se reproduce con diferencia `+0.000e+00`. La media de pliegues y el global OOF difieren en
+`+0.0001002686` y no son intercambiables; el proyecto reporta el global.
+
+**Decision.** `METRIC_MATCH = TRUE` para `macro`. Se declara `samples` **excluido** por el
+discriminante de escala: da 0.334 sobre el OOF de V03, mientras el host reporto 0.78306 para
+la submission de V03, y una brecha de 0.449 no se explica por desplazamiento de prevalencia.
+
+**Consecuencias.** Se mantiene `macro_3` como metrica de seleccion. La distincion residual
+entre `macro`, `micro` y `weighted` (menos de 0.0036, spearman >= 0.98 en el ranking de
+umbrales) se registra como pendiente menor, no como bloqueante.
+
+**Lo que no se decide.** No se afirma que el host use `macro` de forma directa. El codigo del
+scorer no esta en el repositorio.
+
+### D-031. La estructura conjunta es real pero no explotable: CLOSED
+
+**Contexto.** P45-B preguntaba si existe una formulacion de prediccion conjunto genuinamente
+nueva, no equivalente a las ya probadas.
+
+**Evidencia.** Los estados `010` y `011` nunca se observan (`TR=1` implica `HS=1` en los 265
+casos de train con `TR=1`). Los errores de las tres etiquetas **no** son independientes dado
+el estado verdadero: chi2 343.156, gl 20, p < 1e-6, con desviaciones de hasta 116 casos en una
+celda.
+
+**Decision.** `JOINT_LABEL_STRUCTURE = CLOSED`.
+
+**Consecuencias.** La estructura conjunta existe pero no se traduce en ganancia. La extraccion
+mas directa, la correccion estructural dura, es negativa en las dos formas (-0.000646 y
+-0.003542). Label Powerset, classifier chains en ambos ordenes, espacio por etiqueta,
+acoplamiento suave y meta-modelos estan todos registrados con resultado negativo o sin
+transferencia. **No se abre ninguna familia conjunta nueva** y no se implementa ningun decoder
+estructurado.
+
+**Alternativas descartadas.** Decoder con funcion de energia explicita sobre estados validos:
+se descarta porque su unica diferencia respecto a la correccion dura es el peso, y la version
+de peso infinito ya es negativa. Ajustar el decoder a un subconjunto de estados sin
+entrenamiento adicional es la misma regla.
+
+**Nota de honestidad.** El pearson(`local_f1`, `kaggle_f1`) es 0.4876, no alto. La
+transferencia local->leaderboard es ruidosa, coherente con que 0 de 22 submissions superaran a
+V03. El discriminante de escala no depende de esa correlacion: se apoya en el valor absoluto
+que el host reporto.
