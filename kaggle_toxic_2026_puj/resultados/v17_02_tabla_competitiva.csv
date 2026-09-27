@@ -1,0 +1,46 @@
+challenger,grupo,macro_f1_optima,delta_oof,rescate_neto_optimo,rescates_optimos,danios_optimos,rescate_neto_en_umbral_propio,supera_escala_de_107,lb,delta_lb,estado
+oof_candidates_v4/C_meta36_downweight,A,0.790001,0.01279,72,137,65,57,False,,,NO ENVIADO
+oof_ens04_v04/proba_ens,A,0.791075,0.013864,59,173,114,51,False,0.77510,-0.00796,PERDIO EN EL LEADERBOARD
+oof_meta_shift_v4/meta_control,A,0.782576,0.005364,56,133,77,24,False,,,NO ENVIADO
+oof_mod03b/proba,A,0.787876,0.010664,55,162,107,52,False,0.77993,-0.00313,PERDIO EN EL LEADERBOARD
+oof_candidates_v4/B_meta36,A,0.783306,0.006094,53,126,73,42,False,0.78163,-0.00143,PERDIO EN EL LEADERBOARD
+oof_meta_shift_v4/meta_shift,A,0.783306,0.006094,53,126,73,42,False,,,NO ENVIADO
+oof_meta_shift_v4/meta_shift_cuantil,A,0.783234,0.006023,52,124,72,38,False,,,NO ENVIADO
+oof_meta_shift_v4/meta_shift_platt,B,0.775573,-0.001638,46,145,99,-87,False,,,NO ENVIADO
+oof_candidates_v4/D_svd300_rbf,A,0.788564,0.011352,44,134,90,30,False,,,NO ENVIADO
+oof_tracks_g_v4/svd__rbf_svc,A,0.788564,0.011352,44,134,90,30,False,,,NO ENVIADO
+oof_candidates_v4/A_cost_sensitive_downweight,A,0.786199,0.008987,41,104,63,6,False,,,NO ENVIADO
+oof_joint_label_v4/joint__lr4_excluir_bal_C2.0,B,0.775495,-0.001717,41,165,124,-20,False,,,NO ENVIADO
+oof_weighting_v4/combo__downweight_violacion_x_clase,A,0.786199,0.008987,41,104,63,6,False,,,NO ENVIADO
+v2_meta_oof/proba,A,0.778934,0.001722,36,137,101,18,False,,,NO ENVIADO
+oof_joint_label_v4/joint__lr6_bal_C2.0,B,0.776458,-0.000753,35,155,120,-32,False,,,NO ENVIADO
+oof_joint_label_v4/joint__lr6_unb_C2.0,B,0.772542,-0.004669,33,155,122,16,False,,,NO ENVIADO
+oof_reweight_v4/svc__down_violacion,A,0.781261,0.00405,33,96,63,-34,False,,,NO ENVIADO
+oof_joint_label_v4/joint__lr4_mapeo_bal_C2.0,B,0.77019,-0.007022,32,190,158,-27,False,,,NO ENVIADO
+oof_joint_label_v4/joint__lr6_unb_C1.0,B,0.767166,-0.010046,30,161,131,-9,False,,,NO ENVIADO
+oof_tracks_g_v4/meta_v03_lm_36feat,B,0.776909,-0.000302,29,117,88,11,False,,,NO ENVIADO
+oof_tracks_g_v4/meta_v03_9feat,A,0.777635,0.000423,25,82,57,4,False,,,NO ENVIADO
+oof_reweight_v4/lr__down_violacion,B,0.771045,-0.006166,24,115,91,16,False,,,NO ENVIADO
+oof_weighting_v4/clase__barrio_anidado_por_etiqueta,B,0.77718,-3.2e-05,24,80,56,4,False,,,NO ENVIADO
+oof_joint_label_v4/joint__lr4_excluir_bal_C1.0,B,0.766003,-0.011209,23,178,155,-88,False,,,NO ENVIADO
+oof_reweight_v4/lr__mild_up,B,0.772721,-0.00449,21,94,73,-15,False,,,NO ENVIADO
+oof_weighting_v4/geo__bm25_k1.2_b0.75,B,0.771356,-0.005855,20,93,73,8,False,,,NO ENVIADO
+oof_weighting_v4/geo__bm25_k2.0_b0.3,B,0.774648,-0.002564,20,71,51,8,False,,,NO ENVIADO
+v2_oof_base_corrected/proba#1,B,0.772697,-0.004514,17,80,63,11,False,,,NO ENVIADO
+oof_reweight_v4/lr__none,B,0.772697,-0.004514,17,80,63,0,False,,,NO ENVIADO
+oof_weighting_v4/geo__v03_sublinear (control),B,0.772697,-0.004514,17,80,63,11,False,,,NO ENVIADO
+oof_weighting_v4/geo__bm25_k1.2_b0.0,B,0.770622,-0.00659,17,93,76,4,False,,,NO ENVIADO
+oof_joint_label_v4/joint__lr4_mapeo_bal_C1.0,B,0.765346,-0.011865,15,188,173,-87,False,,,NO ENVIADO
+oof_weighting_v4/geo__bm25_k0.6_b0.3,B,0.777159,-5.3e-05,13,62,49,5,False,,,NO ENVIADO
+oof_joint_label_v4/joint__lr6_unb_C0.5,B,0.761045,-0.016166,12,156,144,-50,False,,,NO ENVIADO
+oof_tracks_g_v4/alt__ridge,B,0.770777,-0.006435,12,99,87,-4,False,,,NO ENVIADO
+v2_oof_cita_negacion/proba#3,B,0.768337,-0.008875,10,119,109,-8,False,,,NO ENVIADO
+oof_joint_label_v4/joint__lr6_bal_C1.0,B,0.76387,-0.013341,7,167,160,-129,False,,,NO ENVIADO
+v2_oof_base_corrected/proba#2,B,0.77269,-0.004521,6,105,99,-7,False,,,NO ENVIADO
+v2_oof_syntax/proba#4,B,0.762764,-0.014448,6,151,145,-2,False,,,NO ENVIADO
+oof_reweight_v4/svc__none,B,0.77269,-0.004521,6,105,99,-66,False,,,NO ENVIADO
+oof_reweight_v4/lr__clipped_extremos,B,0.760153,-0.017058,5,133,128,-13,False,,,NO ENVIADO
+v2_oof_emocion_nbsvm_ortografia/proba#6,B,0.767933,-0.009279,4,192,188,-11,False,,,NO ENVIADO
+oof_reweight_v4/svc__clipped_extremos,B,0.768469,-0.008742,4,105,101,-71,False,,,NO ENVIADO
+oof_weighting_v4/geo__binario,B,0.774418,-0.002794,4,56,52,-8,False,,,NO ENVIADO
+v2_oof_syntax/proba#5,B,0.761109,-0.016102,2,154,152,-5,False,,,NO ENVIADO
