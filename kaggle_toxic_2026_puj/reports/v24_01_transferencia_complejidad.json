@@ -1,6 +1,6 @@
 {
   "experimento": "V24-01 (P1: modelo de transferencia de complejidad sobre el historial real)",
-  "fecha": "2026-09-27T06:14:01+00:00",
+  "fecha": "2026-09-27T06:14:37+00:00",
   "n_submissions": 22,
   "n_con_delta_oof_calculable": 19,
   "historial": [
@@ -288,6 +288,7 @@
       "sparsity": 0.0,
       "norma_coeficientes": NaN,
       "n_parametros": NaN,
+      "corrected_cv": 0.7904094525165721,
       "celdas": 240,
       "rescates": 136,
       "danios": 104,

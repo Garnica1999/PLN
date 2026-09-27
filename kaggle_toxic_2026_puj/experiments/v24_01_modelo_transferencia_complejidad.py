@@ -88,6 +88,7 @@ V23 = {
     "sparsity": 0.0,
     "norma_coeficientes": np.nan,
     "n_parametros": np.nan,
+    "corrected_cv": 0.7772114525165721 + 0.013198,
     "celdas": 240,
     "rescates": 136,
     "danios": 104,
@@ -103,6 +104,30 @@ def log(mensaje: str) -> None:
         mensaje: texto a mostrar.
     """
     print(f"[V24-01] {mensaje}", flush=True)
+
+
+def _num(fila: dict[str, Any], clave: str, formato: str = ".4f", vacio: str = "n/d") -> str:
+    """Formatea un campo numerico que puede no existir.
+
+    La fila de V23 no se recalcula en este script, asi que sus indicadores de modelo lineal
+    no existen. En vez de inventarlos, la tabla los marca como no disponible.
+
+    Args:
+        fila: fila del indicador.
+        clave: nombre del campo.
+        formato: formato de Python.
+        vacio: texto cuando el campo no existe o es nan.
+
+    Returns:
+        El valor formateado o el texto de ausencia.
+    """
+    valor = fila.get(clave, None)
+    if valor is None or (isinstance(valor, float) and np.isnan(valor)):
+        return vacio
+    try:
+        return format(valor, formato)
+    except (TypeError, ValueError):
+        return str(valor)
 
 
 def macro_f1(verdad: np.ndarray, predicho: np.ndarray) -> float:
@@ -404,10 +429,12 @@ def _informe_md(
     ]
     for f in indicadores:
         lineas.append(
-            f"| {f['modelo']} | {f['corrected_cv']:.6f} | {f['f1_train']:.4f} | "
-            f"{f['gap_train_oof']:+.4f} | {f['fraccion_no_nula']:.4f} | {f['sparsity']:.4f} | "
-            f"{f['norma_coeficientes']:.4f} | {f['celdas']} | {f['rescates']} | {f['danios']} | "
-            f"{f['neto']:+d} |"
+            f"| {f.get('modelo', '?')} | {_num(f, 'corrected_cv', '.6f')} | "
+            f"{_num(f, 'f1_train')} | {_num(f, 'gap_train_oof', '+.4f')} | "
+            f"{_num(f, 'fraccion_no_nula')} | {_num(f, 'sparsity')} | "
+            f"{_num(f, 'norma_coeficientes')} | {_num(f, 'celdas', '.0f')} | "
+            f"{_num(f, 'rescates', '.0f')} | {_num(f, 'danios', '.0f')} | "
+            f"{_num(f, 'neto', '+.0f')} |"
         )
     lineas += [
         "",
