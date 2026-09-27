@@ -1,44 +1,77 @@
-# Contexto V20 - auditoria de interacciones de scores (V20-00)
+# Contexto de la cadena - V21 (CERRADA)
 
-Fecha: 2026-09-26. Metodo: lectura directa de codigo en 12 worktrees (v7, v8, v11 a v20).
-Detalle completo: `kaggle_toxic_2026_puj/reports/v20_00_auditoria_interacciones.md`.
+Actualizado 2026-09-26. Worktree `/home/carlos/Git/PLN-v21`, rama `v21`, base `ad761ba`.
+**Fase cerrada. Sin submission enviada. V03 = 0.78306 LB, intacto.**
 
-1. VEREDICTO: la formulacion de V20 es genuinamente nueva. Ningun script multiplica los scores
-   OOF de V03 (HS, TR, AG) entre si para cambiar la decision de una sola etiqueta.
-2. Comprobacion de cierre: los 64 scripts que leen `features/oof_v03_final.npz` se enumeraron uno
-   a uno y se busco producto entre columnas en cada uno. Cero en 63; el unico positivo es
-   `v8_12_seleccion_por_grupo.py:170`, que es `y[:,0]*4 + y[:,1]*2 + y[:,2]`, powerset de
-   etiquetas VERDADERAS, no scores.
-3. Triple producto `HS*TR*AG`: busqueda explicita en los 12 worktrees, cero coincidencias.
-4. Unico ejecutado adyacente: `v6_02_label_factorization.py:188`, `proba_tr = proba_hs *
-   cond_tr_hs1`. Medido -0.010716, IC95 [-0.01843, -0.003339], 1 rescate / 35 danio, 1/5 pliegues,
-   Gate 1 no superado. NO es V20: el segundo factor es un modelo NUEVO entrenado solo en filas
-   HS=1 (lineas 181-187) y el primero es un HS reentrenado por ese codigo (lineas 167-170).
-5. V6-B si comparte con V20 lo importante: V03 como base y cambio de una sola columna
-   (lineas 342-344). V20 es la version de V6-B con los factores correctos.
-6. `x * (1 - y)`: presente solo como mezcla de ramas en `v6_02:207-210` con condicionales, no con
-   scores. Medido B2-AG-dos-ramas -0.000832, IC95 [-0.007475, +0.005724].
-7. `logit(x) * logit(y)`: presente en `v12_03_entrenamiento_por_pares.py:257-258` como
-   `arriba_hs * (logitos[:,0] - logitos[:,1])`. NO es V20: es un termino de perdida, y
-   `arriba_hs` es +1/-1 segun la etiqueta VERDADERA (linea 256). Medido lambda=0.25 da
-   -0.002469, deteccion 0.4915 bajo el minimo 0.5166. H3 cerrada.
-8. Descartado por categoria 1 (texto): `v9_05_proyecciones_supervisadas.py:100-101` tiene
-   literalmente `p[:,0]*p[:,1], p[:,0]*p[:,2], p[:,1]*p[:,2]`, pero `p` son proyecciones del
-   TF-IDF sobre direcciones discriminantes (lineas 98-99) que alimentan una LR nueva (linea 110).
-   Medido SDR 0.706634 vs SVD 0.653145, -0.070578 frente a V03. No es V20.
-9. Descartado por categoria 2 (meta-modelo): V8-08 corrector sobre margenes, V13
-   `17_stacking_v2.py`, y `33_class_conditional_lm_v4.py:347-349` que calcula la entropia binaria
-   elemento a elemento de las tres columnas de V03 como columnas de meta.
-10. Descartado por no continuo: V19-02 `v19_02_restriccion_tr_implica_hs.py` es una regla dura
-    con gatillo (docstring lineas 27-30). Medido +0.0006626 +- 0.0023678, 3/5 pliegues,
-    `reproducible: false`, cambios netos -3 frente a 26.75 necesarias, REGLA DESCARTADA.
-11. V16 (00-03) y V8 (00-13) revisados: prevalencia, submissions, promedio de umbrales, vecinos de
-    capacidad, ensemble, log-count ratio sobre la matriz TF-IDF, C y pesos, curva de transferencia.
-    Nada de interacciones entre scores.
-12. V20 no esta pre-registrada: la cadena `\bV20\b` no aparece en `DECISIONS.md` ni en
-    `experiments/`.
-13. AVISO para la fase: `DECISIONS.md` D-095 ya diagnostico que el producto atenua la probabilidad
-    en filas con score intermedio y que V03 acertaba ahi. V20 debe confrontar ese mecanismo, y la
-    version en log-espacio (suma de logits) lo evita por construccion.
-14. No se escribio ningun script nuevo, no se entreno nada, no se generaron artefactos de datos.
-    Solo lectura, greps y los dos ficheros de informe.
+## Decision de cierre
+
+**NO CANDIDATE JUSTIFIES SUBMISSION.** Las **4 submissions restantes se reservan**.
+
+Orden pre-registrado por si hubiera restriccion externa: **WS-3 > VS-100 > L1 C=4.0**.
+
+## La tabla
+
+| candidato | DeltaOOF | rescates | danos | neto | novedad | coste | submission |
+| --- | ---: | ---: | ---: | ---: | --- | --- | --- |
+| FUSION-WS-3 | +0.005747 | 74 | 63 | +11 | ya entrenada | cero | no |
+| FUSION-VS-100 | +0.005046 | 77 | 67 | +10 | ya entrenada | cero | no |
+| L1 C=4.0 | +0.006431 | 208 | 205 | +3 | nueva | bajo | no |
+| All-but-the-top (D=1..3) | no medida | -- | -- | -- | nueva | bajo | no |
+| SSWE | no medida | -- | -- | -- | nueva | alto | no |
+| CBOW / GloVe / word2vec | no medida | -- | -- | -- | nueva parcial | alto | no |
+
+## Los tres argumentos de la decision
+
+1. El cambio de WS-3 no es distinguible de ruido: 74 contra 63 sobre 137 pares
+   discordantes, **McNemar exacto p = 0.3930**, menos de un sigma. Su perfil implica
+   +0.00024 de LB, ~2 % de un error estandar.
+2. WS-3 y VS-100 solapan el **80.3 %** de sus cambios: son la misma perturbacion.
+3. L1 tiene el mayor DeltaOOF y el peor perfil: 413 celdas para un neto de +3, 2,7 veces
+   menos eficiente por celda, y desplaza la tasa de TR en +0.0357 con saldo negativo, que
+   es el mecanismo exacto de V20 (LB -0.00643).
+
+## Correcciones registradas
+
+- **McNemar del especialista**: p = 0.3930, no 0.347. Conclusion igual.
+- **Su regresion dLB sobre dOOF se descarta**: ajusto con n=7 pero solo 4 sondas tienen
+  `local_f1` numerico; recalculada da `dLB = -0.00744 + 0.508 * dOOF`, n=4, dominada por V20.
+  Y `local_f1` no significa lo mismo en todas las fases.
+- **P0**: la afirmacion de que las cinco sondas de V16 tenian DeltaOOF positivo era
+  **incorrecta**; tres de cuatro lo tienen negativo. Corregido en el informe de P0.
+
+## Hallazgos que sobreviven a la fase
+
+1. El **NB-SVM del proyecto estaba mal implementado** (desviacion del ratio 4.32 frente a
+   0.79 del canonico, 30-46 % fuera de [-3,3]) y la version **correcta es peor** (0.7638),
+   porque binariza y descarta el term frequency, que en tweets toxicos es senal.
+2. Las metricas de la linea de embeddings son **sensibles a detalles no publicados**. V5.1
+   consulta el **binario** de fastText, donde 2.282 tipos fuera de vocabulario reciben vector
+   por subpalabra; el `.vec` solo exporta los 100.098 del modelo. Con el `.vec`,
+   FUSION-B0-200 daba 0.7728 en vez de 0.7818. Toda comparacion futura debe declarar de
+   donde salen los vectores de tipo.
+3. **L1 recorta la brecha train-OOF de 0.1980 a 0.0665** a C=2.0: mecanismo real y medido,
+   que no se convierte en celdas acertadas.
+4. La **unica palanca con evidencia publicada solida en espanol** es el preprocesamiento
+   del **texto de la tarea**, que V5 aplico al corpus y jamas al texto de la tarea.
+   **No medida, no descartada.**
+
+## Artefactos de la fase
+
+- `reports/v21_p0_00_inventario_v5_v5_1.md`: inventario y auditoria de V5/V5.1 (20 filas).
+- `reports/v21_p1_01_embeddings_desde_cero.md`, `reports/v21_p1_02_toxicidad_nlp_clasico.md`,
+  `reports/v21_p1_03_nbsvm_y_hibridos.md`, `reports/v21_p1_03_addendum_verificacion.md`.
+- `reports/v21_01_triaje_competitivo.md` + `.json`, `experiments/v21_01_triaje_competitivo.py`.
+- `reports/v21_02_dictamen_competitivo.md` (kaggle-specialist).
+- `reports/v21_03_cierre_de_fase.md`: la tabla y la decision.
+- `docs/v21_p2_especificacion_niveles_limpieza.md`: spec de P2, **no ejecutada** (P2 queda
+  sin ejecutar; el cierre se apoyo en el techo medido y en el dictamen).
+
+Commits: `fbe6b94`, `f8b1400`, `2e095d8`, `0379602`, `37ed7a3`, `4e5c0e0`.
+
+## Estado
+
+- **V03 = 0.78306**, sha256 `7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e`,
+  `baseline_v03_frozen` sin cambios.
+- **Submissions: 21 en el log, 0 enviadas en V21, 4 disponibles.**
+- V22 **no** se abre sin una hipotesis con diferencia informacional o algoritmica
+  identificable, o sin restriccion externa que obligue a usar WS-3.
