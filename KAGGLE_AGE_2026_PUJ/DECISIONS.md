@@ -1490,3 +1490,96 @@ Tras declarar la saturación se probó la vía indicada como trabajo futuro:
   `reports/v20_f1_f2_complementariedad.csv`, `reports/v20_f3_umbrales.md`,
   `reports/v20_f3_umbrales.csv`, `reports/v20_f3c_candidato.md`, `figures/v20_f1_f2.png`,
   `figures/v20_f3_umbrales.png`, `submissions/age_submission_v20_candidato_umbrales.csv`.
+
+## D-054 — V20 CONFIRMED_CHALLENGER (0,62689) y ORDINAL_RECONSTRUCTION cerrada
+
+- **Observation**: la submission `age_submission_v20_candidato_umbrales.csv` puntuo **0,62689** en
+  Kaggle, un delta de **+0,00111** sobre V19 (0,62578). V20 pasa a ser el **nuevo referente de
+  leaderboard de AGE** y V19 queda como **baseline historico**. No se reemplaza ningun artefacto de
+  V19.
+- **Result**: el **A control exacto** de la fase de reconstruccion reproduce V20 al 100 %:
+  **0,6097782 frente a 0,6097782**, con 0 de 5 folds y neto 0. Ese control es lo que valida el
+  script de reconstruccion, y sin el ninguna de las otras tres variantes seria interpretable.
+- **La hipotesis ordinal queda validada externamente**: la cadena de cinco discriminadores no solo mejoro
+  el OOF (`V19 0,60794-0,60904` frente a `V20 0,6097782`) sino que **transfirio positivamente a
+  Kaggle** (0,62689 > 0,62578). La familia `ORDINAL_NESTED_THRESHOLDS` pasa de `WEAK_SIGNAL` a
+  **`CONFIRMED_CHALLENGER`**, y queda **invertida la prioridad**: ya no se buscan clases de funcion ni
+  modelos genericos, sino el maximo rendimiento de este mecanismo.
+- **Auditoria de las cinco fronteras (P2)**: exactitud balanceada **0,7632 / 0,8264 / 0,8465 / 0,8373 /
+  0,8112**, AUC **0,9284 / 0,9224 / 0,9274 / 0,9340 / 0,9456**, y **descalibracion entre -0,0003 y
+  +0,0002**, es decir **las cinco estan esencialmente perfectamente calibradas**. No hay margen en
+  recalibrar.
+- **Consistencia ordinal (P3)**: **18.927 de 169.336 filas (11,18 %)** violan la monotonia, con
+  magnitud media **0,002457** y maxima **0,518606**. **V20 resolvio eso con el maximo acumulado**, que
+  es la unica correccion que respeta el orden sin inventar informacion.
+- **Impacto de cada frontera sobre el blend (P6)**: degradar la frontera 1 cuesta **-0,0129**, la 2
+  **-0,0072**, la 3 **-0,0040**, la 4 **-0,0018** y la 5 **-0,0024**. **La primera frontera es el cuello
+  de botella en impacto**, y es ademas la de menor exactitud balanceada (0,7632). Eso separa "frontera
+  debil" de "frontera cuyos errores importan poco": **aqui la mas debil es la que mas importa**.
+- **Las cuatro reconstrucciones (P1), y la respuesta a la pregunta de la fase**:
+  - **A control**: 0,6097782, delta **+0,0000**, 0/5, neto 0. Reproduce V20 exacto.
+  - **B proyeccion monotona por PAVA**: 0,6097927, delta **+0,0000**, 3/5, IC95 [-0,0000, +0,0001],
+    neto **+5**. **Identica a A**, y eso era lo esperable: con una magnitud media de violacion de
+    0,002457, **una proyeccion monotona no tiene nada que corregir**.
+  - **C decision por conteo de umbrales**: 0,5983871, delta **-0,0114**, 0/5, neto **-3.319**, con
+    fronteras **0,545 y 0,5456** frente a las 0,5075 y 0,5029 de V20.
+  - **D decision por edad esperada**: 0.5834541, delta **-0,0263**, 0/5, neto **-6.414**, con fronteras
+    **0,541 y 0,5738**.
+- **Decision**: **`ORDINAL_RECONSTRUCTION = CLOSED`.** La pregunta de la fase tiene respuesta: **la mejora
+  de V20 procede de usar cinco fronteras ordinales, y NO existe margen en la forma de convertir esas cinco
+  probabilidades acumuladas en las seis clases finales.** Los datos lo dicen en tres direcciones
+  independientes: la descalibracion es cero, el 11,18 % de violaciones tienen magnitud despreciable, y la
+  proyeccion monotona es identica al control.
+- **Un hallazgo que vale mas que el resultado**: **C y D mejoran las fronteras de forma espectacular**
+  (0,545/0,5456 y 0,541/0,5738 frente a 0,5075/0,5029) **y destruyen el macro-F1** (-0,0114 y -0,0263).
+  Es la **leccion de P1 repetida dentro de la familia ordinal**, y es la confirmacion mas limpia de que en
+  este problema **la macro-F1 de seis clases es la metrica que manda y la frontera es una minoria de la
+  masa**. Un mecanismo que mejora la frontera y empeora la global no es una mejora.
+- **Consequences**: (1) **la prioridad de investigacion queda invertida** y es explotar la familia ordinal,
+  no buscar clases de funcion ni ensembles genericos; (2) **la direccion con mas recorrido que queda
+  abierta** es la de **descomposiciones de decision**, porque la cadena sola ya alcanza 0,6046893 por
+  encima de V12 y el primer umbral concentra el mayor impacto; (3) **los umbrales 4 y 5 apenas importan**
+  (-0,0018 y -0,0024), luego cualquier trabajo futuro debe concentrarse en los dos primeros; (4) **no se
+  propone submission nueva todavia**, porque ninguna de las cuatro variantes mejora el OOF de V20 y el
+  criterio exige mejora local antes de enviar.
+- **Evidence**: `experiments/v20_p0_fronteras.json`, `experiments/v20_p1_reconstruccion.json`,
+  `reports/v20_p0_fronteras.md`, `reports/v20_p0_fronteras.csv`, `reports/v20_p0_consistencia.csv`,
+  `reports/v20_p1_reconstruccion.md`, `reports/v20_p1_comparativa.csv`,
+  `reports/v20_p1_complementariedad.csv`, `figures/v20_p0_fronteras.png`,
+  `figures/v20_p0_consistencia.png`, `figures/v20_p1_reconstruccion.png`.
+
+## D-055 — V20 P2: mejorar la frontera mas debil destruye la global (ORDINAL_WEIGHTS cerrada)
+
+- **Observation**: el paso 8 del plan pedia probar una variante de perdida ponderada por frontera **solo si el
+  analisis mostraba que unas fronteras tienen errores mucho mas perjudiciales**. P6 lo mostro con numero:
+  la frontera 1 cuesta **-0,0129** de caida del blend frente a **-0,0018** y **-0,0024** de las fronteras 4
+  y 5, es decir **siete veces mas impacto**, y es ademas la de menor exactitud balanceada (0,7632). La
+  condicion se cumplio y se ejecuto **una sola configuracion**, sin grid.
+- **Experiment**: `class_weight = "balanced"` en el discriminador del **primer umbral** (28.863 filas de
+  `13-17` contra 140.473 del resto, un 17/83), con los **otros cuatro umbrales intactos**. Hipotesis: al
+  subir el peso del lado minoritario, LightGBM dejaria de podar los cortes que separan al grupo pequeno y
+  mejoraria la exactitud balanceada de ese umbral.
+- **Result**:
+  - **Exactitud balanceada del primer umbral: 0,7632 -> 0,8430, es decir +0,0797.** La hipotesis era
+    correcta y el mecanismo funciona: el peso **si** mejora la frontera.
+  - **Pero el blend de V20 cae a 0,5932020, un delta de -0,0166, con 0 de 5 folds** y IC95
+    [-0,0178, -0,0153], con rescate 5.234, dano 6.574 y **neto -1.340**.
+  - Las fronteras del blend bajan a **0,4117 y 0,5088**, frente a las 0,5075 y 0,5029 de V20.
+- **Decision**: **`ORDINAL_WEIGHTS` se cierra con numero.** No se propone submission: la variante no mejora
+  el OOF de V20 y el criterio exige mejora local antes de enviar.
+- **Reason**: este es el **tercer negativo limpio y del mismo tipo** en el proyecto, y el mas instructivo
+  porque aqui **la hipotesis era correcta**. Mejorar la frontera mas debil en **+0,0797** de exactitud
+  balanceada **destruye el macro-F1 en -0,0166**. Luego **la exactitud de una frontera no es el cuello de
+  botella**: el blend de V20 ya extraia de ese umbral lo que necesitaba, y forzarlo a separar mejor el
+  grupo pequeno descalibra las cinco CDF a la vez, porque **las cinco comparten el mismo espacio de
+  features y el mismo modelo**. Es la leccion de P1 repetida por tercera vez, ahora dentro de la familia
+  ordinal y con la hipotesis acertada.
+- **Consequences**: (1) **la direccion con recorrido no es reponderar fronteras**, porque la exactitud de
+  una frontera y el macro-F1 global no estan alineadas; (2) **el primer umbral no era el cuello de botella
+  en impacto** a pesar de ser el mas debil en metrica, y eso queda medido; (3) **la unica via que queda
+  abierta dentro de la familia ordinal** es cambiar **los clasificadores**, no la reconstruccion (cerrada en
+  D-054) ni los pesos (cerrada aqui), y el candidato natural es **mejorar el primer discriminador con un
+  modelo distinto**, que es un cambio de mecanismo y no de hiperparametro; (4) **no se abre ninguna otra
+  familia** mientras la ordinal tenga un challenger confirmado por leaderboard.
+- **Evidence**: `experiments/v20_p2_pesos.json`, `reports/v20_p2_pesos.md`, `reports/v20_p2_pesos.csv`,
+  `figures/v20_p2_pesos.png`.

@@ -152,6 +152,61 @@
   redaccion, no de medicion, y queda declarado en `reports/v17_compliance.md` en vez de darse por
   hecho.
 
+## V20 · PESOS ORDINALES (2026-09-27) CERRADA — mejorar la frontera debil destruye la global (D-055)
+
+- **`ORDINAL_WEIGHTS` cerrada con numero.** Se probo **una sola configuracion** (`class_weight` balanced
+  en el primer umbral, los otros cuatro intactos) porque P6 mostro que la frontera 1 pesa **siete veces
+  mas** que la 4 y es la de menor exactitud balanceada.
+- **La hipotesis era correcta y aun asi perdio.** La exactitud balanceada del primer umbral sube
+  **0,7632 -> 0,8430 (+0,0797)**, pero el blend de V20 cae a **0,5932020 (-0,0166)**, con **0 de 5
+  folds**, IC95 [-0,0178, -0,0153] y **neto -1.340**.
+- **Es el tercer negativo limpio del mismo tipo, y el mas instructivo** porque aqui la hipotesis acerto:
+  **la exactitud de una frontera no es el cuello de botella**. El blend ya extraia de ese umbral lo que
+  necesitaba, y forzarlo a separar mejor el grupo pequeno **descalibra las cinco CDF a la vez**, porque
+  las cinco comparten el mismo espacio de features y el mismo modelo.
+- **Consecuencia para la direccion**: **no es reponderar fronteras**. La unica via abierta dentro de la
+  familia ordinal es cambiar **los clasificadores**, no la reconstruccion (D-054) ni los pesos (aqui). El
+  candidato natural es **mejorar el primer discriminador con un modelo distinto**, que es un cambio de
+  mecanismo y no de hiperparametro.
+- **No se abre ninguna otra familia** mientras la ordinal tenga un challenger confirmado por leaderboard.
+
+## V20 · CONFIRMED_CHALLENGER (2026-09-27) — 0,62689 (D-054)
+
+- **V20 es el nuevo referente de leaderboard de AGE: LB 0,62689**, un delta de **+0,00111** sobre V19
+  (0,62578). **V19 queda como baseline historico** y no se reemplaza ningun artefacto suyo.
+- **La hipotesis ordinal queda validada externamente**: la cadena de cinco discriminadores no solo mejoro
+  el OOF sino que **transfirio positivamente a Kaggle**. `ORDINAL_NESTED_THRESHOLDS` pasa de
+  `WEAK_SIGNAL` a **`CONFIRMED_CHALLENGER`**, y la prioridad de investigacion queda **invertida**: ya no
+  se buscan clases de funcion ni ensembles genericos, sino el maximo rendimiento de este mecanismo.
+- **Auditoria de las cinco fronteras**: exactitud balanceada **0,7632 / 0,8264 / 0,8465 / 0,8373 /
+  0,8112**, AUC **0,9284 / 0,9224 / 0,9274 / 0,9340 / 0,9456**, y **descalibracion entre -0,0003 y
+  +0,0002**: **las cinco estan esencialmente perfectamente calibradas** y no hay margen en recalibrar.
+- **Consistencia ordinal**: **11,18 %** de las filas violan la monotonia, con magnitud media **0,002457**
+  y maxima **0,518606**. V20 lo resolvio con el **maximo acumulado**.
+- **Impacto de cada frontera sobre el blend**: la 1 cuesta **-0,0129**, la 2 **-0,0072**, la 3 **-0,0040**,
+  la 4 **-0,0018** y la 5 **-0,0024**. **La primera frontera es el cuello de botella en impacto** y es
+  ademas la de menor exactitud balanceada: **la mas debil es la que mas importa**. Y los umbrales 4 y 5
+  apenas importan.
+- **`ORDINAL_RECONSTRUCTION = CLOSED`.** Las cuatro variantes, con el **control A reproduciendo V20 al
+  100 %** (0,6097782 frente a 0,6097782):
+  - **A control**: +0,0000, 0/5, neto 0.
+  - **B proyeccion monotona por PAVA**: +0,0000, 3/5, neto **+5**. **Identica a A**, y era lo esperable
+    con una magnitud de violacion de 0,002457.
+  - **C conteo de umbrales**: **-0,0114**, 0/5, neto **-3.319**, con fronteras **0,545 y 0,5456**.
+  - **D edad esperada**: **-0,0263**, 0/5, neto **-6.414**, con fronteras **0,541 y 0,5738**.
+- **La respuesta a la pregunta de la fase**: **la mejora de V20 procede de usar cinco fronteras ordinales,
+  y NO existe margen en la forma de convertir esas cinco probabilidades acumuladas en las seis clases
+  finales.** Lo dicen tres senales independientes: descalibracion cero, violaciones de magnitud
+  despreciable, y proyeccion monotona identica al control.
+- **El hallazgo que vale mas que el resultado**: **C y D mejoran las fronteras de forma espectacular y
+  destruyen el macro-F1**. Es la **leccion de P1 repetida dentro de la familia ordinal**, y la
+  confirmacion mas limpia de que **la macro-F1 de seis clases es la metrica que manda y la frontera es una
+  minoria de la masa**.
+- **No se propone submission nueva todavia**: ninguna de las cuatro variantes mejora el OOF de V20, y el
+  criterio exige mejora local antes de enviar.
+- **Entregables**: `scripts/v20_p0_fronteras.py`, `scripts/v20_p1_reconstruccion.py`, 2 informes P0, 2
+  informes P1, 4 CSV, 3 figuras. `experiments.csv` pasa a **122**.
+
 ## V20 · MECANISMOS NUEVOS (2026-09-27) — dos familias cerradas, una viva (D-053)
 
 - **V19 sigue congelado en 0,62578.** No se toco su configuracion, sus features, su modelo persistido,
@@ -518,17 +573,14 @@ adopta** (D-011).
   matriz de confusión, **sin colapsar etiquetas** en la submission.
 
 ## Próxima acción recomendada
-- **Decidir la submission de V20-F3c.** El fichero
-  `submissions/age_submission_v20_candidato_umbrales.csv` esta construido, validado con 8 de 8 checks y
-  **no enviado**. Es un mecanismo nuevo (cadena de cinco umbrales anidados, sin modelo multiclase), con
-  +0,0018 de OOF, 5 de 5 folds y un 3,14 % de filas cambiadas frente a V19. La mejora esperada en LB
-  es +0,0019, y la calibracion tiene un residuo de -0,0016 con oscilacion de 0,0034, luego **el envio
-  es una apuesta, no una mejora esperada con confianza**. Compara contra **0,62578**, que es el
-  champion.
-- Si F3c no mejora el leaderboard, la familia de **descomposiciones de decision** queda cerrada y con
-  ella se agota tambien el espacio de mecanismos post-V19. Si mejora, la linea a continuar es hacer la
-  cadena mas discriminante, no buscar mas clases de funcion.
-- Lo anterior cerraba la explotacion de parametros de V19 (D-052): las dos unicas configuraciones de bajo riesgo autorizadas no llegaban ni al gate
+- **Cambiar el primer discriminador por un modelo distinto.** Es la unica via abierta dentro de la
+  familia ordinal: la reconstruccion esta cerrada (D-054), los pesos estan cerrados (D-055), y reponderar
+  fronteras no funciona porque **la exactitud de una frontera y el macro-F1 global no estan alineadas**.
+  Un cambio de **mecanismo** en el primer umbral (el de mayor impacto, -0,0129, y menor exactitud
+  balanceada, 0,7632) es lo que queda, y no es un ajuste de hiperparametro.
+- **No volver a ORDINAL_RECONSTRUCTION ni a ORDINAL_WEIGHTS**: ambas cerradas con numero.
+- **No abrir otra familia** mientras la ordinal tenga un challenger confirmado por leaderboard.
+- **No enviar nada sin mejora local previa.**: las dos unicas configuraciones de bajo riesgo autorizadas no llegaban ni al gate
   de adopcion, y el eje de parametros resulto plano. El detalle esta en `CHAMPION.md` y en
   `reports/v19_x1_explotacion.md`.
 - Lo que reabre AGE son solo tres cosas, ninguna de ellas un experimento: **fuente de informacion

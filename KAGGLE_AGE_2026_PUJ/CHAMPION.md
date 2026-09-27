@@ -2,6 +2,8 @@
 
 Estado congelado del mejor mecanismo competitivo observado en AGE.
 
+**Actualizado el 2026-09-27: V20 es el champion. V19 queda como baseline historico.**
+
 ## Varios scores que no deben confundirse
 
 | Nombre | Que es | Valor |
@@ -16,15 +18,16 @@ Estado congelado del mejor mecanismo competitivo observado en AGE.
 
 | Campo | Valor |
 |---|---|
-| **Nombre** | **V19 boosting** |
-| **LB** | **0,62578** |
-| CV LOFO agrupado de 5 folds | 0,6079388 |
-| CV en particion independiente de 4 folds | 0,6090431 |
-| Delta de LB frente al envio oficial de V12 | **+0,00396** |
-| Delta de LB frente a la replica de V12 | +0,00390 |
+| **Nombre** | **V20 cadena de umbrales anidados** |
+| **LB** | **0,62689** |
+| CV LOFO agrupado de 5 folds | 0,6097782 |
+| CV de V19, el champion anterior | 0,6079388 |
+| Delta de LB frente a V19 (champion anterior) | **+0,00111** |
+| Delta de LB frente al envio oficial de V12 | +0,00507 |
+| Delta de LB frente a la replica de V12 | +0,00501 |
 | Submission | `submissions/age_submission_v19_challenger_boosting.csv` |
-| Modelo persistido | `models/v19_champion_lightgbm.txt` |
-| SHA256 del modelo | `22221d1802c1ec4495f393f27f884b9119763a30d47072a0a1205ad671c50619` |
+| Submission | `submissions/age_submission_v20_candidato_umbrales.csv` |
+| SHA256 de la submission | `2c964af78c90bf08` (completo en `experiments/v20_f3c_candidato.json`) |
 | Semilla del arbol | 42 |
 | Semilla global | 42 |
 
@@ -77,12 +80,13 @@ indice 255 en ambos.
   mayor de 153 filas). El meta se ajusta en cuatro folds y predice el quinto; nunca sus propias filas.
 - Confirmacion independiente en una particion de **4 folds**.
 
-## Que cambia respecto a V12, y cuanto
+## Que cambia respecto a V19, y cuanto
 
-- **11.392 de 112.892 filas cambian (10,09 %)** en la submission.
-- En el train, con el OOF: rescate 4.622, dano 3.311, **neto +1.311**.
-- Fronteras: `18-24|25-34` de 0,4963 a **0,5083** y `25-34|35-49` de 0,4974 a **0,5018**, y **sin
-  intercambio de suma cero**, que era el fallo que hundia la global en P1.
+- **3.546 de 112.892 filas cambian (3,14 %)** en la submission, frente al envio de V19.
+- En el train, con el OOF: **neto +294** filas.
+- Fronteras: `18-24|25-34` de 0,5083 a **0,5075** y `25-34|35-49` de 0,5018 a **0,5029**. La primera
+  frontera baja un poco y la segunda sube: **no hay intercambio de suma cero**, que era el fallo que
+  hundia la global en P1.
 
 ## Por que funciona, en una frase
 
@@ -96,7 +100,24 @@ Evidencia: las 279 dan 0,6072, sin las 73 quedan en 0,5870 (por debajo de V12) y
 
 ## Estado de la explotacion
 
-**CERRADA** el 2026-09-27 (D-052). Se ejecutaron las dos unicas configuraciones que el agente
+**V19.x CERRADA** el 2026-09-27 (D-052). **V20 CONFIRMED_CHALLENGER** el mismo dia con LB 0,62689.
+
+## Familia ordinal
+
+| Estado | Familia |
+|---|---|
+| **`CONFIRMED_CHALLENGER`** | `ORDINAL_NESTED_THRESHOLDS`: la cadena de cinco discriminadores transfirio positivamente a Kaggle |
+| **`CLOSED`** | `ORDINAL_RECONSTRUCTION`: no hay margen en convertir las cinco CDF en seis clases (D-054) |
+
+**La direccion con mas recorrido que queda abierta** es la de **descomposiciones de decision**, porque la
+cadena sola ya alcanza 0,6046893 por encima de V12 y el **primer umbral concentra el mayor impacto**
+(-0,0129 de caida del blend al degradarlo, frente a -0,0072, -0,0040, -0,0018 y -0,0024 de los otros
+cuatro). Los umbrales 4 y 5 apenas importan.
+
+## Baseline historico
+
+**V19 boosting, LB 0,62578**, queda como baseline historico y no se toca. Su configuracion, su
+submission y su hash siguen registrados mas arriba en la seccion de V19. Se ejecutaron las dos unicas configuraciones que el agente
 `kaggle specialist` autorizo, y ninguna merece submission:
 
 | Configuracion | CV | Delta contra V19 | Folds pos. | 4 folds | Merece submission |

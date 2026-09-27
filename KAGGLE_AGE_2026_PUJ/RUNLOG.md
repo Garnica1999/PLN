@@ -1361,3 +1361,127 @@ convencion antes que el mecanismo.
 
 `experiments.csv` pasa a **122 experimentos**. Auditoria de idioma: **0 errores** sobre 433 ficheros.
 Sin push.
+
+## 2026-09-27 · V20 CONFIRMED_CHALLENGER y cierre de ORDINAL_RECONSTRUCTION (D-054)
+
+**Resultado externo**: `age_submission_v20_candidato_umbrales.csv` puntuo **0,62689** en Kaggle, un delta
+de **+0,00111** sobre V19 (0,62578). **V20 pasa a ser el nuevo referente de leaderboard de AGE** y V19
+queda como baseline historico, sin reemplazar ningun artefacto suyo.
+
+**La hipotesis ordinal queda validada externamente.** La cadena de cinco discriminadores no solo mejoro
+el OOF sino que **transfirio positivamente a Kaggle**. `ORDINAL_NESTED_THRESHOLDS` pasa de
+`WEAK_SIGNAL` a **`CONFIRMED_CHALLENGER`**, y la prioridad de investigacion queda **invertida**: ya no se
+buscan clases de funcion ni ensembles genericos, sino el maximo rendimiento de este mecanismo.
+
+**Auditoria de las cinco fronteras (P2)**:
+
+| Frontera | Exacta balanceada | AUC | F1 binario | Descalibracion |
+|---|---|---|---|---|
+| <= 13-17 vs >= 18-24 | 0,7632 | 0,9284 | 0,9444 | +0,0001 |
+| <= 18-24 vs >= 25-34 | 0,8264 | 0,9224 | 0,8906 | -0,0003 |
+| <= 25-34 vs >= 35-49 | 0,8465 | 0,9274 | 0,8444 | -0,0001 |
+| <= 35-49 vs >= 50-64 | 0,8373 | 0,9340 | 0,7852 | +0,0002 |
+| <= 50-64 vs >= 65-xx | 0,8112 | 0,9456 | 0,7285 | -0,0000 |
+
+**Las cinco estan esencialmente perfectamente calibradas** (descalibracion entre -0,0003 y +0,0002), luego
+**no hay margen en recalibrar**. Y el AUC esta entre 0,9224 y 0,9456, muy parejo.
+
+**Consistencia ordinal (P3)**: **18.927 de 169.336 filas (11,18 %)** violan la monotonia, con
+magnitud media **0,002457** y maxima **0,518606**. V20 lo resolvio con el **maximo acumulado**, que es
+la unica correccion que respeta el orden sin inventar informacion.
+
+**Impacto de cada frontera sobre el blend de V20 (P6)**:
+
+| Frontera degradada | Blend | Caida | Cadena en soledad | Caida |
+|---|---|---|---|---|
+| <= 13-17 vs >= 18-24 | 0,5968936 | **-0,0129** | 0,0485421 | -0,5561 |
+| <= 18-24 vs >= 25-34 | 0,6026180 | **-0,0072** | 0,3352297 | -0,2695 |
+| <= 25-34 vs >= 35-49 | 0,6057464 | -0,0040 | 0,4655049 | -0,1392 |
+| <= 35-49 vs >= 50-64 | 0,6079730 | -0,0018 | 0,4914815 | -0,1132 |
+| <= 50-64 vs >= 65-xx | 0,6073803 | -0,0024 | 0,4604091 | -0,1443 |
+
+**La primera frontera es el cuello de botella en impacto** y es ademas la de menor exactitud balanceada:
+**la mas debil es la que mas importa**. Y los umbrales 4 y 5 apenas importan.
+
+**Las cuatro reconstrucciones (P1), y la respuesta a la pregunta de la fase**:
+
+| Variante | macro-F1 | Delta contra V20 | Folds | Frontera 1 | Frontera 2 | Neto |
+|---|---|---|---|---|---|---|
+| A control exacto | 0,6097782 | +0,0000 | 0/5 | 0,5075 | 0,5029 | 0 |
+| B proyeccion monotona por PAVA | 0,6097927 | +0,0000 | 3/5 | 0,5074 | 0,5028 | +5 |
+| C conteo de umbrales | 0,5983871 | **-0,0114** | 0/5 | **0,545** | **0,5456** | -3.319 |
+| D edad esperada | 0,5834541 | **-0,0263** | 0/5 | **0,541** | **0,5738** | -6.414 |
+
+**El control A reproduce V20 al 100 %** (0,6097782 frente a 0,6097782), y ese control es lo que valida
+el script: sin el, ninguna de las otras tres variantes seria interpretable.
+
+**`ORDINAL_RECONSTRUCTION = CLOSED`.** La pregunta de la fase tiene respuesta: **la mejora de V20 procede
+de usar cinco fronteras ordinales, y NO existe margen en la forma de convertir esas cinco probabilidades
+acumuladas en las seis clases finales.** Lo dicen tres senales independientes: descalibracion cero,
+violaciones de magnitud despreciable, y proyeccion monotona identica al control.
+
+**El hallazgo que vale mas que el resultado**: **C y D mejoran las fronteras de forma espectacular**
+(0,545/0,5456 y 0,541/0,5738 frente a 0,5075/0,5029) **y destruyen el macro-F1** (-0,0114 y -0,0263).
+Es la **leccion de P1 repetida dentro de la familia ordinal**, y la confirmacion mas limpia de que en este
+problema **la macro-F1 de seis clases es la metrica que manda y la frontera es una minoria de la masa**.
+
+**Decision**: no se propone submission nueva todavia. Ninguna de las cuatro variantes mejora el OOF de V20,
+y el criterio exige mejora local antes de enviar. **La direccion con mas recorrido que queda abierta** es
+la de **descomposiciones de decision**, concentrada en los dos primeros umbrales.
+
+**Cinco incidentes de ejecucion propios**, todos anteriores al resultado: un **signo invertido** en la
+convencion de la cadena (las CDF crecen, luego la monotonia es por maximo acumulado y la primera clase es
+`p_0` y no `1 - p_0`; con el signo equivocado daba 0,0249 y casi se lee como "el mecanismo es terrible");
+una **polaridad invertida** en el diagnostico por umbral (medi sobre `decision` daba el error del lado alto
+mientras la columna de V12 daba el acierto); un `assert` de nombres que detecto 14 nombres para 78
+columnas; un `assert` de composicion que detecto un corte desplazado 6 columnas; y varios `NameError` de
+figura por usar `figura` en un sitio y `fig` en otro.
+
+`experiments.csv` pasa a **122 experimentos**. Auditoria de idioma: **0 errores** sobre 441 ficheros. Sin
+push.
+
+## 2026-09-27 · V20 P2 — Mejorar la frontera debil destruye la global (D-055)
+
+**Condicion del paso 8 del plan**: probar una variante de perdida ponderada por frontera **solo si el
+analisis mostraba que unas fronteras tienen errores mucho mas perjudiciales**. P6 lo mostro con numero:
+la frontera 1 cuesta **-0,0129** de caida del blend frente a **-0,0018** y **-0,0024** de las fronteras 4
+y 5, es decir **siete veces mas impacto**, y es ademas la de menor exactitud balanceada (0,7632). La
+condicion se cumplio y se ejecuto **una sola configuracion**, sin grid.
+
+**Configuracion**: `class_weight = "balanced"` en el discriminador del **primer umbral** (28.863 filas
+de `13-17` contra 140.473 del resto, un 17/83), con los **otros cuatro umbrales intactos**. Hipotesis: al
+subir el peso del lado minoritario, LightGBM dejaria de podar los cortes que separan al grupo pequeno.
+
+**Resultado, en dos lineas que se contradicen a proposito**:
+
+| Medida | V20 | Con el peso |
+|---|---|---|
+| exactitud balanceada del primer umbral | 0,7632 | **0,8430 (+0,0797)** |
+| macro-F1 del blend | 0,6097782 | **0,5932020 (-0,0166)** |
+| folds positivos | - | **0/5** |
+| IC95 | - | **[-0,0178, -0,0153]** |
+| neto de filas | - | **-1.340** |
+
+**La hipotesis era correcta y aun asi perdio.** El peso **si** mejora la frontera: +0,0797 de exactitud
+balanceada. Pero el blend cae -0,0166 con 0 de 5 folds, y las fronteras del blend bajan a 0,4117 y
+0,5088 frente a las 0,5075 y 0,5029 de V20.
+
+**Por que, y es la parte que importa**: **la exactitud de una frontera no es el cuello de botella**. El
+blend de V20 ya extraia de ese umbral lo que necesitaba, y forzarlo a separar mejor el grupo pequeno
+**descalibra las cinco CDF a la vez**, porque las cinco comparten el mismo espacio de features y el mismo
+modelo. Es la **leccion de P1 repetida por tercera vez**, ahora dentro de la familia ordinal y con la
+hipotesis acertada, que es lo que la hace concluyente: **no era que la frontera no se pudiera mejorar, es
+que mejorarla no es lo que falta**.
+
+**Decision**: `ORDINAL_WEIGHTS` cerrada con numero. Sin submission: no mejora el OOF de V20.
+
+**La unica via que queda abierta dentro de la familia ordinal** es cambiar **los clasificadores**, no la
+reconstruccion (cerrada en D-054) ni los pesos (cerrada aqui). El candidato natural es **mejorar el
+primer discriminador con un modelo distinto**, que es un cambio de **mecanismo** y no de hiperparametro.
+Y **no se abre ninguna otra familia** mientras la ordinal tenga un challenger confirmado por leaderboard.
+
+Un incidente de ejecucion: falto definir `matriz = matriz_279()` en el `main` del script, luego un
+`KeyError` de `neto` por estar dentro de `complementariedad`. Ambos anteriores al resultado.
+
+`experiments.csv` pasa a **123 experimentos**. Auditoria de idioma: **0 errores** sobre 444 ficheros. Sin
+push.

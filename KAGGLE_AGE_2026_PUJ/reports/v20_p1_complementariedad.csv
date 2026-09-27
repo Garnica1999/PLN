@@ -1,0 +1,5 @@
+variante,ambos_correctos,ambos_incorrectos,solo_candidato,solo_v20,neto,predicciones_modificadas
+A control exacto: maximo acumulado,103331,66005,0,0,0,0
+B proyeccion monotona por PAVA,103320,65989,16,11,5,41
+C decision por conteo de umbrales,91651,57644,8361,11680,-3319,33182
+D decision por edad esperada,85622,54710,11295,17709,-6414,47138
