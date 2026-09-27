@@ -1593,3 +1593,56 @@ fuera un bucle.
 
 `experiments.csv` pasa a **125 experimentos**. Auditoria de idioma: **0 errores** sobre 456 ficheros. Sin
 push.
+
+## 2026-09-27 · V22 — Frontier audit completo + coste ordinal (D-057)
+
+**El forense se resuelve contra el codigo y no contra el informe.** Las diez preguntas:
+labels binarios; target con dos clases; HIERBA declara `multiclass` con `num_class 6` pero el booster
+tiene seis clases y las columnas 2 a 5 de `predict_proba` son cero exacto; salen seis columnas, la 0 es
+P(lado alto) y la 1 es P(lado bajo); cada CDF sale directamente del clasificador binario; si hay cinco
+binarios independientes; no hay multiclase transformado; es el CASO A; las probabilidades son
+ACUMULADAS; y la monotonia NO esta garantizada (el 11,18 % de las filas la viola).
+
+**La especificacion declarada cuantificada**: da 0,6097782 y una binaria correctamente especificada
+da 0,6091232. Correlacion entre las dos CDF 0,998 en las cinco fronteras, luego el ranking es el
+mismo, pero la calibracion difiere hasta 0,33. Y la declarada es 0,00066 mejor. **No es un bug que
+haya que arreglar**: es una version que funciona mejor, y se documenta y conserva.
+
+**El modelo compartido** (un unico LightGBM multiclase con cinco CDF por suma) tiene **0
+violaciones** de monotonia frente a las 18.927 de V20, porque una suma de probabilidades no negativas
+es monotona siempre. Blend 0,6096150, delta -0,000163, 3 de 5 folds, IC95 [-0,00078, +0,00045], neto
+-13 y 4.451 cambios.
+
+**Los tres candidatos de B1 no mejoran B1**: LinearSVC C 0,2 da 0,5992098 (-0,0106) con B1 0,6782;
+C 1,0 da 0,5992058 con B1 0,6784; y el boosting especializado da 0,6097377 (-0,0000) con B1 0,7606,
+por debajo del 0,7632 de V20. Los tres son NO_SIGNAL y el mecanismo queda cerrado por el criterio
+del brief.
+
+**PASO 14, el coste ordinal**: cambiar el argmax por el coste esperado minimo con `C[i][j] =
+|i-j|^alfa`. alfa 1 da **0,5949198** (-0,0149) y alfa 2 da **0,5392168** (-0,0706). **El coste ordinal
+destruye el macro-F1**: los errores del modelo no estan concentrados a grandes distancias, y forzarlos
+a evitarlas degrada la frontera y la global a la vez.
+
+**Errores compartidos**: **64.825 filas (38,3 % del train) las equivocan V19 y V20 juntas**. V20 rescata
+1.474 de V19 e introduce 1.193: **neto +281**. La clase con mas errores compartidos es `25-34` con
+**14.913**.
+
+**Diversidad real**: el modelo historico mas complementario con V20 es **NB-SVM word**, que rescata
+**10.462** de sus 66.018 errores (15,85 %) — **pero ya es miembro de V20**. Los modelos buenos son
+altamente redundantes: los tres primeros comparten mas del 82 % de sus errores con V20.
+
+**La respuesta a la pregunta central**: **no se ha encontrado una fuente nueva con evidencia de existir.**
+La unica fuente grande medida (los errores compartidos) esta agotada, y la que queda (representaciones a
+nivel de caracter) es estructuralmente ilegal. Compartir representacion **si** elimina la monotonia por
+construccion, pero **no** mejora el macro-F1 final: la consistencia ordinal no era el cuello de botella.
+
+**Seis incidentes de ejecucion propios**, todos anteriores al resultado: una cadena multilinea del
+informe sin comillas en las lineas intermedias; un diccionario al que le faltaba la llave de cierre; una
+variable de bucle con un ideograma que no se renombro en los tres sitios que la usaban; un KeyError de
+cambios por estar dentro de complementariedad; un NameError de constructor por evaluar un unico
+candidato como si fuera un bucle; y un NameError de `y` por definir el bloque antes de las etiquetas.
+El mas instructivo es el de la cache: `v22_oof_v20.npy` contenia el **modelo compartido B**, no la
+cadena de V20, y por eso el control no reproducia.
+
+`experiments.csv` pasa a **126 experimentos**. Auditoria de idioma: **0 errores** sobre 456 ficheros.
+Sin push.

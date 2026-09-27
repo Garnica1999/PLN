@@ -1,0 +1,24 @@
+familia,experimentos,estado,mejor_oof,mejor_lb,mecanismo,que_queda_sin_probar
+representaciones de texto,"E-001 a E-026, V13",CLOSED,"0,6077 (V19)","0,62182","TF-IDF de palabra y de caracteres, con y sin normalizacion",nada con mecanismo nuevo; las variantes de TF-IDF estan agotadas
+representaciones lexicas,"D-039, ADV-01, ADV-02",CLOSED,"0,6013 (PH18)",-,24 subcategorias lexicas construidas a mano,0 de 72 columnas son no redundantes; no queda amplitud nueva
+representaciones linguisticas,"V14, D-044",CLOSED,"0,2409 (bloque aislado)",-,"morfologia, POS y dependencias con spaCy","el bloque aislado era el mejor del proyecto y la fusion daba -0,0015"
+boosting,"E-022, V19, V21",CLOSED,"0,6079388 (V19)","0,62578",LightGBM sobre las 279 features,"HistGradientBoosting, otra clase de funcion distinta"
+arboles extremos,V21 F2,CLOSED,"0,5836218",-,"ExtraTrees, bagging con cortes aleatorios","nada; queda 0,0243 por debajo del LightGBM de V19"
+retrieval y vecinos,"D-026, PH10, E-026",CLOSED,-,-,kNN sobre SVD y coincidencia de duplicados,"la cobertura in-fold es 0,00 % por diseno; no es medible"
+ordinal independiente (Frank & Hall),"E-021a, V20",CLOSED,"0,6046893 (compartido)",-,K-1 binarios independientes,nada; ya es el mecanismo de V20
+reconstruccion ordinal,"D-054, ORD-1, ORD-B",CLOSED,"0,6097782 (V20)","0,62689",maximo acumulado y diferencias de cinco CDF,nada; las cuatro variantes no mejoran el control
+pesos ordinales,D-055,CLOSED,"0,5932020",-,class_weight balanced en el primer umbral,nada; el peso mejora la frontera y destruye la global
+B1 specialist,"D-056, V21",CLOSED,"0,6097377",-,LinearSVC y boosting dedicado para 13-17 vs >=18,nada; los tres candidatos tienen B1 por debajo del de V20
+representacion ordinal compartida,"D-057, V22",CLOSED,"0,6096150",-,un unico multiclase con cinco CDF por suma,nada; elimina la monotonia por construccion y no gana
+calibracion y capa de decision,"PH15, PH32, D-037",CLOSED,"0,6015",-,"isotonica, temperatura y 33 capas ordinales",nada; la descalibracion de las cinco CDF es cero
+funciones objetivo,"V18, D-049",CLOSED,"0,6079388","0,62578","re-peso, margen, termino aditivo y destilacion",coste de error proporcional a la distancia ordinal
+informacion del id,medicion en V22,INVALID,-,-,el campo id como variable numerica,"nada; es el indice de fila, correlacion 0,00123"
+hashing,ninguno,INVALID,-,-,hashing trick para n-gramas,nada; el brief lo prohibe expresamente
+subword y byte-level,ninguno,INVALID,-,-,representaciones a nivel de subpalabra o byte,"nada; exigirian deep learning, prohibido"
+sparse random projection,ninguno,PARTIALLY_EXPLORED,-,-,proyeccion aleatoria dispersa de las features existentes,"nada con mecanismo nuevo, pero el valor esperado es bajo"
+feature selection supervisada,ninguno,UNEXPLORED,-,-,seleccion supervisada de las 279 features,V15 podo SIN supervision; la seleccion supervisada no se ha hecho
+HistGradientBoosting,ninguno,UNEXPLORED,-,-,"histogram boosting, otra clase de funcion",nada; LightGBM y ExtraTrees ya fallaron como complemento
+SVM con nucleo RBF,ninguno,UNEXPLORED,-,-,SVM no lineal sobre las 279 features,"nada; coste alto y LinearSVC ya pierde 0,085 en B1"
+CORAL / cumulative-link compartido,ninguno,UNEXPLORED,-,-,pesos compartidos entre los cinco umbrales,"nada; E-021a es independiente, no comparte pesos"
+calibracion ordinal,ninguno,UNEXPLORED,-,-,calibracion de las cinco CDF por frontera,nada; la descalibracion conjunta es cero
+coste ordinal en la perdida,ninguno,UNEXPLORED,-,-,penalizar los errores segun la distancia ordinal,nada; es el unico objetivo nuevo de la lista

@@ -198,6 +198,49 @@
   mecanismo y no de hiperparametro.
 - **No se abre ninguna otra familia** mientras la ordinal tenga un challenger confirmado por leaderboard.
 
+## V22 · FRONTIER AUDIT + COSTE ORDINAL (2026-09-27) — familia ordinal cerrada (D-057)
+
+- **`ORDINAL_NESTED_THRESHOLDS = CLOSED`.** La familia ordinal queda cerrada en sus **cuatro**
+  subfamilias: reconstruccion (D-054), pesos (D-055), clasificadores de B1 (D-056) y **ahora
+  representacion compartida**. V20 sigue en LB **0,62689**.
+- **Forense de V20 resuelto contra el codigo**: los labels son **binarios**, el target tiene **2**
+  clases, HIERBA **declara** `multiclass` con `num_class 6` pero el booster tiene seis clases y las
+  columnas 2 a 5 de `predict_proba` son **cero exacto**. Las seis columnas salen y la 0 es
+  P(lado alto) y la 1 es P(lado bajo). Cada CDF se obtiene **directamente** del clasificador binario.
+  No hay multiclase transformado: **CASO A**.
+- **La especificacion declarada cuantificada**: da **0,6097782** y una binaria correctamente
+  especificada da **0,6091232**. Correlacion entre las dos CDF de **0,998** en las cinco fronteras
+  (mismo ranking), calibracion que difiere hasta **0,33**, y la declarada es **0,00066 mejor**.
+  **No es un bug que haya que arreglar**: es una version que funciona mejor. Se documenta y se
+  conserva.
+- **PASO 5, el modelo compartido**: un **unico LightGBM multiclase** con las cinco CDF **por
+  suma**. Al ser suma de probabilidades no negativas, **las cinco son monotonicas siempre**: se
+  miden **0 violaciones** de 169.336 frente a las 18.927 de V20. Blend **0,6096150**, delta
+  **-0,000163**, 3 de 5 folds, IC95 [-0,00078, +0,00045], neto **-13**, **4.451 cambios**.
+- **PASO 3/4, los tres candidatos de B1**: los tres tienen B1 **por debajo** del de V20 (0,6782,
+  0,6784 y 0,7606 contra 0,7632). **`NO_SIGNAL` en los tres** y el mecanismo queda cerrado por el
+  criterio del brief.
+- **PASO 14, el coste ordinal**: cambiar el argmax de V20 por el coste esperado minimo con
+  `C[i][j] = |i-j|^alfa`. alfa 1 da **0,5949198** (-0,0149) y alfa 2 da **0,5392168** (-0,0706).
+  **El coste ordinal destruye el macro-F1**: los errores del modelo no estan concentrados a grandes
+  distancias, y forzarlos a evitarlas degrada la frontera y la global a la vez. Es la cuarta
+  confirmacion de la leccion de P1.
+- **Errores compartidos**: **64.825 filas (38,3 % del train) las equivocan V19 y V20 juntas**. V20
+  rescata 1.474 de V19 e introduce 1.193: **neto +281**. La clase con mas errores compartidos es
+  `25-34` con **14.913**.
+- **Diversidad real**: el modelo historico mas complementario con V20 es **NB-SVM word**, que
+  rescata **10.462** de sus 66.018 errores (**15,85 %**) — **pero ya es un miembro de V20**. Los
+  modelos buenos son altamente redundantes: los tres primeros comparten mas del **82 %** de sus
+  errores con V20.
+- **La respuesta a la pregunta central**: **no se ha encontrado una fuente nueva con evidencia de
+  existir.** La unica fuente grande medida (los errores compartidos) esta agotada; la que queda
+  (representaciones a nivel de caracter) es **estructuralmente ilegal**. Compartir representacion
+  **si** elimina la monotonía por construccion, pero **no mejora el macro-F1 final**: la consistencia
+  ordinal **no era el cuello de botella**.
+- **Entregables**: `scripts/v22_frontier_audit.py`, `scripts/v22_b1_specialist.py`,
+  `scripts/v22_ordinal_cost.py`, `CHAMPION.md`, `reports/v22_frontier_audit.md`,
+  `reports/v22_top3.md`, `reports/v22_frontier.csv`. `experiments.csv` pasa a **126**.
+
 ## V20 · CONFIRMED_CHALLENGER (2026-09-27) — 0,62689 (D-054)
 
 - **V20 es el nuevo referente de leaderboard de AGE: LB 0,62689**, un delta de **+0,00111** sobre V19
@@ -601,14 +644,14 @@ adopta** (D-011).
   matriz de confusión, **sin colapsar etiquetas** en la submission.
 
 ## Próxima acción recomendada
-- **La familia ordinal esta cerrada en sus tres subfamilias** (D-054 reconstruccion, D-055 pesos, D-056
+- **La familia ordinal esta cerrada en sus cuatro subfamilias** (D-054 reconstruccion, D-055 pesos, D-056 clasificadores de B1, D-057 representacion compartida) (D-054 reconstruccion, D-055 pesos, D-056
   clasificadores de B1). No queda ningun eje dentro de ella, y **V20 sigue en 0,62689** como champion.
 - **Lo que queda abierto ya no es un eje de la familia ordinal**: la unica pregunta que sobrevive es de
   **analisis**, no de modelo: **por que el primer umbral tiene la menor metrica y el mayor impacto en el
   blend**. No se responde con otro experimento de B1, porque los dos mecanismos posibles ya fallaron.
 - **Antes de abrir otra familia** convendria resolver esa pregunta, porque indicaria si la senal de la
   primera frontera esta ya agotada o si hay una lectura distinta por hacer.
-- **No enviar nada sin mejora local previa.**: las dos unicas configuraciones de bajo riesgo autorizadas no llegaban ni al gate
+- **No enviar nada sin mejora local previa.**: las unicas configuraciones de bajo riesgo autorizadas no llegaban ni al gate
   de adopcion, y el eje de parametros resulto plano. El detalle esta en `CHAMPION.md` y en
   `reports/v19_x1_explotacion.md`.
 - Lo que reabre AGE son solo tres cosas, ninguna de ellas un experimento: **fuente de informacion
