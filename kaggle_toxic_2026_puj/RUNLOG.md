@@ -1559,3 +1559,83 @@ aplicacion de la condicion de HS a las decisiones de TR y AG, via que ya estaba 
 medicion desde v12.
 
 **Sin push, sin merge adicional, sin reset, sin rebase, sin modificar otras ramas.**
+
+## Fase v14: auditoria de entrenamiento partially-label para TR y AG (2026-09-26)
+
+Worktree `/home/carlos/Git/PLN-v14`, rama `proyecto-kaggle-toxic-2026-v14`, desde `b07e410` que es
+el estado validado de v13. v13, v12 y v11 no se modifican. **Un solo experimento, V14-00**, mas el
+informe final V14-01, y el registro llega a **239 filas con 239 claves unicas y 23 campos, sin filas
+malformadas**.
+
+**Ninguna submission generada, ninguna enviada, ninguna recomendada. V03 se mantiene** con
+0.7772114525165721 local y 0.78306 en el externo. **holdout2 intacto, con 0 de 3 evaluaciones
+gastadas.** Segunda particion no ejecutada. Test no utilizado.
+
+### La auditoria cerro la fase antes de gastar nada
+
+El enunciado advertia que la perdida enmascarada de P1 **no debe confundirse con H2-M**, y por eso
+proponia P1 para no repetirlo. La auditoria demuestra lo contrario, y con la mayor evidencia posible:
+
+| comprobacion | valor |
+| --- | --- |
+| peor diferencia de coeficientes | **0.000e+00** |
+| peor diferencia de probabilidades | **0.000e+00** |
+| delta de la enmascarada | **-0.116581** |
+| delta de H2-M registrado en v12 | -0.116581 |
+
+**Una fila con peso cero en la perdida no aporta gradiente.** Luego el coeficiente lo determinan solo
+las filas con peso uno, que son exactamente las que H2-M conserva. Enmascarar y eliminar dejan el
+mismo subconjunto de filas aportando senal. Lo unico que puede distinguirlas es como se reescala el
+termino de perdida, que es una constante de escala de la familia de calibracion y umbrales, ya
+cerrada. Y la formulacion **reproduce un resultado negativo ya registrado, hasta el ultimo decimal**.
+
+**Se cumple la condicion de parada numero 1. La fase se cierra con 0 de 4 principales y 0 de 2 de
+reserva.**
+
+### Mi propia verificacion fallo primero, y la segunda no
+
+La verificacion inicial uso **una sola pliegue** y concluyo que la identidad era exacta con
+0.000e+00. Al extenderla a los cinco pliegues aparecieron diferencias de 4,5e-01. **La causa era
+mia**: en la reconstruccion de H2-M pasaba `sample_weight` nulo, es decir sin pesos de clase, cuando
+el brazo M real usa `class_weight="balanced"` sobre la submuestra de HS=1. Estaba comparando H2-M
+contra un ajuste sin ponderar, y mi H2-M reconstruido daba -0.132999 en lugar de -0.116581.
+
+**Lo detecto** comprobar que el delta reconstruido coincidiera con el registrado en v12. Sin esa
+comprobacion la conclusion erronea habria pasado, porque un numero pequeno no delata un modelo mal
+montado.
+
+### Los cuatro mecanismos "nuevos" tienen cero menciones historicas
+
+La sonda textual **se marca a si misma**, porque el guion de auditoria nombra los doce mecanismos que
+busca. Con el conteo desglosado:
+
+| mecanismo | guiones historicos | conteo bruto |
+| --- | --- | --- |
+| aprendizaje con etiquetas parciales | **0** | 1 |
+| positive-unlabeled learning | **0** | 1 |
+| selective loss | **0** | 1 |
+| masked BCE | **0** | 1 |
+
+Es el patron que v12 documento, aqui con su cuantificacion. Y la sonda estructural da el lado
+positivo: **13 llamadas con `sample_weight`**, ninguna definida por la indefinicion de la etiqueta.
+La unica operacion del historial que condiciona la senal de TR y AG a HS=1 es H2-M.
+
+### La conclusion comoda, evitada
+
+Seria comodo concluir que las etiquetas de TR y AG en HS=0 deben seguir siendo negativos ordinarios
+porque la alternativa fallo. **No puede afirmarse**: la alternativa no ha fallado, ha resultado ser el
+mismo estimador que la formulacion que si fallo. No hay evidencia ni a favor ni en contra de la
+semantica de observacion parcialmente definida, y las preguntas 1, 2 y 5 del enunciado se declaran sin
+respuesta por evidencia.
+
+Lo que si queda establecido es una restriccion de lo construible: **cualquier mecanismo que se
+implemente enmascarando la perdida de clasificacion sobre las filas HS=0 va a reproducir H2-M**.
+
+### Estado
+
+**1 experimento, que es la auditoria. 0 ejecuciones. 0 adoptables, 0 marginales, 1 rechazada.
+Fraccion del techo del oraculo recuperada -2,52 de signo negativo. 0 submissions, 0 de 3
+evaluaciones de holdout2, segunda particion no ejecutada, test no utilizado, V03 congelada e
+intacta.**
+
+**Sin push, sin merge adicional, sin reset, sin rebase, sin modificar otras ramas.**

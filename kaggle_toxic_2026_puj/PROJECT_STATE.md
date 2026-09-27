@@ -1,9 +1,43 @@
 # PROJECT_STATE - KAGGLE_TOXIC_2026_PUJ
 
-Ultima actualizacion: 2026-09-26 (fases **v6** a **v13** CERRADAS; v13 cierra la linea de
-inferencia estructurada de etiquetas, D-100 a D-104). La seccion de detalle mas reciente que
-habia aqui era la de v5; las de v6 a v12 se registran en DECISIONS.md, RUNLOG.md y en los
+Ultima actualizacion: 2026-09-26 (fases **v6** a **v14** CERRADAS; v14 cierra la linea de
+entrenamiento partially-label de TR y AG, D-105 a D-109). La seccion de detalle mas reciente que
+habia aqui era la de v5; las de v6 a v13 se registran en DECISIONS.md, RUNLOG.md y en los
 informes de fase de reports/.
+
+## Fase v14 "Auditoria de entrenamiento partially-label" (CERRADA el 2026-09-26)
+
+Rama `proyecto-kaggle-toxic-2026-v14` (worktree `/home/carlos/Git/PLN-v14`, base v13 `b07e410`).
+**Un experimento, V14-00, mas el informe final V14-01. Decisiones D-105 a D-109.**
+
+**Resultado: 0 ejecuciones y 0 candidatas.** La auditoria cumplio la condicion de parada numero 1 del
+enunciado, que permite cerrar la fase sin ejecutar nada. 0 submissions, 0 de 3 evaluaciones de
+holdout2, segunda particion no ejecutada, test no utilizado, V03 congelada e intacta.
+
+**Lo que la fase deja establecido**:
+
+1. **La perdida enmascarada de P1 ES H2-M, con diferencia exactamente cero** en coeficientes,
+   probabilidades y macro-F1, y reproduce el -0.116581 ya registrado hasta el ultimo decimal. La
+   razon: una fila con peso cero no aporta gradiente, luego enmascarar y eliminar dejan el mismo
+   subconjunto de filas aportando senal.
+2. **No se puede concluir que los negativos ordinarios sean correctos.** La alternativa no fallo:
+   resulto ser el mismo estimador. No hay evidencia ni a favor ni en contra de la semantica de
+   observacion parcialmente definida, y las preguntas 1, 2 y 5 del enunciado se declaran sin
+   respuesta por evidencia.
+3. **Lo que si queda restringido es lo construible**: cualquier mecanismo que se implemente
+   enmascarando la perdida de clasificacion sobre las filas HS=0 va a reproducir H2-M. Para
+   apartarse haria falta una senal distinta de cero y sin etiqueta en esas filas, lo que exigiria
+   datos externos, una representacion nueva o informacion transductiva, los tres prohibidos.
+4. **Los cuatro mecanismos que la fase propone como nuevos por su terminologia tienen cero
+   menciones historicas**, una vez descontada la autorreferencia de la propia consulta. Y ninguna de
+   las 13 llamadas con `sample_weight` del codebase condiciona los pesos a la definicion de la
+   etiqueta.
+
+**Decision de gobierno: la linea de entrenamiento partially-label de TR y AG en el regimen HS=0
+queda CERRADA.** No se afirma que haya que mejorar HS, que v13 ya desmentio con delta exactamente
+cero en TR y AG. La unica linea realmente abierta, y que no es de esta familia, es una formulacion
+que aporte senal sin etiqueta a las filas HS=0, y requiere una decision de jerarquia distinta, no un
+experimento mas.
 
 ## Fase v13 "Estimacion de HS e inferencia estructurada de etiquetas" (CERRADA el 2026-09-26)
 

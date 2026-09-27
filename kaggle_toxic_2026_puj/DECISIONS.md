@@ -3581,3 +3581,115 @@ cada uno; y la procedencia del techo, que reencuadra dos fases de trabajo previo
 rechazada, 0 submissions, 0 de 3 evaluaciones de holdout2, segunda particion no ejecutada, test no
 utilizado, V03 congelada e intacta con identidad verificada en cada ejecucion. Registro en 237 filas
 con 237 claves y 23 campos.
+
+## D-105 - La perdida enmascarada de P1 ES H2-M, con diferencia exactamente cero
+
+El enunciado de V14 advierte que la perdida con TR y AG enmascaradas donde HS=0 **no debe
+confundirse con H2-M**, que eliminaba filas, y propone P1 precisamente para no repetirlo. La
+auditoria V14-00 demuestra lo contrario.
+
+| comprobacion | valor |
+| --- | --- |
+| peor diferencia de coeficientes entre H2-M y la enmascarada | **0.000e+00** |
+| peor diferencia de probabilidades sobre la validacion | **0.000e+00** |
+| delta del macro-F1 de la enmascarada | **-0.116581** |
+| delta del macro-F1 de H2-M reconstruido | -0.116581 |
+| delta de H2-M registrado en v12 | -0.116581 |
+
+**La razon es una sola observacion de optimizacion**: una fila con peso cero en la perdida no aporta
+gradiente, luego el vector de coeficientes lo determinan unicamente las filas con peso uno, que son
+exactamente las que H2-M conserva. Enmascarar y eliminar dejan el mismo subconjunto de filas
+aportando senal, y por eso producen el mismo estimador.
+
+**Lo unico que puede distinguirlas es como se reescala el termino de perdida**, es decir la
+normalizacion y los pesos de clase. Eso no es un mecanismo de aprendizaje: es una constante de
+escala, y pertenece a la familia de calibracion y umbrales, que ya estaba cerrada.
+
+La prueba que cierra la fase no es la identidad de estimador, que convence, sino que **la
+formulacion nueva reproduce un resultado negativo ya registrado, hasta el ultimo decimal**.
+
+**Decision**: se cumple la condicion de parada numero 1 del enunciado. No se ejecutan P1 a P4, y la
+fase queda cerrada con 0 de 4 experimentos principales y 0 de 2 de reserva.
+
+## D-106 - Mi primera verificacion de la equivalencia fue erronea, y la segunda no
+
+La verificacion inicial uso **una sola pliegue** y concluyo que la identidad era exacta, con
+diferencia 0.000e+00. Al extenderla a los cinco pliegues aparecieron diferencias de orden 4.5e-01.
+
+**La causa era mia**: en la reconstruccion de H2-M pasaba `sample_weight` nulo, es decir **sin pesos
+de clase**, cuando el brazo M real usa `class_weight="balanced"` sobre la submuestra de HS=1. Estaba
+comparando H2-M contra un ajuste sin ponderar, que no es H2-M, y por eso mi H2-M reconstruido daba
+-0.132999 en lugar de -0.116581.
+
+**Lo que lo detecto** fue comprobar que el delta reconstruido coincidiera con el registrado en v12.
+Sin esa comprobacion la conclusion erronea habria pasado, porque un numero pequeno no delata un
+modelo mal montado.
+
+**Leccion, que se conserva**: un veredicto de equivalencia no se sostiene en una sola pliegue, y
+**reproducir un resultado historico conocido es la comprobacion que detecta un error de montaje**.
+
+## D-107 - La conclusion comoda esta prohibida: la alternativa no fallo, es el mismo estimador
+
+Seria comodo concluir que las etiquetas de TR y AG en el regimen HS=0 deben seguir modelandose como
+negativos ordinarios, porque la alternativa fallo con -0.116581. **Eso no puede afirmarse**, y la
+razon es tecnica: la alternativa **no ha fallado, ha resultado ser el mismo estimador** que la
+formulacion que si fallo. No hay ninguna prueba en contra de la semantica de observacion
+parcialmente definida, del mismo modo que no hay ninguna a favor.
+
+Lo que si queda establecido es una **restriccion de lo construible**: cualquier mecanismo que se
+implemente enmascarando la perdida de clasificacion sobre las filas HS=0 va a reproducir H2-M, con
+su cambio de escala y su -0.116581. Para apartarse de ahi hace falta una senal distinta de cero y sin
+etiqueta en esas filas, y obtenerla exigiria datos externos, una representacion nueva o informacion
+transductiva, **los tres prohibidos por la jerarquia de la fase**.
+
+Las preguntas 1, 2 y 5 de la seccion 12 del enunciado quedan por eso **sin respuesta por evidencia**,
+y asi se declaran.
+
+## D-108 - Los cuatro mecanismos "nuevos" no existen en el registro, y eso tambien se cuantifica
+
+El barrido de los doce mecanismos que el enunciado exige buscar da un resultado que conviene hacer
+visible en vez de dejar como nota al pie: **la sonda textual se marca a si misma**, porque el guion
+de auditoria nombra literalmente los doce mecanismos que busca.
+
+| mecanismo | guiones historicos | conteo bruto |
+| --- | --- | --- |
+| aprendizaje con etiquetas parciales | **0** | 1 |
+| positive-unlabeled learning | **0** | 1 |
+| selective loss | **0** | 1 |
+| masked BCE | **0** | 1 |
+
+Los cuatro tienen **cero menciones historicas** una vez descontada la autorreferencia de la propia
+consulta. Es el patron que v12 documento por primera vez, aqui con su cuantificacion: cada conteo se
+reporta en dos columnas, con autorreferencia y sin ella, y la segunda es la que vale como evidencia.
+
+La sonda estructural confirma el lado positivo: **13 llamadas con `sample_weight`** en todo el codigo,
+y ninguna define los pesos por la indefinicion de la etiqueta. `calcular_pesos` de V4-B05 pondera por
+discrepancia entre prediccion y verdad, es decir por el error del modelo. `pesos_dureza` de V4-C
+viene del mapa de dureza. `pesos(tamanos, esquema)` de V6-03 pondera por tamano de grupo. V6-07 actua
+sobre el ruido del par. `pesos_por_clase` de V8-07 reescala por clase, que es lo que P5 ya midio en
++0.0023.
+
+**La unica operacion del historial que condiciona la senal de TR y AG a HS=1 es H2-M**, y es
+exactamente la que P1 reproduce.
+
+## D-109 - Cierre de la v14: 1 experimento, 0 ejecuciones, y una linea cerrada
+
+| ID | via | resultado | decision |
+| --- | --- | --- | --- |
+| V14-00 | auditoria de novedad partially-label | P1 ES H2-M, diferencia 0.000e+00 | FASE CERRADA |
+| V14-01 | informe final y siete respuestas | 0 ejecuciones | CLOSED |
+
+**La linea de entrenamiento partially-label de TR y AG en el regimen HS=0 queda CERRADA.** Y se cierra
+en la forma que el propio enunciado establecia para este caso, con la formulacion que v13 ya habia
+dejado establecida y que V14 confirma: el techo del oraculo procede de conocer la condicion semantica
+HS al evaluar TR y AG, pero mejorar HS por si sola no produce beneficio, y las familias historicas de
+routing, factorizacion, powerset, ranking y meta-combinacion estan cerradas.
+
+**Lo que queda abierto, y no es una hipotesis de esta linea**: una formulacion que aportase una senal
+distinta de cero y sin etiqueta a las filas HS=0. Caeria fuera de la jerarquia actual, y por eso
+requiere una decision de gobierno distinta, no un experimento mas.
+
+**Estado**: 1 experimento, 0 de 4 principales y 0 de 2 de reserva, 0 ejecuciones, 0 adoptables, 0
+marginales, 1 rechazada, fraccion del techo del oraculo recuperada -2.52 de signo negativo, 0
+submissions, 0 de 3 evaluaciones de holdout2, segunda particion no ejecutada, test no utilizado, V03
+congelada e intacta. Registro en 239 filas con 239 claves unicas y 23 campos.
