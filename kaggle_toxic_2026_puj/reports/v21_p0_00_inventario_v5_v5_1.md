@@ -292,14 +292,25 @@ la fase.
 Este es el dato que hay que poner delante de cualquier decision de envio. Las cinco
 sondas de V16 se enviaron con `deltaOOF` positivo y las cinco bajaron:
 
-| submission | `local_f1` | LB | delta LB |
-|---|---:|---:|---:|
-| v16_ch1 tasa optima transportada | 0.778280 | 0.77828 | **-0.00478** |
-| v16_ch5 tasa optima absoluta | -- | 0.77495 | **-0.00811** |
-| v16_ch7 C=1.5 | 0.776653 | 0.77296 | **-0.01010** |
-| v16_ch8 C=2.5 | 0.776752 | 0.77707 | **-0.00599** |
-| v16_ch9 min_df=1 | 0.765532 | 0.76978 | **-0.01328** |
-| V20 regla cross-score (ref 56597267) | 0.777998 | 0.77663 | **-0.00643** |
+**CORRECCION (2026-09-27, verificada)**: la afirmacion de que las cinco sondas de V16
+tenian `deltaOOF` positivo **es incorrecta**. La columna `local_f1` del log no es el
+`corrected_cv` de V03 para esas filas: V16 optimizo la tasa predicha, asi que su `local_f1`
+mide otra magnitud. Al restar 0.777211 se obtiene, para las cuatro con valor numerico,
+un `dOOF` **negativo** en tres de ellas (-0.000558, -0.000459, -0.011679) y positivo solo
+en V20 (+0.000787). Es decir: V16 no fue "senal positiva que no transfirio", fue "senal ya
+nula o negativa que tampoco transfirio". La conclusion de la fase no cambia, pero el
+diagnostico era incorrecto y la correccion importa para no sobreinterpretar la ventana.
+
+La tabla, con la lectura corregida:
+
+| submission | `local_f1` | dOOF leido | LB | delta LB |
+|---|---:|---:|---:|---:|
+| v16_ch1 tasa optima transportada | (vacio) | no calculable | 0.77828 | **-0.00478** |
+| v16_ch5 tasa optima absoluta | (vacio) | no calculable | 0.77495 | **-0.00811** |
+| v16_ch7 C=1.5 | 0.776653 | -0.000558 | 0.77296 | **-0.01010** |
+| v16_ch8 C=2.5 | 0.776752 | -0.000459 | 0.77707 | **-0.00599** |
+| v16_ch9 min_df=1 | 0.765532 | -0.011679 | 0.76978 | **-0.01328** |
+| V20 regla cross-score (ref 56597267) | 0.777998 | +0.000787 | 0.77663 | **-0.00643** |
 
 Y el balance global de `submissions/leaderboard_log.csv`, con 21 filas:
 
