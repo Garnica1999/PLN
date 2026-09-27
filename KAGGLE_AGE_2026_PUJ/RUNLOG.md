@@ -1034,3 +1034,78 @@ porque un producto de 279 por 6 no gana nada con la GPU y asi no se depende de l
 ROCm, que lanzo una excepcion durante la prueba de humo.
 
 `experiments.csv` pasa a **109 experimentos**. Auditoria de idioma: **0 errores**. Sin push.
+
+## 2026-09-26 · AGE CERRADO — auditoria de cierre estrategico (D-050)
+
+**Motivo de la sesion**: dejar de producir experimentos por inercia y determinar, con una auditoria
+global y con el agente `kaggle specialist`, si existe una oportunidad real de superar los 0,62188 de
+V12. El brief prohibia expresamente abrir otra fase, otra busqueda de hiperparametros o otra ronda de
+variantes de perdidas.
+
+**Orden ejecutado**: (1) inventario de los 62 artefactos de train de `features/`, para saber que se
+habia dejado sin explotar; (2) delegacion al agente `kaggle specialist` con la auditoria completa de
+V12, V15, V16, V17 y V18, con el inventario ya verificado y las diez preguntas del brief; (3)
+verificacion independiente de las cifras que el especialista pidio corregir; (4) redaccion de la
+decision.
+
+**Lo que encontro el inventario**: los 62 artefactos de train estan consumidos o cerrados con numero,
+y **todos** los OOF de miembros ya estan comprimidos a seis columnas o menos. La hipotesis de
+compresion de outputs **no se puede formular**: cada miembro es un modelo de seis clases y no puede
+emitir mas, luego la compresion se introdujo al construir el miembro, no al combinarlo en V12. Se
+cerraron en su dia los unicos no usados: especialistas por longitud (+0,0000), BM25 (-0,0002), kNN
+(0,3088 sin aporte), grupos de tres columnas (<= 0), `content_only` y `style_only` (PH6-L3),
+residuales de longitud (PH5-L2, -0,0019), conjunciones (0,1489) y modalidad (0,1270), ambas por debajo
+del suelo de azar de 0,1667, los 72 bloques lexicograficos (D-039, 0 de 72 no redundantes) y las tres
+vistas de margenes de la capa ordinal (D-037).
+
+**Lo que el especialista concluyo**: **no existe** hipotesis con probabilidad razonable de superar
+V12. Ninguna de las candidatas que sobreviven a la auditoria pasa del 15 % de probabilidad, y la que
+mas tiene esta prevista por debajo del gate por un factor de tres a diez. Ademas aislo una sonda de
+prior-shift que dio +0,0010.
+
+**Verificacion de sus cifras, una a una**:
+- La masa de la frontera: **confirmada**. `18-24` 16,93 % y `25-34` 16,74 %, luego **33,67 %**. Mi
+  D-049 de ayer decia que la frontera era una "minoria de la masa" y leida al pie de la letra **es
+  falsa**. Es una correccion real y la acepto.
+- La elasticidad: **confirmada y recalada de forma independiente**. Corregir `n` filas mal
+  clasificadas de un par a su etiqueta verdadera, por contrafactual sobre el OOF existente, vale
+  +0,0015 con 250, +0,0031 con 500, +0,0061 y +0,0063 con 1.000, +0,0122 y +0,0125 con 2.000 y
+  +0,0303 y +0,0308 con 5.000. El gate de +0,003 **se cruza con 478 correcciones** de las 28.721 y
+  28.438 que V12 comete en cada par. **La lever es grande y D-049 estaba mal razonado.**
+- La calibracion CV -> LB: **confirmada con datos que si son verificables**. Sus once pares tienen el
+  LB en `experiments/phase12_auditoria_estado.json`, pero el CV de siete de ellos no esta en ningun
+  artefacto, luego su recta no se puede reproducir entera. Reconstruida con los **cuatro** envios
+  cuyos dos extremos si son verificables (v01, v07, v08, v12): `LB = +0,00223 + 1,02825 x CV`,
+  **R2 = 0,9968**. Un gate de +0,003 vale **+0,00308** en LB. Su pendiente de 1,064 y la mia de 1,028
+  coinciden en lo que importa: **el gap no da puntos gratis y los gates estan calibrados**.
+- La sonda de prior-shift: **no deja artefacto en disco**, luego sus +0,0010 no son verificables y no
+  se usan como evidencia. Aun por cierto, tres veces por debajo del gate.
+
+**Dos errores propios que la verificacion destapo, y que habrian ido al informe sin corregir**:
+1. La primera regresion salio con pendiente 0,231 y **R2 = 0,0043**, porque `age_submission_v08.csv`
+   tiene **dos** puntuaciones registradas (0,39563 de una subida con formato roto y 0,60376 de la
+   buena) y mi emparejamiento por orden de valor metia el punto erroneo en la recta.
+2. Escribi a mano en el informe ejecutivo que el envio de V12 puntuo **0,62188**, cuando **0,62188 es
+   la replica reproducible** y el envio puntuo **0,62182**. El numero venia de una constante del
+   modulo, no del artefacto. Ahora los dos se leen de `phase12_auditoria_estado.json` y cada uno con su
+   nombre. Atribuirle a la Champion una puntuacion que no tiene es exactamente el tipo de error que
+   D-048 vino a corregir, y lo estaba cometiendo yo.
+
+**Decision**: las ocho condiciones del brief para ejecutar un experimento, evaluadas una a una, **fallan
+tres**, y son las tres no negociables: el especialista no lo considera una hipotesis competitiva, la
+informacion no es genuinamente nueva, y ya fue probada historicamente. Ademas el brief pide que la
+decision se tome entre `EXECUTE ONE FINAL HIGH-CONFIDENCE EXPERIMENT` y `CLOSE AGE - V12 REMAINS
+CHAMPION`, y solo la segunda es admisible aqui.
+
+```
+CLOSE AGE - V12 REMAINS CHAMPION
+```
+
+**D-050** deja escrita la correccion de la razon de D-049: el bloqueo es de **identificabilidad** de
+las filas corregibles, no de magnitud, ni de informacion, ni de funcion objetivo. Importa porque una
+razon equivocada induce a leer la frontera como una lever pequena y a cerrarla para siempre, cuando
+es una lever grande a la que solo le falta un selector, que es un problema distinto y resoluble en otro
+dataset.
+
+`experiments.csv` pasa a **111 experimentos**. Auditoria de idioma: **0 errores** sobre 405 ficheros.
+Sin push, sin PR, sin merge, sin reescritura de historia. V12 intacto. Sin submission nueva.

@@ -152,6 +152,48 @@
   redaccion, no de medicion, y queda declarado en `reports/v17_compliance.md` en vez de darse por
   hecho.
 
+## AGE CERRADO (2026-09-26) — V12 permanece champion (D-050)
+
+- **Decision**: `CLOSE AGE - V12 REMAINS CHAMPION`. **Sin experimento adicional y sin submission
+  nueva.** V12 intacto en **0,6005017473** pooled, **0,62182** en el envio `age_submission_v12.csv` y
+  **0,62188** en la replica reproducible.
+- **La hipotesis de compresion de outputs muere por construccion, no por evidencia.** Los 62
+  artefactos de train de `features/` estan consumidos o cerrados con numero, y **todos** los OOF de
+  miembros estan ya comprimidos a seis columnas o menos, porque cada miembro es un modelo de seis
+  clases y no puede emitir mas. La compresion **no la introduce V12**: se introdujo al construir cada
+  miembro. La hipotesis no se puede formular.
+- **D-049 estaba mal razonado, y ahora esta medido.** Escribio que la frontera es una *minoria de la
+  masa*: `18-24` es el 16,93 % y `25-34` el 16,74 %, luego juntas son **33,67 %**, un tercio. Y la
+  lever es grande: corregir 1.000 filas mal clasificadas de un par a su etiqueta verdadera vale
+  **+0,0061** y **+0,0063** de macro-F1 global, medido por contrafactual sobre el OOF existente. El
+  gate de +0,003 **se cruza con 478 correcciones** de las 28.721 y 28.438 que V12 comete en cada par.
+  El cierre **no** puede sostenerse en la magnitud.
+- **La razon correcta es la identificabilidad.** La senal existe (D-048: 0,7136 y 0,7493), la
+  magnitud sobra, y la funcion objetivo no se puede re-pesar sin transferir (P1: intercambio de suma
+  cero). Lo que falta es un **selector** que identifique cuales de esas 478 filas corregir, y cinco
+  selectores de V17 mas la pagina de confianza de V16 (90 puertas, **cero filas desviadas**)
+  demuestran que la senal de confianza no contiene esa informacion. Los errores de V12 en frontera son
+  ademas **confiados**: margen 0,809 cuando el especialista acierta contra 0,539 cuando V12 acierta.
+- **El gap CV -> LB no da puntos gratis.** `LB = +0,00223 + 1,02825 x CV`, **R2 = 0,9968**, con los
+  cuatro envios cuyos dos extremos son verificables en disco (v01, v07, v08, v12). Un gate de +0,003
+  en CV vale **+0,00308** en LB y llevaria a 0,62278. El gap es un offset aditivo estable, de
+  +0,01716 a +0,02132. Los gates locales estan **calibrados**.
+- **El veredicto del agente `kaggle specialist` es cerrar**, con las tres condiciones no negociables
+  del brief en contra: la hipotesis no es competitiva, la informacion no es nueva y ya fue probada.
+  Su sonda de prior-shift (+0,0010) **no dejo artefacto en disco**, luego no es verificable; aun
+  tomandola por cierta, queda tres veces por debajo del gate.
+- **AGE no se reabre** salvo que aparezca una fuente de informacion nueva, una regla nueva del
+  concurso o evidencia externa. En particular y de forma permanente: no mas fases, ni busqueda de
+  hiperparametros, ni variantes de perdidas, de features, de ensembles, de destilacion ni de
+  especialistas.
+- **Lo que el trabajo deja recomendado no es un experimento**: optimizar o seleccionar **sobre las
+  fronteras directamente**, lo que exige cambiar la metrica efectiva del entrenamiento. Es un problema
+  distinto del que se cerro, porque la lever es grande y lo que falta es un selector, no informacion.
+- **Entregables**: `reports/age_decision_ejecutiva.md`, `reports/age_cierre_auditoria.md`,
+  `reports/age_cierre_auditoria.csv`, `reports/age_lb_calibration.csv`,
+  `figures/age_elasticidad_frontera.png`, `scripts/age_cierre_auditoria.py`,
+  `scripts/age_decision_ejecutiva.py`. `experiments.csv` pasa a **111**.
+
 ## V18 · FUNCION DE ENTRENAMIENTO (2026-09-26) CERRADA — la senal esta disponible y no se cobra (D-049)
 
 - **La premisa de la fase quedo invertida, y fue el hallazgo mas importante de V18.** P0 concluyo que
@@ -359,7 +401,9 @@ adopta** (D-011).
   matriz de confusión, **sin colapsar etiquetas** en la submission.
 
 ## Próxima acción recomendada
-- **Ninguna dentro del marco actual.** V12, V15, V16, V17 y V18 estan cerradas con medicion, y
+- **Ninguna. AGE está cerrado** con V12 como champion (D-050, 2026-09-26). La decisión y su evidencia
+  están en `reports/age_decision_ejecutiva.md`.
+- Históricamente, y solo como registro de lo que se descartó: V12, V15, V16, V17 y V18 estan cerradas con medicion, y
   ninguna de las cinco ha dejado una pista que supere su propio gate. Reanudar solo tiene sentido
   **cambiando el marco**: optimizar o seleccionar **sobre las fronteras directamente**, en lugar de
   la macro-F1 de seis clases que las diluye. Esa es la accion que `reports/v18_final_research.md`

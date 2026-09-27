@@ -1243,3 +1243,56 @@ Tras declarar la saturación se probó la vía indicada como trabajo futuro:
   `reports/v18_p0_reproduccion.md`, `reports/v18_p1_peso_clases.md`, `reports/v18_p3_margen.md`,
   `reports/v18_p4_multiobjetivo.md`, `reports/v18_p5_destilacion.md`, `reports/v18_distillation.csv`,
   `reports/v18_reproducibility.md`, `reports/v18_compliance.md`, 7 figuras de V18.
+
+## D-050 — Correccion de la razon de D-049, y cierre de AGE
+
+- **Observation**: la auditoria de cierre estrategico (`scripts/age_cierre_auditoria.py`, que no
+  entrena nada y solo verifica cifras sobre artefactos existentes) midio dos cosas que D-049
+  afirmaba o implicaba sin haberlas medido.
+- **Result**:
+  1. **D-049 estaba mal razonado, aunque acertara en la conclusion.** Escribio que "la macro-F1 de seis
+     clases es una media, y la frontera es una minoria de la masa". Leida al pie de la letra, **es
+     falsa**: `18-24` son 16,93 % de las filas y `25-34` el 16,74 %, luego juntas son **33,67 %**, un
+     tercio y no una minoria.
+  2. **La lever no es pequena, y ahora esta medida.** Corregir `n` filas mal clasificadas de un par a
+     su etiqueta verdadera, que es lo que haria un selector perfecto, vale por contrafactual sobre el
+     OOF existente: **+0,0015 con 500 filas, +0,0031 con 1.000, +0,0063 con 2.000**. El gate de
+     adopcion de +0,003 **se cruza con unas 478 correcciones netas**, de las 28.721 y 28.438 que V12
+     comete en cada par. Es decir, la magnitud de la oportunidad es de sobra.
+  3. **La calibracion CV -> LB confirma que el gate no engaña.** Regresando el leaderboard sobre el CV
+     de los cuatro envios cuyos dos extremos son verificables en disco (v01, v07, v08, v12):
+     **LB = 0,00223 + 1,02825 x CV**, **R2 = 0,9968**. Un gate de +0,003 en CV vale **+0,00308** en LB
+     y llevaria a **0,62278**. El gap es un offset aditivo estable, de +0,01716 a +0,02132, y **no da
+     puntos gratis**: los gates locales estan calibrados, ni mas cerrados ni mas abiertos de lo que
+     parecen.
+  4. **La hipotesis de compresion de outputs muere por construccion.** Los 62 artefactos de train de
+     `features/` estan consumidos o cerrados con numero, y **todos** los OOF de miembros estan ya
+     comprimidos a seis columnas o menos, porque cada miembro es un modelo de seis clases y no puede
+     emitir mas. La compresion no la introduce V12: se introdujo al construir cada miembro.
+- **Decision**: **AGE se cierra con V12 como champion.** No se ejecuta ningun experimento adicional y
+  no se genera ninguna submission. Se **reescribe la razon de D-049** con el diagnostico correcto.
+- **Reason**: el bloqueo **no es de magnitud, ni de informacion, ni de funcion objetivo**. Es de
+  **identificabilidad**: existen 28.721 filas mal clasificadas en la primera frontera, corregirlas
+  darian +0,012 de macro-F1, y solo ~478 bastan para el gate, pero **no existe un selector que
+  identifique cuales**. Eso es lo que midieron los cinco selectores de V17 (compuerta +0,0002, regla
+  conjunta +0,0000, arbitro aprendido -0,0001 con 0 de 5 folds, combinador local -0,0002) y la pagina
+  de confianza de V16, que con 90 puertas no desvia ni una fila. Los errores de V12 en frontera son
+  ademas **errores confiados**: margen 0,809 cuando el especialista acierta contra 0,539 cuando V12
+  acierta, luego la confianza no discrimina. Y solo el 12,7 % y el 8,0 % de las victorias del
+  especialista caen en la region de frontera. La razon correcta importa: una razon equivocada induce a
+  leer la frontera como una lever pequena y a cerrarla para siempre, cuando es una lever grande a la que
+  solo le falta un selector, que es un problema distinto y resoluble en otro dataset.
+- **Consequences**: (1) **V12 queda congelado** en 0,6005017473 pooled, 0,62182 en el envio y 0,62188
+  en la replica; (2) AGE **no se reabre** salvo que aparezca una fuente de informacion nueva, una regla
+  nueva del concurso o evidencia externa que cambie el espacio de busqueda. En particular, y de forma
+  permanente: **no mas fases, ni busqueda de hiperparametros, ni variantes de perdidas, ni de
+  features, ni de ensembles, ni de destilacion, ni de especialistas**; (3) la accion que el trabajo
+  deja recomendada no es un experimento: **optimizar o seleccionar sobre las fronteras directamente**,
+  lo que exige cambiar la metrica efectiva del entrenamiento, y queda como recommendation para quien
+  retome el problema con un dataset que permita agrupar por autor (D-003) o con etiquetas mas
+  informativas; (4) una correccion de trazabilidad: la sonda de prior-shift que menciono el agente
+  especialista **no dejo artefacto en disco**, luego su +0,0010 no es verificable y no se usa como
+  evidencia; aun tomandolo por cierto, queda tres veces por debajo del gate.
+- **Evidence**: `reports/age_cierre_auditoria.md`, `reports/age_cierre_auditoria.csv`,
+  `reports/age_lb_calibracion.csv`, `figures/age_elasticidad_frontera.png`,
+  `experiments/age_cierre_auditoria.json`, `scripts/age_cierre_auditoria.py`.
