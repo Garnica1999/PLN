@@ -29,3 +29,6 @@ experiments/*.stdout
 
 # Sistema
 .DS_Store
+
+# Derivado de V20: 1,3 GB reconstruible con scripts/v20_f1_f2.py
+features/v20_f1_bloque_clase_condicional.npy

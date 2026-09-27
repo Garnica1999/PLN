@@ -1423,3 +1423,70 @@ Tras declarar la saturación se probó la vía indicada como trabajo futuro:
   `reports/v19_x1_explotacion.md`, `reports/v19_x1_comparativa.csv`,
   `reports/v19_x1_complementariedad.csv`, `figures/v19_importancia.png`, `figures/v19_complejidad.png`,
   `figures/v19_x1_explotacion.png`, `CHAMPION.md`.
+
+## D-053 — V20: dos familias cerradas con numero y una con senal positiva post-V19
+
+- **Observation**: con V19 en **0,62578** y su eje de parametros agotado, Carlos reabre AGE con el
+  objetivo de encontrar **mecanismos que aporten informacion distinta** a V19 y V12, y con la regla de
+  clasificar cada familia como `NEW_SIGNAL`, `WEAK_SIGNAL`, `NO_SIGNAL`, `OVERFIT`, `DUPLICATE` o
+  `ILLEGAL`. V19 queda **congelado**: no se toco su configuracion, sus features, su modelo persistido,
+  su submission ni su hash.
+- **Auditoria previa, sin proponer nada**: se cruzaron los **117 experimentos** contra **28
+  mecanismos**. Tres familias del brief **nunca** se habian probado: **RandomForest/ExtraTrees,
+  HistGradientBoosting y CatBoost** como clase de funcion sobre las 279, y **ninguna transformacion de
+  clase condicional** aplicada a las features numericas. Y una familia quedo **cerrada con medicion en
+  un comando**: el campo `id` **es el indice de fila**, 1 a 169.336 en train y en test, con correlacion
+  de rango **0,00123** con la clase y distribucion plana por quintiles. **No hay senal de tiempo que
+  extraer**, y la familia no consume un hueco.
+- **F1, la vista de clase condicional de las 122 features numericas: `NO_SIGNAL`.** El bloque de 73
+  label-informed se construyo in-fold sobre **cinco** familias de entidades (mencion, hashtag, fuente de
+  retweet, rareza, lexico) y las **122 features densas y estructuradas nunca recibieron ese
+  tratamiento**. Se construyo el bloque equivalente, **976 columnas**, in-fold. Comparacion
+  **emparejada con el mismo aprendiz y los mismos hiperparametros**: arbol sobre las 279 da
+  **0,6072312**, sobre las **122 crudas 0,3440624**, sobre las **976 del bloque 0,3438942**. El
+  transform **no aporta nada** (delta -0,0002). Como cuarto miembro: **-0,0001**, neto **+30**.
+  **Consecuencia que importa mas que el resultado**: acota por que funciona el bloque de 73. No es que
+  las transformaciones de clase condicional sean buenas en general, sino que las familias de entidades
+  y la rareza **son** discriminantes y las features de forma, posicion y entropia **no lo son**.
+- **F2, la clase de funcion alternativa: `NO_SIGNAL`, y el negativo mas informativo de la sesion.**
+  ExtraTrees, con sesgo inductivo de verdad distinto (cortes aleatorios, arboles profundos, bagging, sin
+  boosting ni learning rate), da **0,5836218** sobre las **mismas 279**: **0,0236 por debajo** del
+  LightGBM de V19, con 0 de 5 folds. Como cuarto miembro: **-0,0010**, neto **-240**. **El efecto de
+  V19 no es "cualquier combinador no lineal": es del BOOSTING**, y eso explica el mecanismo por el que
+  el bloque de 73 se cobra, que es el ajuste secuencial por residuo y no la no linealidad en general.
+- **F3, los cinco umbrales anidados: `WEAK_SIGNAL`, y el unico mecanismo vivo post-V19.** El
+  especialista de D-048 saca 0,7136 siendo un binario de **dos clases**, luego ajustado sobre **el 34 %
+  de las filas**. El umbral anidado hace **la misma decision con el 100 %**. Se ajustan cinco
+  clasificadores de `clase <= k-1` contra `clase >= k` sobre las 279, con monotonia por maximo acumulado
+  y la distribucion de seis clases por diferencias. **No es un duplicado**: E-028a usa pares
+  **adyacentes**, que es el comparador; y ORD-1 de D-037 construia las CDF **a partir de la salida de
+  V12**, sin clasificadores nuevos, y dio 0,5887.
+- **Result**:
+  - **Exactitud balanceada de los cinco discriminadores**: 0,7632 / 0,8264 / 0,8465 / 0,8373 / 0,8112,
+    es decir **+0,26 a +0,35 sobre el azar**, y **superan a V12 medido en la misma fila en tres de los
+    cinco umbrales** (0,8465 contra 0,8504; 0,8373 contra 0,8210; 0,8112 contra 0,7429).
+  - **La cadena en solitario: 0,6046893, por encima del 0,6005017 de V12 y sin un solo modelo
+    multiclase.** Ese es el resultado de la sesion: una geometria distinta llega a la misma region.
+  - **Como cuarto miembro: 0,6097782, delta +0,0018, 5 de 5 folds, IC95 [+0,0012, +0,0025],** neto
+    **+294** filas y **5.674** cambios de prediccion en el train.
+- **Decision**: **F1 y F2 se cierran con numero. F3 sigue abierta como `WEAK_SIGNAL`, y su submission
+  queda construida y validada pero NO ENVIADA.** V19 sigue siendo champion con 0,62578 y no se toca.
+- **Reason**: F3 es el unico mecanismo con senal positiva y estable, y su justificacion es **estructural
+  y no estadistica**: la cadena de cinco discriminadores binarios alcanza por si sola 0,6046893, por
+  encima de V12, lo que demuestra que hay una geometria de decision distinta disponible. Pero la
+  mejora esperada en LB es de **+0,0019**, y el residuo de la calibracion sobre V19 fue de **-0,0016**
+  con oscilacion de **0,0034** entre modelos vecinos: **la mejora esperada es del mismo orden que la
+  incertidumbre del aparato**. Por eso se presenta y no se envia solo, que es justo lo que distingue a
+  este candidato de los cuatro de V19.x descartados, donde no habia cambio de mecanismo.
+- **Consequences**: (1) `age_submission_v20_candidato_umbrales.csv` queda lista, con **3.546 de 112.892
+  filas cambiadas (3,14 %)** frente al envio de V19, 8 de 8 checks y SHA256 `2c964af7...`; (2) el bloque
+  de 1,3 GB queda **fuera de git** y se reconstruye con `scripts/v20_f1_f2.py`; (3) **la comprension de
+  por que funciona V19 queda mas aguda**: el bloque de 73 importa por ser un socio de interaccion con
+  entidades discriminantes, y el boosting lo cobra porque ajusta residuo a residuo; (4) la direccion
+  con mas recorrido que queda abierta es la de **descomposiciones de decision**, no la de clases de
+  funcion ni la de transformaciones de features.
+- **Evidence**: `experiments/v20_f1_f2.json`, `experiments/v20_f3_umbrales.json`,
+  `experiments/v20_f3c_candidato.json`, `reports/v20_f1_f2.md`, `reports/v20_f1_f2_comparativa.csv`,
+  `reports/v20_f1_f2_complementariedad.csv`, `reports/v20_f3_umbrales.md`,
+  `reports/v20_f3_umbrales.csv`, `reports/v20_f3c_candidato.md`, `figures/v20_f1_f2.png`,
+  `figures/v20_f3_umbrales.png`, `submissions/age_submission_v20_candidato_umbrales.csv`.

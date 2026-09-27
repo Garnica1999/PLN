@@ -152,6 +152,45 @@
   redaccion, no de medicion, y queda declarado en `reports/v17_compliance.md` en vez de darse por
   hecho.
 
+## V20 · MECANISMOS NUEVOS (2026-09-27) — dos familias cerradas, una viva (D-053)
+
+- **V19 sigue congelado en 0,62578.** No se toco su configuracion, sus features, su modelo persistido,
+  su submission ni su hash.
+- **Auditoria previa**: 117 experimentos cruzados contra 28 mecanismos. **Nunca** probados:
+  **RandomForest/ExtraTrees, HistGradientBoosting, CatBoost** y la **transformacion de clase
+  condicional** de las features numericas. Y el campo **`id` cerrado con medicion en un comando**: es el
+  indice de fila, 1 a 169.336, con correlacion de rango **0,00123** con la clase y distribucion plana
+  por quintiles. **No hay senal de tiempo que extraer.**
+- **F1, clase condicional de las 122 features numericas: `NO_SIGNAL`.** Bloque de 976 columnas
+  construido in-fold y comparado **con el mismo arbol y los mismos hiperparametros**: las 279 dan
+  **0,6072312**, las 122 **crudas 0,3440624**, las 976 del bloque **0,3438942**. El transform no
+  aporta (**-0,0002**). **Consecuencia que importa mas que el resultado**: acota por que funciona el
+  bloque de 73, y es **no** que las transformaciones de clase condicional sean buenas en general, sino
+  que las entidades y la rareza **son** discriminantes y las features de forma y posicion **no lo son**.
+- **F2, clase de funcion alternativa: `NO_SIGNAL`, y el negativo mas informativo.** ExtraTrees da
+  **0,5836218** sobre las **mismas 279**, **0,0236 por debajo** del LightGBM de V19, con 0 de 5 folds.
+  **El efecto de V19 no es "cualquier combinador no lineal": es del BOOSTING**, que ajusta residuo a
+  residuo, y eso explica por que el bloque de 73 se cobra.
+- **F3, cinco umbrales anidados: `WEAK_SIGNAL`, el unico mecanismo vivo post-V19.** El especialista de
+  D-048 saca 0,7136 siendo un binario de dos clases, luego con **el 34 % de las filas**; el umbral
+  anidado hace **la misma decision con el 100 %**. No es un duplicado de E-028a (pares adyacentes, el
+  comparador) ni de ORD-1 (CDF desde la salida de V12, sin clasificadores nuevos, dio 0,5887).
+  - Exactitud balanceada de los cinco discriminadores: 0,7632 / 0,8264 / 0,8465 / 0,8373 / 0,8112, y
+    **superan a V12 en la misma fila en tres de los cinco**.
+  - **La cadena en solitario: 0,6046893, por encima del 0,6005017 de V12 y sin un solo modelo
+    multiclase.**
+  - Como cuarto miembro: **0,6097782, +0,0018, 5 de 5 folds, IC95 [+0,0012, +0,0025]**, neto **+294**,
+    5.674 cambios.
+- **Candidato preparado y NO ENVIADO**: `submissions/age_submission_v20_candidato_umbrales.csv`, **3.546
+  de 112.892 filas (3,14 %)** frente al envio de V19, 8 de 8 checks, SHA256 `2c964af7...`. Mejora
+  esperada **+0,0019** en LB, y el residuo de la calibracion sobre V19 fue de **-0,0016** con
+  oscilacion de **0,0034**: la mejora esperada es **del mismo orden que la incertidumbre del aparato**.
+- **La direccion con mas recorrido que queda abierta** es la de **descomposiciones de decision**, no la
+  de clases de funcion ni la de transformaciones de features.
+- **Entregables**: `scripts/v20_f1_f2.py`, `scripts/v20_f3_umbrales.py`,
+  `scripts/v20_f3c_candidato.py`, 5 informes, 3 CSV, 2 figuras y 1 submission. El bloque de 1,3 GB queda
+  **fuera de git** y se reconstruye con el script. `experiments.csv` pasa a **122**.
+
 ## V19.x · EXPLOTACION DEL CHAMPION (2026-09-27) CERRADA — el eje de parametros es plano (D-052)
 
 - **`V19 PERMANECE CHAMPION` con LB 0,62578.** Sin submission nueva y **sin volver a V12**.
@@ -479,8 +518,17 @@ adopta** (D-011).
   matriz de confusión, **sin colapsar etiquetas** en la submission.
 
 ## Próxima acción recomendada
-- **Ninguna dentro del marco actual.** V19 es champion con **LB 0,62578** y su explotacion esta
-  **cerrada** (D-052): las dos unicas configuraciones de bajo riesgo autorizadas no llegaban ni al gate
+- **Decidir la submission de V20-F3c.** El fichero
+  `submissions/age_submission_v20_candidato_umbrales.csv` esta construido, validado con 8 de 8 checks y
+  **no enviado**. Es un mecanismo nuevo (cadena de cinco umbrales anidados, sin modelo multiclase), con
+  +0,0018 de OOF, 5 de 5 folds y un 3,14 % de filas cambiadas frente a V19. La mejora esperada en LB
+  es +0,0019, y la calibracion tiene un residuo de -0,0016 con oscilacion de 0,0034, luego **el envio
+  es una apuesta, no una mejora esperada con confianza**. Compara contra **0,62578**, que es el
+  champion.
+- Si F3c no mejora el leaderboard, la familia de **descomposiciones de decision** queda cerrada y con
+  ella se agota tambien el espacio de mecanismos post-V19. Si mejora, la linea a continuar es hacer la
+  cadena mas discriminante, no buscar mas clases de funcion.
+- Lo anterior cerraba la explotacion de parametros de V19 (D-052): las dos unicas configuraciones de bajo riesgo autorizadas no llegaban ni al gate
   de adopcion, y el eje de parametros resulto plano. El detalle esta en `CHAMPION.md` y en
   `reports/v19_x1_explotacion.md`.
 - Lo que reabre AGE son solo tres cosas, ninguna de ellas un experimento: **fuente de informacion

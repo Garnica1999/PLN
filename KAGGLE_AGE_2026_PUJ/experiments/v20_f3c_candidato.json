@@ -1,0 +1,80 @@
+{
+  "fase": "V20 F3c candidato",
+  "fecha": "2026-09-27",
+  "timestamp_utc": "2026-09-27T11:06:20+00:00",
+  "candidato": {
+    "combinacion": "LogReg + MLP(64) + arbol de V19 + cadena de umbrales, 1/4 cada uno",
+    "v19_intacto": true,
+    "cadena": {
+      "discriminadores": 5,
+      "monotonia": "maximo acumulado",
+      "hiperparametros": {
+        "objective": "multiclass",
+        "num_class": 6,
+        "n_estimators": 300,
+        "learning_rate": 0.05,
+        "num_leaves": 8,
+        "max_depth": 3,
+        "min_child_samples": 200,
+        "colsample_bytree": 0.5,
+        "subsample": 0.8,
+        "subsample_freq": 1,
+        "reg_lambda": 1.0,
+        "n_jobs": 32,
+        "random_state": 42,
+        "verbose": -1
+      }
+    }
+  },
+  "oof": {
+    "candidato": 0.6097782,
+    "v19": 0.6079388,
+    "delta": 0.001839,
+    "folds_positivos": 5,
+    "ic95": [
+      0.0012,
+      0.0025
+    ],
+    "neto_filas": 294
+  },
+  "leaderboard": {
+    "v19": 0.62578,
+    "previsto": 0.62923,
+    "delta_previsto": 0.00345,
+    "residuo_de_la_calibracion_sobre_v19": -0.0016,
+    "oscilacion_entre_modelos_vecinos": 0.0034,
+    "nota": "la mejora esperada es del mismo orden que la incertidumbre del aparato, por lo que el envio es una decision de Carlos"
+  },
+  "cambios": 3546,
+  "fraccion_cambiada": 0.031411,
+  "distribucion": {
+    "13-17": 18384,
+    "18-24": 20440,
+    "25-34": 17372,
+    "35-49": 16323,
+    "50-64": 20790,
+    "65-xx": 19583
+  },
+  "distribucion_v19": {
+    "13-17": 18521,
+    "18-24": 20263,
+    "25-34": 17430,
+    "35-49": 16412,
+    "50-64": 20599,
+    "65-xx": 19667
+  },
+  "checks": {
+    "columns_ok": true,
+    "rows_ok": true,
+    "ids_equal_test": true,
+    "ids_unique": true,
+    "ids_same_order": true,
+    "no_nan": true,
+    "labels_valid": true,
+    "padded_width_ok": true
+  },
+  "sha256": "2c964af78c90bf0884b4107665b5100f0c1aa2d9059c47692e613578b6cf660d",
+  "archivo": "/home/carlos/Git/PLN/KAGGLE_AGE_2026_PUJ/submissions/age_submission_v20_candidato_umbrales.csv",
+  "enviado": false,
+  "segundos": 173.1
+}

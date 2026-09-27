@@ -1280,3 +1280,84 @@ modelo y no del fold. Esa decision se registro como tal.
 `CHAMPION.md` creado con los tres scores separados, la configuracion congelada y el hash del modelo.
 `experiments.csv` pasa a **117 experimentos**. Auditoria de idioma: **0 errores** sobre 424 ficheros. Sin
 push.
+
+## 2026-09-27 · V20 — Tres familias nuevas: dos cerradas con numero, una con senal positiva (D-053)
+
+**Punto de partida**: V19 congelado en **0,62578**. El objetivo ya no es el eje de boosting, sino
+mecanismos que aporten **informacion distinta** a V19 y V12. V19 no se toco: ni configuracion, ni
+features, ni modelo persistido, ni submission, ni hash.
+
+**Auditoria previa, antes de proponer nada**: se cruzaron los **117 experimentos** contra **28
+mecanismos**. Nunca se habian probado **RandomForest/ExtraTrees, HistGradientBoosting ni CatBoost**
+como clase de funcion sobre las 279, ni ninguna transformacion de clase condicional de las features
+numericas. Y una familia se cerro **con medicion en un comando**: el campo `id` **es el indice de
+fila** (1 a 169.336 en train y test), con correlacion de rango **0,00123** con la clase y distribucion
+plana por quintiles. No hay senal de tiempo que extraer.
+
+**F1, la vista de clase condicional de las 122 features numericas: NO_SIGNAL.** El bloque de 73
+label-informed se construye in-fold sobre cinco familias de entidades; las 122 densas y estructuradas
+nunca recibieron ese tratamiento. Se construyo el bloque equivalente de **976 columnas**, in-fold, y se
+comparo **con el mismo aprendiz y los mismos hiperparametros**:
+
+| Entrada del arbol de V19 | Columnas | macro-F1 |
+|---|---|---|
+| las 279 de V19 | 279 | 0,6072312 |
+| las 122 numericas CRUDAS | 122 | 0,3440624 |
+| las 976 del bloque de clase condicional | 976 | 0,3438942 |
+
+El transform no aporta: **-0,0002**. Como cuarto miembro, -0,0001 con neto +30. **Lo que si importa es
+por que**: acota por que funciona el bloque de 73. No es que las transformaciones de clase condicional
+sean buenas en general, sino que las entidades y la rareza **son** discriminantes y las features de
+forma y posicion **no lo son**.
+
+**F2, la clase de funcion alternativa: NO_SIGNAL, y el negativo mas informativo de la sesion.**
+ExtraTrees, con sesgo inductivo de verdad distinto, da **0,5836218** sobre las **mismas 279**:
+**0,0236 por debajo** del LightGBM de V19, con 0 de 5 folds y neto -4.531. Como cuarto miembro, -0,0010
+con neto -240. **El efecto de V19 no es "cualquier combinador no lineal": es del BOOSTING**, que es lo
+que explica por que el bloque de 73 se cobra, porque ajusta residuo a residuo.
+
+**F3, los cinco umbrales anidados: WEAK_SIGNAL, y el unico mecanismo vivo post-V19.** El especialista de
+D-048 saca 0,7136 siendo un binario de dos clases, luego ajustado sobre **el 34 % de las filas**. El
+umbral anidado hace **la misma decision con el 100 %**. Cinco clasificadores de `clase <= k-1` contra
+`clase >= k` sobre las 279, con monotonia por maximo acumulado y la distribucion de seis clases por
+diferencias. No es un duplicado: E-028a usa pares adyacentes (el comparador), y ORD-1 de D-037
+construia las CDF a partir de la salida de V12, sin clasificadores nuevos, y dio 0,5887.
+
+| Umbral | Filas bajo / alto | Exactitud balanceada | V12 en esa fila |
+|---|---|---|---|
+| <= 13-17 vs >= 18-24 | 28.863 / 140.473 | 0,7632 | 0,9408 |
+| <= 18-24 vs >= 25-34 | 57.539 / 111.797 | 0,8264 | 0,8797 |
+| <= 25-34 vs >= 35-49 | 85.886 / 83.450 | **0,8465** | 0,8504 |
+| <= 35-49 vs >= 50-64 | 114.116 / 55.220 | **0,8373** | 0,8210 |
+| <= 50-64 vs >= 65-xx | 142.176 / 27.160 | **0,8112** | 0,7429 |
+
+**La cadena en solitario: 0,6046893, por encima del 0,6005017 de V12 y sin un solo modelo multiclase.**
+Como cuarto miembro: **0,6097782, delta +0,0018, 5 de 5 folds, IC95 [+0,0012, +0,0025]**, neto **+294**
+y 5.674 cambios.
+
+**Candidato construido y validado, NO ENVIADO**: `age_submission_v20_candidato_umbrales.csv`, cambia
+**3.546 de 112.892 filas (3,14 %)** frente al envio de V19, 8 de 8 checks, SHA256 `2c964af7...`. La
+mejora esperada en LB es **+0,0019**, y el residuo de la calibracion sobre V19 fue de **-0,0016** con
+oscilacion de **0,0034** entre modelos vecinos: la mejora esperada es **del mismo orden que la
+incertidumbre del aparato**. Por eso se presenta en vez de enviarse solo.
+
+**Cinco incidentes de ejecucion propios**, todos anteriores al resultado:
+1. **Signo invertido** en la convencion de la cadena: `acumuladas[:,k]` es `P(Y <= clase k)` y por tanto
+   **crece**, luego la monotonia es por **maximo** acumulado y la primera clase es `p_0`, no `1 - p_0`.
+   Con el signo equivocado el minimo acumulado colapsaba las cinco probabilidades y daba 0,0249.
+2. **Polaridad invertida en el diagnostico por umbral**: medi sobre `decision` daba el **error** del
+   lado alto, mientras la columna de V12 daba el **acierto**, y las dos juntas parecian contradictorias.
+   Ahora se calculan acierto de cada lado y exactitud balanceada por separado.
+3. Un `assert` de nombres de columna detecto que `MEMBER_FILES` son 14 ficheros que suman 78 columnas y
+   yo generaba 14 nombres.
+4. Un `assert` de composicion detecto que el corte del bloque label-informed estaba desplazado 6
+   columnas, lo que habria contaminado la prueba de falsacion de D-052.
+5. Varios `NameError` de figura por usar `figura` en un sitio y `fig` en otro.
+
+El mas instructivo es el **1**: sin el chequeo de que la serie de probabilidades tiene el signo
+correcto, la cadena daba 0,0249 y esa cifra casi se lee como "el mecanismo es terrible", cuando en
+realidad era un error mio de convencion. Ese casi lo demuestra que un OOF absurdo exige revisar la
+convencion antes que el mecanismo.
+
+`experiments.csv` pasa a **122 experimentos**. Auditoria de idioma: **0 errores** sobre 433 ficheros.
+Sin push.
