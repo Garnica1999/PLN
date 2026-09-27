@@ -1,0 +1,96 @@
+{
+  "experimento": "V18-01 (P1 conjunto de cambio y P2 senal de aceptacion)",
+  "fecha": "2026-09-27T02:58:56+00:00",
+  "referencia_v03": 0.7772114525165721,
+  "lb_v03": 0.78306,
+  "permuta": 1000,
+  "minimo_celdas_por_regimen": 30,
+  "veredicto": {
+    "estado": "NO SELECTIVE CORRECTION SIGNAL",
+    "challengers_medidos": 5,
+    "challengers_con_senal_nominal": 2,
+    "challengers_con_senal_tras_bonferroni": 0,
+    "umbral_bonferroni": 0.01,
+    "mejor_p_global": 0.01998001998001998,
+    "mejor_mejora_fuera_de_muestra": 2.4,
+    "mejora_necesaria_para_la_escala": 26.75,
+    "hay_mejora_competitiva": false,
+    "detalle_por_challenger": [
+      {
+        "challenger": "oof_candidates_v4/C_meta36_downweight",
+        "n_celdas_de_cambio": 202,
+        "n_rescate": 137,
+        "n_dano": 65,
+        "neto_aceptar_todo": 72,
+        "n_regimenes": 371,
+        "maximo_desvio": 0.11807973048848963,
+        "p_global": 0.0989010989010989,
+        "mejor_regimen": "diferencia_abs_de_scores>=0.1308",
+        "mejor_auc": 0.6180797304884896,
+        "mejor_mejora_fuera_de_muestra": 0.0,
+        "mejor_caracteristica": "aux_n_oraciones"
+      },
+      {
+        "challenger": "oof_ens04_v04/proba_ens",
+        "n_celdas_de_cambio": 287,
+        "n_rescate": 173,
+        "n_dano": 114,
+        "neto_aceptar_todo": 59,
+        "n_regimenes": 408,
+        "maximo_desvio": 0.1035898996045026,
+        "p_global": 0.03796203796203796,
+        "mejor_regimen": "aux_n_plurales<=1.0000",
+        "mejor_auc": 0.6035898996045026,
+        "mejor_mejora_fuera_de_muestra": 2.2,
+        "mejor_caracteristica": "aux_n_plurales"
+      },
+      {
+        "challenger": "oof_meta_shift_v4/meta_control",
+        "n_celdas_de_cambio": 223,
+        "n_rescate": 131,
+        "n_dano": 92,
+        "neto_aceptar_todo": 39,
+        "n_regimenes": 364,
+        "maximo_desvio": 0.1025141055426485,
+        "p_global": 0.16083916083916083,
+        "mejor_regimen": "aux_pos_NOUN_frac>=0.1667",
+        "mejor_auc": 0.3974858944573515,
+        "mejor_mejora_fuera_de_muestra": 1.0,
+        "mejor_caracteristica": "aux_pos_NOUN_frac"
+      },
+      {
+        "challenger": "oof_mod03b/proba",
+        "n_celdas_de_cambio": 271,
+        "n_rescate": 161,
+        "n_dano": 110,
+        "neto_aceptar_todo": 51,
+        "n_regimenes": 408,
+        "maximo_desvio": 0.11070016939582161,
+        "p_global": 0.01998001998001998,
+        "mejor_regimen": "aux_n_plurales<=1.0000",
+        "mejor_auc": 0.6107001693958216,
+        "mejor_mejora_fuera_de_muestra": 2.4,
+        "mejor_caracteristica": "aux_n_plurales"
+      },
+      {
+        "challenger": "oof_candidates_v4/B_meta36",
+        "n_celdas_de_cambio": 202,
+        "n_rescate": 120,
+        "n_dano": 82,
+        "neto_aceptar_todo": 38,
+        "n_regimenes": 363,
+        "maximo_desvio": 0.09237804878048783,
+        "p_global": 0.42857142857142855,
+        "mejor_regimen": "diferencia_abs_de_scores>=0.0688",
+        "mejor_auc": 0.5923780487804878,
+        "mejor_mejora_fuera_de_muestra": 1.4,
+        "mejor_caracteristica": "diferencia_abs_de_scores"
+      }
+    ]
+  },
+  "gastos": {
+    "submissions": 0,
+    "modelos_entrenados": 0,
+    "artefactos_regenerados": 0
+  }
+}
