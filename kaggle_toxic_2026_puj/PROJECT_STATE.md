@@ -1,9 +1,44 @@
 # PROJECT_STATE - KAGGLE_TOXIC_2026_PUJ
 
-Ultima actualizacion: 2026-09-26 (fases **v6** a **v14** CERRADAS; v14 cierra la linea de
-entrenamiento partially-label de TR y AG, D-105 a D-109). La seccion de detalle mas reciente que
-habia aqui era la de v5; las de v6 a v13 se registran en DECISIONS.md, RUNLOG.md y en los
-informes de fase de reports/.
+Ultima actualizacion: 2026-09-26 (fases **v6** a **v15** CERRADAS; v15 cierra el
+proyecto TOXIC en V03, D-110 a D-114). La seccion de detalle mas reciente que habia aqui era
+la de v5; las de v6 a v14 se registran en DECISIONS.md, RUNLOG.md y en los informes de fase
+de reports/.
+
+## Fase v15 "Cierre de la frontera final" (CERRADA el 2026-09-26)
+
+Rama `proyecto-kaggle-toxic-2026-v15` (worktree `/home/carlos/Git/PLN-v15`, base v14 `c5be6b9`).
+**Tres experimentos, V15-00 a V15-02. Decisiones D-110 a D-114.**
+
+**ESTADO DEL PROYECTO: CLOSED. TOXIC se cierra en V03.** V03 continua siendo la mejor solucion
+reproducible bajo las restricciones actuales, con 0.78306 en el externo y 0.7772114525165721 en el
+desarrollo. 0 adoptables, 0 marginales, 3 rechazadas, 0 submissions, 0 de 3 evaluaciones de
+holdout2, segunda particion no ejecutada, test no utilizado.
+
+**Lo que la fase establece**:
+
+1. **La categoria de identidad y metadata no existe.** El input es `id;text;HS;TR;AG` y nada mas.
+   No hay user ID, ni fecha, ni perfil. La via queda cerrada por inexistencia, no por resultado.
+2. **V03 tiene dos propiedades demostrablemente incompletas**, y de la primera se sigue la unica
+   clase de senal que no puede expresar: la posicion en el documento, porque `TfidfVectorizer`
+   extrae n-gramas sin registrar donde esta cada palabra.
+3. **De doce clases de senal inventariadas, tres no existen, cuatro ya estaban medidas y cinco
+   estan en familias cerradas.** Los rasgos estructurales de E2-18 son negativos en dos
+   estimaciones independientes, -0.0052 y -0.0051.
+4. **La senal residual existe y es complementaria, y es inutilizable.** El AUC estratificado por el
+   margen de V03 da 0.5547 con valor p empirico por debajo de 1 entre 500, es decir el rasgo ve
+   algo que V03 no ve. Y anadido a V03 cambia entre 14 y 57 celdas con **acierto CERO** entre las
+   modificadas, frente al umbral de detectabilidad de 0.5166.
+5. **El mejor resultado local de la historia, 0.8465, perdio en el externo** con 0.78163 frente a
+   0.78306. V03 sigue siendo la mejor solucion por evidencia en contra medida, no por falta de
+   intentos.
+6. **El techo de +0.046271 no es un techo de HS.** Es un efecto aguas abajo de conocer la condicion
+   semantica, y V13 demostro que corregir HS deja TR y AG con delta exactamente cero.
+
+**Decision de gobierno: no se abre una V16.** La regla metodologica final prohibe la dinamica de
+experimento negativo seguido de reformulacion, y las tres adiciones de V15 son negativas con acierto
+cero, que es el caso mas limpio de ese patron. Cualquier trabajo futuro requiere una hipotesis que
+demuestre una diferencia **informacional** antes de gastar un experimento.
 
 ## Fase v14 "Auditoria de entrenamiento partially-label" (CERRADA el 2026-09-26)
 

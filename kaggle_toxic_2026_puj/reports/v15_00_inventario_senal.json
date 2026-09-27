@@ -1,0 +1,187 @@
+{
+  "experimento": "V15-00 (P0, inventario de fuentes de senal)",
+  "fecha": "2026-09-27T00:43:17+00:00",
+  "referencia_v03": 0.7772114525165721,
+  "esquema_del_input": {
+    "columnas": [
+      "id",
+      "text",
+      "HS",
+      "TR",
+      "AG"
+    ],
+    "columnas_test": [
+      "id",
+      "text"
+    ],
+    "cabecera_bruta": "id;text;HS;TR;AG",
+    "columnas_de_identidad": [
+      "id"
+    ],
+    "valores_de_id": [
+      "20002",
+      "20003",
+      "20005",
+      "20007",
+      "20008"
+    ],
+    "id_es_contador": false,
+    "n_filas": 1731
+  },
+  "que_ve_v03": {
+    "descripcion": "Un modelo lineal sobre la union de TF-IDF de word(1,2) y char_wb(3,5), con class_weight balanced, ajustado dentro de cada pliegue",
+    "parametros_word": {
+      "analyzer": "word",
+      "ngram_range": [
+        1,
+        2
+      ],
+      "min_df": 2,
+      "sublinear_tf": true
+    },
+    "parametros_char": {
+      "analyzer": "char_wb",
+      "ngram_range": [
+        3,
+        5
+      ],
+      "min_df": 2,
+      "sublinear_tf": true
+    },
+    "hiperparametros": "C=2.0, liblinear, max_iter 2000, semilla 42",
+    "umbrales": [
+      0.44,
+      0.51,
+      0.46
+    ],
+    "filas_del_oof": 1483,
+    "columnas_de_probabilidad": 3,
+    "nota_sobre_la_dimension": "Aqui no se imprime la dimension del espacio de caracteristicas, que es la del pipeline completo y no aporta a este inventario. Lo que se conserva es el tamano del OOF, que es el soporte sobre el que se mide cualquier senal"
+  },
+  "propiedades_incompletas": [
+    {
+      "propiedad": "La posicion absoluta en el documento no esta representada",
+      "por_que_es_demostrable": "TfidfVectorizer extrae n-gramas de cada palabra sin registrar en que posicion del documento esta esa palabra, y char_wb hace lo mismo dentro de cada palabra. Dos textos con las mismas palabras en distinto orden producen el mismo vector",
+      "senal_que_no_puede_expresar": "donde aparece algo, no solo si aparece",
+      "comprobacion_empirica": "Se comprueba en P3 con AUC estratificado por el margen de V03: si el rasgo no discrimina dentro de los estratos donde V03 ya ha decidido, V03 ya lo ve"
+    },
+    {
+      "propiedad": "Las relaciones entre palabras distantes no estan representadas",
+      "por_que_es_demostrable": "word(1,2) solo observa una ventana de dos tokens, y un modelo lineal sobre TF-IDF no tiene terminos de interaccion entre dimensiones distintas",
+      "senal_que_no_puede_expresar": "coocurrencias lejanas y relaciones de orden largo",
+      "comprobacion_empirica": "El mismo AUC estratificado. Un rasgo de orden largo discriminaria dentro de los estratos de V03 si anadiera informacion"
+    }
+  ],
+  "implementados_historicamente": {
+    "E2-18-META+CH+ESTR-RIDGE frente a E2-18-META-BASES-RIDGE": "0.7822 frente a 0.7874, diferencia -0.0052",
+    "E2-18-META+CH+ESTR-ANID frente a E2-18-META-BASES-ANID": "0.7802 frente a 0.7853, diferencia -0.0051",
+    "feature de modelo pos_mencion_inicial": "2 guiones: 16_targeting_v2.py:1204, v15_01_gap_y_ortogonalidad.py:89",
+    "feature de modelo mencion_inicial": "21 guiones: 01_eda_linguistico.py:2647, 01_eda_linguistico.py:3243, 01_eda_linguistico.py:3438, 06_error_analysis.py:1058, 06_error_analysis.py:1113, 06_error_analysis.py:189, 06_error_analysis.py:211, 06_error_analysis.py:2111, 06_error_analysis.py:999, 08_features_densas_h11_h12.py:1470, 08_features_densas_h11_h12.py:344, 16_targeting_v2.py:1204, 16_targeting_v2.py:280, 20_emocion_nbsvm_ortografia_v2.py:274, 20_emocion_nbsvm_ortografia_v2.py:939, 20_emocion_nbsvm_ortografia_v2.py:969, 20_emocion_nbsvm_ortografia_v2.py:975, 22_artefactos_auditoria_v2.py:1284, 22_artefactos_auditoria_v2.py:1461, 22_artefactos_auditoria_v2.py:171, v15_01_gap_y_ortogonalidad.py:89"
+  },
+  "inventario": [
+    {
+      "categoria": "E identidad o metadata",
+      "senal": "user ID, autor, perfil",
+      "disponible_en_el_input": "NO",
+      "llega_a_v03": "no aplica",
+      "historico": "ninguno",
+      "veredicto": "NO EXISTE. El fichero bruto tiene solo id, text, HS, TR y AG"
+    },
+    {
+      "categoria": "E identidad o metadata",
+      "senal": "fecha o timestamp",
+      "disponible_en_el_input": "NO",
+      "llega_a_v03": "no aplica",
+      "historico": "ninguno",
+      "veredicto": "NO EXISTE como campo. Hay fechas dentro del texto, y ahi si llegan a V03"
+    },
+    {
+      "categoria": "E identidad o metadata",
+      "senal": "id de fila",
+      "disponible_en_el_input": "SI",
+      "llega_a_v03": "no",
+      "historico": "ninguno",
+      "veredicto": "PROHIBIDA por la seccion 3.E. Es un contador, con valores 20002, 20003, 20005"
+    },
+    {
+      "categoria": "D no supervisada permitida",
+      "senal": "corpus externo mc4_es y mixto",
+      "disponible_en_el_input": "en disco, fuera del input autorizado",
+      "llega_a_v03": "no",
+      "historico": "track de embeddings v5, cerrado",
+      "veredicto": "NO UTILIZABLE. La seccion 3.D prohibe asumir que no este etiquetada implica que este permitida, y el track que los uso quedo cerrado sin candidata"
+    },
+    {
+      "categoria": "C supervisada",
+      "senal": "margenes, probabilidades y scores OOF",
+      "disponible_en_el_input": "SI",
+      "llega_a_v03": "si",
+      "historico": "meta E2-02 y E2-18, corrector V8-08, cadenas E2-01",
+      "veredicto": "CERRADA. El meta de E2-18 dio 0.7874 y se rechazo por transferencia, con el leaderboard en 0.78163 frente a 0.78306"
+    },
+    {
+      "categoria": "C supervisada",
+      "senal": "relaciones entre HS, TR y AG",
+      "disponible_en_el_input": "SI",
+      "llega_a_v03": "no",
+      "historico": "V6-B, V4-E, H2, H3, V13",
+      "veredicto": "CERRADA en cinco familias distintas. V13 demostro que corregir HS deja TR y AG con delta exactamente cero"
+    },
+    {
+      "categoria": "A textual directa",
+      "senal": "n-gramas de palabra y de caracter",
+      "disponible_en_el_input": "SI",
+      "llega_a_v03": "si",
+      "historico": "V03, y todas las variantes de word y char",
+      "veredicto": "ES EL NUCLEO DE V03. No es senal residual, es la senal que ya se usa"
+    },
+    {
+      "categoria": "A textual directa",
+      "senal": "subpalabras implicitas",
+      "disponible_en_el_input": "SI",
+      "llega_a_v03": "si",
+      "historico": "char_wb(3,5) es exactamente eso",
+      "veredicto": "CUBIERTA por la representacion actual"
+    },
+    {
+      "categoria": "B estructura del texto",
+      "senal": "longitud, menciones, hashtags, URLs, comillas",
+      "disponible_en_el_input": "SI",
+      "llega_a_v03": "parcialmente",
+      "historico": "E2-18, rasgos estructurales del meta: longitud en caracteres y tokens, mencion, hashtag, URL, comillas, segunda persona, colectivo, risas, mayusculas y elongacion",
+      "veredicto": "MEDIDA Y NEGATIVA DOS VECES. META+CH+ESTR-RIDGE 0.7822 frente a META-BASES-RIDGE 0.7874, y META+CH+ESTR-ANID 0.7802 frente a META-BASES-ANID 0.7853"
+    },
+    {
+      "categoria": "B estructura del texto",
+      "senal": "proporciones y densidades de las anteriores",
+      "disponible_en_el_input": "SI",
+      "llega_a_v03": "no",
+      "historico": "E2-20, bloque de 24 columnas con densidad de afecto, de risa y de diminutivo",
+      "veredicto": "MEDIDA en el track de emocion, ortografia y NBSVM, que quedo cerrado"
+    },
+    {
+      "categoria": "A textual directa",
+      "senal": "posicion de la mencion en el texto",
+      "disponible_en_el_input": "SI",
+      "llega_a_v03": "NO, y es demostrable",
+      "historico": "16_targeting_v2 linea 1280 con pos_mencion_inicial, y 20_emocion_nbsvm_ortografia_v2 linea 936 con mencion_inicial",
+      "veredicto": "IMPLEMENTADA como feature en dos canales, ambos cerrados. No es nueva, pero su poder aislado es de 0.5598 de AUC contra HS, y es la unica clase que V03 no puede representar por construccion. Se aisla para P3"
+    },
+    {
+      "categoria": "A textual directa",
+      "senal": "orden entre palabras distantes",
+      "disponible_en_el_input": "SI",
+      "llega_a_v03": "NO, y es demostrable",
+      "historico": "ninguno que lo exprese como rasgo",
+      "veredicto": "NO REPRESENTADO por V03, porque la ventana de word(1,2) es de dos y un modelo lineal no interacciona dimensiones. Es la otra mitad de la brecha teorica, y comparte raiz con la posicion"
+    }
+  ],
+  "conteo": {
+    "total": 12,
+    "cubiertas_por_v03": 3,
+    "medidas": 4,
+    "inexistentes": 3,
+    "aisladas_para_p3": 1
+  },
+  "conclusion": "De las doce clases de senal del inventario, ninguna es nueva sin matiz. La categoria E no existe. Las de texto y estructura ya fueron implementadas y medidas, y los rasgos estructurales son negativos en dos estimaciones independientes del contexto mas rico disponible. Queda una sola clase que V03 no puede representar por construccion, la posicion, y su poder aislado es de 0.5598 de AUC contra HS. Se aisa para P3 con la comprobacion que decide, que es el AUC estratificado por el margen de V03."
+}

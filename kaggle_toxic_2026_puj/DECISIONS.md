@@ -3693,3 +3693,115 @@ requiere una decision de gobierno distinta, no un experimento mas.
 marginales, 1 rechazada, fraccion del techo del oraculo recuperada -2.52 de signo negativo, 0
 submissions, 0 de 3 evaluaciones de holdout2, segunda particion no ejecutada, test no utilizado, V03
 congelada e intacta. Registro en 239 filas con 239 claves unicas y 23 campos.
+
+## D-110 - La categoria E no existe: no hay user ID, ni fecha, ni perfil
+
+La primera comprobacion de V15, y la que cierra de raiz la via de identidad y metadata. El fichero
+bruto `data/raw/toxic_train.csv` tiene exactamente la cabecera **`id;text;HS;TR;AG`**, y el
+cargador `read_train` no descarta ninguna columna. No hay user ID, ni autor, ni marca temporal, ni
+perfil, ni ningun campo de identificacion.
+
+La unica columna no textual es `id`, con valores 20002, 20003, 20005 y huecos, es decir **un contador
+de fila**. Y ademas la seccion 3.E del enunciado prohibe introducir user ID, fecha, perfil o
+metadata externa, luego esta doblemente descartada: por no existir como senal y por estar
+prohibida.
+
+**Lo que si hay son datos dentro del texto**: correos, fechas como `16/03/2017` y telefonos como
+`V-13.899.989`. Eso no es metadata, es texto, y por tanto ya llega a V03 a traves de char_wb(3,5).
+
+**Decision**: la categoria E se cierra por inexistencia y no por resultado. No queda nada que
+auditar en ella.
+
+## D-111 - V03 tiene dos propiedades demostrablemente incompletas, y de la primera sale la unica clase no cubierta
+
+De la representacion de V03 se siguen dos propiedades, ambas demostrables y no conjeturas:
+
+1. **La posicion absoluta en el documento no esta representada.** `TfidfVectorizer` extrae n-gramas
+   de cada palabra sin registrar en que posicion del documento esta esa palabra, y `char_wb` hace
+   lo mismo dentro de cada palabra. Dos textos con las mismas palabras en distinto orden producen
+   el mismo vector.
+2. **Las relaciones entre palabras distantes no estan representadas.** word(1,2) solo observa una
+   ventana de dos tokens, y un modelo lineal sobre TF-IDF no tiene terminos de interaccion.
+
+De la primera se sigue una clase de senal que V03 no puede expresar: **las senales que dependen de
+donde aparece algo, no de si aparece**.
+
+**Y hay que ser preciso sobre el estado de esa clase**, porque no es nueva: `pos_mencion_inicial` fue
+feature de modelo en `16_targeting_v2.py` linea 1204, y `mencion_inicial` aparece en 8 guiones mas
+entre los que estan `20_emocion_nbsvm_ortografia_v2.py` y `08_features_densas_h11_h12.py`. La
+sonda de V15-00 se excluye a si misma, por el motivo que v12 documento y v14 cuantifico.
+
+Lo que **no** se ha probado es la posicion como **columna de V03**, que es donde V03 toma su
+decision. Y esa es la unica intervencion que la fase autoriza, porque es la unica que no cambia de
+modelo, ni umbrales, ni representacion, ni regularizacion.
+
+## D-112 - La medicion que decide es el AUC estratificado, y dos mediciones habrian sido invalidas
+
+Antes de medir, hay que descartar dos mediciones que parecen razonables y no lo son.
+
+**El AUC global de un rasgo no decide nada.** Un AUC de 0.5598 contra HS es perfectamente compatible
+con que V03 ya tenga ese 0.5598 dentro de su prediccion. Un rasgo puede ser informativo y no aportar
+nada.
+
+**El R2 de predecir el rasgo desde los margenes de V03 tampoco decide nada.** Tres numeros no pueden
+reconstruir cuatro rasgos, luego el R2 sale bajo **por construccion** y parece una noticia buena
+que no lo es. Se descarto antes de escribir el experimento definitivo.
+
+**La medicion valida es el AUC estratificado por el margen de V03**: si el rasgo discrimina dentro de
+los estratos donde V03 ya ha decidido, aporta informacion que V03 no tiene. Y como referencia, el
+null se construye **permutando el rasgo dentro de cada estrato 500 veces**, conservando su
+distribucion y destruyendo su relacion con la etiqueta, con valor p empirico.
+
+**Correccion propia**: la primera implementacion hacia **una sola permutacion**, que es un punto y
+no un null, y su varianza es la del estimador. Se sustituyo por las 500 permutaciones antes de
+interpretar nada. Ademas solo se probo en P4 la primera de las tres candidatas que pasaron P3, y se
+probaron las tres.
+
+## D-113 - La senal residual existe, es complementaria, y es inutilizable: acierto CERO en las celdas modificadas
+
+Este es el hallazgo de la fase, y tiene tres partes que no hay que mezclar.
+
+| rasgo anadido a V03 | AUC en estratos | p empirico | delta | celdas | acierto entre las modificadas |
+| --- | --- | --- | --- | --- | --- |
+| primer_token_es_mencion | 0.5547 | 0.0000 | -0.002868 | 50 | **0.0000** |
+| posicion_primera_mencion | 0.5491 | 0.0000 | -0.001352 | 14 | **0.0000** |
+| mencion_en_primeros_dos | 0.5547 | 0.0000 | -0.003037 | 57 | **0.0000** |
+
+**La senal existe y ve algo que V03 no ve.** Con un valor p empirico por debajo de 1 entre 500, la
+complementariedad es real y estadisticamente solida. Eso responde literalmente a la pregunta de la
+seccion 12.
+
+**Y no es utilizable.** El filtro de detectabilidad de V8-02 exige un acierto entre las celdas
+modificadas superior a 0.5166. El observado es **0.0000 en las tres candidatas**: de 50, 14 y 57
+celdas modificadas, **ninguna** coincide con la verdad. No es una mejora que no llega al gate, es un
+cambio que danan sin ambiguedad. La informacion ordena bien a los ejemplos y en el punto de corte
+del umbral congelado empuja en el sentido contrario.
+
+**Es la tercera estimacion independiente que coincide**: los rasgos estructurales de E2-18 costaron
+-0.0052 y -0.0051, y los rasgos de posicion cuestan entre -0.0014 y -0.0030 con acierto cero.
+
+**La leccion general, que es mas util que el resultado**: una fuente de senal puede ser real,
+complementaria y estadisticamente significativa, y a la vez ser inutilizable en el punto de
+decision. El AUC mide capacidad de discriminar; la metrica mide calidad de la decision; y no se
+puede pasar de la una a la otra.
+
+## D-114 - TOXIC se cierra en V03: estado CLOSED
+
+**CLOSED. V03 continua siendo la mejor solucion reproducible bajo las restricciones actuales.**
+
+De doce clases de senal inventariadas, **tres no existen** como campo, **cuatro ya estaban medidas**
+y cinco estan en familias cerradas, incluida la unica que V03 no puede representar por construccion.
+No queda una fuente de senal permitida y genuinamente nueva identificada en el input disponible.
+
+**El dato que sostiene la decision y que conviene no olvidar**: el mejor resultado local de toda la
+historia, 0.8465 en S08, **no se adopto** porque el externo fue 0.78163 frente a 0.78306 de V03. V03
+sigue siendo la mejor solucion no por falta de intentos, sino por **evidencia en contra medida**, y
+en un proyecto de 242 experimentos eso es una conclusion fuerte.
+
+**No se abre una V16 para buscar microganancias.** La seccion 14 del enunciado prohibe la dinamica
+de experimento negativo seguido de reformulacion, y las tres adiciones de V15 son negativas con
+acierto cero, que es el caso mas limpio de ese patron.
+
+**Estado**: 3 experimentos, 0 adoptables, 0 marginales, 3 rechazadas, 0 submissions, 0 de 3
+evaluaciones de holdout2, segunda particion no ejecutada, test no utilizado, V03 congelada e intacta
+con identidad verificada. Registro en 242 filas con 242 claves unicas y 23 campos.

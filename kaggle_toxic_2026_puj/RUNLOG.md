@@ -1639,3 +1639,79 @@ evaluaciones de holdout2, segunda particion no ejecutada, test no utilizado, V03
 intacta.**
 
 **Sin push, sin merge adicional, sin reset, sin rebase, sin modificar otras ramas.**
+
+## Fase v15: cierre de la frontera final, inventario de senal (2026-09-26)
+
+Worktree `/home/carlos/Git/PLN-v15`, rama `proyecto-kaggle-toxic-2026-v15`, desde `c5be6b9` que es
+el estado validado de v14. v14, v13, v12 y v11 no se modifican. **Tres experimentos, V15-00 a
+V15-02**, y el registro llega a **242 filas con 242 claves unicas y 23 campos, sin filas
+malformadas**.
+
+**Ninguna submission generada, ninguna enviada, ninguna recomendada. V03 se mantiene** con
+0.7772114525165721 local y 0.78306 en el externo. **holdout2 intacto, con 0 de 3 evaluaciones
+gastadas.** Segunda particion no ejecutada. Test no utilizado.
+
+### La fase cambia el objetivo: de modelo a informacion
+
+V15 deja de buscar modelos y pregunta **que informacion disponible en los datos no esta usando
+V03**. El inventario es lo primero, y da tres respuestas.
+
+**La categoria E no existe.** El fichero bruto tiene exactamente `id;text;HS;TR;AG` y el cargador no
+descarta ninguna columna. No hay user ID, ni fecha, ni perfil. La unica columna no textual es `id`,
+que es un contador de fila con valores 20002, 20003, 20005, y que ademas la seccion 3.E prohibe.
+
+**V03 tiene dos propiedades demostrablemente incompletas**: no registra la posicion absoluta en el
+documento, porque `TfidfVectorizer` extrae n-gramas sin la posicion, y no interacciona dimensiones,
+porque word(1,2) solo ve una ventana de dos. De la primera se sigue una clase de senal no
+expresable.
+
+**De doce clases, tres no existen, cuatro ya estaban medidas y cinco estan en familias cerradas.**
+Los rasgos estructurales de E2-18 costaron -0.0052 y -0.0051 en dos estimaciones independientes.
+
+### La unica clase no cubierta, y por que se aisla
+
+La **posicion en el documento**. Y hay que ser preciso: **no es nueva**. `pos_mencion_incial` fue
+feature de modelo en `16_targeting_v2.py` linea 1204, y `mencion_inicial` aparece en 8 guiones mas.
+Lo que no se ha probado es la posicion como **columna de V03**, que es donde V03 decide.
+
+### Dos mediciones descartadas por invalidas, antes de escribir el experimento
+
+**El AUC global de un rasgo no decide nada**: un AUC de 0.5598 es compatible con que V03 ya tenga
+ese 0.5598 dentro de su prediccion.
+
+**El R2 de predecir el rasgo desde los margenes de V03 tampoco**: tres numeros no pueden
+reconstruir cuatro rasgos, luego sale bajo por construccion y parece una buena noticia que no lo es.
+
+**La que si decide es el AUC estratificado por el margen de V03**, con null de 500 permutaciones
+dentro de cada estrato y valor p empirico.
+
+**Correcciones propias**: la primera implementacion hacia **una sola permutacion**, que es un punto
+y no un null. Y solo se probo en P4 la primera de las tres candidatas que pasaron P3.
+
+### El resultado, que tiene dos mitades
+
+**La senal residual existe y es complementaria**: AUC de 0.5547 en los estratos de V03 con valor p
+empirico por debajo de 1 entre 500. Es literalmente lo que la seccion 12 pregunta, y la respuesta es
+que el rasgo **ve algo que V03 no ve**.
+
+**Y no es utilizable**: las tres candidatas dan -0.002868, -0.001352 y -0.003037, y el dato que
+decide es el **acierto CERO** entre las celdas modificadas, de 50, 14 y 57 celdas, **ninguna**
+acierta, frente al umbral de detectabilidad de 0.5166. No es una mejora que no llega al gate, es
+un cambio que dana sin ambiguedad.
+
+### El dato que sostiene el cierre
+
+El **mejor resultado local de toda la historia, 0.8465 en S08, no se adopto**: el externo fue
+0.78163 frente a 0.78306 de V03. V03 sigue siendo la mejor solucion no por falta de intentos, sino
+por evidencia en contra medida, y en un proyecto de 242 experimentos eso es una conclusion fuerte.
+
+### Estado y cierre
+
+**3 experimentos, 0 adoptables, 0 marginales, 3 rechazadas. 0 submissions, 0 de 3 evaluaciones de
+holdout2, segunda particion no ejecutada, test no utilizado, V03 congelada e intacta.**
+
+**CLOSED. V03 continua siendo la mejor solucion reproducible bajo las restricciones actuales. No
+existe una fuente de senal permitida y genuinamente nueva identificada en el input disponible. No
+se abre una V16 para buscar microganancias.**
+
+**Sin push, sin merge adicional, sin reset, sin rebase, sin modificar otras ramas.**

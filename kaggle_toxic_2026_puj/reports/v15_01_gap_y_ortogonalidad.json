@@ -1,0 +1,260 @@
+{
+  "experimento": "V15-01 (P1 matriz de gap, P3 ortogonalidad y P4 gateado)",
+  "fecha": "2026-09-27T00:43:33+00:00",
+  "referencia_v03": 0.7772114525165721,
+  "identidad_control": {
+    "metrica": 0.7772114525165721,
+    "diferencia": 0.0
+  },
+  "delta_oraculo": 0.046271,
+  "gate_exploratorio": 0.002,
+  "gate_candidato": 0.003,
+  "umbral_de_deteccion": 0.5166,
+  "matriz_p1": [
+    {
+      "senal": "N-gramas de palabra y de caracter",
+      "v03": "SI, es su nucleo",
+      "historico": "V03 y todas las variantes de word y char",
+      "mecanismo_nuevo": "ninguno: es lo que V03 ya hace",
+      "permitido": "si",
+      "independencia": "no es senal residual, es la senal en uso",
+      "prioridad": "NINGUNA"
+    },
+    {
+      "senal": "Subpalabras implicitas",
+      "v03": "SI, via char_wb(3,5)",
+      "historico": "representacion actual",
+      "mecanismo_nuevo": "ninguno",
+      "permitido": "si",
+      "independencia": "cubierta exactamente por char_wb",
+      "prioridad": "NINGUNA"
+    },
+    {
+      "senal": "Longitud, menciones, hashtags, URLs, comillas",
+      "v03": "parcialmente",
+      "historico": "E2-18, rasgos estructurales del meta, y E2-20 con densidades",
+      "mecanismo_nuevo": "anadirlos como columna de V03 en vez de al meta",
+      "permitido": "si",
+      "independencia": "NEGATIVA: -0.0052 y -0.0051 en las dos estimaciones de E2-18",
+      "prioridad": "BAJA, la evidencia en contra es doble"
+    },
+    {
+      "senal": "Proporciones y densidades de rasgos",
+      "v03": "no",
+      "historico": "E2-20, bloque de 24 columnas con densidad de afecto, risa y diminutivo",
+      "mecanismo_nuevo": "ninguno identificado",
+      "permitido": "si",
+      "independencia": "medida en el track cerrado de emocion y ortografia",
+      "prioridad": "BAJA"
+    },
+    {
+      "senal": "user ID, autor, perfil, fecha",
+      "v03": "no aplica",
+      "historico": "ninguno",
+      "mecanismo_nuevo": "no existe: el input solo tiene id, text y las tres etiquetas",
+      "permitido": "PROHIBIDO por la seccion 3.E ademas de inexistente",
+      "indepidencia": "no aplica",
+      "prioridad": "NINGUNA"
+    },
+    {
+      "senal": "Corpus externo no etiquetado",
+      "v03": "no",
+      "historico": "track de embeddings v5, cerrado sin candidata",
+      "mecanismo_nuevo": "ninguno",
+      "permitido": "NO, la seccion 3.D prohibe suponerlo",
+      "independencia": "explorado y cerrado",
+      "prioridad": "NINGUNA"
+    },
+    {
+      "senal": "Margenes, probabilidades y relaciones entre etiquetas",
+      "v03": "no",
+      "historico": "E2-02, E2-18, V8-08, E2-01, V6-B, V4-E, H2, H3, V13",
+      "mecanismo_nuevo": "ninguno: cinco familias cerradas",
+      "permitido": "si",
+      "independencia": "CERRADA. V13 demostro que corregir HS deja TR y AG con delta cero",
+      "prioridad": "NINGUNA"
+    },
+    {
+      "senal": "POSICION en el documento",
+      "v03": "NO, y es demostrable",
+      "historico": "16_targeting_v2 linea 1204 con pos_mencion_inicial, y mencion_inicial en 8 guiones",
+      "mecanismo_nuevo": "anadirla como columna de V03, que es donde no se ha probado",
+      "permitido": "si",
+      "independencia": "A ES MEDIR en P3. La representacion no registra posicion, luego la clase no es expresable, pero eso no basta: hay que medir si discrimina donde V03 no decide",
+      "prioridad": "LA UNICA que justifica una prueba"
+    }
+  ],
+  "p3_ortogonalidad": {
+    "primer_token_es_mencion": {
+      "auc_global": 0.5598100096104087,
+      "auc_medio_estratos": 0.5547447819432321,
+      "percentil_95_del_null": 0.5218571607491187,
+      "p_empirico": 0.0,
+      "permutaciones": 500,
+      "estratos_sobre_medio": 4,
+      "numero_estratos": 5,
+      "auc_por_estrato": [
+        0.4136,
+        0.5417,
+        0.5339,
+        0.5817,
+        0.7028
+      ],
+      "holgura_sobre_el_null": 0.03288762119411337,
+      "veredicto": "COMPLEMENTARIA"
+    },
+    "posicion_primera_mencion": {
+      "auc_global": 0.5490472758187329,
+      "auc_medio_estratos": 0.5490833947679834,
+      "percentil_95_del_null": 0.5241501273771823,
+      "p_empirico": 0.0,
+      "permutaciones": 500,
+      "estratos_sobre_medio": 3,
+      "numero_estratos": 5,
+      "auc_por_estrato": [
+        0.4466,
+        0.5236,
+        0.4915,
+        0.5955,
+        0.6882
+      ],
+      "holgura_sobre_el_null": 0.02493326739080115,
+      "veredicto": "COMPLEMENTARIA"
+    },
+    "mencion_en_primeros_dos": {
+      "auc_global": 0.5593036149922377,
+      "auc_medio_estratos": 0.5546663059814737,
+      "percentil_95_del_null": 0.5204588771807055,
+      "p_empirico": 0.0,
+      "permutaciones": 500,
+      "estratos_sobre_medio": 4,
+      "numero_estratos": 5,
+      "auc_por_estrato": [
+        0.4203,
+        0.5357,
+        0.523,
+        0.5915,
+        0.7028
+      ],
+      "holgura_sobre_el_null": 0.034207428800768214,
+      "veredicto": "COMPLEMENTARIA"
+    },
+    "proporcion_antes_de_la_mencion": {
+      "auc_global": 0.4390626155097213,
+      "auc_medio_estratos": 0.44525554301190795,
+      "percentil_95_del_null": 0.5228151484490956,
+      "p_empirico": 1.0,
+      "permutaciones": 500,
+      "estratos_sobre_medio": 1,
+      "numero_estratos": 5,
+      "auc_por_estrato": [
+        0.5783,
+        0.4627,
+        0.4827,
+        0.4053,
+        0.2972
+      ],
+      "holgura_sobre_el_null": -0.07755960543718765,
+      "veredicto": "YA VISIBLE EN V03"
+    }
+  },
+  "p4_adicion": {
+    "ejecutado": true,
+    "resultados": [
+      {
+        "ejecutado": true,
+        "rasgo": "primer_token_es_mencion",
+        "metrica": 0.7743437796401261,
+        "delta": -0.002867672876445959,
+        "intervalo": {
+          "delta": -0.002867672876445959,
+          "inferior": -0.0077178487409443,
+          "superior": 0.0015789713193651012,
+          "excluye_cero": false,
+          "remuestreos": 2000
+        },
+        "celdas_modificadas": 50,
+        "acierto_entre_modificadas": 0.0,
+        "deteccion": false,
+        "supera_gate": false,
+        "nota": "La columna se estandariza con la media y el desvio del pliegue de entrenamiento, y se anade al final de la matriz. Todo lo demas queda congelado."
+      },
+      {
+        "ejecutado": true,
+        "rasgo": "posicion_primera_mencion",
+        "metrica": 0.7758598220862373,
+        "delta": -0.0013516304303348159,
+        "intervalo": {
+          "delta": -0.0013516304303348159,
+          "inferior": -0.0033476606419909597,
+          "superior": 0.000540821347250045,
+          "excluye_cero": false,
+          "remuestreos": 2000
+        },
+        "celdas_modificadas": 14,
+        "acierto_entre_modificadas": 0.0,
+        "deteccion": false,
+        "supera_gate": false,
+        "nota": "La columna se estandariza con la media y el desvio del pliegue de entrenamiento, y se anade al final de la matriz. Todo lo demas queda congelado."
+      },
+      {
+        "ejecutado": true,
+        "rasgo": "mencion_en_primeros_dos",
+        "metrica": 0.7741744064245561,
+        "delta": -0.003037046092015938,
+        "intervalo": {
+          "delta": -0.003037046092015938,
+          "inferior": -0.007854702966130908,
+          "superior": 0.0014231870034114107,
+          "excluye_cero": false,
+          "remuestreos": 2000
+        },
+        "celdas_modificadas": 57,
+        "acierto_entre_modificadas": 0.0,
+        "deteccion": false,
+        "supera_gate": false,
+        "nota": "La columna se estandariza con la media y el desvio del pliegue de entrenamiento, y se anade al final de la matriz. Todo lo demas queda congelado."
+      }
+    ],
+    "mejor": {
+      "ejecutado": true,
+      "rasgo": "posicion_primera_mencion",
+      "metrica": 0.7758598220862373,
+      "delta": -0.0013516304303348159,
+      "intervalo": {
+        "delta": -0.0013516304303348159,
+        "inferior": -0.0033476606419909597,
+        "superior": 0.000540821347250045,
+        "excluye_cero": false,
+        "remuestreos": 2000
+      },
+      "celdas_modificadas": 14,
+      "acierto_entre_modificadas": 0.0,
+      "deteccion": false,
+      "supera_gate": false,
+      "nota": "La columna se estandariza con la media y el desvio del pliegue de entrenamiento, y se anade al final de la matriz. Todo lo demas queda congelado."
+    },
+    "delta": -0.0013516304303348159,
+    "rasgo": "posicion_primera_mencion",
+    "metrica": 0.7758598220862373,
+    "celdas_modificadas": 14,
+    "acierto_entre_modificadas": 0.0,
+    "deteccion": false,
+    "intervalo": {
+      "delta": -0.0013516304303348159,
+      "inferior": -0.0033476606419909597,
+      "superior": 0.000540821347250045,
+      "excluye_cero": false,
+      "remuestreos": 2000
+    },
+    "supera_gate": false,
+    "nota": "La columna se estandariza con la media y el desvio del pliegue de entrenamiento, y se anade al final de la matriz. Todo lo demas queda congelado."
+  },
+  "candidatas_adoptables": [],
+  "gastos": {
+    "submissions": 0,
+    "evaluaciones_de_holdout2": 0,
+    "consultas_de_leaderboard": 0,
+    "segunda_particion": 0
+  }
+}
