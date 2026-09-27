@@ -1,0 +1,233 @@
+{
+  "fase": "V18 · P3 objetivo de margen de adyacencia",
+  "fecha": "2026-09-26",
+  "pre_registrado": {
+    "margen": 1.0,
+    "epocas": 30,
+    "lote": 512,
+    "tasa_aprendizaje": 0.001,
+    "lambda": [
+      0.0,
+      0.1,
+      0.5
+    ]
+  },
+  "modelo": "cabeza lineal de 6 clases, misma capacidad que la LogReg de V12",
+  "referencia": {
+    "macro_f1": 0.6005,
+    "fronteras": {
+      "18-24|25-34": 0.4963,
+      "25-34|35-49": 0.4974
+    },
+    "f1_por_clase": {
+      "13-17": 0.671,
+      "18-24": 0.5059,
+      "25-34": 0.4858,
+      "35-49": 0.5593,
+      "50-64": 0.6549,
+      "65-xx": 0.7261
+    }
+  },
+  "resultados": [
+    {
+      "brazo": "A_control",
+      "restriccion": "ninguna",
+      "lambda": 0.0,
+      "pares": [],
+      "macro_lineal_solo": 0.5876,
+      "fronteras_lineal_solo": {
+        "18-24|25-34": 0.4865,
+        "25-34|35-49": 0.4833
+      },
+      "macro_combinada": 0.5983,
+      "accuracy": 0.5986,
+      "delta": -0.0022,
+      "frontera_18_24_25_34": 0.4957,
+      "frontera_25_34_35_49": 0.4949,
+      "bootstrap_ic95": [
+        -0.002973,
+        -0.001431,
+        0.0
+      ],
+      "f1_por_clase": {
+        "13-17": 0.6666,
+        "18-24": 0.5044,
+        "25-34": 0.4844,
+        "35-49": 0.5564,
+        "50-64": 0.6547,
+        "65-xx": 0.7233
+      },
+      "f1_train_lineal": 0.5921,
+      "f1_validacion_lineal": 0.5876,
+      "perdida_entrenamiento_media": 1.0347,
+      "brecha_train_validacion": 0.0045,
+      "epocas": 30,
+      "convergio": true,
+      "adopta": false
+    },
+    {
+      "brazo": "B1_generico",
+      "restriccion": "adyacencia generica",
+      "lambda": 0.1,
+      "pares": [
+        "13-17|18-24",
+        "18-24|25-34",
+        "25-34|35-49",
+        "35-49|50-64",
+        "50-64|65-xx"
+      ],
+      "macro_lineal_solo": 0.5861,
+      "fronteras_lineal_solo": {
+        "18-24|25-34": 0.4727,
+        "25-34|35-49": 0.476
+      },
+      "macro_combinada": 0.5985,
+      "accuracy": 0.5991,
+      "delta": -0.002,
+      "frontera_18_24_25_34": 0.4892,
+      "frontera_25_34_35_49": 0.4918,
+      "bootstrap_ic95": [
+        -0.002904,
+        -0.001211,
+        0.0
+      ],
+      "f1_por_clase": {
+        "13-17": 0.6695,
+        "18-24": 0.4994,
+        "25-34": 0.4838,
+        "35-49": 0.5567,
+        "50-64": 0.6552,
+        "65-xx": 0.7261
+      },
+      "f1_train_lineal": 0.5927,
+      "f1_validacion_lineal": 0.5861,
+      "perdida_entrenamiento_media": 1.036,
+      "brecha_train_validacion": 0.0066,
+      "epocas": 30,
+      "convergio": true,
+      "adopta": false
+    },
+    {
+      "brazo": "B2_generico",
+      "restriccion": "adyacencia generica",
+      "lambda": 0.5,
+      "pares": [
+        "13-17|18-24",
+        "18-24|25-34",
+        "25-34|35-49",
+        "35-49|50-64",
+        "50-64|65-xx"
+      ],
+      "macro_lineal_solo": 0.5693,
+      "fronteras_lineal_solo": {
+        "18-24|25-34": 0.4243,
+        "25-34|35-49": 0.4474
+      },
+      "macro_combinada": 0.5935,
+      "accuracy": 0.5948,
+      "delta": -0.007,
+      "frontera_18_24_25_34": 0.4651,
+      "frontera_25_34_35_49": 0.4802,
+      "bootstrap_ic95": [
+        -0.008343,
+        -0.005787,
+        0.0
+      ],
+      "f1_por_clase": {
+        "13-17": 0.6647,
+        "18-24": 0.4802,
+        "25-34": 0.4742,
+        "35-49": 0.5557,
+        "50-64": 0.656,
+        "65-xx": 0.73
+      },
+      "f1_train_lineal": 0.5754,
+      "f1_validacion_lineal": 0.5693,
+      "perdida_entrenamiento_media": 1.0677,
+      "brecha_train_validacion": 0.0061,
+      "epocas": 30,
+      "convergio": true,
+      "adopta": false
+    },
+    {
+      "brazo": "C1_central",
+      "restriccion": "adyacencia central",
+      "lambda": 0.1,
+      "pares": [
+        "18-24|25-34",
+        "25-34|35-49"
+      ],
+      "macro_lineal_solo": 0.5852,
+      "fronteras_lineal_solo": {
+        "18-24|25-34": 0.5257,
+        "25-34|35-49": 0.4281
+      },
+      "macro_combinada": 0.599,
+      "accuracy": 0.5986,
+      "delta": -0.0015,
+      "frontera_18_24_25_34": 0.5172,
+      "frontera_25_34_35_49": 0.4706,
+      "bootstrap_ic95": [
+        -0.002452,
+        -0.000554,
+        0.00125
+      ],
+      "f1_por_clase": {
+        "13-17": 0.6688,
+        "18-24": 0.5125,
+        "25-34": 0.4788,
+        "35-49": 0.5552,
+        "50-64": 0.6549,
+        "65-xx": 0.7237
+      },
+      "f1_train_lineal": 0.593,
+      "f1_validacion_lineal": 0.5852,
+      "perdida_entrenamiento_media": 1.0424,
+      "brecha_train_validacion": 0.0077,
+      "epocas": 30,
+      "convergio": true,
+      "adopta": false
+    },
+    {
+      "brazo": "C2_central",
+      "restriccion": "adyacencia central",
+      "lambda": 0.5,
+      "pares": [
+        "18-24|25-34",
+        "25-34|35-49"
+      ],
+      "macro_lineal_solo": 0.555,
+      "fronteras_lineal_solo": {
+        "18-24|25-34": 0.51,
+        "25-34|35-49": 0.2969
+      },
+      "macro_combinada": 0.5903,
+      "accuracy": 0.5912,
+      "delta": -0.0102,
+      "frontera_18_24_25_34": 0.5193,
+      "frontera_25_34_35_49": 0.4013,
+      "bootstrap_ic95": [
+        -0.011545,
+        -0.008796,
+        0.0
+      ],
+      "f1_por_clase": {
+        "13-17": 0.6702,
+        "18-24": 0.5029,
+        "25-34": 0.4508,
+        "35-49": 0.5402,
+        "50-64": 0.6539,
+        "65-xx": 0.7238
+      },
+      "f1_train_lineal": 0.5573,
+      "f1_validacion_lineal": 0.555,
+      "perdida_entrenamiento_media": 1.109,
+      "brecha_train_validacion": 0.0023,
+      "epocas": 30,
+      "convergio": true,
+      "adopta": false
+    }
+  ],
+  "dispositivo": "cuda",
+  "segundos": 303.2
+}
