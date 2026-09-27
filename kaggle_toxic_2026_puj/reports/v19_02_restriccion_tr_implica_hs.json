@@ -1,0 +1,38 @@
+{
+  "experimento": "V19-02 (regla de estructura TR implica HS, con un parametro y disciplina de pliegues)",
+  "fecha": "2026-09-27T03:20:05+00:00",
+  "estado": "REGLA DESCARTADA",
+  "macro_de_v03": 0.7772114525165721,
+  "delta_medio_fuera_de_muestra": 0.0006626457283982923,
+  "delta_desviacion": 0.0023677555814106575,
+  "pliegues_que_mejoran": 3,
+  "pliegues_evaluados": 5,
+  "reproducible": false,
+  "cambios_netos_de_celda": -3,
+  "cambios_netos_necesarios": 26.75,
+  "alcanza_la_escala": false,
+  "celdas_que_cambia": 26,
+  "tipos_de_cambio": {
+    "FN->TP": {
+      "celdas": 9,
+      "neto": 9
+    },
+    "TN->FP": {
+      "celdas": 11,
+      "neto": -11
+    },
+    "TP->FN": {
+      "celdas": 0,
+      "neto": 0
+    },
+    "FP->TN": {
+      "celdas": 0,
+      "neto": 0
+    }
+  },
+  "p_empirico": 0.7944111776447106,
+  "gastos": {
+    "submissions": 0,
+    "modelos_entrenados": 0
+  }
+}
