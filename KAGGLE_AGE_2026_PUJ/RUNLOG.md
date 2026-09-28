@@ -1909,3 +1909,20 @@ intacto.
 - **Notebook:** seccion 36 anadida, ejecutada, con las 4 aserciones en verde.
 - **Higiene:** los 2 directorios no ajenos a AGE quedan fuera de la rama, sin borrar y sin modificar.
 - **Informes:** `reports/v28_final_research.md` y `reports/AGE_COMPLETE_RESEARCH_REPORT.md` reconstruido de V20 a V28.
+
+---
+
+## Cierre de la fase V29 · 2026-09-29
+
+- **Baseline vigente:** V20, 0,6097782 corrected_cv, LB 0.62689, hash sin cambio.
+- **Modelos historicos reutilizados:** 51 OOF en 17 familias, **0 reentrenamientos**.
+- **Mejor corrected_cv de V29:** 0,6125960, delta +0.002818, 5/5 folds: **mejor que V20, pero por debajo del gate de +0,003**.
+- **Mejor modelo individual de V29:** el LightGBM de Optuna, 0,6121698 (delta +0.002392), **el primero que supera a V20 individualmente**.
+- **Mejor candidato interno:** ninguno. Hay un ensemble positivo, pero **no llega al gate** y no se genera submission.
+- **Numero de experimentos:** 138 filas en `experiments.csv`; 1 nuevos en V29.
+- **Numero de submissions:** **0** en V26, V27, V28 y V29.
+- **Familias cerradas:** las de V25 a V28, mas la diversidad de modelos historicos de V29 (0 de 47 con rescate neto positivo). **La capacidad individual queda con un margen medido y pequeno, no cerrada.**
+- **Segunda particion (P13):** no ejecutada, por falta de finalistas.
+- **Notebook:** seccion 37 anadida con las cuatro aserciones.
+- **Higiene:** los 2 directorios ajenos a AGE siguen fuera de la rama.
+- **Informes:** `reports/V29_FINAL_RESEARCH_REPORT.md` y `reports/AGE_COMPLETE_RESEARCH_REPORT.md` de V20 a V29, mas `reports/age_complete_experiment_history.csv`.

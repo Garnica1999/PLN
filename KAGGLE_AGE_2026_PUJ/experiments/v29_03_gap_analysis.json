@@ -1,0 +1,76 @@
+{
+  "fase": "V29 03 P3 gap analysis",
+  "fecha": "2026-09-29",
+  "experimenta": false,
+  "ejes": [
+    {
+      "eje": "capacidad de modelo individual",
+      "veredicto": "GENUINELY_NEW",
+      "experimentos": 2,
+      "experimentos_previstos": "P4 LightGBM Optuna, P5 MLP Optuna",
+      "por_que": "ninguna familia cerrada de V25 a V28 modifico la CAPACIDAD de un miembro individual; todas transformaron la combinacion, la escala o la representacion. Buscar mejores hiperparametros sobre la misma representacion de 279 features es un eje que nadie ha tocado.",
+      "control": "misma matriz de 279 features, mismos folds, y el resultado se compara contra el cuarto correspondiente de V20, no contra el ensemble.",
+      "frescura": "la unica freshness real: V19 exploro max_depth y min_child_samples, pero nunca learning_rate, reg_alpha, reg_lambda ni el par n_estimators con early stopping de forma conjunta."
+    },
+    {
+      "eje": "diversidad de errores entre miembros",
+      "veredicto": "GENUINELY_NEW",
+      "experimentos": 0,
+      "experimentos_previstos": "P2, ya ejecutado: es medicion, no entrenamiento",
+      "por_que": "el historial tiene 51 OOF en 17 familias y 47 modelos que NUNCA han formado parte de un ensemble. La pregunta de si alguno aporta senal que los cuatro cuartos de V20 no poseen no se ha formulado ni medido antes.",
+      "control": "la referencia es la diversidad interna del propio V20: correlacion de errores 0.7802 de media y 0.1644 de discrepancia. Un candidato tiene que ser MAS diverso que los miembros actuales para tener sentido entrar.",
+      "frescura": "medido: 28 modelos tienen correlacion de errores por debajo de 0.7802 y 13 ademas tienen CVusable."
+    },
+    {
+      "eje": "composicion del ensemble",
+      "veredicto": "PARTIALLY_TESTED",
+      "experimentos": 1,
+      "experimentos_previstos": "P9 Optuna de pesos, P10 seleccion de subconjunto",
+      "por_que": "el MECANISMO de optimizar pesos es el de H04 y H06, y las dos estan cerradas. Lo que es genuinamente nuevo es el CONJUNTO de candidatos: H04 y H06 solo reevaluaron los miembros que V20 ya tenia; aqui el pool incluye modelos de 18 estructuras distintas que nunca han entrado en un ensemble.",
+      "control": "si el optimum de Optuna se apoya en un solo modelo o devuelve los cuatro cuartos de V20 con otros pesos, la conclusion es que es H04 de nuevo, y se cierra por equivalencia. Si el optimum reparte peso en familias distintas, la hipotesis de diversidad tiene una afirmacion que hacer.",
+      "frescura": "dato de P2 que decide: de los 47 modelos fuera de V20, 0 tienen rescate unico mayor que dano unico frente a V20. Que sean pocos no cierra la hipotesis, porque un blend ponderado puede explotar decorrelacion que un modelo solo no puede."
+    }
+  ],
+  "veredictos": {
+    "capacidad de modelo individual": "GENUINELY_NEW",
+    "diversidad de errores entre miembros": "GENUINELY_NEW",
+    "composicion del ensemble": "PARTIALLY_TESTED"
+  },
+  "presupuesto_autorizado": 10,
+  "presupuesto_previsto": 3,
+  "familias_historicas": 17,
+  "oof_reutilizables": 51,
+  "modelos_fuera_del_circulo_de_v20": 47,
+  "mas_diversos_que_los_miembros_de_v20": 28,
+  "mas_diversos_y_con_cv_usable": 13,
+  "con_rescate_neto_positivo_frente_a_v20": 0,
+  "optuna_prohibido_sobre": [
+    "threshold",
+    "feature selection",
+    "calibracion",
+    "pairwise",
+    "ordinal",
+    "robust loss",
+    "grafo",
+    "ventana local"
+  ],
+  "familias_cerradas_no_reabiertas": [
+    "feature selection supervisada",
+    "escalado afil de la evidencia",
+    "transformacion percentil",
+    "fiabilidad constante por modelo y clase",
+    "restricciones monotonas",
+    "reponder blends equivalentes",
+    "calibracion de probabilidades",
+    "ponderacion de modelos",
+    "apilado de segundo nivel",
+    "familias ordinales (H10, CORAL)",
+    "bagging del meta-modelo",
+    "descomposicion pairwise",
+    "geometria del consenso",
+    "fusion de evidencia Dirichlet",
+    "incertidumbre explicita",
+    "subespacio aleatorio"
+  ],
+  "segundos": 0.0
+}

@@ -1,0 +1,272 @@
+{
+  "fase": "V29 07 cierre",
+  "fecha": "2026-09-29",
+  "experimenta": false,
+  "pistas_optuna": {
+    "V29-01": {
+      "estado": "COMPLETADA",
+      "etiqueta": "P4 · Optuna individual LightGBM",
+      "modelo": "LightGBMOptuna",
+      "corrected_cv": 0.6121698,
+      "delta_vs_V20": 0.002392,
+      "media_por_fold": 0.61217,
+      "desviacion_por_fold": 0.003413,
+      "n_trials_por_fold": 30,
+      "n_trials_totales": 150,
+      "n_triouts_outlier": 0,
+      "oof_guardado": "v29_lgbm_optuna_oof.npy",
+      "cifras": [
+        0.6835,
+        0.5187,
+        0.4969,
+        0.5726,
+        0.6665,
+        0.7348
+      ],
+      "pista": "lightgbm",
+      "fecha": "2026-09-29",
+      "estructura": "anidada: Optuna en inner_val (subconjunto de outer_train), refit en outer_train, medida solo en outer_val",
+      "representacion": "las 279 features de V20, sin anadir ninguna",
+      "sampler": "TPESampler(seed=20260929 + fold)",
+      "semilla": 20260929,
+      "hilos": 12,
+      "sin_dropout_en_mlp": "sklearn MLPClassifier no ofrece dropout; el espacio usa alpha como regularizador de pesos y se declara la ausencia",
+      "control_optuna": "la funcion objetivo recibe exclusivamente indices de inner_val, y hay una asercion que aborta si inner_val toca outer_val",
+      "segundos": 5152.3
+    },
+    "V29-02": {
+      "estado": "NO_EJECUTADA",
+      "etiqueta": "P5 · Optuna individual MLP",
+      "modelo": "MLPOptuna"
+    }
+  },
+  "ensemble": {
+    "P9-1 Optuna macro-F1": {
+      "corrected_cv": 0.6119153,
+      "delta": 0.002137,
+      "folds_positivos": 4,
+      "supera_gate": false
+    },
+    "P9-2 Optuna macro-F1 menos lambda por entropia": {
+      "corrected_cv": 0.612596,
+      "delta": 0.002818,
+      "folds_positivos": 5,
+      "supera_gate": false
+    },
+    "P9-3 Caruana con tope de 6 miembros": {
+      "corrected_cv": 0.6121102,
+      "delta": 0.002332,
+      "folds_positivos": 4,
+      "supera_gate": false
+    },
+    "T0 V20 sin tocar": {
+      "corrected_cv": 0.6097782,
+      "delta": 0.0,
+      "folds_positivos": 0,
+      "supera_gate": false
+    },
+    "T1 promedio igual de todo el pool": {
+      "corrected_cv": 0.5946618,
+      "delta": -0.015116,
+      "folds_positivos": 0,
+      "supera_gate": false
+    },
+    "C-1 Optuna macro-F1": {
+      "corrected_cv": 0.6090958,
+      "delta": -0.000682,
+      "folds_positivos": 2,
+      "supera_gate": false
+    },
+    "C-2 Optuna macro-F1 menos lambda por entropia": {
+      "corrected_cv": 0.6094175,
+      "delta": -0.000361,
+      "folds_positivos": 2,
+      "supera_gate": false
+    },
+    "C-3 Caruana con tope de 6 miembros": {
+      "corrected_cv": 0.6091703,
+      "delta": -0.000608,
+      "folds_positivos": 2,
+      "supera_gate": false
+    }
+  },
+  "P13_segunda_particion": {
+    "ejecutada": false,
+    "motivo": "ningun metodo supero el gate (delta >= +0.003 y >= 4/5 folds), luego hay 0 finalistas. El punto 31 del brief reserva la segunda particion para finalistas congelados, y aplicarla sin ninguno seria fabricar una validacion que nada sostiene.",
+    "finalistas": 0
+  },
+  "control_h04": {
+    "datos": {
+      "P9-1 Optuna macro-F1": {
+        "peso_de_V20": 0.1262,
+        "peso_maximo": 0.5941,
+        "miembro_que_lleva_el_peso": "v29_lgbm_optuna",
+        "miembros_efectivos": 4,
+        "apoyo_por_familia": {
+          "Optuna (nueva capacidad)": 0.5941,
+          "cuarto de V20": 0.1507,
+          "perceptron multicapa": 0.1103,
+          "NB-SVM (lineal sobre binarios)": 0.057,
+          "cabeza de modelo multiclase": 0.0284,
+          "desconocida": 0.0228,
+          "arbol / boosting": 0.0125,
+          "estructura ordinal": 0.0118,
+          "logistica multiclase": 0.008,
+          "solo contenido": 0.0045
+        }
+      },
+      "P9-2 Optuna macro-F1 menos lambda por entropia": {
+        "peso_de_V20": 0.0822,
+        "peso_maximo": 0.6145,
+        "miembro_que_lleva_el_peso": "v29_lgbm_optuna",
+        "miembros_efectivos": 4,
+        "apoyo_por_familia": {
+          "Optuna (nueva capacidad)": 0.6145,
+          "perceptron multicapa": 0.1547,
+          "cuarto de V20": 0.0822,
+          "arbol / boosting": 0.0511,
+          "NB-SVM (lineal sobre binarios)": 0.0431,
+          "logistica multiclase": 0.0238,
+          "cabeza de modelo multiclase": 0.022,
+          "desconocida": 0.006,
+          "solo contenido": 0.0025,
+          "estructura ordinal": 0.0
+        }
+      },
+      "P9-3 Caruana con tope de 6 miembros": {
+        "peso_de_V20": 0.2467,
+        "peso_maximo": 0.4267,
+        "miembro_que_lleva_el_peso": "v29_lgbm_optuna",
+        "miembros_efectivos": 5,
+        "apoyo_por_familia": {
+          "Optuna (nueva capacidad)": 0.4267,
+          "cuarto de V20": 0.3134,
+          "perceptron multicapa": 0.12,
+          "arbol / boosting": 0.06,
+          "NB-SVM (lineal sobre binarios)": 0.0333,
+          "logistica multiclase": 0.0133,
+          "desconocida": 0.0133,
+          "cabeza de modelo multiclase": 0.0067,
+          "solo contenido": 0.0067,
+          "estructura ordinal": 0.0067
+        }
+      }
+    },
+    "decision": "el optimum reparte peso entre estructuras distintas de V20: hay algo que decir"
+  },
+  "pool": {
+    "n_miembros": 16,
+    "criterio": [
+      "util: CV >= 0,50",
+      "diverso: familia distinta de la de V20 o correlacion de errores por debajo del liston interno de V20",
+      "no redundante: se eliminan los que toman las mismas decisiones que otro ya elegido",
+      "tamano: como maximo 16"
+    ]
+  },
+  "compliance": {
+    "comprobaciones": [
+      {
+        "comprobacion": "transformers",
+        "uso_en_codigo": 0,
+        "menciones_en_prosa": 3,
+        "cumplida": true
+      },
+      {
+        "comprobacion": "BERT",
+        "uso_en_codigo": 0,
+        "menciones_en_prosa": 2,
+        "cumplida": true
+      },
+      {
+        "comprobacion": "RoBERTa",
+        "uso_en_codigo": 0,
+        "menciones_en_prosa": 2,
+        "cumplida": true
+      },
+      {
+        "comprobacion": "LLM",
+        "uso_en_codigo": 0,
+        "menciones_en_prosa": 2,
+        "cumplida": true
+      },
+      {
+        "comprobacion": "embeddings",
+        "uso_en_codigo": 0,
+        "menciones_en_prosa": 2,
+        "cumplida": true
+      },
+      {
+        "comprobacion": "external_classifier",
+        "uso_en_codigo": 0,
+        "menciones_en_prosa": 2,
+        "cumplida": true
+      },
+      {
+        "comprobacion": "external_labels",
+        "uso_en_codigo": 0,
+        "menciones_en_prosa": 2,
+        "cumplida": true
+      },
+      {
+        "comprobacion": "pseudo_labeling",
+        "uso_en_codigo": 0,
+        "menciones_en_prosa": 2,
+        "cumplida": true
+      },
+      {
+        "comprobacion": "test_labels",
+        "uso_en_codigo": 0,
+        "menciones_en_prosa": 2,
+        "cumplida": true
+      },
+      {
+        "comprobacion": "test_training",
+        "uso_en_codigo": 0,
+        "menciones_en_prosa": 0,
+        "cumplida": true
+      },
+      {
+        "comprobacion": "holdout_reuse",
+        "uso_en_codigo": 0,
+        "menciones_en_prosa": 10,
+        "cumplida": true
+      },
+      {
+        "comprobacion": "leaderboard_tuning",
+        "uso_en_codigo": 0,
+        "menciones_en_prosa": 0,
+        "cumplida": true
+      },
+      {
+        "comprobacion": "toxic_test",
+        "uso_en_codigo": 0,
+        "menciones_en_prosa": 2,
+        "cumplida": true
+      }
+    ],
+    "todas_cumplidas": true,
+    "ficheros_auditados": 24,
+    "ningun_holdout_abierto": []
+  },
+  "higiene": {
+    "home": {
+      "existe": true,
+      "versionado_por_git": false,
+      "sigue_fuera_de_la_rama": true
+    },
+    "kaggle_toxic_2026_puj/tools": {
+      "existe": true,
+      "versionado_por_git": false,
+      "sigue_fuera_de_la_rama": true
+    }
+  },
+  "auditoria": [],
+  "presupuesto_autorizado": 10,
+  "presupuesto_gastado": 1,
+  "finalistas": 0,
+  "submissions_generadas": 0,
+  "baseline_vigente": 0.6097782,
+  "leaderboard_v20": 0.62689,
+  "artefactos_de_v20_tocados": [],
+  "segundos": 1.0
+}

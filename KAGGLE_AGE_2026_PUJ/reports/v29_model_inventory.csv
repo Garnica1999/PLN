@@ -1,0 +1,52 @@
+model_id,artefacto,fase,familia,tipo_de_salida,corrected_cv_pooled,media_por_fold,desviacion_por_fold,homogeneidad_folds,folds_desviados,experimentos_que_lo_citan,argmax_hash,nota,reutilizable
+v20_f3b_oof_candidato,v20_f3b_oof_candidato.npy,V20 (cadena de umbrales y arboles),cuarto de V20,probabilidad,0.6097782,0.6097847,0.0030921,0.994929,0,desconocido,0abebedbe2927290,,True
+v22_oof_v20,v22_oof_v20.npy,V22 (forense de V20),cuarto de V20,probabilidad,0.609615,0.6096175,0.0032061,0.994741,0,desconocido,9131526a3c3a64c4,,True
+v19_x1_oof_arbol4_max_depth4,v19_x1_oof_arbol4_max_depth4.npy,V19 (cuartos del blend),arbol / boosting,probabilidad,0.6082721,0.6082793,0.0035799,0.994115,0,desconocido,fa99cfa9d6d6db64,,True
+v19_b1_oof4_arbol,v19_b1_oof4_arbol.npy,V19 (cuartos del blend),desconocida,probabilidad,0.6082295,0.6082389,0.0040553,0.993333,0,desconocido,53b415f54665c7f3,,True
+v22_oof_v19,v22_oof_v19.npy,V22 (forense de V20),cuarto de V20,probabilidad,0.6079388,0.6079452,0.0033497,0.99449,0,desconocido,861b6f02ad19d6f7,,True
+v19_x1_oof_arbol5_max_depth4,v19_x1_oof_arbol5_max_depth4.npy,V19 (cuartos del blend),arbol / boosting,probabilidad,0.607663,0.6076581,0.0040617,0.993316,0,desconocido,9ee7710a3e521e1a,,True
+v19_x1_oof_arbol4_min_child_samples800,v19_x1_oof_arbol4_min_child_samples800.npy,V19 (cuartos del blend),arbol / boosting,probabilidad,0.6075522,0.6075622,0.0038136,0.993723,0,desconocido,d32024edbde85b28,,True
+v19_oof_arbol_5folds,v19_oof_arbol_5folds.npy,V19 (cuartos del blend),arbol / boosting,probabilidad,0.6072312,0.6072252,0.0047361,0.9922,0,desconocido,9519aa44ac14fc4e,,True
+v22_seis_compartida,v22_seis_compartida.npy,V22 (forense de V20),cuarto de V20,probabilidad,0.6072312,0.6072252,0.0047361,0.9922,0,desconocido,9519aa44ac14fc4e,,True
+v19_x1_oof_arbol5_min_child_samples800,v19_x1_oof_arbol5_min_child_samples800.npy,V19 (cuartos del blend),arbol / boosting,probabilidad,0.6069322,0.6069286,0.0045228,0.992548,0,desconocido,62ad4c0bf4f19330,,True
+v16_oof_combinador_logistico,v16_oof_combinador_logistico.npy,V16 (combinadores),lineal,probabilidad,0.6011052,0.6009462,0.0048908,0.991861,0,desconocido,7ef3472f7346a57a,,True
+oof_ensemble_v12,oof_ensemble_v12.npy,ensemble V12,combinador / meta-modelo,probabilidad,0.6005017,0.6004103,0.004185,0.99303,0,PH13-ERR,38caf9ea10338b48,,True
+v17_p9_oof,v17_p9_oof.npy,V17,combinador / meta-modelo,probabilidad,0.6003893,0.6002972,0.0041526,0.993082,0,V17-P9-ARBITRO,a4f78764ccfe2e09,,True
+v17_p5_oof,v17_p5_oof.npy,V17,combinador / meta-modelo,probabilidad,0.6002984,0.6001927,0.004429,0.992621,0,V17-P5-COMBINADOR,996c033a0f1455df,,True
+v13_p1b_oof,v13_p1b_oof.npy,V13 (fusión de tokens),combinador / meta-modelo,probabilidad,0.6002535,0.600193,0.0050937,0.991513,0,V13-P1B-FUSION,a91168b1bbaad8d7,,True
+v16_oof_peso_aprendido,v16_oof_peso_aprendido.npy,V16 (combinadores),combinador / meta-modelo,probabilidad,0.6001594,0.6000491,0.0042141,0.992977,0,desconocido,e20f546434e5600c,,True
+v19_b1_oof4_mlp,v19_b1_oof4_mlp.npy,V19 (cuartos del blend),perceptron multicapa,probabilidad,0.599369,0.599373,0.0041357,0.9931,0,desconocido,deb28618bad8975a,,True
+v14b_oof,v14b_oof.npy,V14,combinador / meta-modelo,probabilidad,0.5990343,0.5989936,0.0050774,0.991523,0,V14B-FUSION-LINGUISTICO,174ca2712ee82b78,,True
+v19_b1_oof_mlp,v19_b1_oof_mlp.npy,V19 (cuartos del blend),perceptron multicapa,probabilidad,0.5989481,0.5989333,0.0028176,0.995296,0,desconocido,b14512634a57e78d,,True
+v15b_oof,v15b_oof.npy,V15,combinador / meta-modelo,probabilidad,0.5964585,0.5964554,0.0036817,0.993827,0,V15B-PODA,ffe6749f8af06bb5,,True
+v19_b1_oof4_logreg,v19_b1_oof4_logreg.npy,V19 (cuartos del blend),logistica multiclase,probabilidad,0.5919774,0.59198,0.0056843,0.990398,0,desconocido,a4ad4918fa4178fa,,True
+v19_b1_oof_logreg,v19_b1_oof_logreg.npy,V19 (cuartos del blend),logistica multiclase,probabilidad,0.5915679,0.5915587,0.0049823,0.991578,0,desconocido,46a616f02af95b51,,True
+oof_meta_ridge,oof_meta_ridge.npy,meta-modelos de la fase de metamodelado,lineal,probabilidad,0.5836422,0.5836178,0.0034368,0.994111,0,desconocido,fe73c2e3dab8d0e7,,True
+v20_oof_extratrees_279_-769,v20_oof_extratrees_279_-769.npy,V20 (cadena de umbrales y arboles),ExtraTrees,probabilidad,0.5836218,0.5835979,0.0041866,0.992826,0,desconocido,2d67ac604a30edb7,,True
+oof_E016_margenes,oof_E016_margenes.npy,"E (modelos clasicos, fase temprana)",cabeza de modelo multiclase,margen_o_log_odds,0.5658609,0.5658479,0.0029607,0.994768,0,desconocido,c07fb176e90aa884,,True
+oof_E014_margenes,oof_E014_margenes.npy,"E (modelos clasicos, fase temprana)",cabeza de modelo multiclase,margen_o_log_odds,0.564422,0.5644107,0.0034024,0.993972,0,desconocido,71b4cf01e6633824,,True
+oof_ADV05_nbsvm,oof_ADV05_nbsvm.npy,ADV (fase avanzada),NB-SVM (lineal sobre binarios),margen_o_log_odds,0.5641065,0.5640884,0.0040437,0.992831,0,ADV-05,f1c5e3c789f7a301,,True
+oof_E013_margenes,oof_E013_margenes.npy,"E (modelos clasicos, fase temprana)",cabeza de modelo multiclase,margen_o_log_odds,0.5627799,0.5627661,0.0029019,0.994843,0,desconocido,d3400ad58efc764f,,True
+oof_E-009,oof_E-009.npy,"E (modelos clasicos, fase temprana)",desconocida,probabilidad,0.5602854,0.5602698,0.002916,0.994795,0,desconocido,68c2051e4e6a7335,,True
+oof_E-011,oof_E-011.npy,"E (modelos clasicos, fase temprana)",desconocida,probabilidad,0.5579567,0.557928,0.0040461,0.992748,0,desconocido,a7115e53dd4ea839,,True
+oof_content_only,oof_content_only.npy,solo contenido,solo contenido,margen_o_log_odds,0.5537293,0.5537056,0.0037279,0.993267,0,desconocido,ed71e0d2a4283581,,True
+oof_E021a_ordinal,oof_E021a_ordinal.npy,"E (modelos clasicos, fase temprana)",estructura ordinal,probabilidad,0.5527027,0.5526936,0.0032901,0.994047,0,desconocido,ae3130ad416bd5f9,,True
+oof_E-010,oof_E-010.npy,"E (modelos clasicos, fase temprana)",desconocida,probabilidad,0.5370044,0.5369849,0.0041281,0.992312,0,desconocido,70bcff31a6d451a4,,True
+oof_ADV07_nbsvm_word,oof_ADV07_nbsvm_word.npy,ADV (fase avanzada),NB-SVM (lineal sobre binarios),margen_o_log_odds,0.5254191,0.5254104,0.0042222,0.991964,0,desconocido,aa050761db0dc1fb,,True
+oof_E017_probabilidades,oof_E017_probabilidades.npy,"E (modelos clasicos, fase temprana)",cabeza de modelo multiclase,probabilidad,0.5015377,0.5015255,0.004355,0.991317,0,desconocido,099d4fc3fa358fb3,,True
+oof_E023b_largo,oof_E023b_largo.npy,"E (modelos clasicos, fase temprana)",desconocida,margen_o_log_odds,0.5011634,0.5011437,0.0022361,0.995538,0,desconocido,719e55e76d582569,,True
+oof_E023a_corto,oof_E023a_corto.npy,"E (modelos clasicos, fase temprana)",desconocida,margen_o_log_odds,0.4817534,0.4817302,0.0026725,0.994452,0,desconocido,7ff0cc7d948d5889,,True
+oof_meta_sgd,oof_meta_sgd.npy,meta-modelos de la fase de metamodelado,SGD,probabilidad,0.4774174,0.4762953,0.0096215,0.979799,0,desconocido,b59fcda9b180a244,,True
+oof_E025_bm25,oof_E025_bm25.npy,"E (modelos clasicos, fase temprana)",BM25 (lineal disperso),margen_o_log_odds,0.4688409,0.4688357,0.0041474,0.991154,0,desconocido,2b0c7b88b57c0379,,True
+vista_extremos_margenes,vista_extremos_margenes.npy,vistas expandidas de la matriz 279,cabeza de modelo multiclase,margen_o_log_odds,0.4578103,0.457802,0.0032932,0.992806,0,desconocido,5d6231315c128c85,,True
+oof_E019b_densas_svd,oof_E019b_densas_svd.npy,"E (modelos clasicos, fase temprana)",denso textometrico (SVD),probabilidad,0.4075327,0.407128,0.00538,0.986786,0,desconocido,549d8d134ed1f8f9,,True
+oof_E021b_rocchio,oof_E021b_rocchio.npy,"E (modelos clasicos, fase temprana)",desconocida,probabilidad,0.4016579,0.401663,0.0050065,0.987536,0,desconocido,def3b7af8e420414,,True
+oof_E015_softmax,oof_E015_softmax.npy,"E (modelos clasicos, fase temprana)",cabeza de modelo multiclase,probabilidad,0.3973402,0.3973288,0.0036235,0.99088,0,desconocido,e57c618efc6ca0e5,,True
+v20_oof_arbol_122_131000,v20_oof_arbol_122_131000.npy,V20 (cadena de umbrales y arboles),arbol / boosting,probabilidad,0.3440624,0.3440684,0.0046044,0.986618,0,desconocido,9d97c56f35214d23,,True
+v20_oof_arbol_976_1317,v20_oof_arbol_976_1317.npy,V20 (cadena de umbrales y arboles),arbol / boosting,probabilidad,0.3438942,0.343521,0.0043844,0.987237,0,desconocido,2034f790af42201d,,True
+oof_E019a_densas,oof_E019a_densas.npy,"E (modelos clasicos, fase temprana)",denso textometrico (SVD),probabilidad,0.3387947,0.3381153,0.0035858,0.989395,0,desconocido,da8cd4ab1f4419d5,,True
+oof_E026_knn,oof_E026_knn.npy,"E (modelos clasicos, fase temprana)",vecinos mas cercanos,probabilidad,0.3088251,0.3088194,0.0017611,0.994297,0,desconocido,f9ac42fd10f30c4e,,True
+vista_ampliada_margenes,vista_ampliada_margenes.npy,vistas expandidas de la matriz 279,cabeza de modelo multiclase,margen_o_log_odds,0.284839,0.2848092,0.0040404,0.985814,0,desconocido,ae75a88cb3044688,,True
+oof_style_only,oof_style_only.npy,solo estilo,solo estilo,margen_o_log_odds,0.2793018,0.2792858,0.0016934,0.993937,0,PH6-L3,fe55028fcfab1da6,,True
+vista_estructura_margenes,vista_estructura_margenes.npy,vistas expandidas de la matriz 279,cabeza de modelo multiclase,margen_o_log_odds,0.2285261,0.2279998,0.0020802,0.990876,0,PH21-VISTA,b665ee90640c7231,,True
+v23_binarios_lineales_oof,v23_binarios_lineales_oof.npy,V23 (CORAL),desconocida,probabilidad_no_normalizada,0.0620538,0.0620392,0.0010648,0.982837,0,V23-01-CORAL,283c10840eb4ff56,,True

@@ -2,7 +2,7 @@
 
 Comprueba que el código, la documentación y los datos derivados están en español y sin caracteres de otros alfabetos. Motivo: en la fase de lexicones se colaron ideogramas CJK, cirílicos y puntuación china en listas de palabras y docstrings; en V13 eso se detecta de forma automática.
 
-- **Ficheros auditados**: 523 (`.py`, `.md`, `.txt`, `.csv`)
+- **Ficheros auditados**: 543 (`.py`, `.md`, `.txt`, `.csv`)
 - **Errores**: 0 · **Avisos**: 2
 
 **Sin errores**: no hay ideogramas, cirílicos, árabe, hebreo, devanagari, tailandés, coreano, puntuación CJK ni mojibake en el proyecto.
