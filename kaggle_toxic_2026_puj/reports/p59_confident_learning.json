@@ -1,0 +1,230 @@
+{
+  "familia": "P59_C_CONFIDENT_LEARNING",
+  "naturaleza": "DIAGNOSTIC_ONLY. 0 modelos, 0 submissions, 0 consultas a Kaggle, 0 uso de holdout, 0 uso de test. Ninguna etiqueta observada cambia (parrafo 23)",
+  "fecha": "2026-09-28T04:19:15+00:00",
+  "novelty": {
+    "veredicto": "NOVEL",
+    "V30_00_cerro_por": "identificadores de dificultad, no estimador de etiqueta latente",
+    "por_que_no_es_duplicado": "la tabla conjunta segura usa la distribucion global de las etiquetas observadas dentro de cada conjunto seguro, que es una propiedad que V4-B01 y V6-07 no computan"
+  },
+  "mecanismo": {
+    "implementacion": "confident joint escrito desde cero con numpy; sin cleanlab",
+    "umbral_seguro": "media de p sobre las instancias predichas de cada clase",
+    "conjunto_seguro": "predice c y p_c >= umbral de c",
+    "tabla_conjunta": "Q[c][j] = miembros del conjunto seguro de c con etiqueta j",
+    "pureza_calibrada": "Q[c][c] / suma_j Q[c][j]",
+    "perdidos": "|y = c| - Q[c][c], la clase observada que su conjunto no cubre"
+  },
+  "controles": {
+    "sha256_v03_verificado": true,
+    "oof_reproducido": true,
+    "grupos_partidos_entre_pliegues": 0,
+    "tests_unitarios": [
+      {
+        "test": "sin ruido, la tabla conjunta es la identidad",
+        "ok": true,
+        "detalle": "q=[[2000, 0], [0, 2000]] pureza=[1.0, 1.0]"
+      },
+      {
+        "test": "sin ruido, la perdida por clase es 0",
+        "ok": true,
+        "detalle": "perdidos=[0, 0]"
+      },
+      {
+        "test": "con 15 por ciento de ruido inyectado aparece masa fuera de la diagonal",
+        "ok": true,
+        "detalle": "q=[[1691, 309], [311, 1689]]"
+      },
+      {
+        "test": "los umbrales seguros estan en [0.5, 1]",
+        "ok": true,
+        "detalle": "umbrales=[0.95, 0.95]"
+      },
+      {
+        "test": "el conjunto seguro de la clase c solo contiene predicciones c",
+        "ok": true,
+        "detalle": "n_seguro=[2000, 2000]"
+      },
+      {
+        "test": "la suma de cada fila de q es el tamano de su conjunto seguro",
+        "ok": true,
+        "detalle": "filas=[2000, 2000] conjuntos=[2000, 2000]"
+      },
+      {
+        "test": "con clase pura, el residuo tiene media cercana a cero",
+        "ok": true,
+        "detalle": "media del residuo -0.1050, no cero exacto por construccion"
+      },
+      {
+        "test": "el estimador es determinista",
+        "ok": true,
+        "detalle": "dos llamadas coinciden"
+      }
+    ]
+  },
+  "tablas_conjuntas": {
+    "HS": {
+      "q": [
+        [
+          420,
+          33
+        ],
+        [
+          29,
+          269
+        ]
+      ],
+      "n_seguro": [
+        453,
+        298
+      ],
+      "umbral": [
+        0.739721,
+        0.750344
+      ],
+      "pureza": [
+        0.927152,
+        0.902685
+      ],
+      "perdidos": [
+        415,
+        379
+      ]
+    },
+    "TR": {
+      "q": [
+        [
+          630,
+          14
+        ],
+        [
+          19,
+          226
+        ]
+      ],
+      "n_seguro": [
+        644,
+        245
+      ],
+      "umbral": [
+        0.837325,
+        0.806154
+      ],
+      "pureza": [
+        0.978261,
+        0.922449
+      ],
+      "perdidos": [
+        408,
+        219
+      ]
+    },
+    "AG": {
+      "q": [
+        [
+          470,
+          44
+        ],
+        [
+          28,
+          248
+        ]
+      ],
+      "n_seguro": [
+        514,
+        276
+      ],
+      "umbral": [
+        0.750787,
+        0.761467
+      ],
+      "pureza": [
+        0.914397,
+        0.898551
+      ],
+      "perdidos": [
+        446,
+        319
+      ]
+    }
+  },
+  "control_v4b01": {
+    "correlacion_1_menos_p_true_con_error": {
+      "HS": 0.7952,
+      "TR": 0.8098,
+      "AG": 0.8006
+    },
+    "referencia_publicada": {
+      "HS": -0.795,
+      "TR": -0.81,
+      "AG": -0.801
+    },
+    "nota": "el signo es el inverso porque el score es 1 - p_true; la magnitud es la que tiene que reproducirse"
+  },
+  "diagnostico": [
+    {
+      "objetivo": "s_conf: error de alta confianza",
+      "n": 36,
+      "auc": 0.983647,
+      "ic95_bajo": 0.97846,
+      "ic95_alto": 0.98839,
+      "nota": "el rival mas fuerte: muestra las celdas C de alta confianza frente al resto"
+    },
+    {
+      "objetivo": "s_joint: error de alta confianza",
+      "n": 36,
+      "auc": 0.562004,
+      "ic95_bajo": 0.472483,
+      "ic95_alto": 0.651126,
+      "nota": "el rival mas fuerte: muestra las celdas C de alta confianza frente al resto"
+    },
+    {
+      "objetivo": "s_resid: error de alta confianza",
+      "n": 36,
+      "auc": 0.982715,
+      "ic95_bajo": 0.977171,
+      "ic95_alto": 0.987939,
+      "nota": "el rival mas fuerte: muestra las celdas C de alta confianza frente al resto"
+    },
+    {
+      "objetivo": "s_conf: no rescatable entre los 757 errores",
+      "n": 42,
+      "auc": 0.974143,
+      "ic95_bajo": 0.965286,
+      "ic95_alto": 0.982804,
+      "nota": "el objetivo del parrafo 62, medido sobre la poblacion de errores"
+    },
+    {
+      "objetivo": "s_joint: no rescatable entre los 757 errores",
+      "n": 42,
+      "auc": 0.582366,
+      "ic95_bajo": 0.49455,
+      "ic95_alto": 0.664342,
+      "nota": "el objetivo del parrafo 62, medido sobre la poblacion de errores"
+    },
+    {
+      "objetivo": "s_resid: no rescatable entre los 757 errores",
+      "n": 42,
+      "auc": 0.973019,
+      "ic95_bajo": 0.963748,
+      "ic95_alto": 0.982216,
+      "nota": "el objetivo del parrafo 62, medido sobre la poblacion de errores"
+    }
+  ],
+  "auc_control_s_conf": 0.974143,
+  "auc_nuevo_s_resid": 0.973019,
+  "mejora_sobre_el_control": false,
+  "umbral_parrafo_62": 0.6,
+  "decision": "MARGINAL. El estimador alcanza el umbral de 0,60 pero no supera al control de dificultad, luego no aporta mas que medir que tan dificil es un ejemplo. Ponderar no tendria justificacion mechanica y no se hace",
+  "experimentos_registrados": 0,
+  "por_que_no_se_registra": "el parrafo 50 no registra gap analysis, oracle ni diagnosticos. Este paso no entrena ni evalua corrected_cv",
+  "formulacion": "V03 remains the best verified leaderboard result.",
+  "gastos": {
+    "submissions": 0,
+    "modelos": 0,
+    "consultas_kaggle": 0,
+    "uso_holdout": 0,
+    "uso_test": 0,
+    "segundos": 15.3
+  }
+}

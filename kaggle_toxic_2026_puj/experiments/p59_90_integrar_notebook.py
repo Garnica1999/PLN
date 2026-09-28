@@ -40,6 +40,7 @@ TITULO_GENERAL = "P59 - Frontier Research (2026-09-28)"
 # celda de codigo. La celda de codigo lee los artefactos en tiempo de ejecucion.
 SECCIONES: tuple[dict[str, Any], ...] = (
     {
+        "numero": "55",
         "marca": "55. P59 - Frontier Research",
         "titulo": TITULO_GENERAL,
         "md": """\
@@ -119,6 +120,7 @@ print(f"  decision: {g['decision']}")
 """,
     },
     {
+        "numero": "56",
         "marca": "56. P59-A Voronoi",
         "titulo": "P59-A - Voronoi y geometria local",
         "md": """\
@@ -259,6 +261,129 @@ print()
 print(f"  experimentos consumidos en P59-A: {fr.loc[fr['ID'] == 'P59-A', 'experiments_used'].iloc[0]}")
 """,
     },
+    {
+        "numero": "57",
+        "marca": "57. P59-C Confident Learning",
+        "titulo": "P59-C - Confident learning y estimacion formal de ruido de etiqueta",
+        "md": """\
+## 57. P59-C - Confident learning y estimacion formal de ruido de etiqueta
+
+### Hipotesis
+
+Existe una poblacion pequena de celdas cuya etiqueta observada es sistematicamente
+incompatible con la evidencia OOF, y esa poblacion no es solo el error de alta
+confianza de V03.
+
+### Auditoria de hueco
+
+`NOVEL`, y el matiz importa: V30-00 cerro la familia `label noise` con cuatro
+experimentos negativos, pero todos eran **identificadores de dificultad**. Un
+identificador de dificultad pregunta que probabilidad tiene una celda de fallar;
+un estimador de consistencia latente pregunta si la etiqueta observada concuerda
+con la evidencia. No son el mismo objeto.
+
+### Metodo
+
+Confident joint escrito desde cero con numpy, sin `cleanlab`, por etiqueta:
+
+```text
+umbral seguro   t_c = media de p sobre las instancias predichas de la clase c
+conjunto seguro C_hat_c = predice c  Y  p_c >= t_c
+tabla conjunta  Q[c][j] = miembros de C_hat_c con etiqueta observada j
+pureza calib.   t_pure_c = Q[c][c] / suma_j Q[c][j]
+perdidos        |y = c| - Q[c][c]
+```
+
+Tres scores, y el punto de tener tres:
+
+| score | que es | papel |
+|---|---|---|
+| `s_conf = 1 - p_true` | confianza en la clase verdadera | **control**, ya medido por V4-B01 |
+| `s_joint = 1 - t_pure_y` | impureza del conjunto seguro de la clase | global, por clase |
+| `s_resid = s_conf - s_joint` | residuo de la instancia frente a su clase | **la aportacion** |
+
+`s_resid` puede diferir en ordenamiento de `s_conf` porque le resta la linea base
+de su clase. Ese es el unico que puede aportar algo.
+
+### Control: V4-B01 verificado, no asumido
+
+```text
+V4-B01 declaro    r(p_true, error) = -0,795 / -0,810 / -0,801
+medido aqui       r(1 - p_true, error) = +0,7952 / +0,8098 / +0,8006
+desviacion maxima 4e-04
+```
+
+**V4-B01 CONFIRMADO.** Durante esta auditoria se sospecho que estaba mal y no lo
+estaba: el error era nuestro. `proba[:, y]` devuelve P(clase 1) incluso cuando
+`y` vale 0, y la probabilidad de la clase verdadera es
+`where(y == 1, p, 1 - p)`. Es la segunda vez en esta fase que el control escrito
+por nosotros es el que estaba mal.
+
+### Resultado, decision y artefacto
+
+| score | AUC contra celda no rescatable | IC95 |
+|---|---:|---|
+| `s_conf` (control) | **0,974143** | [0,9653, 0,9828] |
+| `s_resid` (nuevo) | 0,973019 | [0,9637, 0,9822] |
+| `s_joint` | 0,582400 | [0,4945, 0,6643] |
+
+**36 de las 42 celdas no rescatables son ademas errores de alta confianza.** El
+estimador formal no supera al control, luego el parrafo 62 **no se cumple**:
+lo que se sospechaba como ruido es, casi en su totalidad, dificultad.
+
+`MARGINAL`. La ponderacion de celdas sospechosas del parrafo 23 **no tiene
+justificacion mecanica y no se ejecuta**. **0 experimentos consumidos.**
+
+Artefactos: `reports/p59_confident_learning.{md,csv,json}`,
+`features/p59_confident_cells.npz`.""",
+        "codigo": """\\
+from pathlib import Path
+import json
+import pandas as pd
+
+RAIZ = Path.cwd()
+while not (RAIZ / "reports").exists() and RAIZ != RAIZ.parent:
+    RAIZ = RAIZ.parent
+c = json.loads((RAIZ / "reports" / "p59_confident_learning.json").read_text(encoding="utf-8"))
+res = pd.read_csv(RAIZ / "reports" / "p59_confident_learning.csv")
+fr = pd.read_csv(RAIZ / "reports" / "p59_frontier_registry.csv", dtype=str, keep_default_na=False)
+reg = json.loads((RAIZ / "reports" / "p59_hypothesis_registry.json").read_text(encoding="utf-8"))
+
+print("57.1  TABLA CONJUNTA SEGURA POR ETIQUETA")
+print(f"  {'etiqueta':10}{'Q00':>7}{'Q01':>7}{'Q10':>7}{'Q11':>7}{'seg0':>7}{'seg1':>7}"
+      f"{'pure0':>9}{'pure1':>9}   perdidos")
+for e, t in c["tablas_conjuntas"].items():
+    q = t["q"]
+    print(f"  {e:10}{q[0][0]:>7}{q[0][1]:>7}{q[1][0]:>7}{q[1][1]:>7}"
+          f"{t['n_seguro'][0]:>7}{t['n_seguro'][1]:>7}{t['pureza'][0]:>9.4f}{t['pureza'][1]:>9.4f}"
+          f"   {t['perdidos'][0]} / {t['perdidos'][1]}")
+print()
+print("  La masa fuera de la diagonal es real: hay desacuerdo de etiqueta dentro de los")
+print("  conjuntos seguros. Lo que NO consigue el estimador es decir QUE celdas son.")
+print()
+print("57.2  CONTROL DE V4-B01, VERIFICADO")
+w = reg["verificaciones_de_controles"]["V4-B01_p_true_vs_error"]
+print(f"  declarado  {w['declarado']}")
+print(f"  medido     {w['medido_sobre_el_artefacto_hardness_v4']}")
+print(f"  veredicto  {w['veredicto']}")
+print()
+print("57.3  RESULTADO: EL PARRAFO 62 NO SE CUMPLE")
+print(f"  {'objetivo':52}{'n':>6}{'AUC':>10}  IC95")
+for _, r in res.iterrows():
+    a = "n/d" if r["auc"] is None else f"{float(r['auc']):.4f}"
+    ic = "" if str(r["ic95_bajo"]) in ("", "nan") else f"[{float(r['ic95_bajo']):.4f}, {float(r['ic95_alto']):.4f}]"
+    print(f"  {str(r['objetivo'])[:52]:52}{str(r['n']):>6}{a:>10}  {ic}")
+print()
+print(f"  control  s_conf  AUC {c['auc_control_s_conf']}")
+print(f"  nuevo    s_resid AUC {c['auc_nuevo_s_resid']}")
+print(f"  el estimador formal supera al control por mas de 0,01: {c['mejora_sobre_el_control']}")
+print()
+print("57.4  DECISION")
+print(f"  {c['decision']}")
+print()
+print(f"  experimentos consumidos en P59-C: {fr.loc[fr['ID'] == 'P59-C', 'experiments_used'].iloc[0]}")
+""",
+    },
 )
 
 SUSTITUCIONES = {
@@ -330,7 +455,7 @@ def main() -> None:
         if not f.exists():
             raise SystemExit(f"PARADA: falta {f.name}; ejecuta primero los pasos de P59")
     for s in SECCIONES:
-        for campo in ("marca", "titulo", "md", "codigo"):
+        for campo in ("numero", "marca", "titulo", "md", "codigo"):
             if s[campo] != a_ascii(s[campo]):
                 raise SystemExit(f"PARADA: la seccion {s['marca']} tiene no-ASCII en {campo}")
 
@@ -340,8 +465,9 @@ def main() -> None:
                           if c["cell_type"] == "markdown")
     anadidas = 0
     for s in SECCIONES:
-        if s["marca"] in existentes:
-            print(f"  ya existe, no se duplica: {s['marca']}")
+        ancla = f"## {s['numero']}."
+        if ancla in existentes:
+            print(f"  ya existe, no se duplica: seccion {s['numero']} (ancla {ancla})")
             continue
         notebook["cells"].append(markdown(s["md"]))
         notebook["cells"].append(codigo(s["codigo"]))
