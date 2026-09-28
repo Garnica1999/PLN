@@ -1,0 +1,56 @@
+{
+  "familia": "P60_LITERATURE_REVIEW",
+  "naturaleza": "AUDITORIA Y GAP ANALYSIS. 0 experimentos, 0 modelos, 0 submissions, 0 Kaggle, 0 holdout, 0 test. V03 no se modifica",
+  "fecha": "2026-09-28T14:57:45+00:00",
+  "baseline": {
+    "corrected_cv": "0.7772114525165721",
+    "sha256": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e"
+  },
+  "metodos_evaluados": 14,
+  "metodos_nuevos": 9,
+  "metodos_cerrados": 5,
+  "pistas_abiertas": 8,
+  "pistas_cerradas": 4,
+  "orden_ejecucion": [
+    "G",
+    "A",
+    "L",
+    "D",
+    "C",
+    "H",
+    "I",
+    "J"
+  ],
+  "estructura_etiquetas_medida": {
+    "prevalencia_HS": 0.43695212407282535,
+    "prevalencia_TR": 0.3000674308833446,
+    "prevalencia_AG": 0.38233310856372216,
+    "filas_HS0": 835,
+    "n_filas": 1483,
+    "P_TR1_dado_HS0": 0.0,
+    "P_TR1_dado_HS1": 0.6867283950617284,
+    "P_AG1_dado_HS0": 0.026347305389221556,
+    "P_AG1_dado_HS1": 0.8410493827160493,
+    "P_AG1_dado_TR1": 0.946067415730337,
+    "P_AG1_dado_TR0": 0.14065510597302505,
+    "negativos_TR_no_definidos": 1.0,
+    "negativos_AG_no_definidos": 0.9736526946107784
+  },
+  "conteo_gap": {
+    "ASL": 0,
+    "W-ASL": 0,
+    "PAIR-NOISE": 0,
+    "EFFNUM": 0,
+    "DBL": 0,
+    "LOGIT-ADJ": 0,
+    "LDAM": 0,
+    "LDL": 1,
+    "CONTRAST-OVL": 1,
+    "OT-PROT": 1,
+    "META-RW": 0,
+    "POLYLOSS": 0,
+    "CONFORMAL": 0,
+    "DRO-GROUP": 0
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}
