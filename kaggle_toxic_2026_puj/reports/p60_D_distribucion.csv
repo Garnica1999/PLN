@@ -1,0 +1,22 @@
+magnitud,valor
+brazo_0_corrected_cv,0.7772647318762402
+brazo_1_corrected_cv,0.776832883084101
+delta_perdida_puro,-0.0004318487921392
+delta_vs_V03,-0.00037856943247105423
+corrected_cv_V03,0.7772114525165721
+pliegues_mejorados,0
+folds_brazo_1,0.796010 0.795526 0.778538 0.734431 0.780042
+folds_brazo_0,0.796010 0.795526 0.778860 0.736317 0.780042
+rescate,3
+damage,3
+neto,0
+cambian,6
+beta,0.9999
+diferencia_relativa_maxima_entre_formas,0.02329045
+diferencia_relativa_media_entre_formas,-0.01477321
+coseno_medio_entre_soluciones,0.9999996203
+convergio,True
+gate_delta_superado,False
+gate_pliegues_superado,False
+gate_superado,False
+decision,"CLOSED. La forma de numero efectivo es practicamente la misma que la balanceada de V03 en este corpus, con diferencia relativa de la razon por debajo del dos por ciento"
