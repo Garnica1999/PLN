@@ -1,0 +1,9 @@
+Track,Corrected_CV,Delta_mecanismo,Pliegues_mejorados,Bootstrap,Rescue,Damage,Net,Mecanismo_activo,Complementariedad,Decision
+A,0.624338862,-0.1529258699,0,NO EJECUTADO (gate no superado),334,1552,-1218,corte duro 0.00 por ciento de activating; reescalado del negativo factor 15.0,rescate 334 / dano 1552 / neto -1218,CLOSED
+C,0.7772647319,,0,NO EJECUTADO (gate no superado),2,1,1,3 celdas de 4449 cambiadas,rescate 2 / dano 1 / neto 1,CLOSED
+D,0.7768328831,-0.0004318488,0,NO EJECUTADO (gate no superado),3,3,0,6 celdas de 4449 cambiadas,rescate 3 / dano 3 / neto 0,CLOSED
+G,0.4497522457,-0.294907274,0,NO EJECUTADO (gate no superado),278,868,-590,1146 celdas de 4449 cambiadas,rescate 278 / dano 868 / neto -590,CLOSED
+H,0.4686780062,-0.072306717,0,NO EJECUTADO (gate no superado),391,2655,-2264,distinguible del control por 2842 veces el sesgo de su propia metrica,rescate 391 / dano 2655 / neto -2264,CLOSED
+I,0.4761602463,-0.3011044856,0,NO EJECUTADO (gate no superado),318,890,-572,"fraccion negativa 20.8 por ciento, razon p90/abs(p10) 5.35",rescate 318 / dano 890 / neto -572,CLOSED
+J,0.7755546945,-0.0017100374,2,NO EJECUTADO (gate no superado),25,23,2,48 celdas de 4449 cambiadas,rescate 25 / dano 23 / neto 2,CLOSED
+L,0.777600986,0.0003362541,2,NO EJECUTADO (gate no superado),2,1,1,3 celdas de 4449 cambiadas,rescate 2 / dano 1 / neto 1,MARGINAL
