@@ -1,0 +1,127 @@
+{
+  "familia": "P59_D_INFLUENCE",
+  "naturaleza": "DIAGNOSTIC_ONLY. 0 modelos, 0 submissions, 0 consultas a Kaggle, 0 uso de holdout, 0 uso de test. NO se elimina ninguna observacion",
+  "fecha": "2026-09-28T04:30:06+00:00",
+  "novelty": {
+    "veredicto": "NOVEL, con precedente adyacente declarado",
+    "V6_03": "cerro la ponderacion por tamano de grupo, que es influencia en el sentido de la intuicion pero no del calculo",
+    "por_que_es_nuevo": "ningun experimento del registro estima influencia sobre los parametros de V03"
+  },
+  "metodo": {
+    "objetivo": "0,5 w'w + C sum_i log(1 + exp(-z_i)) con z_i = y_i (x_i . w + b)",
+    "gradiente": "-C sum_i y_i x_i sigmoid(-z_i) + w",
+    "hessiano": "C X' W X + I, con W = diag(sigmoid(z) sigmoid(-z))",
+    "influencia": "I_i = C y_i sigmoid(-z_i) H^-1 x_i",
+    "woodbury": "H^-1 = I - X' P X, K = (I + C W^(1/2) G W^(1/2))^-1, G = X X'",
+    "costo": "una inversa de 1186 por 1186 y un producto disperso por denso; nunca se forma el Hessiano de 27431 por 27431",
+    "elimina_algo": false
+  },
+  "controles": {
+    "sha256_v03_verificado": true,
+    "oof_reproducido": true,
+    "grupos_partidos_entre_pliegues": 0,
+    "tests": [
+      {
+        "test": "la influencia es finita",
+        "ok": true,
+        "detalle": "max |infl| = 1.6766e+00, max norma = 1.5102e+01"
+      },
+      {
+        "test": "la forma dual G - G P G coincide con la resolucion directa de H",
+        "ok": true,
+        "detalle": "max |dual - directo| = 3.145e-14"
+      },
+      {
+        "test": "el orden de la influencia sigue al LOO real (Spearman)",
+        "ok": true,
+        "detalle": "rho = 0.9993 sobre 60 borrados reales, con senal en los datos"
+      },
+      {
+        "test": "el signo del cambio estimado coincide con el real",
+        "ok": true,
+        "detalle": "concordancia 1.0000 sobre 60 borrados con cambio no nulo"
+      },
+      {
+        "test": "el error de magnitud es de primer orden y queda documentado",
+        "ok": true,
+        "detalle": "error relativo mediano 0.0444 y maximo 0.1560. Se registra como limite del metodo: la influencia es un dispositivo de cribado por ORDEN, no un LOO exacto"
+      },
+      {
+        "test": "la auto-influencia es |residuo| por un factor de palanca positivo",
+        "ok": true,
+        "detalle": "factor min 0.3087 max 1.9846, y |factor| / c = |residuo| en todas las filas: True"
+      },
+      {
+        "test": "el calculo es determinista",
+        "ok": true,
+        "detalle": "dos llamadas coinciden bit a bit"
+      }
+    ]
+  },
+  "por_etiqueta": [
+    {
+      "etiqueta": "HS",
+      "n_top": 100,
+      "frac_error_en_top": 0.92,
+      "frac_error_base": 0.21308159136884694,
+      "enriquecimiento_error": 4.31759493670886,
+      "frac_alta_conf_en_top": 0.52,
+      "frac_alta_conf_base": 0.06540795684423466,
+      "frac_grupo_multiplo_en_top": 0.01,
+      "frac_grupo_multiplo_base": 0.004045853000674309,
+      "auto_influencia_max": 1.5190014658098647,
+      "auto_influencia_mediana": 0.411870134145658
+    },
+    {
+      "etiqueta": "TR",
+      "n_top": 100,
+      "frac_error_en_top": 0.71,
+      "frac_error_base": 0.11058664868509778,
+      "enriquecimiento_error": 6.42030487804878,
+      "frac_alta_conf_en_top": 0.34,
+      "frac_alta_conf_base": 0.048550236008091704,
+      "frac_grupo_multiplo_en_top": 0.01,
+      "frac_grupo_multiplo_base": 0.004045853000674309,
+      "auto_influencia_max": 2.368153844386523,
+      "auto_influencia_mediana": 0.3806146717490868
+    },
+    {
+      "etiqueta": "AG",
+      "n_top": 100,
+      "frac_error_en_top": 0.8,
+      "frac_error_base": 0.1867835468644639,
+      "enriquecimiento_error": 4.28303249097473,
+      "frac_alta_conf_en_top": 0.38,
+      "frac_alta_conf_base": 0.0667565745111261,
+      "frac_grupo_multiplo_en_top": 0.01,
+      "frac_grupo_multiplo_base": 0.004045853000674309,
+      "auto_influencia_max": 1.9141102104934902,
+      "auto_influencia_mediana": 0.43769517572346395
+    }
+  ],
+  "residuo_no_rescatable": {
+    "percentil_influencia_C": 0.851624,
+    "percentil_influencia_B": 0.746327,
+    "razon": 1.141087
+  },
+  "asociacion": {
+    "spearman_influencia_error": 0.395459,
+    "p_error": 1.814355208759062e-166,
+    "spearman_influencia_confianza": -0.534492,
+    "p_confianza": 0.0,
+    "razon_error_sobre_confianza": 0.739878,
+    "criterio": "el parrafo 63 exige que la influencia se relacione con la frontera MAS ALLA de lo que la confianza ya explica"
+  },
+  "decision": "CLOSED. La influencia se asocia al error MENOS que la confianza, luego es una medida peor de dificultad que lo que ya existe. El downweighting por influencia no se ejecuta y no se reintenta",
+  "experimentos_registrados": 0,
+  "por_que_no_se_registra": "el parrafo 50 no registra diagnosticos. Este paso no entrena ni evalua corrected_cv",
+  "formulacion": "V03 remains the best verified leaderboard result.",
+  "gastos": {
+    "submissions": 0,
+    "modelos": 0,
+    "consultas_kaggle": 0,
+    "uso_holdout": 0,
+    "uso_test": 0,
+    "segundos": 58.9
+  }
+}

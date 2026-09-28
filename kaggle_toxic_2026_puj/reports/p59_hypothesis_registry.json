@@ -439,8 +439,10 @@
       "hipotesis": "una observacion puede no parecer ruido pero desplazar de verdad la frontera de V03",
       "senal_esperada": "los ejemplos de influencia extrema se enriquecen en contradiccion, near-duplicate, autor seudonimo o residuo no rescatable",
       "alcance": "diagnostico primero; el downweighting por influencia queda como decision posterior",
-      "estado": "OPEN",
-      "gates": "parrafo 63: no eliminar por alta influencia sin relacion con la frontera"
+      "estado": "CLOSED",
+      "gates": "parrafo 63: no eliminar por alta influencia sin relacion con la frontera",
+      "resultado": "Enriquecimiento de error en el top 100 de influencia: 4,32 (HS), 6,42 (TR), 4,28 (AG). Las 42 celdas no rescatables estan en el percentil de influencia 0.8516 frente a 0.7463 de las 715 rescatables. PERO el control decisivo: Spearman(|influencia|, error) = +0.3955 frente a Spearman(|influencia|, confianza) = -0.5345, razon 0.740 por debajo de 1",
+      "decision": "CLOSED. La influencia se asocia al error MENOS que la confianza, luego es una medida peor de dificultad que lo que ya existe. El downweighting por influencia no se ejecuta y no se reintenta. 0 experimentos consumidos"
     },
     "P59-E": {
       "id": "P59-E",
@@ -542,6 +544,20 @@
       "gates": "parrafo 62: no puede ser solo error de alta confianza de V03",
       "resultado": "Tabla conjunta segura por etiqueta: HS [[420,33],[29,269]] pureza 0,9272/0,9027; TR [[630,14],[19,226]] pureza 0,9783/0,9224; AG [[470,44],[28,248]] pureza 0,9144/0,8986. El estimador formal s_resid da AUC 0,9730 contra celda no rescatable, frente a 0,9741 del control 1 - p_true, luego NO supera al control. 36 de las 42 celdas no rescatables son ademas errores de alta confianza. Control V4-B01 verificado con desviacion 4e-04",
       "decision": "MARGINAL. El estimador formal de consistencia latente alcanza el umbral de 0,60 pero no supera al control de dificultad, luego no aporta mas que medir que tan dificil es un ejemplo. La ponderacion de celdas sospechosas del parrafo 23 NO tiene justificacion mecanica y no se ejecuta. 0 experimentos consumidos"
+    },
+    "P59-D": {
+      "id": "P59-D",
+      "family": "influencia",
+      "mecanismo": "estimacion de influencia sobre los parametros de LogisticRegression mediante su aproximacion Hessiana",
+      "precedente": "ninguno: 0 coincidencias de influence, cook, hessian, jackknife",
+      "novedad": "NOVEL",
+      "hipotesis": "una observacion puede no parecer ruido pero desplazar de verdad la frontera de V03",
+      "senal_esperada": "los ejemplos de influencia extrema se enriquecen en contradiccion, near-duplicate, autor seudonimo o residuo no rescatable",
+      "alcance": "diagnostico primero; el downweighting por influencia queda como decision posterior",
+      "estado": "CLOSED",
+      "gates": "parrafo 63: no eliminar por alta influencia sin relacion con la frontera",
+      "resultado": "Enriquecimiento de error en el top 100 de influencia: 4,32 (HS), 6,42 (TR), 4,28 (AG). Las 42 celdas no rescatables estan en el percentil de influencia 0.8516 frente a 0.7463 de las 715 rescatables. PERO el control decisivo: Spearman(|influencia|, error) = +0.3955 frente a Spearman(|influencia|, confianza) = -0.5345, razon 0.740 por debajo de 1",
+      "decision": "CLOSED. La influencia se asocia al error MENOS que la confianza, luego es una medida peor de dificultad que lo que ya existe. El downweighting por influencia no se ejecuta y no se reintenta. 0 experimentos consumidos"
     }
   },
   "verificaciones_de_controles": {
@@ -559,5 +575,15 @@
       "veredicto": "CONFIRMADO, desviacion maxima 3e-08 atribuible a float32",
       "nota": "durante esta auditoria se sospecho que V4-B01 estaba mal. El error era nuestro: proba[:, y] devuelve P(clase 1) incluso cuando y vale 0, y la probabilidad de la clase verdadera es where(y == 1, p, 1 - p). Con la forma correcta V4-B01 reproduce exactamente. Es la segunda vez en esta fase que el control escrito por nosotros es el que estaba mal"
     }
+  },
+  "patron_emergente": {
+    "enunciado": "tres mecanismos independientes de 'que celdas importan' se reducen a la confianza de V03",
+    "evidencia": {
+      "P59-A geometria local": "AUC 0,725194 contra error; el bloque complementario dio neto -18",
+      "P59-C consistencia latente": "AUC 0,973019 frente a 0,974143 del control 1 - p_true, es decir no lo supera",
+      "P59-D influencia": "razon error/confianza 0.740, por debajo de 1"
+    },
+    "lectura": "predecir la dificultad de una celda es facil y barato en este corpus, y NO es lo mismo que mejorar la decision. Las pistas que cambian el modelo en vez de identificar celdas siguen siendo cualitativamente distintas y tienen prioridad",
+    "no_es_una_prueba_de_optimalidad": "esto acota el alcance de un tipo de metodo, no demuestra que no exista una mejora defendible"
   }
 }

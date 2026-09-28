@@ -384,6 +384,146 @@ print()
 print(f"  experimentos consumidos en P59-C: {fr.loc[fr['ID'] == 'P59-C', 'experiments_used'].iloc[0]}")
 """,
     },
+    {
+        "numero": "58",
+        "marca": "58. P59-D Influence",
+        "titulo": "P59-D - Influence functions sobre V03",
+        "md": """\
+## 58. P59-D - Influence functions sobre V03
+
+### Hipotesis
+
+Una observacion puede no parecer ruido y aun asi desplazar de verdad la frontera de
+V03.
+
+### Auditoria de hueco
+
+`NOVEL` con precedente adyacente declarado: V6-03 cerro la ponderacion por tamano de
+grupo, que es influencia en el sentido de la intuicion pero no del calculo. Ningun
+experimento del registro estima influencia sobre los parametros de V03.
+
+### Metodo
+
+```text
+objetivo    0,5 w'w + C sum_i log(1 + exp(-z_i)),  z_i = y_i (x_i . w + b)
+gradiente   -C sum_i y_i x_i sigmoid(-z_i) + w
+Hessiano    H = C X' W X + I,   W = diag(sigmoid(z) sigmoid(-z))
+influencia  I_i = C y_i sigmoid(-z_i) H^-1 x_i
+```
+
+El Hessiano de V03 es 27431 por 27431, unos 6 GB en float64. La identidad de
+Woodbury lo deja en el dual:
+
+```text
+X H^-1 X' = G - X X' P X X' = G - G P G
+```
+
+todo de tamano `n` por `n`. **La forma `I - P G` NO es lo mismo**, porque `X' P X` es
+`d` por `d` y su version en indices de muestra no es `P G`. Eso se comprobo contra
+la resolucion directa del Hessiano: error 3,1e-14 con `G - G P G`.
+
+La influencia se define respecto de un modelo ajustado, asi que cada punto se evalua
+en el modelo del pliegue en el que entro como entrenamiento, y se promedian los 4.
+**No se elimina ninguna observacion (parrafo 25).**
+
+### Controles
+
+| test | veredicto | detalle |
+|---|---|---|
+| influencia finita | OK | |
+| forma dual contra resolucion directa de H | OK | 3,1e-14 |
+| orden frente al LOO real (Spearman) | OK | 0,9993 sobre 60 borrados reales |
+| signo del cambio estimado | OK | concordancia 1,0000 sobre 60 borrados |
+| error de magnitud de primer orden | documentado | mediano 0,0444, maximo 0,1560 |
+| auto-influencia = \\|residuo\\| por palanca positiva | OK | |
+| determinismo | OK | |
+
+La influencia es una **aproximacion de primer orden**: es un dispositivo de cribado
+por orden, no un LOO exacto, y asi se registra.
+
+### Resultado, decision y artefacto
+
+| etiqueta | error en el top 100 | base | enriquecimiento |
+|---|---:|---:|---:|
+| HS | 0,9200 | 0,2131 | 4,32 |
+| TR | 0,7100 | 0,1106 | 6,42 |
+| AG | 0,8000 | 0,1868 | 4,28 |
+
+Los puntos mas influyenetes **son** casi todos errores. Pero el control que decide es
+otro:
+
+```text
+Spearman(|influencia|, error)       +0,3955
+Spearman(|influencia|, confianza)   -0,5345
+razon error / confianza               0,740   por debajo de 1
+```
+
+Sin el segundo renglon, el primero solo diria que los ejemplos dificiles tienen
+influencia, que es lo esperable y lo inutil.
+
+`CLOSED`. **0 experimentos consumidos.**
+
+Artefactos: `reports/p59_influence_analysis.{md,csv,json}`,
+`features/p59_influence_cells.npz`.""",
+        "codigo": """\
+from pathlib import Path
+import json
+import pandas as pd
+
+RAIZ = Path.cwd()
+while not (RAIZ / "reports").exists() and RAIZ != RAIZ.parent:
+    RAIZ = RAIZ.parent
+d = json.loads((RAIZ / "reports" / "p59_influence_analysis.json").read_text(encoding="utf-8"))
+reg = json.loads((RAIZ / "reports" / "p59_hypothesis_registry.json").read_text(encoding="utf-8"))
+fr = pd.read_csv(RAIZ / "reports" / "p59_frontier_registry.csv", dtype=str, keep_default_na=False)
+tab = pd.read_csv(RAIZ / "reports" / "p59_influence_analysis.csv")
+
+print("58.1  EL HESSIANO NO SE FORMA NUNCA")
+for k, v in d["metodo"].items():
+    print(f"  {k:12} {v}")
+print()
+print("  6 GB en float64 para el Hessiano de 27431 por 27431. Woodbury lo deja en el dual:")
+print("  X H^-1 X' = G - G P G, todo de tamano n por n.")
+print()
+print("58.2  CONTROLES DEL MECANISMO")
+for t in d["controles"]["tests"]:
+    print(f"  [{'OK ' if t['ok'] else 'FALLA'}] {t['test'][:60]:62} {t['detalle'][:60]}")
+print()
+print("58.3  ENRIQUECIMIENTO DEL TOP 100 DE INFLUENCIA")
+print(f"  {'etiqueta':10}{'error_top':>12}{'base':>10}{'enriquec.':>12}{'grupo_top':>12}")
+for _, r in tab.iterrows():
+    print(f"  {r['etiqueta']:10}{float(r['frac_error_en_top']):>12.4f}"
+          f"{float(r['frac_error_base']):>10.4f}{float(r['enriquecimiento_error']):>12.2f}"
+          f"{float(r['frac_grupo_multiplo_en_top']):>12.4f}")
+print()
+print("58.4  EL CONTROL QUE DECIDE")
+a = d["asociacion"]
+print(f"  Spearman(|influencia|, error)      {a['spearman_influencia_error']:+.4f}  p={a['p_error']:.2e}")
+print(f"  Spearman(|influencia|, confianza)  {a['spearman_influencia_confianza']:+.4f}  p={a['p_confianza']:.2e}")
+print(f"  razon error / confianza            {a['razon_error_sobre_confianza']:.3f}   (1 = aporta lo mismo)")
+print()
+r = d["residuo_no_rescatable"]
+print("58.5  EL OBJETIVO DURO: LAS 42 CELDAS NO RESCATABLES")
+print(f"  percentil de influencia de C  {r['percentil_influencia_C']:.4f}")
+print(f"  percentil de influencia de B  {r['percentil_influencia_B']:.4f}")
+print(f"  razon                          {r['razon']}")
+print()
+print("58.6  DECISION")
+print(f"  {d['decision']}")
+print()
+print("58.7  EL PATRON EMERGENTE, YA CON TRES EVIDENCIAS")
+pe = reg["patron_emergente"]
+print(f"  {pe['enunciado']}")
+for k, v in pe["evidencia"].items():
+    print(f"    {k:26} {v}")
+print()
+print(f"  lectura: {pe['lectura']}")
+print()
+print(f"  NO es una prueba de optimalidad: {pe['no_es_una_prueba_de_optimalidad']}")
+print()
+print(f"  experimentos consumidos en P59-D: {fr.loc[fr['ID'] == 'P59-D', 'experiments_used'].iloc[0]}")
+""",
+    },
 )
 
 SUSTITUCIONES = {
