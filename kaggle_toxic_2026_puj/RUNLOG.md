@@ -1771,3 +1771,46 @@ MD; un bucle que **redefinia** `matriz` y hacia que la matriz 8x8 se guardara co
 verificacion explicita del artefacto, no por el informe final.
 
 **Sin push, sin merge, sin reset, sin rebase, sin PR. 0 submissions. V03 intacto.**
+
+
+---
+
+## 2026-09-28 - Fase P46: auditoria del campeon real
+
+**Alcance.** 0 modelos, 0 submissions, 0 consultas a Kaggle, holdout y test sin usar. Tarea
+exclusivamente documental.
+
+**P46-00** (`experiments/v46_00_champion_audit.py`, exit code 0): 22 filas del leaderboard log
+auditadas con artefacto y sha256; extraccion de las afirmaciones de CHAMPION.md por tabla;
+reproduccion de la formula declarada; deteccion de la contradiccion interna; separacion de las
+cuatro magnitudes. Artefactos: `reports/p46_champion_audit.{json,md,csv}`.
+
+**P46-01** (`experiments/v46_01_integrar_notebook.py`, exit code 0): seccion 42, notebook 185 ->
+187 celdas, celda de codigo ejecutada con returncode 0, 0 secciones duplicadas.
+
+**Veredicto.** CASE B. `leaderboard_max_verified = 0.78306` (V03). `CHAMPION_STATUS =
+INCONSISTENTE_AUTOCORREGIDO`. Decision registrada como D-117.
+
+**Correcciones aplicadas a P45: splice de IDs y redaccion.**
+
+- Las decisiones de P45 se escribieron como D-030 y D-031, IDs ya ocupados por la fase v5.
+  Detectado al buscar el siguiente ID libre para P46. Renumeradas a D-115 y D-116, con nota de
+  correccion. El contenido no cambio. El registro de decisiones queda con 116 encabezados y 0
+  duplicados.
+- `METRIC_MATCH = TRUE` era una formulacion demasiado fuerte. Desdoblado en
+  `LOCAL_METRIC_REPRODUCED = TRUE` y `KAGGLE_SCORER_DIRECTLY_VERIFIED = FALSE`, porque el
+  codigo del scorer del host no esta en el repositorio. Actualizado el script, el JSON, el MD,
+  el CSV y la fila V45-00 del registro.
+
+**Hallazgo no previsto: la columna `macro_f1` del registro mezcla bases de medida.** 4 filas
+sobre holdout2 y 46 sobre el split D-004 supersedido. Las filas de V03 registran 0.8322 y
+0.8356 en esa base. Un maximo ingenuo sobre la columna devuelve S08 con 0.8743, que es una
+medida de holdout, no de corrected_cv. No se reescriben las filas historicas; se documenta el
+defecto y se fija la magnitud utilizable desde `features/oof_v03_final.npz`.
+
+**Errores propios durante la fase.** Una expresion rota en el generador de MD y dos
+referencias a una clave renombrada, ambos detectados porque el script se ejecuto de verdad y se
+comprobo el exit code, no solo `py_compile`. Un pipe a `tail` enmascaraba el exit code real en
+la primera ejecucion; se corrigio capturando el codigo sin pipe.
+
+**Sin push, sin merge, sin reset, sin rebase, sin PR.**

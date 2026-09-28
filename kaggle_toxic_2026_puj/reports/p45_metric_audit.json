@@ -1,7 +1,7 @@
 {
   "familia": "P45_METRIC_AUDIT",
   "experimento": "V45-00 (P0 auditoria de la metrica de la competicion)",
-  "fecha": "2026-09-27T23:49:14+00:00",
+  "fecha": "2026-09-28T00:17:52+00:00",
   "estado": "AUDIT_ONLY",
   "pregunta": "corrected_cv coincide exactamente con la metrica que usa Kaggle?",
   "reproduccion_v03": {
@@ -137,10 +137,13 @@
       0.46
     ]
   },
+  "LOCAL_METRIC_REPRODUCED": true,
+  "KAGGLE_SCORER_DIRECTLY_VERIFIED": false,
   "METRIC_MATCH": true,
+  "nota_sobre_METRIC_MATCH": "METRIC_MATCH=TRUE afirma la reproduccion de la metrica local y su identidad con f1_score(average='macro'). NO afirma que el scorer del host se haya leido: eso es KAGGLE_SCORER_DIRECTLY_VERIFIED, que es False porque el codigo del scorer no esta en el repositorio",
   "gastos": {
     "submissions": 0,
     "modelos_entrenados": 0,
-    "segundos": 11.0
+    "segundos": 11.6
   }
 }

@@ -276,7 +276,16 @@ def main() -> None:
 
     # --------------------------------------------------------- informes
     coincide_local = abs(macro_directo - corrected_cv) <= TOLERANCIA
-    metric_match = bool(reproduce and coincide_local and discrepancias == 0)
+    local_reproducido = bool(reproduce and coincide_local and discrepancias == 0)
+    # El codigo del scorer del host no esta en el repositorio (V19-00 lo leyo de la
+    # API de Kaggle pero no lo guardo). Por tanto NO se puede afirmar que el host
+    # usa 'macro' de forma directa. Se declaran dos banderas separadas.
+    scorer_en_repo = (PROJECT_ROOT / "data" / "external" / "metric_f1_score.py").exists()
+    kaggle_directo = False
+    metric_match = local_reproducido
+    log(f"   LOCAL_METRIC_REPRODUCED = {local_reproducido}")
+    log(f"   KAGGLE_SCORER_DIRECTLY_VERIFIED = {kaggle_directo} "
+        f"(scorer en el repositorio: {scorer_en_repo})")
     informe = {
         "familia": "P45_METRIC_AUDIT",
         "experimento": "V45-00 (P0 auditoria de la metrica de la competicion)",
@@ -326,7 +335,14 @@ def main() -> None:
             "optimo_macro3": resultados["macro_3"]["mejor_config"],
             "umbrales_congelados_v03": umbrales.tolist(),
         },
+        "LOCAL_METRIC_REPRODUCED": local_reproducido,
+        "KAGGLE_SCORER_DIRECTLY_VERIFIED": kaggle_directo,
         "METRIC_MATCH": metric_match,
+        "nota_sobre_METRIC_MATCH": (
+            "METRIC_MATCH=TRUE afirma la reproduccion de la metrica local y su "
+            "identidad con f1_score(average='macro'). NO afirma que el scorer del "
+            "host se haya leido: eso es KAGGLE_SCORER_DIRECTLY_VERIFIED, que es "
+            "False porque el codigo del scorer no esta en el repositorio"),
         "gastos": {
             "submissions": 0,
             "modelos_entrenados": 0,
@@ -383,6 +399,8 @@ def _csv(informe: dict[str, Any]) -> None:
     lineas.append(f"discriminante,muestra_oof_v03,{e['muestra_oof_de_v03']:.5f},")
     lineas.append(f"discriminante,brecha_samples,{e['brecha_samples']:+.5f},")
     lineas.append(f"discriminante,samples_excluido,{informe['samples_excluido_por_escala']},")
+    lineas.append(f"veredicto,LOCAL_METRIC_REPRODUCED,{informe['LOCAL_METRIC_REPRODUCED']},")
+    lineas.append(f"veredicto,KAGGLE_SCORER_DIRECTLY_VERIFIED,{informe['KAGGLE_SCORER_DIRECTLY_VERIFIED']},")
     lineas.append(f"veredicto,METRIC_MATCH,{informe['METRIC_MATCH']},")
     REPORTE_CSV.write_text("\n".join(lineas) + "\n", encoding="utf-8")
 
@@ -524,6 +542,10 @@ def _md(informe: dict[str, Any]) -> None:
         "## 6. Veredicto",
         "",
         f"**METRIC_MATCH = {informe['METRIC_MATCH']}**",
+        "",
+        f"- `LOCAL_METRIC_REPRODUCED` = **{informe['LOCAL_METRIC_REPRODUCED']}**",
+        (f"- `KAGGLE_SCORER_DIRECTLY_VERIFIED` = "
+        f"**{informe['KAGGLE_SCORER_DIRECTLY_VERIFIED']}**"),
         "",
         "Alcance exacto de esa afirmacion:",
         "",

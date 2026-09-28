@@ -3,7 +3,14 @@
 Proyecto: KAGGLE_TOXIC_2026_PUJ (https://www.kaggle.com/competitions/tweet-toxic-2026-puj)
 Metrica oficial: F1 Score, media column-wise de la F1 binaria de la clase positiva
 sobre HS, TR y AG (`f1_media_columnas`, D-009).
-Ultima actualizacion de este fichero: 2026-09-26, fase v16.
+Ultima actualizacion de este fichero: 2026-09-28, fase P46 (auditoria del campeon).
+
+**Estado verificado del campeon (P46, 2026-09-28).** `leaderboard_max_verified = 0.78306`,
+que corresponde a `v03_lr_union_thr` (V03), sha256
+`7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e`. Las 22 submissions
+registradas en `submissions/leaderboard_log.csv` tienen artefacto en disco, sin duplicados ni
+valores nulos, y **ninguna supera 0.78306**. Los valores 0.78535 y 0.78650 que aparecen mas
+abajo en este fichero son predicciones, no mediciones; ver el aviso de la seccion 4.
 
 ---
 
@@ -110,7 +117,16 @@ champion (hash, reproduccion celda a celda desde el artefacto congelado, reentre
 independiente y OOF canonico) y hash sha256 de cada salida. Medidas en
 `resultados/v16_01_tabla_de_challengers.csv`.
 
-| # | Clave | Fichero | Tasa | Celdas | LB combinado | sha256 |
+> **AVISO ANADIDO EN P46 (2026-09-28). La columna `LB combinado` de la tabla siguiente NO
+> contiene puntuaciones del leaderboard: contiene PREDICCIONES.** Se titula asi y el propio
+> fichero declara la formula que las produce, unas lineas mas abajo. `ch1` y `ch5` si se
+> enviaron, y sus puntuaciones reales son **0.77828** y **0.77495**, ambas REJECTED. Esos
+> valores medidos estan en la seccion *Estado al cierre de V16*, mas abajo en este mismo
+> fichero, y son los que valen. La tabla se conserva intacta como registro de lo que se
+> predijo en su momento, no como registro de lo que se midio. Verificacion y evidencia:
+> `reports/p46_champion_audit.{json,md,csv}`.
+
+| # | Clave | Fichero | Tasa | Celdas | LB combinado (PREDICTO, no medido) | sha256 |
 |---|---|---|---|---|---|---|
 | 1 | ch1 | `submissions/toxic_submission_v16_ch1_tasa_optima_transportada.csv` | 0.3836 | 66 | 0.78535 | `a1b91806f7201aa14a16d4b6d95f8032f04bb36812e417cd9e1c481a5a1ac032` |
 | 2 | ch5 | `submissions/toxic_submission_v16_ch5_tasa_optima_absoluta.csv` | 0.3980 | 116 | 0.78650 | `dac0d815465ada1df4b1c554deeb1b4a39d863226e0d8154dd3349d5cd0492d9` |
@@ -118,7 +134,7 @@ independiente y OOF canonico) y hash sha256 de cada salida. Medidas en
 | 4 | ch4 | `submissions/toxic_submission_v16_ch4_control_tasa_baja.csv` | 0.3576 | 24 | 0.78242 | `e0d6bb1cd71e0b49e8e14beb585779b8dc3eb8300892899db4ec21a4f8739d9c` |
 | 5 | ch3 | `submissions/toxic_submission_v16_ch3_peso_char_070.csv` | 0.3873 | 183 | 0.77431 | `d0d5e42e2b3ec5125721e801deb52206d904bb5bd41d506a547928893dec20a8` |
 
-`LB combinado` = 0.78306 + 0.12011 x delta_tasa + aciertos_netos_oof x 2.804e-05, y para
+`LB combinado` (PREDICCION, no medicion) = 0.78306 + 0.12011 x delta_tasa + aciertos_netos_oof x 2.804e-05, y para
 ch3, que cambia el modelo y no solo la regla, la base de perdidas por cambio de modelo
 del registro (-0.00875, media de v04, v05, v06, v07 y v09_p5).
 

@@ -1,0 +1,38 @@
+submission,experiment,local_score,leaderboard_score,dLB,artefacto,sha256,verified,source,status
+v00_plantilla,E00,,0.51494,,submissions/toxic_submission_v00_plantilla.csv,0dfb4d07dffc31d3d452f5e53508d259e6ab5c2ec0dcd67bd70e4b03c5016ecc,MEDIDO,submissions/leaderboard_log.csv (host Kaggle),REJECTED
+v01_baseline_tfidf_lr,B1,0.75778,0.75677,-0.00101,submissions/toxic_submission_v01_baseline_tfidf_lr.csv,0c02c8aad81a8458709c908ef80265cb317f4965f8a43b0e57cf96ef021e2ec7,MEDIDO,submissions/leaderboard_log.csv (host Kaggle),REJECTED
+v02_lr_union,MOD-03b_BEST,0.79270,0.77993,-0.01277,submissions/toxic_submission_v02_lr_union.csv,228068c6ce0475e88662d3459e6945afc2ab20a5f3ecc529ca70ccabb4208043,MEDIDO,submissions/leaderboard_log.csv (host Kaggle),REJECTED
+v03_lr_union_thr,MOD-04 / TH-01,0.79890,0.78306,-0.01584,submissions/toxic_submission_v03_lr_union_thr.csv,7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e,MEDIDO,submissions/leaderboard_log.csv (host Kaggle),BEST_VERIFIED_LB
+v04_ens04_mediana,ENS-03,0.79850,0.77510,-0.02340,submissions/toxic_submission_v04_ens04_mediana.csv,c37cf1f5f9159b22c5d91200c5cff12c63c89c1ef3f49ac458b8307dc2a9e77e,MEDIDO,submissions/leaderboard_log.csv (host Kaggle),REJECTED
+v05_optuna,OPT-01,0.80390,0.77602,-0.02788,submissions/toxic_submission_v05_optuna.csv,a7f68a8679dadb13966627321116ccb23594eabd55c57c6a689ba262cba10278,MEDIDO,submissions/leaderboard_log.csv (host Kaggle),REJECTED
+v06_robustez_c1,S04,0.79290,0.77227,-0.02063,submissions/toxic_submission_v06_robustez_c1.csv,fc943e688259c89ca74c20499a2ccb025d700eabdf11aec38fe0447069af10fa,MEDIDO,submissions/leaderboard_log.csv (host Kaggle),REJECTED
+v07_robustez_mindf5,S06,0.79930,0.77034,-0.02896,submissions/toxic_submission_v07_robustez_mindf5.csv,4ba99f4daa62a9c04bd988b80873a8b9853420803bc8909bad7c1011ccf89e99,MEDIDO,submissions/leaderboard_log.csv (host Kaggle),REJECTED
+v08_meta_v2,E2-02-META,0.78740,0.78163,-0.00577,submissions/toxic_submission_v08_meta_v2.csv,b59852f6e71527d9d551156b2d974ac0232359bf3aef3360b5df84e123aa94b2,MEDIDO,submissions/leaderboard_log.csv (host Kaggle),REJECTED
+v09_candidate_a,E2-09,0.78090,0.77895,-0.00199,submissions/toxic_submission_v09_candidate_a.csv,8e5a95d3bd6a3e4e59de64f31739cf721a4237136ad92d3b09666e9d442d4927,MEDIDO,submissions/leaderboard_log.csv (host Kaggle),REJECTED
+v10_candidate_b,E2-10,0.77930,0.77978,+0.00047,submissions/toxic_submission_v10_candidate_b.csv,92caa41e379f10184c71a3d24775ca10d054297afb4a22f2c84933ec8f43d288,MEDIDO,submissions/leaderboard_log.csv (host Kaggle),REJECTED
+v11_candidate_c,E2-11,0.77970,0.78150,+0.00184,submissions/toxic_submission_v11_candidate_c.csv,066d46ca12e95fde01340300a0854768f2de83b65539dca82da1e60be2858a8d,MEDIDO,submissions/leaderboard_log.csv (host Kaggle),REJECTED
+v08_p1_fold_ensemble,V8-04,0.77721,0.77470,-0.00836,submissions/toxic_submission_v08_p1_fold_ensemble.csv,3bbcc6bb1c7e58caec6a3d88605acebd9298be94a2c3c4c31e51dd5b642820b5,MEDIDO,submissions/leaderboard_log.csv (host Kaggle),REJECTED
+v09_p5_c_por_etiqueta,V9-05,0.77752,0.77781,-0.00525,submissions/toxic_submission_v09_p5_c_por_etiqueta.csv,610abaa16d03c13da0820a859ea7b1d54d4d6dc918b241e3fdcee28a4d089206,MEDIDO,submissions/leaderboard_log.csv (host Kaggle),REJECTED
+v12_p7_promedio_repeticiones,V12-P7,0.78228,0.77122,-0.01184,submissions/toxic_submission_v12_p7_promedio_repeticiones.csv,6157ef15e2da21db69de13773353dd5b49945a0991421849c640b82c138341d4,MEDIDO,submissions/leaderboard_log.csv (host Kaggle),REJECTED
+56597267,V20-01,0.77800,0.77663,-0.00643,submissions/toxic_submission_v20_01_regla_hs_interaccion.csv,cbb39d44be341f1d462de40257122184944af88e8f96d90324ddf93a4956873f,MEDIDO,submissions/leaderboard_log.csv (host Kaggle),REJECTED
+v16_ch5_tasa_optima_absoluta,V16-05,,0.77495,-0.00811,submissions/toxic_submission_v16_ch5_tasa_optima_absoluta.csv,dac0d815465ada1df4b1c554deeb1b4a39d863226e0d8154dd3349d5cd0492d9,MEDIDO,submissions/leaderboard_log.csv (host Kaggle),REJECTED
+v16_ch1_tasa_optima_transportada,V16-01,,0.77828,-0.00478,submissions/toxic_submission_v16_ch1_tasa_optima_transportada.csv,a1b91806f7201aa14a16d4b6d95f8032f04bb36812e417cd9e1c481a5a1ac032,MEDIDO,submissions/leaderboard_log.csv (host Kaggle),REJECTED
+v16_ch7_C1p5,V16-07,0.77665,0.77296,-0.01010,submissions/toxic_submission_v16_ch7_C1p5.csv,197feee3a4b6a64a3def249b0b0265491172da521e98c4b25bbd40e7d9530456,MEDIDO,submissions/leaderboard_log.csv (host Kaggle),REJECTED
+v16_ch8_C2p5,V16-08,0.77675,0.77707,-0.00599,submissions/toxic_submission_v16_ch8_C2p5.csv,2a533a442ab0a8a30b4ba46f56b6a32386baf848730da02e0a5a2bc286c3fb90,MEDIDO,submissions/leaderboard_log.csv (host Kaggle),REJECTED
+v16_ch9_mindf1,V16-09,0.76553,0.76978,-0.01328,submissions/toxic_submission_v16_ch9_mindf1.csv,827da9e7f695b7b69c6cc03558d796d18670f47227a8916cc663c42eb9b94449,MEDIDO,submissions/leaderboard_log.csv (host Kaggle),REJECTED
+56599802,V23-01,0.79041,0.77938,-0.00368,submissions/toxic_submission_v23_01_svd_rbf_sigmoid.csv,8f750e910767756c5839f601fa2d13de014fd15b3e5bdae906682b80e1d53e69,MEDIDO,submissions/leaderboard_log.csv (host Kaggle),REJECTED
+
+afirmacion_no_medida,experimento,valor_afirmado,,,,,UNSUPPORTED_CLAIM_PREDICTION,CHAMPION.md,
+ch1 (linea 115),v16_ch1_tasa_optima_transportada,0.78535,,,,,UNSUPPORTED_CLAIM_PREDICTION,CHAMPION.md,"medido real 0.77828, discrepancia +0.00707"
+ch5 (linea 116),v16_ch5_tasa_optima_absoluta,0.78650,,,,,UNSUPPORTED_CLAIM_PREDICTION,CHAMPION.md,"medido real 0.77495, discrepancia +0.01155"
+ch2 (linea 117),no encontrada en el log,0.78418,,,,,UNSUPPORTED_CLAIM_PREDICTION,CHAMPION.md,no enviada: sin valor medido
+ch4 (linea 118),no encontrada en el log,0.78242,,,,,UNSUPPORTED_CLAIM_PREDICTION,CHAMPION.md,no enviada: sin valor medido
+ch3 (linea 119),no encontrada en el log,0.77431,,,,,UNSUPPORTED_CLAIM_PREDICTION,CHAMPION.md,no enviada: sin valor medido
+
+reproduccion_formula,clave,delta_tasa,neto_oof,,lb_combinado_recalculado,,reproduce,CHAMPION.md,
+ch1,,0.019,0,,0.785342,,True,CHAMPION.md,afirmado 0.78535
+ch5,,0.0335,-21,,0.786495,,True,CHAMPION.md,afirmado 0.7865
+
+contradiccion_interna_champion_md,clave,valor_medido,,,,,MEDIDO,CHAMPION.md,
+ch1,,0.77828,,,,,MEDIDO,CHAMPION.md,REJECTED
+ch5,,0.77495,,,,,MEDIDO,CHAMPION.md,REJECTED

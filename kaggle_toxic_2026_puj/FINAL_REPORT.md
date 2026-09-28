@@ -920,3 +920,91 @@ interpretar cualquier mejora local pequena como promesa de mejora en el externo.
 
 *Seccion generada por `experiments/v45_00_metrica_audit.py` y
 `experiments/v45_01_joint_label_structure.py` el 2026-09-27. Sin push: la rama sigue local.*
+
+
+---
+
+## Addendum P46 (2026-09-28) - El campeon verificado
+
+### El veredicto
+
+```text
+leaderboard_max_verified = 0.78306
+champion                = v03_lr_union_thr  (V03)
+sha256                  = 7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e
+CASE                    = B
+CHAMPION_STATUS         = INCONSISTENTE_AUTOCORREGIDO
+```
+
+**Ninguna de las 22 submissions enviadas supero a V03.** Cada una tiene artefacto en disco con
+su sha256, y el registro no tiene duplicados, nulos ni valores fuera de rango.
+
+### Por que la contradiccion no era una contradiccion
+
+`CHAMPION.md` atribuia a `v16_ch1` un LB de 0.78535 y a `v16_ch5` un LB de 0.78650. La columna
+que contiene esos numeros se titula, en su propio encabezado, **`LB combinado`**, y unas lineas
+mas abajo el fichero declara la formula que la produce:
+
+```text
+LB combinado = 0.78306 + 0.12011 x delta_tasa + aciertos_netos_oof x 2.804e-05
+```
+
+Recalculada con los parametros que el propio texto da, esa formula devuelve 0.785342 y
+0.786495: desviaciones de **7.9e-06** y **5.2e-06** respecto a los valores afirmados. Eran
+**predicciones** del modelo causal de la fase v16, no puntuaciones del host.
+
+Y lo mas importante: las mediciones reales de esas mismas submissions estan **en el mismo
+fichero**, en la seccion *Estado al cierre de V16*, y son **0.77828** y **0.77495**, ambas
+marcadas REJECTED. No habia dos fuentes en conflicto. Habia una prediccion y una medicion, y la
+medicion es la que vale. El propio CHAMPION.md ya lo habia escrito, en una tabla 110 lineas mas
+abajo de la que se estaba citando.
+
+Se conserva la tabla original intacta como registro de lo que se predijo, con un aviso que
+marca la columna como prediccion. No se borra historia.
+
+### Las cuatro magnitudes que no deben confundirse
+
+| magnitud | valor | quien |
+|---|---:|---|
+| mejor corrected_cv utilizable | 0.7772114525165721 | OOF canonico de 1483 filas |
+| mejor local del log | 0.80390 | `v05_optuna`, LB 0.77602 |
+| mejor submission por LB | **0.78306** | `v03_lr_union_thr` |
+| mejor modelo congelado | 0.7772114525 | V03, LB 0.78306 |
+
+El mejor local no es el mejor LB. `v05_optuna` tiene el mejor local del registro y pierde
+0.007 de LB. Esa distancia es la razon por la que el log de leaderboard, y no la mejor cifra
+local, debe decidir el campeon.
+
+### Un defecto del registro que conviene conocer
+
+La columna `macro_f1` de `experiments.csv` **mezcla tres bases de medida**: 4 filas sobre el
+holdout2 de 248 filas, 46 sobre el split D-004 que D-015/D-016 supersedieron, y el resto sin
+base declarada. Las filas historicas de V03 registran 0.8322 y 0.8356, no 0.7772114525.
+
+Un maximo ingenuo sobre esa columna devuelve **S08 con 0.8743**, que es una medida de holdout.
+Cualquiera que ordene el registro por esa columna sin clasificar la base obtiene rankings
+invalidos. La magnitud de CV utilizable se lee del artefacto congelado
+`features/oof_v03_final.npz`.
+
+No se reescribieron las filas historicas. Cambiar 46 valores seria reescribir historia sin
+evidencia de que el valor corregido sea el que se midio en su momento.
+
+### Correccion a P45
+
+`METRIC_MATCH = TRUE` era demasiado fuerte. Queda desdoblado:
+
+```text
+LOCAL_METRIC_REPRODUCED           = TRUE
+KAGGLE_SCORER_DIRECTLY_VERIFIED   = FALSE
+```
+
+El codigo del scorer del host no esta en el repositorio. Lo que si esta demostrado es que la
+metrica local es exactamente `f1_score(average="macro")` y que `corrected_cv` se reproduce al
+ultimo digito. Eso basta para que las comparaciones internas del proyecto sean coherentes, y
+no basta para afirmar que se ha leido el scorer de Kaggle.
+
+Ademas, las decisiones que P45 escribio como D-030 y D-031 ocupan IDs ya usados por la fase
+v5. Renumeradas a D-115 y D-116.
+
+*Seccion generada por `experiments/v46_00_champion_audit.py` y
+`experiments/v46_01_integrar_notebook.py`. Sin push: la rama sigue local.*

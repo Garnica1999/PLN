@@ -3807,7 +3807,9 @@ evaluaciones de holdout2, segunda particion no ejecutada, test no utilizado, V03
 con identidad verificada. Registro en 242 filas con 242 claves unicas y 23 campos.
 
 
-### D-030. La metrica local es la macro de 3 etiquetas, y `samples` queda excluido
+> **Nota de correccion (P46, 2026-09-28).** Estas dos decisiones se escribieron inicialmente como D-030 y D-031, que ya estaban ocupados por decisiones de la fase v5 (alcance de datos externos y estado de la representacion). Se renumeran a D-115 y D-116. El contenido no cambio.
+
+### D-115. La metrica local es la macro de 3 etiquetas, y `samples` queda excluido
 
 **Contexto.** P45 abria con la pregunta de si `corrected_cv` coincide con la metrica del
 host. Sin resolverlo, todo delta comparativo posterior carecia de base.
@@ -3828,7 +3830,7 @@ umbrales) se registra como pendiente menor, no como bloqueante.
 **Lo que no se decide.** No se afirma que el host use `macro` de forma directa. El codigo del
 scorer no esta en el repositorio.
 
-### D-031. La estructura conjunta es real pero no explotable: CLOSED
+### D-116. La estructura conjunta es real pero no explotable: CLOSED
 
 **Contexto.** P45-B preguntaba si existe una formulacion de prediccion conjunto genuinamente
 nueva, no equivalente a las ya probadas.
@@ -3856,3 +3858,48 @@ entrenamiento adicional es la misma regla.
 transferencia local->leaderboard es ruidosa, coherente con que 0 de 22 submissions superaran a
 V03. El discriminante de escala no depende de esa correlacion: se apoya en el valor absoluto
 que el host reporto.
+
+
+### D-117. El campeon verificado es V03 con LB 0.78306; los 0.78535 y 0.78650 eran predicciones
+
+**Contexto.** `CHAMPION.md` atribuia a `v16_ch1` un LB de 0.78535 y a `v16_ch5` un LB de
+0.78650, mientras `submissions/leaderboard_log.csv` registraba como maximo 0.78306. Si la
+afirmacion de CHAMPION.md fuera cierta, V03 no seria el campeon, y todas las decisiones del
+proyecto estarian apoyadas en una referencia equivocada.
+
+**Jerarquia de evidencia aplicada.** 1. archivo de submission, 2. registro externo asociado,
+3. leaderboard log estructurado, 4. metadata de experimento, 5. reports, 6. notebook,
+7. CHAMPION.md, 8. texto narrativo.
+
+**Evidencia.** La tabla de CHAMPION.md de la seccion 4 se titula, en su propio encabezado,
+**`LB combinado`**, y el fichero declara la formula que produce esos numeros:
+`0.78306 + 0.12011 x delta_tasa + aciertos_netos_oof x 2.804e-05`. Recalculada con los
+parametros que el propio texto da, reproduce 0.785342 y 0.786495, con desviaciones de
+7.9e-06 y 5.2e-06 respecto a los valores afirmados. **Son predicciones, no mediciones.**
+
+Las mediciones reales de esas mismas submissions son 0.77828 y 0.77495, y estan en la seccion
+*Estado al cierre de V16* del mismo CHAMPION.md, marcadas REJECTED. Los 22 registros del log
+tienen artefacto en disco, sin duplicados, sin nulos y sin valores fuera de rango, y ninguno
+supera 0.78306.
+
+**Decision.** `CASE B`.
+- `leaderboard_max_verified = 0.78306` (`v03_lr_union_thr`).
+- `baseline_operativo = V03`, sha256 `7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e`.
+- `CHAMPION_STATUS = INCONSISTENTE_AUTOCORREGIDO`: no hay dos fuentes en conflicto, hay una
+  prediccion y una medicion en el mismo fichero, y la medicion es la que vale.
+
+**Accion sobre CHAMPION.md.** No se borra historia. Se anade un aviso que marca la columna como
+prediccion, se renombra el encabezado a `LB combinado (PREDICTO, no medido)`, se etiqueta la
+formula como prediccion, y se ancla el estado verificado en la cabecera del fichero.
+
+**Hallazgo secundario, relevante para el registro.** La columna `macro_f1` de
+`experiments.csv` **mezcla tres bases de medida**: 4 filas sobre el holdout2 de 248 filas y 46
+sobre el split D-004, supersedido por D-015/D-016. Las filas historicas de V03 registran
+0.8322 y 0.8356 en esa base, no 0.7772114525. Ordenar esa columna sin clasificar la base
+produce rankings invalidos: un maximo ingenuo devuelve S08 con 0.8743, que es una medida de
+holdout. La magnitud de CV utilizable es la del OOF canonico, y se lee del artefacto congelado
+`features/oof_v03_final.npz`, no de esa columna.
+
+**Lo que no se decide.** No se reescriben las filas historicas del registro para "corregir" su
+base. Cambiar 46 valores historicos seria reescribir historia sin evidencia de que el valor
+nuevo sea el que se midio en su momento.

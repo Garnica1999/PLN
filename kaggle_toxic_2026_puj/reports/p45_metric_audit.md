@@ -2,7 +2,7 @@
 
 Generado por `experiments/v45_00_metrica_audit.py` (V45-00 (P0 auditoria de la metrica de la competicion)).
 
-Fecha 2026-09-27T23:49:14+00:00. **0 modelos, 0 submissions.**
+Fecha 2026-09-28T00:17:52+00:00. **0 modelos, 0 submissions.**
 
 ## 1. Reproduccion de V03
 
@@ -98,6 +98,9 @@ El pearson(local_f1, kaggle_f1) es 0.4876, no alto. Eso no habilita `samples`, p
 ## 6. Veredicto
 
 **METRIC_MATCH = True**
+
+- `LOCAL_METRIC_REPRODUCED` = **True**
+- `KAGGLE_SCORER_DIRECTLY_VERIFIED` = **False**
 
 Alcance exacto de esa afirmacion:
 

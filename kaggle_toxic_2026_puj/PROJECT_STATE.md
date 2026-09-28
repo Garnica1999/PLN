@@ -789,3 +789,45 @@ cuando ya estaba medido y era negativo; V44-03 declaraba 173->176 celdas cuando 
 fue 177->181), una celda del notebook cuya tabla no producia ningun script, y un fallback
 copy-pegado en `v44_02_pls_correcto.py` que devolvia la decision de V44-01. Ninguna cifra
 experimental cambio. Commit `2285423`.
+
+
+---
+
+## Fase P46 (2026-09-28) - Champion reconciliation
+
+**Que se resolvio.** El verdadero mejor resultado de leaderboard del proyecto.
+
+```text
+leaderboard_max_verified = 0.78306   (v03_lr_union_thr = V03)
+baseline_operativo       = V03
+sha256                    = 7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e
+CHAMPION_STATUS           = INCONSISTENTE_AUTOCORREGIDO
+CASE                      = B
+```
+
+**Por que los 0.78535 y 0.78650 no son Scores.** La columna que los contiene se titula
+`LB combinado` y el propio CHAMPION.md declara la formula que la produce. Recalculada, los
+reproduce con desviaciones de 7.9e-06 y 5.2e-06. **Son predicciones del modelo causal de la
+fase v16.** Las mediciones reales de `v16_ch1` y `v16_ch5` son 0.77828 y 0.77495, ambas
+REJECTED, y estan en el mismo fichero.
+
+**Integridad del log.** 22 filas, 0 duplicados, 0 nulos, 0 fuera de rango, 22/22 con artefacto
+en disco. Ninguna supera 0.78306. **0 de 22 submissions superaron V03**, y ahora eso esta
+respaldado por artefacto y hash, no por lectura de una tabla.
+
+**Las cuatro magnitudes separadas.** mejor corrected_cv utilizable 0.7772114525165721 (OOF
+canonico de 1483 filas); mejor local del log 0.80390 (`v05_optuna`, LB 0.77602); mejor
+submission por LB 0.78306 (V03); mejor modelo congelado V03. **El mejor local no es el mejor
+LB**, y la unica magnitud que decide el campeon es la tercera.
+
+**Defecto del registro detectado.** La columna `macro_f1` de `experiments.csv` mezcla tres
+bases de medida (holdout2, split D-004 supersedido, OOF canonico). Ordenarla sin clasificar la
+base produce rankings invalidos. Documentado en D-117; no se reescriben las filas historicas.
+
+**Correccion de P45 aplicada.** Las decisiones que P45 escribio como D-030 y D-031 estanban ya
+ocupadas por la fase v5. Renumeradas a D-115 y D-116. Ademas, `METRIC_MATCH = TRUE` se
+desdobla: `LOCAL_METRIC_REPRODUCED = TRUE` y `KAGGLE_SCORER_DIRECTLY_VERIFIED = FALSE`,
+porque el codigo del scorer del host no esta en el repositorio.
+
+**Estado del campeon.** Sin cambios. V03 intacto. 0 submissions, 0 consultas a Kaggle,
+0 modelos, holdout y test sin usar. 3 submissions reservadas.
