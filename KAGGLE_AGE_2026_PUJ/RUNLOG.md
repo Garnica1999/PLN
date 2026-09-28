@@ -1767,3 +1767,50 @@ ids y titulos unicos, 0 artefactos faltantes, **9 celdas ejecutadas con 0 errore
 anteriores y `notebooks/09_final_pipeline.ipynb` obsoleto respecto a V20.
 
 Sin push, con V12 y V20 intactos, y sin abrir ninguna hipotesis nueva.
+
+## 2026-09-27 · V25 — Seleccion supervisada de features por informacion mutua (D-060)
+
+La pregunta era una: **existe evidencia de que V20 contiene features ruidosas que, al eliminarse
+con seleccion supervisada hecha dentro de cada fold, mejoren el macro-F1 de forma reproducible?**
+
+**La procedencia se verifico antes de entrenar, y por tres vias.** Las 73 features label-informed
+se construyen con `y_train` del training fold, se escriben solo en `valid_idx`, y usan el **mismo
+array de grupos de duplicado y los mismos folds** que V20, comparados array a array y no por
+nombre de funcion. **LEGAL.** El inventario cubre las 279 una a una, con 279 nombres unicos y una
+columna constante.
+
+**Hubo que estandarizar antes del mutual information, y no es un detalle.** Las 73 supervisadas
+llegan a magnitud absoluta 59.439 frente a las probabilidades de miembro, que viven en [0, 1]. El
+estimador por vecino mas cercano no es invariante a escala, luego sin estandarizar el ranking no
+mide senal. Se estandariza dentro de cada training fold y la validacion nunca participa.
+
+**El resultado.** T0 reproduce 0,6097782 exacto. T1, con K = 139, da 0,6091492: delta -0,000629,
+1 de 5 folds positivos, 1.042 rescates contra 1.143 danos, neto -101, y solo 3.545 filas cambian.
+El F1 por clase es practicamente identico.
+
+**El hallazgo util es el por bloque.** Sobreviven con frecuencia 1,000 las 78 probabilidades del
+ensamble y las 6 de NB-SVM, con MI media de 0,215 y 0,208. Nunca sobreviven 74 de las 87
+estructuradas ni 30 de las 35 densas, con MI media de 0,012. **El mutual information alto no es
+ruido: es la prediccion de los miembros que sostiene el modelo.** La seleccion no elimina ruido,
+elimina senal, y por eso no mejora. La seleccion es ademas estable: 137 features en los cinco folds
+y 138 en ninguno.
+
+**La distincion que ya habia confundido dos veces, ahora registrada en el artefacto**: la cadena
+de cinco umbrales en solitario da 0,6046893 y el blend de cuatro cuartos da 0,6097782. En la
+primera ejecucion el abort automatico la cazo: T0 no reproducia porque estaba midiendo la cadena
+en vez del blend. El mecanismo de seguridad funciono, y la correccion es la misma distincion que
+en V22 y V23.
+
+**Decision**: SUPERVISED_FEATURE_SELECTION = CLOSED. Sin submission, sin bootstrap, sin probar
+otro K y sin probar otro selector. Con esto queda cerrado el tercer eje abierto de V22.
+
+**Cuatro bugs propios, los cuatro cazados por `ruff` y ninguno por `ast`.** El parametro de
+`reconstruye` se escribio `cumuladas` sin la "a" inicial mientras el cuerpo usaba `acumuladas`; una
+comprehension usaba `f`, que era la variable de la comprehension anterior y cuyo scope no
+sobrevive; la reconstruccion indexaba la ultima CDF con `n_clases - 1` en vez de
+`n_umbral - 1`, saliendose del array; y dos identificadores CJK se colaron en funciones inutiles.
+`ast.parse` no detecta ninguno de los cuatro, porque solo valida nombres en ejecucion. Para eso
+exige el brief `ruff`, y para eso sirve.
+
+Auditoria de idioma: 0 errores. Notebook con la seccion 33 y 11 celdas ejecutadas sin error.
+Sin push, con V20 intacto y sin submission.

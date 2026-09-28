@@ -1812,3 +1812,71 @@ Tras declarar la saturación se probó la vía indicada como trabajo futuro:
   `reports/v24_tabla_maestra.csv`, `reports/figures/v24_evolucion_corrected_cv.png`,
   `scripts/v24_notebook_reconciliacion.py`, seccion 31 de
   `notebooks/99_entrega_consolidado.ipynb`.
+
+## D-060 — V25: la seleccion supervisada no elimina ruido, elimina senal (CLOSED)
+
+- **Observation**: V22 cerro el frente de representaciones y dejo abierta la seleccion
+  supervisada de features. V24 fue solo documental. Carlos pidio evaluar si las 279 features
+  contienen ruido que perjudica a V20.
+- **Pregunta que se responde, y no otra**: > Existe evidencia de que V20 contiene un subconjunto
+  significativo de features ruidosas que, al eliminarse mediante seleccion supervisada realizada
+  correctamente dentro de cada fold, mejore de forma reproducible el macro-F1?
+- **La procedencia, verificada antes de entrenar** (`v25_00_inventario.py`, tres comprobaciones
+  independientes): las **73 features label-informed** se construyen con `y_train` **del training
+  fold**, se escriben **solo en `valid_idx`**, y usan **el mismo array de grupos de duplicado y los
+  mismos folds** que V20, comparados array a array y no por nombre de funcion. **LEGAL.** El
+  inventario cubre las 279 una a una: 78 miembros del ensamble, 35 densas, 87 estructuradas, 73
+  label-informed y 6 NB-SVM, con 279 nombres unicos y una columna constante.
+- **Por que hay que estandarizar antes de medir el mutual information**: `mutual_info_classif`
+  estima con vecino mas cercano y **la metrica de distancia no es invariante a escala**. Las 73
+  supervisadas llegan a magnitud absoluta **59.439** frente a las probabilidades de miembro, que
+  viven en [0, 1]. Sin estandarizar, el estimador compara distancias en unas columnas y en otras
+  no, y el ranking deja de medir senal. Se estandariza **dentro de cada training fold** y la
+  validacion nunca participa.
+- **Medicion**, con T0 y T1 usando **el mismo codigo de V20**, la misma `HIERBA` y la misma cadena
+  de umbrales, luego la diferencia entre ellos **no puede ser otra cosa que las columnas
+  seleccionadas**:
+
+  | Modelo | corrected_cv | Delta | Folds + | rescue | damage | net | filas |
+  |---|---|---|---|---|---|---|---|
+  | T0 V20 sin seleccion | **0,6097782** | - | 0/5 | - | - | 0 | 0 |
+  | T1 seleccion MI top 50% (K=139) | 0,6091492 | **-0,000629** | **1/5** | 1.042 | 1.143 | **-101** | 3.545 |
+
+- **El hallazgo util es el por bloque**, no el delta: la seleccion **no elimina ruido, elimina
+  senal**. Sobreviven con frecuencia **1,000** las **78 probabilidades del ensamble** y las **6 de
+  NB-SVM**, con MI media de 0,215 y 0,208. **Nunca** sobreviven **74 de las 87 estructuradas** ni
+  **30 de las 35 densas**, con MI media de 0,012. El mutual information alto **no es ruido: es la
+  prediccion de los miembros que sostiene el modelo**, y el boosting la estaba usando.
+- **La seleccion es estable**: 137 features en los cinco folds y 138 en ninguno. La mitad estable
+  no es casual, y desde luego no es ruido.
+- **La perdida es pequena y repartida**: 1.042 rescates contra 1.143 danos, neto **-101**, y solo
+  3.545 filas cambian. El F1 por clase es practicamente identico: la caida se reparte y **ninguna
+  clase se ve afectada de forma especifica**.
+- **Decision**: **`SUPERVISED_FEATURE_SELECTION = CLOSED`.** Delta -0,000629, **1 de 5** folds
+  positivos, gate no cumplido por las dos vias. Sin submission, sin bootstrap (el brief lo reserva
+  al caso en que se supera el gate de delta), **sin probar otro K y sin probar otro selector**.
+- **Reason**: la hipotesis era plausible y la evidencia la refuta con mecanismo, no con magnitud.
+  La mitad de las variables que el mutual information considera mas informativas son
+  **probabilidades de los miembros del ensamble**, y la metrica macro-F1 depende de ellas. Quitar
+  ruido exigiria que el MI alto fuera ruido, y no lo es. El resultado es coherente con V15, que ya
+  habia visto que podar empeora, pero por un **mecanismo distinto y mas claro**: V15 podaba por
+  redundancia no supervisada, y V25 muestra que la seleccion **supervisada** tampoco mejora porque
+  lo que ordena son las probabilidades del ensamble, no la calidad de las variables.
+- **Consequences**: (1) **la familia de seleccion de features queda cerrada**, y con ella el tercer
+  eje abierto de V22; (2) `experiments.csv` pasa a **130** con `V25-00-INVENTARIO` (auditoria, sin
+  entrenar) y `V25-01-SELECCION-MI`; (3) **V20 sigue siendo el champion** con LB **0,62689** intacto;
+  (4) no se genera submission y no se abre ninguna hipotesis nueva.
+- **Cuatro bugs propios cazados por `ruff` y no por `ast`**, todos en `v25_01_seleccion.py`:
+  el parametro de `reconstruye` se escribio `cumuladas` sin la "a" inicial mientras el cuerpo
+  usaba `acumuladas`; una comprehension usaba `f` de la comprehension anterior, cuyo scope no
+  sobrevive; la reconstruccion indexaba la ultima CDF con `n_clases - 1` en vez de
+  `n_umbral - 1`, que se salia del array; y dos identificadores CJK se colaron en funciones
+  inutiles. **`ast.parse` no detecta ninguno de los cuatro**: solo valida nombres en ejecucion. Eso
+  es exactamente para lo que el brief exige `ruff`.
+- **Evidence**: `experiments/v25_00_inventario.json`, `experiments/v25_01_seleccion.json`,
+  `experiments/v25_02_auditoria.json`, `reports/v25_feature_inventory.csv`,
+  `reports/v25_feature_selection.md`, `reports/v25_feature_selection.csv`,
+  `reports/v25_feature_selection_frequency.csv`, `reports/v25_00_inventario.md`,
+  `reports/v25_02_auditoria.md`, `reports/figures/v25_frecuencia_seleccion.png`,
+  `reports/figures/v25_delta_por_fold.png`, seccion 33 de
+  `notebooks/99_entrega_consolidado.ipynb`.

@@ -198,6 +198,36 @@
   mecanismo y no de hiperparametro.
 - **No se abre ninguna otra familia** mientras la ordinal tenga un challenger confirmado por leaderboard.
 
+## V25 · SELECCION SUPERVISADA DE FEATURES (2026-09-27) CERRADA — elimina senal, no ruido (D-060)
+
+- **`SUPERVISED_FEATURE_SELECTION = CLOSED`.** T1 (mutual information, top 50 por ciento,
+  K = **139**) da **0,6091492** frente al control T0 **0,6097782** que reproduce exacto. Delta
+  **-0,000629**, **1/5** folds positivos, neto **-101**, 3.545 filas cambian. Gate no cumplido.
+  **V20 sigue siendo el champion** con LB **0,62689** intacto.
+- **La procedencia de las 73 label-informed se verifico ANTES de entrenar**, por codigo, por
+  comparacion array a array de los grupos de duplicado y por comparacion de los folds: se
+  construyen con `y_train` del training fold y usan la **misma particion** que V20. **LEGAL.**
+- **Hubo que estandarizar antes del mutual information**: las 73 supervisadas llegan a magnitud
+  **59.439** frente a probabilidades en [0, 1], y el estimador por vecino mas cercano no es
+  invariante a escala. Se estandariza dentro de cada training fold.
+- **El hallazgo es el por bloque, no el delta**: sobreviven con frecuencia **1,000** las **78
+  probabilidades del ensamble** y las **6 de NB-SVM**; **nunca** sobreviven **74 de las 87
+  estructuradas** ni **30 de las 35 densas**. **El mutual information alto no es ruido: es la
+  prediccion de los miembros que sostiene el modelo.** La seleccion **no elimina ruido, elimina
+  senal**, y por eso no mejora.
+- **La seleccion es estable**: 137 features en los cinco folds, 138 en ninguno. No es ruido
+  descartado, es la mitad que sostiene el modelo.
+- **La distincion que ya habia confundido dos veces queda registrada en el artefacto**: la cadena
+  de cinco umbrales en solitario da **0,6046893** y el **blend** de cuatro cuartos da
+  **0,6097782**. Cualquier comparacion contra V20 tiene que hacerse contra el blend.
+- **Cuatro bugs propios cazados por `ruff` y no por `ast`**: un parametro mal escrito
+  (`cumuladas` sin "a"), una variable de comprehension que no sobrevive al scope, un indice
+  fuera de array y dos identificadores CJK. `ast.parse` no detecta ninguno.
+- **Entregables**: `scripts/v25_00_inventario.py`, `scripts/v25_01_seleccion.py`,
+  `scripts/v25_02_notebook.py`, `reports/v25_feature_inventory.csv`,
+  `reports/v25_feature_selection.md`, `reports/v25_feature_selection.csv`,
+  `reports/v25_feature_selection_frequency.csv`. `experiments.csv` pasa a **130**.
+
 ## V24 · RECONCILIACION DOCUMENTAL (2026-09-27) CERRADA — la causa era estructural (D-059)
 
 - **Fase actual: V24, reconciliacion documental. Sin experimento, sin submission, sin hipotesis

@@ -1,0 +1,64 @@
+{
+  "fase": "V25 00 inventario y procedencia",
+  "fecha": "2026-09-27",
+  "experimenta": false,
+  "n_features": 279,
+  "n_filas": 169336,
+  "bloques": {
+    "estructurado": 87,
+    "miembro_ensamble": 78,
+    "label_informed": 73,
+    "denso_textometrico": 35,
+    "nbsvm_palabra": 6
+  },
+  "procedencia": {
+    "codigo_calcula_con_y_train": true,
+    "codigo_escribe_solo_en_validacion": true,
+    "codigo_pasa_y_train_a_la_firma": true,
+    "mismo_array_de_grupos": true,
+    "mismos_folds_de_validacion": true,
+    "tamanos_de_fold": [
+      33868,
+      33868,
+      33867,
+      33866,
+      33867
+    ],
+    "veredicto": "LEGAL: construidas con las etiquetas del training fold y con la misma particion de folds que V20"
+  },
+  "escala": {
+    "supervisada": {
+      "n_columnas": 73,
+      "magnitudes_distintas_mediana": 2049,
+      "magnitudes_distintas_maxima": 155998,
+      "max_absoluto": 59439.0,
+      "columnas_constantes": 1,
+      "columnas_con_negativos": 5,
+      "separacion_clase_media_sobre_desviacion": 0.2501
+    },
+    "no supervisada": {
+      "n_columnas": 206,
+      "magnitudes_distintas_mediana": 2598,
+      "magnitudes_distintas_maxima": 168044,
+      "max_absoluto": 9500.0,
+      "columnas_constantes": 0,
+      "columnas_con_negativos": 87,
+      "separacion_clase_media_sobre_desviacion": 0.2708
+    }
+  },
+  "nombres_duplicados": [],
+  "nombres_vacios": 0,
+  "verificaciones": {
+    "matriz_de_279": true,
+    "inventario_completo": true,
+    "nombres_sin_repetir": true,
+    "nombres_no_vacios": true,
+    "procedencia_legal": true,
+    "clasificacion_etiquetada": true
+  },
+  "cadena_sin_blend": 0.6046893,
+  "blend_canonico_v20": 0.6097782,
+  "columnas_constantes": 1,
+  "columnas_label_informed": 73,
+  "segundos": 71.0
+}
