@@ -290,6 +290,37 @@ hipotesis**. El proximo experimento se decide despues y no automaticamente.
 sesiones anteriores, porque el proyecto excluye `notebooks/` de su auditoria de idioma historica; y
 `notebooks/09_final_pipeline.ipynb` es un notebook antiguo de diez celdas, obsoleto respecto a V20.
 
+## 12cuatri. V26 — Advanced research: representacion de la evidencia del ensemble
+
+La fase V26 no busco mas modelos. Busco una forma distinta de explotar la informacion que AGE ya
+poseia, y arranca de una distincion que reencuadra el problema: **V20 ya es un meta-modelo**. De
+las 279 features, 84 son predicciones de modelos base, y el meta-modelo es LightGBM. La pregunta no
+era construir un meta-modelo, sino si su **representacion de la evidencia** era explotable de otra
+forma.
+
+El **gap analysis** de 15 familias, buscado por equivalencia funcional y no por coincidencia de
+nombre, dejo **cinco genuinamente abiertas**: la reescalada afin de las 84 columnas de evidencia, el
+percentil, las `monotone_constraints` nativas de LightGBM, la fiabilidad por miembro y clase, y la
+reescalada de las salidas del blend.
+
+Dos afirmaciones del propio briefing resultaron **falsas**, y el proyecto las midio antes de
+decidir. La primera: un arbol **no** es invariante a una transformacion monotona en esta
+implementacion de LightGBM, y un z-score afin cambia la prediccion **bit a bit**. La invariancia
+teorica habria cerrado la hipotesis sin gastar presupuesto. La segunda: un percentil no es
+monotonia estricta, porque colapsa empates.
+
+El experimento minimo dio **0,6097770** frente al control **0,6097782**: delta **-0,000001**, dos
+de cinco folds, y **1.809 filas** que cambian para un saldo de **+3** sobre 169.336. La conclusion
+es que **la evidencia del ensemble es invariante a su escala en todo lo que el macro-F1 mide**: lo
+que el meta-modelo necesita de las probabilidades de los miembros es el orden, y el orden ya se
+conserva.
+
+Con eso, y con lo acumulado en V25 y en las cinco subfamilias ordinales, **el cuello de botella
+restante de AGE no esta en la representacion de las features, ni en la combinacion de las
+predicciones, ni en la calibracion de la evidencia**. Todas tienen evidencia negativa reproducible.
+Lo que queda es una limitacion de los datos: casi cuatro de cada diez filas las equivocan V19 y
+V20 juntas, y ningun modelo del historial las corrige.
+
 ## 12. Limitaciones y trabajo futuro
 
 **Limitaciones**

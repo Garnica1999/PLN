@@ -198,6 +198,37 @@
   mecanismo y no de hiperparametro.
 - **No se abre ninguna otra familia** mientras la ordinal tenga un challenger confirmado por leaderboard.
 
+## V26 · ADVANCED RESEARCH (2026-09-28) — H02 CLOSED — la evidencia es invariante a su escala (D-061)
+
+- **Fase cerrada con una sola hipotesis ejecutada.** `V26_SELECTED_TRACK = H02`, y el resultado es
+  **H02 CLOSED**: T1 da **0,6097770** frente al control **0,6097782** que reproduce exacto. Delta
+  **-0,000001**, **2/5** folds, neto **+3** sobre 1.809 filas cambiadas (1,07%). Gate de V26
+  (+0,003 y 4/5) no cumplido por las dos vias. **Sin submission.** **V20 sigue siendo el champion**
+  con LB **0,62689** y hash sin cambio.
+- **La distincion que reencuadra la fase: V20 YA es un meta-modelo.** De las 279 features, **84 son
+  predicciones de modelos base** (78 de los 14 miembros de V12 y 6 de NB-SVM) y el meta-modelo es
+  **LightGBM**. La pregunta de V26 no era construir un meta-modelo, sino si su **representacion
+  de la evidencia** era explotable de otra forma.
+- **Dos afirmaciones medidas en vez de suponer, y las dos contrarias a la intuicion**: un arbol
+  **NO** es invariante a una transformacion monotona en esta LightGBM (el z-score cambia la
+  prediccion **bit a bit**, diferencia maxima **0,219** sobre 135.468 filas), y un percentil no es
+  monotonia estricta porque colapsa empates (**0,166**). La invariancia teorica habria cerrado H02
+  sin gastar presupuesto, y era **falsa**.
+- **Gap analysis**: 15 familias por equivalencia funcional, **5 genuinamente abiertas** (H02, H03,
+  H11, H12, H14). H11 (`monotone_constraints` de LightGBM) tiene **cero usos** en el proyecto
+  entero y es el unico mecanismo del punto 11 sin probar.
+- **La lectura**: la transformacion **si cambia el modelo y no cambia la metrica**. La evidencia del
+  ensemble es **invariante a su escala en todo lo que el macro-F1 mide**: lo que el meta-modelo
+  necesita de las probabilidades de los miembros es el **orden**, y el orden ya se conserva.
+- **El cuello de botella restante no esta en ninguna de las cuatro propiedades del punto 43**:
+  representacion de features (V25, D-060), escala de la evidencia (V26-01), formulacion ordinal
+  (cinco subfamilias, D-054 a D-058) y no linealidad (D-053, D-056). Todas con evidencia negativa
+  reproducible. Lo que queda es una limitacion de los **datos**.
+- **Abiertas y NO ejecutadas**: H03, H11, H12, H14. El punto 41 prohibe convertir una observacion en
+  otro experimento sin autorizacion.
+- **Entregables**: `scripts/v26_00_gap_analysis.py`, `scripts/v26_01_rank_representacion.py`,
+  `scripts/v26_02_auditoria.py`, 7 informes en `reports/`, 5 figuras. `experiments.csv` pasa a **132**.
+
 ## V25 · SELECCION SUPERVISADA DE FEATURES (2026-09-27) CERRADA — elimina senal, no ruido (D-060)
 
 - **`SUPERVISED_FEATURE_SELECTION = CLOSED`.** T1 (mutual information, top 50 por ciento,

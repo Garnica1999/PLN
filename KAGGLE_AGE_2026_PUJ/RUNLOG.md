@@ -1814,3 +1814,65 @@ exige el brief `ruff`, y para eso sirve.
 
 Auditoria de idioma: 0 errores. Notebook con la seccion 33 y 11 celdas ejecutadas sin error.
 Sin push, con V20 intacto y sin submission.
+
+## 2026-09-28 · V26 — Advanced research: representacion de la evidencia (D-061)
+
+La pregunta de V26 era si existe una forma distinta de explotar la informacion de los modelos base
+sin anadir ni podar features. La respuesta empieza por una distincion que reencuadra la fase.
+
+**V20 YA ES UN META-MODELO.** De las 279 features, 84 son predicciones de modelos base: las 78
+columnas de los 14 miembros del ensamble de V12 y las 6 de NB-SVM. El meta-modelo de V20 es
+LightGBM, con cinco binarios para la cadena de umbrales y uno mas para el arbol del blend. La
+pregunta de V26 no era construir un meta-modelo, sino si su representacion de la evidencia era
+explotable de otra forma.
+
+**GAP ANALYSIS** de 15 familias buscando equivalencia funcional en el codigo, no por coincidencia
+de nombre. Diez cerradas con numero y **cinco genuinamente abiertas**: H02 (reescalada afin de las
+84 columnas), H03 (percentil), H11 (`monotone_constraints` nativas de LightGBM, con **cero usos**
+en el proyecto entero), H12 (fiabilidad por miembro y clase) y H14 (reescalar las salidas del
+blend).
+
+**DOS AFIRMACIONES MEDIDAS EN VEZ DE SUPUESTAS, y las dos contrarias a la intuicion.** La primera:
+un arbol **no** es invariante a una transformacion monotona en esta implementacion de LightGBM. Con
+`colsample_bytree=0,5` y `subsample=0,8`, un z-score afin cambia la prediccion **bit a bit**, con
+diferencia maxima 0,219 sobre las 135.468 filas de un fold. La invariancia teorica es exactamente
+el argumento que habria cerrado H02 sin gastar presupuesto, y es falsa: la construccion de
+histogramas por cuantiles y el submuestreo la rompen. La segunda: un percentil no es monotonia
+estricta, colapsa empates, y tambien cambia el arbol, con diferencia maxima 0,166. Por eso el gap
+analysis exige evidencia y no argumentos.
+
+**EL EXPERIMENTO.** V20 exacto como control, que reproduce 0,6097782, y una sola transformacion
+como unico cambio: media y desviacion de las 84 columnas de evidencia, estimadas solo dentro de
+cada training fold. Las otras 195 quedan bit a bit iguales y los tres miembros historicos del blend
+no se reentrenan, luego la diferencia entre T0 y T1 no puede ser otra cosa que la transformacion.
+
+El resultado es T1 = 0,6097770, delta **-0,000001**, 2 de 5 folds, 555 rescates contra 552 danos,
+neto **+3** sobre 1.809 filas cambiadas. El intervalo bootstrap es [-0,000375, +0,000397]: incluye
+el cero con holgura. Gate de V26, +0,003 y 4/5 folds, no cumplido por las dos vias.
+
+**LA LECTURA QUE IMPORTA**: la transformacion **si cambia el modelo y no cambia la metrica**.
+1.809 filas, el 1,07% del train, para mover +3 sobre 169.336. La evidencia del ensemble es
+**invariante a su escala en todo lo que el macro-F1 mide**: lo que el meta-modelo necesita de las
+probabilidades de los miembros es el **orden**, y el orden ya se conserva.
+
+**EL CUELLO DE BOTELLA RESTANTE NO ESTA EN NINGUNA DE LAS CUATRO PROPIEDADES** que enumera el
+punto 43. Representacion de features, con V25 y D-060; escala de la evidencia, con este
+experimento; formulacion ordinal, con cinco subfamilias cerradas entre D-054 y D-058; y no
+linealidad, con D-053 y D-056. Todas con evidencia negativa reproducible. Lo que queda sin
+descartar es una limitacion de los **datos**: el 38,3% de las filas las equivocan V19 y V20
+juntas, y ningun modelo del historial las corrige. Eso ya no es un problema de modelo.
+
+**TRES BUGS PROPIOS, TODOS EN LA AUDITORIA DE LA PROPIA FASE.** `_es_mencion` exigia que la linea
+contuviera el identificador completo de la comprobacion, `holdout_reuse`, en vez del termino,
+`holdout`, luego toda mencion pasaba sin filtrarse. Y `y_test` matcheaba **dentro** de
+`already_tested`, un falso positivo de subcadena. Los dos se cazaron verificando el hallazgo uno a
+uno en vez de aceptar el recuento. Y el compliance se detectaba a si mismo en su propio informe y
+en su propio JSON, que se excluyen con el mismo argumento que excluye al script.
+
+**COMPLIANCE**: 15 de 15 comprobaciones cumplidas, sobre codigo y artefactos, no por declaracion.
+Unicode 0 introducidos. Lint 0 errores de correccion. Notebook con la seccion 34, 7 celdas
+ejecutadas sin error y con una asercion que hace fallar si el CSV no coincide con el artefacto.
+
+Detenido tras el primer experimento, como manda el punto 46. H03, H11, H12 y H14 quedan
+documentadas y sin ejecutar. Auditoria de idioma: 493 ficheros, 0 errores. Sin push y con V20
+intacto.

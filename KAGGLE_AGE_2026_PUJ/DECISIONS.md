@@ -1880,3 +1880,66 @@ Tras declarar la saturación se probó la vía indicada como trabajo futuro:
   `reports/v25_02_auditoria.md`, `reports/figures/v25_frecuencia_seleccion.png`,
   `reports/figures/v25_delta_por_fold.png`, seccion 33 de
   `notebooks/99_entrega_consolidado.ipynb`.
+
+## D-061 — V26: la evidencia del ensemble es invariante a su escala (H02 CLOSED)
+
+- **Observation**: V25 cerro la seleccion supervisada de features y demostro que la senal fuerte
+  esta en las **84 columnas** de las 279 que son predicciones de modelos base. Carlos pidio buscar
+  una forma distinta de explotar esa informacion sin anadir ni podar features.
+- **La distincion que gobierna el analisis, y que el brief no contemplaba**: **V20 ya es un
+  meta-modelo.** De las 279 features, 84 son predicciones de los 14 miembros del ensamble de V12 y
+  de NB-SVM, y el meta-modelo es **LightGBM**: cinco binarios para la cadena de umbrales y uno para
+  el arbol del blend. La pregunta de V26 no es construir un meta-modelo, sino si su
+  **representacion de la evidencia** es explotable de otra forma.
+- **Gap analysis** (`v26_00_gap_analysis.py`): 15 familias buscadas por **equivalencia funcional**
+  en el codigo, no por coincidencia de nombre. **5 genuinamente abiertas**: H02 (reescalada afin),
+  H03 (percentil), H11 (`monotone_constraints` nativas de LightGBM, **cero usos** en el proyecto),
+  H12 (fiabilidad por miembro y clase) y H14 (reescalar las salidas del blend). Las otras 10 estan
+  cerradas con numero.
+- **Dos afirmaciones que hubo que MEDIR en vez de suponer**, y las dos son contrarias a la
+  intuicion:
+  1. **Un arbol NO es invariante a una transformacion monotona en esta implementacion de
+     LightGBM.** Con `colsample_bytree=0,5` y `subsample=0,8`, un **z-score afin** cambia la
+     prediccion **bit a bit**, con diferencia maxima **0,219** sobre las **135.468** filas de un
+     fold. La invariancia teorica es exactamente el argumento que habria cerrado H02 sin gastar
+     presupuesto, y es **falso**: la construccion de histogramas por cuantiles y el submuestreo lo
+     rompen. Por eso se midio antes de decidir.
+  2. **Un percentil no es una transformacion monotonia estricta**: colapsa valores a empates, luego
+     pierde orden fino, y el arbol tambien cambia, con diferencia maxima **0,166**.
+- **Seleccion**: `V26_SELECTED_TRACK = H02`, por novedad metodologica, evidencia de que V20 no lo
+  captura y coste bajo. H03, H11, H12 y H14 quedan documentadas y **no se ejecutan**.
+- **Medicion**, con V20 exacto como control y una sola transformacion como unico cambio:
+
+  | Modelo | corrected_cv | Delta | Folds + | rescue | damage | net | filas |
+  |---|---|---|---|---|---|---|---|
+  | T0 V20 control | **0,6097782** | - | 0/5 | - | - | 0 | 0 |
+  | T1 evidencia de miembros reescalada | 0,6097770 | **-0,000001** | **2/5** | 555 | 552 | **+3** | 1.809 |
+
+  El intervalo bootstrap es **[-0,000375, +0,000397]**: incluye el cero con holgura.
+- **La lectura que importa**: **la transformacion si cambia el modelo y no cambia la metrica**.
+  1.809 filas cambian, el 1,07% del train, y el saldo es **+3 sobre 169.336**. La evidencia del
+  ensemble es **invariante a su escala en todo lo que el macro-F1 mide**.
+- **Decision**: **`H02 CLOSED`.** Delta -0,000001, 2 de 5 folds, frente a un gate de **+0,003** y
+  **4/5** folds. Sin submission, sin bootstrap de promocion, y **sin segundo experimento**: el
+  punto 46 del brief obliga a detenerse tras el primero.
+- **Reason**: la hipotesis era plausible y la evidencia la refuta con claridad. Parte de la senal
+  **esta** en las probabilidades de los miembros, pero su **escala no importa**: lo que el
+  meta-modelo necesita de ellas es el **orden**, y el orden ya se conserva. Reescalar cambia la
+  prediccion sin cambiar la informacion, y por eso mueve 1.809 filas para mover **+3**.
+- **Consequences**: (1) **la escala de la evidencia del ensemble no es el cuello de botella**, y con
+  ella quedan descartadas por evidencia reproducible las cuatro candidatas del punto 43;
+  (2) **H03, H11, H12 y H14 siguen abiertas y no se ejecutan sin autorizacion**; (3) el cuello de
+  botella restante **no esta en la representacion de las features, ni en la combinacion de las
+  predicciones, ni en la calibracion de la evidencia**, segun el informe final; (4) **V20 sigue
+  siendo el champion** con LB **0,62689** y hash sin cambio, y `experiments.csv` pasa a **132**.
+- **Un bug propio en la propia auditoria, y es el tercero de la serie**: `_es_mencion` exigia que
+  la linea contuviera el **identificador completo** de la comprobacion (`holdout_reuse`) en vez del
+  **termino** (`holdout`), luego toda mencion pasaba sin filtrarse y el compliance se detectaba a si
+  mismo. Ademas `y_test` matcheaba **dentro** de `already_tested`, un falso positivo de subcadena.
+  Los dos se cazaron verificando el hallazgo uno a uno, no aceptando el recuento.
+- **Evidence**: `experiments/v26_00_gap_analysis.json`, `experiments/v26_01_rank_representacion.json`,
+  `experiments/v26_02_auditoria.json`, `reports/v26_hypothesis_gap_analysis.md`,
+  `reports/v26_hypothesis_gap_analysis.csv`, `reports/v26_master_results.csv`,
+  `reports/v26_hypothesis_registry.csv`, `reports/v26_reproducibility.md`,
+  `reports/v26_compliance.md`, `reports/v26_final_research.md`, cinco figuras `v26_*`, seccion 34
+  de `notebooks/99_entrega_consolidado.ipynb`.
