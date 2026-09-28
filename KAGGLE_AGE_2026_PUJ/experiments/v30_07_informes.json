@@ -1,0 +1,25 @@
+{
+  "fase": "V30 07 informes",
+  "fecha": "2026-09-30",
+  "experimenta": false,
+  "informe": "V30_FINAL_REPORT.md",
+  "lineas_informe": 211,
+  "informes_generados": [
+    "V30_FINAL_REPORT.md",
+    "v30_optuna_refinement.md",
+    "v30_submission_audit.md",
+    "v30_transfer_analysis.md",
+    "v30_reproducibility.md",
+    "v30_compliance.md",
+    "AGE_COMPLETE_RESEARCH_REPORT.md",
+    "age_complete_experiment_history.csv"
+  ],
+  "notebook_celdas": 231,
+  "estado_vs_v29": "EQUIVALE_A_V29",
+  "delta_vs_lgbm_v29": 6.9e-05,
+  "gate_historico": true,
+  "strong_marginal": true,
+  "submissions": 0,
+  "estado_upload": "STOP_SIN_CREDENCIAL",
+  "segundos": 0.0
+}

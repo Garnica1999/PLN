@@ -1,0 +1,7 @@
+modelo_a,modelo_b,alcance,individual_cv,corr_errores,tasa_discrepancia,rescate_unico,dano_unico,neto
+v20_f3b_oof_candidato,v20_f3b_oof_candidato,contra V20,0.6097782,1.0,0.0,0,0,0
+v29_lgbm_optuna,v20_f3b_oof_candidato,contra V20,0.6121698,0.863593,0.101455,5689,5288,401
+v30_lgbm_refinado,v20_f3b_oof_candidato,contra V20,0.6122387,0.869413,0.097776,5448,5061,387
+v20_f3b_oof_candidato,v29_lgbm_optuna,par a par,,0.863593,0.101455,5288,5689,-401
+v20_f3b_oof_candidato,v30_lgbm_refinado,par a par,,0.869413,0.097776,5061,5448,-387
+v29_lgbm_optuna,v30_lgbm_refinado,par a par,,0.916446,0.062615,3365,3351,14

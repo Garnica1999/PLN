@@ -1926,3 +1926,17 @@ intacto.
 - **Notebook:** seccion 37 anadida con las cuatro aserciones.
 - **Higiene:** los 2 directorios ajenos a AGE siguen fuera de la rama.
 - **Informes:** `reports/V29_FINAL_RESEARCH_REPORT.md` y `reports/AGE_COMPLETE_RESEARCH_REPORT.md` de V20 a V29, mas `reports/age_complete_experiment_history.csv`.
+
+---
+
+## Cierre de la fase V30 · 2026-09-30
+
+- **Baseline vigente:** V20, 0,6097782 corrected_cv, LB 0.62689, hash sin cambio.
+- **Refinamiento V30:** 0,6122387 (delta V20 0,002461, delta V29-LGBM 0,000069) | veredicto **EQUIVALE_A_V29**.
+- **Candidato final:** `E1 Optuna macro-F1`, 0,6130051, delta 0,003227, 5/5 folds, neto +530.
+- **Gate historico:** True | **STRONG_MARGINAL:** True.
+- **Segunda particion:** con configuracion congelada, sin re-optimizar.
+- **Submissions:** **0**, estado `STOP_SIN_CREDENCIAL`. El fichero esta construido, validado con 10/10 checks y con hash; **falta la credencial de Kaggle, que es del usuario**.
+- **Numero de experimentos:** 139 filas; **1** nuevo de entrenamiento en V30 (el refinamiento). El ensemble, la segunda particion y la construccion del fichero son operaciones sobre artefactos congelados.
+- **Presupuesto:** 1 de 4 experimentos nuevos.
+- **Compliance:** 13/13 en cero usos. **Artefactos de V20 tocados:** 0.

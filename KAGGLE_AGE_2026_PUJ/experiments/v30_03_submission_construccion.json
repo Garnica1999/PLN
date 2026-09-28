@@ -1,0 +1,283 @@
+{
+  "fase": "V30 03 construccion de la submission",
+  "fecha": "2026-09-30",
+  "momento_utc": "2026-09-28T23:34:44+00:00",
+  "experimenta": false,
+  "candidato": "E1 Optuna macro-F1",
+  "pesos_congelados": {
+    "v20_f3b_oof_candidato": 0.3548,
+    "v29_lgbm_optuna": 0.3354,
+    "v30_lgbm_refinado": 0.3098
+  },
+  "vector_pesos_usado": {
+    "v20_f3b_oof_candidato": 0.3548,
+    "v29_lgbm_optuna": 0.3354,
+    "v30_lgbm_refinado": 0.3098
+  },
+  "miembros": {
+    "v20_f3b_oof_candidato": {
+      "origen": "receta de V20, sin modificar"
+    },
+    "v29_lgbm_optuna": {
+      "artefacto": "v29_04_optuna_lightgbm.json",
+      "n_configuraciones": 5,
+      "configuraciones": [
+        {
+          "num_leaves": 87,
+          "max_depth": 5,
+          "learning_rate": 0.0430166950028842,
+          "min_child_samples": 76,
+          "subsample": 0.6581570543882859,
+          "subsample_freq": 1,
+          "colsample_bytree": 0.70766450002428,
+          "reg_alpha": 0.6147385859030499,
+          "reg_lambda": 9.792145504680492e-05,
+          "n_estimators": 816
+        },
+        {
+          "num_leaves": 55,
+          "max_depth": 6,
+          "learning_rate": 0.033526986553363,
+          "min_child_samples": 54,
+          "subsample": 0.8941120537508466,
+          "subsample_freq": 1,
+          "colsample_bytree": 0.6299160105578635,
+          "reg_alpha": 4.026902217415037e-07,
+          "reg_lambda": 6.6850377528309e-07,
+          "n_estimators": 1372
+        },
+        {
+          "num_leaves": 57,
+          "max_depth": 8,
+          "learning_rate": 0.0221243429735215,
+          "min_child_samples": 94,
+          "subsample": 0.9225205673898446,
+          "subsample_freq": 1,
+          "colsample_bytree": 0.52058407816027,
+          "reg_alpha": 1.8772169842126896,
+          "reg_lambda": 0.0181940457692546,
+          "n_estimators": 912
+        },
+        {
+          "num_leaves": 43,
+          "max_depth": 9,
+          "learning_rate": 0.0300028683641043,
+          "min_child_samples": 22,
+          "subsample": 0.6998254389554196,
+          "subsample_freq": 1,
+          "colsample_bytree": 0.5250455092128341,
+          "reg_alpha": 1.0090819656249398e-05,
+          "reg_lambda": 7.87982213180386e-06,
+          "n_estimators": 863
+        },
+        {
+          "num_leaves": 56,
+          "max_depth": 7,
+          "learning_rate": 0.0208110771899144,
+          "min_child_samples": 29,
+          "subsample": 0.7762118181212365,
+          "subsample_freq": 1,
+          "colsample_bytree": 0.6242271327287489,
+          "reg_alpha": 1.3833851148235308e-05,
+          "reg_lambda": 0.0004885693686069,
+          "n_estimators": 1084
+        }
+      ],
+      "diagnostico": [
+        {
+          "config": 0,
+          "n_estimators": 816,
+          "iteraciones_efectivas": 816,
+          "early_stopping": false,
+          "nota": "el numero de iteraciones lo fijo el early stopping del interior de Optuna; aqui se entrena ese numero exacto"
+        },
+        {
+          "config": 1,
+          "n_estimators": 1372,
+          "iteraciones_efectivas": 1372,
+          "early_stopping": false,
+          "nota": "el numero de iteraciones lo fijo el early stopping del interior de Optuna; aqui se entrena ese numero exacto"
+        },
+        {
+          "config": 2,
+          "n_estimators": 912,
+          "iteraciones_efectivas": 912,
+          "early_stopping": false,
+          "nota": "el numero de iteraciones lo fijo el early stopping del interior de Optuna; aqui se entrena ese numero exacto"
+        },
+        {
+          "config": 3,
+          "n_estimators": 863,
+          "iteraciones_efectivas": 863,
+          "early_stopping": false,
+          "nota": "el numero de iteraciones lo fijo el early stopping del interior de Optuna; aqui se entrena ese numero exacto"
+        },
+        {
+          "config": 4,
+          "n_estimators": 1084,
+          "iteraciones_efectivas": 1084,
+          "early_stopping": false,
+          "nota": "el numero de iteraciones lo fijo el early stopping del interior de Optuna; aqui se entrena ese numero exacto"
+        }
+      ]
+    },
+    "v30_lgbm_refinado": {
+      "artefacto": "v30_01_optuna_refinamiento.json",
+      "n_configuraciones": 5,
+      "configuraciones": [
+        {
+          "num_leaves": 41.0,
+          "max_depth": 10.0,
+          "learning_rate": 0.015612823179143214,
+          "min_child_samples": 79.0,
+          "subsample": 0.775913545060191,
+          "colsample_bytree": 0.5969526009433974,
+          "reg_alpha": 1.0941449983677585e-05,
+          "reg_lambda": 0.00036896192791107643,
+          "n_estimators": 1011.0
+        },
+        {
+          "num_leaves": 32.0,
+          "max_depth": 7.0,
+          "learning_rate": 0.017387326275059966,
+          "min_child_samples": 23.0,
+          "subsample": 0.8215355497227395,
+          "colsample_bytree": 0.8291548707315466,
+          "reg_alpha": 0.8747434883808647,
+          "reg_lambda": 2.053077365511584e-05,
+          "n_estimators": 1486.0
+        },
+        {
+          "num_leaves": 63.0,
+          "max_depth": 7.0,
+          "learning_rate": 0.02867292541012883,
+          "min_child_samples": 110.0,
+          "subsample": 0.7807106452264457,
+          "colsample_bytree": 0.4021908926823267,
+          "reg_alpha": 1.1486360263326448e-05,
+          "reg_lambda": 0.00031823134119350724,
+          "n_estimators": 1023.0
+        },
+        {
+          "num_leaves": 42.0,
+          "max_depth": 7.0,
+          "learning_rate": 0.015729268043126833,
+          "min_child_samples": 41.0,
+          "subsample": 0.999685646683389,
+          "colsample_bytree": 0.596195315949217,
+          "reg_alpha": 0.004978399116554409,
+          "reg_lambda": 1.8436108646384413e-08,
+          "n_estimators": 1477.0
+        },
+        {
+          "num_leaves": 64.0,
+          "max_depth": 6.0,
+          "learning_rate": 0.03818854692388361,
+          "min_child_samples": 52.0,
+          "subsample": 0.8731483359860639,
+          "colsample_bytree": 0.46934472778342573,
+          "reg_alpha": 1.927060050589197e-08,
+          "reg_lambda": 0.004339321331656464,
+          "n_estimators": 1000.0
+        }
+      ],
+      "diagnostico": [
+        {
+          "config": 0,
+          "n_estimators": 1011,
+          "iteraciones_efectivas": 1011,
+          "early_stopping": false,
+          "nota": "el numero de iteraciones lo fijo el early stopping del interior de Optuna; aqui se entrena ese numero exacto"
+        },
+        {
+          "config": 1,
+          "n_estimators": 1486,
+          "iteraciones_efectivas": 1486,
+          "early_stopping": false,
+          "nota": "el numero de iteraciones lo fijo el early stopping del interior de Optuna; aqui se entrena ese numero exacto"
+        },
+        {
+          "config": 2,
+          "n_estimators": 1023,
+          "iteraciones_efectivas": 1023,
+          "early_stopping": false,
+          "nota": "el numero de iteraciones lo fijo el early stopping del interior de Optuna; aqui se entrena ese numero exacto"
+        },
+        {
+          "config": 3,
+          "n_estimators": 1477,
+          "iteraciones_efectivas": 1477,
+          "early_stopping": false,
+          "nota": "el numero de iteraciones lo fijo el early stopping del interior de Optuna; aqui se entrena ese numero exacto"
+        },
+        {
+          "config": 4,
+          "n_estimators": 1000,
+          "iteraciones_efectivas": 1000,
+          "early_stopping": false,
+          "nota": "el numero de iteraciones lo fijo el early stopping del interior de Optuna; aqui se entrena ese numero exacto"
+        }
+      ]
+    }
+  },
+  "schema_train_test": {
+    "train_columnas": [
+      "id",
+      "text",
+      "age_range"
+    ],
+    "test_columnas": [
+      "id",
+      "text"
+    ],
+    "mismas_columnas_sin_el_target": true,
+    "target_ausente_en_test": true,
+    "matriz_test_shape": [
+      112892,
+      279
+    ],
+    "matriz_test_coincide_con_ancho": true
+  },
+  "checks": {
+    "rows_ok": true,
+    "columns_ok": true,
+    "ids_equal_test": true,
+    "ids_same_order": true,
+    "ids_unique": true,
+    "no_nan": true,
+    "labels_valid": true,
+    "labels_width_ok": true,
+    "sin_filas_vacias": true,
+    "schema_verificado": true
+  },
+  "checks_superados": 10,
+  "checks_total": 10,
+  "distribucion_predicciones": {
+    "13-17": 18141,
+    "18-24": 20767,
+    "25-34": 17135,
+    "35-49": 16406,
+    "50-64": 20794,
+    "65-xx": 19649
+  },
+  "comparacion_con_envio_v20": {
+    "envio_de_referencia": "age_submission_v20_candidato_umbrales.csv",
+    "decisiones_distintas": 7253,
+    "proporcion": 0.064247,
+    "distribucion_envio_v20": {
+      "13-17": 18384,
+      "18-24": 20440,
+      "25-34": 17372,
+      "35-49": 16323,
+      "50-64": 20790,
+      "65-xx": 19583
+    }
+  },
+  "archivo": "age_submission_v30_final_candidate.csv",
+  "sha256": "f543a715a1881c6128a860301b84a7273c3db8f8a709545be1e6267822e713be",
+  "bytes": 1356504,
+  "filas": 112892,
+  "uso_del_test": "solo transform y predict. Ninguna etiqueta, ninguna estadistica, ningun ajuste de umbral. Los pesos y los hiperparametros estaban congelados antes de entrar aqui.",
+  "subido_a_kaggle": false,
+  "segundos": 750.3
+}
