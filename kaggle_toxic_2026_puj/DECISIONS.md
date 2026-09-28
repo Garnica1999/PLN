@@ -551,7 +551,7 @@ evidencia, experimento, resultado, conclusion final.
   (E2-16), especialistas por rebanada (E2-20) y espacios de features por
   etiqueta (E2-21).
 - **Observacion**: ninguna supera la regla de adopcion (D-016):
-  - E2-14 (calibracion Platt/isotónica anidadas): mejora la calidad de las
+  - E2-14 (calibracion Platt/isotonica anidadas): mejora la calidad de las
     probabilidades (Brier 0.1583 -> 0.1199; log-loss 0.5002 -> 0.4035) pero la
     F1 con umbrales reajustados es invariante; **cerrada** (mecanismo sin
     mejora).
@@ -688,7 +688,7 @@ evidencia, experimento, resultado, conclusion final.
   candidatos (D-024), Carlos abre una nueva fase de investigacion
   (`ADVANCED RESEARCH v4`, 108 secciones) con el objetivo de encontrar
   alternativas genuinamente nuevas a V03 (LB 0.78306) y no mas variantes de
-  modelo. La especificacion prohibe repetir lineas ya probadas (§84, §85-§89).
+  modelo. La especificacion prohibe repetir lineas ya probadas (parrafo 84, parrafo 85-parrafo 89).
 - **Observacion**: (a) V03 esta congelada y verificada byte a byte; (b) el
   protocolo v2 (D-016) sigue vigente; (c) el presupuesto de control esta
   agotado en su mayor parte: 4/5 evaluaciones de holdout usadas y 12 sondas de
@@ -732,7 +732,7 @@ evidencia, experimento, resultado, conclusion final.
 
 - **Contexto**: primera linea de la fase v4 (P1). Objetivo: medir la
   consistencia de etiquetas en clusters de texto repetido y construir un mapa de
-  dureza **out-of-fold** (spec §7-§13), antes de intentar reponderar ejemplos.
+  dureza **out-of-fold** (spec parrafo 7-parrafo 13), antes de intentar reponderar ejemplos.
 - **Observacion**: (V4-A01) con cuatro criterios de agrupamiento (exacto,
   normalizado, Jaccard 0.8, cosimilitud TF-IDF 0.85) hay **15 clusters con 2+
   miembros** que cubren 84 tweets (4.85 %) y solo **2 son contradictorios**. No
@@ -762,7 +762,7 @@ evidencia, experimento, resultado, conclusion final.
   duplicacion, sino dificultad del modelo ante ejemplos coherentes. La ambiguedad
   de anotacion existe (el cluster de insultos tiene 21 % de desacuerdo) pero el
   modelo la resuelve bien porque sigue la anotacion mayoritaria. Ademas, la via
-  que la spec propone en §11 (ponderar por perdida OOF) es tecnicamente
+  que la spec propone en parrafo 11 (ponderar por perdida OOF) es tecnicamente
   defectuosa en este corpus: la BCE agregada no preserva el orden de dificultad
   por compensacion entre etiquetas.
 - **Decision**: (1) V4-A01 y V4-A02 quedan cerradas con evidencia; (2) V4-B03
@@ -772,7 +772,7 @@ evidencia, experimento, resultado, conclusion final.
   ejemplos) y se ejecuta solo como control negativo, no como candidata; (4) la
   ambiguedad local del vecino mas cercano se conserva como variable de
   analisis para V4-F03.
-- **Razon**: evita gastar las tres estrategias de la spec §8 en una via cuyo
+- **Razon**: evita gastar las tres estrategias de la spec parrafo 8 en una via cuyo
   techo de impacto ya esta cuantificado, y evita un reweighting mal definido.
 - **Evidencia**: `reports/label_consistency_v4.json`,
   `reports/label_consistency_v4_ejemplos.md` (revision manual de los clusters),
@@ -781,8 +781,8 @@ evidencia, experimento, resultado, conclusion final.
 
 ## D-027 - P2 (TRACK B): el hard example mining clasico empeora; solo funciona bajar el peso de los ejemplos que mas violan el umbral
 
-- **Contexto**: V4-B03, V4-B04 y V4-B05 del backlog v4, con el diseño sin fuga
-  exigido por la spec (§11): para cada pliegue externo se calcula la dureza con
+- **Contexto**: V4-B03, V4-B04 y V4-B05 del backlog v4, con el diseno sin fuga
+  exigido por la spec (parrafo 11): para cada pliegue externo se calcula la dureza con
   un CV **anidado** de 4 pliegues sobre el entrenamiento, de modo que ningun peso
   procede de un modelo que vio ese ejemplo. El control `lr:none` reproduce
   exactamente la referencia (0.7772), lo que valida el pipeline.
@@ -795,7 +795,7 @@ evidencia, experimento, resultado, conclusion final.
   el umbral: LR 0.7784 (+0.0036, IC95 [-0.0016, +0.0092]) y SVC 0.7801, que es
   +0.0086 respecto de su propio control (0.7715); (d) la ponderacion
   independiente por etiqueta empeora (0.7686); (e) las tres estrategias de la
-  spec §8 no mueven la metrica: downweight 0.7777 (+0.0005) y remove 0.7768
+  spec parrafo 8 no mueven la metrica: downweight 0.7777 (+0.0005) y remove 0.7768
   (-0.0004).
 - **Hipotesis**: dar mas peso a los ejemplos que el modelo falla (hard example
   mining) y penalizar los que mas violan el umbral (descartar ruido) son la misma
@@ -811,13 +811,13 @@ evidencia, experimento, resultado, conclusion final.
   colectiva): subir su peso empuja la frontera y degrada el resto, mientras que
   excluirlos del entrenamiento permite un limite de decision mas limpio. El
   patron es coherente con D-026 (el ruido textual no explica el error) y con la
-  revision bibliografica (DiscrimLoss, `reports/estado_arte_v4.md` §4).
+  revision bibliografica (DiscrimLoss, `reports/estado_arte_v4.md` parrafo 4).
 - **Decision**: (1) V4-B03, V4-B04 y V4-B05 quedan **cerradas sin adopcion**
   (ninguna variante cumple el criterio D-016 de +0.005 y 3/5 pliegues);
   (2) el TRACK B se da por cerrado en su parte de reweighting; (3) el unico
-  mecanismo con señal positiva (`down_violacion`) se arrastra al TRACK C como
+  mecanismo con senal positiva (`down_violacion`) se arrastra al TRACK C como
   V4-C05 para comprobar si es **complementario** del barrido de class weights;
-  (4) no se borra ninguna etiqueta ni ejemplo (§8, §90).
+  (4) no se borra ninguna etiqueta ni ejemplo (parrafo 8, parrafo 90).
 - **Razon**: se evita gastar mas LINEAs en una familia con evidencia negativa
   consistente y se concentra el esfuerzo en el mecanismo que mostro senal.
 - **Evidencia**: `reports/reweighting_v4.json`,
@@ -825,7 +825,7 @@ evidencia, experimento, resultado, conclusion final.
 
 ## D-028 - P4 (TRACK H): el shift de calibracion del meta se mide y se refuta; el meta de 36 features queda como candidato
 
-- **Contexto**: `advanced_research_v2.md` §4.3 dejo abierta la hipotesis de que
+- **Contexto**: `advanced_research_v2.md` parrafo 4.3 dejo abierta la hipotesis de que
   el meta v2 no transfirio al leaderboard porque sus entradas (scores OOF de
   bases ajustadas sobre 4/5 del desarrollo) se undistribuyen al predecir con
   bases ajustadas sobre el 100 % del train. V4-H01 mide ese efecto dentro del
@@ -898,7 +898,7 @@ evidencia, experimento, resultado, conclusion final.
   modelo y submission finales; (2) la submission v12 se conserva como artefacto
   experimental reproducible y marcada `DESCARTADO` (no se envia); (3) el holdout
   queda agotado (5/5) y no se gastan mas sondas de LB en v4; (4) la fase v4 se
-  cierra con la condicion de terminacion B de la spec (§102): hipotesis nuevas
+  cierra con la condicion de terminacion B de la spec (parrafo 102): hipotesis nuevas
   investigadas y cerradas con evidencia, sin fabricar mejora.
 - **Razon**: el holdout es la unica evidencia externa disponible y contradicts
   con el corrected_cv; con multiplicidad ya alta, descartar es la decision
@@ -909,109 +909,109 @@ evidencia, experimento, resultado, conclusion final.
 
 ## D-030 - Scope of external unlabeled data for from-scratch embeddings
 
-- **Contexto**: la fase v5 («Embedding from Scratch») introduce por primera vez en
+- **Contexto**: la fase v5 ("Embedding from Scratch") introduce por primera vez en
   el proyecto texto externo. Las fases anteriores trabajaron bajo D-002, que
-  prohibía usar corpus o etiquetas externos. La especificación v5 abre esa
-  posibilidad **con un alcance acotado**, y el usuario **(Carlos)** cerró el
-  alcance exacto antes de autorizar la ejecución.
-- **Autorización (transcripción literal de lo comunicado por el usuario)**:
+  prohibia usar corpus o etiquetas externos. La especificacion v5 abre esa
+  posibilidad **con un alcance acotado**, y el usuario **(Carlos)** cerro el
+  alcance exacto antes de autorizar la ejecucion.
+- **Autorizacion (transcripcion literal de lo comunicado por el usuario)**:
 
-  > El profesor autorizó para esta competencia el uso de datos externos no
-  > etiquetados exclusivamente para entrenar desde cero una representación de
-  > embeddings/vectorización. Los datos externos no pueden utilizarse para
-  > entrenamiento supervisado, clasificación, generación de labels,
+  > El profesor autorizo para esta competencia el uso de datos externos no
+  > etiquetados exclusivamente para entrenar desde cero una representacion de
+  > embeddings/vectorizacion. Los datos externos no pueden utilizarse para
+  > entrenamiento supervisado, clasificacion, generacion de labels,
   > pseudo-labeling, ajuste de thresholds ni ninguna otra forma de aprendizaje
   > sobre HS/TR/AG.
 
-- **Alcance de la autorización** (límite explícito):
+- **Alcance de la autorizacion** (limite explicito):
   1. Los corpus externos se usan **exclusivamente** para aprender la
-     representación distribuida (pesos de embeddings/vectorización).
+     representacion distribuida (pesos de embeddings/vectorizacion).
   2. Queda **prohibido** cualquier uso de datos externos para: entrenamiento
-     supervisado del clasificador final, clasificación, generación de labels,
+     supervisado del clasificador final, clasificacion, generacion de labels,
      pseudo-labeling, ajuste de umbrales o cualquier otra forma de aprendizaje
      sobre HS/TR/AG.
-  3. Toda supervisión del clasificador procede **solo** del train oficial de
+  3. Toda supervision del clasificador procede **solo** del train oficial de
      TOXIC.
   4. El embedding se entrena **completamente desde cero**; el vocabulario o
      tokenizer, cuando corresponda, se construye desde cero.
   5. Cada corpus externo debe documentar `source`, `url`, `version`, `license`,
-     `download_date` y `sha256` (§29 y §35 de la spec v5).
+     `download_date` y `sha256` (parrafo 29 y parrafo 35 de la spec v5).
   6. No se incorpora ninguna fuente nueva de forma silenciosa durante una
-     ejecución.
+     ejecucion.
 - **Evidencia**: **NO existe** correo, foro ni captura formal archivada en el
-  repositorio que documente literalmente la autorización. Esta decisión registra
-  **únicamente** la información comunicada directamente por el usuario en la
-  sesión del 2026-09-25. No se inventa, reconstruye ni infiere ninguna evidencia
-  escrita. Queda como acción opcional del usuario incorporar el documento
-  original si dispone de él; no bloquea la fase.
-- **Regla ante ambigüedad**: si durante el desarrollo aparece una
-  interpretación ambigua sobre si una fuente concreta entra dentro de esta
-  autorización, **no se asume permitida**: se registra la duda en
-  `DECISIONS.md` y se detiene **únicamente esa fuente** hasta resolverla.
-- **Fuentes habilitadas por el usuario** (con sus límites):
+  repositorio que documente literalmente la autorizacion. Esta decision registra
+  **unicamente** la informacion comunicada directamente por el usuario en la
+  sesion del 2026-09-25. No se inventa, reconstruye ni infiere ninguna evidencia
+  escrita. Queda como accion opcional del usuario incorporar el documento
+  original si dispone de el; no bloquea la fase.
+- **Regla ante ambiguedad**: si durante el desarrollo aparece una
+  interpretacion ambigua sobre si una fuente concreta entra dentro de esta
+  autorizacion, **no se asume permitida**: se registra la duda en
+  `DECISIONS.md` y se detiene **unicamente esa fuente** hasta resolverla.
+- **Fuentes habilitadas por el usuario** (con sus limites):
   - **Wikipedia ES**: fuente principal (P1); disponible, con procedencia clara,
     poco ruido y cobertura general.
   - **mC4 (`allenai/c4`, config `es`)**: fuente web principal (P2); accesible
     sin el bloqueo manual que presenta OSCAR.
-  - **OSCAR**: opcional; solo con acceso legítimo y directo. No se retrasa la
-    investigación por OSCAR ni se usan mecanismos para saltar restricciones de
+  - **OSCAR**: opcional; solo con acceso legitimo y directo. No se retrasa la
+    investigacion por OSCAR ni se usan mecanismos para saltar restricciones de
     acceso.
   - **HPLT / CEREAL**: opcionales y no obligatorios. Antes de incorporarse se
-    documenta procedencia, licencia, cobertura en español, tamaño, diversidad,
+    documenta procedencia, licencia, cobertura en espanol, tamano, diversidad,
     solapamiento con Wikipedia/mC4 y coste de procesamiento. No se dedica tiempo
     desproporcionado a CEREAL.
-  - Prioridad de composición: `Wikipedia ES` → `mC4-es` → `mezcla` →
-    `HPLT/CEREAL/OSCAR` solo si aportan información marginal real. **No** se
+  - Prioridad de composicion: `Wikipedia ES` -> `mC4-es` -> `mezcla` ->
+    `HPLT/CEREAL/OSCAR` solo si aportan informacion marginal real. **No** se
     construye una mezcla enorme antes de medir el aporte individual.
 - **Escala autorizada**: hasta **500M tokens** como techo de esta fase inicial,
-  con la secuencia obligatoria `10M → 50M → 100M → decidir → 250M → decidir →
-  500M → decidir`. No se supera 500M sin una nueva decisión explícita del
-  usuario. Antes de cada expansión se registra `RATIONALE_FOR_CORPUS_EXPANSION`
-  con al menos una condición de la §30 de la spec.
-- **Implementación autorizada**:
+  con la secuencia obligatoria `10M -> 50M -> 100M -> decidir -> 250M -> decidir ->
+  500M -> decidir`. No se supera 500M sin una nueva decision explicita del
+  usuario. Antes de cada expansion se registra `RATIONALE_FOR_CORPUS_EXPANSION`
+  con al menos una condicion de la parrafo 30 de la spec.
+- **Implementacion autorizada**:
   - **fastText C++ oficial** compilado localmente (g++, cmake, make): la
-    librería implementa el algoritmo, pero **los pesos se entrenan desde cero**
-    y no se descarga ningún modelo.
+    libreria implementa el algoritmo, pero **los pesos se entrenan desde cero**
+    y no se descarga ningun modelo.
   - **Word2Vec-control** mediante el mismo binario con `minn=0, maxn=0`,
     registrado como `WORD2VEC-CONTROL / FASTTEXT-SG-SUBWORDS-OFF`.
-  - **PyTorch** solo como respaldo o control metodológico; no se reimplementa
-    fastText en PyTorch si la versión C++ resuelve el experimento.
-  - **gensim**: no se instala ni se depende de él (no hay wheel para Python
-    3.14 y la compilación desde source tiene riesgo alto).
+  - **PyTorch** solo como respaldo o control metodologico; no se reimplementa
+    fastText en PyTorch si la version C++ resuelve el experimento.
+  - **gensim**: no se instala ni se depende de el (no hay wheel para Python
+    3.14 y la compilacion desde source tiene riesgo alto).
   - **GloVe**: no implementado por defecto; solo si FastText y Word2Vec muestran
-    una señal que justifique una tercera geometría.
-- **Anti-fuga y auditoría**: la auditoría debe comprobar 0 usos de
+    una senal que justifique una tercera geometria.
+- **Anti-fuga y auditoria**: la auditoria debe comprobar 0 usos de
   `transformers`, BERT, RoBERTa, `from_pretrained`, embeddings preentrenados,
-  labels externas, labels de test, inclusión de `toxic_test.csv` y de datasets
+  labels externas, labels de test, inclusion de `toxic_test.csv` y de datasets
   externos de hate speech; y debe distinguir **texto usado para el embedding** de
-  **labels usadas para supervisión**. La variante principal es
-  **EXTERNAL-ONLY**: no se añaden los 1.731 tweets de TOXIC al corpus. La
-  adaptación de dominio es secundaria y **in-fold** (`embedding_train_k` = corpus
-  externo + textos de train del fold `k`), nunca con validación, holdout ni test.
-- **Normalizaciones**: `EMB-NORMAL` y `EMB-ASCII` (lowercase, transliteración
-  reproducible, URLs, menciones, hashtags, formas informales y preservación de
-  elongaciones). **Sin** correctores ortográficos, **sin** reconstrucción de
-  tildes, **sin** información semántica externa y **sin** etiquetas.
-- **Protocolo de evaluación**: `corrected_cv` con grupos near-duplicado ∪
+  **labels usadas para supervision**. La variante principal es
+  **EXTERNAL-ONLY**: no se anaden los 1.731 tweets de TOXIC al corpus. La
+  adaptacion de dominio es secundaria y **in-fold** (`embedding_train_k` = corpus
+  externo + textos de train del fold `k`), nunca con validacion, holdout ni test.
+- **Normalizaciones**: `EMB-NORMAL` y `EMB-ASCII` (lowercase, transliteracion
+  reproducible, URLs, menciones, hashtags, formas informales y preservacion de
+  elongaciones). **Sin** correctores ortograficos, **sin** reconstruccion de
+  tildes, **sin** informacion semantica externa y **sin** etiquetas.
+- **Protocolo de evaluacion**: `corrected_cv` con grupos near-duplicado ?
   pseudo-autor (`src/splits.py`) y referencia V03 0.7772 (nunca 0.7989 como
-  referencia primaria). El **holdout está agotado (5/5)** y no se usa ni se crea
-  otro. Jerarquía de evidencia: `corrected_cv` → leaderboard.
-- **Criterios de adopción** (§29): **A** mejora ≥ +0.005 con estabilidad
+  referencia primaria). El **holdout esta agotado (5/5)** y no se usa ni se crea
+  otro. Jerarquia de evidencia: `corrected_cv` -> leaderboard.
+- **Criterios de adopcion** (parrafo 29): **A** mejora >= +0.005 con estabilidad
   razonable; **B** complementariedad robusta; **C** evidencia representacional
   fuerte aunque la F1 sea marginal. Se distingue `adopted` / `candidate` /
   `exploratory` y **no se presenta una mejora exploratoria como mejora final**.
 - **Entrega**: rama independiente `proyecto-kaggle-toxic-2026-v5`; V03 intacta;
-  no se borra evidencia histórica; no se modifica retrospectivamente D-024 ni
-  decisiones anteriores; **sin** submissions automáticas; **sin** push
-  automático sin autorización explícita en la sesión; PR al finalizar y **sin**
-  merge automático.
-- **Alcance autorizado en esta sesión**: **P0, P1 y P2**. No se descargan 500M
-  tokens antes de completar el diagnóstico de cobertura (P1) y el primer
+  no se borra evidencia historica; no se modifica retrospectivamente D-024 ni
+  decisiones anteriores; **sin** submissions automaticas; **sin** push
+  automatico sin autorizacion explicita en la sesion; PR al finalizar y **sin**
+  merge automatico.
+- **Alcance autorizado en esta sesion**: **P0, P1 y P2**. No se descargan 500M
+  tokens antes de completar el diagnostico de cobertura (P1) y el primer
   resultado downstream (P2).
 - **Evidencia en disco**: `docs/embedding_from_scratch_v5_spec.md` (spec maestra
   transcrita), `tasks/plan_v5.md`, `reports/embedding_compliance.md`,
   `data/external/corpora/corpus_manifest.json` y scripts `embedding_*.py`.
-- **Conclusión**: la autorización queda acotada a la representación
+- **Conclusion**: la autorizacion queda acotada a la representacion
   distribuida; cualquier uso que exceda ese alcance se considera no autorizado y
   detiene el experimento correspondiente.
 
@@ -1130,11 +1130,11 @@ evidencia, experimento, resultado, conclusion final.
 ## D-033 - Curva 10M -> 50M: el techo no es la representacion
 
 - **Contexto**: D-032 cerro la fase con la palanca de **registro** agotada. Quedaba
-  por medir la otra dimension de la §31, el **tamano** del corpus con arquitectura
+  por medir la otra dimension de la parrafo 31, el **tamano** del corpus con arquitectura
   fija (seccion 10 de la spec). El usuario lo solicito explicitamente, con lo que
   esta decision no cambia el criterio de adopcion: mide una prediccion declarada.
 - **Razon de la expansion** (`RATIONALE_FOR_CORPUS_EXPANSION-50M`, registrada en
-  `corpus_manifest.json` antes de construir): condiciones 1, 2 y 3 de la §30, **sin
+  `corpus_manifest.json` antes de construir): condiciones 1, 2 y 3 de la parrafo 30, **sin
   descarga adicional** (la parte 1 del dump, ya bajada en P1, contiene el material)
   y con el pipeline de P1 **importado**, de modo que los 10M anteriores estan
   contenido **identicamente** en los 50M (verificado: `True`). Costes: construccion
@@ -1171,7 +1171,7 @@ evidencia, experimento, resultado, conclusion final.
   Wikipedia, IC95 que toca el 0). **V03 se mantiene.**
 - **Lo que esta decision deja escrito para el futuro**: si algun dia se quisiera
   volver a intentar esta linea, la variable que queda por explorar **no es el
-  corpus ni la representacion**, sino el techo del clasificador y el tamaño de los
+  corpus ni la representacion**, sino el techo del clasificador y el tamano de los
   datos etiquetados. Con 1.731 ejemplos, la mejora esperable de cualquier segunda
   fuente de senal es de milesimas, y el protocolo disponible no tiene evidencia
   externa para distinguirla del ruido.
@@ -1179,8 +1179,8 @@ evidencia, experimento, resultado, conclusion final.
 ## D-034 - Tramo inferior de la curva (5M): existe un suelo, y la curva del embedding es plana
 
 - **Contexto**: D-033 midio la curva hacia arriba (10M -> 50M) y concluyo que quintuplicar
-  los tokens no aumenta la aportacion complementaria. Quedaba el tramo inferior de la §10,
-  que se midio a peticion del usuario. Bajar de escala no es una expansion, asi que la §30
+  los tokens no aumenta la aportacion complementaria. Quedaba el tramo inferior de la parrafo 10,
+  que se midio a peticion del usuario. Bajar de escala no es una expansion, asi que la parrafo 30
   no le aplica: se registro `REDUCCION_A_5M` en el manifiesto con el motivo y con la nota de
   que los 5M tokens son un **prefijo exacto** de los 10M (`es_prefijo_exacto_de_10M: True`),
   sin descarga adicional y sin tocar los corpus existentes.
@@ -1286,7 +1286,7 @@ evidencia, experimento, resultado, conclusion final.
 - **Decision**: la familia `vector_size` se **CIERRA por inercia**. No se exploran 400d,
   500d ni 768d.
 - **Gate de dos niveles (correccion de criterio)**: el mejor delta toca el umbral de
-  +0.005 por **cinco diezmilésimas** y su intervalo de confianza **incluye el 0**. La
+  +0.005 por **cinco diezmilesimas** y su intervalo de confianza **incluye el 0**. La
   seccion 20 pedia el gate "junto con estabilidad razonable entre pliegues", y la
   complementariedad se exige con bootstrap. A partir de aqui una variante es **adoptable**
   solo si `delta >= +0.005` **y** `IC95 no incluye 0`. Tratar el umbral como un test de
@@ -1295,7 +1295,7 @@ evidencia, experimento, resultado, conclusion final.
   intervalo tocando el 0 es la senal de que la cifra no significa nada.
 - **Hallazgo**: la capacidad dimensional **no es la palanca**. Con 1.483 ejemplos
   etiquetados, comprimir cada documento en 100, 200 o 300 coordenadas da lo mismo. Los
-  slices conservan la señal de v5 (elongaciones +0.0344, urls +0.0181, hashtags +0.0151),
+  slices conservan la senal de v5 (elongaciones +0.0344, urls +0.0181, hashtags +0.0151),
   es decir, es la misma aportacion de siempre y no una nueva.
 - **Correccion de metodo que hay que registrar**: los tipos que se consultan al modelo son
   los **6.059 del train**, no los de train+test (8.855). Con el conjunto equivocado, 100d
@@ -1518,7 +1518,7 @@ evidencia, experimento, resultado, conclusion final.
 
 - **Contexto**: P11 es la auditoria final de la fase. Por la regla de contabilidad de la
   seccion 2 de la spec es una ``AUDIT / REPRODUCTION UNIT`` y **no** cuenta como experimento
-  nuevo: por eso no añade fila a `experiments.csv` y su resultado vive en
+  nuevo: por eso no anade fila a `experiments.csv` y su resultado vive en
   `reports/embedding_auditoria_v5_1.json` y en esta decision.
 - **Resultado de la auditoria (11/11 comprobaciones OK, veredicto GO)**:
 
@@ -1540,7 +1540,7 @@ evidencia, experimento, resultado, conclusion final.
   LB 0.78306). No se genera ninguna submission nueva ni ninguna sonda de leaderboard.
 - **Conclusion de la fase, en sus dos mitades, que es lo que la fase pretendia separar**:
   1. **Representacion**: la arquitectura si cambia la calidad del embedding (rango 0,0297)
-     y su forma revela que la señal util es local y ortografica (gana reduciendo la ventana,
+     y su forma revela que la senal util es local y ortografica (gana reduciendo la ventana,
      con el intervalo de subpalabras en el punto medio 3-6). Resultado positivo.
   2. **Tarea**: ninguna de las 14 configuraciones aporta a V03 por encima del ruido (mejor
      delta +0,0057 con IC95 que incluye el 0). Resultado negativo.
@@ -1640,7 +1640,7 @@ evidencia, experimento, resultado, conclusion final.
   umbrales congelados de V03**, y la columna de umbrales ajustados queda solo como
   dato de diagnostico.
 
-## D-046 - Track A cerrado: la ponderacion por grupo no se adopta, y la repeticion es señal, no ruido
+## D-046 - Track A cerrado: la ponderacion por grupo no se adopta, y la repeticion es senal, no ruido
 
 - **Contexto**: el gap analysis (V6-00) confirmo por busqueda en el codigo que la ponderacion
   por tamano de grupo nunca se habia probado. Lo probado antes era ponderar por **dureza**
@@ -1669,7 +1669,7 @@ evidencia, experimento, resultado, conclusion final.
   tres esquemas se ordenan exactamente segun cuanto penalizan a los grupos repetidos (A1
   +0.0006, A2 +0.0002, A3 -0.0149) y **empeoran al hacerlo**. Como el tope de A3 es mas
   agresivo que `1/g` para todo `g >= 2`, la progresion no es un accidente de los parametros
-  sino una relacion monotona. La lectura es que **un tuit repetido es señal y no ruido de
+  sino una relacion monotona. La lectura es que **un tuit repetido es senal y no ruido de
   recoleccion**: que el mismo texto ofensivo aparezca varias veces lo hace mas representativo
   de la distribucion, no menos. Bajar su peso hasta la unidad basica confunde repeticion con
   azar, y por eso A3 se lleva por delante las tres F1 a la vez. Esta conclusion es mas util que
@@ -1726,7 +1726,7 @@ evidencia, experimento, resultado, conclusion final.
   0 salvage, 0 damage, 2744 caracteristicas**. Cuarto control de la fase con la misma funcion
   que B0, A0 e I0. **Ninguno de los cuatro ha fallado desde que existen**, y este habria
   pasado desapercibido sin el.
-- **Decision 3, resultado: los skip-grams son NEUTROS, no dañinos**: hueco 1 da -0.0022
+- **Decision 3, resultado: los skip-grams son NEUTROS, no daninos**: hueco 1 da -0.0022
   (IC95 [-0.0084, +0.0039], 2/5) y huecos 1 y 2 da -0.0001 (IC95 [-0.0085, +0.0082], 2/5),
   con el bloque de palabras pasando de 2744 a 5025 caracteristicas, un **+83 %**. Anadir
   dimensionalidad no cuesta nada y no aporta nada. Es un resultado **distinto del de V4-D**,
@@ -2024,7 +2024,7 @@ evidencia, experimento, resultado, conclusion final.
   error no era del codigo sino del protocolo, que necesariamente reduce el conjunto de
   ajuste. Anadir el brazo P0-0 separo las dos cosas. Es exactamente el mismo error de
   interpretacion que la fase v6 cometio al tratar la reoptimizacion de umbrales como una
-  mejora, y por eso el gate de §32 debe ir **acompañado de una reflexion sobre que mide**.
+  mejora, y por eso el gate de parrafo 32 debe ir **acompanado de una reflexion sobre que mide**.
 - **Decision 4, el resultado principal es el informe de dispersion, que era lo que v6 dejo
   pendiente**. Quince umbrales, cinco pliegues por tres etiquetas:
   - HS: media 0.4120, mediana 0.4100, desviacion 0.0402, rango intercuartil 0.0500, rango 0.1000.
@@ -2084,7 +2084,7 @@ evidencia, experimento, resultado, conclusion final.
   control). Eso explica los dos hechos medidos antes: por que E2-16 dio -0.0006 y por que
   reajustar umbrales sobre el mismo conjunto infla +0.0036. **No hay informacion en los datos
   que identifique el umbral.** V03 mantiene los suyos **por evidencia medida y no por
-  inercia**, que es la diferencia entre un congelado justificado y uno que nadie revisó.
+  inercia**, que es la diferencia entre un congelado justificado y uno que nadie reviso.
 - **Decision 4, hay que separar si el codigo esta bien de cuanto cuesta el protocolo, y son
   dos efectos distintos**. Por eso P0.1 tiene tres brazos: P0-0 valida el codigo y da
   0.777211 exacto; P0-1-control tiene -0.0081, que **no es un error** sino el coste de
@@ -2194,11 +2194,11 @@ evidencia, experimento, resultado, conclusion final.
   difiere de la de V03 en **92 filas de 1154 y 100 celdas de 3462, un 2.9 %**. Como
   referencia, el unico movimiento positivo de leaderboard del proyecto, de v02 a v03, cambio
   126 celdas y dio +0.0031. **La prediccion razonable es que el ensemble se mueva en el orden
-  de milésimas, y ese es el techo que hay que tener presente al leer el numero.** Se escribe
+  de milesimas, y ese es el techo que hay que tener presente al leer el numero.** Se escribe
   antes del envio y no despues, porque un techo declarado despues del resultado no sirve.
 - **Decision 5, la dispersion entre pliegues es apreciable y conviene registrarla**. Las
   metricas en su propio pliegue van de 0.7386 (pliegue 4) a 0.7960 (pliegue 1), un rango de
-  0.057. El promedio da el mismo peso a un pliegue mas débil, lo que es correcto en media pero
+  0.057. El promedio da el mismo peso a un pliegue mas debil, lo que es correcto en media pero
   significa que la reduccion de varianza no es uniforme entre pliegues.
 - **Decision 6, parada obligatoria antes del envio**. El fichero
   `submissions/toxic_submission_v08_p1_fold_ensemble.csv` esta escrito y pasa las nueve
@@ -2501,7 +2501,7 @@ evidencia, experimento, resultado, conclusion final.
   da **+0,000306**, frente a **-0,002043** del brazo de control que usa una sola constante con
   el mismo procedimiento interno. **La idea aporta +0,002349 sobre el protocolo**, y esa
   diferencia si es atribuible a elegir por etiqueta. Lo relevante no es la magnitud, que es de
-  milésimas, sino la **tasa de acierto entre las celdas modificadas: 0,5185**, frente a 0,46 de
+  milesimas, sino la **tasa de acierto entre las celdas modificadas: 0,5185**, frente a 0,46 de
   P1, de 0,39 a 0,44 de P3 y de 0,39 a 0,42 de P4. Es la primera vez por encima del azar.
 - **Decision 2, P6 vuelve al patron y ademas cuantifica cuanto depende el proyecto del
   balanceo**. La rama por etiqueta da -0,005298 con tasa 0,3919, y el control -0,006857 con
@@ -2531,7 +2531,7 @@ evidencia, experimento, resultado, conclusion final.
 - **Decision 6, y de ese descubrimiento sale la mejor linea de la fase**. Promediar las cinco
   repeticiones da **+0,005066**, con IC95 [-0,00371, +0,01414], **4 de 5 pliegues a favor**,
   182 celdas modificadas y **tasa de acierto 0,5495 frente a un minimo de 0,5527: falla el
-  filtro por tres milésimas.** Es la mayor mejora local de la fase, la unica con cuatro pliegues
+  filtro por tres milesimas.** Es la mayor mejora local de la fase, la unica con cuatro pliegues
   a favor y la unica con tasa de acierto por encima de 0,55. El mecanismo es el mismo que P1,
   que promedia cinco modelos, pero **aqui los modelos son de particiones distintas y no de la
   misma particion**, y esa es la diferencia: la reduccion de varianza es real y no marginal.
@@ -2602,7 +2602,7 @@ evidencia, experimento, resultado, conclusion final.
 - **Decision 1, se construye la version coherente y se mide, y la hipotesis es falsa**. Un
   modelo por repeticion, que es lo que el OOF promedia, da una submission **identica** a la de
   veinticinco: **cero celdas de diferencia**, y la misma tasa de positivos, 0,3608. La
-  contraccion de probabilidades al promediar cinco modelos es de **+0,000591**, de milésimas.
+  contraccion de probabilidades al promediar cinco modelos es de **+0,000591**, de milesimas.
   Promediar los cinco pliegues de cada repeticion no produce una decision distinta de promediar
   uno por repeticion, porque los modelos de pliegues de una misma repeticion coinciden entre si.
 - **Decision 2, el desacople existia pero era inocuo, y eso hay que decirlo con precision**. El
@@ -2672,7 +2672,7 @@ evidencia, experimento, resultado, conclusion final.
   referencia, que es 1,1 veces el ruido. **Se registry todo y no hay ninguna submission
   recomendada.**
 
-## D-068 — Apertura de la fase v10 en worktree propio
+## D-068  -  Apertura de la fase v10 en worktree propio
 
 Se abre `/home/carlos/Git/PLN-v10` en la rama `proyecto-kaggle-toxic-2026-v10` desde `23aac93`,
 con `data/` enlazado a la copia compartida y `features/` y `models/` copiados, porque son
@@ -2688,7 +2688,7 @@ mezclarian.
 Verificacion de partida, `V10-00`: `corrected_cv` reconstruido 0.7772114525165721 con
 coincidencia exacta, `sha256` de la submission v03 identico, 207 filas de registro, 15 sondas.
 
-## D-069 — Holdout2 congelado, su gate NO se supero, y por que se creo antes de la via A
+## D-069  -  Holdout2 congelado, su gate NO se supero, y por que se creo antes de la via A
 
 Se crea `holdout2` con `StratifiedGroupKFold(n_splits=6, semilla=20260926)` sobre las 1483 filas
 del desarrollo: 247 filas en 235 grupos para holdout2, 1236 en 1180 para dev2, **cero grupos
@@ -2710,7 +2710,7 @@ sobre datos nunca vistos.
 Por la regla pre-registrada, **dev2 no se usa para ninguna decision de adopcion**. Holdout2 si
 sigue pudiendo servir como juez, pero solo por comparacion pareada dentro de sus 247 filas.
 
-## D-070 — V10-02: el ruido de la metrica corregida es de mas de 0.017, y eso obliga a cambiar el protocolo
+## D-070  -  V10-02: el ruido de la metrica corregida es de mas de 0.017, y eso obliga a cambiar el protocolo
 
 La desviacion de D-069 admite tres explicaciones separables. El **control de equivalencia da
 diferencia exactamente 0.0**: el codigo de P0b reproduce los 0.7772114525165721 al ultimo
@@ -2736,7 +2736,7 @@ siguen vigentes sin relajar.
 
 El criterio mas informativo sigue siendo **cuantas repeticiones mejoran**, como en D-067.
 
-## D-071 — Arnes de evaluacion validado en los dos sentidos, y los cuatro gates de la via A
+## D-071  -  Arnes de evaluacion validado en los dos sentidos, y los cuatro gates de la via A
 
 **D-071a, el arnes (V10-03) se valida antes de usarse para juzgar.** Con el control nulo, la
 candidata identidad, da delta exactamente 0.0 en las cinco particiones e intervalo [0.0, 0.0]. Con
@@ -2770,7 +2770,7 @@ de mala y algo mas dispersa, y la de encogimiento es la mas estable pero con med
 1 no superado, y los umbrales congelados se quedan porque no existe version a la vez igual de
 buena y mas robusta.
 
-## D-072 — CORRECCION: la cifra de +0.0036 no es el efecto de optimizar umbrales
+## D-072  -  CORRECCION: la cifra de +0.0036 no es el efecto de optimizar umbrales
 
 **La fase v6 atribuyo a la reoptimizacion de umbrales un inflado de +0.0036, y esa cita era
 incorrecta.** El informe `reports/v7_umbral_anidado.md` ya lo habia demostrado y asi lo explica:
@@ -2788,7 +2788,7 @@ Ademas, las dispersiones de las tres parametrizaciones, de 0.0052 a 0.0054, son 
 banda de particion de 0.0053 de D-070, lo que indica que la dispersion observada es **ruido y no
 una propiedad de la parametrizacion**.
 
-## D-073 — Shift de features: la via se CIERRA porque el discriminador esta por debajo del azar
+## D-073  -  Shift de features: la via se CIERRA porque el discriminador esta por debajo del azar
 
 Un discriminador que separa entrenamiento de prueba con las 24.646 caracteristicas de V03 da un
 **AUC global fuera de muestra de 0.487717**, con los cinco pliegues entre 0.462749 y 0.525974, y
@@ -2802,7 +2802,7 @@ unico desplazamiento medido entre las dos poblaciones es el de prevalencia, de f
 D-071c ya mostro que adaptarle la capa de decision empeora. Diagnostico solo: no se entrena nada
 con la prueba.
 
-## D-074 — Integridad de holdout2 y filtro de detectabilidad: nada enviable, y una correccion de criterio
+## D-074  -  Integridad de holdout2 y filtro de detectabilidad: nada enviable, y una correccion de criterio
 
 La integridad se confirma: los identificadores conservan su `sha256`, se localizan las 247 filas,
 cero solape y cero grupos compartidos. **Las tres evaluaciones de holdout2 siguen sin gastar**,
@@ -2818,7 +2818,7 @@ por buena una candidata con **+0.000131** y contradecia el propio veredicto del 
 por los dos criterios del addendum, delta minimo y particiones que mejoran. Con la banda de
 D-070, un delta positivo por si solo no significa nada.
 
-## D-075 — Correlacion entre caracteristicas: la conclusion de la v8 era correcta pero su prueba no la sostenia
+## D-075  -  Correlacion entre caracteristicas: la conclusion de la v8 era correcta pero su prueba no la sostenia
 
 **D-075a, por que V10-09 no repite la v8.** La v8 cerro la seleccion por correlacion asi: "reducir
 20.870 rasgos a 251 por magnitud y redundancia deja la metrica en 0,594, el criterio de magnitud
@@ -2851,7 +2851,7 @@ correlacion no mejora a V03**, con tres umbrales y sin reintentar mas. **NO** se
 mejor regla de cual conservar, porque esa regla no estaba pre-registrada, y afirmar lo contrario
 seria hacer exactamente lo que hizo la v8.
 
-## D-076 — El control refute la hipotesis de la complementariedad: la REGLA es irrelevante
+## D-076  -  El control refute la hipotesis de la complementariedad: la REGLA es irrelevante
 
 V10-09 empeoraba tanto que la explicacion obvia era la **regla de conservacion**: se conservaba de
 cada par la caracteristica mas informativa **en solitario**, y para un modelo lineal lo que vale
@@ -2878,7 +2878,7 @@ con el control que faltaba en la v8: cuatro reglas, tres informadas y una ciega,
 resultado. Ademas significa que esas caracteristicas correlacionadas **llevan senal real y no
 sustituible**, y que en la estructura de correlacion **no hay nada que explotar**.
 
-## D-077 — P4, BiGRU con afinamiento: afinar funciona, y la tasa diferencial es lo que lo hace funcionar. H1 cerrada
+## D-077  -  P4, BiGRU con afinamiento: afinar funciona, y la tasa diferencial es lo que lo hace funcionar. H1 cerrada
 
 La fase v9 dejo H1 con una sola variante: V9-04, con los embeddings **congelados**, dio **0.6943**,
 frente a 0.6636 del control de media mas regresion lineal y 0.777211 de V03. Quedaba probar si
@@ -2889,7 +2889,7 @@ ha producido el proyecto**: la variante afinada da **0.711639**, es decir **+0.0
 congelada.
 
 **Pero el control es lo que da valor al resultado, y es la variante que el plan no habia pedido.**
-Se añadio una tercera variante, la misma red afinada pero con **una sola tasa de aprendizaje para
+Se anadio una tercera variante, la misma red afinada pero con **una sola tasa de aprendizaje para
 todo** en vez de la diferencial. Da **0.699086**, o sea solo **+0.005092** sobre la congelada. De los
 +0.017645 del afinamiento, **+0.012553 los aporta la tasa de aprendizaje diferencial y no el
 hecho de mover el embebido**. Sin ese control, la conclusion would've sido que afinar aporta
@@ -5144,3 +5144,19 @@ que mejorar la decision.
 > mejora de decision disponible por esa via. Ademas confirma, desde la geometria,
 > la conclusion de P54 de que las 42 celdas no rescatables son un limite de
 > definicion de etiqueta y no un hueco de informacion recuperable.
+<!-- P60 2026-09-28 -->
+## P60 - decisiones
+
+- D-130: CERRAR B (weighted ASL) por duplicacion funcional, con dos patas: la ponderacion por frecuencia de etiqueta es class_weight balanced y el suavizado de coocurrencia es la familia de dependencia entre etiquetas de V4-E. 0 experimentos.
+- D-131: CERRAR E (logit adjustment y LDAM) por equivalencia algebraica: sobre un modelo lineal, ajustar el logit desplaza el intercepto, y con umbral fijo un desplazamiento de intercepto es un cambio de umbral. 0 experimentos.
+- D-132: CERRAR F (label distribution learning) por equivalencia: con tres etiquetas anidadas el subespacio factible tiene cuatro puntos, medido, y V4-E ya lo enumero.
+- D-133: CERRAR K (conformal prediction) sin objetivo accionable: convertir un conjunto conformista en decision binaria exige un umbral.
+- D-134: CERRAR G con el mecanismo medido: el termino contrastivo domina el objetivo por un orden de magnitud a lambda 1,0 y la arquitectura no compite con V03.
+- D-135: CERRAR A con el mecanismo medido: el corte duro nunca se activa, con cero por ciento de negativos con perdida exactamente cero, y lo que actua es un ponderado de clase ya cerrado por V8-07.
+- D-136: MANTENER L como MARGINAL: el mecanismo se activa pero mueve 3 celdas de 4449 y empeora el grupo que pretendia proteger.
+- D-137: CERRAR D con la prediccion confirmada antes de entrenar: las dos formas de ponderado difieren menos de 2,33 por ciento con coseno 0,9999996 entre soluciones.
+- D-138: CERRAR C. La senal existe y esta localizada, con el control de TR en AUC 1,0000 y el estructural de AG aportando +0,1129, pero la intervencion suave fue un no-op exacto y la dura ya la cerro V14-00.
+- D-139: CERRAR H con la condicion de novedad MEDIDA: 2842 veces el sesgo de su propia metrica distingue la version distributiva de la de Dirac, y aun asi pierde 0,072307 contra su control de centroide.
+- D-140: CERRAR I. El mecanismo se activa fuerte, con 20,77 por ciento de pesos negativos, y degrada la decision en 0,301104 por falta de un conjunto retenido limpio.
+- D-141: CERRAR J. El objetivo propio se uso de verdad, con diferencia maxima entre soluciones de 1,31 a 1,65, y el resultado es -0,001710. La version anterior habia medido un delta de exactamente cero por un no-op del optimizador compartido.
+

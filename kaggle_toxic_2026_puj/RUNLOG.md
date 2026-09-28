@@ -547,7 +547,7 @@ Registro cronologico de ejecuciones. Formato:
   de entrenamiento del meta y el de inferencia es **pequeno** (KS medio 0.0624) y
   **no causa dano** (meta_shift 0.7828 > meta_control 0.7791); la alineacion por
   cuantiles recupera +0.00005 y Platt empeora -0.0171. **Hipotesis abierta de
-  v2 §4.3 refutada** (D-028). El meta de 36 features cumple el nivel de D-016.
+  v2 parrafo 4.3 refutada** (D-028). El meta de 36 features cumple el nivel de D-016.
 - 15:00 | P5 TRACK G | `experiments/33_class_conditional_lm_v4.py`: la
   verosimilitud class-conditional (unigram/bigram/char) vale 0.4876 sola pero
   **aporta +0.0041** a la fusion tardia (0.7710 -> 0.7751). Ridge 0.7698, SGD
@@ -586,7 +586,7 @@ Registro cronologico de ejecuciones. Formato:
   (el `NaN` inicial era del corpus de juguete de 25 tipos). `D-030` registrada con
   la transcripcion literal de la autorizacion y **sin** inventar evidencia escrita.
   Spec maestra transcrita en `docs/embedding_from_scratch_v5_spec.md`.
-  `data/external/corpora/corpus_manifest.json` creado con el esquema de la §35 y
+  `data/external/corpora/corpus_manifest.json` creado con el esquema de la parrafo 35 y
   copia declarativa en `reports/corpus_manifest_v5.json`. Auditoria de recursos:
   0 usos de transformers / sentence-transformers / GloVe / `from_pretrained`.
   `corrected_cv` de V03 reproduce **0.777211** desde el OOF canonico. Trabajo en
@@ -634,7 +634,7 @@ Registro cronologico de ejecuciones. Formato:
   refutado, y la hipotesis de complementariedad (que exige P6) **sigue sin medir**.
   **0 sondas de LB, 0 usos de holdout, 0 submissions.**
 - 18:45 | v5 P3 complementariedad (fusion + meta anidado) | `experiments/embedding_03_fusion_complementariedad_v5.py`
-  (EBD-07..09). Todas las variantes se evalúan en el **mismo punto de operación**:
+  (EBD-07..09). Todas las variantes se evaluan en el **mismo punto de operacion**:
   los umbrales congelados de V03 (0.44/0.51/0.46), para que nadie gane por ajustar
   su propio umbral; el control `V03-TFIDF` reproduce **0.777211 exacto**, lo que
   valida el protocolo celda a celda. Resultados: `V03-TFIDF` 0.7772 | `EMB-SOLO`
@@ -675,7 +675,7 @@ Registro cronologico de ejecuciones. Formato:
 - 20:40 | v5 P8 curva 10M -> 50M | `experiments/embedding_07_corpus_50M_v5.py` (E-CORP-08) y
   `experiments/embedding_08_fasttext_50M_v5.py` (EBD-13/14), a peticion del usuario.
   `RATIONALE_FOR_CORPUS_EXPANSION-50M` registrado antes de construir, con las
-  condiciones 1, 2 y 3 de la §30 y el criterio de parada declarado. El corpus de
+  condiciones 1, 2 y 3 de la parrafo 30 y el criterio de parada declarado. El corpus de
   50M se construyo **sin descarga adicional** (misma parte 1 del dump) y con el
   pipeline de P1 **importado**, de modo que los 10M anteriores estan contenido
   identicamente (verificado). 50.000.000 tokens, 21.529 documentos, 646.957 tipos;
@@ -686,11 +686,11 @@ Registro cronologico de ejecuciones. Formato:
   0.7818 con 10M, y `EMB-WIKI-50M` **0.6687** frente a 0.6530 (+0.0157). Es decir,
   5x tokens **mejoran la representacion** y **no** la aportacion complementaria.
   Las subpalabras aportan +0.0030 a 50M frente a +0.0138 a 10M. **D-033**: no se
-  escala a 100M ni 500M; el techo no es la representacion sino el tamaño de los
+  escala a 100M ni 500M; el techo no es la representacion sino el tamano de los
   datos etiquetados y el bloque disperso de V03. **0 submissions, 0 sondas de LB.**
 - 21:20 | v5 P9-P10 tramo inferior de la curva (5M) | `experiments/embedding_09_corpus_5M_v5.py`
   (E-CORP-09) y `experiments/embedding_10_fasttext_5M_v5.py` (EBD-15/16), a peticion del
-  usuario. `REDUCCION_A_5M` registrada: la §30 aplica a expansiones, no a reducciones.
+  usuario. `REDUCCION_A_5M` registrada: la parrafo 30 aplica a expansiones, no a reducciones.
   Corpus de 5.011.404 tokens verificado como **prefijo exacto** de los 10M, sin descarga
   adicional. FastText 200d entrenado en 43 s (vocabulario 64.839) y control Word2Vec en
   29 s. **Resultado**: `FUSION-WIKI-5M` **0.7757** (delta **-0.0015**, IC95
@@ -724,7 +724,7 @@ Registro cronologico de ejecuciones. Formato:
   FUSION-VS-100 0.7823 (+0.0050, IC95 [-0.0028, +0.0130]), FUSION-VS-300 0.7805 (+0.0033),
   dispersion interna 0.0017. **La dimension no es la palanca**: la familia se cierra por
   inercia y no se exploran 400d, 500d ni 768d. El mejor delta toca el umbral por cinco
-  diezmilésimas con el intervalo incluyendo el 0, asi que **D-036** adopta un gate de dos
+  diezmilesimas con el intervalo incluyendo el 0, asi que **D-036** adopta un gate de dos
   niveles (delta >= +0.005 **y** IC95 que excluya el 0). Correccion de metodo registrada: los
   tipos consultados son los 6.059 del train y no los de train+test; con el conjunto
   equivocado 100d salia -0.0065. **Presupuesto 2/9 + 0/1.** 0 submissions, 0 sondas de LB.
@@ -841,7 +841,7 @@ Registro cronologico de ejecuciones. Formato:
   ya estan en grupos de tamano 1**, asi que solo el 7.1 % de las filas puede cambiar de
   peso. Maximo 7 filas por grupo, 1415 grupos distintos.
   Y el patron es monotono en la agresividad: **cuanto mas se penaliza a los repetidos, peor**
-  (A1 > A2 > A3). La lectura es que **un tuit repetido es señal, no ruido de recoleccion**,
+  (A1 > A2 > A3). La lectura es que **un tuit repetido es senal, no ruido de recoleccion**,
   y que no conviene reabrir esta linea ni en variantes mas suaves.
   **Track A cerrado por resultado negativo (seccion 54). D-046.** 0 submissions.
 - 21:55 | v6 Track I: ponderacion word/char, resultado negativo | `v6_04_char_weight.py`
@@ -1167,7 +1167,7 @@ Registro cronologico de ejecuciones. Formato:
   **Recomendacion: no enviar la v13**, porque predice una tasa de positivos por debajo de V03 y
   la curva dice que ese lado pierde. Quedan 15 sondas, 13 de 14 comparables dentro del ruido, y
   V03 como maximo.
-  **D-065 y D-066. 3 sondas en la fase v8, 6 submissions escritas, 0 automáticas.**
+  **D-065 y D-066. 3 sondas en la fase v8, 6 submissions escritas, 0 automaticas.**
 - v8 seis tecnicas del material de clase | tres scripts
   **Y un hallazgo que explica la fase entera. El brazo de control que es V03 sin cambiar nada,
   medido con el protocolo de cinco repeticiones, da +0,004309 con 0 de 5 repeticiones que
@@ -2487,3 +2487,11 @@ ningun control lo notara si no se hubiera escrito una celda de codigo que la
 consume.
 
 **Sin push, sin merge, sin reset, sin rebase, sin PR.**
+<!-- P60 2026-09-28 -->
+## P60 - ejecucion
+
+- 2026-09-28T18:01:44+00:00 P60 completa, exit 0.
+- 0 submissions, 0 consultas al leaderboard, 0 uso de holdout, 0 uso de test.
+- Baseline verificado al inicio y al cierre de cada pista: sha256 intacto, corrected_cv exacto, 1415 grupos con 0 partidos.
+- Artefactos generados por script leyendo los JSON, sin cifras propias.
+

@@ -106,7 +106,7 @@ permitidos. La unica pregunta que sigue abierta, y que **no** es una hipotesis d
 conseguir que la condicion de HS se estime mejor, porque de ella dependen los tres caminos y el
 proyecto ya cerro las familias que podrian atacarla.
 
-## Fase actual: v5 «Embedding from Scratch» (CERRADA el 2026-09-25)
+## Fase actual: v5 "Embedding from Scratch" (CERRADA el 2026-09-25)
 
 Rama `proyecto-kaggle-toxic-2026-v5` (worktree `/home/carlos/Git/PLN-v5`, base
 v4 `5d06ce7`; PR #28 de v4 sigue abierto y sin mergear). Spec transcrita en
@@ -165,7 +165,7 @@ archivada de la autorizacion; se registra solo lo comunicado por el usuario.
 | V6 Track B | **Cerrado negativo**: B1 -0.0107, B2 -0.0008; 0/5 pasan el Gate 1 |
 | D-045 | El control B0 es obligatorio; la invariante es cierta pero solo 1.35 % de las predicciones la violan |
 | V6 Track A | **Cerrado negativo**: A1 +0.0006, A2 +0.0002, A3 -0.0149; 0/4 pasan el Gate 1 |
-| D-046 | Solo el 7.1 % de filas es repetible y penalizarlo empeora: la repeticion es señal |
+| D-046 | Solo el 7.1 % de filas es repetible y penalizarlo empeora: la repeticion es senal |
 | V6 Track I | **Cerrado negativo**: optimo interior en 1.5 pero +0.0016, mitad del gate |
 | D-047 | El peso heredado de hstack no era optimo, pero la escala no era el cuello de botella |
 | V6 Track C1 | **Cerrado negativo y neutro**: -0.0001 con IC95 que incluye el 0; **C queda cerrada entera** |
@@ -180,9 +180,9 @@ archivada de la autorizacion; se registra solo lo comunicado por el usuario.
 | V6 entrega | 25 variantes, 7 controles, **0 adopciones**; 7 de 24 experimentos gastados |
 | D-052 | **Fase v6 CERRADA**: no queda ninguna linea ejecutable de la especificacion |
 | variable abierta | El tamano de los datos etiquetados (1.483), unica palanca que deja la evidencia |
-| GATE DE CIERRE | §29: A (+0.005 con estabilidad) / B (complementariedad robusta) / C (senal representacional fuerte) |
+| GATE DE CIERRE | parrafo 29: A (+0.005 con estabilidad) / B (complementariedad robusta) / C (senal representacional fuerte) |
 
-## Fase anterior: v4 «Advanced Research v4» (CERRADA el 2026-09-25)
+## Fase anterior: v4 "Advanced Research v4" (CERRADA el 2026-09-25)
 
 Rama `proyecto-kaggle-toxic-2026-v4`. Spec archivada en
 `docs/advanced_research_v4_spec.md`; plan en `tasks/plan_v4.md`; backlog
@@ -190,7 +190,7 @@ pre-registrado en `reports/research_backlog_v4.md`; informe de cierre en
 `reports/advanced_research_v4.md`; matriz de cumplimiento en
 `reports/spec_compliance_v4.md`. Decisiones D-025 a D-029.
 
-**Resultado: la fase se cierra con la condicion B de la spec (§102): hipotesis
+**Resultado: la fase se cierra con la condicion B de la spec (parrafo 102): hipotesis
 nuevas investigadas y cerradas con evidencia, sin mejora transferible.** El
 unico candidato que supero los tres gates de D-016 (C, `meta36_downweight`,
 corrected_cv 0.7882 = +0.0110, 4/5 pliegues, IC95 [+0.0054, +0.0200]) **fue
@@ -198,13 +198,13 @@ rechazado por el holdout congelado: 0.8163 frente a 0.8285 de V03 (delta
 -0.0122)**. Su submission (v12) queda como artefacto reproducible marcado
 `DESCARTADO`; no se envio a Kaggle.
 
-| Campo (§104) | Valor |
+| Campo (parrafo 104) | Valor |
 |---|---|
 | CURRENT_BEST_MODEL | **V03** (sin cambios; verificada byte a byte en P0 y en la auditoria final) |
 | CURRENT_BEST_CORRECTED_CV | **0.777211** (protocolo v2, desarrollo n=1.483) |
 | CURRENT_BEST_HOLDOUT | 0.8285 (V03, P7-01). **Holdout agotado: 5/5 evaluaciones usadas** |
 | CURRENT_BEST_KAGGLE | **0.78306** (v03, mejor de 12 sondas; 0 sondas nuevas en v4) |
-| NEW_SIGNALS | ninguna adoptada. Señales nuevas caracterizadas y **cerradas**: rareza del ruido de etiqueta (2.8 % de contradicciones, no explica el error); dureza util = distancia a la frontera (la BCE agregada no preserva el orden); reweighting con signo negativo; verosimilitud class-conditional aporta +0.0041 en fusion; SVC RBF sobre SVD 300 = 0.7904 con IC fragil |
+| NEW_SIGNALS | ninguna adoptada. Senales nuevas caracterizadas y **cerradas**: rareza del ruido de etiqueta (2.8 % de contradicciones, no explica el error); dureza util = distancia a la frontera (la BCE agregada no preserva el orden); reweighting con signo negativo; verosimilitud class-conditional aporta +0.0041 en fusion; SVC RBF sobre SVD 300 = 0.7904 con IC fragil |
 | CLOSED_TRACKS | A, B, C, D, E, F y H (TRACK G queda cerrado salvo el aporte documentado de la verosimilitud) |
 | OPEN_TRACKS | ninguno |
 | SUBMISSION_CANDIDATES | ninguno. `toxic_submission_v12_descartado_meta36_downweight.csv` conservado como artefacto, marcado DESCARTADO |
@@ -1463,3 +1463,13 @@ punto de operacion de V03, cuya puntuacion cruda ya es mejor que cualquier reaju
 Notebook 212 -> 216 celdas, secciones 55 y 56, ambas con `returncode = 0` aisladas.
 
 **Formulacion:** > V03 remains the best verified leaderboard result.
+<!-- P60 2026-09-28 -->
+## Estado tras P60
+
+- Rama: proyecto-kaggle-toxic-2026-p60, creada desde v25 que contiene P59.
+- Experimentos registrados: 336 en experiments.csv, 336 ids unicos.
+- Campeon: V03, corrected_cv 0.7772114525165721, LB 0.78306, sha256 7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e, sin cambios.
+- P60: 0 candidatos, 1 marginal (pista L), 7 cerradas, 4 cerradas sin experimento.
+- Submissions nuevas en P60: 0. Consultas al leaderboard: 0.
+- Artefactos de P60: 9 JSON de pista o auditoria, 9 informes .md, 9 CSV, 3 informes consolidados.
+
