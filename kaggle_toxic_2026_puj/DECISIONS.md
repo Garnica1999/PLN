@@ -4002,3 +4002,57 @@ experimento. Se consume 0 de los 3 experimentos de presupuesto.
 **Lo que esto responde a la pregunta de la directiva.** Seguimos sin mejorar **porque ya no
 existe senal utilizable**, no porque nunca convertimos el EDA en mecanismos. Las dos ramas de la
 pregunta se resuelven: la conversion fue completa, y la senal tampoco esta.
+
+
+### D-120. La contradiccion 147/757 frente a 715/757 son dos magnitudes distintas, y ninguna es azar
+
+**Contexto.** P48 presento 715 de 757 celdas de error de V03 como "rescatables" y, en la
+misma fase, cito 147 de 757 como `cobertura_de_errores_v03`,inionando que los tensores OOF por
+canal no estaban en disco y que 715 era una cota superior. P49 exige resolverlo antes de
+cerrar nada.
+
+**Los tensores eran recuperables.** Estan en `/home/carlos/Git/PLN/kaggle_toxic_2026_puj/features/`
+y en `/home/carlos/Git/PLN-v8/kaggle_toxic_2026_puj/features/`. Reconstruido el pool con la
+misma regla de exclusion que `experiments/28_hardness_v4.py` (se descartan `TXT+*` y
+`CH-TGT+DIST`), salen **20 canales**, y la fraccion de fallo por celda coincide con
+`reports/hardness_v4.csv` en **4449 de 4449 celdas, con diferencia 0.00e+00**.
+
+**Que significa cada cifra.**
+
+| cifra | unidad | definicion |
+|---|---|---|
+| **757** | label-cell | celdas (tweet, etiqueta) con `pred != y_true` sobre 1483 x 3. **No** son tweets con error: son 441 filas |
+| **147** | label-cell | celdas de error de V03 que acierta **una sola** variante, `C_meta36_downweight` con umbral 0.5. Es la `cobertura_de_errores_v03` de V17-00 |
+| **715** | label-cell | celdas de error de V03 que acierta **al menos uno de los 20 canales** de la fase v2, binarizados a 0.5 |
+
+Las dos son observacion directa y **no son comparables**: 147 es el rescate de un modelo, 715
+es el de la union de veinte. El 147 **se reproduce exactamente**: 147 rescates, 90 danos,
+cobertura 0.194187582562748.
+
+**No es azar.** Si los 20 canales fallaran de forma independiente, con la probabilidad marginal
+observada, el numero de celdas de error de V03 en las que ninguno acierta seria **1,20**. El
+observado es **42**, es decir 35 veces mas. Un canal acierta una celda de error de V03 con
+probabilidad 0,2756 (5,51 de 20). Los canales fallan **juntos** con V03, que es exactamente la
+firma de un hueco de representacion compartido.
+
+**Pero el rescate no se puede cobrar.** De los 20 canales, **19 tienen net negativo**. El
+unico positivo es `base:M2_union_lr_c2` con +11, que es el propio V03 con umbral 0.5 en lugar
+de 0,44/0,51/0,46, luego no es un modelo alternativo sino una perturbacion de umbral. El
+canal con mas rescates, `cita:NEG`, rescata 337 y dania 2043: **net -1706**.
+
+**Decision.** `CASE A`. `OBSERVED_RESCUE = 715`, `UPPER_BOUND` no aplica a 715. Y una
+conclusion nueva y mas fuerte que la de P48: **el rescate existe, es real y esObservable, pero
+es difuso y no identificable**, porque ningun canal individual tiene net positivo y no hay
+informacion por celda que diga cual de los veinte conviene escuchar.
+
+**Correccion de P48.** Dos elementos quedan **superados**: la limitacion que declaraba los
+tensores no recuperables, y el criterio de enrichment que solo miraba la tasa de rescate. El
+resto, incluidas las cifras 757, 715 y 42, queda **verificado**.
+
+**Lo que P48 dio por bueno y P49 corrige en el otro sentido.** El margin sigue siendo valido
+porque se puede repetir sobre el rescate observado, y coincide: la tasa de rescate cae de
+1,0000 con margen bajo a 0,8472 y 0,8182 con margen alto en TR y AG. Y las slices cambian de
+diagnostico al anadir el enriquecimiento en irrecuperables: `negacion` tiene lift 1,921, o sea
+se concentra en errores **irrecuperables**, mientras `hashtags` tiene lift 0,245 y se
+concentra en errores **rescatables**. P48 las declaro a todas indistinguibles porque solo
+midio una de las dos direcciones.

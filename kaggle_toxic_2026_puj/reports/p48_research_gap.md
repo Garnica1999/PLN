@@ -1,3 +1,18 @@
+> **RECLASIFICADO EN P49 (2026-09-28).** Este informe se conserva intacto y sus
+> cifras numericas se **verifican**, pero dos afirmaciones quedan **superadas**:
+>
+> 1. La limitacion que declaraba "los tensores OOF por canal ya no estan en disco, luego
+>    la categoria C es una cota superior" es **FALSA**: los tensores estaban en los
+>    worktrees `PLN` y `PLN-v8`, y la reconstruccion del pool de 20 canales coincide con
+>    `reports/hardness_v4.csv` en las 4449 celdas con diferencia 0. Las cifras 715 y 42
+>    son **observacion directa**, no cota superior.
+> 2. El criterio de enrichment usado aqui solo miraba la tasa de rescate. P49 lo completa
+>    con el enriquecimiento en errores **irrecuperables**, que si separa slices.
+>
+> El veredicto `EDA_RESEARCH_GAP = NONE` **se mantiene**, pero por un motivo mas fuerte
+> que el que se dio aqui: no es que no haya rescate, es que **ninguno de los 20 canales
+> tiene net positivo**. Ver `reports/p49_rescue_reconciliation.md`.
+
 # P48 - Brecha de investigacion guiada por EDA
 
 Generado por `experiments/v48_01_residual_atlas.py` (V48-01 (P1 atlas de residuos, rescate y patrones)).

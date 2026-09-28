@@ -1183,3 +1183,89 @@ que esta fase deja sobre la mesa.
 *Seccion generada por `experiments/v48_00_eda_traceability.py`,
 `experiments/v48_01_residual_atlas.py` y `experiments/v48_02_integrar_notebook.py`.
 Sin push: la rama sigue local.*
+
+
+---
+
+## Addendum P49 (2026-09-28) - La contradiccion del rescate, resuelta
+
+### Que significan las tres cifras
+
+| cifra | unidad | que es |
+|---|---|---|
+| **757** | label-cell | celdas (tweet, etiqueta) con `pred != y_true` sobre 1483 x 3. Los tweets con error son **441** |
+| **147** | label-cell | celdas de error de V03 que acierta **una** variante, `C_meta36_downweight` con umbral 0.5 |
+| **715** | label-cell | celdas de error de V03 que acierta **al menos uno** de los 20 canales de la fase v2 |
+
+**Las dos no son comparables.** 147 es el rescate de un modelo; 715 es el de la union de veinte.
+La confusion venia de ponerlas sobre el mismo denominador sin decir que los numeradores
+significan cosas distintas.
+
+### Los tensores no se habian perdido
+
+Estaban en `/home/carlos/Git/PLN/.../features/` y en `/home/carlos/Git/PLN-v8/.../features/`.
+Reconstruido el pool de 20 canales con la misma regla de exclusion que
+`experiments/28_hardness_v4.py`, la fraccion de fallo por celda coincide con
+`reports/hardness_v4.csv` en **4449 de 4449 celdas con diferencia 0.00e+00**. La limitacion que
+P48 declaro era falsa.
+
+Y el 147 se reproduce exactamente: **147 rescates, 90 danios, cobertura 0.194187582562748**.
+
+### 715 es real, y no es azar
+
+| magnitud | valor |
+|---|---:|
+| probabilidad de que un canal acierte una celda de error de V03 | 0,2756 |
+| celdas irrecuperables **esperadas** si los canales fueran independientes | **1,20** |
+| celdas irrecuperables **observadas** | **42** |
+
+Si el rescate grande fuera un artefacto de tener veinte modelos, las irrecuperables serian unas
+pocas. Son 42, **35 veces mas**. Los canales fallan juntos con V03, que es la firma de un hueco
+de representacion compartido.
+
+### Pero el rescate no se puede cobrar
+
+| canal | rescate | damage | net |
+|---|---:|---:|---:|
+| `cita:NEG` | 337 | 2043 | **-1706** |
+| `synt:SYN-POS` | 309 | 1014 | -705 |
+| `emoc:EMO-LEX@C=1.0` | 306 | 899 | -593 |
+| `base:M2_union_lr_c2` | 71 | 60 | **+11** |
+| los otros 16 | | | negativos |
+
+**19 de 20 canales tienen net negativo.** El unico positivo es `M2_union_lr_c2`, que es el
+propio V03 con umbral 0.5 en lugar de 0,44/0,51/0,46: no es un modelo alternativo, es una
+perturbacion de umbral del mismo modelo.
+
+Esta es la conclusion que P48 no tenia y que cambia el sentido de su veredicto. No es que no haya
+senal de rescate. **Hay 715 celdas rescued, son reales, y son irreducibles en la practica**,
+porque ningun canal las convierte en mejora neta y no existe informacion por celda que diga cual
+de los veinte escuchar.
+
+### Efecto sobre las conclusiones de P48
+
+| elemento de P48 | estado tras P49 |
+|---|---|
+| 757 celdas de error | **verificado** |
+| 715 rescatables | **verificado, y es observacion directa, no cota** |
+| 42 irrecuperables | **verificado** |
+| analisis de margen | **verificado**, y ahora sobre rescate observado |
+| "los tensores no estan en disco" | **superado**: estaban en dos worktrees |
+| criterio de enrichment | **superado**: solo miraba rescate, no irrecuperabilidad |
+| `EDA_RESEARCH_GAP = NONE` | **se mantiene**, por motivo mas fuerte |
+
+Y las slices cambian de diagnostico al anadir el enriquecimiento en irrecuperables: `negacion`
+tiene lift 1,921, es decir se concentra en errores **irrecuperables**, mientras `hashtags` tiene
+lift 0,245 y se concentra en errores **rescatables**. P48 las declaraba todas indistinguibles
+porque solo midio una de las dos direcciones.
+
+### Lo que queda abierto
+
+Ninguna hipotesis de modelo. Pero si una pregunta de teoria de la informacion que la evidencia
+ahora permite formular con precision: **?por que los veinte canales aciertan 715 celdas
+distintas, y ninguno de forma exploitable?** Eso no es un problema de modelo, es un problema de
+identificacion: falta una senal que diga, por celda, cual de los veinte canales merece ser
+escuchado. Ninguna de las familias probadas en V21-V48 attacka eso.
+
+*Seccion generada por `experiments/v49_00_rescate_forense.py` y
+`experiments/v49_01_integrar_notebook.py`. Sin push: la rama sigue local.*

@@ -913,3 +913,44 @@ de rescate literal de la directiva no es computable con los artefactos presentes
 
 **Estado del campeon.** Sin cambios. V03 intacto. 0 modelos, 0 submissions, 0 consultas a
 Kaggle, 0 uso de holdout o test.
+
+
+---
+
+## Fase P49 (2026-09-28) - OOF Rescue Reconciliation
+
+**Que se resolvio.** La contradiccion entre 715/757 y 147/757.
+
+```text
+OBSERVED_RESCUE        = 715 de 757  (94,45 pct) - observacion directa
+UPPER_BOUND_RESCUE     = no aplica a 715
+147                    = rescate de UNA sola variante, no de la union
+irrecuperables         = 42 de 757   (5,55 pct)
+esperado si azar       = 1,20
+CASE                   = A
+```
+
+**Los tensores SI eran recuperables**, en los worktrees `PLN` y `PLN-v8`. La reconstruccion del
+pool de 20 canales coincide con `reports/hardness_v4.csv` en las 4449 celdas con diferencia
+`0.00e+00`. La limitacion que P48 declaro era falsa.
+
+**Las dos cifras no son comparables y nunca debieron serlo.** 147 es el rescate de una variante
+concreta (`C_meta36_downweight`, umbral 0.5) y **se reproduce exactamente**: 147 rescates, 90
+danos, cobertura 0.194187582562748. 715 es el de la union de veinte canales. La confusion venia
+de presentar ambas sobre el mismo denominador sin decir que el numerador significa cosas
+distintas.
+
+**No es azar, y ese es el hallazgo.** Con independencia entre canales se esperarian 1,20
+celdas irrecuperables; se observan **42**. Un canal acierta una celda de error de V03 solo el
+27,56 por ciento de las veces. Los canales fallan juntos con V03.
+
+**Pero no se puede cobrar.** **19 de los 20 canales tienen net negativo.** El unico positivo
+es el propio V03 con umbral 0.5, que no es un modelo alternativo. El canal con mas rescates
+(`cita:NEG`) tiene **net -1706**: rescata 337 y dania 2043.
+
+**Correccion de P48.** Dos elementos superados: la limitacion sobre los tensores y el criterio
+de enrichment. El resto verificado, y `EDA_RESEARCH_GAP = NONE` **se mantiene** por un motivo mas
+fuerte: no es que no haya rescate, es que es difuso e identificable.
+
+**Estado del campeon.** Sin cambios. V03 intacto. 0 modelos, 0 submissions, 0 consultas a
+Kaggle, 0 uso de holdout o test.

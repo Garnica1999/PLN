@@ -1,0 +1,8 @@
+metrica,valor,numerador,denominador,unidad,definicion,fuente,observado,cota,reproducible,estado
+celdas_de_error_de_V03,757,,,label-cell,"celdas (tweet, etiqueta) con pred != y_true sobre 1483x3",features/oof_v03_final.npz,si,no,si,VERIFIED
+filas_con_algun_error,441,,,tweet,tweets con al menos una de las tres labels mal,features/oof_v03_final.npz,si,no,si,VERIFIED
+rescate_de_una_variante,147,147,757,label-cell,celdas de error de V03 que C_meta36_downweight (umbrales 0.5) acierta. Es la cobertura_de_errores_v03 de V17-00,features/oof_candidates_v4.npz,si,no,si,VERIFIED
+rescate_de_la_union_de_8_variantes,263,263,757,label-cell,celdas de error de V03 que acierta al menos una de las 8 variantes inventariadas por V17-00,reports/v17_00_inventario_complementariedad.json,si,no,no,REPORTED_NOT_REPRODUCED
+celdas_con_al_menos_un_canal_que_acerte,715,715,757,label-cell,"celdas de error de V03 que acierta al menos uno de los 20 canales OOF de la fase v2, binarizados a 0.5",features/v2_oof_*.npz (worktrees PLN y PLN-v8),si,no,si,VERIFIED
+celdas_irrecuperables,42,42,757,label-cell,celdas de error de V03 que no acierta ninguno de los 20 canales OOF de la fase v2,features/v2_oof_*.npz,si,no,si,VERIFIED
+irrecuperables_esperadas_si_independencia,1.2,,,label-cell,"celdas de error de V03 con cero aciertos esperadas si los 20 canales fallaran de forma independiente, con la probabilidad marginal observada",calculado en este script,no,si,si,UPPER_BOUND_NULL

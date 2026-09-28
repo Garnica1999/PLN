@@ -1904,3 +1904,46 @@ poblacion "las tres mal" y habria sido circular, sustituido por `label_rarity` y
 usado en `main`; y un texto que afirmaba "100 por ciento" cuando el valor calculado es 99,3.
 
 **Sin push, sin merge, sin reset, sin rebase, sin PR.**
+
+
+---
+
+## 2026-09-28 - Fase P49: reconciliacion forense del rescate OOF
+
+**Alcance.** 0 modelos, 0 submissions, 0 consultas a Kaggle, 0 uso de holdout o test.
+
+**V49-00** (`experiments/v49_00_rescate_forense.py`, exit code 0): localizacion de los tensores
+en dos worktrees, reconstruccion del pool de 20 canales validada contra `hardness_v4.csv`
+(4449/4449 celdas, diferencia 0.00e+00), reproduccion exacta del 147 de V17-00, matriz de
+rescate y damage por canal, prueba de azar frente a senal, margen sobre rescate observado y
+slices error-dense frente a rescue-dense. Artefactos:
+`reports/p49_rescue_reconciliation.{json,md,csv}`, `p49_rescue_matrix.csv`,
+`p49_damage_matrix.csv`.
+
+**V49-01** (`experiments/v49_01_integrar_notebook.py`, exit code 0): seccion 45, notebook 192 ->
+194 celdas, celda de codigo con returncode 0.
+
+**Hallazgos.**
+
+- Los tensores `v2_oof_*.npz` y `oof_candidates_v4.npz` estaban en los worktrees `PLN` y
+  `PLN-v8`. No se habian perdido.
+- 757 son **label-cells**, no tweets. Los tweets con algun error son 441.
+- 147 es el rescate de **una** variante; 715 es el de la **union de veinte**. Se reproducen
+  ambos exactamente.
+- 715 no es azar: se esperan 1,20 celdas irrecuperables bajo independencia y se observan 42.
+- 19 de 20 canales tienen net negativo. El unico positivo es V03 con umbral 0.5.
+- `p49_damage_matrix.csv` se escribe con la misma tabla que la de rescate, con la columna
+  `rescate` renombrada a `damage`, para que ambos ficheros sean legibles por separado. Es una
+  decision de comodidad de lectura, no dos medidas distintas: la matriz de damage por canal es
+  la columna `damage` de `p49_rescue_matrix.csv`.
+
+**Reclasificacion de P48.** Se anade una cabecera a `reports/p48_research_gap.md` que declara
+superados dos elementos (la limitacion sobre los tensores y el criterio de enrichment) y
+verificados el resto. No se borra ni se reescribe el informe original.
+
+**Errores propios.** Identificador CJK introducido en el script; `f1_score` importado desde
+`scipy.stats` en vez de `sklearn.metrics`; las claves del artefacto v4 no son `variantes` sino
+los propios nombres de variante en primer nivel; y columnas de contexto que no se copiaban al
+dataframe base. Los cuatro detectados por ejecucion real con `exit code` capturado sin pipe.
+
+**Sin push, sin merge, sin reset, sin rebase, sin PR.**
