@@ -1,0 +1,23 @@
+magnitud,valor
+brazo_0_corrected_cv,0.5409847232116939
+brazo_1_corrected_cv,0.4686780062434686
+delta_divergencia_puro,-0.07230671696822527
+delta_vs_V03,-0.3085334462731035
+corrected_cv_V03,0.7772114525165721
+correlacion_dirac_contra_distribucion,0.000000
+sesgo_de_la_rejilla_de_cuantiles,0.000157
+diferencia_relativa_dirac_contra_distribucion,0.435592
+razon_senal_sobre_sesgo,2842.283333
+pliegues_mejorados,0
+folds_brazo_1,0.478309 0.435957 0.486647 0.466306 0.475025
+folds_brazo_0,0.539174 0.542920 0.539472 0.541745 0.541595
+rescate,391
+damage,2655
+neto,-2264
+cambian,3046
+direcciones_seccionadas,64
+unidades_por_tweet,32
+gate_delta_superado,False
+gate_pliegues_superado,False
+gate_superado,False
+decision,"CLOSED_BY_DUPLICACION. El gap check mostro que la version Dirac del transporte es la familia cerrada, y la version distributiva no mejora sobre ella"
