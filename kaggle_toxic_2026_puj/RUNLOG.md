@@ -2496,3 +2496,40 @@ consume.
 - Baseline verificado al inicio y al cierre de cada pista: sha256 intacto, corrected_cv exacto, 1415 grupos con 0 partidos.
 - Artefactos generados por script leyendo los JSON, sin cifras propias.
 
+<!-- P61 2026-09-28 -->
+## P61 (2026-09-28) - Capacidad, diversidad y distribucion de probabilidad
+
+Tres experimentos: `P61-01` LightGBM con Optuna anidado, `P61-02` ensemble con pertenencia
+y pesos anidados, `P61-03` segunda particion con control negativo. Ademas la
+reconciliacion de los nueve problemas de instrumentacion de P60, la EDA de las
+probabilidades OOF de V03 y el inventario con diversidad de los veinte canales del pool de
+P50.
+
+```text
+P61-01  LightGBM + Optuna anidado    0.7513651502
+         familia -0.0302397191
+         busqueda +0.0043934168
+         total -0.0258463023   2/5   CLOSED
+P61-02  ensemble anidado             0.7835159596  +0.0063045070  gate superado
+         control de atribucion: el modelo nuevo SUBTRAIA -0,000850
+P61-03  segunda particion            test 1 -0.0011527969
+         test 2 holdback medio -0.0015908404 con 7/10
+         test 3 control negativo +0.0059889238   REJECTED
+```
+
+**El hallazgo que mas importa.** El control negativo NO colapsa. Con los tres peores
+canales del pool, entre 0,04 y 0,24 por debajo de V03, la ganancia del ensemble sigue
+siendo +0.0059889238. Un promediado ponderado que contiene a V03 mejora el OOF casi con
+seguridad porque los pesos se eligen para exploitear su residuo sobre las mismas filas, y
+el bootstrap no lo detecta porque mide ruido de muestreo y no sesgo de seleccion. Esto
+explica de una sola causa el fracaso historico de ENS-01 a ENS-04.
+
+**El diagnostico que queda.** Entre el 60 y el 68 por ciento de los errores de V03 son
+errores de alta confianza, con la distancia al umbral POR ENCIMA de la de los aciertos.
+El limite de V03 no es de decision ni de calibracion: es de representacion.
+
+```text
+no evidence of exploitable remaining model capacity/diversity
+V03 remains the best verified leaderboard result.
+```
+<!-- /P61 2026-09-28 -->

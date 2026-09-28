@@ -5161,3 +5161,175 @@ que mejorar la decision.
 - D-140: CERRAR I. El mecanismo se activa fuerte, con 20,77 por ciento de pesos negativos, y degrada la decision en 0,301104 por falta de un conjunto retenido limpio.
 - D-141: CERRAR J. El objetivo propio se uso de verdad, con diferencia maxima entre soluciones de 1,31 a 1,65, y el resultado es -0,001710. La version anterior habia medido un delta de exactamente cero por un no-op del optimizador compartido.
 
+<!-- P61 2026-09-28 -->
+## D-142. La EDA de probabilidades demuestra que los errores de V03 NO son de decision
+
+**Contexto.** P61 cambia el enfoque: deja de acumular tecnicas de clasificacion y pasa a
+preguntar por la naturaleza de los errores de V03. La pregunta operativa es que
+probabilidad produjo el modelo para cada observacion, donde estaba respecto al umbral y
+que decision salio de ahi.
+
+**Lo medido.** 4449 celdas etiqueta-tweet sobre el OOF canonico.
+
+| magnitud | HS | TR | AG |
+|---|---:|---:|---:|
+| distancia media al umbral de los ACIERTOS | 0,2582 | 0,3493 | 0,2622 |
+| distancia media al umbral de los ERRORES | 0,1519 | 0,1922 | 0,1607 |
+| errores con distancia >= 0,10 | 64,15 % | 68,28 % | 60,05 % |
+| errores con distancia >= 0,30 | 17,03 % | 23,65 % | 13,58 % |
+| ECE | 0,0578 | 0,0675 | 0,0492 |
+
+**La lectura.** Los errores estan MAS cerca del umbral que los aciertos, y entre 60 y 68
+por ciento de ellos son errores de ALTA CONFIANZA. Eso descarta de raiz la hipotesis de
+que el limite de V03 sea un problema de decision: si los errores se acumulasen junto al
+umbral, un desplazamiento del umbral los arreglaria, y V8-09 ya habia cerrado eso. Un
+modelo que se equivoca con confianza no se arregla moviendo el corte; se arregla
+representando mejor el texto o bien ese texto no lleva la senal.
+
+**Consecuencia para el resto de la fase.** Esto reencuadra y legitima el bloque de
+capacidad: si el error es de representacion, la palanca es un modelo con mas capacidad o
+con otra familia, no una calibracion. Y explica por que la calibracion, unica linea viva
+que quedaba, no es una pista: es un sintoma, no una causa.
+
+**Advertencia registrada.** La EDA es diagnostica. No se uso para ajustar umbrales, elegir
+modelos ni optimizar hiperparametros, y su artefacto lo dice en su propio encabezado.
+## D-143. La familia LightGBM es nueva en el registro y aun asi no llega: mismo patron que OPT-01
+
+**Contexto.** El encargo autoriza una sola familia nueva de optimizacion, LightGBM, si el
+analisis de hueco confirma que no existe una busqueda local exhaustiva. El hueco se
+confirma: LightGBM, XGBoost y CatBoost devuelven CERO filas en las 336 del registro.
+
+**El riesgo, declarado antes de ejecutar.** `OPT-01` ya habia corrido Optuna sobre el
+propio TF-IDF de V03, 24 trials, y gano +0,008565 en OOF. Se descarto porque no
+transfirio: 0,77602 frente a 0,78306, un hueco de -0,028. Su conclusion registrada es que
+la busqueda por OOF premia capacidad que no generaliza.
+
+**El resultado, con la descomposicion que pide el parrafo 27.**
+
+```text
+brazo 0, V03                       0,7772114525
+brazo 1, LightGBM por defecto      0,7469717334   cambio de familia  -0,0302397191
+brazo 2, LightGBM con Optuna       0,7513651502   optimizacion       +0,0043934168
+                                                          total           -0,0258463023
+pliegues que mejoran 2/5 | rescate 225 | dano 253 | neto -28 | 450 trials
+```
+
+**La lectura.** La busqueda Optuna FUNCIONA: recupera +0,004393, casi un 15 por ciento
+del deficit de la familia. Lo que no llega es la familia. Y el sentido de la descomposicion
+importa: el fallo no es de optimizacion, luego mas busqueda no lo arreglaria. El
+represamiento se declaro antes de ejecutar: 27431 rasgos contra 1186 filas de
+entrenamiento es un regimen donde los arboles no son naturalmente fuertes, y el
+precedente V4-G ya habia medido gradient boosting sobre SVD de este corpus en 0,7297.
+
+## D-144. La pertenencia al pool NO estaba anidada, y eso hacia invalido el numero del ensemble
+
+**Contexto.** El primer ensemble dio +0,0063045070, supero el gate, paso 4 de 5 pliegues y
+dio un bootstrap de IC95 [+0,002697, +0,014385]. Antes de aceptarlo habia que revisar el
+protocolo, y la revision encontro dos defectos.
+
+**Defecto uno, de instrumentacion.** Los pesos se optimizaban con SLSQP sobre el
+macro-F1. Con el umbral fijo, la decision es constante a tramos y el F1 tambien, luego
+su gradiente es cero casi en todas partes y el optimizador se paraba en su punto
+inicial. Los pesos que devolvia eran EXACTAMENTE uniformes, 1 sobre k, en todos los
+tamanos y en los dos objetivos. Eran un artefacto del metodo, no una solucion.
+
+**Defecto dos, de fuga, y este es el grave.** Los pesos estaban anidados pero la
+PERTENENCIA no. Los tres canales historicos se elegian una sola vez, de forma global,
+por una utilidad ajustada por diversidad calculada sobre todo el OOF. La pregunta de
+quien pertenece al pool se respondia con las mismas filas sobre las que despues se
+puntuaba. Anidar los pesos no repara eso, porque el conjunto de candidatos ya arrastraba
+la fuga antes de optimizarse nada.
+
+**La correccion.** La pertenencia se decide ahora dentro de cada pliegue, ordenando los
+candidatos por utilidad calculada SOLO con las filas internas. Y los pesos se buscan sin
+derivadas: el punto uniforme, los k vertices unitarios y 300 sorteos Dirichlet(1) con
+semilla fija. El punto uniforme siempre es candidato, luego el resultado no puede ser
+peor que el promedio simple.
+
+**El dato que hace creible la correccion.** La pertenencia ELEGIDA sale IDENTICA en los cinco
+pliegues: los mismos tres canales, V03, LightGBM y M3_union_svc, con los mismos
+utilidades. Luego la seleccion no es fragil, y el numero sobrevive a la correccion, lo
+que confirma que el defecto era de principio y no de resultado.
+
+## D-145. El control negativo no colapsa: la ganancia del ensemble NO es diversidad
+
+**Contexto.** El ensemble con el modelo nuevo daba +0,0063045070 y lo superaba. El
+control de atribucion del parrafo 33 ya habia mostrado que el modelo nuevo SUBTRAIA
+-0,000850, es decir que el mejor pool era el que NO lo incluia. Eso ya era una senal, y
+llevo a la segunda particion, donde los finalistas se congelaron antes de ejecutar.
+
+**Tres tests, porque uno no basta.**
+
+| test | que mide | resultado |
+|---|---|---|
+| 1 | particion nueva con semilla distinta, todo re-derivado dentro | -0.0011527969 |
+| 2 | holdback 3 contra 2 sobre las diez parejas de pliegues | medio -0.0015908404, 7/10 positivas |
+| 3 | CONTROL NEGATIVO: los tres peores canales en lugar de los mejores | +0.0059889238 |
+
+**El test 3 es el que decide.** Con `cita:NEG` en 0,533063, `synt:SYN-MORPH` en 0,565239
+y `synt:SYN-DEPS` en 0,572844, es decir entre 0,04 y 0,24 POR DEBAJO de V03, la ganancia
+sigue siendo +0.0059889238. El control deberia colapsar si la explicacion fuera
+diversidad verdadera, porque Diversity implica que los miembros tienen que ser
+razonablemente buenos y estructuralmente distintos. No colapsa.
+
+**La conclusion, y es la mas util de la fase.** Un promediado ponderado que contiene a V03
+mejora el OOF casi con seguridad, porque los pesos se eligen para exploitear el residuo
+de V03 sobre las mismas filas, y eso es ajustar, no generalizar. El bootstrap de la
+particion canonica daba IC95 [+0,002697, +0,014385] y aun asi no era evidencia, porque
+mide la variabilidad del estimador sobre las filas que ya intervinieron en elegirlo. El
+bootstrap mide ruido de muestreo, no sesgo de seleccion, y aqui habia sesgo de seleccion.
+
+**Consecuencia retroactiva.** Esto explica de una sola causa por que los ensembles
+historicos ENS-01 a ENS-04 tambien fallaron, y por que la mitad de los 90 resultados
+historicos que mencionan ensembles son negativos. No era que faltara busqueda: era que la
+busqueda de pesos sobre un pool que contiene al modelo de referencia no produce
+evidencia, con o sin anidamiento. La leccion se registra como metodo, no como resultado.
+
+## D-146. P61 se cierra SIN capacidad explotable y SIN diversidad explotable, y el
+diagnostico de las probabilidades queda como instrumento permanente
+
+**El criterio de cierre del parrafo 57 se cumple en sus tres condiciones.**
+
+```text
+capacidad    LightGBM no mejora, -0,0258463023 total, 2/5 pliegues
+diversidad   el control negativo no colapsa, luego no hay diversidad que explotar
+ensemble     supera el gate en la canonica y NO sobrevive a la segunda particion
+```
+
+**La formulacion literal que corresponde al resultado.**
+
+```text
+no evidence of exploitable remaining model capacity/diversity
+```
+
+**Lo que P61 si deja, y es lo mas valioso de la fase.** La EDA de probabilidades es un
+instrumento diagnostico permanente que separa cuatro modos de fallo que un unico numero
+de F1 no distingue:
+
+```text
+error de representacion   el texto no lleva la senal, o el modelo no la lee
+error de calibracion      la probabilidad esta sistematicamente desviada
+error de decision         el orden es bueno y el umbral esta mal puesto
+sin informacion disponible la observacion es indistinguible de sus vecinas
+```
+
+La medicion central es que el 60 al 68 por ciento de los errores de V03 son de alta
+confianza, con la distancia al umbral por ENCIMA de la de los aciertos. Eso apunta al
+primer modo, y descarta el tercero, que era el que P59 y V8-09 habian explorado sin
+exito. El techo estructural de V28-01, con errores de HS, TR y AG solapados entre +0,42
+y +0,51, sigue en pie y es coherente con esta lectura.
+
+**El presupuesto.** Tres experimentos de los ocho principales. Los cinco restantes NO se
+gastan, porque el criterio de parada se alcanzo: no hay una hipotesis nueva con mecanismo
+activado, y las cuatro plazas de reserva son para hipotesis genuinamente nuevas, no para
+rescatar un negativo ni para buscar hiperparametros de un modelo ya cerrado.
+
+**Lo que queda congelado.**
+
+```text
+V03 remains the best verified leaderboard result.
+corrected_cv = 0.7772114525165721
+LB = 0.78306
+sha256 = 7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e
+```
+<!-- /P61 2026-09-28 -->

@@ -1,0 +1,94 @@
+{
+  "familia": "P61_SEGUNDA_PARTICION",
+  "naturaleza": "EXPERIMENTO. 0 submissions, 0 Kaggle, 0 holdout, 0 test. V03 no se modifica. Los finalistas se congelan antes de ejecutar",
+  "fecha": "2026-09-28T21:05:39+00:00",
+  "experiment_id": "P61-03",
+  "track": "P61-segunda-particion",
+  "script": "experiments/p61_08_segunda_particion.py",
+  "finalistas_congelados": [
+    "con_nuevo_k3_A",
+    "con_nuevo_k4_A"
+  ],
+  "excluidos_del_concurso_de_finalistas": {
+    "con_nuevo_k5_A": "supera el delta y los 5/5 pliegues, pero su IC95 de bootstrap es [-0,001798, +0,008766], que CONTIENE el cero, luego no cumple la condicion de bootstrap favorable y no es finalista"
+  },
+  "alcance_de_lo_revalidado": "se revalida la CAPA DE DECISION, es decir la eleccion de pertenencia y la de pesos. NO se revalidan los modelos base, porque los veinte canales historicos solo existen como probabilidades out-of-fold en la particion canonica. Reajustarlos exigiria su codigo de entrenamiento exacto y sus hiperparametros, y adivinarlos sustituiria en silencio un modelo distinto por uno con nombre",
+  "tests": {
+    "1_nueva_particion": {
+      "semilla": 20260928,
+      "hash_fold_canonico": "81bc0a3102bf1bc7b9a5e142d50072d65e67b67737417eaa3f20e7c9ec0a0504",
+      "hash_fold_nuevo": "4f0ea95046da0a15be1885f180f20acdee29f1e18673f50edaaaf99c14b90a3f",
+      "resultados": {
+        "test1_con_nuevo_A": {
+          "corrected_cv": 0.7760586556,
+          "delta": -0.0011527969,
+          "pliegues_mejorados": 2
+        },
+        "test1_con_nuevo_B": {
+          "corrected_cv": 0.7788843359,
+          "delta": 0.0016728834,
+          "pliegues_mejorados": 3
+        },
+        "test1_sin_nuevo_A": {
+          "corrected_cv": 0.7816740411,
+          "delta": 0.0044625886,
+          "pliegues_mejorados": 4
+        },
+        "test1_sin_nuevo_B": {
+          "corrected_cv": 0.7787776014,
+          "delta": 0.0015661489,
+          "pliegues_mejorados": 2
+        }
+      }
+    },
+    "2_holdback_3_contra_2": {
+      "delta_medio": -0.0015908404,
+      "delta_mediano": 0.0023656997,
+      "positivas": 7,
+      "de": 10,
+      "delta_minimo": -0.0182202289,
+      "delta_maximo": 0.0073094462
+    },
+    "3_control_negativo": {
+      "miembros": [
+        "cita:NEG",
+        "synt:SYN-MORPH",
+        "synt:SYN-DEPS"
+      ],
+      "corrected_cv_de_los_miembros": {
+        "cita:NEG": 0.533063,
+        "synt:SYN-MORPH": 0.565239,
+        "synt:SYN-DEPS": 0.572844
+      },
+      "delta": 0.0059889238
+    }
+  },
+  "veredicto_del_mecanismo": "el control negativo NO colapsa: la ganancia aparece igual con miembros que estan 0,04 a 0,24 por debajo de V03, luego la explicacion por diversidad no se sostiene y el efecto hay que atribuirlo al hecho de ejecutar una busqueda de pesos sobre un pool que incluye V03",
+  "bootstrap_particion_nueva": {
+    "IC95": [
+      -0.011307,
+      0.031095
+    ],
+    "n": 4000,
+    "agrupado_por": "grupo canonico",
+    "grupos": 1415,
+    "incluye_el_cero": true
+  },
+  "reproducibilidad": {
+    "nivel": "R2",
+    "git_commit": "e5de2ce",
+    "seed_particion_nueva": 20260928,
+    "seed_canonica": 42,
+    "hash_fold_canonico": "81bc0a3102bf1bc7b9a5e142d50072d65e67b67737417eaa3f20e7c9ec0a0504",
+    "hash_fold_nuevo": "4f0ea95046da0a15be1885f180f20acdee29f1e18673f50edaaaf99c14b90a3f",
+    "puntos_en_el_simplejo": 300
+  },
+  "formulacion": "V03 remains the best verified leaderboard result.",
+  "gastos": {
+    "submissions": 0,
+    "consultas_kaggle": 0,
+    "uso_holdout": 0,
+    "uso_test": 0,
+    "experimentos": 1
+  }
+}
