@@ -1858,3 +1858,49 @@ realmente resueltos.
 capturo **sin pipe**, porque en P46 un `| tail` habia enmascarado un fallo real.
 
 **Sin push, sin merge, sin reset, sin rebase, sin PR.**
+
+
+---
+
+## 2026-09-28 - Fase P48: investigacion residual guiada por EDA
+
+**Alcance.** 0 modelos, 0 submissions, 0 consultas a Kaggle, 0 uso de holdout o test. Presupuesto
+de 3 experimentos: **consumidos 0**.
+
+**V48-00** (`experiments/v48_00_eda_traceability.py`, exit code 0): matriz de trazabilidad de 15
+hallazgos del EDA contra las 318 filas del registro. Artefactos:
+`reports/p48_eda_traceability.{json,md,csv}`.
+
+**V48-01** (`experiments/v48_01_residual_atlas.py`, exit code 0): atlas de 1483 filas, 757 celdas
+de error, clasificacion A/B/C contra los 20 canales OOF historicos, analisis de margen, errores
+conjuntos, 24 slices y combinaciones, y veredicto de brecha. Artefactos:
+`reports/p48_residual_atlas.{json,csv}`, `p48_rescue_analysis.csv`,
+`p48_unrescued_analysis.csv`, `p48_pattern_candidates.csv`, `p48_research_gap.md`.
+
+**V48-02** (`experiments/v48_02_integrar_notebook.py`, exit code 0): seccion 44, notebook 189 ->
+192 celdas, dos celdas de codigo con returncode 0.
+
+**Hallazgo central.** Ninguna slice se enriquece en rescate. Varias tienen lift de error de 1,21
+a 1,60 con p < 0,01, pero su tasa de rescate es igual o inferior a la global de 0,9445.
+
+**Tres correcciones de criterio durante la fase, todas detectadas por auditoria propia.**
+
+1. El criterio de cierre por "ultima fila coincidente" daba 7 hallazgos abiertos y era erroneo:
+   para "grupos de near-duplicate" la ultima fila era la auditoria del campeon de P46, que no
+   tiene nada que ver. Redefinido sobre veredictos sustantivos, excluyendo `AUDIT_ONLY` y
+   `DIAGNOSTIC_ONLY`. El resultado correcto es 1 hallazgo abierto, no 7.
+2. El criterio de candidato a hipotesis exigia lift de la **tasa de error**, lo que selectaba
+   patrones que solo describen donde V03 falla, un hecho ya conocido. Redefinido para exigir
+   enriquecimiento en **rescate** mediante prueba binomial contra la tasa global. Los 6
+   candidatos iniciales pasan a 0.
+3. Dos patrones quedaron definidos por el propio error (`margen_bajo_error`,
+   `margen_alto_error`), de modo que su lift era circular. Marcados como no candidatos. Y
+   `urls` y `urls_2_o_mas` eran el mismo patron, porque `n_urls` solo toma 0, 2 y 4 en dev.
+
+**Errores de codigo corregidos.** Columna `canales_acieren_min` mal escrita frente a su uso; el
+insulto lexico no existe por fila fuera de `all_three_errors.csv`, que es precisamente la
+poblacion "las tres mal" y habria sido circular, sustituido por `label_rarity` y `poblacion`;
+`id` del parquet es `object` y hay que castearlo; un `diagnostico_de_margen` calculado en `_md` y
+usado en `main`; y un texto que afirmaba "100 por ciento" cuando el valor calculado es 99,3.
+
+**Sin push, sin merge, sin reset, sin rebase, sin PR.**

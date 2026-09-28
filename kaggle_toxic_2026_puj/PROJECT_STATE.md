@@ -870,3 +870,46 @@ experimental ficticia.
 
 **Estado del campeon.** Sin cambios. V03 intacto, `corrected_cv = 0.7772114525165721`, LB
 0.78306. 0 modelos, 0 submissions, 0 consultas a Kaggle, 3 submissions reservadas.
+
+
+---
+
+## Fase P48 (2026-09-28) - EDA-Driven Residual Research
+
+**Que se respondio.** Si el EDA original se convertirio en hipotesis experimentales, y si quedan
+patrones de error residual con mecanismo sin probar.
+
+```text
+EDA_RESEARCH_GAP   = NONE
+hipotesis nuevas   = 0
+experimentos      = 0 de un presupuesto de 3
+```
+
+**Trazabilidad: 14 de 15 hallazgos del EDA cerrados, ninguno sin experimento.** La conversion
+del EDA en mecanismos fue completa. El unico hallazgo abierto es la rareza de etiqueta, con un
+unico experimento asociado. Ademas, el informe EDA de origen solo declara hipotesis en 3 de sus
+6 hallazgos clave.
+
+**Atlas de residuos: no hay poblacion rescatable escondida.** De las 757 celdas de error de V03,
+**715 (94,45 por ciento)** las acierta al menos un canal OOF historico y **42 (5,55 por ciento)**
+ninguno. La tasa de error global es 0,2974; la de rescate, 0,9445.
+
+**El hallazgo que decide la fase.** Hay slices con error muy por encima de la media, con lift de
+1,21 a 1,60 y p < 0,01. **Pero ninguna se enriquece en rescate**: su tasa de rescate es igual o
+inferior a la global, y varias quedan significativamente por debajo. Elevar la tasa de error no es
+lo mismo que concentrar informacion recuperable, y la prueba que lo separa es el enriquecimiento
+en rescate.
+
+**Sobre el margen.** El rescate cae de forma monotona con el margen de V03: 0,9929 por debajo de
+0,10 frente a 0,8657 desde 0,20. El **85,7 por ciento de las celdas irrecuperables estan en
+margen alto** (36 de 42). Es la firma de un hueco de representacion, pero son 42 celdas de 757.
+
+**La respuesta a la pregunta de la directiva.** Seguimos sin mejorar **porque ya no existe senal
+utilizable**, no porque el EDA quedara sin convertir. Las dos ramas se resuelven a la vez.
+
+**Limitaciones que quedan declaradas.** Los tensores OOF por canal ya no estan en disco, asi que
+la categoria C es una cota superior del rescate y no identifica el modelo concreto. Y la matriz
+de rescate literal de la directiva no es computable con los artefactos presentes.
+
+**Estado del campeon.** Sin cambios. V03 intacto. 0 modelos, 0 submissions, 0 consultas a
+Kaggle, 0 uso de holdout o test.

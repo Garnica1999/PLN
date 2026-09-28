@@ -1088,3 +1088,98 @@ familia de modelo nueva, no de una fuente de datos nueva, porque no queda ningun
 
 *Seccion generada por `experiments/v47_00_auditoria_datos.py` y
 `experiments/v47_01_integrar_notebook.py`. Sin push: la rama sigue local.*
+
+
+---
+
+## Addendum P48 (2026-09-28) - El EDA se exploto por completo, y no queda senal
+
+### La pregunta
+
+P48 no era "que modelo probamos ahora", sino si seguimos sin mejorar porque ya no existe senal
+o porque nunca convertimos el EDA en mecanismos. Son dos diagnosticos opuestos y obligan a
+respuestas opuestas.
+
+### Primera respuesta: la conversion fue completa
+
+| magnitud | valor |
+|---|---:|
+| hallazgos del EDA auditados | 15 |
+| con mecanismo probado y cerrado | **14** |
+| sin un solo experimento | **0** |
+| abiertos | 1 |
+
+El unico abierto es la rareza de etiqueta, con un unico experimento. Y el propio informe EDA de
+origen solo declaraba hipotesis explicita en 3 de sus 6 hallazgos clave: los otros tres se
+convirtieron en experimentos por otras vias, pero lo hicieron.
+
+Aplicar un criterio mas severo **empeora** el balance, no lo mejora. Exigir que el tema no tenga
+ninguna fila con un veredicto de apertura, siendo literales, daria 14 de 15 igual. La conclusion
+no depende del criterio.
+
+### Segunda respuesta: la senal tampoco esta
+
+De las 757 celdas de error de V03, **715 (94,45 por ciento)** las acierta al menos un canal OOF
+historico, y **42 (5,55 por ciento) ninguna**. La tasa de error global es 0,2974 y la de
+rescate 0,9445.
+
+Aqui esta el hallazgo que decide la fase, y es contraintuitivo. Hay slices con tasa de error
+claramente superior a la media:
+
+| patron | lift de error | tasa de rescate | enriquecimiento |
+|---|---:|---:|---:|
+| cita | 1,60 | 0,9655 | 1,022 |
+| colectivo | 1,39 | 0,9267 | 0,981 |
+| negacion | 1,28 | 0,8776 | 0,929 |
+| longitud larga | 1,26 | 0,9017 | 0,955 |
+| hashtags | 1,21 | 0,9808 | 1,038 |
+
+Todas con p por debajo de 0,01. **Y ninguna se enriquece en rescate.** El enriquecimiento es el
+cociente entre la tasa de rescate del patron y la global, y todos rondan 1,0 o estan por debajo.
+Varios son significativamente **mas bajos** que la media: colectivo en falso negativo de HS 0,882,
+negacion 0,929.
+
+Eso es la prueba de que **tener mas errores no es tener senal oculta**. Un patron donde V03 falla
+mas de lo normal, y donde el resto de modelos acierta en la misma proporcion que en cualquier otro
+sitio, no es una oportunidad: es una descripcion de donde V03 falla, que ya sabiamos.
+
+Un criterio de hipotesis mal construido habria abierto aqui cinco lineas de investigacion. Todas
+serian duplicados de familias ya cerradas, porque colectivo, negacion, longitud, elongacion,
+hashtags y cita ya tienen 11 a 46 experimentos cada uno.
+
+### El margen, que si tiene senal
+
+La tasa de rescate cae de forma monotona con el margen de V03:
+
+| bin de margen | errores | tasa de rescate |
+|---|---:|---:|
+| [0, 0,05) | 141 | 1,0000 |
+| [0,05, 0,10) | 141 | 0,9858 |
+| [0,10, 0,20) | 207 | 0,9807 |
+| [0,20, 0,30) | 134 | 0,9179 |
+| [0,30, 1] | 134 | 0,8134 |
+
+Y el **85,7 por ciento de las celdas irrecuperables estan en margen alto** (36 de 42). Es la firma
+de un hueco de representacion: V03 se equivoca con conviccion exactamente donde ningun canal
+historico acierta.
+
+Es un hallazgo real y con mecanismo. Pero son **42 celdas de 757**, un 5,55 por ciento del
+error. Para que una hipotesis de este tipo fuera accionable haria falta que ese subconjunto
+fuera grande, y no lo es.
+
+### Decision
+
+**`EDA_RESEARCH_GAP = NONE`.** Cero hipotesis, cero experimentos de un presupuesto de tres.
+
+### Lo que queda abierto, que no es una hipotesis
+
+La limitacion real de esta fase no es de senal, es de **artefacto**: los tensores OOF por canal
+(`features/v2_oof_*.npz`) ya no estan en disco. Solo sobrevive la fraccion de fallo por celda, de
+modo que la categoria C es una cota superior del rescate, no la identificacion del modelo que
+rescata. Con esos tensores, la misma pregunta se responderia con evidencia mas fuerte. No es una
+via de mejora del modelo: es una tarea de mantenimiento del repositorio, y es la unica accion
+que esta fase deja sobre la mesa.
+
+*Seccion generada por `experiments/v48_00_eda_traceability.py`,
+`experiments/v48_01_residual_atlas.py` y `experiments/v48_02_integrar_notebook.py`.
+Sin push: la rama sigue local.*

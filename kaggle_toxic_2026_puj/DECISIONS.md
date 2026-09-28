@@ -3951,3 +3951,54 @@ hipotesis.
 
 **Consecuencia.** No queda ninguna via de datos. La recomendacion de P46 queda cerrada por
 evidencia, no por prudencia.
+
+
+### D-119. El EDA se convertirio completo en hipotesis, y el hueco de investigacion es nulo
+
+**Contexto.** P48 pone a prueba la hypothesis de que el proyecto no mejora porque el EDA
+original no se convirtio en mecanismos experimentales, en vez de porque no quede senal.
+
+**Metodo.** Dos piezas, ambas sobre artefactos existentes, sin entrenar nada.
+
+1. Trazabilidad: 15 hallazgos del EDA original, cada uno con el mecanismo que deriva de el,
+   buscado en las 318 filas del registro de experimentos.
+2. Atlas de residuos: las 757 celdas de error de V03 sobre el OOF canonico, cruzadas con la
+   fraccion de fallo por celda de los 20 canales OOF historicos, congelada en
+   `reports/hardness_v4.csv`.
+
+**Resultado 1: la trazabilidad es casi total.** **14 de 15 hallazgos del EDA tienen mecanismo
+probado y cerrado**, y **ninguno se quedo sin un solo experimento**. El unico abierto es la
+rareza de etiqueta, con un unico experimento. Ademas, el informe EDA de origen solo declara
+hipotesis explicita en 3 de sus 6 hallazgos clave; los otros 3 se convirtieron en experimentos
+por otras vias.
+
+Criterio de cierre aplicado: predominio de veredictos **sustantivos** de cierre sobre los de
+apertura, excluyendo filas `AUDIT_ONLY` y `DIAGNOSTIC_ONLY`, que no se refieren al mecanismo. Un
+primer criterio que usaba la ultima fila coincidente daba 7 hallazgos abiertos, y era erroneo:
+para "grupos de near-duplicate" la ultima fila era la auditoria del campeon de P46.
+
+**Resultado 2: no hay poblacion rescatable escondida.** De las 757 celdas de error de V03,
+**715 (94,45 por ciento)** son acertadas por al menos un canal historico, y **42 (5,55 por
+ciento)** no lo son por ninguno. La tasa de error global es 0,2974 y la de rescate 0,9445.
+
+**El punto decisivo: ninguna slice se enriquece en rescate.** Se evaluaron 24 slices y
+combinaciones de las ya existentes en el EDA. Varias tienen tasa de error claramente superior a
+la media, con lift de 1,21 a 1,60 y p por debajo de 0,01: cita, colectivo, negacion, longitud
+larga, elongacion, hashtags. **Pero su tasa de rescate es igual o inferior a la global.** Ninguna
+supera 1,0 en el cociente de enriquecimiento, y varias quedan significativamente por debajo: colectivo en falso negativo de HS 0,882, negacion 0,929, longitud larga 0,955.
+
+Eso invalida la lectura intuitiva de "hay subpoblaciones con senal oculta". La prueba que las separa
+es precisamente el enriquecimiento en rescate, y ninguna lo supera.
+
+**Sobre el margen.** La tasa de rescate cae de forma monotona con el margen de V03: 0,9929 con
+margen por debajo de 0,10 y 0,8657 con margen de 0,20 o mas. Y **el 85,7 por ciento de las
+celdas irrecuperables estan en margen alto** (36 de 42). Esa es la firma de un hueco de
+representacion: V03 se equivoca con conviccion justo donde ningun canal acierta. Pero son **42
+celdas de 757**, un 5,55 por ciento. Ninguna hipotesis se sostiene sobre esa base.
+
+**Decision.** `EDA_RESEARCH_GAP = NONE`. No se propone ninguna hipotesis y no se ejecuta ningun
+experimento. Se consume 0 de los 3 experimentos de presupuesto.
+
+**Lo que esto responde a la pregunta de la directiva.** Seguimos sin mejorar **porque ya no
+existe senal utilizable**, no porque nunca convertimos el EDA en mecanismos. Las dos ramas de la
+pregunta se resuelven: la conversion fue completa, y la senal tampoco esta.
