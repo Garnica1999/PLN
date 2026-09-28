@@ -1,0 +1,245 @@
+{
+  "familia": "P59_B_LOCAL_WINDOW",
+  "naturaleza": "EXPERIMENTO. 1 candidato, 0 submissions, 0 consultas a Kaggle, 0 holdout, 0 test. V03 no se modifica",
+  "fecha": "2026-09-28T14:06:18+00:00",
+  "experiment_id": "P59-07",
+  "track": "P59-B",
+  "gap_analysis": {
+    "precedente_mas_cercano": "V4-D01-D04, 'ventanas locales como tokens' (spec 24)",
+    "por_que_no_es_duplicacion": "en V4-D la ventana es un canal sparse EXTRA apilado al documento completo, luego la unidad de puntuacion sigue siendo el tweet entero y la dilution no se toca. Aqui la ventana ES la unidad de puntuacion: el vector del documento no existe",
+    "precedente_del_principio_de_agregacion": "DL-02 CharCNN con kernels de caracter 3 y 5 = campos locales con max, 0,741036, descartado, pero en familia densa y entrenada desde cero, no en la familia sparse lineal de V03",
+    "rows_MIL_multiple_instance": 0,
+    "informes_con_ventana_o_segmento": "solo la familia de la ventana de entrenamiento de FastText (EBD-18/19/21/22/23), mecanismo distinto",
+    "B_NOVELTY": true,
+    "FUNCTIONAL_EQUIVALENCE": "FALSE"
+  },
+  "configuracion_pre_registrada": {
+    "ventana_tokens": 32,
+    "stride_tokens": 16,
+    "solapamiento": 16,
+    "tokenizacion": "(?u)\\b\\w\\w+\\b (el patron por defecto de TfidfVectorizer)",
+    "corte": "sobre los intervalos de caracter de los tokens, para conservar la forma superficial",
+    "tweets_cortos": "una sola ventana igual al tweet completo, sin duplicar ni relleno",
+    "entrenamiento": "la union de todas las ventanas del training fold; cada ventana hereda la etiqueta de su tweet",
+    "agregacion": "max de la probabilidad de ventana, por etiqueta",
+    "clasificador": "LogisticRegression C=2.0 balanced liblinear max_iter=1000 seed=42, el de V03",
+    "features": "word(1,2) + char_wb(3,5), min_df=2, sublinear_tf, el de V03",
+    "umbrales": "0,44 / 0,51 / 0,46 congelados, no reajustados",
+    "rejilla": "ninguna. No se prueba otro tamano, stride, agregacion ni umbral"
+  },
+  "factibilidad_registrada_antes_de_validation": {
+    "tokens_mediana": 15.0,
+    "tokens_max": 51,
+    "caracteres_mediana": 92.0,
+    "ventanas_por_tweet_media": 1.0856,
+    "ventanas_por_tweet_max": 3,
+    "tweets_multi_ventana": 122,
+    "porcentaje_multi_ventana": 8.23,
+    "celdas_alcanzables": 366,
+    "distribucion_num_ventanas": {
+      "1": 1361,
+      "2": 117,
+      "3": 5
+    },
+    "techo": "fuera de esas celdas la representacion es identica a la de V03 por construccion, luego el cambio no puede excederlas"
+  },
+  "control": {
+    "brazo_A_corrected_cv": "0.7772114525165721",
+    "max_abs_diff_prob_vs_canonica": 0.0,
+    "reproduce_bit_a_bit": true
+  },
+  "resultado": {
+    "brazo_A_corrected_cv": 0.7772114525,
+    "brazo_B_corrected_cv": 0.7765868373,
+    "delta_vs_V03": -0.0006246152,
+    "folds": [
+      0.780451,
+      0.800555,
+      0.774467,
+      0.739976,
+      0.787747
+    ],
+    "folds_V03": [
+      0.79601,
+      0.794034,
+      0.77886,
+      0.738598,
+      0.779056
+    ],
+    "pliegues_mejorados": 3,
+    "f1_por_etiqueta": {
+      "HS": {
+        "f1": 0.7654135338,
+        "f1_ref": 0.7616892911,
+        "rescate": 18,
+        "damage": 14
+      },
+      "TR": {
+        "f1": 0.8139013453,
+        "f1_ref": 0.8157303371,
+        "rescate": 4,
+        "damage": 6
+      },
+      "AG": {
+        "f1": 0.7504456328,
+        "f1_ref": 0.7542147294,
+        "rescate": 17,
+        "damage": 20
+      }
+    },
+    "complementariedad": {
+      "rescate": 39,
+      "damage": 40,
+      "neto": -1,
+      "cambian": 79,
+      "acierto_en_las_que_cambian": 0.4937,
+      "ambos_correctos": 3652,
+      "ambos_fallan": 718,
+      "solo_B1_correcto": 39,
+      "solo_V03_correcto": 40,
+      "por_etiqueta": {
+        "HS": {
+          "f1": 0.7654135338,
+          "f1_ref": 0.7616892911,
+          "rescate": 18,
+          "damage": 14
+        },
+        "TR": {
+          "f1": 0.8139013453,
+          "f1_ref": 0.8157303371,
+          "rescate": 4,
+          "damage": 6
+        },
+        "AG": {
+          "f1": 0.7504456328,
+          "f1_ref": 0.7542147294,
+          "rescate": 17,
+          "damage": 20
+        }
+      }
+    },
+    "gate": {
+      "delta_min": 0.003,
+      "pliegues_min": 4,
+      "supera_delta": false,
+      "supera_pliegues": false,
+      "superado": false
+    },
+    "bootstrap": null
+  },
+  "deriva_max": {
+    "n_observaciones": 366,
+    "max_menos_media_promedio": 0.05494,
+    "max_menos_media_mediana": 0.039284,
+    "max_menos_media_maximo": 0.288256,
+    "prob_ventana_media": 0.290006,
+    "nota": "el max de k probabilidades sesga al alza; se reporta como calibracion de la regla y NO se puntua como variante"
+  },
+  "estratos": {
+    "corto": {
+      "n_tweets": 478,
+      "cambios": 14,
+      "ccv_B1": 0.876483,
+      "ccv_V03": 0.880188
+    },
+    "medio": {
+      "n_tweets": 514,
+      "cambios": 27,
+      "ccv_B1": 0.744428,
+      "ccv_V03": 0.739816
+    },
+    "largo": {
+      "n_tweets": 491,
+      "cambios": 38,
+      "ccv_B1": 0.62278,
+      "ccv_V03": 0.627188
+    }
+  },
+  "complementariedad_por_estrato": {
+    "multi_ventana": {
+      "n_tweets": 122,
+      "cambios": 26,
+      "rescate": 11,
+      "damage": 15,
+      "neto": -4,
+      "acierto_en_las_que_cambian": 0.4231
+    },
+    "una_sola_ventana": {
+      "n_tweets": 1361,
+      "cambios": 53,
+      "rescate": 28,
+      "damage": 25,
+      "neto": 3,
+      "acierto_en_las_que_cambian": 0.5283
+    }
+  },
+  "slices_proyecto": {
+    "tiene_url": {
+      "n_tweets": 458,
+      "cambios": 32
+    },
+    "tiene_hashtag": {
+      "n_tweets": 144,
+      "cambios": 9
+    },
+    "tiene_mencion": {
+      "n_tweets": 702,
+      "cambios": 30
+    },
+    "tiene_mencion_inicial": {
+      "n_tweets": 605,
+      "cambios": 23
+    },
+    "tiene_retuit": {
+      "n_tweets": 0,
+      "cambios": 0
+    },
+    "tiene_pregunta": {
+      "n_tweets": 132,
+      "cambios": 14
+    },
+    "tiene_comillas": {
+      "n_tweets": 72,
+      "cambios": 7
+    },
+    "texto_corto_40": {
+      "n_tweets": 127,
+      "cambios": 4
+    },
+    "region_regimen_noticia": {
+      "n_tweets": 510,
+      "cambios": 37
+    },
+    "region_sin_url_ni_hashtag": {
+      "n_tweets": 973,
+      "cambios": 42
+    },
+    "cuartil_longitud_Q1": {
+      "n_tweets": 390,
+      "cambios": 11
+    },
+    "cuartil_longitud_Q2": {
+      "n_tweets": 361,
+      "cambios": 16
+    },
+    "cuartil_longitud_Q3": {
+      "n_tweets": 361,
+      "cambios": 16
+    },
+    "cuartil_longitud_Q4": {
+      "n_tweets": 371,
+      "cambios": 36
+    }
+  },
+  "residuo_42_celdas_rescatadas": 0,
+  "decision": "CLOSED. La representacion por ventanas locales con agregacion max NO mejora la metrica. NO se rescata con mean, top-k, softmax ni max+mean (parrafo 15). Y con el techo de viabilidad registrado, el resultado no puedeerse como refutacion de la hipotesis local en general, solo de esta configuracion",
+  "experimentos_registrados": 1,
+  "formulacion": "V03 remains the best verified leaderboard result.",
+  "gastos": {
+    "submissions": 0,
+    "consultas_kaggle": 0,
+    "uso_holdout": 0,
+    "uso_test": 0,
+    "segundos": 7.1
+  }
+}

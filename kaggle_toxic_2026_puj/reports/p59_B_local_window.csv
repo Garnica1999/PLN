@@ -1,0 +1,23 @@
+magnitud,valor
+brazo_A_corrected_cv,0.7772114525165721
+brazo_B_corrected_cv,0.7765868373082134
+delta_vs_V03,-0.0006246152083586587
+pliegues_mejorados,3
+folds_B1,0.780451 0.800555 0.774467 0.739976 0.787747
+folds_V03,0.796010 0.794034 0.778860 0.738598 0.779056
+rescate,39
+damage,40
+neto,-1
+cambian,79
+solo_B1_correcto,39
+solo_V03_correcto,40
+tokens_mediana,15.0
+tweets_multi_ventana,122
+porcentaje_multi_ventana,8.23
+ventanas_por_tweet_media,1.0856
+cambios_multi_ventana,26
+cambios_una_ventana,53
+gate_delta_superado,False
+gate_pliegues_superado,False
+gate_superado,False
+decision,"CLOSED. La representacion por ventanas locales con agregacion max NO mejora la metrica. NO se rescata con mean, top-k, softmax ni max+mean (parrafo 15). Y con el techo de viabilidad registrado, el resultado no puedeerse como refutacion de la hipotesis local en general, solo de esta configuracion"

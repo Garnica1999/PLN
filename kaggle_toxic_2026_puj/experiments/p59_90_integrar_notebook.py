@@ -653,6 +653,206 @@ print(f"  experimentos consumidos = {g['experimentos_registrados']}")
 print(f"  experimentos usados en P59-H segun el registro: {fr.loc[fr['ID'] == 'P59-H', 'experiments_used'].iloc[0]}")
 """,
     },
+    {
+        "numero": "60",
+        "marca": "60. P59-I perdida robusta redescendiente",
+        "titulo": "P59-I - Perdida robusta redescendiente: MARGINAL, sin mecanismo causal",
+        "md": """\
+## 60. P59-I - Perdida robusta redescendiente: MARGINAL
+
+### Motivacion e hipotesis
+
+No es que los ejemplos toxicos deban pesar menos, ni detectar outliers para
+reponderarlos. La hipotesis es sobre la **funcion objetivo**: la perdida
+logistica puede dejar que unas pocas observaciones de alto leverage con residuos
+extremos muevan la frontera global, y una perdida acotada y redescendiente
+podria limitarla DURANTE el ajuste, de forma endogena, sin nombrar ningun
+ejemplo.
+
+### Auditoria de novedad funcional
+
+`0` filas del registro mencionan tukey, biweight, geman, mcclure, cauchy, fair,
+redescend, m-estimador, rlm o irls. `V34-01` lista "margin/robust loss" con
+profundidad **(0) UNEXPLORED**. `V35-01` probo `modified_huber`, pero sobre
+`SGDClassifier`, otra resolucion, y Huber esta acotada pero NO es redescendiente.
+
+### Configuracion, fijada antes de mirar validation
+
+```text
+funcion       biweight de Tukey, UNA sola, sin rejilla
+tau           4,685, constante normal-consistente estandar
+sigma         1, porque el residuo de devianza ya es un residuo estandarizado
+normalizacion L(dev) = sigma^2 rho(sqrt(dev)/sigma), que coincide con el
+              log-loss hasta segundo orden, luego la regularizacion efectiva
+              NO cambia y la comparacion es de perdida y no de capacidad
+solver        L-BFGS-B con gradiente analitico, verificado contra diferencias
+              centrales con error relativo 1e-09
+```
+
+### Control de optimizador
+
+Tres brazos. `A` es V03 por sklearn y reproduce el canonico bit a bit. `B` es
+mi propio ajuste sobre la logistica pura: si `B` no clonara a `A`, la
+diferencia de `C` hablaria de mi optimizador y no de la perdida. `B` clona a `A`
+con 3 celdas de decision distintas de 4449.
+
+La primera version uso un Newton con el intercepto absorbido por recentrado
+ponderado. Ese esquema resta dos terminos grandes y con d = 27.431 la resta
+pierde toda la precision: el mismo codigo daba coseno 0,99999 con d = 25 y
+`corrected_cv 0,4674` con d = 27.431. El brazo `B` es exactamente lo que lo
+detecto y detuvo la ejecucion antes de interpretar nada.
+
+### El mecanismo no es el hipotetizado
+
+Es lo mas importante del resultado:
+
+- el redescendiente **nunca activa**: 0,00 por ciento de celdas con influencia
+  exactamente nula en los quince ajustes
+- la influencia **no se atenua, aumenta**: ratio 1,0112 y Spearman +0,9992
+- los residuos **empeoran**, percentil 99 de 1,2760 a 1,3477
+- de las 12 celdas que cambian, **ninguna** esta entre los 268 errores de alta
+  confianza
+
+Lo que si hay es una mejora pequena y quirurgica: las tres etiquetas suben, 4 de
+5 pliegues suben, y solo cambian 12 de 4449 celdas.
+""",
+        "codigo": """\
+import json
+from pathlib import Path
+
+rep = Path("reports")
+d = json.loads((rep / "p59_I_robust_loss.json").read_text())
+r = d["resultado"]
+c = d["convergencia"]
+mf = d["mecanismo"]
+inf = d["influencia_post_hoc"]
+dec = r["complementariedad"]
+
+print("== resultado ==")
+print(f"  corrected_cv V03 (brazo A) {r['brazo_A_corrected_cv']!r}")
+print(f"  corrected_cv brazo B       {r['brazo_B_corrected_cv']!r}")
+print(f"  corrected_cv Tukey         {r['brazo_C_corrected_cv']!r}")
+print(f"  delta_vs_V03               {r['delta_vs_V03']:+.10f}")
+print(f"  folds                      {r['folds']}")
+print(f"  folds V03                  {r['folds_V03']}")
+print(f"  pliegues que mejoran       {r['pliegues_mejorados']}/5")
+print(f"  rescate {dec['rescate']} | damage {dec['damage']} | neto {dec['neto']:+d}")
+print()
+print("== gate ==")
+print(f"  {r['gate']}")
+print(f"  bootstrap: {r['bootstrap']}")
+print()
+print("== convergencia ==")
+print(f"  B {c['brazo_B_todas_convergen']} grad {c['norma_gradiente_B_max']:.2e}"
+      f" | C {c['brazo_C_todas_convergen']} grad {c['norma_gradiente_C_max']:.2e}")
+print(f"  fraccion recortada (influencia nula): {c['fraccion_recortada_media']}")
+print()
+print("== mecanismo ==")
+print(f"  celdas que cambian                 {mf['celdas_que_cambian']}")
+print(f"  cambios en error de ALTA confianza    {mf['cambios_en_error_de_alta_confianza']}")
+print(f"  cambios en error de BAJA confianza    {mf['cambios_en_error_de_baja_confianza']}")
+print(f"  cambios que rompen un acierto     {mf['cambios_que_rompen_un_acierto']}")
+print(f"  |residual| p99 antes -> despues   {mf['residuo_p99_antes']} -> {mf['residuo_p99_despues']}")
+print()
+print("== influencia, analisis POSTERIOR (no se uso para modificar I1) ==")
+print(f"  total V03 {inf['suma_influencia_V03']:.4e} -> robusto {inf['suma_influencia_robusto']:.4e}"
+      f" | ratio {inf['ratio']}")
+print(f"  Spearman entre ambas distribuciones {inf['spearman_entre_ambas']}")
+print()
+print(f"  decision: {d['decision'][:120]}")
+print(f"  formulacion: {d['formulacion']}")
+""",
+    },
+    {
+        "numero": "61",
+        "marca": "61. P59-B ventanas locales",
+        "titulo": "P59-B - Ventanas locales: CLOSED, sin complementariedad",
+        "md": """\
+## 61. P59-B - Representacion por ventanas locales: CLOSED
+
+### Motivacion e hipotesis
+
+No es detectar mejor las celdas difiles. La hipotesis es sobre la **unidad de
+representacion**: V03 comprime un tweet entero en un unico vector sparse, y ese
+vector puede diluir evidencia toxica concentrada en pocos tokens. Una
+representacion por ventanas locales la preserva, porque el clasificador nunca ve
+el documento entero.
+
+### Auditoria de novedad funcional
+
+`V4-D01-D04` ya probo "ventanas locales como tokens" (spec 24) y cerro TRACK D
+como NO_SIGNAL, pero **no es duplicacion**: alla la ventana es un canal sparse
+EXTRA apilado al documento completo, luego la unidad de puntuacion sigue siendo
+el tweet. Aqui la ventana **es** la unidad de puntuacion y el vector del
+documento no existe.
+
+`DL-02` (CharCNN, kernels de caracter 3 y 5) es el precedente mas cercano del
+principio de agregacion, campos locales con max, pero en familia densa y desde
+cero: 0,741036, descartado. Cero filas mencionan multiple-instance learning.
+
+### Factibilidad, registrada antes de mirar validation
+
+Los tweets son cortos: mediana de **15 tokens**, maximo 51. Con ventana de 32
+tokens solo el **8,23 por ciento** de los tweets tiene mas de una ventana. Fuera
+de esas 366 celdas la representacion es identica a la de V03 por construccion,
+luego el cambio no puede excederlas. Es una cota previa, no una promesa.
+
+### Donde se concentran los cambios
+
+El resultado mas informativo no es el delta global sino su descomposicion: de
+las 79 celdas que cambian, **53 estan en tweets con una sola ventana**, que por
+construccion no fueron segmentados. Esas 53 solo reflejan el cambio del
+conjunto de entrenamiento, no el mecanismo local. Y en el estrato donde el
+mecanismo si actua, las correcciones son netamente negativas.
+""",
+        "codigo": """\
+import json
+from pathlib import Path
+
+rep = Path("reports")
+d = json.loads((rep / "p59_B_local_window.json").read_text())
+fac = d["factibilidad_registrada_antes_de_validation"]
+r = d["resultado"]
+dec = r["complementariedad"]
+es = d["complementariedad_por_estrato"]
+esl = d["estratos"]
+
+print("== factibilidad, registrada ANTES de validation ==")
+print(f"  tokens por tweet: mediana {fac['tokens_mediana']:.0f} max {fac['tokens_max']}")
+print(f"  ventanas por tweet: media {fac['ventanas_por_tweet_media']} max {fac['ventanas_por_tweet_max']}")
+print(f"  tweets multi-ventana: {fac['tweets_multi_ventana']}"
+      f" ({fac['porcentaje_multi_ventana']} por ciento)")
+print(f"  celdas alcanzables: {fac['celdas_alcanzables']}")
+print(f"  {fac['techo']}")
+print()
+print("== resultado ==")
+print(f"  corrected_cv V03 {r['brazo_A_corrected_cv']!r}")
+print(f"  corrected_cv B1  {r['brazo_B_corrected_cv']!r}")
+print(f"  delta_vs_V03     {r['delta_vs_V03']:+.10f}")
+print(f"  folds B1         {r['folds']}")
+print(f"  folds V03        {r['folds_V03']}")
+print(f"  pliegues que mejoran {r['pliegues_mejorados']}/5")
+print(f"  rescate {dec['rescate']} | damage {dec['damage']} | neto {dec['neto']:+d}"
+      f" | cambian {dec['cambian']} | acierto en las que cambian {dec['acierto_en_las_que_cambian']}")
+print()
+print("== la pregunta del parrafo 13, separada por estrato ==")
+for k, v in es.items():
+    print(f"  {k:18} n={v['n_tweets']:5d} cambios={v['cambios']:3d}"
+          f" rescate={v['rescate']:3d} damage={v['damage']:3d} neto={v['neto']:+d}")
+print()
+print("== estratos por longitud ==")
+for k, v in esl.items():
+    print(f"  {k:6} n={v['n_tweets']:5d} cambios={v['cambios']:3d}"
+          f" ccv B1 {v['ccv_B1']:.4f} V03 {v['ccv_V03']:.4f}")
+print()
+print("== deriva del max (calibracion, NO es una variante candidata) ==")
+print(f"  {d['deriva_max']}")
+print()
+print(f"  gate: {r['gate']}")
+print(f"  decision: {d['decision'][:140]}")
+print(f"  formulacion: {d['formulacion']}")
+""",
+    },
 )
 
 SUSTITUCIONES = {
