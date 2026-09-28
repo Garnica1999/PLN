@@ -1,0 +1,285 @@
+{
+  "familia": "P53_FINE_GRAINED_OBSERVABLE_POLICY",
+  "experimento": "V53-00 (auditoria de politica observable de grano fino)",
+  "fecha": "2026-09-28T02:22:22+00:00",
+  "estado": "AUDIT_ONLY",
+  "auditoria_de_p52": {
+    "estratos": "v03_pred x bin de margen x bin de numero de discrepancias",
+    "la_accion_se_elige_con_y_true_de_todas_las_celdas_del_estrato": true,
+    "existe_version_out_of_fold": true,
+    "contaminado": false,
+    "por_que_no_invalida": "elegir la accion con y_true es lo que hace que sea un TECHO holgado por construccion. Si un techo holgado cae por debajo de V03, todo lo mas cenido tambien cae, luego la conclusion se sostiene",
+    "lo_que_p52_no_establish": "una cota sobre todas las particiones observables"
+  },
+  "colapso_estructural": {
+    "celdas_con_discrepancia": 3896,
+    "celdas_con_valor_propuesto_distinto": 0,
+    "celdas_con_dos_canales_contradicendose": 0,
+    "espacio_de_acciones_real": 2,
+    "consecuencia": "cambiar al canal 3 o al canal 17 produce la misma prediccion, luego la mascara no puede portar informacion sobre el valor propuesto; solo las probabilidades pueden decir cuan fuerte empuja cada canal"
+  },
+  "mascaras": {
+    "distintas_sobre_todas_las_celdas": 1127,
+    "distintas_entre_las_con_discrepancia": 1126,
+    "patrones_en_celdas_de_error": 1126,
+    "frecuencia_mediana": 1.0,
+    "frecuencia_maxima": 658,
+    "patrones_singleton": 843
+  },
+  "rescate_exclusivo": {
+    "celdas_con_rescate_unico": 78,
+    "coincide_con_p52": true,
+    "suma_de_exclusivos": 78,
+    "hhi_estandar": 0.360289,
+    "cuota_de_exclusivos_sobre_715": 0.109091,
+    "canales_con_net_exclusivo_positivo": 2
+  },
+  "pareces": {
+    "analizados": 190,
+    "suma_de_B_sobre_todos_los_pares": 0,
+    "pares_con_B_positivo": 0,
+    "jaccard_de_rescates": {
+      "min": 0.046154,
+      "max": 1.0,
+      "media": 0.2504198105263158
+    }
+  },
+  "direccion_simple_vs_conjunta": [
+    {
+      "tipo": "un_solo_canal",
+      "n": 959,
+      "rescate_rate": 0.081335,
+      "dano_rate": 0.918665,
+      "net": -803,
+      "valor_esperado": -0.001174109
+    },
+    {
+      "tipo": "dos_o_mas",
+      "n": 2937,
+      "rescate_rate": 0.216888,
+      "dano_rate": 0.783112,
+      "net": -1663,
+      "valor_esperado": -0.000728244
+    }
+  ],
+  "techos": [
+    {
+      "nivel": "P0",
+      "corrected_cv": 0.7772114525,
+      "delta_vs_v03": 0.0,
+      "n_cambiadas": 0,
+      "net": 0,
+      "estados_observables": 1,
+      "cobertura_validacion": 1.0
+    },
+    {
+      "nivel": "P1",
+      "corrected_cv": 0.7623696498,
+      "delta_vs_v03": -0.0148418027,
+      "n_cambiadas": 146,
+      "net": -16,
+      "estados_observables": 18,
+      "cobertura_validacion": 1.0
+    },
+    {
+      "nivel": "P2",
+      "corrected_cv": 0.7566874656,
+      "delta_vs_v03": -0.0205239869,
+      "n_cambiadas": 113,
+      "net": -61,
+      "estados_observables": 1469,
+      "cobertura_validacion": 0.707575
+    },
+    {
+      "nivel": "P3",
+      "corrected_cv": 0.7588669459,
+      "delta_vs_v03": -0.0183445066,
+      "n_cambiadas": 97,
+      "net": -57,
+      "estados_observables": 1877,
+      "cobertura_validacion": 0.646887
+    },
+    {
+      "nivel": "P4",
+      "corrected_cv": 0.7712584603,
+      "delta_vs_v03": -0.0059529922,
+      "n_cambiadas": 23,
+      "net": -19,
+      "estados_observables": 2940,
+      "cobertura_validacion": 0.363902
+    }
+  ],
+  "soporte": [
+    {
+      "nivel": "P2",
+      "soporte_minimo": 5,
+      "corrected_cv": 0.7761995598,
+      "delta_vs_v03": -0.0010118927,
+      "n_cambiadas": 11,
+      "net": -3
+    },
+    {
+      "nivel": "P2",
+      "soporte_minimo": 10,
+      "corrected_cv": 0.7760870884,
+      "delta_vs_v03": -0.0011243641,
+      "n_cambiadas": 3,
+      "net": -3
+    },
+    {
+      "nivel": "P2",
+      "soporte_minimo": 20,
+      "corrected_cv": 0.7772114525,
+      "delta_vs_v03": 0.0,
+      "n_cambiadas": 0,
+      "net": 0
+    },
+    {
+      "nivel": "P3",
+      "soporte_minimo": 5,
+      "corrected_cv": 0.7772114525,
+      "delta_vs_v03": 0.0,
+      "n_cambiadas": 0,
+      "net": 0
+    },
+    {
+      "nivel": "P3",
+      "soporte_minimo": 10,
+      "corrected_cv": 0.7772114525,
+      "delta_vs_v03": 0.0,
+      "n_cambiadas": 0,
+      "net": 0
+    },
+    {
+      "nivel": "P3",
+      "soporte_minimo": 20,
+      "corrected_cv": 0.7772114525,
+      "delta_vs_v03": 0.0,
+      "n_cambiadas": 0,
+      "net": 0
+    },
+    {
+      "nivel": "P4",
+      "soporte_minimo": 5,
+      "corrected_cv": 0.7772114525,
+      "delta_vs_v03": 0.0,
+      "n_cambiadas": 0,
+      "net": 0
+    },
+    {
+      "nivel": "P4",
+      "soporte_minimo": 10,
+      "corrected_cv": 0.7772114525,
+      "delta_vs_v03": 0.0,
+      "n_cambiadas": 0,
+      "net": 0
+    },
+    {
+      "nivel": "P4",
+      "soporte_minimo": 20,
+      "corrected_cv": 0.7772114525,
+      "delta_vs_v03": 0.0,
+      "n_cambiadas": 0,
+      "net": 0
+    }
+  ],
+  "comparacion": {
+    "V03": 0.7772114525,
+    "P52_STRATUM_ORACLE": 0.7753804469,
+    "mejor_techo_observable_P53": 0.7772114525,
+    "TRUE_ORACLE": 0.9870178614
+  },
+  "interaccionalidad": [
+    {
+      "canal": "emoc:EMO-LEX@C=1.0",
+      "n_solo": 21,
+      "n_con_otros": 1184,
+      "tasa_solo": 0.0,
+      "tasa_con_otros": 0.258446,
+      "diferencia": -0.258446
+    },
+    {
+      "canal": "emoc:NB-UNION-SVC@C=1.0",
+      "n_solo": 9,
+      "n_con_otros": 482,
+      "tasa_solo": 0.222222,
+      "tasa_con_otros": 0.446058,
+      "diferencia": -0.223836
+    },
+    {
+      "canal": "emoc:EMO-ALL@C=1.0",
+      "n_solo": 16,
+      "n_con_otros": 1146,
+      "tasa_solo": 0.0625,
+      "tasa_con_otros": 0.265271,
+      "diferencia": -0.20277099999999998
+    },
+    {
+      "canal": "synt:SYN-DEPS",
+      "n_solo": 56,
+      "n_con_otros": 1323,
+      "tasa_solo": 0.053571,
+      "tasa_con_otros": 0.226002,
+      "diferencia": -0.172431
+    },
+    {
+      "canal": "emoc:NB-WORD-LR@C=1.0",
+      "n_solo": 7,
+      "n_con_otros": 375,
+      "tasa_solo": 0.285714,
+      "tasa_con_otros": 0.442667,
+      "diferencia": -0.15695299999999995
+    },
+    {
+      "canal": "synt:SYN-MORPH",
+      "n_solo": 73,
+      "n_con_otros": 1358,
+      "tasa_solo": 0.068493,
+      "tasa_con_otros": 0.215022,
+      "diferencia": -0.146529
+    },
+    {
+      "canal": "emoc:EMO-EST@C=2.0",
+      "n_solo": 69,
+      "n_con_otros": 1106,
+      "tasa_solo": 0.130435,
+      "tasa_con_otros": 0.26311,
+      "diferencia": -0.13267500000000002
+    },
+    {
+      "canal": "cita:NEG",
+      "n_solo": 658,
+      "n_con_otros": 1722,
+      "tasa_solo": 0.068389,
+      "tasa_con_otros": 0.16957,
+      "diferencia": -0.101181
+    },
+    {
+      "canal": "synt:SYN-POS",
+      "n_solo": 34,
+      "n_con_otros": 1289,
+      "tasa_solo": 0.147059,
+      "tasa_con_otros": 0.235842,
+      "diferencia": -0.088783
+    },
+    {
+      "canal": "cita:CITA",
+      "n_solo": 8,
+      "n_con_otros": 463,
+      "tasa_solo": 0.5,
+      "tasa_con_otros": 0.393089,
+      "diferencia": 0.10691099999999998
+    }
+  ],
+  "supera_el_gate_de_entrenamiento": false,
+  "caso": "C",
+  "gastos": {
+    "submissions": 0,
+    "modelos_entrenados": 0,
+    "consultas_kaggle": 0,
+    "uso_holdout": 0,
+    "uso_test": 0,
+    "segundos": 305.5
+  },
+  "hhi_texto": "0.360289"
+}

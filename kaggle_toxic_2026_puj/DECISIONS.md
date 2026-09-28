@@ -4330,3 +4330,105 @@ unicamente en el `STRATUM_ORACLE`.
 **Decision.** `CASE C`. `UTILITY_POLICY = CLOSED` y `CONTEXTUAL_SELECTION = CLOSED`, con
 un motivo que ya no es "no lo probamos" sino una cota negativa. **P52-01 no se ejecuta**,
 porque la directiva solo lo justifica si el techo supera V03 + 0,003.
+
+
+### D-124. El espacio de acciones se colapsa a 2 y ningun patron de mascara supera V03
+
+**Contexto.** P52 cerro la linea contextual afirmando que ninguna politica observable
+supera V03, pero lo hizo sobre 18 estratos definidos por **cuantos** canales discrepan.
+P53_existia para comprobar si la **identidad exacta** de esos canales aporta algo. Antes de
+eso, una comprobacion estructural resulta decisiva.
+
+**El colapso.** En las 3896 celdas con discrepancia, **todos** los canales que discrepan
+proponen exactamente el valor `1 - v03_pred`.
+
+```text
+celdas con discrepancia                          3896
+celdas con valor propuesto distinto de 1-v03        0
+celdas con dos canales contradiciendose             0
+espacio de acciones real                             2
+```
+
+Cambiar al canal 3 o al canal 17 produce **la misma prediccion**. Por tanto la mascara
+**no puede portar informacion sobre el valor propuesto**, porque el valor no depende de
+quien discrepa. Solo puede portar informacion a traves de las **probabilidades** de esos
+canales, es decir de cuan fuerte empujan. Y eso convierte el problema entero en **una
+decision binaria por celda: voltear o no**.
+
+El `TRUE_ORACLE` reconstruido con el colapso de dos acciones da **0,9870178614**, con
+diferencia 0 frente a P50. El colapso no pierde nada.
+
+**Correcciones a P52.**
+
+1. **El `STRATUM_ORACLE` NO estaba contaminado; la pregunta estaba mal planteada.** P52
+   elige la accion de cada estrato usando `y_true` de todas las celdas del estrato,
+   incluidas las de validacion. Eso es exactamente lo que hace que sea un **techo**: un
+   techo holgado por construccion. Si un techo holgado cae por debajo de V03, todo lo mas
+   cenido tambien cae, luego la conclusion se sostiene. Lo que P52 **no** establece es una
+   cota sobre todas las particiones observables.
+2. **La exclusividad bilateral de P52 estaba mal calculada.** P52|reporto `0 pares` con
+   exclusividad bilateral. Ese cero era un **artefacto**: la medicion restringia `i_only` a
+   las celdas donde **ambos** canales discrepan de V03, y por el colapso esos dos canales
+   proposing alli el mismo valor, luego `i_only` era 0 por construccion. P53 lo mide sin
+   esa restriccion y obtiene **189 de 190 pares con exclusividad bilateral de rescate**.
+3. **El HHI de P52 estaba mal definido.** Se computo como `sum((exclusivo_i / 715)^2)`,
+   con proporciones que **no suman 1**, porque el denominador 715 es el total de rescates
+   y no la suma de los exclusivos. P53 reporta las dos metricas por separado:
+
+```text
+HHI estandar de los 78 exclusivos     0,360289  (minimo teorico con 11 no nulos: 0,090909)
+cuota de exclusivos sobre los 715     10,91 pct
+```
+
+4. **`0 pares contradictorios` era ambiguo pero su numero era correcto.** Descompuesto en
+   A, B, C y D sobre los 190 pares: **B = 0**. Y no es casualidad: es la identidad
+   estructural del colapso.
+
+**Lo que se mantiene de P52.** Las 78 celdas con rescate unico (P53 las recalcula y
+obtiene 78), el `TRUE_ORACLE` de 0,9870178614, y la construccion de los estratos.
+
+**Distribucion de mascaras.** 1126 patrones distintos sobre 3896 celdas con discrepancia,
+frecuencia mediana 1, maximo 658, **843 patrones singleton**. La mascara esta muy
+fragmentada, y esa fragmentacion es la causa de que las policies fine-grained no
+generalicen.
+
+**Rescate y dano por patron.** Sobre las 3896 celdas con discrepancia, no sobre las de
+error de V03, que es donde el canje existe de verdad:
+
+| tipo | n | rescate | dano | net |
+|---|---:|---:|---:|---:|
+| un solo canal | 959 | 8,13 pct | 91,87 pct | **-803** |
+| dos o mas | 2937 | 21,69 pct | 78,31 pct | **-1663** |
+
+El dano domina por cuatro a uno en las dos. Voltear a ciegas pierde siempre.
+
+**Techos cross-fitted de P0 a P4**, todos con la accion aprendida en el training fold,
+aplicada al validation fold, y con repliegue `P4 -> P3 -> P2 -> P1 -> V03`:
+
+| nivel | corrected_cv | delta vs V03 | cambiadas | net | estados | cobertura |
+|---|---:|---:|---:|---:|---:|---:|
+| P0 solo V03 | 0,7772114525 | +0,0000000000 | 0 | 0 | 1 | 100,0 pct |
+| P1 + margen y conteo | 0,7623696498 | -0,0148418027 | 146 | -16 | 18 | 100,0 pct |
+| P2 + mascara exacta | 0,7566874656 | -0,0205239869 | 113 | -61 | 1469 | 70,8 pct |
+| P3 + identidad de etiqueta | 0,7588669459 | -0,0183445066 | 97 | -57 | 1877 | 64,7 pct |
+| P4 + probabilidades | 0,7712584603 | -0,0059529922 | 23 | -19 | 2940 | 36,4 pct |
+
+**El mejor techo observable es P0, es decir no hacer nada.** Toda particion informativa
+empeora a V03. Y el diagnostico de soporte explica por que: al exigir soporte minimo 20 en
+training, los cambios caen a **cero** en P2, P3 y P4. Los patrones con expectativa positiva
+en retrospectiva son los pequenos, luego no generalizan.
+
+**Interaccionalidad: existe, y no sirve.** Diez canales tienen soporte suficiente en ambos
+regimenes, con diferencias entre -0,2584 y +0,1069 en tasa de rescate segun actue solo o
+con otros. Es decir hay estructura de tipo "canal A util cuando actua solo, canal B util
+cuando A tambien discrepa". Pero no llega a producir una politica positiva.
+
+**Decision.** `CASE C`. `MASK_BASED_SELECTION = CLOSED`. **No se entrena modelo**, porque el
+techo no supera V03 + 0,003.
+
+**Alcance de la afirmacion, que es lo que P53 pretendia corregir.** La evidencia sostiene
+que **ninguna politica basada en la mascara de desacuerdo, el margen, el numero de
+discrepancias, la identidad de la etiqueta y las probabilidades de los canales supera V03
+en evaluacion cross-fitted**. Y como el colapso demuestra que el espacio de acciones real
+tiene solo dos elementos, la conclusion es mucho mas fuerte que la de P52. Lo que **no**
+se afirma, y no debe afirmarse, es que ninguna politica imaginable supere V03.

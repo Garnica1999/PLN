@@ -2096,3 +2096,49 @@ el notebook, corregidas antes de ejecutar. Todos detectados por ejecucion real c
 `exit code` capturado sin pipe.
 
 **Sin push, sin merge, sin reset, sin rebase, sin PR.**
+
+
+---
+
+## 2026-09-28 - Fase P53: auditoria de politica observable de grano fino
+
+**Alcance.** 0 modelos, 0 submissions, 0 busqueda de umbrales, 0 Optuna, 0 consultas a
+Kaggle, 0 uso de holdout o test. **0 filas nuevas en `experiments.csv`**, porque toda la
+fase es auditoria, y la directiva lo prohibe expresamente.
+
+**V53-00** (`experiments/v53_00_politica_fina.py`, exit code 0, 305 s): auditoria del
+`STRATUM_ORACLE` de P52, colapso estructural del espacio de acciones, distribucion de
+mascaras, rescate y dano por patron, auditoria del rescate exclusivo, descomposicion A B C
+D de los 190 pares, HHI estandar, y techos cross-fitted de P0 a P4 con soporte diagnostico.
+Artefactos: `reports/p53_observable_policy.json`, `p53_observable_policy_audit.md`,
+`p53_observable_policy.csv`, `p53_pairwise_channels.csv`, `p53_exclusive_rescue.csv`,
+`p53_pattern_policy.csv`.
+
+**V53-01** (`experiments/v53_01_integrar_notebook.py`, exit code 0): seccion 49, notebook
+200 -> 202 celdas, celda de codigo con returncode 0.
+
+**Correccion de conclusion propia.** P52 cerro la linea contextual y la directriz de P53
+podia haberlo dado por definitivo. P53 lo abre porque la inferencia de P52 no se seguia: 18
+estratos no acotan todas las particiones observables. Al abrirlo, aparece el colapso
+estructural, que es mas fuerte que lo que P52 afirmaba y tambien mas limitado.
+
+**Tres correcciones metricas a P52.** (1) `STRATUM_ORACLE` no esta contaminado: la pregunta
+de la directriz estaba mal planteada, porque elegir la accion con `y_true` es justamente lo
+que hace que un techo sea holgado, y un techo holgado por debajo de V03 acota todo lo mas
+cenido. (2) La exclusividad bilateral estaba mal medida: P52 restringia `i_only` a las
+celdas donde ambos canales discrepan, conjunto que por el colapso es degenerado, luego da 0
+por construccion; P53 obtiene 189 de 190. (3) El HHI estaba mal definido con
+proporciones que no suman 1.
+
+**Errores propios.** El mas grave: use `canales_plano[0]` en vez de "cualquier canal
+discrepa" al construir la accion de volteo, lo que restringio el colapso a un solo canal y
+produjo un `TRUE_ORACLE` de 0,8088 en vez de 0,9870. Cero con dos canales contradiciendose
+debio delatarlo, porque con 20 canales era imposible. Ademas: `+` sobre arrays de cadenas
+de numpy, `p_max` y `p_mean` con NaN, una clave de JSON escrita despues del `write_text`,
+y un analisis por patron que era **tautologico** porque se hacia sobre celdas de error de
+V03, donde voltear siempre ayuda. Todos por ejecucion real con `exit code` sin pipe.
+
+**Rendimiento.** 305 s, por recomputar el estado observable dentro del bucle de pliegues en
+vez de precalcularlo. Es ineficiencia, no error, y no afecta a los resultados.
+
+**Sin push, sin merge, sin reset, sin rebase, sin PR.**

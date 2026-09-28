@@ -1066,3 +1066,44 @@ direcciones en un solo clasificador por canal.
 
 **Estado del campeon.** Sin cambios. V03 intacto. 0 modelos, 0 submissions, 0 consultas a
 Kaggle, 0 uso de holdout o test. P52-01 no se ejecuta: el techo no lo justifica.
+
+
+---
+
+## Fase P53 (2026-09-28) - Politica observable de grano fino
+
+**Que se respondio.** Si la identidad exacta de los canales que discrepan aporta algo que
+el conteo no aporta.
+
+```text
+ESPACIO DE ACCIONES REAL      = 2   (no 21)
+celdas con valor distinto     = 0
+celdas con dos contradictorios = 0
+P0 (no hacer nada)             0,7772114525   +0,0000000000
+P1 margen + conteo            0,7623696498   -0,0148418027
+P2 + mascara exacta           0,7566874656   -0,0205239869
+P3 + etiqueta                 0,7588669459   -0,0183445066
+P4 + probabilidades           0,7712584603   -0,0059529922
+P52 STRATUM_ORACLE            0,7753804469   -0,0018310056
+TRUE_ORACLE                   0,9870178614   +0,2098064089
+CASE = C
+```
+
+**El colapso estructural es el hallazgo central.** En las 3896 celdas con discrepancia,
+todos los canales que discrepan proponen exactamente `1 - v03_pred`. Cero celdas donde
+dos se contradigan. Cambiar al canal 3 o al canal 17 da **la misma prediccion**, luego la
+mascara no puede decir el valor propuesto. El problema entero es **una decision binaria
+por celda**.
+
+**Ninguna particion observable supera V03.** El mejor techo es P0, que es no hacer nada.
+Y el diagnostico de soporte lo explica: con soporte minimo 20 los cambios caen a cero,
+porque los patrones con expectativa positiva en retrospectiva son los pequenos.
+
+**Tres correcciones a P52.** (1) El `STRATUM_ORACLE` no estaba contaminado, la pregunta
+estaba mal planteada: elegir la accion con `y_true` es lo que hace que sea un techo. (2) La
+exclusividad bilateral de P52 estaba mal calculada:|reportaba 0 pares y son **189 de 190**,
+porque restringia la medicion a un conjunto degenerado. (3) El HHI de P52 estaba mal
+definido, con proporciones que no sumaban 1.
+
+**Estado del campeon.** Sin cambios. V03 intacto. 0 modelos, 0 submissions, 0 busqueda de
+umbrales, 0 consultas a Kaggle, 0 uso de holdout o test. No se entrena modelo.

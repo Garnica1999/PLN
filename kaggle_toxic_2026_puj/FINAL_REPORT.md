@@ -1537,3 +1537,98 @@ tendria que demostrar primero que supera 0,7754.
 
 *Seccion generada por `experiments/v52_00_auditoria_y_techo.py` y
 `experiments/v52_01_integrar_notebook.py`. Sin push: la rama sigue local.*
+
+
+---
+
+## Addendum P53 (2026-09-28) - El espacio de acciones se colapsa a 2
+
+### El colapso, que explica casi todo lo anterior
+
+En las **3896 celdas con discrepancia**, todos los canales que discrepan proponen
+exactamente el valor `1 - v03_pred`.
+
+| magnitud | valor |
+|---|---:|
+| celdas con discrepancia | 3896 |
+| celdas con valor propuesto **distinto** de `1 - v03_pred` | **0** |
+| celdas donde dos canales discrepantes se contradicen | **0** |
+| **espacio de acciones real** | **2** |
+
+Cambiar al canal 3 o al canal 17 produce **la misma prediccion**. La mascara no puede decir
+el valor propuesto, porque el valor no depende de quien discrepa; solo las **probabilidades**
+dicen cuan fuerte empuja cada canal. El `TRUE_ORACLE` reconstruido con el colapso da
+**0,9870178614**, identico a P50.
+
+### La cadena de techos
+
+| politica | corrected_cv | delta vs V03 |
+|---|---:|---:|
+| **P0: no hacer nada (V03)** | **0,7772114525** | **+0,0000000000** |
+| P1: margen + conteo de discrepancias | 0,7623696498 | -0,0148418027 |
+| P2: + mascara exacta | 0,7566874656 | -0,0205239869 |
+| P3: + identidad de etiqueta | 0,7588669459 | -0,0183445066 |
+| P4: + probabilidades de los canales | 0,7712584603 | -0,0059529922 |
+| P52 STRATUM_ORACLE (18 estratos) | 0,7753804469 | -0,0018310056 |
+| TRUE_ORACLE | 0,9870178614 | +0,2098064089 |
+
+**El mejor techo observable es P0.** Toda particion informativa empeora a V03. Y el
+diagnostico de soporte lo explica: con soporte minimo 20 en training, los cambios caen a
+**cero**. Los patrones con expectativa positiva en retrospectiva son los pequenos, luego no
+generalizan.
+
+### El canje, medido donde existe
+
+Sobre las 3896 celdas con discrepancia:
+
+| tipo | n | rescate | dano | net |
+|---|---:|---:|---:|---:|
+| un solo canal | 959 | 8,13 pct | 91,87 pct | **-803** |
+| dos o mas | 2937 | 21,69 pct | 78,31 pct | **-1663** |
+
+El dano domina por cuatro a uno. Voltear a ciegas pierde siempre.
+
+### Tres correcciones a P52
+
+1. **El `STRATUM_ORACLE` no estaba contaminado; la pregunta estaba mal planteada.** Elegir
+   la accion con `y_true` es justamente lo que hace que sea un **techo holgado por
+   construccion**. Si un techo holgado cae por debajo de V03, todo lo mas cenido tambien
+   cae. La conclusion de P52 se sostenia.
+2. **La exclusividad bilateral estaba mal calculada.** P52 reporto `0 pares`; P53 obtiene
+   **189 de 190**. El cero era un artefacto de restringir la medicion al conjunto donde ambos
+   canales discrepan, que por el colapso es degenerado.
+3. **El HHI estaba mal definido.** `sum((exclusivo_i / 715)^2)` usa proporciones que **no
+   suman 1**. P53 reporta las dos metricas por separado:
+
+| metrica | valor |
+|---|---:|
+| HHI estandar de los 78 exclusivos | **0,360289** (minimo teorico 0,090909) |
+| cuota de exclusivos sobre los 715 | **10,91 pct** |
+
+### Distribucion de mascaras
+
+1126 patrones distintos sobre 3896 celdas, frecuencia mediana **1**, maximo 658, **843
+patrones singleton**. La mascara esta muy fragmentada, y esa fragmentacion es la causa
+directa de que las politicas fine-grained no generalicen.
+
+### Interaccionalidad: existe, y no sirve
+
+Diez canales tienen soporte suficiente en ambos regimenes, con diferencias de tasa de
+rescate entre **-0,2584** y **+0,1069** segun actuen solos o con otros. Hay estructura del
+tipo "canal A util cuando actua solo, canal B util cuando A tambien discrepa". Pero no llega
+a producir una politica positiva.
+
+### Decision
+
+`CASE C`. `MASK_BASED_SELECTION = CLOSED`. **No se entrena modelo**, porque el techo no supera
+V03 + 0,003.
+
+**Alcance de la afirmacion.** Lo que la evidencia sostiene: ninguna politica basada en la
+mascara de desacuerdo, el margen, el numero de discrepancias, la identidad de la etiqueta y
+las probabilidades de los canales supera V03 en evaluacion cross-fitted. Y como el colapso
+demuestra que el espacio de acciones real tiene **dos** elementos, esto es bastante mas
+fuerte que lo que P52 podia afirmar. Lo que **no** se afirma, y no debe afirmarse, es que
+ninguna politica imaginable supere V03.
+
+*Seccion generada por `experiments/v53_00_politica_fina.py` y
+`experiments/v53_01_integrar_notebook.py`. Sin push: la rama sigue local.*
