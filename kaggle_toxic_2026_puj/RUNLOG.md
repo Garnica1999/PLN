@@ -2055,3 +2055,44 @@ sesion y el verificador del proyecto lo acepta. Dos entradas CJK que **si** intr
 yo en P50 (`??` y `??`) quedaron corregidas antes de ejecutarse.
 
 **Sin push, sin merge, sin reset, sin rebase, sin PR.**
+
+
+---
+
+## 2026-09-28 - Fase P52: policy oracle, decision boundary y complementariedad
+
+**Alcance.** 0 modelos, 0 submissions, 0 consultas a Kaggle, 0 uso de holdout o test.
+**0 filas nuevas en `experiments.csv`**, porque toda la fase es auditoria y analisis
+descriptivo, y la directiva lo prohibe expresamente.
+
+**V52-00** (`experiments/v52_00_auditoria_y_techo.py`, exit code 0): auditoria del codigo
+real de P51, re-derivacion cerrada e independiente de la utilidad, verificacion de la
+asimetria, techo de estrato, rescate y dano exclusivos, complementariedad de los 190
+pares, correlacion de error en el regimen V03-wrong, clustering descriptivo y curva de
+valor. Artefactos: `reports/p52_policy_oracle.{json,csv}`,
+`p52_channel_pair_analysis.csv`, `p52_channel_exclusivity.csv`,
+`p52_error_correlation.csv`, `p52_policy_value_curve.csv`, `p52_policy_analysis.md`.
+
+**V52-01** (`experiments/v52_01_integrar_notebook.py`, exit code 0): seccion 48, notebook
+198 -> 200 celdas, celda de codigo con returncode 0.
+
+**Correccion propia de una correccion previa.** P51 registro que la elevacion necesaria al
+bajar de 1 a 0 era 1,03x. Es incorrecto: dividio `(1 - 0,6108) = 0,3892` por la tasa base
+de 0,3761, pero el rescate al bajar es `P(y=0)` y su equilibrio es `0,6108`. El valor
+correcto es **1,62x**, luego la direccion 1->0 era mas dificil de lo que P51 reporto.
+
+**Una lectura que se descarta a si misma.** La curva de valor de la politica sale con net
++225 y **no es valor de politica**: la accion por estrato se elige con labels del training
+fold, de modo que todo cambio es rescate por construccion. Se reporta marcada como
+contaminada, y la conclusion se apoya solo en el `STRATUM_ORACLE`. Antes de arreglarlo, la
+primera version de la curva daba `net = n_cambiadas` en los ocho umbrales, lo que delato el
+problema.
+
+**Errores propios.** `np.repeat` sobre un array 2D en vez de `ravel`, que daba 13347
+elementos en vez de 4449; una clave de diccionario con un espacio, que rompia el informe;
+`p51_eq` leido despues de su primer uso; un `and` sin sentido que producia un `base_up`
+falso; y **tres entradas CJK** (`??`, `??` y `??`) introducidas al escribir el script y
+el notebook, corregidas antes de ejecutar. Todos detectados por ejecucion real con
+`exit code` capturado sin pipe.
+
+**Sin push, sin merge, sin reset, sin rebase, sin PR.**

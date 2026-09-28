@@ -4244,3 +4244,89 @@ formulaciones de selector cada uno. El techo de +0,2098 que dio P50 sigue en pie
 sigue sin ser alcanzable: el problema no es de modelo sino de que **el conjunto de
 cambios disponibles tiene expectativa negativa** y la mejor regla conocida solo
 recupera parte de esa perdida.
+
+
+### D-123. El techo de la mejor politica observable es NEGATIVO: la seleccion contextual se cierra por una razon matematica
+
+**Contexto.** P51 cerro `CONTEXTUAL_SELECTION = CLOSED` con dos implementaciones
+negativas, pero dejo una pregunta: ?existe una politica mejor que V03 dentro de la
+informacion observable, aunque todavia no sepamos aprenderla? P52 responde con un
+techo, sin entrenar nada.
+
+**Primero, una correccion de P51.** P51 registro que la elevacion necesaria al bajar
+de 1 a 0 era **1,03x**. Es un error. P51 dividio `(1 - eq_down) = 0,3892` por la tasa
+base de 0,3761, pero el rescate al bajar es `P(y=0)` y su equilibrio es el propio
+`eq_down = 0,6108`. La elevacion real es **1,62x**. El equilibrio (0,3892) y la elevacion
+al subir (2,18x) si se reproducen. Consecuencia: la direccion 1->0 era **mas** dificil de
+lo que P51 reporto, no mas facil.
+
+**Segunda correccion, de lectura del codigo.** P51 aplico el umbral **0,5** donde la
+teoria da **0,3892** al subir y **0,6108** al bajar. Luego fue mas estricto de lo
+necesario al subir y mas laxo al bajar, y por eso sobre-cambio justo en la direccion
+que mas dana. Ademas P51 usaba **un solo clasificador por canal mezclando las dos
+direcciones**, que es lo que la directiva de P52 prohibe.
+
+**La correccion conceptual que hace el trabajo.** `policy oracle` sin `y_true` **no es un
+tercer objeto**: una politica que estima `P(rescue | observable)` **es** una politica
+aprendida. Por eso P52 separa una cadena de cuatro:
+
+```text
+V03                                    0,7772114525   (inaccion, net 0)
+estrato_out_of_fold                    0,7549322355   (-0,0222792170)
+STRATUM_ORACLE                         0,7753804469   (-0,0018310056)
+TRUE_ORACLE                            0,9870178614   (+0,2098064089)
+```
+
+El `STRATUM_ORACLE` es el **techo rigido**: la mejor politica que sea constante dentro de
+estratos observables, con la accion de cada estrato elegida usando `y_true`. Usa 18
+estratos definidos solo con la prediccion de V03, el bin de margen y el numero de
+canales que discrepan. El `TRUE_ORACLE` reconstruido coincide con el de P50 con
+diferencia 0.
+
+**El techo es NEGATIVO.** La mejor politica estratificada posible, con el permiso de mirar
+`y_true`, pierde frente a no hacer nada. De ahi se sigue por fuerza logica que **ninguna**
+politica condicional sobre variables observables puede superar a V03. No es un resultado
+empirico de un modelo que salio mal: es un cota.
+
+**La descomposicion explica por que el oracle es tan grande y a la vez inalcanzable.**
+
+```text
+TRUE_ORACLE -> STRATUM_ORACLE   +0,211637   coste de coarsar la politica a estratos
+STRATUM_ORACLE -> V03          -0,001831   lo que una politica estratificada gana (nada)
+```
+
+El +0,2098 del `TRUE_ORACLE` esta **casi enteramente** en la granularidad de celda. Exige
+una accion distinta en cada celda, y los estratos observables no dicen cual.
+
+**Rescate exclusivo: la hipotesis del usuario, medida y refutada.** P49 dijo que 19 de 20
+canales tienen net negativo, y era razonable sospechar que cada uno aporta regiones
+exclusivas cuya combinacion supere a todos. Medido:
+
+| magnitud | valor |
+|---|---:|
+| celdas con rescate unico (solo un canal las rescata) | **78 de 715** |
+| HHI del reparto de los 715 rescates | **0,0020** |
+| canales con `net_exclusivo` positivo | **2 de 20** |
+| pares con exclusividad bilateral | **0 de 190** |
+| pares donde los dos canales se contradicen | **0 de 190** |
+
+El HHI de 0,0020 con 20 canales significa reparto casi uniforme (el minimo teorico es
+1/20 = 0,05, y sale **por debajo** porque los canales se solapan muchisimo). Y el dato
+duro: **donde dos canales difieren de V03, nunca difieren entre si**. No hay nada que
+repartir, luego ninguna combinacion puede aportar de forma exclusiva. La hipotesis de
+complementariedad queda cerrada con evidencia, no con opinion.
+
+**Correlacion de error en el regimen donde V03 falla.** Media 0,1859, maximo 1,0000,
+minimo -0,1598, 14 de 190 pares por encima de 0,5, y 6 grupos a distancia 0,65. La
+diversidad global de los canales no es la misma que la diversidad **precisamente donde V03
+falla**, que es la unica que un selector necesitaria.
+
+**Una lectura que se descarta a si misma.** La curva de valor de la politica sale con net
++225, y **no es valor de politica**: la accion de cada estrato se elige con labels del
+training fold, de modo que en las celdas de error de V03 la mejor accion es un rescate
+por construccion. Se reporta marcada como contaminada y la conclusion se apoya
+unicamente en el `STRATUM_ORACLE`.
+
+**Decision.** `CASE C`. `UTILITY_POLICY = CLOSED` y `CONTEXTUAL_SELECTION = CLOSED`, con
+un motivo que ya no es "no lo probamos" sino una cota negativa. **P52-01 no se ejecuta**,
+porque la directiva solo lo justifica si el techo supera V03 + 0,003.

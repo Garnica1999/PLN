@@ -1456,3 +1456,84 @@ tienen net negativo y el unico positivo es el propio V03 con otro umbral.
 `experiments/v51_01_selector_utilidad.py`,
 `experiments/v51_02_accion_utilidad_esperada.py` y
 `experiments/v51_03_integrar_notebook.py`. Sin push: la rama sigue local.*
+
+
+---
+
+## Addendum P52 (2026-09-28) - El techo de la politica observable es negativo
+
+### La pregunta de fondo, respondida
+
+> ?Existe una politica de decision basada unicamente en senales observables que tenga un
+> techo materialmente superior a V03?
+
+**No. Y se puede demostrar con una cota, no con un modelo que salio mal.**
+
+### La cadena de techos
+
+| objeto | corrected_cv | delta vs V03 | usa `y_true` |
+|---|---:|---:|---|
+| V03 (inaccion) | 0,7772114525 | +0,0000000000 | no |
+| estrato, accion del training fold | 0,7549322355 | -0,0222792170 | solo en entrenamiento |
+| **STRATUM_ORACLE** | **0,7753804469** | **-0,0018310056** | si |
+| TRUE_ORACLE | 0,9870178614 | +0,2098064089 | si |
+
+El `STRATUM_ORACLE` es la mejor politica **constante dentro de estratos observables**,
+con la accion de cada estrato elegida mirando `y_true`. Usa 18 estratos definidos solo con
+la prediccion de V03, el bin de margen y el numero de canales que discrepan.
+
+**Es una cota, no un experimento.** Si esa politica pierde frente a no hacer nada, ninguna
+politica condicional sobre variables observables puede ganar.
+
+### Donde esta el +0,2098, y por que es inalcanzable
+
+| tramo | magnitud | que mide |
+|---|---:|---|
+| TRUE_ORACLE -> STRATUM_ORACLE | **+0,211637** | coste de obligar a la politica a ser constante en un estrato |
+| STRATUM_ORACLE -> V03 | **-0,001831** | lo que una politica estratificada puede ganar |
+
+Practicamente todo el oracle esta en la **granularidad de celda**. Exige una accion
+distinta en cada celda, y los estratos observables no dicen cual.
+
+### Rescate exclusivo: la hipotesis de complementariedad, medida
+
+| magnitud | valor |
+|---|---:|
+| celdas con rescate unico | **78 de 715** |
+| HHI del reparto de los 715 rescates | **0,0020** |
+| canales con `net_exclusivo` positivo | **2 de 20** |
+| pares con exclusividad bilateral | **0 de 190** |
+| pares donde los dos canales se contradicen | **0 de 190** |
+
+El HHI de 0,0020 esta **por debajo** del minimo teorico de 1/20 = 0,05, porque los canales
+se solapan muchisimo. Y el dato duro: **donde dos canales difieren de V03, nunca difieren
+entre si**. No hay nada que repartir, asi que ninguna combinacion puede aportar de forma
+exclusiva. La hipotesis era razonable y queda cerrada con evidencia.
+
+### Correcciones a P51
+
+1. La elevacion necesaria al bajar de 1 a 0 era **1,62x**, no 1,03x. P51 dividio
+   `(1 - 0,6108)` por la tasa base, cuando el rescate al bajar es `P(y=0)` y su equilibrio
+   es el propio `0,6108`. La direccion 1->0 era **mas dificil** de lo reportado.
+2. P51 aplico el umbral **0,5** donde la teoria da **0,3892** al subir y **0,6108** al bajar,
+   luego sobre-cambio justo en la direccion que mas dano hace.
+3. P51 mezclaba las dos direcciones en un solo clasificador por canal.
+
+### Una lectura que se descarta a si misma
+
+La curva de valor de la politica sale con net +225 y **no es valor de politica**: la accion
+de cada estrato se elige con labels del training fold, de modo que todo cambio es rescate
+por construccion. Se reporta marcada como contaminada y la conclusion se apoya unicamente
+en el `STRATUM_ORACLE`.
+
+### Decision
+
+`CASE C`. `UTILITY_POLICY = CLOSED` y `CONTEXTUAL_SELECTION = CLOSED`.
+
+El motivo final ya no es "no lo probamos". Es: **la mejor politica estratificada posible,
+con permiso de mirar `y_true`, pierde**. Por tanto la linea contextual esta cerrada por
+una cota negativa, y cualquier intento futuro de seleccion contextual sobre este pool
+tendria que demostrar primero que supera 0,7754.
+
+*Seccion generada por `experiments/v52_00_auditoria_y_techo.py` y
+`experiments/v52_01_integrar_notebook.py`. Sin push: la rama sigue local.*

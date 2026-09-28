@@ -1025,3 +1025,44 @@ medir, bajar de 1 a 0 sale **neta positiva** (+5) mientras subir sale muy negati
 
 **Estado del campeon.** Sin cambios. V03 intacto. 0 modelos, 0 submissions, 0
 consultas a Kaggle, 0 uso de holdout o test.
+
+
+---
+
+## Fase P52 (2026-09-28) - Policy Oracle, decision boundary y complementariedad
+
+**Que se respondio.** Si existe una politica de decision basada solo en senales observables
+con un techo materialmente superior a V03.
+
+```text
+V03                          0,7772114525
+estrato_out_of_fold          0,7549322355   (-0,0222792170)
+STRATUM_ORACLE               0,7753804469   (-0,0018310056)  <- techo rigido
+TRUE_ORACLE                  0,9870178614   (+0,2098064089)
+hueco TRUE -> STRATUM        +0,211637
+hueco STRATUM -> V03         -0,001831
+CASE = C
+```
+
+**El techo es negativo.** La mejor politica constante dentro de estratos observables,
+con el permiso de mirar `y_true`, pierde frente a no hacer nada. Ningun selector
+condicional puede superar a V03, y eso es una cota y no un fallo de modelo.
+
+**El +0,2098 del oracle esta casi todo en la granularidad de celda.** Coarsar la politica
+a 18 estratos observables cuesta +0,211637. Exige una accion distinta en cada celda, y
+los estratos no dicen cual.
+
+**Rescate exclusivo: la hipotesis queda refutada con evidencia.** 78 de 715 celdas
+rescatadas tienen un unico rescuer, HHI del reparto 0,0020 (casi uniforme, por debajo del
+minimo teorico de 0,05 porque el solapamiento es enorme), 2 de 20 canales con
+`net_exclusivo` positivo, y **0 de 190 pares con exclusividad bilateral**. El dato duro:
+donde dos canales difieren de V03, **nunca** difieren entre si.
+
+**Correcciones a P51.** (1) La elevacion necesaria al bajar era **1,62x**, no 1,03x: P51
+dividio `(1 - eq)` por la tasa base cuando el rescate al bajar es `P(y=0)` y su equilibrio
+es el propio `eq`. (2) P51 aplico el umbral **0,5** donde la teoria da 0,3892 al subir y
+0,6108 al bajar, luego sobre-cambio en la direccion que mas dana. (3) P51 mezclaba las dos
+direcciones en un solo clasificador por canal.
+
+**Estado del campeon.** Sin cambios. V03 intacto. 0 modelos, 0 submissions, 0 consultas a
+Kaggle, 0 uso de holdout o test. P52-01 no se ejecuta: el techo no lo justifica.
