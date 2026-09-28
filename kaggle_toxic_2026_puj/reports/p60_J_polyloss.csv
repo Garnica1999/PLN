@@ -1,0 +1,20 @@
+magnitud,valor
+brazo_0_corrected_cv,0.7772647318762402
+brazo_1_corrected_cv,0.7755546944538407
+delta_perdida_puro,-0.0017100374223995018
+delta_vs_V03,-0.001656758062731356
+corrected_cv_V03,0.7772114525165721
+pliegues_mejorados,2
+folds_brazo_1,0.790502 0.791669 0.779115 0.741423 0.774836
+folds_brazo_0,0.796010 0.795526 0.778860 0.736317 0.780042
+rescate,25
+damage,23
+neto,2
+cambian,48
+eps_1,1.0
+eps_2,1.0
+convergio,True
+gate_delta_superado,False
+gate_pliegues_superado,False
+gate_superado,False
+decision,"CLOSED. La forma polinomica de la perdida no mejora sobre la logistica con el mismo C, y V7-01 y V12-02 ya habian cerrado la rama de la perdida. El confound de escala declarado limita la lectura del lado positivo"
