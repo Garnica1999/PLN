@@ -1,0 +1,22 @@
+magnitud,valor
+brazo_0_corrected_cv,0.7772647318762402
+brazo_1_corrected_cv,0.6243388619649254
+delta_perdida_puro,-0.15292586991131485
+delta_vs_V03,-0.1528725905516467
+corrected_cv_V03,0.7772114525165721
+pliegues_mejorados,0
+folds_brazo_1,0.621903 0.624690 0.630246 0.618720 0.626855
+folds_brazo_0,0.796010 0.795526 0.778860 0.736317 0.780042
+rescate,334
+damage,1552
+neto,-1218
+cambian,1886
+gamma_mas,0.0
+gamma_menos,4.0
+corte_m,0.05
+negativos_con_perdida_cero_media,0.000000
+convergio,True
+gate_delta_superado,False
+gate_pliegues_superado,False
+gate_superado,False
+decision,"CLOSED. La perdida asimetrica no mejora sobre el control de misma capacidad, con el mecanismo de corte duro Siendo el que V7-01 no probo"
