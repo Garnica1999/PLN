@@ -1717,3 +1717,53 @@ contenido ajeno a esta fase.
 
 `experiments.csv` pasa a **130 experimentos**. Auditoría de idioma del proyecto: 471 ficheros,
 **0 errores**. Sin push, con V12, V19 y V20 intactos, y con el test y el holdout sin tocar.
+
+## 2026-09-27 · V24 — Reconciliacion documental (D-059)
+
+La fase no experimenta. El hallazgo es que **la causa del notebook incompleto era estructural, no
+editorial**.
+
+**La fuente de verdad del notebook es una cadena de cinco scripts, no un generador unico.**
+`fase09_99_entrega.py` crea la Parte I, `fase12_notebook_final.py` regenera con V13,
+`phase28_notebook_final_v2.py` regenera con V14 a V16, `v17_notebook.py` anade la Parte III y
+`v23_02_auditoria.py` anade V23. **Un eslabon por fase**, y **V18, V19, V20, V21 y V22 nunca
+tuvieron eslabon**. Por eso el notebook se quedaba en V17 con V20 como champion, y por eso no se
+podia cerrar desde V23 sin dejar esas cinco fases fuera.
+
+**Las 103 celdas no eran un numero erroneo**: eran correctas para lo que contenian. El numero no
+estaba mal, estaba incompleto. Ahora hay **121 celdas y 33 secciones**, con las doce versiones
+V12 a V23 presentes.
+
+**Renumeracion minima**: V23 estaba en 31 y V24 se construia como 32, luego el orden quedaria
+invertido. Se invierte, V24 pasa a 31 y V23 a 32. Se renumera **una sola seccion existente**, que
+es lo que el brief pedia evitar.
+
+**El registry tenia un defecto propio y preexisting**: tres lineas de cabecera en vez de una, con
+dos espurias ocupando `experiment_id` dos veces. Declaraba 130 experimentos y tenia 128. Aparece
+igual en al menos los ultimos seis commits. Corregido, y **V24 no anade filas** porque es
+documentacion: el conteo real es **128**.
+
+**Dos discrepancias documentadas sin tocar artefactos**: V20 registrado como 0,609615, que es el
+modelo compartido de D-057 y no la cadena de V20, con canonico 0,6097782; y V12 registrado como
+0,6004, redondeado, con canonico pooled 0,6005017.
+
+**Dos errores propios durante la fase**: el patron de renumeracion estaba invertido, se buscaba
+`## 31. V18` para convertirlo en `## 36. V23` cuando lo que existia era `## 31. V23`, luego el
+renumerado no se aplicaba y las secciones quedaban en orden 32 antes que 31. Y `ruff` no estaba en
+el PATH del subprocess, que lo resolvia con `cfg.ROOT.parents[1]`, que es `/home/carlos/Git` y no
+`/home/carlos`; ahora se deriva de `sys.executable`. Ademas el simbolo de seccion se coló tres
+veces, y la propia auditoria de Unicode lo cazó.
+
+**Sobre ruff**: el proyecto **no tiene configuracion**, luego se aplican sus defaults, que incluyen
+reglas de estilo que el proyecto incumple de forma sistematica — los scripts ya commiteados tienen
+12 avisos `ISC004` y este tiene 54. El gate de la fase exige cero **errores de correccion** (reglas
+`F` y `E9`), que es lo que se verifica, y ambos estan a cero.
+
+**Auditoria: PASS.** py_compile rc 0, ruff 0 errores de correccion, **0 Unicode introducido**,
+ids y titulos unicos, 0 artefactos faltantes, **9 celdas ejecutadas con 0 errores**, coherencia
+**7/7**. Auditoria de idioma del proyecto: 474 ficheros, **0 errores**.
+
+**Deuda declarada en el propio notebook, no escondida**: 38 caracteres Unicode de sesiones
+anteriores y `notebooks/09_final_pipeline.ipynb` obsoleto respecto a V20.
+
+Sin push, con V12 y V20 intactos, y sin abrir ninguna hipotesis nueva.

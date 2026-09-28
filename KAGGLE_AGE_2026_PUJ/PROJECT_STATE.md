@@ -198,6 +198,33 @@
   mecanismo y no de hiperparametro.
 - **No se abre ninguna otra familia** mientras la ordinal tenga un challenger confirmado por leaderboard.
 
+## V24 · RECONCILIACION DOCUMENTAL (2026-09-27) CERRADA — la causa era estructural (D-059)
+
+- **Fase actual: V24, reconciliacion documental. Sin experimento, sin submission, sin hipotesis
+  nueva.** **V20 sigue siendo el champion** (LB **0,62689**) y **V23 sigue cerrado**.
+- **La causa del notebook incompleto era estructural, no editorial.** La fuente de verdad es una
+  **cadena de cinco scripts** con **un eslabon por fase**, y **V18, V19, V20, V21 y V22 nunca
+  tuvieron eslabon**. Por eso el notebook se quedaba en V17 con V20 como champion.
+- **Notebook reconciliado**: de **103 a 121 celdas**, de 32 a **33 secciones**, con las **doce
+  versiones V12 a V23 presentes**. Cada fase integrada con hipotesis, metodo, control,
+  `corrected_cv`, decision y ruta de artefactos.
+- **Renumeracion minima**: V24 pasa a la seccion **31** y V23 a la **32**, que es la cronologia
+  correcta. Se renumera una sola seccion existente.
+- **El registry tenia un defecto propio y preexisting**: **tres lineas de cabecera** en vez de una,
+  con dos espurias ocupando `experiment_id` dos veces. Declaraba 130 experimentos y tenia **128**.
+  Corregido a una cabecera; **V24 no anade filas** porque es documentacion.
+- **Dos discrepancias documentadas sin tocar artefactos**: V20 registrado como 0,609615 (que es el
+  modelo compartido de D-057, no la cadena de V20; canonico **0,6097782**) y V12 registrado como
+  0,6004 (redondeado; canonico **0,6005017**).
+- **Auditoria: PASS.** py_compile rc 0, ruff 0 errores de correccion, **0 Unicode introducido**,
+  ids y titulos unicos, 0 artefactos faltantes, **9 celdas ejecutadas con 0 errores**, coherencia
+  **7/7**.
+- **Deuda declarada en el propio notebook, no escondida**: 38 caracteres Unicode de sesiones
+  anteriores, y `notebooks/09_final_pipeline.ipynb` obsoleto respecto a V20.
+- **Entregables**: `scripts/v24_notebook_reconciliacion.py`,
+  `experiments/v24_reconciliacion.json`, `reports/v24_reconciliacion.md`,
+  `reports/v24_tabla_maestra.csv`, `reports/figures/v24_evolucion_corrected_cv.png`.
+
 ## V23 · CORAL / CUMULATIVE-LINK (2026-09-27) CERRADA — compartir pesos funciona y no alcanza (D-058)
 
 - **`CORAL = CLOSED` y `ORDINAL_SHARED_WEIGHTS = NO_SIGNAL`.** Delta **-0.126077**

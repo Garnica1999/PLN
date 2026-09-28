@@ -248,6 +248,48 @@ que solo vale si `s_y = 1`, y penalizar solo `w`, que produce separacion y dispa
 **pre-registrados sin mirar AGE**, a partir de una comprobacion de separacion sobre un sintetico
 con la forma y la escala del proyecto.
 
+## 12ter. V24 — Reconciliacion documental: la causa era estructural
+
+La fase V24 no experimenta. Su objeto es que el notebook consolidado represente el estado real de
+la investigacion, y el hallazgo es que la causa de que no lo hiciera **no era editorial**.
+
+**La fuente de verdad del notebook es una cadena, no un generador unico.** Hay cinco scripts, cada
+uno de una fase, aplicados en orden sobre el mismo archivo: `fase09_99_entrega.py`,
+`fase12_notebook_final.py`, `phase28_notebook_final_v2.py`, `v17_notebook.py` y
+`v23_02_auditoria.py`. La cadena tiene **un eslabon por fase**, y **V18, V19, V20, V21 y V22
+nunca tuvieron eslabon**. Ese es el motivo exacto de que el notebook se quedara en V17 con V20 como
+champion, y explica por que no se podia cerrar desde V23 sin dejar esas cinco fases fuera.
+
+Las 103 celdas no eran un numero erroneo: eran correctas **para lo que contenian**, V12 a V17 mas
+la seccion de V23 anadida al final. El numero no estaba mal, estaba incompleto. Ahora el notebook
+tiene **121 celdas y 33 secciones**, con las **doce versiones V12 a V23** presentes y cada una
+con hipotesis, metodo, control, `corrected_cv`, decision y ruta de artefactos.
+
+**El registry arrastra un defecto propio, y es preexisting.** `experiments.csv` tenia **tres
+lineas de cabecera** en vez de una: las dos espurias ocupaban el identificador `experiment_id` dos
+veces, luego declaraba 130 experimentos y tenia **128**. El defecto aparece igual en al menos los
+ultimos seis commits, muy anterior a V23. Se corrige a una sola cabecera, y **V24 no anade
+ninguna fila** porque es documentacion y no un experimento: el conteo real es **128**.
+
+**Dos discrepancias se documentan sin sobreescribir los artefactos.** `v22_frontier_audit.json`
+registra V20 como **0,609615**, que es la salida del **modelo compartido** de D-057 y no la cadena
+de V20; el canonico es **0,6097782**, verificado por reproduccion exacta en cuatro artefactos. Y
+`phase39_fusion_v12.json` registra la referencia de V12 **redondeada a cuatro decimales**
+(0,6004), cuando el canonico pooled es **0,6005017**. En ambos casos el notebook muestra
+`ORIGINAL` junto a `CORRECTED` con su motivo.
+
+**Auditoria de la fase: PASS.** `py_compile` rc 0, `ruff` con cero errores de correccion, cero
+caracteres Unicode introducidos, identificadores y titulos unicos, cero artefactos faltantes, nueve
+celdas del notebook ejecutadas de verdad con cero errores, y coherencia numerica 7 de 7.
+
+**Lo que esta fase no hace**: no entrena nada, no genera submissions, no consulta Kaggle, no lee el
+test ni el holdout, no anade filas al registry, no cambia resultados historicos y **no abre ninguna
+hipotesis**. El proximo experimento se decide despues y no automaticamente.
+
+**Deuda que queda declarada y no se cierra aqui**: el notebook conserva 38 caracteres Unicode de
+sesiones anteriores, porque el proyecto excluye `notebooks/` de su auditoria de idioma historica; y
+`notebooks/09_final_pipeline.ipynb` es un notebook antiguo de diez celdas, obsoleto respecto a V20.
+
 ## 12. Limitaciones y trabajo futuro
 
 **Limitaciones**

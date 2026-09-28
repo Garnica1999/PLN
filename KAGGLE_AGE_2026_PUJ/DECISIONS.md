@@ -1755,3 +1755,60 @@ Tras declarar la saturación se probó la vía indicada como trabajo futuro:
   `reports/v23_coral_results.csv`, `reports/v23_coral_audit.md`, `reports/v23_00_tests_coral.md`,
   `reports/figures/v23_coral_monotonicidad.png`, `reports/figures/v23_coral_complementariedad.png`,
   `reports/figures/v23_coral_folds.png`, celdas 31.1 a 31.13 de `notebooks/99_entrega_consolidado.ipynb`.
+
+## D-059 — V24: la causa del notebook incompleto era estructural, no editorial
+
+- **Observation**: V23 reporto a la vez `experiments.csv = 130` y `notebook = 103 celdas`, y
+  reconocio que el notebook consolidado llegaba hasta V17 mientras el champion es V20. Carlos pidio
+  no experimentar hasta reconciliarlo.
+- **Result, la causa raiz medida**: la fuente de verdad del notebook **no es un generador unico**.
+  Es una **cadena de cinco scripts**, cada uno de una fase, aplicados en orden sobre el mismo
+  archivo: `fase09_99_entrega.py` (crea la Parte I), `fase12_notebook_final.py` (V13),
+  `phase28_notebook_final_v2.py` (V14 a V16), `v17_notebook.py` (anade la Parte III) y
+  `v23_02_auditoria.py` (anade la seccion de V23). La cadena tiene **un eslabon por fase**, y
+  **V18, V19, V20, V21 y V22 nunca tuvieron eslabon**. Ese es el motivo exacto de la deuda, y
+  explica por que no se podia cerrar desde V23 sin dejar esas cinco fases fuera.
+- **Por que 103 celdas no era un numero erroneo**: era correcto **para lo que contenia**, V12 a V17
+  mas la seccion de V23 anadida al final. El numero no estaba mal, estaba incompleto. Ahora son
+  **121 celdas** y **33 secciones**, con las doce versiones V12 a V23 presentes.
+- **Renumeracion minima**: V23 estaba numerada 31 y V24 se construia como 32, luego el orden
+  quedaria invertido. Se invierte: **V24 pasa a la seccion 31 y V23 a la 32**. Se renumera **una
+  sola seccion existente**, que es lo que el brief pedia evitar.
+- **El registry arrastra un defecto propio,Measuredo**: `experiments.csv` tenia **tres lineas de
+  cabecera**, no una. Las dos espurias ocupaban el identificador `experiment_id` **dos veces**, luego
+  el registry declaraba 130 experimentos y tenia **128**. El defecto es **preexistente**: aparece
+  igual en al menos los ultimos seis commits, muy anterior a V23. Se corrige a una sola cabecera.
+  **V24 no anade ninguna fila**, porque es documentacion y no un experimento, asi que el conteo
+  solo puede bajar.
+- **Dos discrepancias documentadas sin sobreescribir artefactos**, como pide el punto 7 del brief:
+  1. **V20**: `v22_frontier_audit.json` registra **0,609615**, que es la salida del **modelo
+     compartido** de D-057 y no la cadena de V20. El canonico es **0,6097782**, verificado por
+     reproduccion exacta en cuatro artefactos.
+  2. **V12**: `phase39_fusion_v12.json` registra la referencia **redondeada a cuatro decimales**
+     (0,6004). El canonico pooled es **0,6005017**, que usan `v18_cierre.referencia_pooled` y
+     `v22_frontier_audit.baselines.V12`.
+  En ambos casos se muestra `ORIGINAL` junto a `CORRECTED` con su motivo y **el artefacto
+  historico no se modifica**.
+- **Auditoria de la fase: PASS.** `py_compile` rc 0, `ruff` con **0 errores de correccion** (el
+  proyecto no tiene configuracion de ruff y sus avisos de estilo `ISC004` son sistematicos: los
+  scripts ya commiteados tienen 12), **0 caracteres Unicode introducidos**, notebook con ids y
+  titulos unicos, **0 artefactos faltantes**, **9 celdas ejecutadas con 0 errores** y coherencia
+  numerica **7 de 7**.
+- **Decision**: **V24 = reconciliacion documental, sin experimento.** Sin submissions, sin
+  consultar Kaggle, sin leer el test ni el holdout, sin tocar V12 ni V20, y **sin abrir ninguna
+  hipotesis**: el proximo experimento se decide despues y no automaticamente.
+- **Reason**: la deuda no era de contenido sino de proceso. Documentar la cadena de generadores
+  hace que la ausencia de un eslabon sea visible la proxima vez, en lugar de descubrirse por el
+  recuento de celdas.
+- **Consequences**: (1) el notebook representa las doce fases con hipotesis, metodo, control,
+  corrected CV, decision y ruta de artefactos; (2) existe una **tabla maestra** y una **figura de
+  evolucion** construidas desde artefactos, no desde memoria; (3) el registry es integro y su
+  conteo real es **128**; (4) la deuda restante queda **declarada en el propio notebook**, sin
+  esconderla.
+- **Deuda que queda abierta y no se cierra aqui**: el notebook conserva **38 caracteres Unicode** de
+  sesiones anteriores, porque el proyecto excluye `notebooks/` de su auditoria de idioma; y
+  `notebooks/09_final_pipeline.ipynb` es un notebook antiguo de 10 celdas, obsoleto respecto a V20.
+- **Evidence**: `experiments/v24_reconciliacion.json`, `reports/v24_reconciliacion.md`,
+  `reports/v24_tabla_maestra.csv`, `reports/figures/v24_evolucion_corrected_cv.png`,
+  `scripts/v24_notebook_reconciliacion.py`, seccion 31 de
+  `notebooks/99_entrega_consolidado.ipynb`.
