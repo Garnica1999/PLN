@@ -1,0 +1,62 @@
+{
+  "familia": "P59_T_LOCAL_CALIBRATION",
+  "naturaleza": "CIERRE POR DUPLICACION FUNCIONAL. 0 experimentos, 0 modelos, 0 scores, 0 submissions, 0 consultas a Kaggle, 0 holdout, 0 test. V03 no se modifica",
+  "fecha": "2026-09-28T14:25:43+00:00",
+  "track": "P59-T",
+  "estado": "CLOSED_BY_DUPLICATION",
+  "experimentos_consumidos": 0,
+  "dependencia": "B1, de la que hereda el score local max. No ejecutada porque B1 cerro y la prueba de duplicacion no necesita el score",
+  "T0_control": {
+    "corrected_cv_V03": "0.7772114525165721",
+    "reproduce_exacto": true,
+    "corrected_cv_B1_insumo": 0.7765868373
+  },
+  "T1_gap_check": {
+    "veredicto": "EXISTE EQUIVALENCIA FUNCIONAL",
+    "pierna_1_algebraica": {
+      "platt": "p_cal = sigmoid(a*logit(p_raw) + b)",
+      "consecuencia": "con umbral fijo t, p_cal >= t equivale EXACTAMENTE a p_raw >= sigmoid((logit(t) - b)/a), es decir un reseleccion del umbral por etiqueta sobre el score crudo",
+      "por_que_eso_mata_T": "una reparametrizacion monotona no aporta informacion, solo mueve el corte. El encargo mismo excluye el threshold sweep al definir T"
+    },
+    "pierna_2_precedente": [
+      {
+        "id": "V8-09",
+        "hallazgo": "F1 como funcion de la tasa de positivos predicha es UNIMODAL y V03 esta exactamente en su maximo, medido sobre quince sondas independientes",
+        "cierre": "cierra de raiz la familia entera de calibraciones, umbrales y pesos por etiqueta, y no depende de ajustar nada"
+      },
+      {
+        "id": "V10-04",
+        "que_hizo": "Platt, isotonica recortada y beta de tres parametros sobre los scores de V03, con calibrador anidado en el pliegue y cinco semillas",
+        "resultado": "la calibracion funciona de verdad: ECE medio de 0,058293 a 0,024801 con Platt. Pero el delta medio anidado de Platt es +0,000148 con IC95 [-0,005221, +0,005932]",
+        "cierre": "NO ACCIONABLE, con clausula pre-registrada explicita: no se reintenta con mas variantes de calibracion porque el criterio de cierre ya se cumplio"
+      },
+      {
+        "id": "E2-14-MEJOR-M2",
+        "resultado": "+0,0018 con 3 de 5 pliegues, CERRADA sin mejora"
+      },
+      {
+        "id": "E2-14-MEJOR-META",
+        "resultado": "-0,0017, CERRADA sin mejora"
+      },
+      {
+        "id": "V4-H01",
+        "resultado": "Platt sobre los scores del meta de 36 rasgos: -0,0171, empeora"
+      },
+      {
+        "id": "V9-02",
+        "resultado": "Platt mas EM de Saerens, sonda no adoptada ni enviada"
+      }
+    ]
+  },
+  "por_que_U_no_esta_cerrado": "U fusiona un segundo score en el primero, y eso cambia el RANKING, que ninguna reparametrizacion monotona puede hacer. Esa es exactamente la linea algebraica que separa U de T, y por eso la fusion continua no cae en el cierre de V8-09 ni en la clausula de V10-04. U se ejecuta por separado y este cierre no la afecta",
+  "decision": "CLOSED_BY_DUPLICATION. 0 experimentos consumidos. No es que la calibracion del score local haya fallado: es que no es un experimento, porque Platt a umbral fijo ES un cambio de umbral, y esa familia esta cerrada de raiz por V8-09 y de forma especifica por V10-04. Sin sonda, sin entrenamiento, sin submissions. V03 remains the best verified leaderboard result.",
+  "formulacion": "V03 remains the best verified leaderboard result.",
+  "gastos": {
+    "submissions": 0,
+    "consultas_kaggle": 0,
+    "uso_holdout": 0,
+    "uso_test": 0,
+    "entrenamientos": 0,
+    "segundos": 0.1
+  }
+}

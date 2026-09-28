@@ -853,6 +853,359 @@ print(f"  decision: {d['decision'][:140]}")
 print(f"  formulacion: {d['formulacion']}")
 """,
     },
+    {
+        "numero": "62",
+        "marca": "62. P59-T calibracion del score local",
+        "titulo": "P59-T - Calibracion del score local: CLOSED_BY_DUPLICATION",
+        "md": """\
+## 62. P59-T - Calibracion del score local: CLOSED_BY_DUPLICATION
+
+No se ejecuto ningun experimento. La pista se cerro en el gap check, y el motivo
+es algebrico antes que historico.
+
+### Pierna 1, algebrica
+
+Platt es una transformacion afin en el logit, `p_cal = sigmoid(a*logit(p_raw) + b)`.
+Con un umbral fijo `t`:
+
+```text
+p_cal >= t  <=>  p_raw >= sigmoid((logit(t) - b)/a)
+```
+
+Es decir, aplicar Platt y mantener el umbral **es** reseleccionar el umbral por
+etiqueta. Una reparametrizacion monotona no aporta informacion, solo mueve el
+corte, y el propio encargo excluye el threshold sweep al definir T.
+
+### Pierna 2, precedente, y es un cierre de raiz
+
+`V8-09` midio sobre quince sondas independientes que la F1 frente a la tasa de
+positivos predicha es **unimodal y V03 esta exactamente en su maximo**. Eso cierra
+de raiz la familia entera de calibraciones, umbrales y pesos por etiqueta. Y
+`V10-04` probo Platt, isotonica y beta de tres parametros sobre los scores de V03
+con el calibrador anidado: la calibracion funciona de verdad, ECE de 0,058293 a
+0,024801, pero el delta medio anidado de Platt es **+0,000148** con IC95
+[-0,005221, +0,005932], y su decision cierra con clausula pre-registrada de no
+reintentar mas variantes. `E2-14` calibro M2 y META sin mejora, y `V4-H01` empeoro
+-0,0171 aplicando Platt al meta.
+
+### Por que U no cae en este cierre
+
+La fusion cambia el **ranking** siempre que los dos scores discrepen, y una
+reparametrizacion monotona no puede hacer eso. Esa es la linea algebraica exacta
+que separa U de T.
+""",
+        "codigo": """\
+import json
+from pathlib import Path
+
+d = json.loads(Path("reports/p59_T_local_calibration.json").read_text())
+print("== estado ==")
+print(f"  track {d['track']} | {d['estado']} | {d['experimentos_consumidos']} experimentos")
+print(f"  dependencia: {d['dependencia']}")
+print()
+print("== T0 control ==")
+print(f"  {d['T0_control']}")
+print()
+print("== T1 gap check ==")
+g = d["T1_gap_check"]
+print(f"  veredicto: {g['veredicto']}")
+print(f"  algebra: {g['pierna_1_algebraica']['platt']}")
+print(f"  {g['pierna_1_algebraica']['consecuencia']}")
+for p_ in g["pierna_2_precedente"]:
+    cuerpo = p_.get("hallazgo") or p_.get("que_hizo") or ""
+    print(f"  {p_['id']:18} {cuerpo}")
+    if p_.get("resultado"):
+        print(f"  {'':18} resultado: {p_['resultado']}")
+    print(f"  {'':18} cierre: {p_.get('cierre', '(cerrado sin nota de cierre)')}")
+print()
+print(f"  por que U no: {d['por_que_U_no_esta_cerrado']}")
+print()
+print(f"  decision: {d['decision'][:160]}")
+""",
+    },
+    {
+        "numero": "63",
+        "marca": "63. P59-U fusion global + local",
+        "titulo": "P59-U - Fusion continua del score global y el local: MARGINAL",
+        "md": """\
+## 63. P59-U - Fusion continua del score global y el local
+
+### Novedad: base nueva, mecanismo ya explorado
+
+`ENS-01` a `ENS-04` combinan cuatro bases globales (voto igual, rejilla del
+simplex, stacking por etiqueta, mejor par o trio anidado). `V4-H01` y `S08` usan un
+meta de 36 rasgos. `FIN-08`, `FIN-09` y `FIN-10` enviaron candidatos de meta al
+leaderboard y los tres quedaron por debajo de V03.
+
+Lo nuevo es la **base**: ninguna fusion previa uso un score calculado sobre una
+unidad de representacion distinta.
+
+### Configuracion
+
+```text
+p = (1 - alpha) p_V03 + alpha p_local,  un alpha compartido por las tres etiquetas
+regla =maximizar el macro-F1 a los umbrales congelados sobre las predicciones
+       inner-OOF del TRAINING FOLD EXTERIOR. Validation nunca se toca
+rejilla alpha de 0.00 a 1.00 en pasos de 0.05, y el NULO alpha = 0 esta dentro,
+       luego la regla puede volver siempre a V03
+```
+
+### El dato decisivo
+
+El alpha **oracle**, el que habria maximizado el score externo y por tanto hace
+trampas, aporta **menos** que la seleccion anidada y honesta. La mejor fusion con
+un alpha unico en todo el corpus apenas mueve la metrica, luego el delta de la
+regla anidada viene de adaptar alpha pliegue a pliegue y no de senal transferible.
+""",
+        "codigo": """\
+import json
+from pathlib import Path
+
+d = json.loads(Path("reports/p59_U_global_local_fusion.json").read_text())
+r = d["resultado"]
+print("== gap check ==")
+print(f"  {d['U1_gap_check']['veredicto']}")
+print(f"  base nueva: {d['U1_gap_check']['base_nueva']}")
+print(f"  por que no cae en el cierre de T: {d['U1_gap_check']['por_que_U_no_esta_cerrada_como_T']}")
+print()
+print("== control ==")
+print(f"  {d['control']}")
+print()
+print("== resultado ==")
+print(f"  corrected_cv U   {r['corrected_cv_U']!r}")
+print(f"  delta_vs_V03     {r['delta_vs_V03']:+.10f}")
+print(f"  folds U          {r['folds_U']}")
+print(f"  pliegues +       {r['pliegues_mejorados']}/5")
+print(f"  alphas por pliegue {r['alphas_por_pliegue']}")
+print(f"  rescate {r['rescate']} | dano {r['damage']} | neto {r['neto']:+d} | "
+      f"acierto en las que cambian {r['acierto_en_las_que_cambian']}")
+print(f"  gate: {r['gate']}")
+print()
+print("== la pregunta del parrafo 13, por estrato ==")
+for k, v in r["complementariedad_por_estrato"].items():
+    print(f"  {k:18} n={v['n_tweets']:5d} rescate={v['rescate']:3d} dano={v['damage']:3d} "
+          f"neto={v['neto']:+d}")
+print()
+o = d["oracle_diagnostico"]
+print("== diagnostico oracle, NO es candidato ==")
+print(f"  alpha_oracle {o['alpha_oracle']} | delta_oracle {o['delta_oracle']:+.10f}")
+print(f"  {o['nota']}")
+print()
+print(f"  decision: {d['decision'][:150]}")
+""",
+    },
+    {
+        "numero": "64",
+        "marca": "64. P59-E regularizacion por grafo",
+        "titulo": "P59-E - Regularizacion por grafo: MARGINAL, indistinguible del ruido",
+        "md": """\
+## 64. P59-E - Regularizacion por grafo sobre el objetivo de V03
+
+### Novedad: nueva
+
+| eje | filas del registro |
+|---|---:|
+| regularizacion por grafo | **0** |
+| manifold regularization | **0** |
+| termino cuadratico sobre un grafo de documentos | **0** |
+| PageRank o paseo aleatorio | **0** |
+| red neuronal sobre grafo | **0** |
+
+El precedente mas cercano, `V4-F01-F04`, usa la vecindad para **propagar
+etiquetas**, que es predecir, y cerro con techo nulo. `V4-A01`, `V4-A02`,
+`E2-20-ESPECIALISTAS` y `V6-07` usan vecindad para predecir o ponderar. Ninguno
+regulariza un objetivo.
+
+**Previo nulo que conviene no esconder**: `V4-F01-F04` midio que un vecino
+discrepante aporta solo +0,018 de error con IC95 [-0,013, +0,049], no
+significativo. Un grafo puede regularizar sin que los vecinos compartan error, luego
+no cierra la pista, pero se ejecuta sabiendo que el diagnostico previo salio nulo.
+
+### Configuracion
+
+```text
+grafo     coseno kNN con k = 10 sobre el TF-IDF de V03, filas de ENTRENAMIENTO
+objetivo  0,5 w'w + (lambda/2) w'X'WX w + C sum omega perdida(s)
+lambda    0,1, un solo valor, sin rejilla
+el grafo  SOLO regulariza: nunca vota, nunca recupera
+```
+
+El grafo se escapa por construccion: el mayor autovalor de `X'WX` se pone a 1, luego
+lambda = 0,1 significa una curvatura de suavizado de al menos diez veces menor que
+la del L2. Que ese sea el magnitud es un juicio declarado, no una magnitud
+derivada.
+""",
+        "codigo": """\
+import json
+from pathlib import Path
+
+d = json.loads(Path("reports/p59_E_grafo_regularizacion.json").read_text())
+r = d["resultado"]
+print("== gap check ==")
+g = d["E1_gap_check"]
+print(f"  veredicto: {g['veredicto']}")
+for k, v in g.items():
+    if k.startswith("filas_"):
+        print(f"  {k:44} {v}")
+print(f"  precedente mas cercano: {g['precedente_mas_cercano']}")
+print()
+print("== control: el brazo 0 es lo que hace legible al brazo 1 ==")
+print(f"  {d['control']}")
+print()
+print("== resultado ==")
+print(f"  brazo 0 (lambda 0)  {r['brazo_0_corrected_cv']!r}")
+print(f"  brazo 1 (lambda .1) {r['brazo_1_corrected_cv']!r}")
+print(f"  delta GRAFO PURO    {r['delta_grafo_puro_brazo1_menos_brazo0']:+.10f}")
+print(f"  delta vs V03        {r['delta_vs_V03_brazo1_menos_V03']:+.10f}  incluye la tolerancia")
+print(f"  pliegues +          {r['pliegues_mejorados']}/5")
+print(f"  rescate {r['rescate']} | dano {r['damage']} | neto {r['neto']:+d} | "
+      f"acierto {r['acierto_en_las_que_cambian']}")
+print(f"  gate: {r['gate']}")
+print()
+print(f"  decision: {d['decision'][:200]}")
+""",
+    },
+    {
+        "numero": "65",
+        "marca": "65. P59-F n-gramas generativas",
+        "titulo": "P59-F - Modelo generativo de n-gramas: CLOSED_BY_DUPLICATION",
+        "md": """\
+## 65. P59-F - Modelo generativo de n-gramas: CLOSED_BY_DUPLICATION
+
+No se ejecuto ningun experimento. Tres patas.
+
+### Pierna 1, algebrica
+
+Sobre una representacion de n-gramas fija, todo modelo generativo condicional de
+clase colapsa a
+
+```text
+log P(c | x) = log P(c) + sum_f theta_{f,c}
+```
+
+que es la forma de naive Bayes y de log-odds. El unico parametro libre es el
+estimador de `theta`, y todo estimador de `theta` es una estrategia de suavizado.
+La representacion no salva nada, porque el colapso vale para cualquier base.
+
+### Pierna 2, la familia ya se ejecuto
+
+`MOD-02` probo ComplementNB sobre la union TF-IDF de V03: -0,069949 con 0 de 5
+pliegues. `E2-15` probo el ratio log-count NB-SVM: -0,0234 con 0 de 5 pliegues,
+ganancia de ensemble -0,0057 y correlacion de residuales con V03 de 0,9243.
+`V37-01` probo BM25: -0,0027860149, neto -6, correlacion 0,9874, con su propia frase
+de que no aporta una fuente de senal nueva. `V26-03` probo Tsetlin Machine y fue
+REJECTED. Cero filas describen un modelo generativo como tal.
+
+### Pierna 3, y cierra la especificacion exacta de F
+
+El unico grado de libertad de este modelo es el **suavizado**, y F esta
+especificado justo como un orden y una estrategia de suavizado. `V8-04` midio
+ese parametro: -0,058496 con 1e-6 y +0,004745 con 1e-3, un salto de **+0,063241**
+entre dos valores que solo difieren en esa constante, y su lectura es que el
+suavizado sostiene el metodo entero. Su decision pre-registra por escrito que **no
+se barre el suavizado**. F es un punto suelto de un barrido cerrado de antemano.
+""",
+        "codigo": """\
+import json
+from pathlib import Path
+
+d = json.loads(Path("reports/p59_F_generativo_ngram.json").read_text())
+g = d["F1_gap_check"]
+print("== estado ==")
+print(f"  track {d['track']} | {d['estado']} | {d['experimentos_consumidos']} experimentos")
+print(f"  dependencia: {d['dependencia']}")
+print()
+print("== algebra: el colapso ==")
+a = g["pierna_1_algebraica"]
+print(f"  {a['colapso']}")
+print(f"  {a['consecuencia']}")
+print()
+print("== familia ya ejecutada ==")
+for p_ in g["pierna_2_familia_ya_ejecutada"]:
+    print(f"  {p_['id']:26} {p_.get('que_hizo', '')}")
+    print(f"  {'':26} {p_.get('resultado', '')}")
+    print(f"  {'':26} cierre: {p_.get('cierre', '(cerrado sin nota de cierre)')}")
+print()
+print("== el unico grado de libertad, prohibido ==")
+c3 = g["pierna_3_el_unico_grado_de_libertad_esta_prohibido"]
+print(f"  {c3['por_que_es_legislativa']}")
+print(f"  {c3['V8_04_lo_medijo']}")
+print(f"  cierre: {c3['cierre_pre_registrado']}")
+print(f"  {c3['estado_del_mejor_punto']}")
+print()
+print(f"  decision: {d['decision'][:200]}")
+""",
+    },
+    {
+        "numero": "66",
+        "marca": "66. P59 cierre, DAG y tabla maestra",
+        "titulo": "P59 - Cierre: DAG de dependencias, tabla maestra y conclusion",
+        "md": """\
+## 66. P59 - Cierre de la fase
+
+### Grafo de dependencias, para que unas instrucciones futuras no creen dependencias falsas
+
+```text
+                 B1  (P59-B, ventanas locales)
+                  |
+        +---------+---------+
+        |                   |
+      P59-T               P59-U
+  (calibracion local)   (fusion global+local)
+
+  P59-A, C, D, G, H, I, E, F   ->  independientes
+```
+
+`P59-T` y `P59-U` necesitan el score local de `B1`; el resto no. Y `P59-E` y
+`P59-F` no miran un solo artefacto de `B`, `T` ni `U`.
+
+### Conclusion global, separando cinco efectos
+
+1. **Diagnostico: real y fuerte, no accionable.** AUC 0,725 para la geometria,
+   0,9730 para la consistencia latente, Spearman 0,9993 para la influencia. Tres
+   mecanismos independientes, todos correctos, ninguno traducible a correccion.
+2. **Calibracion: mueve la cifra sin mover la correccion.** Es el hallazgo mas
+   importante de la fase. La calibracion de V03 funciona (ECE 0,058 a 0,025) y su
+   delta es +0,000148 con IC95 que incluye el cero. Y en P59-B el sesgo del max
+   produjo +0,003367 **superando el gate** con rescate 11 contra damage 15.
+3. **Representacion: mueve la frontera sin mover las decisiones.** La perdida
+   robusta cambia los coeficientes con cambio relativo de norma 0,046 y solo
+   cambian 12 de 4449 celdas, ninguna de alta confianza.
+4. **Decision: positivo pequeno e inconsistente.** +0,00131 en 4 de 5, +0,00148 en
+   2 de 5, +0,000099 en 2 de 5. Ninguno paso el gate, luego **a ninguno se le
+   ejecuto bootstrap**.
+5. **Informacion complementaria: no se produjo en ninguna pista.** A neto -18, I
+   neto +4, B neto -1, U neto +6, E neto -5.
+""",
+        "codigo": """\
+import json
+from pathlib import Path
+import pandas as pd
+
+d = json.loads(Path("reports/p59_final_summary.json").read_text())
+print("== baseline congelado ==")
+print(f"  corrected_cv {d['baseline']['corrected_cv']} | LB {d['baseline']['LB']}")
+print(f"  sha256 {d['baseline']['sha256']}")
+print()
+print("== tabla maestra, en orden de ejecucion ==")
+m = pd.read_csv("reports/p59_master_results.csv")
+print(m[["orden","track","dependencia","estado","experimentos","corrected_cv",
+         "delta_vs_V03","folds","neto"]].to_string(index=False))
+print()
+print(f"presupuesto: {d['presupuesto']['usados']} de {d['presupuesto']['principales']} "
+      f"principales, {d['presupuesto']['reserva']} de reserva intactos")
+print(f"candidatos {d['candidatos']} | finalistas {d['finalistas']} | submissions {d['submissions']}")
+print()
+print("== conclusion ==")
+print(f"  {d['conclusion']}")
+print()
+print("== cumplimiento de la fase completa ==")
+for k, vv in d.items():
+    if k == "gastos":
+        print(f"  {k}: {vv}")
+print(f"  formulacion: {d['formulacion']}")
+""",
+    },
 )
 
 SUSTITUCIONES = {
