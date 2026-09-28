@@ -1,0 +1,319 @@
+{
+  "familia": "P47_DATA_AUDIT",
+  "experimento": "V47-00 (P0 auditoria de datos y expansion legal del train)",
+  "fecha": "2026-09-28T00:29:46+00:00",
+  "estado": "AUDIT_ONLY",
+  "pregunta": "Existe alguna fuente de datos etiquetados legalmente utilizable que V03 no haya usado, y la augmentation train-only ya fue probada?",
+  "enlace_data": {
+    "data_dir": "/home/carlos/Git/PLN-v25/kaggle_toxic_2026_puj/data",
+    "data_dir_es_symlink": false,
+    "hijos_symlink": [
+      "processed",
+      "raw"
+    ],
+    "destinos_symlink": {
+      "raw": "/home/carlos/Git/PLN/kaggle_toxic_2026_puj/data/raw",
+      "processed": "/home/carlos/Git/PLN/kaggle_toxic_2026_puj/data/processed"
+    },
+    "real": "/home/carlos/Git/PLN-v25/kaggle_toxic_2026_puj/data"
+  },
+  "inventario_oficial": [
+    {
+      "path": "data/raw/toxic_train.csv",
+      "formato": "csv (;)",
+      "filas": 1731,
+      "columnas": 5,
+      "columnas_label": "HS,TR,AG",
+      "columnas_texto": "text",
+      "origen": "oficial Kaggle (Kaggle)",
+      "clase": "OFFICIAL_LABELED_TRAIN",
+      "mtime": 1790370160,
+      "sha256": "3d40e7345b588860cf4744914be88ddc094e4f03591516c8176ab40b7f76d42f",
+      "particion": "dev + holdout",
+      "legal_for_supervised_training": true,
+      "legal_for_embedding_training": true,
+      "legal_for_validation": true,
+      "legal_for_test_prediction": true,
+      "nota": "Unica fuente de etiquetas de la que dispone el proyecto"
+    },
+    {
+      "path": "data/raw/toxic_test.csv",
+      "formato": "csv (latin-1)",
+      "filas": 1154,
+      "columnas": 2,
+      "columnas_label": "ninguna",
+      "columnas_texto": "text",
+      "origen": "oficial Kaggle (Kaggle)",
+      "clase": "OFFICIAL_TEST",
+      "mtime": 1790370160,
+      "sha256": "e91ff8258dadbbcd57593273ff1babd805f00074ae755507d64fa00942785e83",
+      "particion": "test",
+      "legal_for_supervised_training": false,
+      "legal_for_embedding_training": false,
+      "legal_for_validation": false,
+      "legal_for_test_prediction": true,
+      "nota": "Sin labels. Uso exclusivo de prediccion"
+    },
+    {
+      "path": "data/processed/holdout_v2_ids.csv",
+      "formato": "csv",
+      "filas": 1731,
+      "columnas": 7,
+      "columnas_label": "HS,TR,AG (copia)",
+      "columnas_texto": "ninguna",
+      "origen": "derivado de toxic_train.csv",
+      "clase": "DERIVED_FEATURE",
+      "mtime": 1790370160,
+      "sha256": "e5b62e5f22c4c63a8c43df4019969504d44c0baa5b503c19ba3560032f5ee6cd",
+      "particion": "dev 1483 / holdout 248",
+      "legal_for_supervised_training": false,
+      "legal_for_embedding_training": false,
+      "legal_for_validation": false,
+      "legal_for_test_prediction": false,
+      "nota": "Lista de ids con su particion. Las 248 filas de holdout son AGOTADAS"
+    },
+    {
+      "path": "data/processed/holdout2_ids.csv",
+      "formato": "csv",
+      "filas": 247,
+      "columnas": 1,
+      "columnas_label": "ninguna",
+      "columnas_texto": "ninguna",
+      "origen": "derivado de toxic_train.csv",
+      "clase": "DERIVED_FEATURE",
+      "mtime": 1790408500,
+      "sha256": "f6c6ed958abf728b8210d15c26ec43fbd71659a0918d36089a9c6d6cef1639dc",
+      "particion": "subconjunto de dev",
+      "legal_for_supervised_training": false,
+      "legal_for_embedding_training": false,
+      "legal_for_validation": false,
+      "legal_for_test_prediction": false,
+      "nota": "Segunda particion, dibujada de dev, no del holdout"
+    },
+    {
+      "path": "data/processed/grupos_near_duplicados.csv",
+      "formato": "csv",
+      "filas": 2885,
+      "columnas": 4,
+      "columnas_label": "ninguna",
+      "columnas_texto": "ninguna",
+      "origen": "derivado de toxic_train.csv",
+      "clase": "DERIVED_FEATURE",
+      "mtime": 1790370160,
+      "sha256": "afabf9ae1c295ea8f203120bf28578cb4bdb4e8f16b89178d820baeaac62e622",
+      "particion": "metadatos",
+      "legal_for_supervised_training": false,
+      "legal_for_embedding_training": false,
+      "legal_for_validation": true,
+      "legal_for_test_prediction": false,
+      "nota": "Agrupacion para StratifiedGroupKFold"
+    },
+    {
+      "path": "features/oof_v03_final.npz",
+      "formato": "npz",
+      "filas": 1483,
+      "columnas": 0,
+      "columnas_label": "y_true embebido",
+      "columnas_texto": "ninguna",
+      "origen": "derivado: OOF de V03",
+      "clase": "DERIVED_FEATURE",
+      "mtime": 1790490922,
+      "sha256": "559265816ce4f6312c87f008f90324f0eec70a74d1e6247364c162793338feab",
+      "particion": "dev",
+      "legal_for_supervised_training": false,
+      "legal_for_embedding_training": false,
+      "legal_for_validation": true,
+      "legal_for_test_prediction": false,
+      "nota": "Artefacto congelado de V03. Fuente de la magnitud de CV"
+    },
+    {
+      "path": "features/v2_structured_features.parquet",
+      "formato": "parquet",
+      "filas": 2885,
+      "columnas": 125,
+      "columnas_label": "ninguna",
+      "columnas_texto": "ninguna",
+      "origen": "derivado: features estructurales v2",
+      "clase": "DERIVED_FEATURE",
+      "mtime": 1790490922,
+      "sha256": "9f5b79764f1b447611245e3b0c5933ff3bf93208f111f29f8754bcf987ff174c",
+      "particion": "train",
+      "legal_for_supervised_training": false,
+      "legal_for_embedding_training": false,
+      "legal_for_validation": true,
+      "legal_for_test_prediction": true,
+      "nota": "Features, no filas de entrenamiento"
+    }
+  ],
+  "inventario_externo": [
+    {
+      "id": "E-CORP-01",
+      "origen": "wikipedia_es",
+      "licencia": "CC BY-SA 4.0 (atribucion obligatoria) y texto de MediaWiki bajo CC BY-SA/GFDL",
+      "documentos": 2847,
+      "tokens": 10002400,
+      "descarga": "2026-09-25",
+      "ruta": "data/external/corpora/wikipedia_es/emb_normal/tokens_10M.txt",
+      "sha256_raw": "3248f107590e6a00e458fdce09616bb22726d78fe3f40106f5a1a7b05d50dabc",
+      "clase": "EXTERNAL_UNLABELED",
+      "legal_for_supervised_training": false,
+      "legal_for_embedding_training": true,
+      "legal_for_validation": false,
+      "legal_for_test_prediction": false,
+      "nota": "D-030: solo representacion distribuida. Prohibido el uso supervisado, pseudo-labeling y umbrales"
+    },
+    {
+      "id": "E-CORP-06",
+      "origen": "m_c4_es",
+      "licencia": "ODC-BY 1.0 (declarada en la ficha del dataset; el contenido deriva de Common Crawl)",
+      "documentos": 16738,
+      "tokens": 10000239,
+      "descarga": "2026-09-25",
+      "ruta": "data/external/corpora/mc4_es/emb_normal/tokens_10M.txt",
+      "sha256_raw": "96ed39f4c18e17ade9f7e2f2b07e6b7da3138408ced77d45385873578195053f",
+      "clase": "EXTERNAL_UNLABELED",
+      "legal_for_supervised_training": false,
+      "legal_for_embedding_training": true,
+      "legal_for_validation": false,
+      "legal_for_test_prediction": false,
+      "nota": "D-030: solo representacion distribuida. Prohibido el uso supervisado, pseudo-labeling y umbrales"
+    },
+    {
+      "id": "E-CORP-08",
+      "origen": "wikipedia_es",
+      "licencia": "CC BY-SA 4.0 (atribucion obligatoria) y texto de MediaWiki bajo CC BY-SA/GFDL",
+      "documentos": 21529,
+      "tokens": 50000028,
+      "descarga": "2026-09-25",
+      "ruta": "data/external/corpora/wikipedia_es_50M/emb_normal/tokens_50M.txt",
+      "sha256_raw": "3248f107590e6a00e458fdce09616bb22726d78fe3f40106f5a1a7b05d50dabc",
+      "clase": "EXTERNAL_UNLABELED",
+      "legal_for_supervised_training": false,
+      "legal_for_embedding_training": true,
+      "legal_for_validation": false,
+      "legal_for_test_prediction": false,
+      "nota": "D-030: solo representacion distribuida. Prohibido el uso supervisado, pseudo-labeling y umbrales"
+    },
+    {
+      "id": "E-CORP-09",
+      "origen": "wikipedia_es",
+      "licencia": "CC BY-SA 4.0 y texto de MediaWiki bajo CC BY-SA/GFDL",
+      "documentos": 1694,
+      "tokens": 5011404,
+      "descarga": "2026-09-25",
+      "ruta": "data/external/corpora/wikipedia_es_5M/emb_normal/tokens_5M.txt",
+      "sha256_raw": "3248f107590e6a00e458fdce09616bb22726d78fe3f40106f5a1a7b05d50dabc",
+      "clase": "EXTERNAL_UNLABELED",
+      "legal_for_supervised_training": false,
+      "legal_for_embedding_training": true,
+      "legal_for_validation": false,
+      "legal_for_test_prediction": false,
+      "nota": "D-030: solo representacion distribuida. Prohibido el uso supervisado, pseudo-labeling y umbrales"
+    },
+    {
+      "id": "E-CORP-07",
+      "origen": "wikipedia_10M + web_10M",
+      "licencia": "mezcla de ambas",
+      "documentos": null,
+      "tokens": 20000045,
+      "descarga": "2026-09-25",
+      "ruta": "data/external/corpora/mixto/emb_normal/tokens_20M.txt",
+      "sha256_raw": "",
+      "clase": "EXTERNAL_UNLABELED",
+      "legal_for_supervised_training": false,
+      "legal_for_embedding_training": true,
+      "legal_for_validation": false,
+      "legal_for_test_prediction": false,
+      "nota": "Union de los dos corpora a efectos de vocabulario"
+    }
+  ],
+  "artefactos_embeddings_en_disco": 19,
+  "reconciliacion_de_cifras": {
+    "dev": {
+      "afirmado": 1483,
+      "real": 1483,
+      "coincide": true,
+      "fuente": "holdout_v2_ids.csv, particion == dev"
+    },
+    "holdout": {
+      "afirmado": 519,
+      "real": 248,
+      "coincide": false,
+      "fuente": "holdout_v2_ids.csv, particion != dev",
+      "diagnostico": "519 NO es el holdout: es el numero de positivos TR en train (519). El holdout real tiene 248 filas"
+    },
+    "unlabeled_rows": {
+      "afirmado": 44000,
+      "real": 0,
+      "coincide": false,
+      "fuente": "ninguna",
+      "diagnostico": "No existe ninguna fuente de ~44k filas. Los corpus externos se miden en TOKENS, no en filas. El '44' que circula en el repositorio son las 44 features del meta-modelo E2-02-META"
+    }
+  },
+  "pregunta_central": {
+    "n_official_labeled_train": 1731,
+    "n_dev": 1483,
+    "n_holdout": 248,
+    "n_official_test": 1154,
+    "n_test_tiene_labels": false,
+    "n_train_sin_asignar": 0,
+    "n_holdout2": 247,
+    "n_holdout2_dentro_del_holdout": 0,
+    "n_external_unlabeled_documentos": 42808,
+    "n_external_unlabeled_tokens": 95014116,
+    "test_contamination_en_corpus": "NINGUNA: el manifiesto declara que ningun texto de toxic_test.csv entra en el corpus, y la auditoria de fuga de E-CORP-01 da 0 textos con coincidencia de 8-gramas"
+  },
+  "precedente_augmentation": {
+    "augmentation_ya_probada": true,
+    "experimento": "V6-08",
+    "script": "experiments/v6_08_aumento.py",
+    "script_existe": true,
+    "script_sha256": "7cc796cbc18ac70ee4614b7f329f524ecc1b9283e80ef49f933bf7575af02acb",
+    "transformaciones": [
+      "espaciado",
+      "elongacion",
+      "repeticion_puntuacion"
+    ],
+    "coinciden_con_los_candidatos_de_la_directiva": true,
+    "colocacion_del_pipeline": "dentro del training fold: construir_textos_aumentados recibe solo los indices de entrenamiento del pliegue",
+    "grupos_preservados": true,
+    "control_reproduce_v03": true,
+    "resultado_j1_una_copia": -0.0061,
+    "resultado_j2_dos_copias": "negativo",
+    "decision_registrada": "Track J cerrado por resultado negativo. Sin ampliar rejilla",
+    "auditoria_previa": "V41-01: DATA_AUDIT_COMPLETE. Familias A (ortografica) y D (mixup) cerradas",
+    "filas_del_registro": [
+      {
+        "experiment_id": "V6-08",
+        "decision": "**Track J cerrado por resultado negativo (seccion 54). Sin ampliar rejilla.** Con J cerrada, no queda ninguna linea ejecutable de la especificacion de v6: B, A, C, I, H, F y J esta"
+      },
+      {
+        "experiment_id": "V41-01",
+        "decision": "DATA_AUDIT_COMPLETE. Las familias A (ortografica) y D (mixup) estan cerradas. B (word dropout conservador) y C (masking estructural) no tienen equivalente exacto, pero B esta parci"
+      }
+    ]
+  },
+  "veredicto": {
+    "CASE": "A+D",
+    "DATA_EXPANSION": "CLOSED",
+    "motivo_data_expansion": "El train oficial tiene 1731 filas y estan todas asignadas: 1483 en dev y 248 en holdout. No queda ni una fila etiquetada oficial sin usar. La recomendacion de 'mas datos etiquetados' no es operacionalmente posible con este corpus",
+    "TRAIN_AUGMENTATION": "CLOSED",
+    "motivo_train_augmentation": "V6-08 ya ejecuto exactamente las tres transformaciones que la directiva propone (espaciado, elongacion, repeticion de puntuacion), con la augmentation dentro del training fold y los grupos preservados. J1 dio -0.0061 y J2 tambien negativo. Repetirlo bajo otra denominacion seria duplicar un experimento cerrado",
+    "ejecutado_experimento_nuevo": false,
+    "correcciones_de_cifras": {
+      "519_no_es_el_holdout": "519 es el numero de positivos TR; el holdout tiene 248",
+      "no_existen_44k_filas": "las fuentes externas se miden en tokens; ningun dataset del proyecto tiene 44k filas"
+    },
+    "baseline_operativo": "V03",
+    "corrected_cv_v03": 0.7772114525165721,
+    "sha256_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "gastos": {
+      "submissions": 0,
+      "modelos_entrenados": 0,
+      "consultas_kaggle": 0,
+      "uso_del_holdout": "solo conteo y hash",
+      "uso_del_test": "solo conteo y hash",
+      "segundos": 0.0
+    }
+  }
+}

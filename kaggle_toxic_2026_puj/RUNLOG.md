@@ -1814,3 +1814,47 @@ comprobo el exit code, no solo `py_compile`. Un pipe a `tail` enmascaraba el exi
 la primera ejecucion; se corrigio capturando el codigo sin pipe.
 
 **Sin push, sin merge, sin reset, sin rebase, sin PR.**
+
+
+---
+
+## 2026-09-28 - Fase P47: auditoria de disponibilidad de datos
+
+**Alcance.** 0 modelos, 0 submissions, 0 consultas a Kaggle, 0 Pseudo-labeling, 0 labels
+externos, 0 embeddings nuevos. Holdout y test abiertos **solo** para contar filas y calcular
+hashes.
+
+**V47-00** (`experiments/v47_00_auditoria_datos.py`, exit code 0): inventario de 7 fuentes
+oficiales/derivadas con filas, columnas, sha256 y clasificacion legal; 5 corpus externos con
+licencia, documentos y tokens; reconciliacion de las tres cifras citadas; conteos de la
+pregunta central; busqueda del precedente de augmentation. Artefactos:
+`reports/p47_data_inventory.{json,md,csv}` y `reports/p47_augmentation_audit.md`.
+
+**V47-01** (`experiments/v47_01_integrar_notebook.py`, exit code 0): seccion 43, notebook 187 ->
+189 celdas, celda de codigo con returncode 0.
+
+**Hallazgos.**
+
+- `data/` es un directorio real; `raw` y `processed` son enlaces simbolicos a otro worktree y
+  `external` es real. Se registro con `is_symlink()` y `resolve()`, no de memoria.
+- `train 1731 = dev 1483 + holdout 248`, sin asignar 0.
+- `holdout2` (247 filas) esta dibujado **de dev**, no del holdout: 0 de 247 caen dentro del
+  holdout. Por tanto no anade etiquetas nuevas.
+- 519 es el numero de positivos TR, no el holdout. El holdout tiene 248.
+- No hay 44k filas sin etiquetar en ningun sitio. El "44" son las features del meta-modelo.
+- V6-08 ya probo `espaciado`, `elongacion` y `repeticion_puntuacion` con la augmentation dentro
+  del training fold, grupos preservados y control que reproduce V03. J1 = -0.0061.
+
+**Correccion propia durante la fase.** Redacte primero que "`data/` es un enlace simbolico a X",
+afirmacion **falsa** que no habia verificado. Se detecto al imprimir la estructura real, y se
+sustituyo por una linea que se construye con `is_symlink()` y `resolve()` en tiempo de
+ejecucion. Tambien un primer borrador de frase daba por simblicos `raw`, `processed` **y**
+`external`, cuando `external` es un directorio real; la version final lista los destinos
+realmente resueltos.
+
+**Errores de tooling.** Una lambda dentro de un bucle capturaba la variable de iteracion
+(B023, detectado por ruff); una insercion de helper rompio la indentacion; una excepcion ciega
+`except Exception` quedo tras el lint. Los tres se corrigieron antes de cerrar. El `exit code` se
+capturo **sin pipe**, porque en P46 un `| tail` habia enmascarado un fallo real.
+
+**Sin push, sin merge, sin reset, sin rebase, sin PR.**

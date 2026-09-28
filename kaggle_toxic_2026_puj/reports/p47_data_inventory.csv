@@ -1,0 +1,31 @@
+path,clase,filas,columnas,columnas_label,columnas_texto,origen,particion,mtime,sha256,legal_for_supervised_training,legal_for_embedding_training,legal_for_validation,legal_for_test_prediction,nota
+data/raw/toxic_train.csv,OFFICIAL_LABELED_TRAIN,1731,5,"HS,TR,AG",text,oficial Kaggle (Kaggle),dev + holdout,1790370160,3d40e7345b588860cf4744914be88ddc094e4f03591516c8176ab40b7f76d42f,True,True,True,True,Unica fuente de etiquetas de la que dispone el proyecto
+data/raw/toxic_test.csv,OFFICIAL_TEST,1154,2,ninguna,text,oficial Kaggle (Kaggle),test,1790370160,e91ff8258dadbbcd57593273ff1babd805f00074ae755507d64fa00942785e83,False,False,False,True,Sin labels. Uso exclusivo de prediccion
+data/processed/holdout_v2_ids.csv,DERIVED_FEATURE,1731,7,"HS,TR,AG (copia)",ninguna,derivado de toxic_train.csv,dev 1483 / holdout 248,1790370160,e5b62e5f22c4c63a8c43df4019969504d44c0baa5b503c19ba3560032f5ee6cd,False,False,False,False,Lista de ids con su particion. Las 248 filas de holdout son AGOTADAS
+data/processed/holdout2_ids.csv,DERIVED_FEATURE,247,1,ninguna,ninguna,derivado de toxic_train.csv,subconjunto de dev,1790408500,f6c6ed958abf728b8210d15c26ec43fbd71659a0918d36089a9c6d6cef1639dc,False,False,False,False,"Segunda particion, dibujada de dev, no del holdout"
+data/processed/grupos_near_duplicados.csv,DERIVED_FEATURE,2885,4,ninguna,ninguna,derivado de toxic_train.csv,metadatos,1790370160,afabf9ae1c295ea8f203120bf28578cb4bdb4e8f16b89178d820baeaac62e622,False,False,True,False,Agrupacion para StratifiedGroupKFold
+features/oof_v03_final.npz,DERIVED_FEATURE,1483,0,y_true embebido,ninguna,derivado: OOF de V03,dev,1790490922,559265816ce4f6312c87f008f90324f0eec70a74d1e6247364c162793338feab,False,False,True,False,Artefacto congelado de V03. Fuente de la magnitud de CV
+features/v2_structured_features.parquet,DERIVED_FEATURE,2885,125,ninguna,ninguna,derivado: features estructurales v2,train,1790490922,9f5b79764f1b447611245e3b0c5933ff3bf93208f111f29f8754bcf987ff174c,False,False,True,True,"Features, no filas de entrenamiento"
+data/external/corpora/wikipedia_es/emb_normal/tokens_10M.txt,EXTERNAL_UNLABELED,2847,,ninguna,tokens,wikipedia_es (CC BY-SA 4.0 (atribucion obligatoria) y texto de MediaWiki bajo CC BY-SA/GFDL),externo,,3248f107590e6a00e458fdce09616bb22726d78fe3f40106f5a1a7b05d50dabc,False,True,False,False,"D-030: solo representacion distribuida. Prohibido el uso supervisado, pseudo-labeling y umbrales"
+data/external/corpora/mc4_es/emb_normal/tokens_10M.txt,EXTERNAL_UNLABELED,16738,,ninguna,tokens,m_c4_es (ODC-BY 1.0 (declarada en la ficha del dataset; el contenido deriva de Common Crawl)),externo,,96ed39f4c18e17ade9f7e2f2b07e6b7da3138408ced77d45385873578195053f,False,True,False,False,"D-030: solo representacion distribuida. Prohibido el uso supervisado, pseudo-labeling y umbrales"
+data/external/corpora/wikipedia_es_50M/emb_normal/tokens_50M.txt,EXTERNAL_UNLABELED,21529,,ninguna,tokens,wikipedia_es (CC BY-SA 4.0 (atribucion obligatoria) y texto de MediaWiki bajo CC BY-SA/GFDL),externo,,3248f107590e6a00e458fdce09616bb22726d78fe3f40106f5a1a7b05d50dabc,False,True,False,False,"D-030: solo representacion distribuida. Prohibido el uso supervisado, pseudo-labeling y umbrales"
+data/external/corpora/wikipedia_es_5M/emb_normal/tokens_5M.txt,EXTERNAL_UNLABELED,1694,,ninguna,tokens,wikipedia_es (CC BY-SA 4.0 y texto de MediaWiki bajo CC BY-SA/GFDL),externo,,3248f107590e6a00e458fdce09616bb22726d78fe3f40106f5a1a7b05d50dabc,False,True,False,False,"D-030: solo representacion distribuida. Prohibido el uso supervisado, pseudo-labeling y umbrales"
+data/external/corpora/mixto/emb_normal/tokens_20M.txt,EXTERNAL_UNLABELED,,,ninguna,tokens,wikipedia_10M + web_10M (mezcla de ambas),externo,,,False,True,False,False,Union de los dos corpora a efectos de vocabulario
+
+RECONCILIACION,afirmado,real,coincide,fuente,diagnostico
+dev,1483,1483,True,"holdout_v2_ids.csv, particion == dev",
+holdout,519,248,False,"holdout_v2_ids.csv, particion != dev",519 NO es el holdout: es el numero de positivos TR en train (519). El holdout real tiene 248 filas
+unlabeled_rows,44000,0,False,ninguna,"No existe ninguna fuente de ~44k filas. Los corpus externos se miden en TOKENS, no en filas. El '44' que circula en el repositorio son las 44 features del meta-modelo E2-02-META"
+
+PREGUNTA_CENTRAL,valor
+n_official_labeled_train,1731
+n_dev,1483
+n_holdout,248
+n_official_test,1154
+n_test_tiene_labels,False
+n_train_sin_asignar,0
+n_holdout2,247
+n_holdout2_dentro_del_holdout,0
+n_external_unlabeled_documentos,42808
+n_external_unlabeled_tokens,95014116
+test_contamination_en_corpus,"NINGUNA: el manifiesto declara que ningun texto de toxic_test.csv entra en el corpus, y la auditoria de fuga de E-CORP-01 da 0 textos con coincidencia de 8-gramas"

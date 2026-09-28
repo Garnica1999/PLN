@@ -3903,3 +3903,51 @@ holdout. La magnitud de CV utilizable es la del OOF canonico, y se lee del artef
 **Lo que no se decide.** No se reescriben las filas historicas del registro para "corregir" su
 base. Cambiar 46 valores historicos seria reescribir historia sin evidencia de que el valor
 nuevo sea el que se midio en su momento.
+
+
+### D-118. No existe expansion legal de datos, y la augmentation ya estaba cerrada
+
+**Contexto.** P46 dejo como recomendacion unica plausible "mas datos etiquetados", admitiendo
+que no se habia demostrado que esa via fuera legal y disponible. P47 audita si lo es.
+
+**Evidencia, recountada sobre los ficheros.**
+
+| magnitud | valor | fuente |
+|---|---:|---|
+| train oficial etiquetado | 1731 | `data/raw/toxic_train.csv`, sha256 `3d40e7345b588860...` |
+| dev, usado por V03 | 1483 | `holdout_v2_ids.csv`, `particion == dev` |
+| holdout, agotado | 248 | `holdout_v2_ids.csv`, `particion != dev` |
+| train sin asignar | **0** | 1731 = 1483 + 248 |
+| test oficial | 1154 | `data/raw/toxic_test.csv`, sin labels |
+| holdout2 | 247 | dibujado **de dev**, 0 dentro del holdout |
+| corpus externos | 42808 docs / 95.014.116 tokens | legales solo para embeddings (D-030) |
+
+**Correcciones de cifras que esta auditoria deja fijadas.**
+
+1. **519 no es el tamano del holdout.** 519 es el numero de positivos TR en train. El holdout
+   tiene 248 filas. La cifra 519 circulaba en la documentacion reciente como si fuera el
+   holdout.
+2. **No existen ~44k filas sin etiquetar.** Los corpus externos se miden en **tokens**, no en
+   filas, y van de 5M a 50M. Ningun dataset del proyecto tiene 44k filas. El "44" que circula en
+   el repositorio son las **44 features** del meta-modelo `E2-02-META`.
+
+**Decision.** `DATA_EXPANSION = CLOSED`. El train esta completamente asignado. La recomendacion
+de "mas datos etiquetados" **no es operacionalmente posible** con este corpus, y se retira como
+via.
+
+**Sobre la augmentation.** La directiva la abria solo si se confirmaba que la familia no se
+habia ejecutado. Se ejecuto: **V6-08** (`experiments/v6_08_aumento.py`, sha256
+`7cc796cbc18ac70ee4614b7f329f524ecc1b9283e80ef49f933bf7575af02acb`, existe) implemento `espaciado`, `elongacion` y `repeticion_puntuacion`, que son
+exactamente los candidatos ortograficos de la directiva, con la augmentation aplicada solo a
+los indices de entrenamiento del pliegue y con los grupos preservados. El control J0 reproduce
+V03 exactamente. J1 dio **-0.0061** y J2 tambien negativo. `TRAIN_AUGMENTATION = CLOSED`.
+
+**Lo unico nominalmente sin equivalente** segun la auditoria previa V41-01 son *word dropout
+conservador* y *masking estructural*. No se abren: la directiva acota los candidatos a
+transformaciones ortograficas de alta confianza, y ambas tocan el contenido de las palabras, que
+es lo que su propia seccion 12 prohibe por riesgo de alterar la etiqueta. Con el precedente
+adverso de V6-08 y de las diez normalizaciones PRE-00..PRE-09, abrirlas seria gasto sin
+hipotesis.
+
+**Consecuencia.** No queda ninguna via de datos. La recomendacion de P46 queda cerrada por
+evidencia, no por prudencia.

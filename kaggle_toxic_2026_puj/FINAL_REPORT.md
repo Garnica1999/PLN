@@ -1008,3 +1008,83 @@ v5. Renumeradas a D-115 y D-116.
 
 *Seccion generada por `experiments/v46_00_champion_audit.py` y
 `experiments/v46_01_integrar_notebook.py`. Sin push: la rama sigue local.*
+
+
+---
+
+## Addendum P47 (2026-09-28) - No queda via de datos
+
+### El veredicto
+
+```text
+CASE               = A + D
+DATA_EXPANSION     = CLOSED
+TRAIN_AUGMENTATION = CLOSED
+```
+
+### El train esta completo
+
+```text
+train oficial etiquetado   1731
+  de las que en dev         1483   (usadas por V03)
+  de las que en holdout     248   (agotadas)
+  sin asignar                 0
+test oficial               1154   (sin labels)
+```
+
+1731 = 1483 + 248, exactamente. **No queda ni una fila etiquetada oficial sin usar.** La
+recomendacion de "mas datos etiquetados" que P46 dejo como unica variable viable **no es
+operacionalmente posible** con este corpus. No es que resulte dificil: es que no hay nada que
+usar.
+
+### Dos cifras de la documentacion eran falsas
+
+**519 no era el holdout.** Es el numero de positivos TR en train. El holdout tiene **248** filas.
+La cifra circulaba como si fuera el tamano del holdout, y por eso la mencionaba como "519 filas
+de holdout" al recomendar mas datos.
+
+**No existen ~44k filas sin etiquetar.** Los corpus externos existen y son grandes, pero se
+miden en **tokens**: 5M, 10M, 10M, 20M y 50M, para 42808 documentos y 95.114.116 tokens en
+total. Ningun dataset del proyecto tiene 44k filas. El "44" que circulaba en el repositorio son
+las **44 features** del meta-modelo `E2-02-META`.
+
+### Lo que si hay, y por que no sirve
+
+| fuente | volumen | legal para |
+|---|---|---|
+| wikipedia_es (CC BY-SA 4.0) | 10M / 50M / 5M tokens | solo embeddings |
+| m_c4_es (ODC-BY 1.0) | 10M tokens | solo embeddings |
+| mezcla de ambos | 20M tokens | solo embeddings |
+| 19 modelos fastText entrenados | artefactos | nada, son salidas |
+
+D-030 autoriza los corpus externos **exclusivamente para aprender la representacion
+distribuida**, y prohibe de forma explicita el entrenamiento supervisado, la generacion de
+labels, el pseudo-labeling y el ajuste de thresholds. Como la familia de embeddings esta
+cerrada, los 95 millones de tokens no tienen uso disponible.
+
+### La augmentation ya existia
+
+La directiva la abria solo si se confirmaba que no se habia ejecutado. Se habia ejecutado:
+**V6-08**.
+
+- Transformaciones: `espaciado`, `elongacion`, `repeticion_puntuacion`. Son exactamente los
+  tres candidatos ortograficos que la directiva listaba.
+- Colocacion: dentro del training fold, que es lo que la directiva exigia.
+- Grupos: preservados. El control J0 reproduce V03 exactamente.
+- Resultado: J1 (una copia por fila) = **-0.0061**. J2 (dos copias) tambien negativo.
+
+No se creo ninguna fila experimental ficticia, y no se repitio el experimento bajo otra
+denominacion.
+
+### Donde queda el proyecto
+
+El campeon no se mueve: V03, `corrected_cv = 0.7772114525165721`, LB 0.78306. Y la via de los
+datos se cierra por evidencia.
+
+Eso deja el proyecto **sin ninguna via abierta**: 15 familias de modelos cerradas, la
+estructura conjunta cerrada, la expansion de datos cerrada, la augmentation cerrada, la
+metrica verificada y el campeon verificado. Cualquier hipotesis futura tiene que salir de una
+familia de modelo nueva, no de una fuente de datos nueva, porque no queda ninguna.
+
+*Seccion generada por `experiments/v47_00_auditoria_datos.py` y
+`experiments/v47_01_integrar_notebook.py`. Sin push: la rama sigue local.*

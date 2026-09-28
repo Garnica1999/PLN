@@ -831,3 +831,42 @@ porque el codigo del scorer del host no esta en el repositorio.
 
 **Estado del campeon.** Sin cambios. V03 intacto. 0 submissions, 0 consultas a Kaggle,
 0 modelos, holdout y test sin usar. 3 submissions reservadas.
+
+
+---
+
+## Fase P47 (2026-09-28) - Data Availability Audit
+
+**Que se resolvio.** Si existe alguna fuente de datos etiquetados legalmente utilizable que V03
+no haya usado.
+
+```text
+CASE                = A + D
+DATA_EXPANSION      = CLOSED
+TRAIN_AUGMENTATION  = CLOSED
+experimento nuevo   = False
+```
+
+**El train esta completamente asignado.** 1731 filas = 1483 en dev + 248 en holdout. Cero
+filas sin asignar. La recomendacion de "mas datos etiquetados" que P46 dejo abierta **no es
+operacionalmente posible** con este corpus, y queda cerrada por evidencia.
+
+**Dos cifras de la documentacion reciente eran falsas.**
+
+- **519 no es el holdout.** Es el numero de positivos TR en train. El holdout tiene **248** filas.
+- **No existen ~44k filas sin etiquetar.** Los corpus externos se miden en tokens (5M a 50M), no
+  en filas, y suman 42808 documentos. El "44" que circulaba son las 44 features del
+  meta-modelo `E2-02-META`.
+
+**Lo que si hay, y para que sirve.** 950.114.116 tokens externos repartidos en cinco corpus
+(wikipedia_es CC BY-SA 4.0, m_c4_es ODC-BY 1.0, y sus mezclas). Legales **solo** para aprender
+la representacion distribuida segun D-030, y la familia de embeddings esta cerrada. Ademas hay
+19 modelos fastText ya entrenados en disco, que son salidas derivadas, no fuentes de filas.
+
+**La augmentation ya existia.** V6-08 implemento las tres transformaciones ortograficas que la
+directiva proponia, con la colocacion en el pipeline que la directiva exigia y los grupos
+preservados. J1 = **-0.0061**. `TRAIN_AUGMENTATION = CLOSED`. No se creo ninguna fila
+experimental ficticia.
+
+**Estado del campeon.** Sin cambios. V03 intacto, `corrected_cv = 0.7772114525165721`, LB
+0.78306. 0 modelos, 0 submissions, 0 consultas a Kaggle, 3 submissions reservadas.
