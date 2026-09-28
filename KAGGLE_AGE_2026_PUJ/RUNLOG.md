@@ -1646,3 +1646,74 @@ cadena de V20, y por eso el control no reproducia.
 
 `experiments.csv` pasa a **126 experimentos**. Auditoria de idioma: **0 errores** sobre 456 ficheros.
 Sin push.
+
+## 2026-09-27 · V23 — CORAL / cumulative-link con pesos compartidos (D-058)
+
+La pregunta era una: **compartir pesos entre las cinco fronteras ordinales aporta una señal útil
+que los cinco binarios independientes de V20 no capturan?** La respuesta tiene tres partes y las
+tres importan.
+
+**La implementación.** Cumulative-link en `src/ordinal_coral.py` con `numpy` y `scipy`, sin
+librería externa: un único vector `w` y cinco umbrales `theta_k = gamma + suma_{j<k}
+softplus(delta_j)`. El orden de los umbrales es una garantía de construcción, no una corrección
+posterior. Gradiente analítico verificado contra diferencias finitas con error relativo 3,15e-10.
+
+**Dos errores de formulación que los tests cazaron, ambos míos.** El primero: evalué
+`log P(Y = y)` como `log sigmoid(z_y) + log(1 - sigmoid(z_{y-1}))`, que **factoriza** la
+diferencia de dos CDF en producto de sigmoidos. Esa factorización solo es válida si `s_y = 1`; con
+ella el objetivo daba 678,80 contra 895,41 de la referencia calculada por otra vía. La
+verosimilitud correcta es la diferencia, y el gradiente también cambia. El segundo: penalizar
+solo `w` produce separación — en un sintético los umbrales llegaban a 12,07 con features
+estandarizadas en [-3, 3] y el macro-F1 de entrenamiento caía a 0,213. La penalización de los
+gaps entre umbrales lo arregla, y no sesga `gamma`, que sí debe ser grande y negativo porque
+`13-17` es la clase rara. La penalización existe en el módulo pero **no se activa** en AGE.
+
+**El pre-registro se hizo sin mirar AGE.** TEST B genera 135.000 filas, 279 columnas y
+proporciones reales de clase, y mide que **no hay separación**: 0 filas saturadas, `|eta|max`
+5,78, CDF entre 1,07e-04 y 0,99967. Con eso, `lambda_w = 1,0` y `lambda_umbral = 0,0` —los
+valores de libro— quedan congelados antes de ver el resultado, y el resultado es insensible a
+`lambda_w` (0,2760 contra 0,2771 en el sintético). No se corre ninguna grid.
+
+**El control que faltaba.** Un delta de -0,126 contra V20 mezcla dos efectos: compartir pesos y
+perder no linealidad. Añadí un control B con cinco binarios **lineales independientes** y el mismo
+estandarizado por fold, y ahí aparece otro fallo propio: en la primera versión `LogisticRegression`
+recibía las features crudas, avisaba de que no convergía y devolvía la iteración parcial. Un
+control que no converge no es un control.
+
+**El resultado.**
+
+| Modelo | macro-F1 | Delta | Folds + | monotonia | neto |
+|---|---|---|---|---|---|
+| V20 (control A) | 0,6097782 | - | 3/5 | 18.927 | 0 |
+| cinco binarios lineales (control B) | 0,4690055 | -0,140773 | 0/5 | no medido | -23.343 |
+| CORAL (peso compartido) | 0,4837017 | -0,126077 | 0/5 | **0** | -22.619 |
+
+**La descomposición es el resultado útil.** Compartir pesos y ordenar umbrales vale **+0,014696**
+frente al control B. La hipótesis de la fase **es correcta**: compartir información entre
+fronteras aporta. Pero la no linealidad de LightGBM vale **-0,140773** para el lado contrario, un
+orden de magnitud mayor, y ahí se decide la métrica.
+
+**La monotonía se resuelve de verdad y no compra nada.** CORAL tiene 0 violaciones frente a las
+18.927 de V20, y aun así pierde 0,1261. Es la **segunda** confirmación independiente de D-057, donde
+el modelo compartido también tenía 0 violaciones y perdía 0,0002. Resolver gratis un problema que
+no era el cuello de botella no compra nada.
+
+**El mapa de errores se rehace entero.** Aciertos: 103.331 de V20 frente a 80.712 de CORAL, con
+delta -22.619 que coincide exactamente con el neto de complementariedad. Las 36 de 36 celdas de
+la matriz de confusión cambian, con distancia L1 57.650.
+
+**Auditoría de la fase: PASS.** Sintaxis, import, ejecución real, artefactos, serialización,
+unicode, notebook y coherencia numérica (9/9). La validación de ejecución del notebook encontró
+**tres bugs reales** en las celdas nuevas: acceso por columna donde debía ser por índice, un
+`drop` de una columna ya convertida en índice, y `display`/`Image` sin importar. Los tres
+arreglados. El propio script de auditoría se autocorregió: contenía los caracteres Unicode que
+reportaba, y ahora los documenta por nombre y codepoint.
+
+**Deuda que queda escrita y no resuelta**: el notebook consolidado llega hasta la sección 30, que
+cierra V17, y **no contiene V18 a V22** aunque el champion es V20. Además arrastra 38 caracteres
+Unicode de sesiones anteriores que el proyecto nunca detectó porque `notebooks/` está excluido de
+su auditoría de idioma. V23 no introduce ninguno. Se deja constancia en vez de reescribir
+contenido ajeno a esta fase.
+
+`experiments.csv` pasa a **130 experimentos**. Auditoría de idioma del proyecto: 471 ficheros,
+**0 errores**. Sin push, con V12, V19 y V20 intactos, y con el test y el holdout sin tocar.

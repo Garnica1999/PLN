@@ -1679,3 +1679,79 @@ Tras declarar la saturación se probó la vía indicada como trabajo futuro:
   analisis, no de modelo**: por que el primer umbral tiene la menor metrica y el mayor impacto en el blend.
 - **Evidence**: `experiments/v22_ordinal.json`, `experiments/v22_b1_specialist.json`,
   `reports/v22_ordinal.md`, `reports/v22_b1_specialist.md`, `reports/v22_b1_specialist.csv`.
+
+## D-058 — V23: CORAL cerrado. Compartir pesos funciona y no alcanza (ORDINAL_SHARED_WEIGHTS = NO_SIGNAL)
+
+- **Observation**: V22 cerro la familia ordinal en cuatro subfamilias y dejo una pregunta con
+  evidencia de poder importar: si las cinco fronteras ordinales **compartieran** su vector de
+  pesos y sus umbrales estuvieran **ordenados**, la monotonia dejaria de ser una correccion
+  posterior para ser una garantia de construccion. V20 ajusta cinco binarios independientes y el
+  **11,18 %** de las filas (18.927 de 169.336) viola el orden de sus CDF.
+- **Result**: implementada la formulacion cumulative-link en `src/ordinal_coral.py` con `numpy` y
+  `scipy`, sin ninguna libreria externa: un unico `w` y cinco umbrales
+  `theta_k = gamma + suma_{j<k} softplus(delta_j)`, que crece **por construccion**. Verificada
+  contra diferencias finitas (error relativo **3,15e-10**) y contra la densidad de clase
+  calculada por otra via (diferencia **0,0**).
+- **Un error de formulacion propio, encontrado por los tests**: la primera version evaluaba
+  `log P(Y = y)` como `log sigmoid(z_y) + log(1 - sigmoid(z_{y-1}))`, que **factoriza** la
+  diferencia de dos CDF en un producto de sigmoidos. Esa factorizacion **solo es valida si
+  `s_y = 1`**; con ella el objetivo daba 678,80 frente a 895,41 de la referencia. La
+  verosimilitud correcta es la **diferencia** `sigmoid(theta_y - eta) - sigmoid(theta_{y-1} - eta)`,
+  evaluada con `logaddexp` y `log1p`. El gradiente tambien cambia: `d/d(eta) = 1 - s_y - s_{y-1}`
+  y `d/d(theta_k) = ∓s_k (1 - s_k) / P(Y = y)`.
+- **Un segundo error, de optimizacion**: penalizar solo `w` produce **separacion**. En un
+  sintetico los umbrales llegaban a **12,07** con features estandarizadas en [-3, 3] y el
+  macro-F1 de entrenamiento caia a **0,213**. La solucion esta en penalizar los **gaps** entre
+  umbrales, que acota la separacion sin sesgar `gamma` (que si debe ser grande y negativo cuando
+  la clase baja es rara, como `13-17`). La penalizacion existe en el modulo pero **no se activa**
+  en AGE.
+- **Pre-registro sin mirar AGE**: TEST B demuestra que a la escala del proyecto (135.000 filas,
+  279 columnas, proporciones reales de clase) **no hay separacion**: 0 filas saturadas,
+  `|eta|max = 5,78`, CDF entre 1,07e-04 y 0,99967. Luego `lambda_w = 1,0` y `lambda_umbral = 0,0`
+  (los valores de libro) quedan congelados **antes** de ver el resultado, y el resultado es
+  insensible a `lambda_w` (0,2760 con 1,0 frente a 0,2771 con 0,1 en el sintetico).
+- **Control A, V20**: reproduce **0,6097782** exacto desde artefacto, con las **18.927**
+  violaciones de D-057 confirmadas. Si no hubiera reproducido, la fase se detenía.
+- **Control B, el que faltaba**: un delta de -0,126 contra V20 mezcla **dos** efectos, compartir
+  pesos y perder no linealidad. Sin un segundo control la atribucion es imposible, asi que se
+  anadio **cinco binarios lineales independientes** con el mismo estandarizado por fold.
+  **Sin el, un control que no converge no es un control**: en la primera version
+  `LogisticRegression` recibia las features crudas, avisaba de no converger y devolivia la
+  iteracion parcial. Corregido.
+- **Medicion**:
+
+  | Modelo | macro-F1 | Delta | Folds + | monotonia | rescate | dano | neto |
+  |---|---|---|---|---|---|---|---|
+  | V20 (control A) | **0,6097782** | - | 3/5 | **18.927** | - | - | 0 |
+  | cinco binarios lineales (control B) | 0,4690055 | -0,140773 | 0/5 | no medido | 10.936 | 34.279 | -23.343 |
+  | **CORAL (peso compartido)** | **0,4837017** | **-0,126077** | **0/5** | **0** | 24.468 | 47.087 | -22.619 |
+
+- **Descomposicion, que es el resultado util**: compartir pesos y ordenar umbrales vale
+  **+0.014696** frente al control B. La hipotesis de la fase **es correcta**: compartir
+  informacion entre fronteras aporta. Pero la no linealidad de LightGBM vale **-0.140773**,
+  un orden de magnitud mayor, y ahi se decide la metrica.
+- **La monotonia se resuelve de verdad y no compra nada**: CORAL tiene **0** violaciones frente a
+  las **18.927** de V20, y aun asi pierde 0,1261. Es la **segunda** confirmacion independiente de
+  D-057 (el modelo compartido tambien tenia 0 y perdia 0,0002): **la consistencia ordinal no era
+  el cuello de botella**. Resolverlo gratis no compra nada.
+- **Error intersection**: aciertos 103.331 de V20 frente a 80.712 de CORAL (delta -22.619, que
+  coincide exactamente con el `neto` de complementariedad). Las **36 de 36** celdas de la matriz
+  de confusion cambian, con distancia L1 **57.650**: no es que CORAL cambie algunas filas, es que
+  rehace el mapa de errores entero.
+- **Decision**: **`ORDINAL_SHARED_WEIGHTS = NO_SIGNAL` y `CORAL = CLOSED`.** Delta -0,126077, 0/5
+  folds positivos, ningunasubmission. El bootstrap **no se calcula**, porque el brief lo reserva
+  al caso en que se supera el gate de delta. No se abre ninguna familia nueva.
+- **Reason**: las dos fuentes de senal que la hipotesis ofrecia estan medidas y las dos estan
+  agotadas. Compartir pesos aporta +0,0147, y +0,0147 es menor que el ruido de resolucion del
+  aparato (V19 a V20 fueron +0,0011 en LB). Ordenar umbrales vale 0 violaciones, y 0 violaciones
+  ya era gratis en D-057. La conclusion es uncomfortable pero es la que sostienen los numeros:
+  **la formulacion ordinal no es donde queda la senal**, ni compartida ni independiente.
+- **Consequences**: (1) **la familia ordinal queda cerrada en sus cinco subfamilias**;
+  (2) **no se propone submission**; (3) **no se abre HistGradientBoosting, RBF-SVM, feature
+  selection supervisada, prototipos, monotonic ranking ni random projection**, segun el brief;
+  (4) queda una sola pregunta de analisis sin responder, que ya no es de modelo.
+- **Evidence**: `experiments/v23_00_tests.json`, `experiments/v23_01_coral.json`,
+  `experiments/v23_02_auditoria.json`, `reports/v23_coral_analysis.md`,
+  `reports/v23_coral_results.csv`, `reports/v23_coral_audit.md`, `reports/v23_00_tests_coral.md`,
+  `reports/figures/v23_coral_monotonicidad.png`, `reports/figures/v23_coral_complementariedad.png`,
+  `reports/figures/v23_coral_folds.png`, celdas 31.1 a 31.13 de `notebooks/99_entrega_consolidado.ipynb`.

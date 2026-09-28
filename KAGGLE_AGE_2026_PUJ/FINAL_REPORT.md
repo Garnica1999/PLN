@@ -204,6 +204,50 @@ Resultado global: **APROBADO** (`reports/auditorias.md`).
 - **Formato de submission**: columns_ok=True; columns_match_sample=True; rows_ok=True; ids_equal_test=True.
 - **Trazabilidad**: n_experimentos_registrados=30; todos_con_hipotesis=True; todos_con_resultado=True; n_decisiones=16.
 
+## 12bis. V23 — CORAL / cumulative-link con pesos compartidos
+
+La ultima fase abierta sobre la formulacion ordinal responde a una sola pregunta: **compartir el
+vector de pesos entre las cinco fronteras ordinales y ordenar los umbrales aporta una senal util
+que los cinco binarios independientes de V20 no capturan?**
+
+La formulacion es cumulative-link: `P(Y <= k | x) = sigmoid(theta_k - w' x)` con
+`theta_k = gamma + suma_{{j<k}} softplus(delta_j)`. El orden de los umbrales es una **garantia de
+construccion**, luego las cinco CDF son monotonicas siempre y no hay que imponer nada despues.
+Esta implementada en `src/ordinal_coral.py` con `numpy` y `scipy`, con gradiente analitico
+verificado contra diferencias finitas (error relativo 3,15e-10) y verificada contra la densidad
+de clase calculada por otra via.
+
+**Medicion, con el control A y un control B que hacia falta.**
+
+| Modelo | macro-F1 | Delta | Folds + | violaciones de monotonia |
+|---|---|---|---|---|
+| V20 (cinco binarios LightGBM independientes) | **0,6097782** | - | 3/5 | **18.927** |
+| cinco binarios **lineales** independientes (control B) | 0,4690055 | -0,140773 | 0/5 | no medido |
+| **CORAL** (peso compartido, umbrales ordenados) | 0,4837017 | -0,126077 | 0/5 | **0** |
+
+Un delta de -0,126 mezcla dos efectos —compartir pesos y perder no linealidad—, asi que se
+anadio el control B para separarlos. El resultado de esa descomposicion es lo util de la fase:
+
+- **Compartir pesos y ordenar umbrales vale +0,014696.** La hipotesis **es correcta**: compartir
+  informacion entre las fronteras ordinales aporta senal.
+- **La no linealidad vale -0,140773**, un orden de magnitud mas. Un modelo lineal sobre las 279
+  features no compite con LightGBM, y ahi se decide el macro-F1.
+- **La monotonia se resuelve de verdad y no compra nada.** CORAL tiene 0 violaciones frente a las
+  18.927 de V20 y aun asi pierde 0,1261. Es la **segunda** confirmacion independiente de D-057.
+
+**Conclusion.** `CORAL = CLOSED` y `ORDINAL_SHARED_WEIGHTS = NO_SIGNAL`. Sin submission, sin
+bootstrap (el brief lo reserva al caso en que se supera el gate de delta) y sin abrir ninguna
+familia nueva. La conclusion es incomoda pero la sostienen los numeros: **la formulacion ordinal
+no es donde queda la senal**, ni compartida ni independiente, y la evidencia acumulada ya no
+sostiene que quede ahi.
+
+**Una nota sobre la verificacion.** Dos errores de formulacion propios fueron cazados por los
+tests antes de tocar el dataset: factorizar la diferencia de dos CDF como producto de sigmoidos,
+que solo vale si `s_y = 1`, y penalizar solo `w`, que produce separacion y dispara los umbrales a
+12,07 con features estandarizadas en [-3, 3]. Los valores de regularizacion quedaron
+**pre-registrados sin mirar AGE**, a partir de una comprobacion de separacion sobre un sintetico
+con la forma y la escala del proyecto.
+
 ## 12. Limitaciones y trabajo futuro
 
 **Limitaciones**

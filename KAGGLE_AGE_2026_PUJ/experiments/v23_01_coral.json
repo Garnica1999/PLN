@@ -1,0 +1,413 @@
+{
+  "fase": "V23 01 CORAL",
+  "fecha": "2026-09-27",
+  "champion_congelado": {
+    "nombre": "V20",
+    "lb": 0.62689,
+    "cv": 0.6097782,
+    "intacto": true
+  },
+  "hipotesis": "compartir el vector de pesos entre las cinco fronteras ordinales y ordenar los umbrales aporta senal util que cinco binarios independientes no capturan",
+  "variable_unica": "pesos compartidos frente a independientes",
+  "pre_registrado": {
+    "lambda_w": 1.0,
+    "lambda_umbral": 0.0,
+    "C_logistico_control_B": 1.0,
+    "n_splits": 5,
+    "agrupacion": "dup_clusters, StratifiedGroupKFold"
+  },
+  "control_a": {
+    "macro_f1": 0.6097782,
+    "reproducido": true,
+    "violaciones_monotonia": 18927
+  },
+  "candidatos": {
+    "V20 (control A)": {
+      "modelo": "V20 (control A)",
+      "macro_f1": 0.6097782,
+      "delta_vs_v20": 0.0,
+      "media_folds": 0.609785,
+      "desviacion_folds": 0.003092,
+      "scores_por_fold": [
+        0.6132028,
+        0.612081,
+        0.6104461,
+        0.6088426,
+        0.604351
+      ],
+      "delta_por_fold": [
+        0.003425,
+        0.002303,
+        0.000668,
+        -0.000936,
+        -0.005427
+      ],
+      "folds_positivos": 3,
+      "violaciones_monotonia": 18927,
+      "salvage": 0,
+      "damage": 0,
+      "neto": 0,
+      "cambios": 0,
+      "ambos_aciertos": 103331,
+      "ambos_fallos": 66005,
+      "f1_por_clase": {
+        "13-17": 0.6818,
+        "18-24": 0.517,
+        "25-34": 0.4965,
+        "35-49": 0.5687,
+        "50-64": 0.6637,
+        "65-xx": 0.731
+      },
+      "frontera_18_24_25_34": 0.5075,
+      "frontera_25_34_35_49": 0.5029,
+      "complementariedad_por_clase": {
+        "13-17": {
+          "filas": 28863,
+          "rescata": 0,
+          "danio": 0,
+          "neto": 0
+        },
+        "18-24": {
+          "filas": 28676,
+          "rescata": 0,
+          "danio": 0,
+          "neto": 0
+        },
+        "25-34": {
+          "filas": 28347,
+          "rescata": 0,
+          "danio": 0,
+          "neto": 0
+        },
+        "35-49": {
+          "filas": 28230,
+          "rescata": 0,
+          "danio": 0,
+          "neto": 0
+        },
+        "50-64": {
+          "filas": 28060,
+          "rescata": 0,
+          "danio": 0,
+          "neto": 0
+        },
+        "65-xx": {
+          "filas": 27160,
+          "rescata": 0,
+          "danio": 0,
+          "neto": 0
+        }
+      }
+    },
+    "cinco binarios lineales (control B)": {
+      "modelo": "cinco binarios lineales (control B)",
+      "macro_f1": 0.4690055,
+      "delta_vs_v20": -0.140773,
+      "media_folds": 0.469012,
+      "desviacion_folds": 0.005385,
+      "scores_por_fold": [
+        0.4737085,
+        0.4712285,
+        0.4705763,
+        0.4710854,
+        0.4584631
+      ],
+      "delta_por_fold": [
+        -0.13607,
+        -0.13855,
+        -0.139202,
+        -0.138693,
+        -0.151315
+      ],
+      "folds_positivos": 0,
+      "violaciones_monotonia": "no medido",
+      "salvage": 5468,
+      "damage": 28811,
+      "neto": -23343,
+      "cambios": 49212,
+      "ambos_aciertos": 74520,
+      "ambos_fallos": 60537,
+      "f1_por_clase": {
+        "13-17": 0.6617,
+        "18-24": 0.4961,
+        "25-34": 0.4738,
+        "35-49": 0.5397,
+        "50-64": 0.6428,
+        "65-xx": 0.0
+      },
+      "frontera_18_24_25_34": 0.4912,
+      "frontera_25_34_35_49": 0.4897,
+      "complementariedad_por_clase": {
+        "13-17": {
+          "filas": 28863,
+          "rescata": 806,
+          "danio": 1448,
+          "neto": -642
+        },
+        "18-24": {
+          "filas": 28676,
+          "rescata": 1334,
+          "danio": 1992,
+          "neto": -658
+        },
+        "25-34": {
+          "filas": 28347,
+          "rescata": 1400,
+          "danio": 1670,
+          "neto": -270
+        },
+        "35-49": {
+          "filas": 28230,
+          "rescata": 1129,
+          "danio": 1605,
+          "neto": -476
+        },
+        "50-64": {
+          "filas": 28060,
+          "rescata": 799,
+          "danio": 1570,
+          "neto": -771
+        },
+        "65-xx": {
+          "filas": 27160,
+          "rescata": 0,
+          "danio": 20526,
+          "neto": -20526
+        }
+      }
+    },
+    "CORAL pesos compartidos": {
+      "modelo": "CORAL pesos compartidos",
+      "macro_f1": 0.4837017,
+      "delta_vs_v20": -0.126077,
+      "media_folds": 0.483656,
+      "desviacion_folds": 0.004743,
+      "scores_por_fold": [
+        0.4842829,
+        0.4854819,
+        0.4887768,
+        0.4850558,
+        0.4746802
+      ],
+      "delta_por_fold": [
+        -0.125495,
+        -0.124296,
+        -0.121001,
+        -0.124722,
+        -0.135098
+      ],
+      "folds_positivos": 0,
+      "violaciones_monotonia": 0,
+      "salvage": 12234,
+      "damage": 34853,
+      "neto": -22619,
+      "cambios": 67763,
+      "ambos_aciertos": 68478,
+      "ambos_fallos": 53771,
+      "f1_por_clase": {
+        "13-17": 0.6267,
+        "18-24": 0.4342,
+        "25-34": 0.3288,
+        "35-49": 0.3641,
+        "50-64": 0.4923,
+        "65-xx": 0.656
+      },
+      "frontera_18_24_25_34": 0.4067,
+      "frontera_25_34_35_49": 0.3466,
+      "complementariedad_por_clase": {
+        "13-17": {
+          "filas": 28863,
+          "rescata": 983,
+          "danio": 3873,
+          "neto": -2890
+        },
+        "18-24": {
+          "filas": 28676,
+          "rescata": 3195,
+          "danio": 4786,
+          "neto": -1591
+        },
+        "25-34": {
+          "filas": 28347,
+          "rescata": 2901,
+          "danio": 7054,
+          "neto": -4153
+        },
+        "35-49": {
+          "filas": 28230,
+          "rescata": 2849,
+          "danio": 7538,
+          "neto": -4689
+        },
+        "50-64": {
+          "filas": 28060,
+          "rescata": 2002,
+          "danio": 6834,
+          "neto": -4832
+        },
+        "65-xx": {
+          "filas": 27160,
+          "rescata": 304,
+          "danio": 4768,
+          "neto": -4464
+        }
+      }
+    }
+  },
+  "matrices_confusion": {
+    "V20 (control A)": [
+      [
+        18968,
+        6222,
+        1471,
+        816,
+        842,
+        544
+      ],
+      [
+        4571,
+        15659,
+        4022,
+        1823,
+        1562,
+        1039
+      ],
+      [
+        1680,
+        5926,
+        13278,
+        3349,
+        2468,
+        1646
+      ],
+      [
+        766,
+        2212,
+        3655,
+        15173,
+        3742,
+        2682
+      ],
+      [
+        459,
+        1092,
+        1756,
+        2466,
+        19727,
+        2560
+      ],
+      [
+        337,
+        794,
+        957,
+        1503,
+        3043,
+        20526
+      ]
+    ],
+    "CORAL pesos compartidos": [
+      [
+        16078,
+        8169,
+        2681,
+        1313,
+        547,
+        75
+      ],
+      [
+        4913,
+        14068,
+        5284,
+        2819,
+        1342,
+        250
+      ],
+      [
+        1042,
+        9010,
+        9125,
+        5973,
+        2643,
+        554
+      ],
+      [
+        227,
+        3125,
+        6118,
+        10484,
+        7008,
+        1268
+      ],
+      [
+        78,
+        1071,
+        2672,
+        5745,
+        14895,
+        3599
+      ],
+      [
+        107,
+        676,
+        1281,
+        3020,
+        6014,
+        16062
+      ]
+    ]
+  },
+  "confusiones_fuera_de_diagonal": {
+    "V20 (control A)": {
+      "18-24->25-34": 4022,
+      "25-34->18-24": 5926,
+      "25-34->35-49": 3349,
+      "35-49->25-34": 3655,
+      "35-49->50-64": 3742,
+      "50-64->35-49": 2466,
+      "13-17->50-64": 842,
+      "50-64->13-17": 459,
+      "18-24->65-xx": 1039,
+      "65-xx->18-24": 794,
+      "13-17->65-xx": 544,
+      "65-xx->13-17": 337
+    },
+    "CORAL pesos compartidos": {
+      "18-24->25-34": 5284,
+      "25-34->18-24": 9010,
+      "25-34->35-49": 5973,
+      "35-49->25-34": 6118,
+      "35-49->50-64": 7008,
+      "50-64->35-49": 5745,
+      "13-17->50-64": 547,
+      "50-64->13-17": 78,
+      "18-24->65-xx": 250,
+      "65-xx->18-24": 676,
+      "13-17->65-xx": 75,
+      "65-xx->13-17": 107
+    }
+  },
+  "geometria_del_error": {
+    "aciertos_v20": 103331,
+    "aciertos_coral": 80712,
+    "delta_aciertos": -22619,
+    "celdas_modificadas": 36,
+    "distancia_l1": 57650,
+    "aciertos_fuera_de_la_frontera_1_v20": 9948,
+    "aciertos_fuera_de_la_frontera_1_coral": 14294
+  },
+  "gate": {
+    "delta_minimo": 0.001,
+    "folds_minimos": 4,
+    "delta_coral": -0.126077,
+    "cumple_delta": false,
+    "cumple_folds": false,
+    "bootstrap": null
+  },
+  "control_b_delta": -0.140773,
+  "atribucion": "CORAL contra el control B aísla el efecto de compartir pesos; el delta contra V20 mezcla ese efecto con la perdida de no linealidad",
+  "fallos_de_convergencia": [],
+  "decision": "CORAL = CLOSED",
+  "estado": "NO_SIGNAL",
+  "submission_generada": false,
+  "segundos": 2470.1
+}

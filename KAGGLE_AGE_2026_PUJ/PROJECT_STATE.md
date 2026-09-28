@@ -198,6 +198,38 @@
   mecanismo y no de hiperparametro.
 - **No se abre ninguna otra familia** mientras la ordinal tenga un challenger confirmado por leaderboard.
 
+## V23 · CORAL / CUMULATIVE-LINK (2026-09-27) CERRADA — compartir pesos funciona y no alcanza (D-058)
+
+- **`CORAL = CLOSED` y `ORDINAL_SHARED_WEIGHTS = NO_SIGNAL`.** Delta **-0.126077**
+  frente a V20, **0/5 folds** positivos, sin submission. **V20 sigue en 0,62689** como champion y
+  no se ha tocado.
+- **La hipotesis de la fase era correcta y no alcanza.** CORAL vale **+0.014696** frente
+  al control B (cinco binarios lineales independientes). Compartir informacion entre las cinco
+  fronteras **si** aporta. Pero la no linealidad de LightGBM vale **-0.140773**, un
+  orden de magnitud mas, y ahi se decide el macro-F1.
+- **La monotonia se resuelve de verdad y no compra nada.** CORAL: **0** violaciones frente a las
+  **18.927** de V20. Aun asi pierde 0,1261. **Segunda confirmacion independiente de D-057**: la
+  consistencia ordinal no era el cuello de botella, y resolverla gratis no compra nada.
+- **Dos errores de formulacion que los tests cazaron**, ambos propios: (1) factorizar la
+  diferencia de dos CDF como producto de sigmoidos, que **solo vale si `s_y = 1`**; el objetivo
+  daba 678,80 contra 895,41 de la referencia; (2) penalizar solo `w` produce **separacion** y
+  dispara los umbrales a 12,07 con features en [-3, 3].
+- **Pre-registro sin mirar AGE**: TEST B demuestra que a la escala del proyecto no hay
+  separacion, luego `lambda_w = 1,0` y `lambda_umbral = 0,0` quedan congelados antes de ver el
+  resultado.
+- **El control B hizo falta**: sin el, -0,126 mezclaba compartir pesos con perder no linealidad.
+  Ademas recibe las features **crudas** en la primera version, no converge y devuelve la
+  iteracion parcial: un control que no converge no es un control.
+- **Auditoria de la fase**: PASS. Sintaxis, import, ejecucion, artefactos, serializacion, unicode
+  (0 caracteres introducidos), notebook (16 celdas ejecutadas, 0 errores) y coherencia numerica
+  (9/9). La validacion de ejecucion encontro **3 bugs reales** en las celdas del notebook.
+- **Deuda documentada**: el notebook consolidado llega hasta la seccion 30 (V17) y **no contiene
+  V18 a V22**, aunque el champion es V20. Se integra V23 como pide el brief y se deja constancia
+  de lo demas.
+- **Entregables**: `src/ordinal_coral.py`, `scripts/v23_00_tests_coral.py`,
+  `scripts/v23_01_coral.py`, `scripts/v23_02_auditoria.py`, `reports/v23_coral_analysis.md`,
+  `reports/v23_coral_results.csv`, `reports/v23_coral_audit.md`. `experiments.csv` pasa a **130**.
+
 ## V22 · FRONTIER AUDIT + COSTE ORDINAL (2026-09-27) — familia ordinal cerrada (D-057)
 
 - **`ORDINAL_NESTED_THRESHOLDS = CLOSED`.** La familia ordinal queda cerrada en sus **cuatro**
