@@ -4862,3 +4862,172 @@ holdout ni test, no modifica V03, y **no registra ninguna fila en `experiments.c
 hubo ninguna ejecucion experimental. La decision competitiva queda pendiente: cerrar, autorizar
 una ultima investigacion dirigida, o preparar una unica submission de un candidato validado.
 Ninguna se ejecuta automaticamente.
+
+
+### D-129. Ningun candidato cumple los siete criterios, y la lectura de P58 sobre E2-13 era incorrecta
+
+**Contexto.** P57 concluyo que no existia candidato y, al hacerlo, escribio que
+`E2-13-META-ENT-RIDGE` era *el unico artefacto con delta honesto anidado positivo y sin
+veredicto externo*, y que solo le faltaba una verificacion externa. **P58 audita esa
+afirmacion y la corrige.** La decision de no enviar nada no cambia; el motivo cambia.
+
+**1. Que significa exactamente el cierre "por sparsity" de E2-13.**
+
+La columna `decision` de `experiments.csv` dice `CERRADA por sparsity` para las tres variantes
+de E2-13. El `result` estructurado dice otra cosa, y es la que manda.
+
+```text
+cobertura_informativa   0,005247376311844078   =  0,52 por ciento
+umbral de cierre        0,20                   = 20 por ciento
+menciones               1079 instancias, 6 sobreviven   = 0,556 por ciento
+hashtags                255 instancias, 1 sobrevive    = 0,392 por ciento
+dominio                 458 instancias, 458 sobreviven, pero 1 unico en desarrollo
+                        o sea el unico dominio que pasa el filtro es t.co
+```
+
+**Sparsity no invalida una mejora por si solo, y por eso se cuantifica el aporte real del
+canal sobre su propio comparador**, que es la pregunta correcta:
+
+```text
+comparador                                META-BASES-RIDGE (0,7874)
+E2-13-META-ENT-RIDGE                      0,7884666035195752
+delta sobre el comparador                 +0,0011091426646537839
+pliegues mejorados sobre el comparador    3 de 5
+complementariedad (ensemble_gain)         -0,00025592446516731204
+aporta con IC positivo                    False
+delta sobre V03                           +0,011266603519575202   <-- este NO es suyo
+```
+
+**El cierre es metodologico y esta bien justificado.** El sparsity es la CAUSA y el incremento
+medido de +0,0011 con 3 de 5 pliegues y complementariedad negativa es la PRUEBA de que la causa
+es real. No se concluyo "sparsity invalida automaticamente", se concluyo "sparsity mas el
+incremento medido invalida", que es otra cosa.
+
+**2. La correccion: el delta de +0,0113 no es de E2-13, es de la familia META.**
+
+`v2_meta_oof.npz` declara `variante = META-BASES-RIDGE`, `modelo = ridge`, `parametro = 3.0`, con
+**44 features** cuyas ultimas ocho son los rasgos estructurales. Ese es exactamente el modelo
+que se envio como `v08_meta_v2`, y su `corrected_cv` recomputado desde el OOF en disco da
+**0,7873574608549214**, identico al del registro.
+
+Luego **E2-13-META-ENT-RIDGE es `v08_meta_v2` mas un canal que cubre el 0,52 por ciento de las
+instancias.** No es un mecanismo nuevo: es una perturbacion de un candidato ya rechazado
+externamente, con LB 0,78163. El +0,0113 que P57 reporto como su_delta sobre V03 es la ganancia
+de la **familia META**, refutada 5 de 5 veces en el leaderboard.
+
+| afirmacion de P57 | estado tras P58 |
+|---|---|
+| E2-13 tiene el mayor delta honesto anidado | **se mantiene**: 0,7884666, el mayor anidado del registro |
+| E2-13 es un candidato sin veredicto externo | **CORREGIDO**: su arquitectura ya tiene veredicto, LB 0,78163 |
+| E2-13 solo necesita una verificacion externa | **CORREGIDO**: su unico delta propio es +0,0011 con 3 de 5 |
+| el cierre por sparsity lo invalida | **CORREGIDO**: lo que lo invalida es el incremento medido, y esta justificado |
+
+**3. La descomposicion celular, recomputada SIN reentrenar.**
+
+`features/oof_candidates_v4.npz` contiene los cuatro candidatos del gate de V4-X01, con ids y
+etiquetas identicos al OOF canonico. Las cinco descomposiciones **reproducen
+`reports/v4_candidates.json` al sexto decimal**, lo que prueba que estos tensores son los que
+alimentaron el gate pre-registrado.
+
+```text
+candidato                              ccv       delta  plieg  cambian    r    d  neto  acierto  LB
+META-BASES-RIDGE (= v08_meta_v2)  0.787357  +0.010146   4/5     246  132  114   +18   0.5366  0.78163
+A_cost_sensitive_downweight       0.785416  +0.008205   5/5     173   99   74   +25   0.5723  sin veredicto
+B_meta36                          0.782774  +0.005562   4/5     186  115   71   +44   0.6183  sin veredicto
+C_meta36_downweight               0.788173  +0.010962   4/5     212  134   78   +56   0.6321  holdout
+D_svd300_rbf                      0.790410  +0.013198   5/5     240  136  104   +32   0.5667  0.77938
+```
+
+Sobre 4449 celdas. El `acierto` es la proporcion de celdas modificadas en las que el candidato
+acierta donde V03 falla, y es la medida honesta del efecto.
+
+**4. Los siete criterios de la directiva, aplicados uno por uno.**
+
+| candidato | 1 CV | 2 repro | 3 plieg | 4 leak | 5 mec | 6 artefacto | 7 no LB | FINALISTA |
+|---|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+| META-BASES-RIDGE | si | si | si | si | si | si | **NO** | **NO** |
+| A_cost_sensitive_downweight | si | si | si | si | si | **NO** | si | **NO** |
+| B_meta36 | si | si | si | si | si | **NO** | si | **NO** |
+| C_meta36_downweight | si | si | si | si | si | si | **NO** | **NO** |
+| D_svd300_rbf | si | si | si | si | si | si | **NO** | **NO** |
+
+**El criterio 6, `artefacto de prediccion completo`, es el que decide.** Solo tres de los cinco
+tienen CSV de submission, y los tres ya fueron enviados o ya fueron rechazados por el holdout.
+
+**5. El caso limite, y el unico quasi-finalista del proyecto: B_meta36.**
+
+```text
+corrected_cv   0,782774   (+0,005563 sobre V03)
+pliegues       4 de 5
+IC95 pareado   [+0,003147, +0,016633]   NO incluye el cero
+celdas         186 cambian, 115 rescates, 71 danos, neto +44
+acierto        0,6183, el mas alto de los cinco
+LB             ninguno. Nunca se envio
+cumple_D016    True, el unico de A y B que lo cumple
+```
+
+Es el unico candidato que pasa el gate D-016 pre-registrado y no tiene veredicto externo. Aun
+asi no es finalista, por tres razones que son independientes entre si:
+
+1. **No existe artefacto de prediccion.** `experiments/36_candidatos_v4.py` no escribe ninguna
+   submission; solo `C` recibio una, via `38_refit_final_v4.py`, y quedo marcada DESCARTADO.
+   El criterio 6 falla, y la directiva 12 prohibe crear una variante nueva.
+2. **El unico instrumento de adjudicacion esta agotado.** El holdout lleva 5 de 5 evaluaciones.
+3. **Su hermano con veredicto fue rechazado, y es casi indistinguible de un rechazo ya
+   medido.** `FIN-01-C-REF-44` registra `delta_vs_meta_v08 = -4,25e-05`: `C` es
+   estadisticamente el mismo modelo que `v08_meta_v2`. `B` es `C` sin el downweight, luego no
+   hay evidencia de que se comporte de otro modo.
+
+**B pasa cinco de siete y falla en el sexto por ausencia de artefacto, no por defecto del
+modelo.** Es el `quasi-finalista` del proyecto y conviene nombrarlo como tal.
+
+**6. Panorama de los 31 candidatos con corrected_cv D-016 superior a V03.**
+
+| categoria | n | por que no son finalistas |
+|---|---:|---|
+| con LB verificado y **positivo** | **0** | ninguno supera 0,78306 |
+| con LB verificado y negativo | 5 | v08_meta_v2 -0,00143, v23 -0,00368, v09 -0,00411, v11 -0,00156, v10 -0,00328 |
+| rechazados por holdout | 1 | C_meta36_downweight, 0,8163 contra 0,8285, delta -0,0122 |
+| **sin ningun veredicto externo** | **2** | A y B, y ninguno tiene artefacto |
+| familias cerradas por inercia | 10 | embeddings EBD, con 9 de 9 unidades exploratorias agotadas |
+| mecanismos que no alcanzan su gate | 3 | V4-B03, V4-B05 y otros, por debajo de +0,005 y de 3 de 5 |
+| mediciones, no modelos | 1 | PA-01 mide la brecha D-004 contra D-016 |
+
+**7. D_svd300_rbf: por que el CV mas alto no transfirio, y por que queda CLOSED.**
+
+El mejor `corrected_cv` del proyecto, 5 de 5 pliegues, 136 rescates contra 104 danos y
+McNemar p=0,0452, perdio 0,00368 en el externo. La firma mecanica esta en los vectores de
+soporte: 1321 de 1731 para HS, 1317 para AG y 1044 para TR, es decir el 60 a 76 por ciento de
+las muestras, la marca de un kernel RBF con `gamma=scale` sobre 300 dimensiones que memoriza en
+vez de generalizar. El gap local-LB pasa de +0,005849 a -0,011030. **El LB ya aporto la
+evidencia negativa suficiente, luego `CLOSED`.**
+
+**8. Integridad de los artefactos.**
+
+Los 37 CSV de `submissions/` pasan la validacion formal: 1154 filas, columnas `id,HS,TR,AG`, ids
+y orden identicos a `toxic_test.csv`, etiquetas binarias, sin nulos, sha256 calculado.
+**Ninguno se modifica.** Se confirma ademas que
+`toxic_submission_v20_03_reproduccion_v03.csv` es **bit a bit identico** a la submission de V03,
+que es la razon de que su envio diera delta exactamente 0.
+
+**9. Presupuesto.**
+
+```text
+local_reservation   3      autolimitacion del proyecto
+competition_limit   UNKNOWN   no se consulta Kaggle
+envios historicos   23
+envios hoy          0
+```
+
+**Decision: `CASE A`. `FINALIST = NONE`.**
+
+> V03 remains the best verified leaderboard result.
+
+```text
+best verified result  !=  proof of global optimum
+```
+
+Lo que SOSTIENE la auditoria: que **el conjunto de artefactos que hemos producido no contiene**
+un candidato que justifique una sonda final. Lo que NO SOSTIENE: que no exista una mejora
+defendible. Son afirmaciones sobre estados distintos, y confundirlas seria el error de
+razonamiento mas caro disponible ahora mismo.

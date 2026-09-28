@@ -2092,3 +2092,131 @@ detiene. No se abre P58.**
 
 *Seccion generada por `experiments/v57_00_sintesis_estrategica.py` y
 `experiments/v57_01_integrar_notebook.py`. Sin push: la rama sigue local.*
+
+
+---
+
+## Addendum P58 (2026-09-28) - Auditoria final de candidatos existentes
+
+> Auditoria pura. **0 modelos, 0 entrenamientos, 0 submissions, 0 consultas a Kaggle, 0 holdout,
+> 0 test.** **0 filas nuevas en `experiments.csv`** (siguen siendo 323). Decision **D-129**.
+
+### Pregunta y respuesta
+
+> ?Existe ya, dentro de los artefactos que hemos producido, algun candidato suficientemente
+> defendible como para justificar una unica sonda final?
+
+**No. `FINALIST = NONE`. `CASE A`.** Mantener V03.
+
+### La correccion a P57
+
+P57 escribio que `E2-13-META-ENT-RIDGE` era el unico candidato con delta honesto anidado
+positivo y sin veredicto externo. **Es incorrecto**, y la auditoria lo demuestra:
+
+| | valor |
+|---|---|
+| `v2_meta_oof.npz` declara | `META-BASES-RIDGE`, ridge alpha 3, 44 features |
+| eso es | **el modelo enviado como `v08_meta_v2`, LB 0,78163** |
+| cobertura del canal de entidades | **0,52 por ciento** frente a un umbral del 20 por ciento |
+| de 1079 menciones sobreviven | 6 |
+| de 255 hashtags sobrevive | 1 |
+| unico dominio que pasa el filtro | `t.co`, 1 unico en desarrollo |
+| incremento **sobre su comparador** | **+0,0011, 3 de 5 pliegues**, complementariedad ?0,0003 |
+| su delta de +0,0113 | **es de la familia META, no suyo** |
+
+**E2-13 no es un mecanismo nuevo: es `v08_meta_v2` mas un canal que cubre el medio por ciento de
+las instancias.** El cierre por sparsity es metodologico y esta bien justificado, porque el
+incremento medido confirma la causa.
+
+### Descomposicion celular, recomputada sin reentrenar
+
+```text
+candidato                              ccv       delta  plieg  cambian    r    d  neto  acierto  LB
+META-BASES-RIDGE (= v08_meta_v2)  0.787357  +0.010146   4/5     246  132  114   +18   0.5366  0.78163
+A_cost_sensitive_downweight       0.785416  +0.008205   5/5     173   99   74   +25   0.5723  sin veredicto
+B_meta36                          0.782774  +0.005562   4/5     186  115   71   +44   0.6183  sin veredicto
+C_meta36_downweight               0.788173  +0.010962   4/5     212  134   78   +56   0.6321  holdout
+D_svd300_rbf                      0.790410  +0.013198   5/5     240  136  104   +32   0.5667  0.77938
+```
+
+Reproducen `reports/v4_candidates.json` al sexto decimal, lo que prueba que los tensores en
+disco son los que alimentaron el gate pre-registrado.
+
+### Los siete criterios
+
+**El que decide es el 6, `artefacto de prediccion completo`.** Solo tres de los cinco tienen
+CSV, y los tres ya fueron enviados o rechazados por el holdout.
+
+| candidato | 6 artefacto | 7 no rechazado por LB | FINALISTA |
+|---|:-:|:-:|:-:|
+| META-BASES-RIDGE | si | **NO** | **NO** |
+| A_cost_sensitive_downweight | **NO** | si | **NO** |
+| B_meta36 | **NO** | si | **NO** |
+| C_meta36_downweight | si | **NO** | **NO** |
+| D_svd300_rbf | si | **NO** | **NO** |
+
+### El caso limite: B_meta36
+
+El unico que pasa el gate D-016 pre-registrado (IC95 [+0,003147, +0,016633], 4 de 5 pliegues,
+acierto 0,6183, el mas alto de los cinco) y **no tiene ningun veredicto externo**. No es
+finalista por tres razones independientes:
+
+1. **No existe artefacto de prediccion**, y la directiva 12 prohibe crear uno.
+2. **El holdout esta agotado 5 de 5**, luego no puede pasar por el filtro que el proyecto uso
+   para decidir en la fase final.
+3. **Su hermano `C` es estadisticamente el mismo modelo que `v08_meta_v2`**
+   (`delta_vs_meta_v08 = ?4,25e-05`), que dio LB 0,78163.
+
+**Pasa cinco de siete y falla en el sexto por ausencia de artefacto, no por defecto del modelo.**
+Es el `quasi-finalista` del proyecto.
+
+### Panorama de los 31 candidatos con corrected_cv superior a V03
+
+| categoria | n |
+|---|---:|
+| con LB verificado y **positivo** | **0** |
+| con LB verificado y negativo | 5 |
+| rechazados por holdout | 1 |
+| **sin veredicto externo** | **2** (A y B, ninguno con artefacto) |
+| familias de embeddings cerradas por inercia | 10 |
+| por debajo de su gate | 3 |
+| mediciones, no modelos | 1 |
+
+### D_svd300_rbf: `CLOSED`
+
+El mejor `corrected_cv` del proyecto, 5 de 5 pliegues, 136 rescates contra 104 danos y McNemar
+p=0,0452, **perdio 0,00368 en el externo**. La firma mecanica esta en el soporte: 60 a 76 por
+ciento de vectores de soporte, la marca de un kernel RBF con `gamma=scale` sobre 300 dimensiones
+que memoriza. El LB ya aporto la evidencia negativa suficiente.
+
+### Integridad de artefactos
+
+Los **37 de 37** CSV de `submissions/` pasan la validacion formal: 1154 filas, columnas
+`id,HS,TR,AG`, ids y orden identicos a `toxic_test.csv`, binarios, sin nulos, sha256.
+`v20_03_reproduccion_v03.csv` es **bit a bit identico** a V03. **Ningun artefacto se modifica.**
+
+### Presupuesto
+
+```text
+local_reservation   3
+competition_limit   UNKNOWN      no se consulta Kaggle
+envios historicos   23
+envios hoy          0
+```
+
+### Formulacion final
+
+> V03 remains the best verified leaderboard result.
+
+```text
+best verified result  !=  proof of global optimum
+```
+
+**Lo que la auditoria SOSTIENE:** que el conjunto de artefactos que hemos producido **no
+contiene** un candidato que justifique una sonda final.
+
+**Lo que NO SOSTIENE:** que no exista una mejora defendible. Son afirmaciones sobre estados
+distintos, y confundirlas seria el error de razonamiento mas caro disponible ahora mismo.
+
+*Seccion generada por `experiments/v58_00_auditoria_candidatos.py` y
+`experiments/v58_01_integrar_notebook.py`. Sin push: la rama sigue local.*

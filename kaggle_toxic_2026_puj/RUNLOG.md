@@ -2355,3 +2355,75 @@ salia 0.7885 en vez de 0.7904 y la familia de svd300_rbf quedaba sin clasificar.
 la metrica **lleva dentro** el protocolo, y eso habia que codificarlo.
 
 **Sin push, sin merge, sin reset, sin rebase, sin PR.**
+
+
+---
+
+## 2026-09-28 - Fase P58: auditoria final de candidatos existentes
+
+**Alcance.** Auditoria pura. **0 modelos, 0 entrenamientos, 0 submissions, 0 consultas a Kaggle,
+0 uso de holdout, 0 uso de test labels. 0 filas nuevas en `experiments.csv`** (?21: P58 no es
+experimento).
+
+**V58-00** (`experiments/v58_00_auditoria_candidatos.py`, exit code 0, 0,2 s): verifica el
+sha256 de V03 al arrancar y **aborta si no coincide**; verifica que el OOF canonico reproduce
+`0.7772114525165721` al ultimo digito y **aborta si no**; verifica que los tres OOF comparten
+ids y etiquetas; recomputa cinco descomposiciones celulares sin entrenar; comprueba que
+reproducen `reports/v4_candidates.json` al sexto decimal y **aborta si no**; audita E2-13;
+aplica los siete criterios; valida formalmente los 37 CSV sin modificar ninguno.
+Artefactos: `reports/p58_final_candidate_audit.{md,csv,json}`.
+
+**V58-01** (`experiments/v58_01_integrar_notebook.py`, exit code 0): seccion 54, notebook
+210 -> 212 celdas, celda con returncode 0.
+
+**El hallazgo que importa, y que corrige a P57.** P57 afirmo que E2-13-META-ENT-RIDGE era el
+unico candidato con delta honesto anidado positivo y sin veredicto externo, y que solo le
+faltaba una verificacion externa. **Era incorrecto, y el error venia de leer la columna
+`decision` de `experiments.csv` en vez del `result` estructurado que hay en la misma fila.**
+
+La columna dice `CERRADA por sparsity`. El `result` dice: cobertura informativa 0,52 por ciento
+contra un umbral del 20 por ciento, y sobre su propio comparador el incremento es +0,0011 con
+3 de 5 pliegues y complementariedad negativa. Ademas, `v2_meta_oof.npz` declara
+`variante = META-BASES-RIDGE`, ridge alpha 3, 44 features, que **es el modelo que se envio como
+`v08_meta_v2` con LB 0,78163**.
+
+O sea: E2-13 no es un mecanismo nuevo, es v08_meta_v2 mas un canal que cubre el medio por ciento
+de las instancias, y su delta de +0,0113 es el de la familia META, refutada 5 de 5 veces. **El
+cierre por sparsity es metodologico y correcto**, y el caso limite real es `B_meta36`.
+
+**La leccion sobre como se leen las fases anteriores.** `experiments.csv` resume el veredicto en
+una columna de texto libre, y esa columna puede ser **una etiqueta de la causa en vez de la
+conclusion del argumento**. El bloque `result` es el que tiene los numeros. Es la segunda vez
+que un control automatico sobre texto en vez de sobre evidencia da un veredicto erroneo, y la
+primera vez que el error no estaba en el control sino en como leimos el registro a mano.
+
+**El caso limite, bien separado del veredicto.** `B_meta36` pasa el gate D-016 pre-registrado
+(IC95 [+0,003147, +0,016633], 4 de 5 pliegues, acierto 0,6183, el mas alto de los cinco) y no
+tiene **ningun** veredicto externo. No es finalista por tres razones independientes: no existe
+artefacto de prediccion y la directiva 12 prohibe crearlo; el holdout esta agotado 5 de 5; y su
+hermano `C` es estadisticamente el mismo modelo que `v08_meta_v2`
+(`delta_vs_meta_v08 = -4,25e-05`). **Pasa cinco de siete y falla en el sexto por ausencia de
+artefacto.** Nombrarlo `quasi-finalista` es mas util que esconderlo, porque es el unico punto
+donde una decision futura tendria algo que decidir.
+
+**El metodo que hizo posible auditar sin reentrenar.** `features/oof_candidates_v4.npz` contiene
+los cuatro candidatos del gate de V4-X01, con ids y etiquetas identicos al OOF canonico, y
+`v2_meta_oof.npz` contiene el OOF del meta. Con esos dos tensores y el OOF canonico de V03 se
+recomputan las cinco descomposiciones, y **reproducen el artefacto del gate al sexto decimal**,
+lo que prueba que son los mismos tensores. Eso es validacion formal de artefactos, que es lo
+unico que la directiva 12 permite, y no es reentrenamiento.
+
+**Validacion formal de los 37 CSV.** 1154 filas, columnas `id,HS,TR,AG`, ids y orden identicos
+a `toxic_test.csv`, etiquetas binarias, sin nulos, sha256. **37 de 37 validos.** Ninguno se
+modifica. Se confirma que `toxic_submission_v20_03_reproduccion_v03.csv` es bit a bit identico a
+V03, que es la razon de que su envio diera delta exactamente 0.
+
+**Errores propios.** Cinco fallos de ejecucion, todos detectados por la ejecucion real con exit
+code capturado y no por revision visual: claves en espanol buscadas en ingles (`rescate` por
+`rescue`), claves anidadas bajo `veredicto` buscadas en la raiz, dos caracteres acentuados que
+se colaron en las cadenas del markdown y que no pasan por `a_ascii`, y el modulo
+`unicodedata.decomposing` que no existe. El ultimo aparecio tambien en P57, y es el mismo error
+dos fases seguidas: **conviene convertir los caracteres no-ASCII del diccionario de sustitucion
+a escapes `\uXXXX` desde el principio, no a posteriori.**
+
+**Sin push, sin merge, sin reset, sin rebase, sin PR.**

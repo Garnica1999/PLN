@@ -1307,3 +1307,92 @@ Notebook 208 -> 210 celdas, seccion 53, returncode 0.
 automaticamente: cerrar con V03, usar un candidato historico, o una ultima investigacion
 dirigida. Y la opcion de candidato **no es ejecutable** sin una excepcion explicita, porque no
 existe ninguno que cumpla los cinco criterios.
+
+
+---
+
+## Fase P58 (2026-09-28) - Auditoria final de candidatos existentes
+
+**Naturaleza: auditoria. 0 modelos, 0 entrenamientos, 0 submissions, 0 consultas a Kaggle, 0
+uso de holdout, 0 uso de test labels.** **NO se registro ninguna fila en `experiments.csv`**
+(siguen siendo 323). Decision **D-129**.
+
+**Pregunta:** existe ya, dentro de los artefactos que hemos producido, algun candidato
+suficientemente defendible como para justificar una unica sonda final.
+
+**Respuesta: NO. `FINALIST = NONE`. `CASE A`.**
+
+**El hallazgo que corrige a P57.** P57 escribio que `E2-13-META-ENT-RIDGE` era el unico
+candidato con delta honesto anidado positivo y sin veredicto externo, y que solo le faltaba una
+verificacion externa. **Es incorrecto.** `v2_meta_oof.npz` declara
+`variante = META-BASES-RIDGE`, ridge alpha 3, 44 features, que es exactamente el modelo
+enviado como `v08_meta_v2` con LB 0,78163. Luego E2-13 es `v08_meta_v2` mas un canal de
+cobertura informativa **0,52 por ciento** frente a un umbral de cierre del 20 por ciento. Su
+delta propio es **+0,0011 con 3 de 5 pliegues** y complementariedad negativa. El +0,0113 que
+P57 le atribuia es la ganancia de la familia META, refutada 5 de 5 veces. **El cierre por
+sparsity es metodologico y esta bien justificado**, y el caso limite es `B_meta36`.
+
+**Descomposicion celular recomputada sin reentrenar**, desde OOF ya en disco, reproduciendo
+`reports/v4_candidates.json` al sexto decimal:
+
+```text
+candidato                              ccv       delta  plieg  cambian    r    d  neto  acierto  LB
+META-BASES-RIDGE (= v08_meta_v2)  0.787357  +0.010146   4/5     246  132  114   +18   0.5366  0.78163
+A_cost_sensitive_downweight       0.785416  +0.008205   5/5     173   99   74   +25   0.5723  sin veredicto
+B_meta36                          0.782774  +0.005562   4/5     186  115   71   +44   0.6183  sin veredicto
+C_meta36_downweight               0.788173  +0.010962   4/5     212  134   78   +56   0.6321  holdout
+D_svd300_rbf                      0.790410  +0.013198   5/5     240  136  104   +32   0.5667  0.77938
+```
+
+**Los siete criterios.** El que decide es el **criterio 6, artefacto de prediccion completo**:
+solo tres de los cinco candidatos tienen CSV, y los tres ya fueron enviados o rechazados por
+el holdout.
+
+| candidato | 6 artefacto | 7 no rechazado por LB | FINALISTA |
+|---|:-:|:-:|:-:|
+| META-BASES-RIDGE | si | **NO** | **NO** |
+| A_cost_sensitive_downweight | **NO** | si | **NO** |
+| B_meta36 | **NO** | si | **NO** |
+| C_meta36_downweight | si | **NO** | **NO** |
+| D_svd300_rbf | si | **NO** | **NO** |
+
+**El caso limite: B_meta36**, el unico que pasa el gate D-016 pre-registrado (IC95
+[+0,003147, +0,016633], 4 de 5 pliegues, acierto 0,6183, el mas alto de los cinco) y no tiene
+**ningun** veredicto externo. No es finalista por tres razones independientes: no existe
+artefacto de prediccion y la directiva 12 prohibe crearlo; el holdout esta agotado 5 de 5; y su
+hermano `C` es estadisticamente el mismo modelo que `v08_meta_v2`
+(`delta_vs_meta_v08 = -4,25e-05`). **Pasa cinco de siete y falla en el sexto por ausencia de
+artefacto, no por defecto del modelo.** Es el `quasi-finalista` del proyecto.
+
+**Panorama de los 31 candidatos con corrected_cv D-016 > V03:** 0 con LB positivo, 5 con LB
+negativo, 1 rechazado por holdout, 2 sin veredicto externo y sin artefacto, 10 de familias de
+embeddings cerradas por inercia con 9 de 9 unidades agotadas, 3 por debajo de su gate, y 1 que
+es una medicion de protocolo y no un modelo.
+
+**D_svd300_rbf = CLOSED.** El mejor corrected_cv del proyecto, 5 de 5 pliegues, McNemar
+p=0,0452, perdio 0,00368 en el externo. La firma esta en el soporte: 60 a 76 por ciento de
+vectores de soporte, la marca de un kernel RBF con gamma=scale sobre 300 dimensiones que
+memoriza. El LB ya aporto la evidencia negativa suficiente.
+
+**Integridad:** los 37 CSV de `submissions/` pasan la validacion formal (1154 filas, columnas
+`id,HS,TR,AG`, ids y orden identicos a `toxic_test.csv`, binarios, sin nulos, sha256).
+`v20_03_reproduccion_v03.csv` es bit a bit identico a V03. **Ningun artefacto se modifica.**
+
+**Presupuesto:** `local_reservation = 3`, `competition_limit = UNKNOWN`, 23 envios
+historicos, 0 hoy. No se consulta Kaggle.
+
+**Artefactos:** `reports/p58_final_candidate_audit.{md,csv,json}`. Notebook 210 -> 212 celdas,
+seccion 54, returncode 0.
+
+**Formulacion final:** > V03 remains the best verified leaderboard result.
+
+```text
+best verified result  !=  proof of global optimum
+```
+
+Lo que se SOSTIENE: que **el conjunto de artefactos que hemos producido no contiene** un
+candidato que justifique una sonda final. Lo que NO se SOSTIENE: que no exista una mejora
+defendible.
+
+**P58 se detiene. No se ha enviado nada, no se ha modificado ningun artefacto, y no se abre
+P59.**
