@@ -1,0 +1,16 @@
+hallazgo_eda,columna,antecedente,n_C,n_B,n_A,pct_C,pct_B,pct_A,rescue_enrichment_C_sobre_B,p_rescue_enrichment,nonrescue_enrichment_C_sobre_A,p_nonrescue_enrichment
+cita,n_tramos_cita,"V19, V32 y P50: analizado y cerrado",1,44,138,0.02381,0.061538,0.037378,0.3869,0.930579,0.637,0.798098
+colectivo,n_colectivos,"V05, V20 y P50: analizado y cerrado",12,208,869,0.285714,0.290909,0.235374,0.9821,0.587377,1.2139,0.271686
+hashtags,n_hashtags,P49 lo encontro enriquecido en errores,1,78,353,0.02381,0.109091,0.095612,0.2183,0.992184,0.249,0.985314
+urls,n_urls,V31 lo analizo como estructura,9,244,1121,0.214286,0.341259,0.303629,0.6279,0.975057,0.7057,0.927366
+mencion_inicial,tiene_mencion_inicial,V14 y P50,20,246,1549,0.47619,0.344056,0.419556,1.384,0.052754,1.135,0.27686
+negacion,n_negaciones,"V19, V32 y P49",21,231,906,0.5,0.323077,0.245395,1.5476,0.012914,2.0375,0.00032
+insulto,tiene_insulto,"V06, V17 y V18",28,360,1970,0.666667,0.503497,0.533586,1.3241,0.024242,1.2494,0.056575
+atribucion,n_marcadores_atribucion,V01 y P50,3,59,244,0.071429,0.082517,0.066089,0.8656,0.684606,1.0808,0.531115
+elongacion,tiene_elongacion,P47 y V06-08,7,163,655,0.166667,0.227972,0.177411,0.7311,0.873636,0.9394,0.634986
+segunda_persona,n_segunda,V01 y P50,23,303,1690,0.547619,0.423776,0.457746,1.2922,0.07182,1.1963,0.155261
+risas,n_risas,P49: enriquecido en errores,2,35,215,0.047619,0.048951,0.058234,0.9728,0.615895,0.8177,0.710563
+propn,n_propn,V01 y P50,37,599,3000,0.880952,0.837762,0.812568,1.0516,0.303365,1.0842,0.175142
+imperativos,n_imperativos,V01,4,91,559,0.095238,0.127273,0.151408,0.7483,0.799311,0.629,0.897637
+rt,rt_presente,V29,0,0,0,0.0,0.0,0.0,,,,
+leet,tiene_leet,V01 y P50,9,160,812,0.214286,0.223776,0.219935,0.9576,0.618244,0.9743,0.595259

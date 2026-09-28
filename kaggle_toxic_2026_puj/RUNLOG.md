@@ -2142,3 +2142,43 @@ V03, donde voltear siempre ayuda. Todos por ejecucion real con `exit code` sin p
 vez de precalcularlo. Es ineficiencia, no error, y no afecta a los resultados.
 
 **Sin push, sin merge, sin reset, sin rebase, sin PR.**
+
+
+---
+
+## 2026-09-28 - Fase P54: atlas semantico de los errores no rescatables
+
+**Alcance.** 0 modelos, 0 submissions, 0 consultas a Kaggle, 0 uso de holdout o test.
+**0 filas nuevas en `experiments.csv`**: toda la fase es EDA y auditoria.
+
+**V54-00** (`experiments/v54_00_atlas_no_rescatable.py`, exit code 0): poblaciones A, B y C
+recalculadas desde cero y verificadas contra P49, tabla descriptiva de 33 atributos por
+celda, distribucion A/B/C, comparacion B contra C con enrichment y p de un lado,
+reconciliacion de los quince hallazgos del EDA original con **dos** enrichments, test del
+mecanismo concedente, atlas completo de las 42 celdas y taxonomia retrospectiva.
+Artefactos: `reports/p54_semantic_audit.json`, `p54_semantic_audit.md`,
+`p54_nonrescuable_atlas.csv`, `p54_nonrescuable_taxonomy.csv`,
+`p54_rescue_vs_nonrescue.csv`, `p54_eda_reconciliation.csv`.
+
+**V54-01** (`experiments/v54_01_integrar_notebook.py`, exit code 0): seccion 50, notebook
+202 -> 204 celdas, celda de codigo con returncode 0.
+
+**La leccion metodologica de la fase.** Una lectura cualitativa de las 42 celdas llevo a
+pensar que el residuo era `insulto lexico sin escalada`. Al medirlo, el lexico esta en el
+66,67 por ciento de C **y en el 53,36 por ciento de A**, luego el enrichment es de 1,25x
+y no discrimina. La lectura cualitativa era correcta sobre el subconjunto de AG y
+equivocada sobre el conjunto. Es exactamente el riesgo que la directiva intenta evitar, y
+solo se esquivo porque el calculo se hizo antes de escribir la conclusion.
+
+**Un mecanismo propuesto y refutado por los datos.** La lectura sugeria que la negacion
+actua de forma *concedente*, licenciando lo que sigue. Medido: una sola celda de 42
+combina negacion y marcador de contraste, con enrichment de 0,76x. El mecanismo se
+declara **sin explicar** en lugar de sustituirlo por otro.
+
+**Errores propios.** El test binomial recibia **conteos** en vez de indicadores, y
+`k > n` lo hacia fallar en la reconciliacion del EDA; un dict que ruff elimino como
+"usado" en un fix previo y que hacia falta; precedencia de operadores en la mascara de
+alta confianza, que mezclaba la precedencia de `&` con la de `|`; y un `RE_TODO_CAPS` sin
+usar. Todos por ejecucion real con `exit code` capturado sin pipe.
+
+**Sin push, sin merge, sin reset, sin rebase, sin PR.**

@@ -4432,3 +4432,109 @@ discrepancias, la identidad de la etiqueta y las probabilidades de los canales s
 en evaluacion cross-fitted**. Y como el colapso demuestra que el espacio de acciones real
 tiene solo dos elementos, la conclusion es mucho mas fuerte que la de P52. Lo que **no**
 se afirma, y no debe afirmarse, es que ninguna politica imaginable supere V03.
+
+
+### D-125. El residuo no rescatable es frontera de etiqueta, no informacion ausente, y no tiene valor material
+
+**Contexto.** P53 demostro que el espacio de acciones real tiene dos elementos, porque
+todos los canales que discrepan proponen el mismo complemento binario. Cerrada la
+seleccion contextual, P54 vuelve al EDA y pregunta que son los errores que ningun canal
+puede corregir.
+
+**Poblaciones, recalculadas desde cero y verificadas contra P49.**
+
+```text
+A = V03 correcto                              3692
+B = V03 mal y algun canal acierta               715
+C = V03 mal y ningun canal acierta              42
+errores totales                                757
+verificacion 757 / 715 / 42                    True
+```
+
+**Advertencia de soporte, que condiciona todo lo demas.** Las 42 celdas de C proceden de
+**33 tweets distintos**, y 9 de las 42 celdas vienen de solo 3 tweets con las tres
+etiquetas mal. El soporte efectivo es **33 observaciones, no 42**. Cualquier
+enrichecimiento de este residuo debe leerse con esa cifra delante.
+
+**Composicion.** FP (V03=1, y=0) **22** celdas, FN (V03=0, y=1) **20** celdas. Por
+etiqueta, el porcentaje de errores que son no rescatables es **HS 2,85 pct**, **TR 7,32
+pct**, **AG 7,58 pct**: el residuo se concentra en AG y TR, no en HS.
+
+**Margen y confianza.** El **85,7 por ciento** de C cae en el bin de margen alto
+`[0,20, 1]`, y **36 de 42** son errores de alta confianza. P49 lo sugirio y P54 lo
+confirma. Es coherente con P53: en la frontera de decision, la propia confianza de V03
+bloquea cualquier correccion.
+
+**Una impresion mia que los datos corrigen.** Leer las 42 celdas sugiere con fuerza que el
+residuo es `insulto lexico sin escalada`. Al medirlo:
+
+```text
+lexico de insulto en C   66,67 pct
+lexico de insulto en A   53,36 pct
+enrichment C/A            1,25x    p = 0,0566
+```
+
+No es discriminante. La impresion cualitativa era correcta sobre las celdas de AG y
+equivocada sobre el conjunto. **El insulto esta presente en la mitad de todas las celdas**,
+correctas e incorrectas por igual.
+
+**El mayor candidato, y por que no es hipotesis.** La negacion:
+
+| atributo | n en C | pct C | pct A | enrichment C/A | p |
+|---|---:|---:|---:|---:|---:|
+| negacion | 17 | 40,48 pct | 22,35 pct | **1,81** | **0,0064** |
+| marcador de contraste | 5 | 11,90 pct | 5,63 pct | 2,11 | 0,0858 |
+| negacion **y** contraste | **1** | 2,38 pct | 3,11 pct | **0,76** | 0,7353 |
+
+**El mecanismo que la lectura cualitativa sugeria queda REFUTADO.** Proponia que la
+negacion era *concedente*, es decir que licenciaba lo que venia despues, como en "no soy
+racista pero si persona". Medido: **una sola celda de 42** cumple negacion y contraste, y
+el enrichment es de **0,76x**, o sea nulo. Ademas la negacion tiene tambien enrichment de
+**rescate** sobre B de 1,55x, luego **marca celdas???? UAS difficultes en general y no un modo de fallo concreto**. El mecanismo queda **sin explicar**, y se registra asi en lugar de proponer uno.
+
+**Los otros dos candidatos, y el argumento que los cierra.**
+
+| candidato | n en C | enrichment C/A | p | valor absoluto |
+|---|---:|---:|---:|---:|
+| `mi + insulto` (posesivo) | **4** | 7,33 | 0,0022 | ~0,0005 de macro-F1 |
+| grupo marginal (`sin papeles`, `inmigrante`) | **9** | 2,68 | 0,0052 | ~0,0011 de macro-F1 |
+
+El lexico de grupo marginal **no aparece en ningun script del proyecto** como feature:
+`sin_papeles` e `indocumentad` dan 0 ficheros. Luego el mecanismo no se ha probado. Pero
+**9 celdas no alcanzan el margen de adopcion**: 26,75 celdas valen aproximadamente 0,003
+de macro-F1, luego 9 valen 0,0011. Y por el resultado ya establecido en P51 a P53, una
+regla que acierte esas 9 celdas tambien dana otras, con neto negativo.
+
+**Taxonomia retrospectiva de las 42 celdas.** Marcada como retrospectiva, porque el modelo
+vio texto y etiqueta a la vez:
+
+| categoria | n | pct de C |
+|---|---:|---:|
+| FP: insulto lexico sin escalada | 21 | 50,0 pct |
+| FN: narrativa sobre grupo marginal | 9 | 21,4 pct |
+| FN: insulto con agresividad no activada | 6 | 14,3 pct |
+| FN: agresividad o target no lexicalizada | 4 | 9,5 pct |
+| FP: error no lexicalizado | 1 | 2,4 pct |
+| FN: discurso citado o atribuido | 1 | 2,4 pct |
+
+**Reconciliacion con los 15 hallazgos del EDA original.** Se reportan **dos** enrichments,
+porque `error enrichment` solo dice donde V03 falla: `rescue enrichment` dice donde hay
+alternativa y `non-rescue enrichment` dice donde no la hay. Ninguno de los quince
+hallazgos alcanza un enrichment de no-rescate superior a 2,1 con soporte util.
+
+**Decision.** `P54_RESEARCH_GAP = NONE`, con **0 hipotesis nuevas**. La conclusion es
+especifica y no un cierre generico:
+
+1. **No es falta de informacion en el texto.** El 66,67 por ciento de C ya contiene el
+   lexico de insulto, y el reparto por etiqueta es desigual de una manera que el texto si
+   explica. La informacion esta presente y el modelo la ve.
+2. **Es, en su mayor parte, desacuerdo de frontera de etiqueta.** Insulto lexico con
+   etiqueta 0, y narrativa sobre grupo con etiqueta 1. En ambos casos el texto es
+   inequivoco y la lectura del anotador es una convencion que no se deriva del texto.
+3. **No queda fenomeno semantico con soporte suficiente y valor material.** El mayor
+   candidato tiene 17 celdas, su mecanismo queda sin explicar, y 17 celdas valen unos
+   0,002 de macro-F1, por debajo del margen de 0,003.
+
+**Lo que no se afirma.** No se afirma que sea imposible mejorar. Se afirma que en este
+residuo no hay mecanismo semantico con soporte y valor material, y que la via de datos
+observables quedo cerrada por P52 y P53 con una **cota**, no por falta de intento.

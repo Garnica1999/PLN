@@ -1107,3 +1107,47 @@ definido, con proporciones que no sumaban 1.
 
 **Estado del campeon.** Sin cambios. V03 intacto. 0 modelos, 0 submissions, 0 busqueda de
 umbrales, 0 consultas a Kaggle, 0 uso de holdout o test. No se entrena modelo.
+
+
+---
+
+## Fase P54 (2026-09-28) - Atlas semantico de los errores no rescatables
+
+**Que se respondio.** Que son los errores que ningun canal historico puede corregir, y si
+eso es representacion, decision o informacion ausente.
+
+```text
+A correcto        3692
+B rescatable       715
+C no rescatable     42   de 33 tweets distintos
+errores            757   verificado contra P49
+FP 22  FN 20
+HS 2,85 pct | TR 7,32 pct | AG 7,58 pct de los errores son no rescatables
+margen alto       85,7 pct de C
+alta confianza    36 de 42
+P54_RESEARCH_GAP  = NONE
+hipotesis nuevas  = 0
+```
+
+**El soporte efectivo es 33, no 42.** Las 42 celdas proceden de 33 tweets, y 9 de ellas
+vienen de solo 3 tweets con las tres etiquetas mal.
+
+**El residuo no es falta de informacion.** El 66,67 por ciento de C ya contiene el lexico
+de insulto, y solo el 2,85 por ciento de los errores de HS son no rescatables frente al
+7,58 por ciento de AG.
+
+**Es frontera de etiqueta.** Mitad falsos positivos con insulto lexico y etiqueta 0, mitad
+falsos negativos con narrativa sobre grupo y etiqueta 1. Texto inequivoco, convencion del
+anotador.
+
+**El mayor candidato, la negacion, no es hipotesis.** 17 celdas, enrichment 1,81 con
+p=0,0064, pero su mecanismo queda **sin explicar**: la version concedente se refuta con
+**una sola celda** de 42 y enrichment 0,76. Y la negacion tambien marca dificultad en
+general, no un modo de fallo.
+
+**El valor absoluto cierra el resto.** `mi + insulto` da 7,33x con 4 celdas; el lexico de
+grupo marginal da 2,68x con 9 celdas y no aparece en ningun script del proyecto. Ninguno
+alcanza el margen: 26,75 celdas valen ~0,003 de macro-F1.
+
+**Estado del campeon.** Sin cambios. V03 intacto. 0 modelos, 0 submissions, 0 consultas a
+Kaggle, 0 uso de holdout o test. 0 filas nuevas en `experiments.csv`.

@@ -1632,3 +1632,116 @@ ninguna politica imaginable supere V03.
 
 *Seccion generada por `experiments/v53_00_politica_fina.py` y
 `experiments/v53_01_integrar_notebook.py`. Sin push: la rama sigue local.*
+
+
+---
+
+## Addendum P54 (2026-09-28) - El residuo es frontera de etiqueta, no informacion ausente
+
+### La pregunta, respondida
+
+> ?Los errores restantes de V03 son errores de representacion, errores de decision, o casos
+> donde el texto disponible simplemente no contiene suficiente informacion?
+
+**Ninguna de las tres, en su forma habitual. Son, sobre todo, desacuerdos de frontera de
+etiqueta.**
+
+### El soporte, antes que nada
+
+| magnitud | valor |
+|---|---:|
+| celdas de C | 42 |
+| **tweets distintos** | **33** |
+| celdas de C que vienen de 3 tweets con las tres etiquetas mal | 9 |
+
+El soporte efectivo es **33 observaciones, no 42**. Toda enrichment de este residuo debe
+leerse con esa cifra delante.
+
+### Composicion
+
+FP (V03=1, y=0) **22** ? FN (V03=0, y=1) **20**. Y el reparto por etiqueta es desigual:
+
+| etiqueta | errores | no rescatables | pct |
+|---|---:|---:|---:|
+| HS | 316 | 9 | **2,85 pct** |
+| TR | 164 | 12 | 7,32 pct |
+| AG | 277 | 21 | 7,58 pct |
+
+El **85,7 por ciento** de C cae en margen alto, y **36 de 42** son errores de alta
+confianza. P49 lo sugirio, P54 lo confirma.
+
+### Una impresion mia que los datos corrigen
+
+Leer las 42 celdas sugiere con fuerza que el residuo es `insulto lexico sin escalada`. Al
+medirlo:
+
+| | pct con lexico de insulto |
+|---|---:|
+| C (no rescatable) | 66,67 pct |
+| A (correcto) | 53,36 pct |
+| **enrichment C/A** | **1,25x**, p = 0,0566 |
+
+**No discrimina.** El insulto esta en la mitad de todas las celdas, correctas e
+incorrectas por igual. La lectura cualitativa era correcta sobre el subconjunto de AG y
+equivocada sobre el conjunto.
+
+### El mayor candidato, y por que no es hipotesis
+
+La **negacion** es el atributo con mas fuerza en todo el residuo:
+
+| atributo | n en C | pct C | pct A | enrichment C/A | p |
+|---|---:|---:|---:|---:|---:|
+| negacion | 17 | 40,48 pct | 22,35 pct | **1,81** | **0,0064** |
+| marcador de contraste | 5 | 11,90 pct | 5,63 pct | 2,11 | 0,0858 |
+| negacion **y** contraste | **1** | 2,38 pct | 3,11 pct | **0,76** | 0,7353 |
+
+La lectura cualitativa proponia un mecanismo *concedente*: la negacion licencia lo que
+viene despues, como en ?no soy racista pero si persona?. **Queda refutado**: una sola celda
+de 42 lo cumple, con enrichment 0,76x. Y la negacion tambien tiene enrichment de **rescate**
+sobre B de 1,55x, luego **marca celdas dificiles en general, no un modo de fallo concreto**.
+El mecanismo se declara **sin explicar**.
+
+### Los otros dos candidatos, y el argumento del valor absoluto
+
+| candidato | n en C | enrichment C/A | p | valor en macro-F1 |
+|---|---:|---:|---:|---:|
+| `mi + insulto` (posesivo) | **4** | 7,33 | 0,0022 | ~0,0005 |
+| grupo marginal (`sin papeles`, `inmigrante`) | **9** | 2,68 | 0,0052 | ~0,0011 |
+
+El lexico de grupo marginal **no aparece en ningun script del proyecto**: `sin_papeles` e
+`indocumentad` dan 0 ficheros. El mecanismo no se ha probado. Pero **26,75 celdas valen
+~0,003 de macro-F1**, luego ninguno llega al margen, y por el resultado de P51 a P53 una
+regla que acierte esas celdas tambien dana otras.
+
+### Taxonomia retrospectiva de las 42 celdas
+
+| categoria | n | pct de C |
+|---|---:|---:|
+| FP: insulto lexico sin escalada | 21 | 50,0 pct |
+| FN: narrativa sobre grupo marginal | 9 | 21,4 pct |
+| FN: insulto con agresividad no activada | 6 | 14,3 pct |
+| FN: agresividad o target no lexicalizada | 4 | 9,5 pct |
+| FP: error no lexicalizado | 1 | 2,4 pct |
+| FN: discurso citado o atribuido | 1 | 2,4 pct |
+
+Marcada como **retrospectiva**: el modelo vio texto y etiqueta a la vez, luego describe y
+no infiere.
+
+### Decision
+
+`P54_RESEARCH_GAP = NONE`, con **0 hipotesis nuevas**. La conclusion es especifica:
+
+1. **No es falta de informacion en el texto.** El 66,67 por ciento de C ya contiene el
+   lexico de insulto, y el reparto por etiqueta (2,85 / 7,32 / 7,58 por ciento) es desigual
+   de un modo que el texto si explica.
+2. **Es, en su mayor parte, desacuerdo de frontera de etiqueta.** Insulto lexico con
+   etiqueta 0, y narrativa sobre grupo con etiqueta 1. En ambos casos el texto es
+   inequivoco y la lectura del anotador es una convencion que no se deriva del texto.
+3. **No queda fenomeno semantico con soporte suficiente y valor material.**
+
+**Lo que no se afirma.** No se afirma que sea imposible mejorar. Se afirma que en este
+residuo no hay mecanismo semantico con soporte y valor material, y que la via de datos
+observables quedo cerrada por P52 y P53 con una **cota**, no por falta de intento.
+
+*Seccion generada por `experiments/v54_00_atlas_no_rescatable.py` y
+`experiments/v54_01_integrar_notebook.py`. Sin push: la rama sigue local.*
