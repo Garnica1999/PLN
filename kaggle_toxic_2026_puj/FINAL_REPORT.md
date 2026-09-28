@@ -1269,3 +1269,83 @@ escuchado. Ninguna de las familias probadas en V21-V48 attacka eso.
 
 *Seccion generada por `experiments/v49_00_rescate_forense.py` y
 `experiments/v49_01_integrar_notebook.py`. Sin push: la rama sigue local.*
+
+
+---
+
+## Addendum P50 (2026-09-28) - El techo es enorme, y no se puede cobrar
+
+### La pregunta de fondo, respondida
+
+> El problema historico no era falta de senal, sino incapacidad para identificar que canal es
+> correcto en cada celda?
+
+**Si, en el diagnostico. No, en el remedio.** Y esa distincion es el resultado de la fase.
+
+### El techo del oracle
+
+| magnitud | valor |
+|---|---:|
+| macro-F1 de V03 | 0,7772114525 |
+| macro-F1 del oracle | 0,9870178614 |
+| **delta** | **+0,2098064089** |
+| celdas con alguna accion correcta | 4407 de 4449 |
+| celdas sin ninguna accion correcta | 42 |
+
+Por etiqueta: HS +0,231382, TR +0,170787, AG +0,227250. **69,9 veces** el margen de 0,003 que la
+directiva exigia. La idea de que macro-F1 rindiese poca ganancia practica queda **refutada**.
+
+### La captura
+
+| selector | corrected_cv | delta | rescate | damage | net |
+|---|---:|---:|---:|---:|---:|
+| B0 V03 | 0,7772114525 | +0,0000000000 | 0 | 0 | 0 |
+| B1 mayoria de los 20 canales | 0,3502747884 | -0,4269366641 | 361 | 1645 | -1284 |
+| B2 canal mas fiable | 0,3616799365 | -0,4155315160 | 373 | 1655 | -1282 |
+| B3 V03 salvo mayoria | 0,3502747884 | -0,4269366641 | 361 | 1645 | -1284 |
+| **S1 selector cross-fitted** | **0,7657442265** | **-0,0114672260** | **48** | **67** | **-19** |
+
+**0 de 5 pliegues positivos.** Y la cifra que lo cierra: la accion que elige S1 acierta **82,56 %**
+de las celdas, mientras no cambiar nunca acierta **82,98 %**. El selector es **peor que abstenerse**.
+
+### Por que falla
+
+La regla es `argmax` de P(acierta), luego premia al canal mas **predecible**, no al mas util. Lo que
+eligio de verdad:
+
+| accion | veces | net real |
+|---|---:|---:|
+| KEEP_V03 | 4158 | 0 |
+| `cita:NEG` | 109 | **-1706** |
+| `synt:SYN-POS` | 81 | -705 |
+| `emoc:NB-WORD-LR@C=1.0` | 30 | -46 |
+
+**Todos los canales que eligio tienen net negativo**, y los dos mas elegidos son los dos peores del
+pool. El AUC maximo (0,7237) lo tiene precisamente el canal con peor net.
+
+Y la razon de fondo: **19 de los 20 canales tienen accuracy inferior a 0,5 sobre el conjunto de
+desacuerdo**, es decir sobre las celdas donde un selector los usaria. Solo V03 con umbral 0.5 llega
+a 0,5420. El danio se concentra entero en la frontera: el bin de margen `[0, 0,10)` aporta **net -22**,
+`[0,10, 0,20)` aporta +3, y `[0,20, 1]` no cambia una sola celda.
+
+### Decision
+
+`CASE B`. `CONTEXTUAL_SELECTION = CLOSED`. S2 no se ejecuta por regla de la directiva. Sin bootstrap
+ni segunda particion, porque el gate de 0,003 no se pasa.
+
+### Lo que esto cambia en el diagnostico del techo de V03
+
+Hasta aqui la explicacion era "probamos 15 familias y ninguna funciono", que no distingue entre las
+tres causas posibles. Ahora se distinguen dos, y la evidencia se inclina claramente por una:
+
+- **No es que falte senal.** Hay +0,2098 de macro-F1 disponible en el pool historico.
+- **Es que la senal es difusa y no direccionable.** 715 celdas tienen una alternativa correcta,
+  ninguna tiene una firma observable que diga cual, y los canales son individualmente peores que una
+  moneda en el preciso conjunto donde habria que elegir.
+
+Es una explicacion mucho mas solida del techo actual, y tambien mas dura: **no queda una via legal de
+seleccion contextual que explorar**, porque la dificultad no es de modelo sino de informacion.
+
+*Seccion generada por `experiments/v50_00_brecha_y_oracle.py`,
+`experiments/v50_01_selector.py` y `experiments/v50_02_integrar_notebook.py`. Sin push: la rama sigue
+local.*

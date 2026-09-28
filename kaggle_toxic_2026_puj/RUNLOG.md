@@ -1947,3 +1947,46 @@ los propios nombres de variante en primer nivel; y columnas de contexto que no s
 dataframe base. Los cuatro detectados por ejecucion real con `exit code` capturado sin pipe.
 
 **Sin push, sin merge, sin reset, sin rebase, sin PR.**
+
+
+---
+
+## 2026-09-28 - Fase P50: seleccion contextual de canal y techo del oracle
+
+**Alcance.** 0 modelos, 0 submissions, 0 consultas a Kaggle, 0 uso de holdout o test.
+
+**V50-00** (`experiments/v50_00_brecha_y_oracle.py`, exit code 0): auditoria de brecha de las cinco
+categorias contra los artefactos, reconstruccion del pool de 20 canales, techo del oracle, tabla de
+fiabilidad condicional al desacuerdo, y construccion de la matriz de 53 variables observables por
+label-cell. Artefactos: `reports/p50_selector_gap_audit.md`, `p50_oracle_ceiling.csv`,
+`p50_channel_reliability.csv`, `p50_gap_and_oracle.json`, `features/p50_celda_features.npz`.
+
+**V50-01** (`experiments/v50_01_selector.py`, exit code 0): baselines B0-B3, S1 con 21
+`LogisticRegression` y cross-fitting de 5 pliegues canonicos, AUC out-of-fold por accion, metricas
+por pliegue, interseccion de errores, analisis por margen y por confianza, y correlacion de
+Spearman entre AUC y net real. Artefactos: `reports/p50_selector_results.{json,csv}`,
+`p50_selector_analysis.md`.
+
+**V50-02** (`experiments/v50_02_integrar_notebook.py`, exit code 0): seccion 46, notebook 194 -> 196
+celdas, celda de codigo con returncode 0.
+
+**Bug propio mas grave de la fase, y casi pasa.** La primera version de `f1_macro` aplastaba las
+4449 celdas con `ravel` antes de llamar a `f1_score`. sklearn ve ahi un unico problema binario sobre
+4449 muestras y devuelve el **F1 agregado, 0,8186415291**, no el macro-F1 multietiqueta. El valor
+canonico `corrected_cv` de V03 es **0,7772114525165721**, que es la media de los tres F1 por etiqueta.
+Con la version erronea, el delta del oracle salia **+0,1713** en vez de **+0,2098**: inflaba
+exactamente la magnitud que la fase existe para medir. Corregido a `f1_score(y, p,
+average="macro")` sobre la matriz 2D y verificado celda a celda contra el `corrected_cv` canonico.
+Es exactamente el fallo que P45 audito en el scorer del proyecto, reincidido en codigo nuevo.
+
+**Otros errores propios.** Desempaquetado invertido de `acciones.shape`; calculo del AUC sobre el
+conjunto de entrenamiento en vez de out-of-fold, que habria inflado la cifra de identificabilidad;
+un `np.repeat`innecesario en el analisis por margen; una f-string anidada rota en la tabla de AUC
+del notebook; identificadores CJK en dos scripts. Los cinco detectados por ejecucion real con
+`exit code` capturado sin pipe.
+
+**S2 no se ejecuto**, conforme a la regla de la especificacion que lo prohibe cuando S1 ya falla de
+forma clara. El gate de 0,003 no se pasa, luego tampoco se calcularon bootstrap ni segunda
+particion.
+
+**Sin push, sin merge, sin reset, sin rebase, sin PR.**

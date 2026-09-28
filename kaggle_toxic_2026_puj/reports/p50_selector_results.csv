@@ -1,0 +1,6 @@
+selector,corrected_cv,delta_vs_v03,celdas_cambiadas,rescate,damage,net,auc_maxima,pliegues_positivos,bootstrap_ic95
+B0_V03,0.7772114525,0.0,0,0,0,0,,,
+B1_mayoria_canales,0.3502747884,-0.4269366641,2006,361,1645,-1284,,,
+B2_canal_mas_fiable_base:M1_word_lr,0.3616799365,-0.415531516,2028,373,1655,-1282,,,
+B3_V03_salvo_mayoria,0.3502747884,-0.4269366641,2006,361,1645,-1284,,,
+S1_correccion,0.7657442265,-0.011467226,291,48,67,-19,0.7672,0,

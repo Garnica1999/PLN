@@ -954,3 +954,37 @@ fuerte: no es que no haya rescate, es que es difuso e identificable.
 
 **Estado del campeon.** Sin cambios. V03 intacto. 0 modelos, 0 submissions, 0 consultas a
 Kaggle, 0 uso de holdout o test.
+
+
+---
+
+## Fase P50 (2026-09-28) - Contextual Channel Selection
+
+**Que se res respondio.** Si el techo de V03 se explica por falta de senal o por incapacidad de
+identificacion.
+
+```text
+SELECTOR_FAMILY            = GENUINELY_NEW (la categoria E no existia)
+ORACLE_DELTA               = +0,209806 macro-F1  (69,9x el margen de 0,003)
+S1_CORRECTED_CV            = 0,7657442265
+S1_DELTA                   = -0,0114672260
+PLIEGUES_POSITIVOS         = 0 de 5
+RESCATE / DAMAGE / NET     = 48 / 67 / -19
+ACCION ELEGIDA             = 82,56 pct de aciertos
+NO CAMBIAR NUNCA           = 82,98 pct de aciertos
+CASE                       = B
+```
+
+**El techo es enorme y la captura es negativa.** El hipotesis planteo que macro-F1 podria ofrecer
+poca ganancia practica: **queda refutado**. Los 715 rescates valen **+0,2098 de macro-F1**, setenta
+veces el margen exigido.
+
+**Y sin embargo el selector pierde 0,0115 y queda 19 celdas por debajo de no hacer nada.** Todos los
+canales que eligio tienen net negativo, y los dos mas elegidos son los dos peores del pool. El
+argmax sobre P(acierta) premia la **predecibilidad**, no la **utilidad**.
+
+**19 de los 20 canales tienen accuracy inferior a 0,5** sobre el conjunto de desacuerdo, es decir
+sobre exactamente las celdas donde un selector los usaria. Solo V03 con otro umbral llega a 0,5420.
+
+**Estado del campeon.** Sin cambios. V03 intacto. 0 modelos, 0 submissions, 0 consultas a Kaggle, 0
+uso de holdout o test.

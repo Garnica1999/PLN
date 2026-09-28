@@ -4056,3 +4056,92 @@ diagnostico al anadir el enriquecimiento en irrecuperables: `negacion` tiene lif
 se concentra en errores **irrecuperables**, mientras `hashtags` tiene lift 0,245 y se
 concentra en errores **rescatables**. P48 las declaro a todas indistinguibles porque solo
 midio una de las dos direcciones.
+
+
+### D-121. La senal existe y es enorme, pero no es identificable: el techo es +0,2098 y el selector pierde 0,0115
+
+**Contexto.** P49 cerro con una pregunta abierta: 715 de 757 celdas de error de V03 las acierta
+al menos uno de los 20 canales historicos, pero ningun canal tiene net positivo. P50?es que es que el
+problema no era falta de senal sino incapacidad de identificacion, y exige medir el techo del
+oracle antes de entrenar nada.
+
+**Paso 1, auditoria de brecha.** Se clasificaron las cinco categorias contra los artefactos, no
+contra los nombres de los scripts. A (ensayo) en V17 y V23, B (ponderacion global) en V17, V23 y
+`17_stacking_v2.py`, C (umbral) en los umbrales de V03, D (correccion selectiva) en **V18-01**. E
+(seleccion por label-cell con abstencion) **no esta implementada en ninguna parte**, luego
+`SELECTOR_FAMILY = GENUINELY_NEW`. Pero D, que es su caso degenerado, ya dio veredicto negativo:
+5 challengers, 0 con senal tras Bonferroni, **mejor AUC 0,6181**, mejor mejora fuera de muestra
+**2,4 celdas frente a 26,75 necesarias**.
+
+**Paso 2, techo del oracle.** Con `y_true` y el espacio completo de 21 acciones:
+
+```text
+macro-F1 de V03     = 0,7772114525
+macro-F1 del oracle  = 0,9870178614
+DELTA               = +0,2098064089
+```
+
+Por etiqueta: HS +0,231382, TR +0,170787, AG +0,227250. Son **69,9 veces** el margen de 0,003 que la
+especificacion fija. La hipotesis suspicion de que macro-F1 ofreciera poca ganancia practica queda
+**refutada**: la ganancia seria enorme. De las 4449 celdas, 4407 tienen alguna accion correcta y
+**42 no la tienen**, luego el oracle no puede llegar a 1,0.
+
+**La fiabilidad de los canales lo anticipaba y es el dato clave.** Medida sobre el **conjunto de
+desacuerdo**, es decir exactamente donde un selector usaria cada canal, la accuracy es:
+
+| canal | accuracy global | accuracy dado desacuerdo | net |
+|---|---:|---:|---:|
+| `base:M2_union_lr_c2` | 0,8323 | **0,5420** | +11 |
+| `emoc:NB-UNION-LR@C=1.0` | 0,8274 | 0,4860 | -11 |
+| `base:M3_union_svc` | 0,8283 | 0,4828 | -7 |
+| `cita:NEG` | 0,4464 | 0,1416 | **-1706** |
+
+**19 de los 20 canales estan por debajo de 0,5** sobre las celdas donde discrepan de V03, es decir
+son peores que una moneda. El unico que supera 0,5 es el propio V03 con umbral 0.5, que no es un
+canal alternativo sino la accion de abstenerse.
+
+**Paso 3, el selector.** 21 `LogisticRegression` binarios, uno por accion, con `KEEP_V03` siempre
+disponible, 53 variables observables, cross-fitting con los pliegues canonicos de TOXIC agrupados.
+Sin `y_true`, sin correccion de V03, sin el canal correcto.
+
+```text
+corrected_cv   = 0,7657442265
+delta vs V03   = -0,0114672260
+pliegues       = 0 de 5 positivos
+rescate        = 48
+damage         = 67
+net            = -19
+abstencion     = 93,46 pct
+```
+
+**La cifra que decide el caso**: la accion que elige el selector acierta **82,56 %** de las celdas.
+No cambiar nunca acierta **82,98 %**. El selector es **19 celdas PEOR que abstenerse**.
+
+**Por que falla, de forma mecanica.** La regla es argmax de P(acierta), luego premia al canal mas
+**predecible**, no al mas util. Y las acciones que S1 eligio de verdad fueron:
+
+```text
+KEEP_V03              4158 veces   (net 0, correcto)
+cita:NEG               109 veces   net -1706   <- el peor canal del pool
+synt:SYN-POS            81 veces   net  -705   <- el segundo peor
+emoc:NB-WORD-LR@C=1.0   30 veces   net   -46
+emoc:ORT-AE@C=2.0       11 veces   net   -84
+emoc:NB-UNION-SVC       10 veces   net   -57
+```
+
+**Todos los canales que eligio tienen net negativo**, y los dos mas elegidos son los dos peores. La
+correlacion de Spearman entre el AUC de un canal y su net real es **+0,5559 (p 0,0109)**, o sea en
+promedio el canal mas predecible dana menos, pero **el canal de maximo AUC (0,7237) es precisamente
+el de peor net**. Ese es el fallo sistematico de un argmax sobre P(acierta).
+
+**El danio esta todo en la frontera.** Por margen de V03: `[0, 0,10)` cambia 112 celdas, rescata 45,
+dana 67, **net -22**; `[0,10, 0,20)` cambia 3, net +3; `[0,20, 1]` no cambia ninguna. El selector
+solo actua donde V03 ya dudaba, y ahi la informacion para elegir no existe.
+
+**S2 no se ejecuta.** La especificacion lo prohibe cuando S1 ya falla de forma clara, y S1 tiene
+delta negativo y cero pliegues positivos. El gate de 0,003 no se pasa, luego **no hay bootstrap ni
+segunda particion**.
+
+**Decision.** `CASE B`. `CONTEXTUAL_SELECTION = CLOSED`. La conclusion no es que falte senal: es que
+la senal existe, es enorme, y **no es direccionable**. Una explicacion del techo actual de V03
+sustancialmente mejor que "probamos 15 familias y ninguna funciono".
