@@ -1,5 +1,5 @@
 ID,family,novelty_status,status,experiments_used,best_corrected_cv,delta_vs_V03,folds,bootstrap,rescue,damage,net,decision,reason
-P59-A,geometria local,PARTIALLY_DUPLICATE,OPEN,0,n/a,n/a,n/a,n/a,n/a,n/a,n/a,PENDING,sin ejecutar
+P59-A,geometria local,PARTIALLY_DUPLICATE,CLOSED,1,0.779641,+0.002429,3/5,"[-0.008991, +0.000674]",55,73,-18,CLOSED.,CLOSED.
 P59-B,evidencia multiple instancia,NOVEL,OPEN,0,n/a,n/a,n/a,n/a,n/a,n/a,n/a,PENDING,sin ejecutar
 P59-C,ruido de etiqueta formal,NOVEL,OPEN,0,n/a,n/a,n/a,n/a,n/a,n/a,n/a,PENDING,sin ejecutar
 P59-D,influencia,NOVEL,OPEN,0,n/a,n/a,n/a,n/a,n/a,n/a,n/a,PENDING,sin ejecutar

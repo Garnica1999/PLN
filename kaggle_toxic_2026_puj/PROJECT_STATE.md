@@ -1396,3 +1396,70 @@ defendible.
 
 **P58 se detiene. No se ha enviado nada, no se ha modificado ningun artefacto, y no se abre
 P59.**
+
+
+---
+
+## Fase P59 (2026-09-28) - Frontier research: geometria local, estructura y data-centric
+
+**Naturaleza: investigacion de frontera. 0 submissions en toda la fase, 0 consultas a
+Kaggle, 0 uso de holdout, 0 uso de test labels. V03 congelado e intacto.**
+Presupuesto: 12 experimentos principales + 6 de reserva. Decision **D-130** (track A).
+
+**Pregunta de la fase:** ?existe una estructura local, geometrica o data-centric del
+train que V03 no esta explotando y que pueda producir una mejora reproducible?
+
+### Gate de novedad ejecutado (P59-00), y su consecuencia
+
+El registro de hipotesis **verifica** sus precedentes contra `experiments.csv` y
+aborta si la cifra citada no esta en la fila real. 16 precedentes verificados.
+Eso cazo dos transcripciones erroneas propias durante la redaccion.
+
+```text
+P59-G  DUPLICATE            cerrado SIN consumir experimento (V8-03 ya lo hizo)
+P59-A  PARTIALLY_DUPLICATE  abierto, alcance reducido a lo no visto
+P59-B  NOVEL                V03 nunca se ha usado como puntuador local
+P59-C  NOVEL                V30-00 cerro por identificadores de dificultad, no por
+                            un estimador formal de etiqueta latente
+P59-D  NOVEL                con precedente adyacente declarado (V6-03)
+P59-E  NOVEL                la propagacion dura ya tiene techo nulo
+P59-F  NARROW               solo sobrevive con contexto secuencial real
+P59-H  NOVEL                0 coincidencias en 323 filas
+P59-I  NOVEL                Huber no es redescendiente y V35-01 cambio el resolutor
+```
+
+### P59-A Voronoi: CLOSED con 1 experimento
+
+```text
+AUC del score contra error de V03          0,725194   IC95 [0,7061, 0,7446]
+AUC del score contra celda no rescatable    0,471798   IC95 [0,3954, 0,5469]
+```
+
+La geometria local **predice los errores de V03** con IC95 que excluye 0,5. **No
+identifica las 42 celdas no rescatables de P54**: el IC95 incluye 0,5, luego no hay
+senal en ninguna direccion. El objetivo fuerte del parrafo 60 queda refutado.
+
+El bloque complementario, que el parrafo 14 autorizaba porque la puerta del parrafo
+15 si se supero:
+
+```text
+A  V03 crudo                     0,7772114525
+B  LR([p_v03])                   0,7743581357   -0,0028533168
+C  LR([p_v03, 8 rasgos])         0,7796406441   +0,0024291916
+C menos B                        +0,0052825084   con 5 de 5 pliegues
+IC95 de C-A                      [-0,008991, +0,000674]   incluye cero
+acierto en las celdas que cambian 0,4297   por debajo de 0,5
+rescate 55 | damage 73 | neto -18
+de las 42 no rescatables, rescata 1
+```
+
+H1 y H2 fallan, luego `CLOSED`. El mecanismo del fallo es que el acierto en las
+celdas modificadas esta **por debajo del azar**: el delta de metrica es positivo y
+el neto es negativo a la vez. Y el detalle que no se pierde: **la geometria aporta
++0,005283 sobre el brazo B con 5 de 5 pliegues**; lo que no hace es mejorar el
+punto de operacion de V03, cuya puntuacion cruda ya es mejor que cualquier reajuste.
+
+**Experimentos registrados:** 1 (`P59-02`). `experiments.csv` pasa de 323 a 324.
+Notebook 212 -> 216 celdas, secciones 55 y 56, ambas con `returncode = 0` aisladas.
+
+**Formulacion:** > V03 remains the best verified leaderboard result.

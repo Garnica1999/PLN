@@ -2220,3 +2220,64 @@ distintos, y confundirlas seria el error de razonamiento mas caro disponible aho
 
 *Seccion generada por `experiments/v58_00_auditoria_candidatos.py` y
 `experiments/v58_01_integrar_notebook.py`. Sin push: la rama sigue local.*
+
+
+---
+
+## Addendum P59 - Frontier research (2026-09-28)
+
+> 0 submissions en toda la fase, 0 consultas a Kaggle, 0 holdout, 0 test labels.
+> V03 congelado: `corrected_cv 0.7772114525165721`, LB 0.78306.
+> Decisiones **D-130** (track A). `experiments.csv`: 323 -> 324.
+
+### El gate de novedad hizo su trabajo antes de gastar un solo experimento
+
+> **P59-G no se ejecuta.** V8-03 ya implemento lo que el parrafo 33 propone: seleccion
+> por peso alto bajo submuestras, a tres umbrales, con IC95 pareado. Negativo y
+> monotono (?0,003308 / ?0,004628 / ?0,018890; 1/5, 1/5, 0/5) y cerrado de forma
+> explicita sin reintento.
+
+El registro **verifica** sus precedentes contra `experiments.csv` y aborta si la
+cifra citada no esta en la fila real. Eso cazo dos transcripciones erroneas
+propias. Un precedente citado de memoria es evidencia inventada.
+
+### P59-A Voronoi ? `CLOSED`, 1 experimento
+
+| resultado | valor | IC95 |
+|---|---:|---|
+| AUC del score contra error de V03 | **0,725194** | [0,7061, 0,7446], excluye 0,5 |
+| AUC del score contra celda no rescatable | 0,471798 | [0,3954, 0,5469], **incluye 0,5** |
+
+```text
+A  V03 crudo                     corrected_cv 0,7772114525
+B  LR([p_v03])                   0,7743581357   -0,0028533168
+C  LR([p_v03, 8 rasgos])         0,7796406441   +0,0024291916
+C menos B                        +0,0052825084   con 5 de 5 pliegues
+IC95 pareado de C-A              [-0,008991, +0,000674]   incluye cero
+acierto en las celdas que cambian 0,4297   (por debajo de 0,5)
+rescate 55 | damage 73 | neto -18
+de las 42 celdas no rescatables, rescata 1
+```
+
+H1 (delta ? +0,003) y H2 (4/5 pliegues) fallan. El mecanismo del fallo es que el
+acierto en las celdas modificadas queda **por debajo del azar**: delta de metrica
+positivo y neto negativo a la vez. El filtro de detectabilidad de V8-02, que
+exigia ~0,55, habria bloqueado el envio igualmente.
+
+**El matiz que no conviene perder:** C supera a B en **+0,005283 con 5 de 5
+pliegues**. La geometria aporta algo real y medible. Lo que no hace es mejorar el
+punto de operacion de V03, cuya puntuacion cruda ya es mejor que cualquier reajuste.
+
+### Formulacion
+
+> V03 remains the best verified leaderboard result.
+
+```text
+SOSTIENE   la geometria local explica que celdas fallan, y no se explotaba
+NO SOSTIENE que exista una mejora de decision disponible por esa via
+```
+
+La segunda linea es la que manda. Predecir la dificultad de un ejemplo no es lo
+mismo que mejorar la decision, y V6-07 ya lo habia medido con otras senales.
+
+*Seccion generada por `experiments/p59_0*.py` y `p59_90_integrar_notebook.py`. Sin push.*

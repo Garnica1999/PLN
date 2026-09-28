@@ -1,0 +1,130 @@
+{
+  "familia": "P59_A_VORONOI_BLOCK",
+  "naturaleza": "EXPERIMENTO. 1 candidato, 15 ajustes de clasificador lineal, 0 submissions, 0 consultas a Kaggle, 0 uso de holdout, 0 uso de test. V03 no se modifica",
+  "fecha": "2026-09-28T04:12:17+00:00",
+  "experimento_id": "P59-02",
+  "brazos": {
+    "A_V03_crudo": {
+      "corrected_cv": 0.7772114525,
+      "nota": "OOF canonico congelado"
+    },
+    "B_LR_1_rasgo": {
+      "corrected_cv": 0.7743581357,
+      "delta": -0.0028533168,
+      "nota": "el coste de envolver la puntuacion de V03 en un ajuste nuevo"
+    },
+    "C_LR_9_rasgos": {
+      "corrected_cv": 0.7796406441,
+      "delta": 0.0024291916,
+      "rasgos": [
+        "d_same",
+        "d_opp",
+        "margen",
+        "pureza",
+        "cuota_opuesta",
+        "cuota_densa",
+        "soporte_celda",
+        "inconsistencia"
+      ]
+    }
+  },
+  "gates_pre_registrados": {
+    "delta_minimo": 0.003,
+    "pliegues_minimos": 4,
+    "tolerancia_H0": 0.01,
+    "aislamiento_vs_B": true,
+    "fijados_antes_de_ejecutar": true
+  },
+  "resultado_gates": {
+    "H0": true,
+    "H1": false,
+    "H2": false,
+    "H3": true,
+    "superados": false
+  },
+  "pliegues": {
+    "mejora_C_vs_A": 3,
+    "mejora_C_vs_B": 5,
+    "f1_C": [
+      0.795476,
+      0.789583,
+      0.780166,
+      0.752228,
+      0.781744
+    ],
+    "f1_A": [
+      0.79601,
+      0.794034,
+      0.77886,
+      0.738598,
+      0.779056
+    ]
+  },
+  "bootstrap": {
+    "delta_C_menos_A": [
+      -0.008991,
+      0.000674
+    ],
+    "delta_C_menos_B": [
+      -0.007193,
+      0.001798
+    ],
+    "n_repeticiones": 2000,
+    "semilla": 42,
+    "incluye_cero": true
+  },
+  "complementariedad": {
+    "rescate": 55,
+    "damage": 73,
+    "neto": -18,
+    "cambian": 128,
+    "acierto_en_las_que_cambian": 0.4297,
+    "ambos_correctos": 3619,
+    "ambos_fallan": 702,
+    "por_etiqueta": {
+      "HS": {
+        "f1": 0.7624720774,
+        "f1_v03": 0.7616892911,
+        "rescate": 12,
+        "damage": 15
+      },
+      "TR": {
+        "f1": 0.8175965665,
+        "f1_v03": 0.8157303371,
+        "rescate": 18,
+        "damage": 24
+      },
+      "AG": {
+        "f1": 0.7588532884,
+        "f1_v03": 0.7542147294,
+        "rescate": 25,
+        "damage": 34
+      }
+    },
+    "brazo_B": {
+      "rescate": 44,
+      "damage": 56,
+      "neto": -12,
+      "cambian": 100
+    },
+    "ensemble": {
+      "f1": 0.7796870436,
+      "ganancia": 0.0024755911
+    }
+  },
+  "residuo_42_celdas": {
+    "rescatadas_por_el_candidato": 1,
+    "nota": "el parrafo 44 prohibe aceptar una mejora que solo mueva ejemplos faciles; medir cuantas de las 42 toca es el control de eso"
+  },
+  "decision": "CLOSED. No supera los gates del parrafo 41. La geometria local predice los errores de V03 con AUC 0,725 y aun asi no aporta nada accionable: ese es el mismo resultado que V6-07 obtuvo con sus senales de sospecha, y confirma que predecir la dificultad de un ejemplo no es lo mismo que mejorar la decision. No se reintenta con mas prototipos, mas vecinos ni otra constante",
+  "registrado_en_experiments_csv": true,
+  "formulacion": "V03 remains the best verified leaderboard result.",
+  "gastos": {
+    "submissions": 0,
+    "ajustes_lineales": 30,
+    "consultas_kaggle": 0,
+    "uso_holdout": 0,
+    "uso_test": 0,
+    "segundos": 80.8
+  }
+}

@@ -2427,3 +2427,63 @@ dos fases seguidas: **conviene convertir los caracteres no-ASCII del diccionario
 a escapes `\uXXXX` desde el principio, no a posteriori.**
 
 **Sin push, sin merge, sin reset, sin rebase, sin PR.**
+
+
+---
+
+## 2026-09-28 - Fase P59: frontier research (tracks y gate)
+
+**P59-00** (`experiments/p59_00_registro_hipotesis.py`, exit 0, 0,2 s): registro de
+hipotesis con gate de novedad ejecutable. 16 precedentes verificados contra
+`experiments.csv`, abortando si la cifra citada no esta en la fila real.
+
+**El hallazgo que ahorra presupuesto: P59-G no se ejecuta.** V8-03 ya hizo
+exactamente lo que propone el parrafo 33, a tres umbrales (1636 / 927 / 455
+features; -0,003308, -0,004628, -0,018890; 1/5, 1/5, 0/5), con IC95 pareado, y se
+cerro con "No se reintenta con mas agresividad ni con otra constante de
+submuestreo". Un gate de novedad que no cierra pistas no esta haciendo su trabajo.
+
+**P59-01** (`experiments/p59_01_voronoi_local.py`, exit 0, 90,0 s): diagnostico
+Voronoi. 9 tests unitarios en verde, 5 teselaciones fold-internas, AUC del score
+0,725194 contra error de V03 con IC95 [0,7061, 0,7446], y 0,471798 contra celda no
+rescatable con IC95 [0,3954, 0,5469]. **Diagnostico, no experimento:** no entrena
+clasificador ni evalua `corrected_cv`, luego no se registro en `experiments.csv`
+(parrafo 50).
+
+**P59-02** (`experiments/p59_02_voronoi_bloque.py`, exit 0, 80,8 s): bloque
+complementario, 1 experimento registrado. Tres brazos para separar el coste del
+envoltorio del aporte de la geometria. H1 y H2 fallan, `CLOSED`.
+
+**P59-90** (`experiments/p59_90_integrar_notebook.py`, exit 0): integrador generico
+e idempotente. Seccion 55 (P59 Frontier Research) y 56 (P59-A). Las dos celdas se
+verifican **aisladas** con `returncode = 0`, no solo encadenadas.
+
+**Errores propios de esta fase, todos cazados por `exit code` real.**
+
+1. Dos precedentes citados **de memoria** en el registro de hipotesis. El gate los
+   rechazo porque las cadenas no existian en las filas del registro. Es exactamente
+   el fallo que el gate existe para impedir, y aparecio en el propio gate.
+2. `celda_c[error].all()` como comprobacion de que toda celda no rescatable es un
+   error: seleccionaba las 757 celdas con error, no las 42. Condicion trivialmente
+   verdadera, luego inutil.
+3. Comparar el `tweet_id` del atlas de P54 contra el **indice posicional** en vez
+   del identificador real: 0 celdas localizadas donde deberian ser 42.
+4. La matriz de distancias consulta-referencia construida como producto de
+   distancias a prototipos, que no es una distancia entre puntos. El calculo
+   estaba entero mal.
+5. `centros[d[0].sum()]` como primer medoid: indexaba un array con un float.
+6. Reemplazar globalmente `rescuable` por `rescatable` **corrompio la ruta** al
+   atlas de P54. Los reemplazos globales de cadenas nunca son seguros.
+7. Escaneo de bytes > 127 sobre un `.npz`: un ZIP es binario por naturaleza, luego
+   el control no significaba nada. Sustituido por una asercion de dtype.
+8. Editar la celda del notebook con cirugia de strings en vez de dejar que el
+   integrador idempotente la regenerase: duplico la seccion 56. Se revirtio el
+   notebook a HEAD y se reintegro.
+
+**El punto de fondo, que es el mas caro de los ocho:** tres de los ocho fallos
+eran de **suposicion** en vez de de medicion. La geometria se construyo entera
+sobre una distancia mal definida, y el resultado habria sido publicado sin que
+ningun control lo notara si no se hubiera escrito una celda de codigo que la
+consume.
+
+**Sin push, sin merge, sin reset, sin rebase, sin PR.**

@@ -5031,3 +5031,116 @@ Lo que SOSTIENE la auditoria: que **el conjunto de artefactos que hemos producid
 un candidato que justifique una sonda final. Lo que NO SOSTIENE: que no exista una mejora
 defendible. Son afirmaciones sobre estados distintos, y confundirlas seria el error de
 razonamiento mas caro disponible ahora mismo.
+
+
+### D-130. P59-A Voronoi: la geometria local predice los errores y aun asi no aporta nada
+
+**Contexto.** P58 cerro con `FINALIST = NONE` y senalo que eso era una afirmacion
+sobre el conjunto de artefactos, no sobre el problema. P59 abre una frontera de
+geometria local, y su gate de novedad (`experiments/p59_00_registro_hipotesis.py`)
+cerro **P59-G sin ejecutar ningun experimento**: V8-03 ya habia hecho exactamente
+lo que el parrafo 33 propone, a tres umbrales de seleccion, con IC95 pareado, y
+lo habia cerrado con "No se reintenta con mas agresividad ni con otra constante de
+submuestreo".
+
+**1. Lo que ya estaba hecho, y por que este track entra como `PARTIALLY_DUPLICATE`.**
+
+| precedente | que habia cerrado |
+|---|---|
+| V29-03 | 48 configuraciones de kNN, ninguna con net positivo |
+| V4-F01-F04 | la vecindad explica el error: +0,018 con IC95 [-0,013, +0,049], no significativo |
+| V6-07 | la senal de sospecha es un buen marcador de dificultad, no un limpiador |
+| EBD-07 | rasgos de vecindad dentro de un LR: 0,7818, "No se genera submission" |
+
+La pregunta "la geometria local explica los errores" estaba **contestada**. Lo no
+visto era el objeto matematico: prototipos de clase, celdas, margen, soporte de
+celda, y la comparacion contra las 42 celdas no rescatables de P54.
+
+**2. El metodo, y por que el coseno de la union no es un supuesto.**
+
+```text
+8 prototipos por clase y etiqueta, farthest-first + Lloyd, sin azar
+15 vecinos para la densidad local
+distancia = coseno de la union TF-IDF de V03, en las 27431 dimensiones
+```
+
+Cada bloque TF-IDF viene normalizado a norma 1, luego la norma de la union es
+`sqrt(2)` para toda fila y **`distancia_coseno_union = (cos_palabra + cos_caracter) / 2`
+exactamente**. Es una propiedad declarada del pipeline de V03, no una eleccion de
+este trabajo. Y no hay SVD: el parrafo 8 lo prohibe como experimento principal.
+
+**3. El resultado, separado en lo que SOSTIENE y lo que NO SOSTIENE.**
+
+```text
+AUC del score contra error de V03          0,725194   IC95 [0,7061, 0,7446]  excluye 0,5
+AUC del score contra celda no rescatable    0,471798   IC95 [0,3954, 0,5469]  INCLUYE 0,5
+rango percentil medio en C (42 celdas)      0,4721
+rango percentil medio en B (715 celdas)     0,6995
+```
+
+**SOSTIENE:** la geometria local predice los errores de V03. Eso es un hecho
+nuevo y con IC95 que excluye 0,5.
+**NO SOSTIENE:** que la geometria identifique las celdas no rescatables. El punto
+estimador queda por debajo de 0,5 y su IC95 **incluye 0,5**, luego **no hay senal
+en ninguna direccion**. El objetivo fuerte del parrafo 60 queda refutado.
+
+Una lectura honesta obliga a matizar: el rango percentil de C (0,4721) esta muy
+por debajo del de B (0,6995), y esa diferencia se lee a primera vista como una
+direccion invertida. Con 42 celdas positivas el AUC es muy ruidoso, y el bootstrap
+dice que esa diferencia **no** se distingue de cero. Por eso el veredicto es "sin
+senal" y no "senal invertida".
+
+**4. El bloque complementario, que el parrafo 14 autorizaba.**
+
+La puerta del parrafo 15 (AUC >= 0,60) si se supero, luego el parrafo 14 habilita
+el bloque. Tres brazos, porque el coste de envolver la puntuacion de V03 en un
+ajuste nuevo hay que separarlo del aporte de la geometria:
+
+```text
+A  V03 crudo                        corrected_cv 0,7772114525      (control congelado)
+B  LR([p_v03])                      corrected_cv 0,7743581357      -0,0028533168
+C  LR([p_v03, 8 rasgos Voronoi])    corrected_cv 0,7796406441      +0,0024291916
+
+C menos B                           +0,0052825084   con 5 de 5 pliegues
+C menos A                           +0,0024291916   con 3 de 5 pliegues
+IC95 pareado de C-A                 [-0,008991, +0,000674]   incluye cero
+rescate 55 | damage 73 | neto -18 | cambian 128
+acierto en las celdas que cambian   0,4297
+de las 42 no rescatables, rescata   1
+```
+
+| gate del parrafo 41 | resultado |
+|---|---|
+| H0 el envoltorio de un rasgo no rompe V03 | True |
+| H1 delta >= +0,003 frente a V03 | **False** (+0,002429) |
+| H2 al menos 4 de 5 pliegues | **False** (3/5) |
+| H3 supera al brazo B, luego es geometria y no envoltorio | True (+0,005283) |
+
+**5. El mecanismo del fallo, que es lo que queda.**
+
+El acierto en las celdas que cambian es **0,4297, por debajo de 0,5**: en las
+celdas que el candidato modifica acierta menos de la mitad. Por eso el delta de
+metrica es positivo y el **neto es negativo (-18)** a la vez. Y el filtro de
+detectabilidad que el proyecto fijo en V8-02 exigia alrededor de 0,55 de acierto
+en las celdas modificadas habria bloqueado el envio igualmente.
+
+El detalle que conviene no perder: **C supera a B en +0,005283 con 5 de 5
+pliegues.** La geometria aporta algo real y medible. Lo que no hace es mejorar el
+punto de operacion de V03, porque la puntuacion cruda de V03 ya es mejor que
+cualquier reajuste suyo, y porque lo que aporta se aplica con una tasa de acierto
+por debajo del azar.
+
+**Decision: `P59-A = CLOSED`. 1 experimento consumido (P59-02).**
+
+No se reintenta con mas prototipos, mas vecinos ni otra constante. El parrafo 45
+prohibe abrir rejillas, y ademas el precedente V6-07 ya habia medido el mismo
+fenomeno con otras senales: predecir la dificultad de un ejemplo no es lo mismo
+que mejorar la decision.
+
+**6. Lo que esto dice del problema, y lo que no dice.**
+
+> SOSTIENE: la estructura geometrica local del train explica **que** celdas
+> fallan, y esa informacion no estaba explotada. **NO SOSTIENE:** que exista una
+> mejora de decision disponible por esa via. Ademas confirma, desde la geometria,
+> la conclusion de P54 de que las 42 celdas no rescatables son un limite de
+> definicion de etiqueta y no un hueco de informacion recuperable.

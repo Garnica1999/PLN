@@ -399,8 +399,10 @@
       "hipotesis": "alguna observacion mal etiquetada ocupa una region local poco coherente con su propia clase",
       "senal_esperada": "AUC >= 0.60 del score contra error de V03 y separacion entre celdas rescatables y no rescatables de P54",
       "alcance": "solo la version no vista: prototipos de clase, celdas, margen, y la comparacion contra las 42 celdas no rescatables. La parte 'la vecindad explica el error' ya esta contestada por V4-F01-F04 y V6-07",
-      "estado": "OPEN",
-      "gates": "parrafo 15: AUC >= 0.60 exploratorio, no de adopcion"
+      "estado": "CLOSED",
+      "gates": "parrafo 15: AUC >= 0.60 exploratorio, no de adopcion",
+      "resultado": "AUC del score contra error de V03 0,725194 con IC95 [0,7061, 0,7446]; AUC contra celda no rescatable 0,471798 con IC95 [0,3954, 0,5469], que incluye 0.5. El bloque complementario dio corrected_cv 0.779641 con 3 de 5 pliegues e IC95 [-0.008991, +0.000674]",
+      "decision": "CLOSED."
     },
     "P59-B": {
       "id": "P59-B",
@@ -509,5 +511,21 @@
     "uso_holdout": 0,
     "uso_test": 0,
     "segundos": 0.2
+  },
+  "resultados_por_track": {
+    "P59-A": {
+      "id": "P59-A",
+      "family": "geometria local",
+      "mecanismo": "Voronoi de prototipos de clase sobre coseno de la union V03; score de inconsistencia local a partir de margen, pureza, soporte de celda y desacuerdo de clase",
+      "precedente": "V29-03, EBD-07, V4-F01-F04, V6-07",
+      "novedad": "PARTIALLY_DUPLICATE",
+      "hipotesis": "alguna observacion mal etiquetada ocupa una region local poco coherente con su propia clase",
+      "senal_esperada": "AUC >= 0.60 del score contra error de V03 y separacion entre celdas rescatables y no rescatables de P54",
+      "alcance": "solo la version no vista: prototipos de clase, celdas, margen, y la comparacion contra las 42 celdas no rescatables. La parte 'la vecindad explica el error' ya esta contestada por V4-F01-F04 y V6-07",
+      "estado": "CLOSED",
+      "gates": "parrafo 15: AUC >= 0.60 exploratorio, no de adopcion",
+      "resultado": "AUC del score contra error de V03 0,725194 con IC95 [0,7061, 0,7446]; AUC contra celda no rescatable 0,471798 con IC95 [0,3954, 0,5469], que incluye 0.5. El bloque complementario dio corrected_cv 0.779641 con 3 de 5 pliegues e IC95 [-0.008991, +0.000674]",
+      "decision": "CLOSED."
+    }
   }
 }
