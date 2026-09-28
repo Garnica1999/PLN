@@ -1,0 +1,110 @@
+{
+  "fase": "V28 00 P0 higiene y control absoluto",
+  "fecha": "2026-09-28",
+  "experimenta": false,
+  "higiene": {
+    "hallazgos": [
+      {
+        "ruta": "home",
+        "existe": true,
+        "n_ficheros": 1,
+        "bytes": 4949,
+        "extensiones": {
+          ".py": 1
+        },
+        "contiene_rutas_de_AGE": false,
+        "git_anidado": false,
+        "scripts_python": 1,
+        "cabeceras_python": [
+          {
+            "fichero": "home/carlos/Git/PLN-v25/kaggle_toxic_2026_puj/experiments/v44_01_integrar_notebook.py",
+            "primera_linea": "\"\"\"Integra la fase V44 (PLS sobre la representacion de V03) en el notebook."
+          }
+        ],
+        "versionado_por_git": false,
+        "accion": "auditado, NO se borra, NO se commitea, NO se modifica"
+      },
+      {
+        "ruta": "kaggle_toxic_2026_puj/tools",
+        "existe": true,
+        "n_ficheros": 702,
+        "bytes": 17030402,
+        "extensiones": {
+          ".html": 198,
+          ".js": 145,
+          ".d": 45,
+          ".png": 44,
+          ".o": 43,
+          ".md": 31,
+          ".py": 25,
+          ".make": 20
+        },
+        "contiene_rutas_de_AGE": false,
+        "git_anidado": true,
+        "scripts_python": 25,
+        "cabeceras_python": [
+          {
+            "fichero": "kaggle_toxic_2026_puj/tools/fastText/alignment/align.py",
+            "primera_linea": "#!/usr/bin/env python3"
+          },
+          {
+            "fichero": "kaggle_toxic_2026_puj/tools/fastText/alignment/eval.py",
+            "primera_linea": "#!/usr/bin/env python3"
+          },
+          {
+            "fichero": "kaggle_toxic_2026_puj/tools/fastText/alignment/unsup_align.py",
+            "primera_linea": "#!/usr/bin/env python3"
+          }
+        ],
+        "versionado_por_git": false,
+        "accion": "auditado, NO se borra, NO se commitea, NO se modifica"
+      }
+    ],
+    "ninguno_pertenece_a_AGE": true
+  },
+  "control_absoluto": {
+    "corrected_cv_recomputado": 0.6097782,
+    "corrected_cv_canonico": 0.6097782,
+    "reproduce_macro_f1": true,
+    "max_abs_diferencia_vs_artefacto_blend": 0.0,
+    "reproduce_bit_a_bit": true,
+    "folds": [
+      33868,
+      33868,
+      33867,
+      33866,
+      33867
+    ],
+    "folds_esperados": [
+      33868,
+      33868,
+      33867,
+      33866,
+      33867
+    ],
+    "folds_identicos": true,
+    "n_filas": 169336,
+    "n_features": 279,
+    "clases": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "meta_modelo": {
+      "num_leaves": 8,
+      "max_depth": 3,
+      "n_estimators": 300,
+      "min_child_samples": 200,
+      "colsample_bytree": 0.5
+    },
+    "data_hash": "32393abca28db4c9",
+    "hash_submission_v20": "2c964af78c90bf0884b4107665b5100f0c1aa2d9059c47692e613578b6cf660d",
+    "hash_submission_intacto": true,
+    "artefactos_tocados": []
+  },
+  "v28_autorizado": true,
+  "segundos": 32.9
+}

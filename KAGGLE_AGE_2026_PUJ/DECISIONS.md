@@ -1981,3 +1981,21 @@ Tras declarar la saturación se probó la vía indicada como trabajo futuro:
 - **Decision**: **V20 permanece como baseline absoluto** en 0,6097782 (LB 0.62689, hash sin cambio). Las 15 familias del gap analysis quedan cerradas o marginales, ninguna abierta. **No se genera ninguna submission.** La investigacion de esta via se cierra: no queda ninguna hipotesis defendible sin medir, y lo unico abierto es senal nueva, que las reglas de AGE impiden obtener de las fuentes obvias.
 
 - **Consequences**: el cuello de botella restante esta en la **limitacion de los datos**: el 38,3 % de filas que V19 y V20 fallan juntas es la unica masa grande y medida, y esta agotada con la senal actual. Toda intervencion futura sobre las 279 features actua sobre la parte del sistema que el meta-modelo **ya no lee**, salvo que antes se demuestre que aporta senal que el bloque de evidencia de los miembros no aporta.
+
+---
+
+## D-063 - V28: ni la varianza de la estimacion ni la descomposicion de la decision son el cuello de botella
+
+- **Observation**: V25 a V27 habian eliminado el podado de features, la escala de la evidencia, las restricciones monotonas, los percentiles, la fiabilidad constante y las reformulaciones ordinales. V28 se pregunto por mecanismos **estructuralmente distintos** para combinar, estabilizar o descomponer la evidencia: bagging del meta-modelo, geometria del consenso, descomposicion pairwise, fusion de evidencia, incertidumbre explicita y subespacio aleatorio.
+
+- **El gap analysis fue el trabajo mas rentable.** Cuatro de las seis tecnicas se cerraron **sin gastar un experimento**: **B** porque `advanced_04_incertidumbre.py` implementa un superconjunto y esta medido (267 features 0,5897 frente a 318 features 0,5898, delta +0,0001); **D** porque un pool de evidencia es un combinador, y H04 mas H06 estan cerrados con numero, con V20 ya siendo el segundo nivel; **E** por la regla critica del brief, que prohibe duplicar B; y **F** porque `HIERBA` ya tiene `colsample_bytree=0,5`, que es exactamente aleatorizar la exposicion de cada arbol a un subespacio manteniendo todas las columnas.
+
+- **A CLOSED**: bagging de N=5 miembros con bootstrap de Poisson(1), agregado por promedio de probabilidades. Delta **-0,0003120**, 1/5 folds, neto -46, IC95 que incluye el cero. **La varianza existia**: los cinco miembros acordaban solo en el 0.9189 de las decisiones. Y promediarla empeoro. Ademas 1.500 estimadores en vez de 300 no dieron ganancia, lo que descarta la explicacion por capacidad.
+
+- **C CLOSED**: cinco binarios **disjuntos**, uno por par adyacente, contra los cinco **anidados** de `clase <= k-1` de V20. Delta **-0,0675530**, 0/5 folds, neto -10,996, IC95 que **excluye el cero**. Los pares si reducen los errores de su objetivo local, de 39,556 a 32,826, y si son complementarios en la masa dificil (7,788 de las 61,949 filas que V19 y V20 fallan juntas). El daño esta en las clases que no son frontera, donde un clasificador que solo ve dos clases no puede colocar una fila lejos de su par.
+
+- **Decision**: **V20 permanece como baseline absoluto** en 0,6097782 (LB 0.62689). Las seis tecnicas quedan respondidas: cuatro por equivalencia funcional y dos por experimento, ambas negativas. **0 finalistas, 0 submissions, ninguna linea de V20 tocada.** El cuello de botella restante es la **limitacion de los datos**, y V28 no ha reducido la masa que ningun modelo corrige.
+
+- **Consequences**: queda agotado el espacio de mecanismos accesible **sin senal nueva**: representacion, combinacion, calibracion, estructura ordinal, geometria del consenso, varianza de estimacion y descomposicion de la decision tienen todas evidencia negativa reproducible. Cualquier linea futura tiene que demostrar primero que aporta senal que el bloque de evidencia de los miembros no aporta; otra forma de combinar lo que ya existe esta cerrada por V25 a V28.
+
+- **Una correccion que se declara**: el IC95 del bootstrap de **V26-01** quedo a `null` en su artefacto y no es recuperable sin reentrenar. Se marco `no persistido` en la tabla historica en vez de citar una cifra sin fuente. No afecta a ninguna decision: H02 se cerro por delta y folds, y el bootstrap era confirmatorio.

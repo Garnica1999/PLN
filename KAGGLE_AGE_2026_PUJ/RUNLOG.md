@@ -1894,3 +1894,18 @@ intacto.
 - **Submissions generadas:** 0. **Push:** ninguno. **V20 modificado:** no.
 
 - **Informe completo:** `reports/AGE_COMPLETE_RESEARCH_REPORT.md`, generado por `scripts/v27_10_informe_completo.py`.
+
+---
+
+## Cierre de la fase V28 · 2026-09-28
+
+- **Baseline vigente:** V20, 0,6097782 corrected_cv, LB 0.62689, hash sin cambio.
+- **Mejor corrected_cv de V28:** 0,6094663 (A), **peor que V20**.
+- **Mejor candidato interno:** ninguno. Las dos tecnicas ejecutadas son negativas.
+- **Numero de experimentos:** 137 filas en `experiments.csv`; **2** nuevos en V28, **0** filas ficticias para B, D, E y F.
+- **Numero de submissions:** **0** en V26, V27 y V28.
+- **Familias:** 14 cerradas y 1 marginales en V26, mas las 6 de V28; **ninguna abierta**.
+- **Tecnicas de V28:** 2 ejecutadas de 6; 4 cerradas sin gastar ningun experimento.
+- **Notebook:** seccion 36 anadida, ejecutada, con las 4 aserciones en verde.
+- **Higiene:** los 2 directorios no ajenos a AGE quedan fuera de la rama, sin borrar y sin modificar.
+- **Informes:** `reports/v28_final_research.md` y `reports/AGE_COMPLETE_RESEARCH_REPORT.md` reconstruido de V20 a V28.

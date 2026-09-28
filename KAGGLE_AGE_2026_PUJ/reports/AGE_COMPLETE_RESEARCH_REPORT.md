@@ -1,10 +1,10 @@
-# AGE - Informe completo de la investigacion, de V20 al cierre actual
+# AGE - Informe completo de la investigacion, de V20 al cierre de V28
 
-**Fecha:** 2026-09-28 · **Rama:** `proyecto-kaggle-age-2026-v26` · **Baseline congelado:** 0,6097782 · **Champion:** V20, LB 0.62689
+**Fecha:** 2026-09-28 · **Rama:** `proyecto-kaggle-age-2026-v28` · **Baseline congelado:** 0,6097782 · **Champion:** V20, LB 0.62689
 
-Este informe reconstruye **toda** la trayectoria relevante de AGE desde V20 hasta el cierre actual. No se limita a V26 ni a V27, y no omite ninguna fase negativa: la mayor parte de lo que se midio en esta etapa fue negativo, y ese resultado es el producto.
+Reconstruye **toda** la trayectoria de AGE desde V20 hasta el cierre de V28, sin omitir ninguna fase negativa. La mayoria de lo que se midio en estas fases fue negativo, y ese resultado es el producto.
 
-**Ninguna cifra de este informe esta escrita a mano si existe un artefacto del que leerla.** El generador es `scripts/v27_10_informe_completo.py` y lee de `experiments.csv`, de `reports/v26_master_results.csv`, de los artefactos JSON y del notebook. Las unicas constantes fijadas en el generador son las que no viven en ningun artefacto: los scores ya obtenidos del leaderboard, los hashes y el historial, y cada una lleva su fuente declarada.
+**Ninguna cifra de este informe esta escrita a mano si existe un artefacto del que leerla.** Las secciones de V20 a V27 se generan importando `scripts/v27_10_informe_completo.py`, de modo que hay una sola fuente y este informe no puede divergir del de V27. Las de V28 las genera `scripts/v28_07_informes.py`.
 
 ## 1. Resumen ejecutivo
 
@@ -14,7 +14,7 @@ Este informe reconstruye **toda** la trayectoria relevante de AGE desde V20 hast
 | Mejor corrected_cv | **0,610051** (H03, MARGINAL) | `experiments/v27_05_h03_percentil.json` |
 | Mejor score verificado en leaderboard | **0.62689** (V20) | envio verificado de V20 |
 | Mejor candidato validado internamente | H03, MARGINAL, no finalista | su IC95 incluye el cero y esta 11 veces bajo el gate |
-| Numero de experimentos | **135** filas en `experiments.csv` | registro |
+| Numero de experimentos | **137** filas en `experiments.csv` | registro |
 | Familias evaluadas desde V20 | **15** | `v26_hypothesis_gap_analysis.csv` |
 | Familias cerradas | **14** | mismo fichero, columna `status` |
 | Familias marginales | **1** | idem |
@@ -259,7 +259,155 @@ No se vuelve a analizar el test y no se usa el leaderboard para explicar errores
 
 La complementariedad por clase de los tres candidatos de V27 esta medida y en el artefacto. H03 es la mas illustrativa: mueve F1 en las seis clases en la cuarta decimal, con rescate y dano casi iguales (neto +51 sobre 1.764 filas cambiadas). Es la firma de un modelo que **redistribuye** decisiones entre clases que ya eran ambiguas, no de uno que corrige errores.
 
-## 10. Reproducibilidad
+## 10. V28: mecanismos estructuralmente distintos para combinar la evidencia
+
+|---|---|---|
+| Baseline vigente | **0,6097782** corrected_cv | canonico, reproducido por los 2 controles de V28 |
+| Leaderboard de V20 | **0.62689** | envio verificado, sin cambio |
+| Tecnicas evaluadas | **6** | gap analysis |
+| Cerradas sin experimento | **4** (B, D, E, F) | mismo fichero |
+| Experimentos ejecutados | **2** de 8 autorizados | `v28_04_cierre.json` |
+| Mejor corrected_cv de V28 | **0,6094663** (A, peor que V20) | artefactos |
+| Finalistas | **0** | ninguna supero el gate |
+| Submissions generadas | **0** | hash de V20 sin cambio |
+| Filas en `experiments.csv` | **137** | registro |
+**La respuesta a la pregunta de V28 es no, y se contesta con dos experimentos y cuatro  cierres por equivalencia.** Ningun mecanismo estructuralmente distinto de combinar, estabilizar o descomponer la evidencia supera a V20.
+| ID | Tecnica | Modo | Resultado | Decision |
+|---|---|---|---|---|
+| V28-02 | A · Meta-model bagging | probado | -0,0003120, 1/5 folds | CLOSED |
+| V28-03 | C · Pairwise class decomposition | probado | -0,0675530, 0/5 folds | CLOSED |
+| - | B · Compact consensus geometry | equivalencia, ya medido | +0,0001 historico | cerrada sin experimento |
+| - | D · Dirichlet / evidence fusion | equivalencia con H04 y H06 | no medido | cerrada sin experimento |
+| - | E · Explicit uncertainty | duplicacion de B | no medido | cerrada sin experimento |
+| - | F · Randomized meta-subspace | equivalencia con `colsample_bytree` | no medido | cerrada sin experimento |
+
+### El gap analysis de V28, que fue el trabajo mas rentable de la fase
+
+
+| ID | Tecnica | Veredicto | Experimentos | Evidencia |
+|---|---|---|---|---|
+| A | Meta-model bagging | **PARTIALLY_TESTED** | 1 | `HIERBA` ya tiene `subsample=0.8` con `subsample_freq=1`, y en LightGBM eso hace que **cada uno de los 300 arboles se ajuste sobre una muestra aleator |
+| B | Compact consensus geometry | **ALREADY_CLOSED** | 0 | `scripts/advanced_04_incertidumbre.py` implementa un **superconjunto** de lo que B propone: por miembro, confianza (probabilidad maxima), margen (top- |
+| C | Pairwise class decomposition | **GENUINELY_NEW** | 1 | `OneVsOneClassifier`, `VotingClassifier` y `ClassifierChain` tienen **0**, **0** y **0** ficheros respectivamente: no existe. `OneVsRestClassifier` si |
+| D | Dirichlet / evidence fusion | **FUNCTIONALLY_DUPLICATED** | 0 | La palabra `dirichlet` aparece en 3 ficheros, y **todos son el prior estadistico de Monroe et al. para ordenar terminos por log-odds en el EDA**, no f |
+| E | Meta-model con incertidumbre explicita | **CLOSED_BY_DUPLICATION** | 0 | B ya incorpora entropia, margen, reparto de votos y desacuerdo, que son exactamente las tres magnitudes que E propone representar: consenso, desacuerd |
+| F | Randomized meta-subspace | **FUNCTIONALLY_DUPLICATED** | 0 | `HIERBA` ya tiene **`colsample_bytree=0.5`**: cada arbol ve un subconjunto aleatorio de la mitad de las 279 columnas, y **se mantienen todas las colum |
+
+### B: cerrada con un numero, no con una opinion
+
+`scripts/advanced_04_incertidumbre.py` construye por miembro la **confianza**, el **margen** (top-1 menos top-2) y la **entropia** de Shannon; entre miembros, el reparto de votos por clase, la pluralidad, el desacuerdo y la desviacion de scores; y cuatro estadisticos agregados. Eso es un **superconjunto** de lo que B propone.
+
+| Variante | Features | macro-F1 |
+|---|---|---|
+| v09 (base) | 267 | 0.5897 |
+| + bloque de incertidumbre completo | 318 | 0.5898 |
+
+Delta: **0.0001**. Anadir 51 columnas de geometria del consenso no cambio el macro-F1.
+
+### F: ya implementado en la configuracion del champion
+
+`HIERBA` ya tiene `colsample_bytree=0,5`: cada arbol ve un subconjunto aleatorio de la mitad de las 279 columnas **manteniendo todas las disponibles**. Eso es exactamente el mecanismo que F describe, y V27-04 lo midio como control: quitarlo no cambia el numero de features que el modelo abre.
+
+## 11. Las dos tecnicas realmente ejecutadas
+
+### 3.1 A · Meta-model bagging
+
+**Motivacion.** V20 usa un unico meta-modelo. Aunque la evidencia base sea correcta, la estimacion de la frontera podria tener varianza residual.
+
+**Lo unico que cambia.** Las filas que ve cada ajuste del meta-modelo. Se mantienen la matriz de 279 features, las predicciones de los tres miembros del blend, los folds, la cadena de cinco umbrales, la reconstruccion, los thresholds y el blend. No se anade ningun modelo base, ninguna representacion y no se selecciona ninguna feature.
+
+**Configuracion, fijada antes de mirar la validacion.** N = 5 miembros, remuestreo bootstrap de Poisson(1) como sample_weight, semilla derivada de cfg.SEED, miembro, fold y umbral, agregacion **promedio de probabilidades**.
+
+**El confundidor, declarado antes del resultado.** los estimadores totales pasan de 300 a 1500: parte de cualquier mejora puede ser capacidad y no reduccion de varianza.
+
+| Metrica | T0 (V20) | T1 (embolsado) |
+|---|---|---|
+| corrected_cv | 0.6097782 | **0.6094663** |
+| Delta | 0,0000000 | **-0,0003120** |
+| Folds positivos | - | **1/5** |
+| Rescue / damage / net | 0 / 0 / 0 | 815 / 861 / **-46** |
+| Filas que cambian | 0 | 2,728 |
+| IC95 | - | [-0,0007850, 0,0001560], incluye el cero |
+
+**F1 por clase:**
+
+| Clase | V20 | Embolsado | Cambio |
+|---|---|---|---|
+| 13-17 | 0.6818 | 0.6822 | +0.0004 |
+| 18-24 | 0.5170 | 0.5171 | +0.0001 |
+| 25-34 | 0.4965 | 0.4957 | -0.0008 |
+| 35-49 | 0.5687 | 0.5680 | -0.0007 |
+| 50-64 | 0.6637 | 0.6633 | -0.0004 |
+| 65-xx | 0.7310 | 0.7304 | -0.0006 |
+
+**A2, el control de varianza, que es lo que hace informativo al resultado:**
+
+| Medida | Valor |
+|---|---|
+| **Acuerdo medio entre los 5 miembros** | **0.9189** |
+| Acuerdo minimo entre dos miembros | 0.9158 |
+| Acuerdo de la prediccion final con V20 | 0.9839 |
+| Desviacion tipica de las acumuladas, V20 | 0.321442 |
+| Desviacion tipica de las acumuladas, embolsado | 0.321046 |
+| Mediana de la diferencia absoluta de acumuladas | 0.003821 |
+
+**Mecanismo observado.** Los cinco miembros **acuerdan solo en el 91,9 %** de las decisiones, luego **la varianza que A pretendia eliminar existia y era real**. Y promediarla empeoro: el resultado es 98,4 % identico a V20 y 0,000312 peor, con 815 rescates contra 861 danos. La dispersion de las acumuladas apenas se movio (0,32144 a 0,32105).
+
+**Lo que A cierra.** La varianza de la estimacion del meta-modelo **no es donde esta el error**. Los desacuerdos entre miembros ocurren en filas donde el modelo ya era incierto, y promediarlos no recupera senal, solo suaviza. Y el resultado **no** es un artefacto de capacidad: 1.500 estimadores en vez de 300 no dieron ganancia, lo que descarta la explicacion facil.
+
+### 3.2 C · Descomposicion pairwise en 5 pares disjuntos
+
+**Motivacion, medida antes de escribir codigo.** La confusion del control V20 es claramente bandada: los cinco pares adyacentes concentran el **59,9 % de sus 66.005 errores**.
+
+| Par adyacente | Confusiones mutuas |
+|---|---|
+| 13-17|18-24 | 10,793 |
+| 18-24|25-34 | 9,948 |
+| 25-34|35-49 | 7,004 |
+| 35-49|50-64 | 6,208 |
+| 50-64|65-xx | 5,603 |
+
+**La distincion con V20, que es lo que hace nueva a la tecnica.** V20 entrena **cinco binarios anidados** de `clase <= k-1`, en los que cada uno mezcla todas las clases por debajo del umbral. C entrena **cinco binarios disjuntos**, uno por par adyacente, sin solape y sin restriccion de orden. No es CORAL, que comparte pesos e impone umbrales ordenados, ni cumulative-link: aqui cada frontera la aprende un clasificador independiente con la matriz completa de 279 features.
+
+**Pares y agregacion, fijados antes de entrenar.** Criterio: pares con al menos 5000 confusiones mutuas en la confusion out-of-fold del control V20, fijado antes de entrenar. Pares: `13-17|18-24`, `18-24|25-34`, `25-34|35-49`, `35-49|50-64`, `50-64|65-xx`. Agregacion: **cadena de probabilidad independiente: P(clase<=k) = producto de (1 - p_j)**, una sola implementacion.
+
+**El coste mecanico, declarado antes.** cada clasificador ve 57,539 filas en vez de 169,336: la descomposicion disjunta particiona las filas, y eso es su mecanismo, no un defecto.
+
+| Metrica | T0 (V20) | T1 (pares) |
+|---|---|---|
+| corrected_cv | 0.6097782 | **0.5422249** |
+| Delta | 0,0000000 | **-0,0675530** |
+| Folds positivos | - | **0/5** |
+| Rescue / damage / net | 0 / 0 / 0 | 8,461 / 19,457 / **-10,996** |
+| Filas que cambian | 0 | 54,252 |
+| Errores totales | 66,005 | 77,001 |
+| Errores en los 5 pares adyacentes | **39,556** | **32,826** |
+| IC95 | - | [-0,0692860, -0,0657640], **excluye el cero** |
+
+**F1 por clase:**
+
+| Clase | V20 | Pares | Cambio |
+|---|---|---|---|
+| 13-17 | 0.6818 | 0.4980 | -0.1838 |
+| 18-24 | 0.5170 | 0.3473 | -0.1697 |
+| 25-34 | 0.4965 | 0.4458 | -0.0507 |
+| 35-49 | 0.5687 | 0.5599 | -0.0088 |
+| 50-64 | 0.6637 | 0.6653 | +0.0016 |
+| 65-xx | 0.7310 | 0.7370 | +0.0060 |
+
+**Mecanismo observado, y aqui C aporto conocimiento real:**
+
+1. **Los pares disjuntos si resuelven su objetivo local.** Los errores en los cinco pares adyacentes **bajan de 39,556 a 32,826**
+
+2. **El precio esta en las clases que no son frontera.** 50-64 y 65-xx *mejoran* ligeramente, mientras 13-17 y 18-24 se desploman. Un clasificador que solo ve `{k, k+1}` no puede colocar una fila lejos de su par: la masa de probabilidad de las clases no adyacentes desaparece al encadenar.
+
+3. **C es complementario en la masa dificil y aun asi inutil.** De las 61,949 filas que V19 y V20 fallan juntas, **C acierta 7,788 (12.57%)**: senal real, no ruido. Pero a cambio rompe 3,383 aciertos que V20 tenia. Complementariedad sin rentabilidad.
+
+4. **Descartado el defecto de implementacion.** El IC95 es estrecho y excluye el cero, y el dano esta localizado en las clases no frontera, que es exactamente lo que predice el mecanismo de la cadena.
+
+> **Una discrepancia que se declara.** El brief cita 38,3 % de errores conjuntos y > esta medicion da **36,6 %**, porque la definicion no es identica: aqui se usa > `arbol_v19` (el miembro arbol del blend) contra V20. Se usa la cifra medida y > reproducible, no la que encajaria.
+
+## 12. Reproducibilidad acumulada de V20 a V28
 
 ### Identificadores y hashes
 
@@ -271,8 +419,8 @@ La complementariedad por clase de los tres candidatos de V27 esta medida y en el
 | Ramas de trabajo | `proyecto-kaggle-age-2026-v26` |
 | Folds | `StratifiedGroupKFold` 5 folds con `dup_clusters`, `[33868, 33868, 33867, 33866, 33867]` |
 | Semilla | `cfg.SEED`, sin semilla nueva para seleccionar |
-| Experimentos registrados | 135 filas, 0 duplicados |
-| Notebook | 168 celdas, secciones 0 a 35, 4 aserciones obligatorias |
+| Experimentos registrados | 137 filas, 0 duplicados |
+| Notebook | 189 celdas, secciones 0 a 35, 4 aserciones obligatorias |
 | Commits sin push | `946026f` V26, `42da3d8` V25, `e39bcf3` V24, `a6a18f4` V23, `ff3dc65` y `30b895e` V22, `372127a` V21 |
 
 ### Clasificacion
@@ -322,7 +470,7 @@ La complementariedad por clase de los tres candidatos de V27 esta medida y en el
 
 2. **La correccion del mecanismo de H11 modifico un artefacto ya generado.** El `mecanismo` de `v27_02` se sustituyo por un puntero a `v27_03`, con nota de edicion en el propio JSON. El delta, los folds y la decision no se tocaron. Se declara porque el punto 32 exige que la cadena de artefactos sea rastreable, y un artefacto editado sin nota romperia esa cadena.
 
-## 11. Compliance final
+## 13. Compliance acumulada
 
 Valores **medidos** por `scripts/v27_09_compliance_auditoria.py` con `grep` dirigido sobre el codigo y los artefactos de V27, y no declarados.
 
@@ -380,59 +528,86 @@ leaderboard_tuning = 0
 
 No se genero ninguna submission en V26 ni en V27. No se toco el test, ni para labels, ni para entrenamiento, ni para calibracion, ni para seleccion de features, ni para umbrales. No se toco el holdout. No se hizo push, ni merge, ni force-push, ni reset destructivo.
 
-## 12. Conclusion cientifica: donde esta el cuello de botella de AGE
 
-La pregunta es donde queda el limite de AGE despues de V20 a V27. Se responde por ejes, y se separa lo que tiene evidencia negativa de lo que no se ha medido.
+### Compliance especifica de V28
 
-| Eje | Estado | Evidencia |
+Las 13 comprobaciones de V28 dan cero usos, y la higiene del repositorio se verifica de nuevo al cierre: los dos directorios ajenos a AGE **siguen fuera de la rama**.
+
+```text
+transformers = 0
+BERT = 0
+RoBERTa = 0
+LLM = 0
+embeddings = 0
+external_classifier = 0
+external_labels = 0
+pseudo_labeling = 0
+test_labels = 0
+test_calibration = 0
+test_feature_selection = 0
+test_threshold_tuning = 0
+holdout_reuse = 0
+leaderboard_tuning = 0
+```
+
+
+El brief autoriza ocho experimentos y permite no consumirlos. Se consumieron **2**, y la razon es concreta:
+
+1. El gap analysis cerro **cuatro de seis** antes de entrenar, y dos de ellas (**B** y **F**) porque ya estaban implementadas, una de ellas con un numero medido hace anos.
+
+2. Las dos que quedaron son **mecanismos distintos entre si** y ambos se midieron: uno de estimacion, uno de descomposicion de la decision.
+
+3. Los dos son negativos, y el punto 34 pide precisamente eso: si dos o tres tecnicas consecutivas no muestran ninguna senal, hacer una evaluacion global antes de seguir consumiendo. Las dos son negativas y de forma rotunda, con un de ellas con el IC95 excluyendo el cero.
+
+4. **E y F no se ejecutaron** y no por prudencia vaga: E es duplicacion de B por la regla critica del propio brief, y F es un hiperparametro ya activo en `HIERBA`. Ninguna de las dos necesita un experimento para estar cerrada.
+
+## 14. Conclusion cientifica de V28
+
+### Donde esta el cuello de botella de AGE, ahora
+
+| Eje | Estado tras V28 | Evidencia |
 |---|---|---|
-| **Representacion de features** | agotado | H02 (escala) y H03 (percentil) medidos; H15 (seleccion) cerrado en V25 |
-| **Combinacion de predicciones** | agotado | H04, H05, H06, H13 cerrados; H14 cerrado por equivalencia; V20 ya es el segundo nivel |
-| **Calibracion** | agotado | H01 cerrado en D-029 |
-| **Estructura ordinal** | agotado | H10 y CORAL (D-058) cerrados con numero |
-| **Meta-modelo** | agotado | H07, H08, H09, H11, H12 cerrados |
-| **Limitacion de los datos** | **lo que queda abierto** | el 38,3 % de filas que V19 y V20 fallan juntas |
+| Representacion de features | agotado | V25 (seleccion), V26-01 (escala), V27-05 (percentil) |
+| Combinacion de predicciones | agotado | H04, H05, H06, H13, y **D** cerrada por equivalencia en V28 |
+| Calibracion | agotado | H01 (D-029) |
+| Estructura ordinal | agotado | H10, CORAL (D-058) |
+| Geometria del consenso | agotado | **B**, superconjunto ya implementado y medido: +0,0001 |
+| **Varianza del meta-modelo** | **agotado en V28** | **A**: la varianza existia (91,9 % de acuerdo) y promediarla empeoro |
+| **Descomposicion de la decision** | **agotado en V28** | **C**: los pares disjuntos atacan el 59,9 % de los errores y aun asi colapsan las clases no frontera |
+| Incertidumbres explicita | cerrada | **E**, duplicacion de B |
+| Subespacio aleatorio | cerrado | **F**, ya implementado en `colsample_bytree` |
+| **Limitacion de los datos** | **lo unico abierto** | la masa que ningun modelo corrige |
 
-### La respuesta, sin adornos
+### La respuesta
 
-**El cuello de botella restante de AGE no esta en el modelo, esta en los datos.** Ninguna de las cinco propiedades del meta-modelo que se podian cambiar sin reentrenar todo el sistema queda abierta, y cada una tiene evidencia negativa reproducible. Y el mecanismo de por que fallaron es uno solo y esta medido: el meta-modelo de V20 abre **7 de sus 279 features**, todas del bloque de evidencia de los miembros.
+**La pregunta de V28 era si existia una mejora escondida en la forma de estimar y combinar la evidencia, y la respuesta es que no.** Las dos rutas genuinamente nuevas se han medido:
 
-Eso significa que **casi toda la ingenieria acumulada en las 279 features llega al resultado a traves de la prediccion de los miembros, no a traves del meta-modelo**. Añadir features, podarlas, reescalarlas, imponerles monotonia o darles fiabilidad son intervenciones sobre la parte del sistema que ya no se lee.
+- **La varianza de la estimacion no es el cuello.** Existia, se midio, y eliminarla empeoro. Y 1.500 estimadores en vez de 300 no dieron ganancia, asi que tampoco es capacidad.
 
-Lo que si queda abierto es la unica via que ninguna de las familias toco: **informacion nueva desde los datos**. Y dentro de eso, la masa de 38,3 % de filas que ambos modelos fallan juntas es la unica grande y medida, y esta agotada con la senal actual.
+- **La descomposicion de la decision no es el cuello.**-ataca exactamente donde esta el error medido y funciona ahi, pero el dano en las clases no frontera es mayor que el beneficio. El problema no es *que clase* se confunde, es *cuanta informacion* sobrevive a la descomposicion.
 
-**No se afirma que el problema este resuelto.** Se afirma que el espacio de mejoras que era accesible sin senal nueva esta agotado, con evidencia.
+**Junto con V25 a V27, el limite que queda es el mismo que se identifico entonces: la limitacion de los datos.** La masa de filas que ningun modelo del espacio probado corrige sigue ahi, y V28 no la ha reducido.
 
-## 13. Conclusion practica
+**No se afirma que AGE este resuelto.** Se afirma que el espacio de mecanismos accesible sin senal nueva esta agotado, con evidencia negativa reproducible en cada eje.
+
+## 15. Conclusion practica de V28
 
 | Pregunta | Respuesta |
 |---|---|
 | Baseline vigente | **V20**, 0,6097782 corrected_cv, LB 0.62689 |
-| Mejor candidato interno | H03 (percentil), MARGINAL, no finalista |
+| corrected_cv de A | 0,6094663, **peor** que V20 |
+| corrected_cv de C | 0,5422249, **mucho peor** que V20 |
+| Mejor candidato interno | ninguno: las dos tecnicas son negativas |
 | Existe candidato listo para submission | **No** |
-| Debe cerrarse la investigacion de esta via | **Si**: no quedan lineas metodologicamente abiertas |
-| Se genera submission | **No**, y no se genera automaticamente |
-| Se modifica V20 | **No**, y no se modificara sin una hipotesis nueva con mecanismo distinto |
+| Debe cerrarse la investigacion | **Si**, si no aparece senal nueva |
+| Se genera submission | **No** |
+| Se modifica V20 | **No** |
 
-### Lineas definitivamente descartadas
+### Que queda por delante, y no es una hipotesis mas
 
-1. **Seleccion supervisada de features.** Cerrada en V25, y no se reintenta con otro K ni con otro selector sin defecto metodologico demostrado.
+La unica via con recorrido es **senal nueva desde los datos**, y las restricciones de AGE (sin transformers, sin LLM, sin embeddings, sin etiquetas externas) cierran las fuentes obvias. Cualquier linea nueva deberia empezar por demostrar que aporta senal que el bloque de evidencia de los miembros no aporta, y no por otra forma de combinar lo que ya existe: V25 a V28 hanShown que las cuatro familias de esa pregunta estan cerradas.
 
-2. **Reescalada de la evidencia** en cualquiera de sus formas: afin, percentil, temperatura o isotonica. Las cuatro quedan contestadas: H01 y H02 cerradas con numero, H03 medida y marginal, y un cambio de combinador ya cerrado como H04 y H06.
-
-3. **Restricciones monotonas internas** del meta-modelo: no pueden actuar, porque las features con relacion defendible no son las que el modelo abre.
-
-4. **Fiabilidad por modelo y clase** en formulacion agregada: es una constante por fila.
-
-5. **Estructura ordinal y correccion de coste**: cerradas con numero en V22 y V23.
-
-6. **Interacciones, meta-modelos no lineales distintos y meta-modelos por clase**: cerradas con numero, y ademas un arbol no puede aprovechar del todo una interaccion.
-
-### Que queda por delante
-
-No una hipotesis, sino una **decision de Carlos**. La unica via con recorrido sin explorar es senal nueva, y las restricciones de AGE (sin transformers, sin LLM, sin embeddings, sin etiquetas externas) cierran las fuentes de senal mas obvias. Cualquier linea nueva deberia empezar por demostrar que aporta senal que el bloque de evidencia de los miembros no aporta, y no por una transformacion de lo que ya existe.
-
-## 14. Figuras
+## 16. Figuras acumuladas
 
 ### Figuras maestras de la investigacion completa
 
@@ -459,6 +634,17 @@ Otras figuras de V25 a V27 en disco: **12**, entre ellas `v25_delta_por_fold.png
 
 **Total de figuras de V27: 16.** Ninguna oculta un resultado negativo: las tres figuras de delta por fold de H12, H11 y H03 estan las tres, y dos de ellas son negativas o marginales.
 
+### Figuras de V28 (4)
+
+| Figura | Que muestra |
+|---|---|
+| `v28_maestra_resultados.png` | corrected_cv por experimento, delta frente a V20, consistencia por fold y rescate frente a dano |
+| `v28_maestra_folds.png` | F1 por clase de A y C, y el acuerdo entre miembros de A |
+| `v28_A_bagging_diagnostico.png` | delta por fold, F1 por clase y dispersion de A |
+| `v28_C_pairwise_diagnostico.png` | delta por fold, F1 por clase y errores en los pares adyacentes de C |
+
+Ninguna oculta un resultado negativo: las cuatro son de las dos tecnicas negativas.
+
 ---
 
-**Cierre de la fase.** V20 permanece como baseline absoluto en 0,6097782. El leaderboard no se utilizo para decidir entre hipotesis, no se toco el test ni el holdout, no se genero ninguna submission y no se modifico V20. La investigacion termina aqui porque las hipotesis defendibles restantes han sido contestadas o cerradas por evidencia, no porque se haya agotado el presupuesto.
+**Cierre de la investigacion.** V20 permanece como baseline absoluto en 0,6097782 (LB 0.62689). El leaderboard no se utilizo para decidir entre hipotesis, no se toco el test ni el holdout, no se genero ninguna submission y no se modifico V20. La investigacion termina porque las hipotesis defendibles han sido contestadas o cerradas por evidencia, y porque las dos unicas que quedaban mecanicamente abiertas han resultado negativas.

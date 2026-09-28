@@ -1,0 +1,165 @@
+{
+  "fase": "V28 02 P2 tecnica A bagging del meta-modelo",
+  "fecha": "2026-09-28",
+  "tecnica": "A",
+  "hipotesis": "la estimacion de la frontera tiene varianza residual, y embolsar el meta-modelo sobre las mismas features la reduce",
+  "novedad": "PARTIALLY_TESTED: LightGBM ya embolsaba filas por arbol via subsample, A anade un segundo nivel de ajustes independientes",
+  "n_miembros": 5,
+  "agregacion": "promedio de probabilidades",
+  "remuestreo": "bootstrap de Poisson(1) como sample_weight, semilla derivada de cfg.SEED, miembro, fold y umbral",
+  "confundidor_declarado": "los estimadores totales pasan de 300 a 1500: parte de cualquier mejora puede ser capacidad y no reduccion de varianza",
+  "control_t0": {
+    "corrected_cv": 0.6097782,
+    "reproducido": true
+  },
+  "candidatos": {
+    "T0 V20 control": {
+      "modelo": "T0 V20 control",
+      "corrected_cv": 0.6097782,
+      "delta_vs_V20": 0.0,
+      "fold_1": 0.6132028,
+      "fold_2": 0.612081,
+      "fold_3": 0.6104461,
+      "fold_4": 0.6088426,
+      "fold_5": 0.604351,
+      "media": 0.609785,
+      "desviacion": 0.003092,
+      "delta_por_fold": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "folds_positivos": 0,
+      "rescue": 0,
+      "damage": 0,
+      "net": 0,
+      "changed_rows": 0,
+      "f1_por_clase": {
+        "13-17": 0.6818,
+        "18-24": 0.517,
+        "25-34": 0.4965,
+        "35-49": 0.5687,
+        "50-64": 0.6637,
+        "65-xx": 0.731
+      },
+      "complementariedad_por_clase": {
+        "13-17": {
+          "rescata": 0,
+          "danio": 0
+        },
+        "18-24": {
+          "rescata": 0,
+          "danio": 0
+        },
+        "25-34": {
+          "rescata": 0,
+          "danio": 0
+        },
+        "35-49": {
+          "rescata": 0,
+          "danio": 0
+        },
+        "50-64": {
+          "rescata": 0,
+          "danio": 0
+        },
+        "65-xx": {
+          "rescata": 0,
+          "danio": 0
+        }
+      },
+      "frontera_1": 0.5075
+    },
+    "T1 meta-modelo embolsado": {
+      "modelo": "T1 meta-modelo embolsado",
+      "corrected_cv": 0.6094663,
+      "delta_vs_V20": -0.000312,
+      "fold_1": 0.6119135,
+      "fold_2": 0.6119025,
+      "fold_3": 0.6109419,
+      "fold_4": 0.6087707,
+      "fold_5": 0.6038215,
+      "media": 0.60947,
+      "desviacion": 0.003048,
+      "delta_por_fold": [
+        -0.001289,
+        -0.000178,
+        0.000496,
+        -7.2e-05,
+        -0.00053
+      ],
+      "folds_positivos": 1,
+      "rescue": 815,
+      "damage": 861,
+      "net": -46,
+      "changed_rows": 2728,
+      "f1_por_clase": {
+        "13-17": 0.6822,
+        "18-24": 0.5171,
+        "25-34": 0.4957,
+        "35-49": 0.568,
+        "50-64": 0.6633,
+        "65-xx": 0.7304
+      },
+      "complementariedad_por_clase": {
+        "13-17": {
+          "rescata": 140,
+          "danio": 107
+        },
+        "18-24": {
+          "rescata": 207,
+          "danio": 205
+        },
+        "25-34": {
+          "rescata": 191,
+          "danio": 223
+        },
+        "35-49": {
+          "rescata": 119,
+          "danio": 140
+        },
+        "50-64": {
+          "rescata": 98,
+          "danio": 104
+        },
+        "65-xx": {
+          "rescata": 60,
+          "danio": 82
+        }
+      },
+      "frontera_1": 0.5069
+    }
+  },
+  "delta": -0.000312,
+  "control_de_varianza_A2": {
+    "desviacion_typica_de_acumuladas_V20": 0.3214424157450639,
+    "desviacion_typica_de_acumuladas_embolsadas": 0.3210458815541132,
+    "max_abs_diferencia_de_acumuladas": 0.24423245203491462,
+    "mediana_abs_diferencia_de_acumuladas": 0.003821421519119371,
+    "acuerdo_de_prediccion_con_V20": 0.9838900174800397,
+    "acuerdo_medio_entre_miembros": 0.918883,
+    "acuerdo_minimo_entre_miembros": 0.915836,
+    "desviacion_typica_entre_miembros": 0.018766023370328327
+  },
+  "gate": {
+    "delta_minimo": 0.003,
+    "folds_minimos": 4,
+    "cumple_delta": false,
+    "cumple_folds": false,
+    "bootstrap": {
+      "delta": -0.000312,
+      "ic95": [
+        -0.000785,
+        0.000156
+      ],
+      "proporcion_positiva": 0.09975,
+      "ic95_incluye_cero": true
+    }
+  },
+  "decision": "A CLOSED",
+  "estado": "CLOSED",
+  "submission_generada": false,
+  "segundos": 660.3
+}

@@ -1,0 +1,282 @@
+{
+  "fase": "V28 03 P6 tecnica C descomposicion pairwise",
+  "fecha": "2026-09-28",
+  "tecnica": "C",
+  "hipotesis": "las confusiones dominantes son entre pares adyacentes, y un clasificador disjunto por par puede aprender fronteras que el multiclase no representa",
+  "novedad": "GENUINELY_NEW: OneVsOne, VotingClassifier y ClassifierChain tienen 0 usos; V20 entrena cinco binarios ANIDADOS de clase<=k-1 y C cinco DISJUNTOS por par",
+  "pares_seleccionados": [
+    "13-17|18-24",
+    "18-24|25-34",
+    "25-34|35-49",
+    "35-49|50-64",
+    "50-64|65-xx"
+  ],
+  "corte_de_seleccion": 5000,
+  "criterio_de_seleccion": "pares con al menos 5000 confusiones mutuas en la confusion out-of-fold del control V20, fijado antes de entrenar",
+  "filas_por_par": [
+    57539,
+    57023,
+    56577,
+    56290,
+    55220
+  ],
+  "agregacion": "cadena de probabilidad independiente: P(clase<=k) = producto de (1 - p_j)",
+  "coste_mecanico_declarado": "cada clasificador ve 57,539 filas en vez de 169,336: la descomposicion disjunta particiona las filas, y eso es su mecanismo, no un defecto",
+  "control_t0": {
+    "corrected_cv": 0.6097782,
+    "reproducido": true
+  },
+  "candidatos": {
+    "T0 V20 control": {
+      "modelo": "T0 V20 control",
+      "corrected_cv": 0.6097782,
+      "delta_vs_V20": 0.0,
+      "fold_1": 0.6132028,
+      "fold_2": 0.612081,
+      "fold_3": 0.6104461,
+      "fold_4": 0.6088426,
+      "fold_5": 0.604351,
+      "media": 0.609785,
+      "desviacion": 0.003092,
+      "delta_por_fold": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "folds_positivos": 0,
+      "rescue": 0,
+      "damage": 0,
+      "net": 0,
+      "changed_rows": 0,
+      "f1_por_clase": {
+        "13-17": 0.6818,
+        "18-24": 0.517,
+        "25-34": 0.4965,
+        "35-49": 0.5687,
+        "50-64": 0.6637,
+        "65-xx": 0.731
+      },
+      "complementariedad_por_clase": {
+        "13-17": {
+          "rescata": 0,
+          "danio": 0
+        },
+        "18-24": {
+          "rescata": 0,
+          "danio": 0
+        },
+        "25-34": {
+          "rescata": 0,
+          "danio": 0
+        },
+        "35-49": {
+          "rescata": 0,
+          "danio": 0
+        },
+        "50-64": {
+          "rescata": 0,
+          "danio": 0
+        },
+        "65-xx": {
+          "rescata": 0,
+          "danio": 0
+        }
+      },
+      "confusion": [
+        [
+          18968,
+          6222,
+          1471,
+          816,
+          842,
+          544
+        ],
+        [
+          4571,
+          15659,
+          4022,
+          1823,
+          1562,
+          1039
+        ],
+        [
+          1680,
+          5926,
+          13278,
+          3349,
+          2468,
+          1646
+        ],
+        [
+          766,
+          2212,
+          3655,
+          15173,
+          3742,
+          2682
+        ],
+        [
+          459,
+          1092,
+          1756,
+          2466,
+          19727,
+          2560
+        ],
+        [
+          337,
+          794,
+          957,
+          1503,
+          3043,
+          20526
+        ]
+      ],
+      "errores_totales": 66005,
+      "errores_en_pares_adyacentes": 39556,
+      "frontera_1": 0.5075
+    },
+    "T1 cinco pares disjuntos": {
+      "modelo": "T1 cinco pares disjuntos",
+      "corrected_cv": 0.5422249,
+      "delta_vs_V20": -0.067553,
+      "fold_1": 0.5491557,
+      "fold_2": 0.5488336,
+      "fold_3": 0.540253,
+      "fold_4": 0.5376243,
+      "fold_5": 0.5350919,
+      "media": 0.542192,
+      "desviacion": 0.00579,
+      "delta_por_fold": [
+        -0.064047,
+        -0.063247,
+        -0.070193,
+        -0.071218,
+        -0.069259
+      ],
+      "folds_positivos": 0,
+      "rescue": 8461,
+      "damage": 19457,
+      "net": -10996,
+      "changed_rows": 54252,
+      "f1_por_clase": {
+        "13-17": 0.498,
+        "18-24": 0.3473,
+        "25-34": 0.4458,
+        "35-49": 0.5599,
+        "50-64": 0.6653,
+        "65-xx": 0.737
+      },
+      "complementariedad_por_clase": {
+        "13-17": {
+          "rescata": 8224,
+          "danio": 0
+        },
+        "18-24": {
+          "rescata": 14,
+          "danio": 9139
+        },
+        "25-34": {
+          "rescata": 47,
+          "danio": 3939
+        },
+        "35-49": {
+          "rescata": 68,
+          "danio": 2279
+        },
+        "50-64": {
+          "rescata": 52,
+          "danio": 2550
+        },
+        "65-xx": {
+          "rescata": 56,
+          "danio": 1550
+        }
+      },
+      "confusion": [
+        [
+          27192,
+          667,
+          355,
+          223,
+          241,
+          185
+        ],
+        [
+          18518,
+          6534,
+          1566,
+          851,
+          687,
+          520
+        ],
+        [
+          13741,
+          1095,
+          9386,
+          1847,
+          1268,
+          1010
+        ],
+        [
+          9066,
+          411,
+          1546,
+          12962,
+          2384,
+          1861
+        ],
+        [
+          6788,
+          175,
+          591,
+          1395,
+          17229,
+          1882
+        ],
+        [
+          5029,
+          67,
+          316,
+          790,
+          1926,
+          19032
+        ]
+      ],
+      "errores_totales": 77001,
+      "errores_en_pares_adyacentes": 32826,
+      "frontera_1": 0.2792
+    }
+  },
+  "delta": -0.067553,
+  "masa_conjunta_38pct": {
+    "filas": 61949,
+    "proporcion_del_train": 0.365835,
+    "de_esas_C_acerta": 7788,
+    "de_esas_C_sigue_fallando": 54161,
+    "proporcion_de_la_masa_corregida": 0.125716,
+    "de_las_no_masa_C_acerta": 84547,
+    "de_las_no_masa_C_falla": 3383
+  },
+  "gate": {
+    "delta_minimo": 0.003,
+    "folds_minimos": 4,
+    "cumple_delta": false,
+    "cumple_folds": false,
+    "bootstrap": {
+      "delta": -0.067553,
+      "ic95": [
+        -0.069286,
+        -0.065764
+      ],
+      "proporcion_positiva": 0.0,
+      "ic95_incluye_cero": false
+    }
+  },
+  "decision": "C CLOSED",
+  "estado": "CLOSED",
+  "submission_generada": false,
+  "segundos": 85.9
+}

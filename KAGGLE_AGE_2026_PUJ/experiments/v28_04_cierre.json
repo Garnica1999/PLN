@@ -1,0 +1,40 @@
+{
+  "fase": "V28 04 cierre",
+  "fecha": "2026-09-28",
+  "experimenta": false,
+  "tecnicas_ejecutadas": {
+    "V28-02": {
+      "delta": -0.000312,
+      "decision": "A CLOSED",
+      "estado": "CLOSED"
+    },
+    "V28-03": {
+      "delta": -0.067553,
+      "decision": "C CLOSED",
+      "estado": "CLOSED"
+    }
+  },
+  "tecnicas_cerradas_sin_experimento": [
+    "B",
+    "D",
+    "E",
+    "F"
+  ],
+  "veredictos_gap_analysis": {
+    "A": "PARTIALLY_TESTED",
+    "B": "ALREADY_CLOSED",
+    "C": "GENUINELY_NEW",
+    "D": "FUNCTIONALLY_DUPLICATED",
+    "E": "CLOSED_BY_DUPLICATION",
+    "F": "FUNCTIONALLY_DUPLICATED"
+  },
+  "presupuesto_autorizado": 8,
+  "presupuesto_gastado": 2,
+  "finalistas": 0,
+  "submissions_generadas": 0,
+  "baseline_vigente": 0.6097782,
+  "leaderboard_v20": 0.62689,
+  "auditoria": [],
+  "coherente": true,
+  "segundos": 0.4
+}
