@@ -1198,3 +1198,46 @@ coincide, y el `corrected_cv` se reproduce exactamente.
 
 **Estado del campeon.** Sin cambios. V03 intacto, sha256 verificado. 0 modelos, 0
 submissions, 0 consultas a Kaggle, 0 uso de holdout o test.
+
+
+---
+
+## Fase P56 (2026-09-28) - Transferencia de umbrales corregida
+
+**Que se respondio.** Si el sesgo de transferencia de umbrales de P55 es un mecanismo real y
+reproducible que merece formar parte del pipeline final.
+
+```text
+P55_CORRECTED_RESULT_REPRODUCED = TRUE   (0,7781367700 exacto)
+T0 historico                          0,7772114525   +0,0000000000
+T1 mediana aplicada GLOBALMENTE        0,7798514633   +0,0026400107   4/5 pliegues
+umbral por pliegue exterior (HONESTO)   0,7745478730   -0,0026635795
+optimismo de la cifra global de T1                  +0,0053035902
+net a nivel de celda                                 -11
+bootstrap del delta de T1             IC95 [-0,003456, +0,008989]  INCLUYE 0
+umbrales de V03 fuera del rango interior            NINGUNA de las tres
+THRESHOLD_TRANSFER_BIAS                = NOT_CONFIRMED
+STATUS                                 = CLOSED
+CASE                                   = B
+```
+
+**El hallazgo central es una correccion de P55.** Los umbrales de V03 **caen dentro** del
+rango de las cinco estimaciones interiores, en las tres etiquetas. El supuesto sesgo
+sistematico de +0,03 fuera de rango en los cinco pliegues era un **artefacto del
+procedimiento mas simple de P55**, que tomaba el umbral de probabilidades out-of-fold de
+modelos ya entrenados y de ahi una varianza artificialmente baja.
+
+**La cifra honesta es negativa.** El optimismo de aplicar una sola mediana a los cinco
+pliegues, usando datos de los cinco para definirla, vale **+0,0053**, el doble de la mejora
+aparente de +0,0026. La cifra honesta, con el umbral de cada pliegue exterior aplicado a ese
+mismo pliegue, da **-0,0027**.
+
+**Tres senales lo confirman.** El net de celdas es **-11** (43 rescates, 54 danos) y es
+negativo en las tres etiquetas. El IC95 del delta **incluye 0**. Y de los cinco pliegues,
+cuatro son positivos y el pliegue 3 se lleva **-0,0310**.
+
+**El defecto procedimental de P55 sigue siendo un hecho real**: los umbrales si se adoptaron
+bajo el protocolo D-004, mas debil. Lo que se corrige es su **magnitud**, no su existencia.
+
+**Estado del campeon.** Sin cambios. V03 intacto. 1 experimento real (V56-01), **0
+submissions**, 0 consultas a Kaggle, 0 uso de holdout o test. No se crea candidato local.

@@ -2230,3 +2230,50 @@ inexistente; y `ruff --fix` elimino en una pasada anterior un diccionario que si
 Todos por ejecucion real con `exit code` capturado sin pipe.
 
 **Sin push, sin merge, sin reset, sin rebase, sin PR.**
+
+
+---
+
+## 2026-09-28 - Fase P56: transferencia de umbrales corregida
+
+**Alcance.** La unica variable es el procedimiento de estimacion de umbrales. Sin cambios
+en representacion, clasificador, C, ngrams ni class weights. **1 submission: 0.** 0
+consultas a Kaggle, 0 uso de holdout o test. **1 fila nueva en `experiments.csv`**
+(`V56-01`), porque si hubo una ejecucion experimental reproducible.
+
+**V56-00** (`experiments/v56_00_transferencia_umbrales.py`, exit code 0, 43 s):
+reproduccion exacta de P55, anidamiento completo con 4 pliegues interiores agrupados y
+refit de vectorizador y modelo dentro de cada outer train, distribucion de umbrales con
+mediana y desviacion estandar, regla de agregacion unica (mediana), T0 contra T1 por
+pliegue, por etiqueta y por celda, tasa positiva, bootstrap opcional y decision.
+Artefactos: `reports/p56_threshold_transfer.{json,md}`,
+`p56_threshold_transfer.csv`, `p56_threshold_stability.csv`.
+
+**V56-01** (`experiments/v56_01_integrar_notebook.py`, exit code 0): seccion 52, notebook
+206 -> 208 celdas, celda de codigo con returncode 0.
+
+**La correccion de conclusion propia.** P56 se abrio  para no descartar el
+mecanismo de P55 por el gate, y lo que encontro fue que **el mecanismo tampoco se
+sostiene**. Los umbrales de V03 caen dentro del rango de las cinco estimaciones interiores
+en las tres etiquetas, con desviaciones estandar de 0,019 a 0,043. El "fuera del rango en
+los cinco pliegues" de P55 era un artefacto de su procedimiento mas simple.
+
+**El numero que casi paso.** La mediana aplicada globalmente da **+0,00264**, con 4 de 5
+pliegues positivos, y habria clasificado como CASE A por el margen de la directiva. Es
+optimismo puro: definir el umbral con datos de los cinco pliegues y luego evaluarlo en los
+cinco vale **+0,0053**, mas que la propia mejora. La cifra honesta es **-0,00266**, y por eso
+la logica de decision se corrigio para que use el umbral por pliegue exterior y no la
+mediana global.
+
+**El contraste instructive.** El F1 sube +0,0026 mientras el recuento de celdas baja -11.
+No es contradiccion: macro-F1 promedia tres etiquetas y un cambio de umbral reordaza
+positivas. Pero el recuento de celdas es la medida honesta del efecto, y es negativo en las
+tres etiquetas. Es el mismo patron que P54 encontro en el residuo, y por eso se reporta el
+net y no solo el F1.
+
+**Errores propios.** Concatenacion de arrays de cadenas de numpy con `+`, que no soporta
+`<U21` mas `<U21`; e imports sin usar. El mas relevante: la logica de decision inicial
+usaba la cifra global de T1 y habria reportado CASE A, que es exactamente el falso positivo
+que P56 pretendia evitar.
+
+**Sin push, sin merge, sin reset, sin rebase, sin PR.**

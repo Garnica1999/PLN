@@ -4638,3 +4638,82 @@ delta             +0,000925                     por debajo del margen de 0,003
 
 **0 experimentos nuevos y 0 submissions.** La correccion es legal y podria ejecutarse, pero
 su magnitud medida no alcanza el margen, y V03 permanece congelado e intacto.
+
+
+### D-127. El sesgo de transferencia de umbrales de P55 no sobrevive al anidamiento completo
+
+**Contexto.** P55 reporto que los umbrales de V03 (0,44 / 0,51 / 0,46) estan **0,03 por
+encima** de los umbrales anidados del protocolo corregido D-016, **fuera del rango en los
+cinco pliegues** en HS y TR, y que corregirlo daba **+0,000925**. P56 hace el anidamiento
+que P55 no hacia, con vectorizador y modelo **re-ajustados** dentro de un split interior
+agrupado, y el resultado corrige a P55.
+
+**Reproduccion.** `P55_CORRECTED_RESULT_REPRODUCED = TRUE`:
+0,7781367700 reproducido exactamente. La correccion procedimental de P55 es un hecho real.
+
+**El anidamiento completo cambia el diagnostico.** Con 4 pliegues interiores agrupados y
+refit completo dentro de cada outer train:
+
+| etiqueta | estimaciones interiores | mediana | std | min | max | V03 | V03 en el rango |
+|---|---|---:|---:|---:|---:|---:|---|
+| HS | 0,40 0,41 0,42 0,41 0,45 | 0,41 | 0,0192 | 0,40 | 0,45 | 0,44 | **SI** |
+| TR | 0,47 0,46 0,46 0,51 0,46 | 0,46 | 0,0217 | 0,46 | 0,51 | 0,51 | **SI** |
+| AG | 0,40 0,48 0,43 0,51 0,45 | 0,45 | 0,0428 | 0,40 | 0,51 | 0,46 | **SI** |
+
+**Los umbrales de V03 caen DENTRO del rango interior en las tres etiquetas.** El supuesto
+sesgo sistematico de P55 era un **artefacto de su procedimiento mas simple**, que producia
+rangos artificialmente estrechos: el procedimiento de P55 tomaba el umbral de las
+probabilidades out-of-fold de cuatro pliegues, ya producidas por modelos entrenados, y de ahi
+una varianza mucho menor.
+
+**La cifra honesta es negativa, y la apparentemente positiva es optimismo.**
+
+```text
+T0 historico (0,44 / 0,51 / 0,46)          0,7772114525   +0,0000000000
+T1 mediana aplicada GLOBALMENTE            0,7798514633   +0,0026400107   4/5 pliegues
+umbral por pliegue exterior (HONESTO)       0,7745478730   -0,0026635795
+optimismo de definir el umbral con todos los pliegues       +0,0053035902
+```
+
+**El optimismo es el doble de la mejora aparente.** Aplicar una sola mediana a los cinco
+pliegues usa datos de los cinco para definirla, y eso vale **+0,0053**, mas que el propio
++0,0026. La cifra que decide es la del umbral de cada pliegue exterior aplicado a ese
+mismo pliegue, y es **negativa**.
+
+**Tres senales independientes apuntan en la misma direccion.**
+
+```text
+net a nivel de celda, T1 contra T0    -11   (43 rescates, 54 danos)
+   por etiqueta                        HS  -5 | TR  -6 | AG   0
+bootstrap del delta de T1             mediana +0,002553
+                                       IC95 [-0,003456, +0,008989]  INCLUYE 0
+pliegues con delta positivo            4 de 5, con el pliegue 3 en -0,0310
+```
+
+El F1 sube mientras el recuento de celdas baja. No es contradictorio: macro-F1 promedia
+tres etiquetas y un cambio de umbral reordaza las positivas, y el F1 de la etiqueta afectada
+puede subir sin que el recuento neto de celdas mejore. Pero **el recuento de celdas es la
+medida honesta del efecto**, y es negativo en las tres etiquetas.
+
+**Tasa positiva.** Con T1, HS pasa de 0,4572 a 0,4943 y TR de 0,3001 a 0,3216. Es decir T1
+produce muchas mas positivas, y aun asi el F1 no mejora de forma robusta.
+
+**Decision.** `CASE B`.
+`THRESHOLD_TRANSFER_BIAS = NOT_CONFIRMED`. `STATUS = CLOSED`. **No se crea candidato local
+y no se genera submission.** La correccion procedimental de P55 **sigue siendo un hecho
+historico real** (los umbrales si se adoptaron bajo D-004), pero su impacto medido con el
+procedimiento correcto es menor de lo que P55 sugeria, y en el anidamiento completo resulta
+contraproducente.
+
+**Lo que P56 corrige de P55, explicitamente.**
+
+| afirmacion de P55 | estado tras P56 |
+|---|---|
+| los umbrales de V03 se adoptaron bajo D-004 | **se mantiene**, es un hecho |
+| los umbrales estan fuera del rango en los cinco pliegues | **CORREGIDO**: caen dentro |
+| el sesgo es sistematico, de +0,03 en HS y TR | **CORREGIDO**: no hay sesgo sistematico |
+| la correccion da +0,000925 | **CORREGIDO**: la cifra honesta es -0,002664 |
+| `BUG_FOUND` con impacto bajo el margen | **se mantiene como hecho**, el impacto es nulo o negativo |
+
+**Ninguna submission.** El gate de +0,003 no se alcanza por la cifra honesta, y la cifra
+global que lo alcanzaba no es adoptable por su optimismo de mas de 0,005.

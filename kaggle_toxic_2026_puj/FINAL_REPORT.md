@@ -1853,3 +1853,89 @@ Con dos matices que la evidencia si permite y que conviene no perder:
 
 *Seccion generada por `experiments/v55_00_auditoria_pipeline.py` y
 `experiments/v55_01_integrar_notebook.py`. Sin push: la rama sigue local.*
+
+
+---
+
+## Addendum P56 (2026-09-28) - El sesgo de umbrales no se sostiene
+
+### Reproduccion de P55
+
+`P55_CORRECTED_RESULT_REPRODUCED = TRUE`, 0,7781367700 exacto. La correccion procedimental
+de P55 es un hecho historico real: los umbrales se adoptaron bajo el protocolo D-004, mas
+debil que el D-016 con el que se reporta la metrica.
+
+### El anidamiento completo corrige el diagnostico
+
+P55 uso un procedimiento que **no** era anidamiento completo: tomaba el umbral de las
+probabilidades out-of-fold de cuatro pliegues, ya producidas por modelos entrenados. P56
+re-ajusta vectorizador y modelo dentro de un split interior agrupado, y el resultado cambia:
+
+| etiqueta | estimaciones interiores | mediana | std | min | max | V03 | ?V03 en el rango? |
+|---|---|---:|---:|---:|---:|---:|---|
+| HS | 0,40 0,41 0,42 0,41 0,45 | 0,41 | 0,0192 | 0,40 | 0,45 | 0,44 | **si** |
+| TR | 0,47 0,46 0,46 0,51 0,46 | 0,46 | 0,0217 | 0,46 | 0,51 | 0,51 | **si** |
+| AG | 0,40 0,48 0,43 0,51 0,45 | 0,45 | 0,0428 | 0,40 | 0,51 | 0,46 | **si** |
+
+**Los umbrales de V03 caen dentro del rango en las tres etiquetas.** El sesgo sistematico de
++0,03 ?fuera del rango en los cinco pliegues? era un artefacto del procedimiento mas simple,
+que producia rangos artificialmente estrechos.
+
+### La cifra honesta es negativa
+
+| politica | macro-F1 | delta vs V03 |
+|---|---:|---:|
+| T0 historico (0,44/0,51/0,46) | 0,7772114525 | +0,0000000000 |
+| T1 mediana aplicada **globalmente** | 0,7798514633 | +0,0026400107 |
+| **umbral por pliegue exterior (honesto)** | **0,7745478730** | **-0,0026635795** |
+| P55 simple, referencia | 0,7781367700 | +0,0009253174 |
+
+**El optimismo de definir el umbral con datos de los cinco pliegues y evaluarlo en los cinco
+es de +0,0053: el doble de la mejora aparente.** Por eso la cifra que decide es la del
+umbral de cada pliegue exterior aplicado a ese mismo pliegue.
+
+### Tres senales independientes
+
+| senal | valor |
+|---|---|
+| net a nivel de celda, T1 contra T0 | **-11** (43 rescates, 54 danos) |
+| net por etiqueta | HS -5, TR -6, AG 0 |
+| bootstrap del delta de T1 | mediana +0,002553, IC95 [-0,003456, +0,008989] |
+| el IC95 incluye 0 | **si** |
+| pliegues con delta positivo | 4 de 5, con el pliegue 3 en **-0,0310** |
+
+El F1 sube mientras el recuento de celdas baja. No es contradictorio: macro-F1 promedia
+tres etiquetas y un cambio de umbral reordena las positivas. Pero el recuento de celdas es
+la medida honesta del efecto, y es negativo en las tres etiquetas.
+
+### Tasa positiva
+
+| etiqueta | T0 | T1 | diferencia |
+|---|---:|---:|---:|
+| HS | 0,4572 | 0,4943 | +0,0371 |
+| TR | 0,3001 | 0,3216 | +0,0216 |
+| AG | 0,3776 | 0,3844 | +0,0067 |
+
+T1 produce muchas mas positivas y aun asi el F1 no mejora de forma robusta.
+
+### Decision
+
+`CASE B`. `THRESHOLD_TRANSFER_BIAS = NOT_CONFIRMED`. `STATUS = CLOSED`. **No se crea
+candidato local y no se genera submission.**
+
+### Que se corrige de P55
+
+| afirmacion de P55 | estado tras P56 |
+|---|---|
+| los umbrales se adoptaron bajo D-004 | **se mantiene**, es un hecho |
+| estan fuera del rango en los cinco pliegues | **CORREGIDO**: caen dentro |
+| el sesgo es sistematico, +0,03 en HS y TR | **CORREGIDO**: no hay sesgo sistematico |
+| la correccion da +0,000925 | **CORREGIDO**: la cifra honesta es -0,002664 |
+| `BUG_FOUND` con impacto bajo el margen | **se mantiene como hecho**, el impacto es nulo o negativo |
+
+El defecto procedimental de P55 **sigue siendo real como hecho historico**. Lo que se
+corrige es su magnitud, no su existencia. Y la conclusion estrategica queda mas fuerte que
+en P55: la linea procedimental esta cerrada por medicion, no por abandono.
+
+*Seccion generada por `experiments/v56_00_transferencia_umbrales.py` y
+`experiments/v56_01_integrar_notebook.py`. Sin push: la rama sigue local.*
