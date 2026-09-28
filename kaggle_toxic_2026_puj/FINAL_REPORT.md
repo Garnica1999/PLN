@@ -2282,6 +2282,7 @@ mismo que mejorar la decision, y V6-07 ya lo habia medido con otras senales.
 
 *Seccion generada por `experiments/p59_0*.py` y `p59_90_integrar_notebook.py`. Sin push.*
 <!-- P60 2026-09-28 -->
+<!-- P60 2026-09-28 -->
 ## P60 - cierre de la fase
 
 P60 CLOSED. Doce pistas de literatura multi-etiqueta, 8 experimentos consumidos, 4 pistas cerradas sin experimento, 0 candidatos, 1 marginal, 0 bootstraps, 0 submissions, 0 Kaggle, 0 holdout, 0 test. V03 sigue siendo el resultado verificado. sha256 7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e. corrected_cv 0.7772114525165721. LB 0.78306. Detalle en reports/P60_FINAL_RESEARCH_REPORT.md y reports/TOXIC_COMPLETE_RESEARCH_REPORT.md.

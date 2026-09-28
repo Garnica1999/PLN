@@ -2488,9 +2488,10 @@ consume.
 
 **Sin push, sin merge, sin reset, sin rebase, sin PR.**
 <!-- P60 2026-09-28 -->
+<!-- P60 2026-09-28 -->
 ## P60 - ejecucion
 
-- 2026-09-28T18:01:44+00:00 P60 completa, exit 0.
+- 2026-09-28T18:06:45+00:00 P60 completa, exit 0.
 - 0 submissions, 0 consultas al leaderboard, 0 uso de holdout, 0 uso de test.
 - Baseline verificado al inicio y al cierre de cada pista: sha256 intacto, corrected_cv exacto, 1415 grupos con 0 partidos.
 - Artefactos generados por script leyendo los JSON, sin cifras propias.

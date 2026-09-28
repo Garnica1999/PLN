@@ -1,7 +1,7 @@
 {
   "familia": "TOXIC_COMPLETE_REPORT",
-  "fecha": "2026-09-28T18:01:44+00:00",
-  "commit": "fbaa516",
+  "fecha": "2026-09-28T18:06:45+00:00",
+  "commit": "5a33594",
   "champion": {
     "corrected_cv": "0.7772114525165721",
     "lb": 0.78306,
@@ -24,8 +24,8 @@
   },
   "p60": {
     "familia": "P60_CIERRE",
-    "fecha": "2026-09-28T18:00:25+00:00",
-    "commit": "fbaa516",
+    "fecha": "2026-09-28T18:06:36+00:00",
+    "commit": "5a33594",
     "baseline": {
       "corrected_cv": "0.7772114525165721",
       "lb": 0.78306,

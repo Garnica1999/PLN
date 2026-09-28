@@ -175,6 +175,25 @@ def estado(decision: str) -> str:
     return "CLOSED"
 
 
+def primero_no_nulo(d: dict[str, Any], claves: tuple[str, ...]) -> Any:
+    """Devuelve el primer valor NO NULO entre varias claves.
+
+    La distincion con la verdad es lo importante: un delta de cero es un resultado
+    legitimo y debe aparecer, no un dato ausente.
+
+    Args:
+        d: diccionario de la pista.
+        claves: claves candidatas, en orden de prioridad.
+
+    Returns:
+        El primer valor no nulo, o None.
+    """
+    for c in claves:
+        if d.get(c) is not None:
+            return d[c]
+    return None
+
+
 CHAMPION = PROJECT_ROOT / "CHAMPION.md"
 
 
@@ -252,10 +271,15 @@ def main() -> None:
         d = datos[pista]
         r = d.get("resultado", {})
         g = r.get("gate", {})
-        dm = (r.get("delta_mecanismo_puro") or r.get("delta_contraste_puro")
-              or r.get("delta_perdida_puro") or r.get("delta_agrupado_puro")
-              or r.get("delta_intervencion_puro") or r.get("delta_divergencia_puro")
-              or r.get("delta_meta_puro"))
+        # Cada pista nombra su delta con la clave que describe SU comparacion. Se toma el
+        # primer valor NO NULO y no el primer valor VERDADERO, porque el delta de la
+        # pista C es exactamente cero, y cero es falsy en Python: con la forma
+        # `a or b or c` un delta de 0,0000000000 se pasaba por alto y la tabla lo
+        # mostraba como NaN, ocultando justamente el dato mas llamativo de esa pista.
+        dm = primero_no_nulo(r, (
+            "delta_mecanismo_puro", "delta_contraste_puro", "delta_perdida_puro",
+            "delta_agrupado_puro", "delta_intervencion_puro", "delta_divergencia_puro",
+            "delta_meta_puro", "delta_vs_control", "delta"))
         filas.append({
             "Track": pista.replace("P60-", ""),
             "ID": pista,

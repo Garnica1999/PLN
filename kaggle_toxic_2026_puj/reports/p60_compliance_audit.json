@@ -1,6 +1,6 @@
 {
   "familia": "P60_COMPLIANCE_AUDIT",
-  "fecha": "2026-09-28T18:05:19+00:00",
+  "fecha": "2026-09-28T18:06:46+00:00",
   "comprobaciones": [
     {
       "comprobacion": "identificadores prohibidos en p60_00_registro_hipotesis.py",
@@ -55,7 +55,7 @@
     {
       "comprobacion": "identificadores prohibidos en p60_11_cerrar.py",
       "estado": "OK",
-      "detalle": "0 de 33 identificadores prohibidos; 195 identificadores distintos analizados via arbol de sintaxis"
+      "detalle": "0 de 33 identificadores prohibidos; 198 identificadores distintos analizados via arbol de sintaxis"
     },
     {
       "comprobacion": "identificadores prohibidos en p60_12_total.py",
@@ -210,7 +210,7 @@
     {
       "comprobacion": "historial de commits",
       "estado": "OK",
-      "detalle": "180 commits en la rama"
+      "detalle": "194 commits en la rama"
     },
     {
       "comprobacion": "la rama no tiene seguimiento remoto, luego no hay push posible desde aqui",
@@ -225,7 +225,7 @@
     {
       "comprobacion": "diff del arbol ya consolidado",
       "estado": "OK",
-      "detalle": "cambios pendientes: 7 lineas de diff"
+      "detalle": "cambios pendientes: 13 lineas de diff"
     }
   ],
   "resumen": {

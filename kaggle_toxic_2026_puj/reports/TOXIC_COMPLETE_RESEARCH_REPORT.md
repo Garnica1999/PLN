@@ -1,6 +1,6 @@
 # TOXIC - Informe completo de la investigacion acumulada
 
-Generado por `experiments/p60_12_total.py`. Fecha 2026-09-28T18:01:44+00:00. Commit fbaa516.
+Generado por `experiments/p60_12_total.py`. Fecha 2026-09-28T18:06:45+00:00. Commit 5a33594.
 
 Todo lo que sigue esta DERIVADO de fuentes estructuradas y no transcrito: el estado del
 campeon de `CHAMPION.md`, el historial de `experiments.csv`, y los artefactos de fase.
@@ -160,7 +160,7 @@ P60 evaluo doce familias de la literatura sobre aprendizaje multi-etiqueta, cons
 | pista | corrected_cv | delta del mecanismo | pliegues | rescate | dano | neto | decision |
 |---|---:|---:|---:|---:|---:|---:|---|
 | A | 0.624338862 | -0.152926 | 0/5 | 334 | 1552 | -1218 | **CLOSED** |
-| C | 0.7772647319 | +nan | 0/5 | 2 | 1 | 1 | **CLOSED** |
+| C | 0.7772647319 | +0.000000 | 0/5 | 2 | 1 | 1 | **CLOSED** |
 | D | 0.7768328831 | -0.000432 | 0/5 | 3 | 3 | 0 | **CLOSED** |
 | G | 0.4497522457 | -0.294907 | 0/5 | 278 | 868 | -590 | **CLOSED** |
 | H | 0.4686780062 | -0.072307 | 0/5 | 391 | 2655 | -2264 | **CLOSED** |

@@ -5145,6 +5145,7 @@ que mejorar la decision.
 > la conclusion de P54 de que las 42 celdas no rescatables son un limite de
 > definicion de etiqueta y no un hueco de informacion recuperable.
 <!-- P60 2026-09-28 -->
+<!-- P60 2026-09-28 -->
 ## P60 - decisiones
 
 - D-130: CERRAR B (weighted ASL) por duplicacion funcional, con dos patas: la ponderacion por frecuencia de etiqueta es class_weight balanced y el suavizado de coocurrencia es la familia de dependencia entre etiquetas de V4-E. 0 experimentos.

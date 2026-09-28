@@ -1,6 +1,6 @@
 # P60 - Auditoria de cumplimiento
 
-Generado por `experiments/p60_14_auditoria.py`. Fecha 2026-09-28T18:05:19+00:00.
+Generado por `experiments/p60_14_auditoria.py`. Fecha 2026-09-28T18:06:46+00:00.
 
 ## Como se verifico
 
@@ -24,7 +24,7 @@ lo mismo que pasar.
 | identificadores prohibidos en p60_07_transporte.py | **OK** | 0 de 33 identificadores prohibidos; 316 identificadores distintos analizados via arbol de sintaxis |
 | identificadores prohibidos en p60_09_polyloss.py | **OK** | 0 de 33 identificadores prohibidos; 254 identificadores distintos analizados via arbol de sintaxis |
 | identificadores prohibidos en p60_10_metareweight.py | **OK** | 0 de 33 identificadores prohibidos; 239 identificadores distintos analizados via arbol de sintaxis |
-| identificadores prohibidos en p60_11_cerrar.py | **OK** | 0 de 33 identificadores prohibidos; 195 identificadores distintos analizados via arbol de sintaxis |
+| identificadores prohibidos en p60_11_cerrar.py | **OK** | 0 de 33 identificadores prohibidos; 198 identificadores distintos analizados via arbol de sintaxis |
 | identificadores prohibidos en p60_12_total.py | **OK** | 0 de 33 identificadores prohibidos; 143 identificadores distintos analizados via arbol de sintaxis |
 | identificadores prohibidos en p60_13_notebook.py | **OK** | 0 de 33 identificadores prohibidos; 97 identificadores distintos analizados via arbol de sintaxis |
 | identificadores prohibidos en p60_14_auditoria.py | **OK** | 0 de 33 identificadores prohibidos; 183 identificadores distintos analizados via arbol de sintaxis |
@@ -55,10 +55,10 @@ lo mismo que pasar.
 | integracion idempotente | **OK** | anadidas en la ultima pasada: 0 |
 | ASCII en scripts, artefactos e informes de P60 | **OK** | 0 bytes no ASCII en 15 scripts, 13 JSON y 12 informes |
 | rama de trabajo | **OK** | rama: proyecto-kaggle-toxic-2026-p60 |
-| historial de commits | **OK** | 180 commits en la rama |
+| historial de commits | **OK** | 194 commits en la rama |
 | la rama no tiene seguimiento remoto, luego no hay push posible desde aqui | **OK** | la rama proyecto-kaggle-toxic-2026-p60 no declara upstream; el repositorio tiene remoto origin, pero esta rama nunca se ha publicado |
 | ultimos commits visibles | **OK** | 10 commits listados |
-| diff del arbol ya consolidado | **OK** | cambios pendientes: 7 lineas de diff |
+| diff del arbol ya consolidado | **OK** | cambios pendientes: 13 lineas de diff |
 
 ## Las prohibiciones, una por una, con como se verifico cada una
 

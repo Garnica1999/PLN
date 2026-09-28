@@ -1,7 +1,7 @@
 # P60 - Informe final de investigacion guiada por literatura
 
-Generado por `experiments/p60_11_cerrar.py`. Fecha 2026-09-28T18:00:25+00:00.
-Commit fbaa516. Rama v60. Sin push.
+Generado por `experiments/p60_11_cerrar.py`. Fecha 2026-09-28T18:06:36+00:00.
+Commit 5a33594. Rama v60. Sin push.
 
 ## Resumen ejecutivo
 
@@ -77,7 +77,7 @@ Tres consecuencias, y las tres importan mas que cualquier resultado individual:
 | 2 | A | Asymmetric Loss for Multi-Label Classification | **CLOSED** | -0.152926 | 0/5 | -1218 |
 | 3 | L | Distributionally Robust Optimization with Grou | **MARGINAL** | +0.000336 | 2/5 | 1 |
 | 4 | D | Class-Balanced Loss Based on Effective Number  | **CLOSED** | -0.000432 | 0/5 | 0 |
-| 5 | C | Noisy Multi-Label Text Classification via Inst | **CLOSED** | +nan | 0/5 | 1 |
+| 5 | C | Noisy Multi-Label Text Classification via Inst | **CLOSED** | +0.000000 | 0/5 | 1 |
 | 6 | H | Robust Text Classification: Analyzing Prototyp | **CLOSED** | -0.072307 | 0/5 | -2264 |
 | 7 | I | Learning to Reweight Examples for Robust Deep  | **CLOSED** | -0.301104 | 0/5 | -572 |
 | 8 | J | PolyLoss: A Unified Formulation of Cross-Entro | **CLOSED** | -0.001710 | 2/5 | 2 |
@@ -103,7 +103,7 @@ No se muestran solo los mejores. El orden de lectura que mas informa es por el d
 | pista | corrected_cv | delta del mecanismo | pliegues | rescate | dano | neto | celdas |
 |---|---:|---:|---:|---:|---:|---:|---:|
 | A | 0.624338862 | -0.1529258699 | 0/5 | 334 | 1552 | -1218 | -0.1528725906 |
-| C | 0.7772647319 | +nan | 0/5 | 2 | 1 | 1 | 5.32794e-05 |
+| C | 0.7772647319 | +0.0000000000 | 0/5 | 2 | 1 | 1 | 5.32794e-05 |
 | D | 0.7768328831 | -0.0004318488 | 0/5 | 3 | 3 | 0 | -0.0003785694 |
 | G | 0.4497522457 | -0.2949072740 | 0/5 | 278 | 868 | -590 | nan |
 | H | 0.4686780062 | -0.0723067170 | 0/5 | 391 | 2655 | -2264 | -0.3085334463 |
@@ -159,7 +159,7 @@ Deep learning, donde se uso: solo en la pista G, con un SVD interno de 128 dimen
 
 ## Git
 
-Trabajo en la rama `proyecto-kaggle-toxic-2026-p60`, creada desde `v25` que contiene P59. Sin push, sin merge, sin force-push, sin rebase destructivo. Un commit local por pista. Estado al cierre de este script: commit fbaa516.
+Trabajo en la rama `proyecto-kaggle-toxic-2026-p60`, creada desde `v25` que contiene P59. Sin push, sin merge, sin force-push, sin rebase destructivo. Un commit local por pista. Estado al cierre de este script: commit 5a33594.
 
 ## Notebook
 
