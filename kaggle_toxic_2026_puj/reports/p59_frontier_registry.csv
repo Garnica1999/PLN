@@ -6,5 +6,5 @@ P59-D,influencia,NOVEL,CLOSED,0,"diagnostico, sin corrected_cv",n/a (no se entre
 P59-E,suavidad en grafo,NOVEL,OPEN,0,n/a,n/a,n/a,n/a,n/a,n/a,n/a,PENDING,sin ejecutar
 P59-F,n-gramas generativas,NARROW,OPEN,0,n/a,n/a,n/a,n/a,n/a,n/a,n/a,PENDING,sin ejecutar
 P59-G,seleccion por estabilidad,DUPLICATE,CLOSED,0,n/a,n/a,n/a,n/a,n/a,n/a,n/a,"DUPLICATE. Cerrado sin consumir experimento. No se reintenta con mas agresividad ni con otra constante de submuestreo, porque el precedente prohibio exactamente eso y la tendencia va en direccion contraria","cerrado por el precedente V8-03 (tres umbrales de seleccion, IC95 pareado)"
-P59-H,estructura no negativa,NOVEL,OPEN,0,n/a,n/a,n/a,n/a,n/a,n/a,n/a,PENDING,sin ejecutar
+P59-H,estructura no negativa,NOVEL,CLOSED,0,n/a (cerrado antes de entrenar),n/a,n/a,n/a,n/a,n/a,n/a,"CLOSED por EQUIVALENCIA_FUNCIONAL_SUFICIENTE, sin entrenar y sin consumir experimento. El parrafo 1 autoriza exactamente este cierre. La no negatividad aporta interpretabilidad pero no informacion: una compresion lineal del mismo rango captura todo lo que NMF captura y algo mas. No se monta rejilla ","NMF(8) reconstruye peor que SVD truncada del mismo rango, luego la informacion ya estaba disponible con compresion lineal conocida"
 P59-I,perdida robusta,NOVEL,OPEN,0,n/a,n/a,n/a,n/a,n/a,n/a,n/a,PENDING,sin ejecutar

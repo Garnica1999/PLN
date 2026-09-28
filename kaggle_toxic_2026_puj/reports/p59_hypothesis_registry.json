@@ -490,8 +490,10 @@
       "hipotesis": "la representacion contiene componentes tematicos no negativos que no aparecen de forma explicita en el modelo lineal",
       "senal_esperada": "el bloque NMF aporta complemento positivo sobre V03",
       "alcance": "diagnostico primero; bloque pequeno despues solo si hay senal",
-      "estado": "OPEN",
-      "gates": "parrafo 67: no como otro SVD, sino por componentes no negativos interpretables"
+      "estado": "CLOSED",
+      "gates": "parrafo 67: no como otro SVD, sino por componentes no negativos interpretables",
+      "resultado": "H_NOVELTY = TRUE (nunca ejecutado; las dos coincidencias de 'nmf' en el registro son falsos positivos). FUNCTIONAL_EQUIVALENCE = SUFICIENTE. NMF(8) reconstruye la matriz de evidencia con error relativo 0.093047 frente a 0.091040 de una SVD truncada del mismo rango, brecha -0.002007. NMF convergio en 4008 iteraciones. Lo unico que cambia es la forma de los pesos, mas esparsos y no negativos, que es legible pero no es informacion nueva. Ademas: el parrafo 3 pide la entrada de V20 y V20 NO es un experimento de este proyecto; la matriz de 44 columnas del meta tampoco esta en disco; y NMF no es aplicable a esa matriz porque los margenes tienen signo",
+      "decision": "CLOSED por EQUIVALENCIA_FUNCIONAL_SUFICIENTE, sin entrenar y sin consumir experimento. El parrafo 1 autoriza exactamente este cierre. La no negatividad aporta interpretabilidad pero no informacion: una compresion lineal del mismo rango captura todo lo que NMF captura y algo mas. No se monta rejilla de rangos"
     },
     "P59-I": {
       "id": "P59-I",
@@ -558,6 +560,20 @@
       "gates": "parrafo 63: no eliminar por alta influencia sin relacion con la frontera",
       "resultado": "Enriquecimiento de error en el top 100 de influencia: 4,32 (HS), 6,42 (TR), 4,28 (AG). Las 42 celdas no rescatables estan en el percentil de influencia 0.8516 frente a 0.7463 de las 715 rescatables. PERO el control decisivo: Spearman(|influencia|, error) = +0.3955 frente a Spearman(|influencia|, confianza) = -0.5345, razon 0.740 por debajo de 1",
       "decision": "CLOSED. La influencia se asocia al error MENOS que la confianza, luego es una medida peor de dificultad que lo que ya existe. El downweighting por influencia no se ejecuta y no se reintenta. 0 experimentos consumidos"
+    },
+    "P59-H": {
+      "id": "P59-H",
+      "family": "estructura no negativa",
+      "mecanismo": "factorizacion no negativa dentro del pliegue de entrenamiento, con componentes interpretables",
+      "precedente": "ninguno: 0 coincidencias de nmf, non-negative o topic model en 323 filas",
+      "novedad": "NOVEL",
+      "hipotesis": "la representacion contiene componentes tematicos no negativos que no aparecen de forma explicita en el modelo lineal",
+      "senal_esperada": "el bloque NMF aporta complemento positivo sobre V03",
+      "alcance": "diagnostico primero; bloque pequeno despues solo si hay senal",
+      "estado": "CLOSED",
+      "gates": "parrafo 67: no como otro SVD, sino por componentes no negativos interpretables",
+      "resultado": "H_NOVELTY = TRUE (nunca ejecutado; las dos coincidencias de 'nmf' en el registro son falsos positivos). FUNCTIONAL_EQUIVALENCE = SUFICIENTE. NMF(8) reconstruye la matriz de evidencia con error relativo 0.093047 frente a 0.091040 de una SVD truncada del mismo rango, brecha -0.002007. NMF convergio en 4008 iteraciones. Lo unico que cambia es la forma de los pesos, mas esparsos y no negativos, que es legible pero no es informacion nueva. Ademas: el parrafo 3 pide la entrada de V20 y V20 NO es un experimento de este proyecto; la matriz de 44 columnas del meta tampoco esta en disco; y NMF no es aplicable a esa matriz porque los margenes tienen signo",
+      "decision": "CLOSED por EQUIVALENCIA_FUNCIONAL_SUFICIENTE, sin entrenar y sin consumir experimento. El parrafo 1 autoriza exactamente este cierre. La no negatividad aporta interpretabilidad pero no informacion: una compresion lineal del mismo rango captura todo lo que NMF captura y algo mas. No se monta rejilla de rangos"
     }
   },
   "verificaciones_de_controles": {
@@ -585,5 +601,14 @@
     },
     "lectura": "predecir la dificultad de una celda es facil y barato en este corpus, y NO es lo mismo que mejorar la decision. Las pistas que cambian el modelo en vez de identificar celdas siguen siendo cualitativamente distintas y tienen prioridad",
     "no_es_una_prueba_de_optimalidad": "esto acota el alcance de un tipo de metodo, no demuestra que no exista una mejora defendible"
+  },
+  "gaps_de_novedad": {
+    "P59-H": {
+      "H_NOVELTY": true,
+      "FUNCTIONAL_EQUIVALENCE": "EQUIVALENCIA_FUNCIONAL_SUFICIENTE. NMF reconstruye la matriz de evidencia peor que una SVD truncada del mismo rango, luego la informacion que aporta ya estaba disponible con una compresion lineal conocida, y la no negatividad no aporta nada sobre ella",
+      "decision_preliminar": "CLOSED",
+      "bloqueo": "el parrafo 3 pide usar exactamente la entrada de V20, y V20 no es un experimento de este proyecto",
+      "artefacto": "reports/p59_H_nmf_gap.json"
+    }
   }
 }

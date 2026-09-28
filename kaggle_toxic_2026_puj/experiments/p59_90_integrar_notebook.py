@@ -524,6 +524,135 @@ print()
 print(f"  experimentos consumidos en P59-D: {fr.loc[fr['ID'] == 'P59-D', 'experiments_used'].iloc[0]}")
 """,
     },
+    {
+        "numero": "59",
+        "marca": "59. P59-H NMF",
+        "titulo": "P59-H - NMF: cerrado por equivalencia funcional, sin entrenar",
+        "md": """\
+## 59. P59-H - NMF: cerrado por equivalencia funcional, sin entrenar
+
+### Motivacion
+
+La hipotesis era que existe estructura latente no negativa compartida en la evidencia
+del ensemble que permita comprimir el espacio sin perder la complementariedad
+relevante para macro-F1.
+
+### Hipotesis y auditoria de hueco
+
+`H_NOVELTY = TRUE`: NMF no se ha ejecutado nunca. Las dos filas del registro que
+coinciden con "nmf" son falsos positivos (`V4-B03` dentro de "Track B", `V14-01`
+dentro de una frase de cierre). Eso hace que sea **documentalmente** nuevo, y el
+encargo dice explicitamente que eso no basta: hay que probar que el mecanismo es
+distinto.
+
+### Control: tres bloqueos de especificacion
+
+1. **`V20` no existe.** El espacio de ids salta de V17 a V25; V18 a V24 no
+   existen. Lo unico con ese nombre son etiquetas de *lote* de submission.
+2. **La matriz de 44 columnas del meta tampoco esta en disco.**
+   `v2_meta_oof.npz` guarda los 44 **nombres** y la `proba` resultante, no los
+   valores. Reconstruirla obligaria a reentrenar las 4 bases.
+3. **NMF no es aplicable a esa matriz** porque los margenes tienen signo, y el
+   parrafo 3 prohibe modificar los datos.
+
+Ninguna de las tres se resuelve solo, y sustituirlas en silencio seria el fallo que
+este proyecto lleva tres fases evitando.
+
+### Configuracion
+
+NMF y SVD truncada del **mismo rango unico** sobre la mayor matriz de evidencia no
+negativa que existe en disco: 4449 celdas por 21 columnas de canales de
+probabilidad. El rank 8 se fijo antes de ejecutar, justificado por muestras por
+columna (211,9), por el rango util acotado por `min(n, p) = 21`, por ser el mismo
+orden de magnitud que el `k = 8` que ya uso el precedente V25-01, y por su coste
+de segundos. **No hay rejilla de rangos.**
+
+### Resultado
+
+| magnitud | SVD | NMF |
+|---|---:|---:|
+| error de reconstruccion relativo | **0,091040** | 0,093047 |
+| esparsidad de los pesos | 0,0238 | 0,5357 |
+| pesos negativos | 82 | 0 |
+
+**NMF reconstruye PEOR que la SVD truncada del mismo rango**: brecha **-0,002007**.
+NMF convergio en 4008 iteraciones, luego no es un artefacto de no convergencia.
+
+Lo unico que NMF cambia de verdad es la forma de los pesos: mas esparsos, no
+negativos por construccion, y los 8 componentes tienen conjunto top-5 distinto. Eso
+es **legible**, que es justo lo que el parrafo 67 pedia como justificacion. Pero
+legible no es informacion nueva: una compresion lineal del mismo rango captura todo
+lo que NMF captura, y algo mas.
+
+### Decision
+
+```text
+P59-H = CLOSED
+motivo EQUIVALENCIA_FUNCIONAL_SUFICIENTE
+experimentos consumidos 0
+```
+
+El parrafo 1 autoriza cerrar la pista sin entrenar cuando el gap analysis encuentra
+equivalencia funcional suficiente. Cerrar aqui evita gastar un experimento en
+medir lo que un control de capacidad ya resolvio, y evita montar una rejilla de
+rangos sobre una hipotesis sin mecanismo propio.
+
+Artefactos: `reports/p59_H_nmf.md`, `reports/p59_H_nmf_gap.{md,json}`.""",
+        "codigo": """\
+from pathlib import Path
+import json
+import pandas as pd
+
+RAIZ = Path.cwd()
+while not (RAIZ / "reports").exists() and RAIZ != RAIZ.parent:
+    RAIZ = RAIZ.parent
+g = json.loads((RAIZ / "reports" / "p59_H_nmf_gap.json").read_text(encoding="utf-8"))
+fr = pd.read_csv(RAIZ / "reports" / "p59_frontier_registry.csv", dtype=str, keep_default_na=False)
+
+print("59.1  CONTROLES BLOQUEANTES DEL ENCARGO")
+b = g["bloqueo_de_especificacion"]
+print(f"  {'prefijo':8}existe")
+for k, v in b["espacio_de_ids"].items():
+    print(f"  {k:8}{v}")
+print()
+print(f"  1. {b['problema']}")
+print(f"  2. {b['segundo_bloqueo'][:150]}")
+print(f"  3. {b['tercer_bloqueo'][:150]}")
+print()
+print("59.2  NOVEDAD")
+print(f"  H_NOVELTY = {g['H_NOVELTY']}")
+for e in g["H_NOVELTY_evidencia"]:
+    print(f"    - {e}")
+print()
+print("59.3  EL VECINO FUNCIONAL MAS CERCANO")
+v = g["FUNCTIONAL_EQUIVALENCE_detalle"]["vecino_mas_cercano"]
+print(f"  {v['experimento']}: {v['mecanismo']}")
+print(f"  resultado: {v['resultado']}")
+print(f"  solape: {v['solape']}")
+print(f"  diferencia real: {v['diferencia_no_cosmetica'][:150]}")
+print()
+print("59.4  LA MEDICION QUE DECIDE")
+m = g["medicion_de_equivalencia"]
+e = m["error_reconstruccion_relativo"]
+print(f"  matriz {m['matriz']['forma']}, negativos {m['matriz']['negativos']}, rank unico {m['rank_unico']}")
+print(f"  justificacion del rank: {m['rank_justificacion'][:190]}")
+print()
+print(f"  {'magnitud':34}{'SVD':>12}{'NMF':>12}")
+print(f"  {'error de reconstruccion':34}{e['SVD']:>12.6f}{e['NMF']:>12.6f}")
+print(f"  {'esparsidad de los pesos':34}{m['esparsidad_pesos']['SVD']:>12.4f}{m['esparsidad_pesos']['NMF']:>12.4f}")
+print(f"  {'pesos negativos':34}{m['pesos_negativos']['SVD']:>12d}{m['pesos_negativos']['NMF']:>12d}")
+print()
+print(f"  brecha SVD - NMF = {e['brecha_SVD_menos_NMF']:+.6f}  NEGATIVA: SVD reconstruye mejor")
+print(f"  NMF convergio en {m['convergencia_nmf_iteraciones']} iteraciones")
+print(f"  componentes con top-5 distinto: {m['componentes_top5_distintos']} de {m['rank_unico']}")
+print()
+print("59.5  DECISION")
+print(f"  FUNCTIONAL_EQUIVALENCE = {g['FUNCTIONAL_EQUIVALENCE']}")
+print(f"  decision = {g['decision_preliminar']}")
+print(f"  experimentos consumidos = {g['experimentos_registrados']}")
+print(f"  experimentos usados en P59-H segun el registro: {fr.loc[fr['ID'] == 'P59-H', 'experiments_used'].iloc[0]}")
+""",
+    },
 )
 
 SUSTITUCIONES = {
