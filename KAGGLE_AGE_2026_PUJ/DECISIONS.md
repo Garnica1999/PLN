@@ -1943,3 +1943,41 @@ Tras declarar la saturación se probó la vía indicada como trabajo futuro:
   `reports/v26_hypothesis_registry.csv`, `reports/v26_reproducibility.md`,
   `reports/v26_compliance.md`, `reports/v26_final_research.md`, cinco figuras `v26_*`, seccion 34
   de `notebooks/99_entrega_consolidado.ipynb`.
+
+---
+
+## Cierre de la fase V27 · 2026-09-28
+
+- **Baseline congelado:** V20, 0,609778 corrected_cv, LB 0.62689, hash `2c964af78c90bf08...`, sin cambios.
+
+- **Experimentos de V27:** tres, `V27-01` (H12), `V27-02` (H11) y `V27-05` (H03). H14 se cerro por equivalencia funcional sin entrenar y **no cuenta como experimento**.
+
+- **Resultado unico positivo:** H03, delta 0,000272, 3/5 folds, IC95 que incluye el cero. **MARGINAL**, no finalista, sin submission.
+
+- **Hallazgo estructural:** el meta-modelo de V20 divide por **7 de 279 features**, todas del bloque de evidencia de los miembros. Se controlo que no sea efecto del submuestreo.
+
+- **Consecuencia:** ninguna de las cuatro familias abiertas de V26 queda abierta. La linea de representacion, combinacion, calibracion, estructura ordinal y meta-modelo esta agotada con evidencia negativa reproducible.
+
+- **Submissions generadas:** 0. **Push:** ninguno. **V20 modificado:** no.
+
+- **Informe completo:** `reports/AGE_COMPLETE_RESEARCH_REPORT.md`, generado por `scripts/v27_10_informe_completo.py`.
+
+---
+
+## D-062 - V27: el cuello de botella de AGE no esta en el modelo, esta en los datos
+
+- **Observation**: el brief autorizo continuar secuencialmente por las cuatro familias que V26 dejo abiertas (**H12** fiabilidad por modelo y clase, **H11** restricciones monotonas nativas, **H14** reescalar la salida del blend, **H03** percentil), con gate de +0,003 y 4/5 folds, y orden H12, H11, H14, H03.
+
+- **H12 CLOSED, por resultado y por equivalencia**: la tabla fiabilidad(modelo, clase) se construye replicando un valor por par sobre todas las filas, luego es **constante por fila**, y una columna constante no puede generar splits. Delta **exactamente 0,0000000** y **0 filas cambian**. Se verifico que LightGBM con columnas constantes devuelve predicciones identicas bit a bit. Su unica variante razonable, fiabilidad por evidencia, es una interaccion entre miembros, cerrada como **H07**.
+
+- **H11 CLOSED**: 0,6097782 de baseline, delta -0,000355, 2/5 folds, neto -55. Las restricciones se fijaron **antes** de entrenar, sobre **42 features** de los 7 modelos con probabilidad genuina por clase. `E019b_densas_svd` se excluyo pese a que sus componentes sumen 1, porque es un TruncatedSVD de features densas y un SVD no genera probabilidades de clase.
+
+- **H14 CLOSED por equivalencia funcional, sin experimento**: reescalar la salida del blend es H02, H03, H01 o un cambio de combinador, y los cuatro estan cerrados con numero.
+
+- **H03 MARGINAL**: delta 0,000272, 3/5 folds, rescue 564, damage 513, neto +51, 1,764 filas cambian, IC95 que **incluye el cero**. Unico resultado positivo de V26 y V27, y no finalista. No se genera submission y no se reintenta.
+
+- **El hallazgo que explica los tres fracasos**: el meta-modelo de V20 divide por **7 de sus 279 features**, todas del bloque de evidencia de los miembros; **0 de 35 densas, 0 de 87 estructuradas, 0 de 73 label-informed y 0 de 6 NB-SVM**. Se descarto que sea efecto del submuestreo: sin `colsample_bytree` y sin `subsample` el numero no cambia. Eso explica de una sola vez por que la seleccion de V25 no podria mejorar, por que reescalar no movio la metrica y por que las restricciones monotonas no podian actuar.
+
+- **Decision**: **V20 permanece como baseline absoluto** en 0,6097782 (LB 0.62689, hash sin cambio). Las 15 familias del gap analysis quedan cerradas o marginales, ninguna abierta. **No se genera ninguna submission.** La investigacion de esta via se cierra: no queda ninguna hipotesis defendible sin medir, y lo unico abierto es senal nueva, que las reglas de AGE impiden obtener de las fuentes obvias.
+
+- **Consequences**: el cuello de botella restante esta en la **limitacion de los datos**: el 38,3 % de filas que V19 y V20 fallan juntas es la unica masa grande y medida, y esta agotada con la senal actual. Toda intervencion futura sobre las 279 features actua sobre la parte del sistema que el meta-modelo **ya no lee**, salvo que antes se demuestre que aporta senal que el bloque de evidencia de los miembros no aporta.

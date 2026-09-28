@@ -1,0 +1,179 @@
+{
+  "fase": "V27 02 H11 restricciones monotonas",
+  "fecha": "2026-09-28",
+  "hipotesis": "certainas relaciones entre evidencia y clases tienen estructura monotona y el boosting libre gasta capacidad en relaciones que no son plausibles",
+  "novedad_funcional": "`monotone_constraints` tiene CERO usos en todo el proyecto; V20 impone la monotonia DESPUES, con maximo acumulado sobre cinco modelos independientes",
+  "justificacion_de_las_restricciones": "en la matriz 279 ningun bloque es probabilidad en [0,1]: todos estan en log-odds o son margenes. Solo siete modelos guardan probabilidad genuina por clase, verificados en el codigo que los produce. E019b es un TruncatedSVD de features densas, no de clases, y queda excluido aunque sus componentes sumen 1 por casualidad numerica",
+  "modelos_con_probabilidad": [
+    "E-009",
+    "E-010",
+    "E-011",
+    "E015_softmax",
+    "E017_probabilidades",
+    "E021a_ordinal",
+    "E021b_rocchio"
+  ],
+  "excluidos_con_motivo": {
+    "E019b_densas_svd": "TruncatedSVD de features densas, no de clases",
+    "E013_margenes": "margen, no probabilidad de clase",
+    "E016_margenes": "margen, no probabilidad de clase",
+    "E014_margenes": "margen, no probabilidad de clase",
+    "E015_ordinal": "un solo valor, no cubre las seis clases",
+    "E028a_pares": "cinco columnas de pares, no cubre las seis clases",
+    "ADV05_nbsvm": "score NB-SVM, no probabilidad de clase",
+    "nbsvm_word": "score NB-SVM, no probabilidad de clase"
+  },
+  "features_restringidas": 42,
+  "features_libres": 237,
+  "signo": "+1 (creciente): subir P(clase j) sube P(Y <= k - 1) para toda j",
+  "control_t0": {
+    "corrected_cv": 0.6097782,
+    "reproducido": true
+  },
+  "candidatos": {
+    "T0 V20 control": {
+      "modelo": "T0 V20 control",
+      "corrected_cv": 0.6097782,
+      "delta_vs_V20": 0.0,
+      "fold_1": 0.6132028,
+      "fold_2": 0.612081,
+      "fold_3": 0.6104461,
+      "fold_4": 0.6088426,
+      "fold_5": 0.604351,
+      "media": 0.609785,
+      "desviacion": 0.003092,
+      "delta_por_fold": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "folds_positivos": 0,
+      "rescue": 0,
+      "damage": 0,
+      "net": 0,
+      "changed_rows": 0,
+      "f1_por_clase": {
+        "13-17": 0.6818,
+        "18-24": 0.517,
+        "25-34": 0.4965,
+        "35-49": 0.5687,
+        "50-64": 0.6637,
+        "65-xx": 0.731
+      },
+      "complementariedad_por_clase": {
+        "13-17": {
+          "rescata": 0,
+          "danio": 0
+        },
+        "18-24": {
+          "rescata": 0,
+          "danio": 0
+        },
+        "25-34": {
+          "rescata": 0,
+          "danio": 0
+        },
+        "35-49": {
+          "rescata": 0,
+          "danio": 0
+        },
+        "50-64": {
+          "rescata": 0,
+          "danio": 0
+        },
+        "65-xx": {
+          "rescata": 0,
+          "danio": 0
+        }
+      },
+      "frontera_1": 0.5075
+    },
+    "T1 con restricciones monotonas": {
+      "modelo": "T1 con restricciones monotonas",
+      "corrected_cv": 0.6094234,
+      "delta_vs_V20": -0.000355,
+      "fold_1": 0.6123409,
+      "fold_2": 0.611502,
+      "fold_3": 0.6110893,
+      "fold_4": 0.6089762,
+      "fold_5": 0.6032355,
+      "media": 0.609429,
+      "desviacion": 0.003289,
+      "delta_por_fold": [
+        -0.000862,
+        -0.000579,
+        0.000643,
+        0.000134,
+        -0.001116
+      ],
+      "folds_positivos": 2,
+      "rescue": 752,
+      "damage": 807,
+      "net": -55,
+      "changed_rows": 2552,
+      "f1_por_clase": {
+        "13-17": 0.6818,
+        "18-24": 0.5167,
+        "25-34": 0.4953,
+        "35-49": 0.5685,
+        "50-64": 0.6634,
+        "65-xx": 0.7309
+      },
+      "complementariedad_por_clase": {
+        "13-17": {
+          "rescata": 112,
+          "danio": 95
+        },
+        "18-24": {
+          "rescata": 169,
+          "danio": 201
+        },
+        "25-34": {
+          "rescata": 175,
+          "danio": 205
+        },
+        "35-49": {
+          "rescata": 145,
+          "danio": 135
+        },
+        "50-64": {
+          "rescata": 92,
+          "danio": 105
+        },
+        "65-xx": {
+          "rescata": 59,
+          "danio": 66
+        }
+      },
+      "frontera_1": 0.5064
+    }
+  },
+  "delta": -0.000355,
+  "mecanismo": {
+    "ERROR_SUPERADO": true,
+    "detalle": "el diagnostico de v27_02 conto una clave inexistente",
+    "correccion_en": "experiments/v27_03_h11_mecanismo.json"
+  },
+  "gate": {
+    "delta_minimo": 0.003,
+    "folds_minimos": 4,
+    "cumple_delta": false,
+    "cumple_folds": false,
+    "bootstrap": {
+      "delta": -0.000355,
+      "ic95": [
+        -0.000803,
+        0.000127
+      ],
+      "proporcion_positiva": 0.068,
+      "ic95_incluye_cero": true
+    }
+  },
+  "decision": "H11 CLOSED",
+  "estado": "CLOSED",
+  "submission_generada": false,
+  "segundos": 1072.9,
+  "nota_de_edicion": "El campo `mecanismo` de este artefacto fue un diagnostico erroneo (0/0 splits por contar la clave `split_feature`, que no existe). Se sustituyo por un puntero al artefacto corregido `v27_03_h11_mecanismo.json`. El delta, los folds y la decision NO se modifican."
+}

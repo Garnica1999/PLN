@@ -182,3 +182,27 @@ Ambas mediciones se hicieron con el percentil y la media **aprendidos solo del t
 **Presupuesto**: {'principal': 8, 'reserva': 4, 'absoluto': 12, 'primer_experimento': 1}
 
 El primer experimento tendra exactamente **V20 como control y una unica transformacion nueva**. No se cambia simultaneamente la representacion, el meta-modelo, la regularizacion ni los thresholds.
+
+## 6. Resultado real de las cuatro hipotesis abiertas
+
+Actualizado tras ejecutar V27. Ninguna se declara positiva sin el numero que la sostiene, y una hipotesis cerrada sin entrenamiento no cuenta como experimento.
+
+| ID | Modo de cierre | Estado | Delta | Resultado |
+|---|---|---|---|---|
+| H02 | probado | CLOSED | -0.000001 | 0.609777 |
+| H12 | probado | CLOSED | +0.000000 | 0.6097782 |
+| H11 | probado | CLOSED | -0.000355 | 0.6094234 |
+| H14 | **cerrada por equivalencia funcional** | CLOSED | no medido | sin experimento |
+| H03 | probado | MARGINAL | +0.000272 | 0.6100505 |
+
+### H14 se cierra sin experimento, y por que
+
+Reescalar la salida del blend tiene cuatro formas posibles y **las cuatro estan cerradas con numero**:
+
+- **reescalado afin de cada columna del blend** es **H02**, que ya se midio: delta -0,000001, CLOSED (`experiments/v26_01_rank_representacion.json`).
+- **percentil de cada columna del blend** es **H03**, que ya se midio: delta +0,000272, MARGINAL (`experiments/v27_05_h03_percentil.json`).
+- **temperatura o isotonica sobre la salida** es **H01**, que ya se midio: recalibracion medida y cerrada (`DECISIONS.md D-029`).
+- **cambiar el combinador del blend** es **H04 + H06**, que ya se midio: peso aprendido y combinador logistico medidos (`DECISIONS.md D-046, D-051`).
+
+No queda ninguna transformacion de la salida del blend que no sea una de esas, y ademas el problema operativo es menor de lo que parece: el meta-modelo de V20 divide por **7 de sus 279 features** (`experiments/v27_04_concentracion.json`), luego escalar una salida que el modelo no abre no puede cambiar mucho.
+

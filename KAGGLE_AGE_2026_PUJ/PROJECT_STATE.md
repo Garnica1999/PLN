@@ -796,3 +796,21 @@ adopta** (D-011).
   (30 experimentos) · `requirements.txt` (312 paquetes).
 - Submissions: `age_submission_v01..v06.csv` + `age_submission_final.csv` (reproduce la v06 al
   100,0000%).
+
+---
+
+## Cierre de la fase V27 · 2026-09-28
+
+- **Baseline congelado:** V20, 0,609778 corrected_cv, LB 0.62689, hash `2c964af78c90bf08...`, sin cambios.
+
+- **Experimentos de V27:** tres, `V27-01` (H12), `V27-02` (H11) y `V27-05` (H03). H14 se cerro por equivalencia funcional sin entrenar y **no cuenta como experimento**.
+
+- **Resultado unico positivo:** H03, delta 0,000272, 3/5 folds, IC95 que incluye el cero. **MARGINAL**, no finalista, sin submission.
+
+- **Hallazgo estructural:** el meta-modelo de V20 divide por **7 de 279 features**, todas del bloque de evidencia de los miembros. Se controlo que no sea efecto del submuestreo.
+
+- **Consecuencia:** ninguna de las cuatro familias abiertas de V26 queda abierta. La linea de representacion, combinacion, calibracion, estructura ordinal y meta-modelo esta agotada con evidencia negativa reproducible.
+
+- **Submissions generadas:** 0. **Push:** ninguno. **V20 modificado:** no.
+
+- **Informe completo:** `reports/AGE_COMPLETE_RESEARCH_REPORT.md`, generado por `scripts/v27_10_informe_completo.py`.

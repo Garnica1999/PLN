@@ -1,0 +1,185 @@
+{
+  "fase": "V27 01 H12 fiabilidad por modelo y clase",
+  "fecha": "2026-09-28",
+  "hipotesis": "el meta-modelo se beneficia de conocer explicitamente la fiabilidad de cada miembro y para cada clase de edad",
+  "novedad_funcional": "ninguna de las tres familias existentes construye una tabla fiabilidad(miembro, clase): phase32 mide la del top-1 de la decision final (D-029), v20_p0_fronteras la de cada frontera, y phase2 solo la nombra como objetivo",
+  "medida": "media de la columna del modelo y clase sobre las filas de esa clase del training fold",
+  "columnas_anadidas": 78,
+  "modelos_incluidos": [
+    "ADV05_nbsvm",
+    "E-009",
+    "E-010",
+    "E-011",
+    "E013_margenes",
+    "E014_margenes",
+    "E015_softmax",
+    "E016_margenes",
+    "E017_probabilidades",
+    "E019b_densas_svd",
+    "E021a_ordinal",
+    "E021b_rocchio",
+    "nbsvm_word"
+  ],
+  "modelos_excluidos": {
+    "E015_ordinal": 1,
+    "E028a_pares": 5
+  },
+  "modelos_excluidos_motivo": "no cubren las seis clases, luego no pueden aportar fiabilidad de todas; no se inventan las que faltan",
+  "control_t0": {
+    "corrected_cv": 0.6097782,
+    "reproducido": true
+  },
+  "candidatos": {
+    "T0 V20 control": {
+      "modelo": "T0 V20 control",
+      "corrected_cv": 0.6097782,
+      "delta_vs_V20": 0.0,
+      "fold_1": 0.6132028,
+      "fold_2": 0.612081,
+      "fold_3": 0.6104461,
+      "fold_4": 0.6088426,
+      "fold_5": 0.604351,
+      "media": 0.609785,
+      "desviacion": 0.003092,
+      "delta_por_fold": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "folds_positivos": 0,
+      "rescue": 0,
+      "damage": 0,
+      "net": 0,
+      "changed_rows": 0,
+      "f1_por_clase": {
+        "13-17": 0.6818,
+        "18-24": 0.517,
+        "25-34": 0.4965,
+        "35-49": 0.5687,
+        "50-64": 0.6637,
+        "65-xx": 0.731
+      },
+      "complementariedad_por_clase": {
+        "13-17": {
+          "rescata": 0,
+          "danio": 0
+        },
+        "18-24": {
+          "rescata": 0,
+          "danio": 0
+        },
+        "25-34": {
+          "rescata": 0,
+          "danio": 0
+        },
+        "35-49": {
+          "rescata": 0,
+          "danio": 0
+        },
+        "50-64": {
+          "rescata": 0,
+          "danio": 0
+        },
+        "65-xx": {
+          "rescata": 0,
+          "danio": 0
+        }
+      },
+      "frontera_1": 0.5075
+    },
+    "T1 con fiabilidad por modelo y clase": {
+      "modelo": "T1 con fiabilidad por modelo y clase",
+      "corrected_cv": 0.6097782,
+      "delta_vs_V20": 0.0,
+      "fold_1": 0.6132028,
+      "fold_2": 0.612081,
+      "fold_3": 0.6104461,
+      "fold_4": 0.6088426,
+      "fold_5": 0.604351,
+      "media": 0.609785,
+      "desviacion": 0.003092,
+      "delta_por_fold": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "folds_positivos": 0,
+      "rescue": 0,
+      "damage": 0,
+      "net": 0,
+      "changed_rows": 0,
+      "f1_por_clase": {
+        "13-17": 0.6818,
+        "18-24": 0.517,
+        "25-34": 0.4965,
+        "35-49": 0.5687,
+        "50-64": 0.6637,
+        "65-xx": 0.731
+      },
+      "complementariedad_por_clase": {
+        "13-17": {
+          "rescata": 0,
+          "danio": 0
+        },
+        "18-24": {
+          "rescata": 0,
+          "danio": 0
+        },
+        "25-34": {
+          "rescata": 0,
+          "danio": 0
+        },
+        "35-49": {
+          "rescata": 0,
+          "danio": 0
+        },
+        "50-64": {
+          "rescata": 0,
+          "danio": 0
+        },
+        "65-xx": {
+          "rescata": 0,
+          "danio": 0
+        }
+      },
+      "frontera_1": 0.5075
+    }
+  },
+  "delta": 0.0,
+  "mecanismo": {
+    "rango_global": 1.4093,
+    "modelo_mas_variable": "fiab_E015_softmax",
+    "desviacion_tipica_por_clase": {
+      "13-17": 0.7014,
+      "18-24": 0.5952,
+      "25-34": 0.5648,
+      "35-49": 0.5861,
+      "50-64": 0.6534,
+      "65-xx": 0.8378
+    },
+    "distincion_entre_clases": 2.8638
+  },
+  "gate": {
+    "delta_minimo": 0.003,
+    "folds_minimos": 4,
+    "cumple_delta": false,
+    "cumple_folds": false,
+    "bootstrap": {
+      "delta": 0.0,
+      "ic95": [
+        0.0,
+        0.0
+      ],
+      "proporcion_positiva": 0.0,
+      "ic95_incluye_cero": true
+    }
+  },
+  "decision": "H12 CLOSED",
+  "estado": "CLOSED",
+  "submission_generada": false,
+  "segundos": 242.6
+}

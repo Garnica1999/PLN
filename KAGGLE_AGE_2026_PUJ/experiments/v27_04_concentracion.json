@@ -1,0 +1,309 @@
+{
+  "fase": "V27 04 concentracion de features",
+  "fecha": "2026-09-28",
+  "experimenta": false,
+  "hallazgo": "el meta-modelo de V20 divide por muy pocas de sus 279 features, y todas son del bloque de evidencia de los miembros",
+  "por_umbral": {
+    "umbral_1": {
+      "splits_totales": 3990,
+      "features_distintas": 7,
+      "porcentaje_de_279": 2.51,
+      "bloques": {
+        "miembro_ensamble": 7
+      },
+      "features": [
+        {
+          "indice": 0,
+          "splits": 600,
+          "nombre": "E013_margenes_c0",
+          "bloque": "miembro_ensamble"
+        },
+        {
+          "indice": 1,
+          "splits": 600,
+          "nombre": "E013_margenes_c1",
+          "bloque": "miembro_ensamble"
+        },
+        {
+          "indice": 2,
+          "splits": 600,
+          "nombre": "E013_margenes_c2",
+          "bloque": "miembro_ensamble"
+        },
+        {
+          "indice": 3,
+          "splits": 599,
+          "nombre": "E013_margenes_c3",
+          "bloque": "miembro_ensamble"
+        },
+        {
+          "indice": 4,
+          "splits": 592,
+          "nombre": "E013_margenes_c4",
+          "bloque": "miembro_ensamble"
+        },
+        {
+          "indice": 5,
+          "splits": 576,
+          "nombre": "E013_margenes_c5",
+          "bloque": "miembro_ensamble"
+        },
+        {
+          "indice": 6,
+          "splits": 423,
+          "nombre": "E016_margenes_c0",
+          "bloque": "miembro_ensamble"
+        }
+      ]
+    },
+    "umbral_2": {
+      "splits_totales": 4042,
+      "features_distintas": 7,
+      "porcentaje_de_279": 2.51,
+      "bloques": {
+        "miembro_ensamble": 7
+      },
+      "features": [
+        {
+          "indice": 0,
+          "splits": 600,
+          "nombre": "E013_margenes_c0",
+          "bloque": "miembro_ensamble"
+        },
+        {
+          "indice": 1,
+          "splits": 600,
+          "nombre": "E013_margenes_c1",
+          "bloque": "miembro_ensamble"
+        },
+        {
+          "indice": 3,
+          "splits": 600,
+          "nombre": "E013_margenes_c3",
+          "bloque": "miembro_ensamble"
+        },
+        {
+          "indice": 2,
+          "splits": 600,
+          "nombre": "E013_margenes_c2",
+          "bloque": "miembro_ensamble"
+        },
+        {
+          "indice": 4,
+          "splits": 598,
+          "nombre": "E013_margenes_c4",
+          "bloque": "miembro_ensamble"
+        },
+        {
+          "indice": 5,
+          "splits": 591,
+          "nombre": "E013_margenes_c5",
+          "bloque": "miembro_ensamble"
+        },
+        {
+          "indice": 6,
+          "splits": 453,
+          "nombre": "E016_margenes_c0",
+          "bloque": "miembro_ensamble"
+        }
+      ]
+    },
+    "umbral_3": {
+      "splits_totales": 4065,
+      "features_distintas": 7,
+      "porcentaje_de_279": 2.51,
+      "bloques": {
+        "miembro_ensamble": 7
+      },
+      "features": [
+        {
+          "indice": 0,
+          "splits": 600,
+          "nombre": "E013_margenes_c0",
+          "bloque": "miembro_ensamble"
+        },
+        {
+          "indice": 1,
+          "splits": 600,
+          "nombre": "E013_margenes_c1",
+          "bloque": "miembro_ensamble"
+        },
+        {
+          "indice": 3,
+          "splits": 600,
+          "nombre": "E013_margenes_c3",
+          "bloque": "miembro_ensamble"
+        },
+        {
+          "indice": 2,
+          "splits": 600,
+          "nombre": "E013_margenes_c2",
+          "bloque": "miembro_ensamble"
+        },
+        {
+          "indice": 4,
+          "splits": 600,
+          "nombre": "E013_margenes_c4",
+          "bloque": "miembro_ensamble"
+        },
+        {
+          "indice": 5,
+          "splits": 592,
+          "nombre": "E013_margenes_c5",
+          "bloque": "miembro_ensamble"
+        },
+        {
+          "indice": 6,
+          "splits": 473,
+          "nombre": "E016_margenes_c0",
+          "bloque": "miembro_ensamble"
+        }
+      ]
+    },
+    "umbral_4": {
+      "splits_totales": 4077,
+      "features_distintas": 7,
+      "porcentaje_de_279": 2.51,
+      "bloques": {
+        "miembro_ensamble": 7
+      },
+      "features": [
+        {
+          "indice": 0,
+          "splits": 600,
+          "nombre": "E013_margenes_c0",
+          "bloque": "miembro_ensamble"
+        },
+        {
+          "indice": 3,
+          "splits": 600,
+          "nombre": "E013_margenes_c3",
+          "bloque": "miembro_ensamble"
+        },
+        {
+          "indice": 1,
+          "splits": 600,
+          "nombre": "E013_margenes_c1",
+          "bloque": "miembro_ensamble"
+        },
+        {
+          "indice": 2,
+          "splits": 600,
+          "nombre": "E013_margenes_c2",
+          "bloque": "miembro_ensamble"
+        },
+        {
+          "indice": 4,
+          "splits": 600,
+          "nombre": "E013_margenes_c4",
+          "bloque": "miembro_ensamble"
+        },
+        {
+          "indice": 5,
+          "splits": 595,
+          "nombre": "E013_margenes_c5",
+          "bloque": "miembro_ensamble"
+        },
+        {
+          "indice": 6,
+          "splits": 482,
+          "nombre": "E016_margenes_c0",
+          "bloque": "miembro_ensamble"
+        }
+      ]
+    },
+    "umbral_5": {
+      "splits_totales": 3994,
+      "features_distintas": 7,
+      "porcentaje_de_279": 2.51,
+      "bloques": {
+        "miembro_ensamble": 7
+      },
+      "features": [
+        {
+          "indice": 0,
+          "splits": 600,
+          "nombre": "E013_margenes_c0",
+          "bloque": "miembro_ensamble"
+        },
+        {
+          "indice": 1,
+          "splits": 600,
+          "nombre": "E013_margenes_c1",
+          "bloque": "miembro_ensamble"
+        },
+        {
+          "indice": 3,
+          "splits": 600,
+          "nombre": "E013_margenes_c3",
+          "bloque": "miembro_ensamble"
+        },
+        {
+          "indice": 2,
+          "splits": 600,
+          "nombre": "E013_margenes_c2",
+          "bloque": "miembro_ensamble"
+        },
+        {
+          "indice": 4,
+          "splits": 592,
+          "nombre": "E013_margenes_c4",
+          "bloque": "miembro_ensamble"
+        },
+        {
+          "indice": 5,
+          "splits": 578,
+          "nombre": "E013_margenes_c5",
+          "bloque": "miembro_ensamble"
+        },
+        {
+          "indice": 6,
+          "splits": 424,
+          "nombre": "E016_margenes_c0",
+          "bloque": "miembro_ensamble"
+        }
+      ]
+    }
+  },
+  "controles": {
+    "V20 exacta (HIERBA)": {
+      "splits_totales": 3990,
+      "features_distintas": 7,
+      "por_bloque": {
+        "miembro_ensamble": 7
+      }
+    },
+    "sin colsample_bytree": {
+      "splits_totales": 3960,
+      "features_distintas": 7,
+      "por_bloque": {
+        "miembro_ensamble": 7
+      }
+    },
+    "sin subsample": {
+      "splits_totales": 4014,
+      "features_distintas": 7,
+      "por_bloque": {
+        "miembro_ensamble": 7
+      }
+    },
+    "num_leaves=31 y max_depth=-1": {
+      "splits_totales": 18000,
+      "features_distintas": 30,
+      "por_bloque": {
+        "miembro_ensamble": 30
+      }
+    }
+  },
+  "features_totales": 279,
+  "features_usadas": 7,
+  "es_efecto_del_submuestreo": false,
+  "prueba": "quitar colsample_bytree o subsample no cambia el numero de features usadas; subir num_leaves a 31 si las amplía de 7 a 30, luego estaban disponibles y no usadas por falta de capacidad",
+  "explica": {
+    "V25": "el mutual information ordena alto las columnas de miembro_ensamble, que son justo las que el modelo usa; las estructuradas y las densas que el MI descarta son las que ya no se dividian",
+    "V26-01": "reescalar columnas no cambia su orden, y el modelo divide por orden",
+    "H11": "las features con relacion monotona defendible son las probabilidades de clase, en los indices 12 a 53, y ninguna se usa para dividir"
+  },
+  "no_abre_hipotesis": true,
+  "segundos": 75.0
+}
