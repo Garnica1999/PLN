@@ -988,3 +988,40 @@ sobre exactamente las celdas donde un selector los usaria. Solo V03 con otro umb
 
 **Estado del campeon.** Sin cambios. V03 intacto. 0 modelos, 0 submissions, 0 consultas a Kaggle, 0
 uso de holdout o test.
+
+
+---
+
+## Fase P51 (2026-09-28) - Utility-Aware Contextual Gating
+
+**Que se respondio.** Si los 715 rescates potenciales se convierten en mejora real
+cuando el selector aprende la utilidad del cambio en vez de la correccion del canal.
+
+```text
+SELECTOR_UTILITY_ALREADY_TESTED = FALSE
+EQUILIBRIO_ANALITICO            = 0,3892 en las DOS direcciones (no 0,5)
+AUC del target de utilidad      = 0,5507 a 0,9249, media 0,8091
+AUC del target de correccion    = 0,55 a 0,77  (P50)
+elevacion necesaria al subir    = 2,18x
+elevacion necesaria al bajar    = 1,03x
+S1-U  delta = -0,7477491670   0/5 pliegues   net -916
+S2-U  delta = -0,0101586431   1/5 pliegues   net  -62
+permutacion: observado -62 vs nula -115  -> 53 celdas MEJOR que el azar, p = 0,0000
+solo direccion 1->0: net +5
+CASE = A
+```
+
+**Lo que P51 corrige de P50.** P50 concluyo que la informacion no era identificable.
+P51 demuestra que **si lo es**: el AUC sube a 0,81 de media y el selector es 53
+celdas mejor que colocar los cambios al azar, con p de una cola 0,0000. El problema
+es otro y es mas duro: **el conjunto de cambios disponibles tiene expectativa
+negativa**, y la mejor regla conocida recupera solo una parte de esa perdida.
+
+**La asimetria de direccion es el hallazgo mecanico.** El equilibrio no es 0,5 sino
+0,3892, y sale de la forma cerrada de V19-01, no de un grid. Las dos direcciones no
+son intercambiables: subir necesita 2,18x de elevacion y bajar solo 1,03x. Y al
+medir, bajar de 1 a 0 sale **neta positiva** (+5) mientras subir sale muy negativa
+(-67).
+
+**Estado del campeon.** Sin cambios. V03 intacto. 0 modelos, 0 submissions, 0
+consultas a Kaggle, 0 uso de holdout o test.

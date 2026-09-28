@@ -4145,3 +4145,102 @@ segunda particion**.
 **Decision.** `CASE B`. `CONTEXTUAL_SELECTION = CLOSED`. La conclusion no es que falte senal: es que
 la senal existe, es enorme, y **no es direccionable**. Una explicacion del techo actual de V03
 sustancialmente mejor que "probamos 15 familias y ninguna funciono".
+
+
+### D-122. El objetivo de utilidad es mucho mas aprendible que el de correccion, y aun asi no supera a V03
+
+**Contexto.** P50 cerro `CONTEXTUAL_SELECTION = CLOSED` probando un unico surrogado,
+`argmax P(canal acierta)`, y obteniendo -0,0115. P51 reabre la linea porque ese
+surrogado premia la **predecibilidad** de un canal y no su **utilidad**: por eso P50
+eligio `cita:NEG` 109 veces con net -1706. La pregunta nueva es si un selector que
+aprende el beneficio de sustituir V03 mejora la decision.
+
+**La utilidad no es una invencion de P51.** `experiments/v19_01_valor_de_correccion.py`
+ya derivo la forma cerrada del delta de F1 para los cuatro estados de celda, y su
+propio texto dice que en V18 se contaron rescates y danos como si valieran uno cada
+uno, lo cual es falso en el margen. Ademas `reports/v19_01_valor_de_correccion.json`
+**no existe**, solo el `.md`. V19-01 y V19-03 tienen **cero ajustes de modelo**: la
+utilidad se midio, nunca se aprendio. Luego
+`SELECTOR_UTILITY_ALREADY_TESTED = FALSE` y P51 continua.
+
+**Un hecho estructural que condiciona todo.** En celdas binarias, si el canal y V03
+discrepan, la etiqueta verdadera coincide con **exactamente una** de las dos
+predicciones. Luego **todo cambio de discrepancia es rescate o dano, y nunca ambos
+mal**, y por tanto `delta_F1 > 0` equivale a `rescate`. El target binario de P51
+coincide por construccion con el de P50 y con el de V18-01. Verificado sobre las
+4449 celdas por 20 canales: `True`. **Lo unico nuevo es la magnitud.**
+
+**La asimetria de direccion y el equilibrio que no es 0,5.** De la forma cerrada:
+`FN -> TP` escala con `TP + FP + FN` y `FP -> TN` solo con `TP`. Medido sobre los
+conteos de cada pliegue de entrenamiento, la razon es **1,57x**. De ahi sale que el
+punto de equilibrio, expresado sobre `P(y=1)`, es **0,3892 para las dos
+direcciones**, con coincidencia a 1,7e-16. No es 0,5, y no es un grid: sale de la
+forma cerrada.
+
+**La senal es mucho mas aprendible que en P50.** Este es el hallazgo de P51 con
+independencia de como termine la decision:
+
+| target | AUC out-of-fold |
+|---|---|
+| `channel_correct` (P50) | 0,55 a 0,77 |
+| `delta_F1 > 0` (P51) | **0,5507 a 0,9249, media 0,8091** |
+
+**Lo que hay que?? superar, y no es igual en las dos direcciones.** Tasa base de
+acierto al subir de 0 a 1: **17,86 pct**, frente a un equilibrio de 38,92 pct, o sea
+hace falta una elevacion de **2,18x**. Al bajar de 1 a 0: **37,61 pct**, o sea solo
+**1,03x**. Las dos direcciones no son intercambiables.
+
+**S1-U, target binario con umbral 0,5.** `corrected_cv` 0,0294622851, delta
+**-0,7477491670**, 0 de 5 pliegues, rescate 414, damage 1330, net **-916**. Catastrofico,
+y el motivo es preciso: un target binario trata igual una celda que gana 1,0e-3 que
+otra que gana 1,6e-3, de modo que **no puede distinguir que bajar de 1 a 0 arriesga
+`TP -> FN`, que vale 1,57 veces mas de lo que gana**. Por eso destroza las celdas de
+margen alto: 1018 cambios, net **-780**.
+
+Con los umbrales analiticos de equilibrio sobre la confianza maxima, el mismo modelo
+baja a delta **-0,0050258278** con net -7. Es una mejora de 0,74 de macro-F1 hacer
+bien la puerta, y dice que el fallo era de decision y no de objetivo.
+
+**S2-U,/utilidad esperada, autorizada por la directiva** porque S1-U mostro senal
+observable con delta negativo. Mismos veinte clasificadores; lo unico que cambia es la
+agregacion, y por eso no es un modelo nuevo ni una familia nueva:
+
+```text
+E[u(i,j)] = P_j(x) * g_direccion - (1 - P_j(x)) * h_direccion
+se elige argmax y se cambia solo si es mayor que cero
+```
+
+Sin umbral, luego sin grid. Resultado: `corrected_cv` **0,7670528094**, delta
+**-0,0101586431**, 1 de 5 pliegues, 304 celdas cambiadas, rescate 121, damage 183,
+net **-62**.
+
+**El diagnostico que explica el resultado, y que contradice a P50.** Una permutacion
+que reasigna los mismos 304 cambios a celdas elegidas al azar da una nula de net
+**-115**, con IC95 **[-136, -93]**. El observado es **-62**. El selector es **53
+celdas mejor que el azar**, con p de una cola **0,0000**.
+
+```text
+P50 concluyo: la informacion no es identificable
+P51 demuestra: la informacion SI es identificable (AUC 0,81 y 53 celdas sobre el azar)
+               pero el conjunto de cambios tiene expectativa negativa,
+               y recuperar esa ganancia entera no basta para superar a no hacer nada
+```
+
+Hay ademas un **gap de calibracion** enorme: el modelo esperaba que sus cambios
+valieran **+0,056618** de macro-F1 y salieron a **-0,010159**. Sus probabilidades
+estan sobreestimadas.
+
+**La asimetria se confirma con el signo inesperado.** Bajar de 1 a 0 sale **neta
+positiva** (net **+5**, 50 rescates y 45 danos) y subir de 0 a 1 sale muy negativa
+(net **-67**), al contrario de lo que predicen las magnitudes, porque el selector
+discrimina mucho mejor al bajar: 50 de 95 aciertos, un 52,6 pct frente al
+equilibrio de 38,92 pct. La variante restringida a la direccion 1->0 da delta
+**-0,0050042857** con net +5. Positiva en celdas, insuficiente en macro-F1, porque 5
+celdas valen alrededor de 0,0006 y hacen falta 26,75 para 0,003.
+
+**Decision.** `CASE A`. `CONTEXTUAL_SELECTION = CLOSED`, ahora de forma definitiva,
+tras haber probado gating por correccion (P50) y gating por utilidad (P51), con dos
+formulaciones de selector cada uno. El techo de +0,2098 que dio P50 sigue en pie, y
+sigue sin ser alcanzable: el problema no es de modelo sino de que **el conjunto de
+cambios disponibles tiene expectativa negativa** y la mejor regla conocida solo
+recupera parte de esa perdida.

@@ -1,0 +1,76 @@
+{
+  "familia": "P51_UTILITY_AWARE_CONTEXTUAL_GATING",
+  "experimento": "V51-00 (brecha utilitaria, utilidad exacta y asimetria)",
+  "fecha": "2026-09-28T01:35:27+00:00",
+  "estado": "AUDIT_ONLY",
+  "gap_audit": {
+    "selector_utility_already_tested": false,
+    "catalogo": [
+      {
+        "componente": "definicion de la utilidad exacta de un cambio de celda",
+        "estado": "YA EXISTIA",
+        "evidencia": "experiments/v19_01_valor_de_correccion.py deriva la forma cerrada del delta de F1 para los cuatro estados: FN->TP escala con TP+FP+FN, FP->TN solo con TP, y los otros dos son sus negativos",
+        "nota": "Su propio texto dice que en V18 se contarion rescates y danos como si valieran uno cada uno, lo cual es falso en el margen. P51 reutiliza esa correccion, no la reinventa"
+      },
+      {
+        "componente": "artefacto JSON con esos valores por celda",
+        "estado": "AUSENTE",
+        "evidencia": "reports/v19_01_valor_de_correccion.json no existe; solo el .md",
+        "nota": "P51 reconstruye los conteos y los deltas desde el OOF canonico"
+      },
+      {
+        "componente": "selector entrenado con la utilidad como objetivo",
+        "estado": "NO EXISTE",
+        "evidencia": "cero ajustes de modelo en v19_01 y v19_03, verificado por grep de LogisticRegression, fit y predict",
+        "nota": "V19 midio el valor de las correcciones pero nunca lo uso para decidir"
+      },
+      {
+        "componente": "selector con target de correccion (rescate frente a dano)",
+        "estado": "YA EXISTIO, NEGATIVO",
+        "evidencia": "v18_01 dio NO SELECTIVE CORRECTION SIGNAL con AUC 0,6181; P50 S1 dio -0,0115 con 0 de 5 pliegues",
+        "nota": "el target de correccion ya esta descartado dos veces"
+      }
+    ],
+    "origen_de_la_formula_de_utilidad": "experiments/v19_01_valor_de_correccion.py, funciones valor_de_corregir_falso_negativo y valor_de_corregir_falso_positivo",
+    "nota": "P51 no reinventa la utilidad: la reutiliza desde V19-01, que ya derivo la forma cerrada. Lo que no existia era un selector que la usara como objetivo, y eso es lo que P51 construye"
+  },
+  "asimetria_de_direccion": {
+    "ganancia_FN_a_TP": 0.001402553801,
+    "ganancia_FP_a_TN": 0.000901233451,
+    "razon_ganancia_sobre_perdida": 1.5729,
+    "p_umbral_para_subir_a_1": 0.389157,
+    "p_umbral_para_bajar_a_0": 0.610843,
+    "interpretacion": "subir de 0 a 1 es una apuesta favorable: al acertar se paga FN->TP, que escala con TP+FP+FN, y al fallar se paga TN->FP, que solo escala con TP. Bajar de 1 a 0 es la apuesta opuesta. P50 trato las dos direcciones por igual, y por eso su argmax eligio canales con net negativo"
+  },
+  "estructura_del_signo": {
+    "utilidad_positiva_equivale_a_rescate": true,
+    "existe_caso_ambos_mal_en_discrepancia": false,
+    "nota": "en celdas binarias, si el canal y V03 discrepan, y coincide con exactamente una de las dos predicciones, luego todo cambio de discrepancia es rescate o dano y nunca ambos mal. El target binario de P51 coincide con el de P50; lo nuevo es la magnitud",
+    "cociente_magnitud_rescate_sobre_dano": 0.9372
+  },
+  "valor_esperado_por_direccion": {
+    "subir_0_a_1": -0.088309007,
+    "bajar_1_a_0": -0.139770182,
+    "n_ganadoras_subiendo": 1465,
+    "n_perdedoras_subiendo": 6739,
+    "n_ganadoras_bajando": 2708,
+    "n_perdedoras_bajando": 4492
+  },
+  "v03": {
+    "corrected_cv": 0.7772114525165721,
+    "celdas_de_error": 757
+  },
+  "p50_control": {
+    "corrected_cv": 0.7657442265,
+    "delta_vs_v03": -0.011467226,
+    "target": "channel_correct"
+  },
+  "gastos": {
+    "submissions": 0,
+    "modelos_entrenados": 0,
+    "consultas_kaggle": 0,
+    "uso_holdout": 0,
+    "uso_test": 0,
+    "segundos": 0.1
+  }
+}

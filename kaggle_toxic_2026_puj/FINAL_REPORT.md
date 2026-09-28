@@ -1349,3 +1349,110 @@ seleccion contextual que explorar**, porque la dificultad no es de modelo sino d
 *Seccion generada por `experiments/v50_00_brecha_y_oracle.py`,
 `experiments/v50_01_selector.py` y `experiments/v50_02_integrar_notebook.py`. Sin push: la rama sigue
 local.*
+
+
+---
+
+## Addendum P51 (2026-09-28) - La senal si se identifica, pero el conjunto de cambios es una perdida
+
+### La pregunta de fondo, respondida
+
+> ?Los 715 rescates potenciales pueden convertirse en mejora real si el selector aprende
+> a predecir el beneficio de sustituir V03, en lugar de intentar predecir que canal
+> acertara?
+
+**No. Y el motivo no es el que se suponia.**
+
+### P50 se equivoco en el diagnostico
+
+P50 concluyo que la informacion complementaria no era identificable. P51 lo mide y lo
+refuta:
+
+| prueba | resultado |
+|---|---|
+| AUC out-of-fold del target de utilidad | **0,5507 a 0,9249, media 0,8091** |
+| AUC out-of-fold del target de correccion (P50) | 0,55 a 0,77 |
+| permutacion del net de celdas | observado **-62**, nula **-115**, IC95 [-136, -93] |
+| p de una cola, mejor que el azar | **0,0000** |
+
+El selector es **53 celdas mejor que colocar los cambios al azar**. La informacion si
+se identifica.
+
+### La causa real: el conjunto de cambios tiene expectativa negativa
+
+No hacer nada tiene net **0**. El mejor selector conocido tiene net **-62**. La permutacion
+muestra que ese -62 es **53 celdas mejor** que la politica aleatoria, luego el selector
+trabaja, solo que **el pool de cambios disponibles es una perdida en conjunto** y recuperar
+su ganancia entera no alcanza para superar la inaccion.
+
+Hay ademas un **gap de calibracion** enorme: el modelo esperaba que sus cambios valieran
+**+0,056618** de macro-F1 y salieron a **-0,010159**.
+
+### La asimetria de direccion, que es el hallazgo mecanico
+
+| magnitud | valor |
+|---|---:|
+| equilibrio para **subir** de 0 a 1, sobre `P(y=1)` | **0,3892** |
+| equilibrio para **bajar** de 1 a 0, sobre `P(y=1)` | **0,3892** |
+| los dos coinciden | si, a 1,7e-16 |
+| razon `FN->TP` sobre `FP->TN` | **1,57x** |
+| tasa base al subir / elevacion necesaria | 17,86 pct / **2,18x** |
+| tasa base al bajar / elevacion necesaria | 37,61 pct / **1,03x** |
+
+**El equilibrio no es 0,5, y sale de la forma cerrada de V19-01, no de un grid.** Y al
+medir el reparto por direccion, el signo resulta invertido respecto a lo que predecian las
+magnitudes:
+
+| direccion | cambios | rescate | damage | net |
+|---|---:|---:|---:|---:|
+| subir 0 a 1 | 209 | 71 | 138 | **-67** |
+| bajar 1 a 0 | 95 | 50 | 45 | **+5** |
+
+Bajar sale **neta positiva**, porque el selector discrimina mucho mejor al bajar: 52,6 pct
+de aciertos frente al equilibrio de 38,92 pct. La variante restringida a esa direccion da
+net +5, o sea positiva en celdas pero **insuficiente en macro-F1**: 5 celdas valen unos
+0,0006 y hacen faltan 26,75 para 0,003.
+
+### Un hecho estructural que explica por que S1-U se desploma
+
+En celdas binarias, si el canal y V03 discrepan, la etiqueta verdadera coincide con
+**exactamente una** de las dos predicciones. Luego **todo cambio de discrepancia es
+rescate o dano, y nunca ambos mal**, y por tanto `delta_F1 > 0` **equivale a** rescate.
+El target binario de P51 coincide por construccion con el de P50. Lo unico nuevo es la
+magnitud, y un clasificador binario no puede usarla: trata igual una celda que gana
+1,0e-3 que otra que gana 1,6e-3, de modo que no sabe que bajar de 1 a 0 arriesga
+`TP -> FN`, que vale 1,57 veces mas de lo que gana. Por eso destroza el margen alto: 1018
+cambios, net -780.
+
+### Las tres politicas
+
+| politica | corrected_cv | delta vs V03 | net |
+|---|---:|---:|---:|
+| V03 | 0,7772114525 | +0,0000000000 | 0 |
+| P50 S1 (`channel_correct`) | 0,7657442265 | -0,0114672260 | -19 |
+| P51 S1-U (binario) | 0,0294622851 | -0,7477491670 | -916 |
+| P51 S2-U (utilidad esperada) | 0,7670528094 | -0,0101586431 | -62 |
+| oracle (techo, usa `y_true`) | 0,9870178614 | +0,2098064089 | +715 |
+
+### Decision
+
+`CASE A`. `CONTEXTUAL_SELECTION = CLOSED` **de forma definitiva**, tras haber probado
+gating por correccion y gating por utilidad, con dos formulaciones de selector cada uno.
+
+La conclusion final sobre el techo de V03 es mas precisa que la de P50 y mas dura:
+
+- **No es que falte senal.** Hay +0,2098 de macro-F1 disponible, y es identificable
+  con AUC 0,81.
+- **Es que el pool de cambios tiene expectativa negativa.** De media, cambiar V03 por
+  un canal arbitrario pierde. El selector recupera 53 celdas de esa perdida y no
+  suficientes para volver al positivo.
+
+Eso explica por que 15 familias de modelos no,superaron el techo, y tambien por que ningun
+selector contextual lo hara con este pool. Para convertirlo habria que anadir canales
+con **net positivo individual**, y P49 ya midio que **no hay ninguno**: de 20 canales, 19
+tienen net negativo y el unico positivo es el propio V03 con otro umbral.
+
+*Seccion generada por `experiments/v51_00_utilidad_y_asimetria.py`,
+`experiments/v51_01_selector_utilidad.py`,
+`experiments/v51_02_accion_utilidad_esperada.py` y
+`experiments/v51_03_integrar_notebook.py`. Sin push: la rama sigue local.*

@@ -1990,3 +1990,68 @@ forma clara. El gate de 0,003 no se pasa, luego tampoco se calcularon bootstrap 
 particion.
 
 **Sin push, sin merge, sin reset, sin rebase, sin PR.**
+
+
+---
+
+## 2026-09-28 - Fase P51: seleccion contextual consciente de la utilidad
+
+**Alcance.** 0 modelos, 0 submissions, 0 consultas a Kaggle, 0 uso de holdout o test.
+Presupuesto respetado: 2 experimentos, P51-01 (S1-U) y P51-02 (S2-U).
+
+**V51-00** (`experiments/v51_00_utilidad_y_asimetria.py`, exit code 0): brecha de la
+familia utilitaria contra los artefactos, reconstruccion de la utilidad exacta con los
+conteos de cada pliegue de entrenamiento, y analisis de asimetria de direccion.
+Artefactos: `reports/p51_utility_selector_audit.md`, `p51_direction_asymmetry.csv`,
+`p51_utility_gap_and_utility.json`, `features/p51_utility_targets.npz`.
+
+**V51-01** (`experiments/v51_01_selector_utilidad.py`, exit code 0): S1-U con 20
+`LogisticRegression` entrenados solo sobre celdas en discrepancia, target `delta_F1 >
+0`, cross-fitting de 5 pliegues canonicos, puntos de equilibrio analiticos, y tres
+diagnosticos de calibracion. Artefactos: `reports/p51_utility_selector_results.{json,csv}`,
+`p51_utility_selector_analysis.md`, `p51_utility_selector_confusion.csv`,
+`p51_utility_selector_rescue.csv`.
+
+**V51-02** (`experiments/v51_02_accion_utilidad_esperada.py`, exit code 0): S2-U con la
+regla de utilidad esperada, permutacion del net de celdas y variante restringida a la
+direccion 1->0. Artefactos: `reports/p51_s2u_results.{json,csv}`,
+`p51_utility_selector_s2u.md`.
+
+**V51-03** (`experiments/v51_03_integrar_notebook.py`, exit code 0): seccion 47,
+notebook 196 -> 198 celdas, celda de codigo con returncode 0.
+
+**Dos hallazgos que corrigen a P50.**
+
+1. El target de utilidad es **mucho mas aprendible** que el de correccion: AUC
+   out-of-fold de 0,5507 a 0,9249, media **0,8091**, frente al 0,55 a 0,77 de P50.
+2. Una permutacion da una nula de net **-115** con IC95 [-136, -93] frente a un
+   observado de **-62**, luego el selector es **53 celdas mejor que el azar** con p de
+   una cola 0,0000. P50 afirmo que la informacion no era identificable, y eso era
+   falso.
+
+**Un hecho estructural.** En celdas binarias, si canal y V03 discrepan, la etiqueta
+verdadera coincide con exactamente una de las dos, luego todo cambio es rescate o
+dano y nunca ambos mal. Luego `delta_F1 > 0` equivale a `rescate` y el target binario
+de P51 coincide por construccion con el de P50. Lo unico nuevo es la magnitud, y un
+clasificador binario no puede usarla.
+
+**El bootstrap se sustituyo por permutacion, y por que.** El gate no pasa, luego la
+directiva no pide bootstrap. Ademas un bootstrap sobre las celdas cambiadas es
+**degenerado**: al reasignar a cada celda la prediccion del selector de la celda
+muestreada, el valor no cambia y el intervalo sale de ancho cero, que es lo que
+ocurrio en la primera ejecucion. La permutacion si responde a la pregunta util.
+
+**Errores propios.** Un triple-quote anidado en un heredoc rompio el script de parche
+sin escribir nada; un bloque D1/D2/D3 insertado dos veces y despues eliminado de
+ambas copias; `d_arriba` con la asignacion retirada por ruff; indexado de canales
+aplanado contra mascaras 2D; y un `ravel` de masks con formas incompatibles. Todos
+detectados por ejecucion real con `exit code` capturado sin pipe.
+
+**Unicode.** Auditoria exhaustiva de los 30 ficheros de P50 y P51: **0 bytes > 127**
+en todos, comprobados en forma literal y en forma escapada `\uXXXX`, contra los rangos
+CJK, hiragana, katakana, hangul, CJK-ext y cirilico. Las secciones 45, 46 y 47 del
+notebook dan 0 no-ASCII. El no-ASCII restante del repositorio es anterior a esta
+sesion y el verificador del proyecto lo acepta. Dos entradas CJK que **si** introduje
+yo en P50 (`??` y `??`) quedaron corregidas antes de ejecutarse.
+
+**Sin push, sin merge, sin reset, sin rebase, sin PR.**
