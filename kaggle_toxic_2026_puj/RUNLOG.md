@@ -2182,3 +2182,51 @@ alta confianza, que mezclaba la precedencia de `&` con la de `|`; y un `RE_TODO_
 usar. Todos por ejecucion real con `exit code` capturado sin pipe.
 
 **Sin push, sin merge, sin reset, sin rebase, sin PR.**
+
+
+---
+
+## 2026-09-28 - Fase P55: auditoria estrategica del pipeline final de V03
+
+**Alcance.** 0 modelos, 0 submissions, 0 consultas a Kaggle, 0 uso de holdout o test.
+**0 filas nuevas en `experiments.csv`**: es una auditoria, no un experimento. V03 no se
+modifica.
+
+**V55-00** (`experiments/v55_00_auditoria_pipeline.py`, exit code 0): lectura del pipeline
+real desde el codigo de `04_refit_submissions_v02_v03.py` y `14_oof_corregido_v2.py`,
+integridad de artefactos con sha256, umbrales in-sample y **anidados**, estabilidad por
+pliegue, tasa positiva, trayectoria con el tamano de entrenamiento, consistencia de
+vectorizador y grupos, y balance de pliegues. Artefactos:
+`reports/p55_pipeline_audit.{json,md}`, `p55_pipeline_audit.csv`,
+`p55_threshold_transfer.csv`, `p55_artifact_integrity.csv`.
+
+**V55-01** (`experiments/v55_01_integrar_notebook.py`, exit code 0): seccion 51, notebook
+204 -> 206 celdas, celda de codigo con returncode 0.
+
+**El hallazgo, y por que no es una mejora.** Los umbrales de V03 se adoptaron sobre un OOF
+generado con un protocolo de agrupacion mas debil que el de la metrica reportada. Al
+corregir el protocolo no se reoptimizaron. Los umbrales anidados muestran que V03 esta
+0,03 por encima de lo que pide D-016, en los cinco pliegues, en HS y TR. Pero la estimacion
+honesta del beneficio es **+0,000925**, por debajo del margen de adopcion de 0,003. Se
+registra como `BUG_FOUND` con `ORIGINAL_RESULT` y `CORRECTED_RESULT` separados, y **no** se
+llama mejora ni se gasta una submission.
+
+**Por que importa la distincion entre in-sample y anidado.** El delta in-sample es
+**+0,003629**, que habria superado el margen de adopcion. Es una trampa: el umbral se
+eligio sobre el mismo OOF que se puntua, luego no es una mejora esperable. El delta
+anidado, con el umbral elegido en cuatro pliegues y aplicado al quinto, es **+0,000925**.
+Reportar el primero como.expected seria el error clasico de esta auditoria.
+
+**Un metodo que se corrigio a si mismo.** La primera comprobacion de si el vectorizador se
+ajustaba dentro del pliegue buscaba una cadena en el docstring y devolvio `False`. La
+verificacion correcta mira el codigo: `construir_matrices` llama a
+`vectorizador.fit_transform(textos_entrenamiento)`, luego **si** esta dentro y no hay
+leakage de representacion. Un `False` erroneo habria reportado un defecto de leakage que no
+existe.
+
+**Errores propios.** Un triple-quote anidado en la celda del notebook rompio el literal; una
+referencia a indice futuro al construir la trayectoria de tamanos; una clave de npz
+inexistente; y `ruff --fix` elimino en una pasada anterior un diccionario que si se usaba.
+Todos por ejecucion real con `exit code` capturado sin pipe.
+
+**Sin push, sin merge, sin reset, sin rebase, sin PR.**

@@ -1745,3 +1745,111 @@ observables quedo cerrada por P52 y P53 con una **cota**, no por falta de intent
 
 *Seccion generada por `experiments/v54_00_atlas_no_rescatable.py` y
 `experiments/v54_01_integrar_notebook.py`. Sin push: la rama sigue local.*
+
+
+---
+
+## Addendum P55 (2026-09-28) - La referencia de V03 mezcla dos protocolos
+
+### El pipeline real
+
+```text
+raw train 1731 -> dev 1483 / holdout 248
+
+A) 04_refit_submissions_v02_v03.py
+     grupos = near-duplicado (D-004)
+     vectorizador y modelo DENTRO de cada pliegue
+     -> oof_mod03b.npz
+     -> umbrales 0,44 / 0,51 / 0,46 sobre ESE OOF
+     -> refit sobre el 100 pct del train con ESOS umbrales
+     -> submission V03
+
+B) 14_oof_corregido_v2.py
+     grupos = near-duplicate UNION pseudo-autor (D-016)
+     -> v2_oof_base_corrected.npz
+     -> corrected_cv = 0,7772114525 con LOS UMBRALES DE A)
+```
+
+**La discrepancia:** los dos numeros de la referencia de V03 vienen de protocolos de
+agrupacion distintos, y D-004 es el mas debil porque deja que un pseudo-autor cruce
+pliegues. Cuando D-016 corrigio el protocolo, el `corrected_cv` se recalculo conservando los
+umbrales viejos.
+
+### El sesgo es sistematico
+
+| etiqueta | umbrales anidados por pliegue | mediana | V03 | dentro del rango |
+|---|---|---:|---:|---|
+| HS | 0,40 0,41 0,40 0,41 0,41 | 0,41 | **0,44** | **NO, en los 5** |
+| TR | 0,50 0,48 0,50 0,48 0,48 | 0,48 | **0,51** | **NO, en los 5** |
+| AG | 0,47 0,45 0,45 0,45 0,45 | 0,45 | 0,46 | si |
+
+### La magnitud honesta esta bajo el margen
+
+| metodo | macro-F1 | delta vs V03 |
+|---|---:|---:|
+| umbrales de V03 | 0,7772114525 | +0,0000000000 |
+| optimos **in-sample** | 0,7808400798 | **+0,003629** |
+| **anidados (honesto)** | **0,7781367700** | **+0,000925** |
+
+El numero in-sample habria superado el margen de adopcion. **Es una trampa**: el umbral se
+eligio sobre el mismo OOF que se puntua. El anidado, con el umbral elegido en cuatro
+pliegues y aplicado al quinto, queda en +0,000925, **por debajo de 0,003**.
+
+### La consecuencia operativa
+
+| umbrales | HS | TR | AG |
+|---|---:|---:|---:|
+| de V03 | 0,4572 | 0,3001 | 0,3776 |
+| anidados | 0,4970 | 0,3075 | 0,3810 |
+
+Los umbrales de V03 son demasiado altos: el OOF produce unos 4 puntos por debajo de
+positivos en HS que los umbrales del propio protocolo piden. Es **consistente en
+direccion** con que el LB saliera 0,0058 por encima del OOF, aunque **no lo demuestra**.
+
+### Lo que la auditoria no encontro
+
+- **Vectorizador dentro del pliegue**: verificado en el codigo
+  (`vectorizador.fit_transform(textos_entrenamiento)`), luego **no** hay leakage de
+  representacion.
+- **Prevalencias homogeneas** entre pliegues, luego ninguno domina.
+- **El mecanismo no es el tamano de entrenamiento**: con 80 %, 90 % y 100 % de los grupos del
+  training fold, los umbrales son practicamente identicos.
+- **La brecha OOF a LB** es de 0,25 sigma. Se sabe el signo, se desconoce la causa, y ninguna
+  consulta a Kaggle es legal en esta fase.
+
+### Integridad de artefactos
+
+`features/oof_mod03b.npz`, que produjo los umbrales adoptados, **no existe en disco**. Los
+umbrales de V03 **no son auditables**. El sha256 de la submission coincide y el
+`corrected_cv` se reproduce exactamente.
+
+### Decision
+
+`P55_PROCEDURAL_GAP = B`, clasificado como **`BUG_FOUND`** y **no** como mejora, con
+original y corregido separados:
+
+```text
+ORIGINAL_RESULT   corrected_cv = 0,7772114525   umbrales 0,44/0,51/0,46 de D-004
+CORRECTED_RESULT  corrected_cv = 0,7781367700   umbrales anidados de D-016
+delta             +0,000925                     por debajo del margen de 0,003
+```
+
+**0 experimentos nuevos, 0 submissions.** La correccion es legal y el mecanismo es concreto,
+pero su magnitud medida no alcanza el margen, y V03 permanece congelado e intacto.
+
+### Recomendacion estrategica final
+
+> V03 permanece como mejor resultado verificado y no se identificaron defectos
+> procedimentales ni mecanismos de mejora pendientes dentro del pipeline permitido.
+
+Con dos matices que la evidencia si permite y que conviene no perder:
+
+1. **Se identifico un defecto procedimental** cuantificado (+0,000925) que esta por debajo del
+   margen de adopcion. No se corrigio porque corregirlo no mejora el resultado de forma
+   adoptable, y V03 esta congelado.
+2. **No se afirma que V03 sea globalmente optimo.** La brecha de 0,25 sigma con el
+   leaderboard queda sin explicar, y el techo de 0,9870 que P50 midio sigue sin alcanzarse.
+   Cerrar la linea procedimental no es cerrar el techo.
+
+*Seccion generada por `experiments/v55_00_auditoria_pipeline.py` y
+`experiments/v55_01_integrar_notebook.py`. Sin push: la rama sigue local.*

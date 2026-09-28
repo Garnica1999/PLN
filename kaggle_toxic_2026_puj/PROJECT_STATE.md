@@ -1151,3 +1151,50 @@ alcanza el margen: 26,75 celdas valen ~0,003 de macro-F1.
 
 **Estado del campeon.** Sin cambios. V03 intacto. 0 modelos, 0 submissions, 0 consultas a
 Kaggle, 0 uso de holdout o test. 0 filas nuevas en `experiments.csv`.
+
+
+---
+
+## Fase P55 (2026-09-28) - Auditoria estrategica del pipeline final de V03
+
+**Que se respondio.** Si existe un defecto o perdida de informacion en el procedimiento de
+V03 que explique parte de la brecha OOF a leaderboard.
+
+```text
+P55_PROCEDURAL_GAP              = B  (BUG_FOUND, no mejora)
+ORIGINAL_RESULT  corrected_cv  = 0,7772114525   umbrales 0,44/0,51/0,46 de D-004
+CORRECTED_RESULT corrected_cv  = 0,7781367700   umbrales anidados de D-016
+delta                          = +0,000925        por debajo del margen de 0,003
+experimentos nuevos            = 0
+submissions nuevas             = 0
+```
+
+**La discrepancia.** Los dos numeros de la referencia de V03 vienen de **protocolos de
+agrupacion distintos**: los umbrales se optimizaron con grupos D-004 (solo near-duplicate,
+que deja cruzar pliegues a un pseudo-autor) y el `corrected_cv` se reporta con D-016
+(near-dup UNION pseudo-autor). Al corregir el protocolo en D-016 no se reoptimizaron los
+umbrales.
+
+**El sesgo es sistematico.** Los umbrales anidados por pliegue son 0,40-0,41 en HS y
+0,48-0,50 en TR, frente a los 0,44 y 0,51 de V03. **V03 queda fuera del rango en los cinco
+pliegues sin excepcion**, en ambas etiquetas.
+
+**La magnitud honesta esta bajo el margen.** El delta anidado es **+0,000925**, y el
+in-sample +0,003629 no es una mejora esperable porque el umbral se eligio sobre el mismo OOF
+que se puntua. Luego la correccion es legal pero **no justifica una submission**.
+
+**La consecuencia operativa.** Los umbrales de V03 son demasiado altos: el OOF produce
+0,4572 de positivos en HS frente a 0,4970 que piden los umbrales del propio protocolo. Es
+consistente en direccion con un LB 0,0058 por encima del OOF, aunque no lo demuestra.
+
+**Lo que la auditoria no encuentra.** Vectorizador dentro de cada pliegue, verificado en el
+codigo. Prevalencias homogeneas entre pliegues. Y el mecanismo no es el tamano de
+entrenenamiento: con 80, 90 y 100 por ciento de grupos los umbrales son practicamente
+identicos.
+
+**Integridad.** `features/oof_mod03b.npz`, que produjo los umbrales adoptados, **no existe en
+disco**, luego los umbrales de V03 no son auditables. El sha256 de la submission si
+coincide, y el `corrected_cv` se reproduce exactamente.
+
+**Estado del campeon.** Sin cambios. V03 intacto, sha256 verificado. 0 modelos, 0
+submissions, 0 consultas a Kaggle, 0 uso de holdout o test.

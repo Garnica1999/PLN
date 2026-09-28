@@ -4538,3 +4538,103 @@ especifica y no un cierre generico:
 **Lo que no se afirma.** No se afirma que sea imposible mejorar. Se afirma que en este
 residuo no hay mecanismo semantico con soporte y valor material, y que la via de datos
 observables quedo cerrada por P52 y P53 con una **cota**, no por falta de intento.
+
+
+### D-126. Los umbrales de V03 vienen de un protocolo mas debil que el de la metica reportada
+
+**Contexto.** P55 audita el procedimiento de V03 sin buscar modelos. La pregunta es si
+existe un defecto que explique parte de la brecha OOF a leaderboard. No es una busqueda:
+es una lectura del codigo y una medicion con umbrales anidados.
+
+**El pipeline real, leido del codigo y no de los docstrings.** El diagrama que hace el
+codigo tiene dos ramas, y ahi esta el problema:
+
+```text
+raw train 1731 -> dev 1483 / holdout 248
+
+A) 04_refit_submissions_v02_v03.py
+     grupos = near-duplicado (D-004), 5 pliegues
+     vectorizador y modelo DENTRO de cada pliegue  (verificado en el codigo:
+       construir_matrices -> vectorizador.fit_transform(textos_entrenamiento))
+     -> oof_mod03b.npz
+     -> umbrales 0,44 / 0,51 / 0,46 maximizando F1 sobre ESE OOF
+     -> refit sobre el 100 por ciento del train con ESOS umbrales
+     -> submission V03
+
+B) 14_oof_corregido_v2.py
+     grupos = near-duplicate UNION pseudo-autor (D-016), 5 pliegues
+     -> v2_oof_base_corrected.npz
+     -> corrected_cv = 0,7772114525 con LOS UMBRALES DE A)
+```
+
+**La discrepancia.** Los **dos numeros de la referencia de V03 vienen de protocolos de
+agrupacion distintos**, y D-004 es el mas debil porque deja que un pseudo-autor cruce
+pliegues. Cuando D-016 corrigio el protocolo, el `corrected_cv` se recalculo **conservando
+los umbrales viejos**, sin reoptimizarlos bajo el protocolo nuevo.
+
+**La direccion del sesgo es sistematica, no ruido.** Con umbrales **anidados**, es decir
+optimizados en cuatro pliegues y aplicados al quinto:
+
+| etiqueta | umbrales anidados por pliegue | mediana | V03 | V03 dentro del rango |
+|---|---|---:|---:|---|
+| HS | 0,40 0,41 0,40 0,41 0,41 | 0,41 | **0,44** | **NO, en los 5** |
+| TR | 0,50 0,48 0,50 0,48 0,48 | 0,48 | **0,51** | **NO, en los 5** |
+| AG | 0,47 0,45 0,45 0,45 0,45 | 0,45 | 0,46 | si |
+
+Los umbrales de V03 estan **0,03 por encima** de los que pide el protocolo corregido, en
+HS y TR, **en los cinco pliegues sin excepcion**.
+
+**La magnitud honesta esta por debajo del margen.** El delta in-sample, optimizando sobre
+el mismo OOF que se puntua, da **+0,003629**. Ese numero **no** es una mejora esperable.
+El delta **anidado**, que si es una estimacion honesta, da:
+
+```text
+macro-F1 con umbrales V03     0,7772114525
+macro-F1 con umbrales anidados 0,7781367700
+delta                         +0,000925
+```
+
+**+0,000925 esta por debajo del margen de adopcion de +0,003.** Por eso la correccion es
+legal y el mecanismo es concreto, pero **no justifica gastar una submission**.
+
+**La consecuencia operativa es una tasa positiva infraestimada.** Sobre el OOF:
+
+| umbrales | HS | TR | AG |
+|---|---:|---:|---:|
+| de V03 | 0,4572 | 0,3001 | 0,3776 |
+| anidados | 0,4970 | 0,3075 | 0,3810 |
+
+Los umbrales de V03 son demasiado altos y el OOF produce unos 4 puntos por debajo de
+positivos en HS que los umbrales del propio protocolo piden. Eso es **consistente en
+direccion** con que el LB haya salido 0,0058 **por encima** del OOF, aunque no lo
+demuestra.
+
+**El mecanismo no es el tamano del entrenamiento.** La trayectoria con 80, 90 y 100 por
+ciento de los grupos del training fold da macro-F1 0,7756814919, 0,7775151230 y
+0,7781367700, con umbrales practicamente identicos. Luego el desplazamiento no viene de
+que el modelo final se ajuste con mas datos, sino de que los umbrales se elegieron bajo
+otro protocolo.
+
+**Integridad de artefactos.** `features/oof_mod03b.npz`, que produjo los umbrales adoptados,
+**no existe en disco**. Los umbrales de V03 **no son auditables**. El sha256 de la
+submission V03 si coincide con el esperado, y `corrected_cv` se reproduce exactamente desde
+el OOF D-016.
+
+**Lo que la auditoria NO encuentra.** El vectorizador se ajusta **dentro** de cada pliegue,
+verificado en el codigo y no en el docstring, luego no hay leakage de representacion. Las
+prevalencias por pliegue son homogeneas, luego ningun pliegue domina. La dispersion del
+macro-F1 entre pliegues es 0,0574, con un pliegue claramente mas bajo (0,7386) frente a
+0,7960 del primero, luego la media de pliegues (0,7773117212) difiere del global
+(0,7772114525) en 0,0001.
+
+**Decision.** `P55_PROCEDURAL_GAP = B`, clasificado como **`BUG_FOUND`** y **no** como
+mejora, con `ORIGINAL_RESULT` y `CORRECTED_RESULT` separados:
+
+```text
+ORIGINAL_RESULT   corrected_cv = 0,7772114525   umbrales 0,44/0,51/0,46 de D-004
+CORRECTED_RESULT  corrected_cv = 0,7781367700   umbrales anidados de D-016
+delta             +0,000925                     por debajo del margen de 0,003
+```
+
+**0 experimentos nuevos y 0 submissions.** La correccion es legal y podria ejecutarse, pero
+su magnitud medida no alcanza el margen, y V03 permanece congelado e intacto.
