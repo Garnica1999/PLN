@@ -1,0 +1,317 @@
+{
+  "familia": "P60_G_LABEL_OVERLAP_CONTRASTIVE",
+  "naturaleza": "EXPERIMENTO. 1 candidato, 0 submissions, 0 Kaggle, 0 holdout, 0 test. V03 no se modifica",
+  "fecha": "2026-09-28T15:09:11+00:00",
+  "experiment_id": "P60-01",
+  "track": "P60-G",
+  "script": "experiments/p60_01_contrastive.py",
+  "pregunta": "La literatura de multi-etiqueta 2025 modifica la GEOMETRIA aprendida con un objetivo contrastivo cuyos positivos son instancias que comparten etiqueta. Ese eje no esta cubierto por ninguna pista anterior de TOXIC",
+  "hipotesis": "anadir un termino de contraste supervisado por solapamiento de etiquetas al objetivo de un clasificador sobre TF-IDF cambia la frontera de forma favorable frente a un control de identica arquitectura y capacidad",
+  "mecanismo": "el termino contrastivo atrae en el espacio proyectado las instancias que comparten al menos una etiqueta, de modo que la superficie de decision se organiza por solapamiento y no solo por la etiqueta propia",
+  "modelo": "SVD 128 sobre el TF-IDF de V03, proyeccion lineal entrenable de 32 dims normalizada y tres cabezas lineales, una por etiqueta. Sin transformer, sin embedding preentrenado, sin datos externos",
+  "perdida": "entropia cruzada con pesos de clase, mas 1,0 por SupCon por solapamiento",
+  "rasgos": "los 27.431 del TF-IDF de V03, reducidos a 128 por SVD ajustado dentro del pliegue. Ningun rasgo externo",
+  "interpretacion": "El resultado es negativo y hay dos razones separadas. La primera es de magnitud: con lambda = 1,0 la perdida contrastiva vale alrededor de 7,4 y la de clasificacion alrededor de 0,45, luego el termino contrastivo domina el objetivo por un orden de magnitud y el ajuste discriminativo se sacrifica; el techo de training cae de 0,8951 a 0,7926. La segunda es estructural y es la que mas pesa: la arquitectura, incluso sin contraste, queda en 0,744660 frente a 0,777211 de V03, luego no podia producir un candidato aunque el contraste hubiera funcionado. El techo de training del control es 0,8951 con un F1 fuera de muestra de 0,744660, o sea un sobreajuste de 0,15, que es lo que se espera al comprimir 27.431 rasgos a 128 y luego a 32. La conclusion transferible es que en TOXIC el contraste necesita un encoder que este corpus no puede entrenar sin datos externos, y que la descompresion pierde mas de lo que la geometria gana",
+  "segmentos": "0 transformers, 0 BERT, 0 RoBERTa, 0 LLM, 0 embeddings preentrenados, 0 externos",
+  "paper": "Multi-Label Text Classification with Label Attention Aware and Correlation Aware Contrastive Learning, IJCAI 2025, DOI 10.24963/ijcai.2025/936",
+  "gap_analysis": {
+    "filas_registro_contrastive": 1,
+    "unica_coincidencia": "V12-00, que solo la nombra como hipotesis de registro",
+    "veredicto": "NUEVA",
+    "eje": "geometria aprendida, unico eje no cubierto"
+  },
+  "adaptacion_legal": {
+    "dominio_original": "multi-etiqueta de texto con encoder grande",
+    "adaptacion": "TF-IDF de V03 -> SVD 128 (filas de training) -> proyeccion lineal 32",
+    "que_cambia": "el encoder; aqui no hay transformer ni embedding preentrenado",
+    "que_es_invariante": "el positivo es un par definido por solapamiento de etiquetas"
+  },
+  "configuracion_pre_registrada": {
+    "svd_rank": 128,
+    "dim_proyeccion": 32,
+    "positivos": "instancias que comparten al menos una etiqueta",
+    "temperatura": 0.1,
+    "lambda": 1.0,
+    "optimizador": "Adam lr 0.001, weight decay 0.0001, 200 epocas, full batch",
+    "criterio_de_positivos": "derivado de las etiquetas de TRAINING del pliegue",
+    "rejilla": "ninguna sobre temperatura, dimension ni umbral de positivos"
+  },
+  "control": {
+    "brazo_0_solo_entropia_cruzada": {
+      "corrected_cv": 0.7446595197012505,
+      "folds": [
+        0.7441350298984842,
+        0.7721485575752887,
+        0.7470174020663188,
+        0.7030330877651307,
+        0.756369934886559
+      ],
+      "f1_por_etiqueta": {
+        "HS": 0.7218045113,
+        "TR": 0.7869615832,
+        "AG": 0.7252124646
+      },
+      "rescate": 185,
+      "damage": 235,
+      "neto": -50,
+      "cambian": 420
+    },
+    "nota": "misma arquitectura, misma capacidad, mismos hiperparametros; lo unico que difiere es el termino contrastivo, luego brazo 1 menos brazo 0 aisla el contraste y nada mas"
+  },
+  "resultado": {
+    "brazo_0_corrected_cv": 0.7446595197,
+    "brazo_1_corrected_cv": 0.4497522457,
+    "delta_contraste_puro": -0.294907274,
+    "delta_vs_V03_brazo_1": -0.3274592068,
+    "folds_brazo_1": [
+      0.451622,
+      0.457689,
+      0.44862,
+      0.440184,
+      0.451078
+    ],
+    "folds_brazo_0": [
+      0.744135,
+      0.772149,
+      0.747017,
+      0.703033,
+      0.75637
+    ],
+    "pliegues_mejorados": 0,
+    "f1_por_etiqueta_brazo_1": {
+      "HS": 0.7007553748,
+      "TR": 0.0,
+      "AG": 0.6485013624
+    },
+    "rescate": 278,
+    "damage": 868,
+    "neto": -590,
+    "cambian": 1146,
+    "gate": {
+      "delta_min": 0.003,
+      "pliegues_min": 4,
+      "supera_delta": false,
+      "supera_pliegues": false,
+      "superado": false
+    }
+  },
+  "techo_de_arquitectura": {
+    "control": {
+      "f1_y_umbral_por_etiqueta_por_pliegue": [
+        [
+          [
+            0.848138,
+            0.34
+          ],
+          [
+            0.889189,
+            0.39
+          ],
+          [
+            0.844492,
+            0.38
+          ]
+        ],
+        [
+          [
+            0.841121,
+            0.31
+          ],
+          [
+            0.894376,
+            0.37
+          ],
+          [
+            0.839827,
+            0.38
+          ]
+        ],
+        [
+          [
+            0.836988,
+            0.35
+          ],
+          [
+            0.895265,
+            0.56
+          ],
+          [
+            0.83368,
+            0.35
+          ]
+        ],
+        [
+          [
+            0.863419,
+            0.35
+          ],
+          [
+            0.902475,
+            0.59
+          ],
+          [
+            0.840085,
+            0.37
+          ]
+        ],
+        [
+          [
+            0.838959,
+            0.37
+          ],
+          [
+            0.894217,
+            0.51
+          ],
+          [
+            0.847034,
+            0.33
+          ]
+        ]
+      ]
+    },
+    "contraste": {
+      "f1_y_umbral_por_etiqueta_por_pliegue": [
+        [
+          [
+            0.784378,
+            0.47
+          ],
+          [
+            0.64572,
+            0.36
+          ],
+          [
+            0.738636,
+            0.44
+          ]
+        ],
+        [
+          [
+            0.79965,
+            0.49
+          ],
+          [
+            0.595186,
+            0.36
+          ],
+          [
+            0.721668,
+            0.43
+          ]
+        ],
+        [
+          [
+            0.794495,
+            0.5
+          ],
+          [
+            0.626866,
+            0.35
+          ],
+          [
+            0.725898,
+            0.45
+          ]
+        ],
+        [
+          [
+            0.809889,
+            0.49
+          ],
+          [
+            0.678899,
+            0.38
+          ],
+          [
+            0.722408,
+            0.42
+          ]
+        ],
+        [
+          [
+            0.774834,
+            0.48
+          ],
+          [
+            0.663605,
+            0.36
+          ],
+          [
+            0.715564,
+            0.43
+          ]
+        ]
+      ]
+    }
+  },
+  "por_que_el_gate_no_compara_contra_V03": "los umbrales de V03 son umbrales sobre la escala de probabilidad de V03. Un modelo entrenado con otro optimizador y otra arquitectura tiene otra escala, luego aplicarle los umbrales de V03 es un handicap, y ajustarlos seria un barrido de umbrales, familia que V8-09 cerro de raiz. Por eso el gate de esta pista es el efecto del contraste sobre su propio control, que si es un experimento controlado",
+  "por_fold": [
+    {
+      "pliegue": 1,
+      "positivos_por_instancia": 239.41,
+      "fraccion_de_pares_positivos": 0.202243,
+      "loss_control_final": 0.454828,
+      "loss_control_inicial": 0.968194,
+      "loss_contraste_final": 7.372065,
+      "loss_contraste_inicial": 9.951693,
+      "convergio_control": true,
+      "convergio_contraste": true
+    },
+    {
+      "pliegue": 2,
+      "positivos_por_instancia": 239.27,
+      "fraccion_de_pares_positivos": 0.202125,
+      "loss_control_final": 0.459094,
+      "loss_control_inicial": 0.972915,
+      "loss_contraste_final": 7.386168,
+      "loss_contraste_inicial": 9.956987,
+      "convergio_control": true,
+      "convergio_contraste": true
+    },
+    {
+      "pliegue": 3,
+      "positivos_por_instancia": 240.0,
+      "fraccion_de_pares_positivos": 0.202572,
+      "loss_control_final": 0.459322,
+      "loss_control_inicial": 0.974076,
+      "loss_contraste_final": 7.380057,
+      "loss_contraste_inicial": 9.99353,
+      "convergio_control": true,
+      "convergio_contraste": true
+    },
+    {
+      "pliegue": 4,
+      "positivos_por_instancia": 239.1,
+      "fraccion_de_pares_positivos": 0.20181,
+      "loss_control_final": 0.446213,
+      "loss_control_inicial": 0.966889,
+      "loss_contraste_final": 7.351306,
+      "loss_contraste_inicial": 9.913474,
+      "convergio_control": true,
+      "convergio_contraste": true
+    },
+    {
+      "pliegue": 5,
+      "positivos_por_instancia": 238.53,
+      "fraccion_de_pares_positivos": 0.201506,
+      "loss_control_final": 0.458421,
+      "loss_control_inicial": 0.973173,
+      "loss_contraste_final": 7.371143,
+      "loss_contraste_inicial": 9.970644,
+      "convergio_control": true,
+      "convergio_contraste": true
+    }
+  ],
+  "convergencia": true,
+  "decision": "CLOSED. El termino contrastivo no aporta sobre el control de misma arquitectura y capacidad",
+  "experimentos_registrados": 1,
+  "formulacion": "V03 remains the best verified leaderboard result.",
+  "gastos": {
+    "submissions": 0,
+    "consultas_kaggle": 0,
+    "uso_holdout": 0,
+    "uso_test": 0,
+    "segundos": 13.6
+  }
+}
