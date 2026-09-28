@@ -2277,3 +2277,81 @@ usaba la cifra global de T1 y habria reportado CASE A, que es exactamente el fal
 que P56 pretendia evitar.
 
 **Sin push, sin merge, sin reset, sin rebase, sin PR.**
+
+
+---
+
+## 2026-09-28 - Fase P57: cierre estrategico y plan final
+
+**Alcance.** Solo auditoria y sintesis. **0 modelos, 0 entrenamientos, 0 submissions, 0
+consultas a Kaggle, 0 uso de holdout, 0 uso de test. 0 filas nuevas en `experiments.csv`**,
+porque no hubo ninguna ejecucion experimental (?29).
+
+**V57-00** (`experiments/v57_00_sintesis_estrategica.py`, exit code 0): cruza `experiments.csv`
+(323 filas), `leaderboard_log.csv` (22), `submission_manifest.csv` (9), `CHAMPION.md` y los
+informes `p45` a `p56`. Verifica el sha256 de V03 al arrancar y **aborta si no coincide**.
+Clasifica cada experimento por metrica, protocolo, poblacion y anidamiento, y construye la
+jerarquia de magnitudes. Artefactos: `p57_final_experiment_inventory.csv`,
+`p57_family_status.csv`, `p57_candidate_matrix.csv`, `p57_open_questions.csv`,
+`p57_strategic_closure.{md,json}`.
+
+**V57-01** (`experiments/v57_01_integrar_notebook.py`, exit code 0): seccion 53, notebook
+208 -> 210 celdas, celda de codigo con returncode 0 y cifras leidas de los artefactos.
+
+**El hallazgo que cambia como hay que leer el registro.** Las columnas `f1` y `macro_f1` de
+`experiments.csv` **no son una metrica cada una**. El maximo absoluto de `macro_f1` es 0.8743, y
+es **macro-6 sobre holdout**. La diferencia entre macro-6 y la metrica del proyecto, medida
+sobre el mismo OOF de V03, es **+0.04101**. Y `leaderboard_log.csv` registra para V03 un
+`local_f1` de 0.7989, **+0.021689** por encima del `corrected_cv` canonico, que es el coste de
+medir con D-004 en vez de D-016.
+
+Esto no lo habia detectado ninguna fase, y es la clase de error que produce una conclusion
+falsa con toda la aparencia de una conclusion bien construida. **La respuesta no es reescribir
+el registro**, que es historico y correcto en su contexto, sino **anadirle la clasificacion**
+para que la columna sea utilizable. Eso hace `p57_final_experiment_inventory.csv`.
+
+**El hallazgo operativo.** `experiments.csv` V33-03 documenta un envio real y aceptado: ID
+**56608788**, 2026-09-27, `toxic_submission_v32_05_url_length.csv`, LB 0.78306, delta
+**exactamente 0** porque el fichero es identico a V03. **No esta en `leaderboard_log.csv`.** El
+total real de envios es **23**, no 22, y tanto `PROJECT_STATE.md` como `CHAMPION.md` afirman
+"0 de 22". La afirmacion sigue siendo cierta en su sustancia y **el recuento es erroneo**. El
+log no se modifica: es un registro de mediciones y sus 22 filas son fiables.
+
+Ese envio es, de paso, el control mas limpio del proyecto: +0.0045 de `corrected_cv` y **LB sin
+moverse ni en la sexta cifra decimal**.
+
+**El numero que resume la estrategia.** Diez envios de candidatos con mecanismo nuevo
+(1 de kernels, 1 de especializacion, 3 de ensembles, 5 de meta) y **los diez transfirieron a la
+baja**. Y el mejor CV comparable del proyecto, 0.7904 de svd300_rbf, **no es el campeon**: se
+envio y perdio 0.00368. La cifra que un argumento de "hemos probado mas cosas y ninguna supera
+a V03" tiene que citar es la **anidada**, 0.7885, porque el 0.7904 es el maximo de cuatro
+candidatos comparados sobre el mismo OOF, luego lleva seleccion.
+
+**El resultado incomodo de la seccion de candidatos.** Ningun artefacto cumple a la vez legal,
+reproducible, sin leakage, no rechazado y con mecanismo claro. No es una omision: los tres con
+mejor evidencia interna tienen veredicto externo medido y contrario, y el unico con delta
+honesto positivo y sin veredicto externo (E2-13) se cerro por una razon de mecanismo, no de
+metrica.
+
+**La distincion que P57 insistio en separar, y que vale la pena repetir.** Hay dos sitios donde
+"no funciono" y "nunca se probo bien" no son lo mismo:
+
+- **PLS: cierre de tipo B.** Sus numeros no son evidencia porque el experimento se invalido. El
+  resultado verdadero llego despues, como verificacion, y es negativo. La hipotesis no se
+  rechaza; el experimento si.
+- **Estructura de etiquetas en V13-02 y V14-00: nunca ejecutadas**, cerradas por condicion de
+  parada con 0 de 4 experimentos. Ahi no cabe decir "no funciono". Se registran como pregunta
+  abierta, no como cierre.
+
+**Errores propios.** Colision de nombre: la funcion `log()` quedaba sombreada por la variable
+`log = pd.read_csv(LB_LOG)`, y fallo en tiempo de ejecucion. Un `if` anidado redundante. Un
+`int64` de pandas no serializable en JSON. Y un conteo que contaba claves de diccionario en vez
+de envios, que imprimia "envio real no registrado: 7" cuando era 1. Los cuatro se detectaron
+por ejecucion real con exit code capturado, no por revision visual.
+
+**Nota sobre una trampa de lectura que se evito.** La primera version del clasificador no
+reconocia `corrected_cv` como marcador del protocolo D-016, y por eso el maximo comparable
+salia 0.7885 en vez de 0.7904 y la familia de svd300_rbf quedaba sin clasificar. El nombre de
+la metrica **lleva dentro** el protocolo, y eso habia que codificarlo.
+
+**Sin push, sin merge, sin reset, sin rebase, sin PR.**

@@ -1939,3 +1939,156 @@ en P55: la linea procedimental esta cerrada por medicion, no por abandono.
 
 *Seccion generada por `experiments/v56_00_transferencia_umbrales.py` y
 `experiments/v56_01_integrar_notebook.py`. Sin push: la rama sigue local.*
+
+
+---
+
+## Addendum P57 (2026-09-28) - Cierre estrategico y plan final
+
+> Fase de auditoria y sintesis. **0 modelos, 0 entrenamientos, 0 submissions, 0 consultas a
+> Kaggle, 0 uso de holdout, 0 uso de test.** Decision **D-128**. No se registro ninguna fila
+> nueva en `experiments.csv`.
+
+### Baseline congelado
+
+```text
+id           v03_lr_union_thr
+repr         TF-IDF word(1,2) + char_wb(3,5), min_df=2, sublinear_tf
+clasificador LogisticRegression C=2.0, class_weight=balanced, liblinear, max_iter=1000, seed 42
+umbrales     HS 0.44 | TR 0.51 | AG 0.46
+corrected_cv 0.7772114525165721
+LB           0.78306
+sha256       7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e
+```
+
+### 1. La jerarquia de magnitudes, con la incompatibilidad explicita
+
+| magnitud | valor | experimento | comparable con V03 |
+|---|---:|---|---|
+| best_architectural_CV (macro-6, diagnostica) | 0.8743 | S08 | **NO** |
+| best_holdout_CV | 0.8465 | S08 | **NO** |
+| best_CV protocolo D-004 | 0.8039 | S05 / v05_optuna | **NO** |
+| best comparable D-016 | 0.7904 | svd300_rbf | SI, **con seleccion** |
+| best anidado D-016 | 0.7885 | E2-13-META-ENT-RIDGE | SI, sin seleccion |
+| **V03 corrected_cv** | **0.7772114525165721** | V03 | SI |
+| **best verified LB** | **0.78306** | v03_lr_union_thr | SI |
+| **current champion** | **V03** | sha256 `7d7478f2...` | SI |
+| remaining submission budget | limite diario exacto desconocido | 0 hoy, reserva propia 3 | n/a |
+
+### 2. El problema de lectura del registro
+
+`experiments.csv` mezcla en `f1` y `macro_f1` **al menos tres metricas y tres protocolos**:
+
+- `macro_f1` contiene **macro-6** en la era V2/E2/MOD/TH/ENS y la metrica del proyecto en la era
+  V10+.
+- `f1` contiene **holdout de 248 filas** en S08, **D-004** en la era antigua y **D-016** en la
+  corregida.
+
+Medido sobre el mismo OOF de V03: metrica del proyecto 0.7772114525, macro-6 0.8182213363,
+**diferencia +0.04101**. Y `leaderboard_log.csv` registra para V03 un `local_f1` de 0.7989,
+**+0.021689** por encima del `corrected_cv` canonico, que es el coste de medir con D-004.
+
+**Cualquier tabla de "mejor CV" construida tomando el maximo de esas columnas es falsa.** La
+clasificacion `metrica` / `protocolo` / `poblacion` / `anidado` se anade en
+`reports/p57_final_experiment_inventory.csv` (323 filas). El registro historico no se modifica.
+
+### 3. Submissions: el recuento era erroneo
+
+| magnitud | valor |
+|---|---:|
+| envios historicos totales | **23** |
+| con LB verificado en el log | 22 |
+| envio real NO registrado en el log | 1 |
+| ficheros en disco | 37 |
+| generados y nunca enviados | 14 |
+| maximo LB verificado | 0.78306 |
+| envios hoy, 2026-09-28 | 0 |
+
+`experiments.csv` V33-03 documenta un envio real y aceptado, **ID 56608788**, 2026-09-27,
+`toxic_submission_v32_05_url_length.csv`, LB 0.78306, delta **exactamente 0**. **No esta en el
+log.** El total es 23, no 22.
+
+### 4. El patron que gobierna la estrategia
+
+| familia | envios | LB | veredicto |
+|---|---:|---|---|
+| kernels | 1 | 0.77938 | RECHAZADO |
+| label_specialization | 1 | 0.77781 | RECHAZADO |
+| ensembles | 3 | 0.7751, 0.7747, 0.77122 | los tres a la baja |
+| stacking / meta-modelos | 5 | 0.78163, 0.77895, 0.77978, 0.78150, 0.77663 | los cinco a la baja |
+| structural_features | 1 | 0.78306, delta 0 | sin efecto |
+
+**Diez envios de candidatos con mecanismo nuevo. Los diez transfirieron a la baja.** Y el mejor
+CV comparable del proyecto **no es el campeon**.
+
+### 5. Ningun artefacto cumple los cinco criterios de candidato
+
+| artefacto | que le falta |
+|---|---|
+| v23_01 svd300_rbf, 0.7904 | ya rechazado: enviado, LB 0.77938 |
+| v08_meta_v2, 0.7874 | ya rechazado: enviado, LB 0.78163 |
+| v20_01 meta 36 features, 0.7882 | ya rechazado dos veces: holdout y LB 0.77663 |
+| E2-13-META-ENT-RIDGE, 0.7885 anidado | cerrado por sparsity, nunca verificado fuera |
+| umbrales anidados de P56 | NOT_CONFIRMED, delta honesto negativo |
+| v16_ch2 prior shift EM | transductivo |
+
+### 6. Estado de las 22 familias
+
+20 cerradas por resultado negativo (A), sin transferencia (C) o inexistencia (E). Dos con
+matiz:
+
+- **PLS: tipo B.** El experimento se invalido por implementacion, luego su numero no es
+  evidencia. El resultado verdadero (V43-02) es -0.0137423671.
+- **Estructura de etiquetas en V13-02 y V14-00: nunca ejecutadas**, 0 de 4 experimentos,
+  cerradas por condicion de parada. **No cabe decir "no funciono".**
+
+### 7. Conclusiones de mechanism que P56, P47 y P54 ya fijaron
+
+```text
+THRESHOLD_TRANSFER   P55 +0.000925 | P56 honesto -0.002664 | CLOSED
+CONTEXTUAL_SELECTION techo observable -0.001831, oracel +0.209806 | CLOSED
+DATA_EXPANSION       0 filas oficiales sin usar | CLOSED
+residual             42 celdas = 0,95 por ciento, en 33 tweets
+```
+
+La formulacion sobre los canales: **la senal existe y es enorme**, y **ningun selector probado
+la convirtio en mejora neta positiva**. No se afirma que no haya senal.
+
+### 8. Artefactos que no deben volver a usarse
+
+`v17` y `v18` y `v16_ch2` (transductivas), `v12_descartado_meta36_downweight` (rechazada por
+holdout), `v20_03_reproduccion_v03` (invalida), `v32_05_url_length` (gastada, delta 0). Ninguna
+se modifica. Ninguna se vuelve a enviar.
+
+### 9. Formulacion final obligatoria
+
+> V03 remains the best verified leaderboard result and the frozen architectural baseline. The
+> investigated legal mechanisms did not produce a robust transferable improvement, and no
+> additional mechanism with sufficient evidence has currently been identified.
+
+```text
+best verified result  !=  proof of global optimum
+```
+
+Verificado: 0.78306 es el maximo del leaderboard en 23 envios; 0.7772114525165721 es el CV
+corregido de la configuracion congelada.
+
+**No afirmado:** que V03 sea globalmente optimo. La brecha OOF-LB de 0.00584855 sigue sin
+mecanismo identificado, y el techo del oracel de +0.2098064089 no se ha alcanzado **ni se ha
+descartado como alcanzable**. Que ningun candidato con mejor CV local haya transferido es
+evidencia **en contra de la optimizacion local** y a favor de V03 como eleccion; **no es
+evidencia de que no exista una mejor**.
+
+### 10. Las tres estrategias, sin elegir
+
+| estrategia | a favor | en contra | riesgo | coste |
+|---|---|---|---|---|
+| **A. cerrar con V03** | 0 de 23 lo superaron; los 10 candidatos a la baja; 22 familias cerradas | techo del oracel +0.2098 sin alcanzar; brecha OOF-LB sin explicar | bajo: el leaderboard conserva la mejor puntuacion | cero |
+| **B. candidato historico** | E2-13 con +0.0113 anidado y sin contradiccion externa | los tres con delta comparable tienen veredicto contrario; patron 10/10 | alto | 1 submission, y **no hay candidato que cumpla los cinco criterios** |
+| **C. ultima investigacion dirigida** | brecha OOF-LB y asimetria dev-holdout sin caracterizar | ninguna hipotesis cumple las seis condiciones de reapertura; banda de particion 0.017 | medio | alto, no medido |
+
+**La decision competitiva queda pendiente de una instruccion posterior. P57 no la toma y se
+detiene. No se abre P58.**
+
+*Seccion generada por `experiments/v57_00_sintesis_estrategica.py` y
+`experiments/v57_01_integrar_notebook.py`. Sin push: la rama sigue local.*

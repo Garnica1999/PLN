@@ -1241,3 +1241,69 @@ bajo el protocolo D-004, mas debil. Lo que se corrige es su **magnitud**, no su 
 
 **Estado del campeon.** Sin cambios. V03 intacto. 1 experimento real (V56-01), **0
 submissions**, 0 consultas a Kaggle, 0 uso de holdout o test. No se crea candidato local.
+
+
+---
+
+## Fase P57 (2026-09-28) - Cierre estrategico y plan final
+
+**Naturaleza: auditoria y sintesis. 0 modelos, 0 entrenamientos, 0 submissions, 0 consultas a
+Kaggle, 0 uso de holdout, 0 uso de test.** No se registro ninguna fila nueva en
+`experiments.csv`. Decision **D-128**.
+
+**Baseline congelado, verificado al arrancar la fase:** V03, `corrected_cv`
+0.7772114525165721, LB 0.78306, sha256
+`7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e`, intacto.
+
+**Lo que P57 encontro y que las fases anteriores no tenian formulado:**
+
+1. **Las columnas `f1` y `macro_f1` de `experiments.csv` no son una metrica cada una.** Mezclan
+   al menos tres metricas y tres protocolos. El maximo absoluto de `macro_f1` es 0.8743, que es
+   macro-6 sobre holdout, no una medida de la competencia. La diferencia macro-6 contra metrica
+   del proyecto es +0.04101 sobre el mismo OOF de V03, y el `local_f1` del log para V03 es
+   +0.021689 por encima del `corrected_cv` canonico. Cualquier tabla de "mejor CV" construida
+   tomando el maximo de esas columnas es falsa. La clasificacion `metrica` / `protocolo` /
+   `poblacion` / `anidado` se anade en `reports/p57_final_experiment_inventory.csv`.
+2. **Un envio real a Kaggle no estaba en el log.** V33-03 documento el envio ID **56608788** del
+   2026-09-27, fichero `toxic_submission_v32_05_url_length.csv`, LB 0.78306, delta
+   **exactamente 0** porque el fichero es identico a V03. El total historico de envios es
+   **23**, no 22. El log no se modifica.
+3. **No hay candidato.** Ningun artefacto cumple a la vez legal, reproducible, sin leakage, no
+   rechazado y con mecanismo claro. Los tres con mejor evidencia interna tienen veredicto
+   externo medido y contrario.
+4. **El patron de fondo: 10 envios de candidatos con mecanismo nuevo, los 10 a la baja.** Y el
+   mejor CV comparable del proyecto no es el campeon.
+5. **PLS es cierre de tipo B, no A.** Sus numeros nunca fueron evidencia, porque el
+   experimento se invalido. El resultado verdadero llego despues como verificacion (V43-02,
+   -0.0137423671).
+6. **Dos lineas de estructura de etiquetas nunca se ejecutaron** (V13-02, V14-00, 0 de 4
+   experimentos): se cerraron por condicion de parada. Ahi no cabe decir "no funciono".
+
+**Jerarquia de magnitudes, sin mezclar metricas:**
+
+```text
+best_architectural_CV (macro-6, diagnostica)   0.8743      S08            NO comparable
+best_holdout_CV                                0.8465      S08            NO comparable
+best_CV protocolo D-004                        0.8039      S05 / v05      NO comparable
+best comparable D-016                          0.7904      svd300_rbf     SI, con SELECCION
+best anidado D-016                              0.7885      E2-13          SI, sin seleccion
+V03 corrected_cv                               0.7772114525165721            SI
+best verified LB                               0.78306      v03_lr_union_thr
+current champion                               V03          sha256 7d7478f2...
+remaining submission budget                    limite diario exacto desconocido; 0 hoy; reserva 3
+```
+
+**Submissions:** 37 ficheros en disco, 23 envios historicos, 22 con LB en el log, 1 envio real no
+registrado, 14 generados y nunca enviados. 0 de 23 superaron 0.78306.
+
+**Estado del campeon:** sin cambios. V03 intacto.
+
+**Artefactos de la fase:** `reports/p57_final_experiment_inventory.csv` (323 filas),
+`p57_family_status.csv` (22 familias), `p57_candidate_matrix.csv` (7 artefactos),
+`p57_open_questions.csv` (5 preguntas con mecanismo), `p57_strategic_closure.{md,json}`.
+Notebook 208 -> 210 celdas, seccion 53, returncode 0.
+
+**La decision competitiva NO se toma en P57.** Quedan tres salidas, ninguna ejecutada
+automaticamente: cerrar con V03, usar un candidato historico, o una ultima investigacion
+dirigida. Y la opcion de candidato **no es ejecutable** sin una excepcion explicita, porque no
+existe ninguno que cumpla los cinco criterios.

@@ -4717,3 +4717,148 @@ contraproducente.
 
 **Ninguna submission.** El gate de +0,003 no se alcanza por la cifra honesta, y la cifra
 global que lo alcanzaba no es adoptable por su optimismo de mas de 0,005.
+
+
+### D-128. El registro mezcla metricas, un envio real no estaba en el log, y no hay candidato
+
+**Contexto.** P57 no entrena nada. Su trabajo es cruzar `experiments.csv`,
+`leaderboard_log.csv`, `submission_manifest.csv`, `CHAMPION.md` y los informes `p45` a `p56`,
+y hacer legible el estado del proyecto. Al hacer el cruce aparecieron tres cosas que ninguna
+fase anterior habia formulado.
+
+**1. Las columnas `f1` y `macro_f1` de `experiments.csv` no son una metrica cada una.**
+
+Mezclan al menos tres metricas y tres protocolos:
+
+| magnitud | valor | metrica | protocolo | poblacion |
+|---|---:|---|---|---|
+| maximo absoluto de la columna `macro_f1` | 0.8743 (S08) | **macro-6**, no la de la competencia | holdout | 248 filas |
+| metrica del proyecto sobre el OOF de V03 | 0.7772114525 | la de la competencia | D-016 | dev 1483 |
+| macro-6 sobre el mismo OOF de V03 | 0.8182213363 | **macro-6** | D-016 | dev 1483 |
+| `local_f1` que registra el log para V03 | 0.7989 | la de la competencia | **D-004** | dev |
+| `corrected_cv` canonico de V03 | 0.7772114525 | la de la competencia | **D-016** | dev 1483 |
+
+P45 declaro macro-6 diagnostica. La diferencia medida sobre el mismo OOF es **+0.04101**, y la
+diferencia entre el `local_f1` del log y el `corrected_cv` canonico es **+0.021689**, que es
+exactamente el coste de medir con D-004 en vez de D-016.
+
+**Consecuencia practice:** cualquier tabla de "mejor CV" construida tomando el maximo de esas
+columnas es falsa por mas de 0,04, y mezclar protocolos anade hasta 0,024 mas. La respuesta NO
+es reescribir el registro, sino **anadirle la clasificacion**: `metrica`, `protocolo`,
+`poblacion` y `anidado` van ahora en `reports/p57_final_experiment_inventory.csv`, una fila por
+experimento, y solo se compara dentro de un mismo protocolo.
+
+**2. Un envio real a Kaggle no estaba en el log del leaderboard.**
+
+`experiments.csv` fila V33-03 documenta: *Submission ENVIADA y ACEPTADA. ID 56608788. Fichero
+toxic_submission_v32_05_url_length.csv. Score LB 0.78306. delta_LB = 0.00000. 2 submissions
+restantes hoy.* Esa fila no existe en `leaderboard_log.csv`, que tiene 22 entradas.
+
+| magnitud | valor |
+|---|---:|
+| envios con LB verificado en el log | 22 |
+| envio real no registrado | 1 |
+| **envios historicos totales** | **23** |
+| ficheros de submission en disco | 37 |
+| generados y nunca enviados | 14 |
+
+`PROJECT_STATE.md` y `CHAMPION.md` afirman ambos "0 de 22 submissions superaron V03". La
+afirmacion **sigue siendo cierta en su sustancia** porque 0 de 23 superaron 0.78306, pero el
+**recuento es erroneo**. Se corrige aqui y en el informe de P57; el log no se modifica, porque
+es un registro de mediciones y sus 22 filas son fiables.
+
+Este envio es ademas el control mas limpio del proyecto: la interaccion con longitud de URL dio
+**+0.0045 de corrected_cv** y el LB **no se movio ni en la sexta cifra decimal**, porque la
+submission resulto identica a V03.
+
+**3. No hay ningun artefacto que cumpla los cinco criterios de candidato a la vez.**
+
+| artefacto | que le falta |
+|---|---|
+| v23_01 svd300_rbf, corrected_cv 0.7904 | ya rechazado: enviado, LB 0.77938 |
+| v08_meta_v2, corrected_cv 0.7874 | ya rechazado: enviado, LB 0.78163 |
+| v20_01 meta de 36 features, corrected_cv 0.7882 | ya rechazado dos veces: por holdout y por LB 0.77663 |
+| E2-13-META-ENT-RIDGE, 0.7885 anidado | legal y sin leakage, pero cerrado por sparsity y nunca verificado fuera |
+| umbrales anidados de P56 | veredicto NOT_CONFIRMED, delta honesto negativo |
+| v16_ch2 prior shift EM | transductivo: consume informacion del conjunto de test |
+
+**El patron de fondo, que es el hecho mas firme del proyecto:**
+
+| familia | envios | LB | veredicto |
+|---|---:|---|---|
+| kernels | 1 | 0.77938 | RECHAZADO |
+| label_specialization | 1 | 0.77781 | RECHAZADO |
+| ensembles | 3 | 0.7751, 0.7747, 0.77122 | los tres a la baja |
+| stacking / meta-modelos | 5 | 0.78163, 0.77895, 0.77978, 0.78150, 0.77663 | los cinco a la baja |
+| structural_features | 1 | 0.78306, delta 0 | sin efecto |
+
+**Diez envios de candidatos con mecanismo nuevo. Los diez transfirieron a la baja.** Y el mejor
+CV comparable del proyecto **no es el campeon**: es svd300_rbf con 0.7904, que se envio y perdio
+0.00368.
+
+**4. PLS es un cierre de tipo B, no A, y dos lineas no llegaron a probarse.**
+
+- **PLS: invalidado, no negativo.** V42-01 y V43-01 se invalidaron por implementacion (rango
+  invalido, API de PLS), luego sus numeros **no son evidencia**. El resultado verdadero lo
+  produjo V43-02 como verificacion y es **-0.0137423671**. La hipotesis de embedding
+  supervisado no se rechaza; el experimento si.
+- **VW: si se probo y se cerro.** V43-01 intento FTRL y quedo invalidado por la API; V44-01 lo
+  repito bien sobre la representacion exacta de V03 y cerro
+  `SPARSE_ONLINE_OPTIMIZATION = CLOSED`.
+- **Estructura de etiquetas: dos lineas cerradas por condicion de parada.** V13-02
+  (`CERRADA FORMALMENTE`) y V14-00 (`0 de 4 experimentos`) no llegaron a ejecutarse. Ahi **no
+  cabe decir "no funciono"**, porque no llego a probarse. Se registra como pregunta abierta, no
+  como cierre. Y V13-01, que si se ejecuto, dio +0.000534, y V15-01, tercera estimacion
+  independiente, dio -0.0014.
+
+**5. La jerarquia de magnitudes, con la incompatibilidad explicita.**
+
+| magnitud | valor | experimento | comparable con V03 |
+|---|---:|---|---|
+| best_architectural_CV (macro-6, diagnostica) | 0.8743 | S08 | **NO** |
+| best_holdout_CV | 0.8465 | S08 | **NO** |
+| best_CV protocolo D-004 | 0.8039 | S05 / v05_optuna | **NO** |
+| best comparable D-016 | 0.7904 | V4-G01-G03 (svd300_rbf) | SI, **con seleccion** |
+| best anidado D-016 | 0.7885 | E2-13-META-ENT-RIDGE | SI, sin seleccion |
+| **V03 corrected_cv** | **0.7772114525165721** | V03 | SI |
+| **best verified LB** | **0.78306** | v03_lr_union_thr | SI |
+| current champion | V03 | sha256 `7d7478f2...` | SI |
+| remaining submission budget | limite diario exacto desconocido | 0 envios hoy, reserva propia 3 | n/a |
+
+El 0.7904 es el maximo de **cuatro** candidatos comparados sobre el mismo OOF, luego lleva
+seleccion y su IC95 tocaba cero. La cifra que un argumento de "hemos probado mas cosas y
+ninguna supera a V03" tiene que citar es la **anidada**, 0.7885.
+
+**Presupuesto de submissions.** La unica cifra local es la anotacion de V33-03: *2 submissions
+restantes hoy* el 2026-09-27, dia en el que se cuentan 7 envios. Eso exige un limite diario de
+al menos 9, pero la cifra **exacta no consta en ningun registro local** y **no se consulta
+Kaggle**. Hoy 2026-09-28 hay **0** envios. La reserva de 3 es autolimitacion del proyecto, no un
+limite de la competencia.
+
+**Metrica.** Se mantiene, sin cambio: `LOCAL_METRIC_REPRODUCED = TRUE`,
+`KAGGLE_SCORER_DIRECTLY_VERIFIED = FALSE`.
+
+**Formulacion final, y la distincion que no hay que perder.**
+
+> V03 remains the best verified leaderboard result and the frozen architectural baseline. The
+> investigated legal mechanisms did not produce a robust transferable improvement, and no
+> additional mechanism with sufficient evidence has currently been identified.
+
+```text
+best verified result  !=  proof of global optimum
+```
+
+Verificado: 0.78306 es el maximo del leaderboard en 23 envios, y 0.7772114525165721 es el CV
+corregido de la configuracion congelada.
+
+**NO afirmado:** que V03 sea globalmente optimo. La brecha OOF-LB de 0.00584855 sigue sin
+mecanismo identificado, y el techo del oracel de +0.2098064089 no se ha alcanzado **ni se ha
+descartado como alcanzable**. El hecho de que ningun candidato con mejor CV local haya
+transferido es evidencia **en contra de la optimizacion local** y a favor de V03 como eleccion.
+**No es evidencia de que no exista una mejor.**
+
+**Lo que P57 NO hace, por diseno.** No entrena, no genera submission, no consulta Kaggle, no usa
+holdout ni test, no modifica V03, y **no registra ninguna fila en `experiments.csv`** porque no
+hubo ninguna ejecucion experimental. La decision competitiva queda pendiente: cerrar, autorizar
+una ultima investigacion dirigida, o preparar una unica submission de un candidato validado.
+Ninguna se ejecuta automaticamente.
