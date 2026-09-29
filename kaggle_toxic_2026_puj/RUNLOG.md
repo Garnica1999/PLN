@@ -2836,3 +2836,18 @@ Cadena regenerada: `27_label_consistency_v4.py` -> `28_hardness_v4.py` ->
 `30_supervised_weighting_v4.py`. Los tres scripts sin drift desde sus commits originales.
 
 Sin push, sin merge, sin rebase. Test y holdout sin tocar.
+
+## 2026-09-29, confirmacion de A_cost_sensitive_downweight
+
+- `docs/p69_especificacion_congelada.md` (`915991b`): semilla, protocolo, regla de decision y
+  diseno de permutacion fijados **antes** de ejecutar.
+- `experiments/p69_04_tercera_particion.py`: tercera particion, semilla 20261001.
+  **CASO A**, tres de tres positivas.
+- `experiments/p69_05_permutacion.py`: 1000 permutaciones, semilla 20261002.
+  **p = 0,000999**, 0 de 1000 superan al observado.
+- `experiments/p69_06_particiones_corregidas.py`: corrige el defecto de `ajustar_predecir`
+  (class_weight 'balanced' recalculado con sample_weight) y repite las dos particiones.
+
+Estado final: **PROMISING_UNCONFIRMED**, 5 de 6 componentes. No se adopta, no se envia nada.
+
+Sin push, sin merge, sin rebase.

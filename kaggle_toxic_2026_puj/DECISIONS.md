@@ -6416,3 +6416,89 @@ entrena `LogisticRegression(C=2.0, liblinear)` directamente sobre la representac
 
 La etiqueta 'meta' podria inducir a creer que el candidato pertenece a la familia de stacking,
 que ya fue rechazada por transferencia. **No pertenece.** La fuente autoritativa es el codigo.
+
+
+## D-196 a D-200: A_cost_sensitive_downweight confirmado, PROMISING_UNCONFIRMED
+
+Fecha 2026-09-29.
+
+### D-196. La tercera particion estaba fijada antes de existir
+
+La semilla `20261001`, el metodo de pliegues, la regla de decision y el diseno de la
+permutacion se escribieron y se commitearon en `docs/p69_especificacion_congelada.md`
+(`915991b`) **antes** de ejecutar nada. Ese orden es lo unico que convierte la no-adaptacion
+de una afirmacion en un hecho comprobable.
+
+### D-197. Un defecto real en el reentrenamiento, encontrado porque el guard se nego a seguir
+
+El test de permutacion se **detuvo solo**: los pesos reales no reproducen el delta observado.
+La causa:
+
+```text
+ajustar_predecir deja class_weight='balanced' cuando el multiplicador es 1.0
+sklearn recalcula 'balanced' CON los sample_weight; un dict explicito no
+los coeficientes difieren hasta 1,4e-2
+```
+
+El historico fija **siempre** el diccionario explicito. La reproduccion canonica no se vio
+afectada porque **carga** el OOF; las particiones segunda y tercera si, porque se reentrenan.
+
+Corregido con `ajustar_exacto`, que replica el bloque inline sin guard. Con el, la canonica da
+`0,7854160387`, identica a `3,2e-11`.
+
+```text
+segunda   +0,0105253130 -> +0,0105253130   sin cambio
+tercera   +0,0047946703 -> +0,0048825807   cambio en la sexta cifra
+```
+
+El signo y la conclusion no cambian; los numeros reportados son los corregidos.
+
+### D-198. Tres de tres particiones positivas
+
+```text
+canonica   +0,0082045862   5 de 5   neto +25
+segunda    +0,0105253130   5 de 5   neto +12
+tercera    +0,0048825807   4 de 5   neto +10
+media      +0,0078708266
+minimo     +0,0048825807
+```
+
+**CASO A** de la regla pre-registrada: `PROMISING_UNCONFIRMED`, y se pasa al test de
+permutacion.
+
+### D-199. La permutacion es decisiva
+
+Pregunta distinta de la de las particiones: no si sobrevive a otro reparto, sino si depende de
+**emparejar los pesos con los ejemplos**.
+
+```text
+delta real                  +0,0082045862
+nulo: media                 -0,0013209910
+nulo: maximo                +0,0045971670
+nulo: percentil 99          +0,0030856337
+permutaciones >= observado  0 de 1000
+p empirico                  0,000999
+```
+
+**El maximo de mil permutaciones es la mitad del delta real.** Ninguna asignacion equivalente
+de los mismos pesos se acerca. La regla funciona por **que** ejemplos reciben menos peso, no
+solo por cuanto peso se retira.
+
+Veredicto: `STRONGLY_SUPPORTED_BUT_NOT_AUTOMATICALLY_ADOPTED`.
+
+### D-200. ESTADO FINAL: PROMISING_UNCONFIRMED, y por que no ADOPTED
+
+| componente | cumple |
+|---|---|
+| tres particiones positivas | SI |
+| permutacion favorable | SI |
+| bootstrap por grupos compatible | **NO** |
+| rescue/damage favorable | SI |
+| compliance completo | SI |
+| provenance completo | SI |
+
+**5 de 6.** El unico que falla es el bootstrap por grupos, cuyo intervalo sigue incluyendo el
+cero. Por eso no se clasifica ADOPTED: la adopcion exigiria tambien ese componente, y es una
+decision separada y explicita.
+
+No se genera submission. No se abre una cuarta particion. No se abre una grid.

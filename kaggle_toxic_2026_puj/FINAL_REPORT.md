@@ -2619,3 +2619,18 @@ V03 remains the best verified leaderboard result.
   Con 1415 grupos sobre 1483 filas, el remuestreo por filas subestimaba la incertidumbre.
 - Correccion documental: el mecanismo **no es un meta-modelo**; P58 lo etiquetaba mal.
 <!-- /DOWNWEIGHT-AUDIT 2026-09-29 -->
+
+<!-- DOWNWEIGHT-CONFIRM 2026-09-29 -->
+### Confirmacion de A_cost_sensitive_downweight (2026-09-29)
+
+- **Tres de tres particiones positivas**: canonica `+0,0082045862`, segunda `+0,0105253130`,
+  tercera `+0,0048825807`. Media `+0,0078708266`.
+- **Test de permutacion**: `p = 0,000999`. **0 de 1000** asignaciones equivalentes alcanzan el
+  delta observado; el maximo de la distribucion nula es `+0,0045971670`, la mitad del real.
+  La regla funciona por **que** ejemplos reciben menos peso.
+- **Defecto corregido**: `ajustar_predecir` dejaba `class_weight='balanced'` con multiplicador
+  1.0, y sklearn recalcula 'balanced' con los `sample_weight`. La canonica no se afecto
+  (carga el OOF); las particiones segunda y tercera si, y se repitieron.
+- **ESTADO FINAL: PROMISING_UNCONFIRMED** (5 de 6 componentes). El bootstrap por grupos sigue
+  incluyendo el cero, luego **no se adopta** y **no se envia submission**.
+<!-- /DOWNWEIGHT-CONFIRM 2026-09-29 -->

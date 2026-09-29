@@ -1,0 +1,13 @@
+particion,semilla,V03,candidato,delta,folds_positivos,rescate,damage,neto,deltas_por_pliegue,nota
+canonica,,0.7772114525,0.7854160387,0.0082045862,5,99,74,25,0.002243|0.001592|0.003378|0.023607|0.010356,historico
+segunda,20260928,0.7674405718,0.7779658848,0.010525313,5,86,74,12,0.026302|0.004643|0.002975|0.020868|0.003209,recorrida aqui
+tercera,20261001,0.7739813065,0.7788638872,0.0048825807,4,80,70,10,0.00188|-0.006834|0.014358|0.01106|0.00444,recorrida aqui
+segunda_etiquetas,,,,,,,,,HS:r37d30|TR:r21d25|AG:r28d19,
+tercera_etiquetas,,,,,,,,,HS:r45d27|TR:r18d15|AG:r17d28,
+RESUMEN,media,0.0078708266,,,,,,,,
+RESUMEN,positivas,3,,,,,,,,
+DECISION,CASO A,PROMISING_UNCONFIRMED,,,,,,,,
+CONTRASTE_segunda,antes,0.010525313,,,,,,,,guard activo
+CONTRASTE_segunda,ahora,0.010525313,,,,,,,,corregido
+CONTRASTE_tercera,antes,0.0047946703,,,,,,,,guard activo
+CONTRASTE_tercera,ahora,0.0048825807,,,,,,,,corregido

@@ -377,3 +377,6 @@ P68-02|2026-09-29|auditoria de duplicacion de P68-H2 y barrido de los ocho ejes 
 P69-01|2026-09-29|auditoria y reproduccion exacta de A_cost_sensitive_downweight|REPRODUCIBLE R3, 0.7854160387 identico a 3,2e-11, criterio 6 = A_falta_de_artefacto|P69|experiments/p69_01_auditoria_downweight.py
 P69-02|2026-09-29|segunda particion agrupada del candidato con la regla congelada|CONFIRMED, delta +0.0105253130 con 5 de 5 pliegues|P69|experiments/p69_02_segunda_particion.py
 P69-03|2026-09-29|cierre del candidato: ORIGINAL, REPRODUCED, segunda particion y estado final|MARGINAL, bootstrap por grupos [-0.000691, 0.011818] incluye el cero|P69|experiments/p69_03_cierre_downweight.py
+P69-04|2026-09-29|tercera particion confirmatoria con protocolo pre-registrado en 915991b|CASO A, delta +0.0047946703 con 4 de 5 (luego corregido a +0.0048825807)|P69|experiments/p69_04_tercera_particion.py
+P69-05|2026-09-29|test de permutacion pre-registrado, 1000 permutaciones, semilla 20261002|p empirico 0.000999, 0 de 1000 superan al observado, STRONGLY_SUPPORTED|P69|experiments/p69_05_permutacion.py
+P69-06|2026-09-29|correccion del reentrenamiento y repeticion de las particiones segunda y tercera|ajustar_exacto; canonica identica a 3.2e-11; tres de tres positivas|P69|experiments/p69_06_particiones_corregidas.py
