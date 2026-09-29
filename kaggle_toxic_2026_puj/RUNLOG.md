@@ -2810,3 +2810,14 @@ Sin push, sin merge, sin rebase.
   estructura predice dificultad, no ganador.
 
 Sin push, sin merge, sin rebase. Test y holdout sin tocar.
+
+## 2026-09-29, P68-H2 y el cierre de la investigacion
+
+- `experiments/p68_02_h2_auditoria.py`: audita si el rescue-reweighting es nuevo. **No lo es.**
+  9 ponderados con indicador propio, 2 con indicador ajeno, y el propuesto es un subconjunto
+  estricto de uno ya medido. Clasificado **DUPLICATE**. Coste: 0 experimentos.
+- Barrido de los ocho ejes que el encargo senala: 0 sin cita historica.
+- Condicion de cierre del encargo cumplida. Fase de investigacion **cerrada**.
+- Notebook actualizado con P67 y P68.
+
+Sin push, sin merge, sin rebase. Test y holdout sin tocar.

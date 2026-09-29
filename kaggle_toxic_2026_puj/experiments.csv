@@ -373,3 +373,4 @@ P67-02|2026-09-29|cierre de la fase: consolidacion, figuras, cumplimiento y regi
 P67-03|2026-09-29|cierre documental: evidencia congelada, interpretacion, dano de P66 y ASCII|11 piezas de evidencia, 8 figuras, marca DO_NOT_RERUN_UNGUARDED|P67|experiments/p67_03_cierre_documental.py
 P67-04|2026-09-29|gap analysis post-P67: interseccion de errores y clasificacion de familias|A 542, B 215 (28,4 por ciento), 122 exclusivas, hipotesis P68-H1 propuesta|P67|experiments/p67_04_gap_analysis.py
 P68-01|2026-09-29|enrutado de la decision por estructura del ejemplo, con dos controles y una ablacion|INVALIDATED, delta -0.0018992302, 1 de 5 pliegues|P68|experiments/p68_01_enrutado_por_estructura.py
+P68-02|2026-09-29|auditoria de duplicacion de P68-H2 y barrido de los ocho ejes de mecanismos|P68-H2 DUPLICATE, 0 experimentos, 0 ejes sin cita historica, fase cerrada|P68|experiments/p68_02_h2_auditoria.py

@@ -6236,3 +6236,99 @@ funciona, y se cierra.
 
 No se abre otra linea solo para consumir presupuesto. Un presupuesto sin gastar es preferible
 a experimentos de baja informacion.
+
+
+## D-187 a D-190: P68-H2 descartada por auditoria, y el cierre de la fase de investigacion
+
+Fecha 2026-09-29.
+
+### D-187. P68-H2 es DUPLICATE, y no se ejecuta
+
+La propuesta era reponderar los pares donde V03 falla y MI_arbol acierta, con `w = 2`, y ver si
+el mapa de rescates transfiere al **entrenamiento** en vez de corregir el score despues.
+
+La auditoria clasifica cada ponderado del registro por la **fuente de su indicador**:
+
+```text
+indicador PROPIO, funcion de (p_V03, y)    9 experimentos
+indicador AJENO, de otro modelo            2: V51 (INVALIDATED) y esta propuesta
+```
+
+El argumento cabe en cuatro lineas:
+
+```text
+V4-B03 ya pondero:   pred_V03 != y                     hard example mining
+P68-H2 propone:      pred_V03 != y  AND  pred_OTRO == y
+el segundo termino no anade informacion: le QUITA filas
+```
+
+Y la medicion que lo cierra: el mapa de rescates cubre **215 de las 757 celdas de error**, el
+28,4 por ciento. El indicador propuesto es un **subconjunto estricto** de uno ya medido, y un
+subconjunto de un indicador no puede ser un mecanismo nuevo.
+
+**Coste de la hipotesis: 0 experimentos.**
+
+### D-188. Y ademas va en la direccion que salio mal
+
+```text
+mild_up         0,7751   -0,0021    subir el peso a lo dificil EMPEORA
+medium_up       0,7676   -0,0096    subirlo mas, EMPEORA mas
+down_violacion  0,7784   +0,0036    BAJAR el peso a los que violan: mejora
+```
+
+P68-H2 propone **subir** sobre la parte mas dificil del corpus. La razon esta escrita desde V4:
+
+> en este corpus los ejemplos que el modelo falla son, desde el punto de vista del modelo,
+> frontera irreductible con la representacion disponible: subir su peso empuja la frontera y
+> degrada el resto
+
+### D-189. El unico ponderado que funciono no es un mapa de rescates
+
+`A_cost_sensitive_downweight` alcanzo `0,785416`, `+0,008205`, con **5 de 5 pliegues**. Es el
+mejor ponderado del proyecto y no se adopto porque **fallo el criterio 6, el de artefacto**, y
+no tiene veredicto externo.
+
+Su indicador es la **violacion del umbral del propio V03**, no la correccion de otro modelo. Es
+la direccion que funciona: bajar, no subir.
+
+Y P50 y P51 ya construyeron el mapa de rescates de los canales, midieron su techo en `+0,2098`
+y fallaron al explotarlo con `-0,0102`. Es la misma leccion de P68-H1 con otro nombre.
+
+### D-190. Se cierra la fase de investigacion, y el encargo lo autoriza
+
+El encargo autoriza cerrar **solo** si el gap analysis posterior demuestra que no quedan
+mecanismos genuinamente nuevos, o que las unicas lineas restantes son variantes de mecanismos
+cerrados o invalidados.
+
+Los ocho ejes que el encargo senala como prioritarios, y quien los recorrio:
+
+```text
+estructura de los ejemplos            P68-H1                  INVALIDATED
+estructura local                      P59-02, P59-10, V29     cerrado
+geometria de representacion           V25, V27, V26, V43      cerrado
+distribucion del entrenamiento        V6-03, P60-06, P60-04   cerrado
+descomposicion de decisiones          P68-H1, P50, P51        INVALIDATED
+estructura especifica de los errores  V4-B, V4-C, P60-08, V28 cerrado
+transferencia al entrenamiento        V30-00, V6-07, P59-10   cerrado
+ponderacion por correccion ajena      P68-H2                  DUPLICATE
+```
+
+**Ejes sin cita historica: 0.**
+
+El estado cientifico al cerrar:
+
+```text
+V03 sigue siendo la referencia congelada, 0,7772114525165721.
+P67 no produjo mejora adoptable. P68-H1 tampoco. P68-H2 no se ejecuto.
+Existe senal residual en MI_arbol, medida y no explotada.
+El techo oracle sobre las celdas delegables es +0,0391, y cuatro mecanismos
+  distintos han fallado al intentar acercarse a el.
+```
+
+Lo que queda abierto es una **pregunta**, no una tecnica: existe informacion en los modelos
+alternativos que ningun mecanismo probado ha sabido explotar, y lo que falta no es una variante
+de lo probado sino una razon por la que la informacion sea alcanzable **desde el
+entrenamiento**. Esa razon no existe hoy.
+
+Cerrar no es una rendicion. Cuatro mecanismos probados, uno descartado por algebra y otro por
+auditoria es mas de lo que la mayoria de los proyectos puede afirmar sobre su propio techo.

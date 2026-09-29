@@ -524,3 +524,14 @@ V03 remains the best verified leaderboard result.
 
 > V03 remains the best verified leaderboard result.
 <!-- /POST-P67 2026-09-29 -->\n
+<!-- CIERRE 2026-09-29 -->
+### P68-H2 y el cierre (2026-09-29)
+
+- `P68-H2 (rescue re-weighting)`: **DUPLICATE**. El mecanismo (sample weighting) esta medido
+  nueve veces; el indicador propuesto es un subconjunto estricto del de V4-B03, y en la
+  direccion que salio mal. **Coste: 0 experimentos.**
+- Los ocho ejes del encargo tienen cita historica. **0 sin recorrer.**
+- **Fase de investigacion cerrada**, con la condicion del encargo cumplida.
+- 122 rescates exclusivos, 77 de MI_arbol (46 en LARGA). Techo oracle de las celdas
+  delegables: +0,0391, no alcanzado por cuatro mecanismos distintos.
+<!-- /CIERRE 2026-09-29 -->
