@@ -2425,3 +2425,74 @@ Tras declarar la saturación se probó la vía indicada como trabajo futuro:
   (por ejemplo que se permitieran metadatos o modelos preentrenados, que es donde la literatura
   situa la mayor parte de la ganancia), o una **hipotesis cientificamente distinta** que no este en
   las 39 auditadas. Cambiar el `beta` de una familia cerrada no cumple ninguna de las tres.
+
+---
+
+## D-072 - Plug-in por clase: `PROMISING_CONFIRMED`, y una correccion al registro historico
+
+- **Observation**: la auditoria de cobertura habia cerrado la investigacion con 39 mecanismos. Al
+  revisar el problema con mirada nueva aparecio un objeto que **no se habia probado nunca**: la
+  **regla de decision**. No la representacion, no el modelo, no la correccion del score: como se
+  convierte la probabilidad en clase.
+
+- **La medicion que lo motiva**: las seis clases de train son **perfectamente balanceadas** (0,160 a
+  0,170) y la prediccion de V30 **no lo esta** (0,146 a 0,187). Su F1 por clase va de **0,4992**
+  (25-34) a **0,7351** (65-xx). `argmax` maximiza accuracy, no macro-F1, y cuando el reparto
+  predicho se desvia hacia las clases faciles hay margen que `argmax` no aprovecha.
+
+- **El candidato**: `argmax_c(w_c * p_c)` con `w = [1.0000, 1.1749, 1.2721, 1.1630, 1.0010,
+  0.8128]`, derivados por ascenso por coordenadas sobre validacion interna de la particion canonica.
+  Sube 25-34, 18-24 y 35-49; baja 65-xx; deja 13-17 y 50-64 intactas.
+
+- **Las dos particiones**:
+
+  | Particion | V30 | plug-in | delta | folds+ | IC95 | alta conf. |
+  |---|---|---|---|---|---|---|
+  | canonica | 0,6134471 | 0,6154643 | **+0,0020172** | 5/5 | [+0,00101, +0,00295] | **0** |
+  | alternativa | 0,6144120 | 0,6164700 | **+0,0020580** | 5/5 | [+0,00112, +0,00306] | **0** |
+
+  **La diferencia entre las dos particiones es 0,0000408.** Reproduce casi a la cuarta cifra. El
+  diagnostico `nested` (pesos re-derivados dentro de la particion alternativa) da **+0,0022884**:
+  el mecanismo aparece solo.
+
+- **La prediccion falsable, confirmada dos veces**: P34 establecio que una mejora que solo toca la
+  frontera es de tipo calibracion. Aqui la prediccion era falsable —un multiplicador por clase no
+  puede alterar el orden cuando el margen es grande— y se cumplio en las dos particiones: **cero**
+  cambios en filas de alta confianza. Las 11.225 filas que cambian tienen confianza media 0,3357
+  frente a 0,6136 del conjunto.
+
+- **El matiz que se declara**: el control `permutado` cambio de signo entre particiones (−0,00279 en
+  la canonica, +0,00144 en la alternativa), asi que `real − permutado` baja de +0,0048 a +0,00062.
+  La lectura: parte del efecto es generica —cualquier perturbacion que diversifique el reparto ayuda
+  algo a macro-F1— y la asignacion correcta de cada multiplicador a su clase anade unos **+0,0006**
+  sobre eso. **El permutado no es un control negativo perfecto**: lo que aisla es la diferencia, no
+  el nivel.
+
+- **La fuga que se declaro en el pre-registro, y como queda**: los pesos congelados se derivaron de
+  la union de cinco ajustes que cubren las 169.336 filas, asi que no son fuera de muestra para esas
+  filas. En la canonica puntuaban **por encima** de los anidados (+0,00254 frente a +0,00202), que
+  es la firma de haber visto los datos. **En la particion alternativa eso se invierte**
+  (`congelado − nested = −0,0002304`): el efecto no se infla bajo un reparto nuevo.
+
+- **La clasificacion, con las tres respuestas separadas**: **no** es una mejora de representacion,
+  **no** es una mejora del modelo, **si** es una mejora de la regla de decision. El candidato sube
+  macro-F1 **bajando accuracy** de 0,61464 a 0,61254: sacrifica aciertos para subir el recall de las
+  clases debiles, que es lo que macro-F1 premia.
+
+- **Correccion al registro historico**: `V20-F3-UMBRALES` quedo etiquetado en el gap analysis como
+  *"correccion de umbral"* y **no lo era**. Fue una **cadena de cinco discriminadores binarios
+  anidados con monotonia**, es decir una arquitectura ordinal. La regla de decision post-hoc no se
+  habia probado nunca, y ese error mio de clasificacion contribuyo a que la linea pareciera cerrada.
+  Los informes historicos no se modifican.
+
+- **Decision**: **`PROMISING_CONFIRMED`**, no `FINALIST` y no `ADOPTED`. El delta esta por encima del
+  gate de PROMISING (+0,0015) y **por debajo del de FINALIST** (+0,003). Y la particion alternativa
+  usa los **mismos grupos** repartidos de otra forma, asi que es una reejecucion y no una particion
+  independiente: ese limite viene de que `dup_clusters` cubre el dataset entero, y esta declarado
+  desde P00. **No se ha generado ninguna submission y el leaderboard no se ha consultado.**
+
+- **Consequences**: la conclusion de cierre `AGE_RESEARCH_CLOSED` queda **matizada por este
+  hallazgo**. La formulacion correcta pasa a ser: no quedan mecanismos de aprendizaje sin recorrer,
+  **pero quedaba uno de decision**, y produce una mejora confirmada de ~+0,0020 en CV que no habia
+  sido medida. Eso no invalida la auditoria —los 39 mecanismos siguen auditados— sino que muestra
+  que su enumeracion estaba incompleta: auditaba *como aprender* y no *como decidir*.

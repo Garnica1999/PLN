@@ -2022,3 +2022,20 @@ intacto.
 - **Entrenamiento: 0. Submissions: 0.** Leaderboard, test y holdout: sin tocar.
 - **Evidencia conservada:** las tres equivalencias algebraicas, los tres errores de auditoria
   corregidos con su numero correcto, y C1 con su control disenado y su motivo de no ejecucion.
+
+
+---
+
+## Plug-in por clase para macro-F1 · 2026-10-11
+
+- **Resultado:** `PROMISING_CONFIRMED`.
+- **Candidato:** `argmax_c(w_c * p_c)`, `w = [1.00, 1.17, 1.27, 1.16, 1.00, 0.81]`.
+- **Canonica:** 0.6134471 -> 0.6154643 (**+0,0020172**, 5/5).
+- **Alternativa:** 0,6144120 -> 0.61647 (**+0,0020580**, 5/5).
+- **Diferencia entre particiones:** 0,0000408.
+- **Nested (mecanismo en limpio):** +0,0022884, 5/5.
+- **Alta confianza:** **cero** cambios en las dos particiones. Prediccion falsable confirmada.
+- **Matiz:** el control `permutado` paso de -0,00279 a +0,00144; parte del efecto es generica.
+- **Pre-registro:** commit `bd08aba`. Pesos congelados, ninguna reoptimizacion.
+- **Entrenamiento:** 0 modelos nuevos (solo la reejecucion de V30 en la particion alternativa, que
+  es el protocolo ya definido). **Submissions: 0.** Test y holdout: sin tocar.

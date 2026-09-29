@@ -1028,3 +1028,35 @@ Con **evidencia nueva** que cambie el diagnostico, un **cambio de restriccion** 
 modelos preentrenados son donde la literatura situa la mayor parte de la ganancia), o una
 **hipotesis cientificamente distinta** que no este entre las 39 auditadas. Cambiar el `beta` de una
 familia cerrada no cumple ninguna de las tres.
+
+---
+
+## PLUG-IN POR CLASE PARA MACRO-F1 (2026-10-11) - `PROMISING_CONFIRMED`
+
+- **Que es**: cambiar la **regla de decision** de `argmax` a `argmax_c(w_c * p_c)` con
+  `w = [1.0000, 1.1749, 1.2721, 1.1630, 1.0010, 0.8128]`. **No** cambia el modelo, la
+  representacion ni los artefactos de V30.
+- **Por que**: las clases de train son perfectamente balanceadas (0,160-0,170) y la prediccion de
+  V30 no (0,146-0,187). `argmax` maximiza accuracy, no macro-F1.
+
+| Particion | V30 | plug-in | delta | folds+ | IC95 | alta conf. |
+|---|---|---|---|---|---|---|
+| canonica | 0.6134471 | 0.6154643 | **+0,0020172** | 5/5 | [+0,00101, +0,00295] | **0** |
+| alternativa | 0,6144120 | 0.61647 | **+0,0020580** | 5/5 | [+0,00112, +0,00306] | **0** |
+
+- **Diferencia entre particiones: 0,0000408.** Y el `nested` (pesos re-derivados en la particion
+  alternativa) da +0,0022884: el mecanismo aparece solo.
+- **Prediccion falsable confirmada dos veces**: cero cambios en filas de alta confianza. Un
+  multiplicador no puede alterar el orden con margen grande. Es un cambio de regla, no de
+  calibracion.
+- **Matiz declarado**: el control `permutado` cambio de signo entre particiones; parte del efecto es
+  generica (diversificar el reparto) y la asignacion correcta anade ~+0,0006. El permutado no es un
+  control negativo perfecto.
+- **Fuga descartada**: `congelado - nested = -0,0002304` en la particion nueva; los congelados no se
+  inflan.
+- **Clasificacion**: NO mejora de representacion, NO mejora del modelo, **SI mejora de la regla de
+  decision**. Sube macro-F1 bajando accuracy (0,61464 -> 0,61254).
+- **Estado**: no `FINALIST` (delta bajo +0,003) y no `ADOPTED` (la particion alternativa es
+  reejecucion, no independiente). **Submission: ninguna. Leaderboard: no consultado.**
+- **Correccion al registro**: `V20-F3-UMBRALES` era una **arquitectura ordinal** (cadena de
+  discriminadores binarios anidados), no una regla de decision. Ver D-072.
