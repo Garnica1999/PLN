@@ -1,0 +1,24 @@
+tipo,clave,n,coseno_medio,coseno_minimo,coseno_desviacion,jaccard_medio,repeticion_cruzada,cambio_lexico
+eda,todas,1483,0.514672,0.505854,0.012115,0.507157,0.015004,0.485328
+eda,CORTA,167,0.706587,0.706587,0.0,0.706587,0.0,0.293413
+eda,MEDIA,602,0.599523,0.596278,0.004,0.596764,0.004715,0.400477
+eda,LARGA,547,0.436785,0.425026,0.015267,0.424957,0.019631,0.563215
+eda,MUY_LARGA,167,0.272003,0.24391,0.043161,0.253951,0.051947,0.727997
+eda,V03 correcto,1042,0.558776,0.550479,0.010835,0.552019,0.013105,0.441224
+eda,V03 incorrecto,441,0.410462,0.400414,0.01514,0.401156,0.019493,0.589538
+eda,error de alta confianza,295,0.429102,0.41988,0.014617,0.420284,0.017838,0.570898
+eda,solo multi segmento,751,0.041623,0.02421,0.023924,0.026782,0.029629,0.958377
+auc_contra_el_error,coseno_medio,,0.428915
+auc_contra_el_error,coseno_minimo,,0.425493
+auc_contra_el_error,coseno_desviacion,,0.533615
+auc_contra_el_error,jaccard_medio,,0.428973
+auc_contra_el_error,repeticion_cruzada,,0.541231
+auc_contra_el_error,cambio_lexico,,0.571084
+auc_contra_el_error,n_tokens_REFERENCIA,,0.600506
+brecha,contra_anchura,,0.0090835614
+brecha,contra_margen,,0.0083711943
+
+brazo,corrected_cv,delta_vs_V03,pliegues_mejorados,rescate,damage,neto
+V03_cohesion,0.7745024464,-0.0027090062,0,36,45,-9
+V03_aleatorio,0.7654188849,-0.0117925676,0,63,105,-42
+V03_margen,0.766131252,-0.0110802005,1,78,168,-90
