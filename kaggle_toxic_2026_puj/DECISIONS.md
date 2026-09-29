@@ -6502,3 +6502,70 @@ cero. Por eso no se clasifica ADOPTED: la adopcion exigiria tambien ese componen
 decision separada y explicita.
 
 No se genera submission. No se abre una cuarta particion. No se abre una grid.
+
+
+## D-201 a D-204: cierre de la investigacion en CANDIDATE_PENDING_GOVERNANCE
+
+Fecha 2026-09-29.
+
+### D-201. La conclusion, congelada
+
+> A_cost_sensitive_downweight presenta una mejora reproducible, consistente entre tres
+> particiones y altamente improbable bajo la permutacion de la asignacion de pesos. Sin
+> embargo, el bootstrap por grupos continua incluyendo cero, por lo que la magnitud del efecto
+> no queda resuelta con suficiente precision para clasificarlo como ADOPTED.
+
+Lo que **no** se afirma: ni "demostrado definitivamente", ni "es ruido", ni "V03 ha sido
+superado definitivamente". La formulacion precisa es: **evidencia fuerte de direccion y
+mecanismo, pero incertidumbre residual sobre la magnitud poblacional**.
+
+### D-202. Las tres pruebas responden a tres preguntas, y no se mezclan
+
+```text
+particiones           estabilidad frente al cambio de reparto
+permutacion           especificidad de la correspondencia peso-ejemplo
+bootstrap por grupos  incertidumbre sobre la magnitud
+```
+
+El bootstrap por grupos no responde a si el mecanismo es especifico, y la permutacion no
+responde a la magnitud. Usar una prueba para afirmar lo que responde otra es el error que este
+cierre documenta para evitarlo.
+
+### D-203. La limitacion es de precision, y no se resuelve con mas particiones
+
+```text
+IC95 por grupos   [-0.0006906975, +0.0118175641]   incluye el cero
+limite inferior   a seis diezmilesimas de cero
+```
+
+El intervalo **no** dice que el efecto sea negativo: dice que con el tamano efectivo del train
+no se puede descartar que lo sea. Repetir particiones hasta que un intervalo excluya el cero no
+seria evidencia, seria seleccion. No se abre una cuarta particion.
+
+### D-204. El estado de gobernanza
+
+```text
+research_status              CANDIDATE_PENDING_GOVERNANCE
+
+V03                          FROZEN
+A_cost_sensitive_downweight  PROMISING_UNCONFIRMED
+SUBMISSION                   NO
+TEST                         NO
+LEADERBOARD                  NO
+```
+
+**El candidato no puede evaluarse sobre test real bajo el protocolo actual.** Se registra como
+un hecho, no como un juicio: esta nota no declara licita ni ilicita ninguna estrategia
+transductiva sin una regla oficial que la respalde.
+
+Una eventual submission seria una decision **explicita y separada**, que reconociera que se
+estaria evaluando un candidato cuyo bootstrap incluye el cero, que consumiria informacion hoy
+intacta, y que el resultado no seria confirmatorio de nada nuevo porque las tres particiones ya
+estan hechas.
+
+Criterio de reapertura: solo con **evidencia nueva externa** (autorizacion normativa explicita,
+nuevo dato legal, nuevo conjunto etiquetado permitido, cambio de reglas). **No** con "quiero un
+IC95 que no incluya 0".
+
+Los mecanismos cerrados siguen cerrados: P66 (residualizacion), P67 (calibracion, umbral,
+blend), P68-H1 (enrutado textual), P68-H2 (rescue weighting por correccion ajena).

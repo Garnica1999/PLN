@@ -2851,3 +2851,19 @@ Sin push, sin merge, sin rebase. Test y holdout sin tocar.
 Estado final: **PROMISING_UNCONFIRMED**, 5 de 6 componentes. No se adopta, no se envia nada.
 
 Sin push, sin merge, sin rebase.
+
+## 2026-09-29, cierre de A_cost_sensitive_downweight
+
+- `experiments/p69_07_cierre_final.py`: consolida la evidencia final, escribe el apartado
+  **LIMITACION DE PRECISION ESTADISTICA** y la nota de gobernanza. 0 experimentos.
+
+Informes nuevos: `final_evidence.md`, `final_evidence.csv`, `governance_note.md`.
+
+```text
+research_status   CANDIDATE_PENDING_GOVERNANCE
+V03               FROZEN
+candidato         PROMISING_UNCONFIRMED
+SUBMISSION        NO      TEST  NO      LEADERBOARD  NO
+```
+
+Sin push, sin merge, sin rebase.

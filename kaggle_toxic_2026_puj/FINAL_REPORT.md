@@ -2634,3 +2634,32 @@ V03 remains the best verified leaderboard result.
 - **ESTADO FINAL: PROMISING_UNCONFIRMED** (5 de 6 componentes). El bootstrap por grupos sigue
   incluyendo el cero, luego **no se adopta** y **no se envia submission**.
 <!-- /DOWNWEIGHT-CONFIRM 2026-09-29 -->
+
+<!-- DOWNWEIGHT-CLOSE 2026-09-29 -->
+### Cierre de A_cost_sensitive_downweight (2026-09-29)
+
+**Conclusion congelada**: mejora reproducible, consistente entre tres particiones y altamente
+improbable bajo la permutacion de la asignacion de pesos; pero el bootstrap por grupos continua
+incluyendo cero, luego la magnitud no queda resuelta con precision suficiente para ADOPTED.
+
+```text
+ORIGINAL                     +0,0082045862   nunca enviado, nunca auditado
+REPRODUCED                   +0,0082045862   R3, diferencia 3,2e-11
+SECOND_PARTITION             +0,0105253130   5 de 5
+THIRD_PARTITION_CORRECTED    +0,0048825807   4 de 5
+PERMUTATION                  p = 0,000999    0 de 1000 superan al observado
+FINAL_STATUS                 PROMISING_UNCONFIRMED
+
+research_status              CANDIDATE_PENDING_GOVERNANCE
+SUBMISSION  NO     TEST  NO     LEADERBOARD  NO
+```
+
+**Limitacion de precision estadistica**: el IC95 por grupos `[-0,0006906975, +0,0118175641]`
+incluye el cero. El limite inferior esta a seis diezmilesimas. No se resuelve con mas
+particiones: seria seleccion, no evidencia.
+
+Las tres pruebas responden a preguntas distintas: particiones = estabilidad del reparto;
+permutacion = especificidad de la correspondencia peso-ejemplo; bootstrap = magnitud.
+
+Nota de gobernanza en `reports/a_cost_sensitive_downweight_governance_note.md`.
+<!-- /DOWNWEIGHT-CLOSE 2026-09-29 -->

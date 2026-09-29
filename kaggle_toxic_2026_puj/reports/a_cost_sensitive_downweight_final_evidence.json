@@ -1,0 +1,204 @@
+{
+  "familia": "P69_CIERRE_FINAL",
+  "experiment_id": "P69-07",
+  "fecha": "2026-09-29T19:49:10+00:00",
+  "naturaleza": "CIERRE DOCUMENTAL. 0 experimentos, 0 entrenamientos, 0 submissions, 0 test, 0 holdout, 0 leaderboard",
+  "conclusion_congelada": "A_cost_sensitive_downweight presenta una mejora reproducible, consistente entre tres particiones y altamente improbable bajo la permutacion de la asignacion de pesos. Sin embargo, el bootstrap por grupos continua incluyendo cero, por lo que la magnitud del efecto no queda resuelta con suficiente precision para clasificarlo como ADOPTED.",
+  "formulacion_precisa": "evidencia fuerte de direccion y mecanismo, pero incertidumbre residual sobre la magnitud poblacional",
+  "no_se_afirma": [
+    "demostrado definitivamente",
+    "es ruido",
+    "V03 ha sido superado definitivamente"
+  ],
+  "estados": [
+    {
+      "estado": "ORIGINAL",
+      "valor": "+0.0082045862",
+      "nota": "2026-09-25, nunca enviado, nunca auditado"
+    },
+    {
+      "estado": "REPRODUCED",
+      "valor": "+0.0082045862",
+      "nota": "R3, diferencia 3,2e-11"
+    },
+    {
+      "estado": "SECOND_PARTITION",
+      "valor": "+0.0105253130",
+      "nota": "5 de 5 pliegues"
+    },
+    {
+      "estado": "THIRD_PARTITION_CORRECTED",
+      "valor": "+0.0048825807",
+      "nota": "4 de 5, tras corregir el defecto"
+    },
+    {
+      "estado": "PERMUTATION",
+      "valor": "p = 0.000999",
+      "nota": "0 de 1000 superan al observado"
+    },
+    {
+      "estado": "FINAL_STATUS",
+      "valor": "PROMISING_UNCONFIRMED",
+      "nota": "5 de 6 componentes"
+    }
+  ],
+  "particiones": [
+    {
+      "nombre": "canonica",
+      "V03": 0.7772114525,
+      "delta": 0.0082045862,
+      "folds": 5,
+      "rescate": 99,
+      "damage": 74,
+      "deltas": [
+        0.002243,
+        0.001592,
+        0.003378,
+        0.023607,
+        0.010356
+      ],
+      "etiquetas": [
+        {
+          "etiqueta": "HS",
+          "rescate": 42,
+          "damage": 23,
+          "neto": 19
+        },
+        {
+          "etiqueta": "TR",
+          "rescate": 14,
+          "damage": 19,
+          "neto": -5
+        },
+        {
+          "etiqueta": "AG",
+          "rescate": 43,
+          "damage": 32,
+          "neto": 11
+        }
+      ]
+    },
+    {
+      "nombre": "segunda",
+      "V03": 0.7674405718,
+      "delta": 0.010525313,
+      "folds": 5,
+      "rescate": 86,
+      "damage": 74,
+      "deltas": [
+        0.026302,
+        0.004643,
+        0.002975,
+        0.020868,
+        0.003209
+      ],
+      "etiquetas": [
+        {
+          "etiqueta": "HS",
+          "rescate": 37,
+          "damage": 30,
+          "neto": 7
+        },
+        {
+          "etiqueta": "TR",
+          "rescate": 21,
+          "damage": 25,
+          "neto": -4
+        },
+        {
+          "etiqueta": "AG",
+          "rescate": 28,
+          "damage": 19,
+          "neto": 9
+        }
+      ]
+    },
+    {
+      "nombre": "tercera",
+      "V03": 0.7739813065,
+      "delta": 0.0048825807,
+      "folds": 4,
+      "rescate": 80,
+      "damage": 70,
+      "deltas": [
+        0.00188,
+        -0.006834,
+        0.012343,
+        0.012575,
+        0.00444
+      ],
+      "etiquetas": [
+        {
+          "etiqueta": "HS",
+          "rescate": 45,
+          "damage": 27,
+          "neto": 18
+        },
+        {
+          "etiqueta": "TR",
+          "rescate": 18,
+          "damage": 15,
+          "neto": 3
+        },
+        {
+          "etiqueta": "AG",
+          "rescate": 17,
+          "damage": 28,
+          "neto": -11
+        }
+      ]
+    }
+  ],
+  "resumen_particiones": {
+    "media": 0.0078708266,
+    "mediana": 0.0082045862,
+    "minimo": 0.0048825807,
+    "maximo": 0.010525313,
+    "positivas": 3
+  },
+  "permutacion": {
+    "p_empirico": 0.000999,
+    "n_ge_observado": 0,
+    "nulo_media": -0.001320991,
+    "nulo_maximo": 0.004597167
+  },
+  "limitacion_estadistica": {
+    "bootstrap_por_grupos_ic95": [
+      -0.0006906975,
+      0.0118175641
+    ],
+    "incluye_cero": true,
+    "causa": "precision limitada por el tamano efectivo del train",
+    "no_se_resuelve_con_mas_particiones": true
+  },
+  "las_tres_pruebas": {
+    "particiones": "estabilidad frente al cambio de reparto",
+    "permutacion": "especificidad de la correspondencia peso-ejemplo",
+    "bootstrap_por_grupos": "incertidumbre sobre la magnitud"
+  },
+  "defecto_class_weight": {
+    "conservado_como_evidencia": true,
+    "signo_y_conclusion_no_cambiaron": true,
+    "codigo_historico_modificado": false
+  },
+  "mecanica": {
+    "regla": "violacion alta de margen -> peso menor",
+    "contraste": "aumentar el peso de ejemplos dificiles empeoro",
+    "estatus": "evidencia empirica especifica del dataset"
+  },
+  "research_status": "CANDIDATE_PENDING_GOVERNANCE",
+  "gobernanza": {
+    "scripts_de_submission_historicos": 8,
+    "submissions_existentes_en_disco": 39,
+    "se_genero_alguna_submission_en_esta_fase": false,
+    "se_modifico_alguna_submission": false,
+    "el_candidato_tiene_pipeline_propio_de_submission": false,
+    "verificacion": "no es 'que hacen los scripts historicos' sino 'si se ejecutaron'. La comprobacion es por artefactos: cero submissions nuevas y cero cambios en submissions/ bajo git",
+    "nota": "el candidato congelado NO tiene pipeline propio de submission. Crearlo seria el primer paso de una decision que esta nota no toma"
+  },
+  "reproducibilidad": {
+    "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "corrected_cv_v03": 0.7772114525165721
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

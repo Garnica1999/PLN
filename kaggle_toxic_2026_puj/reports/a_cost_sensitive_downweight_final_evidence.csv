@@ -1,0 +1,50 @@
+bloque,clave,valor
+ORIGINAL,valor,+0.0082045862
+ORIGINAL,nota,"2026-09-25, nunca enviado, nunca auditado"
+REPRODUCED,valor,+0.0082045862
+REPRODUCED,nota,"R3, diferencia 3,2e-11"
+SECOND_PARTITION,valor,+0.0105253130
+SECOND_PARTITION,nota,5 de 5 pliegues
+THIRD_PARTITION_CORRECTED,valor,+0.0048825807
+THIRD_PARTITION_CORRECTED,nota,"4 de 5, tras corregir el defecto"
+PERMUTATION,valor,p = 0.000999
+PERMUTATION,nota,0 de 1000 superan al observado
+FINAL_STATUS,valor,PROMISING_UNCONFIRMED
+FINAL_STATUS,nota,5 de 6 componentes
+PARTICION,canonica,0.0082045862
+RESCUE_canonica,HS,rescate=42|damage=23|neto=19
+RESCUE_canonica,TR,rescate=14|damage=19|neto=-5
+RESCUE_canonica,AG,rescate=43|damage=32|neto=11
+PARTICION,segunda,0.010525313
+RESCUE_segunda,HS,rescate=37|damage=30|neto=7
+RESCUE_segunda,TR,rescate=21|damage=25|neto=-4
+RESCUE_segunda,AG,rescate=28|damage=19|neto=9
+PARTICION,tercera,0.0048825807
+RESCUE_tercera,HS,rescate=45|damage=27|neto=18
+RESCUE_tercera,TR,rescate=18|damage=15|neto=3
+RESCUE_tercera,AG,rescate=17|damage=28|neto=-11
+RESUMEN,media,0.0078708266
+RESUMEN,minimo,0.0048825807
+RESUMEN,positivas,3
+PERMUTACION,nulo_media,-0.001320991
+PERMUTACION,nulo_desviacion,0.0020508746
+PERMUTACION,nulo_mediana,-0.0012968408
+PERMUTACION,nulo_minimo,-0.0078934583
+PERMUTACION,nulo_maximo,0.004597167
+PERMUTACION,nulo_percentil_95,0.0020341831
+PERMUTACION,nulo_percentil_99,0.0030856337
+PERMUTACION,p_empirico,0.000999
+PERMUTACION,n_ge_observado,0
+LIMITACION,bootstrap_por_grupos_ic95_bajo,-0.0006906975
+LIMITACION,bootstrap_por_grupos_ic95_alto,0.0118175641
+LIMITACION,incluye_cero,True
+GOVERNANZA,research_status,CANDIDATE_PENDING_GOVERNANCE
+GOVERNANZA,submission,NO
+GOVERNANZA,test,NO
+GOVERNANZA,leaderboard,NO
+DECISION,tres_particiones_positivas,True
+DECISION,permutacion_favorable,True
+DECISION,bootstrap_por_grupos_compatible,False
+DECISION,rescue_damage_favorable,True
+DECISION,compliance_completo,True
+DECISION,provenance_completo,True
