@@ -1,7 +1,7 @@
 {
   "familia": "P67_CIERRE",
   "experiment_id": "P67-02",
-  "fecha": "2026-09-29T16:45:27+00:00",
+  "fecha": "2026-09-29T16:51:20+00:00",
   "pregunta": "si el residuo de MI_arbol es senal complementaria, calibracion o resultado inestable",
   "categoria_del_mecanismo": "MIXED_CON_ATRIBUCION_PARCIAL",
   "razon": "Los cuatro controles NO dicen lo mismo y eso es el hallazgo. El reentreno anidado de UN escalar por etiqueta da -0.0029731513, es DECISIVO: la calibracion NO explica el efecto y V03 no estaba simplemente mal calibrado en esta particion. Y el AUC del residuo de MI_arbol se mantiene fuera de la banda, en 0.579597, lo que un movimiento de frontera no puede producir. PERO la misma correccion da positivo con 4 de los 7 candidatos, luego una parte del efecto pertenece a la OPERACION y no a MI_arbol. El enriquecimiento de los rescates es 1.3383, mayor que uno, luego hay concentracion real en la banda pero no exclusiva",
@@ -67,7 +67,7 @@
   "fallos_de_cumplimiento": 0,
   "reproducibilidad": {
     "nivel": "R2",
-    "git_commit": "452e2bd",
+    "git_commit": "c6ae671",
     "seed": 42,
     "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
     "corrected_cv": 0.7772114525165721,

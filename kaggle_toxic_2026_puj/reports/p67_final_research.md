@@ -1,6 +1,6 @@
 # P67 - Validacion de la senal residual de MI_arbol
 
-Generado por `experiments/p67_02_cerrar.py`. Fecha 2026-09-29T16:45:27+00:00.
+Generado por `experiments/p67_02_cerrar.py`. Fecha 2026-09-29T16:51:20+00:00.
 
 ## La respuesta corta
 

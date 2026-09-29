@@ -1,6 +1,6 @@
 # P67 - Cumplimiento
 
-Fecha 2026-09-29T16:45:27+00:00.
+Fecha 2026-09-29T16:51:20+00:00.
 
 **24 comprobaciones, 0 fallos.**
 
@@ -67,5 +67,33 @@ No se corrigen. Reescribir filas historicas del registro esta prohibido, y hacer
 | scripts y documentos de P67 | 0 | ASCII PURO |
 | filas anadidas a experiments.csv por P67 | 0 | ASCII PURO |
 | filas historicas de experiments.csv | 300 | DEBT PREEXISTENTE, no se reescribe |
+
+### Hallazgo 3: un script de P66 destruye un artefacto de P66 al re-ejecutarse
+
+P67 necesita `features/p66_scores_candidatos.npz`, que vive en `features/` y esta en `.gitignore`, asi que no viaja entre worktrees. Se regenero con `experiments/p66_01_regenerar_scores.py`. Al hacerlo aparecio un efecto que P67 provoco sin pretenderlo:
+
+```text
+p66_01_regenerar_scores.py, linea 86
+  CSV_REG = REPORTS / "p66_score_fusion.csv"
+
+ese nombre lo escribe de mas, con SU tabla de verificacion de 8 filas.
+el que lo posee legitimamente es p66_02_fusion_espacio_scores.py, con 214 filas.
+```
+
+El nombre colisiona entre dos scripts de la misma fase. Re-ejecutar el regenerador borra en silencio los 214 registros de la fase de fusion. P67 no se apercibio hasta que `git show --stat` del commit mostro 222 lineas borradas.
+
+**Restaurado** con `git checkout HEAD~1 -- reports/p66_score_fusion.csv reports/p66_score_regeneration.json`, y comprobado que vuelven a ser 214 filas.
+
+Lo que **no** hizo falta restaurar: `reports/p66_score_fusion.json`, que es el fichero que la reconciliacion lee de verdad, salio intacto. El dano era solo del CSV.
+
+### Procedimiento para recuperar el npz sin tocar la historia
+
+```bash
+/home/carlos/venv/bin/python experiments/p66_01_regenerar_scores.py   # genera el npz
+git checkout HEAD -- reports/p66_score_fusion.csv                     # deshace el dano
+git checkout HEAD -- reports/p66_score_regeneration.json               # y su fecha
+```
+
+Es la unica forma limpia hoy, porque corregir `p66_01_regenerar_scores.py` seria editar el codigo de una fase anterior, que el encargo prohibe. Si alguna fase futura tuviera presupuesto para arreglarlo en vez de esquivarlo, el cambio es una linea: que `CSV_REG` de `p66_01` apunte a `p66_score_regeneration.csv`, que es el nombre que le corresponde.
 
 > V03 remains the best verified leaderboard result.

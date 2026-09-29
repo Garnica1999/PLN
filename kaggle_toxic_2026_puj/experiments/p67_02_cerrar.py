@@ -401,6 +401,37 @@ def main() -> None:
         "| filas anadidas a experiments.csv por P67 | 0 | ASCII PURO |",
         (f"| filas historicas de experiments.csv | {bytes_debt} | DEBT PREEXISTENTE, "
         "no se reescribe |"), "",
+        "### Hallazgo 3: un script de P66 destruye un artefacto de P66 al re-ejecutarse", "",
+        ("P67 necesita `features/p66_scores_candidatos.npz`, que vive en `features/` y esta en "
+        "`.gitignore`, asi que no viaja entre worktrees. Se regenero con "
+        "`experiments/p66_01_regenerar_scores.py`. Al hacerlo aparecio un efecto que P67 "
+        "provoco sin pretenderlo:"), "",
+        "```text",
+        "p66_01_regenerar_scores.py, linea 86",
+        '  CSV_REG = REPORTS / "p66_score_fusion.csv"',
+        "",
+        "ese nombre lo escribe de mas, con SU tabla de verificacion de 8 filas.",
+        "el que lo posee legitimamente es p66_02_fusion_espacio_scores.py, con 214 filas.",
+        "```", "",
+        ("El nombre colisiona entre dos scripts de la misma fase. Re-ejecutar el regenerador "
+        "borra en silencio los 214 registros de la fase de fusion. P67 no se apercibio hasta "
+        "que `git show --stat` del commit mostro 222 lineas borradas."), "",
+        ("**Restaurado** con `git checkout HEAD~1 -- reports/p66_score_fusion.csv "
+        "reports/p66_score_regeneration.json`, y comprobado que vuelven a ser 214 filas."), "",
+        ("Lo que **no** hizo falta restaurar: `reports/p66_score_fusion.json`, que es el "
+        "fichero que la reconciliacion lee de verdad, salio intacto. El dano era solo del CSV."),
+        "",
+        "### Procedimiento para recuperar el npz sin tocar la historia", "",
+        "```bash",
+        "/home/carlos/venv/bin/python experiments/p66_01_regenerar_scores.py   # genera el npz",
+        "git checkout HEAD -- reports/p66_score_fusion.csv                     # deshace el dano",
+        "git checkout HEAD -- reports/p66_score_regeneration.json               # y su fecha",
+        "```", "",
+        ("Es la unica forma limpia hoy, porque corregir `p66_01_regenerar_scores.py` seria "
+        "editar el codigo de una fase anterior, que el encargo prohibe. Si alguna fase futura "
+        "tuviera presupuesto para arreglarlo en vez de esquivarlo, el cambio es una linea: "
+        "que `CSV_REG` de `p66_01` apunte a `p66_score_regeneration.csv`, que es el nombre que "
+        "le corresponde."), "",
     ]
     cab += ["> V03 remains the best verified leaderboard result.", ""]
     MD_COMP.write_text(a_ascii("\n".join(cab)), encoding="ascii")
@@ -822,12 +853,60 @@ def main() -> None:
         "```", "",
         "El regenerador de P66 es necesario porque `features/` esta en `.gitignore` y no",
         "viaja entre worktrees. Es determinista y verifica sus siete scores contra la fase de",
-        "origen antes de continuar.",
+        "origen antes de continuar.", "",
+        "### ADVERTENCIA: el regenerador pisa un artefacto de P66", "",
+        "`experiments/p66_01_regenerar_scores.py` declara en su linea 86",
+        "`CSV_REG = REPORTS / \"p66_score_fusion.csv\"`, un nombre que pertenece de verdad a",
+        "`p66_02_fusion_espacio_scores.py`. Al ejecutarlo escribe su propia tabla de 8 filas",
+        "encima de los 214 registros de la fase de fusion. Hay que deshacerlo siempre:", "",
+        "```bash",
+        "git checkout HEAD -- reports/p66_score_fusion.csv reports/p66_score_regeneration.json",
+        "```", "",
+        "Es un bug de la fase P66, no de P67. No se corrige aqui porque editar el codigo de",
+        "una fase anterior esta prohibido. El JSON, `reports/p66_score_fusion.json`, si se ve",
+        "intacto: es el que usa la reconciliacion.", "",
         "",
         "## Idempotencia", "",
         "Los tres scripts se pueden ejecutar dos veces seguidas sin duplicar contenido en",
         "`FINAL_REPORT.md`, `PROJECT_STATE.md`, `CHAMPION.md`, `RUNLOG.md`, `DECISIONS.md` ni",
-        "en el informe acumulado: cada bloque va sellado con `<!-- P67 2026-09-29 -->`.",
+        "en el informe acumulado: cada bloque va sellado con `<!-- P67 2026-09-29 -->`.", "",
+        "Verificado en tres pasadas consecutivas. Excluyendo la marca de tiempo de ejecucion,",
+        "el hash agregado de los trece documentos e informes de la fase es **identico** en las",
+        "tres. El valor concreto no se transcribe aqui a proposito: un hash escrito dentro del",
+        "fichero que el hash resume no puede ser consistente consigo mismo, porque al cambiar",
+        "el hash cambia tambien el fichero. La comprobacion se reproduce con:", "",
+        "```bash",
+        "snap() {",
+        "  for f in FINAL_REPORT.md PROJECT_STATE.md CHAMPION.md RUNLOG.md DECISIONS.md \\",
+        "           reports/TOXIC_COMPLETE_RESEARCH_REPORT.md reports/p67_compliance.md \\",
+        "           reports/p67_reproducibility.md reports/p67_final_research.md \\",
+        "           reports/p67_final_summary.json reports/p67_master_results.csv \\",
+        "           reports/p67_controles_decisivos.json reports/p67_p66_reconciliation.json; do",
+        ('    printf "%s  %s\\n" "$(grep -vE \'^Fecha |^Generado por|"fecha":\' "$f" | sha256sum'
+        ' | cut -c1-16)" "$f"'),
+        "  done | sha256sum | cut -c1-16",
+        "}",
+        "```", "",
+        "### Lo que si cambia entre ejecuciones, y por que es correcto", "",
+        "| elemento | cambia | motivo |", "|---|---|---|",
+        "| `Fecha` en el informe de cumplimiento | si | es la hora real de la ejecucion |",
+        "| `Generado por ... Fecha` en los informes | si | idem |",
+        "| `\"fecha\"` en los JSON | si | idem |",
+        "| `\"git_commit\"` en los JSON | si | si se commitea entre pasadas |",
+        "| todo lo demas | **no** | el contenido es identico |", "",
+        "El timestamp es provenance, no ruido: registra cuando se ejecuto cada vez. Quien",
+        "verifique la idempotencia tiene que excluirlo, o comparar el arbol en vez del hash",
+        "crudo del fichero. Un hash de fichero completo **no** es estable en este diseno, y",
+        "que no lo sea no es un defecto.", "",
+        "### El bug que esta seccion documenta", "",
+        "Una version anterior de `escribir_bloque` **buscaba** las marcas para saber si el",
+        "bloque existia pero **no las escribia nunca**. Como consecuencia, la segunda",
+        "ejecucion no encontraba la marca y anadia una copia duplicada: 204 lineas repetidas en",
+        "seis ficheros historicos. Se detecto al comparar hashes antes y despues de la",
+        "segunda pasada, y se corrigio sellando siempre el bloque entre las dos marcas.",
+        "El dano estaba sin commitear y se revirtio con `git checkout --`.", "",
+        "Lo que si quedo commiteado, en `c6ae671`, fue un dano distinto y de otra fase: ver",
+        "el aviso sobre `p66_score_fusion.csv` mas arriba.",
     ]
     MD_REPR.write_text(a_ascii("\n".join(rep)), encoding="ascii")
     log("   DECISIONS, FINAL_REPORT, PROJECT_STATE, CHAMPION, RUNLOG y acumulado actualizados")
