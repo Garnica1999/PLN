@@ -1,0 +1,285 @@
+{
+  "familia": "P64_GAP_ANALYSIS",
+  "naturaleza": "AUDITORIA. 0 experimentos, 0 modelos, 0 features",
+  "fecha": "2026-09-29T07:17:30+00:00",
+  "experiment_id": "P64-00",
+  "script": "experiments/p64_01_gap_analysis.py",
+  "pregunta": "que es genuinamente nuevo en segmentar, dado que P59-07 ya probo ventanas locales",
+  "precedente_mas_cercano": {
+    "P59-07": "ventana fija de 32 tokens con avance 16, agregacion por maximo, delta -0,0006246152, 3/5, neto -1, CLOSED",
+    "P59-09": "fusion con un alpha, +0,0014800075, 2/5, MARGINAL",
+    "P59-02": "geometria local como bloque, AUC 0,725 y nada accionable, CLOSED"
+  },
+  "cobertura": {
+    "n_filas": 1483,
+    "tokens_mediana": 15.0,
+    "tokens_maximo": 57,
+    "tokens_percentil_90": 32.0,
+    "ventana_fija_32_16": {
+      "filas_con_mas_de_una_unidad": 142,
+      "porcentaje": 9.5752
+    },
+    "segmentacion_por_puntuacion": {
+      "filas_con_mas_de_uno": 751,
+      "porcentaje": 50.6406,
+      "segmentos_medianos": 2.0,
+      "segmentos_maximos": 13
+    },
+    "factor_de_cobertura": 5.2887
+  },
+  "asociacion_con_el_error": {
+    "por_numero_de_segmentos": [
+      {
+        "n_segmentos": "1",
+        "n_filas": 732,
+        "tasa_de_error": 0.144353,
+        "tokens_medianos": 12.0
+      },
+      {
+        "n_segmentos": "2",
+        "n_filas": 376,
+        "tasa_de_error": 0.187057,
+        "tokens_medianos": 15.0
+      },
+      {
+        "n_segmentos": "3",
+        "n_filas": 205,
+        "tasa_de_error": 0.19187,
+        "tokens_medianos": 18.0
+      },
+      {
+        "n_segmentos": "4",
+        "n_filas": 91,
+        "tasa_de_error": 0.208791,
+        "tokens_medianos": 23.0
+      },
+      {
+        "n_segmentos": "5 o mas",
+        "n_filas": 79,
+        "tasa_de_error": 0.227848,
+        "tokens_medianos": 34.0
+      }
+    ],
+    "tasa_1_segmento": 0.144353,
+    "tasa_5_o_mas": 0.227848,
+    "diferencia": 0.083495,
+    "crece_con_los_segmentos": true,
+    "aviso": "es una ASOCIACION y no un mecanismo, y la fase existe justamente para saber si lo es"
+  },
+  "por_rebanada": {
+    "bins": [
+      {
+        "bin": "CORTA",
+        "n": 167,
+        "tokens_medios": 4.84,
+        "segmentos_medios": 1.389,
+        "con_dos_o_mas": 50,
+        "porcentaje_con_dos_o_mas": 29.94,
+        "tasa_de_error": 0.065868
+      },
+      {
+        "bin": "MEDIA",
+        "n": 602,
+        "tokens_medios": 10.92,
+        "segmentos_medios": 1.616,
+        "con_dos_o_mas": 247,
+        "porcentaje_con_dos_o_mas": 41.03,
+        "tasa_de_error": 0.168882
+      },
+      {
+        "bin": "LARGA",
+        "n": 547,
+        "tokens_medios": 21.34,
+        "segmentos_medios": 2.102,
+        "con_dos_o_mas": 325,
+        "porcentaje_con_dos_o_mas": 59.41,
+        "tasa_de_error": 0.186472
+      },
+      {
+        "bin": "MUY_LARGA",
+        "n": 167,
+        "tokens_medios": 38.71,
+        "segmentos_medios": 3.293,
+        "con_dos_o_mas": 129,
+        "porcentaje_con_dos_o_mas": 77.25,
+        "tasa_de_error": 0.225549
+      }
+    ]
+  },
+  "tabla": [
+    {
+      "family": "ventana numerica fija",
+      "hypothesis": "cambiar la unidad de documento a ventana de 32 tokens",
+      "historical_status": "exact_duplicate",
+      "experiments": "P59-07",
+      "historical_result": "-0,0006246152, 3/5, neto -1, CLOSED",
+      "closed": "si",
+      "reason_closed": "medido y negativo, con su propio diagnostico de cobertura",
+      "new_formulation": "",
+      "novelty": "ninguna",
+      "expected_mechanism": "",
+      "priority": "-"
+    },
+    {
+      "family": "fusion de score local y global",
+      "hypothesis": "mezclar el score local con el de V03 mediante un alpha",
+      "historical_status": "exact_duplicate",
+      "experiments": "P59-09",
+      "historical_result": "+0,0014800075, 2/5, MARGINAL, gate fallido por ambas condiciones",
+      "closed": "si",
+      "reason_closed": "el alpha optimo externo daba menos que la regla anidada",
+      "new_formulation": "",
+      "novelty": "ninguna",
+      "expected_mechanism": "",
+      "priority": "-"
+    },
+    {
+      "family": "geometria local como bloque",
+      "hypothesis": "rasgos de geometria Voronoi anadidos a V03",
+      "historical_status": "functional_duplicate",
+      "experiments": "P59-02, V6-07",
+      "historical_result": "AUC 0,725 para predecir errores y nada accionable, CLOSED",
+      "closed": "si",
+      "reason_closed": "predecir la dificultad no es mejorar la decision",
+      "new_formulation": "",
+      "novelty": "ninguna",
+      "expected_mechanism": "",
+      "priority": "-"
+    },
+    {
+      "family": "max-pooling de evidencia local",
+      "hypothesis": "agregar la evidencia segmental tomando el maximo",
+      "historical_status": "exact_duplicate",
+      "experiments": "P59-07",
+      "historical_result": "neto -4 en su propio estrato alcanzable",
+      "closed": "si",
+      "reason_closed": "el max sesga al alza y desplaza celdas sin corregir errores",
+      "new_formulation": "",
+      "novelty": "ninguna",
+      "expected_mechanism": "",
+      "priority": "-"
+    },
+    {
+      "family": "ventana como canal sparse extra",
+      "hypothesis": "anadir la ventana como un canal mas al documento",
+      "historical_status": "exact_duplicate",
+      "experiments": "V4-D01-D04, E2-09",
+      "historical_result": "CERRADA sin senal",
+      "closed": "si",
+      "reason_closed": "la unidad de puntuacion seguia siendo el tweet",
+      "new_formulation": "",
+      "novelty": "ninguna",
+      "expected_mechanism": "",
+      "priority": "-"
+    },
+    {
+      "family": "canal TF-IDF segmental",
+      "hypothesis": "un canal de n-gramas por segmento aporta senal directa",
+      "historical_status": "functional_duplicate",
+      "experiments": "P59-07, V4-D01-D04",
+      "historical_result": "la ventana como unidad dio -0,0006246152",
+      "closed": "si",
+      "reason_closed": "misma mecanica, y P59-07 demuestra ademas que el max no es la via",
+      "new_formulation": "",
+      "novelty": "ninguna",
+      "expected_mechanism": "",
+      "priority": "-"
+    },
+    {
+      "family": "umbral por estrato de longitud o de segmentos",
+      "hypothesis": "el umbral debe depender de la region",
+      "historical_status": "exact_duplicate",
+      "experiments": "E2-16, E2-20, V8-09",
+      "historical_result": "CERRADAS sin mejora",
+      "closed": "si",
+      "reason_closed": "medido tres veces con variantes distintas",
+      "new_formulation": "",
+      "novelty": "ninguna",
+      "expected_mechanism": "",
+      "priority": "-"
+    },
+    {
+      "family": "segmentacion determinista por puntuacion",
+      "hypothesis": "la distribucion interna de la evidencia es lo que V03 aplana",
+      "historical_status": "genuinely_new",
+      "experiments": "0",
+      "historical_result": "nunca medida; P59 uso ventanas numericas, no estructura",
+      "closed": "no",
+      "reason_closed": "",
+      "new_formulation": "segmentos por puntuacion fuerte, con la evidencia de cada uno medida con los coeficientes de V03 aprendidos en el pliegue",
+      "novelty": "ALTA",
+      "expected_mechanism": "el promedio implicito de TF-IDF destruye la distribucion interna",
+      "priority": "1"
+    },
+    {
+      "family": "descomposicion de la evidencia por segmento",
+      "hypothesis": "cada segmento aporta una contribucion identificable al score",
+      "historical_status": "genuinely_new",
+      "experiments": "0",
+      "historical_result": "P59 no computo nunca contribuciones por unidad",
+      "closed": "no",
+      "reason_closed": "",
+      "new_formulation": "leave-one-segment-out: la diferencia entre el score completo y el score sin ese segmento, por etiqueta",
+      "novelty": "ALTA",
+      "expected_mechanism": "un segmento domina, o hay varios que compiten",
+      "priority": "2"
+    },
+    {
+      "family": "conflicto de evidencia interna",
+      "hypothesis": "los tweets largos pueden tener evidencia a favor y en contra a la vez",
+      "historical_status": "genuinely_new",
+      "experiments": "0",
+      "historical_result": "nunca medida",
+      "closed": "no",
+      "reason_closed": "",
+      "new_formulation": "positiva contra negativa dentro del mismo tweet, por etiqueta",
+      "novelty": "ALTA",
+      "expected_mechanism": "coexistencia de evidencia contradictoria",
+      "priority": "3"
+    },
+    {
+      "family": "perfil de longitud y dispersion de segmentos",
+      "hypothesis": "la estructura segmental en si es un rasgo con senal propia",
+      "historical_status": "genuinely_new",
+      "experiments": "0",
+      "historical_result": "nunca medida; V30-01 y V31 trabajan con estructura global",
+      "closed": "no",
+      "reason_closed": "",
+      "new_formulation": "perfil de longitudes de segmento, dispersion y entropia",
+      "novelty": "MEDIA",
+      "expected_mechanism": "forma de la distribucion interna",
+      "priority": "4"
+    }
+  ],
+  "n_abiertas": 4,
+  "n_cerradas": 7,
+  "cortes_de_longitud_congelados": [
+    {
+      "nombre": "CORTA",
+      "desde": 0,
+      "hasta": 6
+    },
+    {
+      "nombre": "MEDIA",
+      "desde": 7,
+      "hasta": 15
+    },
+    {
+      "nombre": "LARGA",
+      "desde": 16,
+      "hasta": 30
+    },
+    {
+      "nombre": "MUY_LARGA",
+      "desde": 31,
+      "hasta": 1000000000
+    }
+  ],
+  "reproducibilidad": {
+    "nivel": "R2",
+    "git_commit": "aa5c006",
+    "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "corrected_cv": 0.7772114525165721
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

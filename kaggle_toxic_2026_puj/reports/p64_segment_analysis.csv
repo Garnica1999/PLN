@@ -1,0 +1,21 @@
+tipo,clave,n_segmentos,log_n_segmentos,es_multi_segmento,fraccion_del_segmento_mas_largo,fraccion_del_segmento_mas_corto,desviacion_de_la_longitud,entropia_de_la_longitud,tasa_de_error,nota
+eda,todas,1483,1.958867,1.010836,0.506406,0.862339,0.568098,0.261861,0.168367,0.170151,
+eda,CORTA,167,1.389222,0.840384,0.299401,0.958383,0.77994,0.041175,0.092684,0.065868,
+eda,MEDIA,602,1.616279,0.913185,0.410299,0.916042,0.656444,0.146007,0.115235,0.168882,
+eda,LARGA,547,2.102377,1.063819,0.59415,0.833007,0.489205,0.342846,0.191343,0.186472,
+eda,MUY_LARGA,167,3.293413,1.359759,0.772455,0.668786,0.296201,0.634916,0.360322,0.225549,
+eda,V03 correcto,1042,1.84453,0.975512,0.460653,0.882566,0.607854,0.23383,0.148412,0.0,
+eda,V03 incorrecto,441,2.229025,1.0943,0.614512,0.814547,0.474162,0.328093,0.215516,0.572184,
+eda,error de alta confianza,295,2.20339,1.083302,0.59661,0.825029,0.486701,0.331626,0.206568,0.649718,
+cobertura,S1,751,2.0,13,0.506406,0.170151,tasa de error multi 0.195295
+cobertura,S2,751,2.0,13,0.506406,0.170151,tasa de error multi 0.195295
+cobertura,S3,602,1.0,9,0.405934,0.170151,tasa de error multi 0.193245
+cobertura,S4,1018,2.0,31,0.686446,0.170151,tasa de error multi 0.184676
+auc,n_segmentos,0.588351,,,,,
+auc,log_n_segmentos,0.588351,,,,,
+auc,es_multi_segmento,0.57693,,,,,
+auc,fraccion_del_segmento_mas_largo,0.413968,,,,,
+auc,fraccion_del_segmento_mas_corto,0.419111,,,,,
+auc,desviacion_de_la_longitud,0.578305,,,,,
+auc,entropia_de_la_longitud,0.589847,,,,,
+auc,n_tokens_como_referencia,0.600506,,,,,referencia trivial de longitud
