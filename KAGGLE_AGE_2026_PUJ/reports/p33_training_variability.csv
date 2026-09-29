@@ -1,0 +1,5 @@
+magnitud,valor,fuente,escala_para_gates
+ruido del estimador (reagrupar las mismas predicciones),1.61e-05,"P00, 200 re-particiones","no, despreciable"
+"variabilidad de entrenamiento (misma receta, otro reparto)",0.0008876,"P00, V30 vs V30 en la particion alternativa","si, es la que manda"
+delta P33 real,-0.0002152,P33-P07,ratio 0.24
+delta P34 real,-0.0002039,P34-P10,ratio 0.23

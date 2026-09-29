@@ -1,0 +1,37 @@
+{
+  "fase": "P33+P34 notebook y compliance",
+  "fecha": "2026-10-04",
+  "experimenta": false,
+  "commit": "ca3c315e42c26569f3c7c529af9b2b8a3b77e1e9",
+  "compliance_ast": {
+    "scripts": [
+      "p33_00_scores_url.py",
+      "p33_01_residualizacion.py",
+      "p33_p34_cierre.py",
+      "p33_p34_notebook_compliance.py",
+      "p34_00_audit.py",
+      "p34_01_pairwise.py"
+    ],
+    "hallazgos": [],
+    "total": 0,
+    "positivos": {
+      "validacion_agrupada": 1,
+      "oos_estricto": 1,
+      "inner_train_separado": 3,
+      "bootstrap": 3,
+      "control_barajado": 3,
+      "control_aleatorio": 2,
+      "score_type_declarado": 4
+    },
+    "positivos_ok": true
+  },
+  "notebook": {
+    "anadida": true,
+    "antes": 242,
+    "despues": 253,
+    "anadidas": 11,
+    "idempotente": true
+  },
+  "cumplimiento_global": true,
+  "segundos": 0.8
+}

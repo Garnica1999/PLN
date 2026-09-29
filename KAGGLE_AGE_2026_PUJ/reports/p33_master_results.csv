@@ -1,0 +1,6 @@
+ID,track,hipotesis,corrected_cv,delta_vs_V30,brazo,decision
+P33-01,P8,el residuo linguistico mejora la decision de V30,0.6134471,0.0,V30,REFERENCIA
+P33-01,P8,el residuo linguistico mejora la decision de V30,0.6132319,-0.0002152,real,INTEGRACION GLOBAL CLOSED
+P33-01,P8,el residuo linguistico mejora la decision de V30,0.6130622,-0.0003849,barajado,INTEGRACION GLOBAL CLOSED
+P33-01,P8,el residuo linguistico mejora la decision de V30,0.6132858,-0.0001613,ruido,INTEGRACION GLOBAL CLOSED
+P33-01,P8,el residuo linguistico mejora la decision de V30,0.6132319,-0.0002152,con_intercepto,INTEGRACION GLOBAL CLOSED

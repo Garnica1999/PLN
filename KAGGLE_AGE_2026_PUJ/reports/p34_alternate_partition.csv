@@ -1,0 +1,2 @@
+fase,particion_alternativa,motivo,protocolo_si_se_hubiera_ejecutado
+P34,no ejecutada,"no procede: el mecanismo quedo INVALIDATED en la particion principal, con el control de ruido aleatorio ganando a la senal real. Pedir una segunda particion para confirmar un resultado ya invalidado seria gastar presupuesto en confirmar algo que no va a cambiar de veredicto","reejecutar V30 y el canal sobre el reparto alterno, aplicar la MISMA correccion sin reajustar beta"

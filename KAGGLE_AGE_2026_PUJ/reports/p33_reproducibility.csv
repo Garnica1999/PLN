@@ -1,0 +1,6 @@
+artefacto,clase,motivo
+V30 (pesos medios),R3,reproduce desde el pool OOF y el manifest de pesos; hash del submission verificado
+V30 (cifra publicada),R1,los pesos por fold no se persistieron
+canal linguistico (OOF),R3,"funcion determinista de (textos, folds); persistido con SHA256 en artifacts/p33_scores"
+P33 correccion global,R3,"a_c, b_c en inner_train; beta en inner_val; seed fijo 20261002"
+P34 correccion pairwise,R3,"a, b en inner_train; beta en inner_val; seed fijo 20261003"
