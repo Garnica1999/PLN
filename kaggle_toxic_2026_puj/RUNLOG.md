@@ -2797,3 +2797,16 @@ Sin push, sin merge, sin rebase.
 - 8 figuras nuevas. 0 bytes no ASCII en los artefactos generados.
 
 Sin push, sin merge, sin rebase.
+
+## 2026-09-29, post-P67: gap analysis y P68-H1
+
+- `experiments/p67_04_gap_analysis.py`: interseccion de errores separada en A y B, matriz de
+  atribucion entre las siete alternativas, clasificacion de once familias y el presupuesto.
+  B = 215 celdas, 122 exclusivas. Propone `P68-H1`.
+- `experiments/p68_01_enrutado_por_estructura.py`: enrutado de la decision por estructura del
+  texto, 123 features, cero derivadas del score. Resultado **INVALIDATED**, delta
+  -0.0018992302, 1 de 5 pliegues.
+- El diagnostico: AUC a quien delegar 0,5491 frente a AUC donde V03 falla 0,6080. La
+  estructura predice dificultad, no ganador.
+
+Sin push, sin merge, sin rebase. Test y holdout sin tocar.

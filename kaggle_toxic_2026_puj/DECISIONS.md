@@ -6152,3 +6152,87 @@ La comprobacion autoritativa es el escaneo byte a byte. Las dos se reportan por 
 Deuda declarada y no corregida: `experiments.csv` tiene 300 bytes no ASCII en 91 lineas
 historicas. Las lineas que P67 anade tienen 0.
 
+
+
+## D-183 a D-186: el gap analysis y la primera linea nueva
+
+Fecha 2026-09-29.
+
+### D-183. La pregunta cambia de sitio: de la formula al error
+
+El gap analysis no empieza por el estado del arte. Empieza por los errores, porque P67 dejo
+dos hechos que juntos lo obligan:
+
+```text
+la senal existe     AUC 0,5796 fuera de banda, positiva en los 6 betas con beta fijo
+la via esta agotada el mecanismo estrella de P66 es algebraicamente un blend
+```
+
+La pregunta nueva no es `que otra formula aplicamos al score`. Es donde esta la informacion y
+quien ya la alcanza.
+
+### D-184. La poblacion B existe, es grande y es exclusiva
+
+```text
+A   V03 falla y TODAS fallan      542 celdas    informacion que nadie alcanza
+B   V03 falla y ALGUNA acierta    215 celdas    informacion que SI se alcanza
+```
+
+De todo lo que V03 falla, alguien alcanza el **28,4 por ciento**. Y de esas 215 celdas, **122
+(56,7 por ciento) son exclusivas de un solo candidato**. MI_arbol solo alcanza 77 que nadie
+mas ve, el 35,8 por ciento de B.
+
+El Jaccard mas alto entre dos candidatos es 0,3377. Incluso el par mas parecido comparte solo
+un tercio de sus rescates: la diversidad es real, no superficial.
+
+### D-185. La estructura del texto predice la DIFICULTAD, no QUIEN GANA
+
+`P68-H1` propuso enrutar la decision por la estructura del ejemplo: 123 features del texto,
+**cero derivadas del score**. Es la primera linea que cambia QUIEN decide en vez de COMO se
+combina un score, y por eso no es DUPLICATE.
+
+Resultado: **INVALIDATED**.
+
+```text
+techo si se delegara exactamente lo delegable   +0,0390871336
+enrutado real                                   -0.0018992302
+objetivo barajado                               -0.0008864889
+delegacion aleatoria                            -0.0007338368
+enrutado con el margen de V03                   -0.0029300234
+pliegues positivos                              1 de 5
+```
+
+Y la razon, que es lo que hace util el negativo. Las MISMAS features con dos objetivos:
+
+```text
+AUC a quien delegar     0,5491
+AUC donde V03 falla     0,6080
+```
+
+El enrutador aprende la cosa equivocada, no es que no aprenda nada. Manda trabajo al experto
+donde el ejemplo *parece* dificil, que es donde V03 ya resolvia y donde el experto tambien
+falla: de las celdas delegadas, V03 **ya acertaba** la mayoria en todos los pliegues.
+
+Y el aviso de escala: en **11 de 15** celdas pliegue-etiqueta el delta interno era positivo y
+el externo salio negativo. Con 800 filas internas en tres etiquetas, `+0,004` interno no
+transfiere.
+
+### D-186. El presupuesto no se gasta por gastarlo
+
+```text
+experimentos historicos     373
+de P67                      4
+de P68                      1
+familias CLOSED             6
+familias INVALIDATED        2
+familias DUPLICATE          1
+familias COMPLEMENTARY      1
+familias PARTIALLY_OPEN     1   MI_arbol: la senal existe, la via de integracion no
+```
+
+`P68-H1` se ejecuto con **1 experimento principal y 2 controles mas 1 ablacion**, sin grid, sin
+varias semillas, sin diez hiperparametros. Primero se verifica si la hipotesis funciona. No
+funciona, y se cierra.
+
+No se abre otra linea solo para consumir presupuesto. Un presupuesto sin gastar es preferible
+a experimentos de baja informacion.

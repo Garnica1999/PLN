@@ -371,3 +371,5 @@ P67-00|2026-09-29|reconciliacion de las dos cifras de P66 y auditoria del nested
 P67-01|2026-09-29|cuatro controles decisivos: umbral anidado, sustitucion cruzada, enriquecimiento y AUC del residuo|MIXED_CON_ATRIBUCION_PARCIAL, umbral -0.0029731513, sustitucion 4/7|P67|experiments/p67_01_controles_decisivos.py
 P67-02|2026-09-29|cierre de la fase: consolidacion, figuras, cumplimiento y registro|MIXED_CON_ATRIBUCION_PARCIAL, 24 comprobaciones 0 fallos, 6 figuras|P67|experiments/p67_02_cerrar.py
 P67-03|2026-09-29|cierre documental: evidencia congelada, interpretacion, dano de P66 y ASCII|11 piezas de evidencia, 8 figuras, marca DO_NOT_RERUN_UNGUARDED|P67|experiments/p67_03_cierre_documental.py
+P67-04|2026-09-29|gap analysis post-P67: interseccion de errores y clasificacion de familias|A 542, B 215 (28,4 por ciento), 122 exclusivas, hipotesis P68-H1 propuesta|P67|experiments/p67_04_gap_analysis.py
+P68-01|2026-09-29|enrutado de la decision por estructura del ejemplo, con dos controles y una ablacion|INVALIDATED, delta -0.0018992302, 1 de 5 pliegues|P68|experiments/p68_01_enrutado_por_estructura.py

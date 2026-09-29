@@ -1,0 +1,4 @@
+etiqueta,celdas,errores_de_V03,A_nadie_alcanza,B_alguien_alcanza,fraccion_B,B_que_MI_arbol_alcanza,A_que_MI_arbol_tambien_falla,B_que_negacion_alcanza,A_que_negacion_tambien_falla,B_que_word_1_3_alcanza,A_que_word_1_3_tambien_falla,B_que_cohesion_alcanza,A_que_cohesion_tambien_falla,B_que_huecos_1_2_alcanza,A_que_huecos_1_2_tambien_falla,B_que_contraste_alcanza,A_que_contraste_tambien_falla,B_que_huecos_6_10_alcanza,A_que_huecos_6_10_tambien_falla
+HS,1483,316,218,98,0.310127,58,218,23,218,21,218,20,218,35,218,2,218,21,218
+TR,1483,164,125,39,0.237805,29,125,9,125,6,125,3,125,11,125,1,125,7,125
+AG,1483,277,199,78,0.281588,52,199,21,199,6,199,13,199,24,199,3,199,16,199

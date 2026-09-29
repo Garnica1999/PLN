@@ -1768,3 +1768,17 @@ V03 remains the best verified leaderboard result.
 
 > V03 remains the best verified leaderboard result.
 <!-- /P67 2026-09-29 -->
+\n<!-- POST-P67 2026-09-29 -->\n## Post-P67 (2026-09-29): el gap analysis y una linea nueva cerrada
+
+- Poblacion **B = 215 celdas** donde V03 falla y alguien acierta. El 28,4 por ciento de sus
+  errores. **122 exclusivas** de un solo candidato.
+- Once familias clasificadas: 6 `CLOSED`, 2 `INVALIDATED`, 1 `DUPLICATE`, 1 `COMPLEMENTARY`,
+  1 `PARTIALLY_OPEN` (MI_arbol).
+- `P68-H1` (enrutado por estructura del ejemplo): **INVALIDATED**, delta
+  -0.0018992302, 1 de 5 pliegues.
+- El techo era `+0,0390871336`. El enrutador no lo captura porque la estructura predice
+  dificultad (AUC 0,6080), no ganador (AUC 0,5491).
+- 1 experimento principal, 2 controles, 1 ablacion. Sin grid.
+
+> V03 remains the best verified leaderboard result.
+<!-- /POST-P67 2026-09-29 -->\n
