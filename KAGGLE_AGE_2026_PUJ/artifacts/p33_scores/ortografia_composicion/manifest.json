@@ -1,0 +1,23 @@
+{
+  "candidate_name": "ortografia+composicion",
+  "source_script": "scripts/v31_03_canales_linguisticos.py (canal individual) o su combinacion; los OOF estan en features/v31_canales_oof.npz",
+  "git_commit": "1e00bfada15e48c3f2166f461ce83062f9fd91bd",
+  "seed": "42 para los folds (StratifiedGroupKFold sobre dup_clusters); LinearSVC sin random_state porque es determinista",
+  "data_hash": "2ada573b27b9cb503cda0bb80344b092b9601a3105fe9b56d2127e261f2edf8e",
+  "data_hash_que_es": "SHA256 del array de textos de train concatenados, en el orden de las filas",
+  "feature_configuration": "canal estructural anadido al bloque textual, vectorizado por separado con TfidfVectorizer(analyzer=word, ngram_range=(1,3), min_df=5, sublinear_tf=True). Peso del canal 1.0, fijo y no buscado",
+  "model_configuration": "LinearSVC(C=1.0, loss=squared_hinge, penalty=l2, max_iter=3000, tol=1e-4)",
+  "fold_definition": "StratifiedGroupKFold, n_splits=5, n_repeats=1, scheme=group, grupos=dup_clusters, semilla 42. **Los mismos folds que V20 y V30**",
+  "creation_method": "OOF estrictamente out-of-fold: para cada fold se ajusta el vectorizador de palabras y el LinearSVC **solo** sobre train de ese fold, y se predice su validacion. La decision_function se convierte a probabilidad con un softmax para que sea comparable con la mezcla de V30, que si es probabilidad",
+  "softmax_nota": "el OOF de origen es un decision_function de SVM, NO probabilidades: sus filas suman un valor negativo. Se convierte con softmax desplazado, que preserva el argmax y produce seis valores positivos que suman 1. El softmax **NO** calibra: el score sirve para mezclar y ordenar, no para interpretar como probabilidad real",
+  "n_filas": 169336,
+  "n_clases": 6,
+  "sha256": {
+    "cand_pred.npy": "d4d4cce0d6bd923370a848c3cc8ade45b47b29fee210bc38d54db35bdce56503",
+    "cand_prob.npy": "03f12dbc6cc4c0d38e2a2b24ebfcf1ca5fc505cb1f20acf99779796ebfafb866",
+    "fold_idx.npy": "74d18330c40c3598a1936706ae9434c5fdf29119d357d38353cf298812fe6fb5",
+    "ids.npy": "d69ecb339f1dc57de2f9cddd558658b5a272ffa42aec15c771773e8eabd59825",
+    "v30_prob.npy": "3d77352486605971093ade7214ae82326057845d8bf54a2d88c83843c5a721db",
+    "y_true.npy": "b1c928f9b9f5575547c1090a1fd83cf32a048b694af35a980b460c0bd66d48e6"
+  }
+}

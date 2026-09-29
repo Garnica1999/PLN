@@ -1,0 +1,190 @@
+{
+  "fase": "P33+ 01 residualizacion, control barajado y correccion minima",
+  "fecha": "2026-10-02",
+  "experimenta": true,
+  "baseline_v30": 0.6134471,
+  "candidato": "ortografia+composicion+discurso",
+  "p05_informacion_del_residuo": {
+    "auc_medio_residuo_vs_ovr": 0.54111,
+    "por_clase": [
+      {
+        "clase": "13-17",
+        "auc_residuo_vs_ovr": 0.55073,
+        "auc_zc_vs_ovr": 0.8647,
+        "auc_zv30_vs_ovr": 0.93104
+      },
+      {
+        "clase": "18-24",
+        "auc_residuo_vs_ovr": 0.52322,
+        "auc_zc_vs_ovr": 0.75778,
+        "auc_zv30_vs_ovr": 0.85934
+      },
+      {
+        "clase": "25-34",
+        "auc_residuo_vs_ovr": 0.51365,
+        "auc_zc_vs_ovr": 0.73211,
+        "auc_zv30_vs_ovr": 0.84177
+      },
+      {
+        "clase": "35-49",
+        "auc_residuo_vs_ovr": 0.5415,
+        "auc_zc_vs_ovr": 0.78125,
+        "auc_zv30_vs_ovr": 0.87216
+      },
+      {
+        "clase": "50-64",
+        "auc_residuo_vs_ovr": 0.5547,
+        "auc_zc_vs_ovr": 0.85683,
+        "auc_zv30_vs_ovr": 0.92333
+      },
+      {
+        "clase": "65-xx",
+        "auc_residuo_vs_ovr": 0.56285,
+        "auc_zc_vs_ovr": 0.89676,
+        "auc_zv30_vs_ovr": 0.94833
+      }
+    ],
+    "lectura": "por encima de 0,50 el residuo conserva informacion de edad; en torno a 0,50 no conserva nada y las correcciones de abajo serian ruido con forma matematica"
+  },
+  "p07_correcciones": [
+    {
+      "brazo": "real",
+      "corrected_cv": 0.6132319,
+      "delta_vs_v30": -0.0002152,
+      "folds": [
+        0.615945,
+        0.616899,
+        0.612963,
+        0.61334,
+        0.607044
+      ],
+      "delta_por_fold": [
+        -0.000291,
+        0.000212,
+        -0.00021,
+        -0.000173,
+        -0.00061
+      ],
+      "folds_positivos": 1,
+      "rescate": 838,
+      "danio": 882,
+      "neto": -44
+    },
+    {
+      "brazo": "barajado",
+      "corrected_cv": 0.6130622,
+      "delta_vs_v30": -0.0003849,
+      "folds": [
+        0.615974,
+        0.616361,
+        0.613235,
+        0.612967,
+        0.6068
+      ],
+      "delta_por_fold": [
+        -0.000262,
+        -0.000326,
+        6.1e-05,
+        -0.000545,
+        -0.000854
+      ],
+      "folds_positivos": 1,
+      "rescate": 728,
+      "danio": 795,
+      "neto": -67
+    },
+    {
+      "brazo": "ruido",
+      "corrected_cv": 0.6132858,
+      "delta_vs_v30": -0.0001613,
+      "folds": [
+        0.616603,
+        0.616296,
+        0.613645,
+        0.612429,
+        0.607488
+      ],
+      "delta_por_fold": [
+        0.000367,
+        -0.00039,
+        0.000472,
+        -0.001083,
+        -0.000166
+      ],
+      "folds_positivos": 2,
+      "rescate": 786,
+      "danio": 809,
+      "neto": -23
+    },
+    {
+      "brazo": "con_intercepto",
+      "corrected_cv": 0.6132319,
+      "delta_vs_v30": -0.0002152,
+      "folds": [
+        0.615945,
+        0.616899,
+        0.612963,
+        0.61334,
+        0.607044
+      ],
+      "delta_por_fold": [
+        -0.000291,
+        0.000212,
+        -0.00021,
+        -0.000173,
+        -0.00061
+      ],
+      "folds_positivos": 1,
+      "rescate": 838,
+      "danio": 882,
+      "neto": -44
+    }
+  ],
+  "p06_atribucion": {
+    "real_menos_barajado": 0.0001697,
+    "real_menos_ruido": -5.39e-05,
+    "con_intercepto_menos_sin": 0.0,
+    "betas_por_fold": [
+      0.1,
+      -0.05,
+      -0.05,
+      0.1,
+      0.1
+    ]
+  },
+  "p19_variabilidad": {
+    "variabilidad_de_entrenamiento": 0.0008876,
+    "ratios": {
+      "real": 0.242,
+      "barajado": 0.434,
+      "ruido": 0.182,
+      "con_intercepto": 0.242
+    }
+  },
+  "protocolo": {
+    "estructura": "outer_train se parte en inner_train (75%) e inner_val (25%). a_c y b_c se ajustan en inner_train, beta y alpha se eligen en inner_val, y outer_val solo recibe la correccion ya fijada",
+    "betas_explorados": [
+      -0.6,
+      -0.4,
+      -0.3,
+      -0.2,
+      -0.1,
+      -0.05,
+      0.0,
+      0.05,
+      0.1,
+      0.2,
+      0.3,
+      0.4,
+      0.6
+    ],
+    "eps": 1e-06,
+    "semilla": 20261002
+  },
+  "restricciones": {
+    "usa_test": false,
+    "usa_red": false,
+    "outer_val_en_el_ajuste": false
+  },
+  "segundos": 2.2
+}
