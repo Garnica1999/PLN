@@ -1,0 +1,256 @@
+{
+  "familia": "P64_LEAVE_ONE_OUT",
+  "naturaleza": "EXPERIMENTO. 1 candidato y 2 controles, 0 submissions, 0 Kaggle, 0 holdout, 0 test",
+  "fecha": "2026-09-29T07:23:30+00:00",
+  "experiment_id": "P64-03",
+  "track": "P5-P6-leave-one-out-y-contradiccion",
+  "script": "experiments/p64_04_leave_one_out.py",
+  "pregunta": "donde descansa la decision de V03, y la contribucion con signo de cada segmento aporta algo que su confianza no tenga",
+  "novedad": "P59 no computo nunca contribuciones por unidad. P64-03 midio la distribucion de probabilidades por segmento, que describe lo que el modelo dice de cada pieza aislada pero NO dice de que pieza depende la decision una vez junto el resto del documento",
+  "definicion": "contribucion_i = score del documento completo menos el score del documento sin el segmento i, por etiqueta, con los coeficientes de V03 del pliegue de entrenamiento",
+  "por_que_importa_el_signo": "separa un segmento que DISCREPA del consenso de uno que simplemente es debil, y el conflicto sobre contribuciones no es el mismo que el conflicto sobre probabilidades de P64-03",
+  "n_columnas": 36,
+  "rasgos_por_etiqueta": [
+    "loo_max",
+    "loo_min",
+    "loo_rango",
+    "loo_desviacion",
+    "loo_entropia",
+    "loo_concentracion",
+    "loo_positiva",
+    "loo_negativa",
+    "loo_conflicto",
+    "loo_brecha",
+    "loo_cambia_de_signo",
+    "loo_fraccion_implicita"
+  ],
+  "filas_con_perfil": 751,
+  "filas_sin_perfil": 732,
+  "por_que_las_de_un_segmento_no_tienen_perfil": "el leave-one-out de un documento de un segmento es la cadena vacia, que no es evidencia de nada. No se rellenan con un cero porque un cero pareceria una medida y es una ausencia",
+  "protocolo": {
+    "clasificadores": "los de V03, ajustados SOLO en las filas de entrenamiento",
+    "documentos_parciales": "se transforman con los vectorizadores del pliegue y se puntuan con sus clasificadores. El clasificador nunca se entrena sobre un documento parcial",
+    "pseudo_labeling": "ninguno: ningun segmento recibe etiqueta ni es objetivo",
+    "control_de_capacidad": "V03 mas un bloque aleatorio de la misma anchura",
+    "control_del_margen": "V03 mas sus propios margenes",
+    "umbrales": "0,44 / 0,51 / 0,46 congelados"
+  },
+  "resultados": {
+    "V03_loo": {
+      "corrected_cv": 0.7656662316818297,
+      "folds": [
+        0.7853108748631136,
+        0.7797615365582086,
+        0.7641880321315849,
+        0.7383585715946857,
+        0.7605912030473051
+      ],
+      "por_bin": {
+        "CORTA": {
+          "n": 167,
+          "F1": 0.934547,
+          "F1_de_V03": 0.947956,
+          "delta": -0.013409
+        },
+        "MEDIA": {
+          "n": 602,
+          "F1": 0.792407,
+          "F1_de_V03": 0.796405,
+          "delta": -0.003998
+        },
+        "LARGA": {
+          "n": 547,
+          "F1": 0.665988,
+          "F1_de_V03": 0.68335,
+          "delta": -0.017362
+        },
+        "MUY_LARGA": {
+          "n": 167,
+          "F1": 0.553373,
+          "F1_de_V03": 0.560571,
+          "delta": -0.007198
+        }
+      },
+      "rescate": 73,
+      "damage": 136
+    },
+    "V03_random": {
+      "corrected_cv": 0.7679574277271736,
+      "folds": [
+        0.7877884132517234,
+        0.7583557663547409,
+        0.7617281064089575,
+        0.735806182194069,
+        0.7990216649939216
+      ],
+      "por_bin": {
+        "CORTA": {
+          "n": 167,
+          "F1": 0.943786,
+          "F1_de_V03": 0.947956,
+          "delta": -0.00417
+        },
+        "MEDIA": {
+          "n": 602,
+          "F1": 0.780063,
+          "F1_de_V03": 0.796405,
+          "delta": -0.016342
+        },
+        "LARGA": {
+          "n": 547,
+          "F1": 0.674754,
+          "F1_de_V03": 0.68335,
+          "delta": -0.008596
+        },
+        "MUY_LARGA": {
+          "n": 167,
+          "F1": 0.559304,
+          "F1_de_V03": 0.560571,
+          "delta": -0.001267
+        }
+      },
+      "rescate": 116,
+      "damage": 149
+    },
+    "V03_margen": {
+      "corrected_cv": 0.7661312520165589,
+      "folds": [
+        0.7688570389043375,
+        0.7832395247029393,
+        0.762560125060125,
+        0.749561403508772,
+        0.7663992177260909
+      ],
+      "por_bin": {
+        "CORTA": {
+          "n": 167,
+          "F1": 0.9379,
+          "F1_de_V03": 0.947956,
+          "delta": -0.010056
+        },
+        "MEDIA": {
+          "n": 602,
+          "F1": 0.782453,
+          "F1_de_V03": 0.796405,
+          "delta": -0.013952
+        },
+        "LARGA": {
+          "n": 547,
+          "F1": 0.680556,
+          "F1_de_V03": 0.68335,
+          "delta": -0.002794
+        },
+        "MUY_LARGA": {
+          "n": 167,
+          "F1": 0.559525,
+          "F1_de_V03": 0.560571,
+          "delta": -0.001046
+        }
+      },
+      "rescate": 78,
+      "damage": 168
+    }
+  },
+  "brecha_contra_capacidad": -0.002291196,
+  "brecha_contra_el_margen": -0.0004650203,
+  "contradiccion_por_estrato": [
+    {
+      "estrato": "todas multi",
+      "n": 751,
+      "loo_concentracion": 0.707987,
+      "loo_conflicto": 0.018153,
+      "loo_cambia_de_signo": 0.716822,
+      "loo_fraccion_implicita": 0.660186,
+      "loo_entropia": 0.663482
+    },
+    {
+      "estrato": "V03 correcto",
+      "n": 480,
+      "loo_concentracion": 0.726222,
+      "loo_conflicto": 0.015605,
+      "loo_cambia_de_signo": 0.676389,
+      "loo_fraccion_implicita": 0.688001,
+      "loo_entropia": 0.639037
+    },
+    {
+      "estrato": "V03 incorrecto",
+      "n": 271,
+      "loo_concentracion": 0.67569,
+      "loo_conflicto": 0.022667,
+      "loo_cambia_de_signo": 0.788438,
+      "loo_fraccion_implicita": 0.61092,
+      "loo_entropia": 0.706779
+    },
+    {
+      "estrato": "error de alta confianza",
+      "n": 176,
+      "loo_concentracion": 0.688065,
+      "loo_conflicto": 0.020101,
+      "loo_cambia_de_signo": 0.753788,
+      "loo_fraccion_implicita": 0.618361,
+      "loo_entropia": 0.686052
+    },
+    {
+      "estrato": "CORTA",
+      "n": 50,
+      "loo_concentracion": 0.755398,
+      "loo_conflicto": 0.02024,
+      "loo_cambia_de_signo": 0.613333,
+      "loo_fraccion_implicita": 0.69,
+      "loo_entropia": 0.610779
+    },
+    {
+      "estrato": "MEDIA",
+      "n": 247,
+      "loo_concentracion": 0.741432,
+      "loo_conflicto": 0.020217,
+      "loo_cambia_de_signo": 0.697706,
+      "loo_fraccion_implicita": 0.663893,
+      "loo_entropia": 0.655111
+    },
+    {
+      "estrato": "LARGA",
+      "n": 325,
+      "loo_concentracion": 0.711391,
+      "loo_conflicto": 0.01758,
+      "loo_cambia_de_signo": 0.710769,
+      "loo_fraccion_implicita": 0.650234,
+      "loo_entropia": 0.663903
+    },
+    {
+      "estrato": "MUY_LARGA",
+      "n": 129,
+      "loo_concentracion": 0.616998,
+      "loo_conflicto": 0.014839,
+      "loo_cambia_de_signo": 0.808786,
+      "loo_fraccion_implicita": 0.666604,
+      "loo_entropia": 0.69888
+    }
+  ],
+  "auc_contra_el_acierto": {
+    "concentracion": 0.449595,
+    "conflicto": 0.380911,
+    "cambia_de_signo": 0.398551,
+    "fraccion_implicita": 0.454946,
+    "margen_de_V03": 0.770875
+  },
+  "gate": {
+    "delta_min": 0.0015,
+    "pliegues_min": 4,
+    "delta": -0.0115452208,
+    "pliegues_mejorados": 0,
+    "superado": false
+  },
+  "lectura": "CONTRIBUCION_REDUNDANTE",
+  "veredicto": "la contribucion con signo NO supera al margen de V03, con una brecha de -0.0004650203. El mejor rasgo alcanza 0.454946 de AUC contra el acierto frente a 0.770875 del margen. Y P64-03 ya habia encontrado lo mismo con la distribucion de probabilidades. La descomposicion con signo es MAS informativa que ninguna de las dos, y aun asi no aporta, porque V03 lleva la estructura interna dentro de su confianza",
+  "decision": "CLOSED por redundancia con la confianza",
+  "experimentos_registrados": 1,
+  "reproducibilidad": {
+    "nivel": "R2",
+    "git_commit": "6f2b131",
+    "seed": 42,
+    "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "corrected_cv": 0.7772114525165721
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}
