@@ -1,6 +1,6 @@
 # P63 - Integracion de los bloques, y el techo que queda
 
-Generado por `experiments/p63_07_integracion_y_techo.py`. Fecha 2026-09-29T06:34:13+00:00.
+Generado por `experiments/p63_07_integracion_y_techo.py`. Fecha 2026-09-29T06:35:57+00:00.
 
 ## Por que esta pregunta y no otra
 
@@ -47,12 +47,19 @@ El mejor F1 alcanzable moviendo **solo el corte** de V03 es el techo de cualquie
 funcion monotona de su propia puntuacion, luego es exactamente la parte del error
 residual que ninguna representacion puede atacar.
 
+**Correccion de este propio script, y es importante.** Una version anterior devolvia
+el MAXIMO de los tres optimos por etiqueta en vez de la MEDIA MACRO, y eso inflaba el
+margen casi al doble. El corrected_cv de V03 es la media macro, luego el techo
+comparable tiene que serlo tambien. Sobre-declarar un techo es el error mas facil de
+cometer en todo el experimento, porque un techo mas alto hace que cualquier negativo
+parezca mas pequeno.
+
 | bin | tokens | n | F1 de V03 | techo moviendo el corte | margen |
 |---|---|---:|---:|---:|---:|
-| CORTA | 0-6 | 167 | 0.9480 | 0.9700 | +0.0220 |
-| MEDIA | 7-15 | 602 | 0.7964 | 0.8288 | +0.0324 |
-| LARGA | 16-30 | 547 | 0.6834 | 0.7342 | +0.0508 |
-| MUY_LARGA | 31-+ | 167 | 0.5606 | 0.7195 | +0.1589 |
+| CORTA | 0-6 | 167 | 0.9480 | 0.9480 | +0.0000 |
+| MEDIA | 7-15 | 602 | 0.7964 | 0.8057 | +0.0093 |
+| LARGA | 16-30 | 547 | 0.6834 | 0.7051 | +0.0217 |
+| MUY_LARGA | 31-+ | 167 | 0.5606 | 0.6495 | +0.0890 |
 
 ## La interseccion de errores
 

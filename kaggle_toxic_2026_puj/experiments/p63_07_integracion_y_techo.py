@@ -295,25 +295,46 @@ def main() -> None:
     log("   parte del error residual que ninguna representacion puede tocar")
 
     def techo_umbral(m: np.ndarray) -> dict[str, float]:
-        """Mejor F1 alcanzable moviendo solo el umbral, por etiqueta y en conjunto.
+        """Mejor macro-F1 alcanzable moviendo solo el umbral, por region.
+
+        El corrected_cv de V03 es la MEDIA MACRO de las tres etiquetas, luego el techo
+        comparable tiene que ser la media macro de los tres optimos por etiqueta. Una
+        version anterior de esta funcion devolvia el MAXIMO de los tres, y eso inflaba el
+        margen casi al doble: +0,1589 en lugar de +0,0890 en la region MUY_LARGA. Sobre
+        declarar un techo es el error mas facil de cometer en todo el experimento, porque
+        un techo mas alto hace que cualquier negativo parezca mas pequeno.
 
         Args:
             m: mascara de la region.
 
         Returns:
-            Diccionario con el techo y el corte que lo alcanza.
+            Diccionario con el techo macro, los cortes por etiqueta y el desglose.
         """
-        mejor = 0.0
-        corte = 0.0
+        optimos, cortes, actuales = [], [], []
         for j in range(3):
             s, t = proba_v03[m, j], y[m, j]
+            actual = float(f1_score(t, (s >= V03_UMBRALES[j]).astype(int), zero_division=0))
+            actuales.append(actual)
             if t.sum() == 0 or (t == 0).sum() == 0:
+                optimos.append(actual)
+                cortes.append(float(V03_UMBRALES[j]))
                 continue
+            mejor, corte = 0.0, 0.0
             for c in np.unique(s):
                 f1j = f1_score(t, (s >= c).astype(int), zero_division=0)
                 if f1j > mejor:
                     mejor, corte = float(f1j), float(c)
-        return {"techo": round(mejor, 6), "corte": round(corte, 6)}
+            optimos.append(mejor)
+            cortes.append(corte)
+        actual_macro = float(np.mean(actuales))
+        techo_macro = float(np.mean(optimos))
+        return {"techo": round(techo_macro, 6),
+                "actual": round(actual_macro, 6),
+                "margen": round(techo_macro - actual_macro, 6),
+                "cortes_optimos": [round(c, 6) for c in cortes],
+                "umbrales_de_V03": [float(u) for u in V03_UMBRALES],
+                "f1_por_etiqueta_con_V03": [round(a, 6) for a in actuales],
+                "f1_por_etiqueta_optima": [round(o, 6) for o in optimos]}
 
     mnscaras = {}
     filas_techo = []
@@ -326,7 +347,10 @@ def main() -> None:
                             "tokens": f"{lo}-{hi if hi < 10**9 else '+'}",
                             "F1_de_V03": round(f1_v03, 6),
                             "techo_moviendo_el_corte": t["techo"],
-                            "margen": round(t["techo"] - f1_v03, 6)})
+                            "margen": t["margen"],
+                            "cortes_optimos": t["cortes_optimos"],
+                            "f1_por_etiqueta_con_V03": t["f1_por_etiqueta_con_V03"],
+                            "f1_por_etiqueta_optima": t["f1_por_etiqueta_optima"]})
         log(f"      {nombre:10} n {int(m.sum()):5d}  F1 {f1_v03:.4f}  techo {t['techo']:.4f}  "
             f"margen {t['techo'] - f1_v03:+.4f}")
 
@@ -453,10 +477,12 @@ def main() -> None:
     with (REPORTS / "p63_techo_por_rebanada.csv").open("w", encoding="ascii",
                                                        newline="") as fh:
         w = _csv.writer(fh, lineterminator="\n")
-        w.writerow(["bin", "tokens", "n", "F1_de_V03", "techo_moviendo_el_corte", "margen"])
+        w.writerow(["bin", "tokens", "n", "F1_de_V03", "techo_moviendo_el_corte",
+                    "margen", "cortes_optimos"])
         for f in filas_techo:
             w.writerow([f["bin"], f["tokens"], f["n"], f["F1_de_V03"],
-                        f["techo_moviendo_el_corte"], f["margen"]])
+                        f["techo_moviendo_el_corte"], f["margen"],
+                        ";".join(str(c) for c in f["cortes_optimos"])])
     with (REPORTS / "p63_error_intersection.csv").open("w", encoding="ascii",
                                                        newline="") as fh:
         w = _csv.writer(fh, lineterminator="\n")
@@ -574,6 +600,13 @@ def main() -> None:
     W("El mejor F1 alcanzable moviendo **solo el corte** de V03 es el techo de cualquier")
     W("funcion monotona de su propia puntuacion, luego es exactamente la parte del error")
     W("residual que ninguna representacion puede atacar.")
+    W("")
+    W("**Correccion de este propio script, y es importante.** Una version anterior devolvia")
+    W("el MAXIMO de los tres optimos por etiqueta en vez de la MEDIA MACRO, y eso inflaba el")
+    W("margen casi al doble. El corrected_cv de V03 es la media macro, luego el techo")
+    W("comparable tiene que serlo tambien. Sobre-declarar un techo es el error mas facil de")
+    W("cometer en todo el experimento, porque un techo mas alto hace que cualquier negativo")
+    W("parezca mas pequeno.")
     W("")
     W("| bin | tokens | n | F1 de V03 | techo moviendo el corte | margen |")
     W("|---|---|---:|---:|---:|---:|")

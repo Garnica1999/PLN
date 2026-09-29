@@ -1,7 +1,7 @@
 {
   "familia": "P63_INTEGRACION",
   "naturaleza": "EXPERIMENTO. 3 candidatos y 1 control de igual ancho total, 0 submissions, 0 Kaggle, 0 holdout, 0 test",
-  "fecha": "2026-09-29T06:34:13+00:00",
+  "fecha": "2026-09-29T06:35:57+00:00",
   "experiment_id": "P63-06",
   "track": "H-integracion-y-techo",
   "script": "experiments/p63_07_integracion_y_techo.py",
@@ -204,32 +204,92 @@
       "n": 167,
       "tokens": "0-6",
       "F1_de_V03": 0.947956,
-      "techo_moviendo_el_corte": 0.97,
-      "margen": 0.022044
+      "techo_moviendo_el_corte": 0.947956,
+      "margen": 0.0,
+      "cortes_optimos": [
+        0.500441,
+        0.587133,
+        0.49894
+      ],
+      "f1_por_etiqueta_con_V03": [
+        0.941176,
+        0.97,
+        0.932692
+      ],
+      "f1_por_etiqueta_optima": [
+        0.941176,
+        0.97,
+        0.932692
+      ]
     },
     {
       "bin": "MEDIA",
       "n": 602,
       "tokens": "7-15",
       "F1_de_V03": 0.796405,
-      "techo_moviendo_el_corte": 0.828829,
-      "margen": 0.032424
+      "techo_moviendo_el_corte": 0.805704,
+      "margen": 0.009299,
+      "cortes_optimos": [
+        0.463342,
+        0.475937,
+        0.512235
+      ],
+      "f1_por_etiqueta_con_V03": [
+        0.772809,
+        0.823799,
+        0.792608
+      ],
+      "f1_por_etiqueta_optima": [
+        0.783088,
+        0.828829,
+        0.805195
+      ]
     },
     {
       "bin": "LARGA",
       "n": 547,
       "tokens": "16-30",
       "F1_de_V03": 0.68335,
-      "techo_moviendo_el_corte": 0.734177,
-      "margen": 0.050827
+      "techo_moviendo_el_corte": 0.705079,
+      "margen": 0.021729,
+      "cortes_optimos": [
+        0.414852,
+        0.448615,
+        0.358994
+      ],
+      "f1_por_etiqueta_con_V03": [
+        0.687805,
+        0.709677,
+        0.652568
+      ],
+      "f1_por_etiqueta_optima": [
+        0.697892,
+        0.734177,
+        0.683168
+      ]
     },
     {
       "bin": "MUY_LARGA",
       "n": 167,
       "tokens": "31-+",
       "F1_de_V03": 0.560571,
-      "techo_moviendo_el_corte": 0.719512,
-      "margen": 0.158941
+      "techo_moviendo_el_corte": 0.649536,
+      "margen": 0.088966,
+      "cortes_optimos": [
+        0.332644,
+        0.235224,
+        0.295014
+      ],
+      "f1_por_etiqueta_con_V03": [
+        0.647059,
+        0.5,
+        0.534653
+      ],
+      "f1_por_etiqueta_optima": [
+        0.719512,
+        0.576923,
+        0.652174
+      ]
     }
   ],
   "interseccion_de_errores": [
@@ -366,7 +426,7 @@
   "experimentos_registrados": 1,
   "reproducibilidad": {
     "nivel": "R2",
-    "git_commit": "306481f",
+    "git_commit": "8dc4c70",
     "seed": 42,
     "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
     "corrected_cv": 0.7772114525165721
