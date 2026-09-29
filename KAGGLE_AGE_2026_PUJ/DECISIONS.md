@@ -2194,3 +2194,72 @@ Tras declarar la saturación se probó la vía indicada como trabajo futuro:
   queda la cifra que mide el techo: de los 65.403 errores de V30, **27.007 no los corrige ninguna
   de las 26 fuentes disponibles**, y G14 anade que tampoco hay un campo sin explotar que pudiera
   corregirlos.
+
+---
+
+## D-069 - Cierre de la investigacion de AGE: `AGE_RESEARCH_CLOSED`
+
+- **Observation**: G14 cerro el **input gap** (no hay campos de entrada legal sin usar). Quedaba
+  abierta la pregunta distinta del **mechanism gap**: si existe alguna forma de APRENDER de los
+  mismos inputs que no se haya probado. La auditoria se hizo sobre 39 mecanismos buscados en el
+  codigo **por operacion**, no por nombre de libreria.
+
+- **La medicion que fundamenta la decision** refina la particion A/B del gap analysis y anade una
+  distincion que faltaba:
+
+  | Grupo | Filas | % |
+  |---|---|---|
+  | A: nadie corrige | 27.430 | 41,9 % |
+  | B: alguien corrige | 37.973 | 58,1 % |
+  | - B1 rescate **unico** | 8.358 | 12,8 % |
+  | - B2 rescate **compartido** | 30.038 | 45,9 % |
+
+  Mediana de fuentes por error rescatado: **5**, con un maximo de 25. **B2 domina**, y eso importa
+  porque un rescate compartido significa que la informacion esta en varias fuentes a la vez y el
+  problema es de integracion; solo un rescate unico apuntaria a un problema de mecanismo.
+
+- **Los rescates exclusivos no tienen estructura comun**, y se midio en vez de suponerse: 8.029
+  filas repartidas entre **23 fuentes distintas**, con la mas frecuente concentrando solo el
+  **20,5 %**. Longitud media 81,6 frente a 84,2 de todos los errores; confianza de V30 0,429 frente
+  a 0,442; fraccion con URL 41,5 % frente a 41,3 %. **Indistinguibles en toda dimension medida.**
+  Veredicto: heterogeneidad, que es la firma de ruido de modelo y no de un canal sin explotar.
+
+- **De 39 mecanismos, 23 estan usados y 9 cerrados.** Los cinco que no aparecen en el codigo se
+  cierran con la medicion delante, no por inercia: **focal loss**, **hard example mining** y
+  **label smoothing** apuntan a los ejemplos dificiles y a la frontera, que es la poblacion A
+  (27.430 filas sin ninguna fuente que las corrija) y donde P34 midio que el ruido aleatorio gana a
+  la senal real. **ranking objective** no mueve la metrica evaluada. **bootstrap de grupos** es
+  reduccion de varianza con otra unidad de remuestreo, y el bagging del meta-modelo ya se cerro en
+  -0,000312.
+
+- **Las cinco vias de integracion del score estan cerradas con control de atribucion**:
+
+  | Via | Resultado |
+  |---|---|
+  | feature anadida al meta-espacio (V31-06) | +0,0002948 sobre el control barajado |
+  | miembro de la mezcla (V31-05) | +0,0000642 sobre el reoptimizado |
+  | residuo global (P33) | -0,0002152; el ruido aleatorio gana |
+  | residuo local por pares (P34) | -0,0002039; cero rescates de alta confianza |
+  | residuo con pendiente (G12) | +0,0003018 sin superar a la constante, y baja el AUC |
+
+  En las cinco el control gana o empata. **No es que la integracion se intentara poco: se intento
+  cinco veces con la misma conclusion.**
+
+- **Decision**: **`AGE_RESEARCH_CLOSED`**. V30 permanece como mejor resultado validado: 0,6134471
+  de corrected_cv, 0,6143347 en la particion alterna y **0,63302** en el leaderboard.
+
+- **Dos correcciones que la auditoria encontro, y se declaran**: (a) la particion del gap analysis
+  reportaba A = 27.007 y el valor correcto es **27.430**; el defecto estaba en un enmascarado
+  enrevesado para excluir a los miembros de V30 de su propio rescate. (b) La definicion de "rescate
+  exclusivo" del inventario previo daba 122; con la de aqui da **8.029**. Los dos numeros miden
+  cosas distintas y se declara cual se usa.
+
+- **Consequences**: la conclusion es **sobre el espacio auditado**, y el espacio esta enumerado: 39
+  mecanismos, 6 familias de representacion, 10 familias de modelo, la entrada completa y las cinco
+  vias de integracion. Lo que **no** se afirma: que V30 sea optimo; que no exista ninguna mejora
+  posible; que no exista informacion linguistica (P33 midio AUC 0,5411 en el residuo). Lo que si se
+  afirma, con la medicion a la vista, es que **no quedan actualmente mecanismos de aprendizaje
+  metodologicamente defendibles y no recorridos dentro de las restricciones del proyecto**. Para que
+  algo nuevo funcionara haria falta informacion que no esta en los datos: metadatos de cuenta
+  (prohibidos por ser una tarea de texto), contenido de URLs (no hay ninguna de status) o modelos
+  semanticos (prohibidos por las reglas).

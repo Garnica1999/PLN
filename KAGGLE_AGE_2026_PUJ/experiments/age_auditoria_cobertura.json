@@ -1,0 +1,332 @@
+{
+  "fase": "auditoria de cobertura metodologica: interseccion de errores",
+  "fecha": "2026-10-07",
+  "experimenta": false,
+  "baseline_v30": 0.6134471,
+  "n_fuentes": 26,
+  "fuentes": [
+    "V30:v20_f3b_oof_candidato",
+    "V30:v29_lgbm_optuna",
+    "V30:v30_lgbm_refinado",
+    "pool:oof_ADV07_nbsvm_word",
+    "pool:oof_E-009",
+    "pool:oof_E-010",
+    "pool:oof_E-011",
+    "pool:oof_E013_margenes",
+    "pool:oof_E016_margenes",
+    "pool:oof_E017_probabilidades",
+    "pool:oof_E021a_ordinal",
+    "pool:oof_E023b_largo",
+    "pool:oof_content_only",
+    "pool:v19_b1_oof_logreg",
+    "pool:v19_b1_oof_mlp",
+    "pool:v19_oof_arbol_5folds",
+    "pool:v20_cadena_reconstruida",
+    "canal:composicion",
+    "canal:discurso",
+    "canal:forma_palabra",
+    "canal:ortografia",
+    "canal:ortografia+composicion",
+    "canal:ortografia+composicion+discurso",
+    "canal:posicion",
+    "canal:todos",
+    "canal:url"
+  ],
+  "particion": {
+    "errores_v30": 65403,
+    "A_nadie_corrige": 27430,
+    "B_alguien_corrige": 37973,
+    "B1_rescate_unico": 8358,
+    "B2_rescate_compartido": 30038,
+    "correccion_del_gap_analysis": "aqui A = 27.430, frente a los 27.007 que reporto el gap analysis anterior. La diferencia viene de que aquel usaba un enmascarado enrevesado para excluir a los miembros de V30 de su propio rescate, y arrastraba un error. Este es el numero correcto: se excluye a los tres miembros de V30 comparando por prefijo del nombre, que es directo y verificable",
+    "max_fuentes_que_rescatan_una_fila": 25,
+    "mediana_de_fuentes_por_error_rescatado": 5.0,
+    "lectura": "un rescate COMPARTIDO significa que la informacion esta en varias fuentes a la vez, y el problema es de integracion. Un rescate UNICO significa que solo esa fuente la tiene, y el problema es de mecanismo"
+  },
+  "tablero_por_fuente": [
+    {
+      "fuente": "pool:oof_E023b_largo",
+      "es_miembro_de_v30": false,
+      "errores_de_v30_que_rescata": 10861,
+      "de_esos_unicos": 1646,
+      "fraccion_de_sus_rescates_que_son_unicos": 0.15155,
+      "exactitud_en_las_filas_de_error_de_v30": 0.16606
+    },
+    {
+      "fuente": "pool:oof_E-010",
+      "es_miembro_de_v30": false,
+      "errores_de_v30_que_rescata": 10116,
+      "de_esos_unicos": 1345,
+      "fraccion_de_sus_rescates_que_son_unicos": 0.13296,
+      "exactitud_en_las_filas_de_error_de_v30": 0.15467
+    },
+    {
+      "fuente": "pool:v19_b1_oof_mlp",
+      "es_miembro_de_v30": false,
+      "errores_de_v30_que_rescata": 6909,
+      "de_esos_unicos": 860,
+      "fraccion_de_sus_rescates_que_son_unicos": 0.12448,
+      "exactitud_en_las_filas_de_error_de_v30": 0.10564
+    },
+    {
+      "fuente": "canal:todos",
+      "es_miembro_de_v30": false,
+      "errores_de_v30_que_rescata": 12437,
+      "de_esos_unicos": 585,
+      "fraccion_de_sus_rescates_que_son_unicos": 0.04704,
+      "exactitud_en_las_filas_de_error_de_v30": 0.19016
+    },
+    {
+      "fuente": "pool:oof_ADV07_nbsvm_word",
+      "es_miembro_de_v30": false,
+      "errores_de_v30_que_rescata": 10638,
+      "de_esos_unicos": 502,
+      "fraccion_de_sus_rescates_que_son_unicos": 0.04719,
+      "exactitud_en_las_filas_de_error_de_v30": 0.16265
+    },
+    {
+      "fuente": "pool:oof_E021a_ordinal",
+      "es_miembro_de_v30": false,
+      "errores_de_v30_que_rescata": 9382,
+      "de_esos_unicos": 446,
+      "fraccion_de_sus_rescates_que_son_unicos": 0.04754,
+      "exactitud_en_las_filas_de_error_de_v30": 0.14345
+    },
+    {
+      "fuente": "pool:v19_b1_oof_logreg",
+      "es_miembro_de_v30": false,
+      "errores_de_v30_que_rescata": 6263,
+      "de_esos_unicos": 401,
+      "fraccion_de_sus_rescates_que_son_unicos": 0.06403,
+      "exactitud_en_las_filas_de_error_de_v30": 0.09576
+    },
+    {
+      "fuente": "canal:forma_palabra",
+      "es_miembro_de_v30": false,
+      "errores_de_v30_que_rescata": 12097,
+      "de_esos_unicos": 372,
+      "fraccion_de_sus_rescates_que_son_unicos": 0.03075,
+      "exactitud_en_las_filas_de_error_de_v30": 0.18496
+    },
+    {
+      "fuente": "pool:v20_cadena_reconstruida",
+      "es_miembro_de_v30": false,
+      "errores_de_v30_que_rescata": 4718,
+      "de_esos_unicos": 355,
+      "fraccion_de_sus_rescates_que_son_unicos": 0.07524,
+      "exactitud_en_las_filas_de_error_de_v30": 0.07214
+    },
+    {
+      "fuente": "pool:oof_content_only",
+      "es_miembro_de_v30": false,
+      "errores_de_v30_que_rescata": 9275,
+      "de_esos_unicos": 313,
+      "fraccion_de_sus_rescates_que_son_unicos": 0.03375,
+      "exactitud_en_las_filas_de_error_de_v30": 0.14181
+    },
+    {
+      "fuente": "pool:oof_E-011",
+      "es_miembro_de_v30": false,
+      "errores_de_v30_que_rescata": 9779,
+      "de_esos_unicos": 263,
+      "fraccion_de_sus_rescates_que_son_unicos": 0.02689,
+      "exactitud_en_las_filas_de_error_de_v30": 0.14952
+    },
+    {
+      "fuente": "canal:posicion",
+      "es_miembro_de_v30": false,
+      "errores_de_v30_que_rescata": 11879,
+      "de_esos_unicos": 261,
+      "fraccion_de_sus_rescates_que_son_unicos": 0.02197,
+      "exactitud_en_las_filas_de_error_de_v30": 0.18163
+    },
+    {
+      "fuente": "V30:v29_lgbm_optuna",
+      "es_miembro_de_v30": true,
+      "errores_de_v30_que_rescata": 2326,
+      "de_esos_unicos": 190,
+      "fraccion_de_sus_rescates_que_son_unicos": 0.08169,
+      "exactitud_en_las_filas_de_error_de_v30": 0.03556
+    },
+    {
+      "fuente": "pool:oof_E017_probabilidades",
+      "es_miembro_de_v30": false,
+      "errores_de_v30_que_rescata": 11276,
+      "de_esos_unicos": 189,
+      "fraccion_de_sus_rescates_que_son_unicos": 0.01676,
+      "exactitud_en_las_filas_de_error_de_v30": 0.17241
+    },
+    {
+      "fuente": "V30:v30_lgbm_refinado",
+      "es_miembro_de_v30": true,
+      "errores_de_v30_que_rescata": 2235,
+      "de_esos_unicos": 135,
+      "fraccion_de_sus_rescates_que_son_unicos": 0.0604,
+      "exactitud_en_las_filas_de_error_de_v30": 0.03417
+    },
+    {
+      "fuente": "canal:discurso",
+      "es_miembro_de_v30": false,
+      "errores_de_v30_que_rescata": 11661,
+      "de_esos_unicos": 87,
+      "fraccion_de_sus_rescates_que_son_unicos": 0.00746,
+      "exactitud_en_las_filas_de_error_de_v30": 0.17829
+    },
+    {
+      "fuente": "canal:ortografia+composicion+discurso",
+      "es_miembro_de_v30": false,
+      "errores_de_v30_que_rescata": 11761,
+      "de_esos_unicos": 74,
+      "fraccion_de_sus_rescates_que_son_unicos": 0.00629,
+      "exactitud_en_las_filas_de_error_de_v30": 0.17982
+    },
+    {
+      "fuente": "canal:composicion",
+      "es_miembro_de_v30": false,
+      "errores_de_v30_que_rescata": 11741,
+      "de_esos_unicos": 73,
+      "fraccion_de_sus_rescates_que_son_unicos": 0.00622,
+      "exactitud_en_las_filas_de_error_de_v30": 0.17952
+    },
+    {
+      "fuente": "canal:ortografia",
+      "es_miembro_de_v30": false,
+      "errores_de_v30_que_rescata": 11657,
+      "de_esos_unicos": 63,
+      "fraccion_de_sus_rescates_que_son_unicos": 0.0054,
+      "exactitud_en_las_filas_de_error_de_v30": 0.17823
+    },
+    {
+      "fuente": "pool:v19_oof_arbol_5folds",
+      "es_miembro_de_v30": false,
+      "errores_de_v30_que_rescata": 3311,
+      "de_esos_unicos": 52,
+      "fraccion_de_sus_rescates_que_son_unicos": 0.01571,
+      "exactitud_en_las_filas_de_error_de_v30": 0.05062
+    },
+    {
+      "fuente": "canal:url",
+      "es_miembro_de_v30": false,
+      "errores_de_v30_que_rescata": 11639,
+      "de_esos_unicos": 48,
+      "fraccion_de_sus_rescates_que_son_unicos": 0.00412,
+      "exactitud_en_las_filas_de_error_de_v30": 0.17796
+    },
+    {
+      "fuente": "canal:ortografia+composicion",
+      "es_miembro_de_v30": false,
+      "errores_de_v30_que_rescata": 11797,
+      "de_esos_unicos": 42,
+      "fraccion_de_sus_rescates_que_son_unicos": 0.00356,
+      "exactitud_en_las_filas_de_error_de_v30": 0.18037
+    },
+    {
+      "fuente": "pool:oof_E016_margenes",
+      "es_miembro_de_v30": false,
+      "errores_de_v30_que_rescata": 8899,
+      "de_esos_unicos": 27,
+      "fraccion_de_sus_rescates_que_son_unicos": 0.00303,
+      "exactitud_en_las_filas_de_error_de_v30": 0.13606
+    },
+    {
+      "fuente": "pool:oof_E-009",
+      "es_miembro_de_v30": false,
+      "errores_de_v30_que_rescata": 9339,
+      "de_esos_unicos": 18,
+      "fraccion_de_sus_rescates_que_son_unicos": 0.00193,
+      "exactitud_en_las_filas_de_error_de_v30": 0.14279
+    },
+    {
+      "fuente": "pool:oof_E013_margenes",
+      "es_miembro_de_v30": false,
+      "errores_de_v30_que_rescata": 8941,
+      "de_esos_unicos": 7,
+      "fraccion_de_sus_rescates_que_son_unicos": 0.00078,
+      "exactitud_en_las_filas_de_error_de_v30": 0.13671
+    },
+    {
+      "fuente": "V30:v20_f3b_oof_candidato",
+      "es_miembro_de_v30": true,
+      "errores_de_v30_que_rescata": 3181,
+      "de_esos_unicos": 4,
+      "fraccion_de_sus_rescates_que_son_unicos": 0.00126,
+      "exactitud_en_las_filas_de_error_de_v30": 0.04864
+    }
+  ],
+  "fuente_con_mas_rescates_unicos": "pool:oof_E023b_largo",
+  "poblacion_b_por_clase": [
+    {
+      "clase": "13-17",
+      "errores_de_V30_en_la_clase": 9795,
+      "en_poblacion_B": 5924,
+      "fraccion_de_la_clase_que_es_B": 0.6048
+    },
+    {
+      "clase": "18-24",
+      "errores_de_V30_en_la_clase": 12943,
+      "en_poblacion_B": 7925,
+      "fraccion_de_la_clase_que_es_B": 0.6123
+    },
+    {
+      "clase": "25-34",
+      "errores_de_V30_en_la_clase": 14852,
+      "en_poblacion_B": 8617,
+      "fraccion_de_la_clase_que_es_B": 0.5802
+    },
+    {
+      "clase": "35-49",
+      "errores_de_V30_en_la_clase": 13056,
+      "en_poblacion_B": 7083,
+      "fraccion_de_la_clase_que_es_B": 0.5425
+    },
+    {
+      "clase": "50-64",
+      "errores_de_V30_en_la_clase": 8218,
+      "en_poblacion_B": 4924,
+      "fraccion_de_la_clase_que_es_B": 0.5992
+    },
+    {
+      "clase": "65-xx",
+      "errores_de_V30_en_la_clase": 6539,
+      "en_poblacion_B": 3500,
+      "fraccion_de_la_clase_que_es_B": 0.5353
+    }
+  ],
+  "rescates_exclusivos": {
+    "n": 8029,
+    "fuentes_distintas": 23,
+    "concentracion_fuente_top": 0.20501,
+    "estructura": "HETEROGENEIDAD ENTRE FAMILIAS",
+    "por_clase": {
+      "35-49": 1582,
+      "13-17": 1208,
+      "65-xx": 863,
+      "25-34": 1912,
+      "50-64": 1031,
+      "18-24": 1433
+    },
+    "confusiones": {
+      "25-34->18-24": 839,
+      "13-17->18-24": 769,
+      "18-24->13-17": 520,
+      "35-49->25-34": 506,
+      "18-24->25-34": 489,
+      "35-49->50-64": 472,
+      "65-xx->50-64": 424,
+      "25-34->35-49": 383
+    },
+    "longitud_media": 81.61,
+    "longitud_media_de_todos_los_errores": 84.16,
+    "confianza_media_v30": 0.4285,
+    "confianza_media_de_todos_los_errores": 0.4418,
+    "fraccion_con_url": 0.41487,
+    "fraccion_con_url_en_todos_los_errores": 0.41279,
+    "lectura": "los 8029 rescates exclusivos se reparten entre 23 fuentes distintas y ninguna concentra mas del 21%. No hay una fuente con informacion exclusiva que apunte a un mecanismo nuevo: la informacion esta dispersa, que es la firma de ruido de modelo, no de un canal sin explotar"
+  },
+  "restricciones": {
+    "usa_test": false,
+    "usa_holdout": false,
+    "optimiza_sobre_las_categorias": false
+  },
+  "segundos": 0.8
+}

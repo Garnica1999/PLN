@@ -1,0 +1,16 @@
+{
+  "fase": "cierre de la investigacion",
+  "fecha": "2026-10-07",
+  "experimenta": false,
+  "commit": "b41852b9463daec15eab3012722f8b3b20a2d3ec",
+  "conclusion": "AGE_RESEARCH_CLOSED",
+  "documentos": [
+    "DECISIONS.md (D-069)",
+    "PROJECT_STATE.md",
+    "RUNLOG.md",
+    "FINAL_REPORT.md",
+    "experiments.csv (AUDIT-COVERAGE)",
+    "notebook"
+  ],
+  "experimentos_de_entrenamiento": 0
+}

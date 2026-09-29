@@ -906,3 +906,24 @@ adopta** (D-011).
 - **Estado de la investigacion**: seis lineas cerradas y la **entrada enumerada por completo**. El
   techo esta medido: 27.007 de los 65.403 errores de V30 no los corrige ninguna de las 26 fuentes,
   y no hay campo sin explotar que pudiera hacerlo.
+
+---
+
+## CIERRE DE LA INVESTIGACION DE AGE (2026-10-07) - `AGE_RESEARCH_CLOSED`
+
+- **Baseline final**: V30 = **0.6134471** corrected_cv, **0.6143347** en la particion alterna,
+  **0.63302** en el leaderboard. Hash del submission `f543a715...` sin cambio.
+- **Input gap**: cerrado por G14 (`NOT_ACTIONABLE`).
+- **Mechanism gap**: cerrado por esta auditoria. **39 mecanismos auditados**, 23 usados, 9
+  cerrados, 1 invalidado, 1 no accionable y 5 sin usar que se cierran con evidencia.
+- **Particion de errores**: A = **27,430** (41,9 %) sin ninguna fuente que los corrija; B =
+  **37,973** (58,1 %) con al menos una. De B, **8,358** son rescates unicos y
+  **30,038** compartidos: **la informacion esta repartida**, no encerrada en una fuente.
+- **Rescates exclusivos**: **8,029** entre **23 fuentes**, concentracion 20,5 %, sin
+  estructura comun en longitud, confianza ni URL. Es ruido de modelo.
+- **Cinco vias de integracion cerradas con control**: feature, miembro de mezcla, residuo global,
+  residuo local y residuo con pendiente. En las cinco el control gana o empata.
+- **Conclusion**: no quedan mecanismos de aprendizaje metodologicamente defendibles y no recorridos
+  dentro de las restricciones del proyecto. Ver D-069.
+- **Correcciones declaradas**: A = 27.430, no 27.007; rescates exclusivos = 8.029 con esta
+  definicion, no 122 con la del inventario previo.

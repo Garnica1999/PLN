@@ -1,7 +1,7 @@
 {
   "fase": "V13 · P0a auditoria de idioma",
   "fecha": "2026-09-25",
-  "ficheros_auditados": 645,
+  "ficheros_auditados": 655,
   "errores": 0,
   "avisos": 2,
   "hallazgos": [

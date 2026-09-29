@@ -1972,3 +1972,19 @@ intacto.
 - **Techo medido:** 27.007 de los 65.403 errores de V30 no los corrige ninguna de las 26 fuentes
   disponibles, y no hay campo de entrada que pudiera corregirlos.
 - **Compliance:** 0 hallazgos. **Artefactos de V30 tocados:** 0.
+
+
+---
+
+## Cierre de la investigacion de AGE · 2026-10-07
+
+- **Conclusion:** `AGE_RESEARCH_CLOSED`.
+- **Mecanismos auditados:** 39. Usados 23, cerrados 9, invalidado 1, no accionable 1, sin usar 5
+  (todos cerrados con evidencia).
+- **Experimentos de entrenamiento: 0.** Es una auditoria.
+- **Particion de errores:** A = 27,430 (41,9 %), B = 37,973 (58,1 %). B1 unico =
+  8,358; B2 compartido = 30,038. Mediana de fuentes por rescate: 5.
+- **Rescates exclusivos:** 8,029 entre 23 fuentes, sin estructura comun.
+- **Correcciones declaradas:** A correcto = 27.430 (el gap analysis reportaba 27.007); rescates
+  exclusivos = 8.029 con esta definicion.
+- **Compliance:** 0 hallazgos. **Artefactos de V30 tocados:** 0. **Submissions: 0.**
