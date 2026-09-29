@@ -6071,3 +6071,84 @@ por grupos de `[-0,0044311634, +0,0102108745]`, que abarca de -7 a +15 celdas.
 Confirmarlo con una segunda particion no distingue el efecto de la
 particion, luego no se gasta presupuesto en ello.
 <!-- /P67 2026-09-29 -->
+
+## D-177 a D-182: P67, el cierre y lo que queda por explotar
+
+Fecha 2026-09-29.
+
+### D-177. El control que parecia un hallazgo era un bug, y por eso el cierre lo cuenta
+
+El primer control de azar seleccionaba `beta` sobre la validacion EXTERNA y lo aplicaba a esa
+misma particion. Daba `+0,0054964453`, el doble que la senal real. Un control de ruido que gana
+a la senal no es un hallazgo: es la firma de un error.
+
+Corregido a la validacion interna, el azar da `-0,0017593058` crudo y `-0,0030780979` con la
+escala igualada.
+
+### D-178. La equivalencia algebraica: el mecanismo residual de P66 es un blend
+
+```text
+R = z_C - (a + b0 * z_V03)
+z + beta*R = (1 - beta*b0)*z_V03 + beta*z_C - beta*a
+```
+
+La diferencia entre las dos formas es `8.882e-16`, ruido de coma flotante. El mecanismo
+`residual` de P66 es **exactamente** un blend lineal de logits mas un desplazamiento de umbral.
+
+P66 creyo medir cinco mecanismos distintos y midio menos. `residual` pertenece a la familia de
+`blend_logit`. Esto cambia la clasificacion del gap analysis: hay familias que son DUPLICATE
+por algebra, no por parecido estadistico.
+
+### D-179. Con beta fijo, la senal es real y la operacion la extrae
+
+Con el `beta` fijo y aplicado a todo el mundo desaparece la eleccion por pliegue, y la
+comparacion se vuelve directa:
+
+```text
+                 b=0.05      b=0.10      b=0.15      b=0.20      b=0.30      b=0.50
+senal real    +0,0028928  +0,0032695  +0,0034275  +0,0029508  +0,0007598  +0,0018954
+azar igualado -0,0012044  -0,0025008  -0,0036764  -0,0055031  -0,0098576  -0,0239503
+```
+
+La senal real es positiva en los **seis** betas. El azar es negativo en los **seis**. La
+desviacion del residuo es la misma en los dos casos, luego no se mide magnitud de perturbacion
+sino contenido.
+
+Es la evidencia mas limpia a favor de que MI_arbol lleva informacion que la operacion extrae.
+
+### D-180. La categoria NO cambia, y ahora esta mejor sostenida
+
+`MIXED_CON_ATRIBUCION_PARCIAL` se mantiene. Lo que cambia es la calidad del soporte:
+
+```text
+NO es calibracion    el escalar anidado da -0,0029731513
+NO es ruido          con beta fijo el azar pierde en todos los betas y la senal gana en todos
+NO es exclusivo      4 de 7 candidatos positivos bajo la misma operacion
+NO es robusto        IC95 por grupos incluye el cero, y el efecto son 4 celdas de 1483
+```
+
+Las cuatro frases conviven sin contradecirse, y esa es exactamente la definicion de la
+categoria. No se convierte en `CLOSED` ni en `ADOPTED`.
+
+### D-181. Un script de P66 destruye un artefacto de P66, y queda marcado
+
+`experiments/p66_01_regenerar_scores.py`, linea 86, declara
+`CSV_REG = REPORTS / "p66_score_fusion.csv"`, un nombre que pertenece a `p66_02`. Al
+re-ejecutarlo borra 214 registros en silencio.
+
+Restaurado. Codigo historico **no** modificado: preservar la correspondencia entre codigo y
+resultados de las fases anteriores importa mas que la comodidad. Marca
+`DO_NOT_RERUN_UNGUARDED` en `docs/DO_NOT_RERUN_UNGUARDED.md`, y el procedimiento seguro en
+`reports/p67_reproducibility.md`.
+
+### D-182. La regla de ASCII necesita un segundo verificador, no porque el primero falle
+
+El verificador oficial vigila alfabetos no latinos. Su lista **no incluye Latin-1 Supplement**,
+luego no ve un acento latino. La regla del proyecto es `0 bytes > 127`, que es mas fuerte.
+
+La comprobacion autoritativa es el escaneo byte a byte. Las dos se reportan por separado en
+`reports/ascii_compliance_dual.md` en vez de fundirse en un unico OK.
+
+Deuda declarada y no corregida: `experiments.csv` tiene 300 bytes no ASCII en 91 lineas
+historicas. Las lineas que P67 anade tienen 0.
+

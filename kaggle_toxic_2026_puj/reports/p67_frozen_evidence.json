@@ -1,0 +1,92 @@
+{
+  "familia": "P67_EVIDENCIA_CONGELADA",
+  "experiment_id": "P67-03",
+  "fecha": "2026-09-29T17:10:47+00:00",
+  "decision": "MIXED_CON_ATRIBUCION_PARCIAL",
+  "evidencia": [
+    {
+      "evidencia": "C-A calibracion escalar",
+      "medida": "delta del reentreno anidado de un escalar por etiqueta",
+      "valor": -0.0029731513,
+      "unidad": "delta de corrected_cv",
+      "lo_que_prueba": "que la calibracion NO explica el efecto: el modelo de calibracion mas barato posible es peor que el umbral congelado",
+      "lo_que_no_prueba": "nada a favor de MI_arbol. Es un control negativo, y su valor es negativo",
+      "fuente": "reports/p67_controles_decisivos.json"
+    },
+    {
+      "evidencia": "C-E AUC del residuo de MI_arbol",
+      "medida": "AUC contra la etiqueta, fuera de la banda de margen",
+      "valor": 0.579597,
+      "unidad": "AUC",
+      "lo_que_prueba": "que hay senal que no es movimiento de frontera: fuera de la banda no hay margen que mover",
+      "lo_que_no_prueba": "que esa senal sea exclusiva de MI_arbol, ni que sea explotable",
+      "fuente": "reports/p67_controles_decisivos.json"
+    },
+    {
+      "evidencia": "C-E desviacion del residuo de MI_arbol",
+      "medida": "desviacion estandar del residuo",
+      "valor": 0.833791,
+      "unidad": "desviacion estandar",
+      "lo_que_prueba": "que el residuo no es colineal con V03",
+      "lo_que_no_prueba": "que la magnitud implique utilidad",
+      "fuente": "reports/p67_controles_decisivos.json"
+    },
+    {
+      "evidencia": "C-E del candidato mas redundante",
+      "medida": "desviacion estandar del residuo de huecos_1_2",
+      "valor": 0.219333,
+      "unidad": "desviacion estandar",
+      "lo_que_prueba": "el contraste que da sentido al anterior",
+      "lo_que_no_prueba": "nada por si sola",
+      "fuente": "reports/p67_controles_decisivos.json"
+    },
+    {
+      "evidencia": "C-B atribucion",
+      "medida": "candidatos con delta positivo bajo la misma operacion",
+      "valor": "4 de 7",
+      "unidad": "conteo",
+      "lo_que_prueba": "que parte del efecto es de la OPERACION y no de MI_arbol",
+      "lo_que_no_prueba": "que MI_arbol no aporte nada: es el mas alto de los siete",
+      "fuente": "reports/p67_controles_decisivos.json"
+    },
+    {
+      "evidencia": "efecto defendible del blend de P66",
+      "medida": "delta de MI_arbol|blend_prob",
+      "valor": 0.0033068923,
+      "unidad": "delta de corrected_cv",
+      "lo_que_prueba": "que con 3 de 5 pliegues el blend crece mas que el residual",
+      "lo_que_no_prueba": "NO es adoptable: falla el gate de 4 de 5 pliegues, y no es comparable con el residual porque es OTRO mecanismo",
+      "fuente": "reports/p66_score_fusion.json"
+    },
+    {
+      "evidencia": "efecto del residual de P66",
+      "medida": "delta de MI_arbol|residual",
+      "valor": 0.0026743167,
+      "unidad": "delta de corrected_cv",
+      "lo_que_prueba": "que pasa el gate de delta y el de 4 de 5 pliegues",
+      "lo_que_no_prueba": "que sea robusto: su IC95 por grupos incluye el cero",
+      "fuente": "reports/p67_p66_reconciliation.json"
+    },
+    {
+      "evidencia": "bootstrap del residual",
+      "medida": "IC95 por grupos de near-duplicados",
+      "valor": "[-0.004431163444677563, 0.010210874472249717]",
+      "unidad": "intervalo",
+      "lo_que_prueba": "que la incertidumbre domina el efecto",
+      "lo_que_no_prueba": "que el signo sea negativo. El punto esta por encima de cero, lo que no esta es el intervalo",
+      "fuente": "reports/p66_complementarity.json"
+    },
+    {
+      "evidencia": "atribucion historica del blend",
+      "medida": "brecha de atribucion de P66",
+      "valor": 0.0093216366,
+      "unidad": "delta de corrected_cv",
+      "lo_que_prueba": "nada: esta INVALIDADA como medida de informacion atribuida",
+      "lo_que_no_prueba": "no se debe usar. Se conserva solo para trazabilidad, marcada como invalida",
+      "fuente": "reports/p67_p66_reconciliation.json"
+    }
+  ],
+  "ratio_de_varianza": 3.8015,
+  "atribucion_historica_invalida": 0.0093216366,
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

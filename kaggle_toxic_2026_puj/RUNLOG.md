@@ -2784,3 +2784,16 @@ V03 remains the best verified leaderboard result.
 
 Sin push, sin merge, sin rebase.
 <!-- /P67 2026-09-29 -->
+
+## 2026-09-29, P67 cierre documental
+
+- `experiments/p67_03_cierre_documental.py`: congela 11 piezas de evidencia, separa las cuatro
+  afirmaciones, documenta el dano de P66 con su marca de no reejecucion, y corre las dos
+  verificaciones de ASCII por separado.
+- Control nuevo: azar con beta fijo. La senal real es positiva en los seis betas y el azar
+  negativo en los seis.
+- Hallazgo algebraico: el mecanismo `residual` de P66 es un `blend_logit` con desplazamiento de
+  umbral, con diferencia `8.882e-16`.
+- 8 figuras nuevas. 0 bytes no ASCII en los artefactos generados.
+
+Sin push, sin merge, sin rebase.
