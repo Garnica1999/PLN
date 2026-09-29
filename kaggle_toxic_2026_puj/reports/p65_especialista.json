@@ -1,0 +1,214 @@
+{
+  "familia": "P65_ESPECIALISTA",
+  "naturaleza": "EXPERIMENTO. 1 especialista y 3 controles, 0 submissions, 0 Kaggle, 0 holdout, 0 test",
+  "fecha": "2026-09-29T14:50:24+00:00",
+  "experiment_id": "P65-04",
+  "track": "P19-especialista-de-tweets-largos",
+  "script": "experiments/p65_04_especialista.py",
+  "pregunta": "un V03 ajustado solo en tweets largos corrige el margen residual que P63 midio en MUY_LARGA",
+  "por_que_es_nueva": "P63 y P64 midieron el MARGEN por rebanada de longitud. Ninguno entreno un MODELO en los tweets largos. Un margen medido y un modelo ajustado son objetos distintos, y el segundo puede cambiar que caracteristicas importan en un tweet largo",
+  "puerta": {
+    "tokens": 16,
+    "congelada_antes": true,
+    "origen": "es la frontera que P63 ya usaba entre MEDIA y LARGA: se hereda, no se elige. Una puerta elegida despues de ver el resultado es un parametro ajustado vestido de parametro fijo",
+    "optimizada": false,
+    "aprendida": false,
+    "elegida_por_f1": false
+  },
+  "filas_en_el_estrato_largo": 714,
+  "protocolo": {
+    "vectorizadores": "siempre sobre el entrenamiento COMPLETO del pliegue. El subconjunto es la condicion que se prueba, no la fuente del vocabulario",
+    "clasificador": "LogisticRegression C=2.0 balanced liblinear, identico a V03",
+    "umbrales": "0,44 / 0,51 / 0,46 congelados, sin reajustar por estrato"
+  },
+  "controles": {
+    "reentrenado": "el MISMO modelo ajustado sobre las mismas filas largas sin ningun criterio de longitud. Separa especializacion de redistribucion",
+    "aleatorio": "un especialista ajustado sobre el mismo numero de filas elegidas al azar, que absorbe el numero de filas y el desequilibrio sin la estructura de longitud",
+    "solo_largo": "el global restringido a las filas largas, referencia like-for-like"
+  },
+  "resultados": {
+    "global": {
+      "corrected_cv": 0.7772114525165721,
+      "folds": [
+        0.7960101143044023,
+        0.7940339497874405,
+        0.7788600288600289,
+        0.738598013128522,
+        0.7790564997088775
+      ],
+      "por_bin": {
+        "CORTA": {
+          "n": 167,
+          "F1": 0.947956,
+          "F1_de_V03": 0.947956,
+          "delta": 0.0
+        },
+        "MEDIA": {
+          "n": 602,
+          "F1": 0.796405,
+          "F1_de_V03": 0.796405,
+          "delta": 0.0
+        },
+        "LARGA": {
+          "n": 547,
+          "F1": 0.68335,
+          "F1_de_V03": 0.68335,
+          "delta": 0.0
+        },
+        "MUY_LARGA": {
+          "n": 167,
+          "F1": 0.560571,
+          "F1_de_V03": 0.560571,
+          "delta": 0.0
+        }
+      },
+      "rescate": 0,
+      "damage": 0
+    },
+    "especialista": {
+      "corrected_cv": 0.76915179526095,
+      "folds": [
+        0.77221568925111,
+        0.7711257112974047,
+        0.772795867759978,
+        0.750310446899141,
+        0.7809497939646991
+      ],
+      "por_bin": {
+        "CORTA": {
+          "n": 167,
+          "F1": 0.947956,
+          "F1_de_V03": 0.947956,
+          "delta": 0.0
+        },
+        "MEDIA": {
+          "n": 602,
+          "F1": 0.796405,
+          "F1_de_V03": 0.796405,
+          "delta": 0.0
+        },
+        "LARGA": {
+          "n": 547,
+          "F1": 0.657696,
+          "F1_de_V03": 0.68335,
+          "delta": -0.025654
+        },
+        "MUY_LARGA": {
+          "n": 167,
+          "F1": 0.58177,
+          "F1_de_V03": 0.560571,
+          "delta": 0.021199
+        }
+      },
+      "rescate": 87,
+      "damage": 135
+    },
+    "reentrenado": {
+      "corrected_cv": 0.76915179526095,
+      "folds": [
+        0.77221568925111,
+        0.7711257112974047,
+        0.772795867759978,
+        0.750310446899141,
+        0.7809497939646991
+      ],
+      "por_bin": {
+        "CORTA": {
+          "n": 167,
+          "F1": 0.947956,
+          "F1_de_V03": 0.947956,
+          "delta": 0.0
+        },
+        "MEDIA": {
+          "n": 602,
+          "F1": 0.796405,
+          "F1_de_V03": 0.796405,
+          "delta": 0.0
+        },
+        "LARGA": {
+          "n": 547,
+          "F1": 0.657696,
+          "F1_de_V03": 0.68335,
+          "delta": -0.025654
+        },
+        "MUY_LARGA": {
+          "n": 167,
+          "F1": 0.58177,
+          "F1_de_V03": 0.560571,
+          "delta": 0.021199
+        }
+      },
+      "rescate": 87,
+      "damage": 135
+    },
+    "aleatorio": {
+      "corrected_cv": 0.7654406467864417,
+      "folds": [
+        0.783770768602981,
+        0.7673529464980368,
+        0.7680905052834209,
+        0.7412144487115268,
+        0.7674056043621261
+      ],
+      "por_bin": {
+        "CORTA": {
+          "n": 167,
+          "F1": 0.947956,
+          "F1_de_V03": 0.947956,
+          "delta": 0.0
+        },
+        "MEDIA": {
+          "n": 602,
+          "F1": 0.796405,
+          "F1_de_V03": 0.796405,
+          "delta": 0.0
+        },
+        "LARGA": {
+          "n": 547,
+          "F1": 0.657689,
+          "F1_de_V03": 0.68335,
+          "delta": -0.025661
+        },
+        "MUY_LARGA": {
+          "n": 167,
+          "F1": 0.469981,
+          "F1_de_V03": 0.560571,
+          "delta": -0.09059
+        }
+      },
+      "rescate": 82,
+      "damage": 112
+    }
+  },
+  "brechas": {
+    "especialista_contra_reentrenado": 0.0,
+    "especialista_contra_aleatorio": 0.0037111485,
+    "especialista_contra_global": -0.0080596573
+  },
+  "F1_en_LARGA": {
+    "global": 0.68335,
+    "especialista": 0.657696
+  },
+  "F1_en_MUY_LARGA": {
+    "V03": 0.560571,
+    "especialista": 0.58177
+  },
+  "gate": {
+    "delta_min": 0.0015,
+    "pliegues_min": 4,
+    "delta": -0.0080596573,
+    "pliegues_mejorados": 2
+  },
+  "lectura": "REDISTRIBUCION_NO_ESPECIALIZACION",
+  "veredicto": "El especialista NO supera al reentrenado: +0.0000000000. Es decir, ajustar un V03 sobre las mismas 714 filas, sin ningun criterio de longitud, consigue lo mismo o mas. Y el global es -0.0080596573. Lo que se ha medido no es que los tweets largos necesiten un modelo distinto, es que tener menos filas cambia el ajuste. Y en MUY_LARGA, que es donde P63 midio el margen de +0,0890, el especialista deja F1 en 0.5818 frente a 0.5606 de V03. La familia del especialista se cierra con el control mas fuerte de las cinco que han hecho falta en esta fase, porque separa las dos explicaciones y las separa a favor de la que no interesa",
+  "decision": "CLOSED",
+  "experimentos_registrados": 1,
+  "reproducibilidad": {
+    "nivel": "R2",
+    "git_commit": "e190f49",
+    "seed": 42,
+    "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "corrected_cv": 0.7772114525165721
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

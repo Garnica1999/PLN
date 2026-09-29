@@ -1,0 +1,16 @@
+brazo,corrected_cv,delta_vs_V03,pliegues_mejorados,rescate,damage,neto
+global,0.7772114525,0.0,0,0,0,0
+especialista,0.7691517953,-0.0080596573,2,87,135,-48
+reentrenado,0.7691517953,-0.0080596573,2,87,135,-48
+aleatorio,0.7654406468,-0.0117708057,1,82,112,-30
+
+bin,n,F1_global,F1_especialista,F1_reentrenado,F1_aleatorio
+CORTA,167,0.947956,0.947956,0.947956,0.947956
+MEDIA,602,0.796405,0.796405,0.796405,0.796405
+LARGA,547,0.683350,0.657696,0.657696,0.657689
+MUY_LARGA,167,0.560571,0.581770,0.581770,0.469981
+
+brecha,especialista_contra_reentrenado,0.0
+brecha,especialista_contra_aleatorio,0.0037111485
+config,puerta_de_tokens,16
+config,filas_en_el_estrato_largo,714
