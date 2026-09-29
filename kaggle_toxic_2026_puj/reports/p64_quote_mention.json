@@ -1,0 +1,159 @@
+{
+  "familia": "P64_QUOTE_MENTION",
+  "naturaleza": "EXPERIMENTO. 0 a 2 candidatos y 2 controles, 0 submissions, 0 Kaggle, 0 holdout, 0 test",
+  "fecha": "2026-09-29T14:17:17+00:00",
+  "experiment_id": "P64-06",
+  "track": "P11-P12-frontera-de-cita-y-de-mencion",
+  "script": "experiments/p64_06_quote_mention.py",
+  "pregunta": "esta V03 tratando como evidencia propia contenido que pertenece a una cita, y hay una frontera de mencion que aporte algo",
+  "eda_previa": {
+    "umbral_de_frecuencia": 0.05,
+    "umbral_de_diferencial": 0.05,
+    "citas": {
+      "filas_con_cita_cerrada": 1,
+      "porcentaje": 0.0674,
+      "error_con_cita": 0.0,
+      "error_sin_cita": 0.170265,
+      "diferencial_de_error": 0.0
+    },
+    "menciones": {
+      "filas_con_mencion": 702,
+      "porcentaje": 47.3365,
+      "menciones_maximas": 16,
+      "error_con_mencion": 0.148623,
+      "error_sin_mencion": 0.189501,
+      "diferencial_de_error": -0.040878
+    },
+    "cita_justificada": false,
+    "mencion_justificada": true
+  },
+  "regla_de_decision": "una frontera se modela solo si es FRECUENTE, mas del 5 por ciento de filas con al menos dos partes, o DIFERENCIAL, si la tasa de error entre las dos partes difiere mas de cinco puntos",
+  "por_que_no_es_un_recuento": "un recuento dice cuantas menciones tiene un tweet. Esto dice lo que el modelo cree a cada LADO de la frontera, y la asimetria entre el interior y el exterior de una cita es la unica forma de responder si V03 puntua una cita como si fueran sus propias palabras. Una bandera no lo responde y un recuento tampoco",
+  "identidad_de_usuario": "no se usa. Solo la posicion del simbolo @",
+  "resultados": {
+    "V03_mencion": {
+      "corrected_cv": 0.7585094002448892,
+      "folds": [
+        0.761587428054494,
+        0.7744967271477233,
+        0.7658917285354067,
+        0.7314459483797675,
+        0.7586345499028319
+      ],
+      "por_bin": {
+        "CORTA": {
+          "n": 167,
+          "F1": 0.951468,
+          "F1_de_V03": 0.947956
+        },
+        "MEDIA": {
+          "n": 602,
+          "F1": 0.78174,
+          "F1_de_V03": 0.796405
+        },
+        "LARGA": {
+          "n": 547,
+          "F1": 0.637837,
+          "F1_de_V03": 0.68335
+        },
+        "MUY_LARGA": {
+          "n": 167,
+          "F1": 0.553216,
+          "F1_de_V03": 0.560571
+        }
+      },
+      "rescate": 96,
+      "damage": 145
+    },
+    "V03_margen": {
+      "corrected_cv": 0.7661312520165589,
+      "folds": [
+        0.7688570389043375,
+        0.7832395247029393,
+        0.762560125060125,
+        0.749561403508772,
+        0.7663992177260909
+      ],
+      "por_bin": {
+        "CORTA": {
+          "n": 167,
+          "F1": 0.9379,
+          "F1_de_V03": 0.947956
+        },
+        "MEDIA": {
+          "n": 602,
+          "F1": 0.782453,
+          "F1_de_V03": 0.796405
+        },
+        "LARGA": {
+          "n": 547,
+          "F1": 0.680556,
+          "F1_de_V03": 0.68335
+        },
+        "MUY_LARGA": {
+          "n": 167,
+          "F1": 0.559525,
+          "F1_de_V03": 0.560571
+        }
+      },
+      "rescate": 78,
+      "damage": 168
+    },
+    "V03_random": {
+      "corrected_cv": 0.7677487019713451,
+      "folds": [
+        0.7617752844095639,
+        0.7905501904964289,
+        0.7500563579915168,
+        0.7520810491786872,
+        0.7845141787377345
+      ],
+      "por_bin": {
+        "CORTA": {
+          "n": 167,
+          "F1": 0.937061,
+          "F1_de_V03": 0.947956
+        },
+        "MEDIA": {
+          "n": 602,
+          "F1": 0.792719,
+          "F1_de_V03": 0.796405
+        },
+        "LARGA": {
+          "n": 547,
+          "F1": 0.666973,
+          "F1_de_V03": 0.68335
+        },
+        "MUY_LARGA": {
+          "n": 167,
+          "F1": 0.542279,
+          "F1_de_V03": 0.560571
+        }
+      },
+      "rescate": 139,
+      "damage": 175
+    }
+  },
+  "brechas": {
+    "V03_mencion_contra_aleatorio": -0.0092393017,
+    "V03_mencion_contra_el_margen": -0.0076218518
+  },
+  "tracks": {
+    "cita": {
+      "justificada": false,
+      "decidido_por": "EDA previa"
+    }
+  },
+  "lectura": "SIN_APORTE",
+  "veredicto": "ninguna frontera aporta: el mejor es V03_mencion con -0.0187020523 global, -0.0092393017 contra el control de anchura y -0.0076218518 contra el margen",
+  "decision": "CLOSED",
+  "experimentos_registrados": 1,
+  "reproducibilidad": {
+    "nivel": "R2",
+    "git_commit": "1c9c738",
+    "seed": 42,
+    "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "corrected_cv": 0.7772114525165721
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}
