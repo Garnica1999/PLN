@@ -1,0 +1,28 @@
+input_field,modelo_o_experimento,estado,donde_se_ve_en_codigo
+text,TF-IDF word (E-001..),USED,"scripts/v19_b1_boosting.py, scripts/v31_03_canales_linguisticos.py"
+id,TF-IDF word (E-001..),NOT_USED,no aparece en ninguna construccion de features; solo como clave de orden y de alineacion
+age_range,TF-IDF word (E-001..),PROHIBITED,se usa como etiqueta en fit y en las metricas; nunca en una matriz de entrada
+text,TF-IDF char_wb,USED,"scripts/v19_b1_boosting.py, scripts/v31_03_canales_linguisticos.py"
+id,TF-IDF char_wb,NOT_USED,no aparece en ninguna construccion de features; solo como clave de orden y de alineacion
+age_range,TF-IDF char_wb,PROHIBITED,se usa como etiqueta en fit y en las metricas; nunca en una matriz de entrada
+text,canales V31 (10),DERIVED,"scripts/v19_b1_boosting.py, scripts/v31_03_canales_linguisticos.py"
+id,canales V31 (10),NOT_USED,no aparece en ninguna construccion de features; solo como clave de orden y de alineacion
+age_range,canales V31 (10),PROHIBITED,se usa como etiqueta en fit y en las metricas; nunca en una matriz de entrada
+text,estructurado 279 (V20),DERIVED,"scripts/v19_b1_boosting.py, scripts/v31_03_canales_linguisticos.py"
+id,estructurado 279 (V20),NOT_USED,no aparece en ninguna construccion de features; solo como clave de orden y de alineacion
+age_range,estructurado 279 (V20),PROHIBITED,se usa como etiqueta en fit y en las metricas; nunca en una matriz de entrada
+text,V29 LightGBM,USED,"scripts/v19_b1_boosting.py, scripts/v31_03_canales_linguisticos.py"
+id,V29 LightGBM,NOT_USED,no aparece en ninguna construccion de features; solo como clave de orden y de alineacion
+age_range,V29 LightGBM,PROHIBITED,se usa como etiqueta en fit y en las metricas; nunca en una matriz de entrada
+text,V30 ensemble,USED,"scripts/v19_b1_boosting.py, scripts/v31_03_canales_linguisticos.py"
+id,V30 ensemble,NOT_USED,no aparece en ninguna construccion de features; solo como clave de orden y de alineacion
+age_range,V30 ensemble,PROHIBITED,se usa como etiqueta en fit y en las metricas; nunca en una matriz de entrada
+text,P33 residuo,USED,"scripts/v19_b1_boosting.py, scripts/v31_03_canales_linguisticos.py"
+id,P33 residuo,NOT_USED,no aparece en ninguna construccion de features; solo como clave de orden y de alineacion
+age_range,P33 residuo,PROHIBITED,se usa como etiqueta en fit y en las metricas; nunca en una matriz de entrada
+text,P34 pairwise,USED,"scripts/v19_b1_boosting.py, scripts/v31_03_canales_linguisticos.py"
+id,P34 pairwise,NOT_USED,no aparece en ninguna construccion de features; solo como clave de orden y de alineacion
+age_range,P34 pairwise,PROHIBITED,se usa como etiqueta en fit y en las metricas; nunca en una matriz de entrada
+text,G12 pendiente,USED,"scripts/v19_b1_boosting.py, scripts/v31_03_canales_linguisticos.py"
+id,G12 pendiente,NOT_USED,no aparece en ninguna construccion de features; solo como clave de orden y de alineacion
+age_range,G12 pendiente,PROHIBITED,se usa como etiqueta en fit y en las metricas; nunca en una matriz de entrada

@@ -1,0 +1,379 @@
+{
+  "fase": "G14 auditoria de informacion de entrada",
+  "fecha": "2026-10-06",
+  "experimenta": false,
+  "commit": "2bc7ed15b7b81f2658b3143e34fe890a5786e633",
+  "baseline_v30": 0.6134471,
+  "esquema": {
+    "train": [
+      "id",
+      "text",
+      "age_range"
+    ],
+    "test": [
+      "id",
+      "text"
+    ],
+    "zip": "contiene exactamente los mismos 3 ficheros: age_train.csv, age_test.csv, age_submission.csv. No hay campos ocultos"
+  },
+  "inventario": [
+    {
+      "campo": "id",
+      "split": "train",
+      "tipo": "int64",
+      "filas": 169336,
+      "nulos": 0,
+      "cardinalidad": 169336,
+      "ejemplos_no_sensibles": "1 | 2 | 3",
+      "presente_en_train": true,
+      "presente_en_test": true,
+      "en_notebook": true,
+      "en_scripts": "se usa como indice de fila y como clave de orden en varios scripts; nunca como feature",
+      "utilizacion_actual": "**solo administrativo**: clave de orden, verificacion de unicidad y alineacion de la submission. Nunca entra a ningun modelo",
+      "rol": "identificador de fila",
+      "legalidad": "NO UTILIZABLE como entrada (ver la auditoria del id)",
+      "decision": "NOT_ACTIONABLE"
+    },
+    {
+      "campo": "text",
+      "split": "train",
+      "tipo": "object",
+      "filas": 169336,
+      "nulos": 0,
+      "cardinalidad": 168091,
+      "ejemplos_no_sensibles": "Ud y su flia fueron las mas beneficiadas... | http://t.co/Jp4hFcwMF6 | Hasta el 1 de oct Medellin estara respir...",
+      "presente_en_train": true,
+      "presente_en_test": true,
+      "en_notebook": true,
+      "en_scripts": "20 scripts lo leen",
+      "utilizacion_actual": "USADO en todas las representaciones: TF-IDF de palabra, char n-grams y los diez canales estructurales de V31",
+      "rol": "unico campo de contenido",
+      "legalidad": "LEGAL: es la entrada que la tarea define",
+      "decision": "EN USO"
+    },
+    {
+      "campo": "age_range",
+      "split": "train",
+      "tipo": "category",
+      "filas": 169336,
+      "nulos": 0,
+      "cardinalidad": 6,
+      "ejemplos_no_sensibles": "50-64 | 13-17 | 35-49",
+      "presente_en_train": true,
+      "presente_en_test": false,
+      "en_notebook": true,
+      "en_scripts": "el target",
+      "utilizacion_actual": "**TARGET**. Se lee para construir las etiquetas y para medir, nunca como entrada",
+      "rol": "TARGET",
+      "legalidad": "PROHIBIDO como entrada",
+      "decision": "PROHIBITED"
+    },
+    {
+      "campo": "id",
+      "split": "test",
+      "tipo": "int64",
+      "filas": 112892,
+      "nulos": 0,
+      "cardinalidad": 112892,
+      "ejemplos_no_sensibles": "1 | 2 | 3",
+      "presente_en_train": true,
+      "presente_en_test": true,
+      "en_notebook": true,
+      "en_scripts": "se usa como indice de fila y como clave de orden en varios scripts; nunca como feature",
+      "utilizacion_actual": "**solo administrativo**: clave de orden, verificacion de unicidad y alineacion de la submission. Nunca entra a ningun modelo",
+      "rol": "identificador de fila",
+      "legalidad": "NO UTILIZABLE como entrada (ver la auditoria del id)",
+      "decision": "NOT_ACTIONABLE"
+    },
+    {
+      "campo": "text",
+      "split": "test",
+      "tipo": "object",
+      "filas": 112892,
+      "nulos": 0,
+      "cardinalidad": 112245,
+      "ejemplos_no_sensibles": "RT @diana_dagostino: La tragedia de Chor... | RT @SignosDelRock: Ojala vos tambien. ht... | @prioritycaro A mi tambien me parece eso...",
+      "presente_en_train": true,
+      "presente_en_test": true,
+      "en_notebook": true,
+      "en_scripts": "20 scripts lo leen",
+      "utilizacion_actual": "USADO en todas las representaciones: TF-IDF de palabra, char n-grams y los diez canales estructurales de V31",
+      "rol": "unico campo de contenido",
+      "legalidad": "LEGAL: es la entrada que la tarea define",
+      "decision": "EN USO"
+    }
+  ],
+  "auditoria_id": {
+    "train": {
+      "min": 1,
+      "max": 169336,
+      "n": 169336,
+      "unico": true,
+      "monotono": true
+    },
+    "test": {
+      "min": 1,
+      "max": 112892,
+      "n": 112892,
+      "unico": true,
+      "monotono": true
+    },
+    "interseccion_train_test": 112892,
+    "fraccion_del_test_que_reaparece_en_train": 1.0,
+    "digitos_del_maximo": 6,
+    "parece_snowflake_de_twitter": false,
+    "correlacion_pearson_con_la_clase": -0.000838,
+    "correlacion_spearman_con_la_clase": -0.000824,
+    "veredicto": "**INDICE ADMINISTRATIVO DE FILA.** Los ids van de 1 a N dentro de cada split y vuelven a empezar: **los 112.892 ids del test aparecen tambien en train**, para filas distintas. El `id` 1 es un tweet distinto en cada split. No identifica contenido, y por tanto en prediccion real su valor no significa nada",
+    "por_que_no_es_snowflake": "un id de tweet tiene 18-19 digitos; el maximo de este campo tiene 6. No codifica ninguna marca de tiempo",
+    "por_que_no_puede_ser_feature": "un campo cuyo valor se repite entre train y test para filas distintas no puede aportar informacion sobre la fila: la misma entrada corresponderia a dos salidas distintas en el 100 % del test",
+    "senal_aprovechable": "correlacion con la clase -0.000838: nada. El brief anticipa este caso y prohibe rescatarlo con modulo, hash, posicion, patrones de digitos, buckets o sinonimos, porque eso seria pescar correlaciones espurias sobre un numero de fila"
+  },
+  "traza_del_texto": [
+    {
+      "dimension": "contenido lexico",
+      "se_conserva": "si, integro",
+      "representacion_que_lo_captura": "TF-IDF de palabra (1-2) y char_wb (3-5)",
+      "probado_en": "desde el baseline E-001",
+      "estado": "EN USO"
+    },
+    {
+      "dimension": "case (mayusculas y minusculas)",
+      "se_conserva": "no en el TF-IDF, que aplica lowercase",
+      "representacion_que_lo_captura": "canal `ortografia`: bloques CAPS, ratio de mayusculas, CAPS por palabra",
+      "probado_en": "V31-03 (+0,001993 en banco) y V31-06 (sin aporte en la integracion)",
+      "estado": "PROBADO, SIN APORTE CERRADO"
+    },
+    {
+      "dimension": "puntuacion",
+      "se_conserva": "no en el TF-IDF, que tokeniza con \\w+",
+      "representacion_que_lo_captura": "canal `ortografia`: repeticiones, y canal `discurso`: preguntas, exclamaciones, suspension",
+      "probado_en": "V31-03 y V31-06",
+      "estado": "PROBADO, SIN APORTE CERRADO"
+    },
+    {
+      "dimension": "elongaciones y caracteres repetidos",
+      "se_conserva": "no",
+      "representacion_que_lo_captura": "canal `ortografia`: REPETICION, REPVOCAL, REPCONSON, REPLONG",
+      "probado_en": "V31-03 y V31-06",
+      "estado": "PROBADO, SIN APORTE CERRADO"
+    },
+    {
+      "dimension": "URLs",
+      "se_conserva": "si, como token de la propia URL",
+      "representacion_que_lo_captura": "canal `url` (presencia, tipo, longitud, posicion) y la taxonomia de P32/P33",
+      "probado_en": "V31-02, V31-03, P33-P02",
+      "estado": "PROBADO, SIN APORTE CERRADO"
+    },
+    {
+      "dimension": "menciones y hashtags",
+      "se_conserva": "si como token",
+      "representacion_que_lo_captura": "el propio TF-IDF de palabra, y el canal `discurso` para la posicion",
+      "probado_en": "features estructuradas de V20 y V31",
+      "estado": "EN USO"
+    },
+    {
+      "dimension": "longitud",
+      "se_conserva": "si",
+      "representacion_que_lo_captura": "bloque estructurado de 279 features (LENBUCKET, NTOKENS) y los slices de longitud de V31-F",
+      "probado_en": "V20 y V31",
+      "estado": "EN USO"
+    },
+    {
+      "dimension": "posicion de los elementos",
+      "se_conserva": "no",
+      "representacion_que_lo_captura": "canales `posicion` y `forma_palabra` de V31-03",
+      "probado_en": "V31-03: **negativos** (-0,002303 y -0,002984, 0/5 folds)",
+      "estado": "PROBADO Y CERRADO NEGATIVO"
+    },
+    {
+      "dimension": "acentos y ortografia",
+      "se_conserva": "si, en el texto original",
+      "representacion_que_lo_captura": "el TF-IDF de palabra sin strip_accents, y las listas de marcadores de V31",
+      "probado_en": "V31-03",
+      "estado": "EN USO"
+    }
+  ],
+  "matriz_campo_por_modelo": [
+    {
+      "input_field": "text",
+      "modelo_o_experimento": "TF-IDF word (E-001..)",
+      "estado": "USED",
+      "donde_se_ve_en_codigo": "scripts/v19_b1_boosting.py, scripts/v31_03_canales_linguisticos.py"
+    },
+    {
+      "input_field": "id",
+      "modelo_o_experimento": "TF-IDF word (E-001..)",
+      "estado": "NOT_USED",
+      "donde_se_ve_en_codigo": "no aparece en ninguna construccion de features; solo como clave de orden y de alineacion"
+    },
+    {
+      "input_field": "age_range",
+      "modelo_o_experimento": "TF-IDF word (E-001..)",
+      "estado": "PROHIBITED",
+      "donde_se_ve_en_codigo": "se usa como etiqueta en fit y en las metricas; nunca en una matriz de entrada"
+    },
+    {
+      "input_field": "text",
+      "modelo_o_experimento": "TF-IDF char_wb",
+      "estado": "USED",
+      "donde_se_ve_en_codigo": "scripts/v19_b1_boosting.py, scripts/v31_03_canales_linguisticos.py"
+    },
+    {
+      "input_field": "id",
+      "modelo_o_experimento": "TF-IDF char_wb",
+      "estado": "NOT_USED",
+      "donde_se_ve_en_codigo": "no aparece en ninguna construccion de features; solo como clave de orden y de alineacion"
+    },
+    {
+      "input_field": "age_range",
+      "modelo_o_experimento": "TF-IDF char_wb",
+      "estado": "PROHIBITED",
+      "donde_se_ve_en_codigo": "se usa como etiqueta en fit y en las metricas; nunca en una matriz de entrada"
+    },
+    {
+      "input_field": "text",
+      "modelo_o_experimento": "canales V31 (10)",
+      "estado": "DERIVED",
+      "donde_se_ve_en_codigo": "scripts/v19_b1_boosting.py, scripts/v31_03_canales_linguisticos.py"
+    },
+    {
+      "input_field": "id",
+      "modelo_o_experimento": "canales V31 (10)",
+      "estado": "NOT_USED",
+      "donde_se_ve_en_codigo": "no aparece en ninguna construccion de features; solo como clave de orden y de alineacion"
+    },
+    {
+      "input_field": "age_range",
+      "modelo_o_experimento": "canales V31 (10)",
+      "estado": "PROHIBITED",
+      "donde_se_ve_en_codigo": "se usa como etiqueta en fit y en las metricas; nunca en una matriz de entrada"
+    },
+    {
+      "input_field": "text",
+      "modelo_o_experimento": "estructurado 279 (V20)",
+      "estado": "DERIVED",
+      "donde_se_ve_en_codigo": "scripts/v19_b1_boosting.py, scripts/v31_03_canales_linguisticos.py"
+    },
+    {
+      "input_field": "id",
+      "modelo_o_experimento": "estructurado 279 (V20)",
+      "estado": "NOT_USED",
+      "donde_se_ve_en_codigo": "no aparece en ninguna construccion de features; solo como clave de orden y de alineacion"
+    },
+    {
+      "input_field": "age_range",
+      "modelo_o_experimento": "estructurado 279 (V20)",
+      "estado": "PROHIBITED",
+      "donde_se_ve_en_codigo": "se usa como etiqueta en fit y en las metricas; nunca en una matriz de entrada"
+    },
+    {
+      "input_field": "text",
+      "modelo_o_experimento": "V29 LightGBM",
+      "estado": "USED",
+      "donde_se_ve_en_codigo": "scripts/v19_b1_boosting.py, scripts/v31_03_canales_linguisticos.py"
+    },
+    {
+      "input_field": "id",
+      "modelo_o_experimento": "V29 LightGBM",
+      "estado": "NOT_USED",
+      "donde_se_ve_en_codigo": "no aparece en ninguna construccion de features; solo como clave de orden y de alineacion"
+    },
+    {
+      "input_field": "age_range",
+      "modelo_o_experimento": "V29 LightGBM",
+      "estado": "PROHIBITED",
+      "donde_se_ve_en_codigo": "se usa como etiqueta en fit y en las metricas; nunca en una matriz de entrada"
+    },
+    {
+      "input_field": "text",
+      "modelo_o_experimento": "V30 ensemble",
+      "estado": "USED",
+      "donde_se_ve_en_codigo": "scripts/v19_b1_boosting.py, scripts/v31_03_canales_linguisticos.py"
+    },
+    {
+      "input_field": "id",
+      "modelo_o_experimento": "V30 ensemble",
+      "estado": "NOT_USED",
+      "donde_se_ve_en_codigo": "no aparece en ninguna construccion de features; solo como clave de orden y de alineacion"
+    },
+    {
+      "input_field": "age_range",
+      "modelo_o_experimento": "V30 ensemble",
+      "estado": "PROHIBITED",
+      "donde_se_ve_en_codigo": "se usa como etiqueta en fit y en las metricas; nunca en una matriz de entrada"
+    },
+    {
+      "input_field": "text",
+      "modelo_o_experimento": "P33 residuo",
+      "estado": "USED",
+      "donde_se_ve_en_codigo": "scripts/v19_b1_boosting.py, scripts/v31_03_canales_linguisticos.py"
+    },
+    {
+      "input_field": "id",
+      "modelo_o_experimento": "P33 residuo",
+      "estado": "NOT_USED",
+      "donde_se_ve_en_codigo": "no aparece en ninguna construccion de features; solo como clave de orden y de alineacion"
+    },
+    {
+      "input_field": "age_range",
+      "modelo_o_experimento": "P33 residuo",
+      "estado": "PROHIBITED",
+      "donde_se_ve_en_codigo": "se usa como etiqueta en fit y en las metricas; nunca en una matriz de entrada"
+    },
+    {
+      "input_field": "text",
+      "modelo_o_experimento": "P34 pairwise",
+      "estado": "USED",
+      "donde_se_ve_en_codigo": "scripts/v19_b1_boosting.py, scripts/v31_03_canales_linguisticos.py"
+    },
+    {
+      "input_field": "id",
+      "modelo_o_experimento": "P34 pairwise",
+      "estado": "NOT_USED",
+      "donde_se_ve_en_codigo": "no aparece en ninguna construccion de features; solo como clave de orden y de alineacion"
+    },
+    {
+      "input_field": "age_range",
+      "modelo_o_experimento": "P34 pairwise",
+      "estado": "PROHIBITED",
+      "donde_se_ve_en_codigo": "se usa como etiqueta en fit y en las metricas; nunca en una matriz de entrada"
+    },
+    {
+      "input_field": "text",
+      "modelo_o_experimento": "G12 pendiente",
+      "estado": "USED",
+      "donde_se_ve_en_codigo": "scripts/v19_b1_boosting.py, scripts/v31_03_canales_linguisticos.py"
+    },
+    {
+      "input_field": "id",
+      "modelo_o_experimento": "G12 pendiente",
+      "estado": "NOT_USED",
+      "donde_se_ve_en_codigo": "no aparece en ninguna construccion de features; solo como clave de orden y de alineacion"
+    },
+    {
+      "input_field": "age_range",
+      "modelo_o_experimento": "G12 pendiente",
+      "estado": "PROHIBITED",
+      "donde_se_ve_en_codigo": "se usa como etiqueta en fit y en las metricas; nunca en una matriz de entrada"
+    }
+  ],
+  "decision": "NOT_ACTIONABLE",
+  "motivo": "el esquema tiene tres campos: `text` es la entrada y esta en uso en todas las representaciones; `age_range` es el target y esta prohibido como entrada; `id` es un indice de fila que va de 1 a N dentro de cada split y cuyos valores reaparecen enteros en train y test para filas distintas, con correlacion -0,00084 con la clase. No existe ningun campo de entrada legal, presente en prediccion y sin usar",
+  "no_se_rescata_el_id": "el brief prohibe expresamente rescatarlo con modulo, hash, posicion, patrones de digitos, buckets o sinonimos. Hacerlo no seria encontrar informacion, seria pescar correlaciones espurias sobre un numero de fila",
+  "cierres_por_la_traza": "las dimensiones de `text` que no llegan al TF-IDF (case, puntuacion, elongaciones, posicion) fueron cubiertas por los diez canales de V31-03 y su integracion se cerro sin aporte en V31-06. Eso es el caso C del brief: informacion dentro de text que ya esta contenida o ya fue probada, no un canal nuevo",
+  "grupo_a_y_grupo_b": {
+    "A_nadie_corrige": 27007,
+    "B_alguien_corrige": 38396,
+    "lectura": "los 27.007 errores del grupo A no tienen ninguna fuente disponible que los corrija, y G14 confirma que tampoco hay un campo de entrada sin explotar que pudiera hacerlo"
+  },
+  "restricciones": {
+    "usa_test_para_decidir": false,
+    "usa_target_como_entrada": false,
+    "construye_feature_del_id": false,
+    "usa_holdout": false,
+    "usa_red": false,
+    "leaderboard_para_ajustar": false
+  },
+  "segundos": 0.6
+}

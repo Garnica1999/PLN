@@ -2148,3 +2148,49 @@ Tras declarar la saturación se probó la vía indicada como trabajo futuro:
   explorado. La formulacion correcta no es que V30 sea el limite teorico, sino que **las familias
   evaluadas no produjeron evidencia suficiente**, y que la unica via con recorrido real
   (**senal nueva en los datos**) sigue cerrada por las reglas de AGE en sus fuentes obvias.
+
+---
+
+## D-068 - G14: no existe informacion de entrada legal sin utilizar, y el `id` no es rescatable
+
+- **Observation**: cerradas las vias de correccion en score-space (P33, P34, G12), la unica linea
+  con margen estructural que quedaba era G14: comprobar si existia un campo de entrada legal,
+  presente en prediccion y que ningun modelo hubiera consumido. La duda concreta estaba en el
+  campo `id`: si fuera un *snowflake* de Twitter, codificaria la fecha de publicacion, que es
+  informacion real, legal y disponible en test.
+
+- **El `id` no es un snowflake, y la prueba es geometrica antes que estadistica**: va de **1 a
+  169.336** en train y de **1 a 112.892** en test, monotono y sin huecos, con **6 digitos** en el
+  maximo. Un id de tweet tiene 18-19. Y hay un dato que cierra el caso por si solo: **los 112.892
+  ids del test aparecen tambien en train**, es decir el 100 %, para filas distintas. El `id` 1 es
+  un tweet distinto en cada split. Un campo cuyo valor identifica a dos filas con salidas
+  distintas no puede ser feature: no aporta informacion sobre la fila.
+
+- **La correlacion con la clase es -0,00084.** Nada, como corresponde a un indice de fila.
+
+- **Auditoria del resto del esquema**: el ZIP de la competicion contiene exactamente tres ficheros
+  (`age_train.csv`, `age_test.csv`, `age_submission.csv`), sin campos ocultos. Los tres campos son
+  `text` (en uso en las nueve familias de modelo), `age_range` (target, prohibido como entrada) e
+  `id` (administrativo). La matriz campo-por-modelo da: `text` USED o DERIVED en 9 de 9, `id`
+  NOT_USED en 9 de 9, `age_range` PROHIBITED en 9 de 9.
+
+- **Traza de `text`**: ninguna dimension queda en el limbo. Las que el TF-IDF no captura (case,
+  puntuacion, elongaciones, posicion) fueron cubiertas por los diez canales de V31-03 y su
+  integracion se cerro sin aporte en V31-06. Eso es el **caso C** del brief, informacion ya
+  contenida o ya probada, no un canal nuevo.
+
+- **Decision**: **G14 = NOT_ACTIONABLE**, y se declara por que no es `CLOSED`: `CLOSED` significa
+  que habia un canal y estaba cubierto; `NOT_ACTIONABLE` significa que no hay canal, ni cubierto ni
+  descubierto. **No se intenta rescatar el `id`** con modulo, hash, posicion, patrones de digitos,
+  buckets ni sinonimos, como el brief prohibe expresamente: eso no seria encontrar informacion,
+  seria ajustar una correlacion espuria sobre 169.336 filas.
+
+- **Consequences**: la fase de investigacion queda con sus seis lineas cerradas (correccion de
+  score global, local, pendiente, canal linguistico, capacidad del meta-modelo, diversidad de
+  ensembles) y con la **entrada enumerada por completo**. La conclusion que se puede sostener es
+  que **no existe actualmente informacion de entrada legal, observable en prediccion y no
+  utilizada por los modelos, que pueda abrir una nueva linea experimental**. No es lo mismo que
+  decir que V30 sea optimo: es decir que las vias que el protocolo permite estan recorridas. Y
+  queda la cifra que mide el techo: de los 65.403 errores de V30, **27.007 no los corrige ninguna
+  de las 26 fuentes disponibles**, y G14 anade que tampoco hay un campo sin explotar que pudiera
+  corregirlos.

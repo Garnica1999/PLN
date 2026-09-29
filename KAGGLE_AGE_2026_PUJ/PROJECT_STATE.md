@@ -883,3 +883,26 @@ adopta** (D-011).
   Ver D-067.
 - **Auditorias**: compliance 0 hallazgos sobre 9 scripts con 6 comprobaciones positivas;
   notebook 242 celdas con la seccion V31+ en **10/10 verde**; idioma 586 ficheros **0 errores**.
+
+---
+
+## G14 - AUDITORIA DE INFORMACION DE ENTRADA (2026-10-06) - NOT_ACTIONABLE
+
+- **Pregunta**: existe algun campo de entrada legal, presente en prediccion y que ningun modelo
+  haya consumido?
+- **Esquema real**: el ZIP contiene exactamente `age_train.csv` (`id`, `text`, `age_range`),
+  `age_test.csv` (`id`, `text`) y `age_submission.csv`. Sin campos ocultos.
+- **El `id` no es un snowflake**: 1..169.336 en train y 1..112.892 en test, **6 digitos** en el
+  maximo, monotono y sin huecos. Y **el 100 % de los ids del test reaparece en train** para filas
+  distintas: es un indice de fila por split, no un identificador de contenido. Correlacion con la
+  clase: **-0,00084**.
+- **Matriz campo-por-modelo**: `text` USED/DERIVED 9 de 9; `id` NOT_USED 9 de 9; `age_range`
+  PROHIBITED 9 de 9.
+- **Traza de `text`**: toda dimension no capturada por el TF-IDF (case, puntuacion, elongaciones,
+  posicion) fue cubierta por los diez canales de V31-03 y cerrada por V31-06. Caso C, no canal
+  nuevo.
+- **Decision**: **NOT_ACTIONABLE**. No se rescata el `id` con modulo, hash, posicion ni patrones de
+  digitos. Ver D-068.
+- **Estado de la investigacion**: seis lineas cerradas y la **entrada enumerada por completo**. El
+  techo esta medido: 27.007 de los 65.403 errores de V30 no los corrige ninguna de las 26 fuentes,
+  y no hay campo sin explotar que pudiera hacerlo.

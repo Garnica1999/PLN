@@ -1956,3 +1956,19 @@ intacto.
 - **Submissions: 0.** No hubo finalista que la justificara.
 - **Cuarenas:** retrieval de contenido de URL y POS tagger.
 - **Compliance:** 0 hallazgos. **Artefactos de V30 tocados:** 0 (hash del submission sin cambio).
+
+
+---
+
+## Cierre de G14 - auditoria de informacion de entrada · 2026-10-06
+
+- **Resultado:** `G14 = NOT_ACTIONABLE`. No existe campo de entrada legal, disponible en
+  prediccion y sin usar.
+- **Experimentos de entrenamiento: 0.** Es una auditoria, y la fila de `experiments.csv` lo declara.
+- **El `id`:** indice de fila por split, 6 digitos, 100 % de los ids del test reaparecen en train,
+  correlacion -0,00084. No se rescata.
+- **Traza de `text`:** toda dimension no capturada por el TF-IDF ya fue probada por V31-03 y
+  cerrada por V31-06.
+- **Techo medido:** 27.007 de los 65.403 errores de V30 no los corrige ninguna de las 26 fuentes
+  disponibles, y no hay campo de entrada que pudiera corregirlos.
+- **Compliance:** 0 hallazgos. **Artefactos de V30 tocados:** 0.
