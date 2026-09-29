@@ -1,0 +1,183 @@
+{
+  "fase": "validacion confirmatoria del plug-in por clase",
+  "fecha": "2026-10-11",
+  "experimenta": true,
+  "commit": "bd08aba659333bf045098edc83b8d46efe186a4e",
+  "pre_registro": "commit bd08aba",
+  "particion_alternativa": {
+    "semilla": 987654,
+    "solapes_con_la_canonica": [
+      7155,
+      7272,
+      7167,
+      7229,
+      7220
+    ],
+    "es_reejecucion_no_independiente": true
+  },
+  "pesos_congelados": [
+    1.0,
+    1.1749,
+    1.2721,
+    1.163,
+    1.001,
+    0.8128
+  ],
+  "v30_en_la_particion_alternativa": 0.614412,
+  "resultados": [
+    {
+      "brazo": "congelado",
+      "corrected_cv": 0.61647,
+      "delta_vs_v30": 0.002058,
+      "folds": [
+        0.617038,
+        0.619713,
+        0.617066,
+        0.619284,
+        0.609219
+      ],
+      "folds_positivos": 5,
+      "rescate": 3356,
+      "danio": 3712,
+      "neto": -356,
+      "filas_que_cambian": 11225,
+      "accuracy": 0.61254,
+      "ratio_sobre_variabilidad": 2.319
+    },
+    {
+      "brazo": "uniforme",
+      "corrected_cv": 0.614412,
+      "delta_vs_v30": 0.0,
+      "folds": [
+        0.615001,
+        0.619066,
+        0.616529,
+        0.614351,
+        0.60711
+      ],
+      "folds_positivos": 0,
+      "rescate": 0,
+      "danio": 0,
+      "neto": 0,
+      "filas_que_cambian": 0,
+      "accuracy": 0.61464,
+      "ratio_sobre_variabilidad": 0.0
+    },
+    {
+      "brazo": "permutado",
+      "corrected_cv": 0.6158537,
+      "delta_vs_v30": 0.0014417,
+      "folds": [
+        0.616183,
+        0.619452,
+        0.616564,
+        0.61936,
+        0.607668
+      ],
+      "folds_positivos": 5,
+      "rescate": 3781,
+      "danio": 4100,
+      "neto": -319,
+      "filas_que_cambian": 12446,
+      "accuracy": 0.61276,
+      "ratio_sobre_variabilidad": 1.624
+    },
+    {
+      "brazo": "aleatorio",
+      "corrected_cv": 0.5982227,
+      "delta_vs_v30": -0.0161893,
+      "folds": [
+        0.597665,
+        0.602546,
+        0.598135,
+        0.599307,
+        0.593456
+      ],
+      "folds_positivos": 0,
+      "rescate": 6933,
+      "danio": 9697,
+      "neto": -2764,
+      "filas_que_cambian": 28640,
+      "accuracy": 0.59832,
+      "ratio_sobre_variabilidad": 18.239
+    },
+    {
+      "brazo": "nested",
+      "corrected_cv": 0.6167003,
+      "delta_vs_v30": 0.0022884,
+      "folds": [
+        0.617952,
+        0.620046,
+        0.617441,
+        0.619287,
+        0.608703
+      ],
+      "folds_positivos": 5,
+      "rescate": 3625,
+      "danio": 3975,
+      "neto": -350,
+      "filas_que_cambian": 12203,
+      "accuracy": 0.61257,
+      "ratio_sobre_variabilidad": 2.578
+    }
+  ],
+  "pesos_nested_diagnostico": [
+    [
+      1.0,
+      1.1618,
+      1.284,
+      1.1052,
+      1.0,
+      0.8187
+    ],
+    [
+      1.0,
+      1.2214,
+      1.284,
+      1.0513,
+      0.9512,
+      0.8187
+    ],
+    [
+      1.0,
+      1.2214,
+      1.3499,
+      1.1052,
+      1.0,
+      0.8607
+    ],
+    [
+      1.0,
+      1.1618,
+      1.284,
+      1.0513,
+      0.9512,
+      0.8187
+    ],
+    [
+      1.0,
+      1.1618,
+      1.284,
+      1.0513,
+      0.9048,
+      0.8187
+    ]
+  ],
+  "alta_confianza": {
+    "n_cambian": 11225,
+    "n_alta_que_cambian": 0,
+    "confianza_media_de_las_que_cambian": 0.3357
+  },
+  "criterio_cumplido": true,
+  "veredicto": "PROMISING_CONFIRMED",
+  "restricciones": {
+    "usa_test": false,
+    "usa_holdout": false,
+    "usa_leaderboard": false,
+    "reajusta_pesos_congelados": false,
+    "genera_submission": false,
+    "proyecta_score": false,
+    "rejilla_adicional": false
+  },
+  "segundos": 2087.6
+}
