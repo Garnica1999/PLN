@@ -1,0 +1,270 @@
+{
+  "familia": "P65_NGRAMS",
+  "naturaleza": "EXPERIMENTO. 2 candidatos por orden y 2 controles, 0 submissions, 0 Kaggle, 0 holdout, 0 test",
+  "fecha": "2026-09-29T14:37:36+00:00",
+  "experiment_id": "P65-01",
+  "track": "P02-P04-ngramas-de-orden-superior",
+  "script": "experiments/p65_01_ngrams.py",
+  "pregunta": "anadir trigramas y tetragramas de palabra a V03, sin tocar el bloque de caracteres, aporta algo que la bolsa actual no tiene",
+  "por_que_no_es_un_rerun_de_REP_04": "REP-04 midio word (1,3) SUELTO, con C=1.0 y sin bloque de caracteres, y lo registro como descartado. Eso es sustituir la representacion y cambiar el regularizador. Aqui es ANADIR: char (3,5), C=2.0, umbrales, pliegues y semilla intactos, y lo unico que cambia es que el bloque de palabras emite trigramas",
+  "ordenes": [
+    3
+  ],
+  "por_que_no_es_una_rejilla": "los ordenes se ejecutan en orden creciente y el siguiente solo si el anterior muestra evidencia, por regla del encargo",
+  "protocolo": {
+    "bloque_de_caracteres": "char_wb (3,5) min_df=2 sublinear, sin tocar",
+    "clasificador": "LogisticRegression C=2.0 balanced liblinear, identico a V03",
+    "umbrales": "0,44 / 0,51 / 0,46 congelados",
+    "control_de_capacidad": "bloque sparse aleatorio con la MISMA anchura y densidad aproximada que el bloque real",
+    "control_del_margen": "V03 mas sus margenes",
+    "confound_de_escala": "el bloque se normaliza a la norma media del bloque base antes de concatenar"
+  },
+  "anchos": {
+    "palabras_1_3": {
+      "1": 3115,
+      "2": 3252,
+      "3": 3225,
+      "4": 3244,
+      "5": 3214
+    },
+    "palabras_1_3_sin_char": {
+      "1": 3115,
+      "2": 3252,
+      "3": 3225,
+      "4": 3244,
+      "5": 3214
+    },
+    "V03_aleatorio": {},
+    "V03_aleatorio_palabras": {},
+    "V03_margen": {}
+  },
+  "tiempos": {
+    "palabras_1_3": 7.519160509109497,
+    "palabras_1_3_sin_char": 0.06290960311889648,
+    "V03_aleatorio": 0.0,
+    "V03_aleatorio_palabras": 0.0,
+    "V03_margen": 0.0
+  },
+  "resultados": {
+    "palabras_1_3": {
+      "corrected_cv": 0.7732593837466633,
+      "folds": [
+        0.7827005689074654,
+        0.7965866362925187,
+        0.7752793652696641,
+        0.7382171269257577,
+        0.7735966672748281
+      ],
+      "por_bin": {
+        "CORTA": {
+          "n": 167,
+          "F1": 0.94486,
+          "F1_de_V03": 0.947956,
+          "delta": -0.003096
+        },
+        "MEDIA": {
+          "n": 602,
+          "F1": 0.791073,
+          "F1_de_V03": 0.796405,
+          "delta": -0.005332
+        },
+        "LARGA": {
+          "n": 547,
+          "F1": 0.684736,
+          "F1_de_V03": 0.68335,
+          "delta": 0.001386
+        },
+        "MUY_LARGA": {
+          "n": 167,
+          "F1": 0.549129,
+          "F1_de_V03": 0.560571,
+          "delta": -0.011442
+        }
+      },
+      "rescate": 33,
+      "damage": 48,
+      "segundos": 7.52
+    },
+    "palabras_1_3_sin_char": {
+      "corrected_cv": 0.7547741314203482,
+      "folds": [
+        0.7614266809182064,
+        0.7677661250176463,
+        0.7634251667250784,
+        0.717135362609179,
+        0.7649173612219137
+      ],
+      "por_bin": {
+        "CORTA": {
+          "n": 167,
+          "F1": 0.931448,
+          "F1_de_V03": 0.947956,
+          "delta": -0.016508
+        },
+        "MEDIA": {
+          "n": 602,
+          "F1": 0.765062,
+          "F1_de_V03": 0.796405,
+          "delta": -0.031343
+        },
+        "LARGA": {
+          "n": 547,
+          "F1": 0.676786,
+          "F1_de_V03": 0.68335,
+          "delta": -0.006564
+        },
+        "MUY_LARGA": {
+          "n": 167,
+          "F1": 0.520822,
+          "F1_de_V03": 0.560571,
+          "delta": -0.039749
+        }
+      },
+      "rescate": 85,
+      "damage": 173,
+      "segundos": 0.06
+    },
+    "V03_aleatorio": {
+      "corrected_cv": 0.6743436992133046,
+      "folds": [
+        0.6610082134627718,
+        0.6897075049386023,
+        0.6716067393199419,
+        0.6665059662661025,
+        0.6825412425412424
+      ],
+      "por_bin": {
+        "CORTA": {
+          "n": 167,
+          "F1": 0.900607,
+          "F1_de_V03": 0.947956,
+          "delta": -0.047349
+        },
+        "MEDIA": {
+          "n": 602,
+          "F1": 0.714743,
+          "F1_de_V03": 0.796405,
+          "delta": -0.081662
+        },
+        "LARGA": {
+          "n": 547,
+          "F1": 0.504607,
+          "F1_de_V03": 0.68335,
+          "delta": -0.178743
+        },
+        "MUY_LARGA": {
+          "n": 167,
+          "F1": 0.385605,
+          "F1_de_V03": 0.560571,
+          "delta": -0.174966
+        }
+      },
+      "rescate": 210,
+      "damage": 559,
+      "segundos": 0.0
+    },
+    "V03_aleatorio_palabras": {
+      "corrected_cv": 0.7135922067222938,
+      "folds": [
+        0.7184007777340792,
+        0.7248377913506131,
+        0.7327991816261114,
+        0.6968199185961051,
+        0.6945419621336093
+      ],
+      "por_bin": {
+        "CORTA": {
+          "n": 167,
+          "F1": 0.903038,
+          "F1_de_V03": 0.947956,
+          "delta": -0.044918
+        },
+        "MEDIA": {
+          "n": 602,
+          "F1": 0.743915,
+          "F1_de_V03": 0.796405,
+          "delta": -0.05249
+        },
+        "LARGA": {
+          "n": 547,
+          "F1": 0.583844,
+          "F1_de_V03": 0.68335,
+          "delta": -0.099506
+        },
+        "MUY_LARGA": {
+          "n": 167,
+          "F1": 0.438904,
+          "F1_de_V03": 0.560571,
+          "delta": -0.121667
+        }
+      },
+      "rescate": 181,
+      "damage": 384,
+      "segundos": 0.0
+    },
+    "V03_margen": {
+      "corrected_cv": 0.7661312520165589,
+      "folds": [
+        0.7688570389043375,
+        0.7832395247029393,
+        0.762560125060125,
+        0.749561403508772,
+        0.7663992177260909
+      ],
+      "por_bin": {
+        "CORTA": {
+          "n": 167,
+          "F1": 0.9379,
+          "F1_de_V03": 0.947956,
+          "delta": -0.010056
+        },
+        "MEDIA": {
+          "n": 602,
+          "F1": 0.782453,
+          "F1_de_V03": 0.796405,
+          "delta": -0.013952
+        },
+        "LARGA": {
+          "n": 547,
+          "F1": 0.680556,
+          "F1_de_V03": 0.68335,
+          "delta": -0.002794
+        },
+        "MUY_LARGA": {
+          "n": 167,
+          "F1": 0.559525,
+          "F1_de_V03": 0.560571,
+          "delta": -0.001046
+        }
+      },
+      "rescate": 78,
+      "damage": 168,
+      "segundos": 0.0
+    }
+  },
+  "brechas": {
+    "palabras_1_3_contra_aleatorio": 0.0989156845,
+    "palabras_1_3_contra_aleatorio_de_palabras": 0.059667177,
+    "palabras_1_3_contra_margen": 0.0071281317,
+    "palabras_1_3_sin_char_contra_aleatorio": 0.0804304322
+  },
+  "gate": {
+    "delta_min": 0.0015,
+    "pliegues_min": 4,
+    "mejor": "palabras_1_3",
+    "delta": -0.0039520688,
+    "pliegues_mejorados": 1
+  },
+  "lectura": "INFORMACION_SI_INTEGRACION_NO",
+  "veredicto": "palabras_1_3 lleva informacion que no es capacidad ni confianza: +0.0989156845 contra el control de anchura y +0.0071281317 contra el margen. Y el global es -0.0039520688 con 1 de 5 pliegues, luego no entra. Es el tercer caso de este patron en el proyecto, despues de la negacion en P64-07 y de la composicion tematica en P64-08: la senal existe y la integracion la descarta",
+  "decision": "COMPLEMENTARY",
+  "experimentos_registrados": 1,
+  "reproducibilidad": {
+    "nivel": "R2",
+    "git_commit": "b11fa4f",
+    "seed": 42,
+    "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "corrected_cv": 0.7772114525165721
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

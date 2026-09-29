@@ -1,0 +1,321 @@
+{
+  "familia": "P65_GAP_ANALYSIS",
+  "naturaleza": "AUDITORIA. 0 experimentos, 0 modelos, 0 features",
+  "fecha": "2026-09-29T14:33:40+00:00",
+  "experiment_id": "P65-00",
+  "script": "experiments/p65_00_audit_gap.py",
+  "auditoria_del_baseline": {
+    "corrected_cv": 0.7772114525165721,
+    "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "coincide": true,
+    "filas_del_registro": 359,
+    "identificadores_unicos": 359,
+    "test_presente": true,
+    "test_leido_por_esta_fase": false,
+    "holdout2_presente": true,
+    "holdout_usado": false,
+    "submissions_generadas": 0,
+    "kaggle": 0,
+    "leaderboard": 0
+  },
+  "pruebas_en_el_codigo": {
+    "word_1_3_en_codigo": [
+      "03_variantes_representaciones.py",
+      "19_sintaxis_cita_negacion_v2.py",
+      "p62_00_auditoria_y_gap.py"
+    ],
+    "word_1_4_en_codigo": [
+      "19_sintaxis_cita_negacion_v2.py",
+      "p62_00_auditoria_y_gap.py"
+    ],
+    "skipgrams": [
+      "embedding_01_corpus_wikipedia_v5.py",
+      "embedding_11_auditoria_firmas_v5_1.py",
+      "embedding_12_vector_size_v5_1.py",
+      "embedding_13_window_v5_1.py",
+      "embedding_19_notebook_v5_1.py",
+      "p59_03_confident_learning.py",
+      "p59_04_influence.py",
+      "p59_07_local_window.py",
+      "p59_90_integrar_notebook.py",
+      "p60_00_registro_hipotesis.py",
+      "p60_11_cerrar.py",
+      "p60_12_total.py",
+      "p60_13_notebook.py",
+      "p61_03_lightgbm.py",
+      "p61_09_cerrar.py",
+      "p61_10_notebook.py",
+      "p62_00_auditoria_y_gap.py",
+      "p62_03_pista_l.py",
+      "p62_05_cerrar.py",
+      "p62_09_cobertura.py",
+      "p63_01_gap_analysis.py",
+      "p63_02_id_forensics.py",
+      "p63_10_cerrar.py",
+      "p65_00_audit_gap.py",
+      "v11_00_reconciliacion.py",
+      "v11_08_cierre_y_tabla_maestra.py",
+      "v11_09_cierre_entregables.py",
+      "v12_00_auditoria_brecha.py",
+      "v12_03_entrenamiento_por_pares.py",
+      "v12_05_informe_final.py",
+      "v12_05_registrar.py",
+      "v19_03_diagnosticos_y_dictamen.py",
+      "v22_02_preprocessing_historic_vs_raw.py",
+      "v22_03_all_but_the_top.py",
+      "v24_03_sonda_knn_predictor.py",
+      "v48_00_eda_traceability.py",
+      "v48_01_residual_atlas.py",
+      "v49_00_rescate_forense.py",
+      "v52_00_auditoria_y_techo.py",
+      "v52_01_integrar_notebook.py",
+      "v6_00_gap_analysis.py",
+      "v6_05_skipgrams.py",
+      "v6_09_entregables.py",
+      "v7_00_gap_audit.py",
+      "v7_01_perdida_f1.py",
+      "v7_02_prior_grupo.py",
+      "v7_04_entregables.py"
+    ],
+    "cohesion_interna": [
+      "27_label_consistency_v4.py",
+      "p65_00_audit_gap.py",
+      "v24_03_sonda_knn_predictor.py",
+      "v24_03b_perfil_de_celdas.py",
+      "v28_01_diagnostico_errores.py",
+      "v28_02_integrar_notebook.py",
+      "v29_02_similitudes_laxas.py",
+      "v29_03_vecinos_corrigen_errores.py",
+      "v29_04_transformaciones_contradictorias.py",
+      "v29_05_integrar_notebook.py",
+      "v34_01_frontera.py",
+      "v53_00_politica_fina.py",
+      "v53_01_integrar_notebook.py"
+    ],
+    "covariate_shift": [
+      "p65_00_audit_gap.py",
+      "v10_07_shift_features.py"
+    ],
+    "contraste": [
+      "16_targeting_v2.py",
+      "20_emocion_nbsvm_ortografia_v2.py",
+      "p62_01_eda_linguistica.py",
+      "p65_00_audit_gap.py"
+    ],
+    "word_char_producto": [
+      "p65_00_audit_gap.py",
+      "v6_00_gap_analysis.py"
+    ],
+    "especialista_largo": [
+      "01_eda_linguistico.py",
+      "06_error_analysis.py",
+      "11_dl_desde_cero.py",
+      "21_backlog_restante_v2.py",
+      "24_informe_final_candidatos.py",
+      "p59_10_grafo_regularizacion.py",
+      "p59_12_informe_final.py",
+      "p59_90_integrar_notebook.py",
+      "p63_01_gap_analysis.py",
+      "p65_00_audit_gap.py",
+      "v12_00_auditoria_brecha.py",
+      "v28_01_diagnostico_errores.py",
+      "v28_02_integrar_notebook.py",
+      "v6_00_gap_analysis.py",
+      "v7_00_gap_audit.py"
+    ]
+  },
+  "por_que_se_lee_el_codigo": "con 359 filas una busqueda por nombre devuelve las mismas filas para cualquier patron que aparezca en una pregunta, luego la clasificacion tiene que ser FUNCIONAL: que calcula la representacion, no como se llama",
+  "tabla": [
+    {
+      "familia": "skip-grams con hueco 1 y huecos 1 y 2",
+      "estado": "EXACT_DUPLICATE",
+      "antecedente": "V6-05 (experiments/v6_05_skipgrams.py)",
+      "resultado": "-0,0001 con IC95 que incluye el 0, vocabulario +83 por ciento",
+      "por_que_equivale": "cambio el analizador del bloque de palabras para que los pares con hueco compitan con las palabras por el mismo presupuesto L2, que es exactamente la mecanica que se quiere probar",
+      "nuevo": "",
+      "prioridad": "-",
+      "experimento": 0
+    },
+    {
+      "familia": "pares lejanos a 3-5 y 6-10 tokens",
+      "estado": "PARTIAL_PRECEDENT",
+      "antecedente": "V6-05 llego hasta hueco 2; 16_targeting_v2 midio distancias target-insulto con lexico inducido",
+      "resultado": "V6-05 neutral en huecos cortos y 16 Targeting fue un problema distinto",
+      "por_que_equivale": "no del todo: los huecos grandes no se midieron y una distancia entre un target y un insulto con lexico no es un par lexico sparse de anchura desconocida",
+      "nuevo": "huecos de 3 a 5 y de 6 a 10 tokens, en canal sparse con presupuesto L2",
+      "prioridad": 1,
+      "experimento": 1
+    },
+    {
+      "familia": "word (1,3) anadido a V03",
+      "estado": "PARTIAL_PRECEDENT",
+      "antecedente": "REP-04 (experiments/03_variantes_representaciones.py)",
+      "resultado": "REP-04 midio word (1,3) SUELTO con C=1.0 y sin bloque char, macro_f1 0,8062 y descartada",
+      "por_que_equivale": "no del todo. Aquello sustituyo la representacion y cambio C. Aqui se anade a V03 manteniendo char (3,5), C=2.0, umbrales y pliegues, y se mide el delta sobre el baseline congelado",
+      "nuevo": "la adicion, que es la unica forma en que la pregunta esta formulada",
+      "prioridad": 1,
+      "experimento": 1
+    },
+    {
+      "familia": "word (1,4) anadido a V03",
+      "estado": "PARTIAL_PRECEDENT",
+      "antecedente": "nunca medido en el bloque de palabras; los (1,4) del codigo son POS (19_sintaxis_cita_negacion_v2.py) y una rejilla de Optuna",
+      "resultado": "no aplica",
+      "por_que_equivale": "no aplica: es un orden superior y solo se ejecuta si el (1,3) muestra evidencia, por regla del encargo",
+      "nuevo": "orden 4",
+      "prioridad": 2,
+      "experimento": 1
+    },
+    {
+      "familia": "canal de negacion como patrones",
+      "estado": "EXACT_DUPLICATE",
+      "antecedente": "E2-08 y E2-08-TXT (19_sintaxis_cita_negacion_v2.py)",
+      "resultado": "-0,2505 sola y -0,0115 sobre V03",
+      "por_que_equivale": "misma adicion, mismo LR. P64-07 fue mas lejos con el alcance a distancia 1, 2 y 3 y con el efecto sobre la evidencia, y tambien cerro",
+      "nuevo": "",
+      "prioridad": "-",
+      "experimento": 0
+    },
+    {
+      "familia": "canal cita y atribucion",
+      "estado": "EXACT_DUPLICATE",
+      "antecedente": "E2-07, E2-07-TXT y E2-07-CITA-NEG-TXT",
+      "resultado": "-0,0335, -0,0218 y -0,0220",
+      "por_que_equivale": "separo el texto dentro y fuera de comillas con dos representaciones word(1,2), que es el mecanismo. Y P64-06 midio ademas que el corpus tiene 39 filas con comillas y solo una con interior no vacio, luego no hay estructura que medir",
+      "nuevo": "",
+      "prioridad": "-",
+      "experimento": 0
+    },
+    {
+      "familia": "frontera de mencion",
+      "estado": "FUNCTIONAL_DUPLICATE",
+      "antecedente": "P64-06",
+      "resultado": "-0,0187 con brecha -0,0092 contra el aleatorio",
+      "por_que_equivale": "la evidencia antes y despues del simbolo @ ya se midio con 60 columnas y dos controles",
+      "nuevo": "",
+      "prioridad": "-",
+      "experimento": 0
+    },
+    {
+      "familia": "alcance de contraste",
+      "estado": "GENUINELY_NEW",
+      "antecedente": "ninguno. Las apariciones de 'pero' y 'aunque' en el codigo son menciones textuales, no un mecanismo",
+      "resultado": "no aplica",
+      "por_que_equivale": "no aplica. La hipotesis no es que el marcador este presente sino que la evidencia cambia de lado al cruzarlo, y eso no se midio",
+      "nuevo": "pares de marcador con la palabra alcanzada, en las dos direcciones",
+      "prioridad": 1,
+      "experimento": 1
+    },
+    {
+      "familia": "cohesion documental interna",
+      "estado": "GENUINELY_NEW",
+      "antecedente": "V10-07 es shift de covariables ENTRE tren y prueba, que es otro objeto",
+      "resultado": "no aplica",
+      "por_que_equivale": "no aplica. La cohesion es una propiedad DENTRO del documento y el shift de V10-07 es una propiedad ENTRE poblaciones",
+      "nuevo": "coseno entre segmentos, solapamiento de vocabulario, repeticion cruzada y cambio lexico, primero como diagnostico",
+      "prioridad": 1,
+      "experimento": 1
+    },
+    {
+      "familia": "interaccion palabra x forma superficial",
+      "estado": "PARTIAL_PRECEDENT",
+      "antecedente": "la UNION word + char_wb es una suma de canales, no un producto",
+      "resultado": "no aplica",
+      "por_que_equivale": "parcial: el producto categorico no se midio, pero tampoco aporta una hipotesis clara sin convertir el espacio en un producto que compite con el presupuesto",
+      "nuevo": "no se abre: sin hipotesis propia, un producto de pares es capacidad, y el control de capacidad ya lo decidio",
+      "prioridad": "-",
+      "experimento": 0
+    },
+    {
+      "familia": "modelo multiple-instance",
+      "estado": "EXACT_DUPLICATE",
+      "antecedente": "P64-05 con la cobertura corregida de P59-07",
+      "resultado": "-0,0549 con neto -400",
+      "por_que_equivale": "es el mismo experimento, ya ejecutado",
+      "nuevo": "",
+      "prioridad": "-",
+      "experimento": 0
+    },
+    {
+      "familia": "agregadores segmentales",
+      "estado": "EXACT_DUPLICATE",
+      "antecedente": "P64-03, P64-04 y P64-05",
+      "resultado": "brechas contra el margen negativas o casi nulas",
+      "por_que_equivale": "cerrado en P64",
+      "nuevo": "",
+      "prioridad": "-",
+      "experimento": 0
+    },
+    {
+      "familia": "mezcla de temas",
+      "estado": "EXACT_DUPLICATE",
+      "antecedente": "P64-08 mas cinco factorizaciones previas",
+      "resultado": "-0,0046 con brecha -0,0021 contra el control de anchura",
+      "por_que_equivale": "sexta factoriazacion latente medida y cerrada",
+      "nuevo": "",
+      "prioridad": "-",
+      "experimento": 0
+    },
+    {
+      "familia": "POS, dependencias y morfologia",
+      "estado": "EXACT_DUPLICATE",
+      "antecedente": "P62-01 a P62-05 y E2-03, E2-04",
+      "resultado": "cerrados en ambas fases",
+      "por_que_equivale": "repetido por el encargo",
+      "nuevo": "",
+      "prioridad": "-",
+      "experimento": 0
+    },
+    {
+      "familia": "especialista de tweets largos",
+      "estado": "GENUINELY_NEW",
+      "antecedente": "P63 y P64 midieron el MARGEN por rebanada; nadie entreno un MODELO especializado",
+      "resultado": "no aplica",
+      "por_que_equivale": "no aplica. Un margen medido no es un modelo, y un modelo entrenado en el subconjunto largo es una pregunta distinta",
+      "nuevo": "V03 global mas un especialista entrenado en LARGA y MUY_LARGA, con puerta determinista y tres controles",
+      "prioridad": 1,
+      "experimento": 1
+    },
+    {
+      "familia": "min_df y presupuesto de vocabulario",
+      "estado": "EXACT_DUPLICATE",
+      "antecedente": "P62-03, P62-05 y R2-MINDF5",
+      "resultado": "cerrados",
+      "por_que_equivale": "repetido por el encargo",
+      "nuevo": "",
+      "prioridad": "-",
+      "experimento": 0
+    }
+  ],
+  "n_abiertas": 6,
+  "n_cerradas": 10,
+  "cortes_de_longitud_congelados": [
+    {
+      "nombre": "CORTA",
+      "desde": 0,
+      "hasta": 6
+    },
+    {
+      "nombre": "MEDIA",
+      "desde": 7,
+      "hasta": 15
+    },
+    {
+      "nombre": "LARGA",
+      "desde": 16,
+      "hasta": 30
+    },
+    {
+      "nombre": "MUY_LARGA",
+      "desde": 31,
+      "hasta": 1000000000
+    }
+  ],
+  "reproducibilidad": {
+    "nivel": "R2",
+    "git_commit": "b11fa4f",
+    "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "corrected_cv": 0.7772114525165721
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}
