@@ -1,0 +1,8 @@
+candidato,corrected_cv_regenerado,delta_regenerado,delta_reportado,diferencia,estado,min,max,validas_01,nota
+MI_arbol,0.7717741807,-0.0054372718,-0.0091686799,0.003731408085,NO_VERIFICABLE,0.004069,0.987075,True,"el bloque de entrada era un .npz de features/, que esta en .gitignore y ya no existe. El numero historico no es reproducible ni comprobable, luego el numero REGENERADO es su referencia"
+negacion,0.7735886795,-0.0036227731,-0.0021826774,-0.001440095656,DIFERENCIA_NO_RESUELTA,0.013227,0.998479,True,"se identifico una causa parcial: el brazo original de P64-07 concatenaba SIN normalizar a la norma del bloque base, y aqui se replica. La diferencia que queda no esta resuelta y se DECLARA en vez de camuflarla. P66 usa el score regenerado, que es out-of-fold de verdad"
+word_1_3,0.7732593837,-0.0039520688,-0.0039520688,3e-11,REPRODUCE,0.011911,0.999041,True,"reproduce exactamente la fase de origen, con diferencia del orden de 1e-11"
+cohesion,0.7745024464,-0.0027090062,-0.0027090062,3.7e-11,REPRODUCE,0.023161,0.997094,True,"reproduce exactamente la fase de origen, con diferencia del orden de 1e-11"
+huecos_1_2,0.7761598617,-0.0010515908,-0.0010515908,-1.6e-11,REPRODUCE,0.013972,0.996575,True,"reproduce exactamente la fase de origen, con diferencia del orden de 1e-11"
+contraste,0.7748262592,-0.0023851933,-0.0023851933,-4.6e-11,REPRODUCE,0.014787,0.998576,True,"reproduce exactamente la fase de origen, con diferencia del orden de 1e-11"
+huecos_6_10,0.7697723394,-0.0074391131,-0.0074391131,-1.3e-11,REPRODUCE,0.015829,0.998987,True,"reproduce exactamente la fase de origen, con diferencia del orden de 1e-11"
