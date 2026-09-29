@@ -1,0 +1,28 @@
+tipo,clave,valor
+brazo,V03_seg,0.752035287
+brazo_delta,V03_seg,-0.0251761655
+brazo,V03_random,0.7603432554
+brazo_delta,V03_random,-0.0168681972
+brazo,V03_margen,0.766131252
+brazo_delta,V03_margen,-0.0110802005
+brecha_contra_capacidad,,-0.0083079683
+brecha_contra_el_margen,,-0.014095965
+distribucion,todas,1483,0.117346,0.10811,0.014351,0.392179,0.064899,0.223652,0.97531
+distribucion,V03 correcto,1042,0.124701,0.124662,0.011089,0.43909,0.057642,0.19747,0.980546
+distribucion,V03 incorrecto,441,0.099967,0.069003,0.02206,0.281335,0.082044,0.285517,0.962937
+distribucion,error de alta confianza,295,0.118601,0.074027,0.020059,0.292662,0.078875,0.277478,0.962667
+distribucion,CORTA,167,0.273335,0.072873,0.011507,0.266467,0.045926,0.10481,1.0
+distribucion,MEDIA,602,0.132192,0.108506,0.012444,0.393189,0.05547,0.156537,0.993984
+distribucion,LARGA,547,0.06997,0.117756,0.014582,0.446446,0.070422,0.262714,0.974935
+distribucion,MUY_LARGA,167,0.063015,0.110328,0.023314,0.336496,0.099769,0.456486,0.884528
+auc,evidencia_positiva_HS,0.556752
+auc,evidencia_conflicto_HS,0.604785
+auc,desacuerdo_HS,0.394698
+auc,desviacion_HS,0.590605
+auc,evidencia_positiva_agregada,0.565074
+auc,margen_de_V03_para_predecir_el_ACIERTO,0.770875
+auc,evidencia_positiva_HS_contra_el_ACIERTO,0.443248
+auc,evidencia_conflicto_HS_contra_el_ACIERTO,0.395215
+auc,desacuerdo_HS_contra_el_ACIERTO,0.605302
+auc,desviacion_HS_contra_el_ACIERTO,0.409395
+auc,evidencia_positiva_agregada_contra_el_ACIERTO,0.434926
