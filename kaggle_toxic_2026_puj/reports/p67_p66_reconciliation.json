@@ -1,0 +1,177 @@
+{
+  "familia": "P67_RECONCILIACION",
+  "naturaleza": "AUDITORIA. 0 fusiones, 0 modelos, 0 artefactos nuevos",
+  "fecha": "2026-09-29T16:26:25+00:00",
+  "experiment_id": "P67-00",
+  "script": "experiments/p67_00_reconciliacion.py",
+  "pregunta": "de donde sale cada numero de P66 y cual es el valido",
+  "resultado": "dos mecanismos distintos, no dos versiones de uno",
+  "final_valido": 0.0026743167,
+  "final_valido_mecanismo": "MI_arbol con CORRECCION RESIDUAL anidada",
+  "dimension_del_efecto_en_celdas": 4.01,
+  "n_filas": 1483,
+  "reconciliacion": [
+    {
+      "reported_value": 0.0033068923,
+      "source_report": "reports/p66_score_fusion.md y .json",
+      "script": "experiments/p66_02_fusion_espacio_scores.py",
+      "code_version": "commit 9f75317, con el barajado de blend_prob ya corregido",
+      "mechanism": "MI_arbol con MEZCLA LINEAL de probabilidades",
+      "nested_status": "anidado tras corregir _inner_split",
+      "control_status": "barajado, delta del control -0,0060147443",
+      "pliegues_positivos": 3,
+      "validity": "el numero es correcto para SU mecanismo",
+      "classification": "NON_COMPARABLE",
+      "final_status": "NO es la version corregida de la otra cifra. Es otro mecanismo, con menos pliegues positivos y por tanto fuera del gate de 4/5"
+    },
+    {
+      "reported_value": 0.0026743167,
+      "source_report": "reports/p66_complementarity.md y .json",
+      "script": "experiments/p66_03_complementariedad_bootstrap.py",
+      "code_version": "commit 9f75317, mismo bloque de scores que el anterior",
+      "mechanism": "MI_arbol con CORRECCION RESIDUAL anidada",
+      "nested_status": "anidado: a y b0 en inner_train, beta en inner_validation",
+      "control_status": "barajado, delta del control -0,0014390421",
+      "pliegues_positivos": 4,
+      "validity": "el numero es correcto para SU mecanismo",
+      "classification": "FINAL_VALID_P66_RESULT",
+      "final_status": "es el unico valor que cumple delta >= +0,0015 y >= 4/5 pliegues. Es el resultado valido de P66 y el unico que P67 debe intentar confirmar"
+    },
+    {
+      "reported_value": 0.0041133588,
+      "source_report": "reports/p66_complementarity.md, columna brecha de atribucion",
+      "script": "experiments/p66_03_complementariedad_bootstrap.py",
+      "code_version": "commit 9f75317",
+      "mechanism": "delta del residual menos el delta del control barajado",
+      "nested_status": "no aplica, es una resta de dos resultados",
+      "control_status": "el control es un SUELO, no un cero",
+      "pliegues_positivos": "",
+      "validity": "la RESTA es correcta como aritmetica",
+      "classification": "CORRECTED",
+      "final_status": "reinterpretada: no es 'informacion atribuida'. Es 'cuanto le costaria a la misma operacion con ruido en vez de senal', mas el beneficio. La lectura defendible es que el score REAL bate al BARRAJADO, no que la mejora valga esta cantidad"
+    },
+    {
+      "reported_value": 0.0093216366,
+      "source_report": "reports/p66_score_fusion.md, brecha de atribucion del blend",
+      "script": "experiments/p66_02_fusion_espacio_scores.py",
+      "code_version": "commit 9f75317",
+      "mechanism": "delta del blend menos el delta del control barajado",
+      "nested_status": "no aplica",
+      "control_status": "el control es un SUELO y aqui es muy profundo, -0,006",
+      "pliegues_positivos": "",
+      "validity": "la RESTA es correcta como aritmetica",
+      "classification": "INVALIDATED",
+      "final_status": "casi dos tercios de esta cifra son el dano evitado de usar ruido, no senal del candidato. Como medida de informacion atribuida queda invalidada"
+    },
+    {
+      "reported_value": -0.0060147443,
+      "source_report": "reports/p66_score_fusion.md, control barajado del blend",
+      "script": "experiments/p66_02_fusion_espacio_scores.py",
+      "code_version": "commit 9f75317",
+      "mechanism": "la MISMA operacion con el score del candidato barajado",
+      "nested_status": "anidado igual que el real",
+      "control_status": "es el control",
+      "pliegues_positivos": "",
+      "validity": "el numero es correcto",
+      "classification": "ORIGINAL",
+      "final_status": "el suelo. Su profundidad es en si misma informacion: la operacion con ruido cuesta casi el doble de lo que la senal real aporta"
+    },
+    {
+      "reported_value": -0.0044311634,
+      "source_report": "reports/p66_complementarity.md, percentil 2,5 del bootstrap",
+      "script": "experiments/p66_03_complementariedad_bootstrap.py",
+      "code_version": "commit 9f75317",
+      "mechanism": "extremo inferior del IC95 del residual, por grupos",
+      "nested_status": "no aplica",
+      "control_status": "no aplica",
+      "pliegues_positivos": "",
+      "validity": "el numero es correcto",
+      "classification": "ORIGINAL",
+      "final_status": "equivale a perder unas 7 celdas. Es el otro extremo del hecho de que la incertidumbre domina el efecto"
+    },
+    {
+      "reported_value": 0.0102108745,
+      "source_report": "reports/p66_complementarity.md, percentil 97,5 del bootstrap",
+      "script": "experiments/p66_03_complementariedad_bootstrap.py",
+      "code_version": "commit 9f75317",
+      "mechanism": "extremo superior del IC95 del residual, por grupos",
+      "nested_status": "no aplica",
+      "control_status": "no aplica",
+      "pliegues_positivos": "",
+      "validity": "el numero es correcto",
+      "classification": "ORIGINAL",
+      "final_status": "equivale a ganar unas 15 celdas"
+    }
+  ],
+  "reclasificaciones": {
+    "brecha_atribucion_blend": "INVALIDATED",
+    "brecha_atribucion_residual": "CORRECTED",
+    "delta_blend": "NON_COMPARABLE",
+    "delta_residual": "FINAL_VALID_P66_RESULT"
+  },
+  "por_que_la_atribucion_was_inflada": "el control barajado es un SUELO y no un cero: es lo que cuesta la MISMA operacion cuando el candidato no lleva senal. Restarlo resta el dano evitado. En el blend, la mayor parte de la 'brecha' es eso y no informacion del candidato",
+  "auditoria_nested": [
+    {
+      "comprobacion": "_inner_split YA NO devuelve (ir, ir)",
+      "presente_en_el_codigo": false,
+      "nota": "el bug era devolver el mismo conjunto dos veces. Se verifica que el codigo ACTUAL ya no lo hace, que es la forma de comprobar que la correccion llego antes del numero reportado"
+    },
+    {
+      "comprobacion": "ahora usa StratifiedKFold",
+      "presente_en_el_codigo": true,
+      "nota": "el split interno es real y estratificado por la etiqueta"
+    },
+    {
+      "comprobacion": "beta se selecciona en i_va",
+      "presente_en_el_codigo": true,
+      "nota": "beta se elige sobre inner_validation"
+    },
+    {
+      "comprobacion": "a y b0 se ajustan en i_tr",
+      "presente_en_el_codigo": true,
+      "nota": "la regresion residual se ajusta solo en inner_train"
+    },
+    {
+      "comprobacion": "la normalizacion de longitud usa el entrenamiento",
+      "presente_en_el_codigo": true,
+      "nota": "la media y la desviacion de longitud salen del entrenamiento del pliegue"
+    }
+  ],
+  "nested_correcto": false,
+  "lo_que_falta_y_una_revision_apunto": [
+    {
+      "medida": "tasa base de los errores en la banda del umbral",
+      "por_que": "sin el total de errores de V03 y de errores en la banda, el '47 de 53' no se puede interpretar en ninguna direccion"
+    },
+    {
+      "medida": "AUC del residuo contra la etiqueta, estratificado por margen",
+      "por_que": "es el discriminante directo entre representacion y calibracion, y no se midio"
+    },
+    {
+      "medida": "el perfil de margen del control barajado",
+      "por_que": "sin el, el '47 de 53' no se puede ni apoyar ni refutar"
+    },
+    {
+      "medida": "reentreno anidado del umbral",
+      "por_que": "un escalar por etiqueta. Si reproduce el efecto, todo es calibracion"
+    },
+    {
+      "medida": "cuantos grupos hay para el bootstrap",
+      "por_que": "el IC95 depende de los grados de libertad del remuestreo"
+    },
+    {
+      "medida": "significacion del conteo de 4 de 5 pliegues",
+      "por_que": "bajo la nula de signos, P(al menos 4 de 5) = 0,1875, luego no es evidencia"
+    }
+  ],
+  "conclusion_que_no_cambia": "ninguno de los dos mecanismos se promueve. El IC95 del residual incluye el cero y eso no depende de la aritmetica de la atribucion",
+  "conclusion_que_si_cambia": "las cifras de atribucion dejan de ser 'informacion atribuida' y pasan a ser 'cuanto cuesta la misma operacion con ruido'. El valor defendible del blend es +0,0033 y el del residual +0,0027, no las brechas",
+  "historia_no_se_sobreescribe": true,
+  "reproducibilidad": {
+    "nivel": "R2",
+    "git_commit": "51b0c2b",
+    "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "corrected_cv": 0.7772114525165721
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}
