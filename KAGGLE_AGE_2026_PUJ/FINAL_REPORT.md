@@ -743,3 +743,84 @@ las reglas de AGE en sus fuentes obvias.
 - **Duplicacion algebraica**: EMD2 es la familia acumulativa CORAL con perdida L2.
 - **Registros**: 5 candidatos, 21 duplicaciones, 25 metodos rechazados con motivo.
 - **Conclusion**: no existe razon cientifica para reabrir. Ver D-070.
+
+---
+
+# CIERRE FORMAL DE AGE (2026-10-09) - `AGE_RESEARCH_CLOSED`
+
+> Estado congelado definitivo. Esta seccion es el acta de cierre: si algo de lo anterior
+> contradice lo de aqui, manda esto.
+
+## Los tres numeros
+
+```text
+V30 corrected_cv      = 0.6134471
+V30 particion alterna = 0.6143347
+V30 leaderboard       = 0.63302
+```
+
+No son intercambiables. 0.6134471 es la unica configuracion reproducible desde los artefactos **y**
+la que se envio. 0.6143347 es una **reejecucion con reentrenamiento** sobre los mismos grupos con
+otra semilla: su diferencia con la primera es reentrenamiento en el 99 %, medido. 0.63302 es
+evidencia de transferencia y nunca se uso para seleccionar nada.
+
+## Estado de cada linea
+
+| Linea | Veredicto |
+|---|---|
+| G14 auditoria de informacion de entrada | **NOT_ACTIONABLE** |
+| P33 residuo global | **CLOSED** |
+| P34 correccion local por pares | **INVALIDATED** |
+| G12 pendiente sobre el margen | **CLOSED** |
+| Revision bibliografica 2026 | **NO_NEW_METHOD** |
+| C1 perdidas distancia-conscientes | **LATENT / NO EJECUTADA** |
+
+## La conclusion, con sus tres negaciones
+
+> **No se afirma que V30 sea optimo.**
+> **No se afirma que AGE sea imposible de mejorar.**
+> Se afirma que, dentro de las restricciones vigentes, los inputs legalmente disponibles y los
+> mecanismos auditados, **no queda actualmente una hipotesis nueva con justificacion suficiente
+> para reabrir la investigacion**.
+
+## La cobertura que sostiene la afirmacion
+
+```text
+39 mecanismos auditados
+23 USED          9 CLOSED          1 INVALIDATED
+ 1 NOT_ACTIONABLE 5 NOT USED       0 GENUINELY_NEW con justificacion suficiente
+```
+
+Los cinco `NOT USED` se cierran con medicion: focal loss, hard example mining y label smoothing
+apuntan a la poblacion A (27.430 filas sin ninguna de 26 fuentes que las corrija) y a la frontera,
+donde P34 midio que el ruido aleatorio gana. `ranking objective` no mueve macro-F1. `bootstrap de
+grupos` es varianza con otra unidad, y el bagging ya se cerro en -0,000312.
+
+## C1, latente y con su control
+
+**No se ejecuta.** Su expectativa honesta es no cruzar el gate, y la evidencia publicada dice que el
+trade-off ordinal/nominal va en contra de macro-F1 (Vargas et al., IEEE TKDE 2026; Kasai et al.,
+texto). Queda con su control disenado: tres brazos (CE one-hot, label smoothing, kernel con
+etiquetas permutadas) y gate doble (delta >= +0,0015 con 4/5 folds **y** delta > 8,9e-04).
+
+## Las equivalencias que impiden reabrir por error
+
+1. `EMD2(one-hot) = suma_k (F_pred(k) - 1[y<=k])^2` -> es la familia acumulativa CORAL, cerrada.
+2. El minimizador esperado de **Ord-NLL** es un target suave -> colapsa a C1.
+3. Los **targets suaves** son un **superconjunto** de label smoothing -> cerrado por argumento,
+   y ahora por evidencia.
+
+## Correcciones de auditoria conservadas
+
+| Se reporto | Correcto | Causa |
+|---|---|---|
+| A = 27.007 | **27.430** | enmascarado en los miembros de V30 |
+| 122 rescates exclusivos | **8.029** | definiciones distintas, ninguna erronea |
+| OOF de V31-03 como probabilidades | son **`decision_function`** | dividir por la suma invierte el orden: 0,5048 -> 0,0445 |
+
+## Como se reabriria
+
+Con **evidencia nueva** que cambie el diagnostico, un **cambio de restriccion** (los metadatos o los
+modelos preentrenados son donde la literatura situa la mayor parte de la ganancia), o una
+**hipotesis cientificamente distinta** que no este entre las 39 auditadas. Cambiar el `beta` de una
+familia cerrada no cumple ninguna de las tres.

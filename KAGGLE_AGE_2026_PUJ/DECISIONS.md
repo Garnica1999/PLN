@@ -2325,3 +2325,103 @@ Tras declarar la saturación se probó la vía indicada como trabajo futuro:
   mismo-proceso. Lo que **no** se afirma: que V30 sea optimo, ni que no exista ninguna mejora
   posible. Lo que si: la literatura no ofrece un mecanismo que AGE no haya cubierto o que no
   empuje contra su metrica.
+
+---
+
+## D-071 - Acta de cierre de AGE: `AGE_RESEARCH_CLOSED`
+
+- **Decision**: se cierra formalmente la investigacion de AGE. **No se ejecuta C1 ni ninguna otra
+  falsacion.** V30 permanece como mejor resultado validado y como baseline congelado.
+
+- **Estado congelado, y es el dato que gobierna todo lo demas**:
+
+  ```text
+  V30 corrected_cv      = 0.6134471
+  V30 particion alterna = 0.6143347
+  V30 leaderboard       = 0.63302
+  ```
+
+  Los tres numeros son distintos y **no son intercambiables**: 0,6134471 es la unica configuracion
+  reproducible desde los artefactos y la que se envio; 0,6143347 es una **reejecucion con
+  reentrenamiento** sobre los mismos grupos con otra semilla, y su diferencia con la primera es
+  reentrenamiento en el 99 %, medido; 0,63302 es el leaderboard, evidencia de transferencia que no
+  se uso para seleccionar nada.
+
+- **Estado de cada linea, cerrado y con su veredicto**:
+
+  | Linea | Veredicto |
+  |---|---|
+  | G14 auditoria de entrada | **NOT_ACTIONABLE** |
+  | P33 residuo global | **CLOSED** |
+  | P34 correccion local por pares | **INVALIDATED** |
+  | G12 pendiente sobre el margen | **CLOSED** |
+  | Revision bibliografica | **NO_NEW_METHOD** |
+  | C1 perdidas distancia-conscientes | **LATENT / NO EJECUTADA** |
+
+- **La conclusion metodologica, con sus tres negaciones explicitas**:
+
+  > **No se afirma que V30 sea optimo.** **No se afirma que AGE sea imposible de mejorar.** Se
+  > afirma que, dentro de las restricciones vigentes, los inputs legalmente disponibles y los
+  > mecanismos auditados, **no queda actualmente una hipotesis nueva con justificacion suficiente
+  > para reabrir la investigacion**.
+
+  La formulacion importa: la primera y la segunda negacion evitan vender un cierre como un optimo, y
+  la tercera acota la afirmacion al espacio auditado en vez de al espacio entero. Un cierre honesto
+  no puede ser mas amplio que su auditoria.
+
+- **La cobertura auditada, que es lo que sostiene la tercera afirmacion**:
+
+  ```text
+  39 mecanismos auditados
+  23 USED          9 CLOSED          1 INVALIDATED
+   1 NOT_ACTIONABLE 5 NOT USED       0 GENUINELY_NEW con justificacion suficiente para ejecutar
+  ```
+
+  Los cinco `NOT USED` no quedan en el limbo: **focal loss**, **hard example mining** y **label
+  smoothing** apuntan a los ejemplos dificiles y a la frontera, que es la poblacion A (27.430 filas
+  donde ninguna de 26 fuentes acierta) y donde P34 midio que el ruido aleatorio gana a la senal
+  real. **ranking objective** no mueve la metrica evaluada. **bootstrap de grupos** es reduccion de
+  varianza con otra unidad de remuestreo, y el bagging del meta-modelo ya se cerro en -0,000312.
+
+- **C1 queda LATENT, y se documenta con su control por si se revisa**:
+
+  | Campo | Valor |
+  |---|---|
+  | Hipotesis | codificar en el objetivo que confundir 13-17 con 18-24 es menos grave que con 65-xx cambia la geometria del ajuste |
+  | Evidencia a favor | SORD (CVPR 2019) mejora exactitud en Adience en dos replicas independientes; Vargas et al. (TKDE 2026) encuentra que el etiquetado suave mejora la generalizacion ordinal |
+  | Evidencia en contra | **el mismo Vargas et al. dice que la CE categorica rinde mejor en promedio en metricas NOMINALES**, y Kasai et al. (texto) lo confirma: hay un trade-off y la mejora ordinal se paga con metricas nominales |
+  | Por que no se ejecuta | macro-F1 es nominal. La expectativa honesta es **no cruzar el gate**, y el brief pide decidir si reabrir, no gastar en una falsacion |
+  | Control ya disenado | tres brazos: CE one-hot, label smoothing uniforme (el cierre de la auditoria), y kernel con etiquetas permutadas (regularizacion pura). Gate: delta >= +0,0015 con 4/5 folds **y** delta > 8,9e-04 con signo consistente |
+  | Diferencia con lo cerrado | no es CORAL (K-1 salidas acumulativas) ni pairwise (K(K-1)/2 binarios); **si es un superconjunto de label smoothing**: con q_k = exp(-beta|k-y|^2) colapsa a LS cuando beta tiende a 0 |
+
+- **Las equivalencias algebraicas, conservadas porque son anticiclicas**: sin ellas, una iteracion
+  futura volveria a proponer como nuevas tres tecnicas que ya estan cubiertas.
+
+  1. `EMD2(one-hot) = suma_k (F_pred(k) - 1[y<=k])^2`. El objetivo que la literatura presenta como
+     ordinal distinto **es** la familia acumulativa CORAL/all-threshold con perdida L2, cerrada en
+     V22/V23/H10/D-058.
+  2. El minimizador esperado de **Ord-NLL** es un target suave (Corollary 1 de su propio paper):
+     colapsa a C1 en expectativa.
+  3. Los **targets suaves** son un superconjunto de **label smoothing**: su gradiente es `p - q =
+     (p - e_y) + (e_y - q)`, es decir CE one-hot mas un **sesgo fijo dependiente de la clase**, no
+     una superficie de decision distinta.
+
+- **Los errores de auditoria corregidos, conservados con su numero correcto**:
+
+  | Lo que se reporto | Lo correcto | Causa |
+  |---|---|---|
+  | A = 27.007 | **27.430** | enmascarado enrevesado para excluir a los miembros de V30 de su propio rescate |
+  | 122 rescates exclusivos | **8.029** | definiciones distintas: el previo medía otra cosa. Ninguno de los dos es erroneo |
+  | OOF de V31-03 como probabilidades | son **`decision_function`** | dividirlos por la suma de su fila **invierte el orden**: F1 0,5048 -> 0,0445 |
+  | "soft labels ya cerrado" | cerrado **por argumento, no por medicion** | 0 scripts, 0 menciones; el proyecto entero tiene 2 perdidas custom |
+
+  Y los **falsos positivos de mis propias busquedas por regex**, declarados para que nadie los
+  repita como evidencia: `complement` matcheaba "complementario" en espanol (391 veces) y `sord`
+  matcheaba `tensordot` (15 veces).
+
+- **Consequences**: la investigacion queda cerrada con el mapa auditado **dos veces**, contra el
+  codigo del proyecto y contra la literatura 2020-2026. Una reapertura futura tendria que apoyarse
+  en una de tres cosas: **evidencia nueva** que cambie el diagnostico, un **cambio de restriccion**
+  (por ejemplo que se permitieran metadatos o modelos preentrenados, que es donde la literatura
+  situa la mayor parte de la ganancia), o una **hipotesis cientificamente distinta** que no este en
+  las 39 auditadas. Cambiar el `beta` de una familia cerrada no cumple ninguna de las tres.

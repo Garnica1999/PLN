@@ -2004,3 +2004,21 @@ intacto.
 - **Duplicaciones:** 21 pares. La mas contundente es algebraica: EMD2 = familia acumulativa CORAL.
 - **Rechazados:** 25 metodos con motivo documentado.
 - **Compliance:** 0 hallazgos. **Artefactos de V30 tocados:** 0.
+
+
+---
+
+## Cierre formal de AGE · 2026-10-09
+
+- **Resultado:** `AGE_RESEARCH_CLOSED`. Acta completa en D-071.
+- **Estado congelado:** V30 corrected_cv **0.6134471** | particion alterna 0.6143347 | leaderboard
+  **0.63302**. Los tres no son intercambiables.
+- **Lineas:** G14 NOT_ACTIONABLE | P33 CLOSED | P34 INVALIDATED | G12 CLOSED | literatura
+  NO_NEW_METHOD | C1 LATENT sin ejecutar.
+- **Cobertura:** 39 mecanismos (23 USED, 9 CLOSED, 1 INVALIDATED, 1 NOT_ACTIONABLE, 5 NOT USED),
+  0 genuinamente nuevos con justificacion suficiente.
+- **Conclusion:** no se afirma que V30 sea optimo ni que AGE sea imposible de mejorar; se afirma que
+  no queda hipotesis nueva con justificacion suficiente para reabrir.
+- **Entrenamiento: 0. Submissions: 0.** Leaderboard, test y holdout: sin tocar.
+- **Evidencia conservada:** las tres equivalencias algebraicas, los tres errores de auditoria
+  corregidos con su numero correcto, y C1 con su control disenado y su motivo de no ejecucion.
