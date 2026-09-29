@@ -410,7 +410,7 @@ def _md(tabla: pd.DataFrame, conclusion: str) -> None:
     lineas = [
         "# AGE - revision bibliografica orientada a mecanismos (2026)", "",
         f"**Conclusion: `{conclusion}`**", "",
-        f"**Baseline congelado:** V30 = {CV_V30} corrected_cv, leaderboard {LB_V30}.  ",
+        f"**Baseline congelado:** V30 = {CV_V30} corrected_cv, leaderboard {LB_V30}.",
         f"**Variabilidad de entrenamiento medida:** {VARIABILIDAD}.", "",
         "## La pregunta", "",
         "> ¿Existe algun mecanismo publicado y metodologicamente defendible que pueda implementarse "

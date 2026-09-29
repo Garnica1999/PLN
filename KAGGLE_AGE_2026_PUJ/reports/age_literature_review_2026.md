@@ -2,7 +2,7 @@
 
 **Conclusion: `NO_NEW_METHOD`**
 
-**Baseline congelado:** V30 = 0.6134471 corrected_cv, leaderboard 0.63302.  
+**Baseline congelado:** V30 = 0.6134471 corrected_cv, leaderboard 0.63302.
 **Variabilidad de entrenamiento medida:** 0.0008876.
 
 ## La pregunta
