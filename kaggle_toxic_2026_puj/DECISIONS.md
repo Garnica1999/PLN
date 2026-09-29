@@ -6634,3 +6634,35 @@ seria admisible: eso corresponde a una regla, no a una nota.
 Criterio de reapertura: solo con evidencia nueva y externa (autorizacion normativa explicita,
 nuevo dato legal, nuevo conjunto etiquetado permitido, cambio de reglas). No con "quiero un
 IC95 que no incluya 0".
+
+
+## D-209. Dos etiquetas para el mismo campo, y por que no eran una contradiccion
+
+Fecha 2026-09-29.
+
+El expediente quedo con dos valores distintos para la clave `research_status`:
+
+```text
+a_cost_sensitive_downweight_final_evidence.json   CANDIDATE_PENDING_GOVERNANCE
+toxic_candidate_cost_sensitive_manifest.json      EXPERIMENTAL_RESEARCH_CLOSED
+```
+
+Ninguno es incorrecto. El nombre del campo estaba haciendo **dos trabajos a la vez**, y se
+separan en tres ejes:
+
+```text
+research_status     EXPERIMENTAL_RESEARCH_CLOSED   se siguen buscando mecanismos nuevos?  no
+candidate_status    PROMISING_UNCONFIRMED          el candidato esta adoptado?            no
+governance_status   PENDING                        la decision de gobernanza esta tomada? no
+```
+
+`CANDIDATE_PENDING_GOVERNANCE` queda **`SUPERSEDED`**: no incorrecta, sino subespecificada.
+Significaba lo correcto — candidato no adoptado, decision pendiente — pero colapsaba los dos
+ultimos ejes en una palabra.
+
+**Los dos ficheros historicos NO se modifican.** Reescribir un informe ya publicado para
+corregir su vocabulario es exactamente lo que este proyecto no hace: se preserva el original y
+se documenta la relacion. Detalle en `reports/toxic_candidate_status_reconciliation.md`.
+
+A partir de aqui, cuando un documento del proyecto diga `research_status`, se refiere al primer
+eje y solo al primero.

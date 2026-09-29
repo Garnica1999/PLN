@@ -2883,3 +2883,17 @@ submission 0 | test_development_use 0 | leaderboard_tuning 0
 La investigacion experimental termina aqui. El candidato queda congelado.
 
 Sin push, sin merge, sin rebase.
+
+## 2026-09-29, reconciliacion de estado
+
+- `experiments/p69_09_reconciliar_estado.py`: separa los tres ejes de estado y marca
+  `CANDIDATE_PENDING_GOVERNANCE` como `SUPERSEDED`. 0 experimentos, 0 ficheros historicos
+  modificados.
+
+```text
+research_status     EXPERIMENTAL_RESEARCH_CLOSED
+candidate_status    PROMISING_UNCONFIRMED
+governance_status   PENDING
+```
+
+Sin push, sin merge, sin rebase.

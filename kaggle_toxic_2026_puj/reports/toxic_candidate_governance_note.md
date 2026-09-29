@@ -106,6 +106,21 @@ leaderboard_tuning           0
 La investigacion experimental termina aqui. El candidato queda congelado y
 perfectamente reproducible en `reports/toxic_candidate_cost_sensitive_manifest.json`.
 
+## El estado, sin ambiguedad
+
+Dos documentos del expediente usan la clave `research_status` con valores distintos, y no son
+contradictorios: responden a preguntas distintas. Se separan aqui.
+
+| eje | valor | pregunta |
+|---|---|---|
+| `research_status` | `EXPERIMENTAL_RESEARCH_CLOSED` | se siguen buscando mecanismos nuevos? |
+| `candidate_status` | `PROMISING_UNCONFIRMED` | el candidato esta adoptado? |
+| `governance_status` | `PENDING` | la decision de gobernanza esta tomada? |
+
+`CANDIDATE_PENDING_GOVERNANCE` fue una etiqueta anterior que colapsaba los dos ultimos ejes en
+una palabra. Queda `SUPERSEDED`: no incorrecta, sino subespecificada. Detalle completo en
+`reports/toxic_candidate_status_reconciliation.md`.
+
 > V03 remains the best verified leaderboard result.
 
 *Generado por `experiments/p69_08_paquete_candidato.py`. Sin push.*
