@@ -1,0 +1,6 @@
+ID,Track,Experimento,Mecanismo,Corrected_CV,Delta_vs_V03,Decision
+P64-00,gap analysis,0,cobertura 5.29x por puntuacion,,,AUDITORIA
+P64-01,segmentacion y perfil EDA,0,el mejor rasgo del perfil da AUC 0.600506 frente a 0.600506 de la referencia trivial,,,PERFIL CERRADO. Continuar con descomposicion de evidencia
+P64-02,P4 evidencia segmental,1,distribucion de la evidencia interna de V03 por segmento,0.7520352870492927,-0.0251761655,"CLOSED como representacion, y CONFIRMADA como descripcion. La estructura interna es real, V03 ya la ve en su confianza, y anadirla no aporta"
+P64-03,P5-P6 leave-one-out y contradiccion,1,la contribucion con signo de cada segmento al score de V03,0.7656662316818297,-0.0115452208,CLOSED por redundancia con la confianza
+P64-04,P8 especializacion en la region larga,1,"los bloques por estrato, contra el margen en el mismo estrato",0.7587037655769205,-0.0185076869,CLOSED. La evidencia no funciona ni donde P63 dijo que estaba el margen

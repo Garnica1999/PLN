@@ -5678,3 +5678,128 @@ aggregate-composition dimensions of this representation
 V03 remains the best verified leaderboard result.
 ```
 <!-- /P63 2026-09-29 -->
+
+<!-- P64 2026-09-29 -->
+## D-157. P59-07 explico su fracaso por COBERTURA, y eso abre la linea
+
+**Contexto.** P59-07 cambio la unidad de representacion del documento a una ventana local y
+consiguio -0,0006246152, 3/5, neto -1, CLOSED. P59-09 fusiono con un alpha y P59-02 uso la
+geometria local como bloque. La familia **no estaba intacta** y el encargo lo nombra
+explicitamente.
+
+**Lo que P59-07 registro como causa.** Los tweets son cortos, mediana de 15 tokens, luego con
+ventana de 32 solo el 9.6 por ciento
+tiene mas de una unidad. Eso es una afirmacion sobre el TAMANO de la ventana, no sobre la idea
+de evidencia local.
+
+**La medicion que abre la fase.**
+
+| criterio | filas con mas de una unidad | porcentaje |
+|---|---:|---:|
+| ventana fija 32 tokens, avance 16 | 142 | 9.6 por ciento |
+| segmentacion por puntuacion | 751 | 50.6 por ciento |
+
+**Factor de cobertura 5.29x.** Eso no es una variacion
+de parametro: es un mecanismo que puede actuar en una de cada dos filas frente a una de cada
+diez. Y la asociacion accompanying es de
++8.35 puntos de error entre un segmento y
+cinco o mas.
+
+## D-158. El perfil segmental es LONGITUD CON DISFRAZ DE ESTRUCTURA
+
+La EDA tiene que comparar contra una REFERENCIA TRIVIAL, porque un rasgo estructural que
+solo mide longitud no aporta nada.
+
+| rasgo | AUC para predecir si V03 falla |
+|---|---:|
+| entropia_de_la_longitud | 0.589847 |
+| n_tokens, REFERENCIA TRIVIAL | 0.600506 |
+
+Ventaja: **-0.010659**. El mejor
+rasgo segmental es PEOR que contar tokens.
+
+**Decision: PERFIL CERRADO como rasgo**, y la fase continua porque la descomposicion de la
+evidencia mide otra cosa: no la FORMA de la segmentacion sino donde se situa la evidencia del
+modelo dentro de ella.
+
+## D-159. La estructura interna es REAL, y V03 ya la lleva en su confianza
+
+**El hallazgo de P64-02.** Entre las filas que V03 resuelve y las que falla con alta confianza,
+el conflicto interno **se duplica**, y la entropia de la distribucion de evidencia dentro del
+tweet **crece de forma monotona con la longitud**, mientras la fraccion de evidencia en los
+tres primeros segmentos cae de 1,0000 a 0,8845.
+
+| estrato | conflicto | entropia | top3 |
+|---|---:|---:|---:|
+| CORTA | 0,0115 | 0,1048 | 1,0000 |
+| MUY_LARGA | 0,0233 | 0,4565 | 0,8845 |
+
+**El hallazgo de P64-03, que es el mas fuerte de la fase.** El
+71.68 por ciento de las filas
+multi segmento TIENE segmentos que empujan en signos opuestos, y eso CRECE con la longitud
+hasta el 80,88 por ciento en MUY_LARGA, mientras la concentracion cae de 0,7554 a 0,6170.
+
+| estrato | n | concentracion | conflicto | cambia de signo |
+|---|---:|---:|---:|---:|
+| todas multi | 751 | 0.7080 | 0.0182 | 0.7168 |
+| V03 correcto | 480 | 0.7262 | 0.0156 | 0.6764 |
+| V03 incorrecto | 271 | 0.6757 | 0.0227 | 0.7884 |
+| error de alta confianza | 176 | 0.6881 | 0.0201 | 0.7538 |
+| CORTA | 50 | 0.7554 | 0.0202 | 0.6133 |
+| MEDIA | 247 | 0.7414 | 0.0202 | 0.6977 |
+| LARGA | 325 | 0.7114 | 0.0176 | 0.7108 |
+| MUY_LARGA | 129 | 0.6170 | 0.0148 | 0.8088 |
+
+**Y no aporta.** El bloque de evidencia no supera al margen de V03, con
+-0.0140959650, y el leave-one-out tampoco, con
+-0.0004650203, que es casi nula.
+
+**La conclusion en una frase.** En los tweets largos y ambiguos donde V03 falla, la evidencia
+interna existe, esta repartida y es contradictoria, y es exactamente la que la bolsa de
+n-gramas aplana. Y V03 ya la lleva dentro de su confianza, que es por que anadirla no hace
+nada.
+
+## D-160. Ni siquiera donde P63 dijo que estaba el margen, y con un detalle revelador
+
+P64-04 evalua los bloques por estrato, con la metrica primaria GLOBAL y sin tomar la decision
+sobre la mejor rebanada.
+
+| bin | mejor bloque | contra el margen en el mismo estrato |
+|---|---:|---:|
+| CORTA | -0.0082 | +0.0019 |
+| MEDIA | -0.0022 | +0.0118 |
+| LARGA | -0.0223 | -0.0195 |
+| MUY_LARGA | -0.0019 | -0.0008 |
+
+**El detalle que revela mucho.** El UNICO brazo que gana en la region LARGA es el control
+**aleatorio**, +0,0018, y es tambien el que mas pierde en MUY_LARGA, -0,0312. Un bloque de
+numeros aleatorios que gana donde la senal deberia estar y se hunde en la de al lado es la
+firma de que ahi manda la varianza de la estimacion y no la informacion.
+
+**Y el margen tampoco.** En el mismo estrato queda en -0,0010, luego el problema de MUY_LARGA
+no es de representacion ni de confianza.
+
+## D-161. P64 se cierra con CUATRO experimentos, y la respuesta tiene dos mitades
+
+```text
+la estructura interna existe     80,88 por ciento de los muy largos tienen segmentos que
+                                  empujan en signos opuestos, y la entropia interna sube
+                                  de 0,1048 a 0,4565 con la longitud
+pero no aporta                   ni en el promedio, con -0.0140959650
+                                  contra el margen, ni en el estrato largo
+y el margen tampoco               -0,0010 en MUY_LARGA, luego no es confianza
+```
+
+**Presupuesto.** 4 de 22 principales, 0 de 6 reservas. Siete familias cerradas sin gastar
+experimento, entre ellas las ventanas numericas, el max-pooling de evidencia local, la
+geometria local, la fusion con alpha, el canal TF-IDF segmental y los umbrales por estrato.
+
+**Se mantiene la literal del proyecto.**
+
+```text
+the internal evidence distribution of long tweets is real, measured and reproducible,
+and V03 already carries it inside its own confidence
+
+V03 remains the best verified leaderboard result.
+```
+<!-- /P64 2026-09-29 -->

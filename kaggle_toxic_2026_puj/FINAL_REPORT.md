@@ -2412,3 +2412,46 @@ aggregate-composition dimensions of this representation
 V03 remains the best verified leaderboard result.
 ```
 <!-- /P63 2026-09-29 -->
+
+<!-- P64 2026-09-29 -->
+## P64 (2026-09-29) - Representacion del tweet largo y distribucion de la evidencia interna
+
+Cuatro experimentos, dos auditorias, trece figuras. Ninguno supera a V03, y la respuesta
+tiene dos mitades que no se pueden separar.
+
+**La estructura interna es REAL.** P59-07 habia explicado su fracaso por cobertura, no por
+concepto: con ventana de 32 tokens solo el
+9.6 por ciento de las filas tiene mas
+de una unidad, mientras que la segmentacion por puntuacion llega al
+50.6 por ciento. Un factor de
+5.29 en las celdas alcanzables, que no es una variacion
+de parametro.
+
+**Y el leave-one-out, que P59 nunca computo, muestra el mecanismo.** El 80,88 por ciento de
+los documentos multi segmento de la region MUY_LARGA tienen segmentos que empujan la decision
+en signos opuestos, la entropia interna sube de 0,1048 a 0,4565 con la longitud, y la
+concentracion cae de 0,7554 a 0,6170. En los tweets largos la decision no descansa en un
+segmento dominante sino en un reparto contradictorio. Eso es exactamente lo que una bolsa de
+n-gramas aplana.
+
+**Y no aporta.** El bloque de evidencia queda -0.0140959650 frente al
+margen de V03, y el leave-one-out -0.0004650203, que es casi nula.
+Tampoco gana en la region larga, que es donde P63 midio el margen, y el margen tampoco mejora
+ahi, luego el problema de MUY_LARGA no es de representacion ni de confianza.
+
+**El perfil segmental es longitud disfrazada.** El mejor rasgo da
+0.589847 de AUC frente a
+0.600506 de contar tokens, luego queda
+cerrado como rasgo.
+
+**La razon de fondo.** El margen de V03 solo ya explica sus propios errores con AUC 0,770875
+contra el acierto, y el mejor rasgo de evidencia interna llega a 0,605302. La estructura no
+falta: esta dentro de la confianza de V03.
+
+```text
+the internal evidence distribution of long tweets is real, measured and reproducible,
+and V03 already carries it inside its own confidence
+
+V03 remains the best verified leaderboard result.
+```
+<!-- /P64 2026-09-29 -->
