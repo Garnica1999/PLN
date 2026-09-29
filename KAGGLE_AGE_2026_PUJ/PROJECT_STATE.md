@@ -860,3 +860,26 @@ adopta** (D-011).
 - **Numero de experimentos:** 139 filas; **1** nuevo de entrenamiento en V30 (el refinamiento). El ensemble, la segunda particion y la construccion del fichero son operaciones sobre artefactos congelados.
 - **Presupuesto:** 1 de 4 experimentos nuevos.
 - **Compliance:** 13/13 en cero usos. **Artefactos de V20 tocados:** 0.
+
+---
+
+## V31+ ADVANCED RESEARCH (2026-09-30) CERRADA - la senal linguistica es real y V30 ya la tenia
+
+- **Baseline corregido**: el operativo de V30 es **0,6134471** (pesos medios, lo que se envio y lo
+  que reproduce), no los 0,6130051 publicados, que venian de pesos por fold nunca persistidos.
+  Error de transferencia contra el LB real 0,63302: **+0,00001**. Ver D-066.
+- **Track A**: prevalencia de URL **monotona en la edad** (33,4 % -> 50,0 %), pero **99 % `t.co`**,
+  **0 status URLs**, sin semantica de dominio que extraer. Enmascarar la URL **cuesta** 0,006969.
+  El **retrieval de contenido queda QUARANTINED**: las reglas de la compilacion no estan
+  disponibles y no se hizo ninguna llamada de red.
+- **Banco de representaciones** (modelo, folds, semilla y vectorizador fijos): el canal
+  `ortografia+composicion+discurso` da **+0,006820 con 5/5 folds**. Cerradas negativas: posicion
+  (-0,002303) y forma de palabra (-0,002984).
+- **Integracion**: como 4o miembro **+0,0000642** sobre el control reoptimizado; como 48 features
+  **+0,0002948** sobre el control barajado. Ninguna via supera el gate de +0,0015.
+- **Track J**: el **90 % de las confusiones de V30 son entre bandas adyacentes**. 9.780 errores de
+  alta confianza (15,0 % de los errores), pero el problema es de **resolucion de escala**.
+- **Resultado**: **0 finalistas, 0 submissions**. V30 sigue siendo el mejor resultado validado.
+  Ver D-067.
+- **Auditorias**: compliance 0 hallazgos sobre 9 scripts con 6 comprobaciones positivas;
+  notebook 242 celdas con la seccion V31+ en **10/10 verde**; idioma 586 ficheros **0 errores**.

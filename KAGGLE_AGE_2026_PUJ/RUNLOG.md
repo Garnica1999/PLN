@@ -1940,3 +1940,19 @@ intacto.
 - **Numero de experimentos:** 139 filas; **1** nuevo de entrenamiento en V30 (el refinamiento). El ensemble, la segunda particion y la construccion del fichero son operaciones sobre artefactos congelados.
 - **Presupuesto:** 1 de 4 experimentos nuevos.
 - **Compliance:** 13/13 en cero usos. **Artefactos de V20 tocados:** 0.
+
+
+---
+
+## Cierre de la fase V31+ · 2026-09-30
+
+- **Baseline operativo:** V30 = **0,6134471** (corregido; el publicado 0,6130051 no es
+  reproducible). LB 0,63302, error de transferencia +0,00001.
+- **Mejor corrected_cv encontrado:** 0,6134471. **Mejor segunda particion:** 0,6143347. **Mejor LB
+  transferido:** 0,63302. **Diferencia vs V30: 0,000000** en los tres.
+- **Numero de experimentos:** 147 filas en `experiments.csv`, +8 de V31+ (0 duplicados, 0
+  ficticias).
+- **Presupuesto:** 8 experimentos ejecutados sobre 38 disponibles. No se abrio ninguna grid.
+- **Submissions: 0.** No hubo finalista que la justificara.
+- **Cuarenas:** retrieval de contenido de URL y POS tagger.
+- **Compliance:** 0 hallazgos. **Artefactos de V30 tocados:** 0 (hash del submission sin cambio).

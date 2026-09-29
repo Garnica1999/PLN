@@ -2041,3 +2041,110 @@ Tras declarar la saturación se probó la vía indicada como trabajo futuro:
 - **Consequences**: queda agotada tambien la capacidad del meta-arbol. Entre V25 y V30, los ejes cerrados son: representacion, escala, fiabilidad, monotonia, percentiles, estructura ordinal, bagging del meta-modelo, descomposicion pairwise, geometria del consenso, diversidad de modelos historicos **y capacidad individual**. El unico margen que queda es un orden de magnitud menor que el gate, y la unica via con recorrido sigue siendo senal nueva en los datos, que las reglas de AGE cierran en las fuentes obvias.
 
 - **Una correccion del propio metodo que se declara**: el pool historico de V29 excluia al mejor modelo individual por ser poco diverso, lo que habria impedido responder a la pregunta de V29. Se corrigio antes de commitear, y el criterio corregido esta en `scripts/v29_05_pool.py`. Tambien se detectaron dos procesos de Optuna escribiendo el mismo artefacto, y el que sobrevive es el de 30 trials por fold, que es el del rango que recomienda el brief y ademas el mejor de los dos.
+
+---
+
+## D-066 - V31+: el baseline correcto era 0,6134471, y la cifra publicada no era reproducible
+
+- **Observation**: la primera accion de V31+ fue reproducir V30 desde sus artefactos, y **no
+  reprodujo**. El OOF recomputado dio 0,6134471 frente a los 0,6130051 que V30 habia publicado, con
+  una desviacion de 0,000442. Es exactamente la desviacion que produce distinguir dos drivers
+  distintos, y por eso lo primero fue auditar en vez de asumir.
+
+- **La causa, y no era un bug de V30**: el CV publicado se compuso con los **pesos por fold** que
+  Optuna optimizo en cada fold por separado, y **esos pesos nunca se persistieron**: el artefacto
+  `v30_02_ensemble.json` solo guarda la media entre folds. La composicion del OOF con pesos por
+  fold y la composicion con pesos medios son dos OOF distintos, y la submission uso **los medios**.
+
+- **El leaderboard resuelve cual de las dos es la real**:
+
+  | Configuracion | corrected_cv | LB predicho | LB real | error |
+  |---|---|---|---|---|
+  | pesos por fold (**no persistida**) | 0,6130051 | 0,63255 | 0,63302 | +0,00047 |
+  | pesos medios (**lo que se envio**) | 0,6134471 | 0,63301 | 0,63302 | **+0,00001** |
+
+  Con la calibracion interna `LB = +0,00223 + 1,02825 x CV`, la cifra operativa acierta el
+  leaderboard hasta la quinta decimal y la publicada se queda tres veces mas lejos. El hash del
+  fichero enviado confirma que la submission uso los pesos medios.
+
+- **Decision**: el baseline operativo de V31+ y de adelante es **0,6134471**. Se mantiene
+  publicada la cifra de V30 por trazabilidad, marcada como **NO REPRODUCIBLE** en
+  `reports/v31_candidate_comparison.csv`, en vez de sobrescribirla en silencio. La clase de
+  reproducibilidad del baseline pasa de R1 a **R3**.
+
+- **Consequences**: (a) la comparacion de V31+ se mide contra la cifra que **reproduce y que se
+  envio**, no contra la que estaba impresa, y eso cambia el estado de V30 de 0,6130051 a
+  0,6134471; (b) el error de transferencia de V30 baja de +0,00047 a **+0,00001**, lo que
+  convierte a V30 en un **caso A limpio** (CV robusto, segunda particion robusta y LB que
+  mejora) y valida la calibracion interna como instrumento fiable para fijar los cortes de esta
+  fase; (c) deja una leccion de proceso: una cifra puede estar en el informe, en el artefacto y
+  en el notebook y aun asi **no ser reconstruible**, porque lo que falta no es el numero sino el
+  dato que lo produce.
+
+---
+
+## D-067 - V31+: las familias linguisticas son senal real y no aportan a V30
+
+- **Observation**: V31+ se abrio buscando senal nueva en representacion: URL, composicion
+  lexica, ortografia, discurso, posicion y forma de palabra, con el protocolo corregido
+  (`StratifiedGroupKFold` sobre `dup_clusters`, folds identicos a V20, OOF estrictamente
+  out-of-fold) y con un banco donde **se varia la representacion y se fijan modelo, folds,
+  semilla y vectorizador**, para separar "falta senal" de "falta capacidad".
+
+- **El Track A se reencuadro por los datos**: la prevalencia de URL en train es **monotona en la
+  edad**, del 33,4 % en 13-17 al 50,0 % en 65-xx, una distribucion real. Pero el **99 % de las
+  URLs son `t.co`** con un token de ruta opaco de 10 caracteres, y hay **0 status URLs**. La
+  taxonomia de dominios que propone el brief es casi vacia en este dataset: no hay semantica de
+  dominio que extraer. Ademas enmascarar la URL **cuesta** 0,006969, asi que la URL no es ruido, y
+  el canal URL explico solo aporta 0,001894. La URL ya se estaba leyendo.
+
+- **La senal linguistica es real y consistente**: el canal `ortografia+composicion+discurso` bate
+  al texto solo en **+0,006820 con 5 de 5 folds**. Dos familias salieron negativas y se cierran:
+  canal por posicion (-0,002303, 0/5 folds) y forma de palabra (-0,002984, 0/5 folds).
+
+- **Y aun asi no aporta a V30**: como cuarto miembro de la mezcla, **+0,0000642** sobre el control
+  reoptimizado; como 48 features en el meta-espacio de 279, **+0,0002948** sobre el control
+  barajado. Ambos muy por debajo del gate de +0,0015. El patron es el mismo que V29 identifico
+  con `HIERBA`: no le falta senal al canal, le falta sitio donde V30 no la exprese ya.
+
+- **Los dos controles son lo que hace interpretable el resultado**. El brazo "V30 con 3 pesos
+  reoptimizados" da +0,0003477, o sea que **la mayor parte del aparente +0,0004119 de la
+  integracion es el efecto de tener pesos optimizados en vez de fijos, no el canal**. Y el
+  control de barajado, que baraja **solo** el canal, deja a V30 intacto y da 0,6134855: confirma
+  que la senal viaja en las filas correctas, y a la vez que su magnitud es pequena.
+
+- **Dos errores propios, corregidos antes de commit y declarados**: (a) `v31_04` leia
+  `neto <= 0` como "redundante", que es una tautologia, porque un clasificador mas debil siempre
+  tiene rescate neto negativo; el criterio correcto es la **tasa de error compartido**, que si da
+  diversidad real (acuerdo 0,752, 11.761 filas que el canal acierta y V30 no). (b) El primer
+  control de barajado barajaba los **cuatro** miembros en vez de solo el canal, lo que lo
+  reducia a 0,1639 y producia un veredicto de "aporte real" sin fundamento. La version corregida
+  baraja unicamente el miembro nuevo.
+
+- **Track J explica por que no queda margen de representacion**: el **90 % de las diez
+  confusiones principales de V30 son entre bandas adyacentes**, no saltos. Hay 9.780 errores de
+  alta confianza (15,0 % de los errores), pero se reparten en un problema de **resolucion de
+  escala**, no de informacion ausente. Y la familia que ataca eso, los modelos ordinales, ya esta
+  cerrada por la historia del proyecto (H10, CORAL, D-058), con su propia evidencia.
+
+- **Dos lineas en cuarentena, no cerradas por resultado sino por ambiguedad**: (a) la
+  recuperacion del contenido de una URL, porque **las reglas de la compilacion no estan
+  disponibles en este entorno** (sin copia local, la API de Kaggle no autentica, y el unico
+  fichero de reglas del arbol pertenece a otra compilacion y esta mal titulado). No se hizo
+  **ninguna** llamada de red. (b) el POS tagger como predictor, por ser un modelo externo
+  preentrenado y las reglas no son explicitas; se descarta en vez de asumir que es legal.
+
+- **Decision**: **0 finalistas, 0 submissions, ninguna linea de V30 tocada.** V30 permanece como
+  baseline absoluto con corrected_cv 0,6134471 y LB 0,63302. Las familias se cierran asi:
+  URL CLOSED, verbos CLOSED, posicion CLOSED, forma de palabra CLOSED, representaciones sparse
+  nuevas CLOSED, integracion en el meta-espacio CLOSED, capacidad de modelos CLOSED;
+  ortografia, composicion y discurso **MARGINAL** (senal real, ya absorbida); mineria guiada por
+  errores **DIAGNOSTICO**; retrieval de contenido y POS **QUARANTINED**.
+
+- **Consequences y relacion con D-064 y D-065**: D-064 (V29) concluyo que la capacidad si era un
+  cuello, y D-065 (V30) que el margen de V29 no se consolidaba. V31+ **afina el diagnostico una
+  vez mas**: el cuello no es la capacidad ni la senal lingüistica expresable con representacion
+  sparse explicita. Lo que queda es resolucion entre bandas vecinas, que es un eje distinto y ya
+  explorado. La formulacion correcta no es que V30 sea el limite teorico, sino que **las familias
+  evaluadas no produjeron evidencia suficiente**, y que la unica via con recorrido real
+  (**senal nueva en los datos**) sigue cerrada por las reglas de AGE en sus fuentes obvias.

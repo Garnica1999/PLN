@@ -1,0 +1,190 @@
+{
+  "fase": "V31+ 02 banco de representaciones",
+  "fecha": "2026-09-30",
+  "experimenta": true,
+  "baseline_v30": 0.6134471,
+  "objetivo": "aislar la representacion: modelo, folds, semilla, vectorizador y metrica son identicos en todas las variantes, lo unico que cambia es el texto",
+  "protocolo": {
+    "folds": "StratifiedGroupKFold 5, dup_clusters, identicos a V20",
+    "modelo": "LinearSVC(C=1.0, squared_hinge)",
+    "vectorizador": {
+      "analyzer": "word",
+      "ngram_range": [
+        1,
+        2
+      ],
+      "min_df": 3,
+      "max_df": 0.5,
+      "sublinear_tf": true,
+      "lowercase": true,
+      "strip_accents": null,
+      "token_pattern": "(?u)\\b\\w+\\b"
+    },
+    "metrica": "macro-F1 de 6 clases"
+  },
+  "variantes": [
+    {
+      "representacion": "raw",
+      "macro_f1": 0.4979941,
+      "folds": [
+        0.4997643,
+        0.4983362,
+        0.499694,
+        0.5006074,
+        0.4915207
+      ],
+      "delta_por_fold": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "f1_por_clase": [
+        0.56542,
+        0.39682,
+        0.37578,
+        0.45643,
+        0.55521,
+        0.63831
+      ],
+      "documentos_vacios": 104,
+      "vocabulario_medio": null,
+      "segundos": 111.3,
+      "delta_vs_raw": 0.0,
+      "folds_positivos": 0
+    },
+    {
+      "representacion": "url_mask",
+      "macro_f1": 0.4910249,
+      "folds": [
+        0.4901883,
+        0.4908199,
+        0.4954199,
+        0.4943036,
+        0.4843106
+      ],
+      "delta_por_fold": [
+        -0.009576,
+        -0.0075163,
+        -0.0042741,
+        -0.0063038,
+        -0.0072101
+      ],
+      "f1_por_clase": [
+        0.55864,
+        0.37941,
+        0.37247,
+        0.44942,
+        0.54912,
+        0.63709
+      ],
+      "documentos_vacios": 3986,
+      "vocabulario_medio": null,
+      "segundos": 97.0,
+      "delta_vs_raw": -0.0069692,
+      "folds_positivos": 0
+    },
+    {
+      "representacion": "url_struct",
+      "macro_f1": 0.4926034,
+      "folds": [
+        0.4933651,
+        0.4928234,
+        0.4935845,
+        0.495623,
+        0.48755
+      ],
+      "delta_por_fold": [
+        -0.0063992,
+        -0.0055128,
+        -0.0061095,
+        -0.0049844,
+        -0.0039707
+      ],
+      "f1_por_clase": [
+        0.55884,
+        0.38794,
+        0.37314,
+        0.45348,
+        0.54262,
+        0.63961
+      ],
+      "documentos_vacios": 104,
+      "vocabulario_medio": null,
+      "segundos": 104.6,
+      "delta_vs_raw": -0.0053907,
+      "folds_positivos": 0
+    },
+    {
+      "representacion": "url_canal",
+      "macro_f1": 0.4987321,
+      "folds": [
+        0.5019519,
+        0.498227,
+        0.5012247,
+        0.501383,
+        0.4907736
+      ],
+      "delta_por_fold": [
+        0.0021876,
+        -0.0001092,
+        0.0015307,
+        0.0007756,
+        -0.0007471
+      ],
+      "f1_por_clase": [
+        0.56758,
+        0.39865,
+        0.37754,
+        0.45492,
+        0.55425,
+        0.63945
+      ],
+      "documentos_vacios": 0,
+      "vocabulario_medio": null,
+      "segundos": 160.4,
+      "delta_vs_raw": 0.000738,
+      "folds_positivos": 3
+    },
+    {
+      "representacion": "solo_url",
+      "macro_f1": 0.1563043,
+      "folds": [
+        0.1570648,
+        0.1571453,
+        0.1580026,
+        0.1555482,
+        0.1537471
+      ],
+      "delta_por_fold": [
+        -0.3426995,
+        -0.3411909,
+        -0.3416914,
+        -0.3450592,
+        -0.3377736
+      ],
+      "f1_por_clase": [
+        0.00104,
+        0.30919,
+        0.04859,
+        0.14265,
+        0.25738,
+        0.17899
+      ],
+      "documentos_vacios": 0,
+      "vocabulario_medio": null,
+      "segundos": 10.3,
+      "delta_vs_raw": -0.3416898,
+      "folds_positivos": 0
+    }
+  ],
+  "restricciones": {
+    "usa_test": false,
+    "usa_red": false,
+    "usa_embeddings": false,
+    "usa_parser_externo": false,
+    "usa_labels_de_validacion": false
+  },
+  "segundos": 523.7
+}

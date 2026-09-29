@@ -633,3 +633,49 @@ _Generado por `scripts/phase41_cierre_lexicones.py`._
 - **Numero de experimentos:** 139 filas; **1** nuevo de entrenamiento en V30 (el refinamiento). El ensemble, la segunda particion y la construccion del fichero son operaciones sobre artefactos congelados.
 - **Presupuesto:** 1 de 4 experimentos nuevos.
 - **Compliance:** 13/13 en cero usos. **Artefactos de V20 tocados:** 0.
+
+---
+
+## Epilogo V31+ (2026-09-30) - representacion linguistica: senal real, aporte nulo
+
+V31+ abrio la frontera de la investigacion mas alla de la capacidad del meta-modelo, que era la
+unica via con recorrido segun el cierre de V30, y la llevo al terreno de la representacion:
+representacion de URL, composicion lexica, ortografia, discurso, posicion y forma de palabra.
+
+**Lo que encontro, en orden de fuerza:**
+
+1. **La correccion del baseline.** V30 publico 0,6130051 con pesos por fold que nunca se
+   persistieron. El OOF reproducible, y el que se envio, es **0,6134471**. El leaderboard lo
+   confirma con error **+0,00001**. Toda la comparacion de la fase se mide contra esa cifra
+   (D-066).
+
+2. **La URL esta distribuida por edad pero no tiene semantica que extraer.** La prevalencia es
+   monotona, del 33,4 % en 13-17 al 50,0 % en 65-xx, y enmascarar la URL **cuesta** 0,006969. Pero
+   el 99 % son `t.co` con token opaco de 10 caracteres y hay **0 status URLs**: la taxonomia de
+   dominios que seatelaria en el brief es casi vacia en este dataset.
+
+3. **La composicion linguistica es senal real y reproducible.** El canal
+   `ortografia+composicion+discurso` bate al texto solo en **+0,006820 con 5 de 5 folds**, con
+   modelo, folds, semilla y vectorizador fijos. Dos familias salieron negativas y se cerraron:
+   posicion (-0,002303) y forma de palabra (-0,002984).
+
+4. **Y no aporta a V30.** Como cuarto miembro: **+0,0000642** sobre el control reoptimizado. Como
+   48 features: **+0,0002948** sobre el control barajado. El gate es +0,0015. El patron es el de
+   `HIERBA` en V29, una generacion antes: la senal existe, el sitio donde fluya ya no.
+
+5. **El margen que queda no es de representacion.** El **90 % de las confusiones de V30** son
+   entre bandas adyacentes, y los 9.780 errores de alta confianza se reparten en un problema de
+   resolucion de escala. La familia que lo ataca, los ordinales, ya estaba cerrada (H10, D-058).
+
+**Lo que no se hizo y por que.** El retrieval del contenido de una URL quedo **QUARANTINED**:
+las reglas de la compilacion no estan disponibles en este entorno, y sin el texto de las reglas no
+se puede establecer que sea legal. No se hizo **ninguna** llamada de red en toda la fase. El POS
+tagger quedo **QUARANTINED** por ser un modelo externo preentrenado con reglas no explicitas, y
+por eso no se grafico la composicion por POS: se dice en el informe en vez de omitirlo en
+silencio.
+
+**Estado final.** **0 finalistas, 0 submissions, ninguna linea de V30 tocada.** El hash del
+fichero de submission de V30 sigue siendo `f543a715...`. La formulacion correcta del cierre no es
+que V30 sea el limite teorico, sino que **las familias evaluadas no produjeron evidencia
+suficiente**, y que la unica via con recorrido real (senal nueva en los datos) sigue cerrada por
+las reglas de AGE en sus fuentes obvias.

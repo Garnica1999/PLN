@@ -1,0 +1,8 @@
+ID,track,hipotesis,corrected_cv,delta_vs_V30,papel,decision
+V31-N1-v30_congelado,N,el canal linguistico aporta al meta-espacio de V30 como miembro,0.6134471,0.0,"referencia absoluta, pesos congelados del manifest de V30",REFERENCIA
+V31-N1-v30_reopt,N,el canal linguistico aporta al meta-espacio de V30 como miembro,0.6137948,0.0003477,"control: subir de 3 pesos fijos a 3 pesos optimizados. Si esto ya da gain, el gain de N1 no puede atribuirse al canal",CONTROL
+V31-N1-v30_mas_canal,N,el canal linguistico aporta al meta-espacio de V30 como miembro,0.613859,0.0004119,"la integracion de verdad: cuatro miembros, pesos optimizados con estructura anidada",CERRADO
+V31-N1-v30_mas_canal_barajado,N,el canal linguistico aporta al meta-espacio de V30 como miembro,0.6134855,3.84e-05,"control de atribucion: mismos 4 miembros, mismos pesos, misma optimizacion, pero con las probabilidades del canal permutadas al azar",CONTROL
+V31-N2-solo279,N,el canal linguistico aporta como features en el meta-espacio de 279,0.6116801,-0.001767,control de modelo,CERRADO
+V31-N2-mas_canal,N,el canal linguistico aporta como features en el meta-espacio de 279,0.6116856,-0.0017615,integracion,CERRADO
+V31-N2-mas_canal_barajado,N,el canal linguistico aporta como features en el meta-espacio de 279,0.6113908,-0.0020563,control de atribucion,CERRADO
