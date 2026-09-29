@@ -383,3 +383,4 @@ P69-06|2026-09-29|correccion del reentrenamiento y repeticion de las particiones
 P69-07|2026-09-29|cierre documental: evidencia final, limite estadistico y nota de gobernanza|CANDIDATE_PENDING_GOVERNANCE, PROMISING_UNCONFIRMED, 0 experimentos|P69|experiments/p69_07_cierre_final.py
 P69-08|2026-09-29|paquete del candidato congelado y cierre experimental|EXPERIMENTAL_RESEARCH_CLOSED, PROMISING_UNCONFIRMED, governance PENDING|P69|experiments/p69_08_paquete_candidato.py
 P69-09|2026-09-29|reconciliacion de las dos etiquetas de estado en tres ejes separados|CANDIDATE_PENDING_GOVERNANCE -> SUPERSEDED, 0 ficheros historicos modificados|P69|experiments/p69_09_reconciliar_estado.py
+P69-10|2026-09-29|submission experimental del candidato congelado, generada y auditada|6fc7c171a8af08b9, 1154 filas, 38 checks 0 fallos, NO subida|P69|experiments/p69_10_submission_candidato.py

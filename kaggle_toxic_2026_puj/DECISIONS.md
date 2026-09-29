@@ -6666,3 +6666,60 @@ se documenta la relacion. Detalle en `reports/toxic_candidate_status_reconciliat
 
 A partir de aqui, cuando un documento del proyecto diga `research_status`, se refiere al primer
 eje y solo al primero.
+
+
+## D-210 a D-212: submission experimental generada, auditada y NO subida
+
+Fecha 2026-09-29.
+
+### D-210. La autorizacion es explicita y separada de la investigacion
+
+```text
+candidate_status: PROMISING_UNCONFIRMED -> APPROVED_FOR_EXPERIMENTAL_SUBMISSION
+proposito: verificar transferencia al conjunto de test
+```
+
+No reabre la investigacion. No se cambia el candidato, ni los pesos, ni los umbrales, ni la
+representacion.
+
+### D-211. El refit sigue el protocolo pre-registrado, y no uno elegido ahora
+
+`38_refit_final_v4.py` dejo escrito como se reajusta un candidato de pliegues a un solo modelo:
+
+```text
+pesos de ejemplo   error_score calculado SOLO con OOF
+pesos de clase     la MEDIANA de los multiplicadores que el barrido eligio por pliegue
+```
+
+Lo primero es el candidato entero, y necesita un OOF: en un ajuste unico sobre todo el train no
+existe, asi que lo aporta el OOF canonico. Lo segundo colapsa cinco vectores en uno sin
+re-seleccionar: `[[1.0,1.5,1.2],[1.0,1.5,1.5],[1.5,1.2,0.8],[1.2,1.5,1.2],[1.5,1.2,0.8]]`
+-> mediana `[1.2, 1.5, 1.2]`.
+
+**Filas de entrenamiento**: el encargo pide *train oficial completo* y, dos lineas despues, *no
+utilizar el holdout*. El holdout es un subconjunto del train, asi que la instruccion se resuelve
+sola: **1483 filas de desarrollo**, exactamente lo que midio cada numero del candidato.
+
+Se deja anotado que la submission de V03 **si** se ajusto sobre las 1731. Igualarlo seria una
+decision de gobernanza distinta, y hacerlo aqui cambiaria el candidato, que esta congelado.
+
+### D-212. El defecto de los ids, que no era de la submission
+
+Tres checks fallaron seguidos por el mismo motivo: los ids del test se leen como texto y los de
+la plantilla y de V03 como enteros. Comparar sin normalizar da **falsos positivos por TIPO, no
+por contenido**.
+
+La submission siempre fue correcta: su columna de id es **identica** a la de V03, byte a byte, y
+el orden coincide con el test y con la plantilla oficial.
+
+Lo que estaba mal era mi comprobacion, y se arreglo de raiz: **una sola normalizacion, usada por
+todas las comparaciones**, en lugar de repetir la conversion en cada check. Es la quinta vez en
+este proyecto que una comprobacion mia da un falso positivo, y la segunda por tipo.
+
+```text
+submission   submissions/toxic_submission_cost_sensitive_candidate.csv
+sha256       6fc7c171a8af08b9ac80c744baae2aceb65f2c1488e5eda15382b5914930898f
+filas        1154      columnas  id, HS, TR, AG
+checks       38, fallos 0
+subida       NO       leaderboard NO      labels de test NO      holdout NO
+```

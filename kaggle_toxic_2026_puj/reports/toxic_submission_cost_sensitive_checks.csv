@@ -1,0 +1,39 @@
+check,pasa,valor
+V03 sha256 congelado,True,7d7478f271e6edfd51afff85bad3eaa0
+V03 corrected_cv,True,0.7772114525165721
+candidato reproducido en la tolerancia,True,0.785416038667608
+se entrena solo con el desarrollo,True,1483
+el holdout no entra en el entrenamiento,True,0
+test leido,True,1154
+misma regla: la mediana es 0 y no se sube ningun peso,True,"mediana 0.0, >1: 0"
+n de pesos < 1 coincide con el canonico,True,441
+fraccion de peso retirada coincide,True,0.13663
+los multiplicadores son la mediana pre-registrada,True,"[1.2, 1.5, 1.2]"
+vectorizadores ajustados SOLO con el entrenamiento,True,dim train 24646
+test transformado con los vectorizadores del train,True,24646
+"tres cabezas entrenadas, una por etiqueta",True,3
+columnas exactas,True,"['id', 'HS', 'TR', 'AG']"
+numero de filas = filas del test,True,1154 vs 1154
+ids unicos,True,1154
+mismo conjunto de ids que el test,True,1154
+mismo orden de ids que el test,True,coincide
+mismo orden de ids que la plantilla oficial,True,coincide
+ningun id adicional,True,0
+ningun id perdido,True,0
+la columna de id es identica a la de V03,True,identica
+el id es entero como el de V03,True,int64
+valores binarios validos,True,0/1
+sin NaN,True,0
+sin columnas auxiliares,True,4
+dtypes enteros,True,int
+el vocabulario del test NO entra en el fitting,True,3435 <= 24246
+los pesos se calculan solo con el train,True,1483
+los umbrales son los congelados,True,congelados
+el holdout no aparece en ninguna matriz,True,1483
+el test solo tiene id y text,True,"['id', 'text']"
+no existe ninguna etiqueta de test en el dataframe,True,"['id', 'text']"
+no se lee el leaderboard,True,no se consulta
+no se lee el holdout,True,no se usa
+ninguna submission previa se lee como entrada,True,no aplica
+la submission se ha escrito,True,6fc7c171a8af08b9ac80c744baae2aceb65f2c1488e5eda15382b5914930898f
+0 bytes > 127 en la submission,True,0

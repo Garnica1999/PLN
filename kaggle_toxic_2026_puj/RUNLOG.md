@@ -2897,3 +2897,21 @@ governance_status   PENDING
 ```
 
 Sin push, sin merge, sin rebase.
+
+## 2026-09-29, submission experimental preparada
+
+- `experiments/p69_10_submission_candidato.py`: revalida V03 y el candidato, reajusta segun el
+  protocolo pre-registrado, transforma el test con los vectorizadores del train, predice, y
+  genera la submission con 38 checks.
+
+```text
+submission   submissions/toxic_submission_cost_sensitive_candidate.csv
+sha256       6fc7c171a8af08b9ac80c744baae2aceb65f2c1488e5eda15382b5914930898f
+filas        1154      columnas  id, HS, TR, AG
+checks       38, fallos 0
+```
+
+No se sube a Kaggle. No se consulta el leaderboard. No se leen labels de test. No se usa el
+holdout. No se generan variantes.
+
+Sin push, sin merge, sin rebase.

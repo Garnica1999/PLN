@@ -618,3 +618,28 @@ La permutacion prueba **especificidad** (la asignacion real de pesos lleva mas i
 asignaciones equivalentes permutadas), no generalizacion poblacional ni mejora de leaderboard.
 El bootstrap por grupos sigue siendo la limitacion principal.
 <!-- /EXPLICIT-CLOSE 2026-09-29 -->
+
+<!-- SUBMISSION 2026-09-29 -->
+### Submission experimental preparada (2026-09-29)
+
+```text
+submission   submissions/toxic_submission_cost_sensitive_candidate.csv
+sha256       6fc7c171a8af08b9ac80c744baae2aceb65f2c1488e5eda15382b5914930898f
+filas        1154      columnas  id, HS, TR, AG
+checks       38, fallos 0
+subida       NO       leaderboard NO      labels de test NO      holdout NO
+```
+
+```text
+candidate_status    PROMISING_UNCONFIRMED -> APPROVED_FOR_EXPERIMENTAL_SUBMISSION
+governance_status   SUBMISSION_PREPARED
+research_status     EXPERIMENTAL_RESEARCH_CLOSED
+```
+
+Refit segun el protocolo pre-registrado: error_score solo del OOF y mediana de los
+multiplicadores por pliegue. Entrenamiento sobre las 1483 filas de desarrollo; el holdout de 248
+no se toca.
+
+El score de Kaggle, si aparece, sera transferencia externa del candidato congelado y no una
+herramienta de tuning. No se afirma que la submission mejore a V03.
+<!-- /SUBMISSION 2026-09-29 -->
