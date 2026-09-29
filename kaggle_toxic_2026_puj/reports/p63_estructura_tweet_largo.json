@@ -1,0 +1,242 @@
+{
+  "familia": "P63_ESTRUCTURA_TWEET_LARGO",
+  "naturaleza": "EXPERIMENTO. 2 candidatos y 2 controles de capacidad, 0 submissions, 0 Kaggle, 0 holdout, 0 test",
+  "fecha": "2026-09-29T06:31:21+00:00",
+  "experiment_id": "P63-05",
+  "track": "E1-estructura-tweet-largo",
+  "script": "experiments/p63_06_estructura_tweet_largo.py",
+  "pregunta": "la estructura interna del texto largo, y sobre todo la interaccion entre posicion y longitud, aporta sobre V03",
+  "origen_de_la_hipotesis": "V30-01 medico que el mayor deposito de error es la region de texto largo con densidad lexica baja y caracteres repetidos, estable en 5/5 pliegues, y que el efecto de la URL y la mencion cambia de signo con la longitud, que es exactamente el tipo de interaccion que un modelo lineal de n-gramas no captura. Lo escribio y no gasto un experimento. Es la hipotesis mas antigua que queda sin gastar en todo el repositorio",
+  "por_que_ninguna_familia_cerrada_la_alcanza": "P62 probo la identidad del token condicionada a su categoria; esto prueba donde se situa una estructura dentro del texto y como cambia con la longitud del texto. Son mecanismos distintos",
+  "bins_congelados": [
+    {
+      "nombre": "CORTA",
+      "desde": 0,
+      "hasta": 6
+    },
+    {
+      "nombre": "MEDIA",
+      "desde": 7,
+      "hasta": 15
+    },
+    {
+      "nombre": "LARGA",
+      "desde": 16,
+      "hasta": 30
+    },
+    {
+      "nombre": "MUY_LARGA",
+      "desde": 31,
+      "hasta": 1000000000
+    }
+  ],
+  "cortes_declarados_antes": true,
+  "n_columnas": 21,
+  "columnas": [
+    "pos_url",
+    "pos_url_al_final",
+    "pos_mencion",
+    "pos_mencion_al_inicio",
+    "pos_hashtag",
+    "conc_punt_inicio",
+    "conc_punt_fin",
+    "conc_dig_inicio",
+    "conc_dig_fin",
+    "conc_mayus_inicio",
+    "conc_mayus_fin",
+    "dif_punt_inicio_fin",
+    "n_segmentos",
+    "peso_primer_segmento",
+    "repeticion_consecutiva",
+    "densidad_inicio",
+    "densidad_fin",
+    "dif_densidad",
+    "comillas_abren",
+    "comillas_cierran",
+    "comillas_equilibradas"
+  ],
+  "protocolo": {
+    "confound_de_escala": "el bloque denso se normaliza a norma media de fila uno antes de concatenarse, igual que el control aleatorio, que es el fallo que el track D cometio y corrigio",
+    "control_de_capacidad": "V03 mas un bloque aleatorio del mismo ancho, por pliegue",
+    "clasificador": "IDENTICO a V03 en los cuatro brazos",
+    "pliegues": "los canonicos, por grupo",
+    "umbrales": "0,44 / 0,51 / 0,46"
+  },
+  "resultados": {
+    "V03_pos": {
+      "corrected_cv": 0.7671031903596547,
+      "folds": [
+        0.7816780475160586,
+        0.7775007761370669,
+        0.770521670324669,
+        0.7375933304067733,
+        0.7684529920445414
+      ],
+      "por_bin": {
+        "CORTA": {
+          "n": 167,
+          "F1": 0.937002,
+          "F1_de_V03": 0.947956,
+          "delta_vs_V03": -0.010954
+        },
+        "MEDIA": {
+          "n": 602,
+          "F1": 0.789023,
+          "F1_de_V03": 0.796405,
+          "delta_vs_V03": -0.007382
+        },
+        "LARGA": {
+          "n": 547,
+          "F1": 0.669812,
+          "F1_de_V03": 0.68335,
+          "delta_vs_V03": -0.013538
+        },
+        "MUY_LARGA": {
+          "n": 167,
+          "F1": 0.547955,
+          "F1_de_V03": 0.560571,
+          "delta_vs_V03": -0.012616
+        }
+      },
+      "rescate": 83,
+      "damage": 114
+    },
+    "V03_random": {
+      "corrected_cv": 0.769605242971586,
+      "folds": [
+        0.7799786710344548,
+        0.7882183485020363,
+        0.7761967757734921,
+        0.7406204167639435,
+        0.7623190056743169
+      ],
+      "por_bin": {
+        "CORTA": {
+          "n": 167,
+          "F1": 0.940642,
+          "F1_de_V03": 0.947956,
+          "delta_vs_V03": -0.007314
+        },
+        "MEDIA": {
+          "n": 602,
+          "F1": 0.790563,
+          "F1_de_V03": 0.796405,
+          "delta_vs_V03": -0.005842
+        },
+        "LARGA": {
+          "n": 547,
+          "F1": 0.669413,
+          "F1_de_V03": 0.68335,
+          "delta_vs_V03": -0.013937
+        },
+        "MUY_LARGA": {
+          "n": 167,
+          "F1": 0.557392,
+          "F1_de_V03": 0.560571,
+          "delta_vs_V03": -0.003179
+        }
+      },
+      "rescate": 105,
+      "damage": 138
+    },
+    "pos_solo": {
+      "corrected_cv": 0.5475223449425387,
+      "folds": [
+        0.5537125712065681,
+        0.5321413367390379,
+        0.5825532853827825,
+        0.5168072367161503,
+        0.5507600340912912
+      ],
+      "por_bin": {
+        "CORTA": {
+          "n": 167,
+          "F1": 0.799939,
+          "F1_de_V03": 0.947956,
+          "delta_vs_V03": -0.148017
+        },
+        "MEDIA": {
+          "n": 602,
+          "F1": 0.56938,
+          "F1_de_V03": 0.796405,
+          "delta_vs_V03": -0.227025
+        },
+        "LARGA": {
+          "n": 547,
+          "F1": 0.413291,
+          "F1_de_V03": 0.68335,
+          "delta_vs_V03": -0.270059
+        },
+        "MUY_LARGA": {
+          "n": 167,
+          "F1": 0.36243,
+          "F1_de_V03": 0.560571,
+          "delta_vs_V03": -0.198141
+        }
+      },
+      "rescate": 287,
+      "damage": 1427
+    },
+    "random_solo": {
+      "corrected_cv": 0.4762486728856851,
+      "folds": [
+        0.4702092731530471,
+        0.49284623434118874,
+        0.481813112227414,
+        0.4655815918658384,
+        0.470270038873289
+      ],
+      "por_bin": {
+        "CORTA": {
+          "n": 167,
+          "F1": 0.597114,
+          "F1_de_V03": 0.947956,
+          "delta_vs_V03": -0.350842
+        },
+        "MEDIA": {
+          "n": 602,
+          "F1": 0.479021,
+          "F1_de_V03": 0.796405,
+          "delta_vs_V03": -0.317384
+        },
+        "LARGA": {
+          "n": 547,
+          "F1": 0.424054,
+          "F1_de_V03": 0.68335,
+          "delta_vs_V03": -0.259296
+        },
+        "MUY_LARGA": {
+          "n": 167,
+          "F1": 0.463563,
+          "F1_de_V03": 0.560571,
+          "delta_vs_V03": -0.097008
+        }
+      },
+      "rescate": 390,
+      "damage": 1955
+    }
+  },
+  "brecha_global": -0.0025020526,
+  "brecha_por_bin": {
+    "LARGA": 0.000399,
+    "MUY_LARGA": -0.009437
+  },
+  "gate": {
+    "delta_min": 0.0015,
+    "pliegues_min": 4,
+    "delta": -0.0101082622,
+    "pliegues_mejorados": 0,
+    "superado": false
+  },
+  "veredicto": "el bloque de posiciones vale -0.0101082622 frente a V03 con 0/5 pliegues y la BRECHA especifica global es -0.0025020526. Y aqui esta la lectura que importa: la hipotesis de V30-01 situaba el mecanismo en la region larga, y en MUY_LARGA la brecha es -0.009437, es decir el bloque de posiciones es PEOR que un bloque aleatorio del mismo ancho precisamente donde se suponia que estaba la senal. La interaccion entre posicion y longitud NO es la que explica el deposito de error, y la hipotesis de V30-01 queda refutada en su prediccion, no solo no confirmada",
+  "decision": "CLOSED. La estructura interna no aporta sobre V03",
+  "experimentos_registrados": 1,
+  "reproducibilidad": {
+    "nivel": "R2",
+    "git_commit": "d5d8aa4",
+    "seed": 42,
+    "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "corrected_cv": 0.7772114525165721
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}
