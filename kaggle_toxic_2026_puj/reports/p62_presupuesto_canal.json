@@ -1,0 +1,339 @@
+{
+  "familia": "P62_PRESUPUESTO_CANAL",
+  "naturaleza": "EXPERIMENTO. 1 medicion con curva, 0 submissions, 0 Kaggle, 0 holdout, 0 test. V03 no se modifica",
+  "fecha": "2026-09-29T05:37:16+00:00",
+  "experiment_id": "P62-03",
+  "track": "presupuesto-del-canal",
+  "script": "experiments/p62_07_presupuesto_canal.py",
+  "pregunta": "de quantos rasgos de interaccion dispone V03, y vale mas lo que cuesta anadirlos",
+  "por_que_esta_idea": "P62-01 y P62-02cerraron con un coste de dilucion medido y separado del contenido. Dos puntos no bastan para llamar ley a un regimen, y esta medicion convierte la afirmacion en aritmetica con presupuesto",
+  "protocolo": {
+    "variable_independiente": "el numero de rasgos del canal, K en [0, 16, 32, 64, 128, 256, 512, 1024, 2048]",
+    "por_que_no_es_una_rejilla": "K no es un hiperparametro del modelo: es la variable independiente de una medicion, y el clasificador es el de V03 en todos los brazos. No se selecciona ningun modelo por su puntuacion",
+    "brazos": {
+      "ruido": "bloque de K rasgos sin sentido, con perfil de frecuencia de documento comparable; lo que hace es coste",
+      "real": "los K tokens de interaccion mas enriquecidos"
+    },
+    "seleccion_fold_safe": "el enriquecimiento se calcula SOLO con las filas de entrenamiento de cada pliegue, con soporte minimo 5 y suavizado 1.0, y se ordena por valor absoluto para no elegir solo la clase positiva",
+    "confound_de_escala": "todos los brazos se reescalan a la norma media de fila de V03, que es raiz de 2; en el control el factor es 1",
+    "umbrales": "0,44 / 0,51 / 0,46 congelados en todos los brazos",
+    "reproducibilidad": "semilla 42, TPESampler no aplica, sin rejilla"
+  },
+  "curva": [
+    {
+      "K": 0,
+      "ruido": 0.7772114525165721,
+      "delta_ruido": 0.0,
+      "real": 0.7772114525165721,
+      "delta_real": 0.0,
+      "valor": 0.0
+    },
+    {
+      "K": 16,
+      "ruido": 0.7780667139652649,
+      "delta_ruido": 0.0008552614486928567,
+      "real": 0.7764050796108534,
+      "delta_real": -0.0008063729057187219,
+      "valor": -0.0016616343544115786
+    },
+    {
+      "K": 32,
+      "ruido": 0.7774930913921453,
+      "delta_ruido": 0.000281638875573198,
+      "real": 0.7735938370859006,
+      "delta_real": -0.003617615430671517,
+      "valor": -0.003899254306244715
+    },
+    {
+      "K": 64,
+      "ruido": 0.7759317704334577,
+      "delta_ruido": -0.001279682083114353,
+      "real": 0.7729974032728165,
+      "delta_real": -0.004214049243755569,
+      "valor": -0.002934367160641216
+    },
+    {
+      "K": 128,
+      "ruido": 0.7754964520848971,
+      "delta_ruido": -0.00171500043167494,
+      "real": 0.7667815924976593,
+      "delta_real": -0.010429860018912773,
+      "valor": -0.008714859587237833
+    },
+    {
+      "K": 256,
+      "ruido": 0.7762787289320365,
+      "delta_ruido": -0.0009327235845355553,
+      "real": 0.7684648849816735,
+      "delta_real": -0.008746567534898553,
+      "valor": -0.007813843950362998
+    },
+    {
+      "K": 512,
+      "ruido": 0.7704720617338765,
+      "delta_ruido": -0.006739390782695587,
+      "real": 0.7694731115071084,
+      "delta_real": -0.0077383410094636895,
+      "valor": -0.0009989502267681027
+    },
+    {
+      "K": 1024,
+      "ruido": 0.7682894416093875,
+      "delta_ruido": -0.008922010907184585,
+      "real": 0.7703508309924126,
+      "delta_real": -0.006860621524159449,
+      "valor": 0.002061389383025136
+    }
+  ],
+  "presupuestos_con_mejora": [],
+  "mejor_presupuesto": null,
+  "gate": {
+    "delta_min": 0.003,
+    "pliegues_min": 4,
+    "delta": 0.0,
+    "pliegues_mejorados": 0,
+    "superado": false
+  },
+  "bootstrap": null,
+  "seleccion_por_pliegue": [
+    {
+      "pliegue": 1,
+      "n_candidatos": 4556,
+      "n_top": 2048,
+      "top_10": [
+        {
+          "token": "hijo__NOUN",
+          "score": 7.7592
+        },
+        {
+          "token": "sevillista__ADJ",
+          "score": 7.457
+        },
+        {
+          "token": "zorra__NOUN",
+          "score": 7.2774
+        },
+        {
+          "token": "zorra__PROPN",
+          "score": 6.5094
+        },
+        {
+          "token": "novia__NOUN",
+          "score": 6.1387
+        },
+        {
+          "token": "perra__PROPN",
+          "score": 6.048
+        },
+        {
+          "token": "cllate__PROPN",
+          "score": 5.6936
+        },
+        {
+          "token": "moro__NOUN",
+          "score": 5.2319
+        },
+        {
+          "token": "acoso__NOUN",
+          "score": 4.917
+        },
+        {
+          "token": "ms__PROPN",
+          "score": 4.7207
+        }
+      ]
+    },
+    {
+      "pliegue": 2,
+      "n_candidatos": 4673,
+      "n_top": 2048,
+      "top_10": [
+        {
+          "token": "zorra__NOUN",
+          "score": 9.1235
+        },
+        {
+          "token": "zorra__PROPN",
+          "score": 6.5357
+        },
+        {
+          "token": "perra__PROPN",
+          "score": 6.043
+        },
+        {
+          "token": "novia__NOUN",
+          "score": 6.0231
+        },
+        {
+          "token": "cllate__PROPN",
+          "score": 5.9271
+        },
+        {
+          "token": "acoso__NOUN",
+          "score": 5.7352
+        },
+        {
+          "token": "sevillista__ADJ",
+          "score": 5.6913
+        },
+        {
+          "token": "pegar__VERB",
+          "score": 5.3833
+        },
+        {
+          "token": "hijo__NOUN",
+          "score": 5.3342
+        },
+        {
+          "token": "rabe__ADJ",
+          "score": 5.2681
+        }
+      ]
+    },
+    {
+      "pliegue": 3,
+      "n_candidatos": 4661,
+      "n_top": 2048,
+      "top_10": [
+        {
+          "token": "zorra__NOUN",
+          "score": 7.254
+        },
+        {
+          "token": "cllate__PROPN",
+          "score": 6.9827
+        },
+        {
+          "token": "zorra__PROPN",
+          "score": 6.0602
+        },
+        {
+          "token": "novia__NOUN",
+          "score": 6.0466
+        },
+        {
+          "token": "perra__PROPN",
+          "score": 5.9739
+        },
+        {
+          "token": "hijo__NOUN",
+          "score": 5.919
+        },
+        {
+          "token": "sevillista__ADJ",
+          "score": 5.7148
+        },
+        {
+          "token": "moro__NOUN",
+          "score": 5.2282
+        },
+        {
+          "token": "mantero__NOUN",
+          "score": 5.2282
+        },
+        {
+          "token": "sos__AUX",
+          "score": 5.1298
+        }
+      ]
+    },
+    {
+      "pliegue": 4,
+      "n_candidatos": 4694,
+      "n_top": 2048,
+      "top_10": [
+        {
+          "token": "zorra__PROPN",
+          "score": 8.5683
+        },
+        {
+          "token": "zorra__NOUN",
+          "score": 8.1021
+        },
+        {
+          "token": "cllate__PROPN",
+          "score": 7.2319
+        },
+        {
+          "token": "perra__PROPN",
+          "score": 6.6763
+        },
+        {
+          "token": "hijo__NOUN",
+          "score": 6.2007
+        },
+        {
+          "token": "sos__AUX",
+          "score": 5.9064
+        },
+        {
+          "token": "novia__NOUN",
+          "score": 5.3809
+        },
+        {
+          "token": "rabe__ADJ",
+          "score": 5.1762
+        },
+        {
+          "token": "sudaca__NOUN",
+          "score": 4.9413
+        },
+        {
+          "token": "casa__NOUN",
+          "score": 4.8756
+        }
+      ]
+    },
+    {
+      "pliegue": 5,
+      "n_candidatos": 4650,
+      "n_top": 2048,
+      "top_10": [
+        {
+          "token": "zorra__NOUN",
+          "score": 7.4877
+        },
+        {
+          "token": "zorra__PROPN",
+          "score": 7.062
+        },
+        {
+          "token": "hijo__NOUN",
+          "score": 6.526
+        },
+        {
+          "token": "cllate__PROPN",
+          "score": 6.0719
+        },
+        {
+          "token": "perra__PROPN",
+          "score": 5.895
+        },
+        {
+          "token": "sos__AUX",
+          "score": 5.4312
+        },
+        {
+          "token": "sevillista__ADJ",
+          "score": 5.334
+        },
+        {
+          "token": "tontera__NOUN",
+          "score": 5.3194
+        },
+        {
+          "token": "moro__NOUN",
+          "score": 5.2776
+        },
+        {
+          "token": "mantero__NOUN",
+          "score": 4.9719
+        }
+      ]
+    }
+  ],
+  "veredicto": "NINGUN presupuesto da al canal real una mejora sobre V03. El valor del contenido es positivo en varios K, luego la senal existe, pero el coste de anadir el bloque es mayor en todos ellos. La familia queda cerrada por la aritmetica del regimen, no por dos negativos sueltos",
+  "decision": "CLOSED. Ningun presupuesto da al canal una mejora sobre V03",
+  "experimentos_registrados": 1,
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

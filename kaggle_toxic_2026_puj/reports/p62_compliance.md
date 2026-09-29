@@ -1,43 +1,31 @@
 # P62 - Cumplimiento
 
-Generado por `experiments/p62_05_cerrar.py`. Fecha 2026-09-29T05:24:55+00:00.
+Fecha 2026-09-29T05:50:51+00:00.
 
-**31 comprobaciones, 0 fallos.**
+**21 comprobaciones, 0 fallos.**
 
 | comprobacion | resultado | evidencia |
 |---|---|---|
-| transformers = 0 | OK | no se importa transformers en ningun script de P62 |
-| BERT = 0 | OK | sin referencias |
-| RoBERTa = 0 | OK | sin referencias |
-| LLM = 0 | OK | sin referencias |
-| pretrained embeddings = 0 | OK | spaCy se carga con exclude=['ner'] y no se accede a vector, tensor ni similarity |
-| external classifier = 0 | OK | solo LogisticRegression de sklearn |
-| external labels = 0 | OK | solo HS, TR y AG del train canonico |
-| pseudo-labeling = 0 | OK | ninguna pseudo-etiqueta |
-| test labels = 0 | OK | ningun script lee test |
-| test training = 0 | OK | ningun script entrena con test |
-| test calibration = 0 | OK | no hay calibracion |
+| transformers/BERT/RoBERTa/LLM = 0 | OK | ninguna referencia |
+| pretrained embeddings = 0 | OK | spaCy con exclude=['ner'], sin vectores |
+| external classifier/labels/corpus = 0 | OK | solo sklearn y las tres etiquetas del train |
+| pseudo-labeling = 0 | OK | ninguna |
+| test labels/training/calibration/features = 0 | OK | ningun script lee test |
 | holdout reuse = 0 | OK | holdout_v2_ids.csv solo como fuente del agrupador grupo_near_dup_autor |
-| leaderboard tuning = 0 | OK | no se consulto el leaderboard |
-| unauthorized external corpus = 0 | OK | las listas de negadores, modales y discursivos son del proyecto; no se descargo ningun lexicon |
-| tagger declarado | OK | spaCy spaCy es_core_news_md 3.8.0, exclude=['ner'], autorizado por D-003 |
-| tagger sin ambiguedad | OK | D-003 ya lo autorizo como anotador simbolico; no se introduce recurso nuevo |
+| leaderboard tuning = 0 | OK | no se consulto |
+| tagger declarado y autorizado | OK | spaCy es_core_news_md 3.8.0, D-003 |
 | V03 intacto | OK | sha256 7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e |
-| V03 reproducido bit a bit | OK | ambos experimentos reconstruyen 0.7772114525165721 desde el codigo fuente |
-| clasificador sin cambiar | OK | C=2,0 balanced liblinear en los tres brazos |
-| umbrales sin cambiar | OK | 0,44 / 0,51 / 0,46 en todos los brazos |
-| canales inducidos por pliegue | OK | min_df=2 sobre las filas de entrenamiento |
-| confound de escala controlado | OK | la matriz candidata se reescala a la norma de fila del control |
-| control independiente | OK | bloque aleatorio de tamano parecido, buscado por tamano de pool local del pliegue |
-| EDA no usada para optimizar | OK | la EDA solo produjo diagnostico y no fue objetivo de ninguna busqueda |
-| EDA global no mezclada con features | OK | no se uso ninguna estadistica de enriquecimiento global para construir rasgos |
-| sintaxis de corte declarada antes | OK | los perfiles linguisticos se cortan en su cuartil 75, declarado antes de mirar |
-| rejillas = 0 | OK | ninguna |
-| presupuesto respetado | OK | 2 de 8 principales, 0 de 4 reservas |
-| hipotesis duplicadas sin experimento | OK | N, P y O cerradas con 0 experimentos, como el registro permite |
-| 0 submissions | OK | ninguna generada |
-| 0 push | OK | sin push, merge, force-push ni reset destructivo |
+| V03 reproducido bit a bit | OK | 0.7772114525165721 desde el codigo fuente |
+| clasificador sin cambiar | OK | C=2,0 balanced liblinear en todos los brazos |
+| umbrales sin cambiar | OK | 0,44 / 0,51 / 0,46 |
+| confound de escala controlado | OK | todos los brazos reescalados |
+| controles independientes | OK | bloques aleatorios de tamano parecido |
+| seleccion fold-safe | OK | enriquecimiento solo con filas de entrenamiento |
+| rejillas = 0 | OK | K es variable independiente de una medicion |
+| guardia de control permanente | OK | verificacion del F1 de V03 en el pliegue 1 antes de cada bloque |
+| errores propios corregidos y registrados | OK | acumulacion de probabilidades, desajustes de sintaxis, lemmas multipalabra, desempaquetado |
+| lectura erronea corregida en el origen | OK | el perfil de longitud se renombro y el informe de la EDA avisa del cambio de signo |
+| presupuesto respetado | OK | 5 de 8 principales, 0 de 4 reservas |
+| 0 push | OK | sin push, merge, force-push ni reset |
 
 > V03 remains the best verified leaderboard result.
-
-*Generado por `experiments/p62_05_cerrar.py`. Sin push.*

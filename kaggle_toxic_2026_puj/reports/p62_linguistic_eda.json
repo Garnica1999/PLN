@@ -1,7 +1,7 @@
 {
   "familia": "P62_LINGUISTIC_EDA",
   "naturaleza": "DESCRIPTIVA. 0 experimentos, 0 modelos, 0 submissions, 0 Kaggle, 0 holdout, 0 test. No se usa para optimizar nada",
-  "fecha": "2026-09-29T05:13:34+00:00",
+  "fecha": "2026-09-29T05:47:07+00:00",
   "tagger": {
     "herramienta": "spaCy",
     "version": "3.8.13",
@@ -2245,7 +2245,7 @@
       "delta_F1_rico_menos_pobre": -0.028571000000000013
     },
     {
-      "perfil": "estructura_corta",
+      "perfil": "longitud_del_tweet",
       "etiqueta": "HS",
       "regimen": "rico",
       "n": 157,
@@ -2256,7 +2256,7 @@
       "delta_F1_rico_menos_pobre": -0.16302799999999995
     },
     {
-      "perfil": "estructura_corta",
+      "perfil": "longitud_del_tweet",
       "etiqueta": "HS",
       "regimen": "pobre",
       "n": 234,
@@ -2267,7 +2267,7 @@
       "delta_F1_rico_menos_pobre": -0.16302799999999995
     },
     {
-      "perfil": "estructura_corta",
+      "perfil": "longitud_del_tweet",
       "etiqueta": "TR",
       "regimen": "rico",
       "n": 60,
@@ -2278,7 +2278,7 @@
       "delta_F1_rico_menos_pobre": -0.286423
     },
     {
-      "perfil": "estructura_corta",
+      "perfil": "longitud_del_tweet",
       "etiqueta": "TR",
       "regimen": "pobre",
       "n": 208,
@@ -2289,7 +2289,7 @@
       "delta_F1_rico_menos_pobre": -0.286423
     },
     {
-      "perfil": "estructura_corta",
+      "perfil": "longitud_del_tweet",
       "etiqueta": "AG",
       "regimen": "rico",
       "n": 138,
@@ -2300,7 +2300,7 @@
       "delta_F1_rico_menos_pobre": -0.24954600000000005
     },
     {
-      "perfil": "estructura_corta",
+      "perfil": "longitud_del_tweet",
       "etiqueta": "AG",
       "regimen": "pobre",
       "n": 215,

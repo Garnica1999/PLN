@@ -1,6 +1,6 @@
 # P62 - EDA linguistica del corpus canonico
 
-Generado por `experiments/p62_01_eda_linguistica.py`. Fecha 2026-09-29T05:13:34+00:00.
+Generado por `experiments/p62_01_eda_linguistica.py`. Fecha 2026-09-29T05:47:07+00:00.
 
 > **Esta EDA es descriptiva.** No entrena, no modifica V03, no selecciona
 > hiperparametros, no usa test, ni holdout, ni leaderboard, ni ajusta thresholds. Su
@@ -89,9 +89,9 @@ etiqueta.
 | discourse_rico | HS | 183 | 0.9009 | 0.8993 | +0.0016 | 0.1093 | 0.1013 |
 | discourse_rico | TR | 132 | 0.8861 | 0.9372 | -0.0511 | 0.1439 | 0.0675 |
 | discourse_rico | AG | 158 | 0.8714 | 0.9000 | -0.0286 | 0.1392 | 0.1055 |
-| estructura_corta | HS | 157 | 0.7876 | 0.9507 | -0.1630 | 0.1975 | 0.0385 |
-| estructura_corta | TR | 60 | 0.6813 | 0.9677 | -0.2864 | 0.4167 | 0.0433 |
-| estructura_corta | AG | 138 | 0.7042 | 0.9538 | -0.2495 | 0.2899 | 0.0465 |
+| longitud_del_tweet | HS | 157 | 0.7876 | 0.9507 | -0.1630 | 0.1975 | 0.0385 |
+| longitud_del_tweet | TR | 60 | 0.6813 | 0.9677 | -0.2864 | 0.4167 | 0.0433 |
+| longitud_del_tweet | AG | 138 | 0.7042 | 0.9538 | -0.2495 | 0.2899 | 0.0465 |
 | negation_rico | HS | 150 | 0.8281 | 0.8929 | -0.0648 | 0.1800 | 0.0937 |
 | negation_rico | TR | 94 | 0.7792 | 0.9280 | -0.1488 | 0.1915 | 0.1086 |
 | negation_rico | AG | 125 | 0.7805 | 0.8792 | -0.0987 | 0.1920 | 0.1422 |
@@ -105,9 +105,18 @@ etiqueta.
 | verb_rico | TR | 128 | 0.8673 | 0.9618 | -0.0945 | 0.1406 | 0.0429 |
 | verb_rico | AG | 163 | 0.8561 | 0.9496 | -0.0934 | 0.1718 | 0.0565 |
 
-El corte es el cuartil 75 dentro de cada rasgo y de cada etiqueta, y se declara ANTES
-de mirar los resultados, que es lo que exige el parrafo 39 para que una rebanada
-linguistica pueda usarse como criterio y no solo como descripcion.
+El corte es el cuartil 75 dentro de cada rasgo y de cada etiqueta, y se declara
+ANTES de mirar los resultados, que es lo que exige el parrafo 39 para que una
+rebanada linguistica pueda usarse como criterio y no solo como descripcion.
+
+**Aviso de lectura, y es una correccion.** Una version anterior de este informe
+nombraba el perfil de longitud `estructura_corta` y concluyo que V03 fallaba en los
+tweets cortos. Era al reves: su cuartil ALTO es lo largo, luego la delta negativa
+dice que V03 es MEJOR en los largos. La comprobacion posterior por region lo
+confirma de forma independiente, con AUC de 0,94 en los cortos frente a 0,85 a 0,92
+en los largos, y F1 de 0,94 contra 0,72. El perfil se llama ahora
+`longitud_del_tweet` para que el nombre no vuelva a inducir el error, y la region
+corta se analiza aparte en `p62_techo_cortos.md`.
 
 ## Palabras funcionales, negacion, modalidad y discursivos
 

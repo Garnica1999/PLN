@@ -1,113 +1,137 @@
-# P62 - Representacion, estructura linguistica y correccion de errores de alta confianza
+# P62 - Representacion, estructura linguistica y error de alta confianza
 
-Generado por `experiments/p62_05_cerrar.py`. Fecha 2026-09-29T05:24:55+00:00.
+Informe final de la fase. Fecha 2026-09-29T05:50:51+00:00. Cinco experimentos, 0 submissions, 0 Kaggle, 0 holdout, 0 test.
 
-## La pregunta final de la fase
+## La respuesta a la pregunta de la fase
 
-> V03 falla principalmente porque no tiene suficiente informacion textual, o porque la representacion word+char no expresa adecuadamente la estructura linguistica con la que esas palabras se combinan?
+> V03 falla porque no tiene suficiente informacion textual, o porque la representacion word+char no expresa adecuadamente la estructura con la que esas palabras se combinan?
 
-## La respuesta
+**Las dos cosas son verdad a la vez, y por eso hace falta separarlas.** La interaccion entre la palabra y su categoria es REAL y vale +0.0657, el 17.41 por ciento de la senal de la palabra. El problema no es que falte informacion: es que no cabe, y porque no cabe no compensa ni compensada por ampliar la cobertura.
 
-**La segunda, y ahora con una medida en vez de con una intuicion.** La synergy entre la palabra y su categoria es +0.0657, que es el 17.41 por ciento de la senal de la palabra. La informacion que falta es REAL y esta medida. El problema es que no cabe: anadir ese canal al espacio de V03 cuesta mas de lo que la interaccion repara.
+## El recorrido, y por que cada experimento era necesario
 
-Y la segunda mitad de la pregunta tiene su propia respuesta:
-
-```text
-categoria sola              +0.0095   casi nada
-palabra sola                +0.3773
-synergy palabra-POS         +0.0657   17.41 por ciento de la palabra
-```
-
-## El gap analysis, y por que dos pistas se cerraron sin gastar experimento
-
-El encargo pide una auditoria FUNCIONAL y no una busqueda de nombres, y el motivo es concreto: con 341 experimentos, buscar `POS` devuelve las mismas filas para las cinco pistas, porque las cinco usan el mismo vocabulario. Lo que las distingue es la representacion, y eso hay que leerlo en el codigo.
-
-| pista | veredicto | experimentos | por que |
-|---|---|---:|---|
-| L | **genuinely_new** | 1 | ninguna de las dos formas existentes combina la identidad de la palabra con su categoria. El token palabra__POS no aparece en ningun sitio del codigo, y eso es una comprobable, no  |
-| M | **genuinely_new** | 1 | el triple lexical cabeza__relacion__dependiente no existe. La version existente acerca la cabeza y la relacion pero pierde el dependiente, que es justamente el elemento que disting |
-| N | **functionally_equivalent** | 0 | la representacion propuesta y la existente son el mismo objeto. Repetirla gastaria un experimento para confirmar un numero que ya esta en el registro con el mismo clasificador, los |
-| O | **partially_tested** | 1 | la composicion lexica como likelihood y como interaccion ya se probo y fue peor que V03. Lo que no se probo es usarla como CANAL sparse dentro del espacio de V03. La diferencia es  |
-| P | **functionally_equivalent** | 0 | el alcance de la negacion y el aislamiento de la cita ya se calcularon y se midieron, y el emparejamiento insulto-target tambien. Los tokens propuestos son una reexpresion mas tosc |
-
-El script ABORTA si la comprobacion central falla: verifica contra el fuente que no existe ningun token `palabra__POS` y que la secuencia categorial si existe.
-
-## El tagger ya estaba resuelto por D-003
+Los tres primeros no fueron tres intentos: cada uno lo pidio una medicion del anterior.
 
 ```text
-herramienta   spaCy spaCy es_core_news_md 3.8.0, exclude=['ner'], autorizado por D-003
-
-D-003 permite es_core_news_md como anotador SIMBOLICO con exclude=['ner'], y prohibe doc.vector, token.vector, doc.tensor y similarity con un assert en el codigo de features. No hay ambiguedad normativa que resolver y no se introduce ningun recurso externo nuevo.
+P62-01  L palabra__POS                 -0,009572  1/5   la interaccion vale
+                                                    +0,002014 frente al azar
+P62-02  M triple lexico               -0,011236  0/5   la estructura vale
+                                                    -0,010793, PEOR que el azar
+P62-03  curva de presupuesto           ningun K mejora a V03
+P62-04  POS contra lemas sueltos      ambos pierden 8/8, el POS ayuda 6/8
+P62-05  cobertura min_df=1             -0,003351  la cobertura sube al 99,5
 ```
 
-## La EDA linguistica: lo que separa las clases
+## El coste de anadir un canal, separado del contenido
 
-| magnitud | valor | que mide |
-|---|---:|---|
-| palabra sola, como elemento | +0.3773 | saber QUE palabra |
-| palabra sola, como presencia | +0.1549 | que aparezca siquiera |
-| categoria sola | +0.0095 | la composicion gramatical |
-| palabra y categoria juntas | +0.4525 | el canal combinado |
-| **synergy** | **+0.0657** | **lo que no se descompone** |
+Un candidato que anade rasgos puede perder porque el contenido no sirve, o porque anadir rasgos en un espacio de 21.000 dimensiones con 1.186 filas diluye. Se separan con un control aleatorio independiente de tamano parecido.
 
-**Y la frecuencia NO es enrichment.** La correlacion entre la frecuencia bruta de un sustantivo y su log de enriquecimiento es -0.0572, practicamente cero. Los ocho sustantivos mas enriquecidos de HS son `zorra` +2,51 con 51 apariciones, `mantero` +2,15 con 11, `novia` +1,83 con 23, y `subsahariano` +1,70 con 16, mientras que el mas frecuente, `puta` con 408, tiene -0,22. La palabra que mas aparece no es la que mas discrimina.
-
-## Donde falla V03, por perfil linguistico
-
-El corte es el cuartil 75 dentro de cada rasgo y de cada etiqueta, y se declara ANTES de mirar los resultados, que es lo que permite usarlos como criterio y no solo como descripcion.
-
-| perfil | delta de F1 rico menos pobre | lectura |
-|---|---:|---|
-| estructura corta | -0,2330 | **V03 falla mucho mas cuando el tweet es corto** |
-| clausula simple | -0,1495 | idem |
-| negation rico | -0,1041 | la negacion le cuesta |
-| verb rico | -0,0865 | |
-| dependency rico | +0,1070 | V03 MEJOR cuando hay estructura sintactica |
-| noun rico | +0,0812 | idem |
-
-El dato mas accionable: en TR corto la tasa de error de alta confianza de V03 es **0,4167**, y en TR largo **0,0433**. Casi diez veces. Y en la rebanada de estructura sintactica rica V03 es MEJOR, con un delta de +0,1070.
-
-Esa combinacion es informativa y corta una lectura erronea: V03 no falla por ignorar la gramntica, falla cuando no hay texto. Y eso NO es un problema de representacion, es un techo de informacion.
-
-## Los dos experimentos, y el control que hace legibles sus negativos
-
-Un candidato que anade rasgos puede perder por dos razones que se confunden: que el contenido no sirva, o que anadir rasgos en un espacio de 21.000 dimensiones con 1.186 filas de entrenamiento dane. Se separan con un control.
-
-**Y el primer control resulto ser un no-op demostrable, lo cual es en si mismo un hallazgo.** Reetiquetar el vocabulario real con nombres nuevos da EXACTAMENTE el mismo resultado, porque permutar columnas de la matriz de diseno es una simetria de un modelo lineal regularizado: la penalizacion es la norma al cuadrado del vector de coeficientes. Un control asi no puede discriminar nada. El control que si distingue es un bloque INDEPENDIENTE del mismo tamano.
-
-Ademas hay un confound de escala que no salta a la vista: cada bloque TF-IDF se normaliza por separado, luego anadir un tercero cambia la norma de fila, que equivale a cambiar C. La matriz candidata se reescala a la norma del control, y los dos experimentos reproducen V03 EXACTAMENTE desde el codigo fuente.
-
-| | L palabra-POS | M triple lexico |
+| | L palabra__POS | M triple lexico |
 |---|---:|---:|
-| corrected_cv | 0.7676396879 | 0.7659752040 |
-| delta vs V03 | -0.0095717646 | -0.0112362485 |
-| pliegues que mejoran | 1/5 | 0/5 |
 | (1) coste de anadir el bloque | +0.0115854689 | +0.0004432824 |
 | (2) valor de la estructura | +0.0020137043 | -0.0107929661 |
-| decision | CLOSED | CLOSED |
+| (3) saldo | -0.0095717646 | -0.0112362485 |
 
-**L.** El contenido vale +0.0020137043 frente al bloque aleatorio, luego la interaccion palabra-POS EXISTE y es medible. Pero repaga solo el 17.4 por ciento del coste de anadir el bloque.
+En L la interaccion **existe** y repaga el 17.4 por ciento de su coste. En M el canal es mucho mas pequeno, el coste casi nulo, y la estructura es **peor que el azar**.
 
-**M.** El canal es mucho mas pequeno, luego el coste es casi nulo, y aun asi la estructura lexica vale -0.0107929661: es **peor que un bloque aleatorio del mismo tamano**. El triple lexico no aporta y ademas molesta. Las relaciones que mas rasgos aportan, `obj`, `advmod` y `nsubj`, son las mas genericas y las que el texto crudo ya expresa con bigramas.
+## La cobertura, que no era lo que creia
 
-**La regla general que queda.** En un espacio disperso grande con pocos datos, anadir un canal categorial se paga con mas de lo que la categoria repara, y esa parte se puede medir por separado del contenido. Eso cierra la FAMILIA con evidencia y no con un unico negativo.
+El canal de palabras de V03 tiene 2673 terminos en el pliegue 1, y `min_df=2` conserva solo el **28.3 por ciento** de las formas superficiales presentes. Con `min_df=1` sube al **99.5 por ciento** y **resta**: A -0.0040227339, B -0.0116799367, C -0.0033508936.
 
-## La pista O no se abre, y esa es la parte que conviene registrar
+Las palabras que `min_df=2` descartaba no eran las que faltaban.
 
-El gap analysis le asigno un experimento y una CONDICION, declarada antes de que corriera ninguno: abrirla solo si L y M demostraban que anadir un canal categorial al espacio de V03 mueve algo. L repago el 17,4 por ciento de su coste y M fue peor que el azar. La condicion fallo, y una hipotesis cerrada por duplicacion consume CERO experimentos. Reintentar O con un peso del canal distinto seria rescatar un negativo con un hiperparametro, que es lo que P60 y P61 rechazaron. No se hace.
+## La correccion mas importante de la fase
 
-## La respuesta a la pregunta final, en una linea
+**Yo lei mal mi propia EDA y lo digo sin rodeos.** El perfil de longitud se llamaba `estructura_corta`, pero su medida era el numero de tokens, luego su cuartil superior es lo LARGO. La delta negativa, -0,2330, no decia que V03 fallara en los cortos: decia que V03 es **mejor** en los largos.
+
+La comprobacion independiente lo desmiente de forma rotunda:
+
+| region | n | F1 de V03 | AUC interno | error de alta confianza |
+|---|---:|---:|---:|---:|
+| corta, hasta 6 tokens | 136 | 0.9704 | 0.9872 | 0.0294 |
+| larga | 1347 | 0.7795 | 0.9242 | 0.0794 |
+
+V03 alcanza **0.9639** de AUC dentro de la region corta. El margen hasta el techo moviendo **solo el corte** es de +0.000323, luego en los cortos V03 ordena bien y la linea esta casi donde debe.
+
+**El limite esta en el orden de los tweets largos**, los que tienen ambiguedad y sentimiento mixto. Ahi el AUC baja a 0,85-0,92 y el techo moviendo el corte deja apenas +0,006. Y V28-01 ya habia mostrado que los errores de las tres etiquetas se solapan con coeficientes de +0,42 a +0,51, luego fallan sobre los mismos textos. Las dos lineas convergen.
+
+La correccion se aplico EN EL ORIGEN: el perfil se renombro `longitud_del_tweet` y su informe lleva un aviso de lectura.
+
+## Un hallazgo de instrumentacion que conviene no perder
+
+Un control construido reetiquetando el vocabulario con nombres nuevos da **EXACTAMENTE** el mismo resultado, y no es un fallo: **permutar columnas de la matriz de diseno es una simetria de un modelo lineal regularizado**, porque la penalizacion es la norma al cuadrado del vector de coeficientes. Ese control es un no-op demostrable. El reflejo natural ante un desajuste entre dos representaciones es reetiquetar una para igualarla a la otra, y eso no mide nada.
+
+## Errores propios encontrados y corregidos en la fase
+
+- El `corrected_cv` de la curva se calculaba **dentro** del bucle de pliegues, sobre un array con una sola quinta parte rellena, y cada pliegue sobrescribia al anterior. Daba 0,2518 en todos los brazos. Anadido un guardia permanente que verifica el control en el pliegue 1.
+- La EDA de secuencias POS y dependencias no filtraba por clase, luego las tres etiquetas obtenian conteos identicos y la EDA era una tabla repetida.
+- Los perfiles linguisticos se guardaban como booleanos y el cuartil era degenerado, luego la rebanada rica era la misma que la pobre.
+- Un lema multipalabra, `quedar el`, rompia el tokenizador del canal de dependencias.
+- La sintaxis de un f-string con `+` en el subindice, y una clave de JSON que no existe. Ambos los atrapo la auto-verificacion del notebook antes de escribirlo.
+
+## La respuesta en tres partes
 
 ```text
-V03 no falla porque le falte informacion textual expresable en la gramatica.
-Falla porque en los tweets cortos no hay informacion, y ahi es un techo de
-informacion y no un defecto de la representacion.
+la interaccion existe    +0.0657, el 17.41 por ciento de la senal de la palabra
+pero no cabe             repaga el 17.4 por ciento de su coste de anadido
+y la cobertura no es la via  min_df=1 sube al 99.5 por ciento y resta
 ```
 
-Y no se afirma que V03 sea matematicamente optimo. Se afirma lo que las mediciones sostienen: que en el espacio de representaciones linguisticas que esta fase se permitio explorar, ninguna produjo una mejora reproducible, y que la informacion de interaccion que si existe es medible pero no cabe en el modelo.
+## Estado
 
-## Graficas
+| | |
+|---|---|
+| experimentos | 5 de 8 principales, 0 de 4 reservas |
+| registro | 344 filas, 344 identificadores unicos |
+| pistas cerradas sin experimento | N, P y O |
+| cumplimiento | 21 comprobaciones, 0 fallos |
+| submissions | 0 |
+| Kaggle | 0 |
+| holdout | 0 |
+| test | 0 |
+| reproducibilidad | R2, sin R4 |
 
+## Cierre
+
+```text
+no evidence of exploitable remaining model capacity in the linguistic representation
+
+V03 remains the best verified leaderboard result.
+```
+
+No se afirma que V03 sea matematicamente optimo. Se afirma lo que las mediciones sostienen: el eje de la representacion esta cerrado en sus dos dimensiones naturales, la gramatica y la cobertura, ambas con numeros, y el limite que queda esta en el orden de los textos largos y ambiguos.
+
+## Artefactos
+
+* `reports/p62_cobertura_vocabulario.csv`
+* `reports/p62_cobertura_vocabulario.json`
+* `reports/p62_cobertura_vocabulario.md`
+* `reports/p62_compliance.md`
+* `reports/p62_final_summary.json`
+* `reports/p62_hypothesis_gap_analysis.csv`
+* `reports/p62_hypothesis_gap_analysis.md`
+* `reports/p62_linguistic_composition.csv`
+* `reports/p62_linguistic_composition.md`
+* `reports/p62_linguistic_eda.json`
+* `reports/p62_linguistic_gap.csv`
+* `reports/p62_master_results.csv`
+* `reports/p62_notebook_integration.json`
+* `reports/p62_p61_audit.json`
+* `reports/p62_pista_l_word_pos.json`
+* `reports/p62_pista_l_word_pos.md`
+* `reports/p62_pista_m_dependencias.json`
+* `reports/p62_pista_m_dependencias.md`
+* `reports/p62_pos_o_no_pos.csv`
+* `reports/p62_pos_o_no_pos.json`
+* `reports/p62_pos_o_no_pos.md`
+* `reports/p62_presupuesto_canal.csv`
+* `reports/p62_presupuesto_canal.json`
+* `reports/p62_presupuesto_canal.md`
+* `reports/p62_probability_analysis.csv`
+* `reports/p62_reproducibility.md`
+* `reports/p62_techo_cortos.csv`
+* `reports/p62_techo_cortos.json`
+* `reports/p62_techo_cortos.md`
 * `figuras/p62/01_probability_distributions_reference.png`
 * `figuras/p62/02_probability_distance_to_threshold.png`
 * `figuras/p62/03_high_confidence_error_distribution.png`
@@ -122,5 +146,3 @@ Y no se afirma que V03 sea matematicamente optimo. Se afirma lo que las medicion
 * `figuras/p62/12_v03_error_by_linguistic_profile.png`
 
 > V03 remains the best verified leaderboard result.
-
-*Generado por `experiments/p62_05_cerrar.py*. Sin push.*

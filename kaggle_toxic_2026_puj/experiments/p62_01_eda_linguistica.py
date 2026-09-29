@@ -585,11 +585,20 @@ def main() -> None:
         worse = df_perfil.groupby("perfil")["delta_F1_rico_menos_pobre"].mean()
         worse = worse.dropna().sort_values()
         log("")
-        log("      perfiles donde V03 va PEOR cuando el rasgo esta presente, que son las")
-        log("      regiones donde una representacion linguistica tendria algo que arreglar:")
+        log("      (delta = F1 en el cuartil ALTO del rasgo menos el cuartil BAJO)")
         for prof, val in worse.items():
-            if val < -0.01:
+            if abs(val) >= 0.01:
                 log(f"        {prof:28} delta medio {val:+.4f}")
+        log("")
+        log("      LECTURA CORREGIDA, y es importante. Una version anterior de este")
+        log("      script nombraba el perfil de longitud como 'estructura_corta', de modo")
+        log("      que su cuartil ALTO era lo LARGO, y la delta se leia como 'V03 falla en")
+        log("      los cortos'. Era al reves: la delta negativa dice que V03 es MEJOR en el")
+        log("      cuartil alto, es decir en los tweets largos. La comprobacion posterior")
+        log("      por region lo confirma de forma independiente: V03 alcanza 0,94 de AUC")
+        log("      en los cortos y 0,85 a 0,92 en los largos, con F1 de 0,94 contra 0,72. El")
+        log("      problema no son los cortos, son los largos. El perfil se llama ahora")
+        log("      'longitud_del_tweet' para que el nombre no vuelva a inducir el error.")
 
     # ---------- figuras ----------
     log("")
@@ -686,9 +695,18 @@ def main() -> None:
                   f"{r['V03_F1'] - p['V03_F1']:+.4f} | "
                   f"{r['high_conf_error_rate']:.4f} | {p['high_conf_error_rate']:.4f} |")
     W("")
-    W("El corte es el cuartil 75 dentro de cada rasgo y de cada etiqueta, y se declara ANTES")
-    W("de mirar los resultados, que es lo que exige el parrafo 39 para que una rebanada")
-    W("linguistica pueda usarse como criterio y no solo como descripcion.")
+    W("El corte es el cuartil 75 dentro de cada rasgo y de cada etiqueta, y se declara")
+    W("ANTES de mirar los resultados, que es lo que exige el parrafo 39 para que una")
+    W("rebanada linguistica pueda usarse como criterio y no solo como descripcion.")
+    W("")
+    W("**Aviso de lectura, y es una correccion.** Una version anterior de este informe")
+    W("nombraba el perfil de longitud `estructura_corta` y concluyo que V03 fallaba en los")
+    W("tweets cortos. Era al reves: su cuartil ALTO es lo largo, luego la delta negativa")
+    W("dice que V03 es MEJOR en los largos. La comprobacion posterior por region lo")
+    W("confirma de forma independiente, con AUC de 0,94 en los cortos frente a 0,85 a 0,92")
+    W("en los largos, y F1 de 0,94 contra 0,72. El perfil se llama ahora")
+    W("`longitud_del_tweet` para que el nombre no vuelva a inducir el error, y la region")
+    W("corta se analiza aparte en `p62_techo_cortos.md`.")
     W("")
     W("## Palabras funcionales, negacion, modalidad y discursivos")
     W("")
@@ -893,7 +911,7 @@ def construir_perfiles(documentos: list[dict[str, Any]]) -> pd.DataFrame:
                                                                      "det"}) / n,
             "discourse_rico": sum(1 for t in toks if t["t"] in dis) / n,
             "modal_rico": sum(1 for t in toks if t["t"] in mod) / n,
-            "estructura_corta": float(d["n"]),
+            "longitud_del_tweet": float(d["n"]),
             "clausula_simple": float(d["n_oraciones"] * 10
                                      + sum(1 for t in d["tok"] if t["d"] in {"cc", "mark"})),
         })

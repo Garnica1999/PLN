@@ -394,43 +394,34 @@ V03 remains the best verified leaderboard result.
 <!-- /P61 2026-09-28 -->
 
 <!-- P62 2026-09-29 -->
-## P62 (2026-09-29) - Representacion, estructura linguistica y correccion de errores de
-alta confianza
+## P62 (2026-09-29) - Representacion, estructura linguistica y error de alta confianza
 
-Dos experimentos: `P62-01` pista L, tokens condicionados por POS; `P62-02` pista M,
-triples lexicos de dependencia. Ademas el gap analysis funcional de V2 a V61, la EDA
-linguistica del corpus canonico y el informe de hueco linguistico.
+Cinco experimentos, tres pistas cerradas sin gastar nada, y una correccion de lectura.
 
 ```text
-gap analysis   2 pistas genuinamente nuevas, 2 cerradas por equivalencia funcional,
-               1 condicional que no llega a abrirse
-EDA            synergy palabra-POS +0.0657, que es el
-               17.41 por ciento de la senal de la palabra
-P62-01  L      0.7676396879  -0.0095717646  CLOSED
-               contenido +0.0020137043, repaga el
-               17.4 por ciento del coste
-P62-02  M      0.7659752040  -0.0112362485  CLOSED
-               contenido -0.0107929661, PEOR que el azar
+P62-01  L palabra__POS     -0,009572  1/5  CLOSED
+P62-02  M triple lexico   -0,011236  0/5  CLOSED
+P62-03  curva de presupuesto   ningun K mejora
+P62-04  POS contra lemas   ambos pierden 8/8, el POS ayuda 6/8
+P62-05  cobertura min_df=1  -0.0033508936  CLOSED
 ```
 
-**Lo que mas importa de la fase.** La synergy entre la palabra y su categoria es REAL y
-medible, y es el 17.41 por ciento de la senal de la
-palabra. El problema no es que falte informacion: es que no cabe. Anadir un canal disperso
-al espacio de V03 cuesta mas de lo que la categoria repara, y esa parte se midio por
-separado con un control aleatorio independiente de tamano parecido.
+**La interaccion existe y es medible.** La synergy palabra-POS es +0.0657, el
+17.41 por ciento de la senal de la palabra. El problema no
+es que falte informacion, es que no cabe: repaga el
+17.4 por ciento del coste de anadir el canal.
 
-**El hallazgo de instrumentacion que se lleva la fase.** Un control construido reetiquetando
-el vocabulario con nombres nuevos da EXACTAMENTE el mismo resultado, porque permutar
-columnas es una simetria del modelo lineal regularizado. Ese control es un no-op
-demostrable. Es la misma leccion del control negativo de P61, y conviene tenerla escrita
-porque el reflejo natural ante un desajuste es reetiquetar, y eso no mide nada.
+**La cobertura tampoco es la via.** `min_df=2` conserva solo el
+28.3 por ciento de las formas superficiales
+presentes, y `min_df=1` lo sube al 99.5 por
+ciento y resta.
 
-**El diagnostico que queda, y que recorta una lectura erronea.** V03 falla mas cuanto mas
-CORTO es el tweet: delta de F1 de -0,2330 entre la rebanada corta y la larga, con tasa de
-error de alta confianza de 0,4167 en TR corto frente a 0,0433 en TR largo. Y V03 es MEJOR
-cuando el tweet tiene estructura sintactica rica, con un delta de +0,1070. No es que V03
-ignore la gramatica: es que en los tweets cortos no hay informacion, y ahi hay un techo y no
-un defecto de la representacion.
+**La correccion.** Yo lei mal mi propia EDA: el perfil de longitud se llamaba
+`estructura_corta` pero su cuartil superior es lo largo, luego la delta negativa decia que
+V03 es MEJOR en los largos, no peor en los cortos. La comprobacion independiente lo
+desmiente: V03 alcanza 0.9639 de AUC en los cortos y su F1
+es 0,94 contra 0,72 en los largos. El limite esta en el ORDEN de los textos largos, donde
+V28-01 ya habia localizado el techo estructural.
 
 ```text
 no evidence of exploitable remaining model capacity in the linguistic representation

@@ -174,6 +174,8 @@ def main() -> None:
 
     requeridos = ["p62_p61_audit.json", "p62_linguistic_eda.json",
                   "p62_pista_l_word_pos.json", "p62_pista_m_dependencias.json",
+                  "p62_presupuesto_canal.json", "p62_pos_o_no_pos.json",
+                  "p62_cobertura_vocabulario.json", "p62_techo_cortos.json",
                   "p62_final_summary.json"]
     faltan = [n for n in requeridos if not (REPORTS / n).exists()]
     if faltan:
@@ -211,14 +213,19 @@ print()
 print(f"experimentos {f['experimentos']} de {f['presupuesto']} | reservas "
       f"{f['reservas_gastadas']} | submissions {f['submissions']} | kaggle {f['kaggle']} "
       f"| holdout {f['holdout']} | test {f['test']}")
-print('criterio de cierre cumplido:', f['criterio_de_cierre_cumplido'])
+print('cumplimiento:', f['cumplimiento'])
+print()
+print('REGISTADOS:', f['experimentos_registrados'])
 print()
 print('pistas cerradas SIN gastar experimento:')
-for p in f['pistas_cerradas_sin_experimento']:
-    print('  -', p)
+for _p in f['pistas_cerradas_sin_experimento']:
+    print('  -', _p)
 print()
 print('REGLA GENERAL que deja la fase:')
-print(' ', f['regla_general'])"""))
+print(' ', f['regla_general'])
+print()
+print('CORRECCION DE LECTURA:')
+print(' ', f['correccion_de_lectura'])"""))
 
     C.append(md("""## 90. El gap analysis, y por que dos pistas se cerraron sin gastar experimento
 
@@ -474,6 +481,120 @@ print('Y el motivo por el que importa: el reflejo natural ante un desajuste entr
 print('representaciones es reetiquetar una para igualarla a la otra, y eso no mide nada.')
 print('Un control tiene que ser independiente y del mismo tamano, no identico.')"""))
 
+    C.append(md("""## 97. La curva de presupuesto, y por que dos negativos no bastaban
+
+Las pistas L y M habian medido su propio fallo y era uno solo: un COSTE de dilucion
+separado de un VALOR de contenido. Dos puntos no permiten llamar ley a un regimen, asi que
+el coste y el valor se midieron juntos a lo largo de un rango de tamanos de canal, con dos
+brazos: uno de K rasgos SIN SENTIDO, que mide el coste, y uno de los K tokens de
+interaccion mas enriquecidos, que mide el valor. La diferencia entre ambos en cada K es el
+valor del contenido a ese presupuesto.
+
+K no es un hiperparametro del modelo: es la variable independiente de una medicion, el
+clasificador es el de V03 en todos los brazos, y no se selecciona ningun modelo por su
+puntuacion."""))
+    C.append(code("""pre = art('p62_presupuesto_canal.json')
+print('LA CURVA DE PRESUPUESTO DEL CANAL')
+print()
+print(f"{'K':>6}{'delta ruido':>16}{'delta real':>16}{'valor':>16}")
+for r in pre['curva']:
+    print(f"{r['K']:>6}{r['delta_ruido']:>+16.10f}{r['delta_real']:>+16.10f}"
+          f"{r['valor']:>+16.10f}")
+print()
+print('presupuestos con mejora sobre V03:', pre['presupuestos_con_mejora'] or 'ninguno')
+print()
+print(pre['veredicto'])
+print()
+print('Y los tokens que el ranking fold-safe selecciona de verdad:')
+for s in pre['seleccion_por_pliegue'][:2]:
+    print(f"  pliegue {s['pliegue']}: " +
+          ', '.join(f"{r['token']}({r['score']:.2f})" for r in s['top_10'][:6]))"""))
+
+    C.append(md("""## 98. Ni gramatica ni cobertura: las dos dimensiones naturales, refutadas con numeros
+
+La curva mostraba que los tokens seleccionados eran palabras ordinarias que V03 ya tiene.
+Eso abre dos preguntas, y cada una es un experimento.
+
+La primera: el sufijo de POS, anade informacion o duplica lemas? La misma curva, con
+canal de lemas sueltos en lugar de `lema__POS`, con todo lo demas identico.
+
+La segunda, que salio de seguir el numero de cobertura: el canal de palabras de V03 tiene
+**2673 terminos** en el pliegue 1, y `min_df=2` conserva solo una cuarta parte de las
+formas superficiales presentes. Las 21.000 entidades son la union de bigramas y gramas de
+caracter. Si el cuello fuera la cobertura, `min_df=1` lo arreglaria, sin gramatica
+ninguna."""))
+    C.append(code("""po = art('p62_pos_o_no_pos.json')
+print('EL SUFIJO DE POS, FRENTE A LEMAS SUELTOS, CON TODO LO DEMAS IGUAL')
+print()
+print(f"{'K':>6}{'solo lema':>18}{'lema__POS':>18}{'ventaja del POS':>18}")
+for r in po['curva']:
+    print(f"{r['K']:>6}{r['solo_lema']:>18.10f}{r['con_pos']:>18.10f}"
+          f"{r['ventaja_del_POS']:>+18.10f}")
+print()
+print(f"el POS ayuda en {po['presupuestos_en_que_el_POS_ayuda']} de {len(po['curva'])} "
+      f"presupuestos")
+print(f"ambos canales pierden en {po['presupuestos_ambos_negativos']} de "
+      f"{len(po['curva'])}")
+print(f"redundancia de los tokens seleccionados  {po['redundancia']['media']:.4f}")
+print(f"cobertura de V03 sobre esos lemas       {po['cobertura_de_V03']['media']:.4f}")
+print()
+print('La hipotesis resulto a medias y el script se niega a forzarla:')
+print(' ', po['veredicto'])"""))
+    C.append(code("""co = art('p62_cobertura_vocabulario.json')
+print('LA COBERTURA DEL VOCABULARIO, QUE NO ERA LO QUE CREIA')
+print()
+print(f"{'pliegue':>8}{'vocab md2':>12}{'vocab md1':>12}{'formas':>10}{'cob md2':>10}"
+      f"{'cob md1':>10}")
+for c in co['cobertura_por_pliegue']:
+    print(f"{c['pliegue']:>8}{c['vocabulario_de_palabras_min_df_2']:>12}"
+          f"{c['vocabulario_de_palabras_min_df_1']:>12}"
+          f"{c['formas_superficiales_presentes']:>10}{c['cobertura_con_min_df_2']:>10.4f}"
+          f"{c['cobertura_con_min_df_1']:>10.4f}")
+print()
+print('Y QUE APORTA CADA BRAZO')
+for k, val in co['aportaciones'].items():
+    print(f'  {k:36} {val:+.10f}')
+print()
+print(' ', co['veredicto'])
+print()
+print('Las palabras que min_df=2 descartaba no eran las que faltaban.')"""))
+
+    C.append(md("""## 99. CORRECCION: V03 es MEJOR en los tweets cortos, y el problema son los largos
+
+Esta seccion corrige una lectura erronea de la propia EDA de esta fase, y conviene
+dejarla escrita porque el error era de interpretacion, no de codigo.
+
+La EDA nombro un perfil `estructura_corta` cuya medida era el **numero de tokens**, luego su
+cuartil superior es lo **largo**. Su delta negativa de -0,2330 se leyo como "V03 falla en
+los tweets cortos" cuando dice exactamente lo contrario.
+
+La comprobacion independiente lo desmiente, midiendo el AUC de la puntuacion de V03 DENTRO
+de cada region."""))
+    C.append(code("""te = art('p62_techo_cortos.json')
+print('LA CORRECCION, POR REGION')
+print(f"  region corta: hasta {te['definicion_de_la_region']['max_tokens']} tokens, "
+      f"definida en la EDA antes de que existiera ningun candidato")
+print()
+print(f"{'et':>4}{'region':>8}{'n':>7}{'F1 V03':>10}{'AUC':>10}{'err alta conf':>15}"
+      f"{'techo moviendo el corte':>24}")
+for et in ('HS', 'TR', 'AG'):
+    for reg in ('corta', 'larga'):
+        b = te['por_region'][et][reg]
+        print(f"{et:>4}{reg:>8}{b['n']:>7}{b['F1_de_V03']:>10.4f}"
+              f"{b['AUC_dentro_de_la_region']:>10.4f}"
+              f"{b['tasa_de_error_de_alta_confianza']:>15.4f}"
+              f"{b['mejor_F1_alcanzable_moviendo_el_corte']:>24.4f}")
+print()
+print(f"AUC medio dentro de la region corta        {te['auc_medio_region_corta']:.4f}")
+print(f"margen hasta el techo moviendo el corte   "
+      f"{te['margen_medio_al_techo_region_corta']:+.4f}")
+print()
+print(' ', te['veredicto'])
+print()
+print('La correccion se aplico EN EL ORIGEN: el perfil de la EDA se renombro')
+print('longitud_del_tweet y su informe lleva un aviso de lectura, para que el signo no')
+print('vuelva a inducir el error a quien lea el artefacto.')"""))
+
     C.append(md("""## 96. P62 - Cierre de la fase
 
 Dos experimentos de ocho, cero reservas, tres pistas cerradas sin gastar nada.
@@ -592,7 +713,7 @@ print('interaccion que si existe es medible pero no cabe en el modelo.')"""))
         "familia": "P62_NOTEBOOK", "fecha": inicio.isoformat(timespec="seconds"),
         "notebook": "notebooks/10_final_pipeline.ipynb",
         "celdas_antes": antes, "celdas_despues": len(nb2["cells"]),
-        "secciones": list(range(89, 97)),
+        "secciones": list(range(89, 100)),
         "regla": ("todos los numeros se leen de los artefactos, ninguno transcrito; las "
                   "celdas se EJECUTAN antes de escribir el notebook y el script para si "
                   "alguna falla"),
@@ -606,7 +727,7 @@ print('interaccion que si existe es medible pero no cabe en el modelo.')"""))
     commit = subprocess.run(["git", "rev-parse", "--short", "HEAD"], capture_output=True,
                             text=True, cwd=PROJECT_ROOT, check=False).stdout.strip()
     log("")
-    log(f"P62-06 OK | secciones 89 a 96 | {len(nb2['cells']) - antes} celdas | {n_ok} "
+    log(f"P62-06 OK | secciones 89 a 99 | {len(nb2['cells']) - antes} celdas | {n_ok} "
         f"ejecutadas | commit {commit}")
 
 

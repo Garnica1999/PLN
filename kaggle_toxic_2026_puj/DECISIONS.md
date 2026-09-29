@@ -5335,95 +5335,53 @@ sha256 = 7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e
 <!-- /P61 2026-09-28 -->
 
 <!-- P62 2026-09-29 -->
-## D-142. El gap analysis de P62 se hace contra el codigo y cierra dos pistas sin gastar
+## D-142. El gap analysis de P62 se hace contra el codigo, y cierra dos pistas sin gastar
 experimento
 
-**Contexto.** El encargo pide auditar funcionalmente V2 a V61 y clasificar cada fenomeno
-como `already_tested`, `partially_tested`, `functionally_equivalent` o `genuinely_new`, y
-dice que no basta buscar nombres. El motivo se ve en el registro: hay 341 experimentos y
-una busqueda de `POS` devuelve las mismas pocas filas para las cinco pistas propuestas,
-porque las cinco usan el mismo vocabulario. Lo que las distingue es la REPRESENTACION, y
-eso no esta en ningun nombre.
+**Contexto.** El encargo pide una auditoria FUNCIONAL de V2 a V61 y no una busqueda de
+nombres. Con 341 experimentos, buscar `POS` devuelve las mismas pocas filas para las cinco
+pistas propuestas, porque las cinco usan el mismo vocabulario; lo que las distingue es la
+representacion, y eso hay que leerlo en el codigo.
 
-**Lo que el codigo de verdad emite.** El proyecto ya construyo informacion de POS y de
-dependencias DOS veces, y las dos como densidad: 36 columnas `pos_VERB_n` y
-`pos_VERB_frac`, y 31 de `dep_amod_n`. Ademas E2-03 vectoriza la secuencia
-`POS_dependiente_POS_cabeza` con `ngram_range (1,4)`, y E2-04 emite
-`POS_dependiente_POS_cabeza`, `DEP_cabeza_POS` y `DEP_cabeza`. Ninguna de las dos veces
-entra la identidad de la palabra en la misma unidad que su papel.
+**Lo que el codigo emite de verdad.** El proyecto ya construyo POS y dependencias DOS
+veces, y las dos como densidad: 36 columnas `pos_VERB_n` y 31 de `dep_amod_n`. Ademas
+E2-03 vectoriza la secuencia `POS_dependiente_POS_cabeza` con `ngram_range (1,4)`, y E2-04
+emite `POS_dependiente_POS_cabeza`, `DEP_cabeza_POS` y `DEP_cabeza`. En ninguno de los dos
+casos entra la identidad de la palabra en la misma unidad que su papel.
 
 | pista | veredicto | experimentos | razon |
 |---|---|---:|---|
-| L `palabra__POS` | genuinely_new | 1 | ningun token de esa forma se emite en el proyecto |
-| M triple lexico de dependencia | genuinely_new | 1 | E2-04 nunca incluye la palabra dependiente |
+| L `palabra__POS` | genuinely_new | 1 | ningun token de esa forma existe en el proyecto |
+| M triple lexico | genuinely_new | 1 | E2-04 nunca incluye la palabra dependiente |
 | N secuencias POS | functionally_equivalent | 0 | E2-03 ES esa representacion |
-| P contraste estructural | functionally_equivalent | 0 | E2-05, E2-07 y E2-08 ya la cubren con mas detalle |
+| P contraste estructural | functionally_equivalent | 0 | E2-05, E2-07 y E2-08 la cubren con mas detalle |
 | O composicion lexica | condicional | 0 | se abre solo si L y M funcionan |
 
-**La afirmacion es comprobable, y el script ABORTA si falla.** `p62_00_auditoria_y_gap.py`
-verifica contra el fuente que no existe ningun token `palabra__POS` y que la secuencia
-categorial si existe. Un gap analysis que no se puede fallar no es un gap analysis.
+**La afirmacion es comprobable y el script ABORTA si falla.** Verifica contra el fuente que
+no existe ningun token `palabra__POS` y que la secuencia categorial si existe.
 
-**El tagger ya estaba resuelto.** El parrafo 25 pregunta por la legalidad de los pesos
-preentrenados, y la respuesta es que **D-003** ya establecio que `es_core_news_md` puede
-usarse como anotador simbolico con `exclude=["ner"]`, con `doc.vector`, `token.vector`,
-`doc.tensor` y `similarity()` prohibidos mediante un assert en el codigo de features. No
-hay ambiguedad que resolver y no se introduce ningun recurso externo nuevo.
+**El tagger ya estaba resuelto.** **D-003** permite `es_core_news_md` como anotador
+simbolico con `exclude=["ner"]`, y prohibe `doc.vector`, `token.vector`, `doc.tensor` y
+`similarity()` mediante un assert en el codigo de features. No hay ambiguedad normativa.
 
-## D-143. La synergy palabra-POS es REAL y su tamano es medible, pero no cabe en el canal
-
-**Contexto.** El encargo pregunta en su seccion 24 si las clases se distinguen por las
-PALABRAS que contienen o tambien por COMO se combinan, y esa pregunta tiene una medida.
-
-**La descomposicion.**
+## D-143. La synergy palabra-POS es REAL, y su tamano se mide: 17,41 por ciento
 
 ```text
 palabra sola               +0.3773
 palabra como presencia      +0.1549
 categoria sola             +0.0095
 palabra y categoria juntas +0.4525
-synergy                    +0.0657  (17.41 por ciento de la palabra)
+synergy                    +0.0657  (17.41 por ciento)
 ```
 
-**La lectura.** La synergy es la unica magnitud de la tabla que no se puede escribir como
-funcion de la palabra y de la categoria por separado. Y es exactamente lo que ninguna de las
-dos representaciones ya probadas expresa: el TF-IDF de V03 sabe la palabra y tira la
-categoria, y el canal de E2-03 sabe la categoria y tira la palabra. La forma de la senal que
-falta es la INTERACCION, no la etiqueta.
+La synergy es la unica magnitud que no se escribe como funcion de la palabra y de la
+categoria por separado, y es lo que ninguna de las dos representaciones existentes expresa.
+La categoria sola vale +0.0095, casi nada. Y la frecuencia NO es
+enrichment: la correlacion es
+-0.0572. `puta` aparece 408 veces con
+-0,22; `zorra` 51 veces con +2,51.
 
-**La categoria sola vale +0.0095**, casi nada, lo cual ya anticipaba el
-resultado: el marginal de POS no es senal, la interaccion si.
-
-**Ademas, frecuencia no es enrichment.** La correlacion entre la frecuencia bruta de un
-sustantivo y su log de enriquecimiento es
--0.0572, es decir practicamente
-cero. Una palabra frecuente en todas las clases no es senal aunque aparezca mucho, que es
-justo lo que el encargo pedia no suponer.
-
-## D-144. Anadir un canal disperso a V03 CUESTA, y el coste se puede medir aparte del
-contenido
-
-**Contexto.** La pista L dio al modelo el par palabra-categoria y perdio
--0.0095717646. Antes de concluir nada habia que separar dos causas que se confunden:
-que el contenido linguistico no sirva, o que anadir rasgos en un espacio de 21.000
-dimensiones con 1.186 filas de entrenamiento dane. Son cosas distintas y se separan con un
-control.
-
-**El control, y por que NO puede ser una reetiquetacion.** La primera version emparejo el
-control reetiquetando el vocabulario real con nombres nuevos. Dio EXACTAMENTE el mismo
-resultado, y no era un fallo: permutar columnas de la matriz de diseno es una SIMETRIA de
-un modelo lineal regularizado, porque la penalizacion es la norma al cuadrado del vector de
-coeficientes. Ese control es un no-op demostrable y no puede discriminar nada. Es la misma
-leccion del control negativo de P61, aplicada a una representacion en vez de a una busqueda
-de pesos.
-
-**El control que si discrimina** es un bloque INDEPENDIENTE de tamano parecido, buscado
-por el tamano del pool, local de cada pliegue. Y ademas hay que controlar el confound de
-escala: cada bloque TF-IDF se normaliza por separado, luego anadir un tercero cambia la
-norma de fila, que es lo mismo que cambiar C. La matriz candidata se reescala a la norma
-del control, con lo que los brazos difieren en una direccion y no en una escala.
-
-**La lectura en tres partes.**
+## D-144. Anadir un canal disperso a V03 CUESTA, y el coste se separa del contenido
 
 | | L | M |
 |---|---:|---:|
@@ -5431,56 +5389,97 @@ del control, con lo que los brazos difieren en una direccion y no en una escala.
 | (2) valor de la estructura | +0.0020137043 | -0.0107929661 |
 | (3) saldo | -0.0095717646 | -0.0112362485 |
 
-**La lectura.** En L el contenido vale
-+0.0020137043 frente al bloque aleatorio, luego la
-interaccion existe, pero repaga solo el
-17.4 por ciento del coste de anadir el bloque. En M el canal
-es mucho mas pequeno, luego el coste es casi nulo, y aun asi la estructura lexica vale
--0.0107929661: es **peor que un bloque aleatorio del mismo
-tamano**. El triple lexico no aporta y ademas molesta, y las relaciones que mas rasgos
-aportan, `obj`, `advmod` y `nsubj`, son las mas genericas y las que el texto crudo ya
-expresa con bigramas.
+En L el contenido vale +0.0020137043 frente al bloque
+aleatorio, luego la interaccion existe, pero repaga solo el
+17.4 por ciento del coste. En M el canal es mucho mas
+pequeno, el coste casi nulo, y la estructura vale
+-0.0107929661: PEOR que un bloque aleatorio del mismo tamano.
 
-**La regla general que queda.** En un espacio disperso grande con pocos datos, anadir un
-canal categorial se paga con mas de lo que la categoria repara, y la parte que se paga es
-medible y separable del contenido. Eso cierra la FAMILIA "anadir un canal linguistico al
-espacio de V03" con evidencia, y no con un unico negativo.
+**Un control reetiquetado es un no-op demostrable.** Reetiquetar el vocabulario con nombres
+nuevos dio EXACTAMENTE el mismo resultado, porque permutar columnas de la matriz de diseno
+es una SIMETRIA de un modelo lineal regularizado, ya que la penalizacion es la norma al
+cuadrado del vector de coeficientes. Ese control no puede discriminar nada. Es la misma
+leccion del control negativo de P61, y el reflejo natural ante un desajuste es reetiquetar,
+lo cual no mide nada.
 
-## D-145. P62 se cierra con DOS experimentos, y la condicion pre-registrada de la tercera
-no se cumplio
+## D-145. Ni la gramatica ni la cobertura: las dos dimensiones naturales estan refutadas con
+numeros
 
-**El cierre.** El criterio del encargo se cumple en sus tres partes: la capacidad de una
-familia nueva no mejora, la tercera es cero familias nuevas de modelo de modelo, y ninguna representacion
-linguistica aporta. La formulacion que corresponde es
+**La curva de presupuesto (P62-03).** Con el bug de acumulacion corregido, ningun
+presupuesto de canal da al modelo una mejora, y el valor del contenido es negativo en casi
+todos. Con dos puntos no se podia llamar ley a un regimen; con la curva, si.
+
+**El sufijo de POS no es solo partir filas (P62-04).** Ayuda en
+6 de 8 presupuestos, con hasta
++0,006881. Pero AMBOS canales pierden en 8 de
+8. La redundancia medida de los tokens seleccionados es
+0.5209 y la cobertura de V03
+0.3983, luego la condicion pre-declarada para llamarlo
+redundancia NO se cumplio y el script registro el fallo en vez de forzar una conclusion.
+
+**La cobertura no es el cuello (P62-05).** El canal de palabras de V03 tiene 2673 terminos
+en el pliegue 1, y las 21.000 entidades son la union de bigramas y gramas de caracter.
+Con `min_df=2` conserva solo el 28.3 por ciento
+de las formas superficiales presentes, y con `min_df=1` el
+99.5 por ciento. Y no mejora: A
+-0.0040227339, B -0.0116799367, C
+-0.0033508936. Sobre cobertura completa el canal POS vale
++0.0006718403.
+
+**La regla general.** En un espacio disperso grande con pocos datos, anadir un canal
+categorial se paga con mas de lo que la categoria repara, y esa parte se mide por separado
+del contenido. Y ampliar la cobertura de vocabulario tampoco es la via.
+
+## D-146. CORRECCION: V03 es MEJOR en los tweets cortos, y el problema son los largos
+
+**El error.** La EDA linguistica nombro un perfil `estructura_corta` cuya medida era el
+NUMERO DE TOKENS, luego su cuartil superior es lo LARGO. Su delta negativa, -0,2330, se
+leio como "V03 falla en los tweets cortos" cuando dice exactamente lo contrario: V03 es
+MEJOR en el cuartil alto, es decir en los largos.
+
+**La comprobacion independiente que lo desmiente.**
+
+| region | n | F1 de V03 | AUC interno | error de alta confianza |
+|---|---:|---:|---:|---:|
+| corta (hasta 6 tokens) | 136 | 0.9704 | 0.9872 | 0.0294 |
+| larga | 1347 | 0.7795 | 0.9242 | 0.0794 |
+
+V03 alcanza 0,9639 de AUC dentro de la region corta, frente a 0,85 a 0,92 en la larga, y su
+F1 es 0,94 contra 0,72. El margen hasta el techo moviendo SOLO el corte es de
++0.000323 en la region corta, luego en los cortos
+V03 ordena bien y la linea esta casi donde debe.
+
+**Lo que queda, y es mas dificil de arreglar.** El limite esta en el ORDEN dentro de los
+tweets largos, que son los que contienen ambiguedad y sentimiento mixto. Ahi el AUC baja
+y el techo moviendo el corte deja solo +0,006. Ninguna representacion probada en esta fase
+lo mueve, y V28-01 ya habia mostrado que los errores de las tres etiquetas se solapan con
+coeficientes de +0,42 a +0,51, luego fallan sobre los mismos textos.
+
+**La correccion se aplico en el origen.** El perfil de la EDA se renombro
+`longitud_del_tweet` y su informe lleva un aviso de lectura, para que el signo no vuelva a
+inducir el error a quien lea el artefacto.
+
+## D-147. P62 se cierra con CINCO experimentos, y la respuesta final tiene tres partes
 
 ```text
-no evidence of exploitable remaining model capacity in the linguistic representation
+la interaccion existe      +0,0657, el 17,41 por ciento de la senal de la palabra
+pero no cabe               repaga el 17,4 por ciento de su coste de anadido
+y la cobertura no es la via  min_df=1 sube la cobertura al 99,5 por ciento y resta
 ```
 
-y se mantiene la literal del proyecto:
+**Lo que la fase establece, y es mas fuerte que cinco negativos sueltos:** el eje de la
+representacion esta cerrado en sus dos dimensiones naturales, la GRAMATICA y la
+COBERTURA, y ambas con numeros. Y el limite que queda no es de representacion sino de
+ORDEN en los textos largos y ambiguos, que es donde V28-01 ya habia localizado el techo
+estructural.
+
+**Presupuesto.** 5 de 8 experimentos principales, 0 de 4 reservas. Tres pistas cerradas
+sin gastar nada: N por equivalencia con E2-03, P por equivalencia con E2-05, E2-07 y
+E2-08, y O por condicion no cumplida.
+
+**Se mantiene la literal del proyecto.**
 
 ```text
 V03 remains the best verified leaderboard result.
 ```
-
-**La pista O no se abre, y esa es la parte que conviene registrar.** El gap analysis le
-asigno UN experimento y una CONDICION, declarada antes de que corriera ninguno: abrirla
-solo si L y M demostraban que anadir un canal categorial disperso al espacio de V03 mueve
-algo. L repago el 17,4 por ciento de su coste y M fue peor que el azar. La condicion fallo,
-y la regla del proyecto es que una hipotesis cerrada por duplicacion consume CERO
-experimentos. Reintentar O con un peso del canal distinto seria **rescatar un negativo con
-un hiperparametro**, que es exactamente lo que P60 y P61 rechazaron. No se hace.
-
-**Presupuesto.** 2 de 8 experimentos principales, 0 de 4 reservas. Tres pistas cerradas sin
-gastar nada: N por equivalencia funcional con E2-03, P por equivalencia con E2-05, E2-07 y
-E2-08, y O por condicion no cumplida.
-
-**Lo que queda como permanente.** La EDA linguistica del corpus canonico, con 4449 celdas
-de composicion, los enrichments por clase POS, los perfiles pronominales, las secuencias y
-los patrones de dependencia, y la tabla de donde falla V03 por perfil linguistico. El dato
-mas accionable de esa tabla es que los errores de alta confianza de V03 se concentran en
-los tweets COROTOS y de clausula simple: el delta de F1 entre la rebanada corta y la larga
-es de -0,2330 de media, y la tasa de error de alta confianza en TR corto es 0,4167 frente
-a 0,0433 en TR largo. Esa region existe y esta medida. Lo que la fase demuestra es que no
-se puede atacar con un canal categorial.
 <!-- /P62 2026-09-29 -->
