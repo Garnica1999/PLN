@@ -1,0 +1,3 @@
+ID,Track,Hypothesis,Historical evidence,Novelty,Expected mechanism,Method,Status,Result,Decision
+P63-00,gap analysis,que queda abierto,344 experimentos y lectura del codigo,n/a,n/a,lectura funcional del codigo y del registro,cerrado,5 familias abiertas,"cinco familias abiertas, quince cerradas sin gastar experimento"
+P63-01,ID forensics,el id es un contador administrativo,V15-00 lo afirma sin medirlo,ALTA,procedencia,forense estructural sin supervised labels,cerrado,"D. STRUCTURED_IDENTIFIER, confianza alta","el id es un indice de coleccion, no un contador"
