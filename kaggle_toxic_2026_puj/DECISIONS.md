@@ -6332,3 +6332,87 @@ entrenamiento**. Esa razon no existe hoy.
 
 Cerrar no es una rendicion. Cuatro mecanismos probados, uno descartado por algebra y otro por
 auditoria es mas de lo que la mayoria de los proyectos puede afirmar sobre su propio techo.
+
+
+## D-191 a D-194: A_cost_sensitive_downweight, auditado y reproducido
+
+Fecha 2026-09-29.
+
+### D-191. El criterio 6 fallo por falta de artefacto, no por falta de efecto
+
+```text
+categoria              A_falta_de_artefacto
+criterio               6_artefacto_de_prediccion_completo
+submission             NO EXISTE
+```
+
+Faltaba un CSV de submission. El candidato nunca se convirtio en prediccion sobre el conjunto
+de prueba, luego no habia artefacto que auditar ni enviar, y la directiva 12 prohibia generar
+uno durante la auditoria. **La ausencia del fichero es una decision de gobernanza, no un fallo
+del experimento.** Esa distincion es la razon de esta auditoria.
+
+### D-192. El candidato se reproduce EXACTAMENTE: R3
+
+```text
+                        ORIGINAL        REPRODUCIDO
+corrected_cv            0,7854160387    0,7854160387     diferencia 3,2e-11
+delta vs V03           +0,0082045862   +0,0082045862
+deltas por pliegue     0,002243 0,001592 0,003378 0,023607 0,010356   identicos
+pliegues mejorados      5 de 5          5 de 5
+rescate / dano / neto   99 / 74 / +25   99 / 74 / +25
+```
+
+No se declara `R3` por cercania: se exige coincidencia de score, delta, pliegues, rescate y
+dano a la vez, y se cumple. El candidato usa `LogisticRegression` con `liblinear`, que es
+determinista dado el mismo input, a diferencia de la `LinearSVC` que dio problemas antes.
+
+### D-193. La segunda particion CONFIRMA la direccion
+
+```text
+canonica   delta +0,0082045862   5 de 5   neto +25
+segunda    delta +0,0105253130   5 de 5   neto +12
+```
+
+Semilla `20260928`, la misma que uso P61. Regla de pesos, clasificador, representacion,
+umbrales y protocolo de pliegues congelados. Lo unico que cambia es que grupo cae en que
+pliegue. **El efecto no es un artefacto de la particion canonica.**
+
+### D-194. ESTADO FINAL: MARGINAL, y por que no es FINALIST
+
+```text
+reproducido exactamente R3               SI
+cinco de cinco en la canonica            SI
+cinco de cinco en la segunda             SI
+misma direccion en la segunda            SI
+bootstrap por filas compatible con mejora   NO
+bootstrap por grupos compatible con mejora  NO
+compliance sin fallos                    SI
+```
+
+```text
+por FILAS   (historico) [-0,0002247696, +0,0116880198]
+por GRUPOS  (proyecto)  [-0,0006906975, +0,0118175641]
+```
+
+Dos matices que hay que decir juntos:
+
+El bootstrap **por filas** remuestrea filas, y con 1415 grupos de near-duplicados sobre 1483
+filas eso trata duplicados como independientes y **subestima** la incertidumbre. El proyecto
+usa remuestreo por **grupos** desde P66. La de grupos es la correcta, y es tambien la que
+incluye el cero con mas margen.
+
+Pero el limite inferior esta a **seis diezmilesimas** de cero, y el superior a **+1,18 puntos
+por ciento**. El intervalo no dice que el efecto sea negativo: dice que a 1483 filas no se
+puede descartar que lo sea. Es **CASO C** del encargo, `MARGINAL`.
+
+No se abre una grid. No se toca la regla de pesos. No se envia submission.
+
+### D-195. Correccion documental: el mecanismo no es un meta-modelo
+
+El CSV de P58 describe el mecanismo como *'meta con downweight coste-sensible por violacion
+del umbral'*. El codigo de `30_supervised_weighting_v4.py` **no construye ningun meta-modelo**:
+entrena `LogisticRegression(C=2.0, liblinear)` directamente sobre la representacion de V03 con
+`sample_weight`.
+
+La etiqueta 'meta' podria inducir a creer que el candidato pertenece a la familia de stacking,
+que ya fue rechazada por transferencia. **No pertenece.** La fuente autoritativa es el codigo.

@@ -2821,3 +2821,18 @@ Sin push, sin merge, sin rebase. Test y holdout sin tocar.
 - Notebook actualizado con P67 y P68.
 
 Sin push, sin merge, sin rebase. Test y holdout sin tocar.
+
+## 2026-09-29, auditoria de A_cost_sensitive_downweight
+
+- `experiments/p69_01_auditoria_downweight.py`: recupera la procedencia completa, reconstruye
+  la regla de pesos del codigo, clasifica la causa del criterio 6 como **A_falta_de_artefacto**
+  y reproduce el candidato.
+- `experiments/p69_02_segunda_particion.py`: repite el experimento congelado sobre la segunda
+  particion agrupada (semilla 20260928). **CONFIRMED**, delta +0,0105253130 con 5 de 5.
+- `experiments/p69_03_cierre_downweight.py`: consolida ORIGINAL, REPRODUCED y segunda
+  particion, anade el bootstrap por grupos y fija el estado final **MARGINAL**.
+
+Cadena regenerada: `27_label_consistency_v4.py` -> `28_hardness_v4.py` ->
+`30_supervised_weighting_v4.py`. Los tres scripts sin drift desde sus commits originales.
+
+Sin push, sin merge, sin rebase. Test y holdout sin tocar.

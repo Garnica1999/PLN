@@ -2606,3 +2606,16 @@ V03 remains the best verified leaderboard result.
 - 122 rescates exclusivos, 77 de MI_arbol (46 en LARGA). Techo oracle de las celdas
   delegables: +0,0391, no alcanzado por cuatro mecanismos distintos.
 <!-- /CIERRE 2026-09-29 -->
+
+<!-- DOWNWEIGHT-AUDIT 2026-09-29 -->
+### Auditoria de A_cost_sensitive_downweight (2026-09-29)
+
+- **REPRODUCIBLE, nivel R3.** `0,7854160387` reproducido exacto a `3,2e-11`; delta
+  `+0,0082045862`; cinco deltas por pliegue identicos; 99 rescates y 74 danos identicos.
+- **Criterio 6 = `A_falta_de_artefacto`**: faltaba el CSV de submission, y la directiva 12
+  prohibia crearlo. Fallo procedimental, no experimental.
+- **Segunda particion CONFIRMED**: delta `+0,0105253130` con 5 de 5 pliegues.
+- **ESTADO FINAL: MARGINAL.** Bootstrap por grupos `[-0,000691, +0,011818]` incluye el cero.
+  Con 1415 grupos sobre 1483 filas, el remuestreo por filas subestimaba la incertidumbre.
+- Correccion documental: el mecanismo **no es un meta-modelo**; P58 lo etiquetaba mal.
+<!-- /DOWNWEIGHT-AUDIT 2026-09-29 -->

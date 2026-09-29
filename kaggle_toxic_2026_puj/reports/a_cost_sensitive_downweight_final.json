@@ -1,0 +1,68 @@
+{
+  "familia": "P69_CIERRE_DOWNWEIGHT",
+  "experiment_id": "P69-03",
+  "fecha": "2026-09-29T17:54:08+00:00",
+  "ORIGINAL": {
+    "corrected_cv": 0.7854160387,
+    "delta_vs_V03": 0.0082045862,
+    "deltas_por_pliegue": [
+      0.002243,
+      0.001592,
+      0.003378,
+      0.023607,
+      0.010356
+    ],
+    "pliegues_mejorados": 5,
+    "veredicto_externo": "nunca enviado"
+  },
+  "REPRODUCED": {
+    "corrected_cv": 0.7854160387,
+    "delta_vs_V03": 0.0082045862,
+    "nivel": "R3",
+    "diferencia_absoluta": 3.2391977989e-11
+  },
+  "SEGUNDA_PARTICION": {
+    "delta_vs_su_V03": 0.010525313,
+    "pliegues_mejorados": 5,
+    "deltas_por_pliegue": [
+      0.026302,
+      0.004643,
+      0.002975,
+      0.020868,
+      0.003209
+    ],
+    "semilla": 20260928
+  },
+  "BOOTSTRAP": {
+    "por_filas": [
+      -0.0002247696,
+      0.0116880198
+    ],
+    "por_grupos": [
+      -0.0006906975,
+      0.0118175641
+    ],
+    "por_grupos_incluye_cero": true,
+    "n_grupos": 1415,
+    "n_filas": 1483
+  },
+  "gates": {
+    "reproducido_exactamente_R3": true,
+    "cinco_de_cinco_en_la_canonica": true,
+    "cinco_de_cinco_en_la_segunda": true,
+    "misma_direccion_en_la_segunda": true,
+    "bootstrap_por_filas_compatible_con_mejora": false,
+    "bootstrap_por_grupos_compatible_con_mejora": false,
+    "compliance_sin_fallos": true
+  },
+  "FINAL_STATUS": "MARGINAL",
+  "razon": "el candidato se reproduce EXACTAMENTE y confirma su direccion en una segunda particion con 5 de 5 pliegues, pero el intervalo de confianza incluye el cero bajo las DOS unidades de remuestreo. Con un limite inferior de -0.000691 por grupos, la mejora no es distinguible del ruido a este tamano de muestra. CASO C del encargo",
+  "causa_del_criterio_6": "A_falta_de_artefacto",
+  "mecanismo": "downweight coste-sensible por violacion del umbral, combinado con un barrido anidado del multiplicador de class_weight por etiqueta",
+  "reproducibilidad": {
+    "git_commit": "16d443b",
+    "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "corrected_cv_v03": 0.7772114525165721
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

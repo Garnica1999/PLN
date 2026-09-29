@@ -1,0 +1,39 @@
+bloque,clave,valor
+ORIGINAL,corrected_cv,0.7854160387
+ORIGINAL,delta_vs_V03,0.0082045862
+ORIGINAL,pliegues_mejorados,5
+ORIGINAL,deltas_por_pliegue,0.002243|0.001592|0.003378|0.023607|0.010356
+ORIGINAL,rescate,99
+ORIGINAL,damage,74
+ORIGINAL,neto,25
+REPRODUCED,corrected_cv,0.7854160387
+REPRODUCED,delta_vs_V03,0.0082045862
+REPRODUCED,pliegues_mejorados,5
+REPRODUCED,deltas_por_pliegue,0.002243|0.001592|0.003378|0.023607|0.010356
+REPRODUCED,bootstrap_delta_ejemplo,0.0056192403
+REPRODUCED,bootstrap_ic95_bajo,-0.0002247696
+REPRODUCED,bootstrap_ic95_alto,0.0116880198
+REPRODUCED,nivel_reproducibilidad,R3
+FINAL_STATUS,resolucion,MARGINAL
+PROVENANCE,causa_del_criterio_6,A_falta_de_artefacto
+PESOS,depende_de_p_V03,True
+PESOS,depende_de_y,True
+PESOS,depende_del_margen,True
+PESOS,depende_de_label,NO para el peso: se promedia sobre las 3 etiquetas
+PESOS,unidad,"por tweet (ejemplo), NO por par tweet-etiqueta"
+PESOS,mediana_de_error_score,0.0
+PESOS,IQR,0.016266
+PESOS,peso_minimo,0.5
+PESOS,peso_maximo,1.0
+PESOS,peso_medio,0.86337
+PESOS,n_con_peso_mayor_que_1,0
+PESOS,n_con_peso_menor_que_1,441
+PESOS,n_con_peso_igual_1,1042
+PESOS,n_en_el_suelo_0_5,371
+PESOS,suma_de_pesos,1280.38
+PESOS,suma_neutra,1483
+PESOS,fraccion_de_peso_eliminada,0.13663
+CELDAS,HS,V03_correcto_candidato_incorrecto=23|V03_incorrecto_candidato_correcto=42|ambos_correctos=1144|ambos_incorrectos=274|rescate=42|damage=23|neto=19
+CELDAS,TR,V03_correcto_candidato_incorrecto=19|V03_incorrecto_candidato_correcto=14|ambos_correctos=1300|ambos_incorrectos=150|rescate=14|damage=19|neto=-5
+CELDAS,AG,V03_correcto_candidato_incorrecto=32|V03_incorrecto_candidato_correcto=43|ambos_correctos=1174|ambos_incorrectos=234|rescate=43|damage=32|neto=11
+CELDAS,GLOBAL (celdas),V03_correcto_candidato_incorrecto=74|V03_incorrecto_candidato_correcto=99|ambos_correctos=3618|ambos_incorrectos=658|rescate=99|damage=74|neto=25
