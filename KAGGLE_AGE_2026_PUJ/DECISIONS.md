@@ -2496,3 +2496,64 @@ Tras declarar la saturación se probó la vía indicada como trabajo futuro:
   **pero quedaba uno de decision**, y produce una mejora confirmada de ~+0,0020 en CV que no habia
   sido medida. Eso no invalida la auditoria —los 39 mecanismos siguen auditados— sino que muestra
   que su enumeracion estaba incompleta: auditaba *como aprender* y no *como decidir*.
+
+---
+
+## D-073 - Submission experimental del plug-in: PREPARED, y la correccion de tres numeros
+
+- **Observation**: confirmado el candidato del plug-in por clase (`PROMISING_CONFIRMED`), se
+  construyo **una unica** submission con V30 congelado, los pesos congelados y la regla congelada.
+
+- **El STOP del sanity check encontro un error mio, y hay que declararlo**: estaba confundiendo
+  **tres numeros distintos** de la particion canonica, y el que habia reportado como titular no era
+  el que corresponde a lo que hace la submission.
+
+  | | Valor | Delta vs V30 | Que es |
+  |---|---|---|---|
+  | **(A) nested** | 0,6154643 | **+0,0020172** | cada fold con SUS pesos, ajustados en los otros cuatro |
+  | **(B) congelados globales** | 0,6159732 | **+0,0025261** | los pesos congelados aplicados GLOBALMENTE. **Es lo que hace la submission** |
+  | (C) redondeados a 2 decimales | 0,6159908 | +0,0025437 | los mismos redondeados, global |
+
+  La submission aplica los pesos congelados de forma **global**, asi que su analogo interno es
+  **(B)**, no (A). El sanity check comparaba contra (A) y por eso **paro antes de generar nada**,
+  que es exactamente para lo que estaba.
+
+- **Y (B) > (A) es la fuga que declare en el pre-registro, medida**: los pesos congelados se
+  derivaron de la union de cinco ajustes que cubren las 169.336 filas, asi que aplicarlos
+  globalmente esta algo sobreajustado. **La estimacion honesta del mecanismo es el nested**, que no
+  depende de los pesos concretos: **+0,0020172** en la canonica y **+0,0022884** en la alternativa.
+  Los titulares de D-072 siguen siendo validos; lo que se corrige es cual de los tres numeros
+  describe la submission.
+
+- **La submission**: `submissions/age_submission_plugin_candidate.csv`, SHA256
+  `29cbe6cca4312a65f5176bad25c7d4ae4624d348f3e55586dfa36767a3abd6c0`, 112.892 filas, columnas `id` y `age_range`, 10/10 checks. **7.408 filas cambian
+  respecto de `argmax` puro (6,56 %), con confianza media 0,3361 frente a 0,6247 del conjunto, y
+  CERO cambios con confianza >= 0,60.** La prediccion falsable se cumple tambien en test.
+
+- **El pipeline es el de V30, no uno reconstruido**: el script **importa** `_v20_en_test`,
+  `_lgbm_en_test` y `_configs_del_miembro` de `v30_03_submission.py` en vez de reimplementarlos,
+  porque reimplementar un pipeline que produjo un leaderboard conocido es la forma mas facil de
+  construir otro modelo sin darse cuenta. La unica linea que cambia es la decision final.
+
+- **El orden de clases se demostro, no se asumio**: sobre el OOF, para cada clase real `i` la
+  columna `i` es la que mas se activa (matriz `E[p[:, j] | y = i]` con diagonal dominante en las
+  seis filas). Si el `argmax` por fila no cayera en la diagonal, el script **no genera submission**.
+  El unico error que podria haber arruinado esto en silencio era asignar `1,27` a la clase
+  equivocada.
+
+- **Auditoria: APROBADA.** Operaciones prohibidas sobre el test: **0**. Compliance de AGE: **0**.
+  Fichero: **10/10**. La auditoria es **por operacion y no por palabra**: leer el test para
+  `transform -> predict` es lo que el procedimiento debe hacer, y marcarlo como leakage seria tan
+  inutil como no auditarlo.
+
+- **Decision**: **`V30 = FROZEN`, `plug-in = PROMISING_CONFIRMED`, `submission = PREPARED`.**
+  **No se sube automaticamente a Kaggle** y **no se interpreta ningun score por anticipado**: no se
+  proyecta el leaderboard ni se usa el numero de filas cambiadas como prediccion. Si
+  posteriormente se obtiene el score, se clasificara como `POSITIVE_TRANSFER`, `NEUTRAL_TRANSFER` o
+  `NEGATIVE_TRANSFER` contra el 0,63302 de V30, **sin volver a entrenar ni generar una segunda
+  sonda**.
+
+- **Consequences**: hay por primera vez un candidato que cambia filas del test de forma validada
+  internamente en dos particiones, con cero cambios en alta confianza y con el mecanismo
+  reproduciendose en limpio. Su transferencia externa es, por definicion, lo unico que falta por
+  medir.

@@ -2039,3 +2039,19 @@ intacto.
 - **Pre-registro:** commit `bd08aba`. Pesos congelados, ninguna reoptimizacion.
 - **Entrenamiento:** 0 modelos nuevos (solo la reejecucion de V30 en la particion alternativa, que
   es el protocolo ya definido). **Submissions: 0.** Test y holdout: sin tocar.
+
+
+---
+
+## Submission experimental del plug-in · 2026-10-12
+
+- **Estado:** `V30 = FROZEN`, `plug-in = PROMISING_CONFIRMED`, `submission = PREPARED`.
+- **Fichero:** `submissions/age_submission_plugin_candidate.csv`, SHA256 `29cbe6cca4312a65...`
+- **112.892 filas**, 10/10 checks, auditoria **APROBADA** (0 operaciones prohibidas, 0 hallazgos de
+  compliance).
+- **En test:** 7.408 filas cambian (6,56 %); confianza media 0,3361 frente a 0,6247; **cero cambios
+  en alta confianza**.
+- **Correccion declarada:** se estaban confundiendo tres numeros. El nested (**+0,0020172**) es la
+  estimacion honesta del mecanismo; el global con pesos congelados (**+0,0025261**) es lo que
+  ejecuta la submission. El sanity check paro la construccion por esto.
+- **No subida.** Sin proyeccion de score. Sin segunda sonda.

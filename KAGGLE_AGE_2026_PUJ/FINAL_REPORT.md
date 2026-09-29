@@ -856,3 +856,41 @@ familia cerrada no cumple ninguna de las tres.
   reejecucion, no independiente). **Submission: ninguna. Leaderboard: no consultado.**
 - **Correccion al registro**: `V20-F3-UMBRALES` era una **arquitectura ordinal** (cadena de
   discriminadores binarios anidados), no una regla de decision. Ver D-072.
+
+---
+
+## SUBMISSION EXPERIMENTAL PREPARADA (2026-10-12)
+
+```text
+V30          = FROZEN
+plug-in      = PROMISING_CONFIRMED
+submission   = PREPARED
+```
+
+- **Fichero**: `submissions/age_submission_plugin_candidate.csv`
+- **SHA256**: `29cbe6cca4312a65f5176bad25c7d4ae4624d348f3e55586dfa36767a3abd6c0`
+- **112.892 filas** | columnas `id`, `age_range` | **10/10 checks** | auditoria **APROBADA**
+- **Regla**: `class = argmax_c(w_c * p_c)` con `w = [1.00, 1.17, 1.27, 1.16, 1.00, 0.81]` sobre las
+  probabilidades de V30 **sin transformar**.
+
+### Los tres numeros, porque confundirlos fue un error
+
+| | Valor | Delta | Que es |
+|---|---|---|---|
+| (A) nested | 0,6154643 | **+0,0020172** | **la estimacion honesta del mecanismo** |
+| (B) congelados global | 0,6159732 | +0,0025261 | lo que ejecuta la submission |
+| (C) redondeados | 0,6159908 | +0,0025437 | variante de la anterior |
+
+(B) > (A) es la fuga declarada en el pre-registro: los pesos vieron todas las filas al derivarse.
+
+### En test
+
+**7.408 filas cambian (6,56 %)** respecto de `argmax` puro, con confianza media **0,3361** frente a
+**0,6247** del conjunto, y **cero cambios con confianza >= 0,60**. La prediccion falsable se cumple
+tambien en test.
+
+### Estado
+
+**No subida a Kaggle** y sin score por anticipado: no se proyecta el leaderboard. Si se obtiene, se
+clasificara como `POSITIVE_TRANSFER` / `NEUTRAL_TRANSFER` / `NEGATIVE_TRANSFER` contra 0,63302, sin
+reentrenar ni generar una segunda sonda.

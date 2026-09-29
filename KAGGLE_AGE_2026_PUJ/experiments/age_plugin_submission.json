@@ -1,0 +1,162 @@
+{
+  "fase": "submission experimental: plug-in por clase",
+  "fecha": "2026-10-12",
+  "experimenta": false,
+  "orden_verificado": true,
+  "sanity_check": {
+    "canonica": {
+      "v30": 0.6134471,
+      "v30_esperado": 0.6134471,
+      "frozen_global": 0.6159732,
+      "frozen_global_esperado": 0.6159732,
+      "nested_esperado": 0.6154643,
+      "delta_nested": 0.0020172,
+      "delta_frozen_global": 0.0025261,
+      "nota": "el sanity check comprueba frozen_global, porque es la operacion que ejecuta la submission. El nested es la estimacion HONESTA del mecanismo y va 0,0005 por debajo: la diferencia es la fuga declarada en el pre-registro",
+      "v30_ok": true,
+      "frozen_global_ok": true
+    },
+    "filas_que_cambian": 11344,
+    "confianza_media_de_las_que_cambian": 0.3343,
+    "confianza_media_del_conjunto": 0.60924,
+    "cambios_en_alta_confianza": 0,
+    "reproduce": true
+  },
+  "manifest": {
+    "submission_path": "submissions/age_submission_plugin_candidate.csv",
+    "submission_sha256": "29cbe6cca4312a65f5176bad25c7d4ae4624d348f3e55586dfa36767a3abd6c0",
+    "git_commit": "fd1899ad8329cd9df95ca95e53a34953737bbbb7",
+    "V30_artifact_hashes": {
+      "v30_02_ensemble.json": "0a3b02ca50f5bbe515226762f3a68a87495e46c7c3981dbfd7310353fcd23370",
+      "v30_03_submission_construccion.json": "0574f67dbb5d16f8c9dfeb79786be50ddd0ed4282f2c8498b3c4f6f1bd41946e",
+      "v30_lgbm_refinado_oof.npy": "968c2c625b7359baa45548b4dfbd753371533ecc81a4e2131f85845cacd6f93d",
+      "meta_features_test_v12_fresca.npy": "99e673e5780615b723082eb14447c0cf6070b0bd2c0cb0d248f286b2582b1ea1"
+    },
+    "training_data_hash": "bbf5c7cdc88bbee97443c6769ce141edac8bde6d5dd0aa86cf35bf1df3b2c87c",
+    "test_data_hash": "9a4e36d9e8dcdb16d1606e77008329feb2e036abbae5f16e12dc8a058149a426",
+    "class_order_verificado": {
+      "orden_declarado": [
+        "13-17",
+        "18-24",
+        "25-34",
+        "35-49",
+        "50-64",
+        "65-xx"
+      ],
+      "matriz_E_p_col_j_dado_y_i": [
+        [
+          0.5913,
+          0.1966,
+          0.1003,
+          0.0517,
+          0.0339,
+          0.0262
+        ],
+        [
+          0.1992,
+          0.4071,
+          0.1851,
+          0.1008,
+          0.0621,
+          0.0457
+        ],
+        [
+          0.1018,
+          0.1874,
+          0.3979,
+          0.1529,
+          0.0937,
+          0.0663
+        ],
+        [
+          0.0523,
+          0.1021,
+          0.1528,
+          0.4676,
+          0.129,
+          0.0962
+        ],
+        [
+          0.0349,
+          0.0645,
+          0.095,
+          0.1291,
+          0.5667,
+          0.1097
+        ],
+        [
+          0.0279,
+          0.0486,
+          0.0693,
+          0.0997,
+          0.1144,
+          0.6401
+        ]
+      ],
+      "argmax_por_fila": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "diagonal_domina": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "orden_verificado": true,
+      "lectura": "para cada clase real i, la columna cuya media es mayor es la i: el orden de columnas coincide con cfg.CLASSES"
+    },
+    "weights": [
+      1.0,
+      1.1749,
+      1.2721,
+      1.163,
+      1.001,
+      0.8128
+    ],
+    "decision_rule": "predicted_class = argmax_c(weight_c * p_c); p_c son las probabilidades de V30 sin ninguna transformacion",
+    "V30_internal_cv": 0.6134471,
+    "plugin_internal_cv_canonica_nested": 0.6154643,
+    "plugin_internal_cv_canonica_frozen_global": 0.6159732,
+    "plugin_internal_cv_alternativa": 0.61647,
+    "canonical_delta_nested": 0.0020172,
+    "canonical_delta_frozen_global": 0.0025261,
+    "alternative_delta": 0.002058,
+    "estimacion_honesta_del_mecanismo": "el nested, +0,0020172 en la canonica y +0,0022884 en la alternativa: no depende de los pesos concretos. El frozen-global esta algo sobreajustado porque los pesos vieron todas las filas al derivarse",
+    "bootstrap": {
+      "canonica": [
+        0.0010143,
+        0.002948
+      ],
+      "alternativa": [
+        0.0011204,
+        0.0030622
+      ]
+    },
+    "filas_que_cambian_respecto_de_v30": 7408,
+    "cambios_en_alta_confianza": 0,
+    "checks": {
+      "filas": true,
+      "columnas_exactas": true,
+      "ids_unicos": true,
+      "ids_iguales_a_test": true,
+      "mismo_orden_de_ids": true,
+      "sin_nan": true,
+      "clases_validas": true,
+      "sin_columnas_auxiliares": true,
+      "todas_las_clases_presentes": true,
+      "sin_duplicados": true
+    },
+    "reproducibility": "R2: el pipeline reentrena V20 y los dos LightGBM sobre todo el train; LightGBM no es reproducible bit a bit entre ejecuciones con distinta carga de CPU, como el proyecto ya documento en V30",
+    "timestamp": "2026-09-29T20:48:00+00:00",
+    "subido_a_kaggle": false,
+    "uso_del_test": "solo transform y predict. Ninguna etiqueta, ninguna estadistica, ningun ajuste de umbral sobre test"
+  },
+  "segundos": 792.2
+}

@@ -1,0 +1,79 @@
+{
+  "fase": "auditoria de la submission experimental",
+  "fecha": "2026-10-12",
+  "experimenta": false,
+  "operaciones_sobre_el_test": {
+    "scripts_auditados": [
+      "age_plugin_auditoria.py",
+      "age_plugin_cierre.py",
+      "age_plugin_confirmacion.py",
+      "age_plugin_documentacion.py",
+      "age_plugin_preregistro.py",
+      "age_plugin_submission.py"
+    ],
+    "hallazgos": [],
+    "total_hallazgos": 0,
+    "comprobaciones_positivas": {
+      "orden_de_clases_verificado": 1,
+      "sanity_check_antes_de_predecir": 1,
+      "pesos_congelados_sin_reoptimizar": 4,
+      "regla_argumento": 3,
+      "pipeline_de_v30_reutilizado": 1,
+      "solo_argmax_y_producto": 5
+    },
+    "positivas_ok": true,
+    "metodo": "AST de cada script + busqueda por operacion en cada linea de codigo vivo, excluyendo comentarios y docstrings, que nombran las prohibiciones sin ejecutarlas"
+  },
+  "compliance": {
+    "scripts": [
+      "age_plugin_auditoria.py",
+      "age_plugin_cierre.py",
+      "age_plugin_confirmacion.py",
+      "age_plugin_documentacion.py",
+      "age_plugin_preregistro.py",
+      "age_plugin_submission.py"
+    ],
+    "hallazgos": [],
+    "total": 0
+  },
+  "fichero": {
+    "checks": {
+      "filas": true,
+      "columnas_exactas": true,
+      "ids_unicos": true,
+      "ids_iguales_a_test": true,
+      "mismo_orden_que_test": true,
+      "sin_nan": true,
+      "clases_validas": true,
+      "todas_las_clases_presentes": true,
+      "sin_columnas_auxiliares": true,
+      "hash_coincide_con_el_manifiesto": true
+    },
+    "todos_ok": true,
+    "sha256": "29cbe6cca4312a65f5176bad25c7d4ae4624d348f3e55586dfa36767a3abd6c0",
+    "distribucion_predicha": {
+      "13-17": 15965,
+      "18-24": 21900,
+      "25-34": 20158,
+      "35-49": 17217,
+      "50-64": 20360,
+      "65-xx": 17292
+    },
+    "distribucion_relativa": {
+      "13-17": 0.1414,
+      "18-24": 0.194,
+      "25-34": 0.1786,
+      "35-49": 0.1525,
+      "50-64": 0.1803,
+      "65-xx": 0.1532
+    }
+  },
+  "aprobado": true,
+  "nota_de_metodo": "el test se lee para transform y predict, que es lo que el procedimiento debe hacer. Lo que se audita es que NO se lea su target ni se ajuste nada con el",
+  "no_se_hace": [
+    "estimar score",
+    "proyectar leaderboard",
+    "usar el numero de filas cambiadas como prediccion"
+  ],
+  "segundos": 0.3
+}
