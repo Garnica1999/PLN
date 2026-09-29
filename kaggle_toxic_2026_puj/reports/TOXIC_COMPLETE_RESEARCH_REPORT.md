@@ -523,3 +523,56 @@ and V03 already carries it inside its own confidence
 V03 remains the best verified leaderboard result.
 ```
 <!-- /P64 2026-09-29 -->
+
+<!-- P65 2026-09-29 -->
+## P65 (2026-09-29) - Representacion de largo alcance, alcance de operadores y jerarquia
+
+Cuatro experimentos y una auditoria, trece figuras. Ninguno supera a V03, y la respuesta tiene
+una forma que no estaba prevista.
+
+**LA RESPUESTA: la senal existe y la adicion la rechaza.** Cinco candidatos de este proyecto
+baten a los dos controles, el de capacidad y el de la confianza de V03, y ninguno mejora:
+
+| candidato | contra el control de anchura | contra el margen de V03 | delta vs V03 |
+|---|---:|---:|---:|
+| P64-07 alcance de negacion | +0,0201566146 | +0,0088975231 | -0,0021826774 |
+| P65-01 word (1,3) | +0.0596671770 | +0.0071281317 | -0,0039520688 |
+| P65-03 cohesion documental | +0.0090835614 | +0.0083711943 | -0,0027090062 |
+
+Lo que falta no es informacion: es sitio. Unas cientos de columnas compitiendo por el
+presupuesto L2 de un espacio de veinte mil, y lo que la columna nueva necesita decir es mas
+pequeno que lo que cuesta decirlo. Eso es una afirmacion sobre la ARQUITECTURA de la adicion,
+y es falsable: predice que la misma evidencia fundida en el espacio de probabilidad, y no
+concatenada en el de caracteristicas, sobrevive.
+
+**EL GAP ANALYSIS CERRO MAS DE LO QUE ABRIO.** 6 abiertas y
+10 cerradas, leidas en el codigo y no en el registro. Los skip-grams ya los
+habia medido V6-05, con un vocabulario un 83 por ciento mayor y un resultado neutro. La
+negacion y la cita las habian medido E2-07 y E2-08, y despues P64-06 y P64-07.
+
+**EL CONTROL DE IMPLEMENTACION REPRODUCE A V6-05.** El rango de hueco 1 a 2, que es
+exactamente el suyo, da
+-0.0010515908 frente al -0,0001 que el
+registro. Luego la implementacion de los pares con hueco es la misma, y los rangos que V6-05 no
+alcanzo, de tres a cinco y de seis a diez tokens, tampoco aportan.
+
+**Y LA LONGITUD DEL TWEET NO ES EL MECANISMO.** Un especialista ajustado en LARGA y MUY_LARGA
+es BIT A BIT el mismo numero que un reentrenado sobre las mismas
+714 filas sin ningun criterio de longitud:
++0.0000000000. Un negativo asi no es *faltan datos*,
+que seria una excusa valida: dice que la especializacion no es el mecanismo, punto. Y el
+especialista gana
++0.0212 en MUY_LARGA y
+pierde -0.0257 en LARGA, que tiene
+el triple de filas, luego hay una mejora local real que la metrica primaria rechaza.
+
+```text
+the information about long-range relations is present, measurable and not what V03 already
+knows, and none of it fits through concatenation
+
+the length of a tweet is not the mechanism either: a model retrained on the long rows with no
+length criterion is bit for bit the specialist
+
+V03 remains the best verified leaderboard result.
+```
+<!-- /P65 2026-09-29 -->

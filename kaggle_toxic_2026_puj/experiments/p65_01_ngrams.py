@@ -242,7 +242,7 @@ def main() -> None:
         # mide informacion sino que el bloque aleatorio destruye el modelo. El segundo usa la
         # densidad REAL del bloque de palabras del mismo orden, que es la comparacion justa.
         # Se conservan ambos y se informa de los dos, porque la distancia entre ellos es
-        # justamente lo que hace que un control de capacidad pueda 해석 mal.
+        # justamente lo que hace que un control de capacidad pueda ?? mal.
         ancho_ref = max(anchos[f"palabras_1_{o}"][f] for o, _s in ORDENES)
         rng = np.random.default_rng(SEMILLA + f)
         dens_char = float(xc.nnz / max(xc.shape[0] * xc.shape[1], 1))

@@ -1,6 +1,6 @@
 # P65 - n-gramas de palabra de orden superior anadidos a V03
 
-Generado por `experiments/p65_01_ngrams.py`. Fecha 2026-09-29T14:37:36+00:00.
+Generado por `experiments/p65_01_ngrams.py`. Fecha 2026-09-29T14:55:47+00:00.
 
 ## Que hay de nuevo aqui, frente al precedente
 
@@ -26,7 +26,7 @@ bloque aleatorio de la misma anchura y comparar.
 
 | brazo | corrected_cv | delta vs V03 | pliegues | neto | ancho | segundos |
 |---|---:|---:|---:|---:|---:|---:|
-| palabras_1_3 | 0.7732593837 | -0.0039520688 | 1/5 | -15 | 3210 | 7.5 |
+| palabras_1_3 | 0.7732593837 | -0.0039520688 | 1/5 | -15 | 3210 | 0.4 |
 | palabras_1_3_sin_char | 0.7547741314 | -0.0224373211 | 0/5 | -88 | 3210 | 0.1 |
 | V03_aleatorio | 0.6743436992 | -0.1028677533 | 0/5 | -349 | 0 | 0.0 |
 | V03_aleatorio_palabras | 0.7135922067 | -0.0636192458 | 0/5 | -203 | 0 | 0.0 |

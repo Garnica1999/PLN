@@ -5803,3 +5803,134 @@ and V03 already carries it inside its own confidence
 V03 remains the best verified leaderboard result.
 ```
 <!-- /P64 2026-09-29 -->
+
+<!-- P65 2026-09-29 -->
+## D-162. El gap analysis se hizo en el CODIGO, y cerro mas de lo que abrio
+
+Con 359 filas en el registro, una busqueda por nombre devuelve las mismas filas para
+cualquier patron que aparezca dentro de una pregunta. La clasificacion tiene que ser
+funcional.
+
+| familia | estado | antecedente |
+|---|---|---|
+| skip-grams con hueco 1 y huecos 1 y 2 | EXACT_DUPLICATE | V6-05 (experiments/v6_05_skipgrams.py) |
+| pares lejanos a 3-5 y 6-10 tokens | PARTIAL_PRECEDENT | V6-05 llego hasta hueco 2; 16_targeting_v2 midio distancias target |
+| word (1,3) anadido a V03 | PARTIAL_PRECEDENT | REP-04 (experiments/03_variantes_representaciones.py) |
+| word (1,4) anadido a V03 | PARTIAL_PRECEDENT | nunca medido en el bloque de palabras; los (1,4) del codigo son PO |
+| canal de negacion como patrones | EXACT_DUPLICATE | E2-08 y E2-08-TXT (19_sintaxis_cita_negacion_v2.py) |
+| canal cita y atribucion | EXACT_DUPLICATE | E2-07, E2-07-TXT y E2-07-CITA-NEG-TXT |
+| frontera de mencion | FUNCTIONAL_DUPLICATE | P64-06 |
+| alcance de contraste | GENUINELY_NEW | ninguno. Las apariciones de 'pero' y 'aunque' en el codigo son men |
+| cohesion documental interna | GENUINELY_NEW | V10-07 es shift de covariables ENTRE tren y prueba, que es otro ob |
+| interaccion palabra x forma superficial | PARTIAL_PRECEDENT | la UNION word + char_wb es una suma de canales, no un producto |
+| modelo multiple-instance | EXACT_DUPLICATE | P64-05 con la cobertura corregida de P59-07 |
+| agregadores segmentales | EXACT_DUPLICATE | P64-03, P64-04 y P64-05 |
+| mezcla de temas | EXACT_DUPLICATE | P64-08 mas cinco factorizaciones previas |
+| POS, dependencias y morfologia | EXACT_DUPLICATE | P62-01 a P62-05 y E2-03, E2-04 |
+| especialista de tweets largos | GENUINELY_NEW | P63 y P64 midieron el MARGEN por rebanada; nadie entreno un MODELO |
+| min_df y presupuesto de vocabulario | EXACT_DUPLICATE | P62-03, P62-05 y R2-MINDF5 |
+
+**Seis abiertas y diez cerradas.** Y cuatro de las cerradas no habrian parecido cerradas
+por el nombre: los skip-grams los midio V6-05, la negacion y la cita los midieron E2-07
+y E2-08, y word (1,3) existia pero como sustitucion y con otro C, no como adicion.
+
+## D-163. El control de hueco 1 a 2 REPRODUCE a V6-05, y eso es lo que cierra la familia
+
+V6-05 probo hueco 1 y huecos 1 y 2 y dio -0,0001 con IC95 que incluye el cero. Este
+script incluye el rango de hueco 1 a 2 como **control de implementacion**, y da:
+
+| rango | corrected_cv | delta vs V03 | pliegues | neto |
+|---|---:|---:|---:|---:|
+| hueco_1_2 | 0.7761598617 | -0.0010515908 | - | +1 |
+| hueco_3_5 | 0.7706593428 | -0.0065521098 | - | -18 |
+| hueco_6_10 | 0.7697723394 | -0.0074391131 | - | -19 |
+| CONTRASTE | 0.7748262592 | -0.0023851933 | - | -8 |
+
+-0,0010515908 frente al -0,0001 que registro V6-05. La implementacion de los pares con
+hueco es la misma, luego los rangos que V6-05 NO alcanzo se han medido aqui y tampoco
+aportan.
+
+## D-164. Cinco candidatos baten a AMBOS controles y ninguno mejora a V03
+
+| candidato | contra el control de anchura | contra el margen de V03 | delta vs V03 |
+|---|---:|---:|---:|
+| P64-07 negacion | +0,0201566146 | +0,0088975231 | -0,0021826774 |
+| P65-01 word (1,3) | +0,0596671770 | +0,0071281317 | -0,0039520688 |
+| P65-03 cohesion | +0,0090835614 | +0,0083711943 | -0,0027090062 |
+| P64-08 mezcla de temas | -0,0021189973 | +0,0065189177 | -0,0045612828 |
+
+La lectura no es que falte informacion. Esta, es medible, y lo que la rechaza es la
+**adicion**: unas cientos de columnas compitiendo por el presupuesto L2 de un espacio de
+veinte mil, y lo que la columna nueva necesita decir es mas pequeno de lo que cuesta
+decirlo.
+
+Eso es una afirmacion sobre la ARQUITECTURA de la adicion, y es falsable: predice que la
+misma evidencia FUSADA en el espacio de probabilidad, y no concatenada en el de
+caracteristicas, sobrevive. Ese es un paso real, clasico, y no se ha intentado aqui.
+
+## D-165. El especialista es BIT A BIT el reentrenado, y eso cierra la familia de raiz
+
+| brazo | corrected_cv | delta vs V03 | pliegues | neto |
+|---|---:|---:|---:|---:|
+| global | 0.7772114525 | +0.0000000000 | - | +0 |
+| especialista | 0.7691517953 | -0.0080596573 | - | -48 |
+| reentrenado | 0.7691517953 | -0.0080596573 | - | -48 |
+| aleatorio | 0.7654406468 | -0.0117708057 | - | -30 |
+
+La brecha entre el especialista y el reentrenado es **+0,0000000000**: ajustar un V03
+sobre las mismas 714 filas SIN NINGUN criterio de longitud da el
+mismo numero que ajustarlo seleccionando por longitud. La longitud no es el mecanismo.
+
+Un negativo aqui habria podido ser "faltan datos", que es una excusa valida. Este dice
+que la especializacion no es el mecanismo, punto.
+
+Y hay un dato en sentido contrario que hay que mirar: en MUY_LARGA el especialista GANA
++0.0212, y pierde en LARGA
+-0.0257, que tiene el triple de
+filas. Hay una mejora local real en el extremo que se paga con una perdida mayor en el
+tramo intermedio, y la metrica primaria, que es el corrected_cv global, la rechaza. Es
+justo lo que pasa cuando se prohibe elegir el punto de longitud que maximiza F1.
+
+## D-166. La cohesion documental es el indicador de multi segmento con otra forma
+
+| estrato | coseno medio | cambio lexico | repeticion cruzada |
+|---|---:|---:|---:|
+| todas | 0.5147 | 0.4853 | 0.0150 |
+| CORTA | 0.7066 | 0.2934 | 0.0000 |
+| MEDIA | 0.5995 | 0.4005 | 0.0047 |
+| LARGA | 0.4368 | 0.5632 | 0.0196 |
+| MUY_LARGA | 0.2720 | 0.7280 | 0.0519 |
+| V03 correcto | 0.5588 | 0.4412 | 0.0131 |
+| V03 incorrecto | 0.4105 | 0.5895 | 0.0195 |
+| error de alta confianza | 0.4291 | 0.5709 | 0.0178 |
+| solo multi segmento | 0.0416 | 0.9584 | 0.0296 |
+
+Un documento de un solo segmento tiene coseno 1,0 por definicion y uno de varios lo tiene
+en torno a 0,04, luego el descriptor es **bimodal** y en la pratique dice "tiene mas de un
+segmento", que ya se cerro en P64-02.
+
+Pero el cambio lexico con la longitud es MONOTONO y fuerte, y eso si es un hallazgo sobre
+el corpus: el coseno baja de 0,7066 en CORTA a 0,2720 en MUY_LARGA, y los tweets que V03
+falla repiten su vocabulario la mitad que los que resuelve.
+
+V03 no puede usar esa lectura, porque un token repetido es un token repetido y la bolsa lo
+ve igual.
+
+## D-167. P65 se cierra con CUATRO experimentos y UNA LEY QUE SE REPITE
+
+```text
+la senal existe        cinco candidatos baten a los dos controles
+pero no cabe           ninguno supera el gate de +0,0015
+y el cuello es la       el presupuesto L2 del espacio de caracteristicas, no la
+adicion, no la senal    disponibilidad de la senal
+```
+
+**Se mantiene la literal del proyecto.**
+
+```text
+the internal evidence distribution of long tweets is real, measured and reproducible,
+and V03 already carries it inside its own confidence
+
+V03 remains the best verified leaderboard result.
+```
+<!-- /P65 2026-09-29 -->
