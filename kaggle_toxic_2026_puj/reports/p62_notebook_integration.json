@@ -1,0 +1,29 @@
+{
+  "familia": "P62_NOTEBOOK",
+  "fecha": "2026-09-29T05:26:22+00:00",
+  "notebook": "notebooks/10_final_pipeline.ipynb",
+  "celdas_antes": 335,
+  "celdas_despues": 335,
+  "secciones": [
+    89,
+    90,
+    91,
+    92,
+    93,
+    94,
+    95,
+    96
+  ],
+  "regla": "todos los numeros se leen de los artefactos, ninguno transcrito; las celdas se EJECUTAN antes de escribir el notebook y el script para si alguna falla",
+  "celdas_de_codigo_ejecutadas": 11,
+  "celdas_de_codigo_con_fallo": 0,
+  "artefactos_leidos": [
+    "p62_p61_audit.json",
+    "p62_linguistic_eda.json",
+    "p62_pista_l_word_pos.json",
+    "p62_pista_m_dependencias.json",
+    "p62_final_summary.json"
+  ],
+  "idempotencia": "delimitado por <!-- P62-NOTEBOOK-INICIO --> y <!-- P62-NOTEBOOK-FIN -->",
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

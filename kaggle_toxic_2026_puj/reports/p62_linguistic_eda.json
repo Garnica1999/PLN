@@ -1,0 +1,2580 @@
+{
+  "familia": "P62_LINGUISTIC_EDA",
+  "naturaleza": "DESCRIPTIVA. 0 experimentos, 0 modelos, 0 submissions, 0 Kaggle, 0 holdout, 0 test. No se usa para optimizar nada",
+  "fecha": "2026-09-29T05:13:34+00:00",
+  "tagger": {
+    "herramienta": "spaCy",
+    "version": "3.8.13",
+    "modelo": "es_core_news_md",
+    "version_modelo": "3.8.0",
+    "licencia": "GNU GPL 3.0",
+    "ner": "excluido",
+    "vectores": "prohibidos por D-003",
+    "autorizacion": "D-003"
+  },
+  "n_filas": 1483,
+  "soporte_minimo": 8,
+  "delta_alta_confianza": 0.1,
+  "composicion_pos": {
+    "HS": {
+      "ADJ": 1.0216,
+      "ADP": 1.7114,
+      "ADV": 0.6173,
+      "AUX": 0.7623,
+      "CCONJ": 0.5617,
+      "DET": 1.7531,
+      "INTJ": 0.0231,
+      "NOUN": 2.6605,
+      "NUM": 0.037,
+      "PART": 0.0,
+      "PRON": 1.1914,
+      "PROPN": 2.1142,
+      "PUNCT": 0.0031,
+      "SCONJ": 0.5525,
+      "SYM": 0.0,
+      "VERB": 1.8009,
+      "X": 0.0015
+    },
+    "TR": {
+      "ADJ": 0.818,
+      "ADP": 1.0404,
+      "ADV": 0.5169,
+      "AUX": 0.7213,
+      "CCONJ": 0.4427,
+      "DET": 1.2607,
+      "INTJ": 0.0225,
+      "NOUN": 1.9708,
+      "NUM": 0.027,
+      "PART": 0.0,
+      "PRON": 1.0427,
+      "PROPN": 2.191,
+      "PUNCT": 0.0045,
+      "SCONJ": 0.4674,
+      "SYM": 0.0,
+      "VERB": 1.4225,
+      "X": 0.0
+    },
+    "AG": {
+      "ADJ": 1.0229,
+      "ADP": 1.5961,
+      "ADV": 0.5908,
+      "AUX": 0.7372,
+      "CCONJ": 0.5379,
+      "DET": 1.6384,
+      "INTJ": 0.0194,
+      "NOUN": 2.5026,
+      "NUM": 0.0317,
+      "PART": 0.0,
+      "PRON": 1.134,
+      "PROPN": 2.2628,
+      "PUNCT": 0.0053,
+      "SCONJ": 0.5238,
+      "SYM": 0.0018,
+      "VERB": 1.7513,
+      "X": 0.0018
+    }
+  },
+  "enriquecimiento": {
+    "HS": {
+      "VERB": {
+        "top_enriquecidos": [
+          {
+            "lema": "venir",
+            "n_pos": 16,
+            "n_neg": 8,
+            "log_enr": 1.005
+          },
+          {
+            "lema": "callatir",
+            "n_pos": 25,
+            "n_neg": 14,
+            "log_enr": 0.919
+          },
+          {
+            "lema": "llamar",
+            "n_pos": 9,
+            "n_neg": 8,
+            "log_enr": 0.4744
+          },
+          {
+            "lema": "ver",
+            "n_pos": 37,
+            "n_neg": 36,
+            "log_enr": 0.3957
+          },
+          {
+            "lema": "querer",
+            "n_pos": 27,
+            "n_neg": 31,
+            "log_enr": 0.2355
+          },
+          {
+            "lema": "dar",
+            "n_pos": 23,
+            "n_neg": 28,
+            "log_enr": 0.1798
+          },
+          {
+            "lema": "pasar",
+            "n_pos": 16,
+            "n_neg": 20,
+            "log_enr": 0.1577
+          },
+          {
+            "lema": "saber",
+            "n_pos": 13,
+            "n_neg": 17,
+            "log_enr": 0.1177
+          },
+          {
+            "lema": "hacer",
+            "n_pos": 38,
+            "n_neg": 51,
+            "log_enr": 0.0813
+          },
+          {
+            "lema": "ir",
+            "n_pos": 22,
+            "n_neg": 31,
+            "log_enr": 0.0388
+          },
+          {
+            "lema": "tener",
+            "n_pos": 41,
+            "n_neg": 62,
+            "log_enr": -0.0365
+          },
+          {
+            "lema": "mereces",
+            "n_pos": 9,
+            "n_neg": 15,
+            "log_enr": -0.101
+          },
+          {
+            "lema": "merecer",
+            "n_pos": 9,
+            "n_neg": 15,
+            "log_enr": -0.101
+          },
+          {
+            "lema": "pensar",
+            "n_pos": 8,
+            "n_neg": 15,
+            "log_enr": -0.2064
+          },
+          {
+            "lema": "poner",
+            "n_pos": 9,
+            "n_neg": 17,
+            "log_enr": -0.2188
+          }
+        ],
+        "top_en_ALL_raros": [
+          {
+            "lema": "tener",
+            "n_pos": 41,
+            "n_neg": 62,
+            "log_enr": -0.0365
+          },
+          {
+            "lema": "hacer",
+            "n_pos": 38,
+            "n_neg": 51,
+            "log_enr": 0.0813
+          },
+          {
+            "lema": "decir",
+            "n_pos": 30,
+            "n_neg": 56,
+            "log_enr": -0.2401
+          },
+          {
+            "lema": "ver",
+            "n_pos": 37,
+            "n_neg": 36,
+            "log_enr": 0.3957
+          },
+          {
+            "lema": "querer",
+            "n_pos": 27,
+            "n_neg": 31,
+            "log_enr": 0.2355
+          },
+          {
+            "lema": "ensear",
+            "n_pos": 17,
+            "n_neg": 38,
+            "log_enr": -0.4042
+          },
+          {
+            "lema": "ir",
+            "n_pos": 22,
+            "n_neg": 31,
+            "log_enr": 0.0388
+          },
+          {
+            "lema": "dar",
+            "n_pos": 23,
+            "n_neg": 28,
+            "log_enr": 0.1798
+          },
+          {
+            "lema": "callatir",
+            "n_pos": 25,
+            "n_neg": 14,
+            "log_enr": 0.919
+          },
+          {
+            "lema": "pasar",
+            "n_pos": 16,
+            "n_neg": 20,
+            "log_enr": 0.1577
+          },
+          {
+            "lema": "hablar",
+            "n_pos": 11,
+            "n_neg": 22,
+            "log_enr": -0.2816
+          },
+          {
+            "lema": "dejar",
+            "n_pos": 10,
+            "n_neg": 23,
+            "log_enr": -0.4112
+          },
+          {
+            "lema": "saber",
+            "n_pos": 13,
+            "n_neg": 17,
+            "log_enr": 0.1177
+          },
+          {
+            "lema": "poner",
+            "n_pos": 9,
+            "n_neg": 17,
+            "log_enr": -0.2188
+          },
+          {
+            "lema": "venir",
+            "n_pos": 16,
+            "n_neg": 8,
+            "log_enr": 1.005
+          }
+        ]
+      },
+      "ADJ": {
+        "top_enriquecidos": [
+          {
+            "lema": "ilegal",
+            "n_pos": 17,
+            "n_neg": 6,
+            "log_enr": 1.3135
+          },
+          {
+            "lema": "negro",
+            "n_pos": 9,
+            "n_neg": 5,
+            "log_enr": 0.8798
+          },
+          {
+            "lema": "puto",
+            "n_pos": 24,
+            "n_neg": 17,
+            "log_enr": 0.6975
+          },
+          {
+            "lema": "cllate",
+            "n_pos": 12,
+            "n_neg": 17,
+            "log_enr": 0.0436
+          },
+          {
+            "lema": "er",
+            "n_pos": 8,
+            "n_neg": 13,
+            "log_enr": -0.0728
+          },
+          {
+            "lema": "mejor",
+            "n_pos": 9,
+            "n_neg": 16,
+            "log_enr": -0.1616
+          },
+          {
+            "lema": "indocumentado",
+            "n_pos": 9,
+            "n_neg": 17,
+            "log_enr": -0.2188
+          }
+        ],
+        "top_en_ALL_raros": [
+          {
+            "lema": "puto",
+            "n_pos": 24,
+            "n_neg": 17,
+            "log_enr": 0.6975
+          },
+          {
+            "lema": "cllate",
+            "n_pos": 12,
+            "n_neg": 17,
+            "log_enr": 0.0436
+          },
+          {
+            "lema": "indocumentado",
+            "n_pos": 9,
+            "n_neg": 17,
+            "log_enr": -0.2188
+          },
+          {
+            "lema": "mejor",
+            "n_pos": 9,
+            "n_neg": 16,
+            "log_enr": -0.1616
+          },
+          {
+            "lema": "ilegal",
+            "n_pos": 17,
+            "n_neg": 6,
+            "log_enr": 1.3135
+          },
+          {
+            "lema": "er",
+            "n_pos": 8,
+            "n_neg": 13,
+            "log_enr": -0.0728
+          },
+          {
+            "lema": "negro",
+            "n_pos": 9,
+            "n_neg": 5,
+            "log_enr": 0.8798
+          }
+        ]
+      },
+      "NOUN": {
+        "top_enriquecidos": [
+          {
+            "lema": "zorra",
+            "n_pos": 46,
+            "n_neg": 5,
+            "log_enr": 2.4274
+          },
+          {
+            "lema": "mantero",
+            "n_pos": 10,
+            "n_neg": 1,
+            "log_enr": 2.0738
+          },
+          {
+            "lema": "novia",
+            "n_pos": 19,
+            "n_neg": 4,
+            "log_enr": 1.7553
+          },
+          {
+            "lema": "subsahariano",
+            "n_pos": 13,
+            "n_neg": 3,
+            "log_enr": 1.6218
+          },
+          {
+            "lema": "perra",
+            "n_pos": 44,
+            "n_neg": 16,
+            "log_enr": 1.3425
+          },
+          {
+            "lema": "puto",
+            "n_pos": 9,
+            "n_neg": 3,
+            "log_enr": 1.2853
+          },
+          {
+            "lema": "guarra",
+            "n_pos": 9,
+            "n_neg": 3,
+            "log_enr": 1.2853
+          },
+          {
+            "lema": "casa",
+            "n_pos": 8,
+            "n_neg": 3,
+            "log_enr": 1.1799
+          },
+          {
+            "lema": "hija",
+            "n_pos": 11,
+            "n_neg": 7,
+            "log_enr": 0.7745
+          },
+          {
+            "lema": "papel",
+            "n_pos": 8,
+            "n_neg": 5,
+            "log_enr": 0.7745
+          },
+          {
+            "lema": "refugiado",
+            "n_pos": 9,
+            "n_neg": 8,
+            "log_enr": 0.4744
+          },
+          {
+            "lema": "mujer",
+            "n_pos": 37,
+            "n_neg": 37,
+            "log_enr": 0.369
+          },
+          {
+            "lema": "culo",
+            "n_pos": 10,
+            "n_neg": 10,
+            "log_enr": 0.369
+          },
+          {
+            "lema": "inmigracin",
+            "n_pos": 9,
+            "n_neg": 9,
+            "log_enr": 0.369
+          },
+          {
+            "lema": "m",
+            "n_pos": 9,
+            "n_neg": 10,
+            "log_enr": 0.2737
+          }
+        ],
+        "top_en_ALL_raros": [
+          {
+            "lema": "puta",
+            "n_pos": 138,
+            "n_neg": 270,
+            "log_enr": -0.2986
+          },
+          {
+            "lema": "mujer",
+            "n_pos": 37,
+            "n_neg": 37,
+            "log_enr": 0.369
+          },
+          {
+            "lema": "perra",
+            "n_pos": 44,
+            "n_neg": 16,
+            "log_enr": 1.3425
+          },
+          {
+            "lema": "inmigrante",
+            "n_pos": 28,
+            "n_neg": 31,
+            "log_enr": 0.2706
+          },
+          {
+            "lema": "polla",
+            "n_pos": 10,
+            "n_neg": 42,
+            "log_enr": -0.9943
+          },
+          {
+            "lema": "zorra",
+            "n_pos": 46,
+            "n_neg": 5,
+            "log_enr": 2.4274
+          },
+          {
+            "lema": "cara",
+            "n_pos": 14,
+            "n_neg": 28,
+            "log_enr": -0.2902
+          },
+          {
+            "lema": "mierda",
+            "n_pos": 13,
+            "n_neg": 24,
+            "log_enr": -0.2108
+          },
+          {
+            "lema": "q",
+            "n_pos": 10,
+            "n_neg": 22,
+            "log_enr": -0.3686
+          },
+          {
+            "lema": "vez",
+            "n_pos": 10,
+            "n_neg": 21,
+            "log_enr": -0.3241
+          },
+          {
+            "lema": "novia",
+            "n_pos": 19,
+            "n_neg": 4,
+            "log_enr": 1.7553
+          },
+          {
+            "lema": "hombre",
+            "n_pos": 8,
+            "n_neg": 15,
+            "log_enr": -0.2064
+          },
+          {
+            "lema": "pas",
+            "n_pos": 8,
+            "n_neg": 13,
+            "log_enr": -0.0728
+          },
+          {
+            "lema": "culo",
+            "n_pos": 10,
+            "n_neg": 10,
+            "log_enr": 0.369
+          },
+          {
+            "lema": "m",
+            "n_pos": 9,
+            "n_neg": 10,
+            "log_enr": 0.2737
+          }
+        ]
+      },
+      "PROPN": {
+        "top_enriquecidos": [
+          {
+            "lema": "zorra",
+            "n_pos": 39,
+            "n_neg": 7,
+            "log_enr": 1.9784
+          },
+          {
+            "lema": "perra",
+            "n_pos": 117,
+            "n_neg": 27,
+            "log_enr": 1.8075
+          },
+          {
+            "lema": "cllate",
+            "n_pos": 61,
+            "n_neg": 14,
+            "log_enr": 1.7881
+          },
+          {
+            "lema": "guarra",
+            "n_pos": 10,
+            "n_neg": 4,
+            "log_enr": 1.1575
+          },
+          {
+            "lema": "pinche",
+            "n_pos": 11,
+            "n_neg": 5,
+            "log_enr": 1.0622
+          },
+          {
+            "lema": "tu",
+            "n_pos": 33,
+            "n_neg": 18,
+            "log_enr": 0.9509
+          },
+          {
+            "lema": "puta",
+            "n_pos": 29,
+            "n_neg": 17,
+            "log_enr": 0.8798
+          },
+          {
+            "lema": "t",
+            "n_pos": 23,
+            "n_neg": 15,
+            "log_enr": 0.7745
+          },
+          {
+            "lema": "callate",
+            "n_pos": 73,
+            "n_neg": 57,
+            "log_enr": 0.6126
+          },
+          {
+            "lema": "eres",
+            "n_pos": 13,
+            "n_neg": 10,
+            "log_enr": 0.6102
+          },
+          {
+            "lema": "d",
+            "n_pos": 9,
+            "n_neg": 7,
+            "log_enr": 0.5921
+          },
+          {
+            "lema": "mierda",
+            "n_pos": 10,
+            "n_neg": 10,
+            "log_enr": 0.369
+          },
+          {
+            "lema": "vos",
+            "n_pos": 10,
+            "n_neg": 12,
+            "log_enr": 0.2019
+          },
+          {
+            "lema": "espaa",
+            "n_pos": 15,
+            "n_neg": 18,
+            "log_enr": 0.1972
+          },
+          {
+            "lema": "qu",
+            "n_pos": 9,
+            "n_neg": 14,
+            "log_enr": -0.0365
+          }
+        ],
+        "top_en_ALL_raros": [
+          {
+            "lema": "perra",
+            "n_pos": 117,
+            "n_neg": 27,
+            "log_enr": 1.8075
+          },
+          {
+            "lema": "callate",
+            "n_pos": 73,
+            "n_neg": 57,
+            "log_enr": 0.6126
+          },
+          {
+            "lema": "cllate",
+            "n_pos": 61,
+            "n_neg": 14,
+            "log_enr": 1.7881
+          },
+          {
+            "lema": "tu",
+            "n_pos": 33,
+            "n_neg": 18,
+            "log_enr": 0.9509
+          },
+          {
+            "lema": "zorra",
+            "n_pos": 39,
+            "n_neg": 7,
+            "log_enr": 1.9784
+          },
+          {
+            "lema": "puta",
+            "n_pos": 29,
+            "n_neg": 17,
+            "log_enr": 0.8798
+          },
+          {
+            "lema": "t",
+            "n_pos": 23,
+            "n_neg": 15,
+            "log_enr": 0.7745
+          },
+          {
+            "lema": "espaa",
+            "n_pos": 15,
+            "n_neg": 18,
+            "log_enr": 0.1972
+          },
+          {
+            "lema": "q",
+            "n_pos": 11,
+            "n_neg": 20,
+            "log_enr": -0.1906
+          },
+          {
+            "lema": "rabes",
+            "n_pos": 8,
+            "n_neg": 22,
+            "log_enr": -0.5693
+          },
+          {
+            "lema": "eres",
+            "n_pos": 13,
+            "n_neg": 10,
+            "log_enr": 0.6102
+          },
+          {
+            "lema": "qu",
+            "n_pos": 9,
+            "n_neg": 14,
+            "log_enr": -0.0365
+          },
+          {
+            "lema": "vos",
+            "n_pos": 10,
+            "n_neg": 12,
+            "log_enr": 0.2019
+          },
+          {
+            "lema": "mierda",
+            "n_pos": 10,
+            "n_neg": 10,
+            "log_enr": 0.369
+          },
+          {
+            "lema": "pinche",
+            "n_pos": 11,
+            "n_neg": 5,
+            "log_enr": 1.0622
+          }
+        ]
+      }
+    },
+    "TR": {
+      "VERB": {
+        "top_enriquecidos": [
+          {
+            "lema": "callatir",
+            "n_pos": 25,
+            "n_neg": 14,
+            "log_enr": 1.7811
+          },
+          {
+            "lema": "mereces",
+            "n_pos": 9,
+            "n_neg": 15,
+            "log_enr": 0.7611
+          },
+          {
+            "lema": "merecer",
+            "n_pos": 9,
+            "n_neg": 15,
+            "log_enr": 0.7611
+          },
+          {
+            "lema": "querer",
+            "n_pos": 21,
+            "n_neg": 37,
+            "log_enr": 0.6845
+          },
+          {
+            "lema": "tener",
+            "n_pos": 29,
+            "n_neg": 74,
+            "log_enr": 0.3148
+          },
+          {
+            "lema": "saber",
+            "n_pos": 8,
+            "n_neg": 22,
+            "log_enr": 0.2928
+          },
+          {
+            "lema": "ver",
+            "n_pos": 20,
+            "n_neg": 53,
+            "log_enr": 0.2866
+          },
+          {
+            "lema": "decir",
+            "n_pos": 22,
+            "n_neg": 64,
+            "log_enr": 0.1922
+          },
+          {
+            "lema": "ensear",
+            "n_pos": 13,
+            "n_neg": 42,
+            "log_enr": 0.109
+          },
+          {
+            "lema": "dar",
+            "n_pos": 12,
+            "n_neg": 39,
+            "log_enr": 0.1072
+          },
+          {
+            "lema": "hacer",
+            "n_pos": 19,
+            "n_neg": 70,
+            "log_enr": -0.0359
+          },
+          {
+            "lema": "ir",
+            "n_pos": 10,
+            "n_neg": 43,
+            "log_enr": -0.1552
+          }
+        ],
+        "top_en_ALL_raros": [
+          {
+            "lema": "tener",
+            "n_pos": 29,
+            "n_neg": 74,
+            "log_enr": 0.3148
+          },
+          {
+            "lema": "hacer",
+            "n_pos": 19,
+            "n_neg": 70,
+            "log_enr": -0.0359
+          },
+          {
+            "lema": "decir",
+            "n_pos": 22,
+            "n_neg": 64,
+            "log_enr": 0.1922
+          },
+          {
+            "lema": "ver",
+            "n_pos": 20,
+            "n_neg": 53,
+            "log_enr": 0.2866
+          },
+          {
+            "lema": "querer",
+            "n_pos": 21,
+            "n_neg": 37,
+            "log_enr": 0.6845
+          },
+          {
+            "lema": "ensear",
+            "n_pos": 13,
+            "n_neg": 42,
+            "log_enr": 0.109
+          },
+          {
+            "lema": "ir",
+            "n_pos": 10,
+            "n_neg": 43,
+            "log_enr": -0.1552
+          },
+          {
+            "lema": "dar",
+            "n_pos": 12,
+            "n_neg": 39,
+            "log_enr": 0.1072
+          },
+          {
+            "lema": "callatir",
+            "n_pos": 25,
+            "n_neg": 14,
+            "log_enr": 1.7811
+          },
+          {
+            "lema": "saber",
+            "n_pos": 8,
+            "n_neg": 22,
+            "log_enr": 0.2928
+          },
+          {
+            "lema": "mereces",
+            "n_pos": 9,
+            "n_neg": 15,
+            "log_enr": 0.7611
+          },
+          {
+            "lema": "merecer",
+            "n_pos": 9,
+            "n_neg": 15,
+            "log_enr": 0.7611
+          }
+        ]
+      },
+      "ADJ": {
+        "top_enriquecidos": [
+          {
+            "lema": "puto",
+            "n_pos": 24,
+            "n_neg": 17,
+            "log_enr": 1.5596
+          },
+          {
+            "lema": "cllate",
+            "n_pos": 12,
+            "n_neg": 17,
+            "log_enr": 0.9057
+          },
+          {
+            "lema": "er",
+            "n_pos": 8,
+            "n_neg": 13,
+            "log_enr": 0.7893
+          },
+          {
+            "lema": "mejor",
+            "n_pos": 9,
+            "n_neg": 16,
+            "log_enr": 0.7005
+          }
+        ],
+        "top_en_ALL_raros": [
+          {
+            "lema": "puto",
+            "n_pos": 24,
+            "n_neg": 17,
+            "log_enr": 1.5596
+          },
+          {
+            "lema": "cllate",
+            "n_pos": 12,
+            "n_neg": 17,
+            "log_enr": 0.9057
+          },
+          {
+            "lema": "mejor",
+            "n_pos": 9,
+            "n_neg": 16,
+            "log_enr": 0.7005
+          },
+          {
+            "lema": "er",
+            "n_pos": 8,
+            "n_neg": 13,
+            "log_enr": 0.7893
+          }
+        ]
+      },
+      "NOUN": {
+        "top_enriquecidos": [
+          {
+            "lema": "zorra",
+            "n_pos": 46,
+            "n_neg": 5,
+            "log_enr": 3.2895
+          },
+          {
+            "lema": "novia",
+            "n_pos": 18,
+            "n_neg": 5,
+            "log_enr": 2.3838
+          },
+          {
+            "lema": "perra",
+            "n_pos": 42,
+            "n_neg": 18,
+            "log_enr": 2.0479
+          },
+          {
+            "lema": "guarra",
+            "n_pos": 8,
+            "n_neg": 4,
+            "log_enr": 1.8189
+          },
+          {
+            "lema": "hija",
+            "n_pos": 11,
+            "n_neg": 7,
+            "log_enr": 1.6366
+          },
+          {
+            "lema": "puta",
+            "n_pos": 129,
+            "n_neg": 279,
+            "log_enr": 0.4638
+          },
+          {
+            "lema": "q",
+            "n_pos": 9,
+            "n_neg": 23,
+            "log_enr": 0.3556
+          },
+          {
+            "lema": "mierda",
+            "n_pos": 10,
+            "n_neg": 27,
+            "log_enr": 0.2968
+          },
+          {
+            "lema": "cara",
+            "n_pos": 10,
+            "n_neg": 32,
+            "log_enr": 0.1325
+          },
+          {
+            "lema": "mujer",
+            "n_pos": 8,
+            "n_neg": 66,
+            "log_enr": -0.7764
+          }
+        ],
+        "top_en_ALL_raros": [
+          {
+            "lema": "puta",
+            "n_pos": 129,
+            "n_neg": 279,
+            "log_enr": 0.4638
+          },
+          {
+            "lema": "mujer",
+            "n_pos": 8,
+            "n_neg": 66,
+            "log_enr": -0.7764
+          },
+          {
+            "lema": "perra",
+            "n_pos": 42,
+            "n_neg": 18,
+            "log_enr": 2.0479
+          },
+          {
+            "lema": "zorra",
+            "n_pos": 46,
+            "n_neg": 5,
+            "log_enr": 3.2895
+          },
+          {
+            "lema": "cara",
+            "n_pos": 10,
+            "n_neg": 32,
+            "log_enr": 0.1325
+          },
+          {
+            "lema": "mierda",
+            "n_pos": 10,
+            "n_neg": 27,
+            "log_enr": 0.2968
+          },
+          {
+            "lema": "q",
+            "n_pos": 9,
+            "n_neg": 23,
+            "log_enr": 0.3556
+          },
+          {
+            "lema": "novia",
+            "n_pos": 18,
+            "n_neg": 5,
+            "log_enr": 2.3838
+          },
+          {
+            "lema": "hija",
+            "n_pos": 11,
+            "n_neg": 7,
+            "log_enr": 1.6366
+          },
+          {
+            "lema": "guarra",
+            "n_pos": 8,
+            "n_neg": 4,
+            "log_enr": 1.8189
+          }
+        ]
+      },
+      "PROPN": {
+        "top_enriquecidos": [
+          {
+            "lema": "zorra",
+            "n_pos": 39,
+            "n_neg": 7,
+            "log_enr": 2.8405
+          },
+          {
+            "lema": "cllate",
+            "n_pos": 61,
+            "n_neg": 14,
+            "log_enr": 2.6502
+          },
+          {
+            "lema": "perra",
+            "n_pos": 116,
+            "n_neg": 28,
+            "log_enr": 2.626
+          },
+          {
+            "lema": "tu",
+            "n_pos": 33,
+            "n_neg": 18,
+            "log_enr": 1.813
+          },
+          {
+            "lema": "puta",
+            "n_pos": 29,
+            "n_neg": 17,
+            "log_enr": 1.7419
+          },
+          {
+            "lema": "guarra",
+            "n_pos": 9,
+            "n_neg": 5,
+            "log_enr": 1.7419
+          },
+          {
+            "lema": "callate",
+            "n_pos": 73,
+            "n_neg": 57,
+            "log_enr": 1.4747
+          },
+          {
+            "lema": "eres",
+            "n_pos": 13,
+            "n_neg": 10,
+            "log_enr": 1.4723
+          },
+          {
+            "lema": "pinche",
+            "n_pos": 9,
+            "n_neg": 7,
+            "log_enr": 1.4542
+          },
+          {
+            "lema": "t",
+            "n_pos": 20,
+            "n_neg": 18,
+            "log_enr": 1.3312
+          },
+          {
+            "lema": "vos",
+            "n_pos": 10,
+            "n_neg": 12,
+            "log_enr": 1.064
+          }
+        ],
+        "top_en_ALL_raros": [
+          {
+            "lema": "perra",
+            "n_pos": 116,
+            "n_neg": 28,
+            "log_enr": 2.626
+          },
+          {
+            "lema": "callate",
+            "n_pos": 73,
+            "n_neg": 57,
+            "log_enr": 1.4747
+          },
+          {
+            "lema": "cllate",
+            "n_pos": 61,
+            "n_neg": 14,
+            "log_enr": 2.6502
+          },
+          {
+            "lema": "tu",
+            "n_pos": 33,
+            "n_neg": 18,
+            "log_enr": 1.813
+          },
+          {
+            "lema": "zorra",
+            "n_pos": 39,
+            "n_neg": 7,
+            "log_enr": 2.8405
+          },
+          {
+            "lema": "puta",
+            "n_pos": 29,
+            "n_neg": 17,
+            "log_enr": 1.7419
+          },
+          {
+            "lema": "t",
+            "n_pos": 20,
+            "n_neg": 18,
+            "log_enr": 1.3312
+          },
+          {
+            "lema": "eres",
+            "n_pos": 13,
+            "n_neg": 10,
+            "log_enr": 1.4723
+          },
+          {
+            "lema": "vos",
+            "n_pos": 10,
+            "n_neg": 12,
+            "log_enr": 1.064
+          },
+          {
+            "lema": "pinche",
+            "n_pos": 9,
+            "n_neg": 7,
+            "log_enr": 1.4542
+          },
+          {
+            "lema": "guarra",
+            "n_pos": 9,
+            "n_neg": 5,
+            "log_enr": 1.7419
+          }
+        ]
+      }
+    },
+    "AG": {
+      "VERB": {
+        "top_enriquecidos": [
+          {
+            "lema": "callatir",
+            "n_pos": 25,
+            "n_neg": 14,
+            "log_enr": 1.1456
+          },
+          {
+            "lema": "llegar",
+            "n_pos": 9,
+            "n_neg": 7,
+            "log_enr": 0.8187
+          },
+          {
+            "lema": "venir",
+            "n_pos": 13,
+            "n_neg": 11,
+            "log_enr": 0.7497
+          },
+          {
+            "lema": "llamar",
+            "n_pos": 8,
+            "n_neg": 9,
+            "log_enr": 0.4902
+          },
+          {
+            "lema": "ver",
+            "n_pos": 29,
+            "n_neg": 44,
+            "log_enr": 0.19
+          },
+          {
+            "lema": "mereces",
+            "n_pos": 9,
+            "n_neg": 15,
+            "log_enr": 0.1255
+          },
+          {
+            "lema": "querer",
+            "n_pos": 22,
+            "n_neg": 36,
+            "log_enr": 0.1201
+          },
+          {
+            "lema": "ir",
+            "n_pos": 19,
+            "n_neg": 34,
+            "log_enr": 0.0359
+          },
+          {
+            "lema": "dar",
+            "n_pos": 18,
+            "n_neg": 33,
+            "log_enr": 0.0136
+          },
+          {
+            "lema": "poner",
+            "n_pos": 9,
+            "n_neg": 17,
+            "log_enr": 0.0077
+          },
+          {
+            "lema": "merecer",
+            "n_pos": 8,
+            "n_neg": 16,
+            "log_enr": -0.0405
+          },
+          {
+            "lema": "decir",
+            "n_pos": 29,
+            "n_neg": 57,
+            "log_enr": -0.0637
+          },
+          {
+            "lema": "tener",
+            "n_pos": 33,
+            "n_neg": 70,
+            "log_enr": -0.1408
+          },
+          {
+            "lema": "hacer",
+            "n_pos": 28,
+            "n_neg": 61,
+            "log_enr": -0.1643
+          },
+          {
+            "lema": "saber",
+            "n_pos": 9,
+            "n_neg": 21,
+            "log_enr": -0.1929
+          }
+        ],
+        "top_en_ALL_raros": [
+          {
+            "lema": "tener",
+            "n_pos": 33,
+            "n_neg": 70,
+            "log_enr": -0.1408
+          },
+          {
+            "lema": "hacer",
+            "n_pos": 28,
+            "n_neg": 61,
+            "log_enr": -0.1643
+          },
+          {
+            "lema": "decir",
+            "n_pos": 29,
+            "n_neg": 57,
+            "log_enr": -0.0637
+          },
+          {
+            "lema": "ver",
+            "n_pos": 29,
+            "n_neg": 44,
+            "log_enr": 0.19
+          },
+          {
+            "lema": "querer",
+            "n_pos": 22,
+            "n_neg": 36,
+            "log_enr": 0.1201
+          },
+          {
+            "lema": "ensear",
+            "n_pos": 13,
+            "n_neg": 42,
+            "log_enr": -0.5266
+          },
+          {
+            "lema": "ir",
+            "n_pos": 19,
+            "n_neg": 34,
+            "log_enr": 0.0359
+          },
+          {
+            "lema": "dar",
+            "n_pos": 18,
+            "n_neg": 33,
+            "log_enr": 0.0136
+          },
+          {
+            "lema": "callatir",
+            "n_pos": 25,
+            "n_neg": 14,
+            "log_enr": 1.1456
+          },
+          {
+            "lema": "pasar",
+            "n_pos": 10,
+            "n_neg": 26,
+            "log_enr": -0.3024
+          },
+          {
+            "lema": "hablar",
+            "n_pos": 9,
+            "n_neg": 24,
+            "log_enr": -0.3208
+          },
+          {
+            "lema": "saber",
+            "n_pos": 9,
+            "n_neg": 21,
+            "log_enr": -0.1929
+          },
+          {
+            "lema": "poner",
+            "n_pos": 9,
+            "n_neg": 17,
+            "log_enr": 0.0077
+          },
+          {
+            "lema": "venir",
+            "n_pos": 13,
+            "n_neg": 11,
+            "log_enr": 0.7497
+          },
+          {
+            "lema": "mereces",
+            "n_pos": 9,
+            "n_neg": 15,
+            "log_enr": 0.1255
+          }
+        ]
+      },
+      "ADJ": {
+        "top_enriquecidos": [
+          {
+            "lema": "negro",
+            "n_pos": 9,
+            "n_neg": 5,
+            "log_enr": 1.1063
+          },
+          {
+            "lema": "puto",
+            "n_pos": 23,
+            "n_neg": 18,
+            "log_enr": 0.8291
+          },
+          {
+            "lema": "ilegal",
+            "n_pos": 11,
+            "n_neg": 12,
+            "log_enr": 0.5155
+          },
+          {
+            "lema": "cllate",
+            "n_pos": 12,
+            "n_neg": 17,
+            "log_enr": 0.2701
+          },
+          {
+            "lema": "mejor",
+            "n_pos": 10,
+            "n_neg": 15,
+            "log_enr": 0.2208
+          },
+          {
+            "lema": "indocumentado",
+            "n_pos": 8,
+            "n_neg": 18,
+            "log_enr": -0.1517
+          }
+        ],
+        "top_en_ALL_raros": [
+          {
+            "lema": "puto",
+            "n_pos": 23,
+            "n_neg": 18,
+            "log_enr": 0.8291
+          },
+          {
+            "lema": "cllate",
+            "n_pos": 12,
+            "n_neg": 17,
+            "log_enr": 0.2701
+          },
+          {
+            "lema": "indocumentado",
+            "n_pos": 8,
+            "n_neg": 18,
+            "log_enr": -0.1517
+          },
+          {
+            "lema": "mejor",
+            "n_pos": 10,
+            "n_neg": 15,
+            "log_enr": 0.2208
+          },
+          {
+            "lema": "ilegal",
+            "n_pos": 11,
+            "n_neg": 12,
+            "log_enr": 0.5155
+          },
+          {
+            "lema": "negro",
+            "n_pos": 9,
+            "n_neg": 5,
+            "log_enr": 1.1063
+          }
+        ]
+      },
+      "NOUN": {
+        "top_enriquecidos": [
+          {
+            "lema": "zorra",
+            "n_pos": 44,
+            "n_neg": 7,
+            "log_enr": 2.3227
+          },
+          {
+            "lema": "novia",
+            "n_pos": 18,
+            "n_neg": 5,
+            "log_enr": 1.7482
+          },
+          {
+            "lema": "puto",
+            "n_pos": 9,
+            "n_neg": 3,
+            "log_enr": 1.5118
+          },
+          {
+            "lema": "guarra",
+            "n_pos": 9,
+            "n_neg": 3,
+            "log_enr": 1.5118
+          },
+          {
+            "lema": "perra",
+            "n_pos": 42,
+            "n_neg": 18,
+            "log_enr": 1.4123
+          },
+          {
+            "lema": "mantero",
+            "n_pos": 8,
+            "n_neg": 3,
+            "log_enr": 1.4064
+          },
+          {
+            "lema": "casa",
+            "n_pos": 8,
+            "n_neg": 3,
+            "log_enr": 1.4064
+          },
+          {
+            "lema": "hija",
+            "n_pos": 11,
+            "n_neg": 7,
+            "log_enr": 1.001
+          },
+          {
+            "lema": "m",
+            "n_pos": 8,
+            "n_neg": 11,
+            "log_enr": 0.3078
+          },
+          {
+            "lema": "culo",
+            "n_pos": 8,
+            "n_neg": 12,
+            "log_enr": 0.2278
+          },
+          {
+            "lema": "inmigrante",
+            "n_pos": 23,
+            "n_neg": 36,
+            "log_enr": 0.1626
+          },
+          {
+            "lema": "pas",
+            "n_pos": 8,
+            "n_neg": 13,
+            "log_enr": 0.1537
+          },
+          {
+            "lema": "mierda",
+            "n_pos": 12,
+            "n_neg": 25,
+            "log_enr": -0.0976
+          },
+          {
+            "lema": "puta",
+            "n_pos": 133,
+            "n_neg": 275,
+            "log_enr": -0.127
+          },
+          {
+            "lema": "cara",
+            "n_pos": 13,
+            "n_neg": 29,
+            "log_enr": -0.1666
+          }
+        ],
+        "top_en_ALL_raros": [
+          {
+            "lema": "puta",
+            "n_pos": 133,
+            "n_neg": 275,
+            "log_enr": -0.127
+          },
+          {
+            "lema": "mujer",
+            "n_pos": 19,
+            "n_neg": 55,
+            "log_enr": -0.4341
+          },
+          {
+            "lema": "perra",
+            "n_pos": 42,
+            "n_neg": 18,
+            "log_enr": 1.4123
+          },
+          {
+            "lema": "inmigrante",
+            "n_pos": 23,
+            "n_neg": 36,
+            "log_enr": 0.1626
+          },
+          {
+            "lema": "zorra",
+            "n_pos": 44,
+            "n_neg": 7,
+            "log_enr": 2.3227
+          },
+          {
+            "lema": "cara",
+            "n_pos": 13,
+            "n_neg": 29,
+            "log_enr": -0.1666
+          },
+          {
+            "lema": "mierda",
+            "n_pos": 12,
+            "n_neg": 25,
+            "log_enr": -0.0976
+          },
+          {
+            "lema": "q",
+            "n_pos": 9,
+            "n_neg": 23,
+            "log_enr": -0.28
+          },
+          {
+            "lema": "novia",
+            "n_pos": 18,
+            "n_neg": 5,
+            "log_enr": 1.7482
+          },
+          {
+            "lema": "pas",
+            "n_pos": 8,
+            "n_neg": 13,
+            "log_enr": 0.1537
+          },
+          {
+            "lema": "culo",
+            "n_pos": 8,
+            "n_neg": 12,
+            "log_enr": 0.2278
+          },
+          {
+            "lema": "m",
+            "n_pos": 8,
+            "n_neg": 11,
+            "log_enr": 0.3078
+          },
+          {
+            "lema": "hija",
+            "n_pos": 11,
+            "n_neg": 7,
+            "log_enr": 1.001
+          },
+          {
+            "lema": "puto",
+            "n_pos": 9,
+            "n_neg": 3,
+            "log_enr": 1.5118
+          },
+          {
+            "lema": "guarra",
+            "n_pos": 9,
+            "n_neg": 3,
+            "log_enr": 1.5118
+          }
+        ]
+      },
+      "PROPN": {
+        "top_enriquecidos": [
+          {
+            "lema": "zorra",
+            "n_pos": 39,
+            "n_neg": 7,
+            "log_enr": 2.2049
+          },
+          {
+            "lema": "cllate",
+            "n_pos": 61,
+            "n_neg": 14,
+            "log_enr": 2.0146
+          },
+          {
+            "lema": "perra",
+            "n_pos": 113,
+            "n_neg": 31,
+            "log_enr": 1.866
+          },
+          {
+            "lema": "pinche",
+            "n_pos": 11,
+            "n_neg": 5,
+            "log_enr": 1.2887
+          },
+          {
+            "lema": "tu",
+            "n_pos": 33,
+            "n_neg": 18,
+            "log_enr": 1.1774
+          },
+          {
+            "lema": "guarra",
+            "n_pos": 9,
+            "n_neg": 5,
+            "log_enr": 1.1063
+          },
+          {
+            "lema": "puta",
+            "n_pos": 29,
+            "n_neg": 17,
+            "log_enr": 1.1063
+          },
+          {
+            "lema": "eres",
+            "n_pos": 13,
+            "n_neg": 10,
+            "log_enr": 0.8367
+          },
+          {
+            "lema": "callate",
+            "n_pos": 72,
+            "n_neg": 58,
+            "log_enr": 0.8084
+          },
+          {
+            "lema": "t",
+            "n_pos": 21,
+            "n_neg": 17,
+            "log_enr": 0.7962
+          },
+          {
+            "lema": "mierda",
+            "n_pos": 10,
+            "n_neg": 10,
+            "log_enr": 0.5955
+          },
+          {
+            "lema": "d",
+            "n_pos": 8,
+            "n_neg": 8,
+            "log_enr": 0.5955
+          },
+          {
+            "lema": "vos",
+            "n_pos": 10,
+            "n_neg": 12,
+            "log_enr": 0.4285
+          },
+          {
+            "lema": "espaa",
+            "n_pos": 14,
+            "n_neg": 19,
+            "log_enr": 0.3078
+          },
+          {
+            "lema": "q",
+            "n_pos": 9,
+            "n_neg": 22,
+            "log_enr": -0.2374
+          }
+        ],
+        "top_en_ALL_raros": [
+          {
+            "lema": "perra",
+            "n_pos": 113,
+            "n_neg": 31,
+            "log_enr": 1.866
+          },
+          {
+            "lema": "callate",
+            "n_pos": 72,
+            "n_neg": 58,
+            "log_enr": 0.8084
+          },
+          {
+            "lema": "cllate",
+            "n_pos": 61,
+            "n_neg": 14,
+            "log_enr": 2.0146
+          },
+          {
+            "lema": "tu",
+            "n_pos": 33,
+            "n_neg": 18,
+            "log_enr": 1.1774
+          },
+          {
+            "lema": "zorra",
+            "n_pos": 39,
+            "n_neg": 7,
+            "log_enr": 2.2049
+          },
+          {
+            "lema": "puta",
+            "n_pos": 29,
+            "n_neg": 17,
+            "log_enr": 1.1063
+          },
+          {
+            "lema": "t",
+            "n_pos": 21,
+            "n_neg": 17,
+            "log_enr": 0.7962
+          },
+          {
+            "lema": "espaa",
+            "n_pos": 14,
+            "n_neg": 19,
+            "log_enr": 0.3078
+          },
+          {
+            "lema": "q",
+            "n_pos": 9,
+            "n_neg": 22,
+            "log_enr": -0.2374
+          },
+          {
+            "lema": "eres",
+            "n_pos": 13,
+            "n_neg": 10,
+            "log_enr": 0.8367
+          },
+          {
+            "lema": "vos",
+            "n_pos": 10,
+            "n_neg": 12,
+            "log_enr": 0.4285
+          },
+          {
+            "lema": "mierda",
+            "n_pos": 10,
+            "n_neg": 10,
+            "log_enr": 0.5955
+          },
+          {
+            "lema": "pinche",
+            "n_pos": 11,
+            "n_neg": 5,
+            "log_enr": 1.2887
+          },
+          {
+            "lema": "d",
+            "n_pos": 8,
+            "n_neg": 8,
+            "log_enr": 0.5955
+          },
+          {
+            "lema": "guarra",
+            "n_pos": 9,
+            "n_neg": 5,
+            "log_enr": 1.1063
+          }
+        ]
+      }
+    }
+  },
+  "frecuencia_versus_enriquecimiento": {
+    "correlacion": -0.057191,
+    "n_soporte": 71,
+    "suposicion_que_se_rechaza": "frecuencia alta equivale a senal discriminativa; la correlacion medida es la que la pone a prueba"
+  },
+  "perfil_pronominal": {
+    "HS": {
+      "primera_singular": {
+        "media": 0.0203,
+        "mediana": 0.0,
+        "proporcion_con_alguno": 0.213
+      },
+      "segunda": {
+        "media": 0.0394,
+        "mediana": 0.0,
+        "proporcion_con_alguno": 0.3673
+      },
+      "tercera": {
+        "media": 0.0443,
+        "mediana": 0.0,
+        "proporcion_con_alguno": 0.4738
+      },
+      "primera_plural": {
+        "media": 0.0021,
+        "mediana": 0.0,
+        "proporcion_con_alguno": 0.0309
+      }
+    },
+    "TR": {
+      "primera_singular": {
+        "media": 0.0258,
+        "mediana": 0.0,
+        "proporcion_con_alguno": 0.2494
+      },
+      "segunda": {
+        "media": 0.0529,
+        "mediana": 0.0,
+        "proporcion_con_alguno": 0.4427
+      },
+      "tercera": {
+        "media": 0.0405,
+        "mediana": 0.0,
+        "proporcion_con_alguno": 0.4135
+      },
+      "primera_plural": {
+        "media": 0.0013,
+        "mediana": 0.0,
+        "proporcion_con_alguno": 0.0112
+      }
+    },
+    "AG": {
+      "primera_singular": {
+        "media": 0.0213,
+        "mediana": 0.0,
+        "proporcion_con_alguno": 0.224
+      },
+      "segunda": {
+        "media": 0.0424,
+        "mediana": 0.0,
+        "proporcion_con_alguno": 0.3845
+      },
+      "tercera": {
+        "media": 0.044,
+        "mediana": 0.0,
+        "proporcion_con_alguno": 0.4656
+      },
+      "primera_plural": {
+        "media": 0.0021,
+        "mediana": 0.0,
+        "proporcion_con_alguno": 0.0317
+      }
+    }
+  },
+  "funcionales": {
+    "negadores": {
+      "HS": 0.0168,
+      "TR": 0.0164,
+      "AG": 0.0159
+    },
+    "modales": {
+      "HS": 0.0027,
+      "TR": 0.0024,
+      "AG": 0.0025
+    },
+    "discursivos": {
+      "HS": 0.0481,
+      "TR": 0.0469,
+      "AG": 0.0465
+    },
+    "determinantes": {
+      "HS": 0.0892,
+      "TR": 0.0847,
+      "AG": 0.0839
+    },
+    "preposiciones": {
+      "HS": 0.0692,
+      "TR": 0.0497,
+      "AG": 0.064
+    },
+    "conjunciones": {
+      "HS": 0.0618,
+      "TR": 0.0594,
+      "AG": 0.06
+    }
+  },
+  "estructura_clausula": {
+    "n_oraciones": {
+      "HS": 1.6389,
+      "TR": 1.4966,
+      "AG": 1.5926
+    },
+    "n_tokens": {
+      "HS": 17.7253,
+      "TR": 14.2674,
+      "AG": 17.6102
+    },
+    "coordina": {
+      "HS": 0.5293,
+      "TR": 0.4,
+      "AG": 0.4991
+    },
+    "subordina": {
+      "HS": 1.2515,
+      "TR": 1.0202,
+      "AG": 1.2081
+    },
+    "imperativo": {
+      "HS": 0.7114,
+      "TR": 0.573,
+      "AG": 0.6949
+    }
+  },
+  "pregunta_central_seccion_24": {
+    "solo_palabra": 0.377334,
+    "solo_categoria": 0.009517,
+    "palabra_mas_categoria": 0.452548,
+    "sinergia_por_etiqueta": {
+      "HS": 0.023999,
+      "TR": 0.106748,
+      "AG": 0.066344
+    },
+    "sinergia": 0.065697,
+    "sinergia_sobre_palabra": 0.174108,
+    "palabra_por_tweet": 0.154932
+  },
+  "perfiles_y_error_v03": [
+    {
+      "perfil": "adj_rico",
+      "etiqueta": "HS",
+      "regimen": "rico",
+      "n": 169,
+      "V03_F1": 0.873333,
+      "V03_error_rate": 0.224852,
+      "high_conf_error_rate": 0.142012,
+      "V03_prob_media": 0.651032,
+      "delta_F1_rico_menos_pobre": -0.02901100000000001
+    },
+    {
+      "perfil": "adj_rico",
+      "etiqueta": "HS",
+      "regimen": "pobre",
+      "n": 281,
+      "V03_F1": 0.902344,
+      "V03_error_rate": 0.177936,
+      "high_conf_error_rate": 0.096085,
+      "V03_prob_media": 0.713316,
+      "delta_F1_rico_menos_pobre": -0.02901100000000001
+    },
+    {
+      "perfil": "adj_rico",
+      "etiqueta": "TR",
+      "regimen": "rico",
+      "n": 121,
+      "V03_F1": 0.884793,
+      "V03_error_rate": 0.206612,
+      "high_conf_error_rate": 0.140496,
+      "V03_prob_media": 0.7289,
+      "delta_F1_rico_menos_pobre": -0.04983199999999999
+    },
+    {
+      "perfil": "adj_rico",
+      "etiqueta": "TR",
+      "regimen": "pobre",
+      "n": 220,
+      "V03_F1": 0.934625,
+      "V03_error_rate": 0.122727,
+      "high_conf_error_rate": 0.081818,
+      "V03_prob_media": 0.798595,
+      "delta_F1_rico_menos_pobre": -0.04983199999999999
+    },
+    {
+      "perfil": "adj_rico",
+      "etiqueta": "AG",
+      "regimen": "rico",
+      "n": 146,
+      "V03_F1": 0.854902,
+      "V03_error_rate": 0.253425,
+      "high_conf_error_rate": 0.150685,
+      "V03_prob_media": 0.658733,
+      "delta_F1_rico_menos_pobre": -0.05258699999999994
+    },
+    {
+      "perfil": "adj_rico",
+      "etiqueta": "AG",
+      "regimen": "pobre",
+      "n": 248,
+      "V03_F1": 0.907489,
+      "V03_error_rate": 0.169355,
+      "high_conf_error_rate": 0.096774,
+      "V03_prob_media": 0.725093,
+      "delta_F1_rico_menos_pobre": -0.05258699999999994
+    },
+    {
+      "perfil": "clausula_simple",
+      "etiqueta": "HS",
+      "regimen": "rico",
+      "n": 166,
+      "V03_F1": 0.822695,
+      "V03_error_rate": 0.301205,
+      "high_conf_error_rate": 0.156627,
+      "V03_prob_media": 0.563736,
+      "delta_F1_rico_menos_pobre": -0.09977000000000003
+    },
+    {
+      "perfil": "clausula_simple",
+      "etiqueta": "HS",
+      "regimen": "pobre",
+      "n": 271,
+      "V03_F1": 0.922465,
+      "V03_error_rate": 0.143911,
+      "high_conf_error_rate": 0.088561,
+      "V03_prob_media": 0.7311,
+      "delta_F1_rico_menos_pobre": -0.09977000000000003
+    },
+    {
+      "perfil": "clausula_simple",
+      "etiqueta": "TR",
+      "regimen": "rico",
+      "n": 77,
+      "V03_F1": 0.758065,
+      "V03_error_rate": 0.38961,
+      "high_conf_error_rate": 0.285714,
+      "V03_prob_media": 0.571346,
+      "delta_F1_rico_menos_pobre": -0.18906100000000003
+    },
+    {
+      "perfil": "clausula_simple",
+      "etiqueta": "TR",
+      "regimen": "pobre",
+      "n": 229,
+      "V03_F1": 0.947126,
+      "V03_error_rate": 0.100437,
+      "high_conf_error_rate": 0.056769,
+      "V03_prob_media": 0.810778,
+      "delta_F1_rico_menos_pobre": -0.18906100000000003
+    },
+    {
+      "perfil": "clausula_simple",
+      "etiqueta": "AG",
+      "regimen": "rico",
+      "n": 129,
+      "V03_F1": 0.753623,
+      "V03_error_rate": 0.395349,
+      "high_conf_error_rate": 0.248062,
+      "V03_prob_media": 0.538121,
+      "delta_F1_rico_menos_pobre": -0.15969599999999995
+    },
+    {
+      "perfil": "clausula_simple",
+      "etiqueta": "AG",
+      "regimen": "pobre",
+      "n": 257,
+      "V03_F1": 0.913319,
+      "V03_error_rate": 0.159533,
+      "high_conf_error_rate": 0.097276,
+      "V03_prob_media": 0.727052,
+      "delta_F1_rico_menos_pobre": -0.15969599999999995
+    },
+    {
+      "perfil": "dependency_rico",
+      "etiqueta": "HS",
+      "regimen": "rico",
+      "n": 209,
+      "V03_F1": 0.949749,
+      "V03_error_rate": 0.095694,
+      "high_conf_error_rate": 0.033493,
+      "V03_prob_media": 0.772478,
+      "delta_F1_rico_menos_pobre": 0.10698199999999991
+    },
+    {
+      "perfil": "dependency_rico",
+      "etiqueta": "HS",
+      "regimen": "pobre",
+      "n": 184,
+      "V03_F1": 0.842767,
+      "V03_error_rate": 0.271739,
+      "high_conf_error_rate": 0.152174,
+      "V03_prob_media": 0.622837,
+      "delta_F1_rico_menos_pobre": 0.10698199999999991
+    },
+    {
+      "perfil": "dependency_rico",
+      "etiqueta": "TR",
+      "regimen": "rico",
+      "n": 184,
+      "V03_F1": 0.936416,
+      "V03_error_rate": 0.119565,
+      "high_conf_error_rate": 0.070652,
+      "V03_prob_media": 0.823074,
+      "delta_F1_rico_menos_pobre": 0.04971599999999998
+    },
+    {
+      "perfil": "dependency_rico",
+      "etiqueta": "TR",
+      "regimen": "pobre",
+      "n": 113,
+      "V03_F1": 0.8867,
+      "V03_error_rate": 0.20354,
+      "high_conf_error_rate": 0.150442,
+      "V03_prob_media": 0.710418,
+      "delta_F1_rico_menos_pobre": 0.04971599999999998
+    },
+    {
+      "perfil": "dependency_rico",
+      "etiqueta": "AG",
+      "regimen": "rico",
+      "n": 195,
+      "V03_F1": 0.943089,
+      "V03_error_rate": 0.107692,
+      "high_conf_error_rate": 0.046154,
+      "V03_prob_media": 0.790263,
+      "delta_F1_rico_menos_pobre": 0.10911199999999999
+    },
+    {
+      "perfil": "dependency_rico",
+      "etiqueta": "AG",
+      "regimen": "pobre",
+      "n": 151,
+      "V03_F1": 0.833977,
+      "V03_error_rate": 0.284768,
+      "high_conf_error_rate": 0.192053,
+      "V03_prob_media": 0.620068,
+      "delta_F1_rico_menos_pobre": 0.10911199999999999
+    },
+    {
+      "perfil": "discourse_rico",
+      "etiqueta": "HS",
+      "regimen": "rico",
+      "n": 183,
+      "V03_F1": 0.900901,
+      "V03_error_rate": 0.180328,
+      "high_conf_error_rate": 0.10929,
+      "V03_prob_media": 0.664201,
+      "delta_F1_rico_menos_pobre": 0.0016199999999999548
+    },
+    {
+      "perfil": "discourse_rico",
+      "etiqueta": "HS",
+      "regimen": "pobre",
+      "n": 306,
+      "V03_F1": 0.899281,
+      "V03_error_rate": 0.183007,
+      "high_conf_error_rate": 0.101307,
+      "V03_prob_media": 0.708138,
+      "delta_F1_rico_menos_pobre": 0.0016199999999999548
+    },
+    {
+      "perfil": "discourse_rico",
+      "etiqueta": "TR",
+      "regimen": "rico",
+      "n": 132,
+      "V03_F1": 0.886076,
+      "V03_error_rate": 0.204545,
+      "high_conf_error_rate": 0.143939,
+      "V03_prob_media": 0.722699,
+      "delta_F1_rico_menos_pobre": -0.05114400000000008
+    },
+    {
+      "perfil": "discourse_rico",
+      "etiqueta": "TR",
+      "regimen": "pobre",
+      "n": 237,
+      "V03_F1": 0.93722,
+      "V03_error_rate": 0.118143,
+      "high_conf_error_rate": 0.067511,
+      "V03_prob_media": 0.799585,
+      "delta_F1_rico_menos_pobre": -0.05114400000000008
+    },
+    {
+      "perfil": "discourse_rico",
+      "etiqueta": "AG",
+      "regimen": "rico",
+      "n": 158,
+      "V03_F1": 0.871429,
+      "V03_error_rate": 0.227848,
+      "high_conf_error_rate": 0.139241,
+      "V03_prob_media": 0.659442,
+      "delta_F1_rico_menos_pobre": -0.028571000000000013
+    },
+    {
+      "perfil": "discourse_rico",
+      "etiqueta": "AG",
+      "regimen": "pobre",
+      "n": 275,
+      "V03_F1": 0.9,
+      "V03_error_rate": 0.181818,
+      "high_conf_error_rate": 0.105455,
+      "V03_prob_media": 0.719534,
+      "delta_F1_rico_menos_pobre": -0.028571000000000013
+    },
+    {
+      "perfil": "estructura_corta",
+      "etiqueta": "HS",
+      "regimen": "rico",
+      "n": 157,
+      "V03_F1": 0.787645,
+      "V03_error_rate": 0.350318,
+      "high_conf_error_rate": 0.197452,
+      "V03_prob_media": 0.527558,
+      "delta_F1_rico_menos_pobre": -0.16302799999999995
+    },
+    {
+      "perfil": "estructura_corta",
+      "etiqueta": "HS",
+      "regimen": "pobre",
+      "n": 234,
+      "V03_F1": 0.950673,
+      "V03_error_rate": 0.094017,
+      "high_conf_error_rate": 0.038462,
+      "V03_prob_media": 0.794693,
+      "delta_F1_rico_menos_pobre": -0.16302799999999995
+    },
+    {
+      "perfil": "estructura_corta",
+      "etiqueta": "TR",
+      "regimen": "rico",
+      "n": 60,
+      "V03_F1": 0.681319,
+      "V03_error_rate": 0.483333,
+      "high_conf_error_rate": 0.416667,
+      "V03_prob_media": 0.495507,
+      "delta_F1_rico_menos_pobre": -0.286423
+    },
+    {
+      "perfil": "estructura_corta",
+      "etiqueta": "TR",
+      "regimen": "pobre",
+      "n": 208,
+      "V03_F1": 0.967742,
+      "V03_error_rate": 0.0625,
+      "high_conf_error_rate": 0.043269,
+      "V03_prob_media": 0.861547,
+      "delta_F1_rico_menos_pobre": -0.286423
+    },
+    {
+      "perfil": "estructura_corta",
+      "etiqueta": "AG",
+      "regimen": "rico",
+      "n": 138,
+      "V03_F1": 0.704225,
+      "V03_error_rate": 0.456522,
+      "high_conf_error_rate": 0.289855,
+      "V03_prob_media": 0.49502,
+      "delta_F1_rico_menos_pobre": -0.24954600000000005
+    },
+    {
+      "perfil": "estructura_corta",
+      "etiqueta": "AG",
+      "regimen": "pobre",
+      "n": 215,
+      "V03_F1": 0.953771,
+      "V03_error_rate": 0.088372,
+      "high_conf_error_rate": 0.046512,
+      "V03_prob_media": 0.809131,
+      "delta_F1_rico_menos_pobre": -0.24954600000000005
+    },
+    {
+      "perfil": "negation_rico",
+      "etiqueta": "HS",
+      "regimen": "rico",
+      "n": 150,
+      "V03_F1": 0.828125,
+      "V03_error_rate": 0.293333,
+      "high_conf_error_rate": 0.18,
+      "V03_prob_media": 0.571603,
+      "delta_F1_rico_menos_pobre": -0.06477200000000005
+    },
+    {
+      "perfil": "negation_rico",
+      "etiqueta": "HS",
+      "regimen": "pobre",
+      "n": 491,
+      "V03_F1": 0.892897,
+      "V03_error_rate": 0.193483,
+      "high_conf_error_rate": 0.093686,
+      "V03_prob_media": 0.685851,
+      "delta_F1_rico_menos_pobre": -0.06477200000000005
+    },
+    {
+      "perfil": "negation_rico",
+      "etiqueta": "TR",
+      "regimen": "rico",
+      "n": 94,
+      "V03_F1": 0.779221,
+      "V03_error_rate": 0.361702,
+      "high_conf_error_rate": 0.191489,
+      "V03_prob_media": 0.609025,
+      "delta_F1_rico_menos_pobre": -0.14880399999999994
+    },
+    {
+      "perfil": "negation_rico",
+      "etiqueta": "TR",
+      "regimen": "pobre",
+      "n": 350,
+      "V03_F1": 0.928025,
+      "V03_error_rate": 0.134286,
+      "high_conf_error_rate": 0.108571,
+      "V03_prob_media": 0.773506,
+      "delta_F1_rico_menos_pobre": -0.14880399999999994
+    },
+    {
+      "perfil": "negation_rico",
+      "etiqueta": "AG",
+      "regimen": "rico",
+      "n": 125,
+      "V03_F1": 0.780488,
+      "V03_error_rate": 0.36,
+      "high_conf_error_rate": 0.192,
+      "V03_prob_media": 0.550353,
+      "delta_F1_rico_menos_pobre": -0.09868900000000003
+    },
+    {
+      "perfil": "negation_rico",
+      "etiqueta": "AG",
+      "regimen": "pobre",
+      "n": 436,
+      "V03_F1": 0.879177,
+      "V03_error_rate": 0.215596,
+      "high_conf_error_rate": 0.142202,
+      "V03_prob_media": 0.686686,
+      "delta_F1_rico_menos_pobre": -0.09868900000000003
+    },
+    {
+      "perfil": "noun_rico",
+      "etiqueta": "HS",
+      "regimen": "rico",
+      "n": 209,
+      "V03_F1": 0.933673,
+      "V03_error_rate": 0.124402,
+      "high_conf_error_rate": 0.066986,
+      "V03_prob_media": 0.760488,
+      "delta_F1_rico_menos_pobre": 0.08121400000000001
+    },
+    {
+      "perfil": "noun_rico",
+      "etiqueta": "HS",
+      "regimen": "pobre",
+      "n": 175,
+      "V03_F1": 0.852459,
+      "V03_error_rate": 0.257143,
+      "high_conf_error_rate": 0.16,
+      "V03_prob_media": 0.619426,
+      "delta_F1_rico_menos_pobre": 0.08121400000000001
+    },
+    {
+      "perfil": "noun_rico",
+      "etiqueta": "TR",
+      "regimen": "rico",
+      "n": 185,
+      "V03_F1": 0.960674,
+      "V03_error_rate": 0.075676,
+      "high_conf_error_rate": 0.043243,
+      "V03_prob_media": 0.828276,
+      "delta_F1_rico_menos_pobre": 0.07646300000000006
+    },
+    {
+      "perfil": "noun_rico",
+      "etiqueta": "TR",
+      "regimen": "pobre",
+      "n": 106,
+      "V03_F1": 0.884211,
+      "V03_error_rate": 0.207547,
+      "high_conf_error_rate": 0.150943,
+      "V03_prob_media": 0.708155,
+      "delta_F1_rico_menos_pobre": 0.07646300000000006
+    },
+    {
+      "perfil": "noun_rico",
+      "etiqueta": "AG",
+      "regimen": "rico",
+      "n": 202,
+      "V03_F1": 0.936842,
+      "V03_error_rate": 0.118812,
+      "high_conf_error_rate": 0.069307,
+      "V03_prob_media": 0.763818,
+      "delta_F1_rico_menos_pobre": 0.12328299999999992
+    },
+    {
+      "perfil": "noun_rico",
+      "etiqueta": "AG",
+      "regimen": "pobre",
+      "n": 140,
+      "V03_F1": 0.813559,
+      "V03_error_rate": 0.314286,
+      "high_conf_error_rate": 0.214286,
+      "V03_prob_media": 0.614128,
+      "delta_F1_rico_menos_pobre": 0.12328299999999992
+    },
+    {
+      "perfil": "pronoun_rico",
+      "etiqueta": "HS",
+      "regimen": "rico",
+      "n": 164,
+      "V03_F1": 0.891892,
+      "V03_error_rate": 0.195122,
+      "high_conf_error_rate": 0.097561,
+      "V03_prob_media": 0.680534,
+      "delta_F1_rico_menos_pobre": -0.015270000000000006
+    },
+    {
+      "perfil": "pronoun_rico",
+      "etiqueta": "HS",
+      "regimen": "pobre",
+      "n": 206,
+      "V03_F1": 0.907162,
+      "V03_error_rate": 0.169903,
+      "high_conf_error_rate": 0.067961,
+      "V03_prob_media": 0.725008,
+      "delta_F1_rico_menos_pobre": -0.015270000000000006
+    },
+    {
+      "perfil": "pronoun_rico",
+      "etiqueta": "TR",
+      "regimen": "rico",
+      "n": 147,
+      "V03_F1": 0.919118,
+      "V03_error_rate": 0.14966,
+      "high_conf_error_rate": 0.095238,
+      "V03_prob_media": 0.762112,
+      "delta_F1_rico_menos_pobre": -0.028642999999999974
+    },
+    {
+      "perfil": "pronoun_rico",
+      "etiqueta": "TR",
+      "regimen": "pobre",
+      "n": 141,
+      "V03_F1": 0.947761,
+      "V03_error_rate": 0.099291,
+      "high_conf_error_rate": 0.070922,
+      "V03_prob_media": 0.834324,
+      "delta_F1_rico_menos_pobre": -0.028642999999999974
+    },
+    {
+      "perfil": "pronoun_rico",
+      "etiqueta": "AG",
+      "regimen": "rico",
+      "n": 152,
+      "V03_F1": 0.910394,
+      "V03_error_rate": 0.164474,
+      "high_conf_error_rate": 0.072368,
+      "V03_prob_media": 0.700071,
+      "delta_F1_rico_menos_pobre": 0.034995
+    },
+    {
+      "perfil": "pronoun_rico",
+      "etiqueta": "AG",
+      "regimen": "pobre",
+      "n": 176,
+      "V03_F1": 0.875399,
+      "V03_error_rate": 0.221591,
+      "high_conf_error_rate": 0.142045,
+      "V03_prob_media": 0.73028,
+      "delta_F1_rico_menos_pobre": 0.034995
+    },
+    {
+      "perfil": "verb_rico",
+      "etiqueta": "HS",
+      "regimen": "rico",
+      "n": 183,
+      "V03_F1": 0.87037,
+      "V03_error_rate": 0.229508,
+      "high_conf_error_rate": 0.131148,
+      "V03_prob_media": 0.640627,
+      "delta_F1_rico_menos_pobre": -0.07142900000000008
+    },
+    {
+      "perfil": "verb_rico",
+      "etiqueta": "HS",
+      "regimen": "pobre",
+      "n": 200,
+      "V03_F1": 0.941799,
+      "V03_error_rate": 0.11,
+      "high_conf_error_rate": 0.055,
+      "V03_prob_media": 0.761954,
+      "delta_F1_rico_menos_pobre": -0.07142900000000008
+    },
+    {
+      "perfil": "verb_rico",
+      "etiqueta": "TR",
+      "regimen": "rico",
+      "n": 128,
+      "V03_F1": 0.867257,
+      "V03_error_rate": 0.234375,
+      "high_conf_error_rate": 0.140625,
+      "V03_prob_media": 0.711658,
+      "delta_F1_rico_menos_pobre": -0.09452600000000011
+    },
+    {
+      "perfil": "verb_rico",
+      "etiqueta": "TR",
+      "regimen": "pobre",
+      "n": 163,
+      "V03_F1": 0.961783,
+      "V03_error_rate": 0.07362,
+      "high_conf_error_rate": 0.042945,
+      "V03_prob_media": 0.84853,
+      "delta_F1_rico_menos_pobre": -0.09452600000000011
+    },
+    {
+      "perfil": "verb_rico",
+      "etiqueta": "AG",
+      "regimen": "rico",
+      "n": 163,
+      "V03_F1": 0.85614,
+      "V03_error_rate": 0.251534,
+      "high_conf_error_rate": 0.171779,
+      "V03_prob_media": 0.63921,
+      "delta_F1_rico_menos_pobre": -0.09341500000000003
+    },
+    {
+      "perfil": "verb_rico",
+      "etiqueta": "AG",
+      "regimen": "pobre",
+      "n": 177,
+      "V03_F1": 0.949555,
+      "V03_error_rate": 0.096045,
+      "high_conf_error_rate": 0.056497,
+      "V03_prob_media": 0.780092,
+      "delta_F1_rico_menos_pobre": -0.09341500000000003
+    }
+  ],
+  "artefacto_anotacion": "features/p62_anotacion_spacy.json.gz",
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

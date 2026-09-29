@@ -1,0 +1,36 @@
+{
+  "familia": "P62_FINAL",
+  "fecha": "2026-09-29T05:24:55+00:00",
+  "pregunta": "V03 falla porque le falta informacion textual, o porque word+char no expresa la estructura linguistica con la que las palabras se combinan",
+  "respuesta": "la synergy palabra-POS es real y medible, 17.41 por ciento de la senal de la palabra, pero anadirla como canal cuesta mas de lo que repara; y V03 falla mas cuanto mas corto es el tweet, que es un techo de informacion y no un defecto de la representacion",
+  "experimentos": 2,
+  "presupuesto": 8,
+  "reservas_gastadas": 0,
+  "pistas_cerradas_sin_experimento": [
+    "N secuencias POS",
+    "P contraste estructural",
+    "O composicion lexica, por condicion no cumplida"
+  ],
+  "lectura_en_tres_partes": {
+    "L": {
+      "coste_de_anadir_un_bloque": 0.0115854689,
+      "valor_de_la_estructura_linguistica": 0.0020137043,
+      "fraccion_repagada": 0.173813,
+      "saldo": -0.0095717646
+    },
+    "M": {
+      "coste_de_anadir_un_bloque": 0.0004432824,
+      "valor_de_la_estructura_lexica": -0.0107929661,
+      "fraccion_repagada": -24.347831,
+      "saldo": -0.0112362485
+    }
+  },
+  "regla_general": "en un espacio disperso grande con pocos datos, anadir un canal categorial se paga con mas de lo que la categoria repara, y la parte que se paga es medible y separable del contenido",
+  "hallazgo_de_instrumentacion": "un control por reetiquetacion es un no-op demostrable, porque permutar columnas es simetria del modelo lineal regularizado",
+  "submissions": 0,
+  "kaggle": 0,
+  "holdout": 0,
+  "test": 0,
+  "criterio_de_cierre_cumplido": true,
+  "formulacion": "V03 remains the best verified leaderboard result."
+}
