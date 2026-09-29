@@ -1,0 +1,6 @@
+categoria,n_filas,porcentaje_del_total,longitud_media_texto,longitud_mediana_texto
+NO_URL,101261,59.7989,86.96,87.0
+SHORTENER_URL,66554,39.3029,93.94,99.0
+TRUNCATED_DOMAIN,1311,0.7742,138.27,139.0
+EXTERNAL_DOMAIN_URL,208,0.1228,91.87,91.5
+TWITTER_URL,2,0.0012,75.0,75.0

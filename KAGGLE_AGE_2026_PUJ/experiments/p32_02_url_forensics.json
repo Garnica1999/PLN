@@ -1,0 +1,111 @@
+{
+  "fase": "P32+ 02 P02 forensics de URL",
+  "fecha": "2026-10-01",
+  "experimenta": false,
+  "baseline_v30": 0.6134471,
+  "metodo": "taxonomia determinista por regex sobre `text`; **ninguna etiqueta** interviene en la construccion de las categorias. Los cortes por clase llegan despues y son diagnostico, no definicion",
+  "inventario": {
+    "total_rows": 169336,
+    "rows_with_url": 68075,
+    "rows_without_url": 101261,
+    "url_rate": 0.402011,
+    "rows_with_only_url": 4022,
+    "rows_with_text_plus_url": 64053,
+    "rows_with_multiple_urls": 5388,
+    "rows_with_twitter_or_x_url": 2,
+    "rows_with_external_url": 210,
+    "rows_with_shortened_url": 66559,
+    "rows_with_truncated_domain": 1689,
+    "rows_with_twitter_status_url": 0,
+    "rows_url_at_beginning": 4631,
+    "rows_url_at_end": 5656,
+    "rows_url_in_middle": 57790,
+    "rows_text_before_and_after_url": 0,
+    "dominios_distintos": 80,
+    "url_chars_total": 1623720,
+    "frac_media_ocupada_por_url": 0.13107,
+    "pos_media_primera_url": 0.645971,
+    "pos_media_ultima_url": 0.664371,
+    "distancia_media_entre_urls_multiples": 0.232473,
+    "categorias": {
+      "NO_URL": 101261,
+      "SHORTENER_URL": 66554,
+      "TRUNCATED_DOMAIN": 1311,
+      "EXTERNAL_DOMAIN_URL": 208,
+      "TWITTER_URL": 2
+    },
+    "longitud_por_categoria": {
+      "EXTERNAL_DOMAIN_URL": 91.87,
+      "NO_URL": 86.96,
+      "SHORTENER_URL": 93.94,
+      "TRUNCATED_DOMAIN": 138.27,
+      "TWITTER_URL": 75.0
+    },
+    "longitud_mediana_por_categoria": {
+      "EXTERNAL_DOMAIN_URL": 91.5,
+      "NO_URL": 87.0,
+      "SHORTENER_URL": 99.0,
+      "TRUNCATED_DOMAIN": 139.0,
+      "TWITTER_URL": 75.0
+    },
+    "n_por_categoria": {
+      "EXTERNAL_DOMAIN_URL": 208,
+      "NO_URL": 101261,
+      "SHORTENER_URL": 66554,
+      "TRUNCATED_DOMAIN": 1311,
+      "TWITTER_URL": 2
+    },
+    "url_rate_por_clase": {
+      "13-17": 0.334373,
+      "18-24": 0.299484,
+      "25-34": 0.38124,
+      "35-49": 0.454516,
+      "50-64": 0.44943,
+      "65-xx": 0.500258
+    },
+    "n_por_clase": {
+      "13-17": 28863,
+      "18-24": 28676,
+      "25-34": 28347,
+      "35-49": 28230,
+      "50-64": 28060,
+      "65-xx": 27160
+    },
+    "solo_url_por_clase": {
+      "13-17": 0.015833,
+      "18-24": 0.018726,
+      "25-34": 0.016474,
+      "35-49": 0.023804,
+      "50-64": 0.031682,
+      "65-xx": 0.036819
+    },
+    "diagnostico_solo_tras_la_taxonomia": "la taxonomia se construyo sin usar ninguna etiqueta; estas cifras por clase son el primer uso de labels y llegan despues, para diagnostico, nunca para definir categorias"
+  },
+  "legality": {
+    "hipotesis": "P2.8: recuperar el texto del recurso al que apunta una URL presente en la fila",
+    "estado": "QUARANTINED",
+    "clasificacion": "AMBIGUOUS",
+    "reglas_disponibles": false,
+    "hallazgos": {
+      "reglas_locales_de_AGE": [],
+      "api_kaggle_accesible": false,
+      "motivo_api": "la API de Kaggle rechaza la llamada por autenticacion",
+      "reglas_de_otra_competicion": {
+        "ruta": "kaggle_toxic_2026_puj/docs/competition_rules.md",
+        "describe_otra_competicion": true,
+        "nota": "el fichero se titula 'Reglas oficiales de la competencia' pero su contenido es de la competicion de toxicidad (HS, TR, AG), no de edad. **No se usa como fuente de reglas de AGE**: hacerlo daria por cubierto un requisito que no lo esta"
+      }
+    },
+    "decision": "QUARANTINED sin excepcion, tal como manda el brief para el caso ambiguo. No se hace ninguna peticion HTTP, no se recupera contenido, y ningun candidato que dependa de contenido recuperado puede llegar a una submission. Esto cierra de una vez P2.8, P2.9, P2.10, P12 y H-P32-10",
+    "como_se_levanta": "que el organizador confirme por escrito si la recuperacion del contenido de una URL propia esta permitida y que no se combina con metadatos. Sin ese texto, la clasificacion no puede pasar de AMBIGUOUS",
+    "lo_que_sigue_abierto": "P2.5, P2.6 y P2.7 siguen siendo legales y ejecutables: usan **solo** el texto que ya esta en el dataset, sin descargar nada. Es la unica via de la URL que esta permitida con lo que se sabe"
+  },
+  "restricciones": {
+    "usa_test": false,
+    "usa_red": false,
+    "llamadas_http": 0,
+    "recupera_contenido": false,
+    "usa_metadata": false
+  },
+  "segundos": 3.3
+}
