@@ -1,7 +1,7 @@
 {
   "familia": "P67_RECONCILIACION",
   "naturaleza": "AUDITORIA. 0 fusiones, 0 modelos, 0 artefactos nuevos",
-  "fecha": "2026-09-29T16:26:25+00:00",
+  "fecha": "2026-09-29T16:41:33+00:00",
   "experiment_id": "P67-00",
   "script": "experiments/p67_00_reconciliacion.py",
   "pregunta": "de donde sale cada numero de P66 y cual es el valido",
@@ -169,7 +169,7 @@
   "historia_no_se_sobreescribe": true,
   "reproducibilidad": {
     "nivel": "R2",
-    "git_commit": "51b0c2b",
+    "git_commit": "452e2bd",
     "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
     "corrected_cv": 0.7772114525165721
   },

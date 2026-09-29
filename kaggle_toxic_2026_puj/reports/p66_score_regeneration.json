@@ -1,7 +1,7 @@
 {
   "familia": "P66_REGENERACION",
   "naturaleza": "REGENERACION VERIFICADA. 0 fusiones, 0 nuevos experimentos de la hipotesis de la fase, 0 submissions, 0 Kaggle, 0 holdout, 0 test",
-  "fecha": "2026-09-29T15:38:27+00:00",
+  "fecha": "2026-09-29T16:32:10+00:00",
   "experiment_id": "P66-01",
   "track": "P02b-regeneracion-de-scores",
   "script": "experiments/p66_01_regenerar_scores.py",
@@ -134,7 +134,7 @@
   "nota_sobre_lo_no_recomputado": "las partes caras de las fases de origen son las mismas que aqui: la segmentacion S1 y el leave-one-segment-out se recalculan con los modelos del pliegue, exactamente como se hicieron entonces. Lo unico que cambia es que las probabilidades se escriben a disco",
   "reproducibilidad": {
     "nivel": "R2",
-    "git_commit": "60d89f2",
+    "git_commit": "452e2bd",
     "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
     "corrected_cv": 0.7772114525165721
   },

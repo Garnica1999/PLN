@@ -2565,3 +2565,19 @@ the IC95 includes zero
 V03 remains the best verified leaderboard result.
 ```
 <!-- /P66 2026-09-29 -->
+
+<!-- P67 2026-09-29 -->
+## P67 (2026-09-29): el residuo de MI_arbol es MIXED, no una senal transferible
+
+- Categoria del mecanismo: **MIXED_CON_ATRIBUCION_PARCIAL**.
+- Reentreno anidado de un escalar por etiqueta: `-0.0029731513`, es decir la calibracion **no** explica el efecto.
+- AUC del residuo de MI_arbol contra la etiqueta **fuera** de la banda: `0.579597`, sobre 0,5. Los otros seis candidatos caen por debajo.
+- Sustitucion cruzada: `4 de 7` candidatos dan positivo con la misma operacion.
+- Enriquecimiento de los rescates: `1.338302`.
+- Efecto en celdas: `4.01` de 1483 filas.
+- 1 de 12 tracks principales ejecutados, 0 de 4 reservas.
+- 0 nuevas representaciones, 0 submissions, 0 Kaggle, 0 holdout, 0 test.
+- Figuras: 6 en `figuras/p67/`.
+
+> V03 remains the best verified leaderboard result.
+<!-- /P67 2026-09-29 -->

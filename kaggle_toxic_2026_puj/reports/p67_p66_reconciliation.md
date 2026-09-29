@@ -1,6 +1,6 @@
 # P67 - Reconciliacion de las cifras de P66
 
-Generado por `experiments/p67_00_reconciliacion.py`. Fecha 2026-09-29T16:26:25+00:00.
+Generado por `experiments/p67_00_reconciliacion.py`. Fecha 2026-09-29T16:41:33+00:00.
 
 ## Por que este script va antes que cualquier fusion
 

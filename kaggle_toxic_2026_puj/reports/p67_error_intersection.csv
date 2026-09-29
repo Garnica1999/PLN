@@ -1,0 +1,4 @@
+etiqueta,filas_en_banda,errores_de_V03,errores_en_banda,tasa_base_de_errores_en_banda,rescates,rescates_en_banda,fraccion_de_rescates_en_banda,enriquecimiento,rescates_fuera_de_banda
+HS,313,316,127,0.401899,13,13,1.0,0.484994,0
+TR,134,164,53,0.323171,16,12,0.75,2.505773,4
+AG,287,277,111,0.400722,24,22,0.916667,1.024139,2

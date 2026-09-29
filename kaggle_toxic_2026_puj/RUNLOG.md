@@ -2774,3 +2774,13 @@ the IC95 includes zero
 V03 remains the best verified leaderboard result.
 ```
 <!-- /P66 2026-09-29 -->
+
+<!-- P67 2026-09-29 -->
+## 2026-09-29, P67
+
+- `experiments/p67_00_reconciliacion.py`: reconcilia las dos cifras de P66, marca `FINAL_VALID_P66_RESULT = 0.0026743167` y audita el protocolo nested.
+- `experiments/p67_01_controles_decisivos.py`: reentreno anidado del umbral, sustitucion cruzada de los 7 candidatos, enriquecimiento de los rescates y AUC del residuo contra la etiqueta estratificado por banda de margen.
+- `experiments/p67_02_cerrar.py`: informe final, figuras, cumplimiento, registro y cierre idempotente.
+
+Sin push, sin merge, sin rebase.
+<!-- /P67 2026-09-29 -->

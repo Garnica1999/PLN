@@ -6031,3 +6031,43 @@ es NO LINEAL, luego su error no es una funcion lineal del error de V03 y por eso
 informacion que el score de V03 no puede representar
 ```
 <!-- /P66 2026-09-29 -->
+
+<!-- P67 2026-09-29 -->
+## D-172 a D-176: P67, el residuo de MI_arbol
+
+Fecha 2026-09-29.
+
+### D-172. Los dos numeros de P66 eran dos mecanismos, no dos versiones
+
+`+0,0033068923` es una mezcla lineal de probabilidades con 3 de 5 pliegues.
+`+0,0026743167` es una correccion residual anidada con 4 de 5. Difieren en
+`+0,0006`, menos de una fila de 1483. `FINAL_VALID_P66_RESULT` es la segunda,
+la unica que cumple los dos gates.
+
+### D-173. La brecha de atribucion estaba calculada contra un suelo
+
+P66 reporto `delta real - delta del control barajado`. El control es un suelo,
+es decir lo que cuesta la MISMA operacion sin senal. Restarlo resta el dano
+evitado. La brecha del blend, `+0,0093216366`, queda **INVALIDATED** como medida
+de informacion atribuida; la del residual queda **CORRECTED**. Las cifras
+defendibles son `+0,0033` y `+0,0027`.
+
+### D-174. La calibracion NO explica el efecto
+
+Reentrenar un escalar por etiqueta de forma anidada da `-0.0029731513`,
+peor que el umbral congelado. El control mas barato posible de calibracion no
+iguala al mecanismo caro, luego hay algo mas que movimiento de frontera.
+
+### D-175. Parte del efecto es de la operacion, no de MI_arbol
+
+La misma correccion residual da delta positivo con 4 de los 7 candidatos. MI_arbol sigue
+siendo el mas alto y el unico con AUC de residuo sobre 0,5 fuera de la banda,
+pero la firma no es unica.
+
+### D-176. El efecto esta por debajo de la resolucion de la metrica
+
+4.01 celdas sobre 1483 filas, con un IC95
+por grupos de `[-0,0044311634, +0,0102108745]`, que abarca de -7 a +15 celdas.
+Confirmarlo con una segunda particion no distingue el efecto de la
+particion, luego no se gasta presupuesto en ello.
+<!-- /P67 2026-09-29 -->

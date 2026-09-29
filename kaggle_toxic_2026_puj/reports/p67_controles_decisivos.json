@@ -1,0 +1,178 @@
+{
+  "familia": "P67_CONTROLES",
+  "naturaleza": "EXPERIMENTO. 4 controles, 0 nuevas representaciones, 0 submissions, 0 Kaggle, 0 holdout, 0 test",
+  "fecha": "2026-09-29T16:41:34+00:00",
+  "experiment_id": "P67-01",
+  "track": "P04-P14-controles-decisivos",
+  "script": "experiments/p67_01_controles_decisivos.py",
+  "pregunta": "el efecto de P66 es senal complementaria, calibracion, o ruido",
+  "C-A_reentreno_anidado_del_umbral": {
+    "umbrales_reentrenados": [
+      0.385,
+      0.445,
+      0.52
+    ],
+    "umbrales_congelados": [
+      0.44,
+      0.51,
+      0.46
+    ],
+    "delta": -0.0029731513,
+    "delta_de_referencia_del_residual": 0.0026743167,
+    "lo_reproduce_o_supera": false,
+    "por_que_es_el_control_mas_cheapest": "un escalar por etiqueta es el modelo de calibracion mas barato posible. Si lo mas barato iguala a lo caro, no hay caso para lo caro"
+  },
+  "C-B_sustitucion_cruzada": [
+    {
+      "candidato": "MI_arbol",
+      "delta_real": 0.0026743167,
+      "delta_barajado": -0.0014390421,
+      "positivo": true
+    },
+    {
+      "candidato": "negacion",
+      "delta_real": 0.0011549795,
+      "delta_barajado": -0.0054335321,
+      "positivo": true
+    },
+    {
+      "candidato": "word_1_3",
+      "delta_real": -0.0001400584,
+      "delta_barajado": 0.0038763165,
+      "positivo": false
+    },
+    {
+      "candidato": "cohesion",
+      "delta_real": 3.25761e-05,
+      "delta_barajado": -0.0070646241,
+      "positivo": true
+    },
+    {
+      "candidato": "huecos_1_2",
+      "delta_real": 0.000350531,
+      "delta_barajado": -0.0064731429,
+      "positivo": true
+    },
+    {
+      "candidato": "contraste",
+      "delta_real": 0.0,
+      "delta_barajado": -0.001787895,
+      "positivo": false
+    },
+    {
+      "candidato": "huecos_6_10",
+      "delta_real": -0.0028447979,
+      "delta_barajado": 0.0004009382,
+      "positivo": false
+    }
+  ],
+  "candidatos_con_delta_positivo": 4,
+  "C-D_tasa_base_y_enriquecimiento": [
+    {
+      "etiqueta": "HS",
+      "filas_en_banda": 313,
+      "errores_de_V03": 316,
+      "errores_en_banda": 127,
+      "tasa_base_de_errores_en_banda": 0.401899,
+      "rescates": 13,
+      "rescates_en_banda": 13,
+      "fraccion_de_rescates_en_banda": 1.0,
+      "enriquecimiento": 0.484994,
+      "rescates_fuera_de_banda": 0
+    },
+    {
+      "etiqueta": "TR",
+      "filas_en_banda": 134,
+      "errores_de_V03": 164,
+      "errores_en_banda": 53,
+      "tasa_base_de_errores_en_banda": 0.323171,
+      "rescates": 16,
+      "rescates_en_banda": 12,
+      "fraccion_de_rescates_en_banda": 0.75,
+      "enriquecimiento": 2.505773,
+      "rescates_fuera_de_banda": 4
+    },
+    {
+      "etiqueta": "AG",
+      "filas_en_banda": 287,
+      "errores_de_V03": 277,
+      "errores_en_banda": 111,
+      "tasa_base_de_errores_en_banda": 0.400722,
+      "rescates": 24,
+      "rescates_en_banda": 22,
+      "fraccion_de_rescates_en_banda": 0.916667,
+      "enriquecimiento": 1.024139,
+      "rescates_fuera_de_banda": 2
+    }
+  ],
+  "enriquecimiento_promedio": 1.338302,
+  "C-E_auc_del_residuo_contra_la_etiqueta": [
+    {
+      "candidato": "MI_arbol",
+      "desviacion_del_residuo": 0.833791,
+      "uno_menos_r2": 0.998168,
+      "auc_contra_la_etiqueta_global": 0.572628,
+      "auc_contra_la_etiqueta_dentro_de_la_banda": 0.567424,
+      "auc_contra_la_etiqueta_fuera_de_la_banda": 0.579597
+    },
+    {
+      "candidato": "negacion",
+      "desviacion_del_residuo": 0.204325,
+      "uno_menos_r2": 0.99935,
+      "auc_contra_la_etiqueta_global": 0.472985,
+      "auc_contra_la_etiqueta_dentro_de_la_banda": 0.492127,
+      "auc_contra_la_etiqueta_fuera_de_la_banda": 0.465626
+    },
+    {
+      "candidato": "word_1_3",
+      "desviacion_del_residuo": 0.146912,
+      "uno_menos_r2": 0.998761,
+      "auc_contra_la_etiqueta_global": 0.499251,
+      "auc_contra_la_etiqueta_dentro_de_la_banda": 0.484706,
+      "auc_contra_la_etiqueta_fuera_de_la_banda": 0.504894
+    },
+    {
+      "candidato": "cohesion",
+      "desviacion_del_residuo": 0.111987,
+      "uno_menos_r2": 0.99778,
+      "auc_contra_la_etiqueta_global": 0.455979,
+      "auc_contra_la_etiqueta_dentro_de_la_banda": 0.45134,
+      "auc_contra_la_etiqueta_fuera_de_la_banda": 0.452727
+    },
+    {
+      "candidato": "huecos_1_2",
+      "desviacion_del_residuo": 0.219333,
+      "uno_menos_r2": 0.998051,
+      "auc_contra_la_etiqueta_global": 0.516186,
+      "auc_contra_la_etiqueta_dentro_de_la_banda": 0.524327,
+      "auc_contra_la_etiqueta_fuera_de_la_banda": 0.516491
+    },
+    {
+      "candidato": "contraste",
+      "desviacion_del_residuo": 0.080671,
+      "uno_menos_r2": 0.999111,
+      "auc_contra_la_etiqueta_global": 0.437045,
+      "auc_contra_la_etiqueta_dentro_de_la_banda": 0.457961,
+      "auc_contra_la_etiqueta_fuera_de_la_banda": 0.432401
+    },
+    {
+      "candidato": "huecos_6_10",
+      "desviacion_del_residuo": 0.186302,
+      "uno_menos_r2": 0.999591,
+      "auc_contra_la_etiqueta_global": 0.471673,
+      "auc_contra_la_etiqueta_dentro_de_la_banda": 0.444546,
+      "auc_contra_la_etiqueta_fuera_de_la_banda": 0.476209
+    }
+  ],
+  "categoria_del_mecanismo": "MIXED_CON_ATRIBUCION_PARCIAL",
+  "razon": "Los cuatro controles NO dicen lo mismo y eso es el hallazgo. El reentreno anidado de UN escalar por etiqueta da -0.0029731513, es DECISIVO: la calibracion NO explica el efecto y V03 no estaba simplemente mal calibrado en esta particion. Y el AUC del residuo de MI_arbol se mantiene fuera de la banda, en 0.579597, lo que un movimiento de frontera no puede producir. PERO la misma correccion da positivo con 4 de los 7 candidatos, luego una parte del efecto pertenece a la OPERACION y no a MI_arbol. El enriquecimiento de los rescates es 1.3383, mayor que uno, luego hay concentracion real en la banda pero no exclusiva",
+  "experimentos_registrados": 1,
+  "reproducibilidad": {
+    "nivel": "R2",
+    "git_commit": "452e2bd",
+    "seed": 42,
+    "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "corrected_cv": 0.7772114525165721
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}
