@@ -432,7 +432,7 @@ def main() -> None:
                 xs = pp.fit_transform([textos_canal[i] for i in ir])
                 xsv = pp.transform([textos_canal[i] for i in iva])
             # El brazo de negacion de P64-07 CONCATENABA SIN escalar, a diferencia de todos
-            # los demás canales de las fases P64 y P65. Replicar la diferencia es parte de
+            # los dem?s canales de las fases P64 y P65. Replicar la diferencia es parte de
             # reproducir el numero, y aqui se hace de forma explicita y no por descuido.
             if nombre == "negacion":
                 xa = hstack([xbase, xs]).tocsr()

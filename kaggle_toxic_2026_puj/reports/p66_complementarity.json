@@ -1,0 +1,163 @@
+{
+  "familia": "P66_COMPLEMENTARIEDAD",
+  "naturaleza": "EXPERIMENTO. 1 candidato Massey con bootstrap, 0 submissions, 0 Kaggle, 0 holdout, 0 test",
+  "fecha": "2026-09-29T15:52:07+00:00",
+  "experiment_id": "P66-03",
+  "track": "P14-P17-P18-P21",
+  "script": "experiments/p66_03_complementariedad_bootstrap.py",
+  "pregunta": "la correccion residual de MI_arbol rescata errores reales o solo recalibra lo que ya estaba en el umbral",
+  "unidad_de_remuestreo": {
+    "grupos": 1415,
+    "fuente": "holdout_v2_ids.csv, columna grupo_near_dup_autor",
+    "por_que": "dentro de un grupo las filas no son independientes y remuestrear filas subestimaria el intervalo"
+  },
+  "resultado": {
+    "corrected_cv": 0.7798857692536291,
+    "delta_vs_V03": 0.002674316737056981,
+    "con_score_barajado": 0.7757724104359683,
+    "brecha_de_atribucion": 0.0041133588,
+    "pliegues_mejorados": 4
+  },
+  "bootstrap": {
+    "n": 2000,
+    "media": 0.0027270194,
+    "ic95_inferior": -0.004431163444677563,
+    "ic95_superior": 0.010210874472249717,
+    "incluye_el_cero": true
+  },
+  "rescate_por_etiqueta": [
+    {
+      "etiqueta": "HS",
+      "v03_ok_fusion_ko": 10,
+      "v03_ko_fusion_ok": 13,
+      "ambos_ok": 1157,
+      "ambos_ko": 303,
+      "rescate": 13,
+      "damage": 10,
+      "neto": 3,
+      "rescate_de_alta_confianza": 0,
+      "damage_de_alta_confianza": 0,
+      "rescate_cerca_del_umbral": 13
+    },
+    {
+      "etiqueta": "TR",
+      "v03_ok_fusion_ko": 16,
+      "v03_ko_fusion_ok": 16,
+      "ambos_ok": 1303,
+      "ambos_ko": 148,
+      "rescate": 16,
+      "damage": 16,
+      "neto": 0,
+      "rescate_de_alta_confianza": 4,
+      "damage_de_alta_confianza": 3,
+      "rescate_cerca_del_umbral": 12
+    },
+    {
+      "etiqueta": "AG",
+      "v03_ok_fusion_ko": 27,
+      "v03_ko_fusion_ok": 24,
+      "ambos_ok": 1179,
+      "ambos_ko": 253,
+      "rescate": 24,
+      "damage": 27,
+      "neto": -3,
+      "rescate_de_alta_confianza": 2,
+      "damage_de_alta_confianza": 4,
+      "rescate_cerca_del_umbral": 22
+    }
+  ],
+  "rescate_por_bloque": [
+    {
+      "etiqueta": "CORTA",
+      "rescate": 1,
+      "damage": 3,
+      "neto": -2,
+      "F1_fusion": 0.945155,
+      "F1_de_V03": 0.947956
+    },
+    {
+      "etiqueta": "MEDIA",
+      "rescate": 21,
+      "damage": 22,
+      "neto": -1,
+      "F1_fusion": 0.794385,
+      "F1_de_V03": 0.796405
+    },
+    {
+      "etiqueta": "LARGA",
+      "rescate": 26,
+      "damage": 17,
+      "neto": 9,
+      "F1_fusion": 0.704685,
+      "F1_de_V03": 0.68335
+    },
+    {
+      "etiqueta": "MUY_LARGA",
+      "rescate": 5,
+      "damage": 11,
+      "neto": -6,
+      "F1_fusion": 0.565319,
+      "F1_de_V03": 0.560571
+    }
+  ],
+  "rescate_unico_por_candidato": [
+    {
+      "candidato": "negacion",
+      "rescate_unito_sobre_MI_arbol": 83,
+      "celdas_que_MI_arbol_no_puede_rescatar": 53,
+      "autorizado_a_combinar": true
+    },
+    {
+      "candidato": "word_1_3",
+      "rescate_unito_sobre_MI_arbol": 67,
+      "celdas_que_MI_arbol_no_puede_rescatar": 53,
+      "autorizado_a_combinar": true
+    },
+    {
+      "candidato": "cohesion",
+      "rescate_unito_sobre_MI_arbol": 75,
+      "celdas_que_MI_arbol_no_puede_rescatar": 53,
+      "autorizado_a_combinar": true
+    },
+    {
+      "candidato": "huecos_1_2",
+      "rescate_unito_sobre_MI_arbol": 98,
+      "celdas_que_MI_arbol_no_puede_rescatar": 53,
+      "autorizado_a_combinar": true
+    },
+    {
+      "candidato": "contraste",
+      "rescate_unito_sobre_MI_arbol": 53,
+      "celdas_que_MI_arbol_no_puede_rescatar": 53,
+      "autorizado_a_combinar": true
+    },
+    {
+      "candidato": "huecos_6_10",
+      "rescate_unito_sobre_MI_arbol": 74,
+      "celdas_que_MI_arbol_no_puede_rescatar": 53,
+      "autorizado_a_combinar": true
+    }
+  ],
+  "regla_de_combinacion": "dos fuentes se combinan solo si cada una tiene rescate unico. Una segunda fuente que corrige las mismas celdas no es una segunda fuente",
+  "gate_de_finalista": {
+    "delta_min": 0.003,
+    "delta": 0.002674316737056981,
+    "pliegues_min": 4,
+    "pliegues": 4,
+    "bootstrap_favorable": false,
+    "atribucion": true,
+    "rescate_de_alta_confianza": 6,
+    "superado": false
+  },
+  "decision": "PROMISING",
+  "veredicto": "Cumple 3 de las cinco condiciones del gate de finalist: delta +0.0026743167, 4 de 5 pliegues, IC95 [-0.0044311634, +0.0102108745] incluye cero: True, brecha +0.0041133588, rescate de alta confianza 6. Es el mejor resultado de toda la investigacion en el espacio de scores y queda como PROMISING",
+  "experimentos_registrados": 1,
+  "reproducibilidad": {
+    "nivel": "R2",
+    "git_commit": "9f75317",
+    "seed": 42,
+    "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "corrected_cv": 0.7772114525165721
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

@@ -5934,3 +5934,100 @@ and V03 already carries it inside its own confidence
 V03 remains the best verified leaderboard result.
 ```
 <!-- /P65 2026-09-29 -->
+
+<!-- P66 2026-09-29 -->
+## D-168. Los scores de los candidatos NO existian, y eso casi se pasa por alto
+
+P64 y P65 publicaron metricas y scores por pliegue, y **no escribieron sus probabilidades a
+disco**. Ademas `features/` esta en `.gitignore`, luego los bloques de features tampoco estan
+versionados. El unico artefacto de probabilidad del repositorio era el propio V03.
+
+La alternativa a regenerar habria sido INVENTAR scores. Se regeneraron con el codigo de origen,
+las mismas semillas y los mismos pliegues, y **la regeneracion se verifico contra el numero que
+cada fase reporto**:
+
+| candidato | regenerado | la fase reporto | estado |
+|---|---:|---:|---|
+| MI_arbol | -0.0054372718 | -0.0091686799 | NO_VERIFICABLE |
+| negacion | -0.0036227731 | -0.0021826774 | DIFERENCIA_NO_RESUELTA |
+| word_1_3 | -0.0039520688 | -0.0039520688 | REPRODUCE |
+| cohesion | -0.0027090062 | -0.0027090062 | REPRODUCE |
+| huecos_1_2 | -0.0010515908 | -0.0010515908 | REPRODUCE |
+| contraste | -0.0023851933 | -0.0023851933 | REPRODUCE |
+| huecos_6_10 | -0.0074391131 | -0.0074391131 | REPRODUCE |
+
+Cinco reproducen con diferencia del orden de 1e-11. La negacion tiene una causa parcial
+identificada, el brazo original concatenaba SIN normalizar, y la diferencia restante se
+DECLARA. El MI_arbol es NO VERIFICABLE porque su bloque de entrada era un `.npz` que ya no
+existe.
+
+**El script se PARO en su primera version** cuando la verificacion fue binaria. Continuar y
+reportar un resultado sobre scores no verificados habria sido medir otra cosa.
+
+## D-169. La fusion en el espacio de scores SI FUNCIONA, y es la primera vez
+
+P65 cerro con una ley: siete representaciones beat a los dos controles y ninguna mejoraba a V03
+al concatenarse. La pregunta que quedaba era si esa senal funciona **corrigiendo el score**.
+
+| fusion | delta vs V03 | pliegues | brecha de atribucion |
+|---|---:|---:|---:|
+| MI_arbol + residual anidada | +0.0026743167 | 4/5 | +0.0041133588 |
+| MI_arbol + residual con score barajado | -0.0014390421 | | |
+
+La brecha de atribucion es la cifra que manda: el MISMO mecanismo con el score del candidato
+**barajado** pierde +0.0041133588. Luego la mejora es del
+candidato y no de la capa de fusion.
+
+**MI_arbol es ademas el unico candidato cuyo residuo sobrevive.** Las correlaciones entre
+z_V03 y z_C de los siete van de +0,9294 a +0,9988: son casi la misma puntuacion. Y el AUC del
+residuo separa:
+
+| candidato | corr con z_V03 | AUC del residuo |
+|---|---:|---:|
+| MI_arbol | +0.9294 | 0.565387 |
+| negacion | +0.9921 | 0.453645 |
+| word_1_3 | +0.9963 | 0.514599 |
+| cohesion | +0.9971 | 0.441306 |
+| huecos_1_2 | +0.9910 | 0.498082 |
+| contraste | +0.9988 | 0.482872 |
+| huecos_6_10 | +0.9931 | 0.418585 |
+
+Cinco de siete quedan **por debajo de 0,5**, luego su parte unica es antisimetrica con el error
+de V03. Y el residuo con componente NO LINEAL es justamente el de MI_arbol, que P64-05 ya
+habia senalado como el unico por encima del margen.
+
+## D-170. Y el matiz que va pegado a ese resultado: es mas CALIBRACION que REPRESENTACION
+
+De las 53 celdas que la fusion
+rescata, **solo 6 son
+errores de ALTA CONFIANZA de V03** y las demas estan pegadas al umbral. Una fusion que mueve
+celdas a traves de una frontera ha encontrado calibracion, no representacion.
+
+Y el bootstrap por 1415 grupos da IC95
+[-0.0044311634, +0.0102108745], que
+**INCLUYE el cero**.
+
+Por eso el veredicto es PROMISING y no FINALIST: cumple 3 de las 5 condiciones del gate.
+
+## D-171. P66 se cierra con dos experimentos y una respuesta a la pregunta que la abrio
+
+```text
+la pregunta     puede una senal que no funciona como feature funcionar como correccion
+                del score de V03
+la respuesta     SI, y la mejora es atribuible al candidato, no a la capa de fusion
+el matiz         es sobre todo recalibracion: 6 de 53 rescates son de alta confianza
+la prudencia     el IC95 incluye el cero, luego no esta demostrado
+la siguiente     segunda particion congelada, que no se ha ejecutado porque el gate no llego
+```
+
+**Y el principio general que se lleva el proyecto**, que es mas util que el numero:
+
+```text
+anadir columnas a un espacio de veinte mil dimensiones no cabe, y corregir un score de
+tres columnas si, para la MISMA senal y con el MISMO modelo de base
+
+la unica excepcion medida es MI_arbol, y su rasgo distintivo es que el modelo que lo produce
+es NO LINEAL, luego su error no es una funcion lineal del error de V03 y por eso queda
+informacion que el score de V03 no puede representar
+```
+<!-- /P66 2026-09-29 -->

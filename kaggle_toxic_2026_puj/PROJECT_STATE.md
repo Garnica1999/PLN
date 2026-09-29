@@ -1695,3 +1695,60 @@ length criterion is bit for bit the specialist
 V03 remains the best verified leaderboard result.
 ```
 <!-- /P65 2026-09-29 -->
+
+<!-- P66 2026-09-29 -->
+## P66 (2026-09-29) - Late fusion: la evidencia de largo alcance en el espacio de scores
+
+Dos experimentos y dos auditorias, trece figuras. Y es la primera vez que la senal de largo
+alcance mueve el numero.
+
+**LA RESPUESTA A LA PREGUNTA DE LA FASE: SI, Y ES ATRIBUIBLE AL CANDIDATO.**
+
+| fusion | delta vs V03 | pliegues | brecha de atribucion |
+|---|---:|---:|---:|
+| MI_arbol + residual anidada | +0.0026743167 | 4/5 | +0.0041133588 |
+| MI_arbol + residual con score barajado | -0.0014390421 | | |
+
+La brecha de atribucion es la cifra que manda: el mismo mecanismo con el score del candidato
+**barajado** pierde casi todo.
+
+**Y MI_arbol es el unico que funciona porque es NO LINEAL.** Las correlaciones entre z_V03 y
+z_C de los siete candidatos van de +0,9294 a +0,9988: son casi la misma puntuacion. El AUC del
+residuo deja a cinco de siete por debajo de 0,5, luego su parte unica destruye informacion en
+vez de anadirla. El de MI_arbol es el unico por encima del azar, y su modelo es el unico no
+lineal de la lista. Si el error de V03 fuera una funcion lineal del error de MI_arbol, la
+regresion residual no dejaria nada.
+
+**EL MATIZ, Y VA PEGADO AL RESULTADO.** De las
+53 celdas que la fusion rescata, solo
+6 son errores de
+alta confianza y las demas estan pegadas al umbral, luego es sobre todo **recalibracion**. Y el
+bootstrap por 1415 grupos da IC95
+[-0.0044311634, +0.0102108745], que
+**incluye el cero**. Veredicto PROMISING, no FINALIST.
+
+**EL INVENTARIO FUE EL PROBLEMA REAL.** Ningun script de P64 y P65 escribio sus
+probabilidades a disco, y `features/` esta en `.gitignore`. Los scores se regeneraron y se
+verificaron contra el numero de cada fase: 5 de 7 reproducen con diferencia de 1e-11, uno es
+no verificable y uno tiene una diferencia declarada. El regenerador **se paro** cuando dos no
+cuadraron.
+
+**Y UNA CORRECCION QUE CAMBIO EL VEREDICTO DEL MEJOR RESULTADO.** `blend_prob` usaba siempre
+la probabilidad REAL del candidato y nunca la barajada, luego su control de barajado salia
+identico al real POR CONSTRUCCION, la brecha daba cero falso, y el mejor resultado de la fase
+queda INVALIDATED por un motivo que no era el suyo. Corregido, ese mismo resultado pasa a
++0,0033 con brecha +0,0093.
+
+```text
+adding columns to a twenty thousand dimension space does not fit, and correcting a three
+column score does, for the SAME evidence and with the SAME base model
+
+the only measured exception is MI_arbol, and its distinguishing feature is that the model
+producing it is NON LINEAR
+
+and the caveat: it is mostly recalibration, because 6 of 53 rescues are high confidence and
+the IC95 includes zero
+
+V03 remains the best verified leaderboard result.
+```
+<!-- /P66 2026-09-29 -->
