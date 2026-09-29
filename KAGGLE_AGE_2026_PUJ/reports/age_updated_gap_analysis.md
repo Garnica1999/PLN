@@ -1,6 +1,6 @@
 # AGE - gap analysis actualizado
 
-**Baseline congelado:** V30 = 0.6134471, leaderboard 0.63302.  
+**Baseline congelado:** V30 = 0.6134471, leaderboard 0.63302.
 **Variabilidad de entrenamiento:** 0.0008876, que es la escala contra la que se juzga cualquier delta de esta fase.
 
 ## La medicion que fundamenta el inventario

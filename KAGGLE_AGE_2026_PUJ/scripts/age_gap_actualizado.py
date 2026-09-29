@@ -340,7 +340,7 @@ def main() -> int:
 def _md(tabla: pd.DataFrame, part: dict, counts: dict) -> str:
     lineas = [
         "# AGE - gap analysis actualizado", "",
-        f"**Baseline congelado:** V30 = {CV_V30}, leaderboard {LB_V30}.  ",
+        f"**Baseline congelado:** V30 = {CV_V30}, leaderboard {LB_V30}.",
         f"**Variabilidad de entrenamiento:** {VARIABILIDAD}, que es la escala contra la que se "
         f"juzga cualquier delta de esta fase.", "",
         "## La medicion que fundamenta el inventario", "",
