@@ -1,0 +1,342 @@
+{
+  "fase": "P34+ 00 auditoria, inventario y matriz adyacente",
+  "fecha": "2026-10-03",
+  "experimenta": false,
+  "baseline_v30": 0.6134471,
+  "leaderboard": 0.63302,
+  "variabilidad_de_entrenamiento": 0.0008876,
+  "p00_auditoria": {
+    "commit": "a718647f27a6750ad2d5ae047f17985b48254f03",
+    "hash_submission_v30": "f543a715a1881c6128a860301b84a7273c3db8f8a709545be1e6267822e713be",
+    "hash_submission_esperado": "f543a715a1881c6128a860301b84a7273c3db8f8a709545be1e6267822e713be",
+    "submission_intacto": true,
+    "v30_recalculado": 0.6134471,
+    "v30_canonico": 0.6134471,
+    "v30_reproduce": true,
+    "v30_persistido_identico": true,
+    "leaderboard_registrado": 0.63302,
+    "leaderboard_usado_para_ajustar": false,
+    "test_tocado_por_la_fase": false,
+    "holdout_reutilizado": false,
+    "miembros_y_pesos": {
+      "v20_f3b_oof_candidato": 0.3548,
+      "v29_lgbm_optuna": 0.3354,
+      "v30_lgbm_refinado": 0.3098
+    }
+  },
+  "p01_inventario": [
+    {
+      "candidate_name": "V30 (referencia)",
+      "source_model": "mezcla de 3 miembros: v20_f3b_oof_candidato, v29_lgbm_optuna, v30_lgbm_refinado, con los pesos medios del manifest",
+      "score_type": "**probability** (los tres miembros guardan probabilidades reales: LightGBM y las cadenas de V20)",
+      "score_range": "0.000026 a 0.999699",
+      "n_classes": 6,
+      "argmax_valid": false,
+      "suma_por_fila": "1.000000 a 1.000000",
+      "fold_provenance": "mismos folds que V20: StratifiedGroupKFold 5 sobre dup_clusters, semilla 42",
+      "artifact_hash": "3d77352486605971",
+      "uso_en_p34": "d_V30(i,j) = log((P[i]+eps)/(P[j]+eps))"
+    },
+    {
+      "candidate_name": "ortografia+composicion+discurso",
+      "source_model": "LinearSVC(C=1.0) sobre texto + canal estructural, OOF por fold",
+      "score_type": "**decision_function** en `features/v31_canales_oof.npz`; el persistido en `artifacts/p33_scores/` es el mismo valor con **softmax** para poder mezclar. **El pairwise de P34 usa el crudo**",
+      "score_range": "-4.0857 a 7.3519",
+      "n_classes": 6,
+      "argmax_valid": true,
+      "suma_por_fila": "-11.3762 a -3.2867 **NEGATIVA: no es probabilidad**",
+      "fold_provenance": "mismos folds que V20",
+      "artifact_hash": "95205e0fbbb8937f",
+      "uso_en_p34": "d_C(i,j) = score_C[i] - score_C[j] sobre el crudo"
+    },
+    {
+      "candidate_name": "discurso",
+      "source_model": "LinearSVC(C=1.0) sobre texto + canal estructural, OOF por fold",
+      "score_type": "**decision_function** en `features/v31_canales_oof.npz`; el persistido en `artifacts/p33_scores/` es el mismo valor con **softmax** para poder mezclar. **El pairwise de P34 usa el crudo**",
+      "score_range": "-4.1130 a 7.5675",
+      "n_classes": 6,
+      "argmax_valid": true,
+      "suma_por_fila": "-10.3589 a -3.5315 **NEGATIVA: no es probabilidad**",
+      "fold_provenance": "mismos folds que V20",
+      "artifact_hash": "66d0acbc10f1cc72",
+      "uso_en_p34": "d_C(i,j) = score_C[i] - score_C[j] sobre el crudo"
+    },
+    {
+      "candidate_name": "ortografia+composicion",
+      "source_model": "LinearSVC(C=1.0) sobre texto + canal estructural, OOF por fold",
+      "score_type": "**decision_function** en `features/v31_canales_oof.npz`; el persistido en `artifacts/p33_scores/` es el mismo valor con **softmax** para poder mezclar. **El pairwise de P34 usa el crudo**",
+      "score_range": "-4.0290 a 7.4274",
+      "n_classes": 6,
+      "argmax_valid": true,
+      "suma_por_fila": "-11.2699 a -3.4051 **NEGATIVA: no es probabilidad**",
+      "fold_provenance": "mismos folds que V20",
+      "artifact_hash": "e704e26d1634790a",
+      "uso_en_p34": "d_C(i,j) = score_C[i] - score_C[j] sobre el crudo"
+    },
+    {
+      "candidate_name": "composicion",
+      "source_model": "LinearSVC(C=1.0) sobre texto + canal estructural, OOF por fold",
+      "score_type": "**decision_function** en `features/v31_canales_oof.npz`; el persistido en `artifacts/p33_scores/` es el mismo valor con **softmax** para poder mezclar. **El pairwise de P34 usa el crudo**",
+      "score_range": "-3.9198 a 7.4077",
+      "n_classes": 6,
+      "argmax_valid": true,
+      "suma_por_fila": "-10.8801 a -3.4926 **NEGATIVA: no es probabilidad**",
+      "fold_provenance": "mismos folds que V20",
+      "artifact_hash": "7bc1a896fbbd4ae4",
+      "uso_en_p34": "d_C(i,j) = score_C[i] - score_C[j] sobre el crudo"
+    },
+    {
+      "candidate_name": "ortografia",
+      "source_model": "LinearSVC(C=1.0) sobre texto + canal estructural, OOF por fold",
+      "score_type": "**decision_function** en `features/v31_canales_oof.npz`; el persistido en `artifacts/p33_scores/` es el mismo valor con **softmax** para poder mezclar. **El pairwise de P34 usa el crudo**",
+      "score_range": "-4.0363 a 7.6265",
+      "n_classes": 6,
+      "argmax_valid": true,
+      "suma_por_fila": "-10.9429 a -3.4272 **NEGATIVA: no es probabilidad**",
+      "fold_provenance": "mismos folds que V20",
+      "artifact_hash": "6ce9f4388055bf41",
+      "uso_en_p34": "d_C(i,j) = score_C[i] - score_C[j] sobre el crudo"
+    },
+    {
+      "candidate_name": "url",
+      "source_model": "LinearSVC(C=1.0) sobre texto + canal estructural, OOF por fold",
+      "score_type": "**decision_function** en `features/v31_canales_oof.npz`; el persistido en `artifacts/p33_scores/` es el mismo valor con **softmax** para poder mezclar. **El pairwise de P34 usa el crudo**",
+      "score_range": "-3.9724 a 7.6098",
+      "n_classes": 6,
+      "argmax_valid": true,
+      "suma_por_fila": "-10.2907 a -3.5937 **NEGATIVA: no es probabilidad**",
+      "fold_provenance": "mismos folds que V20",
+      "artifact_hash": "a03b7b3dfe27cf88",
+      "uso_en_p34": "d_C(i,j) = score_C[i] - score_C[j] sobre el crudo"
+    },
+    {
+      "candidate_name": "raw",
+      "source_model": "LinearSVC(C=1.0) sobre texto + canal estructural, OOF por fold",
+      "score_type": "**decision_function** en `features/v31_canales_oof.npz`; el persistido en `artifacts/p33_scores/` es el mismo valor con **softmax** para poder mezclar. **El pairwise de P34 usa el crudo**",
+      "score_range": "-3.9606 a 7.6116",
+      "n_classes": 6,
+      "argmax_valid": true,
+      "suma_por_fila": "-10.2497 a -3.4689 **NEGATIVA: no es probabilidad**",
+      "fold_provenance": "mismos folds que V20",
+      "artifact_hash": "d74788519bfae7c0",
+      "uso_en_p34": "d_C(i,j) = score_C[i] - score_C[j] sobre el crudo"
+    },
+    {
+      "candidate_name": "todos",
+      "source_model": "LinearSVC(C=1.0) sobre texto + canal estructural, OOF por fold",
+      "score_type": "**decision_function** en `features/v31_canales_oof.npz`; el persistido en `artifacts/p33_scores/` es el mismo valor con **softmax** para poder mezclar. **El pairwise de P34 usa el crudo**",
+      "score_range": "-3.9971 a 7.1463",
+      "n_classes": 6,
+      "argmax_valid": true,
+      "suma_por_fila": "-11.8797 a -3.0934 **NEGATIVA: no es probabilidad**",
+      "fold_provenance": "mismos folds que V20",
+      "artifact_hash": "dc922dd20914d27d",
+      "uso_en_p34": "d_C(i,j) = score_C[i] - score_C[j] sobre el crudo"
+    },
+    {
+      "candidate_name": "posicion",
+      "source_model": "LinearSVC(C=1.0) sobre texto + canal estructural, OOF por fold",
+      "score_type": "**decision_function** en `features/v31_canales_oof.npz`; el persistido en `artifacts/p33_scores/` es el mismo valor con **softmax** para poder mezclar. **El pairwise de P34 usa el crudo**",
+      "score_range": "-3.8119 a 7.4498",
+      "n_classes": 6,
+      "argmax_valid": true,
+      "suma_por_fila": "-10.5994 a -3.4523 **NEGATIVA: no es probabilidad**",
+      "fold_provenance": "mismos folds que V20",
+      "artifact_hash": "0a3332087d1ebce8",
+      "uso_en_p34": "d_C(i,j) = score_C[i] - score_C[j] sobre el crudo"
+    },
+    {
+      "candidate_name": "forma_palabra",
+      "source_model": "LinearSVC(C=1.0) sobre texto + canal estructural, OOF por fold",
+      "score_type": "**decision_function** en `features/v31_canales_oof.npz`; el persistido en `artifacts/p33_scores/` es el mismo valor con **softmax** para poder mezclar. **El pairwise de P34 usa el crudo**",
+      "score_range": "-4.0520 a 7.2599",
+      "n_classes": 6,
+      "argmax_valid": true,
+      "suma_por_fila": "-10.8658 a -3.3831 **NEGATIVA: no es probabilidad**",
+      "fold_provenance": "mismos folds que V20",
+      "artifact_hash": "007d790588a0d86b",
+      "uso_en_p34": "d_C(i,j) = score_C[i] - score_C[j] sobre el crudo"
+    }
+  ],
+  "p01_regla_absoluta": {
+    "regla_absoluta": "NUNCA dividir un decision_function por la suma de su fila. Las filas suman -11.376 a -3.287, es decir negativo: dividir por esa suma invierte el orden de las clases y convierte el score en basura. Medido en P32: F1 0,5048 con argmax crudo frente a 0,0445 con la normalizacion invalida",
+    "candidatos": 10
+  },
+  "p02_matriz_adyacente": {
+    "n_errores": 65403,
+    "n_errores_adyacentes": 39202,
+    "n_errores_salto": 26201,
+    "fraccion_adyacente": 0.59939,
+    "fraccion_no_adyacente": 0.40061,
+    "fraccion_adyacente_sobre_confusiones": 0.59939,
+    "matriz": [
+      [
+        19068,
+        6127,
+        1523,
+        790,
+        803,
+        552
+      ],
+      [
+        4493,
+        15733,
+        4145,
+        1728,
+        1564,
+        1013
+      ],
+      [
+        1700,
+        5842,
+        13495,
+        3184,
+        2472,
+        1654
+      ],
+      [
+        744,
+        2227,
+        3765,
+        15174,
+        3706,
+        2614
+      ],
+      [
+        455,
+        1049,
+        1818,
+        2407,
+        19842,
+        2489
+      ],
+      [
+        320,
+        760,
+        978,
+        1437,
+        3044,
+        20621
+      ]
+    ],
+    "por_pareja": [
+      {
+        "tipo": "pareja adyacente",
+        "par": "A5",
+        "real_i": "50-64",
+        "real_j": "65-xx",
+        "errores_en_ambos_sentidos": 5533,
+        "fraccion_del_total_de_errores": 0.0846
+      },
+      {
+        "tipo": "pareja adyacente",
+        "par": "A4",
+        "real_i": "35-49",
+        "real_j": "50-64",
+        "errores_en_ambos_sentidos": 6113,
+        "fraccion_del_total_de_errores": 0.09347
+      },
+      {
+        "tipo": "pareja adyacente",
+        "par": "A2",
+        "real_i": "18-24",
+        "real_j": "25-34",
+        "errores_en_ambos_sentidos": 9987,
+        "fraccion_del_total_de_errores": 0.1527
+      },
+      {
+        "tipo": "pareja adyacente",
+        "par": "A3",
+        "real_i": "25-34",
+        "real_j": "35-49",
+        "errores_en_ambos_sentidos": 6949,
+        "fraccion_del_total_de_errores": 0.10625
+      },
+      {
+        "tipo": "pareja adyacente",
+        "par": "A1",
+        "real_i": "13-17",
+        "real_j": "18-24",
+        "errores_en_ambos_sentidos": 10620,
+        "fraccion_del_total_de_errores": 0.16238
+      }
+    ],
+    "saltos_principales": [
+      {
+        "tipo": "salto no adyacente",
+        "par": "-",
+        "real_i": "35-49",
+        "real_j": "65-xx",
+        "errores_en_ambos_sentidos": 2614,
+        "fraccion_del_total_de_errores": 0.03997
+      },
+      {
+        "tipo": "salto no adyacente",
+        "par": "-",
+        "real_i": "25-34",
+        "real_j": "50-64",
+        "errores_en_ambos_sentidos": 2472,
+        "fraccion_del_total_de_errores": 0.0378
+      },
+      {
+        "tipo": "salto no adyacente",
+        "par": "-",
+        "real_i": "35-49",
+        "real_j": "18-24",
+        "errores_en_ambos_sentidos": 2227,
+        "fraccion_del_total_de_errores": 0.03405
+      },
+      {
+        "tipo": "salto no adyacente",
+        "par": "-",
+        "real_i": "50-64",
+        "real_j": "25-34",
+        "errores_en_ambos_sentidos": 1818,
+        "fraccion_del_total_de_errores": 0.0278
+      },
+      {
+        "tipo": "salto no adyacente",
+        "par": "-",
+        "real_i": "18-24",
+        "real_j": "35-49",
+        "errores_en_ambos_sentidos": 1728,
+        "fraccion_del_total_de_errores": 0.02642
+      },
+      {
+        "tipo": "salto no adyacente",
+        "par": "-",
+        "real_i": "25-34",
+        "real_j": "13-17",
+        "errores_en_ambos_sentidos": 1700,
+        "fraccion_del_total_de_errores": 0.02599
+      },
+      {
+        "tipo": "salto no adyacente",
+        "par": "-",
+        "real_i": "25-34",
+        "real_j": "65-xx",
+        "errores_en_ambos_sentidos": 1654,
+        "fraccion_del_total_de_errores": 0.02529
+      },
+      {
+        "tipo": "salto no adyacente",
+        "par": "-",
+        "real_i": "18-24",
+        "real_j": "50-64",
+        "errores_en_ambos_sentidos": 1564,
+        "fraccion_del_total_de_errores": 0.02391
+      }
+    ],
+    "afirmacion_de_v31": 0.9,
+    "verificacion": "la afirmacion de V31 era ~90% adyacente. Medido sobre TODOS los 65,403 errores: **59.94% adyacente** y 40.06% salto. La afirmacion se sostiene",
+    "por_que_se_verifica": "el 90% de V31 salio de mirar las DIEZ confusiones mas frecuentes, no de todos los errores. Una fila con 10.000 errores puede tener las diez mas altas casi todas adyacentes y aun asi ser minoritaria en el total. Aqui se cuenta sobre la matriz completa, que es lo que decide si la hipotesis de P34 tiene base"
+  },
+  "restricciones": {
+    "usa_test": false,
+    "usa_holdout": false,
+    "usa_red": false,
+    "divide_score_por_suma": false,
+    "leaderboard_para_ajustar": false
+  },
+  "segundos": 0.5
+}

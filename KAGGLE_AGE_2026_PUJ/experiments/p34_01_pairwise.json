@@ -1,0 +1,531 @@
+{
+  "fase": "P34+ 01 scores pairwise, residualizacion local y correccion",
+  "fecha": "2026-10-03",
+  "experimenta": true,
+  "baseline_v30": 0.6134471,
+  "candidato": "ortografia+composicion+discurso",
+  "correccion_del_registro": {
+    "afirmacion_incorrecta": "V31 reporto 90% de confusiones adyacentes",
+    "valor_real": 0.5994,
+    "por_que_se_equivoco": "V31 conto la fraccion no adyacente entre las DIEZ confusiones mas frecuentes, que por construccion son casi todas adyacentes. Contado sobre los 65.403 errores completos es 59,94% adyacente y 40,06% salto",
+    "efecto_sobre_la_hipotesis": "la hipotesis de P34 sigue siendo valida en su forma (las adyacentes son la mayoria) pero su techo es mucho mas bajo de lo que se suponia: solo el 59,94% de los errores son elegibles para una correccion pairwise"
+  },
+  "p03_scores": [
+    {
+      "par": "A1",
+      "clase_i": "13-17",
+      "clase_j": "18-24",
+      "d_v30_media": -0.61719,
+      "d_v30_std": 1.65654,
+      "d_c_media": -0.02991,
+      "d_c_std": 0.84674,
+      "corr_d_c_d_v30": 0.64999,
+      "acuerdo_signo": 0.67002,
+      "operador_v30": "log((P_i+eps)/(P_j+eps)) sobre probabilidad",
+      "operador_c": "score_i - score_j sobre decision_function crudo"
+    },
+    {
+      "par": "A2",
+      "clase_i": "18-24",
+      "clase_j": "25-34",
+      "d_v30_media": -0.07738,
+      "d_v30_std": 1.4743,
+      "d_c_media": -0.01274,
+      "d_c_std": 0.76228,
+      "corr_d_c_d_v30": 0.57027,
+      "acuerdo_signo": 0.66787,
+      "operador_v30": "log((P_i+eps)/(P_j+eps)) sobre probabilidad",
+      "operador_c": "score_i - score_j sobre decision_function crudo"
+    },
+    {
+      "par": "A3",
+      "clase_i": "25-34",
+      "clase_j": "35-49",
+      "d_v30_media": 0.16535,
+      "d_v30_std": 1.68248,
+      "d_c_media": 0.01204,
+      "d_c_std": 0.79162,
+      "corr_d_c_d_v30": 0.64967,
+      "acuerdo_signo": 0.69156,
+      "operador_v30": "log((P_i+eps)/(P_j+eps)) sobre probabilidad",
+      "operador_c": "score_i - score_j sobre decision_function crudo"
+    },
+    {
+      "par": "A4",
+      "clase_i": "35-49",
+      "clase_j": "50-64",
+      "d_v30_media": 0.45881,
+      "d_v30_std": 2.11475,
+      "d_c_media": 0.04286,
+      "d_c_std": 0.87748,
+      "corr_d_c_d_v30": 0.74272,
+      "acuerdo_signo": 0.71212,
+      "operador_v30": "log((P_i+eps)/(P_j+eps)) sobre probabilidad",
+      "operador_c": "score_i - score_j sobre decision_function crudo"
+    },
+    {
+      "par": "A5",
+      "clase_i": "50-64",
+      "clase_j": "65-xx",
+      "d_v30_media": 0.32541,
+      "d_v30_std": 2.4604,
+      "d_c_media": 0.0158,
+      "d_c_std": 0.98591,
+      "corr_d_c_d_v30": 0.7892,
+      "acuerdo_signo": 0.7202,
+      "operador_v30": "log((P_i+eps)/(P_j+eps)) sobre probabilidad",
+      "operador_c": "score_i - score_j sobre decision_function crudo"
+    }
+  ],
+  "p04_residuales": [
+    {
+      "par": "A1",
+      "fold": 0,
+      "a": 0.17184,
+      "b": 0.33089,
+      "residuo_media": -0.00321,
+      "residuo_std": 0.64567,
+      "corr_residuo_d_v30": 0.00136
+    },
+    {
+      "par": "A2",
+      "fold": 0,
+      "a": 0.0098,
+      "b": 0.29428,
+      "residuo_media": -0.0019,
+      "residuo_std": 0.62595,
+      "corr_residuo_d_v30": -0.00799
+    },
+    {
+      "par": "A3",
+      "fold": 0,
+      "a": -0.04099,
+      "b": 0.30457,
+      "residuo_media": -0.00019,
+      "residuo_std": 0.59757,
+      "corr_residuo_d_v30": 0.00205
+    },
+    {
+      "par": "A4",
+      "fold": 0,
+      "a": -0.09804,
+      "b": 0.30716,
+      "residuo_media": 0.00465,
+      "residuo_std": 0.58849,
+      "corr_residuo_d_v30": 0.00505
+    },
+    {
+      "par": "A5",
+      "fold": 0,
+      "a": -0.08158,
+      "b": 0.31381,
+      "residuo_media": -0.0005,
+      "residuo_std": 0.60573,
+      "corr_residuo_d_v30": 0.01888
+    },
+    {
+      "par": "A1",
+      "fold": 1,
+      "a": 0.17511,
+      "b": 0.33389,
+      "residuo_media": -0.00086,
+      "residuo_std": 0.64066,
+      "corr_residuo_d_v30": -0.00511
+    },
+    {
+      "par": "A2",
+      "fold": 1,
+      "a": 0.00783,
+      "b": 0.29552,
+      "residuo_media": -0.00345,
+      "residuo_std": 0.62334,
+      "corr_residuo_d_v30": -0.00037
+    },
+    {
+      "par": "A3",
+      "fold": 1,
+      "a": -0.03623,
+      "b": 0.30596,
+      "residuo_media": -0.00274,
+      "residuo_std": 0.60198,
+      "corr_residuo_d_v30": 0.00132
+    },
+    {
+      "par": "A4",
+      "fold": 1,
+      "a": -0.09626,
+      "b": 0.308,
+      "residuo_media": 0.00314,
+      "residuo_std": 0.58775,
+      "corr_residuo_d_v30": 0.00133
+    },
+    {
+      "par": "A5",
+      "fold": 1,
+      "a": -0.091,
+      "b": 0.31688,
+      "residuo_media": 0.00359,
+      "residuo_std": 0.6039,
+      "corr_residuo_d_v30": -0.00016
+    },
+    {
+      "par": "A1",
+      "fold": 2,
+      "a": 0.17497,
+      "b": 0.33177,
+      "residuo_media": 0.00181,
+      "residuo_std": 0.63857,
+      "corr_residuo_d_v30": 0.01398
+    },
+    {
+      "par": "A2",
+      "fold": 2,
+      "a": 0.00942,
+      "b": 0.29616,
+      "residuo_media": -0.00395,
+      "residuo_std": 0.627,
+      "corr_residuo_d_v30": -0.00193
+    },
+    {
+      "par": "A3",
+      "fold": 2,
+      "a": -0.03829,
+      "b": 0.30494,
+      "residuo_media": 0.0041,
+      "residuo_std": 0.59875,
+      "corr_residuo_d_v30": 0.00416
+    },
+    {
+      "par": "A4",
+      "fold": 2,
+      "a": -0.09891,
+      "b": 0.30687,
+      "residuo_media": 0.00208,
+      "residuo_std": 0.5894,
+      "corr_residuo_d_v30": 0.00862
+    },
+    {
+      "par": "A5",
+      "fold": 2,
+      "a": -0.08375,
+      "b": 0.31514,
+      "residuo_media": -0.00206,
+      "residuo_std": 0.60979,
+      "corr_residuo_d_v30": 0.00467
+    },
+    {
+      "par": "A1",
+      "fold": 3,
+      "a": 0.17765,
+      "b": 0.33268,
+      "residuo_media": 0.00235,
+      "residuo_std": 0.64271,
+      "corr_residuo_d_v30": -0.00044
+    },
+    {
+      "par": "A2",
+      "fold": 3,
+      "a": 0.01497,
+      "b": 0.29454,
+      "residuo_media": -0.00708,
+      "residuo_std": 0.62494,
+      "corr_residuo_d_v30": 0.00642
+    },
+    {
+      "par": "A3",
+      "fold": 3,
+      "a": -0.04076,
+      "b": 0.30581,
+      "residuo_media": 0.00619,
+      "residuo_std": 0.60415,
+      "corr_residuo_d_v30": -0.0098
+    },
+    {
+      "par": "A4",
+      "fold": 3,
+      "a": -0.09754,
+      "b": 0.30861,
+      "residuo_media": -0.00206,
+      "residuo_std": 0.58836,
+      "corr_residuo_d_v30": -0.00349
+    },
+    {
+      "par": "A5",
+      "fold": 3,
+      "a": -0.09334,
+      "b": 0.31673,
+      "residuo_media": -0.00404,
+      "residuo_std": 0.60603,
+      "corr_residuo_d_v30": 0.00708
+    },
+    {
+      "par": "A1",
+      "fold": 4,
+      "a": 0.17602,
+      "b": 0.3315,
+      "residuo_media": -0.00073,
+      "residuo_std": 0.64262,
+      "corr_residuo_d_v30": -0.00466
+    },
+    {
+      "par": "A2",
+      "fold": 4,
+      "a": 0.0122,
+      "b": 0.29389,
+      "residuo_media": 0.00098,
+      "residuo_std": 0.62742,
+      "corr_residuo_d_v30": 0.0032
+    },
+    {
+      "par": "A3",
+      "fold": 4,
+      "a": -0.03737,
+      "b": 0.30723,
+      "residuo_media": -0.00284,
+      "residuo_std": 0.60077,
+      "corr_residuo_d_v30": 0.00146
+    },
+    {
+      "par": "A4",
+      "fold": 4,
+      "a": -0.10426,
+      "b": 0.30949,
+      "residuo_media": 0.00283,
+      "residuo_std": 0.58531,
+      "corr_residuo_d_v30": -0.0003
+    },
+    {
+      "par": "A5",
+      "fold": 4,
+      "a": -0.08358,
+      "b": 0.31718,
+      "residuo_media": -0.00442,
+      "residuo_std": 0.60536,
+      "corr_residuo_d_v30": -0.00565
+    }
+  ],
+  "p13_auc_por_pareja": [
+    {
+      "par": "A1",
+      "n_filas_en_la_pareja": 57539,
+      "v30_acierta_en_la_pareja": 0.60482,
+      "candidato_acierta_en_la_pareja": 0.66407,
+      "auc_residuo": 0.51359,
+      "auc_d_v30": 0.65549
+    },
+    {
+      "par": "A2",
+      "n_filas_en_la_pareja": 57023,
+      "v30_acierta_en_la_pareja": 0.51257,
+      "candidato_acierta_en_la_pareja": 0.6322,
+      "auc_residuo": 0.49416,
+      "auc_d_v30": 0.50516
+    },
+    {
+      "par": "A3",
+      "n_filas_en_la_pareja": 56577,
+      "v30_acierta_en_la_pareja": 0.50673,
+      "candidato_acierta_en_la_pareja": 0.67179,
+      "auc_residuo": 0.4946,
+      "auc_d_v30": 0.43326
+    },
+    {
+      "par": "A4",
+      "n_filas_en_la_pareja": 56290,
+      "v30_acierta_en_la_pareja": 0.62206,
+      "candidato_acierta_en_la_pareja": 0.7343,
+      "auc_residuo": 0.50318,
+      "auc_d_v30": 0.41996
+    },
+    {
+      "par": "A5",
+      "n_filas_en_la_pareja": 55220,
+      "v30_acierta_en_la_pareja": 0.73276,
+      "candidato_acierta_en_la_pareja": 0.78658,
+      "auc_residuo": 0.49461,
+      "auc_d_v30": 0.4569
+    }
+  ],
+  "p10_resultados": [
+    {
+      "brazo": "real",
+      "corrected_cv": 0.6132432,
+      "delta_vs_v30": -0.0002039,
+      "fold_scores": "[0.615546, 0.616524, 0.612908, 0.613833, 0.607443]",
+      "folds_positivos": 1,
+      "rescate": 701,
+      "danio": 735,
+      "neto": -34
+    },
+    {
+      "brazo": "barajado",
+      "corrected_cv": 0.6130362,
+      "delta_vs_v30": -0.0004109,
+      "fold_scores": "[0.615761, 0.616249, 0.612806, 0.613017, 0.607372]",
+      "folds_positivos": 0,
+      "rescate": 641,
+      "danio": 707,
+      "neto": -66
+    },
+    {
+      "brazo": "aleatorio",
+      "corrected_cv": 0.6133229,
+      "delta_vs_v30": -0.0001242,
+      "fold_scores": "[0.616441, 0.61692, 0.612829, 0.612656, 0.607791]",
+      "folds_positivos": 3,
+      "rescate": 679,
+      "danio": 705,
+      "neto": -26
+    },
+    {
+      "brazo": "v30",
+      "corrected_cv": 0.6134471,
+      "delta_vs_v30": 0.0,
+      "fold_scores": "[0.616236, 0.616687, 0.613174, 0.613512, 0.607654]",
+      "folds_positivos": 0,
+      "rescate": 0,
+      "danio": 0,
+      "neto": 0
+    }
+  ],
+  "p09_por_pareja": [
+    {
+      "par": "A1",
+      "filas_adyacentes": 50608,
+      "filas_corregidas": 980,
+      "aciertos_antes": 31822,
+      "aciertos_despues": 31799,
+      "rescate": 377,
+      "danio": 400,
+      "neto": -23
+    },
+    {
+      "par": "A2",
+      "filas_adyacentes": 48606,
+      "filas_corregidas": 1039,
+      "aciertos_antes": 26478,
+      "aciertos_despues": 26446,
+      "rescate": 379,
+      "danio": 411,
+      "neto": -32
+    },
+    {
+      "par": "A3",
+      "filas_adyacentes": 45678,
+      "filas_corregidas": 785,
+      "aciertos_antes": 24472,
+      "aciertos_despues": 24486,
+      "rescate": 246,
+      "danio": 232,
+      "neto": 14
+    },
+    {
+      "par": "A4",
+      "filas_adyacentes": 43117,
+      "filas_corregidas": 559,
+      "aciertos_antes": 27662,
+      "aciertos_despues": 27635,
+      "rescate": 141,
+      "danio": 168,
+      "neto": -27
+    },
+    {
+      "par": "A5",
+      "filas_adyacentes": 33820,
+      "filas_corregidas": 366,
+      "aciertos_antes": 22828,
+      "aciertos_despues": 22803,
+      "rescate": 78,
+      "danio": 103,
+      "neto": -25
+    }
+  ],
+  "p11_localidad": [
+    {
+      "escenario": "S1 todas las filas",
+      "n": 169336,
+      "f1_v30": 0.61345,
+      "f1_corregido": 0.61324,
+      "delta": -0.0002
+    },
+    {
+      "escenario": "S2 top1/top2 adyacentes",
+      "n": 130106,
+      "f1_v30": 0.61258,
+      "f1_corregido": 0.61232,
+      "delta": -0.00026
+    },
+    {
+      "escenario": "S3 error adyacente de V30",
+      "n": 50984,
+      "f1_v30": 0.0,
+      "f1_corregido": 0.01269,
+      "delta": 0.01269
+    }
+  ],
+  "p12_rescate_alta_confianza": {
+    "errores_adyacentes_alta": 7422,
+    "errores_adyacentes_baja": 43562,
+    "rescatados_alta": 0,
+    "danados_alta": 735,
+    "neto_alta": -735
+  },
+  "p14_betas": [
+    {
+      "fold": 0,
+      "beta_shared": 0.1
+    },
+    {
+      "fold": 1,
+      "beta_shared": 0.05
+    },
+    {
+      "fold": 2,
+      "beta_shared": -0.1
+    },
+    {
+      "fold": 3,
+      "beta_shared": -0.05
+    },
+    {
+      "fold": 4,
+      "beta_shared": 0.05
+    }
+  ],
+  "p22_mecanismo": "INVALIDATED",
+  "p22_motivo": "la correccion con senal real (-0.0002039) no supera a la correccion con ruido aleatorio (-0.0001242). No hay evidencia de que la correspondencia del residuo sea lo que aporta",
+  "p20_variabilidad": {
+    "variabilidad": 0.0008876,
+    "ratio_delta": 0.23
+  },
+  "protocolo": {
+    "correccion": "solo intercambia top1 y top2 de V30, y solo si son adyacentes. No puede llevar la fila a una tercera clase ni a una no adyacente",
+    "a_b_beta": "a y b de d_C = a + b * d_V30 se ajustan en inner_train; beta se elige en inner_val; outer_val solo recibe la correccion ya fijada",
+    "betas": [
+      -1.0,
+      -0.6,
+      -0.4,
+      -0.2,
+      -0.1,
+      -0.05,
+      0.05,
+      0.1,
+      0.2,
+      0.4,
+      0.6,
+      1.0
+    ],
+    "eps": 1e-06,
+    "semilla": 20261003
+  },
+  "restricciones": {
+    "usa_test": false,
+    "usa_holdout": false,
+    "usa_red": false,
+    "divide_score_por_suma": false,
+    "score_c_es_decision_function": true,
+    "outer_val_en_el_ajuste": false,
+    "leaderboard_para_ajustar": false
+  },
+  "segundos": 1.9
+}

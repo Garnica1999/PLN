@@ -1,0 +1,6 @@
+par,clase_i,clase_j,d_v30_media,d_v30_std,d_c_media,d_c_std,corr_d_c_d_v30,acuerdo_signo,operador_v30,operador_c
+A1,13-17,18-24,-0.61719,1.65654,-0.02991,0.84674,0.64999,0.67002,log((P_i+eps)/(P_j+eps)) sobre probabilidad,score_i - score_j sobre decision_function crudo
+A2,18-24,25-34,-0.07738,1.4743,-0.01274,0.76228,0.57027,0.66787,log((P_i+eps)/(P_j+eps)) sobre probabilidad,score_i - score_j sobre decision_function crudo
+A3,25-34,35-49,0.16535,1.68248,0.01204,0.79162,0.64967,0.69156,log((P_i+eps)/(P_j+eps)) sobre probabilidad,score_i - score_j sobre decision_function crudo
+A4,35-49,50-64,0.45881,2.11475,0.04286,0.87748,0.74272,0.71212,log((P_i+eps)/(P_j+eps)) sobre probabilidad,score_i - score_j sobre decision_function crudo
+A5,50-64,65-xx,0.32541,2.4604,0.0158,0.98591,0.7892,0.7202,log((P_i+eps)/(P_j+eps)) sobre probabilidad,score_i - score_j sobre decision_function crudo
