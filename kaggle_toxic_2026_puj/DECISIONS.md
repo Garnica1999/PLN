@@ -6657,7 +6657,7 @@ governance_status   PENDING                        la decision de gobernanza est
 ```
 
 `CANDIDATE_PENDING_GOVERNANCE` queda **`SUPERSEDED`**: no incorrecta, sino subespecificada.
-Significaba lo correcto — candidato no adoptado, decision pendiente — pero colapsaba los dos
+Significaba lo correcto  -  candidato no adoptado, decision pendiente  -  pero colapsaba los dos
 ultimos ejes en una palabra.
 
 **Los dos ficheros historicos NO se modifican.** Reescribir un informe ya publicado para
@@ -6723,3 +6723,91 @@ filas        1154      columnas  id, HS, TR, AG
 checks       38, fallos 0
 subida       NO       leaderboard NO      labels de test NO      holdout NO
 ```
+
+
+## D-213 a D-217: post-mortem de la transferencia, y la causa que faltaba
+
+Fecha 2026-09-29. Evidencia externa nueva: candidato LB 0,77522 frente a V03 0,78306, delta -0,00784.
+
+### D-213. El hecho estructural
+
+```text
+gap de V03        LB - CV = +0,00585   (el LB esta POR ENCIMA)
+gap del candidato LB - CV = -0,01020   (el LB esta por debajo)
+diferencia de gaps        = -0,01604
+```
+
+No es solo que el candidato pierda: **los dos gaps van en direcciones opuestas**.
+
+### D-214. El confounder de tamano, medido
+
+Submuestreo por grupo del desarrollo, 3 repeticiones por tamano, semillas fijadas antes:
+
+```text
+ tam   CV_V03 medio   desviacion   rango
+ 100%     0,777211     0,000000   0,000000   (las 3 identicas: control limpio)
+  90%     0,768916     0,007214   0,014086
+  80%     0,762201     0,003470   0,006516
+  70%     0,765370     0,002017   0,003927
+```
+
+**La desviacion por reducir datos es 0,88 veces el efecto.** Al 90 por ciento el rango entre
+repeticiones (0,0141) **supera el efecto entero**. El confounder tiene la magnitud correcta.
+
+### D-215. La regla de pesos y la prevalencia son estables
+
+La misma formula produce poblaciones de pesos practicamente iguales en todos los tamanos
+(mediana 0, fraccion retirada 0,1366-0,1424, ningun peso > 1). Y la prevalencia OOF predicha se
+mueve muy poco (HS +0,0101, TR +0,0209, AG -0,0088). **Ni la sensibilidad de la regla ni el
+cambio de distribucion explican nada.**
+
+### D-216. LA CAUSA QUE FALTABA, Y ES LA MAYOR: SELECCION DEL BASELINE
+
+El proyecto tiene **21 mediciones de leaderboard no triviales**. Y:
+
+```text
+maximo    0,78306   <- V03
+mediana   0,77663
+desviacion 0,00574
+
+el candidato (0,77522) cae en el percentil 42,9
+esta por debajo de la MEDIANA por solo 0,00141
+ventaja del maximo sobre la mediana: 0,00643
+el gap a explicar:                   0,00585
+```
+
+**Los dos numeros son del mismo tamano.** El candidato no quedo por debajo: quedo **en la
+mediana**. Y V03 no es una medicion representativa: es el **maximo de 21 intentos**. Comparar una
+medicion fresca contra un maximo seleccionado favorece al maximo en una cantidad del orden del
+propio gap.
+
+Esto lo encontro la **auditoria independiente** delegada al especialista de Kaggle, que ademas
+corrigio tres cosas mas: A estaba subvalorada (es el termino dominante, con cuota declarada de
+52-87 por ciento segun la forma de la curva), "gana en todos los tamanos" era un non-sequitur
+como evidencia sobre transferencia externa, y faltaba la transferencia de umbral como causa no
+evaluada.
+
+### D-217. La reconciliacion que la auditoria exigio
+
+```text
+al 100% la sensibilidad dio  +0,006765
+el canonico es              +0,0082045862
+diferencia                   0,001440, el 17,5 por ciento del efecto
+```
+
+**Causa**: la sensibilidad uso la **mediana** de los multiplicadores y el canonico los
+**por pliegue**. La columna del candidato queda como **cota inferior declarada**. La parte que
+sostiene el argumento de tamano no se ve afectada: **V03 al 100 por ciento da 0,777211,
+exactamente el valor canonico.**
+
+### El candidato NO cambia de estado
+
+```text
+external_transfer   NEGATIVE, registrado
+candidate_status    PROMISING_UNCONFIRMED, sin cambios
+research_status     EXPERIMENTAL_RESEARCH_CLOSED
+```
+
+Un leaderboard negativo **no es** un experimento invalido. La auditoria encontro un sesgo en la
+INTERPRETACION, no en el experimento: la reproduccion sigue siendo R3, las tres particiones
+siguen positivas y la permutacion sigue en p = 0,000999.

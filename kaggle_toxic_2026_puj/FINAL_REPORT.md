@@ -2714,3 +2714,39 @@ no se toca.
 El score de Kaggle, si aparece, sera transferencia externa del candidato congelado y no una
 herramienta de tuning. No se afirma que la submission mejore a V03.
 <!-- /SUBMISSION 2026-09-29 -->
+
+<!-- POSTMORTEM 2026-09-29 -->
+### Post-mortem de la transferencia CV -> LB (2026-09-29)
+
+```text
+V03 LB        0,78306
+candidato LB  0,77522     delta -0,00784
+clase         EXTERNAL_TRANSFER_RESULT, transferencia NEGATIVA
+```
+
+**El hecho estructural**: el gap de V03 (`LB-CV`) es `+0,00585` y el del candidato `-0,01020`.
+Los dos gaps van en direcciones opuestas.
+
+**La causa dominante, y faltaba en la taxonomia**: SELECCION DEL BASELINE. El proyecto tiene 21
+mediciones de leaderboard no triviales; V03 (`0,78306`) es el **maximo** de todas, con mediana
+`0,77663`. El candidato cae en el **percentil 42,9**, a solo `0,00141` de la mediana.
+
+```text
+ventaja del maximo sobre la mediana   0,00643
+el gap a explicar                     0,00585
+```
+
+**El confounder de tamano tambien existe**: reducir el entrenamiento un 10 por ciento mueve el CV
+de V03 con desviacion `0,007214`, el 88 por ciento del efecto, y al 90 por ciento el rango entre
+repeticiones supera el efecto entero.
+
+**La regla de pesos y la prevalencia son estables**: no explican nada.
+
+```text
+candidate_status    PROMISING_UNCONFIRMED    sin cambios
+external_transfer   NEGATIVE, registrado
+research_status     EXPERIMENTAL_RESEARCH_CLOSED
+```
+
+Un leaderboard negativo no es un experimento invalido.
+<!-- /POSTMORTEM 2026-09-29 -->

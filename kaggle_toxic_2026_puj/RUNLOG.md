@@ -2915,3 +2915,20 @@ No se sube a Kaggle. No se consulta el leaderboard. No se leen labels de test. N
 holdout. No se generan variantes.
 
 Sin push, sin merge, sin rebase.
+
+## 2026-09-29, post-mortem de la transferencia CV -> LB
+
+- `experiments/p70_01_sensibilidad_tamano.py`: 12 corridas de submuestreo por grupo.
+  Desviacion 0,007214 = 0,88x el efecto. Control limpio: las 3 al 100% identicas.
+- `experiments/p70_02_postmortem.py`: prevalencia, margenes, descomposicion e interseccion.
+- `experiments/p70_03_correccion_postmortem.py`: **la causa dominante es la SELECCION del
+  baseline**. V03 es el maximo de 21 mediciones; el candidato cae en la mediana.
+
+```text
+ventaja del maximo sobre la mediana   0,00643
+el gap a explicar                     0,00585
+```
+
+Auditoria independiente del especialista de Kaggle: 3 objeciones, todas incorporadas.
+
+Sin test, sin holdout, sin submission nueva, sin tuning. Sin push.

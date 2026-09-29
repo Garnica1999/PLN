@@ -1,0 +1,407 @@
+{
+  "familia": "P70_POSTMORTEM_TRANSFERENCIA",
+  "experiment_id": "P70-01",
+  "fecha": "2026-09-29T20:24:42+00:00",
+  "naturaleza": "POST-MORTEM. 0 submissions nuevas, 0 test, 0 holdout, 0 leaderboard",
+  "resultado_externo": {
+    "clase": "EXTERNAL_TRANSFER_RESULT",
+    "LB_V03": 0.78306,
+    "LB_candidato": 0.77522,
+    "delta_LB": -0.00784,
+    "transferencia": "NEGATIVA"
+  },
+  "confound_de_tamano": {
+    "V03_enviado_filas": 1731,
+    "candidato_enviado_filas": 1483,
+    "holdout_excluido_filas": 248,
+    "confirmado_por": [
+      "experiments/p69_10_submission_candidato.py",
+      "reports/toxic_submission_cost_sensitive_manifest.json",
+      "experiments/baseline_v03_frozen/pipeline_v03.json"
+    ],
+    "training_ids_hash": "4edbfd82b1fb4a23a53a544467efad5a",
+    "excluded_holdout_ids_hash": "3b0c4726d3a9358f1ba50b2f243ed4b9",
+    "holdout_labels_leidas": false
+  },
+  "sensibilidad": {
+    "semillas": {
+      "100": [
+        20261003,
+        20261004,
+        20261005
+      ],
+      "90": [
+        20261006,
+        20261007,
+        20261008
+      ],
+      "80": [
+        20261009,
+        20261010,
+        20261011
+      ],
+      "70": [
+        20261012,
+        20261013,
+        20261014
+      ]
+    },
+    "tamanos": [
+      100,
+      90,
+      80,
+      70
+    ],
+    "resumen_por_tamano": [
+      {
+        "tamano_pct": 100,
+        "cv_v03_medio": 0.7772114525,
+        "cv_v03_desv": 0.0,
+        "cv_v03_rango": 0.0,
+        "delta_medio": 0.0067650933,
+        "delta_desv": 0.0,
+        "n_filas_medio": 1483
+      },
+      {
+        "tamano_pct": 90,
+        "cv_v03_medio": 0.7689161154,
+        "cv_v03_desv": 0.0072142832,
+        "cv_v03_rango": 0.0140858961,
+        "delta_medio": 0.0069777288,
+        "delta_desv": 0.0038841975,
+        "n_filas_medio": 1334
+      },
+      {
+        "tamano_pct": 80,
+        "cv_v03_medio": 0.7622009711,
+        "cv_v03_desv": 0.0034695953,
+        "cv_v03_rango": 0.0065162581,
+        "delta_medio": 0.0109134848,
+        "delta_desv": 0.00158017,
+        "n_filas_medio": 1185
+      },
+      {
+        "tamano_pct": 70,
+        "cv_v03_medio": 0.7653697306,
+        "cv_v03_desv": 0.0020171802,
+        "cv_v03_rango": 0.0039265018,
+        "delta_medio": 0.0114700151,
+        "delta_desv": 0.0042148037,
+        "n_filas_medio": 1038
+      }
+    ],
+    "desviacion_maxima": 0.0072142832,
+    "rango_maximo": 0.0140858961,
+    "caida_100_a_70": 0.0118417219,
+    "efecto_del_weighting": 0.0082045862,
+    "ratio_desviacion_sobre_efecto": 0.8793
+  },
+  "estabilidad_de_pesos": {
+    "pares_comparables": 3,
+    "nota": "el submuestreo por grupo cambia los ids en cada corrida, luego la comparacion directa de pesos entre tamanos no es identificable por esa via"
+  },
+  "reproducibilidad": {
+    "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "corrected_cv_v03": 0.7772114525165721,
+    "seed_base": 42
+  },
+  "formulacion": "V03 remains the best verified leaderboard result.",
+  "prevalencia": [
+    {
+      "etiqueta": "HS",
+      "prevalencia_real": 0.436952,
+      "prevalencia_V03": 0.457181,
+      "prevalencia_candidato": 0.467296,
+      "cambio_absoluto": 0.010115
+    },
+    {
+      "etiqueta": "TR",
+      "prevalencia_real": 0.300067,
+      "prevalencia_V03": 0.300067,
+      "prevalencia_candidato": 0.320971,
+      "cambio_absoluto": 0.020904
+    },
+    {
+      "etiqueta": "AG",
+      "prevalencia_real": 0.382333,
+      "prevalencia_V03": 0.377613,
+      "prevalencia_candidato": 0.368847,
+      "cambio_absoluto": -0.008766
+    }
+  ],
+  "descomposicion": [
+    {
+      "etiqueta": "HS",
+      "f1_V03": 0.761689,
+      "f1_candidato": 0.778523,
+      "delta_f1": 0.016834,
+      "prec_V03": 0.744838,
+      "prec_cand": 0.753247,
+      "rec_V03": 0.779321,
+      "rec_cand": 0.805556
+    },
+    {
+      "etiqueta": "TR",
+      "f1_V03": 0.81573,
+      "f1_candidato": 0.816504,
+      "delta_f1": 0.000773,
+      "prec_V03": 0.81573,
+      "prec_cand": 0.789916,
+      "rec_V03": 0.81573,
+      "rec_cand": 0.844944
+    },
+    {
+      "etiqueta": "AG",
+      "f1_V03": 0.754215,
+      "f1_candidato": 0.761221,
+      "delta_f1": 0.007006,
+      "prec_V03": 0.758929,
+      "prec_cand": 0.775137,
+      "rec_V03": 0.749559,
+      "rec_cand": 0.747795
+    }
+  ],
+  "margenes": [
+    {
+      "etiqueta": "HS",
+      "mediana_margen_V03": 0.229209,
+      "mediana_margen_candidato": 0.240057,
+      "frac_cerca_umbral_V03": 0.211059,
+      "frac_cerca_umbral_candidato": 0.215779
+    },
+    {
+      "etiqueta": "TR",
+      "mediana_margen_V03": 0.377789,
+      "mediana_margen_candidato": 0.380357,
+      "frac_cerca_umbral_V03": 0.090357,
+      "frac_cerca_umbral_candidato": 0.088334
+    },
+    {
+      "etiqueta": "AG",
+      "mediana_margen_V03": 0.250567,
+      "mediana_margen_candidato": 0.262484,
+      "frac_cerca_umbral_V03": 0.193527,
+      "frac_cerca_umbral_candidato": 0.180715
+    }
+  ],
+  "interseccion": [
+    {
+      "etiqueta": "HS",
+      "V03_ko_cand_ok": 42,
+      "V03_ok_cand_ko": 23,
+      "ambos_ok": 1144,
+      "ambos_ko": 274,
+      "rescue": 42,
+      "damage": 23,
+      "net": 19
+    },
+    {
+      "etiqueta": "TR",
+      "V03_ko_cand_ok": 14,
+      "V03_ok_cand_ko": 19,
+      "ambos_ok": 1300,
+      "ambos_ko": 150,
+      "rescue": 14,
+      "damage": 19,
+      "net": -5
+    },
+    {
+      "etiqueta": "AG",
+      "V03_ko_cand_ok": 43,
+      "V03_ok_cand_ko": 32,
+      "ambos_ok": 1174,
+      "ambos_ko": 234,
+      "rescue": 43,
+      "damage": 32,
+      "net": 11
+    },
+    {
+      "etiqueta": "GLOBAL",
+      "V03_ko_cand_ok": 99,
+      "V03_ok_cand_ko": 74,
+      "rescue": 99,
+      "damage": 74,
+      "net": 25
+    }
+  ],
+  "hechos": [
+    {
+      "hecho": "el weighting mejora el protocolo OOF controlado",
+      "valor": "+0.0082045862",
+      "verificado": true
+    },
+    {
+      "hecho": "la submission congelada obtiene LB por debajo de V03",
+      "valor": "0.77522 contra 0.78306, delta -0.00784",
+      "verificado": true
+    },
+    {
+      "hecho": "los dos hechos no permiten afirmar que el weighting sea falso",
+      "valor": "el CV mejora en las tres particiones y la permutacion es p = 0,000999",
+      "verificado": true
+    }
+  ],
+  "causas_evaluadas": {
+    "A_diferencia_de_datos": {
+      "aplica": true,
+      "magnitud_medida": "reducir el entrenamiento un 10 por ciento mueve el CV de V03 con desviacion 0.007214, que es 0.88 veces el efecto",
+      "la_diferencia_real": "14.3 por ciento menos filas",
+      "lectura": "la magnitud es del orden correcto para explicar el deficit. NO se puede medir V03 con 1731 sin el holdout"
+    },
+    "B_el_weighting_no_generaliza": {
+      "aplica": "NO_DEMOSTRABLE",
+      "razon": "el candidato sigue batiendo a V03 en TODOS los tamanos medidos, con deltas entre +0,0068 y +0,0151. No hay evidencia de que el mecanismo sea danino"
+    },
+    "C_variabilidad_entre_particiones": {
+      "aplica": true,
+      "magnitud_medida": "el rango dentro de un mismo tamano llega a 0.014086",
+      "lectura": "comparable al efecto, y refuerza A"
+    },
+    "D_cambio_en_la_distribucion_de_clases": {
+      "aplica": false,
+      "razon": "medido en el item 16: la prevalencia predicha cambia muy poco"
+    },
+    "E_sensibilidad_de_la_regla_de_pesos": {
+      "aplica": false,
+      "razon": "medido en el item 9: la misma formula produce poblaciones de pesos estables en todos los tamanos"
+    },
+    "H_no_identificable_con_datos_permitidos": {
+      "aplica": true,
+      "razon": "el holdout esta congelado y las labels del test estan prohibidas, luego no se puede separar 'menos datos' de 'no transfiere' con certeza"
+    }
+  },
+  "clasificacion": "MIXED_EXPLANATION",
+  "detalle_clasificacion": "el confounder de tamano es plausible por magnitud, la regla de pesos y la prevalencia son estables, y la separacion final no es identificable sin datos prohibidos",
+  "figuras": [
+    "p70_04_prevalencia_oof.png",
+    "p70_05_rescue_damage_net.png",
+    "p70_06_cv_vs_lb.png"
+  ],
+  "git_commit": "7cef16a",
+  "correccion_tras_auditoria": {
+    "auditoria": "independiente, delegada al especialista de Kaggle",
+    "hallazgos_que_cambian_la_respuesta": [
+      {
+        "n_scores_de_leaderboard": 22,
+        "n_no_triviales": 21,
+        "maximo": 0.78306,
+        "maximo_es": "v03_lr_union_thr",
+        "mediana_no_trivial": 0.77663,
+        "media_no_trivial": 0.7756252380952382,
+        "desviacion_no_trivial": 0.005739513584832434,
+        "el_maximo_es_V03": true,
+        "candidato_LB": 0.77522,
+        "candidato_percentil": 42.9,
+        "candidato_menos_mediana": -0.00141,
+        "ventaja_del_maximo_sobre_la_mediana": 0.00643,
+        "el_gap_a_explicar": 0.00585
+      }
+    ],
+    "la_causa_que_faltaba": "F_seleccion_del_baseline",
+    "cuota_de_A_como_mapeo": [
+      {
+        "forma": "lineal",
+        "H_predicho": 0.0139,
+        "cuota_de_A": 0.8663,
+        "residuo": 0.002145
+      },
+      {
+        "forma": "logaritmica",
+        "H_predicho": 0.012232,
+        "cuota_de_A": 0.7623,
+        "residuo": 0.003813
+      },
+      {
+        "forma": "decaimiento 0.81",
+        "H_predicho": 0.008409,
+        "cuota_de_A": 0.5241,
+        "residuo": 0.007636
+      },
+      {
+        "forma": "concavidad estricta (cota)",
+        "H_predicho": 0.011203,
+        "cuota_de_A": 0.6982,
+        "residuo": 0.004842
+      }
+    ],
+    "reconciliacion_del_control": {
+      "delta_sensibilidad_100": 0.006765,
+      "delta_canonico": 0.0082045862,
+      "diferencia": 0.00144,
+      "causa": "mediana de multiplicadores frente a multiplicadores por pliegue",
+      "lectura": "la columna del candidato queda como cota inferior declarada. La sensibilidad de V03, que es la que sostiene el argumento de tamano, no se ve afectada: V03 al 100 por ciento da 0,777211, exactamente el valor canonico"
+    },
+    "causas_corregidas": [
+      {
+        "causa": "F_seleccion_del_baseline",
+        "aplica": true,
+        "magnitud": "el maximo esta 0.00643 por encima de la mediana, y el gap a explicar es 0.00585",
+        "por_que": "V03 es el maximo de 21 mediciones; el candidato es una medicion fresca que cae en el percentil 43. Comparar una contra un maximo seleccionado favorece al maximo en un tamano del orden del propio gap"
+      },
+      {
+        "causa": "A_diferencia_de_datos",
+        "aplica": true,
+        "magnitud": "cuota estimada entre 58 y 95 por ciento del gap segun la forma de la curva, con IC del slope que incluye cero",
+        "por_que": "la extrapolacion es hacia ARRIBA del rango medido y la concavidad tipica sobreestima la cuota. Queda como escenario declarado, no como verdicto"
+      },
+      {
+        "causa": "C_variabilidad_entre_particiones",
+        "aplica": "COMPONENTE",
+        "magnitud": "rango de 0.0141 dentro de un mismo tamano",
+        "por_que": "es una componente de incertidumbre, no una explicacion separada"
+      },
+      {
+        "causa": "B_el_weighting_no_generaliza",
+        "aplica": "SIN_EVIDENCIA_POSITIVA",
+        "magnitud": "un unico test a ~1 EE de la diferencia",
+        "por_que": "el candidato cae en la mediana historica, no por debajo. Un leaderboard negativo no es evidencia de que el mecanismo sea falso"
+      },
+      {
+        "causa": "D_cambio_en_la_distribucion_de_clases",
+        "aplica": "NO_EVALUADO",
+        "magnitud": "la prevalencia OOF se mueve poco, pero no se puede evaluar en test",
+        "por_que": "no evaluable sin labels de test"
+      },
+      {
+        "causa": "E_sensibilidad_de_la_regla_de_pesos",
+        "aplica": "NO EVIDENCIADO",
+        "magnitud": "masa retirada estable 0.1366-0.1424, pero eso mide masa, no identidad",
+        "por_que": "la estabilidad de escala no es un analisis de sensibilidad de la regla"
+      },
+      {
+        "causa": "G_transferencia_de_umbral",
+        "aplica": "NO_EVALUADO",
+        "magnitud": "los umbrales se ajustaron en dev para V03 y se reutilizan",
+        "por_que": "el candidato mueve la prevalencia predicha de TR +0.0209, y un intercambio de precision/recall puede cambiar de signo con otra prevalencia de test"
+      }
+    ],
+    "clasificacion": "MIXED_EXPLANATION",
+    "detalle": "La causa dominante en el registro es la SELECCION del baseline, que la taxonomia no contemplaba: V03 es el maximo de 21 mediciones de leaderboard y el candidato es una medicion fresca que cae en la mediana. El confounder de tamano aporta una cuota declarada de entre el 58 y el 95 por ciento segun la forma de la curva, con un intervalo que incluye cero. La transferencia de umbral y el cambio de distribucion no son evaluables sin labels de test. No hay evidencia positiva de que el mecanismo sea falso: el candidato aterrizo donde aterriza una submission media de esta familia.",
+    "correcciones_de_redaccion": [
+      [
+        "B decia NO_DEMOSTRABLE",
+        "SIN_EVIDENCIA_POSITIVA: la razon anterior era un non-sequitur"
+      ],
+      [
+        "A decia 'magnitud del orden correcto'",
+        "A es el termino dominante del estimador puntual, con cuota declarada"
+      ],
+      [
+        "C figuraba como causa",
+        "C es una componente de incertidumbre, no una causa"
+      ],
+      [
+        "D y E decian NO aplica",
+        "NO_EVALUADO y NO EVIDENCIADO, respectivamente"
+      ],
+      [
+        "faltaba F",
+        "seleccion del baseline, y es la de mayor magnitud"
+      ],
+      [
+        "faltaba G",
+        "transferencia de umbral, no evaluada"
+      ]
+    ]
+  }
+}
