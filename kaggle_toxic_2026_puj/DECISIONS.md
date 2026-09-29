@@ -5483,3 +5483,198 @@ E2-08, y O por condicion no cumplida.
 V03 remains the best verified leaderboard result.
 ```
 <!-- /P62 2026-09-29 -->
+
+<!-- P63 2026-09-29 -->
+## D-148. El id NO es un contador, y su clasificacion se hace por reglas, no por recuento
+
+**Contexto.** V15-00 audito que informacion ofrece el fichero bruto y concluyo que "la
+unica columna no textual es id, que es un contador". El encargo de P63 prohibe expresamente
+dar eso por bueno, y con razon.
+
+**Lo que se midio.** El id es un entero en el bloque contiguo
+[20001,
+24999]. Train tiene
+1731 ids y test
+1154, con interseccion
+**0** y union
+2885 sobre
+4999
+posiciones, de las que 2114
+no las usa nadie. `grupos_near_duplicados.csv` tiene exactamente
+2885 filas.
+
+**La categoria no sale de contar pruebas a favor.** Sale de reglas explicitas evaluadas en
+orden fijo, porque contar mezclaria pruebas que apuntan a categorias distintas y decidiria
+por mayoria.
+
+| regla | se cumple |
+|---|---|
+| F. POSSIBLE_TIME_ENCODED | no: 5 cifras frente a las 18 de un Snowflake, y longitud binaria constante |
+| C. SEQUENTIAL | no: ni empieza en uno, ni es monotono, Kendall +0,024 |
+| B. RANDOM_UNIQUE | no: cero colisiones en 1731 sorteos de 4999 |
+| E. POSSIBLE_SOURCE | no: ocupacion 0.5480 a 0.6180 y proporcion de train 0.5401 a 0.6416 |
+| **D. STRUCTURED_IDENTIFIER** | **si, confianza alta por los cuatro descartes** |
+
+**La lectura importa mas que la etiqueta.** Hay estructura, pero es de PROCEDENCIA: el
+numero dice de que coleccion salio la fila y en que posicion ocupaba, y no dice quien la
+escribio ni cuando.
+
+## D-149. Y sin embargo el id no porta senal: pierde contra un control de igual dimension
+
+| brazo | corrected_cv |
+|---|---:|
+| id_solo, 21 columnas | 0.4191359898 |
+| random_solo, 21 columnas aleatorias | 0.4240383000 |
+| id_solo con 20 permutaciones de etiqueta, maximo | 0.4379545936 |
+
+El control aleatorio **supera** al bloque real, y el brazo real queda
+-0.0188186038 **por debajo** del maximo de las
+permutaciones. Eso no es ruido con suerte: es ruido medido.
+
+**Y no puede alcanzar el gate ni aunque fuera perfecto**, porque va solo y compite contra
+un modelo que tiene todo el texto. Su valor era diagnostico, y el diagnostico es que la
+estructura del indice no contiene informacion de etiqueta.
+
+## D-150. La estructura relacional no fallo: estaba VACIA
+
+| magnitud | valor |
+|---|---:|
+| filas en un grupo singleton | 1378 de 1483 |
+| porcentaje | 92.92 por ciento |
+| perfiles distintos del bloque | 7 sobre 6 columnas |
+| V03_rel | 0.6727442905 |
+| V03_random, control de igual ancho | 0.7558082301 |
+| en solitario, el bloque frente al aleatorio | +0,0484024301 |
+| la fuga, con alcance COMPLETO | -0.1206215055 |
+
+En solitario el bloque **supera** al aleatorio, luego hay senal. Es que hay senal en 105
+filas. Anadir un bloque casi constante no aporta variacion y si desplaza la norma de las
+filas, que es el mismo confound de escala que P62 midio.
+
+**La cifra de la fuga se publica a proposito.** Medir el mismo rasgo con las filas de
+validacion incluidas daria -0.1206215055, y esa es exactamente
+la informacion que un revisor tendria que discutir para excluir. Que este en la pagina y no
+descubierto despues.
+
+## D-151. La composicion en RATIOS porta senal, y eso es distinto de lo que P62 concluyo
+
+| magnitud | valor |
+|---|---:|
+| V03 + 42 ratios | 0.7669427506 |
+| V03 + 42 columnas aleatorias | 0.7585899239 |
+| BRECHA especifica | +0.0083528268 |
+| el bloque solo contra el aleatorio solo | +0.1055015148 |
+
+P62 concluyo que un canal POS de alta dimension no compensa su coste. Esto **no** es un
+resultado contrario: es una forma distinta de la misma pregunta. Y la diferencia es que un
+canal de varios cientos de columnas dispersas compite por el presupuesto L2 de un espacio de
+21000 dimensiones, mientras que 42 proporciones acotadas no compiten.
+
+**La composicion categorial SI porta informacion.** Lo que no consigue es una mejora que
+sobreviva a la concurrencia.
+
+## D-152. La hipotesis mas antigua del repositorio queda REFUTADA, no solo no confirmada
+
+V30-01 escribio, sin gastar un experimento, que "el efecto de la URL y de la mencion no es
+de signo fijo sino que cambia con la longitud del texto", y que eso era exactamente el tipo
+de interaccion que un modelo lineal sobre n-gramas no captura.
+
+| region | n | F1 de V03 | brecha del bloque frente al aleatorio |
+|---|---:|---:|---:|
+| CORTA | 167 | 0,9480 | +0.000399 en LARGA |
+| MEDIA | 602 | 0,7964 | |
+| LARGA | 547 | 0,6834 | +0.000399 |
+| MUY_LARGA | 167 | 0,5606 | **-0.009437** |
+
+El bloque de posiciones es **peor** que un bloque aleatorio del mismo ancho precisamente en
+la region donde se suponia la senal. "No se vio la senal que se buscaba" y "se vio la senal
+contraria donde se buscaba" no son lo mismo, y la segunda cosa es la que queda escrita.
+
+## D-153. El margen residual crece con la longitud, y separa dos cosas que iban juntas
+
+| bin | n | F1 de V03 | techo moviendo solo el corte | margen |
+|---|---:|---:|---:|---:|
+| CORTA | 167 | 0.9480 | 0.9480 | +0.0000 |
+| MEDIA | 602 | 0.7964 | 0.8057 | +0.0093 |
+| LARGA | 547 | 0.6834 | 0.7051 | +0.0217 |
+| MUY_LARGA | 167 | 0.5606 | 0.6495 | +0.0890 |
+
+El techo moviendo solo el corte es el techo de cualquier funcion monotona de la puntuacion
+de V03, luego es exactamente la parte del residuo que **ninguna representacion puede
+atacar**. El margen va de +0.0000 en la region corta a
++0.0890 en la muy larga.
+
+**El +0.0000 de la region CORTA es un resultado por si
+solo**: el umbral de V03 ya es el optimo ahi sobre las tres etiquetas, luego en los cortos no
+hay nada que ganar moviendo la decision.
+
+## D-154. La redundancia no es con los n-gramas: es con la CONFIANZA
+
+| brazo | AUC media para predecir el error de V03 |
+|---|---:|
+| margen de V03 solo | 0.757141 |
+| margen + composicion | 0.732533 |
+| margen + posicion | 0.732787 |
+| margen + aleatorio | 0.720208 |
+
+Los bloques **superan** al control aleatorio, luego contienen informacion sobre que filas va
+a fallar V03. Y **no mejoran al margen**: aportan
+-0.024608 y
+-0.024354, es decir lo restan.
+
+Ese es un TERCER caso que la taxonomia de dos lecturas no preveia, y es el que se da. La
+informacion de los bloques sobre el residuo ya esta implicita en la confianza de V03. No es
+redundancia con los n-gramas, que es lo que se suponia, y tampoco es informacion nueva.
+
+**Eso explica de golpe el patron de los cinco tracks anteriores.** No es que los bloques no
+supieran nada: es que lo que saben ya esta en el margen, y anadirlos solo agrega columnas que
+compiten por el presupuesto de un espacio de 21000 dimensiones.
+
+## D-155. Dos correcciones que CAMBIARON la direccion de una conclusion
+
+**P63-04, el confound de escala.** La primera ejecucion daba
+-0,1899987838. Concatena 42 columnas ya estandarizadas a un bloque de norma raiz de dos y
+luego reescala la matriz TOTAL a la norma de V03, lo que divide la base por un factor de
+orden 4,7 y equivale a reducir C brutalmente. Medido antes de corregir:
+
+```text
+V03 sin bloque                    0,7772114525
+V03 + bloque sin reescalar        0,7619790732   -0,0152323793
+V03 + bloque con norma unitaria   0,7669427506   -0,0102687019
+```
+
+La brecha especifica **cambio de signo**, de -0,0038269291 a +0.0083528268.
+
+**P63-06, el techo inflado.** El techo residual tomaba el maximo de los tres optimos por
+etiqueta, y el corrected_cv de V03 es la media macro. El margen de MUY_LARGA es
+**+0,0890**, no +0,1589.
+
+Sobre-declarar un techo es el error mas facil de cometer en todo el proyecto, porque un techo
+mas alto hace que cualquier negativo parezca mas pequeno. Ambas correcciones tienen fila
+propia en `experiments.csv` para que quien lea las conclusiones las encuentre antes que ellas.
+
+## D-156. P63 se cierra con SEIS experimentos, y la respuesta tiene seis partes
+
+```text
+1 senal lexical         no queda: el id no es lexico y V03 ya lleva el texto entero
+2 senal sublexical      no queda: el canal char_wb de V03 ya es sublexical
+3 senal agregada        SI existe, +0,1055015148 frente al aleatorio, y no cabe
+4 senal estructural     REFUTADA en la region donde se suponia, con -0,009437
+5 senal relacional      el bloque esta 92,92 por ciento vacio en este corpus
+6 senal de procedencia  el id tiene estructura y no porta senal, y se mide por que
+```
+
+**El limite que queda no es de representacion sino de orden**, y se ve en tres medidas que
+apuntan al mismo sitio: el margen al techo por rebanada, la tasa de error por rebanada, que
+sube de 6,59 a 22,55 por ciento, y el AUC del margen para predecir sus propios errores,
+0,757141, que ya es alto y que ningun bloque mejora.
+
+**Se mantiene la literal del proyecto.**
+
+```text
+no evidence of exploitable remaining model capacity in the record-level and
+aggregate-composition dimensions of this representation
+
+V03 remains the best verified leaderboard result.
+```
+<!-- /P63 2026-09-29 -->

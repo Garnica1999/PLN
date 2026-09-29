@@ -1,0 +1,53 @@
+{
+  "familia": "P63_FINAL",
+  "fecha": "2026-09-29T06:59:40+00:00",
+  "pregunta": "que informacion de cada registro, de las relaciones entre registros y de la composicion del texto no estaba representando V03",
+  "respuesta": "la informacion existe y se puede medir, pero no cabe junto a V03 porque lo que aporta ya esta implicito en su confianza. La composicion agregada vale +0.1055015148 frente a un control de igual dimension, y el margen de V03 ya explica sus propios errores con AUC 0.757141",
+  "id": {
+    "clasificacion": "D. STRUCTURED_IDENTIFIER",
+    "confianza": "alta",
+    "es_contador": false,
+    "lectura": "indice de coleccion, estructura de procedencia y no de contenido",
+    "senal_predictiva": false
+  },
+  "experimentos": 6,
+  "presupuesto": 25,
+  "reservas_gastadas": 0,
+  "resultados_por_id": {
+    "P63-00": null,
+    "P63-00b": null,
+    "P63-02": 0.4191359898217959,
+    "P63-03": 0.6727442905142497,
+    "P63-04": 0.7669427506352032,
+    "P63-05": 0.7671031903596547,
+    "P63-06": 0.7534060877581737,
+    "P63-07": null,
+    "P63-04C": null,
+    "P63-06C": null
+  },
+  "techo_por_rebanada": {
+    "CORTA": 0.0,
+    "MEDIA": 0.009299,
+    "LARGA": 0.021729,
+    "MUY_LARGA": 0.088966
+  },
+  "regla_general": "una vez conocido el margen de V03, los bloques nuevos contienen informacion sobre su residuo que supera a un control de capacidad, pero no mejoran al margen: la redundancia es con la confianza y no con los n-gramas",
+  "correcciones_que_cambiaron_una_conclusion": [
+    "P63-04: el confound de escala paso el delta de -0,1899987838 a -0,0102687019",
+    "P63-06: el techo residual paso el margen de MUY_LARGA de +0,1589 a +0,0890"
+  ],
+  "pistas_cerradas_sin_experimento": [
+    "perfil ortografico como ratios, ya incluido en el bloque de composicion",
+    "posicion como composicion,cubierto por el track E1"
+  ],
+  "submissions": 0,
+  "kaggle": 0,
+  "holdout": 0,
+  "test": 0,
+  "leaderboard": 0,
+  "cumplimiento": {
+    "comprobaciones": 29,
+    "fallos": 0
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

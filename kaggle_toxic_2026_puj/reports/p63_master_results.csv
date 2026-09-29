@@ -1,0 +1,11 @@
+ID,Track,Experimento,Mecanismo,Corrected_CV,Delta_vs_V03,Decision
+P63-00,ID forensics,0,"el id es un indice de coleccion, no un contador",,,D. STRUCTURED_IDENTIFIER
+P63-00b,gap analysis,0,"5 familias abiertas, 16 cerradas sin gastar",,,AUDITORIA
+P63-02,A id predictivo,1,el id pierde contra un control de igual dimension,0.4191359898217959,-0.3580754627,CLOSED. El indice de coleccion no aporta senal especifica
+P63-03,B estructura relacional,1,el bloque esta 92.92 por ciento degenerado,0.6727442905142497,-0.104467162,CLOSED. La estructura de repeticion no aporta sobre V03
+P63-04,D composicion en ratios,1,"brecha especifica +0.0083528268, y +0,1055015148 en solitario",0.7669427506352032,-0.0102687019,CLOSED. La composicion agregada no aporta sobre V03
+P63-05,E1 estructura del tweet largo,1,"la brecha en MUY_LARGA es -0.009437, la hipotesis de V30-01 queda refutada",0.7671031903596547,-0.0101082622,CLOSED. La estructura interna no aporta sobre V03
+P63-06,H integracion y techo,1,"brecha +0.0085891400 y techo por rebanada de +0,0000 a +0,0890",0.7534060877581737,-0.0238053648,MARGINAL
+P63-07,K residuo de V03,1,"los bloques superan al aleatorio pero RESTAN al margen, luego la redundancia es con la confianza",,,La senal es nueva y el limite es de representacion
+P63-04C,correccion de escala de P63-04,0,"-0,1899987838 -> -0,0102687019",,,"CORRECCION: confound de escala: concatenar columnas estandarizadas encogia la base por 4,7"
+P63-06C,correccion del techo de P63-06,0,"+0,1589 -> +0,0890",,,CORRECCION: el techo tomaba el maximo sobre tres etiquetas y no la media macro

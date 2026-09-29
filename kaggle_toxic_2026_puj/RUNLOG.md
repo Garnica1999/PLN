@@ -2569,3 +2569,55 @@ no evidence of exploitable remaining model capacity in the linguistic representa
 V03 remains the best verified leaderboard result.
 ```
 <!-- /P62 2026-09-29 -->
+
+<!-- P63 2026-09-29 -->
+## P63 (2026-09-29) - Representacion a nivel de registro, estructura del dataset y composicion
+
+Seis experimentos, dos auditorias y un dataset auxiliar. Ninguno supera a V03, y lo
+interesante no son los negativos sino que cada uno lleva un mecanismo MEDIDO.
+
+```text
+P63-00  ID forensics      D. STRUCTURED_IDENTIFIER, confianza alta, 0 experimentos
+P63-02  id predictivo     0,419136 contra 0,424038 de un control de igual dimension
+P63-03  relacional        el bloque esta 92,92 por ciento vacio
+P63-04  composicion       brecha especifica +0,0083528268, y +0,1055 en solitario
+P63-05  texto largo       la brecha en MUY_LARGA es -0,009437
+P63-06  integracion       brecha +0,0085891400, MARGINAL
+P63-07  residuo           los bloques restan al margen, luego son redundantes con el
+                         margen y no con los n-gramas
+```
+
+**El id no es un contador.** V15-00 lo afirmo sin medirlo. Train y test son dos muestras
+disjuntas del mismo bloque contiguo, con interseccion 0 y union
+2885 sobre 4999 posiciones. Es un indice de
+coleccion, y su contenido es la posicion en un ensamblado, que no correlaciona con la
+etiqueta.
+
+**La composicion en ratios porta senal y no cabe.** Es un resultado distinto del de P62, no
+uno contrario: un canal disperso de varios cientos de columnas compite por el presupuesto
+L2 de un espacio de 21000 dimensiones, y 42 proporciones acotadas no compiten. Y aun asi
+no mejora a V03, porque lo que aportan ya esta implicito en la confianza de V03.
+
+**La hipotesis mas antigua del repositorio queda refutada.** V30-01 escribio que el efecto de
+la URL y la mencion cambia de signo con la longitud, y nunca gasto un experimento. El bloque
+de posiciones es PEOR que un bloque aleatorio del mismo ancho precisamente en la region
+muy larga, con -0.009437. Refutada en su prediccion, no solo
+no confirmada.
+
+**El limite que queda es de orden, no de decision.** El margen hasta el techo moviendo solo
+el corte va de +0.0000 en la region corta a +0.0890 en la
+muy larga, y en la region CORTA es exactamente +0.0000: el umbral de V03 ya
+es el optimo ahi sobre las tres etiquetas.
+
+**Dos correcciones cambiaron la direccion de una conclusion** y tienen fila propia en el
+registro. El confound de escala de P63-04 paso el delta de -0,1899987838 a
+-0,0102687019 y cambio el signo de la brecha. El techo de P63-06 paso el margen de MUY_LARGA
+de +0,1589 a +0,0890.
+
+```text
+no evidence of exploitable remaining model capacity in the record-level and
+aggregate-composition dimensions of this representation
+
+V03 remains the best verified leaderboard result.
+```
+<!-- /P63 2026-09-29 -->

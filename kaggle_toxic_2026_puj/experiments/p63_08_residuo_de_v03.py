@@ -293,7 +293,7 @@ def main() -> None:
     brecha_pos = d_pos - d_rand
 
     log("")
-    log("   ¿LOS BLOQUES EXPLICAN LOS ERRORES DE V03?")
+    log("   LOS BLOQUES EXPLICAN LOS ERRORES DE V03?")
     log(f"      {'brazo':20}{'AUC HS':>10}{'AUC TR':>10}{'AUC AG':>10}{'AUC media':>12}")
     for f in filas:
         log(f"      {f['brazo']:20}{f['auc_HS']:>10.6f}{f['auc_TR']:>10.6f}"

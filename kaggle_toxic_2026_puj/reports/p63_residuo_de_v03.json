@@ -1,7 +1,7 @@
 {
   "familia": "P63_RESIDUO",
   "naturaleza": "EXPERIMENTO. 3 candidatos y 1 control, 0 modelos de etiqueta, 0 submissions, 0 Kaggle, 0 holdout, 0 test",
-  "fecha": "2026-09-29T06:51:15+00:00",
+  "fecha": "2026-09-29T06:59:38+00:00",
   "experiment_id": "P63-07",
   "track": "K-residuo-de-V03",
   "script": "experiments/p63_08_residuo_de_v03.py",
@@ -132,7 +132,7 @@
   "experimentos_registrados": 1,
   "reproducibilidad": {
     "nivel": "R2",
-    "git_commit": "7d8825a",
+    "git_commit": "13eda02",
     "seed": 42,
     "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
     "corrected_cv": 0.7772114525165721
