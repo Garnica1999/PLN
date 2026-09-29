@@ -1,0 +1,7 @@
+validacion,valor,aprobado
+firma_teorica_accuracy_baja,-0.002108,True
+firma_teorica_no_todas_suben,5,True
+bootstrap_ic95_contiene_cero,"[0.0010143, 0.002948]",True
+cero_cambios_en_alta_confianza,0,True
+pesos_estables_en_las_clases_que_se_mueven,"4 clases movidas, 4 con signo consistente",True
+sensibilidad_a_la_rejilla,0.0001401,True
