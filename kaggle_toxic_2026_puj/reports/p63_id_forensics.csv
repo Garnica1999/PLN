@@ -1,0 +1,100 @@
+seccion,magnitud,valor
+1,n_rows,1731
+1,n_unique_ids,1731
+1,n_repeated_ids,0
+1,duplicate_rate,0.0
+1,max_multiplicity,1
+1,min_value,20002
+1,max_value,24999
+1,range,4997
+1,rango_teorico_de_valores,4998
+1,valores_faltantes,0
+1,valores_no_enteros,0
+1,primer_valor,20430
+1,primer_valor_es_uno,False
+2,monotono,False
+2,fraccion_creciente_entre_filas_consecutivas,0.5121387283
+2,salto_mediano_entre_filas_consecutivas,49
+2,salto_minimo_entre_filas_consecutivas,-4949
+2,salto_maximo_entre_filas_consecutivas,4753
+2,n_saltos_distintos_entre_filas,1549
+2,salto_mediano_sobre_valores_ordenados,2
+2,salto_minimo_sobre_valores_ordenados,1
+2,salto_maximo_sobre_valores_ordenados,31
+2,n_huecos_sobre_valores_ordenados,1105
+2,n_valores_ausentes_en_el_rango,3267
+2,densidad_de_ocupacion_del_rango,0.3463385354
+3,longitud_decimal,"{""5"": 1731}"
+3,longitud_binaria,"{""15"": 1731}"
+3,distribucion_de_digitos,"{""0"": 841, ""1"": 848, ""2"": 2643, ""3"": 846, ""4"": 879, ""5"": 540, ""6"": 530, ""7"": 501, ""8"": 519, ""9"": 508}"
+3,frecuencia_de_digitos,"{""0"": 0.485846, ""1"": 0.48989, ""2"": 1.526863, ""3"": 0.488735, ""4"": 0.507799, ""5"": 0.311958, ""6"": 0.306181, ""7"": 0.289428, ""8"": 0.299827, ""9"": 0.293472}"
+3,entropia_de_digitos,3.058769
+3,entropia_maxima_teorica,3.321928
+3,entropia_normalizada,0.920781
+3,prefijos_2_digitos_mas_frecuentes,"{""24"": 370, ""21"": 356, ""22"": 345, ""23"": 335, ""20"": 325}"
+3,sufijos_2_digitos_mas_frecuentes,"{""32"": 27, ""42"": 26, ""68"": 26, ""55"": 24, ""60"": 23, ""64"": 23, ""81"": 23, ""24"": 22, ""74"": 22, ""95"": 21}"
+3,bits_de_alta_posicion_constantes,15
+3,escala_observada,24999
+3,bits_necesarios_para_un_snowflake,63
+3,orden_de_gran_magnitud_que_un_snowflake_daria,18
+3bis,spearman_id_vs_indice_de_fila,-0.022613
+3bis,spearman_id_mod_2_vs_indice_de_fila,-0.043888
+3bis,spearman_id_mod_10_vs_indice_de_fila,0.011531
+3bis,spearman_id_entre_bits_altos_y_bajos,-0.027917
+4,n_bloques,10
+4,ancho_de_bloque,500
+4,corte_declarado_antes,True
+4,bloques,"[{""bloque"": 0, ""id_desde"": 20002, ""id_hasta"": 20501, ""ancho"": 500, ""n_train"": 179, ""n_test"": 115, ""densidad_train"": 0.358, ""prevalencia_HS"": 0.402235, ""prevalencia_TR"": 0.290503, ""prevalencia_AG"": 0.335196, ""prevalencia_cualquiera"": 0.402235}, {""bloque"": 1, ""id_desde"": 20502, ""id_hasta"": 21001, ""ancho"": 500, ""n_train"": 147, ""n_test"": 126, ""densidad_train"": 0.294, ""prevalencia_HS"": 0.47619, ""prevalencia_TR"": 0.346939, ""prevalencia_AG"": 0.442177, ""prevalencia_cualquiera"": 0.489796}, {""bloque"": 2, ""id_desde"": 21002, ""id_hasta"": 21501, ""ancho"": 500, ""n_train"": 189, ""n_test"": 121, ""densidad_train"": 0.378, ""prevalencia_HS"": 0.433862, ""prevalencia_TR"": 0.296296, ""prevalencia_AG"": 0.407407, ""prevalencia_cualquiera"": 0.455026}, {""bloque"": 3, ""id_desde"": 21502, ""id_hasta"": 22001, ""ancho"": 500, ""n_train"": 166, ""n_test"": 110, ""densidad_train"": 0.332, ""prevalencia_HS"": 0.439759, ""prevalencia_TR"": 0.289157, ""prevalencia_AG"": 0.373494, ""prevalencia_cualquiera"": 0.451807}, {""bloque"": 4, ""id_desde"": 22002, ""id_hasta"": 22501, ""ancho"": 500, ""n_train"": 168, ""n_test"": 124, ""densidad_train"": 0.336, ""prevalencia_HS"": 0.386905, ""prevalencia_TR"": 0.267857, ""prevalencia_AG"": 0.363095, ""prevalencia_cualquiera"": 0.416667}, {""bloque"": 5, ""id_desde"": 22502, ""id_hasta"": 23001, ""ancho"": 500, ""n_train"": 177, ""n_test"": 114, ""densidad_train"": 0.354, ""prevalencia_HS"": 0.446328, ""prevalencia_TR"": 0.316384, ""prevalencia_AG"": 0.378531, ""prevalencia_cualquiera"": 0.468927}, {""bloque"": 6, ""id_desde"": 23002, ""id_hasta"": 23501, ""ancho"": 500, ""n_train"": 166, ""n_test"": 123, ""densidad_train"": 0.332, ""prevalencia_HS"": 0.391566, ""prevalencia_TR"": 0.283133, ""prevalencia_AG"": 0.36747, ""prevalencia_cualquiera"": 0.39759}, {""bloque"": 7, ""id_desde"": 23502, ""id_hasta"": 24001, ""ancho"": 500, ""n_train"": 169, ""n_test"": 109, ""densidad_train"": 0.338, ""prevalencia_HS"": 0.502959, ""prevalencia_TR"": 0.284024, ""prevalencia_AG"": 0.431953, ""prevalencia_cualquiera"": 0.514793}, {""bloque"": 8, ""id_desde"": 24002, ""id_hasta"": 24501, ""ancho"": 500, ""n_train"": 179, ""n_test"": 101, ""densidad_train"": 0.358, ""prevalencia_HS"": 0.469274, ""prevalencia_TR"": 0.329609, ""prevalencia_AG"": 0.396648, ""prevalencia_cualquiera"": 0.480447}, {""bloque"": 9, ""id_desde"": 24502, ""id_hasta"": 24999, ""ancho"": 498, ""n_train"": 191, ""n_test"": 110, ""densidad_train"": 0.383534, ""prevalencia_HS"": 0.424084, ""prevalencia_TR"": 0.298429, ""prevalencia_AG"": 0.340314, ""prevalencia_cualquiera"": 0.445026}]"
+4,rango_prevalencia_entre_bloques,0.117203
+4,densidad_min,0.294
+4,densidad_max,0.383534
+5,n_textos_unicos_normalizados,1731
+5,n_textos_repetidos,0
+5,mismo_texto_implica_mismo_id,True
+5,mismo_id_implica_mismo_texto,True
+5,n_grupos_con_mas_de_un_id_en_train,6
+5,distancia_intra_grupo_mediana,1328
+5,distancia_intra_grupo_media,1169.5
+5,distancia_entre_ids_aleatorios_esperada,1657.982
+5,tamanano_de_la_otra_submuestra_como_referencia,1154
+6,n_ids_train,1731
+6,n_ids_test,1154
+6,n_ids_duplicados_dentro_de_train,0
+6,n_ids_duplicados_dentro_de_test,0
+6,interseccion,0
+6,union,2885
+6,rango_train,"[20002, 24999]"
+6,rango_test,"[20001, 24998]"
+6,rango_union,"[20001, 24999]"
+6,valores_del_rango_no_usados,2114
+6,solapamiento_de_rangos,True
+6,grupos_canonicos_dev,1415
+6,grupos_canonicos_holdout,230
+6,corrected_cv_del_oof_canonico,0.7772114525165721
+6,coherencia_oof,True
+6bis,n_bloques,10
+6bis,ancho_de_bloque,500
+6bis,bloques,"[{""bloque"": 0, ""id_desde"": 20001, ""id_hasta"": 20500, ""ancho"": 500, ""n_train"": 178, ""n_test"": 116, ""n_usados"": 294, ""n_sin_usar"": 206, ""fraccion_ocupada"": 0.588, ""proporcion_de_train_entre_los_usados"": 0.605442}, {""bloque"": 1, ""id_desde"": 20501, ""id_hasta"": 21000, ""ancho"": 500, ""n_train"": 148, ""n_test"": 126, ""n_usados"": 274, ""n_sin_usar"": 226, ""fraccion_ocupada"": 0.548, ""proporcion_de_train_entre_los_usados"": 0.540146}, {""bloque"": 2, ""id_desde"": 21001, ""id_hasta"": 21500, ""ancho"": 500, ""n_train"": 189, ""n_test"": 120, ""n_usados"": 309, ""n_sin_usar"": 191, ""fraccion_ocupada"": 0.618, ""proporcion_de_train_entre_los_usados"": 0.61165}, {""bloque"": 3, ""id_desde"": 21501, ""id_hasta"": 22000, ""ancho"": 500, ""n_train"": 166, ""n_test"": 110, ""n_usados"": 276, ""n_sin_usar"": 224, ""fraccion_ocupada"": 0.552, ""proporcion_de_train_entre_los_usados"": 0.601449}, {""bloque"": 4, ""id_desde"": 22001, ""id_hasta"": 22500, ""ancho"": 500, ""n_train"": 168, ""n_test"": 125, ""n_usados"": 293, ""n_sin_usar"": 207, ""fraccion_ocupada"": 0.586, ""proporcion_de_train_entre_los_usados"": 0.573379}, {""bloque"": 5, ""id_desde"": 22501, ""id_hasta"": 23000, ""ancho"": 500, ""n_train"": 177, ""n_test"": 114, ""n_usados"": 291, ""n_sin_usar"": 209, ""fraccion_ocupada"": 0.582, ""proporcion_de_train_entre_los_usados"": 0.608247}, {""bloque"": 6, ""id_desde"": 23001, ""id_hasta"": 23500, ""ancho"": 500, ""n_train"": 165, ""n_test"": 123, ""n_usados"": 288, ""n_sin_usar"": 212, ""fraccion_ocupada"": 0.576, ""proporcion_de_train_entre_los_usados"": 0.572917}, {""bloque"": 7, ""id_desde"": 23501, ""id_hasta"": 24000, ""ancho"": 500, ""n_train"": 170, ""n_test"": 109, ""n_usados"": 279, ""n_sin_usar"": 221, ""fraccion_ocupada"": 0.558, ""proporcion_de_train_entre_los_usados"": 0.609319}, {""bloque"": 8, ""id_desde"": 24001, ""id_hasta"": 24500, ""ancho"": 500, ""n_train"": 179, ""n_test"": 100, ""n_usados"": 279, ""n_sin_usar"": 221, ""fraccion_ocupada"": 0.558, ""proporcion_de_train_entre_los_usados"": 0.641577}, {""bloque"": 9, ""id_desde"": 24501, ""id_hasta"": 24999, ""ancho"": 499, ""n_train"": 191, ""n_test"": 111, ""n_usados"": 302, ""n_sin_usar"": 197, ""fraccion_ocupada"": 0.60521, ""proporcion_de_train_entre_los_usados"": 0.63245}]"
+6bis,fraccion_ocupada_min,0.548
+6bis,fraccion_ocupada_max,0.618
+6bis,fraccion_ocupada_media,0.577121
+6bis,proporcion_train_min,0.540146
+6bis,proporcion_train_max,0.641577
+6bis,n_bloques_sin_posiciones_sin_usar,0
+7b,categorias_descartadas_con_evidencia,"[""F. POSSIBLE_TIME_ENCODED_IDENTIFIER"", ""C. SEQUENTIAL_IDENTIFIER"", ""B. RANDOM_UNIQUE_IDENTIFIER"", ""E. POSSIBLE_SOURCE_IDENTIFIER""]"
+7b,n_descartes,4
+7b,criterio_de_confianza,"alta con 4 o mas descartes, media-alta con 2 o 3, media por debajo; nunca por recuento de pruebas a favor"
+7,escala | A. OPAQUE_ADMINISTRATIVE,"EN CONTRA: vive en el intervalo contiguo [20001, 24999], y un identificador administrativo opaco se suele repartir por todo el rango posible"
+7,bloques | A. OPAQUE_ADMINISTRATIVE,"EN CONTRA: la densidad de ocupacion es casi constante entre los 10 bloques, de 0.2940 a 0.3835, lo que es propio de una submuestra uniforme de una coleccion y no de un contador de filas"
+7,azar | B. RANDOM_UNIQUE_IDENTIFIER,"EN CONTRA: si 1731 valores se sorteasen con reemplazo de un rango de 4999 posiciones, se esperarian 29.27 por ciento de colisiones y aqui hay cero; ademas el rango NO empieza en uno, lo que un generador aleatorio de ids no hace"
+7,monotonia | C. SEQUENTIAL_IDENTIFIER,"EN CONTRA: solo el 51.21 por ciento de los pares consecutivos de filas crecen, es decir un Kendall de +0.024277, y el fichero esta barajado"
+7,huecos | C. SEQUENTIAL_IDENTIFIER,"EN CONTRA: faltan 2114 posiciones del rango y hay 1105 huecos, asi que no es una serie correlativa"
+7,bloques_de_id | D. STRUCTURED_IDENTIFIER,"A FAVOR: el id es un indice dentro de un bloque contiguo de 4999 posiciones del que train y test son muestras disjuntas, y eso es una estructura, aunque sea de procedencia y no de contenido"
+7,dentro_de_bloques | D. STRUCTURED_IDENTIFIER,"EN CONTRA: no hay sub-bloques internos: la densidad de ocupacion varia solo de 0.2940 a 0.3835 entre bloques de 500 posiciones, y la prevalencia de cualquier etiqueta varia solo 0.117203"
+7,densidad_por_bloque | E. POSSIBLE_SOURCE_IDENTIFIER,"EN CONTRA: la ocupacion del bloque va de 0.5480 a 0.6180 sin una sola posicion sin usar en 10 bloques, y la proporcion de train entre los usados se mantiene entre 0.5401 y 0.6416, que NO es lo que se veria si cada subcoleccion hubiera aportado una fraccion distinta"
+7,particion_algebraica | E. POSSIBLE_SOURCE_IDENTIFIER,"EN CONTRA: la proporcion de train entre los usados se mantiene en una franja estrecha en los 10 bloques, lo que es consistente con una particion por azar de un bloque unico y no con varias fuentes"
+7,escala | F. POSSIBLE_TIME_ENCODED_IDENTIFIER,"EN CONTRA: los valores llegan a 24999, unas 5 cifras, y un esquema temporal como Snowflake ocupa 63 bits y produce 18 o 19 cifras, luego la MAGNITUD refute la hipotesis por si sola"
+7,crecimiento | F. POSSIBLE_TIME_ENCODED_IDENTIFIER,"EN CONTRA: la longitud binaria es constante en todo el rango, asi que no hay un campo de tiempo de ancho fijo embebido en los bits altos"
+7,huecos_temporales | F. POSSIBLE_TIME_ENCODED_IDENTIFIER,"EN CONTRA: los huecos entre valores ordenados van de 1 a 31 sin ninguna progresion, lo que descarta una cadencia de muestreo temporal"
+7,alternativas | G. UNKNOWN,"EN CONTRA: hay evidencia que descarta A, B, C y F, y evidencia parcial a favor de D y E, pero nada que distinga definitivamente una subfuente de un indice de corpus"
+7,CLASIFICACION,"D. STRUCTURED_IDENTIFIER, confianza alta"
