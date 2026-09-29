@@ -1,0 +1,262 @@
+{
+  "fase": "gap analysis actualizado",
+  "fecha": "2026-10-05",
+  "experimenta": false,
+  "commit": "8f821ca779ea816b7a4bffb068a417de308114c6",
+  "baseline_v30": 0.6134471,
+  "leaderboard": 0.63302,
+  "variabilidad_de_entrenamiento": 0.0008876,
+  "particion_de_errores": {
+    "n_errores_v30": 65403,
+    "n_fuentes_examinadas": 26,
+    "n_fuentes_externas_a_v30": 23,
+    "A_nadie_corrige": {
+      "n": 27007,
+      "fraccion": 0.41293
+    },
+    "B_alguien_corrige": {
+      "n": 38396,
+      "fraccion": 0.58707
+    },
+    "top_rescatadores": [
+      {
+        "fuente": "canal:todos",
+        "errores_de_v30_que_corrige": 12437
+      },
+      {
+        "fuente": "canal:forma_palabra",
+        "errores_de_v30_que_corrige": 12097
+      },
+      {
+        "fuente": "canal:posicion",
+        "errores_de_v30_que_corrige": 11879
+      },
+      {
+        "fuente": "canal:ortografia+composicion",
+        "errores_de_v30_que_corrige": 11797
+      },
+      {
+        "fuente": "canal:ortografia+composicion+discurso",
+        "errores_de_v30_que_corrige": 11761
+      },
+      {
+        "fuente": "canal:composicion",
+        "errores_de_v30_que_corrige": 11741
+      },
+      {
+        "fuente": "canal:discurso",
+        "errores_de_v30_que_corrige": 11661
+      },
+      {
+        "fuente": "canal:ortografia",
+        "errores_de_v30_que_corrige": 11657
+      },
+      {
+        "fuente": "canal:url",
+        "errores_de_v30_que_corrige": 11639
+      },
+      {
+        "fuente": "pool:oof_E017_probabilidades",
+        "errores_de_v30_que_corrige": 11276
+      }
+    ],
+    "lectura": "de los 65,403 errores de V30, 27,007 (41.3%) no los corrige NINGUNA de las 23 fuentes externas disponibles, y 38,396 (58.7%) los corrige alguna. El grupo B es donde hay informacion aprovechable; el grupo A es un limite duro"
+  },
+  "inventario": [
+    {
+      "ID": "G12",
+      "family": "integracion de score",
+      "hypothesis": "correccion cuya intensidad dependa del margen de V30 (pendiente sobre el margen, no constante)",
+      "categoria": "A",
+      "status": "sin evidencia, mecanismo no probado",
+      "previous_evidence": "P33 probo un beta COMPARTIDO y un intercepto, y el intercepto salio 0. La evidencia apunta en esta direccion: el margen de V30 predice sus propios errores con AUC 0,8005, muy por encima del 0,5411 del residuo",
+      "why_not_duplicate": "P33 ajusto una constante; esto ajusta una pendiente sobre una variable que P33 no uso. El mecanismo es distinto y son 2-3 parametros, no una grid",
+      "expected_mechanism": "la correccion pesa mas donde V30 ya es confiado y menos donde duda, que es donde el residuo deberia ayudar",
+      "cost": "bajo",
+      "priority": 1,
+      "leakage_risk": "bajo, con estructura anidada estricta"
+    },
+    {
+      "ID": "G08",
+      "family": "entrenamiento",
+      "hypothesis": "entrenar con targets suavizados en las zonas de frontera",
+      "categoria": "A",
+      "status": "sin evidencia directa",
+      "previous_evidence": "P34 mostro que las mejoras cerca del limite son de tipo calibracion y que ahi el ruido gana. Suavizar etiquetas actua precisamente en la zona de frontera",
+      "why_not_duplicate": "reordena el aprendizaje hacia las fronteras, donde el residuo no discrimina; el mecanismo es distinto de sumar su residuo al score",
+      "expected_mechanism": "desplaza la masa de probabilidad hacia la frontera en vez de afianzarla, y podria reducir el exceso de confianza de V30 en filas dificiles",
+      "cost": "medio",
+      "priority": 4,
+      "leakage_risk": "bajo: requiere reentrenar V30, que esta congelado, luego es inviable tal cual"
+    },
+    {
+      "ID": "G10",
+      "family": "calibracion",
+      "hypothesis": "corregir el sesgo de probabilidad por clase",
+      "categoria": "A",
+      "status": "PARTIAL_PRECEDENT",
+      "previous_evidence": "PH32 y PH33 probaron correccion y calibracion: +0,0002 y ninguna positiva. P33 mostro que el intercepto se elige en 0",
+      "why_not_duplicate": "corregir el prior por clase en vez del residuo del candidato es otra operacion, pero el precedente es negativo y el mecanismo es de calibracion, no de senal",
+      "expected_mechanism": "recentrar las probabilidades de cada clase hacia su frecuencia real",
+      "cost": "bajo",
+      "priority": 6,
+      "leakage_risk": "bajo"
+    },
+    {
+      "ID": "G09",
+      "family": "entrenamiento",
+      "hypothesis": "reponder el entrenamiento hacia el grupo A (nadie corrige)",
+      "categoria": "A",
+      "status": "sin evidencia, y con contra-indicacion",
+      "previous_evidence": "el grupo A son errores que NINGUN modelo disponible corrige, luego no hay senal que sancionar: reponderlos sube ruido de entrenamiento",
+      "why_not_duplicate": "-",
+      "expected_mechanism": "-",
+      "cost": "bajo",
+      "priority": 8,
+      "leakage_risk": "bajo"
+    },
+    {
+      "ID": "G06",
+      "family": "retrieval de URL",
+      "hypothesis": "recuperar el texto de la URL de la fila",
+      "categoria": "B",
+      "status": "QUARANTINED",
+      "previous_evidence": "0 URLs de status en 169.336 filas: el sujeto no existe. Y las reglas de AGE no estan disponibles en este entorno",
+      "why_not_duplicate": "-",
+      "expected_mechanism": "-",
+      "cost": "no ejecutable",
+      "priority": 0,
+      "leakage_risk": "alto si se ejecutara"
+    },
+    {
+      "ID": "G14",
+      "family": "fuente de datos",
+      "hypothesis": "informacion del train que ningun modelo disponible ha leido todavia",
+      "categoria": "B",
+      "status": "sin explorar, y no es un experimento",
+      "previous_evidence": "es la unica categoria que el brief marca como prioridad maxima, y no tiene precedente cerrado en las 150 filas de experiments.csv. Requiere inventario de que campos existen y cuales se han leido",
+      "why_not_duplicate": "ningun modelo existente ha consumido esos campos, luego no hay duplicado posible por construccion",
+      "expected_mechanism": "no determinable sin el inventario: depende de que campos queden sin leer, y ese es justamente el trabajo previo",
+      "cost": "a determinar",
+      "priority": 2,
+      "leakage_risk": "a determinar segun el campo"
+    },
+    {
+      "ID": "G01",
+      "family": "correccion de score",
+      "hypothesis": "corregir el score de V30 sumando el residuo linguistico",
+      "categoria": "C",
+      "status": "INVALIDATED (P33 global, P34 local)",
+      "previous_evidence": "P33: AUC del residuo 0,5411 pero la correccion global da -0,0002152 y el ruido aleatorio gana a la senal real. P34: correccion pairwise -0,0002039, AUC de residuo por pareja 0,49-0,51, cero rescates de alta confianza",
+      "why_not_duplicate": "-",
+      "expected_mechanism": "-",
+      "cost": "cerrado",
+      "priority": 0,
+      "leakage_risk": "ninguno"
+    },
+    {
+      "ID": "G02",
+      "family": "representacion linguistica",
+      "hypothesis": "anadir un canal linguistico al espacio de features",
+      "categoria": "C",
+      "status": "CLOSED (V31-06)",
+      "previous_evidence": "+0,0002948 sobre el control barajado, muy por debajo del gate de +0,0015 y dentro de la variabilidad de entrenamiento",
+      "why_not_duplicate": "-",
+      "expected_mechanism": "-",
+      "cost": "cerrado",
+      "priority": 0,
+      "leakage_risk": "ninguno"
+    },
+    {
+      "ID": "G03",
+      "family": "capacidad del meta-modelo",
+      "hypothesis": "mas capacidad en el meta-arbol",
+      "categoria": "C",
+      "status": "CLOSED (V29, V30)",
+      "previous_evidence": "V29 +0,002392 sobre V20; V30 refinamiento +0,000069 sobre V29, es decir la region estaba ya encontrada",
+      "why_not_duplicate": "-",
+      "expected_mechanism": "-",
+      "cost": "cerrado",
+      "priority": 0,
+      "leakage_risk": "ninguno"
+    },
+    {
+      "ID": "G04",
+      "family": "diversidad de ensembles historicos",
+      "hypothesis": "combinar mas modelos historicos",
+      "categoria": "C",
+      "status": "CLOSED (V29)",
+      "previous_evidence": "0 de 47 combinaciones con rescate neto positivo",
+      "why_not_duplicate": "-",
+      "expected_mechanism": "-",
+      "cost": "cerrado",
+      "priority": 0,
+      "leakage_risk": "ninguno"
+    },
+    {
+      "ID": "G05",
+      "family": "correccion de umbral",
+      "hypothesis": "mover el umbral de decision de V30",
+      "categoria": "C",
+      "status": "CLOSED (V20-F3)",
+      "previous_evidence": "ganancia historica nula. Ademas la oscilacion entre modelos vecinos es 0,0034, mayor que cualquier delta de esta fase",
+      "why_not_duplicate": "-",
+      "expected_mechanism": "-",
+      "cost": "cerrado",
+      "priority": 0,
+      "leakage_risk": "ninguno"
+    },
+    {
+      "ID": "G13",
+      "family": "bagging",
+      "hypothesis": "promediar el residuo sobre subconjuntos de datos",
+      "categoria": "C",
+      "status": "CLOSED (V28-02)",
+      "previous_evidence": "el bagging del meta-modelo dio -0,000312. El bagging del residuo es la misma idea sobre un objeto mas pequeno, y con un residuo de AUC 0,54 no hay mas que promediar",
+      "why_not_duplicate": "-",
+      "expected_mechanism": "-",
+      "cost": "bajo",
+      "priority": 7,
+      "leakage_risk": "ninguno"
+    },
+    {
+      "ID": "G07",
+      "family": "metrica",
+      "hypothesis": "optimizar el ranking del margen en vez del argmax",
+      "categoria": "D",
+      "status": "DESCARTADO por irrelevancia",
+      "previous_evidence": "la metrica de la competicion y el leaderboard evaluan argmax sobre la etiqueta. Cambiar la metrica interna no mejora el score de Kaggle",
+      "why_not_duplicate": "-",
+      "expected_mechanism": "-",
+      "cost": "bajo",
+      "priority": 9,
+      "leakage_risk": "ninguno"
+    },
+    {
+      "ID": "G11",
+      "family": "estructura de clases",
+      "hypothesis": "fusionar las dos clases extremas",
+      "categoria": "D",
+      "status": "sin evidencia",
+      "previous_evidence": "13-17 y 65-xx tienen menos apoyo textual, pero V30 ya las separa bien en la matriz de confusion",
+      "why_not_duplicate": "-",
+      "expected_mechanism": "-",
+      "cost": "medio",
+      "priority": 10,
+      "leakage_risk": "bajo"
+    }
+  ],
+  "categorias": {
+    "C": 6,
+    "A": 4,
+    "B": 2,
+    "D": 2
+  },
+  "restricciones": {
+    "usa_test": false,
+    "usa_holdout": false,
+    "usa_red": false,
+    "leaderboard_para_ajustar": false
+  },
+  "segundos": 0.8
+}
