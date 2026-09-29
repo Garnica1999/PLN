@@ -6569,3 +6569,68 @@ IC95 que no incluya 0".
 
 Los mecanismos cerrados siguen cerrados: P66 (residualizacion), P67 (calibracion, umbral,
 blend), P68-H1 (enrutado textual), P68-H2 (rescue weighting por correccion ajena).
+
+
+## D-205 a D-208: cierre experimental y paquete del candidato
+
+Fecha 2026-09-29.
+
+### D-205. `EXPERIMENTAL_RESEARCH_CLOSED`, y lo que NO significa
+
+```text
+research_status     EXPERIMENTAL_RESEARCH_CLOSED
+candidate_status    PROMISING_UNCONFIRMED
+governance_status   PENDING
+```
+
+La investigacion de **nuevos mecanismos** queda cerrada. Eso no es lo mismo que rechazar el
+candidato. La distincion, escrita para que nadie la colapse:
+
+```text
+research closed       no se buscan mas mecanismos
+candidate rejected    NO: nada dice que el candidato este mal
+candidate adopted     TAMPOCO: nada dice que deba enviarse
+```
+
+### D-206. La permutacion prueba especificidad, no generalizacion
+
+```text
+PRUEBA    la asignacion real de pesos contiene mas informacion que
+          asignaciones equivalentes permutadas
+NO PRUEBA generalizacion poblacional definitiva
+NO PRUEBA mejora garantizada de leaderboard
+```
+
+El bootstrap por grupos sigue siendo la limitacion principal, y releer la permutacion no la
+convierte en la otra cosa.
+
+### D-207. El candidato queda empaquetado y reproducible
+
+`reports/toxic_candidate_cost_sensitive_manifest.json` contiene 27 bloques: hipotesis, commits,
+hashes de datos, representacion, clasificador, umbrales, funcion de pesos, semilla, protocolo
+de pliegues, los tres resultados, la permutacion, el bootstrap, hashes de artefactos y
+compliance.
+
+La descripcion correcta del mecanismo es **downweight basado en violacion de margen del propio
+V03**. No es un meta-modelo, no es stacking, no es correccion residual, y **no es rescue
+weighting**: eso es P68-H2, que va en direccion opuesta.
+
+### D-208. El estado final del proyecto
+
+```text
+V03                          FROZEN
+A_cost_sensitive_downweight  PROMISING_UNCONFIRMED
+research_status              EXPERIMENTAL_RESEARCH_CLOSED
+governance_status            PENDING
+submission                   0
+test_development_use         0
+leaderboard_tuning           0
+```
+
+`reports/toxic_candidate_governance_note.md` deja por escrito que esta validado, que no, que
+procedimiento haria falta para una eventual submission, y que **no decide** si el uso del test
+seria admisible: eso corresponde a una regla, no a una nota.
+
+Criterio de reapertura: solo con evidencia nueva y externa (autorizacion normativa explicita,
+nuevo dato legal, nuevo conjunto etiquetado permitido, cambio de reglas). No con "quiero un
+IC95 que no incluya 0".

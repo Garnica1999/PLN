@@ -592,3 +592,29 @@ permutacion = especificidad de la correspondencia peso-ejemplo; bootstrap = magn
 
 Nota de gobernanza en `reports/a_cost_sensitive_downweight_governance_note.md`.
 <!-- /DOWNWEIGHT-CLOSE 2026-09-29 -->
+
+<!-- EXPLICIT-CLOSE 2026-09-29 -->
+### Cierre experimental (2026-09-29)
+
+```text
+research_status     EXPERIMENTAL_RESEARCH_CLOSED
+candidate_status    PROMISING_UNCONFIRMED
+governance_status   PENDING
+
+V03                          FROZEN
+submission 0 | test_development_use 0 | leaderboard_tuning 0
+```
+
+El cierre experimental **no** es un rechazo del candidato, y **no** es una adopcion. Es que se
+dejan de buscar mecanismos nuevos.
+
+Paquete congelado y reproducible:
+- `reports/toxic_candidate_cost_sensitive_manifest.json` (27 bloques con hashes y commits)
+- `reports/toxic_candidate_cost_sensitive_final.md`
+- `reports/toxic_candidate_cost_sensitive_evidence.csv`
+- `reports/toxic_candidate_governance_note.md`
+
+La permutacion prueba **especificidad** (la asignacion real de pesos lleva mas informacion que
+asignaciones equivalentes permutadas), no generalizacion poblacional ni mejora de leaderboard.
+El bootstrap por grupos sigue siendo la limitacion principal.
+<!-- /EXPLICIT-CLOSE 2026-09-29 -->

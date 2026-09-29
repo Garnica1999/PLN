@@ -2867,3 +2867,19 @@ SUBMISSION        NO      TEST  NO      LEADERBOARD  NO
 ```
 
 Sin push, sin merge, sin rebase.
+
+## 2026-09-29, cierre experimental
+
+- `experiments/p69_08_paquete_candidato.py`: empaqueta el candidato con manifest completo,
+  tabla comparativa con V03, evidencia en CSV y nota de gobernanza. 0 experimentos.
+
+```text
+research_status     EXPERIMENTAL_RESEARCH_CLOSED
+candidate_status    PROMISING_UNCONFIRMED
+governance_status   PENDING
+submission 0 | test_development_use 0 | leaderboard_tuning 0
+```
+
+La investigacion experimental termina aqui. El candidato queda congelado.
+
+Sin push, sin merge, sin rebase.
