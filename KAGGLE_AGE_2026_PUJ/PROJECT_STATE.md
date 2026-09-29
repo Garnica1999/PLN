@@ -927,3 +927,23 @@ adopta** (D-011).
   dentro de las restricciones del proyecto. Ver D-069.
 - **Correcciones declaradas**: A = 27.430, no 27.007; rescates exclusivos = 8.029 con esta
   definicion, no 122 con la del inventario previo.
+
+---
+
+## REVISION BIBLIOGRAFICA (2026-10-08) - `NO_NEW_METHOD`
+
+- **Baseline**: V30 = **0.6134471** corrected_cv, leaderboard **0.63302**, sin cambios.
+- **Pregunta**: existe un mecanismo publicado, compatible con el reglamento, genuinamente distinto
+  de las 39 familias auditadas y con evidencia de mejora en macro-F1 sobre texto?
+- **Hallazgo central**: **macro-F1 es una metrica nominal y la literatura ordinal optimiza metricas
+  distancia-conscientes**. Vargas et al. (IEEE TKDE 2026) y Kasai et al. (arXiv 2405.11775)
+  confirman el trade-off de forma explicita: la mejora ordinal se paga con metricas nominales.
+- **Huecos de ejecucion reales, declarados**: AGE nunca corrio targets suaves ni label smoothing
+  (0 scripts), ni EMD (0), ni proyeccion de topicos (0). Solo hay 2 perdidas custom en todo el
+  proyecto: margen (V18-P3) y destilacion (V18-P5).
+- **Cinco candidatos evaluados, ninguno justifica reabrir**: C1 (perdidas distancia-conscientes),
+  C2 (ruido ordinal), C3 (unimodal), C4 (estilo/contenido), C5 (geometria). C1 es el unico con
+  hueco real; se registra y **no se ejecuta**.
+- **Duplicacion algebraica**: EMD2 es la familia acumulativa CORAL con perdida L2.
+- **Registros**: 5 candidatos, 21 duplicaciones, 25 metodos rechazados con motivo.
+- **Conclusion**: no existe razon cientifica para reabrir. Ver D-070.

@@ -2263,3 +2263,65 @@ Tras declarar la saturación se probó la vía indicada como trabajo futuro:
   algo nuevo funcionara haria falta informacion que no esta en los datos: metadatos de cuenta
   (prohibidos por ser una tarea de texto), contenido de URLs (no hay ninguna de status) o modelos
   semanticos (prohibidos por las reglas).
+
+---
+
+## D-070 - Revision bibliografica: `NO_NEW_METHOD`
+
+- **Observation**: cerrada la linea experimental, la pregunta que quedaba era si existe literatura
+  que revele un mecanismo no probado. Se reviso el estado del arte de author profiling, ordinal
+  classification y edad a partir de texto (ACL Anthology, EMNLP, COLING, IEEE TKDE, PRL,
+  Information Fusion, CLEO/PAN, arXiv 2020-2026).
+
+- **El hallazgo central es un desajuste de metrica, y decide la revision**:
+
+  ```text
+  macro-F1 es NOMINAL: trata todos los errores igual.
+  La literatura ordinal optimiza metricas DISTANCIA-CONSCIENTES: MAE, QWK, RPS, 1-off.
+  ```
+
+  Dos fuentes convergentes lo dicen de forma explicita: **Vargas et al., IEEE TKDE 2026** (12
+  datasets ordinales, 20 configuraciones) encuentra que el etiquetado suave mejora la
+  generalizacion ordinal pero **la cross-entropy categorica rinde mejor en promedio en metricas
+  nominales**; y **Kasai et al., arXiv 2405.11775** (texto, comparativa explicita de perdidas)
+  afirma que **hay un trade-off: la mejora ordinal se paga con metricas nominales**.
+
+- **La validacion contra el repositorio encontro huecos de ejecucion reales**, y se declaran en
+  vez de taparlos: AGE **nunca corrio** un target suave ni `label smoothing` (**0 scripts, 0
+  menciones**), ni EMD/Wasserstein (**0 scripts**), ni una proyeccion de features fuera de
+  direcciones de topico (**0 scripts**). El proyecto entero tiene **solo dos perdidas custom**:
+  margen (V18-P3) y destilacion (V18-P5). Es decir, la `label smoothing` que la auditoria dijo
+  "cerrada" lo estaba **por argumento, no por medicion**.
+
+- **Dos recuentos iniciales fueron falsos positivos de la propia busqueda**, y se declaran:
+  `complement` matcheaba "complementario" en el texto en espanol (391 veces) y `sord` matcheaba
+  `tensordot` (15 veces).
+
+- **Los cinco candidatos, y por que ninguno justifica reabrir**:
+
+  | ID | Mecanismo | Veredicto |
+  |---|---|---|
+  | C1 | perdidas distancia-conscientes (SORD, triangular/beta, OLL/MLL) | unico con hueco real, pero la evidencia empuja contra macro-F1 y es un **superconjunto de label smoothing** |
+  | C2 | ruido ordinal explicito (Ord-NLL) | el eje mas no auditado, y **colapsa a C1 en expectativa**: su propio paper demuestra la equivalencia |
+  | C3 | regularizacion unimodal (ORCU) | su ganancia medida es de **calibracion**; no supera a su componente de soft labels |
+  | C4 | separacion estilo/contenido (DePro, INLP) | la ganancia es **estrictamente OOD** (DePro pierde in-distribution) y el CV de AGE es IID |
+  | C5 | geometria ordinal (CPL, Mahalanobis) | ganancia atada a un extractor preentrenado (VGG-16) |
+
+- **La duplicacion mas contundente es algebraica**: `EMD2(one-hot) = suma_k (F_pred(k) -
+  1[y<=k])^2`, es decir el objetivo que la literatura presenta como ordinal distinto **ES** la
+  familia acumulativa CORAL/all-threshold con perdida L2, cerrada en V22/V23/H10/D-058.
+
+- **Decision**: **`NO_NEW_METHOD`**. Ningun candidato cumple a la vez las tres condiciones del
+  brief: compatible con el reglamento, no equivalente a algo cerrado, y con evidencia de mejora de
+  macro-F1 en clasificacion de edad a partir de texto con modelos clasicos. **C1 queda registrado y
+  NO ejecutado**, con su control ya disenado, porque su expectativa honesta es no cruzar el gate y
+  el brief pide decidir si reabrir, no gastar en una falsacion.
+
+- **Consequences**: el mapa de mecanismos queda auditado **dos veces**: contra el codigo del
+  proyecto (39 mecanismos) y contra la literatura 2020-2026. La revision aporta cinco piezas de
+  evidencia de cierre que antes no existian: el argumento algebraico de EMD, la distincion entre
+  calibracion y forma unimodal, la equivalencia en expectativa Ord-NLL/soft labels, la advertencia
+  documentada del trade-off nominal/ordinal, y el eje de ruido ordinal con su contra-argumento de
+  mismo-proceso. Lo que **no** se afirma: que V30 sea optimo, ni que no exista ninguna mejora
+  posible. Lo que si: la literatura no ofrece un mecanismo que AGE no haya cubierto o que no
+  empuje contra su metrica.

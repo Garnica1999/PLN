@@ -1,0 +1,108 @@
+{
+  "fase": "revision bibliografica",
+  "fecha": "2026-10-08",
+  "experimenta": false,
+  "commit": "2737cba252a4f020b3e4dc32bf0b1516c293d445",
+  "baseline_v30": 0.6134471,
+  "leaderboard": 0.63302,
+  "conclusion": "NO_NEW_METHOD",
+  "candidatos": [
+    {
+      "id": "C1",
+      "nombre": "Perdidas distancia-conscientes sobre cabeza multinomial (SORD, triangular/beta, DLDL, OLL/MLL)",
+      "paper_evidencia": "Diaz & Marathe CVPR 2019 (SORD, Adience, +2,7 pp exactitud en 2 replicas independientes); Vargas et al. Pattern Recognition 2022 / Information Fusion 2023 / Information Sciences 2023 / ESWA 2024 (familias de kernel, mejora de sensibilidad en clases extremas); Castagnos et al. COLING 2022 (OLL); Kasai et al. arXiv 2405.11775 (texto, comparativa explicita)",
+      "por_que_no_probado": "AGE nunca ejecuto un target suave: **0 scripts, 0 menciones**. Lo mas cercano son 2 perdidas custom (margen en V18-P3 y destilacion en V18-P5), ninguna de target distribuido. La auditoria cerro 'label smoothing' por argumento, no por medicion",
+      "diferencia_con_cerrado": "**No es CORAL**: CORAL son K-1 salidas sigmoidales acumulativas con pesos compartidos. **No es pairwise**: pairwise entrena K(K-1)/2 binarios (invalidado en V28-03); aqui hay un solo modelo. **Si es un superconjunto de label smoothing uniforme**: con q_k = exp(-beta|k-y|^2) se recupera LS cuando beta tiende a 0. Algebraicamente, -suma q_k log p_k = CE(y) - suma_{k!=y} q_k log p_k, y su gradiente p - q = (p - e_y) + (e_y - q): CE one-hot mas un **sesgo fijo dependiente de la clase**, no una superficie de decision distinta. Es regularizacion del eje de etiquetas, no informacion nueva",
+      "mecanismo_esperado": "reduccion de confianza en fronteras adyacentes, con cambios de argmax solo en la region de empate",
+      "modo_de_fallo": "el argmax no cambia; el trade-off nominal/ordinal documentado en texto; ganancia dentro del ruido de entrenamiento",
+      "control": "tres brazos: CE one-hot, LS uniforme (el cierre de la auditoria), kernel con etiquetas permutadas (regularizacion pura). Gate: delta >= +0,0015 con 4/5 folds **y** delta > 8,9e-04 con signo consistente",
+      "coste": "small",
+      "riesgo": "bajo; bandera gris si el kernel se aprende de la matriz de confusion OOF",
+      "recomendacion": "UNICO EXPERIMENTO DE FALSACION DEFENDIBLE, con expectativa honesta de que NO cruza el gate. Su valor es dejar el cierre con evidencia propia en vez de por analogia",
+      "vector": "novedad 2 / evidencia 4 / compatibilidad 5 / transferibilidad 4 / coste 5"
+    },
+    {
+      "id": "C2",
+      "nombre": "Aprendizaje con ruido ordinal explicito (Ord-NLL, Garg & Manwani)",
+      "paper_evidencia": "Garg & Manwani ACML 2020 (primer robusto para ordinal bajo ruido class-conditional); Yuan et al. PRICAI 2023; Takezaki et al. IEEE Access 2026 (Ord-NLL, **reporta macro-F1** = 0,625 en ruido severo, imagenes medicas)",
+      "por_que_no_probado": "el eje nunca estuvo en el espacio de mecanismos; la auditoria cerro hard mining y focal por analogia, no con experimentos de ruido",
+      "diferencia_con_cerrado": "no es class_weight (la correccion es condicional al modelo y a la etiqueta) ni focal (focal sube el peso de ejemplos dificiles; una perdida robusta a ruido **baja** la contribucion de desviaciones confiadas). Pero el propio Ord-NLL demuestra (Corollary 1) que **su minimizador esperado es un target suave**: es decir, colapsa a C1 en expectativa",
+      "mecanismo_esperado": "reduce el sobreajuste a etiquetas corruptas; potencial mejora en las clases extremas",
+      "modo_de_fallo": "si train y test comparten el proceso de anotacion, el optimo sobre etiquetas ruidosas coincide con el limpio **salvo un desplazamiento de umbral por clase** (Natarajan et al. NeurIPS 2013), y AGE ya midio que el intercepto optimo es **0** (P33). El unico canal corregible por la teoria ya esta cerrado por medicion",
+      "control": "inyectar ruido ordinal sintetico **solo en el fold de entrenamiento** y evaluar en el fold limpio: es la unica forma de verificar el mecanismo. Controles: brazo de soft labels (equivalencia en expectativa) y brazo de umbral",
+      "coste": "medium",
+      "riesgo": "bajo si el ruido se genera solo sobre train",
+      "recomendacion": "NO REABRIR. Es el eje no auditado, pero tiene tres cierres convergentes: equivalencia en expectativa con C1, el argumento de mismo-proceso de ruido con el umbral ya medido en 0, y la no identificabilidad sin datos limpios",
+      "vector": "novedad 5 / evidencia 3 / compatibilidad 4 / transferibilidad 3 / coste 3"
+    },
+    {
+      "id": "C3",
+      "nombre": "Regularizacion de forma unimodal (CO2, ORCU-LBE, stick-breaking)",
+      "paper_evidencia": "ORCU arXiv 2410.15658v4: calibracion SOTA (ECE/SCE/ACE), y en clasificacion SORD supera a ORCU en Adience (59,10 frente a 57,50 de exactitud). Stick-breaking Neurocomputing 2020; Beckham & Pal ICML 2017",
+      "por_que_no_probado": "el post-procesado de calibracion se cerro (PH32/PH33) con el intercepto en 0; la restriccion de **forma** no se probo explicitamente",
+      "diferencia_con_cerrado": "la calibracion es una transformacion monotona de las probabilidades; la unimodalidad es una restriccion funcional sobre los **gaps de logits**. No es equivalente a soft labels. Pero el efecto sobre el argmax es marginal salvo en empates, y toda la evidencia de la que presumiria es de **calibracion**, no de F1",
+      "mecanismo_esperado": "cambios de prediccion solo en muestras cercanas al empate; mejora de confiabilidad, no de F1",
+      "modo_de_fallo": "identico a C1 sin su parte util, mas un hiperparametro extra (escala de barrera) que infla la superficie de tuning",
+      "control": "aislar SoftCE frente a SoftCE+LBE; el control decisivo es el brazo SoftCE solo",
+      "coste": "small-medium",
+      "riesgo": "ninguno",
+      "recomendacion": "MANTENER CERRADO. La evidencia propia del paper dice que la ganancia es de calibracion y que no supera a su componente de soft labels en exactitud",
+      "vector": "novedad 3 / evidencia 4 / compatibilidad 5 / transferibilidad 2 / coste 4"
+    },
+    {
+      "id": "C4",
+      "nombre": "Separacion estilo/contenido y eliminacion de atajos sin etiquetas de entorno (DePro, INLP, NFL, topic-marginalization)",
+      "paper_evidencia": "DePro Dou et al. COLING 2022 (RFF + reponderacion; **la exactitud in-distribution BAJA**: MNLI 84,3 a 83,2; FEVER 85,4 a 84,5, y solo mejora OOD); INLP Ravfogel et al. ACL 2020; NFL Chew et al. EACL Findings 2024; Seroussi et al. CoNLL 2011",
+      "por_que_no_probado": "la seleccion supervisada de features se cerro (V25) y el cluster-conditioning se uso (10 scripts), pero nunca se hizo una proyeccion al espacio nulo de pseudo-atributos tematicos",
+      "diferencia_con_cerrado": "no es chi2/MI (que selecciona por relevancia con la etiqueta) ni cluster-conditioning (que condiciona la prediccion al cluster). Es una **proyeccion de subespacio**, y ese mecanismo concreto no se ejecuto: 0 scripts",
+      "mecanismo_esperado": "reduce la dependencia de palabras topicas",
+      "modo_de_fallo": "el CV IID no se mueve o baja: **la ganancia de DePro es estrictamente OOD y el CV de AGE es IID**. Y en edad los topicos **son** la senal principal (escuela, trabajo, hijos, jubilacion): proyectarlos fuera puede borrar senal",
+      "control": "proyeccion de direcciones aleatorias con la misma dimensionalidad; chi2 como referencia del cierre",
+      "coste": "large",
+      "riesgo": "el clustering debe entrenarse dentro del fold de train; usar el texto de test rozaria 'test para desarrollo'",
+      "recomendacion": "NO REABRIR. La propia Tabla 1 de DePro muestra caida in-distribution, y la medicion de AGE ya dice que el canal estilometrico integrado aporta +0,0003: el priors es negativo en las dos direcciones",
+      "vector": "novedad 3 / evidencia 2 / compatibilidad 3 / transferibilidad 2 / coste 2"
+    },
+    {
+      "id": "C5",
+      "nombre": "Geometria ordinal de clases: prototipos restringidos y covarianzas condicionales (CPL, Mahalanobis/QDA)",
+      "paper_evidencia": "CPL Wang et al. AAAI 2023 (proxies con restriccion de layout; Adience 61,6-62,1 de exactitud frente a 59,6 de SORD, con VGG-16 preentrenado en ImageNet)",
+      "por_que_no_probado": "se usaron prototipos, centroides y kNN, pero sin restricciones de layout ni metrica aprendida. La capacidad del meta-modelo se cerro (V29/V30)",
+      "diferencia_con_cerrado": "los prototipos de AGE no imponian geometria global; CPL anade una restriccion de layout y un objetivo de similitud unimodal. Es una diferencia real pero incremental",
+      "mecanismo_esperado": "mejoras en MAE y en errores lejanos; para macro-F1 necesita mover fronteras adyacentes",
+      "modo_de_fallo": "la ganancia de CPL esta atada a un **extractor de features preentrenado (VGG-16)**; con TF-IDF/SVD y un MLP la restriccion de layout puede no aportar nada, y estimar covarianzas en dimension alta y dispersa es mal condicionado",
+      "control": "clasificador de centroides sin restriccion en la misma representacion y folds; QDA regularizada sobre SVD para la parte de Mahalanobis",
+      "coste": "medium",
+      "riesgo": "ninguno",
+      "recomendacion": "MANTENER CERRADO. Baja novedad (prototipos ya USED) y evidencia dependiente de un extractor prohibido",
+      "vector": "novedad 2 / evidencia 2 / compatibilidad 5 / transferibilidad 2 / coste 3"
+    }
+  ],
+  "duplicaciones": 21,
+  "rechazados": 25,
+  "validacion_contra_repositorio": {
+    "soft_targets_o_label_smoothing_ejecutados": 0,
+    "emd_wasserstein_ejecutados": 0,
+    "proyeccion_de_topicos_ejecutada": 0,
+    "perdidas_custom_en_todo_el_proyecto": 2,
+    "cuales": [
+      "v18_p3_margen.perdida_con_margen",
+      "v18_p5_destilacion.perdida_destilacion"
+    ],
+    "falsos_positivos_declarados": [
+      "'complement' matcheaba 'complementario' en el texto en espanol (391 veces)",
+      "'sord' matcheaba 'tensordot' (15 veces)"
+    ],
+    "coral_cerrado": true,
+    "intercepto_optimo": 0.0
+  },
+  "hallazgo_central": "macro-F1 es una metrica NOMINAL y la literatura ordinal optimiza metricas DISTANCIA-CONSCIENTES. Dos fuentes convergentes lo dicen de forma explicita: Vargas et al. IEEE TKDE 2026 (12 datasets, 20 configuraciones) y Kasai et al. arXiv 2405.11775 (texto). El hueco de ejecucion existe y la evidencia dice que llenarlo empuja en la direccion contraria a la del concurso",
+  "restricciones": {
+    "entrenamiento": 0,
+    "usa_test": false,
+    "usa_holdout": false,
+    "submissions": 0,
+    "usa_leaderboard_para_elegir": false
+  },
+  "segundos": 0.0
+}

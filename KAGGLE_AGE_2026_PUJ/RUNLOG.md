@@ -1988,3 +1988,19 @@ intacto.
 - **Correcciones declaradas:** A correcto = 27.430 (el gap analysis reportaba 27.007); rescates
   exclusivos = 8.029 con esta definicion.
 - **Compliance:** 0 hallazgos. **Artefactos de V30 tocados:** 0. **Submissions: 0.**
+
+
+---
+
+## Revision bibliografica · 2026-10-08
+
+- **Resultado:** `NO_NEW_METHOD`.
+- **Entrenamiento: 0.** Submissions: 0. Test y holdout: sin tocar.
+- **Hallazgo central:** desajuste de metrica. macro-F1 es nominal; la literatura ordinal optimiza
+  metricas distancia-conscientes y el trade-off esta documentado en texto.
+- **Huecos de ejecucion declarados:** 0 scripts con targets suaves, 0 con EMD, 0 con proyeccion de
+  topicos. La "label smoothing cerrada" lo estaba por argumento, no por medicion.
+- **Candidatos:** 5 evaluados, 1 con hueco real (C1), registrado y no ejecutado.
+- **Duplicaciones:** 21 pares. La mas contundente es algebraica: EMD2 = familia acumulativa CORAL.
+- **Rechazados:** 25 metodos con motivo documentado.
+- **Compliance:** 0 hallazgos. **Artefactos de V30 tocados:** 0.

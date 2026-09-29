@@ -1,0 +1,26 @@
+metodo,reason_excluded
+EMD/Wasserstein ordinal (Hou et al. 2017; EMD en XGBoost),Cerrado por equivalencia algebraica con la familia acumulativa CORAL/all-threshold
+Ranking ordinal distinto de lo probado,"No aparece nada que no sea all-threshold, pairwise (V28-03), CORAL/CORN o WKL (surrogado de QWK, metrica distancia-consciente)"
+ORCU como palanca de macro-F1,Su contribucion medida es calibracion; no supera a su componente SoftCE en exactitud
+"Correlacion de logits por priors (logit adjustment, Menon et al. 2021)",Las clases de AGE estan balanceadas; no aplica
+"Calibracion post-hoc, temperature scaling, Dirichlet",Cerrado por PH32/PH33; el intercepto optimo medido es 0
+"Filtrado de muestras ruidosas, co-teaching, sample selection",Equivalente a hard example mining (auditoria) o a Ord-NLL (C2)
+"Curriculo por dificultad, focal, OHEM","Cerrado por auditoria: apuntan a la poblacion A, donde ninguna de 26 fuentes tiene senal"
+"Stacking, bagging, seed ensembles","Cerrado: H04/H06 por equivalencia funcional; V28-02 en -0,000312"
+"Seleccion de features supervisada, incluida SHAP","Cerrado por V25 (D-060, -0,000629)"
+"ECOC ordinal (Barbero-Gomez et al. 2023, dlordinal)",Misma familia de descomposicion; pairwise invalidado en V28-03
+"CORAL, CORN, CLM, stick-breaking","Cerrado por D-058 y anexos, o familia de C3"
+CPL y prototipos restringidos,Baja novedad (prototipos USED) y evidencia dependiente de extractor preentrenado
+Mahalanobis y QDA por clase,Sin evidencia en texto/edad; geometria mal condicionada en representacion dispersa
+"DePro, INLP, NFL, JTT, DFR, IRM, Group-DRO","Requieren grupos o entornos, o son variantes de reponderacion, o su ganancia es estrictamente OOD. El CV de AGE es IID"
+Author-topic y marginalizacion por LDA,Cluster-conditioning ya usado en 10 scripts
+Label enhancement (Xu & Geng 2019),Familia soft-labels con kernel de vecindad; sin evidencia de macro-F1 en texto
+Concept-based LDL (Springer 2022),Requiere conocimiento externo de conceptos: INCOMPATIBLE por reglamento
+Contrastive learning desde label distribution (Neurocomputing 2022),Perdidas contrastivas con redes; sin evidencia de macro-F1 en edad; familia de representacion cerrada
+"Aumentacion, mixup, EDA en texto",Sin evidencia ordinal-texto-macro-F1; los modelos de AGE son lineales y el dataset es grande
+"Modelos secuenciales from-scratch (char-CNN, LSTM)","Permitidos en principio, pero la literatura clasica de perfilado muestra que los n-gramas con lineales son competitivos, y no hay evidencia de que el orden aporte en edad"
+"Modelos y etiquetas de edad externos, FastText/word2vec preentrenados, LLM, entailment",PROHIBIDO; su transferibilidad es nula sin el modelo preentrenado
+Metadatos de usuario,"PROHIBIDO. La literatura (PLoS ONE 2017, F1 0,739) muestra que ahi esta la mayor ganancia, y por eso la prohibicion es la que mas limita"
+"Arboles y forests ordinales (ORCA, ordinal forest, LightGBM ordinal)",Familia de objetivos ordinales cerrada; LightGBM multinomial ya usado
+"Conformal, abtencion, opcion de rechazo",No mejora macro-F1 con un argmax forzado por fila
+Ruido de anotacion con multiples anotadores,AGE no tiene multiples anotadores; queda solo como C2

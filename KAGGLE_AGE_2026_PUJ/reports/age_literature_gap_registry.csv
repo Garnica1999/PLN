@@ -1,0 +1,22 @@
+paper_method,AGE_existing_method,relationship,reason
+"SORD, soft labels (Diaz & Marathe CVPR 2019)",label smoothing (cerrado por argumento en la auditoria); class_weight (V18-P1),Superconjunto de LS uniforme,CE con target suave = CE one-hot + sesgo fijo por clase; con beta tendiendo a 0 colapsa a LS
+DLDL (Gao et al. IEEE TIP 2017); LDL (Geng TKDE 2016),soft labels (misma familia),Variante con marginalizacion sobre la edad continua,Misma modificacion de target
+Kernels triangular/beta/generalizada (Vargas 2022-2024),soft labels (familia),Eleccion de kernel dentro de la misma familia,"El kernel cambia la forma, no el mecanismo"
+LCM (Guo et al. AAAI 2021); LDL Dual-kNN (SDM 2025),kernel aprendido; kNN (USED),Kernel de similitud aprendido + kNN en inferencia,El modulo LDL es target-side; kNN cerrado
+Stick-breaking (Neurocomputing 2020); CO2; VS-SL; ORCU-LBE,calibracion y post-proceso (PH32/PH33),Restriccion de forma frente a calibracion,ORCU no supera a SORD en exactitud; su ganancia declarada es de calibracion
+EMD2 (Hou et al. 2017),CORAL y variantes (CLOSED); pairwise (invalidado),**Equivalencia algebraica**: EMD2(one-hot) = suma_k (F_pred(k) - 1[y<=k])^2,"Es la familia acumulativa all-threshold con perdida L2: la misma descomposicion que V22/V23/H10/D-058, con otra perdida"
+OLL/MLL (Castagnos et al. COLING 2022; Kasai et al. 2024),No probado; lo mas cercano es el cierre de label smoothing,"Penalizacion complementaria distancia-consciente, NO descomposicion","Es la variante **menos cubierta** por los cierres, y por eso es lo unico que sobrevive como candidato (C1)"
+WKL (de la Torre et al. PRL 2018),ranking como objetivo (descartado); metrica macro-F1,Surrogado de QWK,QWK es distancia-consciente y macro-F1 es nominal: desajuste de metrica
+"CORAL (Cao et al. PRL 2020), CORN, CLM, OBD, ECOC ordinal","V22-ORDINAL-COMPARTIDO, V23-01-CORAL, H10, D-058",Identidad o variante directa,Ya auditado con control de atribucion
+Nested dichotomies (Frank & Hall ECML 2001),"descomposicion pairwise (V28-03, -0,067553)",Misma familia de descomposicion,"Cambia el esquema de particion, no el mecanismo"
+Ord-NLL (Takezaki et al. IEEE Access 2026),soft labels (familia),**Equivalencia en expectativa demostrada en el propio paper** (Corollary 1),El minimizador esperado es un target suave exponencial
+Garg & Manwani ACML 2020; SVOR robusto (Neurocomputing 2024),"umbral e intercepto (PH32/PH33, optimo 0)",Para ruido simetrico el optimo limpio solo cambia el umbral por clase,La parte corregible por teoria ya se midio y no aporta
+JTT (Liu et al. ICML 2021),hard example mining (auditoria),Reponderar ejemplos dificiles,Mismo conjunto objetivo de muestras
+DFR (Kirichenko et al. ICLR 2023),class_weight (V18-P1); capacidad (V29/V30),Reentrenar la ultima capa con muestra balanceada,Las clases de AGE ya estan balanceadas; es un refit
+DePro (Dou et al. COLING 2022),seleccion supervisada (V25); seleccion de muestras,Decorrelacion y purificacion (familia robustez OOD),La Tabla 1 del paper muestra caida in-distribution; la ganancia es OOD
+INLP (Ravfogel et al. ACL 2020),seleccion supervisada (V25),Proyeccion de subespacio espurio,"Mecanismo distinto, sin evidencia en edad/texto"
+NFL (Chew et al. EACL Findings 2024),no probado,Deteccion de tokens espurios por vecindad,Robustez a OOD; no ataca macro-F1 IID
+LDA/author-topic (Seroussi et al. CoNLL 2011; CL 2014),cluster conditioning (10 scripts),Prediccion marginalizando topicos,Es condicionar por cluster: misma familia
+CPL (Wang et al. AAAI 2023),prototipos y centroides (USED); kNN (USED),Prototipos con layout restringido,Diferencia incremental; ganancia atada a VGG preentrenado
+Label enhancement (Xu & Geng TKDE 2019),soft labels (familia),Construccion de distribuciones desde vecindad,Target-side con kernel de kNN
+Optimizacion directa de macro-F1 (Eban et al. AISTATS 2017); reglas plug-in (Lipton ICML 2014),"calibracion y umbral (PH32/PH33), intercepto 0",Regla de decision sobre posteriores,"En multiclase balanceado la parte accionable es el umbral por clase, ya medido"
