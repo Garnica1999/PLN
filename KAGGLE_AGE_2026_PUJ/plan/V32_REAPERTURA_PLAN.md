@@ -106,10 +106,17 @@ cerrar la linea con evidencia y no gastar mas gates de delta (P(delta >= +0.0015
   triage formal y lista exhaustiva de la familia; tabla de simetria de sesgo verificada por sonda;
   cierre sostenido en A1 vs la derivacion, no en A1 vs A2; firma de Carlos antes de ejecutar).
 
-- [ ] **F2'''' Pre-registro + implementacion + revision**: pre-registro congelado (JSON + MD + puerta
-  G0-G6 normativa), `ml-coder`, `ml-reviewer`, `ml-qa-engineer` (GO/NO-GO). Scripts previstos:
-  `v34_00_preregistro.py` y `v34_01_ftrl_softmax_multipasada.py`; artefactos en rutas **nuevas**
-  (`artifacts/p34_scores/v34_e1/`, `checkpoints/v34_e1/`), sin tocar `p33_scores/todos` ni `v33_01`.
+- [x] **F2'''' Pre-registro + implementacion + revision**: pre-registro congelado (`9e862d1`: JSON +
+  MD + puerta G0-G6 normativa) y exploracion previa versionada; `ml-coder` produjo
+  `v34_01_ftrl_softmax_multipasada.py` (5320 lineas, ASCII puro, 0 asserts); **enmiendas 2 y 3
+  PRE-EJECUCION** (`v34_00d`: control con `partial_fit` x 10 tras medir que `fit` repetido
+  reinicia `t_` a 401 en vez de 4001; `v34_00e`: `token_pattern` restaurado a la receta canonica);
+  `ml-reviewer` **APROBADO** en cuatro rondas (3a implementacion independiente del nucleo con
+  max|delta w| = 4.663e-15, `t_` = 4001 medido, cuatro caminos de cierre con las ocho salidas);
+  `ml-qa-engineer` **NO-GO -> GO** en dos rondas tras corregir un bloqueante real (`KeyError` de
+  `pass` en la sonda (j), ruta que `--verificar` no alcanza). En total **11 bugs reales** cazados
+  antes de ejecutar. Artefactos en rutas **nuevas** (`artifacts/p34_scores/v34_e1/`,
+  `checkpoints/v34_e1/`), sin tocar `p33_scores/todos` ni `v33_01`.
 
 - [x] **F3'''' Ejecucion + puerta + gates**: ejecutado en CPU (exit 0; **51.4 s** del presupuesto
   1200 s; RSS pico 0.685 GB; sondas (a)-(j) pass; `p33_scores/todos` intacto). **Veredicto
