@@ -1,0 +1,93 @@
+{
+  "fase": "P3/P4/P5 pre-registro congelado (familias restantes)",
+  "fecha": "2026-09-30",
+  "commit": "3df50dfe9a394b980355b082cabca5cdd498541e",
+  "hashes": {
+    "anotacion_md_parquet": "dacbc3055ccde0d9a53f335f65b63df666b2ac1a4eee4a94e5b46fd7cd8c5745",
+    "anotacion_lg_parquet": "81287d541c082ea888ad1b5d06b83680bc5078c624c2da32f0473139d67a739c",
+    "dep_edges_md_parquet": "3983212647c7f48f67cc952eec80428a69471d152b33b1e2d271468447a2d411",
+    "dep_edges_lg_parquet": "ed32f5d2a91d360c9f852c983aa278301e75661e9ea13e20607eb72b76054055",
+    "corpus_train": "39c6c8270366fe155f3c8dd232e31867bee659af8908121d04b6bd89bd163748",
+    "canonico_y_true": "b1c928f9b9f5575547c1090a1fd83cf32a048b694af35a980b460c0bd66d48e6",
+    "canonico_fold_idx": "74d18330c40c3598a1936706ae9434c5fdf29119d357d38353cf298812fe6fb5",
+    "canonico_v30_prob": "3d77352486605971093ade7214ae82326057845d8bf54a2d88c83843c5a721db",
+    "manifest_plugin": "8d635e6a546b5a0e3829872b5e182be745910bd2a0945759a6a44b6eb7e643f7"
+  },
+  "pesos_plugin": [
+    1.0,
+    1.1749,
+    1.2721,
+    1.163,
+    1.001,
+    0.8128
+  ],
+  "baseline_primario": 0.6159732,
+  "representaciones": {
+    "R3_lemma_POS": {
+      "definicion": "tokens lemma_POS de la columna congelada lemma_pos_seq (querer_VERB)",
+      "vec": "TfidfVectorizer(analyzer='word', ngram_range=(1,2), min_df=5, sublinear_tf=True, lowercase=True, token_pattern=r'(?u)\\S+')",
+      "nota": "es el bloque B de P7 SIN el bloque de texto: canal tipado aislado"
+    },
+    "R4_morfologia": {
+      "definicion": "tokens de morph_seq con los vacios '_' EXCLUIDOS (bundles tipo Tense=Past|Person=1, en orden; los bigramas son adyacencia en la secuencia FILTRADA)",
+      "vec": "identico a R3",
+      "nota": "excluir '_' evita que el canal mida longitud/posicion; los docs vacios suben (se cuentan y se declaran; uniforme 1/6)"
+    },
+    "R5_dependencias": {
+      "definicion": "tokens 'dep->POS_cabeza' por token (nsubj->VERB, det->NOUN; raiz 'ROOT->POS' como codificacion propia) del artefacto derivado determinista dep_edges (mismo modelo congelado; validacion 0/0 contra lo almacenado)",
+      "vec": "identico a R3",
+      "nota": "etiqueta de arco (relacion + categoria de la cabeza); no es un triple historico; pierde el POS del dependiente por decision fija"
+    }
+  },
+  "aprendiz": "LogisticRegression(C=1.0, max_iter=2000, solver='lbfgs', tol=1e-3)",
+  "integracion": "combinador logistico anidado sobre [p_V30 || p_canal] L2 por fila (12 features), decision argmax(w_plug-in * p_combinada); identico a P6/P7",
+  "control": "secuencias del canal permutadas DENTRO DE CADA FOLD (semilla 20261031; mismo mapeo md/lg); pipeline completo; NO comparable numericamente con los barajados globales de P2/P6 (declarado)",
+  "semillas": {
+    "bootstrap": 20261010,
+    "barajado": 20261031
+  },
+  "gates": {
+    "delta_min": 0.0015,
+    "folds_min": 4
+  },
+  "vacios_por_canal": {
+    "md": {
+      "R3": 104,
+      "R4": 4343,
+      "R5": 104
+    },
+    "lg": {
+      "R3": 104,
+      "R4": 4901,
+      "R5": 104
+    }
+  },
+  "anotadores": [
+    "md",
+    "lg"
+  ],
+  "orden": [
+    "R3_lemma_POS",
+    "R4_morfologia",
+    "R5_dependencias"
+  ],
+  "clasificacion_previa": {
+    "P3_lemma_POS": "PARTIALLY_COVERED (auditoria del ciclo P6: lemas solo como agregados en v14a; incremento lexical cubierto; incremento POS cerrado en P2)",
+    "P4_morfologia": "PARTIALLY_COVERED (ratios en v14a; sufijos redundantes con char_wb medido en V13)",
+    "P5_dependencias": "GENUINELY_NEW por operacion; sin justificacion independiente tras P7 (revision unica del gap)"
+  },
+  "override_usuario": "ejecutar las familias restantes pese a P3/P4 PARTIALLY_COVERED y P5 sin justificacion independiente; cierre con evidencia propia",
+  "umbral_alta_confianza": 0.6,
+  "n_bootstrap": 2000,
+  "variabilidad_entrenamiento": 0.0008876,
+  "sklearn_version": "1.8.0",
+  "no_hacer": [
+    "grid",
+    "sub-hipotesis extra",
+    "test",
+    "holdout",
+    "leaderboard",
+    "submission"
+  ],
+  "segundos": 1.2
+}

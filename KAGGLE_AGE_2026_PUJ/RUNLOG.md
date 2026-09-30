@@ -2153,3 +2153,13 @@ intacto.
 - Resultado: CLOSED. Brazos: lg: -0.0007606 (1/5) | md: -0.0006894 (2/5). T solo md 0.4942.
 - Control: bloque B permutado dentro de cada fold por el pipeline completo.
 - Baseline 0.6159732; sin tuning; sin test; sin holdout; sin submission.
+
+---
+
+## Pre-registro del ciclo final (P3/P4/P5) · 2026-09-30
+
+- Congeladas las tres familias restantes con protocolo P6/P7 (combinador anidado, control
+  intra-fold semilla 20261031, gates) y orden R3->R4->R5.
+- Baseline recomputado: 0.6159732. Artefacto dep_edges registrado (md 39832126..., lg ed32f5d2...).
+- Override del usuario registrado (P3/P4 PARTIALLY_COVERED, P5 sin justificacion independiente).
+- Sin tuning, sin test, sin holdout, sin submission.
