@@ -1,6 +1,6 @@
 # V32 - Plan de reapertura: optimizacion del puntaje (2026-09-30)
 
-Estado global: **EN EJECUCION**.
+Estado global: **P1 CERRADA (NO_ATRIBUIBLE)**; P2 (CatBoost) pendiente de autorizacion del usuario.
 Campeon congelado (FINAL_REFERENCE): **V30 + plug-in por clase**, LB 0.63575
 (CV global 0.6159732; nested 0.6154643; particion canonica).
 Objetivo del usuario: mejorar el puntaje de Kaggle; referencia declarada: acercarse a 0.70 de F1.
@@ -48,9 +48,12 @@ Objetivo del usuario: mejorar el puntaje de Kaggle; referencia declarada: acerca
   **NO_ATRIBUIBLE**: A1 -0.0034165 (0/5), A2 -0.0009284 (control no favorable),
   A3 -0.0009011 (control negativo por encima de A1). Sin segunda particion; P1 cerrada
   (D-081). `ml-trainer` valido artefactos (9/9) y gates contra el arbol congelado.
-- [ ] **F4 Cierre**: notebook consolidado (seccion nueva "PHASE - V32 REOPENING"), actualizacion
-  de `experiments.csv`, `PROJECT_STATE.md`, `DECISIONS.md`, `RUNLOG.md`, `FINAL_REPORT.md` y
-  los informes del experimento; commits por fase; ingesta en graphiti y codebase.
+- [x] **F4 Cierre**: notebook consolidado con la seccion "PHASE - V32 REOPENING" (310 celdas;
+  salida real + aserciones); `experiments.csv`/`RUNLOG.md`/`PROJECT_STATE.md`/`FINAL_REPORT.md`
+  y `DECISIONS.md` (D-081) actualizados; commits `5c998e6` y `8baaad7`; graphiti (episodio +
+  3 tripletas en `kaggle_age_2026_puj`) y codebase re-indexado (42.768 nodos / 102.033 aristas).
+  S1 aclarado: el commit `9c5cca2` citado en el prereg es el HEAD al generarlo; sus artefactos
+  entraron en `1cdf7a1`.
 
 ## Criterio de parada
 
@@ -65,5 +68,5 @@ Objetivo del usuario: mejorar el puntaje de Kaggle; referencia declarada: acerca
 | 2026-09-30 | F0 | plan cargado, rama creada, estado verificado | 9c5cca2 |
 | 2026-09-30 | F1 | arquitectura + legalidad + reglas NN (ES estricto y GPU por decision de Carlos) | 9c5cca2 |
 | 2026-09-30 | F2 | pre-registro congelado + runner verificado (reviewer APROBADO + QA GO 47/47) | 1cdf7a1 / d1a152f |
-| 2026-09-30 | F3 | V32-E1 ejecutado en GPU; NO_ATRIBUIBLE; P1 cerrada (D-081) | (commit de cierre F3/F4) |
-| 2026-09-30 | F4 | notebook + docs + memorias | (commit de cierre F3/F4) |
+| 2026-09-30 | F3 | V32-E1 ejecutado en GPU; NO_ATRIBUIBLE; P1 cerrada (D-081) | 5c998e6 |
+| 2026-09-30 | F4 | notebook + docs + memorias (graphiti + codebase) | 8baaad7 + este commit |
