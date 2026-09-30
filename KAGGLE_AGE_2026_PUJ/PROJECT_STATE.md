@@ -1098,3 +1098,36 @@ tambien en test.
 **No subida a Kaggle** y sin score por anticipado: no se proyecta el leaderboard. Si se obtiene, se
 clasificara como `POSITIVE_TRANSFER` / `NEUTRAL_TRANSFER` / `NEGATIVE_TRANSFER` contra 0,63302, sin
 reentrenar ni generar una segunda sonda.
+
+---
+
+# ESTADO FINAL DE AGE
+
+```text
+V30     = HISTORICAL_FROZEN_BASELINE   LB = 0.63302
+PLUG-IN = ADOPTED                      LB = 0.63575
+plug-in delta LB = +0.00273
+
+research_status   = CLOSED
+candidate_status  = ADOPTED
+external_transfer = POSITIVE_TRANSFER
+```
+
+| | CV canonico | CV alternativo | leaderboard |
+|---|---|---|---|
+| V30 | 0.6134471 | 0.6143347 | 0.63302 |
+| **plug-in** | **0.6154643** | **0.6164700** | **0.63575** |
+| delta | **+0.0020172** | **+0.0020580** | **+0.00273** |
+
+**Regla**: `argmax_c(w_c * p_c)` con `w = [1.00, 1.17, 1.27, 1.16, 1.00, 0.81]`.
+**No cambia** el modelo, la representacion, los hiperparametros ni la semilla.
+
+**Fichero**: `submissions/age_submission_plugin_candidate.csv`, SHA256
+`29cbe6cca4312a65f5176bad25c7d4ae4624d348f3e55586dfa36767a3abd6c0`. No sobrescrito.
+
+**Conclusion**: la mejora proviene de la **regla de decision**, no de una representacion ni de un
+modelo nuevo. Afirmacion acotada: para este problema y esta configuracion de probabilidades. **No**
+se afirma que V30 fuera incorrecto ni que `argmax` no sea optimo en general.
+
+**Investigacion cerrada.** Sin grid nueva, sin pesos nuevos, sin submission nueva, sin
+tuning con el leaderboard. P33/P34/G12/G14 no se reabren salvo evidencia externa o cambio de reglas.

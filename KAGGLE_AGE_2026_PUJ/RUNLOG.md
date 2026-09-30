@@ -2055,3 +2055,17 @@ intacto.
   estimacion honesta del mecanismo; el global con pesos congelados (**+0,0025261**) es lo que
   ejecuta la submission. El sanity check paro la construccion por esto.
 - **No subida.** Sin proyeccion de score. Sin segunda sonda.
+
+---
+
+## El plug-in se adopta: cierre definitivo · 2026-10-13
+
+- **Leaderboard del plug-in: 0.63575** frente a 0.63302 de V30. **Delta +0.00273.**
+- **`POSITIVE_EXTERNAL_TRANSFER`.** Las tres medidas (CV canonico, CV alternativo, LB) coinciden en
+  direccion.
+- **Estado:** `V30 = HISTORICAL_FROZEN_BASELINE`, `PLUG-IN = ADOPTED`, `research_status = CLOSED`.
+- **Calibracion:** el LB casa con el CV global (error +0.00015) y no con el nested (+0.00067), lo que
+  confirma que la correccion de los tres numeros era la descripcion correcta de la operacion.
+- **Submissions nuevas: 0. Tuning post-leaderboard: 0.** Los dos ficheros quedan sin sobrescribir.
+- **La investigacion queda cerrada.** El resultado vino de auditar *como decidir*, no de mejorar
+  *como aprender*.
