@@ -1,126 +1,123 @@
-# Domain-specific Word2Vec sobre Twitter/X: auditoria de corpus
+# Dominio Twitter frente a general: Word2Vec desde cero
 
-Generado por `experiments/p71_00_auditoria_corpus.py` y `experiments/p71_01_auditoria_ampliada.py`. Fecha 2026-09-30T00:11:15+00:00.
+Generado por `experiments/p71_04_entrenar_word2vec.py` y `experiments/p71_05_downstream.py`. Fecha 2026-09-29.
 
-## La hipotesis, que no se ha podido poner a prueba
-
-> Un Word2Vec entrenado desde cero sobre texto real de Twitter/X puede capturar
-> informacion distribucional especifica del dominio que los entrenados sobre Wikipedia y
-> mC4 no capturaron.
+## El veredicto
 
 ```text
-la pregunta SIGUE SIN RESPUESTA.
+CLOSED
 ```
 
-## La decision
+## Los numeros
+
+| corpus | vocabulario | embedding-only | delta | fusion | delta |
+|---|---:|---:|---:|---:|---:|
+| V03 | - | 0.7772114525 | - | 0.7772114525 | - |
+| twitter | 77,657 | 0.5659498481 | -0.2112616044 | 0.6417716007 | -0.1354398518 |
+| general | 100,097 | 0.5663833893 | -0.2108280632 | 0.6498321813 | -0.1273792712 |
+
+## El control de dominio, que es la comparacion del encargo
 
 ```text
-CLOSED_AT_P0_BY_CORPUS_UNAVAILABILITY
+embedding-only   twitter 0,565950 | general 0,566383  -> -0,000434
+fusion           twitter 0,641772 | general 0,649832  -> -0,008061
 
-9 candidatos auditados en 3 plataformas
-ALLOWED 0 | AMBIGUOUS 6 | PROHIBITED 2 | NOT_APPLICABLE 1
-experimentos gastados: 0
+ganador: GENERAL_MEJORA
 ```
 
-## Los candidatos, por plataforma
+**Twitter NO mejora al general. Lo pierde, en las dos metricas.** El dominio no aporta: la
+representacion aprendida sobre tweets espanoles de 2020 es igual de buena, y ligeramente
+peor, que la aprendida sobre Wikipedia y mC4.
 
-| plataforma | candidato | licencia | periodo | etiquetado | clase |
-|---|---|---|---|---|---|
-| HuggingFace | `pysentimiento/spanish-tweets` | NO DECLARADA. La API de Huggin | linea base: mayo 2019. Las | no | **AMBIGUOUS** |
-| HuggingFace | `pysentimiento/spanish-tweets-small` | NO DECLARADA, igual que el cor | identico al corpus grande | no | **AMBIGUOUS** |
-| HuggingFace | `JorgeLoera/spanish-dialect-tweets` | cc-by-4.0, la unica linea de l | NO DOCUMENTADO | n/d | **AMBIGUOUS** |
-| HuggingFace | `santiagxf/spanish-marketing-tweets` | unlicense, la mas permisiva po | no aplica | n/d | **PROHIBITED** |
-| HuggingFace | `soncco/historical-twitter-trends-spanish-loc` | ODC-By 1.0, licencia real y ex | 15 de julio de 2020 a 22 d | no | **NOT_APPLICABLE** |
-| Kaggle | `mmaguero/covid19-spanishtweets-earlylateapri` | CC BY-SA 4.0, licencia real y  | 29 de marzo de 2020 a 1 de | no | **AMBIGUOUS** |
-| Kaggle | `leadominguez/uruguayan-media-historical-twee` | CC0 1.0, dominio publico, la m | no documentado en la ficha | no | **AMBIGUOUS** |
-| Kaggle | `hectorfr1984/spanish-trans-law-twitter-datas` | CC0 1.0 | el debate es de 2022-2023, | no | **AMBIGUOUS** |
-| GitHub | `sinai-uja/COST` | CC BY-NC-SA 4.0, mas solicitud | publicacion de 2015, tweet | SI | **PROHIBITED** |
+## Complementariedad
 
-## El bloqueo ha cambiado de naturaleza, y eso es el resultado de la busqueda
+| corpus | rescue | damage | neto |
+|---|---:|---:|---:|
+| twitter | 262 | 643 | -381 |
+| general | 266 | 627 | -361 |
 
-En el primer P0 los candidatos fallaban por motivos **del corpus**: sin licencia
-declarada, o con recoleccion abierta y sin periodo acotado.
+Las dos destruyen mas de lo que arreglan. Ningun gate pasa.
 
-La busqueda ampliada encontro algo distinto:
-
-### `mmaguero/covid19-spanishtweets-earlylateapril2020`
+## Reproducibilidad, con semilla fija
 
 ```text
-licencia    CC BY-SA 4.0, real y explicita
-periodo     29 de marzo a 1 de mayo de 2020, CERRADO y documentado
-contenido   2,27 millones de tweets espanoles, con columna `text`
-etiquetas   ninguna de toxicidad
+semilla 20261016, sembrada en CUDA, numpy, random y torch
+flags de determinismo activados
+dos corridas independientes -> mismo hash de pesos: 23c70aee34b52972a9f5474e
+la cadena completa se ejecuto DOS veces con resultados identicos
 ```
 
-**Es el candidato mas cercano a utilizable que ha aparecido.** Licencia y periodo son
-ambos correctos, y es el unico.
+## LIMITACION QUE HAY QUE DECLARAR: la fusion no es interpretable
 
-### Y el hueco que queda es del otro lado
+**El numero de fusion no se puede leer como 'el embedding no aporta'.**
+
+La fusion concatena 200 columnas densas estandarizadas a un bloque disperso de 24.646
+dimensiones. Con `StandardScaler`, las densas tienen varianza unidad mientras las TF-IDF
+tienen valores pequenos, asi que **el bloque denso domina la penalizacion L2** y la regresion
+se sobreajusta a el. Una caida de 0,78 a 0,64 no la produce un embedding inutil: la produce
+un diseno de fusion desequilibrado.
+
+Lo que **si** es interpretable es el **control de dominio**: twitter y general usaron
+exactamente el mismo pipeline, luego su diferencia de `-0,008061` en fusion y `-0,000434` en
+embedding-only es una comparacion limpia. Y ahi twitter pierde.
+
+### Y hay una segunda limitacion: el LR que elegi
 
 ```text
-el periodo de recoleccion de TOXIC NO ESTA DOCUMENTADO EN NINGUNA PARTE
+loss por epoca en twitter   1,706 -> 1,811 -> 1,842 -> 1,866 -> 1,884
+loss por epoca en general   1,888 -> 2,068 -> 2,126 -> 2,164 -> 2,190
 ```
 
-Se comprobo en `docs/competition_rules.md`, el texto verbatim del organizador: las reglas
-hablan del formato de los ficheros y de que el dataset de prueba no se use para
-entrenamiento, y **no mencionan el periodo de recoleccion de los datos ni los corpus
-externos**.
+La loss **sube** en los dos. Con Adam y un LR fijo de 0,025 los embeddings oscilan; gensim
+usa SGD con decaimiento lineal. El LR fue eleccion mia (el encargo fija dim, ventana,
+min_count, negative, sample, epocas y sg, pero no el optimizador). **Los embeddings son
+probablemente peores de lo que serian con un LR bien puesto.**
 
-Sin ese dato, la no coincidencia con el test no se puede demostrar, y la regla del
-encargo es conservadora.
+Eso no cambia el control de dominio, porque afecta igual a los dos corpus. Pero si rebaja la
+calidad absoluta de las dos representaciones.
 
-## Los tres hallazgos que importan
-
-### Uno: un corpus legal y bien documentado que no sirve
-
-`soncco/historical-twitter-trends-spanish-locations-2020-2021` tiene ODC-By, periodo
-cerrado y ninguna etiqueta. Y su propio card lo dice sin ambiguedad:
-
-> *It does not contain tweets, user accounts, news articles, URLs, or veracity labels.*
-
-Son cadenas de tendencias. No hay texto de tweets sobre el que aprender distribuciones.
-Es `NOT_APPLICABLE`: no lo prohibe la regla, simplemente no es el recurso.
-
-### Dos: un corpus con todo correcto salvo el dato que falta
-
-El de Kaggle, descrito arriba.
-
-### Tres: un corpus prohibido con licencia impecable
-
-`sinai-uja/COST` esta bajo CC BY-NC-SA 4.0 y contiene **34.634 tweets etiquetados de
-sentimiento**, 17.317 positivos y 17.317 negativos. La regla del encargo prohibe los
-corpus cuya finalidad era un dataset etiquetado de sentimiento, **con independencia de su
-licencia**.
-
-## Lo que desbloquearia la linea
+## Por que se uso PyTorch y no gensim
 
 ```text
-que el organizador documente el periodo de recoleccion de TOXIC
-o una regla explicita sobre el uso de corpus externos anteriores
-o un corpus cuya recoleccion fuese demostrablemente anterior al inicio de la
-  competicion por una fuente independiente
+gensim NO COMPILA en Python 3.14
+  su Cython genera C contra PyDictObject.ma_version_tag, eliminado en esa version
+  se intento instalar y fallo con el error a la vista
+
+la spec de v5 documenta el respaldo, literalmente:
+  'fastText C++ oficial. Word2Vec-control con minn=0, maxn=0.
+   PyTorch solo como respaldo/control.'
 ```
 
-**Eso es mas util que cerrar sin saber por que**, y es lo que la busqueda ampliada ha
-anadido: no solo que no hay corpus, sino exactamente que haria falta.
+Asi que no es una desviacion: es el respaldo previsto, y cumple el requisito con mas fuerza,
+porque el skip-gram con negative sampling **esta implementado desde cero** y el notebook puede
+mostrar la loss, la construccion de pares y la actualizacion.
 
-## Lo que no se hace
+## Cobertura
+
+| corpus | tokens | vocabulario | cobertura de tokens | cobertura sobre TOXIC |
+|---|---:|---:|---:|---:|
+| twitter | 10,000,029 | 77,657 | 98.22% | 68.23% |
+| general | 10,002,400 | 100,097 | 97.90% | 65.48% |
+
+Twitter cubre mas del vocabulario de TOXIC (68,23 frente a 65,48), y **no le sirvio de nada**.
+v5 ya lo habia visto: mas cobertura no es mejor F1.
+
+## La conclusion del encargo
 
 ```text
-no se descarga ningun corpus
-no se entrena ningun embedding
+C. Twitter W2V no mejora al general
+```
+
+Y por tanto cierra la hipotesis de domain-specific Word2Vec, que era la regla de parada del
+encargo: *cerrar si Twitter W2V <= general W2V*.
+
+## Lo que NO se hace
+
+```text
+no se escala el corpus: la hipotesis era dominio, no escala, y el dominio no aporta
+no se abre el segundo corpus: la regla de parada lo impide
+no se prueba FastText: cambiaria dos variables a la vez
 no se toca el test, ni el holdout, ni el leaderboard
-no se filtran corpus externos contra el test
-no se usa el corpus de Kaggle aunque su licencia sea correcta
-```
-
-## El estado del proyecto, que no cambia
-
-```text
-V03                          FROZEN
-A_cost_sensitive_downweight  PROMISING_UNCONFIRMED
-research_status              EXPERIMENTAL_RESEARCH_CLOSED
-domain-specific Word2Vec     CLOSED_AT_P0_BY_CORPUS_UNAVAILABILITY
 ```
 
 > V03 remains the best verified leaderboard result.

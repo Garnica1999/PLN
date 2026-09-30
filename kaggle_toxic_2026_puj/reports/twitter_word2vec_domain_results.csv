@@ -1,2 +1,4 @@
-estado,razon,experimentos_ejecutados,corpus_utilizado
-NO_APLICA,P1 no se ejecuto: ningun corpus paso la auditoria de P0,0,ninguno
+corpus,vocabulario,embedding_only_cv,embedding_delta,fusion_cv,fusion_delta,rescue,damage,net,f1_pliegues_fusion,pasa_gate
+V03,,0.7772114525,0.0,0.7772114525,0.0,,,,,
+twitter,77657,0.5659498481,-0.2112616044,0.6417716007,-0.1354398518,262,643,-381,0.644478|0.62034|0.686841|0.585784|0.669804,False
+general,100097,0.5663833893,-0.2108280632,0.6498321813,-0.1273792712,266,627,-361,0.656515|0.64075|0.652074|0.641144|0.658188,False

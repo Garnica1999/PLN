@@ -30,3 +30,7 @@ tools/*
 !tools/verificar_*.py
 
 models
+
+# Embeddings entrenados: 133 MB, y reproducibles con semilla fija.
+# Su SHA256 queda registrado en reports/twitter_word2vec_training.json.
+modelos/twitter_domain/*.npz

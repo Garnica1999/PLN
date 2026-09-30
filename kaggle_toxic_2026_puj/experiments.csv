@@ -391,3 +391,5 @@ P71-00|2026-09-29|P0 auditoria de procedencia de corpus espanoles de Twitter/X|C
 P71-01|2026-09-29|P0 ampliado: busqueda de corpus en HuggingFace, Kaggle y GitHub|9 candidatos, ALLOWED 0; el bloqueo pasa a ser el periodo de TOXIC no documentado|P71|experiments/p71_01_auditoria_ampliada.py
 P71-02|2026-09-29|correccion del criterio de auditoria: la licencia no era una regla|la competencia no menciona licencias; mmaguero pasa a ALLOWED; P1 procede|P71|experiments/p71_02_correccion_criterio.py
 P71-03|2026-09-29|preparacion de los corpus de Twitter y general con la misma tokenizacion|Twitter 10.000.029 tokens | general 10.002.400 | diferencia 0,02 por ciento|P71|experiments/p71_03_preparar_corpus.py
+P71-04|2026-09-29|Word2Vec desde cero sobre los dos corpus, con semilla fija|twitter 77.657 palabras | general 100.097 | reproducibilidad verificada|P71|experiments/p71_04_entrenar_word2vec.py
+P71-05|2026-09-29|downstream: embedding-only, fusion y complementariedad|CLOSED | dominio GENERAL_MEJORA -0,008061 | ningun gate pasa|P71|experiments/p71_05_downstream.py

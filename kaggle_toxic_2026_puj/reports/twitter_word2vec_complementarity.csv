@@ -1,2 +1,9 @@
-estado,razon,rescue,damage,net,HS,TR,AG
-NO_APLICA,"no hay embedding entrenado, luego no hay complementariedad que medir",,,,,,
+corpus,etiqueta,rescue,damage,net
+twitter,HS,108,245,-137
+twitter,TR,51,170,-119
+twitter,AG,103,228,-125
+twitter,GLOBAL,262,643,-381
+general,HS,113,245,-132
+general,TR,54,152,-98
+general,AG,99,230,-131
+general,GLOBAL,266,627,-361
