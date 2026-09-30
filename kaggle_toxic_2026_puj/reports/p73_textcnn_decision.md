@@ -17,3 +17,33 @@ holdout = 0
 leaderboard = 0
 submission = 0
 ```
+
+---
+
+## ADENDA: la robustez de particion es PARCIAL
+
+Anadida despues de ejecutar P73-03. **No modifica el texto anterior ni la regla pre-registrada**,
+que se aplico correctamente a la particion congelada. Anade la evidencia posterior y califica.
+
+```text
+particion                    delta         pliegues A      IC 95 por clusters            excluye 0
+la congelada                +0.0316259472      4 de 5      [+0.010066, +0.053484]          SI
+alternativa 20261103        +0.0344649141      4 de 5      [+0.014094, +0.055680]          SI
+alternativa 20261104        +0.0112854167      4 de 5      [-0.009276, +0.031672]          NO
+```
+
+Estable en las tres: el signo y la direccion (A gana en 4 de 5 pliegues en cada una).
+Inestable: la magnitud, que va de +0.011 a +0.034, y la significacion, que se pierde en una de
+las tres.
+
+**Afirmacion defendible**: la direccion del efecto es estable en las tres particiones agrupadas
+probadas, pero su magnitud no lo es. La evidencia es direccionalmente consistente y
+cuantitativamente inestable.
+
+`P73 = COMPLEMENTARY` se mantiene CON esa calificacion explicita, no como efecto establecido.
+
+**Amenaza principal sin medir**: el control aleatorio es UNA sola tirada, y el mandato de la fase
+prohibe otra semilla. En P72 la nula vario entre 0.5731 y 0.6183 sobre diez tiradas, un rango de
+0.045 **mayor que el delta medido aqui**. No se puede distinguir "la geometria aporta" de "esa
+matriz aleatoria concreta salio floja". Es lo primero que habria que medir antes de invertir mas
+en esta linea.

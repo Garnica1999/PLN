@@ -7622,3 +7622,48 @@ campeon.
 otra semilla (no se ejecuto ninguna), ni que la diferencia se deba a relaciones semanticas y no a
 estructura direccional aprendida, porque las ramas difieren tambien en anisotropia y forma
 espectral. Y no se afirma "el corpus era suficiente".
+
+### D-254. ADENDA a D-253: la robustez de particion es PARCIAL, y eso acota el hallazgo
+
+P73-03 repitio el contraste completo con DOS particiones adicionales. La agrupacion por
+near-duplicados no cambia; solo cambia el reparto en pliegues. Las matrices son **exactamente** las
+de P73-02, luego la unica palanca es el reparto.
+
+```text
+particion                    delta         pliegues A      IC 95 por clusters            excluye 0
+la congelada de P73-02      +0.0316259472      4 de 5      [+0.010066, +0.053484]          SI
+alternativa 20261103        +0.0344649141      4 de 5      [+0.014094, +0.055680]          SI
+alternativa 20261104        +0.0112854167      4 de 5      [-0.009276, +0.031672]          NO
+```
+
+**Veredicto de robustez: PARCIAL.**
+
+Lo que SI es estable, en las tres particiones:
+
+```text
+el signo            A supera a B en las TRES
+la direccion        A gana en 4 de 5 pliegues en las TRES
+la magnitud         NO. Va de +0.0113 a +0.0345, un factor de 3
+la significacion    NO. Dos intervalos excluyen el cero y uno lo contiene
+```
+
+**Consecuencia sobre la clasificacion.** La regla pre-registrada se aplico a la particion congelada
+y dio `A_SUPERA_A_B_CLARO`. Esa aplicacion es correcta y no se reescribe. Pero la robustez parcial
+significa que la afirmacion defendible **no** es "la geometria aprendida aporta ventaja clara al
+lector secuencial", sino:
+
+> La direccion del efecto es estable en las tres particiones agrupadas probadas, pero su magnitud
+> no lo es: va de +0.011 a +0.034 y la significacion se pierde en una de las tres. La evidencia es
+> **direccionalmente consistente y cuantitativamente inestable**.
+
+`P73 = COMPLEMENTARY` se mantiene **con esa calificacion explicita**, no como efecto establecido.
+
+**La amenaza principal sigue sin medir, y hay que decir cual es.** El control aleatorio es **UNA
+sola tirada**. El mandato de la fase prohibe otra semilla del modelo, luego no se puede distinguir
+"la geometria aporta" de "esa matriz aleatoria concreta salio floja". En P72 se usaron diez tiradas
+precisamente por esto, y alli la nula vario entre 0.5731 y 0.6183, un rango de 0.045, que es MAYOR
+que el delta aqui medido. **Es la debilidad mas grave del hallazgo positivo y la primera cosa que
+habria que medir antes de invertir mas en esta linea.**
+
+**Lo que NO cambia con esta adenda**: la TextCNN sigue sin ser competitiva con el campeon (0.6091
+frente a 0.7772), no se evalua ninguna fusion, y no se afirma nada sobre el corpus en general.
