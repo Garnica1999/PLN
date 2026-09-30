@@ -117,9 +117,17 @@ las salvaguardas, el mecanismo de integracion P6/P7, los gates, la sonda de dete
 compliance de los ciclos previos. Scripts previstos: `v32_04_preregistro_ftrl.py` (lead) y
 `v32_05_ftrl_challenger.py` (runner). Un experimento = un script nuevo.
 
-- [ ] **F1'' Arquitectura y novedad**: `ml-architect` congela el protocolo (representacion
-  TF-IDF congelada y verificable, config unica sin grid, control de atribucion ex ante,
-  determinismo); `kaggle-specialist` valida reglas/leakage. Sin `dl-specialist` (no hay red).
+- [x] **F1'' Arquitectura y novedad**: `ml-architect` congelo el protocolo (FTRL-Proximal propio
+  alpha 0.05 / lambda1 0.0 / lambda2 1.0 / beta 1.0 / 10 pasadas; TF-IDF IDENTICA a
+  `v31_02_banco_representaciones.py` ajustada POR FOLD; A2 gemelo SGD con 10 pasadas; A3
+  barajado; sondas (a)-(d) obligatorias con exit 4; regla de fallback escrita antes de ejecutar;
+  cap por IC95 de la diferencia). `kaggle-specialist` = APROBADO CON EXIGENCIAS. Nota:
+  `vowpalwabbit 9.11.8` esta instalado y se descarta (implementacion propia verificable).
+  **Auditoria registrada**: el `data_hash` del manifiesto canonico es un hash de PUNTEROS
+  (`tobytes()` sobre array de objetos) y no es reproducible; se congelan sha256 del archivo
+  (`39c6c827...`) y del array de textos con receta determinista (`53c1a348...`).
+  Pre-registro: `reports/v32_p3_preregistro.md` + `experiments/v32_04_preregistro_ftrl.json`
+  (script `v32_04`).
 - [ ] **F2'' Pre-registro + implementacion + revision**: pre-registro congelado; `ml-coder`;
   `ml-reviewer`; `ml-qa-engineer` (GO/NO-GO).
 - [ ] **F3'' Entrenamiento y evaluacion**: `ml-trainer`; gates; arbol (PROMISING -> segunda

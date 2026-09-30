@@ -1,0 +1,204 @@
+{
+  "fase": "V32-E3 (P3) pre-registro congelado",
+  "fecha": "2026-09-30",
+  "commit": "15c2be8a014bd1c12c7f89be0dadb16974f9a649",
+  "experimento": "challenger FTRL-Proximal sobre TF-IDF ajustada por fold (ciclo 3)",
+  "baseline_primario": 0.6159732,
+  "referencia_nested": 0.6154643,
+  "pesos_plugin": [
+    1.0,
+    1.1749,
+    1.2721,
+    1.163,
+    1.001,
+    0.8128
+  ],
+  "hashes": {
+    "canonico_y_true": "b1c928f9b9f5575547c1090a1fd83cf32a048b694af35a980b460c0bd66d48e6",
+    "canonico_fold_idx": "74d18330c40c3598a1936706ae9434c5fdf29119d357d38353cf298812fe6fb5",
+    "canonico_v30_prob": "3d77352486605971093ade7214ae82326057845d8bf54a2d88c83843c5a721db",
+    "canonico_ids": "d69ecb339f1dc57de2f9cddd558658b5a272ffa42aec15c771773e8eabd59825",
+    "manifest_canonico": "8881a9f53e8613aa943681e7fd9a42a3a281aa66b5d7c796d13d2758c6226076",
+    "corpus_archivo": "39c6c8270366fe155f3c8dd232e31867bee659af8908121d04b6bd89bd163748",
+    "corpus_textos": "53c1a348a7954f3e59d7c67caddd6477a06f7d3441724c201052b4b5273445fc",
+    "vectorizador": "9bae157614458dbdf26fb7aed4c78d2954c36e895f830341e59b23fa63e2b51b"
+  },
+  "versiones": {
+    "sklearn": "1.8.0",
+    "numpy": "1.26.4",
+    "pandas": "2.3.3"
+  },
+  "corpus": {
+    "receta": "src.data.load_train() sobre data/raw/age_train.csv (sep=cfg.TRAIN_SEP, encoding utf-8-sig, clean_text aplicado); texto = columna TEXT_COL; orden de filas = orden del CSV = orden canonico de ids.npy",
+    "ids_alineados": true,
+    "etiquetas_alineadas": true,
+    "hash_contenido": "sha256 con longitud (8 bytes LE) + bytes UTF-8 por texto, en orden",
+    "desvio_manifest": {
+      "data_hash_manifest": "2ada573b27b9cb503cda0bb80344b092b9601a3105fe9b56d2127e261f2edf8e",
+      "problema": "el manifiesto lo calculo con to_numpy().tobytes() sobre un array de OBJETOS: serializa punteros de memoria, no el texto; no es reproducible entre procesos (se observaron 68b9a0f2 y 40342f7c)",
+      "decision": "no se reordena nada; se congelan sha256 del archivo + sha256 del array de textos con receta determinista + la receta"
+    }
+  },
+  "representacion": {
+    "vectorizador": {
+      "analyzer": "word",
+      "ngram_range": [
+        1,
+        2
+      ],
+      "min_df": 3,
+      "max_df": 0.5,
+      "sublinear_tf": true,
+      "lowercase": true,
+      "strip_accents": null,
+      "token_pattern": "(?u)\\b\\w+\\b"
+    },
+    "norm_dtype": "defaults de sklearn (norm='l2', dtype float64)",
+    "ajuste": "POR FOLD: fit solo en fold-train (idf, min_df y max_df nunca globales)",
+    "precedente": "scripts/v31_02_banco_representaciones.py (VECTORIZADOR) y el propio manifest canonico ('se ajusta el vectorizador solo sobre train de ese fold')",
+    "verificabilidad": "sha256 de config + sha256 del vocabulario ordenado y del idf por fold + sonda de refit que reproduce los mismos hashes"
+  },
+  "ftrl": {
+    "algoritmo": "FTRL-Proximal (McMahan et al. 2013), implementacion propia exacta",
+    "alpha": 0.05,
+    "lambda1": 0.0,
+    "lambda2": 1.0,
+    "beta": 1.0,
+    "bias": true,
+    "x0": 1.0,
+    "power_t": null,
+    "epocas": 10,
+    "criterio_parada": "ninguno (10 pasadas fijas)",
+    "ovr": "6 modelos binarios con sigmoid; p no suma 1",
+    "barajado": "np.random.default_rng(20261010+fold) sobre los indices de fold-train por epoca",
+    "combinador_p": "normalizacion L2 por fila (comparador canonico); se reportan ademas argmax crudo, macro-F1 diagonal y log_loss",
+    "actualizacion": "sigma=(sqrt(n+g^2)-sqrt(n))/(alpha*beta); z+=g-sigma*w; n+=g^2; w=0 si |z|<=lambda1; si no sign(z)*(|z|-lambda1)/((beta+sqrt(n))/alpha+lambda2)",
+    "alternativa_no_usada": "vowpalwabbit 9.11.8 instalado en el venv y NO usado (parametrizacion y bit_precision distintas; sin sondesn de verificacion)"
+  },
+  "a2_sgd_twin": {
+    "estimator": "sklearn.linear_model.SGDClassifier",
+    "loss": "log_loss",
+    "alpha": 1e-06,
+    "max_iter": 10,
+    "tol": null,
+    "fit_intercept": true,
+    "average": false,
+    "learning_rate": "optimal",
+    "random_state": "20261010+fold",
+    "n_jobs": 32,
+    "desvio_de_precedente": "E-011 usaba max_iter=30 y tol=1e-4; aqui 10/tol=None para igualar el presupuesto de pasadas con A1 (desvio declarado, no fallo)",
+    "limitacion": "en A1 el bias es coordenada regularizada de FTRL; en A2 no se regulariza (limite de sklearn): asimetria declarada en el informe"
+  },
+  "a3_control_negativo": {
+    "descripcion": "los mismos 6 FTRL con etiquetas de fold-train permutadas con np.random.default_rng(20261011+fold); no decisional",
+    "umbral_fuga": "A3 debe quedar por debajo de la linea base de la clase mayoritaria; si la supera -> STOP por sospecha de fuga (gate A3)"
+  },
+  "sondas": {
+    "a_vectorizado_vs_lazo": {
+      "problema": "aleatorio 200x50x6",
+      "tolerancia": 1e-12
+    },
+    "b_punto_fijo_analitico": {
+      "config": "lambda1=lambda2=0 con feature constante",
+      "residuo_max": 1e-09
+    },
+    "c_totalf1_macro": {
+      "comparacion": "TotalF1:average=Macro == macro-F1 de sklearn",
+      "tolerancia": 1e-06
+    },
+    "d_sin_nan_logloss_finito": true,
+    "politica": "si alguna sonda falla -> exit 4 ANTES de entrenar; cualquier ajuste exige enmienda pre-ejecucion (precedente f0bf731)"
+  },
+  "fallback": {
+    "criterio": "en el fold 0 de A1, sobre las filas de fold-train: log_loss OvR medio tras 10 pasadas <= 0.8 * log_loss tras la pasada 1, y sin NaN/inf",
+    "si_falla": "usar la alternativa declarada alpha=0.005 (lambda2=1.0 resto igual) y registrar config_fallback_usada=True en el JSON de resultados y en el informe",
+    "prohibido": "decidir con fold-val o con el leaderboard; si el criterio se fijara despues de observar fold-0, el resultado se marca post-hoc en D-083"
+  },
+  "determinismo": {
+    "seeds": {
+      "global": 20261010,
+      "barajado_etiquetas": 20261011,
+      "orden_datos": "default_rng(20261010+fold) por epoca"
+    },
+    "hilos": "OMP/MKL/OPENBLAS_NUM_THREADS = 32 fijos antes de importar numpy; el lazo FTRL es mono-hilo",
+    "esperado": "exacto bit a bit (float64, orden CSR, permutacion sembrada, sin reducciones multi-hilo ni atomicos ni BLAS denso)",
+    "sonda": "reentrenar fold 0 de A1 y de A2 con config identica y comparar bit a bit",
+    "tolerancias": "0 exacto; <=1e-9 conforme; >1e-9 declarar rango y exigir delta_gate > rango; rango >= 0.0008876 o solape con el gate => no concluyente"
+  },
+  "integracion": {
+    "mecanismo": "combinador logistico anidado sobre [L2(v30_prob) || L2(p_brazo)] (12 features, L2 por fila con clip 1e-12); LogReg(C=1.0, max_iter=2000, lbfgs) por fold (fit fold!=k, predice fold==k)",
+    "decision": "argmax(p_comb * w_plugin CONGELADO)",
+    "diagnosticos": [
+      "argmax_sin_regla",
+      "delta vs nested 0.6154643",
+      "log_loss por brazo",
+      "macro-F1 diagonal 6x6"
+    ]
+  },
+  "gates": {
+    "baseline_abort": 5e-07,
+    "delta_min": 0.0015,
+    "folds_min": 4,
+    "control": "delta_int(A1) > delta_int(A2) Y bootstrap pareado de la diferencia (F1_combA1 - F1_combA2; 2000; semilla 20261010) con IC95 sin cero",
+    "control_negativo": "si delta_int(A3) >= delta_int(A1): NO_ATRIBUIBLE (precedencia)",
+    "a3_gate": "A3 debe quedar por debajo de la linea base de la clase mayoritaria; si la supera -> STOP por sospecha de fuga (gate A3)",
+    "bootstrap": {
+      "n": 2000,
+      "semilla": 20261010,
+      "ic95_sin_cero": true
+    },
+    "sin_leakage": true,
+    "determinismo_concluyente": true,
+    "cap_ic95_diferencia": "si el IC95 de la diferencia contiene 0, el veredicto queda capado a MARGINAL aunque A1 pase el resto de gates (decision del lead, registrada; puede degradar un resultado genuinamente bueno)",
+    "cap_determinismo": "sonda no concluyente -> el veredicto no puede ser PROMISING"
+  },
+  "arbol": {
+    "NO_ATRIBUIBLE": "si delta_int(A3) >= delta_int(A1) (precedencia)",
+    "PROMISING": "gates completos y IC95 de la diferencia excluye 0 -> segunda particion congelada (semilla 987654) en este mismo ciclo",
+    "MARGINAL": "delta > 0 sin gates completos (incluye el cap por IC95) -> no se adopta",
+    "CLOSED": "delta <= 0 -> se cierra P3 y la reapertura V32 termina",
+    "nota": "la formulacion del arquitecto 'A1 <= A2 -> NO_ATRIBUIBLE' queda subsumida por este arbol, que es el validado por QA en el ciclo 2 (P2)",
+    "submission": "jamas automatica; requeriria gate completo + segunda particion + autorizacion explicita"
+  },
+  "ejecucion": {
+    "coste_estimado": "~25-30 min CPU (fit TF-IDF ~90 s por fold compartido por los 3 brazos; A1 ~60 s; A2 ~20 s; A3 ~60 s)",
+    "ram_tope_gb": 20.0,
+    "ram_medicion": "resource.getrusage(ru_maxrss); si se supera -> STOP registrado; NO anadir max_features sobre la marcha",
+    "calibracion": "tras el fold 0 de A1: proyeccion = 9 x t_fold0; si supera 20.0 h -> parar y reportar",
+    "timeout_global": "24.0 h",
+    "checkpoints": "experiments/v32_05_estado.json (resumible por fold)",
+    "escritura_atomica": "tmp + os.replace en artifacts/p33_scores/v32_p3/"
+  },
+  "novedad": {
+    "ftrl_en_codigo": false,
+    "verificacion": "search_graph del proyecto home-carlos-Git-PLN: 0 nodos; search_code y grep solo literales con el nombre del candidato",
+    "cobertura_registrada_en": "DECISIONS D-083, PROJECT_STATE.md e informe del experimento; NO se edita scripts/age_cobertura_metodologica.py"
+  },
+  "compliance": {
+    "embeddings": 0,
+    "transformers": 0,
+    "llm": 0,
+    "datos_externos": 0,
+    "test": 0,
+    "holdout": 0,
+    "leaderboard": 0,
+    "submission": 0,
+    "nota": "TF-IDF + modelo lineal ya usados por el proyecto (LogReg/LinearSVC/SGD/NB-SVM): no cuenta como embedding vetado; vowpalwabbit 9.11.8 instalado y NO usado",
+    "ast_audit": "auditoria de literales de ruta que pruebe ausencia de vowpal/vw/torch/transformers/gensim/fasttext y 0 rutas de test/holdout/submission",
+    "auditorias_exigidas": [
+      "hashes del manifest",
+      "sha256 del archivo y del array de textos",
+      "sha256 del vectorizador",
+      "vocabulario e idf por fold",
+      "sondas (a)-(d)",
+      "sonda de reentreno",
+      "RSS pico",
+      "config_fallback_usada",
+      "escritura atomica"
+    ]
+  },
+  "entregables": {
+    "preregistro": "scripts/v32_04_preregistro_ftrl.py -> experiments/v32_04_preregistro_ftrl.json + reports/v32_p3_preregistro.md",
+    "runner": "scripts/v32_05_ftrl_challenger.py -> experiments/v32_05_ftrl_challenger.json, experiments/v32_05_estado.json, artifacts/p33_scores/v32_p3/{a1_ftrl,a2_sgd_twin,a3_ftrl_barajado}.npy, reports/v32_p3_ftrl_challenger.md, reports/figures/v32_p3_curvas.png, fila V32-E3 en experiments.csv y seccion en RUNLOG.md"
+  }
+}

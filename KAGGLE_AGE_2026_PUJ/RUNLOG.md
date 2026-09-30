@@ -2216,3 +2216,12 @@ intacto.
 - Baseline recomputado 0.6159732; ES interno 90/10; 32 hilos CPU; sin tuning posterior.
 - Sin particiones reservadas: sin test, sin holdout, sin submission.
 - Artefactos: experiments/v32_03_catboost_challenger.json | reports/v32_p2_catboost_challenger.md | reports/figures/v32_p2_curvas.png.
+
+---
+
+## Pre-registro de V32-E3 (P3 FTRL-Proximal) · 2026-09-30
+
+- Congelado: FTRL-Proximal propio sobre TF-IDF ajustada por fold; A2 gemelo SGD con 10 pasadas; A3 barajado;
+  sondas (a)-(d) obligatorias; regla de fallback escrita antes de ejecutar; cap por IC95 de la diferencia; determinismo con
+  sonda bit a bit. Auditoria: el data_hash del manifest es un hash de punteros, no reproducible; se congelan hashes de contenido.
+- Baseline recomputado: 0.6159732. Sin test, sin holdout, sin submission.
