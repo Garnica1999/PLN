@@ -103,6 +103,7 @@ os.environ["OPENBLAS_NUM_THREADS"] = "32"
 
 import argparse
 import ast
+import builtins
 import csv
 import hashlib
 import json
@@ -4069,6 +4070,34 @@ def registrar_fold(estado: dict, brazo: str, fold: int, resultado: dict, oof: np
     return detalle
 
 
+def anclaje_no_aplica_a2() -> dict:
+    """Dict EXPLICITO de no-aplicabilidad del anclaje de ``lambda1`` para el brazo A2.
+
+    La verificacion del anclaje de ``lambda1`` es EXCLUSIVA de A1 porque es el unico brazo con
+    estado ``z`` (el nucleo FTRL-Proximal con L1 y umbral duro, del que el anclaje es la mediana de
+    ``|z_j| > 0``). A2 es SGD puro: no tiene ``z``, ni L1, ni umbral, luego no existe ningun
+    ``z`` al que medirle la mediana y su ``anclaje_lambda1`` se DECLARA no aplicable en lugar de
+    dejar la variable sin ligar. Se construye un dict NUEVO en cada llamada para que el consumidor
+    (`registrar_fold` y el JSON) no pueda mutar el de otra llamada.
+
+    Returns
+    -------
+    dict
+        ``aplica`` False, el motivo por el que no aplica y que la medicion es de A1 y solo de A1.
+        Solo escalares nativos de JSON.
+    """
+    return {"aplica": False,
+            "motivo": "no aplica: A2 es SGD puro, sin estado z y sin L1, de modo que no existe "
+                      "mediana de |z_j| > 0 que pueda definir un anclaje de lambda1",
+            "medida_sobre": "ninguna: el anclaje se define sobre el z del nucleo FTRL y A2 no lo "
+                            "tiene; A2 guarda z a ceros en el checkpoint por construccion",
+            "quien_lo_verifica": "A1_ftrl_lambda1, y solo en la pasada 1 del fold 0, con el nucleo "
+                                 "de anclaje (lambda1 = 0.0) sobre el mismo stream",
+            "criterio": "no aplica a A2: la verificacion en runtime (diferencia EXACTA 0 con la "
+                        "mediana congelada y sha256 del snapshot de z identico al de la sonda "
+                        "pre-ejecucion) es una comprobacion exclusiva de A1"}
+
+
 def entrenar_brazo_fold(brazo: str, datos_fold: dict, ordenes: list[np.ndarray], fold: int,
                         clase_va: np.ndarray) -> dict:
     """Entrena UN fold de UN brazo con el presupuesto multi-pasada y el ES interno congelados.
@@ -4103,7 +4132,10 @@ def entrenar_brazo_fold(brazo: str, datos_fold: dict, ordenes: list[np.ndarray],
     dict
         Trayectoria por pasada, pasada de parada, mejor pasada, pesos restaurados, sesgo,
         probabilidades del fold-val, macro-F1 standalone, frecuencias y tiempo. En A1, ademas,
-        la magnitud L1 de cada pasada y la verificacion del anclaje en el fold 0.
+        la magnitud L1 de cada pasada y la verificacion del anclaje en el fold 0. ``anclaje_lambda1``
+        lleva la verificacion en A1 y el dict EXPLICITO de no-aplicabilidad de
+        :func:`anclaje_no_aplica_a2` en A2 (y ``None`` en los folds 1-4 de A1, donde el anclaje es
+        EXCLUSIVO del fold 0 por diseno), nunca un nombre sin ligar.
 
     Raises
     ------
@@ -4121,11 +4153,19 @@ def entrenar_brazo_fold(brazo: str, datos_fold: dict, ordenes: list[np.ndarray],
     trayectoria: list[dict] = []
     metricas: list[float] = []
     mejor_valor = -math.inf
+    # ALCANCE de `anclaje`: se declara AQUI, antes de la rama, y no dentro de la de A1. Motivo del
+    # patron (bug que mato la corrida con exit 1 al pasar al brazo A2, con checkpoints y OOF ya
+    # escritos): el `return` de abajo es COMUN a los dos brazos y lee `anclaje`, luego declararlo
+    # solo en la rama de A1 lo dejaba SIN LIGAR en A2 (UnboundLocalError) y hacia el brazo de
+    # control inalcanzable de forma determinista, con independencia de los datos y de la semilla.
+    # El valor de A2 DECLARA la no-aplicabilidad en vez de callar: la verificacion del anclaje es
+    # exclusiva de A1 (unico brazo con estado `z`). Un `dict.get("anclaje", None)` en el `return`
+    # NO serviria: esconderia justo la distincion entre "medido" y "no aplica".
+    anclaje: dict | None = anclaje_no_aplica_a2() if clave == "a2" else None
     if clave == "a1":
         nucleo = FtrlSoftmaxMulticlase(x_train.shape[1], datos_fold["alpha"])
         mejor_estado: dict = {}
         mejor_sha = ""
-        anclaje: dict | None = None
         for indice, orden in enumerate(ordenes):
             stats = nucleo.pasar(x_train, y_es_train, orden)
             if fold == 0 and indice == 0:
@@ -7138,6 +7178,15 @@ def ejecutar(verificar: bool, humo: bool) -> int:
               f"del sistema y borrado = {autoensayo['temporal_borrado']}; en el proyecto NO se ha "
               f"creado {', '.join(autoensayo['artefactos_ausentes'])} (ausencia comprobada)",
               flush=True)
+        ensamblado = autoensayo["ensamblado_a2"]
+        print(f"  ensamblado de entrenar_brazo_fold: AST sobre {len(ensamblado['ast']['lecturas_en_return'])} "
+              f"lecturas del return comun y "
+              f"{len(ensamblado['ast']['ramas_de_primer_nivel'])} rama(s) if/else, 0 riesgos de "
+              f"nombre sin ligar; A2 llamado de verdad con el mini: devuelve = "
+              f"{ensamblado['a2']['devuelve']}, {ensamblado['a2']['claves_del_contrato']}/"
+              f"{ensamblado['a2']['claves_del_contrato']} claves del contrato, anclaje con aplica = "
+              f"False declarado, checkpoint solo en el temporal = "
+              f"{ensamblado['a2']['checkpoint_en_temporal']}", flush=True)
         print("VERIFICACION OK", flush=True)
         return 0
 
@@ -8190,6 +8239,313 @@ def verificar_cero_efectos_autoejercicio() -> list[str]:
     return [ruta_relativa(ruta) for ruta in vigiladas.values()]
 
 
+#: Claves que `registrar_fold` LEE del dict que devuelve `entrenar_brazo_fold`. El ensayo del
+#: brazo A2 comprueba que las 14 existen: el fallo que se cubre (nombre sin ligar al ensamblar el
+#: retorno) es exactamente el de un contrato incompleto entre el que entrena y el que registra.
+CLAVES_DEL_RETORNO_ENTRENAMIENTO = (
+    "alpha", "anclaje_lambda1", "frecuencias_fold_val", "lambda1",
+    "macro_f1_standalone_fold_val", "max_abs_suma_menos_uno", "mejor_pasada", "n_actualizaciones",
+    "ordenes_sha256", "pasada_de_parada", "p_va", "sesgo", "tiempo_seg", "trayectoria")
+
+
+def nombres_ligados_en_destino(destino: ast.AST) -> set[str]:
+    """Nombres a los que una sentencia de ASIGNACION liga en el ambito de la funcion.
+
+    Parameters
+    ----------
+    destino:
+        Nodo ``target`` de un ``Assign``, ``AnnAssign``, ``AugAssign``, ``for`` o ``with``; tupla o
+        lista de esos nodos en el caso del desempaquetado multiple.
+
+    Returns
+    -------
+    set[str]
+        Nombres ligados. Vacio si el destino no liga ningun nombre simple (por ejemplo, un
+        subscript o un atributo).
+    """
+    if isinstance(destino, ast.Name):
+        return {destino.id}
+    if isinstance(destino, (ast.Tuple, ast.List)):
+        return {nombre for elemento in destino.elts
+                for nombre in nombres_ligados_en_destino(elemento)}
+    return set()
+
+
+def recorrer_ligados(nodo: ast.AST, ligados: set[str]) -> None:
+    """Acumula en ``ligados`` los nombres que ``nodo`` liga en SU PROPIO ambito.
+
+    La recursion NO entra en el cuerpo de una ``def``, de una ``async def`` ni de una ``class``:
+    dentro de esos cuerpos las asignaciones pertenecen a otro ambito, asi que contarlas como
+    ligadas en el de fuera es exactamente el error que hacia invisible el bug (una asignacion
+    dentro de otra funcion hacia creer que el nombre era un global del modulo).
+
+    Parameters
+    ----------
+    nodo:
+        Nodo de la raiz de la recursion.
+    ligados:
+        Conjunto de salida, modificado in situ.
+    """
+    if isinstance(nodo, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+        ligados.add(nodo.name)
+        return
+    if isinstance(nodo, ast.Assign):
+        for destino in nodo.targets:
+            ligados |= nombres_ligados_en_destino(destino)
+    elif isinstance(nodo, (ast.AnnAssign, ast.AugAssign, ast.For, ast.AsyncFor)):
+        ligados |= nombres_ligados_en_destino(nodo.target)
+    elif isinstance(nodo, ast.withitem) and nodo.optional_vars is not None:
+        ligados |= nombres_ligados_en_destino(nodo.optional_vars)
+    elif isinstance(nodo, ast.ExceptHandler) and nodo.name:
+        ligados.add(nodo.name)
+    elif isinstance(nodo, ast.NamedExpr):
+        ligados |= nombres_ligados_en_destino(nodo.target)
+    for hijo in ast.iter_child_nodes(nodo):
+        recorrer_ligados(hijo, ligados)
+
+
+def nombres_ligados_en(sentencia: ast.AST | list) -> set[str]:
+    """Nombres que una sentencia liga, RECORRIENDO sus bloques anidados.
+
+    Se usa para el cuerpo entero de una rama, donde una asignacion puede vivir dentro de un bucle
+    o de un ``if`` interno.
+
+    Parameters
+    ----------
+    sentencia:
+        Nodo de sentencia, o lista de sentencias como la de un ``body`` o un ``orelse``.
+
+    Returns
+    -------
+    set[str]
+        Nombres ligados en cualquier profundidad del ambito de la sentencia.
+    """
+    ligados: set[str] = set()
+    for raiz in (sentencia if isinstance(sentencia, list) else [sentencia]):
+        recorrer_ligados(raiz, ligados)
+    return ligados
+
+
+def nombres_globales_del_modulo(arbol: ast.AST) -> set[str]:
+    """Nombres ligados a NIVEL DE MODULO (imports, constantes, funciones y clases).
+
+    Parameters
+    ----------
+    arbol:
+        Arbol de sintaxis del modulo.
+
+    Returns
+    -------
+    set[str]
+        Nombres disponibles sin haber pasado por la funcion que se audita.
+    """
+    ligados = nombres_ligados_en(arbol.body)
+    for sentencia in arbol.body:
+        if isinstance(sentencia, (ast.Import, ast.ImportFrom)):
+            for alias in sentencia.names:
+                ligados.add((alias.asname or alias.name).split(".")[0])
+    return ligados
+
+
+def nombres_de_comprension(funcion: ast.AST) -> set[str]:
+    """Nombres que las comprensiones y las ``lambda`` de la funcion ligan en SU PROPIO ambito.
+
+    Parameters
+    ----------
+    funcion:
+        Nodo ``FunctionDef`` a inspeccionar.
+
+    Returns
+    -------
+    set[str]
+        Nombres de los generadores y de los parametros de lambda.
+    """
+    ligados: set[str] = set()
+    for nodo in ast.walk(funcion):
+        if isinstance(nodo, ast.comprehension):
+            ligados |= nombres_ligados_en_destino(nodo.target)
+        elif isinstance(nodo, ast.Lambda):
+            ligados |= {parametro.arg for parametro in nodo.args.args}
+            ligados |= {parametro.arg for parametro in nodo.args.posonlyargs}
+            ligados |= {parametro.arg for parametro in nodo.args.kwonlyargs}
+    return ligados
+
+
+def auditar_ensamblado_por_ast(nombre_funcion: str) -> dict:
+    """Prueba ESTATICA por AST de que el RETORNO COMUN de una funcion no puede leer un nombre SIN LIGAR.
+
+    Cubre la clase exacta de bug que produjo el ``UnboundLocalError`` de ``anclaje``: un nombre
+    que se asigna SOLO dentro de una de las ramas de un ``if``/``else`` de primer nivel y que, sin
+    embargo, se LEE en el ``return`` que las dos ramas comparten. Con la rama de A2 sin su
+    asignacion, el brazo de control es inalcanzable de forma determinista.
+
+    El criterio es NECESARIO, no una analisis de asignacion definitiva: marca un nombre cuando
+    (a) se lee en algun ``return`` de la funcion, (b) no es un parametro, ni un global del modulo,
+    ni unbuiltins, ni un local de comprension, y (c) se liga solo en UNA de las ramas de un
+    ``if``/``else`` de primer nivel, sin ligar en el nivel superior. Un nombre ligado en AMBAS
+    ramas, o en el nivel superior, queda fuera; uno ligado en el cuerpo de un ``if`` SIN ``else``
+    tambien se marca. Los bucles vacios no se analizan: `ordenes` tiene ``P_MAX`` permutaciones no
+    vacias.
+
+    Parameters
+    ----------
+    nombre_funcion:
+        Nombre de la funcion a auditar.
+
+    Returns
+    -------
+    dict
+        Lecturas del ``return``, ramas de primer nivel analizadas y ``riesgos`` (vacio si todo
+        correcto).
+
+    Raises
+    ------
+    Detencion
+        Si la funcion no existe, si no tiene ``return``, si no tiene ningun ``if``/``else`` de
+        primer nivel que analizar o si algun nombre del ``return`` puede quedar sin ligar (codigo 2).
+    """
+    fuente = Path(__file__).read_text(encoding="utf-8")
+    arbol = ast.parse(fuente)
+    funcion = next((nodo for nodo in arbol.body
+                    if isinstance(nodo, ast.FunctionDef) and nodo.name == nombre_funcion), None)
+    if funcion is None:
+        raise Detencion(f"[STOP] la funcion '{nombre_funcion}' no existe en el propio codigo, de "
+                        f"modo que la auditoria de ensamblado no puede aplicarse (exit 2)", 2)
+    leidos: set[str] = set()
+    for retorno in (nodo for nodo in ast.walk(funcion) if isinstance(nodo, ast.Return)):
+        if retorno.value is None:
+            continue
+        leidos |= {nodo.id for nodo in ast.walk(retorno.value)
+                   if isinstance(nodo, ast.Name) and isinstance(nodo.ctx, ast.Load)}
+    if not leidos:
+        raise Detencion(f"[STOP] la funcion '{nombre_funcion}' no lee ningun nombre en su retorno, "
+                        f"de modo que la auditoria de ensamblado no tiene nada que comprobar "
+                        f"(exit 2)", 2)
+    parametros = {parametro.arg for parametro in funcion.args.posonlyargs + funcion.args.args
+                  + funcion.args.kwonlyargs}
+    disponibles = (nombres_globales_del_modulo(arbol) | parametros | set(dir(builtins))
+                   | nombres_de_comprension(funcion))
+    candidatos = leidos - disponibles
+    ligados_topo: set[str] = set()
+    ramas: list[dict] = []
+    for sentencia in funcion.body:
+        if isinstance(sentencia, ast.If):
+            en_if = nombres_ligados_en(sentencia.body)
+            en_else = nombres_ligados_en(sentencia.orelse)
+            ligados_topo |= en_if & en_else
+            ramas.append({"linea": int(sentencia.lineno), "prueba": ast.unparse(sentencia.test),
+                          "tiene_else": bool(sentencia.orelse),
+                          "solo_una_rama": sorted((en_if ^ en_else) & candidatos),
+                          "comunes_entre_ramas": sorted((en_if & en_else) & candidatos)})
+        else:
+            ligados_topo |= nombres_ligados_en(sentencia)
+    ramas_completas = [rama for rama in ramas if rama["tiene_else"]]
+    if not ramas_completas:
+        raise Detencion(f"[STOP] '{nombre_funcion}' no tiene ningun if/else de primer nivel que "
+                        f"auditar, luego la comprobacion de ambito no tendria alcance (exit 2)", 2)
+    riesgos = sorted({nombre for rama in ramas for nombre in rama["solo_una_rama"]}
+                     - ligados_topo)
+    for rama in ramas:
+        for nombre in rama["solo_una_rama"]:
+            if nombre in riesgos:
+                print(f"  [STOP] '{nombre_funcion}' lee '{nombre}' en su retorno pero lo liga solo "
+                      f"en una rama del if de la linea {rama['linea']} ({rama['prueba']}): en la "
+                      f"otra rama queda sin ligar", flush=True)
+    if riesgos:
+        raise Detencion(f"[STOP] '{nombre_funcion}' puede devolver con un nombre sin ligar "
+                        f"({riesgos}), que es el fallo que hizo inalcanzable el brazo A2 (exit 2)", 2)
+    return {"funcion": nombre_funcion, "lecturas_en_return": sorted(leidos),
+            "lecturas_de_la_funcion": sorted(candidatos), "ligados_en_topo": sorted(ligados_topo),
+            "ramas_de_primer_nivel": ramas, "riesgos": []}
+
+
+def ensayar_ensamblado_a2(directorio: Path) -> dict:
+    """Ejercita de verdad `entrenar_brazo_fold` con el brazo A2 y comprueba que DEVUELVE.
+
+    Es el camino que faltaba: el autoejercicio montaba un estado SIMULADO y nunca pasaba por
+    `entrenar_brazo_fold`, de modo que no podia ver un fallo de ambito en el ensamblado de su
+    retorno. Aqui se llama a la funcion REAL con el problema mini, el brazo de control A2 y el
+    fold 0, y se comprueban tres cosas: que el dict que devuelve trae las 14 claves que lee
+    `registrar_fold`, que ``anclaje_lambda1`` DECLARA la no-aplicabilidad (``aplica`` False con su
+    motivo, solo escalares nativos) en lugar de venir mudo, y que el checkpoint quedo dentro del
+    temporal y no en el proyecto.
+
+    A1 NO se puede ejercitar aqui, y el motivo es concreto y no una comodidad:
+    `verificar_anclaje_lambda1` exige diferencia EXACTA 0 con ``MEDIANA_Z_CONGELADA`` y sha256 del
+    snapshot de ``z`` identico al de la sonda pre-ejecucion, y los dos estan congelados sobre el
+    ES-train del fold 0 REAL, luego el mini no puede reproducirlos por construccion (saldria con
+    ``Detencion``, exit 2). Por eso la cobertura de A1 la da la auditoria ESTATICA por AST, que si
+    verifica el ensamblado de los dos brazos, y el ensayo en runtime cubre el brazo que el bug
+    dejaba inalcanzable.
+
+    Parameters
+    ----------
+    directorio:
+        Directorio temporal ya creado donde se redirigen TODAS las rutas de escritura del modulo.
+
+    Returns
+    -------
+    dict
+        Comprobaciones del ensayo y el detalle de la no-aplicabilidad de A2.
+
+    Raises
+    ------
+    Detencion
+        Si `entrenar_brazo_fold` no devuelve, si falta alguna de las 14 claves del contrato, si
+        ``anclaje_lambda1`` no declara la no-aplicabilidad o si el checkpoint no quedo en el
+        temporal (codigo 2).
+    """
+    mini = problema_mini()
+    datos_fold: dict = {"alpha": float(mini["alpha"]), "y_es_train": mini["y_es_train"],
+                        "y_es_val": mini["y_es_val"]}
+    for clave in ("a1", "a2"):
+        # El fold simulado usa el MISMO ES-val para el early stopping interno y para el fold-val:
+        # lo que se ejercita es el ENSAMBLADO del retorno, no ninguna metrica, y asi el ensayo no
+        # depende de un segundo conjunto que el mini no trae.
+        datos_fold[f"x_{clave}_train"] = mini[f"x_{clave}_train"]
+        datos_fold[f"x_{clave}_esval"] = mini[f"x_{clave}_val"]
+        datos_fold[f"x_{clave}_va"] = mini[f"x_{clave}_val"]
+    originales = aislar_rutas_autoejercicio(directorio)
+    try:
+        resultado = entrenar_brazo_fold("A2_sgd_presupuesto", datos_fold, mini["ordenes"], 0,
+                                       mini["y_es_val"])
+        checkpoint = ruta_pesos(0, "A2_sgd_presupuesto")
+        checkpoint_escrito = bool(checkpoint.exists())
+        checkpoint_en_temporal = bool(str(checkpoint).startswith(str(directorio)))
+    finally:
+        restaurar_rutas_autoejercicio(originales)
+    if not isinstance(resultado, dict):
+        raise Detencion("[STOP] el ensayo del brazo A2 con el mini no devolvio un dict (exit 2)", 2)
+    faltan = [clave for clave in CLAVES_DEL_RETORNO_ENTRENAMIENTO if clave not in resultado]
+    if faltan:
+        raise Detencion(f"[STOP] el retorno de entrenar_brazo_fold en A2 no trae las claves que "
+                        f"registrar_fold lee: {faltan} (exit 2)", 2)
+    anclaje = resultado["anclaje_lambda1"]
+    if (not isinstance(anclaje, dict) or bool(anclaje.get("aplica", True))
+            or not isinstance(anclaje.get("motivo"), str) or not anclaje["motivo"].strip()
+            or como_nativo(anclaje) != anclaje):
+        raise Detencion(f"[STOP] el anclaje_lambda1 de A2 no declara la no-aplicabilidad "
+                        f"(aplica False con su motivo y solo escalares nativos) sino {anclaje!r} "
+                        f"(exit 2)", 2)
+    if not checkpoint_escrito or not checkpoint_en_temporal:
+        raise Detencion("[STOP] el ensayo del brazo A2 no escribio su checkpoint dentro del "
+                        "temporal del autoejercicio (exit 2)", 2)
+    print(f"  [autoejercicio] brazo A2 sobre el mini: entrenar_brazo_fold ha DEVUELTO, "
+          f"{len(resultado)} claves, anclaje_lambda1 con aplica = {anclaje['aplica']} "
+          f"({anclaje['motivo'][:56]}...), checkpoint solo en el temporal = "
+          f"{checkpoint_en_temporal}", flush=True)
+    return {"brazo": "A2_sgd_presupuesto", "devuelve": True,
+            "claves_del_contrato": len(CLAVES_DEL_RETORNO_ENTRENAMIENTO),
+            "claves_faltantes": [], "anclaje_declara_no_aplica": True,
+            "anclaje_lambda1": anclaje, "checkpoint_en_temporal": checkpoint_en_temporal,
+            "pasadas_ejecutadas": int(resultado["pasada_de_parada"]),
+            "naturaleza": NATURALEZA_AUTOEJERCICIO, "a1_ejercitado": False,
+            "motivo_de_no_ejercitar_a1": "verificar_anclaje_lambda1 exige diferencia EXACTA 0 con "
+                                         "la mediana congelada y sha256 del snapshot de z medidos "
+                                         "sobre el ES-train del fold 0 REAL, que el mini no puede "
+                                         "reproducir; su ensamblado lo cubre la auditoria por AST"}
+
+
 def autoensayo_ruta_salida(contexto: dict) -> dict:
     """Autoejercicio PERMANENTE de la ruta de salida, incorporado a ``--verificar``.
 
@@ -8199,6 +8555,12 @@ def autoensayo_ruta_salida(contexto: dict) -> dict:
     naturaleza, y deja el proyecto intacto: todas las rutas de escritura se redirigen a un
     directorio temporal del sistema que se borra al terminar, y despues se comprueba la ausencia de
     los artefactos del proyecto.
+
+    A los cinco caminos se anade el ensayo del BRAZO DE CONTROL: :func:`auditar_ensamblado_por_ast`
+    (estatico, sobre el codigo fuente) y :func:`ensayar_ensamblado_a2` (en runtime, llamando a
+    `entrenar_brazo_fold` con el mini y el brazo A2). No se cuentan como caminos porque no son
+    ramas del arbol de decision, sino la cobertura del ENSAMBLADO que el estado simulado no
+    ejercitaba y que por eso no vio el bug de ambito de `anclaje`.
 
     NO es evidencia experimental ni una medicion del ciclo: las magnitudes son sinteticas y
     declaradas, hay 0 folds reales y 0 metricas reales. Es la cobertura permanente de la clase de
@@ -8212,17 +8574,19 @@ def autoensayo_ruta_salida(contexto: dict) -> dict:
     Returns
     -------
     dict
-        Caminos ejercitados, resultado de cada uno, si el temporal se borro y las rutas del proyecto
-        que siguen ausentes.
+        Caminos ejercitados, resultado de cada uno, el ensayo de ensamblado del brazo A2, si el
+        temporal se borro y las rutas del proyecto que siguen ausentes.
 
     Raises
     ------
     Detencion
-        Cualquier excepcion real que produzca uno de los caminos se propaga sin envolver, para que
-        ``--verificar`` falle con el error y el traceback de verdad.
+        Cualquier excepcion real que produzca uno de los caminos, o el fallo de cualquiera de las
+        dos comprobaciones de ensamblado, se propaga sin envolver, para que ``--verificar`` falle
+        con el error y el traceback de verdad.
     """
     raiz = Path(tempfile.mkdtemp(prefix=PREFIJO_TEMPORAL_AUTOEJERCICIO))
     resultados: list[dict] = []
+    ensamblado: dict = {}
     borrado = False
     try:
         for camino in CAMINOS_AUTOEJERCICIO:
@@ -8234,13 +8598,21 @@ def autoensayo_ruta_salida(contexto: dict) -> dict:
                 resultados.append(ejecutar_camino_autoejercicio(camino, contexto))
             finally:
                 restaurar_rutas_autoejercicio(originales)
+        # Cobertura del ENSAMBLADO de `entrenar_brazo_fold`, la zona que el estado simulado no
+        # tocaba: primero la prueba ESTATICA (que no necesita ni datos ni disco) y despues el
+        # ensayo en runtime del brazo A2, con sus rutas de escritura en otro subdirectorio del
+        # MISMO temporal, que se borra igualmente.
+        ensamblado = {"ast": auditar_ensamblado_por_ast("entrenar_brazo_fold")}
+        directorio_a2 = raiz / "ensamblado_a2"
+        directorio_a2.mkdir(parents=True, exist_ok=True)
+        ensamblado["a2"] = ensayar_ensamblado_a2(directorio_a2)
     finally:
         borrado = borrar_temporal_autoejercicio(raiz)
     if not borrado:
         raise Detencion(f"[STOP] el temporal del autoejercicio {raiz} no se pudo borrar (exit 2)", 2)
     ausentes = verificar_cero_efectos_autoejercicio()
     return {"caminos": list(CAMINOS_AUTOEJERCICIO), "caminos_ok": len(resultados),
-            "por_camino": resultados, "temporal_borrado": borrado,
+            "por_camino": resultados, "ensamblado_a2": ensamblado, "temporal_borrado": borrado,
             "artefactos_ausentes": ausentes, "naturaleza": NATURALEZA_AUTOEJERCICIO,
             "folds_reales": 0, "metricas_reales": 0}
 
