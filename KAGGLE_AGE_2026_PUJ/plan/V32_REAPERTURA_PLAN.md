@@ -1,10 +1,11 @@
 # V32 - Plan de reapertura: optimizacion del puntaje (2026-09-30)
 
 Estado global: reapertura V32 **TERMINADA** (P1 NO_ATRIBUIBLE D-081, P2 CLOSED D-082,
-P3 NO_ATRIBUIBLE D-083) y **V33 TERMINADA** (V33-E1 NO_ATRIBUIBLE_BY_GATE, D-084; Via B
-descartada por ILEGAL). Cuatro candidatos medidos y ninguno pasa los gates. Campeon V30 +
-plug-in (LB 0.63575) intacto; sin submission. Reabrir la linea online exigiria un diseno
-y un pre-registro nuevos.
+P3 NO_ATRIBUIBLE D-083), V33 **TERMINADA** (V33-E1 NO_ATRIBUIBLE_BY_GATE, D-084; Via B
+descartada por ILEGAL) y V34 **TERMINADA** (V34-E1 LINEA_ONLINE_CERRADA_POR_MECANISMO,
+D-085): la familia FTRL-Proximal queda cerrada por mecanismo. **Cinco candidatos medidos y
+ninguno pasa los gates.** Campeon V30 + plug-in (LB 0.63575) intacto; sin submission; sin test,
+holdout ni leaderboard.
 Campeon congelado (FINAL_REFERENCE): **V30 + plug-in por clase**, LB 0.63575
 (CV global 0.6159732; nested 0.6154643; particion canonica).
 Objetivo del usuario: mejorar el puntaje de Kaggle; referencia declarada: acercarse a 0.70 de F1.
@@ -123,10 +124,18 @@ cerrar la linea con evidencia y no gastar mas gates de delta (P(delta >= +0.0015
   `nodo_concedido=True`. Sin integracion, sin bootstrap y con `delta` vacio en informe e
   historial; sin segunda particion ni submission; campeon intacto.
 
-- [ ] **F4'''' Cierre**: acta **D-085** con triage formal, tabla de las 21 celdas y su lectura,
-  anclas con sensibilidad, tabla de simetria de sesgo, estado de sondas (a)-(i), lista de miembros de
-  familia cubiertos y NO cubiertos, y confirmacion de que no se toco el campeon ni los artefactos
-  previos; notebook, docs, registros de novedad, memorias y commits.
+- [x] **F4'''' Cierre**: acta **D-085** con el triage formal, la tabla de las **27 celdas** y su
+  lectura, anclas con sensibilidad, tabla de simetria de sesgo, estado de sondas (a)-(j), lista de
+  miembros de familia cubiertos y **NO cubiertos** (cierre one-shot), el limite declarado de la
+  auditoria de literales y la confirmacion de que no se toco el campeon ni los artefactos previos;
+  `PROJECT_STATE.md` y `FINAL_REPORT.md` actualizados; seccion **PHASE - V34 (FALSACION DE LA LINEA
+  FTRL-PROXIMAL)** en el notebook consolidado (**322 celdas**, salida real + 14 aserciones);
+  registro de novedad nuevo (`reports/v34_novelty_registry.csv`) y fila anexada en
+  `reports/age_complete_experiment_history.csv` con `delta` y `bootstrap` vacios; RUNLOG y
+  `experiments.csv` al dia; memorias (episodio + 3 tripletas en Graphiti del grupo
+  `kaggle_age_2026_puj`; codebase re-indexado con **46.219 nodos / 111.578 aristas**). Con este
+  cierre **la familia FTRL-Proximal queda cerrada por mecanismo** y el ciclo V34 termina con el
+  campeon V30 + plug-in (LB 0.63575) intacto.
 
 Regla de alpha propuesta (a congelar): `alpha* = 2*M/(d_norm * P_max^2)` con `M = ln(K-1) = ln5 =
 1.6094379124341003` (constante DECLARADA), `d_norm = sqrt(1 - sum_c prior_c^2)` del prior MEDIDO del
