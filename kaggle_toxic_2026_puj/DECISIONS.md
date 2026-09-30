@@ -7227,3 +7227,61 @@ NO   si el embedding aporta a V03, porque la fusion tiene un defecto no aislado
 
 La hipotesis **sigue sin ponerse a prueba de forma limpia**, y ahora por un motivo distinto del
 anterior: antes fallaba el entrenamiento, ahora falla la fusion.
+
+
+## D-237 a D-239: los tres defectos del downstream, y la causa real
+
+Fecha 2026-09-29. Carlos pide corregir todos los bugs de implementacion.
+
+### D-237. Eran TRES defectos, no uno
+
+```text
+UNO  el vectorizador se ajustaba sobre TODO el desarrollo, no dentro de cada pliegue
+     la forma correcta reproduce el OOF de V03 a 0,777211 EXACTO; el atajo daba 0,778004
+DOS  usaba C=1.0 sin class_weight, cuando V03 usa C=2.0 con balanced
+TRES la escala del bloque denso no estaba igualada a la del disperso
+     y normalize() sobre el concatenado NO es el arreglo: encoge el TF-IDF unas 20 veces
+```
+
+El tercero merece detalle: `normalize()` sobre el producto concatenado reparte la norma de fila
+entre el bloque disperso y el denso, y como el denso tiene 200 columnas de varianza unidad se
+lleva casi toda. El bloque TF-IDF queda multiplicado por ~0,05 y con el se va la senal de V03.
+Ese fue el motivo de la caida a 0,578, no el embedding.
+
+### D-238. La causa real, y NO es el vocabulario
+
+```text
+twitter  68,6 por ciento de cobertura, 70 filas sin ningun token en vocabulario
+general  65,9 por ciento de cobertura, 72 filas sin ningun token
+```
+
+La escasez existe. **Pero no es la causa**: se anadio un bloque ALEATORIO como control y se
+comporta igual o mejor.
+
+```text
+escala 0,05: twitter -0,000473 | general -0,000975   FRENTE AL RUIDO
+escala 0,10: twitter -0,001978 | general -0,003583   FRENTE AL RUIDO
+```
+
+A las escalas donde la fusion hace menos dano, **los embeddings reales rinden igual o peor que
+el ruido**, y el ruido no tiene ningun problema de cobertura.
+
+```text
+la tarea es LEXICA: son n-gramas concretos los que senalan toxicidad
+un embedding promediado de 200 dimensiones es una bolsa de palabras COMPRIMIDA
+no puede codificar QUE n-gramas estan presentes; el TF-IDF de 24.646 si
+el cuello no es el corpus: es el POOLING y la DIMENSION
+```
+
+### D-239. El control de dominio, respondido, y el veredicto
+
+Twitter bate a general en todas las escalas, por `+0,0005` a `+0,0071`, y en las bajas el ruido
+se cuela entre los dos. **No hay senal de dominio defendible.**
+
+```text
+la fusion NUNCA bate a V03: el mejor punto es 0,776423 frente a 0,777211, o sea -0,0008
+VEREDICTO: CLOSED
+```
+
+No porque el corpus sea malo. Sino porque **la representacion promediada no puede competir con
+una representacion lexica dispersa en una tarea lexica**, y eso ya lo habia medido v5.
