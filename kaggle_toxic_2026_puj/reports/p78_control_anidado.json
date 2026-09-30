@@ -1,0 +1,4713 @@
+{
+  "familia": "P78_CONTROL_ANIDADO_WORD2VEC",
+  "experiment_id": "P78",
+  "fase": "control anidado Word2Vec frente al azar, con normalizacion alineada",
+  "pre_registro": "docs/p78_preregistro.md",
+  "pre_registro_sha256": "6737f43522c1c9dd0fc45d474d04ab92a7a230aa6b674ee83645588db20c9a0b",
+  "pre_registro_commit": "dabf07d",
+  "pregunta": "en condiciones de early stopping estrictamente anidados, el embedding Word2Vec aporta senal sobre el objetivo frente a una matriz aleatoria de identica forma e identicas normas de fila, cuando el texto de entrada se normaliza igual que el corpus?",
+  "configuracion": {
+    "pre_registro": "docs/p78_preregistro.md",
+    "pre_registro_sha256": "6737f43522c1c9dd0fc45d474d04ab92a7a230aa6b674ee83645588db20c9a0b",
+    "pre_registro_commit": "dabf07d",
+    "brazos": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "variantes_entrada": [
+      "cruda",
+      "norm"
+    ],
+    "semillas": [
+      20261130,
+      20261131,
+      20261132
+    ],
+    "semilla_primaria": 20261130,
+    "semilla_bootstrap": 20261102,
+    "n_bootstrap": 2000,
+    "umbrales_v03": [
+      0.44,
+      0.51,
+      0.46
+    ],
+    "v03_corrected_cv": 0.7772114525165721,
+    "sha256_w2v": "302c994d13b75f8f5fbd440eea2c4f4113997e2581524021923b92f8244d705a",
+    "sha_matriz_pad": "c1b774e52e0e1dc131311bddea967e2a72a96e29",
+    "maxlen": 60,
+    "kernels": [
+      2,
+      3,
+      4
+    ],
+    "n_folds": 5,
+    "n_internos": 3,
+    "eps_gate_delta": 0.003,
+    "gate_folds": 4,
+    "umbral_parejidad": 0.5,
+    "dispositivo": "cpu",
+    "hilos": 32,
+    "parquet_de_slices_no_leido": "features/v2_structured_features.parquet",
+    "hiperparametros_de_epoca_estrella": {
+      "epocas_maximas": 40,
+      "origen_epocas_maximas": "p75_01:139, literal range(1, 41)",
+      "tolerancia_early_stopping": 0.001,
+      "origen_tolerancia": "p75_01:155, literal 1e-3",
+      "paciencia": 6,
+      "origen_paciencia": "p75_01:157, literal 6",
+      "suavizado": "media movil de 3 de la BCE de validacion interna",
+      "batch": 32,
+      "origen_batch": "p73_02:BATCH, importado por p75_01:47",
+      "lr_pico": 0.001,
+      "lr_min": 0.0001,
+      "warmup": 3,
+      "clip": 1.0,
+      "origen_lr_y_clip": "p75_01:128 AdamW lr=1e-3 y p75_01:148 clip_grad_norm_ 1.0; el perfil por epoca viene de p73_02:lr_de",
+      "nota_sobre_el_cosine": "el cosine de lr_de esta disenado para 40 epocas, pero E* observado esta entre 10 y 17. El learning rate real medio queda por encima del que tendria un cosine ree calibrado a E*. Es identico en los cuatro brazos, luego no sesga el delta pareado, pero sube la varianza entre semillas"
+    },
+    "nota_sobre_el_ruido_entre_semillas": "el log muestra que el macro-F1 de outer_val se mueve hasta 0.08 entre dos semillas del mismo brazo y pliegue, frente a un EPS_GATE_DELTA de 0.003. El gate pre-registrado es muy demanding. No se modifica: se aplica el que dice el pre-registro y la magnitud del ruido se reporta junto al veredicto",
+    "entorno": {
+      "version_de_torch": "2.14.0+rocm7.2",
+      "version_de_python": "3.14.7",
+      "semilla_global_de_torch": "se fija antes de cada unidad, en p75_01:180",
+      "nota_determinismo": "no se activa torch.use_deterministic_algorithms; el orden de reduccion de conv y linear en CPU depende del numero de hilos, que aqui esta fijado a 32. Mismo equipo y mismos hilos da reproduccion bit a bit, como se comprobo entre dos corridas"
+    }
+  },
+  "protocolo": {
+    "por_pliegue": "1) epoca_estrella produce E* como mediana de tres splits internos por clusters sobre ia, y NINGUNA fila de ib participa. 2) entrenar_fijo reentrena sobre ia COMPLETO durante E* epocas fijas. 3) outer_val se evalua una sola vez por (brazo, semilla, pliegue)",
+    "semilla_base_de_los_splits_internos": 20261101,
+    "formula_de_la_semilla_interna": "SEMILLA_INTERNA_BASE + 100*k + 7*j, con j en 0..2",
+    "control_aleatorio": "genera_aleatoria(semilla, W, normas), que conserva las normas de fila. B y D comparten la MISMA matriz aleatoria para la misma semilla, de modo que P4 = D - B aisla la normalizacion",
+    "diferencia_entre_las_dos_variantes_de_entrada": "variante_cruda es `tokenizar` de P73-02 tal cual; variante_norm es `tokenizar(normalizar(t))` con `normalizar` de P71-03. La unica diferencia entre ambas es la pre-normalizacion, nada mas"
+  },
+  "auditoria_de_integridad": {
+    "v03_reconstruido": 0.7772114525,
+    "v03_esperado": 0.7772114525165721,
+    "aserciones": {
+      "1_macro_f1_de_v03": true,
+      "2_ids_del_oof": true,
+      "3_cobertura_de_pliegues": true,
+      "4_sha256_del_w2v": true,
+      "5_sha_matriz_pad": true,
+      "6_inner_val_aislado": true,
+      "7_una_evaluacion_por_unidad": true,
+      "8_pareo_de_los_brazos": true,
+      "9_probabilidades_finitas_y_sin_filas_sin_prediccion": true,
+      "10_ascii": true
+    },
+    "de_donde_sale_el_10": "`10_ascii` es el AND de los valores observados por `verificar_ascii_texto([script, CSV temporal])` antes de construir este JSON. Los dos JSON no existian todavia, asi que se vuelven a verificar sobre sus temporales despues de escribirlos y antes de renombrarlos; ese resultado no cabe aqui y vive en el log y en el manifiesto sha256",
+    "n_holdout_apartado_y_no_usado": 248,
+    "indices_del_early_stopping": {
+      "cumple": true,
+      "verificado_sobre": "indices OBSERVADOS, no recalculados. `p75_01.partir_interna` se instrumento temporalmente alrededor de cada llamada real a `epoca_estrella` y se capturaron sus argumentos y su mascara devuelta; esta seccion no vuelve a derivar ningun split",
+      "unidades_instrumentadas": 60,
+      "llamadas_observadas": 180,
+      "llamadas_esperadas": 180,
+      "cobertura_de_unidades": "las 4 ramas por las 3 semillas en los 5 pliegues",
+      "limite_declarado": "la instrumentacion envuelve el modulo de P75 y ve la llamada, pero no el interior del bucle de entrenamiento: no demuestra que las filas de inner_val no se usen mas alla de la mascara que devuelve partir_interna. Eso se sostiene leyendo `p75_01:121-160`, donde el unico uso de `ia` es `ia[m_in]` y `ia[~m_in]`",
+      "detalle_por_pliegue": [
+        {
+          "pliegue": 1,
+          "n_outer_train": 1186,
+          "n_outer_val": 297,
+          "sha_outer_train": "1ca576e176ee77f6379d92978433f4bd1f01909e",
+          "sha_outer_val": "0889d2aec7a7ca5083b8bcabb4ec678daf33ec47",
+          "grupos_de_outer_train_sha": "71d4d5c66a6c4698cbdd54581be69dff2b715348",
+          "llamadas_observadas": 36,
+          "splits_internos": [
+            {
+              "split": 0,
+              "semilla_del_split_interno": 20261201,
+              "n_inner_train": 957,
+              "n_inner_val": 229,
+              "sha_inner_train": "a1954589f94c529a68f13c60c3ad6a9b7ea2b565",
+              "sha_inner_val": "c0bf255d58413cb9e64adec3cedb694abbd7c4fd",
+              "unidades": [
+                {
+                  "brazo": "A",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 957,
+                  "n_inner_val": 229,
+                  "sha_inner_train": "a1954589f94c529a68f13c60c3ad6a9b7ea2b565",
+                  "sha_inner_val": "c0bf255d58413cb9e64adec3cedb694abbd7c4fd"
+                },
+                {
+                  "brazo": "A",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 957,
+                  "n_inner_val": 229,
+                  "sha_inner_train": "a1954589f94c529a68f13c60c3ad6a9b7ea2b565",
+                  "sha_inner_val": "c0bf255d58413cb9e64adec3cedb694abbd7c4fd"
+                },
+                {
+                  "brazo": "A",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 957,
+                  "n_inner_val": 229,
+                  "sha_inner_train": "a1954589f94c529a68f13c60c3ad6a9b7ea2b565",
+                  "sha_inner_val": "c0bf255d58413cb9e64adec3cedb694abbd7c4fd"
+                },
+                {
+                  "brazo": "B",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 957,
+                  "n_inner_val": 229,
+                  "sha_inner_train": "a1954589f94c529a68f13c60c3ad6a9b7ea2b565",
+                  "sha_inner_val": "c0bf255d58413cb9e64adec3cedb694abbd7c4fd"
+                },
+                {
+                  "brazo": "B",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 957,
+                  "n_inner_val": 229,
+                  "sha_inner_train": "a1954589f94c529a68f13c60c3ad6a9b7ea2b565",
+                  "sha_inner_val": "c0bf255d58413cb9e64adec3cedb694abbd7c4fd"
+                },
+                {
+                  "brazo": "B",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 957,
+                  "n_inner_val": 229,
+                  "sha_inner_train": "a1954589f94c529a68f13c60c3ad6a9b7ea2b565",
+                  "sha_inner_val": "c0bf255d58413cb9e64adec3cedb694abbd7c4fd"
+                },
+                {
+                  "brazo": "C",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 957,
+                  "n_inner_val": 229,
+                  "sha_inner_train": "a1954589f94c529a68f13c60c3ad6a9b7ea2b565",
+                  "sha_inner_val": "c0bf255d58413cb9e64adec3cedb694abbd7c4fd"
+                },
+                {
+                  "brazo": "C",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 957,
+                  "n_inner_val": 229,
+                  "sha_inner_train": "a1954589f94c529a68f13c60c3ad6a9b7ea2b565",
+                  "sha_inner_val": "c0bf255d58413cb9e64adec3cedb694abbd7c4fd"
+                },
+                {
+                  "brazo": "C",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 957,
+                  "n_inner_val": 229,
+                  "sha_inner_train": "a1954589f94c529a68f13c60c3ad6a9b7ea2b565",
+                  "sha_inner_val": "c0bf255d58413cb9e64adec3cedb694abbd7c4fd"
+                },
+                {
+                  "brazo": "D",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 957,
+                  "n_inner_val": 229,
+                  "sha_inner_train": "a1954589f94c529a68f13c60c3ad6a9b7ea2b565",
+                  "sha_inner_val": "c0bf255d58413cb9e64adec3cedb694abbd7c4fd"
+                },
+                {
+                  "brazo": "D",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 957,
+                  "n_inner_val": 229,
+                  "sha_inner_train": "a1954589f94c529a68f13c60c3ad6a9b7ea2b565",
+                  "sha_inner_val": "c0bf255d58413cb9e64adec3cedb694abbd7c4fd"
+                },
+                {
+                  "brazo": "D",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 957,
+                  "n_inner_val": 229,
+                  "sha_inner_train": "a1954589f94c529a68f13c60c3ad6a9b7ea2b565",
+                  "sha_inner_val": "c0bf255d58413cb9e64adec3cedb694abbd7c4fd"
+                }
+              ],
+              "misma_mascara_en_las_doce_unidades_del_plegue": true,
+              "interseccion_con_outer_val": 0
+            },
+            {
+              "split": 1,
+              "semilla_del_split_interno": 20261208,
+              "n_inner_train": 955,
+              "n_inner_val": 231,
+              "sha_inner_train": "f52f4da1d6648af1ce6a62f7a11f1569e487aaa5",
+              "sha_inner_val": "2891a28628de8a65b0df37355968b364144db949",
+              "unidades": [
+                {
+                  "brazo": "A",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 955,
+                  "n_inner_val": 231,
+                  "sha_inner_train": "f52f4da1d6648af1ce6a62f7a11f1569e487aaa5",
+                  "sha_inner_val": "2891a28628de8a65b0df37355968b364144db949"
+                },
+                {
+                  "brazo": "A",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 955,
+                  "n_inner_val": 231,
+                  "sha_inner_train": "f52f4da1d6648af1ce6a62f7a11f1569e487aaa5",
+                  "sha_inner_val": "2891a28628de8a65b0df37355968b364144db949"
+                },
+                {
+                  "brazo": "A",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 955,
+                  "n_inner_val": 231,
+                  "sha_inner_train": "f52f4da1d6648af1ce6a62f7a11f1569e487aaa5",
+                  "sha_inner_val": "2891a28628de8a65b0df37355968b364144db949"
+                },
+                {
+                  "brazo": "B",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 955,
+                  "n_inner_val": 231,
+                  "sha_inner_train": "f52f4da1d6648af1ce6a62f7a11f1569e487aaa5",
+                  "sha_inner_val": "2891a28628de8a65b0df37355968b364144db949"
+                },
+                {
+                  "brazo": "B",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 955,
+                  "n_inner_val": 231,
+                  "sha_inner_train": "f52f4da1d6648af1ce6a62f7a11f1569e487aaa5",
+                  "sha_inner_val": "2891a28628de8a65b0df37355968b364144db949"
+                },
+                {
+                  "brazo": "B",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 955,
+                  "n_inner_val": 231,
+                  "sha_inner_train": "f52f4da1d6648af1ce6a62f7a11f1569e487aaa5",
+                  "sha_inner_val": "2891a28628de8a65b0df37355968b364144db949"
+                },
+                {
+                  "brazo": "C",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 955,
+                  "n_inner_val": 231,
+                  "sha_inner_train": "f52f4da1d6648af1ce6a62f7a11f1569e487aaa5",
+                  "sha_inner_val": "2891a28628de8a65b0df37355968b364144db949"
+                },
+                {
+                  "brazo": "C",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 955,
+                  "n_inner_val": 231,
+                  "sha_inner_train": "f52f4da1d6648af1ce6a62f7a11f1569e487aaa5",
+                  "sha_inner_val": "2891a28628de8a65b0df37355968b364144db949"
+                },
+                {
+                  "brazo": "C",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 955,
+                  "n_inner_val": 231,
+                  "sha_inner_train": "f52f4da1d6648af1ce6a62f7a11f1569e487aaa5",
+                  "sha_inner_val": "2891a28628de8a65b0df37355968b364144db949"
+                },
+                {
+                  "brazo": "D",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 955,
+                  "n_inner_val": 231,
+                  "sha_inner_train": "f52f4da1d6648af1ce6a62f7a11f1569e487aaa5",
+                  "sha_inner_val": "2891a28628de8a65b0df37355968b364144db949"
+                },
+                {
+                  "brazo": "D",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 955,
+                  "n_inner_val": 231,
+                  "sha_inner_train": "f52f4da1d6648af1ce6a62f7a11f1569e487aaa5",
+                  "sha_inner_val": "2891a28628de8a65b0df37355968b364144db949"
+                },
+                {
+                  "brazo": "D",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 955,
+                  "n_inner_val": 231,
+                  "sha_inner_train": "f52f4da1d6648af1ce6a62f7a11f1569e487aaa5",
+                  "sha_inner_val": "2891a28628de8a65b0df37355968b364144db949"
+                }
+              ],
+              "misma_mascara_en_las_doce_unidades_del_plegue": true,
+              "interseccion_con_outer_val": 0
+            },
+            {
+              "split": 2,
+              "semilla_del_split_interno": 20261215,
+              "n_inner_train": 947,
+              "n_inner_val": 239,
+              "sha_inner_train": "f22c1d1fb511fbfde1c1e6de7ab91fccabbae78a",
+              "sha_inner_val": "d79184d3f119001dcbb5963e9be1ab115bb8c7ec",
+              "unidades": [
+                {
+                  "brazo": "A",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 947,
+                  "n_inner_val": 239,
+                  "sha_inner_train": "f22c1d1fb511fbfde1c1e6de7ab91fccabbae78a",
+                  "sha_inner_val": "d79184d3f119001dcbb5963e9be1ab115bb8c7ec"
+                },
+                {
+                  "brazo": "A",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 947,
+                  "n_inner_val": 239,
+                  "sha_inner_train": "f22c1d1fb511fbfde1c1e6de7ab91fccabbae78a",
+                  "sha_inner_val": "d79184d3f119001dcbb5963e9be1ab115bb8c7ec"
+                },
+                {
+                  "brazo": "A",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 947,
+                  "n_inner_val": 239,
+                  "sha_inner_train": "f22c1d1fb511fbfde1c1e6de7ab91fccabbae78a",
+                  "sha_inner_val": "d79184d3f119001dcbb5963e9be1ab115bb8c7ec"
+                },
+                {
+                  "brazo": "B",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 947,
+                  "n_inner_val": 239,
+                  "sha_inner_train": "f22c1d1fb511fbfde1c1e6de7ab91fccabbae78a",
+                  "sha_inner_val": "d79184d3f119001dcbb5963e9be1ab115bb8c7ec"
+                },
+                {
+                  "brazo": "B",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 947,
+                  "n_inner_val": 239,
+                  "sha_inner_train": "f22c1d1fb511fbfde1c1e6de7ab91fccabbae78a",
+                  "sha_inner_val": "d79184d3f119001dcbb5963e9be1ab115bb8c7ec"
+                },
+                {
+                  "brazo": "B",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 947,
+                  "n_inner_val": 239,
+                  "sha_inner_train": "f22c1d1fb511fbfde1c1e6de7ab91fccabbae78a",
+                  "sha_inner_val": "d79184d3f119001dcbb5963e9be1ab115bb8c7ec"
+                },
+                {
+                  "brazo": "C",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 947,
+                  "n_inner_val": 239,
+                  "sha_inner_train": "f22c1d1fb511fbfde1c1e6de7ab91fccabbae78a",
+                  "sha_inner_val": "d79184d3f119001dcbb5963e9be1ab115bb8c7ec"
+                },
+                {
+                  "brazo": "C",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 947,
+                  "n_inner_val": 239,
+                  "sha_inner_train": "f22c1d1fb511fbfde1c1e6de7ab91fccabbae78a",
+                  "sha_inner_val": "d79184d3f119001dcbb5963e9be1ab115bb8c7ec"
+                },
+                {
+                  "brazo": "C",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 947,
+                  "n_inner_val": 239,
+                  "sha_inner_train": "f22c1d1fb511fbfde1c1e6de7ab91fccabbae78a",
+                  "sha_inner_val": "d79184d3f119001dcbb5963e9be1ab115bb8c7ec"
+                },
+                {
+                  "brazo": "D",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 947,
+                  "n_inner_val": 239,
+                  "sha_inner_train": "f22c1d1fb511fbfde1c1e6de7ab91fccabbae78a",
+                  "sha_inner_val": "d79184d3f119001dcbb5963e9be1ab115bb8c7ec"
+                },
+                {
+                  "brazo": "D",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 947,
+                  "n_inner_val": 239,
+                  "sha_inner_train": "f22c1d1fb511fbfde1c1e6de7ab91fccabbae78a",
+                  "sha_inner_val": "d79184d3f119001dcbb5963e9be1ab115bb8c7ec"
+                },
+                {
+                  "brazo": "D",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 947,
+                  "n_inner_val": 239,
+                  "sha_inner_train": "f22c1d1fb511fbfde1c1e6de7ab91fccabbae78a",
+                  "sha_inner_val": "d79184d3f119001dcbb5963e9be1ab115bb8c7ec"
+                }
+              ],
+              "misma_mascara_en_las_doce_unidades_del_plegue": true,
+              "interseccion_con_outer_val": 0
+            }
+          ]
+        },
+        {
+          "pliegue": 2,
+          "n_outer_train": 1186,
+          "n_outer_val": 297,
+          "sha_outer_train": "a6a34b6d4ccccf0f365ad1fe1e5d3d613136dcfb",
+          "sha_outer_val": "92306418ad13a6d5327b5e05f9552afdd833f9a0",
+          "grupos_de_outer_train_sha": "f34390dc564618d19cad6459fa30b402f1432416",
+          "llamadas_observadas": 36,
+          "splits_internos": [
+            {
+              "split": 0,
+              "semilla_del_split_interno": 20261301,
+              "n_inner_train": 947,
+              "n_inner_val": 239,
+              "sha_inner_train": "41a5f9d26625358079e181efe3c07d6a5bee900c",
+              "sha_inner_val": "e8432e9feab2c0df3502f8f3124d3eb0bfd6bed7",
+              "unidades": [
+                {
+                  "brazo": "A",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 947,
+                  "n_inner_val": 239,
+                  "sha_inner_train": "41a5f9d26625358079e181efe3c07d6a5bee900c",
+                  "sha_inner_val": "e8432e9feab2c0df3502f8f3124d3eb0bfd6bed7"
+                },
+                {
+                  "brazo": "A",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 947,
+                  "n_inner_val": 239,
+                  "sha_inner_train": "41a5f9d26625358079e181efe3c07d6a5bee900c",
+                  "sha_inner_val": "e8432e9feab2c0df3502f8f3124d3eb0bfd6bed7"
+                },
+                {
+                  "brazo": "A",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 947,
+                  "n_inner_val": 239,
+                  "sha_inner_train": "41a5f9d26625358079e181efe3c07d6a5bee900c",
+                  "sha_inner_val": "e8432e9feab2c0df3502f8f3124d3eb0bfd6bed7"
+                },
+                {
+                  "brazo": "B",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 947,
+                  "n_inner_val": 239,
+                  "sha_inner_train": "41a5f9d26625358079e181efe3c07d6a5bee900c",
+                  "sha_inner_val": "e8432e9feab2c0df3502f8f3124d3eb0bfd6bed7"
+                },
+                {
+                  "brazo": "B",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 947,
+                  "n_inner_val": 239,
+                  "sha_inner_train": "41a5f9d26625358079e181efe3c07d6a5bee900c",
+                  "sha_inner_val": "e8432e9feab2c0df3502f8f3124d3eb0bfd6bed7"
+                },
+                {
+                  "brazo": "B",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 947,
+                  "n_inner_val": 239,
+                  "sha_inner_train": "41a5f9d26625358079e181efe3c07d6a5bee900c",
+                  "sha_inner_val": "e8432e9feab2c0df3502f8f3124d3eb0bfd6bed7"
+                },
+                {
+                  "brazo": "C",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 947,
+                  "n_inner_val": 239,
+                  "sha_inner_train": "41a5f9d26625358079e181efe3c07d6a5bee900c",
+                  "sha_inner_val": "e8432e9feab2c0df3502f8f3124d3eb0bfd6bed7"
+                },
+                {
+                  "brazo": "C",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 947,
+                  "n_inner_val": 239,
+                  "sha_inner_train": "41a5f9d26625358079e181efe3c07d6a5bee900c",
+                  "sha_inner_val": "e8432e9feab2c0df3502f8f3124d3eb0bfd6bed7"
+                },
+                {
+                  "brazo": "C",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 947,
+                  "n_inner_val": 239,
+                  "sha_inner_train": "41a5f9d26625358079e181efe3c07d6a5bee900c",
+                  "sha_inner_val": "e8432e9feab2c0df3502f8f3124d3eb0bfd6bed7"
+                },
+                {
+                  "brazo": "D",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 947,
+                  "n_inner_val": 239,
+                  "sha_inner_train": "41a5f9d26625358079e181efe3c07d6a5bee900c",
+                  "sha_inner_val": "e8432e9feab2c0df3502f8f3124d3eb0bfd6bed7"
+                },
+                {
+                  "brazo": "D",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 947,
+                  "n_inner_val": 239,
+                  "sha_inner_train": "41a5f9d26625358079e181efe3c07d6a5bee900c",
+                  "sha_inner_val": "e8432e9feab2c0df3502f8f3124d3eb0bfd6bed7"
+                },
+                {
+                  "brazo": "D",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 947,
+                  "n_inner_val": 239,
+                  "sha_inner_train": "41a5f9d26625358079e181efe3c07d6a5bee900c",
+                  "sha_inner_val": "e8432e9feab2c0df3502f8f3124d3eb0bfd6bed7"
+                }
+              ],
+              "misma_mascara_en_las_doce_unidades_del_plegue": true,
+              "interseccion_con_outer_val": 0
+            },
+            {
+              "split": 1,
+              "semilla_del_split_interno": 20261308,
+              "n_inner_train": 950,
+              "n_inner_val": 236,
+              "sha_inner_train": "ef51c7a0e4779fc1cb201df98c9efa36409654d3",
+              "sha_inner_val": "e7896f4af2a956adfdf98c656dc8d25e13079fc9",
+              "unidades": [
+                {
+                  "brazo": "A",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 950,
+                  "n_inner_val": 236,
+                  "sha_inner_train": "ef51c7a0e4779fc1cb201df98c9efa36409654d3",
+                  "sha_inner_val": "e7896f4af2a956adfdf98c656dc8d25e13079fc9"
+                },
+                {
+                  "brazo": "A",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 950,
+                  "n_inner_val": 236,
+                  "sha_inner_train": "ef51c7a0e4779fc1cb201df98c9efa36409654d3",
+                  "sha_inner_val": "e7896f4af2a956adfdf98c656dc8d25e13079fc9"
+                },
+                {
+                  "brazo": "A",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 950,
+                  "n_inner_val": 236,
+                  "sha_inner_train": "ef51c7a0e4779fc1cb201df98c9efa36409654d3",
+                  "sha_inner_val": "e7896f4af2a956adfdf98c656dc8d25e13079fc9"
+                },
+                {
+                  "brazo": "B",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 950,
+                  "n_inner_val": 236,
+                  "sha_inner_train": "ef51c7a0e4779fc1cb201df98c9efa36409654d3",
+                  "sha_inner_val": "e7896f4af2a956adfdf98c656dc8d25e13079fc9"
+                },
+                {
+                  "brazo": "B",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 950,
+                  "n_inner_val": 236,
+                  "sha_inner_train": "ef51c7a0e4779fc1cb201df98c9efa36409654d3",
+                  "sha_inner_val": "e7896f4af2a956adfdf98c656dc8d25e13079fc9"
+                },
+                {
+                  "brazo": "B",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 950,
+                  "n_inner_val": 236,
+                  "sha_inner_train": "ef51c7a0e4779fc1cb201df98c9efa36409654d3",
+                  "sha_inner_val": "e7896f4af2a956adfdf98c656dc8d25e13079fc9"
+                },
+                {
+                  "brazo": "C",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 950,
+                  "n_inner_val": 236,
+                  "sha_inner_train": "ef51c7a0e4779fc1cb201df98c9efa36409654d3",
+                  "sha_inner_val": "e7896f4af2a956adfdf98c656dc8d25e13079fc9"
+                },
+                {
+                  "brazo": "C",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 950,
+                  "n_inner_val": 236,
+                  "sha_inner_train": "ef51c7a0e4779fc1cb201df98c9efa36409654d3",
+                  "sha_inner_val": "e7896f4af2a956adfdf98c656dc8d25e13079fc9"
+                },
+                {
+                  "brazo": "C",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 950,
+                  "n_inner_val": 236,
+                  "sha_inner_train": "ef51c7a0e4779fc1cb201df98c9efa36409654d3",
+                  "sha_inner_val": "e7896f4af2a956adfdf98c656dc8d25e13079fc9"
+                },
+                {
+                  "brazo": "D",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 950,
+                  "n_inner_val": 236,
+                  "sha_inner_train": "ef51c7a0e4779fc1cb201df98c9efa36409654d3",
+                  "sha_inner_val": "e7896f4af2a956adfdf98c656dc8d25e13079fc9"
+                },
+                {
+                  "brazo": "D",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 950,
+                  "n_inner_val": 236,
+                  "sha_inner_train": "ef51c7a0e4779fc1cb201df98c9efa36409654d3",
+                  "sha_inner_val": "e7896f4af2a956adfdf98c656dc8d25e13079fc9"
+                },
+                {
+                  "brazo": "D",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 950,
+                  "n_inner_val": 236,
+                  "sha_inner_train": "ef51c7a0e4779fc1cb201df98c9efa36409654d3",
+                  "sha_inner_val": "e7896f4af2a956adfdf98c656dc8d25e13079fc9"
+                }
+              ],
+              "misma_mascara_en_las_doce_unidades_del_plegue": true,
+              "interseccion_con_outer_val": 0
+            },
+            {
+              "split": 2,
+              "semilla_del_split_interno": 20261315,
+              "n_inner_train": 952,
+              "n_inner_val": 234,
+              "sha_inner_train": "7c94a29ae720c01b90226cefd7317fa6ca5f895c",
+              "sha_inner_val": "dbcdfd377055f3e06833303082acd08d04efcb81",
+              "unidades": [
+                {
+                  "brazo": "A",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 952,
+                  "n_inner_val": 234,
+                  "sha_inner_train": "7c94a29ae720c01b90226cefd7317fa6ca5f895c",
+                  "sha_inner_val": "dbcdfd377055f3e06833303082acd08d04efcb81"
+                },
+                {
+                  "brazo": "A",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 952,
+                  "n_inner_val": 234,
+                  "sha_inner_train": "7c94a29ae720c01b90226cefd7317fa6ca5f895c",
+                  "sha_inner_val": "dbcdfd377055f3e06833303082acd08d04efcb81"
+                },
+                {
+                  "brazo": "A",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 952,
+                  "n_inner_val": 234,
+                  "sha_inner_train": "7c94a29ae720c01b90226cefd7317fa6ca5f895c",
+                  "sha_inner_val": "dbcdfd377055f3e06833303082acd08d04efcb81"
+                },
+                {
+                  "brazo": "B",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 952,
+                  "n_inner_val": 234,
+                  "sha_inner_train": "7c94a29ae720c01b90226cefd7317fa6ca5f895c",
+                  "sha_inner_val": "dbcdfd377055f3e06833303082acd08d04efcb81"
+                },
+                {
+                  "brazo": "B",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 952,
+                  "n_inner_val": 234,
+                  "sha_inner_train": "7c94a29ae720c01b90226cefd7317fa6ca5f895c",
+                  "sha_inner_val": "dbcdfd377055f3e06833303082acd08d04efcb81"
+                },
+                {
+                  "brazo": "B",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 952,
+                  "n_inner_val": 234,
+                  "sha_inner_train": "7c94a29ae720c01b90226cefd7317fa6ca5f895c",
+                  "sha_inner_val": "dbcdfd377055f3e06833303082acd08d04efcb81"
+                },
+                {
+                  "brazo": "C",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 952,
+                  "n_inner_val": 234,
+                  "sha_inner_train": "7c94a29ae720c01b90226cefd7317fa6ca5f895c",
+                  "sha_inner_val": "dbcdfd377055f3e06833303082acd08d04efcb81"
+                },
+                {
+                  "brazo": "C",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 952,
+                  "n_inner_val": 234,
+                  "sha_inner_train": "7c94a29ae720c01b90226cefd7317fa6ca5f895c",
+                  "sha_inner_val": "dbcdfd377055f3e06833303082acd08d04efcb81"
+                },
+                {
+                  "brazo": "C",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 952,
+                  "n_inner_val": 234,
+                  "sha_inner_train": "7c94a29ae720c01b90226cefd7317fa6ca5f895c",
+                  "sha_inner_val": "dbcdfd377055f3e06833303082acd08d04efcb81"
+                },
+                {
+                  "brazo": "D",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 952,
+                  "n_inner_val": 234,
+                  "sha_inner_train": "7c94a29ae720c01b90226cefd7317fa6ca5f895c",
+                  "sha_inner_val": "dbcdfd377055f3e06833303082acd08d04efcb81"
+                },
+                {
+                  "brazo": "D",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 952,
+                  "n_inner_val": 234,
+                  "sha_inner_train": "7c94a29ae720c01b90226cefd7317fa6ca5f895c",
+                  "sha_inner_val": "dbcdfd377055f3e06833303082acd08d04efcb81"
+                },
+                {
+                  "brazo": "D",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 952,
+                  "n_inner_val": 234,
+                  "sha_inner_train": "7c94a29ae720c01b90226cefd7317fa6ca5f895c",
+                  "sha_inner_val": "dbcdfd377055f3e06833303082acd08d04efcb81"
+                }
+              ],
+              "misma_mascara_en_las_doce_unidades_del_plegue": true,
+              "interseccion_con_outer_val": 0
+            }
+          ]
+        },
+        {
+          "pliegue": 3,
+          "n_outer_train": 1187,
+          "n_outer_val": 296,
+          "sha_outer_train": "960514833282046d820576db6b5434d1e71828ad",
+          "sha_outer_val": "76f514e13f0e0b1ca5822a42161d8947fb8d5837",
+          "grupos_de_outer_train_sha": "e7b8a3dbab4905e6df8465c6e460b7dbeda27a95",
+          "llamadas_observadas": 36,
+          "splits_internos": [
+            {
+              "split": 0,
+              "semilla_del_split_interno": 20261401,
+              "n_inner_train": 954,
+              "n_inner_val": 233,
+              "sha_inner_train": "5d1181e49e4d0aba57d3b3a65b38c48e81762a57",
+              "sha_inner_val": "8bfedf9baa7c66cd14ab99bdf0dcfadc9e9ecb72",
+              "unidades": [
+                {
+                  "brazo": "A",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 954,
+                  "n_inner_val": 233,
+                  "sha_inner_train": "5d1181e49e4d0aba57d3b3a65b38c48e81762a57",
+                  "sha_inner_val": "8bfedf9baa7c66cd14ab99bdf0dcfadc9e9ecb72"
+                },
+                {
+                  "brazo": "A",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 954,
+                  "n_inner_val": 233,
+                  "sha_inner_train": "5d1181e49e4d0aba57d3b3a65b38c48e81762a57",
+                  "sha_inner_val": "8bfedf9baa7c66cd14ab99bdf0dcfadc9e9ecb72"
+                },
+                {
+                  "brazo": "A",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 954,
+                  "n_inner_val": 233,
+                  "sha_inner_train": "5d1181e49e4d0aba57d3b3a65b38c48e81762a57",
+                  "sha_inner_val": "8bfedf9baa7c66cd14ab99bdf0dcfadc9e9ecb72"
+                },
+                {
+                  "brazo": "B",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 954,
+                  "n_inner_val": 233,
+                  "sha_inner_train": "5d1181e49e4d0aba57d3b3a65b38c48e81762a57",
+                  "sha_inner_val": "8bfedf9baa7c66cd14ab99bdf0dcfadc9e9ecb72"
+                },
+                {
+                  "brazo": "B",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 954,
+                  "n_inner_val": 233,
+                  "sha_inner_train": "5d1181e49e4d0aba57d3b3a65b38c48e81762a57",
+                  "sha_inner_val": "8bfedf9baa7c66cd14ab99bdf0dcfadc9e9ecb72"
+                },
+                {
+                  "brazo": "B",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 954,
+                  "n_inner_val": 233,
+                  "sha_inner_train": "5d1181e49e4d0aba57d3b3a65b38c48e81762a57",
+                  "sha_inner_val": "8bfedf9baa7c66cd14ab99bdf0dcfadc9e9ecb72"
+                },
+                {
+                  "brazo": "C",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 954,
+                  "n_inner_val": 233,
+                  "sha_inner_train": "5d1181e49e4d0aba57d3b3a65b38c48e81762a57",
+                  "sha_inner_val": "8bfedf9baa7c66cd14ab99bdf0dcfadc9e9ecb72"
+                },
+                {
+                  "brazo": "C",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 954,
+                  "n_inner_val": 233,
+                  "sha_inner_train": "5d1181e49e4d0aba57d3b3a65b38c48e81762a57",
+                  "sha_inner_val": "8bfedf9baa7c66cd14ab99bdf0dcfadc9e9ecb72"
+                },
+                {
+                  "brazo": "C",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 954,
+                  "n_inner_val": 233,
+                  "sha_inner_train": "5d1181e49e4d0aba57d3b3a65b38c48e81762a57",
+                  "sha_inner_val": "8bfedf9baa7c66cd14ab99bdf0dcfadc9e9ecb72"
+                },
+                {
+                  "brazo": "D",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 954,
+                  "n_inner_val": 233,
+                  "sha_inner_train": "5d1181e49e4d0aba57d3b3a65b38c48e81762a57",
+                  "sha_inner_val": "8bfedf9baa7c66cd14ab99bdf0dcfadc9e9ecb72"
+                },
+                {
+                  "brazo": "D",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 954,
+                  "n_inner_val": 233,
+                  "sha_inner_train": "5d1181e49e4d0aba57d3b3a65b38c48e81762a57",
+                  "sha_inner_val": "8bfedf9baa7c66cd14ab99bdf0dcfadc9e9ecb72"
+                },
+                {
+                  "brazo": "D",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 954,
+                  "n_inner_val": 233,
+                  "sha_inner_train": "5d1181e49e4d0aba57d3b3a65b38c48e81762a57",
+                  "sha_inner_val": "8bfedf9baa7c66cd14ab99bdf0dcfadc9e9ecb72"
+                }
+              ],
+              "misma_mascara_en_las_doce_unidades_del_plegue": true,
+              "interseccion_con_outer_val": 0
+            },
+            {
+              "split": 1,
+              "semilla_del_split_interno": 20261408,
+              "n_inner_train": 950,
+              "n_inner_val": 237,
+              "sha_inner_train": "88fae9126b763b99d01fa25881023fb9ad290d8e",
+              "sha_inner_val": "3213be9c077bcce5237b3065c071df6b8970a0d7",
+              "unidades": [
+                {
+                  "brazo": "A",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 950,
+                  "n_inner_val": 237,
+                  "sha_inner_train": "88fae9126b763b99d01fa25881023fb9ad290d8e",
+                  "sha_inner_val": "3213be9c077bcce5237b3065c071df6b8970a0d7"
+                },
+                {
+                  "brazo": "A",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 950,
+                  "n_inner_val": 237,
+                  "sha_inner_train": "88fae9126b763b99d01fa25881023fb9ad290d8e",
+                  "sha_inner_val": "3213be9c077bcce5237b3065c071df6b8970a0d7"
+                },
+                {
+                  "brazo": "A",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 950,
+                  "n_inner_val": 237,
+                  "sha_inner_train": "88fae9126b763b99d01fa25881023fb9ad290d8e",
+                  "sha_inner_val": "3213be9c077bcce5237b3065c071df6b8970a0d7"
+                },
+                {
+                  "brazo": "B",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 950,
+                  "n_inner_val": 237,
+                  "sha_inner_train": "88fae9126b763b99d01fa25881023fb9ad290d8e",
+                  "sha_inner_val": "3213be9c077bcce5237b3065c071df6b8970a0d7"
+                },
+                {
+                  "brazo": "B",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 950,
+                  "n_inner_val": 237,
+                  "sha_inner_train": "88fae9126b763b99d01fa25881023fb9ad290d8e",
+                  "sha_inner_val": "3213be9c077bcce5237b3065c071df6b8970a0d7"
+                },
+                {
+                  "brazo": "B",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 950,
+                  "n_inner_val": 237,
+                  "sha_inner_train": "88fae9126b763b99d01fa25881023fb9ad290d8e",
+                  "sha_inner_val": "3213be9c077bcce5237b3065c071df6b8970a0d7"
+                },
+                {
+                  "brazo": "C",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 950,
+                  "n_inner_val": 237,
+                  "sha_inner_train": "88fae9126b763b99d01fa25881023fb9ad290d8e",
+                  "sha_inner_val": "3213be9c077bcce5237b3065c071df6b8970a0d7"
+                },
+                {
+                  "brazo": "C",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 950,
+                  "n_inner_val": 237,
+                  "sha_inner_train": "88fae9126b763b99d01fa25881023fb9ad290d8e",
+                  "sha_inner_val": "3213be9c077bcce5237b3065c071df6b8970a0d7"
+                },
+                {
+                  "brazo": "C",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 950,
+                  "n_inner_val": 237,
+                  "sha_inner_train": "88fae9126b763b99d01fa25881023fb9ad290d8e",
+                  "sha_inner_val": "3213be9c077bcce5237b3065c071df6b8970a0d7"
+                },
+                {
+                  "brazo": "D",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 950,
+                  "n_inner_val": 237,
+                  "sha_inner_train": "88fae9126b763b99d01fa25881023fb9ad290d8e",
+                  "sha_inner_val": "3213be9c077bcce5237b3065c071df6b8970a0d7"
+                },
+                {
+                  "brazo": "D",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 950,
+                  "n_inner_val": 237,
+                  "sha_inner_train": "88fae9126b763b99d01fa25881023fb9ad290d8e",
+                  "sha_inner_val": "3213be9c077bcce5237b3065c071df6b8970a0d7"
+                },
+                {
+                  "brazo": "D",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 950,
+                  "n_inner_val": 237,
+                  "sha_inner_train": "88fae9126b763b99d01fa25881023fb9ad290d8e",
+                  "sha_inner_val": "3213be9c077bcce5237b3065c071df6b8970a0d7"
+                }
+              ],
+              "misma_mascara_en_las_doce_unidades_del_plegue": true,
+              "interseccion_con_outer_val": 0
+            },
+            {
+              "split": 2,
+              "semilla_del_split_interno": 20261415,
+              "n_inner_train": 950,
+              "n_inner_val": 237,
+              "sha_inner_train": "823366ecbdc3860c2ec507887b40a45a22c3b513",
+              "sha_inner_val": "d8ac4331fc256c7e1d1f04d40b2fe32d426de2dd",
+              "unidades": [
+                {
+                  "brazo": "A",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 950,
+                  "n_inner_val": 237,
+                  "sha_inner_train": "823366ecbdc3860c2ec507887b40a45a22c3b513",
+                  "sha_inner_val": "d8ac4331fc256c7e1d1f04d40b2fe32d426de2dd"
+                },
+                {
+                  "brazo": "A",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 950,
+                  "n_inner_val": 237,
+                  "sha_inner_train": "823366ecbdc3860c2ec507887b40a45a22c3b513",
+                  "sha_inner_val": "d8ac4331fc256c7e1d1f04d40b2fe32d426de2dd"
+                },
+                {
+                  "brazo": "A",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 950,
+                  "n_inner_val": 237,
+                  "sha_inner_train": "823366ecbdc3860c2ec507887b40a45a22c3b513",
+                  "sha_inner_val": "d8ac4331fc256c7e1d1f04d40b2fe32d426de2dd"
+                },
+                {
+                  "brazo": "B",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 950,
+                  "n_inner_val": 237,
+                  "sha_inner_train": "823366ecbdc3860c2ec507887b40a45a22c3b513",
+                  "sha_inner_val": "d8ac4331fc256c7e1d1f04d40b2fe32d426de2dd"
+                },
+                {
+                  "brazo": "B",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 950,
+                  "n_inner_val": 237,
+                  "sha_inner_train": "823366ecbdc3860c2ec507887b40a45a22c3b513",
+                  "sha_inner_val": "d8ac4331fc256c7e1d1f04d40b2fe32d426de2dd"
+                },
+                {
+                  "brazo": "B",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 950,
+                  "n_inner_val": 237,
+                  "sha_inner_train": "823366ecbdc3860c2ec507887b40a45a22c3b513",
+                  "sha_inner_val": "d8ac4331fc256c7e1d1f04d40b2fe32d426de2dd"
+                },
+                {
+                  "brazo": "C",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 950,
+                  "n_inner_val": 237,
+                  "sha_inner_train": "823366ecbdc3860c2ec507887b40a45a22c3b513",
+                  "sha_inner_val": "d8ac4331fc256c7e1d1f04d40b2fe32d426de2dd"
+                },
+                {
+                  "brazo": "C",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 950,
+                  "n_inner_val": 237,
+                  "sha_inner_train": "823366ecbdc3860c2ec507887b40a45a22c3b513",
+                  "sha_inner_val": "d8ac4331fc256c7e1d1f04d40b2fe32d426de2dd"
+                },
+                {
+                  "brazo": "C",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 950,
+                  "n_inner_val": 237,
+                  "sha_inner_train": "823366ecbdc3860c2ec507887b40a45a22c3b513",
+                  "sha_inner_val": "d8ac4331fc256c7e1d1f04d40b2fe32d426de2dd"
+                },
+                {
+                  "brazo": "D",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 950,
+                  "n_inner_val": 237,
+                  "sha_inner_train": "823366ecbdc3860c2ec507887b40a45a22c3b513",
+                  "sha_inner_val": "d8ac4331fc256c7e1d1f04d40b2fe32d426de2dd"
+                },
+                {
+                  "brazo": "D",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 950,
+                  "n_inner_val": 237,
+                  "sha_inner_train": "823366ecbdc3860c2ec507887b40a45a22c3b513",
+                  "sha_inner_val": "d8ac4331fc256c7e1d1f04d40b2fe32d426de2dd"
+                },
+                {
+                  "brazo": "D",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 950,
+                  "n_inner_val": 237,
+                  "sha_inner_train": "823366ecbdc3860c2ec507887b40a45a22c3b513",
+                  "sha_inner_val": "d8ac4331fc256c7e1d1f04d40b2fe32d426de2dd"
+                }
+              ],
+              "misma_mascara_en_las_doce_unidades_del_plegue": true,
+              "interseccion_con_outer_val": 0
+            }
+          ]
+        },
+        {
+          "pliegue": 4,
+          "n_outer_train": 1187,
+          "n_outer_val": 296,
+          "sha_outer_train": "765b982ba75ff18bd84c98c19b41bd68f07db64d",
+          "sha_outer_val": "675d4a66fddf03bc585d561020b0605e609bbc0d",
+          "grupos_de_outer_train_sha": "d9102a23b997924695c29ed7b29850b83755a816",
+          "llamadas_observadas": 36,
+          "splits_internos": [
+            {
+              "split": 0,
+              "semilla_del_split_interno": 20261501,
+              "n_inner_train": 953,
+              "n_inner_val": 234,
+              "sha_inner_train": "51b8cee805f34a9dd4266b69b3e5fc365e2d308d",
+              "sha_inner_val": "e069e094ab7fa6fa23ae7f1f3c8f71d8c32f3428",
+              "unidades": [
+                {
+                  "brazo": "A",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 953,
+                  "n_inner_val": 234,
+                  "sha_inner_train": "51b8cee805f34a9dd4266b69b3e5fc365e2d308d",
+                  "sha_inner_val": "e069e094ab7fa6fa23ae7f1f3c8f71d8c32f3428"
+                },
+                {
+                  "brazo": "A",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 953,
+                  "n_inner_val": 234,
+                  "sha_inner_train": "51b8cee805f34a9dd4266b69b3e5fc365e2d308d",
+                  "sha_inner_val": "e069e094ab7fa6fa23ae7f1f3c8f71d8c32f3428"
+                },
+                {
+                  "brazo": "A",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 953,
+                  "n_inner_val": 234,
+                  "sha_inner_train": "51b8cee805f34a9dd4266b69b3e5fc365e2d308d",
+                  "sha_inner_val": "e069e094ab7fa6fa23ae7f1f3c8f71d8c32f3428"
+                },
+                {
+                  "brazo": "B",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 953,
+                  "n_inner_val": 234,
+                  "sha_inner_train": "51b8cee805f34a9dd4266b69b3e5fc365e2d308d",
+                  "sha_inner_val": "e069e094ab7fa6fa23ae7f1f3c8f71d8c32f3428"
+                },
+                {
+                  "brazo": "B",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 953,
+                  "n_inner_val": 234,
+                  "sha_inner_train": "51b8cee805f34a9dd4266b69b3e5fc365e2d308d",
+                  "sha_inner_val": "e069e094ab7fa6fa23ae7f1f3c8f71d8c32f3428"
+                },
+                {
+                  "brazo": "B",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 953,
+                  "n_inner_val": 234,
+                  "sha_inner_train": "51b8cee805f34a9dd4266b69b3e5fc365e2d308d",
+                  "sha_inner_val": "e069e094ab7fa6fa23ae7f1f3c8f71d8c32f3428"
+                },
+                {
+                  "brazo": "C",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 953,
+                  "n_inner_val": 234,
+                  "sha_inner_train": "51b8cee805f34a9dd4266b69b3e5fc365e2d308d",
+                  "sha_inner_val": "e069e094ab7fa6fa23ae7f1f3c8f71d8c32f3428"
+                },
+                {
+                  "brazo": "C",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 953,
+                  "n_inner_val": 234,
+                  "sha_inner_train": "51b8cee805f34a9dd4266b69b3e5fc365e2d308d",
+                  "sha_inner_val": "e069e094ab7fa6fa23ae7f1f3c8f71d8c32f3428"
+                },
+                {
+                  "brazo": "C",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 953,
+                  "n_inner_val": 234,
+                  "sha_inner_train": "51b8cee805f34a9dd4266b69b3e5fc365e2d308d",
+                  "sha_inner_val": "e069e094ab7fa6fa23ae7f1f3c8f71d8c32f3428"
+                },
+                {
+                  "brazo": "D",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 953,
+                  "n_inner_val": 234,
+                  "sha_inner_train": "51b8cee805f34a9dd4266b69b3e5fc365e2d308d",
+                  "sha_inner_val": "e069e094ab7fa6fa23ae7f1f3c8f71d8c32f3428"
+                },
+                {
+                  "brazo": "D",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 953,
+                  "n_inner_val": 234,
+                  "sha_inner_train": "51b8cee805f34a9dd4266b69b3e5fc365e2d308d",
+                  "sha_inner_val": "e069e094ab7fa6fa23ae7f1f3c8f71d8c32f3428"
+                },
+                {
+                  "brazo": "D",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 953,
+                  "n_inner_val": 234,
+                  "sha_inner_train": "51b8cee805f34a9dd4266b69b3e5fc365e2d308d",
+                  "sha_inner_val": "e069e094ab7fa6fa23ae7f1f3c8f71d8c32f3428"
+                }
+              ],
+              "misma_mascara_en_las_doce_unidades_del_plegue": true,
+              "interseccion_con_outer_val": 0
+            },
+            {
+              "split": 1,
+              "semilla_del_split_interno": 20261508,
+              "n_inner_train": 953,
+              "n_inner_val": 234,
+              "sha_inner_train": "92ced0495e6a9834babc4203cebb069c789ca43d",
+              "sha_inner_val": "9f2c4d77b62f0c2bc335a02812caae4f62e64efa",
+              "unidades": [
+                {
+                  "brazo": "A",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 953,
+                  "n_inner_val": 234,
+                  "sha_inner_train": "92ced0495e6a9834babc4203cebb069c789ca43d",
+                  "sha_inner_val": "9f2c4d77b62f0c2bc335a02812caae4f62e64efa"
+                },
+                {
+                  "brazo": "A",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 953,
+                  "n_inner_val": 234,
+                  "sha_inner_train": "92ced0495e6a9834babc4203cebb069c789ca43d",
+                  "sha_inner_val": "9f2c4d77b62f0c2bc335a02812caae4f62e64efa"
+                },
+                {
+                  "brazo": "A",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 953,
+                  "n_inner_val": 234,
+                  "sha_inner_train": "92ced0495e6a9834babc4203cebb069c789ca43d",
+                  "sha_inner_val": "9f2c4d77b62f0c2bc335a02812caae4f62e64efa"
+                },
+                {
+                  "brazo": "B",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 953,
+                  "n_inner_val": 234,
+                  "sha_inner_train": "92ced0495e6a9834babc4203cebb069c789ca43d",
+                  "sha_inner_val": "9f2c4d77b62f0c2bc335a02812caae4f62e64efa"
+                },
+                {
+                  "brazo": "B",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 953,
+                  "n_inner_val": 234,
+                  "sha_inner_train": "92ced0495e6a9834babc4203cebb069c789ca43d",
+                  "sha_inner_val": "9f2c4d77b62f0c2bc335a02812caae4f62e64efa"
+                },
+                {
+                  "brazo": "B",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 953,
+                  "n_inner_val": 234,
+                  "sha_inner_train": "92ced0495e6a9834babc4203cebb069c789ca43d",
+                  "sha_inner_val": "9f2c4d77b62f0c2bc335a02812caae4f62e64efa"
+                },
+                {
+                  "brazo": "C",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 953,
+                  "n_inner_val": 234,
+                  "sha_inner_train": "92ced0495e6a9834babc4203cebb069c789ca43d",
+                  "sha_inner_val": "9f2c4d77b62f0c2bc335a02812caae4f62e64efa"
+                },
+                {
+                  "brazo": "C",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 953,
+                  "n_inner_val": 234,
+                  "sha_inner_train": "92ced0495e6a9834babc4203cebb069c789ca43d",
+                  "sha_inner_val": "9f2c4d77b62f0c2bc335a02812caae4f62e64efa"
+                },
+                {
+                  "brazo": "C",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 953,
+                  "n_inner_val": 234,
+                  "sha_inner_train": "92ced0495e6a9834babc4203cebb069c789ca43d",
+                  "sha_inner_val": "9f2c4d77b62f0c2bc335a02812caae4f62e64efa"
+                },
+                {
+                  "brazo": "D",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 953,
+                  "n_inner_val": 234,
+                  "sha_inner_train": "92ced0495e6a9834babc4203cebb069c789ca43d",
+                  "sha_inner_val": "9f2c4d77b62f0c2bc335a02812caae4f62e64efa"
+                },
+                {
+                  "brazo": "D",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 953,
+                  "n_inner_val": 234,
+                  "sha_inner_train": "92ced0495e6a9834babc4203cebb069c789ca43d",
+                  "sha_inner_val": "9f2c4d77b62f0c2bc335a02812caae4f62e64efa"
+                },
+                {
+                  "brazo": "D",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 953,
+                  "n_inner_val": 234,
+                  "sha_inner_train": "92ced0495e6a9834babc4203cebb069c789ca43d",
+                  "sha_inner_val": "9f2c4d77b62f0c2bc335a02812caae4f62e64efa"
+                }
+              ],
+              "misma_mascara_en_las_doce_unidades_del_plegue": true,
+              "interseccion_con_outer_val": 0
+            },
+            {
+              "split": 2,
+              "semilla_del_split_interno": 20261515,
+              "n_inner_train": 948,
+              "n_inner_val": 239,
+              "sha_inner_train": "f8c96120a3ab6b2c10d6c8d24901a385baf5e175",
+              "sha_inner_val": "b7fad61a93715f19c594464e2c174388b2036798",
+              "unidades": [
+                {
+                  "brazo": "A",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 948,
+                  "n_inner_val": 239,
+                  "sha_inner_train": "f8c96120a3ab6b2c10d6c8d24901a385baf5e175",
+                  "sha_inner_val": "b7fad61a93715f19c594464e2c174388b2036798"
+                },
+                {
+                  "brazo": "A",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 948,
+                  "n_inner_val": 239,
+                  "sha_inner_train": "f8c96120a3ab6b2c10d6c8d24901a385baf5e175",
+                  "sha_inner_val": "b7fad61a93715f19c594464e2c174388b2036798"
+                },
+                {
+                  "brazo": "A",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 948,
+                  "n_inner_val": 239,
+                  "sha_inner_train": "f8c96120a3ab6b2c10d6c8d24901a385baf5e175",
+                  "sha_inner_val": "b7fad61a93715f19c594464e2c174388b2036798"
+                },
+                {
+                  "brazo": "B",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 948,
+                  "n_inner_val": 239,
+                  "sha_inner_train": "f8c96120a3ab6b2c10d6c8d24901a385baf5e175",
+                  "sha_inner_val": "b7fad61a93715f19c594464e2c174388b2036798"
+                },
+                {
+                  "brazo": "B",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 948,
+                  "n_inner_val": 239,
+                  "sha_inner_train": "f8c96120a3ab6b2c10d6c8d24901a385baf5e175",
+                  "sha_inner_val": "b7fad61a93715f19c594464e2c174388b2036798"
+                },
+                {
+                  "brazo": "B",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 948,
+                  "n_inner_val": 239,
+                  "sha_inner_train": "f8c96120a3ab6b2c10d6c8d24901a385baf5e175",
+                  "sha_inner_val": "b7fad61a93715f19c594464e2c174388b2036798"
+                },
+                {
+                  "brazo": "C",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 948,
+                  "n_inner_val": 239,
+                  "sha_inner_train": "f8c96120a3ab6b2c10d6c8d24901a385baf5e175",
+                  "sha_inner_val": "b7fad61a93715f19c594464e2c174388b2036798"
+                },
+                {
+                  "brazo": "C",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 948,
+                  "n_inner_val": 239,
+                  "sha_inner_train": "f8c96120a3ab6b2c10d6c8d24901a385baf5e175",
+                  "sha_inner_val": "b7fad61a93715f19c594464e2c174388b2036798"
+                },
+                {
+                  "brazo": "C",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 948,
+                  "n_inner_val": 239,
+                  "sha_inner_train": "f8c96120a3ab6b2c10d6c8d24901a385baf5e175",
+                  "sha_inner_val": "b7fad61a93715f19c594464e2c174388b2036798"
+                },
+                {
+                  "brazo": "D",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 948,
+                  "n_inner_val": 239,
+                  "sha_inner_train": "f8c96120a3ab6b2c10d6c8d24901a385baf5e175",
+                  "sha_inner_val": "b7fad61a93715f19c594464e2c174388b2036798"
+                },
+                {
+                  "brazo": "D",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 948,
+                  "n_inner_val": 239,
+                  "sha_inner_train": "f8c96120a3ab6b2c10d6c8d24901a385baf5e175",
+                  "sha_inner_val": "b7fad61a93715f19c594464e2c174388b2036798"
+                },
+                {
+                  "brazo": "D",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 948,
+                  "n_inner_val": 239,
+                  "sha_inner_train": "f8c96120a3ab6b2c10d6c8d24901a385baf5e175",
+                  "sha_inner_val": "b7fad61a93715f19c594464e2c174388b2036798"
+                }
+              ],
+              "misma_mascara_en_las_doce_unidades_del_plegue": true,
+              "interseccion_con_outer_val": 0
+            }
+          ]
+        },
+        {
+          "pliegue": 5,
+          "n_outer_train": 1186,
+          "n_outer_val": 297,
+          "sha_outer_train": "166d9564aa5ca9e12bc55cbc8f76ff15c0e44298",
+          "sha_outer_val": "24b6e428ea81dc241ab6f744d5910ed4ddec8a86",
+          "grupos_de_outer_train_sha": "c68282775123b58d1237d2be4615e3c534440df0",
+          "llamadas_observadas": 36,
+          "splits_internos": [
+            {
+              "split": 0,
+              "semilla_del_split_interno": 20261601,
+              "n_inner_train": 948,
+              "n_inner_val": 238,
+              "sha_inner_train": "a0132c7541277924f260789f73c1f6c5093ff3cd",
+              "sha_inner_val": "3f02733ec3d4f5b3e7111a1990b5e7b942c1b29b",
+              "unidades": [
+                {
+                  "brazo": "A",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 948,
+                  "n_inner_val": 238,
+                  "sha_inner_train": "a0132c7541277924f260789f73c1f6c5093ff3cd",
+                  "sha_inner_val": "3f02733ec3d4f5b3e7111a1990b5e7b942c1b29b"
+                },
+                {
+                  "brazo": "A",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 948,
+                  "n_inner_val": 238,
+                  "sha_inner_train": "a0132c7541277924f260789f73c1f6c5093ff3cd",
+                  "sha_inner_val": "3f02733ec3d4f5b3e7111a1990b5e7b942c1b29b"
+                },
+                {
+                  "brazo": "A",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 948,
+                  "n_inner_val": 238,
+                  "sha_inner_train": "a0132c7541277924f260789f73c1f6c5093ff3cd",
+                  "sha_inner_val": "3f02733ec3d4f5b3e7111a1990b5e7b942c1b29b"
+                },
+                {
+                  "brazo": "B",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 948,
+                  "n_inner_val": 238,
+                  "sha_inner_train": "a0132c7541277924f260789f73c1f6c5093ff3cd",
+                  "sha_inner_val": "3f02733ec3d4f5b3e7111a1990b5e7b942c1b29b"
+                },
+                {
+                  "brazo": "B",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 948,
+                  "n_inner_val": 238,
+                  "sha_inner_train": "a0132c7541277924f260789f73c1f6c5093ff3cd",
+                  "sha_inner_val": "3f02733ec3d4f5b3e7111a1990b5e7b942c1b29b"
+                },
+                {
+                  "brazo": "B",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 948,
+                  "n_inner_val": 238,
+                  "sha_inner_train": "a0132c7541277924f260789f73c1f6c5093ff3cd",
+                  "sha_inner_val": "3f02733ec3d4f5b3e7111a1990b5e7b942c1b29b"
+                },
+                {
+                  "brazo": "C",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 948,
+                  "n_inner_val": 238,
+                  "sha_inner_train": "a0132c7541277924f260789f73c1f6c5093ff3cd",
+                  "sha_inner_val": "3f02733ec3d4f5b3e7111a1990b5e7b942c1b29b"
+                },
+                {
+                  "brazo": "C",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 948,
+                  "n_inner_val": 238,
+                  "sha_inner_train": "a0132c7541277924f260789f73c1f6c5093ff3cd",
+                  "sha_inner_val": "3f02733ec3d4f5b3e7111a1990b5e7b942c1b29b"
+                },
+                {
+                  "brazo": "C",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 948,
+                  "n_inner_val": 238,
+                  "sha_inner_train": "a0132c7541277924f260789f73c1f6c5093ff3cd",
+                  "sha_inner_val": "3f02733ec3d4f5b3e7111a1990b5e7b942c1b29b"
+                },
+                {
+                  "brazo": "D",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 948,
+                  "n_inner_val": 238,
+                  "sha_inner_train": "a0132c7541277924f260789f73c1f6c5093ff3cd",
+                  "sha_inner_val": "3f02733ec3d4f5b3e7111a1990b5e7b942c1b29b"
+                },
+                {
+                  "brazo": "D",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 948,
+                  "n_inner_val": 238,
+                  "sha_inner_train": "a0132c7541277924f260789f73c1f6c5093ff3cd",
+                  "sha_inner_val": "3f02733ec3d4f5b3e7111a1990b5e7b942c1b29b"
+                },
+                {
+                  "brazo": "D",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 948,
+                  "n_inner_val": 238,
+                  "sha_inner_train": "a0132c7541277924f260789f73c1f6c5093ff3cd",
+                  "sha_inner_val": "3f02733ec3d4f5b3e7111a1990b5e7b942c1b29b"
+                }
+              ],
+              "misma_mascara_en_las_doce_unidades_del_plegue": true,
+              "interseccion_con_outer_val": 0
+            },
+            {
+              "split": 1,
+              "semilla_del_split_interno": 20261608,
+              "n_inner_train": 957,
+              "n_inner_val": 229,
+              "sha_inner_train": "ad2a6110846e5f6c60890959ef38ca2b5a4e759d",
+              "sha_inner_val": "0b56d95fa2938b9d55d212c31591161093755a37",
+              "unidades": [
+                {
+                  "brazo": "A",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 957,
+                  "n_inner_val": 229,
+                  "sha_inner_train": "ad2a6110846e5f6c60890959ef38ca2b5a4e759d",
+                  "sha_inner_val": "0b56d95fa2938b9d55d212c31591161093755a37"
+                },
+                {
+                  "brazo": "A",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 957,
+                  "n_inner_val": 229,
+                  "sha_inner_train": "ad2a6110846e5f6c60890959ef38ca2b5a4e759d",
+                  "sha_inner_val": "0b56d95fa2938b9d55d212c31591161093755a37"
+                },
+                {
+                  "brazo": "A",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 957,
+                  "n_inner_val": 229,
+                  "sha_inner_train": "ad2a6110846e5f6c60890959ef38ca2b5a4e759d",
+                  "sha_inner_val": "0b56d95fa2938b9d55d212c31591161093755a37"
+                },
+                {
+                  "brazo": "B",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 957,
+                  "n_inner_val": 229,
+                  "sha_inner_train": "ad2a6110846e5f6c60890959ef38ca2b5a4e759d",
+                  "sha_inner_val": "0b56d95fa2938b9d55d212c31591161093755a37"
+                },
+                {
+                  "brazo": "B",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 957,
+                  "n_inner_val": 229,
+                  "sha_inner_train": "ad2a6110846e5f6c60890959ef38ca2b5a4e759d",
+                  "sha_inner_val": "0b56d95fa2938b9d55d212c31591161093755a37"
+                },
+                {
+                  "brazo": "B",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 957,
+                  "n_inner_val": 229,
+                  "sha_inner_train": "ad2a6110846e5f6c60890959ef38ca2b5a4e759d",
+                  "sha_inner_val": "0b56d95fa2938b9d55d212c31591161093755a37"
+                },
+                {
+                  "brazo": "C",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 957,
+                  "n_inner_val": 229,
+                  "sha_inner_train": "ad2a6110846e5f6c60890959ef38ca2b5a4e759d",
+                  "sha_inner_val": "0b56d95fa2938b9d55d212c31591161093755a37"
+                },
+                {
+                  "brazo": "C",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 957,
+                  "n_inner_val": 229,
+                  "sha_inner_train": "ad2a6110846e5f6c60890959ef38ca2b5a4e759d",
+                  "sha_inner_val": "0b56d95fa2938b9d55d212c31591161093755a37"
+                },
+                {
+                  "brazo": "C",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 957,
+                  "n_inner_val": 229,
+                  "sha_inner_train": "ad2a6110846e5f6c60890959ef38ca2b5a4e759d",
+                  "sha_inner_val": "0b56d95fa2938b9d55d212c31591161093755a37"
+                },
+                {
+                  "brazo": "D",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 957,
+                  "n_inner_val": 229,
+                  "sha_inner_train": "ad2a6110846e5f6c60890959ef38ca2b5a4e759d",
+                  "sha_inner_val": "0b56d95fa2938b9d55d212c31591161093755a37"
+                },
+                {
+                  "brazo": "D",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 957,
+                  "n_inner_val": 229,
+                  "sha_inner_train": "ad2a6110846e5f6c60890959ef38ca2b5a4e759d",
+                  "sha_inner_val": "0b56d95fa2938b9d55d212c31591161093755a37"
+                },
+                {
+                  "brazo": "D",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 957,
+                  "n_inner_val": 229,
+                  "sha_inner_train": "ad2a6110846e5f6c60890959ef38ca2b5a4e759d",
+                  "sha_inner_val": "0b56d95fa2938b9d55d212c31591161093755a37"
+                }
+              ],
+              "misma_mascara_en_las_doce_unidades_del_plegue": true,
+              "interseccion_con_outer_val": 0
+            },
+            {
+              "split": 2,
+              "semilla_del_split_interno": 20261615,
+              "n_inner_train": 950,
+              "n_inner_val": 236,
+              "sha_inner_train": "ff9e3003bb05560eab8ce55235608f946793f3c4",
+              "sha_inner_val": "89e03be882bd8f593e879352c827c596f43a4976",
+              "unidades": [
+                {
+                  "brazo": "A",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 950,
+                  "n_inner_val": 236,
+                  "sha_inner_train": "ff9e3003bb05560eab8ce55235608f946793f3c4",
+                  "sha_inner_val": "89e03be882bd8f593e879352c827c596f43a4976"
+                },
+                {
+                  "brazo": "A",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 950,
+                  "n_inner_val": 236,
+                  "sha_inner_train": "ff9e3003bb05560eab8ce55235608f946793f3c4",
+                  "sha_inner_val": "89e03be882bd8f593e879352c827c596f43a4976"
+                },
+                {
+                  "brazo": "A",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 950,
+                  "n_inner_val": 236,
+                  "sha_inner_train": "ff9e3003bb05560eab8ce55235608f946793f3c4",
+                  "sha_inner_val": "89e03be882bd8f593e879352c827c596f43a4976"
+                },
+                {
+                  "brazo": "B",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 950,
+                  "n_inner_val": 236,
+                  "sha_inner_train": "ff9e3003bb05560eab8ce55235608f946793f3c4",
+                  "sha_inner_val": "89e03be882bd8f593e879352c827c596f43a4976"
+                },
+                {
+                  "brazo": "B",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 950,
+                  "n_inner_val": 236,
+                  "sha_inner_train": "ff9e3003bb05560eab8ce55235608f946793f3c4",
+                  "sha_inner_val": "89e03be882bd8f593e879352c827c596f43a4976"
+                },
+                {
+                  "brazo": "B",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 950,
+                  "n_inner_val": 236,
+                  "sha_inner_train": "ff9e3003bb05560eab8ce55235608f946793f3c4",
+                  "sha_inner_val": "89e03be882bd8f593e879352c827c596f43a4976"
+                },
+                {
+                  "brazo": "C",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 950,
+                  "n_inner_val": 236,
+                  "sha_inner_train": "ff9e3003bb05560eab8ce55235608f946793f3c4",
+                  "sha_inner_val": "89e03be882bd8f593e879352c827c596f43a4976"
+                },
+                {
+                  "brazo": "C",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 950,
+                  "n_inner_val": 236,
+                  "sha_inner_train": "ff9e3003bb05560eab8ce55235608f946793f3c4",
+                  "sha_inner_val": "89e03be882bd8f593e879352c827c596f43a4976"
+                },
+                {
+                  "brazo": "C",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 950,
+                  "n_inner_val": 236,
+                  "sha_inner_train": "ff9e3003bb05560eab8ce55235608f946793f3c4",
+                  "sha_inner_val": "89e03be882bd8f593e879352c827c596f43a4976"
+                },
+                {
+                  "brazo": "D",
+                  "semilla_de_modelo": 20261130,
+                  "n_inner_train": 950,
+                  "n_inner_val": 236,
+                  "sha_inner_train": "ff9e3003bb05560eab8ce55235608f946793f3c4",
+                  "sha_inner_val": "89e03be882bd8f593e879352c827c596f43a4976"
+                },
+                {
+                  "brazo": "D",
+                  "semilla_de_modelo": 20261131,
+                  "n_inner_train": 950,
+                  "n_inner_val": 236,
+                  "sha_inner_train": "ff9e3003bb05560eab8ce55235608f946793f3c4",
+                  "sha_inner_val": "89e03be882bd8f593e879352c827c596f43a4976"
+                },
+                {
+                  "brazo": "D",
+                  "semilla_de_modelo": 20261132,
+                  "n_inner_train": 950,
+                  "n_inner_val": 236,
+                  "sha_inner_train": "ff9e3003bb05560eab8ce55235608f946793f3c4",
+                  "sha_inner_val": "89e03be882bd8f593e879352c827c596f43a4976"
+                }
+              ],
+              "misma_mascara_en_las_doce_unidades_del_plegue": true,
+              "interseccion_con_outer_val": 0
+            }
+          ]
+        }
+      ],
+      "nota": "los splits internos dependen SOLO del pliegue k, no del brazo ni de la semilla de modelo, asi que las doce unidades de un pliegue observan la misma mascara; eso se comprueba con `misma_mascara_en_las_doce_unidades_del_plegue`"
+    },
+    "contadores_de_evaluacion_sobre_outer_val": {
+      "unidades": 60,
+      "evaluaciones_por_unidad": 1,
+      "total": 60,
+      "nota": "`entrenar_fijo` hace dos pasadas hacia delante sobre outer_val para comprobar el determinismo del modo eval. No es una segunda seleccion: el checkpoint lo fija E*, que se midio sin ver outer_val"
+    }
+  },
+  "cobertura": {
+    "pre_registro": "docs/p78_preregistro.md",
+    "pre_registro_sha256": "6737f43522c1c9dd0fc45d474d04ab92a7a230aa6b674ee83645588db20c9a0b",
+    "maxlen": 60,
+    "kernels": [
+      2,
+      3,
+      4
+    ],
+    "n_filas_dev": 1483,
+    "variante_cruda": "`tokenizar` de P73-02 tal cual, SIN `normalizar`",
+    "variante_norm": "`tokenizar(normalizar(t))` con `normalizar` de P71-03. La unica diferencia con la variante cruda es la pre-normalizacion",
+    "cruda": {
+      "n_filas": 1483,
+      "n_tokens": 26996,
+      "tokens_cubiertos": 18529,
+      "proporcion_tokens_con_id_distinto_de_cero": 0.686361,
+      "tokens_oov": 8467,
+      "proporcion_oov": 0.313639,
+      "tokens_que_entran_en_la_matriz": 26996,
+      "tokens_no_cero_en_la_matriz": 18529,
+      "nota_id_cero": "padding y OOV comparten el id 0, que es la convencion de TextCNN con padding_idx=0. La arquitectura NO se cambia en P78; el deficit queda cuantificado",
+      "posiciones_de_padding": 61984,
+      "proporcion_de_padding_de_la_matriz": 0.696606,
+      "tipos_distintos_en_dev": 8128,
+      "tipos_distintos_ausentes_del_vocabulario": 4856,
+      "filas_sin_tokens": 0,
+      "filas_sin_tokens_cubiertos": 70,
+      "fraccion_de_filas_sin_tokens_cubiertos": 0.047202,
+      "filas_truncadas_por_maxlen": 0,
+      "fraccion_truncada_por_maxlen": 0.0,
+      "maxlen": 60,
+      "kernels": [
+        2,
+        3,
+        4
+      ],
+      "kernel_mayor": 4,
+      "filas_mas_cortas_que_el_kernel_mayor": 7,
+      "fraccion_mas_cortas_que_el_kernel_mayor": 0.00472,
+      "filas_sin_ningun_kernel_valido": 0,
+      "canales_de_filtro_muertos_por_fila_media": 0.005394,
+      "filas_con_algun_canal_muerto": 7,
+      "filas_totalmente_muertas": 70,
+      "fraccion_totalmente_muertas": 0.047202,
+      "canales_de_filtro_muertos_incluyendo_muertas": 0.146999,
+      "nota_filas_totalmente_muertas": "una fila con cero tokens cubiertos tiene el embedding nulo, la convolucion devuelve el sesgo, relu y max dan cero, y las TRES ramas quedan muertas. Es un caso MAS grave que una fila simplemente corta, y el conteo por longitud no lo veia. El mecanismo que separa la variante cruda de la normalizada son estas filas, no las filas cortas",
+      "nota_max_pooling": "una fila mas corta que el kernel mayor tiene TODOS sus canales de ese kernel a cero tras el max-pooling enmascarado con -1e9 y relu: ese bloque de filtros no aporta nada",
+      "longitud_real_media": 18.203641,
+      "longitud_real_mediana": 16.0,
+      "longitud_real_maxima": 60,
+      "tipos_fuera_del_vocabulario_top": [
+        "Y\t85",
+        "PUTA\t84",
+        "A\t77",
+        "Callate\t72",
+        "Cllate\t70",
+        "LA\t66",
+        "QUE\t66",
+        "DE\t65",
+        "No\t63",
+        "El\t57",
+        "rabe\t56",
+        "La\t54",
+        "cllate\t54",
+        "Tu\t50",
+        "rabes\t48",
+        "NO\t44",
+        "Que\t43",
+        "TU\t35",
+        "Los\t33",
+        "CALLATE\t32",
+        "Si\t32",
+        "TE\t31",
+        "ensear\t29",
+        "Te\t28",
+        "Lo\t28"
+      ]
+    },
+    "norm": {
+      "n_filas": 1483,
+      "n_tokens": 25502,
+      "tokens_cubiertos": 22629,
+      "proporcion_tokens_con_id_distinto_de_cero": 0.887342,
+      "tokens_oov": 2873,
+      "proporcion_oov": 0.112658,
+      "tokens_que_entran_en_la_matriz": 25502,
+      "tokens_no_cero_en_la_matriz": 22629,
+      "nota_id_cero": "padding y OOV comparten el id 0, que es la convencion de TextCNN con padding_idx=0. La arquitectura NO se cambia en P78; el deficit queda cuantificado",
+      "posiciones_de_padding": 63478,
+      "proporcion_de_padding_de_la_matriz": 0.713396,
+      "tipos_distintos_en_dev": 5665,
+      "tipos_distintos_ausentes_del_vocabulario": 1766,
+      "filas_sin_tokens": 0,
+      "filas_sin_tokens_cubiertos": 1,
+      "fraccion_de_filas_sin_tokens_cubiertos": 0.000674,
+      "filas_truncadas_por_maxlen": 0,
+      "fraccion_truncada_por_maxlen": 0.0,
+      "maxlen": 60,
+      "kernels": [
+        2,
+        3,
+        4
+      ],
+      "kernel_mayor": 4,
+      "filas_mas_cortas_que_el_kernel_mayor": 15,
+      "fraccion_mas_cortas_que_el_kernel_mayor": 0.010115,
+      "filas_sin_ningun_kernel_valido": 0,
+      "canales_de_filtro_muertos_por_fila_media": 0.011463,
+      "filas_con_algun_canal_muerto": 15,
+      "filas_totalmente_muertas": 1,
+      "fraccion_totalmente_muertas": 0.000674,
+      "canales_de_filtro_muertos_incluyendo_muertas": 0.013486,
+      "nota_filas_totalmente_muertas": "una fila con cero tokens cubiertos tiene el embedding nulo, la convolucion devuelve el sesgo, relu y max dan cero, y las TRES ramas quedan muertas. Es un caso MAS grave que una fila simplemente corta, y el conteo por longitud no lo veia. El mecanismo que separa la variante cruda de la normalizada son estas filas, no las filas cortas",
+      "nota_max_pooling": "una fila mas corta que el kernel mayor tiene TODOS sus canales de ese kernel a cero tras el max-pooling enmascarado con -1e9 y relu: ese bloque de filtros no aporta nada",
+      "longitud_real_media": 17.196224,
+      "longitud_real_mediana": 15.0,
+      "longitud_real_maxima": 57,
+      "tipos_fuera_del_vocabulario_top": [
+        "cllate\t139",
+        "rabe\t56",
+        "rabes\t52",
+        "ensear\t32",
+        "espaa\t31",
+        "arabe\t28",
+        "gero\t28",
+        "violacin\t28",
+        "guarra\t27",
+        "inmigracin\t26",
+        "estn\t23",
+        "mereca\t20",
+        "subsaharianos\t20",
+        "gera\t18",
+        "coo\t17",
+        "arabes\t17",
+        "imbcil\t16",
+        "aqu\t15",
+        "comemela\t15",
+        "enseando\t14",
+        "despus\t12",
+        "manteros\t11",
+        "sudacas\t11",
+        "sudaca\t11",
+        "gabacho\t10"
+      ]
+    },
+    "desglose_de_los_cinco_motivos": {
+      "tokens_totales": 26996,
+      "oov_totales": 8467,
+      "tasa_oov": 0.313639,
+      "oov_rescatados_por_normalizar": 5101,
+      "tasa_de_rescate": 0.602457,
+      "por_motivo": {
+        "casing": {
+          "ocurrencias": 5787,
+          "fraccion_de_tokens": 0.214365,
+          "oov": 5787,
+          "oov_dentro_del_motivo": 1.0,
+          "fraccion_del_oov_total": 0.683477,
+          "tipos_distintos": 3136,
+          "rescatadas_por_normalizar": 4465
+        },
+        "url": {
+          "ocurrencias": 1493,
+          "fraccion_de_tokens": 0.055304,
+          "oov": 3,
+          "oov_dentro_del_motivo": 0.002009,
+          "fraccion_del_oov_total": 0.000354,
+          "tipos_distintos": 7,
+          "rescatadas_por_normalizar": 0
+        },
+        "mencion": {
+          "ocurrencias": 449,
+          "fraccion_de_tokens": 0.016632,
+          "oov": 449,
+          "oov_dentro_del_motivo": 1.0,
+          "fraccion_del_oov_total": 0.053029,
+          "tipos_distintos": 393,
+          "rescatadas_por_normalizar": 449
+        },
+        "numero": {
+          "ocurrencias": 187,
+          "fraccion_de_tokens": 0.006927,
+          "oov": 187,
+          "oov_dentro_del_motivo": 1.0,
+          "fraccion_del_oov_total": 0.022086,
+          "tipos_distintos": 65,
+          "rescatadas_por_normalizar": 187
+        },
+        "hashtag": {
+          "ocurrencias": 93,
+          "fraccion_de_tokens": 0.003445,
+          "oov": 52,
+          "oov_dentro_del_motivo": 0.55914,
+          "fraccion_del_oov_total": 0.006141,
+          "tipos_distintos": 73,
+          "rescatadas_por_normalizar": 0
+        },
+        "otro": {
+          "ocurrencias": 18987,
+          "fraccion_de_tokens": 0.703326,
+          "oov": 1989,
+          "oov_dentro_del_motivo": 0.104756,
+          "fraccion_del_oov_total": 0.234912,
+          "tipos_distintos": 4456,
+          "rescatadas_por_normalizar": 0
+        }
+      },
+      "tokens_con_comilla_tipografica": 0,
+      "tokens_con_comilla_ascii": 6,
+      "nota_comillas": "la comilla tipografica U+2019 NO se convierte en ascii por NFKC, asi que sobrevive en las dos variantes; se cuenta aparte porque es un residuo que la normalizacion no arregla",
+      "prioridad": "casing > url > mencion > numero > hashtag > otro, que es el orden en que `normalizar` aplica las transformaciones"
+    },
+    "declaracion": "El id 0 es compartido por padding y OOV, que es la convencion de TextCNN con padding_idx=0, y la arquitectura NO se cambia en P78. Los motivos casing, url, mencion y numero SI los arregla la normalizacion y se han medido token a token, no se han supuesto. El hashtag lo conserva el corpus y lo conserva tambien la entrada normalizada, asi que es irreducible con este normalizador. Los cinco motivos se miden sobre el texto CRUDO, porque son propiedades del texto crudo; en la variante normalizada aparecen como RESCATE, que es la columna reportada."
+  },
+  "brazos": {
+    "A": {
+      "descripcion": "Word2Vec 100d congelado, entrada SIN normalizar (tokenizado de P73 tal cual)",
+      "matriz": "w2v",
+      "variante_entrada": "cruda",
+      "semilla_primaria": 20261130,
+      "por_semilla": {
+        "20261130": {
+          "macro_f1": 0.583875535,
+          "f1_positiva_por_etiqueta": {
+            "HS": 0.59938367,
+            "TR": 0.59658344,
+            "AG": 0.55565949
+          },
+          "f1_media_columnas_2x2_de_referencia": {
+            "HS": 0.5993836672,
+            "TR": 0.5965834428,
+            "AG": 0.5556594949
+          },
+          "f1_macro6": 0.67504194,
+          "f1_micro": 0.58375959,
+          "exact_match": 0.53540121,
+          "macro_f1_por_pliegue": [
+            0.609817443,
+            0.525958203,
+            0.6299255357,
+            0.5286450968,
+            0.6082706767
+          ],
+          "n_falsos_positivos": {
+            "HS": 261,
+            "TR": 89,
+            "AG": 205
+          },
+          "n_positivos_reales": {
+            "HS": 648,
+            "TR": 445,
+            "AG": 567
+          },
+          "metricas_de_probabilidad": {
+            "brier_por_etiqueta": {
+              "HS": 0.21897754,
+              "TR": 0.15033886,
+              "AG": 0.20713244
+            },
+            "brier_medio": 0.19214961,
+            "log_loss_por_etiqueta": {
+              "HS": 0.63319779,
+              "TR": 0.48649428,
+              "AG": 0.61125967
+            },
+            "log_loss_medio": 0.57698391
+          },
+          "media_probabilidad_por_etiqueta": {
+            "HS": 0.41795004,
+            "TR": 0.2608584,
+            "AG": 0.3578123
+          },
+          "nota_f1": "la F1 por etiqueta es 2*TP/(2*TP+FP+FN), la funcion real del proyecto en src/evaluation.py, comprobada contra una referencia 2x2 independiente. Los falsos positivos se declaran porque son la razon por la que F1 y recall no coinciden. El recall no se calcula en ningun sitio de P78"
+        },
+        "20261131": {
+          "macro_f1": 0.6119454273,
+          "f1_positiva_por_etiqueta": {
+            "HS": 0.64227642,
+            "TR": 0.5994832,
+            "AG": 0.59407666
+          },
+          "f1_media_columnas_2x2_de_referencia": {
+            "HS": 0.6422764228,
+            "TR": 0.5994832041,
+            "AG": 0.5940766551
+          },
+          "f1_macro6": 0.68062081,
+          "f1_micro": 0.61624485,
+          "exact_match": 0.49089683,
+          "macro_f1_por_pliegue": [
+            0.5722319974,
+            0.5954807361,
+            0.6469978795,
+            0.6124884797,
+            0.6259329011
+          ],
+          "n_falsos_positivos": {
+            "HS": 354,
+            "TR": 97,
+            "AG": 240
+          },
+          "n_positivos_reales": {
+            "HS": 648,
+            "TR": 445,
+            "AG": 567
+          },
+          "metricas_de_probabilidad": {
+            "brier_por_etiqueta": {
+              "HS": 0.21666239,
+              "TR": 0.1493249,
+              "AG": 0.20387741
+            },
+            "brier_medio": 0.1899549,
+            "log_loss_por_etiqueta": {
+              "HS": 0.62493532,
+              "TR": 0.47196641,
+              "AG": 0.59906848
+            },
+            "log_loss_medio": 0.56532341
+          },
+          "media_probabilidad_por_etiqueta": {
+            "HS": 0.48478198,
+            "TR": 0.28151799,
+            "AG": 0.40300901
+          },
+          "nota_f1": "la F1 por etiqueta es 2*TP/(2*TP+FP+FN), la funcion real del proyecto en src/evaluation.py, comprobada contra una referencia 2x2 independiente. Los falsos positivos se declaran porque son la razon por la que F1 y recall no coinciden. El recall no se calcula en ningun sitio de P78"
+        },
+        "20261132": {
+          "macro_f1": 0.5815113418,
+          "f1_positiva_por_etiqueta": {
+            "HS": 0.59550562,
+            "TR": 0.58964143,
+            "AG": 0.55938697
+          },
+          "f1_media_columnas_2x2_de_referencia": {
+            "HS": 0.595505618,
+            "TR": 0.5896414343,
+            "AG": 0.5593869732
+          },
+          "f1_macro6": 0.67875788,
+          "f1_micro": 0.58166283,
+          "exact_match": 0.55630479,
+          "macro_f1_por_pliegue": [
+            0.6080286111,
+            0.5924959742,
+            0.6036422207,
+            0.4566260613,
+            0.6193792766
+          ],
+          "n_falsos_positivos": {
+            "HS": 227,
+            "TR": 86,
+            "AG": 185
+          },
+          "n_positivos_reales": {
+            "HS": 648,
+            "TR": 445,
+            "AG": 567
+          },
+          "metricas_de_probabilidad": {
+            "brier_por_etiqueta": {
+              "HS": 0.22173246,
+              "TR": 0.15264064,
+              "AG": 0.20893269
+            },
+            "brier_medio": 0.19443526,
+            "log_loss_por_etiqueta": {
+              "HS": 0.64151109,
+              "TR": 0.49350852,
+              "AG": 0.62243664
+            },
+            "log_loss_medio": 0.58581875
+          },
+          "media_probabilidad_por_etiqueta": {
+            "HS": 0.40550472,
+            "TR": 0.26024338,
+            "AG": 0.34102834
+          },
+          "nota_f1": "la F1 por etiqueta es 2*TP/(2*TP+FP+FN), la funcion real del proyecto en src/evaluation.py, comprobada contra una referencia 2x2 independiente. Los falsos positivos se declaran porque son la razon por la que F1 y recall no coinciden. El recall no se calcula en ningun sitio de P78"
+        }
+      },
+      "macro_f1_por_semilla": [
+        0.583875535,
+        0.6119454273,
+        0.5815113418
+      ],
+      "macro_f1_media": 0.5924441014,
+      "macro_f1_sd_entre_semillas": 0.0169299627,
+      "macro_f1_primaria": 0.583875535,
+      "f1_por_etiqueta_primaria": {
+        "HS": 0.59938367,
+        "TR": 0.59658344,
+        "AG": 0.55565949
+      },
+      "brier_medio_primaria": 0.19214961,
+      "log_loss_medio_primaria": 0.57698391,
+      "nota": "la desviacion entre semillas es variabilidad de SEMILLA, no de datos: las tres semillas comparten folds, filas, batches, init y matrices dentro de la misma condicion de entrada"
+    },
+    "B": {
+      "descripcion": "matriz aleatoria pareada, entrada SIN normalizar",
+      "matriz": "aleatoria",
+      "variante_entrada": "cruda",
+      "semilla_primaria": 20261130,
+      "por_semilla": {
+        "20261130": {
+          "macro_f1": 0.5713645137,
+          "f1_positiva_por_etiqueta": {
+            "HS": 0.60578387,
+            "TR": 0.5459854,
+            "AG": 0.56232427
+          },
+          "f1_media_columnas_2x2_de_referencia": {
+            "HS": 0.6057838661,
+            "TR": 0.5459854015,
+            "AG": 0.5623242737
+          },
+          "f1_macro6": 0.66971193,
+          "f1_micro": 0.57729941,
+          "exact_match": 0.50438301,
+          "macro_f1_por_pliegue": [
+            0.5798295272,
+            0.5698039216,
+            0.5940946491,
+            0.6114061265,
+            0.4828784785
+          ],
+          "n_falsos_positivos": {
+            "HS": 268,
+            "TR": 53,
+            "AG": 200
+          },
+          "n_positivos_reales": {
+            "HS": 648,
+            "TR": 445,
+            "AG": 567
+          },
+          "metricas_de_probabilidad": {
+            "brier_por_etiqueta": {
+              "HS": 0.22054227,
+              "TR": 0.15524988,
+              "AG": 0.20697584
+            },
+            "brier_medio": 0.19425599,
+            "log_loss_por_etiqueta": {
+              "HS": 0.6425094,
+              "TR": 0.51275832,
+              "AG": 0.62142196
+            },
+            "log_loss_medio": 0.5922299
+          },
+          "media_probabilidad_por_etiqueta": {
+            "HS": 0.41126935,
+            "TR": 0.22654422,
+            "AG": 0.35077087
+          },
+          "nota_f1": "la F1 por etiqueta es 2*TP/(2*TP+FP+FN), la funcion real del proyecto en src/evaluation.py, comprobada contra una referencia 2x2 independiente. Los falsos positivos se declaran porque son la razon por la que F1 y recall no coinciden. El recall no se calcula en ningun sitio de P78"
+        },
+        "20261131": {
+          "macro_f1": 0.5615817651,
+          "f1_positiva_por_etiqueta": {
+            "HS": 0.5994109,
+            "TR": 0.52753623,
+            "AG": 0.55779817
+          },
+          "f1_media_columnas_2x2_de_referencia": {
+            "HS": 0.5994108984,
+            "TR": 0.5275362319,
+            "AG": 0.5577981651
+          },
+          "f1_macro6": 0.65771224,
+          "f1_micro": 0.56915233,
+          "exact_match": 0.48145651,
+          "macro_f1_por_pliegue": [
+            0.5518682465,
+            0.5038080785,
+            0.5754640052,
+            0.5916699842,
+            0.5722004145
+          ],
+          "n_falsos_positivos": {
+            "HS": 303,
+            "TR": 63,
+            "AG": 219
+          },
+          "n_positivos_reales": {
+            "HS": 648,
+            "TR": 445,
+            "AG": 567
+          },
+          "metricas_de_probabilidad": {
+            "brier_por_etiqueta": {
+              "HS": 0.22744163,
+              "TR": 0.15779123,
+              "AG": 0.21385039
+            },
+            "brier_medio": 0.19969442,
+            "log_loss_por_etiqueta": {
+              "HS": 0.65854396,
+              "TR": 0.51859112,
+              "AG": 0.63320677
+            },
+            "log_loss_medio": 0.60344728
+          },
+          "media_probabilidad_por_etiqueta": {
+            "HS": 0.43745295,
+            "TR": 0.23049298,
+            "AG": 0.36612328
+          },
+          "nota_f1": "la F1 por etiqueta es 2*TP/(2*TP+FP+FN), la funcion real del proyecto en src/evaluation.py, comprobada contra una referencia 2x2 independiente. Los falsos positivos se declaran porque son la razon por la que F1 y recall no coinciden. El recall no se calcula en ningun sitio de P78"
+        },
+        "20261132": {
+          "macro_f1": 0.5744638009,
+          "f1_positiva_por_etiqueta": {
+            "HS": 0.60689655,
+            "TR": 0.54885057,
+            "AG": 0.56764428
+          },
+          "f1_media_columnas_2x2_de_referencia": {
+            "HS": 0.6068965517,
+            "TR": 0.5488505747,
+            "AG": 0.5676442763
+          },
+          "f1_macro6": 0.67280383,
+          "f1_micro": 0.58011772,
+          "exact_match": 0.51517195,
+          "macro_f1_por_pliegue": [
+            0.5491422959,
+            0.5970259899,
+            0.6027119997,
+            0.5512717778,
+            0.5668489058
+          ],
+          "n_falsos_positivos": {
+            "HS": 261,
+            "TR": 60,
+            "AG": 190
+          },
+          "n_positivos_reales": {
+            "HS": 648,
+            "TR": 445,
+            "AG": 567
+          },
+          "metricas_de_probabilidad": {
+            "brier_por_etiqueta": {
+              "HS": 0.2158824,
+              "TR": 0.15306608,
+              "AG": 0.20611322
+            },
+            "brier_medio": 0.19168723,
+            "log_loss_por_etiqueta": {
+              "HS": 0.62231335,
+              "TR": 0.49139451,
+              "AG": 0.60733717
+            },
+            "log_loss_medio": 0.57368168
+          },
+          "media_probabilidad_por_etiqueta": {
+            "HS": 0.41974893,
+            "TR": 0.24051354,
+            "AG": 0.35272721
+          },
+          "nota_f1": "la F1 por etiqueta es 2*TP/(2*TP+FP+FN), la funcion real del proyecto en src/evaluation.py, comprobada contra una referencia 2x2 independiente. Los falsos positivos se declaran porque son la razon por la que F1 y recall no coinciden. El recall no se calcula en ningun sitio de P78"
+        }
+      },
+      "macro_f1_por_semilla": [
+        0.5713645137,
+        0.5615817651,
+        0.5744638009
+      ],
+      "macro_f1_media": 0.5691366932,
+      "macro_f1_sd_entre_semillas": 0.0067237712,
+      "macro_f1_primaria": 0.5713645137,
+      "f1_por_etiqueta_primaria": {
+        "HS": 0.60578387,
+        "TR": 0.5459854,
+        "AG": 0.56232427
+      },
+      "brier_medio_primaria": 0.19425599,
+      "log_loss_medio_primaria": 0.5922299,
+      "nota": "la desviacion entre semillas es variabilidad de SEMILLA, no de datos: las tres semillas comparten folds, filas, batches, init y matrices dentro de la misma condicion de entrada"
+    },
+    "C": {
+      "descripcion": "Word2Vec 100d congelado, entrada NORMALIZADA con normalizar de P71-03",
+      "matriz": "w2v",
+      "variante_entrada": "norm",
+      "semilla_primaria": 20261130,
+      "por_semilla": {
+        "20261130": {
+          "macro_f1": 0.6597610505,
+          "f1_positiva_por_etiqueta": {
+            "HS": 0.65522621,
+            "TR": 0.70473876,
+            "AG": 0.61931818
+          },
+          "f1_media_columnas_2x2_de_referencia": {
+            "HS": 0.655226209,
+            "TR": 0.7047387606,
+            "AG": 0.6193181818
+          },
+          "f1_macro6": 0.7321582,
+          "f1_micro": 0.65612148,
+          "exact_match": 0.61631827,
+          "macro_f1_por_pliegue": [
+            0.6360001065,
+            0.6906506429,
+            0.6902666708,
+            0.6127885836,
+            0.6623702841
+          ],
+          "n_falsos_positivos": {
+            "HS": 214,
+            "TR": 88,
+            "AG": 162
+          },
+          "n_positivos_reales": {
+            "HS": 648,
+            "TR": 445,
+            "AG": 567
+          },
+          "metricas_de_probabilidad": {
+            "brier_por_etiqueta": {
+              "HS": 0.20019502,
+              "TR": 0.12490354,
+              "AG": 0.18811802
+            },
+            "brier_medio": 0.17107219,
+            "log_loss_por_etiqueta": {
+              "HS": 0.59350893,
+              "TR": 0.42329651,
+              "AG": 0.57694312
+            },
+            "log_loss_medio": 0.53124952
+          },
+          "media_probabilidad_por_etiqueta": {
+            "HS": 0.41814015,
+            "TR": 0.27778417,
+            "AG": 0.36082736
+          },
+          "nota_f1": "la F1 por etiqueta es 2*TP/(2*TP+FP+FN), la funcion real del proyecto en src/evaluation.py, comprobada contra una referencia 2x2 independiente. Los falsos positivos se declaran porque son la razon por la que F1 y recall no coinciden. El recall no se calcula en ningun sitio de P78"
+        },
+        "20261131": {
+          "macro_f1": 0.6623222795,
+          "f1_positiva_por_etiqueta": {
+            "HS": 0.66168783,
+            "TR": 0.68891538,
+            "AG": 0.63636364
+          },
+          "f1_media_columnas_2x2_de_referencia": {
+            "HS": 0.6616878267,
+            "TR": 0.6889153754,
+            "AG": 0.6363636364
+          },
+          "f1_macro6": 0.72857833,
+          "f1_micro": 0.66015863,
+          "exact_match": 0.59474039,
+          "macro_f1_por_pliegue": [
+            0.668239968,
+            0.6294772259,
+            0.6617660614,
+            0.6678031041,
+            0.6784104441
+          ],
+          "n_falsos_positivos": {
+            "HS": 248,
+            "TR": 105,
+            "AG": 183
+          },
+          "n_positivos_reales": {
+            "HS": 648,
+            "TR": 445,
+            "AG": 567
+          },
+          "metricas_de_probabilidad": {
+            "brier_por_etiqueta": {
+              "HS": 0.2051032,
+              "TR": 0.12727408,
+              "AG": 0.19122214
+            },
+            "brier_medio": 0.17453314,
+            "log_loss_por_etiqueta": {
+              "HS": 0.60869963,
+              "TR": 0.42721597,
+              "AG": 0.58344894
+            },
+            "log_loss_medio": 0.53978818
+          },
+          "media_probabilidad_por_etiqueta": {
+            "HS": 0.4485891,
+            "TR": 0.28778301,
+            "AG": 0.38452555
+          },
+          "nota_f1": "la F1 por etiqueta es 2*TP/(2*TP+FP+FN), la funcion real del proyecto en src/evaluation.py, comprobada contra una referencia 2x2 independiente. Los falsos positivos se declaran porque son la razon por la que F1 y recall no coinciden. El recall no se calcula en ningun sitio de P78"
+        },
+        "20261132": {
+          "macro_f1": 0.6309126817,
+          "f1_positiva_por_etiqueta": {
+            "HS": 0.62046205,
+            "TR": 0.66835443,
+            "AG": 0.60392157
+          },
+          "f1_media_columnas_2x2_de_referencia": {
+            "HS": 0.6204620462,
+            "TR": 0.6683544304,
+            "AG": 0.6039215686
+          },
+          "f1_macro6": 0.71707843,
+          "f1_micro": 0.62739907,
+          "exact_match": 0.60755226,
+          "macro_f1_por_pliegue": [
+            0.6349600117,
+            0.5728132804,
+            0.6239803378,
+            0.6419750994,
+            0.6701412507
+          ],
+          "n_falsos_positivos": {
+            "HS": 188,
+            "TR": 81,
+            "AG": 145
+          },
+          "n_positivos_reales": {
+            "HS": 648,
+            "TR": 445,
+            "AG": 567
+          },
+          "metricas_de_probabilidad": {
+            "brier_por_etiqueta": {
+              "HS": 0.20765794,
+              "TR": 0.1319197,
+              "AG": 0.19203054
+            },
+            "brier_medio": 0.17720273,
+            "log_loss_por_etiqueta": {
+              "HS": 0.61993437,
+              "TR": 0.44895939,
+              "AG": 0.59416842
+            },
+            "log_loss_medio": 0.55435406
+          },
+          "media_probabilidad_por_etiqueta": {
+            "HS": 0.39135269,
+            "TR": 0.25242146,
+            "AG": 0.33040188
+          },
+          "nota_f1": "la F1 por etiqueta es 2*TP/(2*TP+FP+FN), la funcion real del proyecto en src/evaluation.py, comprobada contra una referencia 2x2 independiente. Los falsos positivos se declaran porque son la razon por la que F1 y recall no coinciden. El recall no se calcula en ningun sitio de P78"
+        }
+      },
+      "macro_f1_por_semilla": [
+        0.6597610505,
+        0.6623222795,
+        0.6309126817
+      ],
+      "macro_f1_media": 0.6509986706,
+      "macro_f1_sd_entre_semillas": 0.0174420522,
+      "macro_f1_primaria": 0.6597610505,
+      "f1_por_etiqueta_primaria": {
+        "HS": 0.65522621,
+        "TR": 0.70473876,
+        "AG": 0.61931818
+      },
+      "brier_medio_primaria": 0.17107219,
+      "log_loss_medio_primaria": 0.53124952,
+      "nota": "la desviacion entre semillas es variabilidad de SEMILLA, no de datos: las tres semillas comparten folds, filas, batches, init y matrices dentro de la misma condicion de entrada"
+    },
+    "D": {
+      "descripcion": "matriz aleatoria pareada, entrada NORMALIZADA",
+      "matriz": "aleatoria",
+      "variante_entrada": "norm",
+      "semilla_primaria": 20261130,
+      "por_semilla": {
+        "20261130": {
+          "macro_f1": 0.628797368,
+          "f1_positiva_por_etiqueta": {
+            "HS": 0.64556962,
+            "TR": 0.63395225,
+            "AG": 0.60687023
+          },
+          "f1_media_columnas_2x2_de_referencia": {
+            "HS": 0.6455696203,
+            "TR": 0.6339522546,
+            "AG": 0.606870229
+          },
+          "f1_macro6": 0.71393189,
+          "f1_micro": 0.62948467,
+          "exact_match": 0.57653405,
+          "macro_f1_por_pliegue": [
+            0.6351005793,
+            0.6336149669,
+            0.6404706098,
+            0.5865710984,
+            0.6466545435
+          ],
+          "n_falsos_positivos": {
+            "HS": 208,
+            "TR": 70,
+            "AG": 163
+          },
+          "n_positivos_reales": {
+            "HS": 648,
+            "TR": 445,
+            "AG": 567
+          },
+          "metricas_de_probabilidad": {
+            "brier_por_etiqueta": {
+              "HS": 0.20551937,
+              "TR": 0.13538918,
+              "AG": 0.19053585
+            },
+            "brier_medio": 0.17714813,
+            "log_loss_por_etiqueta": {
+              "HS": 0.60294864,
+              "TR": 0.44705945,
+              "AG": 0.57609578
+            },
+            "log_loss_medio": 0.54203462
+          },
+          "media_probabilidad_por_etiqueta": {
+            "HS": 0.4145371,
+            "TR": 0.25526213,
+            "AG": 0.36259098
+          },
+          "nota_f1": "la F1 por etiqueta es 2*TP/(2*TP+FP+FN), la funcion real del proyecto en src/evaluation.py, comprobada contra una referencia 2x2 independiente. Los falsos positivos se declaran porque son la razon por la que F1 y recall no coinciden. El recall no se calcula en ningun sitio de P78"
+        },
+        "20261131": {
+          "macro_f1": 0.6195258833,
+          "f1_positiva_por_etiqueta": {
+            "HS": 0.62196144,
+            "TR": 0.63401361,
+            "AG": 0.6026026
+          },
+          "f1_media_columnas_2x2_de_referencia": {
+            "HS": 0.6219614417,
+            "TR": 0.6340136054,
+            "AG": 0.6026026026
+          },
+          "f1_macro6": 0.71363377,
+          "f1_micro": 0.61838059,
+          "exact_match": 0.58934592,
+          "macro_f1_por_pliegue": [
+            0.6406506812,
+            0.6235169284,
+            0.6038000608,
+            0.5881053949,
+            0.63991907
+          ],
+          "n_falsos_positivos": {
+            "HS": 174,
+            "TR": 57,
+            "AG": 131
+          },
+          "n_positivos_reales": {
+            "HS": 648,
+            "TR": 445,
+            "AG": 567
+          },
+          "metricas_de_probabilidad": {
+            "brier_por_etiqueta": {
+              "HS": 0.2098959,
+              "TR": 0.1393126,
+              "AG": 0.19516594
+            },
+            "brier_medio": 0.18145814,
+            "log_loss_por_etiqueta": {
+              "HS": 0.62360004,
+              "TR": 0.47824117,
+              "AG": 0.60560563
+            },
+            "log_loss_medio": 0.56914895
+          },
+          "media_probabilidad_por_etiqueta": {
+            "HS": 0.38657167,
+            "TR": 0.22283599,
+            "AG": 0.32624784
+          },
+          "nota_f1": "la F1 por etiqueta es 2*TP/(2*TP+FP+FN), la funcion real del proyecto en src/evaluation.py, comprobada contra una referencia 2x2 independiente. Los falsos positivos se declaran porque son la razon por la que F1 y recall no coinciden. El recall no se calcula en ningun sitio de P78"
+        },
+        "20261132": {
+          "macro_f1": 0.6299934237,
+          "f1_positiva_por_etiqueta": {
+            "HS": 0.63242376,
+            "TR": 0.65322581,
+            "AG": 0.60433071
+          },
+          "f1_media_columnas_2x2_de_referencia": {
+            "HS": 0.632423756,
+            "TR": 0.6532258065,
+            "AG": 0.6043307087
+          },
+          "f1_macro6": 0.71690596,
+          "f1_micro": 0.62807718,
+          "exact_match": 0.58597438,
+          "macro_f1_por_pliegue": [
+            0.6567004531,
+            0.6198780169,
+            0.5980335537,
+            0.6226697836,
+            0.6477681758
+          ],
+          "n_falsos_positivos": {
+            "HS": 204,
+            "TR": 56,
+            "AG": 142
+          },
+          "n_positivos_reales": {
+            "HS": 648,
+            "TR": 445,
+            "AG": 567
+          },
+          "metricas_de_probabilidad": {
+            "brier_por_etiqueta": {
+              "HS": 0.20310679,
+              "TR": 0.1334987,
+              "AG": 0.19188675
+            },
+            "brier_medio": 0.17616408,
+            "log_loss_por_etiqueta": {
+              "HS": 0.59613816,
+              "TR": 0.44566316,
+              "AG": 0.58273277
+            },
+            "log_loss_medio": 0.54151136
+          },
+          "media_probabilidad_por_etiqueta": {
+            "HS": 0.4004551,
+            "TR": 0.24558286,
+            "AG": 0.33651565
+          },
+          "nota_f1": "la F1 por etiqueta es 2*TP/(2*TP+FP+FN), la funcion real del proyecto en src/evaluation.py, comprobada contra una referencia 2x2 independiente. Los falsos positivos se declaran porque son la razon por la que F1 y recall no coinciden. El recall no se calcula en ningun sitio de P78"
+        }
+      },
+      "macro_f1_por_semilla": [
+        0.628797368,
+        0.6195258833,
+        0.6299934237
+      ],
+      "macro_f1_media": 0.6261055583,
+      "macro_f1_sd_entre_semillas": 0.0057294616,
+      "macro_f1_primaria": 0.628797368,
+      "f1_por_etiqueta_primaria": {
+        "HS": 0.64556962,
+        "TR": 0.63395225,
+        "AG": 0.60687023
+      },
+      "brier_medio_primaria": 0.17714813,
+      "log_loss_medio_primaria": 0.54203462,
+      "nota": "la desviacion entre semillas es variabilidad de SEMILLA, no de datos: las tres semillas comparten folds, filas, batches, init y matrices dentro de la misma condicion de entrada"
+    }
+  },
+  "comparaciones": {
+    "P1": {
+      "descripcion": "C - D. Efecto del embedding con la normalizacion alineada. PRIMARIA",
+      "brazo_efecto": "C",
+      "brazo_control": "D",
+      "deltas_globales_por_semilla": [
+        0.0309636825,
+        0.0427963963,
+        0.000919258
+      ],
+      "delta_global_media": 0.0248931123,
+      "delta_global_sd_entre_semillas": 0.0215884818,
+      "ic95_t_sobre_las_tres_semillas": {
+        "media": 0.0248931123,
+        "sd": 0.0215884818,
+        "se": 0.0124641158,
+        "n": 3,
+        "t_critico": 4.302653,
+        "ic95": [
+          -0.0287356494,
+          0.078521874
+        ]
+      },
+      "deltas_por_pliegue_por_semilla": [
+        [
+          0.0008995272,
+          0.0275892867,
+          -0.0217404413
+        ],
+        [
+          0.057035676,
+          0.0059602976,
+          -0.0470647366
+        ],
+        [
+          0.049796061,
+          0.0579660007,
+          0.0259467842
+        ],
+        [
+          0.0262174852,
+          0.0796977092,
+          0.0193053157
+        ],
+        [
+          0.0157157406,
+          0.0384913742,
+          0.0223730749
+        ]
+      ],
+      "deltas_por_pliegue_promedio": [
+        0.0022494575,
+        0.0053104123,
+        0.0445696153,
+        0.04174017,
+        0.0255267299
+      ],
+      "pliegues_positivos": 5,
+      "bootstrap_por_clusters": {
+        "semilla": 20261102,
+        "n": 2000,
+        "por_semilla": [
+          {
+            "semilla": 20261130,
+            "media": 0.0309177291,
+            "ic95": [
+              0.0093805321,
+              0.0526868586
+            ]
+          },
+          {
+            "semilla": 20261131,
+            "media": 0.0425577691,
+            "ic95": [
+              0.0192242738,
+              0.0639086318
+            ]
+          },
+          {
+            "semilla": 20261132,
+            "media": 0.0004873524,
+            "ic95": [
+              -0.0227640639,
+              0.0228707674
+            ]
+          }
+        ],
+        "media_de_las_tres": 0.0246542835,
+        "delta_medio_entre_semillas": {
+          "media": 0.0246542835,
+          "ic95": [
+            0.0079020514,
+            0.040644575
+          ],
+          "que_es": "bootstrap por clusters del delta MEDIO entre las tres semillas: por replica se remuestran clusters, se calcula el macro-F1 de C y de D sobre esa replica y se promedian sobre las tres semillas. Este es el intervalo que usa la rama 2",
+          "es_un_ic95_valido": true
+        },
+        "extremos_promediados_entre_semillas_no_es_un_ic95": [
+          0.001946914,
+          0.0464887526
+        ],
+        "por_que_no_es_un_ic95": "es la media de los extremos de percentiles de tres bootstraps INDEPENDIENTES, uno por semilla. El estimando de esos tres intervalos es la diferencia de las semillas por separado, no el delta medio: promediar los extremos no es tomar percentiles de la distribucion de una sola estadistica, asi que el ancho y el centro no tienen lectura de 95 por ciento. Se conserva solo por trazabilidad y no se usa en el veredicto"
+      },
+      "unidades_que_cambian_de_decision": {
+        "unidades": 4449,
+        "cambian": 655,
+        "tasa_de_cambio": 0.147224,
+        "rescue": 352,
+        "damage": 303,
+        "net": 49,
+        "nota": "descriptivo. NO es una metrica y NO se usa en el veredicto"
+      }
+    },
+    "P2": {
+      "descripcion": "A - B. Efecto del embedding con el tokenizado actual. Es lo que midieron P73 y P74",
+      "brazo_efecto": "A",
+      "brazo_control": "B",
+      "deltas_globales_por_semilla": [
+        0.0125110212,
+        0.0503636622,
+        0.0070475409
+      ],
+      "delta_global_media": 0.0233074081,
+      "delta_global_sd_entre_semillas": 0.0235901053,
+      "ic95_t_sobre_las_tres_semillas": {
+        "media": 0.0233074081,
+        "sd": 0.0235901053,
+        "se": 0.0136197537,
+        "n": 3,
+        "t_critico": 4.302653,
+        "ic95": [
+          -0.0352936621,
+          0.0819084783
+        ]
+      },
+      "deltas_por_pliegue_por_semilla": [
+        [
+          0.0299879158,
+          0.0203637509,
+          0.0588863152
+        ],
+        [
+          -0.0438457186,
+          0.0916726576,
+          -0.0045300156
+        ],
+        [
+          0.0358308866,
+          0.0715338743,
+          0.000930221
+        ],
+        [
+          -0.0827610297,
+          0.0208184955,
+          -0.0946457165
+        ],
+        [
+          0.1253921981,
+          0.0537324866,
+          0.0525303708
+        ]
+      ],
+      "deltas_por_pliegue_promedio": [
+        0.0364126606,
+        0.0144323078,
+        0.0360983273,
+        -0.0521960836,
+        0.0772183518
+      ],
+      "pliegues_positivos": 4,
+      "bootstrap_por_clusters": {
+        "semilla": 20261102,
+        "n": 2000,
+        "por_semilla": [
+          {
+            "semilla": 20261130,
+            "media": 0.0120534549,
+            "ic95": [
+              -0.0135363676,
+              0.0356127087
+            ]
+          },
+          {
+            "semilla": 20261131,
+            "media": 0.0501323004,
+            "ic95": [
+              0.0296355671,
+              0.0717054583
+            ]
+          },
+          {
+            "semilla": 20261132,
+            "media": 0.0070191841,
+            "ic95": [
+              -0.0159712405,
+              0.0310996414
+            ]
+          }
+        ],
+        "media_de_las_tres": 0.0230683131,
+        "delta_medio_entre_semillas": {
+          "media": 0.0230683132,
+          "ic95": [
+            0.0061988973,
+            0.0394292852
+          ],
+          "que_es": "bootstrap por clusters del delta MEDIO entre las tres semillas: por replica se remuestran clusters, se calcula el macro-F1 de A y de B sobre esa replica y se promedian sobre las tres semillas. Este es el intervalo que usa la rama 2",
+          "es_un_ic95_valido": true
+        },
+        "extremos_promediados_entre_semillas_no_es_un_ic95": [
+          4.2653e-05,
+          0.0461392695
+        ],
+        "por_que_no_es_un_ic95": "es la media de los extremos de percentiles de tres bootstraps INDEPENDIENTES, uno por semilla. El estimando de esos tres intervalos es la diferencia de las semillas por separado, no el delta medio: promediar los extremos no es tomar percentiles de la distribucion de una sola estadistica, asi que el ancho y el centro no tienen lectura de 95 por ciento. Se conserva solo por trazabilidad y no se usa en el veredicto"
+      },
+      "unidades_que_cambian_de_decision": {
+        "unidades": 4449,
+        "cambian": 722,
+        "tasa_de_cambio": 0.162284,
+        "rescue": 358,
+        "damage": 364,
+        "net": -6,
+        "nota": "descriptivo. NO es una metrica y NO se usa en el veredicto"
+      }
+    },
+    "P3": {
+      "descripcion": "C - A. Efecto de alinear la normalizacion en el brazo Word2Vec",
+      "brazo_efecto": "C",
+      "brazo_control": "A",
+      "deltas_globales_por_semilla": [
+        0.0758855155,
+        0.0503768522,
+        0.0494013399
+      ],
+      "delta_global_media": 0.0585545692,
+      "delta_global_sd_entre_semillas": 0.0150169631,
+      "ic95_t_sobre_las_tres_semillas": {
+        "media": 0.0585545692,
+        "sd": 0.0150169631,
+        "se": 0.0086700477,
+        "n": 3,
+        "t_critico": 4.302653,
+        "ic95": [
+          0.0212503648,
+          0.0958587736
+        ]
+      },
+      "deltas_por_pliegue_por_semilla": [
+        [
+          0.0261826635,
+          0.0960079706,
+          0.0269314006
+        ],
+        [
+          0.1646924399,
+          0.0339964898,
+          -0.0196826939
+        ],
+        [
+          0.060341135,
+          0.0147681819,
+          0.0203381172
+        ],
+        [
+          0.0841434868,
+          0.0553146244,
+          0.1853490381
+        ],
+        [
+          0.0540996074,
+          0.052477543,
+          0.0507619741
+        ]
+      ],
+      "deltas_por_pliegue_promedio": [
+        0.0497073449,
+        0.0596687453,
+        0.0318158114,
+        0.1082690498,
+        0.0524463748
+      ],
+      "pliegues_positivos": 5,
+      "bootstrap_por_clusters": {
+        "semilla": 20261102,
+        "n": 2000,
+        "por_semilla": [
+          {
+            "semilla": 20261130,
+            "media": 0.075850121,
+            "ic95": [
+              0.0534541674,
+              0.0983761655
+            ]
+          },
+          {
+            "semilla": 20261131,
+            "media": 0.0502382353,
+            "ic95": [
+              0.0309037311,
+              0.0696614734
+            ]
+          },
+          {
+            "semilla": 20261132,
+            "media": 0.048844914,
+            "ic95": [
+              0.0240985818,
+              0.0737331862
+            ]
+          }
+        ],
+        "media_de_las_tres": 0.0583110901,
+        "delta_medio_entre_semillas": {
+          "media": 0.0583110901,
+          "ic95": [
+            0.0407102789,
+            0.076529152
+          ],
+          "que_es": "bootstrap por clusters del delta MEDIO entre las tres semillas: por replica se remuestran clusters, se calcula el macro-F1 de C y de A sobre esa replica y se promedian sobre las tres semillas. Este es el intervalo que usa la rama 2",
+          "es_un_ic95_valido": true
+        },
+        "extremos_promediados_entre_semillas_no_es_un_ic95": [
+          0.0361521601,
+          0.080590275
+        ],
+        "por_que_no_es_un_ic95": "es la media de los extremos de percentiles de tres bootstraps INDEPENDIENTES, uno por semilla. El estimando de esos tres intervalos es la diferencia de las semillas por separado, no el delta medio: promediar los extremos no es tomar percentiles de la distribucion de una sola estadistica, asi que el ancho y el centro no tienen lectura de 95 por ciento. Se conserva solo por trazabilidad y no se usa en el veredicto"
+      },
+      "unidades_que_cambian_de_decision": {
+        "unidades": 4449,
+        "cambian": 675,
+        "tasa_de_cambio": 0.151719,
+        "rescue": 445,
+        "damage": 230,
+        "net": 215,
+        "nota": "descriptivo. NO es una metrica y NO se usa en el veredicto"
+      }
+    },
+    "P4": {
+      "descripcion": "D - B. Mismo efecto en el brazo aleatorio. Control de confusion",
+      "brazo_efecto": "D",
+      "brazo_control": "B",
+      "deltas_globales_por_semilla": [
+        0.0574328542,
+        0.0579441181,
+        0.0555296228
+      ],
+      "delta_global_media": 0.056968865,
+      "delta_global_sd_entre_semillas": 0.0012723645,
+      "ic95_t_sobre_las_tres_semillas": {
+        "media": 0.056968865,
+        "sd": 0.0012723645,
+        "se": 0.0007346,
+        "n": 3,
+        "t_critico": 4.302653,
+        "ic95": [
+          0.0538081365,
+          0.0601295936
+        ]
+      },
+      "deltas_por_pliegue_por_semilla": [
+        [
+          0.0552710521,
+          0.0887824347,
+          0.1075581571
+        ],
+        [
+          0.0638110453,
+          0.1197088499,
+          0.022852027
+        ],
+        [
+          0.0463759607,
+          0.0283360556,
+          -0.004678446
+        ],
+        [
+          -0.0248350281,
+          -0.0035645893,
+          0.0713980058
+        ],
+        [
+          0.163776065,
+          0.0677186554,
+          0.08091927
+        ]
+      ],
+      "deltas_por_pliegue_promedio": [
+        0.083870548,
+        0.0687906407,
+        0.0233445234,
+        0.0143327961,
+        0.1041379968
+      ],
+      "pliegues_positivos": 5,
+      "bootstrap_por_clusters": {
+        "semilla": 20261102,
+        "n": 2000,
+        "por_semilla": [
+          {
+            "semilla": 20261130,
+            "media": 0.0569858468,
+            "ic95": [
+              0.0351355973,
+              0.0783928888
+            ]
+          },
+          {
+            "semilla": 20261131,
+            "media": 0.0578127666,
+            "ic95": [
+              0.0368496789,
+              0.0796954714
+            ]
+          },
+          {
+            "semilla": 20261132,
+            "media": 0.0553767457,
+            "ic95": [
+              0.0347078052,
+              0.0746076479
+            ]
+          }
+        ],
+        "media_de_las_tres": 0.0567251197,
+        "delta_medio_entre_semillas": {
+          "media": 0.0567251197,
+          "ic95": [
+            0.0403630839,
+            0.0732516219
+          ],
+          "que_es": "bootstrap por clusters del delta MEDIO entre las tres semillas: por replica se remuestran clusters, se calcula el macro-F1 de D y de B sobre esa replica y se promedian sobre las tres semillas. Este es el intervalo que usa la rama 2",
+          "es_un_ic95_valido": true
+        },
+        "extremos_promediados_entre_semillas_no_es_un_ic95": [
+          0.0355643605,
+          0.077565336
+        ],
+        "por_que_no_es_un_ic95": "es la media de los extremos de percentiles de tres bootstraps INDEPENDIENTES, uno por semilla. El estimando de esos tres intervalos es la diferencia de las semillas por separado, no el delta medio: promediar los extremos no es tomar percentiles de la distribucion de una sola estadistica, asi que el ancho y el centro no tienen lectura de 95 por ciento. Se conserva solo por trazabilidad y no se usa en el veredicto"
+      },
+      "unidades_que_cambian_de_decision": {
+        "unidades": 4449,
+        "cambian": 666,
+        "tasa_de_cambio": 0.149697,
+        "rescue": 413,
+        "damage": 253,
+        "net": 160,
+        "nota": "descriptivo. NO es una metrica y NO se usa en el veredicto"
+      }
+    }
+  },
+  "v03_macro_f1": 0.7772114525,
+  "registro_por_pliegue": [
+    {
+      "brazo": "A",
+      "semilla": 20261130,
+      "pliegue": 1,
+      "variante": "cruda",
+      "matriz": "w2v",
+      "sha_matriz": "c1b774e52e0e1dc131311bddea967e2a72a96e29",
+      "E_estrella": 12,
+      "epocas_de_los_tres_splits": [
+        10,
+        12,
+        17
+      ],
+      "n_outer_train": 1186,
+      "n_outer_val": 297,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.609817,
+      "segundos": 72.2
+    },
+    {
+      "brazo": "A",
+      "semilla": 20261130,
+      "pliegue": 2,
+      "variante": "cruda",
+      "matriz": "w2v",
+      "sha_matriz": "c1b774e52e0e1dc131311bddea967e2a72a96e29",
+      "E_estrella": 10,
+      "epocas_de_los_tres_splits": [
+        12,
+        10,
+        10
+      ],
+      "n_outer_train": 1186,
+      "n_outer_val": 297,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.525958,
+      "segundos": 32.5
+    },
+    {
+      "brazo": "A",
+      "semilla": 20261130,
+      "pliegue": 3,
+      "variante": "cruda",
+      "matriz": "w2v",
+      "sha_matriz": "c1b774e52e0e1dc131311bddea967e2a72a96e29",
+      "E_estrella": 16,
+      "epocas_de_los_tres_splits": [
+        17,
+        14,
+        16
+      ],
+      "n_outer_train": 1187,
+      "n_outer_val": 296,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.629926,
+      "segundos": 27.3
+    },
+    {
+      "brazo": "A",
+      "semilla": 20261130,
+      "pliegue": 4,
+      "variante": "cruda",
+      "matriz": "w2v",
+      "sha_matriz": "c1b774e52e0e1dc131311bddea967e2a72a96e29",
+      "E_estrella": 14,
+      "epocas_de_los_tres_splits": [
+        14,
+        11,
+        26
+      ],
+      "n_outer_train": 1187,
+      "n_outer_val": 296,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.528645,
+      "segundos": 26.2
+    },
+    {
+      "brazo": "A",
+      "semilla": 20261130,
+      "pliegue": 5,
+      "variante": "cruda",
+      "matriz": "w2v",
+      "sha_matriz": "c1b774e52e0e1dc131311bddea967e2a72a96e29",
+      "E_estrella": 12,
+      "epocas_de_los_tres_splits": [
+        14,
+        12,
+        12
+      ],
+      "n_outer_train": 1186,
+      "n_outer_val": 297,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.608271,
+      "segundos": 23.8
+    },
+    {
+      "brazo": "A",
+      "semilla": 20261131,
+      "pliegue": 1,
+      "variante": "cruda",
+      "matriz": "w2v",
+      "sha_matriz": "c1b774e52e0e1dc131311bddea967e2a72a96e29",
+      "E_estrella": 11,
+      "epocas_de_los_tres_splits": [
+        15,
+        11,
+        11
+      ],
+      "n_outer_train": 1186,
+      "n_outer_val": 297,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.572232,
+      "segundos": 17.0
+    },
+    {
+      "brazo": "A",
+      "semilla": 20261131,
+      "pliegue": 2,
+      "variante": "cruda",
+      "matriz": "w2v",
+      "sha_matriz": "c1b774e52e0e1dc131311bddea967e2a72a96e29",
+      "E_estrella": 10,
+      "epocas_de_los_tres_splits": [
+        9,
+        12,
+        10
+      ],
+      "n_outer_train": 1186,
+      "n_outer_val": 297,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.595481,
+      "segundos": 18.1
+    },
+    {
+      "brazo": "A",
+      "semilla": 20261131,
+      "pliegue": 3,
+      "variante": "cruda",
+      "matriz": "w2v",
+      "sha_matriz": "c1b774e52e0e1dc131311bddea967e2a72a96e29",
+      "E_estrella": 10,
+      "epocas_de_los_tres_splits": [
+        15,
+        10,
+        10
+      ],
+      "n_outer_train": 1187,
+      "n_outer_val": 296,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.646998,
+      "segundos": 14.9
+    },
+    {
+      "brazo": "A",
+      "semilla": 20261131,
+      "pliegue": 4,
+      "variante": "cruda",
+      "matriz": "w2v",
+      "sha_matriz": "c1b774e52e0e1dc131311bddea967e2a72a96e29",
+      "E_estrella": 10,
+      "epocas_de_los_tres_splits": [
+        10,
+        10,
+        16
+      ],
+      "n_outer_train": 1187,
+      "n_outer_val": 296,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.612488,
+      "segundos": 16.9
+    },
+    {
+      "brazo": "A",
+      "semilla": 20261131,
+      "pliegue": 5,
+      "variante": "cruda",
+      "matriz": "w2v",
+      "sha_matriz": "c1b774e52e0e1dc131311bddea967e2a72a96e29",
+      "E_estrella": 14,
+      "epocas_de_los_tres_splits": [
+        14,
+        13,
+        14
+      ],
+      "n_outer_train": 1186,
+      "n_outer_val": 297,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.625933,
+      "segundos": 27.2
+    },
+    {
+      "brazo": "A",
+      "semilla": 20261132,
+      "pliegue": 1,
+      "variante": "cruda",
+      "matriz": "w2v",
+      "sha_matriz": "c1b774e52e0e1dc131311bddea967e2a72a96e29",
+      "E_estrella": 11,
+      "epocas_de_los_tres_splits": [
+        12,
+        11,
+        9
+      ],
+      "n_outer_train": 1186,
+      "n_outer_val": 297,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.608029,
+      "segundos": 27.0
+    },
+    {
+      "brazo": "A",
+      "semilla": 20261132,
+      "pliegue": 2,
+      "variante": "cruda",
+      "matriz": "w2v",
+      "sha_matriz": "c1b774e52e0e1dc131311bddea967e2a72a96e29",
+      "E_estrella": 11,
+      "epocas_de_los_tres_splits": [
+        11,
+        13,
+        10
+      ],
+      "n_outer_train": 1186,
+      "n_outer_val": 297,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.592496,
+      "segundos": 16.3
+    },
+    {
+      "brazo": "A",
+      "semilla": 20261132,
+      "pliegue": 3,
+      "variante": "cruda",
+      "matriz": "w2v",
+      "sha_matriz": "c1b774e52e0e1dc131311bddea967e2a72a96e29",
+      "E_estrella": 14,
+      "epocas_de_los_tres_splits": [
+        14,
+        14,
+        11
+      ],
+      "n_outer_train": 1187,
+      "n_outer_val": 296,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.603642,
+      "segundos": 23.4
+    },
+    {
+      "brazo": "A",
+      "semilla": 20261132,
+      "pliegue": 4,
+      "variante": "cruda",
+      "matriz": "w2v",
+      "sha_matriz": "c1b774e52e0e1dc131311bddea967e2a72a96e29",
+      "E_estrella": 12,
+      "epocas_de_los_tres_splits": [
+        12,
+        12,
+        18
+      ],
+      "n_outer_train": 1187,
+      "n_outer_val": 296,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.456626,
+      "segundos": 24.4
+    },
+    {
+      "brazo": "A",
+      "semilla": 20261132,
+      "pliegue": 5,
+      "variante": "cruda",
+      "matriz": "w2v",
+      "sha_matriz": "c1b774e52e0e1dc131311bddea967e2a72a96e29",
+      "E_estrella": 15,
+      "epocas_de_los_tres_splits": [
+        14,
+        15,
+        15
+      ],
+      "n_outer_train": 1186,
+      "n_outer_val": 297,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.619379,
+      "segundos": 21.5
+    },
+    {
+      "brazo": "B",
+      "semilla": 20261130,
+      "pliegue": 1,
+      "variante": "cruda",
+      "matriz": "aleatoria",
+      "sha_matriz": "b900e4b5a86a70440c3fb9c199a86b045b9d4f84",
+      "E_estrella": 10,
+      "epocas_de_los_tres_splits": [
+        10,
+        8,
+        11
+      ],
+      "n_outer_train": 1186,
+      "n_outer_val": 297,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.57983,
+      "segundos": 17.5
+    },
+    {
+      "brazo": "B",
+      "semilla": 20261130,
+      "pliegue": 2,
+      "variante": "cruda",
+      "matriz": "aleatoria",
+      "sha_matriz": "b900e4b5a86a70440c3fb9c199a86b045b9d4f84",
+      "E_estrella": 10,
+      "epocas_de_los_tres_splits": [
+        9,
+        10,
+        10
+      ],
+      "n_outer_train": 1186,
+      "n_outer_val": 297,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.569804,
+      "segundos": 17.6
+    },
+    {
+      "brazo": "B",
+      "semilla": 20261130,
+      "pliegue": 3,
+      "variante": "cruda",
+      "matriz": "aleatoria",
+      "sha_matriz": "b900e4b5a86a70440c3fb9c199a86b045b9d4f84",
+      "E_estrella": 8,
+      "epocas_de_los_tres_splits": [
+        12,
+        8,
+        7
+      ],
+      "n_outer_train": 1187,
+      "n_outer_val": 296,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.594095,
+      "segundos": 13.6
+    },
+    {
+      "brazo": "B",
+      "semilla": 20261130,
+      "pliegue": 4,
+      "variante": "cruda",
+      "matriz": "aleatoria",
+      "sha_matriz": "b900e4b5a86a70440c3fb9c199a86b045b9d4f84",
+      "E_estrella": 9,
+      "epocas_de_los_tres_splits": [
+        9,
+        7,
+        14
+      ],
+      "n_outer_train": 1187,
+      "n_outer_val": 296,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.611406,
+      "segundos": 19.8
+    },
+    {
+      "brazo": "B",
+      "semilla": 20261130,
+      "pliegue": 5,
+      "variante": "cruda",
+      "matriz": "aleatoria",
+      "sha_matriz": "b900e4b5a86a70440c3fb9c199a86b045b9d4f84",
+      "E_estrella": 9,
+      "epocas_de_los_tres_splits": [
+        9,
+        9,
+        10
+      ],
+      "n_outer_train": 1186,
+      "n_outer_val": 297,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.482878,
+      "segundos": 14.1
+    },
+    {
+      "brazo": "B",
+      "semilla": 20261131,
+      "pliegue": 1,
+      "variante": "cruda",
+      "matriz": "aleatoria",
+      "sha_matriz": "d5edfed1d0c2a9f510c02332a6407a970ac613b1",
+      "E_estrella": 11,
+      "epocas_de_los_tres_splits": [
+        11,
+        9,
+        11
+      ],
+      "n_outer_train": 1186,
+      "n_outer_val": 297,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.551868,
+      "segundos": 16.9
+    },
+    {
+      "brazo": "B",
+      "semilla": 20261131,
+      "pliegue": 2,
+      "variante": "cruda",
+      "matriz": "aleatoria",
+      "sha_matriz": "d5edfed1d0c2a9f510c02332a6407a970ac613b1",
+      "E_estrella": 9,
+      "epocas_de_los_tres_splits": [
+        11,
+        9,
+        9
+      ],
+      "n_outer_train": 1186,
+      "n_outer_val": 297,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.503808,
+      "segundos": 14.5
+    },
+    {
+      "brazo": "B",
+      "semilla": 20261131,
+      "pliegue": 3,
+      "variante": "cruda",
+      "matriz": "aleatoria",
+      "sha_matriz": "d5edfed1d0c2a9f510c02332a6407a970ac613b1",
+      "E_estrella": 10,
+      "epocas_de_los_tres_splits": [
+        12,
+        10,
+        9
+      ],
+      "n_outer_train": 1187,
+      "n_outer_val": 296,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.575464,
+      "segundos": 19.2
+    },
+    {
+      "brazo": "B",
+      "semilla": 20261131,
+      "pliegue": 4,
+      "variante": "cruda",
+      "matriz": "aleatoria",
+      "sha_matriz": "d5edfed1d0c2a9f510c02332a6407a970ac613b1",
+      "E_estrella": 10,
+      "epocas_de_los_tres_splits": [
+        10,
+        9,
+        13
+      ],
+      "n_outer_train": 1187,
+      "n_outer_val": 296,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.59167,
+      "segundos": 19.4
+    },
+    {
+      "brazo": "B",
+      "semilla": 20261131,
+      "pliegue": 5,
+      "variante": "cruda",
+      "matriz": "aleatoria",
+      "sha_matriz": "d5edfed1d0c2a9f510c02332a6407a970ac613b1",
+      "E_estrella": 10,
+      "epocas_de_los_tres_splits": [
+        11,
+        10,
+        7
+      ],
+      "n_outer_train": 1186,
+      "n_outer_val": 297,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.5722,
+      "segundos": 14.0
+    },
+    {
+      "brazo": "B",
+      "semilla": 20261132,
+      "pliegue": 1,
+      "variante": "cruda",
+      "matriz": "aleatoria",
+      "sha_matriz": "e3eb063e4218fc7d531bb088db8fe90cb1d0aada",
+      "E_estrella": 9,
+      "epocas_de_los_tres_splits": [
+        8,
+        9,
+        10
+      ],
+      "n_outer_train": 1186,
+      "n_outer_val": 297,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.549142,
+      "segundos": 16.5
+    },
+    {
+      "brazo": "B",
+      "semilla": 20261132,
+      "pliegue": 2,
+      "variante": "cruda",
+      "matriz": "aleatoria",
+      "sha_matriz": "e3eb063e4218fc7d531bb088db8fe90cb1d0aada",
+      "E_estrella": 8,
+      "epocas_de_los_tres_splits": [
+        8,
+        9,
+        7
+      ],
+      "n_outer_train": 1186,
+      "n_outer_val": 297,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.597026,
+      "segundos": 14.4
+    },
+    {
+      "brazo": "B",
+      "semilla": 20261132,
+      "pliegue": 3,
+      "variante": "cruda",
+      "matriz": "aleatoria",
+      "sha_matriz": "e3eb063e4218fc7d531bb088db8fe90cb1d0aada",
+      "E_estrella": 9,
+      "epocas_de_los_tres_splits": [
+        15,
+        9,
+        8
+      ],
+      "n_outer_train": 1187,
+      "n_outer_val": 296,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.602712,
+      "segundos": 17.7
+    },
+    {
+      "brazo": "B",
+      "semilla": 20261132,
+      "pliegue": 4,
+      "variante": "cruda",
+      "matriz": "aleatoria",
+      "sha_matriz": "e3eb063e4218fc7d531bb088db8fe90cb1d0aada",
+      "E_estrella": 8,
+      "epocas_de_los_tres_splits": [
+        8,
+        7,
+        11
+      ],
+      "n_outer_train": 1187,
+      "n_outer_val": 296,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.551272,
+      "segundos": 13.3
+    },
+    {
+      "brazo": "B",
+      "semilla": 20261132,
+      "pliegue": 5,
+      "variante": "cruda",
+      "matriz": "aleatoria",
+      "sha_matriz": "e3eb063e4218fc7d531bb088db8fe90cb1d0aada",
+      "E_estrella": 9,
+      "epocas_de_los_tres_splits": [
+        10,
+        9,
+        9
+      ],
+      "n_outer_train": 1186,
+      "n_outer_val": 297,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.566849,
+      "segundos": 17.9
+    },
+    {
+      "brazo": "C",
+      "semilla": 20261130,
+      "pliegue": 1,
+      "variante": "norm",
+      "matriz": "w2v",
+      "sha_matriz": "c1b774e52e0e1dc131311bddea967e2a72a96e29",
+      "E_estrella": 12,
+      "epocas_de_los_tres_splits": [
+        16,
+        10,
+        12
+      ],
+      "n_outer_train": 1186,
+      "n_outer_val": 297,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.636,
+      "segundos": 17.9
+    },
+    {
+      "brazo": "C",
+      "semilla": 20261130,
+      "pliegue": 2,
+      "variante": "norm",
+      "matriz": "w2v",
+      "sha_matriz": "c1b774e52e0e1dc131311bddea967e2a72a96e29",
+      "E_estrella": 13,
+      "epocas_de_los_tres_splits": [
+        12,
+        13,
+        13
+      ],
+      "n_outer_train": 1186,
+      "n_outer_val": 297,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.690651,
+      "segundos": 31.7
+    },
+    {
+      "brazo": "C",
+      "semilla": 20261130,
+      "pliegue": 3,
+      "variante": "norm",
+      "matriz": "w2v",
+      "sha_matriz": "c1b774e52e0e1dc131311bddea967e2a72a96e29",
+      "E_estrella": 17,
+      "epocas_de_los_tres_splits": [
+        17,
+        16,
+        18
+      ],
+      "n_outer_train": 1187,
+      "n_outer_val": 296,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.690267,
+      "segundos": 440.0
+    },
+    {
+      "brazo": "C",
+      "semilla": 20261130,
+      "pliegue": 4,
+      "variante": "norm",
+      "matriz": "w2v",
+      "sha_matriz": "c1b774e52e0e1dc131311bddea967e2a72a96e29",
+      "E_estrella": 14,
+      "epocas_de_los_tres_splits": [
+        14,
+        12,
+        16
+      ],
+      "n_outer_train": 1187,
+      "n_outer_val": 296,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.612789,
+      "segundos": 38.2
+    },
+    {
+      "brazo": "C",
+      "semilla": 20261130,
+      "pliegue": 5,
+      "variante": "norm",
+      "matriz": "w2v",
+      "sha_matriz": "c1b774e52e0e1dc131311bddea967e2a72a96e29",
+      "E_estrella": 12,
+      "epocas_de_los_tres_splits": [
+        14,
+        12,
+        12
+      ],
+      "n_outer_train": 1186,
+      "n_outer_val": 297,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.66237,
+      "segundos": 20.6
+    },
+    {
+      "brazo": "C",
+      "semilla": 20261131,
+      "pliegue": 1,
+      "variante": "norm",
+      "matriz": "w2v",
+      "sha_matriz": "c1b774e52e0e1dc131311bddea967e2a72a96e29",
+      "E_estrella": 13,
+      "epocas_de_los_tres_splits": [
+        13,
+        11,
+        13
+      ],
+      "n_outer_train": 1186,
+      "n_outer_val": 297,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.66824,
+      "segundos": 20.8
+    },
+    {
+      "brazo": "C",
+      "semilla": 20261131,
+      "pliegue": 2,
+      "variante": "norm",
+      "matriz": "w2v",
+      "sha_matriz": "c1b774e52e0e1dc131311bddea967e2a72a96e29",
+      "E_estrella": 12,
+      "epocas_de_los_tres_splits": [
+        10,
+        15,
+        12
+      ],
+      "n_outer_train": 1186,
+      "n_outer_val": 297,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.629477,
+      "segundos": 16.8
+    },
+    {
+      "brazo": "C",
+      "semilla": 20261131,
+      "pliegue": 3,
+      "variante": "norm",
+      "matriz": "w2v",
+      "sha_matriz": "c1b774e52e0e1dc131311bddea967e2a72a96e29",
+      "E_estrella": 14,
+      "epocas_de_los_tres_splits": [
+        17,
+        14,
+        11
+      ],
+      "n_outer_train": 1187,
+      "n_outer_val": 296,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.661766,
+      "segundos": 20.9
+    },
+    {
+      "brazo": "C",
+      "semilla": 20261131,
+      "pliegue": 4,
+      "variante": "norm",
+      "matriz": "w2v",
+      "sha_matriz": "c1b774e52e0e1dc131311bddea967e2a72a96e29",
+      "E_estrella": 14,
+      "epocas_de_los_tres_splits": [
+        14,
+        12,
+        18
+      ],
+      "n_outer_train": 1187,
+      "n_outer_val": 296,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.667803,
+      "segundos": 21.9
+    },
+    {
+      "brazo": "C",
+      "semilla": 20261131,
+      "pliegue": 5,
+      "variante": "norm",
+      "matriz": "w2v",
+      "sha_matriz": "c1b774e52e0e1dc131311bddea967e2a72a96e29",
+      "E_estrella": 15,
+      "epocas_de_los_tres_splits": [
+        14,
+        15,
+        17
+      ],
+      "n_outer_train": 1186,
+      "n_outer_val": 297,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.67841,
+      "segundos": 20.0
+    },
+    {
+      "brazo": "C",
+      "semilla": 20261132,
+      "pliegue": 1,
+      "variante": "norm",
+      "matriz": "w2v",
+      "sha_matriz": "c1b774e52e0e1dc131311bddea967e2a72a96e29",
+      "E_estrella": 14,
+      "epocas_de_los_tres_splits": [
+        15,
+        11,
+        14
+      ],
+      "n_outer_train": 1186,
+      "n_outer_val": 297,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.63496,
+      "segundos": 21.2
+    },
+    {
+      "brazo": "C",
+      "semilla": 20261132,
+      "pliegue": 2,
+      "variante": "norm",
+      "matriz": "w2v",
+      "sha_matriz": "c1b774e52e0e1dc131311bddea967e2a72a96e29",
+      "E_estrella": 13,
+      "epocas_de_los_tres_splits": [
+        13,
+        15,
+        12
+      ],
+      "n_outer_train": 1186,
+      "n_outer_val": 297,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.572813,
+      "segundos": 19.9
+    },
+    {
+      "brazo": "C",
+      "semilla": 20261132,
+      "pliegue": 3,
+      "variante": "norm",
+      "matriz": "w2v",
+      "sha_matriz": "c1b774e52e0e1dc131311bddea967e2a72a96e29",
+      "E_estrella": 13,
+      "epocas_de_los_tres_splits": [
+        13,
+        14,
+        13
+      ],
+      "n_outer_train": 1187,
+      "n_outer_val": 296,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.62398,
+      "segundos": 15.6
+    },
+    {
+      "brazo": "C",
+      "semilla": 20261132,
+      "pliegue": 4,
+      "variante": "norm",
+      "matriz": "w2v",
+      "sha_matriz": "c1b774e52e0e1dc131311bddea967e2a72a96e29",
+      "E_estrella": 15,
+      "epocas_de_los_tres_splits": [
+        15,
+        12,
+        18
+      ],
+      "n_outer_train": 1187,
+      "n_outer_val": 296,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.641975,
+      "segundos": 22.1
+    },
+    {
+      "brazo": "C",
+      "semilla": 20261132,
+      "pliegue": 5,
+      "variante": "norm",
+      "matriz": "w2v",
+      "sha_matriz": "c1b774e52e0e1dc131311bddea967e2a72a96e29",
+      "E_estrella": 15,
+      "epocas_de_los_tres_splits": [
+        16,
+        15,
+        15
+      ],
+      "n_outer_train": 1186,
+      "n_outer_val": 297,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.670141,
+      "segundos": 20.7
+    },
+    {
+      "brazo": "D",
+      "semilla": 20261130,
+      "pliegue": 1,
+      "variante": "norm",
+      "matriz": "aleatoria",
+      "sha_matriz": "b900e4b5a86a70440c3fb9c199a86b045b9d4f84",
+      "E_estrella": 10,
+      "epocas_de_los_tres_splits": [
+        10,
+        8,
+        11
+      ],
+      "n_outer_train": 1186,
+      "n_outer_val": 297,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.635101,
+      "segundos": 12.8
+    },
+    {
+      "brazo": "D",
+      "semilla": 20261130,
+      "pliegue": 2,
+      "variante": "norm",
+      "matriz": "aleatoria",
+      "sha_matriz": "b900e4b5a86a70440c3fb9c199a86b045b9d4f84",
+      "E_estrella": 8,
+      "epocas_de_los_tres_splits": [
+        8,
+        8,
+        11
+      ],
+      "n_outer_train": 1186,
+      "n_outer_val": 297,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.633615,
+      "segundos": 15.7
+    },
+    {
+      "brazo": "D",
+      "semilla": 20261130,
+      "pliegue": 3,
+      "variante": "norm",
+      "matriz": "aleatoria",
+      "sha_matriz": "b900e4b5a86a70440c3fb9c199a86b045b9d4f84",
+      "E_estrella": 10,
+      "epocas_de_los_tres_splits": [
+        12,
+        10,
+        7
+      ],
+      "n_outer_train": 1187,
+      "n_outer_val": 296,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.640471,
+      "segundos": 16.3
+    },
+    {
+      "brazo": "D",
+      "semilla": 20261130,
+      "pliegue": 4,
+      "variante": "norm",
+      "matriz": "aleatoria",
+      "sha_matriz": "b900e4b5a86a70440c3fb9c199a86b045b9d4f84",
+      "E_estrella": 13,
+      "epocas_de_los_tres_splits": [
+        13,
+        11,
+        14
+      ],
+      "n_outer_train": 1187,
+      "n_outer_val": 296,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.586571,
+      "segundos": 19.0
+    },
+    {
+      "brazo": "D",
+      "semilla": 20261130,
+      "pliegue": 5,
+      "variante": "norm",
+      "matriz": "aleatoria",
+      "sha_matriz": "b900e4b5a86a70440c3fb9c199a86b045b9d4f84",
+      "E_estrella": 11,
+      "epocas_de_los_tres_splits": [
+        9,
+        11,
+        12
+      ],
+      "n_outer_train": 1186,
+      "n_outer_val": 297,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.646655,
+      "segundos": 13.9
+    },
+    {
+      "brazo": "D",
+      "semilla": 20261131,
+      "pliegue": 1,
+      "variante": "norm",
+      "matriz": "aleatoria",
+      "sha_matriz": "d5edfed1d0c2a9f510c02332a6407a970ac613b1",
+      "E_estrella": 10,
+      "epocas_de_los_tres_splits": [
+        10,
+        10,
+        11
+      ],
+      "n_outer_train": 1186,
+      "n_outer_val": 297,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.640651,
+      "segundos": 17.7
+    },
+    {
+      "brazo": "D",
+      "semilla": 20261131,
+      "pliegue": 2,
+      "variante": "norm",
+      "matriz": "aleatoria",
+      "sha_matriz": "d5edfed1d0c2a9f510c02332a6407a970ac613b1",
+      "E_estrella": 11,
+      "epocas_de_los_tres_splits": [
+        8,
+        12,
+        11
+      ],
+      "n_outer_train": 1186,
+      "n_outer_val": 297,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.623517,
+      "segundos": 13.9
+    },
+    {
+      "brazo": "D",
+      "semilla": 20261131,
+      "pliegue": 3,
+      "variante": "norm",
+      "matriz": "aleatoria",
+      "sha_matriz": "d5edfed1d0c2a9f510c02332a6407a970ac613b1",
+      "E_estrella": 13,
+      "epocas_de_los_tres_splits": [
+        14,
+        13,
+        9
+      ],
+      "n_outer_train": 1187,
+      "n_outer_val": 296,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.6038,
+      "segundos": 19.5
+    },
+    {
+      "brazo": "D",
+      "semilla": 20261131,
+      "pliegue": 4,
+      "variante": "norm",
+      "matriz": "aleatoria",
+      "sha_matriz": "d5edfed1d0c2a9f510c02332a6407a970ac613b1",
+      "E_estrella": 12,
+      "epocas_de_los_tres_splits": [
+        12,
+        9,
+        13
+      ],
+      "n_outer_train": 1187,
+      "n_outer_val": 296,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.588105,
+      "segundos": 13.1
+    },
+    {
+      "brazo": "D",
+      "semilla": 20261131,
+      "pliegue": 5,
+      "variante": "norm",
+      "matriz": "aleatoria",
+      "sha_matriz": "d5edfed1d0c2a9f510c02332a6407a970ac613b1",
+      "E_estrella": 11,
+      "epocas_de_los_tres_splits": [
+        11,
+        10,
+        12
+      ],
+      "n_outer_train": 1186,
+      "n_outer_val": 297,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.639919,
+      "segundos": 18.3
+    },
+    {
+      "brazo": "D",
+      "semilla": 20261132,
+      "pliegue": 1,
+      "variante": "norm",
+      "matriz": "aleatoria",
+      "sha_matriz": "e3eb063e4218fc7d531bb088db8fe90cb1d0aada",
+      "E_estrella": 9,
+      "epocas_de_los_tres_splits": [
+        8,
+        9,
+        10
+      ],
+      "n_outer_train": 1186,
+      "n_outer_val": 297,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.6567,
+      "segundos": 11.4
+    },
+    {
+      "brazo": "D",
+      "semilla": 20261132,
+      "pliegue": 2,
+      "variante": "norm",
+      "matriz": "aleatoria",
+      "sha_matriz": "e3eb063e4218fc7d531bb088db8fe90cb1d0aada",
+      "E_estrella": 9,
+      "epocas_de_los_tres_splits": [
+        8,
+        9,
+        9
+      ],
+      "n_outer_train": 1186,
+      "n_outer_val": 297,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.619878,
+      "segundos": 14.8
+    },
+    {
+      "brazo": "D",
+      "semilla": 20261132,
+      "pliegue": 3,
+      "variante": "norm",
+      "matriz": "aleatoria",
+      "sha_matriz": "e3eb063e4218fc7d531bb088db8fe90cb1d0aada",
+      "E_estrella": 12,
+      "epocas_de_los_tres_splits": [
+        12,
+        14,
+        8
+      ],
+      "n_outer_train": 1187,
+      "n_outer_val": 296,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.598034,
+      "segundos": 13.8
+    },
+    {
+      "brazo": "D",
+      "semilla": 20261132,
+      "pliegue": 4,
+      "variante": "norm",
+      "matriz": "aleatoria",
+      "sha_matriz": "e3eb063e4218fc7d531bb088db8fe90cb1d0aada",
+      "E_estrella": 11,
+      "epocas_de_los_tres_splits": [
+        11,
+        9,
+        15
+      ],
+      "n_outer_train": 1187,
+      "n_outer_val": 296,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.62267,
+      "segundos": 22.6
+    },
+    {
+      "brazo": "D",
+      "semilla": 20261132,
+      "pliegue": 5,
+      "variante": "norm",
+      "matriz": "aleatoria",
+      "sha_matriz": "e3eb063e4218fc7d531bb088db8fe90cb1d0aada",
+      "E_estrella": 12,
+      "epocas_de_los_tres_splits": [
+        10,
+        13,
+        12
+      ],
+      "n_outer_train": 1186,
+      "n_outer_val": 297,
+      "n_eval_outer": 1,
+      "forward_passes_sobre_outer_val": 2,
+      "nota_forward_passes": "`entrenar_fijo` hace DOS pasadas hacia delante sobre ib para comprobar que el modo eval es determinista. Es una comprobacion de determinismo, NO una seleccion de checkpoint",
+      "macro_f1_outer_val": 0.647768,
+      "segundos": 18.3
+    }
+  ],
+  "manifiesto_de_pareo": [
+    {
+      "variante": "cruda",
+      "semilla": 20261130,
+      "pliegue_comprobado": 1,
+      "sha_init_compartido": "5f49da30edd780950275a9d7007707b27b35924c",
+      "sha_ids_outer_train": "dc02b4d624e7dc888a18a814a862ad4afe34ac0a",
+      "sha_largos_outer_train": "163d999757ccd0e1519fdfbc24393057dce0b71a",
+      "parametros_entrenables_iguales_tras_el_init": true,
+      "batches_identicos": true,
+      "rng_global_identico": true,
+      "mascaras_dropout_identicas": true,
+      "posiciones_dropout_observadas": 5469,
+      "forma_matrices": [
+        77658,
+        100
+      ],
+      "sha_matriz_w2v": "c1b774e52e0e1dc131311bddea967e2a72a96e29",
+      "sha_matriz_aleatoria": "b900e4b5a86a70440c3fb9c199a86b045b9d4f84",
+      "hashes_distintos": true
+    },
+    {
+      "variante": "cruda",
+      "semilla": 20261131,
+      "pliegue_comprobado": 1,
+      "sha_init_compartido": "c7dd7722d485568769890a442736f02005fd1e0d",
+      "sha_ids_outer_train": "dc02b4d624e7dc888a18a814a862ad4afe34ac0a",
+      "sha_largos_outer_train": "163d999757ccd0e1519fdfbc24393057dce0b71a",
+      "parametros_entrenables_iguales_tras_el_init": true,
+      "batches_identicos": true,
+      "rng_global_identico": true,
+      "mascaras_dropout_identicas": true,
+      "posiciones_dropout_observadas": 5862,
+      "forma_matrices": [
+        77658,
+        100
+      ],
+      "sha_matriz_w2v": "c1b774e52e0e1dc131311bddea967e2a72a96e29",
+      "sha_matriz_aleatoria": "d5edfed1d0c2a9f510c02332a6407a970ac613b1",
+      "hashes_distintos": true
+    },
+    {
+      "variante": "cruda",
+      "semilla": 20261132,
+      "pliegue_comprobado": 1,
+      "sha_init_compartido": "9b24b449bdf7ab9889e8c19d4c1dc46976c29470",
+      "sha_ids_outer_train": "dc02b4d624e7dc888a18a814a862ad4afe34ac0a",
+      "sha_largos_outer_train": "163d999757ccd0e1519fdfbc24393057dce0b71a",
+      "parametros_entrenables_iguales_tras_el_init": true,
+      "batches_identicos": true,
+      "rng_global_identico": true,
+      "mascaras_dropout_identicas": true,
+      "posiciones_dropout_observadas": 5439,
+      "forma_matrices": [
+        77658,
+        100
+      ],
+      "sha_matriz_w2v": "c1b774e52e0e1dc131311bddea967e2a72a96e29",
+      "sha_matriz_aleatoria": "e3eb063e4218fc7d531bb088db8fe90cb1d0aada",
+      "hashes_distintos": true
+    },
+    {
+      "variante": "norm",
+      "semilla": 20261130,
+      "pliegue_comprobado": 1,
+      "sha_init_compartido": "5f49da30edd780950275a9d7007707b27b35924c",
+      "sha_ids_outer_train": "ce043b19181f1c9b4ba2c2aa34df922e4919d4e4",
+      "sha_largos_outer_train": "6a9da75ae4e0359083455a853dde7525f74bb7e1",
+      "parametros_entrenables_iguales_tras_el_init": true,
+      "batches_identicos": true,
+      "rng_global_identico": true,
+      "mascaras_dropout_identicas": true,
+      "posiciones_dropout_observadas": 5658,
+      "forma_matrices": [
+        77658,
+        100
+      ],
+      "sha_matriz_w2v": "c1b774e52e0e1dc131311bddea967e2a72a96e29",
+      "sha_matriz_aleatoria": "b900e4b5a86a70440c3fb9c199a86b045b9d4f84",
+      "hashes_distintos": true
+    },
+    {
+      "variante": "norm",
+      "semilla": 20261131,
+      "pliegue_comprobado": 1,
+      "sha_init_compartido": "c7dd7722d485568769890a442736f02005fd1e0d",
+      "sha_ids_outer_train": "ce043b19181f1c9b4ba2c2aa34df922e4919d4e4",
+      "sha_largos_outer_train": "6a9da75ae4e0359083455a853dde7525f74bb7e1",
+      "parametros_entrenables_iguales_tras_el_init": true,
+      "batches_identicos": true,
+      "rng_global_identico": true,
+      "mascaras_dropout_identicas": true,
+      "posiciones_dropout_observadas": 5995,
+      "forma_matrices": [
+        77658,
+        100
+      ],
+      "sha_matriz_w2v": "c1b774e52e0e1dc131311bddea967e2a72a96e29",
+      "sha_matriz_aleatoria": "d5edfed1d0c2a9f510c02332a6407a970ac613b1",
+      "hashes_distintos": true
+    },
+    {
+      "variante": "norm",
+      "semilla": 20261132,
+      "pliegue_comprobado": 1,
+      "sha_init_compartido": "9b24b449bdf7ab9889e8c19d4c1dc46976c29470",
+      "sha_ids_outer_train": "ce043b19181f1c9b4ba2c2aa34df922e4919d4e4",
+      "sha_largos_outer_train": "6a9da75ae4e0359083455a853dde7525f74bb7e1",
+      "parametros_entrenables_iguales_tras_el_init": true,
+      "batches_identicos": true,
+      "rng_global_identico": true,
+      "mascaras_dropout_identicas": true,
+      "posiciones_dropout_observadas": 5549,
+      "forma_matrices": [
+        77658,
+        100
+      ],
+      "sha_matriz_w2v": "c1b774e52e0e1dc131311bddea967e2a72a96e29",
+      "sha_matriz_aleatoria": "e3eb063e4218fc7d531bb088db8fe90cb1d0aada",
+      "hashes_distintos": true
+    }
+  ],
+  "veredicto": {
+    "criterio": "docs/p78_preregistro.md seccion 7, aplicado sin modificarlo",
+    "orden_de_aplicacion": "1, luego 2, luego 3, y si ninguna se cumple rama 0",
+    "rama_cumplida": 1,
+    "texto_literal_de_la_rama": "Si `P1 >= +0.003` y `P1` es positivo en al menos 4 de 5 pliegues: el embedding aporta senal con normalizacion alineada. La linea Word2Vec tiene fundamento y la Fase 4 (curva de corpus) se justifica.",
+    "lectura_del_ic95": {
+      "ambiguedad_del_pre_registro": false,
+      "nota": "la seccion 5 declara dos intervalos para el mismo delta y la seccion 7 dice 'su IC95' sin especificar cual. La lectura principal es el bootstrap pareado por clusters DEL DELTA MEDIO, que es un IC95 valido; se reporta tambien la t sobre las tres semillas y, solo por trazabilidad, la lectura que resultaria del promedio de extremos, que no es un IC95 y no decide",
+      "bootstrap_por_clusters_delta_medio": [
+        0.0079020514,
+        0.040644575
+      ],
+      "es_un_ic95_valido": true,
+      "contiene_el_cero": false,
+      "rama_por_bootstrap": 1,
+      "ic95_t_sobre_semillas": [
+        -0.0287356494,
+        0.078521874
+      ],
+      "contiene_el_cero_t": true,
+      "rama_por_t": 1,
+      "extremos_promediados_entre_semillas_no_es_un_ic95": [
+        0.001946914,
+        0.0464887526
+      ],
+      "rama_por_extremos_promediados_no_es_un_ic95": 1,
+      "el_intervalo_que_decide": "bootstrap_por_clusters_delta_medio"
+    },
+    "regla_evaluada": {
+      "P1_media": 0.0248931123,
+      "P1_pliegues_positivos": 5,
+      "P2_media": 0.0233074081,
+      "P3_media": 0.0585545692,
+      "P4_media": 0.056968865,
+      "eps_gate_delta": 0.003,
+      "gate_folds": 4,
+      "hueco_del_pre_registro": "el pre-registro no tiene rama para 0 < P1 < +0.003, ni para P1 > 0 con el IC95 excluyendo el cero, ni para P1 negativo con el IC95 excluyendo el cero. En esos casos la rama es 0 y se declara no concluyente"
+    },
+    "observacion_P3_P4": {
+      "se_cumple": true,
+      "ratio_min_sobre_max": 0.972919,
+      "umbral_declarado": 0.5,
+      "texto_literal": "Si `P3` y `P4` son de magnitud parecida: la alineacion de normalizacion actua sobre ambos brazos por igual, y no es un mecanismo especifico del embedding."
+    },
+    "observacion_P1_P2": {
+      "se_cumple": true,
+      "texto_literal": "Si `P1` y `P2` son ambos claramente positivos: el tokenizado era un cuello de botella adicional y hay senal que investigar."
+    },
+    "que_no_decide": "P78 no dice nada sobre superar a V03. Su unico producto es la estimacion del efecto del embedding bajo un protocolo sin fuga, mas el diagnostico de cobertura que decide si abrir la Fase 4"
+  },
+  "csv_pareado": {
+    "ruta": "reports/p78_pares.csv",
+    "unidades_tweet_etiqueta": 4449,
+    "columnas_de_probabilidad": [
+      "proba_A",
+      "proba_B",
+      "proba_C",
+      "proba_D",
+      "proba_A_s20261131",
+      "proba_B_s20261131",
+      "proba_C_s20261131",
+      "proba_D_s20261131",
+      "proba_A_s20261132",
+      "proba_B_s20261132",
+      "proba_C_s20261132",
+      "proba_D_s20261132"
+    ],
+    "nota": "las cuatro probabilidades del pre-registro son las de la semilla primaria 20261130, en las columnas proba_A a proba_D; las de las otras dos semillas van anadidas para que el resultado sea recomputable sin reentrenar"
+  },
+  "figuras": {
+    "p78_01_deltas_por_pliegue.png": {
+      "bytes": 32455,
+      "sha256": "9c1b7d91324fd8fe8c1efbc583a15595cc2d348931f571b94f8b49cc914caba8"
+    },
+    "p78_02_cobertura_y_motivos.png": {
+      "bytes": 36668,
+      "sha256": "30cc4e3fbb9746c34578289159458628beb7ee64c6f0a15042f0588137ec1046"
+    },
+    "p78_03_f1_por_etiqueta.png": {
+      "bytes": 23857,
+      "sha256": "02d839d792d29d5d3c7c957b0e94ef7d9eb5afc523c92df2b5b5cb0fbb414b44"
+    },
+    "p78_04_probabilidades.png": {
+      "bytes": 48090,
+      "sha256": "c232dfb155c101f217aa8a09041b9b58305171209dbeadd9af50654c46b19994"
+    },
+    "p78_05_delta_por_semilla.png": {
+      "bytes": 26219,
+      "sha256": "21800af8c43329995f3be11bc6738757495d409da0d097ca058a149b657934a8"
+    },
+    "p78_06_ic95_bootstrap.png": {
+      "bytes": 22509,
+      "sha256": "7bde5e52537c8cf867f2080b07ca6fac3a1589a79fbbcbcdb1f4e8803b2320d5"
+    }
+  },
+  "asercion_10_ascii": {
+    "que_se_verifico_antes_de_construir_este_json": {
+      "p78_01_control_anidado.py": true,
+      "p78_pares.csv.tmp_p78": true
+    },
+    "que_se_verifico_y_cuando": "ANTES de construir este JSON, byte a byte y leyendo el fichero del disco: el propio script y el CSV pareado ya escrito en su temporal. El campo de arriba es el resultado OBSERVADO de esa llamada, no una constante redactada. Este JSON y el JSON de cobertura todavia no existian en ese momento, asi que no aparecen: se vuelven a verificar sobre sus temporales DESPUES de escribirlos y ANTES de renombrarlos, y si alguno sale False el script aborta y no queda ningun artefacto final. Ningun JSON puede certificar su propio hash; para eso esta el manifiesto sha256 aparte",
+    "manifiesto_sha256": {
+      "ruta": "reports/p78_manifiesto.sha256",
+      "entradas": 10,
+      "cubre": "el CSV pareado, los dos JSON, las seis figuras y este propio script",
+      "por_que_fuera_del_json": "para que el JSON no se auto-referencie: el manifiesto contiene el sha del JSON, no al reves"
+    },
+    "desviacion_declarada": "Un PNG es binario por construccion y sus bytes comprimidos son mayores que 127, asi que la asercion 10 se aplica byte a byte al script, al JSON de resultados, al JSON de cobertura y al CSV, y a las figuras se les exige nombre ASCII, firma PNG valida y etiquetas ASCII. Es imposible de cumplir literalmente sobre un PNG",
+    "sha256_verificados_sobre_los_temporales": {
+      "csv_pareado": "7f78f0c743d986a2e0290fdf2e6322836f0dd228ee71a0973e503a507585fc56",
+      "json_resultados": "5bec5dae4e6b02c8284525f27ea0be94a82837053f5a47326c659d9a3f9ec4ec",
+      "json_cobertura": "2468e6e8cca33ecbf34c3a7ff0a141b1fee138fa71ad32f022e8544f0afb2280",
+      "figura_p78_01_deltas_por_pliegue.png": "9c1b7d91324fd8fe8c1efbc583a15595cc2d348931f571b94f8b49cc914caba8",
+      "figura_p78_02_cobertura_y_motivos.png": "30cc4e3fbb9746c34578289159458628beb7ee64c6f0a15042f0588137ec1046",
+      "figura_p78_03_f1_por_etiqueta.png": "02d839d792d29d5d3c7c957b0e94ef7d9eb5afc523c92df2b5b5cb0fbb414b44",
+      "figura_p78_04_probabilidades.png": "c232dfb155c101f217aa8a09041b9b58305171209dbeadd9af50654c46b19994",
+      "figura_p78_05_delta_por_semilla.png": "21800af8c43329995f3be11bc6738757495d409da0d097ca058a149b657934a8",
+      "figura_p78_06_ic95_bootstrap.png": "7bde5e52537c8cf867f2080b07ca6fac3a1589a79fbbcbcdb1f4e8803b2320d5"
+    }
+  },
+  "cumplimiento": {
+    "test_leido": 0,
+    "holdout_leido": 0,
+    "submission_generada": 0,
+    "leaderboard_consultado": 0,
+    "v03_reentrenado": 0,
+    "word2vec_tocado": 0,
+    "parquet_de_slices_leido": 0,
+    "gpu_usado": 0,
+    "scripts_p71_a_p77_editados": 0,
+    "nota_holdout": "la particion holdout se aparta con holdout_v2 y no se lee nunca"
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

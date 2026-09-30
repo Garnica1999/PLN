@@ -3151,3 +3151,83 @@ Sin push, sin merge, sin rebase.
   signo del bootstrap invertido. Ninguna produjo un numero publicado.
 
 Sin push, sin merge, sin rebase.
+
+## 2026-09-30, auditoria de Word2Vec y TextCNN. Fases 0 a 3 del plan, y P78
+
+Plan de ejecucion: `/home/carlos/.opencode/plan/toxic_word2vec_textcnn_auditoria_y_reparacion.md`.
+Se audita la cadena P71 a P77 y se corrige. V03 congelado, W2V100 congelado, test holdout
+leaderboard y submission en cero.
+
+### Fase 0: entorno, congelado y metricas
+- Hardware re-verificado en vivo: venv 3.14.7, torch 2.14.0+rocm7.2, RX 9070 XT, 32 hilos, 31 GB.
+- `w2v_twitter_100d.npz` sha256 `302c994d13b75f8f5fbd440eea2c4f4113997e2581524021923b92f8244d705a`,
+  **coincide** con el congelado. Rama `proyecto-kaggle-toxic-2026-p67`.
+- El grafo `kaggle-toxic-2026-p67` permitio recuperar las firmas de las 40 funciones implicadas sin
+  releer 4995 lineas. Se uso solo para localizacion; la verdad es el codigo fuente.
+
+### Fase 3, P79: la auditoria del entrenador Word2Vec. Commit 710a8a8
+- **CONFIRMADO**: `SkipGram.forward` de p71_04:211-216 promedia el termino negativo sobre
+  `batch x K` en vez de sumarlo. Ratio **1/K exacto** para K=1,5,10,20 con residuo cero frente a
+  autograd. Sobre pares reales del artefacto congelado, el ratio de la norma del gradiente de entrada
+  es **0.080338** y la loss 1.084121 frente a 9.785559 de la referencia. El codigo no es un objetivo
+  distinto: es la referencia con la repulsion en 1/K.
+- **NO CONFIRMADO**: la hipotesis del scheduler con semillas desalineadas **era falsa**. Ambas ramas
+  usan `default_rng(SEMILLA + ep)`. El desvio real es de +0.215 por ciento en el total de lotes. Esto
+  **corrige una afirmacion del plan de auditoria**.
+- **Defecto real sin alcance en el artefacto**: la matriz de salida se inicializa a cero, luego el
+  gradiente de la entrada es exactamente cero en el paso 1. Con Adam o SGD plano escapa en el paso 2:
+  se pierde un paso de 1398.
+- Tres bugs del propio script P79, corregidos antes de aceptar el numero. El grave: `gradiente_analitico`
+  usaba `unsqueeze(1)` sobre un tensor de forma (B, K) y producia (B, B, K) en vez de (B, K, dim).
+  Con K igual a dim pasaba el filtro de shape y **corrompia el gradiente en silencio**. Ademas se
+  comparaba el gradiente analitico por ocurrencia con el de autograd ya acumulado, y se comparaba el
+  gradiente completo de la salida contra su sola parte positiva.
+- No se reentrena el Word2Vec y no se toca el artefacto congelado.
+
+### Fases 1 y 2, P78: el control anidado con la normalizacion alineada
+Commits dabf07d (pre-registro), e5045e7, db4e5d2, 47bc216. Revision de los cuatro especialistas.
+
+- **P1 = C - D = +0.024893**, sd entre semillas 0.021588, 5/5 pliegues, IC95 de bootstrap
+  (0.007902, 0.040645). Criterio pre-registado: **rama 1**.
+- **Pero el gate es fragil**: el bootstrap propaga cero variabilidad de reentrenamiento, y el delta
+  por semilla va de +0.0428 a **+0.0009**. El IC t con n=3 contiene el cero.
+- **El efecto de la normalizacion es mas grande que el del embedding**: P4 = +0.056969 con
+  desviacion de 0.001272, y es el 65 por ciento de la ganancia total C - B de +0.088397.
+- La cobertura sube de **68.64 a 88.73 por ciento** y las filas totalmente muertas de **70 a 1**. El
+  OOV era 68.3 por ciento ruido de caja, no falta de corpus.
+- El termino de interaccion `P1 - P2 = P3 - P4 = +0.001586` admite aditividad aproximada en la
+  media. **No** se afirma ortogonalidad: la sd de P3 es doce veces la de P4.
+- El control pareado se verifico por fuera: las normas de fila coinciden con diferencia maxima
+  4.77e-07, y el coseno intra-brazo es +0.1598 en Word2Vec frente a -0.0002 en la aleatoria.
+- **Seccion de corpus CERRADA**: el techo de cobertura es de 88.73 a cerca de 91.3 por ciento, y la
+  procedencia no lo permite. Lo que procede es `MIN_COUNT` de 3 a 2, que no necesita corpus nuevo.
+- **P73 y P74 reetiquetados como exploratorios, protocolo contaminado.** Sus numeros se conservan.
+
+### Las tres paradas, y por que importan
+1. Tras 6 unidades: asercion 10 redactada y no observada; asercion 6 re-derivando los splits en vez
+   de observarlos; `ic95_promediado` invalido que ademas **decidia una rama**; escritura no atomica.
+2. Tras 15 unidades: **etiquetas de semilla falsas** en el JSON, por dividir por `N_INTERNOS` cuando
+   `epoca_estrella` usa `7*j`; y el diagnostico de canales muertos sin contar las 70 filas con cero
+   tokens cubiertos, que es el mecanismo real.
+3. Tras 60 unidades y toda la metrica: `savefig` deducia el formato de la extension y
+   `nombre.png.tmp_p78` no es un formato soportado. **La escritura atomica funciono**: no quedo ningun
+   artefacto final a medias.
+
+Y un bug que habria costado 7 horas: el smoke test encontro que la asercion 6 nueva exigia
+`N_INTERNOS*j` y el protocolo real usa `7*j`, luego habria abortado despues de entrenar todo.
+
+Las seis unidades comunes entre la primera y la ultima corrida son **bit a bit identicas**: las tres
+rondas de correccion fueron de instrumentacion y de informe, no de calculo.
+
+### Verificacion
+Diez aserciones del pre-registro, todas en verde; la 6 sobre 180 llamadas reales capturadas
+parcheando `p75_01.partir_interna`. ASCII byte a byte en dos pasadas. El manifiesto verifica con
+`sha256sum -c` las diez piezas. El JSON se reproduce entero desde el CSV pareado y el OOF canonico
+con calculo independiente, sin discrepancias.
+
+```text
+gap del mejor brazo frente a V03: 0.117450, en METRICA LOCAL
+V03 remains the best verified leaderboard result.
+```
+
+Sin push, sin merge, sin rebase.

@@ -1,4 +1,49 @@
 
+<!-- P78-CONTROL-ANIDADO 2026-09-30 -->
+## P78: el embedding aporta, pero el tokenizer era el cuello de botella
+
+```text
+P78 = RAMA 1 del criterio pre-registado
+
+A Word2Vec  CRUDA        0.592444   sd 0.016930
+B aleatoria  CRUDA        0.569137   sd 0.006724
+C Word2Vec  NORMALIZADA  0.650999   sd 0.017442
+D aleatoria  NORMALIZADA  0.626106   sd 0.005729
+
+P1 = C - D  +0.024893  sd 0.021588  5/5 folds  IC95 boot (0.007902, 0.040645)
+P2 = A - B  +0.023307  sd 0.023590  4/5 folds  IC95 boot (0.006199, 0.039429)
+P3 = C - A  +0.058555  sd 0.015017  5/5 folds  IC95 boot (0.040710, 0.076529)
+P4 = D - B  +0.056969  sd 0.001272  5/5 folds  IC95 boot (0.040363, 0.073252)
+
+el gate pasa, pero es FRAGIL: el bootstrap propaga cero variabilidad de reentrenamiento
+y el delta por semilla de P1 va de +0.0428 a +0.0009. El IC t con n=3 contiene el cero
+
+el efecto de la normalizacion es MAS GRANDE que el del embedding: 65 por ciento del total
+cobertura 68.64 -> 88.73 por ciento, OOV 31.36 -> 11.27, filas totalmente muertas 70 -> 1
+el OOV era 68.3 por ciento ruido de caja, no falta de corpus
+
+control pareado verificado por fuera: normas de fila identicas, y coseno intra-brazo
++0.1598 en Word2Vec frente a -0.0002 en la aleatoria. P1 mide informacion de similitud
+
+P79: el objetivo de p71_04 NO es SGNS, el factor 1/K es exacto. El scheduler SI esta bien
+```
+
+**Reetiquetado**: P73 y P74 pasan de "evidencia reproducible" a **exploratorios, protocolo
+contaminado**: elegian el checkpoint con el pliegue externo de validacion. Sus numeros se conservan.
+
+**Cerrado**: la seccion de corpus. El techo de cobertura es de 88.73 a cerca de 91.3 por ciento y
+la procedencia no lo permite. Lo que procede es `MIN_COUNT` de 3 a 2, que no necesita corpus nuevo.
+
+```text
+V03 = FROZEN      Word2Vec Twitter 100d = FROZEN
+P72 = CLOSED      P73 = EXPLORATORIO      P74 = EXPLORATORIO
+P75 = SIN TRANSFERENCIA      P76 = SIN TRANSFERENCIA      P77 = CASO 1
+P78 = RAMA 1, gate fragil      P79 = OBJETIVO CONFIRMADO
+TEXTCNN = ACTIVA SOLO BAJO EL ALCANCE DEL OPERADOR SELECTIVO
+test = 0   holdout = 0   leaderboard = 0   submission = 0
+```
+<!-- /P78-CONTROL-ANIDADO 2026-09-30 -->
+
 <!-- P77-SELECTIVO 2026-09-30 -->
 ## P77: el selector funciona y no alcanza
 

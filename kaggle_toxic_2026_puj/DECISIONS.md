@@ -8314,3 +8314,131 @@ siempre estuvo en la cola.
 **No se afirma** que la TextCNN sea inutil: P74 sostiene que su representacion contiene informacion
 de tarea, y P77 no lo refuta. Lo que P77 muestra es que **esa informacion, en el espacio de las
 probabilidades de la CNN, no es lo bastante fiable para tocar la decision del campeon**.
+
+## D-270: P78. El embedding aporta, pero el tokenizer era el cuello de botella
+
+Pre-registro `docs/p78_preregistro.md`, sha256 `6737f43522c1c9dd0fc45d474d04ab92a7a230aa6b674ee83645588db20c9a0b`,
+commiteado en `dabf07d` **antes** de escribir el script. Controles: ML Reviewer, DL Specialist,
+NLP Specialist y Kaggle Specialist, los cuatro antes y despues de aceptar numero.
+
+### D-270.1. Los cuatro brazos
+
+```text
+A  Word2Vec 100d  CRUDA        0.592444   sd 0.016930
+B  aleatoria      CRUDA        0.569137   sd 0.006724
+C  Word2Vec 100d  NORMALIZADA  0.650999   sd 0.017442
+D  aleatoria      NORMALIZADA  0.626106   sd 0.005729
+
+P1 = C - D   +0.024893   sd 0.021588   5/5 folds   IC95 boot (0.007902, 0.040645)
+P2 = A - B   +0.023307   sd 0.023590   4/5 folds   IC95 boot (0.006199, 0.039429)
+P3 = C - A   +0.058555   sd 0.015017   5/5 folds   IC95 boot (0.040710, 0.076529)
+P4 = D - B   +0.056969   sd 0.001272   5/5 folds   IC95 boot (0.040363, 0.073252)
+```
+
+Criterio pre-registado seccion 7, aplicado en orden: **rama 1**, el gate de 0.003 se cumplio.
+
+### D-270.2. El gate se cumplio, pero es mas fragile de lo que parece
+
+El bootstrap por clusters remuestrea tweets y promedia sobre las tres redes ya entrenadas:
+propaga **cero** variabilidad de reentrenamiento. La desviacion entre semillas de P1, 0.021588, es
+mayor que el semiancho del intervalo, 0.016372, y el IC t con n=3 contiene el cero.
+
+```text
+P1 por semilla   s20261130 +0.030964   s20261131 +0.042796   s20261132 +0.000919
+```
+
+El gate pasa en dos de tres semillas y **casi no pasa en la tercera**. Y 5/5 pliegues no son cinco
+observaciones independientes: quince unidades sobre las mismas 1483 filas.
+
+Se afirma: el efecto es positivo en las quince unidades pareadas y la estimacion puntual es +0.025.
+**No** se afirma que se reproduzca al reentrenar.
+
+### D-270.3. El hallazgo de primer orden: el tokenizer, no el embedding
+
+Descomposicion del total en la semilla primaria:
+
+```text
+C - B  total             +0.088397
+  (C - D)  embedding     +0.030964    35.0 por ciento
+  (D - B)  normalizacion +0.057433    65.0 por ciento
+```
+
+P4, el efecto de normalizar en el brazo **aleatorio**, es +0.056969 con desviacion de **0.001272**,
+trece veces menor que la del brazo. **El 65 por ciento de la ganancia la produce una transformacion
+determinista de cadenas.** Cobertura 68.64 a 88.73 por ciento, OOV 31.36 a 11.27, y filas
+totalmente muertas de 70 a 1. El OOV era 68.3 por ciento ruido de caja.
+
+### D-270.4. La interaccion se puede acotar, no afirmar
+
+`P1 - P2 = P3 - P4 = +0.001586` identicamente, semilla a semilla. Se admite **aditividad aproximada
+en la media**. **No** se afirma ortogonalidad: no hay IC del termino, y la sd de P3 es doce veces la
+de P4. Que la media de tres valores dispersos de a 0.0016 es cancelacion, no efecto pequeno.
+
+### D-270.5. P73 y P74 quedan reetiquetados
+
+P73 reporto +0.0316259 y P74 +0.02427 con diez de diez semillas, con el checkpoint elegido por el
+pliegue externo. Con protocolo limpio y el tokenizado de P73, P2 = +0.023307. Dos efectos explican
+la diferencia: la fuga de checkpoint y el 68 por ciento de OOV por caja.
+
+**P73 y P74 pasan de "evidencia reproducible" a "exploratorios, protocolo contaminado".** Los
+numeros historicos se conservan intactos.
+
+### D-270.6. Seccion de corpus: CERRADA, con evidencia
+
+La cobertura esta en 88.73 por ciento sin tocar el corpus. Del OOV residual solo 650 tokens, un 2.5
+por ciento, serian recuperables con mas corpus: el techo es de 88.73 a cerca de 91.3 por ciento. Y la
+procedencia no lo permite: la fuente son tweets de COVID-19 de abril de 2020 y el desarrollo es
+texto de foro sobre registro civil. Los 1989 tokens sin motivo son 898 de forma ortografica
+recuperable, 441 que el corpus vio con frecuencia 1 o 2 y descarto `MIN_COUNT = 3`, y 650 de dominio.
+
+Lo que procede no es mas corpus sino `MIN_COUNT` de 3 a 2, que no necesita corpus nuevo y recupera
+441 tokens. No justifica una fase sola. El margen grande esta en la calidad del vector, y ahi ataca
+P79.
+
+### D-270.7. El control pareado, verificado por fuera
+
+Brecha senalada por el NLP Specialist y cerrada fuera del script: la norma de la fila aleatoria
+coincide con la de la fila Word2Vec, diferencia maxima 4.77e-07, en las tres semillas. Y el coseno
+intra-brazo sobre 800 filas es **+0.1598** en Word2Vec frente a **-0.0002** en la aleatoria. El
+embedding tiene estructura de similitud direccional real y la matriz aleatoria es isotropica: P1
+mide informacion de similitud, no escala.
+
+### D-270.8. Tres paradas y lo que cada una teaching
+
+La corrida se detuvo **tres veces** antes de aceptar un numero.
+
+1. Tras 6 unidades: la asercion 10 declaraba `"10_ascii": true` como literal antes de verificar; la
+   asercion 6 **re-derivaba** los splits internos en vez de observar los consumidos, y es la que
+   certifica el arreglo de P73 y P74; `ic95_promediado` no era un intervalo del 95 por ciento y
+   **decidia la rama 2**; y la escritura no era atomica.
+2. Tras 15 unidades: las **etiquetas de semilla del informe eran falsas**, por dividir por
+   `N_INTERNOS` cuando `epoca_estrella` de p75_01:121 usa `7*j`. Con tres splits, resto vale 0, 7
+   y 14, y dividir por 3 daba 0, 2 y 4, anunciando semillas que nunca ocurrieron. Y el diagnostico de
+   canales muertos no contaba las 70 filas con cero tokens cubiertos, que son un caso mas grave que
+   una fila corta.
+3. Tras 60 unidades y toda la metrica: `savefig` deducia el formato de la extension y
+   `nombre.png.tmp_p78` no es un formato soportado.
+
+La escritura atomica **funciono**: en la tercera parada no quedo ningun artefacto final a medias, solo
+un CSV temporal huerfano. Un fallo a media corrida sin esa correccion habria dejado 4449 filas de
+OOF pareado en disco con apariencia de resultado y sin veredicto.
+
+Y un bug que habria costado 7 horas: el smoke test encontro que la asercion 6 nueva exigia semillas
+`BASE + 100*k + N_INTERNOS*j` y el protocolo real usa `7*j`. Habria abortado **despues** de
+entrenar las 60 unidades.
+
+Las seis unidades comunes entre la primera corrida y la final son **bit a bit identicas**: las tres
+rondas de correccion fueron de instrumentacion y de informe, no de calculo.
+
+### D-270.9. Verificacion y estado
+
+Diez aserciones del pre-registro, todas en verde. La 6 se cumple sobre 180 llamadas reales a
+`partir_interna` capturadas parcheando `p75_01.partir_interna` alrededor de cada llamada a
+`epoca_estrella`. ASCII verificado byte a byte en dos pasadas. `reports/p78_manifiesto.sha256`
+verifica con `sha256sum -c` las diez piezas. El JSON se reproduce entero desde el CSV pareado y el
+OOF canonico con calculo independiente, sin discrepancias.
+
+```text
+gap del mejor brazo frente a V03: 0.117450, en METRICA LOCAL
+V03 remains the best verified leaderboard result.
+```
