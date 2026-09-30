@@ -7693,3 +7693,86 @@ habria que medir antes de invertir mas en esta linea.**
 
 **Lo que NO cambia con esta adenda**: la TextCNN sigue sin ser competitiva con el campeon (0.6091
 frente a 0.7772), no se evalua ninguna fusion, y no se afirma nada sobre el corpus en general.
+
+## D-255: la revision de cierre de ML/DL, y el hallazgo que vuelve a acotar P73
+
+### D-255.1. La significacion de P73 depende de la especificacion del intervalo
+
+Este es el hallazgo mas importante de las dos revisiones de cierre, y no lo habia visto.
+
+```text
+deltas por pliegue    +0.061471  -0.053772  +0.064504  +0.060351  +0.022266
+media                 +0.030964
+desviacion tipica     0.050436
+error tipico          0.022556   con 4 grados de libertad
+IC 95 t de Student    [-0.031652, +0.093580]     CRUZA EL CERO
+IC 95 bootstrap       [+0.010066, +0.053484]     excluye el cero
+```
+
+**Un pliegue (el segundo) va en contra con -0.0538, mas de una desviacion.** Con la unidad de
+inferencia "pliegue" el intervalo cruza el cero; con la unidad "cluster de near-duplicados" no. No
+es ruido: es la **especificacion de dependencia**, y cambia el veredicto.
+
+Consecuencia: el "excluye el cero SI" de la particion congelada es **sensible a la especificacion
+elegida**, y eso hay que declararlo cada vez que se cite. El bootstrap condiciona en la particion;
+la unidad pliegue no. La lectura honesta es que **hay indicio, no significacion robusta a la
+especificacion**, y encaja con la calificacion ya registrada: direccionalmente consistente,
+cuantitativamente inestable.
+
+### D-255.2. La definicion de la metrica queda congelada por escrito
+
+El revisor detecto que la media simple de los F1 por pliegue no coincide con el CV titular:
+
+```text
+                 media de pliegues    OOF concatenado    diferencia
+A Word2Vec            0.6065              0.6091            +0.0026
+B aleatorio           0.5755              0.5774            +0.0019
+```
+
+No es un error: la metrica titular del proyecto es el **macro-F1 sobre las 1483 filas OOF
+concatenadas**, y el bootstrap apunta a esa misma cantidad. Pero la definicion debe quedar escrita,
+porque P74 la replica. **Titular = macro-F1 de las predicciones OOF concatenadas con umbrales
+congelados.** La media de pliegues se reporta como diagnostico, nunca como titular.
+
+### D-255.3. El conteo de parametros, verificado: 70.339, no 80.339
+
+El revisor afirmo que la aritmetica daba 80.339. **Se verifico componente a componente y el valor
+correcto es 70.339**, que es ademas el que el script aserto al ejecutar:
+
+```text
+convs.0  (64, 100, 2) 12.800 + 64      fc1.weight (64, 192) 12.288 + 64
+convs.1  (64, 100, 3) 19.200 + 64      fc2.weight (3, 64)      192 +  3
+convs.2  (64, 100, 4) 25.600 + 64      TOTAL                  70.339
+```
+
+No se acepta el numero del revisor sin comprobarlo, igual que no se acepto el mio sin comprobarlo.
+
+### D-255.4. Puntos tecnicos que el revisor confirmo, y uno que se acota
+
+```text
+el pooling enmascarado no fabrica la ventaja   la conducta de una fila sin ventana valida YA
+                                               estaba documentada en el pre-registro (produce
+                                               0 exacto) y no hay NaN en 10 corridas
+los umbrales                                   congelados de V03, nunca ajustados en P73
+el vocabulario y el corpus                     construidos solo con el corpus externo, nunca con
+                                               texto de desarrollo ni de test (P0 y P73-01)
+la identidad lexica de B                       es el control correcto; solo se igualo la norma
+                                               por token, NO la media ni la covarianza por
+                                               dimension, luego la ventaja puede ser "geometria
+                                               mas estadistica de frecuencia", no "semantica"
+```
+
+**La lectura del control de sobreajuste es parcialmente circular y se acota.** "La brecha de A es
+menor que la de B" es exactamente lo que predice la hipotesis de features mas utiles, luego es
+consistente pero **no independiente**. La evidencia no circular es la otra: la ventaja aparece en el
+pliegue externo. Y hay una segunda lectura que debilita mas: A puede tener menos brecha por menor
+capacidad efectiva, no por mas informacion. La brecha no distingue entre las dos.
+
+**Rebanadas por longitud, lectura corregida**: "nula en 0-6 y aproximadamente plana despues", no
+"creciente con la longitud". La explicacion mas plausible: con max pooling global, mas posiciones
+significa que el maximo se satura con n-gramas de activacion alta presentes en las dos ramas, y el
+vector pooled se vuelve menos dependiente de la composicion exacta, comprimiendo el delta.
+
+**Amenazas que el revisor anadio y que no estaban declaradas**: A tambien es UNA tirada (una semilla
+de Word2Vec, una particion); la asimetria A-B no implica que la varianza de A sea despreciable. La
+curva de early stopping no se reporta. Y la especificacion del intervalo de D-255.1.
