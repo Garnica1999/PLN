@@ -201,7 +201,7 @@ NOMBRES_GATE = ("G0_objetivo_de_la_regla", "G1_banda_ll_train", "G2_progreso",
 #: Campos numericos que el checkpoint exige por fold y por brazo.
 CAMPOS_FOLD = ("n_vocabulario", "vocab_sha256", "idf_sha256", "n_filas_fit_es_train",
                "n_filas_es_val", "n_train_fold", "n_val_fold", "n_features_es_train",
-               "n_features_es_val", "n_coordinates_a1", "alpha_efectivo", "d_norm",
+               "n_features_es_val", "n_coordinates_a1", "alpha_efectivo", "d_norm", "prior_es",
                "h_prior_es", "prior_es_sha256", "alpha_sha256", "es_train_sha256", "es_val_sha256",
                "ordenes_sha256", "pasada_de_parada", "mejor_pasada", "trayectoria", "sesgo",
                "t_", "n_actualizaciones", "macro_f1_standalone_fold_val",
@@ -1036,6 +1036,33 @@ def auditar_lecturas_de_datos() -> dict:
     violaciones: list[dict] = []
     revisadas = 0
     detalle: dict[str, dict] = {}
+    # El I/O real de este script cuelga de constantes de nivel de modulo (CANONICO, OOF_DIR,
+    # CKPT_DIR, RUTAS_HASHES, RUTAS_HASH_CORPUS), luego esos literales se auditan tambien: sin
+    # esta pasada, una ruta externa declarada como constante de modulo pasaria desapercibida.
+    lineas_en_funcion = {int(interno.lineno)
+                         for nodo in ast.walk(arbol)
+                         if isinstance(nodo, (ast.FunctionDef, ast.AsyncFunctionDef))
+                         for interno in ast.walk(nodo)
+                         if isinstance(interno, ast.Constant)}
+    literales_modulo = [(linea, texto) for linea, texto in literales_de_ruta(arbol)
+                        if linea not in lineas_en_funcion]
+    # A nivel de modulo, un literal SIN barra es un NOMBRE que luego se compone con una raiz
+    # declarada (`CANONICO / "fold_idx.npy"`), asi que se admite: lo que se vigila es que ningun
+    # literal de modulo apunte a una ruta externa o prohibida. Los literales CON barra (relativos o
+    # absolutos) si se comprueban contra las listas.
+    for linea, texto in literales_modulo:
+        revisadas += 1
+        if "/" not in texto:
+            continue
+        if not any(texto.startswith(prefijo) or prefijo in texto
+                   for prefijo in permitidas_union):
+            violaciones.append({"funcion": "<modulo>", "linea": linea, "literal": texto,
+                                "rol": "modulo"})
+    # Comprobacion en runtime: el corpus se carga desde cfg.TRAIN_FILE y debe ser el declarado.
+    if Path(cfg.TRAIN_FILE).resolve() != (ROOT / "data" / "raw" / "age_train.csv").resolve():
+        violaciones.append({"funcion": "<runtime>", "linea": 0,
+                            "literal": str(Path(cfg.TRAIN_FILE).resolve()),
+                            "rol": "corpus"})
     for nombre, propios in funciones:
         if nombre in FUNCIONES_LECTORAS:
             admitidas, rol = RUTAS_LECTURA_PERMITIDAS, "lectora"
@@ -1045,7 +1072,10 @@ def auditar_lecturas_de_datos() -> dict:
             admitidas, rol = permitidas_union, "mixta"
         revisadas += len(propios)
         detalle[nombre] = {"rol": rol, "literales": [texto for _, texto in propios]}
+        nombres_de_rol = {Path(prefijo).name for prefijo in admitidas}
         for linea, texto in propios:
+            if "/" not in texto and texto in nombres_de_rol:
+                continue
             if not any(texto.startswith(prefijo) or prefijo in texto for prefijo in admitidas):
                 violaciones.append({"funcion": nombre, "linea": linea, "literal": texto, "rol": rol})
     for violacion in violaciones:
@@ -1061,6 +1091,8 @@ def auditar_lecturas_de_datos() -> dict:
             "literales_en_funciones_revisados": revisadas,
             "literales_de_ruta_totales": len(literales),
             "roles_por_funcion": {nombre: detalle[nombre]["rol"] for nombre in sorted(detalle)},
+            "literales_de_modulo_revisados": len(literales_modulo),
+            "corpus_en_runtime": str(Path(cfg.TRAIN_FILE).resolve()),
             "violaciones": []}
 
 
@@ -1168,6 +1200,8 @@ class FtrlSoftmaxMulticlase:
             Alpha efectivo con el que se actualiza el siguiente ejemplo.
         """
         if self.power_t > 0.0:
+            if self.t <= 0:
+                raise Detencion("[STOP] power_t > 0 exige t > 0 para el decaimiento (exit 2)", 2)
             return self.alpha / (float(self.t) ** self.power_t)
         return self.alpha
 
@@ -1561,8 +1595,8 @@ def verificar_constantes(prereg: dict) -> tuple[bool, dict]:
                                            for e in prereg["enmiendas"])
                                    and {e["objeto"] for e in prereg["enmiendas"]}
                                    == {"control.a2_sgd.ajuste (presupuesto de 10 pasadas)",
-                                       "representacion.vectorizador.token_pattern (fidelidad "
-                                       "de la receta canonica)"}),
+                                       ("representacion.vectorizador.token_pattern "
+                                        "(fidelidad de la receta canonica)")}),
         "enmienda_defecto": ("doble sesgo" in control["enmienda_pre_ejecucion_1"][
             "defecto_corregido"]),
         "enmienda_exigencia": ("tabla de simetria de sesgo" in control["enmienda_pre_ejecucion_1"][
@@ -2677,6 +2711,15 @@ def sonda_asimetria_no_equivalente(prereg: dict) -> dict:
                                     "sano que demuestra que el presupuesto no es el limite",
             "lectura_correcta_de_a2": "el gemelo no es un equivalente de FTRL a 1e-6: se lee como "
                                       "'el presupuesto de 10 pasadas NO es el limite'",
+            "lambda2_ftrl": valores["lambda2_ftrl"],
+            "alpha_reg_sgd": valores["alpha_reg_sgd"],
+            "cociente": valores["cociente"],
+            "control_ajuste": (f"{prereg['control']['ajuste']['modo']} con "
+                               f"{prereg['control']['ajuste']['llamadas']} llamadas; "
+                               f"{prereg['control']['ajuste']['nota']}"),
+            "desvio_declarado_partial_fit": (
+                f"{prereg['control']['desvio_declarado_partial_fit']['medicion']}; "
+                f"motivo: {prereg['control']['desvio_declarado_partial_fit']['motivo_de_la_eleccion']}"),
             "pass": bool(valores["lambda2_ftrl"] == LAMBDA2 and valores["alpha_reg_sgd"] == 1e-06
                          and "NO se apoya" in asimetria["sonda_exigida"])}
 
@@ -2848,6 +2891,7 @@ def preparar_fold(textos: np.ndarray, clase: np.ndarray, fold_idx: np.ndarray,
               "vocab_sha256": sha256_textos(sorted(vectorizador.vocabulary_)),
               "idf_sha256": sha256_f64(vectorizador.idf_),
               "n_features_es_train_sin_sesgo": int(x_es.shape[1]),
+              "n_features_es_val_sin_sesgo": int(x_es_val.shape[1]),
               "n_coordinates_a1": int(x_es.shape[1] + 1),
               "prior": prior.tolist(), "prior_sha256": sha256_f64(prior),
               "d_norm": d_norm_de_prior(prior), "h_prior_es": entropia_de_prior(prior),
@@ -3056,10 +3100,11 @@ def registrar_fold(estado: dict, brazo: str, fold: int, resultado: dict, oof: np
                "n_train_fold": int(hashes_fold["n_train_fold"]),
                "n_val_fold": int(hashes_fold["n_val_fold"]),
                "n_features_es_train": int(hashes_fold["n_features_es_train_sin_sesgo"]),
-               "n_features_es_val": int(hashes_fold["n_features_es_train_sin_sesgo"]),
+               "n_features_es_val": int(hashes_fold["n_features_es_val_sin_sesgo"]),
                "n_coordinates_a1": int(hashes_fold["n_coordinates_a1"]),
                "alpha_efectivo": float(resultado["alpha"]), "d_norm": float(hashes_fold["d_norm"]),
                "h_prior_es": float(hashes_fold["h_prior_es"]),
+               "prior_es": [float(valor) for valor in hashes_fold["prior"]],
                "prior_es_sha256": hashes_fold["prior_sha256"],
                "alpha_sha256": hashes_fold["alpha_sha256"],
                "es_train_sha256": hashes_fold["es_train_sha256"],
@@ -3383,9 +3428,13 @@ def evaluar_puerta_preliminar(estado: dict, brazo: str) -> dict:
     g2_pasa = bool(mejoras_g2 >= 1)
     g3_pasa = bool(float(detalle["macro_f1_standalone_fold_val"]) >= G3_MINIMO)
     frec = [float(valor) for valor in detalle["frecuencias_fold_val"]]
-    prior = np.asarray(detalle.get("prior_es", []), dtype=np.float64)
+    if "prior_es" not in detalle:
+        raise Detencion("[STOP] el detalle del fold no trae el prior MEDIDO del ES-train, que G4 "
+                        "exige como ancla (exit 2)", 2)
+    prior = np.asarray(detalle["prior_es"], dtype=np.float64)
     if prior.size != N_CLASES:
-        prior = np.full(N_CLASES, 1.0 / N_CLASES)
+        raise Detencion(f"[STOP] el prior MEDIDO del ES-train tiene {prior.size} componentes y no "
+                        f"{N_CLASES} (exit 2)", 2)
     g4_cumple = all(G4_FACTOR_INFERIOR * float(prior[c]) <= frec[c]
                     <= G4_FACTOR_SUPERIOR * float(prior[c]) for c in range(N_CLASES))
     g6_pasa = bool(float(detalle["max_abs_suma_menos_uno"]) <= G6_TOLERANCIA)
@@ -3583,7 +3632,6 @@ def triage_formal(estado: dict, sondas: dict, puerta: dict) -> dict:
     alpha_ok = bool(sondas["g_reproducibilidad_alpha"]["diferencia_es_cero_exacto"]
                     and a1["alpha_sha256"] == a2["alpha_sha256"])
     un_alpha = bool(a1["alpha_efectivo"] == a2["alpha_efectivo"]
-                    and abs(a1["alpha_efectivo"] - a1["d_norm"] * 0.0) >= 0.0
                     and abs(a1["alpha_efectivo"]
                             - 2.0 * M_MARGEN / (a1["d_norm"] * (P_MAX ** 2))) == 0.0)
     checklist = {
@@ -3621,7 +3669,10 @@ def triage_formal(estado: dict, sondas: dict, puerta: dict) -> dict:
             "criterio": "un unico alpha por fold, identico en A1 y A2, igual a la forma cerrada "
                         "2*M/(d_norm*P_max^2) al cero binario: no hay grid ni reintento"},
     }
-    hay_defecto = any(bool(item["valor"]) for item in checklist.values())
+    # Cada `valor` de la checklist vale True cuando la comprobacion PASSA, es decir cuando NO hay
+    # indicador de defecto; un indicador de defecto es por tanto un valor False. Sin este "not" la
+    # clasificacion seria siempre DEFECTO_DE_IMPLEMENTACION y el nodo seria inalcanzable.
+    hay_defecto = any(not bool(item["valor"]) for item in checklist.values())
     mecanismo_publicado = bool(estado.get("mecanismo"))
     clasificacion = "DEFECTO_DE_IMPLEMENTACION" if hay_defecto else "MECANISMO_DEFINITIVO"
     concedido = bool((not hay_defecto) and mecanismo_publicado)
@@ -3736,6 +3787,7 @@ def entrenar_con_puerta(estado: dict, textos: np.ndarray, clase: np.ndarray,
             "n_filas_es_val": hashes_fold["n_filas_es_val"],
             "n_train_fold": hashes_fold["n_train_fold"],
             "prior": hashes_fold["prior"], "prior_sha256": hashes_fold["prior_sha256"],
+            "prior_es": hashes_fold["prior"],
             "d_norm": hashes_fold["d_norm"], "h_prior_es": hashes_fold["h_prior_es"],
             "alpha": hashes_fold["alpha"], "alpha_sha256": hashes_fold["alpha_sha256"]}
         estado["vectorizador_por_fold"][str(fold)] = {
@@ -4090,8 +4142,9 @@ def verificar_invariantes(estado: dict, clase: np.ndarray, fold_idx: np.ndarray,
                              and len(registro["idf_sha256"]) == 64
                              and len(registro["es_train_sha256"]) == 64
                              and len(registro["es_val_sha256"]) == 64)
-            filas_fit.append(registro["n_filas_fit_es_train"] == registro["n_train_fold"] // 1
-                             or registro["n_filas_fit_es_train"] < registro["n_train_fold"])
+            filas_fit.append(registro["n_filas_fit_es_train"] < registro["n_train_fold"]
+                             and registro["n_filas_fit_es_train"] + registro["n_filas_es_val"]
+                             == registro["n_train_fold"])
             coordenadas.append(registro["n_coordinates_a1"] == registro["n_vocabulario"] + 1)
             sumas.append(registro["max_abs_suma_menos_uno"] <= G6_TOLERANCIA)
             presupuesto.append(registro["pasada_de_parada"] <= P_MAX
@@ -4414,6 +4467,11 @@ def escribir_informe(resultado: dict) -> None:
         f"- Lectura correcta de A2: {asimetria['lectura_correcta_de_a2']}.",
         f"- Enmienda 2 (control A2): {asimetria['control_ajuste']}.",
         f"- Desviacion declarada: {asimetria['desvio_declarado_partial_fit']}.",
+        # Se citan por OBJETO y no por numero: en este documento 'Enmienda 1' y 'Enmienda 2'
+        # ya designan el doble sesgo y el control, y numerar aqui colisionaria con ellas.
+        *[f"- Enmienda del pre-registro ({enmienda['objeto']}): {enmienda['motivo']} "
+          f"(afecta a gates: {enmienda['afecta_a_gates']}; {enmienda['estado_datos']})."
+          for enmienda in resultado["prereg"]["enmiendas"]],
         "",
         "## 4. Consumo diagnostico del fold 0 y puerta G0-G6 (fail-fast)",
         "",
