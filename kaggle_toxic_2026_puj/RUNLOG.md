@@ -3085,3 +3085,31 @@ Sin push, sin merge, sin rebase.
   era falsa) y cinco imprecisiones mas. Registrado en `DECISIONS.md` D-258. **Ningun numero cambia.**
 
 Sin push, sin merge, sin rebase.
+
+
+## 2026-09-30, P76: calibracion nested de V03 y del TextCNN, y fusion controlada
+
+- `experiments/p76_01_calibracion_nested.py`: calibracion nested con las mismas 5 folds externas de
+  P75. `outer_train -> inner_train + inner_calibration -> calibrador -> outer_validation`, con la
+  outer_validation **completamente aislada**. Solo dos familias, `raw` y Platt, para no abrir grid.
+  Las predicciones de outer_validation se reutilizan de P75.
+- La calibracion **funciona como operacion estadistica**: Brier de V03 0.125771 -> 0.122455, del CNN
+  0.192150 -> 0.188485; pendientes de V03 1.31 -> 1.00 y del CNN 0.59 -> 0.85.
+- **Y no transfiere nada.** Las ocho configuraciones (cuatro condiciones x dos alphas) son
+  negativas. La mejor es **C, que calibra solo al CNN**, con `-0.0017743921` a alpha 0.05 y 2/5
+  folds. Pero la mejora es **inercia, no complementariedad**: rescata menos (11 frente a 17) y dana
+  menos (14 frente a 21).
+- **Razon estructural**: el AUC del CNN sobre el error de V03 no cambia al calibrar (0.4872 ->
+  0.4910 en HS, 0.6045 -> 0.6032 en TR, 0.4973 -> 0.4995 en AG). Una calibracion es monotona: no
+  reordena, luego no crea informacion discriminativa.
+- **Hallazgo no esperado**: calibrar a V03 lo **empeora** 0.0086 (0.7772114525 -> 0.7685825353),
+  porque los umbrales congelados se eligieron sobre sus probabilidades crudas. **Su sobreconfianza
+  es portante**: es parte de la definicion de su punto de operacion. Por eso B y D estan condenadas
+  de antemano y la unica comparacion que informa es A frente a C.
+- **VEREDICTO: CASO B `CALIBRACION_MEJORA_COMPLEMENTARIEDAD_PERO_NO_F1`.** Gate superado por
+  ninguna. **Finalista: ninguno.** El **bootstrap no se ejecuto** porque ninguna configuracion
+  supero el gate preliminar (delta >= +0.003 y rescue > damage): es lo pre-registrado.
+- Siete figuras en `figuras/p76/`.
+- La segunda particion **sigue sin ejecutarse**: sigue sin haber finalista.
+
+Sin push, sin merge, sin rebase.

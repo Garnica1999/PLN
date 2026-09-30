@@ -1,0 +1,518 @@
+{
+  "familia": "P76_CALIBRACION_NESTED",
+  "experiment_id": "P76",
+  "fase": "calibracion nested de ambos modelos y fusion controlada",
+  "fecha": "2026-09-30T09:48:39+00:00",
+  "naturaleza": "EXPERIMENTO. 5 calibradores por modelo. 8 configuraciones de fusion",
+  "hipotesis": "la complementariedad observada esta siendo desperdiciada por una incompatibilidad de calibracion; una calibracion nested permite transferir parte del rescue a corrected_cv",
+  "protocolo": {
+    "particiones": "las mismas 5 folds externas de P75",
+    "nested": "outer_train -> inner_train + inner_calibration -> calibrador -> outer_validation",
+    "outer_validation_aislada": true,
+    "calibradores": [
+      "raw",
+      "Platt"
+    ],
+    "alphas": [
+      0.05,
+      0.1
+    ],
+    "alpha_primario": 0.1,
+    "fraccion_calibracion": 0.7,
+    "epocas_cnn_de_p75": {
+      "1": 12,
+      "2": 10,
+      "3": 16,
+      "4": 14,
+      "5": 12
+    },
+    "limitacion_declarada": "el calibrador se ajusta sobre un modelo entrenado en inner_train (unas 830 filas) y se aplica a las predicciones de un modelo entrenado sobre el outer_train completo (1186)"
+  },
+  "pass0": {
+    "v03_crudo": 0.7772114525,
+    "coincide_con_el_campeon": true,
+    "holdout_usado": 0,
+    "test_usado": 0,
+    "leaderboard": 0,
+    "submission": 0
+  },
+  "calibracion_por_pliegue": [
+    {
+      "pliegue": 1,
+      "inner_train": 832,
+      "inner_calibration": 354,
+      "intentos": 1,
+      "epocas_cnn": 12,
+      "platt_v03": [
+        {
+          "pendiente": 1.141458,
+          "intercepto": -0.223634
+        },
+        {
+          "pendiente": 1.086729,
+          "intercepto": -0.665176
+        },
+        {
+          "pendiente": 1.117806,
+          "intercepto": -0.142146
+        }
+      ],
+      "platt_cnn": [
+        {
+          "pendiente": 0.593303,
+          "intercepto": -0.433082
+        },
+        {
+          "pendiente": 0.625407,
+          "intercepto": -0.553314
+        },
+        {
+          "pendiente": 0.593803,
+          "intercepto": -0.28368
+        }
+      ],
+      "segundos": 2.8
+    },
+    {
+      "pliegue": 2,
+      "inner_train": 818,
+      "inner_calibration": 368,
+      "intentos": 1,
+      "epocas_cnn": 10,
+      "platt_v03": [
+        {
+          "pendiente": 1.476461,
+          "intercepto": 0.044046
+        },
+        {
+          "pendiente": 1.471449,
+          "intercepto": -0.290803
+        },
+        {
+          "pendiente": 1.382853,
+          "intercepto": 0.008307
+        }
+      ],
+      "platt_cnn": [
+        {
+          "pendiente": 0.996617,
+          "intercepto": -0.151239
+        },
+        {
+          "pendiente": 0.94921,
+          "intercepto": 0.22776
+        },
+        {
+          "pendiente": 0.864069,
+          "intercepto": 0.002062
+        }
+      ],
+      "segundos": 1.8
+    },
+    {
+      "pliegue": 3,
+      "inner_train": 823,
+      "inner_calibration": 364,
+      "intentos": 1,
+      "epocas_cnn": 16,
+      "platt_v03": [
+        {
+          "pendiente": 1.463057,
+          "intercepto": -0.074073
+        },
+        {
+          "pendiente": 1.615304,
+          "intercepto": -0.368232
+        },
+        {
+          "pendiente": 1.379238,
+          "intercepto": -0.047244
+        }
+      ],
+      "platt_cnn": [
+        {
+          "pendiente": 0.550111,
+          "intercepto": -0.048695
+        },
+        {
+          "pendiente": 0.665087,
+          "intercepto": 0.194665
+        },
+        {
+          "pendiente": 0.447912,
+          "intercepto": -0.020661
+        }
+      ],
+      "segundos": 2.6
+    },
+    {
+      "pliegue": 4,
+      "inner_train": 833,
+      "inner_calibration": 354,
+      "intentos": 1,
+      "epocas_cnn": 14,
+      "platt_v03": [
+        {
+          "pendiente": 1.349693,
+          "intercepto": -0.15215
+        },
+        {
+          "pendiente": 1.162281,
+          "intercepto": -0.464406
+        },
+        {
+          "pendiente": 1.490118,
+          "intercepto": -0.237581
+        }
+      ],
+      "platt_cnn": [
+        {
+          "pendiente": 0.719462,
+          "intercepto": -0.111435
+        },
+        {
+          "pendiente": 0.687895,
+          "intercepto": -0.010806
+        },
+        {
+          "pendiente": 0.748591,
+          "intercepto": -0.031673
+        }
+      ],
+      "segundos": 2.3
+    },
+    {
+      "pliegue": 5,
+      "inner_train": 823,
+      "inner_calibration": 363,
+      "intentos": 1,
+      "epocas_cnn": 12,
+      "platt_v03": [
+        {
+          "pendiente": 1.107107,
+          "intercepto": -0.076358
+        },
+        {
+          "pendiente": 1.453131,
+          "intercepto": -0.547805
+        },
+        {
+          "pendiente": 1.225461,
+          "intercepto": -0.049889
+        }
+      ],
+      "platt_cnn": [
+        {
+          "pendiente": 0.428912,
+          "intercepto": 0.02417
+        },
+        {
+          "pendiente": 0.562968,
+          "intercepto": 0.087833
+        },
+        {
+          "pendiente": 0.47162,
+          "intercepto": 0.008018
+        }
+      ],
+      "segundos": 1.9
+    }
+  ],
+  "metricas_de_calibracion": {
+    "v03_raw": {
+      "HS": {
+        "brier": 0.148551,
+        "log_loss": 0.460781,
+        "pendiente": 1.311048,
+        "intercepto": -0.077302
+      },
+      "TR": {
+        "brier": 0.089307,
+        "log_loss": 0.308197,
+        "pendiente": 1.360647,
+        "intercepto": -0.414059
+      },
+      "AG": {
+        "brier": 0.139454,
+        "log_loss": 0.441771,
+        "pendiente": 1.298334,
+        "intercepto": -0.194299
+      },
+      "macro_brier": 0.125771,
+      "macro_log_loss": 0.403583
+    },
+    "v03_cal": {
+      "HS": {
+        "brier": 0.146439,
+        "log_loss": 0.453651,
+        "pendiente": 0.996569,
+        "intercepto": 0.013441
+      },
+      "TR": {
+        "brier": 0.084913,
+        "log_loss": 0.28695,
+        "pendiente": 0.998942,
+        "intercepto": 0.05233
+      },
+      "AG": {
+        "brier": 0.136012,
+        "log_loss": 0.432427,
+        "pendiente": 0.974155,
+        "intercepto": -0.113279
+      },
+      "macro_brier": 0.122455,
+      "macro_log_loss": 0.391009
+    },
+    "cnn_raw": {
+      "HS": {
+        "brier": 0.218978,
+        "log_loss": 0.633198,
+        "pendiente": 0.59205,
+        "intercepto": -0.026097
+      },
+      "TR": {
+        "brier": 0.150339,
+        "log_loss": 0.486494,
+        "pendiente": 0.61502,
+        "intercepto": 0.028903
+      },
+      "AG": {
+        "brier": 0.207132,
+        "log_loss": 0.61126,
+        "pendiente": 0.589011,
+        "intercepto": -0.077475
+      },
+      "macro_brier": 0.19215,
+      "macro_log_loss": 0.576984
+    },
+    "cnn_cal": {
+      "HS": {
+        "brier": 0.216276,
+        "log_loss": 0.621955,
+        "pendiente": 0.813262,
+        "intercepto": 0.093371
+      },
+      "TR": {
+        "brier": 0.147232,
+        "log_loss": 0.456025,
+        "pendiente": 0.861862,
+        "intercepto": 0.028946
+      },
+      "AG": {
+        "brier": 0.201947,
+        "log_loss": 0.589994,
+        "pendiente": 0.89355,
+        "intercepto": -0.025774
+      },
+      "macro_brier": 0.188485,
+      "macro_log_loss": 0.555991
+    }
+  },
+  "miembros_con_umbrales_congelados": {
+    "V03_raw": 0.7772114525,
+    "V03_cal": 0.7685825353,
+    "CNN_raw": 0.583875535,
+    "CNN_cal": 0.5738807461
+  },
+  "diversidad": {
+    "CNN_raw": {
+      "auc_error_v03": {
+        "HS": 0.487206,
+        "TR": 0.604502,
+        "AG": 0.497264
+      },
+      "acuerdo": 0.757024,
+      "desacuerdo": 0.242976,
+      "correlacion_con_v03": {
+        "HS": 0.588567,
+        "TR": 0.719074,
+        "AG": 0.612593
+      }
+    },
+    "CNN_cal": {
+      "auc_error_v03": {
+        "HS": 0.491008,
+        "TR": 0.603231,
+        "AG": 0.499461
+      },
+      "acuerdo": 0.748483,
+      "desacuerdo": 0.251517,
+      "correlacion_con_v03": {
+        "HS": 0.57018,
+        "TR": 0.722914,
+        "AG": 0.598987
+      }
+    },
+    "decisiones_que_cambia_la_calibracion_del_cnn": 0.051697
+  },
+  "fusiones": [
+    {
+      "configuracion": "A_V03raw_CNNraw_alpha0.05",
+      "corrected_cv": 0.7746109462,
+      "delta_vs_v03": -0.0026005064,
+      "fold_scores": [
+        -0.005575,
+        0.000385,
+        0.001429,
+        -0.004336,
+        -0.005949
+      ],
+      "folds_positivos": 2,
+      "rescue": 17,
+      "damage": 21,
+      "net": -4,
+      "rescue_rate": 0.003821,
+      "damage_rate": 0.00472
+    },
+    {
+      "configuracion": "A_V03raw_CNNraw_alpha0.10",
+      "corrected_cv": 0.7719675587,
+      "delta_vs_v03": -0.0052438938,
+      "fold_scores": [
+        -0.007635,
+        -0.002555,
+        0.003422,
+        -0.007954,
+        -0.012719
+      ],
+      "folds_positivos": 1,
+      "rescue": 31,
+      "damage": 45,
+      "net": -14,
+      "rescue_rate": 0.006968,
+      "damage_rate": 0.010115
+    },
+    {
+      "configuracion": "B_V03cal_CNNraw_alpha0.05",
+      "corrected_cv": 0.7651264389,
+      "delta_vs_v03": -0.0120850136,
+      "fold_scores": [
+        -0.040623,
+        -0.002671,
+        0.003584,
+        -0.00952,
+        -0.01524
+      ],
+      "folds_positivos": 1,
+      "rescue": 68,
+      "damage": 72,
+      "net": -4,
+      "rescue_rate": 0.015284,
+      "damage_rate": 0.016183
+    },
+    {
+      "configuracion": "B_V03cal_CNNraw_alpha0.10",
+      "corrected_cv": 0.7624993298,
+      "delta_vs_v03": -0.0147121227,
+      "fold_scores": [
+        -0.045396,
+        -0.004869,
+        2.4e-05,
+        -0.010924,
+        -0.016443
+      ],
+      "folds_positivos": 1,
+      "rescue": 72,
+      "damage": 81,
+      "net": -9,
+      "rescue_rate": 0.016183,
+      "damage_rate": 0.018206
+    },
+    {
+      "configuracion": "C_V03raw_CNNcal_alpha0.05",
+      "corrected_cv": 0.7754370605,
+      "delta_vs_v03": -0.0017743921,
+      "fold_scores": [
+        -0.003414,
+        0.000385,
+        0.001885,
+        -0.006399,
+        -0.001948
+      ],
+      "folds_positivos": 2,
+      "rescue": 11,
+      "damage": 14,
+      "net": -3,
+      "rescue_rate": 0.002472,
+      "damage_rate": 0.003147
+    },
+    {
+      "configuracion": "C_V03raw_CNNcal_alpha0.10",
+      "corrected_cv": 0.7749963696,
+      "delta_vs_v03": -0.0022150829,
+      "fold_scores": [
+        -0.003414,
+        0.000343,
+        0.003595,
+        -0.006862,
+        -0.005774
+      ],
+      "folds_positivos": 2,
+      "rescue": 24,
+      "damage": 27,
+      "net": -3,
+      "rescue_rate": 0.005394,
+      "damage_rate": 0.006069
+    },
+    {
+      "configuracion": "D_V03cal_CNNcal_alpha0.05",
+      "corrected_cv": 0.7659669038,
+      "delta_vs_v03": -0.0112445488,
+      "fold_scores": [
+        -0.042343,
+        -0.002397,
+        0.002469,
+        -0.00952,
+        -0.008511
+      ],
+      "folds_positivos": 1,
+      "rescue": 67,
+      "damage": 69,
+      "net": -2,
+      "rescue_rate": 0.01506,
+      "damage_rate": 0.015509
+    },
+    {
+      "configuracion": "D_V03cal_CNNcal_alpha0.10",
+      "corrected_cv": 0.7645497894,
+      "delta_vs_v03": -0.0126616631,
+      "fold_scores": [
+        -0.045845,
+        -0.002672,
+        0.002626,
+        -0.009516,
+        -0.012545
+      ],
+      "folds_positivos": 1,
+      "rescue": 71,
+      "damage": 75,
+      "net": -4,
+      "rescue_rate": 0.015959,
+      "damage_rate": 0.016858
+    }
+  ],
+  "bootstrap": {},
+  "gate": {
+    "delta_minimo": 0.003,
+    "folds_minimos": 4,
+    "pasa": []
+  },
+  "veredicto": {
+    "caso": "CASO B",
+    "etiqueta": "CALIBRACION_MEJORA_COMPLEMENTARIEDAD_PERO_NO_F1"
+  },
+  "finalista": null,
+  "que_no_se_responde": [
+    "si es mejor que V03 de forma definitiva",
+    "si debe hacerse submission",
+    "si debe hacerse fine-tuning",
+    "si debe probarse otra arquitectura"
+  ],
+  "que_queda_abierto": [
+    "segunda particion para un finalista, que no existe todavia",
+    "combinadores selectivos o no lineales",
+    "alphas fuera del rango pre-registrado",
+    "otras familias de calibracion, solo si Platt no basta"
+  ],
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

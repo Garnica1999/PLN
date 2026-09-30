@@ -8123,3 +8123,93 @@ ABIERTO    recalibracion por pliegue o por etiqueta antes de fusionar; combinado
 
 **El veredicto operativo se mantiene: CASO 5 y sin finalista.** Lo que habia que corregir era el
 lenguaje y dos razonamientos, no el rumbo.
+
+## D-259: P76. La calibracion funcionaba, y no era el cuello de botella
+
+### D-259.1. La incompatibilidad de calibracion es real, y la calibracion nested la arregla
+
+```text
+                 macro Brier        macro log loss     pendientes por etiqueta
+v03 raw            0.125771           0.403583          1.311  1.361  1.298
+v03 calibrado      0.122455           0.391009          0.997  0.999  0.974
+cnn raw            0.192150           0.576984          0.592  0.615  0.589
+cnn calibrado      0.188485           0.555991          0.813  0.862  0.894
+```
+
+La hipotesis de partida era correcta en su primer tramo: **los dos modelos viven en escalas de
+probabilidad distintas** (V03 sobreconfiado con pendiente 1,3; el CNN infraconfiado con 0.6), y la
+calibracion nested **lo arregla estadisticamente** — lleva la pendiente de V03 a 1,0 exacto y la del
+CNN a 0.85, y mejora el Brier y el log loss de los dos.
+
+### D-259.2. Y no transfiere nada, por una razon estructural
+
+```text
+A  V03raw + CNNraw   a0.05  -0.0026005064  folds 2/5  rescue 17  damage 21  net  -4
+A  V03raw + CNNraw   a0.10  -0.0052438938  folds 1/5  rescue 31  damage 45  net -14
+B  V03cal + CNNraw   a0.05  -0.0120850136  folds 1/5  rescue 68  damage 72  net  -4
+B  V03cal + CNNraw   a0.10  -0.0147121227  folds 1/5  rescue 72  damage 81  net  -9
+C  V03raw + CNNcal   a0.05  -0.0017743921  folds 2/5  rescue 11  damage 14  net  -3   MEJOR
+C  V03raw + CNNcal   a0.10  -0.0022150829  folds 2/5  rescue 24  damage 27  net  -3
+D  V03cal + CNNcal   a0.05  -0.0112445488  folds 1/5  rescue 67  damage 69  net  -2
+D  V03cal + CNNcal   a0.10  -0.0126616631  folds 1/5  rescue 71  damage 75  net  -4
+```
+
+**Las ocho configuraciones son negativas. El gate no lo supera ninguna. No hay finalista.**
+
+La mejor es **C, que calibra SOLO al CNN**, con `-0.0017743921` a alpha 0.05 (frente a `-0.0026005064`
+de A). Pero la mejora **no es complementariedad, es inercia**: el CNN calibrado mueve menos unidades,
+y por eso rescata menos (11 frente a 17) **y tambien dana menos** (14 frente a 21).
+
+**La razon estructural, y es decisiva.** El AUC del CNN sobre el error de V03 **no cambia** al
+calibrar:
+
+```text
+CNN raw    HS 0.487206   TR 0.604502   AG 0.497264
+CNN cal    HS 0.491008   TR 0.603231   AG 0.499461
+```
+
+**Una calibracion es una transformacion monotona: no puede reordenar, luego no puede crear
+informacion discriminativa nueva.** Si el score del CNN no sabe donde V03 falla (AUC ~0.5 en HS y
+AG), ningun calibrador lo va a arreglar. Eso cierra la avenida con un argumento que no depende de
+los alphas, de los umbrales ni de la particion.
+
+### D-259.3. El hallazgo que no esperaba: el punto de operacion del campeon es inseparable de su miscalibracion
+
+```text
+V03 raw        0.7772114525   (el campeon)
+V03 calibrado  0.7685825353   delta -0.0086289172
+CNN raw        0.5838755350
+CNN calibrado  0.5738807461   delta -0.2033307064
+```
+
+**Calibrar a V03 lo empeora en 0.0086.** Los umbrales 0.44/0.51/0.46 estan congelados y fueron
+elegidos sobre las probabilidades **crudas** de V03. Al calibrarlas, las probabilidades se encogen
+hacia 0.5 y los umbrales dejan de caer en el punto de operacion correcto.
+
+Dicho de otro modo: **la sobreconfianza de V03 es portante.** Su miscalibracion (pendiente 1,3) no
+es un defecto que haya que corregir, es parte de la definicion de su punto de operacion. Cualquier
+condicion que recalibre a V03 (B y D) esta condenada de antemano por construccion, y por eso la
+unica comparacion que informa es **A frente a C**.
+
+### D-259.4. El veredicto y la respuesta a la pregunta central
+
+**CASO B: `CALIBRACION_MEJORA_COMPLEMENTARIEDAD_PERO_NO_F1`.**
+
+La pregunta de P76 era si la complementariedad estaba siendo desperdiciada por una incompatibilidad
+de calibracion. **La respuesta es que no.** La incompatibilidad existia y se ha medido y corregido,
+pero **no era el cuello de botella**:
+
+```text
+lo que SI se logro     comparabilidad probabilistica real: pendientes 1.31 -> 1.00 en V03 y
+                       0.59 -> 0.85 en el CNN, con Brier y log loss mejores en los dos
+lo que NO se logro     transferir nada a corrected_cv. Las ocho configuraciones siguen negativas
+el por que             la calibracion es monotona: arregla la escala sin tocar el orden, y el
+                       orden es justo lo que falta (AUC ~0.5 en HS y AG)
+```
+
+**Queda cerrado**: la calibracion de ambos modelos como mecanismo de transferencia. **Queda
+abierto**: un operador de fusion no monotono o selectivo que use informacion distinta del score del
+CNN, y la segunda particion, que sigue sin ejecutarse.
+
+**No se afirma** que la calibracion sea inutil: mejora la calidad probabilistica y eso tiene valor
+por si mismo. Lo que no hace es crear informacion donde no la hay.
