@@ -134,9 +134,9 @@ para no presentar como hallazgo lo que es limite de resolucion.
 
 > El control mide la contribucion marginal de las **direcciones aprendidas** bajo una unica
 > lectura fija: mismo vocabulario, `d = 100`, mismo mean pooling, misma regresion logistica,
-> mismos umbrales congelados. Las dos ramas pertenecen a la **misma familia funcional** —un
+> mismos umbrales congelados. Las dos ramas pertenecen a la **misma familia funcional**  - un
 > clasificador lineal sobre la bolsa de tokens normalizada, con coeficientes en un subespacio de
-> dimension menor o igual que 100— y lo unico que cambia es **cual** subespacio se usa. Un empate
+> dimension menor o igual que 100 -  y lo unico que cambia es **cual** subespacio se usa. Un empate
 > acota la conclusion a esta lectura; **no prueba ni descarta** senal dependiente de orden,
 > composicion o no linealidad.
 
