@@ -1,8 +1,10 @@
 # V32 - Plan de reapertura: optimizacion del puntaje (2026-09-30)
 
-Estado global: **reapertura V32 TERMINADA** con tres candidatos medidos: P1 NO_ATRIBUIBLE
-(D-081), P2 CLOSED (D-082), P3 NO_ATRIBUIBLE (D-083). Campeon V30 + plug-in (LB 0.63575)
-intacto; sin submission. V33 (Via A) aprobada por Carlos y en ejecucion.
+Estado global: reapertura V32 **TERMINADA** (P1 NO_ATRIBUIBLE D-081, P2 CLOSED D-082,
+P3 NO_ATRIBUIBLE D-083) y **V33 TERMINADA** (V33-E1 NO_ATRIBUIBLE_BY_GATE, D-084; Via B
+descartada por ILEGAL). Cuatro candidatos medidos y ninguno pasa los gates. Campeon V30 +
+plug-in (LB 0.63575) intacto; sin submission. Reabrir la linea online exigiria un diseno
+y un pre-registro nuevos.
 Campeon congelado (FINAL_REFERENCE): **V30 + plug-in por clase**, LB 0.63575
 (CV global 0.6159732; nested 0.6154643; particion canonica).
 Objetivo del usuario: mejorar el puntaje de Kaggle; referencia declarada: acercarse a 0.70 de F1.
@@ -123,7 +125,18 @@ script nuevo; pre-registro congelado; campeon V30 + plug-in (LB 0.63575) intacto
   0.0632781, max 0.2153788, sesgo 0.0038350, frac > 1 = 0.0) -> la correccion proximal es
   ~24x MAS DEBIL que el gradiente, no inflada. Sin integracion, sin bootstrap, sin segunda
   particion, sin submission; `delta` intacto. V33 cerrada (D-084).
-- [ ] **F4''' Cierre** documentado por experimento (D-084..., notebook, docs, memorias).
+- [x] **F4''' Cierre**: acta **D-084** (Observation / Result / Decision / Consequences /
+  Evidence) con el hallazgo clave de que el punto de operacion viable de `alpha` esta
+  entre 0.004 (correccion ~24x mas debil que el gradiente) y 0.05 (correccion inflada que
+  hacia divergir en D-083), y que localizarlo exigiria un grid, prohibido por el
+  protocolo; `PROJECT_STATE.md` y `FINAL_REPORT.md` actualizados; seccion
+  **PHASE - V33 (P3b - FTRL SOFTMAX ONLINE)** en el notebook consolidado (319 celdas,
+  salida real + 20 aserciones); artefactos de novedad NUEVOS
+  (`reports/v33_novelty_registry.csv` y fila anexada en
+  `reports/age_complete_experiment_history.csv`, sin editar ningun script ejecutado);
+  RUNLOG y `experiments.csv` al dia; memorias (episodio + 3 tripletas en Graphiti del
+  grupo `kaggle_age_2026_puj`; codebase re-indexado con 44.843 nodos y 107.796 aristas).
+  Con este cierre **V33 queda cerrado** y la reapertura V32 sigue terminada.
 
 ## Ciclo 2 - P2 CatBoost sobre matriz_279 (abierto 2026-09-30)
 
