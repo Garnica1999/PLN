@@ -62,8 +62,11 @@
       "hash": "no aplica: no se ha descargado",
       "test_overlap_garantizable": false,
       "clasificacion": "AMBIGUOUS",
-      "razon_principal": "sin licencia declarada, y sin poder garantizar que el texto del test no este en el corpus sin compararlo contra el test, que esta prohibido",
-      "plataforma": "HuggingFace"
+      "razon_principal": "la licencia deja de ser el motivo principal y pasa a ser un riesgo declarado. Lo que lo mantiene fuera es el criterio 2: la recoleccion por timelines completas no tiene periodo acotado, luego el solapamiento no es garantizable ni conociendo la procedencia de TOXIC",
+      "plataforma": "HuggingFace",
+      "clasificacion_original": "AMBIGUOUS",
+      "razon_original": "sin licencia declarada, y sin poder garantizar que el texto del test no este en el corpus sin compararlo contra el test, que esta prohibido",
+      "registro_corregido": "la licencia pasa de criterio eliminatorio a campo declarado"
     },
     {
       "candidato": "pysentimiento/spanish-tweets-small",
@@ -153,7 +156,10 @@
       "hash": "no aplica",
       "test_overlap_garantizable": "no aplica: no hay tweets que puedan solaparse",
       "clasificacion": "NOT_APPLICABLE",
-      "razon_principal": "el propio card lo dice: no contiene tuits, usuarios, noticias ni etiquetas. Son cadenas de tendencias. Legal y bien documentado, pero no es un corpus de texto de tweets"
+      "razon_principal": "criterio 3: sin texto de tweets no hay corpus sobre el que aprender",
+      "clasificacion_original": "NOT_APPLICABLE",
+      "razon_original": "el propio card lo dice: no contiene tuits, usuarios, noticias ni etiquetas. Son cadenas de tendencias. Legal y bien documentado, pero no es un corpus de texto de tweets",
+      "registro_corregido": "la licencia pasa de criterio eliminatorio a campo declarado"
     },
     {
       "candidato": "mmaguero/covid19-spanishtweets-earlylateapril2020",
@@ -171,8 +177,11 @@
       "download_date": "2026-09-29",
       "hash": "no aplica: no se ha descargado",
       "test_overlap_garantizable": false,
-      "clasificacion": "AMBIGUOUS",
-      "razon_principal": "LICENCIA Y PERIODO CORRECTOS, y es el unico. Lo que falta es del otro lado: el periodo de recoleccion de TOXIC no esta documentado en ninguna parte, luego la no coincidencia con el test no se puede demostrar"
+      "clasificacion": "ALLOWED",
+      "razon_principal": "pasa los tres criterios: sin etiquetas, con texto, y con periodo cerrado y documentado anterior a la competicion. La procedencia privada del dataset de TOXIC refuerza el criterio de solapamiento",
+      "clasificacion_original": "AMBIGUOUS",
+      "razon_original": "LICENCIA Y PERIODO CORRECTOS, y es el unico. Lo que falta es del otro lado: el periodo de recoleccion de TOXIC no esta documentado en ninguna parte, luego la no coincidencia con el test no se puede demostrar",
+      "registro_corregido": "la licencia pasa de criterio eliminatorio a campo declarado"
     },
     {
       "candidato": "leadominguez/uruguayan-media-historical-tweets",
@@ -229,17 +238,21 @@
       "hash": "no aplica",
       "test_overlap_garantizable": false,
       "clasificacion": "PROHIBITED",
-      "razon_principal": "ETIQUETADO DE SENTIMIENTO, 17.317 positivos y 17.317 negativos. Prohibido por la regla del encargo con independencia de la licencia"
+      "razon_principal": "criterio 1, el unico que la licencia no puede salvar",
+      "clasificacion_original": "PROHIBITED",
+      "razon_original": "ETIQUETADO DE SENTIMIENTO, 17.317 positivos y 17.317 negativos. Prohibido por la regla del encargo con independencia de la licencia",
+      "registro_corregido": "la licencia pasa de criterio eliminatorio a campo declarado"
     }
   ],
   "conteo": {
-    "ALLOWED": 0,
-    "AMBIGUOUS": 3,
-    "PROHIBITED": 1
+    "AMBIGUOUS": 5,
+    "PROHIBITED": 2,
+    "NOT_APPLICABLE": 1,
+    "ALLOWED": 1
   },
   "decision": {
-    "clasificacion_de_la_linea": "CLOSED_AT_P0_BY_CORPUS_UNAVAILABILITY",
-    "puede_ejecutarse_p1": false,
+    "clasificacion_de_la_linea": "REOPENED_P1_PROCEDE",
+    "puede_ejecutarse_p1": true,
     "experimentos_gastados": 0,
     "candidatos_auditados": 9,
     "plataformas": [
@@ -290,5 +303,95 @@
     ],
     "candidatos_unicos_kaggle": 42,
     "hallazgos_nuevos": 5
+  },
+  "correccion_del_criterio": {
+    "el_error_corregido": "la ausencia de licencia se trato como criterio eliminatorio cuando era un campo a registrar",
+    "verificacion": "docs/competition_rules.md, texto verbatim: 0 menciones de licencias y 0 de corpus externos",
+    "lo_que_la_competencia_si_dice": [
+      "esta permitido el uso de librerias comunes de NLP y ML",
+      "el dataset de prueba no debe ser usado para entrenamiento",
+      "se pueden usar modelos de vectorizacion, pero deben entrenarse DESDE CERO"
+    ],
+    "nota_sobre_la_tercera_frase": "no solo no prohibe esta linea, la pide",
+    "criterios": [
+      {
+        "criterio": "1_corpus_etiquetado",
+        "es_regla": true,
+        "fuente": "encargo, item 3, prohibicion explicita",
+        "enunciado": "no utilizar ningun corpus cuya finalidad original sea un dataset etiquetado de toxicidad, hate speech, cyberbullying, sentiment, age o gender, si las etiquetas forman parte de su definicion"
+      },
+      {
+        "criterio": "2_solapamiento_con_el_test",
+        "es_regla": true,
+        "fuente": "encargo, item 22",
+        "enunciado": "si no se puede garantizar razonablemente que el texto del test no este en el corpus, clasificar como AMBIGUOUS y no utilizarlo"
+      },
+      {
+        "criterio": "3_contenido_utilizable",
+        "es_regla": true,
+        "fuente": "implicito: la hipotesis exige texto de tweets",
+        "enunciado": "el corpus tiene que contener texto de tweets sobre el que aprender"
+      },
+      {
+        "criterio": "4_licencia_declarada",
+        "es_regla": false,
+        "fuente": "la competencia NO lo exige; el encargo lo pide como CAMPO a registrar",
+        "enunciado": "se registra y se declara como riesgo practico, pero no descalifica. Elevarlo a criterio fue un error mio"
+      }
+    ],
+    "reclasificacion": [
+      {
+        "candidato": "mmaguero/covid19-spanishtweets-earlylateapril2020",
+        "antes": "AMBIGUOUS",
+        "por_que_antes": "solapamiento no garantizable",
+        "etiquetado": false,
+        "licencia": "CC BY-SA 4.0",
+        "contenido": "texto de tweets",
+        "periodo": "cerrado, 29 de marzo a 1 de mayo de 2020",
+        "despues": "ALLOWED",
+        "razon": "pasa los tres criterios: sin etiquetas, con texto, y con periodo cerrado y documentado anterior a la competicion. La procedencia privada del dataset de TOXIC refuerza el criterio de solapamiento",
+        "pendiente": "la comprobacion empirica contra el texto de TOXIC train, que es legal y aporta evidencia adicional"
+      },
+      {
+        "candidato": "pysentimiento/spanish-tweets",
+        "antes": "AMBIGUOUS",
+        "por_que_antes": "sin licencia declarada",
+        "etiquetado": false,
+        "licencia": "NO DECLARADA",
+        "contenido": "texto de tweets",
+        "periodo": "abierto: coleccion de mayo de 2019 mas timelines sin periodo acotado",
+        "despues": "AMBIGUOUS",
+        "razon": "la licencia deja de ser el motivo principal y pasa a ser un riesgo declarado. Lo que lo mantiene fuera es el criterio 2: la recoleccion por timelines completas no tiene periodo acotado, luego el solapamiento no es garantizable ni conociendo la procedencia de TOXIC",
+        "pendiente": ""
+      },
+      {
+        "candidato": "soncco/historical-twitter-trends-spanish-locations-2020-2021",
+        "antes": "NOT_APPLICABLE",
+        "por_que_antes": "no contiene texto de tweets",
+        "etiquetado": false,
+        "licencia": "ODC-By",
+        "contenido": "cadenas de tendencias",
+        "periodo": "cerrado, 2020-2021",
+        "despues": "NOT_APPLICABLE",
+        "razon": "criterio 3: sin texto de tweets no hay corpus sobre el que aprender",
+        "pendiente": ""
+      },
+      {
+        "candidato": "sinai-uja/COST",
+        "antes": "PROHIBITED",
+        "por_que_antes": "etiquetado de sentimiento",
+        "etiquetado": "SI, 34634 con polaridad",
+        "licencia": "CC BY-NC-SA 4.0",
+        "contenido": "texto de tweets",
+        "periodo": "2015 o anterior",
+        "despues": "PROHIBITED",
+        "razon": "criterio 1, el unico que la licencia no puede salvar",
+        "pendiente": ""
+      }
+    ],
+    "procede_p1": true,
+    "candidato": "mmaguero/covid19-spanishtweets-earlylateapril2020",
+    "informacion_nueva_de_carlos": "el dataset de TOXIC fue RECOPILADO para la competencia y es privado. Eso alimenta el criterio 2: un corpus publico no puede contener un dataset que nunca se publico, salvo coincidencia de tweets concretos",
+    "pendiente_antes_de_usarlo": "comprobacion empirica de solapamiento contra el texto de TOXIC TRAIN, que es legal porque el train no esta prohibido"
   }
 }

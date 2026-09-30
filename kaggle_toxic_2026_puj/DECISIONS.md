@@ -6959,3 +6959,87 @@ Eso es mas util que cerrar sin saber por que, y es lo que la busqueda ampliada h
 solo que no hay corpus, sino exactamente que haria falta.
 
 La linea sigue en `CLOSED_AT_P0_BY_CORPUS_UNAVAILABILITY`, con 0 experimentos gastados.
+
+
+## D-224 a D-227: la licencia no era una regla, y la linea se reabre
+
+Fecha 2026-09-29. Carlos pregunta de donde sale la restriccion de licencia. La respuesta obliga a
+corregir un error mio.
+
+### D-224. La restriccion era mia, no de la competencia
+
+Verificado sobre el texto verbatim de `docs/competition_rules.md`. Sobre datos hay exactamente
+tres frases:
+
+```text
+esta permitido el uso de librerias comunes de NLP y ML
+el dataset de prueba no debe ser usado para entrenamiento
+se pueden usar modelos de vectorizacion, pero deben ENTRENARSE DESDE CERO
+```
+
+**Cero menciones de licencias. Cero menciones de corpus externos.** Y la tercera frase no solo
+no prohibe esta linea: **la pide**.
+
+### D-225. Un campo descriptivo elevado a criterio eliminatorio
+
+El encargo pedia **registrar** `license/terms` como campo de la auditoria, y definia **una sola
+prohibicion explicita**: los corpus cuya finalidad fuese un dataset **etiquetado** de las seis
+categorias, mas la garantia de no solapamiento con el test.
+
+En ningun sitio decia que la ausencia de licencia descalifique. **Yo la eleve a criterio
+eliminatorio, y eso me llevo a clasificar `pysentimiento/spanish-tweets` como AMBIGUOUS poniendo
+la licencia primero cuando su bloqueo real es otro.**
+
+Los cuatro criterios, con su fuente:
+
+```text
+REGLA  1_corpus_etiquetado            encargo, item 3, prohibicion explicita
+REGLA  2_solapamiento_con_el_test     encargo, item 22
+REGLA  3_contenido_utilizable         implicito: la hipotesis exige texto de tweets
+CAMPO  4_licencia_declarada           la competencia NO lo exige; se registra y se declara
+                                      como riesgo practico, pero no descalifica
+```
+
+### D-226. Reclasificacion, y la linea se reabre
+
+Carlos confirma que el dataset de TOXIC fue **recopilado para la competencia y es privado**. Eso
+alimenta directamente el criterio 2.
+
+```text
+mmaguero/covid19-spanishtweets-...    AMBIGUOUS -> ALLOWED
+pysentimiento/spanish-tweets          AMBIGUOUS -> AMBIGUOUS  (por el criterio 2, no por licencia)
+soncco/historical-twitter-trends-...  NOT_APPLICABLE (sin texto de tweets)
+sinai-uja/COST                        PROHIBITED (etiquetado)
+```
+
+`mmaguero` pasa los tres criterios: sin etiquetas, con texto, y con **periodo cerrado y
+documentado** (29 de marzo a 1 de mayo de 2020).
+
+### D-227. El solapamiento, comprobado antes de usar el corpus
+
+```text
+filas recorridas                                2.277.953
+coincidencias EXACTAS con el texto de train             0
+coincidencias NORMALIZADAS con train                    0
+rango temporal observado                      2020-03 y 2020-04
+```
+
+La comprobacion se hizo contra **train**, que no esta prohibido. No se comparo contra el test.
+
+Y los dos corpus quedan preparados con la misma tokenizacion:
+
+```text
+Twitter    361.994 documentos | 10.000.029 tokens
+general      2.847 documentos | 10.002.400 tokens
+diferencia    0,02 por ciento
+```
+
+Tokenizacion **EMB-NORMAL-TW**, aplicada a los DOS corpus para aislar el dominio. Se diferencia
+de la de v5 en que **conserva el contenido del hashtag** (`#covid` como token) en vez de
+colapsarlo a un marcador, porque ahi vive parte de la senal que la hipotesis quiere capturar.
+
+### Lo que falta para cerrar P1
+
+Entrenar los dos Word2Vec. La spec de v5 dice **"No instalar gensim"** y usa el binario
+**FastText C++ con `minn=0, maxn=0`** para el control. Ese binario no existe en este worktree, y
+g++/cmake/make si. Hay que compilarlo desde la fuente oficial antes de entrenar.

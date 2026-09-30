@@ -2965,3 +2965,22 @@ El hallazgo: el bloqueo ha cambiado de naturaleza. El candidato de Kaggle tiene 
 explicita y periodo cerrado; lo que falta es que **el periodo de TOXIC no esta documentado**.
 
 Sin push, sin merge, sin rebase.
+
+
+## 2026-09-29, la linea Twitter se reabre: la licencia no era una regla
+
+- `experiments/p71_02_correccion_criterio.py`: corrige el criterio de auditoria. La competencia
+  no menciona licencias; era un campo a registrar que yo eleve a criterio eliminatorio.
+- `experiments/p71_03_preparar_corpus.py`: descarga verificada, comprobacion de solapamiento y
+  preparacion de los dos corpus con la misma tokenizacion.
+
+```text
+mmaguero/covid19-spanishtweets-...  AMBIGUOUS -> ALLOWED
+solapamiento con train: 0 exactas, 0 normalizadas
+Twitter 10.000.029 tokens | general 10.002.400 tokens
+```
+
+Pendiente para cerrar P1: compilar el binario FastText C++ (la spec de v5 prohibe gensim) y
+entrenar los dos modelos.
+
+Sin push, sin merge, sin rebase.
