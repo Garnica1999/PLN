@@ -3,6 +3,35 @@
 > Memoria persistente del proyecto. Leer SIEMPRE al inicio de sesión o tras compactación.
 > Última actualización: 2026-09-26 (cierre de V13 ADVANCED RESEARCH).
 
+## V35 via B (2026-09-30) CERRADA — `lambda1 > 0` no acota la norma; FTRL CERRADA DEFINITIVAMENTE (D-086)
+- **Veredicto**: `LINEA_ONLINE_CERRADA_POR_MECANISMO`, causa unica `G8_acotacion_norma`, con
+  `cierre_definitivo = True`. Cierre de **familia**, no un gate de delta. `integracion`, `delta` y
+  `bootstrap` en `None` con `motivo_de_no_calculo`; sin segunda particion ni submission.
+- **La hipotesis era falsable y quedo falsada**: el umbral L1 **no acota** `||w||_2`. Razon
+  max/min = **2.130435582526498** frente al umbral 1.0 anclado a la hipotesis misma. Trayectoria de
+  A1: `ll_train` 10.0583 -> 19.1594, `||w||_2` 28.2746 -> **60.2372**.
+- **El matiz**: `G7` **pasa** (la fraccion con `|z_j| <= lambda1` es **0.019333**, no 0), luego el L1
+  resulto **activo pero insuficiente**: descarta coordenadas de verdad y aun asi no acota.
+  **Acotar no es lo mismo que bastar**.
+- **El estado definitivo de la familia**: con `alpha` pequeno es **inerte** (D-084), con la regla de
+  margen **divergente** (D-085), y con umbral L1 **se duplica la norma** (D-086). Tres regimes
+  distintos, un mismo mecanismo. **No hay segundo `lambda1` ni acta futura dentro de este espacio**,
+  y el segundo miembro NO CUBIERTO (pesos por clase con L2 normalizado fuera de FTRL) queda
+  **cerrado por declaracion**. A diferencia de D-085, "cerrada" **si** significa agotada.
+- **Neto del proyecto**: **6 candidatos medidos** (P1, P2, P3, V33-E1, V34-E1, V35-E1) y **ninguno
+  pasa los gates**. Campeon **V30 + plug-in (LB 0.63575) intacto**.
+- **Aprendizaje metodologico (legado)**: `--verificar` y `--humo` **no ejecutaban la ruta de salida**,
+  y por ese hueco llegaron **5 bugs bloqueantes** (`KeyError` y `TypeError` en
+  `construir_resultado`, `escribir_informe`, `escribir_registro_novedad`, `NODOS_ARBOL` sombreado, y
+  `UnboundLocalError` que hacia A2 inalcanzable), todos capaces de matar la corrida **despues** de
+  entrenar. Se cerro el hueco con un **autoejercicio estructural** (5 caminos, funciones reales, las 10
+  rutas de escritura aisladas en un temporal) y una **cobertura en dos capas** del ensamblado de
+  `entrenar_brazo_fold` (AST y runtime), ambas dentro de `--verificar`. Ninguno de los 5 bugs toco
+  un gate, un umbral o el pre-registro.
+- **Pendiente**: la **via C1** (representacion nueva sin embeddings; candidato A = transiciones de
+  caracter global, P ~10-15 %, expectativa banco +0.002..+0.005 e integracion ~0 +-0.001) sigue
+  **sin ejecutar** y es lo unico que queda del ciclo.
+
 ## Entrega del trabajo (2026-09-25)
 - **Commit y merge a `main`**: PR **#26** (`kaggle-age-2026-puj`) fusionado. Commit `3a518ac`,
   merge `27238e7`. 255 archivos versionados; datos, features y modelos quedan fuera de git por

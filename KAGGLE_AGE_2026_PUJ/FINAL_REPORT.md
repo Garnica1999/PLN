@@ -1072,3 +1072,72 @@ Sin test, sin holdout, sin submissions.
   por clase con L2 normalizado fuera de FTRL) quedan declarados como tales.
 - Campeon **V30 + plug-in (LB 0.63575) intacto**; sin test, sin holdout, sin leaderboard, sin
   submission.
+
+
+---
+
+## Cierre del ciclo V35, via B: `lambda1 > 0` (D-086) — la familia FTRL queda cerrada DE FORMA DEFINITIVA
+
+**Veredicto**: `LINEA_ONLINE_CERRADA_POR_MECANISMO`, causa unica **`G8_acotacion_norma`**,
+`cierre_definitivo = True`. No es un gate de delta: es un cierre de **familia**.
+
+**El experimento**: reinicio one-shot de la familia FTRL-Proximal sobre su primer miembro NO
+CUBIERTO, `lambda1 > 0`. No es un reintento de `alpha`: `alpha*` quedo **congelado e identico** al
+de V34-E1 (`0.035262336465737745`); lo que cambia es el espacio de soluciones, con el umbral duro
+`w_j = 0` si `|z_j| <= lambda1`. El anclaje fue **derivado, sin grid**:
+`lambda1 := mediana(|z_j| > 0)` sobre TRAIN del fold 0 = `0.23993793862904017`.
+
+**La hipotesis**: acotar la norma elimina la divergencia de D-085 conservando aprendizaje.
+
+**Lo medido** (fold 0, unico consumido: la puerta cerro aqui por diseno de fail-fast):
+
+| Gate | A1 | A2 |
+|---|---|---|
+| G0 (objetivo de la regla) | **FALLA** (`D_acum` 23.1774 vs [0.8047, 3.2189]) | pasa |
+| G1 (banda de `ll_train`) | **FALLA** (19.159444 vs techo 1.78157) | pasa |
+| G2 (progreso) | **FALLA** (0 mejoras en 3 pasadas) | pasa |
+| G3 (macro-F1 fold-val >= 0.30) | **FALLA** (0.046073) | pasa (0.491995) |
+| G4 (frecuencias) | **FALLA** (`[0,0,0,0,0,1]`) | pasa |
+| G5 (determinismo exacto) | pasa (`max|dp|` = 0.0) | pasa (0.0) |
+| G6 (suma 1) | pasa (2.22e-16) | pasa (4.44e-16) |
+| **G7 (L1 activo)** | **pasa** | `None` NO APLICA |
+| **G8 (acotacion de la norma)** | **FALLA** (razon **2.130435582526498** > 1.0) | `None` NO APLICA |
+
+Trayectoria de A1: `ll_train` 10.058343 -> 15.401682 -> 19.159444, con `||w||_2` 28.274594 ->
+46.452124 -> **60.237202**: la norma **se duplica**. A2, control de **presupuesto**, llega a
+`ll_train` 1.062199 -> 0.404220 y macro-F1 0.491995: el presupuesto de 10 pasadas no es el limite.
+
+**El matiz que importa**: la fraccion de coordenadas con `|z_j| <= lambda1` en pasadas >= 2 es
+**0.019333, no 0**, luego **G7 pasa** y el L1 resulto **activo pero insuficiente** (la escasez incluso
+mejora, de 0.951073 a 0.980667). El umbral descarta de verdad y aun asi no acota. **Acotar no es lo
+mismo que bastar**, y por eso el fallo de G8 es de **hipotesis**, no de implementacion ni de puerta.
+
+**Como se cerro el ciclo con honestidad**: (1) la sonda pre-ejecucion ya habia falsado la hipotesis
+(razon `||w||_2` = 2.1304 con `lambda1` = mediana) y el codigo lo ejecuto **dentro del runner** con
+identidad numerica **exacta** frente al artefacto versionado; (2) hubo **cinco enmiendas
+pre-ejecucion** declaradas (anclaje circular, sondas de firma, `token_pattern`, secciones de
+contexto, asimetria duplicada); (3) `ml-reviewer` dio **APPROVED** tras cazar 3 bugs bloqueantes de la
+ruta de salida, y **APPROVED** de nuevo sobre el fix del cuarto; (4) un unico defecto de
+implementacion (`UnboundLocalError` que hacia A2 inalcanzable) se corrigio y **re-ejecuto desde
+cero**, reproduciendo los tres artefactos del fold 0 **bit a bit**.
+
+**Consecuencias**: (i) la familia **FTRL-Proximal queda CERRADA DE FORMA DEFINITIVA** en esta
+representacion: con `alpha` pequeno es **inerte** (D-084), con la regla de margen **divergente**
+(D-085), y con umbral L1 la norma **se duplica igualmente** (esta acta). Tres regimes distintos, un
+mismo mecanismo; (ii) **no hay segundo `lambda1`** (seria grid) **ni acta futura dentro de este
+espacio**; (iii) el **segundo miembro NO CUBIERTO** (pesos por clase con L2 normalizado fuera de
+FTRL) queda **cerrado por declaracion**, con su evidencia de techo (su geometria de norma acotada es
+la del control sano A2: `0.4934789` standalone en D-083 y `-0.0017002` integrado con 0/5 folds); (iv) a
+diferencia de D-085, aqui **"cerrada" si significa agotada** en todo el espacio de FTRL.
+
+**Neto del ciclo**: 6 candidatos medidos (P1, P2, P3, V33-E1, V34-E1, V35-E1), **ninguno pasa los
+gates**. Campeon **V30 + plug-in (LB 0.63575) intacto**; sin integracion, sin bootstrap, sin segunda
+particion, sin submission, y con `artifacts/p33_scores/todos` con sha256 `8881a9f5...` antes y
+despues. Coste 141.13 s de los 1200 s declarados y RSS 0.693 GB de los 20 GB.
+
+**Metodologia que queda como legado del ciclo**: el autoejercicio estructural incorporado a
+`--verificar` (5 caminos con las funciones reales de punta a punta y las escrituras aisladas en un
+temporal) mas la cobertura en dos capas del ensamblado de `entrenar_brazo_fold` (AST y runtime)
+**cazaron 5 bugs bloqueantes** que `--verificar` y `--humo` no veian, todos capaces de matar la
+corrida **despues** de entrenar y con checkpoints ya escritos. Ninguno de los 5 llego a tocar un
+gate, un umbral o el pre-registro.

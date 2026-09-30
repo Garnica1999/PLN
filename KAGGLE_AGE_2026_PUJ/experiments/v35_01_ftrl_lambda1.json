@@ -1,0 +1,3498 @@
+{
+  "fase": "V35-E1 ejecucion",
+  "fecha": "2026-09-30",
+  "commit": "f4df7115faa4430823348a9763070b5f40a6ed0b",
+  "prereg": {
+    "json": "experiments/v35_00_preregistro.json",
+    "sha256": "21d12765d647e5d306b7a156bda8a8b90995587afa4e3af04106671a5d53272d",
+    "informe": "reports/v35_preregistro.md",
+    "puerta": "reports/v34_convergence_gate.md",
+    "commit_congelado": "c0c762e9912b92ab67764fe73b2efb60aef8e65c",
+    "enmiendas": [
+      {
+        "fecha": "2026-09-30",
+        "objeto": "anclaje_lambda1.verificacion (item 2 del diseno)",
+        "de": "exigir diferencia exacta 0 y sha256 del snapshot de z leido del core YA REGULARIZADO de A1",
+        "a": "verificar con el NUCLEO DE ANCLAJE (lambda1 = 0.0) sobre el mismo stream de la pasada 1 del fold 0 de A1 (misma matriz, etiquetas, orden congelado y alpha): diferencia exacta 0 con 0.23993793862904017 y sha256 identico al de la sonda pre-ejecucion versionada",
+        "motivo": "circularidad: en FTRL z depende de w y w depende de lambda1, luego el z de A1 nunca puede reproducir el umbral que lo define. Medido: con lambda1 = mediana la mediana del z es 0.2333793834039217 (diferencia -0.006558555225118473), con lambda1 = 0 es 0.23993793862904017 (diferencia exacta 0.0)",
+        "diagnostico_secundario": "se publica la mediana del core ya regularizado (0.2333793834039217) declarando que NO es el anclaje y que su diferencia (-0.006558555225118473) es la magnitud del acoplamiento z <- w(lambda1)",
+        "sha256_del_anclaje": "ec1d1a7b13454f8b",
+        "cambia_el_protocolo": false,
+        "cambia_el_numero": false,
+        "afecta_a_gates": false,
+        "estado_datos": "sin resultados; enmienda pre-ejecucion"
+      },
+      {
+        "fecha": "2026-09-30",
+        "objeto": "sondas_nuevas (k)-(m): dimension del problema y alcance del contraste",
+        "de": "las sondas (k), (l) y (m) reproducen dentro del runner los tres casos del gemelo pre-ejecucion (identidad numerica), sin decir donde corren",
+        "a": "en el miniproblema de --verificar son NO-GATE y de FIRMA DE MECANISMO (orden de las tres normas y signo de la razon, con deltas publicados como diagnostico); la IDENTIDAD NUMERICA exacta de los tres casos se ejecuta dentro del runner durante la corrida real, en el fold 0, sobre el stream real de ES-train, con diferencia relativa <= 1e-9 en ll_train y ||w||_2, y diferencia EXACTA 0 mas sha256 identico en la mediana del anclaje",
+        "motivo": "el mini tiene del orden de 1350 x 51 coordenadas frente a las 121921 x 107793 del gemelo pre-ejecucion, luego la identidad numerica es imposible por dimension; ademas con lambda1 = 0.2399 el mini apenas poda (escasez efectiva 1.0 en los tres casos), de modo que alli no hay magnitud que reproducir. Cargar el corpus dentro de --verificar volveria la verificacion pesada y con efectos de carga",
+        "no_gate": true,
+        "cambia_el_protocolo": false,
+        "cambia_el_anclaje": false,
+        "afecta_a_gates": false,
+        "evidencia_de_mecanismo": "la decision se apoya en la trayectoria interna de A1 sobre el stream real (que alimenta G8) mas el triage, no en evidencia importada de /tmp; ademas lambda1 = 0 ya tiene evidencia real versionada del ciclo V34-E1 y lambda1 = mediana es el propio A1, luego la repeticion de los tres casos es confirmacion y no la fuente",
+        "presupuesto": "los ~60 s de los tres casos caben en los 1200 s declarados",
+        "estado_datos": "sin resultados; enmienda pre-ejecucion"
+      },
+      {
+        "fecha": "2026-09-30",
+        "objeto": "config.vectorizador.token_pattern y hashes.vectorizador",
+        "de": {
+          "token_pattern": "(?u)\\\\b\\\\w+\\\\b",
+          "hashes_vectorizador": "33311e5eddc0b0bbfd07505b9ed3474bb824d1b41fac92d3d7bfd3fd902ba977"
+        },
+        "a": {
+          "token_pattern": "(?u)\\b\\w+\\b",
+          "hashes_vectorizador": "9bae157614458dbdf26fb7aed4c78d2954c36e895f830341e59b23fa63e2b51b"
+        },
+        "motivo": "el patron congelado lleva backslashes dobles: no compila ninguna palabra (medido, re.compile del patron congelado no encuentra match en 'hola mundo'), luego el vocabulario seria vacio y la representacion inservible. El canonico es el que declaran los pre-registros de V33 y V34 y el que produjo las 107793 coordenadas que registran el nucleo de V34 y la sonda pre-ejecucion de esta via",
+        "clase": "tercera enmienda pre-ejecucion; mismo precedente que v34_00e (correccion de un literal del pre-registro antes de ejecutar)",
+        "cambia_el_protocolo": false,
+        "cambia_el_modelo": false,
+        "cambia_los_gates": false,
+        "estado_datos": "sin resultados; enmienda pre-ejecucion"
+      },
+      {
+        "fecha": "2026-09-30",
+        "objeto": "secciones de contexto ausentes: control, corpus, anclas, representacion, budgeto, regla_alpha",
+        "de": "pre-registro de V35 con 27 secciones, sin las 6 que el informe publica y que el runner lee en construir_resultado (17 lecturas)",
+        "a": "las 6 secciones restituidas verbatim del pre-registro de V34-E1, con `origen` auditable y con las anulaciones V35 declaradas en `anulaciones_v35` y en las propias claves",
+        "motivo": "17 lecturas prereg[...] de secciones inexistentes: la corrida moria DESPUES de entrenar los dos brazos en los 5 folds, con checkpoints y OOF ya escritos, y verificar_constantes no lo detectaba (106/106 no era cobertura real). Detectado al ejecutar de verdad construir_resultado, escribir_informe y resumen_consola con un estado simulado, porque --verificar y --humo NO ejecutan la ruta de salida",
+        "clase": "cuarta enmienda pre-ejecucion; restitucion de contexto ya congelado, sin tocar ninguna decision experimental",
+        "cambia_el_protocolo": false,
+        "cambia_alpha": false,
+        "cambia_los_gates": false,
+        "cambia_el_presupuesto": false,
+        "estado_datos": "sin resultados; enmienda pre-ejecucion"
+      },
+      {
+        "fecha": "2026-09-30",
+        "objeto": "control.asimetria_declarada (desambiguacion de la no-equivalencia estructural)",
+        "de": "dos declaraciones para el mismo par de brazos: control.asimetria_declarada.no_equivalencia_estructural con el texto de V34 (L2 de A2 en 1e-6 como no-op) y control.anulaciones_v35.asimetria_declarada con el de V35; solo el segundo es el de V35",
+        "a": "una sola declaracion vigente, la de V35, en control.asimetria_declarada; el texto de V34 queda integro y con su valor en control.anulaciones_v35.no_equivalencia_estructural_texto_anulado_de_v34",
+        "motivo": "un documento de registro con dos declaraciones para lo mismo es la ambiguedad que el proyecto ya pago; el runner ya no imprimia el texto de V34 (la linea del informe lee la asimetria de la sonda), luego el riesgo era de lectura, pero la ambiguedad seja",
+        "clase": "quinta enmienda pre-ejecucion; desambiguacion documental, sin cambiar el protocolo",
+        "cambia_el_protocolo": false,
+        "cambia_los_gates": false,
+        "estado_datos": "sin resultados; enmienda pre-ejecucion"
+      }
+    ]
+  },
+  "verificacion": {
+    "constantes": {
+      "fase": true,
+      "fecha": true,
+      "baseline_primario": true,
+      "referencia_nested": true,
+      "pesos_plugin": true,
+      "versiones_claves": true,
+      "hashes_claves": true,
+      "hashes_long_64": true,
+      "hilos_del_prereg": true,
+      "semilla_del_prereg": true,
+      "lambda1_mediana_congelada": true,
+      "lambda1_es_la_mediana": true,
+      "lambda1_definicion_medida": true,
+      "lambda1_medida_sobre_es_train": true,
+      "lambda1_flag_1_resuelto": true,
+      "lambda1_no_se_re_deriva": true,
+      "lambda1_sensibilidad_declarada": true,
+      "enmiendas_todas_sin_resultados": true,
+      "enmiendas_ninguna_cambia_el_protocolo": true,
+      "enmienda_1_presente": true,
+      "enmienda_2_presente": true,
+      "enmienda_3_presente": true,
+      "enmienda_4_presente": true,
+      "enmienda_5_presente": true,
+      "asimetria_vigente_es_la_de_v35": true,
+      "enmienda_1_nucleo_de_anclaje": true,
+      "enmienda_1_mismo_stream": true,
+      "enmienda_1_criterio": true,
+      "enmienda_1_valor_congelado": true,
+      "enmienda_1_sha_declarado_es_prefijo_del_real": true,
+      "enmienda_1_diagnostico_secundario": true,
+      "enmienda_1_circularidad": true,
+      "lambda1_sha256_z_congelado": true,
+      "lambda1_razon_normas_previa": true,
+      "lambda1_mediana_sobre_alpha": true,
+      "alpha_valor_esperado": true,
+      "alpha_formula": true,
+      "alpha_no_se_re_deriva": true,
+      "alpha_unchanged_desde_v34": true,
+      "regla_anchos_fija": true,
+      "presupuesto_p_max": true,
+      "presupuesto_p_min": true,
+      "presupuesto_paciencia": true,
+      "presupuesto_mejora": true,
+      "presupuesto_particion_es": true,
+      "test_size_es": true,
+      "ajuste_por_fold_es_train": true,
+      "vectorizador_config": true,
+      "nucleo_lambda1_mediana": true,
+      "nucleo_lambda2_beta": true,
+      "nucleo_power_t": true,
+      "nucleo_x0": true,
+      "nucleo_variante_l2": true,
+      "nucleo_sha256_en_prereg": true,
+      "gates_claves": true,
+      "puerta_momento": true,
+      "puerta_g0_g6_sin_cambios": true,
+      "heredada_G0": true,
+      "heredada_G1": true,
+      "heredada_G2": true,
+      "heredada_G3": true,
+      "heredada_G4": true,
+      "heredada_G5": true,
+      "heredada_G6": true,
+      "g7_criterio": true,
+      "g7_tolerancia": true,
+      "g7_anclaje_medida": true,
+      "g7_criterio_muerto": true,
+      "g7_aplica_a": true,
+      "g8_criterio": true,
+      "g8_anclaje_hipotesis": true,
+      "g8_aplica_a": true,
+      "gates_exclusivos_de_a1": true,
+      "rama_g7_o_g8": true,
+      "rama_conjunta": true,
+      "rama_todas_pasan": true,
+      "sondas_k_l_m_claves": true,
+      "sondas_politica_no_gate": true,
+      "identidad_en_fold_0": true,
+      "identidad_criterio": true,
+      "identidad_se_publica_no_gate": true,
+      "sonda_l_razon": true,
+      "asimetria_control_presupuesto": true,
+      "asimetria_lectura_unidireccional": true,
+      "asimetria_apoyo_del_veredicto": true,
+      "terminal_miembro": true,
+      "terminal_cerrados": true,
+      "terminal_segundo_miembro": true,
+      "terminal_re_emision": true,
+      "miembro_no_cubierto": true,
+      "no_es_reintento_de_alpha": true,
+      "serie_abort": true,
+      "serie_delta": true,
+      "serie_folds": true,
+      "serie_bootstrap": true,
+      "ejecucion_presupuesto": true,
+      "ejecucion_timeout": true,
+      "ejecucion_calibracion": true,
+      "ejecucion_checkpoints": true,
+      "ejecucion_escritura_atomica": true,
+      "compliance_cifras": true,
+      "compliance_ast_audit": true,
+      "compliance_lecturas": true,
+      "compliance_auditorias": true,
+      "anclas_logaritmicas": true,
+      "ancla_m": true,
+      "hilos_efectivos": true,
+      "entregables": true,
+      "entregables_novelty": true,
+      "entregables_historia": true,
+      "entregables_acta": true
+    },
+    "versiones": {
+      "instaladas": {
+        "sklearn": "1.8.0",
+        "numpy": "1.26.4",
+        "pandas": "2.3.3"
+      },
+      "esperadas": {
+        "sklearn": "1.8.0",
+        "numpy": "1.26.4",
+        "pandas": "2.3.3"
+      },
+      "checks": {
+        "sklearn": true,
+        "numpy": true,
+        "pandas": true
+      }
+    },
+    "constantes_control": {
+      "control_prereg": {
+        "estimator": "sklearn.linear_model.SGDClassifier",
+        "loss": "log_loss",
+        "alpha_reg": 1e-06,
+        "learning_rate": "optimal",
+        "shuffle": false,
+        "fit_intercept": true,
+        "max_iter": 10,
+        "tol": null,
+        "random_state": "20261010+fold",
+        "n_jobs": 32,
+        "pasadas": 10,
+        "matriz": "la MISMA TF-IDF por fold, **SIN columna de sesgo pre-anadida** (un solo camino de sesgo por brazo)",
+        "por_que": "es el precedente que SI aprende (0.3956246 en V33-E1 con una pasada; 0.4934789 con diez en D-083) y por eso demuestra que el presupuesto no es el limite",
+        "enmienda_pre_ejecucion_1": {
+          "defecto_corregido": "D-083 y V33-E1 entregaron al control la matriz con sesgo pre-anadido Y fit_intercept=True (doble sesgo)",
+          "motivacion": "correccion de un defecto de implementacion, NO de conveniencia: no altera el criterio de exito y no favorece a A1",
+          "exigencia": "tabla de simetria de sesgo con UN solo camino por brazo, verificada por sonda: max|gradiente de la coordenada de sesgo| en A1 y paridad con intercept_ de A2"
+        },
+        "asimetria_declarada": {
+          "lambda2_ftrl": 1.0,
+          "alpha_reg_sgd": 1e-06,
+          "no_equivalencia_estructural": "A1 tiene un regularizador (L1) que A2 no tiene: A2 es control de PRESUPUESTO, NO gemelo mecanico. Ninguna conclusion puede descansar en el contraste A1 vs A2: delta, razones entre brazos e IC bootstrap cruzado quedan contaminados. El veredicto se apoya solo en evidencia interna de A1 contra la regla derivada (G0/G1/G4) mas el triage",
+          "sonda_exigida": "publicar que el veredicto NO se apoya en el contraste A1 vs A2 y que la lectura de A2 es unidireccional (presupuesto)",
+          "vigente_para": "V35-E1 (reinicio one-shot de la familia FTRL, acta D-086)"
+        },
+        "ajuste": {
+          "modo": "partial_fit_por_pasada",
+          "llamadas": 10,
+          "t_acumulado": "t_ se acumula entre llamadas (401 si se usara fit repetido, por el reinicio de self.t_ en BaseSGDClassifier._fit)",
+          "es_por_pasada": true,
+          "restaura_mejor_coef": true,
+          "max_iter": null,
+          "nota": "el numero de pasadas (10) es el que el pre-registro congelo; lo que se corrige es como se ejecuta, porque fit(max_iter=1, warm_start=True) no acumula el schedule"
+        },
+        "desvio_declarado_partial_fit": {
+          "no_bit_identico_a_fit_max_iter_10": true,
+          "medicion": "4.5e-5 a 2 pasadas y 2.0e1 a 4 pasadas en un problema sintetico",
+          "motivo_de_la_eleccion": "es la unica via que permite evaluar el early stopping despues de cada pasada, que el pre-registro exige (P_min 3, paciencia 2, restaurar el mejor coef_), y da el mismo presupuesto que A1"
+        },
+        "origen": "copiado verbatim de experiments/v34_00_preregistro.json (mismo corpus, mismo vectorizador canonico, mismo presupuesto de pasadas y mismo control SGD); solo las anulaciones de V35 se listan en la clave `anulaciones_v35`",
+        "anulaciones_v35": {
+          "asimetria_declarada": "A1 tiene un regularizador (L1) que A2 no tiene: A2 es control de PRESUPUESTO, NO gemelo mecanico. Ninguna conclusion puede descansar en el contraste A1 vs A2: delta, razones entre brazos e IC bootstrap cruzado quedan contaminados. El veredicto se apoya solo en evidencia interna de A1 contra la regla derivada (G0/G1/G4) mas el triage",
+          "sonda_exigida": "publicar que el veredicto NO se apoya en el contraste A1 vs A2 y que la lectura de A2 es unidireccional (presupuesto)",
+          "no_equivalencia_estructural_texto_anulado_de_v34": "con lambda2 = 1e-6 el L2-en-acumulador y el L2-en-denominador dan resultado IDENTICO (es un no-op, medido en la exploracion previa): por eso no existe una equivalencia FTRL<->SGD a escala 1e-6",
+          "motivo_de_anulacion": "describe una asimetria distinta (el L2 de A2 en 1e-6 como no-op medido en V34) y no la de V35, que es la presencia del L1 solo en A1. No se aplica a V35 y se conserva aqui, con su valor, para que la anulacion sea trazable"
+        }
+      },
+      "ejecutable": {
+        "modo": "partial_fit_por_pasada",
+        "llamadas": 10,
+        "max_iter": 1,
+        "warm_start": true,
+        "tol": null,
+        "shuffle": false,
+        "average": false,
+        "fit_intercept": true,
+        "alpha_reg": 1e-06,
+        "learning_rate": "optimal",
+        "random_state": "20261010+fold",
+        "n_jobs": 32
+      }
+    },
+    "hashes": {
+      "canonico_y_true": true,
+      "canonico_fold_idx": true,
+      "canonico_v30_prob": true,
+      "canonico_ids": true,
+      "canonico_cand_pred": true,
+      "canonico_cand_prob": true,
+      "manifest_canonico": true,
+      "nucleo_v34": true,
+      "corpus_archivo": true,
+      "corpus_textos": true,
+      "vectorizador": true,
+      "sonda_lambda1_script": true,
+      "sonda_lambda1_json": true
+    },
+    "hashes_recomputados": {
+      "canonico_y_true": "b1c928f9b9f5575547c1090a1fd83cf32a048b694af35a980b460c0bd66d48e6",
+      "canonico_fold_idx": "74d18330c40c3598a1936706ae9434c5fdf29119d357d38353cf298812fe6fb5",
+      "canonico_v30_prob": "3d77352486605971093ade7214ae82326057845d8bf54a2d88c83843c5a721db",
+      "canonico_ids": "d69ecb339f1dc57de2f9cddd558658b5a272ffa42aec15c771773e8eabd59825",
+      "canonico_cand_pred": "2fd8ab0292e8b7364dd003ff3e23902b01786a612c3e9a57641d88788efca369",
+      "canonico_cand_prob": "57be29623543c2616011f8fc77aff89b71faecdad6b599f1b4f4b133655a8134",
+      "manifest_canonico": "8881a9f53e8613aa943681e7fd9a42a3a281aa66b5d7c796d13d2758c6226076",
+      "nucleo_v34": "cf443fc86bf291ca5ba47f92a40a7a80b25a0d9edb050b3929508c9bd56e29da",
+      "corpus_archivo": "39c6c8270366fe155f3c8dd232e31867bee659af8908121d04b6bd89bd163748",
+      "corpus_textos": "53c1a348a7954f3e59d7c67caddd6477a06f7d3441724c201052b4b5273445fc",
+      "vectorizador": "9bae157614458dbdf26fb7aed4c78d2954c36e895f830341e59b23fa63e2b51b",
+      "sonda_lambda1_script": "4330c00a3f517467ac45ea7f67f8af331c8438ed024d0aa3db5ecc51e2f3a49b",
+      "sonda_lambda1_json": "e6554eb25269a3a48780e9f9d8674e67abdaf41136eb2277db3d54704b7b3aff"
+    },
+    "hashes_esperados": {
+      "sonda_lambda1_script": "4330c00a3f517467ac45ea7f67f8af331c8438ed024d0aa3db5ecc51e2f3a49b",
+      "sonda_lambda1_json": "e6554eb25269a3a48780e9f9d8674e67abdaf41136eb2277db3d54704b7b3aff",
+      "nucleo_v34": "cf443fc86bf291ca5ba47f92a40a7a80b25a0d9edb050b3929508c9bd56e29da",
+      "manifest_canonico": "8881a9f53e8613aa943681e7fd9a42a3a281aa66b5d7c796d13d2758c6226076",
+      "canonico_y_true": "b1c928f9b9f5575547c1090a1fd83cf32a048b694af35a980b460c0bd66d48e6",
+      "canonico_fold_idx": "74d18330c40c3598a1936706ae9434c5fdf29119d357d38353cf298812fe6fb5",
+      "canonico_v30_prob": "3d77352486605971093ade7214ae82326057845d8bf54a2d88c83843c5a721db",
+      "canonico_ids": "d69ecb339f1dc57de2f9cddd558658b5a272ffa42aec15c771773e8eabd59825",
+      "canonico_cand_pred": "2fd8ab0292e8b7364dd003ff3e23902b01786a612c3e9a57641d88788efca369",
+      "canonico_cand_prob": "57be29623543c2616011f8fc77aff89b71faecdad6b599f1b4f4b133655a8134",
+      "corpus_archivo": "39c6c8270366fe155f3c8dd232e31867bee659af8908121d04b6bd89bd163748",
+      "corpus_textos": "53c1a348a7954f3e59d7c67caddd6477a06f7d3441724c201052b4b5273445fc",
+      "vectorizador": "9bae157614458dbdf26fb7aed4c78d2954c36e895f830341e59b23fa63e2b51b"
+    },
+    "hashes_corpus_recomputados": {
+      "corpus_archivo": "39c6c8270366fe155f3c8dd232e31867bee659af8908121d04b6bd89bd163748",
+      "corpus_textos": "53c1a348a7954f3e59d7c67caddd6477a06f7d3441724c201052b4b5273445fc",
+      "vectorizador": "9bae157614458dbdf26fb7aed4c78d2954c36e895f830341e59b23fa63e2b51b",
+      "sonda_lambda1_script": "4330c00a3f517467ac45ea7f67f8af331c8438ed024d0aa3db5ecc51e2f3a49b",
+      "sonda_lambda1_json": "e6554eb25269a3a48780e9f9d8674e67abdaf41136eb2277db3d54704b7b3aff"
+    },
+    "receta_hash_textos": "sha256 con longitud (8 bytes LE) + bytes UTF-8 por texto, en orden",
+    "corpus_prohibido": "el data_hash del manifiesto canonico (2ada573b...) queda invalidado en D-083: es un hash de punteros, no de contenido",
+    "corpus_receta": "src.data.load_train() sobre data/raw/age_train.csv (sep=cfg.TRAIN_SEP, encoding utf-8-sig, clean_text aplicado); orden de filas = orden del CSV = orden canonico de ids.npy",
+    "baseline_recomputado": 0.6159732487657944,
+    "baseline_esperado": 0.6159732,
+    "baseline_ok": true,
+    "ids_alineados": true,
+    "etiquetas_alineadas": true,
+    "linea_base_mayoritaria": {
+      "clase_indice": 0,
+      "clase": "13-17",
+      "frecuencia": 0.17044810317947748,
+      "macro_f1_linea_base": 0.04854212180687087,
+      "n_filas": 169336,
+      "ancla_congelada": 0.04854212180687087,
+      "diferencia": 0.0
+    },
+    "anclas": {
+      "macro_f1_trivial_clase_mayoritaria": 0.04854212180687087,
+      "clase_mayoritaria": "13-17",
+      "gemelo_sgd_d083": 0.4934789,
+      "log_uniforme_k6": 1.791759469228055,
+      "log_k_menos_1": 1.6094379124341003,
+      "h_prior_subconjunto_exploracion": 1.7914536815044917,
+      "d_norm_referencia": 0.912815416414756,
+      "alpha_esperado_para_d_norm_referencia": 0.035263162376364156,
+      "origen": "copiado verbatim de experiments/v34_00_preregistro.json (mismo corpus, mismo vectorizador canonico, mismo presupuesto de pasadas y mismo control SGD); solo las anulaciones de V35 se listan en la clave `anulaciones_v35`",
+      "anulaciones_v35": {
+        "nota_sobre_los_dos_valores_de_alpha": "0.0352631 es el valor de REFERENCIA calculado con el prior del fold-train COMPLETO (d_norm = 0.912815416414756, el de la exploracion del arquitecto); 0.035262336465737745 es el valor EFECTIVO del fold 0, derivado con el prior MEDIDO del ES-train (d_norm = 0.9128367962785974). No son una contradiccion: son dos priors distintos, y el segundo es el que gobierna"
+      },
+      "h_prior_es_fold_0": 1.7915714394468476,
+      "d_norm_es_fold_0": 0.9128367962785974,
+      "alpha_efectivo_fold_0": 0.035262336465737745,
+      "mediana_abs_z_anclaje_fold_0": 0.23993793862904017,
+      "mediana_sobre_alpha": 6.8044,
+      "razon_max_min_norma_w_lambda1_mediana": 2.1304,
+      "sha256_z_anclaje_fold_0": "ec1d1a7b13454f8b",
+      "lectura": "anclas medidas en la sonda pre-ejecucion (experiments/v35_00b_sonda_lambda1.json) y en el stream real de TRAIN del fold 0: el cociente mediana/alpha = 6.8044 confirma que lambda1 = alpha es un no-op, y la razon de normas 2.1304 > 1.0 confirma que un lambda1 fijo NO acota la norma, que es lo que G8 pone a prueba"
+    }
+  },
+  "compliance": {
+    "ast_audit": true,
+    "literales_de_ruta_revisados": 39,
+    "modulos_revisados": 31,
+    "particiones_reservadas_vigiladas": [
+      "test",
+      "holdout",
+      "submission",
+      "leaderboard"
+    ],
+    "familias_vetadas": [
+      "vowpal",
+      "vw",
+      "torch",
+      "transformers",
+      "gensim",
+      "fasttext",
+      "sentence-transformers",
+      "word2vec",
+      "glove",
+      "spacy-vectors"
+    ],
+    "violaciones": [],
+    "embeddings": 0,
+    "transformers": 0,
+    "llm": 0,
+    "datos_externos": 0,
+    "test": 0,
+    "holdout": 0,
+    "leaderboard": 0,
+    "submission": 0,
+    "lecturas": {
+      "lecturas_permitidas": [
+        "data/raw/age_train.csv",
+        "artifacts/p33_scores/todos"
+      ],
+      "escrituras_permitidas": [
+        "artifacts/p35_scores/v35_e1",
+        "checkpoints/v35_e1",
+        "experiments/",
+        "reports/"
+      ],
+      "funciones_lectoras": [
+        "cargar_preregistro",
+        "cargar_canonico",
+        "cargar_corpus",
+        "verificar_hashes",
+        "auditar_ast_propio",
+        "auditar_lecturas_de_datos",
+        "ajustar_vectorizador_fold",
+        "indices_fold",
+        "particion_es",
+        "generar_ordenes",
+        "anadir_sesgo",
+        "refit_vectorizador"
+      ],
+      "funciones_escriptoras": [
+        "escribir_json",
+        "escribir_json_atomico",
+        "guardar_estado",
+        "guardar_oof",
+        "guardar_pesos",
+        "figura_curvas",
+        "escribir_informe",
+        "anotar_runlog",
+        "anotar_experiments_csv",
+        "escribir_registro_novedad",
+        "anotar_historial"
+      ],
+      "funciones_revisadas": 163,
+      "literales_en_funciones_revisados": 39,
+      "literales_de_ruta_totales": 39,
+      "roles_por_funcion": {
+        "__init__": "mixta",
+        "aislar_rutas_autoejercicio": "mixta",
+        "ajustar_sgd": "mixta",
+        "alfa_pasada": "mixta",
+        "alpha_derivado": "mixta",
+        "alpha_derivado_general": "mixta",
+        "anadir_sesgo": "lectora",
+        "anclaje_no_aplica_a2": "mixta",
+        "anotar_experiments_csv": "escritora",
+        "anotar_historial": "escritora",
+        "anotar_runlog": "escritora",
+        "asegurar_brazo_cargado": "mixta",
+        "asegurar_calibracion": "mixta",
+        "auditar_ast_propio": "lectora",
+        "auditar_ensamblado_por_ast": "mixta",
+        "auditar_lecturas_de_datos": "lectora",
+        "autoensayo_ruta_salida": "mixta",
+        "bootstrap_delta": "mixta",
+        "borrar_temporal_autoejercicio": "mixta",
+        "calcular_gates": "mixta",
+        "cargar": "mixta",
+        "cargar_canonico": "lectora",
+        "cargar_corpus": "lectora",
+        "cargar_estado": "mixta",
+        "cargar_gemelo_previo": "mixta",
+        "cargar_preregistro": "lectora",
+        "cerrar_puerta": "mixta",
+        "combinador_oof": "mixta",
+        "como_nativo": "mixta",
+        "comparar_relativo": "mixta",
+        "comprobar_camino_autoejercicio": "mixta",
+        "construir_resultado": "mixta",
+        "coord_sesgo": "mixta",
+        "d_norm_de_prior": "mixta",
+        "decidir_rama_arbol": "mixta",
+        "detalle_fold_autoejercicio": "mixta",
+        "diagnostico_brazo": "mixta",
+        "ejecutar": "mixta",
+        "ejecutar_camino_autoejercicio": "mixta",
+        "ejecutar_humo": "mixta",
+        "ejecutar_sondas": "mixta",
+        "ensayar_ensamblado_a2": "mixta",
+        "entrar_brazo_mini_segunda": "mixta",
+        "entrenar_brazo_fold": "mixta",
+        "entrenar_brazo_mini": "mixta",
+        "entrenar_con_puerta": "mixta",
+        "entropia_de_prior": "mixta",
+        "es_literal_de_ruta": "mixta",
+        "escribir_informe": "escritora",
+        "escribir_json": "escritora",
+        "escribir_json_atomico": "escritora",
+        "escribir_registro_novedad": "escritora",
+        "estado": "mixta",
+        "estado_autoejercicio": "mixta",
+        "estado_nuevo": "mixta",
+        "evaluar_combinacion": "mixta",
+        "evaluar_es": "mixta",
+        "evaluar_gates_l1": "mixta",
+        "evaluar_l1_inerte": "mixta",
+        "evaluar_puerta_preliminar": "mixta",
+        "figura_curvas": "escritora",
+        "fila_a_pasada": "mixta",
+        "frecuencias": "mixta",
+        "ftrl_softmax_lazo_ingenuo": "mixta",
+        "ftrl_softmax_multipasada": "mixta",
+        "gates_fallidos_de": "mixta",
+        "gemelo_lambda1_caso": "mixta",
+        "generar_ordenes": "lectora",
+        "guardar_estado": "escritora",
+        "guardar_oof": "escritora",
+        "guardar_pesos": "escritora",
+        "identidad_autoejercicio": "mixta",
+        "identidad_lambda1_fold_0": "mixta",
+        "identidad_lambda1_markdown": "mixta",
+        "indices_fold": "lectora",
+        "integracion_autoejercicio": "mixta",
+        "linea_base_mayoritaria": "mixta",
+        "literales_de_ruta": "mixta",
+        "log_loss_multiclase": "mixta",
+        "log_loss_propio": "mixta",
+        "logits_a_prob": "mixta",
+        "logits_de_sgd": "mixta",
+        "macro": "mixta",
+        "macro_de_conteos": "mixta",
+        "magnitud_l1": "mixta",
+        "magnitudes_comunes_autoejercicio": "mixta",
+        "main": "mixta",
+        "marca_autoejercicio": "mixta",
+        "mascara_de_folds": "mixta",
+        "max_abs_suma_menos_uno": "mixta",
+        "mecanismo_fold_0": "mixta",
+        "mecanismo_markdown": "mixta",
+        "mediana_abs_z_publicable": "mixta",
+        "mediana_de_abs_z": "mixta",
+        "modulos_importados": "mixta",
+        "nombres_de_comprension": "mixta",
+        "nombres_entregables": "mixta",
+        "nombres_globales_del_modulo": "mixta",
+        "nombres_ligados_en": "mixta",
+        "nombres_ligados_en_destino": "mixta",
+        "normaliza": "mixta",
+        "normaliza_l2": "mixta",
+        "oof_autoejercicio": "mixta",
+        "parsear_argumentos": "mixta",
+        "pasar": "mixta",
+        "preparar_fold": "mixta",
+        "prior_de_es_train": "mixta",
+        "problema_aleatorio": "mixta",
+        "problema_mini": "mixta",
+        "publicar_gates_l1": "mixta",
+        "publicar_l1_inerte": "mixta",
+        "publicar_lectura_a2_unidireccional": "mixta",
+        "publicar_rama_arbol": "mixta",
+        "recorrer_ligados": "mixta",
+        "refit_autoejercicio": "mixta",
+        "refit_vectorizador": "lectora",
+        "registrar_fold": "mixta",
+        "restaurar_rutas_autoejercicio": "mixta",
+        "resumen_consola": "mixta",
+        "rss_gb": "mixta",
+        "ruta_oof": "mixta",
+        "ruta_pesos": "mixta",
+        "ruta_relativa": "mixta",
+        "sembrar_registros_autoejercicio": "mixta",
+        "sesgo_autoejercicio": "mixta",
+        "sha256_archivo": "mixta",
+        "sha256_bytes": "mixta",
+        "sha256_f64": "mixta",
+        "sha256_f64_2d": "mixta",
+        "sha256_i64": "mixta",
+        "sha256_pesos": "mixta",
+        "sha256_textos": "mixta",
+        "siguiente_paso_predeclarado": "mixta",
+        "softmax": "mixta",
+        "sonda_a_vectorizado_vs_lazo": "mixta",
+        "sonda_asimetria_no_equivalente": "mixta",
+        "sonda_b_raiz_analitica_lambda0": "mixta",
+        "sonda_c_totalf1_macro": "mixta",
+        "sonda_d_sin_nan_logloss_finito": "mixta",
+        "sonda_determinismo_autoejercicio": "mixta",
+        "sonda_determinismo_fold0": "mixta",
+        "sonda_e_logloss_multiclase_propio": "mixta",
+        "sonda_f_filas_suman_uno": "mixta",
+        "sonda_g_reproducibilidad_alpha": "mixta",
+        "sonda_h_estabilidad_es": "mixta",
+        "sonda_i_simetria_presupuesto": "mixta",
+        "sonda_j_tabla_de_mecanismo": "mixta",
+        "sondas_klm_gemelo_lambda1": "mixta",
+        "tabla_sesgo_markdown": "mixta",
+        "tabla_simetria_sesgo": "mixta",
+        "token_pattern_equivalente": "mixta",
+        "tr_idx_tamano": "mixta",
+        "trayectoria_autoejercicio": "mixta",
+        "triage_formal": "mixta",
+        "verificar_anclaje_lambda1": "mixta",
+        "verificar_cero_efectos_autoejercicio": "mixta",
+        "verificar_constantes": "mixta",
+        "verificar_deadline": "mixta",
+        "verificar_hashes": "lectora",
+        "verificar_invariantes": "mixta",
+        "verificar_ram": "mixta",
+        "verificar_versiones": "mixta"
+      },
+      "literales_de_modulo_revisados": 33,
+      "corpus_en_runtime": "/home/carlos/Git/PLN/KAGGLE_AGE_2026_PUJ/data/raw/age_train.csv",
+      "violaciones": []
+    },
+    "auditorias_exigidas": [
+      "hashes de los 6 .npy + manifest",
+      "corpus archivo y textos",
+      "vectorizador",
+      "nucleo de V34 sin cambios",
+      "sonda previa versionada",
+      "vocabulario e idf por fold",
+      "sondas (a)-(m)",
+      "tabla de mecanismo por pasada",
+      "determinismo A1 y A2",
+      "RSS con ru_maxrss",
+      "escritura atomica"
+    ],
+    "nota_ast_audit": "importes Y literales (vowpal, vw, torch, transformers, gensim, fasttext, sentence-transformers, word2vec, glove, spacy-vectors) y 0 rutas de test/holdout/submission/leaderboard"
+  },
+  "config": {
+    "vectorizador": {
+      "analyzer": "word",
+      "ngram_range": [
+        1,
+        2
+      ],
+      "min_df": 3,
+      "max_df": 0.5,
+      "sublinear_tf": true,
+      "lowercase": true,
+      "strip_accents": null,
+      "token_pattern": "(?u)\\b\\w+\\b"
+    },
+    "vectorizador_fit": {
+      "ngram_range": [
+        1,
+        2
+      ]
+    },
+    "nota_ngram_range": "la config congelada declara ngram_range como lista; sklearn 1.8.0 exige tupla y en el fit se convierte (mismo valor); el sha256 congelado del dict usa SIEMPRE la lista",
+    "norm_dtype": "defaults de sklearn (norm='l2', dtype float64)",
+    "ajuste_vectorizador": "POR FOLD: fit solo en ES-train (el 10 % del fold-train va al ES interno y NO se vectoriza con el) \u2014 declarado por coherencia con la regla de alpha, que se deriva sobre las filas que se entrenan",
+    "sesgo": "A1 materializa el sesgo como coordenada x0=1.0 (un solo camino); A2 usa fit_intercept=True SIN columna de sesgo pre-anadida (enmienda pre-ejecucion 1)",
+    "presupuesto": {
+      "p_max": 10,
+      "p_min": 3,
+      "paciencia": 2,
+      "mejora_minima": 0.0001,
+      "test_size_es": 0.1,
+      "orden_por_pasada": "np.random.default_rng(20261010+fold+pasada).permutation de las filas ES-train; un orden distinto por pasada y por fold",
+      "particion_es": "sklearn.model_selection.StratifiedShuffleSplit(n_splits=1, test_size=0.1, random_state=20261010+fold) sobre las filas de fold-train",
+      "restauracion": "al parar se restaura el mejor w (seleccion sobre TRAIN)",
+      "prohibido": "usar fold-val, test o el leaderboard para parar, seleccionar o comparar brazos"
+    },
+    "regla_alpha": {
+      "formula": "alpha* = M*(2 - power_t)/(d_norm * P_max**(2 - power_t))",
+      "con_power_t_cero": "alpha* = 2*M/(d_norm * P_max**2)",
+      "M": 1.6094379124341003,
+      "valores_evaluados": 0,
+      "ancla_d_norm": 0.912815416414756,
+      "ancla_alpha": 0.035263162376364156,
+      "ancla_n_train_fold": 135468,
+      "alpha_por_fold": {
+        "0": 0.035262336465737745
+      }
+    },
+    "control": {
+      "ejecutable": {
+        "modo": "partial_fit_por_pasada",
+        "llamadas": 10,
+        "max_iter": 1,
+        "warm_start": true,
+        "tol": null,
+        "shuffle": false,
+        "average": false,
+        "fit_intercept": true,
+        "alpha_reg": 1e-06,
+        "learning_rate": "optimal",
+        "random_state": "20261010+fold",
+        "n_jobs": 32
+      },
+      "espejo_prereg": {
+        "modo": "partial_fit_por_pasada",
+        "llamadas": 10,
+        "t_acumulado": "t_ se acumula entre llamadas (401 si se usara fit repetido, por el reinicio de self.t_ en BaseSGDClassifier._fit)",
+        "es_por_pasada": true,
+        "restaura_mejor_coef": true,
+        "max_iter": null,
+        "nota": "el numero de pasadas (10) es el que el pre-registro congelo; lo que se corrige es como se ejecuta, porque fit(max_iter=1, warm_start=True) no acumula el schedule"
+      },
+      "nota_kwargs": "el estimador NO se construye con max_iter = 10: se construye con max_iter = 1 y se llama a partial_fit una vez por orden congelado de cada pasada"
+    },
+    "pesos_plugin": [
+      1.0,
+      1.1749,
+      1.2721,
+      1.163,
+      1.001,
+      0.8128
+    ],
+    "hilos": 32,
+    "seeds": {
+      "global": 20261010,
+      "es_segunda_particion": 987654,
+      "sgd_random_state": "20261010+fold"
+    },
+    "integracion": {
+      "c_logreg": 1.0,
+      "max_iter_logreg": 2000,
+      "clip": 1e-12,
+      "n_bootstrap": 2000,
+      "pesos_plugin": [
+        1.0,
+        1.1749,
+        1.2721,
+        1.163,
+        1.001,
+        0.8128
+      ],
+      "decision": "argmax(p_comb * pesos plugin congelados)"
+    },
+    "coste": {
+      "presupuesto_declarado_seg": 1200.0,
+      "proyeccion_max_h": 20.0,
+      "timeout_global_h": 24.0,
+      "ram_tope_gb": 20.0,
+      "variabilidad_referencia": 0.0008876,
+      "gate_delta": 0.0015,
+      "gate_folds": 4,
+      "umbral_alta_confianza": 0.6,
+      "tolerancia_determinismo": 1e-09
+    }
+  },
+  "sondas": {
+    "a_vectorizado_vs_lazo": {
+      "descripcion": "FTRL softmax multiclase multi-pasada (3 pasadas) vectorizada vs lazo ingenuo, problema aleatorio 200x50x6",
+      "alpha": 0.035318988698263484,
+      "n_pasadas": 3,
+      "max_abs_diff": 1.0547118733938987e-15,
+      "tolerancia": 1e-12,
+      "pass": true
+    },
+    "b_raiz_analitica_lambda0": {
+      "descripcion": "lambda1=lambda2=0 con feature constante: raiz analitica alpha*z/(beta+sqrt(n)) y paso unico alpha*g/(beta+|g|) con p=1/6",
+      "alpha": 0.03526101798176724,
+      "residuo_raiz": 1.3877787807814457e-17,
+      "residuo_un_paso": 0.0,
+      "residuo_max": 1.3877787807814457e-17,
+      "umbral": 1e-09,
+      "pass": true
+    },
+    "c_totalf1_macro": {
+      "metrica": "TotalF1:average=Macro",
+      "total_f1_average_macro": 0.1675788789443113,
+      "total_f1_default": 0.16783582644676073,
+      "macro_f1_sklearn": 0.1675788789443113,
+      "delta_criterio": 0.0,
+      "delta_default_vs_macro": 0.00025694750244942277,
+      "tolerancia": 1e-06,
+      "pass": true
+    },
+    "d_sin_nan_logloss_finito": {
+      "descripcion": "softmax multiclase sin NaN/inf y log_loss multiclase finito",
+      "n_filas": 400,
+      "p_finita": true,
+      "w_finito": true,
+      "log_loss_multiclase": 2.331259898589296,
+      "log_loss_finito": true,
+      "p_min": 0.02094162431976432,
+      "p_max": 0.6269259270411982,
+      "pass": true
+    },
+    "e_logloss_multiclase_propio": {
+      "descripcion": "log_loss multiclase propio -media log p[i,y[i]] contra sklearn.metrics.log_loss con filas que suman 1",
+      "log_loss_propio": 2.988767125390605,
+      "log_loss_sklearn": 2.988767125390605,
+      "delta": 0.0,
+      "max_abs_suma_menos_uno": 2.220446049250313e-16,
+      "tolerancia": 1e-09,
+      "pass": true
+    },
+    "f_filas_suman_uno": {
+      "descripcion": "max|sum_c p_c - 1| del softmax de 6 logits, sin temperatura",
+      "max_abs_suma_menos_uno_por_caso": {
+        "ftrl_una_pasada": 2.220446049250313e-16,
+        "aleatorio": 3.3306690738754696e-16,
+        "extremos_1e3": 4.440892098500626e-16
+      },
+      "peor": 4.440892098500626e-16,
+      "tolerancia": 1e-09,
+      "pass": true
+    },
+    "g_reproducibilidad_alpha": {
+      "fold": 0,
+      "n_es_train": 121921,
+      "prior": [
+        0.17044643662699616,
+        0.1693473642768678,
+        0.16739528055052041,
+        0.16671451185603792,
+        0.16570566186300964,
+        0.160390744826568
+      ],
+      "prior_sha256": "bc9e6d3043c04219e42a2cfd023bd69c9a844811c674c25510623ab9b605cdf3",
+      "d_norm": 0.9128367962785974,
+      "d_norm_referencia_ancla": 0.912815416414756,
+      "d_norm_uniforme": 0.9128709291752768,
+      "h_prior_es": 1.7915714394468476,
+      "M": 1.6094379124341003,
+      "P_max": 10,
+      "power_t": 0.0,
+      "alpha_run": 0.035262336465737745,
+      "alpha_formula_general": 0.035262336465737745,
+      "alpha_sha256": "83a538cb56b1c4cc63b82da9a7c0ea0a61843128d0f20706bc38b8ca9ce1815e",
+      "alpha_ancla_referencia": 0.035263162376364156,
+      "alpha_esperado_aproximado": 0.0352631,
+      "diferencia_exacta": 0.0,
+      "diferencia_es_cero_exacto": true,
+      "ancla_reproduce": true,
+      "M_es_ln_K_menos_1": true,
+      "criterio": "alpha*, d_norm y prior recalculados en runtime desde el ES-train; |alpha*_run - alpha*_formula| = 0 exacto + sha256 de prior y alpha*; si no reproduce -> exit 2 ANTES de entrenar",
+      "pass": true
+    },
+    "h_estabilidad_es": {
+      "descripcion": "dos corridas identicas del fold 0 de cada brazo: misma pasada de parada, mismo ll_train y sha256 de los pesos IDENTICOS (tolerancia 0)",
+      "problema": "mini (dimension reducida); sobre el fold 0 real la misma comprobacion es el gate G5",
+      "brazos": {
+        "A1_ftrl_lambda1": {
+          "pasada_de_parada": [
+            3,
+            3
+          ],
+          "ll_train": [
+            23.291927429575324,
+            23.291927429575324
+          ],
+          "sha256_w": [
+            "6fb54221536bac81c13d7ef18e26910749b7c6d59f1a383019c553616a308be8",
+            "6fb54221536bac81c13d7ef18e26910749b7c6d59f1a383019c553616a308be8"
+          ],
+          "pasada_igual": true,
+          "ll_train_igual": true,
+          "pesos_identicos": true,
+          "max_abs_diff_ll_train": 0.0,
+          "tolerancia": 0.0,
+          "pass": true
+        },
+        "A2_sgd_presupuesto": {
+          "pasada_de_parada": [
+            10,
+            10
+          ],
+          "ll_train": [
+            21.132546449429192,
+            21.132546449429192
+          ],
+          "sha256_w": [
+            "9add1b9961840769f5d205c331a17b6851b0fff6b3e3379573c0c9c07b4e9546",
+            "9add1b9961840769f5d205c331a17b6851b0fff6b3e3379573c0c9c07b4e9546"
+          ],
+          "pasada_igual": true,
+          "ll_train_igual": true,
+          "pesos_identicos": true,
+          "max_abs_diff_ll_train": 0.0,
+          "tolerancia": 0.0,
+          "pass": true
+        }
+      },
+      "pass": true
+    },
+    "i_simetria_presupuesto": {
+      "descripcion": "sha256 de la particion ES y de los ordenes por pasada identicos en ambos brazos; los ordenes se generan UNA vez por fold y se pasan a los dos brazos",
+      "n_pasadas": 10,
+      "n_filas_es_train": 1350,
+      "es_train_sha256": "dfdea2b4de523d74164fd7ba3417aae24427d72e20f6379f6149f07074e7d887",
+      "es_val_sha256": "aa7793610f1d9fbf6e955510162a416d4de69e6a213e589ccd35e2626e55176e",
+      "es_train_y_es_val_distintos": true,
+      "ordenes_sha256_A1": [
+        "5527b3bf48498f6c7af9a4c217f786ef814b967a9f18e16e3101d0118f03c2cf",
+        "d63099d9e190ffed51f0304e957834bf3f07cc35b064f1f3e30473a8e663482c",
+        "8120ddea7d21175db580a9efba7fe35ba70958bd8ff81af8ee95a3068fbba231",
+        "da67bea03e7b96275c1011c5c4043e7c6030b3cca84472c4c75e516fdbbf211a",
+        "1a1e44e40d43ec31c076ffe7b71f8b44081dac934f907002334809a330b9b7d9",
+        "c4eae4e67956acb90f0753cf7f5bf49d5f3870bbe8474a2d24a474cd3ba5dcfc",
+        "3e6bb3464b5e8bedfcc0f0ca2e462b0539d707dc0d6cd90a23da38215f625db7",
+        "21a7c7923f0b8534d7dc40c165c7956d3ffa02b3fc7dfb6dce088d58561d6b5a",
+        "35783832e43b77e700dd0e770643aa9ae97807cc3fe437130894891f46140c9e",
+        "5f8b0bbdd9a9a39c8a0f6543791b74b099b888177edb908f3564700a3135d14d"
+      ],
+      "ordenes_sha256_A2": [
+        "5527b3bf48498f6c7af9a4c217f786ef814b967a9f18e16e3101d0118f03c2cf",
+        "d63099d9e190ffed51f0304e957834bf3f07cc35b064f1f3e30473a8e663482c",
+        "8120ddea7d21175db580a9efba7fe35ba70958bd8ff81af8ee95a3068fbba231",
+        "da67bea03e7b96275c1011c5c4043e7c6030b3cca84472c4c75e516fdbbf211a",
+        "1a1e44e40d43ec31c076ffe7b71f8b44081dac934f907002334809a330b9b7d9",
+        "c4eae4e67956acb90f0753cf7f5bf49d5f3870bbe8474a2d24a474cd3ba5dcfc",
+        "3e6bb3464b5e8bedfcc0f0ca2e462b0539d707dc0d6cd90a23da38215f625db7",
+        "21a7c7923f0b8534d7dc40c165c7956d3ffa02b3fc7dfb6dce088d58561d6b5a",
+        "35783832e43b77e700dd0e770643aa9ae97807cc3fe437130894891f46140c9e",
+        "5f8b0bbdd9a9a39c8a0f6543791b74b099b888177edb908f3564700a3135d14d"
+      ],
+      "ordenes_identicos_entre_brazos": true,
+      "generador_reproducible": true,
+      "criterio": "sha256 de la particion ES y de los ordenes por pasada identicos en ambos brazos",
+      "pass": true
+    },
+    "j_tabla_de_mecanismo": {
+      "descripcion": "tabla de mecanismo: ll_train y D_acum por pasada de A1 y A2, razon |sigma*w|/|g| y w_max_abs; la falsacion se reproduce dentro del runner, NO se importa de /tmp",
+      "es_gate": false,
+      "prior_es": [
+        0.1637037037037037,
+        0.17037037037037037,
+        0.17407407407407408,
+        0.15703703703703703,
+        0.17333333333333334,
+        0.16148148148148148
+      ],
+      "h_prior_es": 1.7910330945259374,
+      "M": 1.6094379124341003,
+      "banda_D_acum_objetivo": [
+        0.8047189562170501,
+        3.2188758248682006
+      ],
+      "techo_G1_ll_train": 1.7810330945259374,
+      "alpha": 0.035266126860731356,
+      "d_norm": 0.912738684795126,
+      "brazos": {
+        "A1_ftrl_lambda1": {
+          "pasada_de_parada": 3,
+          "mejor_pasada": 1,
+          "trayectoria": [
+            {
+              "pasada": 1,
+              "ll_train": 20.665994472245217,
+              "D_acum": 24.68474182874249,
+              "macro_f1_es": 0.04597701149425287,
+              "w_max_abs": 0.7608986131761744,
+              "razon_sigma_sobre_g": 0.2898723346727807,
+              "razon_sigma_sobre_g_pasada": 0.2898723346727807
+            },
+            {
+              "pasada": 2,
+              "ll_train": 23.288555075699396,
+              "D_acum": 35.68010798654562,
+              "macro_f1_es": 0.04597701149425287,
+              "w_max_abs": 1.0950899041615954,
+              "razon_sigma_sobre_g": 0.30533116499651075,
+              "razon_sigma_sobre_g_pasada": 0.3207563470600844
+            },
+            {
+              "pasada": 3,
+              "ll_train": 23.291927429575324,
+              "D_acum": 44.06543819122264,
+              "macro_f1_es": 0.04597701149425287,
+              "w_max_abs": 1.3497309096242798,
+              "razon_sigma_sobre_g": 0.31152915683841526,
+              "razon_sigma_sobre_g_pasada": 0.3239116497444554
+            }
+          ]
+        },
+        "A2_sgd_presupuesto": {
+          "pasada_de_parada": 10,
+          "mejor_pasada": 5,
+          "trayectoria": [
+            {
+              "pasada": 1,
+              "ll_train": 23.218397532402122,
+              "D_acum": 850.9579428137029,
+              "macro_f1_es": 0.04563492063492064,
+              "w_max_abs": 198.27616122958102,
+              "t_": 1351.0
+            },
+            {
+              "pasada": 2,
+              "ll_train": 22.32896401547598,
+              "D_acum": 943.356237349402,
+              "macro_f1_es": 0.07764948084496957,
+              "w_max_abs": 217.21151455780978,
+              "t_": 2701.0
+            },
+            {
+              "pasada": 3,
+              "ll_train": 21.398214975853033,
+              "D_acum": 486.87608722147564,
+              "macro_f1_es": 0.07642591326801852,
+              "w_max_abs": 215.13521626255553,
+              "t_": 4051.0
+            },
+            {
+              "pasada": 4,
+              "ll_train": 22.90221564095283,
+              "D_acum": 1009.1512779286732,
+              "macro_f1_es": 0.047892720306513405,
+              "w_max_abs": 182.4688825636612,
+              "t_": 5401.0
+            },
+            {
+              "pasada": 5,
+              "ll_train": 21.813654350512216,
+              "D_acum": 643.3806745368904,
+              "macro_f1_es": 0.10565208065208065,
+              "w_max_abs": 255.55056581988273,
+              "t_": 6751.0
+            },
+            {
+              "pasada": 6,
+              "ll_train": 22.769714811161514,
+              "D_acum": 756.641072638577,
+              "macro_f1_es": 0.04816955684007707,
+              "w_max_abs": 156.45185866025,
+              "t_": 8101.0
+            },
+            {
+              "pasada": 7,
+              "ll_train": 21.699843705831434,
+              "D_acum": 552.7729872228016,
+              "macro_f1_es": 0.09929879644165358,
+              "w_max_abs": 159.27610073148463,
+              "t_": 9451.0
+            },
+            {
+              "pasada": 8,
+              "ll_train": 22.73930845653149,
+              "D_acum": 793.2675619418843,
+              "macro_f1_es": 0.04980842911877395,
+              "w_max_abs": 188.29095739062862,
+              "t_": 10801.0
+            },
+            {
+              "pasada": 9,
+              "ll_train": 22.43855753642265,
+              "D_acum": 700.5057005380704,
+              "macro_f1_es": 0.07494369369369369,
+              "w_max_abs": 201.01132791947964,
+              "t_": 12151.0
+            },
+            {
+              "pasada": 10,
+              "ll_train": 21.132546449429192,
+              "D_acum": 508.72439748299104,
+              "macro_f1_es": 0.09134636241377814,
+              "w_max_abs": 178.42304006681084,
+              "t_": 13501.0
+            }
+          ]
+        }
+      }
+    },
+    "k_caso_lambda1_cero": {
+      "nombre": "lambda1_0",
+      "lambda1": 0.0,
+      "trayectoria": [
+        {
+          "pasada": 1,
+          "ll_train": 20.75178783276184,
+          "norma_w_l2": 6.558112172151513,
+          "coordenadas_vivas": 51,
+          "clases_vivas": 306,
+          "escasez_efectiva": 1.0,
+          "frac_coordenadas_muertas": 0.0,
+          "sha256_z": "029c980a937eba16644cab3bceda42e69c74960392ecaa21603596b214983361",
+          "mediana_abs_z": 80.20774223932168
+        },
+        {
+          "pasada": 2,
+          "ll_train": 23.288751769042282,
+          "norma_w_l2": 9.47808368123998,
+          "coordenadas_vivas": 51,
+          "clases_vivas": 306,
+          "escasez_efectiva": 1.0,
+          "frac_coordenadas_muertas": 0.0,
+          "sha256_z": "d4a6c39a3cf9102523a4caeaed73550f2c194f6f22de7a8f47b0d7360a3d9908",
+          "mediana_abs_z": 159.31427856829993
+        },
+        {
+          "pasada": 3,
+          "ll_train": 23.291927429575324,
+          "norma_w_l2": 11.706821300818099,
+          "coordenadas_vivas": 51,
+          "clases_vivas": 306,
+          "escasez_efectiva": 1.0,
+          "frac_coordenadas_muertas": 0.0,
+          "sha256_z": "64fd1cae5102c09fc08b286016bd2e93fae0acf70078be5eaf1c68ec20ec9e5c",
+          "mediana_abs_z": 238.19601745640466
+        }
+      ],
+      "ll_train_final": 23.291927429575324,
+      "norma_w_l2_final": 11.706821300818099,
+      "escasez_efectiva_final": 1.0,
+      "mediana_abs_z_pasada_1": 80.20774223932168,
+      "sha256_z_pasada_1": "029c980a937eba16644cab3bceda42e69c74960392ecaa21603596b214983361",
+      "normas_por_pasada": [
+        6.558112172151513,
+        9.47808368123998,
+        11.706821300818099
+      ],
+      "descripcion": "sondas (k), (l) y (m): los tres casos del gemelo de lambda1 reproducidos DENTRO del runner sobre el problema mini con las mismas reglas de update, el mismo alpha y los mismos ordenes congelados, contrastados contra el artefacto versionado con tolerancia declarada",
+      "es_gate": false,
+      "caso": "lambda1_0",
+      "contraste": {
+        "lambda1_run": 0.0,
+        "lambda1_artefacto": 0.0,
+        "lambda1_identico": true,
+        "delta_maximo_absoluto": 49.27678719454379,
+        "reproduce_numericamente": false,
+        "por_pasada": [
+          {
+            "pasada": 1,
+            "ll_train_run": 20.75178783276184,
+            "ll_train_artefacto": 10.086313578600262,
+            "delta_ll_train": 10.665474254161577,
+            "norma_w_l2_run": 6.558112172151513,
+            "norma_w_l2_artefacto": 29.194850667547023,
+            "delta_norma_w_l2": -22.63673849539551,
+            "escasez_efectiva_run": 1.0,
+            "escasez_efectiva_artefacto": 1.0,
+            "delta_escasez_efectiva": 0.0
+          },
+          {
+            "pasada": 2,
+            "ll_train_run": 23.288751769042282,
+            "ll_train_artefacto": 15.42062521362065,
+            "delta_ll_train": 7.868126555421632,
+            "norma_w_l2_run": 9.47808368123998,
+            "norma_w_l2_artefacto": 47.27989643345345,
+            "delta_norma_w_l2": -37.80181275221347,
+            "escasez_efectiva_run": 1.0,
+            "escasez_efectiva_artefacto": 1.0,
+            "delta_escasez_efectiva": 0.0
+          },
+          {
+            "pasada": 3,
+            "ll_train_run": 23.291927429575324,
+            "ll_train_artefacto": 19.174420615478212,
+            "delta_ll_train": 4.117506814097112,
+            "norma_w_l2_run": 11.706821300818099,
+            "norma_w_l2_artefacto": 60.98360849536189,
+            "delta_norma_w_l2": -49.27678719454379,
+            "escasez_efectiva_run": 1.0,
+            "escasez_efectiva_artefacto": 1.0,
+            "delta_escasez_efectiva": 0.0
+          }
+        ],
+        "nota": "el problema del runner es el mini (1350 x 51) y el del artefacto es el ES-train real del fold 0 (121921 x 107793): la identidad numerica no aplica y el delta se publica como diagnostico, no como veredicto"
+      },
+      "reproduce": false,
+      "problema": {
+        "tipo": "mini",
+        "n_filas_es_train": 1350,
+        "n_coordenadas": 51,
+        "es_train_sha256": "dfdea2b4de523d74164fd7ba3417aae24427d72e20f6379f6149f07074e7d887",
+        "ordenes_sha256": [
+          "5527b3bf48498f6c7af9a4c217f786ef814b967a9f18e16e3101d0118f03c2cf",
+          "d63099d9e190ffed51f0304e957834bf3f07cc35b064f1f3e30473a8e663482c",
+          "8120ddea7d21175db580a9efba7fe35ba70958bd8ff81af8ee95a3068fbba231",
+          "da67bea03e7b96275c1011c5c4043e7c6030b3cca84472c4c75e516fdbbf211a",
+          "1a1e44e40d43ec31c076ffe7b71f8b44081dac934f907002334809a330b9b7d9",
+          "c4eae4e67956acb90f0753cf7f5bf49d5f3870bbe8474a2d24a474cd3ba5dcfc",
+          "3e6bb3464b5e8bedfcc0f0ca2e462b0539d707dc0d6cd90a23da38215f625db7",
+          "21a7c7923f0b8534d7dc40c165c7956d3ffa02b3fc7dfb6dce088d58561d6b5a",
+          "35783832e43b77e700dd0e770643aa9ae97807cc3fe437130894891f46140c9e",
+          "5f8b0bbdd9a9a39c8a0f6543791b74b099b888177edb908f3564700a3135d14d"
+        ],
+        "nota": "el artefacto se midio sobre el ES-train REAL del fold 0; aqui se reproduce sobre el problema mini, luego la identidad numerica con el artefacto no aplica y se contrasta la FIRMA de mecanismo"
+      },
+      "tolerancia": 0.0,
+      "politica": "son sondas NO-GATE: no deciden el veredicto, pero la decision de mecanismo no puede descansar en evidencia importada de /tmp, luego se reproducen aqui; una no reproduccion se publica y no detiene el ciclo"
+    },
+    "l_caso_lambda1_alpha": {
+      "nombre": "lambda1_alpha",
+      "lambda1": 0.035266126860731356,
+      "trayectoria": [
+        {
+          "pasada": 1,
+          "ll_train": 20.741011898201936,
+          "norma_w_l2": 6.554531585087054,
+          "coordenadas_vivas": 51,
+          "clases_vivas": 306,
+          "escasez_efectiva": 1.0,
+          "frac_coordenadas_muertas": 0.0,
+          "sha256_z": "b6d9714b01cedddcc663f2a05a63397f3dbc0569870b337738ec576488f2def0",
+          "mediana_abs_z": 80.20664372194253
+        },
+        {
+          "pasada": 2,
+          "ll_train": 23.288727035926147,
+          "norma_w_l2": 9.475815390534356,
+          "coordenadas_vivas": 51,
+          "clases_vivas": 306,
+          "escasez_efectiva": 1.0,
+          "frac_coordenadas_muertas": 0.0,
+          "sha256_z": "51d91f5d7236ceb65e03411d070de8dd3a2974c9e7e93456568a19360add424f",
+          "mediana_abs_z": 159.31714554913154
+        },
+        {
+          "pasada": 3,
+          "ll_train": 23.291927429575324,
+          "norma_w_l2": 11.7050725488648,
+          "coordenadas_vivas": 51,
+          "clases_vivas": 306,
+          "escasez_efectiva": 1.0,
+          "frac_coordenadas_muertas": 0.0,
+          "sha256_z": "18bdab913462e80a1251ca71c734e73659b9a9faa1d102fd3585743179916b6b",
+          "mediana_abs_z": 238.20132910159555
+        }
+      ],
+      "ll_train_final": 23.291927429575324,
+      "norma_w_l2_final": 11.7050725488648,
+      "escasez_efectiva_final": 1.0,
+      "mediana_abs_z_pasada_1": 80.20664372194253,
+      "sha256_z_pasada_1": "b6d9714b01cedddcc663f2a05a63397f3dbc0569870b337738ec576488f2def0",
+      "normas_por_pasada": [
+        6.554531585087054,
+        9.475815390534356,
+        11.7050725488648
+      ],
+      "descripcion": "sondas (k), (l) y (m): los tres casos del gemelo de lambda1 reproducidos DENTRO del runner sobre el problema mini con las mismas reglas de update, el mismo alpha y los mismos ordenes congelados, contrastados contra el artefacto versionado con tolerancia declarada",
+      "es_gate": false,
+      "caso": "lambda1_alpha",
+      "contraste": {
+        "lambda1_run": 0.035266126860731356,
+        "lambda1_artefacto": 0.035262336465737745,
+        "lambda1_identico": false,
+        "delta_maximo_absoluto": 49.15839137688325,
+        "reproduce_numericamente": false,
+        "por_pasada": [
+          {
+            "pasada": 1,
+            "ll_train_run": 20.741011898201936,
+            "ll_train_artefacto": 10.083240868084,
+            "delta_ll_train": 10.657771030117937,
+            "norma_w_l2_run": 6.554531585087054,
+            "norma_w_l2_artefacto": 29.02889262656771,
+            "delta_norma_w_l2": -22.474361041480655,
+            "escasez_efectiva_run": 1.0,
+            "escasez_efectiva_artefacto": 0.9923742729119701,
+            "delta_escasez_efectiva": 0.007625727088029888
+          },
+          {
+            "pasada": 2,
+            "ll_train_run": 23.288727035926147,
+            "ll_train_artefacto": 15.418472712408523,
+            "delta_ll_train": 7.870254323517624,
+            "norma_w_l2_run": 9.475815390534356,
+            "norma_w_l2_artefacto": 47.14299208512644,
+            "delta_norma_w_l2": -37.66717669459208,
+            "escasez_efectiva_run": 1.0,
+            "escasez_efectiva_artefacto": 0.9923742729119701,
+            "delta_escasez_efectiva": 0.007625727088029888
+          },
+          {
+            "pasada": 3,
+            "ll_train_run": 23.291927429575324,
+            "ll_train_artefacto": 19.172685241471445,
+            "delta_ll_train": 4.119242188103879,
+            "norma_w_l2_run": 11.7050725488648,
+            "norma_w_l2_artefacto": 60.86346392574805,
+            "delta_norma_w_l2": -49.15839137688325,
+            "escasez_efectiva_run": 1.0,
+            "escasez_efectiva_artefacto": 0.9923742729119701,
+            "delta_escasez_efectiva": 0.007625727088029888
+          }
+        ],
+        "nota": "el problema del runner es el mini (1350 x 51) y el del artefacto es el ES-train real del fold 0 (121921 x 107793): la identidad numerica no aplica y el delta se publica como diagnostico, no como veredicto"
+      },
+      "reproduce": false,
+      "problema": {
+        "tipo": "mini",
+        "n_filas_es_train": 1350,
+        "n_coordenadas": 51,
+        "es_train_sha256": "dfdea2b4de523d74164fd7ba3417aae24427d72e20f6379f6149f07074e7d887",
+        "ordenes_sha256": [
+          "5527b3bf48498f6c7af9a4c217f786ef814b967a9f18e16e3101d0118f03c2cf",
+          "d63099d9e190ffed51f0304e957834bf3f07cc35b064f1f3e30473a8e663482c",
+          "8120ddea7d21175db580a9efba7fe35ba70958bd8ff81af8ee95a3068fbba231",
+          "da67bea03e7b96275c1011c5c4043e7c6030b3cca84472c4c75e516fdbbf211a",
+          "1a1e44e40d43ec31c076ffe7b71f8b44081dac934f907002334809a330b9b7d9",
+          "c4eae4e67956acb90f0753cf7f5bf49d5f3870bbe8474a2d24a474cd3ba5dcfc",
+          "3e6bb3464b5e8bedfcc0f0ca2e462b0539d707dc0d6cd90a23da38215f625db7",
+          "21a7c7923f0b8534d7dc40c165c7956d3ffa02b3fc7dfb6dce088d58561d6b5a",
+          "35783832e43b77e700dd0e770643aa9ae97807cc3fe437130894891f46140c9e",
+          "5f8b0bbdd9a9a39c8a0f6543791b74b099b888177edb908f3564700a3135d14d"
+        ],
+        "nota": "el artefacto se midio sobre el ES-train REAL del fold 0; aqui se reproduce sobre el problema mini, luego la identidad numerica con el artefacto no aplica y se contrasta la FIRMA de mecanismo"
+      },
+      "tolerancia": 0.0,
+      "flag_1_mediana_sobre_alpha": 6.804368702629027,
+      "lambda1_alpha_es_no_op": true,
+      "politica": "son sondas NO-GATE: no deciden el veredicto, pero la decision de mecanismo no puede descansar en evidencia importada de /tmp, luego se reproducen aqui; una no reproduccion se publica y no detiene el ciclo"
+    },
+    "m_caso_lambda1_mediana": {
+      "nombre": "lambda1_mediana",
+      "lambda1": 0.23993793862904017,
+      "trayectoria": [
+        {
+          "pasada": 1,
+          "ll_train": 20.665994472245217,
+          "norma_w_l2": 6.529708013012471,
+          "coordenadas_vivas": 51,
+          "clases_vivas": 306,
+          "escasez_efectiva": 1.0,
+          "frac_coordenadas_muertas": 0.0,
+          "sha256_z": "db4ad42922ae6da5f29b653dbcfff9f882719fbb5934b5f40801ea1ff14265e5",
+          "mediana_abs_z": 80.00481993060772
+        },
+        {
+          "pasada": 2,
+          "ll_train": 23.288555075699396,
+          "norma_w_l2": 9.46010577803817,
+          "coordenadas_vivas": 51,
+          "clases_vivas": 306,
+          "escasez_efectiva": 1.0,
+          "frac_coordenadas_muertas": 0.0,
+          "sha256_z": "f0da6c7f8383542c99eff9ebdbc27d71a13995b878310656c241ef06512ed3e5",
+          "mediana_abs_z": 159.28690335332823
+        },
+        {
+          "pasada": 3,
+          "ll_train": 23.291927429575324,
+          "norma_w_l2": 11.692967094123848,
+          "coordenadas_vivas": 51,
+          "clases_vivas": 306,
+          "escasez_efectiva": 1.0,
+          "frac_coordenadas_muertas": 0.0,
+          "sha256_z": "50ea1d48ed33cbee8244d0960698d34bc5752b508c94e3d5b01a34f9f3c1b7b8",
+          "mediana_abs_z": 238.2017864299837
+        }
+      ],
+      "ll_train_final": 23.291927429575324,
+      "norma_w_l2_final": 11.692967094123848,
+      "escasez_efectiva_final": 1.0,
+      "mediana_abs_z_pasada_1": 80.00481993060772,
+      "sha256_z_pasada_1": "db4ad42922ae6da5f29b653dbcfff9f882719fbb5934b5f40801ea1ff14265e5",
+      "normas_por_pasada": [
+        6.529708013012471,
+        9.46010577803817,
+        11.692967094123848
+      ],
+      "descripcion": "sondas (k), (l) y (m): los tres casos del gemelo de lambda1 reproducidos DENTRO del runner sobre el problema mini con las mismas reglas de update, el mismo alpha y los mismos ordenes congelados, contrastados contra el artefacto versionado con tolerancia declarada",
+      "es_gate": false,
+      "caso": "lambda1_mediana",
+      "contraste": {
+        "lambda1_run": 0.23993793862904017,
+        "lambda1_artefacto": 0.23993793862904017,
+        "lambda1_identico": true,
+        "delta_maximo_absoluto": 48.544235028184644,
+        "reproduce_numericamente": false,
+        "por_pasada": [
+          {
+            "pasada": 1,
+            "ll_train_run": 20.665994472245217,
+            "ll_train_artefacto": 10.058343327445655,
+            "delta_ll_train": 10.607651144799561,
+            "norma_w_l2_run": 6.529708013012471,
+            "norma_w_l2_artefacto": 28.27459446151044,
+            "delta_norma_w_l2": -21.74488644849797,
+            "escasez_efectiva_run": 1.0,
+            "escasez_efectiva_artefacto": 0.9510728897052684,
+            "delta_escasez_efectiva": 0.048927110294731624
+          },
+          {
+            "pasada": 2,
+            "ll_train_run": 23.288555075699396,
+            "ll_train_artefacto": 15.40168213060249,
+            "delta_ll_train": 7.886872945096906,
+            "norma_w_l2_run": 9.46010577803817,
+            "norma_w_l2_artefacto": 46.45212395628998,
+            "delta_norma_w_l2": -36.99201817825181,
+            "escasez_efectiva_run": 1.0,
+            "escasez_efectiva_artefacto": 0.9806666481125862,
+            "delta_escasez_efectiva": 0.019333351887413808
+          },
+          {
+            "pasada": 3,
+            "ll_train_run": 23.291927429575324,
+            "ll_train_artefacto": 19.1594443184596,
+            "delta_ll_train": 4.132483111115725,
+            "norma_w_l2_run": 11.692967094123848,
+            "norma_w_l2_artefacto": 60.23720212230849,
+            "delta_norma_w_l2": -48.544235028184644,
+            "escasez_efectiva_run": 1.0,
+            "escasez_efectiva_artefacto": 0.9806666481125862,
+            "delta_escasez_efectiva": 0.019333351887413808
+          }
+        ],
+        "nota": "el problema del runner es el mini (1350 x 51) y el del artefacto es el ES-train real del fold 0 (121921 x 107793): la identidad numerica no aplica y el delta se publica como diagnostico, no como veredicto"
+      },
+      "reproduce": false,
+      "problema": {
+        "tipo": "mini",
+        "n_filas_es_train": 1350,
+        "n_coordenadas": 51,
+        "es_train_sha256": "dfdea2b4de523d74164fd7ba3417aae24427d72e20f6379f6149f07074e7d887",
+        "ordenes_sha256": [
+          "5527b3bf48498f6c7af9a4c217f786ef814b967a9f18e16e3101d0118f03c2cf",
+          "d63099d9e190ffed51f0304e957834bf3f07cc35b064f1f3e30473a8e663482c",
+          "8120ddea7d21175db580a9efba7fe35ba70958bd8ff81af8ee95a3068fbba231",
+          "da67bea03e7b96275c1011c5c4043e7c6030b3cca84472c4c75e516fdbbf211a",
+          "1a1e44e40d43ec31c076ffe7b71f8b44081dac934f907002334809a330b9b7d9",
+          "c4eae4e67956acb90f0753cf7f5bf49d5f3870bbe8474a2d24a474cd3ba5dcfc",
+          "3e6bb3464b5e8bedfcc0f0ca2e462b0539d707dc0d6cd90a23da38215f625db7",
+          "21a7c7923f0b8534d7dc40c165c7956d3ffa02b3fc7dfb6dce088d58561d6b5a",
+          "35783832e43b77e700dd0e770643aa9ae97807cc3fe437130894891f46140c9e",
+          "5f8b0bbdd9a9a39c8a0f6543791b74b099b888177edb908f3564700a3135d14d"
+        ],
+        "nota": "el artefacto se midio sobre el ES-train REAL del fold 0; aqui se reproduce sobre el problema mini, luego la identidad numerica con el artefacto no aplica y se contrasta la FIRMA de mecanismo"
+      },
+      "tolerancia": 0.0,
+      "razon_max_min_norma": 1.7907335321613125,
+      "razon_max_min_norma_previa": 2.130435582526498,
+      "razon_supera_1": true,
+      "lectura": "si el orden de normas se respeta y la razon con la mediana supera 1.0, el problema mini reproduce la FIRMA de mecanismo de la sonda pre-ejecucion: el L1 prima coordenadas (lambda1 = alpha casi no hace nada frente a lambda1 = 0) pero NO acota la norma por si solo, que es lo que G8 pone a prueba",
+      "politica": "son sondas NO-GATE: no deciden el veredicto, pero la decision de mecanismo no puede descansar en evidencia importada de /tmp, luego se reproducen aqui; una no reproduccion se publica y no detiene el ciclo"
+    },
+    "_gemelo_lambda1": {
+      "descripcion": "sondas (k), (l) y (m): los tres casos del gemelo de lambda1 reproducidos DENTRO del runner sobre el problema mini con las mismas reglas de update, el mismo alpha y los mismos ordenes congelados, contrastados contra el artefacto versionado con tolerancia declarada",
+      "es_gate": false,
+      "politica": "son sondas NO-GATE: no deciden el veredicto, pero la decision de mecanismo no puede descansar en evidencia importada de /tmp, luego se reproducen aqui; una no reproduccion se publica y no detiene el ciclo",
+      "problema": {
+        "tipo": "mini",
+        "n_filas_es_train": 1350,
+        "n_coordenadas": 51,
+        "es_train_sha256": "dfdea2b4de523d74164fd7ba3417aae24427d72e20f6379f6149f07074e7d887",
+        "ordenes_sha256": [
+          "5527b3bf48498f6c7af9a4c217f786ef814b967a9f18e16e3101d0118f03c2cf",
+          "d63099d9e190ffed51f0304e957834bf3f07cc35b064f1f3e30473a8e663482c",
+          "8120ddea7d21175db580a9efba7fe35ba70958bd8ff81af8ee95a3068fbba231",
+          "da67bea03e7b96275c1011c5c4043e7c6030b3cca84472c4c75e516fdbbf211a",
+          "1a1e44e40d43ec31c076ffe7b71f8b44081dac934f907002334809a330b9b7d9",
+          "c4eae4e67956acb90f0753cf7f5bf49d5f3870bbe8474a2d24a474cd3ba5dcfc",
+          "3e6bb3464b5e8bedfcc0f0ca2e462b0539d707dc0d6cd90a23da38215f625db7",
+          "21a7c7923f0b8534d7dc40c165c7956d3ffa02b3fc7dfb6dce088d58561d6b5a",
+          "35783832e43b77e700dd0e770643aa9ae97807cc3fe437130894891f46140c9e",
+          "5f8b0bbdd9a9a39c8a0f6543791b74b099b888177edb908f3564700a3135d14d"
+        ],
+        "nota": "el artefacto se midio sobre el ES-train REAL del fold 0; aqui se reproduce sobre el problema mini, luego la identidad numerica con el artefacto no aplica y se contrasta la FIRMA de mecanismo"
+      },
+      "tolerancia": 0.0,
+      "tolerancia_declarada": "tolerancia CERO para la identidad numerica (no alcanzable entre problemas distintos) y tolerancia CERO tambien para la firma relacional: el orden de las tres normas y el signo de la razon se comprueban de forma exacta",
+      "artefacto_previo": "experiments/v35_00b_sonda_lambda1.json",
+      "sha256_artefacto_previo": "e6554eb25269a3a48780e9f9d8674e67abdaf41136eb2277db3d54704b7b3aff",
+      "identidad_numerica": {
+        "se_ejecuta_aqui": false,
+        "donde": "dentro del runner, en el FOLD 0 de la CORRIDA REAL, sobre el stream real de ES-train (misma matriz, mismas etiquetas, mismo orden congelado y mismo alpha que la sonda pre-ejecucion)",
+        "criterio": "diferencia relativa <= 1e-09 en ll_train y ||w||_2 de cada pasada frente al artefacto; diferencia EXACTA 0 y sha256 identico en la mediana del anclaje y en el snapshot de z",
+        "publica": "si, en el estado, en el informe y en el resultado, como no-gate",
+        "motivo": "el miniproblema de --verificar no puede darla: 1350 x 51 frente a 121921 x 107793 del gemelo pre-ejecucion, y con lambda1 = 0.2399 el mini apenas poda (escasez efectiva 1.0 en los tres casos), luego alli no hay magnitud que reproducir. Aqui el contraste es de FIRMA de mecanismo",
+        "funcion": "identidad_lambda1_fold_0"
+      },
+      "n_pasadas": 3,
+      "alpha": 0.035266126860731356,
+      "lambda1_mediana_congelada": 0.23993793862904017,
+      "casos": {
+        "lambda1_0": {
+          "nombre": "lambda1_0",
+          "lambda1": 0.0,
+          "trayectoria": [
+            {
+              "pasada": 1,
+              "ll_train": 20.75178783276184,
+              "norma_w_l2": 6.558112172151513,
+              "coordenadas_vivas": 51,
+              "clases_vivas": 306,
+              "escasez_efectiva": 1.0,
+              "frac_coordenadas_muertas": 0.0,
+              "sha256_z": "029c980a937eba16644cab3bceda42e69c74960392ecaa21603596b214983361",
+              "mediana_abs_z": 80.20774223932168
+            },
+            {
+              "pasada": 2,
+              "ll_train": 23.288751769042282,
+              "norma_w_l2": 9.47808368123998,
+              "coordenadas_vivas": 51,
+              "clases_vivas": 306,
+              "escasez_efectiva": 1.0,
+              "frac_coordenadas_muertas": 0.0,
+              "sha256_z": "d4a6c39a3cf9102523a4caeaed73550f2c194f6f22de7a8f47b0d7360a3d9908",
+              "mediana_abs_z": 159.31427856829993
+            },
+            {
+              "pasada": 3,
+              "ll_train": 23.291927429575324,
+              "norma_w_l2": 11.706821300818099,
+              "coordenadas_vivas": 51,
+              "clases_vivas": 306,
+              "escasez_efectiva": 1.0,
+              "frac_coordenadas_muertas": 0.0,
+              "sha256_z": "64fd1cae5102c09fc08b286016bd2e93fae0acf70078be5eaf1c68ec20ec9e5c",
+              "mediana_abs_z": 238.19601745640466
+            }
+          ],
+          "ll_train_final": 23.291927429575324,
+          "norma_w_l2_final": 11.706821300818099,
+          "escasez_efectiva_final": 1.0,
+          "mediana_abs_z_pasada_1": 80.20774223932168,
+          "sha256_z_pasada_1": "029c980a937eba16644cab3bceda42e69c74960392ecaa21603596b214983361",
+          "normas_por_pasada": [
+            6.558112172151513,
+            9.47808368123998,
+            11.706821300818099
+          ]
+        },
+        "lambda1_alpha": {
+          "nombre": "lambda1_alpha",
+          "lambda1": 0.035266126860731356,
+          "trayectoria": [
+            {
+              "pasada": 1,
+              "ll_train": 20.741011898201936,
+              "norma_w_l2": 6.554531585087054,
+              "coordenadas_vivas": 51,
+              "clases_vivas": 306,
+              "escasez_efectiva": 1.0,
+              "frac_coordenadas_muertas": 0.0,
+              "sha256_z": "b6d9714b01cedddcc663f2a05a63397f3dbc0569870b337738ec576488f2def0",
+              "mediana_abs_z": 80.20664372194253
+            },
+            {
+              "pasada": 2,
+              "ll_train": 23.288727035926147,
+              "norma_w_l2": 9.475815390534356,
+              "coordenadas_vivas": 51,
+              "clases_vivas": 306,
+              "escasez_efectiva": 1.0,
+              "frac_coordenadas_muertas": 0.0,
+              "sha256_z": "51d91f5d7236ceb65e03411d070de8dd3a2974c9e7e93456568a19360add424f",
+              "mediana_abs_z": 159.31714554913154
+            },
+            {
+              "pasada": 3,
+              "ll_train": 23.291927429575324,
+              "norma_w_l2": 11.7050725488648,
+              "coordenadas_vivas": 51,
+              "clases_vivas": 306,
+              "escasez_efectiva": 1.0,
+              "frac_coordenadas_muertas": 0.0,
+              "sha256_z": "18bdab913462e80a1251ca71c734e73659b9a9faa1d102fd3585743179916b6b",
+              "mediana_abs_z": 238.20132910159555
+            }
+          ],
+          "ll_train_final": 23.291927429575324,
+          "norma_w_l2_final": 11.7050725488648,
+          "escasez_efectiva_final": 1.0,
+          "mediana_abs_z_pasada_1": 80.20664372194253,
+          "sha256_z_pasada_1": "b6d9714b01cedddcc663f2a05a63397f3dbc0569870b337738ec576488f2def0",
+          "normas_por_pasada": [
+            6.554531585087054,
+            9.475815390534356,
+            11.7050725488648
+          ]
+        },
+        "lambda1_mediana": {
+          "nombre": "lambda1_mediana",
+          "lambda1": 0.23993793862904017,
+          "trayectoria": [
+            {
+              "pasada": 1,
+              "ll_train": 20.665994472245217,
+              "norma_w_l2": 6.529708013012471,
+              "coordenadas_vivas": 51,
+              "clases_vivas": 306,
+              "escasez_efectiva": 1.0,
+              "frac_coordenadas_muertas": 0.0,
+              "sha256_z": "db4ad42922ae6da5f29b653dbcfff9f882719fbb5934b5f40801ea1ff14265e5",
+              "mediana_abs_z": 80.00481993060772
+            },
+            {
+              "pasada": 2,
+              "ll_train": 23.288555075699396,
+              "norma_w_l2": 9.46010577803817,
+              "coordenadas_vivas": 51,
+              "clases_vivas": 306,
+              "escasez_efectiva": 1.0,
+              "frac_coordenadas_muertas": 0.0,
+              "sha256_z": "f0da6c7f8383542c99eff9ebdbc27d71a13995b878310656c241ef06512ed3e5",
+              "mediana_abs_z": 159.28690335332823
+            },
+            {
+              "pasada": 3,
+              "ll_train": 23.291927429575324,
+              "norma_w_l2": 11.692967094123848,
+              "coordenadas_vivas": 51,
+              "clases_vivas": 306,
+              "escasez_efectiva": 1.0,
+              "frac_coordenadas_muertas": 0.0,
+              "sha256_z": "50ea1d48ed33cbee8244d0960698d34bc5752b508c94e3d5b01a34f9f3c1b7b8",
+              "mediana_abs_z": 238.2017864299837
+            }
+          ],
+          "ll_train_final": 23.291927429575324,
+          "norma_w_l2_final": 11.692967094123848,
+          "escasez_efectiva_final": 1.0,
+          "mediana_abs_z_pasada_1": 80.00481993060772,
+          "sha256_z_pasada_1": "db4ad42922ae6da5f29b653dbcfff9f882719fbb5934b5f40801ea1ff14265e5",
+          "normas_por_pasada": [
+            6.529708013012471,
+            9.46010577803817,
+            11.692967094123848
+          ]
+        }
+      },
+      "contraste": {
+        "lambda1_0": {
+          "lambda1_run": 0.0,
+          "lambda1_artefacto": 0.0,
+          "lambda1_identico": true,
+          "delta_maximo_absoluto": 49.27678719454379,
+          "reproduce_numericamente": false,
+          "por_pasada": [
+            {
+              "pasada": 1,
+              "ll_train_run": 20.75178783276184,
+              "ll_train_artefacto": 10.086313578600262,
+              "delta_ll_train": 10.665474254161577,
+              "norma_w_l2_run": 6.558112172151513,
+              "norma_w_l2_artefacto": 29.194850667547023,
+              "delta_norma_w_l2": -22.63673849539551,
+              "escasez_efectiva_run": 1.0,
+              "escasez_efectiva_artefacto": 1.0,
+              "delta_escasez_efectiva": 0.0
+            },
+            {
+              "pasada": 2,
+              "ll_train_run": 23.288751769042282,
+              "ll_train_artefacto": 15.42062521362065,
+              "delta_ll_train": 7.868126555421632,
+              "norma_w_l2_run": 9.47808368123998,
+              "norma_w_l2_artefacto": 47.27989643345345,
+              "delta_norma_w_l2": -37.80181275221347,
+              "escasez_efectiva_run": 1.0,
+              "escasez_efectiva_artefacto": 1.0,
+              "delta_escasez_efectiva": 0.0
+            },
+            {
+              "pasada": 3,
+              "ll_train_run": 23.291927429575324,
+              "ll_train_artefacto": 19.174420615478212,
+              "delta_ll_train": 4.117506814097112,
+              "norma_w_l2_run": 11.706821300818099,
+              "norma_w_l2_artefacto": 60.98360849536189,
+              "delta_norma_w_l2": -49.27678719454379,
+              "escasez_efectiva_run": 1.0,
+              "escasez_efectiva_artefacto": 1.0,
+              "delta_escasez_efectiva": 0.0
+            }
+          ],
+          "nota": "el problema del runner es el mini (1350 x 51) y el del artefacto es el ES-train real del fold 0 (121921 x 107793): la identidad numerica no aplica y el delta se publica como diagnostico, no como veredicto"
+        },
+        "lambda1_alpha": {
+          "lambda1_run": 0.035266126860731356,
+          "lambda1_artefacto": 0.035262336465737745,
+          "lambda1_identico": false,
+          "delta_maximo_absoluto": 49.15839137688325,
+          "reproduce_numericamente": false,
+          "por_pasada": [
+            {
+              "pasada": 1,
+              "ll_train_run": 20.741011898201936,
+              "ll_train_artefacto": 10.083240868084,
+              "delta_ll_train": 10.657771030117937,
+              "norma_w_l2_run": 6.554531585087054,
+              "norma_w_l2_artefacto": 29.02889262656771,
+              "delta_norma_w_l2": -22.474361041480655,
+              "escasez_efectiva_run": 1.0,
+              "escasez_efectiva_artefacto": 0.9923742729119701,
+              "delta_escasez_efectiva": 0.007625727088029888
+            },
+            {
+              "pasada": 2,
+              "ll_train_run": 23.288727035926147,
+              "ll_train_artefacto": 15.418472712408523,
+              "delta_ll_train": 7.870254323517624,
+              "norma_w_l2_run": 9.475815390534356,
+              "norma_w_l2_artefacto": 47.14299208512644,
+              "delta_norma_w_l2": -37.66717669459208,
+              "escasez_efectiva_run": 1.0,
+              "escasez_efectiva_artefacto": 0.9923742729119701,
+              "delta_escasez_efectiva": 0.007625727088029888
+            },
+            {
+              "pasada": 3,
+              "ll_train_run": 23.291927429575324,
+              "ll_train_artefacto": 19.172685241471445,
+              "delta_ll_train": 4.119242188103879,
+              "norma_w_l2_run": 11.7050725488648,
+              "norma_w_l2_artefacto": 60.86346392574805,
+              "delta_norma_w_l2": -49.15839137688325,
+              "escasez_efectiva_run": 1.0,
+              "escasez_efectiva_artefacto": 0.9923742729119701,
+              "delta_escasez_efectiva": 0.007625727088029888
+            }
+          ],
+          "nota": "el problema del runner es el mini (1350 x 51) y el del artefacto es el ES-train real del fold 0 (121921 x 107793): la identidad numerica no aplica y el delta se publica como diagnostico, no como veredicto"
+        },
+        "lambda1_mediana": {
+          "lambda1_run": 0.23993793862904017,
+          "lambda1_artefacto": 0.23993793862904017,
+          "lambda1_identico": true,
+          "delta_maximo_absoluto": 48.544235028184644,
+          "reproduce_numericamente": false,
+          "por_pasada": [
+            {
+              "pasada": 1,
+              "ll_train_run": 20.665994472245217,
+              "ll_train_artefacto": 10.058343327445655,
+              "delta_ll_train": 10.607651144799561,
+              "norma_w_l2_run": 6.529708013012471,
+              "norma_w_l2_artefacto": 28.27459446151044,
+              "delta_norma_w_l2": -21.74488644849797,
+              "escasez_efectiva_run": 1.0,
+              "escasez_efectiva_artefacto": 0.9510728897052684,
+              "delta_escasez_efectiva": 0.048927110294731624
+            },
+            {
+              "pasada": 2,
+              "ll_train_run": 23.288555075699396,
+              "ll_train_artefacto": 15.40168213060249,
+              "delta_ll_train": 7.886872945096906,
+              "norma_w_l2_run": 9.46010577803817,
+              "norma_w_l2_artefacto": 46.45212395628998,
+              "delta_norma_w_l2": -36.99201817825181,
+              "escasez_efectiva_run": 1.0,
+              "escasez_efectiva_artefacto": 0.9806666481125862,
+              "delta_escasez_efectiva": 0.019333351887413808
+            },
+            {
+              "pasada": 3,
+              "ll_train_run": 23.291927429575324,
+              "ll_train_artefacto": 19.1594443184596,
+              "delta_ll_train": 4.132483111115725,
+              "norma_w_l2_run": 11.692967094123848,
+              "norma_w_l2_artefacto": 60.23720212230849,
+              "delta_norma_w_l2": -48.544235028184644,
+              "escasez_efectiva_run": 1.0,
+              "escasez_efectiva_artefacto": 0.9806666481125862,
+              "delta_escasez_efectiva": 0.019333351887413808
+            }
+          ],
+          "nota": "el problema del runner es el mini (1350 x 51) y el del artefacto es el ES-train real del fold 0 (121921 x 107793): la identidad numerica no aplica y el delta se publica como diagnostico, no como veredicto"
+        }
+      },
+      "deltas_maximos_absolutos": {
+        "lambda1_0": 49.27678719454379,
+        "lambda1_alpha": 49.15839137688325,
+        "lambda1_mediana": 48.544235028184644
+      },
+      "reproducen_numericamente": false,
+      "firma_de_mecanismo": {
+        "orden_de_normas_finales": [
+          "lambda1_0",
+          "lambda1_alpha",
+          "lambda1_mediana"
+        ],
+        "orden_esperado": [
+          "lambda1_0",
+          "lambda1_alpha",
+          "lambda1_mediana"
+        ],
+        "orden_reproduce": true,
+        "lambda1_alpha_es_no_op": true,
+        "razon_max_min_norma_lambda1_mediana": 1.7907335321613125,
+        "razon_max_min_umbral_G8": 1.0,
+        "razon_supera_1": true,
+        "lectura": "si el orden de normas se respeta y la razon con la mediana supera 1.0, el problema mini reproduce la FIRMA de mecanismo de la sonda pre-ejecucion: el L1 prima coordenadas (lambda1 = alpha casi no hace nada frente a lambda1 = 0) pero NO acota la norma por si solo, que es lo que G8 pone a prueba"
+      },
+      "razon_max_min_norma_previa": 2.130435582526498,
+      "flag_1_mediana_sobre_alpha": 6.804368702629027,
+      "lectura": "el contraste con el artefacto es de FIRMA y no de identidad: sobre el mini los valores absolutos difieren (problema de otra dimension y otro soporte) pero el orden de las tres normas y el hecho de que la razon con la mediana supere 1.0 se comprueban contra el artefacto y son la evidencia que la decision de mecanismo necesita"
+    },
+    "todas_pasan": true,
+    "politica": "si alguna de las nueve sondas pass/fail falla -> exit 4 ANTES de entrenar; cualquier ajuste exige enmienda pre-ejecucion. Las sondas no-gate (j) y (k), (l), (m) se publican y no deciden el veredicto",
+    "duracion_seg": 2.768277406692505
+  },
+  "asimetrias": {
+    "descripcion": "A2 es control de PRESUPUESTO (no gemelo mecanico: no tiene L1); el veredicto NO se apoya en el contraste A1 frente a A2",
+    "valores": {
+      "lambda1_ftrl": 0.23993793862904017,
+      "lambda1_sgd_control": 0.0,
+      "lambda2_ftrl": 1.0,
+      "alpha_reg_sgd": 1e-06,
+      "cociente_lambda2_sobre_alpha_reg": 1000000.0
+    },
+    "asimetria_declarada": "A1 tiene un regularizador (L1) que A2 no tiene: A2 es control de PRESUPUESTO, no gemelo mecanico. Ninguna conclusion puede descansar en el contraste A1 vs A2 (delta, razones entre brazos e IC bootstrap cruzado quedan contaminados): el veredicto se apoya solo en evidencia interna de A1 contra la regla derivada (G0/G1/G4) mas el triage",
+    "regla_de_lectura_unidireccional": "A1 tiene un regularizador (L1) que A2 no tiene: A2 es control de PRESUPUESTO, no gemelo mecanico. Ninguna conclusion puede descansar en el contraste A1 vs A2 (delta, razones entre brazos e IC bootstrap cruzado quedan contaminados): el veredicto se apoya solo en evidencia interna de A1 contra la regla derivada (G0/G1/G4) mas el triage",
+    "lectura_correcta_de_a2": "A2 no es un gemelo mecanico de A1: se lee unicamente como 'el presupuesto de 10 pasadas NO es el limite'. El delta entre brazos, las razones entre brazos y el IC bootstrap cruzado quedan contaminados por la asimetria del regularizador y NO se publican como evidencia",
+    "apoyo_del_veredicto": "evidencia interna de A1 contra la regla derivada (G0/G1/G4), mas G7/G8 sobre la trayectoria de A1, mas el triage formal y las sondas (k), (l) y (m) del gemelo de lambda1",
+    "control_ajuste": "partial_fit_por_pasada con 10 llamadas y estimador construido con max_iter = 1 (NO 10)",
+    "lambda1_ftrl": 0.23993793862904017,
+    "lambda1_sgd_control": 0.0,
+    "lambda2_ftrl": 1.0,
+    "alpha_reg_sgd": 1e-06,
+    "cociente": 1000000.0,
+    "criterio": "A1 tiene L1 y A2 no: el contraste entre brazos esta contaminado y el veredicto se apoya solo en evidencia interna de A1",
+    "pass": true
+  },
+  "simetria_sesgo": {
+    "descripcion": "tabla de simetria de sesgo exigida por la enmienda pre-ejecucion 1: UN solo camino de sesgo por brazo, verificado por sonda",
+    "A1_camino": "coordenada de sesgo x0=1.0 materializada dentro de FTRL (propio z, propio n, sin termino de sesgo aparte)",
+    "A2_camino": "fit_intercept=True sobre la MISMA matriz SIN columna de sesgo pre-anadida (enmienda 1: se corrige el doble sesgo de D-083/V33-E1)",
+    "doble_sesgo": false,
+    "declaracion": "no hay doble sesgo en ningun brazo: A1 materializa el sesgo como coordenada unica y A2 lo aporta solo por intercept_; el defecto de D-083 y V33-E1 (matriz con sesgo pre-anadido Y fit_intercept=True) NO se reproduce aqui",
+    "por_brazo": {
+      "A1_ftrl_lambda1": {
+        "fuente": [
+          "coordenada de sesgo x0=1.0 dentro de FTRL (propio z, propio n)"
+        ],
+        "n_caminos_de_sesgo": [
+          1
+        ],
+        "sesgo_por_fold": {
+          "0": {
+            "n_caminos": 1,
+            "fuente": "coordenada de sesgo x0=1.0 dentro de FTRL (propio z, propio n)",
+            "max_abs_gradiente_coordenada_sesgo": 0.9999999999999999,
+            "gradiente_acumulado_por_clase": [
+              66207.31171643853,
+              64957.775020548666,
+              64338.19557298258,
+              64044.57081112449,
+              63839.78810719457,
+              290496.26534254797
+            ],
+            "desplazamiento_por_clase": [
+              -2.8985027818148663,
+              -3.000521916061058,
+              -2.9715520348501614,
+              -2.971520107829613,
+              -2.9425509619940087,
+              6.599751975774442
+            ],
+            "max_abs_desplazamiento": 6.599751975774442,
+            "coord_sesgo_sha256": "8d3711b02c87db21f67097073922cedf1f301894fe7b936aa09391104fda02d8",
+            "sha256_w": "4a7a2d44c6a75edddbf17becbbc4673999132cb62a961d5bee11b4f84fac8fcf"
+          }
+        }
+      },
+      "A2_sgd_presupuesto": {
+        "fuente": [
+          "fit_intercept=True sobre la matriz SIN columna de sesgo pre-anadida (un solo camino)"
+        ],
+        "n_caminos_de_sesgo": [
+          1
+        ],
+        "sesgo_por_fold": {
+          "0": {
+            "n_caminos": 1,
+            "fuente": "fit_intercept=True sobre la matriz SIN columna de sesgo pre-anadida (un solo camino)",
+            "intercept_": [
+              -1.9183893512422898,
+              -1.2893783696669183,
+              -1.89437036122244,
+              -2.451892878830996,
+              -2.7145594691904047,
+              -3.4519030282446312
+            ],
+            "max_abs_intercept": 3.4519030282446312,
+            "intercept_sha256": "fdf6018022dfda14226a5ed0ff78b4beee37ae36be1b674d1b69236dbffa2193",
+            "sha256_w": "b13dd9deba4e95813845780f2be6a158409d800df1003dbb1d7d290a505b6eda"
+          }
+        }
+      }
+    },
+    "comparacion_por_fold": {
+      "0": {
+        "A1_max_abs_gradiente_coordenada_sesgo": 0.9999999999999999,
+        "A1_desplazamiento_por_clase": [
+          -2.8985027818148663,
+          -3.000521916061058,
+          -2.9715520348501614,
+          -2.971520107829613,
+          -2.9425509619940087,
+          6.599751975774442
+        ],
+        "A1_max_abs_desplazamiento": 6.599751975774442,
+        "A2_intercept": [
+          -1.9183893512422898,
+          -1.2893783696669183,
+          -1.89437036122244,
+          -2.451892878830996,
+          -2.7145594691904047,
+          -3.4519030282446312
+        ],
+        "A2_max_abs_intercept": 3.4519030282446312,
+        "razon_A1_sobre_A2": 0.2896952758573064,
+        "razon_desplazamiento_sobre_intercept": 1.9119169692117803,
+        "mismo_orden_de_magnitud": true
+      }
+    }
+  },
+  "puerta": {
+    "momento": "dentro del fold 0, ANTES de los folds 1-4 y ANTES de integrar",
+    "aplica_a": [
+      "A1_ftrl_lambda1",
+      "A2_sgd_presupuesto"
+    ],
+    "gates_aplicables_a1": [
+      "G0_objetivo_de_la_regla",
+      "G1_banda_ll_train",
+      "G2_progreso",
+      "G3_macro_f1_fold_val",
+      "G4_frecuencias",
+      "G5_determinismo",
+      "G6_suma_unidad",
+      "G7_L1_activo",
+      "G8_acotacion_norma"
+    ],
+    "gates_aplicables_a2": [
+      "G0_objetivo_de_la_regla",
+      "G1_banda_ll_train",
+      "G2_progreso",
+      "G3_macro_f1_fold_val",
+      "G4_frecuencias",
+      "G5_determinismo",
+      "G6_suma_unidad"
+    ],
+    "gates_no_aplicables": {
+      "A1_ftrl_lambda1": [],
+      "A2_sgd_presupuesto": [
+        "G7_L1_activo",
+        "G8_acotacion_norma"
+      ]
+    },
+    "fold_0_consumido_diagnostico": true,
+    "nota_fold_0": "G3 y G4 leen el fold-val del fold 0, que es parte de la validacion canonica; su fallo NO toca delta",
+    "gates": {
+      "A1_ftrl_lambda1": {
+        "G0_objetivo_de_la_regla": {
+          "criterio": "A1: M/2 <= D_acum <= 2*M con D_acum = rango medio de logits (max - min) sobre ES-train al parar",
+          "valor": 23.177427218233596,
+          "rango": [
+            0.8047189562170501,
+            3.2188758248682006
+          ],
+          "M": 1.6094379124341003,
+          "anclaje": "M = ln(5) separa la tasa base del uniforme; factor 2 declarado cubre la linealizacion de primer orden",
+          "que_es_G0": "comprueba que la regla de alpha consiguio su objetivo declarado, no solo que hubo perdida",
+          "pass": false
+        },
+        "G1_banda_ll_train": {
+          "criterio": "0.05 <= ll_train <= H(prior)_ES - 0.01",
+          "valor": 19.159444318459602,
+          "piso": 0.05,
+          "techo": 1.7815714394468476,
+          "h_prior_es": 1.7915714394468476,
+          "anclaje": "techo anclado en la entropia del prior MEDIDO del ES-train, NO en ln 6",
+          "pass": false
+        },
+        "G2_progreso": {
+          "criterio": "la mejor ll_train por pasada mejora en >= 1 de las primeras P_min = 3 pasadas",
+          "ll_train_por_pasada": [
+            10.058343327445654,
+            15.401682130602488,
+            19.159444318459602
+          ],
+          "mejoras_en_las_primeras_P_min": 0,
+          "tolerancia": 1e-06,
+          "anclaje": "un modelo que no aprende nada tiene ll_train plana",
+          "pass": false
+        },
+        "G3_macro_f1_fold_val": {
+          "criterio": "macro-F1 standalone en el fold-val >= 0.3",
+          "valor": 0.04607294317217981,
+          "minimo": 0.3,
+          "anclas": {
+            "trivial": 0.04854212180687087,
+            "gemelo_sgd_d083": 0.4934789
+          },
+          "pass": false
+        },
+        "G4_frecuencias": {
+          "criterio": "frecuencia predicha por clase en [0.5*prior_c, 1.5*prior_c]",
+          "valores": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "prior_es": [
+            0.17044643662699616,
+            0.1693473642768678,
+            0.16739528055052041,
+            0.16671451185603792,
+            0.16570566186300964,
+            0.160390744826568
+          ],
+          "rango_por_clase": [
+            [
+              0.08522321831349808,
+              0.2556696549404942
+            ],
+            [
+              0.0846736821384339,
+              0.2540210464153017
+            ],
+            [
+              0.08369764027526021,
+              0.2510929208257806
+            ],
+            [
+              0.08335725592801896,
+              0.2500717677840569
+            ],
+            [
+              0.08285283093150482,
+              0.24855849279451447
+            ],
+            [
+              0.080195372413284,
+              0.24058611723985202
+            ]
+          ],
+          "anclaje": "prior MEDIDO del ES-train",
+          "pass": false
+        },
+        "G5_determinismo": {
+          "criterio": "max|delta p| = 0.0 EXACTO entre dos corridas identicas del fold 0 (ambos brazos)",
+          "valor": 0.0,
+          "tolerancia": 0.0,
+          "sha256_w": "4a7a2d44c6a75edddbf17becbbc4673999132cb62a961d5bee11b4f84fac8fcf",
+          "pasada_de_parada": 3,
+          "ll_train": 19.159444318459602,
+          "aplica_a": "A1 y A2",
+          "pass": true
+        },
+        "G6_suma_unidad": {
+          "criterio": "max|sum_c p_c - 1| <= 1e-09",
+          "valor": 2.220446049250313e-16,
+          "tolerancia": 1e-09,
+          "anclaje": "softmax de 6 logits",
+          "aplica_a": "A1 y A2",
+          "pass": true
+        },
+        "G7_L1_activo": {
+          "criterio": "escasez efectiva (coordenadas con al menos una clase viva, |z_j| > lambda1) mayor que cero en TODAS las pasadas Y no degradada respecto de la pasada 1 mas alla de la tolerancia declarada de 0.02",
+          "lambda1": 0.23993793862904017,
+          "definicion": "coordenadas con |z_j| > lambda1 para AL MENOS una clase c, divididas por el total de coordenadas del fold (d + 1, con la coordenada del sesgo)",
+          "escasez_por_pasada": [
+            0.9510728897052684,
+            0.9806666481125862,
+            0.9806666481125862
+          ],
+          "frac_coordenadas_muertas_por_pasada": [
+            0.048927110294731624,
+            0.019333351887413808,
+            0.019333351887413808
+          ],
+          "escasez_pasada_1": 0.9510728897052684,
+          "escasez_ultima_pasada": 0.9806666481125862,
+          "degradacion_p1_menos_ultima": -0.029593758407317816,
+          "tolerancia_declarada": 0.02,
+          "pasadas_con_escasez_nula": [],
+          "n_pasadas": 3,
+          "valor": true,
+          "anclaje": "la magnitud de pasada 1 MEDIDA, con tolerancia nombrada; NO el 0.5 arbitrario que reescribia el anclaje ni el piso 0, que seria tautologico",
+          "aplica_a": "solo A1",
+          "lectura": "G7 mide si el L1 esta ACTIVO (descarta coordenadas de verdad). No mide si el L1 ALCANZA: acotar no es lo mismo que bastar, de eso responde G8",
+          "pass": true
+        },
+        "G8_acotacion_norma": {
+          "criterio": "razon max/min de ||w||_2 entre la primera y la ultima pasada <= 1.0 (||w||_2 = norma euclidea de la matriz de pesos completa)",
+          "lambda1": 0.23993793862904017,
+          "normas_por_pasada": [
+            28.27459446151044,
+            46.45212395628998,
+            60.23720212230849
+          ],
+          "norma_minima": 28.27459446151044,
+          "norma_maxima": 60.23720212230849,
+          "razon": 2.130435582526498,
+          "umbral": 1.0,
+          "motivo_minimo": "min = 28.27459446151044 > 0: la razon max/min esta definida",
+          "n_pasadas": 3,
+          "valor": false,
+          "anclaje": "la HIPOTESIS misma: si el L1 acota la norma, esta no crece, luego el umbral es 1.0 y NO un factor arbitrario como 1.5",
+          "aplica_a": "solo A1",
+          "lectura": "acotar NO es lo mismo que bastar: una razon mayor que 1.0 con escasez efectiva positiva significa L1 ACTIVO que aun asi deja crecer la norma",
+          "pass": false
+        }
+      },
+      "A2_sgd_presupuesto": {
+        "G0_objetivo_de_la_regla": {
+          "criterio": "A2: ll_train <= H(prior)_ES - 0.01",
+          "valor": 0.4042196354629878,
+          "techo": 1.7815714394468476,
+          "h_prior_es": 1.7915714394468476,
+          "anclaje": "prior MEDIDO del ES-train; el control sano debe aprender de verdad",
+          "que_es_G0": "en A2 comprueba que el presupuesto no es el limite",
+          "pass": true
+        },
+        "G1_banda_ll_train": {
+          "criterio": "0.05 <= ll_train <= H(prior)_ES - 0.01",
+          "valor": 0.4042196354629878,
+          "piso": 0.05,
+          "techo": 1.7815714394468476,
+          "h_prior_es": 1.7915714394468476,
+          "anclaje": "techo anclado en la entropia del prior MEDIDO del ES-train, NO en ln 6",
+          "pass": true
+        },
+        "G2_progreso": {
+          "criterio": "la mejor ll_train por pasada mejora en >= 1 de las primeras P_min = 3 pasadas",
+          "ll_train_por_pasada": [
+            1.0621988075152096,
+            0.53150291338037,
+            0.46136712737751984,
+            0.4448820595778469,
+            0.44331860641441856,
+            0.4161367286176657,
+            0.4135696447419864,
+            0.4124644129409522,
+            0.4099931648709885,
+            0.4042196354629878
+          ],
+          "mejoras_en_las_primeras_P_min": 2,
+          "tolerancia": 1e-06,
+          "anclaje": "un modelo que no aprende nada tiene ll_train plana",
+          "pass": true
+        },
+        "G3_macro_f1_fold_val": {
+          "criterio": "macro-F1 standalone en el fold-val >= 0.3",
+          "valor": 0.49199473325810494,
+          "minimo": 0.3,
+          "anclas": {
+            "trivial": 0.04854212180687087,
+            "gemelo_sgd_d083": 0.4934789
+          },
+          "pass": true
+        },
+        "G4_frecuencias": {
+          "criterio": "frecuencia predicha por clase en [0.5*prior_c, 1.5*prior_c]",
+          "valores": [
+            0.16142081020432267,
+            0.18265028935868666,
+            0.15085036022203852,
+            0.1547478445730483,
+            0.18899846462737688,
+            0.16133223101452698
+          ],
+          "prior_es": [
+            0.17044643662699616,
+            0.1693473642768678,
+            0.16739528055052041,
+            0.16671451185603792,
+            0.16570566186300964,
+            0.160390744826568
+          ],
+          "rango_por_clase": [
+            [
+              0.08522321831349808,
+              0.2556696549404942
+            ],
+            [
+              0.0846736821384339,
+              0.2540210464153017
+            ],
+            [
+              0.08369764027526021,
+              0.2510929208257806
+            ],
+            [
+              0.08335725592801896,
+              0.2500717677840569
+            ],
+            [
+              0.08285283093150482,
+              0.24855849279451447
+            ],
+            [
+              0.080195372413284,
+              0.24058611723985202
+            ]
+          ],
+          "anclaje": "prior MEDIDO del ES-train",
+          "pass": true
+        },
+        "G5_determinismo": {
+          "criterio": "max|delta p| = 0.0 EXACTO entre dos corridas identicas del fold 0 (ambos brazos)",
+          "valor": 0.0,
+          "tolerancia": 0.0,
+          "sha256_w": "b13dd9deba4e95813845780f2be6a158409d800df1003dbb1d7d290a505b6eda",
+          "pasada_de_parada": 10,
+          "ll_train": 0.4042196354629878,
+          "aplica_a": "A1 y A2",
+          "pass": true
+        },
+        "G6_suma_unidad": {
+          "criterio": "max|sum_c p_c - 1| <= 1e-09",
+          "valor": 4.440892098500626e-16,
+          "tolerancia": 1e-09,
+          "anclaje": "softmax de 6 logits",
+          "aplica_a": "A1 y A2",
+          "pass": true
+        },
+        "G7_L1_activo": {
+          "criterio": "escasez efectiva (coordenadas con al menos una clase viva, |z_j| > lambda1) mayor que cero en todas las pasadas y no degradada mas alla de 0.02 respecto de la pasada 1",
+          "lambda1": null,
+          "escasez_por_pasada": null,
+          "valor": null,
+          "pass": null,
+          "aplica_a": "solo A1",
+          "estado": "no_aplica",
+          "motivo": "A2 es el control de PRESUPUESTO y NO lleva regularizador L1: no hay umbral |z_j| > lambda1 que medir ni hipotesis de acotacion que comprobar. La gate no aplica a este brazo y NO cuenta como fallo"
+        },
+        "G8_acotacion_norma": {
+          "criterio": "razon max/min de ||w||_2 entre la primera y la ultima pasada <= 1.0",
+          "lambda1": null,
+          "normas_por_pasada": null,
+          "razon": null,
+          "valor": null,
+          "pass": null,
+          "aplica_a": "solo A1",
+          "estado": "no_aplica",
+          "motivo": "A2 es el control de PRESUPUESTO y NO lleva regularizador L1: no hay umbral |z_j| > lambda1 que medir ni hipotesis de acotacion que comprobar. La gate no aplica a este brazo y NO cuenta como fallo"
+        }
+      }
+    },
+    "brazos_fallidos": {
+      "A1_ftrl_lambda1": [
+        "G0_objetivo_de_la_regla",
+        "G1_banda_ll_train",
+        "G2_progreso",
+        "G3_macro_f1_fold_val",
+        "G4_frecuencias",
+        "G8_acotacion_norma"
+      ],
+      "A2_sgd_presupuesto": []
+    },
+    "pasa": false,
+    "g5_evaluada": true,
+    "criterio_de_fallo": "una gate cuenta como fallida SOLO si pass is False; pass = None significa que no aplica a ese brazo o que aun no se ha medido",
+    "consecuencia_si_falla": "el nodo del arbol lo decide la rama pre-declarada: si G7 o G8 fallan en A1 -> LINEA_ONLINE_CERRADA_POR_MECANISMO; si G7 y G8 pasan y G0-G4 fallan en A1 -> HIPOTESIS_CONJUNTA_REFUTADA; en cualquier otro caso -> NO_ATRIBUIBLE_BY_GATE. En los dos nodos de cierre no se integra ni se hace bootstrap: delta y bootstrap quedan VACIOS",
+    "prohibido": "usar fold-val, la particion reservada o el leaderboard para parar, seleccionar o comparar brazos; reintentar con otro alpha o con un segundo lambda1 tras el fallo (seria grid)"
+  },
+  "gates_l1": {
+    "exclusivas_de_a1": [
+      "G7_L1_activo",
+      "G8_acotacion_norma"
+    ],
+    "criterio_de_conteo": "una gate cuenta como fallida SOLO si pass is False; pass = None significa que no aplica a ese brazo o que aun no se ha medido",
+    "gates_no_aplicables": {
+      "A1_ftrl_lambda1": [],
+      "A2_sgd_presupuesto": [
+        "G7_L1_activo",
+        "G8_acotacion_norma"
+      ]
+    },
+    "nota": "pass = None significa que la gate NO APLICA a ese brazo (o que aun no se ha medido) y por eso NO cuenta como fallo: el unico conteo de fallos es el de gates_fallidos_de, que exige pass is False",
+    "por_brazo": {
+      "A1_ftrl_lambda1": {
+        "G7_L1_activo": {
+          "pass": true,
+          "estado": "medida",
+          "motivo": null,
+          "aplica_a": "solo A1",
+          "criterio": "escasez efectiva (coordenadas con al menos una clase viva, |z_j| > lambda1) mayor que cero en TODAS las pasadas Y no degradada respecto de la pasada 1 mas alla de la tolerancia declarada de 0.02",
+          "lectura": "G7 mide si el L1 esta ACTIVO (descarta coordenadas de verdad). No mide si el L1 ALCANZA: acotar no es lo mismo que bastar, de eso responde G8",
+          "valor": true,
+          "lambda1": 0.23993793862904017
+        },
+        "G8_acotacion_norma": {
+          "pass": false,
+          "estado": "medida",
+          "motivo": null,
+          "aplica_a": "solo A1",
+          "criterio": "razon max/min de ||w||_2 entre la primera y la ultima pasada <= 1.0 (||w||_2 = norma euclidea de la matriz de pesos completa)",
+          "lectura": "acotar NO es lo mismo que bastar: una razon mayor que 1.0 con escasez efectiva positiva significa L1 ACTIVO que aun asi deja crecer la norma",
+          "valor": false,
+          "lambda1": 0.23993793862904017
+        }
+      },
+      "A2_sgd_presupuesto": {
+        "G7_L1_activo": {
+          "pass": null,
+          "estado": "no_aplica",
+          "motivo": "A2 es el control de PRESUPUESTO y NO lleva regularizador L1: no hay umbral |z_j| > lambda1 que medir ni hipotesis de acotacion que comprobar. La gate no aplica a este brazo y NO cuenta como fallo",
+          "aplica_a": "solo A1",
+          "criterio": "escasez efectiva (coordenadas con al menos una clase viva, |z_j| > lambda1) mayor que cero en todas las pasadas y no degradada mas alla de 0.02 respecto de la pasada 1",
+          "lectura": null,
+          "valor": null,
+          "lambda1": null
+        },
+        "G8_acotacion_norma": {
+          "pass": null,
+          "estado": "no_aplica",
+          "motivo": "A2 es el control de PRESUPUESTO y NO lleva regularizador L1: no hay umbral |z_j| > lambda1 que medir ni hipotesis de acotacion que comprobar. La gate no aplica a este brazo y NO cuenta como fallo",
+          "aplica_a": "solo A1",
+          "criterio": "razon max/min de ||w||_2 entre la primera y la ultima pasada <= 1.0",
+          "lectura": null,
+          "valor": null,
+          "lambda1": null
+        }
+      }
+    }
+  },
+  "l1_inerte": {
+    "lambda1": 0.23993793862904017,
+    "frac_muertas_por_pasada": [
+      0.048927110294731624,
+      0.019333351887413808,
+      0.019333351887413808
+    ],
+    "frac_muertas_pasada_1": 0.048927110294731624,
+    "frac_muertas_maxima_en_pasadas_ge_2": 0.019333351887413808,
+    "n_pasadas": 3,
+    "inerte": false,
+    "lectura": "L1 ACTIVO pero insuficiente: en las pasadas >= 2 hay coordenadas con |z_j| <= lambda1 = 0.23993793862904017 (fraccion maxima medida 0.019333351887413808 > 0), luego el umbral descarta de verdad; que G8 falle significa que ACOTAR NO ES LO MISMO QUE BASTAR, no que la puerta este mal",
+    "responsabilidad_de_la_puerta": "la puerta aplica un umbral activo; su fallo es de hipotesis, no de implementacion"
+  },
+  "triage": {
+    "se_ejecuta_si": "la puerta se cerro en el fold 0 (rama pre-declarada del arbol)",
+    "checklist": {
+      "D1_sondas_abcde_en_verde": {
+        "valor": true,
+        "criterio": "sondas (a)-(e) con pass = True (vectorizado vs lazo, raiz analitica, TotalF1 Macro, sin NaN, log_loss propio vs sklearn)"
+      },
+      "D2_sondas_fghi_en_verde": {
+        "valor": true,
+        "criterio": "sondas (f)-(i) con pass = True (filas que suman 1, reproducibilidad de alpha*, estabilidad del ES, simetria de presupuesto)"
+      },
+      "D3_sesgo_unico_por_brazo": {
+        "valor": true,
+        "criterio": "A1 con una sola coordenada de sesgo (n_features == n_vocabulario, n_coordinates_a1 == n_vocabulario + 1) y A2 con fit_intercept=True sobre la matriz sin columna de sesgo"
+      },
+      "D4_presupuesto_no_truncado": {
+        "valor": true,
+        "criterio": "pasada_de_parada en [P_min=3, P_max=10], Trayectoria con tantas entradas como pasadas y ordenes/particion ES identicos en A1 y A2"
+      },
+      "D5_es_bien_configurado": {
+        "valor": true,
+        "criterio": "mejor_pasada <= pasada_de_parada (se restaura el mejor w) y particion ES identica en ambos brazos, ajustada SOLO en ES-train; la metrica del ES es el macro-F1 del 10 % de TRAIN, nunca fold-val"
+      },
+      "D6_determinismo_exacto": {
+        "valor": true,
+        "criterio": "G5 evaluado con max|delta p| = 0.0 EXACTO en los dos brazos (sonda h)"
+      },
+      "D7_alpha_reproducible": {
+        "valor": true,
+        "criterio": "sonda (g) con diferencia exacta 0 entre las dos rutas de alpha* y mismo sha256 de alpha* en los dos brazos"
+      },
+      "D8_sin_segundo_alpha_ni_fallback": {
+        "valor": true,
+        "criterio": "un unico alpha por fold, identico en A1 y A2, igual a la forma cerrada 2*M/(d_norm*P_max^2) al cero binario: no hay grid ni reintento"
+      },
+      "D9_un_solo_lambda1_y_esta_activo": {
+        "valor": true,
+        "criterio": "un unico lambda1 por fold, igual a la mediana congelada (0 busqueda), y el L1 esta ACTIVO: la fraccion de coordenadas con |z_j| <= lambda1 es mayor que 0 en las pasadas >= 2. Si fuese 0 exacta, la hipotesis estaria analiticamente muerta y el fallo NO se culparia a la puerta",
+        "lambda1": 0.23993793862904017,
+        "lambda1_congelado": 0.23993793862904017,
+        "frac_muertas_maxima_en_pasadas_ge_2": 0.019333351887413808,
+        "l1_inerte": false
+      }
+    },
+    "hay_indicador_de_defecto": false,
+    "clasificacion": "MECANISMO_DEFINITIVO",
+    "mecanismo_publicado_dentro_del_runner": true,
+    "nodo_concedido": true,
+    "l1_inerte": {
+      "lambda1": 0.23993793862904017,
+      "frac_muertas_por_pasada": [
+        0.048927110294731624,
+        0.019333351887413808,
+        0.019333351887413808
+      ],
+      "frac_muertas_pasada_1": 0.048927110294731624,
+      "frac_muertas_maxima_en_pasadas_ge_2": 0.019333351887413808,
+      "n_pasadas": 3,
+      "inerte": false,
+      "lectura": "L1 ACTIVO pero insuficiente: en las pasadas >= 2 hay coordenadas con |z_j| <= lambda1 = 0.23993793862904017 (fraccion maxima medida 0.019333351887413808 > 0), luego el umbral descarta de verdad; que G8 falle significa que ACOTAR NO ES LO MISMO QUE BASTAR, no que la puerta este mal",
+      "responsabilidad_de_la_puerta": "la puerta aplica un umbral activo; su fallo es de hipotesis, no de implementacion"
+    },
+    "lectura_del_l1": "L1 ACTIVO pero insuficiente: en las pasadas >= 2 hay coordenadas con |z_j| <= lambda1 = 0.23993793862904017 (fraccion maxima medida 0.019333351887413808 > 0), luego el umbral descarta de verdad; que G8 falle significa que ACOTAR NO ES LO MISMO QUE BASTAR, no que la puerta este mal",
+    "motivo_de_no_calculo": null,
+    "uno_shot": "reabrir la familia exige acta nueva con hipotesis mecanica nueva, no otro gate; y re-derivar lambda1 tras ver la puerta seria grid"
+  },
+  "rama_arbol": {
+    "nodo": "LINEA_ONLINE_CERRADA_POR_MECANISMO",
+    "es_rama_de_cierre": true,
+    "causa": [
+      "G8_acotacion_norma"
+    ],
+    "lectura": "falla ['G8_acotacion_norma'] en A1: la hipotesis de acotacion del L1 queda refutada por medicion sobre la trayectoria real del fold 0. El cierre es DEFINITIVO de la familia: no hay segundo lambda1 (seria grid) ni acta futura dentro de este espacio",
+    "cierre_definitivo": true,
+    "integracion": null,
+    "motivo_de_no_calculo": "la puerta se cerro en el fold 0 (pasa = False) por la rama pre-declarada 'LINEA_ONLINE_CERRADA_POR_MECANISMO': gates fallidas de A1 ['G0_objetivo_de_la_regla', 'G1_banda_ll_train', 'G2_progreso', 'G3_macro_f1_fold_val', 'G4_frecuencias', 'G8_acotacion_norma'] y de A2 []; falla ['G8_acotacion_norma'] en A1: la hipotesis de acotacion del L1 queda refutada por medicion sobre la trayectoria real del fold 0. El cierre es DEFINITIVO de la familia: no hay segundo lambda1 (seria grid) ni acta futura dentro de este espacio. El pre-registro prohibe integrar y hacer bootstrap, luego delta y bootstrap quedan VACIOS",
+    "g7_falla_en_a1": false,
+    "g8_falla_en_a1": true,
+    "g0_g4_fallan_en_a1": [
+      "G0_objetivo_de_la_regla",
+      "G1_banda_ll_train",
+      "G2_progreso",
+      "G3_macro_f1_fold_val",
+      "G4_frecuencias"
+    ],
+    "rama_predeclarada": {
+      "G7_o_G8_fallan_en_A1": {
+        "nodo": "LINEA_ONLINE_CERRADA_POR_MECANISMO",
+        "texto_del_prereg": "LINEA_ONLINE_CERRADA_POR_MECANISMO: la acotacion queda refutada y la familia se cierra DEFINITIVAMENTE (no hay segundo lambda1 ni acta futura dentro de este espacio)"
+      },
+      "G7_y_G8_pasan_pero_G0_G4_fallan_en_A1": {
+        "nodo": "HIPOTESIS_CONJUNTA_REFUTADA",
+        "texto_del_prereg": "HIPOTESIS_CONJUNTA_REFUTADA (acota pero no aprende); NO es cierre por conveniencia y se registra con su propia evidencia"
+      },
+      "cualquier_otro_fallo": {
+        "nodo": "NO_ATRIBUIBLE_BY_GATE",
+        "texto_del_prereg": "mismo criterio que en V34: el fallo no es atribuible a G7 ni a G8 de A1"
+      },
+      "ninguna_gate_falla": {
+        "nodo": "gates de la serie (rama NO de cierre)",
+        "texto_del_prereg": "se evaluan los gates de la serie; PROMISING exigiria segunda particion con autorizacion del usuario, que el script no ejecuta"
+      }
+    },
+    "rama_predeclarada_coincide_con_el_prereg": false
+  },
+  "lectura_unidireccional_a2": {
+    "regla": "A2 es un control de PRESUPUESTO, no un gemelo mecanico: ninguna conclusion puede descansar en el contraste A1 frente a A2, porque el delta, las razones entre brazos y el IC bootstrap cruzado quedan contaminados por las diferencias de mecanismo (estimador, regularizador y camino de sesgo)",
+    "lectura_correcta_de_a2": "A2 solo sirve para comprobar que el presupuesto NO es el limite: que el control sano aprende de verdad (G0, G1, G2 y G4 de A2). Un A2 que aprende NO demuestra que un A1 con L1 funcione, y un A1 que falla frente a un A2 sano no se atribuye a que 'el L1 no sirve'",
+    "no_es_gemelo_mecanico": "A1 lleva regularizador L1 y A2 no; A2 aporta su sesgo con fit_intercept=True sobre la matriz sin columna de sesgo y A1 con una coordenada x0 = 1.0 dentro de FTRL",
+    "magnitudes_contaminadas": [
+      "el delta de A1 frente al de A2",
+      "las razones entre brazos (por ejemplo la razon max/min de ||w||_2 de A1 leida como contraste frente a A2)",
+      "el IC95 bootstrap cruzado de la diferencia entre brazos"
+    ],
+    "en_que_se_apoya_el_veredicto": "solo evidencia interna de A1 contra la regla derivada (G0, G1 y G4) mas el triage formal y las magnitudes L1 de su propia trayectoria (G7, G8 y el criterio 'L1 inerte')",
+    "prohibido": "no afirmar que el L1 mejora o empeora el resultado comparando A1 con A2, ni leer el signo de esa diferencia como evidencia de mecanismo"
+  },
+  "mecanismo_fold_0": {
+    "fold_0": true,
+    "brazos": {
+      "A1_ftrl_lambda1": [
+        {
+          "pasada": 1,
+          "ll_train": 10.058343327445654,
+          "D_acum": 12.072638779554156,
+          "macro_f1_es": 0.04607718405428329,
+          "w_max_abs": 6.599751975774442,
+          "razon_sigma_sobre_g": 0.13324064162240382,
+          "razon_sigma_sobre_g_pasada": 0.13324064162240382,
+          "perdida_online": 5.554166302024483,
+          "norma_w_l2": 28.27459446151044,
+          "escasez_efectiva": 0.9510728897052684,
+          "frac_coordenadas_muertas": 0.048927110294731624,
+          "frac_clases_muertas": 0.5082813045992474,
+          "coordenadas_vivas": 102519
+        },
+        {
+          "pasada": 2,
+          "ll_train": 15.401682130602488,
+          "D_acum": 18.47438702586234,
+          "macro_f1_es": 0.04607718405428329,
+          "w_max_abs": 9.991392715143766,
+          "razon_sigma_sobre_g": 0.18364504317564467,
+          "razon_sigma_sobre_g_pasada": 0.23420972786457636,
+          "perdida_online": 12.913968592282723,
+          "norma_w_l2": 46.45212395628998,
+          "escasez_efectiva": 0.9806666481125862,
+          "frac_coordenadas_muertas": 0.019333351887413808,
+          "frac_clases_muertas": 0.39126844971380326,
+          "coordenadas_vivas": 105709
+        },
+        {
+          "pasada": 3,
+          "ll_train": 19.159444318459602,
+          "D_acum": 23.177427218233596,
+          "macro_f1_es": 0.04607718405428329,
+          "w_max_abs": 12.500161168894245,
+          "razon_sigma_sobre_g": 0.20793451481905414,
+          "razon_sigma_sobre_g_pasada": 0.25659069365055576,
+          "perdida_online": 17.35018775342141,
+          "norma_w_l2": 60.23720212230849,
+          "escasez_efectiva": 0.9806666481125862,
+          "frac_coordenadas_muertas": 0.019333351887413808,
+          "frac_clases_muertas": 0.3845735189978323,
+          "coordenadas_vivas": 105709
+        }
+      ],
+      "A2_sgd_presupuesto": [
+        {
+          "pasada": 1,
+          "ll_train": 1.0621988075152096,
+          "D_acum": 9.009318183124304,
+          "macro_f1_es": 0.4507238550998481,
+          "w_max_abs": 36.851097308207834,
+          "t_": 121922.0
+        },
+        {
+          "pasada": 2,
+          "ll_train": 0.53150291338037,
+          "D_acum": 6.504952133264232,
+          "macro_f1_es": 0.4783218879835666,
+          "w_max_abs": 28.975537013589275,
+          "t_": 243843.0
+        },
+        {
+          "pasada": 3,
+          "ll_train": 0.46136712737751984,
+          "D_acum": 5.946399805412504,
+          "macro_f1_es": 0.4846075615775398,
+          "w_max_abs": 26.40142144815189,
+          "t_": 365764.0
+        },
+        {
+          "pasada": 4,
+          "ll_train": 0.4448820595778469,
+          "D_acum": 5.6863165739339845,
+          "macro_f1_es": 0.48594479392195905,
+          "w_max_abs": 25.635766863845546,
+          "t_": 487685.0
+        },
+        {
+          "pasada": 5,
+          "ll_train": 0.44331860641441856,
+          "D_acum": 5.572205768520885,
+          "macro_f1_es": 0.4921236862256317,
+          "w_max_abs": 25.259161527755204,
+          "t_": 609606.0
+        },
+        {
+          "pasada": 6,
+          "ll_train": 0.4161367286176657,
+          "D_acum": 5.4994739625788895,
+          "macro_f1_es": 0.4937403871043837,
+          "w_max_abs": 25.091526790541643,
+          "t_": 731527.0
+        },
+        {
+          "pasada": 7,
+          "ll_train": 0.4135696447419864,
+          "D_acum": 5.395290221282304,
+          "macro_f1_es": 0.4969814311737142,
+          "w_max_abs": 24.82520224675737,
+          "t_": 853448.0
+        },
+        {
+          "pasada": 8,
+          "ll_train": 0.4124644129409522,
+          "D_acum": 5.374681722507983,
+          "macro_f1_es": 0.49313499246502346,
+          "w_max_abs": 24.749555178199547,
+          "t_": 975369.0
+        },
+        {
+          "pasada": 9,
+          "ll_train": 0.4099931648709885,
+          "D_acum": 5.3219146180107195,
+          "macro_f1_es": 0.4987334207184772,
+          "w_max_abs": 24.729735032756043,
+          "t_": 1097290.0
+        },
+        {
+          "pasada": 10,
+          "ll_train": 0.4042196354629878,
+          "D_acum": 5.255189045039075,
+          "macro_f1_es": 0.49427587880931695,
+          "w_max_abs": 24.650374742441638,
+          "t_": 1219211.0
+        }
+      ]
+    },
+    "alpha": 0.035262336465737745,
+    "d_norm": 0.9128367962785974,
+    "h_prior_es": 1.7915714394468476,
+    "M": 1.6094379124341003,
+    "banda_D_acum_objetivo": [
+      0.8047189562170501,
+      3.2188758248682006
+    ],
+    "banda_ll_train": [
+      0.05,
+      1.7815714394468476
+    ],
+    "ll_train_A1_final": 19.159444318459602,
+    "ll_train_A2_final": 0.4042196354629878,
+    "w_max_abs_A1_final": 12.500161168894245,
+    "w_max_abs_A2_final": 24.650374742441638
+  },
+  "identidad_lambda1_fold_0": {
+    "descripcion": "identidad numerica de los tres casos del gemelo de lambda1 (lambda1 = 0, lambda1 = alpha y lambda1 = mediana) ejecutada en el FOLD 0 de la corrida real, sobre el stream real de ES-train, con las mismas reglas de update, el mismo alpha y el mismo orden congelado que la sonda pre-ejecucion",
+    "es_gate": false,
+    "politica": "NO-GATE: la identidad informa de que la politica del pre-registro reflejada en el codigo no deriva, pero no decide el veredicto. Si alguna comparacion falla se publica como fallo de la sonda y el ciclo continua con su veredicto intacto",
+    "donde": "fold 0 de la corrida real, UNA sola vez; NO en los folds 1-4 (el stream es otro) ni en --verificar (que no carga el corpus para esto: alli la identidad es imposible por dimension y las sondas (k), (l) y (m) comparan por firma de mecanismo)",
+    "criterio": "diferencia relativa <= 1e-09 en ll_train y ||w||_2 de cada pasada frente al artefacto; diferencia EXACTA 0 y sha256 identico en la mediana del anclaje y en el snapshot de z",
+    "tolerancia_relativa": 1e-09,
+    "tolerancia_anclaje": 0.0,
+    "artefacto": "experiments/v35_00b_sonda_lambda1.json",
+    "sha256_artefacto": "e6554eb25269a3a48780e9f9d8674e67abdaf41136eb2277db3d54704b7b3aff",
+    "n_pasadas_por_caso": 3,
+    "alpha_run": 0.035262336465737745,
+    "alpha_artefacto": 0.035262336465737745,
+    "alpha_identico": true,
+    "n_filas_es_train": 121921,
+    "n_coordenadas": 107793,
+    "es_train_sha256": "be8169b0bd1adafc458cfe00593382c970bb29f34f5bafd52e4f3a5d78e470b6",
+    "ordenes_sha256": [
+      "a82da8487c49d28eb7a658ad4b4ddeaf5a4066d13ae764261c487b0f14acc31b",
+      "91f7c9aceca3d277798ac260ed3524a1dc03b404b86dbc241953be485d887fd9",
+      "6cfac0a1a0747e25270dcdd8db791c4ea9ff46368c0e6f02ece098556d199dfc"
+    ],
+    "tabla": {
+      "lambda1_0": {
+        "nombre": "lambda1_0",
+        "lambda1": 0.0,
+        "trayectoria": [
+          {
+            "pasada": 1,
+            "ll_train": 10.086313578600262,
+            "norma_w_l2": 29.194850667547023,
+            "coordenadas_vivas": 107793,
+            "clases_vivas": 646758,
+            "escasez_efectiva": 1.0,
+            "frac_coordenadas_muertas": 0.0,
+            "sha256_z": "ec1d1a7b13454f8b7309446576318487b9325df018c5b454b228a6a336630f66",
+            "mediana_abs_z": 0.23993793862904017
+          },
+          {
+            "pasada": 2,
+            "ll_train": 15.42062521362065,
+            "norma_w_l2": 47.27989643345345,
+            "coordenadas_vivas": 107793,
+            "clases_vivas": 646758,
+            "escasez_efectiva": 1.0,
+            "frac_coordenadas_muertas": 0.0,
+            "sha256_z": "87dd496ada779724653ff80c51bc3496472050927afb1145cb2da715f17677c3",
+            "mediana_abs_z": 0.48912179745524753
+          },
+          {
+            "pasada": 3,
+            "ll_train": 19.174420615478212,
+            "norma_w_l2": 60.98360849536189,
+            "coordenadas_vivas": 107793,
+            "clases_vivas": 646758,
+            "escasez_efectiva": 1.0,
+            "frac_coordenadas_muertas": 0.0,
+            "sha256_z": "9091868e75f7b55964d33bb98339e3a6b424aadd97b8bd9e93826b2eb9ff173a",
+            "mediana_abs_z": 0.7335452733518542
+          }
+        ],
+        "ll_train_final": 19.174420615478212,
+        "norma_w_l2_final": 60.98360849536189,
+        "escasez_efectiva_final": 1.0,
+        "mediana_abs_z_pasada_1": 0.23993793862904017,
+        "sha256_z_pasada_1": "ec1d1a7b13454f8b7309446576318487b9325df018c5b454b228a6a336630f66",
+        "normas_por_pasada": [
+          29.194850667547023,
+          47.27989643345345,
+          60.98360849536189
+        ]
+      },
+      "lambda1_alpha": {
+        "nombre": "lambda1_alpha",
+        "lambda1": 0.035262336465737745,
+        "trayectoria": [
+          {
+            "pasada": 1,
+            "ll_train": 10.083240868084,
+            "norma_w_l2": 29.02889262656771,
+            "coordenadas_vivas": 106971,
+            "clases_vivas": 553204,
+            "escasez_efectiva": 0.9923742729119701,
+            "frac_coordenadas_muertas": 0.007625727088029888,
+            "sha256_z": "47d8e80d9cc77925739fecf92b26a5a6064d1c0f2e82e5a074237b880b696b4a",
+            "mediana_abs_z": 0.2364941053587996
+          },
+          {
+            "pasada": 2,
+            "ll_train": 15.418472712408523,
+            "norma_w_l2": 47.14299208512644,
+            "coordenadas_vivas": 106971,
+            "clases_vivas": 556058,
+            "escasez_efectiva": 0.9923742729119701,
+            "frac_coordenadas_muertas": 0.007625727088029888,
+            "sha256_z": "30f71ad8595ad7987585cf84282fdbed64ac58f55806babfcafdf7ab154ffbd8",
+            "mediana_abs_z": 0.4886309113541375
+          },
+          {
+            "pasada": 3,
+            "ll_train": 19.172685241471445,
+            "norma_w_l2": 60.86346392574805,
+            "coordenadas_vivas": 106971,
+            "clases_vivas": 556341,
+            "escasez_efectiva": 0.9923742729119701,
+            "frac_coordenadas_muertas": 0.007625727088029888,
+            "sha256_z": "b47acbf4a910293ed67438cdc7a17c2366689d9ebcaa846e69bf05e21f9e8b9c",
+            "mediana_abs_z": 0.734832024823518
+          }
+        ],
+        "ll_train_final": 19.172685241471445,
+        "norma_w_l2_final": 60.86346392574805,
+        "escasez_efectiva_final": 0.9923742729119701,
+        "mediana_abs_z_pasada_1": 0.2364941053587996,
+        "sha256_z_pasada_1": "47d8e80d9cc77925739fecf92b26a5a6064d1c0f2e82e5a074237b880b696b4a",
+        "normas_por_pasada": [
+          29.02889262656771,
+          47.14299208512644,
+          60.86346392574805
+        ]
+      },
+      "lambda1_mediana": {
+        "nombre": "lambda1_mediana",
+        "lambda1": 0.23993793862904017,
+        "trayectoria": [
+          {
+            "pasada": 1,
+            "ll_train": 10.058343327445655,
+            "norma_w_l2": 28.27459446151044,
+            "coordenadas_vivas": 102519,
+            "clases_vivas": 318023,
+            "escasez_efectiva": 0.9510728897052684,
+            "frac_coordenadas_muertas": 0.048927110294731624,
+            "sha256_z": "5298129a33dc6c63d92e84095c338d17b8bf27594a0ba6eed6eccfe1a1752e21",
+            "mediana_abs_z": 0.2333793834039217
+          },
+          {
+            "pasada": 2,
+            "ll_train": 15.40168213060249,
+            "norma_w_l2": 46.45212395628998,
+            "coordenadas_vivas": 105709,
+            "clases_vivas": 393702,
+            "escasez_efectiva": 0.9806666481125862,
+            "frac_coordenadas_muertas": 0.019333351887413808,
+            "sha256_z": "dfbbaaefeef24586ba961467b84abd203b4ddff70101a857604f65112297d73c",
+            "mediana_abs_z": 0.5012940627522899
+          },
+          {
+            "pasada": 3,
+            "ll_train": 19.1594443184596,
+            "norma_w_l2": 60.23720212230849,
+            "coordenadas_vivas": 105709,
+            "clases_vivas": 398032,
+            "escasez_efectiva": 0.9806666481125862,
+            "frac_coordenadas_muertas": 0.019333351887413808,
+            "sha256_z": "e3a52060b512090a617c562cadf50b6c8d7ac6ab2372d33541531edcf6c75662",
+            "mediana_abs_z": 0.7591137868288682
+          }
+        ],
+        "ll_train_final": 19.1594443184596,
+        "norma_w_l2_final": 60.23720212230849,
+        "escasez_efectiva_final": 0.9806666481125862,
+        "mediana_abs_z_pasada_1": 0.2333793834039217,
+        "sha256_z_pasada_1": "5298129a33dc6c63d92e84095c338d17b8bf27594a0ba6eed6eccfe1a1752e21",
+        "normas_por_pasada": [
+          28.27459446151044,
+          46.45212395628998,
+          60.23720212230849
+        ]
+      }
+    },
+    "comparacion": {
+      "lambda1_0": {
+        "lambda1_run": 0.0,
+        "lambda1_artefacto": 0.0,
+        "lambda1_identico": true,
+        "peor_diferencia_relativa_ll_train": 0.0,
+        "peor_diferencia_relativa_norma_w_l2": 0.0,
+        "reproduce": true,
+        "por_pasada": [
+          {
+            "pasada": 1,
+            "ll_train": {
+              "valor": 10.086313578600262,
+              "referencia": 10.086313578600262,
+              "diferencia_absoluta": 0.0,
+              "diferencia_relativa": 0.0,
+              "dentro_de_tolerancia": true,
+              "motivo": "diferencia relativa |10.086313578600262 - 10.086313578600262| / |10.086313578600262| = 0.0 frente al umbral declarado 1e-09"
+            },
+            "norma_w_l2": {
+              "valor": 29.194850667547023,
+              "referencia": 29.194850667547023,
+              "diferencia_absoluta": 0.0,
+              "diferencia_relativa": 0.0,
+              "dentro_de_tolerancia": true,
+              "motivo": "diferencia relativa |29.194850667547023 - 29.194850667547023| / |29.194850667547023| = 0.0 frente al umbral declarado 1e-09"
+            },
+            "escasez_efectiva_run": 1.0,
+            "escasez_efectiva_artefacto": 1.0,
+            "delta_escasez_efectiva": 0.0,
+            "escasez_efectiva_es_diagnostico": "la escasez efectiva se publica como diagnostico: el criterio de identidad declarado es ll_train y ||w||_2"
+          },
+          {
+            "pasada": 2,
+            "ll_train": {
+              "valor": 15.42062521362065,
+              "referencia": 15.42062521362065,
+              "diferencia_absoluta": 0.0,
+              "diferencia_relativa": 0.0,
+              "dentro_de_tolerancia": true,
+              "motivo": "diferencia relativa |15.42062521362065 - 15.42062521362065| / |15.42062521362065| = 0.0 frente al umbral declarado 1e-09"
+            },
+            "norma_w_l2": {
+              "valor": 47.27989643345345,
+              "referencia": 47.27989643345345,
+              "diferencia_absoluta": 0.0,
+              "diferencia_relativa": 0.0,
+              "dentro_de_tolerancia": true,
+              "motivo": "diferencia relativa |47.27989643345345 - 47.27989643345345| / |47.27989643345345| = 0.0 frente al umbral declarado 1e-09"
+            },
+            "escasez_efectiva_run": 1.0,
+            "escasez_efectiva_artefacto": 1.0,
+            "delta_escasez_efectiva": 0.0,
+            "escasez_efectiva_es_diagnostico": "la escasez efectiva se publica como diagnostico: el criterio de identidad declarado es ll_train y ||w||_2"
+          },
+          {
+            "pasada": 3,
+            "ll_train": {
+              "valor": 19.174420615478212,
+              "referencia": 19.174420615478212,
+              "diferencia_absoluta": 0.0,
+              "diferencia_relativa": 0.0,
+              "dentro_de_tolerancia": true,
+              "motivo": "diferencia relativa |19.174420615478212 - 19.174420615478212| / |19.174420615478212| = 0.0 frente al umbral declarado 1e-09"
+            },
+            "norma_w_l2": {
+              "valor": 60.98360849536189,
+              "referencia": 60.98360849536189,
+              "diferencia_absoluta": 0.0,
+              "diferencia_relativa": 0.0,
+              "dentro_de_tolerancia": true,
+              "motivo": "diferencia relativa |60.98360849536189 - 60.98360849536189| / |60.98360849536189| = 0.0 frente al umbral declarado 1e-09"
+            },
+            "escasez_efectiva_run": 1.0,
+            "escasez_efectiva_artefacto": 1.0,
+            "delta_escasez_efectiva": 0.0,
+            "escasez_efectiva_es_diagnostico": "la escasez efectiva se publica como diagnostico: el criterio de identidad declarado es ll_train y ||w||_2"
+          }
+        ]
+      },
+      "lambda1_alpha": {
+        "lambda1_run": 0.035262336465737745,
+        "lambda1_artefacto": 0.035262336465737745,
+        "lambda1_identico": true,
+        "peor_diferencia_relativa_ll_train": 0.0,
+        "peor_diferencia_relativa_norma_w_l2": 0.0,
+        "reproduce": true,
+        "por_pasada": [
+          {
+            "pasada": 1,
+            "ll_train": {
+              "valor": 10.083240868084,
+              "referencia": 10.083240868084,
+              "diferencia_absoluta": 0.0,
+              "diferencia_relativa": 0.0,
+              "dentro_de_tolerancia": true,
+              "motivo": "diferencia relativa |10.083240868084 - 10.083240868084| / |10.083240868084| = 0.0 frente al umbral declarado 1e-09"
+            },
+            "norma_w_l2": {
+              "valor": 29.02889262656771,
+              "referencia": 29.02889262656771,
+              "diferencia_absoluta": 0.0,
+              "diferencia_relativa": 0.0,
+              "dentro_de_tolerancia": true,
+              "motivo": "diferencia relativa |29.02889262656771 - 29.02889262656771| / |29.02889262656771| = 0.0 frente al umbral declarado 1e-09"
+            },
+            "escasez_efectiva_run": 0.9923742729119701,
+            "escasez_efectiva_artefacto": 0.9923742729119701,
+            "delta_escasez_efectiva": 0.0,
+            "escasez_efectiva_es_diagnostico": "la escasez efectiva se publica como diagnostico: el criterio de identidad declarado es ll_train y ||w||_2"
+          },
+          {
+            "pasada": 2,
+            "ll_train": {
+              "valor": 15.418472712408523,
+              "referencia": 15.418472712408523,
+              "diferencia_absoluta": 0.0,
+              "diferencia_relativa": 0.0,
+              "dentro_de_tolerancia": true,
+              "motivo": "diferencia relativa |15.418472712408523 - 15.418472712408523| / |15.418472712408523| = 0.0 frente al umbral declarado 1e-09"
+            },
+            "norma_w_l2": {
+              "valor": 47.14299208512644,
+              "referencia": 47.14299208512644,
+              "diferencia_absoluta": 0.0,
+              "diferencia_relativa": 0.0,
+              "dentro_de_tolerancia": true,
+              "motivo": "diferencia relativa |47.14299208512644 - 47.14299208512644| / |47.14299208512644| = 0.0 frente al umbral declarado 1e-09"
+            },
+            "escasez_efectiva_run": 0.9923742729119701,
+            "escasez_efectiva_artefacto": 0.9923742729119701,
+            "delta_escasez_efectiva": 0.0,
+            "escasez_efectiva_es_diagnostico": "la escasez efectiva se publica como diagnostico: el criterio de identidad declarado es ll_train y ||w||_2"
+          },
+          {
+            "pasada": 3,
+            "ll_train": {
+              "valor": 19.172685241471445,
+              "referencia": 19.172685241471445,
+              "diferencia_absoluta": 0.0,
+              "diferencia_relativa": 0.0,
+              "dentro_de_tolerancia": true,
+              "motivo": "diferencia relativa |19.172685241471445 - 19.172685241471445| / |19.172685241471445| = 0.0 frente al umbral declarado 1e-09"
+            },
+            "norma_w_l2": {
+              "valor": 60.86346392574805,
+              "referencia": 60.86346392574805,
+              "diferencia_absoluta": 0.0,
+              "diferencia_relativa": 0.0,
+              "dentro_de_tolerancia": true,
+              "motivo": "diferencia relativa |60.86346392574805 - 60.86346392574805| / |60.86346392574805| = 0.0 frente al umbral declarado 1e-09"
+            },
+            "escasez_efectiva_run": 0.9923742729119701,
+            "escasez_efectiva_artefacto": 0.9923742729119701,
+            "delta_escasez_efectiva": 0.0,
+            "escasez_efectiva_es_diagnostico": "la escasez efectiva se publica como diagnostico: el criterio de identidad declarado es ll_train y ||w||_2"
+          }
+        ]
+      },
+      "lambda1_mediana": {
+        "lambda1_run": 0.23993793862904017,
+        "lambda1_artefacto": 0.23993793862904017,
+        "lambda1_identico": true,
+        "peor_diferencia_relativa_ll_train": 0.0,
+        "peor_diferencia_relativa_norma_w_l2": 0.0,
+        "reproduce": true,
+        "por_pasada": [
+          {
+            "pasada": 1,
+            "ll_train": {
+              "valor": 10.058343327445655,
+              "referencia": 10.058343327445655,
+              "diferencia_absoluta": 0.0,
+              "diferencia_relativa": 0.0,
+              "dentro_de_tolerancia": true,
+              "motivo": "diferencia relativa |10.058343327445655 - 10.058343327445655| / |10.058343327445655| = 0.0 frente al umbral declarado 1e-09"
+            },
+            "norma_w_l2": {
+              "valor": 28.27459446151044,
+              "referencia": 28.27459446151044,
+              "diferencia_absoluta": 0.0,
+              "diferencia_relativa": 0.0,
+              "dentro_de_tolerancia": true,
+              "motivo": "diferencia relativa |28.27459446151044 - 28.27459446151044| / |28.27459446151044| = 0.0 frente al umbral declarado 1e-09"
+            },
+            "escasez_efectiva_run": 0.9510728897052684,
+            "escasez_efectiva_artefacto": 0.9510728897052684,
+            "delta_escasez_efectiva": 0.0,
+            "escasez_efectiva_es_diagnostico": "la escasez efectiva se publica como diagnostico: el criterio de identidad declarado es ll_train y ||w||_2"
+          },
+          {
+            "pasada": 2,
+            "ll_train": {
+              "valor": 15.40168213060249,
+              "referencia": 15.40168213060249,
+              "diferencia_absoluta": 0.0,
+              "diferencia_relativa": 0.0,
+              "dentro_de_tolerancia": true,
+              "motivo": "diferencia relativa |15.40168213060249 - 15.40168213060249| / |15.40168213060249| = 0.0 frente al umbral declarado 1e-09"
+            },
+            "norma_w_l2": {
+              "valor": 46.45212395628998,
+              "referencia": 46.45212395628998,
+              "diferencia_absoluta": 0.0,
+              "diferencia_relativa": 0.0,
+              "dentro_de_tolerancia": true,
+              "motivo": "diferencia relativa |46.45212395628998 - 46.45212395628998| / |46.45212395628998| = 0.0 frente al umbral declarado 1e-09"
+            },
+            "escasez_efectiva_run": 0.9806666481125862,
+            "escasez_efectiva_artefacto": 0.9806666481125862,
+            "delta_escasez_efectiva": 0.0,
+            "escasez_efectiva_es_diagnostico": "la escasez efectiva se publica como diagnostico: el criterio de identidad declarado es ll_train y ||w||_2"
+          },
+          {
+            "pasada": 3,
+            "ll_train": {
+              "valor": 19.1594443184596,
+              "referencia": 19.1594443184596,
+              "diferencia_absoluta": 0.0,
+              "diferencia_relativa": 0.0,
+              "dentro_de_tolerancia": true,
+              "motivo": "diferencia relativa |19.1594443184596 - 19.1594443184596| / |19.1594443184596| = 0.0 frente al umbral declarado 1e-09"
+            },
+            "norma_w_l2": {
+              "valor": 60.23720212230849,
+              "referencia": 60.23720212230849,
+              "diferencia_absoluta": 0.0,
+              "diferencia_relativa": 0.0,
+              "dentro_de_tolerancia": true,
+              "motivo": "diferencia relativa |60.23720212230849 - 60.23720212230849| / |60.23720212230849| = 0.0 frente al umbral declarado 1e-09"
+            },
+            "escasez_efectiva_run": 0.9806666481125862,
+            "escasez_efectiva_artefacto": 0.9806666481125862,
+            "delta_escasez_efectiva": 0.0,
+            "escasez_efectiva_es_diagnostico": "la escasez efectiva se publica como diagnostico: el criterio de identidad declarado es ll_train y ||w||_2"
+          }
+        ]
+      }
+    },
+    "anclaje": {
+      "lambda1_del_nucleo_de_anclaje": 0.0,
+      "mediana_abs_z": 0.23993793862904017,
+      "mediana_congelada": 0.23993793862904017,
+      "diferencia_exacta": 0.0,
+      "diferencia_es_cero_exacto": true,
+      "sha256_z": "ec1d1a7b13454f8b7309446576318487b9325df018c5b454b228a6a336630f66",
+      "sha256_z_congelado": "ec1d1a7b13454f8b7309446576318487b9325df018c5b454b228a6a336630f66",
+      "sha256_z_artefacto": "ec1d1a7b13454f8b7309446576318487b9325df018c5b454b228a6a336630f66",
+      "sha256_identico": true,
+      "sha256_es_prefijo_del_artefacto": true,
+      "criterio": "diferencia EXACTA 0 con la mediana congelada y sha256 del snapshot de z identico al de la sonda pre-ejecucion versionada"
+    },
+    "diagnostico_secundario": {
+      "lambda1": 0.23993793862904017,
+      "mediana_abs_z_core_ya_regularizado": 0.2333793834039217,
+      "valor_esperado": 0.2333793834039217,
+      "diferencia_respecto_del_anclaje": -0.006558555225118473,
+      "diferencia_esperada": -0.006558555225118473,
+      "coincide": true,
+      "es_el_anclaje": false,
+      "lectura": "NO es el anclaje: la mediana del z del core YA REGULARIZADO no puede coincidir con la del core de anclaje porque z depende de w y w depende de lambda1. Su diferencia respecto del anclaje es la magnitud del acoplamiento z <- w(lambda1) y por eso el anclaje solo puede reproducirse con lambda1 = 0.0"
+    },
+    "fallos": [],
+    "reproduce": true,
+    "coste_seg": 60.7561252117157,
+    "coste_declarado_seg": 60.0,
+    "presupuesto_declarado_seg": 1200.0
+  },
+  "equivalencia_token_pattern": {
+    "coincide_exacto": false,
+    "diferencia_solo_token_pattern": false,
+    "iguales_en_el_resto_de_claves": true,
+    "par_de_token_pattern_reconocido": false,
+    "receta_identica_bit_a_bit": true,
+    "claves_de_receta": [
+      "analyzer",
+      "lowercase",
+      "max_df",
+      "min_df",
+      "ngram_range",
+      "strip_accents",
+      "sublinear_tf",
+      "token_pattern"
+    ],
+    "claves_de_nota_del_prereg": [
+      "nota_token_pattern"
+    ],
+    "caso_reconocido": "solo_notas_del_prereg",
+    "token_pattern_local": "(?u)\\b\\w+\\b",
+    "token_pattern_prereg": "(?u)\\b\\w+\\b",
+    "sha256_dict_local": "9bae157614458dbdf26fb7aed4c78d2954c36e895f830341e59b23fa63e2b51b",
+    "sha256_dict_prereg": "8698703344c934437dc94d4b78add663f97791a233661a2db51894980adb4f04",
+    "sha256_dict_prereg_solo_receta": "9bae157614458dbdf26fb7aed4c78d2954c36e895f830341e59b23fa63e2b51b",
+    "sha256_canonico": "9bae157614458dbdf26fb7aed4c78d2954c36e895f830341e59b23fa63e2b51b",
+    "sha256_typo_anterior_enmienda": "33311e5eddc0b0bbfd07505b9ed3474bb824d1b41fac92d3d7bfd3fd902ba977",
+    "hash_local_es_el_canonico": true,
+    "hash_prereg_es_el_typo": false,
+    "equivalente": true,
+    "es_gate": true,
+    "nota": "el pre-registro V35 arrastro en su origen el token_pattern ANTERIOR a la enmienda pre-ejecucion 3 de V34 (dobles backslashes), que deja el vocabulario vacio y no es ejecutable; la tercera enmienda pre-ejecucion ya lo restauro a la receta canonica de un backslash y fijo el sha256 9bae1576..., que es la de v31_02, la de los pre-registros V33 y V34 ya enmendados y la del nucleo de V34 verificado por sha256. La comprobacion NO se relaja: exige que las ocho claves de receta coincidan bit a bit y que el dict local tenga el sha256 canonico congelado. La clave nota_token_pattern del pre-registro es documentacion pura: no es un parametro del vectorizador, porque el ajuste usa siempre el dict local VECTORIZADOR_FIT"
+  },
+  "refit": {
+    "descripcion": "sonda de refit del vectorizador en los 5 folds, ajustada SIEMPRE sobre ES-train",
+    "folds": {},
+    "reproducido": null,
+    "nota": "no se ejecuta: la puerta cerro el ciclo antes de terminar los folds"
+  },
+  "vocabulario_idf_por_fold": {
+    "0": {
+      "n_vocabulario": 107792,
+      "vocab_sha256": "b8605131d60d10118670ff5e78dbf54a4883f0726ea8d3b13e9fc799bfa18618",
+      "idf_sha256": "1257b741569c36c48043b2c9eadb31bf1bd1f142f50091a06982dbc9ca8aa832",
+      "n_filas_fit_es_train": 121921
+    }
+  },
+  "particiones_es_por_fold": {
+    "0": {
+      "es_train_sha256": "be8169b0bd1adafc458cfe00593382c970bb29f34f5bafd52e4f3a5d78e470b6",
+      "es_val_sha256": "2897aae6711911e9d7e036eef028e50bc1641f96b8656b758c8b4847f9264ae2",
+      "n_filas_fit_es_train": 121921,
+      "n_filas_es_val": 13547,
+      "n_train_fold": 135468,
+      "prior": [
+        0.17044643662699616,
+        0.1693473642768678,
+        0.16739528055052041,
+        0.16671451185603792,
+        0.16570566186300964,
+        0.160390744826568
+      ],
+      "prior_sha256": "bc9e6d3043c04219e42a2cfd023bd69c9a844811c674c25510623ab9b605cdf3",
+      "prior_es": [
+        0.17044643662699616,
+        0.1693473642768678,
+        0.16739528055052041,
+        0.16671451185603792,
+        0.16570566186300964,
+        0.160390744826568
+      ],
+      "d_norm": 0.9128367962785974,
+      "h_prior_es": 1.7915714394468476,
+      "alpha": 0.035262336465737745,
+      "alpha_sha256": "83a538cb56b1c4cc63b82da9a7c0ea0a61843128d0f20706bc38b8ca9ce1815e"
+    }
+  },
+  "determinismo": {
+    "sonda_por_brazo": {
+      "A1_ftrl_lambda1": {
+        "max_abs_diff_repeticion": 0.0,
+        "max_abs_diff_p": 0.0,
+        "sha256_w": "4a7a2d44c6a75edddbf17becbbc4673999132cb62a961d5bee11b4f84fac8fcf",
+        "sha256_w_primera": "4a7a2d44c6a75edddbf17becbbc4673999132cb62a961d5bee11b4f84fac8fcf",
+        "pasada_de_parada": 3,
+        "pasada_de_parada_primera": 3,
+        "ll_train": 19.159444318459602,
+        "ll_train_primera": 19.159444318459602,
+        "clasicacion": "exacto",
+        "tolerancia_declarada": 1e-09,
+        "variabilidad_referencia": 0.0008876,
+        "gate_delta": 0.0015,
+        "no_concluyente": false,
+        "solape_con_gate": false,
+        "sha256_w_identico": true,
+        "pasada_identica": true,
+        "ll_train_identico": true,
+        "pass": true
+      },
+      "A2_sgd_presupuesto": {
+        "max_abs_diff_repeticion": 0.0,
+        "max_abs_diff_p": 0.0,
+        "sha256_w": "b13dd9deba4e95813845780f2be6a158409d800df1003dbb1d7d290a505b6eda",
+        "sha256_w_primera": "b13dd9deba4e95813845780f2be6a158409d800df1003dbb1d7d290a505b6eda",
+        "pasada_de_parada": 10,
+        "pasada_de_parada_primera": 10,
+        "ll_train": 0.4042196354629878,
+        "ll_train_primera": 0.4042196354629878,
+        "clasicacion": "exacto",
+        "tolerancia_declarada": 1e-09,
+        "variabilidad_referencia": 0.0008876,
+        "gate_delta": 0.0015,
+        "no_concluyente": false,
+        "solape_con_gate": false,
+        "sha256_w_identico": true,
+        "pasada_identica": true,
+        "ll_train_identico": true,
+        "pass": true
+      }
+    },
+    "no_concluyente": true,
+    "tolerancia_declarada": 1e-09,
+    "variabilidad_referencia": 0.0008876,
+    "nota": "la rama de cierre no llega a los gates de delta: el determinismo se publica solo como diagnostico del fold 0 y el cap queda activo por construccion"
+  },
+  "control": null,
+  "calibracion": null,
+  "rss_pico_gb": 0.6933403015136719,
+  "ram_tope_gb": 20.0,
+  "sin_leakage": null,
+  "entrenamiento": {
+    "A1_ftrl_lambda1": {
+      "folds": {
+        "0": {
+          "n_vocabulario": 107792,
+          "vocab_sha256": "b8605131d60d10118670ff5e78dbf54a4883f0726ea8d3b13e9fc799bfa18618",
+          "idf_sha256": "1257b741569c36c48043b2c9eadb31bf1bd1f142f50091a06982dbc9ca8aa832",
+          "n_filas_fit_es_train": 121921,
+          "n_filas_es_val": 13547,
+          "n_train_fold": 135468,
+          "n_val_fold": 33868,
+          "n_features_es_train": 107792,
+          "n_features_es_val": 107792,
+          "n_coordinates_a1": 107793,
+          "alpha_efectivo": 0.035262336465737745,
+          "d_norm": 0.9128367962785974,
+          "h_prior_es": 1.7915714394468476,
+          "prior_es": [
+            0.17044643662699616,
+            0.1693473642768678,
+            0.16739528055052041,
+            0.16671451185603792,
+            0.16570566186300964,
+            0.160390744826568
+          ],
+          "prior_es_sha256": "bc9e6d3043c04219e42a2cfd023bd69c9a844811c674c25510623ab9b605cdf3",
+          "alpha_sha256": "83a538cb56b1c4cc63b82da9a7c0ea0a61843128d0f20706bc38b8ca9ce1815e",
+          "es_train_sha256": "be8169b0bd1adafc458cfe00593382c970bb29f34f5bafd52e4f3a5d78e470b6",
+          "es_val_sha256": "2897aae6711911e9d7e036eef028e50bc1641f96b8656b758c8b4847f9264ae2",
+          "lambda1": 0.23993793862904017,
+          "anclaje_lambda1": {
+            "lambda1_congelado": 0.23993793862904017,
+            "lambda1_del_ciclo": 0.23993793862904017,
+            "lambda1_es_la_mediana": true,
+            "nucleo_de_anclaje_lambda1": 0.0,
+            "mediana_abs_z_ancaje": 0.23993793862904017,
+            "diferencia_exacta": 0.0,
+            "diferencia_es_cero_exacto": true,
+            "sha256_z_ancaje": "ec1d1a7b13454f8b7309446576318487b9325df018c5b454b228a6a336630f66",
+            "sha256_z_ancaje_congelado": "ec1d1a7b13454f8b7309446576318487b9325df018c5b454b228a6a336630f66",
+            "sha256_reproduce": true,
+            "norma_w_l2_del_brazo_regularizado_pasada_1": 28.27459446151044,
+            "mediana_abs_z_brazo_regularizado": 0.2333793834039217,
+            "escasez_efectiva_brazo_regularizado_pasada_1": 0.9510728897052684,
+            "nota": "el anclaje se mide con lambda1 = 0.0 porque es la trayectoria que DEFINE la mediana; la mediana del brazo ya regularizado se publica aparte porque z depende de w y w depende de lambda1, luego NO puede coincidir con el anclaje y su lectura correcta es 'el L1 ya cambio el espacio de soluciones'}",
+            "criterio": "diferencia EXACTA 0 con la mediana congelada y sha256 del snapshot de z identico al de la sonda pre-ejecucion; si no reproduce -> exit 2",
+            "reproduce": true
+          },
+          "ordenes_sha256": [
+            "a82da8487c49d28eb7a658ad4b4ddeaf5a4066d13ae764261c487b0f14acc31b",
+            "91f7c9aceca3d277798ac260ed3524a1dc03b404b86dbc241953be485d887fd9",
+            "6cfac0a1a0747e25270dcdd8db791c4ea9ff46368c0e6f02ece098556d199dfc",
+            "2d76bd70d4ab16c8d52f2b9f3642cedf7eba722faee84ac165b24d21433c8dca",
+            "6a050486ce4161674ce0af81b6084c5d50aa6dc102766f14fd4b96b23529d8df",
+            "36c64022d0dbaa326b82e7882d4e908b3e3ca35932bc150f14bd4e2273721ce6",
+            "e3697d357361bcf213b6333614cb4f627a0b5058a9abd5238c51bc4f8ad4cd67",
+            "9890efbc70d2806fc5fa52c5777a4f2721169bf65f06266151e4995a2015f61e",
+            "0e324654a4507eb538b855bec708120d6990c24fc40c75c73e72e2b1bf9bd53a",
+            "6a688ce096e9135f0b5e3a46a533eb94ad9047a60f27175c564868ca3a853549"
+          ],
+          "pasada_de_parada": 3,
+          "mejor_pasada": 1,
+          "trayectoria": [
+            {
+              "pasada": 1,
+              "ll_train": 10.058343327445654,
+              "D_acum": 12.072638779554156,
+              "macro_f1_es": 0.04607718405428329,
+              "w_max_abs": 6.599751975774442,
+              "razon_sigma_sobre_g": 0.13324064162240382,
+              "razon_sigma_sobre_g_pasada": 0.13324064162240382,
+              "perdida_online": 5.554166302024483,
+              "norma_w_l2": 28.27459446151044,
+              "escasez_efectiva": 0.9510728897052684,
+              "frac_coordenadas_muertas": 0.048927110294731624,
+              "frac_clases_muertas": 0.5082813045992474,
+              "coordenadas_vivas": 102519
+            },
+            {
+              "pasada": 2,
+              "ll_train": 15.401682130602488,
+              "D_acum": 18.47438702586234,
+              "macro_f1_es": 0.04607718405428329,
+              "w_max_abs": 9.991392715143766,
+              "razon_sigma_sobre_g": 0.18364504317564467,
+              "razon_sigma_sobre_g_pasada": 0.23420972786457636,
+              "perdida_online": 12.913968592282723,
+              "norma_w_l2": 46.45212395628998,
+              "escasez_efectiva": 0.9806666481125862,
+              "frac_coordenadas_muertas": 0.019333351887413808,
+              "frac_clases_muertas": 0.39126844971380326,
+              "coordenadas_vivas": 105709
+            },
+            {
+              "pasada": 3,
+              "ll_train": 19.159444318459602,
+              "D_acum": 23.177427218233596,
+              "macro_f1_es": 0.04607718405428329,
+              "w_max_abs": 12.500161168894245,
+              "razon_sigma_sobre_g": 0.20793451481905414,
+              "razon_sigma_sobre_g_pasada": 0.25659069365055576,
+              "perdida_online": 17.35018775342141,
+              "norma_w_l2": 60.23720212230849,
+              "escasez_efectiva": 0.9806666481125862,
+              "frac_coordenadas_muertas": 0.019333351887413808,
+              "frac_clases_muertas": 0.3845735189978323,
+              "coordenadas_vivas": 105709
+            }
+          ],
+          "sesgo": {
+            "n_caminos": 1,
+            "fuente": "coordenada de sesgo x0=1.0 dentro de FTRL (propio z, propio n)",
+            "max_abs_gradiente_coordenada_sesgo": 0.9999999999999999,
+            "gradiente_acumulado_por_clase": [
+              66207.31171643853,
+              64957.775020548666,
+              64338.19557298258,
+              64044.57081112449,
+              63839.78810719457,
+              290496.26534254797
+            ],
+            "desplazamiento_por_clase": [
+              -2.8985027818148663,
+              -3.000521916061058,
+              -2.9715520348501614,
+              -2.971520107829613,
+              -2.9425509619940087,
+              6.599751975774442
+            ],
+            "max_abs_desplazamiento": 6.599751975774442,
+            "coord_sesgo_sha256": "8d3711b02c87db21f67097073922cedf1f301894fe7b936aa09391104fda02d8",
+            "sha256_w": "4a7a2d44c6a75edddbf17becbbc4673999132cb62a961d5bee11b4f84fac8fcf"
+          },
+          "t_": 121921.0,
+          "n_actualizaciones": 121921,
+          "macro_f1_standalone_fold_val": 0.04607294317217981,
+          "frecuencias_fold_val": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "max_abs_suma_menos_uno": 2.220446049250313e-16,
+          "tiempo_seg": 34.74499273300171
+        }
+      },
+      "folds_completados": [
+        "0"
+      ],
+      "oof_artefacto": {
+        "archivo": "artifacts/p35_scores/v35_e1/a1_ftrl_lambda1.npy",
+        "existe": true,
+        "sha256": "d218bb92a1cafc592e3afc64d0320720b01818302ea838c0eca0cecb5dc8ef5a"
+      }
+    },
+    "A2_sgd_presupuesto": {
+      "folds": {
+        "0": {
+          "n_vocabulario": 107792,
+          "vocab_sha256": "b8605131d60d10118670ff5e78dbf54a4883f0726ea8d3b13e9fc799bfa18618",
+          "idf_sha256": "1257b741569c36c48043b2c9eadb31bf1bd1f142f50091a06982dbc9ca8aa832",
+          "n_filas_fit_es_train": 121921,
+          "n_filas_es_val": 13547,
+          "n_train_fold": 135468,
+          "n_val_fold": 33868,
+          "n_features_es_train": 107792,
+          "n_features_es_val": 107792,
+          "n_coordinates_a1": 107793,
+          "alpha_efectivo": 0.035262336465737745,
+          "d_norm": 0.9128367962785974,
+          "h_prior_es": 1.7915714394468476,
+          "prior_es": [
+            0.17044643662699616,
+            0.1693473642768678,
+            0.16739528055052041,
+            0.16671451185603792,
+            0.16570566186300964,
+            0.160390744826568
+          ],
+          "prior_es_sha256": "bc9e6d3043c04219e42a2cfd023bd69c9a844811c674c25510623ab9b605cdf3",
+          "alpha_sha256": "83a538cb56b1c4cc63b82da9a7c0ea0a61843128d0f20706bc38b8ca9ce1815e",
+          "es_train_sha256": "be8169b0bd1adafc458cfe00593382c970bb29f34f5bafd52e4f3a5d78e470b6",
+          "es_val_sha256": "2897aae6711911e9d7e036eef028e50bc1641f96b8656b758c8b4847f9264ae2",
+          "lambda1": 0.23993793862904017,
+          "anclaje_lambda1": {
+            "aplica": false,
+            "motivo": "no aplica: A2 es SGD puro, sin estado z y sin L1, de modo que no existe mediana de |z_j| > 0 que pueda definir un anclaje de lambda1",
+            "medida_sobre": "ninguna: el anclaje se define sobre el z del nucleo FTRL y A2 no lo tiene; A2 guarda z a ceros en el checkpoint por construccion",
+            "quien_lo_verifica": "A1_ftrl_lambda1, y solo en la pasada 1 del fold 0, con el nucleo de anclaje (lambda1 = 0.0) sobre el mismo stream",
+            "criterio": "no aplica a A2: la verificacion en runtime (diferencia EXACTA 0 con la mediana congelada y sha256 del snapshot de z identico al de la sonda pre-ejecucion) es una comprobacion exclusiva de A1"
+          },
+          "ordenes_sha256": [
+            "a82da8487c49d28eb7a658ad4b4ddeaf5a4066d13ae764261c487b0f14acc31b",
+            "91f7c9aceca3d277798ac260ed3524a1dc03b404b86dbc241953be485d887fd9",
+            "6cfac0a1a0747e25270dcdd8db791c4ea9ff46368c0e6f02ece098556d199dfc",
+            "2d76bd70d4ab16c8d52f2b9f3642cedf7eba722faee84ac165b24d21433c8dca",
+            "6a050486ce4161674ce0af81b6084c5d50aa6dc102766f14fd4b96b23529d8df",
+            "36c64022d0dbaa326b82e7882d4e908b3e3ca35932bc150f14bd4e2273721ce6",
+            "e3697d357361bcf213b6333614cb4f627a0b5058a9abd5238c51bc4f8ad4cd67",
+            "9890efbc70d2806fc5fa52c5777a4f2721169bf65f06266151e4995a2015f61e",
+            "0e324654a4507eb538b855bec708120d6990c24fc40c75c73e72e2b1bf9bd53a",
+            "6a688ce096e9135f0b5e3a46a533eb94ad9047a60f27175c564868ca3a853549"
+          ],
+          "pasada_de_parada": 10,
+          "mejor_pasada": 9,
+          "trayectoria": [
+            {
+              "pasada": 1,
+              "ll_train": 1.0621988075152096,
+              "D_acum": 9.009318183124304,
+              "macro_f1_es": 0.4507238550998481,
+              "w_max_abs": 36.851097308207834,
+              "t_": 121922.0
+            },
+            {
+              "pasada": 2,
+              "ll_train": 0.53150291338037,
+              "D_acum": 6.504952133264232,
+              "macro_f1_es": 0.4783218879835666,
+              "w_max_abs": 28.975537013589275,
+              "t_": 243843.0
+            },
+            {
+              "pasada": 3,
+              "ll_train": 0.46136712737751984,
+              "D_acum": 5.946399805412504,
+              "macro_f1_es": 0.4846075615775398,
+              "w_max_abs": 26.40142144815189,
+              "t_": 365764.0
+            },
+            {
+              "pasada": 4,
+              "ll_train": 0.4448820595778469,
+              "D_acum": 5.6863165739339845,
+              "macro_f1_es": 0.48594479392195905,
+              "w_max_abs": 25.635766863845546,
+              "t_": 487685.0
+            },
+            {
+              "pasada": 5,
+              "ll_train": 0.44331860641441856,
+              "D_acum": 5.572205768520885,
+              "macro_f1_es": 0.4921236862256317,
+              "w_max_abs": 25.259161527755204,
+              "t_": 609606.0
+            },
+            {
+              "pasada": 6,
+              "ll_train": 0.4161367286176657,
+              "D_acum": 5.4994739625788895,
+              "macro_f1_es": 0.4937403871043837,
+              "w_max_abs": 25.091526790541643,
+              "t_": 731527.0
+            },
+            {
+              "pasada": 7,
+              "ll_train": 0.4135696447419864,
+              "D_acum": 5.395290221282304,
+              "macro_f1_es": 0.4969814311737142,
+              "w_max_abs": 24.82520224675737,
+              "t_": 853448.0
+            },
+            {
+              "pasada": 8,
+              "ll_train": 0.4124644129409522,
+              "D_acum": 5.374681722507983,
+              "macro_f1_es": 0.49313499246502346,
+              "w_max_abs": 24.749555178199547,
+              "t_": 975369.0
+            },
+            {
+              "pasada": 9,
+              "ll_train": 0.4099931648709885,
+              "D_acum": 5.3219146180107195,
+              "macro_f1_es": 0.4987334207184772,
+              "w_max_abs": 24.729735032756043,
+              "t_": 1097290.0
+            },
+            {
+              "pasada": 10,
+              "ll_train": 0.4042196354629878,
+              "D_acum": 5.255189045039075,
+              "macro_f1_es": 0.49427587880931695,
+              "w_max_abs": 24.650374742441638,
+              "t_": 1219211.0
+            }
+          ],
+          "sesgo": {
+            "n_caminos": 1,
+            "fuente": "fit_intercept=True sobre la matriz SIN columna de sesgo pre-anadida (un solo camino)",
+            "intercept_": [
+              -1.9183893512422898,
+              -1.2893783696669183,
+              -1.89437036122244,
+              -2.451892878830996,
+              -2.7145594691904047,
+              -3.4519030282446312
+            ],
+            "max_abs_intercept": 3.4519030282446312,
+            "intercept_sha256": "fdf6018022dfda14226a5ed0ff78b4beee37ae36be1b674d1b69236dbffa2193",
+            "sha256_w": "b13dd9deba4e95813845780f2be6a158409d800df1003dbb1d7d290a505b6eda"
+          },
+          "t_": 1219211.0,
+          "n_actualizaciones": 1219211,
+          "macro_f1_standalone_fold_val": 0.49199473325810494,
+          "frecuencias_fold_val": [
+            0.16142081020432267,
+            0.18265028935868666,
+            0.15085036022203852,
+            0.1547478445730483,
+            0.18899846462737688,
+            0.16133223101452698
+          ],
+          "max_abs_suma_menos_uno": 4.440892098500626e-16,
+          "tiempo_seg": 1.5089831352233887
+        }
+      },
+      "folds_completados": [
+        "0"
+      ],
+      "oof_artefacto": {
+        "archivo": "artifacts/p35_scores/v35_e1/a2_sgd_presupuesto.npy",
+        "existe": true,
+        "sha256": "202798561c41960901dbc833a8dc05af196fcd076ec7916f4746216604c3f6b4"
+      }
+    }
+  },
+  "integracion": null,
+  "complementariedad": null,
+  "gates": {},
+  "caps": {},
+  "veredicto": "LINEA_ONLINE_CERRADA_POR_MECANISMO",
+  "motivo_de_no_calculo": "la puerta se cerro en el fold 0 (pasa = False) por la rama pre-declarada 'LINEA_ONLINE_CERRADA_POR_MECANISMO': gates fallidas de A1 ['G0_objetivo_de_la_regla', 'G1_banda_ll_train', 'G2_progreso', 'G3_macro_f1_fold_val', 'G4_frecuencias', 'G8_acotacion_norma'] y de A2 []; falla ['G8_acotacion_norma'] en A1: la hipotesis de acotacion del L1 queda refutada por medicion sobre la trayectoria real del fold 0. El cierre es DEFINITIVO de la familia: no hay segundo lambda1 (seria grid) ni acta futura dentro de este espacio. El pre-registro prohibe integrar y hacer bootstrap, luego delta y bootstrap quedan VACIOS",
+  "siguiente_paso": "LINEA_ONLINE_CERRADA_POR_MECANISMO: la acotacion queda refutada y la familia se cierra DEFINITIVAMENTE (no hay segundo lambda1 ni acta futura dentro de este espacio)",
+  "origen_de_siguiente_paso": "puerta.rama_predeclarada.G7_o_G8_fallan",
+  "duracion_seg": 139.695143699646,
+  "duracion_sondas_seg": 2.768277406692505,
+  "tiempos_por_brazo_fold_seg": {
+    "A1_ftrl_lambda1": {
+      "0": 34.74499273300171
+    },
+    "A2_sgd_presupuesto": {
+      "0": 1.5089831352233887
+    }
+  }
+}

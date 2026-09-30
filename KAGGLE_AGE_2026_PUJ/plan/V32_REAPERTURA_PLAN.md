@@ -38,7 +38,7 @@ sin autorizacion.
   generaron senal nueva, aunque pequena). Requiere **ruling** si alguna variante roza "embedding
   aprendido" (p.ej. tema_latente, SVD denso, NMF/LDA): el pre-registro debe declararlo y el
   especialista falla si no es defendible. Auditoria de novedad obligatoria (codebase-memory + grep).
-- [ ] **F3''''' Orden de ejecucion**: B primero (es el reinicio one-shot ya autorizado y su evidencia
+- [x] **F3''''' Orden de ejecucion**: B primero (es el reinicio one-shot ya autorizado y su evidencia
   cierra la familia de forma definitiva), despues C1. Un experimento + su control por ciclo; sin
   grids; cada uno con pre-registro congelado, `ml-coder`, `ml-reviewer`, `ml-qa-engineer` (GO/NO-GO) y
   `ml-trainer`. Cierre documentado por experimento (D-086 para B, D-087 para C1) con notebook, docs,

@@ -3068,3 +3068,91 @@ No se usa el 0,63575 para optimizar pesos, crear variantes, seleccionar semillas
   `scripts/v34_00_preregistro.py`, `scripts/v33_00b_enmienda_preregistro.py`,
   `scripts/v34_00b_exploracion_alpha.py`, `scripts/v34_00d_enmienda_preregistro.py`,
   `scripts/v34_00e_enmienda_preregistro.py`, `scripts/v34_01_ftrl_softmax_multipasada.py`.
+
+## D-086 - V35-E1: `lambda1 > 0` no acota la norma; la familia FTRL-Proximal queda CERRADA DE FORMA DEFINITIVA
+
+- **Observation**: primer (y unico) experimento de la **via B** del ciclo V35, autorizado y firmado
+  por Carlos el 2026-09-30 tras D-085, que habia cerrado la familia FTRL-Proximal **por mecanismo**
+  con cierre **one-shot** y declarado dos miembros **NO CUBIERTOS**. Este cubre el primero de ellos,
+  `lambda1 > 0`. No es un reintento de `alpha`: **`alpha*` quedo CONGELADO e identico al de V34-E1**
+  (`0.035262336465737745`, de `2*M/(d_norm*P_max^2)` con `M = ln 5` y `d_norm` del prior MEDIDO del
+  ES-train); lo que cambia es el **espacio de soluciones**, con un umbral duro `w_j = 0` si
+  `|z_j| <= lambda1`. El anclaje de `lambda1` fue **DERIVADO, sin grid**:
+  `lambda1 := mediana(|z_j| > 0)` medida en el stream de TRAIN del fold 0 al final de la pasada 1 =
+  **`0.23993793862904017`**. La hipotesis mecanica, falsable, era que **acotar la norma elimina la
+  divergencia de D-085 conservando aprendizaje**.
+- **Evidencia previa que ya la falsaba**: la sonda pre-ejecucion
+  (`scripts/v35_00b_sonda_lambda1.py`, artefacto versionado) resolvio los dos flags tecnicos que
+  `kaggle-specialist` exigio antes de congelar. Flag 1: "lambda1 = alpha es un no-op" exige
+  `mediana(|z|) > alpha`, y medido `mediana/alpha = 6.8044`, luego se cumple. Flag 2, resuelto en
+  **negativo**: un `lambda1` fijo **no acota** `||w||_2` (razon max/min = **2.1304** con la mediana),
+  porque sigue valiendo `|w_j| <= |z_j|/lambda2` y el umbral solo acota si `z` permanece acotado. La
+  prediccion registrada antes de ejecutar era `LINEA_ONLINE_CERRADA_POR_MECANISMO` por fallo de G8.
+- **Correcciones y enmiendas PRE-EJECUCION (5, todas declaradas)**: (1) el anclaje se verifica con el
+  **NUCLEO DE ANCLAJE** (`lambda1 = 0.0`) sobre el mismo stream, no con el `z` del core ya
+  regularizado, que es circular (`z` depende de `w` y `w` de `lambda1`); (2) las sondas (k), (l), (m)
+  son de **firma de mecanismo** en el mini y la **identidad numerica exacta** corre en el fold 0
+  real; (3) el `token_pattern` congelado llevaba backslashes dobles (vocabulario vacio) y se
+  corrige al canonico `9bae1576...`; (4) se restituyen 6 secciones de contexto del pre-registro que
+  el runner leia y no existian; (5) se deja **una sola** declaracion vigente de asimetria.
+- **Defecto de implementacion entre medias (unico, y el unico permitido)**: el primer intento
+  (`18a6249`) termino en exit 1 por `UnboundLocalError: 'anclaje'`, que hacia **A2 inalcanzable de
+  forma determinista** porque la variable se asignaba solo en la rama `if clave == "a1":` y se leia
+  en el `return` comun. Incidente en `reports/v35_e1_incidente_bloqueo.md`, evidencia del intento en
+  cuarentena en `experiments/v35_e1_intento_1_bloqueado/`. Corregido en `f4df711` y validado por
+  `ml-reviewer` (**APPROVED**), que reintrodujo el bug en una copia y comprobo que `--verificar` da
+  **exit 2 sin `VERIFICACION OK`**, y que su traversal AST propia hallo que `anclaje` era el
+  **unico** nombre del `return` comun ligado solo en la rama de A1. La re-emision se hizo **desde
+  cero** y **reprodujo los tres artefactos binarios del fold 0 bit a bit** del intento 1.
+- **Resultado medido (fold 0, unico fold consumido; la puerta cerro aqui por diseno)**: A1 falla
+  `G0` (`D_acum` 23.1774 vs banda [0.8047, 3.2189]), `G1` (`ll_train` 19.159444 vs techo 1.78157),
+  `G2` (0 mejoras), `G3` (macro-F1 0.046073 < 0.30), `G4` (frecuencias `[0,0,0,0,0,1]`) y **`G8`
+  (razon max/min de `||w||_2` = `2.130435582526498` > 1.0)**, y **pasa `G5` (determinismo `max|dp|` =
+  0.0 exacto), `G6` (2.22e-16 <= 1e-9) y `G7`**. A2 pasa las suyas (`G3` = 0.491995, `ll_train`
+  1.062199 -> 0.404220) y sus `G7`/`G8` quedan **`None` = NO APLICA**, porque no lleva L1. Trayectoria
+  de A1: `ll_train` 10.058343 -> 15.401682 -> 19.159444 con `||w||_2` 28.274594 -> 46.452124 ->
+  **60.237202**. Escasez efectiva 0.951073 -> 0.980667. Triage **D1-D9 los nueve en `True`**,
+  `hay_indicador_de_defecto = false`, `clasificacion = MECANISMO_DEFINITIVO`.
+- **El matiz que importa**: la fraccion de coordenadas con `|z_j| <= lambda1` en pasadas >= 2 es
+  **0.019333, no 0**, luego **G7 pasa y el L1 resulto ACTIVO pero INSUFICIENTE** (la escasez incluso
+  *mejora*). El umbral descarta de verdad y aun asi la norma **se duplica**: **acotar no es lo mismo
+  que bastar**, y por eso el fallo de G8 es un fallo de **hipotesis**, no de implementacion ni de
+  puerta.
+- **Decision**: veredicto **`LINEA_ONLINE_CERRADA_POR_MECANISMO`** con `causa = ["G8_acotacion_norma"]`
+  y `cierre_definitivo = True`. Cierre de **FAMILIA**, no un gate de delta. La integracion y el
+  bootstrap **no se ejecutan** (el pre-registro los prohibe tras el fallo de la puerta): `integracion`,
+  `delta` y `bootstrap` quedan en `None` con `motivo_de_no_calculo`, y `gates` y `caps` vacios. Sin
+  segunda particion, sin submission; el campeon **V30 + plug-in** (LB 0.63575) permanece intacto y
+  `artifacts/p33_scores/todos` con `sha256` `8881a9f5...` antes y despues.
+- **Consequences**: (i) la familia **FTRL-Proximal queda CERRADA DE FORMA DEFINITIVA** en esta
+  representacion: con `alpha` pequeno el entrenamiento queda **inerte** (D-084), con la regla de
+  margen **divergente** (D-085), y con umbral L1 la norma **se duplica igualmente** (esta acta). Las
+  tres evidencias cierran el mismo mecanismo desde tres regimes distintos; (ii) **no hay segundo
+  `lambda1`** (seria grid) **ni acta futura dentro de este espacio de FTRL**; (iii) el **segundo
+  miembro NO CUBIERTO** queda **CERRADO POR DECLARACION**, con su evidencia de techo: su geometria de
+  norma acotada es la del control sano A2, que ya midio `0.4934789` standalone en D-083 y `-0.0017002`
+  integrado con 0/5 folds; (iv) "cerrada" ahora **si** significa agotada en todo el espacio de FTRL,
+  a diferencia de D-085, donde quedaban miembros sueltos; (v) **metodologia transferible**: el
+  autoejercicio estructural incorporado a `--verificar` (5 caminos, con las funciones reales de punta a
+  punta y las escrituras aisladas en un temporal) mas la cobertura en dos capas del ensamblado de
+  `entrenar_brazo_fold` (AST y runtime) cazaron **5 bugs bloqueantes** de la ruta de salida que
+  `--verificar` y `--humo` no veian, todos capaces de matar la corrida **despues** de entrenar.
+- **Limites declarados**: (a) `rama_predeclarada_coincide_con_el_prereg = false` es un artefacto
+  **cosmetico** del propio check: exige que el literal `NO_ATRIBUIBLE_BY_GATE` aparezca en los textos
+  del pre-registro, pero esa rama esta fijada en el runner y el pre-registro solo almacena las tres
+  ramas de `puerta.rama_predeclarada`. El nodo emitido es exactamente el pre-declarado para la rama
+  ocurrida (`G7_o_G8_fallan`), luego **no afecta al veredicto**; (b) la auditoria de literales a
+  nivel de modulo mantiene el limite ya declarado en D-085 (nombres sueltos que luego se componen con
+  una raiz declarada), sin fuga activa; (c) solo se consumio el fold 0 por diseno de fail-fast, luego
+  **no hay** resultado a 5 folds ni estimacion de variabilidad para este experimento.
+- **Evidence**: `experiments/v35_01_ftrl_lambda1.json`, `experiments/v35_01_estado.json`,
+  `checkpoints/v35_e1/fold0_{A1_ftrl_lambda1,A2_sgd_presupuesto}.npz`,
+  `artifacts/p35_scores/v35_e1/`, `reports/v35_e1_ftrl_lambda1.md`,
+  `reports/figures/v35_e1_curvas.png`, `reports/v35_novelty_registry.csv`,
+  `reports/v35_preregistro.md`, `reports/v35_sonda_lambda1.md`,
+  `reports/v35_e1_incidente_bloqueo.md`, `experiments/v35_00_preregistro.json` (5 enmiendas),
+  `experiments/v35_00b_sonda_lambda1.json`, `experiments/v35_e1_intento_1_bloqueado/`,
+  `scripts/v35_00_preregistro.py`, `scripts/v35_00b_sonda_lambda1.py`,
+  `scripts/v35_00b2_enmienda_preregistro.py`, `scripts/v35_00c_enmienda_preregistro.py`,
+  `scripts/v35_00d_enmienda_preregistro.py`, `scripts/v35_00e_enmienda_preregistro.py`,
+  `scripts/v35_00f_enmienda_preregistro.py`, `scripts/v35_01_ftrl_lambda1.py`.
