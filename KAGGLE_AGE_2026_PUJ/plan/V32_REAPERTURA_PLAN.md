@@ -111,7 +111,18 @@ script nuevo; pre-registro congelado; campeon V30 + plug-in (LB 0.63575) intacto
   matmul con dimensiones incompatibles, `sum(axis=1)` que reducia las clases, `KeyError` de
   `control_atribucion`, typo `verdicto`, sonda de determinismo `None` y `KeyError` de `caps`.
   Lint limpio, `py_compile` OK, `--verificar` EXIT 0, 0 asserts de integridad (todo `Detencion`).
-- [ ] **F3''' Ejecucion + gates** por ciclo, con control propio y los gates de la serie.
+- [x] **F3''' Ejecucion + gates**: ejecutado en CPU (exit 0; **21.1 s**; fail-fast en el
+  fold 0; RSS 0.71 GB; sondas (a)-(f) pass; AST 0 violaciones). Veredicto
+  **NO_ATRIBUIBLE_BY_GATE**: A1 (FTRL softmax, 1 pasada, alpha = 3/(2*sqrt(135468)) =
+  0.0040754249463367) dejo `ll_train` en 1.8047797, a 0.013 del anclaje uniforme ln 6 =
+  1.7917595 -> fallo G1 (>1.6126), G3 (macro-F1 standalone 0.0409742 < 0.30 y < el trivial
+  0.0485421) y G4 (frecuencias [0.2629, 0.1125, 0.0019, 0.00024, 0.0270, 0.5955], colapso a
+  la clase 5); G2 y G6 pasaron. A2 (SGD 1 pasada) sano en perdida y F1 (ll 1.3899611,
+  F1 0.3956246, G1-G3 y G6 OK) pero fallo G4 (clase 5 al 42.6 % > 0.30). Sonda de
+  atribucion PUBLICADA: razon media |sigma*w|/|g| = 0.0419516 (mediana 0.0380133, p90
+  0.0632781, max 0.2153788, sesgo 0.0038350, frac > 1 = 0.0) -> la correccion proximal es
+  ~24x MAS DEBIL que el gradiente, no inflada. Sin integracion, sin bootstrap, sin segunda
+  particion, sin submission; `delta` intacto. V33 cerrada (D-084).
 - [ ] **F4''' Cierre** documentado por experimento (D-084..., notebook, docs, memorias).
 
 ## Ciclo 2 - P2 CatBoost sobre matriz_279 (abierto 2026-09-30)

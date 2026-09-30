@@ -2265,3 +2265,15 @@ intacto.
 - Sin cambios en el protocolo ni en el codigo del runner: el JSON y el runner ya usaban la banda enmendada.
 - Nota de la entrada anterior: el ancla de G3 debe leerse `(clase 13-17)`; el JSON del
 - pre-registro guarda el indice de clase (0) y el nombre se resuelve con `cfg.CLASSES`.
+
+
+---
+
+## V33-E1 ejecutado: FTRL-Proximal softmax multiclase de una pasada - 2026-09-30
+
+- Veredicto: NO_ATRIBUIBLE_BY_GATE.
+- Puerta G1-G6 en el fold 0 (consumido-diagnostico): pasa = False; brazos con gates fallidos: {'A1_ftrl_softmax': ['G1_ll_train_banda', 'G3_macro_f1_fold_val', 'G4_frecuencia_por_clase'], 'A2_sgd_1p': ['G4_frecuencia_por_clase']}.
+- Baseline recomputado 0.6159732; ancla trivial 0.04854212180687087 reproducida; sondas (a)-(f) todas pasan.
+- RSS pico 0.71 GB (tope 20); 32 hilos; duracion 21 s.
+- Sin particiones reservadas: sin evaluacion sobre la particion bloqueada del campeon, sin envio.
+- Artefactos: experiments/v33_01_ftrl_softmax_online.json | experiments/v33_01_estado.json | reports/v33_e1_ftrl_softmax_online.md | reports/figures/v33_e1_curvas.png | reports/v33_novelty_registry.csv | artifacts/p33_scores/v33_e1/a1_ftrl_softmax.npy | artifacts/p33_scores/v33_e1/a2_sgd_1p.npy.

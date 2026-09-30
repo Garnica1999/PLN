@@ -1,0 +1,709 @@
+{
+  "fase": "V33-E1 ejecucion: challenger FTRL-Proximal softmax multiclase de una pasada",
+  "fecha": "2026-09-30",
+  "commit": "57f4c4e70c435c6e93f884b384d8977cc0de98d3",
+  "prereg": {
+    "json": "experiments/v33_00_preregistro.json",
+    "sha256": "9a9374387be034c995b9311726150b1f4b4e555e019720215ed3d3330f1cab2d",
+    "informe": "reports/v33_preregistro.md",
+    "puerta": "reports/v33_convergence_gate.md",
+    "commit_congelado": "7e59b06a0b1699814adf436f76acd2c324a56bf5"
+  },
+  "verificacion": {
+    "constantes": {
+      "fase": true,
+      "fecha": true,
+      "baseline_primario": true,
+      "referencia_nested": true,
+      "pesos_plugin": true,
+      "versiones_claves": true,
+      "hashes_claves": true,
+      "anclas_claves": true,
+      "anclas_cifras": true,
+      "anclas_log_uniforme": true,
+      "anclas_alpha_derivado": true,
+      "a1_ftrl": true,
+      "a1_parametros": true,
+      "a1_orden": true,
+      "a1_alternativa_no_usada": true,
+      "a1_probabilidades": true,
+      "a2_sgd": true,
+      "a2_parametros": true,
+      "a2_random_state": true,
+      "a2_n_jobs": true,
+      "enmiendas_prereg": true,
+      "puerta": true,
+      "puerta_aplica_a": true,
+      "puerta_umbrales": true,
+      "puerta_prohibido": true,
+      "sonda_atribucion": true,
+      "sonda_atribucion_cap": true,
+      "sondas": true,
+      "sondas_tolerancias": true,
+      "sonda_e_es_nueva": true,
+      "sondas_politica": true,
+      "refit": true,
+      "refit_5_folds": true,
+      "determinismo": true,
+      "determinismo_seeds": true,
+      "determinismo_tolerancias": true,
+      "hilos_efectivos": true,
+      "integracion": true,
+      "integracion_parametros": true,
+      "gates": true,
+      "gates_parametros": true,
+      "gates_bootstrap": true,
+      "gates_caps": true,
+      "arbol": true,
+      "arbol_nodos": true,
+      "arbol_segunda_particion": true,
+      "novedad": true,
+      "novedad_no_es": true,
+      "via_b": true,
+      "via_b_b1_ilegal": true,
+      "ejecucion": true,
+      "ejecucion_ram": true,
+      "ejecucion_calibracion": true,
+      "ejecucion_timeout": true,
+      "ejecucion_checkpoints": true,
+      "ejecucion_atomica": true,
+      "vectorizador_config": true,
+      "vectorizador_ajuste_por_fold": true,
+      "vectorizador_reutilizacion": true,
+      "corpus_receta": true,
+      "corpus_hash_contenido": true,
+      "corpus_prohibido": true,
+      "compliance_cifras": true,
+      "compliance_auditorias": true,
+      "compliance_ast_audit": true,
+      "entregables": true
+    },
+    "versiones": {
+      "instaladas": {
+        "sklearn": "1.8.0",
+        "numpy": "1.26.4",
+        "pandas": "2.3.3"
+      },
+      "esperadas": {
+        "sklearn": "1.8.0",
+        "numpy": "1.26.4",
+        "pandas": "2.3.3"
+      },
+      "checks": {
+        "sklearn": true,
+        "numpy": true,
+        "pandas": true
+      }
+    },
+    "hashes": {
+      "canonico_y_true": true,
+      "canonico_fold_idx": true,
+      "canonico_v30_prob": true,
+      "canonico_ids": true,
+      "canonico_cand_pred": true,
+      "canonico_cand_prob": true,
+      "manifest_canonico": true,
+      "corpus_archivo": true,
+      "corpus_textos": true,
+      "vectorizador": true,
+      "ancla_d083_json": true
+    },
+    "hashes_recomputados": {
+      "canonico_y_true": "b1c928f9b9f5575547c1090a1fd83cf32a048b694af35a980b460c0bd66d48e6",
+      "canonico_fold_idx": "74d18330c40c3598a1936706ae9434c5fdf29119d357d38353cf298812fe6fb5",
+      "canonico_v30_prob": "3d77352486605971093ade7214ae82326057845d8bf54a2d88c83843c5a721db",
+      "canonico_ids": "d69ecb339f1dc57de2f9cddd558658b5a272ffa42aec15c771773e8eabd59825",
+      "canonico_cand_pred": "2fd8ab0292e8b7364dd003ff3e23902b01786a612c3e9a57641d88788efca369",
+      "canonico_cand_prob": "57be29623543c2616011f8fc77aff89b71faecdad6b599f1b4f4b133655a8134",
+      "manifest_canonico": "8881a9f53e8613aa943681e7fd9a42a3a281aa66b5d7c796d13d2758c6226076",
+      "corpus_archivo": "39c6c8270366fe155f3c8dd232e31867bee659af8908121d04b6bd89bd163748",
+      "corpus_textos": "53c1a348a7954f3e59d7c67caddd6477a06f7d3441724c201052b4b5273445fc",
+      "vectorizador": "9bae157614458dbdf26fb7aed4c78d2954c36e895f830341e59b23fa63e2b51b",
+      "ancla_d083_json": "aa791c89b0b89ceacd343c8d6422d48e6e242b34ba7b65a9c2722796b0242118"
+    },
+    "hashes_esperados": {
+      "corpus_archivo": "39c6c8270366fe155f3c8dd232e31867bee659af8908121d04b6bd89bd163748",
+      "corpus_textos": "53c1a348a7954f3e59d7c67caddd6477a06f7d3441724c201052b4b5273445fc",
+      "vectorizador": "9bae157614458dbdf26fb7aed4c78d2954c36e895f830341e59b23fa63e2b51b",
+      "ancla_d083_json": "aa791c89b0b89ceacd343c8d6422d48e6e242b34ba7b65a9c2722796b0242118",
+      "manifest_canonico": "8881a9f53e8613aa943681e7fd9a42a3a281aa66b5d7c796d13d2758c6226076",
+      "canonico_y_true": "b1c928f9b9f5575547c1090a1fd83cf32a048b694af35a980b460c0bd66d48e6",
+      "canonico_fold_idx": "74d18330c40c3598a1936706ae9434c5fdf29119d357d38353cf298812fe6fb5",
+      "canonico_v30_prob": "3d77352486605971093ade7214ae82326057845d8bf54a2d88c83843c5a721db",
+      "canonico_ids": "d69ecb339f1dc57de2f9cddd558658b5a272ffa42aec15c771773e8eabd59825",
+      "canonico_cand_pred": "2fd8ab0292e8b7364dd003ff3e23902b01786a612c3e9a57641d88788efca369",
+      "canonico_cand_prob": "57be29623543c2616011f8fc77aff89b71faecdad6b599f1b4f4b133655a8134"
+    },
+    "hashes_corpus_recomputados": {
+      "corpus_archivo": "39c6c8270366fe155f3c8dd232e31867bee659af8908121d04b6bd89bd163748",
+      "corpus_textos": "53c1a348a7954f3e59d7c67caddd6477a06f7d3441724c201052b4b5273445fc",
+      "vectorizador": "9bae157614458dbdf26fb7aed4c78d2954c36e895f830341e59b23fa63e2b51b",
+      "ancla_d083_json": "aa791c89b0b89ceacd343c8d6422d48e6e242b34ba7b65a9c2722796b0242118"
+    },
+    "receta_hash_textos": "sha256 con longitud (8 bytes LE) + bytes UTF-8 por texto, en orden",
+    "corpus_prohibido": "el data_hash del manifiesto canonico (2ada573b...) queda invalidado en D-083: es un hash de punteros de memoria, no de contenido",
+    "corpus_receta": "src.data.load_train() sobre data/raw/age_train.csv (sep=cfg.TRAIN_SEP, encoding utf-8-sig, clean_text aplicado); texto = columna TEXT_COL; orden de filas = orden del CSV = orden canonico de ids.npy",
+    "baseline_recomputado": 0.6159732487657944,
+    "baseline_esperado": 0.6159732,
+    "baseline_ok": true,
+    "ids_alineados": true,
+    "etiquetas_alineadas": true,
+    "linea_base_mayoritaria": {
+      "clase_indice": 0,
+      "clase": "13-17",
+      "frecuencia": 0.17044810317947748,
+      "macro_f1_linea_base": 0.04854212180687087,
+      "n_filas": 169336,
+      "ancla_congelada": 0.04854212180687087,
+      "diferencia": 0.0
+    },
+    "anclas": {
+      "macro_f1_trivial_clase_mayoritaria": 0.04854212180687087,
+      "clase_mayoritaria": "0",
+      "gemelo_sgd_d083": 0.4934789,
+      "log_uniforme_k6": 1.791759469228055,
+      "n_train_fold_esperado": 135468,
+      "alpha_esperado_para_n_train": 0.0040754249463367
+    }
+  },
+  "compliance": {
+    "ast_audit": true,
+    "literales_de_ruta_revisados": 94,
+    "modulos_revisados": 28,
+    "particiones_reservadas_vigiladas": [
+      "test",
+      "holdout",
+      "submission",
+      "leaderboard"
+    ],
+    "familias_vetadas": [
+      "vowpal",
+      "vw",
+      "torch",
+      "transformers",
+      "gensim",
+      "fasttext",
+      "sentence-transformers",
+      "word2vec",
+      "glove",
+      "spacy-vectors"
+    ],
+    "violaciones": [],
+    "embeddings": 0,
+    "transformers": 0,
+    "llm": 0,
+    "datos_externos": 0,
+    "test": 0,
+    "holdout": 0,
+    "leaderboard": 0,
+    "submission": 0,
+    "auditorias_exigidas": [
+      "6 .npy canonicos + manifest",
+      "sha256 del archivo y del array de textos (nunca el data_hash del manifiesto)",
+      "sha256 del vectorizador",
+      "vocabulario e idf por fold",
+      "sonda de refit en los 5 folds",
+      "sondas (a)-(f)",
+      "sonda de atribucion |sigma*w|/|g|",
+      "sondas de determinismo A1 y A2",
+      "RSS pico con ru_maxrss",
+      "escritura atomica"
+    ],
+    "nota_ast_audit": "importes Y literales de ruta: vowpal, vw, torch, transformers, gensim, fasttext, sentence-transformers, word2vec, glove, spacy-vectors; mas 0 rutas de test/holdout/submission/leaderboard",
+    "alternativa_no_usada": "vowpalwabbit 9.11.8 instalado y NO usado"
+  },
+  "config": {
+    "a1_ftrl_softmax": {
+      "algoritmo": "FTRL-Proximal softmax multiclase (McMahan 2013), implementacion propia exacta",
+      "clases": "K=6 en un solo juego de pesos (softmax); p suma 1 y es comparable con la mezcla",
+      "alpha": {
+        "formula": "alpha = 3/(2*sqrt(T))",
+        "T": "n_train_fold del fold",
+        "origen": "derivado del desplazamiento acumulado del intercepto: 2*alpha*sqrt(T) debe ser del orden de 1.8x el log-odds de la tasa base |log(1/5)|",
+        "valores_evaluados": 0,
+        "rango_esperado": "0.00404 a 0.00409 (varia con T por construccion, no por busqueda)",
+        "nota": "con alpha=0.05 (D-083) el desplazamiento seria 36.8, 36x mayor"
+      },
+      "lambda1": 0.0,
+      "lambda2": 1.0,
+      "beta": 1.0,
+      "bias_x0": 1.0,
+      "power_t": null,
+      "pasadas": 1,
+      "orden": "fold-train barajado UNA vez con np.random.default_rng(20261010+fold); orden congelado y reutilizado por el control",
+      "dtype": "float64",
+      "probabilidades": "softmax de los 6 logits, sin temperatura (L04/C03 cerradas)",
+      "alternativa_no_usada": "vowpalwabbit 9.11.8 instalado y NO usado"
+    },
+    "a2_sgd_control": {
+      "estimator": "sklearn.linear_model.SGDClassifier",
+      "loss": "log_loss",
+      "learning_rate": "optimal",
+      "alpha": 1e-06,
+      "max_iter": 1,
+      "tol": null,
+      "fit_intercept": true,
+      "average": false,
+      "shuffle": false,
+      "random_state": "20261010+fold",
+      "n_jobs": 32,
+      "pasadas": 1,
+      "por_que": "misma representacion, mismo presupuesto (1 pasada), mismo barajado, misma semilla y misma evaluacion: lo unico libre es el eje proximal/adaptativo",
+      "asimetria_declarada": "alpha 1e-6 frente a 0.004 (cuatro ordenes de magnitud) y laregularidad del intercepto: por eso la sonda |sigma*w|/|g| es OBLIGATORIA"
+    },
+    "vectorizador": {
+      "analyzer": "word",
+      "ngram_range": [
+        1,
+        2
+      ],
+      "min_df": 3,
+      "max_df": 0.5,
+      "sublinear_tf": true,
+      "lowercase": true,
+      "strip_accents": null,
+      "token_pattern": "(?u)\\b\\w+\\b"
+    },
+    "vectorizador_fit": {
+      "ngram_range": [
+        1,
+        2
+      ]
+    },
+    "nota_ngram_range": "la config congelada declara ngram_range como lista; sklearn 1.8.0 exige tupla y en el fit se convierte (mismo valor); el sha256 congelado del dict usa SIEMPRE la lista",
+    "nota_orden": "fold-train barajado UNA vez con np.random.default_rng(20261010+fold); orden congelado y reutilizado por el control; la permutacion se entrega como filas al control, que con shuffle=False (enmenda 2) la consume tal cual",
+    "norm_dtype": "defaults de sklearn (norm='l2', dtype float64)",
+    "ajuste_vectorizador": "POR FOLD: fit solo en fold-train (idf, min_df y max_df nunca globales)",
+    "pesos_plugin": [
+      1.0,
+      1.1749,
+      1.2721,
+      1.163,
+      1.001,
+      0.8128
+    ],
+    "hilos": 32,
+    "alpha_por_fold": {
+      "0": 0.0040754249463367
+    },
+    "regla_alpha": {
+      "formula": "alpha = 3/(2*sqrt(T))",
+      "T": "n_train_fold del fold",
+      "origen": "derivado del desplazamiento acumulado del intercepto: 2*alpha*sqrt(T) debe ser del orden de 1.8x el log-odds de la tasa base |log(1/5)|",
+      "valores_evaluados": 0,
+      "rango_esperado": "0.00404 a 0.00409 (varia con T por construccion, no por busqueda)",
+      "ancla_n_train_fold": 135468,
+      "ancla_alpha": 0.0040754249463367
+    },
+    "seeds": {
+      "global": 20261010,
+      "orden_datos": "default_rng(20261010+fold) una vez por fold",
+      "sgd_random_state": "20261010+fold"
+    },
+    "integracion": {
+      "c_logreg": 1.0,
+      "max_iter": 2000,
+      "clip": 1e-12,
+      "decision": "argmax(p_comb * w_plugin CONGELADO)"
+    },
+    "puntos_de_la_pasada": [
+      0.25,
+      0.5,
+      1.0
+    ],
+    "magnitud_ll_train": "perdida de train del modelo ajustado a ese prefijo del orden congelado (misma en A1 y A2); en A1 se publica ademas la media online del stream",
+    "nota_capas": "la libreria de bandits instalada en el venv se descarta y NO se importa: el FTRL-Proximal es implementacion propia verificada por las sondas (a), (b), (e) y (f)"
+  },
+  "sondas": {
+    "a_vectorizado_vs_lazo": {
+      "descripcion": "FTRL softmax multiclase vectorizado vs lazo ingenuo, problema aleatorio 200x50x6, una pasada",
+      "alpha": 0.10606601717798213,
+      "max_abs_diff": 7.771561172376096e-16,
+      "tolerancia": 1e-12,
+      "pass": true
+    },
+    "b_raiz_analitica_lambda0": {
+      "descripcion": "lambda1=lambda2=0 con feature constante: raiz analitica alpha*z/(beta+sqrt(n)) y paso unico alpha*g/(beta+|g|) con p=1/6",
+      "alpha": 0.3,
+      "residuo_raiz": 0.0,
+      "residuo_un_paso": 0.0,
+      "residuo_max": 0.0,
+      "umbral": 1e-09,
+      "pass": true
+    },
+    "c_totalf1_macro": {
+      "metrica": "TotalF1:average=Macro",
+      "total_f1_average_macro": 0.1675788789443113,
+      "total_f1_default": 0.16783582644676073,
+      "macro_f1_sklearn": 0.1675788789443113,
+      "delta_criterio": 0.0,
+      "delta_default_vs_macro": 0.00025694750244942277,
+      "tolerancia": 1e-06,
+      "pass": true
+    },
+    "d_sin_nan_logloss_finito": {
+      "descripcion": "softmax multiclase sin NaN/inf y log_loss multiclase finito",
+      "n_filas": 400,
+      "p_finita": true,
+      "w_finito": true,
+      "log_loss_multiclase": 8.977220008498897,
+      "log_loss_finito": true,
+      "p_min": 3.8592201900121414e-07,
+      "p_max": 0.9999970869447026,
+      "pass": true
+    },
+    "e_logloss_multiclase_propio": {
+      "descripcion": "log_loss multiclase propio -media log p[i,y[i]] contra sklearn.metrics.log_loss con filas que suman 1",
+      "log_loss_propio": 9.244409126983212,
+      "log_loss_sklearn": 9.244409126983212,
+      "delta": 0.0,
+      "max_abs_suma_menos_uno": 4.440892098500626e-16,
+      "tolerancia": 1e-09,
+      "nota": "NUEVA en V33: D-083 solo probo el OvR, que no normaliza",
+      "pass": true
+    },
+    "f_filas_suman_uno": {
+      "descripcion": "max|sum_c p_c - 1| del softmax de 6 logits, sin temperatura",
+      "max_abs_suma_menos_uno_por_caso": {
+        "ftrl_una_pasada": 2.220446049250313e-16,
+        "aleatorio": 3.3306690738754696e-16,
+        "extremos_1e3": 4.440892098500626e-16
+      },
+      "peor": 4.440892098500626e-16,
+      "tolerancia": 1e-09,
+      "pass": true
+    },
+    "todas_pasan": true,
+    "politica": "si alguna falla -> exit 4 ANTES de entrenar; cualquier ajuste exige enmienda pre-ejecucion (precedente f0bf731)",
+    "duracion_seg": 0.30727577209472656
+  },
+  "puerta": {
+    "momento": "dentro del fold 0, ANTES de los folds 1-4 y ANTES de integrar",
+    "fold_0_consumido_diagnostico": true,
+    "nota_fold_0": "consumido-diagnostico: G3 y G4 leen el fold-val del fold 0, que es parte de la validacion canonica; su fallo NO toca delta",
+    "magnitud": "log_loss multiclase de train en el 25/50/100 % de la pasada, medido como perdida de train del modelo ajustado a ese prefijo del orden congelado (misma magnitud en A1 y A2); en A1 se publica ademas la media online del stream, que es la lectura directa de la firma de D-083",
+    "gates": {
+      "A1_ftrl_softmax": {
+        "G1_ll_train_banda": {
+          "criterio": "0.05 <= ll_train(100%) <= 1.6125835223052496",
+          "valor": 1.8047797299502006,
+          "banda": [
+            0.05,
+            1.6125835223052496
+          ],
+          "anclaje": 1.791759469228055,
+          "pass": false
+        },
+        "G2_monotonia": {
+          "criterio": "ll_train no creciente en 25/50/100 % (prefijo del orden congelado)",
+          "valores": [
+            1.805123293645612,
+            1.8049024196157781,
+            1.8047797299502006
+          ],
+          "tolerancia": 1e-06,
+          "ll_train_online": {
+            "0.25": 1.794374439940621,
+            "0.5": 1.7960593517978758,
+            "1.0": 1.7985295179883731
+          },
+          "pass": true
+        },
+        "G3_macro_f1_fold_val": {
+          "criterio": "macro-F1 standalone en el fold-val >= 0.3",
+          "valor": 0.040974177687717,
+          "minimo": 0.3,
+          "anclas": {
+            "trivial": 0.04854212180687087,
+            "gemelo_sgd_d083": 0.4934789
+          },
+          "pass": false
+        },
+        "G4_frecuencia_por_clase": {
+          "criterio": "frecuencia predicha por clase en [0.1, 0.3]",
+          "valores": [
+            0.26290303531357034,
+            0.11246604464391166,
+            0.0018896893823077833,
+            0.0002362111727884729,
+            0.027016652887681587,
+            0.5954883665997401
+          ],
+          "rango": [
+            0.1,
+            0.3
+          ],
+          "pass": false
+        },
+        "G5_determinismo": {
+          "criterio": "max|delta p| = 0.0 exacto entre dos corridas identicas",
+          "valor": null,
+          "pass": null,
+          "estado": "no evaluado: exige la segunda corrida del fold 0"
+        },
+        "G6_suma_unidad": {
+          "criterio": "max|sum_c p_c - 1| <= 1e-09",
+          "valor": 4.440892098500626e-16,
+          "tolerancia": 1e-09,
+          "pass": true
+        }
+      },
+      "A2_sgd_1p": {
+        "G1_ll_train_banda": {
+          "criterio": "0.05 <= ll_train(100%) <= 1.6125835223052496",
+          "valor": 1.38996114808309,
+          "banda": [
+            0.05,
+            1.6125835223052496
+          ],
+          "anclaje": 1.791759469228055,
+          "pass": true
+        },
+        "G2_monotonia": {
+          "criterio": "ll_train no creciente en 25/50/100 % (prefijo del orden congelado)",
+          "valores": [
+            3.3924258777465557,
+            1.7031540525939641,
+            1.38996114808309
+          ],
+          "tolerancia": 1e-06,
+          "ll_train_online": {},
+          "pass": true
+        },
+        "G3_macro_f1_fold_val": {
+          "criterio": "macro-F1 standalone en el fold-val >= 0.3",
+          "valor": 0.395624562468643,
+          "minimo": 0.3,
+          "anclas": {
+            "trivial": 0.04854212180687087,
+            "gemelo_sgd_d083": 0.4934789
+          },
+          "pass": true
+        },
+        "G4_frecuencia_por_clase": {
+          "criterio": "frecuencia predicha por clase en [0.1, 0.3]",
+          "valores": [
+            0.1479567733553797,
+            0.1017479626786347,
+            0.22425298216605646,
+            0.04411243651824731,
+            0.056395417503247905,
+            0.4255344277784339
+          ],
+          "rango": [
+            0.1,
+            0.3
+          ],
+          "pass": false
+        },
+        "G5_determinismo": {
+          "criterio": "max|delta p| = 0.0 exacto entre dos corridas identicas",
+          "valor": null,
+          "pass": null,
+          "estado": "no evaluado: exige la segunda corrida del fold 0"
+        },
+        "G6_suma_unidad": {
+          "criterio": "max|sum_c p_c - 1| <= 1e-09",
+          "valor": 4.440892098500626e-16,
+          "tolerancia": 1e-09,
+          "pass": true
+        }
+      }
+    },
+    "brazos_fallidos": {
+      "A1_ftrl_softmax": [
+        "G1_ll_train_banda",
+        "G3_macro_f1_fold_val",
+        "G4_frecuencia_por_clase"
+      ],
+      "A2_sgd_1p": [
+        "G4_frecuencia_por_clase"
+      ]
+    },
+    "pasa": false,
+    "g5_evaluada": false,
+    "consecuencia_si_falla": "veredicto NO_ATRIBUIBLE_BY_GATE: sin fallback, sin segundo alpha, sin integrar, sin bootstrap; se documenta y termina",
+    "prohibido": "reintentar con otro alpha tras el fallo (seria grid)"
+  },
+  "refit": {
+    "descripcion": "reajustar el vectorizador en los 5 folds y comprobar que los sha256 de vocabulario e idf coinciden con los de la corrida",
+    "tolerancia": "identicos bit a bit entre las dos corridas",
+    "exigido_por": "kaggle-specialist",
+    "folds": {},
+    "reproducido": null,
+    "nota": "no se ejecuta: la puerta cerro el ciclo antes de terminar los folds"
+  },
+  "vocabulario_idf_por_fold": {
+    "0": {
+      "n_filas_fit": 135468,
+      "n_vocabulario": 118409,
+      "vocab_sha256": "f7d4a7efa7669d595122d323d9e14f319714fc91686d386dba84c451adb9d7b2",
+      "idf_sha256": "ec9b876fc50d30dae4df1e35472d9e9c333188bb38856ff891b6a28e67eb7630",
+      "n_features": 118410,
+      "tiempo_fit_seg": 2.86102294921875e-06,
+      "n_train_fold": 135468
+    }
+  },
+  "determinismo": {
+    "sonda_A1_ftrl_softmax": null,
+    "sonda_A2_sgd_1p": null,
+    "atribucion_fold_0": {
+      "definicion": "razon media |sigma*w|/|g| por coordenada (coordenadas no nulas de la pasada); 1 significa correccion igual al gradiente",
+      "n_coordenadas": 118410,
+      "n_coordenadas_tocadas": 118410,
+      "n_actualizaciones": 135468,
+      "razon_media_coordenadas": 0.04195162985558543,
+      "razon_mediana_coordenadas": 0.03801326416271605,
+      "razon_p90_coordenadas": 0.06327813993473001,
+      "razon_max_coordenadas": 0.21537883066885719,
+      "razon_global": 0.03768882203436883,
+      "razon_por_clase": [
+        0.04482900127182571,
+        0.03721424870853629,
+        0.02915997356655026,
+        0.03158886680190751,
+        0.03977901051509745,
+        0.04340509714124735
+      ],
+      "razon_coordenada_sesgo": 0.0038350400065826885,
+      "fraccion_coordenadas_con_razon_supera_1": 0.0
+    },
+    "atribucion_publicada": true,
+    "no_concluyente": false,
+    "tolerancia_declarada": 1e-09,
+    "variabilidad_referencia": 0.0008876,
+    "esperado": "exacto bit a bit",
+    "hilos": "OMP/MKL/OPENBLAS_NUM_THREADS = 32 antes de numpy; FTRL mono-hilo",
+    "tolerancias": "0 exacto; <=1e-9 conforme; >1e-9 con rango publicado y delta_gate > rango; rango >= 0.0008876 o solape con el gate => no concluyente"
+  },
+  "calibracion": null,
+  "rss_pico_gb": 0.7101325988769531,
+  "ram_tope_gb": 20.0,
+  "rss_medicion": "resource.getrusage(ru_maxrss)",
+  "sin_leakage": null,
+  "entrenamiento": {
+    "A1_ftrl_softmax": {
+      "folds": {
+        "0": {
+          "n_features": 118410,
+          "n_vocabulario": 118409,
+          "vocab_sha256": "f7d4a7efa7669d595122d323d9e14f319714fc91686d386dba84c451adb9d7b2",
+          "idf_sha256": "ec9b876fc50d30dae4df1e35472d9e9c333188bb38856ff891b6a28e67eb7630",
+          "n_filas_fit": 135468,
+          "T": 135468,
+          "alpha_efectivo": 0.0040754249463367,
+          "tiempo_seg": 16.11137866973877,
+          "ll_train_prefijo": {
+            "0.25": 1.805123293645612,
+            "0.5": 1.8049024196157781,
+            "1.0": 1.8047797299502006
+          },
+          "ll_train_online": {
+            "0.25": 1.794374439940621,
+            "0.5": 1.7960593517978758,
+            "1.0": 1.7985295179883731
+          },
+          "macro_f1_standalone_fold_val": 0.040974177687717,
+          "frecuencias_fold_val": [
+            0.26290303531357034,
+            0.11246604464391166,
+            0.0018896893823077833,
+            0.0002362111727884729,
+            0.027016652887681587,
+            0.5954883665997401
+          ],
+          "max_abs_suma_menos_uno": 4.440892098500626e-16,
+          "n_train_fold": 135468,
+          "n_val_fold": 33868,
+          "atribucion": {
+            "definicion": "razon media |sigma*w|/|g| por coordenada (coordenadas no nulas de la pasada); 1 significa correccion igual al gradiente",
+            "n_coordenadas": 118410,
+            "n_coordenadas_tocadas": 118410,
+            "n_actualizaciones": 135468,
+            "razon_media_coordenadas": 0.04195162985558543,
+            "razon_mediana_coordenadas": 0.03801326416271605,
+            "razon_p90_coordenadas": 0.06327813993473001,
+            "razon_max_coordenadas": 0.21537883066885719,
+            "razon_global": 0.03768882203436883,
+            "razon_por_clase": [
+              0.04482900127182571,
+              0.03721424870853629,
+              0.02915997356655026,
+              0.03158886680190751,
+              0.03977901051509745,
+              0.04340509714124735
+            ],
+            "razon_coordenada_sesgo": 0.0038350400065826885,
+            "fraccion_coordenadas_con_razon_supera_1": 0.0
+          }
+        }
+      },
+      "folds_completados": [
+        "0"
+      ],
+      "oof_artefacto": {
+        "archivo": "artifacts/p33_scores/v33_e1/a1_ftrl_softmax.npy",
+        "existe": true,
+        "sha256": "ac19ce3a2e773451112c08c93e7c394dd6fc0d32ec020fb3e9e0f6151ffdeede"
+      }
+    },
+    "A2_sgd_1p": {
+      "folds": {
+        "0": {
+          "n_features": 118410,
+          "n_vocabulario": 118409,
+          "vocab_sha256": "f7d4a7efa7669d595122d323d9e14f319714fc91686d386dba84c451adb9d7b2",
+          "idf_sha256": "ec9b876fc50d30dae4df1e35472d9e9c333188bb38856ff891b6a28e67eb7630",
+          "n_filas_fit": 135468,
+          "T": 135468,
+          "alpha_efectivo": 1e-06,
+          "tiempo_seg": 0.4958784580230713,
+          "ll_train_prefijo": {
+            "0.25": 3.3924258777465557,
+            "0.5": 1.7031540525939641,
+            "1.0": 1.38996114808309
+          },
+          "ll_train_online": {},
+          "macro_f1_standalone_fold_val": 0.395624562468643,
+          "frecuencias_fold_val": [
+            0.1479567733553797,
+            0.1017479626786347,
+            0.22425298216605646,
+            0.04411243651824731,
+            0.056395417503247905,
+            0.4255344277784339
+          ],
+          "max_abs_suma_menos_uno": 4.440892098500626e-16,
+          "n_train_fold": 135468,
+          "n_val_fold": 33868,
+          "atribucion": null
+        }
+      },
+      "folds_completados": [
+        "0"
+      ],
+      "oof_artefacto": {
+        "archivo": "artifacts/p33_scores/v33_e1/a2_sgd_1p.npy",
+        "existe": true,
+        "sha256": "d37044e5cbdf4b426e93b14649aca58a05a4c7294e502d5ccc35aa2a1a5b028f"
+      }
+    }
+  },
+  "integracion": null,
+  "complementariedad": null,
+  "gates": {},
+  "caps": {},
+  "veredicto": "NO_ATRIBUIBLE_BY_GATE",
+  "siguiente_paso": "veredicto NO_ATRIBUIBLE_BY_GATE: sin fallback, sin segundo alpha, sin integrar, sin bootstrap; se documenta y termina. la puerta G1-G6 falla en A1 o A2: STOP documentado, sin fallback, sin integrar (nodo nuevo, no un gate de delta)",
+  "duracion_seg": 21.100011110305786,
+  "duracion_sondas_seg": 0.30727577209472656,
+  "tiempos_por_brazo_fold_seg": {
+    "A1_ftrl_softmax": {
+      "0": 16.11137866973877
+    },
+    "A2_sgd_1p": {
+      "0": 0.4958784580230713
+    }
+  },
+  "nota_cierre": "sin fallback, sin segundo alpha, sin integrar y sin bootstrap: el pre-registro prohibe reintentar con otro alpha (seria grid). El fold 0 queda consumido-diagnostico y su fallo no toca delta."
+}
