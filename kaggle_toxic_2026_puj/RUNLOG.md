@@ -2984,3 +2984,22 @@ Pendiente para cerrar P1: compilar el binario FastText C++ (la spec de v5 prohib
 entrenar los dos modelos.
 
 Sin push, sin merge, sin rebase.
+
+
+## 2026-09-29, el veredicto de la fase Twitter se invalida
+
+Carlos miro las curvas de loss y pregunto si el modelo no estaria aprendiendo. Tenia razon.
+
+- `experiments/p71_06_word2vec_optimizador.py`: mismo modelo con SGD y decaimiento lineal.
+  **La loss se queda clavada en 1,386295**, que es el valor del estado de productos punto nulos.
+- `experiments/p71_07_invalidar_veredicto.py`: marca el veredicto.
+
+```text
+CLOSED -> INVALID_DUE_TO_UNTRAINED_REPRESENTATIONS
+la hipotesis sigue SIN PONERSE A PRUEBA
+```
+
+Se probaron cuatro arreglos y ninguno funciono. Hay un bug en mi implementacion que no he
+aislado, y queda declarado como tal.
+
+Sin push, sin merge, sin rebase.

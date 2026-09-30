@@ -7043,3 +7043,71 @@ colapsarlo a un marcador, porque ahi vive parte de la senal que la hipotesis qui
 Entrenar los dos Word2Vec. La spec de v5 dice **"No instalar gensim"** y usa el binario
 **FastText C++ con `minn=0, maxn=0`** para el control. Ese binario no existe en este worktree, y
 g++/cmake/make si. Hay que compilarlo desde la fuente oficial antes de entrenar.
+
+
+## D-228 a D-230: Carlos mira la loss, y el veredicto de la fase Twitter se cae
+
+Fecha 2026-09-29. Carlos pregunta si el modelo no estara aprendiendo, mirando las curvas de
+loss por epoca. **Tenia razon, y el error es mio.**
+
+### D-228. El sintoma que Carlos vio
+
+```text
+twitter   loss 1,706 -> 1,811 -> 1,842 -> 1,866 -> 1,884   (Adam)
+general   loss 1,888 -> 2,068 -> 2,126 -> 2,164 -> 2,190   (Adam)
+```
+
+La loss **subia** en los dos corpus. Con embeddings aleatorios y 10 negativos, la loss esperada
+es 7,63, asi que la primera epoca si bajaba; pero despues subia. Eso no es entrenar.
+
+### D-229. La revision: la loss esta clavada en el valor del estado cero
+
+```text
+loss observada, constante en las CINCO epocas:   1,386295
+loss del estado cero, -log(0,5)-log(0,5):        1,386294
+coinciden
+```
+
+1,3863 es exactamente el valor de la loss cuando **los productos punto son nulos**, o sea cuando
+los embeddings de salida no se han movido de su inicializacion, que es cero.
+
+Se probo a arreglarlo por cuatro vias, y **ninguna funciono**:
+
+```text
+escala de inicializacion 0,5/dim -> 1/sqrt(dim), 28 veces mayor    loss 1,3863
+learning rate 0,025 -> 0,5, veinte veces mayor                     loss 1,3863
+lote 8192 -> 256 con el lr escalado por el lote                    loss 1,3863
+Adam -> SGD con decaimiento lineal                                 loss 1,3863
+```
+
+En una prueba aislada, con el lr escalado por el lote, los pesos **si** cambian (`dW = 0,000763`).
+Asi que los parametros se actualizan en algunas configuraciones, pero **la loss no baja en
+ninguna**. Hay una incoherencia que **no he aislado**, y la dejo declarada como tal.
+
+### D-230. La consecuencia: el veredicto CLOSED no es valido
+
+```text
+veredicto anterior   CLOSED
+veredicto corregido  INVALID_DUE_TO_UNTRAINED_REPRESENTATIONS
+```
+
+**Las dos corridas entrenaron representaciones practicamente aleatorias.** Los numeros del
+informe de dominio (twitter 0,565950, general 0,566383, fusion 0,641772 y 0,649832) se
+calcularon sobre esas representaciones y **no dicen nada sobre la hipotesis de dominio**.
+
+Esto no es un matiz: es la diferencia entre un resultado y un artefacto. La conclusion honesta
+es que **la hipotesis sigue sin ponerse a prueba**, exactamente igual que en P0 antes de tener
+corpus.
+
+El informe `reports/twitter_word2vec_domain_analysis.md` lleva ahora un aviso al principio. Sus
+numeros **no se reescriben**: se preserva el original y se documenta la relacion.
+
+### Lo que haria falta
+
+```text
+aislar por que la loss no baja aunque los pesos cambien
+candidato: el gradiente hacia la salida se anula, o el optimizador no ve esos parametros
+candidato: la inicializacion a cero de la salida junto con la escala de la entrada
+alternativa: verificar el skip-gram contra una implementacion de referencia antes de
+  volver a sacar conclusiones
+```

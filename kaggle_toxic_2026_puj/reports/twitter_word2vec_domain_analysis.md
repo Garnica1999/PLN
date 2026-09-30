@@ -1,3 +1,19 @@
+# AVISO: VEREDICTO INVALIDADO
+
+> **El veredicto `CLOSED` de este informe NO es valido.**
+>
+> Carlos observo que la loss subia por epoca. La revision confirmo que la loss se
+> queda clavada en 1,386295, que es exactamente el valor del estado de productos
+> punto nulos: **los embeddings de salida nunca se movieron de cero y las
+> representaciones no entrenaron**.
+>
+> Los numeros de este informe se calcularon sobre representaciones practicamente
+> aleatorias. **No dicen nada sobre la hipotesis de dominio.**
+>
+> Detalle en `reports/twitter_word2vec_invalidacion.json`.
+
+---
+
 # Dominio Twitter frente a general: Word2Vec desde cero
 
 Generado por `experiments/p71_04_entrenar_word2vec.py` y `experiments/p71_05_downstream.py`. Fecha 2026-09-29.
