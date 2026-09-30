@@ -82,6 +82,27 @@ Objetivo del usuario: mejorar el puntaje de Kaggle; referencia declarada: acerca
 | 2026-09-30 | F3'' | V32-E3 ejecutado (755 s); NO_ATRIBUIBLE; P3 cerrada; reapertura TERMINA (D-083) | a008e45 |
 | 2026-09-30 | F4'' | notebook + docs + memorias | (commit de cierre) |
 
+## Ciclo 4 - V33: combinacion autorizada (diseno online corregido + linea de otra magnitud)
+
+Carlos autoriza combinar la opcion 2 (P3b: diseno online corregido, con semantica online real
+en lugar de 10 pasadas proximales) y la opcion 3 (una linea de ideas de otra magnitud). La
+reapertura V32 queda CERRADA (D-081, D-082, D-083) y esto es un expediente nuevo con su propio
+plan. Restricciones heredadas: sin transformers/LLMs/embeddings; sin datos externos; sin metadatos;
+test solo transform->predict; holdout intocable; leaderboard sin tuning; un experimento = un
+script nuevo; pre-registro congelado; campeon V30 + plug-in (LB 0.63575) intacto.
+
+- [ ] **F1''' Investigacion y arquitectura**: `ml-architect` (estado del arte + auditoria de
+  novedad en el grafo) define (i) el diseno online corregido con su control y una puerta de
+  convergencia fail-fast, y (ii) 2-3 ideas de "otra magnitud" **fuera de los 39 mecanismos ya
+  auditados**, con veredicto de legalidad y expectativa honesta, y recomienda cual pre-registrar
+  primero; `kaggle-specialist` valida legalidad (frontera de embeddings/datos); `nlp-specialist`
+  valora viabilidad de representaciones nuevas. El plan V33 se presenta a Carlos para
+  aprobacion antes de ejecutar nada.
+- [ ] **F2''' Pre-registro + implementacion + revision** por experimento (pre-registro congelado,
+  `ml-coder`, `ml-reviewer`, `ml-qa-engineer` GO/NO-GO).
+- [ ] **F3''' Ejecucion + gates** por ciclo, con control propio y los gates de la serie.
+- [ ] **F4''' Cierre** documentado por experimento (D-084..., notebook, docs, memorias).
+
 ## Ciclo 2 - P2 CatBoost sobre matriz_279 (abierto 2026-09-30)
 
 Autorizado por Carlos tras cerrar P1 (opcion A). Referencia de la auditoria por operacion:
