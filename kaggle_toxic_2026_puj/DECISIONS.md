@@ -8730,3 +8730,128 @@ conserva quien lea el informe dentro de seis meses.
 ```text
 V03 remains the best verified leaderboard result.
 ```
+
+---
+
+## D-274: P81. La auditoria de los cinco huecos arranca, mide cinco afirmaciones y se para en A6
+
+**Status**: INCONCLUSA. 5 CONFIRMADO, 0 REFUTADO, 0 NO APLICABLE, 0 STOP, 15 sin ejecutar. Sin
+informe publicado en JSON ni en markdown.
+
+**Date**: 2026-09-30
+
+**Context**
+
+Script `experiments/p81_01_cierre_huecos.py`, sha256
+`212aa786998f682a4ccefca2d91aa77f0cbf510968a0e8d21f1c687083f8e913`, 4517 lineas, 67 de 67 en el
+modo de humo, APROBADO por `ml-reviewer`, que ademas comprobo que el humo discrimina porque tres
+mutaciones distintas bajaron el recuento cada una. Pre-registro
+`docs/p81_preregistro_cierre_huecos.md`, sha256
+`55e6900cce49bd7e2ee98b00e0c315081c04718edb18df4abd49f484755faabc`, commiteado en `86a9140`, y
+enmienda 1, `docs/p81_enmienda_1.md`, sha256
+`496223801147a414e74a53fb7cf407ae48ad4671c74e45daba4dce19f15801c6`, commiteada en `c3dee26`. Los
+dos sha256 los comprueba el propio script antes de leer nada mas y los comprobamos tambien a mano
+antes de ejecutar.
+
+La corrida se para con `KeyError: 'm1_media'` en `afirmacion_a6`, linea 1846, con codigo de salida 1,
+a los 62 s con cronometro de subprocess y a los 77 s en la primera corrida en segundo plano. Las dos
+en el mismo punto y con el mismo contenido.
+
+La causa esta a la vista y **no se ha arreglado**. `elegir_primario` genera la clave del brazo con
+`clave = f"m1_{objetivo.lower()}"` en la linea 1265 y la escribe en la 1277, luego el brazo SUMA
+guarda `m1_suma`. `afirmacion_a6` busca para SUMA el literal `m1_media`, que es la clave del brazo
+MEDIA. `afirmacion_a5`, linea 1711, lo hace bien con `["SUMA"]["m1_suma"]`. El mismo patron de
+clave literal, bien a una linea de distancia y mal a la otra.
+
+Es la misma familia del fallo que el revisor dejo **sin cobertura de humo directa**: una clave
+literal escrita a mano contra un diccionario de claves generadas. Aqui se ve el limite de Smoke
+Test Driven Development con una suite que solo verifica el recuento de comprobaciones: **67 de 67
+pasan y el recorrido real revienta en el sixth affirmation.**
+
+Lo que si se midio, y es lo que mas interesa del bloque 1, es la curva completa de M1 por learning
+rate para los dos brazos, con los seis puntos de la enmienda 1 y tres semillas:
+
+```text
+lr 0.02  MEDIA 0.0000  SUMA 0.0000   lr 0.20  MEDIA 0.7389  SUMA 1.0000
+lr 0.05  MEDIA 0.0000  SUMA 0.0000   lr 0.35  MEDIA 1.0000  SUMA 1.0000
+lr 0.10  MEDIA 0.0056  SUMA 0.0389   lr 0.50  MEDIA 1.0000  SUMA 1.0000
+```
+
+**La SUMA gana 2 de 6 puntos** y la curva **no es monotona**, como se sospechaba. El prototipo no se
+reproduce: daba MEDIA 0.3611 contra SUMA 0.0000 en 0.20, aqui la SUMA gana 1.0000 contra 0.7389; y
+daba MEDIA 0.4667 contra SUMA 0.8278 en 0.35, aqui empatan en el techo de 1.0000.
+
+El titular que declara el script es `A5: CONFIRMADO [EL_TEST_DISCRIMINA]`, con diferencia
+`-0.700000` entre los dos mejores de la rejilla. Y hay que leerlo con el signo delante, porque la
+comprobacion de la linea 1726 es `abs(diferencia) >= TOL["discriminacion"]`: **discrimina por
+magnitud y no por direccion.** Los dos mejores son 0.0389 de la SUMA en 0.10 y 0.7389 de la MEDIA en
+0.20, y la SUMA **pierde por 0.70**. La afirmacion que iba a medir la direccion es precisamente A6, y
+es precisamente la que revienta, luego **la direccion preregistrada queda sin medir**.
+
+**Decision**
+
+No se arregla el script. Se devuelve el log literal y el punto exacto al orquestador, como estaba
+instruido, y **P81 queda INCONCLUSO**.
+
+Se registra la corrida como resultado y no como tentativa fallida, porque el bloque 1 aporto la
+medida que se buscaba: la curva entera de los seis learning rates con los dos brazos, el recuento de
+victorias por learning rate y la declaracion de no monotonia. Eso contesta por que el par de
+primarios no basta: con seis puntos y tres semillas la mayor parte de la curva es ruido y el
+prototipo no se reproduce.
+
+Se dejan por escrito **tres salvedades permanentes**.
+
+1. **El anclaje a una implementacion externa de SGNS queda SIN HACER**, porque gensim no esta
+   instalado y con Python 3.14.7 no compila. Autoriza afirmar sobre el **OBJETIVO**, y **no** sobre
+   la calidad relativa del artefacto frente a una libreria. Nada de lo que produzca P81 puede leerse
+   como "Word2Vec es mejor que V03".
+2. El texto ancla de `docs/p81_enmienda_1.md` se commiteo en `5f4faf7` con dos tildes y se corrigio
+   en `c3dee26` **sin reescribir historia**. El sha256 vinculante es el de `c3dee26`.
+3. El revisor dejo sin cobertura de humo directa el fallo de la tupla pasada como clave literal,
+   que esta corregido y verificado en vivo pero sin caso de humo que lo fije. **El fallo de
+   `afirmacion_a6` es de esa misma familia y tampoco lo cubre el humo.**
+
+**Alternatives Considered**
+
+1. Arreglar la linea 1846 y relanzar. **Descartado por instruccion expresa.** Editar el fichero es
+   lo que trunco otro a 0 bytes en este proyecto. La correccion la decide el orquestador.
+2. Relanzar el script sin el `--humo`, o tocar `TOL`, para ver si el titular cambia. **Descartado.**
+   El pre-registro fija los margenes antes de ejecutar y no se negocian despues.
+3. Presentar la curva del bloque 1 como resultado de P81 y dar por cerrado el experimento.
+   **Descartado.** Falta el bloque 2 entero, que es donde vive la proporcion de OOV con el
+   tokenizador real de `v9_04`, y faltan quince afirmaciones. Un cierre parcial no es un cierre.
+4. Leer `-0.700000` como que el test **no** discrimina porque la diferencia sale a favor de la MEDIA.
+   **Descartado por lectura del codigo.** El umbral se compara en valor absoluto y la banda muerta
+   tambien. El script dice que discrimina. Lo que no dice, y por eso se deja escrito, es que
+   discrimina en la direccion contraria a la que A6 espera.
+5. Ejecutar el Word2Vec de diez millones de tokens, generar submission o consultar el leaderboard
+   para responder por el bucle. **Descartado.** Es una auditoria del ancla ejecutable, no una medida
+   de la calidad del artefacto, y el limite permanente 1 lo prohibe expresamente.
+
+**Consequences**
+
+**P81 no publica informe.** `reports/p81_cierre_huecos.json` y `reports/p81_cierre_huecos.md` no
+existen, no hay temporal `.tmp_p81`, y la asercion ASCII byte a byte de esos dos ficheros y el
+verificador oficial **no se pueden ejecutar** porque no hay nada que verificar. El recuento de
+`NO_DISPONIBLE` en el markdown no aplica. **La proporcion de OOV recalculada con el tokenizador real
+de `v9_04` no se ha obtenido**, ni contra el 0.155020 del prototipo ni contra las tres cifras
+anteriores, y tampoco el reparto entre canal de relleno y canal de OOV.
+
+Ninguna salida se publico y ninguna se vacio. La guarda de la linea 476, que aborta si el destino ya
+existe, y la asercion ASCII en memoria de las lineas 471 a 475, que comprueban antes de abrir nada,
+funcionaron como estaban escritas. **El bug que trunco un fichero a cero bytes en este proyecto no
+se ha reproducido.**
+
+Fronteras respetadas y comprobadas: test 0, holdout 0 identificadores deserializados, leaderboard 0,
+submission 0, P71 a P80 sin tocar, V03 sin tocar, umbrales 0.44, 0.51 y 0.46 sin tocar, `modelos/`
+sin escrituras. El artefacto congelado se abrio en solo lectura y salio con la misma huella
+`302c994d13b75f8f5fbd440eea2c4f4113997e2581524021923b92f8244d705a` de 29 478 868 bytes, antes y
+despues de las dos corridas.
+
+Queda pendiente para el orquestador una correccion de una clave literal y **un caso de humo que la
+fije**, porque la suite actual demuestra que Smoke Test Driven Development con 67 comprobaciones no
+fijaba el contrato de claves que el resto del recorrido da por hecho.
+
+```text
+V03 remains the best verified leaderboard result.
+```

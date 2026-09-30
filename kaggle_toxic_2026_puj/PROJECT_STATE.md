@@ -1,3 +1,92 @@
+<!-- P81-INCONCLUSO 2026-09-30 -->
+## P81: INCONCLUSO. 5 de 20 afirmaciones medidas, todas CONFIRMADO, se para en A6 con un KeyError
+
+```text
+A1..A5 CONFIRMADO   A0 y A6..A19 sin ejecutar
+5 CONFIRMADO   0 REFUTADO   0 NO APLICABLE   0 STOP   15 sin ejecutar
+codigo de salida 1   62.3 s con cronometro de subprocess, 77 s en la primera corrida
+mismo punto de fallo en las dos, bit a bit
+```
+
+```text
+experiments/p81_01_cierre_huecos.py  212aa786998f682a4ccefca2d91aa77f0cbf510968a0e8d21f1c687083f8e913
+4517 lineas, 67 de 67 en --humo, APROBADO por ml-reviewer
+reports/p81_cierre_huecos.json  NO EXISTE
+reports/p81_cierre_huecos.md    NO EXISTE
+ningun temporal .tmp_p81, ninguna salida publicada, ninguna vaciada
+```
+
+**Fallo literal, sin arreglar.**
+
+```text
+File ".../experiments/p81_01_cierre_huecos.py", line 1846, in afirmacion_a6
+    m1_suma = primario["primarios"]["SUMA"]["m1_media"]
+KeyError: 'm1_media'
+```
+
+`elegir_primario` genera la clave del brazo con `f"m1_{objetivo.lower()}"` en la linea 1265 y la
+escribe en la 1277, luego SUMA guarda `m1_suma`. `afirmacion_a6` busca para SUMA el literal
+`m1_media`, que es la clave del brazo MEDIA. `afirmacion_a5`, linea 1711, lo hace bien. Mismo patron
+de clave literal, bien a una linea y mal a la otra.
+
+**El limite de la suite de humo, aqui y en serio.** El revisor dejo sin cobertura de humo directa el
+fallo de la tupla pasada como clave literal. Este fallo es **de esa misma familia** y **tampoco lo
+cubre el humo**: 67 de 67 pasan y el recorrido real revienta en la sexta afirmacion. Smoke Test
+Driven Development con recuento de comprobaciones no fija el contrato de claves que el resto del
+recorrido da por hecho.
+
+**Bloque 1, que es lo que si se midio.** Curva completa de M1 por learning rate, los dos brazos, seis
+puntos de la enmienda 1 y tres semillas, sobre corpus plantado de 23004 pares con M3 del azar
+0.000042 en 2000 permutaciones:
+
+```text
+lr 0.02  MEDIA 0.0000  SUMA 0.0000   lr 0.20  MEDIA 0.7389  SUMA 1.0000
+lr 0.05  MEDIA 0.0000  SUMA 0.0000   lr 0.35  MEDIA 1.0000  SUMA 1.0000
+lr 0.10  MEDIA 0.0056  SUMA 0.0389   lr 0.50  MEDIA 1.0000  SUMA 1.0000
+```
+
+**La SUMA gana 2 de 6 puntos y la curva NO es monotona.** El prototipo no se reproduce: daba MEDIA
+0.3611 contra SUMA 0.0000 en 0.20, aqui la SUMA gana 1.0000 contra 0.7389; daba MEDIA 0.4667 contra
+SUMA 0.8278 en 0.35, aqui empatan en el techo de 1.0000. Primario declarado en lr 0.1, con la zona
+betonal de la enmienda 1 dejando fuera los 1.0000.
+
+**El titular, con el signo delante.** `A5: CONFIRMADO [EL_TEST_DISCRIMINA]`, diferencia
+`-0.700000`. La comprobacion de la linea 1726 es `abs(diferencia) >= TOL["discriminacion"]`:
+**discrimina por magnitud, no por direccion.** Los dos mejores son 0.0389 de la SUMA en 0.10 y
+0.7389 de la MEDIA en 0.20, y la SUMA **pierde por 0.70**. La afirmacion que iba a medir la
+direccion es A6, y es la que revienta, luego **la direccion preregistrada queda sin medir**.
+
+**Bloque 2: no se ha ejecutado.** El fallo cae antes de la linea 4360. **A8 no corrio.** La
+proporcion de OOV con el tokenizador real de `v9_04` **no se ha obtenido**: ni el 0.155020 del
+prototipo, ni las tres cifras anteriores, ni el reparto entre canal de relleno y canal de OOV. Los
+bloques 3 y 4 tampoco.
+
+**Lo que no se pudo verificar.** El ASCII byte a byte de `reports/p81_cierre_huecos.json` y `.md` y
+el verificador oficial **no se pueden ejecutar**, porque los ficheros no existen. El recuento de
+`NO_DISPONIBLE` en el markdown **no aplica**, porque no hay markdown. El bug que llenaba el `.md` de
+`NO_DISPONIBLE` en silencio no se ha reproducido porque el script no llego a escribir.
+
+**Fronteras respetadas y comprobadas.**
+
+```text
+test = 0   holdout = 0 identificadores deserializados   leaderboard = 0   submission = 0
+P71 a P80 sin tocar   V03 sin tocar   umbrales 0.44 / 0.51 / 0.46 sin tocar   modelos/ sin escrituras
+congelado 302c994d13b75f8f5fbd440eea2c4f4113997e2581524021923b92f8244d705a ANTES
+congelado 302c994d13b75f8f5fbd440eea2c4f4113997e2581524021923b92f8244d705a DESPUES
+29478868 bytes, abierto en solo lectura, misma huella tras las dos corridas
+```
+
+**Limite permanente.** El anclaje a una implementacion externa de SGNS queda **SIN HACER** porque
+gensim no esta instalado y con Python 3.14.7 no compila: autoriza afirmar sobre el **OBJETIVO**, no
+sobre la calidad relativa del artefacto frente a una libreria. Dos salvedades mas: el texto ancla de
+`docs/p81_enmienda_1.md` se commiteo en `5f4faf7` con dos tildes y se corrigio en `c3dee26` sin
+reescribir historia, y el sha256 vinculante es el de `c3dee26`; y el fallo de la tupla pasada como
+clave literal sigue sin caso de humo que lo fije.
+
+```text
+V03 remains the best verified leaderboard result.
+```
+
 <!-- P80-CERRADO 2026-09-30 -->
 ## P80: cerrado y publicado. 19 de 19, 7 de 7 CONFIRMADO, informe en JSON y markdown
 

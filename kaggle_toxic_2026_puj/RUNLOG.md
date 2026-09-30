@@ -3706,3 +3706,161 @@ medidas, informe en JSON y en markdown, tres figuras y ninguna escritura fuera d
 ```text
 V03 remains the best verified leaderboard result.
 ```
+
+---
+
+## P81 - 2026-09-30 - Auditoria de los cinco huecos de P80. FALLA EN A6, codigo de salida 1
+
+Script `experiments/p81_01_cierre_huecos.py`, sha256
+`212aa786998f682a4ccefca2d91aa77f0cbf510968a0e8d21f1c687083f8e913`, 4517 lineas, 67 de 67 en `--humo`.
+APROBADO por `ml-reviewer`, que comprobo ademas que el humo discrimina: tres mutaciones distintas
+bajaron el recuento cada una.
+
+Documentos vinculantes comprobados por el propio script antes de leer nada mas, y comprobados
+tambien a mano antes de ejecutarlo:
+
+```text
+docs/p81_preregistro_cierre_huecos.md  55e6900cce49bd7e2ee98b00e0c315081c04718edb18df4abd49f484755faabc  commit 86a9140
+docs/p81_enmienda_1.md                 496223801147a414e74a53fb7cf407ae48ad4671c74e45daba4dce19f15801c6  commit c3dee26
+```
+
+### Duracion y codigo de salida
+
+```text
+corrida en segundo plano, 2026-09-30T23:39:30Z a 23:40:47Z   77 s   codigo de salida 1
+corrida de comprobacion con subprocess, 62.3 s                 codigo de salida 1
+mismo punto de fallo en las dos, bit a bit
+```
+
+### Punto exacto del fallo
+
+```text
+Traceback (most recent call last):
+  File ".../experiments/p81_01_cierre_huecos.py", line 4510, in <module>
+    main()
+  File ".../experiments/p81_01_cierre_huecos.py", line 4356, in main
+    resultado = funcion(*argumentos)
+  File ".../experiments/p81_01_cierre_huecos.py", line 1846, in afirmacion_a6
+    m1_suma = primario["primarios"]["SUMA"]["m1_media"]
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'm1_media'
+```
+
+**Causa, sin arreglar.** `elegir_primario` construye la clave por objetivo con
+`clave = f"m1_{objetivo.lower()}"` en la linea 1265 y la escribe en la 1277, luego el brazo **SUMA**
+guarda la clave `"m1_suma"`. `afirmacion_a6` en la linea 1846 busca para el brazo SUMA una clave
+literal `"m1_media"`, que es la del brazo MEDIA, y revienta. `afirmacion_a5` en la linea 1711 lo
+hace bien, `primario["primarios"]["SUMA"]["m1_suma"]`, luego el mismo patron literal aparece bien y
+mal a dos lineas de distancia. Es un fallo de la misma familia que el que el revisor dejo sin
+cobertura de humo directa: una clave literal escrita a mano contra un diccionario de claves
+generadas.
+
+**No se ha tocado el script.** Ni una linea, ni un nombre, ni un temporal. La correccion la decide
+el orquestador.
+
+### Estado de las veinte afirmaciones
+
+```text
+CONFIRMADO 5   REFUTADO 0   NO APLICABLE 0   STOP 0   sin ejecutar 15
+A1 CONFIRMADO   A2 CONFIRMADO   A3 CONFIRMADO   A4 CONFIRMADO   A5 CONFIRMADO
+A0 sin ejecutar, se calcula al final
+A6 a A19 sin ejecutar, el fallo corta el recorrido
+```
+
+### Bloque 1: la curva completa de M1 por learning rate, los dos brazos
+
+```text
+lr 0.02  MEDIA 0.0000  SUMA 0.0000  diferencia +0.0000
+lr 0.05  MEDIA 0.0000  SUMA 0.0000  diferencia +0.0000
+lr 0.10  MEDIA 0.0056  SUMA 0.0389  diferencia +0.0333
+lr 0.20  MEDIA 0.7389  SUMA 1.0000  diferencia +0.2611
+lr 0.35  MEDIA 1.0000  SUMA 1.0000  diferencia +0.0000
+lr 0.50  MEDIA 1.0000  SUMA 1.0000  diferencia +0.0000
+```
+
+Corpus plantado de 23004 pares, M3 del azar 0.000042 con 2000 permutaciones.
+
+**Recuento de victorias por learning rate: la SUMA gana 2 de 6 puntos.** Los seis puntos, curva
+completa, y `curva monotona: False`, como se anticipaba. El prototipo daba MEDIA 0.3611 contra SUMA
+0.0000 en 0.20 y MEDIA 0.4667 contra SUMA 0.8278 en 0.35; aqui en 0.20 gana la SUMA 1.0000 contra
+0.7389 de la MEDIA y en 0.35 y 0.50 empatan en el techo de 1.0000. **El prototipo no se reproduce**,
+ni en el signo del punto 0.20 ni en la magnitud del punto 0.35.
+
+**Primario declarado: lr 0.1.** La zona betonal de la enmienda 1, M1 mayor que 0.99, deja fuera
+1.0000 de la SUMA en 0.20 y los dos 1.0000 de 0.35 y 0.50. El mejor utilizable de la SUMA queda en
+0.0389 en 0.10 y el de la MEDIA en 0.7389 en 0.20.
+
+**Lectura del titular tal como la declara el script:**
+
+```text
+A5: CONFIRMADO [EL_TEST_DISCRIMINA] | la diferencia entre los dos mejores de la rejilla es
+-0.700000, por encima del minimo de 0.02, fuera de la banda muerta de 0.005, y los cuatro hash de
+```
+
+La linea se corta en 150 caracteres en `_registrar`, linea 4503, no en el dato. Y hay que leerla con
+cuidado: la comprobacion es `abs(diferencia) >= TOL["discriminacion"]` en la linea 1726, luego
+`-0.700000` **discrima por magnitud, no por direccion**. Los dos mejores son 0.0389 de la SUMA en
+0.10 y 0.7389 de la MEDIA en 0.20, y **la SUMA pierde por 0.70**. El titular dice que el test
+discrimina, y es cierto; lo que no dice es que discrimina **en contra** de la direccion que A6
+espera. El texto "por encima del minimo" se refiere al valor absoluto. A6 es justo la afirmacion que
+iba a medir la direccion, y es justo la que revienta.
+
+### Bloque 2: no se ha ejecutado
+
+El fallo ocurre en el bloque 1, en A6, antes de la linea 4360 que abre el bloque 2. **A8 no se ha
+ejecutado.** La proporcion de OOV recalculada con el tokenizador real de `v9_04` **no se ha
+obtenido**: no hay cifra, ni el 0.155020 del prototipo ni ninguna de las tres anteriores, ni el
+reparto entre canal de relleno y canal de OOV. Los bloques 3 y 4 tampoco.
+
+### Salidas
+
+```text
+reports/p81_cierre_huecos.json   NO EXISTE
+reports/p81_cierre_huecos.md     NO EXISTE
+ningun temporal .tmp_p81 en reports/
+```
+
+El script fallo antes de la escritura atomica, luego **nada se publico y nada se vacio**. La
+guarda de la linea 476, que aborta si el destino ya existe, y la asercion ASCII en memoria de la
+linea 471 a 475 guardaban todo antes de abrir nada, funcionaron como estaban escritas. El bug que trunco un
+fichero a cero bytes en este proyecto no se ha reproducido.
+
+La asercion ASCII byte a byte de `reports/p81_cierre_huecos.json` y `.md` y el verificador oficial
+**no se pueden ejecutar**, porque los ficheros no existen. El recuento de `NO_DISPONIBLE` en el
+markdown **no aplica**, porque no hay markdown.
+
+### Fronteras respetadas
+
+```text
+test = 0   holdout = 0 identificadores deserializados   leaderboard = 0   submission = 0
+P71 a P80 sin tocar   V03 sin tocar   umbrales 0.44 / 0.51 / 0.46 sin tocar
+modelos/ sin escrituras
+congelado 302c994d13b75f8f5fbd440eea2c4f4113997e2581524021923b92f8244d705a ANTES
+congelado 302c994d13b75f8f5fbd440eea2c4f4113997e2581524021923b92f8244d705a DESPUES
+```
+
+El artefacto congelado se abrio en solo lectura y salio con la misma huella,29 478 868 bytes, tras
+las dos corridas. No se entreno el Word2Vec de diez millones de tokens. No se genero submission.
+
+### Limite permanente
+
+**El anclaje a una implementacion externa de SGNS queda SIN HACER** porque gensim no esta instalado
+y con Python 3.14.7 no compila. Autoriza afirmar sobre el **OBJETIVO**, no sobre la calidad relativa
+del artefacto frente a una libreria.
+
+Dos salvedades mas. El texto ancla de `docs/p81_enmienda_1.md` se commiteo en `5f4faf7` con dos
+tildes y se corrigio en `c3dee26` sin reescribir historia. Y el revisor dejo **sin cobertura de humo
+directa** el fallo de la tupla pasada como clave literal, que esta corregido y verificado en vivo
+pero sin caso de humo que lo fije; el fallo de `afirmacion_a6` que acaba de parar la corrida es de
+esa misma familia y **tampoco lo cubre el humo**, porque las 67 comprobaciones pasan.
+
+### Estado
+
+**P81 queda INCONCLUSO.** 5 de 20 afirmaciones medidas, todas CONFIRMADO, ninguna REFUTADA, ninguna
+STOP, y 15 sin ejecutar por un `KeyError` de clave literal en A6. Sin informe en JSON ni en
+markdown. El bloque 1 aporta la curva completa y el recuento de victorias, que es lo que mas
+interesa; el bloque 2 no aporta nada todavia.
+
+```text
+V03 remains the best verified leaderboard result.
+```
