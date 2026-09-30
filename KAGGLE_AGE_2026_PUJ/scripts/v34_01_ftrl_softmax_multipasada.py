@@ -220,7 +220,8 @@ COMPLIANCE_AUDITORIAS = [
     "sondas (a)-(j)", "tabla de simetria de sesgo", "sonda de reproducibilidad de alpha*",
     "estabilidad del ES", "simetria de presupuesto", "RSS pico con ru_maxrss", "escritura atomica"]
 
-#: Configuracion del vectorizador: IDENTICA a la congelada del pre-registro (hash 33311e5e). En
+#: Configuracion del vectorizador: IDENTICA a la canonica del proyecto y a la congelada del
+#: pre-registro (hash 9bae1576 tras la enmienda del token_pattern). En
 #: el fit se convierte ngram_range a tupla porque sklearn 1.8.0 lo exige (mismo valor); el sha256
 #: congelado del dict se calcula SIEMPRE sobre la CONFIG con la lista.
 VECTORIZADOR = {"analyzer": "word", "ngram_range": [1, 2], "min_df": 3, "max_df": 0.5,
@@ -4516,7 +4517,8 @@ def escribir_informe(resultado: dict) -> None:
     for nombre in NOMBRES_SONDAS:
         detalle = resultado["sondas"][nombre]
         marca = "no es gate" if nombre == NOMBRES_SONDAS[-1] else str(detalle.get("pass"))
-        lineas.append(f"| ({nombre[0]}) {nombre} | {marca} | {detalle['descripcion']} |")
+        lineas.append(f"| ({nombre[0]}) {nombre} | {marca} | "
+                     f"{detalle.get('descripcion', 'sin descripcion')} |")
     lineas += [
         "",
         f"- Politica: {resultado['sondas']['politica']}.",
@@ -5156,7 +5158,12 @@ def ejecutar(verificar: bool) -> int:
         return 0
 
     estado = cargar_estado()
-    estado["sondas"] = {nombre: bool(sondas[nombre]["pass"]) for nombre in NOMBRES_SONDAS}
+    # La sonda (j) NO es pass/fail (publica la tabla de mecanismo), luego se registra como None
+    # en vez de leer una clave que no existe: leerla reventaba la corrida justo despues de
+    # escribir el estado.
+    estado["sondas"] = {nombre: (bool(sondas[nombre]["pass"])
+                             if "pass" in sondas[nombre] else None)
+                       for nombre in NOMBRES_SONDAS}
     guardar_estado(estado)
     oofs, puerta_fallida = entrenar_con_puerta(estado, textos, clase, fold_idx)
     if puerta_fallida is not None:
