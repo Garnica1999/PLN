@@ -1,0 +1,57 @@
+{
+  "fase": "P0 gap analysis + P1 legalidad",
+  "fecha": "2026-09-29",
+  "commit": "67e0d3056e8163bc0cc3b0202256f449a149f769",
+  "operaciones": {
+    "archivos_barridos": 252,
+    "spacy_import": [
+      "phase10_dos_vias.py",
+      "v14a_linguistico.py"
+    ],
+    "usan_atributos_anotacion": [
+      "phase10_dos_vias.py",
+      "v14a_linguistico.py"
+    ],
+    "firmas_secuencia": [],
+    "tagger_nltk": []
+  },
+  "corpus": {
+    "filas_train": 169336,
+    "filas_con_no_ascii": 51,
+    "pct_no_ascii": 0.03,
+    "filas_con_vocales_acentuadas": 0,
+    "pct_con_acentos": 0.0,
+    "pct_con_mencion": 63.9,
+    "pct_con_hashtag": 20.2,
+    "pct_con_http": 41.6,
+    "longitud_mediana": 93,
+    "longitud_max": 140
+  },
+  "modelo": {
+    "nombre": "core_news_md",
+    "version": "3.8.0",
+    "licencia": "GNU GPL 3.0",
+    "idioma": "es",
+    "componentes": [
+      "tok2vec",
+      "morphologizer",
+      "parser",
+      "attribute_ruler",
+      "lemmatizer",
+      "ner"
+    ],
+    "sha256_meta_json": "889a2fd05d217fa7c1bcffa867af7fc30911bc7b48523f87b5b2525846553ef5",
+    "sha_coincide_con_v14": true,
+    "include_static_vectors": true,
+    "usa_transformer_en_config": false,
+    "spacy_version": "3.8.13"
+  },
+  "filas_linguisticas_experiments": 60,
+  "clasificacion_anotador": "AMBIGUOUS",
+  "p2_estado": "GATEADO a resolucion (opciones A/B/C en D-075)",
+  "captura_reglas_sha256": "122788b9a8e75e5b1430da4944484358287b428e147a17541f18ba83678c1e27",
+  "sin_test": true,
+  "sin_holdout": true,
+  "sin_submission": true,
+  "segundos": 4.0
+}

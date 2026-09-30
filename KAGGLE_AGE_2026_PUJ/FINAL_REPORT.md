@@ -927,3 +927,21 @@ se afirma que V30 fuera incorrecto ni que `argmax` no sea optimo en general.
 
 **Investigacion cerrada.** Sin grid nueva, sin pesos nuevos, sin submission nueva, sin
 tuning con el leaderboard. P33/P34/G12/G14 no se reabren salvo evidencia externa o cambio de reglas.
+
+---
+
+# FASE ABIERTA - LINGUISTIC STRUCTURED ENRICHMENT (2026-09-29)
+
+Pregunta: existe informacion linguistica estructural (secuencias tipadas) no explotada de forma
+equivalente? El candidato adoptado (V30 + plug-in, LB 0,63575) permanece como FINAL_REFERENCE.
+
+| Paso | Estado | Resultado |
+|---|---|---|
+| P0 gap analysis por operacion | **COMPLETADO** | Secuencias tipadas L1-L7 = GENUINELY_NEW; formas agregadas y regex cerradas con medicion |
+| P1 auditoria de legalidad | **COMPLETADO** | Anotador es_core_news_md = AMBIGUOUS (conflicto interno + vectores estaticos internos) |
+| P2 POS estructurado | **GATEADO** | No se ejecuta hasta resolver la clasificacion (opciones A/B/C) |
+
+Reglas especificas capturadas: `references/age_rules_capture_2026-09-29.md`.
+Artefactos: `reports/linguistic_enrichment_gap_analysis.{md,csv}`,
+`reports/age_linguistic_legality_audit.md`, `reports/linguistic_annotation_registry.csv`.
+Sin test, sin holdout, sin submissions.

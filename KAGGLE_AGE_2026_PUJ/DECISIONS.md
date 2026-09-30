@@ -2667,3 +2667,49 @@ No se usa el 0,63575 para optimizar pesos, crear variantes, seleccionar semillas
 ## 14. El camino, en una linea
 
 39 mecanismos de **aprendizaje** auditados y cerrados, y el resultado vino de un mecanismo de **decision**. La auditoria era valida; su enumeracion estaba incompleta.
+
+---
+
+## D-075 - Reapertura: fase de enriquecimiento linguistico estructurado (P0 y P1 completados, P2 gateado)
+
+- **Observation**: el candidato adoptado (V30 + plug-in, LB 0,63575) queda como FINAL_REFERENCE y
+  no se toca. Se reabre una fase con una unica pregunta autorizada: si existe informacion
+  linguistica ESTRUCTURAL (secuencias tipadas de POS, lemma_POS, morfologia, dependencias,
+  entidades o texto tipado) que las fases anteriores no explotaron de forma equivalente.
+
+- **P0 - gap analysis por operacion** (233 ficheros de codigo y 154 filas de experiments.csv):
+  - Lo USADO historicamente: 26 conteos POS (PH10/D-026, -0,0032); 37 ratios agregados de
+    morfologia, sintaxis, entidades y lemas (V14a/b, fusion -0,0015 con 1/5 folds); lexicones
+    propios (V13); canales regex sin tagger (V31-03, +0,006820 en banco y ~0 en integracion);
+    secuencia de tipos SUPERFICIALES de token (PH21/PH22, +0,0018, no adoptada; enriquecer el
+    alfabeto no mejora); correcciones en score-space del residuo (P33/P34/G12, cerradas).
+  - Lo NUNCA usado: las SECUENCIAS tipadas (L1-L7). Verificado por operacion: 0 scripts con
+    firmas de construccion de secuencias; solo 2 scripts usan spaCy y hacen conteos y ratios.
+  - Dos cierres historicos imprecisos documentados: "n-gramas de POS" figuraba como cerrado
+    citando D-026 (que midio conteos), y la morfologia por sufijos (cerrada con razon por
+    redundancia con char_wb) no es la morfologia del analizador (D-043 ya lo distinguia).
+  - La pared de integracion es el riesgo real: cinco rutas con control de atribucion, todas
+    cerradas; variabilidad de entrenamiento 8,9e-04 como escala de juicio.
+
+- **P1 - auditoria de legalidad**: se capturo la pagina Rules de la competicion HOY
+  (`references/age_rules_capture_2026-09-29.md`): las reglas especificas permiten librerias
+  comunes de NLP y ML (NLTK, Scikit-learn, TensorFlow, PyTorch, Pandas, Numpy) y no mencionan
+  transformers ni LLMs ni preentrenados. Carlos confirmo las prohibiciones de curso:
+  transformers y LLMs (profesor) y embeddings EXPRESAMENTE, preentrenados o entrenados.
+  El anotador `es_core_news_md` (3.8.0, GPL-3.0, SHA256 de meta.json 889a2fd0..., no-transformer)
+  queda **AMBIGUOUS**: D-001 lo permitia por nombre y D-026/D-043 lo autorizaron y usaron; V31
+  lo dejo en cuarentena; y su tok2vec usa vectores estaticos preentrenados internamente
+  (include_static_vectors=true), aunque de el solo se usarian las etiquetas.
+
+- **Decision**: la fase queda abierta en P0/P1. **P2 (POS estructurado) NO se ejecuta hasta
+  resolver la clasificacion del anotador.** Mientras sea AMBIGUOUS, ningun resultado de esta via
+  puede alimentar una submission (regla del brief). La resolucion se eleva a Carlos en tres
+  opciones: (A) extender expresamente la lectura de D-001 a esta fase (etiquetas si, vectores no,
+  con procedencia y ablacion); (B) mantener la cuarentena estricta; (C) consultar al profesor.
+  El candidato adoptado no se modifica en ninguna de las tres.
+
+- **Consequences**: ningun resultado nuevo puede desplazar al candidato adoptado sin gate completo,
+  segunda particion y autorizacion explicita. Artefactos: `reports/linguistic_enrichment_gap_analysis.md`,
+  `reports/linguistic_enrichment_gap_analysis.csv`, `reports/age_linguistic_legality_audit.md`,
+  `reports/linguistic_annotation_registry.csv`, `references/age_rules_capture_2026-09-29.md`,
+  `experiments/age_linguistic_p0p1_gap_y_legalidad.json`. Sin test, sin holdout, sin submission.

@@ -2069,3 +2069,18 @@ intacto.
 - **Submissions nuevas: 0. Tuning post-leaderboard: 0.** Los dos ficheros quedan sin sobrescribir.
 - **La investigacion queda cerrada.** El resultado vino de auditar *como decidir*, no de mejorar
   *como aprender*.
+
+---
+
+## Reapertura: enriquecimiento linguistico estructurado (P0 y P1) · 2026-09-29
+
+- **P0 (gap analysis por operacion)**: barrido de 233 ficheros y 154 filas de experiments.csv.
+  Las SECUENCIAS tipadas (POS, lemma_POS, morfologia, dependencias, entidades, texto tipado)
+  NUNCA se construyeron: 0 firmas de secuencia en todo el codigo. Dos cierres historicos
+  imprecisos detectados y documentados (n-gramas de POS cerrados por nombre citando conteos).
+- **P1 (legalidad)**: reglas especificas capturadas de la pagina Rules (librerias comunes
+  permitidas; nada sobre preentrenados). Prohibiciones confirmadas por Carlos: transformers,
+  LLMs y embeddings (preentrenados o entrenados). Anotador spaCy = **AMBIGUOUS** (conflicto
+  D-001/D-043 vs V31 + uso interno de vectores estaticos).
+- **P2 gateado**: no se ejecuta hasta resolver la clasificacion del anotador (opciones A/B/C
+  elevadas a Carlos). Sin test, sin holdout, sin submission, sin tocar el candidato adoptado.
