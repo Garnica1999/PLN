@@ -2769,3 +2769,12 @@ No se usa el 0,63575 para optimizar pesos, crear variantes, seleccionar semillas
 - **Consequences**: la conclusion es sobre NER estructural con la integracion probada, no sobre 'toda la familia linguistica' (P2 ya dejo esa leccion: modos de fallo distintos no se extrapolan). P5 (dependencias) queda como unica familia GENUINELY_NEW documentada y no priorizada; P3/P4 quedan PARTIALLY_COVERED. Sin reabrir POS ni encadenar variantes sin hipotesis nueva.
 
 - **Evidence**: `experiments/age_linguistic_06_ner_estructura.json`, `reports/ner_structural_results.csv`, `reports/ner_structural_complementarity.csv`, `reports/ner_structural_decision.md`.
+---
+
+## D-079 - P7: el texto tipado (texto original + lemma_POS) queda en CLOSED
+
+- **Observation**: se ejecuto P7 con el pre-registro congelado. Baseline primario recomputado: 0.6159732 (brazo A = ablacion sin canal, D-076 cond.4). Resultados: md: delta -0.0006894 (2/5), barajado -0.0012268 | lg: delta -0.0007606 (1/5), barajado -0.0010814.
+- **Result**: texto tipado solo (md) macro-F1 0.4941735; peso del bloque canal en el combinador 0.1917 (md).
+- **Decision**: cierre documentado; P5 pendiente de una unica evaluacion del gap.
+- **Consequences**: si el resultado no es positivo, la conclusion es 'la representacion lexema+POS no aporta mejora al campeon bajo el mecanismo evaluado' (no es una afirmacion sobre toda la informacion linguistica). El campeon adoptado (V30 + plug-in, LB 0.63575) permanece intacto. P2 y P6 no se reabren.
+- **Evidence**: `experiments/age_linguistic_09_texto_tipado.json`, `reports/age_typed_text_results.csv`, `reports/age_typed_text_complementarity.csv`, `reports/age_typed_text_decision.md`.

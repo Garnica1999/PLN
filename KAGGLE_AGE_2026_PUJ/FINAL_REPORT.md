@@ -966,3 +966,10 @@ Sin test, sin holdout, sin submissions.
 - Resultado: NINGUN BRAZO PASA: NER estructural se cierra documentado; el campeon intacto.
 - N1/N1b/N2 x md/lg con control barajado por el pipeline completo; baseline 0.6159732.
 - Sin test, sin holdout, sin leaderboard, sin submission.
+
+---
+
+## P7 ejecutado: texto tipado (2026-09-30)
+
+- Resultado: CLOSED. T solo (md) 0.4941735; delta real/barajado por anotador en el informe.
+- Baseline 0.6159732; sin test, sin holdout, sin submission; campeon intacto.

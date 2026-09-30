@@ -2145,3 +2145,11 @@ intacto.
 - Baseline primario recomputado: 0.6159732.
 - Revisiones de Kaggle Specialist y revisor ML incorporadas; smoke test de 1 fold: 19,1 s.
 - Sin tuning, sin test, sin holdout, sin submission.
+
+---
+
+## P7 ejecutado: texto tipado (texto original + lemma_POS) · 2026-09-30
+
+- Resultado: CLOSED. Brazos: lg: -0.0007606 (1/5) | md: -0.0006894 (2/5). T solo md 0.4942.
+- Control: bloque B permutado dentro de cada fold por el pipeline completo.
+- Baseline 0.6159732; sin tuning; sin test; sin holdout; sin submission.
