@@ -1960,3 +1960,51 @@ es la posibilidad de responderla con los recursos disponibles.
 
 El estado del proyecto no cambia: investigacion cerrada, candidato congelado.
 <!-- /TWITTER-W2V 2026-09-29 -->
+
+
+<!-- P75-Y-FUSION 2026-09-30 -->
+## P75: complementariedad estructural sin transferencia con fusion lineal cruda
+
+```text
+P75 = COMPLEMENTARIEDAD ESTRUCTURAL SIN TRANSFERENCIA CON FUSION LINEAL CRUDA
+
+V03 errors                    757
+CNN corrige                   268 de ellos, el 35.4 por ciento
+damage / rescue               3.03
+net                           -545 unidades tweet-etiqueta
+AUC del score CNN sobre el error de V03   HS 0.4872   TR 0.6045   AG 0.4973
+
+INFORMACION COMPLEMENTARIA = OBSERVADA
+TRANSFERENCIA MEDIANTE BLEND LINEAL DE PROBABILIDADES CRUDAS = NEGATIVA
+```
+
+P75 queda **cerrada** para fusion lineal cruda y para alpha 0,05, 0,10 y 0,15. No se reabre esa
+misma busqueda.
+
+```text
+CERRADO    la fusion lineal simple de V03 con este CNN, sin recalibrar, en el rango 0.05-0.15
+ABIERTO    recalibracion por pliegue o etiqueta; combinadores selectivos o no lineales; alphas
+           fuera del rango; estabilidad del CNN; y la segunda particion, que NUNCA se ejecuto
+```
+
+**La segunda particion no se ejecuto** porque el gate corto el flujo al no haber finalista. La
+transferibilidad queda **sin medir, no refutada**.
+
+**TEXTCNN = ACTIVA PARA INVESTIGACION CONTROLADA.** No se abre ninguna arquitectura nueva.
+
+```text
+V03 = FROZEN      Word2Vec Twitter 100d = FROZEN      P72 = CLOSED
+P73 = COMPLEMENTARY      P74 = EVIDENCIA REPRODUCIBLE
+TEXTCNN = WAITING (se cierra aqui salvo que P76 justifique una fase posterior)
+test = 0   holdout = 0   leaderboard = 0   submission = 0
+```
+
+### Incidencias declaradas de P75
+
+- **Slices**: P75-01 perdio nueve de doce por un fallo de tipos en el join (parquet con `id` de
+  texto, OOF con `id` entero). Recuperadas sin reentrenar desde el OOF pareado guardado.
+- **Tiempos contaminados**: carga media 50,8 sobre 32 nucleos por un proceso ajeno. No se usan para
+  comparaciones.
+- **Techo oraculo**: casi vacuo por construccion. No prueba que el fallo sea de direccion y no de
+  magnitud.
+<!-- /P75-Y-FUSION 2026-09-30 -->

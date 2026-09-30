@@ -3054,3 +3054,34 @@ Sin push, sin merge, sin rebase.
 - `experiments/p72_02_dimension_downstream.py`: downstream de las tres dimensiones.
 
 Sin push, sin merge, sin rebase.
+
+
+## 2026-09-30, P75: complementariedad de Word2Vec + TextCNN frente a V03, y fusion minima
+
+- `experiments/p75_01_complementariedad_textcnn.py`: OOF pareado de los dos modelos sobre
+  exactamente las mismas filas, con la particion canonica. El TextCNN usa `E*` como mediana de tres
+  splits internos por clusters y reentrena sobre el `outer_train` completo durante `E*` epocas
+  fijas. **La comprobacion de alineamiento pasa**: V03 recalculado desde la tabla pareada de 4449
+  unidades da `0.7772114525` exacto.
+- Resultado: **rescue 268, damage 813, net -545** en unidades tweet-etiqueta. Las tres etiquetas en
+  la misma direccion. El CNN corrige **268 de los 757 errores de V03 (35,4 por ciento)**, pero el
+  dano lo triplica. AUC del score del CNN sobre el error de V03: **HS 0,4872, TR 0,6045, AG
+  0,4973**.
+- Fusion con los tres alphas pre-registrados, todos negativos: 0,05 -> -0,0026005064; 0,10 ->
+  -0,0052438938; 0,15 -> -0,0080173237. Gate NO PASA. **VEREDICTO: CASO 5 `CNN_PERJUDICA`**.
+  **Finalista: ninguno.**
+- **Incidencia metodologica, conservada**: P75-01 perdio nueve de doce slices por unir la tabla de
+  anotaciones sin comprobar el tipo del identificador (parquet con `id` de texto frente a OOF con
+  `id` entero; interseccion cero; `reindex` a NaN; slices vacias saltadas por umbral).
+  `experiments/p75_02_slices_recuperadas.py` las recalcula desde el OOF pareado guardado, sin
+  reentrenar, leyendo solo la particion `dev`.
+- **Advertencia sobre tiempos**: la corrida esta contaminada por un proceso ajeno consumiendo CPU
+  (carga media 50,8 sobre 32 nucleos). El pliegue 1 tardo 624 s frente a 24 s de un intento previo
+  de la misma corrida. **Esos tiempos no se usan para ninguna comparacion.**
+- **La segunda particion NO se ejecuto**, porque no hubo finalista. La transferibilidad queda **sin
+  medir, no refutada**.
+- Validacion independiente del Kaggle Specialist: corrigio tres razonamientos propios (el techo
+  oraculo es casi vacuo; el AUC no es ~0,5 en todo; la justificacion "no se midio el modelo suelto"
+  era falsa) y cinco imprecisiones mas. Registrado en `DECISIONS.md` D-258. **Ningun numero cambia.**
+
+Sin push, sin merge, sin rebase.
