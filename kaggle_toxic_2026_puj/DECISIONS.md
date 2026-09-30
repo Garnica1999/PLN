@@ -7111,3 +7111,62 @@ candidato: la inicializacion a cero de la salida junto con la escala de la entra
 alternativa: verificar el skip-gram contra una implementacion de referencia antes de
   volver a sacar conclusiones
 ```
+
+
+## D-231 a D-233: el bug del Word2Vec, aislado con un corpus diminuto
+
+Fecha 2026-09-29. A peticion de Carlos, se aisla el bug con una prueba controlada.
+
+### D-231. La prueba que lo aisla
+
+Un corpus diminuto de **dos familias de diez palabras que nunca se mezclan**, y pares reales en
+vez de aleatorios. La prueba anterior fallaba porque usaba pares aleatorios, que son
+inaprendibles por construccion, y por eso la loss no se movia en ninguna configuracion.
+
+```text
+salida a CERO      lr 0,05   loss 1,3863 -> 1,3682
+salida a CERO      lr 0,5    loss 1,3863 -> 0,2094    APRENDE
+salida ALEATORIA   lr 0,05   loss 1,3860 -> 1,2290
+salida ALEATORIA   lr 0,5    loss 1,3860 -> 0,2063    APRENDE
+```
+
+Dos conclusiones:
+
+```text
+el forward y el backward SON CORRECTOS: con learning rate suficiente el modelo aprende
+la inicializacion a cero de la salida NO es fatal: solo hace falta que el paso sea grande
+```
+
+### D-232. El bug: el learning rate sin escalar por el lote
+
+Con la loss promediada sobre lotes de 8192, el gradiente es el **promedio**, o sea 8192 veces
+mas pequeno que el gradiente por ejemplo que usa word2vec. El learning rate efectivo por
+ejemplo era `0,025/8192 = 3e-6`, en vez de `0,025`.
+
+**Los cuatro intentos anteriores fallaron porque los cuatro probaban otra cosa**: la escala de
+la entrada, el optimizador, el tamano del lote sin escalar el learning rate, y el decaimiento.
+Ninguno tocaba el cociente entre el learning rate y el lote.
+
+La correccion es la regla de escalado lineal: `lr = 0,025 x lote`. Con lote 256, `lr = 6,4`.
+Se anade ademas la inicializacion aleatoria de la salida.
+
+### D-233. La correccion funciona
+
+```text
+twitter   loss 1,272136 -> 1,174189 -> 1,132058 -> 1,108284 -> 1,095145
+general   loss 1,254160 -> 1,140164 -> 1,094067 -> ...
+```
+
+Comparado con las corridas rotas:
+
+```text
+Adam           1,706 -> 1,811 -> 1,842 -> 1,866 -> 1,884      SUBE
+SGD sin arreglo 1,386295 constante en las cinco epocas        CLAVADA
+SGD corregido   1,272136 -> ... -> 1,095145                   BAJA
+```
+
+**La loss baja monoticamente en los dos corpus.** Los modelos se guardan como
+`w2v_<corpus>_lrfix.npz` y son los que hay que usar en el downstream.
+
+Queda pendiente relanzar el downstream con estos modelos. Los numeros del downstream anterior
+siguen marcados como invalidados.
