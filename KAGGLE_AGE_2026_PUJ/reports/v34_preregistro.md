@@ -123,3 +123,23 @@ inercia) o los pesos desbordan (D-083, divergencia).
 - Coste esperado ~590 s con presupuesto declarado de 1200 s; RSS < 1.5 GB con tope 20 GB medido con `ru_maxrss`; checkpoints por fold y por brazo con escritura atomica.
 - Referencia de variabilidad de entrenamiento: 0.0008876.
 - La exploracion previa tardo 454 s con RSS 0.56 GB.
+
+## Enmienda pre-ejecucion 2 (2026-09-30)
+
+- **Control A2**: `fit(max_iter=P_MAX=10, ...)` en una sola llamada pasa a `partial_fit` x 10, una por
+  orden congelado de cada pasada. Motivo (medido en /tmp por el implementador): `BaseSGDClassifier._fit` hace
+  `self.t_ = 1.0` en cada llamada, luego `fit(max_iter=1, warm_start=True)` repetido reinicia el schedule 10 veces y queda en
+  `t_ = 401` en vez de `t_ = 4001`; el control recibiria un presupuesto de un orden de magnitud menor que A1. Con
+  `partial_fit` el `t_` se acumula y se alcanza `t_ = 4001`, identico al de `fit(max_iter=10)`.
+- **Desvio declarado**: `partial_fit` x 10 no es identico bit a bit a `fit(max_iter=10)` (4.5e-5 a 2 pasadas y 2.0e1 a 4 pasadas en un
+  problema sintetico, por el contabilizado interno de la primera epoca). Es la unica via que permite el ES por pasada que el
+  protocolo exige (`P_min = 3`, paciencia 2, restaurar el mejor `coef_`) y mantiene el presupuesto de 10 pasadas.
+- No cambia gates, puerta, regla de alpha ni criterio de exito. Sin resultados: enmienda **pre-ejecucion**.
+
+## Enmienda pre-ejecucion 3 (2026-09-30)
+
+- **Fidelidad de la representacion**: el pre-registro de V34 congelo `token_pattern` con dobles backslashes (typo mio), de modo que el
+  sha256 del dict del vectorizador era `33311e5eddc0b0bb...` en lugar del canonico `9bae157614458dbd...`. Se restaura
+  la receta canonica de `v31_02_banco_representaciones.py`: `token_pattern = (?u)\b\w\b` y el sha256 vuelve al valor canonico.
+- El check de no-deriva del runner (comparacion de su espejo con el JSON) fue quien lo detecto. No cambia ninguna otra
+  constante, ningun gate, ni la puerta, ni la regla de alpha. Sin resultados: pre-ejecucion.

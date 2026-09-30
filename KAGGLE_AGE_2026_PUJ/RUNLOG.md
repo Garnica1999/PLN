@@ -2291,3 +2291,20 @@ intacto.
 - La falsacion se reproduce DENTRO del runner; las 27 celdas NO se repiten.
 - Baseline recomputado: 0.6159732; ancla trivial: 0.0485421218068709. Sin test, sin holdout,
   sin submission, campeon intacto.
+
+---
+
+## Enmienda pre-ejecucion 2 de V34-E1 · 2026-09-30
+
+- El control A2 pasa de `fit(max_iter=10)` unico a `partial_fit` x 10 (una por orden congelado): medido en /tmp,
+  `fit(max_iter=1, warm_start=True)` repetido reinicia `self.t_ = 1.0` en cada llamada y queda en `t_ = 401` en vez de
+  `t_ = 4001`, luego no era un presupuesto de 10 pasadas. Desvio declarado: `partial_fit` x 10 no es bit-identico a `fit(max_iter=10)`.
+- Sin resultados; no cambia gates, puerta ni regla de alpha.
+
+---
+
+## Enmienda pre-ejecucion 3 de V34-E1 · 2026-09-30
+
+- `token_pattern` del vectorizador restaurado a la receta canonica de v31_02 (el pre-registro de V34 lo
+  congelo con un typo de dobles backslashes); sha256 del dict: 33311e5e -> 9bae1576 (canonico). Detectado por el check
+  de no-deriva del runner. Sin resultados.

@@ -17,7 +17,7 @@
   "hashes": {
     "corpus_archivo": "39c6c8270366fe155f3c8dd232e31867bee659af8908121d04b6bd89bd163748",
     "corpus_textos": "53c1a348a7954f3e59d7c67caddd6477a06f7d3441724c201052b4b5273445fc",
-    "vectorizador": "33311e5eddc0b0bbfd07505b9ed3474bb824d1b41fac92d3d7bfd3fd902ba977",
+    "vectorizador": "9bae157614458dbdf26fb7aed4c78d2954c36e895f830341e59b23fa63e2b51b",
     "manifest_canonico": "8881a9f53e8613aa943681e7fd9a42a3a281aa66b5d7c796d13d2758c6226076",
     "exploracion_script": "9d898ab8cf5908effd119fe78047cd0ee1375a2958539f8e4c4ab0468fe3e457",
     "exploracion_json": "92d24f8545c6b50ba2c3dda4f9e09e18298a4d18f596aa9d51a0ebe56d0b5753",
@@ -146,7 +146,7 @@
       "sublinear_tf": true,
       "lowercase": true,
       "strip_accents": null,
-      "token_pattern": "(?u)\\\\b\\\\w+\\\\b"
+      "token_pattern": "(?u)\\b\\w+\\b"
     },
     "norm_dtype": "defaults de sklearn (norm='l2', dtype float64)",
     "ajuste": "POR FOLD: fit solo en ES-train (el 10 % del fold-train va al ES interno y NO se vectoriza con el) — declarado por coherencia con la regla de alpha, que se deriva sobre las filas que se entrenan",
@@ -216,6 +216,20 @@
       "alpha_reg_sgd": 1e-06,
       "no_equivalencia_estructural": "con lambda2 = 1e-6 el L2-en-acumulador y el L2-en-denominador dan resultado IDENTICO (es un no-op, medido en la exploracion previa): por eso no existe una equivalencia FTRL<->SGD a escala 1e-6",
       "sonda_exigida": "publicar que el veredicto NO se apoya en esta asimetria: el cierre se sostiene en A1 frente a la DERIVACION (la regla y la exploracion), no en A1 frente a A2"
+    },
+    "ajuste": {
+      "modo": "partial_fit_por_pasada",
+      "llamadas": 10,
+      "t_acumulado": "t_ se acumula entre llamadas (401 si se usara fit repetido, por el reinicio de self.t_ en BaseSGDClassifier._fit)",
+      "es_por_pasada": true,
+      "restaura_mejor_coef": true,
+      "max_iter": null,
+      "nota": "el numero de pasadas (10) es el que el pre-registro congelo; lo que se corrige es como se ejecuta, porque fit(max_iter=1, warm_start=True) no acumula el schedule"
+    },
+    "desvio_declarado_partial_fit": {
+      "no_bit_identico_a_fit_max_iter_10": true,
+      "medicion": "4.5e-5 a 2 pasadas y 2.0e1 a 4 pasadas en un problema sintetico",
+      "motivo_de_la_eleccion": "es la unica via que permite evaluar el early stopping despues de cada pasada, que el pre-registro exige (P_min 3, paciencia 2, restaurar el mejor coef_), y da el mismo presupuesto que A1"
     }
   },
   "puerta": {
@@ -395,5 +409,27 @@
     "runner": "scripts/v34_01_ftrl_softmax_multipasada.py -> experiments/v34_01_ftrl_softmax_multipasada.json, experiments/v34_01_estado.json, artifacts/p34_scores/v34_e1/{a1_ftrl_multipasada,a2_sgd_multipasada}.npy, checkpoints/v34_e1/fold{k}_{brazo}.npz (w, z, n, pasada_de_parada) con escritura atomica, reports/v34_e1_ftrl_multipasada.md, reports/figures/v34_e1_curvas.png, reports/v34_novelty_registry.csv (NUEVO), fila anexada en reports/age_complete_experiment_history.csv, RUNLOG.md y fila V34-E1 en experiments.csv",
     "acta": "D-085 con: clasificacion de triage, tabla de las 27 celdas y su lectura, anclas M/d_norm/P_max con sensibilidad, tabla de simetria de sesgo, estado de sondas (a)-(j), lista de miembros de familia cubiertos vs no cubiertos, y confirmacion de que NO se toco p33_scores/todos ni v33_01, sin submission, sin LB y sin segunda particion",
     "rutas_prohibidas": "artifacts/p33_scores/todos/** y cualquier script ya ejecutado"
-  }
+  },
+  "enmiendas": [
+    {
+      "fecha": "2026-09-30",
+      "objeto": "control.a2_sgd.ajuste (presupuesto de 10 pasadas)",
+      "de": "fit(max_iter=P_MAX=10, tol=None, shuffle=False) en una sola llamada por fold",
+      "a": "partial_fit x 10, una llamada por orden congelado de cada pasada, con t_ acumulado, ES evaluado despues de cada pasada y restauracion del mejor coef_",
+      "motivo": "defecto medido de API: BaseSGDClassifier._fit hace self.t_ = 1.0 en cada llamada, luego fit(max_iter=1, warm_start=True) repetido reinicia el schedule 10 veces y queda en t_ = 401 (medido) en vez de t_ = 4001; el control recibiria un presupuesto de un orden de magnitud menor que A1",
+      "medicion": "t_ = 401 con fit repetido; t_ = 4001 con partial_fit y con fit(max_iter=10); diferencias partial_fit vs fit(max_iter=10): 4.5e-5 a 2 pasadas y 2.0e1 a 4 pasadas en un problema sintetico",
+      "desvio_declarado": "partial_fit x 10 no es identico bit a bit a fit(max_iter=10); es la unica forma de evaluar el ES por pasada que el protocolo exige, y mantiene el presupuesto de 10 pasada declarado",
+      "afecta_a_gates": false,
+      "estado_datos": "sin resultados; enmienda pre-ejecucion"
+    },
+    {
+      "fecha": "2026-09-30",
+      "objeto": "representacion.vectorizador.token_pattern (fidelidad de la receta canonica)",
+      "de": "(?u)\\\\b\\\\w\\\\b (dobles backslashes: typo del pre-registro; sha256 del dict 33311e5eddc0b0bb)",
+      "a": "(?u)\\b\\w+\\b (receta canonica de v31_02_banco_representaciones.py, usada por v32_04, v33_00, el runner v34_01 y la exploracion previa; sha256 del dict 9bae157614458dbd)",
+      "motivo": "el pre-registro de V34 se apartaba de la representacion canonica del proyecto por un typo mio; el check de no-deriva del runner lo detecto al comparar su espejo con el JSON",
+      "afecta_a_gates": false,
+      "estado_datos": "sin resultados; enmienda pre-ejecucion"
+    }
+  ]
 }
