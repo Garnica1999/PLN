@@ -64,6 +64,13 @@ Referencia contra el campeon: V03 0.7772114525, delta -0.1681414426. **Esta comp
 | ELONGACION | 278 | 0.064059 | 0.025749 |
 | INSULTOS_lista_declarada | 649 | 0.034045 | 0.029547 |
 ## Complementariedad frente a V03
+
+> **ACLARACION (anadida en la revision de cierre, P73-04).** Los tres recuentos son un
+> **diagnostico**, NO una mejora del campeon. Estan en unidades **tweet-etiqueta** (1483 x 3
+> = 4449 celdas), no en la metrica agregada, y NO son comparables con `corrected_cv` ni con
+> ningun macro-F1. `net` es un recuento de celdas, no una ganancia de metrica. Mientras A no
+> supere al campeon no se evalua ninguna fusion, y la TextCNN queda 0.168 por debajo de V03.
+> V03 remains the best verified leaderboard result.
 rescue 2096 | damage 602 | net 1494
 ## Limites declarados
 - una sola semilla, por mandato explicito de esta fase: no se estima la varianza de inicializacion ni la del orden de lotes

@@ -1,0 +1,9 @@
+punto,resultado
+punto_1_mismas_filas,"{""cada_fila_en_un_pliegue"": true, ""tamanos"": [297, 297, 296, 296, 297], ""suma"": 1483, ""sin_solape"": true, ""particion_interna_determinista"": true}"
+punto_2_configuracion,"{""orden_de_lotes_identico"": true, ""estado_del_rng_identico"": true, ""mascarilla_dropout_observable_identica"": true, ""posiciones_observables"": 16652, ""acuerdos"": 16652, ""nota_metodo"": ""contar ceros en la salida del dropout esta confundido por los datos: nn.Dropout multiplica la entrada y las entradas de A y B difieren. Se compara la mascarilla observable y el estado del RNG, que es el invariante real"", ""init_comun_reutilizado"": true, ""batch"": 32, ""epocas"": 40, ""paciencia"": 6, ""kernels"": [2, 3, 4], ""maxlen"": 60, ""umbrales"": [0.44, 0.51, 0.46]}"
+punto_3_entrada,"{""ids"": [1483, 60], ""longitud_min"": 2, ""longitud_max"": 60, ""cobertura_por_ciento"": 68.6361, ""filas_sin_cobertura"": 70, ""ventanas_validas_por_kernel"": {""2"": 1483, ""3"": 1482, ""4"": 1476}, ""filas_sin_ventana_por_kernel"": {""2"": 0, ""3"": 1, ""4"": 7}, ""longitudes_efectivas"": [2, 3, 4]}"
+punto_4_diagnostico,"{""declarado_diagnostico"": true, ""fusion_no_evaluada"": true}"
+punto_5_unidades,"{""unidad"": ""tweet-etiqueta"", ""celdas"": 4449, ""recuento_verificado"": 4449, ""coherente"": true, ""rescue"": 2096, ""damage"": 602, ""net"": 1494}"
+punto_6_dependencias,"{""test_tocado"": false, ""holdout_tocado"": false, ""leaderboard_consultado"": false, ""submission_generada"": false}"
+punto_7_robustez,"{""P73_03_es_robustez_y_no_seleccion"": true, ""adenda_presente"": true, ""veredicto_de_robustez"": ""PARCIAL""}"
+veredicto,AUDITORIA_OK
