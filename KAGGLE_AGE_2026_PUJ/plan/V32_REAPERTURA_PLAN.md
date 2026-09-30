@@ -6,6 +6,41 @@ descartada por ILEGAL) y V34 **TERMINADA** (V34-E1 LINEA_ONLINE_CERRADA_POR_MECA
 D-085): la familia FTRL-Proximal queda cerrada por mecanismo. **Cinco candidatos medidos y
 ninguno pasa los gates.** Campeon V30 + plug-in (LB 0.63575) intacto; sin submission; sin test,
 holdout ni leaderboard.
+
+## Ciclo 6 - V35: dos vias (B: miembros NO CUBIERTOS de la familia FTRL; C1: representacion nueva) (2026-09-30)
+
+Carlos eligio **B + C1**. Restricciones heredadas: sin transformers/LLMs/embeddings (preentrenados
+o ENTRENADOS, incluidos vectores tematicos/latentes aprendidos); sin datos/etiquetas externos; sin
+metadatos; test solo transform->predict; holdout intocable; leaderboard sin tuning; un experimento =
+un script nuevo; pre-registro congelado; campeon V30 + plug-in (LB 0.63575) intacto; sin submission
+sin autorizacion.
+
+- [ ] **F1''''' VIA B (reinicio one-shot de la familia FTRL)**: D-085 cerro la familia por mecanismo y
+  declaro dos miembros **NO CUBIERTOS**: `lambda1 > 0` (el shrinkage L1 acota la norma y cambia el
+  punto fijo, que es justo lo que hacia inestable a FTRL) y pesos por clase con **L2 normalizado
+  fuera de FTRL** (geometria distinta: norma acotada como en SGD). Reiniciarla exige **acta nueva con
+  hipotesis mecanica nueva**, no otro gate. `ml-architect` la redacta con la hipotesis mecanica
+  explicita y el diseno; `kaggle-specialist` valida que el cierre one-shot de D-085 se respeta
+  (miembros fuera de la lista cerrada, sin reabrir lo ya cubierto).
+- [ ] **F2''''' VIA C1 (representacion nueva sin embeddings)**: nueva familia de representacion
+  textual **sin embeddings**: n-gramas de caracter/subpalabra, rasgos de forma, estilometria y lo que
+  el arquitecto audite como NO cubierto por los 39 mecanismos y las 6 familias linguisticas. Es la
+  linea con mejor historial real del proyecto (las familias linguisticas fueron las unicas que
+  generaron senal nueva, aunque pequena). Requiere **ruling** si alguna variante roza "embedding
+  aprendido" (p.ej. tema_latente, SVD denso, NMF/LDA): el pre-registro debe declararlo y el
+  especialista falla si no es defendible. Auditoria de novedad obligatoria (codebase-memory + grep).
+- [ ] **F3''''' Orden de ejecucion**: B primero (es el reinicio one-shot ya autorizado y su evidencia
+  cierra la familia de forma definitiva), despues C1. Un experimento + su control por ciclo; sin
+  grids; cada uno con pre-registro congelado, `ml-coder`, `ml-reviewer`, `ml-qa-engineer` (GO/NO-GO) y
+  `ml-trainer`. Cierre documentado por experimento (D-086 para B, D-087 para C1) con notebook, docs,
+  registros de novedad, memorias y commits.
+- [ ] **F4''''' Cierre del ciclo**: actualizar `PROJECT_STATE.md`, `FINAL_REPORT.md`,
+  `DECISIONS.md`, RUNLOG, `experiments.csv` y este plan; re-indexar codebase; cierre de linea
+  documentado para la via C1 si su veredicto lo procede.
+
+**Restricciones de honestidad que se mantienen**: la calibracion del proyecto da LB ~ 0.00223 +
+1.02825 x CV, luego un salto de +0.0626 de CV llevaria a LB 0.70; ninguna de las dos vias tiene
+presupuesto para tanto, y sus expectativas honestas se fijaran en F1''''' antes de ejecutar nada.
 Campeon congelado (FINAL_REFERENCE): **V30 + plug-in por clase**, LB 0.63575
 (CV global 0.6159732; nested 0.6154643; particion canonica).
 Objetivo del usuario: mejorar el puntaje de Kaggle; referencia declarada: acercarse a 0.70 de F1.
