@@ -4568,6 +4568,309 @@ def construir_json(afirmaciones: list, contexto: dict, huella_antes: dict, huell
     }
 
 
+class Ausente(str):
+    """Cadena que ademas sabe comportarse como el contenedor del que viene.
+
+    El redactor del markdown cita muchas claves de las medidas. Si una falta, un `KeyError`
+    revienta el informe entero DESPUES de que el JSON ya esta escrito en su temporal, y el
+    renombrado atomico no ocurre: se pierde un informe entero por una clave. Con esta clase,
+    toda lectura ausente devuelve una cadena, que al imprimirse dice `no disponible`, se puede
+    unir con `join` y se puede formatear, y los contenedores siguen siendo recorribles.
+
+    Es una SUBCLASE DE str a proposito: el redactor mezcla estas lecturas con literales en
+    `join`, en comparaciones y en f-strings, y un objeto que solo sabe imprimirse no llega. Los
+    escalares que SI existen se devuelven tal cual, sin envolver, para no estropear `join` ni las
+    sumas; solo se envuelven los contenedores, y se envuelven al acceder, no de entrada.
+
+    No tapa un valor ERRONEO: solo convierte la ausencia en texto visible. Un `no disponible`
+    en el markdown se ve; una linea que falta no.
+
+    Attributes:
+        valor: el contenedor real, o None si no hay nada.
+        ruta: camino de claves desde la raiz, para poder nombrar la ausencia.
+    """
+
+    def __new__(cls, texto: str = "no disponible", valor=None, ruta: str = ""):
+        """Construye la cadena con su contenedor asociado.
+
+        Args:
+            texto: lo que se imprime.
+            valor: el contenedor real envuelto, o None si no hay.
+            ruta: camino de la clave pedida.
+
+        Returns:
+            La instancia, que ya es una cadena.
+        """
+        objeto = super().__new__(cls, texto)
+        objeto.valor = valor
+        objeto.ruta = ruta
+        return objeto
+
+    def _ruta(self, clave) -> str:
+        """Construye la ruta de una clave hija.
+
+        Args:
+            clave: la clave hija.
+
+        Returns:
+            La ruta completa hasta esa clave.
+        """
+        return f"{self.ruta}/{clave}"
+
+
+class Lista(list):
+    """Lista con acceso tolerante: un indice de tipo texto da la marca de ausencia.
+
+    La hereda de `list` de verdad, luego `len`, el recorrido, las rebanadas y los indices
+    enteros se comportan como en una lista normal, y solo se intercepta el acceso por una clave
+    de texto, que en una lista real no significa nada.
+
+    Attributes:
+        ruta: camino desde la raiz, para nombrar las ausencias.
+    """
+
+    def __new__(cls, elementos=(), ruta: str = ""):
+        """Construye la lista con su ruta.
+
+        Args:
+            elementos: contenido inicial.
+            ruta: camino desde la raiz.
+
+        El contenido se mete con `extend` y no pasandolo a `list.__new__`: al redefinir
+        `__init__`, `super().__new__(cls, elementos)` deja la lista VACIA en vez de llenarla, y
+        eso no lanza error: las columnas del informe salen vacias sin avisar.
+
+        Returns:
+            La instancia, que ya es una lista con su contenido.
+        """
+        objeto = list.__new__(cls)
+        objeto.ruta = ruta
+        objeto.extend(elementos)
+        return objeto
+
+    def __init__(self, elementos=(), ruta: str = "") -> None:
+        """No hace nada: el contenido ya lo pone `__new__`.
+
+        Sin esto, `list.__init__` recibiria tambien la ruta y fallaria al construirse la
+        subclase, que es un error facil de no ver y solo aparece al usar la clase.
+
+        Args:
+            elementos: contenido inicial, ya aplicado en `__new__`.
+            ruta: camino desde la raiz, ya aplicado en `__new__`.
+        """
+        del elementos, ruta
+
+    def __getitem__(self, indice):
+        """Acceso por indice, o marca de ausencia si se pide una clave.
+
+        Args:
+            indice: entero, rebanada o clave de texto.
+
+        Returns:
+            El elemento envuelto, o `no disponible` si se pidio una clave de texto.
+        """
+        if isinstance(indice, str):
+            return Ausente("no disponible", None, f"{self.ruta}/{indice}")
+        return envolver(list.__getitem__(self, indice), self.ruta)
+
+    def __repr__(self):
+        """Representacion para depuracion.
+
+        Returns:
+            Texto con la ruta y el numero de elementos.
+        """
+        return f"Lista({self.ruta}, elementos={len(self)})"
+
+
+def envolver(valor, ruta: str):
+    """Envuelve un valor solo si es un contenedor; los escalares se dejan intactos.
+
+    Un diccionario se envuelve en `Tolerante` para que el acceso anidado siga siendo tolerante,
+    y una lista o tupla en `Lista`. Un escalar se devuelve tal cual, sin envolver, para no
+    estropear ni los `join` ni las sumas del redactor.
+
+    Args:
+        valor: valor de partida.
+        ruta: camino hasta el, para nombrar las ausencias.
+
+    Returns:
+        El valor envuelto si es contenedor, o el valor mismo si es escalar.
+    """
+    if isinstance(valor, dict):
+        return Tolerante(valor, ruta)
+    if isinstance(valor, (list, tuple)):
+        return Lista(valor, ruta)
+    return valor
+
+
+class Tolerante:
+    """Vista tolerante de un diccionario: ninguna lectura ausente lanza excepcion.
+
+    Se envuelve de forma RECURSIVA en cada acceso, no una sola vez: por eso basta con envolver
+    la raiz para que las noventa y nueve lecturas anidadas del redactor queden tolerantes.
+
+    Attributes:
+        valor: el diccionario real envuelto, o None.
+        ruta: camino desde la raiz, para nombrar las ausencias.
+    """
+
+    def __init__(self, valor, ruta: str = "raiz") -> None:
+        """Construye la vista.
+
+        Args:
+            valor: diccionario real envuelto, o None si no hay.
+            ruta: camino desde la raiz.
+        """
+        self.valor = valor if isinstance(valor, dict) else None
+        self.ruta = ruta
+
+    def __getitem__(self, clave):
+        """Acceso anidado que nunca lanza KeyError.
+
+        Args:
+            clave: clave que se pide.
+
+        Returns:
+            El valor envuelto si existe, o una cadena `no disponible` con su ruta.
+        """
+        nueva = f"{self.ruta}/{clave}"
+        if self.valor is not None and clave in self.valor:
+            return envolver(self.valor[clave], nueva)
+        return Tolerante(None, nueva)
+
+    def get(self, clave, defecto=None):
+        """Acceso con defecto explicito, para los sitios que aritmetizan.
+
+        Args:
+            clave: clave que se pide.
+            defecto: valor a devolver si no existe.
+
+        Returns:
+            El valor envuelto si existe, o el defecto tal cual.
+        """
+        if self.valor is not None and clave in self.valor:
+            return envolver(self.valor[clave], f"{self.ruta}/{clave}")
+        if defecto is None:
+            return Tolerante(None, f"{self.ruta}/{clave}")
+        return defecto
+
+    def values(self):
+        """Valores de un diccionario, vacio si no hay.
+
+        Returns:
+            Lista de valores, con los contenedores ya envueltos.
+        """
+        if self.valor is None:
+            return []
+        return [envolver(v, f"{self.ruta}/{clave}")
+                for clave, v in self.valor.items()]
+
+    def items(self):
+        """Pares `(clave, valor)` de un diccionario, vacio si no hay.
+
+        Devuelve pares de verdad y no solo los valores: `escribir_markdown` recorre
+        `veredictos_por_hallazgo.items()` desempaquetando dos, luego devolver una lista de
+        valores haria que la clave se tomara por el valor.
+
+        Returns:
+            Lista de tuplas `(clave, valor_envuelto)`.
+        """
+        if self.valor is None:
+            return []
+        return [(clave, envolver(v, f"{self.ruta}/{clave}"))
+                for clave, v in self.valor.items()]
+
+    def keys(self):
+        """Claves del diccionario, vacio si no hay.
+
+        Returns:
+            Lista de claves.
+        """
+        return list(self.valor) if self.valor is not None else []
+
+    def __iter__(self):
+        """Iteracion sobre los valores envueltos, vacia si no hay.
+
+        Returns:
+            Iterador de valores.
+        """
+        return iter(self.values())
+
+    def __len__(self):
+        """Numero de claves, cero si no hay.
+
+        Returns:
+            Cuantas claves hay.
+        """
+        return len(self.valor) if self.valor is not None else 0
+
+    def __bool__(self):
+        """Verdadero solo si hay un diccionario real con algo dentro.
+
+        Returns:
+            False si no hay diccionario o esta vacio.
+        """
+        return bool(self.valor)
+
+    def __contains__(self, clave) -> bool:
+        """Pertenencia sin lanzar.
+
+        Args:
+            clave: clave consultada.
+
+        Returns:
+            True si la clave existe.
+        """
+        return self.valor is not None and clave in self.valor
+
+    def __str__(self):
+        """Texto del valor real, o la marca de ausencia.
+
+        Returns:
+            La representacion del valor, o `no disponible`.
+        """
+        if self.valor is None:
+            return "no disponible"
+        return str(self.valor)
+
+    def __format__(self, spec):
+        """Formato con cualquier especificador, sin lanzar.
+
+        Args:
+            spec: especificador de formato.
+
+        Returns:
+            El valor formateado, o la marca de ausencia.
+        """
+        if self.valor is None:
+            return "no disponible"
+        try:
+            return format(self.valor, spec)
+        except (TypeError, ValueError):
+            return str(self.valor)
+
+    def __repr__(self):
+        """Representacion para depuracion.
+
+        Returns:
+            Texto con la ruta y el numero de claves.
+        """
+        return f"Tolerante({self.ruta}, claves={len(self)})"
+
+
+def tolerante(valor, ruta: str = "raiz") -> Tolerante:
+    """Envuelve un diccionario para que toda lectura ausente no reviente el redactor.
+
+    Args:
+        valor: diccionario de partida.
+        ruta: camino desde la raiz, para nombrar las ausencias.
+
+    Returns:
+        Vista tolerante del diccionario.
+    """
+    return Tolerante(valor, ruta)
+
+
 def escribir_markdown(afirmaciones: list, informe: dict) -> list:
     """Construye el markdown del informe, linea a linea, en ASCII puro.
 
@@ -4578,7 +4881,8 @@ def escribir_markdown(afirmaciones: list, informe: dict) -> list:
     Returns:
         Lista de lineas del markdown.
     """
-    por_id = {a["afirmacion"]: a for a in afirmaciones}
+    informe = tolerante(informe, "informe")
+    por_id = tolerante({a["afirmacion"]: a for a in afirmaciones}, "afirmaciones")
     a3, a4, a5 = por_id["A3"], por_id["A4"], por_id["A5"]
     a7, a8 = por_id["A7"], por_id["A8"]
     a9, a10 = por_id["A9"], por_id["A10"]
@@ -4593,7 +4897,7 @@ def escribir_markdown(afirmaciones: list, informe: dict) -> list:
     numeros_no_comparables = ", ".join(
         f"{clave} {valor}" for clave, valor
         in a14["consecuencia_obligatoria"]["numeros_no_comparables"].items())
-    apariciones_packing = sum(f["apariciones_de_pack_padded_sequence"]
+    apariciones_packing = sum(float(f.get("apariciones_de_pack_padded_sequence", 0) or 0)
                               for f in a15["medida"]["ficheros"].values())
     linea_a16 = (f"- A16, sonda de relleno: estado {a16['medida'].get('estado_de_la_sonda')}, "
                  f"resultado {a16.get('estado_del_hallazgo', 'sin dato')}, con el umbral fijado "
@@ -5212,6 +5516,41 @@ def json_con_clave_de_forma() -> dict:
             "otro": {"shape": [3, 4]}}
 
 
+def markdown_falso_para_humo() -> tuple:
+    """Un `afirmaciones` y un `informe` con una medida a la que le falta una clave.
+
+    Reproduce la clase exacta de fallo que se llevo por delante el informe completo: el JSON se
+    escribe bien, y al redactar el markdown una clave de `medida.cobertura` ya no existe y el
+    redactor revienta. Aqui la clave que falta es `claves_json_recorridas`, la misma, y la
+    medida de A3 va VACIA, que es el caso peor: no falta una clave suelta, falta el arbol entero.
+
+    Returns:
+        Tupla con la lista de afirmaciones y el informe, ya defectuosos.
+    """
+    afirmaciones = [
+        {"afirmacion": "A3", "hallazgo": "H1", "naturaleza": "CONFIRMAR",
+         "tolerancia": 1e-12, "veredicto": "CONFIRMADO",
+         "que_se_afirma": "medida vacia a proposito", "medida": {}},
+        {"afirmacion": "A12", "hallazgo": "H4", "naturaleza": "CONFIRMAR",
+         "tolerancia": "no aplica", "veredicto": "CONFIRMADO",
+         "que_se_afirma": "medida sin la clave que se llevo el informe",
+         "medida": {"cobertura": {"npz_inspeccionados": 19, "json_inspeccionados": 320,
+                                  "bytes_leidos_en_total": 412987}}},
+    ]
+    informe = {
+        "pre_registro": {"ruta": "docs/x.md", "sha256": "aa", "sha256_recomputado": "aa",
+                         "coincide": True},
+        "veredictos_por_hallazgo": {"H1": {"estado": "CONFIRMADO", "afirmaciones": ["A3"]},
+                                    "H4": {"estado": "CONFIRMADO", "afirmaciones": ["A12"]}},
+        "correccion_de_p79": {"principio": "principio de prueba", "correcciones": []},
+        "limites_declarados": [],
+        "artefacto_congelado": {"antes_de_la_primera_lectura": {"sha256": "s1"},
+                                "despues_de_la_ultima_lectura": {"sha256": "s1"},
+                                "intacto": True},
+    }
+    return afirmaciones, informe
+
+
 def ejecutar_pruebas_de_humo() -> int:
     """Corre las pruebas de humo con datos sinteticos, sin leer nada del proyecto.
 
@@ -5577,6 +5916,45 @@ def ejecutar_pruebas_de_humo() -> int:
               == [])
     comprobar("el verificador ASCII no encuentra bytes mayores que 127 en el script",
               verificar_ascii_byte_a_byte([Path(__file__)])[Path(__file__).name])
+    # --- el redactor del markdown tiene que tolerar medidas incompletas ---
+    try:
+        lineas_md = escribir_markdown(*markdown_falso_para_humo())
+        texto_md = "\n".join(lineas_md)
+        redactor_no_revienta = True
+        detalle_excepcion = ""
+    except Exception as exc:  # noqa: BLE001
+        lineas_md, texto_md = [], ""
+        redactor_no_revienta = False
+        detalle_excepcion = f"{type(exc).__name__}: {exc}"
+    comprobar("el redactor del markdown no revienta con una clave de medida ausente",
+              redactor_no_revienta)
+    comprobar("el redactor pone el texto por defecto en vez de romperse",
+              "no disponible" in texto_md and lineas_md)
+    comprobar("el redactor con medidas incompletas conserva la frase de formulacion",
+              FORMULACION in texto_md)
+    comprobar("el redactor con medidas incompletas sigue dando los 7 hallazgos y las 19 filas",
+              "| Hallazgo | Estado | Afirmaciones |" in texto_md
+              and "| Id | Hallazgo | Naturaleza | Tolerancia | Veredicto |" in texto_md
+              and "A3" in texto_md and "A12" in texto_md)
+    comprobar("el redactor con medidas incompletas no deja la KeyError original",
+              "claves_json_recorridas" not in detalle_excepcion)
+    comprobar("el acceso tolerante NO vacia una lista que si tiene contenido: una lista "
+              "construida con super().__new__ queda vacia sin lanzar y eso vacia columnas del "
+              "informe en silencio",
+              len(tolerante({"k": ["a", "b"]})["k"]) == 2
+              and ", ".join(tolerante({"k": ["a", "b"]})["k"]) == "a, b")
+    comprobar("el acceso tolerante devuelve los pares clave valor de items()",
+              [c for c, _ in tolerante({"a": 1, "b": 2}).items()] == ["a", "b"])
+    comprobar("el acceso tolerante encadena subscript sobre una clave ausente",
+              str(tolerante({"a": {}})["a"]["b"]["c"]) == "no disponible")
+    comprobar("el acceso tolerante deja intactos los escalares que si existen",
+              tolerante({"n": 7})["n"] == 7
+              and isinstance(tolerante({"n": 7})["n"], int))
+    comprobar("el acceso tolerante marca la ausencia con su texto exacto",
+              str(tolerante(None, "x")["y"]["z"]) == "no disponible"
+              and float(tolerante(None).get("k", 0)) == 0.0
+              and list(tolerante(None).values()) == [])
+
     recuento = leer_recuentos_del_holdout()
     comprobar("la lectura del holdout no deserializa y solo lee los campos permitidos",
               recuento["documento_deserializado"] is False

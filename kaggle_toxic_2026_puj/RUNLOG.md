@@ -3552,3 +3552,157 @@ como evidencia huerfana. Vuelve a ml-coder por la clave `claves_json_recorridas`
 ```text
 V03 remains the best verified leaderboard result.
 ```
+
+## 2026-09-30, P80 tercera corrida: informe publicado. 19 de 19 y 7 de 7
+
+### Lo que se ejecuto
+
+Comando: `/home/carlos/venv/bin/python -B experiments/p80_01_auditoria_w2v.py`, version
+`201dcccbdd5e7169127b9d0a6772092d40d9edf74b002d063c5d2da4cde7482f`, 6361 lineas, 70 de 70 en
+`--humo`. **Sin fallos, sin traceback, sin STOP.** Codigo de salida **0**.
+
+Duracion: **2 s**, de 22:11:18 a 22:11:20 UTC. Cronometro interno 1.803 s: test1 0.000, test2 0.019,
+test3 0.294, test4 0.555, test5 0.061, test6 0.171, test7 0.059, figuras 0.627 e informe 0.017.
+
+Pre-registro `440ab13c610e1bcf35a0b00f096699f738bc59480240dbd934e6c5f3e2f7c81f` verificado y sin cambios.
+Artefacto congelado `302c994d13b75f8f5fbd440eea2c4f4113997e2581524021923b92f8244d705a`, 29478868 bytes,
+verificado ANTES de la primera lectura y DESPUES de la ultima, intacto. **El script no se edito.**
+
+### Publicacion
+
+```text
+reports/p80_auditoria_w2v.json  174656 B  sha256 27efa9a37a755464b121581110a333831bfdf5f3acf63f092f8086503f6ad8e6
+reports/p80_auditoria_w2v.md     11657 B  sha256 f8bab0dd93dd6eb299a9b04d89083ef380c882d1d382bfd396d7e47c66ce4e8f
+figuras/p80/  3 PNG, firmas verificadas
+```
+
+Las dos salidas se publicaron por **renombrado atomico**, y la asercion ASCII del propio script paso
+byte a byte sobre el script, el json temporal y el markdown temporal. El JSON publicado lleva ya la
+asercion ASCII final y la firma de los tres PNG, que en la segunda corrida no llegaban a escribirse.
+
+**El `.tmp_p80` viejo ya no existe**, y no lo borre yo. El script reutiliza la misma ruta temporal, la
+vacio con el JSON de esta corrida y la renombro sobre el `.json`. El contenido de la segunda corrida
+sigue en la historia de git, en el commit `c317794`, con sha256
+`890bbb1037b3034a893e88634b5db261a2d9f6acad278722d32c6a00007c834f`. No queda ningun temporal huerfano.
+
+### Las diecinueve afirmaciones y los siete hallazgos
+
+```text
+A1  CONFIRMADO  A2  CONFIRMADO  A3  CONFIRMADO  A4  CONFIRMADO  A5  CONFIRMADO   H1
+A6  CONFIRMADO  A7  CONFIRMADO  A8  CONFIRMADO                                 H2
+A9  CONFIRMADO  A10 CONFIRMADO                                                 H3
+A11 CONFIRMADO  A12 CONFIRMADO  A13 NO APLICABLE POR CONSTRUCCION              H4
+A14 CONFIRMADO                                                         H5
+A15 CONFIRMADO  A16 CONFIRMADO                                                 H6
+A17 CONFIRMADO  A18 CONFIRMADO  A19 CONFIRMADO                                 H7
+
+18 CONFIRMADO   0 REFUTADO   1 NO APLICABLE POR CONSTRUCCION   0 STOP   0 sin ejecutar
+H1 H2 H3 H4 H5 H6 H7 = CONFIRMADO
+```
+
+### El markdown no sale vacio, y eso se ha comprobado
+
+El bug anterior hacia tablas de afirmaciones **vacias y en silencio**, asi que no me basta con que el
+fichero exista. Cuenta de filas de tabla en `reports/p80_auditoria_w2v.md`:
+
+```text
+filas de afirmaciones que empiezan por | A   = 19
+filas de hallazgos que empiezan por | H       =  7
+```
+
+Y estan **pobladas**, no husk: cada fila de afirmacion lleva id, hallazgo, naturaleza, tolerancia y
+veredicto, y cada fila de hallazgo lleva estado y lista de afirmaciones. Ejemplos literales:
+
+```text
+| A5  | H1 | REFUTAR | no aplica: es una correccion de una asercion indebida, no una medicion | **CONFIRMADO** |
+| A13 | H4 | NO APLICABLE POR CONSTRUCCION | ... | **NO APLICABLE POR CONSTRUCCION** |
+| H6  | CONFIRMADO | A15, A16 |
+```
+
+Aparece **una sola** vez el marcador `no disponible`, en la linea de A12, y es legitimo: el
+arreglo de A12 quito `claves_json_recorridas` de `medida.cobertura` y la vista tolerante del
+redactor devuelve `no disponible` ante una clave ausente en vez de reventar. La frase queda
+`Ficheros JSON de reports/: 320, con no disponible claves recorridas`. Ninguna cifra real se vacio.
+
+### Reproducibilidad: las diecinueve medidas son identicas a la segunda corrida
+
+Comparacion del JSON de esta corrida contra el de la segunda, sacado de `c317794`, clave por clave:
+
+```text
+afirmaciones cuya medida difiere:  0 de 19
+afirmaciones cuyo veredicto difiere: 0 de 19
+veredictos_por_hallazgo identico: True
+```
+
+Las cifras que sostienen los hallazgos, las mismas:
+
+```text
+A7  solo_en_el_plan [20261016]   solo_en_el_entrenamiento [20261021]
+A8  total_lotes_plan 1395   total_lotes_recorridos 1398
+A12 n_candidatos 0
+A16 distancia_relativa_l2 0.08399328135684547
+A17 suma 1731   identidad_dev_mas_holdout se cumple True
+```
+
+La auditoria es determinista. Que dos corridas den medidas bit a bit identicas con dos versiones
+distintas del script es la mejor evidencia de que el arreglo del redactor toco solo la instrumentacion
+y no el calculo.
+
+### Lo que queda establecido
+
+**H2 CONFIRMADO.** `p72_01:92-95` planifica con `range(m.EPOCAS)` y `SEMILLA + ep`, o sea 20261016 a
+20261020; `p72_01:99-103` entrena con `enumerate(planes, start=1)` y `SEMILLA + ep`, o sea 20261017 a
+20261021. Los dos bucles se llaman `ep` y por eso P79 los clasifico juntos. Solo en el plan 20261016,
+solo en el entrenamiento 20261021. 1395 lotes planados frente a 1398 recorridos. El veredicto de P79
+era incorrecto.
+
+**H4 CONFIRMADO.** El congelado solo guarda `W`, la tabla de entrada, y una sola matriz. A12 da 0
+candidatos sobre 19 `.npz` por cabecera y 320 `.json`, con criterio de forma exacta `(77657, 100)`.
+A13 NO APLICABLE POR CONSTRUCCION: la tabla de salida no existe en ninguna parte, **no se sustituye en
+silencio por `W` y P80 no publica ninguna cifra sobre el artefacto**. Las cifras absolutas de P79
+describen un par `(E, S)` con `E = S = W` que nunca existio y **no son evidencia del estado final**.
+
+**H5 CONFIRMADO** en `v9_04` y `v10_11`: la metrica que decide cuando restaurar pesos es la del pliegue
+externo que despues se puntua, sin particion interna. **H6 CONFIRMADO**: la GRU corre antes de
+enmascarar (`v9_04:104-105`, `v10_11:170-171`), el efecto es de arrastre y no de explosion, y la sonda
+da 0.08399328135684547. **H7 CONFIRMADO**: DL-03 entreno sobre 1731 filas etiquetadas completas, y
+1483 + 248 = 1731, luego **el holdout v2 estaba dentro del pool** de la validacion cruzada.
+
+### Tres salvedades que el informe del script no lleva
+
+Se registran aqui porque un lector las necesita y el JSON no las publica. Las tres son **limitaciones
+del alcance**, no fallos de medicion.
+
+**Primera, la regla 3 de A19 es una apuesta por nombre, no una medicion.** El desempate por nombre
+puede clasificar como validacion un argumento que llega como parametro sin vinculacion local, por
+ejemplo `x_val`. Es **latente**: no se activa en ninguno de los tres ficheros reales, y ahi manda el
+vinculo local, que es lo correcto. Pero el mecanismo existe y depende del nombre.
+
+**Segunda, `asignaciones_del_llamante` usa `setdefault`.** Si un nombre se asigna dos veces, gana la
+primera y **no se marca ambiguedad**. Se comprobo que eso falla hacia el lado conservador, es decir
+devuelve REFUTADO y no sobre-detecta, que es el lado correcto para una afirmacion de auditoria. Aun
+asi la lectura queda parcial sin que el informe lo advierta.
+
+**Tercera, la sonda de A16 no mide los BiGRU reales.** La sonda corre sobre una red de prueba
+sintetica de 51 filas por 200 columnas, con la fila 0 a cero y semilla fija, no sobre los BiGRU de
+`v9_04` y `v10_11`. **La magnitud 0.08399328135684547 NO se extrapola** a los BiGRU reales: acredita
+que el defecto estructural de A15 tiene peso medible y que el efecto va en la direccion anunciada, y
+nada mas. El orden de las operaciones y el `padding_idx` de A15 si son medidas sobre el codigo real.
+
+### Fronteras respetadas
+
+```text
+test = 0   holdout = 0 identificadores deserializados   leaderboard = 0   submission = 0
+P71 a P79 sin tocar   V03 sin tocar   umbrales 0.44 / 0.51 / 0.46 sin tocar
+modelos/ sin escrituras   el congelado se abrio en solo lectura, con huella comprobada
+```
+
+### Estado
+
+P80 queda **cerrado y publicado**. Los siete hallazgos CONFIRMADO, las diecinueve afirmaciones
+medidas, informe en JSON y en markdown, tres figuras y ninguna escritura fuera de `reports/` y
+`figuras/p80/`.
+
+```text
+V03 remains the best verified leaderboard result.
+```

@@ -1,3 +1,67 @@
+<!-- P80-CERRADO 2026-09-30 -->
+## P80: cerrado y publicado. 19 de 19, 7 de 7 CONFIRMADO, informe en JSON y markdown
+
+```text
+A1..A12 CONFIRMADO   A13 NO APLICABLE POR CONSTRUCCION   A14..A19 CONFIRMADO
+18 CONFIRMADO   0 REFUTADO   1 NO APLICABLE   0 STOP   0 sin ejecutar
+H1 H2 H3 H4 H5 H6 H7 = CONFIRMADO
+corrida de 2 s, codigo de salida 0, sin fallos y sin traceback
+```
+
+```text
+reports/p80_auditoria_w2v.json  174656 B  27efa9a37a755464b121581110a333831bfdf5f3acf63f092f8086503f6ad8e6
+reports/p80_auditoria_w2v.md     11657 B  f8bab0dd93dd6eb299a9b04d89083ef380c882d1d382bfd396d7e47c66ce4e8f
+figuras/p80/  3 PNG, firmas verificadas
+publicados por renombrado atomico, asercion ASCII byte a byte sobre script, json y md
+```
+
+**El `.md` no sale vacio.** 19 filas de tabla de afirmaciones y 7 de hallazgos, todas pobladas. El
+bug anterior hacia tablas vacias en silencio, asi que se comprobo el contenido, no la existencia. Un
+unico `no disponible`, en la linea de A12, y es legitimo: `claves_json_recorridas` ya no existe en el
+esquema de A12 tras el arreglo.
+
+**Reproducible.** Las diecinueve medidas son **bit a bit identicas** a las de la segunda corrida, y los
+veredictos por hallazgo tambien. Dos versiones distintas del script, mismas medidas: los arreglos
+tocaron instrumentacion y no calculo.
+
+**H2 CONFIRMADO, y el veredicto de P79 era erroneo.** `p72_01:92-95` planifica con
+`range(m.EPOCAS)` y `SEMILLA + ep`, o sea 20261016 a 20261020; `p72_01:99-103` entrena con
+`enumerate(planes, start=1)` y `SEMILLA + ep`, o sea 20261017 a 20261021. Solo en el plan 20261016,
+solo en el entrenamiento 20261021. 1395 lotes planados frente a 1398 recorridos.
+
+**H4 CONFIRMADO.** El congelado solo guarda `W`, la tabla de entrada. A12 da 0 candidatos sobre 19
+`.npz` por cabecera y 320 `.json`. A13 NO APLICABLE POR CONSTRUCCION: la tabla de salida no existe,
+**no se sustituye por `W`** y **ninguna cifra absoluta sobre el artefacto es evidencia del estado
+final**.
+
+**H5 CONFIRMADO**: la metrica que decide cuando restaurar pesos es la del pliegue externo que despues
+se puntua. **H6 CONFIRMADO**: GRU antes de la mascara, arrastre y no explosion, 0.08399328135684547.
+**H7 CONFIRMADO**: DL-03 con 1731 filas y 1483 + 248 = 1731, luego el holdout v2 estaba en el pool.
+
+**Tres salvedades de alcance, que el informe del script no lleva.** La regla 3 de A19, el desempate
+por nombre, puede clasificar como validacion un argumento que llega como parametro sin vinculacion
+local, por ejemplo `x_val`; es latente, no se activa en los tres ficheros reales y ahi manda el vinculo
+local, pero es una apuesta por nombre. `asignaciones_del_llamante` usa `setdefault`, luego si un
+nombre se asigna dos veces gana la primera sin marcar ambiguedad; falla hacia el lado conservador, da
+REFUTADO y no sobre-detecta, pero la lectura queda parcial sin aviso. Y la sonda de A16 mide una red
+sintetica de 51 por 200, **no los BiGRU reales**, luego su magnitud **no se extrapola**.
+
+**El `.tmp_p80` viejo ya no existe** y no lo borre yo: el script reutiliza esa ruta, la vacio con el
+JSON de esta corrida y la renombro sobre el `.json`. Sigue en la historia, en `c317794`, sha256
+`890bbb1037b3034a893e88634b5db261a2d9f6acad278722d32c6a00007c834f`.
+
+```text
+P80 = CERRADO   V03 = FROZEN   Word2Vec Twitter 100d = FROZEN
+congelado 302c994d... intacto antes y despues      pre-registro 440ab13c... sin cambios en las tres corridas
+Sin escrituras fuera de reports/ y figuras/p80/. Test, holdout, leaderboard y submission en cero.
+P71 a P79, V03, los umbrales 0.44 / 0.51 / 0.46 y modelos/ sin tocar.
+```
+
+```text
+V03 remains the best verified leaderboard result.
+```
+<!-- /P80-CERRADO 2026-09-30 -->
+
 <!-- P80-SEGUNDA-CORRIDA 2026-09-30 -->
 ## P80: las 19 afirmaciones pasan. Los 7 hallazgos CONFIRMADO. El informe no se publico
 

@@ -8624,3 +8624,109 @@ El proyecto queda a la espera de una clave. Nada mas.
 ```text
 V03 remains the best verified leaderboard result.
 ```
+
+## D-273: P80 tercera corrida. El informe se publica y P80 queda cerrado
+
+Pre-registro `docs/p80_preregistro_auditoria_w2v.md`, sha256
+`440ab13c610e1bcf35a0b00f096699f738bc59480240dbd934e6c5f3e2f7c81f`, commiteado en `8726c9f` y sin
+cambiar en ninguna de las tres corridas. Script `201dcccbdd5e7169127b9d0a6772092d40d9edf74b002d063c5d2da4cde7482f`,
+6361 lineas, 70 de 70 en `--humo`.
+
+**Status**: CERRADO. Las 19 afirmaciones medidas, los 7 hallazgos CONFIRMADO, informe publicado en
+JSON y en markdown.
+
+**Date**: 2026-09-30
+
+**Context**
+
+La segunda corrida hizo todo el trabajo y reviento al final, escribiendo el markdown, con un
+`KeyError` de una clave que el arreglo de A12 habia quitado de `medida.cobertura`. El JSON habia
+quedado huerfano en el temporal y las figuras en disco, pero nada se publico: `reports/p80_auditoria_w2v.json`
+seguia siendo el JSON de parada de la primera corrida.
+
+La tercera corrida lleva el arreglo, una vista tolerante en `escribir_markdown` que devuelve `no
+disponible` ante claves ausentes, mas tres fallos mas del redactor corregidos que habrian roto o
+**vaciado el informe en silencio**. Correccion: 19 de 19 afirmaciones, 7 de 7 hallazgos, sin STOP, sin
+traceback, codigo de salida 0, 2 s, y las dos salidas publicadas por renombrado atomico.
+
+El JSON publicado lleva ya la asercion ASCII final y la firma de los tres PNG, que en la segunda
+corrida no llegaban a escribirse porque se escriben despues del markdown.
+
+Comprobado que el markdown **no sale vacio**, que era el modo de fallo silencioso del bug anterior: 19
+filas de tabla de afirmaciones y 7 de hallazgos, todas pobladas con id, hallazgo, naturaleza,
+tolerancia y veredicto. Aparece una sola vez el marcador `no disponible`, en la linea de A12, y es
+legitimo, porque `claves_json_recorridas` ya no existe en el esquema de A12. Ninguna cifra real se
+vacio.
+
+Lo mas relevante: **las diecinueve medidas son bit a bit identicas a las de la segunda corrida**, y los
+veredictos por hallazgo tambien. Dos versiones distintas del script, mismas medidas. Eso es la mejor
+evidencia de que los arreglos tocaron instrumentacion y no calculo.
+
+**Decision**
+
+Dar P80 por cerrado y publicar. Los siete hallazgos quedan CONFIRMADO y el informe pasa a ser el
+artefacto que consume el proyecto, en `reports/p80_auditoria_w2v.json` y `reports/p80_auditoria_w2v.md`,
+con tres figuras en `figuras/p80/`.
+
+Se acepta que el `.tmp_p80` de la segunda corrida haya desaparecido. **No lo borre yo**: el script
+reutiliza la misma ruta temporal, la vacio con el JSON de esta corrida y la renombro sobre el `.json`.
+Su contenido sigue en la historia de git, en `c317794`, con sha256
+`890bbb1037b3034a893e88634b5db261a2d9f6acad278722d32c6a00007c834f`, luego la evidencia de la corrida
+con los siete hallazgos confirmados no se pierde por estar fuera del arbol de trabajo.
+
+Se registran **tres salvedades** que el informe del script no lleva, marcadas como limitacion del
+alcance y no como fallo de medicion.
+
+**Alternatives Considered**
+
+1. Tratar la segunda corrida como suficiente porque sus medidas coinciden con las de la tercera.
+   **Descartado.** El informe publicado tiene que existir y tiene que haber pasado su propia
+   asercion ASCII y sus firmas de figura. Un JSON huerfano no cumple eso, y el markdown no existia.
+2. Pedir una cuarta corrida para que el `.md` salga sin la frase `con no disponible claves recorridas`.
+   **Descartado.** La frase es honesta: la clave ya no existe en el esquema de A12. Cambiar el
+   redactor para que no lo diga seria maquillar el informe en vez de informarlo, y es
+   exactamente el tipo de retoque posterior al resultado que el pre-registro prohibe. La lectura
+   correcta de esa linea es que la cobertura de A12 se publica en `npz_inspeccionados`,
+   `bytes_leidos_en_total` y `json_inspeccionados`, que es lo que el arreglo sustituyo.
+3. Borrar el `.tmp_p80` viejo si hubiera sobrevivido.
+   **Descartado por instruccion expresa**, y ademas innecesario: no sobrevive porque el propio script
+   lo consume. Si sobrevive en una corrida futura, se decide entonces.
+4. Redondear la magnitud de la sonda de A16 o presentarla junto a los BiGRU reales como si fuera su
+   medida. **Descartado.** La sonda corre sobre una red sintetica de 51 por 200 y su magnitud no se
+   extrapola. Presentarla como medida de los BiGRU seria el tipo de extrapolacion que el propio
+   informe critica en P79.
+5. Correr la auditoria sobre el Word2Vec de diez millones de tokens o generar submission para ver si
+   el artefacto es bueno. **Descartado.** P80 audita el entrenador, no la calidad del embedding, y H4
+   deja constancia de que sin la tabla de salida no hay cifra_absolute del artefacto que valga.
+
+**Consequences**
+
+Los siete hallazgos quedan **CONFIRMADO** y ninguno REFUTADO. H2 corrige a P79: el scheduler de
+`p72_01` planifica con `range(m.EPOCAS)` y `SEMILLA + ep`, o sea 20261016 a 20261020, y entrena con
+`enumerate(planes, start=1)` y `SEMILLA + ep`, o sea 20261017 a 20261021, en `p72_01:92-95` contra
+`p72_01:99-103`; el desfase es de una epoca, 20261016 se planifica sin entrenarse nunca y 20261021 se
+entrena sin planificar, y `total_lotes` sale del plan, luego el curriculum de `lr` se calibra sobre un
+numero de lotes que no es el recorrido. H3 confirma la identidad con el signo correcto y que la de
+P79 fallaba por el signo invertido. H4 confirma que el congelado solo guarda `W`, la tabla de entrada,
+y A13 queda NO APLICABLE POR CONSTRUCCION: la tabla de salida no existe en ninguna parte, no se
+sustituye por `W` y ninguna cifra absoluta de loss o de gradiente sobre el artefacto es evidencia del
+estado final. H5 y H6 confirman la fuga de early stopping y el enmascarado tardio del padding en
+`v9_04` y `v10_11`. H7 confirma que DL-03 entreno sobre 1731 filas etiquetadas completas sin excluir
+el holdout v2 de 248, luego el holdout estaba dentro del pool.
+
+Quedan **tres salvedades de alcance**. La regla 3 de A19, el desempate por nombre, puede clasificar
+como validacion un argumento que llega como parametro sin vinculacion local, por ejemplo `x_val`; es
+latente, no se activa en ninguno de los tres ficheros reales y ahi manda el vinculo local, pero es una
+apuesta por nombre y no una medicion. Y `asignaciones_del_llamante` usa `setdefault`, luego si un
+nombre se asigna dos veces gana la primera sin marcar ambiguedad; se comprobo que falla hacia el lado
+conservador, da REFUTADO y no sobre-detecta, pero la lectura queda parcial sin aviso. Y la sonda de A16
+mide el efecto del enmascarado tardio en una red sintetica de 51 por 200, no en los BiGRU reales,
+luego su magnitud **no se extrapola**: acredita que el defecto estructural pesa y va en la direccion
+anunciada, y nada mas.
+
+Ninguna de las tres invalida un hallazgo. Las tres acotan cuanto se puede concluir, y las tres las
+conserva quien lea el informe dentro de seis meses.
+
+```text
+V03 remains the best verified leaderboard result.
+```
