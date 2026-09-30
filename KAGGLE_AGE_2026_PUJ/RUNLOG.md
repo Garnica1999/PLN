@@ -2189,3 +2189,13 @@ intacto.
 - Veredicto: NO_ATRIBUIBLE. A1 comb 0.6125567 (delta -0.0034165, 0/5 folds); generadores A2/A3 como controles.
 - Baseline recomputado 0.6159732; ES estricto; GPU D-007; sin test, sin holdout, sin submission.
 - Artefactos: experiments/v32_01_surrogate_macrof1.json | reports/v32_e1_surrogate_macrof1.md | experiments/v32_e1_curvas.json.
+
+---
+
+## Pre-registro de V32-E2 (P2 CatBoost) · 2026-09-30
+
+- Congelado: A1 CatBoost MultiClass sobre matriz_279; A2 gemelo LightGBM con el ancla afinada
+  V29/V30 (control decisional); A3 etiquetas barajadas; ES interno (od_wait 150); 32 hilos;
+  integracion P6/P7; gates + bootstrap de la diferencia A1-A2; calibracion y timeout declarados.
+- Baseline recomputado: 0.6159732. Revisiones de ml-architect y kaggle-specialist incorporadas.
+- Sin test, sin holdout, sin submission.

@@ -79,10 +79,13 @@ las salvaguardas y el mecanismo de evaluacion de V32-E1 (hashes, asserts, integr
 gates, determinismo, compliance). Scripts previstos: `v32_02_preregistro_catboost.py` y
 `v32_03_catboost_challenger.py`. Un experimento = un script nuevo.
 
-- [ ] **F1' Arquitectura y legalidad**: `ml-architect` congela el protocolo (config unica
-  justificada por precedente del proyecto, sin grid; control de atribucion elegido ex ante);
-  `kaggle-specialist` valida reglas/leakage heredando las salvaguardas de V32-E1.
-  (Sin `dl-specialist`: no hay red neuronal.)
+- [x] **F1' Arquitectura y legalidad**: `ml-architect` congelo el protocolo (A1 CatBoost
+  MultiClass 3000/lr 0.03/depth 6/ES TotalF1 od_wait 150; A2 gemelo LightGBM con el ancla
+  afinada V29/V30 como control decisional; A3 barajado; guarda de truncamiento; calibracion y
+  timeout); `kaggle-specialist` = APTO con condiciones (bootstrap pareado de la diferencia,
+  tolerancias de determinismo, AST-audit, truncamiento registrado). Sin `dl-specialist` (no
+  hay red neuronal). Pre-registro congelado en `reports/v32_p2_preregistro.md` +
+  `experiments/v32_02_preregistro_catboost.json` (script `v32_02`).
 - [ ] **F2' Pre-registro + implementacion + revision**: pre-registro congelado; `ml-coder`;
   `ml-reviewer`; `ml-qa-engineer` (GO/NO-GO).
 - [ ] **F3' Entrenamiento y evaluacion**: `ml-trainer`; gates; arbol (PROMISING -> segunda

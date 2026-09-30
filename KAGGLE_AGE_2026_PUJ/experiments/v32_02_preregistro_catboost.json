@@ -1,0 +1,153 @@
+{
+  "fase": "V32-E2 (P2) pre-registro congelado",
+  "fecha": "2026-09-30",
+  "commit": "9a2fbfd0b8f5f4a0151ae63e6bbb385d63fbdfcd",
+  "experimento": "challenger CatBoost MultiClass sobre matriz_279 (ciclo 2 de la reapertura)",
+  "baseline_primario": 0.6159732,
+  "referencia_nested": 0.6154643,
+  "pesos_plugin": [
+    1.0,
+    1.1749,
+    1.2721,
+    1.163,
+    1.001,
+    0.8128
+  ],
+  "hashes": {
+    "canonico_y_true": "b1c928f9b9f5575547c1090a1fd83cf32a048b694af35a980b460c0bd66d48e6",
+    "canonico_fold_idx": "74d18330c40c3598a1936706ae9434c5fdf29119d357d38353cf298812fe6fb5",
+    "canonico_v30_prob": "3d77352486605971093ade7214ae82326057845d8bf54a2d88c83843c5a721db",
+    "manifest_plugin": "8d635e6a546b5a0e3829872b5e182be745910bd2a0945759a6a44b6eb7e643f7",
+    "matriz_279_bytes": "175b6d1ee242eef95eec0f7c7c2e1bf5aa50578e20f006000f015e1ce634bf58",
+    "fuente_v19_b1_boosting.py": "841aa5fdf1e13c572cc164f465979d83fc2aaa25aab92b3dc2f434f0516fde9c",
+    "fuente_v32_01_surrogate_macrof1.py": "6d4176837024c792738b28b842c41b3c12c307458578afed90f57c38f14b959e",
+    "fuente_v30_02_ensemble.py": "be11ee23e0d069474b0fc7bcc25bc45045a719a1219f39d7ba118480eeec6cfe",
+    "fuente_age_umbrales_por_clase.py": "a9cb47ec4c37f3fe3b661857fc62dbd2aad2d0bac1e9d6a1a279ffaab60624da"
+  },
+  "versiones": {
+    "catboost": "1.2.10",
+    "lightgbm": "4.6.0",
+    "numpy": "1.26.4"
+  },
+  "brazos": {
+    "A1_catboost": {
+      "config": {
+        "loss_function": "MultiClass",
+        "iterations": 3000,
+        "learning_rate": 0.03,
+        "depth": 6,
+        "l2_leaf_reg": 3.0,
+        "bootstrap_type": "Bernoulli",
+        "subsample": 0.8,
+        "random_strength": 1.0,
+        "border_count": 254,
+        "boosting_type": "Plain",
+        "grow_policy": "SymmetricTree",
+        "thread_count": 32,
+        "random_seed": 20261010,
+        "task_type": "CPU",
+        "allow_writing_files": false,
+        "od_type": "Iter",
+        "od_wait": 150,
+        "use_best_model": true,
+        "eval_metric": "TotalF1",
+        "verbose": 100,
+        "metric_period": 50
+      },
+      "rol": "decisional"
+    },
+    "A2_lgbm_twin": {
+      "config": {
+        "objective": "multiclass",
+        "num_class": 6,
+        "num_leaves": 56,
+        "max_depth": 7,
+        "learning_rate": 0.03,
+        "min_data_in_leaf": 54,
+        "bagging_fraction": 0.78,
+        "bagging_freq": 1,
+        "feature_fraction": 0.6,
+        "lambda_l1": 0.015,
+        "lambda_l2": 0.0005,
+        "num_threads": 32,
+        "seed": 20261010,
+        "deterministic": true,
+        "verbosity": -1,
+        "num_boost_round": 3000,
+        "early_stopping": 150,
+        "feval": "macro-F1"
+      },
+      "rol": "control de atribucion decisional"
+    },
+    "A3_barajado": {
+      "config": "CatBoost A1 con etiquetas del fold-train permutadas (semilla 20261011+fold) antes del split interno; el fold-val conserva etiquetas reales para el OOF",
+      "rol": "control negativo no decisional"
+    }
+  },
+  "entrenamiento": {
+    "split_interno": "90/10 estratificado del fold-train; semilla 20261010+fold; StratifiedShuffleSplit(test_size=0.10)",
+    "fold_val": "jamas se usa para parar/seleccionar (solo predict_proba para el OOF)",
+    "parada": "ES con od_wait/early_stopping = 150 sobre TotalF1 (CatBoost) y macro-F1 feval (LGBM) en el split interno; use_best_model",
+    "truncamiento": "best_iteration >= iterations-150 => flag presupuesto agotado; A1 queda capado a MARGINAL; A2 se registra y anota como control debilitado",
+    "hilos": "thread_count/num_threads = 32 FIJO (determinismo)"
+  },
+  "determinismo": {
+    "seeds": {
+      "global": 20261010,
+      "barajado_etiquetas": 20261011
+    },
+    "sonda": "reentrenar fold 0 de A1 y de A2 con la misma config y comparar el OOF bit a bit (max|delta p|)",
+    "tolerancias": "0 -> exacto; <=1e-9 -> tolerancia declarada; >1e-9 -> segunda repeticion, rango publicado y se exige delta_gate > rango; rango >= 0.0008876 o solape con el gate => no concluyente"
+  },
+  "integracion": {
+    "mecanismo": "combinador logistico anidado sobre [L2(v30_prob) || L2(p_brazo)] (12 features, L2 por fila con clip 1e-12); LogReg(C=1.0, max_iter=2000, lbfgs) por fold (fit fold!=k, predice fold==k)",
+    "decision": "argmax(p_comb * w_plugin CONGELADO)",
+    "diagnosticos": [
+      "argmax_sin_regla (sin pesos)",
+      "delta vs nested 0.6154643"
+    ]
+  },
+  "gates": {
+    "baseline_abort": 5e-07,
+    "delta_min": 0.0015,
+    "folds_min": 4,
+    "control": "delta_int(A1) > delta_int(A2) Y bootstrap pareado de la diferencia (F1_combA1 - F1_combA2; 2000; semilla 20261010) con IC95 sin cero",
+    "control_negativo": "si delta_int(A3) >= delta_int(A1): NO_ATRIBUIBLE (precedencia)",
+    "bootstrap": {
+      "n": 2000,
+      "semilla": 20261010,
+      "ic95_sin_cero": true
+    },
+    "sin_leakage": true,
+    "cap_truncamiento": "flag presupuesto_A1_agotado => veredicto no puede ser PROMISING"
+  },
+  "arbol": {
+    "PROMISING": "pasa los gates -> segunda particion congelada (semilla 987654) antes de cualquier otra cosa",
+    "MARGINAL": "delta > 0 sin gates -> no se adopta; cierre documentado",
+    "CLOSED": "delta <= 0 -> se cierra P2; seria el ultimo candidato priorizado (P3 FTRL solo con autorizacion)",
+    "submission": "jamas automatica; requeriria gate completo + segunda particion + autorizacion explicita"
+  },
+  "ejecucion": {
+    "checkpoints": "experiments/v32_03_estado.json por fold (reanudable)",
+    "calibracion": "tras el fold 0 de A1: proyeccion_total = 9.0 x t_fold0; si > 20.0 h -> parar y reportar (exit 6)",
+    "timeout_global": "24.0 h -> parar con estado guardado (exit 7)"
+  },
+  "compliance": {
+    "embeddings": 0,
+    "transformers": 0,
+    "llm": 0,
+    "datos_externos": 0,
+    "test": 0,
+    "holdout": 0,
+    "leaderboard": 0,
+    "submission": 0,
+    "nota": "0 embeddings; el gemelo LGBM se reentrena desde cero sobre la matriz congelada (control interno, no reutiliza pesos del pool); auditoria AST del runner: 0 referencias prohibidas y 0 lecturas de test/holdout"
+  },
+  "presupuesto": "15 fits CPU secuenciales (~9-19 h con contencion; guardas de calibracion y timeout declaradas)",
+  "variabilidad_entrenamiento": 0.0008876,
+  "umbral_alta_confianza": 0.6,
+  "documentos_fuente": [
+    "plan/V32_REAPERTURA_PLAN.md",
+    "reports/v32_e1_preregistro.md"
+  ]
+}
