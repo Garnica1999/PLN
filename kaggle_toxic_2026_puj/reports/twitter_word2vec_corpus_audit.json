@@ -1,0 +1,180 @@
+{
+  "familia": "P71_TWITTER_WORD2VEC_DOMAIN",
+  "experiment_id": "P71-00",
+  "fase": "P0 auditoria de corpus y legalidad",
+  "fecha": "2026-09-30T00:01:56+00:00",
+  "naturaleza": "AUDITORIA. 0 descargas, 0 entrenamientos, 0 test, 0 holdout, 0 leaderboard",
+  "hipotesis": "un Word2Vec entrenado desde cero sobre texto real de Twitter/X puede capturar informacion distribucional especifica del dominio que los entrenados sobre Wikipedia y mC4 no capturaron",
+  "novedad_declarada": [
+    "entrenamiento desde cero",
+    "corpus Twitter/X",
+    "dominio linguistico cercano al problema"
+  ],
+  "reglas_aplicadas": {
+    "solo_se_utiliza_ALLOWED": true,
+    "prohibido_si_su_finalidad_era_un_dataset_etiquetado_de": [
+      "toxicidad",
+      "hate speech",
+      "cyberbullying",
+      "sentiment",
+      "age",
+      "gender"
+    ],
+    "prohibido_si_no_se_puede_garantizar_test_texts_not_in_external_corpus": true,
+    "prohibido_filtrar_el_corpus_contra_el_test": true,
+    "el_corpus_externo_solo_aporta_texto_no_etiquetado": true,
+    "prohibido_como_feature": [
+      "user_id",
+      "author metadata",
+      "followers",
+      "timestamp",
+      "geolocation",
+      "likes",
+      "retweets",
+      "engagement",
+      "profiles",
+      "labels"
+    ]
+  },
+  "registro_de_corpus": [
+    {
+      "candidato": "pysentimiento/spanish-tweets",
+      "prioridad": 1,
+      "url": "https://huggingface.co/datasets/pysentimiento/spanish-tweets",
+      "provider": "pysentimiento (grupo de PLN, UBA / DC-UBA)",
+      "source": "coleccion Spritzer de Archive.org de mayo de 2019, filtrada a espanol, mas la descarga de las timelines completas de los 432.000 usuarios detectados",
+      "collection_period": "linea base: mayo 2019. Las timelines se descargaron despues, sin periodo acotado ni publicado por usuario",
+      "number_of_tweets": 597433111,
+      "splits": {
+        "train": 597433111,
+        "test": 6224733
+      },
+      "campos": [
+        "text",
+        "tweet_id",
+        "user_id"
+      ],
+      "language_filtering": "solo en la deteccion inicial; el corpus admite 7-8 por ciento de otras lenguas",
+      "labels_existen": false,
+      "metadata_existe": true,
+      "license_terms": "NO DECLARADA. La API de HuggingFace devuelve el campo de licencia vacio, y la ficha no menciona la palabra ni una vez pese a que su indice lista una seccion 'Licensing Information' que no existe",
+      "download_date": "2026-09-29",
+      "hash": "no aplica: no se ha descargado",
+      "test_overlap_garantizable": false,
+      "clasificacion": "AMBIGUOUS",
+      "razon_principal": "sin licencia declarada, y sin poder garantizar que el texto del test no este en el corpus sin compararlo contra el test, que esta prohibido"
+    },
+    {
+      "candidato": "pysentimiento/spanish-tweets-small",
+      "prioridad": 2,
+      "url": "https://huggingface.co/datasets/pysentimiento/spanish-tweets-small",
+      "provider": "pysentimiento",
+      "source": "misma procedencia que el corpus grande",
+      "collection_period": "identico al corpus grande",
+      "number_of_tweets": "10M < n < 100M (categoria declarada)",
+      "splits": {
+        "train": "10M<n<100M"
+      },
+      "campos": [
+        "text",
+        "tweet_id",
+        "user_id"
+      ],
+      "language_filtering": "identico",
+      "labels_existen": false,
+      "metadata_existe": true,
+      "license_terms": "NO DECLARADA, igual que el corpus grande",
+      "download_date": "2026-09-29",
+      "hash": "no aplica",
+      "test_overlap_garantizable": false,
+      "clasificacion": "AMBIGUOUS",
+      "razon_principal": "hereda los dos problemas del corpus grande"
+    },
+    {
+      "candidato": "JorgeLoera/spanish-dialect-tweets",
+      "prioridad": 3,
+      "url": "https://huggingface.co/datasets/JorgeLoera/spanish-dialect-tweets",
+      "provider": "usuario individual",
+      "source": "NO DOCUMENTADA",
+      "collection_period": "NO DOCUMENTADO",
+      "number_of_tweets": "100K < n < 1M (categoria declarada)",
+      "splits": {
+        "train": "100K<n<1M"
+      },
+      "campos": "NO DOCUMENTADOS. El unico fichero es Datos_dialectos.parquet",
+      "language_filtering": "NO DOCUMENTADO",
+      "labels_existen": "PROBABLEMENTE SI. El nombre del fichero, 'Datos_dialectos', apunta a clasificacion de dialecto, y un dataset externo etiquetado esta prohibido con independencia del tema",
+      "metadata_existe": "NO DOCUMENTADO",
+      "license_terms": "cc-by-4.0, la unica linea de la ficha",
+      "download_date": "2026-09-29",
+      "hash": "no aplica",
+      "test_overlap_garantizable": false,
+      "clasificacion": "AMBIGUOUS",
+      "razon_principal": "tiene licencia real, y es lo unico que tiene: sin ficha, sin procedencia, sin periodo y con indicios de estar etiquetado"
+    },
+    {
+      "candidato": "santiagxf/spanish-marketing-tweets",
+      "prioridad": 4,
+      "url": "https://huggingface.co/datasets/santiagxf/spanish-marketing-tweets",
+      "provider": "usuario individual",
+      "source": "no aplica: no hay datos",
+      "collection_period": "no aplica",
+      "number_of_tweets": 0,
+      "splits": {},
+      "campos": [],
+      "language_filtering": "no aplica",
+      "labels_existen": "no aplica",
+      "metadata_existe": "no aplica",
+      "license_terms": "unlicense, la mas permisiva posible",
+      "download_date": "2026-09-29",
+      "hash": "no aplica",
+      "test_overlap_garantizable": "no aplica",
+      "clasificacion": "PROHIBITED",
+      "razon_principal": "el repositorio contiene un README y un .gitattributes y NINGUN fichero de datos. No hay corpus que entrenar"
+    }
+  ],
+  "conteo": {
+    "ALLOWED": 0,
+    "AMBIGUOUS": 3,
+    "PROHIBITED": 1
+  },
+  "decision": {
+    "clasificacion_de_la_linea": "CLOSED_AT_P0_BY_CORPUS_UNAVAILABILITY",
+    "puede_ejecutarse_p1": false,
+    "experimentos_gastados": 0,
+    "por_que_no_es_un_fracaso": "la pregunta sigue sin respuesta. Lo que se cierra es la posibilidad de responderla con los recursos disponibles, no la hipotesis",
+    "por_que_no_se_usa_el_corpus_principal": "dos motivos independientes y cada uno suficiente: no declara licencia, y no se puede garantizar que el texto del test no este dentro sin compararlo contra el test, cosa que el encargo prohibe",
+    "por_que_no_se_busca_mas": "los cuatro candidatos se agotaron con la busqueda dirigida del encargo. Ninguno falla por un motivo que insistir arregle",
+    "alternativas_que_se_descartaron": [
+      {
+        "via": "usar el corpus sin licencia",
+        "por_que_no": "incumple la regla del propio encargo"
+      },
+      {
+        "via": "deduplicar contra el test",
+        "por_que_no": "seria usar el test para construir el recurso"
+      },
+      {
+        "via": "usar un dataset etiquetado",
+        "por_que_no": "prohibido con independencia del tema"
+      },
+      {
+        "via": "sustituir Word2Vec por FastText",
+        "por_que_no": "cambiaria dos variables a la vez"
+      },
+      {
+        "via": "usar los corpus generales de v5",
+        "por_que_no": "serian el CONTROL, no el tratamiento, y sin tratamiento no hay comparacion"
+      }
+    ],
+    "lo_que_queda_registrado": "el corpus principal y sus dos problemas quedan documentados con la evidencia de la consulta, para que una fase futura no repita la auditoria desde cero"
+  },
+  "reproducibilidad": {
+    "nivel": "R2",
+    "git_commit": "111ac1a",
+    "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "corrected_cv_v03": 0.7772114525165721,
+    "consulta_a_la_api": "2026-09-29"
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

@@ -2932,3 +2932,20 @@ el gap a explicar                     0,00585
 Auditoria independiente del especialista de Kaggle: 3 objeciones, todas incorporadas.
 
 Sin test, sin holdout, sin submission nueva, sin tuning. Sin push.
+
+
+## 2026-09-29, P0 de domain-specific Word2Vec sobre Twitter/X
+
+- `experiments/p71_00_auditoria_corpus.py`: auditoria de procedencia de cuatro corpus espanoles
+  de Twitter/X. **Ninguno pasa.** 0 descargas, 0 entrenamientos.
+
+```text
+ALLOWED 0 | AMBIGUOUS 3 | PROHIBITED 1
+CLOSED_AT_P0_BY_CORPUS_UNAVAILABILITY
+```
+
+El corpus principal (`pysentimiento/spanish-tweets`) falla por dos motivos independientes: no
+declara licencia, y no se puede garantizar que el texto del test no este dentro sin compararlo
+contra el test, que el encargo prohibe.
+
+Sin push, sin merge, sin rebase.

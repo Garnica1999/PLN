@@ -6811,3 +6811,72 @@ research_status     EXPERIMENTAL_RESEARCH_CLOSED
 Un leaderboard negativo **no es** un experimento invalido. La auditoria encontro un sesgo en la
 INTERPRETACION, no en el experimento: la reproduccion sigue siendo R3, las tres particiones
 siguen positivas y la permutacion sigue en p = 0,000999.
+
+
+## D-218 a D-220: domain-specific Word2Vec sobre Twitter/X se cierra en P0
+
+Fecha 2026-09-29. Linea nueva autorizada explicitamente, separada de P66/P67/P68.
+
+### D-218. La hipotesis, que no se ha podido poner a prueba
+
+> Un Word2Vec entrenado desde cero sobre texto real de Twitter/X puede capturar informacion
+> distribucional especifica del dominio que los entrenados sobre Wikipedia y mC4 no capturaron.
+
+La novedad no era que Word2Vec exista. Era **entrenamiento desde cero + corpus Twitter/X +
+dominio linguistico cercano al problema**. La pregunta sigue sin respuesta.
+
+### D-219. Ningun corpus pasa la auditoria, y cada uno falla por un motivo distinto
+
+```text
+pysentimiento/spanish-tweets         AMBIGUOUS
+pysentimiento/spanish-tweets-small   AMBIGUOUS
+JorgeLoera/spanish-dialect-tweets    AMBIGUOUS
+santiagxf/spanish-marketing-tweets   PROHIBITED
+```
+
+El corpus que el encargo senalaba es **bueno en principio**: 597 millones de tweets, campos
+`text`/`tweet_id`/`user_id`, **sin labels**, y su finalidad declarada es *language modelling*.
+Falla por **dos motivos independientes, y cada uno es suficiente**:
+
+```text
+1. NO DECLARA LICENCIA
+   la API de HuggingFace devuelve el campo vacio
+   la ficha no menciona la palabra ni una vez
+   su indice SI lista 'Licensing Information' y la seccion NO existe
+
+2. NO SE PUEDE GARANTIZAR QUE EL TEXTO DEL TEST NO ESTE DENTRO
+   recoleccion: coleccion Spritzer de mayo de 2019 mas las TIMELINES COMPLETAS
+                de 432.000 usuarios, con rangos de fecha arbitrarios por usuario
+   la unica forma de comprobarlo seria comparar contra el test
+   y el encargo PROHIBE usar ids, textos o hashes del test para construir el corpus
+```
+
+El encargo es explicito: *en caso de no poder garantizar razonablemente, clasificar el corpus
+como `AMBIGUOUS` y no utilizarlo*.
+
+### D-220. La linea se cierra, y no por un resultado experimental
+
+```text
+CLOSED_AT_P0_BY_CORPUS_UNAVAILABILITY
+experimentos gastados: 0
+```
+
+**No hay tratamiento contra el que comparar.** P1, la comparacion Word2Vec Twitter frente a
+Word2Vec general, no se puede ejecutar.
+
+Las vias que se descartaron, y por que:
+
+```text
+usar el corpus sin licencia        incumple la regla del propio encargo
+deduplicar contra el test          seria usar el test para construir el recurso
+usar un dataset etiquetado         prohibido con independencia del tema
+sustituir Word2Vec por FastText    cambiaria dos variables a la vez
+usar los corpus generales de v5    serian el CONTROL, no el tratamiento
+```
+
+Lo que queda: el corpus principal y sus dos problemas documentados con la evidencia de la
+consulta, en `reports/twitter_word2vec_corpus_registry.csv`. Una fase futura que consiguiera un
+corpus con licencia explicita y periodo de recoleccion anterior y verificable no tendria que
+repetir esta auditoria.
+
+El estado del proyecto no cambia: la investigacion sigue cerrada y el candidato congelado.

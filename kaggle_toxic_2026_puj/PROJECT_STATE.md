@@ -1937,3 +1937,26 @@ research_status     EXPERIMENTAL_RESEARCH_CLOSED
 
 Un leaderboard negativo no es un experimento invalido.
 <!-- /POSTMORTEM 2026-09-29 -->
+
+<!-- TWITTER-W2V 2026-09-29 -->
+### Domain-specific Word2Vec sobre Twitter/X: cerrado en P0 (2026-09-29)
+
+La linea se autorizo con una hipotesis nueva: **entrenamiento desde cero + corpus Twitter/X**,
+no escalar corpus generales.
+
+```text
+ALLOWED 0 | AMBIGUOUS 3 | PROHIBITED 1
+CLOSED_AT_P0_BY_CORPUS_UNAVAILABILITY
+experimentos gastados: 0
+```
+
+El corpus que el encargo senalaba es bueno en principio (597M tweets, sin labels, finalidad
+*language modelling*) y falla por **dos motivos independientes, cada uno suficiente**: no declara
+licencia, y no se puede garantizar que el texto del test no este dentro sin compararlo contra el
+test, cosa que el encargo prohibe.
+
+**No hay tratamiento contra el que comparar.** La pregunta sigue sin respuesta; lo que se cierra
+es la posibilidad de responderla con los recursos disponibles.
+
+El estado del proyecto no cambia: investigacion cerrada, candidato congelado.
+<!-- /TWITTER-W2V 2026-09-29 -->

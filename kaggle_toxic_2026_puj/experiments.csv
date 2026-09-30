@@ -387,3 +387,4 @@ P69-10|2026-09-29|submission experimental del candidato congelado, generada y au
 P70-01|2026-09-29|sensibilidad del CV al tamano de entrenamiento y estabilidad de los pesos|12 corridas, desviacion 0.007214 = 0.88x el efecto, sin test ni holdout|P70|experiments/p70_01_sensibilidad_tamano.py
 P70-02|2026-09-29|post-mortem de la transferencia CV a LB y clasificacion de la causa|prevalencia y margenes estables, MIXED_EXPLANATION|P70|experiments/p70_02_postmortem.py
 P70-03|2026-09-29|correccion del post-mortem tras auditoria del especialista de Kaggle|la causa dominante es la SELECCION del baseline: ventaja 0.00643 frente a gap 0.00585|P70|experiments/p70_03_correccion_postmortem.py
+P71-00|2026-09-29|P0 auditoria de procedencia de corpus espanoles de Twitter/X|CLOSED_AT_P0_BY_CORPUS_UNAVAILABILITY, ALLOWED 0 de 4, 0 experimentos|P71|experiments/p71_00_auditoria_corpus.py
