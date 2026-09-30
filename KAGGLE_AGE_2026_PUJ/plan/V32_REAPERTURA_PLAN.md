@@ -15,7 +15,16 @@ metadatos; test solo transform->predict; holdout intocable; leaderboard sin tuni
 un script nuevo; pre-registro congelado; campeon V30 + plug-in (LB 0.63575) intacto; sin submission
 sin autorizacion.
 
-- [ ] **F1''''' VIA B (reinicio one-shot de la familia FTRL)**: D-085 cerro la familia por mecanismo y
+- [x] **F1''''' VIA B (reinicio one-shot de la familia FTRL)**: `ml-architect` redacto el acta de
+  reinicio (D-086): por que los dos miembros NO CUBIERTOS no son un reintento de `alpha` sino
+  cambios de espacio de soluciones; `lambda1 > 0` va primero (la rama L1 ya existe en el nucleo,
+  0 lineas nuevas) con anclaje DERIVADO `lambda1 := mediana(|z_j|>0)` medida en el stream de
+  TRAIN del fold 0 al final de la pasada 1 (cero grid); puerta G0-G6 **sin cambios** + **G7**
+  (escasez efectiva en (0, 0.5]) + **G8** (`||w||_2` <= 1.5x la de la pasada 1), aplicadas a
+  ambos brazos; triage pre-declarado. Medicion previa en gemelo sintetico: `lambda1 = alpha` es
+  no-op, `lambda1 = mediana(|z|)` amortigua la divergencia pero no la elimina. Coste ~51 s.
+  **Prediccion calibrada**: ~45 % NO_ATRIBUIBLE_BY_GATE, ~43 % cierre por mecanismo
+  (DEFINITIVO), P(aporte al campeon) ~2-3 %. Aprobado por Carlos el 2026-09-30. D-085 cerro la familia por mecanismo y
   declaro dos miembros **NO CUBIERTOS**: `lambda1 > 0` (el shrinkage L1 acota la norma y cambia el
   punto fijo, que es justo lo que hacia inestable a FTRL) y pesos por clase con **L2 normalizado
   fuera de FTRL** (geometria distinta: norma acotada como en SGD). Reiniciarla exige **acta nueva con
