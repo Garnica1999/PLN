@@ -303,8 +303,10 @@ def escribe_csv() -> None:
 def main() -> int:
     autotest_numerico()
     inicio = time.time()
+    # rstrip obligatorio: el CSV crudo viene con padding a 140 chars (D-005); sin quitarlo las
+    # longitudes son basura (correccion de esta misma auditoria, documentada en el commit).
     textos = pd.read_csv(ROOT / "data" / "raw" / "age_train.csv", sep=";",
-                         encoding="utf-8")[cfg.TEXT_COL].astype(str)
+                         encoding="utf-8")[cfg.TEXT_COL].astype(str).str.rstrip()
     print(f"train: {len(textos):,} textos", flush=True)
 
     est, comp, crt, ent_cols = {}, {}, {}, {}

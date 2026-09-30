@@ -49,26 +49,26 @@ Lectura: ~28% de los tokens de entidad caen en menciones/RT/hashtags/URLs/numero
 | con_http | 70,475 | 86.77% |
 | con_hashtag | 34,283 | 91.7% |
 | con_mencion | 108,186 | 91.13% |
-| longitud<=40 | 181 | 2.21% |
-| longitud_41-93 | 5 | 80.0% |
-| longitud>93 | 169,150 | 81.26% |
+| longitud<=40 | 27,528 | 54.57% |
+| longitud_41-93 | 57,497 | 76.32% |
+| longitud>93 | 84,311 | 93.17% |
 
 ## Muestra diagnostica (12 ejemplos, semilla 20260929; NO se corrige nada)
 
 | fila | texto (inicio) | secuencia marcada | nota |
 |---|---|---|---|
 | 59349 | RT @GegeRpz: La lucha se hace con los medios que se tengan, ya lo dije no me gustan las regionales, pero nadie | <MISC> <MISC> _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ | marca de Twitter marcada como entidad (sobredeteccion tipica) |
-| 90106 | RT @yourpimentel: R E A L https://t.co/H41Rw4FKZ9                                                              | _ <MISC> <MISC> <MISC> <MISC> <MISC> <MISC> _ | marca de Twitter marcada como entidad (sobredeteccion tipica) |
-| 87405 | RT @thexfiles: Going to our happy place. #TheXFiles https://t.co/u26LM3kZBO                                    | <ORG> <ORG> <ORG> <ORG> <ORG> <ORG> <ORG> <ORG> _ <MISC> <MISC> <MISC> | marca de Twitter marcada como entidad (sobredeteccion tipica) |
+| 90106 | RT @yourpimentel: R E A L https://t.co/H41Rw4FKZ9 | _ <MISC> <MISC> <MISC> <MISC> <MISC> <MISC> _ | marca de Twitter marcada como entidad (sobredeteccion tipica) |
+| 87405 | RT @thexfiles: Going to our happy place. #TheXFiles https://t.co/u26LM3kZBO | <ORG> <ORG> <ORG> <ORG> <ORG> <ORG> <ORG> <ORG> _ <MISC> <MISC> <MISC> | marca de Twitter marcada como entidad (sobredeteccion tipica) |
 | 132894 | RT @soylunaworldd: @alwaysjaralioff  #CarolinaKopelioff #ValentinaZenere #MichaelRonda #AgustinBernasconiTrend | <ORG> _ _ _ _ _ <MISC> <MISC> <MISC> _ <MISC> <MISC> <MISC> <MISC> <MISC> _ | marca de Twitter marcada como entidad (sobredeteccion tipica) |
 | 36500 | RT @Miguel__Lorente: @_guerrapedro @tjoventut @RossellMarina @DoloBeltran @MARTAGOMEZMUSIC La magia siempre sa | <ORG> _ _ _ _ <ORG> _ _ _ _ _ _ _ _ _ _ _ _ _ | marca de Twitter marcada como entidad (sobredeteccion tipica) |
-| 147120 | Centrales obreras, marcharan hoy en Bogota, apoyando el paro de pilotos de @Avianca .!                         | _ _ _ _ _ _ <LOC> _ _ _ _ _ _ _ <PER> _ _ | marca de Twitter marcada como entidad (sobredeteccion tipica) |
+| 147120 | Centrales obreras, marcharan hoy en Bogota, apoyando el paro de pilotos de @Avianca .! | _ _ _ _ _ _ <LOC> _ _ _ _ _ _ _ <PER> _ _ | marca de Twitter marcada como entidad (sobredeteccion tipica) |
 | 61587 | @Radioacktiva_ @GreenDay #RadioacktivaRevolutionRadio Denme una boleta!! Porfi, ayudenme a cumplir el sueno de | _ _ _ _ <ORG> <ORG> _ _ _ _ <PER> _ _ _ _ _ _ _ _ _ _ _ _ _ _ | entidad lexica (revisar si acierta) |
-| 91525 | Thank you @bungie, was a great campaign #PS4share https://t.co/cfDGMdsKZK                                      | <MISC> <MISC> <MISC> _ _ _ _ _ _ <PER> _ | marca de Twitter marcada como entidad (sobredeteccion tipica) |
+| 91525 | Thank you @bungie, was a great campaign #PS4share https://t.co/cfDGMdsKZK | <MISC> <MISC> <MISC> _ _ _ _ _ _ <PER> _ | marca de Twitter marcada como entidad (sobredeteccion tipica) |
 | 46472 | RT @Caferecords: #Repost @lisandromeza   Entrevista en la emisora Fiesta 107.2 FM desde Espana. Tour Europa 20 | <ORG> <ORG> _ _ _ _ _ _ _ _ _ <MISC> <MISC> <MISC> _ <LOC> _ <MISC> <MISC> <MISC> _ | marca de Twitter marcada como entidad (sobredeteccion tipica) |
 | 37476 | Han jugado a la ruleta rusa.El engano de Volkswagen se extiende a las pruebas de dioxido de carbono https://t. | _ _ _ _ _ _ _ <MISC> <MISC> <MISC> <MISC> _ _ _ _ _ _ _ _ _ <LOC> <LOC> <LOC> | marca de Twitter marcada como entidad (sobredeteccion tipica) |
-| 87777 | RT @PinchesNovios: Tu y Yo de compras deberias de pensarlo.   http://t.co/eKRB8ZXhFq                           | <MISC> <MISC> _ _ _ <MISC> <MISC> <MISC> <MISC> <MISC> <MISC> _ _ _ | marca de Twitter marcada como entidad (sobredeteccion tipica) |
-| 111287 | RT si en tu barrio pasa esto  https://t.co/CArd1WiXsG                                                          | <ORG> _ _ _ _ _ _ _ <ORG> | marca de Twitter marcada como entidad (sobredeteccion tipica) |
+| 87777 | RT @PinchesNovios: Tu y Yo de compras deberias de pensarlo.   http://t.co/eKRB8ZXhFq | <MISC> <MISC> _ _ _ <MISC> <MISC> <MISC> <MISC> <MISC> <MISC> _ _ _ | marca de Twitter marcada como entidad (sobredeteccion tipica) |
+| 111287 | RT si en tu barrio pasa esto  https://t.co/CArd1WiXsG | <ORG> _ _ _ _ _ _ _ <ORG> | marca de Twitter marcada como entidad (sobredeteccion tipica) |
 
 Errores tipicos observados en la muestra (cualitativos, sin corregir): hashtags y menciones marcadas como MISC/ORG; `RT` marcado como ORG; primeras palabras de oracion marcadas como MISC; URLs como MISC. Entidades lexicas bien detectadas en nombres propios evidentes (personas, ciudades, medios).
 

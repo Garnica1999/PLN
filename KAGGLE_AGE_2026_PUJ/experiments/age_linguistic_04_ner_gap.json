@@ -61,18 +61,18 @@
       },
       {
         "corte": "longitud<=40",
-        "documentos": 181,
-        "pct_con_entidad": 2.21
+        "documentos": 27528,
+        "pct_con_entidad": 54.57
       },
       {
         "corte": "longitud_41-93",
-        "documentos": 5,
-        "pct_con_entidad": 80.0
+        "documentos": 57497,
+        "pct_con_entidad": 76.32
       },
       {
         "corte": "longitud>93",
-        "documentos": 169150,
-        "pct_con_entidad": 81.26
+        "documentos": 84311,
+        "pct_con_entidad": 93.17
       }
     ],
     "lg": [
@@ -93,23 +93,23 @@
       },
       {
         "corte": "longitud<=40",
-        "documentos": 181,
-        "pct_con_entidad": 29.28
+        "documentos": 27528,
+        "pct_con_entidad": 56.64
       },
       {
         "corte": "longitud_41-93",
-        "documentos": 5,
-        "pct_con_entidad": 100.0
+        "documentos": 57497,
+        "pct_con_entidad": 79.19
       },
       {
         "corte": "longitud>93",
-        "documentos": 169150,
-        "pct_con_entidad": 83.09
+        "documentos": 84311,
+        "pct_con_entidad": 94.27
       }
     ]
   },
   "sin_test": true,
   "sin_holdout": true,
   "sin_entrenamiento": true,
-  "segundos": 4.9
+  "segundos": 4.1
 }
