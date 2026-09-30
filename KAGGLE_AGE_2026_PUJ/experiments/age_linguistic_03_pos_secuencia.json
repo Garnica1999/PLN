@@ -1,0 +1,194 @@
+{
+  "anotadores": {
+    "md": {
+      "anotador": "md",
+      "medicion1_canal_solo": {
+        "canal_solo_corrected_cv": 0.2750921
+      },
+      "medicion2_complementariedad": {
+        "rescate_unico": 12842,
+        "rescate_compartido": 34996,
+        "danio": 68657,
+        "neto": -55815,
+        "errores_alta_confianza_campeon": 9780,
+        "rescates_unicos_alta_confianza": 1827,
+        "tasa_rescate_alta_confianza": 0.18681
+      },
+      "medicion3_integracion": {
+        "real": {
+          "corrected_cv": 0.6073376,
+          "delta_vs_baseline": -0.0086357,
+          "folds": [
+            0.611136,
+            0.610343,
+            0.608039,
+            0.605649,
+            0.601498
+          ],
+          "folds_positivos": 0,
+          "filas_que_cambian": 19373
+        },
+        "barajado_filas": {
+          "corrected_cv": 0.6120204,
+          "delta_vs_baseline": -0.0039528,
+          "folds": [
+            0.614273,
+            0.615119,
+            0.613509,
+            0.610606,
+            0.60661
+          ],
+          "folds_positivos": 0,
+          "filas_que_cambian": 13289
+        },
+        "barajado_intra": {
+          "corrected_cv": 0.6079423,
+          "delta_vs_baseline": -0.008031,
+          "folds": [
+            0.611449,
+            0.610323,
+            0.608768,
+            0.606699,
+            0.60246
+          ],
+          "folds_positivos": 0,
+          "filas_que_cambian": 18433
+        },
+        "bootstrap": {
+          "delta_medio": -0.0086349,
+          "ic95": [
+            -0.0098444,
+            -0.0074067
+          ],
+          "p_delta_positivo": 0.0
+        },
+        "delta_vs_nested_6154643": -0.0081267,
+        "delta_menos_control_filas": -0.0046829,
+        "ratio_sobre_variabilidad": 9.729
+      },
+      "gate": {
+        "delta_min": 0.0015,
+        "folds_min": 4,
+        "control_primario": "barajado_filas",
+        "pasa": false
+      },
+      "veredicto": "NEGATIVO",
+      "detalle_canal": {
+        "segundos_por_fold": [
+          12.6,
+          12.4,
+          14.3,
+          13.9,
+          14.5
+        ],
+        "vocabularios": [
+          3625,
+          3608,
+          3607,
+          3606,
+          3605
+        ]
+      }
+    },
+    "lg": {
+      "anotador": "lg",
+      "medicion1_canal_solo": {
+        "canal_solo_corrected_cv": 0.272549
+      },
+      "medicion2_complementariedad": {
+        "rescate_unico": 12828,
+        "rescate_compartido": 34442,
+        "danio": 69211,
+        "neto": -56383,
+        "errores_alta_confianza_campeon": 9780,
+        "rescates_unicos_alta_confianza": 1773,
+        "tasa_rescate_alta_confianza": 0.18129
+      },
+      "medicion3_integracion": {
+        "real": {
+          "corrected_cv": 0.6075564,
+          "delta_vs_baseline": -0.0084168,
+          "folds": [
+            0.609572,
+            0.611449,
+            0.609482,
+            0.605079,
+            0.602219
+          ],
+          "folds_positivos": 0,
+          "filas_que_cambian": 19167
+        },
+        "barajado_filas": {
+          "corrected_cv": 0.6118112,
+          "delta_vs_baseline": -0.004162,
+          "folds": [
+            0.614402,
+            0.614037,
+            0.613405,
+            0.61231,
+            0.604937
+          ],
+          "folds_positivos": 0,
+          "filas_que_cambian": 13513
+        },
+        "barajado_intra": {
+          "corrected_cv": 0.6088148,
+          "delta_vs_baseline": -0.0071584,
+          "folds": [
+            0.611998,
+            0.611688,
+            0.611259,
+            0.60574,
+            0.60341
+          ],
+          "folds_positivos": 0,
+          "filas_que_cambian": 18241
+        },
+        "bootstrap": {
+          "delta_medio": -0.0084103,
+          "ic95": [
+            -0.0096703,
+            -0.0072446
+          ],
+          "p_delta_positivo": 0.0
+        },
+        "delta_vs_nested_6154643": -0.0079079,
+        "delta_menos_control_filas": -0.0042548,
+        "ratio_sobre_variabilidad": 9.483
+      },
+      "gate": {
+        "delta_min": 0.0015,
+        "folds_min": 4,
+        "control_primario": "barajado_filas",
+        "pasa": false
+      },
+      "veredicto": "NEGATIVO",
+      "detalle_canal": {
+        "segundos_por_fold": [
+          14.0,
+          13.3,
+          14.8,
+          14.1,
+          14.5
+        ],
+        "vocabularios": [
+          3604,
+          3601,
+          3610,
+          3594,
+          3586
+        ]
+      }
+    }
+  },
+  "fecha": "2026-09-29",
+  "baseline_primario": 0.6159732,
+  "verificacion": {
+    "hashes_ok": true,
+    "constantes_ok": true
+  },
+  "sin_test": true,
+  "sin_holdout": true,
+  "sin_submission": true,
+  "commit": "6e4e5b200a453d5d3bc9e55161159fa9a72c538a"
+}

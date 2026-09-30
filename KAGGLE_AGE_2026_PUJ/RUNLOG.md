@@ -2105,3 +2105,11 @@ intacto.
   bootstrap, control) y arbol de decision.
 - Baseline primario recomputado: 0.6159732 (regla de la submission).
 - Sin tuning, sin test, sin holdout, sin submission automatica.
+
+---
+
+## P2 ejecutado: canal POS-secuencia · 2026-09-29
+
+- md: NEGATIVO | lg: NEGATIVO (arbol pre-registrado aplicado).
+- Baseline primario recomputado: 0.6159732; sin ajuste de ningun parametro.
+- Sin test, sin holdout, sin submission; candidato adoptado intacto.

@@ -1158,3 +1158,16 @@ El anotador queda **AUTORIZADO condicionalmente** (etiquetas si, vectores no) co
 condiciones de D-076, y se anade `es_core_news_lg` como modelo de comparacion. P2 (POS
 estructurado) queda habilitado con pre-registro previo. El candidato adoptado (V30 + plug-in,
 LB 0,63575) permanece como FINAL_REFERENCE.
+
+---
+
+## P2 ejecutado: canal POS-secuencia NEGATIVO (2026-09-29)
+
+- Canal `pos_seq` (md y lg): senal aislada real (**0.2751 / 0.2725** frente al suelo 0.1667),
+  pero la integracion neutral pre-registrada (alfa 0.5, pesos del plug-in congelados) da delta
+  **-0.0086357 / -0.0084168** con **0/5 folds** y con el control barajado rindiendo **mejor**
+  (-0.0039528 / -0.0041620). Veredicto del arbol pre-registrado: **NEGATIVO**.
+- Respuesta de la fase para POS-secuencia: **C** - existe senal nueva pero la integracion no
+  mejora; el modo de fallo es dilucion, no ausencia de informacion.
+- Decision: **POS-secuencia se cierra documentado**; el candidato adoptado (V30 + plug-in,
+  LB 0.63575) permanece intacto. Sin test, sin holdout, sin submission.

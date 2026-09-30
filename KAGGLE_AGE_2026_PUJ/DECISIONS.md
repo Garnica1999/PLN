@@ -2744,3 +2744,16 @@ No se usa el 0,63575 para optimizar pesos, crear variantes, seleccionar semillas
 - **Evidence**: `reports/linguistic_annotation_registry.csv` (actualizado),
   `reports/age_linguistic_legality_audit.md` (seccion Resolucion),
   `experiments/age_linguistic_resolucion.json`.
+---
+
+## D-077 - P2: el canal POS-secuencia queda en NEGATIVO
+
+- **Observation**: se ejecuto P2 con el pre-registro congelado (`reports/age_linguistic_pos_preregistro.md`): canal `pos_seq` (md y lg) -> TF-IDF 1-3 + LogReg C=1.0 ajustado por fold sobre la particion canonica, integracion neutral `p_mix = 0,5*p_V30 + 0,5*p_canal` con los pesos del plug-in congelados. Baseline primario recomputado: 0.6159732.
+
+- **Result**: **md**: delta -0.0086357 (0/5 folds, IC95 [-0.0098444; -0.0074067], control barajado -0.0039528) -> NEGATIVO | **lg**: delta -0.0084168 (0/5 folds, IC95 [-0.0096703; -0.0072446], control barajado -0.0041620) -> NEGATIVO.
+
+- **Decision**: no se adopta. El canal POS-secuencia se cierra documentado conforme al arbol pre-registrado (la regla del brief: una hipotesis negativa se cierra; no se encadenan variantes de POS sin una hipotesis nueva).
+
+- **Consequences**: el candidato adoptado (V30 + plug-in, LB 0,63575) permanece intacto. El modo de fallo queda acotado por las mediciones 1 y 2 (senal en aislamiento y complementariedad contra el campeon), que acotan la lectura: no es 'POS no tiene informacion', es lo que el gate midio sobre ESTA integracion.
+
+- **Evidence**: `experiments/age_linguistic_03_pos_secuencia.json`, `reports/age_linguistic_pos_secuencia.md`, `reports/age_linguistic_pos_secuencia_brazos.csv`.
