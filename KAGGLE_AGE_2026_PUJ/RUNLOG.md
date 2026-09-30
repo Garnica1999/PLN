@@ -2236,3 +2236,14 @@ intacto.
 - RSS pico 0.87 GB (tope 20); 32 hilos; duracion 755 s.
 - Sin particiones reservadas: sin test, sin holdout, sin envio.
 - Artefactos: experiments/v32_05_ftrl_challenger.json | experiments/v32_05_estado.json | reports/v32_p3_ftrl_challenger.md | reports/figures/v32_p3_curvas.png | artifacts/p33_scores/v32_p3/a1_ftrl.npy | artifacts/p33_scores/v32_p3/a2_sgd_twin.npy | artifacts/p33_scores/v32_p3/a3_ftrl_barajado.npy | artifacts/p33_scores/v32_p3/a2_sgd_twin_crudo.npy.
+
+---
+
+## Pre-registro de V33-E1 (FTRL softmax, una pasada) · 2026-09-30
+
+- Congelado: FTRL-Proximal softmax multiclase (K=6, un juego de pesos), 1 pasada online, alpha = 3/(2*sqrt(T))
+  derivado (cero valores evaluados), lambda1 0, lambda2 1, beta 1, intercepto x0=1, sin power_t; control SGD log_loss de 1 pasada con el
+  mismo barajado; puerta de convergencia G1-G6 fail-fast en el fold 0, aplicada a ambos brazos;
+  sonda |sigma*w|/|g| obligatoria; sondas (a)-(f) y sonda de refit; gates de la serie sin cambios.
+- Baseline recomputado: 0.6159732; ancla trivial: 0.0485421218068709. Via B descartada (B1 ilegal; B2 analogia; B3 algebra).
+- Sin test, sin holdout, sin leaderboard, sin submission.

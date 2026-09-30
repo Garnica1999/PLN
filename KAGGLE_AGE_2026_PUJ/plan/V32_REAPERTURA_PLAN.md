@@ -2,8 +2,7 @@
 
 Estado global: **reapertura V32 TERMINADA** con tres candidatos medidos: P1 NO_ATRIBUIBLE
 (D-081), P2 CLOSED (D-082), P3 NO_ATRIBUIBLE (D-083). Campeon V30 + plug-in (LB 0.63575)
-intacto; sin submission. Cualquier reintento (p.ej. un diseno online de una pasada corregido)
-exige pre-registro nuevo.
+intacto; sin submission. V33 (Via A) aprobada por Carlos y en ejecucion.
 Campeon congelado (FINAL_REFERENCE): **V30 + plug-in por clase**, LB 0.63575
 (CV global 0.6159732; nested 0.6154643; particion canonica).
 Objetivo del usuario: mejorar el puntaje de Kaggle; referencia declarada: acercarse a 0.70 de F1.
@@ -91,13 +90,17 @@ plan. Restricciones heredadas: sin transformers/LLMs/embeddings; sin datos exter
 test solo transform->predict; holdout intocable; leaderboard sin tuning; un experimento = un
 script nuevo; pre-registro congelado; campeon V30 + plug-in (LB 0.63575) intacto.
 
-- [ ] **F1''' Investigacion y arquitectura**: `ml-architect` (estado del arte + auditoria de
-  novedad en el grafo) define (i) el diseno online corregido con su control y una puerta de
-  convergencia fail-fast, y (ii) 2-3 ideas de "otra magnitud" **fuera de los 39 mecanismos ya
-  auditados**, con veredicto de legalidad y expectativa honesta, y recomienda cual pre-registrar
-  primero; `kaggle-specialist` valida legalidad (frontera de embeddings/datos); `nlp-specialist`
-  valora viabilidad de representaciones nuevas. El plan V33 se presenta a Carlos para
-  aprobacion antes de ejecutar nada.
+- [x] **F1''' Investigacion y arquitectura**: `ml-architect` diagnostico la divergencia de P3
+  (`sigma` inflado 10x por `alpha=0.05` mas 10 pasadas con semantica proximal; solo `alpha`
+  tiene palanca) y diseno la **Via A**: FTRL-Proximal **softmax multiclase**, **una sola pasada
+  online**, `alpha = 3/(2*sqrt(T))` DERIVADO (T = n_train_fold; cero valores evaluados),
+  lambda1 0.0 / lambda2 1.0 / beta 1.0, intercepto x0=1.0, sin power_t; control SGD log_loss
+  de 1 pasada con el mismo barajado; **puerta de convergencia G1-G6 fail-fast** en el fold 0
+  antes de integrar. La Via B quedo DESCARTADA: B1 (grafo transductivo) **ILEGAL** segun
+  `kaggle-specialist` (usa features de test para modificar predicciones de train; su forma legal
+  es kNN = M09 cerrado), B2 descartada por analogia con C04, B3 refutada por algebra.
+  `kaggle-specialist` = GO condicionado (condiciones incorporadas al pre-registro); sin
+  `nlp-specialist` porque no entra ninguna representacion nueva. **Aprobado por Carlos.**
 - [ ] **F2''' Pre-registro + implementacion + revision** por experimento (pre-registro congelado,
   `ml-coder`, `ml-reviewer`, `ml-qa-engineer` GO/NO-GO).
 - [ ] **F3''' Ejecucion + gates** por ciclo, con control propio y los gates de la serie.
