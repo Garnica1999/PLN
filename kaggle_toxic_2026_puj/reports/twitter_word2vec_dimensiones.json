@@ -1,0 +1,72 @@
+{
+  "familia": "P72_TWITTER_WORD2VEC_DIM",
+  "experiment_id": "P72-01",
+  "fase": "P1 capacidad de la representacion",
+  "fecha": "2026-09-30T04:43:04+00:00",
+  "naturaleza": "ENTRENAMIENTO. 2 dimensiones nuevas, la tercera ya existia",
+  "aislado": {
+    "variable": "vector_size",
+    "valores": [
+      100,
+      300,
+      200
+    ]
+  },
+  "congelado": {
+    "corpus": "twitter 10.000.029 tokens",
+    "tokenizacion": "EMB-NORMAL-TW v1",
+    "window": 5,
+    "min_count": 3,
+    "negative": 10,
+    "sample": 0.0001,
+    "epochs": 5,
+    "sg": 1,
+    "seed": 20261016,
+    "lote": 256,
+    "lr": "0.025 x 256"
+  },
+  "nuevas": [
+    {
+      "dim": 100,
+      "vocabulario": 77657,
+      "tokens": 10000029,
+      "loss_por_epoca": [
+        1.276529,
+        1.181538,
+        1.14267,
+        1.121871,
+        1.110795
+      ],
+      "baja": true,
+      "segundos": 1070.2,
+      "bytes": 29478868,
+      "parametros_embedding": 7765700,
+      "sha256": "302c994d13b75f8f5fbd440eea2c4f4113997e2581524021923b92f8244d705a",
+      "artefacto": "modelos/twitter_domain/w2v_twitter_100d.npz"
+    },
+    {
+      "dim": 300,
+      "vocabulario": 77657,
+      "tokens": 10000029,
+      "loss_por_epoca": [
+        1.269616,
+        1.170286,
+        1.126361,
+        1.100732,
+        1.086255
+      ],
+      "baja": true,
+      "segundos": 1984.3,
+      "bytes": 87107254,
+      "parametros_embedding": 23297100,
+      "sha256": "8e405eed91ac81fc5834a0d3267b5a88cbb320c7f0055a66bc9faa19096f88f2",
+      "artefacto": "modelos/twitter_domain/w2v_twitter_300d.npz"
+    }
+  ],
+  "reproducibilidad": {
+    "nivel": "R2",
+    "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "corrected_cv_v03": 0.7772114525165721
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

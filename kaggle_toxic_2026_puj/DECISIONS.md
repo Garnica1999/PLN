@@ -7325,3 +7325,83 @@ min_count 3, negativos 10, muestreo 1e-4, epocas 5, sg 1, semilla 20261016, lote
 learning rate 0,025 por ejemplo.
 
 No se prueban 50d, 150d, 250d, 400d ni 500d. No hay grid.
+
+
+### D-243 a D-245: la auditoria del Kaggle Specialist, y lo que corrige
+
+Fecha 2026-09-30. Las cinco objeciones, incorporadas.
+
+#### D-243. LA RESOLUCION DE LA METRICA, que es lo que decide
+
+```text
+macro-F1 = media de 3 F1 por etiqueta
+mover UNA celda de la etiqueta j cambia la macro en 2/(3*D_j)
+
+HS: D=1326 -> 0,00050277 por celda
+TR: D= 890 -> 0,00074906 por celda
+AG: D=1127 -> 0,00059154 por celda
+```
+
+**La dispersion de la mejor fusion era `0,000222`, el 44 por ciento de UNA SOLA CELDA.**
+
+```text
+'las tres dimensiones no difieren'  REFORZADO: por debajo de la unidad de la metrica
+'200d es el punto'                  DESTRUIDO: elegirla por 0,000222 arriba es post-hoc
+```
+
+#### D-244. Tres sobreafirmaciones mias, retiradas
+
+```text
+RETIRADO  'la capacidad no es el limite'
+          no se sigue: pooling, modelo lineal, escala y C quedan fijos
+          lo defendible es 'la dimension no produce mejora detectable en este pipeline'
+
+RETIRADO  'la loss mejora luego hay capacidad'
+          la loss mide ajuste al corpus de 2020, no transferencia a toxicidad de 2026
+          y NO es comparable entre dimensiones: distinto numero de parametros
+
+RETIRADO  '200d es el punto'
+          es lectura post-hoc sobre un maximo seleccionado
+```
+
+#### D-245. El confundidor que no habia visto: dimension contra regularizacion efectiva
+
+El ancho del bloque denso cambia con la dimension, y con `C` fijo la penalizacion L2 por
+caracteristica cambia. **La dimension queda confundida con la regularizacion efectiva.** No
+tumba la conclusion negativa, pero **impide atribuirla a capacidad**.
+
+Y el dato mas incomodo, que la auditoria senala: el control de azar mostro que a la escala que
+menos dano hace, los embeddings reales rinden igual o peor que el ruido. La lectura literal es
+que **el bloque denso no aporta senal util**, y entonces la dimension es irrelevante **por
+trivialidad**, no porque sobre capacidad.
+
+### Lo que queda pendiente y NO se ha ejecutado
+
+```text
+varianza de semilla      3-5 semillas por dimension
+curvas completas         no solo el mejor punto
+azar en AMBOS regimenes  solo-embedding, fusion, y vectores de inicializacion aleatoria
+comparacion emparejada   por pliegue mas bootstrap sobre filas
+sensibilidad de umbral   +-0,02
+near-duplicados          Jaccard de shingles contra train y dev
+aislamiento del test     re-correr sin el fichero de test presente
+```
+
+**Sin esos controles no se puede afirmar equivalencia**, solo ausencia de diferencia detectable.
+
+### D-246. Una ambiguedad de compliance que necesita decision de Carlos
+
+La regla dice: *modelos de vectorizacion, pero deben entrenarse desde cero y hacer todo desde
+cero.* Hay dos lecturas:
+
+```text
+(A) sin artefactos preentrenados, el modelo se entrena desde cero
+(B) solo con datos de la competencia
+```
+
+**El diseno cumple (A) y no cumple (B).** Bajo lectura literal cumple, porque la regla prohibe
+usar el test para entrenamiento y no prohibe corpus externos publicos, y "entrenarse desde cero"
+se refiere al modelo.
+
+**Pero el juez es el profesor.** Antes de publicar cualquier conclusion apoyada en el embedding
+hace falta confirmacion escrita de cual de las dos lecturas aplica.
