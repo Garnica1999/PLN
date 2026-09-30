@@ -5973,7 +5973,7 @@ def escribir_informe(resultado: dict) -> None:
         # Las enmiendas del pre-registro tienen esquema HETEROGENEO: unas declaran `afecta_a_gates`
         # y otras `cambia_los_gates` (y anaden `clase` en lugar de `de`/`a`). Leer una clave fija
         # reventaba con KeyError al construir el informe, DESPUES de entrenar y con los checkpoints
-        # ya escritos; por eso se leen LAS DOS y se publica la que la enmienda declare. Lo único que
+        # ya escritos; por eso se leen LAS DOS y se publica la que la enmienda declare. Lo unico que
         # se publica es lo que el pre-registro dice: no se redacta ni se completa nada aqui.
         *[f"- Enmienda del pre-registro ({enmienda['objeto']}): {enmienda['motivo']} "
           f"(afecta a gates: "
