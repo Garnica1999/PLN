@@ -63,9 +63,17 @@ nucleo auditado); su nucleo NO se altera y su hash se verifica en runtime.
 Modos de linea de comandos:
 * (sin flags): pipeline completo (verificacion, sondas (a)-(m), estado, entrenamiento resumible con
   la puerta fail-fast, integracion y gates de la serie, informe, figura y anotadores).
-* `--verificar`: TODO lo anterior salvo el estado y el entrenamiento; imprime
-  `VERIFICACION OK` y NO escribe NADA (ni estado, ni OOF, ni checkpoints, ni filas en RUNLOG.md,
-  experiments.csv, reports/v35_novelty_registry.csv ni en el historial).
+* `--verificar`: TODO lo anterior y ADEMAS el autoejercicio estructural de la ruta de salida, que
+  construye un `estado` SIMULADO y ejecuta con las funciones REALES (`evaluar_puerta_preliminar`,
+  `cerrar_puerta`, `triage_formal`, `decidir_rama_arbol`, `calcular_gates`, `construir_resultado`,
+  `escribir_informe` y `resumen_consola`, mas la figura y los cuatro anotadores) los cinco caminos
+  que emiten cada nodo del arbol; imprime `VERIFICACION OK` y NO escribe NADA en el proyecto (ni
+  estado, ni OOF, ni checkpoints, ni filas en RUNLOG.md, experiments.csv,
+  reports/v35_novelty_registry.csv ni en el historial): todas las rutas de escritura del autoejercicio
+  se redirigen a un directorio TEMPORAL del sistema, se releen y se borra, y al final se comprueba
+  la ausencia de los artefactos del proyecto. El autoejercicio es una PRUEBA ESTRUCTURAL, NUNCA
+  evidencia experimental: su JSON, su informe y su consola llevan la marca explicita
+  `autoejercicio estructural, NO evidencia experimental` con 0 folds reales y 0 metricas.
 * `--humo`: recorre la zona INTERMEDIA entre `--verificar` y el entrenamiento (creacion del
   checkpoint en memoria, mapeo de sondas y escritura atomica del estado) y PARA con un sentinel
   explicito y salida 0 SIN entrenar ningun fold. Es la cobertura permanente del gate de QA para
@@ -100,6 +108,7 @@ import hashlib
 import json
 import math
 import resource
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -5881,7 +5890,23 @@ def escribir_informe(resultado: dict) -> None:
         a1 = resultado["integracion"]["A1_ftrl_lambda1"]
         veredicto_linea = (f"Delta de A1 {a1['delta_vs_baseline']:+.7f} sobre el baseline, "
                            f"IC95 {a1['ic95']}.")
+    #: Cabecera de AVISO que solo aparece cuando el JSON que se esta publificando lleva la marca del
+    #: autoejercicio estructural: el informe entero (nodo, veredicto, tabla de mecanismo, triage)
+    #: seria de otro modo indistinguible del de una corrida real. En la corrida real el JSON no lleva
+    #: esa marca, luego estas lineas no existen.
+    autoejercicio = resultado.get("autoejercicio")
+    cabecera_autoejercicio: list[str] = []
+    if autoejercicio:
+        cabecera_autoejercicio = [
+            f"> **AUTOEJERCICIO ESTRUCTURAL: {autoejercicio['naturaleza']}.**",
+            (f"> Camino ejercitado: {autoejercicio['camino']}; "
+             f"{autoejercicio['folds_reales']} folds reales y "
+             f"{autoejercicio['metricas_reales']} metricas reales."),
+            f"> {autoejercicio['no_es_evidencia']}",
+            "",
+        ]
     lineas: list[str] = [
+        *cabecera_autoejercicio,
         "# V35-E1 - Ejecucion: FTRL-Proximal softmax multiclase multi-pasada con ES interno",
         "",
         f"- Fecha de ejecucion: {FECHA}",
@@ -5945,8 +5970,15 @@ def escribir_informe(resultado: dict) -> None:
         f"- Desviacion declarada: {control_prereg['desvio_declarado_partial_fit']}.",
         # Se citan por OBJETO y no por numero: en este documento 'Enmienda 1' y 'Enmienda 2'
         # ya designan el doble sesgo y el control, y numerar aqui colisionaria con ellas.
+        # Las enmiendas del pre-registro tienen esquema HETEROGENEO: unas declaran `afecta_a_gates`
+        # y otras `cambia_los_gates` (y anaden `clase` en lugar de `de`/`a`). Leer una clave fija
+        # reventaba con KeyError al construir el informe, DESPUES de entrenar y con los checkpoints
+        # ya escritos; por eso se leen LAS DOS y se publica la que la enmienda declare. Lo único que
+        # se publica es lo que el pre-registro dice: no se redacta ni se completa nada aqui.
         *[f"- Enmienda del pre-registro ({enmienda['objeto']}): {enmienda['motivo']} "
-          f"(afecta a gates: {enmienda['afecta_a_gates']}; {enmienda['estado_datos']})."
+          f"(afecta a gates: "
+          f"{enmienda.get('afecta_a_gates') or enmienda.get('cambia_los_gates')}; "
+          f"{enmienda['estado_datos']})."
           for enmienda in resultado["prereg"]["enmiendas"]],
         "",
         "### Regla de lectura UNIDIRECCIONAL de A2",
@@ -6291,7 +6323,7 @@ def escribir_registro_novedad(resultado: dict) -> bool:
         "no_es_embedding": "no", "no_es_representacion_nueva": "no",
         "no_usa_datos_externos": "no", "no_es_un_grid": "no (alpha* DERIVADO en forma cerrada, "
                                                          "0 valores evaluados)",
-        "diferencia_con_v33": NOVEDAD_DIFERENCIA_V33,
+        "diferencia_con_v34": NOVEDAD_DIFERENCIA_V34,
         "verificacion": "sondas (a)-(j) obligatorias con la (j) de tabla de mecanismo publicada "
                         "dentro del runner, tabla de simetria de sesgo por fold, sonda de "
                         "reproducibilidad de alpha* (diferencia exacta 0), sonda de estabilidad "
@@ -6402,6 +6434,15 @@ def resumen_consola(resultado: dict) -> None:
     """
     puerta = resultado["puerta"]
     print()
+    #: Aviso de autoejercicio: lo primero que se imprime cuando el JSON que se resume lleva la marca
+    #: del autoejercicio estructural, para que ninguna linea de este resumen pueda leerse como el
+    #: resultado de una corrida real. En la corrida real no se imprime.
+    autoejercicio = resultado.get("autoejercicio")
+    if autoejercicio:
+        print(f"  [AUTOEJERCICIO] {autoejercicio['naturaleza']} | camino "
+              f"{autoejercicio['camino']} | {autoejercicio['folds_reales']} folds reales y "
+              f"{autoejercicio['metricas_reales']} metricas reales: lo que sigue NO es evidencia "
+              f"experimental", flush=True)
     print(f"[V35-E1] fin en {resultado['duracion_seg']:.0f} s | baseline "
           f"{resultado['verificacion']['baseline_recomputado']:.7f} | {HILOS} hilos | sondas "
           f"(a)-(j) publicadas | RSS pico {resultado['rss_pico_gb']:.2f} GB")
@@ -6995,14 +7036,18 @@ def ejecutar(verificar: bool, humo: bool) -> int:
 
     En ``--verificar`` se detiene ANTES de tocar el disco: imprime ``VERIFICACION OK`` y NO crea
     ni el estado, ni el OOF, ni los checkpoints, ni filas en el RUNLOG, en ``experiments.csv`` ni
-    en el historial. En ``--humo`` se detiene justo despues de escribir ``estado["sondas"]`` (ver
+    en el historial. Antes imprime, ademas, el autoejercicio estructural de la ruta de salida (ver
+    :func:`autoensayo_ruta_salida`): cinco caminos con las funciones reales, todo su I/O en un
+    temporal del sistema que se borra, y comprobacion de que el proyecto sigue intacto. En
+    ``--humo`` se detiene justo despues de escribir ``estado["sondas"]`` (ver
     :func:`ejecutar_humo`), lo que cubre de forma permanente la zona intermedia entre la
     verificacion y el entrenamiento.
 
     Parameters
     ----------
     verificar:
-        Si True solo verifica y ejecuta las sondas, sin entrenar ni escribir.
+        Si True solo verifica, ejecuta las sondas y el autoejercicio estructural de la ruta de
+        salida, sin entrenar ni escribir nada en el proyecto.
     humo:
         Si True recorre la zona intermedia, escribe el estado en un temporal y para con el
         sentinel, sin entrenar ningun fold.
@@ -7069,6 +7114,30 @@ def ejecutar(verificar: bool, humo: bool) -> int:
           f"con lambda2/alpha_reg = {asimetria['cociente']:.0e}; el veredicto NO se "
           "apoya en el contraste A1 frente a A2", flush=True)
     if verificar:
+        # Autoejercicio ESTRUCTURAL permanente de la ruta de salida (la zona que --verificar y
+        # --humo no cubrian y donde se escondieron los tres bugs que mataban la corrida DESPUES de
+        # entrenar, con checkpoints y OOF ya escritos). Construye un estado SIMULADO y ejecuta los
+        # cinco caminos con las funciones REALES de punta a punta. No es evidencia experimental: 0
+        # folds reales, 0 metricas reales, y todas las rutas de escritura van a un temporal del
+        # sistema que se borra. Cualquier excepcion real de un camino se propaga SIN envolver, para
+        # que --verificar falle con el error y el traceback de verdad.
+        contexto = {"inicio": inicio, "prereg": prereg, "auditoria": auditoria,
+                    "lecturas": lecturas, "baseline": baseline, "linea_base": linea_base,
+                    "hashes_corpus": hashes_corpus, "detalle_constantes": detalle_constantes,
+                    "detalle_versiones": detalle_versiones, "detalle_hashes": detalle_hashes,
+                    "sondas": sondas, "asimetria": asimetria, "clase": clase, "fold_idx": fold_idx,
+                    "v30": v30}
+        contexto["oofs"] = oof_autoejercicio(v30)
+        (contexto["integracion"], contexto["complementariedad"],
+         contexto["control"]) = integracion_autoejercicio(clase, fold_idx, v30, contexto["oofs"])
+        autoensayo = autoensayo_ruta_salida(contexto)
+        print(f"  autoejercicio estructural de la ruta de salida: {autoensayo['caminos_ok']}/"
+              f"{len(autoensayo['caminos'])} caminos ejercitados con las funciones reales hasta el "
+              f"final y sin excepcion", flush=True)
+        print(f"  autoejercicio ({NATURALEZA_AUTOEJERCICIO}): escrituras aisladas en un temporal "
+              f"del sistema y borrado = {autoensayo['temporal_borrado']}; en el proyecto NO se ha "
+              f"creado {', '.join(autoensayo['artefactos_ausentes'])} (ausencia comprobada)",
+              flush=True)
         print("VERIFICACION OK", flush=True)
         return 0
 
@@ -7205,14 +7274,986 @@ def ejecutar(verificar: bool, humo: bool) -> int:
     return 0
 
 
+# =====================================================================================
+# ---- 14. AUTOEJERCICIO ESTRUCTURAL DE LA RUTA DE SALIDA (PERMANENTE, EN --verificar) ----
+# =====================================================================================
+
+#: NATURALEZA del autoejercicio: es una PRUEBA ESTRUCTURAL de las funciones que se ejecutan
+#: DESPUES de entrenar (puerta, triage, arbol, gates, JSON, informe, figura y anotadores), JAMAS
+#: evidencia experimental. Viaja en las tres salidas del autoejercicio para que ninguna de ellas
+#: pueda presentarlo como un resultado del ciclo.
+NATURALEZA_AUTOEJERCICIO = "autoejercicio estructural, NO evidencia experimental"
+#: Prefijo del directorio TEMPORAL del sistema donde se aisla el autoejercicio. Sin barra y sin
+#: extension de datos, de modo que la auditoria de lecturas lo trata como NOMBRE y no como ruta.
+PREFIJO_TEMPORAL_AUTOEJERCICIO = "v35_01_autoejercicio_"
+#: Nombres (NO rutas) de los ficheros que el autoejercicio escribe dentro de su temporal. Viven a
+#: nivel de modulo, como :data:`NOMBRE_TEMPORAL_HUMO`, por el mismo motivo que declara esa
+#: constante: un literal de modulo sin barra es un NOMBRE que se compone con una raiz declarada.
+NOMBRES_TEMPORALES_AUTOEJERCICIO = {
+    "resultados": "v35_01_ftrl_lambda1.json",
+    "informe": "v35_e1_ftrl_lambda1.md",
+    "figura": "v35_e1_curvas.png",
+    "estado": "v35_01_estado.json",
+    "novedad": "v35_novelty_registry.csv",
+    "historia": "age_complete_experiment_history.csv",
+    "runlog": "RUNLOG.md",
+    "experiments": "experiments.csv",
+}
+#: Subdirectorios que se aislan para que `ruta_oof` y `ruta_pesos` no puedan escribir en el
+#: proyecto (mismos nombres de directorio que los reales, bajo el temporal).
+DIRECTORIOS_AUTOEJERCICIO = {"oof": "p35_scores", "checkpoints": "v35_e1"}
+#: Constantes de modulo que el autoejercicio redirige al temporal y que restaura al terminar. Son
+#: TODAS las rutas de escritura del script: sin esta lista, una sola que se quedara fuera escribiria
+#: en el proyecto y el autoejercicio dejaria de ser inocuo.
+RUTAS_AISLAR_AUTOEJERCICIO = ("RESULTADOS_JSON", "INFORME", "FIGURA", "ESTADO_JSON", "NOVELTY_CSV",
+                             "HISTORIA_CSV", "RUNLOG", "EXPERIMENTS_CSV", "OOF_DIR", "CKPT_DIR")
+#: Origenes de sesgo, copiados LITERALMENTE de la corrida real: el triage exige que el de A2 empiece
+#: por "fit_intercept=True" (comprobacion D3) y la tabla de simetria publica el texto tal cual.
+FUENTE_SESGO_AUTOEJERCICIO = {
+    "A1_ftrl_lambda1": "coordenada de sesgo x0=1.0 dentro de FTRL (propio z, propio n)",
+    "A2_sgd_presupuesto": "fit_intercept=True sobre la matriz SIN columna de sesgo pre-anadida "
+                          "(un solo camino)",
+}
+#: Prior SINTETICO del ES-train con el que se arma el estado simulado. No es el prior MEDIDO de
+#: ningun fold: 0 folds reales, 0 metricas. Solo tiene que ser COHERENTE con lo que las funciones
+#: asumen, y de ahi que ``d_norm``, ``alpha`` y ``H(prior)`` se DERIVEN de el con las funciones
+#: reales del modulo en vez de declararse a mano.
+PRIOR_AUTOEJERCICIO = [0.1854, 0.1701, 0.1655, 0.1602, 0.1611, 0.1577]
+#: Dimension SINTETICA del fold simulado, coherente con los invariantes que comprueba
+#: `verificar_invariantes`: el vocabulario coincide con el numero de columnas, las coordenadas de A1
+#: son el vocabulario mas la del sesgo, y el 10 % de ES-val mas el 90 % de ES-train son las filas
+#: del fold-train.
+DIMENSION_AUTOEJERCICIO = {"n_vocabulario": 512, "n_train_fold": 135468, "n_val_fold": 33868,
+                           "n_filas_fit_es_train": 121921, "n_filas_es_val": 13547}
+#: PERFILES SINTETICOS del fold 0, uno por situacion que hay que provocar. ``norma_w_l2`` es
+#: CONSTANTE en el perfil verde porque G8 exige razon max/min <= 1.0 y cualquier variacion la
+#: haria fallar; ``macro_f1_standalone`` es la magnitud de G3. Ninguno es una medicion.
+PERFILES_AUTOEJERCICIO = {
+    "verde": {"norma_w_l2": [2.0, 2.0, 2.0], "macro_f1_standalone": 0.50},
+    "g8_falla": {"norma_w_l2": [2.0, 2.5, 3.0], "macro_f1_standalone": 0.50},
+    "g3_falla": {"norma_w_l2": [2.0, 2.0, 2.0], "macro_f1_standalone": 0.20},
+}
+#: Trayectorias SINTETICAS por pasada, con la forma EXACTA que escribe `entrenar_brazo_fold`: A1
+#: lleva las magnitudes L1 porque es el unico brazo con regularizador y A2 NO las lleva, que es lo
+#: que hace que G7 y G8 le salgan con ``pass = None`` en lugar de "no_aplica" inventado.
+TRAYECTORIAS_AUTOEJERCICIO = {
+    "A1_ftrl_lambda1": {"ll_train": [1.75, 1.70, 1.65], "D_acum": [1.6, 1.6, 1.6],
+                        "macro_f1_es": [0.40, 0.45, 0.44], "w_max_abs": [2.0, 2.0, 2.0],
+                        "escasez_efectiva": [0.40, 0.40, 0.40],
+                        "frac_coordenadas_muertas": [0.60, 0.60, 0.60],
+                        "frac_clases_muertas": [0.0, 0.0, 0.0],
+                        "coordenadas_vivas": [205, 205, 205]},
+    "A2_sgd_presupuesto": {"ll_train": [1.79, 1.76, 1.74], "D_acum": [1.5, 1.5, 1.5],
+                            "macro_f1_es": [0.38, 0.42, 0.41], "w_max_abs": [1.5, 1.6, 1.6],
+                            "t_": [121921.0, 243842.0, 365763.0]},
+}
+#: Tiempos SINTETICOS de los dos brazos del fold 0; su suma alimenta la calibracion congelada, que
+#: se ejecuta de verdad y debe salir por debajo del tope declarado.
+TIEMPOS_AUTOEJERCICIO = {"A1_ftrl_lambda1": 12.5, "A2_sgd_presupuesto": 9.5}
+#: PLAN de los cinco caminos: perfil del fold 0 de A1, perfil del de A2 y estado de la identidad de
+#: lambda1 (``None`` = no se midio, ``"reproduce"`` = presente y en verde, ``"falla"`` = presente con
+#: la comparacion FALLIDA). Los tres primeros disparan la rama de cierre de la puerta; los dos
+#: ultimos la dejan pasar y llegan a `calcular_gates`.
+PLAN_AUTOEJERCICIO = {
+    "mecanismo_g8": {"perfil_a1": "g8_falla", "perfil_a2": "verde", "identidad": "reproduce"},
+    "no_atribuible_g3_a2": {"perfil_a1": "verde", "perfil_a2": "g3_falla", "identidad": "reproduce"},
+    "hipotesis_conjunta": {"perfil_a1": "g3_falla", "perfil_a2": "verde", "identidad": "reproduce"},
+    "rama_no_de_cierre": {"perfil_a1": "verde", "perfil_a2": "verde", "identidad": None},
+    "identidad_no_gate": {"perfil_a1": "verde", "perfil_a2": "verde", "identidad": "falla"},
+}
+#: Los cinco caminos, en el orden en que se ejercitan.
+CAMINOS_AUTOEJERCICIO = tuple(PLAN_AUTOEJERCICIO)
+#: Nodo, causa y prefijo de lectura ESPERADOS por camino. El autoejercicio FALLA (exit 2) si el
+#: codigo emite otro nodo, otra causa u otra lectura que no empiece por el prefijo declarado, que es
+#: justo el fallo que produjo los tres bugs que este autoejercicio existe para cazar.
+ESPERADOS_AUTOEJERCICIO = {
+    "mecanismo_g8": {"nodo": NODO_CIERRE_POR_MECANISMO, "causa": [NOMBRES_GATE[8]],
+                     "prefijo_lectura": "falla ['G8_acotacion_norma'] en A1:",
+                     "cierre_definitivo": True},
+    "no_atribuible_g3_a2": {"nodo": "NO_ATRIBUIBLE_BY_GATE", "causa": [NOMBRES_GATE[3]],
+                            "prefijo_lectura": "el fallo no es atribuible a G7 ni a G8 de A1",
+                            "cierre_definitivo": False},
+    "hipotesis_conjunta": {"nodo": NODO_HIPOTESIS_CONJUNTA_REFUTADA, "causa": [NOMBRES_GATE[3]],
+                           "prefijo_lectura": "G7 y G8 pasan y fallan ['G3_macro_f1_fold_val'] en A1:",
+                           "cierre_definitivo": False},
+    "rama_no_de_cierre": {"nodo": None, "causa": None,
+                          "prefijo_lectura": "la puerta se supero en el fold 0",
+                          "cierre_definitivo": False},
+    "identidad_no_gate": {"nodo": None, "causa": None,
+                          "prefijo_lectura": "la puerta se supero en el fold 0",
+                          "cierre_definitivo": False},
+}
+#: Veredictos admisibles en los dos caminos cuya rama NO es de cierre.
+NODOS_RAMA_NO_CIERRE = ("PROMISING", "MARGINAL", "CLOSED")
+
+
+def magnitudes_comunes_autoejercicio() -> dict:
+    """Magnitudes DERIVADAS comunes a los folds sinteticos del autoejercicio.
+
+    ``d_norm`` sale de :func:`d_norm_de_prior`, ``alpha`` de :func:`alpha_derivado` (que es
+    ``2*M/(d_norm*P_max**2)``, la MISMA forma cerrada que la corrida real) y ``H(prior)`` de
+    :func:`entropia_de_prior`, todo sobre el prior sintetico declarado. Se derivan con las funciones
+    del modulo para que ``triage_formal`` (D7 y D8) vea exactamente lo que veria en la corrida real.
+
+    Returns
+    -------
+    dict
+        ``prior``, ``prior_es``, ``d_norm``, ``alpha``, ``h_prior_es``, ``prior_sha256`` y
+        ``alpha_sha256``.
+    """
+    prior = np.asarray(PRIOR_AUTOEJERCICIO, dtype=np.float64)
+    alpha = alpha_derivado(prior)
+    return {"prior": prior, "prior_es": [float(valor) for valor in prior],
+            "d_norm": d_norm_de_prior(prior), "alpha": alpha,
+            "h_prior_es": entropia_de_prior(prior), "prior_sha256": sha256_f64(prior),
+            "alpha_sha256": sha256_f64(np.float64(alpha))}
+
+
+def trayectoria_autoejercicio(brazo: str, perfil: str) -> list[dict]:
+    """Trayectoria SINTETICA por pasada del fold 0 con la forma que lee el codigo.
+
+    Parameters
+    ----------
+    brazo:
+        Nombre del brazo.
+    perfil:
+        Clave de :data:`PERFILES_AUTOEJERCICIO`: solo cambia ``norma_w_l2`` (la magnitud de G8) y
+        ``macro_f1_standalone`` (la de G3).
+
+    Returns
+    -------
+    list[dict]
+        Una entrada por pasada con ``pasada``, ``ll_train``, ``D_acum``, ``macro_f1_es``,
+        ``w_max_abs`` y, solo en A1, las magnitudes L1 que G7 y G8 necesitan.
+    """
+    magnitudes = TRAYECTORIAS_AUTOEJERCICIO[brazo]
+    perfil_valores = PERFILES_AUTOEJERCICIO[perfil]
+    puntos: list[dict] = []
+    for indice in range(len(magnitudes["ll_train"])):
+        punto = {"pasada": indice + 1, "ll_train": magnitudes["ll_train"][indice],
+                 "D_acum": magnitudes["D_acum"][indice],
+                 "macro_f1_es": magnitudes["macro_f1_es"][indice],
+                 "w_max_abs": magnitudes["w_max_abs"][indice]}
+        if brazo == "A1_ftrl_lambda1":
+            punto.update({"razon_sigma_sobre_g": 1.0, "razon_sigma_sobre_g_pasada": 1.0,
+                          "perdida_online": punto["ll_train"],
+                          "norma_w_l2": perfil_valores["norma_w_l2"][indice],
+                          "escasez_efectiva": magnitudes["escasez_efectiva"][indice],
+                          "frac_coordenadas_muertas": magnitudes["frac_coordenadas_muertas"][indice],
+                          "frac_clases_muertas": magnitudes["frac_clases_muertas"][indice],
+                          "coordenadas_vivas": magnitudes["coordenadas_vivas"][indice]})
+        else:
+            punto["t_"] = magnitudes["t_"][indice]
+        puntos.append(punto)
+    return puntos
+
+
+def sesgo_autoejercicio(brazo: str) -> dict:
+    """Bloque de sesgo SINTETICO de un brazo con la forma que leen la tabla y el triage.
+
+    Parameters
+    ----------
+    brazo:
+        Nombre del brazo.
+
+    Returns
+    -------
+    dict
+        UN solo camino de sesgo por brazo: en A1 la coordenada ``x0 = 1.0`` dentro de FTRL y en A2
+        el ``intercept_`` del estimador sobre la matriz sin columna anadida.
+    """
+    if brazo == "A1_ftrl_lambda1":
+        desplazamiento = np.full(N_CLASES, 0.002, dtype=np.float64)
+        return {"n_caminos": 1, "fuente": FUENTE_SESGO_AUTOEJERCICIO[brazo],
+                "max_abs_gradiente_coordenada_sesgo": 0.05,
+                "gradiente_acumulado_por_clase": [0.01] * N_CLASES,
+                "desplazamiento_por_clase": [float(valor) for valor in desplazamiento],
+                "max_abs_desplazamiento": 0.002,
+                "coord_sesgo_sha256": sha256_f64(desplazamiento),
+                "sha256_w": sha256_bytes(b"autoejercicio:sesgo:a1")}
+    intercepto = np.full(N_CLASES, 0.01, dtype=np.float64)
+    return {"n_caminos": 1, "fuente": FUENTE_SESGO_AUTOEJERCICIO[brazo],
+            "intercept_": [float(valor) for valor in intercepto], "max_abs_intercept": 0.01,
+            "intercept_sha256": sha256_f64(intercepto),
+            "sha256_w": sha256_bytes(b"autoejercicio:sesgo:a2")}
+
+
+def detalle_fold_autoejercicio(brazo: str, fold: int, perfil: str, comunes: dict) -> dict:
+    """Detalle SINTETICO de un fold con TODOS los campos de :data:`CAMPOS_FOLD`.
+
+    Se construye campo a campo para que la comprobacion de campos de `cargar_estado` y la de
+    `verificar_invariantes` tengan algo real que mirar: los hashes son de 64 caracteres, las filas de
+    ES-train mas ES-val suman las del fold, el 10 % de ES-val es ``round(0.1 * n_train_fold)`` y las
+    coordenadas de A1 son el vocabulario mas la del sesgo.
+
+    Parameters
+    ----------
+    brazo:
+        Nombre del brazo.
+    fold:
+        Fold canonico simulado (0 para el que consume la puerta, 1-4 para los invariantes).
+    perfil:
+        Clave de :data:`PERFILES_AUTOEJERCICIO`; solo el fold 0 usa el perfil del camino.
+    comunes:
+        Salida de :func:`magnitudes_comunes_autoejercicio`.
+
+    Returns
+    -------
+    dict
+        El detalle del fold tal como queda en el checkpoint.
+    """
+    trayectoria = trayectoria_autoejercicio(brazo, perfil)
+    clave = f"autoejercicio:{brazo}:{fold}"
+    n_pasadas = len(trayectoria)
+    return {"n_vocabulario": DIMENSION_AUTOEJERCICIO["n_vocabulario"],
+            "vocab_sha256": sha256_bytes(f"{clave}:vocab".encode()),
+            "idf_sha256": sha256_bytes(f"{clave}:idf".encode()),
+            "n_filas_fit_es_train": DIMENSION_AUTOEJERCICIO["n_filas_fit_es_train"],
+            "n_filas_es_val": DIMENSION_AUTOEJERCICIO["n_filas_es_val"],
+            "n_train_fold": DIMENSION_AUTOEJERCICIO["n_train_fold"],
+            "n_val_fold": DIMENSION_AUTOEJERCICIO["n_val_fold"],
+            "n_features_es_train": DIMENSION_AUTOEJERCICIO["n_vocabulario"],
+            "n_features_es_val": DIMENSION_AUTOEJERCICIO["n_vocabulario"],
+            "n_coordinates_a1": DIMENSION_AUTOEJERCICIO["n_vocabulario"] + 1,
+            "alpha_efectivo": float(comunes["alpha"]), "d_norm": float(comunes["d_norm"]),
+            "h_prior_es": float(comunes["h_prior_es"]), "prior_es": list(comunes["prior_es"]),
+            "prior_es_sha256": comunes["prior_sha256"], "alpha_sha256": comunes["alpha_sha256"],
+            "es_train_sha256": sha256_bytes(f"{clave}:es_train".encode()),
+            "es_val_sha256": sha256_bytes(f"{clave}:es_val".encode()),
+            "lambda1": LAMBDA1, "anclaje_lambda1": None,
+            "ordenes_sha256": [sha256_bytes(f"{clave}:orden:{pasada}".encode())
+                               for pasada in range(P_MAX)],
+            "pasada_de_parada": n_pasadas, "mejor_pasada": n_pasadas,
+            "trayectoria": trayectoria, "sesgo": sesgo_autoejercicio(brazo),
+            "t_": float(DIMENSION_AUTOEJERCICIO["n_filas_fit_es_train"] * n_pasadas),
+            "n_actualizaciones": int(DIMENSION_AUTOEJERCICIO["n_filas_fit_es_train"] * n_pasadas),
+            "macro_f1_standalone_fold_val": float(PERFILES_AUTOEJERCICIO[perfil][
+                "macro_f1_standalone"]),
+            "frecuencias_fold_val": list(comunes["prior_es"]),
+            "max_abs_suma_menos_uno": 1e-16,
+            "tiempo_seg": TIEMPOS_AUTOEJERCICIO[brazo]}
+
+
+def estado_autoejercicio(sondas: dict, perfil_a1: str, perfil_a2: str) -> dict:
+    """Estado SIMULADO completo, construido SOBRE :func:`estado_nuevo` y no a mano.
+
+    Parte del checkpoint que construye el propio modulo, le pone las partes del fold 0 que la
+    puerta lee (trayectorias, sesgo, prior MEDIDO del ES-train, frecuencias del fold-val, hashes
+    de los ordenes) y las de los folds 1-4 que solo necesita `verificar_invariantes`, mas la tabla de
+    mecanismo, las particiones ES y el vectorizador por fold.
+
+    Parameters
+    ----------
+    sondas:
+        Detalle real de las sondas (a)-(m), que se registra igual que lo hace la corrida real.
+    perfil_a1:
+        Perfil del fold 0 de A1.
+    perfil_a2:
+        Perfil del fold 0 de A2.
+
+    Returns
+    -------
+    dict
+        El checkpoint simulado. NUNCA se escribe en el ``ESTADO_JSON`` del proyecto: la escritura
+        va al temporal del sistema.
+    """
+    estado = estado_nuevo()
+    comunes = magnitudes_comunes_autoejercicio()
+    perfiles = {"A1_ftrl_lambda1": perfil_a1, "A2_sgd_presupuesto": perfil_a2}
+    for fold in range(N_FOLDS):
+        estado["es_por_fold"][str(fold)] = {
+            "es_train_sha256": sha256_bytes(f"autoejercicio:es_train:{fold}".encode()),
+            "es_val_sha256": sha256_bytes(f"autoejercicio:es_val:{fold}".encode()),
+            "n_filas_fit_es_train": DIMENSION_AUTOEJERCICIO["n_filas_fit_es_train"],
+            "n_filas_es_val": DIMENSION_AUTOEJERCICIO["n_filas_es_val"],
+            "n_train_fold": DIMENSION_AUTOEJERCICIO["n_train_fold"],
+            "prior": list(comunes["prior_es"]), "prior_sha256": comunes["prior_sha256"],
+            "prior_es": list(comunes["prior_es"]), "d_norm": float(comunes["d_norm"]),
+            "h_prior_es": float(comunes["h_prior_es"]), "alpha": float(comunes["alpha"]),
+            "alpha_sha256": comunes["alpha_sha256"]}
+        estado["vectorizador_por_fold"][str(fold)] = {
+            "n_vocabulario": DIMENSION_AUTOEJERCICIO["n_vocabulario"],
+            "vocab_sha256": sha256_bytes(f"autoejercicio:vocab:{fold}".encode()),
+            "idf_sha256": sha256_bytes(f"autoejercicio:idf:{fold}".encode()),
+            "n_filas_fit_es_train": DIMENSION_AUTOEJERCICIO["n_filas_fit_es_train"]}
+    for brazo, perfil in perfiles.items():
+        for fold in range(N_FOLDS):
+            # El perfil del camino solo se aplica al fold 0 (el que consume la puerta); los folds
+            # 1-4 llevan el perfil verde porque solo existen para que los invariantes tengan los
+            # cinco y su contenido no cambia el veredicto.
+            estado["brazos"][brazo]["folds"][str(fold)] = detalle_fold_autoejercicio(
+                brazo, fold, perfil if fold == 0 else "verde", comunes)
+        estado["brazos"][brazo]["folds_completados"] = [str(fold) for fold in range(N_FOLDS)]
+        estado["brazos"][brazo]["mascara_relleno_por_fila"] = [1] * N_FILAS
+    estado["sondas"] = {nombre: (bool(sondas[nombre]["pass"])
+                                 if "pass" in sondas[nombre] else None)
+                        for nombre in NOMBRES_SONDAS}
+    estado["rss_pico_gb"] = rss_gb()
+    estado["mecanismo"] = {"fold_0": True,
+                           "nota": f"tabla de mecanismo SINTETICA del autoejercicio "
+                                   f"({NATURALEZA_AUTOEJERCICIO})",
+                           "brazos": {brazo: estado["brazos"][brazo]["folds"]["0"]["trayectoria"]
+                                      for brazo in BRAZOS},
+                           "h_prior_es": float(comunes["h_prior_es"]), "M": M_MARGEN,
+                           "alpha": float(comunes["alpha"])}
+    return estado
+
+
+def identidad_autoejercicio(estado: dict, falla: bool) -> dict:
+    """Bloque SINTETICO de la identidad de los tres casos de lambda1 (sonda NO-GATE).
+
+    Reproduce la forma que construye `identidad_lambda1_fold_0` para que la publicacion de la
+    identidad (JSON, informe y consola) se ejercite con la identidad PRESENTE. Con ``falla=True`` la
+    comparacion se publica FALLIDA, que es lo que exige el camino ``identidad_no_gate``: comprobar
+    que un fallo de una sonda que NO es gate se publica SIN cambiar el veredicto.
+
+    Parameters
+    ----------
+    estado:
+        Checkpoint simulado (solo se leen el ``alpha`` y el ``lambda1`` del fold 0 de A1).
+    falla:
+        True para publicar la comparacion fallida, False para publicarla en verde.
+
+    Returns
+    -------
+    dict
+        La tabla de los tres casos, su comparacion, el anclaje, el diagnostico secundario, los
+        fallos y ``reproduce``.
+    """
+    detalle = estado["brazos"]["A1_ftrl_lambda1"]["folds"]["0"]
+    alpha = float(detalle["alpha_efectivo"])
+    casos = {"lambda1_0": 0.0, "lambda1_alpha": alpha, "lambda1_mediana": MEDIANA_Z_CONGELADA}
+    tabla: dict[str, dict] = {}
+    comparacion: dict[str, dict] = {}
+    for nombre, valor in casos.items():
+        tabla[nombre] = {"lambda1": float(valor),
+                         "mediana_abs_z_pasada_1": MEDIANA_Z_CONGELADA,
+                         "sha256_z_pasada_1": sha256_bytes(
+                             f"autoejercicio:z:{nombre}".encode()),
+                         "trayectoria": [{"pasada": pasada, "ll_train": 1.75 - 0.05 * pasada,
+                                          "norma_w_l2": 2.0 - 0.1 * pasada,
+                                          "escasez_efectiva": 0.40}
+                                         for pasada in range(1, PASADAS_SONDA_KLM + 1)]}
+        comparacion[nombre] = {"lambda1_run": float(valor), "lambda1_artefacto": float(valor),
+                               "lambda1_identico": True,
+                               "peor_diferencia_relativa_ll_train": 1e-3 if falla else 0.0,
+                               "peor_diferencia_relativa_norma_w_l2": 1e-3 if falla else 0.0,
+                               "reproduce": not falla, "por_pasada": []}
+    sha_artefacto = str(cargar_gemelo_previo()["anclaje"]["sha256_del_snapshot_z"])
+    anclaje = {"lambda1_del_nucleo_de_anclaje": 0.0, "mediana_abs_z": MEDIANA_Z_CONGELADA,
+               "mediana_congelada": MEDIANA_Z_CONGELADA,
+               "diferencia_exacta": (1e-9 if falla else 0.0),
+               "diferencia_es_cero_exacto": not falla,
+               "sha256_z": (sha256_bytes(b"autoejercicio:z:anclaje") if falla
+                            else SHA256_Z_ANCLAJE),
+               "sha256_z_congelado": SHA256_Z_ANCLAJE, "sha256_z_artefacto": sha_artefacto,
+               "sha256_identico": not falla,
+               "sha256_es_prefijo_del_artefacto": bool(SHA256_Z_ANCLAJE.startswith(sha_artefacto)),
+               "criterio": "diferencia EXACTA 0 con la mediana congelada y sha256 del snapshot de z "
+                           "identico al de la sonda pre-ejecucion versionada"}
+    diagnostico = {"lambda1": MEDIANA_Z_CONGELADA,
+                   "mediana_abs_z_core_ya_regularizado": MEDIANA_Z_BRAZO_REGULARIZADO_ESPERADA,
+                   "valor_esperado": MEDIANA_Z_BRAZO_REGULARIZADO_ESPERADA,
+                   "diferencia_respecto_del_anclaje": (
+                       DIFERENCIA_MEDIANA_Z_BRAZO_REGULARIZADO + 1e-6 if falla
+                       else DIFERENCIA_MEDIANA_Z_BRAZO_REGULARIZADO),
+                   "diferencia_esperada": DIFERENCIA_MEDIANA_Z_BRAZO_REGULARIZADO,
+                   "coincide": not falla, "es_el_anclaje": False,
+                   "lectura": "NO es el anclaje: la mediana del z del core YA REGULARIZADO no puede "
+                              "coincidir con la del core de anclaje porque z depende de w y w "
+                              "depende de lambda1"}
+    fallos = (["lambda1_mediana/pasada 2/ll_train", "anclaje.sha256_z",
+               "diagnostico_secundario.mediana_regularizada"] if falla else [])
+    return {"descripcion": f"identidad de los tres casos de lambda1 SINTETICA del autoejercicio "
+                           f"({NATURALEZA_AUTOEJERCICIO}): 0 folds reales y 0 comparaciones reales",
+            "es_gate": False,
+            "politica": "NO-GATE: la identidad informa de que la politica del pre-registro reflejada "
+                        "en el codigo no deriva, pero no decide el veredicto. Si alguna comparacion "
+                        "falla se publica como fallo de la sonda y el ciclo continua con su "
+                        "veredicto intacto",
+            "donde": "autoensayo estructural de la ruta de salida, dentro de --verificar; no es el "
+                     "fold 0 de una corrida real",
+            "criterio": "diferencia relativa <= 1e-09 en ll_train y norma de pesos de cada pasada "
+                        "frente al artefacto; diferencia EXACTA 0 y sha256 identico en la mediana "
+                        "del anclaje",
+            "tolerancia_relativa": TOL_IDENTIDAD_FOLD_0, "tolerancia_anclaje": TOL_IDENTIDAD_ANCLAJE,
+            "artefacto": ruta_relativa(SONDA_JSON), "sha256_artefacto": sha256_archivo(SONDA_JSON),
+            "n_pasadas_por_caso": PASADAS_SONDA_KLM, "alpha_run": alpha,
+            "alpha_artefacto": alpha, "alpha_identico": True,
+            "n_filas_es_train": DIMENSION_AUTOEJERCICIO["n_filas_fit_es_train"],
+            "n_coordenadas": DIMENSION_AUTOEJERCICIO["n_vocabulario"] + 1,
+            "es_train_sha256": detalle["es_train_sha256"],
+            "ordenes_sha256": list(detalle["ordenes_sha256"][:PASADAS_SONDA_KLM]),
+            "tabla": tabla, "comparacion": comparacion, "anclaje": anclaje,
+            "diagnostico_secundario": diagnostico, "fallos": fallos,
+            "reproduce": not fallos, "coste_seg": 0.0,
+            "coste_declarado_seg": COSTE_DECLARADO_IDENTIDAD,
+            "presupuesto_declarado_seg": PRESUPUESTO_DECLARADO_SEG}
+
+
+def sonda_determinismo_autoejercicio(estado: dict, brazo: str) -> dict:
+    """Bloque SINTETICO de la sonda de determinismo (la segunda corrida identica del fold 0).
+
+    Reproduce la forma que escribe `sonda_determinismo_fold0` con ``max_abs_diff_p = 0.0`` EXACTO,
+    que es lo que G5 exige para contar como medida. NO es una segunda corrida: 0 folds reales, 0
+    metricas reales.
+
+    Parameters
+    ----------
+    estado:
+        Checkpoint simulado con el fold 0 del brazo ya registrado.
+    brazo:
+        Nombre del brazo.
+
+    Returns
+    -------
+    dict
+        El detalle de la sonda con su ``pass``.
+    """
+    detalle = estado["brazos"][brazo]["folds"]["0"]
+    final = float(detalle["trayectoria"][-1]["ll_train"])
+    return {"max_abs_diff_repeticion": 0.0, "max_abs_diff_p": 0.0,
+            "sha256_w": detalle["sesgo"]["sha256_w"],
+            "sha256_w_primera": detalle["sesgo"]["sha256_w"],
+            "pasada_de_parada": int(detalle["pasada_de_parada"]),
+            "pasada_de_parada_primera": int(detalle["pasada_de_parada"]),
+            "ll_train": final, "ll_train_primera": final, "clasicacion": "exacto",
+            "tolerancia_declarada": TOL_DETERMINISMO, "variabilidad_referencia": VARIABILIDAD,
+            "gate_delta": GATE_DELTA, "no_concluyente": False, "solape_con_gate": False,
+            "sha256_w_identico": True, "pasada_identica": True, "ll_train_identico": True,
+            "pass": True}
+
+
+def refit_autoejercicio(estado: dict) -> dict:
+    """Bloque SINTETICO de la sonda de refit del vectorizador en los cinco folds.
+
+    `refit_vectorizador` reajusta la TF-IDF de los cinco folds sobre el corpus entero, que es
+    trabajo de la corrida real y no de la verificacion: aqui se publica la forma del bloque con los
+    hashes SINTETICOS del estado simulado, declarandolo en la nota.
+
+    Parameters
+    ----------
+    estado:
+        Checkpoint simulado con el vectorizador por fold registrado.
+
+    Returns
+    -------
+    dict
+        El bloque de refit con ``reproducido`` a True (que es lo que `verificar_invariantes` lee).
+    """
+    return {"descripcion": "sonda de refit del vectorizador en los 5 folds, ajustada SIEMPRE sobre "
+                           "ES-train",
+            "folds": {fold: {**registro, "reproducido": True}
+                      for fold, registro in sorted(estado["vectorizador_por_fold"].items())},
+            "reproducido": True,
+            "nota": f"autoejercicio: los hashes son los SINTETICOS del estado simulado "
+                    f"({NATURALEZA_AUTOEJERCICIO}); no se reajusta ningun vectorizador"}
+
+
+def oof_autoejercicio(v30: np.ndarray) -> dict[str, np.ndarray]:
+    """OOF SINTETICO por brazo: matriz de probabilidades que suman 1 por fila.
+
+    Se deriva de los log-prob del campeon con un ruido determinista sembrado por la semilla
+    congelada, para que `combinador_oof`, `evaluar_combinacion`, `diagnostico_brazo`,
+    `bootstrap_delta` y `verificar_invariantes` se ejecuten DE VERDAD con las funciones reales.
+    NO es la prediccion de ningun fold: 0 folds reales, 0 metricas reales.
+
+    Parameters
+    ----------
+    v30:
+        Probabilidades del campeon (N_FILAS, 6).
+
+    Returns
+    -------
+    dict
+        Una matriz por brazo.
+    """
+    generador = np.random.default_rng(SEMILLA)
+    base = np.log(np.clip(v30, 1e-12, 1.0))
+    salida: dict[str, np.ndarray] = {}
+    for indice, brazo in enumerate(BRAZOS):
+        escala = 0.05 * float(indice + 1)
+        salida[brazo] = normaliza(base + escala * generador.standard_normal(v30.shape))
+    return salida
+
+
+def integracion_autoejercicio(clase: np.ndarray, fold_idx: np.ndarray, v30: np.ndarray,
+                              oofs: dict[str, np.ndarray]) -> tuple[dict, dict, dict]:
+    """Integracion, complementariedad y control SINTETICOS con las funciones REALES del modulo.
+
+    Encadena `combinador_oof`, `evaluar_combinacion`, `diagnostico_brazo` y `bootstrap_delta`, que
+    son las que leen el OOF, y devuelve los tres bloques con la misma forma que construye la
+    corrida real. Se ejecuta UNA sola vez y lo comparten los dos caminos cuya rama no es de cierre.
+
+    Parameters
+    ----------
+    clase:
+        Etiquetas canonicas.
+    fold_idx:
+        Fold canonico por fila.
+    v30:
+        Probabilidades del campeon.
+    oofs:
+        OOF sintetico por brazo.
+
+    Returns
+    -------
+    tuple[dict, dict, dict]
+        ``(integracion, complementariedad, control)``.
+    """
+    pesos = np.asarray(PESOS, dtype=np.float64)
+    champ_pred = np.argmax(v30 * pesos, axis=1)
+    integracion: dict[str, dict] = {}
+    predicciones: dict[str, np.ndarray] = {}
+    for brazo in BRAZOS:
+        p_comb, detalle = combinador_oof(v30, oofs[brazo], clase, fold_idx)
+        metrica = evaluar_combinacion(p_comb, clase, fold_idx, champ_pred, pesos)
+        metrica["combinador"] = detalle
+        predicciones[brazo] = metrica.pop("pred_comb")
+        integracion[brazo] = metrica
+    confianza = v30.max(axis=1)
+    complementariedad = {brazo: diagnostico_brazo(oofs[brazo], clase, fold_idx, champ_pred,
+                                                  confianza) for brazo in BRAZOS}
+    diferencia = bootstrap_delta(clase, predicciones["A2_sgd_presupuesto"],
+                                 predicciones["A1_ftrl_lambda1"])
+    control = {"delta_A1": integracion["A1_ftrl_lambda1"]["delta_vs_baseline"],
+               "delta_A2": integracion["A2_sgd_presupuesto"]["delta_vs_baseline"],
+               "diferencia_puntual": (integracion["A1_ftrl_lambda1"]["delta_vs_baseline"]
+                                      - integracion["A2_sgd_presupuesto"]["delta_vs_baseline"]),
+               "delta_medio": diferencia["delta_medio"], "ic95": diferencia["ic95"],
+               "p_delta_positivo": diferencia["p_delta_positivo"],
+               "ic95_sin_cero": diferencia["ic95_sin_cero"],
+               "criterio": "gate de control: el delta PUNTUAL de A1 sobre el de A2",
+               "nota": "IC95 pareado de la diferencia como DIAGNOSTICO adicional; el gate "
+                       "pre-registrado es el delta puntual"}
+    return integracion, complementariedad, control
+
+
+def marca_autoejercicio(camino: str) -> dict:
+    """Marca explicita que el JSON, el informe y la consola llevan en el autoejercicio.
+
+    Parameters
+    ----------
+    camino:
+        Nombre del camino ejercitado.
+
+    Returns
+    -------
+    dict
+        Naturaleza, camino, numero de folds reales y de metricas reales (ambos CERO) y el aviso de
+        que la salida no es evidencia experimental.
+    """
+    return {"naturaleza": NATURALEZA_AUTOEJERCICIO, "camino": camino, "folds_reales": 0,
+            "metricas_reales": 0,
+            "magnitudes": "SINTETICAS declaradas: 0 folds reales, 0 metricas reales, 0 OOF reales y "
+                          "0 checkpoints reales; el estado simulado se serializa solo en un temporal "
+                          "del sistema y se borra al terminar",
+            "no_es_evidencia": "esta salida NO es evidencia experimental: comprueba que la ruta de "
+                               "salida se ejecuta de punta a punta con las funciones reales y que "
+                               "las tres salidas se escriben y se releen; no mide nada del ciclo"}
+
+
+def aislar_rutas_autoejercicio(directorio: Path) -> dict[str, Path]:
+    """Redirige TODAS las rutas de escritura del modulo al temporal del autoejercicio.
+
+    Parameters
+    ----------
+    directorio:
+        Directorio temporal del camino, ya creado.
+
+    Returns
+    -------
+    dict[str, Path]
+        Los valores originales, que `restaurar_rutas_autoejercicio` vuelve a poner.
+    """
+    global RESULTADOS_JSON, INFORME, FIGURA, ESTADO_JSON, NOVELTY_CSV
+    global HISTORIA_CSV, RUNLOG, EXPERIMENTS_CSV, OOF_DIR, CKPT_DIR
+    originales = {nombre: globals()[nombre] for nombre in RUTAS_AISLAR_AUTOEJERCICIO}
+    RESULTADOS_JSON = directorio / NOMBRES_TEMPORALES_AUTOEJERCICIO["resultados"]
+    INFORME = directorio / NOMBRES_TEMPORALES_AUTOEJERCICIO["informe"]
+    FIGURA = directorio / NOMBRES_TEMPORALES_AUTOEJERCICIO["figura"]
+    ESTADO_JSON = directorio / NOMBRES_TEMPORALES_AUTOEJERCICIO["estado"]
+    NOVELTY_CSV = directorio / NOMBRES_TEMPORALES_AUTOEJERCICIO["novedad"]
+    HISTORIA_CSV = directorio / NOMBRES_TEMPORALES_AUTOEJERCICIO["historia"]
+    RUNLOG = directorio / NOMBRES_TEMPORALES_AUTOEJERCICIO["runlog"]
+    EXPERIMENTS_CSV = directorio / NOMBRES_TEMPORALES_AUTOEJERCICIO["experiments"]
+    OOF_DIR = directorio / DIRECTORIOS_AUTOEJERCICIO["oof"]
+    CKPT_DIR = directorio / DIRECTORIOS_AUTOEJERCICIO["checkpoints"]
+    return originales
+
+
+def restaurar_rutas_autoejercicio(originales: dict[str, Path]) -> None:
+    """Devuelve las rutas de escritura del modulo a su valor original.
+
+    Parameters
+    ----------
+    originales:
+        Mapa devuelto por `aislar_rutas_autoejercicio`.
+    """
+    globals().update(originales)
+
+
+def sembrar_registros_autoejercicio(originales: dict[str, Path]) -> None:
+    """Deja en el temporal las CABECERAS que los anotadores exigen, para ejercitarlos de verdad.
+
+    `anotar_experiments_csv` exige 22 columnas, `anotar_historial` exige el esquema congelado de 15 y
+    `anotar_runlog` solo anade su bloque si la marca del ciclo no esta presente: se copian las
+    cabeceras REALES del proyecto (solo lectura, del temporal no) y se escribe un RUNLOG de arena
+    con una sola linea declarada.
+
+    Parameters
+    ----------
+    originales:
+        Mapa con las rutas originales del proyecto, para leer sus cabeceras.
+    """
+    cabecera_experiments = originales["EXPERIMENTS_CSV"].read_text(
+        encoding="utf-8").splitlines()[0]
+    cabecera_historia = originales["HISTORIA_CSV"].read_text(
+        encoding="utf-8").splitlines()[0]
+    EXPERIMENTS_CSV.write_text(cabecera_experiments + "\n", encoding="utf-8")
+    HISTORIA_CSV.write_text(cabecera_historia + "\n", encoding="utf-8")
+    RUNLOG.write_text(f"# RUNLOG de arena del autoejercicio estructural ({NATURALEZA_AUTOEJERCICIO})"
+                      f"\n", encoding="utf-8")
+
+
+def ejecutar_camino_autoejercicio(camino: str, contexto: dict) -> dict:
+    """Ejecuta UN camino de la ruta de salida con las funciones REALES, de principio a fin.
+
+    La cadena es siempre `evaluar_puerta_preliminar` -> `cerrar_puerta` -> `triage_formal` ->
+    `decidir_rama_arbol` -> `calcular_gates` (solo si la puerta se supera) -> `construir_resultado`
+    -> `escribir_json` -> `figura_curvas` -> `escribir_informe` -> los cuatro anotadores ->
+    `resumen_consola`, con todas las rutas de escritura ya redirigidas al temporal del camino. Al
+    final relee el JSON y el informe escritos y compara nodo, causa y lectura con lo que el codigo
+    decide.
+
+    Parameters
+    ----------
+    camino:
+        Nombre del camino de :data:`PLAN_AUTOEJERCICIO`.
+    contexto:
+        Entradas reales de la corrida (pre-registro, auditoria, hashes, sondas, baseline) mas las
+        sinteticas compartidas (OOF, integracion, complementariedad y control).
+
+    Returns
+    -------
+    dict
+        Nodo, causa, lectura, veredicto y comprobaciones del camino.
+
+    Raises
+    ------
+    Detencion
+        Si el codigo emite un nodo, una causa o una lectura distintos de los esperados, si el
+        veredicto no pertenece al arbol congelado, si el JSON o el informe no se releen con la marca
+        del autoejercicio o si el nodo de cierre no trae delta y bootstrap vacios con su motivo
+        (codigo 2).
+    """
+    plan = PLAN_AUTOEJERCICIO[camino]
+    estado = estado_autoejercicio(contexto["sondas"], plan["perfil_a1"], plan["perfil_a2"])
+    estado["identidad_lambda1_fold_0"] = (
+        None if plan["identidad"] is None
+        else identidad_autoejercicio(estado, falla=plan["identidad"] == "falla"))
+    asegurar_calibracion(estado)
+    simetria_sesgo = tabla_simetria_sesgo(estado)
+    # La puerta se evalua igual que en `entrenar_con_puerta`: G5 solo se mide si A1 o A2 no tienen
+    # gates fallidas, y el ciclo se detiene despues con la rama pre-declarada.
+    preliminar = {brazo: evaluar_puerta_preliminar(estado, brazo) for brazo in BRAZOS}
+    a1_pasa = not gates_fallidos_de(preliminar["A1_ftrl_lambda1"])
+    a2_pasa = not gates_fallidos_de(preliminar["A2_sgd_presupuesto"])
+    determinismos_por_brazo: dict[str, dict] = {}
+    rama: dict | None = None
+    if a1_pasa or a2_pasa:
+        for brazo in BRAZOS:
+            determinismos_por_brazo[brazo] = sonda_determinismo_autoejercicio(estado, brazo)
+            estado["brazos"][brazo]["sonda_determinismo"] = determinismos_por_brazo[brazo]
+    puerta = cerrar_puerta(preliminar, determinismos_por_brazo, bool(determinismos_por_brazo))
+    estado["puerta"] = puerta
+    if not puerta["pasa"]:
+        triage = triage_formal(estado, contexto["sondas"], puerta)
+        estado["triage"] = triage
+        veredicto, motivo, rama = decidir_rama_arbol(puerta, triage)
+        estado["rama_arbol"] = rama
+        integracion = None
+        complementariedad = None
+        invariantes = None
+        control = None
+        gates: dict = {}
+        caps: dict = {}
+        refit = {"descripcion": "sonda de refit del vectorizador en los 5 folds, ajustada SIEMPRE "
+                                "sobre ES-train",
+                 "folds": {}, "reproducido": None,
+                 "nota": "no se ejecuta: la puerta cerro el ciclo antes de terminar los folds"}
+        motivo_no_calculo = motivo
+        determinismos = {"sonda_por_brazo": {brazo: estado["brazos"][brazo]["sonda_determinismo"]
+                                             for brazo in BRAZOS},
+                         "no_concluyente": True, "tolerancia_declarada": TOL_DETERMINISMO,
+                         "variabilidad_referencia": VARIABILIDAD,
+                         "nota": "la rama de cierre no llega a los gates de delta: el determinismo se "
+                                 "publica solo como diagnostico del fold 0 y el cap queda activo por "
+                                 "construccion"}
+    else:
+        refit = refit_autoejercicio(estado)
+        invariantes = verificar_invariantes(estado, contexto["clase"], contexto["fold_idx"],
+                                           contexto["oofs"], refit)
+        integracion = contexto["integracion"]
+        complementariedad = contexto["complementariedad"]
+        control = contexto["control"]
+        determinismos = {"sonda_por_brazo": {brazo: estado["brazos"][brazo]["sonda_determinismo"]
+                                             for brazo in BRAZOS},
+                         "no_concluyente": bool(any(estado["brazos"][brazo]["sonda_determinismo"]
+                                                    and estado["brazos"][brazo][
+                                                        "sonda_determinismo"]["no_concluyente"]
+                                                    for brazo in BRAZOS)),
+                         "tolerancia_declarada": TOL_DETERMINISMO,
+                         "variabilidad_referencia": VARIABILIDAD, "gate_delta": GATE_DELTA,
+                         "criterio": "max|delta p| = 0.0 EXACTO entre dos corridas identicas del "
+                                     "fold 0 (G5, que es tambien la sonda h)"}
+        gates, caps, veredicto = calcular_gates(
+            True, integracion, invariantes, determinismos, contexto["sondas"],
+            bool(simetria_sesgo["comparacion_por_fold"]))
+        motivo_no_calculo = None
+    resultado = construir_resultado(
+        contexto["inicio"], contexto["prereg"], contexto["auditoria"], contexto["lecturas"],
+        contexto["baseline"], contexto["linea_base"], contexto["hashes_corpus"],
+        contexto["detalle_constantes"], contexto["detalle_versiones"], contexto["detalle_hashes"],
+        contexto["sondas"], contexto["asimetria"], simetria_sesgo, estado, puerta, refit,
+        integracion, complementariedad, invariantes, determinismos, control, gates, caps,
+        veredicto, motivo_no_calculo)
+    resultado["autoejercicio"] = marca_autoejercicio(camino)
+    escribir_json(RESULTADOS_JSON, resultado)
+    figura_curvas(estado, mecanismo_fold_0(estado), FIGURA)
+    escribir_informe(resultado)
+    anotar_runlog(resultado)
+    anotar_experiments_csv(resultado)
+    escribir_registro_novedad(resultado)
+    anotar_historial(resultado)
+    resumen_consola(resultado)
+    return comprobar_camino_autoejercicio(camino, resultado, rama)
+
+
+def comprobar_camino_autoejercicio(camino: str, resultado: dict, rama: dict | None) -> dict:
+    """Relee las salidas del camino y compara nodo, causa y lectura con lo que el codigo decide.
+
+    Parameters
+    ----------
+    camino:
+        Nombre del camino ejercitado.
+    resultado:
+        JSON de resultados recien escrito.
+    rama:
+        Lo que devolvio `decidir_rama_arbol`, o ``None`` si la puerta se supero.
+
+    Returns
+    -------
+    dict
+        Nodo, causa, lectura, veredicto y las comprobaciones de escritura y publicacion.
+
+    Raises
+    ------
+    Detencion
+        Con el error real y concreto: nodo, causa o lectura distintos de los esperados; veredicto
+        fuera del arbol congelado; nodo de cierre sin delta y bootstrap vacios; identidad fallida
+        que no se publica; o JSON o informe que no se releen con la marca del autoejercicio
+        (codigo 2).
+    """
+    esperado = ESPERADOS_AUTOEJERCICIO[camino]
+    publicada = resultado["rama_arbol"]
+    nodo = publicada["nodo"]
+    causa = publicada["causa"]
+    lectura = publicada["lectura"]
+    veredicto = resultado["veredicto"]
+    print(f"  [autoejercicio] {camino}: nodo = {nodo} | causa = {causa} | veredicto = {veredicto}",
+          flush=True)
+    print(f"  [autoejercicio] {camino}: lectura = {lectura}", flush=True)
+    if nodo != esperado["nodo"]:
+        raise Detencion(f"[STOP] el camino '{camino}' emitio el nodo {nodo!r} y el autoejercicio "
+                        f"esperaba {esperado['nodo']!r} (exit 2)", 2)
+    if causa != esperado["causa"]:
+        raise Detencion(f"[STOP] el camino '{camino}' emitio la causa {causa!r} y el autoejercicio "
+                        f"esperaba {esperado['causa']!r} (exit 2)", 2)
+    if not isinstance(lectura, str) or not lectura.startswith(esperado["prefijo_lectura"]):
+        raise Detencion(f"[STOP] el camino '{camino}' publico una lectura que no empieza por "
+                        f"{esperado['prefijo_lectura']!r}: {lectura!r} (exit 2)", 2)
+    if rama is not None and lectura != rama.get("lectura"):
+        raise Detencion(f"[STOP] el camino '{camino}' publico una lectura distinta de la que decidio "
+                        f"la rama del arbol (exit 2)", 2)
+    if publicada["es_rama_de_cierre"]:
+        if veredicto not in NODOS_ARBOL or veredicto != nodo:
+            raise Detencion(f"[STOP] el camino '{camino}' es de cierre pero su veredicto "
+                            f"{veredicto!r} no coincide con el nodo {nodo!r} (exit 2)", 2)
+        if resultado["integracion"] is not None:
+            raise Detencion(f"[STOP] el nodo de cierre {nodo} trae integracion "
+                            f"{resultado['integracion']} y el arbol exige None (exit 2)", 2)
+        if not resultado["motivo_de_no_calculo"]:
+            raise Detencion(f"[STOP] el nodo de cierre {nodo} no publica motivo_de_no_calculo, "
+                            f"que es lo que deja delta y bootstrap vacios (exit 2)", 2)
+    elif veredicto not in NODOS_RAMA_NO_CIERRE:
+        raise Detencion(f"[STOP] el camino '{camino}' no es de cierre y su veredicto "
+                        f"{veredicto!r} no esta en {list(NODOS_RAMA_NO_CIERRE)} (exit 2)", 2)
+    identidad = resultado.get("identidad_lambda1_fold_0")
+    identidad_esperada = PLAN_AUTOEJERCICIO[camino]["identidad"]
+    if identidad_esperada is not None:
+        if not identidad:
+            raise Detencion(f"[STOP] el camino '{camino}' deberia publicar la identidad de lambda1 "
+                            f"y no la publico (exit 2)", 2)
+        if identidad_esperada == "falla" and (identidad["reproduce"]
+                                                 or not identidad["fallos"]):
+            raise Detencion(f"[STOP] el camino '{camino}' deberia publicar la identidad FALLIDA y "
+                            f"publica reproduce = {identidad['reproduce']} con fallos "
+                            f"{identidad['fallos']} (exit 2)", 2)
+    elif identidad is not None:
+        raise Detencion(f"[STOP] el camino '{camino}' deberia publicar la identidad como ausente "
+                        f"(no se midio) y publico un bloque (exit 2)", 2)
+    releido = json.loads(RESULTADOS_JSON.read_text(encoding="utf-8"))
+    if releido.get("veredicto") != veredicto:
+        raise Detencion(f"[STOP] el JSON del autoejercicio relee el veredicto "
+                        f"{releido.get('veredicto')!r} y se escribio {veredicto!r} (exit 2)", 2)
+    if releido.get("autoejercicio") != resultado["autoejercicio"]:
+        raise Detencion("[STOP] el JSON del autoejercicio relee sin la marca de naturaleza "
+                        "declarada (exit 2)", 2)
+    if releido["autoejercicio"]["naturaleza"] != NATURALEZA_AUTOEJERCICIO:
+        raise Detencion("[STOP] el JSON del autoejercicio relee una naturaleza distinta de la "
+                        "declarada (exit 2)", 2)
+    if releido["autoejercicio"]["folds_reales"] != 0 or (releido["autoejercicio"]["metricas_reales"]
+                                                         != 0):
+        raise Detencion("[STOP] la marca del autoejercicio debe declarar 0 folds reales y 0 metricas "
+                        "reales (exit 2)", 2)
+    if releido["rama_arbol"]["nodo"] != nodo:
+        raise Detencion("[STOP] el JSON del autoejercicio relee un nodo distinto del emitido "
+                        "(exit 2)", 2)
+    informe = INFORME.read_text(encoding="utf-8")
+    if NATURALEZA_AUTOEJERCICIO not in informe:
+        raise Detencion("[STOP] el informe del autoejercicio no lleva la marca de naturaleza "
+                        "declarada (exit 2)", 2)
+    if f"## Veredicto: {veredicto}" not in informe:
+        raise Detencion(f"[STOP] el informe del autoejercicio no publica el veredicto {veredicto!r} "
+                        f"(exit 2)", 2)
+    if not FIGURA.exists() or FIGURA.stat().st_size == 0:
+        raise Detencion("[STOP] el autoejercicio no escribio la figura en su temporal (exit 2)", 2)
+    if not ESTADO_JSON.exists():
+        raise Detencion("[STOP] el autoejercicio no escribio el estado serializado en su temporal "
+                        "(exit 2)", 2)
+    return {"camino": camino, "nodo": nodo, "causa": causa, "lectura": lectura,
+            "veredicto": veredicto, "es_rama_de_cierre": bool(publicada["es_rama_de_cierre"]),
+            "cierre_definitivo": publicada["cierre_definitivo"],
+            "integracion_es_None": resultado["integracion"] is None,
+            "delta_y_bootstrap_vacios": bool(resultado["motivo_de_no_calculo"]),
+            "identidad_publicada": identidad is not None,
+            "identidad_reproduce": (identidad or {}).get("reproduce"),
+            "json_releido": True, "informe_releido": True, "figura_escrita": True,
+            "estado_serializado": True, "naturaleza": NATURALEZA_AUTOEJERCICIO,
+            "folds_reales": 0, "metricas_reales": 0}
+
+
+def borrar_temporal_autoejercicio(raiz: Path) -> bool:
+    """Borra el directorio temporal del autoejercicio y avisa si no puede.
+
+    Parameters
+    ----------
+    raiz:
+        Directorio temporal creado para el autoejercicio.
+
+    Returns
+    -------
+    bool
+        True si se borro entero, False si no.
+    """
+    try:
+        shutil.rmtree(raiz)
+        return True
+    except OSError as error:
+        print(f"  [AVISO] no se pudo borrar el temporal {raiz}: {error}", flush=True)
+        return False
+
+
+def verificar_cero_efectos_autoejercicio() -> list[str]:
+    """Comprueba que el autoejercicio NO ha creado NADA en el proyecto.
+
+    Se ejecuta con las rutas del modulo ya restauradas, de modo que comprueba los destinos reales y
+    no los del temporal. Las cuatro rutas declaradas por el pre-registro para este ciclo (estado,
+    OOF, checkpoints y registro de novedad) deben seguir AUSENTES.
+
+    Returns
+    -------
+    list[str]
+        Las rutas comprobadas, relativas al proyecto.
+
+    Raises
+    ------
+    Detencion
+        Si alguna existe, porque entonces el autoejercicio ha escrito en el proyecto (codigo 2).
+    """
+    vigiladas = {"estado": ESTADO_JSON, "oof": OOF_DIR, "checkpoints": CKPT_DIR,
+                 "novedad": NOVELTY_CSV}
+    existentes = [ruta_relativa(ruta) for ruta in vigiladas.values() if ruta.exists()]
+    if existentes:
+        raise Detencion(f"[STOP] el autoejercicio escribio en el proyecto: {existentes} (exit 2)", 2)
+    return [ruta_relativa(ruta) for ruta in vigiladas.values()]
+
+
+def autoensayo_ruta_salida(contexto: dict) -> dict:
+    """Autoejercicio PERMANENTE de la ruta de salida, incorporado a ``--verificar``.
+
+    Construye un estado SIMULADO, ejecuta los cinco caminos de :data:`PLAN_AUTOEJERCICIO` con las
+    funciones REALES de punta a punta, comprueba que cada uno imprime el nodo, la causa y la lectura
+    que el codigo decide, que el JSON y el informe se escriben y se releen con la marca de
+    naturaleza, y deja el proyecto intacto: todas las rutas de escritura se redirigen a un
+    directorio temporal del sistema que se borra al terminar, y despues se comprueba la ausencia de
+    los artefactos del proyecto.
+
+    NO es evidencia experimental ni una medicion del ciclo: las magnitudes son sinteticas y
+    declaradas, hay 0 folds reales y 0 metricas reales. Es la cobertura permanente de la clase de
+    bug que mata la corrida DESPUES de entrenar, con checkpoints y OOF ya escritos.
+
+    Parameters
+    ----------
+    contexto:
+        Entradas reales de la corrida mas las sinteticas compartidas.
+
+    Returns
+    -------
+    dict
+        Caminos ejercitados, resultado de cada uno, si el temporal se borro y las rutas del proyecto
+        que siguen ausentes.
+
+    Raises
+    ------
+    Detencion
+        Cualquier excepcion real que produzca uno de los caminos se propaga sin envolver, para que
+        ``--verificar`` falle con el error y el traceback de verdad.
+    """
+    raiz = Path(tempfile.mkdtemp(prefix=PREFIJO_TEMPORAL_AUTOEJERCICIO))
+    resultados: list[dict] = []
+    borrado = False
+    try:
+        for camino in CAMINOS_AUTOEJERCICIO:
+            directorio = raiz / camino
+            directorio.mkdir(parents=True, exist_ok=True)
+            originales = aislar_rutas_autoejercicio(directorio)
+            try:
+                sembrar_registros_autoejercicio(originales)
+                resultados.append(ejecutar_camino_autoejercicio(camino, contexto))
+            finally:
+                restaurar_rutas_autoejercicio(originales)
+    finally:
+        borrado = borrar_temporal_autoejercicio(raiz)
+    if not borrado:
+        raise Detencion(f"[STOP] el temporal del autoejercicio {raiz} no se pudo borrar (exit 2)", 2)
+    ausentes = verificar_cero_efectos_autoejercicio()
+    return {"caminos": list(CAMINOS_AUTOEJERCICIO), "caminos_ok": len(resultados),
+            "por_camino": resultados, "temporal_borrado": borrado,
+            "artefactos_ausentes": ausentes, "naturaleza": NATURALEZA_AUTOEJERCICIO,
+            "folds_reales": 0, "metricas_reales": 0}
+
+
 def parsear_argumentos() -> argparse.Namespace:
     """Argumentos de linea de comandos.
 
     Returns
     -------
     argparse.Namespace
-        ``--verificar`` (solo verificacion y sondas, sin escribir nada) y ``--humo`` (recorre la
-        zona entre la verificacion y el entrenamiento y para con un sentinel, sin entrenar).
+        ``--verificar`` (verificacion, sondas y autoejercicio estructural de la ruta de salida, sin
+        escribir nada en el proyecto) y ``--humo`` (recorre la zona entre la verificacion y el
+        entrenamiento y para con un sentinel, sin entrenar).
     """
     analizador = argparse.ArgumentParser(
         description="V35-E1 via B: reinicio one-shot de la familia FTRL sobre el miembro NO "
@@ -7221,8 +8262,11 @@ def parsear_argumentos() -> argparse.Namespace:
                     "(control de PRESUPUESTO, sin L1), con puerta G0-G8 fail-fast en el fold 0.")
     analizador.add_argument("--verificar", action="store_true",
                             help="solo verifica constantes, versiones, hashes, corpus, anclas, "
-                                 "auditoria AST, lecturas, baseline y sondas (a)-(m) (no entrena "
-                                 "y no escribe nada; imprime VERIFICACION OK)")
+                                 "auditoria AST, lecturas, baseline y sondas (a)-(m), y anade el "
+                                 "autoejercicio estructural de la RUTA DE SALIDA (5 caminos con "
+                                 "las funciones reales, todo su I/O en un temporal del sistema "
+                                 "que se borra); no entrena y no escribe nada en el proyecto "
+                                 "(imprime VERIFICACION OK)")
     analizador.add_argument("--humo", action="store_true",
                             help="recorre la zona INTERMEDIA entre --verificar y el entrenamiento "
                                  "(crea el checkpoint en memoria, mapea las sondas y verifica la "
