@@ -3043,3 +3043,14 @@ dominio fusion normalizada    +0,001475  GANA TWITTER
 0,578, treinta puntos por debajo. Es un defecto de implementacion que no he aislado.
 
 Sin push, sin merge, sin rebase.
+
+
+## 2026-09-29, P0 y arranque de P1 de la fase de dimension y pooling
+
+- `experiments/p72_00_auditoria_implementacion.py`: audita lo existente. **6 de 6
+  confirmaciones OK.** Hallazgo: el 200d que existe en disco no es el que produjo el resultado
+  historico; los dos artefactos no entrenados quedan marcados y P1 arranca del valido.
+- `experiments/p72_01_dimensiones.py`: entrena 100d y 300d con todo lo demas congelado.
+- `experiments/p72_02_dimension_downstream.py`: downstream de las tres dimensiones.
+
+Sin push, sin merge, sin rebase.

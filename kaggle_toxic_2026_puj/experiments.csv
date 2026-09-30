@@ -398,3 +398,5 @@ P71-07|2026-09-29|invalidacion del veredicto por representaciones no entrenadas|
 P71-08|2026-09-29|learning rate escalado por el lote: el bug aislado y corregido|twitter loss 1,272 a 1,095 | general 1,254 a 1,094 | baja monotonicamente|P71|experiments/p71_08_word2vec_corregido.py
 P71-09|2026-09-29|downstream con los modelos corregidos y la fusion normalizada|MARGINAL | dominio inconsistente | fusion con un segundo defecto no aislado|P71|experiments/p71_09_downstream_lrfix.py
 P71-10|2026-09-29|downstream con el protocolo de V03, escala igualada y control de azar|CLOSED | la fusion nunca bate a V03 | los embeddings rinden como el ruido|P71|experiments/p71_10_downstream_corregido.py
+P72-00|2026-09-29|P0 auditoria de la implementacion Twitter Word2Vec existente|6 de 6 confirmaciones OK; el 200d valido es w2v_twitter_lrfix.npz|P72|experiments/p72_00_auditoria_implementacion.py
+P72-01|2026-09-29|P1 entrenamiento de 100d y 300d con todo lo demas congelado|unica variable: vector_size|P72|experiments/p72_01_dimensiones.py

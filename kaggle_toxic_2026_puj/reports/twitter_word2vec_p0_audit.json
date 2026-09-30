@@ -1,0 +1,166 @@
+{
+  "familia": "P72_TWITTER_WORD2VEC_DIM",
+  "experiment_id": "P72-00",
+  "fase": "P0 auditoria de la implementacion existente",
+  "fecha": "2026-09-30T04:42:37+00:00",
+  "naturaleza": "AUDITORIA. 0 entrenamientos, 0 test, 0 holdout, 0 leaderboard",
+  "corpus_auditado": {
+    "fuente": "mmaguero/covid19-spanishtweets-earlylateapril2020",
+    "url": "https://www.kaggle.com/datasets/mmaguero/covid19-spanishtweets-earlylateapril2020",
+    "proveedor": "mmaguero",
+    "licencia": "CC BY-SA 4.0, licencia real y explicita",
+    "periodo_de_coleccion": "29 de marzo de 2020 a 1 de mayo de 2020, CERRADO y documentado",
+    "idioma": "espanol declarado por el proveedor",
+    "tiene_etiquetas": false,
+    "clasificacion_en_la_auditoria": "ALLOWED",
+    "documentos_usados": 361994,
+    "tokens_usados": 10000029,
+    "sha256_del_corpus_tokenizado": "1ef872c189d0f405bc1a3f8281cafe08e6b099958e6b8a3816db1460df91f8b9",
+    "fecha_de_descarga": "2026-09-29",
+    "solapamiento_con_train": "0 exactas y 0 normalizadas, medido contra el TEXTO de train",
+    "solapamiento_con_test": "NO se midio: el encargo prohibe comparar contra el test"
+  },
+  "tokenizacion": {
+    "version": "EMB-NORMAL-TW v1",
+    "minusculas": true,
+    "conserva_tildes": true,
+    "url": "a marcador 'url'",
+    "mencion": "a marcador '@usuario' conservando el prefijo",
+    "hashtag": "CONSERVADO con su contenido; v5 lo colapsaba a 'hashtag'",
+    "numero": "a marcador 'numero'",
+    "alargamientos": "NO se colapsan",
+    "patron_token": "[#@]?\\w+(?:['\\u2019]\\w+)*",
+    "diferencia_con_v5": "v5 colapsa hashtags y menciones a marcadores sin contenido. Aqui se conserva el contenido del hashtag porque ahi vive parte de la senal de dominio de Twitter. Se usa el MISMO tokenizador en los dos corpus para aislar el dominio"
+  },
+  "configuracion": {
+    "vector_size": 200,
+    "window": 5,
+    "min_count": 3,
+    "negative": 10,
+    "sample": 0.0001,
+    "epochs": 5,
+    "sg": 1,
+    "seed": 20261016,
+    "lote": 8192,
+    "lr": 0.025,
+    "optimizador": "0,025 x lote",
+    "lr_inicial": 6.4
+  },
+  "artefactos": [
+    {
+      "artefacto": "w2v_twitter.npz",
+      "script": "p71_04",
+      "loss": [
+        1.706327,
+        1.81141,
+        1.841703,
+        1.865799,
+        1.88408
+      ],
+      "valido": false,
+      "sha256": "1d79156f25f26265750a1bf08ab6e21b",
+      "bytes": 58302433
+    },
+    {
+      "artefacto": "w2v_twitter_sgd.npz",
+      "script": "p71_06",
+      "loss": null,
+      "valido": false,
+      "sha256": "eaf4bfb8648f237f53b6d4c150bc9889",
+      "bytes": 57737004
+    },
+    {
+      "artefacto": "w2v_twitter_lrfix.npz",
+      "script": "p71_08",
+      "loss": [
+        1.272136,
+        1.174189,
+        1.132058,
+        1.108284,
+        1.095145
+      ],
+      "valido": true,
+      "sha256": "00bee165447a384c05ee8b7feb69309c",
+      "bytes": 58296403
+    },
+    {
+      "artefacto": "w2v_general_lrfix.npz",
+      "script": "p71_08",
+      "loss": [
+        1.25416,
+        1.140164,
+        1.094067,
+        1.069379,
+        1.055625
+      ],
+      "valido": true,
+      "sha256": "e3681fed4346fa82a3d751d836bfa710",
+      "bytes": 75057480
+    }
+  ],
+  "cual_es_valido": "w2v_twitter_lrfix.npz, de p71_08. Los de p71_04 y p71_06 no entrenaron: la loss se quedo clavada en el valor del estado cero",
+  "confirmaciones": [
+    {
+      "confirmacion": "entrenamiento desde cero",
+      "ok": true,
+      "nota": "el skip-gram esta implementado en el propio script"
+    },
+    {
+      "confirmacion": "sin pesos preentrenados de terceros",
+      "ok": true,
+      "nota": "no hay carga de vectores externos en el cuerpo del script"
+    },
+    {
+      "confirmacion": "sin labels externas",
+      "ok": true,
+      "nota": "el corpus es texto no etiquetado; no hay fichero de etiquetas"
+    },
+    {
+      "confirmacion": "el corpus no incorpora labels de toxicidad",
+      "ok": true,
+      "nota": "la ficha del corpus declara que no hay etiquetas; el JSON de auditoria menciona las categorias prohibidas solo para auditarlas"
+    },
+    {
+      "confirmacion": "sin texto de toxic_test usado a proposito",
+      "ok": true,
+      "nota": "el corpus se descargo de Kaggle antes de existir, y el solapamiento se midio contra TRAIN"
+    },
+    {
+      "confirmacion": "sin metadata de Twitter como feature",
+      "ok": true,
+      "nota": "solo la columna `text` entra en el entrenamiento"
+    }
+  ],
+  "downstream": {
+    "intento_1_sobre_modelos_no_entrenados": {
+      "resultado": "INVALID_DUE_TO_UNTRAINED_REPRESENTATIONS",
+      "fuente": "INVALID_DUE_TO_UNTRAINED_REPRESENTATIONS"
+    },
+    "intento_2_protocolo_corregido": {
+      "v03_reproducido": true,
+      "mejor_fusion_con_bloque_denso": {
+        "escala": 0.05,
+        "twitter": 0.776423007,
+        "general": 0.7759209207,
+        "azar": 0.7768959381
+      },
+      "nota_sobre_la_mejor_fila": "la fila de escala 0,00 es V03 SIN bloque denso, luego no es una fusion",
+      "v03_sola": 0.7772114525165721,
+      "veredicto": "CLOSED"
+    },
+    "pooling_usado": "mean pooling",
+    "defectos_corregidos_en_el_downstream": [
+      "el vectorizador se ajustaba sobre todo el desarrollo en vez de dentro de cada pliegue",
+      "C=1.0 sin class_weight, cuando V03 usa C=2.0 balanced",
+      "la escala del bloque denso no estaba igualada a la del disperso"
+    ]
+  },
+  "inconsistencia_declarada": "el resultado historico de dominio (0,565950 y compania) se calculo sobre representaciones que NO entrenaron, y esta marcado INVALIDATED. P1 arranca del modelo de 200 dimensiones de p71_08, que es el unico valido",
+  "reproducibilidad": {
+    "nivel": "R2",
+    "git_commit": "63fec78",
+    "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "corrected_cv_v03": 0.7772114525165721
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

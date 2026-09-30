@@ -7285,3 +7285,43 @@ VEREDICTO: CLOSED
 
 No porque el corpus sea malo. Sino porque **la representacion promediada no puede competir con
 una representacion lexica dispersa en una tarea lexica**, y eso ya lo habia medido v5.
+
+
+## D-240 a D-242: P0, y el hallazgo que condiciona toda la fase
+
+Fecha 2026-09-29. Nueva fase autorizada: dimension y pooling del Word2Vec de dominio.
+
+### D-240. El 200d que existe en disco NO es el que produjo el resultado historico
+
+```text
+w2v_twitter.npz        p71_04   loss CLAVADA en 1,386295   NO ENTRENO
+w2v_twitter_sgd.npz    p71_06   loss CLAVADA en 1,386295   NO ENTRENO
+w2v_twitter_lrfix.npz  p71_08   loss 1,272 -> 1,095        SI ENTRENO
+```
+
+Los dos primeros produjeron los numeros historicos de dominio y estan marcados
+`INVALID_DUE_TO_UNTRAINED_REPRESENTATIONS`. **P1 arranca del tercero, que es el unico valido.**
+
+### D-241. Las seis confirmaciones de P0, todas OK
+
+```text
+entrenamiento desde cero                       el skip-gram esta implementado en el propio script
+sin pesos preentrenados de terceros            no hay carga de vectores externos
+sin labels externas                            el corpus es texto no etiquetado
+el corpus no incorpora labels de toxicidad     la ficha declara que no hay etiquetas
+sin texto de toxic_test usado a proposito      el corpus se descargo antes, y el solapamiento
+                                               se midio contra TRAIN
+sin metadata de Twitter como feature           solo la columna `text` entra
+```
+
+El corpus: `mmaguero/covid19-spanishtweets-earlylateapril2020`, CC BY-SA 4.0, periodo cerrado
+del 29 de marzo al 1 de mayo de 2020, 361.994 documentos y 10.000.029 tokens, cero solapamiento
+con el texto de train.
+
+### D-242. Lo que P1 aisla
+
+La unica variable es `vector_size`. Todo lo demas congelado: corpus, tokenizacion, ventana 5,
+min_count 3, negativos 10, muestreo 1e-4, epocas 5, sg 1, semilla 20261016, lote 256 y
+learning rate 0,025 por ejemplo.
+
+No se prueban 50d, 150d, 250d, 400d ni 500d. No hay grid.
