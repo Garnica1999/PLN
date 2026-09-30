@@ -2181,3 +2181,11 @@ intacto.
   integracion P6/P7 con regla y pesos del plug-in congelados.
 - Baseline recomputado: 0.6159732. Revisiones de ml-architect, kaggle-specialist y dl-specialist incorporadas.
 - Sin test, sin holdout, sin submission.
+
+---
+
+## V32-E1 ejecutado: perdida surrogate de macro-F1 - 2026-09-30
+
+- Veredicto: NO_ATRIBUIBLE. A1 comb 0.6125567 (delta -0.0034165, 0/5 folds); generadores A2/A3 como controles.
+- Baseline recomputado 0.6159732; ES estricto; GPU D-007; sin test, sin holdout, sin submission.
+- Artefactos: experiments/v32_01_surrogate_macrof1.json | reports/v32_e1_surrogate_macrof1.md | experiments/v32_e1_curvas.json.

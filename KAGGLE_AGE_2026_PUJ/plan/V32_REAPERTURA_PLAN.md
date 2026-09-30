@@ -43,8 +43,11 @@ Objetivo del usuario: mejorar el puntaje de Kaggle; referencia declarada: acerca
   `ml-reviewer` = APROBADO con observaciones (fix de degradacion de determinismo aplicado);
   `ml-qa-engineer` = APROBADO GO (47/47 checks, `--verificar` EXIT 0). Pendiente de aclarar en
   cierre: S1 (el prereg cita el commit 9c5cca2 = HEAD previo al commit de sus artefactos).
-- [ ] **F3 Entrenamiento y evaluacion**: `ml-trainer` ejecuta, registra metricas y aplica gates;
-  segunda particion si PROMISING; `ml-performance-auditor` si hay cuello de botella.
+- [x] **F3 Entrenamiento y evaluacion**: ejecutado en GPU (exit 0, 59 s; relanzado a peticion
+  de Carlos tras liberar p75; sonda de determinismo 0.0 identico). Veredicto
+  **NO_ATRIBUIBLE**: A1 -0.0034165 (0/5), A2 -0.0009284 (control no favorable),
+  A3 -0.0009011 (control negativo por encima de A1). Sin segunda particion; P1 cerrada
+  (D-081). `ml-trainer` valido artefactos (9/9) y gates contra el arbol congelado.
 - [ ] **F4 Cierre**: notebook consolidado (seccion nueva "PHASE - V32 REOPENING"), actualizacion
   de `experiments.csv`, `PROJECT_STATE.md`, `DECISIONS.md`, `RUNLOG.md`, `FINAL_REPORT.md` y
   los informes del experimento; commits por fase; ingesta en graphiti y codebase.
@@ -59,4 +62,8 @@ Objetivo del usuario: mejorar el puntaje de Kaggle; referencia declarada: acerca
 
 | Fecha | Fase | Evento | Commit |
 |---|---|---|---|
-| 2026-09-30 | F0 | plan cargado, rama creada, estado verificado | (este commit) |
+| 2026-09-30 | F0 | plan cargado, rama creada, estado verificado | 9c5cca2 |
+| 2026-09-30 | F1 | arquitectura + legalidad + reglas NN (ES estricto y GPU por decision de Carlos) | 9c5cca2 |
+| 2026-09-30 | F2 | pre-registro congelado + runner verificado (reviewer APROBADO + QA GO 47/47) | 1cdf7a1 / d1a152f |
+| 2026-09-30 | F3 | V32-E1 ejecutado en GPU; NO_ATRIBUIBLE; P1 cerrada (D-081) | (commit de cierre F3/F4) |
+| 2026-09-30 | F4 | notebook + docs + memorias | (commit de cierre F3/F4) |
