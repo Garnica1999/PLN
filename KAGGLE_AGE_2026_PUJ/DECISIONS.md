@@ -2790,3 +2790,30 @@ No se usa el 0,63575 para optimizar pesos, crear variantes, seleccionar semillas
 - **Decision**: con esto quedan MEDIDAS las seis representaciones de la fase (P2, P6, P7 y las tres restantes), todas bajo gates identicos y con control propio. El campeon adoptado (V30 + plug-in, LB 0.63575) permanece intacto; no se reabre ninguna familia; sin encadenar variantes.
 - **Consequences**: el expediente linguistico-estructurado de AGE queda cerrado con evidencia propia para cada familia; la regla de interpretacion pre-registrada se aplica por canal ('no aporta mejora bajo el mecanismo evaluado'), sin extrapolar a la informacion linguistica en general.
 - **Evidence**: `experiments/age_linguistic_12_remaining_channels.json`, `reports/age_remaining_results.csv`, `reports/age_remaining_complementarity.csv`, `reports/age_remaining_decision.md`.
+
+---
+
+## D-081 - V32-E1: la perdida surrogate de macro-F1 queda NO_ATRIBUIBLE; P1 se cierra
+
+- **Observation**: reapertura V32 (2026-09-30) para buscar mejora sobre el campeon adoptado.
+  P1 = challenger MLP (279-128-6, PyTorch/ROCm, ES estricto 90/10 interno, GPU D-007) con
+  perdida diferenciable soft-macro-F1 sobre la matriz de 279 features congelada; pre-registro
+  congelado con los gates de la serie, control gemelo cross-entropy (unica variable: la
+  perdida) y tercer brazo de etiquetas barajadas. Baseline recomputado 0.6159732; determinismo
+  estricto (sonda A1 fold 0: max|delta p| = 0.0); sin leakage (5/5 asserts).
+- **Result**: A1_surrogate delta -0.0034165 (0/5 folds; IC95 [-0.0044246, -0.0023612]);
+  A2_ce -0.0009284 (1/5); A3_barajado -0.0009011 (0/5). El control negativo rinde por encima
+  de A1 -> NO_ATRIBUIBLE; A1 no pasa delta, folds ni control. Standalone A1 0.5989288 con
+  neto -2931 (6041 rescates / 8972 danos; 13151 filas volteadas).
+- **Decision**: P1 se cierra documentada; no hay segunda particion. Campeon V30 + plug-in
+  (LB 0.63575) intacto. Anomalias registradas: (i) ES nunca disparo en A1 (5/5 folds agotaron
+  60 epocas con la metrica interna subiendo; posible truncamiento del brazo, sin efecto en el
+  veredicto); (ii) el gate `ic95 sin cero` es sin direccion (no altera el veredicto).
+- **Consequences**: la familia "objetivo" (perdida alineada a la metrica) queda medida como
+  NEGATIVA bajo el mecanismo evaluado. Candidatos restantes de la lista: P2 = CatBoost sobre
+  matriz_279 (pre-registro nuevo) y P3 = FTRL (secundario), sujetos a autorizacion. Sin test,
+  sin holdout, sin leaderboard, sin submission.
+- **Evidence**: `experiments/v32_01_surrogate_macrof1.json`,
+  `reports/v32_e1_surrogate_macrof1.md`, `reports/v32_e1_preregistro.md`,
+  `experiments/v32_e1_curvas.json`, `reports/figures/v32_e1_curvas.png`,
+  `scripts/v32_00_preregistro.py`, `scripts/v32_01_surrogate_macrof1.py`.

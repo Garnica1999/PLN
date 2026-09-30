@@ -980,3 +980,15 @@ Sin test, sin holdout, sin submissions.
 
 - Resultado: ningun brazo pasa; serie completa de seis representaciones medida.
 - Baseline 0.6159732; sin test, sin holdout, sin submission; campeon intacto.
+
+---
+
+## V32-E1 ejecutado: perdida surrogate de macro-F1 (2026-09-30)
+
+- Reapertura V32 (candidatos: perdida surrogate > CatBoost > FTRL). P1 ejecutado con
+  pre-registro congelado; revisiones ml-architect / kaggle-specialist / dl-specialist; gate
+  ml-reviewer + ml-qa (GO); ES estricto (decision de Carlos) en GPU (D-007).
+- Resultado: **NO_ATRIBUIBLE**. A1 (soft-macro-F1) delta -0.0034165 (0/5 folds, IC95
+  [-0.0044246, -0.0023612]); A2 (CE gemelo) -0.0009284 (1/5); A3 (barajado) -0.0009011 (0/5).
+  Sonda de determinismo 0.0; sin leakage; campeon intacto.
+- Decision: P1 cerrada sin segunda particion (D-081). Sin test, sin holdout, sin submission.
