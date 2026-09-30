@@ -1,0 +1,112 @@
+{
+  "fase": "V32-E1 pre-registro congelado",
+  "fecha": "2026-09-30",
+  "commit": "9c5cca268b810518fc964b64aa0fd577f6a502ae",
+  "experimento": "challenger MLP con perdida surrogate de macro-F1",
+  "baseline_primario": 0.6159732,
+  "referencia_nested": 0.6154643,
+  "pesos_plugin": [
+    1.0,
+    1.1749,
+    1.2721,
+    1.163,
+    1.001,
+    0.8128
+  ],
+  "hashes": {
+    "canonico_y_true": "b1c928f9b9f5575547c1090a1fd83cf32a048b694af35a980b460c0bd66d48e6",
+    "canonico_fold_idx": "74d18330c40c3598a1936706ae9434c5fdf29119d357d38353cf298812fe6fb5",
+    "canonico_v30_prob": "3d77352486605971093ade7214ae82326057845d8bf54a2d88c83843c5a721db",
+    "manifest_plugin": "8d635e6a546b5a0e3829872b5e182be745910bd2a0945759a6a44b6eb7e643f7",
+    "matriz_279_bytes": "175b6d1ee242eef95eec0f7c7c2e1bf5aa50578e20f006000f015e1ce634bf58",
+    "fuente_v19_b1_boosting.py": "841aa5fdf1e13c572cc164f465979d83fc2aaa25aab92b3dc2f434f0516fde9c",
+    "fuente_v30_02_ensemble.py": "be11ee23e0d069474b0fc7bcc25bc45045a719a1219f39d7ba118480eeec6cfe",
+    "fuente_age_umbrales_por_clase.py": "a9cb47ec4c37f3fe3b661857fc62dbd2aad2d0bac1e9d6a1a279ffaab60624da"
+  },
+  "dispositivo": {
+    "entrenamiento": "GPU (ROCm) con guardian D-007 (require_gpu, wait acotado; sin fallback silencioso a CPU)",
+    "gpu_detectada": "AMD Radeon RX 9070 XT",
+    "torch": "2.14.0+rocm7.2",
+    "matmul_precision": "highest"
+  },
+  "arquitectura": "StandardScaler(fit solo fold-train) -> Linear(279,128) -> GELU -> Dropout(0.1) -> Linear(128,6) -> softmax; orden canonico de clases",
+  "perdida_soft_macro_f1": {
+    "formula": "p=softmax(z) clamp [1e-6,1-1e-6]; TP_c=sum(p*y); FP_c=sum(p*(1-y)); FN_c=sum((1-p)*y); P=TP/(TP+FP+1e-6); R=TP/(TP+FN+1e-6); F1=2PR/(P+R+1e-6); L=1-media_c F1_c",
+    "objetivos": "one-hot float32",
+    "eps": 1e-06
+  },
+  "entrenamiento": {
+    "lote": 8192,
+    "pasos_por_epoca": "calculado: ceil(n_train/lote), sin hardcodear",
+    "optimizador": "AdamW lr=0.001 betas=(0.9,0.999) eps=1e-8 wd=0.0001",
+    "epocas_max": 60,
+    "early_stopping": {
+      "split_interno": "90%/10% estratificado por clase del fold-train; semilla = 20261010 + fold",
+      "paciencia": 8,
+      "restaurar": "mejor macro-F1 interna (hard argmax en el split interno)",
+      "fold_val": "jamas se usa para parar (solo OOF)"
+    },
+    "grad_clip": 5.0,
+    "guardas_nan": "loss no finita: salta el paso; >=3 en una epoca o >=10 acumuladas: aborta el brazo",
+    "sanity_1_lote": "100 pasos sobre un lote de 8192: PASS si loss finita y reduccion >= 0.30",
+    "determinismo": {
+      "seeds": {
+        "global": 20261010,
+        "barajado_etiquetas": 20261011
+      },
+      "shuffle_lote": "torch.Generator por (brazo, fold, epoca); seed = 20261010 + 10**6*brazo + 1000*fold + epoca",
+      "algoritmos": "torch.use_deterministic_algorithms(True); si ROCm lanza, se registra el fallback warn_only(True) y la sonda de determinismo lo mide",
+      "hilos_cpu": 8,
+      "sonda": "reentrenar fold 0 del brazo A1 con la misma config; comparar el OOF bit a bit; si difiere, reportar max|delta p| frente a 8.9e-04"
+    }
+  },
+  "brazos": {
+    "A1_surrogate": "MLP con perdida soft-macro-F1 (decisional)",
+    "A2_ce": "gemelo identico con cross-entropy media (control de atribucion)",
+    "A3_barajado": "gemelo A1 con etiquetas del fold-train permutadas (semilla 20261011; control negativo no decisional)"
+  },
+  "integracion": {
+    "mecanismo": "combinador logistico anidado sobre [L2(v30_prob) || L2(p_brazo)] (12 features, L2 por fila con clip 1e-12); LogReg(C=1.0, max_iter=2000, lbfgs) por fold (fit fold!=k, predice fold==k)",
+    "decision": "argmax(p_comb * w_plugin CONGELADO)",
+    "diagnosticos": [
+      "argmax_sin_regla (sin pesos)",
+      "delta vs nested 0.6154643"
+    ]
+  },
+  "gates": {
+    "baseline_abort": 5e-07,
+    "delta_min": 0.0015,
+    "folds_min": 4,
+    "control": "delta_int(A1) > delta_int(A2) (comparacion numerica pre-registrada)",
+    "control_negativo": "si delta_int(A3) >= delta_int(A1): NO_ATRIBUIBLE (no puede pasar a segunda particion)",
+    "bootstrap": {
+      "n": 2000,
+      "semilla": 20261010,
+      "ic95_sin_cero": true
+    },
+    "sin_leakage": true
+  },
+  "arbol": {
+    "PROMISING": "pasa los gates -> segunda particion congelada (semilla 987654) antes de cualquier otra cosa",
+    "MARGINAL": "delta > 0 sin gates -> no se adopta; cierre documentado o P2 con justificacion",
+    "CLOSED": "delta <= 0 -> se cierra P1; solo entonces se evalua P2 (CatBoost)",
+    "submission": "jamas automatica; requeriria gate completo + segunda particion + autorizacion explicita"
+  },
+  "compliance": {
+    "embeddings": 0,
+    "transformers": 0,
+    "LLM": 0,
+    "test": 0,
+    "holdout": 0,
+    "leaderboard": 0,
+    "submissions": 0,
+    "datos_externos": 0,
+    "nota": "0 embeddings en ambos brazos; las activaciones ocultas nunca se exportan; el integrador solo consume las 6 probabilidades"
+  },
+  "presupuesto": "3 brazos x 5 folds con ES (<=60 epocas, ~17 pasos/epoca) en GPU: minutos; combinadores + bootstrap en CPU: ~5-10 min; total < 1 h",
+  "variabilidad_entrenamiento": 0.0008876,
+  "umbral_alta_confianza": 0.6,
+  "documentos_fuente": [
+    "plan/V32_REAPERTURA_PLAN.md"
+  ]
+}

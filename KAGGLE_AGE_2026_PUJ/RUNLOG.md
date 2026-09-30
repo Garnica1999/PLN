@@ -2171,3 +2171,13 @@ intacto.
 - Resultado: ningun brazo pasa. R3_lemma_POS/md: -0.0009172 | R3_lemma_POS/lg: -0.0009230 | R4_morfologia/md: -0.0011668 | R4_morfologia/lg: -0.0010333 | R5_dependencias/md: -0.0009132 | R5_dependencias/lg: -0.0005440.
 - Baseline 0.6159732; control intra-fold 20261031; dep_edges re-validado.
 - Sin test, sin holdout, sin submission; campeon intacto.
+
+---
+
+## Pre-registro de V32-E1: challenger con perdida surrogate de macro-F1 · 2026-09-30
+
+- Congelado: MLP 279->128->6 sobre matriz_279; perdida soft-macro-F1; control gemelo CE;
+  tercer brazo barajado; early stopping estricto (90/10 interno) y GPU (D-007);
+  integracion P6/P7 con regla y pesos del plug-in congelados.
+- Baseline recomputado: 0.6159732. Revisiones de ml-architect, kaggle-specialist y dl-specialist incorporadas.
+- Sin test, sin holdout, sin submission.

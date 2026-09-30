@@ -32,12 +32,15 @@ Objetivo del usuario: mejorar el puntaje de Kaggle; referencia declarada: acerca
 ## Fases
 
 - [x] **F0 Preparacion**: rama `proyecto-kaggle-age-2026-v32`, este plan, estado verificado.
-- [ ] **F1 Arquitectura y legalidad**: `ml-architect` elige la primera tecnica y congela el
-  protocolo; `kaggle-specialist` valida reglas y leakage; `dl-specialist` valida reglas de
-  entrenamiento NN (si aplica); pregunta de early stopping a Carlos antes de entrenar.
+- [x] **F1 Arquitectura y legalidad**: `ml-architect` eligio P1 (perdida surrogate de macro-F1)
+  con protocolo congelable; `kaggle-specialist` = APTO con salvaguardas (hashes/alineacion,
+  asserts de OOF, ES solo interno, determinismo, deltas con argmax puro, tercer brazo barajado);
+  `dl-specialist` aprobo con correcciones (AdamW, one-hot float32, pasos calculados, guardas
+  NaN, determinismo CPU/GPU, sanity de 1 lote) y recomendo ES. Carlos decidio: **early stopping
+  estricto + entrenamiento en GPU** (D-007, guardian). GPU verificada libre el 2026-09-30.
 - [ ] **F2 Pre-registro + implementacion + revision**: script de pre-registro congelado;
-  `ml-coder` implementa `scripts/v32_XX_*.py`; `ml-reviewer` revisa (lint/leakage/reglas);
-  `ml-qa-engineer` verifica (Prove-It).
+  `ml-coder` implementa `scripts/v32_01_surrogate_macrof1.py`; `ml-reviewer` revisa
+  (lint/leakage/reglas); `ml-qa-engineer` verifica (Prove-It).
 - [ ] **F3 Entrenamiento y evaluacion**: `ml-trainer` ejecuta, registra metricas y aplica gates;
   segunda particion si PROMISING; `ml-performance-auditor` si hay cuello de botella.
 - [ ] **F4 Cierre**: notebook consolidado (seccion nueva "PHASE - V32 REOPENING"), actualizacion
