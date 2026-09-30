@@ -1681,7 +1681,9 @@ def figuras(ctx: Contexto, probas: dict[tuple[str, int], np.ndarray], metricas: 
     """Genera las figuras de P78, con nombres y etiquetas en ASCII puro.
 
     Con `sufijo` no vacio, cada figura se guarda como `nombre + sufijo`, que es el temporal
-    que despues publica `publicar_atomico`. La lista que devuelve son SIEMPRE los nombres
+    que despues publica `publicar_atomico`. OJO: matplotlib deduce el formato de la
+    extension, y ".png.tmp_p78" no es un formato soportado, luego toda llamada lleva
+    `format="png"` explicito o revienta con ValueError. La lista que devuelve son SIEMPRE los nombres
     definitivos, con o sin sufijo, porque es lo que se verifica y lo que se renombra.
 
     Args:
@@ -1728,7 +1730,7 @@ def figuras(ctx: Contexto, probas: dict[tuple[str, int], np.ndarray], metricas: 
     ax.set_title("P78: delta por pliegue de las cuatro comparaciones")
     ax.legend(fontsize=8)
     plt.tight_layout()
-    fig.savefig(destino("p78_01_deltas_por_pliegue.png"), dpi=110)
+    fig.savefig(destino("p78_01_deltas_por_pliegue.png"), dpi=110, format="png")
     plt.close(fig)
     escritas.append("p78_01_deltas_por_pliegue.png")
 
@@ -1757,7 +1759,7 @@ def figuras(ctx: Contexto, probas: dict[tuple[str, int], np.ndarray], metricas: 
     axes[1].legend(fontsize=8)
     axes[1].set_title("P78: por que hay OOV, medido token a token")
     plt.tight_layout()
-    fig.savefig(destino("p78_02_cobertura_y_motivos.png"), dpi=110)
+    fig.savefig(destino("p78_02_cobertura_y_motivos.png"), dpi=110, format="png")
     plt.close(fig)
     escritas.append("p78_02_cobertura_y_motivos.png")
 
@@ -1775,7 +1777,7 @@ def figuras(ctx: Contexto, probas: dict[tuple[str, int], np.ndarray], metricas: 
     ax.set_title("P78: F1 real por etiqueta de los cuatro brazos, semilla primaria")
     ax.legend(fontsize=8)
     plt.tight_layout()
-    fig.savefig(destino("p78_03_f1_por_etiqueta.png"), dpi=110)
+    fig.savefig(destino("p78_03_f1_por_etiqueta.png"), dpi=110, format="png")
     plt.close(fig)
     escritas.append("p78_03_f1_por_etiqueta.png")
 
@@ -1790,7 +1792,7 @@ def figuras(ctx: Contexto, probas: dict[tuple[str, int], np.ndarray], metricas: 
     axes[0].set_ylabel("densidad")
     axes[0].legend(fontsize=8, title="brazo")
     plt.tight_layout()
-    fig.savefig(destino("p78_04_probabilidades.png"), dpi=110)
+    fig.savefig(destino("p78_04_probabilidades.png"), dpi=110, format="png")
     plt.close(fig)
     escritas.append("p78_04_probabilidades.png")
 
@@ -1805,7 +1807,7 @@ def figuras(ctx: Contexto, probas: dict[tuple[str, int], np.ndarray], metricas: 
     ax.set_title("P78: delta global por comparacion, media y sd de las tres semillas")
     ax.legend(fontsize=8)
     plt.tight_layout()
-    fig.savefig(destino("p78_05_delta_por_semilla.png"), dpi=110)
+    fig.savefig(destino("p78_05_delta_por_semilla.png"), dpi=110, format="png")
     plt.close(fig)
     escritas.append("p78_05_delta_por_semilla.png")
 
@@ -1820,7 +1822,7 @@ def figuras(ctx: Contexto, probas: dict[tuple[str, int], np.ndarray], metricas: 
     ax.set_ylabel("delta macro-F1")
     ax.set_title(f"P78: IC95 del bootstrap pareado por clusters, {N_BOOTSTRAP} replicas")
     plt.tight_layout()
-    fig.savefig(destino("p78_06_ic95_bootstrap.png"), dpi=110)
+    fig.savefig(destino("p78_06_ic95_bootstrap.png"), dpi=110, format="png")
     plt.close(fig)
     escritas.append("p78_06_ic95_bootstrap.png")
 
