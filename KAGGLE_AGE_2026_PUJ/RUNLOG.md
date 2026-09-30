@@ -2225,3 +2225,14 @@ intacto.
   sondas (a)-(d) obligatorias; regla de fallback escrita antes de ejecutar; cap por IC95 de la diferencia; determinismo con
   sonda bit a bit. Auditoria: el data_hash del manifest es un hash de punteros, no reproducible; se congelan hashes de contenido.
 - Baseline recomputado: 0.6159732. Sin test, sin holdout, sin submission.
+
+
+---
+
+## V32-E3 ejecutado: challenger FTRL-Proximal sobre TF-IDF por fold - 2026-09-30
+
+- Veredicto: NO_ATRIBUIBLE. A1 comb 0.6147759 (delta -0.0011973, 1/5 folds); A2 control delta -0.0017002; A3 negativo delta -0.0011973.
+- Baseline recomputado 0.6159732; sondas (a)-(d) todas pasan; fallback: config_fallback_usada=True, alpha efectivo 0.005.
+- RSS pico 0.87 GB (tope 20); 32 hilos; duracion 755 s.
+- Sin particiones reservadas: sin test, sin holdout, sin envio.
+- Artefactos: experiments/v32_05_ftrl_challenger.json | experiments/v32_05_estado.json | reports/v32_p3_ftrl_challenger.md | reports/figures/v32_p3_curvas.png | artifacts/p33_scores/v32_p3/a1_ftrl.npy | artifacts/p33_scores/v32_p3/a2_sgd_twin.npy | artifacts/p33_scores/v32_p3/a3_ftrl_barajado.npy | artifacts/p33_scores/v32_p3/a2_sgd_twin_crudo.npy.
