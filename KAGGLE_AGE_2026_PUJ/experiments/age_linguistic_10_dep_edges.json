@@ -1,0 +1,34 @@
+{
+  "fase": "P5.0 derivacion de aristas de dependencia",
+  "fecha": "2026-09-30",
+  "fichas": {
+    "md": {
+      "modelo": "es_core_news_md",
+      "filas": 169336,
+      "parquet": "features/linguistic/dep_edges_md_train.parquet",
+      "sha256": "3983212647c7f48f67cc952eec80428a69471d152b33b1e2d271468447a2d411",
+      "documentos_vacios": 104,
+      "vocabulario_aristas": 487,
+      "validacion": {
+        "documentos_con_tokens_distintos": 0,
+        "documentos_con_dep_distinta": 0
+      }
+    },
+    "lg": {
+      "modelo": "es_core_news_lg",
+      "filas": 169336,
+      "parquet": "features/linguistic/dep_edges_lg_train.parquet",
+      "sha256": "ed32f5d2a91d360c9f852c983aa278301e75661e9ea13e20607eb72b76054055",
+      "documentos_vacios": 104,
+      "vocabulario_aristas": 492,
+      "validacion": {
+        "documentos_con_tokens_distintos": 0,
+        "documentos_con_dep_distinta": 0
+      }
+    }
+  },
+  "sin_test": true,
+  "sin_holdout": true,
+  "sin_entrenamiento": true,
+  "segundos": 214.2
+}
