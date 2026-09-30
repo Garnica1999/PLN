@@ -2133,3 +2133,15 @@ intacto.
 - Brazos reales: N1/lg: -0.0010228 (2/5) | N1/md: -0.0009257 (1/5) | N1b/lg: -0.0013202 (0/5) | N1b/md: -0.0010038 (2/5) | N2/lg: -0.0010122 (1/5) | N2/md: -0.0012316 (1/5) | PROMISING: False.
 - Control barajado por el pipeline completo (semilla 20261029); baseline 0.6159732.
 - Sin tuning, sin test, sin holdout, sin submission; campeon intacto.
+
+---
+
+## Pre-registro de P7: texto tipado (texto original + lemma_POS) · 2026-09-30
+
+- Congelado: dos bloques (A = texto original, clon de VEC_PALABRA de V31-03; B = lemma_POS 1-2
+  gramas), vectorizadores separados por fold, escala 1.0; combinador anidado identico a P6;
+  control = bloque B permutado dentro de cada fold (semilla 20261030); gates +0.0015/4-5 folds/
+  real>barajado/bootstrap; md y lg.
+- Baseline primario recomputado: 0.6159732.
+- Revisiones de Kaggle Specialist y revisor ML incorporadas; smoke test de 1 fold: 19,1 s.
+- Sin tuning, sin test, sin holdout, sin submission.
