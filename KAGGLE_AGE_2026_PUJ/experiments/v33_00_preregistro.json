@@ -97,7 +97,8 @@
     "n_jobs": 32,
     "pasadas": 1,
     "por_que": "misma representacion, mismo presupuesto (1 pasada), mismo barajado, misma semilla y misma evaluacion: lo unico libre es el eje proximal/adaptativo",
-    "asimetria_declarada": "alpha 1e-6 frente a 0.004 (cuatro ordenes de magnitud) y laregularidad del intercepto: por eso la sonda |sigma*w|/|g| es OBLIGATORIA"
+    "asimetria_declarada": "alpha 1e-6 frente a 0.004 (cuatro ordenes de magnitud) y laregularidad del intercepto: por eso la sonda |sigma*w|/|g| es OBLIGATORIA",
+    "shuffle": false
   },
   "puerta_convergencia": {
     "momento": "dentro del fold 0, ANTES de los folds 1-4 y ANTES de integrar",
@@ -111,10 +112,10 @@
     "umbrales_derivados": {
       "G1_ll_train_banda": {
         "rango": [
-          0.25,
-          0.6
+          0.05,
+          1.6125835223052496
         ],
-        "anclaje": "uniforme log(6) = 1.7918; la cota alta caza la divergencia de D-083"
+        "anclaje": "suelo 0.05 = detector de humo (con una sola pasada y una actualizacion por ejemplo no hay memorizacion posible); techo 0.9*log(6) = 1.6125835223052495: el ll_train debe mejorar el uniforme en al menos un 10 % relativo. Enmenda 1 pre-ejecucion: la banda congelada [0.25, 0.60] era inalcanzable para cualquier modelo sano (en D-083 el gemelo sano dio log_loss multiclase 1.3568 > 0.60) y cerraba el experimento por construccion"
       },
       "G2_monotonia": {
         "puntos": [
@@ -268,5 +269,30 @@
   "entregables": {
     "preregistro": "scripts/v33_00_preregistro.py -> experiments/v33_00_preregistro.json, reports/v33_preregistro.md, reports/v33_convergence_gate.md",
     "runner": "scripts/v33_01_ftrl_softmax_online.py -> experiments/v33_01_ftrl_softmax_online.json, experiments/v33_01_estado.json, artifacts/p33_scores/v33_e1/{a1_ftrl_softmax,a2_sgd_1p}.npy, reports/v33_e1_ftrl_softmax_online.md, reports/figures/v33_e1_curvas.png, reports/v33_novelty_registry.csv, fila anexada en reports/age_complete_experiment_history.csv, RUNLOG.md y fila V33-E1 en experiments.csv"
-  }
+  },
+  "enmiendas": [
+    {
+      "fecha": "2026-09-30",
+      "objeto": "puerta G1 banda de log_loss multiclase de train",
+      "de": [
+        0.25,
+        0.6
+      ],
+      "a": [
+        0.05,
+        1.6125835223052496
+      ],
+      "motivo": "la banda congelada era inalcanzable para un modelo sano (techo 0.60 muy por deajo del log_loss multiclase 1.3568 que ya midio el gemelo en D-083)",
+      "derivacion": "suelo 0.05 = detector de humo (una pasada no memoriza); techo 0.9*log(6) = 1.6125835223052495 = mejorar el uniforme >= 10 % relativo",
+      "estado_datos": "sin resultados; enmienda pre-ejecucion"
+    },
+    {
+      "fecha": "2026-09-30",
+      "objeto": "a2_sgd_control.shuffle",
+      "de": "(no congelado; default de sklearn True)",
+      "a": false,
+      "motivo": "con shuffle=True el control aplicaba su propia permutacion encima del orden congelado, rompiendo la condicion 'mismo barajado' del propio protocolo",
+      "estado_datos": "sin resultados; enmienda pre-ejecucion"
+    }
+  ]
 }

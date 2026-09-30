@@ -26,3 +26,11 @@ programar la regla: si una sonda fijara un umbral, seria tuning y esta prohibido
 ## Sonda de atribucion obligatoria
 
 razon media |sigma*w| / |g| por coordenada en el fold 0. el control cambia dos variables (alpha y regularizacion del intercepto): la razon sigma/g es la que desambigua la causa (correccion inflada frente a multi-pasada). Consecuencia si no se publica: el veredicto queda capado a MARGINAL.
+
+## Enmienda pre-ejecucion 1 (2026-09-30)
+
+- La banda de **G1** pasa de `[0.25, 0.60]` a `[0.05, 1.6125835223052496]`.
+  Motivo: era inalcanzable para un modelo sano (el gemelo sano de D-083 dio log_loss multiclase
+  1.3568) y garantizaba `NO_ATRIBUIBLE_BY_GATE` sin medir nada. Derivacion del suelo y del techo
+  en la tabla. Sin resultados: pre-ejecucion.
+- El control **A2** fija `shuffle=False` para consumir el orden congelado tal cual.

@@ -68,3 +68,13 @@ Caps: sin sonda de atribucion o con determinismo no concluyente el veredicto no 
 - AST audit de imports Y literales (vowpal, vw, torch, transformers, gensim, fasttext, sentence-transformers, word2vec, glove, spacy-vectors) y 0 rutas de test/holdout/submission/leaderboard.
 - Coste esperado ~13-16 min de CPU; RAM con tope 20 GB medido con `ru_maxrss`; calibracion de fold 0; checkpoints por fold; escritura atomica.
 - Referencia de variabilidad de entrenamiento: 0.0008876.
+
+## Enmienda pre-ejecucion 1 (2026-09-30)
+
+- **G1**: banda de log_loss multiclase de train `[0.25, 0.60]` -> `[0.05, 1.6125835223052496]`. Motivo: la banda congelada era inalcanzable para un
+  modelo sano (en D-083 el gemelo sano dio log_loss multiclase 1.3568 > 0.60) y cerraba el
+  experimento por construccion. Derivacion: suelo 0.05 = detector de humo; techo
+  0.9*log(6) = 1.6125835223052495 (mejorar el uniforme >= 10 % relativo).
+- **A2**: `shuffle` no estaba congelado (default de sklearn True) -> `False`, para que el control
+  consuma el orden congelado tal cual (el default aplicaba su propia permutacion encima).
+- Sin resultados: enmienda **pre-ejecucion** (ningun fold entrenado). Resto del protocolo intacto.

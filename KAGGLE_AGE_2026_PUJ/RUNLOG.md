@@ -2247,3 +2247,10 @@ intacto.
   sonda |sigma*w|/|g| obligatoria; sondas (a)-(f) y sonda de refit; gates de la serie sin cambios.
 - Baseline recomputado: 0.6159732; ancla trivial: 0.0485421218068709. Via B descartada (B1 ilegal; B2 analogia; B3 algebra).
 - Sin test, sin holdout, sin leaderboard, sin submission.
+
+---
+
+## Enmienda pre-ejecucion de V33-E1 · 2026-09-30
+
+- G1: banda de log_loss [0.25, 0.60] -> [0.05, 1.6125835223052495] (inalcanzable para un modelo sano; D-083 midio
+  1.3568 en el gemelo). A2: shuffle=False para respetar el orden congelado. Sin resultados.
