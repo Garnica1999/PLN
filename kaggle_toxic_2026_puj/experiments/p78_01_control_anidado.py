@@ -100,6 +100,7 @@ from p71_03_preparar_corpus import (
     normalizar,
 )
 from p73_02_textcnn_vs_random import (
+    BATCH,
     KERNELS,
     MAXLEN,
     MODELOS,
@@ -212,6 +213,45 @@ CONFIG = {
     "dispositivo": "cpu",
     "hilos": 32,
     "parquet_de_slices_no_leido": "features/v2_structured_features.parquet",
+    # Los literales que gobiernan E* viven en p75_01, NO en las constantes de p73_02, asi
+    # que no se leen de ningun sitio. Se declaran aqui para que el JSON documente que
+    # parametros produjeron la epoca elegida, leidos de p75_01:139,155,157 y de p73_02.
+    "hiperparametros_de_epoca_estrella": {
+        "epocas_maximas": 40,
+        "origen_epocas_maximas": "p75_01:139, literal range(1, 41)",
+        "tolerancia_early_stopping": 1e-3,
+        "origen_tolerancia": "p75_01:155, literal 1e-3",
+        "paciencia": 6,
+        "origen_paciencia": "p75_01:157, literal 6",
+        "suavizado": "media movil de 3 de la BCE de validacion interna",
+        "batch": int(BATCH),
+        "origen_batch": "p73_02:BATCH, importado por p75_01:47",
+        "lr_pico": 1e-3,
+        "lr_min": 1e-4,
+        "warmup": 3,
+        "clip": 1.0,
+        "origen_lr_y_clip": "p75_01:128 AdamW lr=1e-3 y p75_01:148 clip_grad_norm_ 1.0; "
+                            "el perfil por epoca viene de p73_02:lr_de",
+        "nota_sobre_el_cosine": (
+            "el cosine de lr_de esta disenado para 40 epocas, pero E* observado esta entre 10 y "
+            "17. El learning rate real medio queda por encima del que tendria un cosine "
+            "ree calibrado a E*. Es identico en los cuatro brazos, luego no sesga el delta "
+            "pareado, pero sube la varianza entre semillas"),
+    },
+    "nota_sobre_el_ruido_entre_semillas": (
+        "el log muestra que el macro-F1 de outer_val se mueve hasta 0.08 entre dos semillas "
+        "del mismo brazo y pliegue, frente a un EPS_GATE_DELTA de 0.003. El gate pre-registrado "
+        "es muy demanding. No se modifica: se aplica el que dice el pre-registro y la magnitud "
+        "del ruido se reporta junto al veredicto"),
+    "entorno": {
+        "version_de_torch": torch.__version__,
+        "version_de_python": sys.version.split()[0],
+        "semilla_global_de_torch": "se fija antes de cada unidad, en p75_01:180",
+        "nota_determinismo": ("no se activa torch.use_deterministic_algorithms; el orden de "
+                              "reduccion de conv y linear en CPU depende del numero de hilos, "
+                              "que aqui esta fijado a 32. Mismo equipo y mismos hilos da "
+                              "reproduccion bit a bit, como se comprobo entre dos corridas"),
+    },
 }
 
 
@@ -546,7 +586,11 @@ def auditar_indices(ctx: Contexto) -> dict:
             if set(inner_va.tolist()) & ib_set:
                 raise SystemExit(
                     f"STOP asercion 6: pliegue {k}, inner_val observado toca outer_val")
-            por_split.setdefault(resto // N_INTERNOS, []).append({
+            # El indice del split es `resto // PASO_SEMILLA_INTERNA`, NO `resto // N_INTERNOS`.
+            # `epoca_estrella` de p75_01:121 usa 7*j, luego con tres splits resto vale 0, 7 y 14.
+            # Dividir por N_INTERNOS daria 0, 2 y 4, y las etiquetas de semilla del informe
+            # serian FALSAS: anunciarian BASE+100k+14 y BASE+100k+28, que nunca ocurrieron.
+            por_split.setdefault(resto // PASO_SEMILLA_INTERNA, []).append({
                 "brazo": etiqueta["brazo"], "semilla_de_modelo": etiqueta["semilla"],
                 "n_inner_train": int(inner_tr.size),
                 "n_inner_val": int(inner_va.size),
@@ -875,6 +919,12 @@ def cobertura_una_variante(ctx: Contexto, variante: str) -> dict:
     sin_ningun_kernel = largos < min(KERNELS)
     canales_muertos = np.array([sum(1 for k in KERNELS if largos[i] < k)
                                 for i in range(n_filas)], dtype=np.int64)
+    # Una fila con CERO tokens cubiertos es un caso mas grave que una fila corta: su
+    # embedding es el vector nulo, la convolucion devuelve exactamente el sesgo (cero),
+    # relu da cero y el max da cero, luego las TRES ramas de filtros aportan nada. Eso no
+    # lo capturaba el conteo de canales por longitud, que solo mira `largos < k`.
+    filas_muertas = sin_cubiertos
+    canales_muertos_efectivos = canales_muertos + np.where(filas_muertas, len(KERNELS), 0)
     return {
         "n_filas": int(n_filas),
         "n_tokens": n_tokens,
@@ -904,6 +954,16 @@ def cobertura_una_variante(ctx: Contexto, variante: str) -> dict:
         "filas_sin_ningun_kernel_valido": int(sin_ningun_kernel.sum()),
         "canales_de_filtro_muertos_por_fila_media": round(float(canales_muertos.mean()), 6),
         "filas_con_algun_canal_muerto": int((canales_muertos > 0).sum()),
+        "filas_totalmente_muertas": int(filas_muertas.sum()),
+        "fraccion_totalmente_muertas": round(float(filas_muertas.mean()), 6),
+        "canales_de_filtro_muertos_incluyendo_muertas": round(
+            float(canales_muertos_efectivos.mean()), 6),
+        "nota_filas_totalmente_muertas": (
+            "una fila con cero tokens cubiertos tiene el embedding nulo, la convolucion "
+            "devuelve el sesgo, relu y max dan cero, y las TRES ramas quedan muertas. Es un "
+            "caso MAS grave que una fila simplemente corta, y el conteo por longitud no lo "
+            "veia. El mecanismo que separa la variante cruda de la normalizada son estas "
+            "filas, no las filas cortas"),
         "nota_max_pooling": ("una fila mas corta que el kernel mayor tiene TODOS sus canales de "
                              "ese kernel a cero tras el max-pooling enmascarado con -1e9 y relu: "
                              "ese bloque de filtros no aporta nada"),
@@ -961,7 +1021,11 @@ def pass1_cobertura(ctx: Contexto) -> dict:
             f"{100 * diag['fraccion_truncada_por_maxlen']:.2f}% | filas sin token cubierto "
             f"{diag['filas_sin_tokens_cubiertos']} | filas mas cortas que el kernel mayor "
             f"{diag['filas_mas_cortas_que_el_kernel_mayor']} "
-            f"({100 * diag['fraccion_mas_cortas_que_el_kernel_mayor']:.2f}%)")
+            f"({100 * diag['fraccion_mas_cortas_que_el_kernel_mayor']:.2f}%) | filas "
+            f"TOTALMENTE MUERTAS (las {len(KERNELS)} ramas a cero) "
+            f"{diag['filas_totalmente_muertas']} "
+            f"({100 * diag['fraccion_totalmente_muertas']:.2f}%) | canales muertos por fila "
+            f"{diag['canales_de_filtro_muertos_incluyendo_muertas']:.3f} de {len(KERNELS)}")
 
     motivos = descomponer_motivos(ctx.textos, ctx.vocab)
     if motivos["reconstruidas"]["cruda"] != ctx.documentos["cruda"]:
