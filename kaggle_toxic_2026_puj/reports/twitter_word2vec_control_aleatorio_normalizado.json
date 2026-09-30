@@ -1,0 +1,308 @@
+{
+  "familia": "P72_TWITTER_WORD2VEC_DIM",
+  "experiment_id": "P72-04",
+  "fase": "control de aleatoriedad, pipeline de P1 reconstruido",
+  "fecha": "2026-09-30T06:16:51+00:00",
+  "naturaleza": "CONTROL. 11 corridas downstream, 0 entrenamientos de embeddings",
+  "desviacion_del_preregistro": {
+    "documento": "docs/p72_preregistro_control_aleatorio.md",
+    "commit": "7e1aba4",
+    "que_paso": "el brazo entrenado de p72_03 dio 0.6037188662 y NO reprodujo la referencia 0.594729, como el pre-registro exigia",
+    "diagnostico": "p72_03 omitio el StandardScaler ajustado dentro del pliegue de entrenamiento que P1 aplicaba al bloque denso (experiments/p72_02_dimension_downstream.py linea 199)",
+    "accion": "se repite el control con ese paso, en las DOS ramas, con las MISMAS diez semillas ya pre-declaradas. No es un reintento hasta que cuadre: es corregir un pipeline mal reconstruido",
+    "diagnostico_confirmado": true,
+    "consecuencia": "p72_03 sigue siendo valido como contraste INTERNO entre sus dos ramas, que comparten codigo. Su unica limitacion era no conectar con la medicion historica que decia controlar",
+    "verificacion_del_diagnostico": {
+      "brazo_a_recomputado": 0.5947288906,
+      "referencia_historica_completa": 0.5947288906,
+      "referencia_almacenada": 0.594729,
+      "coincidencia": "exacta al decimal",
+      "nota": "el campo diagnostico_confirmado quedo en false en la corrida porque la tolerancia de 1e-9 se comparo contra la referencia almacenada redondeada a seis decimales (0.594729 en vez de 0.5947288906). Recomputado contra el valor completo, la coincidencia es exacta. Campo anadido al reportar: no altera ningun numero del experimento ni sustituye ningun artefacto de la corrida"
+    }
+  },
+  "brazo_a": {
+    "cv": 0.5947288906,
+    "f1_pliegues": [
+      0.602767,
+      0.619838,
+      0.596328,
+      0.58989,
+      0.563628
+    ],
+    "tasa_positivos": [
+      0.556979,
+      0.378287,
+      0.49764
+    ],
+    "pr_auc": [
+      0.60196,
+      0.638631,
+      0.57541
+    ],
+    "tokens_por_fila": 18.2,
+    "tokens_cubiertos": 12.49
+  },
+  "referencia_historica": 0.594729,
+  "desviacion_respecto_de_la_referencia": -1.094e-07,
+  "nulas": [
+    {
+      "tirada": 1,
+      "semilla": 20261020,
+      "cv": 0.573766643,
+      "f1_pliegues": [
+        0.54957,
+        0.585105,
+        0.59939,
+        0.549393,
+        0.584433
+      ],
+      "pr_auc": [
+        0.608703,
+        0.629788,
+        0.559792
+      ],
+      "tasa_positivos": [
+        0.559676,
+        0.394471,
+        0.509103
+      ],
+      "normas_conservadas": true,
+      "segundos": 0.3
+    },
+    {
+      "tirada": 2,
+      "semilla": 20261021,
+      "cv": 0.5806363575,
+      "f1_pliegues": [
+        0.577626,
+        0.592983,
+        0.581068,
+        0.605017,
+        0.545898
+      ],
+      "pr_auc": [
+        0.614706,
+        0.6375,
+        0.580762
+      ],
+      "tasa_positivos": [
+        0.54147,
+        0.373567,
+        0.484154
+      ],
+      "normas_conservadas": true,
+      "segundos": 0.3
+    },
+    {
+      "tirada": 3,
+      "semilla": 20261022,
+      "cv": 0.5911330195,
+      "f1_pliegues": [
+        0.557573,
+        0.621881,
+        0.603153,
+        0.571012,
+        0.600705
+      ],
+      "pr_auc": [
+        0.605003,
+        0.622745,
+        0.561193
+      ],
+      "tasa_positivos": [
+        0.559002,
+        0.376939,
+        0.503034
+      ],
+      "normas_conservadas": true,
+      "segundos": 0.3
+    },
+    {
+      "tirada": 4,
+      "semilla": 20261023,
+      "cv": 0.594904913,
+      "f1_pliegues": [
+        0.562323,
+        0.597745,
+        0.613606,
+        0.606904,
+        0.591554
+      ],
+      "pr_auc": [
+        0.644931,
+        0.632145,
+        0.582788
+      ],
+      "tasa_positivos": [
+        0.548213,
+        0.364127,
+        0.490223
+      ],
+      "normas_conservadas": true,
+      "segundos": 0.3
+    },
+    {
+      "tirada": 5,
+      "semilla": 20261024,
+      "cv": 0.5992814058,
+      "f1_pliegues": [
+        0.577123,
+        0.63671,
+        0.61323,
+        0.580721,
+        0.589126
+      ],
+      "pr_auc": [
+        0.637225,
+        0.622585,
+        0.577182
+      ],
+      "tasa_positivos": [
+        0.558328,
+        0.386379,
+        0.496966
+      ],
+      "normas_conservadas": true,
+      "segundos": 0.3
+    },
+    {
+      "tirada": 6,
+      "semilla": 20261025,
+      "cv": 0.5762815781,
+      "f1_pliegues": [
+        0.602335,
+        0.556815,
+        0.552699,
+        0.572687,
+        0.595665
+      ],
+      "pr_auc": [
+        0.604751,
+        0.59346,
+        0.551305
+      ],
+      "tasa_positivos": [
+        0.547539,
+        0.393122,
+        0.507755
+      ],
+      "normas_conservadas": true,
+      "segundos": 0.3
+    },
+    {
+      "tirada": 7,
+      "semilla": 20261026,
+      "cv": 0.6049587011,
+      "f1_pliegues": [
+        0.575728,
+        0.63124,
+        0.587766,
+        0.594474,
+        0.634254
+      ],
+      "pr_auc": [
+        0.638744,
+        0.644187,
+        0.604936
+      ],
+      "tasa_positivos": [
+        0.534053,
+        0.382333,
+        0.479434
+      ],
+      "normas_conservadas": true,
+      "segundos": 0.3
+    },
+    {
+      "tirada": 8,
+      "semilla": 20261027,
+      "cv": 0.5730621002,
+      "f1_pliegues": [
+        0.559286,
+        0.575801,
+        0.574393,
+        0.582852,
+        0.570942
+      ],
+      "pr_auc": [
+        0.587276,
+        0.59923,
+        0.52991
+      ],
+      "tasa_positivos": [
+        0.569117,
+        0.374241,
+        0.503709
+      ],
+      "normas_conservadas": true,
+      "segundos": 0.3
+    },
+    {
+      "tirada": 9,
+      "semilla": 20261028,
+      "cv": 0.5768957926,
+      "f1_pliegues": [
+        0.583754,
+        0.568967,
+        0.582294,
+        0.595228,
+        0.553998
+      ],
+      "pr_auc": [
+        0.596811,
+        0.623072,
+        0.562493
+      ],
+      "tasa_positivos": [
+        0.55563,
+        0.382333,
+        0.489548
+      ],
+      "normas_conservadas": true,
+      "segundos": 0.3
+    },
+    {
+      "tirada": 10,
+      "semilla": 20261029,
+      "cv": 0.5867730726,
+      "f1_pliegues": [
+        0.588341,
+        0.6015,
+        0.612045,
+        0.575013,
+        0.556243
+      ],
+      "pr_auc": [
+        0.593821,
+        0.607429,
+        0.564969
+      ],
+      "tasa_positivos": [
+        0.558328,
+        0.395819,
+        0.50708
+      ],
+      "normas_conservadas": true,
+      "segundos": 0.3
+    }
+  ],
+  "nula_resumen": {
+    "media": 0.5857693583,
+    "desviacion": 0.011375834,
+    "minimo": 0.5730621002,
+    "maximo": 0.6049587011
+  },
+  "delta_contra_el_maximo": -0.0102298105,
+  "z_contra_la_media_de_la_nula": 0.787593,
+  "pliegues_contra_el_maximo": 1,
+  "bootstrap_agrupado": {
+    "media": -0.010204122,
+    "ic95_bajo": -0.0340544979,
+    "ic95_alto": 0.0130689722,
+    "semianchura": 0.0235617351,
+    "grupos": 1415
+  },
+  "aviso_de_potencia": "la semianchura del bootstrap supera 0,015, luego la banda de efecto claro es inalcanzable por construccion",
+  "veredicto": "SENAL_DEBIL",
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

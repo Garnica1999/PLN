@@ -1,0 +1,21 @@
+brazo,tirada,semilla,cv,delta_vs_A,matriz_distinta,normas_conservadas,segundos
+A_entrenado,,,0.6037188662,0.0,,,
+B_aleatorio,1,20261020,0.5775866677,-0.0261321985,True,True,0.3
+B_aleatorio,2,20261021,0.6003254896,-0.0033933766,True,True,0.3
+B_aleatorio,3,20261022,0.5973315003,-0.0063873659,True,True,0.3
+B_aleatorio,4,20261023,0.5978387518,-0.0058801144,True,True,0.3
+B_aleatorio,5,20261024,0.598747893,-0.0049709732,True,True,0.3
+B_aleatorio,6,20261025,0.5902030125,-0.0135158537,True,True,0.3
+B_aleatorio,7,20261026,0.6179044898,0.0141856236,True,True,0.3
+B_aleatorio,8,20261027,0.5797663575,-0.0239525087,True,True,0.3
+B_aleatorio,9,20261028,0.5795882712,-0.024130595,True,True,0.3
+B_aleatorio,10,20261029,0.593253776,-0.0104650902,True,True,0.3
+
+ancla,prevalencia,,"[0.436952, 0.300067, 0.382333]",,,,
+ancla,piso_all_positivo_por_etiqueta,,"[0.608165, 0.461618, 0.553171]",,,,
+ancla,piso_all_positivo_macro,,0.540985,,,,
+ancla,predicciones_uniformes_macro,,0.421151,,,,
+nula,media,,0.5932546209,,,,
+nula,desviacion,,0.0122425664,,,,
+nula,maximo,,0.6179044898,,,,
+decision,SENAL_DEBIL,,-0.0141856236,,,,

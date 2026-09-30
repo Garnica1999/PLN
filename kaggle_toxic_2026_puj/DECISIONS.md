@@ -7405,3 +7405,95 @@ se refiere al modelo.
 
 **Pero el juez es el profesor.** Antes de publicar cualquier conclusion apoyada en el embedding
 hace falta confirmacion escrita de cual de las dos lecturas aplica.
+
+## D-247 a D-249: el control de aleatoriedad, pre-registrado, y lo que responde
+
+### D-247. El control se pre-registro ANTES de correrlo
+
+Documento `docs/p72_preregistro_control_aleatorio.md`, commit `7e1aba4`, anterior a la corrida. El
+orden es comprobable con `git log`.
+
+Las dos auditorias lo exigieron como condicion, y marcaron tres correcciones obligatorias que se
+incorporaron antes de ejecutar:
+
+```text
+1  "los vectores aleatorios no vienen de ningun dato" es FALSO. Heredan del corpus externo el
+   vocabulario, la norma por token y, por la poda, la frecuencia. Formulacion correcta:
+   "las DIRECCIONES no provienen de datos; el SOPORTE y las MAGNITUDES por token, si"
+2  la banda 0,005-0,015 no tenia referencia. Se fija: delta = macro_F1(A) menos el MAXIMO de las
+   diez tiradas de B, que es el estadistico conservador
+3  re-ejecutar el brazo entrenado hasta clavar 0,594729 seria seleccion. Se corre UNA vez con
+   semillas fijadas y la desviacion se REPORTA como resultado
+```
+
+Se fijaron ademas: un unico esquema de aleatorizacion (direccion uniforme sobre la esfera, norma
+por token exacta), `K = 10` tiradas con sus diez semillas concretas, todas reportadas
+individualmente, anclas obligatorias, bootstrap agrupado por near-duplicados y parrafo de alcance.
+
+**Por que `K = 10` no es una grid.** En una grid hay un argmax sobre configuraciones y se descarta
+el resto. Aqui no hay eleccion: el objeto reportado es la distribucion nula completa y la regla de
+decision usa su **maximo**, un estadistico de orden conservador **en contra** de la hipotesis
+favorable.
+
+### D-248. El brazo entrenado NO reprodujo la referencia, y el diagnostico resulto ser un defecto de reporte de P1
+
+`p72_03` debia reproducir `0.594729` y dio `0.6037188662`. El pre-registro prohibe reintentar
+hasta que cuadre, asi que la desviacion se reporto. Pero reportarla sin diagnosticarla habria
+dejado el control desconectado de la medicion que dice controlar.
+
+**Causa**: `p72_03` reconstruyo mal el pipeline. P1 estandarizaba el bloque denso con un
+`StandardScaler` ajustado DENTRO del pliegue de entrenamiento
+(`experiments/p72_02_dimension_downstream.py` linea 199) antes de la regresion logistica.
+`p72_03` no lo hacia.
+
+`p72_04` repite el control anadiendo ese paso, **en las dos ramas** y con **las mismas diez
+semillas ya pre-declaradas**. No es un reintento hasta que cuadre: es corregir un pipeline mal
+reconstruido. Resultado: el brazo entrenado da `0.5947288906`, **exactamente** el valor historico.
+El diagnostico queda confirmado.
+
+**Defecto de reporte encontrado en P1.** El campo `f1_pliegues_embedding` de
+`reports/twitter_word2vec_dimension_results.json` es **identico en 100d, 200d y 300d**
+(`[0.79601, 0.794034, 0.77886, 0.738598, 0.779056]`): es la lista del baseline V03, no la del
+embedding. Origen: en la linea 195 de `p72_02` una expresion
+`cv(...) if False else cv(des, tx, y, pl)` dejo `f1_emb` con los pliegues del baseline y nunca se
+reasigno. **No afecta al escalar** `embedding_only_cv`, que `p72_04` reproduce al decimal, pero la
+lista de pliegues de P1 era inservible. Las listas correctas de 100d estan en los artefactos de
+P72-04.
+
+### D-249. La respuesta: no hay evidencia de que la geometria aprendida aporte nada a este lector
+
+Dos corridas, dos pipelines, la misma conclusion:
+
+```text
+pipeline              A entrenado   nula media   nula sd    nula max    delta    pliegues   z
+sin estandarizar        0.6037189     0.5932546   0.0122426   0.6179045  -0.014186   0 de 5   +0.85
+con estandarizar (P1)   0.5947289     0.5857694   0.0113758   0.6049587  -0.010230   1 de 5   +0.79
+```
+
+El brazo entrenado cae **dentro del rango de las diez tiradas aleatorias** en las dos corridas, a
+menos de una desviacion de su media, y **por debajo del maximo** en ambas. En `p72_03` el bootstrap
+agrupado del delta da `-0.014439 [-0.034495, +0.005412]`; en `p72_04`,
+`-0.010204 [-0.034054, +0.013069]`. Los dos intervalos contienen el cero.
+
+**La semianchura del bootstrap (0,0200 y 0,0236) SUPERA la banda de 0,015**, luego la banda de
+"efecto claro" es inalcanzable por construccion. Se declara para no presentar como hallazgo lo que
+es limite de resolucion.
+
+**El dato que mas dice**: la nula es **fuerte**. Un subespacio aleatorio de 100 dimensiones sobre la
+bolsa de tokens normalizada alcanza por si solo 0,5731-0,6183, muy por encima del piso trivial
+all-positivo (0,540985) y de las predicciones uniformes (0,421151). La familia lineal **si** lleva
+senal, y esa senal la captura igual una proyeccion aleatoria. Lo que no aparece por ningun lado es
+contribucion de la **geometria aprendida**.
+
+**Veredicto**: `A ~ random`. No hay evidencia de que exista estructura aprendida que merezca
+intentarse recuperar con un lector secuencial. **No se ejecuta el TextCNN.**
+
+**Lo que NO se puede afirmar** (parrafo de alcance obligatorio): con mean pooling y cabeza lineal
+las dos ramas son la **misma familia funcional**, un clasificador lineal sobre la bolsa de tokens
+normalizada con coeficientes en un subespacio de dimension menor o igual que 100. Lo unico que
+cambia es **cual** subespacio. Un empate acota la conclusion a esta lectura; **no prueba ni
+descarta** senal dependiente de orden, composicion o no linealidad. Y la asimetria va en contra de
+la fuerza del resultado: un subespacio aleatorio puede capturar bastante senal de frecuencia o
+palabra suelta, luego **la nula puede ser fuerte y el control puede fallar en detectar una
+contribucion real**. Un empate es evidencia DEBIL; una victoria clara del entrenado habria sido
+evidencia FUERTE.
