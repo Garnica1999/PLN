@@ -2206,3 +2206,13 @@ intacto.
 
 - eval_metric de A1/A3: TotalF1 -> TotalF1:average=Macro (el default de catboost 1.2.10
   promedia Weighted; la intencion congelada es macro-F1). Sin resultados; antes de ejecutar.
+
+
+---
+
+## V32-E2 ejecutado: challenger CatBoost sobre matriz_279 - 2026-09-30
+
+- Veredicto: CLOSED. A1 comb 0.6148474 (delta -0.0011258, 1/5 folds); A2 control delta -0.0012871; A3 negativo delta -0.0012138.
+- Baseline recomputado 0.6159732; ES interno 90/10; 32 hilos CPU; sin tuning posterior.
+- Sin particiones reservadas: sin test, sin holdout, sin submission.
+- Artefactos: experiments/v32_03_catboost_challenger.json | reports/v32_p2_catboost_challenger.md | reports/figures/v32_p2_curvas.png.
