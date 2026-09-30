@@ -3119,3 +3119,35 @@ Sin push, sin merge, sin rebase.
   del titulo. **Resultado: las dos son identicas, luego NO havia intercambio V03/CNN.** La duda
   era legitima porque el titulo no se puede leer de un PNG, pero era infundada. Ademas se
   recalcularon los cuatro miembros desde el JSON y reproducen su macro-F1 al decimal.
+
+## 2026-09-30, P77: operador selectivo sobre el punto de operacion congelado de V03
+
+- Pre-registro escrito y hasheado ANTES de ejecutar, sha256
+  `024b0288af5746baaa1b4acfbdade3c94fb2fbcf29601f41447c893706e7b0ca`, en commit separado.
+- Dos revisiones obligatorias (Kaggle Specialist y ML/DL) incorporadas antes de correr: las
+  magnitudes de evidencia pasan a escala logit para no comparar margenes entre escalas distintas, y
+  los cortes del operador determinista pasan a ser una regla de cuantil calculada solo dentro de
+  `outer_train` y solo sobre las unidades discrepantes. Se anadieron dos condiciones mas estrictas
+  al gate de finalista y el bootstrap paso a ser incondicional. Se **rechazo** proponer confirmar un
+  finalista en el holdout, porque el encargo lo prohibe.
+- Resultados: A V03 0.7772114525 | B CNN sola 0.5838755350 | C nivel 1 0.7579728990 | D nivel 2
+  0.7259394272 | E gate 0.7215155047. **0 de 5 folds positivos en los tres operadores.**
+- El resultado es **monotono en el numero de conmutaciones**: 154 -> -0.0192385535, 393 ->
+  -0.0512720253, 543 -> -0.0556959478. Bootstrap incondicional con los tres IC95 excluyendo cero.
+- **El gate si discrimina**: AUC en outer de 0.6528, 0.7378, 0.7160, 0.6104 y 0.7374; interno medio
+  0.7016. Selecciona 191 de 268 rescates y descarta 461 de 813 danos. Precision del selector
+  **0.3517** frente a una base de **0.2479**.
+- **Y no alcanza**: el tipo de cambio sube de 0.3296 a 0.5426 y sigue muy por debajo de lo que el
+  macro-F1 necesita. El techo no lo fija la calidad del selector sino las 1081 discrepancias de las
+  que solo 268 son rescates.
+- **La senal del gate es sobre todo de V03**: al conmutar, `m_v` cambia -0.6100 y `m_c` solo
+  +0.1611. Es una buena regla de prudencia, no una explotacion de la complementariedad.
+- **TR daña mas que HS y AG**, lo contrario de lo que sugeria el AUC 0.6045 de P75: predecir que
+  V03 falla no es lo mismo que acertar donde V03 falla.
+- **VEREDICTO: CASO 1 `NINGUN_OPERADOR_TRANSFIERE`. Finalista: ninguno. La segunda particion NO se
+  ejecuta.** Ocho figuras en `figuras/p77/`, doce slices diagnosticas.
+- Tres paradas de seguridad propias Saltaron y pararon la corrida: un target degenerado por comparar
+  probabilidad con etiqueta en vez de decision, un `column_stack` que daba nueve features, y el
+  signo del bootstrap invertido. Ninguna produjo un numero publicado.
+
+Sin push, sin merge, sin rebase.

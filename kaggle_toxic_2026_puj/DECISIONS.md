@@ -8213,3 +8213,104 @@ CNN, y la segunda particion, que sigue sin ejecutarse.
 
 **No se afirma** que la calibracion sea inutil: mejora la calidad probabilistica y eso tiene valor
 por si mismo. Lo que no hace es crear informacion donde no la hay.
+
+## D-260: P77. El selector funciona y no alcanza. Y TR daña donde se esperaba que ayudara
+
+### D-260.1. Los tres operadores, y la monotonia que los condemned
+
+```text
+A_V03                    0.7772114525   delta  0.0000000000   switches    0
+B_CNN_sola               0.5838755350   delta -0.1933359176   switches 1081
+C determinista nivel 1   0.7579728990   delta -0.0192385535   switches  154   0/5 folds
+D determinista nivel 2   0.7259394272   delta -0.0512720253   switches  393   0/5 folds
+E gate lineal anidado    0.7215155047   delta -0.0556959478   switches  543   0/5 folds
+```
+
+**El resultado es monotono en el numero de conmutaciones**: 154 conmutaciones da -0.0192, 393 da
+-0.0513, 543 da -0.0557. Cuanto mas conmuta el operador, peor sale. No hay ningun punto de la
+regla en el que la curva se doble. Bootstrap pareado por clusters, **incondicional**: C
+[-0.028184, -0.009886], D [-0.066903, -0.035310], E [-0.072841, -0.039859]. Los tres IC excluyen
+cero, luego el empeoramiento es solido, y en la direccion contraria a la hipotesis.
+
+Ninguno pasa ni una de las cinco condiciones del gate. **Veredicto CASO 1. Sin finalista.**
+
+### D-260.2. El gate SI discrimina. Ese es el hallazgo incomodo
+
+```text
+AUC del gate en outer      0.6528  0.7378  0.7160  0.6104  0.7374
+IC95                      [0.552, 0.752]  [0.650, 0.824]  [0.611, 0.804]  [0.497, 0.723]  [0.664, 0.809]
+AUC interno medio 0.7016
+```
+
+De los 268 rescates potenciales selecciona 191 y descarta 77. De los 813 danos potenciales selecciona
+352 y descarta 461. Precision del selector **0.3517** frente a una base de **0.2479**.
+
+**El gate es un discriminador genuinamente bueno de en que discrepancias acierta la CNN.** Y a pesar
+de eso `corrected_cv` baja 0.0557. Eso cierra una via que parecía abierta: no era que faltara
+seleccion, es que la seleccion disponible **no cambia el signo del intercambio**.
+
+### D-260.3. La razon cuantitativa, y es un techo
+
+```text
+tipo de cambio de la base, P75    268 / 813 = 0.3296
+tipo de cambio del mejor operador  191 / 352 = 0.5426
+```
+
+El gate **casi duplica** la eficiencia con la que convierte damage en rescate, y aun asi sigue
+muy por debajo de lo que el macro-F1 necesita. El AUC de 0.70 no es suficiente porque el techo no
+lo fija la calidad del selector sino el numero de oportunidades: hay 1081 discrepancias y solo 268
+son rescuates. Aunque el selector fuese perfecto, el maximo alcanzable serian 268 rescates con 0
+danios, y el gate real se queda en 191 con 352.
+
+### D-260.4. De donde sale la senal, y por que eso lavac su valor
+
+```text
+al conmutar    m_v       m_c        d
+C nivel 1    -0.5080   +1.4152   +1.9232
+D nivel 2    -0.4222   +0.7709   +1.1930
+E gate       -0.6100   +0.1611   +0.7711
+```
+
+Los operadores deterministas conmutan donde el margen de la CNN cambia mucho y el de V03 poco: usan
+evidencia de la CNN. **El gate hace lo contrario**: al conmutar, el margen de V03 cambia -0.61 y el
+de la CNN solo +0.16. **Su senal es sobre todo la confianza del propio V03**, no informacion propia
+de la CNN. Es una buena regla de prudencia, no una explotacion de la complementariedad. Sus
+coeficientes lo confirman: `m_v` negativo en los cinco pliegues, `m_c` casi nulo.
+
+Esto lo habia anticipado la revision de ML/DL: comparar margenes entre dos modelos con escalas
+distintas, con la CNN infraconfiada, hace que el criterio degenere en funcion de `m_v`. La
+correccion a escala logit mejoro la comparabilidad, pero no elimina que la senal dominante sea de
+V03.
+
+### D-260.5. TR: la expectativa de P75 erawrong y los datos la refutan
+
+```text
+C   HS 0.7670 (-0.0123)   TR 0.7438 (-0.0719)   AG 0.7213 (-0.0282)
+D   HS 0.7207 (-0.0586)   TR 0.6966 (-0.1191)   AG 0.6737 (-0.0758)
+E   HS 0.7269 (-0.0525)   TR 0.7169 (-0.0989)   AG 0.6631 (-0.0864)
+```
+
+P75 habia dejado que TR era la unica etiqueta con AUC de 0.6045 para predecir el error de V03, lo
+que hacia esperable que el operador ayudara mas ahi. **Es justo donde mas daña.**
+
+La distincion es la leccion: **predecir que V03 falla no es lo mismo que acertar donde V03 falla.**
+La CNN tiene algo de informacion sobre *donde se equivoca* V03, pero en esas mismas unidades la CNN
+tambien se equivoca. P75 midio la primera pregunta y P77 demuestra que la segunda tiene una tasa
+de acierto del 0.2479 en la base, y 0.3517 con el mejor selector. Ninguna de las dos llega a 1.
+
+### D-260.6. Decision y cierre
+
+**CASO 1: `NINGUN_OPERADOR_TRANSFIERE`.** Sin finalista. **La segunda particion no se ejecuta**:
+no hay nada que confirmar.
+
+Queda **cerrado**: el operador selectivo de dos niveles con corte por cuantil, y el gate lineal
+anidado de tres features, construidos sobre las salidas de V03 y del CNN.
+
+Queda **abierto**, y es lo unico que la evidencia de la cadena sugiere: un operador que use
+informacion **distinta del score del CNN** para decidir cuando modificar a V03, porque el score del
+CNN es lo que no tiene poder discriminante suficiente. Y queda abierto, sin ejecutar, lo que
+siempre estuvo en la cola.
+
+**No se afirma** que la TextCNN sea inutil: P74 sostiene que su representacion contiene informacion
+de tarea, y P77 no lo refuta. Lo que P77 muestra es que **esa informacion, en el espacio de las
+probabilidades de la CNN, no es lo bastante fiable para tocar la decision del campeon**.
