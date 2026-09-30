@@ -7988,3 +7988,138 @@ intento de la misma corrida habia tardado 24. La causa no era el pipeline sino q
 ajeno consumiendo CPU (carga media 50,8 sobre 32 nucleos, con un proceso de Steam/Proton a 476 por
 ciento). **Ningun numero de resultado depende del tiempo**, pero cualquier comparacion de rendimiento
 de esta corrida no es utilizable y asi se declara.
+
+## D-258: la validacion del Kaggle Specialist, y las ocho correcciones que impone
+
+La validacion encontro **errores reales de razonamiento y de lenguaje**. No cambia ningun numero,
+pero cambia lo que se puede decir. Se registran las ocho, en orden de gravedad.
+
+### D-258.1. El techo oraculo casi vacuo: mi argumento "no es magnitud, es direccion" NO esta probado
+
+Lo escribi en D-257.4 y era un **error de razonamiento**. Un techo oraculo positivo es **casi
+seguro por construccion**: basta una unidad alcanzable mal clasificada para que sea positivo, y con
+cientos de alcanzables y errores en ambos sentidos eso ocurre siempre. Y "crece con alpha" solo dice
+que crece el conjunto volteable, no que una regla no oraculo pudiera ganar. El techo presupone
+conocer de antemano cuales voltear.
+
+```text
+NO SOSTENIDO   "es un problema de direccion, no de magnitud"
+SOSTENIDO      "en el rango probado, la fusion se movio y el efecto agregado es negativo"
+```
+
+Lo que **si** sostiene la lectura de direccion, y es mas modesto: el dano por volteo es casi
+constante entre alphas (-6.84e-5, -6.90e-5, -6.31e-5), los folds positivos caen 2/5 -> 1/5 -> 1/5, y
+la asimetria es 3 a 1. **No se puede excluir "magnitud" en general**: solo hay tres puntos en
+[0.05, 0.15] y no se probo malla fina ni alpha mayor.
+
+### D-258.2. Afirmacion 2 mal generalizada: TR no da 0.5, y HS esta por debajo
+
+```text
+escribi        "el AUC es 0.4872 en HS y 0.4973 en AG, practicamente 0.5"  como si valiera para todo
+correcto       HS 0.4872 (ligera INVERSION, por debajo de 0.5) | AG 0.4973 | TR 0.6045
+```
+
+TR tiene **asociacion debil** (0.6045), no ignorancia. La formulacion correcta: "en HS y AG el
+score no ordena los errores de V03, y en HS ligeramente al reves; en TR hay asociacion debil que
+igualmente no evito el net -143". Confirmacion cruzada que refuerza la lectura: **TR es la etiqueta
+con menos dano y el mayor AUC, y HS y AG con AUC cercano a 0.5 el mayor dano.**
+
+### D-258.3. El rescate NO es despreciable: un tercio de los errores de V03
+
+Aqui me equivoque yo mismo en la aritmetica al preguntar, y el validador lo corrigio:
+
+```text
+MAL    "978 errores de V03"   (contaba ambos_ko dos veces)
+BIEN   errores de V03 = ambos_ko + rescue = 489 + 268 = 757
+       V03 acierta en ambos_ok + damage = 2879 + 813 = 3692
+       la CNN falla en 1302 unidades
+```
+
+```text
+268 / 4449 =  6.0 por ciento de las unidades
+268 /  757 = 35.4 por ciento de los ERRORES de V03
+damage / rescue = 3.03
+```
+
+**Un tercio de los errores de V03 esta clasificado correctamente por el CNN en el mismo punto de
+operacion.** Eso no es despreciable, y obliga a reformular: hay **complementariedad estructural**,
+lo que no hay es **valor recuperable demostrado**. No hay selector probado, el dano domina 3 a 1, y
+el AUC en HS y AG no da base para elegir que voltear.
+
+### D-258.4. La justificacion de la afirmacion 5 era FALSA
+
+```text
+escribi        "no se puede afirmar que la TextCNN sea peor modelo que V03 en general, porque se
+                midio la fusion y no el modelo suelto"
+el reporte SI mide el modelo suelto: CNN sola 0.5838755350 frente a 0.7772114525
+```
+
+Lo defendible es que la CNN es peor **en este punto de operacion** (umbrales de V03, esta
+particion), y que ese numero **no autoriza un juicio general de calidad**, porque depende de
+umbrales propios, de la calibracion, de la arquitectura y del coste relativo de falsos positivos y
+falsos negativos.
+
+### D-258.5. "No depende de ningun umbral" es impreciso
+
+El AUC es invariante a transformaciones **monotonas** del score del CNN, luego la malscalibracion
+**global** no puede explicar el AUC: eso es correcto. Pero:
+
+```text
+el AUC se mide contra el evento "error de V03", que se define UMBRALIZANDO p_V03
+el ranking agrupado depende de recalibraciones monotomas DISTINTAS por pliegue
+E* varia 10 a 16 entre pliegues, luego la heterogeneidad de escala por pliegue es plausible
+```
+
+Formulacion correcta: "el AUC **no puede** explicarse por una malscalibracion global del CNN, pero
+**si depende** de los umbrales de V03 y de la recalibracion por pliegue". Queda pendiente una
+prueba de recalibracion por pliegue antes de agrupar.
+
+### D-258.6. "alcanzables" sobrecuenta: la razon 0.5 es un artefacto del denominador
+
+La condicion `|umbral - p_V03| <= alpha*|p_CNN - p_V03|` es **necesaria pero NO suficiente**:
+incluye unidades del **mismo lado del umbral** que jamas voltean. La tasa de volteo "ronda la mitad"
+esta sobrecontada. **La evidencia dura del movimiento es el numero absoluto de volteos (76 en el
+alpha primario) y el delta negativo, no la razon.**
+
+### D-258.7. Las slices se solapan: no son doce pruebas independientes
+
+Suman -1210, **mas negativo que el net global de -545**, lo que prueba que se solapan (no son una
+particion). Ademas hay una discrepancia documental: el documento decia "nueve de once" y el
+resultado reporta **doce** slices. El recuento correcto es nueve perdidas **de doce**. El signo
+negativo extendido es cualitativamente valido, pero **la fuerza del hallazgo no se multiplica por
+doce**.
+
+### D-258.8. Los intervalos bootstrap son optimistas
+
+El bootstrap remuestrea **clusters de near-duplicados**, lo que ya es mejor que por filas, pero
+trata las 4449 unidades como si fueran observaciones agrupadas solo por cluster, cuando ademas
+**estan agrupadas por tweet (tres etiquetas cada uno)**. Los intervalos son optimistas. El gate falla
+por el punto de todos modos, pero **"perjudica" como significancia estricta solo se sostiene, y de
+forma fragil, en el alpha 0.15** (`[-0.015148, -0.000882]`); el 0.10 lo roza
+(`[-0.010999, +0.000310]`).
+
+### D-258.9. Lo que NO queda cerrado: la segunda particion nunca se ejecuto
+
+**Sin finalista significa que la segunda particion NO SE EJECUTO**, luego la transferibilidad queda
+**sin medir, no refutada**. No convertir esa no-ejecucion en un resultado negativo sobre la
+transferencia.
+
+```text
+CERRADO    la fusion lineal simple de V03 con este CNN, SIN recalibrar y en el rango 0.05-0.15,
+           no funciona. Operativamente la direccion esta agotada: 3 de 3 negativos, folds 2/1/1,
+           y el endpoint alpha=1 (CNN sola) es catastrofico
+ABIERTO    recalibracion por pliegue o por etiqueta antes de fusionar; combinadores selectivos o
+           no lineales; alphas fuera del rango y malla fina; estabilidad del CNN (E* varia 10 a 16);
+           y la segunda particion, que nunca se ejecuto
+```
+
+### D-258.10. La conclusion que el validador considera mas fuerte y sin sobreafirmar
+
+> En la particion canonica, con los umbrales congelados de V03 y los tres alphas pre-registrados, la
+> TextCNN no aporta complementariedad explotable y toda fusion probada degrada macro-F1 (net -545
+> unidades; damage/rescue 3.03; delta -0.0052 en el alpha primario; AUC diagnostico 0.4872 en HS y
+> 0.4973 en AG), por lo que V03 sigue siendo el campeon y solo queda abierto un operador de fusion
+> distinto, recalibrado o selectivo, validado en una segunda particion.
+
+**El veredicto operativo se mantiene: CASO 5 y sin finalista.** Lo que habia que corregir era el
+lenguaje y dos razonamientos, no el rumbo.
