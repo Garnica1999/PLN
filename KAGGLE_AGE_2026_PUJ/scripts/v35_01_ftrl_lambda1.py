@@ -278,6 +278,10 @@ NODOS_ARBOL = {
     "g7_y_g8_pasan_g0_g4_falla": "HIPOTESIS_CONJUNTA_REFUTADA",
     "otro_fallo": "NO_ATRIBUIBLE_BY_GATE",
     "ninguna_falla": "gates de la serie (rama NO de cierre)"}
+#: Nodos del arbol usados para el ``siguiente_paso``. Se nombran aqui porque ``NODOS_ARBOL`` (linea
+#: ~423) es la TUPLA de nodos validos y no admite acceso por clave.
+NODO_CIERRE_POR_MECANISMO = "LINEA_ONLINE_CERRADA_POR_MECANISMO"
+NODO_HIPOTESIS_CONJUNTA_REFUTADA = "HIPOTESIS_CONJUNTA_REFUTADA"
 #: Campos numericos que el checkpoint exige por fold y por brazo.
 CAMPOS_FOLD = ("n_vocabulario", "vocab_sha256", "idf_sha256", "n_filas_fit_es_train",
                "n_filas_es_val", "n_train_fold", "n_val_fold", "n_features_es_train",
@@ -379,6 +383,11 @@ SONDA_SCRIPT = ROOT / "scripts" / "v35_00b_sonda_lambda1.py"
 SONDA_JSON = cfg.EXPERIMENTS / "v35_00b_sonda_lambda1.json"
 SONDA_MD = cfg.REPORTS / "v35_sonda_lambda1.md"
 ESTADO_JSON = cfg.EXPERIMENTS / "v35_01_estado.json"
+#: Nombre (NO ruta) del temporal de sistema que usa --humo: se compone con
+#: ``tempfile.gettempdir()`` y se borra al terminar. Vive aqui, y no dentro de ejecutar_humo, porque la
+#: auditoria de lecturas trata un literal de modulo sin barra como un NOMBRE que se compone con una
+#: raiz declarada; dentro de la funcion, en cambio, se tomaria por un fichero escrito en el proyecto.
+NOMBRE_TEMPORAL_HUMO = "v35_01_humo_estado.json"
 RESULTADOS_JSON = cfg.EXPERIMENTS / "v35_01_ftrl_lambda1.json"
 INFORME = cfg.REPORTS / "v35_e1_ftrl_lambda1.md"
 FIGURA = cfg.FIGURES / "v35_e1_curvas.png"
@@ -1563,68 +1572,96 @@ def problema_aleatorio(n_filas: int, n_features: int, semilla: int
 # =====================================================================================
 # ---- 5. VERIFICACION DE NO-DERIVA CON EL PRE-REGISTRO, VERSIONES Y HASHES ----
 # =====================================================================================
+#: Claves de DOCUMENTACION que el pre-registro puede anadir al dict del vectorizador por encima de
+#: las ocho claves de RECETA. No son parametros del vectorizador (el ajuste usa siempre el dict local
+#: :data:`VECTORIZADOR_FIT`), luego no entran en el hash de la receta ejecutable y no rompen la
+#: equivalencia, que si exige identidad BIT A BIT en todas las demas claves.
+CLAVES_NOTA_VECTORIZADOR = ("nota_token_pattern",)
+#: Los tres objetos de las enmiendas pre-ejecucion del pre-registro V35, buscados POR OBJETO y no
+#: por indice: el orden no es un contrato y la tercera enmienda (token_pattern) se anadio despues.
+OBJETO_ENMIENDA_ANCLAJE = "anclaje_lambda1.verificacion (item 2 del diseno)"
+OBJETO_ENMIENDA_SONDAS = "sondas_nuevas (k)-(m): dimension del problema y alcance del contraste"
+OBJETO_ENMIENDA_TOKEN = "config.vectorizador.token_pattern y hashes.vectorizador"
+
+
 def token_pattern_equivalente(vectorizador_prereg: dict) -> dict:
-    """Aisla la discrepancia del ``token_pattern`` entre el dict local y el del pre-registro.
+    """Comprueba que el dict local del vectorizador y el del pre-registro son la MISMA receta.
 
-    El pre-registro V35 arrastro el valor ANTERIOR a la enmienda pre-ejecucion 3 de V34: su
-    ``token_pattern`` lleva DOBLES backslashes, que como expresion regular exige una barra literal
-    seguida de "b", deja el vocabulario VACIO y hace fallar el ajuste. Los pre-registros V33 y V34 ya
-    enmendados, el nucleo de V34 verificado por sha256 y la sonda pre-ejecucion versionada (que solo
-    pudo medirse con la receta canonica) usan la receta canonica de un backslash, que es la que
-    ejecuta este runner.
+    Tras la tercera enmienda pre-ejecucion el pre-registro ya declara la receta CANONICA
+    (``token_pattern`` de una sola barra, sha256 ``9bae1576...``) mas una clave de DOCUMENTACION
+    (``nota_token_pattern``) que no es un parametro del vectorizador. Se reconocen TRES relaciones,
+    y todas exigen lo mismo: que el dict LOCAL tenga el sha256 canonico congelado, luego la receta
+    que se EJECUTA es siempre la canonica:
 
-    La funcion NO relaja la comprobacion: exige que los dos dict sean IDENTICOS en las otras siete
-    claves, que los dos ``token_pattern`` sean exactamente el par canonico/typo conocido y que los
-    sha256 sean los dos valores congelados declarados. Cualquier otra diferencia se declara como no
-    equivalente y el ciclo se detiene con codigo 2 como antes.
+    1. ``coincide_exacto``: los dos dict son identicos, sin claves de nota.
+    2. ``solo_notas``: coinciden BIT A BIT las ocho claves de receta y el pre-registro anade solo
+       claves de la lista declarada :data:`CLAVES_NOTA_VECTORIZADOR`.
+    3. ``solo_token_pattern``: difieren SOLO en ``token_pattern`` y el par es exactamente el
+       canonico / typo conocido antes de la enmienda 3 (que no es ejecutable), con los dos sha256
+       congelados declarados.
 
-    Parameters
-    ----------
-    vectorizador_prereg:
-        Dict ``config.vectorizador`` del pre-registro congelado.
-
-    Returns
-    -------
-    dict
-        ``coincide_exacto``, ``diferencia_solo_token_pattern``, ``equivalente``, los dos
-        ``token_pattern``, los dos sha256 y la nota que explica por que la receta canonica es la
-        unica ejecutable.
+    Cualquier otra diferencia (una clave de receta distinta, una clave de nota no declarada, un
+    sha256 que no sea el congelado) se declara NO equivalente y el ciclo se detiene con codigo 2.
     """
     local = VECTORIZADOR["token_pattern"]
     prereg = vectorizador_prereg.get("token_pattern")
-    otras_claves = sorted(clave for clave in set(VECTORIZADOR) | set(vectorizador_prereg)
-                          if clave != "token_pattern")
+    claves_receta = sorted((set(VECTORIZADOR) | set(vectorizador_prereg))
+                           - set(CLAVES_NOTA_VECTORIZADOR))
     iguales_en_resto = all(VECTORIZADOR.get(clave) == vectorizador_prereg.get(clave)
-                           for clave in otras_claves)
+                           for clave in claves_receta)
+    receta_prereg = {clave: vectorizador_prereg.get(clave) for clave in claves_receta}
+    notas = sorted(set(vectorizador_prereg) & set(CLAVES_NOTA_VECTORIZADOR))
+    receta_identica = bool(VECTORIZADOR == receta_prereg)
+    coincide_exacto = bool(VECTORIZADOR == vectorizador_prereg)
+    solo_notas = bool(notas) and receta_identica
     par_conocido = ({local, prereg} == {VECTORIZADOR["token_pattern"],
                                         TOKEN_PATTERN_TYPO_ANTERIOR_ENMIENDA}
                     and prereg == TOKEN_PATTERN_TYPO_ANTERIOR_ENMIENDA)
     solo_token = bool(iguales_en_resto and par_conocido)
-    coincide = bool(VECTORIZADOR == vectorizador_prereg)
     hash_local = sha256_bytes(json.dumps(VECTORIZADOR, sort_keys=True).encode("utf-8"))
     hash_prereg = sha256_bytes(json.dumps(vectorizador_prereg, sort_keys=True).encode("utf-8"))
-    equivalencia = bool(coincide or (solo_token
-                                     and hash_local == SHA256_VECTORIZADOR_CANONICO
-                                     and hash_prereg == SHA256_VECTORIZADOR_TYPO_ANTERIOR_ENMIENDA))
-    return {"coincide_exacto": coincide,
+    hash_prereg_receta = sha256_bytes(json.dumps(receta_prereg, sort_keys=True).encode("utf-8"))
+    canonico_local = bool(hash_local == SHA256_VECTORIZADOR_CANONICO)
+    typo_prereg = bool(hash_prereg == SHA256_VECTORIZADOR_TYPO_ANTERIOR_ENMIENDA)
+    if coincide_exacto:
+        caso = "exacto"
+    elif solo_notas:
+        caso = "solo_notas_del_prereg"
+    elif solo_token:
+        caso = "solo_token_pattern_typo_anterior_enmienda"
+    else:
+        caso = "ninguno"
+    equivalencia = bool(canonico_local and (coincide_exacto or solo_notas
+                                            or (solo_token and typo_prereg)))
+    return {"coincide_exacto": coincide_exacto,
             "diferencia_solo_token_pattern": solo_token,
             "iguales_en_el_resto_de_claves": iguales_en_resto,
             "par_de_token_pattern_reconocido": par_conocido,
+            "receta_identica_bit_a_bit": receta_identica,
+            "claves_de_receta": claves_receta,
+            "claves_de_nota_del_prereg": notas,
+            "caso_reconocido": caso,
             "token_pattern_local": local,
             "token_pattern_prereg": prereg,
             "sha256_dict_local": hash_local,
             "sha256_dict_prereg": hash_prereg,
+            "sha256_dict_prereg_solo_receta": hash_prereg_receta,
             "sha256_canonico": SHA256_VECTORIZADOR_CANONICO,
             "sha256_typo_anterior_enmienda": SHA256_VECTORIZADOR_TYPO_ANTERIOR_ENMIENDA,
+            "hash_local_es_el_canonico": canonico_local,
+            "hash_prereg_es_el_typo": typo_prereg,
             "equivalente": equivalencia,
             "es_gate": True,
-            "nota": "el pre-registro V35 arrastro el token_pattern ANTERIOR a la enmienda "
-                    "pre-ejecucion 3 de V34 (dobles backslashes), que deja el vocabulario vacio y "
-                    "no es ejecutable; se ejecuta la receta canonica de un backslash, que es la de "
-                    "v31_02, la de los pre-registros V33 y V34 ya enmendados, la del nucleo de V34 "
-                    "verificado por sha256 y la unica con la que se pudo medir el anclaje. La "
-                    "discrepancia se DECLARA, no se tolera en silencio: las otras siete claves deben "
-                    "coincidir bit a bit"}
+            "nota": "el pre-registro V35 arrastro en su origen el token_pattern ANTERIOR a la "
+                    "enmienda pre-ejecucion 3 de V34 (dobles backslashes), que deja el vocabulario "
+                    "vacio y no es ejecutable; la tercera enmienda pre-ejecucion ya lo restauro a "
+                    "la receta canonica de un backslash y fijo el sha256 9bae1576..., que es la de "
+                    "v31_02, la de los pre-registros V33 y V34 ya enmendados y la del nucleo de V34 "
+                    "verificado por sha256. La comprobacion NO se relaja: exige que las ocho claves "
+                    "de receta coincidan bit a bit y que el dict local tenga el sha256 canonico "
+                    "congelado. La clave nota_token_pattern del pre-registro es documentacion "
+                    "pura: no es un parametro del vectorizador, porque el ajuste usa siempre el "
+                    "dict local VECTORIZADOR_FIT"}
 
 
 def verificar_constantes(prereg: dict) -> tuple[bool, dict]:
@@ -1662,6 +1699,9 @@ def verificar_constantes(prereg: dict) -> tuple[bool, dict]:
     alfa = prereg["alpha_congelado"]
     previa = prereg["sonda_previa"]
     equivalente = token_pattern_equivalente(config["vectorizador"])
+    #: Las enmiendas del pre-registro indexadas por su objeto, para comprobarlas sin depender del
+    #: orden ni de su numero.
+    enmiendas = {str(enmienda["objeto"]): enmienda for enmienda in prereg["enmiendas"]}
     checks = {
         # ---- identidad, baseline, pesos y versiones ----
         "fase": prereg["fase"] == "V35-E1 (via B) pre-registro congelado",
@@ -1689,18 +1729,39 @@ def verificar_constantes(prereg: dict) -> tuple[bool, dict]:
         "lambda1_sensibilidad_declarada": ("q=0.25" in anclaje["sensibilidad_declarada"]
                                             and "gemelo sintetico" in
                                             anclaje["sensibilidad_declarada"]),
-        # ---- enmienda pre-ejecucion 1: la verificacion en runtime usa el NUCLEO DE ANCLAJE ----
-        # El pre-registro congela DOS enmiendas: la del anclaje y la de las sondas (k)-(m). Se
-        # comprueban las dos por su objeto y sus banderas, no por su numero de orden.
-        "enmienda_1_presente": (len(prereg["enmiendas"]) == 2
-                                and prereg["enmiendas"][0]["objeto"]
-                                == "anclaje_lambda1.verificacion (item 2 del diseno)"
-                                and prereg["enmiendas"][0]["afecta_a_gates"] is False
-                                and prereg["enmiendas"][0]["cambia_el_protocolo"] is False
-                                and prereg["enmiendas"][1]["objeto"]
-                                == "sondas_nuevas (k)-(m): dimension del problema y alcance del "
-                                   "contraste"
-                                and prereg["enmiendas"][1]["no_gate"] is True),
+        # ---- enmiendas pre-ejecucion 1, 2 y 3 del pre-registro ----
+        # Se comprueban POR OBJETO y por sus banderas, nunca por su numero de orden ni por indice:
+        # el orden no es un contrato y la tercera enmienda (token_pattern) se anadio despues, lo
+        # que rompio el conteo congelado de dos que traia el runner.
+        "enmienda_1_presente": (len(prereg["enmiendas"]) == 3
+                                and enmiendas.get(OBJETO_ENMIENDA_ANCLAJE, {}).get(
+                                    "afecta_a_gates") is False
+                                and enmiendas.get(OBJETO_ENMIENDA_ANCLAJE, {}).get(
+                                    "cambia_el_protocolo") is False
+                                and enmiendas.get(OBJETO_ENMIENDA_ANCLAJE, {}).get(
+                                    "cambia_el_numero") is False
+                                and str(enmiendas.get(OBJETO_ENMIENDA_ANCLAJE, {}).get(
+                                    "estado_datos", "")).startswith("sin resultados")),
+        "enmienda_2_presente": (enmiendas.get(OBJETO_ENMIENDA_SONDAS, {}).get("no_gate") is True
+                                and enmiendas.get(OBJETO_ENMIENDA_SONDAS, {}).get(
+                                    "cambia_el_protocolo") is False
+                                and enmiendas.get(OBJETO_ENMIENDA_SONDAS, {}).get(
+                                    "cambia_el_anclaje") is False
+                                and enmiendas.get(OBJETO_ENMIENDA_SONDAS, {}).get(
+                                    "afecta_a_gates") is False),
+        "enmienda_3_presente": (
+            enmiendas.get(OBJETO_ENMIENDA_TOKEN, {}).get("cambia_el_protocolo") is False
+            and enmiendas.get(OBJETO_ENMIENDA_TOKEN, {}).get("cambia_el_modelo") is False
+            and enmiendas.get(OBJETO_ENMIENDA_TOKEN, {}).get("cambia_los_gates") is False
+            and enmiendas.get(OBJETO_ENMIENDA_TOKEN, {}).get("de", {}).get(
+                "token_pattern") == TOKEN_PATTERN_TYPO_ANTERIOR_ENMIENDA
+            and enmiendas.get(OBJETO_ENMIENDA_TOKEN, {}).get("a", {}).get(
+                "token_pattern") == VECTORIZADOR["token_pattern"]
+            and enmiendas.get(OBJETO_ENMIENDA_TOKEN, {}).get("de", {}).get(
+                "hashes_vectorizador") == SHA256_VECTORIZADOR_TYPO_ANTERIOR_ENMIENDA
+            and enmiendas.get(OBJETO_ENMIENDA_TOKEN, {}).get("a", {}).get(
+                "hashes_vectorizador") == SHA256_VECTORIZADOR_CANONICO
+            and str(prereg["hashes"]["vectorizador"]) == SHA256_VECTORIZADOR_CANONICO),
         "enmienda_1_nucleo_de_anclaje": (
             "anclaje (lambda1 = 0.0)" in anclaje["verificacion_runtime"]["nucleo"]
             and "lambda1 = 0.0" in anclaje["verificacion_runtime"]["nucleo"]),
@@ -1716,7 +1777,7 @@ def verificar_constantes(prereg: dict) -> tuple[bool, dict]:
             SHA256_Z_ANCLAJE.startswith(
                 str(anclaje["verificacion_runtime"]["sha256_del_snapshot"]))
             and str(anclaje["verificacion_runtime"]["sha256_del_snapshot"])
-            == str(prereg["enmiendas"][0]["sha256_del_anclaje"])),
+            == str(enmiendas.get(OBJETO_ENMIENDA_ANCLAJE, {}).get("sha256_del_anclaje"))),
         "enmienda_1_diagnostico_secundario": (
             float(anclaje["verificacion_runtime"]["diagnostico_secundario"]["valor_esperado"])
             == 0.2333793834039217
@@ -1872,7 +1933,7 @@ def verificar_constantes(prereg: dict) -> tuple[bool, dict]:
         "compliance_ast_audit": ("importes Y literales" in compuerta["ast_audit"]
                                  and "vowpal" in compuerta["ast_audit"]),
         "compliance_lecturas": ("data/raw/age_train.csv" in compuerta["lecturas"]
-                                and "p33_scores/todos" in compuerta["lecturas"]
+                                and "artifacts/p33_scores/todos" in compuerta["lecturas"]
                                 and "intocable" in compuerta["lecturas"]),
         "compliance_auditorias": compuerta["auditorias"] == COMPLIANCE_AUDITORIAS,
         # ---- anclas locales heredadas de la particion canonica ----
@@ -1938,6 +1999,10 @@ def verificar_hashes(prereg: dict, hashes_corpus: dict) -> tuple[bool, dict]:
     tuple[bool, dict]
         Exito global, detalle nombre -> booleano y los valores recomputados.
     """
+    # La equivalencia del token_pattern se recalcula AQUI (igual que en verificar_constantes): la
+    # funcion no la recibe por parametro y, sin esta linea, leerla seria un NameError que
+    # reventaria --verificar al llegar al hash del vectorizador.
+    equivalente = token_pattern_equivalente(prereg["config"]["vectorizador"])
     checks: dict[str, bool] = {}
     recomputados: dict[str, str] = {}
     for nombre, ruta in RUTAS_HASHES.items():
@@ -1952,10 +2017,12 @@ def verificar_hashes(prereg: dict, hashes_corpus: dict) -> tuple[bool, dict]:
     for nombre in CLAVES_HASH_CORPUS:
         recomputados[nombre] = hashes_corpus[nombre]
         if nombre == "vectorizador":
-            # El unico hash con equivalencia declarada: el dict local usa el token_pattern canonico
-            # (el unico ejecutable) y el del pre-registro el anterior a la enmienda 3 de V34. La
-            # equivalencia exige que las otras siete claves coincidan bit a bit y que los dos
-            # sha256 sean los dos valores congelados; cualquier otra diferencia falla.
+            # El unico hash con equivalencia declarada: dict local y dict del pre-registro pueden
+            # ser IDENTICOS (enmienda 3 aplicada al pre-registro) o diferir SOLO en
+            # token_pattern (el dict del pre-registro arrastrando el typo de dobles backslashes,
+            # que no es ejecutable). En el segundo caso la equivalencia exige que las otras siete
+            # claves coincidan bit a bit y que los dos sha256 sean los dos valores congelados;
+            # cualquier otra diferencia falla.
             checks[nombre] = bool(equivalente["equivalente"]
                                   and recomputados[nombre] == equivalente["sha256_canonico"])
         else:
@@ -1968,9 +2035,10 @@ def verificar_hashes(prereg: dict, hashes_corpus: dict) -> tuple[bool, dict]:
               "declarado (token_pattern)", flush=True)
     else:
         print(f"  vectorizador: dict local {recomputados['vectorizador'][:16]} | "
-              f"equivalencia declarada con el {prereg['hashes']['vectorizador'][:16]} del "
-              f"pre-registro = {equivalente['diferencia_solo_token_pattern']} (unica clave que "
-              "difiere: token_pattern)", flush=True)
+              f"pre-registro {prereg['hashes']['vectorizador'][:16]} | coincide exacto = "
+              f"{equivalente['coincide_exacto']} | diferencia solo en token_pattern = "
+              f"{equivalente['diferencia_solo_token_pattern']} | sha256 canonico "
+              f"{equivalente['sha256_canonico'][:16]}", flush=True)
     return all(checks.values()), {"checks": checks, "recomputados": recomputados,
                                   "esperados": prereg["hashes"],
                                   "equivalencia_token_pattern": equivalente}
@@ -3149,9 +3217,9 @@ def identidad_lambda1_fold_0(datos_fold: dict, ordenes: list[np.ndarray]) -> dic
                "criterio": "diferencia EXACTA 0 con la mediana congelada y sha256 del snapshot de z "
                            "identico al de la sonda pre-ejecucion versionada"}
     if not anclaje["diferencia_es_cero_exacto"]:
-        fallos.append("anclaje/mediana_exacta")
+        fallos.append("anclaje.mediana_exacta")
     if not anclaje["sha256_identico"]:
-        fallos.append("anclaje/sha256_z")
+        fallos.append("anclaje.sha256_z")
     mediana_regularizada = casos["lambda1_mediana"]["mediana_abs_z_pasada_1"]
     diferencia_regularizada = (None if mediana_regularizada is None
                                else float(mediana_regularizada - MEDIANA_Z_CONGELADA))
@@ -3167,7 +3235,7 @@ def identidad_lambda1_fold_0(datos_fold: dict, ordenes: list[np.ndarray]) -> dic
                    "diferencia respecto del anclaje es la magnitud del acoplamiento z <- w(lambda1) "
                    "y por eso el anclaje solo puede reproducirse con lambda1 = 0.0"}
     if not diagnostico["coincide"]:
-        fallos.append("diagnostico_secundario/mediana_regularizada")
+        fallos.append("diagnostico_secundario.mediana_regularizada")
     alpha_identico = bool(alpha == alpha_artefacto)
     if not alpha_identico:
         fallos.append("alpha_del_fold_0")
@@ -5596,6 +5664,151 @@ def mecanismo_markdown(mecanismo: dict) -> str:
     return "\n".join(filas)
 
 
+def identidad_lambda1_markdown(identidad: dict | None, equivalencia: dict,
+                               commit_congelado: str, veredicto: str) -> list[str]:
+    """Bloque Markdown de la IDENTIDAD de los tres casos de lambda1 (sonda NO-GATE).
+
+    Es la UNICA fuente de estas lineas: las arma desde el bloque ``identidad`` que
+    :func:`identidad_lambda1_fold_0` midio en el fold 0 y desde la equivalencia declarada del
+    ``token_pattern``, sin recalcular nada. Acepta ``identidad = None`` (el fold 0 no llego a
+    medirla) y lo dice con una sola linea, en vez de reventar la corrida al construir el informe.
+
+    El bloque publica, en este orden: la tabla de los tres casos (``lambda1 = 0.0``,
+    ``lambda1 = alpha`` y ``lambda1 = mediana``) con ``ll_train`` y ``||w||_2`` por pasada, la
+    COMPARACION contra el artefacto versionado con la tolerancia RELATIVA aplicada, el veredicto de
+    esa comparacion, la mediana del anclaje con su diferencia EXACTA 0 y su ``sha256``, el
+    diagnostico secundario del brazo ya regularizado declarado explicitamente como NO el anclaje, y
+    una linea que declara sin ambiguedad que esto es una sonda NO-GATE que NO decide el veredicto.
+    Cierra declarando el supuesto pendiente del runner sobre la clave de documentacion
+    ``nota_token_pattern`` del pre-registro.
+
+    Parameters
+    ----------
+    identidad:
+        Salida de :func:`identidad_lambda1_fold_0`, o ``None`` si no se ejecuto.
+    equivalencia:
+        Salida de :func:`token_pattern_equivalente` (via ``verificar_hashes``).
+    commit_congelado:
+        Commit que congela el pre-registro, tal como lo declara el propio pre-registro.
+    veredicto:
+        Veredicto del ciclo, para dejar escrito que esta subsection NO lo decide.
+
+    Returns
+    -------
+    list[str]
+        Lineas Markdown del bloque, listas para concatenar al informe.
+    """
+    lineas = [
+        "### Identidad de los tres casos de lambda1 (NO-GATE: no decide el veredicto)",
+        "",
+    ]
+    if identidad is None:
+        lineas += [
+            ("- NO se ejecuto: el fold 0 de la corrida real no llego a medirla. Es una sonda "
+             "NO-GATE, luego no se ejecuta ni en los folds 1-4 ni en --verificar."),
+            (f"- El veredicto del ciclo ({veredicto}) NO se apoya en esta subsection."),
+        ]
+        return lineas
+    etiquetas = {"lambda1_0": "lambda1 = 0.0", "lambda1_alpha": "lambda1 = alpha",
+                 "lambda1_mediana": "lambda1 = mediana"}
+    lineas += [
+        f"- {identidad['descripcion']}.",
+        f"- Donde se ejecuta: {identidad['donde']}.",
+        f"- Criterio: {identidad['criterio']}.",
+        "",
+        ("| caso | lambda1 | pasada | ll_train | \\|\\|w\\|\\|_2 |"),
+        "|---|---|---|---|---|",
+    ]
+    for nombre in ("lambda1_0", "lambda1_alpha", "lambda1_mediana"):
+        caso = identidad["tabla"][nombre]
+        for punto in caso["trayectoria"]:
+            lineas.append(f"| {etiquetas[nombre]} | {caso['lambda1']!r} | {punto['pasada']} | "
+                          f"{punto['ll_train']!r} | {punto['norma_w_l2']!r} |")
+    lineas += [
+        "",
+        (f"- Comparacion contra {identidad['artefacto']} (sha256 "
+         f"{identidad['sha256_artefacto'][:16]}...) con la tolerancia RELATIVA declarada "
+         f"{identidad['tolerancia_relativa']!r} sobre `ll_train` y `||w||_2` de CADA pasada "
+         f"({identidad['n_pasadas_por_caso']} pasadas por caso) y tolerancia "
+         f"{identidad['tolerancia_anclaje']!r} en el anclaje; alpha del fold 0 "
+         f"{identidad['alpha_run']!r} frente al del artefacto {identidad['alpha_artefacto']!r} "
+         f"(identico = {identidad['alpha_identico']}); stream real de "
+         f"{identidad['n_filas_es_train']} filas x {identidad['n_coordenadas']} coordenadas."),
+        "",
+        ("| caso | lambda1 run | lambda1 artefacto | peor dif. rel. ll_train | peor dif. rel. "
+         "\\|\\|w\\|\\|_2 | reproduce |"),
+        "|---|---|---|---|---|---|",
+    ]
+    for nombre in ("lambda1_0", "lambda1_alpha", "lambda1_mediana"):
+        info = identidad["comparacion"][nombre]
+        lineas.append(f"| {etiquetas[nombre]} | {info['lambda1_run']!r} | "
+                      f"{info['lambda1_artefacto']!r} | "
+                      f"{info['peor_diferencia_relativa_ll_train']:.3e} | "
+                      f"{info['peor_diferencia_relativa_norma_w_l2']:.3e} | {info['reproduce']} |")
+    fallos = identidad["fallos"]
+    lineas.append(f"- **VEREDICTO de la identidad: reproduce = {identidad['reproduce']}**; fallos "
+                  f"publicados = {fallos if fallos else 'ninguno'} (la escasez efectiva se publica "
+                  "como diagnostico, no como criterio).")
+    anclaje = identidad["anclaje"]
+    diferencia = ("None (no publicable: el z del core es identicamente cero)"
+                  if anclaje["diferencia_exacta"] is None else repr(anclaje["diferencia_exacta"]))
+    lineas += [
+        "",
+        (f"- Anclaje del ciclo (`lambda1` del NUCLEO DE ANCLAJE = "
+         f"{anclaje['lambda1_del_nucleo_de_anclaje']!r}): mediana(|z_j| > 0) al final de la pasada 1 "
+         f"= {anclaje['mediana_abs_z']!r} frente a la congelada {anclaje['mediana_congelada']!r}; "
+         f"diferencia EXACTA = {diferencia} (cero exacto = "
+         f"{anclaje['diferencia_es_cero_exacto']})."),
+        (f"- sha256 del snapshot de `z` del anclaje = {anclaje['sha256_z']}; congelado = "
+         f"{anclaje['sha256_z_congelado']}; identico = {anclaje['sha256_identico']}; el hash "
+         f"congelado es prefijo del del artefacto = "
+         f"{anclaje['sha256_es_prefijo_del_artefacto']}; el del artefacto = "
+         f"{anclaje['sha256_z_artefacto']}."),
+        f"- Criterio del anclaje: {anclaje['criterio']}.",
+    ]
+    diagnostico = identidad["diagnostico_secundario"]
+    lineas += [
+        "",
+        (f"- Diagnostico SECUNDARIO del core YA REGULARIZADO (`lambda1` = "
+         f"{diagnostico['lambda1']!r}): mediana(|z_j| > 0) = "
+         f"{diagnostico['mediana_abs_z_core_ya_regularizado']!r}; diferencia respecto del anclaje = "
+         f"{diagnostico['diferencia_respecto_del_anclaje']!r} frente a la esperada "
+         f"{diagnostico['diferencia_esperada']!r} (coincide = {diagnostico['coincide']}). "
+         f"**NO es el anclaje** (`es_el_anclaje` = {diagnostico['es_el_anclaje']}): "
+         f"{diagnostico['lectura']}."),
+        "",
+        (f"- **NO-GATE**: esto es una SONDA y NO una gate, y NO decide el veredicto del ciclo "
+         f"(`{veredicto}`), que se apoya solo en G0-G6 mas G7 y G8 de A1 y en el triage formal. "
+         f"{identidad['politica']}"),
+        (f"- Coste medido {identidad['coste_seg']:.1f} s frente a los "
+         f"{identidad['coste_declarado_seg']:.0f} s declarados, con un presupuesto declarado de "
+         f"{identidad['presupuesto_declarado_seg']:.0f} s."),
+        "",
+        "### Supuesto pendiente del runner sobre el `token_pattern` del vectorizador",
+        "",
+        (f"- El pre-registro congelado en el commit `{commit_congelado}` trae en "
+         f"`config.vectorizador` la clave `nota_token_pattern` (claves de nota detectadas: "
+         f"{equivalencia['claves_de_nota_del_prereg']}), que es DOCUMENTACION PURA: no es un "
+         f"parametro del vectorizador y por eso no entra en el hash de la receta ejecutable. El "
+         f"ajuste usa SIEMPRE el dict local `VECTORIZADOR_FIT`, nunca el dict del pre-registro."),
+        (f"- Las ocho claves de receta coinciden BIT A BIT con el canonico "
+         f"`{equivalencia['sha256_canonico']}`: la receta identica bit a bit = "
+         f"{equivalencia['receta_identica_bit_a_bit']} (claves: "
+         f"{equivalencia['claves_de_receta']}); sha256 del dict local = "
+         f"{equivalencia['sha256_dict_local']} (es el canonico = "
+         f"{equivalencia['hash_local_es_el_canonico']}); sha256 del dict del pre-registro = "
+         f"{equivalencia['sha256_dict_prereg']}; sha256 del pre-registro restringido a las ocho "
+         f"claves de receta = {equivalencia['sha256_dict_prereg_solo_receta']}."),
+        (f"- Caso reconocido: `{equivalencia['caso_reconocido']}` (coincide exacto = "
+         f"{equivalencia['coincide_exacto']}; diferencia solo en `token_pattern` = "
+         f"{equivalencia['diferencia_solo_token_pattern']}); equivalente = "
+         f"{equivalencia['equivalente']}, y esa comprobacion SI es gate (a diferencia de la "
+         f"subsection de identidad anterior)."),
+        f"- Nota: {equivalencia['nota']}",
+    ]
+    return lineas
+
+
 def escribir_informe(resultado: dict) -> None:
     """Escribe el informe Markdown del ciclo con mecanismo, tabla de sesgo y triage formal.
 
@@ -5603,8 +5816,11 @@ def escribir_informe(resultado: dict) -> None:
     por pasada de A1 y A2 con la banda de la regla de alpha), la TABLA DE SIMETRIA DE SESGO, las
     asimetrias declaradas (incluida la desviacion ``partial_fit`` frente a
     ``fit(max_iter=10)`` de la enmienda 2 y la no-apoyacion del veredicto en la asimetria
-    ``lambda2`` frente a ``alpha_reg``), el consumo diagnostico del fold 0, el triage formal, la
-    puerta G0-G6 y las sondas (a)-(j).
+    ``lambda2`` frente a ``alpha_reg``), el consumo diagnostico del fold 0 con la puerta G0-G8, las
+    gates L1 puerta a puerta, el nodo del arbol con su causa, el criterio "L1 inerte", el triage
+    formal y las sondas (a)-(j). La seccion 6 cierra con la IDENTIDAD de los tres casos de
+    ``lambda1`` (sonda NO-GATE, construida por :func:`identidad_lambda1_markdown`) y con el supuesto
+    pendiente del runner sobre la clave de documentacion ``nota_token_pattern`` del pre-registro.
 
     Parameters
     ----------
@@ -5621,6 +5837,12 @@ def escribir_informe(resultado: dict) -> None:
     commit_congelado = resultado["prereg"]["commit_congelado"]
     linea_base = verificacion["linea_base_mayoritaria"]
     banda_ll = mecanismo["h_prior_es"] - G1_TECHO_MARGEN
+    gates_l1 = resultado["gates_l1"]
+    l1_inerte = resultado.get("l1_inerte")
+    rama = resultado["rama_arbol"]
+    unidireccional = resultado["lectura_unidireccional_a2"]
+    identidad = resultado.get("identidad_lambda1_fold_0")
+    equivalencia_tp = resultado["equivalencia_token_pattern"]
     if resultado["motivo_de_no_calculo"]:
         veredicto_linea = resultado["motivo_de_no_calculo"]
     else:
@@ -5695,7 +5917,17 @@ def escribir_informe(resultado: dict) -> None:
           f"(afecta a gates: {enmienda['afecta_a_gates']}; {enmienda['estado_datos']})."
           for enmienda in resultado["prereg"]["enmiendas"]],
         "",
-        "## 4. Consumo diagnostico del fold 0 y puerta G0-G6 (fail-fast)",
+        "### Regla de lectura UNIDIRECCIONAL de A2",
+        "",
+        (f"- **Regla**: {unidireccional['regla']}."),
+        f"- Lectura correcta de A2: {unidireccional['lectura_correcta_de_a2']}.",
+        f"- Por que A2 no es gemelo mecanico: {unidireccional['no_es_gemelo_mecanico']}.",
+        *(f"- Magnitud contaminada: {magnitud}." for magnitud in
+          unidireccional["magnitudes_contaminadas"]),
+        f"- En que se apoya el veredicto: {unidireccional['en_que_se_apoya_el_veredicto']}.",
+        f"- Prohibido: {unidireccional['prohibido']}.",
+        "",
+        "## 4. Consumo diagnostico del fold 0 y puerta G0-G8 (fail-fast)",
         "",
         f"- {puerta['momento']}.",
         f"- {puerta['nota_fold_0']}.",
@@ -5707,6 +5939,80 @@ def escribir_informe(resultado: dict) -> None:
         lineas.append(f"- {NOMBRES_BRAZO[brazo]}: "
                       + ("todos los gates en verde" if not fallidos
                          else f"gates fallidos {fallidos}"))
+    # ---- subsection: G7 y G8 puerta a puerta, con el None = no aplica explicito ----
+    lineas += [
+        "",
+        "### Gates L1 (G7 y G8), puerta a puerta",
+        "",
+        (f"- Exclusivas de A1: {gates_l1['exclusivas_de_a1']}; "
+         f"gates no aplicables por brazo: {gates_l1['gates_no_aplicables']}."),
+        f"- Criterio de conteo: {gates_l1['criterio_de_conteo']}.",
+        f"- Nota: {gates_l1['nota']}.",
+        "",
+        "| brazo | gate | pass | estado | valor | lambda1 | criterio |",
+        "|---|---|---|---|---|---|---|",
+    ]
+    for brazo in BRAZOS:
+        for nombre in GATES_EXCLUSIVOS_A1:
+            info = gates_l1["por_brazo"][brazo][nombre]
+            if info["pass"] is None:
+                marca = ("None = NO APLICA (no cuenta como fallo)"
+                         if info.get("estado") == "no_aplica"
+                         else "None = no medida todavia (no cuenta como fallo)")
+            else:
+                marca = str(info["pass"])
+            valor = info["valor"]
+            lineas.append(f"| {brazo} | {nombre} | {marca} | {info['estado']} | "
+                          f"{'' if valor is None else valor} | "
+                          f"{'' if info['lambda1'] is None else info['lambda1']} | "
+                          f"{info['criterio']} |")
+    for brazo in BRAZOS:
+        for nombre in GATES_EXCLUSIVOS_A1:
+            info = gates_l1["por_brazo"][brazo][nombre]
+            lineas.append(f"- {brazo} / {nombre}: motivo = {info['motivo']}; "
+                          f"lectura = {info['lectura']}.")
+    # ---- subsection: el nodo del arbol emitido, su causa y su lectura ----
+    lineas += [
+        "",
+        "### Nodo del arbol emitido por el codigo",
+        "",
+        f"- Rama de cierre: {rama['es_rama_de_cierre']}.",
+        f"- Nodo emitido: {rama['nodo']}.",
+        f"- Causa: {rama['causa']}.",
+        f"- Lectura: {rama['lectura']}.",
+        (f"- Cierre definitivo: {rama['cierre_definitivo']}; integracion: "
+         f"{rama['integracion']}; motivo de no calculo: {rama['motivo_de_no_calculo']}"),
+    ]
+    if rama["es_rama_de_cierre"]:
+        lineas.append(f"- G7 falla en A1: {rama['g7_falla_en_a1']}; G8 falla en A1: "
+                      f"{rama['g8_falla_en_a1']}; G0-G4 fallan en A1: {rama['g0_g4_fallan_en_a1']}.")
+    lineas += [
+        ("- Mapa pre-declarado de la rama (nodo al que lleva cada caso; los nombres se contrastan "
+         "contra el pre-registro):"),
+        "| caso | nodo | texto del pre-registro |",
+        "|---|---|---|",
+    ]
+    for caso, info in rama["rama_predeclarada"].items():
+        lineas.append(f"| {caso} | {info['nodo']} | {info['texto_del_prereg']} |")
+    lineas.append(f"- Los nombres de los nodos siguen siendo los del pre-registro: "
+                  f"{rama['rama_predeclarada_coincide_con_el_prereg']}.")
+    # ---- subsection: veredicto del criterio "L1 inerte" ----
+    lineas += [
+        "",
+        '### Criterio "L1 inerte" (hipotesis activa o analiticamente muerta)',
+        "",
+    ]
+    if l1_inerte:
+        lineas.append(f"- Veredicto: L1 {'INERTE' if l1_inerte['inerte'] else 'ACTIVO'} "
+                      f"(lambda1 = {l1_inerte['lambda1']!r}, "
+                      f"{l1_inerte['n_pasadas']} pasadas).")
+        lineas.append(f"- Fraccion de coordenadas con |z_j| <= lambda1 por pasada: "
+                      f"{l1_inerte['frac_muertas_por_pasada']}; maxima en las pasadas >= 2: "
+                      f"{l1_inerte['frac_muertas_maxima_en_pasadas_ge_2']!r}.")
+        lineas.append(f"- Lectura: {l1_inerte['lectura']}")
+        lineas.append(f"- Responsabilidad de la puerta: {l1_inerte['responsabilidad_de_la_puerta']}.")
+    else:
+        lineas.append("- No evaluable: el fold 0 de A1 todavia no tiene trayectoria registrada.")
     lineas += [
         "",
         "## 5. Triage formal (solo si A1 falla y A2 pasa G0-G4)",
@@ -5743,6 +6049,12 @@ def escribir_informe(resultado: dict) -> None:
     lineas += [
         "",
         f"- Politica: {resultado['sondas']['politica']}.",
+        "",
+    ]
+    # ---- subsection: identidad de los tres casos de lambda1 (sonda NO-GATE) ----
+    lineas += identidad_lambda1_markdown(identidad, equivalencia_tp, commit_congelado,
+                                         resultado["veredicto"])
+    lineas += [
         "",
         "## 7. Invariantes de no leakage",
         "",
@@ -6043,7 +6355,13 @@ def anotar_historial(resultado: dict) -> bool:
 
 
 def resumen_consola(resultado: dict) -> None:
-    """Resumen final en consola (maximo 14 lineas).
+    """Resumen final en consola (maximo 17 lineas).
+
+    Publica, ademas del veredicto y del summarise de cada brazo, cinco lineas compactas que son las
+    mismas lecturas que el informe develops: G7 y G8 puerta a puerta con ``None`` declarado NO
+    APLICA, el nodo del arbol con su causa, el veredicto del criterio "L1 inerte", la identidad de
+    los tres casos de ``lambda1`` (que NO cambia el veredicto) y la regla unidireccional de A2.
+    Cada item cabe en UNA sola linea.
 
     Parameters
     ----------
@@ -6068,6 +6386,35 @@ def resumen_consola(resultado: dict) -> None:
           f", A2 n_caminos "
           f"{resultado['simetria_sesgo']['por_brazo']['A2_sgd_presupuesto']['n_caminos_de_sesgo']}, "
           f"doble sesgo = {resultado['simetria_sesgo']['doble_sesgo']}")
+    # ---- (i) G7 y G8 puerta a puerta, con el None declarado NO APLICA ----
+    marcas_l1 = [f"{brazo}/{nombre} = "
+                 + ("NO APLICA (None: no cuenta como fallo)"
+                    if resultado["gates_l1"]["por_brazo"][brazo][nombre]["pass"] is None
+                    else str(resultado["gates_l1"]["por_brazo"][brazo][nombre]["pass"]))
+                 for brazo in BRAZOS for nombre in GATES_EXCLUSIVOS_A1]
+    print(f"  gates L1: {'; '.join(marcas_l1)}")
+    # ---- (ii) nodo del arbol con su causa ----
+    rama = resultado["rama_arbol"]
+    print(f"  nodo del arbol: "
+          f"{rama['nodo'] if rama['nodo'] is not None else 'ninguno (la puerta se supero)'} | causa: "
+          f"{rama['causa'] if rama['causa'] is not None else 'no aplica: la puerta se supero'}")
+    # ---- (iii) veredicto del criterio "L1 inerte" ----
+    l1_inerte = resultado.get("l1_inerte")
+    print("  criterio 'L1 inerte': "
+          + (f"L1 {'INERTE' if l1_inerte['inerte'] else 'ACTIVO'} (frac maxima de coordenadas con "
+             f"|z_j| <= lambda1 en las pasadas >= 2 = "
+             f"{l1_inerte['frac_muertas_maxima_en_pasadas_ge_2']!r})"
+             if l1_inerte else "no evaluable (A1 sin trayectoria registrada en el fold 0)"))
+    # ---- (iv) identidad de los tres casos, que NO cambia el veredicto ----
+    identidad = resultado.get("identidad_lambda1_fold_0")
+    print("  identidad de los tres casos de lambda1 (NO-GATE, no cambia el veredicto): "
+          + (f"reproduce = {identidad['reproduce']} | fallos = "
+             f"{identidad['fallos'] if identidad['fallos'] else 'ninguno'}"
+             if identidad else "no se ejecuto (NO-GATE: ni en --verificar ni en los folds 1-4)"))
+    # ---- (v) regla unidireccional de A2 ----
+    print(f"  regla UNIDIRECCIONAL de A2: el veredicto NO se apoya en el contraste A1 frente a A2 "
+          f"(A2 es control de PRESUPUESTO, no gemelo mecanico); prohibido: "
+          f"{resultado['lectura_unidireccional_a2']['prohibido']}")
     triage = resultado.get("triage") or {}
     if triage:
         print(f"  triage formal: {triage['clasificacion']} | nodo concedido "
@@ -6143,8 +6490,8 @@ def publicar_lectura_a2_unidireccional() -> dict:
         ``en_que_se_apoya_el_veredicto`` y ``prohibido``.
     """
     magnitudes = ["el delta de A1 frente al de A2",
-                  "las razones entre brazos (por ejemplo la razon max/min de ||w||_2 de A1 leida "
-                  "como contraste frente a A2)",
+                  ("las razones entre brazos (por ejemplo la razon max/min de ||w||_2 de A1 "
+                   "leida como contraste frente a A2)"),
                   "el IC95 bootstrap cruzado de la diferencia entre brazos"]
     return {"regla": "A2 es un control de PRESUPUESTO, no un gemelo mecanico: ninguna conclusion "
                      "puede descansar en el contraste A1 frente a A2, porque el delta, las razones "
@@ -6289,6 +6636,59 @@ def publicar_rama_arbol(estado: dict, prereg: dict) -> dict:
             "rama_predeclarada_coincide_con_el_prereg": bool(coincide)}
 
 
+def siguiente_paso_predeclarado(prereg: dict, veredicto: str) -> tuple[str, str]:
+    """Devuelve el ``siguiente_paso`` tal como lo PRE-REGISTRO, nunca inventado.
+
+    El pre-registro congelado no declara una clave ``arbol``: la semantica de cada rama esta en
+    ``puerta.rama_predeclarada`` (texto de la condicion) y la prohibicion de integrar cuando la
+    puerta falla esta en ``gates_de_la_serie.nota``. Por eso el ``siguiente_paso`` se deriva de
+    ahi, con la clave de origen expuesta para que sea auditable.
+
+    Parameters
+    ----------
+    prereg:
+        Pre-registro congelado ya leido.
+    veredicto:
+        Nodo emitido por :func:`decidir_rama_arbol` o por los gates de la serie.
+
+    Returns
+    -------
+    tuple
+        ``(texto_predeclarado, clave_del_prereg_de_la_que_sale)``.
+
+    Raises
+    ------
+    Detencion
+        Si el veredicto no corresponde a ninguna rama pre-declarada o si falta la seccion del
+        pre-registro. No hay ``get`` con valor por defecto: un veredicto desconocido se detiene
+        con exit 2 en vez de emitir un texto invented.
+    """
+    ramas = prereg.get("puerta", {}).get("rama_predeclarada", {})
+    gates = prereg.get("gates_de_la_serie", {})
+    mapa = {
+        NODO_CIERRE_POR_MECANISMO: ("G7_o_G8_fallan", "puerta.rama_predeclarada"),
+        NODO_HIPOTESIS_CONJUNTA_REFUTADA:
+            ("G7_y_G8_pasan_pero_G0_G4_fallan", "puerta.rama_predeclarada"),
+        "NO_ATRIBUIBLE_BY_GATE": (None, "gates_de_la_serie.nota"),
+    }
+    for veredicto_serie in ("PROMISING", "MARGINAL", "CLOSED"):
+        mapa[veredicto_serie] = ("todas_pasan", "puerta.rama_predeclarada")
+    if veredicto not in mapa:
+        raise Detencion(f"[STOP] veredicto '{veredicto}' sin rama pre-declarada en el pre-registro "
+                        "(exit 2)", 2)
+    clave, origen = mapa[veredicto]
+    if clave is None:
+        texto = gates.get("nota")
+        if not isinstance(texto, str) or not texto.strip():
+            raise Detencion("[STOP] falta gates_de_la_serie.nota en el pre-registro (exit 2)", 2)
+        return texto, origen
+    texto = ramas.get(clave)
+    if not isinstance(texto, str) or not texto.strip():
+        raise Detencion(f"[STOP] falta la rama pre-declarada '{clave}' en el pre-registro (exit 2)",
+                        2)
+    return texto, f"{origen}.{clave}"
+
+
 def construir_resultado(inicio: float, prereg: dict, auditoria: dict, lecturas: dict,
                         baseline: float, linea_base: dict, hashes_corpus: dict,
                         detalle_constantes: dict, detalle_versiones: dict, detalle_hashes: dict,
@@ -6298,6 +6698,13 @@ def construir_resultado(inicio: float, prereg: dict, auditoria: dict, lecturas: 
                         determinismo: dict, control: dict | None, gates: dict, caps: dict,
                         veredicto: str, motivo_no_calculo: str | None) -> dict:
     """Ensambla el JSON de resultados con config, hashes, sondas, puerta, gates y veredicto.
+
+    Publica ademas, con los cuatro helpers de la seccion 12 (que son la UNICA fuente de esos
+    textos, para que el JSON, el informe y la consola digan exactamente lo mismo): las gates L1
+    G7 y G8 por brazo con su ``pass`` tal cual (``None`` = no aplica), el nodo del arbol emitido
+    con su causa y su lectura, el veredicto del criterio "L1 inerte", la regla de lectura
+    UNIDIRECCIONAL de A2, la identidad numerica de los tres casos del gemelo de lambda1 medida en
+    el fold 0 (NO-GATE) y la equivalencia declarada del ``token_pattern`` del vectorizador.
 
     Los escalares que se guardan son NATIVOS (``float``, ``int``, ``bool``, ``str``, ``None``) y
     las claves de fold se fuerzan a texto: lo hace :func:`como_nativo` al serializar.
@@ -6370,9 +6777,10 @@ def construir_resultado(inicio: float, prereg: dict, auditoria: dict, lecturas: 
                              "oof_artefacto": oof_artefactos[brazo]} for brazo in BRAZOS}
     alphas = {fold: float(detalle["alpha_efectivo"]) for fold, detalle
               in sorted(estado["brazos"]["A1_ftrl_lambda1"]["folds"].items())}
-    siguiente = prereg["arbol"].get(veredicto)
-    if isinstance(siguiente, dict):
-        siguiente = siguiente.get("semantica", veredicto)
+    siguiente, origen_siguiente = siguiente_paso_predeclarado(prereg, veredicto)
+    # Las cinco piezas las publican los helpers de la seccion 12 y la sexta viene del detalle de
+    # hashes: se conectan AQUI, una sola vez, y no se vuelven a calcular en el informe ni en la
+    # consola, que solo las leen.
     return {
         "fase": FASE_ESTADO.replace(" (checkpoint resumible)", ""),
         "fecha": FECHA,
@@ -6446,8 +6854,14 @@ def construir_resultado(inicio: float, prereg: dict, auditoria: dict, lecturas: 
         "asimetrias": asimetria,
         "simetria_sesgo": simetria_sesgo,
         "puerta": puerta,
+        "gates_l1": publicar_gates_l1(puerta),
+        "l1_inerte": publicar_l1_inerte(estado),
         "triage": estado.get("triage"),
+        "rama_arbol": publicar_rama_arbol(estado, prereg),
+        "lectura_unidireccional_a2": publicar_lectura_a2_unidireccional(),
         "mecanismo_fold_0": mecanismo_fold_0(estado),
+        "identidad_lambda1_fold_0": estado.get("identidad_lambda1_fold_0"),
+        "equivalencia_token_pattern": detalle_hashes["equivalencia_token_pattern"],
         "refit": refit,
         "vocabulario_idf_por_fold": estado["vectorizador_por_fold"],
         "particiones_es_por_fold": estado["es_por_fold"],
@@ -6464,6 +6878,7 @@ def construir_resultado(inicio: float, prereg: dict, auditoria: dict, lecturas: 
         "veredicto": veredicto,
         "motivo_de_no_calculo": motivo_no_calculo,
         "siguiente_paso": siguiente,
+        "origen_de_siguiente_paso": origen_siguiente,
         "duracion_seg": float(time.time() - inicio),
         "duracion_sondas_seg": float(sondas["duracion_seg"]),
         "tiempos_por_brazo_fold_seg": {brazo: {fold: float(detalle["tiempo_seg"]) for fold,
@@ -6508,7 +6923,7 @@ def ejecutar_humo(sondas: dict) -> None:
                             if "pass" in sondas[nombre] else None)
                        for nombre in NOMBRES_SONDAS}
     estado["rss_pico_gb"] = rss_gb()
-    temporal = Path(tempfile.gettempdir()) / "v35_01_humo_estado.json"
+    temporal = Path(tempfile.gettempdir()) / NOMBRE_TEMPORAL_HUMO
     escribir_json(temporal, estado)
     releido = json.loads(temporal.read_text(encoding="utf-8"))
     if releido.get("sondas") != estado["sondas"] or releido.get("fase") != FASE_ESTADO:
@@ -6608,7 +7023,7 @@ def ejecutar(verificar: bool, humo: bool) -> int:
           f"{G8_RAZON_MAXIMA} (supera 1.0 = {firma['razon_supera_1']}); el contraste con el "
           f"artefacto es de FIRMA, no de identidad numerica", flush=True)
     print(f"  asimetria declarada: A2 es control de PRESUPUESTO (no gemelo mecanico: no tiene L1) "
-          f"con lambda2/alpha_reg = {asimetria['valores']['cociente']:.0e}; el veredicto NO se "
+          f"con lambda2/alpha_reg = {asimetria['cociente']:.0e}; el veredicto NO se "
           "apoya en el contraste A1 frente a A2", flush=True)
     if verificar:
         print("VERIFICACION OK", flush=True)
