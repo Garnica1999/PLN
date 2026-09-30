@@ -1,0 +1,525 @@
+{
+  "fase": "ciclo final P3/P4/P5",
+  "fecha": "2026-09-30",
+  "commit": "982d76a2f6f6aba84e047b49515441f25aba1561",
+  "verificacion": {
+    "hashes_ok": true,
+    "constantes_ok": true,
+    "dep_edges_ok": true
+  },
+  "baseline_primario": 0.6159732,
+  "brazos": {
+    "R3_lemma_POS|md": {
+      "corrected_cv": 0.6150561,
+      "delta_vs_baseline": -0.0009172,
+      "delta_vs_nested": -0.0004082,
+      "folds": [
+        0.617998,
+        0.616697,
+        0.615723,
+        0.616332,
+        0.608533
+      ],
+      "folds_positivos": 2,
+      "filas_que_cambian": 8110,
+      "ic95": [
+        -0.001713,
+        -5.03e-05
+      ],
+      "p_delta_positivo": 0.0205,
+      "argmax_sin_regla": 0.6135038,
+      "pasa_gate": false
+    },
+    "R3_lemma_POS|lg": {
+      "corrected_cv": 0.6150502,
+      "delta_vs_baseline": -0.000923,
+      "delta_vs_nested": -0.0004141,
+      "folds": [
+        0.618361,
+        0.617952,
+        0.615357,
+        0.615415,
+        0.608176
+      ],
+      "folds_positivos": 1,
+      "filas_que_cambian": 8249,
+      "ic95": [
+        -0.0017484,
+        -8.37e-05
+      ],
+      "p_delta_positivo": 0.015,
+      "argmax_sin_regla": 0.6132927,
+      "pasa_gate": false
+    },
+    "R4_morfologia|md": {
+      "corrected_cv": 0.6148064,
+      "delta_vs_baseline": -0.0011668,
+      "delta_vs_nested": -0.0006579,
+      "folds": [
+        0.617565,
+        0.617408,
+        0.615407,
+        0.615803,
+        0.607887
+      ],
+      "folds_positivos": 1,
+      "filas_que_cambian": 7016,
+      "ic95": [
+        -0.0019643,
+        -0.0003826
+      ],
+      "p_delta_positivo": 0.0025,
+      "argmax_sin_regla": 0.6127501,
+      "pasa_gate": false
+    },
+    "R4_morfologia|lg": {
+      "corrected_cv": 0.6149399,
+      "delta_vs_baseline": -0.0010333,
+      "delta_vs_nested": -0.0005244,
+      "folds": [
+        0.618263,
+        0.617474,
+        0.615668,
+        0.616055,
+        0.607287
+      ],
+      "folds_positivos": 2,
+      "filas_que_cambian": 7072,
+      "ic95": [
+        -0.0018078,
+        -0.0002723
+      ],
+      "p_delta_positivo": 0.007,
+      "argmax_sin_regla": 0.6131094,
+      "pasa_gate": false
+    },
+    "R5_dependencias|md": {
+      "corrected_cv": 0.61506,
+      "delta_vs_baseline": -0.0009132,
+      "delta_vs_nested": -0.0004043,
+      "folds": [
+        0.618452,
+        0.617231,
+        0.61588,
+        0.61555,
+        0.608228
+      ],
+      "folds_positivos": 1,
+      "filas_que_cambian": 7017,
+      "ic95": [
+        -0.0016948,
+        -0.0001418
+      ],
+      "p_delta_positivo": 0.01,
+      "argmax_sin_regla": 0.6132034,
+      "pasa_gate": false
+    },
+    "R5_dependencias|lg": {
+      "corrected_cv": 0.6154292,
+      "delta_vs_baseline": -0.000544,
+      "delta_vs_nested": -3.51e-05,
+      "folds": [
+        0.617721,
+        0.617739,
+        0.617251,
+        0.615964,
+        0.608514
+      ],
+      "folds_positivos": 2,
+      "filas_que_cambian": 7120,
+      "ic95": [
+        -0.001349,
+        0.000228
+      ],
+      "p_delta_positivo": 0.081,
+      "argmax_sin_regla": 0.6132655,
+      "pasa_gate": false
+    }
+  },
+  "brazos_barajados": {
+    "R3_lemma_POS|md": {
+      "corrected_cv": 0.6147759,
+      "delta_vs_baseline": -0.0011973,
+      "delta_vs_nested": -0.0006884,
+      "folds": [
+        0.618217,
+        0.61701,
+        0.61539,
+        0.615553,
+        0.607755
+      ],
+      "folds_positivos": 1,
+      "filas_que_cambian": 6787,
+      "ic95": [
+        -0.0019881,
+        -0.0004227
+      ],
+      "p_delta_positivo": 0.002,
+      "argmax_sin_regla": 0.6130593
+    },
+    "R3_lemma_POS|lg": {
+      "corrected_cv": 0.6147759,
+      "delta_vs_baseline": -0.0011973,
+      "delta_vs_nested": -0.0006884,
+      "folds": [
+        0.618217,
+        0.61701,
+        0.61539,
+        0.615553,
+        0.607755
+      ],
+      "folds_positivos": 1,
+      "filas_que_cambian": 6787,
+      "ic95": [
+        -0.0019881,
+        -0.0004227
+      ],
+      "p_delta_positivo": 0.002,
+      "argmax_sin_regla": 0.6130593
+    },
+    "R4_morfologia|md": {
+      "corrected_cv": 0.6147815,
+      "delta_vs_baseline": -0.0011917,
+      "delta_vs_nested": -0.0006828,
+      "folds": [
+        0.618217,
+        0.61701,
+        0.61539,
+        0.615581,
+        0.607755
+      ],
+      "folds_positivos": 1,
+      "filas_que_cambian": 6786,
+      "ic95": [
+        -0.0019779,
+        -0.0004227
+      ],
+      "p_delta_positivo": 0.002,
+      "argmax_sin_regla": 0.6130593
+    },
+    "R4_morfologia|lg": {
+      "corrected_cv": 0.6147759,
+      "delta_vs_baseline": -0.0011973,
+      "delta_vs_nested": -0.0006884,
+      "folds": [
+        0.618217,
+        0.61701,
+        0.61539,
+        0.615553,
+        0.607755
+      ],
+      "folds_positivos": 1,
+      "filas_que_cambian": 6787,
+      "ic95": [
+        -0.0019881,
+        -0.0004227
+      ],
+      "p_delta_positivo": 0.002,
+      "argmax_sin_regla": 0.6130593
+    },
+    "R5_dependencias|md": {
+      "corrected_cv": 0.6147759,
+      "delta_vs_baseline": -0.0011973,
+      "delta_vs_nested": -0.0006884,
+      "folds": [
+        0.618217,
+        0.61701,
+        0.61539,
+        0.615553,
+        0.607755
+      ],
+      "folds_positivos": 1,
+      "filas_que_cambian": 6787,
+      "ic95": [
+        -0.0019881,
+        -0.0004227
+      ],
+      "p_delta_positivo": 0.002,
+      "argmax_sin_regla": 0.6130593
+    },
+    "R5_dependencias|lg": {
+      "corrected_cv": 0.6147759,
+      "delta_vs_baseline": -0.0011973,
+      "delta_vs_nested": -0.0006884,
+      "folds": [
+        0.618217,
+        0.61701,
+        0.61539,
+        0.615553,
+        0.607755
+      ],
+      "folds_positivos": 1,
+      "filas_que_cambian": 6787,
+      "ic95": [
+        -0.0019881,
+        -0.0004227
+      ],
+      "p_delta_positivo": 0.002,
+      "argmax_sin_regla": 0.6130593
+    }
+  },
+  "detalle_canal": {
+    "R3_lemma_POS|md": {
+      "vocabularios": [
+        70217,
+        70319,
+        70332,
+        70397,
+        70477
+      ],
+      "segundos_por_fold": [
+        11.2,
+        11.8,
+        9.3,
+        8.5,
+        9.5
+      ],
+      "n_iter_por_fold": [
+        117,
+        124,
+        84,
+        83,
+        93
+      ],
+      "warnings_convergencia": 0,
+      "filas_vacias": 104
+    },
+    "R3_lemma_POS|lg": {
+      "vocabularios": [
+        69802,
+        69979,
+        70086,
+        70038,
+        70227
+      ],
+      "segundos_por_fold": [
+        10.9,
+        11.6,
+        10.6,
+        13.7,
+        12.8
+      ],
+      "n_iter_por_fold": [
+        118,
+        108,
+        99,
+        124,
+        135
+      ],
+      "warnings_convergencia": 0,
+      "filas_vacias": 104
+    },
+    "R4_morfologia|md": {
+      "vocabularios": [
+        8004,
+        8027,
+        8032,
+        8035,
+        8020
+      ],
+      "segundos_por_fold": [
+        4.8,
+        3.0,
+        4.2,
+        3.0,
+        3.2
+      ],
+      "n_iter_por_fold": [
+        99,
+        51,
+        77,
+        51,
+        56
+      ],
+      "warnings_convergencia": 0,
+      "filas_vacias": 4343
+    },
+    "R4_morfologia|lg": {
+      "vocabularios": [
+        8148,
+        8144,
+        8169,
+        8176,
+        8117
+      ],
+      "segundos_por_fold": [
+        5.1,
+        4.3,
+        4.5,
+        3.3,
+        3.1
+      ],
+      "n_iter_por_fold": [
+        94,
+        80,
+        87,
+        60,
+        51
+      ],
+      "warnings_convergencia": 0,
+      "filas_vacias": 4901
+    },
+    "R5_dependencias|md": {
+      "vocabularios": [
+        14093,
+        14163,
+        14171,
+        14179,
+        14166
+      ],
+      "segundos_por_fold": [
+        4.9,
+        6.3,
+        5.4,
+        5.2,
+        6.6
+      ],
+      "n_iter_por_fold": [
+        57,
+        76,
+        66,
+        54,
+        76
+      ],
+      "warnings_convergencia": 0,
+      "filas_vacias": 104
+    },
+    "R5_dependencias|lg": {
+      "vocabularios": [
+        14549,
+        14493,
+        14628,
+        14614,
+        14525
+      ],
+      "segundos_por_fold": [
+        5.7,
+        6.7,
+        5.5,
+        7.7,
+        6.9
+      ],
+      "n_iter_por_fold": [
+        75,
+        94,
+        76,
+        120,
+        103
+      ],
+      "warnings_convergencia": 0,
+      "filas_vacias": 104
+    }
+  },
+  "combinador": {
+    "R3_lemma_POS|md": {
+      "peso_bloque_canal_ratio_por_fold": [
+        0.1806,
+        0.194,
+        0.1949,
+        0.1909,
+        0.1839
+      ],
+      "peso_bloque_canal_ratio_media": 0.1889
+    },
+    "R3_lemma_POS|lg": {
+      "peso_bloque_canal_ratio_por_fold": [
+        0.187,
+        0.2027,
+        0.199,
+        0.1969,
+        0.1925
+      ],
+      "peso_bloque_canal_ratio_media": 0.1956
+    },
+    "R4_morfologia|md": {
+      "peso_bloque_canal_ratio_por_fold": [
+        0.09,
+        0.0753,
+        0.0901,
+        0.0858,
+        0.0779
+      ],
+      "peso_bloque_canal_ratio_media": 0.0838
+    },
+    "R4_morfologia|lg": {
+      "peso_bloque_canal_ratio_por_fold": [
+        0.113,
+        0.0947,
+        0.1053,
+        0.1092,
+        0.1058
+      ],
+      "peso_bloque_canal_ratio_media": 0.1056
+    },
+    "R5_dependencias|md": {
+      "peso_bloque_canal_ratio_por_fold": [
+        0.091,
+        0.0911,
+        0.103,
+        0.0854,
+        0.081
+      ],
+      "peso_bloque_canal_ratio_media": 0.0903
+    },
+    "R5_dependencias|lg": {
+      "peso_bloque_canal_ratio_por_fold": [
+        0.1194,
+        0.1183,
+        0.1169,
+        0.1095,
+        0.1129
+      ],
+      "peso_bloque_canal_ratio_media": 0.1154
+    }
+  },
+  "canal_solo": {
+    "R3_lemma_POS|md": 0.4558531,
+    "R3_lemma_POS|lg": 0.4562059,
+    "R4_morfologia|md": 0.2803143,
+    "R4_morfologia|lg": 0.2763103,
+    "R5_dependencias|md": 0.2668566,
+    "R5_dependencias|lg": 0.2677221
+  },
+  "serie": [
+    {
+      "fase": "P2 POS-secuencia",
+      "canal_solo": 0.2750921,
+      "delta_md": -0.0086357,
+      "veredicto": "NEGATIVO"
+    },
+    {
+      "fase": "P6 NER estructural",
+      "canal_solo": 0.1833881,
+      "delta_md": -0.0009257,
+      "veredicto": "CLOSED"
+    },
+    {
+      "fase": "P7 texto tipado",
+      "canal_solo": 0.4941735,
+      "delta_md": -0.0006894,
+      "veredicto": "CLOSED"
+    }
+  ],
+  "promising": false,
+  "compliance": {
+    "reales": [],
+    "auto_coincidencias_patron": [
+      {
+        "script": "age_linguistic_06_ner_estructura.py",
+        "linea": 290,
+        "hallazgo": "embeddings"
+      },
+      {
+        "script": "age_linguistic_09_texto_tipado.py",
+        "linea": 250,
+        "hallazgo": "embeddings"
+      }
+    ],
+    "limpio": true,
+    "auditor_excluido": "age_linguistic_12_remaining_channels.py"
+  },
+  "sin_test": true,
+  "sin_holdout": true,
+  "sin_submission": true,
+  "segundos_total": 341.7
+}

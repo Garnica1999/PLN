@@ -2778,3 +2778,15 @@ No se usa el 0,63575 para optimizar pesos, crear variantes, seleccionar semillas
 - **Decision**: cierre documentado; P5 pendiente de una unica evaluacion del gap.
 - **Consequences**: si el resultado no es positivo, la conclusion es 'la representacion lexema+POS no aporta mejora al campeon bajo el mecanismo evaluado' (no es una afirmacion sobre toda la informacion linguistica). El campeon adoptado (V30 + plug-in, LB 0.63575) permanece intacto. P2 y P6 no se reabren.
 - **Evidence**: `experiments/age_linguistic_09_texto_tipado.json`, `reports/age_typed_text_results.csv`, `reports/age_typed_text_complementarity.csv`, `reports/age_typed_text_decision.md`.
+---
+
+## D-080 - Ciclo final (P3/P4/P5): las familias restantes quedan medidas y cerradas
+
+- **Observation**: el usuario ordeno ejecutar las experimentaciones restantes; se ejecutaron las tres familias con el protocolo congelado de P6/P7 (baseline 0.6159732; control intra-fold 20261031; artefacto dep_edges derivado y re-validado 0/0). Resultados (md/lg):
+  - R3 lemma_POS: md -0.0009172 (2/5) | lg -0.0009230 (1/5);
+  - R4 morfologia: md -0.0011668 (1/5) | lg -0.0010333 (2/5);
+  - R5 dependencias: md -0.0009132 (1/5) | lg -0.0005440 (2/5).
+- **Result**: ningun brazo pasa el gate: las tres familias se cierran documentadas.
+- **Decision**: con esto quedan MEDIDAS las seis representaciones de la fase (P2, P6, P7 y las tres restantes), todas bajo gates identicos y con control propio. El campeon adoptado (V30 + plug-in, LB 0.63575) permanece intacto; no se reabre ninguna familia; sin encadenar variantes.
+- **Consequences**: el expediente linguistico-estructurado de AGE queda cerrado con evidencia propia para cada familia; la regla de interpretacion pre-registrada se aplica por canal ('no aporta mejora bajo el mecanismo evaluado'), sin extrapolar a la informacion linguistica en general.
+- **Evidence**: `experiments/age_linguistic_12_remaining_channels.json`, `reports/age_remaining_results.csv`, `reports/age_remaining_complementarity.csv`, `reports/age_remaining_decision.md`.

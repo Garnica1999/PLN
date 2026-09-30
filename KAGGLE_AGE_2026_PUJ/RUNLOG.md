@@ -2163,3 +2163,11 @@ intacto.
 - Baseline recomputado: 0.6159732. Artefacto dep_edges registrado (md 39832126..., lg ed32f5d2...).
 - Override del usuario registrado (P3/P4 PARTIALLY_COVERED, P5 sin justificacion independiente).
 - Sin tuning, sin test, sin holdout, sin submission.
+
+---
+
+## Ciclo final ejecutado (P3/P4/P5) · 2026-09-30
+
+- Resultado: ningun brazo pasa. R3_lemma_POS/md: -0.0009172 | R3_lemma_POS/lg: -0.0009230 | R4_morfologia/md: -0.0011668 | R4_morfologia/lg: -0.0010333 | R5_dependencias/md: -0.0009132 | R5_dependencias/lg: -0.0005440.
+- Baseline 0.6159732; control intra-fold 20261031; dep_edges re-validado.
+- Sin test, sin holdout, sin submission; campeon intacto.
