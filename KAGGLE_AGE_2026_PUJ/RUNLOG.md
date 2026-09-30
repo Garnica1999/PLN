@@ -2370,3 +2370,30 @@ intacto.
 ## Enmienda pre-ejecucion 5 de V35-E1 - 2026-09-30
 
 - El pre-registro declaraba dos asimetrias para A1 vs A2 (la de V34 y la de V35). Ahora hay una sola vigente, la de V35, y el texto de V34 queda conservado con su valor como anulado trazable.
+
+---
+
+## Intento 1 de V35-E1: CORRIDA BLOQUEADA por bug de ambito (no es un resultado) · 2026-09-30
+
+- Corrida real con `scripts/v35_01_ftrl_lambda1.py` (commit `8afaef0`, APROVED sin bloqueantes):
+  **exit 1** en **42.82 s** de los 1200 s declarados, RSS pico 0.688 GB de 20 GB.
+- Crash: `UnboundLocalError: 'anclaje'` en `entrenar_brazo_fold:4232`. `anclaje` se asigna solo
+  dentro de `if clave == "a1":` (4136) y se lee en el `return` comun (4232), luego **A2 es
+  inalcanzable de forma determinista**, independiente de los datos. Bug bloqueante #4; no es
+  numerico, ni de puerta, ni de presupuesto.
+- A1 fold 0 **si** completo y registrado (el ensamblado del retorno es lo ultimo del bucle).
+- Evidencia medida antes del crash: anclaje verificado con diferencia **EXACTA 0.0** y `sha256`
+  identico (la enmienda 1 funciona); `ll_train` 10.0583 -> 19.1594; `||w||_2` 28.27 -> **60.24**
+  (razon **2.1304**); escasez efectiva 0.951 -> 0.981; fraccion con `|z| <= lambda1` = **0.019333**
+  (no 0, luego el criterio "L1 inerte" NO se cumple: **L1 activo pero insuficiente**);
+  `macro_f1_es` 0.046077 con frecuencias `[0,0,0,0,0,1]`; razon max/min en el mini **1.7907 > 1.0**.
+- **La puerta no corrio**: `puerta`, `triage` y `rama_arbol` quedaron en `None`, y la identidad
+  numerica de los tres casos de `lambda1` en el fold 0 no se ejecuto. Por tanto **no hay nodo** y
+  **D-086 no puede escribirse como cierre** todavia.
+- Sin integrar, sin bootstrap, sin segundo `lambda1`, sin fallback, sin tocar el pre-registro;
+  `p33_scores/todos` **intacto** (`8881a9f5...` antes y despues), campeon intacto, sin submission.
+- Tratamiento: `DEFECTO_DE_IMPLEMENTACION`, la **unica re-emision** que permite el pre-registro.
+  Se re-ejecuta **desde cero** (sin reutilizar el checkpoint de A1) para que una sola version del
+  codigo produzca todos los artefactos del resultado.
+- Evidencia del intento preservada en `experiments/v35_e1_intento_1_bloqueado/` e informe en
+  `reports/v35_e1_incidente_bloqueo.md`.
