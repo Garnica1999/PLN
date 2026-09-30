@@ -1,0 +1,7 @@
+corte,documentos,pct_con_tokens_md,pct_con_tokens_lg,acuerdo_pos_exacto_pct
+con_http,70475,100.0,100.0,10.32
+con_hashtag,34283,100.0,100.0,4.16
+con_mencion,108186,100.0,100.0,8.49
+longitud<=40,27533,99.62,99.62,37.06
+longitud_41-93,57494,100.0,100.0,18.78
+longitud>93,84309,100.0,100.0,7.92
