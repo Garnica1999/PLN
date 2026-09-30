@@ -8442,3 +8442,91 @@ OOF canonico con calculo independiente, sin discrepancias.
 gap del mejor brazo frente a V03: 0.117450, en METRICA LOCAL
 V03 remains the best verified leaderboard result.
 ```
+
+## D-271: P80. La auditoria del entrenador Word2Vec se para en A12 y queda inconclusa
+
+Pre-registro `docs/p80_preregistro_auditoria_w2v.md`, sha256
+`440ab13c610e1bcf35a0b00f096699f738bc59480240dbd934e6c5f3e2f7c81f`, commiteado en `8726c9f`
+**antes** de escribir el script. Aprobado por ML Reviewer y por ML Coder en `--humo` (44 de 44).
+
+**Status**: INCONCLUSA. H1, H2 y H3 CONFIRMADO con evidencia medida; H4 a H7 SIN VEREDICTO.
+
+**Date**: 2026-09-30
+
+**Context**
+
+P80 audita el entrenador Word2Vec sin reentrenar nada, para confirmar o tumbar los siete hallazgos
+H1 a H7. Trece de las diecinueve afirmaciones quedaron medidas: las once primeras pasaron y la
+duodecima disparo la parada. Las diecinueve affine se ejecutan en orden y el script para en el
+primer STOP, sin escribir el informe completo.
+
+La parada la manda el propio pre-registro, seccion 7, clausula 5: si A12 encuentra una fuente con la
+tabla de salida, se para antes de publicar, porque entonces H4 cambia de contenido. El script
+obedecio, escribio solo `reports/p80_auditoria_w2v.json` con el motivo y el detalle minimo, y no
+escribio ni el markdown ni las figuras.
+
+Los siete candidatos que dispararon la parada no son una tabla de salida. Cuatro son las tablas de
+**entrada** `W` de **otras** corridas de Word2Vec, con vocabulario 77657 pero dimension 200 o 300; los
+cinco `.npz` de `twitter_domain` tienen los mismos dos miembros, `W.npy` y `palabras.npy`, y ninguno
+guarda la matriz de salida. Los otros tres son claves de forma dentro de json de `reports/`, cuyo
+valor es una lista de dos enteros que describe una forma, no un arreglo de pesos.
+
+El defecto esta en el detector de A12, que empareja cualquier `.npz` con primera dimension `77657`
+sin mirar la dimension, y que cuenta como candidata cualquier clave de json llamada `shape` o `forma`.
+Con esos dos criterios, un input table de una corrida que no es la del congelado da falso positivo, y
+un metadato de forma tambien.
+
+Mientras tanto, los tres hallazgos que si se midieron cambian lo que se cree saber. H2 queda
+CONFIRMADO: el scheduler de `p72_01` planifica con `range(5)` y `SEMILLA + ep`, o sea semillas
+20261016 a 20261020, y entrena con `enumerate(planes, start=1)` y `SEMILLA + ep`, o sea 20261017 a
+20261021. Los dos bucles usan una variable llamada `ep` y por eso P79 los clasifico juntos y declaro
+que no habia desfase. El desfase es de una epoca, y la semilla 20261016 se planifica sin entrenarse
+nunca mientras la 20261021 se entrena sin planificar. H3 queda CONFIRMADO con el residuo en
+1.11e-16 y el control discriminante en 2.77, de modo que la identidad mal puesta de P79 fallaba por
+el signo invertido y no informaba de nada.
+
+**Decision**
+
+No tocar nada y devolverlo. No se edita `experiments/p80_01_auditoria_w2v.py`, no se parchea el
+detector de A12 y no se publica un informe parcial como si fuera completo. El veredicto de P80 es
+**inconcluso**, no un hallazgo nuevo. Se registra la parada con su evidencia y se devuelve a
+ML Coder.
+
+**Alternatives Considered**
+
+1. Corregir el detector de A12 para que exija la dimension 100 y descarte las claves de forma.
+   **Descartado.** Editar ese fichero ya costo una vez un truncado a 0 bytes, y ademas el
+   pre-registro obliga a que el resultado no dependa de lo que se encuentre al medir: cambiar el
+   criterio despues de ver el falso positivo es exactamente el sesgo que el pre-registro prohibe.
+2. Publicar el informe con H1, H2 y H3 y dejar H4 a H7 sin veredicto.
+   **Descartado.** El pre-registro dice que una afirmacion con marca STOP impide el informe completo,
+   y el STOP de la seccion 7 clausula 5 es precisamente de esa clase. Un informe a medias con
+   figuras parciales se leeria como una auditoria terminada.
+3. Tratar la parada como un REFUTADO de H4.
+   **Descartado.** El negativo de A12 no quedo establecido: la enumeracion no tiene cobertura
+   declarada y los siete candidatos son falsos positivos. Afirmar que la matriz de salida no se
+   puede reconstruir, o que si, seria Decidir el hallazgo por el detector y no por la evidencia.
+4. Dejar P80 sin registrar y abrir una P81 desde cero.
+   **Descartado.** Las once afirmaciones que pasaron son evidencia real y medida, y repetir el
+   pre-registro perderia la comparacion con P79 que H2 necesita.
+
+**Consequences**
+
+H1, H2 y H3 quedan **CONFIRMADOS** con la evidencia del propio script. El veredicto de P79 sobre el
+scheduler es incorrecto y sobre la identidad de la loss tambien, porque comparaba `pos + neg`
+contra `-(pos + neg)`. Ningun hallazgo queda REFUTADO: A5 era la unica afirmacion marcada REFUTAR y
+tambien salio CONFIRMADO.
+
+H4 a H7 siguen **abiertos**. El script corre en menos de dos segundos, luego reanudar es barato en
+cuanto tiempo, pero la enumeracion de A12 tiene que corregirse en el script y el pre-registro tiene
+que registrar ese cambio antes de volver a medir, o el negativo de A12 seguira sin cobertura
+declarada.
+
+P80 no abre artefactos nuevos: `figuras/p80/` no llega a existir y el unico fichero escrito es
+`reports/p80_auditoria_w2v.json`. El artefacto congelado se abrio en solo lectura y se verifico por
+sha256 antes de la primera lectura y despues de la ultima. Test, holdout, leaderboard y submission
+siguen en cero.
+
+```text
+V03 remains the best verified leaderboard result.
+```

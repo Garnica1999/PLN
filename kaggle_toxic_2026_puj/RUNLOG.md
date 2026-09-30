@@ -3250,3 +3250,108 @@ Sin push, sin merge, sin rebase.
 - Cada `fact` lleva su provenance: fichero, commit y fecha. Eso hace que cualquier hecho
   del grafo sea rastreable hasta su linea de codigo o su hash, sin depender de la memoria
   de la sesion.
+
+## 2026-09-30, P80: auditoria del entrenador Word2Vec. PARADA EN A12, sin informe completo
+
+### Lo que se ejecuto
+
+Comando: `/home/carlos/venv/bin/python -B experiments/p80_01_auditoria_w2v.py`. Codigo de salida **1**.
+Duracion: **menos de 2 segundos**, de 21:37:40 a 21:37:41 UTC. Sin entrenamiento, sin GPU, sin red.
+
+Pre-registro verificado antes de la primera lectura: `440ab13c610e1bcf35a0b00f096699f738bc59480240dbd934e6c5f3e2f7c81f`, commit `8726c9f`. Sin cambios.
+Artefacto congelado verificado ANTES y DESPUES: `302c994d13b75f8f5fbd440eea2c4f4113997e2581524021923b92f8244d705a`, 29478868 bytes. Intacto.
+
+El script **no se edito**. La parada la escribio el propio script, obediente al pre-registro.
+
+### Las once afirmaciones que llegaron a ejecutarse
+
+```text
+A1  CONFIRMADO   H1  la loss promedia el termino negativo por K en vez de sumarlo
+A2  CONFIRMADO   H1  el factor es exactamente 1/K
+A3  CONFIRMADO   H1  p72_01 reutiliza la clase SkipGram de p71_04 sin tocarla
+A4  CONFIRMADO   H1  gradiente, maximo residuo 3.469446951953614e-17
+A5  CONFIRMADO   H1  la afirmacion negativa, con contraejemplos numericos
+A6  CONFIRMADO   H2  los dos iteradores del scheduler, leidos por AST
+A7  CONFIRMADO   H2  el desfase de semillas, uno por epoca
+A8  CONFIRMADO   H2  la comparacion con P79
+A9  CONFIRMADO   H3  identidad con el signo correcto, residuo 1.1102230246251565e-16
+A10 CONFIRMADO   H3  el control, separacion minima 2.771907574551194
+A11 CONFIRMADO   H4  el congelado tiene solo W y palabras
+A12 STOP         H4  se dispara la parada de la seccion 7, clausula 5
+```
+
+Siete afirmaciones mas no se ejecutaron: A13, A14, A15, A16, A17, A18 y A19.
+
+Resumen: **11 CONFIRMADO, 0 REFUTADO, 0 NO APLICABLE, 1 STOP, 7 sin ejecutar.**
+
+### Donde paro y por que
+
+La parada la manda el pre-registro, seccion 7, clausula 5: si A12 encuentra una fuente con la tabla de salida, se para antes de publicar porque H4 cambia de contenido. El script obedecio y escribio solo `reports/p80_auditoria_w2v.json` con el motivo y el detalle minimo. **No se escribio** `reports/p80_auditoria_w2v.md` **ni ninguna figura**: `figuras/p80/` no llega a existir.
+
+Los siete candidatos de A12, y por que ninguno es una tabla de salida:
+
+```text
+4 npz   w2v_twitter.npz        W.npy  (77657, 200)
+        w2v_twitter_300d.npz   W.npy  (77657, 300)
+        w2v_twitter_lrfix.npz  W.npy  (77657, 200)
+        w2v_twitter_sgd.npz    W.npy  (77657, 200)
+3 json  p50_gap_and_oracle.json  matriz_observable/forma  (4449, 53)
+        p59_H_nmf_gap.json       medicion_de_equivalencia/matriz/forma  (4449, 21)
+        p74_null_replicado.json  auditoria_word2vec/shape  (77658, 100)
+```
+
+Los cuatro npz son las tablas de **entrada** `W` de **otras** corridas, y los cinco npz de `twitter_domain` tienen exactamente los mismos dos miembros, `W.npy` y `palabras.npy`. Ninguno guarda una tabla de salida. Los tres json son **claves de forma**: su valor es una lista de dos enteros que describe una forma, no un arreglo de pesos.
+
+El problema esta en el detector de A12, que empareja cualquier `.npz` con primera dimension `77657` **sin mirar la dimension** y cuenta como candidata cualquier clave de json que se llame `shape` o `forma`. Con esos dos criterios, las tablas de entrada de las corridas 200d y 300d y tres metadatos de forma dan falso positivo. **No se corrigio nada**: vuelve a ml-coder.
+
+### H2 en detalle, que es donde P79 fallo
+
+P79 clasifico juntos los dos bucles del scheduler de `p72_01` y declaro que no habia desfase. Si lo hay, y es de una epoca. Con `SEMILLA = 20261016` y `EPOCAS = 5` en `p71_04:62-64`:
+
+```text
+p72_01:92   for ep in range(m.EPOCAS):       ep = 0,1,2,3,4
+p72_01:93       r2 = np.random.default_rng(m.SEMILLA + ep)   semillas 20261016 .. 20261020
+p72_01:95       planes.append(c)                              el plan se construye con esas
+
+p72_01:99   for ep, _ in enumerate(planes, start=1):  ep = 1,2,3,4,5
+p72_01:101      r2 = np.random.default_rng(m.SEMILLA + ep)   semillas 20261017 .. 20261021
+p72_01:102      centros, contextos = cx["pares_de_epoca"](...)  el entrenamiento dibuja otros pares
+p72_01:103      o = r2.permutation(len(centros))               y ademas permuta
+```
+
+El bucle del plan y el del entrenamiento usan los dos una variable llamada `ep`, pero son bucles distintos con base distinta: `range(5)` empieza en 0 y `enumerate(..., start=1)` empieza en 1. Resultado: la semilla `20261016` se planifica y nunca se entrena, y la `20261021` se entrena y nunca se planifica. El total de lotes del scheduler sale del plan, luego el curriculum de `lr` esta calculado sobre una epoca que no es la que se ejecuta.
+
+A6, A7 y A8 quedaron **CONFIRMADO**, y el recorrido por AST con mapa de padres es lo que separa los dos bucles. P79 no los separo.
+
+### Estado de los siete hallazgos
+
+```text
+H1  CONFIRMADO     A1 A2 A3 A4 A5
+H2  CONFIRMADO     A6 A7 A8      el veredicto de P79 era incorrecto
+H3  CONFIRMADO     A9 A10        P79 comparaba pos + neg contra -(pos + neg)
+H4  SIN VEREDICTO  A11 CONFIRMADO, A12 STOP, A13 sin ejecutar
+H5  SIN VEREDICTO  A14 sin ejecutar
+H6  SIN VEREDICTO  A15 A16 sin ejecutar
+H7  SIN VEREDICTO  A17 A18 A19 sin ejecutar
+```
+
+Ningun hallazgo queda REFUTADO: A5 era la unica afirmacion marcada REFUTAR y tambien salio CONFIRMADO.
+
+### Fronteras respetadas
+
+```text
+test = 0   holdout = 0 identificadores deserializados   leaderboard = 0   submission = 0
+P71 a P79 sin tocar   V03 sin tocar   umbrales 0.44 / 0.51 / 0.46 sin tocar
+modelos/ sin escrituras   el congelado se abrio en solo lectura, con huella comprobada
+escrituras: reports/p80_auditoria_w2v.json, nada mas
+```
+
+El holdout se lee con una expresion regular sobre el texto y solo de tres claves: `n_tweets_dev`, `n_tweets_holdout` y `hash_ids_csv`. La lista de identificadores nunca llega a existir como objeto en memoria.
+
+### Estado
+
+P80 **queda inconclusa**: sin informe completo, sin markdown y sin figuras. Se devuelve a ml-coder el problema del detector de A12, que bloquea H4 a H7.
+
+```text
+V03 remains the best verified leaderboard result.
+```

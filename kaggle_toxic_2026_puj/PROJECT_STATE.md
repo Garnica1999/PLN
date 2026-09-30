@@ -1,3 +1,54 @@
+<!-- P80-PARADA-A12 2026-09-30 -->
+## P80: la auditoria Word2Vec se para en A12. H1 H2 H3 confirmados, H4 a H7 abiertos
+
+```text
+A1  CONFIRMADO   A2  CONFIRMADO   A3  CONFIRMADO   A4  CONFIRMADO   A5  CONFIRMADO
+A6  CONFIRMADO   A7  CONFIRMADO   A8  CONFIRMADO   A9  CONFIRMADO   A10 CONFIRMADO
+A11 CONFIRMADO   A12 PARADA       A13 a A19 sin ejecutar
+
+11 CONFIRMADO   0 REFUTADO   0 NO APLICABLE   1 STOP   7 sin ejecutar
+corrida de menos de 2 segundos, codigo de salida 1, sin entrenamiento y sin GPU
+```
+
+**La parada** la manda el pre-registro, seccion 7, clausula 5. A12 busco una tabla de salida en todos
+los `.npz` de `modelos/` y `features/` y en todas las claves de los `.json` de `reports/`, y salio
+con siete candidatos. Ninguno es una tabla de salida: cuatro son el `W` de **entrada** de otras
+corridas (77657 por 200 o 300) y tres son claves de forma, listas de dos enteros que describen una
+forma y no pesos. El detector empareja por primera dimension `77657` sin mirar la dimension, y
+cuenta cualquier clave `shape` o `forma`. No se corrigio nada. Vuelve a ml-coder.
+
+**H2 queda CONFIRMADO y el veredicto de P79 era erroneo.** El scheduler de `p72_01` planifica con
+`range(5)` y `SEMILLA + ep`, o sea 20261016 a 20261020, y entrena con `enumerate(planes, start=1)` y
+`SEMILLA + ep`, o sea 20261017 a 20261021. Los dos bucles se llaman `ep` y P79 los clasifico juntos.
+El desfase es de una epoca: 20261016 se planifica y no se entrena, 20261021 se entrena y no se
+planifica, y el curriculum de `lr` sale de un total de lotes que no es el real. Lineas `p72_01:92-95`
+contra `p72_01:99-103`, con `SEMILLA` y `EPOCAS` en `p71_04:62-64`.
+
+**H3 queda CONFIRMADO.** La identidad con el signo correcto se cumple con residuo 1.11e-16 y el
+control discriminante da 2.77, luego la asercion de P79 comparaba `pos + neg` contra `-(pos + neg)`
+y fallaba siempre sin informar de nada.
+
+```text
+H1  CONFIRMADO     A1 A2 A3 A4 A5
+H2  CONFIRMADO     A6 A7 A8
+H3  CONFIRMADO     A9 A10
+H4  SIN VEREDICTO  A11 CONFIRMADO, A12 PARADA, A13 sin ejecutar
+H5  SIN VEREDICTO  A14 sin ejecutar
+H6  SIN VEREDICTO  A15 A16 sin ejecutar
+H7  SIN VEREDICTO  A17 A18 A19 sin ejecutar
+
+P80 = INCONCLUSA  (sin informe completo, sin markdown, sin figuras)
+congelado 302c994d... intacto antes y despues      pre-registro 440ab13c... verificado
+```
+
+**Sin escrituras fuera de `reports/p80_auditoria_w2v.json`.** P71 a P79, V03, los umbrales 0.44 /
+0.51 / 0.46 y `modelos/` intactos. Test, holdout, leaderboard y submission siguen en cero.
+
+```text
+V03 remains the best verified leaderboard result.
+```
+<!-- /P80-PARADA-A12 2026-09-30 -->
+
 
 <!-- P78-CONTROL-ANIDADO 2026-09-30 -->
 ## P78: el embedding aporta, pero el tokenizer era el cuello de botella

@@ -1,0 +1,76 @@
+{
+  "familia": "P80_AUDITORIA_WORD2VEC",
+  "experiment_id": "P80-01",
+  "informe_completo": false,
+  "motivo_de_la_parada": "ha aparecido una fuente con la tabla de salida; H4 cambia de contenido y hay que parar antes de publicar",
+  "afirmacion_que_para": "A12",
+  "formulacion": "V03 remains the best verified leaderboard result.",
+  "nota": "una afirmacion con marca STOP ha fallado, luego NO se escribe el informe completo. Abajo va el detalle minimo que exige el pre-registro",
+  "detalle": {
+    "n_candidatos": 7,
+    "candidatos_npz": [
+      {
+        "ruta": "modelos/twitter_domain/w2v_twitter.npz",
+        "miembro": "W.npy",
+        "forma": [
+          77657,
+          200
+        ],
+        "dtype": "float32"
+      },
+      {
+        "ruta": "modelos/twitter_domain/w2v_twitter_300d.npz",
+        "miembro": "W.npy",
+        "forma": [
+          77657,
+          300
+        ],
+        "dtype": "float32"
+      },
+      {
+        "ruta": "modelos/twitter_domain/w2v_twitter_lrfix.npz",
+        "miembro": "W.npy",
+        "forma": [
+          77657,
+          200
+        ],
+        "dtype": "float32"
+      },
+      {
+        "ruta": "modelos/twitter_domain/w2v_twitter_sgd.npz",
+        "miembro": "W.npy",
+        "forma": [
+          77657,
+          200
+        ],
+        "dtype": "float32"
+      }
+    ],
+    "candidatos_json": [
+      {
+        "ruta": "reports/p50_gap_and_oracle.json/matriz_observable/forma",
+        "motivo": "clave de forma",
+        "forma": [
+          4449,
+          53
+        ]
+      },
+      {
+        "ruta": "reports/p59_H_nmf_gap.json/medicion_de_equivalencia/matriz/forma",
+        "motivo": "clave de forma",
+        "forma": [
+          4449,
+          21
+        ]
+      },
+      {
+        "ruta": "reports/p74_null_replicado.json/auditoria_word2vec/shape",
+        "motivo": "clave de forma",
+        "forma": [
+          77658,
+          100
+        ]
+      }
+    ]
+  }
+}
