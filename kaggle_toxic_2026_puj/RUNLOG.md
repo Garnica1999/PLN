@@ -3231,3 +3231,22 @@ V03 remains the best verified leaderboard result.
 ```
 
 Sin push, sin merge, sin rebase.
+
+### Ingesta en Graphiti (2026-09-30)
+- Grupo: `kaggle-toxic-2026-puj`. **7 episodios + 56 tripletas**, todos en ASCII puro.
+- El contenido se construyo en un fichero maestro y se valido byte a byte ANTES de enviarlo,
+  con el validador `validar_graphiti.py` que aborta si cualquier byte supera 127, si aparece
+  comilla tipografica, guion largo, zero-width o caracter de otro alfabeto. El validador
+  detecto dos veces que un nombre mio llevaba un caracter no ASCII y se corrigio antes de
+  enviar.
+- La ingesta se hizo **de forma secuencial** porque en paralelo Graphiti creaba nodos
+  duplicados del mismo nombre: tres UUID distintos para el mismo concepto. Ademas los
+  nombres conceptuales llevan prefijo `tema_` porque sin el, `compliance_p78` se resolvia
+  dentro de `P78` y producia un bucle.
+- Grafo final: **sin duplicados**. Un nodo por concepto, con las aristas tipadas.
+- Tipos de arista: OBSERVED, METHODOLOGICAL_ISSUE, LIMITATION, DECISION, CORRECTS,
+  REETIQUETED_AS, RESPECTS, VERIFIED, CONFIRMED, NOT_CONFIRMED, NOT_SUPERSEDING,
+  EXPLOITED_AS, HAS, SUPPORTED_BY, OBSERVED.
+- Cada `fact` lleva su provenance: fichero, commit y fecha. Eso hace que cualquier hecho
+  del grafo sea rastreable hasta su linea de codigo o su hash, sin depender de la memoria
+  de la sesion.
