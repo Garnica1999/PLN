@@ -38,7 +38,6 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from src import config as cfg  # noqa: E402
-from src import data as datos  # noqa: E402
 from src.verificacion_numerica import autotest_numerico  # noqa: E402
 
 FECHA = "2026-09-30"
@@ -605,19 +604,19 @@ def main() -> int:
             lote["combinador"][(familia, clave)] = comb
             lote["canal_solo"][(familia, clave)] = round(solo, 7)
             complementariedad(familia, clave, pred_cand, clase, champ_pred, conf, lote["filas_comp"])
-            for nombre, datos, condicion in (("real", r, "real"),
-                                             ("barajado", r_b, "barajado")):
+            for nombre, metricas, condicion in (("real", r, "real"),
+                                                ("barajado", r_b, "barajado")):
                 detalle = det if nombre == "real" else det_b
                 combo = comb if nombre == "real" else comb_b
                 lote["filas_csv"].append({
                     "familia": familia, "anotador": clave, "brazo": condicion,
-                    "corrected_cv": datos["corrected_cv"],
-                    "delta_vs_baseline": datos["delta_vs_baseline"],
-                    "delta_vs_nested": datos["delta_vs_nested"],
-                    "folds_positivos": datos["folds_positivos"],
-                    "folds": ";".join(f"{v:.6f}" for v in datos["folds"]),
-                    "ic95_lo": datos["ic95"][0], "ic95_hi": datos["ic95"][1],
-                    "filas_que_cambian": datos["filas_que_cambian"],
+                    "corrected_cv": metricas["corrected_cv"],
+                    "delta_vs_baseline": metricas["delta_vs_baseline"],
+                    "delta_vs_nested": metricas["delta_vs_nested"],
+                    "folds_positivos": metricas["folds_positivos"],
+                    "folds": ";".join(f"{v:.6f}" for v in metricas["folds"]),
+                    "ic95_lo": metricas["ic95"][0], "ic95_hi": metricas["ic95"][1],
+                    "filas_que_cambian": metricas["filas_que_cambian"],
                     "vocab_medio": round(float(np.mean(detalle["vocabularios"])), 0),
                     "segundos_canal": sum(detalle["segundos_por_fold"]),
                     "n_iter_medio": round(float(np.mean(detalle["n_iter_por_fold"])), 0),
@@ -625,8 +624,8 @@ def main() -> int:
                     "vacios": detalle["filas_vacias"],
                     "peso_bloque_canal_ratio": combo["peso_bloque_canal_ratio_media"],
                     "canal_solo": round(solo, 7) if nombre == "real" else "",
-                    "argmax_sin_regla": datos["argmax_sin_regla"],
-                    "pasa_gate": datos.get("pasa_gate", "")})
+                    "argmax_sin_regla": metricas["argmax_sin_regla"],
+                    "pasa_gate": metricas.get("pasa_gate", "")})
 
     lote["promising"] = any(r["pasa_gate"] for r in lote["brazos"].values())
     lote["serie"] = serie_previa()
