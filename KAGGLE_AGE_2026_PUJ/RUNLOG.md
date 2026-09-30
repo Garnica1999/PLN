@@ -2277,3 +2277,17 @@ intacto.
 - RSS pico 0.71 GB (tope 20); 32 hilos; duracion 21 s.
 - Sin particiones reservadas: sin evaluacion sobre la particion bloqueada del campeon, sin envio.
 - Artefactos: experiments/v33_01_ftrl_softmax_online.json | experiments/v33_01_estado.json | reports/v33_e1_ftrl_softmax_online.md | reports/figures/v33_e1_curvas.png | reports/v33_novelty_registry.csv | artifacts/p33_scores/v33_e1/a1_ftrl_softmax.npy | artifacts/p33_scores/v33_e1/a2_sgd_1p.npy.
+
+---
+
+## Pre-registro de V34-E1 (falsacion de la linea FTRL) · 2026-09-30
+
+- Exploracion metodologica previa versionada: 27 celdas, 0 bajo H(prior); mejor celda = uniforme
+  (1.7917638) y peor celda = 28.864 (firma de D-083); gemelo SGD sano = 0.1580395.
+- Congelado: alpha* = 2*ln(5)/(d_norm*P_max^2) con d_norm del prior MEDIDO del ES-train y P_max = 10 (ancla
+  D-083), forma cerrada con 0 valores evaluados; 10 pasadas con ES interno 90/10 sobre TRAIN (paciencia 2, minimo 3);
+  control SGD multi-pasada con enmienda pre-ejecucion del doble sesgo; puerta G0-G6 con G0 nuevo y anclas en el
+  prior medido; nodo nuevo LINEA_ONLINE_CERRADA_POR_MECANISMO con triage formal; sondas (a)-(j).
+- La falsacion se reproduce DENTRO del runner; las 27 celdas NO se repiten.
+- Baseline recomputado: 0.6159732; ancla trivial: 0.0485421218068709. Sin test, sin holdout,
+  sin submission, campeon intacto.
