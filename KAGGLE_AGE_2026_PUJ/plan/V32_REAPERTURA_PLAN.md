@@ -83,6 +83,47 @@ Objetivo del usuario: mejorar el puntaje de Kaggle; referencia declarada: acerca
 | 2026-09-30 | F3'' | V32-E3 ejecutado (755 s); NO_ATRIBUIBLE; P3 cerrada; reapertura TERMINA (D-083) | a008e45 |
 | 2026-09-30 | F4'' | notebook + docs + memorias | (commit de cierre) |
 
+## Ciclo 5 - V34: falsacion de la linea online con regla analitica de alpha (autorizado 2026-09-30)
+
+Carlos autorizo (opcion B) un diseno online NUEVO con regla analitica para `alpha`. `ml-architect`
+descubrio midiendo en /tmp que **no existe alpha sano**: con 21 celdas (alpha en [.0005,.5] x
+lambda2 en {.05,.2,1,1e-6} x power_t en {0,.25,.5,1} x L2 en acumulador o denominador) FTRL
+**nunca** baja de `H(prior) = 1.7915715`; el mejor caso da `ln 6` exacto (uniforme), mientras el
+gemelo sano con el mismo presupuesto da 0.1580. Causa: el punto fijo de FTRL es `w_j ~ alpha*sqrt(k)`
+(norma no acotada) frente al `w_j` acotado de SGD con schedule `1/(alpha*(t0+t))`. Por tanto **V34 es
+una FALSACION con la forma mas fuerte de la hipotesis, no un intento de mejora**: su valor es
+cerrar la linea con evidencia y no gastar mas gates de delta (P(delta >= +0.0015) = 3 %).
+
+- [x] **F1'''' Investigacion, arquitectura y compliance**: `ml-architect` congelo el diseno (regla
+  de alpha en forma cerrada, presupuesto multi-pasada con ES interno, control gemelo, puerta G0-G6
+  y nodo nuevo de cierre por mecanismo) y refute con medicion las otras tres reglas candidatas
+  (calibracion de la razon |sigma*w|/|g| -> la razon es casi independiente de alpha, luego no
+  ordena alphas; riego efectivo -> zona de colapso; power_t -> nunca bajo el prior).
+  `kaggle-specialist` = **LEGAL con condiciones** (d_norm y T sobre el subconjunto ES-train;
+  anclas con unidad/fuente/sensibilidad; las 21 celdas se declaran como exploracion metodologica
+  previa y NO se repiten; la falsacion se reproduce DENTRO del script; el nodo de cierre exige
+  triage formal y lista exhaustiva de la familia; tabla de simetria de sesgo verificada por sonda;
+  cierre sostenido en A1 vs la derivacion, no en A1 vs A2; firma de Carlos antes de ejecutar).
+
+- [ ] **F2'''' Pre-registro + implementacion + revision**: pre-registro congelado (JSON + MD + puerta
+  G0-G6 normativa), `ml-coder`, `ml-reviewer`, `ml-qa-engineer` (GO/NO-GO). Scripts previstos:
+  `v34_00_preregistro.py` y `v34_01_ftrl_softmax_multipasada.py`; artefactos en rutas **nuevas**
+  (`artifacts/p34_scores/v34_e1/`, `checkpoints/v34_e1/`), sin tocar `p33_scores/todos` ni `v33_01`.
+
+- [ ] **F3'''' Ejecucion + puerta + gates**: `ml-trainer`; coste medido ~590 s (presupuesto declarado
+  1200 s); RSS esperado < 1.5 GB; sin integracion si la puerta falla.
+
+- [ ] **F4'''' Cierre**: acta **D-085** con triage formal, tabla de las 21 celdas y su lectura,
+  anclas con sensibilidad, tabla de simetria de sesgo, estado de sondas (a)-(i), lista de miembros de
+  familia cubiertos y NO cubiertos, y confirmacion de que no se toco el campeon ni los artefactos
+  previos; notebook, docs, registros de novedad, memorias y commits.
+
+Regla de alpha propuesta (a congelar): `alpha* = 2*M/(d_norm * P_max^2)` con `M = ln(K-1) = ln5 =
+1.6094379124341003` (constante DECLARADA), `d_norm = sqrt(1 - sum_c prior_c^2)` del prior MEDIDO del
+subconjunto ES-train, y `P_max = 10` (ancla: el presupuesto con el que el gemelo SGD de D-083
+aprendio) -> `alpha* = 0.0352631` en el fold 0, con reproducibilidad verificada en runtime (error 0 +
+sha256) antes de entrenar.
+
 ## Ciclo 4 - V33: combinacion autorizada (diseno online corregido + linea de otra magnitud)
 
 Carlos autoriza combinar la opcion 2 (P3b: diseno online corregido, con semantica online real
