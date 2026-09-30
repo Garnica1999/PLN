@@ -1,0 +1,48 @@
+{
+  "fase": "D-076 resolucion de legalidad",
+  "fecha": "2026-09-29",
+  "commit": "2d7fc44fb497abc993c7fef7e7dfc75da59c5b4a",
+  "decision": "lectura A: etiquetas si, vectores no; condiciones D-076",
+  "modelos": {
+    "es_core_news_md": {
+      "recurso": "es_core_news_md",
+      "version": "3.8.0",
+      "idioma": "es",
+      "licencia": "GNU GPL 3.0",
+      "fecha_alta": "2026-08-19",
+      "sha256": "889a2fd05d217fa7c1bcffa867af7fc30911bc7b48523f87b5b2525846553ef5",
+      "componentes": [
+        "tok2vec",
+        "morphologizer",
+        "parser",
+        "attribute_ruler",
+        "lemmatizer",
+        "ner"
+      ],
+      "tamano_mb": 54.4
+    },
+    "es_core_news_lg": {
+      "recurso": "es_core_news_lg",
+      "version": "3.8.0",
+      "idioma": "es",
+      "licencia": "GNU GPL 3.0",
+      "fecha_alta": "2026-09-29",
+      "sha256": "5007184c49f3cf23f50a902e8e4707877887be91c5c10fa05524276ed6a0f0e4",
+      "componentes": [
+        "tok2vec",
+        "morphologizer",
+        "parser",
+        "attribute_ruler",
+        "lemmatizer",
+        "ner"
+      ],
+      "tamano_mb": 631.2
+    }
+  },
+  "p2_habilitado": true,
+  "pre_requisito": "pre-registro del diseno de P2 antes de ejecutar",
+  "sin_test": true,
+  "sin_holdout": true,
+  "sin_submission": true,
+  "segundos": 3.2
+}

@@ -2713,3 +2713,34 @@ No se usa el 0,63575 para optimizar pesos, crear variantes, seleccionar semillas
   `reports/linguistic_enrichment_gap_analysis.csv`, `reports/age_linguistic_legality_audit.md`,
   `reports/linguistic_annotation_registry.csv`, `references/age_rules_capture_2026-09-29.md`,
   `experiments/age_linguistic_p0p1_gap_y_legalidad.json`. Sin test, sin holdout, sin submission.
+
+---
+
+## D-076 - Resolucion de legalidad: el anotador se AUTORIZA (etiquetas si, vectores no) y se compara con es_core_news_lg
+
+- **Observation**: la auditoria P1 dejo el anotador `es_core_news_md` en AMBIGUOUS (D-075):
+  conflicto interno entre D-001/D-026/D-043 (autorizado) y V31 (cuarentena), mas el hecho de que
+  su tok2vec consulta vectores estaticos internamente. Carlos resuelve el 2026-09-29 eligiendo la
+  lectura A, y manda ademas comparar con un modelo mayor en espanol.
+
+- **Decision** (extiende D-001/D-026/D-043 a esta fase):
+  - El anotador se usa **SOLO por sus etiquetas** (POS, morfologia, dependencias, entidades):
+    son forma, no vectores. `doc.vector`, similitudes y cualquier embedding como representacion
+    siguen PROHIBITED.
+  - **Condiciones obligatorias**: (1) procedencia registrada (modelo, version, idioma, licencia,
+    fecha, SHA256); (2) solo etiquetas; (3) control de barajado en todo experimento que aspire a
+    gate; (4) ablacion sin canal en cualquier resultado que aspire a gate; (5) ninguna submission
+    sale de esta via sin gate completo, segunda particion y autorizacion explicita de Carlos;
+    (6) el candidato adoptado (V30 + plug-in, FINAL_REFERENCE) permanece intacto.
+  - **Segundo anotador**: `es_core_news_lg` (misma familia no-transformer, modelo mayor) para
+    comparar cobertura, acuerdo y efecto del canal. Ambos quedan en el registro de anotadores.
+
+- **Consequences**: P2 queda HABILITADO con el pre-requisito de pre-registrar su diseno. La
+  anotacion de train (determinista, sin etiquetas) se guarda en `features/linguistic/` con hash
+  en `experiments/age_linguistic_01_anotacion.json`. La lectura B queda documentada como
+  alternativa no adoptada. Ningun resultado puede desplazar al candidato adoptado sin gates
+  completos.
+
+- **Evidence**: `reports/linguistic_annotation_registry.csv` (actualizado),
+  `reports/age_linguistic_legality_audit.md` (seccion Resolucion),
+  `experiments/age_linguistic_resolucion.json`.

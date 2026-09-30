@@ -1149,3 +1149,12 @@ Reglas especificas capturadas: `references/age_rules_capture_2026-09-29.md`.
 Artefactos: `reports/linguistic_enrichment_gap_analysis.{md,csv}`,
 `reports/age_linguistic_legality_audit.md`, `reports/linguistic_annotation_registry.csv`.
 Sin test, sin holdout, sin submissions.
+
+---
+
+## Resolucion de legalidad (D-076, 2026-09-29)
+
+El anotador queda **AUTORIZADO condicionalmente** (etiquetas si, vectores no) con las seis
+condiciones de D-076, y se anade `es_core_news_lg` como modelo de comparacion. P2 (POS
+estructurado) queda habilitado con pre-registro previo. El candidato adoptado (V30 + plug-in,
+LB 0,63575) permanece como FINAL_REFERENCE.

@@ -2084,3 +2084,14 @@ intacto.
   D-001/D-043 vs V31 + uso interno de vectores estaticos).
 - **P2 gateado**: no se ejecuta hasta resolver la clasificacion del anotador (opciones A/B/C
   elevadas a Carlos). Sin test, sin holdout, sin submission, sin tocar el candidato adoptado.
+
+---
+
+## Resolucion de legalidad del anotador (D-076) · 2026-09-29
+
+- Carlos resuelve la ambiguedad por la lectura A: **etiquetas si, vectores no**, con seis
+  condiciones (procedencia, solo etiquetas, control de barajado, ablacion sin canal, submission
+  gateada, candidato adoptado intacto).
+- Se anade `es_core_news_lg` (modelo mayor, no-transformer) como segundo anotador de comparacion.
+- Registro de anotadores actualizado con ambos modelos y su procedencia.
+- **P2 habilitado** con pre-registro previo. Sin test, sin holdout, sin submission.

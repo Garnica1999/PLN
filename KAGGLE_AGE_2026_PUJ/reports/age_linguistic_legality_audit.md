@@ -2,6 +2,8 @@
 
 **Clasificacion del anotador `es_core_news_md`: AMBIGUOUS. Estado: P2 gateado.**
 
+**Actualizacion (D-076, 2026-09-29): RESUELTO. El anotador queda ALLOWED (condicional). Ver la seccion Resolucion al final.**
+
 ## Objeto
 
 Antes de usar spaCy, Stanza, UDPipe, Flair u otra herramienta linguistica externa hay que
@@ -92,3 +94,22 @@ desde 2026-08-19; el hash de `meta.json` coincide con el registrado en V14.
 | llamadas de red en la fase | 0 (la consulta a la pagina publica de reglas es lectura de reglamento, no de datos) |
 | uso de transformers/LLMs/embeddings | 0 |
 | scripts con firmas de secuencias tipadas | 0 |
+
+## Resolucion (D-076, 2026-09-29)
+
+Carlos resolvio la ambiguedad por la **lectura A** y mando anadir un modelo mayor para
+comparaciones. Clasificacion final de los anotadores:
+
+| Recurso | Clasificacion final | Condiciones |
+|---|---|---|
+| es_core_news_md | **ALLOWED (condicional)** | solo etiquetas; procedencia; control de barajado; ablacion sin canal; submission gateada |
+| es_core_news_lg | **ALLOWED (condicional)** | identicas; ademas es el modelo de comparacion pedido |
+
+Las seis condiciones de D-076 son obligatorias. La lectura B (estricta, "ningun modelo
+preentrenado con vectores en ningun paso") queda documentada arriba como alternativa no
+adoptada. La ambiguedad queda resuelta por decision del participante, con el mismo mecanismo
+que D-001/D-026/D-043.
+
+**Habilitacion**: P2 (POS estructurado) queda habilitado con el pre-requisito de pre-registrar
+su diseno. La anotacion de train con ambos modelos se construye como artefacto derivado
+(`features/linguistic/`), determinista y sin etiquetas, con hash en el manifiesto.
