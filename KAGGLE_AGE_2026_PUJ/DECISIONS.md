@@ -2975,3 +2975,96 @@ No se usa el 0,63575 para optimizar pesos, crear variantes, seleccionar semillas
   `reports/figures/v32_p3_curvas.png`, `reports/v32_p3_preregistro.md`,
   `experiments/v32_04_preregistro_ftrl.json`, `scripts/v32_04_preregistro_ftrl.py`,
   `scripts/v32_05_ftrl_challenger.py`.
+---
+
+## D-085 - V34-E1: la familia FTRL-Proximal queda CERRADA POR MECANISMO (no por gates de delta)
+
+- **Observation**: primer (y unico) experimento del expediente **V34**, autorizado y firmado por
+  Carlos el 2026-09-30 con la opcion "diseno online nuevo con regla analitica para alpha". Su
+  caracter, desde el principio, fue el de una **FALSACION con la forma mas fuerte de la
+  hipotesis**, no un intento de mejora. Diseno congelado (`9e862d1`): FTRL-Proximal softmax
+  multiclase K=6 multi-pasada (`P_max` = 10, ES interno 90/10 **sobre filas de TRAIN**,
+  `P_min` = 3, paciencia 2, restauracion del mejor `w`) con **`alpha*` DERIVADO en forma cerrada**
+  `2*M/(d_norm*P_max^2)`, `M = ln(K-1) = ln 5 = 1.6094379124341003` (constante DECLARADA, con su
+  sensibilidad lineal), `d_norm = sqrt(1 - sum_c prior_c^2)` del prior **MEDIDO** del ES-train y
+  `P_max` = 10 como ancla de D-083 con doble papel (unico grado de libertad). Control gemelo
+  `SGDClassifier(log_loss, alpha=1e-6, learning_rate="optimal", shuffle=False, fit_intercept=True)`
+  con `partial_fit` x 10. Puerta **G0-G6 fail-fast** en el fold 0, aplicada a ambos brazos, con
+  anclas **medidas**: el techo de G1 y la banda de G4 salen del prior del ES-train, no de `ln 6` ni
+  de un `[0.10, 0.30]` arbitrario.
+- **Evidencia previa y por que la falsacion era la forma fuerte**: la exploracion metodologica
+  previa (`scripts/v34_00b_exploracion_alpha.py`, sha256 `9d898ab8...`, versionada como artefacto
+  trazable con semilla, config y presupuesto: 30.000 filas de fold-train del fold 0 x 10 pasadas,
+  solo `ll_train`, sin seleccion) ejecuto **27 celdas** y **0 de 27 bajan de `H(prior)` = 1.7914537**;
+  la mejor celda (alpha 0.176316, lambda2 1.0, power_t 1.0, L2 en denominador) termina en
+  1.7917638, es decir `ln 6` + 4.3e-6: **uniforme, cero aprendizaje**; la peor (alpha 0.08,
+  power_t 0.0) reproduce la firma de colapso de D-083 (6.62 -> 28.86). El gemelo sano con el mismo
+  presupuesto llega a 0.1580395: **el presupuesto no era el limite**.
+- **Correcciones PRE-EJECUCION registradas**: (1) la banda de G1, en V33-E1; (2) el control A2
+  paso de `fit(max_iter=10)` a `partial_fit` x 10 porque `BaseSGDClassifier._fit` hace
+  `self.t_ = 1.0` en cada llamada y `fit(max_iter=1, warm_start=True)` repetido deja el schedule en
+  `t_ = 401` en vez de `4001` (medido por el implementador), con la desviacion bit-a-bit frente a
+  `fit(max_iter=10)` declarada; (3) el `token_pattern` del vectorizador se restauro a la receta
+  canonica de `v31_02` (mi pre-registro lo congelo con un typo de dobles backslashes: sha256
+  `33311e5e` en lugar del canonico `9bae1576`).
+- **Auditoria previa a la corrida**: `ml-reviewer` (cuatro rondas, **APROBADO**) verifico el nucleo
+  con una tercera implementacion independiente (max|delta w| = 4.663e-15 frente a la tolerancia
+  1e-12, con `z`, `n` y `t` identicos), midio `t_ = 4001` con `partial_fit` x 10 y `t_ = 401` con
+  `fit` repetido, y ejecuto los cuatro caminos de cierre con las ocho salidas cada uno.
+  `ml-qa-engineer` (dos rondas, **GO**) cazo un **bloqueante real**: la comprehension que
+  registraba `estado["sondas"]` pedia la clave `"pass"` a las diez sondas, pero (j) -la tabla de
+  mecanismo- no es pass/fail, de modo que la corrida real moria con `KeyError` justo despues de
+  escribir el estado (ruta que `--verificar` no alcanza). En total **11 bugs reales** se cazaron
+  antes de ejecutar: dos en el nucleo FTRL de V33 (matmul incompatible, `sum(axis=1)` que reducia
+  las clases), `KeyError` de `control_atribucion`, typo `verdicto`, sonda `None` y `KeyError` de
+  `caps` en el cierre por puerta, **triage invertido** que hacia el nodo de mecanismo
+  INALCANZABLE, G4 con fallback silencioso al prior uniforme, invariante tautologica dentro de
+  `sin_leakage`, auditoria de literales de modulo que era un no-op, y el `KeyError` de `pass` de
+  arriba.
+- **Result**: exit 0 en **51.4 s** (presupuesto 1200 s), RSS pico 0.685 GB, sondas (a)-(j) pass,
+  `artifacts/p33_scores/todos` intacto (sha256 `8881a9f5...`), sin submission. Con
+  `alpha* = 0.035262336465737745` (`d_norm` = 0.9128367962785974, `H(prior)_ES` =
+  1.7915714394468476) la puerta **FALLA en el fold 0**:
+  - **A1** (FTRL) falla **G0** (`D_acum` 12.106 -> 18.497 -> 23.195 frente a la banda [0.805,
+    3.219]), **G1** (`ll_train` 10.0863 -> 15.4206 -> 19.1744 contra el techo 1.7816: **divergencia
+    mononica, la firma de D-083**), **G2** (0 mejoras en las primeras 3 pasadas), **G3** (macro-F1
+    en ES-val 0.046077, plano y por debajo de la linea base trivial 0.048542) y **G4** (frecuencias
+    [0, 0, 0, 0, 0, 1], colapso total a una clase); pasa G5 (0.0 exacto) y G6 (2.22e-16). La razon
+    `|sigma*w|/|g|` sube de 0.151 a 0.220 y `w_max_abs` de 6.607 a 12.504.
+  - **A2** (gemelo SGD con `partial_fit` x 10) pasa **las siete**: `ll_train` 1.0622 -> 0.4042
+    (descendente), `D_acum` 9.009 -> 5.255, macro-F1 0.4507 -> 0.4943 y frecuencias ~0.15-0.19
+    **sobre el prior medido** (sha256 `bc9e6d30`): el presupuesto **no** es el limite.
+  - **Triage formal**: D1-D8 los ocho en verde (sondas, sesgo unico por brazo, presupuesto no
+    truncado, ES bien configurado, determinismo exacto, `alpha*` reproducible, sin segundo alpha ni
+    fallback) -> `MECANISMO_DEFINITIVO`, con la tabla de mecanismo **publicada dentro del runner**
+    -> `nodo_concedido = True`.
+- **Decision**: veredicto **`LINEA_ONLINE_CERRADA_POR_MECANISMO`**: cierre de **FAMILIA**, no un gate
+  de delta. La integracion y el bootstrap **no se ejecutan** (el pre-registro los prohibe tras el
+  fallo de la puerta) y `delta` y `bootstrap` quedan **vacios con motivo** en el informe y en
+  `reports/age_complete_experiment_history.csv`. Sin segunda particion, sin submission; el campeon
+  **V30 + plug-in** (LB 0.63575) permanece intacto.
+- **Consequences**: (i) la linea de aprendizaje online con FTRL-Proximal queda **cerrada por
+  mecanismo en esta representacion** (TF-IDF L2-normalizada, 6 clases). Las tres evidencias
+  concordan: con `alpha` pequeno (V33-E1) el entrenamiento queda **inerte**; con la regla de margen
+  (V34-E1) **divergencia**; y la exploracion mostro que ningun alpha sano existe. El punto fijo
+  `w_j ~ alpha*sqrt(k)` tiene norma **no acotada**, de modo que `alpha` reescala una direccion sin
+  cota y no hay punto de operacion estable en este problema; (ii) el defecto de **doble sesgo** que
+  contaminaba al control en D-083 y V33-E1 queda **corregido y medido** (un solo camino por brazo,
+  razon A1/A2 = 0.2897, `doble_sesgo = False`); (iii) el cierre es **one-shot**: reabrir la familia
+  exige acta nueva con hipotesis mecanica nueva, no otro gate, y los miembros **NO CUBIERTOS**
+  (`lambda1 > 0` y la variante con pesos por clase y L2 normalizado fuera de FTRL) quedan
+  declarados como tales, de modo que "cerrada" no significa "agotada" en todo el espacio de FTRL;
+  (iv) limite declarado: la auditoria de literales a nivel de modulo admite los nombres sueltos que
+  luego se componen con una raiz declarada, luego no ve una cadena `BinOp` con un nombre fuera de
+  lista (sin fuga activa: cuerpos de funcion estrictos, particiones reservadas cazadas por el
+  AST, corpus con hash de contenido y chequeo en runtime de `cfg.TRAIN_FILE`).
+- **Evidence**: `experiments/v34_01_ftrl_softmax_multipasada.json`, `experiments/v34_01_estado.json`,
+  `checkpoints/v34_e1/fold0_{A1_ftrl_multipasada,A2_sgd_multipasada}.npz`,
+  `artifacts/p34_scores/v34_e1/` (OOF parcial de un fold, documentado),
+  `reports/v34_e1_ftrl_multipasada.md`, `reports/figures/v34_e1_curvas.png`,
+  `reports/v34_convergence_gate.md`, `reports/v34_preregistro.md`,
+  `reports/v34_exploracion_alpha.md`, `reports/v34_novelty_registry.csv`,
+  `experiments/v34_00_preregistro.json`, `experiments/v34_00b_exploracion_alpha.json`,
+  `scripts/v34_00_preregistro.py`, `scripts/v33_00b_enmienda_preregistro.py`,
+  `scripts/v34_00b_exploracion_alpha.py`, `scripts/v34_00d_enmienda_preregistro.py`,
+  `scripts/v34_00e_enmienda_preregistro.py`, `scripts/v34_01_ftrl_softmax_multipasada.py`.

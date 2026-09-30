@@ -1260,3 +1260,28 @@ LB 0,63575) permanece como FINAL_REFERENCE.
   `ml-qa-engineer` (nucleo FTRL, `KeyError` de control, typo `verdicto`, sonda `None`, `caps`,
   asserts), mas dos enmiendas pre-ejecucion del protocolo y la correccion del documento normativo
   de la puerta.
+
+---
+
+## V34-E1: la familia FTRL-Proximal CERRADA POR MECANISMO (2026-09-30)
+
+- Unico experimento de V34 y **FALSACION**, no mejora: FTRL-Proximal softmax multiclase con
+  `alpha*` **derivado en forma cerrada** (`2*ln(5)/(d_norm*P_max^2)`), 10 pasadas con early stopping
+  interno sobre filas de TRAIN, control gemelo SGD con `partial_fit` x 10, y puerta **G0-G6**
+  fail-fast con anclas **medidas** (techo de G1 y banda de G4 desde el prior del ES-train).
+- **51.4 s** de CPU (presupuesto 1200 s), RSS 0.685 GB. La puerta **cortó en el fold 0**: A1 falla
+  G0-G4 (`ll_train` 10.09 -> 15.42 -> 19.17, es decir **divergencia monónica**; `D_acum` hasta 23.2;
+  macro-F1 0.046 plano bajo el trivial 0.0485; frecuencias [0,0,0,0,0,1]) mientras **A2 pasa las
+  siete** (`ll_train` 1.0622 -> 0.4042, macro-F1 0.4943): el presupuesto **no** era el límite.
+- **Triage formal D1-D8 en verde** -> `MECANISMO_DEFINITIVO` y veredicto
+  **`LINEA_ONLINE_CERRADA_POR_MECANISMO`**: cierre de **familia**, no un gate de delta. Sin
+  integracion, sin bootstrap y con `delta` vacio; sin segunda particion ni submission.
+- El defecto de **doble sesgo** que contaminaba al control en D-083 y V33-E1 queda corregido y
+  medido (un solo camino de sesgo por brazo; `doble_sesgo = False`).
+- Cerrada la linea: junto a V33-E1 (inerte con `alpha` pequeno) y a las 27 celdas de la exploracion
+  previa (0 de 27 bajan del prior), la evidencia sostiene que **FTRL-Proximal no tiene un punto de
+  operacion estable** sobre TF-IDF L2-normalizada en este problema. Reabrir exige acta nueva con
+  hipotesis mecanica nueva (**one-shot**), y los miembros **NO CUBIERTOS** (`lambda1 > 0` y pesos
+  por clase con L2 normalizado fuera de FTRL) quedan declarados como tales.
+- Campeon **V30 + plug-in (LB 0.63575) intacto**; sin test, sin holdout, sin leaderboard, sin
+  submission.
