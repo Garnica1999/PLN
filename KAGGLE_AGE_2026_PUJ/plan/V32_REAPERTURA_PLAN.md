@@ -110,8 +110,18 @@ cerrar la linea con evidencia y no gastar mas gates de delta (P(delta >= +0.0015
   `v34_00_preregistro.py` y `v34_01_ftrl_softmax_multipasada.py`; artefactos en rutas **nuevas**
   (`artifacts/p34_scores/v34_e1/`, `checkpoints/v34_e1/`), sin tocar `p33_scores/todos` ni `v33_01`.
 
-- [ ] **F3'''' Ejecucion + puerta + gates**: `ml-trainer`; coste medido ~590 s (presupuesto declarado
-  1200 s); RSS esperado < 1.5 GB; sin integracion si la puerta falla.
+- [x] **F3'''' Ejecucion + puerta + gates**: ejecutado en CPU (exit 0; **51.4 s** del presupuesto
+  1200 s; RSS pico 0.685 GB; sondas (a)-(j) pass; `p33_scores/todos` intacto). **Veredicto
+  `LINEA_ONLINE_CERRADA_POR_MECANISMO`**: la puerta G0-G6 corto en el fold 0 con
+  `alpha* = 0.035262336` (derivado; `d_norm` 0.9128368 del prior MEDIDO; `H(prior)_ES`
+  1.7915714). A1 falla G0 (D_acum 23.195 frente a la banda [0.805, 3.219]), G1 (ll_train
+  19.174 > 1.7816), G2 (0 mejoras en 3 pasadas), G3 (macro-F1 0.04607 < 0.30 y < trivial
+  0.04854) y G4 (frecuencias [0,0,0,0,0,1]); pasa G5 (0.0 exacto) y G6 (2.22e-16). **A2 pasa
+  las siete** (ll_train 1.0622 -> 0.4042, macro-F1 ES 0.4943, frecuencias ~0.15-0.19 sobre el
+  prior medido), luego el presupuesto **no** es el limite. Triage formal D1-D8 los 8 en
+  verde -> `MECANISMO_DEFINITIVO`, tabla de mecanismo publicada dentro del runner,
+  `nodo_concedido=True`. Sin integracion, sin bootstrap y con `delta` vacio en informe e
+  historial; sin segunda particion ni submission; campeon intacto.
 
 - [ ] **F4'''' Cierre**: acta **D-085** con triage formal, tabla de las 21 celdas y su lectura,
   anclas con sensibilidad, tabla de simetria de sesgo, estado de sondas (a)-(i), lista de miembros de

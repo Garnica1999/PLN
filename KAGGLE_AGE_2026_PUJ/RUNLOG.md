@@ -2308,3 +2308,18 @@ intacto.
 - `token_pattern` del vectorizador restaurado a la receta canonica de v31_02 (el pre-registro de V34 lo
   congelo con un typo de dobles backslashes); sha256 del dict: 33311e5e -> 9bae1576 (canonico). Detectado por el check
   de no-deriva del runner. Sin resultados.
+
+
+---
+
+## V34-E1 ejecutado: FTRL-Proximal softmax multiclase multi-pasada - 2026-09-30
+
+- Veredicto: LINEA_ONLINE_CERRADA_POR_MECANISMO (triage: MECANISMO_DEFINITIVO, nodo concedido True).
+- Motivo de no calculo: la puerta G0-G6 se cerro en el fold 0 (pasa = False, brazos con gates fallidos: {'A1_ftrl_multipasada': ['G0_objetivo_de_la_regla', 'G1_banda_ll_train', 'G2_progreso', 'G3_macro_f1_fold_val', 'G4_frecuencias'], 'A2_sgd_multipasada': []}); el pre-registro prohibe integrar y hacer bootstrap: delta y bootstrap quedan VACIOS
+- Puerta G0-G6 en el fold 0 (consumido-diagnostico): pasa = False; brazos con gates fallidos: {'A1_ftrl_multipasada': ['G0_objetivo_de_la_regla', 'G1_banda_ll_train', 'G2_progreso', 'G3_macro_f1_fold_val', 'G4_frecuencias'], 'A2_sgd_multipasada': []}.
+- Tabla de simetria de sesgo: UN solo camino por brazo; A1 coordenada x0 = 1.0, A2 solo intercept_ (doble sesgo de D-083 y V33-E1 corregido).
+- Enmienda 2 aplicada: el control A2 se ajusta con partial_fit x 10 sobre los ordenes congelados (no fit(max_iter=10)), con desviacion declarada en el informe.
+- Baseline recomputado 0.6159732; ancla trivial 0.04854212180687087 reproducida; sondas (a)-(j) publicadas.
+- RSS pico 0.68 GB (tope 20); 32 hilos; duracion 51 s.
+- Sin particiones reservadas: sin evaluacion sobre la particion bloqueada del campeon, sin envio.
+- Artefactos: experiments/v34_01_ftrl_softmax_multipasada.json | experiments/v34_01_estado.json | reports/v34_e1_ftrl_multipasada.md | reports/figures/v34_e1_curvas.png | reports/v34_novelty_registry.csv | artifacts/p34_scores/v34_e1/a1_ftrl_multipasada.npy | artifacts/p34_scores/v34_e1/a2_sgd_multipasada.npy.
