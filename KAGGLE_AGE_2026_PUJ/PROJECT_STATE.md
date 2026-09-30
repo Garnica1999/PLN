@@ -1218,3 +1218,20 @@ LB 0,63575) permanece como FINAL_REFERENCE.
   control A1 vs A2 no favorable. Sin segunda particion (D-082).
 - Lista priorizada de la reapertura agotada; P3 (FTRL) solo con autorizacion. Sin test, sin
   holdout, sin submission; campeon intacto.
+
+---
+
+## V32-E3 ejecutado: FTRL-Proximal NO_ATRIBUIBLE; la reapertura V32 TERMINA (2026-09-30)
+
+- Tercer y ultimo candidato (P3): FTRL-Proximal propio (McMahan 2013) sobre TF-IDF ajustada
+  por fold; gemelo SGD como control de atribucion; control negativo barajado. Pre-registro
+  congelado con la auditoria del `data_hash` canonico (hash de punteros, no reproducible) y
+  `vowpalwabbit` disponible pero NO usado. Verificado por `ml-reviewer` (3 correcciones) y
+  `ml-qa-engineer` (GO). Ejecucion 755 s; RSS 0.87 GB; determinismo exacto; sondas pass.
+- Resultado: **NO_ATRIBUIBLE** (A3 == A1 por precedencia, -0.0011973). El brazo FTRL
+  **degenero**: standalone 0.040169 (bajo la linea base trivial 0.048542), p plana, log_loss
+  OvR 1.7921; la regla de fallback pre-registrada se activo (alpha 0.05 -> 0.005) y no mejoro.
+  El gemelo SGD si aprendo (0.493479) pero con delta integrado -0.0017002 (0/5).
+- **La reapertura V32 queda TERMINADA** con tres candidatos medidos: P1 NO_ATRIBUIBLE (D-081),
+  P2 CLOSED (D-082), P3 NO_ATRIBUIBLE (D-083). Campeon V30 + plug-in (LB 0.63575) intacto;
+  sin test, sin holdout, sin leaderboard, sin submission.

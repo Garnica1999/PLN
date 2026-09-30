@@ -1,7 +1,9 @@
 # V32 - Plan de reapertura: optimizacion del puntaje (2026-09-30)
 
-Estado global: reapertura V32 con **P1 cerrada (NO_ATRIBUIBLE, D-081)** y **P2 cerrada (CLOSED,
-D-082)**; **P3 (FTRL-Proximal) autorizado y EN EJECUCION**; campeon V30 + plug-in intacto.
+Estado global: **reapertura V32 TERMINADA** con tres candidatos medidos: P1 NO_ATRIBUIBLE
+(D-081), P2 CLOSED (D-082), P3 NO_ATRIBUIBLE (D-083). Campeon V30 + plug-in (LB 0.63575)
+intacto; sin submission. Cualquier reintento (p.ej. un diseno online de una pasada corregido)
+exige pre-registro nuevo.
 Campeon congelado (FINAL_REFERENCE): **V30 + plug-in por clase**, LB 0.63575
 (CV global 0.6159732; nested 0.6154643; particion canonica).
 Objetivo del usuario: mejorar el puntaje de Kaggle; referencia declarada: acercarse a 0.70 de F1.
@@ -75,7 +77,10 @@ Objetivo del usuario: mejorar el puntaje de Kaggle; referencia declarada: acerca
 | 2026-09-30 | F2' | pre-registro + enmienda pre-ejecucion 1 + runner verificado (QA 7/7) | e31623f / f0bf731 / c38b8c7 |
 | 2026-09-30 | F3' | V32-E2 ejecutado (1149 s); CLOSED; sin segunda particion (D-082) | b6902ed |
 | 2026-09-30 | F4' | notebook (313 celdas) + docs + memorias | db69ed0 |
-| 2026-09-30 | F1'' | ciclo 3 autorizado: P3 FTRL-Proximal (arquitectura + novedad) | (este commit) |
+| 2026-09-30 | F1'' | ciclo 3 autorizado: P3 FTRL-Proximal (arquitectura + novedad) | 15c2be8 |
+| 2026-09-30 | F2'' | pre-registro congelado + runner verificado (QA GO; auditoria del data_hash) | 7fcf499 / ee90975 |
+| 2026-09-30 | F3'' | V32-E3 ejecutado (755 s); NO_ATRIBUIBLE; P3 cerrada; reapertura TERMINA (D-083) | a008e45 |
+| 2026-09-30 | F4'' | notebook + docs + memorias | (commit de cierre) |
 
 ## Ciclo 2 - P2 CatBoost sobre matriz_279 (abierto 2026-09-30)
 
@@ -136,7 +141,16 @@ compliance de los ciclos previos. Scripts previstos: `v32_04_preregistro_ftrl.py
   AST audit ampliado a modulos importados; mas 3 cosmeticas); `ml-qa-engineer` = GO con
   observaciones (54 checks; `--verificar` sin efectos secundarios; caps, precedencias,
   reanudacion y AST audit probados con harness sintetico en /tmp).
-- [ ] **F3'' Entrenamiento y evaluacion**: `ml-trainer`; gates; arbol (PROMISING -> segunda
-  particion; MARGINAL/CLOSED -> cierre documentado). Con cierre, la reapertura termina.
-- [ ] **F4'' Cierre**: notebook (seccion del ciclo), `DECISIONS.md` (D-083), `PROJECT_STATE.md`,
-  `FINAL_REPORT.md`, RUNLOG, experiments.csv, commits, memorias (graphiti/codebase).
+- [x] **F3'' Entrenamiento y evaluacion**: ejecutado en CPU (exit 0; 755 s; RSS 0.87 GB;
+  sondas (a)-(d) pass; determinismo A1/A2 = 0.0 exacto). Veredicto **NO_ATRIBUIBLE**: la regla
+  de fallback se activo (log_loss medio de train en la epoca 1 = 11.72 -> alpha 0.05 a 0.005
+  con reinicio del fold 0) y aun asi el brazo FTRL **degenero** (standalone 0.040169, por debajo
+  de la linea base de la clase mayoritaria 0.0485; p plana; log_loss OvR 1.7921) mientras el
+  gemelo SGD si aprendo (0.493479; -0.0017002 integrado, 0/5). A1 y A3 colapsan al mismo argmax
+  -> deltas identicos (-0.0011973); control A1 vs A2 no favorable (+0.00050; IC95 contiene 0)
+  y cap por IC95 activo. Sin segunda particion; **P3 cerrada y la reapertura V32 termina**
+  (D-083). `ml-trainer` recomputo 45/45 magnitudes desde los OOF.
+- [x] **F4'' Cierre**: notebook (seccion del ciclo), `DECISIONS.md` (D-083), `PROJECT_STATE.md`,
+  `FINAL_REPORT.md`, RUNLOG, experiments.csv, commits, memorias (graphiti/codebase). Con este
+  cierre la reapertura V32 queda **terminada**: tres candidatos medidos (P1 NO_ATRIBUIBLE,
+  P2 CLOSED, P3 NO_ATRIBUIBLE) y el campeon V30 + plug-in (LB 0.63575) intacto.

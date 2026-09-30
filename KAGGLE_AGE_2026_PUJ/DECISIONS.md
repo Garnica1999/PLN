@@ -2847,3 +2847,54 @@ No se usa el 0,63575 para optimizar pesos, crear variantes, seleccionar semillas
   `reports/v32_p2_preregistro.md`, `artifacts/p33_scores/v32_p2/`,
   `reports/figures/v32_p2_curvas.png`, `scripts/v32_02_preregistro_catboost.py`,
   `scripts/v32_02b_enmienda_preregistro.py`, `scripts/v32_03_catboost_challenger.py`.
+
+---
+
+## D-083 - V32-E3: FTRL-Proximal queda NO_ATRIBUIBLE (y degenerado); la reapertura V32 termina
+
+- **Observation**: tercer y ultimo candidato de la reapertura V32 (P3 = FTRL-Proximal propio,
+  McMahan 2013, sobre TF-IDF ajustada por fold; P1 D-081, P2 D-082). Pre-registro congelado
+  (`7fcf499`): alpha 0.05 / lambda1 0.0 / lambda2 1.0 / beta 1.0 / bias regularizado x0=1.0 /
+  sin power_t / 10 pasadas fijas / OvR 6; A2 gemelo `SGDClassifier(log_loss)` con el mismo
+  presupuesto de pasadas; A3 barajado. **Auditoria registrada**: el `data_hash` del manifiesto
+  canonico es un hash de PUNTEROS de memoria (`tobytes()` sobre un array de objetos) y no es
+  reproducible entre procesos; se congelaron sha256 del archivo (`39c6c827...`) y del array de
+  textos con receta determinista (`53c1a348...`). `vowpalwabbit 9.11.8` instalado y NO usado
+  (implementacion propia con sondas verificables). Sondas (a)-(d) pass: vectorizado vs lazo
+  6.66e-15 (<=1e-12), punto fijo analitico 0.0 (<=1e-9), TotalF1:average=Macro == macro-F1 0.0
+  (<=1e-6), p y log_loss finitos. Runner verificado: `ml-reviewer` (3 correcciones importantes:
+  log_loss multiclase propio, recarga validada del OOF crudo, AST audit de modulos importados)
+  y `ml-qa-engineer` (GO, 54 checks).
+- **Result**: veredicto **NO_ATRIBUIBLE** por precedencia (delta_int(A3) == delta_int(A1) =
+  -0.0011973; empate bit a bit porque ambos brazos colapsan al mismo argmax). Diagnostico
+  adicional relevante: el brazo FTRL **no aprendo**: standalone 0.040169, por debajo de la linea
+  base trivial de la clase mayoritaria (0.048542), p practicamente plana (~0.408 por clase tras
+  normalizacion L2), log_loss OvR medio 1.792106905355127; rescate 6467 / dano 100863 /
+  neto -94396. La regla de fallback congelada **se activo** (log_loss medio de train en la epoca
+  1 = 11.721967, muy por encima de lo esperado; en la epoca 10 = 23.025869) y cambio alpha
+  0.05 -> 0.005 con reinicio de `A1_ftrl/0`, sin mejorar. El gemelo A2 si aprendo (standalone
+  0.493479, log_loss 1.356763) pero tampoco aporta integracion (-0.0017002; 0/5 folds).
+  Control A1 vs A2: +0.000503 con IC95 [-0.0000835, +0.0010866] (contiene cero) -> no
+  favorable, y el cap por IC95 quedo activo. Determinismo exacto (max|delta p| = 0.0 en A1 y
+  A2), RSS pico 0.87 GB (tope 20), sin leakage (10/10 asserts), sin NaN, 755 s de CPU.
+- **Decision**: P3 se cierra documentada; sin segunda particion; **la reapertura V32 termina**
+  con tres candidatos medidos (P1 NO_ATRIBUIBLE, P2 CLOSED, P3 NO_ATRIBUIBLE). El campeon
+  V30 + plug-in (LB 0.63575) permanece intacto.
+- **Consequences**: (i) la conclusion NO es "el aprendizaje online no aporta": la configuracion
+  congelada (10 pasadas con semantica proximal sobre 6 problemas binarios con lambda2 1.0)
+  produce una solucion degenerada en este problema, y la regla de fallback pre-registrada ya
+  habia detectado la no-convergencia sin tocar fold-val ni el leaderboard. Reintentar con otra
+  configuracion (semantica online de una pasada, otra alpha/lambda, otro numero de pasadas)
+  exigiria un DISENO NUEVO y un pre-registro nuevo, no una repeticion de este; (ii) queda
+  registrado que el gemelo lineal (SGD sobre la misma TF-IDF) tampoco aporta integracion
+  (-0.0017), coherente con la capacidad del meta-arbol ya agotada; (iii) la regresion de A1 es
+  asimetrica y explicita (rescata 900 errores de alta confianza del campeon frente a 9780
+  errores de alta confianza: el brazo solo "mueve" 900 filas de las 169.336); (iv)
+  `experiments/v32_e3_exit.txt` se conserva como marcador de monitoreo del trainer, no es
+  salida del script; (v) `reports/v32_e3_run.log` (log de corrida) queda ignorado por gitignore
+  como el resto de logs.
+- **Evidence**: `experiments/v32_05_ftrl_challenger.json`, `experiments/v32_05_estado.json`,
+  `artifacts/p33_scores/v32_p3/`, `reports/v32_p3_ftrl_challenger.md`,
+  `reports/figures/v32_p3_curvas.png`, `reports/v32_p3_preregistro.md`,
+  `experiments/v32_04_preregistro_ftrl.json`, `scripts/v32_04_preregistro_ftrl.py`,
+  `scripts/v32_05_ftrl_challenger.py`.
