@@ -1,6 +1,6 @@
 # V32 - Plan de reapertura: optimizacion del puntaje (2026-09-30)
 
-Estado global: **P1 CERRADA (NO_ATRIBUIBLE)**; P2 (CatBoost) pendiente de autorizacion del usuario.
+Estado global: **P1 CERRADA (NO_ATRIBUIBLE)**; **Ciclo 2 (P2 CatBoost) EN EJECUCION**.
 Campeon congelado (FINAL_REFERENCE): **V30 + plug-in por clase**, LB 0.63575
 (CV global 0.6159732; nested 0.6154643; particion canonica).
 Objetivo del usuario: mejorar el puntaje de Kaggle; referencia declarada: acercarse a 0.70 de F1.
@@ -70,3 +70,21 @@ Objetivo del usuario: mejorar el puntaje de Kaggle; referencia declarada: acerca
 | 2026-09-30 | F2 | pre-registro congelado + runner verificado (reviewer APROBADO + QA GO 47/47) | 1cdf7a1 / d1a152f |
 | 2026-09-30 | F3 | V32-E1 ejecutado en GPU; NO_ATRIBUIBLE; P1 cerrada (D-081) | 5c998e6 |
 | 2026-09-30 | F4 | notebook + docs + memorias (graphiti + codebase) | 8baaad7 + este commit |
+
+## Ciclo 2 - P2 CatBoost sobre matriz_279 (abierto 2026-09-30)
+
+Autorizado por Carlos tras cerrar P1 (opcion A). Referencia de la auditoria por operacion:
+CatBoost 1.2.10 no aparece en el historial; familia boosting con ordered boosting. Se heredan
+las salvaguardas y el mecanismo de evaluacion de V32-E1 (hashes, asserts, integracion P6/P7,
+gates, determinismo, compliance). Scripts previstos: `v32_02_preregistro_catboost.py` y
+`v32_03_catboost_challenger.py`. Un experimento = un script nuevo.
+
+- [ ] **F1' Arquitectura y legalidad**: `ml-architect` congela el protocolo (config unica
+  justificada por precedente del proyecto, sin grid; control de atribucion elegido ex ante);
+  `kaggle-specialist` valida reglas/leakage heredando las salvaguardas de V32-E1.
+  (Sin `dl-specialist`: no hay red neuronal.)
+- [ ] **F2' Pre-registro + implementacion + revision**: pre-registro congelado; `ml-coder`;
+  `ml-reviewer`; `ml-qa-engineer` (GO/NO-GO).
+- [ ] **F3' Entrenamiento y evaluacion**: `ml-trainer`; gates; arbol (PROMISING -> segunda
+  particion; MARGINAL/CLOSED -> cierre). `ml-performance-auditor` si hay cuello de botella.
+- [ ] **F4' Cierre**: notebook (seccion del ciclo), docs, commits, memorias (graphiti/codebase).
