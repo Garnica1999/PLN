@@ -2199,3 +2199,10 @@ intacto.
   integracion P6/P7; gates + bootstrap de la diferencia A1-A2; calibracion y timeout declarados.
 - Baseline recomputado: 0.6159732. Revisiones de ml-architect y kaggle-specialist incorporadas.
 - Sin test, sin holdout, sin submission.
+
+---
+
+## Enmienda pre-ejecucion de V32-E2 (P2) · 2026-09-30
+
+- eval_metric de A1/A3: TotalF1 -> TotalF1:average=Macro (el default de catboost 1.2.10
+  promedia Weighted; la intencion congelada es macro-F1). Sin resultados; antes de ejecutar.

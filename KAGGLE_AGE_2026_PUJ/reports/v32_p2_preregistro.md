@@ -85,3 +85,15 @@ Versiones: catboost 1.2.10, lightgbm 4.6.0, numpy 1.26.4.
 - El gemelo LGBM es un control interno reentrenado desde cero (no reutiliza pesos del
   pool); auditoria AST del runner (0 prohibidos, 0 lecturas de test/holdout).
 - Referencia de variabilidad de entrenamiento: 0.0008876.
+
+## Enmienda pre-ejecucion 1 (2026-09-30)
+
+- **Objeto**: `eval_metric` de A1 (y A3, que sigue la config de A1).
+- **De**: `TotalF1`  ->  **A**: `TotalF1:average=Macro`.
+- **Motivo**: en catboost 1.2.10 `TotalF1` promedia *Weighted* por defecto; la
+  intencion congelada es la media no ponderada de F1 por clase (macro-F1).
+- **Evidencia**: sondas pre-ejecucion (mini-modelos): el default equivale a
+  weighted; `TotalF1:average=Macro` equivale exactamente a la macro-F1 de sklearn.
+  El runner re-verifica la equivalencia en el sanity del fold 0 de A1 (<=1e-6).
+- **Estado**: sin resultados del experimento; enmienda pre-ejecucion. El resto
+  del protocolo congelado queda intacto.

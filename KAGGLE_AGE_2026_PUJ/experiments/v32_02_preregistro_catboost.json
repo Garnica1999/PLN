@@ -50,7 +50,7 @@
         "od_type": "Iter",
         "od_wait": 150,
         "use_best_model": true,
-        "eval_metric": "TotalF1",
+        "eval_metric": "TotalF1:average=Macro",
         "verbose": 100,
         "metric_period": 50
       },
@@ -149,5 +149,16 @@
   "documentos_fuente": [
     "plan/V32_REAPERTURA_PLAN.md",
     "reports/v32_e1_preregistro.md"
+  ],
+  "enmiendas": [
+    {
+      "fecha": "2026-09-30",
+      "objeto": "eval_metric A1/A3 (TotalF1)",
+      "de": "TotalF1",
+      "a": "TotalF1:average=Macro",
+      "motivo": "En catboost 1.2.10 TotalF1 promedia Weighted por defecto; la intencion congelada es la media no ponderada de F1 por clase (macro-F1).",
+      "evidencia": "sondas pre-ejecucion con mini-modelos: default == weighted exacto; TotalF1:average=Macro == macro-F1 de sklearn exacto; el runner re-verifica la equivalencia en el sanity del fold 0 (<=1e-6).",
+      "estado_datos": "sin resultados; enmienda pre-ejecucion"
+    }
   ]
 }
