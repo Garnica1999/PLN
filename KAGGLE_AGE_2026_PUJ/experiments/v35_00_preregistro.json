@@ -1,0 +1,218 @@
+{
+  "fase": "V35-E1 (via B) pre-registro congelado",
+  "fecha": "2026-09-30",
+  "commit": "c0c762e9912b92ab67764fe73b2efb60aef8e65c",
+  "experimento": "reinicio one-shot de la familia FTRL sobre el miembro NO CUBIERTO lambda1 > 0 (control: gemelo SGD de presupuesto)",
+  "acta_de_reinicio": "D-086 (se anexa a DECISIONS.md al cierre; su hash se fija ahi)",
+  "baseline_primario": 0.6159732,
+  "referencia_nested": 0.6154643,
+  "pesos_plugin": [
+    1.0,
+    1.1749,
+    1.2721,
+    1.163,
+    1.001,
+    0.8128
+  ],
+  "hashes": {
+    "sonda_lambda1_script": "4330c00a3f517467ac45ea7f67f8af331c8438ed024d0aa3db5ecc51e2f3a49b",
+    "sonda_lambda1_json": "e6554eb25269a3a48780e9f9d8674e67abdaf41136eb2277db3d54704b7b3aff",
+    "nucleo_v34": "cf443fc86bf291ca5ba47f92a40a7a80b25a0d9edb050b3929508c9bd56e29da",
+    "manifest_canonico": "8881a9f53e8613aa943681e7fd9a42a3a281aa66b5d7c796d13d2758c6226076",
+    "canonico_y_true": "b1c928f9b9f5575547c1090a1fd83cf32a048b694af35a980b460c0bd66d48e6",
+    "canonico_fold_idx": "74d18330c40c3598a1936706ae9434c5fdf29119d357d38353cf298812fe6fb5",
+    "canonico_v30_prob": "3d77352486605971093ade7214ae82326057845d8bf54a2d88c83843c5a721db",
+    "canonico_ids": "d69ecb339f1dc57de2f9cddd558658b5a272ffa42aec15c771773e8eabd59825",
+    "canonico_cand_pred": "2fd8ab0292e8b7364dd003ff3e23902b01786a612c3e9a57641d88788efca369",
+    "canonico_cand_prob": "57be29623543c2616011f8fc77aff89b71faecdad6b599f1b4f4b133655a8134",
+    "corpus_archivo": "39c6c8270366fe155f3c8dd232e31867bee659af8908121d04b6bd89bd163748",
+    "corpus_textos": "53c1a348a7954f3e59d7c67caddd6477a06f7d3441724c201052b4b5273445fc",
+    "vectorizador": "33311e5eddc0b0bbfd07505b9ed3474bb824d1b41fac92d3d7bfd3fd902ba977"
+  },
+  "versiones": {
+    "sklearn": "1.8.0",
+    "numpy": "1.26.4",
+    "pandas": "2.3.3"
+  },
+  "miembro_no_cubierto": {
+    "identificador": "lambda1 > 0",
+    "no_es_reintento_de_alpha": "alpha* queda CONGELADO e identico al de V34-E1; lo que cambia es el espacio de soluciones (umbral duro w_j = 0 si |z_j| <= lambda1), no el punto del learning-rate"
+  },
+  "miembros_cerrados_e_intocables": [
+    "OvR (6 sigmoides)",
+    "power_t (decaimiento)",
+    "multi-pasada",
+    "lambda2 en {.05, .2, 1, 1e-6}",
+    "L2 en acumulador vs denominador",
+    "alpha"
+  ],
+  "anclaje_lambda1": {
+    "definicion": "lambda1 := mediana(|z_j| > 0) medida en el stream de TRAIN del fold 0 al final de la pasada 1 (un unico numero, cero busqueda)",
+    "valor_esperado": 0.23993793862904017,
+    "medida_sobre": "solo filas del ES-train del fold 0; recipe exacta y sha256 del snapshot de z declarados en la sonda pre-ejecucion (experiments/v35_00b_sonda_lambda1.json)",
+    "flag_1_resuelto": "lambda1 = alpha es no-op porque mediana/alpha = 6.8044 > 1 (medido)",
+    "sensibilidad_declarada": "q=0.25 y q=0.75 escalan lambda1 ~ 1/sqrt(q); esa sensibilidad SOLO se ejecuta en gemelo sintetico, jamas sobre datos reales",
+    "prohibido": "re-derivar lambda1 tras ver las gates; un segundo lambda1 seria grid"
+  },
+  "puerta": {
+    "momento": "dentro del fold 0, ANTES de los folds 1-4 y ANTES de integrar",
+    "G0_G6": "las seis de reports/v34_convergence_gate.md, SIN CAMBIOS y con sus umbrales ledos del pre-registro de V34 (techo anclado en H(prior)_ES - 0.01; banda de frecuencias anclada en el prior MEDIDO del ES-train)",
+    "G7_L1_activo": {
+      "criterio": "escasez efectiva (coordenadas con AL MENOS una clase viva, |z_j| > lambda1) mayor que cero en todas las pasadas Y no degradada respecto de la pasada 1 mas allá de una tolerancia declarada de 0.02",
+      "anclaje": "la magnitud de pasada 1 medida, con tolerancia nombrada; NO el 0.5 arbitrario propuesto antes (reescribia el anclaje) ni el piso 0 (tautologico)",
+      "criterio_muerto": "si en pasadas >= 2 la fraccion de coordenadas con |z_j| <= lambda1 fuese 0, la hipotesis esta analiticamente muerta y se reporta asi, sin culpar a la puerta",
+      "aplica_a": "solo A1"
+    },
+    "G8_acotacion_norma": {
+      "criterio": "razon max/min de ||w||_2 entre la primera y la ultima pasada <= 1.0",
+      "anclaje": "la HIPOTESIS misma: si el L1 acota la norma, esta no crece. NO un factor arbitrario como el 1.5 propuesto antes. La sonda pre-ejecucion ya midio 2.1304 con lambda1 = mediana, luego se espera que G8 falle",
+      "aplica_a": "solo A1"
+    },
+    "rama_predeclarada": {
+      "G7_o_G8_fallan": "LINEA_ONLINE_CERRADA_POR_MECANISMO: la acotacion queda refutada y la familia se cierra DEFINITIVAMENTE (no hay segundo lambda1 ni acta futura dentro de este espacio)",
+      "G7_y_G8_pasan_pero_G0_G4_fallan": "HIPOTESIS_CONJUNTA_REFUTADA (acota pero no aprende); NO es cierre por conveniencia y se registra con su propia evidencia",
+      "todas_pasan": "se evaluan los gates de la serie; PROMISING exigiria segunda particion con autorizacion del usuario, que el script no ejecuta"
+    },
+    "asimetria": "A1 tiene un regularizador (L1) que A2 no tiene: A2 es control de PRESUPUESTO, no gemelo mecanico. Ninguna conclusion puede descansar en el contraste A1 vs A2 (delta, razones entre brazos e IC bootstrap cruzado quedan contaminados): el veredicto se apoya solo en evidencia interna de A1 contra la regla derivada (G0/G1/G4) mas el triage"
+  },
+  "sondas_nuevas": {
+    "k_caso_lambda1_cero": "reproduce dentro del runner el caso lambda1 = 0 del gemelo pre-ejecucion (ll_train y ||w||_2 por pasada) y compara con el artefacto versionado",
+    "l_caso_lambda1_alpha": "reproduce el caso lambda1 = alpha, que debe ser no-op (mediana/alpha = 6.8044)",
+    "m_caso_lambda1_mediana": "reproduce el caso lambda1 = mediana, con su ||w||_2 y su escasez",
+    "politica": "son sondas NO-GATE: no deciden el veredicto, pero la decision de mecanismo NO puede descansar en evidencia importada de /tmp, luego se reproducen aqui"
+  },
+  "rama_terminal": {
+    "miembro_actual": "lambda1 > 0",
+    "miembros_cerrados_e_intocables": [
+      "OvR (6 sigmoides)",
+      "power_t (decaimiento)",
+      "multi-pasada",
+      "lambda2 en {.05, .2, 1, 1e-6}",
+      "L2 en acumulador vs denominador",
+      "alpha"
+    ],
+    "segundo_miembro_no_cubierto": "pesos por clase con L2 normalizado fuera de FTRL",
+    "destino_del_segundo_miembro": "CERRADO POR DECLARACION si lambda1 > 0 falla, con su evidencia de techo: su geometria (norma acotada como SGD) es la del control sano A2, que ya midio 0.4934789 standalone en D-083 y -0.0017002 integrado con 0/5 folds",
+    "re_emision": "una unica re-emision, solo por DEFECTO_DE_IMPLEMENTACION, nunca por cambio de hipotesis"
+  },
+  "sonda_previa": {
+    "script": "KAGGLE_AGE_2026_PUJ/scripts/v35_00b_sonda_lambda1.py",
+    "sha256": "4330c00a3f517467ac45ea7f67f8af331c8438ed024d0aa3db5ecc51e2f3a49b",
+    "categoria": "exploracion metodologica previa; datos de fold-train; metrica de perdida; sin seleccion; NO es un grid",
+    "anclaje_medio": 0.23993793862904017,
+    "mediana_sobre_alpha": 6.804368702629027,
+    "flag_1_resuelto": true,
+    "razon_normas_lambda1_mediana": 2.130435582526498,
+    "gemelo_real": [
+      {
+        "nombre": "lambda1_0",
+        "lambda1": 0.0,
+        "ll_train_final": 19.174420615478212,
+        "norma_w_l2_final": 60.98360849536189
+      },
+      {
+        "nombre": "lambda1_alpha",
+        "lambda1": 0.035262336465737745,
+        "ll_train_final": 19.172685241471445,
+        "norma_w_l2_final": 60.86346392574805
+      },
+      {
+        "nombre": "lambda1_mediana",
+        "lambda1": 0.23993793862904017,
+        "ll_train_final": 19.1594443184596,
+        "norma_w_l2_final": 60.23720212230849
+      }
+    ]
+  },
+  "alpha_congelado": {
+    "valor_esperado": 0.035262336465737745,
+    "formula": "2*M/(d_norm*P_max**2) con M = ln(5)",
+    "no_se_re_deriva": true
+  },
+  "config": {
+    "lambda2": 1.0,
+    "beta": 1.0,
+    "power_t": 0.0,
+    "x0": 1.0,
+    "P_max": 10,
+    "P_min": 3,
+    "paciencia": 2,
+    "mejora_minima": 0.0001,
+    "test_size_es": 0.1,
+    "particion_es": "StratifiedShuffleSplit(test_size=0.10, random_state=20261010+fold) sobre filas de TRAIN",
+    "semilla": 20261010,
+    "hilos": 32,
+    "vectorizador": {
+      "analyzer": "word",
+      "ngram_range": [
+        1,
+        2
+      ],
+      "min_df": 3,
+      "max_df": 0.5,
+      "sublinear_tf": true,
+      "lowercase": true,
+      "strip_accents": null,
+      "token_pattern": "(?u)\\\\b\\\\w+\\\\b"
+    },
+    "ajuste": "POR FOLD: solo ES-train"
+  },
+  "puerta_g0_g6_heredada": {
+    "G0": "A1: M/2 <= D_acum <= 2*M; A2: ll_train <= H(prior)_ES - 0.01",
+    "G1": "0.05 <= ll_train <= H(prior)_ES - 0.01",
+    "G2": "mejora en >= 1 de las primeras 3 pasadas (tol 1e-06)",
+    "G3": "macro-F1 standalone en fold-val >= 0.3",
+    "G4": "frecuencias en [0.5*prior_c, 1.5*prior_c] del prior MEDIDO del ES-train",
+    "G5": "determinismo max|delta p| = 0.0 EXACTO",
+    "G6": "filas que suman 1 <= 1e-09"
+  },
+  "gates_de_la_serie": {
+    "baseline_abort": 5e-07,
+    "delta_min": 0.0015,
+    "folds_min": 4,
+    "bootstrap": {
+      "n": 2000,
+      "semilla": 20261010
+    },
+    "nota": "solo se evaluan si la puerta pasa; si falla, integracion y bootstrap quedan prohibidos por el pre-registro"
+  },
+  "compliance": {
+    "embeddings": 0,
+    "transformers": 0,
+    "llm": 0,
+    "datos_externos": 0,
+    "test": 0,
+    "holdout": 0,
+    "leaderboard": 0,
+    "submission": 0,
+    "ast_audit": "importes Y literales (vowpal, vw, torch, transformers, gensim, fasttext, sentence-transformers, word2vec, glove, spacy-vectors) y 0 rutas de test/holdout/submission/leaderboard",
+    "lecturas": "solo data/raw/age_train.csv y artifacts/p33_scores/todos (intocable, sin escritura)",
+    "auditorias": [
+      "hashes de los 6 .npy + manifest",
+      "corpus archivo y textos",
+      "vectorizador",
+      "nucleo de V34 sin cambios",
+      "sonda previa versionada",
+      "vocabulario e idf por fold",
+      "sondas (a)-(m)",
+      "tabla de mecanismo por pasada",
+      "determinismo A1 y A2",
+      "RSS con ru_maxrss",
+      "escritura atomica"
+    ]
+  },
+  "ejecucion": {
+    "coste_estimado": "~51 s (medido en V34-E1 con la misma maquina y nucleo)",
+    "presupuesto_declarado_seg": 1200.0,
+    "ram_tope_gb": 20.0,
+    "timeout_global_h": 24.0,
+    "calibracion": "proyeccion 9 x t_fold0; limite 20.0 h",
+    "checkpoints": "experiments/v35_01_estado.json y checkpoints/v35_e1/",
+    "escritura_atomica": "tmp + os.replace"
+  },
+  "entregables": {
+    "runner": "scripts/v35_01_ftrl_lambda1.py -> experiments/v35_01_ftrl_lambda1.json, experiments/v35_01_estado.json, checkpoints/v35_e1/, artifacts/p35_scores/v35_e1/{a1_ftrl_lambda1,a2_sgd_presupuesto}.npy, reports/v35_e1_ftrl_lambda1.md, reports/figures/v35_e1_curvas.png, reports/v35_novelty_registry.csv, fila anexada en reports/age_complete_experiment_history.csv, RUNLOG.md, fila V35-E1 en experiments.csv",
+    "acta": "D-086 en DECISIONS.md con el miembro NO CUBIERTO, la lista de miembros cerrados e intocables, el destino del segundo miembro NO CUBIERTO y la regla terminal one-shot"
+  },
+  "prediccion_registrada": "con la sonda pre-ejecucion ya falsada la hipotesis de acotacion (razon ||w||_2 = 2.1304 con lambda1 = mediana), el veredicto mas probable es LINEA_ONLINE_CERRADA_POR_MECANISMO por fallo de G8. El ciclo NO puede terminar en PROMISING: alpha esta congelado e identico al que ya divergio"
+}

@@ -2323,3 +2323,13 @@ intacto.
 - RSS pico 0.68 GB (tope 20); 32 hilos; duracion 51 s.
 - Sin particiones reservadas: sin evaluacion sobre la particion bloqueada del campeon, sin envio.
 - Artefactos: experiments/v34_01_ftrl_softmax_multipasada.json | experiments/v34_01_estado.json | reports/v34_e1_ftrl_multipasada.md | reports/figures/v34_e1_curvas.png | reports/v34_novelty_registry.csv | artifacts/p34_scores/v34_e1/a1_ftrl_multipasada.npy | artifacts/p34_scores/v34_e1/a2_sgd_multipasada.npy.
+
+---
+
+## Pre-registro de V35-E1 (via B: lambda1 > 0) · 2026-09-30
+
+- Reinicio one-shot de la familia FTRL sobre el miembro NO CUBIERTO `lambda1 > 0`; acta D-086. `alpha*` CONGELADO e identico a V34-E1.
+- Anclaje derivado: mediana(|z|>0) = 0.23993793862904017 (mediana/alpha = 6.8044); flag 1 resuelto.
+- Flag 2 resuelto en negativo: `lambda1` fijo NO acota `||w||_2` (razon 2.1304), luego la hipotesis de acotacion queda falsada por medicion.
+- Puerta G0-G6 sin cambios + G7 (L1 activo, anclada a la magnitud medida) y G8 (acotacion, anclada a la hipotesis), ambas solo sobre A1; rama pre-declarada; sondas (k)-(m) no-gate.
+- Baseline recomputado 0.6159732; sin test, sin holdout, sin submission, campeon intacto.
