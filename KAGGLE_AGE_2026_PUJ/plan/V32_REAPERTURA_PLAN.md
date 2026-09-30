@@ -86,8 +86,15 @@ gates, determinismo, compliance). Scripts previstos: `v32_02_preregistro_catboos
   tolerancias de determinismo, AST-audit, truncamiento registrado). Sin `dl-specialist` (no
   hay red neuronal). Pre-registro congelado en `reports/v32_p2_preregistro.md` +
   `experiments/v32_02_preregistro_catboost.json` (script `v32_02`).
-- [ ] **F2' Pre-registro + implementacion + revision**: pre-registro congelado; `ml-coder`;
-  `ml-reviewer`; `ml-qa-engineer` (GO/NO-GO).
-- [ ] **F3' Entrenamiento y evaluacion**: `ml-trainer`; gates; arbol (PROMISING -> segunda
-  particion; MARGINAL/CLOSED -> cierre). `ml-performance-auditor` si hay cuello de botella.
+- [x] **F2' Pre-registro + implementacion + revision**: pre-registro congelado (`e31623f`) +
+  **enmienda pre-ejecucion 1** (`f0bf731`: eval_metric -> `TotalF1:average=Macro`; el default
+  Weighted de catboost 1.2.10 difiere de macro-F1); `ml-coder` implemento
+  `scripts/v32_03_catboost_challenger.py`; `ml-reviewer` = APROBADO con observaciones (2
+  correcciones: iteraciones A2 y calibracion fail-closed al reanudar; `metric:"None"` en A2
+  aceptado por el lead como detalle de ejecucion); `ml-qa-engineer` = GO condicionado, cerrado
+  con probe E2E 7/7 (PROMISING/NO_ATRIBUIBLE/caps/CLOSED/MARGINAL) y `--verificar` EXIT 0.
+- [~] **F3' Entrenamiento y evaluacion**: lanzado en CPU (15 fits; ETA 9-19 h con contencion;
+  calibracion tras fold 0 de A1 con parada si proyeccion >20 h; checkpoints resumibles por
+  fold). Al terminar: gates + arbol (PROMISING -> segunda particion; MARGINAL/CLOSED -> cierre)
+  con validacion de `ml-trainer`.
 - [ ] **F4' Cierre**: notebook (seccion del ciclo), docs, commits, memorias (graphiti/codebase).
