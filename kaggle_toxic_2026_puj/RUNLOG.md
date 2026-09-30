@@ -3113,3 +3113,9 @@ Sin push, sin merge, sin rebase.
 - La segunda particion **sigue sin ejecutarse**: sigue sin haber finalista.
 
 Sin push, sin merge, sin rebase.
+- Verificacion de figuras de P76, registrada en `figuras/p76/VERIFICACION.md`: las dos reliability
+  se **regeneraron** desde `reports/p75_paired_oof.csv` mas los parametros de Platt del JSON y se
+  compararon con los PNG almacenados **pixel a pixel**, de modo que la comparacion incluye el texto
+  del titulo. **Resultado: las dos son identicas, luego NO havia intercambio V03/CNN.** La duda
+  era legitima porque el titulo no se puede leer de un PNG, pero era infundada. Ademas se
+  recalcularon los cuatro miembros desde el JSON y reproducen su macro-F1 al decimal.

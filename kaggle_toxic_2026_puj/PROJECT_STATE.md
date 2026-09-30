@@ -2040,3 +2040,17 @@ TEXTCNN = ACTIVA PARA INVESTIGACION CONTROLADA
 test = 0   holdout = 0   leaderboard = 0   submission = 0
 ```
 <!-- /P76-CALIBRACION 2026-09-30 -->
+
+<!-- P76-CIERRE 2026-09-30 -->
+### P76 cerrada documentalmente
+
+`figuras/p76/VERIFICACION.md` registra la verificacion de las siete figuras. Las dos reliability se
+regeneraron y se compararon pixel a pixel con los PNG almacenados: **son identicas**, luego la
+sospecha de intercambio V03/CNN era infundada. Los cuatro miembros recalculados desde el JSON
+reproducen su macro-F1 al decimal. **Ningun valor numerico de P76 se modifica.**
+
+```text
+P76 = CERRADA
+test = 0   holdout = 0   leaderboard = 0   submission = 0
+```
+<!-- /P76-CIERRE 2026-09-30 -->
