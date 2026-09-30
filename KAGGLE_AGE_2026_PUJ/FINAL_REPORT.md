@@ -992,3 +992,16 @@ Sin test, sin holdout, sin submissions.
   [-0.0044246, -0.0023612]); A2 (CE gemelo) -0.0009284 (1/5); A3 (barajado) -0.0009011 (0/5).
   Sonda de determinismo 0.0; sin leakage; campeon intacto.
 - Decision: P1 cerrada sin segunda particion (D-081). Sin test, sin holdout, sin submission.
+
+---
+
+## V32-E2 ejecutado: CatBoost queda CLOSED (2026-09-30)
+
+- Ciclo 2 de la reapertura (P2 CatBoost MultiClass; gemelo LightGBM con el ancla afinada
+  V29/V30 como control decisional; control negativo barajado). Pre-registro con enmienda
+  pre-ejecucion (TotalF1 -> TotalF1:average=Macro). Revisiones y QA completos; ejecucion CPU
+  en 1149 s; determinismo exacto; sin truncamiento.
+- Resultado: **CLOSED**. A1 delta -0.0011258 (1/5 folds); A2 -0.0012871; A3 -0.0012138;
+  control A1 vs A2 no favorable. Sin segunda particion (D-082).
+- Lista priorizada de la reapertura agotada; P3 (FTRL) solo con autorizacion. Sin test, sin
+  holdout, sin submission; campeon intacto.

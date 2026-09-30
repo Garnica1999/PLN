@@ -1,6 +1,7 @@
 # V32 - Plan de reapertura: optimizacion del puntaje (2026-09-30)
 
-Estado global: **P1 CERRADA (NO_ATRIBUIBLE)**; **Ciclo 2 (P2 CatBoost) EN EJECUCION**.
+Estado global: reapertura V32 con **P1 cerrada (NO_ATRIBUIBLE, D-081)** y **P2 cerrada (CLOSED,
+D-082)**; lista priorizada agotada (P3 FTRL solo con autorizacion); campeon V30 + plug-in intacto.
 Campeon congelado (FINAL_REFERENCE): **V30 + plug-in por clase**, LB 0.63575
 (CV global 0.6159732; nested 0.6154643; particion canonica).
 Objetivo del usuario: mejorar el puntaje de Kaggle; referencia declarada: acercarse a 0.70 de F1.
@@ -69,7 +70,11 @@ Objetivo del usuario: mejorar el puntaje de Kaggle; referencia declarada: acerca
 | 2026-09-30 | F1 | arquitectura + legalidad + reglas NN (ES estricto y GPU por decision de Carlos) | 9c5cca2 |
 | 2026-09-30 | F2 | pre-registro congelado + runner verificado (reviewer APROBADO + QA GO 47/47) | 1cdf7a1 / d1a152f |
 | 2026-09-30 | F3 | V32-E1 ejecutado en GPU; NO_ATRIBUIBLE; P1 cerrada (D-081) | 5c998e6 |
-| 2026-09-30 | F4 | notebook + docs + memorias (graphiti + codebase) | 8baaad7 + este commit |
+| 2026-09-30 | F4 | notebook + docs + memorias (graphiti + codebase) | 8baaad7 + 1a0b971 |
+| 2026-09-30 | F1' | P2: arquitectura (architect) + compliance (kaggle-specialist) | e31623f |
+| 2026-09-30 | F2' | pre-registro + enmienda pre-ejecucion 1 + runner verificado (QA 7/7) | e31623f / f0bf731 / c38b8c7 |
+| 2026-09-30 | F3' | V32-E2 ejecutado (1149 s); CLOSED; sin segunda particion (D-082) | b6902ed |
+| 2026-09-30 | F4' | notebook (313 celdas) + docs + memorias | (commit de cierre) |
 
 ## Ciclo 2 - P2 CatBoost sobre matriz_279 (abierto 2026-09-30)
 
@@ -97,4 +102,7 @@ gates, determinismo, compliance). Scripts previstos: `v32_02_preregistro_catboos
   calibracion tras fold 0 de A1 con parada si proyeccion >20 h; checkpoints resumibles por
   fold). Al terminar: gates + arbol (PROMISING -> segunda particion; MARGINAL/CLOSED -> cierre)
   con validacion de `ml-trainer`.
-- [ ] **F4' Cierre**: notebook (seccion del ciclo), docs, commits, memorias (graphiti/codebase).
+- [x] **F4' Cierre**: notebook actualizado con la seccion "PHASE - V32 REOPENING (P2 - CATBOOST)"
+  (313 celdas; salida real + aserciones del veredicto CLOSED); `DECISIONS.md` (D-082),
+  `PROJECT_STATE.md`, `FINAL_REPORT.md`, `RUNLOG.md` y `experiments.csv` al dia; graphiti
+  (episodio + tripletas) y codebase re-indexado.

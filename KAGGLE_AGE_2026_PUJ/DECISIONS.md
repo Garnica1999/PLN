@@ -2817,3 +2817,33 @@ No se usa el 0,63575 para optimizar pesos, crear variantes, seleccionar semillas
   `reports/v32_e1_surrogate_macrof1.md`, `reports/v32_e1_preregistro.md`,
   `experiments/v32_e1_curvas.json`, `reports/figures/v32_e1_curvas.png`,
   `scripts/v32_00_preregistro.py`, `scripts/v32_01_surrogate_macrof1.py`.
+
+---
+
+## D-082 - V32-E2: CatBoost queda CLOSED; la lista priorizada de la reapertura queda agotada
+
+- **Observation**: ciclo 2 de la reapertura V32 (P2 = CatBoost MultiClass sobre la matriz 279
+  congelada; P1/Ciclo 1 cerrado en D-081). Pre-registro congelado (`e31623f`) con enmienda
+  pre-ejecucion 1 (`f0bf731`: eval_metric TotalF1 -> TotalF1:average=Macro; el default Weighted
+  de catboost 1.2.10 difiere de macro-F1, verificado con sondas). Brazos: A1 CatBoost
+  (ES interno od_wait 150, 3000 iter cap, lr 0.03, depth 6), A2 gemelo LightGBM con el ancla
+  afinada V29/V30 (control decisional), A3 etiquetas barajadas (control negativo). Revisiones
+  ml-architect/kaggle-specialist; gate ml-reviewer (2 correcciones) + ml-qa (probe E2E 7/7).
+  Ejecucion CPU en 1149 s; sin truncamiento; sondas de determinismo A1/A2 = 0.0 exactas;
+  sanity TotalF1:average=Macro == macro-F1 (delta 0.0).
+- **Result**: A1 delta -0.0011258 (1/5 folds; IC95 [-0.0019378, -0.0003467]); A2 -0.0012871
+  (1/5); A3 -0.0012138 (1/5). Control A1 vs A2 no favorable (+0.00017; IC95 incluye 0;
+  p+=0.76). El control barajado rinde casi como A1 (y por encima de A2); A1 rescata 9 errores
+  de alta confianza frente a 9780 del campeon. Veredicto del arbol: CLOSED.
+- **Decision**: P2 se cierra documentada; sin segunda particion. Campeon V30 + plug-in
+  (LB 0.63575) intacto. Detalle de ejecucion aceptado por el lead: A2 uso metric "None" para
+  que el ES vigile unicamente el feval macro-F1 congelado.
+- **Consequences**: la reapertura V32 agota su lista priorizada (P1 NEGATIVO/NO_ATRIBUIBLE,
+  D-081; P2 CLOSED, D-082). P3 = FTRL-Proximal queda como opcion secundaria solo con
+  autorizacion explicita; no se activa por si misma. Sin test, sin holdout, sin leaderboard,
+  sin submission.
+- **Evidence**: `experiments/v32_03_catboost_challenger.json`,
+  `experiments/v32_03_estado.json`, `reports/v32_p2_catboost_challenger.md`,
+  `reports/v32_p2_preregistro.md`, `artifacts/p33_scores/v32_p2/`,
+  `reports/figures/v32_p2_curvas.png`, `scripts/v32_02_preregistro_catboost.py`,
+  `scripts/v32_02b_enmienda_preregistro.py`, `scripts/v32_03_catboost_challenger.py`.
