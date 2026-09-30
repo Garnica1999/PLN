@@ -7776,3 +7776,89 @@ vector pooled se vuelve menos dependiente de la composicion exacta, comprimiendo
 **Amenazas que el revisor anadio y que no estaban declaradas**: A tambien es UNA tirada (una semilla
 de Word2Vec, una particion); la asimetria A-B no implica que la varianza de A sea despreciable. La
 curva de early stopping no se reporta. Y la especificacion del intervalo de D-255.1.
+
+## D-256: P74, y el null aleatorio replicado. La ventaja de P73 sobrevive
+
+### D-256.1. El control A contra A, y lo que calibra
+
+```text
+A contra A con la MISMA semilla      delta +0.000000000000   salidas identicas  True
+A contra A con DISTINTA semilla      delta -0.0007645557
+```
+
+El primero verifica que **el instrumento es determinista**: misma matriz, misma semilla, mismos
+datos, misma configuracion, misma salida **bit a bit**. El segundo calibra la varianza de
+inicializacion en **0.0008**, o sea **40 veces menor que el delta que se mide**. Ninguno de los dos
+es evidencia de mejora: son controles del instrumento.
+
+### D-256.2. El resultado: diez de diez
+
+```text
+replica  seed        A_CV        B_CV        delta       folds que gana A
+  1   20261111   0.597812    0.585865    +0.011947        3 de 5
+  2   20261112   0.601477    0.575766    +0.025711        3 de 5
+  3   20261113   0.589549    0.566741    +0.022808        3 de 5
+  4   20261114   0.589207    0.580535    +0.008672        3 de 5
+  5   20261115   0.592732    0.591042    +0.001690        3 de 5
+  6   20261116   0.603531    0.581845    +0.021686        4 de 5
+  7   20261117   0.614455    0.586855    +0.027600        4 de 5
+  8   20261118   0.619284    0.570930    +0.048354        5 de 5
+  9   20261119   0.616064    0.575383    +0.040681        4 de 5
+ 10   20261120   0.610744    0.577189    +0.033556        5 de 5
+
+media +0.0242705458 | mediana +0.0242594813 | sd 0.0143858559
+minimo +0.001690 | maximo +0.048354
+IC 95 t de Student sobre replicas [+0.0139795245, +0.0345615672]   EXCLUYE EL CERO
+A gana en 10 de 10 replicas
+|media| 0.024271 frente a epsilon 0.010 -> NO esta dentro de la banda de equivalencia
+```
+
+Aplica el **CASO 1: EVIDENCIA REPRODUCIBLE**, con las tres condiciones que el pre-registro exigia:
+al menos 8 de 10 replicas ganadas (se ganaron 10), media positiva, e intervalo enteramente por
+encima de cero.
+
+**La amenaza de P73 queda resuelta: la ventaja no se explica por una unica realizacion del
+embedding aleatorio.** El valor de P73 (+0.0316) estaba en la parte alta del rango de P74
+(+0.0017 a +0.0484), luego si habia algo de suerte en aquella tirada, pero **la direccion sobrevive
+en las diez**.
+
+### D-256.3. De donde viene la varianza, que es la parte interesante
+
+```text
+A  media 0.603486   sd 0.011209   rango [0.589207, 0.619284]
+B  media 0.579215   sd 0.007499   rango [0.566741, 0.591042]
+```
+
+**A es MAS variable que B**, no menos. La intuicion habria dicho que anadir un sorteo aleatorio
+metia varianza en B; ocurre lo contrario. Con diez replicas esto es un indicio, no un resultado
+firme, pero apunta a que **el sorteo del embedding aleatorio NO es la fuente dominante de varianza**
+y que lo que varia es el entrenamiento de la TextCNN sobre una representacion aprendida, que es mas
+sensible a la inicializacion que una proyeccion aleatoria.
+
+Con los tres numeros juntos queda una jerarquia util para la atribucion que el encargo pedia:
+
+```text
+varianza de inicializacion de la TextCNN    0.0008     la mas pequena
+varianza del sorteo aleatorio (sd de B)     0.0075
+varianza de la rama entrenada (sd de A)     0.0112     la mas grande
+delta que se pretende medir                 0.0243     mayor que las tres
+```
+
+### D-256.4. P73 NO se modifica, y la relacion entre las dos fases
+
+```text
+P73 = COMPLEMENTARY
+      "evidencia direccionalmente consistente y cuantitativamente inestable"   NO CAMBIA
+P74 = CASO 1 EVIDENCIA REPRODUCIBLE
+```
+
+P73 se trato como experimento historico cerrado. Sus numeros, folds, bootstrap, segunda particion y
+decision **no se tocan**. Lo que P74 anade es que **la inestabilidad cuantitativa que P73 declaro
+era, en buena parte, la incertidumbre de una sola tirada**, y que al replicar el null la direccion
+se mantiene en las diez.
+
+**Lo que NO se responde, y queda congelado**: si la TextCNN es mejor que V03 (la comparacion sigue
+siendo descriptiva: A media 0.6035 frente a 0.7772, y esa diferencia mezcla representacion y
+arquitectura), si procede una fusion, si procede fine-tuning, y si procede una submission.
+
+**TEXTCNN QUEDA EN ESPERA.**

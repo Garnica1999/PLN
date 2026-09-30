@@ -1,0 +1,20 @@
+estadistico,valor
+media_A,0.6034857136
+media_B,0.5792151678
+media_delta,0.0242705458
+mediana_delta,0.0242594813
+sd_delta,0.0143858559
+ic95_t_bajo,0.0139795245
+ic95_t_alto,0.0345615672
+min_delta,0.0016901167
+max_delta,0.0483543126
+replicas_positivas,10
+replicas_negativas,0
+epsilon,0.01
+dentro_de_epsilon,False
+sd_A,0.0112090702
+sd_B,0.0074986963
+control_A_contra_A_misma_semilla,0.0
+control_A_contra_A_distinta_semilla,-0.0007645557
+caso,CASO 1
+etiqueta,EVIDENCIA_REPRODUCIBLE
