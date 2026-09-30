@@ -2412,3 +2412,39 @@ intacto.
 - RSS pico 0.69 GB (tope 20); 32 hilos; duracion 140 s.
 - Sin particiones reservadas: sin evaluacion sobre la particion bloqueada del campeon, sin envio.
 - Artefactos: experiments/v35_01_ftrl_lambda1.json | experiments/v35_01_estado.json | reports/v35_e1_ftrl_lambda1.md | reports/figures/v35_e1_curvas.png | reports/v35_novelty_registry.csv | artifacts/p35_scores/v35_e1/a1_ftrl_lambda1.npy | artifacts/p35_scores/v35_e1/a2_sgd_presupuesto.npy.
+
+---
+
+## Hito D-087: reevaluacion del objetivo LB 0.70 y fijacion del techo · 2026-09-30
+
+- Pregunta de fondo de Carlos, tras 6 candidatos medidos y ninguno pasando gates: ¿es alcanzable
+  **LB 0.70** bajo las restricciones vigentes? **Respuesta: NO**, `P(LB >= 0.70) ~ 1 %` (0.3 %-3 %).
+- **La pieza nueva**: la **curva de oraculo restringido**, versionada como artefacto trazable
+  (`scripts/v35_00g_techo_analisis.py`, `experiments/v35_00g_techo_analisis.json`,
+  `reports/v35_techo_analisis.md`; solo lectura, sin entrenar y sin decidir nada). Un oraculo que
+  usa **solo la informacion del campeon** rinde **+0.0567955** en tau=0.30 (9683 filas),
+  +0.0264312 en 0.35, +0.0080912 en 0.40, +0.0007503 en 0.45 y **0.0** en 0.50 (cero filas con
+  p >= 0.50). El techo de la curva **no alcanza** el +0.0626 del objetivo: un modelo perfecto con la
+  informacion actual no llegaria.
+- Residuo: base argmax de v30_prob macro-F1 **0.6134471**, **65403 errores** (38.62 %), con
+  `|d| = 1` = 39202 (**59.94 %**). El objetivo exige el **16.15 %** de los errores y el mejor oraculo
+  alcanza el 14.81 %.
+- Limites del dato medidos: solo-URL (3891 filas) error 0.6831 y macro-F1 0.1970; `len <= 20` error
+  0.4804; texto identico con etiqueta distinta (713 grupos / 1958 filas) con techo **+0.0018081**,
+  luego el ruido de etiquetado es marginal; solo 51 filas no ASCII, luego no hay via multilingue.
+- La calibracion se sostiene en n = 5 puntos con dominio CV [0.5344, 0.6160]: el objetivo pide
+  **2.04 sigma**, **77 % fuera** del rango y **37 veces** el sigma del residuo. Ningun dato mide el
+  mapping CV -> LB por encima de 0.616, luego el techo queda parcialmente determinado por un
+  instrumento no validado ahi.
+- **Por que no es imposible en absoluto sino inalcanzable aqui**: embeddings/LLMs (+0.03..+0.10),
+  metadatos y agregacion por autor (100-200 tweets por autor en la literatura, 1 tweet de mediana 93
+  caracteres aqui) son **exactamente las tres palancas prohibidas**. Y con los mismos 6 bins,
+  ExaAUAC (doi 10.1007/s44163-024-00145-0) reporta macro-F1 0.44 con BERT: nuestro 0.616 ya le
+  supera en +0.176.
+- **Correcciones a un informe de arquitectura, declaradas**: (a) el ancla trivial del proyecto **se
+  reproduce exacto** (0.04854212180687087; clase 13-17 con 170448 filas = 17.04 %, coherente con
+  2p/(6(1+p))), mientras el informe afirmaba que no reproducia y citaba 0.16666666666666667, que
+  corresponde a p = 0.0909; (b) los textos **no** estan truncados a 140 caracteres de forma
+  mayoritaria: mediana **93** y solo el **2.5 %** en el maximo.
+- **Decision**: LB 0.70 se retira como objetivo; techo **0.642 [0.635, 0.653]**; la via C1 se conserva
+  como cierre de expediente; **D-087** es este hito y **C1 pasa a D-088**.

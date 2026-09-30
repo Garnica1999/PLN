@@ -3156,3 +3156,99 @@ No se usa el 0,63575 para optimizar pesos, crear variantes, seleccionar semillas
   `scripts/v35_00b2_enmienda_preregistro.py`, `scripts/v35_00c_enmienda_preregistro.py`,
   `scripts/v35_00d_enmienda_preregistro.py`, `scripts/v35_00e_enmienda_preregistro.py`,
   `scripts/v35_00f_enmienda_preregistro.py`, `scripts/v35_01_ftrl_lambda1.py`.
+
+## D-087 - Techo alcanzable: LB 0.70 es NO ALCANZABLE bajo las restricciones vigentes (y el techo se fija en 0.642)
+
+- **Observation**: hito distinto de los experimentos. Tras **seis candidatos medidos y ninguno
+  pasa los gates** (P1, P2, P3, V33-E1, V34-E1 y V35-E1/D-086), Carlos pregunta si el objetivo
+  **LB 0.70** es alcanzable bajo las reglas vigentes. La pregunta se responde con medicion sobre el
+  OOF canonico y con la literatura, no con optimismo ni con pesimismo de estilo. La calibracion
+  del proyecto (`reports/age_lb_calibracion.csv`) implica que LB 0.70 exigiria **CV ~ 0.6786**, es
+  decir **+0.0626 de macro-F1** sobre el campeon.
+- **El residuo, medido sobre `artifacts/p33_scores/todos`** (base = argmax de `v30_prob`,
+  macro-F1 **0.6134471**, accuracy 0.6137679, **65403 errores = 38.62 %**): la confusion es
+  **mayoritariamente ordinal**: `|d| = 1` son **39202** errores (**59.94 %**), `|d| = 2` son 15519
+  (23.73 %) y `|d| = 3` son 6779 (10.36 %). Oraculos por un solo tipo (correccion perfecta, sin
+  reentrenar): solo adyacentes **+0.2314841**, solo `|d| = 2` **+0.0934158**, solo `|d| = 3`
+  **+0.0405468**, toda la masa lejana `|d| >= 2` (26201) **+0.1570939**.
+- **El dato que decide**: un **oraculo restringido a la MISMA informacion de V30** (corrige solo las
+  filas donde `p(y_true) >= tau`) rinde **+0.0567955** en `tau = 0.30` (9683 filas), **+0.0264312**
+  en 0.35, **+0.0080912** en 0.40, **+0.0007503** en 0.45 y **0.0** en 0.50 (**cero** filas con
+  `p(y_true) >= 0.50`). El techo mas generoso de esa curva, **+0.0568, es MENOR que el +0.0626 del
+  objetivo**: **un modelo perfecto con la informacion que el campeon ya tiene no llegaria**. Para
+  dimensionarlo de otro modo, el objetivo exige ~10.562 correcciones netas = **16.15 % de los 65403
+  errores**, y el mejor oraculo disponible alcanza 9683 filas = 14.81 %.
+- **Restricciones estructurales del dato, medidas** (todo procedente de
+  `scripts/v35_00g_techo_analisis.py`, artefacto versionado
+  `experiments/v35_00g_techo_analisis.json`): el subconjunto **solo-URL** (3891 filas, texto que es
+  exactamente una URL) tiene error **0.6831** y macro-F1 **0.1970** frente a los 0.6134471 del
+  conjunto; `len <= 20` (5194 filas, 3.07 %) tiene error 0.4804 y macro-F1 0.5249; `len <= 3` (213
+  filas) tiene error 0.6056 y macro-F1 0.1363; **713 grupos / 1958 filas (1.16 %)** comparten texto
+  exacto con etiqueta distinta y su oraculo de etiqueta mayoritaria aporta **+0.0018081** de techo,
+  luego el **ruido de etiquetado es marginal** y no explica el residuo; y solo **51** de las
+  169336 filas no son ASCII, luego **no hay via multilingue**. Sobre el truncamiento se **corrige** una
+  afirmacion del informe de arquitectura: los textos tienen mediana **93** caracteres (no 140) y solo
+  el **2.5 %** llega al maximo de 140, luego el truncamiento del CSV **no** es una limitacion
+  estructural mayor: afecta a la cola, no al conjunto.
+- **La calibracion no puede decidirlo, y es un limite declarado**: `LB ~ 0.00223 + 1.02825 x CV` se
+  sostiene en **n = 5** observaciones (4 ajustados y el campeon retenido). Verificado por
+  leave-one-out: **quitar el punto del campeon reproduce exactamente** `slope = 1.028251` e
+  `intercept = 0.002228`; residuos de los 5 puntos `+6.11e-04, -1.09e-03, -1.67e-03, +2.08e-03,
+  +7.90e-05`; `R2 = 0.99783`; `sigma = 0.001701` (df = 3). Su dominio es CV `[0.5344, 0.6160]`
+  (span 0.0816) y el objetivo pide `x = 0.6786`, que queda **+0.0626 sobre el maximo observado =
+  77 % fuera del rango ajustado = 2.04 sigma**, y la distancia a extrapolar es **37 veces** el sigma
+  del residuo. Ademas, **quitar el punto de V12** (0.5344, otra familia de modelo) mueve la pendiente
+  de 1.028 a 1.093 y el intercepto de +0.0022 a -0.0367. Conclusion honesta: **el techo queda
+  parcialmente determinado por un instrumento no validado en esa zona**, y ningun dato del proyecto
+  mide el mapping CV -> LB por encima de 0.616.
+- **Techo de la literatura (verificado)**: la comparacion directa es **ExaAUAC** (Sadeghi, Akbari y
+  Jaziriyan, 2024, *J. Big Data*, doi **10.1007/s44163-024-00145-0**): Twitter arabe, 181k perfiles y
+  **los MISMOS 6 bins** (`<=18, 18-24, 25-34, 35-49, 50-64, +65`) con **macro-F1 = 0.44** usando BERT
+  fine-tuned **con metadatos**, y 0.58 colapsando a 3 grupos. Nuestro **0.616 ya esta +0.176 por
+  encima** de un resultado publicado con transformer. Los demás referencias: **TAG-it @ EVALITA2020**
+  (Cimino, Dell'Orletta y Missan, CEUR-WS Vol-2765, paper165) edad macro-F1 0.416 (UmBERT) vs 0.382
+  (SVM), es decir **+0.03 a +0.07** de ganancia de transformer; **DADIT** (Lupo, Bose, Habibi, Hovy y
+  Schwarz, 2024, arXiv **2403.05700**, LREC-COLING 2024) reporta hasta **+53 % de F1** en edad con
+  XLM; **Morgan-Lopez, Kim, Bibeau y Dubin** (2017, *AJPH* 107(8)) **74 % de F1** con lenguaje +
+  metadatos frente a **57 % solo metadatos**; **O'Connor et al.** (2024, *JMIR*, doi
+  **10.2196/72521**) revisa el rango publicado de F1 0.31-0.94 y senala que el extremo alto usa edad
+  autodeclarada verificada, con protocolo incompatible. **PAN 2015** (Pardo et al., CLEF) y el
+  overview de **PAN 2020** (Rangel et al., PMC7148014) publican **accuracy media combinada** y no
+  macro-F1 desglosado por edad, luego **no se pudo verificar** esa cifra. **La comparacion no es
+  apples-to-apples en lo que mas importa**: PAN, DADIT, Morgan-Lopez y ExaAUAC agregan **100-200
+  tweets por autor** y usan metadatos; aqui hay **un tweet de 140 caracteres por fila**, y la clave
+  de autor seria metadato externo. **No se pudo verificar**: ningun trabajo de Twitter en espanol con
+  6 bins y features no preentrenadas; la tabla desglosada de edad del PAN 2015; ni el trabajo de
+  doi 10.1007/s44163-026-01695-1 (acceso bloqueado).
+- **Decision**: **LB 0.70 se retira como objetivo** y el techo se fija en **LB 0.642 con IC95
+  [0.635, 0.653]** (equivalente a CV 0.6227 [0.6159, 0.6325]), con **P(LB >= 0.70) ~ 1 %** (rango
+  0.3 %-3 %). Ese techo es una **ESTIMACION, no una medicion**: se deriva de una tasa de captura del
+  ~4 %-9 % del headroom, calibrada con los seis candidatos medidos (uno dio +0.0025 de CV y cinco
+  dieron ~0). Se publica la **curva de oraculo restringido** (`tau -> +0.0081 / +0.0264 / +0.0568`)
+  como medicion formal de **que fraccion del residuo es atacable con la informacion legal**, que es
+  la pieza que faltaba. La via **C1** (candidato A: transiciones de caracter global) se conserva, pero
+  su valor queda declarado como **cierre de expediente, no apuesta al objetivo**. Numeracion: este
+  hito toma **D-087** y **C1 pasa a D-088**.
+- **Consequences**: (i) el objetivo no es **imposible en terminos absolutos**: es **inalcanzable
+  porque el ejercicio prohibe exactamente las tres palancas que lo sostienen**, a saber
+  embeddings/LLMs preentrenados (+0.03..+0.10 de macro-F1 segun TAG-it y DADIT), metadatos (buena
+  parte del peso segun Morgan-Lopez) y datos/etiquetas externos o agregacion por autor (que es el
+  regimen de todos los trabajos citados). Ese matiz debe quedar escrito, porque es la unica lectura
+  honesta del dossier; (ii) el **ancla trivial del proyecto se confirma**: macro-F1 de predecir
+  siempre la clase mayoritaria (indice 0, **170448 = 17.04 %** de las filas) = **0.04854212180687087**,
+  reproducido exacto y coherente con `2p/(6(1+p))`. Un informe de arquitectura afirmo que ese ancla
+  no reproducia y que la trivial era 0.16666666666666667; **es erroneo**, y el 0.1667 corresponde a
+  `p = 0.0909`, que no es la clase mayoritaria de este corpus; (iii) el ruido de etiquetado queda
+  **descartado** como explicacion del residuo (+0.0018 de techo), de modo que el limite es de
+  **informacion disponible**, no de calidad de etiquetas; (iv) cualquier esfuerzo futuro debe
+  justificarse por **informacion que aporta**, no por probabilidad de mover el LB, porque la
+  probabilidad de alcanzar 0.70 esta fijada cerca del 1 %.
+- **Evidence**: analisis reproducible en `/tmp/opencode/age_ceiling` sobre
+  `artifacts/p33_scores/todos` (solo lectura); `reports/age_lb_calibracion.csv`;
+  `artifacts/p33_scores/todos/{y_true,v30_prob,fold_idx,ids}.npy`; `experiments/v35_01_ftrl_lambda1.json`;
+  `DECISIONS.md` (D-081..D-086); `PROJECT_STATE.md`; `FINAL_REPORT.md`; `experiments.csv`;
+  `reports/age_complete_experiment_history.csv`; `scripts/v35_00g_techo_analisis.py`, `experiments/v35_00g_techo_analisis.json`, `reports/v35_techo_analisis.md`. **Limites del hito**: el techo de 0.642 es
+  estimacion; no se pudo verificar la tabla desglosada de PAN 2015, ni un trabajo en espanol con
+  6 bins, ni el paper de doi 10.1007/s44163-026-01695-1; y el LOO de la calibracion **infiere** que
+  los 4 puntos ajustados son los del CSV a partir del propio leave-one-out, sin leer el script de
+  ajuste.

@@ -3,6 +3,49 @@
 > Memoria persistente del proyecto. Leer SIEMPRE al inicio de sesión o tras compactación.
 > Última actualización: 2026-09-26 (cierre de V13 ADVANCED RESEARCH).
 
+## D-087 (2026-09-30): LB 0.70 es NO ALCANZABLE bajo las restricciones; el techo se fija en LB 0.642
+
+- **Pregunta**: tras 6 candidatos medidos y ninguno pasando gates, se reevalua si el objetivo
+  **LB 0.70** es alcanzable. **Respuesta: NO.** `P(LB >= 0.70) ~ 1 %` (rango 0.3 %-3 %).
+  Techo defendible **LB 0.642 con IC95 [0.635, 0.653]** (equivalente a CV 0.6227), que es una
+  **estimacion**, no una medicion.
+- **La pieza que faltaba**: la **curva de oraculo restringido**, ahora versionada en
+  `scripts/v35_00g_techo_analisis.py` + `experiments/v35_00g_techo_analisis.json` +
+  `reports/v35_techo_analisis.md`. Un oraculo que usa **solo la informacion del campeon** (corrige
+  solo filas con `p(y_true) >= tau`) rinde **+0.0567955** en `tau = 0.30` (9683 filas),
+  **+0.0264312** en 0.35, **+0.0080912** en 0.40, **+0.0007503** en 0.45 y **0.0** en 0.50 (**cero**
+  filas con `p >= 0.50`). El techo de la curva, **+0.0568, es MENOR que el +0.0626** que exige el
+  objetivo: **un modelo perfecto con la informacion actual no llegaria**.
+- **El residuo es mayoritariamente ordinal**: base argmax de `v30_prob` macro-F1 **0.6134471**,
+  **65403 errores** (38.62 %); `|d| = 1` son **39202** (**59.94 %**), `|d| = 2` son 15519 y `|d| = 3`
+  son 6779. El objetivo exige ~10.562 correcciones netas = **16.15 % de los errores**, y el mejor
+  oraculo alcanza 14.81 %.
+- **El limite no es el modelo ni la calidad de las etiquetas**: el techo del ruido de etiquetado
+  (texto identico con etiqueta distinta) es **+0.0018081**, marginal. El subconjunto **solo-URL**
+  (3891 filas) tiene error **0.6831** y macro-F1 0.1970. Solo 51 filas no son ASCII: **no hay via
+  multilingue**.
+- **La calibracion no puede decidirlo y es un limite declarado**: `LB ~ 0.00223 + 1.02825 x CV` se
+  sostiene en **n = 5** puntos con dominio CV `[0.5344, 0.6160]`; el objetivo pide CV 0.6786, que es
+  **2.04 sigma** y **77 % fuera** del rango ajustado, y la distancia a extrapolar es **37 veces** el
+  sigma del residuo (0.001701). Quitar el punto de V12 mueve la pendiente de 1.028 a 1.093 y el
+  intercepto de +0.0022 a -0.0367. **Ningun dato del proyecto mide el mapping CV -> LB por encima de
+  0.616**, luego el techo queda parcialmente determinado por un instrumento no validado ahi.
+- **Por que no es imposible en terminos absolutos**: lo que lo sostiene son **embeddings/LLMs
+  preentrenados** (+0.03..+0.10 de macro-F1 segun TAG-it y DADIT), **metadatos** (Morgan-Lopez:
+  74 % de F1 con lenguaje + metadatos vs 57 % solo metadatos) y **agregacion por autor** (PAN, DADIT
+  y ExaAUAC usan 100-200 tweets por autor; aqui hay **un tweet por fila**). Las tres estan
+  **prohibidas** por las reglas del ejercicio. Y el estado del arte publicado con los **mismos 6
+  bins** (ExaAUAC, doi 10.1007/s44163-024-00145-0) reporta macro-F1 **0.44** con BERT y metadatos:
+  nuestro **0.616 ya le supera en +0.176**.
+- **Correcciones a un informe de arquitectura** (declaradas, no silenciosas): (a) el ancla trivial del
+  proyecto **se reproduce exacto** (`0.04854212180687087`, clase 13-17 con 170448 filas = 17.04 %, y
+  coincide con `2p/(6(1+p))`); el informe afirmaba que no reproducia y citaba 0.16666666666666667,
+  que corresponde a `p = 0.0909` y no es la clase mayoritaria; (b) los textos **no** estan truncados
+  a 140 caracteres de forma mayoritaria: la mediana es **93** y solo el **2.5 %** llega al maximo.
+- **Decision**: LB 0.70 se **retira como objetivo**; el techo se fija en **0.642 [0.635, 0.653]**; la
+  via **C1** (transiciones de caracter) se conserva pero como **cierre de expediente, no apuesta al
+  objetivo**; y la numeracion deja **D-087** para este hito y **D-088** para C1.
+
 ## V35 via B (2026-09-30) CERRADA — `lambda1 > 0` no acota la norma; FTRL CERRADA DEFINITIVAMENTE (D-086)
 - **Veredicto**: `LINEA_ONLINE_CERRADA_POR_MECANISMO`, causa unica `G8_acotacion_norma`, con
   `cierre_definitivo = True`. Cierre de **familia**, no un gate de delta. `integracion`, `delta` y

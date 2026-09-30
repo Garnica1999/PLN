@@ -1141,3 +1141,62 @@ temporal) mas la cobertura en dos capas del ensamblado de `entrenar_brazo_fold` 
 **cazaron 5 bugs bloqueantes** que `--verificar` y `--humo` no veian, todos capaces de matar la
 corrida **despues** de entrenar y con checkpoints ya escritos. Ninguno de los 5 llego a tocar un
 gate, un umbral o el pre-registro.
+
+
+---
+
+## D-087: el techo del proyecto - LB 0.70 es NO ALCANZABLE bajo las reglas del ejercicio
+
+**Pregunta de fondo**: tras seis candidatos medidos y ninguno pasando gates, Carlos pregunta si el
+objetivo **LB 0.70** es alcanzable. **Respuesta: NO**, con `P(LB >= 0.70) ~ 1 %`. El techo
+defendible se fija en **LB 0.642 con IC95 [0.635, 0.653]**.
+
+**La evidencia que decide** (versionada en `scripts/v35_00g_techo_analisis.py` y
+`experiments/v35_00g_techo_analisis.json`):
+
+| Oraculo restringido a la informacion de V30 (corrige solo si `p(y_true) >= tau`) | Filas | Ganancia |
+|---|---|---|
+| `tau = 0.30` | 9683 | **+0.0567955** |
+| `tau = 0.35` | 4516 | +0.0264312 |
+| `tau = 0.40` | 1383 | +0.0080912 |
+| `tau = 0.45` | 126 | +0.0007503 |
+| `tau = 0.50` | **0** | 0.0 |
+| **objetivo LB 0.70** | - | **+0.0626** |
+
+El techo de esa curva, **+0.0568, es menor que el +0.0626 que exige el objetivo**: **un modelo
+perfecto con la informacion que el campeon ya tiene no llegaria**, y a `tau = 0.50` **no hay ni una
+sola** fila corregible. El residuo es **mayoritariamente ordinal** (`|d| = 1` son 39202 de 65403
+errores, **59.94 %**), y el objetivo exige corregir el **16.15 %** de los errores cuando el mejor
+oraculo alcanza el 14.81 %.
+
+**El limite no es la calidad de las etiquetas**: el techo del ruido de etiquetado (texto identico
+con etiqueta distinta) es **+0.0018081**, marginal. El subconjunto solo-URL (3891 filas) tiene error
+0.6831 y macro-F1 0.1970. Solo 51 filas de 169336 no son ASCII, luego no hay via multilingue.
+
+**La calibracion no puede decidirlo, y es un limite declarado**: `LB ~ 0.00223 + 1.02825 x CV` se
+sostiene en **n = 5** puntos con dominio CV `[0.5344, 0.6160]`. El objetivo pide CV 0.6786: son
+**2.04 sigma**, **77 % fuera** del rango ajustado, y **37 veces** el sigma del residuo (0.001701).
+Quitar el punto de V12 mueve la pendiente de 1.028 a 1.093 y el intercepto de +0.0022 a -0.0367. Por
+tanto **el techo queda parcialmente determinado por un instrumento no validado en esa zona**, y
+ningun dato del proyecto mide el mapping CV -> LB por encima de 0.616.
+
+**Por que el objetivo no es imposible en terminos absolutos, sino inalcanzable aqui**: lo que lo
+sostiene son las tres palancas que el ejercicio prohibe. **Embeddings/LLMs preentrenados**: +0.03 a
++0.10 de macro-F1 segun TAG-it y DADIT. **Metadatos**: Morgan-Lopez et al. reportan 74 % de F1 con
+lenguaje + metadatos frente a 57 % solo metadatos. **Agregacion por autor**: PAN, DADIT y ExaAUAC
+usan 100-200 tweets por autor, mientras aqui hay **un tweet de 93 caracteres de mediana por fila**. Y
+el estado del arte publicado con los **mismos 6 bins** (ExaAUAC, doi 10.1007/s44163-024-00145-0)
+reporta macro-F1 **0.44** con BERT y metadatos: nuestro **0.616 ya le supera en +0.176**.
+
+**Correcciones a un informe de arquitectura**, declaradas y no silenciosas: (a) el ancla trivial del
+proyecto **se reproduce exacto** (`0.04854212180687087`; clase 13-17 con 170448 filas = 17.04 %, y
+coincide con `2p/(6(1+p))`), mientras el informe afirmaba que no reproducia y citaba
+`0.16666666666666667`, cifra que corresponde a `p = 0.0909` y no a la clase mayoritaria de este
+corpus; (b) los textos **no** estan truncados a 140 caracteres de forma mayoritaria: la mediana es
+**93** y solo el **2.5 %** llega al maximo, luego el truncamiento afecta a la cola y no es una
+limitacion estructural mayor.
+
+**Decision**: **LB 0.70 se retira como objetivo** y el techo se fija en **0.642 [0.635, 0.653]**. La
+via C1 (transiciones de caracter global) se conserva, pero su valor queda declarado como **cierre de
+expediente y publicacion de la curva de oraculo**, no como apuesta al objetivo. Numeracion: este
+hito toma **D-087** y **C1 pasa a D-088**. Campeon **V30 + plug-in (LB 0.63575) intacto**.
