@@ -725,3 +725,7 @@ def main() -> int:
 
     print(f"\n[fin] {time.time() - inicio:.0f} s", flush=True)
     return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
