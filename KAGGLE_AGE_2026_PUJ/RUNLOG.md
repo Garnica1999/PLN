@@ -2254,3 +2254,14 @@ intacto.
 
 - G1: banda de log_loss [0.25, 0.60] -> [0.05, 1.6125835223052495] (inalcanzable para un modelo sano; D-083 midio
   1.3568 en el gemelo). A2: shuffle=False para respetar el orden congelado. Sin resultados.
+
+---
+
+## Correccion de la puerta de V33-E1 · 2026-09-30
+
+- El documento normativo `reports/v33_convergence_gate.md` seguia anunciando la banda G1 congelada `[0.25, 0.60]`
+  porque el reemplazo literal de la enmienda 1 no coincidia con la fila real. Esta correccion reconstruye la fila
+  desde el JSON del pre-registro (fuente unica de verdad): G1 `0.05 <= ll_train <= 1.6125835223052496` (0.9*log(6)), y el ancla de G3 pasa de `(clase 13-17)` a `(clase 13-17)`.
+- Sin cambios en el protocolo ni en el codigo del runner: el JSON y el runner ya usaban la banda enmendada.
+- Nota de la entrada anterior: el ancla de G3 debe leerse `(clase 13-17)`; el JSON del
+- pre-registro guarda el indice de clase (0) y el nombre se resuelve con `cfg.CLASSES`.

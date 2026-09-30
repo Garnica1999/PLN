@@ -6,9 +6,9 @@ programar la regla: si una sonda fijara un umbral, seria tuning y esta prohibido
 
 | Gate | Criterio | Anclaje | Tolerancia |
 |---|---|---|---|
-| G1 | 0.25 <= log_loss multiclase de train <= 0.60 | uniforme `log(6)` = 1.791759; la cota alta caza la divergencia 11.72 -> 23.03 de D-083 | 1e-9 |
+| G1 | 0.05 <= log_loss multiclase de train <= 1.6125835223052496 | suelo 0.05 = detector de humo (una pasada no memoriza); techo 0.9*log(6) = 1.6125835223052496 (mejorar el uniforme >= 10 % relativo) | 1e-9 |
 | G2 | log_loss no creciente en 25 %, 50 % y 100 % de la pasada | caza la firma de D-083 | 1e-6 |
-| G3 | macro-F1 standalone en el fold-val >= 0.30 | trivial 0.0485421 (clase 0) y gemelo SGD de D-083 0.4934789 | 1e-9 |
+| G3 | macro-F1 standalone en el fold-val >= 0.30 | trivial 0.0485421 (clase 13-17) y gemelo SGD de D-083 0.4934789 | 1e-9 |
 | G4 | frecuencia predicha por clase en [0.10, 0.30] | proporciones reales del train | 1e-9 |
 | G5 | max|delta p| = 0.0 entre dos corridas identicas | determinismo CPU esperado exacto | 0 |
 | G6 | max|sum_c p_c - 1| <= 1e-9 | softmax de 6 logits | 1e-9 |

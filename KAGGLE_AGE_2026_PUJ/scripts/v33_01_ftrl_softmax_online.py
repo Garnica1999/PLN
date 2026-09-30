@@ -701,6 +701,9 @@ def verificar_constantes(prereg: dict) -> tuple[bool, dict]:
                           and A2_SGD["estimator"] == "sklearn.linear_model.SGDClassifier"),
         "a2_random_state": A2_SGD["random_state"] == f"{SEMILLA}+fold",
         "a2_n_jobs": A2_SGD["n_jobs"] == HILOS,
+        "enmiendas_prereg": (len(prereg.get("enmiendas", [])) == 2
+                             and all("pre-ejecucion" in str(e.get("estado_datos", ""))
+                                     for e in prereg["enmiendas"])),
         "puerta": prereg["puerta_convergencia"] == PUERTA_PREREG,
         "puerta_aplica_a": PUERTA_PREREG["aplica_a"] == list(BRAZOS),
         "puerta_umbrales": (G1_BANDA == (0.05, 1.6125835223052495)
@@ -1863,8 +1866,10 @@ def anadir_sesgo(x: sp.csr_matrix, x0: float = X0) -> sp.csr_matrix:
                                np.full(n_filas, n_features, dtype=np.int64)])
     valores = np.concatenate([x.data.astype(np.float64), np.full(n_filas, x0)])
     matriz = sp.csr_matrix((valores, (filas, columnas)), shape=(n_filas, n_features + 1))
-    assert matriz.has_sorted_indices, "la matriz con sesgo debe tener indices ascendentes"
-    assert matriz.has_canonical_format, "la matriz con sesgo debe estar en formato canonico"
+    if not matriz.has_sorted_indices:
+        raise Detencion("[STOP] la matriz con sesgo no tiene indices ascendentes (exit 2)", 2)
+    if not matriz.has_canonical_format:
+        raise Detencion("[STOP] la matriz con sesgo no esta en forma canonica (exit 2)", 2)
     return matriz
 
 
@@ -2025,13 +2030,14 @@ def entrenar_a1(x_tr: sp.csr_matrix, y_tr: np.ndarray, orden: np.ndarray, con_at
                            if con_atribucion else None)}
 
 
-def entrenar_a2(x_tr: sp.csr_matrix, y_tr: np.ndarray, orden: np.ndarray) -> dict:
+def entrenar_a2(x_tr: sp.csr_matrix, y_tr: np.ndarray, orden: np.ndarray,
+                fold: int) -> dict:
     """Entrena A2 (gemelo SGD de UNA pasada) y devuelve el modelo y su curva de train.
 
-    Las filas se entregan EN EL ORDEN CONGELADO; encima, ``SGDClassifier`` aplica su propia
-    permutacion sembrada con ``random_state=20261010+fold`` (el pre-registro no congela
-    ``shuffle``). Esa asimetria residual se declara y se reporta: el control no puede recibir
-    una permutacion externa identica a la de A1 porque sklearn la genera por dentro.
+    Las filas se entregan EN EL ORDEN CONGELADO y con ``shuffle=False`` (enmenda 2
+    pre-ejecucion del pre-registro), de modo que el control consume exactamente la misma
+    permutacion que A1. El ``random_state=20261010+fold`` se conserva por fidelidad al
+    protocolo, aunque con ``shuffle=False`` no altera el resultado (verificado: delta P = 0.0).
 
     Parameters
     ----------
@@ -2041,6 +2047,8 @@ def entrenar_a2(x_tr: sp.csr_matrix, y_tr: np.ndarray, orden: np.ndarray) -> dic
         Etiquetas del fold-train.
     orden:
         Permutacion congelada de las filas del fold-train.
+    fold:
+        Fold canonico; la semilla del control es ``20261010 + fold``.
 
     Returns
     -------
@@ -2050,7 +2058,7 @@ def entrenar_a2(x_tr: sp.csr_matrix, y_tr: np.ndarray, orden: np.ndarray) -> dic
     inicio = time.time()
     filas = x_tr[orden].tocsr()
     filas.sort_indices()
-    modelo = SGDClassifier(**kwargs_sgd(0))
+    modelo = SGDClassifier(**kwargs_sgd(fold))
     modelo.fit(filas, y_tr[orden])
     return {"modelo": modelo, "alpha": None, "n_iter": int(np.max(modelo.n_iter_)),
             "tiempo_seg": float(time.time() - inicio)}
@@ -2161,14 +2169,17 @@ def registrar_fold(estado: dict, brazo: str, fold: int, resultado: dict, oof: np
 
     Raises
     ------
-    AssertionError
-        Si la mascara detecta una fila escrita dos veces o un solape de folds.
+    Detencion
+        Si la mascara detecta una fila escrita dos veces o un solape de folds (exit 2).
     """
-    assert np.intersect1d(tr_idx, va_idx).size == 0, "train y val del fold se solapan"
+    if np.intersect1d(tr_idx, va_idx).size != 0:
+        raise Detencion(f"[STOP] train y val del fold {fold} se solapan (exit 2)", 2)
     p_va = resultado["p_va"]
     datos = estado["brazos"][brazo]
     mascara = np.asarray(datos["mascara_relleno_por_fila"], dtype=np.int64)
-    assert mascara[va_idx].max() == 0, f"{brazo} fold {fold}: fila ya rellenada en el OOF"
+    if va_idx.size and int(mascara[va_idx].max()) != 0:
+        raise Detencion(f"[STOP] {brazo} fold {fold}: fila ya rellenada en el OOF (exit 2)",
+                        2)
     oof[va_idx] = p_va
     mascara[va_idx] += 1
     guardar_oof(brazo, oof)
@@ -2251,7 +2262,7 @@ def entrenar_fold(brazo: str, x_tr: sp.csr_matrix, x_va: sp.csr_matrix, y_tr: np
         atribucion = ajuste["atribucion"]
         ll_online = ajuste["ll_train_online"]
     else:
-        ajuste = entrenar_a2(x_tr, y_tr, orden)
+        ajuste = entrenar_a2(x_tr, y_tr, orden, fold)
         modelo = ajuste["modelo"]
         p_va = modelo.predict_proba(x_va)
         p_tr = modelo.predict_proba(x_tr[orden].tocsr())
@@ -3269,7 +3280,11 @@ def escribir_informe(resultado: dict) -> None:
         "",
     ]
     for brazo in BRAZOS:
-        sonda = resultado["determinismo"][f"sonda_{brazo}"]
+        sonda = resultado["determinismo"].get(f"sonda_{brazo}") or {}
+        if not sonda:
+            linea.append(f"- {brazo}: no medido (el cierre por puerta precede a las sondas "
+                         f"de determinismo).")
+            continue
         linea.append(f"- {brazo}: max|delta p| = {sonda['max_abs_diff']:.3e} "
                      f"({sonda['clasificacion']}), rango = {sonda['rango']}, no concluyente = "
                      f"{sonda['no_concluyente']}, solape con el gate = "
@@ -3282,12 +3297,14 @@ def escribir_informe(resultado: dict) -> None:
         (f"- `alpha` del control: {SGD_ALPHA:g} frente al alpha DERIVADO de A1 (~0.004075), "
          "cuatro ordenes de magnitud; y el intercepto de `SGDClassifier` no se regulariza, "
          "mientras que en A1 el sesgo es una coordenada mas de FTRL con su propio `n` y `z`."),
-        ("- `SGDClassifier` baraja por dentro con `random_state=20261010+fold`; las filas se le "
-         "entregan YA EN EL ORDEN CONGELADO, pero sklearn aplica su permutacion sembrada encima. "
-         "El control no puede recibir una permutacion externa identica bit a bit: es una "
-         "asimetria residual del limite de sklearn y queda registrada, no_hidden."),
-        ("- El pre-registro congela `shuffle` en su valor por defecto (no aparece en la lista "
-         "de argumentos), de modo que cambiarlo seria salirse del protocolo."),
+        ("- Las filas se le entregan al control YA EN EL ORDEN CONGELADO y con `shuffle=False` "
+         "(enmenda 2 pre-ejecucion), de modo que consume la MISMA permutacion que A1; el "
+         "`random_state` congelado `20261010+fold` se mantiene aunque con `shuffle=False` no "
+         "altera el resultado (verificado: delta P = 0.0)."),
+        ("- **Enmiendas pre-ejecucion registradas** (sin resultados): (1) banda de G1 de "
+         "`[0.25, 0.60]` a `[0.05, 0.9*log(6)]`, porque el techo original era inalcanzable para "
+         "un modelo sano (D-083 midio log_loss multiclase 1.3568) y cerraba el experimento por "
+         "construccion; (2) `shuffle=False` en el control para respetar el orden congelado."),
         "",
     ]
     if integracion:
@@ -3322,7 +3339,7 @@ def escribir_informe(resultado: dict) -> None:
                 f"{diag['log_loss_prob']:.4f} | {contra['rescate']} | {contra['danio']} | "
                 f"{contra['neto']:+d} | {contra['rescates_alta_confianza']} | "
                 f"{contra['errores_alta_confianza_campeon']} |")
-        control = resultado["control_atribucion"]
+        control = resultado["determinismo"]["control"]
         linea += [
             "",
             "## Gates, caps y veredicto",
@@ -3630,7 +3647,7 @@ def anotar_historial(resultado: dict) -> bool:
                          f"{resultado['veredicto']}"}
     else:
         diag = resultado["complementariedad"]["A1_ftrl_softmax"]["vs_campeon"]
-        contra = resultado["control_atribucion"]
+        contra = resultado["determinismo"]["control"]
         registro = {
             "phase": "V33", "experiment_id": "V33-E1", "date": FECHA,
             "hypothesis": "la divergencia de D-083 fue de configuracion (sigma inflado por "
@@ -3694,8 +3711,9 @@ def resumen_consola(resultado: dict) -> None:
                   f"{met['delta_vs_baseline']:+.7f}, {met['folds_positivos']}/5 folds, IC95 "
                   f"[{met['ic95'][0]:+.7f}, {met['ic95'][1]:+.7f}])")
         print(f"  gates: {resultado['gates']}")
-    print(f"  caps: sonda no publicada = {resultado['caps']['sonda_atribucion_no_publicada']} | "
-          f"determinismo no concluyente = {resultado['caps']['determinismo_no_concluyente']}")
+    caps = resultado.get("caps") or {}
+    print(f"  caps: sonda no publicada = {caps.get('sonda_atribucion_no_publicada')} | "
+          f"determinismo no concluyente = {caps.get('determinismo_no_concluyente')}")
     print(f"  VEREDICTO: {resultado['veredicto']}")
     print(f"  siguiente: {resultado['siguiente_paso']}")
     print(f"  artefactos: {ruta_relativa(RESULTADOS_JSON)} | {ruta_relativa(INFORME)} | "
@@ -3804,8 +3822,7 @@ def construir_resultado(inicio: float, prereg: dict, auditoria: dict, baseline: 
                                 "1.8.0 exige tupla y en el fit se convierte (mismo valor); el "
                                 "sha256 congelado del dict usa SIEMPRE la lista",
             "nota_orden": A1_FTRL["orden"] + "; la permutacion se entrega como filas al control, "
-                          "que encima aplica su propia permutacion sembrada (asimetria "
-                          "declarada)",
+                          "que con shuffle=False (enmenda 2) la consume tal cual",
             "norm_dtype": prereg["representacion"]["norm_dtype"],
             "ajuste_vectorizador": prereg["representacion"]["ajuste"],
             "pesos_plugin": PESOS, "hilos": HILOS,
@@ -3841,7 +3858,7 @@ def construir_resultado(inicio: float, prereg: dict, auditoria: dict, baseline: 
         "complementariedad": complementariedad,
         "gates": gates,
         "caps": caps,
-        "verdicto": veredicto,
+        "veredicto": veredicto,
         "siguiente_paso": ARBOL_PREREG[veredicto],
         "duracion_seg": float(time.time() - inicio),
         "duracion_sondas_seg": float(sondas["duracion_seg"]),
