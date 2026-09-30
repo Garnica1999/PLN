@@ -2125,3 +2125,11 @@ intacto.
 - Baseline primario recomputado: 0.6159732.
 - Revisiones de Kaggle Specialist y revisor ML incorporadas; limites declarados.
 - Sin tuning, sin test, sin holdout, sin submission automatica.
+
+---
+
+## P6 ejecutado: NER estructural (tipos de entidad) · 2026-09-29
+
+- Brazos reales: N1/lg: -0.0010228 (2/5) | N1/md: -0.0009257 (1/5) | N1b/lg: -0.0013202 (0/5) | N1b/md: -0.0010038 (2/5) | N2/lg: -0.0010122 (1/5) | N2/md: -0.0012316 (1/5) | PROMISING: False.
+- Control barajado por el pipeline completo (semilla 20261029); baseline 0.6159732.
+- Sin tuning, sin test, sin holdout, sin submission; campeon intacto.

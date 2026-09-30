@@ -2757,3 +2757,15 @@ No se usa el 0,63575 para optimizar pesos, crear variantes, seleccionar semillas
 - **Consequences**: el candidato adoptado (V30 + plug-in, LB 0,63575) permanece intacto. El modo de fallo queda acotado por las mediciones 1 y 2 (senal en aislamiento y complementariedad contra el campeon), que acotan la lectura: no es 'POS no tiene informacion', es lo que el gate midio sobre ESTA integracion.
 
 - **Evidence**: `experiments/age_linguistic_03_pos_secuencia.json`, `reports/age_linguistic_pos_secuencia.md`, `reports/age_linguistic_pos_secuencia_brazos.csv`.
+---
+
+## D-078 - P6: el canal NER estructural no supera el gate; NER se cierra documentado
+
+- **Observation**: se ejecuto P6 con el pre-registro congelado (N1, N1b y N2; md y lg; control barajado por el pipeline completo). Ningun brazo alcanzo el gate (delta >= +0,0015 con 4/5 folds, real > barajado, bootstrap sin cero). Baseline recomputado: 0.6159732.
+- **Result**: N1/lg: delta -0.0010228 (2/5), barajado -0.0011874 | N1/md: delta -0.0009257 (1/5), barajado -0.0011904 | N1b/lg: delta -0.0013202 (0/5), barajado -0.0011727 | N1b/md: delta -0.0010038 (2/5), barajado -0.0012511 | N2/lg: delta -0.0010122 (1/5), barajado -0.0011698 | N2/md: delta -0.0012316 (1/5), barajado -0.0010243.
+
+- **Decision**: NER estructural se cierra documentado (arbol pre-registrado y regla del brief: hipotesis negativa se cierra; no se buscan variantes inmediatamente). El campeon adoptado (V30 + plug-in, LB 0,63575) permanece intacto.
+
+- **Consequences**: la conclusion es sobre NER estructural con la integracion probada, no sobre 'toda la familia linguistica' (P2 ya dejo esa leccion: modos de fallo distintos no se extrapolan). P5 (dependencias) queda como unica familia GENUINELY_NEW documentada y no priorizada; P3/P4 quedan PARTIALLY_COVERED. Sin reabrir POS ni encadenar variantes sin hipotesis nueva.
+
+- **Evidence**: `experiments/age_linguistic_06_ner_estructura.json`, `reports/ner_structural_results.csv`, `reports/ner_structural_complementarity.csv`, `reports/ner_structural_decision.md`.

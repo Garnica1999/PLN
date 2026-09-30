@@ -1171,3 +1171,11 @@ LB 0,63575) permanece como FINAL_REFERENCE.
   mejora; el modo de fallo es dilucion, no ausencia de informacion.
 - Decision: **POS-secuencia se cierra documentado**; el candidato adoptado (V30 + plug-in,
   LB 0.63575) permanece intacto. Sin test, sin holdout, sin submission.
+
+---
+
+## P6 ejecutado: NER estructural (2026-09-29)
+
+- Resultado: NINGUN BRAZO PASA: NER estructural se cierra documentado; el campeon intacto.
+- N1/N1b/N2 x md/lg con control barajado por el pipeline completo; baseline 0.6159732.
+- Sin test, sin holdout, sin leaderboard, sin submission.
