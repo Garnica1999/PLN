@@ -1,0 +1,4 @@
+corpus,vocabulario,embedding_only_cv,embedding_delta,fusion_estandarizada_cv,fusion_estandarizada_delta,fusion_normalizada_cv,fusion_normalizada_delta,rescue,damage,net,pasa_gate
+V03,,0.7772114525,0.0,0.7772114525,0.0,0.7772114525,0.0,,,,
+twitter,77657,0.5514425602,-0.2257688924,0.6579898386,-0.1192216139,0.5797391785,-0.197472274,270,830,-560,False
+general,100097,0.5574677438,-0.2197437087,0.6658165404,-0.1113949121,0.5782642824,-0.1989471701,266,820,-554,False

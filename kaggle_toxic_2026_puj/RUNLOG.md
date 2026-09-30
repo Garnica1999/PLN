@@ -3024,3 +3024,22 @@ Carlos pidio aislarlo con una prueba controlada. Tenia razon en pedirlo.
 Pendiente: relanzar el downstream con los modelos _lrfix.
 
 Sin push, sin merge, sin rebase.
+
+
+## 2026-09-29, downstream con los modelos corregidos
+
+- `experiments/p71_09_downstream_lrfix.py`: reejecuta el downstream con los modelos que
+  entrenaron de verdad, y con la fusion corregida por normalizacion de filas.
+
+```text
+dominio embedding-only        -0,006025  GANA GENERAL
+dominio fusion estandarizada  -0,007827  GANA GENERAL
+dominio fusion normalizada    +0,001475  GANA TWITTER
+```
+
+**El signo cambia segun como se mida.** Ningun gate pasa.
+
+**Segunda anomalia declarada**: la fusion normalizada deberia quedarse cerca de V03 y cae a
+0,578, treinta puntos por debajo. Es un defecto de implementacion que no he aislado.
+
+Sin push, sin merge, sin rebase.

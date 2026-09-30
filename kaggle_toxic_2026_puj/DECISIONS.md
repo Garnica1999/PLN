@@ -7170,3 +7170,60 @@ SGD corregido   1,272136 -> ... -> 1,095145                   BAJA
 
 Queda pendiente relanzar el downstream con estos modelos. Los numeros del downstream anterior
 siguen marcados como invalidados.
+
+
+## D-234 a D-236: el downstream con los modelos corregidos, y una segunda anomalia
+
+Fecha 2026-09-29.
+
+### D-234. Los modelos corregidos si entrenan
+
+```text
+twitter   loss 1,272136 -> 1,174189 -> 1,132058 -> 1,108284 -> 1,095145
+general   loss 1,254160 -> 1,140164 -> 1,094067 -> 1,069379 -> 1,055625
+```
+
+### D-235. El control de dominio es INCONSISTENTE entre las tres formas de medir
+
+```text
+embedding-only        twitter 0,551443 | general 0,557468 -> -0,006025  GANA GENERAL
+fusion estandarizada  twitter 0,657990 | general 0,665817 -> -0,007827  GANA GENERAL
+fusion normalizada   twitter 0,579739 | general 0,578264 -> +0,001475  GANA TWITTER
+```
+
+**Dos favorecen al general y una a twitter por una milesima.** El signo cambia segun como se
+mida, y eso no es una senal de dominio: es lo que se ve cuando no hay senal.
+
+Ningun gate pasa: delta de fusion `-0,20`, 0 de 5 pliegues positivos, complementariedad negativa
+en los dos corpus.
+
+### D-236. UNA SEGUNDA ANOMALIA, que no he aislado
+
+**La fusion sigue destruyendo la representacion de V03, y no deberia.**
+
+```text
+V03 sola                    0,777211
+V03 + densas estandarizadas 0,665817 (general) y 0,657990 (twitter)
+V03 + densas normalizadas   0,578264 (general) y 0,579739 (twitter)
+```
+
+Con la normalizacion por filas el bloque denso queda practicamente anulado frente a las 24.646
+dimensiones dispersas, asi que la fusion deberia quedarse **cerca de V03**. No lo hace: cae a
+`0,578`, treinta puntos por debajo. Eso apunta a un segundo defecto de implementacion que **no he
+aislado**, y lo declaro como tal.
+
+Los dos defectos son mios, no del embedding ni del corpus. Y significan que **el numero de fusion
+todavia no se puede leer como "el embedding no aporta"**.
+
+### Lo que si y lo que no
+
+```text
+SI   el corpus de Twitter esta validado: periodo cerrado en 2020, cero solapamiento con train
+SI   los dos corpus estan preparados con 10M tokens y tokenizacion identica
+SI   el skip-gram ahora SI entrena: la loss baja monotonicamente en los dos
+NO   si el dominio Twitter aporta, porque el signo cambia segun la forma de fusion
+NO   si el embedding aporta a V03, porque la fusion tiene un defecto no aislado
+```
+
+La hipotesis **sigue sin ponerse a prueba de forma limpia**, y ahora por un motivo distinto del
+anterior: antes fallaba el entrenamiento, ahora falla la fusion.

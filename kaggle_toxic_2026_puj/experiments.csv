@@ -396,3 +396,4 @@ P71-05|2026-09-29|downstream: embedding-only, fusion y complementariedad|CLOSED 
 P71-06|2026-09-29|mismo modelo con SGD y decaimiento lineal|loss clavada en 1,386295: el modelo no aprende|P71|experiments/p71_06_word2vec_optimizador.py
 P71-07|2026-09-29|invalidacion del veredicto por representaciones no entrenadas|CLOSED -> INVALID_DUE_TO_UNTRAINED_REPRESENTATIONS|P71|experiments/p71_07_invalidar_veredicto.py
 P71-08|2026-09-29|learning rate escalado por el lote: el bug aislado y corregido|twitter loss 1,272 a 1,095 | general 1,254 a 1,094 | baja monotonicamente|P71|experiments/p71_08_word2vec_corregido.py
+P71-09|2026-09-29|downstream con los modelos corregidos y la fusion normalizada|MARGINAL | dominio inconsistente | fusion con un segundo defecto no aislado|P71|experiments/p71_09_downstream_lrfix.py
