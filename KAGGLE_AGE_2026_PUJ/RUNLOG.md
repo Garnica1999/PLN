@@ -2333,3 +2333,13 @@ intacto.
 - Flag 2 resuelto en negativo: `lambda1` fijo NO acota `||w||_2` (razon 2.1304), luego la hipotesis de acotacion queda falsada por medicion.
 - Puerta G0-G6 sin cambios + G7 (L1 activo, anclada a la magnitud medida) y G8 (acotacion, anclada a la hipotesis), ambas solo sobre A1; rama pre-declarada; sondas (k)-(m) no-gate.
 - Baseline recomputado 0.6159732; sin test, sin holdout, sin submission, campeon intacto.
+
+---
+
+## Enmienda pre-ejecucion 1 de V35-E1 - 2026-09-30
+
+- El anclaje de lambda1 era circular: se media con un core sin regularizar y se
+  verificaba con el core ya regularizado, cuyo z depende de w y w de lambda1.
+  Medido: lambda1 = mediana -> 0.2333793834039217 (diferencia -0.006558555225118473); lambda1 = 0 -> 0.23993793862904017 (diferencia exacta 0.0).
+- Correccion: la reproducibilidad se verifica con el NUCLEO DE ANCLAJE (lambda1 = 0.0) sobre el mismo stream, con sha256 `ec1d1a7b13454f8b`. No
+  cambia el protocolo, ni gates, ni puerta, ni el numero del anclaje.

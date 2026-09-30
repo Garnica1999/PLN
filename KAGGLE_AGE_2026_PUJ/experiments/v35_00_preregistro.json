@@ -52,7 +52,21 @@
     "medida_sobre": "solo filas del ES-train del fold 0; recipe exacta y sha256 del snapshot de z declarados en la sonda pre-ejecucion (experiments/v35_00b_sonda_lambda1.json)",
     "flag_1_resuelto": "lambda1 = alpha es no-op porque mediana/alpha = 6.8044 > 1 (medido)",
     "sensibilidad_declarada": "q=0.25 y q=0.75 escalan lambda1 ~ 1/sqrt(q); esa sensibilidad SOLO se ejecuta en gemelo sintetico, jamas sobre datos reales",
-    "prohibido": "re-derivar lambda1 tras ver las gates; un segundo lambda1 seria grid"
+    "prohibido": "re-derivar lambda1 tras ver las gates; un segundo lambda1 seria grid",
+    "verificacion_runtime": {
+      "nucleo": "anclaje (lambda1 = 0.0)",
+      "stream": "pasada 1 del fold 0 de A1: misma matriz, mismas etiquetas, mismo orden congelado y mismo alpha",
+      "criterio": "diferencia EXACTA 0 con el valor congelado y sha256 del snapshot de z identico al de la sonda pre-ejecucion versionada",
+      "valor_congelado": 0.23993793862904017,
+      "sha256_del_snapshot": "ec1d1a7b13454f8b",
+      "diagnostico_secundario": {
+        "descripcion": "mediana del z del core YA REGULARIZADO; NO es el anclaje",
+        "valor_esperado": 0.2333793834039217,
+        "diferencia_esperada": -0.006558555225118473,
+        "lectura": "la diferencia es la magnitud del acoplamiento z <- w(lambda1); por eso el anclaje solo puede reproducirse con el core sin regularizar"
+      }
+    },
+    "circularidad_corregida": "el anclaje se mide con un core sin regularizar porque z depende de w y w depende de lambda1"
   },
   "puerta": {
     "momento": "dentro del fold 0, ANTES de los folds 1-4 y ANTES de integrar",
@@ -214,5 +228,20 @@
     "runner": "scripts/v35_01_ftrl_lambda1.py -> experiments/v35_01_ftrl_lambda1.json, experiments/v35_01_estado.json, checkpoints/v35_e1/, artifacts/p35_scores/v35_e1/{a1_ftrl_lambda1,a2_sgd_presupuesto}.npy, reports/v35_e1_ftrl_lambda1.md, reports/figures/v35_e1_curvas.png, reports/v35_novelty_registry.csv, fila anexada en reports/age_complete_experiment_history.csv, RUNLOG.md, fila V35-E1 en experiments.csv",
     "acta": "D-086 en DECISIONS.md con el miembro NO CUBIERTO, la lista de miembros cerrados e intocables, el destino del segundo miembro NO CUBIERTO y la regla terminal one-shot"
   },
-  "prediccion_registrada": "con la sonda pre-ejecucion ya falsada la hipotesis de acotacion (razon ||w||_2 = 2.1304 con lambda1 = mediana), el veredicto mas probable es LINEA_ONLINE_CERRADA_POR_MECANISMO por fallo de G8. El ciclo NO puede terminar en PROMISING: alpha esta congelado e identico al que ya divergio"
+  "prediccion_registrada": "con la sonda pre-ejecucion ya falsada la hipotesis de acotacion (razon ||w||_2 = 2.1304 con lambda1 = mediana), el veredicto mas probable es LINEA_ONLINE_CERRADA_POR_MECANISMO por fallo de G8. El ciclo NO puede terminar en PROMISING: alpha esta congelado e identico al que ya divergio",
+  "enmiendas": [
+    {
+      "fecha": "2026-09-30",
+      "objeto": "anclaje_lambda1.verificacion (item 2 del diseno)",
+      "de": "exigir diferencia exacta 0 y sha256 del snapshot de z leido del core YA REGULARIZADO de A1",
+      "a": "verificar con el NUCLEO DE ANCLAJE (lambda1 = 0.0) sobre el mismo stream de la pasada 1 del fold 0 de A1 (misma matriz, etiquetas, orden congelado y alpha): diferencia exacta 0 con 0.23993793862904017 y sha256 identico al de la sonda pre-ejecucion versionada",
+      "motivo": "circularidad: en FTRL z depende de w y w depende de lambda1, luego el z de A1 nunca puede reproducir el umbral que lo define. Medido: con lambda1 = mediana la mediana del z es 0.2333793834039217 (diferencia -0.006558555225118473), con lambda1 = 0 es 0.23993793862904017 (diferencia exacta 0.0)",
+      "diagnostico_secundario": "se publica la mediana del core ya regularizado (0.2333793834039217) declarando que NO es el anclaje y que su diferencia (-0.006558555225118473) es la magnitud del acoplamiento z <- w(lambda1)",
+      "sha256_del_anclaje": "ec1d1a7b13454f8b",
+      "cambia_el_protocolo": false,
+      "cambia_el_numero": false,
+      "afecta_a_gates": false,
+      "estado_datos": "sin resultados; enmienda pre-ejecucion"
+    }
+  ]
 }
