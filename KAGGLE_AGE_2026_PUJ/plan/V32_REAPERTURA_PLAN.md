@@ -128,8 +128,14 @@ compliance de los ciclos previos. Scripts previstos: `v32_04_preregistro_ftrl.py
   (`39c6c827...`) y del array de textos con receta determinista (`53c1a348...`).
   Pre-registro: `reports/v32_p3_preregistro.md` + `experiments/v32_04_preregistro_ftrl.json`
   (script `v32_04`).
-- [ ] **F2'' Pre-registro + implementacion + revision**: pre-registro congelado; `ml-coder`;
-  `ml-reviewer`; `ml-qa-engineer` (GO/NO-GO).
+- [x] **F2'' Pre-registro + implementacion + revision**: pre-registro congelado (`7fcf499`);
+  `ml-coder` implemento `scripts/v32_05_ftrl_challenger.py` (sondas: vectorizado vs lazo
+  6.66e-15, punto fijo analitico 0.0, TotalF1:average=Macro 0.0, p y log_loss finitos);
+  `ml-reviewer` = APROBADO con observaciones (3 correcciones importantes: log_loss multiclase
+  propio porque sklearn 1.8.0 no renormaliza, recarga validada del OOF crudo de A2 al reanudar,
+  AST audit ampliado a modulos importados; mas 3 cosmeticas); `ml-qa-engineer` = GO con
+  observaciones (54 checks; `--verificar` sin efectos secundarios; caps, precedencias,
+  reanudacion y AST audit probados con harness sintetico en /tmp).
 - [ ] **F3'' Entrenamiento y evaluacion**: `ml-trainer`; gates; arbol (PROMISING -> segunda
   particion; MARGINAL/CLOSED -> cierre documentado). Con cierre, la reapertura termina.
 - [ ] **F4'' Cierre**: notebook (seccion del ciclo), `DECISIONS.md` (D-083), `PROJECT_STATE.md`,
