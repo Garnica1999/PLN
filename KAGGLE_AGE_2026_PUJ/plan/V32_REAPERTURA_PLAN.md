@@ -38,9 +38,11 @@ Objetivo del usuario: mejorar el puntaje de Kaggle; referencia declarada: acerca
   `dl-specialist` aprobo con correcciones (AdamW, one-hot float32, pasos calculados, guardas
   NaN, determinismo CPU/GPU, sanity de 1 lote) y recomendo ES. Carlos decidio: **early stopping
   estricto + entrenamiento en GPU** (D-007, guardian). GPU verificada libre el 2026-09-30.
-- [ ] **F2 Pre-registro + implementacion + revision**: script de pre-registro congelado;
-  `ml-coder` implementa `scripts/v32_01_surrogate_macrof1.py`; `ml-reviewer` revisa
-  (lint/leakage/reglas); `ml-qa-engineer` verifica (Prove-It).
+- [x] **F2 Pre-registro + implementacion + revision**: pre-registro congelado (`9c5cca2` HEAD;
+  artefactos en `1cdf7a1`); `ml-coder` implemento `scripts/v32_01_surrogate_macrof1.py`;
+  `ml-reviewer` = APROBADO con observaciones (fix de degradacion de determinismo aplicado);
+  `ml-qa-engineer` = APROBADO GO (47/47 checks, `--verificar` EXIT 0). Pendiente de aclarar en
+  cierre: S1 (el prereg cita el commit 9c5cca2 = HEAD previo al commit de sus artefactos).
 - [ ] **F3 Entrenamiento y evaluacion**: `ml-trainer` ejecuta, registra metricas y aplica gates;
   segunda particion si PROMISING; `ml-performance-auditor` si hay cuello de botella.
 - [ ] **F4 Cierre**: notebook consolidado (seccion nueva "PHASE - V32 REOPENING"), actualizacion
