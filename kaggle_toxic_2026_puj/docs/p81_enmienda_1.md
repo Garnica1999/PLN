@@ -16,7 +16,7 @@ mayor que 0.99 sin investigarlo.
 
 El problema: el termino negativo del objetivo con SUMA pesa K veces mas que con MEDIA.
 Con el mismo learning rate fijo, el brazo SUMA da un paso K veces mas fuerte. Eso
-significa que comparar a un solo learning rate no aísla el objetivo: mezcla "que
+significa que comparar a un solo learning rate no aisla el objetivo: mezcla "que
 objetivo es mejor" con "cual se entreno mas fuerte". Es exactamente el tipo de
 confund que este proyecto lleva dos fases intentando cerrar.
 
@@ -49,7 +49,7 @@ publica la curva completa de M1 frente a learning rate para los dos brazos.
 El primario pasa a ser el MEJOR de la rejilla de cada objetivo, y la diferencia entre
 ambos es la afirmacion. La curva entera se publica en el JSON y en el markdown.
 
-Por que esto aísla el objetivo: cada objetivo se evalua en SU mejor punto alcanzable
+Por que esto aisla el objetivo: cada objetivo se evalua en SU mejor punto alcanzable
 dentro de una rejilla declarada de antemano, no en un punto arbitrario. La objecion de
 "gano porque se entreno mas fuerte" se responde con la curva: si el brazo SUMA ganara
 solo en el extremo alto de la rejilla, la curva lo muestra y el primario deja de ser
