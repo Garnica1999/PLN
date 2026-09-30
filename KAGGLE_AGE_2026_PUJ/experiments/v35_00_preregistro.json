@@ -93,7 +93,12 @@
     "k_caso_lambda1_cero": "reproduce dentro del runner el caso lambda1 = 0 del gemelo pre-ejecucion (ll_train y ||w||_2 por pasada) y compara con el artefacto versionado",
     "l_caso_lambda1_alpha": "reproduce el caso lambda1 = alpha, que debe ser no-op (mediana/alpha = 6.8044)",
     "m_caso_lambda1_mediana": "reproduce el caso lambda1 = mediana, con su ||w||_2 y su escasez",
-    "politica": "son sondas NO-GATE: no deciden el veredicto, pero la decision de mecanismo NO puede descansar en evidencia importada de /tmp, luego se reproducen aqui"
+    "politica": "son sondas NO-GATE: no deciden el veredicto, pero la decision de mecanismo NO puede descansar en evidencia importada de /tmp. En el miniproblema de --verificar son de FIRMA DE MECANISMO (orden de las tres normas ||w||_2 y signo de la razon > 1.0, con los deltas publicados como diagnostico), porque la identidad numerica es imposible por dimension (mini 1350 x 51 frente a 121921 x 107793 del gemelo, y con lambda1 = 0.2399 el mini apenas poda: escasez efectiva 1.0)",
+    "identidad_numerica": {
+      "donde": "dentro del runner, en el FOLD 0 de la corrida real, sobre el stream real de ES-train (misma matriz, mismas etiquetas, mismo orden congelado y mismo alpha que la sonda pre-ejecucion)",
+      "criterio": "diferencia relativa <= 1e-09 en ll_train y ||w||_2 de cada pasada frente a experiments/v35_00b_sonda_lambda1.json; diferencia EXACTA 0 y sha256 identico en la mediana del anclaje y en el snapshot de z",
+      "publica": "si, en el estado, en el informe y en el resultado, como no-gate"
+    }
   },
   "rama_terminal": {
     "miembro_actual": "lambda1 > 0",
@@ -241,6 +246,20 @@
       "cambia_el_protocolo": false,
       "cambia_el_numero": false,
       "afecta_a_gates": false,
+      "estado_datos": "sin resultados; enmienda pre-ejecucion"
+    },
+    {
+      "fecha": "2026-09-30",
+      "objeto": "sondas_nuevas (k)-(m): dimension del problema y alcance del contraste",
+      "de": "las sondas (k), (l) y (m) reproducen dentro del runner los tres casos del gemelo pre-ejecucion (identidad numerica), sin decir donde corren",
+      "a": "en el miniproblema de --verificar son NO-GATE y de FIRMA DE MECANISMO (orden de las tres normas y signo de la razon, con deltas publicados como diagnostico); la IDENTIDAD NUMERICA exacta de los tres casos se ejecuta dentro del runner durante la corrida real, en el fold 0, sobre el stream real de ES-train, con diferencia relativa <= 1e-9 en ll_train y ||w||_2, y diferencia EXACTA 0 mas sha256 identico en la mediana del anclaje",
+      "motivo": "el mini tiene del orden de 1350 x 51 coordenadas frente a las 121921 x 107793 del gemelo pre-ejecucion, luego la identidad numerica es imposible por dimension; ademas con lambda1 = 0.2399 el mini apenas poda (escasez efectiva 1.0 en los tres casos), de modo que alli no hay magnitud que reproducir. Cargar el corpus dentro de --verificar volveria la verificacion pesada y con efectos de carga",
+      "no_gate": true,
+      "cambia_el_protocolo": false,
+      "cambia_el_anclaje": false,
+      "afecta_a_gates": false,
+      "evidencia_de_mecanismo": "la decision se apoya en la trayectoria interna de A1 sobre el stream real (que alimenta G8) mas el triage, no en evidencia importada de /tmp; ademas lambda1 = 0 ya tiene evidencia real versionada del ciclo V34-E1 y lambda1 = mediana es el propio A1, luego la repeticion de los tres casos es confirmacion y no la fuente",
+      "presupuesto": "los ~60 s de los tres casos caben en los 1200 s declarados",
       "estado_datos": "sin resultados; enmienda pre-ejecucion"
     }
   ]

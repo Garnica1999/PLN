@@ -2343,3 +2343,10 @@ intacto.
   Medido: lambda1 = mediana -> 0.2333793834039217 (diferencia -0.006558555225118473); lambda1 = 0 -> 0.23993793862904017 (diferencia exacta 0.0).
 - Correccion: la reproducibilidad se verifica con el NUCLEO DE ANCLAJE (lambda1 = 0.0) sobre el mismo stream, con sha256 `ec1d1a7b13454f8b`. No
   cambia el protocolo, ni gates, ni puerta, ni el numero del anclaje.
+
+---
+
+## Enmienda pre-ejecucion 2 de V35-E1 - 2026-09-30
+
+- El pre-registro pedia identidad numerica de los tres casos del gemelo en las sondas (k)-(m) sin decir donde; sobre el mini es imposible (1350 x 51 frente a 121921 x 107793).
+- Correccion: en el mini son de FIRMA DE MECANISMO y no-gate; la identidad exacta corre en el fold 0 de la corrida real con tolerancia relativa 1e-09 y diferencia EXACTA 0 en el anclaje.
