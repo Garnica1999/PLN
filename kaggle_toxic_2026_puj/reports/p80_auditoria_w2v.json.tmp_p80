@@ -1,0 +1,4437 @@
+{
+  "familia": "P80_AUDITORIA_WORD2VEC",
+  "experiment_id": "P80-01",
+  "fase": "Fase 2 del plan p80_p82_auditoria_w2v_rnn_bayesiano",
+  "naturaleza": "AUDITORIA FORENSE. Sin entrenamiento, sin reentrenamiento, sin submission y sin tocar el artefacto congelado",
+  "fecha_inicio": "2026-09-30T22:00:19+00:00",
+  "fecha_fin": "2026-09-30T22:00:21+00:00",
+  "formulacion": "V03 remains the best verified leaderboard result.",
+  "pre_registro": {
+    "ruta": "docs/p80_preregistro_auditoria_w2v.md",
+    "sha256": "440ab13c610e1bcf35a0b00f096699f738bc59480240dbd934e6c5f3e2f7c81f",
+    "sha256_recomputado": "440ab13c610e1bcf35a0b00f096699f738bc59480240dbd934e6c5f3e2f7c81f",
+    "coincide": true,
+    "bytes": 38470,
+    "commit": "8726c9f",
+    "regla": "si el sha256 no coincide, P80 para y avisa a Carlos antes de seguir"
+  },
+  "alcance": {
+    "que_se_audita": [
+      "la loss de SkipGram de p71_04:182-216",
+      "el gradiente y su descomposicion con el factor 1/K",
+      "el calculo de total_lotes del scheduler de p72_01:91-96 frente al recorrido de p72_01:98-120",
+      "la recuperabilidad de la matriz de salida del artefacto",
+      "la eleccion de epoca de los BiGRU de v9_04 y v10_11",
+      "el orden del enmascarado del relleno en esos BiGRU",
+      "el pool de CV y la seleccion de epoca de la fase DL"
+    ],
+    "que_no_se_hace": [
+      "reentrenar el Word2Vec, ni de 10 millones de tokens ni de un corpus sintetico con fines de conclusion",
+      "modificar, reentrenar ni sobrescribir el artefacto congelado",
+      "modificar V03, sus umbrales 0.44 / 0.51 / 0.46 ni experiments/baseline_v03_frozen/",
+      "generar submission, consultar el leaderboard, leer test o leer el holdout",
+      "leer features/v2_structured_features.parquet",
+      "editar o borrar P71 a P79 ni los informes que escribieron",
+      "responder a si conviene una LSTM, un GRU con atencion o un modelo bayesiano: eso es P81 y P82",
+      "escribir DECISIONS.md, RUNLOG.md ni PROJECT_STATE.md, que son entregables de la Fase 4 y no de este script"
+    ],
+    "fronteras_de_escritura": [
+      "reports/p80_auditoria_w2v.json",
+      "reports/p80_auditoria_w2v.md",
+      "figuras/p80/",
+      "el propio script"
+    ]
+  },
+  "artefacto_congelado": {
+    "sha256_declarado": "302c994d13b75f8f5fbd440eea2c4f4113997e2581524021923b92f8244d705a",
+    "antes_de_la_primera_lectura": {
+      "ruta": "modelos/twitter_domain/w2v_twitter_100d.npz",
+      "sha256": "302c994d13b75f8f5fbd440eea2c4f4113997e2581524021923b92f8244d705a",
+      "bytes": 29478868,
+      "mtime_ns": 1790744455825458351
+    },
+    "despues_de_la_ultima_lectura": {
+      "ruta": "modelos/twitter_domain/w2v_twitter_100d.npz",
+      "sha256": "302c994d13b75f8f5fbd440eea2c4f4113997e2581524021923b92f8244d705a",
+      "bytes": 29478868,
+      "mtime_ns": 1790744455825458351
+    },
+    "intacto": true,
+    "modo_de_apertura": "open(ruta, 'rb') y np.load sobre el manejador: nunca en modo escritura, nunca se copia, nunca se guarda encima",
+    "matrices_derivadas_en_disco": "ninguna: todo lo calculado vive en memoria y sale solo por el JSON"
+  },
+  "entorno": {
+    "python": "3.14.7",
+    "torch": "2.14.0+rocm7.2",
+    "numpy": "1.26.4",
+    "hilos": 32,
+    "dispositivo": "CPU. No se usa GPU: P80 no entrena nada"
+  },
+  "afirmaciones": [
+    {
+      "afirmacion": "A1",
+      "hallazgo": "H1",
+      "naturaleza": "CONFIRMAR",
+      "que_se_afirma": "la loss reimplementada en P80 coincide con SkipGram.forward de p71_04:199-216 con los mismos pesos y los mismos indices",
+      "tolerancia": 1e-12,
+      "unidad": "diferencia absoluta sobre el valor de la loss, en float64",
+      "medida": {
+        "diferencias_por_k": {
+          "1": 0.0,
+          "5": 0.0,
+          "10": 0.0,
+          "20": 0.0
+        },
+        "maximo": 0.0,
+        "los_cuatro_k_evaluados": true,
+        "clase_importada_acepta_la_firma": true,
+        "clase": "p71_04_entrenar_word2vec.SkipGram"
+      },
+      "exito": "la diferencia maxima sobre los cuatro K es menor o igual que la tolerancia",
+      "fallo": "cualquier diferencia mayor, o que la clase importada no acepte la firma",
+      "stop_si_falla": true,
+      "veredicto": "CONFIRMADO"
+    },
+    {
+      "afirmacion": "A2",
+      "hallazgo": "H1",
+      "naturaleza": "CONFIRMAR",
+      "que_se_afirma": "logsigmoid(v . u_pos).mean() es el termino positivo de la referencia, no depende de K ni del termino negativo",
+      "tolerancia": 1e-12,
+      "unidad": "diferencia absoluta del termino positivo al recalcularlo con otros negativos",
+      "medida": {
+        "diferencias_por_k": {
+          "1": 0.0,
+          "5": 0.0,
+          "10": 0.0,
+          "20": 0.0
+        },
+        "maximo": 0.0,
+        "insensibilidad_al_negativo": {
+          "1": {
+            "pos_con_los_negativos_originales": -0.69280695939266,
+            "pos_con_los_negativos_invertidos": -0.69280695939266
+          },
+          "5": {
+            "pos_con_los_negativos_originales": -0.6927623741006644,
+            "pos_con_los_negativos_invertidos": -0.6927623741006644
+          },
+          "10": {
+            "pos_con_los_negativos_originales": -0.6927141025254155,
+            "pos_con_los_negativos_invertidos": -0.6927141025254155
+          },
+          "20": {
+            "pos_con_los_negativos_originales": -0.6925503923825955,
+            "pos_con_los_negativos_invertidos": -0.6925503923825955
+          }
+        }
+      },
+      "exito": "diferencia menor o igual que la tolerancia en los cuatro K",
+      "fallo": "diferencia mayor, o el termino positivo depende de los negativos",
+      "stop_si_falla": true,
+      "veredicto": "CONFIRMADO"
+    },
+    {
+      "afirmacion": "A3",
+      "hallazgo": "H1",
+      "naturaleza": "CONFIRMAR",
+      "que_se_afirma": "el codigo promedia el termino negativo sobre los ejes lote y K, de modo que neg_codigo = neg_referencia / K de forma exacta",
+      "tolerancia": 1e-12,
+      "unidad": "|ratio_negativo - 1/K|, con ratio_negativo = neg_codigo / neg_referencia",
+      "medida": {
+        "ratio_negativo_por_k": {
+          "1": 1.0,
+          "5": 0.2,
+          "10": 0.09999999999999996,
+          "20": 0.04999999999999999
+        },
+        "desviacion_de_1_sobre_k": {
+          "1": 0.0,
+          "5": 0.0,
+          "10": 4.163336342344337e-17,
+          "20": 1.3877787807814457e-17
+        },
+        "maximo_en_los_cuatro_k": 4.163336342344337e-17,
+        "maximo_en_k_con_evidencia": 4.163336342344337e-17,
+        "k_con_evidencia": [
+          5,
+          10,
+          20
+        ],
+        "nota_de_k_1": "en K = 1 el ratio vale 1 y la asercion es trivialmente cierta",
+        "linea_del_fuente": {
+          "fichero": "experiments/p71_04_entrenar_word2vec.py",
+          "linea": 215,
+          "texto_literal": "neg_l = torch.nn.functional.logsigmoid(-(v.unsqueeze(1) * u_neg).sum(dim=2)).mean()",
+          "comprobacion": "la linea promedia y no suma sobre K antes de promediar",
+          "contiene_sum_dim_1": false,
+          "contiene_mean": true
+        }
+      },
+      "exito": "se cumple en K = 5, K = 10 y K = 20, y la linea que lo produce esta citada",
+      "fallo": "cualquier desviacion mayor que la tolerancia, o un ratio que no sea 1/K",
+      "stop_si_falla": true,
+      "veredicto": "CONFIRMADO"
+    },
+    {
+      "afirmacion": "A4",
+      "hallazgo": "H1",
+      "naturaleza": "CONFIRMAR",
+      "que_se_afirma": "el componente positivo del gradiente pesa 1 y el negativo pesa 1/K, y la suma de los dos reproduce a autograd",
+      "tolerancia": {
+        "componentes": "1e-06 relativa",
+        "residuos": "1e-09 absoluta"
+      },
+      "unidad": "razones de normas y residuos de norma del maximo absoluto",
+      "medida": {
+        "por_k": {
+          "1": {
+            "normas": {
+              "positivo_analitico": 0.005133937431165708,
+              "positivo_autograd": 0.005133937431165708,
+              "negativo_codigo": 0.005286309173976033,
+              "negativo_referencia": 0.005286309173976033,
+              "total_codigo": 0.004763704414551209,
+              "total_referencia": 0.004763704414551209
+            },
+            "ratio_positivo": 1.0,
+            "ratio_negativo": 1.0,
+            "objetivo_de_1_sobre_k": 1.0,
+            "residuos": {
+              "entrada_codigo": 6.505213034913027e-19,
+              "entrada_referencia": 6.505213034913027e-19,
+              "salida_codigo": 1.3010426069826053e-18,
+              "salida_referencia": 1.3010426069826053e-18,
+              "componente_positivo_contra_su_autograd": 8.673617379884035e-19,
+              "componente_positivo_contra_su_autograd_en_salida": 4.336808689942018e-19,
+              "la_diferencia_entre_los_dos_objetivos_es_solo_el_negativo": 0.0
+            }
+          },
+          "5": {
+            "normas": {
+              "positivo_analitico": 0.004351231043046957,
+              "positivo_autograd": 0.004351231043046956,
+              "negativo_codigo": 0.0037418399314959917,
+              "negativo_referencia": 0.018709199657479955,
+              "total_codigo": 0.0032572304754544396,
+              "total_referencia": 0.016041889756197747
+            },
+            "ratio_positivo": 1.0000000000000002,
+            "ratio_negativo": 0.20000000000000004,
+            "objetivo_de_1_sobre_k": 0.2,
+            "residuos": {
+              "entrada_codigo": 4.336808689942018e-19,
+              "entrada_referencia": 1.734723475976807e-18,
+              "salida_codigo": 1.1926223897340549e-18,
+              "salida_referencia": 3.469446951953614e-18,
+              "componente_positivo_contra_su_autograd": 4.336808689942018e-19,
+              "componente_positivo_contra_su_autograd_en_salida": 8.673617379884035e-19,
+              "la_diferencia_entre_los_dos_objetivos_es_solo_el_negativo": 4.336808689942018e-19
+            }
+          },
+          "10": {
+            "normas": {
+              "positivo_analitico": 0.005581216301754065,
+              "positivo_autograd": 0.005581216301754064,
+              "negativo_codigo": 0.0038659425809787697,
+              "negativo_referencia": 0.0386594258097877,
+              "total_codigo": 0.004906951342658817,
+              "total_referencia": 0.03613209127185631
+            },
+            "ratio_positivo": 1.0000000000000002,
+            "ratio_negativo": 0.09999999999999999,
+            "objetivo_de_1_sobre_k": 0.1,
+            "residuos": {
+              "entrada_codigo": 5.421010862427522e-19,
+              "entrada_referencia": 6.938893903907228e-18,
+              "salida_codigo": 1.3010426069826053e-18,
+              "salida_referencia": 2.0816681711721685e-17,
+              "componente_positivo_contra_su_autograd": 4.336808689942018e-19,
+              "componente_positivo_contra_su_autograd_en_salida": 4.336808689942018e-19,
+              "la_diferencia_entre_los_dos_objetivos_es_solo_el_negativo": 1.734723475976807e-18
+            }
+          },
+          "20": {
+            "normas": {
+              "positivo_analitico": 0.005418055201780975,
+              "positivo_autograd": 0.0054180552017809745,
+              "negativo_codigo": 0.003349778284098885,
+              "negativo_referencia": 0.0669955656819777,
+              "total_codigo": 0.004403273593978749,
+              "total_referencia": 0.06398445729740167
+            },
+            "ratio_positivo": 1.0000000000000002,
+            "ratio_negativo": 0.049999999999999996,
+            "objetivo_de_1_sobre_k": 0.05,
+            "residuos": {
+              "entrada_codigo": 6.505213034913027e-19,
+              "entrada_referencia": 8.673617379884035e-18,
+              "salida_codigo": 1.734723475976807e-18,
+              "salida_referencia": 3.469446951953614e-17,
+              "componente_positivo_contra_su_autograd": 6.505213034913027e-19,
+              "componente_positivo_contra_su_autograd_en_salida": 1.734723475976807e-18,
+              "la_diferencia_entre_los_dos_objetivos_es_solo_el_negativo": 3.469446951953614e-18
+            }
+          }
+        },
+        "maximo_residuo": 3.469446951953614e-17,
+        "matriz_de_comparacion": "matriz ACUMULADA, con index_add_ y los mismos indices",
+        "como_se_define_ratio_positivo": "norma del componente positivo analitico dividida por la norma del gradiente que autograd da para el objetivo `-(pos)` aislado. Medirlo contra si mismo daria 1 por definicion y no seria una medida",
+        "aditividad_de_los_componentes": "positivo y negativo se calculan en dos funciones separadas y cada una devuelve solo su termino. Si una unica funcion devolviera el total en funcion de f, el componente negativo llevaria tambien el termino positivo, al sumarlos se contaria dos veces, el residuo dejaria de ser nulo y la razon de los componentes negativos no seria 1/K sino la razon de las normas totales",
+        "poder_discriminante": "el peso 1 del componente positivo es identico por construccion, luego la prueba de verdad son los residuos: el del componente positivo contra su autograd, y el de la suma contra el objetivo completo"
+      },
+      "exito": "ratio_positivo = 1 y ratio_negativo = 1/K, con los residuos por debajo de la tolerancia en los cuatro K",
+      "fallo": "cualquier ratio fuera de tolerancia, o cualquier residuo por encima del limite, lo que significaria que la forma cerrada esta mal",
+      "stop_si_falla": true,
+      "veredicto": "CONFIRMADO"
+    },
+    {
+      "afirmacion": "A5",
+      "hallazgo": "H1",
+      "naturaleza": "REFUTAR",
+      "que_se_afirma": "P80 no asegura que ||g_entrada_codigo|| / ||g_entrada_referencia|| valga 1/K, ni que este dentro de [1/K, 1]. La afirmacion de P79 se retira por no demostrada y por incumplida por su propia medida",
+      "tolerancia": "no aplica: es una correccion de una asercion indebida, no una medicion",
+      "unidad": "razon de normas, publicada como numero informativo",
+      "medida": {
+        "ratio_de_la_norma_del_gradiente_total": {
+          "etiqueta": "no_es_una_asercion",
+          "valor_por_k": {
+            "1": 1.0,
+            "5": 0.20304530980809266,
+            "10": 0.13580590466627365,
+            "20": 0.06881786264923999
+          },
+          "por_que_no_es_una_asercion": "g_codigo y g_referencia no son colineales, luego la razon depende de la direccion del termino negativo y no se puede acotar"
+        },
+        "demostracion_de_la_cota": {
+          "que_se_refuta": "la razon de la norma del gradiente TOTAL de entrada esta acotada",
+          "porque_es_falso": "g_codigo = g_pos + g_neg/K y g_referencia = g_pos + g_neg no son colineales, luego no se puede factorizar la razon en 1/K",
+          "contraejemplos": {
+            "por_debajo_del_limite_inferior": {
+              "g_pos": [
+                1.0,
+                0.0
+              ],
+              "g_neg": [
+                -10.0,
+                0.0
+              ],
+              "norma_total_codigo": 0.0,
+              "norma_total_referencia": 9.0,
+              "razon": 0.0,
+              "limite_inferior_que_P79_afirmaba": 0.1,
+              "lectura": "el termino negativo se opone al positivo con razon K, luego el numerador se anula y la razon cae por debajo de 1/K"
+            },
+            "por_encima_del_limite_superior": {
+              "g_pos": [
+                1.0,
+                0.0
+              ],
+              "g_neg": [
+                -9.999,
+                0.0
+              ],
+              "norma_total_codigo": 9.999999999998899e-05,
+              "norma_total_referencia": 8.999,
+              "razon": 1.1112345816200575e-05,
+              "limite_superior_que_P79_afirmaba": 1.0,
+              "lectura": "el denominador casi se anula y el numerador no, luego la razon se dispara muy por encima de 1"
+            }
+          },
+          "naturaleza_de_los_numeros": "aritmetica exacta sobre dos hipotesis de vectores de gradiente; NO son medidas del artefacto congelado"
+        },
+        "autocomprobacion": {
+          "claves_de_cota_presentes": [],
+          "exigencia": "este bloque no puede contener ninguna clave de cota; si alguna aparece, A5 falla"
+        }
+      },
+      "exito": "el ratio aparece como numero informativo, sin ninguna cota, y con contraejemplos numericos explicitos",
+      "fallo": "que aparezca cualquier cota, o que el ratio se compare contra 1/K",
+      "stop_si_falla": false,
+      "veredicto": "CONFIRMADO"
+    },
+    {
+      "afirmacion": "A6",
+      "hallazgo": "H2",
+      "naturaleza": "CONFIRMAR",
+      "que_se_afirma": "el desfase se establece leyendo el fichero completo con el modulo ast y un mapa de padres, sin busqueda de cadenas ni ventanas de lineas",
+      "tolerancia": "igualdad exacta; cero margen",
+      "unidad": "procedimiento, no numero",
+      "medida": {
+        "lectura_de_p72_01": {
+          "fuente": "experiments/p72_01_dimensiones.py",
+          "n_lineas": 198,
+          "sha256": "48c607f3ff83d0de9ebc4ca6c3fd669c3b9ddb19d118117b9fc4b20ae721b5fe",
+          "procedimiento": {
+            "localizacion": "recorrido del AST con mapa de padres, comparando el camino de atributos del nodo Call con ['np', 'random', 'default_rng']",
+            "prohibido": [
+              "buscar la cadena default_rng en el texto",
+              "buscar hacia atras un encabezado con for en una ventana de lineas",
+              "etiquetar el bucle del plan por la cadena planes.append en una ventana de cuatro lineas"
+            ],
+            "iteradores_admitidos": [
+              "range(N)",
+              "enumerate(x, start=k)"
+            ],
+            "como_se_resuelve_len_de_enumerate": "el objeto se construye con `append` dentro de un unico bucle, y su longitud es el numero de ejecuciones de ese `append`, que es la longitud del rango del bucle una vez resuelto `N` desde el modulo importado. No es el numero de sentencias `append` escritas",
+            "discriminador_del_bucle_del_plan": "el cuerpo del For contiene un Call Attribute(attr='append') sobre el Name 'planes'",
+            "resolucion_del_alias": "m <- cx['mod'] <- base <- experiments/p71_04_entrenar_word2vec.py, siguiendo el codigo por AST",
+            "forma_admitida_para_la_entrada_mod_de_cx": "un Name o un Attribute; en p72_01 es el Name `base`, que es el modulo cargado por importlib"
+          },
+          "llamadas": [
+            {
+              "linea": 75,
+              "texto_literal": "np.random.default_rng(m.SEMILLA)",
+              "argumento": "m.SEMILLA",
+              "bucle_contenedor": null,
+              "rol": "fuera_de_bucle",
+              "rango_de_epocas": null,
+              "conjunto_de_semillas": null,
+              "semillas_por_epoca": null,
+              "nota": "la llamada no esta dentro de ningun bucle, luego no tiene rango que resolver: se registra y se deja tal cual"
+            },
+            {
+              "linea": 93,
+              "texto_literal": "r2 = np.random.default_rng(m.SEMILLA + ep)",
+              "argumento": "m.SEMILLA + ep",
+              "bucle_contenedor": {
+                "linea": 92,
+                "texto_literal": "for ep in range(m.EPOCAS):",
+                "iterador": "range(m.EPOCAS)",
+                "variable": "ep"
+              },
+              "rol": "plan",
+              "rango_de_epocas": {
+                "inicio": 0,
+                "fin": 5,
+                "longitud": 5
+              },
+              "conjunto_de_semillas": [
+                20261016,
+                20261017,
+                20261018,
+                20261019,
+                20261020
+              ],
+              "semillas_por_epoca": {
+                "0": 20261016,
+                "1": 20261017,
+                "2": 20261018,
+                "3": 20261019,
+                "4": 20261020
+              }
+            },
+            {
+              "linea": 101,
+              "texto_literal": "r2 = np.random.default_rng(m.SEMILLA + ep)",
+              "argumento": "m.SEMILLA + ep",
+              "bucle_contenedor": {
+                "linea": 99,
+                "texto_literal": "for ep, _ in enumerate(planes, start=1):",
+                "iterador": "enumerate(planes, start=1)",
+                "variable": "ep"
+              },
+              "rol": "entrenamiento",
+              "rango_de_epocas": {
+                "inicio": 1,
+                "fin": 6,
+                "longitud": 5
+              },
+              "conjunto_de_semillas": [
+                20261017,
+                20261018,
+                20261019,
+                20261020,
+                20261021
+              ],
+              "semillas_por_epoca": {
+                "1": 20261017,
+                "2": 20261018,
+                "3": 20261019,
+                "4": 20261020,
+                "5": 20261021
+              }
+            }
+          ]
+        },
+        "contraste_con_p71_08": {
+          "fuente": "experiments/p71_08_word2vec_corregido.py",
+          "n_lineas": 221,
+          "sha256": "828c7fcd842cbd1892f3511424042cf57bdba5041689578ce2ad1604e7be4caf",
+          "procedimiento": {
+            "localizacion": "recorrido del AST con mapa de padres, comparando el camino de atributos del nodo Call con ['np', 'random', 'default_rng']",
+            "prohibido": [
+              "buscar la cadena default_rng en el texto",
+              "buscar hacia atras un encabezado con for en una ventana de lineas",
+              "etiquetar el bucle del plan por la cadena planes.append en una ventana de cuatro lineas"
+            ],
+            "iteradores_admitidos": [
+              "range(N)",
+              "enumerate(x, start=k)"
+            ],
+            "como_se_resuelve_len_de_enumerate": "el objeto se construye con `append` dentro de un unico bucle, y su longitud es el numero de ejecuciones de ese `append`, que es la longitud del rango del bucle una vez resuelto `N` desde el modulo importado. No es el numero de sentencias `append` escritas",
+            "discriminador_del_bucle_del_plan": "el cuerpo del For contiene un Call Attribute(attr='append') sobre el Name 'planes'",
+            "resolucion_del_alias": "m <- cx['mod'] <- base <- experiments/p71_04_entrenar_word2vec.py, siguiendo el codigo por AST",
+            "forma_admitida_para_la_entrada_mod_de_cx": "un Name o un Attribute; en p72_01 es el Name `base`, que es el modulo cargado por importlib"
+          },
+          "llamadas": [
+            {
+              "linea": 89,
+              "texto_literal": "np.random.default_rng(m.SEMILLA)",
+              "argumento": "m.SEMILLA",
+              "bucle_contenedor": null,
+              "rol": "fuera_de_bucle",
+              "rango_de_epocas": null,
+              "conjunto_de_semillas": null,
+              "semillas_por_epoca": null,
+              "nota": "la llamada no esta dentro de ningun bucle, luego no tiene rango que resolver: se registra y se deja tal cual"
+            },
+            {
+              "linea": 111,
+              "texto_literal": "r2 = np.random.default_rng(m.SEMILLA + ep)",
+              "argumento": "m.SEMILLA + ep",
+              "bucle_contenedor": {
+                "linea": 110,
+                "texto_literal": "for ep in range(m.EPOCAS):",
+                "iterador": "range(m.EPOCAS)",
+                "variable": "ep"
+              },
+              "rol": "plan",
+              "rango_de_epocas": {
+                "inicio": 0,
+                "fin": 5,
+                "longitud": 5
+              },
+              "conjunto_de_semillas": [
+                20261016,
+                20261017,
+                20261018,
+                20261019,
+                20261020
+              ],
+              "semillas_por_epoca": {
+                "0": 20261016,
+                "1": 20261017,
+                "2": 20261018,
+                "3": 20261019,
+                "4": 20261020
+              }
+            },
+            {
+              "linea": 119,
+              "texto_literal": "r2 = np.random.default_rng(m.SEMILLA + ep)",
+              "argumento": "m.SEMILLA + ep",
+              "bucle_contenedor": {
+                "linea": 117,
+                "texto_literal": "for ep, _ in enumerate(planes, start=1):",
+                "iterador": "enumerate(planes, start=1)",
+                "variable": "ep"
+              },
+              "rol": "entrenamiento",
+              "rango_de_epocas": {
+                "inicio": 1,
+                "fin": 6,
+                "longitud": 5
+              },
+              "conjunto_de_semillas": [
+                20261017,
+                20261018,
+                20261019,
+                20261020,
+                20261021
+              ],
+              "semillas_por_epoca": {
+                "1": 20261017,
+                "2": 20261018,
+                "3": 20261019,
+                "4": 20261020,
+                "5": 20261021
+              }
+            }
+          ]
+        },
+        "llamadas_encontradas": 3,
+        "rangos_resueltos": 2,
+        "roles_detectados": [
+          "entrenamiento",
+          "fuera_de_bucle",
+          "plan"
+        ],
+        "heuristicas_de_P79_que_no_se_reproducen": "P79 buscaba el encabezado del bucle hacia atras en una ventana de 15 lineas y decidia si era el bucle del plan buscando la cadena planes.append en 4 lineas alrededor de la llamada. P80 no hace ninguna de las dos"
+      },
+      "exito": "el procedimiento se completa sin ninguna regla de proximidad y los dos rangos quedan resueltos",
+      "fallo": "hace falta la heuristica de P79, o el iterador no es de las dos formas admitidas",
+      "stop_si_falla": true,
+      "veredicto": "CONFIRMADO"
+    },
+    {
+      "afirmacion": "A7",
+      "hallazgo": "H2",
+      "naturaleza": "CONFIRMAR",
+      "que_se_afirma": "el bucle del plan resuelve ep en SEMILLA + {0..4} y el de entrenamiento en SEMILLA + {1..5}; los conjuntos son distintos",
+      "tolerancia": "igualdad exacta de conjuntos; que sean iguales es FALLO",
+      "unidad": "conjunto de enteros",
+      "medida": {
+        "conjunto_plan": [
+          20261016,
+          20261017,
+          20261018,
+          20261019,
+          20261020
+        ],
+        "conjunto_entrenamiento": [
+          20261017,
+          20261018,
+          20261019,
+          20261020,
+          20261021
+        ],
+        "distintos": true,
+        "solo_en_el_plan": [
+          20261016
+        ],
+        "solo_en_el_entrenamiento": [
+          20261021
+        ],
+        "semillas_por_epoca_plan": {
+          "0": 20261016,
+          "1": 20261017,
+          "2": 20261018,
+          "3": 20261019,
+          "4": 20261020
+        },
+        "semillas_por_epoca_entrenamiento": {
+          "1": 20261017,
+          "2": 20261018,
+          "3": 20261019,
+          "4": 20261020,
+          "5": 20261021
+        },
+        "que_implica": "el plan gasta una semilla que el entrenamiento nunca usa, luego total_lotes se calibra sobre un numero de lotes que no es el que se recorre",
+        "por_que_P79_se_equivoco": "su heuristica de etiquetado metio los dos bucles en el mismo grupo, y por eso su unica lista tenia 6 elementos para EPOCAS = 5 y su booleano salia False no porque los rangos coincidieran, sino porque solo habia un grupo"
+      },
+      "exito": "los conjuntos son distintos y la diferencia se reporta con las listas completas",
+      "fallo": "son iguales, lo que refutaria H2 y explicaria el booleano de P79",
+      "stop_si_falla": false,
+      "veredicto": "CONFIRMADO"
+    },
+    {
+      "afirmacion": "A8",
+      "hallazgo": "H2",
+      "naturaleza": "CONFIRMAR",
+      "que_se_afirma": "la diferencia entre las dos secuencias de lotes existe para cualquier corpus, porque las semillas son distintas y pares_de_epoca depende de la semilla; con el recorte declarado se cuantifica",
+      "tolerancia": {
+        "desvio_relativo": "|desvio| > 1e-09",
+        "conteo_de_pares": "0, igualdad exacta con P79 si el recorte coincide"
+      },
+      "unidad": "lotes, y learning rate",
+      "medida": {
+        "parte_1_sin_recorte": {
+          "que_es": "hechos aritmeticos enteros, independientes del corpus",
+          "semillas_por_epoca_plan": [
+            20261016,
+            20261017,
+            20261018,
+            20261019,
+            20261020
+          ],
+          "semillas_por_epoca_entrenamiento": [
+            20261017,
+            20261018,
+            20261019,
+            20261020,
+            20261021
+          ],
+          "difieren_en_todas_las_epocas": true,
+          "la_primera_semilla_del_plan_no_aparece_en_el_entrenamiento": true,
+          "consecuencia": "en toda epoca el generador del entrenamiento se crea con otra semilla, luego pares_de_epoca consume otro flujo y produce otro conjunto de pares",
+          "limite_de_la_afirmacion": "esto prueba el desfase de semillas, que es estructural. NO prueba que la desviacion numerica de lotes tenga el mismo valor para otro corpus: para eso esta la parte 2, con recorte declarado",
+          "lectura_literal_del_pre_registro": "el pre-registro pide comprobar la parte 1 ejecutando los dos bucles con el numero de filas del recorte; se hace asi, y despues se separa lo estructural de lo numerico para no atribuirle al uno lo que solo sostiene el otro"
+        },
+        "parte_2_con_recorte_declarado": {
+          "recorte": {
+            "lineas_leidas": 2000,
+            "documentos": 2000,
+            "tokens": 53243,
+            "vocabulario": 1883,
+            "lote": 256,
+            "lote_tomado_de": "el LOTE de p72_01, que coincide con el recorte declarado",
+            "tokenizado_con": "el RE_TOKEN de p71_04, con el filtro de al menos tres tokens de p71_04.leer_tokens"
+          },
+          "limite_declarado": "los recuentos ABSOLUTOS de pares no son los de la corrida real, porque la frecuencia de los tipos cambia al recortar. Lo que se extrapola es la DESVIACION relativa, no los recuentos",
+          "lotes_por_epoca_plan": [
+            278,
+            280,
+            281,
+            277,
+            279
+          ],
+          "lotes_por_epoca_recorridos": [
+            280,
+            281,
+            277,
+            279,
+            281
+          ],
+          "pares_por_epoca_recorridos": [
+            71522,
+            71821,
+            70720,
+            71298,
+            71890
+          ],
+          "total_lotes_plan": 1395,
+          "total_lotes_recorridos": 1398,
+          "desvio_relativo": 0.002150537634408602,
+          "learning_rate": {
+            "real": {
+              "lr_inicial": 6.4,
+              "lr_minimo": 0.001,
+              "ultimo_real": 0.004577968526466236,
+              "pasos_totales": 1398,
+              "pasos_en_el_piso_del_minimo": 0,
+              "fraccion_en_el_piso": 0.0,
+              "media_real": 3.202288984263234
+            },
+            "ideal_si_el_scheduler_hubiera_usado_el_total_real": {
+              "lr_inicial": 6.4,
+              "lr_minimo": 0.001,
+              "ultimo_real": 0.001,
+              "pasos_totales": 1398,
+              "pasos_en_el_piso_del_minimo": 3,
+              "fraccion_en_el_piso": 0.002145922746781116,
+              "media_real": 3.195424177396281
+            }
+          }
+        },
+        "comparacion_con_p79": {
+          "lectura_de_p79": "reports/p79_auditoria_sgns.json, punto_3_scheduler, solo para contrastar; ninguna cifra de P79 se da por replicada",
+          "p79_total_lotes_plan": 1395,
+          "p79_total_lotes_recorridos": 1398,
+          "p79_desvio_relativo": 0.00215054,
+          "coincide": true,
+          "explicacion": "el par de conteos coincide con el de P79 sobre el mismo recorte, luego estos dos numeros quedan replicados. Lo que P80 corrige de P79 no es esta cuenta, sino el procedimiento que produjo la lista de semillas"
+        }
+      },
+      "exito": "desvio distinto de cero, con la parte 1 declarada sin recorte",
+      "fallo": "desvio exactamente cero, lo que significaria que el recorte borra el efecto",
+      "stop_si_falla": false,
+      "veredicto": "CONFIRMADO"
+    },
+    {
+      "afirmacion": "A9",
+      "hallazgo": "H3",
+      "naturaleza": "CONFIRMAR",
+      "que_se_afirma": "la loss del codigo es -(pos + neg_codigo), luego l_codigo + pos + neg_codigo = 0 con el signo menos puesto",
+      "tolerancia": 1e-12,
+      "unidad": "|l_codigo + pos + neg_codigo| en float64",
+      "medida": {
+        "identidad": "l_codigo + pos + neg_codigo = 0",
+        "residuo_por_k": {
+          "1": 0.0,
+          "5": 0.0,
+          "10": 0.0,
+          "20": 1.1102230246251565e-16
+        },
+        "residuo_maximo": 1.1102230246251565e-16,
+        "nota_sobre_el_error_de_P79": "P79 comparo pos + neg_codigo contra l_codigo, que es -(pos + neg_codigo): al pasar de comparacion a identidad aparece el signo menos que faltaba, y por eso su indicador salia False en los cuatro K"
+      },
+      "exito": "se cumple en los cuatro K, con el signo menos puesto",
+      "fallo": "no se cumple",
+      "stop_si_falla": true,
+      "veredicto": "CONFIRMADO"
+    },
+    {
+      "afirmacion": "A10",
+      "hallazgo": "H3",
+      "naturaleza": "CONFIRMAR",
+      "que_se_afirma": "la prueba de A9 tiene poder discriminante: la identidad con el signo mal puesto, que es la que uso P79, falla en los cuatro K",
+      "tolerancia": "separacion minima 1e-06 en valor absoluto",
+      "unidad": "|pos + neg_codigo - l_codigo|, la distancia de la identidad incorrecta",
+      "medida": {
+        "identidad_incorrecta": "pos + neg_codigo == l_codigo",
+        "separacion_por_k": {
+          "1": 2.7725036095168414,
+          "5": 2.772401879751153,
+          "10": 2.77257439082366,
+          "20": 2.771907574551194
+        },
+        "separacion_minima": 2.771907574551194,
+        "loss_codigo_por_k": {
+          "1": 1.3862518047584207,
+          "5": 1.3862009398755766,
+          "10": 1.38628719541183,
+          "20": 1.385953787275597
+        },
+        "relacion_teorica": "como l_codigo es el opuesto de pos + neg_codigo, la separacion vale 2 por el valor absoluto de l_codigo. Si esa relacion no se cumpliera, la medicion estaria mal",
+        "por_que_es_una_prueba_de_poder": "si la identidad incorrecta fallara por poco, A9 no distinguiria una formula de su negation; por eso se exige una separacion minima y no solo que no sea cero"
+      },
+      "exito": "la identidad incorrecta falla en los cuatro K, con separacion suficiente",
+      "fallo": "la identidad incorrecta tambien se cumple, y A9 quedaria sin poder discriminante",
+      "stop_si_falla": true,
+      "veredicto": "CONFIRMADO"
+    },
+    {
+      "afirmacion": "A11",
+      "hallazgo": "H4",
+      "naturaleza": "CONFIRMAR",
+      "que_se_afirma": "w2v_twitter_100d.npz contiene exactamente dos claves, W y palabras, y una sola matriz; W es modelo.entrada.weight segun p72_01:124-127",
+      "tolerancia": "igualdad exacta del conjunto de claves; cero margen",
+      "unidad": "claves, forma, dtype y recuentos",
+      "medida": {
+        "claves": [
+          "W",
+          "palabras"
+        ],
+        "conjunto_de_claves_esperado": [
+          "W",
+          "palabras"
+        ],
+        "solo_una_matriz": true,
+        "integridad": {
+          "vocabulario": 77657,
+          "dim": 100,
+          "dtype": "float32",
+          "todos_finitos": true,
+          "palabras_unicas": 77657,
+          "filas_nulas": 0,
+          "norma_media_de_fila": 0.8428617433876686,
+          "palabras_de_ejemplo": [
+            "de",
+            "url",
+            "la",
+            "el",
+            "@usuario"
+          ]
+        },
+        "nota_sobre_el_log_de_p72_01": "el log de p72_01:129 anuncia parametros = vocabulario * dim * 2 porque el modelo tiene dos matrices; que las dos se guarden es otra cosa, y no se guardan",
+        "huella_antes_de_leer": {
+          "ruta": "modelos/twitter_domain/w2v_twitter_100d.npz",
+          "sha256": "302c994d13b75f8f5fbd440eea2c4f4113997e2581524021923b92f8244d705a",
+          "bytes": 29478868,
+          "mtime_ns": 1790744455825458351
+        }
+      },
+      "exito": "exactamente esas dos claves, la forma declarada, todos los valores finitos, vocabulario unico y 0 filas nulas",
+      "fallo": "hay una tercera clave, o la forma no es la declarada",
+      "stop_si_falla": true,
+      "veredicto": "CONFIRMADO"
+    },
+    {
+      "afirmacion": "A12",
+      "hallazgo": "H4",
+      "naturaleza": "CONFIRMAR",
+      "que_se_afirma": "no existe en el repositorio ninguna fuente que contenga la tabla de salida del entrenamiento que produjo el congelado",
+      "tolerancia": "no aplica: es una enumeracion con cobertura declarada",
+      "unidad": "recuento de ficheros inspeccionados y de candidatos descartados",
+      "medida": {
+        "cobertura": {
+          "npz_inspeccionados": 19,
+          "npz_por_cabecera_sin_leer_el_contenido": true,
+          "bytes_leidos_en_total": 412987,
+          "json_inspeccionados": 320,
+          "json_con_error_de_lectura": [],
+          "nota_de_recorrido": "todo valor de reports/ se recorre. Un JSON no puede contener la tabla de salida en la practica, y aun asi se comprueba de forma estructural"
+        },
+        "criterio_de_deteccion": {
+          "regla": "una fuente es candidata si contiene un array de rango 2 con forma exactamente (77657, 100)",
+          "por_que_la_segunda_dimension": "en SkipGram las dos tablas son nn.Embedding(n_vocab, dim) con el MISMO dim, luego la tabla de salida tiene exactamente la forma de la de entrada. Una matriz con la primera dimension 77657 y otra segunda pertenece a otra corrida y no puede ser la tabla de salida de este entrenamiento",
+          "por_que_un_json_no_sirve": "una clave shape o forma es metadato, no un array; y un array de esa forma en un JSON serian 7,7 millones de numeros. Aun asi se comprueba de forma estructural",
+          "lo_que_se_descarta_y_se_registra": "todo lo que coincide en la primera dimension pero no en la segunda, con su motivo, para que el negativo sea un dato"
+        },
+        "candidatos_npz": [],
+        "candidatos_json": [],
+        "candidatos_descartados_npz": [
+          {
+            "ruta": "modelos/twitter_domain/vocabularios.npz",
+            "miembro": "tw_palabras.npy",
+            "forma": [
+              77657
+            ],
+            "dtype": "object",
+            "motivo": "la forma [77657] no es de rango 2, luego no es una tabla de embeddings"
+          },
+          {
+            "ruta": "modelos/twitter_domain/w2v_twitter.npz",
+            "miembro": "W.npy",
+            "forma": [
+              77657,
+              200
+            ],
+            "dtype": "float32",
+            "motivo": "la primera dimension coincide (77657) pero la segunda es 200 y la tabla de salida de este entrenamiento tiene dim 100. Las dos tablas del modelo comparten dim, luego esta forma pertenece a otra corrida de otras dimensiones"
+          },
+          {
+            "ruta": "modelos/twitter_domain/w2v_twitter.npz",
+            "miembro": "palabras.npy",
+            "forma": [
+              77657
+            ],
+            "dtype": "object",
+            "motivo": "la forma [77657] no es de rango 2, luego no es una tabla de embeddings"
+          },
+          {
+            "ruta": "modelos/twitter_domain/w2v_twitter_100d.npz",
+            "miembro": "W.npy",
+            "forma": [
+              77657,
+              100
+            ],
+            "motivo": "es la propia tabla de entrada W del artefacto congelado"
+          },
+          {
+            "ruta": "modelos/twitter_domain/w2v_twitter_100d.npz",
+            "miembro": "palabras.npy",
+            "forma": [
+              77657
+            ],
+            "dtype": "object",
+            "motivo": "la forma [77657] no es de rango 2, luego no es una tabla de embeddings"
+          },
+          {
+            "ruta": "modelos/twitter_domain/w2v_twitter_300d.npz",
+            "miembro": "W.npy",
+            "forma": [
+              77657,
+              300
+            ],
+            "dtype": "float32",
+            "motivo": "la primera dimension coincide (77657) pero la segunda es 300 y la tabla de salida de este entrenamiento tiene dim 100. Las dos tablas del modelo comparten dim, luego esta forma pertenece a otra corrida de otras dimensiones"
+          },
+          {
+            "ruta": "modelos/twitter_domain/w2v_twitter_300d.npz",
+            "miembro": "palabras.npy",
+            "forma": [
+              77657
+            ],
+            "dtype": "object",
+            "motivo": "la forma [77657] no es de rango 2, luego no es una tabla de embeddings"
+          },
+          {
+            "ruta": "modelos/twitter_domain/w2v_twitter_lrfix.npz",
+            "miembro": "W.npy",
+            "forma": [
+              77657,
+              200
+            ],
+            "dtype": "float32",
+            "motivo": "la primera dimension coincide (77657) pero la segunda es 200 y la tabla de salida de este entrenamiento tiene dim 100. Las dos tablas del modelo comparten dim, luego esta forma pertenece a otra corrida de otras dimensiones"
+          },
+          {
+            "ruta": "modelos/twitter_domain/w2v_twitter_lrfix.npz",
+            "miembro": "palabras.npy",
+            "forma": [
+              77657
+            ],
+            "dtype": "object",
+            "motivo": "la forma [77657] no es de rango 2, luego no es una tabla de embeddings"
+          },
+          {
+            "ruta": "modelos/twitter_domain/w2v_twitter_sgd.npz",
+            "miembro": "W.npy",
+            "forma": [
+              77657,
+              200
+            ],
+            "dtype": "float32",
+            "motivo": "la primera dimension coincide (77657) pero la segunda es 200 y la tabla de salida de este entrenamiento tiene dim 100. Las dos tablas del modelo comparten dim, luego esta forma pertenece a otra corrida de otras dimensiones"
+          },
+          {
+            "ruta": "modelos/twitter_domain/w2v_twitter_sgd.npz",
+            "miembro": "palabras.npy",
+            "forma": [
+              77657
+            ],
+            "dtype": "object",
+            "motivo": "la forma [77657] no es de rango 2, luego no es una tabla de embeddings"
+          }
+        ],
+        "candidatos_descartados_json": [
+          {
+            "ruta": "reports/auditoria_resumen.json/submission_valores",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/dl_desde_cero_resultados.json/metadata/determinismo/semillas",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              42,
+              43,
+              44
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/dl_desde_cero_resultados.json/multilla/semillas",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              42,
+              43,
+              44
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/embedding_curve_50M_v5.json/arquitectura/subpalabras",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              3,
+              6
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/embedding_curve_5M_v5.json/arquitectura/subpalabras",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              3,
+              6
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/embedding_downstream_v5.json/arquitectura/subpalabras",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              3,
+              6
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/embedding_downstream_v5.json/modelos/FASTTEXT-BASELINE/arquitectura/subpalabras",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              3,
+              6
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/embedding_downstream_v5.json/modelos/FASTTEXT-SEED-CONTROL/arquitectura/subpalabras",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              3,
+              6
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/embedding_downstream_v5.json/modelos/WORD2VEC-CONTROL/arquitectura/subpalabras",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              3,
+              6
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/embedding_web_v5.json/arquitectura/subpalabras",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              3,
+              6
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/emocion_nbsvm_ortografia_v2.json/config/ventanas_tokens",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              3,
+              5,
+              10
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/fase13d_sondas_robustez.json/control/parametros_vectorizador[0]/ngram_range",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              1,
+              2
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/fase13d_sondas_robustez.json/control/parametros_vectorizador[1]/ngram_range",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              3,
+              5
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/fase13d_sondas_robustez.json/sondas[0]/parametros_vectorizador[0]/ngram_range",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              1,
+              2
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/fase13d_sondas_robustez.json/sondas[0]/parametros_vectorizador[1]/ngram_range",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              3,
+              5
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/fase13d_sondas_robustez.json/sondas[1]/parametros_vectorizador[0]/ngram_range",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              1,
+              2
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/fase13d_sondas_robustez.json/sondas[1]/parametros_vectorizador[1]/ngram_range",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              3,
+              5
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/optuna_estudio.json/espacio_busqueda/word/min_df",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              1,
+              2,
+              3,
+              5
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/optuna_estudio.json/espacio_busqueda/word/sublinear_tf",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              true,
+              false
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/optuna_estudio.json/espacio_busqueda/char/min_df",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              2,
+              3,
+              5
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/optuna_estudio.json/espacio_busqueda/char/sublinear_tf",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              true,
+              false
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/optuna_estudio.json/estudio/espacio_busqueda/word/min_df",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              1,
+              2,
+              3,
+              5
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/optuna_estudio.json/estudio/espacio_busqueda/word/sublinear_tf",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              true,
+              false
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/optuna_estudio.json/estudio/espacio_busqueda/char/min_df",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              2,
+              3,
+              5
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/optuna_estudio.json/estudio/espacio_busqueda/char/sublinear_tf",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              true,
+              false
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/optuna_estudio.json/estudio/params_mejor_trial/word/ngram_range",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              1,
+              3
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/optuna_estudio.json/estudio/params_mejor_trial/char/ngram_range",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              3,
+              6
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/optuna_estudio.json/mejor_trial/params/word/ngram_range",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              1,
+              3
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/optuna_estudio.json/mejor_trial/params/char/ngram_range",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              3,
+              6
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p45_joint_label_structure.json/distribucion/estados_observados_train",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              0,
+              1,
+              4,
+              5
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p45_joint_label_structure.json/distribucion/estados_no_observados_train",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              2,
+              3
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p45_joint_label_structure.json/matriz_8x8/matriz[0]",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              627,
+              9,
+              6,
+              5
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p45_joint_label_structure.json/matriz_8x8/matriz[1]",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              8,
+              7,
+              0,
+              0
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p50_gap_and_oracle.json/matriz_observable/forma",
+            "tipo": "clave_de_forma",
+            "valor": [
+              4449,
+              53
+            ],
+            "motivo": "una clave shape o forma es metadato sobre la forma de otra cosa. No es un array, luego no puede ser una tabla de salida"
+          },
+          {
+            "ruta": "reports/p50_gap_and_oracle.json/pliegues/tamanos",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              297,
+              297,
+              296,
+              296
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p59_H_nmf_gap.json/medicion_de_equivalencia/matriz/forma",
+            "tipo": "clave_de_forma",
+            "valor": [
+              4449,
+              21
+            ],
+            "motivo": "una clave shape o forma es metadato sobre la forma de otra cosa. No es un array, luego no puede ser una tabla de salida"
+          },
+          {
+            "ruta": "reports/p59_confident_learning.json/tablas_conjuntas/HS/q[0]",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              420,
+              33
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p59_confident_learning.json/tablas_conjuntas/HS/q[1]",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              29,
+              269
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p59_confident_learning.json/tablas_conjuntas/HS/n_seguro",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              453,
+              298
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p59_confident_learning.json/tablas_conjuntas/HS/perdidos",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              415,
+              379
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p59_confident_learning.json/tablas_conjuntas/TR/q[0]",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              630,
+              14
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p59_confident_learning.json/tablas_conjuntas/TR/q[1]",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              19,
+              226
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p59_confident_learning.json/tablas_conjuntas/TR/n_seguro",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              644,
+              245
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p59_confident_learning.json/tablas_conjuntas/TR/perdidos",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              408,
+              219
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p59_confident_learning.json/tablas_conjuntas/AG/q[0]",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              470,
+              44
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p59_confident_learning.json/tablas_conjuntas/AG/q[1]",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              28,
+              248
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p59_confident_learning.json/tablas_conjuntas/AG/n_seguro",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              514,
+              276
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p59_confident_learning.json/tablas_conjuntas/AG/perdidos",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              446,
+              319
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p60_L_dro.json/por_fold[0]/tamanos",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              301,
+              294,
+              295,
+              296
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p60_L_dro.json/por_fold[1]/tamanos",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              306,
+              289,
+              295,
+              296
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p60_notebook_integration.json/secciones_integradas",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              67,
+              68,
+              69,
+              70
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p61_notebook_integration.json/secciones",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              81,
+              82,
+              83,
+              84
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p62_cobertura_vocabulario.json/control_de_vocabulario/rasgos_por_brazo/control",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              20441,
+              21044,
+              20802,
+              21038
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p62_cobertura_vocabulario.json/control_de_vocabulario/rasgos_por_brazo/A_palabras_min_df_1",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              37491,
+              38392,
+              37961,
+              38399
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p62_cobertura_vocabulario.json/control_de_vocabulario/rasgos_por_brazo/B_palabras_y_char_min_df_1",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              75006,
+              76392,
+              75469,
+              76426
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p62_cobertura_vocabulario.json/control_de_vocabulario/rasgos_por_brazo/C_min_df_1_mas_canal_POS",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              37747,
+              38648,
+              38217,
+              38655
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p62_notebook_integration.json/secciones",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              89,
+              90,
+              91,
+              92
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p62_pista_l_word_pos.json/control_de_vocabulario/vocabulario_por_brazo/control",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              20441,
+              21044,
+              20802,
+              21038
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p62_pista_l_word_pos.json/control_de_vocabulario/vocabulario_por_brazo/pista_L",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              21637,
+              22257,
+              22012,
+              22263
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p62_pista_l_word_pos.json/control_de_vocabulario/vocabulario_por_brazo/control_aleatorio",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              21809,
+              22406,
+              22160,
+              22402
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p62_pista_m_dependencias.json/control_de_vocabulario/rasgos_por_brazo/control",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              20441,
+              21044,
+              20802,
+              21038
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p62_pista_m_dependencias.json/control_de_vocabulario/rasgos_por_brazo/pista_M",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              20784,
+              21405,
+              21148,
+              21375
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p62_pista_m_dependencias.json/control_de_vocabulario/rasgos_por_brazo/control_aleatorio",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              20633,
+              21202,
+              20988,
+              21262
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p63_id_auditoria_predictiva.json/parametros_del_bloque/modulos",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              2,
+              3,
+              5,
+              7
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p63_id_forensics.json/seccion_6_namespace_train_test/rango_train",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              20002,
+              24999
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p63_id_forensics.json/seccion_6_namespace_train_test/rango_test",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              20001,
+              24998
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p63_id_forensics.json/seccion_6_namespace_train_test/rango_union",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              20001,
+              24999
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p64_negacion.json/alcances",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              1,
+              2,
+              3
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p73_auditoria_cierre.json/punto_1_mismas_filas/tamanos",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              297,
+              297,
+              296,
+              296
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p73_auditoria_cierre.json/punto_2_configuracion/kernels",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              2,
+              3,
+              4
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p73_auditoria_cierre.json/punto_3_entrada/ids",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              1483,
+              60
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p73_auditoria_cierre.json/punto_3_entrada/longitudes_efectivas",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              2,
+              3,
+              4
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p73_auditoria_cierre.json/excluyen_el_cero",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              true,
+              true,
+              false
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p73_segunda_particion.json/semillas_de_particion",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              20261103,
+              20261104
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p73_textcnn.json/arquitectura/kernels",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              2,
+              3,
+              4
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p74_null_replicado.json/diseno/semillas_modelo",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              20261111,
+              20261112,
+              20261113,
+              20261114
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p74_null_replicado.json/diseno/semillas_sorteo",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              20261211,
+              20261212,
+              20261213,
+              20261214
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p74_null_replicado.json/auditoria_word2vec/shape",
+            "tipo": "clave_de_forma",
+            "valor": [
+              77658,
+              100
+            ],
+            "motivo": "una clave shape o forma es metadato sobre la forma de otra cosa. No es un array, luego no puede ser una tabla de salida"
+          },
+          {
+            "ruta": "reports/p74_null_replicado.json/auditoria_datos/ids",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              1483,
+              60
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p75_fusion.json/pass1_oof_cnn/epocas_por_fold[0]/epocas_de_los_tres",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              10,
+              12,
+              17
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p75_fusion.json/pass1_oof_cnn/epocas_por_fold[1]/epocas_de_los_tres",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              12,
+              10,
+              10
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p77_operador.json/auditoria/fold_ids/pliegue_1",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              0,
+              1481
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p77_operador.json/auditoria/fold_ids/pliegue_2",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              1,
+              1477
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p77_operador.json/auditoria/fold_ids/pliegue_3",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              6,
+              1476
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p77_operador.json/auditoria/fold_ids/pliegue_4",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              4,
+              1480
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p77_operador.json/auditoria/fold_ids/pliegue_5",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              8,
+              1482
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p78_cobertura.json/kernels",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              2,
+              3,
+              4
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p78_cobertura.json/cruda/kernels",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              2,
+              3,
+              4
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p78_cobertura.json/norm/kernels",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              2,
+              3,
+              4
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p78_control_anidado.json/configuracion/semillas",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              20261130,
+              20261131,
+              20261132
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p78_control_anidado.json/configuracion/kernels",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              2,
+              3,
+              4
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p78_control_anidado.json/cobertura/kernels",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              2,
+              3,
+              4
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p78_control_anidado.json/cobertura/cruda/kernels",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              2,
+              3,
+              4
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p78_control_anidado.json/cobertura/norm/kernels",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              2,
+              3,
+              4
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p78_control_anidado.json/registro_por_pliegue[0]/epocas_de_los_tres_splits",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              10,
+              12,
+              17
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p78_control_anidado.json/registro_por_pliegue[1]/epocas_de_los_tres_splits",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              12,
+              10,
+              10
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p78_control_anidado.json/manifiesto_de_pareo[0]/forma_matrices",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              77658,
+              100
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p78_control_anidado.json/manifiesto_de_pareo[1]/forma_matrices",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              77658,
+              100
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p79_auditoria_sgns.json/configuracion/ks_auditados",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              1,
+              5,
+              10,
+              20
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p79_auditoria_sgns.json/punto_3_scheduler/lectura_estatica_del_fuente/conjuntos_de_semillas_por_bucle/entrenamiento",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p79_auditoria_sgns.json/punto_3_scheduler/lectura_estatica_del_fuente_lrfix/conjuntos_de_semillas_por_bucle/entrenamiento",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p79_auditoria_sgns.json/punto_3_scheduler/pares_por_epoca_plan",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              70956,
+              71522,
+              71821,
+              70720
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p79_auditoria_sgns.json/punto_3_scheduler/pares_por_epoca_reales",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              71522,
+              71821,
+              70720,
+              71298
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p79_auditoria_sgns.json/punto_3_scheduler/lotes_por_epoca_plan",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              278,
+              280,
+              281,
+              277
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p79_auditoria_sgns.json/punto_3_scheduler/lotes_por_epoca_reales",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              280,
+              281,
+              277,
+              279
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/p80_auditoria_w2v.json/detalle/candidatos_npz[0]/forma",
+            "tipo": "clave_de_forma",
+            "valor": [
+              77657,
+              200
+            ],
+            "motivo": "una clave shape o forma es metadato sobre la forma de otra cosa. No es un array, luego no puede ser una tabla de salida"
+          },
+          {
+            "ruta": "reports/p80_auditoria_w2v.json/detalle/candidatos_npz[1]/forma",
+            "tipo": "clave_de_forma",
+            "valor": [
+              77657,
+              300
+            ],
+            "motivo": "una clave shape o forma es metadato sobre la forma de otra cosa. No es un array, luego no puede ser una tabla de salida"
+          },
+          {
+            "ruta": "reports/p80_auditoria_w2v.json/detalle/candidatos_json[0]/forma",
+            "tipo": "clave_de_forma",
+            "valor": [
+              4449,
+              53
+            ],
+            "motivo": "una clave shape o forma es metadato sobre la forma de otra cosa. No es un array, luego no puede ser una tabla de salida"
+          },
+          {
+            "ruta": "reports/p80_auditoria_w2v.json/detalle/candidatos_json[1]/forma",
+            "tipo": "clave_de_forma",
+            "valor": [
+              4449,
+              21
+            ],
+            "motivo": "una clave shape o forma es metadato sobre la forma de otra cosa. No es un array, luego no puede ser una tabla de salida"
+          },
+          {
+            "ruta": "reports/toxic_candidate_cost_sensitive_manifest.json/representation/word/ngram_range",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              1,
+              2
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/toxic_candidate_cost_sensitive_manifest.json/representation/char/ngram_range",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              3,
+              5
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/toxic_cv_lb_transfer_postmortem.json/sensibilidad/semillas/100",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              20261003,
+              20261004,
+              20261005
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/toxic_cv_lb_transfer_postmortem.json/sensibilidad/semillas/90",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              20261006,
+              20261007,
+              20261008
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/toxic_cv_lb_transfer_postmortem.json/sensibilidad/semillas/80",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              20261009,
+              20261010,
+              20261011
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/toxic_cv_lb_transfer_postmortem.json/sensibilidad/semillas/70",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              20261012,
+              20261013,
+              20261014
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/toxic_cv_lb_transfer_postmortem.json/sensibilidad/tamanos",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              100,
+              90,
+              80,
+              70
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/twitter_word2vec_dimensiones.json/aislado/valores",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              100,
+              300,
+              200
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/twitter_word2vec_domain_results.json/reproducibilidad/modelos",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              77657,
+              100097
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/v10_02_ruido_particion.json/ruido_de_particion/semillas",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              42,
+              7,
+              123,
+              2024
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/v10_11_bigru_finetuning.json/resultados/congelado/mejor_epoca_por_pliegue",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              12,
+              10,
+              10,
+              8
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/v10_11_bigru_finetuning.json/resultados/congelado/epocas_ejecutadas_por_pliegue",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              14,
+              13,
+              13,
+              11
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/v10_11_bigru_finetuning.json/resultados/afinado/mejor_epoca_por_pliegue",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              12,
+              11,
+              10,
+              8
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/v10_11_bigru_finetuning.json/resultados/afinado/epocas_ejecutadas_por_pliegue",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              14,
+              14,
+              13,
+              11
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/v10_11_bigru_finetuning.json/resultados/afinando_todo/mejor_epoca_por_pliegue",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              7,
+              7,
+              7,
+              7
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/v10_11_bigru_finetuning.json/resultados/afinando_todo/epocas_ejecutadas_por_pliegue",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              10,
+              10,
+              10,
+              10
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/v15_00_inventario_senal.json/que_ve_v03/parametros_word/ngram_range",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              1,
+              2
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/v15_00_inventario_senal.json/que_ve_v03/parametros_char/ngram_range",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              3,
+              5
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/v16_03_vecinos_de_capacidad.json/identidad_control/parametros_v03/word/ngram_range",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              1,
+              2
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/v16_03_vecinos_de_capacidad.json/identidad_control/parametros_v03/char/ngram_range",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              3,
+              5
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/v26_03_tsetlin_oficial.json/controles/representacion/parametros/ngram_range",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              1,
+              2
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/v26_03_tsetlin_oficial.json/controles/representacion/dimensiones_por_pliegue",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              2673,
+              2766,
+              2745,
+              2776
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/v27_01_char_spectrum_kernel.json/configuracion/rango_ngram",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              3,
+              5
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/v27_01_char_spectrum_kernel.json/configuracion/features_por_pliegue",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              27980,
+              28754,
+              28322,
+              28678
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/v27_01_char_spectrum_kernel.json/memorizacion/spectrum_por_pliegue/1/histograma_20_bins",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              0,
+              0,
+              1,
+              33
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/v27_01_char_spectrum_kernel.json/memorizacion/spectrum_por_pliegue/2/histograma_20_bins",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              0,
+              0,
+              1,
+              28
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/v27_01_char_spectrum_kernel.json/memorizacion/spectrum_por_pliegue/3/histograma_20_bins",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              0,
+              0,
+              2,
+              30
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/v27_01_char_spectrum_kernel.json/memorizacion/spectrum_por_pliegue/4/histograma_20_bins",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              0,
+              0,
+              3,
+              22
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/v27_01_char_spectrum_kernel.json/memorizacion/spectrum_por_pliegue/5/histograma_20_bins",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              0,
+              0,
+              1,
+              37
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/v27_01_char_spectrum_kernel.json/memorizacion/rbf_exacto_por_pliegue/1/histograma_20_bins",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/v27_01_char_spectrum_kernel.json/memorizacion/rbf_exacto_por_pliegue/2/histograma_20_bins",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/v27_01_char_spectrum_kernel.json/memorizacion/rbf_exacto_por_pliegue/3/histograma_20_bins",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/v27_01_char_spectrum_kernel.json/memorizacion/rbf_exacto_por_pliegue/4/histograma_20_bins",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/v27_01_char_spectrum_kernel.json/memorizacion/rbf_exacto_por_pliegue/5/histograma_20_bins",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/v29_03_vecinos_corrigen_errores.json/rejilla/k",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              1,
+              3,
+              5,
+              10
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/v29_04_transformaciones_contradictorias.json/ejemplos_contradictorios[0]/labels_a",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              0,
+              0,
+              0
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/v29_04_transformaciones_contradictorias.json/ejemplos_contradictorios[0]/labels_b",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              1,
+              1,
+              1
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/v29_04_transformaciones_contradictorias.json/ejemplos_contradictorios[1]/labels_a",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              1,
+              1,
+              1
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/v29_04_transformaciones_contradictorias.json/ejemplos_contradictorios[1]/labels_b",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              0,
+              0,
+              0
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/v35_01_sgd.json/V35_01_hinge/convergencia/n_iter/1",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              22,
+              18,
+              22
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/v35_01_sgd.json/V35_01_hinge/convergencia/n_iter/2",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              15,
+              23,
+              13
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/v35_01_sgd.json/V35_01_hinge/convergencia/n_iter/3",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              24,
+              18,
+              17
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/v35_01_sgd.json/V35_01_hinge/convergencia/n_iter/4",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              21,
+              11,
+              18
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/v35_01_sgd.json/V35_01_hinge/convergencia/n_iter/5",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              19,
+              14,
+              21
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/v35_01_sgd.json/V35_02_modified_huber/convergencia/n_iter/1",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              18,
+              17,
+              11
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/v35_01_sgd.json/V35_02_modified_huber/convergencia/n_iter/2",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              15,
+              21,
+              20
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/v35_01_sgd.json/V35_02_modified_huber/convergencia/n_iter/3",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              15,
+              20,
+              16
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/v35_01_sgd.json/V35_02_modified_huber/convergencia/n_iter/4",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              16,
+              22,
+              17
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/v35_01_sgd.json/V35_02_modified_huber/convergencia/n_iter/5",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              18,
+              15,
+              17
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/v36_01_hashing.json/controles_de_implementacion/no_negativo_por_bloque",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              true,
+              true
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/v6_skipgrams.json/huecos/C1-2-huecos12",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              1,
+              2
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/v8_clasificadores_alternativos.json/dimensiones_arbol",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              500,
+              2000
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/v8_clasificadores_alternativos.json/profundidades",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              6,
+              12
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/v8_estabilidad_features.json/variantes[0]/aciertos_por_pliegue",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              -9,
+              -2,
+              -11,
+              7
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/v8_estabilidad_features.json/variantes[1]/aciertos_por_pliegue",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              -7,
+              -14,
+              4,
+              -9
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/v8_log_count_ratio.json/variantes[0]/aciertos_por_pliegue",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              -54,
+              -46,
+              -37,
+              -42
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/v8_log_count_ratio.json/variantes[1]/aciertos_por_pliegue",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              -7,
+              -5,
+              15,
+              9
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/v8_regularizacion_conjunta.json/variantes[0]/aciertos_por_pliegue",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/v8_regularizacion_conjunta.json/variantes[1]/aciertos_por_pliegue",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              0,
+              0,
+              -2,
+              -5
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/variantes_representaciones.json/configuraciones[0]/parametros_vectorizador[0]/ngram_range",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              1,
+              2
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          },
+          {
+            "ruta": "reports/variantes_representaciones.json/configuraciones[1]/parametros_vectorizador[0]/ngram_range",
+            "tipo": "lista_de_enteros",
+            "valor": [
+              1,
+              2
+            ],
+            "motivo": "es una lista de enteros, no una matriz de embeddings"
+          }
+        ],
+        "n_descartados_npz": 11,
+        "n_descartados_json": 170,
+        "n_candidatos": 0,
+        "rutas_no_inspeccionadas_y_por_que": {
+          "data/raw/toxic_test.csv": "test de la competencia, prohibido por el pre-registro",
+          "features/v2_structured_features.parquet": "features estructuradas v2, prohibidas explicitamente por el pre-registro",
+          "experiments/baseline_v03_frozen/": "V03 congelado, no hace falta: V03 no se toca",
+          "submissions/": "submissions, prohibidas por el pre-registro",
+          "config/holdout_v2.json::identificadores": "la lista de identificadores del holdout NO se lee ni se deserializa; de ese fichero solo se leen n_tweets_dev, n_tweets_holdout y hash_ids_csv",
+          "reports/leaderboard*": "ningun score de leaderboard se lee ni se consulta"
+        },
+        "limites_de_la_enumeracion": [
+          "A12 exige los .npz de modelos/ y features/ y los .json de reports/. Los checkpoints .pt de models/ y los ficheros de modelos/ que no son .npz no estan en esa lista y NO se inspeccionan: es un limite declarado de este negativo, no un olvido",
+          "de features/oof_v03_final.npz se lee solo la cabecera del .npz, y eso se declara; su contenido no se lee"
+        ]
+      },
+      "exito": "cero fuentes candidatas",
+      "fallo": "aparece una fuente, y entonces A13 cambia de veredicto y H4 se reescribe",
+      "stop_si_falla": false,
+      "veredicto": "CONFIRMADO"
+    },
+    {
+      "afirmacion": "A13",
+      "hallazgo": "H4",
+      "naturaleza": "NO APLICABLE POR CONSTRUCCION",
+      "que_se_afirma": "las cifras absolutas de loss y de gradiente medidas sobre el artefacto congelado NO son evidencia del estado final del entrenamiento, y no pueden usarse para decir que el artefacto esta bien ni para decir que esta mal",
+      "tolerancia": "no aplica",
+      "unidad": "no aplica: no se mide",
+      "medida": {
+        "evidencia_del_estado_final": false,
+        "motivo": "el artefacto solo guarda W, que es la tabla de entrada. Para evaluar la loss haria falta tambien la tabla de salida, y esa no existe en ninguna parte del repositorio, segun A12",
+        "tabla_de_salida_guardada": false,
+        "tabla_de_salida_sustituida_en_silencio": false,
+        "cifras_incluidas": false,
+        "por_que_no_se_incluyen": "cualquier cifra exigiria el prefijo literal condicional_a_S_igual_a_W y aun asi invitaria a leerse como medida. P80 no pone ninguna, y por eso no hay nada que condicionalizar",
+        "cifras_de_p79_que_no_se_replican": {
+          "loss_codigo": 1.08412074,
+          "loss_referencia": 9.78555861,
+          "norma_del_gradiente_de_entrada_codigo": 0.02042704,
+          "norma_del_gradiente_de_entrada_referencia": 0.25426385,
+          "motivo": "describen el par (E, S) con E = S = W, que nunca existio durante el entrenamiento",
+          "prefijo_que_habria_que_poner": "condicional_a_S_igual_a_W"
+        },
+        "frase_que_sustituye_a_la_de_p79": "el_ratio_entre_objetivos_es_propiedad_de_la_formula_para_ese_par_E_S, y_el_par_usado_no_es_el_del_entrenamiento",
+        "afirmaciones_retiradas_de_p79": [
+          "P79 publico dos claves de cota sobre la razon de la norma del gradiente total, y afirmo que el ratio entre objetivos no depende del subconjunto. P80 retira las dos y no las sustituye por ninguna otra"
+        ],
+        "lo_unico_admisible_sobre_el_artefacto": {
+          "que_se_afirma": "el artefacto lo produjo p72_01 usando la clase SkipGram de p71_04, sin tocarla",
+          "lineas_citadas": {
+            "rango": "p72_01:156-158",
+            "texto": [
+              "cx = {\"sembrar\": base.sembrar, \"SkipGram\": base.SkipGram, \"leer_tokens\": base.leer_tokens,",
+              "\"construir_vocabulario\": base.construir_vocabulario,",
+              "\"pares_de_epoca\": base.pares_de_epoca, \"mod\": base}"
+            ]
+          },
+          "entrada_de_cx": {
+            "linea": 156,
+            "valor": "base.SkipGram"
+          },
+          "apunta_a_la_clase_de_p71_04": true,
+          "la_clase_existe_y_es_clase": true,
+          "la_clase_tiene_forward": true,
+          "nota": "esta es la UNICA afirmacion admisible sobre el artefacto congelado, junto con la integridad descriptiva de W de A11"
+        }
+      },
+      "exito": "el bloque del artefacto declara evidencia_del_estado_final = false con su motivo, y no incluye cifras condicionales",
+      "fallo": "que P80 reporte esas cifras como medida del artefacto entrenado, o que repita la frase sustituida",
+      "stop_si_falla": false,
+      "veredicto": "NO APLICABLE POR CONSTRUCCION"
+    },
+    {
+      "afirmacion": "A14",
+      "hallazgo": "H5",
+      "naturaleza": "CONFIRMAR",
+      "que_se_afirma": "en v9_04 y en v10_11 la metrica de validacion que decide cuando restaurar pesos es la del pliegue externo, y las probabilidades reportadas salen de ese mismo pliegue; no hay particion interna",
+      "tolerancia": "no aplica: comprobacion estructural con lineas exactas",
+      "unidad": "lineas y dependencia de datos",
+      "medida": {
+        "ficheros": {
+          "v9_04": {
+            "encontrada": true,
+            "funcion": "entrenar_pliegue",
+            "linea": 111,
+            "parametros": [
+              "ids_tr",
+              "y_tr",
+              "ids_va",
+              "y_va",
+              "matriz_embedding",
+              "semilla",
+              "dispositivo"
+            ],
+            "parametros_de_validacion": [
+              "ids_va",
+              "y_va"
+            ],
+            "parametros_de_entrenamiento": [
+              "ids_tr",
+              "y_tr",
+              "matriz_embedding",
+              "semilla",
+              "dispositivo"
+            ],
+            "dependencias_calculadas": {
+              "criterio": [],
+              "dispositivo": [
+                "dispositivo"
+              ],
+              "ids_tr": [
+                "ids_tr"
+              ],
+              "ids_va": [
+                "ids_va"
+              ],
+              "idx": [
+                "dispositivo",
+                "ids_tr"
+              ],
+              "logits": [
+                "dispositivo",
+                "ids_tr",
+                "matriz_embedding"
+              ],
+              "matriz_embedding": [
+                "matriz_embedding"
+              ],
+              "mejor_estado": [
+                "dispositivo",
+                "matriz_embedding"
+              ],
+              "mejor_perdida": [],
+              "modelo": [
+                "dispositivo",
+                "matriz_embedding"
+              ],
+              "optimizador": [
+                "dispositivo",
+                "matriz_embedding"
+              ],
+              "perdida": [
+                "dispositivo",
+                "ids_tr",
+                "matriz_embedding",
+                "y_tr"
+              ],
+              "perdida_va": [
+                "dispositivo",
+                "ids_va",
+                "matriz_embedding",
+                "y_va"
+              ],
+              "permutacion": [
+                "dispositivo",
+                "ids_tr"
+              ],
+              "proba": [
+                "dispositivo",
+                "ids_va",
+                "matriz_embedding"
+              ],
+              "semilla": [
+                "semilla"
+              ],
+              "sin_mejora": [],
+              "t_tr": [
+                "dispositivo",
+                "y_tr"
+              ],
+              "t_va": [
+                "dispositivo",
+                "y_va"
+              ],
+              "x_tr": [
+                "dispositivo",
+                "ids_tr"
+              ],
+              "x_va": [
+                "dispositivo",
+                "ids_va"
+              ],
+              "y_tr": [
+                "y_tr"
+              ],
+              "y_va": [
+                "y_va"
+              ]
+            },
+            "piezas": {
+              "inicializa_el_estado": {
+                "linea": 126,
+                "texto_literal": "mejor_estado = {k: v.clone() for k, v in modelo.state_dict().items()}",
+                "parametros_de_validacion_de_esta_pieza": []
+              },
+              "compara_y_sobrescribe": {
+                "linea": 141,
+                "texto_literal": "if perdida_va < mejor_perdida - 1e-5:",
+                "parametros_de_validacion_de_esta_pieza": [
+                  "ids_va",
+                  "y_va"
+                ]
+              },
+              "restaura_los_pesos": {
+                "linea": 149,
+                "texto_literal": "modelo.load_state_dict(mejor_estado)",
+                "parametros_de_validacion_de_esta_pieza": []
+              },
+              "devuelve_probabilidades": {
+                "linea": 153,
+                "texto_literal": "return proba",
+                "parametros_de_validacion_de_esta_pieza": [
+                  "ids_va"
+                ]
+              }
+            },
+            "piezas_completas": true,
+            "piezas_faltantes": [],
+            "piezas_que_portedatos": {
+              "compara_y_sobrescribe": [
+                "ids_va",
+                "y_va"
+              ],
+              "devuelve_probabilidades": [
+                "ids_va"
+              ]
+            },
+            "las_dos_piezas_que_portedatos_usan_validacion": true,
+            "nombres_de_validacion_en_el_cuerpo": [
+              "ids_va",
+              "t_va",
+              "x_va",
+              "y_va"
+            ],
+            "nombres_de_validacion_no_autorizados": [],
+            "llamadas_de_reparto": [],
+            "sin_particion_interna": true,
+            "call_site": {
+              "encontrada": true,
+              "linea_de_la_llamada": 182,
+              "argumentos_de_validacion": [
+                {
+                  "posicion": 2,
+                  "linea": 183,
+                  "expresion": "ids[va]",
+                  "identificador_del_array": "ids[va]",
+                  "clase": "validacion",
+                  "evidencia": "subscript por el segundo elemento del pliegue"
+                },
+                {
+                  "posicion": 3,
+                  "linea": 183,
+                  "expresion": "y[va]",
+                  "identificador_del_array": "y[va]",
+                  "clase": "validacion",
+                  "evidencia": "subscript por el segundo elemento del pliegue"
+                }
+              ],
+              "n_argumentos_de_validacion": 2,
+              "parametros_de_validacion_de_la_funcion": [
+                "ids_va",
+                "y_va"
+              ],
+              "clase_de_cada_argumento": {
+                "ids[tr]": "entrenamiento",
+                "y[tr]": "entrenamiento",
+                "ids[va]": "validacion",
+                "y[va]": "validacion",
+                "matriz_embedding": "desconocido",
+                "42 + k": "desconocido",
+                "dispositivo": "desconocido"
+              },
+              "segundo_elemento_del_bucle_de_pliegues": "va",
+              "linea_del_bucle_de_pliegues": 181,
+              "texto_del_bucle_de_pliegues": "for k, (tr, va) in enumerate(pliegues):",
+              "origen_de_los_pliegues": {
+                "tipo": "asignacion_en_el_llamante",
+                "linea": 167,
+                "expresion": "pliegues_corregidos(dev, grupos[indices_dev])"
+              },
+              "coherente": true,
+              "primer_elemento_del_bucle_de_pliegues": "tr",
+              "criterio_estructural": {
+                "tres_pasos": [
+                  "1. la estructura del propio argumento: un subscript por el segundo o el primer elemento del pliegue, o un atributo cuyo nombre dice val o train",
+                  "2. el vinculo local, si el argumento es un nombre desnudo: se sigue su unica asignacion en el llamante y se clasifica esa expresion con el paso 1",
+                  "3. el nombre, solo como desempate y solo con la convencion declarada, no con un `in` crudo: `tr_val` no es validacion"
+                ],
+                "por_que_no_se_sigue_el_grafo": "en 11_dl el modelo y `x_train` se construyen desde el mismo `datos` que produce `preparar(textos, entrenamiento, validacion)`. Seguir el grafo hasta el pliegue los marcaba a los dos como de validacion, y decia que cuatro argumentos lo eran cuando solo dos lo son",
+                "por_que_A14_y_A19_se_comportan_distinto": "A14 no sufre la limitacion de resolver solo por estructura porque v9_04 y v10_11 pasan los arrays como subscript del pliegue, `ids[va]` e `ids[validacion]`, y ahi la identidad del indice basta. A19 recibe en 11_dl nombres desnudos, `x_val` e `y_val`, con la procedencia unas lineas mas arriba, y por eso hace falta el paso 2. Es una diferencia de como esta escrito el codigo, no de protocolo: los dos entrenan y puntuan con el mismo pliegue",
+                "convenciones": {
+                  "validacion": "^(?:x|t|ids|y|probas|probabilidades)_(?:va|val)$",
+                  "entrenamiento": "^(?:x|t|ids|y|probas|probabilidades)_(?:train|tr)$"
+                }
+              },
+              "busqueda_del_bucle": "se sube por la cadena de For hasta el primero que se desestructura en dos, y no solo el mas proximo: en v10_11 la llamada esta dentro de un bucle de variantes",
+              "regla": "tiene que haber al menos un argumento de validacion, y el bucle tiene que venir de un constructor de pliegues, ya sea una asignacion del llamante o un parametro suyo"
+            },
+            "por_que": {
+              "para_que_sirve": "sin este bloque, un REFUTADO no se puede distinguir de un fallo del detector. P73 y P74 si detectaron esta fuga, luego si aqui no se ve, lo sospechoso es el instrumento y no el codigo",
+              "criterios": [
+                {
+                  "criterio": "cuatro_piezas_localizadas",
+                  "observado": true,
+                  "detalle": {
+                    "piezas_encontradas": [
+                      "compara_y_sobrescribe",
+                      "devuelve_probabilidades",
+                      "inicializa_el_estado",
+                      "restaura_los_pesos"
+                    ],
+                    "piezas_faltantes": []
+                  }
+                },
+                {
+                  "criterio": "las_piezas_que_portedatos_usan_la_validacion",
+                  "observado": true,
+                  "detalle": {
+                    "piezas_que_portedatos": {
+                      "compara_y_sobrescribe": [
+                        "ids_va",
+                        "y_va"
+                      ],
+                      "devuelve_probabilidades": [
+                        "ids_va"
+                      ]
+                    },
+                    "parametros_de_validacion": [
+                      "ids_va",
+                      "y_va"
+                    ]
+                  }
+                },
+                {
+                  "criterio": "sin_particion_interna",
+                  "observado": true,
+                  "detalle": {
+                    "nombres_de_validacion_no_autorizados": [],
+                    "llamadas_de_reparto": [],
+                    "nota": "una llamada cuyo nombre empieza por mayuscula es un constructor de clase, no un repartidor, y no cuenta"
+                  }
+                },
+                {
+                  "criterio": "el_call_site_trae_la_validacion_del_pliegue_externo",
+                  "observado": true,
+                  "detalle": {
+                    "argumentos_de_validacion": [
+                      {
+                        "posicion": 2,
+                        "linea": 183,
+                        "expresion": "ids[va]",
+                        "identificador_del_array": "ids[va]",
+                        "clase": "validacion",
+                        "evidencia": "subscript por el segundo elemento del pliegue"
+                      },
+                      {
+                        "posicion": 3,
+                        "linea": 183,
+                        "expresion": "y[va]",
+                        "identificador_del_array": "y[va]",
+                        "clase": "validacion",
+                        "evidencia": "subscript por el segundo elemento del pliegue"
+                      }
+                    ],
+                    "clase_de_cada_argumento": {
+                      "ids[tr]": "entrenamiento",
+                      "y[tr]": "entrenamiento",
+                      "ids[va]": "validacion",
+                      "y[va]": "validacion",
+                      "matriz_embedding": "desconocido",
+                      "42 + k": "desconocido",
+                      "dispositivo": "desconocido"
+                    },
+                    "segundo_elemento_del_bucle": "va",
+                    "origen_de_los_pliegues": {
+                      "tipo": "asignacion_en_el_llamante",
+                      "linea": 167,
+                      "expresion": "pliegues_corregidos(dev, grupos[indices_dev])"
+                    },
+                    "bucle_de_pliegues_encontrado": true
+                  }
+                }
+              ],
+              "todos_los_criterios_pasan": true
+            },
+            "clasificacion_de_parametros_publicada": {
+              "convencion": "^(?:x|t|ids|y|probas|probabilidades)_(?:va|val)$",
+              "nombres_exactos": [
+                "va",
+                "val",
+                "validacion",
+                "validas"
+              ],
+              "motivo_de_la_convencion": "el identificador tiene que tener un componente exactamente va o val, para que `variante` NO se clasifique como validacion",
+              "parametros_clasificados_como_validacion": [
+                "ids_va",
+                "y_va"
+              ],
+              "parametros_clasificados_como_resto": [
+                "ids_tr",
+                "y_tr",
+                "matriz_embedding",
+                "semilla",
+                "dispositivo"
+              ]
+            },
+            "apariciones_de_la_frase": {
+              "frase": "early stopping estricto",
+              "n_apariciones": 1,
+              "lineas": [
+                252
+              ],
+              "textos": [
+                "\"probo con los vectores propios congelados y early stopping estricto.\","
+              ],
+              "metodo": "busqueda de cadena literal, exigida por el pre-registro; no decide ningun veredicto",
+              "nota": "la frase describe mal el protocolo: no hay particion interna, luego no es early stopping anidado. No se edita el fichero: la correccion va en este informe"
+            },
+            "fuente": {
+              "ruta": "experiments/v9_04_dl_secuencial_fasttext.py",
+              "sha256": "557434f438e9bb19b4af3525e3b823ed753e2a72ece15e89c047c4f7fa513bd8",
+              "n_lineas": 293
+            }
+          },
+          "v10_11": {
+            "encontrada": true,
+            "funcion": "entrenar",
+            "linea": 176,
+            "parametros": [
+              "ids_tr",
+              "y_tr",
+              "ids_va",
+              "y_va",
+              "matriz_embedding",
+              "variante",
+              "semilla",
+              "dispositivo"
+            ],
+            "parametros_de_validacion": [
+              "ids_va",
+              "y_va"
+            ],
+            "parametros_de_entrenamiento": [
+              "ids_tr",
+              "y_tr",
+              "matriz_embedding",
+              "variante",
+              "semilla",
+              "dispositivo"
+            ],
+            "dependencias_calculadas": {
+              "afinable": [
+                "variante"
+              ],
+              "criterio": [],
+              "dispositivo": [
+                "dispositivo"
+              ],
+              "ids_tr": [
+                "ids_tr"
+              ],
+              "ids_va": [
+                "ids_va"
+              ],
+              "idx": [
+                "dispositivo",
+                "ids_tr"
+              ],
+              "matriz_embedding": [
+                "matriz_embedding"
+              ],
+              "mejor_epoca": [],
+              "mejor_estado": [
+                "dispositivo",
+                "matriz_embedding",
+                "variante"
+              ],
+              "mejor_perdida": [],
+              "modelo": [
+                "dispositivo",
+                "matriz_embedding",
+                "variante"
+              ],
+              "optimizador": [
+                "dispositivo",
+                "matriz_embedding",
+                "variante"
+              ],
+              "perdida": [
+                "dispositivo",
+                "ids_tr",
+                "matriz_embedding",
+                "variante",
+                "y_tr"
+              ],
+              "perdida_entrenamiento": [
+                "dispositivo",
+                "ids_tr",
+                "matriz_embedding",
+                "variante",
+                "y_tr"
+              ],
+              "perdida_validacion": [
+                "dispositivo",
+                "ids_va",
+                "matriz_embedding",
+                "variante",
+                "y_va"
+              ],
+              "permutacion": [
+                "dispositivo",
+                "ids_tr"
+              ],
+              "probabilidades": [
+                "dispositivo",
+                "ids_va",
+                "matriz_embedding",
+                "variante"
+              ],
+              "semilla": [
+                "semilla"
+              ],
+              "sin_mejora": [],
+              "t_tr": [
+                "dispositivo",
+                "y_tr"
+              ],
+              "t_va": [
+                "dispositivo",
+                "y_va"
+              ],
+              "variante": [
+                "variante"
+              ],
+              "x_tr": [
+                "dispositivo",
+                "ids_tr"
+              ],
+              "x_va": [
+                "dispositivo",
+                "ids_va"
+              ],
+              "y_tr": [
+                "y_tr"
+              ],
+              "y_va": [
+                "y_va"
+              ]
+            },
+            "piezas": {
+              "inicializa_el_estado": {
+                "linea": 241,
+                "texto_literal": "mejor_estado = {clave: valor.clone() for clave, valor in modelo.state_dict().items()}",
+                "parametros_de_validacion_de_esta_pieza": []
+              },
+              "compara_y_sobrescribe": {
+                "linea": 265,
+                "texto_literal": "if perdida_validacion < mejor_perdida - 1e-5:",
+                "parametros_de_validacion_de_esta_pieza": [
+                  "ids_va",
+                  "y_va"
+                ]
+              },
+              "restaura_los_pesos": {
+                "linea": 275,
+                "texto_literal": "modelo.load_state_dict(mejor_estado)",
+                "parametros_de_validacion_de_esta_pieza": []
+              },
+              "devuelve_probabilidades": {
+                "linea": 279,
+                "texto_literal": "return probabilidades, {",
+                "parametros_de_validacion_de_esta_pieza": [
+                  "ids_va"
+                ]
+              }
+            },
+            "piezas_completas": true,
+            "piezas_faltantes": [],
+            "piezas_que_portedatos": {
+              "compara_y_sobrescribe": [
+                "ids_va",
+                "y_va"
+              ],
+              "devuelve_probabilidades": [
+                "ids_va"
+              ]
+            },
+            "las_dos_piezas_que_portedatos_usan_validacion": true,
+            "nombres_de_validacion_en_el_cuerpo": [
+              "ids_va",
+              "t_va",
+              "x_va",
+              "y_va"
+            ],
+            "nombres_de_validacion_no_autorizados": [],
+            "llamadas_de_reparto": [],
+            "sin_particion_interna": true,
+            "call_site": {
+              "encontrada": true,
+              "linea_de_la_llamada": 330,
+              "argumentos_de_validacion": [
+                {
+                  "posicion": 2,
+                  "linea": 333,
+                  "expresion": "ids[validacion]",
+                  "identificador_del_array": "ids[validacion]",
+                  "clase": "validacion",
+                  "evidencia": "subscript por el segundo elemento del pliegue"
+                },
+                {
+                  "posicion": 3,
+                  "linea": 334,
+                  "expresion": "y[validacion]",
+                  "identificador_del_array": "y[validacion]",
+                  "clase": "validacion",
+                  "evidencia": "subscript por el segundo elemento del pliegue"
+                }
+              ],
+              "n_argumentos_de_validacion": 2,
+              "parametros_de_validacion_de_la_funcion": [
+                "ids_va",
+                "y_va"
+              ],
+              "clase_de_cada_argumento": {
+                "ids[entrenamiento]": "entrenamiento",
+                "y[entrenamiento]": "entrenamiento",
+                "ids[validacion]": "validacion",
+                "y[validacion]": "validacion",
+                "matriz_embedding": "desconocido",
+                "nombre": "desconocido",
+                "42 + indice_pliegue": "desconocido",
+                "dispositivo": "desconocido"
+              },
+              "segundo_elemento_del_bucle_de_pliegues": "validacion",
+              "linea_del_bucle_de_pliegues": 328,
+              "texto_del_bucle_de_pliegues": "for indice_pliegue, (entrenamiento, validacion) in enumerate(pliegues):",
+              "origen_de_los_pliegues": {
+                "tipo": "asignacion_en_el_llamante",
+                "linea": 307,
+                "expresion": "pliegues_corregidos(dev, grupos[indices_dev])"
+              },
+              "coherente": true,
+              "primer_elemento_del_bucle_de_pliegues": "entrenamiento",
+              "criterio_estructural": {
+                "tres_pasos": [
+                  "1. la estructura del propio argumento: un subscript por el segundo o el primer elemento del pliegue, o un atributo cuyo nombre dice val o train",
+                  "2. el vinculo local, si el argumento es un nombre desnudo: se sigue su unica asignacion en el llamante y se clasifica esa expresion con el paso 1",
+                  "3. el nombre, solo como desempate y solo con la convencion declarada, no con un `in` crudo: `tr_val` no es validacion"
+                ],
+                "por_que_no_se_sigue_el_grafo": "en 11_dl el modelo y `x_train` se construyen desde el mismo `datos` que produce `preparar(textos, entrenamiento, validacion)`. Seguir el grafo hasta el pliegue los marcaba a los dos como de validacion, y decia que cuatro argumentos lo eran cuando solo dos lo son",
+                "por_que_A14_y_A19_se_comportan_distinto": "A14 no sufre la limitacion de resolver solo por estructura porque v9_04 y v10_11 pasan los arrays como subscript del pliegue, `ids[va]` e `ids[validacion]`, y ahi la identidad del indice basta. A19 recibe en 11_dl nombres desnudos, `x_val` e `y_val`, con la procedencia unas lineas mas arriba, y por eso hace falta el paso 2. Es una diferencia de como esta escrito el codigo, no de protocolo: los dos entrenan y puntuan con el mismo pliegue",
+                "convenciones": {
+                  "validacion": "^(?:x|t|ids|y|probas|probabilidades)_(?:va|val)$",
+                  "entrenamiento": "^(?:x|t|ids|y|probas|probabilidades)_(?:train|tr)$"
+                }
+              },
+              "busqueda_del_bucle": "se sube por la cadena de For hasta el primero que se desestructura en dos, y no solo el mas proximo: en v10_11 la llamada esta dentro de un bucle de variantes",
+              "regla": "tiene que haber al menos un argumento de validacion, y el bucle tiene que venir de un constructor de pliegues, ya sea una asignacion del llamante o un parametro suyo"
+            },
+            "por_que": {
+              "para_que_sirve": "sin este bloque, un REFUTADO no se puede distinguir de un fallo del detector. P73 y P74 si detectaron esta fuga, luego si aqui no se ve, lo sospechoso es el instrumento y no el codigo",
+              "criterios": [
+                {
+                  "criterio": "cuatro_piezas_localizadas",
+                  "observado": true,
+                  "detalle": {
+                    "piezas_encontradas": [
+                      "compara_y_sobrescribe",
+                      "devuelve_probabilidades",
+                      "inicializa_el_estado",
+                      "restaura_los_pesos"
+                    ],
+                    "piezas_faltantes": []
+                  }
+                },
+                {
+                  "criterio": "las_piezas_que_portedatos_usan_la_validacion",
+                  "observado": true,
+                  "detalle": {
+                    "piezas_que_portedatos": {
+                      "compara_y_sobrescribe": [
+                        "ids_va",
+                        "y_va"
+                      ],
+                      "devuelve_probabilidades": [
+                        "ids_va"
+                      ]
+                    },
+                    "parametros_de_validacion": [
+                      "ids_va",
+                      "y_va"
+                    ]
+                  }
+                },
+                {
+                  "criterio": "sin_particion_interna",
+                  "observado": true,
+                  "detalle": {
+                    "nombres_de_validacion_no_autorizados": [],
+                    "llamadas_de_reparto": [],
+                    "nota": "una llamada cuyo nombre empieza por mayuscula es un constructor de clase, no un repartidor, y no cuenta"
+                  }
+                },
+                {
+                  "criterio": "el_call_site_trae_la_validacion_del_pliegue_externo",
+                  "observado": true,
+                  "detalle": {
+                    "argumentos_de_validacion": [
+                      {
+                        "posicion": 2,
+                        "linea": 333,
+                        "expresion": "ids[validacion]",
+                        "identificador_del_array": "ids[validacion]",
+                        "clase": "validacion",
+                        "evidencia": "subscript por el segundo elemento del pliegue"
+                      },
+                      {
+                        "posicion": 3,
+                        "linea": 334,
+                        "expresion": "y[validacion]",
+                        "identificador_del_array": "y[validacion]",
+                        "clase": "validacion",
+                        "evidencia": "subscript por el segundo elemento del pliegue"
+                      }
+                    ],
+                    "clase_de_cada_argumento": {
+                      "ids[entrenamiento]": "entrenamiento",
+                      "y[entrenamiento]": "entrenamiento",
+                      "ids[validacion]": "validacion",
+                      "y[validacion]": "validacion",
+                      "matriz_embedding": "desconocido",
+                      "nombre": "desconocido",
+                      "42 + indice_pliegue": "desconocido",
+                      "dispositivo": "desconocido"
+                    },
+                    "segundo_elemento_del_bucle": "validacion",
+                    "origen_de_los_pliegues": {
+                      "tipo": "asignacion_en_el_llamante",
+                      "linea": 307,
+                      "expresion": "pliegues_corregidos(dev, grupos[indices_dev])"
+                    },
+                    "bucle_de_pliegues_encontrado": true
+                  }
+                }
+              ],
+              "todos_los_criterios_pasan": true
+            },
+            "clasificacion_de_parametros_publicada": {
+              "convencion": "^(?:x|t|ids|y|probas|probabilidades)_(?:va|val)$",
+              "nombres_exactos": [
+                "va",
+                "val",
+                "validacion",
+                "validas"
+              ],
+              "motivo_de_la_convencion": "el identificador tiene que tener un componente exactamente va o val, para que `variante` NO se clasifique como validacion",
+              "parametros_clasificados_como_validacion": [
+                "ids_va",
+                "y_va"
+              ],
+              "parametros_clasificados_como_resto": [
+                "ids_tr",
+                "y_tr",
+                "matriz_embedding",
+                "variante",
+                "semilla",
+                "dispositivo"
+              ]
+            },
+            "apariciones_de_la_frase": {
+              "frase": "early stopping estricto",
+              "n_apariciones": 2,
+              "lineas": [
+                34,
+                386
+              ],
+              "textos": [
+                "**Se usa early stopping estricto, y la decision estaba pre-registrada** en `tasks/plan_v10.md` antes",
+                "\"decision\": \"early stopping estricto\","
+              ],
+              "metodo": "busqueda de cadena literal, exigida por el pre-registro; no decide ningun veredicto",
+              "nota": "la frase describe mal el protocolo: no hay particion interna, luego no es early stopping anidado. No se edita el fichero: la correccion va en este informe"
+            },
+            "fuente": {
+              "ruta": "experiments/v10_11_bigru_finetuning.py",
+              "sha256": "3b08c78bc3f95127a8eef61e2f5bbe8780bdcf267fd4493d8bfe3d33f4298cd4",
+              "n_lineas": 525
+            }
+          }
+        },
+        "por_que": {
+          "afirmacion": "A14",
+          "por_fichero": {
+            "v9_04": {
+              "funcion_detectada": "entrenar_pliegue",
+              "piezas_completas": true,
+              "piezas_faltantes": [],
+              "call_site_coherente": true,
+              "criterios_que_pasan": [
+                "cuatro_piezas_localizadas",
+                "las_piezas_que_portedatos_usan_la_validacion",
+                "sin_particion_interna",
+                "el_call_site_trae_la_validacion_del_pliegue_externo"
+              ],
+              "criterios_que_fallan": [],
+              "veredicto_del_fichero": "CONFIRMADO",
+              "lectura": "los cuatro criterios pasan"
+            },
+            "v10_11": {
+              "funcion_detectada": "entrenar",
+              "piezas_completas": true,
+              "piezas_faltantes": [],
+              "call_site_coherente": true,
+              "criterios_que_pasan": [
+                "cuatro_piezas_localizadas",
+                "las_piezas_que_portedatos_usan_la_validacion",
+                "sin_particion_interna",
+                "el_call_site_trae_la_validacion_del_pliegue_externo"
+              ],
+              "criterios_que_fallan": [],
+              "veredicto_del_fichero": "CONFIRMADO",
+              "lectura": "los cuatro criterios pasan"
+            }
+          }
+        },
+        "metodo": "la funcion se localiza por AST, por el hecho de llamar a load_state_dict(mejor_estado). Las cuatro piezas se localizan por nodo AST y se calculan sus dependencias hasta los parametros. La coherencia del pliegue se resuelve en el punto de llamada, que es donde se ve de donde salen los argumentos de validacion",
+        "criterio_de_exito": [
+          "las cuatro piezas existen, con su linea y su texto literal",
+          "las dos piezas que portan datos dependen solo de parametros de validacion",
+          "no hay ninguna particion interna en la funcion de entrenamiento",
+          "los argumentos de validacion del call site son el segundo elemento del pliegue del bucle de validacion cruzada"
+        ],
+        "convenciones_usadas": {
+          "validacion": [
+            "^(?:x|t|ids|y|probas|probabilidades)_(?:va|val)$",
+            [
+              "va",
+              "val",
+              "validacion",
+              "validas"
+            ]
+          ],
+          "reparto": "split|part|fold|plieg|inner|train_test|kfold",
+          "reparto_ignora_clases": "^[A-Z]"
+        }
+      },
+      "exito": "las cuatro piezas existen, las que portan datos usan la validacion del pliegue externo y no hay particion interna",
+      "fallo": "hay particion interna, con lo cual H5 queda refutado y los numeros de V9-04 y V10-11 serian comparables",
+      "stop_si_falla": false,
+      "veredicto": "CONFIRMADO",
+      "consecuencia_obligatoria": {
+        "numeros_no_comparables": {
+          "V9-04": 0.694343,
+          "V10-11": 0.711639
+        },
+        "motivo": "elegir la epoca con el pliegue que despues se puntua es una fuga, la misma que condeno P73 y P74",
+        "sesgo": "optimista, de magnitud NO MEDIDA",
+        "lo_que_se_puede_afirmar": "sus numeros son mas bajos que los de V03, asi que la fuga no los convierte en comparables: no se pueden usar como evidencia en ninguna direccion"
+      }
+    },
+    {
+      "afirmacion": "A15",
+      "hallazgo": "H6",
+      "naturaleza": "CONFIRMAR",
+      "que_se_afirma": "la mascara se construye a partir de los identificadores y se multiplica por la SALIDA de la GRU, luego la recurrencia consume los pasos de relleno",
+      "tolerancia": "no aplica: comprobacion estructural",
+      "unidad": "lineas y conteo de apariciones",
+      "medida": {
+        "ficheros": {
+          "v9_04": {
+            "apariciones_de_pack_padded_sequence": 0,
+            "linea_de_la_gru": 104,
+            "texto_de_la_gru": "salida, _ = self.gru(embebido)",
+            "linea_de_la_multiplicacion_por_la_mascara": 105,
+            "texto_de_la_multiplicacion": "suma = (salida * mascara).sum(dim=1)",
+            "orden_gru_antes_que_mascara": true,
+            "padding_idx": 0,
+            "tres_comprobaciones": {
+              "cero_pack_padded_sequence": true,
+              "gru_antes_que_la_mascara": true,
+              "padding_idx_es_cero": true
+            },
+            "fuente": {
+              "ruta": "experiments/v9_04_dl_secuencial_fasttext.py",
+              "sha256": "557434f438e9bb19b4af3525e3b823ed753e2a72ece15e89c047c4f7fa513bd8",
+              "n_lineas": 293
+            }
+          },
+          "v10_11": {
+            "apariciones_de_pack_padded_sequence": 0,
+            "linea_de_la_gru": 170,
+            "texto_de_la_gru": "salida, _ = self.gru(embebido)",
+            "linea_de_la_multiplicacion_por_la_mascara": 171,
+            "texto_de_la_multiplicacion": "suma = (salida * mascara).sum(dim=1)",
+            "orden_gru_antes_que_mascara": true,
+            "padding_idx": 0,
+            "tres_comprobaciones": {
+              "cero_pack_padded_sequence": true,
+              "gru_antes_que_la_mascara": true,
+              "padding_idx_es_cero": true
+            },
+            "fuente": {
+              "ruta": "experiments/v10_11_bigru_finetuning.py",
+              "sha256": "3b08c78bc3f95127a8eef61e2f5bbe8780bdcf267fd4493d8bfe3d33f4298cd4",
+              "n_lineas": 525
+            }
+          }
+        },
+        "naturaleza_del_efecto": "con padding_idx = 0 el vector de relleno es el vector cero, luego el efecto no es de explosion sino de arrastre: los pasos de relleno se acumulan en los estados y, en la direccion inversa, se mezclan en las posiciones reales anteriores al relleno",
+        "metodo": "el conteo de pack_padded_sequence es un recuento de cadena declarado por el pre-registro; el orden de las operaciones y el padding_idx se localizan por AST, no por ventana de lineas"
+      },
+      "exito": "las tres comprobaciones en los dos ficheros",
+      "fallo": "aparece pack_padded_sequence, y H6 queda refutado",
+      "stop_si_falla": true,
+      "veredicto": "CONFIRMADO"
+    },
+    {
+      "afirmacion": "A16",
+      "hallazgo": "H6",
+      "naturaleza": "CONFIRMAR",
+      "que_se_afirma": "el defecto estructural de A15 tiene un peso medible, y el peso se mide antes de decir nada",
+      "tolerancia": {
+        "umbral_de_decision": 0.001,
+        "regla": "menor o igual que el umbral es SIN EFECTO MEDIBLE; mayor que el umbral es EFECTO MEDIBLE",
+        "fijado": "en el pre-registro, antes de ejecutar, y no se negocia despues"
+      },
+      "unidad": "distancia L2 relativa entre los dos vectores agregados",
+      "medida": {
+        "sonda_ejecutada": true,
+        "estado_de_la_sonda": "EJECUTADA",
+        "condiciones": {
+          "sin_entrenar": true,
+          "sin_datos_del_proyecto": true,
+          "matriz_sintetica": "51 filas por 200 columnas, fila 0 a cero, semilla 20261141",
+          "instanciacion": "la clase del propio fichero, misma dimension y semilla fija",
+          "captura_del_vector_agregado": "gancho previo en el dropout, que recibe el vector agregado y no lo recalcula"
+        },
+        "sondas": {
+          "v9_04_BiGRU": {
+            "longitudes_reales": [
+              12,
+              7,
+              4
+            ],
+            "longitud_maxima_real": 12,
+            "longitud_maxima_de_la_tanda": 30,
+            "fila_observada": 0,
+            "pasos_de_relleno_anadidos": 18,
+            "distancia_relativa_l2": 0.08399328135684547,
+            "norma_del_vector_real": 0.9973462820053101,
+            "vector_real_primeros_6": [
+              0.040271416306495667,
+              0.030944740399718285,
+              -0.11008361726999283,
+              -0.10051679611206055,
+              -0.00286186789162457,
+              0.05434446036815643
+            ],
+            "vector_maximo_primeros_6": [
+              0.040271416306495667,
+              0.030944740399718285,
+              -0.11008361726999283,
+              -0.10051679611206055,
+              -0.00286186789162457,
+              0.05434446036815643
+            ],
+            "reproducible": true,
+            "distancia_de_la_segunda_pasada": 0.08399328135684547,
+            "clase_usada": "BiGRU"
+          },
+          "v10_11_BiGRUAfinable": {
+            "longitudes_reales": [
+              12,
+              7,
+              4
+            ],
+            "longitud_maxima_real": 12,
+            "longitud_maxima_de_la_tanda": 30,
+            "fila_observada": 0,
+            "pasos_de_relleno_anadidos": 18,
+            "distancia_relativa_l2": 0.08399328135684547,
+            "norma_del_vector_real": 0.9973462820053101,
+            "vector_real_primeros_6": [
+              0.040271416306495667,
+              0.030944740399718285,
+              -0.11008361726999283,
+              -0.10051679611206055,
+              -0.00286186789162457,
+              0.05434446036815643
+            ],
+            "vector_maximo_primeros_6": [
+              0.040271416306495667,
+              0.030944740399718285,
+              -0.11008361726999283,
+              -0.10051679611206055,
+              -0.00286186789162457,
+              0.05434446036815643
+            ],
+            "reproducible": true,
+            "distancia_de_la_segunda_pasada": 0.08399328135684547,
+            "clase_usada": "BiGRUAfinable"
+          }
+        },
+        "distancias": {
+          "v9_04_BiGRU": 0.08399328135684547,
+          "v10_11_BiGRUAfinable": 0.08399328135684547
+        },
+        "con_efecto_measurable": {
+          "v9_04_BiGRU": true,
+          "v10_11_BiGRUAfinable": true
+        },
+        "reproducible": true,
+        "errores": {}
+      },
+      "exito": "la sonda se ejecuta y devuelve un numero, con los dos vectores y la distancia registrados",
+      "fallo": "distancia no calculable, o variacion no nula entre dos corridas con la misma semilla",
+      "stop_si_falla": false,
+      "veredicto": "CONFIRMADO",
+      "estado_del_hallazgo": "EFECTO_MEDIBLE",
+      "como_se_cierra_h6": "H6 queda confirmado en su parte estructural y con efecto medible por la sonda. La magnitud de la sonda acota el defecto en una red de prueba y NO se extrapola a los BiGRU reales sin medir"
+    },
+    {
+      "afirmacion": "A17",
+      "hallazgo": "H7",
+      "naturaleza": "CONFIRMAR",
+      "que_se_afirma": "el pool de validacion cruzada de la fase DL son las 1731 filas etiquetadas completas, no las 1483 del desarrollo, luego el holdout v2 estaba dentro del pool",
+      "tolerancia": "cero, igualdad entera exacta",
+      "unidad": "filas",
+      "medida": {
+        "via_numerica_que_decide": {
+          "n_validacion_por_pliegue_DL_03": [
+            347,
+            346,
+            346,
+            346,
+            346
+          ],
+          "suma": 1731,
+          "esperado": 1731,
+          "n_tweets_dev": 1483,
+          "n_tweets_holdout": 248,
+          "identidad_dev_mas_holdout": 1731,
+          "identidad_se_cumple": true,
+          "campos_leidos_del_holdout": [
+            "hash_ids_csv",
+            "n_tweets_dev",
+            "n_tweets_holdout"
+          ],
+          "campos_no_leidos_del_holdout": [
+            "distribucion_dev",
+            "distribucion_holdout",
+            "fecha",
+            "grupos",
+            "maximo_evaluaciones",
+            "n_grupos_holdout",
+            "n_grupos_total",
+            "particion",
+            "pliegue_congelado",
+            "protocolo",
+            "registro",
+            "regla_de_uso",
+            "solo_finalistas"
+          ],
+          "documento_del_holdout_deserializado": false,
+          "como_se_leyo_el_holdout": "con expresion regular sobre el texto, sin json.loads, para que ninguna lista del documento llegue a existir como objeto"
+        },
+        "via_estructural_que_apoya": {
+          "linea_del_read_train": 446,
+          "texto_del_read_train": "train = data_module.read_train()",
+          "linea_del_bucle_de_cv": 1362,
+          "texto_del_bucle_de_cv": "for numero, (entrenamiento, validacion) in enumerate(pliegues, start=1):",
+          "busqueda_del_pool": {
+            "candidatas": [
+              {
+                "linea": 313,
+                "texto": "seccion = texto.split(\"KFD Processes\", maxsplit=1)[-1]",
+                "base": "texto",
+                "objeto_repartido": "'KFD Processes'",
+                "viene_de_read_train": false,
+                "es_el_pool_de_cv": false,
+                "clasificacion": "split que NO es el pool: no reparte nada que venga de read_train"
+              },
+              {
+                "linea": 318,
+                "texto": "int(linea.split()[0])",
+                "base": "linea",
+                "objeto_repartido": null,
+                "viene_de_read_train": false,
+                "es_el_pool_de_cv": false,
+                "clasificacion": "split que NO es el pool: no reparte nada que venga de read_train"
+              },
+              {
+                "linea": 491,
+                "texto": "for entrenamiento, validacion in divisor.split(",
+                "base": "divisor",
+                "objeto_repartido": "train",
+                "viene_de_read_train": true,
+                "es_el_pool_de_cv": true,
+                "clasificacion": "pool de la fase DL"
+              }
+            ],
+            "n_candidatas": 3,
+            "nombres_que_vienen_de_read_train": [
+              "train"
+            ],
+            "linea_del_pool_de_cv": 491,
+            "objeto_del_pool_de_cv": "train",
+            "encontrado": true,
+            "criterio": "una llamada es el pool de la fase DL si el objeto que reparte es un nombre asignado desde una llamada a read_train() en el mismo fichero. No se decide por la forma de la llamada, porque `divisor.split(train, ...)` y `linea.split()` son indistinguibles por forma",
+            "linea_del_read_train": 446
+          },
+          "el_pool_es_el_train_completo": true,
+          "lectura": "el pool es `train` entero, sin ninguna mascara que saque el holdout, luego el holdout v2 esta dentro de los cinco pliegues"
+        },
+        "nota_de_procedencia": {
+          "campo_rutas_del_informe": {
+            "reporte_csv": "/home/carlos/Git/PLN/kaggle_toxic_2026_puj/reports/dl_desde_cero_resultados.csv",
+            "reporte_json": "/home/carlos/Git/PLN/kaggle_toxic_2026_puj/reports/dl_desde_cero_resultados.json",
+            "figura": "/home/carlos/Git/PLN/kaggle_toxic_2026_puj/reports/figuras/fig_26_dl_curvas.png",
+            "checkpoint": "/home/carlos/Git/PLN/kaggle_toxic_2026_puj/models/dl_mlp.pt"
+          },
+          "observacion": "el campo rutas apunta a otro arbol de ficheros. El fichero de codigo SI existe aqui, luego la via estructural es posible y H7 no queda como indeterminada. No se corrige el informe viejo"
+        }
+      },
+      "exito": "la suma es 1731 y la identidad 1731 = 1483 + 248 se cumple exactamente",
+      "fallo": "la suma es 1483, o cualquier otro numero que no se descomponga como dev mas holdout",
+      "stop_si_falla": true,
+      "veredicto": "CONFIRMADO"
+    },
+    {
+      "afirmacion": "A18",
+      "hallazgo": "H7",
+      "naturaleza": "CONFIRMAR",
+      "que_se_afirma": "parte 1, los tres informes declaran los mismos n_validacion por pliegue; parte 2, el OOF de DL-01 no puede leerse como mejora sobre V03",
+      "tolerancia": {
+        "parte_1": "igualdad exacta de los cinco n_validacion entre los tres informes",
+        "parte_2": "identidad aritmetica, reportada con 12 decimales"
+      },
+      "unidad": {
+        "parte_1": "filas por pliegue",
+        "parte_2": "columnas de F1"
+      },
+      "medida": {
+        "parte_1_pool_compartido": {
+          "n_validacion_por_pliegue": {
+            "DL-01": [
+              347,
+              346,
+              346,
+              346,
+              346
+            ],
+            "DL-02": [
+              347,
+              346,
+              346,
+              346,
+              346
+            ],
+            "DL-03": [
+              347,
+              346,
+              346,
+              346,
+              346
+            ]
+          },
+          "iguales_entre_los_tres": true,
+          "totales": {
+            "DL-01": 1731,
+            "DL-02": 1731,
+            "DL-03": 1731
+          }
+        },
+        "parte_2_no_es_mejora": {
+          "oof_de_DL_01": 0.7948542132994776,
+          "corrected_cv_de_V03": 0.7772114525165721,
+          "diferencia_aritmetica_con_12_decimales": "0.017642760783",
+          "como_se_etiqueta": "diferencia aritmetica entre dos cifras calculadas sobre distintos conjuntos de filas y con distinto protocolo",
+          "como_NO_se_etiqueta": [
+            "delta",
+            "mejora",
+            "ventaja",
+            "ganancia",
+            "avance"
+          ],
+          "advertencia": "este numero esta contaminado por el holdout v2, por A17, y por una seleccion de epoca no anidada, por A19. NO puede leerse como que un modelo supera a V03: la comparacion no es valida porque los dos numeros no se calcularon sobre el mismo conjunto de filas ni con el mismo protocolo",
+          "umbrales_de_V03_solo_como_referencia": {
+            "HS": 0.44,
+            "TR": 0.51,
+            "AG": 0.46
+          }
+        }
+      },
+      "exito": "parte 1 verificada y parte 2 escrita con la advertencia completa",
+      "fallo": "los n_validacion difieren entre arquitecturas",
+      "stop_si_falla": false,
+      "veredicto": "CONFIRMADO"
+    },
+    {
+      "afirmacion": "A19",
+      "hallazgo": "H7",
+      "naturaleza": "CONFIRMAR",
+      "que_se_afirma": "el entrenamiento de la fase DL restaura los pesos de la epoca con mejor metrica de VALIDACION del propio pliegue que despues se puntua, sin particion interna",
+      "tolerancia": "no aplica: comprobacion estructural con lineas exactas",
+      "unidad": "lineas y dependencia de datos",
+      "medida": {
+        "analisis": {
+          "encontrada": true,
+          "funcion": "entrenar_pliegue",
+          "linea": 1140,
+          "parametros": [
+            "modelo",
+            "x_train",
+            "y_train",
+            "x_val",
+            "y_val",
+            "pos_weight",
+            "dispositivo"
+          ],
+          "parametros_de_validacion": [
+            "x_val",
+            "y_val"
+          ],
+          "parametros_de_entrenamiento": [
+            "modelo",
+            "x_train",
+            "y_train",
+            "pos_weight",
+            "dispositivo"
+          ],
+          "dependencias_calculadas": {
+            "criterio": [
+              "pos_weight"
+            ],
+            "curvas": [],
+            "dispositivo": [
+              "dispositivo"
+            ],
+            "epocas_sin_mejora": [],
+            "f1_val": [
+              "modelo",
+              "x_val",
+              "y_val"
+            ],
+            "indices": [
+              "dispositivo",
+              "x_train"
+            ],
+            "inicio": [],
+            "logits": [
+              "dispositivo",
+              "modelo",
+              "x_train"
+            ],
+            "logits_val": [
+              "modelo",
+              "x_val"
+            ],
+            "mejor_estado": [
+              "modelo"
+            ],
+            "mejor_f1": [],
+            "modelo": [
+              "modelo"
+            ],
+            "n_train": [
+              "x_train"
+            ],
+            "optimizador": [
+              "modelo"
+            ],
+            "perdida": [
+              "dispositivo",
+              "modelo",
+              "pos_weight",
+              "x_train",
+              "y_train"
+            ],
+            "perdida_val": [
+              "modelo",
+              "pos_weight",
+              "x_val",
+              "y_val"
+            ],
+            "permutacion": [
+              "dispositivo",
+              "x_train"
+            ],
+            "pos_weight": [
+              "pos_weight"
+            ],
+            "probabilidad_train": [
+              "modelo",
+              "x_train"
+            ],
+            "probabilidad_val": [
+              "modelo",
+              "x_val"
+            ],
+            "x_train": [
+              "x_train"
+            ],
+            "x_val": [
+              "x_val"
+            ],
+            "y_train": [
+              "y_train"
+            ],
+            "y_val": [
+              "y_val"
+            ],
+            "y_val_np": [
+              "y_val"
+            ]
+          },
+          "piezas": {
+            "inicializa_el_estado": {
+              "linea": 1177,
+              "texto_literal": "mejor_estado = copy.deepcopy(modelo.state_dict())",
+              "parametros_de_validacion_de_esta_pieza": []
+            },
+            "compara_y_sobrescribe": {
+              "linea": 1210,
+              "texto_literal": "if f1_val > mejor_f1:",
+              "parametros_de_validacion_de_esta_pieza": [
+                "x_val",
+                "y_val"
+              ]
+            },
+            "restaura_los_pesos": {
+              "linea": 1225,
+              "texto_literal": "modelo.load_state_dict(mejor_estado)",
+              "parametros_de_validacion_de_esta_pieza": []
+            },
+            "devuelve_probabilidades": {
+              "linea": 1230,
+              "texto_literal": "curvas.probabilidad_val = probabilidad_val",
+              "parametros_de_validacion_de_esta_pieza": [
+                "x_val"
+              ]
+            }
+          },
+          "piezas_completas": true,
+          "piezas_faltantes": [],
+          "piezas_que_portedatos": {
+            "compara_y_sobrescribe": [
+              "x_val",
+              "y_val"
+            ],
+            "devuelve_probabilidades": [
+              "x_val"
+            ]
+          },
+          "las_dos_piezas_que_portedatos_usan_validacion": true,
+          "nombres_de_validacion_en_el_cuerpo": [
+            "x_val",
+            "y_val"
+          ],
+          "nombres_de_validacion_no_autorizados": [],
+          "llamadas_de_reparto": [],
+          "sin_particion_interna": true,
+          "call_site": {
+            "encontrada": true,
+            "linea_de_la_llamada": 1379,
+            "argumentos_de_validacion": [
+              {
+                "posicion": 3,
+                "linea": 1383,
+                "expresion": "x_val",
+                "identificador_del_array": "x_val -> x_val",
+                "clase": "validacion",
+                "evidencia": "vinculo local: atributo cuyo nombre dice val"
+              },
+              {
+                "posicion": 4,
+                "linea": 1384,
+                "expresion": "y_val",
+                "identificador_del_array": "y_val -> validacion",
+                "clase": "validacion",
+                "evidencia": "vinculo local: subscript por el segundo elemento del pliegue"
+              }
+            ],
+            "n_argumentos_de_validacion": 2,
+            "parametros_de_validacion_de_la_funcion": [
+              "x_val",
+              "y_val"
+            ],
+            "clase_de_cada_argumento": {
+              "modelo": "desconocido",
+              "x_train": "entrenamiento",
+              "y_train": "entrenamiento",
+              "x_val": "validacion",
+              "y_val": "validacion",
+              "peso_positivos(etiquetas[entrenamiento]).to(dispositivo)": "entrenamiento",
+              "dispositivo": "desconocido"
+            },
+            "segundo_elemento_del_bucle_de_pliegues": "validacion",
+            "linea_del_bucle_de_pliegues": 1362,
+            "texto_del_bucle_de_pliegues": "for numero, (entrenamiento, validacion) in enumerate(pliegues, start=1):",
+            "origen_de_los_pliegues": {
+              "tipo": "parametro_del_llamante",
+              "linea": 1331,
+              "expresion": "parametro pliegues de evaluar_arquitectura"
+            },
+            "coherente": true,
+            "primer_elemento_del_bucle_de_pliegues": "entrenamiento",
+            "criterio_estructural": {
+              "tres_pasos": [
+                "1. la estructura del propio argumento: un subscript por el segundo o el primer elemento del pliegue, o un atributo cuyo nombre dice val o train",
+                "2. el vinculo local, si el argumento es un nombre desnudo: se sigue su unica asignacion en el llamante y se clasifica esa expresion con el paso 1",
+                "3. el nombre, solo como desempate y solo con la convencion declarada, no con un `in` crudo: `tr_val` no es validacion"
+              ],
+              "por_que_no_se_sigue_el_grafo": "en 11_dl el modelo y `x_train` se construyen desde el mismo `datos` que produce `preparar(textos, entrenamiento, validacion)`. Seguir el grafo hasta el pliegue los marcaba a los dos como de validacion, y decia que cuatro argumentos lo eran cuando solo dos lo son",
+              "por_que_A14_y_A19_se_comportan_distinto": "A14 no sufre la limitacion de resolver solo por estructura porque v9_04 y v10_11 pasan los arrays como subscript del pliegue, `ids[va]` e `ids[validacion]`, y ahi la identidad del indice basta. A19 recibe en 11_dl nombres desnudos, `x_val` e `y_val`, con la procedencia unas lineas mas arriba, y por eso hace falta el paso 2. Es una diferencia de como esta escrito el codigo, no de protocolo: los dos entrenan y puntuan con el mismo pliegue",
+              "convenciones": {
+                "validacion": "^(?:x|t|ids|y|probas|probabilidades)_(?:va|val)$",
+                "entrenamiento": "^(?:x|t|ids|y|probas|probabilidades)_(?:train|tr)$"
+              }
+            },
+            "busqueda_del_bucle": "se sube por la cadena de For hasta el primero que se desestructura en dos, y no solo el mas proximo: en v10_11 la llamada esta dentro de un bucle de variantes",
+            "regla": "tiene que haber al menos un argumento de validacion, y el bucle tiene que venir de un constructor de pliegues, ya sea una asignacion del llamante o un parametro suyo"
+          },
+          "por_que": {
+            "para_que_sirve": "sin este bloque, un REFUTADO no se puede distinguir de un fallo del detector. P73 y P74 si detectaron esta fuga, luego si aqui no se ve, lo sospechoso es el instrumento y no el codigo",
+            "criterios": [
+              {
+                "criterio": "cuatro_piezas_localizadas",
+                "observado": true,
+                "detalle": {
+                  "piezas_encontradas": [
+                    "compara_y_sobrescribe",
+                    "devuelve_probabilidades",
+                    "inicializa_el_estado",
+                    "restaura_los_pesos"
+                  ],
+                  "piezas_faltantes": []
+                }
+              },
+              {
+                "criterio": "las_piezas_que_portedatos_usan_la_validacion",
+                "observado": true,
+                "detalle": {
+                  "piezas_que_portedatos": {
+                    "compara_y_sobrescribe": [
+                      "x_val",
+                      "y_val"
+                    ],
+                    "devuelve_probabilidades": [
+                      "x_val"
+                    ]
+                  },
+                  "parametros_de_validacion": [
+                    "x_val",
+                    "y_val"
+                  ]
+                }
+              },
+              {
+                "criterio": "sin_particion_interna",
+                "observado": true,
+                "detalle": {
+                  "nombres_de_validacion_no_autorizados": [],
+                  "llamadas_de_reparto": [],
+                  "nota": "una llamada cuyo nombre empieza por mayuscula es un constructor de clase, no un repartidor, y no cuenta"
+                }
+              },
+              {
+                "criterio": "el_call_site_trae_la_validacion_del_pliegue_externo",
+                "observado": true,
+                "detalle": {
+                  "argumentos_de_validacion": [
+                    {
+                      "posicion": 3,
+                      "linea": 1383,
+                      "expresion": "x_val",
+                      "identificador_del_array": "x_val -> x_val",
+                      "clase": "validacion",
+                      "evidencia": "vinculo local: atributo cuyo nombre dice val"
+                    },
+                    {
+                      "posicion": 4,
+                      "linea": 1384,
+                      "expresion": "y_val",
+                      "identificador_del_array": "y_val -> validacion",
+                      "clase": "validacion",
+                      "evidencia": "vinculo local: subscript por el segundo elemento del pliegue"
+                    }
+                  ],
+                  "clase_de_cada_argumento": {
+                    "modelo": "desconocido",
+                    "x_train": "entrenamiento",
+                    "y_train": "entrenamiento",
+                    "x_val": "validacion",
+                    "y_val": "validacion",
+                    "peso_positivos(etiquetas[entrenamiento]).to(dispositivo)": "entrenamiento",
+                    "dispositivo": "desconocido"
+                  },
+                  "segundo_elemento_del_bucle": "validacion",
+                  "origen_de_los_pliegues": {
+                    "tipo": "parametro_del_llamante",
+                    "linea": 1331,
+                    "expresion": "parametro pliegues de evaluar_arquitectura"
+                  },
+                  "bucle_de_pliegues_encontrado": true
+                }
+              }
+            ],
+            "todos_los_criterios_pasan": true
+          },
+          "clasificacion_de_parametros_publicada": {
+            "convencion": "^(?:x|t|ids|y|probas|probabilidades)_(?:va|val)$",
+            "nombres_exactos": [
+              "va",
+              "val",
+              "validacion",
+              "validas"
+            ],
+            "motivo_de_la_convencion": "el identificador tiene que tener un componente exactamente va o val, para que `variante` NO se clasifique como validacion",
+            "parametros_clasificados_como_validacion": [
+              "x_val",
+              "y_val"
+            ],
+            "parametros_clasificados_como_resto": [
+              "modelo",
+              "x_train",
+              "y_train",
+              "pos_weight",
+              "dispositivo"
+            ]
+          },
+          "apariciones_de_la_frase": {
+            "frase": "early stopping estricto",
+            "n_apariciones": 5,
+            "lineas": [
+              155,
+              1097,
+              1149,
+              1499,
+              2192
+            ],
+            "textos": [
+              "\"decision_overfitting\": \"early stopping estricto (aprobado en el plan)\",",
+              "# ===== SECCION 6: entrenamiento con early stopping estricto =====",
+              "\"\"\"Entrena un pliegue con AdamW y early stopping estricto sobre F1 de val.",
+              "\"(early stopping estricto, paciencia 5)\",",
+              "\"epocas y early stopping estricto sobre la F1 de validacion (paciencia 5, \""
+            ],
+            "metodo": "busqueda de cadena literal, exigida por el pre-registro; no decide ningun veredicto"
+          },
+          "fuente": {
+            "ruta": "experiments/11_dl_desde_cero.py",
+            "sha256": "22cf724899c4beaa00ba45b918187583b8a83aceaa6caf7f8c48ea482019e5fe",
+            "n_lineas": 2356
+          }
+        },
+        "por_que": {
+          "afirmacion": "A19",
+          "por_fichero": {
+            "11_dl_desde_cero": {
+              "funcion_detectada": "entrenar_pliegue",
+              "piezas_completas": true,
+              "piezas_faltantes": [],
+              "call_site_coherente": true,
+              "criterios_que_pasan": [
+                "cuatro_piezas_localizadas",
+                "las_piezas_que_portedatos_usan_la_validacion",
+                "sin_particion_interna",
+                "el_call_site_trae_la_validacion_del_pliegue_externo"
+              ],
+              "criterios_que_fallan": [],
+              "veredicto_del_fichero": "CONFIRMADO",
+              "lectura": "los cuatro criterios pasan"
+            }
+          }
+        },
+        "criterio_que_decide": "la F1 media por columna de validacion, umbral 0.5, paciencia 5, mejores pesos restaurados",
+        "no_es_early_stopping_anidado": true,
+        "como_se_calcula_no_es_early_stopping_anidado": "es el resultado de los cuatro criterios del bloque por_que, no una afirmacion fija. Solo vale True si las cuatro piezas existen, las que portan datos usan la validacion del pliegue externo, no hay particion interna y el call site es coherente. Asi el campo no puede contradecir al veredicto"
+      },
+      "exito": "las piezas existen, mismo pliegue, sin particion interna",
+      "fallo": "existe particion interna, y H7 queda refutado en esta parte",
+      "stop_si_falla": false,
+      "veredicto": "CONFIRMADO",
+      "consecuencia": "el sesgo de los tres OOF de la fase DL es optimista por dos causas independientes: el holdout dentro del pool (A17) y la seleccion de epoca no anidada (esta afirmacion)"
+    }
+  ],
+  "veredictos_por_hallazgo": {
+    "H1": {
+      "estado": "CONFIRMADO",
+      "afirmaciones": [
+        "A1",
+        "A2",
+        "A3",
+        "A4",
+        "A5"
+      ],
+      "detalle": [
+        "A1: CONFIRMADO",
+        "A2: CONFIRMADO",
+        "A3: CONFIRMADO",
+        "A4: CONFIRMADO",
+        "A5: CONFIRMADO"
+      ]
+    },
+    "H2": {
+      "estado": "CONFIRMADO",
+      "afirmaciones": [
+        "A6",
+        "A7",
+        "A8"
+      ],
+      "detalle": [
+        "A6: CONFIRMADO",
+        "A7: CONFIRMADO",
+        "A8: CONFIRMADO"
+      ]
+    },
+    "H3": {
+      "estado": "CONFIRMADO",
+      "afirmaciones": [
+        "A9",
+        "A10"
+      ],
+      "detalle": [
+        "A9: CONFIRMADO",
+        "A10: CONFIRMADO"
+      ]
+    },
+    "H4": {
+      "estado": "CONFIRMADO",
+      "afirmaciones": [
+        "A11",
+        "A12",
+        "A13"
+      ],
+      "detalle": [
+        "A11: CONFIRMADO",
+        "A12: CONFIRMADO",
+        "A13: NO APLICABLE POR CONSTRUCCION"
+      ]
+    },
+    "H5": {
+      "estado": "CONFIRMADO",
+      "afirmaciones": [
+        "A14"
+      ],
+      "detalle": [
+        "A14: CONFIRMADO"
+      ]
+    },
+    "H6": {
+      "estado": "CONFIRMADO",
+      "afirmaciones": [
+        "A15",
+        "A16"
+      ],
+      "detalle": [
+        "A15: CONFIRMADO",
+        "A16: CONFIRMADO"
+      ]
+    },
+    "H7": {
+      "estado": "CONFIRMADO",
+      "afirmaciones": [
+        "A17",
+        "A18",
+        "A19"
+      ],
+      "detalle": [
+        "A17: CONFIRMADO",
+        "A18: CONFIRMADO",
+        "A19: CONFIRMADO"
+      ]
+    }
+  },
+  "correccion_de_p79": {
+    "principio": "P80 no edita P79 ni su informe. La correccion va en un documento nuevo, y ninguna de las tres correcciones cambia los hallazgos de H1 que P79 si acerto",
+    "correcciones": [
+      {
+        "afirmacion_de_P79": "lectura de las semillas del scheduler: semillas_desalineadas = false, con una unica lista entrenamiento = [0, 1, 2, 3, 4, 5]",
+        "por_que_mal": "su heuristica metio los dos bucles en el mismo grupo, y el booleano salia False no porque los rangos coincidieran, sino porque solo habia un grupo. Su propia lista tiene 6 elementos para EPOCAS = 5, y eso ya lo contradicia",
+        "veredicto_real": "A7: CONFIRMADO",
+        "lo_que_dice_P80": "los dos bucles usan rangos distintos, leidos por AST con mapa de padres, sin buscar hacia atras un encabezado ni etiquetar por una ventana de cadena"
+      },
+      {
+        "afirmacion_de_P79": "la_identidad_se_cumple = false en los cuatro valores de K",
+        "por_que_mal": "comparaba pos + neg_codigo contra l_codigo, que es -(pos + neg_codigo): faltaba el signo menos. Y el script no paraba, con lo que un indicador que siempre falla no informa de nada",
+        "veredicto_real": "A9: CONFIRMADO",
+        "lo_que_dice_P80": "la identidad se afirma con el signo correcto y con parada, y ademas se comprueba que la identidad mal puesta falla, para que la asercion tenga poder discriminante"
+      },
+      {
+        "afirmacion_de_P79": "punto_5_artefacto_congelado, que mide loss y normas de gradiente sobre el artefacto",
+        "por_que_mal": "asigno E = S = W, la misma matriz guardada, a la tabla de entrada y a la de salida. El artefacto solo guarda W",
+        "veredicto_real": "A13: NO APLICABLE POR CONSTRUCCION",
+        "lo_que_dice_P80": "no se mide el artefacto entrenado porque no se puede: se declara el limite y la afirmacion queda NO APLICABLE POR CONSTRUCCION, sin sustituir la tabla que falta por W"
+      }
+    ]
+  },
+  "cifras_de_p79_que_p80_no_replica": {
+    "por_que": "ninguna cifra de P79 se da por replicada ni por refutada de antemano. P80 produce su propia medida o declara que no puede",
+    "cifras": [
+      {
+        "cifra": 0.1,
+        "que_era": "ratio del termino negativo con K = 10",
+        "tratamiento_en_P80": "medida por A3, con la tolerancia del pre-registro y con la linea del fuente citada"
+      },
+      {
+        "cifra": 0.08033795,
+        "que_era": "ratio de la norma del gradiente de entrada, sobre un artefacto con E = S = W",
+        "tratamiento_en_P80": "RETIRADA. A5 no afirma ninguna cota y publica dos contraejemplos; ademas la cifra dependia de una matriz que no existe"
+      },
+      {
+        "cifra": 1.08412074,
+        "que_era": "loss del codigo sobre el artefacto",
+        "tratamiento_en_P80": "NO MEDIBLE. A13 lo declara NO APLICABLE POR CONSTRUCCION"
+      },
+      {
+        "cifra": 9.78555861,
+        "que_era": "loss de la referencia sobre el artefacto",
+        "tratamiento_en_P80": "NO MEDIBLE, por el mismo motivo"
+      },
+      {
+        "cifra": [
+          0.1,
+          1.0
+        ],
+        "que_era": "cota inferior y superior del ratio total",
+        "tratamiento_en_P80": "REFUTADA antes de ejecutar. A5 exige contraejemplo numerico y no publica ninguna cota"
+      },
+      {
+        "cifra": 0.00215054,
+        "que_era": "desvio relativo del total de lotes, con un recorte de 2000 lineas",
+        "tratamiento_en_P80": "medida de nuevo por A8, en dos partes, con el recorte declarado y con la parte 1 sin recorte"
+      },
+      {
+        "cifra": "los dos bucles usan el mismo rango de semillas",
+        "que_era": "lectura del plan frente al entrenamiento",
+        "tratamiento_en_P80": "PRESUMIDA ERRONEA antes de ejecutar. A7 la refuta con conjuntos de enteros exactos"
+      }
+    ]
+  },
+  "limites_declarados": [
+    "A12 exige recorrer todos los .npz de modelos/ y features/ y todos los .json de reports/, mientras que la seccion 2.3 punto 5 prohibe abrir otros ficheros de modelos/. P80 resuelve la tension por la via menos riesgosa: de cada .npz se leen solo las cabeceras .npy dentro del ZIP, sin descomprimir los arrays, y se declara el numero de bytes leidos",
+    "la enumeracion de A12 no incluye los checkpoints .pt de models/ ni los ficheros de modelos/ que no son .npz: es un limite declarado del negativo, no un olvido",
+    "P80 lee de config/holdout_v2.json exclusivamente n_tweets_dev, n_tweets_holdout y hash_ids_csv, y lo hace con expresion regular sobre el texto, sin deserializar el documento: la lista de identificadores no llega a existir como objeto",
+    "la parte 1 de A8 establece el desfase de semillas con aritmetica entera, que es independiente del corpus; el valor numerico de la desviacion se mide con el recorte declarado y no se extrapola a la corrida real",
+    "la convencion que clasifica nombres de validacion y la que detecta llamadas de reparto se publican en el informe, con sus expresiones regulares, para que sean auditables. La segunda ignora los nombres que empiezan por mayuscula, porque esos son constructores de clase y no repartidores",
+    "el calculo del learning rate de A8 usa el LOTE de p72_01, que coincide con el recorte declarado, y el learning rate inicial como LR0_POR_EJEMPLO por LOTE"
+  ],
+  "rutas_prohibidas_no_abiertas": {
+    "data/raw/toxic_test.csv": "test de la competencia, prohibido por el pre-registro",
+    "features/v2_structured_features.parquet": "features estructuradas v2, prohibidas explicitamente por el pre-registro",
+    "experiments/baseline_v03_frozen/": "V03 congelado, no hace falta: V03 no se toca",
+    "submissions/": "submissions, prohibidas por el pre-registro",
+    "config/holdout_v2.json::identificadores": "la lista de identificadores del holdout NO se lee ni se deserializa; de ese fichero solo se leen n_tweets_dev, n_tweets_holdout y hash_ids_csv",
+    "reports/leaderboard*": "ningun score de leaderboard se lee ni se consulta"
+  },
+  "errores_de_importacion_de_modulos": {},
+  "figuras": {
+    "p80_ratio_negativo_y_total.png": {
+      "tema": "ratio frente a 1/K en escala logaritmica",
+      "nota": "el ratio de la norma total se dibuja como numero informativo, sin cota",
+      "sha256": "564ad933955351f851b5c6ba0e2d19afd93154cbc3ef07dc607637b78bdc96d0"
+    },
+    "p80_lr_real_frente_a_ideal.png": {
+      "tema": "learning rate real frente al ideal",
+      "sha256": "1becec0d807e27232849bbc73f194499786d235298f7504a6bdcfa5d48d408d8"
+    },
+    "p80_sonda_de_relleno.png": {
+      "tema": "sonda de relleno",
+      "sha256": "61b8deaadecd071a3f5ed440cb651c69729f6eaf1f6193c1f7b0db3962eda863"
+    }
+  },
+  "asercion_ascii": {
+    "metodo": "escaneo byte a byte con read_bytes, rechazando cualquier byte mayor que 127, ademas del verificador oficial del proyecto. Las figuras son binarias por construccion, y lo que se les exige es el nombre en ASCII y la firma PNG, no el contenido",
+    "observado": {
+      "p80_01_auditoria_w2v.py": true
+    },
+    "sustituciones_ascii": []
+  },
+  "cronometro": {
+    "test1_loss": 0.0,
+    "test2_gradientes": 0.018,
+    "test3_scheduler": 0.297,
+    "test4_identidad_con_signo": 0.55,
+    "test5_artefacto": 0.063,
+    "test6_bigru": 0.171,
+    "test7_fase_dl": 0.056,
+    "figuras": 0.648
+  },
+  "escritura": {
+    "modo": "temporal con sufijo .tmp_p80, verificacion byte a byte del temporal, y renombrado atomico al final",
+    "directorio_de_figuras": "figuras/p80"
+  }
+}

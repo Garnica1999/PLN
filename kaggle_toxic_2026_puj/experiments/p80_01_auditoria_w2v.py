@@ -179,6 +179,11 @@ RUTAS_PROHIBIDAS = {
 # exactamente `va` o `val`, para que `variante` NO se clasifique como validacion.
 PATRON_VALIDACION = re.compile(r"^(?:x|t|ids|y|probas|probabilidades)_(?:va|val)$")
 NOMBRES_VALIDACION_EXACTOS = {"va", "val", "validacion", "validas"}
+# Simetrica de la anterior, para el desempate por nombre del call site. Tambien exige el
+# componente entero: `tr_val` no es validacion porque `tr` no es un prefijo admitido, y
+# `x_valida` tampoco, porque el componente es `valida` y no `val`.
+PATRON_ENTRENAMIENTO = re.compile(r"^(?:x|t|ids|y|probas|probabilidades)_(?:train|tr)$")
+NOMBRES_ENTRENAMIENTO_EXACTOS = {"tr", "train", "entrenamiento", "entrenamientos"}
 # Llamadas que construirian una particion interna dentro de la funcion de entrenamiento. El
 # patron se aplica SOLO a nombres que empiezan por minuscula: `CurvasPliegue()` es una clase y
 # no una particion, y sin esta guarda `plieg` la detecta como repartido y marca REFUTADO donde
@@ -484,6 +489,22 @@ def es_nombre_de_validacion(nombre: str) -> bool:
     return nombre in NOMBRES_VALIDACION_EXACTOS or bool(PATRON_VALIDACION.match(nombre))
 
 
+def es_nombre_de_entrenamiento(nombre: str) -> bool:
+    """Clasifica un identificador como nombre de entrenamiento, por convencion declarada.
+
+    Simetrica de `es_nombre_de_validacion`. Exige el componente entero, igual que la de
+    validacion: `x_train` y `y_tr` cuentan, `x_trainable` no, y `tr_val` no es ni una cosa ni
+    la otra.
+
+    Args:
+        nombre: identificador a clasificar.
+
+    Returns:
+        True si el identificador pertenece a la convencion de entrenamiento.
+    """
+    return nombre in NOMBRES_ENTRENAMIENTO_EXACTOS or bool(PATRON_ENTRENAMIENTO.match(nombre))
+
+
 def verificar_ascii_byte_a_byte(rutas: list) -> dict:
     """Comprueba, byte a byte, que ningun fichero tiene un byte mayor que 127.
 
@@ -568,16 +589,19 @@ def importar_modulo(nombre: str, ruta: Path):
 def contexto_de_modulos() -> dict:
     """Carga los modulos del proyecto que P80 necesita, y solo esos.
 
-    Se cargan `p71_04` (la clase `SkipGram` que se ejecuto) y `p72_01` (el scheduler y sus
-    constantes). `v9_04` y `v10_11` se cargan despues, y solo si A16 llega a ejecutarse, para
-    no pagar su importacion si antes se para. El error de una importacion se guarda con su
-    tipo y su mensaje, nunca se traga: A16 lo necesita para poder decir por que no corrio.
+    Se cargan los cuatro que P80 necesita: `p71_04` (la clase `SkipGram` que se ejecuto),
+    `p72_01` (el scheduler y sus constantes), y `v9_04` y `v10_11` (las clases de BiGRU que
+    A16 sonda). Se cargan los cuatro aqui y no en el momento de sondarlos, para que un fallo de
+    importacion quede registrado CON su causa en un solo sitio: si el error se captura donde se
+    produce y despues se lee de otro diccionario, basta con que uno se lose para que A16 diga
+    "motivo no registrado" y se trague la excepcion.
 
     Returns:
         Diccionario con las claves `p71`, `p72`, `v9` y `v10`, mas `errores`.
     """
     contexto: dict = {"errores": {}}
-    for clave, ruta in (("p71", FUENTE_P71), ("p72", FUENTE_P72)):
+    for clave, ruta in (("p71", FUENTE_P71), ("p72", FUENTE_P72),
+                        ("v9", FUENTE_V9), ("v10", FUENTE_V10)):
         try:
             contexto[clave] = importar_modulo(f"p80_{clave}", ruta)
         except Exception as exc:  # noqa: BLE001
@@ -2350,37 +2374,148 @@ def inspeccionar_npz_de_ruta(ruta: Path, limite: int = 4096) -> dict:
         return inspeccionar_npz_por_cabecera(manejador, str(ruta.relative_to(RAIZ)), limite)
 
 
-def buscar_candidatos_en_json(datos, candidatos: list, contadores: dict, prefijo: str) -> None:
-    """Recorre un JSON recursivamente buscando tablas con forma de tabla de embeddings.
+def es_forma_de_salida(forma, n_vocab: int, dim: int) -> bool:
+    """Dice si una forma puede ser la tabla de SALIDA del artefacto congelado.
 
-    La busqueda es EXHAUSTIVA y no heuristica: se cuentan las claves, se miden las listas largas
-    y se anotan las que podrian ser una tabla de vocabulario por dimension.
+    El criterio es dimensional COMPLETO, no por la primera dimension. Razon: en `SkipGram` las
+    dos tablas son `nn.Embedding(n_vocab, dim)` con el MISMO `dim`, luego `salida.weight` tiene
+    exactamente la forma `(n_vocab, dim)` de `entrada.weight`. Para el congelado de 100
+    dimensiones eso es `(77657, 100)` y nada mas. Una matriz `(77657, 200)` o `(77657, 300)`
+    pertenece a otra corrida y a otro numero de dimensiones, luego NO puede ser la tabla de
+    salida de ESTE entrenamiento, por muy vocabulario que comparta.
+
+    Por eso una coincidencia de la primera dimension no basta: es exactamente lo que hacia que
+    P79 y la primera ejecucion de P80 vieran cuatro tablas de entrada de otras corridas como si
+    fueran la tabla de salida.
+
+    Args:
+        forma: dimensiones a comprobar, o None si no se pudo leer.
+        n_vocab: filas de la tabla de entrada del artefacto.
+        dim: columnas de la tabla de entrada del artefacto.
+
+    Returns:
+        True si la forma puede ser la tabla de salida.
+    """
+    return bool(forma) and len(forma) == 2 and forma[0] == n_vocab and forma[1] == dim
+
+
+def motivo_del_descarte(forma, n_vocab: int, dim: int) -> str:
+    """Explica por que una forma NO es la tabla de salida del artefacto.
+
+    Args:
+        forma: dimensiones observadas, o None si no se pudo leer.
+        n_vocab: filas de la tabla de entrada del artefacto.
+        dim: columnas de la tabla de entrada del artefacto.
+
+    Returns:
+        Texto con el motivo, para que el negativo sea un dato y no una frase.
+    """
+    if not forma:
+        return "no se pudo leer la forma del array"
+    if len(forma) != 2:
+        return f"la forma {forma} no es de rango 2, luego no es una tabla de embeddings"
+    if forma[0] != n_vocab:
+        return (f"la primera dimension es {forma[0]} y el vocabulario del artefacto es "
+                f"{n_vocab}: es otra matriz")
+    return (f"la primera dimension coincide ({n_vocab}) pero la segunda es {forma[1]} y la "
+            f"tabla de salida de este entrenamiento tiene dim {dim}. Las dos tablas del modelo "
+            f"comparten dim, luego esta forma pertenece a otra corrida de otras dimensiones")
+
+
+def buscar_tablas_en_json(datos, n_vocab: int, dim: int, encontradas: list, descartadas: list,
+                          prefijo: str, nivel: int = 0) -> None:
+    """Busca en un JSON un valor que sea de verdad una matriz de la forma de la tabla de salida.
+
+    Un JSON no puede contener la tabla de salida en la practica: haria falta un literal de
+    7,7 millones de numeros. Aun asi se comprueba de forma estructural, y una clave `shape` o
+    `forma` NUNCA cuenta: eso es metadato sobre la forma de otra cosa, no un array.
+
+    Solo se mira una lista si su longitud es exactamente `n_vocab`, y de sus filas solo se
+    necesita la primera para conocer la anchura, luego el coste es acotado.
 
     Args:
         datos: valor del JSON ya deserializado.
-        candidatos: lista donde se acumulan los candidatos.
-        contadores: contadores globales de claves y de listas.
+        n_vocab: filas de la tabla de entrada del artefacto.
+        dim: columnas de la tabla de entrada del artefacto.
+        encontradas: lista donde se acumulan las tablas reales.
+        descartadas: lista donde se acumulan los descartes con su motivo.
         prefijo: camino textual hasta el valor actual.
+        nivel: profundidad actual, para acotar la recursion.
     """
+    if nivel > 14:
+        return
     if isinstance(datos, dict):
-        contadores["claves"] += len(datos)
         for clave, valor in datos.items():
+            ruta = f"{prefijo}/{clave}"
             if clave in ("shape", "forma") and isinstance(valor, (list, tuple)):
-                candidatos.append({"ruta": f"{prefijo}/{clave}", "motivo": "clave de forma",
-                                   "forma": list(valor)})
-            buscar_candidatos_en_json(valor, candidatos, contadores, f"{prefijo}/{clave}")
+                descartadas.append({
+                    "ruta": ruta, "tipo": "clave_de_forma", "valor": list(valor),
+                    "motivo": "una clave shape o forma es metadato sobre la forma de otra "
+                              "cosa. No es un array, luego no puede ser una tabla de salida",
+                })
+                continue
+            buscar_tablas_en_json(valor, n_vocab, dim, encontradas, descartadas, ruta,
+                                  nivel + 1)
     elif isinstance(datos, list):
-        contadores["listas"] += 1
-        if len(datos) >= 5000:
-            largo_interno = len(datos[0]) if datos and isinstance(datos[0], list) else None
-            candidatos.append({"ruta": prefijo, "motivo": "lista de al menos 5000 elementos",
-                               "longitud": len(datos), "longitud_interna": largo_interno})
+        if len(datos) == n_vocab:
+            ancho = len(datos[0]) if datos and isinstance(datos[0], list) else None
+            forma = [n_vocab, ancho] if ancho is not None else [n_vocab]
+            if es_forma_de_salida(forma, n_vocab, dim):
+                encontradas.append({"ruta": prefijo, "forma": forma, "n_filas": len(datos),
+                                     "tipo": "lista_anidada_en_json"})
+            else:
+                descartadas.append({
+                    "ruta": prefijo, "tipo": "lista_anidada_en_json", "forma": forma,
+                    "motivo": motivo_del_descarte(forma, n_vocab, dim)})
+        elif len(datos) >= 2 and all(isinstance(x, int) for x in datos[:2]):
+            descartadas.append({
+                "ruta": prefijo, "tipo": "lista_de_enteros", "valor": list(datos[:4]),
+                "motivo": "es una lista de enteros, no una matriz de embeddings",
+            })
         for indice, valor in enumerate(datos[:2]):
-            buscar_candidatos_en_json(valor, candidatos, contadores, f"{prefijo}[{indice}]")
-    elif isinstance(datos, str) and len(datos) >= 1_000_000:
-        candidatos.append({"ruta": prefijo,
-                           "motivo": "cadena de al menos 1.000.000 de caracteres",
-                           "longitud": len(datos)})
+            buscar_tablas_en_json(valor, n_vocab, dim, encontradas, descartadas,
+                                  f"{prefijo}[{indice}]", nivel + 1)
+
+
+def clasificar_miembros_npz(miembros: list, ruta: str, n_vocab: int, dim: int,
+                            es_el_artefacto: bool) -> dict:
+    """Reparte los miembros de un `.npz` en candidatos y descartados, con el criterio de A12.
+
+    Se separa del cuerpo de `afirmacion_a12` para que el humo pueda ejercitar EXACTAMENTE el
+    mismo criterio sobre un npz sintetico en memoria. Un detector que solo se prueba a si mismo
+    con el camino feliz no prueba nada.
+
+    Args:
+        miembros: lista de miembros con `nombre`, `forma` y `dtype`.
+        ruta: nombre del fichero, para el registro.
+        n_vocab: filas de la tabla de entrada del artefacto.
+        dim: columnas de la tabla de entrada del artefacto.
+        es_el_artefacto: True si el fichero es el artefacto congelado.
+
+    Returns:
+        Diccionario con `candidatos` y `descartados`.
+    """
+    candidatos = []
+    descartados = []
+    for miembro in miembros:
+        forma = miembro.get("forma")
+        if es_el_artefacto and miembro.get("nombre") == "W.npy":
+            descartados.append({
+                "ruta": ruta, "miembro": miembro["nombre"], "forma": forma,
+                "motivo": "es la propia tabla de entrada W del artefacto congelado"})
+            continue
+        if not forma or forma[0] != n_vocab:
+            continue
+        if es_forma_de_salida(forma, n_vocab, dim):
+            candidatos.append({"ruta": ruta, "miembro": miembro["nombre"], "forma": forma,
+                               "dtype": miembro.get("dtype"),
+                               "lectura": "miembro de un npz, array de rango 2"})
+        else:
+            descartados.append({
+                "ruta": ruta, "miembro": miembro["nombre"], "forma": forma,
+                "dtype": miembro.get("dtype"),
+                "motivo": motivo_del_descarte(forma, n_vocab, dim)})
+    return {"candidatos": candidatos, "descartados": descartados}
 
 
 def afirmacion_a12() -> dict:
@@ -2402,24 +2537,19 @@ def afirmacion_a12() -> dict:
     for base in (MODELOS, FEATURES):
         for ruta in sorted(base.rglob("*.npz")):
             inspeccionados.append(inspeccionar_npz_de_ruta(ruta))
+    n_vocab = ARTEFACTO_ESPERADO["vocabulario"]
+    dim = ARTEFACTO_ESPERADO["dim"]
     candidatos_npz = []
     descartados_npz = []
     for registro in inspeccionados:
-        for miembro in registro["miembros"]:
-            forma = miembro["forma"]
-            if forma and len(forma) == 2 and forma[0] == ARTEFACTO_ESPERADO["vocabulario"]:
-                if registro["ruta"] == str(ARTEFACTO.relative_to(RAIZ)) \
-                        and miembro["nombre"] == "W.npy":
-                    descartados_npz.append({
-                        "ruta": registro["ruta"], "miembro": miembro["nombre"], "forma": forma,
-                        "motivo": "es la propia tabla de entrada W del artefacto congelado"})
-                else:
-                    candidatos_npz.append({"ruta": registro["ruta"],
-                                           "miembro": miembro["nombre"], "forma": forma,
-                                           "dtype": miembro["dtype"]})
+        reparto = clasificar_miembros_npz(
+            registro["miembros"], registro["ruta"], n_vocab, dim,
+            registro["ruta"] == str(ARTEFACTO.relative_to(RAIZ)))
+        candidatos_npz.extend(reparto["candidatos"])
+        descartados_npz.extend(reparto["descartados"])
     n_json = 0
-    contadores = {"claves": 0, "listas": 0}
     candidatos_json = []
+    descartados_json = []
     errores_json = []
     for ruta in sorted(REPORTS.rglob("*.json")):
         try:
@@ -2429,8 +2559,8 @@ def afirmacion_a12() -> dict:
                                  "error": f"{type(exc).__name__}: {exc}"})
             continue
         n_json += 1
-        buscar_candidatos_en_json(datos, candidatos_json, contadores,
-                                  str(ruta.relative_to(RAIZ)))
+        buscar_tablas_en_json(datos, n_vocab, dim, candidatos_json, descartados_json,
+                              str(ruta.relative_to(RAIZ)))
     total_candidatos = len(candidatos_npz) + len(candidatos_json)
     resultado = {
         "afirmacion": "A12",
@@ -2447,12 +2577,34 @@ def afirmacion_a12() -> dict:
                 "bytes_leidos_en_total": sum(r["bytes_leidos"] for r in inspeccionados),
                 "json_inspeccionados": n_json,
                 "json_con_error_de_lectura": errores_json,
-                "claves_json_recorridas": contadores["claves"],
-                "listas_json_recorridas": contadores["listas"],
+                "nota_de_recorrido": "todo valor de reports/ se recorre. Un JSON no puede "
+                                     "contener la tabla de salida en la practica, y aun asi "
+                                     "se comprueba de forma estructural",
+            },
+            "criterio_de_deteccion": {
+                "regla": "una fuente es candidata si contiene un array de rango 2 con forma "
+                         f"exactamente ({n_vocab}, {dim})",
+                "por_que_la_segunda_dimension": "en SkipGram las dos tablas son "
+                                                "nn.Embedding(n_vocab, dim) con el MISMO dim, "
+                                                "luego la tabla de salida tiene exactamente la "
+                                                "forma de la de entrada. Una matriz con la "
+                                                f"primera dimension {n_vocab} y otra segunda "
+                                                "pertenece a otra corrida y no puede ser la "
+                                                "tabla de salida de este entrenamiento",
+                "por_que_un_json_no_sirve": "una clave shape o forma es metadato, no un array; "
+                                            "y un array de esa forma en un JSON serian 7,7 "
+                                            "millones de numeros. Aun asi se comprueba de "
+                                            "forma estructural",
+                "lo_que_se_descarta_y_se_registra": "todo lo que coincide en la primera "
+                                                    "dimension pero no en la segunda, con su "
+                                                    "motivo, para que el negativo sea un dato",
             },
             "candidatos_npz": candidatos_npz,
             "candidatos_json": candidatos_json,
             "candidatos_descartados_npz": descartados_npz,
+            "candidatos_descartados_json": descartados_json,
+            "n_descartados_npz": len(descartados_npz),
+            "n_descartados_json": len(descartados_json),
             "n_candidatos": total_candidatos,
             "rutas_no_inspeccionadas_y_por_que": dict(RUTAS_PROHIBIDAS),
             "limites_de_la_enumeracion": [
@@ -2726,6 +2878,26 @@ def resolver_origen_de_pliegues(alcance, nombre_de_pliegues: str | None) -> dict
     return None
 
 
+def nombre_mas_a_la_izquierda(patron) -> str | None:
+    """Devuelve el nombre mas a la izquierda de un patron de desestructuracion.
+
+    En `for k, (tr, va) in ...` el elemento de entrenamiento NO es `k`, que es el contador, sino
+    `tr`, que es la hoja izquierda del ultimo elemento. Sin esta funcion `ids[tr]` no casaba con
+    nada y salia como desconocido.
+
+    Args:
+        patron: nodo `ast.Tuple` o `ast.Name`.
+
+    Returns:
+        El identificador de la hoja izquierda, o None si no hay ninguno.
+    """
+    if isinstance(patron, ast.Name):
+        return patron.id
+    if isinstance(patron, ast.Tuple) and patron.elts:
+        return nombre_mas_a_la_izquierda(patron.elts[0])
+    return None
+
+
 def cadena_del_call_site(texto: str, nombre_funcion: str, nombres_validacion: list,
                         nombre: str) -> dict:  # noqa: ARG001
     """Resuelve el origen de los argumentos de validacion en el punto de llamada.
@@ -2758,9 +2930,12 @@ def cadena_del_call_site(texto: str, nombre_funcion: str, nombres_validacion: li
 
     bucle = bucle_de_pliegues_de_la_llamada(llamada, padres)
     segundo_del_bucle = None
+    primer_del_bucle = None
     nombre_de_pliegues = None
     if bucle is not None:
-        segundo_del_bucle = nombre_mas_a_la_derecha(bucle.target.elts[1])
+        ultimo_del_objetivo = bucle.target.elts[-1]
+        primer_del_bucle = nombre_mas_a_la_izquierda(ultimo_del_objetivo)
+        segundo_del_bucle = nombre_mas_a_la_derecha(ultimo_del_objetivo)
         if isinstance(bucle.iter, ast.Call) and bucle.iter.args \
                 and isinstance(bucle.iter.args[0], ast.Name):
             nombre_de_pliegues = bucle.iter.args[0].id
@@ -2787,65 +2962,160 @@ def cadena_del_call_site(texto: str, nombre_funcion: str, nombres_validacion: li
             return set()
         return {hijo.id for hijo in ast.walk(nodo) if isinstance(hijo, ast.Name)}
 
-    def camino_al_pliegue(nombres: set) -> dict:
-        """Cadena de nombres desde un argumento hasta el indice del pliegue de validacion.
+    def atributo_exterior(expresion: str) -> str | None:
+        """Ultimo atributo de la cadena de una expresion, que identifica QUE array es.
 
         Args:
-            nombres: nombres de partida, los del argumento.
+            expresion: expresion en forma de texto.
 
         Returns:
-            Diccionario con `salto`, `terminal` y `clase`: `validacion` si el argumento se
-            indexa con el segundo elemento del pliegue o termina en un atributo cuyo nombre
-            contiene `val`; `entrenamiento` si termina en un atributo con `train`; y
-            `desconocido` si la cadena se corta antes de llegar al pliegue.
+            El nombre del atributo exterior, o None si la expresion no termina en uno.
         """
-        if segundo_del_bucle is None:
-            return {"salto": None, "terminal": None, "clase": "desconocido"}
-        frontera = set(nombres)
-        visitados: set = set()
-        terminal = None
-        for salto in range(4):
-            if segundo_del_bucle in frontera:
-                terminal = segundo_del_bucle
-                return {"salto": salto, "terminal": terminal, "clase": "validacion"}
-            siguiente = set()
-            for nombre_local in frontera - visitados:
-                visitados.add(nombre_local)
-                expresion = asignaciones_del_llamante.get(nombre_local)
-                if expresion is None:
-                    continue
-                try:
-                    nodo_expresion = ast.parse(expresion, mode="eval").body
-                except SyntaxError:
-                    continue
-                for hoja in ast.walk(nodo_expresion):
-                    if isinstance(hoja, ast.Attribute):
-                        terminal = hoja.attr
-                    elif isinstance(hoja, ast.Name):
-                        siguiente.add(hoja.id)
-            if not siguiente:
-                break
-            frontera = siguiente
-        clase = "desconocido"
-        if terminal:
-            bajo = terminal.lower()
-            if "val" in bajo:
-                clase = "validacion"
-            elif "train" in bajo:
-                clase = "entrenamiento"
-        return {"salto": None, "terminal": terminal, "clase": clase}
+        try:
+            nodo = ast.parse(expresion, mode="eval").body
+        except SyntaxError:
+            return None
+        while isinstance(nodo, ast.Call):
+            nodo = nodo.func
+        if isinstance(nodo, ast.Attribute):
+            return nodo.attr
+        return None
+
+    def clase_por_nombre(terminal: str | None) -> str:
+        """Clasifica un array por el nombre que lo identifica.
+
+        Args:
+            terminal: nombre del atributo exterior del array.
+
+        Returns:
+            `validacion`, `entrenamiento` o `desconocido`.
+        """
+        if not terminal:
+            return "desconocido"
+        bajo = terminal.lower()
+        if "val" in bajo:
+            return "validacion"
+        if "train" in bajo:
+            return "entrenamiento"
+        return "desconocido"
+
+    def evidencia_estructural(nodo: ast.expr) -> dict | None:
+        """Clasifica una expresion por su propia estructura, sin mirar de donde viene.
+
+        Se buscan dos cosas, en este orden:
+
+        1. un subscript cuyo indice es el SEGUNDO elemento del pliegue, o el PRIMERO. Es la
+           evidencia mas fuerte: son los indices los que dicen de que filas sale el array, y es
+           lo que resuelve `ids[va]` y `etiquetas[validacion]`;
+        2. un atributo cuyo nombre dice `val` o dice `train`. Es lo que resuelve `datos.x_val`,
+           donde el indice no aparece porque el array ya venia construido.
+
+        Si una expresion dice las dos cosas, o no dice ninguna, se devuelve None en vez de
+        apostar: un detector que elige cuando no sabe es peor que uno que no opina.
+
+        Args:
+            nodo: expresion a clasificar.
+
+        Returns:
+            Diccionario con `clase` e `identificador`, o None si no hay evidencia.
+        """
+        subscripts = [n for n in ast.walk(nodo)
+                      if isinstance(n, ast.Subscript) and isinstance(n.slice, ast.Name)]
+        for sub in subscripts:
+            if segundo_del_bucle is not None and sub.slice.id == segundo_del_bucle:
+                return {"clase": "validacion", "identificador": sub.slice.id,
+                        "evidencia": "subscript por el segundo elemento del pliegue"}
+            if primer_del_bucle is not None and sub.slice.id == primer_del_bucle:
+                return {"clase": "entrenamiento", "identificador": sub.slice.id,
+                        "evidencia": "subscript por el primer elemento del pliegue"}
+        atributos = sorted({n.attr for n in ast.walk(nodo) if isinstance(n, ast.Attribute)})
+        dicen_val = [a for a in atributos if "val" in a.lower()]
+        dicen_train = [a for a in atributos if "train" in a.lower()]
+        if dicen_val and not dicen_train:
+            return {"clase": "validacion", "identificador": dicen_val[0],
+                    "evidencia": "atributo cuyo nombre dice val"}
+        if dicen_train and not dicen_val:
+            return {"clase": "entrenamiento", "identificador": dicen_train[0],
+                    "evidencia": "atributo cuyo nombre dice train"}
+        if dicen_val and dicen_train:
+            return {"clase": "desconocido",
+                    "identificador": ",".join(dicen_val + dicen_train),
+                    "evidencia": "la expresion dice val y train a la vez, no se apuesta"}
+        return None
+
+    def vinculo_local(nombre: str) -> dict | None:
+        """Clasifica un nombre desnudo siguiendo su unica asignacion en el llamante.
+
+        Es el caso de `11_dl`: la llamada recibe `x_val` e `y_val` como nombres, y su
+        procedencia esta unas lineas mas arriba, en `x_val = datos.x_val.to(dispositivo)` y en
+        `y_val = torch.tensor(etiquetas[validacion], ...)`. Sin seguir ese vinculo los siete
+        argumentos salen como desconocidos y la llamada parece no traer validacion.
+
+        Args:
+            nombre: identificador del argumento.
+
+        Returns:
+            Diccionario con la clasificacion y el vinculo, o None si no hay asignacion.
+        """
+        expresion = asignaciones_del_llamante.get(nombre)
+        if expresion is None:
+            return None
+        try:
+            nodo = ast.parse(expresion, mode="eval").body
+        except SyntaxError:
+            return None
+        resultado = evidencia_estructural(nodo)
+        if resultado is None:
+            return None
+        return {**resultado,
+                "identificador": f"{nombre} -> {resultado['identificador']}",
+                "evidencia": "vinculo local: " + resultado["evidencia"]}
+
+    def clasificar_argumento(argumento: ast.expr) -> dict:
+        """Clasifica UN argumento de la llamada: estructura, luego vinculo, luego nombre.
+
+        Los tres pasos hacen falta y cada uno cubre un caso distinto. Con solo estructura
+        funcionan `ids[va]` de v9_04 e `ids[validacion]` de v10_11, pero los nombres desnudos de
+        `11_dl` salen todos como desconocidos. Con solo vinculo por grafo se arrastraban `modelo`
+        y `x_train` a la clase de validacion, porque se construyen desde el mismo `datos` que
+        produce `preparar(textos, entrenamiento, validacion)`. El nombre entra solo al final, y
+        con la convencion declarada, no con un `in` crudo: `tr_val` NO es validacion.
+
+        Args:
+            argumento: nodo de la llamada.
+
+        Returns:
+            Diccionario con `clase`, `identificador` y `evidencia`.
+        """
+        directo = evidencia_estructural(argumento)
+        if directo is not None:
+            return {**directo, "identificador": ast.unparse(argumento)}
+        if isinstance(argumento, ast.Name):
+            local = vinculo_local(argumento.id)
+            if local is not None:
+                return local
+            if es_nombre_de_validacion(argumento.id):
+                return {"clase": "validacion", "identificador": argumento.id,
+                        "evidencia": "desempate por el nombre, convencion de validacion"}
+            if es_nombre_de_entrenamiento(argumento.id):
+                return {"clase": "entrenamiento", "identificador": argumento.id,
+                        "evidencia": "desempate por el nombre, convencion de entrenamiento"}
+        return {"clase": "desconocido", "identificador": ast.unparse(argumento),
+                "evidencia": "sin subscript, sin atributo que diga val o train, y sin nombre "
+                             "que case con las convenciones"}
 
     argumentos_de_validacion = []
     clases = {}
     for indice_argumento, argumento in enumerate(llamada.args):
         texto_argumento = ast.unparse(argumento)
-        camino = camino_al_pliegue(nombres_de_expresion(texto_argumento))
+        veredicto = clasificar_argumento(argumento)
         registro = {"posicion": indice_argumento, "linea": argumento.lineno,
                     "expresion": texto_argumento,
-                    "saltos_hasta_el_pliegue": camino["salto"],
-                    "terminal": camino["terminal"], "clase": camino["clase"]}
-        clases[texto_argumento] = camino["clase"]
-        if camino["clase"] == "validacion":
+                    "identificador_del_array": veredicto["identificador"],
+                    "clase": veredicto["clase"],
+                    "evidencia": veredicto["evidencia"]}
+        clases[texto_argumento] = veredicto["clase"]
+        if veredicto["clase"] == "validacion":
             argumentos_de_validacion.append(registro)
 
     origen_de_pliegues = resolver_origen_de_pliegues(alcance, nombre_de_pliegues)
@@ -2864,13 +3134,32 @@ def cadena_del_call_site(texto: str, nombre_funcion: str, nombres_validacion: li
                                         if bucle is not None else None),
         "origen_de_los_pliegues": origen_de_pliegues,
         "coherente": bool(coherente),
-        "criterio_estructural": (
-            "un argumento es de validacion si sus nombres, siguiendo las asignaciones del "
-            "llamante hasta tres saltos, llegan al segundo elemento del pliegue del bucle de "
-            "validacion cruzada, o si terminan en un atributo cuyo nombre contiene `val`. El "
-            "criterio NO es comparar el texto del argumento con el nombre del parametro: en el "
-            "codigo real el argumento es `ids[va]` y el parametro se llama `ids_va`, luego una "
-            "comparacion de cadenas no las encontraria nunca"),
+        "primer_elemento_del_bucle_de_pliegues": primer_del_bucle,
+        "criterio_estructural": {
+            "tres_pasos": [
+                "1. la estructura del propio argumento: un subscript por el segundo o el primer "
+                "elemento del pliegue, o un atributo cuyo nombre dice val o train",
+                "2. el vinculo local, si el argumento es un nombre desnudo: se sigue su unica "
+                "asignacion en el llamante y se clasifica esa expresion con el paso 1",
+                "3. el nombre, solo como desempate y solo con la convencion declarada, no con "
+                "un `in` crudo: `tr_val` no es validacion",
+            ],
+            "por_que_no_se_sigue_el_grafo": "en 11_dl el modelo y `x_train` se construyen desde "
+                                            "el mismo `datos` que produce `preparar(textos, "
+                                            "entrenamiento, validacion)`. Seguir el grafo "
+                                            "hasta el pliegue los marcaba a los dos como de "
+                                            "validacion, y decia que cuatro argumentos lo eran "
+                                            "cuando solo dos lo son",
+            "por_que_A14_y_A19_se_comportan_distinto": (
+                "A14 no sufre la limitacion de resolver solo por estructura porque v9_04 y "
+                "v10_11 pasan los arrays como subscript del pliegue, `ids[va]` e "
+                "`ids[validacion]`, y ahi la identidad del indice basta. A19 recibe en 11_dl "
+                "nombres desnudos, `x_val` e `y_val`, con la procedencia unas lineas mas arriba, "
+                "y por eso hace falta el paso 2. Es una diferencia de como esta escrito el "
+                "codigo, no de protocolo: los dos entrenan y puntuan con el mismo pliegue"),
+            "convenciones": {"validacion": PATRON_VALIDACION.pattern,
+                             "entrenamiento": PATRON_ENTRENAMIENTO.pattern},
+        },
         "busqueda_del_bucle": (
             "se sube por la cadena de For hasta el primero que se desestructura en dos, y no "
             "solo el mas proximo: en v10_11 la llamada esta dentro de un bucle de variantes"),
@@ -3478,8 +3767,14 @@ def afirmacion_a16(contexto: dict) -> dict:
     for clave, modulo in (("v9_04_BiGRU", contexto.get("v9")),
                           ("v10_11_BiGRUAfinable", contexto.get("v10"))):
         if modulo is None:
-            errores[clave] = (f"el modulo {clave} no se pudo importar: "
-                              f"{contexto.get('errores', {}).get(clave, 'motivo no registrado')}")
+            causa = contexto.get("errores", {}).get(clave)
+            if causa is None:
+                causa = ("NO HAY CAUSA REGISTRADA: el modulo no se importo y tampoco "
+                         "se registro el error. Eso es un fallo de P80, no del "
+                         "proyecto, y hay que mirarlo antes de fiarse de este "
+                         "veredicto")
+            errores[clave] = f"el modulo {clave} no se pudo importar. Causa: {causa}"
+            continue
             continue
         try:
             clase = resolver_clase_bi_gru(clave, modulo)
@@ -4569,14 +4864,18 @@ def fuente_sintetica_del_scheduler() -> str:
     )
 
 
-def fuente_sintetica_del_entrenador() -> str:
+def fuente_sintetica_del_entrenador(nombre_funcion: str = "entrenar") -> str:
     """Texto sintetico de una funcion de entrenamiento, para las pruebas de A14 y A19.
+
+    Args:
+        nombre_funcion: nombre con el que se define, para que el llamante de la fixture la
+            pueda invocar con ese nombre.
 
     Returns:
         Codigo fuente en Python, con la perdida de validacion decidiendo el estado.
     """
     return (
-        "def entrenar(ids_tr, y_tr, ids_va, y_va):\n"
+        f"def {nombre_funcion}(ids_tr, y_tr, ids_va, y_va):\n"
         "    mejor_perdida = float('inf')\n"
         "    mejor_estado = None\n"
         "    for epoca in range(3):\n"
@@ -4712,6 +5011,39 @@ def fuente_sintetica_del_pool_de_cv() -> str:
     )
 
 
+def fuente_sintetica_forma_de_11_dl() -> str:
+    """Llamante con la FORMA de `11_dl`: argumentos como nombres desnudos.
+
+    En `11_dl` la llamada no recibe subscripts sino `x_train`, `y_train`, `x_val` e `y_val`, y su
+    procedencia esta unas lineas mas arriba. Esa es la forma que el detector por identidad de
+    indice no resolvia, y por eso necesita un caso propio en el humo.
+
+    Se incluye ademas `tr_val`, un nombre trampoloso que contiene la cadena `val` y que NO debe
+    salir como validacion: no es un subscript, no se enlaza a nada que diga val y su nombre no
+    casa con la convencion, luego tiene que quedar como desconocido.
+
+    Returns:
+        Codigo fuente en Python, con el llamante y el entrenador.
+    """
+    return (
+        "def main(textos, etiquetas, pliegues, modelo_base, mascara_tr):\n"
+        "    salida = []\n"
+        "    for numero, (entrenamiento, validacion) in enumerate(pliegues):\n"
+        "        datos = preparar(textos, entrenamiento, validacion)\n"
+        "        modelo = modelo_base.to('cpu')\n"
+        "        tr_val = mascara_tr\n"
+        "        x_train = datos.x_train.to('cpu')\n"
+        "        x_val = datos.x_val.to('cpu')\n"
+        "        y_train = torch.tensor(etiquetas[entrenamiento], dtype=torch.float32)\n"
+        "        y_val = torch.tensor(etiquetas[validacion], dtype=torch.float32)\n"
+        "        curvas = entrenar_pliegue(modelo, x_train, y_train, x_val, y_val, tr_val)\n"
+        "        salida.append(curvas)\n"
+        "    return salida\n"
+        "\n"
+        + fuente_sintetica_del_entrenador("entrenar_pliegue")
+    )
+
+
 def tipos_de_modulo_minimo() -> object:
     """Construye un modulo sintetico con la clase `SkipGram` que H1 necesita.
 
@@ -4827,6 +5159,57 @@ def npz_sintetico_en_memoria() -> io.BytesIO:
              palabras=np.array(["a", "b", "c", "d"], dtype=object))
     buffer.seek(0)
     return buffer
+
+
+def npz_con_tabla_de_salida() -> io.BytesIO:
+    """`.npz` en memoria con un miembro que SI es la tabla de salida del artefacto.
+
+    El miembro se llama `salida` y tiene la forma exacta `(vocabulario, dim)` del congelado.
+    Tiene que disparar la parada, porque es justo la condicion que P80 vigila.
+
+    Returns:
+        Buffer con el npz, posicionado al principio.
+    """
+    buffer = io.BytesIO()
+    np.savez(buffer, salida=np.zeros((ARTEFACTO_ESPERADO["vocabulario"],
+                                     ARTEFACTO_ESPERADO["dim"]), dtype=np.float32))
+    buffer.seek(0)
+    return buffer
+
+
+def npz_con_falsos_positivos() -> io.BytesIO:
+    """`.npz` en memoria con los dos falsos positivos reales de la primera ejecucion.
+
+    Dos tablas de ENTRADA de otras corridas, con la primera dimension del vocabulario del
+    artefacto y la segunda de otras dimensiones: `(77657, 200)` y `(77657, 300)`. Ninguna
+    puede ser la tabla de salida del entrenamiento de 100 dimensiones, porque las dos tablas del
+    modelo comparten `dim`.
+
+    Returns:
+        Buffer con el npz, posicionado al principio.
+    """
+    buffer = io.BytesIO()
+    np.savez(buffer,
+             W_200d=np.zeros((ARTEFACTO_ESPERADO["vocabulario"], 200), dtype=np.float32),
+             W_300d=np.zeros((ARTEFACTO_ESPERADO["vocabulario"], 300), dtype=np.float32))
+    buffer.seek(0)
+    return buffer
+
+
+def json_con_clave_de_forma() -> dict:
+    """Informe sintetico con claves `shape` de dos enteros, como las que hay en reports/.
+
+    Es el segundo falso positivo real: una clave que declara la forma de otra cosa. No es un
+    array, luego no puede ser una tabla de salida.
+
+    Returns:
+        Diccionario con dos formas declaradas y un par de vectores.
+    """
+    return {"modelo": {"shape": [ARTEFACTO_ESPERADO["vocabulario"],
+                                ARTEFACTO_ESPERADO["dim"]],
+                       "forma": [ARTEFACTO_ESPERADO["vocabulario"], 200],
+                       "pesos": [[0.1, 0.2, 0.3]]},
+            "otro": {"shape": [3, 4]}}
 
 
 def ejecutar_pruebas_de_humo() -> int:
@@ -5005,12 +5388,35 @@ def ejecutar_pruebas_de_humo() -> int:
               con_call_site["call_site"]["encontrada"]
               and con_call_site["call_site"]["coherente"]
               and con_call_site["call_site"]["segundo_elemento_del_bucle_de_pliegues"] == "va")
-    comprobar("A14 el argumento de validacion llega al pliegue en cero saltos",
-              any(argumento["saltos_hasta_el_pliegue"] == 0
+    comprobar("A14 el argumento de validacion se identifica por el indice del pliegue",
+              any(argumento["clase"] == "validacion"
+                  and "segundo elemento del pliegue" in argumento["evidencia"]
                   for argumento in con_call_site["call_site"]["argumentos_de_validacion"]))
     comprobar("A14 el argumento de entrenamiento NO se clasifica como de validacion",
               con_call_site["call_site"]["clase_de_cada_argumento"].get("ids[tr]")
               != "validacion")
+    comprobar("A14 el subscript de entrenamiento SI se clasifica como entrenamiento",
+              con_call_site["call_site"]["clase_de_cada_argumento"].get("ids[tr]")
+              == "entrenamiento")
+
+    # --- la FORMA de 11_dl: argumentos como nombres desnudos ---
+    forma_dl = analizar_entrenamiento_con_selector(fuente_sintetica_forma_de_11_dl(),
+                                                    "sintetico_forma_dl.py", "mejor_estado")
+    clases_dl = forma_dl["call_site"]["clase_de_cada_argumento"]
+    comprobar("A19 por vinculo local: x_val e y_val salen como validacion",
+              forma_dl["call_site"]["coherente"]
+              and clases_dl.get("x_val") == "validacion"
+              and clases_dl.get("y_val") == "validacion"
+              and forma_dl["call_site"]["n_argumentos_de_validacion"] == 2)
+    comprobar("A19 por vinculo local: x_train e y_train NO salen como validacion",
+              clases_dl.get("x_train") == "entrenamiento"
+              and clases_dl.get("y_train") == "entrenamiento")
+    comprobar("A19 el nombre trampoloso tr_val NO sale como validacion",
+              clases_dl.get("tr_val") == "desconocido")
+    comprobar("A19 con nombres desnudos pasan los cuatro criterios, como en el fichero real",
+              forma_dl["por_que"]["todos_los_criterios_pasan"])
+    comprobar("A19 la evidencia dice de donde salio cada clasificacion",
+              all("evidencia" in a for a in forma_dl["call_site"]["argumentos_de_validacion"]))
     anidado = analizar_entrenamiento_con_selector(
         fuente_sintetica_con_call_site_anidado(), "sintetico_anidado.py", "mejor_estado")
     comprobar("A14 sube por la cadena de bucles hasta el de pliegues, no se queda en el "
@@ -5047,6 +5453,108 @@ def ejecutar_pruebas_de_humo() -> int:
               and not inspeccion["contenido_de_los_arrays_leido"])
     comprobar("A12 declara cuantos bytes leyo",
               inspeccion["bytes_leidos"] > 0)
+
+    # --- A12: el caso POSITIVO tiene que seguir disparando ---
+    n_vocab = ARTEFACTO_ESPERADO["vocabulario"]
+    dim = ARTEFACTO_ESPERADO["dim"]
+    con_salida = clasificar_miembros_npz(
+        inspeccionar_npz_por_cabecera(npz_con_tabla_de_salida(),
+                                      "sintetico_salida.npz")["miembros"],
+        "sintetico_salida.npz", n_vocab, dim, False)
+    comprobar("A12 el caso positivo VE una tabla de salida de la forma exacta",
+              len(con_salida["candidatos"]) == 1
+              and con_salida["candidatos"][0]["forma"] == [n_vocab, dim])
+
+    # --- A12: los dos falsos positivos reales NO tienen que verse ---
+    falsos = clasificar_miembros_npz(
+        inspeccionar_npz_por_cabecera(npz_con_falsos_positivos(),
+                                      "sintetico_otros.npz")["miembros"],
+        "sintetico_otros.npz", n_vocab, dim, False)
+    comprobar("A12 NO ve la W de entrada de otra corrida con la misma primera dimension",
+              not falsos["candidatos"] and len(falsos["descartados"]) == 2
+              and all(d["forma"][0] == n_vocab and d["forma"][1] != dim
+                      for d in falsos["descartados"]))
+    comprobar("A12 el descarte dice por que: la segunda dimension es de otra corrida",
+              all("segunda" in d["motivo"] and "dim" in d["motivo"]
+                  for d in falsos["descartados"]))
+    encontradas_json = []
+    descartadas_json = []
+    buscar_tablas_en_json(json_con_clave_de_forma(), n_vocab, dim, encontradas_json,
+                          descartadas_json, "sintetico_forma.json")
+    comprobar("A12 NO ve una clave shape de dos enteros como tabla de salida",
+              not encontradas_json
+              and sum(1 for d in descartadas_json if d["tipo"] == "clave_de_forma") == 3)
+    comprobar("A12 el descarte de una clave shape dice que es metadato, no un array",
+              all("metadato" in d["motivo"] for d in descartadas_json
+                  if d["tipo"] == "clave_de_forma"))
+    comprobar("A12 la primera dimension sola no basta para el criterio",
+              not es_forma_de_salida([n_vocab, 200], n_vocab, dim)
+              and not es_forma_de_salida([n_vocab + 1, dim], n_vocab, dim)
+              and not es_forma_de_salida([n_vocab], n_vocab, dim)
+              and es_forma_de_salida([n_vocab, dim], n_vocab, dim))
+    anidada_ok = []
+    anidada_ok_desc = []
+    buscar_tablas_en_json([[[0.0] * dim] * n_vocab], n_vocab, dim, anidada_ok,
+                          anidada_ok_desc, "sintetico_anidado.json")
+    comprobar("A12 una lista de filas anidadas SI se ve cuando tiene la forma exacta",
+              len(anidada_ok) >= 1
+              and all(c["forma"] == [n_vocab, dim] for c in anidada_ok))
+    anidada_mala = []
+    anidada_mala_desc = []
+    buscar_tablas_en_json([[[0.0] * 200] * n_vocab], n_vocab, dim, anidada_mala,
+                          anidada_mala_desc, "sintetico_anidado_malo.json")
+    comprobar("A12 una lista de filas anidadas de otra anchura NO se ve",
+              not anidada_mala
+              and any(d["tipo"] == "lista_anidada_en_json" for d in anidada_mala_desc))
+
+    # --- A2 y A6: un fallo tiene que producir Parada, no un informe ---
+    tolerancia_guardada = TOL["fidelidad_de_la_replica"]
+    try:
+        TOL["fidelidad_de_la_replica"] = -1.0
+        try:
+            resultado = afirmacion_a2(modulo_p71)
+            a2_rota = "NO PARO: devolvio " + str(resultado.get("veredicto"))
+        except Parada as parada_rota:
+            a2_rota = parada_rota.afirmacion
+    finally:
+        TOL["fidelidad_de_la_replica"] = tolerancia_guardada
+    comprobar("A2 con tolerancia imposible produce Parada y no un informe", a2_rota == "A2")
+
+    # Se cambia la funcion en el diccionario del modulo y no con una asignacion local: en
+    # Python el nombre quedaria local para TODO el cuerpo y las llamadas anteriores de este
+    # mismo humo darian UnboundLocalError.
+    lectura_guardada = globals()["auditar_semillas_por_ast"]
+
+    def lectura_rota(*argumentos, **claves):
+        """Lectura rota a proposito: dos llamadas con los rangos sin resolver.
+
+        Args:
+            argumentos: sin uso.
+            claves: sin uso.
+
+        Returns:
+            Diccionario con dos llamadas sin rango resuelto.
+        """
+        return {"llamadas": [{"rol": "plan", "rango_de_epocas": None,
+                              "conjunto_de_semillas": None, "linea": 1,
+                              "texto_literal": "", "argumento": "",
+                              "bucle_contenedor": None, "semillas_por_epoca": None},
+                             {"rol": "entrenamiento", "rango_de_epocas": None,
+                              "conjunto_de_semillas": None, "linea": 2,
+                              "texto_literal": "", "argumento": "",
+                              "bucle_contenedor": None, "semillas_por_epoca": None}],
+                "contraste_con_p71_08": {"llamadas": []}}
+
+    try:
+        globals()["auditar_semillas_por_ast"] = lectura_rota
+        try:
+            resultado = afirmacion_a6()
+            a6_rota = "NO PARO: devolvio " + str(resultado.get("veredicto"))
+        except Parada as parada_rota:
+            a6_rota = parada_rota.afirmacion
+    finally:
+        globals()["auditar_semillas_por_ast"] = lectura_guardada
+    comprobar("A6 con los rangos sin resolver produce Parada y no un informe", a6_rota == "A6")
 
     # --- H6, la sonda ---
     sonda_1 = sondear_relleno_en_toy([12, 7, 4], 30, 20261142)
@@ -5228,9 +5736,9 @@ def siguiente_linea_con_texto(fuente: dict, fragmento: str) -> int:
 def test6_bigru(contexto: dict) -> list:
     """Ejecuta H5 y H6: A14, A15 y A16.
 
-    Los dos modulos de BiGRU se importan aqui, y si la importacion falla se registra el error
-    con su tipo y su mensaje para que A16 pueda decir que la sonda no llego a correr, en vez de
-    publicar un REFUTADO sin causa.
+    Los dos modulos de BiGRU ya estan importados por `contexto_de_modulos`, que es donde se
+    captura el error de importacion con su causa. Aqui solo se registra el resultado, de modo
+    que no haya dos sitios donde guardar el fallo y uno se quede sin el motivo.
 
     Args:
         contexto: contexto de modulos, para la sonda de A16.
@@ -5248,14 +5756,12 @@ def test6_bigru(contexto: dict) -> list:
                if datos["criterios_que_fallan"] else ""))
     a15 = afirmacion_a15()
     log(f"  A15 {a15['veredicto']}")
-    for clave, ruta in (("v9", FUENTE_V9), ("v10", FUENTE_V10)):
-        if contexto.get(clave) is None:
-            try:
-                contexto[clave] = importar_modulo(f"p80_{clave}", ruta)
-                log(f"  modulo {ruta.name} importado")
-            except Exception as exc:  # noqa: BLE001
-                contexto["errores"][clave] = f"{type(exc).__name__}: {exc}"
-                log(f"  FALLO al importar {ruta.name}: {type(exc).__name__}: {exc}")
+    for clave in ("v9", "v10"):
+        if contexto.get(clave) is not None:
+            log(f"  modulo de {clave} importado")
+        else:
+            log(f"  FALLO: {clave} no se pudo importar. "
+                f"{contexto.get('errores', {}).get(clave)}")
     a16 = afirmacion_a16(contexto)
     log(f"  A16 {a16['veredicto']} | sonda {a16['medida'].get('estado_de_la_sonda')} | "
         f"hallazgo {a16.get('estado_del_hallazgo')}")

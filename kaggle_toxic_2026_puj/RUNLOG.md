@@ -3355,3 +3355,200 @@ P80 **queda inconclusa**: sin informe completo, sin markdown y sin figuras. Se d
 ```text
 V03 remains the best verified leaderboard result.
 ```
+
+## 2026-09-30, P80 segunda corrida: las 19 afirmaciones pasan, y el script revienta al escribir el markdown
+
+### Lo que se ejecuto
+
+Comando: `/home/carlos/venv/bin/python -B experiments/p80_01_auditoria_w2v.py`, version
+`d752b4b1342c8fba841d02bff3308e93834c94c2394f671ba48f13ab6f117e42`, 5983 lineas. Codigo de salida **1**.
+
+Duracion: **2 s**, de 22:00:19 a 22:00:21 UTC. No fueron minutos: es una auditoria de enumeracion,
+recorrido de AST y sondas diminutas, sin entrenamiento. El cronometro del propio script suma 1.803 s
+y el reparto es test1 0.000, test2 0.018, test3 0.297, test4 0.550, test5 0.063, test6 0.171,
+test7 0.056 y figuras 0.648.
+
+Pre-registro `440ab13c610e1bcf35a0b00f096699f738bc59480240dbd934e6c5f3e2f7c81f` verificado, sin cambios.
+Artefacto congelado verificado ANTES y DESPUES: `302c994d13b75f8f5fbd440eea2c4f4113997e2581524021923b92f8244d705a`,
+29478868 bytes, intacto.
+
+**El script no se edito.**
+
+### Las 19 afirmaciones: todas ejecutadas, todas en verde
+
+```text
+A1 A2 A3 A4 A5 CONFIRMADO   H1  A6 A7 A8 CONFIRMADO   H2  A9 A10 CONFIRMADO   H3
+A11 A12 CONFIRMADO          H4  A13 NO APLICABLE POR CONSTRUCCION
+A14 CONFIRMADO              H5  A15 A16 CONFIRMADO    H6  A17 A18 A19 CONFIRMADO  H7
+
+18 CONFIRMADO   0 REFUTADO   1 NO APLICABLE POR CONSTRUCCION   0 STOP
+ninguna afirmacion sin ejecutar
+```
+
+Los siete hallazgos quedan **CONFIRMADO**: H1, H2, H3, H4, H5, H6 y H7.
+
+### Donde fallo, y no lo arreglo
+
+Fallo al escribir el **markdown**, con el JSON ya escrito en temporal y las figuras ya en disco.
+Traceback literal:
+
+```text
+Traceback (most recent call last):
+  File "/home/carlos/Git/PLN-v67/kaggle_toxic_2026_puj/experiments/p80_01_auditoria_w2v.py", line 5976, in <module>
+    main()
+    ~~~~^^
+  File "/home/carlos/Git/PLN-v67/kaggle_toxic_2026_puj/experiments/p80_01_auditoria_w2v.py", line 5928, in main
+    md_temporal.write_text("\n".join(escribir_markdown(afirmaciones, informe)) + "\n",
+                                     ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/carlos/Git/PLN-v67/kaggle_toxic_2026_puj/experiments/p80_01_auditoria_w2v.py", line 4704, in escribir_markdown
+    f"{a12['medida']['cobertura']['claves_json_recorridas']} claves recorridas.",
+       ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^~~~~~~~~~~
+KeyError: 'claves_json_recorridas'
+```
+
+El diagnostico es una sola clave vieja. La correccion de A12 **quito** `claves_json_recorridas` de
+`medida.cobertura` y `escribir_markdown` la sigue leyendo. Las otras tres claves que esa funcion lee
+de A12, `npz_inspeccionados`, `bytes_leidos_en_total` y `json_inspeccionados`, mas `n_candidatos`,
+**si existen**: el fallo es exactamente una clave, no un cambio de esquema entero. Vuelve a
+ml-coder. **No he tocado el script.**
+
+### Lo que queda en disco
+
+```text
+reports/p80_auditoria_w2v.json            1936 B    el JSON de PARADA de la corrida ANTERIOR, sin tocar
+reports/p80_auditoria_w2v.json.tmp_p80  174103 B    el informe COMPLETO, huerfano, con las 19 afirmaciones
+reports/p80_auditoria_w2v.md             NO EXISTE
+figuras/p80/p80_ratio_negativo_y_total.png   564ad933955351f8
+figuras/p80/p80_lr_real_frente_a_ideal.png   1becec0d807e2723
+figuras/p80/p80_sonda_de_relleno.png         61b8deaadecd071a
+```
+
+La escritura atomica **funciono**: el renombrado final no llego a ocurrir, asi que el informe
+completo no se publico con apariencia de validado. El coste es que los resultados buenos quedan en un
+temporal huerfano y el `.json` oficial sigue diciendo lo de la parada anterior. **No he renombrado
+nada**: publicar un informe por la mano seria exactamente el atajo que el pre-registro prohibe.
+
+El JSON completo tampoco lleva la asercion ASCII final ni las firmas de los PNG, porque esa parte se
+escribe despues del markdown, que es justo donde revienta.
+
+### H2, el desfase de semillas, con las lineas del fuente
+
+`SEMILLA = 20261016` y `EPOCAS = 5` en `p71_04:62-64`. Leido por AST con mapa de padres, sin buscar
+cadenas ni ventanas de lineas:
+
+```text
+p72_01:92   for ep in range(m.EPOCAS):          ep = 0..4
+p72_01:93       r2 = np.random.default_rng(m.SEMILLA + ep)   rol=plan
+                conjunto = {20261016, 20261017, 20261018, 20261019, 20261020}
+p72_01:99   for ep, _ in enumerate(planes, start=1):  ep = 1..5
+p72_01:101      r2 = np.random.default_rng(m.SEMILLA + ep)   rol=entrenamiento
+                conjunto = {20261017, 20261018, 20261019, 20261020, 20261021}
+```
+
+`distintos = true`. Solo en el plan: `20261016`. Solo en el entrenamiento: `20261021`. El desfase es
+de **una epoca**, y `total_lotes` sale del plan, luego el curriculum de `lr` se calibra sobre un numero
+de lotes que no es el que se recorre. Con el recorte declarado de 2000 lineas: 1395 lotes planados
+frente a 1398 recorridos, desviacion relativa 0.002150537634408602. El `lr` real termina en 0.004578
+con 0 pasos en el piso, mientras que con el total real terminaria en 0.001 con 3 pasos en el piso.
+
+Por que P79 se equivoco: su heuristica metio los dos bucles en el mismo grupo, y su booleano salia
+False no porque los rangos coincidieran sino porque solo habia un grupo. Su propia lista tenia 6
+elementos para `EPOCAS = 5`, y eso ya lo contradicia.
+
+### H4, la matriz de salida no se puede reconstruir
+
+A11: el congelado tiene **exactamente** dos claves, `W` y `palabras`, y una sola matriz, que es la de
+entrada (`modelo.entrada.weight` segun `p72_01:124-127`). Vocabulario 77657, dim 100, float32, todos
+los valores finitos, 77657 palabras unicas, 0 filas nulas. Nota: `p72_01:129` anuncia
+`parametros = vocabulario * dim * 2` porque el modelo tiene dos tablas; que las dos se guarden es
+otra cosa, y no se guardan.
+
+A12: **0 candidatos**, con cobertura declarada. 19 `.npz` inspeccionados por cabecera sin
+descomprimir, 412987 bytes leidos, 320 `.json` de `reports/` recorridos. El criterio ahora es forma
+exacta `(77657, 100)`, porque en SkipGram las dos tablas son `nn.Embedding(n_vocab, dim)` con el
+**mismo** dim. Todo lo que coincide en la primera dimension y no en la segunda se descarta con su
+motivo, registrado. Ese era exactamente el defecto de la corrida anterior.
+
+A13 queda **NO APLICABLE POR CONSTRUCCION**: la tabla de salida no existe en ninguna parte, no se
+sustituye en silencio por `W` y **P80 no publica ninguna cifra sobre el artefacto**. Por tanto
+`loss_codigo = 1.08412074`, `loss_referencia = 9.78555861` y las normas de gradiente 0.02042704 y
+0.25426385 de P79 describen un par `(E, S)` con `E = S = W` que nunca existio durante el
+entrenamiento: describen un modelo ficticio y **no son evidencia del estado final**. Se retiran sin
+sustituto. Lo unico admisible sobre el artefacto es que lo produjo `p72_01` usando la clase `SkipGram`
+de `p71_04` sin tocarla.
+
+### H5, la fuga de early stopping en los BiGRU
+
+A14 CONFIRMADO en los dos ficheros. En `v9_04:111` la funcion `entrenar_pliegue` recibe `ids_va` y
+`y_va` como parametros de validacion e `ids_tr`, `y_tr` como de entrenamiento; el estado se restaura
+por la perdida `perdida_va` (linea 126) y las probabilidades reportadas salen de `proba`, que depende
+de `ids_va`. **No hay particion interna**: la metrica que decide cuando restaurar pesos es la del
+pliegue externo que despues se puntua. Es la fuga que condemned P73 y P74.
+
+### H6, el enmascarado tardio del padding
+
+A15 CONFIRMADO en los dos. Cero `pack_padded_sequence`. En `v9_04:104-105` y en `v10_11:170-171` el
+patron es identico: `salida, _ = self.gru(embebido)` seguido de
+`suma = (salida * mascara).sum(dim=1)`. La GRU corre **antes** de enmascarar, luego los pasos de
+relleno se consumen en la recurrencia. Con `padding_idx = 0` el vector de relleno es el cero, asi que
+el efecto no es de explosion sino de **arrastre**: los pasos de relleno se acumulan en los estados y,
+en la direccion inversa, se mezclan en las posiciones reales anteriores al relleno.
+
+A16 CONFIRMADO con **sonda ejecutada**: matriz sintetica de 51 por 200, fila 0 a cero, longitudes
+reales 12, 7 y 4 contra longitud de tanda 30, o sea 18 pasos de relleno anadidos. Distancia relativa
+L2 **0.08399328135684547** con norma del vector real 0.9973462820053101. Reproducible: la segunda
+pasada da el mismo valor. El defecto estructural pesa, y pesa en la direccion anunciada.
+
+### H7, DL-03 uso las 1731 filas sin excluir el holdout
+
+A17 CONFIRMADO. `n_validacion` por pliegue en DL-03: 347, 346, 346, 346, 346. Suma **1731**. Y
+`1483 + 248 = 1731`, con `n_tweets_dev = 1483` y `n_tweets_holdout = 248`. El pool de validacion
+cruzada de la fase DL son las 1731 filas etiquetadas completas, luego **el holdout v2 estaba dentro
+del pool**. La via estructural lo apoya: `11_dl_desde_carlo.py:446` lee
+`train = data_module.read_train()` y el bucle de CV de la linea 1362 itera sobre `pliegues`. Del
+holdout solo se leyeron tres claves, con expresion regular sobre el texto y sin deserializar el
+documento, para que la lista de identificadores no llegue a existir como objeto.
+
+A18 CONFIRMADO: DL-01, DL-02 y DL-03 declaran los mismos `n_validacion` por pliegue. Y el OOF de
+DL-01, 0.7948542132994776, frente al corrected CV de V03, 0.7772114525165721, **no es una mejora**: es
+una diferencia aritmetica entre dos cifras calculadas sobre distinto conjunto de filas y con
+distinto protocolo, contaminada por el holdout y por una seleccion de epoca no anidada. No se etiqueta
+como delta, mejora, ventaja ni ganancia.
+
+A19 CONFIRMADO: `11_dl_desde_cero.py:1140`, `entrenar_pliegue` restaura los pesos de la epoca con
+mejor `f1_val`, es decir de la validacion del propio pliegue que despues se puntua, sin particion
+interna. La fuga es la misma de H5, en la fase DL.
+
+### Dos salvedades que el informe del script no lleva
+
+Las dejo aqui porque un lector las necesita y el JSON no las publica.
+
+**Primera, la regla 3 de A19 es una apuesta por nombre, no una medicion.** El desempate por nombre
+puede clasificar como validacion un argumento que llega como parametro sin vinculacion local, por
+ejemplo `x_val`. Es **latente**: no se activa en ninguno de los tres ficheros reales, y ahi manda el
+vinculo local, que es lo correcto. Pero el mecanismo existe y depende del nombre, luego no debe
+leerse como una prueba.
+
+**Segunda, `asignaciones_del_llamante` usa `setdefault`.** Si un nombre se asigna dos veces, gana la
+primera y **no se marca ambiguedad**. Se comprobo que eso falla hacia el lado conservador, es decir
+devuelve REFUTADO y no sobre-detecta, que es el lado correcto para una afirmacion de auditoria. Aun
+asi, un nombre asignado dos veces produce una lectura parcial sin que el informe lo advierta.
+
+### Fronteras respetadas
+
+```text
+test = 0   holdout = 0 identificadores deserializados   leaderboard = 0   submission = 0
+P71 a P79 sin tocar   V03 sin tocar   umbrales 0.44 / 0.51 / 0.46 sin tocar
+modelos/ sin escrituras   el congelado se abrio en solo lectura, con huella comprobada
+```
+
+### Estado
+
+Los siete hallazgos estan **CONFIRMADO** y las diecinueve afirmaciones se midieron, pero **el
+informe no se publico**: falta el markdown y el `.json` oficial sigue siendo el de la parada
+anterior. Los resultados buenos estan en `reports/p80_auditoria_w2v.json.tmp_p80`, que se commitea
+como evidencia huerfana. Vuelve a ml-coder por la clave `claves_json_recorridas`.
+
+```text
+V03 remains the best verified leaderboard result.
+```

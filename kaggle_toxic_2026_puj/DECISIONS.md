@@ -8530,3 +8530,97 @@ siguen en cero.
 ```text
 V03 remains the best verified leaderboard result.
 ```
+
+## D-272: P80 segunda corrida. Las 19 afirmaciones pasan y el script revienta al escribir el markdown
+
+Pre-registro `docs/p80_preregistro_auditoria_w2v.md`, sha256
+`440ab13c610e1bcf35a0b00f096699f738bc59480240dbd934e6c5f3e2f7c81f`, commiteado en `8726c9f` y sin
+cambiar. Script `d752b4b1342c8fba841d02bff3308e93834c94c2394f671ba48f13ab6f117e42`, 5983 lineas,
+60 de 60 en `--humo`, aprobado por ML Reviewer tras tres rondas.
+
+**Status**: MEDIDO Y NO PUBLICADO. Las 19 afirmaciones se ejecutaron y los 7 hallazgos quedan
+CONFIRMADO, pero el informe oficial no se publico por un fallo al escribir el markdown.
+
+**Date**: 2026-09-30
+
+**Context**
+
+La corrida anterior se detuvo en A12 por un falso positivo del detector: emparejaba cualquier `.npz`
+con primera dimension 77657 sin mirar la segunda, y contaba como candidata cualquier clave `shape` o
+`forma` de un JSON. Con la correccion, A12 exige forma exacta `(77657, 100)`, porque en SkipGram las
+dos tablas son `nn.Embedding(n_vocab, dim)` con el mismo dim, y registra con su motivo todo lo que
+coincide en la primera dimension y no en la segunda. Salen **0 candidatos** sobre 19 `.npz`
+inspeccionados por cabecera y 320 `.json` recorridos.
+
+Esta vez las diecinueve afirmaciones se ejecutaron enteras: 18 CONFIRMADO, 1 NO APLICABLE POR
+CONSTRUCCION, 0 REFUTADO, 0 STOP. Los siete hallazgos quedan CONFIRMADO. La corrida duro 2 s, no
+minutos, porque es enumeracion, AST y sondas diminutas sin entrenamiento.
+
+Y aun asi el script salio con codigo 1. Revienta en `escribir_markdown`, linea 4704, con
+`KeyError: 'claves_json_recorridas'`. La correccion de A12 quito esa clave de `medida.cobertura` y el
+redactor del markdown la sigue leyendo. Las otras tres claves que esa funcion lee de A12, mas
+`n_candidatos`, si existen: el fallo es una sola clave.
+
+El orden de escritura es lo que hace esto barato. El JSON se escribe en temporal antes que el
+markdown, y las figuras ya estaban en disco. El renombrado atomico final no llego a ocurrir, asi que
+`reports/p80_auditoria_w2v.json` **sigue siendo el JSON de parada de la corrida anterior** y el
+informe completo quedo huerfano en `reports/p80_auditoria_w2v.json.tmp_p80`. No hay markdown y no hay
+`figuras/p80/` con nombre de figura invalido. La proteccion funciono como estaba disenada: no se
+publico un informe incompleto con apariencia de validado.
+
+**Decision**
+
+No arreglar el script y no publicar el informe a mano. Se registra la corrida con su estado real, se
+commitea el temporal huerfano como evidencia para que los resultados no se pierdan, y se devuelve a
+ML Coder el fallo de una clave.
+
+Se aceptan los siete hallazgos como **medidos**, no como **publicados**. La distinction importa: la
+evidencia esta medida y es reproducible, pero el artefacto que la proyecto consume, el informe
+oficial, no existe todavia.
+
+**Alternatives Considered**
+
+1. Arreglar la linea 4704, quitar la clave vieja del redactor o reponerla en A12, y volver a correr.
+   **Descartado por instruccion expresa.** Editar ese fichero ya trunco su contenido a 0 bytes una
+   vez, y ademas cambiar el codigo justo despues de conocer el resultado es el sesgo que el
+   pre-registro prohibe. La correccion de A12 ya la hizo ML Coder con su propia ronda de revision.
+2. Renombrar el temporal a `reports/p80_auditoria_w2v.json` a mano y dar el informe por bueno.
+   **Descartado.** El informe nunca paso por su asercion ASCII final ni por las firmas de los PNG,
+   porque esa parte se escribe despues del markdown, que es donde revienta. Publicarlo seria
+   saltarse exactamente la comprobacion que el script existe para hacer.
+3. Tratar la corrida como fallida y no registrar ningun hallazgo.
+   **Descartado.** Las diecinueve afirmaciones producing evidencia real: H2 con sus lineas, H4 con la
+   tabla de salida ausente, H5, H6 con sonda ejecutada y H7 con la identidad 1483 + 248 = 1731.
+   Descartarlo seria tirar evidencia medida para no admitir un fallo de instrumentacion.
+4. Reabrir el pre-registro para cambiar el esquema de `medida.cobertura` y obligar a que el JSON y el
+   markdown compartan contrato.
+   **Descartado por ahora.** Es la causa raiz de la clase de fallo, pero es una decision de
+   instrumentacion que corresponde a ML Coder con su revision, no un efecto lateral de esta corrida.
+
+**Consequences**
+
+Los siete hallazgos quedan **CONFIRMADO** y ninguno **REFUTADO**. H2 es el que mas cambia el
+entendimiento: el scheduler de `p72_01` planifica con `range(m.EPOCAS)` y `SEMILLA + ep`, o sea
+20261016 a 20261020, y entrena con `enumerate(planes, start=1)` y `SEMILLA + ep`, o sea 20261017 a
+20261021, en `p72_01:92-95` contra `p72_01:99-103`. El desfase es de una epoca y `total_lotes` sale
+del plan, luego el curriculum de `lr` se calibra sobre un numero de lotes que no es el recorrido. H4
+queda confirmado con A13 NO APLICABLE: la tabla de salida no existe en ninguna parte del
+repositorio, no se sustituye por `W` y **ninguna cifra absoluta de loss o de gradiente sobre el
+artefacto es evidencia del estado final**. H5 y H6 confirman la fuga de early stopping y el
+enmascarado tardio del padding en `v9_04` y `v10_11`, esta vez con sonda ejecutada y distancia
+relativa L2 0.08399328135684547. H7 confirma que DL-03 entreno sobre 1731 filas etiquetadas completas
+sin excluir el holdout v2 de 248, luego el holdout estaba dentro del pool.
+
+Quedan **dos salvedades** que el informe del script no publica y que un lector necesita. La regla 3 de
+A19, el desempate por nombre, puede clasificar como validacion un argumento que llega como parametro
+sin vinculacion local, por ejemplo `x_val`; es latente, no se activa en ninguno de los tres ficheros
+reales y ahi manda el vinculo local, pero es una apuesta por nombre y no una medicion. Y
+`asignaciones_del_llamante` usa `setdefault`, luego si un nombre se asigna dos veces gana la primera
+sin marcar ambiguedad; se comprobo que eso falla hacia el lado conservador, da REFUTADO y no
+sobre-detecta, que es el lado correcto, pero la lectura queda parcial sin que el informe lo advierta.
+
+El proyecto queda a la espera de una clave. Nada mas.
+
+```text
+V03 remains the best verified leaderboard result.
+```

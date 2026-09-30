@@ -1,3 +1,69 @@
+<!-- P80-SEGUNDA-CORRIDA 2026-09-30 -->
+## P80: las 19 afirmaciones pasan. Los 7 hallazgos CONFIRMADO. El informe no se publico
+
+```text
+A1..A12 CONFIRMADO   A13 NO APLICABLE POR CONSTRUCCION   A14..A19 CONFIRMADO
+18 CONFIRMADO   0 REFUTADO   1 NO APLICABLE   0 STOP   0 sin ejecutar
+corrida de 2 s, codigo de salida 1, sin entrenamiento
+```
+
+**Misme en el markdown.** Revienta en `escribir_markdown:4704` con
+`KeyError: 'claves_json_recorridas'`: la correccion de A12 quito esa clave de `medida.cobertura` y el
+redactor la sigue leyendo. Las otras tres claves que lee de A12 si existen, luego es **una sola
+clave**. No se ha tocado el script.
+
+```text
+reports/p80_auditoria_w2v.json            1936 B    el JSON de PARADA anterior, sin tocar
+reports/p80_auditoria_w2v.json.tmp_p80  174103 B    el informe COMPLETO, huerfano
+reports/p80_auditoria_w2v.md             NO EXISTE
+figuras/p80/  3 PNG, firmados en el temporal
+```
+
+El renombrado atomico final no llego a ocurrir, luego no se publico un informe incompleto con
+apariencia de validado. El temporal se commitea como evidencia.
+
+**H2 CONFIRMADO, y el veredicto de P79 era erroneo.** `p72_01:92-95` planifica con
+`range(m.EPOCAS)` y `SEMILLA + ep`, o sea 20261016 a 20261020; `p72_01:99-103` entrena con
+`enumerate(planes, start=1)` y `SEMILLA + ep`, o sea 20261017 a 20261021. Los dos bucles se llaman
+`ep` y P79 los clasifico juntos. Solo en el plan: 20261016. Solo en el entrenamiento: 20261021.
+1395 lotes planados frente a 1398 recorridos.
+
+**H4 CONFIRMADO.** El congelado solo tiene `W`, la tabla de entrada, y una sola matriz. A12 da **0
+candidatos** sobre 19 `.npz` por cabecera y 320 `.json`, con criterio de forma exacta `(77657, 100)`,
+que es el defecto que P80_arranco a corregir. A13 queda NO APLICABLE POR CONSTRUCCION: la tabla de
+salida no existe, no se sustituye por `W` y **P80 no publica ninguna cifra sobre el artefacto**.
+Las cifras absolutas de P79 describen un par `(E, S)` con `E = S = W` que nunca existio y **no son
+evidencia del estado final**.
+
+**H5 CONFIRMADO** en `v9_04` y `v10_11`: la metrica que decide cuando restaurar pesos es la del
+pliegue externo que despues se puntua, sin particion interna. **H6 CONFIRMADO** con sonda
+ejecutada: la GRU corre antes de enmascarar (`v9_04:104-105`, `v10_11:170-171`), el efecto es de
+arrastre y no de explosion, y pesa 0.08399328135684547 en distancia relativa L2.
+**H7 CONFIRMADO**: DL-03 entreno sobre 1731 filas etiquetadas completas, y 1483 + 248 = 1731, luego
+**el holdout v2 estaba dentro del pool** de la validacion cruzada.
+
+**Dos salvedades que el informe del script no lleva.** La regla 3 de A19, el desempate por nombre,
+puede clasificar como validacion un argumento que llega como parametro sin vinculacion local, por
+ejemplo `x_val`; es latente, no se activa en los tres ficheros reales y ahi manda el vinculo local,
+pero es una apuesta por nombre y no una medicion. Y `asignaciones_del_llamante` usa `setdefault`,
+luego si un nombre se asigna dos veces gana la primera sin marcar ambiguedad; se comprobo que falla
+hacia el lado conservador, da REFUTADO y no sobre-detecta.
+
+```text
+H1 H2 H3 H4 H5 H6 H7 = CONFIRMADO
+P80 = MEDIDO Y NO PUBLICADO   (falta una clave, vuelve a ml-coder)
+congelado 302c994d... intacto antes y despues      pre-registro 440ab13c... sin cambios
+```
+
+**Sin escrituras fuera de** `reports/p80_auditoria_w2v.json.tmp_p80` y `figuras/p80/`. P71 a P79,
+V03, los umbrales 0.44 / 0.51 / 0.46 y `modelos/` intactos. Test, holdout, leaderboard y submission
+en cero.
+
+```text
+V03 remains the best verified leaderboard result.
+```
+<!-- /P80-SEGUNDA-CORRIDA 2026-09-30 -->
+
 <!-- P80-PARADA-A12 2026-09-30 -->
 ## P80: la auditoria Word2Vec se para en A12. H1 H2 H3 confirmados, H4 a H7 abiertos
 
