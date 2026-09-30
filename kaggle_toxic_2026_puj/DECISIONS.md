@@ -6880,3 +6880,82 @@ corpus con licencia explicita y periodo de recoleccion anterior y verificable no
 repetir esta auditoria.
 
 El estado del proyecto no cambia: la investigacion sigue cerrada y el candidato congelado.
+
+
+## D-221 a D-223: busqueda ampliada de corpus, y el bloqueo cambia de naturaleza
+
+Fecha 2026-09-29. Se amplia la busqueda a HuggingFace, Kaggle y GitHub.
+
+### D-221. Nueve candidatos auditados, y ninguno pasa
+
+```text
+HuggingFace  pysentimiento/spanish-tweets                     AMBIGUOUS
+HuggingFace  pysentimiento/spanish-tweets-small               AMBIGUOUS
+HuggingFace  JorgeLoera/spanish-dialect-tweets                AMBIGUOUS
+HuggingFace  santiagxf/spanish-marketing-tweets               PROHIBITED
+HuggingFace  soncco/historical-twitter-trends-...             NOT_APPLICABLE
+Kaggle       mmaguero/covid19-spanishtweets-...               AMBIGUOUS
+Kaggle       leadominguez/uruguayan-media-historical-tweets   AMBIGUOUS
+Kaggle       hectorfr1984/spanish-trans-law-twitter-dataset   AMBIGUOUS
+GitHub       sinai-uja/COST                                   PROHIBITED
+
+ALLOWED 0 | AMBIGUOUS 6 | PROHIBITED 2 | NOT_APPLICABLE 1
+```
+
+### D-222. EL BLOQUEO HA CAMBIADO DE NATURALEZA, y eso es el resultado de la busqueda
+
+En el primer P0 los candidatos fallaban por motivos **del corpus**: sin licencia declarada, o con
+recoleccion abierta y sin periodo acotado.
+
+La busqueda ampliada encontro algo distinto:
+
+```text
+mmaguero/covid19-spanishtweets-earlylateapril2020
+
+licencia    CC BY-SA 4.0, real y explicita
+periodo     29 de marzo a 1 de mayo de 2020, CERRADO y documentado
+contenido   2,27 millones de tweets espanoles, con columna `text`
+etiquetas   ninguna de toxicidad
+```
+
+**Es el candidato mas cercano a utilizable que ha aparecido.** Licencia y periodo son ambos
+correctos, y es el unico.
+
+Y el hueco que queda es **del otro lado**:
+
+```text
+el periodo de recoleccion de TOXIC NO ESTA DOCUMENTADO EN NINGUNA PARTE
+```
+
+Comprobado en `docs/competition_rules.md`, texto verbatim del organizador: las reglas hablan del
+formato de los ficheros y de que el dataset de prueba no se use para entrenamiento, y **no
+mencionan el periodo de recoleccion ni los corpus externos**.
+
+### D-223. Los otros dos hallazgos que importan
+
+**Uno: un corpus legal y bien documentado que no sirve.**
+
+`soncco/historical-twitter-trends-spanish-locations-2020-2021` tiene ODC-By, periodo cerrado y
+ninguna etiqueta. Y su propio card lo dice sin ambiguedad: *"It does not contain tweets, user
+accounts, news articles, URLs, or veracity labels."* Son cadenas de tendencias. Es
+`NOT_APPLICABLE`: no lo prohibe la regla, simplemente no es el recurso.
+
+**Dos: un corpus prohibido con licencia impecable.**
+
+`sinai-uja/COST` esta bajo CC BY-NC-SA 4.0 y contiene **34.634 tweets etiquetados de
+sentimiento**, 17.317 positivos y 17.317 negativos. La regla prohibe los corpus cuya finalidad
+era un dataset etiquetado de sentimiento, **con independencia de su licencia**.
+
+### Lo que desbloquearia la linea
+
+```text
+que el organizador documente el periodo de recoleccion de TOXIC
+o una regla explicita sobre el uso de corpus externos anteriores
+o un corpus cuya recoleccion fuese demostrablemente anterior al inicio de la
+  competicion por una fuente independiente
+```
+
+Eso es mas util que cerrar sin saber por que, y es lo que la busqueda ampliada ha anadido: no
+solo que no hay corpus, sino exactamente que haria falta.
+
+La linea sigue en `CLOSED_AT_P0_BY_CORPUS_UNAVAILABILITY`, con 0 experimentos gastados.

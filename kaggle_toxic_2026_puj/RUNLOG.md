@@ -2949,3 +2949,19 @@ declara licencia, y no se puede garantizar que el texto del test no este dentro 
 contra el test, que el encargo prohibe.
 
 Sin push, sin merge, sin rebase.
+
+
+## 2026-09-29, P0 ampliado: busqueda en tres plataformas
+
+- `experiments/p71_01_auditoria_ampliada.py`: amplia la busqueda a HuggingFace (6 consultas),
+  Kaggle (8 consultas, 42 candidatos unicos) y GitHub (4 consultas). **9 candidatos auditados,
+  ALLOWED 0.**
+
+```text
+ALLOWED 0 | AMBIGUOUS 6 | PROHIBITED 2 | NOT_APPLICABLE 1
+```
+
+El hallazgo: el bloqueo ha cambiado de naturaleza. El candidato de Kaggle tiene licencia
+explicita y periodo cerrado; lo que falta es que **el periodo de TOXIC no esta documentado**.
+
+Sin push, sin merge, sin rebase.

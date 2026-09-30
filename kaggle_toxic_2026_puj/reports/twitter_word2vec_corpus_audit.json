@@ -62,7 +62,8 @@
       "hash": "no aplica: no se ha descargado",
       "test_overlap_garantizable": false,
       "clasificacion": "AMBIGUOUS",
-      "razon_principal": "sin licencia declarada, y sin poder garantizar que el texto del test no este en el corpus sin compararlo contra el test, que esta prohibido"
+      "razon_principal": "sin licencia declarada, y sin poder garantizar que el texto del test no este en el corpus sin compararlo contra el test, que esta prohibido",
+      "plataforma": "HuggingFace"
     },
     {
       "candidato": "pysentimiento/spanish-tweets-small",
@@ -88,7 +89,8 @@
       "hash": "no aplica",
       "test_overlap_garantizable": false,
       "clasificacion": "AMBIGUOUS",
-      "razon_principal": "hereda los dos problemas del corpus grande"
+      "razon_principal": "hereda los dos problemas del corpus grande",
+      "plataforma": "HuggingFace"
     },
     {
       "candidato": "JorgeLoera/spanish-dialect-tweets",
@@ -110,7 +112,8 @@
       "hash": "no aplica",
       "test_overlap_garantizable": false,
       "clasificacion": "AMBIGUOUS",
-      "razon_principal": "tiene licencia real, y es lo unico que tiene: sin ficha, sin procedencia, sin periodo y con indicios de estar etiquetado"
+      "razon_principal": "tiene licencia real, y es lo unico que tiene: sin ficha, sin procedencia, sin periodo y con indicios de estar etiquetado",
+      "plataforma": "HuggingFace"
     },
     {
       "candidato": "santiagxf/spanish-marketing-tweets",
@@ -130,7 +133,103 @@
       "hash": "no aplica",
       "test_overlap_garantizable": "no aplica",
       "clasificacion": "PROHIBITED",
-      "razon_principal": "el repositorio contiene un README y un .gitattributes y NINGUN fichero de datos. No hay corpus que entrenar"
+      "razon_principal": "el repositorio contiene un README y un .gitattributes y NINGUN fichero de datos. No hay corpus que entrenar",
+      "plataforma": "HuggingFace"
+    },
+    {
+      "candidato": "soncco/historical-twitter-trends-spanish-locations-2020-2021",
+      "plataforma": "HuggingFace",
+      "prioridad": 5,
+      "url": "https://huggingface.co/datasets/soncco/historical-twitter-trends-spanish-locations-2020-2021",
+      "provider": "Braulio Andres Soncco Pimentel",
+      "source": "columnas de tendencias de TweetDeck, recolector cada 15 minutos",
+      "collection_period": "15 de julio de 2020 a 22 de septiembre de 2021",
+      "number_of_tweets": "5.726.446 observaciones de tendencias, NO tweets",
+      "language_filtering": "11 paises hispanohablantes",
+      "labels_existen": false,
+      "metadata_existe": true,
+      "license_terms": "ODC-By 1.0, licencia real y explicita",
+      "download_date": "2026-09-29",
+      "hash": "no aplica",
+      "test_overlap_garantizable": "no aplica: no hay tweets que puedan solaparse",
+      "clasificacion": "NOT_APPLICABLE",
+      "razon_principal": "el propio card lo dice: no contiene tuits, usuarios, noticias ni etiquetas. Son cadenas de tendencias. Legal y bien documentado, pero no es un corpus de texto de tweets"
+    },
+    {
+      "candidato": "mmaguero/covid19-spanishtweets-earlylateapril2020",
+      "plataforma": "Kaggle",
+      "prioridad": 6,
+      "url": "https://www.kaggle.com/datasets/mmaguero/covid19-spanishtweets-earlylateapril2020",
+      "provider": "mmaguero",
+      "source": "tweets en espanol sobre COVID filtrados de otro dataset de Kaggle, con columna `text`, codigo de pais e idioma",
+      "collection_period": "29 de marzo de 2020 a 1 de mayo de 2020, CERRADO y documentado",
+      "number_of_tweets": "2,27 millones de tweets en espanol",
+      "language_filtering": "espanol declarado",
+      "labels_existen": false,
+      "metadata_existe": true,
+      "license_terms": "CC BY-SA 4.0, licencia real y explicita",
+      "download_date": "2026-09-29",
+      "hash": "no aplica: no se ha descargado",
+      "test_overlap_garantizable": false,
+      "clasificacion": "AMBIGUOUS",
+      "razon_principal": "LICENCIA Y PERIODO CORRECTOS, y es el unico. Lo que falta es del otro lado: el periodo de recoleccion de TOXIC no esta documentado en ninguna parte, luego la no coincidencia con el test no se puede demostrar"
+    },
+    {
+      "candidato": "leadominguez/uruguayan-media-historical-tweets",
+      "plataforma": "Kaggle",
+      "prioridad": 7,
+      "url": "https://www.kaggle.com/datasets/leadominguez/uruguayan-media-historical-tweets",
+      "provider": "leadominguez",
+      "source": "tweets de seis cuentas de MEDIOS uruguayos",
+      "collection_period": "no documentado en la ficha",
+      "number_of_tweets": "761 MB",
+      "language_filtering": "espanol",
+      "labels_existen": false,
+      "metadata_existe": true,
+      "license_terms": "CC0 1.0, dominio publico, la mas permisiva posible",
+      "download_date": "2026-09-29",
+      "hash": "no aplica",
+      "test_overlap_garantizable": false,
+      "clasificacion": "AMBIGUOUS",
+      "razon_principal": "periodo sin documentar, y el registro es PERIODISTICO, no conversacional: un embedding de lenguaje de medios no es el dominio de la hipotesis"
+    },
+    {
+      "candidato": "hectorfr1984/spanish-trans-law-twitter-dataset",
+      "plataforma": "Kaggle",
+      "prioridad": 8,
+      "url": "https://www.kaggle.com/datasets/hectorfr1984/spanish-trans-law-twitter-dataset",
+      "provider": "hectorfr1984",
+      "source": "1,5 millones de tweets alrededor del debate de la Ley Trans espanola",
+      "collection_period": "el debate es de 2022-2023, sin periodo exacto en la ficha",
+      "number_of_tweets": "1,5 millones",
+      "language_filtering": "espanol",
+      "labels_existen": false,
+      "metadata_existe": true,
+      "license_terms": "CC0 1.0",
+      "download_date": "2026-09-29",
+      "hash": "no aplica",
+      "test_overlap_garantizable": false,
+      "clasificacion": "AMBIGUOUS",
+      "razon_principal": "el tema del corpus se solapa con la tarea objetivo: el debate sobre una ley de derechos de un grupo protegido es exactamente el espacio donde vive AG. Entrenar la representacion con ese vocabulario introduce senal de tema en el clasificador de toxicidad"
+    },
+    {
+      "candidato": "sinai-uja/COST",
+      "plataforma": "GitHub",
+      "prioridad": 9,
+      "url": "https://github.com/sinai-uja/COST",
+      "provider": "SINAI, Universidad de Jaen",
+      "source": "34.634 tweets en espanol con polaridad derivada de los emoticonos",
+      "collection_period": "publicacion de 2015, tweets anteriores",
+      "number_of_tweets": 34634,
+      "language_filtering": "espanol",
+      "labels_existen": true,
+      "metadata_existe": false,
+      "license_terms": "CC BY-NC-SA 4.0, mas solicitud por correo",
+      "download_date": "2026-09-29",
+      "hash": "no aplica",
+      "test_overlap_garantizable": false,
+      "clasificacion": "PROHIBITED",
+      "razon_principal": "ETIQUETADO DE SENTIMIENTO, 17.317 positivos y 17.317 negativos. Prohibido por la regla del encargo con independencia de la licencia"
     }
   ],
   "conteo": {
@@ -142,32 +241,33 @@
     "clasificacion_de_la_linea": "CLOSED_AT_P0_BY_CORPUS_UNAVAILABILITY",
     "puede_ejecutarse_p1": false,
     "experimentos_gastados": 0,
-    "por_que_no_es_un_fracaso": "la pregunta sigue sin respuesta. Lo que se cierra es la posibilidad de responderla con los recursos disponibles, no la hipotesis",
-    "por_que_no_se_usa_el_corpus_principal": "dos motivos independientes y cada uno suficiente: no declara licencia, y no se puede garantizar que el texto del test no este dentro sin compararlo contra el test, cosa que el encargo prohibe",
-    "por_que_no_se_busca_mas": "los cuatro candidatos se agotaron con la busqueda dirigida del encargo. Ninguno falla por un motivo que insistir arregle",
-    "alternativas_que_se_descartaron": [
-      {
-        "via": "usar el corpus sin licencia",
-        "por_que_no": "incumple la regla del propio encargo"
-      },
-      {
-        "via": "deduplicar contra el test",
-        "por_que_no": "seria usar el test para construir el recurso"
-      },
-      {
-        "via": "usar un dataset etiquetado",
-        "por_que_no": "prohibido con independencia del tema"
-      },
-      {
-        "via": "sustituir Word2Vec por FastText",
-        "por_que_no": "cambiaria dos variables a la vez"
-      },
-      {
-        "via": "usar los corpus generales de v5",
-        "por_que_no": "serian el CONTROL, no el tratamiento, y sin tratamiento no hay comparacion"
-      }
+    "candidatos_auditados": 9,
+    "plataformas": [
+      "HuggingFace",
+      "Kaggle",
+      "GitHub"
     ],
-    "lo_que_queda_registrado": "el corpus principal y sus dos problemas quedan documentados con la evidencia de la consulta, para que una fase futura no repita la auditoria desde cero"
+    "conteo": {
+      "ALLOWED": 0,
+      "AMBIGUOUS": 6,
+      "PROHIBITED": 2,
+      "NOT_APPLICABLE": 1
+    },
+    "el_candidato_mas_cercano": "mmaguero/covid19-spanishtweets-earlylateapril2020",
+    "por_que_el_mas_cercano_no_basta": "su licencia es real y su periodo esta cerrado y documentado a 2020, pero el periodo de TOXIC no esta documentado, luego la no coincidencia con el test no se puede demostrar",
+    "bloqueo": {
+      "en_el_primer_p0": "los candidatos fallaban por motivos DEL CORPUS: sin licencia declarada, o con recoleccion abierta y sin periodo acotado",
+      "en_la_busqueda_ampliada": "el candidato de Kaggle tiene LICENCIA EXPLICITA y PERIODO CERRADO Y DOCUMENTADO. Lo que falta es del otro lado: el periodo de recoleccion de TOXIC no esta documentado en ninguna parte",
+      "donde_se_comprobo": "docs/competition_rules.md, texto verbatim del organizador",
+      "que_dicen_las_reglas": "hablan del formato de los ficheros y de que el dataset de prueba no se use para entrenamiento. No mencionan el periodo de recoleccion de los datos ni los corpus externos",
+      "consecuencia": "sin el periodo de TOXIC, la no coincidencia con el test no se puede demostrar, y la regla del encargo es conservadora",
+      "lo_que_desbloquearia_la_linea": [
+        "que el organizador documente el periodo de recoleccion de TOXIC",
+        "o una regla explicita sobre el uso de corpus externos anteriores",
+        "o un corpus cuya recoleccion fuese demostrablemente anterior al inicio de la competicion por una fuente independiente"
+      ],
+      "no_es_un_fracaso": "identifica exactamente que haria falta. Eso es mas util que cerrar sin saber por que"
+    }
   },
   "reproducibilidad": {
     "nivel": "R2",
@@ -176,5 +276,19 @@
     "corrected_cv_v03": 0.7772114525165721,
     "consulta_a_la_api": "2026-09-29"
   },
-  "formulacion": "V03 remains the best verified leaderboard result."
+  "formulacion": "V03 remains the best verified leaderboard result.",
+  "busqueda_ampliada": {
+    "plataformas_consultadas": [
+      "HuggingFace",
+      "Kaggle",
+      "GitHub"
+    ],
+    "consultas": [
+      "6 en HuggingFace",
+      "8 en Kaggle",
+      "4 en GitHub"
+    ],
+    "candidatos_unicos_kaggle": 42,
+    "hallazgos_nuevos": 5
+  }
 }

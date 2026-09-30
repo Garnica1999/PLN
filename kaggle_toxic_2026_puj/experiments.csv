@@ -388,3 +388,4 @@ P70-01|2026-09-29|sensibilidad del CV al tamano de entrenamiento y estabilidad d
 P70-02|2026-09-29|post-mortem de la transferencia CV a LB y clasificacion de la causa|prevalencia y margenes estables, MIXED_EXPLANATION|P70|experiments/p70_02_postmortem.py
 P70-03|2026-09-29|correccion del post-mortem tras auditoria del especialista de Kaggle|la causa dominante es la SELECCION del baseline: ventaja 0.00643 frente a gap 0.00585|P70|experiments/p70_03_correccion_postmortem.py
 P71-00|2026-09-29|P0 auditoria de procedencia de corpus espanoles de Twitter/X|CLOSED_AT_P0_BY_CORPUS_UNAVAILABILITY, ALLOWED 0 de 4, 0 experimentos|P71|experiments/p71_00_auditoria_corpus.py
+P71-01|2026-09-29|P0 ampliado: busqueda de corpus en HuggingFace, Kaggle y GitHub|9 candidatos, ALLOWED 0; el bloqueo pasa a ser el periodo de TOXIC no documentado|P71|experiments/p71_01_auditoria_ampliada.py

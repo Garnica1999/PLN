@@ -1,6 +1,6 @@
 # Domain-specific Word2Vec sobre Twitter/X: auditoria de corpus
 
-Generado por `experiments/p71_00_auditoria_corpus.py`. Fecha 2026-09-30T00:01:56+00:00.
+Generado por `experiments/p71_00_auditoria_corpus.py` y `experiments/p71_01_auditoria_ampliada.py`. Fecha 2026-09-30T00:11:15+00:00.
 
 ## La hipotesis, que no se ha podido poner a prueba
 
@@ -8,122 +8,101 @@ Generado por `experiments/p71_00_auditoria_corpus.py`. Fecha 2026-09-30T00:01:56
 > informacion distribucional especifica del dominio que los entrenados sobre Wikipedia y
 > mC4 no capturaron.
 
-La novedad no era `Word2Vec existe`. Era **entrenamiento desde cero + corpus Twitter/X +
-dominio linguistico cercano al problema**.
-
 ```text
 la pregunta SIGUE SIN RESPUESTA.
-lo que se cierra es la posibilidad de responderla con los recursos disponibles,
-no la hipotesis.
 ```
 
-## La decision de P0
+## La decision
 
 ```text
 CLOSED_AT_P0_BY_CORPUS_UNAVAILABILITY
 
-ALLOWED 0    AMBIGUOUS 3    PROHIBITED 1
-
+9 candidatos auditados en 3 plataformas
+ALLOWED 0 | AMBIGUOUS 6 | PROHIBITED 2 | NOT_APPLICABLE 1
 experimentos gastados: 0
 ```
 
-**Ningun corpus pasa la auditoria.** P1, la comparacion Word2Vec Twitter frente a
-Word2Vec general, no se puede ejecutar. No hay tratamiento contra el que comparar.
+## Los candidatos, por plataforma
 
-## Los cuatro candidatos
+| plataforma | candidato | licencia | periodo | etiquetado | clase |
+|---|---|---|---|---|---|
+| HuggingFace | `pysentimiento/spanish-tweets` | NO DECLARADA. La API de Huggin | linea base: mayo 2019. Las | no | **AMBIGUOUS** |
+| HuggingFace | `pysentimiento/spanish-tweets-small` | NO DECLARADA, igual que el cor | identico al corpus grande | no | **AMBIGUOUS** |
+| HuggingFace | `JorgeLoera/spanish-dialect-tweets` | cc-by-4.0, la unica linea de l | NO DOCUMENTADO | n/d | **AMBIGUOUS** |
+| HuggingFace | `santiagxf/spanish-marketing-tweets` | unlicense, la mas permisiva po | no aplica | n/d | **PROHIBITED** |
+| HuggingFace | `soncco/historical-twitter-trends-spanish-loc` | ODC-By 1.0, licencia real y ex | 15 de julio de 2020 a 22 d | no | **NOT_APPLICABLE** |
+| Kaggle | `mmaguero/covid19-spanishtweets-earlylateapri` | CC BY-SA 4.0, licencia real y  | 29 de marzo de 2020 a 1 de | no | **AMBIGUOUS** |
+| Kaggle | `leadominguez/uruguayan-media-historical-twee` | CC0 1.0, dominio publico, la m | no documentado en la ficha | no | **AMBIGUOUS** |
+| Kaggle | `hectorfr1984/spanish-trans-law-twitter-datas` | CC0 1.0 | el debate es de 2022-2023, | no | **AMBIGUOUS** |
+| GitHub | `sinai-uja/COST` | CC BY-NC-SA 4.0, mas solicitud | publicacion de 2015, tweet | SI | **PROHIBITED** |
 
-### `pysentimiento/spanish-tweets` - AMBIGUOUS
+## El bloqueo ha cambiado de naturaleza, y eso es el resultado de la busqueda
 
-- **Provider**: pysentimiento (grupo de PLN, UBA / DC-UBA)
-- **Origen**: coleccion Spritzer de Archive.org de mayo de 2019, filtrada a espanol, mas la descarga de las timelines completas de los 432.000 usuarios detectados
-- **Periodo de recoleccion**: linea base: mayo 2019. Las timelines se descargaron despues, sin periodo acotado ni publicado por usuario
-- **Tweets**: 597433111
-- **Campos**: ['text', 'tweet_id', 'user_id']
-- **Labels**: False
-- **Licencia**: NO DECLARADA. La API de HuggingFace devuelve el campo de licencia vacio, y la ficha no menciona la palabra ni una vez pese a que su indice lista una seccion 'Licensing Information' que no existe
-- **Se puede garantizar que el texto del test no esta dentro?**: `False`
-- **Razon principal**: sin licencia declarada, y sin poder garantizar que el texto del test no este en el corpus sin compararlo contra el test, que esta prohibido
+En el primer P0 los candidatos fallaban por motivos **del corpus**: sin licencia
+declarada, o con recoleccion abierta y sin periodo acotado.
 
-### `pysentimiento/spanish-tweets-small` - AMBIGUOUS
+La busqueda ampliada encontro algo distinto:
 
-- **Provider**: pysentimiento
-- **Origen**: misma procedencia que el corpus grande
-- **Periodo de recoleccion**: identico al corpus grande
-- **Tweets**: 10M < n < 100M (categoria declarada)
-- **Campos**: ['text', 'tweet_id', 'user_id']
-- **Labels**: False
-- **Licencia**: NO DECLARADA, igual que el corpus grande
-- **Se puede garantizar que el texto del test no esta dentro?**: `False`
-- **Razon principal**: hereda los dos problemas del corpus grande
-
-### `JorgeLoera/spanish-dialect-tweets` - AMBIGUOUS
-
-- **Provider**: usuario individual
-- **Origen**: NO DOCUMENTADA
-- **Periodo de recoleccion**: NO DOCUMENTADO
-- **Tweets**: 100K < n < 1M (categoria declarada)
-- **Campos**: NO DOCUMENTADOS. El unico fichero es Datos_dialectos.parquet
-- **Labels**: PROBABLEMENTE SI. El nombre del fichero, 'Datos_dialectos', apunta a clasificacion de dialecto, y un dataset externo etiquetado esta prohibido con independencia del tema
-- **Licencia**: cc-by-4.0, la unica linea de la ficha
-- **Se puede garantizar que el texto del test no esta dentro?**: `False`
-- **Razon principal**: tiene licencia real, y es lo unico que tiene: sin ficha, sin procedencia, sin periodo y con indicios de estar etiquetado
-
-### `santiagxf/spanish-marketing-tweets` - PROHIBITED
-
-- **Provider**: usuario individual
-- **Origen**: no aplica: no hay datos
-- **Periodo de recoleccion**: no aplica
-- **Tweets**: 0
-- **Campos**: []
-- **Labels**: no aplica
-- **Licencia**: unlicense, la mas permisiva posible
-- **Se puede garantizar que el texto del test no esta dentro?**: `no aplica`
-- **Razon principal**: el repositorio contiene un README y un .gitattributes y NINGUN fichero de datos. No hay corpus que entrenar
-
-## El corpus que el encargo senalaba, y sus dos problemas
-
-`pysentimiento/spanish-tweets` es un corpus **bueno en principio**: 597 millones de
-tweets, campos `text`/`tweet_id`/`user_id`, **sin labels**, y su finalidad declarada es
-*language modelling* para preentrenar representaciones. Es exactamente el tipo de recurso
-que la hipotesis pedia.
-
-### Problema 1: no declara licencia
+### `mmaguero/covid19-spanishtweets-earlylateapril2020`
 
 ```text
-API de HuggingFace   campo de licencia VACIO
-ficha del dataset    0 menciones de la palabra 'license'
-                      su indice SI lista 'Licensing Information'
-                      y la seccion NO existe en el documento
+licencia    CC BY-SA 4.0, real y explicita
+periodo     29 de marzo a 1 de mayo de 2020, CERRADO y documentado
+contenido   2,27 millones de tweets espanoles, con columna `text`
+etiquetas   ninguna de toxicidad
 ```
 
-### Problema 2: no se puede garantizar que el texto del test no este dentro
+**Es el candidato mas cercano a utilizable que ha aparecido.** Licencia y periodo son
+ambos correctos, y es el unico.
+
+### Y el hueco que queda es del otro lado
 
 ```text
-recoleccion   coleccion Spritzer de Archive.org de mayo de 2019,
-              mas la descarga de las TIMELINES COMPLETAS de 432.000 usuarios
-              localizados a partir de ella
-TOXIC         competencia de 2026, sin periodo de recoleccion documentado
-
-las timelines cubren rangos de fecha arbitrarios por usuario, sin periodo
-acotado ni publicado. La unica forma de comprobar el solapamiento seria
-comparar contra el test, y el encargo PROHIBE usar ids, textos o hashes
-del test para construir o limpiar el corpus
+el periodo de recoleccion de TOXIC NO ESTA DOCUMENTADO EN NINGUNA PARTE
 ```
 
-El encargo es explicito: *en caso de no poder garantizar razonablemente, clasificar el
-corpus como `AMBIGUOUS` y no utilizarlo*.
+Se comprobo en `docs/competition_rules.md`, el texto verbatim del organizador: las reglas
+hablan del formato de los ficheros y de que el dataset de prueba no se use para
+entrenamiento, y **no mencionan el periodo de recoleccion de los datos ni los corpus
+externos**.
 
-**Cada problema es suficiente por si solo.** Se declaran los dos.
+Sin ese dato, la no coincidencia con el test no se puede demostrar, y la regla del
+encargo es conservadora.
 
-## Las alternativas que se descartaron, y por que
+## Los tres hallazgos que importan
 
-| via | por que no |
-|---|---|
-| usar el corpus sin licencia | incumple la regla del propio encargo |
-| deduplicar contra el test | seria usar el test para construir el recurso |
-| usar un dataset etiquetado | prohibido con independencia del tema |
-| sustituir Word2Vec por FastText | cambiaria dos variables a la vez |
-| usar los corpus generales de v5 | serian el CONTROL, no el tratamiento, y sin tratamiento no hay comparacion |
+### Uno: un corpus legal y bien documentado que no sirve
+
+`soncco/historical-twitter-trends-spanish-locations-2020-2021` tiene ODC-By, periodo
+cerrado y ninguna etiqueta. Y su propio card lo dice sin ambiguedad:
+
+> *It does not contain tweets, user accounts, news articles, URLs, or veracity labels.*
+
+Son cadenas de tendencias. No hay texto de tweets sobre el que aprender distribuciones.
+Es `NOT_APPLICABLE`: no lo prohibe la regla, simplemente no es el recurso.
+
+### Dos: un corpus con todo correcto salvo el dato que falta
+
+El de Kaggle, descrito arriba.
+
+### Tres: un corpus prohibido con licencia impecable
+
+`sinai-uja/COST` esta bajo CC BY-NC-SA 4.0 y contiene **34.634 tweets etiquetados de
+sentimiento**, 17.317 positivos y 17.317 negativos. La regla del encargo prohibe los
+corpus cuya finalidad era un dataset etiquetado de sentimiento, **con independencia de su
+licencia**.
+
+## Lo que desbloquearia la linea
+
+```text
+que el organizador documente el periodo de recoleccion de TOXIC
+o una regla explicita sobre el uso de corpus externos anteriores
+o un corpus cuya recoleccion fuese demostrablemente anterior al inicio de la
+  competicion por una fuente independiente
+```
+
+**Eso es mas util que cerrar sin saber por que**, y es lo que la busqueda ampliada ha
+anadido: no solo que no hay corpus, sino exactamente que haria falta.
 
 ## Lo que no se hace
 
@@ -131,17 +110,9 @@ corpus como `AMBIGUOUS` y no utilizarlo*.
 no se descarga ningun corpus
 no se entrena ningun embedding
 no se toca el test, ni el holdout, ni el leaderboard
-no se filtra ningun corpus externo contra el test
-no se cambia Word2Vec por FastText: cambiaria dos variables a la vez
-no se usan los corpus generales de v5 como tratamiento: serian el CONTROL
+no se filtran corpus externos contra el test
+no se usa el corpus de Kaggle aunque su licencia sea correcta
 ```
-
-## Lo que queda registrado para una fase futura
-
-El corpus principal y sus dos problemas quedan documentados con la evidencia de la
-consulta, en `reports/twitter_word2vec_corpus_registry.csv`. Una fase futura que
-consiguiera un corpus con licencia explicita y con un periodo de recoleccion anterior y
-verificable no tendria que repetir esta auditoria desde cero.
 
 ## El estado del proyecto, que no cambia
 
@@ -149,13 +120,9 @@ verificable no tendria que repetir esta auditoria desde cero.
 V03                          FROZEN
 A_cost_sensitive_downweight  PROMISING_UNCONFIRMED
 research_status              EXPERIMENTAL_RESEARCH_CLOSED
-
 domain-specific Word2Vec     CLOSED_AT_P0_BY_CORPUS_UNAVAILABILITY
 ```
 
-Cerrada esta linea, el estado de la investigacion experimental no cambia: sigue cerrada,
-y el candidato sigue congelado.
-
 > V03 remains the best verified leaderboard result.
 
-*Generado por `experiments/p71_00_auditoria_corpus.py`. Sin push.*
+*Sin push.*
