@@ -280,6 +280,179 @@
       "cambia_el_modelo": false,
       "cambia_los_gates": false,
       "estado_datos": "sin resultados; enmienda pre-ejecucion"
+    },
+    {
+      "fecha": "2026-09-30",
+      "objeto": "secciones de contexto ausentes: control, corpus, anclas, representacion, budgeto, regla_alpha",
+      "de": "pre-registro de V35 con 27 secciones, sin las 6 que el informe publica y que el runner lee en construir_resultado (17 lecturas)",
+      "a": "las 6 secciones restituidas verbatim del pre-registro de V34-E1, con `origen` auditable y con las anulaciones V35 declaradas en `anulaciones_v35` y en las propias claves",
+      "motivo": "17 lecturas prereg[...] de secciones inexistentes: la corrida moria DESPUES de entrenar los dos brazos en los 5 folds, con checkpoints y OOF ya escritos, y verificar_constantes no lo detectaba (106/106 no era cobertura real). Detectado al ejecutar de verdad construir_resultado, escribir_informe y resumen_consola con un estado simulado, porque --verificar y --humo NO ejecutan la ruta de salida",
+      "clase": "cuarta enmienda pre-ejecucion; restitucion de contexto ya congelado, sin tocar ninguna decision experimental",
+      "cambia_el_protocolo": false,
+      "cambia_alpha": false,
+      "cambia_los_gates": false,
+      "cambia_el_presupuesto": false,
+      "estado_datos": "sin resultados; enmienda pre-ejecucion"
+    },
+    {
+      "fecha": "2026-09-30",
+      "objeto": "control.asimetria_declarada (desambiguacion de la no-equivalencia estructural)",
+      "de": "dos declaraciones para el mismo par de brazos: control.asimetria_declarada.no_equivalencia_estructural con el texto de V34 (L2 de A2 en 1e-6 como no-op) y control.anulaciones_v35.asimetria_declarada con el de V35; solo el segundo es el de V35",
+      "a": "una sola declaracion vigente, la de V35, en control.asimetria_declarada; el texto de V34 queda integro y con su valor en control.anulaciones_v35.no_equivalencia_estructural_texto_anulado_de_v34",
+      "motivo": "un documento de registro con dos declaraciones para lo mismo es la ambiguedad que el proyecto ya pago; el runner ya no imprimia el texto de V34 (la linea del informe lee la asimetria de la sonda), luego el riesgo era de lectura, pero la ambiguedad seja",
+      "clase": "quinta enmienda pre-ejecucion; desambiguacion documental, sin cambiar el protocolo",
+      "cambia_el_protocolo": false,
+      "cambia_los_gates": false,
+      "estado_datos": "sin resultados; enmienda pre-ejecucion"
     }
-  ]
+  ],
+  "corpus": {
+    "receta": "src.data.load_train() sobre data/raw/age_train.csv (sep=cfg.TRAIN_SEP, encoding utf-8-sig, clean_text aplicado); orden de filas = orden del CSV = orden canonico de ids.npy",
+    "hash_contenido": "sha256 con longitud (8 bytes LE) + bytes UTF-8 por texto, en orden",
+    "prohibido": "el data_hash del manifiesto canonico (2ada573b...) queda invalidado en D-083: es un hash de punteros, no de contenido",
+    "origen": "copiado verbatim de experiments/v34_00_preregistro.json (mismo corpus, mismo vectorizador canonico, mismo presupuesto de pasadas y mismo control SGD); solo las anulaciones de V35 se listan en la clave `anulaciones_v35`",
+    "anulaciones_v35": {}
+  },
+  "regla_alpha": {
+    "formula": "alpha* = M*(2 - power_t)/(d_norm * P_max**(2 - power_t))",
+    "con_power_t_cero": "alpha* = 2*M/(d_norm * P_max**2)",
+    "M": {
+      "valor": 1.6094379124341003,
+      "definicion": "ln(K-1) = ln(5)",
+      "unidad": "log-odds (nats)",
+      "fuente": "constante DECLARADA, ancla ya usada en V33-E1 (|log(1/5)|)",
+      "sensibilidad": "alpha* es lineal en M: si M se multiplica por c, alpha* se multiplica por c (sensibilidad proporcional 1.0)"
+    },
+    "d_norm": {
+      "definicion": "sqrt(1 - sum_c prior_c^2) sobre el prior MEDIDO del subconjunto ES-train del fold",
+      "unidades": "adimensional (0, 1]",
+      "fuente": "medido en runtime con las filas que se entrenan; NO el prior del fold-train completo (el ES consume el 10 %)",
+      "sensibilidad": "alpha* es proporcional a 1/d_norm; con prior uniforme d_norm = 0.9128709 y alpha* seria 0.0352631 (valor de referencia calculado con el prior medido del fold-train completo en la exploracion del arquitecto)"
+    },
+    "P_max": {
+      "valor": 10,
+      "unidad": "pasadas",
+      "fuente": "ancla D-083: el presupuesto con el que el gemelo SGD aprendio",
+      "nota": "entra A LA VEZ como presupuesto y como ancla: hay UN SOLO grado de libertad (no es busqueda); cambiarlo re-deriva alpha* y esta prohibido tras la ejecucion"
+    },
+    "valores_evaluados": 0,
+    "aplicacion": "se calcula UNA vez (fold 0), se congela y se aplica a los 5 folds; si no reproduce la formula en runtime -> exit 2 ANTES de entrenar",
+    "esperado_aproximado": 0.0352631,
+    "origen": "copiado verbatim de experiments/v34_00_preregistro.json (mismo corpus, mismo vectorizador canonico, mismo presupuesto de pasadas y mismo control SGD); solo las anulaciones de V35 se listan en la clave `anulaciones_v35`",
+    "anulaciones_v35": {
+      "aplicacion": "CONGELADO e identico a V34-E1: NO se re-deriva. La unica verificacion en runtime es la del anclaje de lambda1 por el nucleo de anclaje (enmienda 1), no la de la formula. Si el valor efectivo de runtime no coincide con el congelado -> exit 2 ANTES de entrenar"
+    },
+    "valor_congelado": 0.035262336465737745,
+    "no_se_re_deriva": true,
+    "d_norm_fold_0_es": 0.9128367962785974
+  },
+  "anclas": {
+    "macro_f1_trivial_clase_mayoritaria": 0.04854212180687087,
+    "clase_mayoritaria": "13-17",
+    "gemelo_sgd_d083": 0.4934789,
+    "log_uniforme_k6": 1.791759469228055,
+    "log_k_menos_1": 1.6094379124341003,
+    "h_prior_subconjunto_exploracion": 1.7914536815044917,
+    "d_norm_referencia": 0.912815416414756,
+    "alpha_esperado_para_d_norm_referencia": 0.035263162376364156,
+    "origen": "copiado verbatim de experiments/v34_00_preregistro.json (mismo corpus, mismo vectorizador canonico, mismo presupuesto de pasadas y mismo control SGD); solo las anulaciones de V35 se listan en la clave `anulaciones_v35`",
+    "anulaciones_v35": {
+      "nota_sobre_los_dos_valores_de_alpha": "0.0352631 es el valor de REFERENCIA calculado con el prior del fold-train COMPLETO (d_norm = 0.912815416414756, el de la exploracion del arquitecto); 0.035262336465737745 es el valor EFECTIVO del fold 0, derivado con el prior MEDIDO del ES-train (d_norm = 0.9128367962785974). No son una contradiccion: son dos priors distintos, y el segundo es el que gobierna"
+    },
+    "h_prior_es_fold_0": 1.7915714394468476,
+    "d_norm_es_fold_0": 0.9128367962785974,
+    "alpha_efectivo_fold_0": 0.035262336465737745,
+    "mediana_abs_z_anclaje_fold_0": 0.23993793862904017,
+    "mediana_sobre_alpha": 6.8044,
+    "razon_max_min_norma_w_lambda1_mediana": 2.1304,
+    "sha256_z_anclaje_fold_0": "ec1d1a7b13454f8b",
+    "lectura": "anclas medidas en la sonda pre-ejecucion (experiments/v35_00b_sonda_lambda1.json) y en el stream real de TRAIN del fold 0: el cociente mediana/alpha = 6.8044 confirma que lambda1 = alpha es un no-op, y la razon de normas 2.1304 > 1.0 confirma que un lambda1 fijo NO acota la norma, que es lo que G8 pone a prueba"
+  },
+  "control": {
+    "estimator": "sklearn.linear_model.SGDClassifier",
+    "loss": "log_loss",
+    "alpha_reg": 1e-06,
+    "learning_rate": "optimal",
+    "shuffle": false,
+    "fit_intercept": true,
+    "max_iter": 10,
+    "tol": null,
+    "random_state": "20261010+fold",
+    "n_jobs": 32,
+    "pasadas": 10,
+    "matriz": "la MISMA TF-IDF por fold, **SIN columna de sesgo pre-anadida** (un solo camino de sesgo por brazo)",
+    "por_que": "es el precedente que SI aprende (0.3956246 en V33-E1 con una pasada; 0.4934789 con diez en D-083) y por eso demuestra que el presupuesto no es el limite",
+    "enmienda_pre_ejecucion_1": {
+      "defecto_corregido": "D-083 y V33-E1 entregaron al control la matriz con sesgo pre-anadido Y fit_intercept=True (doble sesgo)",
+      "motivacion": "correccion de un defecto de implementacion, NO de conveniencia: no altera el criterio de exito y no favorece a A1",
+      "exigencia": "tabla de simetria de sesgo con UN solo camino por brazo, verificada por sonda: max|gradiente de la coordenada de sesgo| en A1 y paridad con intercept_ de A2"
+    },
+    "asimetria_declarada": {
+      "lambda2_ftrl": 1.0,
+      "alpha_reg_sgd": 1e-06,
+      "no_equivalencia_estructural": "A1 tiene un regularizador (L1) que A2 no tiene: A2 es control de PRESUPUESTO, NO gemelo mecanico. Ninguna conclusion puede descansar en el contraste A1 vs A2: delta, razones entre brazos e IC bootstrap cruzado quedan contaminados. El veredicto se apoya solo en evidencia interna de A1 contra la regla derivada (G0/G1/G4) mas el triage",
+      "sonda_exigida": "publicar que el veredicto NO se apoya en el contraste A1 vs A2 y que la lectura de A2 es unidireccional (presupuesto)",
+      "vigente_para": "V35-E1 (reinicio one-shot de la familia FTRL, acta D-086)"
+    },
+    "ajuste": {
+      "modo": "partial_fit_por_pasada",
+      "llamadas": 10,
+      "t_acumulado": "t_ se acumula entre llamadas (401 si se usara fit repetido, por el reinicio de self.t_ en BaseSGDClassifier._fit)",
+      "es_por_pasada": true,
+      "restaura_mejor_coef": true,
+      "max_iter": null,
+      "nota": "el numero de pasadas (10) es el que el pre-registro congelo; lo que se corrige es como se ejecuta, porque fit(max_iter=1, warm_start=True) no acumula el schedule"
+    },
+    "desvio_declarado_partial_fit": {
+      "no_bit_identico_a_fit_max_iter_10": true,
+      "medicion": "4.5e-5 a 2 pasadas y 2.0e1 a 4 pasadas en un problema sintetico",
+      "motivo_de_la_eleccion": "es la unica via que permite evaluar el early stopping despues de cada pasada, que el pre-registro exige (P_min 3, paciencia 2, restaurar el mejor coef_), y da el mismo presupuesto que A1"
+    },
+    "origen": "copiado verbatim de experiments/v34_00_preregistro.json (mismo corpus, mismo vectorizador canonico, mismo presupuesto de pasadas y mismo control SGD); solo las anulaciones de V35 se listan en la clave `anulaciones_v35`",
+    "anulaciones_v35": {
+      "asimetria_declarada": "A1 tiene un regularizador (L1) que A2 no tiene: A2 es control de PRESUPUESTO, NO gemelo mecanico. Ninguna conclusion puede descansar en el contraste A1 vs A2: delta, razones entre brazos e IC bootstrap cruzado quedan contaminados. El veredicto se apoya solo en evidencia interna de A1 contra la regla derivada (G0/G1/G4) mas el triage",
+      "sonda_exigida": "publicar que el veredicto NO se apoya en el contraste A1 vs A2 y que la lectura de A2 es unidireccional (presupuesto)",
+      "no_equivalencia_estructural_texto_anulado_de_v34": "con lambda2 = 1e-6 el L2-en-acumulador y el L2-en-denominador dan resultado IDENTICO (es un no-op, medido en la exploracion previa): por eso no existe una equivalencia FTRL<->SGD a escala 1e-6",
+      "motivo_de_anulacion": "describe una asimetria distinta (el L2 de A2 en 1e-6 como no-op medido en V34) y no la de V35, que es la presencia del L1 solo en A1. No se aplica a V35 y se conserva aqui, con su valor, para que la anulacion sea trazable"
+    }
+  },
+  "budgeto": {
+    "pasadas_maximas": 10,
+    "pasadas_minimas": 3,
+    "paciencia": 2,
+    "mejora_minima": 0.0001,
+    "orden_por_pasada": "np.random.default_rng(20261010+fold+pasada).permutation de las filas ES-train; un orden distinto por pasada y por fold",
+    "particion_es": {
+      "generador": "sklearn.model_selection.StratifiedShuffleSplit(n_splits=1, test_size=0.1, random_state=20261010+fold) sobre las filas de fold-train",
+      "metrica": "macro-F1 del brazo sobre el 10 % de TRAIN (nunca fold-val)",
+      "restauracion": "al parar se restaura el mejor w (seleccion sobre TRAIN)",
+      "simetria": "ambos brazos reciben el MISMO P_max, la MISMA particion (sha256 de los indices), los MISMOS ordenes por pasada (sha256) y reportan su pasada de parada; el ES no elige entre brazos"
+    },
+    "prohibido": "usar fold-val, test o el leaderboard para parar, seleccionar o comparar brazos",
+    "origen": "copiado verbatim de experiments/v34_00_preregistro.json (mismo corpus, mismo vectorizador canonico, mismo presupuesto de pasadas y mismo control SGD); solo las anulaciones de V35 se listan en la clave `anulaciones_v35`",
+    "anulaciones_v35": {}
+  },
+  "representacion": {
+    "vectorizador": {
+      "analyzer": "word",
+      "ngram_range": [
+        1,
+        2
+      ],
+      "min_df": 3,
+      "max_df": 0.5,
+      "sublinear_tf": true,
+      "lowercase": true,
+      "strip_accents": null,
+      "token_pattern": "(?u)\\b\\w+\\b",
+      "nota_token_pattern": "canonical con una sola barra; el valor con barras dobles que figuraba antes en este pre-registro (hash 33311e5eddc0b0bb) deja el vocabulario vacio y no se usa. Coherente con V33 y V34 (hash 9bae157614458dbd)"
+    },
+    "norm_dtype": "defaults de sklearn (norm='l2', dtype float64)",
+    "ajuste": "POR FOLD: fit solo en ES-train (el 10 % del fold-train va al ES interno y NO se vectoriza con el) — declarado por coherencia con la regla de alpha, que se deriva sobre las filas que se entrenan",
+    "sesgo": "A1 materializa el sesgo como coordenada x0=1.0 (un solo camino); A2 usa fit_intercept=True SIN columna de sesgo pre-anadida (enmienda pre-ejecucion 1)",
+    "origen": "copiado verbatim de experiments/v34_00_preregistro.json (mismo corpus, mismo vectorizador canonico, mismo presupuesto de pasadas y mismo control SGD); solo las anulaciones de V35 se listan en la clave `anulaciones_v35`",
+    "anulaciones_v35": {
+      "nota": "`representacion.vectorizador` es identico a `config.vectorizador` y su hash es el canonico 9bae157614458dbdf26fb7aed4c78d2954c36e895f830341e59b23fa63e2b51b (enmienda 3)"
+    }
+  }
 }

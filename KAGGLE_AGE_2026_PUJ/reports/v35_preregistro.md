@@ -94,3 +94,18 @@
 - **Correccion**: `'(?u)\b\w+\b'` (una sola barra) con hash `9bae157614458dbd`, que es el que declaran los pre-registros de V33 y V34 y el que produjo las 107793 coordenadas que registran el nucleo de V34 y la sonda pre-ejecucion de esta via.
 - **No cambia el protocolo**: no toca modelo, nucleo FTRL, anclaje, gates, puerta, arbol, criterio de exito, presupuesto ni datos; corrige el literal de un parametro para que el pre-registro vuelva a ser la fuente unica de verdad. Mismo precedente que `v34_00e`.
 - Sin resultados: enmienda **pre-ejecucion**.
+
+## Enmienda pre-ejecucion 4 (2026-09-30): se restituyen las 6 secciones de contexto
+
+- **Defecto**: el runner hace 17 lecturas `prereg[...]` de secciones top-level **inexistentes** en el pre-registro de V35 (`control`, `corpus`, `anclas`, `representacion`, `budgeto`, `regla_alpha`; las 6 si estan en el de V34-E1). La corrida moria **despues** de entrenar, con checkpoints y OOF ya escritos, y `verificar_constantes` no lo detectaba. Lo encontro `ml-reviewer` ejecutando de verdad `construir_resultado`, `escribir_informe` y `resumen_consola` con un estado simulado, porque `--verificar` y `--humo` **no** ejecutan la ruta de salida.
+- **Correccion**: las 6 secciones se copian **verbatim** del pre-registro de V34-E1 (mismo corpus, mismo vectorizador canonico, mismo presupuesto y mismo control), cada una con su clave `origen` para que la copia sea auditable, y se anulan **solo** los puntos donde V35 difiere: `control.asimetria_declarada` (A1 tiene L1 y A2 no, luego A2 es control de PRESUPUESTO, no gemelo mecanico), `regla_alpha.aplicacion` (`alpha*` CONGELADO e identico a V34-E1, no se re-deriva) y las anclas medidas en V35.
+- Nota explicita sobre los dos valores de `alpha`: 0.0352631 es la referencia con el prior del fold-train completo (`d_norm` 0.912815416414756) y 0.035262336465737745 es el efectivo del fold 0 con el prior MEDIDO del ES-train (`d_norm` 0.9128367962785974); son dos priors distintos, no una contradiccion.
+- **No cambia el protocolo**: ni modelo, ni nucleo, ni anclaje de `lambda1`, ni `alpha*`, ni gates, ni puerta, ni arbol, ni criterio de exito, ni presupuesto, ni datos. Se restituye contexto ya congelado que el informe publica.
+- Sin resultados: enmienda **pre-ejecucion**.
+
+## Enmienda pre-ejecucion 5 (2026-09-30): una sola declaracion de asimetria
+
+- **Defecto**: la enmienda 4 marco el texto de asimetria de V34 como anulado pero no lo sustituyo, luego el pre-registro declaraba **dos** no-equivalencias estructurales para el mismo par de brazos y solo una era la de V35. El runner ya no imprimia el texto de V34 (la linea del informe lee la asimetria de la sonda), asi que el riesgo era de lectura del documento de registro.
+- **Correccion**: `control.asimetria_declarada.no_equivalencia_estructural` pasa a ser **el texto de V35** (A1 tiene L1 y A2 no, luego A2 es control de PRESUPUESTO y no gemelo mecanico), y el texto de V34 queda integro y con su valor en `control.anulaciones_v35.no_equivalencia_estructural_texto_anulado_de_v34`. No queda ningun texto de V34 presentado como declaracion vigente.
+- **No cambia el protocolo**: la asimetria ya estaba fijada por el especialista antes de congelar y el runner ya la respetaba; es desambiguacion documental. Ni modelo, ni nucleo, ni anclaje, ni `alpha*`, ni gates, ni puerta, ni arbol, ni presupuesto.
+- Sin resultados: enmienda **pre-ejecucion**.

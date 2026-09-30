@@ -2357,3 +2357,16 @@ intacto.
 
 - El `token_pattern` congelado llevaba backslashes dobles y no encuentra match en 'hola mundo' (vocabulario vacio, representacion inservible); el canonico es `'(?u)\b\w+\b'` con hash 9bae157614458dbd, el mismo que declaran V33 y V34.
 - Corregidos `config.vectorizador.token_pattern` y `hashes.vectorizador`; el hash se recomputo y se verifico contra el valor canonico. No cambia modelo, nucleo, anclaje, gates, puerta, arbol ni presupuesto.
+
+---
+
+## Enmienda pre-ejecucion 4 de V35-E1 - 2026-09-30
+
+- El runner hacia 17 lecturas `prereg[...]` de secciones inexistentes en V35 (`control`, `corpus`, `anclas`, `representacion`, `budgeto`, `regla_alpha`): la corrida moria tras entrenar, con checkpoints y OOF escritos, y `verificar_constantes` no lo veia. Detectado por `ml-reviewer` al ejecutar de verdad la ruta de salida, que `--verificar` y `--humo` no cubren.
+- Las 6 secciones se copian verbatim de V34-E1 con `origen` auditable y se anulan solo los puntos donde V35 difiere (asimetria de A2, `alpha` congelado, anclas medidas). No cambia ninguna decision experimental.
+
+---
+
+## Enmienda pre-ejecucion 5 de V35-E1 - 2026-09-30
+
+- El pre-registro declaraba dos asimetrias para A1 vs A2 (la de V34 y la de V35). Ahora hay una sola vigente, la de V35, y el texto de V34 queda conservado con su valor como anulado trazable.

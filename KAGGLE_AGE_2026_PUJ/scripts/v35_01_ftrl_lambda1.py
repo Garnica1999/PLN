@@ -271,15 +271,10 @@ GATES_EXCLUSIVOS_A1 = ("G7_L1_activo", "G8_acotacion_norma")
 GATES_EXCLUSIVOS_A2 = (NOMBRES_GATE[0], NOMBRES_GATE[1], NOMBRES_GATE[2], NOMBRES_GATE[3],
                       NOMBRES_GATE[4], NOMBRES_GATE[5], NOMBRES_GATE[6])
 #: Nodo del arbol que emite el codigo en CADA caso de la rama pre-declarada de la puerta. La
-#: decision la toma :func:`decidir_rama_arbol`; este mapa solo la publica (informe, JSON y consola)
-#: para que se vea que caso produce que nodo, y se contrasta con los textos del pre-registro.
-NODOS_ARBOL = {
-    "g7_o_g8_falla": "LINEA_ONLINE_CERRADA_POR_MECANISMO",
-    "g7_y_g8_pasan_g0_g4_falla": "HIPOTESIS_CONJUNTA_REFUTADA",
-    "otro_fallo": "NO_ATRIBUIBLE_BY_GATE",
-    "ninguna_falla": "gates de la serie (rama NO de cierre)"}
-#: Nodos del arbol usados para el ``siguiente_paso``. Se nombran aqui porque ``NODOS_ARBOL`` (linea
-#: ~423) es la TUPLA de nodos validos y no admite acceso por clave.
+#: decision la toma :func:`decidir_rama_arbol`; estos nombres solo se publican (informe, JSON y
+#: consola) y se contrastan con los textos del pre-registro. La lista de nodos VALIDOS vive en la
+#: tupla ``NODOS_ARBOL`` mas abajo; aqui NO se re-declara ningun dict homonimo, porque lo sombreaba
+#: y hacia fallar ``publicar_rama_arbol`` con ``TypeError``.
 NODO_CIERRE_POR_MECANISMO = "LINEA_ONLINE_CERRADA_POR_MECANISMO"
 NODO_HIPOTESIS_CONJUNTA_REFUTADA = "HIPOTESIS_CONJUNTA_REFUTADA"
 #: Campos numericos que el checkpoint exige por fold y por brazo.
@@ -1582,6 +1577,14 @@ CLAVES_NOTA_VECTORIZADOR = ("nota_token_pattern",)
 OBJETO_ENMIENDA_ANCLAJE = "anclaje_lambda1.verificacion (item 2 del diseno)"
 OBJETO_ENMIENDA_SONDAS = "sondas_nuevas (k)-(m): dimension del problema y alcance del contraste"
 OBJETO_ENMIENDA_TOKEN = "config.vectorizador.token_pattern y hashes.vectorizador"
+OBJETO_ENMIENDA_SECCIONES = ("secciones de contexto ausentes: control, corpus, anclas, "
+                             "representacion, budgeto, regla_alpha")
+OBJETO_ENMIENDA_ASIMETRIA = ("control.asimetria_declarada (desambiguacion de la no-equivalencia "
+                             "estructural)")
+#: Secciones de contexto restituidas por la enmienda 4; el runner las lee al construir el
+#: resultado y las publica, asi que deben existir TODAS con su `origen`.
+SECCIONES_CONTEXTO = ("anclas", "budgeto", "control", "corpus", "regla_alpha",
+                       "representacion")
 
 
 def token_pattern_equivalente(vectorizador_prereg: dict) -> dict:
@@ -1729,12 +1732,19 @@ def verificar_constantes(prereg: dict) -> tuple[bool, dict]:
         "lambda1_sensibilidad_declarada": ("q=0.25" in anclaje["sensibilidad_declarada"]
                                             and "gemelo sintetico" in
                                             anclaje["sensibilidad_declarada"]),
-        # ---- enmiendas pre-ejecucion 1, 2 y 3 del pre-registro ----
+        # ---- enmiendas pre-ejecucion 1 a 5 del pre-registro ----
         # Se comprueban POR OBJETO y por sus banderas, nunca por su numero de orden ni por indice:
-        # el orden no es un contrato y la tercera enmienda (token_pattern) se anadio despues, lo
-        # que rompio el conteo congelado de dos que traia el runner.
-        "enmienda_1_presente": (len(prereg["enmiendas"]) == 3
-                                and enmiendas.get(OBJETO_ENMIENDA_ANCLAJE, {}).get(
+        # el orden no es un contrato, la tercera enmienda (token_pattern) se anadio despues y las
+        # cuarta y quinta (secciones de contexto y desambiguacion de la asimetria) despues de que
+        # el runner comprobara un conteo congelado de tres. El conteo NO se exige en ningun sitio:
+        # lo que se exige es que las cinco esten presentes por objeto y que TODAS declaren que no
+        # hay resultados.
+        "enmiendas_todas_sin_resultados": all(
+            str(enmienda.get("estado_datos", "")).startswith("sin resultados")
+            for enmienda in prereg["enmiendas"]),
+        "enmiendas_ninguna_cambia_el_protocolo": all(
+            enmienda.get("cambia_el_protocolo") is False for enmienda in enmiendas.values()),
+        "enmienda_1_presente": (enmiendas.get(OBJETO_ENMIENDA_ANCLAJE, {}).get(
                                     "afecta_a_gates") is False
                                 and enmiendas.get(OBJETO_ENMIENDA_ANCLAJE, {}).get(
                                     "cambia_el_protocolo") is False
@@ -1762,6 +1772,25 @@ def verificar_constantes(prereg: dict) -> tuple[bool, dict]:
             and enmiendas.get(OBJETO_ENMIENDA_TOKEN, {}).get("a", {}).get(
                 "hashes_vectorizador") == SHA256_VECTORIZADOR_CANONICO
             and str(prereg["hashes"]["vectorizador"]) == SHA256_VECTORIZADOR_CANONICO),
+        "enmienda_4_presente": (
+            enmiendas.get(OBJETO_ENMIENDA_SECCIONES, {}).get("cambia_el_protocolo") is False
+            and enmiendas.get(OBJETO_ENMIENDA_SECCIONES, {}).get("cambia_alpha") is False
+            and enmiendas.get(OBJETO_ENMIENDA_SECCIONES, {}).get("cambia_los_gates") is False
+            and enmiendas.get(OBJETO_ENMIENDA_SECCIONES, {}).get("cambia_el_presupuesto") is False
+            and all("origen" in prereg[seccion] and "anulaciones_v35" in prereg[seccion]
+                    for seccion in SECCIONES_CONTEXTO)
+            and json.dumps(prereg["config"]["vectorizador"], sort_keys=True)
+            == json.dumps(prereg["representacion"]["vectorizador"], sort_keys=True)),
+        "enmienda_5_presente": (
+            enmiendas.get(OBJETO_ENMIENDA_ASIMETRIA, {}).get("cambia_el_protocolo") is False
+            and enmiendas.get(OBJETO_ENMIENDA_ASIMETRIA, {}).get("cambia_los_gates") is False
+            and isinstance(prereg["control"]["anulaciones_v35"].get(
+                "no_equivalencia_estructural_texto_anulado_de_v34"), str)),
+        "asimetria_vigente_es_la_de_v35": (
+            str(prereg["control"]["asimetria_declarada"]["no_equivalencia_estructural"]).startswith(
+                "A1 tiene un regularizador")
+            and "PRESUPUESTO" in str(
+                prereg["control"]["asimetria_declarada"]["no_equivalencia_estructural"])),
         "enmienda_1_nucleo_de_anclaje": (
             "anclaje (lambda1 = 0.0)" in anclaje["verificacion_runtime"]["nucleo"]
             and "lambda1 = 0.0" in anclaje["verificacion_runtime"]["nucleo"]),
@@ -5829,6 +5858,9 @@ def escribir_informe(resultado: dict) -> None:
     """
     control = resultado["verificacion"]["constantes_control"]
     asimetria = resultado["asimetrias"]
+    #: La declaracion de la desviacion del control se lee del PRE-REGISTRO (fuente unica), no de
+    #: la sonda: la sonda publica la medicion, el pre-registro publica lo declarado.
+    control_prereg = resultado["verificacion"]["constantes_control"]["control_prereg"]
     puerta = resultado["puerta"]
     triage = resultado.get("triage") or {}
     mecanismo = resultado["mecanismo_fold_0"]
@@ -5906,11 +5938,11 @@ def escribir_informe(resultado: dict) -> None:
         "",
         (f"- `lambda2` de A1 = {asimetria['lambda2_ftrl']} frente a `alpha_reg` de A2 = "
          f"{asimetria['alpha_reg_sgd']} (cociente {asimetria['cociente']:.0e}). "
-         f"{asimetria['no_equivalencia_estructural']}"),
+         f"{asimetria['asimetria_declarada']}"),
         f"- El veredicto NO se apoya en esa asimetria: {asimetria['apoyo_del_veredicto']}.",
         f"- Lectura correcta de A2: {asimetria['lectura_correcta_de_a2']}.",
         f"- Enmienda 2 (control A2): {asimetria['control_ajuste']}.",
-        f"- Desviacion declarada: {asimetria['desvio_declarado_partial_fit']}.",
+        f"- Desviacion declarada: {control_prereg['desvio_declarado_partial_fit']}.",
         # Se citan por OBJETO y no por numero: en este documento 'Enmienda 1' y 'Enmienda 2'
         # ya designan el doble sesgo y el control, y numerar aqui colisionaria con ellas.
         *[f"- Enmienda del pre-registro ({enmienda['objeto']}): {enmienda['motivo']} "
@@ -6603,21 +6635,32 @@ def publicar_rama_arbol(estado: dict, prereg: dict) -> dict:
     """
     rama = estado.get("rama_arbol")
     predeclarada = prereg["puerta"]["rama_predeclarada"]
+    #: Mapa condicion -> nodo. Los nombres se toman de las constantes de nodo y se validan contra
+    #: la TUPLA ``NODOS_ARBOL`` (linea ~426), que es la unica definicion viva: un dict homonimo
+    #: anterior queda como codigo muerto (ver ``NODO_CIERRE_POR_MECANISMO``).
+    nodos = {"g7_o_g8_falla": NODO_CIERRE_POR_MECANISMO,
+             "g7_y_g8_pasan_g0_g4_falla": NODO_HIPOTESIS_CONJUNTA_REFUTADA,
+             "otro_fallo": "NO_ATRIBUIBLE_BY_GATE",
+             "ninguna_falla": "gates de la serie (rama NO de cierre)"}
+    for clave, nodo in nodos.items():
+        if clave != "ninguna_falla" and nodo not in NODOS_ARBOL:
+            raise Detencion(f"[STOP] el nodo '{nodo}' de la rama '{clave}' no esta en NODOS_ARBOL "
+                            "(exit 2)", 2)
     mapa = {"G7_o_G8_fallan_en_A1": {
-                "nodo": NODOS_ARBOL["g7_o_g8_falla"],
+                "nodo": nodos["g7_o_g8_falla"],
                 "texto_del_prereg": predeclarada["G7_o_G8_fallan"]},
             "G7_y_G8_pasan_pero_G0_G4_fallan_en_A1": {
-                "nodo": NODOS_ARBOL["g7_y_g8_pasan_g0_g4_falla"],
+                "nodo": nodos["g7_y_g8_pasan_g0_g4_falla"],
                 "texto_del_prereg": predeclarada["G7_y_G8_pasan_pero_G0_G4_fallan"]},
             "cualquier_otro_fallo": {
-                "nodo": NODOS_ARBOL["otro_fallo"],
+                "nodo": nodos["otro_fallo"],
                 "texto_del_prereg": ("mismo criterio que en V34: el fallo no es atribuible a G7 ni a "
                                      "G8 de A1")},
             "ninguna_gate_falla": {
-                "nodo": NODOS_ARBOL["ninguna_falla"],
+                "nodo": nodos["ninguna_falla"],
                 "texto_del_prereg": predeclarada["todas_pasan"]}}
     nombres_prereg = " ".join(str(valor) for valor in predeclarada.values())
-    coincide = all(nodo in nombres_prereg for clave, nodo in NODOS_ARBOL.items()
+    coincide = all(nodo in nombres_prereg for clave, nodo in nodos.items()
                    if clave != "ninguna_falla")
     if rama is None:
         return {"nodo": None, "es_rama_de_cierre": False, "causa": None,
