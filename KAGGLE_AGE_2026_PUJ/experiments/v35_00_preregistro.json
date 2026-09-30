@@ -27,7 +27,7 @@
     "canonico_cand_prob": "57be29623543c2616011f8fc77aff89b71faecdad6b599f1b4f4b133655a8134",
     "corpus_archivo": "39c6c8270366fe155f3c8dd232e31867bee659af8908121d04b6bd89bd163748",
     "corpus_textos": "53c1a348a7954f3e59d7c67caddd6477a06f7d3441724c201052b4b5273445fc",
-    "vectorizador": "33311e5eddc0b0bbfd07505b9ed3474bb824d1b41fac92d3d7bfd3fd902ba977"
+    "vectorizador": "9bae157614458dbdf26fb7aed4c78d2954c36e895f830341e59b23fa63e2b51b"
   },
   "versiones": {
     "sklearn": "1.8.0",
@@ -172,7 +172,8 @@
       "sublinear_tf": true,
       "lowercase": true,
       "strip_accents": null,
-      "token_pattern": "(?u)\\\\b\\\\w+\\\\b"
+      "token_pattern": "(?u)\\b\\w+\\b",
+      "nota_token_pattern": "canonical con una sola barra; el valor con barras dobles que figuraba antes en este pre-registro (hash 33311e5eddc0b0bb) deja el vocabulario vacio y no se usa. Coherente con V33 y V34 (hash 9bae157614458dbd)"
     },
     "ajuste": "POR FOLD: solo ES-train"
   },
@@ -260,6 +261,24 @@
       "afecta_a_gates": false,
       "evidencia_de_mecanismo": "la decision se apoya en la trayectoria interna de A1 sobre el stream real (que alimenta G8) mas el triage, no en evidencia importada de /tmp; ademas lambda1 = 0 ya tiene evidencia real versionada del ciclo V34-E1 y lambda1 = mediana es el propio A1, luego la repeticion de los tres casos es confirmacion y no la fuente",
       "presupuesto": "los ~60 s de los tres casos caben en los 1200 s declarados",
+      "estado_datos": "sin resultados; enmienda pre-ejecucion"
+    },
+    {
+      "fecha": "2026-09-30",
+      "objeto": "config.vectorizador.token_pattern y hashes.vectorizador",
+      "de": {
+        "token_pattern": "(?u)\\\\b\\\\w+\\\\b",
+        "hashes_vectorizador": "33311e5eddc0b0bbfd07505b9ed3474bb824d1b41fac92d3d7bfd3fd902ba977"
+      },
+      "a": {
+        "token_pattern": "(?u)\\b\\w+\\b",
+        "hashes_vectorizador": "9bae157614458dbdf26fb7aed4c78d2954c36e895f830341e59b23fa63e2b51b"
+      },
+      "motivo": "el patron congelado lleva backslashes dobles: no compila ninguna palabra (medido, re.compile del patron congelado no encuentra match en 'hola mundo'), luego el vocabulario seria vacio y la representacion inservible. El canonico es el que declaran los pre-registros de V33 y V34 y el que produjo las 107793 coordenadas que registran el nucleo de V34 y la sonda pre-ejecucion de esta via",
+      "clase": "tercera enmienda pre-ejecucion; mismo precedente que v34_00e (correccion de un literal del pre-registro antes de ejecutar)",
+      "cambia_el_protocolo": false,
+      "cambia_el_modelo": false,
+      "cambia_los_gates": false,
       "estado_datos": "sin resultados; enmienda pre-ejecucion"
     }
   ]

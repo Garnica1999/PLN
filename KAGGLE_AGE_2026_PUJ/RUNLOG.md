@@ -2350,3 +2350,10 @@ intacto.
 
 - El pre-registro pedia identidad numerica de los tres casos del gemelo en las sondas (k)-(m) sin decir donde; sobre el mini es imposible (1350 x 51 frente a 121921 x 107793).
 - Correccion: en el mini son de FIRMA DE MECANISMO y no-gate; la identidad exacta corre en el fold 0 de la corrida real con tolerancia relativa 1e-09 y diferencia EXACTA 0 en el anclaje.
+
+---
+
+## Enmienda pre-ejecucion 3 de V35-E1 - 2026-09-30
+
+- El `token_pattern` congelado llevaba backslashes dobles y no encuentra match en 'hola mundo' (vocabulario vacio, representacion inservible); el canonico es `'(?u)\b\w+\b'` con hash 9bae157614458dbd, el mismo que declaran V33 y V34.
+- Corregidos `config.vectorizador.token_pattern` y `hashes.vectorizador`; el hash se recomputo y se verifico contra el valor canonico. No cambia modelo, nucleo, anclaje, gates, puerta, arbol ni presupuesto.

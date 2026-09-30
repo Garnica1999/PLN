@@ -87,3 +87,10 @@
 - **Correccion**: en el miniproblema de `--verificar` son **NO-GATE y de firma de mecanismo** (orden de las tres normas `||w||_2` y signo de la razon, con deltas como diagnostico). La **identidad numerica exacta** corre **dentro del runner, en el fold 0 de la corrida real**, sobre el stream real de ES-train, con diferencia relativa <= 1e-09 en `ll_train` y `||w||_2`, y diferencia **exacta 0** mas `sha256` identico en la mediana del anclaje.
 - **No cambia el protocolo**: son no-gate por pre-registro, no tocan el anclaje, ni los gates, ni la puerta, ni el arbol, ni el criterio de exito. La decision de mecanismo se apoya en la trayectoria interna de A1 (la que alimenta G8) mas el triage; ademas `lambda1 = 0` ya tiene evidencia real versionada de V34-E1 y `lambda1 = mediana` es el propio A1, luego la repeticion es confirmacion.
 - Sin resultados: enmienda **pre-ejecucion**.
+
+## Enmienda pre-ejecucion 3 (2026-09-30): `token_pattern` del vectorizador corregido
+
+- **Defecto**: el pre-registro congelo `'(?u)\\b\\w+\\b'` (backslashes dobles, hash `33311e5eddc0b0bb`). Medido: `re.compile` de ese patron **no encuentra match en `'hola mundo'`**, luego el vocabulario seria **vacio** y la representacion inservible. Es un error de redaccion del pre-registro (cadena cruda con las barras ya escapadas): ningun fold se ha entrenado y el codigo nunca uso el patron defectuoso.
+- **Correccion**: `'(?u)\b\w+\b'` (una sola barra) con hash `9bae157614458dbd`, que es el que declaran los pre-registros de V33 y V34 y el que produjo las 107793 coordenadas que registran el nucleo de V34 y la sonda pre-ejecucion de esta via.
+- **No cambia el protocolo**: no toca modelo, nucleo FTRL, anclaje, gates, puerta, arbol, criterio de exito, presupuesto ni datos; corrige el literal de un parametro para que el pre-registro vuelva a ser la fuente unica de verdad. Mismo precedente que `v34_00e`.
+- Sin resultados: enmienda **pre-ejecucion**.

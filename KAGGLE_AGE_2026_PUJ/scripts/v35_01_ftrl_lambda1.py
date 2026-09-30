@@ -270,6 +270,14 @@ NOMBRES_GATE = ("G0_objetivo_de_la_regla", "G1_banda_ll_train", "G2_progreso",
 GATES_EXCLUSIVOS_A1 = ("G7_L1_activo", "G8_acotacion_norma")
 GATES_EXCLUSIVOS_A2 = (NOMBRES_GATE[0], NOMBRES_GATE[1], NOMBRES_GATE[2], NOMBRES_GATE[3],
                       NOMBRES_GATE[4], NOMBRES_GATE[5], NOMBRES_GATE[6])
+#: Nodo del arbol que emite el codigo en CADA caso de la rama pre-declarada de la puerta. La
+#: decision la toma :func:`decidir_rama_arbol`; este mapa solo la publica (informe, JSON y consola)
+#: para que se vea que caso produce que nodo, y se contrasta con los textos del pre-registro.
+NODOS_ARBOL = {
+    "g7_o_g8_falla": "LINEA_ONLINE_CERRADA_POR_MECANISMO",
+    "g7_y_g8_pasan_g0_g4_falla": "HIPOTESIS_CONJUNTA_REFUTADA",
+    "otro_fallo": "NO_ATRIBUIBLE_BY_GATE",
+    "ninguna_falla": "gates de la serie (rama NO de cierre)"}
 #: Campos numericos que el checkpoint exige por fold y por brazo.
 CAMPOS_FOLD = ("n_vocabulario", "vocab_sha256", "idf_sha256", "n_filas_fit_es_train",
                "n_filas_es_val", "n_train_fold", "n_val_fold", "n_features_es_train",
@@ -307,6 +315,33 @@ VECTORIZADOR = {"analyzer": "word", "ngram_range": [1, 2], "min_df": 3, "max_df"
                 "sublinear_tf": True, "lowercase": True, "strip_accents": None,
                 "token_pattern": r"(?u)\b\w+\b"}
 VECTORIZADOR_FIT = {**VECTORIZADOR, "ngram_range": (1, 2)}
+#: SHA256 del dict del vectorizador con la receta CANONICA (token_pattern de un backslash). Es el
+#: valor que declaran los pre-registros V33 y V34 ya enmendados, el que usa el nucleo de V34 cuyo
+#: sha256 verifica esta corrida y el unico EJECUTABLE: con el typo de dobles backslashes el
+#: vocabulario sale VACIO y el ajuste revienta con "empty vocabulary".
+SHA256_VECTORIZADOR_CANONICO = "9bae157614458dbdf26fb7aed4c78d2954c36e895f830341e59b23fa63e2b51b"
+#: SHA256 del dict con el token_pattern de DOBLES backslashes: es el valor ANTERIOR a la enmienda
+#: pre-ejecucion 3 de V34 (que lo restauro a la receta canonica de v31_02) y es el que el
+#: pre-registro V35 arrastra sin actualizar. Se declara aqui para que la discrepancia sea
+#: EXPLICITA y no una tolerancia silenciosa.
+SHA256_VECTORIZADOR_TYPO_ANTERIOR_ENMIENDA = (
+    "33311e5eddc0b0bbfd07505b9ed3474bb824d1b41fac92d3d7bfd3fd902ba977")
+TOKEN_PATTERN_TYPO_ANTERIOR_ENMIENDA = r"(?u)\\b\\w+\\b"
+
+#: Enmienda pre-ejecucion 2 (identidad numerica en el fold 0): tolerancia RELATIVA de ll_train y
+#: ||w||_2 frente al artefacto de la sonda pre-ejecucion, tolerancia EXACTA (cero binario) de la
+#: mediana del anclaje y del sha256 del snapshot de z. Es NO-GATE: informa, no decide.
+TOL_IDENTIDAD_FOLD_0 = 1e-09
+TOL_IDENTIDAD_ANCLAJE = 0.0
+#: DIAGNOSTICO SECUNDARIO (NO es el anclaje): mediana de |z| del core YA REGULARIZADO con
+#: lambda1 = mediana al final de la pasada 1 del fold 0, y su diferencia respecto del anclaje. No
+#: puede coincidir con el anclaje porque z depende de w y w depende de lambda1: ese acoplamiento es
+#: justo lo que hace circular el anclaje si se lee del core regularizado.
+MEDIANA_Z_BRAZO_REGULARIZADO_ESPERADA = 0.2333793834039217
+DIFERENCIA_MEDIANA_Z_BRAZO_REGULARIZADO = -0.006558555225118473
+#: Coste declarado de la identidad en el fold 0 (tres casos x tres pasadas sobre el stream real),
+#: dentro del presupuesto declarado del ciclo.
+COSTE_DECLARADO_IDENTIDAD = 60.0
 
 #: EJECUCION del control A2: espejo EJECUTABLE de la configuracion congelada del ciclo V34 (que se
 #: hereda sin cambios, porque el pre-registro V35 congela `alpha*` y el presupuesto, no el control).
@@ -1528,6 +1563,70 @@ def problema_aleatorio(n_filas: int, n_features: int, semilla: int
 # =====================================================================================
 # ---- 5. VERIFICACION DE NO-DERIVA CON EL PRE-REGISTRO, VERSIONES Y HASHES ----
 # =====================================================================================
+def token_pattern_equivalente(vectorizador_prereg: dict) -> dict:
+    """Aisla la discrepancia del ``token_pattern`` entre el dict local y el del pre-registro.
+
+    El pre-registro V35 arrastro el valor ANTERIOR a la enmienda pre-ejecucion 3 de V34: su
+    ``token_pattern`` lleva DOBLES backslashes, que como expresion regular exige una barra literal
+    seguida de "b", deja el vocabulario VACIO y hace fallar el ajuste. Los pre-registros V33 y V34 ya
+    enmendados, el nucleo de V34 verificado por sha256 y la sonda pre-ejecucion versionada (que solo
+    pudo medirse con la receta canonica) usan la receta canonica de un backslash, que es la que
+    ejecuta este runner.
+
+    La funcion NO relaja la comprobacion: exige que los dos dict sean IDENTICOS en las otras siete
+    claves, que los dos ``token_pattern`` sean exactamente el par canonico/typo conocido y que los
+    sha256 sean los dos valores congelados declarados. Cualquier otra diferencia se declara como no
+    equivalente y el ciclo se detiene con codigo 2 como antes.
+
+    Parameters
+    ----------
+    vectorizador_prereg:
+        Dict ``config.vectorizador`` del pre-registro congelado.
+
+    Returns
+    -------
+    dict
+        ``coincide_exacto``, ``diferencia_solo_token_pattern``, ``equivalente``, los dos
+        ``token_pattern``, los dos sha256 y la nota que explica por que la receta canonica es la
+        unica ejecutable.
+    """
+    local = VECTORIZADOR["token_pattern"]
+    prereg = vectorizador_prereg.get("token_pattern")
+    otras_claves = sorted(clave for clave in set(VECTORIZADOR) | set(vectorizador_prereg)
+                          if clave != "token_pattern")
+    iguales_en_resto = all(VECTORIZADOR.get(clave) == vectorizador_prereg.get(clave)
+                           for clave in otras_claves)
+    par_conocido = ({local, prereg} == {VECTORIZADOR["token_pattern"],
+                                        TOKEN_PATTERN_TYPO_ANTERIOR_ENMIENDA}
+                    and prereg == TOKEN_PATTERN_TYPO_ANTERIOR_ENMIENDA)
+    solo_token = bool(iguales_en_resto and par_conocido)
+    coincide = bool(VECTORIZADOR == vectorizador_prereg)
+    hash_local = sha256_bytes(json.dumps(VECTORIZADOR, sort_keys=True).encode("utf-8"))
+    hash_prereg = sha256_bytes(json.dumps(vectorizador_prereg, sort_keys=True).encode("utf-8"))
+    equivalencia = bool(coincide or (solo_token
+                                     and hash_local == SHA256_VECTORIZADOR_CANONICO
+                                     and hash_prereg == SHA256_VECTORIZADOR_TYPO_ANTERIOR_ENMIENDA))
+    return {"coincide_exacto": coincide,
+            "diferencia_solo_token_pattern": solo_token,
+            "iguales_en_el_resto_de_claves": iguales_en_resto,
+            "par_de_token_pattern_reconocido": par_conocido,
+            "token_pattern_local": local,
+            "token_pattern_prereg": prereg,
+            "sha256_dict_local": hash_local,
+            "sha256_dict_prereg": hash_prereg,
+            "sha256_canonico": SHA256_VECTORIZADOR_CANONICO,
+            "sha256_typo_anterior_enmienda": SHA256_VECTORIZADOR_TYPO_ANTERIOR_ENMIENDA,
+            "equivalente": equivalencia,
+            "es_gate": True,
+            "nota": "el pre-registro V35 arrastro el token_pattern ANTERIOR a la enmienda "
+                    "pre-ejecucion 3 de V34 (dobles backslashes), que deja el vocabulario vacio y "
+                    "no es ejecutable; se ejecuta la receta canonica de un backslash, que es la de "
+                    "v31_02, la de los pre-registros V33 y V34 ya enmendados, la del nucleo de V34 "
+                    "verificado por sha256 y la unica con la que se pudo medir el anclaje. La "
+                    "discrepancia se DECLARA, no se tolera en silencio: las otras siete claves deben "
+                    "coincidir bit a bit"}
+
+
 def verificar_constantes(prereg: dict) -> tuple[bool, dict]:
     """Compara cada constante local contra el JSON congelado de V35, una por una.
 
@@ -1562,6 +1661,7 @@ def verificar_constantes(prereg: dict) -> tuple[bool, dict]:
     rama = puerta["rama_predeclarada"]
     alfa = prereg["alpha_congelado"]
     previa = prereg["sonda_previa"]
+    equivalente = token_pattern_equivalente(config["vectorizador"])
     checks = {
         # ---- identidad, baseline, pesos y versiones ----
         "fase": prereg["fase"] == "V35-E1 (via B) pre-registro congelado",
@@ -1590,11 +1690,17 @@ def verificar_constantes(prereg: dict) -> tuple[bool, dict]:
                                             and "gemelo sintetico" in
                                             anclaje["sensibilidad_declarada"]),
         # ---- enmienda pre-ejecucion 1: la verificacion en runtime usa el NUCLEO DE ANCLAJE ----
-        "enmienda_1_presente": (len(prereg["enmiendas"]) == 1
+        # El pre-registro congela DOS enmiendas: la del anclaje y la de las sondas (k)-(m). Se
+        # comprueban las dos por su objeto y sus banderas, no por su numero de orden.
+        "enmienda_1_presente": (len(prereg["enmiendas"]) == 2
                                 and prereg["enmiendas"][0]["objeto"]
                                 == "anclaje_lambda1.verificacion (item 2 del diseno)"
                                 and prereg["enmiendas"][0]["afecta_a_gates"] is False
-                                and prereg["enmiendas"][0]["cambia_el_protocolo"] is False),
+                                and prereg["enmiendas"][0]["cambia_el_protocolo"] is False
+                                and prereg["enmiendas"][1]["objeto"]
+                                == "sondas_nuevas (k)-(m): dimension del problema y alcance del "
+                                   "contraste"
+                                and prereg["enmiendas"][1]["no_gate"] is True),
         "enmienda_1_nucleo_de_anclaje": (
             "anclaje (lambda1 = 0.0)" in anclaje["verificacion_runtime"]["nucleo"]
             and "lambda1 = 0.0" in anclaje["verificacion_runtime"]["nucleo"]),
@@ -1642,7 +1748,7 @@ def verificar_constantes(prereg: dict) -> tuple[bool, dict]:
                                      and "filas de TRAIN" in config["particion_es"]),
         "test_size_es": (TEST_SIZE_ES == 0.10 and float(config["test_size_es"]) == 0.1),
         "ajuste_por_fold_es_train": "POR FOLD" in config["ajuste"],
-        "vectorizador_config": config["vectorizador"] == VECTORIZADOR,
+        "vectorizador_config": equivalente["equivalente"],
         # ---- nucleo FTRL congelado: L1 por primera vez distinto de cero ----
         "nucleo_lambda1_mediana": (LAMBDA1 == MEDIANA_Z_CONGELADA
                                    and MEDIANA_Z_CONGELADA > 0.0),
@@ -1708,9 +1814,24 @@ def verificar_constantes(prereg: dict) -> tuple[bool, dict]:
         "sondas_k_l_m_claves": set(prereg["sondas_nuevas"]) == {"k_caso_lambda1_cero",
                                                                 "l_caso_lambda1_alpha",
                                                                 "m_caso_lambda1_mediana",
-                                                                "politica"},
+                                                                "politica",
+                                                                "identidad_numerica"},
         "sondas_politica_no_gate": ("NO-GATE" in prereg["sondas_nuevas"]["politica"]
-                                    and "/tmp" in prereg["sondas_nuevas"]["politica"]),
+                                    and "/tmp" in prereg["sondas_nuevas"]["politica"]
+                                    and "FIRMA DE MECANISMO" in prereg["sondas_nuevas"]["politica"]),
+        # Enmienda pre-ejecucion 2: la IDENTIDAD NUMERICA de los tres casos NO cabe en el
+        # miniproblema de --verificar, luego el pre-registro declara que va en el fold 0 de la
+        # corrida real y con que criterio. Se comprueba el texto DECLARADO para que el codigo no
+        # derive de esa politica.
+        "identidad_en_fold_0": ("FOLD 0" in prereg["sondas_nuevas"]["identidad_numerica"]["donde"]
+                                and "corrida real" in
+                                prereg["sondas_nuevas"]["identidad_numerica"]["donde"]),
+        "identidad_criterio": ("1e-09" in prereg["sondas_nuevas"]["identidad_numerica"]["criterio"]
+                               and "EXACTA 0" in prereg["sondas_nuevas"]["identidad_numerica"]["criterio"]
+                               and "sha256" in
+                               prereg["sondas_nuevas"]["identidad_numerica"]["criterio"]),
+        "identidad_se_publica_no_gate": ("no-gate" in
+                                         prereg["sondas_nuevas"]["identidad_numerica"]["publica"]),
         "sonda_l_razon": "6.8044" in prereg["sondas_nuevas"]["l_caso_lambda1_alpha"],
         # ---- asimetria: A2 es control de PRESUPUESTO, no gemelo mecanico ----
         "asimetria_control_presupuesto": ("control de PRESUPUESTO" in puerta["asimetria"]
@@ -1763,7 +1884,7 @@ def verificar_constantes(prereg: dict) -> tuple[bool, dict]:
         # ---- entregables ----
         "entregables": all(nombre in entregable for nombre in nombres_entregables()),
         "entregables_novelty": "reports/v35_novelty_registry.csv" in entregable,
-        "entregables_historia": ("fila anexada in reports/age_complete_experiment_history.csv"
+        "entregables_historia": ("fila anexada en reports/age_complete_experiment_history.csv"
                                  in entregable),
         "entregables_acta": "D-086" in prereg["entregables"]["acta"],
     }
@@ -1830,12 +1951,29 @@ def verificar_hashes(prereg: dict, hashes_corpus: dict) -> tuple[bool, dict]:
             print(f"  [STOP] hash distinto en {nombre}", flush=True)
     for nombre in CLAVES_HASH_CORPUS:
         recomputados[nombre] = hashes_corpus[nombre]
-        checks[nombre] = recomputados[nombre] == prereg["hashes"][nombre]
+        if nombre == "vectorizador":
+            # El unico hash con equivalencia declarada: el dict local usa el token_pattern canonico
+            # (el unico ejecutable) y el del pre-registro el anterior a la enmienda 3 de V34. La
+            # equivalencia exige que las otras siete claves coincidan bit a bit y que los dos
+            # sha256 sean los dos valores congelados; cualquier otra diferencia falla.
+            checks[nombre] = bool(equivalente["equivalente"]
+                                  and recomputados[nombre] == equivalente["sha256_canonico"])
+        else:
+            checks[nombre] = recomputados[nombre] == prereg["hashes"][nombre]
         if not checks[nombre]:
             print(f"  [STOP] hash distinto en {nombre}: {recomputados[nombre][:16]} != "
                   f"{prereg['hashes'][nombre][:16]}", flush=True)
+    if not checks["vectorizador"]:
+        print("  [STOP] el dict del vectorizador local no es el congelado ni su equivalente "
+              "declarado (token_pattern)", flush=True)
+    else:
+        print(f"  vectorizador: dict local {recomputados['vectorizador'][:16]} | "
+              f"equivalencia declarada con el {prereg['hashes']['vectorizador'][:16]} del "
+              f"pre-registro = {equivalente['diferencia_solo_token_pattern']} (unica clave que "
+              "difiere: token_pattern)", flush=True)
     return all(checks.values()), {"checks": checks, "recomputados": recomputados,
-                                  "esperados": prereg["hashes"]}
+                                  "esperados": prereg["hashes"],
+                                  "equivalencia_token_pattern": equivalente}
 
 
 def cargar_canonico() -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
@@ -2685,6 +2823,29 @@ def mediana_de_abs_z(nucleo: FtrlSoftmaxMulticlase) -> float:
     return float(np.median(positivas))
 
 
+def mediana_abs_z_publicable(nucleo: FtrlSoftmaxMulticlase) -> float | None:
+    """Mediana de ``|z| > 0`` para PUBLICACION, o ``None`` si el ``z`` es identicamente cero.
+
+    Aplica exactamente la receta congelada de :func:`mediana_de_abs_z` (que es la que exige
+    identidad exacta y por eso detiene el ciclo) pero devuelve ``None`` en vez de detener el ciclo
+    cuando el estado no tiene ninguna entrada positiva: ese caso solo puede darse en una sonda de
+    publicacion, donde interesa informar de que no hay mediana en lugar de tumbar la corrida.
+
+    Parameters
+    ----------
+    nucleo:
+        Nucleo FTRL ya recorrido por al menos una pasada.
+
+    Returns
+    -------
+    float | None
+        Mediana de las entradas ``|z| > 0``, o ``None`` si no hay ninguna.
+    """
+    if not bool(np.any(nucleo.z != 0.0)):
+        return None
+    return mediana_de_abs_z(nucleo)
+
+
 def verificar_anclaje_lambda1(x_es: sp.csr_matrix, y_es: np.ndarray, orden: np.ndarray,
                               alpha: float, lambda1: float) -> dict:
     """Verificacion EN RUNTIME del anclaje de lambda1 durante la pasada 1 del fold 0 de A1.
@@ -2803,11 +2964,15 @@ def gemelo_lambda1_caso(x_es: sp.csr_matrix, y_es: np.ndarray, ordenes: list[np.
                             "coordenadas_vivas": magnitud["coordenadas_vivas"],
                             "clases_vivas": magnitud["clases_vivas"],
                             "escasez_efectiva": magnitud["escasez_efectiva"],
-                            "frac_coordenadas_muertas": magnitud["frac_coordenadas_muertas"]})
+                            "frac_coordenadas_muertas": magnitud["frac_coordenadas_muertas"],
+                            "sha256_z": sha256_f64_2d(nucleo.z),
+                            "mediana_abs_z": mediana_abs_z_publicable(nucleo)})
     return {"nombre": nombre, "lambda1": float(lambda1), "trayectoria": trayectoria,
             "ll_train_final": trayectoria[-1]["ll_train"],
             "norma_w_l2_final": trayectoria[-1]["norma_w_l2"],
             "escasez_efectiva_final": trayectoria[-1]["escasez_efectiva"],
+            "mediana_abs_z_pasada_1": trayectoria[0]["mediana_abs_z"],
+            "sha256_z_pasada_1": trayectoria[0]["sha256_z"],
             "normas_por_pasada": [punto["norma_w_l2"] for punto in trayectoria]}
 
 
@@ -2837,6 +3002,203 @@ def cargar_gemelo_previo() -> dict:
         raise Detencion("[STOP] la sonda pre-ejecucion no trae los tres casos del gemelo (exit 2)",
                         2)
     return previo
+
+
+def comparar_relativo(valor: float, referencia: float, tolerancia: float) -> dict:
+    """Compara un valor medido con su referencia por diferencia RELATIVA y da el veredicto.
+
+    Es el criterio de la identidad numerica del fold 0: diferencia RELATIVA ``<= TOL`` en ``ll_train``
+    y ``||w||_2`` de cada pasada. Cuando la referencia es ``0.0`` exacta no hay magnitud relativa
+    que comparar, luego solo se admite identidad exacta y el motivo lo dice, en vez de publicar una
+    division por cero.
+
+    Parameters
+    ----------
+    valor:
+        Valor medido en esta corrida.
+    referencia:
+        Valor del artefacto de la sonda pre-ejecucion.
+    tolerancia:
+        Umbral de la diferencia relativa.
+
+    Returns
+    -------
+    dict
+        ``valor``, ``referencia``, ``diferencia_absoluta``, ``diferencia_relativa`` (o ``None`` si
+        no es definible), ``dentro_de_tolerancia`` y el ``motivo`` del veredicto.
+    """
+    medido = float(valor)
+    referencia = float(referencia)
+    if referencia == 0.0:
+        identico = bool(medido == 0.0)
+        return {"valor": medido, "referencia": 0.0, "diferencia_absoluta": medido,
+                "diferencia_relativa": 0.0 if identico else None,
+                "dentro_de_tolerancia": identico,
+                "motivo": ("la referencia es 0.0 exacta, luego no hay magnitud relativa que "
+                           "comparar: solo se admite identidad exacta al cero binario")
+                if identico else ("la referencia es 0.0 exacta y el valor medido no lo es: no hay "
+                                  "magnitud relativa que comparar y la identidad no se admite")}
+    relativa = abs(medido - referencia) / abs(referencia)
+    return {"valor": medido, "referencia": referencia, "diferencia_absoluta": medido - referencia,
+            "diferencia_relativa": float(relativa),
+            "dentro_de_tolerancia": bool(relativa <= tolerancia),
+            "motivo": f"diferencia relativa |{medido!r} - {referencia!r}| / |{referencia!r}| = "
+                      f"{relativa!r} frente al umbral declarado {tolerancia!r}"}
+
+
+def identidad_lambda1_fold_0(datos_fold: dict, ordenes: list[np.ndarray]) -> dict:
+    """IDENTIDAD NUMERICA de los tres casos del gemelo de lambda1 en el FOLD 0 real (NO-GATE).
+
+    Es la ejecucion que el miniproblema de ``--verificar`` no puede dar: alli los tres casos se
+    comparan por FIRMA DE MECANISMO porque el mini (1350 x 51) no puede reproducir numericamente el
+    ES-train real del fold 0 (121921 x 107793) de la sonda pre-ejecucion. Aqui, con la MISMA matriz
+    de ES-train, las MISMAS etiquetas, el MISMO orden congelado y el MISMO alpha, los tres casos
+    (``lambda1 = 0.0``, ``lambda1 = alpha`` y ``lambda1 = MEDIANA_Z_CONGELADA``) se recorren con las
+    MISMAS reglas de update del nucleo, tres pasadas cada uno, y se contrastan contra el artefacto
+    versionado: diferencia RELATIVA ``<= 1e-09`` en ``ll_train`` y ``||w||_2`` de cada pasada, y
+    diferencia EXACTA 0 mas ``sha256`` identico en la mediana del anclaje y en el snapshot de ``z``.
+
+    Se ejecuta UNA sola vez, en el fold 0 de la corrida real: ni en los folds 1-4 (el stream es otro)
+    ni en ``--verificar`` (que no debe cargar el corpus para esto). NO es una gate: si alguna
+    comparacion falla se publica como fallo de la sonda y el ciclo sigue con su veredicto intacto.
+
+    Parameters
+    ----------
+    datos_fold:
+        Salida de ``preparar_fold`` del fold 0 (matriz de A1 con sesgo, etiquetas y alpha).
+    ordenes:
+        Ordenes congelados del fold 0 (los mismos que recorren los dos brazos).
+
+    Returns
+    -------
+    dict
+        La tabla de los tres casos, su comparacion por pasada, el anclaje con su diferencia exacta
+        y su ``sha256``, el diagnostico secundario del core ya regularizado (que NO es el anclaje),
+        la lista de fallos, ``reproduce`` y el coste medido.
+    """
+    inicio = time.time()
+    x_es = datos_fold["x_a1_train"]
+    y_es = datos_fold["y_es_train"]
+    alpha = float(datos_fold["alpha"])
+    ordenes_tres = list(ordenes[:PASADAS_SONDA_KLM])
+    previo = cargar_gemelo_previo()
+    esperados = {caso["nombre"]: caso for caso in previo["gemelo_real"]}
+    alpha_artefacto = float(previo["config"]["alpha"])
+    casos = {"lambda1_0": gemelo_lambda1_caso(x_es, y_es, ordenes, alpha, 0.0, "lambda1_0"),
+             "lambda1_alpha": gemelo_lambda1_caso(x_es, y_es, ordenes, alpha, alpha,
+                                                  "lambda1_alpha"),
+             "lambda1_mediana": gemelo_lambda1_caso(x_es, y_es, ordenes, alpha,
+                                                    MEDIANA_Z_CONGELADA, "lambda1_mediana")}
+    fallos: list[str] = []
+    comparacion: dict[str, dict] = {}
+    for nombre, caso in casos.items():
+        esperado = esperados[nombre]
+        puntos = {int(punto["pasada"]): punto for punto in esperado["trayectoria"]}
+        por_pasada: list[dict] = []
+        peor_ll = 0.0
+        peor_norma = 0.0
+        for punto in caso["trayectoria"]:
+            referencia = puntos[int(punto["pasada"])]
+            ll = comparar_relativo(punto["ll_train"], float(referencia["ll_train"]),
+                                   TOL_IDENTIDAD_FOLD_0)
+            norma = comparar_relativo(punto["norma_w_l2"], float(referencia["norma_w_l2"]),
+                                      TOL_IDENTIDAD_FOLD_0)
+            if not ll["dentro_de_tolerancia"]:
+                fallos.append(f"{nombre}/pasada {punto['pasada']}/ll_train")
+            if not norma["dentro_de_tolerancia"]:
+                fallos.append(f"{nombre}/pasada {punto['pasada']}/norma_w_l2")
+            if ll["diferencia_relativa"] is not None:
+                peor_ll = max(peor_ll, float(ll["diferencia_relativa"]))
+            if norma["diferencia_relativa"] is not None:
+                peor_norma = max(peor_norma, float(norma["diferencia_relativa"]))
+            por_pasada.append({"pasada": punto["pasada"], "ll_train": ll, "norma_w_l2": norma,
+                               "escasez_efectiva_run": punto["escasez_efectiva"],
+                               "escasez_efectiva_artefacto": float(
+                                   referencia["escasez_efectiva"]),
+                               "delta_escasez_efectiva": float(punto["escasez_efectiva"]
+                                                                - float(referencia[
+                                                                    "escasez_efectiva"])),
+                               "escasez_efectiva_es_diagnostico": "la escasez efectiva se publica "
+                                                                  "como diagnostico: el criterio "
+                                                                  "de identidad declarado es "
+                                                                  "ll_train y ||w||_2"})
+        lambda1_identico = bool(caso["lambda1"] == float(esperado["lambda1"]))
+        if not lambda1_identico:
+            fallos.append(f"{nombre}/lambda1")
+        comparacion[nombre] = {
+            "lambda1_run": caso["lambda1"], "lambda1_artefacto": float(esperado["lambda1"]),
+            "lambda1_identico": lambda1_identico,
+            "peor_diferencia_relativa_ll_train": float(peor_ll),
+            "peor_diferencia_relativa_norma_w_l2": float(peor_norma),
+            "reproduce": bool(lambda1_identico and all(punto["ll_train"]["dentro_de_tolerancia"]
+                                                       and punto["norma_w_l2"]["dentro_de_tolerancia"]
+                                                       for punto in por_pasada)),
+            "por_pasada": por_pasada}
+    mediana_ancaje = casos["lambda1_0"]["mediana_abs_z_pasada_1"]
+    sha_ancaje = casos["lambda1_0"]["sha256_z_pasada_1"]
+    diferencia_exacta = (None if mediana_ancaje is None
+                         else float(mediana_ancaje - MEDIANA_Z_CONGELADA))
+    sha_artefacto = str(previo["anclaje"]["sha256_del_snapshot_z"])
+    anclaje = {"lambda1_del_nucleo_de_anclaje": 0.0, "mediana_abs_z": mediana_ancaje,
+               "mediana_congelada": MEDIANA_Z_CONGELADA, "diferencia_exacta": diferencia_exacta,
+               "diferencia_es_cero_exacto": bool(diferencia_exacta == TOL_IDENTIDAD_ANCLAJE),
+               "sha256_z": sha_ancaje, "sha256_z_congelado": SHA256_Z_ANCLAJE,
+               "sha256_z_artefacto": sha_artefacto,
+               "sha256_identico": bool(sha_ancaje == SHA256_Z_ANCLAJE),
+               "sha256_es_prefijo_del_artefacto": bool(SHA256_Z_ANCLAJE.startswith(sha_artefacto)),
+               "criterio": "diferencia EXACTA 0 con la mediana congelada y sha256 del snapshot de z "
+                           "identico al de la sonda pre-ejecucion versionada"}
+    if not anclaje["diferencia_es_cero_exacto"]:
+        fallos.append("anclaje/mediana_exacta")
+    if not anclaje["sha256_identico"]:
+        fallos.append("anclaje/sha256_z")
+    mediana_regularizada = casos["lambda1_mediana"]["mediana_abs_z_pasada_1"]
+    diferencia_regularizada = (None if mediana_regularizada is None
+                               else float(mediana_regularizada - MEDIANA_Z_CONGELADA))
+    diagnostico = {
+        "lambda1": MEDIANA_Z_CONGELADA, "mediana_abs_z_core_ya_regularizado": mediana_regularizada,
+        "valor_esperado": MEDIANA_Z_BRAZO_REGULARIZADO_ESPERADA,
+        "diferencia_respecto_del_anclaje": diferencia_regularizada,
+        "diferencia_esperada": DIFERENCIA_MEDIANA_Z_BRAZO_REGULARIZADO,
+        "coincide": bool(diferencia_regularizada == DIFERENCIA_MEDIANA_Z_BRAZO_REGULARIZADO),
+        "es_el_anclaje": False,
+        "lectura": "NO es el anclaje: la mediana del z del core YA REGULARIZADO no puede coincidir "
+                   "con la del core de anclaje porque z depende de w y w depende de lambda1. Su "
+                   "diferencia respecto del anclaje es la magnitud del acoplamiento z <- w(lambda1) "
+                   "y por eso el anclaje solo puede reproducirse con lambda1 = 0.0"}
+    if not diagnostico["coincide"]:
+        fallos.append("diagnostico_secundario/mediana_regularizada")
+    alpha_identico = bool(alpha == alpha_artefacto)
+    if not alpha_identico:
+        fallos.append("alpha_del_fold_0")
+    return {
+        "descripcion": "identidad numerica de los tres casos del gemelo de lambda1 (lambda1 = 0, "
+                       "lambda1 = alpha y lambda1 = mediana) ejecutada en el FOLD 0 de la corrida "
+                       "real, sobre el stream real de ES-train, con las mismas reglas de update, el "
+                       "mismo alpha y el mismo orden congelado que la sonda pre-ejecucion",
+        "es_gate": False,
+        "politica": "NO-GATE: la identidad informa de que la politica del pre-registro reflejada en "
+                    "el codigo no deriva, pero no decide el veredicto. Si alguna comparacion falla "
+                    "se publica como fallo de la sonda y el ciclo continua con su veredicto "
+                    "intacto",
+        "donde": "fold 0 de la corrida real, UNA sola vez; NO en los folds 1-4 (el stream es otro) "
+                 "ni en --verificar (que no carga el corpus para esto: alli la identidad es imposible "
+                 "por dimension y las sondas (k), (l) y (m) comparan por firma de mecanismo)",
+        "criterio": "diferencia relativa <= 1e-09 en ll_train y ||w||_2 de cada pasada frente al "
+                    "artefacto; diferencia EXACTA 0 y sha256 identico en la mediana del anclaje y en "
+                    "el snapshot de z",
+        "tolerancia_relativa": TOL_IDENTIDAD_FOLD_0, "tolerancia_anclaje": TOL_IDENTIDAD_ANCLAJE,
+        "artefacto": ruta_relativa(SONDA_JSON), "sha256_artefacto": sha256_archivo(SONDA_JSON),
+        "n_pasadas_por_caso": PASADAS_SONDA_KLM,
+        "alpha_run": alpha, "alpha_artefacto": alpha_artefacto, "alpha_identico": alpha_identico,
+        "n_filas_es_train": int(x_es.shape[0]), "n_coordenadas": int(x_es.shape[1]),
+        "es_train_sha256": str(datos_fold["hashes"]["es_train_sha256"]),
+        "ordenes_sha256": [sha256_i64(orden) for orden in ordenes_tres],
+        "tabla": casos, "comparacion": comparacion, "anclaje": anclaje,
+        "diagnostico_secundario": diagnostico, "fallos": fallos,
+        "reproduce": bool(not fallos),
+        "coste_seg": float(time.time() - inicio), "coste_declarado_seg": COSTE_DECLARADO_IDENTIDAD,
+        "presupuesto_declarado_seg": PRESUPUESTO_DECLARADO_SEG}
 
 
 def sondas_klm_gemelo_lambda1(mini: dict) -> dict:
@@ -2869,7 +3231,8 @@ def sondas_klm_gemelo_lambda1(mini: dict) -> dict:
     -------
     dict
         Los tres casos con su trayectoria, el contraste declarado con el artefacto, la tolerancia,
-        si reproduce, la firma de mecanismo comprobada y la politica NO-GATE.
+        si reproduce, la firma de mecanismo comprobada, la politica NO-GATE y donde se ejecuta la
+        identidad numerica (que va en el fold 0 de la corrida real, no aqui).
 
     Raises
     ------
@@ -2965,6 +3328,20 @@ def sondas_klm_gemelo_lambda1(mini: dict) -> dict:
                                  "se comprueban de forma exacta"),
         "artefacto_previo": ruta_relativa(SONDA_JSON),
         "sha256_artefacto_previo": sha256_archivo(SONDA_JSON),
+        "identidad_numerica": {
+            "se_ejecuta_aqui": False,
+            "donde": "dentro del runner, en el FOLD 0 de la CORRIDA REAL, sobre el stream real de "
+                     "ES-train (misma matriz, mismas etiquetas, mismo orden congelado y mismo alpha "
+                     "que la sonda pre-ejecucion)",
+            "criterio": "diferencia relativa <= 1e-09 en ll_train y ||w||_2 de cada pasada frente al "
+                        "artefacto; diferencia EXACTA 0 y sha256 identico en la mediana del anclaje "
+                        "y en el snapshot de z",
+            "publica": "si, en el estado, en el informe y en el resultado, como no-gate",
+            "motivo": "el miniproblema de --verificar no puede darla: 1350 x 51 frente a "
+                      "121921 x 107793 del gemelo pre-ejecucion, y con lambda1 = 0.2399 el mini "
+                      "apenas poda (escasez efectiva 1.0 en los tres casos), luego alli no hay "
+                      "magnitud que reproducir. Aqui el contraste es de FIRMA de mecanismo",
+            "funcion": "identidad_lambda1_fold_0"},
         "n_pasadas": PASADAS_SONDA_KLM,
         "alpha": alpha,
         "lambda1_mediana_congelada": MEDIANA_Z_CONGELADA,
@@ -3183,11 +3560,13 @@ def estado_nuevo() -> dict:
     -------
     dict
         Checkpoint vacio con inicio, guardas, calibracion, puerta, triage, refit, tabla de
-        mecanismo, particiones ES y vectorizador por fold, y los dos brazos.
+        mecanismo, identidad de lambda1 en el fold 0, rama del arbol, particiones ES y vectorizador
+        por fold, y los dos brazos.
     """
     return {"fase": FASE_ESTADO, "inicio_ts": float(time.time()), "timeout_global_h": TIMEOUT_H,
             "ram_tope_gb": RAM_TOPE_GB, "rss_pico_gb": 0.0, "sondas": None, "calibracion": None,
             "puerta": None, "triage": None, "refit": None, "mecanismo": None,
+            "identidad_lambda1_fold_0": None, "rama_arbol": None,
             "es_por_fold": {}, "vectorizador_por_fold": {},
             "brazos": {brazo: {"folds_completados": [], "folds": {},
                                "mascara_relleno_por_fila": [0] * N_FILAS,
@@ -3226,7 +3605,8 @@ def cargar_estado() -> dict:
     if estado.get("fase") != FASE_ESTADO:
         raise Detencion(f"[STOP] el checkpoint no corresponde a {FASE_ESTADO} (exit 2)", 2)
     for clave in ("inicio_ts", "rss_pico_gb", "calibracion", "puerta", "triage", "refit",
-                  "mecanismo", "es_por_fold", "vectorizador_por_fold", "brazos"):
+                  "mecanismo", "identidad_lambda1_fold_0", "rama_arbol", "es_por_fold",
+                  "vectorizador_por_fold", "brazos"):
         if clave not in estado:
             raise Detencion(f"[STOP] checkpoint sin la clave {clave} (exit 2)", 2)
     for brazo in BRAZOS:
@@ -4245,6 +4625,7 @@ def decidir_rama_arbol(puerta: dict, triage: dict | None) -> tuple[str, str, dic
               f"{rama['lectura']}. El pre-registro prohibe integrar y hacer bootstrap, luego delta "
               "y bootstrap quedan VACIOS")
     rama["motivo_de_no_calculo"] = motivo
+    rama["nodo"] = nodo
     return nodo, motivo, rama
 
 
@@ -4627,6 +5008,29 @@ def entrenar_con_puerta(estado: dict, textos: np.ndarray, clase: np.ndarray,
                 raise Detencion(f"[STOP] el fold-train del fold 0 tiene "
                                 f"{tr_idx_tamano(datos_fold)} filas, distinto del ancla "
                                 f"{ANCLA_N_TRAIN_FOLD} (exit 2)", 2)
+            # Enmienda pre-ejecucion 2: la IDENTIDAD NUMERICA de los tres casos del gemelo de
+            # lambda1 va AQUI, en el fold 0 y UNA sola vez, porque es el unico sitio con la matriz
+            # real de ES-train, el alpha del fold y los ordenes congelados de la corrida. Va antes de
+            # evaluar la puerta para que se publique tambien en la rama de cierre. Es NO-GATE: un
+            # fallo suyo se publica y NO cambia el veredicto. Si el checkpoint ya la traia (corrida
+            # reanudada) no se repite.
+            if not estado.get("identidad_lambda1_fold_0"):
+                identidad = identidad_lambda1_fold_0(datos_fold, ordenes)
+                estado["identidad_lambda1_fold_0"] = identidad
+                guardar_estado(estado)
+                print(f"  identidad de los tres casos de lambda1 (fold 0, NO-GATE): reproduce = "
+                      f"{identidad['reproduce']} | peor diferencia relativa de ll_train "
+                      f"{max(comparacion['peor_diferencia_relativa_ll_train'] for comparacion in identidad['comparacion'].values()):.3e} "
+                      f"y de ||w||_2 "
+                      f"{max(comparacion['peor_diferencia_relativa_norma_w_l2'] for comparacion in identidad['comparacion'].values()):.3e} "
+                      f"(umbral {TOL_IDENTIDAD_FOLD_0:.0e}) | mediana del anclaje con diferencia "
+                      f"exacta {identidad['anclaje']['diferencia_exacta']!r} y sha256 identico = "
+                      f"{identidad['anclaje']['sha256_identico']} | coste "
+                      f"{identidad['coste_seg']:.1f} s", flush=True)
+                if identidad["fallos"]:
+                    print(f"  identidad de lambda1 con fallos publicados (NO-GATE, el veredicto no "
+                          f"cambia): {identidad['fallos']}", flush=True)
+                verificar_ram(estado)
             preliminar = {brazo: evaluar_puerta_preliminar(estado, brazo) for brazo in BRAZOS}
             # `gates_fallidos_de` cuenta SOLO las gates con pass is False: las de A2 que no aplican
             # (G7 y G8, porque A2 no tiene L1) llevan pass = None y no pueden cerrar el ciclo.
@@ -5717,6 +6121,172 @@ def mecanismo_fold_0(estado: dict) -> dict:
             "ll_train_A2_final": float(brazos["A2_sgd_presupuesto"][-1]["ll_train"]),
             "w_max_abs_A1_final": float(brazos["A1_ftrl_lambda1"][-1]["w_max_abs"]),
             "w_max_abs_A2_final": float(brazos["A2_sgd_presupuesto"][-1]["w_max_abs"])}
+
+
+def publicar_lectura_a2_unidireccional() -> dict:
+    """Parrafo de la REGLA UNIDIRECCIONAL con la que hay que leer A2.
+
+    A2 es el control de PRESUPUESTO, no un gemelo mecanico de A1: lleva otro estimador
+    (``partial_fit`` con ``alpha_reg``), otro regularizador (ninguno) y otro camino de sesgo, luego
+    el contraste A1 frente a A2 esta CONTAMINADO por esas diferencias de mecanismo. Por eso ninguna
+    conclusion del ciclo puede descansar en el (ni en el delta entre brazos, ni en las razones entre
+    brazos, ni en el IC bootstrap cruzado): el veredicto se apoya solo en evidencia interna de A1
+    contra la regla derivada (G0, G1 y G4) mas el triage.
+
+    Es la UNICA fuente de este texto: lo leen el JSON de resultados, el informe y el resumen de
+    consola, para que los tres digan lo mismo.
+
+    Returns
+    -------
+    dict
+        ``regla``, ``lectura_correcta_de_a2``, ``no_es_gemelo_mecanico``, ``magnitudes_contaminadas``,
+        ``en_que_se_apoya_el_veredicto`` y ``prohibido``.
+    """
+    magnitudes = ["el delta de A1 frente al de A2",
+                  "las razones entre brazos (por ejemplo la razon max/min de ||w||_2 de A1 leida "
+                  "como contraste frente a A2)",
+                  "el IC95 bootstrap cruzado de la diferencia entre brazos"]
+    return {"regla": "A2 es un control de PRESUPUESTO, no un gemelo mecanico: ninguna conclusion "
+                     "puede descansar en el contraste A1 frente a A2, porque el delta, las razones "
+                     "entre brazos y el IC bootstrap cruzado quedan contaminados por las diferencias "
+                     "de mecanismo (estimador, regularizador y camino de sesgo)",
+            "lectura_correcta_de_a2": "A2 solo sirve para comprobar que el presupuesto NO es el "
+                                      "limite: que el control sano aprende de verdad (G0, G1, G2 y G4 "
+                                      "de A2). Un A2 que aprende NO demuestra que un A1 con L1 "
+                                      "funcione, y un A1 que falla frente a un A2 sano no se "
+                                      "atribuye a que 'el L1 no sirve'",
+            "no_es_gemelo_mecanico": "A1 lleva regularizador L1 y A2 no; A2 aporta su sesgo con "
+                                     "fit_intercept=True sobre la matriz sin columna de sesgo y A1 "
+                                     "con una coordenada x0 = 1.0 dentro de FTRL",
+            "magnitudes_contaminadas": magnitudes,
+            "en_que_se_apoya_el_veredicto": "solo evidencia interna de A1 contra la regla derivada "
+                                            "(G0, G1 y G4) mas el triage formal y las magnitudes L1 "
+                                            "de su propia trayectoria (G7, G8 y el criterio 'L1 "
+                                            "inerte')",
+            "prohibido": "no afirmar que el L1 mejora o empeora el resultado comparando A1 con A2, ni "
+                         "leer el signo de esa diferencia como evidencia de mecanismo"}
+
+
+def publicar_gates_l1(puerta: dict) -> dict:
+    """Publica G7 y G8 por brazo con su ``pass``, su estado y su motivo.
+
+    El ``pass`` se publica TAL COMO esta, incluido ``None``, que significa que la gate no aplica a
+    ese brazo (A2 no tiene L1) y por eso no cuenta como fallo: el conteo sigue siendo el de
+    :func:`gates_fallidos_de`. Para A2 se publica tambien el motivo de la no aplicabilidad.
+
+    Parameters
+    ----------
+    puerta:
+        Puerta ya cerrada por :func:`cerrar_puerta`.
+
+    Returns
+    -------
+    dict
+        ``exclusivas_de_a1``, ``criterio_de_conteo``, ``gates_no_aplicables`` y ``por_brazo`` con el
+        detalle de cada gate.
+    """
+    por_brazo: dict[str, dict] = {}
+    for brazo in BRAZOS:
+        registro = puerta["gates"][brazo]
+        por_brazo[brazo] = {}
+        for nombre in GATES_EXCLUSIVOS_A1:
+            info = registro.get(nombre, {})
+            por_brazo[brazo][nombre] = {
+                "pass": info.get("pass"),
+                "estado": info.get("estado", "medida"),
+                "motivo": info.get("motivo"),
+                "aplica_a": info.get("aplica_a"),
+                "criterio": info.get("criterio"),
+                "lectura": info.get("lectura"),
+                "valor": info.get("valor"),
+                "lambda1": info.get("lambda1")}
+    return {"exclusivas_de_a1": list(GATES_EXCLUSIVOS_A1),
+            "criterio_de_conteo": puerta.get("criterio_de_fallo"),
+            "gates_no_aplicables": puerta.get("gates_no_aplicables"),
+            "nota": "pass = None significa que la gate NO APLICA a ese brazo (o que aun no se ha "
+                    "medido) y por eso NO cuenta como fallo: el unico conteo de fallos es el de "
+                    "gates_fallidos_de, que exige pass is False",
+            "por_brazo": por_brazo}
+
+
+def publicar_l1_inerte(estado: dict) -> dict | None:
+    """Publica el veredicto del criterio "L1 INERTE" tal como lo midio el fold 0 de A1.
+
+    Reutiliza :func:`evaluar_l1_inerte` sobre la trayectoria ya medida, de modo que el texto que
+    sale en el informe, en el JSON y en la consola es el mismo que leyo el triage.
+
+    Parameters
+    ----------
+    estado:
+        Checkpoint con el fold 0 de A1 registrado.
+
+    Returns
+    -------
+    dict | None
+        El veredicto, o ``None`` si el fold 0 de A1 todavia no esta registrado.
+    """
+    detalle = (estado.get("brazos", {}).get("A1_ftrl_lambda1", {}).get("folds", {}).get("0"))
+    if not detalle or not detalle.get("trayectoria"):
+        return None
+    return evaluar_l1_inerte(detalle["trayectoria"], float(detalle["lambda1"]))
+
+
+def publicar_rama_arbol(estado: dict, prereg: dict) -> dict:
+    """Publica el NODO DEL ARBOL emitido, su causa y su lectura, mas la rama pre-declarada entera.
+
+    Cuando la puerta se cerro en el fold 0, el nodo es el que emitio :func:`decidir_rama_arbol` con
+    su ``causa``, su ``lectura`` y si el cierre es definitivo. Cuando la puerta se supero, la rama NO
+    es de cierre y el veredicto lo deciden los gates de la serie: se publica asi, sin inventar un
+    nodo. En ambos casos se publica el mapa pre-declarado de los tres nodos de cierre, comprobando
+    ademas que sus nombres siguen siendo los del pre-registro.
+
+    Parameters
+    ----------
+    estado:
+        Checkpoint con ``rama_arbol`` (o ``None`` si la puerta paso).
+    prereg:
+        Contenido del pre-registro congelado.
+
+    Returns
+    -------
+    dict
+        ``nodo``, ``causa``, ``lectura``, ``cierre_definitivo``, ``es_rama_de_cierre``,
+        ``integracion`` (debe ser ``None`` en los nodos de cierre), ``motivo_de_no_calculo``, la
+        ``rama_predeclarada`` y si sus nombres ``coinciden_con_el_prereg``.
+    """
+    rama = estado.get("rama_arbol")
+    predeclarada = prereg["puerta"]["rama_predeclarada"]
+    mapa = {"G7_o_G8_fallan_en_A1": {
+                "nodo": NODOS_ARBOL["g7_o_g8_falla"],
+                "texto_del_prereg": predeclarada["G7_o_G8_fallan"]},
+            "G7_y_G8_pasan_pero_G0_G4_fallan_en_A1": {
+                "nodo": NODOS_ARBOL["g7_y_g8_pasan_g0_g4_falla"],
+                "texto_del_prereg": predeclarada["G7_y_G8_pasan_pero_G0_G4_fallan"]},
+            "cualquier_otro_fallo": {
+                "nodo": NODOS_ARBOL["otro_fallo"],
+                "texto_del_prereg": ("mismo criterio que en V34: el fallo no es atribuible a G7 ni a "
+                                     "G8 de A1")},
+            "ninguna_gate_falla": {
+                "nodo": NODOS_ARBOL["ninguna_falla"],
+                "texto_del_prereg": predeclarada["todas_pasan"]}}
+    nombres_prereg = " ".join(str(valor) for valor in predeclarada.values())
+    coincide = all(nodo in nombres_prereg for clave, nodo in NODOS_ARBOL.items()
+                   if clave != "ninguna_falla")
+    if rama is None:
+        return {"nodo": None, "es_rama_de_cierre": False, "causa": None,
+                "lectura": "la puerta se supero en el fold 0: la rama NO es de cierre y el veredicto "
+                           "lo deciden los gates de la serie (delta y bootstrap), sin ejecutar la "
+                           "segunda particion",
+                "cierre_definitivo": False, "integracion": None,
+                "motivo_de_no_calculo": None, "rama_predeclarada": mapa,
+                "rama_predeclarada_coincide_con_el_prereg": bool(coincide)}
+    return {"nodo": rama.get("nodo"), "es_rama_de_cierre": True, "causa": rama.get("causa"),
+            "lectura": rama.get("lectura"), "cierre_definitivo": rama.get("cierre_definitivo"),
+            "integracion": None, "motivo_de_no_calculo": rama.get("motivo_de_no_calculo"),
+            "g7_falla_en_a1": rama.get("g7_falla_en_a1"), "g8_falla_en_a1": rama.get("g8_falla_en_a1"),
+            "g0_g4_fallan_en_a1": rama.get("g0_g4_fallan_en_a1"),
+            "rama_predeclarada": mapa,
+            "rama_predeclarada_coincide_con_el_prereg": bool(coincide)}
 
 
 def construir_resultado(inicio: float, prereg: dict, auditoria: dict, lecturas: dict,
