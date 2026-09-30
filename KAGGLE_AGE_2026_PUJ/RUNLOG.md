@@ -2113,3 +2113,15 @@ intacto.
 - md: NEGATIVO | lg: NEGATIVO (arbol pre-registrado aplicado).
 - Baseline primario recomputado: 0.6159732; sin ajuste de ningun parametro.
 - Sin test, sin holdout, sin submission; candidato adoptado intacto.
+
+---
+
+## Pre-registro de P6: canal NER estructural · 2026-09-29
+
+- Congelado: representaciones N1 (tipos por span), N1b (atribucion sin marcas), N2 (tipo + POS
+  de contexto, (1,2)+2000 features); combinador logistico anidado sobre bloques de
+  probabilidad normalizados; regla y pesos del plug-in congelados; barajado entre tweets por el
+  pipeline completo; gates (+0.0015, 4/5, real>barajado, bootstrap) y arbol de decision.
+- Baseline primario recomputado: 0.6159732.
+- Revisiones de Kaggle Specialist y revisor ML incorporadas; limites declarados.
+- Sin tuning, sin test, sin holdout, sin submission automatica.
