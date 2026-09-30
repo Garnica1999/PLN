@@ -1,0 +1,459 @@
+{
+  "familia": "P75_COMPLEMENTARIEDAD_Y_FUSION",
+  "experiment_id": "P75",
+  "fase": "complementariedad de Word2Vec + TextCNN frente a V03, y fusion minima",
+  "fecha": "2026-09-30T08:49:40+00:00",
+  "naturaleza": "EXPERIMENTO. OOF pareado de dos modelos. 0 entrenamientos de embeddings",
+  "pregunta": "la informacion de Word2Vec + TextCNN corrige errores que V03 no corrige, o es una representacion distinta pero redundante?",
+  "alpha_primario": 0.1,
+  "alphas_de_sensibilidad": [
+    0.05,
+    0.15
+  ],
+  "gate": {
+    "delta_minimo": 0.003,
+    "folds_minimos": 4,
+    "requiere_net_positivo": true
+  },
+  "pass0_integridad": {
+    "v03_reconstruido": 0.7772114525,
+    "v03_esperado": 0.7772114525165721,
+    "coincide": true,
+    "sha_w2v": "c1b774e52e0e1dc131311bddea967e2a72a96e29",
+    "sha_auditado": "c1b774e52e0e1dc131311bddea967e2a72a96e29",
+    "holdout_apartado": 248,
+    "holdout_usado": 0,
+    "test_usado": 0,
+    "leaderboard_consultado": 0,
+    "submission": 0,
+    "unidades_tabla": 4449,
+    "v03_recalculado_desde_la_tabla": 0.7772114525,
+    "tabla_reproduce_al_campeon": true
+  },
+  "pass1_oof_cnn": {
+    "cv_cnn_sola": 0.583875535,
+    "epocas_por_fold": [
+      {
+        "pliegue": 1,
+        "E_estrella": 12,
+        "epocas_de_los_tres": [
+          10,
+          12,
+          17
+        ],
+        "n_outer_train": 1186,
+        "n_outer_val": 297,
+        "segundos": 624.5
+      },
+      {
+        "pliegue": 2,
+        "E_estrella": 10,
+        "epocas_de_los_tres": [
+          12,
+          10,
+          10
+        ],
+        "n_outer_train": 1186,
+        "n_outer_val": 297,
+        "segundos": 548.1
+      },
+      {
+        "pliegue": 3,
+        "E_estrella": 16,
+        "epocas_de_los_tres": [
+          17,
+          14,
+          16
+        ],
+        "n_outer_train": 1187,
+        "n_outer_val": 296,
+        "segundos": 590.4
+      },
+      {
+        "pliegue": 4,
+        "E_estrella": 14,
+        "epocas_de_los_tres": [
+          14,
+          11,
+          26
+        ],
+        "n_outer_train": 1187,
+        "n_outer_val": 296,
+        "segundos": 272.0
+      },
+      {
+        "pliegue": 5,
+        "E_estrella": 12,
+        "epocas_de_los_tres": [
+          14,
+          12,
+          12
+        ],
+        "n_outer_train": 1186,
+        "n_outer_val": 297,
+        "segundos": 12.5
+      }
+    ],
+    "semilla": 20261130,
+    "protocolo": "E* como mediana de tres splits internos por clusters, y reentrenamiento sobre el outer_train completo durante E* epocas fijas, para usar las mismas filas que V03 sin elegir la epoca sobre outer_validation"
+  },
+  "pass2_complementariedad": {
+    "global": {
+      "unidades": 4449,
+      "rescue": 268,
+      "damage": 813,
+      "ambos_ok": 2879,
+      "ambos_ko": 489,
+      "net": -545,
+      "rescue_rate": 0.060238,
+      "damage_rate": 0.182738,
+      "net_rate": -0.122499,
+      "v03_error": 757,
+      "cnn_error": 1302
+    },
+    "por_etiqueta": {
+      "HS": {
+        "unidades": 1483,
+        "rescue": 112,
+        "damage": 316,
+        "ambos_ok": 851,
+        "ambos_ko": 204,
+        "net": -204,
+        "rescue_rate": 0.075523,
+        "damage_rate": 0.213082,
+        "net_rate": -0.137559,
+        "v03_error": 316,
+        "cnn_error": 520
+      },
+      "TR": {
+        "unidades": 1483,
+        "rescue": 60,
+        "damage": 203,
+        "ambos_ok": 1116,
+        "ambos_ko": 104,
+        "net": -143,
+        "rescue_rate": 0.040459,
+        "damage_rate": 0.136885,
+        "net_rate": -0.096426,
+        "v03_error": 164,
+        "cnn_error": 307
+      },
+      "AG": {
+        "unidades": 1483,
+        "rescue": 96,
+        "damage": 294,
+        "ambos_ok": 912,
+        "ambos_ko": 181,
+        "net": -198,
+        "rescue_rate": 0.064734,
+        "damage_rate": 0.198247,
+        "net_rate": -0.133513,
+        "v03_error": 277,
+        "cnn_error": 475
+      }
+    },
+    "por_slice": {
+      "MENCION": {
+        "unidades": 2103,
+        "rescue": 120,
+        "damage": 405,
+        "ambos_ok": 1385,
+        "ambos_ko": 193,
+        "net": -285,
+        "rescue_rate": 0.057061,
+        "damage_rate": 0.192582,
+        "net_rate": -0.135521,
+        "v03_error": 313,
+        "cnn_error": 598,
+        "filas": 701
+      },
+      "COLECTIVO": {
+        "unidades": 1089,
+        "rescue": 71,
+        "damage": 154,
+        "ambos_ok": 715,
+        "ambos_ko": 149,
+        "net": -83,
+        "rescue_rate": 0.065197,
+        "damage_rate": 0.141414,
+        "net_rate": -0.076217,
+        "v03_error": 220,
+        "cnn_error": 303,
+        "filas": 363
+      },
+      "AFILIACION_proxy_densidad": {
+        "unidades": 1089,
+        "rescue": 71,
+        "damage": 154,
+        "ambos_ok": 715,
+        "ambos_ko": 149,
+        "net": -83,
+        "rescue_rate": 0.065197,
+        "damage_rate": 0.141414,
+        "net_rate": -0.076217,
+        "v03_error": 220,
+        "cnn_error": 303,
+        "filas": 363
+      },
+      "INTERPERSONAL": {
+        "unidades": 2016,
+        "rescue": 113,
+        "damage": 432,
+        "ambos_ok": 1258,
+        "ambos_ko": 213,
+        "net": -319,
+        "rescue_rate": 0.056052,
+        "damage_rate": 0.214286,
+        "net_rate": -0.158234,
+        "v03_error": 326,
+        "cnn_error": 645,
+        "filas": 672
+      },
+      "URL": {
+        "unidades": 1374,
+        "rescue": 86,
+        "damage": 216,
+        "ambos_ok": 905,
+        "ambos_ko": 167,
+        "net": -130,
+        "rescue_rate": 0.062591,
+        "damage_rate": 0.157205,
+        "net_rate": -0.094614,
+        "v03_error": 253,
+        "cnn_error": 383,
+        "filas": 458
+      },
+      "HASHTAG": {
+        "unidades": 432,
+        "rescue": 35,
+        "damage": 50,
+        "ambos_ok": 303,
+        "ambos_ko": 44,
+        "net": -15,
+        "rescue_rate": 0.081019,
+        "damage_rate": 0.115741,
+        "net_rate": -0.034722,
+        "v03_error": 79,
+        "cnn_error": 94,
+        "filas": 144
+      },
+      "CITA": {
+        "unidades": 183,
+        "rescue": 20,
+        "damage": 48,
+        "ambos_ok": 90,
+        "ambos_ko": 25,
+        "net": -28,
+        "rescue_rate": 0.10929,
+        "damage_rate": 0.262295,
+        "net_rate": -0.153005,
+        "v03_error": 45,
+        "cnn_error": 73,
+        "filas": 61
+      },
+      "ELONGACION": {
+        "unidades": 825,
+        "rescue": 56,
+        "damage": 155,
+        "ambos_ok": 500,
+        "ambos_ko": 114,
+        "net": -99,
+        "rescue_rate": 0.067879,
+        "damage_rate": 0.187879,
+        "net_rate": -0.12,
+        "v03_error": 170,
+        "cnn_error": 269,
+        "filas": 275
+      },
+      "REPETICION": {
+        "unidades": 825,
+        "rescue": 56,
+        "damage": 155,
+        "ambos_ok": 500,
+        "ambos_ko": 114,
+        "net": -99,
+        "rescue_rate": 0.067879,
+        "damage_rate": 0.187879,
+        "net_rate": -0.12,
+        "v03_error": 170,
+        "cnn_error": 269,
+        "filas": 275
+      },
+      "COLOQUIAL_proxy_risas_leet": {
+        "unidades": 1197,
+        "rescue": 68,
+        "damage": 193,
+        "ambos_ok": 809,
+        "ambos_ko": 127,
+        "net": -125,
+        "rescue_rate": 0.056809,
+        "damage_rate": 0.161236,
+        "net_rate": -0.104428,
+        "v03_error": 195,
+        "cnn_error": 320,
+        "filas": 399
+      },
+      "INSULTOS_lista_declarada": {
+        "unidades": 1947,
+        "rescue": 119,
+        "damage": 373,
+        "ambos_ok": 1264,
+        "ambos_ko": 191,
+        "net": -254,
+        "rescue_rate": 0.06112,
+        "damage_rate": 0.191577,
+        "net_rate": -0.130457,
+        "v03_error": 310,
+        "cnn_error": 564,
+        "filas": 649
+      },
+      "SIN_ODIO_EXPLICITO": {
+        "unidades": 2505,
+        "rescue": 176,
+        "damage": 360,
+        "ambos_ok": 1782,
+        "ambos_ko": 187,
+        "net": -184,
+        "rescue_rate": 0.070259,
+        "damage_rate": 0.143713,
+        "net_rate": -0.073453,
+        "v03_error": 363,
+        "cnn_error": 547,
+        "filas": 835
+      }
+    },
+    "proxies_declarados": {
+      "AFILIACION_proxy_densidad": "col_densidad > 0",
+      "COLOQUIAL_proxy_risas_leet": "tiene_risas o tiene_leet",
+      "INSULTOS_lista_declarada": "lista del autor, el corte menos fiable",
+      "SIN_ODIO_EXPLICITO": "HS = 0, corte basado en etiqueta",
+      "REPETICION": "tiene_repeticion"
+    },
+    "nota_de_recuperacion": "P75-01 perdio nueve de once slices por un fallo de tipos en el join: el parquet guarda id como texto y el OOF como entero, la interseccion fue cero y los reindex dieron NaN. Este script las recalcula desde el OOF pareado guardado, sin reentrenar nada. Solo se leyo la particion 'dev' del parquet"
+  },
+  "pass3_diversidad": {
+    "correlacion_proba": {
+      "HS": 0.588567,
+      "TR": 0.719074,
+      "AG": 0.612593
+    },
+    "correlacion_margen": {
+      "HS": 0.588567,
+      "TR": 0.719074,
+      "AG": 0.612593
+    },
+    "auc_v03_error_con_score_cnn": {
+      "HS": 0.487206,
+      "TR": 0.604502,
+      "AG": 0.497264
+    },
+    "auc_cnn_error_con_score_v03": {
+      "HS": 0.518508,
+      "TR": 0.755678,
+      "AG": 0.586575
+    },
+    "acuerdo_unidades": 0.757024,
+    "desacuerdo_unidades": 0.242976
+  },
+  "pass4_fusion": [
+    {
+      "alpha": 0.05,
+      "corrected_cv": 0.7746109462,
+      "delta_vs_v03": -0.0026005064,
+      "fold_scores": [
+        -0.005575,
+        0.000385,
+        0.001429,
+        -0.004336,
+        -0.005949
+      ],
+      "folds_positivos": 2,
+      "n_alcanzables": 82,
+      "n_volteadas": 38,
+      "tasa_volteo": 0.4634,
+      "techo_oraculo": 0.0116408616,
+      "piso_oraculo": -0.0121617867,
+      "bootstrap_media": -0.0025739522,
+      "bootstrap_ic95": [
+        -0.0064917452,
+        0.0013139284
+      ],
+      "rescue_vs_v03": 17,
+      "damage_vs_v03": 21,
+      "net_vs_v03": -4
+    },
+    {
+      "alpha": 0.1,
+      "corrected_cv": 0.7719675587,
+      "delta_vs_v03": -0.0052438938,
+      "fold_scores": [
+        -0.007635,
+        -0.002555,
+        0.003422,
+        -0.007954,
+        -0.012719
+      ],
+      "folds_positivos": 1,
+      "n_alcanzables": 159,
+      "n_volteadas": 76,
+      "tasa_volteo": 0.478,
+      "techo_oraculo": 0.0200631424,
+      "piso_oraculo": -0.0252126061,
+      "bootstrap_media": -0.0052208297,
+      "bootstrap_ic95": [
+        -0.0109993016,
+        0.0003096711
+      ],
+      "rescue_vs_v03": 31,
+      "damage_vs_v03": 45,
+      "net_vs_v03": -14
+    },
+    {
+      "alpha": 0.15,
+      "corrected_cv": 0.7691941289,
+      "delta_vs_v03": -0.0080173237,
+      "fold_scores": [
+        -0.015683,
+        -0.00102,
+        0.00199,
+        -0.010034,
+        -0.016913
+      ],
+      "folds_positivos": 1,
+      "n_alcanzables": 239,
+      "n_volteadas": 127,
+      "tasa_volteo": 0.5314,
+      "techo_oraculo": 0.0305478444,
+      "piso_oraculo": -0.0375782201,
+      "bootstrap_media": -0.0080647117,
+      "bootstrap_ic95": [
+        -0.0151482072,
+        -0.0008824383
+      ],
+      "rescue_vs_v03": 53,
+      "damage_vs_v03": 74,
+      "net_vs_v03": -21
+    }
+  ],
+  "gate_pasa": false,
+  "signos_coherentes": true,
+  "finalista": null,
+  "veredicto": {
+    "caso": "CASO 5",
+    "etiqueta": "CNN_PERJUDICA"
+  },
+  "atribucion": {
+    "nivel_1_informacion": "establecido por P74, no se reabre",
+    "nivel_2_complementariedad": "descriptivo, medido en P75-B/C",
+    "nivel_3_transferencia": "solo si el gate pasa y, para una afirmacion estable, si replica en la segunda particion",
+    "prohibido": [
+      "Word2Vec es mejor que V03",
+      "que el delta sea atribuible al embedding: la comparacion es sistema embedding+CNN contra sistema n-gramas+LR"
+    ]
+  },
+  "deuda_heredada": [
+    "los umbrales 0.44/0.51/0.46 y la C de V03 se eligieron historicamente con acceso a la OOF, luego el liston de +0.003 esta sesgado a favor del campeon"
+  ],
+  "precision_del_corpus": "sin near-duplicados por encima de Jaccard 0.142857, no 'sin ningun solapamiento'",
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

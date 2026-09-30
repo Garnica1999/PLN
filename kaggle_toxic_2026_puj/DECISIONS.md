@@ -7862,3 +7862,129 @@ siendo descriptiva: A media 0.6035 frente a 0.7772, y esa diferencia mezcla repr
 arquitectura), si procede una fusion, si procede fine-tuning, y si procede una submission.
 
 **TEXTCNN QUEDA EN ESPERA.**
+
+## D-257: P75. La complementariedad de errores no transfiere, y la fusion perjudica
+
+### D-257.1. El OOF pareado, y la comprobacion de alineamiento que lo valida
+
+V03 y el TextCNN entrenan los dos sobre el `outer_train` completo y predicen las mismas filas. El
+TextCNN usa `E*` como mediana de tres splits internos por clusters y luego se reentrena sobre el
+`outer_train` completo durante `E*` epocas fijas: mismo presupuesto de datos que V03 y ninguna
+epoca elegida sobre `outer_validation`.
+
+```text
+V03 desde el OOF canonico        0.7772114525   coincide con el campeon
+V03 recalculado desde la tabla   0.7772114525   y la tabla tiene 4449 unidades alineadas
+E* por pliegue                   12, 10, 16, 14, 12   (medianas de tres splits)
+CNN sola (diagnostica)           0.5838755350
+```
+
+La comprobacion de alineamiento que el revisor de DL exigio  - recalcular a V03 **desde la tabla
+pareada** -  pasa al decimal. El pareado esta verificado.
+
+### D-257.2. La matriz de errores: el dano triplica al rescate
+
+```text
+GLOBAL  unidades 4449 | rescue 268 | damage 813 | ambos ok 2879 | ambos ko 489 | net -545
+        rescue_rate 0.0602 | damage_rate 0.1827 | net_rate -0.1225
+
+HS      rescue 112 | damage 316 | net -204
+TR      rescue  60 | damage 203 | net -143
+AG      rescue  96 | damage 294 | net -198
+```
+
+**Las tres etiquetas van en la misma direccion y el net es negativo en las tres.** Y en las doce
+slices ocurre lo mismo: ninguna tiene net positivo. El dano va de 1,4 veces el rescate (HASHTAG) a
+3,1 veces (TR).
+
+### D-257.3. La diversidad: la senal del CNN NO sabe donde V03 falla
+
+```text
+AUC(error de V03 | score del CNN)   HS 0.4872   TR 0.6045   AG 0.4973
+correlacion de probabilidades       HS +0.5886  TR +0.7191  AG +0.6126
+acuerdo 0.757024 | desacuerdo 0.242976
+```
+
+En HS y en AG el AUC es **practicamente 0.5**: el score del CNN **no contiene informacion sobre
+donde V03 se equivoca**. En TR hay una senal debil (0.60). El desacuerdo del 24 por ciento existe,
+pero no esta alineado con los errores de V03: es desacuerdo sin direccion util.
+
+### D-257.4. La fusion: los tres alphas, y el techo que revela lo que pasa
+
+```text
+alpha 0.05   corrected_cv 0.7746109462   delta -0.0026005064   folds 2/5   alcanzables  82  volteadas  38  techo +0.011641
+alpha 0.10   corrected_cv 0.7719675587   delta -0.0052438938   folds 1/5   alcanzables 159  volteadas  76  techo +0.020063
+alpha 0.15   corrected_cv 0.7691941289   delta -0.0080173237   folds 1/5   alcanzables 239  volteadas 127  techo +0.030548
+```
+
+**El techo oraculo es positivo y crece con alpha.** Es decir: con `alpha = 0.10` la fusion *podia*
+haber ganado hasta `+0.020`, y gano `-0.0052`. **No es que los alphas sean demasiado pequenos: es
+que la direccion del CNN en esa banda apunta al lado equivocado.**
+
+Y la tasa de volteo lo confirma: 38 de 82 alcanzables (46 por ciento), 76 de 159 (48 por ciento),
+127 de 239 (53 por ciento). La fusion **movio** aproximadamente la mitad de las unidades que podia
+mover. Eso descarta la lectura "fue inerte por conservadora": movio, y perjudico.
+
+Bootstrap pareado por clusters del delta frente a V03:
+
+```text
+alpha 0.05   [-0.006492, +0.001314]   contiene el cero
+alpha 0.10   [-0.010999, +0.000310]   contiene el cero
+alpha 0.15   [-0.015148, -0.000882]   ENTERAMENTE por debajo de cero
+```
+
+### D-257.5. El veredicto y la atribucion
+
+```text
+GATE sobre el alpha primario 0.10: delta -0.0052438938 >= 0.003  -> NO PASA
+signos coherentes entre los tres alphas: True, todos negativos
+VEREDICTO: CASO 5, CNN_PERJUDICA
+finalista para segunda particion: NINGUNO
+```
+
+**No hay finalista.** No se ejecuta ninguna segunda particion, porque la condicion pre-registrada
+exige delta >= +0.003 con 4 de 5 pliegues positivos y net positivo, y no se cumple ninguna de las
+tres cosas.
+
+**La atribucion, en los tres niveles que no se confunden:**
+
+```text
+Nivel 1  la representacion contiene informacion de tarea     ESTABLECIDO por P74, no se reabre
+Nivel 2  los errores no son redundantes, pero el dano        medido: rescue 268 frente a damage 813
+         triplica al rescate
+Nivel 3  la fusion mejora a V03                              NO. Las tres fusiones empeoran
+```
+
+**NO se puede afirmar** que Word2Vec sea inutil: P74 lo refuta. **NO se puede afirmar** que la
+TextCNN sea peor modelo que V03 en general: se midio la fusion, no el modelo suelto, y la CNN no se
+optimizo contra los umbrales de V03. **NO se puede afirmar** que el problema sea la representacion:
+lo que falla es el mecanismo de combinacion con unos umbrales calibrados para V03.
+
+Y una cautela que hay que dejar escrita: **los umbrales congelados 0.44/0.51/0.46 son los de V03**.
+Aplicados a un modelo con otra calibracion le penalizan, de modo que parte del dano puede ser
+**coste de calibracion y no calidad del modelo**. El gate se juzga con los umbrales congelados
+porque son la regla desplegable, pero la interpretacion tiene que decirlo. Y la conclusion que
+sobrevive a esa cautela es la del AUC: **el score del CNN no sabe donde V03 falla** (0.4872 y
+0.4973 en HS y AG), y eso no depende de ningun umbral.
+
+### D-257.6. Un fallo propio, encontrado y corregido
+
+P75-01 perdio **nueve de once slices** por un fallo silencioso: unio la tabla de anotaciones por
+indice sin comprobar el tipo del identificador. El parquet guarda `id` como **texto** (`'20430'`) y
+el OOF canonico como **entero** (20430). La interseccion fue cero, todos los `reindex` dieron NaN, y
+las slices vacias se saltaron por el umbral de filas. Sobrevivieron solo las dos que no dependen del
+parquet.
+
+`experiments/p75_02_slices_recuperadas.py` las recalcula **desde el OOF pareado ya guardado, sin
+reentrenar nada**, filtrando solo la particion `dev` del parquet (las 1154 filas de test y las 248
+de holdout **no se leen**). Las doce slices dan net negativo. Dos pares son redundantes y se
+declaran: `COLECTIVO` y `AFILIACION_proxy_densidad` dan identicos, y `ELONGACION` y `REPETICION`
+tambien.
+
+### D-257.7. La interferencia ambiental, declarada
+
+El tiempo de P75-01 esta **contaminado**: el pliegue 1 tardo 624 segundos cuando en un primer
+intento de la misma corrida habia tardado 24. La causa no era el pipeline sino que habia un proceso
+ajeno consumiendo CPU (carga media 50,8 sobre 32 nucleos, con un proceso de Steam/Proton a 476 por
+ciento). **Ningun numero de resultado depende del tiempo**, pero cualquier comparacion de rendimiento
+de esta corrida no es utilizable y asi se declara.
