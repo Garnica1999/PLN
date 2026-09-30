@@ -2095,3 +2095,13 @@ intacto.
 - Se anade `es_core_news_lg` (modelo mayor, no-transformer) como segundo anotador de comparacion.
 - Registro de anotadores actualizado con ambos modelos y su procedencia.
 - **P2 habilitado** con pre-registro previo. Sin test, sin holdout, sin submission.
+
+---
+
+## Pre-registro de P2: canal POS-secuencia · 2026-09-29
+
+- Congelado el protocolo: particion canonica leida, canal TF-IDF 1-3 + LogReg (C=1.0),
+  alfa=0.5, control de barajado de filas e intra-documento, gates (+0.0015, 4/5,
+  bootstrap, control) y arbol de decision.
+- Baseline primario recomputado: 0.6159732 (regla de la submission).
+- Sin tuning, sin test, sin holdout, sin submission automatica.
