@@ -509,12 +509,17 @@ def main() -> int:
     prereg = json.loads(PREREG_JSON.read_text(encoding="utf-8"))
 
     print("=== verificacion contra el pre-registro ===", flush=True)
+    rep_ok = {}
+    for r in VEC_STR:
+        esperado = prereg["representaciones"][r]["vectorizador"]
+        if esperado == "identico a N1":  # definicion literal del pre-registro para N1b
+            esperado = prereg["representaciones"]["N1"]["vectorizador"]
+        rep_ok[r] = (esperado == VEC_STR[r])
     constantes_ok = (prereg["gates"]["delta_min"] == GATE_DELTA
                      and prereg["gates"]["folds_min"] == GATE_FOLDS
                      and prereg["semillas"] == {"bootstrap": SEMILLA_BOOTSTRAP,
                                                 "barajado": SEMILLA_BARAJADO}
-                     and all(prereg["representaciones"][r]["vectorizador"] == VEC_STR[r]
-                             for r in VEC_STR))
+                     and all(rep_ok.values()))
     rutas_hashes = {
         "anotacion_md_parquet": PARQUETS["md"],
         "anotacion_lg_parquet": PARQUETS["lg"],
@@ -529,7 +534,7 @@ def main() -> int:
         if sha256(ruta) != prereg["hashes"][nombre]:
             hashes_ok = False
             print(f"  [STOP] hash distinto en {nombre}", flush=True)
-    print(f"  constantes ok: {constantes_ok} | hashes ok: {hashes_ok}", flush=True)
+    print(f"  constantes ok: {constantes_ok} | hashes ok: {hashes_ok} | reps: {rep_ok}", flush=True)
     if not (constantes_ok and hashes_ok):
         print("[STOP] el pre-registro no se respeta", flush=True)
         return 1
