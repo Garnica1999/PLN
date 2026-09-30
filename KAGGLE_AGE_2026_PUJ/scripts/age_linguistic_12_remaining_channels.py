@@ -178,8 +178,8 @@ def evalua(p_comb: np.ndarray, clase: np.ndarray, fold_idx: np.ndarray, champ_pr
            pesos: np.ndarray, baseline: float) -> dict:
     pred = np.argmax(p_comb * pesos, axis=1)
     cv = macro(clase, pred)
-    folds = [macro(clase, pred[fold_idx == k]) for k in range(5)]
-    folds_base = [macro(clase, champ_pred[fold_idx == k]) for k in range(5)]
+    folds = [macro(clase[fold_idx == k], pred[fold_idx == k]) for k in range(5)]
+    folds_base = [macro(clase[fold_idx == k], champ_pred[fold_idx == k]) for k in range(5)]
     ic = bootstrap_delta(clase, champ_pred, pred)
     return {"corrected_cv": round(cv, 7), "delta_vs_baseline": round(cv - baseline, 7),
             "delta_vs_nested": round(cv - 0.6154643, 7),
