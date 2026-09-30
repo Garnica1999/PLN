@@ -7497,3 +7497,128 @@ la fuerza del resultado: un subespacio aleatorio puede capturar bastante senal d
 palabra suelta, luego **la nula puede ser fuerte y el control puede fallar en detectar una
 contribucion real**. Un empate es evidencia DEBIL; una victoria clara del entrenado habria sido
 evidencia FUERTE.
+
+## D-250 a D-253: P73, la TextCNN secuencial, y la primera vez que el embedding gana a su nulo
+
+### D-250. El diagnostico que faltaba: solapamiento por near-duplicados
+
+P0 midio solapamiento exacto y normalizado del corpus externo contra desarrollo: cero. El revisor
+de compliance senalo que faltaba el caso de **near-duplicados**, que es el que puede meter texto de
+la competencia dentro del Word2Vec sin que un chequeo exacto lo note.
+
+Medido con shingles de 3 palabras, indice invertido de desarrollo y Jaccard exacto sobre 294
+documentos candidatos de los 361.994:
+
+```text
+filas de desarrollo con algun shingle en comun    76 de 1483
+jaccard maximo global                             0.142857
+filas con jaccard >= 0.5                          0
+filas con jaccard >= 0.2                          0
+VEREDICTO                                         SIN_SOLAPAMIENTO
+```
+
+El corpus externo no contiene tuits de desarrollo ni near-duplicados. El Word2Vec no pudo ver
+texto de la competencia. Cierra el pendiente de compliance.
+
+### D-251. La TextCNN de dos ramas, y por que el protocolo es anidado
+
+Diseno pre-registrado en `docs/p73_preregistro_textcnn.md` (commit `7192a22`, anterior a la
+corrida). Arquitectura fija: maxlen 60 sin truncar, Conv1D kernels 2/3/4 con 64 filtros, global max
+pooling **con mascara a nivel de ventana**, Dropout 0.5, Dense 64, 3 logits, `BCEWithLogitsLoss` sin
+pesos, AdamW lr 1e-3, batch 32, maximo 40 epocas. **70.339 parametros entrenables** y 7.765.800
+congelados.
+
+Dos decisiones que cambiaron el resultado respecto de lo obvio:
+
+1. **No se elige la epoca sobre el pliegue que se reporta.** Validacion anidada por clusters
+   dentro de cada pliegue, early stopping sobre la BCE de esa validacion interna, y una sola
+   mirada al pliegue externo. Con 297 filas externas y hasta 40 epocas, elegir la epoca ahi
+   habria inflado el resultado y, peor, cada rama habria elegido su propia epoca.
+2. **Init explicito He normal.** El init por defecto de `Conv1d` reduce la relacion senal/DC de
+   2.4 a 0.25 sobre embeddings anisotropicos, y podia ahogar la senal en la rama entrenada.
+
+Las 13 comprobaciones de conformidad pasan, incluida la reconstruccion exacta de V03
+(`0.7772114525`) y del embedding-only de P72 (`0.5947288906`).
+
+### D-252. La comprobacion 12 estaba mal especificada y hubo que refinarla TRES veces
+
+Merece registrarse porque es el unico sitio donde el pre-registro no describia la realidad, y
+conviene que quede por escrito que no se relajo ninguna tolerancia.
+
+El pre-registro pedia: "en las 70 filas sin cobertura, A y B producen predicciones identicas".
+Falso por tres motivos, cada uno descubierto al ejecutar:
+
+```text
+(1) las ramas DIVERGEN al entrenar, luego sus sesgos convolucionales difieren y con ellos la
+    constante de salida: la identidad entre ramas no es una propiedad exigible
+(2) dentro de una rama la prediccion no es constante entre las 70: el numero de VENTANAS VALIDAS
+    depende de la longitud real. Una fila de 2 tokens no tiene ventana valida de tamano 3 ni 4,
+    y esos canales valen 0 en vez de ReLU(sesgo). La salida depende de min(longitud, 4)
+(3) agrupar solo por longitud tampoco basta: las 70 filas caen en PLIEGUES distintos, y cada
+    pliegue tiene su propio modelo entrenado
+```
+
+El invariante exacto, verificado: **la prediccion de una fila sin cobertura queda determinada por
+(pliegue, min(longitud, 4))**. Nueve grupos, cero fallos, sin NaN ni inf.
+
+### D-253. El resultado: por primera vez el embedding entrenado supera a su nulo
+
+```text
+condicion                                      CV out-of-fold      f1 por pliegue
+A  Word2Vec 100d congelado + TextCNN            0.6090700099      0.5677 0.5565 0.6476 0.6335 0.6272
+B  aleatorio 100d congelado + MISMA TextCNN     0.5774440627      0.5062 0.6103 0.5831 0.5732 0.6049
+delta A - B                                    +0.0316259472      gana A en 4 de 5
+```
+
+Bootstrap de clusters de near-duplicados del delta: **+0.031419 [+0.010066, +0.053484]**, 2000
+remuestreos, semianchura 0.021709. **El intervalo queda enteramente por encima de cero.** Aplica la
+regla pre-registrada (`IC 95 > 0` y `>= 4/5 pliegues`), luego el veredicto interno es
+`A_SUPERA_A_B_CLARO`.
+
+**Esto NO contradice a P72, lo acota.** P72 midio que la geometria aprendida no aporta ventaja a un
+lector lineal; P73 mide que si aporta ventaja a un lector secuencial, con el mismo vocabulario, la
+misma norma por token y las mismas particiones. Las dos frases son compatibles.
+
+**No es un artefacto de sobreajuste**, y esto es lo que mas importa comprobar:
+
+```text
+                          train F1 medio   val externo medio   brecha
+A Word2Vec                     0.8565            0.6065          0.250
+B aleatorio                    0.8639            0.5755          0.288
+```
+
+La brecha train-validacion es grande en las dos ramas (esperable con ~949 filas y 70.339
+parametros), pero la de A es **menor** que la de B y la ventaja aparece **en el pliegue externo**,
+no solo en train. Si la ventaja hubiera existido solo en train, la lectura habria sido sobreajuste.
+
+**La TextCNN no es competitiva con el campeon.** A queda 0.168 por debajo de V03
+(`0.7772114525`), y la comparacion **no aisla la representacion**: el protocolo de P73 es mas
+conservador (949 filas de entrenamiento frente a 1186) y la arquitectura es distinta.
+
+**Rebanadas por longitud** (todas, no solo la favorable):
+
+```text
+rebanada        filas    V03      A       B      A - B
+CORTA 0-6         137   0.9607  0.8279  0.8284  -0.0004
+MEDIA 7-15        563   0.8048  0.6542  0.6108  +0.0434
+LARGA 16-30       603   0.6894  0.4689  0.4265  +0.0424
+MUY_LARGA 31+     180   0.5465  0.2620  0.2371  +0.0249
+```
+
+La ventaja es **nula en los tuits cortos y positiva en todas las rebanadas con secuencia**. Es
+coherente con el mecanismo propuesto: donde no hay orden que explotar, la representacion no
+aporta. Y el matiz honesto: la rebanada mas larga muestra la ventaja **menor**, no la mayor, luego
+la hipotesis concreta "la secuencia ayuda sobre todo en tuits largos" **no se cumple** tal como se
+formulo.
+
+En estructura: la ventaja se concentra en HASHTAG (+0.1175 con, +0.0261 sin), ELONGACION
+(+0.0641 / +0.0257) y URL (+0.0432 / +0.0310).
+
+Complementariedad frente a V03: rescue 2096, damage 602, net +1494 sobre las 4449 celdas. **No se
+evalua ninguna fusion**, porque el protocolo de la fase la reserva para cuando A supere al
+campeon.
+
+**Lo que no se puede afirmar**: que Word2Vec funcione en general, que el efecto se replique con
+otra semilla (no se ejecuto ninguna), ni que la diferencia se deba a relaciones semanticas y no a
+estructura direccional aprendida, porque las ramas difieren tambien en anisotropia y forma
+espectral. Y no se afirma "el corpus era suficiente".
