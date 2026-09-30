@@ -1,7 +1,7 @@
 # V32 - Plan de reapertura: optimizacion del puntaje (2026-09-30)
 
 Estado global: reapertura V32 con **P1 cerrada (NO_ATRIBUIBLE, D-081)** y **P2 cerrada (CLOSED,
-D-082)**; lista priorizada agotada (P3 FTRL solo con autorizacion); campeon V30 + plug-in intacto.
+D-082)**; **P3 (FTRL-Proximal) autorizado y EN EJECUCION**; campeon V30 + plug-in intacto.
 Campeon congelado (FINAL_REFERENCE): **V30 + plug-in por clase**, LB 0.63575
 (CV global 0.6159732; nested 0.6154643; particion canonica).
 Objetivo del usuario: mejorar el puntaje de Kaggle; referencia declarada: acercarse a 0.70 de F1.
@@ -74,7 +74,8 @@ Objetivo del usuario: mejorar el puntaje de Kaggle; referencia declarada: acerca
 | 2026-09-30 | F1' | P2: arquitectura (architect) + compliance (kaggle-specialist) | e31623f |
 | 2026-09-30 | F2' | pre-registro + enmienda pre-ejecucion 1 + runner verificado (QA 7/7) | e31623f / f0bf731 / c38b8c7 |
 | 2026-09-30 | F3' | V32-E2 ejecutado (1149 s); CLOSED; sin segunda particion (D-082) | b6902ed |
-| 2026-09-30 | F4' | notebook (313 celdas) + docs + memorias | (commit de cierre) |
+| 2026-09-30 | F4' | notebook (313 celdas) + docs + memorias | db69ed0 |
+| 2026-09-30 | F1'' | ciclo 3 autorizado: P3 FTRL-Proximal (arquitectura + novedad) | (este commit) |
 
 ## Ciclo 2 - P2 CatBoost sobre matriz_279 (abierto 2026-09-30)
 
@@ -98,11 +99,30 @@ gates, determinismo, compliance). Scripts previstos: `v32_02_preregistro_catboos
   correcciones: iteraciones A2 y calibracion fail-closed al reanudar; `metric:"None"` en A2
   aceptado por el lead como detalle de ejecucion); `ml-qa-engineer` = GO condicionado, cerrado
   con probe E2E 7/7 (PROMISING/NO_ATRIBUIBLE/caps/CLOSED/MARGINAL) y `--verificar` EXIT 0.
-- [~] **F3' Entrenamiento y evaluacion**: lanzado en CPU (15 fits; ETA 9-19 h con contencion;
-  calibracion tras fold 0 de A1 con parada si proyeccion >20 h; checkpoints resumibles por
-  fold). Al terminar: gates + arbol (PROMISING -> segunda particion; MARGINAL/CLOSED -> cierre)
-  con validacion de `ml-trainer`.
+- [x] **F3' Entrenamiento y evaluacion**: ejecutado en CPU (exit 0; 1149 s; 15 fits; sin
+  truncamiento; sondas de determinismo A1/A2 = 0.0 exactas; sanity TotalF1:average=Macro ==
+  macro-F1 con delta 0.0). Veredicto **CLOSED**: A1 -0.0011258 (1/5 folds), A2 -0.0012871,
+  A3 -0.0012138; control A1 vs A2 no favorable (+0.00017; IC95 incluye 0). Sin segunda
+  particion; P2 cerrada (D-082). `ml-trainer` valido artefactos, gates y arbol del ciclo 2.
 - [x] **F4' Cierre**: notebook actualizado con la seccion "PHASE - V32 REOPENING (P2 - CATBOOST)"
   (313 celdas; salida real + aserciones del veredicto CLOSED); `DECISIONS.md` (D-082),
   `PROJECT_STATE.md`, `FINAL_REPORT.md`, `RUNLOG.md` y `experiments.csv` al dia; graphiti
   (episodio + tripletas) y codebase re-indexado.
+
+## Ciclo 3 - P3 FTRL-Proximal sobre TF-IDF (autorizado 2026-09-30)
+
+Autorizado por Carlos tras cerrar P2. Es el ultimo candidato de la lista priorizada
+(secundario: FTRL-Proximal es cercano al SGD ya usado; no aparece en el historial). Se heredan
+las salvaguardas, el mecanismo de integracion P6/P7, los gates, la sonda de determinismo y el
+compliance de los ciclos previos. Scripts previstos: `v32_04_preregistro_ftrl.py` (lead) y
+`v32_05_ftrl_challenger.py` (runner). Un experimento = un script nuevo.
+
+- [ ] **F1'' Arquitectura y novedad**: `ml-architect` congela el protocolo (representacion
+  TF-IDF congelada y verificable, config unica sin grid, control de atribucion ex ante,
+  determinismo); `kaggle-specialist` valida reglas/leakage. Sin `dl-specialist` (no hay red).
+- [ ] **F2'' Pre-registro + implementacion + revision**: pre-registro congelado; `ml-coder`;
+  `ml-reviewer`; `ml-qa-engineer` (GO/NO-GO).
+- [ ] **F3'' Entrenamiento y evaluacion**: `ml-trainer`; gates; arbol (PROMISING -> segunda
+  particion; MARGINAL/CLOSED -> cierre documentado). Con cierre, la reapertura termina.
+- [ ] **F4'' Cierre**: notebook (seccion del ciclo), `DECISIONS.md` (D-083), `PROJECT_STATE.md`,
+  `FINAL_REPORT.md`, RUNLOG, experiments.csv, commits, memorias (graphiti/codebase).
