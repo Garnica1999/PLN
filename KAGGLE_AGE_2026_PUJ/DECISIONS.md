@@ -2847,6 +2847,83 @@ No se usa el 0,63575 para optimizar pesos, crear variantes, seleccionar semillas
   `reports/v32_p2_preregistro.md`, `artifacts/p33_scores/v32_p2/`,
   `reports/figures/v32_p2_curvas.png`, `scripts/v32_02_preregistro_catboost.py`,
   `scripts/v32_02b_enmienda_preregistro.py`, `scripts/v32_03_catboost_challenger.py`.
+---
+
+## D-084 - V33-E1: la puerta G1-G6 corta en el fold 0 (NO_ATRIBUIBLE_BY_GATE); V33 cerrada
+
+- **Observation**: primer experimento del expediente **V33**, autorizado por Carlos el
+  2026-09-30 al combinar "diseno online corregido" y "linea de otra magnitud". Diseno congelado
+  (`950e17a`): FTRL-Proximal **softmax multiclase** (K=6 en un solo juego de pesos, sesgo
+  materializado como coordenada con `x0=1.0`), **una sola pasada online** sobre el orden
+  congelado `default_rng(20261010+fold)`, con `alpha = 3/(2*sqrt(T))` **DERIVADO** (T = n_train_fold
+  = 135468 -> alpha = 0.0040754249463367, cero valores evaluados), lambda1 0.0, lambda2 1.0,
+  beta 1.0, sin `power_t`; TF-IDF por fold con la receta de `v31_02` (artefactos y sha256 de
+  vocabulario/idf NUEVOS, no heredados de D-083); control gemelo `SGDClassifier(log_loss)` de
+  **una pasada**. Condiciones incorporadas de `kaggle-specialist` y del arquitecto: sonda de
+  atribucion `|sigma*w|/|g|` **obligatoria**, puerta de convergencia **G1-G6 fail-fast** con
+  umbrales derivados (no calibrados), aplicada igual a A1 y a A2, y nodo nuevo
+  `NO_ATRIBUIBLE_BY_GATE` sin fallback ni segundo alpha. La **Via B quedo DESCARTADA** antes de
+  ejecutar: B1 (grafo coseno kNN transductivo) es **ILEGAL** (usa features de test sin etiqueta
+  para modificar predicciones de train; su forma legal es un kNN re-ponderado = mecanismo M09 ya
+  cerrado), B2 (aumentacion masking/spans) por analogia con C04, B3 (cabeza multitarea) refutada
+  por algebra con tronco lineal.
+- **Enmiendas y correcciones PRE-EJECUCION** (sin resultados en el momento de aplicarlas):
+  (1) banda de G1 de `[0.25, 0.60]` a `[0.05, 0.9*ln(6) = 1.6125835223052496]`, porque el techo
+  original era inalcanzable para cualquier modelo sano (en D-083 el gemelo sano ya dio
+  `log_loss` multiclase 1.3568) y garantizaba `NO_ATRIBUIBLE_BY_GATE` por construccion;
+  (2) `shuffle=False` explicito en el control, para que consuma el orden congelado tal cual (el
+  default de sklearn aplicaba su propia permutacion encima); (3) `scripts/v33_00c_correccion_puerta_md.py`
+  reconstruyo la fila G1 del documento **normativo** `reports/v33_convergence_gate.md` desde el
+  JSON del pre-registro (el reemplazo literal de la enmienda 1 no habia coincidido con la fila
+  real y el documento seguia anunciando la banda congelada).
+- **Auditoria de implementacion**: antes de ejecutar, `--verificar`, `ml-reviewer` y
+  `ml-qa-engineer` cazaron **6 bugs reales**, todos corregidos: `s = w[idx] @ valores` (matmul con
+  dimensiones incompatibles), `sum(axis=1)` que reducia las 6 clases en vez de los no-nulos,
+  `KeyError` de `control_atribucion` (la clave vive en `resultado["determinismo"]["control"]`),
+  typo `"verdicto"` leido por 8 puntos, sonda de determinismo `None` en el cierre por puerta y
+  `KeyError` de `caps` fuera del bloque de integracion; ademas los asserts de integridad se
+  convirtieron a `Detencion` (con `python -O` los asserts desaparecen) y el documento normativo
+  quedo alineado con el protocolo. `ml-reviewer` verifico el nucleo con una **tercera
+  implementacion independiente** (max|dw| = 2.44e-15 frente a la tolerancia 1e-12) y `ml-qa-engineer`
+  dio GO tras simular los tres escenarios de cierre con 8/8 escritores correctos.
+- **Result**: veredicto **`NO_ATRIBUIBLE_BY_GATE`** en 21.1 s de CPU (fail-fast en el fold 0,
+  antes de los folds 1-4 y antes de integrar; RSS 0.71 GB; sondas (a)-(f) pass; AST 94 literales
+  y 28 modulos con 0 violaciones). A1: `ll_train` = 1.8051233 / 1.8049024 / 1.8047797 en el
+  25/50/100 % de la pasada -> **G1 falla** (1.8047797 > 1.6125835223052496, a solo 0.013 del
+  anclaje uniforme `ln 6 = 1.7917595`), **G3 falla** (macro-F1 standalone 0.0409742 < 0.30 y por
+  debajo de la linea base trivial 0.0485421) y **G4 falla** (frecuencias [0.2629, 0.1125, 0.0019,
+  0.00024, 0.0270, 0.5955], colapso a la clase 5); G2 (monotonia) y G6 (filas que suman 1,
+  4.44e-16) pasan. A2: sano en perdida y en F1 (`ll_train` 3.3924259 / 1.7031541 / 1.3899611,
+  macro-F1 0.3956246; G1-G3 y G6 pasan) pero **G4 falla** (clase 5 al 42.6 % > 0.30).
+  **Sonda de atribucion publicada** (obligatoria): razon media `|sigma*w|/|g|` = 0.0419516
+  (mediana 0.0380133, p90 0.0632781, max 0.2153788, global 0.0376888, coordenada del sesgo
+  0.0038350, fraccion de coordenadas con razon > 1 = 0.0). `alpha` efectivo exacto
+  0.0040754249463367 = 3/(2*sqrt(135468)) (error 0.00e+00). Sin integracion, sin bootstrap pareado,
+  sin segunda particion, sin submission y con `delta` intacto (las columnas de delta quedan
+  vacias en el informe y en el historial).
+- **Decision**: V33 se cierra con este veredicto; el campeon **V30 + plug-in** (LB 0.63575)
+  permanece intacto y sin tocar. La linea de aprendizaje online **queda sin medir con una
+  configuracion viable**.
+- **Consequences**: (i) el diagnostico de D-083 era correcto en la mitad y equivocado en la otra:
+  con `alpha = 0.05` la correccion `sigma` resultaba **inflada** y el entrenamiento divergia
+  (11.72 -> 23.03); con el `alpha` derivado la correccion es **~24x mas debil que el gradiente**
+  (razon 0.042) y el modelo **apenas se mueve del uniforme** (1.80478 frente a `ln 6` = 1.79176).
+  El punto de operacion viable esta entre ambos, y buscarlo exigiria un **grid**, prohibido por
+  el protocolo: cualquier reintento necesita un DISENO NUEVO y un pre-registro nuevo, no otro
+  `alpha` desde este script; (ii) la puerta fail-fast resulto exactamente lo que se pedia: 21 s y
+  cero gates gastados en una configuracion no funcional, con el fold 0 declarado
+  consumido-diagnostico; (iii) el fallo de G4 en el control (clase 5 al 42.6 % con una sola
+  pasada, frente al 0.4934789 con diez pasadas en D-083) muestra que **una sola pasada es un
+  presupuesto insuficiente** incluso para un SGD sano en este problema; (iv) quedan tres artefactos
+  de novedad nuevos (`reports/v33_novelty_registry.csv`, fila anexada en
+  `reports/age_complete_experiment_history.csv` y esta acta), sin editar ningun script ejecutado.
+- **Evidence**: `experiments/v33_01_ftrl_softmax_online.json`, `experiments/v33_01_estado.json`,
+  `artifacts/p33_scores/v33_e1/`, `reports/v33_e1_ftrl_softmax_online.md`,
+  `reports/figures/v33_e1_curvas.png`, `reports/v33_novelty_registry.csv`,
+  `reports/v33_convergence_gate.md`, `reports/v33_preregistro.md`,
+  `experiments/v33_00_preregistro.json`, `scripts/v33_00_preregistro.py`,
+  `scripts/v33_00b_enmienda_preregistro.py`, `scripts/v33_00c_correccion_puerta_md.py`,
+  `scripts/v33_01_ftrl_softmax_online.py`.
 
 ---
 

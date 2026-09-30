@@ -1022,3 +1022,28 @@ Sin test, sin holdout, sin submissions.
 - **La reapertura V32 queda TERMINADA** con tres candidatos medidos: P1 NO_ATRIBUIBLE (D-081),
   P2 CLOSED (D-082), P3 NO_ATRIBUIBLE (D-083). Campeon V30 + plug-in (LB 0.63575) intacto;
   sin test, sin holdout, sin leaderboard, sin submission.
+
+---
+
+## V33-E1: la puerta G1-G6 corto en el fold 0 (NO_ATRIBUIBLE_BY_GATE); V33 CERRADA (2026-09-30)
+
+- Unico experimento autorizado: FTRL-Proximal **softmax multiclase de una pasada** con
+  `alpha = 3/(2*sqrt(T))` derivado (0 valores evaluados), control gemelo SGD de una pasada, TF-IDF
+  ajustada por fold con hashes nuevos, y **puerta de convergencia G1-G6 fail-fast** con umbrales
+  derivados. La "linea de otra magnitud" quedo **descartada**: la unica idea de otra magnitud
+  (grafo de similitud transductivo) es **ILEGAL** por la regla `test solo transform->predict`.
+- Ejecucion 21.1 s (fail-fast en el fold 0; RSS 0.71 GB; sondas (a)-(f) pass). **A1 no aprende**:
+  `ll_train` 1.8047797 frente al anclaje uniforme 1.7917595, macro-F1 standalone 0.0409742 (por
+  debajo del trivial 0.0485421) y colapso a la clase 5; falla G1, G3 y G4. **A2** si aprende en
+  perdida y F1 (1.3899611; 0.3956246) pero falla G4 (clase 5 al 42.6 %).
+- La sonda obligatoria `|sigma*w|/|g|` dio razon media **0.042**: la correccion proximal es ~24x
+  MAS DEBIL que el gradiente, lo que **contradice el supuesto del pre-registro** (que esperaba
+  `sigma` inflado) y explica que A1 no se mueva. El diagnostico de D-083 era correcto solo a medias:
+  `alpha = 0.05` inflaba `sigma` (divergencia) y el `alpha` derivado la debila (inercia).
+- Sin integracion, sin bootstrap, sin segunda particion, sin submission. Campeon V30 + plug-in
+  (LB 0.63575) intacto. La linea online queda **sin medir con configuracion viable**: rehacerla
+  exigiria un diseno y un pre-registro nuevos (buscar el `alpha` seria un grid, prohibido).
+- Proceso: **6 bugs reales** cazados antes de ejecutar por `--verificar`, `ml-reviewer` y
+  `ml-qa-engineer` (nucleo FTRL, `KeyError` de control, typo `verdicto`, sonda `None`, `caps`,
+  asserts), mas dos enmiendas pre-ejecucion del protocolo y la correccion del documento normativo
+  de la puerta.
