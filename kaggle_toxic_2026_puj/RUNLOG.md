@@ -3003,3 +3003,24 @@ Se probaron cuatro arreglos y ninguno funciono. Hay un bug en mi implementacion 
 aislado, y queda declarado como tal.
 
 Sin push, sin merge, sin rebase.
+
+
+## 2026-09-29, el bug del Word2Vec queda aislado y corregido
+
+Carlos pidio aislarlo con una prueba controlada. Tenia razon en pedirlo.
+
+- Prueba de aislamiento: corpus diminuto de dos familias que nunca se mezclan, con pares REALES.
+  La prueba anterior usaba pares aleatorios, que son inaprendibles, y por eso no movia la loss.
+- El bug: la loss promediada sobre lotes de 8192 hace el gradiente 8192 veces mas pequeno.
+  El learning rate efectivo por ejemplo era 0,025/8192 en vez de 0,025.
+- La correccion: learning rate escalado por el lote (0,025 x lote), mas inicializacion aleatoria
+  de la salida.
+- experiments/p71_08_word2vec_corregido.py: la loss baja monotonicamente en los dos corpus.
+
+  Adam            1,706 -> 1,884      SUBE
+  SGD sin arreglo 1,386295 constante  CLAVADA
+  SGD corregido   1,272 -> 1,095      BAJA
+
+Pendiente: relanzar el downstream con los modelos _lrfix.
+
+Sin push, sin merge, sin rebase.
