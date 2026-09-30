@@ -101,8 +101,16 @@ script nuevo; pre-registro congelado; campeon V30 + plug-in (LB 0.63575) intacto
   es kNN = M09 cerrado), B2 descartada por analogia con C04, B3 refutada por algebra.
   `kaggle-specialist` = GO condicionado (condiciones incorporadas al pre-registro); sin
   `nlp-specialist` porque no entra ninguna representacion nueva. **Aprobado por Carlos.**
-- [ ] **F2''' Pre-registro + implementacion + revision** por experimento (pre-registro congelado,
-  `ml-coder`, `ml-reviewer`, `ml-qa-engineer` GO/NO-GO).
+- [x] **F2''' Pre-registro + implementacion + revision**: pre-registro congelado (`950e17a`);
+  `ml-coder` implemento `scripts/v33_01_ftrl_softmax_online.py`; **enmienda pre-ejecucion 1**
+  (banda G1 y `shuffle=False`) + `scripts/v33_00c_correccion_puerta_md.py` para el documento
+  normativo; `ml-reviewer` = **APROBADO** tras dos rondas (nucleo verificado con una 3a
+  implementacion independiente, max|dw| = 2.4e-15); `ml-qa-engineer` = **NO-GO** y luego
+  **GO** tras corregir 2 defectos criticos del nodo de cierre por puerta y la fila obsoleta
+  del documento normativo. En total `--verificar` y las revisiones cazaron **6 bugs reales**:
+  matmul con dimensiones incompatibles, `sum(axis=1)` que reducia las clases, `KeyError` de
+  `control_atribucion`, typo `verdicto`, sonda de determinismo `None` y `KeyError` de `caps`.
+  Lint limpio, `py_compile` OK, `--verificar` EXIT 0, 0 asserts de integridad (todo `Detencion`).
 - [ ] **F3''' Ejecucion + gates** por ciclo, con control propio y los gates de la serie.
 - [ ] **F4''' Cierre** documentado por experimento (D-084..., notebook, docs, memorias).
 

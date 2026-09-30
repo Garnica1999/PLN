@@ -2804,8 +2804,9 @@ def combinador_oof(v30: np.ndarray, p_brazo: np.ndarray, clase: np.ndarray,
         va = fold_idx == fold
         modelo = LogisticRegression(C=C_LOGREG, max_iter=MAX_ITER_LOGREG, solver="lbfgs")
         modelo.fit(caracteristicas[tr], clase[tr])
-        assert list(modelo.classes_) == list(range(N_CLASES)), \
-            "el combinador no vio las 6 clases en orden canonico"
+        if list(modelo.classes_) != list(range(N_CLASES)):
+            raise Detencion("[STOP] el combinador no vio las 6 clases en orden canonico "
+                            "(exit 2)", 2)
         p[va] = modelo.predict_proba(caracteristicas[va])
         coeficientes = np.abs(modelo.coef_)
         ratio_por_fold.append(float(coeficientes[:, N_CLASES:].mean()
