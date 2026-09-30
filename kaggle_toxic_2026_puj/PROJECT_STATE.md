@@ -2008,3 +2008,35 @@ test = 0   holdout = 0   leaderboard = 0   submission = 0
 - **Techo oraculo**: casi vacuo por construccion. No prueba que el fallo sea de direccion y no de
   magnitud.
 <!-- /P75-Y-FUSION 2026-09-30 -->
+
+
+<!-- P76-CALIBRACION 2026-09-30 -->
+## P76: la calibracion funciona y no era el cuello de botella
+
+```text
+P76 = CASO B  CALIBRACION_MEJORA_COMPLEMENTARIEDAD_PERO_NO_F1
+
+macro Brier      V03 0.125771 -> 0.122455      CNN 0.192150 -> 0.188485
+pendientes       V03 1.31 -> 1.00              CNN 0.59 -> 0.85
+
+las OCHO configuraciones de fusion negativas. Gate superado por ninguna. Finalista: ninguno
+mejor: C_V03raw_CNNcal_alpha0.05  delta -0.0017743921  folds 2/5  rescue 11  damage 14  net -3
+
+AUC del CNN sobre el error de V03    0.4872 -> 0.4910 HS | 0.6045 -> 0.6032 TR | 0.4973 -> 0.4995 AG
+la calibracion es MONOTONA: arregla la escala sin tocar el orden, y el orden es lo que falta
+
+calibrar a V03 lo EMPEORA 0.0086: su sobreconfianza es PORTANTE
+```
+
+**Cerrado**: la calibracion de ambos modelos como mecanismo de transferencia.
+**Abierto**: un operador de fusion no monotono o selectivo que use informacion distinta del score
+del CNN; y la segunda particion, que sigue sin ejecutarse porque sigue sin haber finalista.
+
+```text
+V03 = FROZEN      Word2Vec Twitter 100d = FROZEN      P72 = CLOSED
+P73 = COMPLEMENTARY      P74 = EVIDENCIA REPRODUCIBLE
+P75 = COMPLEMENTARIEDAD SIN TRANSFERENCIA      P76 = CASO B
+TEXTCNN = ACTIVA PARA INVESTIGACION CONTROLADA
+test = 0   holdout = 0   leaderboard = 0   submission = 0
+```
+<!-- /P76-CALIBRACION 2026-09-30 -->
