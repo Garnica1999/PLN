@@ -7479,6 +7479,32 @@ agrupado del delta da `-0.014439 [-0.034495, +0.005412]`; en `p72_04`,
 "efecto claro" es inalcanzable por construccion. Se declara para no presentar como hallazgo lo que
 es limite de resolucion.
 
+**CORRECCION (encontrada en la revision de cierre del Kaggle Specialist).** El texto de arriba
+decia que la nula de P72 vario "de 0.5731 a 0.6183 sobre diez tiradas, un rango de 0.045". **Era un
+error mio**: mezclaba el minimo de una corrida con un maximo que no es de ninguna. Las cifras
+correctas, leidas de los artefactos:
+
+```text
+P72-03, sin estandarizar    diez tiradas de 0.577587 a 0.617904   rango 0.040318
+P72-04, pipeline de P1      diez tiradas de 0.573062 a 0.604959   rango 0.031897
+```
+
+Y la lectura correcta es **mas debil** que la que escribi: el rango es del **ORDEN** del delta
+medido en P73 (+0.0316), **no mayor que el**, y ademas es el rango de **OTRO LECTOR**. Es un
+argumento de orden de magnitud, no una prueba. Lo que si sostiene la conclusion es que la varianza
+del sorteo bajo el lector de P73 nunca se midio, y eso basta para que la amenaza siga abierta.
+
+**Y una precision que el revisor anadio, y que acota la robustez de particion**: las tres
+particiones reutilizan **EL MISMO par de matrices**, luego la robustez de particion **NO replica el
+sorteo aleatorio** y **NO cubre la amenaza dominante**. Esa amenaza es comun a las tres mediciones y
+no se reparte entre ellas.
+
+**Aclaracion del estimando del bootstrap**: el bootstrap de clusters remuestrea clusters y en cada
+remuestreo calcula `macro-F1(A) - macro-F1(B)` sobre las filas remuestreadas, luego apunta a la
+**diferencia de macro-F1 global** (el estimando titular, +0.0316259472) y no a la media de los
+deltas por pliegue (que es +0.0310). Los dos numeros son coherentes entre si, pero el intervalo
+corresponde al primero.
+
 **El dato que mas dice**: la nula es **fuerte**. Un subespacio aleatorio de 100 dimensiones sobre la
 bolsa de tokens normalizada alcanza por si solo 0,5731-0,6183, muy por encima del piso trivial
 all-positivo (0,540985) y de las predicciones uniformes (0,421151). La familia lineal **si** lleva

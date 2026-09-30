@@ -51,7 +51,26 @@ cuantitativamente inestable.
 `P73 = COMPLEMENTARY` se mantiene CON esa calificacion explicita, no como efecto establecido.
 
 **Amenaza principal sin medir**: el control aleatorio es UNA sola tirada, y el mandato de la fase
-prohibe otra semilla. En P72 la nula vario entre 0.5731 y 0.6183 sobre diez tiradas, un rango de
-0.045 **mayor que el delta medido aqui**. No se puede distinguir "la geometria aporta" de "esa
-matriz aleatoria concreta salio floja". Es lo primero que habria que medir antes de invertir mas
-en esta linea.
+prohibe otra semilla.
+
+**CORRECCION (revision de cierre del Kaggle Specialist).** El texto original decia 0.5731 a
+0.6183 con un rango de 0.045. **Era un error**: mezclaba el minimo de una corrida con un maximo
+que no es de ninguna. Las cifras correctas:
+
+```text
+P72-03, sin estandarizar    de 0.577587 a 0.617904   rango 0.040318
+P72-04, pipeline de P1      de 0.573062 a 0.604959   rango 0.031897
+```
+
+La lectura es mas debil de lo que decia el original: el rango es del ORDEN del delta medido
+aqui, no mayor que el, y es el rango de OTRO lector. Es un argumento de orden de magnitud, no
+una prueba.
+
+**Y una precision que acota la robustez de particion**: las tres particiones reutilizan EL MISMO
+par de matrices, luego NO replican el sorteo aleatorio y NO cubren la amenaza dominante. Esa
+amenaza es comun a las tres mediciones.
+
+Lo que si sostiene la conclusion: la varianza del sorteo bajo el lector de P73 nunca se midio,
+y eso basta para que la amenaza siga abierta. No se puede distinguir "la geometria aporta" de
+"esa matriz aleatoria concreta salio floja". Es lo primero que habria que medir antes de
+invertir mas en esta linea.
