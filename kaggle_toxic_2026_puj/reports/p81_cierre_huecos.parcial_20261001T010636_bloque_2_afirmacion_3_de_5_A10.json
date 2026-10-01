@@ -1,0 +1,922 @@
+{
+  "familia": "P81_CIERRE_HUECOS",
+  "experiment_id": "P81-01",
+  "es_parcial": true,
+  "informe_completo": false,
+  "motivo_de_la_escritura": "bloque 2, afirmacion 3 de 5 (A10)",
+  "patron_de_nombres": "reports/p81_cierre_huecos.parcial_<corrida>_<motivo>.json",
+  "un_propio_por_escritura": true,
+  "bloques_publicados": 3,
+  "parciales_publicados": 3,
+  "fecha": "2026-10-01T01:07:38+00:00",
+  "fecha_inicio": "2026-10-01T01:06:36+00:00",
+  "formulacion": "V03 remains the best verified leaderboard result.",
+  "afirmaciones": [
+    {
+      "afirmacion": "A1",
+      "hueco": 1,
+      "naturaleza": "CONFIRMAR",
+      "stop": false,
+      "tolerancia": "coincidencia de texto, cero margen",
+      "veredicto": "CONFIRMADO",
+      "motivo": "la transcripcion esta en el informe con seccion, numero de ecuacion, arXiv id y DOI, y las cuatro comprobaciones de forma dan verdadero",
+      "medida": {
+        "transcripcion": {
+          "seccion": "2.2, Negative Sampling",
+          "numero_de_ecuacion": "(4)",
+          "arxiv_id": "1310.4546v1 [cs.CL]",
+          "doi": "10.48550/arXiv.1310.4546",
+          "transcripcion_en_ascii": "log sigma( v'_{w_O}^T v_{w_I} )  +  sum_{i=1}^{k} E_{w_i ~ P_n(w)} [ log sigma( - v'_{w_i}^T v_{w_I} ) ]",
+          "apariciones_en_el_pre_registro": 1
+        },
+        "comprobaciones_de_forma": {
+          "el_indice_de_la_suma_corre_de_1_a_k": true,
+          "hay_k_terminos_y_no_otro_numero_de_terminos": true,
+          "la_expectacion_es_solo_sobre_la_distribucion_de_ruido": true,
+          "no_aparece_ningun_factor_uno_sobre_k": true
+        },
+        "ancla": {
+          "url": "https://arxiv.org/abs/1310.4546",
+          "referencia": {
+            "autores": "Tomas Mikolov, Ilya Sutskever, Kai Chen, Greg Corrado, Jeffrey Dean",
+            "titulo": "Distributed Representations of Words and Phrases and their Compositionality",
+            "seccion": "2.2, Negative Sampling",
+            "ecuacion": "(4)",
+            "arxiv": "1310.4546v1 [cs.CL]",
+            "doi": "10.48550/arXiv.1310.4546",
+            "fecha": "16 de octubre de 2013"
+          }
+        }
+      }
+    },
+    {
+      "afirmacion": "A2",
+      "hueco": 1,
+      "naturaleza": "CONFIRMAR",
+      "stop": false,
+      "tolerancia": "(iii) es un entero y debe ser exactamente 0; (i) y (ii) coincidencia exacta, cero margen",
+      "veredicto": "CONFIRMADO",
+      "motivo": "las cuatro comprobaciones pasan: el fragmento anclado por el sha256 del pre-registro no divide por K y acumula el gradiente una vez por negativo",
+      "medida": {
+        "fichero": "word2vec.c",
+        "url": "https://raw.githubusercontent.com/tmikolov/word2vec/master/word2vec.c",
+        "sha256_declarado": "df07a1d504c22aa747f9fc40ddc6cfed52e12c3a402861398426829b83d96ef4",
+        "lineas_declaradas": 715,
+        "sha256_verificado_por_ejecucion": false,
+        "recuperado_en_esta_ejecucion": false,
+        "por_que_no_se_recupera": "sin red por decision del pre-registro: el fichero se consulto una vez al escribir el pre-registro y su transcripcion esta anclada por el sha256 de ese documento",
+        "rango_en_el_pre_registro": "182-202",
+        "apariciones_de_barra_espacio_negative": 0,
+        "acumulaciones_de_gradiente_por_d": 1,
+        "comprobaciones": {
+          "el_sha256_declarado_del_fichero_original_esta_registrado": true,
+          "el_fragmento_coincide_caracter_a_caracter_con_el_pre_registro": true,
+          "la_cadena_barra_espacio_negative_aparece_cero_veces": true,
+          "el_gradiente_se_acumula_una_vez_por_cada_d": true
+        },
+        "fragmento": "520:         // NEGATIVE SAMPLING\n521:         if (negative > 0) for (d = 0; d < negative + 1; d++) {\n522:           if (d == 0) {\n523:             target = word;\n524:             label = 1;\n525:           } else {\n526:             next_random = next_random * (unsigned long long)25214903917 + 11;\n527:             target = table[(next_random >> 16) % table_size];\n528:             if (target == 0) target = next_random % (vocab_size - 1) + 1;\n529:             if (target == word) continue;\n530:             label = 0;\n531:           }\n532:           l2 = target * layer1_size;\n533:           f = 0;\n534:           for (c = 0; c < layer1_size; c++) f += syn0[c + l1] * syn1neg[c + l2];\n535:           if (f > MAX_EXP) g = (label - 1) * alpha;\n536:           else if (f < -MAX_EXP) g = (label - 0) * alpha;\n537:           else g = (label - expTable[(int)((f + MAX_EXP) * (EXP_TABLE_SIZE / MAX_EXP / 2))]) * alpha;\n538:           for (c = 0; c < layer1_size; c++) neu1e[c] += g * syn1neg[c + l2];\n539:           for (c = 0; c < layer1_size; c++) syn1neg[c + l2] += g * syn0[c + l1];\n540:         }\n"
+      }
+    },
+    {
+      "afirmacion": "A3",
+      "hueco": 1,
+      "naturaleza": "CONFIRMAR",
+      "stop": true,
+      "tolerancia": "con los K evaluados, el ratio tiene que coincidir con 1/K dentro de 1e-09, y el termino positivo tiene que ser identico dentro de 1e-09",
+      "veredicto": "CONFIRMADO",
+      "motivo": "ESTA_CONVENCION_ES_COHERENTE_CON_P79_Y_SIGUE_SIENDO_UNA_REIMPLEMENTACION_PROPIA",
+      "medida": {
+        "fuente": "reports/p79_auditoria_sgns.json, clave punto_1_perdidas",
+        "k_evaluados_con_evidencia": [
+          5,
+          10,
+          20
+        ],
+        "desviacion_maxima_del_ratio": 0.0,
+        "desviacion_maxima_del_termino_positivo": 0.0,
+        "frase_obligatoria": "ESTA_CONVENCION_ES_COHERENTE_CON_P79_Y_SIGUE_SIENDO_UNA_REIMPLEMENTACION_PROPIA",
+        "lo_que_esta_afirmacion_NO_hace": "no convierte la convencion en externa. Solo registra de donde viene",
+        "ejemplo_de_P79": {
+          "k": 10,
+          "loss_referencia": 13.00537948118,
+          "termino_negativo_referencia": -10.901938677039,
+          "termino_negativo_codigo": -1.090193867704,
+          "ratio": 0.1
+        }
+      }
+    },
+    {
+      "afirmacion": "A4",
+      "hueco": 1,
+      "naturaleza": "CONFIRMAR",
+      "stop": true,
+      "tolerancia": "enteros exactos",
+      "veredicto": "CONFIRMADO",
+      "motivo": "los cinco exactos, y M3 calculado con las permutaciones declaradas",
+      "medida": {
+        "invariantes": {
+          "pares_entre_familias_distintas": 0,
+          "pares_intra_familia": 16776,
+          "n_documentos": 400,
+          "palabras_por_familia": 10,
+          "palabras_neutras": 5,
+          "n_palabras_en_vocabulario": 65,
+          "n_pares_totales": 23004,
+          "tamanos_de_familia": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ]
+        },
+        "comprobaciones": {
+          "pares_entre_familias_distintas_es_cero": true,
+          "pares_intra_familia_es_mayor_que_cero": true,
+          "num_documentos_es_400": true,
+          "palabras_por_familia_es_10_en_las_6_familias": true,
+          "palabras_neutras_es_5": true,
+          "m3_esta_calculado_con_las_permutaciones_declaradas": true,
+          "n_permutaciones_de_m3": 2000
+        },
+        "diseno": {
+          "familias": 6,
+          "palabras_por_familia": 10,
+          "palabras_neutras": 5,
+          "vocabulario_total": 65,
+          "documentos": 400,
+          "ventana": 3,
+          "subsampling": "desactivado",
+          "k_negativos": 10,
+          "semilla_de_generacion": 20261201,
+          "respuesta_correcta": "para la palabra w, los 9 vecinos correctos son las otras 9 palabras de su familia"
+        }
+      }
+    },
+    {
+      "afirmacion": "A5",
+      "hueco": 1,
+      "naturaleza": "CONFIRMAR",
+      "stop": true,
+      "tolerancia": "margen_de_no_discriminacion = 0.005 absoluto sobre M1; margen_de_discriminacion = 0.02 absoluto sobre M1. Ambos fijados antes de ejecutar",
+      "veredicto": "CONFIRMADO",
+      "etiqueta": "EL_TEST_DISCRIMINA_POR_MAGNITUD",
+      "motivo": "la diferencia entre los dos mejores de la rejilla es -0.700000 en MAGNITUD, por encima del minimo de 0.02 y fuera de la banda muerta de 0.005, y los cuatro hash de identidad coinciden en los 18 pares de brazos. Esta afirmacion NO afirma ninguna direccion: la fija A6, y con la direccion de estos numeros (favor_a_la_media) el bloque NO APOYA a la SUMA",
+      "medida": {
+        "primario_segun_la_enmienda": "mejor de la rejilla declarada de cada objetivo, no un punto suelto",
+        "m1_media_primario": 0.7388888888888889,
+        "m1_suma_primario": 0.03888888888888889,
+        "diferencia_de_m1": -0.7000000000000001,
+        "learning_rate_del_primario": 0.1,
+        "banda_muerta": false,
+        "alcanza_el_minimo": true,
+        "cuatro_hashes_de_identidad_coinciden": true,
+        "hashes_por_punto": [
+          {
+            "learning_rate": 0.02,
+            "indice_de_par": 0,
+            "coinciden": true
+          },
+          {
+            "learning_rate": 0.02,
+            "indice_de_par": 1,
+            "coinciden": true
+          },
+          {
+            "learning_rate": 0.02,
+            "indice_de_par": 2,
+            "coinciden": true
+          },
+          {
+            "learning_rate": 0.05,
+            "indice_de_par": 0,
+            "coinciden": true
+          },
+          {
+            "learning_rate": 0.05,
+            "indice_de_par": 1,
+            "coinciden": true
+          },
+          {
+            "learning_rate": 0.05,
+            "indice_de_par": 2,
+            "coinciden": true
+          },
+          {
+            "learning_rate": 0.1,
+            "indice_de_par": 0,
+            "coinciden": true
+          },
+          {
+            "learning_rate": 0.1,
+            "indice_de_par": 1,
+            "coinciden": true
+          },
+          {
+            "learning_rate": 0.1,
+            "indice_de_par": 2,
+            "coinciden": true
+          },
+          {
+            "learning_rate": 0.2,
+            "indice_de_par": 0,
+            "coinciden": true
+          },
+          {
+            "learning_rate": 0.2,
+            "indice_de_par": 1,
+            "coinciden": true
+          },
+          {
+            "learning_rate": 0.2,
+            "indice_de_par": 2,
+            "coinciden": true
+          },
+          {
+            "learning_rate": 0.35,
+            "indice_de_par": 0,
+            "coinciden": true
+          },
+          {
+            "learning_rate": 0.35,
+            "indice_de_par": 1,
+            "coinciden": true
+          },
+          {
+            "learning_rate": 0.35,
+            "indice_de_par": 2,
+            "coinciden": true
+          },
+          {
+            "learning_rate": 0.5,
+            "indice_de_par": 0,
+            "coinciden": true
+          },
+          {
+            "learning_rate": 0.5,
+            "indice_de_par": 1,
+            "coinciden": true
+          },
+          {
+            "learning_rate": 0.5,
+            "indice_de_par": 2,
+            "coinciden": true
+          }
+        ],
+        "curva_completa": [
+          {
+            "learning_rate": 0.02,
+            "m1_media": 0.0,
+            "m1_suma": 0.0,
+            "diferencia_de_m1": 0.0,
+            "victoria_de_la_suma": false,
+            "zona_betonal_media": false,
+            "zona_betonal_suma": false
+          },
+          {
+            "learning_rate": 0.05,
+            "m1_media": 0.0,
+            "m1_suma": 0.0,
+            "diferencia_de_m1": 0.0,
+            "victoria_de_la_suma": false,
+            "zona_betonal_media": false,
+            "zona_betonal_suma": false
+          },
+          {
+            "learning_rate": 0.1,
+            "m1_media": 0.005555555555555556,
+            "m1_suma": 0.03888888888888889,
+            "diferencia_de_m1": 0.03333333333333333,
+            "victoria_de_la_suma": true,
+            "zona_betonal_media": false,
+            "zona_betonal_suma": false
+          },
+          {
+            "learning_rate": 0.2,
+            "m1_media": 0.7388888888888889,
+            "m1_suma": 1.0,
+            "diferencia_de_m1": 0.26111111111111107,
+            "victoria_de_la_suma": true,
+            "zona_betonal_media": false,
+            "zona_betonal_suma": true
+          },
+          {
+            "learning_rate": 0.35,
+            "m1_media": 1.0,
+            "m1_suma": 1.0,
+            "diferencia_de_m1": 0.0,
+            "victoria_de_la_suma": false,
+            "zona_betonal_media": true,
+            "zona_betonal_suma": true
+          },
+          {
+            "learning_rate": 0.5,
+            "m1_media": 1.0,
+            "m1_suma": 1.0,
+            "diferencia_de_m1": 0.0,
+            "victoria_de_la_suma": false,
+            "zona_betonal_media": true,
+            "zona_betonal_suma": true
+          }
+        ],
+        "recuento_de_victorias_por_learning_rate": {
+          "victorias_de_la_suma": 2,
+          "derrotas_de_la_suma": 4,
+          "total_de_puntos": 6,
+          "reparto": "2 a 4",
+          "curva_monotona": false,
+          "sentido_de_la_curva": "no monotona",
+          "cambios_de_signo_en_la_curva": 2,
+          "recuento_en_banda_muerta": true,
+          "lectura_del_titular": "ZONA DE NO CONCLUSION: el reparto de victorias por learning rate queda en 2 a 4 y eso es ruido con tres semillas. El primario NO debe leerse como confirmacion",
+          "por_que_importa": "la curva de learning rate frente a M1 NO es monotona: MEDIA gana en un punto intermedio y pierde en el punto alto. Con tres semillas eso es ruido, no un hallazgo, y por eso se publica el recuento de victorias por learning rate ademas del primario",
+          "se_publica_igualmente": true
+        },
+        "lectura_del_bloque": {
+          "etiqueta": "EL_TEST_NO_APOYA_A_LA_SUMA",
+          "apoya_a_la_suma": false,
+          "direccion_de_la_diferencia": "favor_a_la_media",
+          "diferencia_de_m1": -0.7000000000000001,
+          "explicacion": "la diferencia entre los dos mejores de la rejilla es -0.700000, de magnitud suficiente para discriminar pero con el SIGNO en contra de la SUMA. La MEDIA gana por 0.700000. El test discrimina por magnitud, pero su direccion es contraria a la hipotesis de A6, y eso se publica: el bloque 1 NO apoya al objetivo de la referencia",
+          "recuento_de_victorias_por_learning_rate": "2 a 4",
+          "curva_monotona": false,
+          "que_afirma_y_que_no_afirma": "este bloque afirma un resultado sobre el OBJETIVO y nada mas. Afirma si el test distingue un objetivo de otro en un corpus con estructura plantada. NO afirma que el artefacto del proyecto sea mejor o peor que el de una libreria, ni que Word2Vec sea mejor que V03, ni que la SUMA sea mejor que la MEDIA fuera de este corpus sintetico"
+        },
+        "criterio_de_la_exclusion_de_zona_betonal": "POR_BRAZO",
+        "motivo_del_criterio_de_zona_betonal": "la zona betonal se excluye POR BRAZO y no por punto. Un punto de la rejilla son dos mediciones, una por objetivo: que la MEDIA sature en un learning rate es un hecho sobre el brazo MEDIA y no invalida la medicion de la SUMA en ese mismo learning rate. El criterio por punto obliga a comparar una cifra saturada con otra que no lo esta, y deja al primario sin ningun punto en cuanto un solo brazo satura. Se publica tambien la lectura por punto, con sus numeros, porque las dos lecturas no coinciden y elegir solo una seria ocultar la otra",
+        "lectura_alternativa_por_punto": {
+          "criterio": "se cae el punto ENTERO si un solo de los dos brazos lo declara betonal. No se usa para el primario: se publica para que se vea lo que cambia",
+          "umbral": 0.99,
+          "por_brazo": {
+            "MEDIA": {
+              "excluidos": [
+                0.35,
+                0.5
+              ],
+              "mejor_no_betonal": 0.7388888888888889,
+              "learning_rate_del_mejor": 0.2
+            },
+            "SUMA": {
+              "excluidos": [
+                0.2,
+                0.35,
+                0.5
+              ],
+              "mejor_no_betonal": 0.03888888888888889,
+              "learning_rate_del_mejor": 0.1
+            }
+          },
+          "diferencia_por_brazo": -0.7000000000000001,
+          "por_punto": {
+            "learning_rates_sobrantes": [
+              0.02,
+              0.05,
+              0.1
+            ],
+            "excluidos_por_punto": [
+              0.2,
+              0.35,
+              0.5
+            ],
+            "MEDIA": 0.005555555555555556,
+            "SUMA": 0.03888888888888889
+          },
+          "diferencia_por_punto": 0.03333333333333333,
+          "las_dos_lecturas_coinciden_en_signo": false
+        },
+        "que_no_afirma_esta_afirmacion": "A5 afirma que el test DISCRIMINA POR MAGNITUD. No afirma que gane la SUMA: la direccion la mide A6, y un CONFIRMADO de A5 con la direccion contraria no es apoyo al titular de la SUMA sino lo contrario"
+      }
+    },
+    {
+      "afirmacion": "A6",
+      "hueco": 1,
+      "naturaleza": "CONFIRMAR",
+      "stop": true,
+      "tolerancia": "M1_suma menos M1_media mayor o igual que 0.02, Y M2_suma mayor que 0, Y M2_suma mayor que M2_media",
+      "veredicto": "REFUTADO",
+      "motivo": "REFUTADO: la direccion es CONTRARIA a la hipotesis. La MEDIA gana por 0.700000 en el primario, y el margen exigido es de 0.02 a favor de la SUMA. Esto no se reinterpreta y no se cambia el umbral: un REFUTADO aqui es informacion, no un problema que se arregla ajustando el criterio",
+      "medida": {
+        "m1_media_primario": 0.7388888888888889,
+        "m1_suma_primario": 0.03888888888888889,
+        "diferencia_de_m1": -0.7000000000000001,
+        "m2_media": 0.10342794967754229,
+        "m2_suma": 0.000285928465095886,
+        "comprobaciones": {
+          "m1_suma_menos_m1_media_mayor_o_igual_que_el_margen": false,
+          "m2_suma_mayor_que_cero": true,
+          "m2_suma_mayor_que_m2_media": false
+        },
+        "direccion_fijada": "la SUMA, que es la de la ecuacion (4)",
+        "direccion_observada": "a favor de la MEDIA",
+        "gana_el_primario": "la MEDIA",
+        "lectura_del_bloque_1": {},
+        "criterio_de_la_exclusion_de_zona_betonal": "POR_BRAZO",
+        "motivo_del_criterio_de_zona_betonal": "la zona betonal se excluye POR BRAZO y no por punto. Un punto de la rejilla son dos mediciones, una por objetivo: que la MEDIA sature en un learning rate es un hecho sobre el brazo MEDIA y no invalida la medicion de la SUMA en ese mismo learning rate. El criterio por punto obliga a comparar una cifra saturada con otra que no lo esta, y deja al primario sin ningun punto en cuanto un solo brazo satura. Se publica tambien la lectura por punto, con sus numeros, porque las dos lecturas no coinciden y elegir solo una seria ocultar la otra",
+        "lectura_alternativa_por_punto": {
+          "criterio": "se cae el punto ENTERO si un solo de los dos brazos lo declara betonal. No se usa para el primario: se publica para que se vea lo que cambia",
+          "umbral": 0.99,
+          "por_brazo": {
+            "MEDIA": {
+              "excluidos": [
+                0.35,
+                0.5
+              ],
+              "mejor_no_betonal": 0.7388888888888889,
+              "learning_rate_del_mejor": 0.2
+            },
+            "SUMA": {
+              "excluidos": [
+                0.2,
+                0.35,
+                0.5
+              ],
+              "mejor_no_betonal": 0.03888888888888889,
+              "learning_rate_del_mejor": 0.1
+            }
+          },
+          "diferencia_por_brazo": -0.7000000000000001,
+          "por_punto": {
+            "learning_rates_sobrantes": [
+              0.02,
+              0.05,
+              0.1
+            ],
+            "excluidos_por_punto": [
+              0.2,
+              0.35,
+              0.5
+            ],
+            "MEDIA": 0.005555555555555556,
+            "SUMA": 0.03888888888888889
+          },
+          "diferencia_por_punto": 0.03333333333333333,
+          "las_dos_lecturas_coinciden_en_signo": false
+        },
+        "que_no_se_reinterpreta": "el umbral de 0.020 y la direccion fijada a la SUMA se mantienen. Un REFUTado aqui es informacion",
+        "confirmacion_con_diez_semillas": {
+          "learning_rate": 0.1,
+          "media_m1_media": 0.005,
+          "media_m1_suma": 0.03833333333333333,
+          "diferencia_pareada_media": 0.03333333333333333
+        },
+        "resolucion_de_tension_entre_los_dos_documentos": "la enmienda 1 declara tres semillas para la curva de la rejilla y el pre-registro declara diez para el test discriminante. Se recorre la rejilla con tres semillas y el punto primario se confirma con las diez semillas pareadas de 20261301 a 20261310. Los dos documentos se cumplen: ninguno se ignora y la ambiguedad se declara en vez de resolverse en silencio"
+      }
+    },
+    {
+      "afirmacion": "A7",
+      "hueco": 1,
+      "naturaleza": "CONFIRMAR",
+      "stop": true,
+      "tolerancia": "enteros para el conteo de victorias (9 de 10), 0.02 para la distancia al azar y 0.02 para el margen pareado",
+      "veredicto": "REFUTADO",
+      "motivo": "el efecto no se sostiene: ['el conteo de victorias por semilla', 'el control negativo tambien recupera estructura']",
+      "medida": {
+        "parte_1_semillas_pareadas": {
+          "victorias_de_la_suma": 8,
+          "n": 10,
+          "exigido": 9,
+          "cumple_el_conteo": false,
+          "diferencias_pareadas_con_signo": [
+            0.03333333333333333,
+            0.05,
+            0.05,
+            0.06666666666666667,
+            0.03333333333333333,
+            0.03333333333333333,
+            0.0,
+            0.05,
+            0.016666666666666666,
+            0.0
+          ],
+          "diferencia_pareada_media": 0.03333333333333333,
+          "cumple_el_margen": true,
+          "prueba_de_los_signos_a_dos_lados": {
+            "positivo": 8,
+            "negativo": 0,
+            "empates": 2,
+            "n": 10
+          }
+        },
+        "parte_2_control_negativo": {
+          "brazo": "SUMA_ESTRUCTURA_ROTA",
+          "m1": 0.15,
+          "nivel_de_azar_m3": 4.166666666666667e-05,
+          "distancia_al_azar": 0.14995833333333333,
+          "tolerancia": 0.02,
+          "cumple": false
+        },
+        "lectura_del_recuento_por_learning_rate": {
+          "victorias_de_la_suma": 2,
+          "derrotas_de_la_suma": 4,
+          "total_de_puntos": 6,
+          "reparto": "2 a 4",
+          "curva_monotona": false,
+          "sentido_de_la_curva": "no monotona",
+          "cambios_de_signo_en_la_curva": 2,
+          "recuento_en_banda_muerta": true,
+          "lectura_del_titular": "ZONA DE NO CONCLUSION: el reparto de victorias por learning rate queda en 2 a 4 y eso es ruido con tres semillas. El primario NO debe leerse como confirmacion",
+          "por_que_importa": "la curva de learning rate frente a M1 NO es monotona: MEDIA gana en un punto intermedio y pierde en el punto alto. Con tres semillas eso es ruido, no un hallazgo, y por eso se publica el recuento de victorias por learning rate ademas del primario",
+          "se_publica_igualmente": true
+        }
+      }
+    },
+    {
+      "afirmacion": "A8",
+      "hueco": 2,
+      "naturaleza": "CONFIRMAR",
+      "stop": false,
+      "tolerancia": "se publica con 6 decimales. No hay cota de exito ni de fallo numerico",
+      "veredicto": "CONFIRMADO",
+      "motivo": "las cuatro cifras estan medidas y publicadas. La cifra de 11.2726 por ciento de la discusion de auditoria NO queda reproducida con ninguna de las tres variantes calculadas aqui: oov sobre posiciones, oov sobre tokens y relleno sobre posiciones. La cifra de P78 con MAX_LEN 60 tampoco se arrastra: son magnitudes distintas",
+      "medida": {
+        "cifras": {
+          "n_filas_de_dev": 1483,
+          "max_len_de_v9_04": 64,
+          "posiciones_totales": 94912,
+          "tokens_que_entran_en_la_matriz": 25539,
+          "proporcion_de_posiciones_oov": 0.04124873567093729,
+          "proporcion_de_posiciones_de_relleno": 0.7309191672285907,
+          "numero_de_tipos_distintos_fuera_de_vocabulario": 2008,
+          "numero_de_filas_con_cero_tokens_cubiertos": 1,
+          "tokens_cubiertos": 21624,
+          "tokens_oov": 3915,
+          "posiciones_de_relleno": 69373,
+          "vocabulario_usado": 3439,
+          "fraccion_de_filas_sin_cubiertos": 0.0006743088334457181,
+          "codigo": "v9_04.cargar_vec, v9_04.normalizar_emb_normal, v9_04.tokenizar y v9_04.secuencias, con v9_04.MAX_LEN"
+        },
+        "cifras_en_por_ciento": {
+          "oov_sobre_posiciones": 4.124874,
+          "oov_sobre_tokens": 15.329496,
+          "relleno_sobre_posiciones": 73.091917
+        },
+        "cifra_de_la_discusion_en_por_ciento": 11.2726,
+        "queda_reproducida": false,
+        "variante_que_la_reproduce": null,
+        "cifras_que_no_se_arrastran": {
+          "p78_oov_normalizado": 0.112658,
+          "p78_oov_crudo": 0.313639,
+          "p78_maxlen": 60,
+          "p80_oov_de_la_discusion_en_por_ciento": 11.2726,
+          "v9_04_max_len": 64
+        },
+        "por_que_no_se_arrastran": "las tres cifras de la discusion usan normalizaciones distintas y MAX_LEN 60, mientras que v9_04 usa MAX_LEN 64 y normalizar_emb_normal. Recalcular con el codigo real es lo unico que hace comparables los numeros"
+      }
+    },
+    {
+      "afirmacion": "A9",
+      "hueco": 2,
+      "naturaleza": "CONFIRMAR",
+      "stop": true,
+      "tolerancia": "igualdad exacta de enteros y residuo cero exacto en la fila de relleno",
+      "veredicto": "CONFIRMADO",
+      "motivo": "las celdas quedan separadas de verdad: identificadores distintos, ambos identificables, matriz con una fila mas y fila de relleno identicamente cero",
+      "medida": {
+        "comprobaciones": {
+          "id_relleno_es_cero": true,
+          "id_oov_es_len_vocabulario_mas_uno": true,
+          "id_relleno_es_distinto_de_id_oov": true,
+          "id_oov_es_mayor_que_cero": true,
+          "forma_de_la_matriz_es_len_vocabulario_mas_dos_por_200": true,
+          "la_fila_de_relleno_es_identicamente_cero": true,
+          "la_fila_de_oov_esta_a_cero_en_c2": true,
+          "la_fila_de_oov_es_no_nula_en_c2b": true
+        },
+        "id_relleno": 0,
+        "id_oov": 3440,
+        "excepcion_declarada": "el identificador de relleno es 0 por convencion; los dos identificadores estan por encima de 0 excepto ese, y esa excepcion se declara",
+        "forma_de_la_matriz": [
+          3441,
+          200
+        ],
+        "residuo_de_la_fila_de_relleno": 0.0,
+        "vector_declarado_de_oov": [
+          0.068034328520298,
+          -0.10569624602794647,
+          -0.8014939427375793,
+          0.30173248052597046,
+          0.38874176144599915,
+          0.3463098704814911,
+          0.3305995762348175,
+          0.7630959749221802,
+          -0.213265061378479,
+          -0.23484113812446594,
+          -0.1139499768614769,
+          -0.3138289153575897,
+          0.05206833407282829,
+          -0.15431343019008636,
+          0.2160561978816986,
+          -0.26451176404953003,
+          0.20860883593559265,
+          0.025496680289506912,
+          0.18068958818912506,
+          -0.36773669719696045,
+          0.3424537181854248,
+          -0.800090491771698,
+          -1.1884995698928833,
+          0.03947031497955322,
+          0.34098193049430847,
+          0.26012107729911804,
+          -0.3289875090122223,
+          0.12874478101730347,
+          0.5305465459823608,
+          -0.020022671669721603,
+          0.06618791073560715,
+          -0.36039960384368896,
+          0.3292013108730316,
+          0.902501106262207,
+          -0.7198312282562256,
+          0.17363521456718445,
+          0.2924259305000305,
+          -0.42191699147224426,
+          0.031632669270038605,
+          -1.119702935218811,
+          0.25604504346847534,
+          0.1623968482017517,
+          -0.3506941497325897,
+          -0.6227577328681946,
+          -0.7967119812965393,
+          -0.4363727569580078,
+          -0.7031161785125732,
+          -0.0041308049112558365,
+          0.48460984230041504,
+          -0.1508350819349289,
+          0.14680330455303192,
+          0.5669485330581665,
+          -0.706139862537384,
+          0.5032172203063965,
+          -0.8035893440246582,
+          0.35956987738609314,
+          -0.038576897233724594,
+          -0.3845536410808563,
+          -0.2775140106678009,
+          0.8386831879615784,
+          -0.542142391204834,
+          -0.006478582974523306,
+          0.7042400240898132,
+          -0.2737272083759308,
+          0.0072561707347631454,
+          -0.6170029044151306,
+          0.26564428210258484,
+          -0.5015562772750854,
+          0.4461749494075775,
+          -0.2709152400493622,
+          0.5628186464309692,
+          0.4028500020503998,
+          0.5337910652160645,
+          -0.5233387351036072,
+          0.37573522329330444,
+          0.8980737924575806,
+          0.13022631406784058,
+          -0.469078004360199,
+          0.22070029377937317,
+          -0.49354758858680725,
+          -0.2131444811820984,
+          0.05268513783812523,
+          -0.1952076554298401,
+          -0.5523247122764587,
+          -0.6310725212097168,
+          -0.14760953187942505,
+          -0.3909725844860077,
+          1.03858482837677,
+          0.047397274523973465,
+          0.011972569860517979,
+          -0.6178699135780334,
+          0.045114222913980484,
+          0.2195710986852646,
+          -0.07983732968568802,
+          0.7976550459861755,
+          -0.07081335037946701,
+          0.02360628731548786,
+          -0.4120171368122101,
+          0.09153071790933609,
+          0.2678990662097931,
+          0.7978875637054443,
+          0.15354889631271362,
+          0.1512109637260437,
+          0.18457797169685364,
+          -1.1995359659194946,
+          0.3747406005859375,
+          -0.09271089732646942,
+          -1.5604368448257446,
+          0.4341762959957123,
+          0.05081303417682648,
+          0.5292145013809204,
+          -0.028107674792408943,
+          -0.05946037545800209,
+          -0.5612812638282776,
+          0.3431566059589386,
+          0.8304889798164368,
+          0.3599826395511627,
+          0.35615935921669006,
+          0.3084743916988373,
+          -0.07476534694433212,
+          -0.4901840388774872,
+          0.6619082093238831,
+          0.15727916359901428,
+          0.35033154487609863,
+          0.31168559193611145,
+          0.39564916491508484,
+          -0.3119579553604126,
+          0.9457806944847107,
+          -0.6356819868087769,
+          -0.3619101345539093,
+          0.30602556467056274,
+          0.2905699908733368,
+          -0.25990238785743713,
+          -0.6416732668876648,
+          -0.058592990040779114,
+          0.5954462885856628,
+          1.0307586193084717,
+          0.2315223217010498,
+          -0.11352791637182236,
+          1.0195209980010986,
+          -0.07892624288797379,
+          -0.03219068422913551,
+          0.45675456523895264,
+          -0.5620125532150269,
+          -0.6298133730888367,
+          -0.05178060755133629,
+          0.5368184447288513,
+          0.11109119653701782,
+          0.03659952059388161,
+          -0.10095573961734772,
+          -0.07464386522769928,
+          -0.008448582142591476,
+          -0.09389013051986694,
+          0.5527544021606445,
+          0.3165457546710968,
+          -1.205973744392395,
+          0.3265838325023651,
+          -0.11150501668453217,
+          0.5920335054397583,
+          -0.48570603132247925,
+          -0.4209577739238739,
+          -0.4803386330604553,
+          0.4963533580303192,
+          0.44524550437927246,
+          -0.1587407886981964,
+          0.5191674828529358,
+          0.06383545696735382,
+          -0.29130715131759644,
+          0.26260700821876526,
+          0.4425215721130371,
+          -0.29161500930786133,
+          -0.26066815853118896,
+          0.08389071375131607,
+          -0.5587069988250732,
+          -0.030875278636813164,
+          -0.40244507789611816,
+          0.4585740566253662,
+          0.23417818546295166,
+          0.5071815252304077,
+          -0.5729991793632507,
+          -0.7561737895011902,
+          -0.016965221613645554,
+          -0.37688201665878296,
+          0.5017006993293762,
+          -0.2843712568283081,
+          -0.25865399837493896,
+          -0.18369300663471222,
+          -0.6606131792068481,
+          -0.6050558090209961,
+          0.8555875420570374,
+          0.006615885999053717,
+          -0.19584867358207703,
+          0.24102935194969177,
+          0.48271700739860535,
+          -0.025120628997683525,
+          -0.09750595688819885,
+          0.6871951818466187,
+          -0.6924327611923218,
+          -0.6643591523170471,
+          -0.665709912776947
+        ],
+        "nota_del_contraste_c2_c2b": "C2 y C2b comparten identificadores y mascara. Lo unico que cambia es el contenido de la fila id_oov: a cero en C2, que es lo que hace el codigo, y el vector declarado en C2b. Por eso su diferencia separa el efecto de la mascara sobre el OOV del efecto de meter un vector nulo, que es exactamente lo que pide el pre-registro. En C2 la fila id_oov sobrevive a la mascara porque su identificador es mayor que 0, y por eso tambien entra en el denominador del promedio"
+      }
+    },
+    {
+      "afirmacion": "A10",
+      "hueco": 2,
+      "naturaleza": "CONFIRMAR",
+      "stop": false,
+      "tolerancia": "banda muerta de 1e-09; una distancia menor o igual que esa se marca SIN EFECTO MEDIBLE",
+      "veredicto": "CONFIRMADO",
+      "motivo": "las 6 magnitudes estan presentes, con su clase y su condicion, y hay al menos una cifra distinta de cero por condicion y por clase",
+      "medida": {
+        "cifras": [
+          {
+            "clase": "v9_04_BiGRU",
+            "condicion": "C0",
+            "distancia_relativa_l2_media": 0.0920078456401825,
+            "etiqueta": "EFECTO MEDIBLE"
+          },
+          {
+            "clase": "v9_04_BiGRU",
+            "condicion": "C1",
+            "distancia_relativa_l2_media": 0.0,
+            "etiqueta": "SIN EFECTO MEDIBLE"
+          },
+          {
+            "clase": "v9_04_BiGRU",
+            "condicion": "C2",
+            "distancia_relativa_l2_media": 0.11460871249437332,
+            "etiqueta": "EFECTO MEDIBLE"
+          },
+          {
+            "clase": "v9_04_BiGRU",
+            "condicion": "C2b",
+            "distancia_relativa_l2_media": 0.11460871249437332,
+            "etiqueta": "EFECTO MEDIBLE"
+          },
+          {
+            "clase": "v9_04_BiGRU",
+            "condicion": "C3",
+            "distancia_relativa_l2_media": 0.0,
+            "etiqueta": "SIN EFECTO MEDIBLE"
+          },
+          {
+            "clase": "v9_04_BiGRU",
+            "condicion": "C2_menos_C2b",
+            "distancia_relativa_l2_media": 0.0,
+            "etiqueta": "SIN EFECTO MEDIBLE"
+          },
+          {
+            "clase": "v10_11_BiGRUAfinable",
+            "condicion": "C0",
+            "distancia_relativa_l2_media": 0.0920078456401825,
+            "etiqueta": "EFECTO MEDIBLE"
+          },
+          {
+            "clase": "v10_11_BiGRUAfinable",
+            "condicion": "C1",
+            "distancia_relativa_l2_media": 0.0,
+            "etiqueta": "SIN EFECTO MEDIBLE"
+          },
+          {
+            "clase": "v10_11_BiGRUAfinable",
+            "condicion": "C2",
+            "distancia_relativa_l2_media": 0.11460871249437332,
+            "etiqueta": "EFECTO MEDIBLE"
+          },
+          {
+            "clase": "v10_11_BiGRUAfinable",
+            "condicion": "C2b",
+            "distancia_relativa_l2_media": 0.11460871249437332,
+            "etiqueta": "EFECTO MEDIBLE"
+          },
+          {
+            "clase": "v10_11_BiGRUAfinable",
+            "condicion": "C3",
+            "distancia_relativa_l2_media": 0.0,
+            "etiqueta": "SIN EFECTO MEDIBLE"
+          },
+          {
+            "clase": "v10_11_BiGRUAfinable",
+            "condicion": "C2_menos_C2b",
+            "distancia_relativa_l2_media": 0.0,
+            "etiqueta": "SIN EFECTO MEDIBLE"
+          }
+        ],
+        "n_cifras": 12,
+        "clases_medidas": [
+          "v10_11_BiGRUAfinable",
+          "v9_04_BiGRU"
+        ],
+        "magnitudes_por_clase": 6,
+        "banda_muerta": 1e-09,
+        "sin_efecto_measurable": [
+          "v9_04_BiGRU/C1",
+          "v9_04_BiGRU/C3",
+          "v9_04_BiGRU/C2_menos_C2b",
+          "v10_11_BiGRUAfinable/C1",
+          "v10_11_BiGRUAfinable/C3",
+          "v10_11_BiGRUAfinable/C2_menos_C2b"
+        ]
+      }
+    }
+  ],
+  "afirmaciones_aisladas_con_fallo": [],
+  "nota_de_robustez": "este JSON parcial existe para que un fallo en las ultimas afirmaciones no tire el trabajo de las anteriores. Se escribe al terminar cada bloque y tras cada afirmacion del bloque 2, con un nombre propio en cada escritura. Un fallo al escribirlo degrada a AVISO y no tumba la corrida",
+  "avisos_de_persistencia": [],
+  "aislamiento_declarado": {
+    "que_se_hace": "cada afirmacion se ejecuta dentro de un guard. Si lanza, se registra el fallo con su tipo y su traza resumida, la afirmacion queda con veredicto ERROR, y la corrida CONTINUA con la siguiente",
+    "que_no_hace": "el guard no convierte un fallo en un resultado. ERROR no es CONFIRMADO ni REFUTADO: es la marca de que la comprobacion no se ejecuto",
+    "escritura_incremental": "se escribe UN parcial PROPIO al terminar cada bloque y tras cada afirmacion del bloque 2, con la marca de la corrida y el motivo en el nombre, para que un fallo en la ultima afirmacion no tire el trabajo de las anteriores. Dos escrituras nunca comparten destino",
+    "un_fallo_de_persistencia_no_tumba_la_corrida": "si un parcial no se puede escribir, eso se registra como AVISO con su causa en el log y la corrida CONTINUA: perder la capacidad de guardar no puede impedir terminar de medir. Lo unico que aborta es una Parada con marca STOP, que se propaga",
+    "por_que_no_se_confunde_con_el_criterio_de_parada": "el criterio de parada del pre-registro se sigue respetando para Parada con marca STOP. Lo que se aisla es el fallo TECNICIO de una afirmacion, que no es lo mismo que el fallo de una asercion",
+    "estados_de_veredicto": [
+      "CONFIRMADO",
+      "REFUTADO",
+      "NO APLICABLE POR CONSTRUCCION",
+      "NO_EVALUABLE",
+      "ERROR"
+    ]
+  },
+  "cronometro": {
+    "bloque_1_corpus": 0.157,
+    "bloque_1_rejilla": 38.472,
+    "bloque_1_confirmacion": 20.514
+  }
+}

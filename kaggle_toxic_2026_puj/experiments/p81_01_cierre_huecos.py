@@ -3832,7 +3832,17 @@ def construir_json(afirmaciones: list, pre: dict, huella_antes: dict, huella_des
         },
         "veredictos": _veredictos_por_afirmacion(afirmaciones),
         "resumen_de_naturalezas": _resumen_de_naturalezas(afirmaciones),
-        "contexto_de_modulos": contexto.get("modulos", {}),
+        # Solo los NOMBRES: los modulos vivos no son serializables y el informe
+        # tiene que poder ir a disco. Es un fallo de la quinta corrida de P81.
+        "contexto_de_modulos": {
+            nombre: getattr(modulo, "__name__", type(modulo).__name__)
+            for nombre, modulo in sorted(contexto.get("modulos", {}).items())
+        },
+        "modulos_esperados_por_afirmacion": {
+            clave: sorted(contrato.get("exige_modulos", []))
+            for clave, contrato in sorted(CONTRATO_DE_AFIRMACIONES.items())
+            if contrato.get("exige_modulos")
+        },
         "errores_de_importacion": contexto.get("errores", {}),
         "cronometro": cronometro,
         "asercion_ascii": {

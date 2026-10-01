@@ -1,3 +1,118 @@
+<!-- P81-CERRADO 2026-10-01 -->
+## P81: CERRADO Y PUBLICADO. 20 de 20, 18 CONFIRMADO, 2 REFUTADO, 0 ERROR, salida 0
+
+```text
+A0..A5 CONFIRMADO   A6 REFUTADO   A7 REFUTADO   A8..A19 CONFIRMADO
+18 CONFIRMADO   2 REFUTADO   0 ERROR   0 STOP   0 sin ejecutar
+65.4 s con cronometro de subprocess, CODIGO DE SALIDA 0
+sin traceback, sin STOP, sin ERROR
+```
+
+```text
+experiments/p81_01_cierre_huecos.py
+  1e52280f64635637429e141440cfe5efce773e91419bf9b9010b8e7d0c6de39f
+  6412 lineas. El hash CAMBIO respecto al 4f7f8488ed9b2710 de la corrida anterior, y es lo
+  esperado: ese delta es el arreglo de la serializacion
+reports/p81_cierre_huecos.json  183426 B
+  81a21033a83c8ffc560a5381cfed4d25f93e99c66ebc3976bc3777a65f381d4b
+reports/p81_cierre_huecos.md     15752 B
+  19e32b944db6d2927f4f58d1eb14505ccb2ab90fe9dc454dfe1062eabe7d30c4
+21 parciales: 10 de la corrida 010045, 10 de esta 010636, y el de la corrida rota conservado
+ningun temporal .tmp_p81
+```
+
+**ASCII byte a byte: los dos finales son ASCII PURO, 0 bytes por encima de 127.** Verificador oficial
+`tools/verificar_caracteres.py`: **salida 0, 0 caracteres no permitidos**.
+**NO_DISPONIBLE en el `.md`: 0**, y 0 en el `.json`. El `.md` tiene 219 lineas y **20 filas de tabla de
+afirmaciones, todas pobladas**. El bug que llenaba el informe de huecos en silencio queda **descartado
+por quinta vez**, ahora con el informe completo publicado.
+
+El arreglo funciona: el informe publica **solo los NOMBRES** de los modulos, mas una tabla de que
+modulos exige cada afirmacion.
+
+```json
+"contexto_de_modulos": {"p81_04": "p71_04", "p72_01": "p72_01", "v10_11": "v10_11", "v9_04": "v9_04"}
+```
+
+**1. El bloque 1 NO apoya a la suma.** A5 **CONFIRMADO** por magnitud, A6 **REFUTADO** por direccion,
+titular **`EL_TEST_NO_APOYA_A_LA_SUMA`**, `apoya_a_la_suma` falso, `direccion` `favor_a_la_media`, y **la
+MEDIA gana por 0.700000**. Reparto **2 a 4**, en zona de no conclusion, curva **no monotona con 2
+cambios de signo**. Las dos lecturas, con umbral 0.99:
+
+```text
+por BRAZO, criterio declarado y el del primario
+  MEDIA excluye 0.35, 0.50        mejor 0.7388888888888889 en lr 0.20
+  SUMA  excluye 0.20, 0.35, 0.50  mejor 0.03888888888888889 en lr 0.10
+  diferencia_por_brazo = -0.7000000000000001   GANA LA MEDIA por 0.700000   primario lr 0.1
+por PUNTO, alternativa publicada, no usada: sobran 0.02, 0.05, 0.10
+  MEDIA 0.005555555555555556  SUMA 0.03888888888888889
+  diferencia_por_punto = +0.03333333333333333   GANA LA SUMA por 0.0333
+las_dos_lecturas_coinciden_en_signo = False
+```
+
+**Las dos lecturas NO coinciden en signo**, y por eso el criterio esta escrito y la alternativa se
+publica. Se publica el REFUTADO sin reinterpretar: tolerancia 0.02, banda muerta 0.005, rejilla,
+criterio y signo intactos.
+
+**2. La pata EJECUTABLE del anclaje de H1 no apoya la suma**, luego **la base unica que sostiene que
+el objetivo no era SGNS es la pata DOCUMENTAL, el codigo C de word2vec**, sha256
+`df07a1d504c22aa747f9fc40ddc6cfed52e12c3a402861398426829b83d96ef4`, 715 lineas. La reimplementacion
+propia no aporta apoyo ejecutable.
+
+**3. Limite permanente.** El anclaje a una implementacion externa queda **SIN HACER** porque gensim no
+esta instalado y no compila con Python 3.14.7: autoriza afirmar sobre el **OBJETIVO**, no sobre la
+calidad relativa del artefacto frente a una libreria. **No se afirma que Word2Vec sea mejor que V03.**
+
+**4. El bloque 2, con el tokenizador real de `v9_04`.** Proporcion de posiciones **OOV 0.041249**, de
+**relleno 0.730919**, **OOV sobre los tokens que llegan a la matriz 0.153295**, **2008 tipos fuera de
+vocabulario**. Desglose: posiciones_totales 94912, tokens_que_entran 25539, tokens_cubiertos 21624,
+tokens_oov 3915, posiciones_de_relleno 69373, vocabulario_usado 3439, n_filas_de_dev 1483, max_len 64,
+filas_con_cero_tokens_cubiertos 1, fraccion_de_filas_sin_cubiertos 0.0006743088334457181.
+**El 11.2726 por ciento de antes NO queda reproducido**, porque las tres cifras de la discusion usan
+normalizaciones distintas y MAX_LEN 60 frente a MAX_LEN 64 y `normalizar_emb_normal` de `v9_04`.
+**El reparto relleno contra OOV tiene magnitud: 69373 posiciones de relleno frente a 3915 tokens OOV,
+sobre 94912 posiciones.** El 0.155020 del prototipo no reproduce ninguna de las cuatro.
+
+**5. El bloque 5.** El desfase de una epoca del scheduler **es un defecto real de codigo**, plan
+`range(EPOCAS)` frente a entrenamiento `enumerate(..., start=1)`, y **su consecuencia numerica es
+DESPRECIABLE**: diferencia relativa de medias **0.002144** contra umbral **0.005**. A18 y A19 los dos
+CONFIRMADO, con `total_lotes_plan 1395` y `total_lotes_recorridos 1398`.
+
+**Salvedad de alcance que queda escrita.** A11 es valido como prueba de que la sonda separa las
+celdas, pero **no** como medida del reparto: sus dos canales miden **exactamente 0.0** en las dos
+clases, con `banda_muerta_de_la_diferencia: True`, luego "el OOV es al menos tan grande que el de
+relleno" es una comparacion de **dos ceros**. **La magnitud del reparto es la de A8.**
+
+**PATRON DE PROCESO, que es informacion cara.** Cinco fallos en la serie P81, todos de **contrato en la
+frontera entre capas**, dos de calculo y el resto de cableado y persistencia, **ninguno cubierto por los
+checks de humo** hasta que se reescribieron los casos de frontera:
+
+```text
+1  KeyError de clave literal en A6            calculo, corregido
+2  AttributeError de RE_TOKEN en A18          cableado, corregido
+3  tabla de origenes del chequeo, a medias    cableado, corregido
+4  escritor incremental sobre su nombre final persistencia, corregido
+5  contexto_de_modulos con modulos vivos      persistencia, corregido
+```
+
+**La leccion operativa: un modo de humo que ejercita funciones con datos sinteticos NO verifica el
+contrato entre capas.** Los 126 checks pasaban enteros mientras el recorrido real reventaba. **Y hace
+falta comprobar por mutacion que cada comprobacion discrimina**: un caso que nunca puede fallar no es
+una prueba.
+
+**Fronteras respetadas y comprobadas.**
+
+```text
+test = 0   holdout = 0 identificadores deserializados   leaderboard = 0   submission = 0
+P71 a P80 sin tocar   V03 sin tocar   umbrales 0.44 / 0.51 / 0.46 sin tocar   modelos/ sin escrituras
+congelado 302c994d13b75f8f5fbd440eea2c4f4113997e2581524021923b92f8244d705a ANTES y DESPUES
+29478868 bytes, abierto en solo lectura, y A0 lo confirma tambien en mtime_ns
+```
+
+```text
+V03 remains the best verified leaderboard result.
+```
+
 <!-- P81-CUARTA-CORRIDA 2026-10-01 -->
 ## P81 cuarta corrida: LAS VEINTE medidas, 18 CONFIRMADO y 2 REFUTADO, 0 ERROR. El informe final muere en un modulo
 
