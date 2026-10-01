@@ -8,7 +8,7 @@
 - **Brecha**: L4 - Transiciones de caracteres, declarada en scripts/phase0_freeze_gap_v2.py:157 y nunca ejecutada (backlog linea 204: 'pendiente').
 - **Reapertura de F10**: la clausula de reapertura de F10 dice literalmente 'solo se abre lo que cambie el MECANISMO: condicionar la palabra a su forma, su posicion o su CATEGORIA'. C1-A es condicionar el caracter a su categoria. Funcionalmente, un n-grama literal mide ortografia lexica y uno sobre el alfabeto de clases mide perfil de tipo de transicion, y ninguno se recupera del otro.
 
-## El mapa de 7 clases (TABLA LITERAL, condicion (i) del ruling)
+## El mapa de 6 clases (TABLA LITERAL, condicion (i) del ruling)
 
 Redactado a priori desde categorias Unicode, **sin ninguna estadistica del corpus**, sin
 ajuste por etiqueta y sin ningun parametro estimado. El mapa **descarta** la identidad del
@@ -29,7 +29,7 @@ caracter: es una abstraccion disenada, no un espacio semantico denso.
 
 ## Las 6 condiciones del ruling, incorporadas
 
-- **i_mapa_literal**: el mapa de 7 clases es una tabla literal del codigo, con sha256, redactado a priori desde categorias Unicode sin ninguna estadistica del corpus
+- **i_mapa_literal**: el mapa de 6 clases es una tabla literal del codigo, con sha256, redactado a priori desde categorias Unicode sin ninguna estadistica del corpus
 - **ii_sonda_de_permutaciones**: permutar el alfabeto en >= 3 permutaciones y exigir que el mapa real gane a los controles; si no gana, el veredicto es 'sin senal especifica de categoria' y L4 se cierra igual
 - **iii_arbol_declarado**: arbol de decision declarado por adelantado, con el nodo SENAL_EXISTE_INTEGRACION_NEUTRA, y C1-A es ONE-SHOT en cualquier caso
 - **iv_banco_no_canonico**: la medicion previa de +0.0031 se hizo en /tmp y es NO canonica: el runner la vuelve a medir dentro de si sobre la particion canonica
@@ -58,7 +58,7 @@ caracter: es una abstraccion disenada, no un espacio semantico denso.
 ## Controles
 
 - **C1_sin_bloque**: el bloque char_wb IDENTICO y sin C1-A, con modelo, folds, semilla y vectorizador congelados: es la referencia del banco
-- **C2_permutaciones**: >= 3 permutaciones del alfabeto de 7 clases derivadas de una semilla declarada, nunca de los datos: mide si la senal es especifica de la clase
+- **C2_permutaciones**: >= 3 permutaciones del alfabeto de 6 clases derivadas de una semilla declarada, nunca de los datos: mide si la senal es especifica de la clase
 - **C3_barajado**: el bloque C1-A con las transiciones barajadas dentro de cada documento, destruyendo el orden y conservando el recuento: separa 'hay transiciones' de 'el orden de las transiciones importa'
 
 ## Sondas obligatorias
@@ -105,3 +105,15 @@ caracter: es una abstraccion disenada, no un espacio semantico denso.
 - **ILEGAL** (para que no se reintente): mapa elegido con matriz de confusion o informacion mutua con la etiqueta; mapa distinto por clase objetivo; mapa derivado de covarianza o autovectores; mapa derivado de clustering de caracteres; frecuencias de transicion como vector denso; estadisticas de transicion sobre todo el corpus antes del split.
 - 0 transformers, 0 LLM, 0 embeddings, 0 datos externos, 0 metadatos; sin test mas alla de `transform -> predict`; sin holdout, sin leaderboard, sin submission; campeon V30 + plug-in intacto; `artifacts/p33_scores/todos` intocable.
 - Coste esperado 3-6 min con presupuesto declarado de 2400 s; RSS con tope 20 GB medido con `ru_maxrss`; checkpoints por fold y escritura atomica.
+
+## Enmienda pre-ejecucion 1 (2026-09-30): 3 defectos del pre-registro y 2 controles degenerados
+
+Detectado por `ml-coder` al implementar el runner, antes de ejecutar.
+
+1. **El mapa tiene 6 clases y el texto decia 7.** La tabla literal tiene 6 claves (`S`, `D`, `P`, `L`, `M`, `O`) y su `sha256` `cac5b2f32699a389` **coincide** con el congelado: el mapa nunca estuvo mal, el **texto** si (3 apariciones de "7 clases").
+2. **El rango de n estaba mal**: decia `[1, 2]` (unigramas y bigramas) y el diseno son **bigramas y trigramas**, `n` en **{2, 3}**.
+3. **Las columnas observadas** son **27 bigramas + 127 trigramas = 154** (medido), no las `18/66` del informe de arquitectura, que no reproducen.
+4. **El control de permutaciones del alfabeto era DEGENERADO**: permutar los *nombres* de las clases es una **renombracion biyectiva**, luego la matriz es una **permutacion exacta de columnas** (diferencia maxima `3.3e-16`, `idf` identico) y el espacio de hipotesis del clasificador lineal es **invariante**. Media ruido del solucionador y **no podia fallar**. **Sustituido** por un **remapeo aleatorio de caracteres a las mismas 6 clases**, con semilla declarada y nunca de los datos: ahi el mapa real **si** puede perder, porque cambia que caracteres caen en cada clase y no su nombre. Siguen exigiendose **>= 3**.
+5. **El control de barajado dentro del documento era DEGENERADO**: el bloque es una **bolsa de n-gramas**, luego barajar dentro del documento deja la matriz **bit a bit identica** y la pregunta "el orden importa" es **intestable**. **Sustituido** por un barajado **entre documentos**, que conserva la distribucion marginal global y destruye la asociacion por documento.
+- **No cambia el protocolo**: ni el mapa literal (su `sha256` no se toca), ni el modelo, ni `LinearSVC(C=1.0)`, ni los folds, ni los gates, ni las hipotesis nulas, ni el arbol, ni la one-shot. Se corrigen **numeros escritos** y se sustituyen **dos controles que no podian fallar** por dos que si pueden.
+- Sin resultados: enmienda **pre-ejecucion**.

@@ -2460,3 +2460,12 @@ intacto.
 - La medicion previa de +0.0031 se declara **NO canonica** y el runner la vuelve a medir dentro de si.
 - **Expectativa declarada**: delta integrado CV +0.0000 a +0.0001, P(gate) 5-10 %. C1-A es **one-shot** en cualquier caso.
 - Baseline recomputado 0.6159732; campeon intacto; sin submission.
+
+---
+
+## Enmienda pre-ejecucion 1 de V36-E1 · 2026-09-30
+
+- Tres defectos del pre-registro: el mapa tiene **6** clases (el texto decia 7, con sha256 `cac5b2f32699a389` verificado), el rango de n era `[1, 2]` cuando el diseno es bigramas y trigramas `[2, 3]`, y las columnas observadas son **27 + 127 = 154**, no `18/66`.
+- Dos controles eran **degenerados**: permutar los NOMBRES de las clases es una renombracion biyectiva (permutacion exacta de columnas, idf identico, diferencia maxima 3.3e-16) y el espacio de hipotesis lineal es invariante; y barajar dentro del documento deja la matriz bit a bit identica porque el bloque es una bolsa de n-gramas. **Ninguno de los dos podia fallar.**
+- Sustituidos por: **remapeo aleatorio de caracteres a las mismas 6 clases** (>= 3, con semilla declarada) y **barajado entre documentos**.
+- No cambia el protocolo: ni mapa, ni modelo, ni folds, ni gates, ni arbol, ni one-shot.

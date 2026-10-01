@@ -49,8 +49,8 @@
     "O"
   ],
   "rango_n_de_transiciones": [
-    1,
-    2
+    2,
+    3
   ],
   "borde": "NO se anaden simbolos de borde (declarado antes de ver el banco; un borde inventaria transiciones inexistentes)",
   "min_df": "ninguno: el vocabulario esta acotado por construccion (18/66/27/127 columnas reales segun el rango y el alfabeto)",
@@ -111,7 +111,7 @@
     "especificidad": {
       "H0_especificidad": "el mapa real no es mejor que una permutacion del alfabeto",
       "unidad": "macro-F1",
-      "criterio": "el mapa real debe ganar a >= 3 permutaciones; si no, el veredicto es 'sin senal especifica de categoria' y L4 se cierra igual"
+      "criterio": "el mapa real debe ganar a >= 3 REMAPEOS aleatorios de caracteres a las mismas 6 clases; si no gana, el veredicto es 'sin senal especifica de categoria' y L4 se cierra igual"
     }
   },
   "arbol_de_decision": {
@@ -133,15 +133,15 @@
   },
   "controles": {
     "C1_sin_bloque": "el bloque char_wb IDENTICO y sin C1-A, con modelo, folds, semilla y vectorizador congelados: es la referencia del banco",
-    "C2_permutaciones": ">= 3 permutaciones del alfabeto de 7 clases derivadas de una semilla declarada, nunca de los datos: mide si la senal es especifica de la clase",
-    "C3_barajado": "el bloque C1-A con las transiciones barajadas dentro de cada documento, destruyendo el orden y conservando el recuento: separa 'hay transiciones' de 'el orden de las transiciones importa'"
+    "C2_permutaciones": "REMAPEO ALEATORIO de caracteres a las mismas 6 clases, con semilla declarada y nunca derivada de los datos ni de los resultados; >= 3 remapeos. Sustituye a la permutacion de los NOMBRES de las clases, que era degenerada: al ser una renombracion biyectiva deja la matriz como permutacion exacta de columnas (diferencia maxima 3.3e-16, idf identico) y el espacio de hipotesis lineal es invariante, luego media ruido del solucionador y no podia fallar",
+    "C3_barajado": "barajado ENTRE documentos de las transiciones: conserva la distribucion marginal global y destruye la asociacion por documento. Sustituye al barajado DENTRO de cada documento, que era degenerado: el bloque es una bolsa de n-gramas, luego barajar dentro del documento deja la matriz bit a bit identica y la pregunta era intestable"
   },
   "sondas": {
     "banco_ree_medido": "el banco se vuelve a medir DENTRO del runner, sobre la particion canonica, con las sondas (i)-(iv); la medicion previa de /tmp es no canonica",
     "tabla_5_de_5_folds": "tabla de macro-F1 por fold del banco y de la integracion",
     "bootstrap_pareado": "IC95 pareado (2000, semilla 20261010) del banco y de la integracion",
-    "permutaciones": "resultado de las >= 3 permutaciones del alfabeto, exigido por la condicion (ii)",
-    "barajado": "resultado del control de barajado, exigido por C3",
+    "permutaciones": "resultado de los >= 3 REMAPEOS aleatorios de caracteres a las mismas 6 clases, exigido por la condicion (ii) corregida; el mapa real debe ganar a todos ellos, y si no gana el veredicto es 'sin senal especifica de categoria' y L4 se cierra igual",
+    "barajado": "resultado del control de barajado ENTRE documentos, exigido por C3 corregida: separa la senal por documento de la simple distribucion global de transiciones",
     "conformidad": "prueba de que el transform es stateless: dos llamadas con la misma entrada dan exactamente la misma matriz",
     "fold_local": "el unico `fit` es el TfidfVectorizer del train de cada fold; se publica el vocabulario y el idf por fold con su sha256",
     "mapa_literal": "sha256 del mapa literal y de la clase resultante, para que nadie pueda cambiarlo entre el pre-registro y la corrida"
@@ -212,5 +212,53 @@
     "un_experimento_un_script": true,
     "p33_scores_intocable": true,
     "sin_submission_sin_autorizacion": true
-  }
+  },
+  "n_clases_del_alfabeto": 6,
+  "columnas_observadas": {
+    "bigramas": 27,
+    "trigramas": 127,
+    "total": 154,
+    "medido": "por el runner, no copiado del informe de arquitectura",
+    "lectura": "con 6 clases hay 6^2 = 36 bigramas y 6^3 = 216 trigramas posibles; se observan 27 y 127"
+  },
+  "enmiendas": [
+    {
+      "fecha": "2026-09-30",
+      "objeto": "n_classes declaradas, rango_n_de_transiciones, columnas observadas, y los dos controles de especificidad y de barajado",
+      "de": {
+        "clases": 7,
+        "rango_n_de_transiciones": [
+          1,
+          2
+        ],
+        "columnas": "18/66/27/127 (del informe de arquitectura, no reproducible)",
+        "control_especificidad": "permutar los NOMBRES de las clases del alfabeto (>= 3)",
+        "control_barajado": "barajar las transiciones DENTRO de cada documento"
+      },
+      "a": {
+        "clases": 6,
+        "rango_n_de_transiciones": [
+          2,
+          3
+        ],
+        "columnas": "27 bigramas + 127 trigramas = 154 observadas (medido en el runner)",
+        "control_especificidad": "REMAPEO ALEATORIO de caracteres a las mismas 6 clases, con semilla declarada y nunca de los datos ni de los resultados (>= 3 remapeos)",
+        "control_barajado": "barajado ENTRE documentos: conserva la distribucion marginal global y destruye la asociacion por documento"
+      },
+      "motivo": {
+        "clases": "la tabla literal tiene 6 claves y su sha256 cac5b2f32699a389 coincide con el congelado: el mapa nunca estuvo mal, el texto si (3 apariciones de '7 clases')",
+        "rango_n": "el diseno son bigramas y trigramas (n en {2, 3}), no unigramas y bigramas",
+        "columnas": "las cifras 18/66 del informe de arquitectura no reproducen; las observadas son 27 y 127, que el runner mide y publica",
+        "control_especificidad": "permutar los nombres de las clases es una renombracion biyectiva: la matriz es una permutacion exacta de columnas (diferencia maxima 3.3e-16, idf identico) y el espacio de hipotesis del clasificador lineal es invariante, luego el control mide ruido del solucionador y no puede fallar",
+        "control_barajado": "el bloque es una bolsa de n-gramas, luego barajar dentro del documento deja la matriz bit a bit identica: la pregunta es intestable y el control no puede fallar"
+      },
+      "cambia_el_mapa_literal": false,
+      "sha256_del_mapa_literal": "cac5b2f32699a389",
+      "cambia_el_modelo": false,
+      "cambia_los_gates": false,
+      "cambia_el_arbol": false,
+      "sigue_one_shot": true,
+      "estado_datos": "sin resultados; enmienda pre-ejecucion"
+    }
+  ]
 }
