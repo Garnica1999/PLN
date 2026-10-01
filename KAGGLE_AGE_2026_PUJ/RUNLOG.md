@@ -2448,3 +2448,15 @@ intacto.
   mayoritaria: mediana **93** y solo el **2.5 %** en el maximo.
 - **Decision**: LB 0.70 se retira como objetivo; techo **0.642 [0.635, 0.653]**; la via C1 se conserva
   como cierre de expediente; **D-087** es este hito y **C1 pasa a D-088**.
+
+---
+
+## Pre-registro de V36-E1 (via C1-A: transiciones de clase) · 2026-09-30
+
+- Brecha **L4**, declarada en `phase0_freeze_gap_v2.py:157` y nunca ejecutada.
+- Reapertura de F10 por su propia clausula: condicionar la palabra/caracter a su **categoria**.
+- Ruling de `kaggle-specialist`: **LEGAL** (test de parametros estimados y test de abstraccion, ambos cumplidos). Las 6 condiciones incorporadas, incluida la **sonda de permutaciones** y el nodo `SENAL_EXISTE_INTEGRACION_NEUTRA`.
+- Mapa de 7 clases como **tabla literal** con sha256, redactado a priori sin estadisticas del corpus. Sin simbolos de borde, declarado antes de ver el banco.
+- La medicion previa de +0.0031 se declara **NO canonica** y el runner la vuelve a medir dentro de si.
+- **Expectativa declarada**: delta integrado CV +0.0000 a +0.0001, P(gate) 5-10 %. C1-A es **one-shot** en cualquier caso.
+- Baseline recomputado 0.6159732; campeon intacto; sin submission.

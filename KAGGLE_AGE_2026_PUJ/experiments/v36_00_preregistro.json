@@ -1,0 +1,216 @@
+{
+  "fase": "V36-E1 (via C1-A) pre-registro congelado",
+  "fecha": "2026-09-30",
+  "commit": "74ca44e1223c9770431c07f382e680e41ae47cd1",
+  "brecha": "L4 - Transiciones de caracteres, declarada en scripts/phase0_freeze_gap_v2.py:157 y nunca ejecutada (backlog linea 204: 'pendiente')",
+  "experimento": "bloque de transiciones de clase de caracter (bigramas y trigramas de clase sobre el texto entero) concatenado al bloque char_wb, con dos controles",
+  "por_que_no_es_un_renombre": "la clausula de reapertura de F10 dice literalmente 'solo se abre lo que cambie el MECANISMO: condicionar la palabra a su forma, su posicion o su CATEGORIA'. C1-A es condicionar el caracter a su categoria. Funcionalmente, un n-grama literal mide ortografia lexica y uno sobre el alfabeto de clases mide perfil de tipo de transicion, y ninguno se recupera del otro",
+  "baseline_primario": 0.6159732,
+  "referencia_nested": 0.6154643,
+  "pesos_plugin": [
+    1.0,
+    1.1749,
+    1.2721,
+    1.163,
+    1.001,
+    0.8128
+  ],
+  "hashes": {
+    "mapa_literal_de_clases": "cac5b2f32699a38915774fdea9763d87d7153d791d853c95aa3cdb7340be1b94",
+    "orden_del_alfabeto": "42fbfb1168092f115f43635b6e7c9e1ce6f1525ad17d87b4d994cd70ac811604",
+    "manifest_canonico": "8881a9f53e8613aa943681e7fd9a42a3a281aa66b5d7c796d13d2758c6226076",
+    "corpus_archivo": "39c6c8270366fe155f3c8dd232e31867bee659af8908121d04b6bd89bd163748",
+    "corpus_textos": "53c1a348a7954f3e59d7c67caddd6477a06f7d3441724c201052b4b5273445fc",
+    "caracteristicas_del_campeon": "8881a9f53e8613aa943681e7fd9a42a3a281aa66b5d7c796d13d2758c6226076",
+    "canonico_y_true": "b1c928f9b9f5575547c1090a1fd83cf32a048b694af35a980b460c0bd66d48e6",
+    "canonico_fold_idx": "74d18330c40c3598a1936706ae9434c5fdf29119d357d38353cf298812fe6fb5",
+    "canonico_v30_prob": "3d77352486605971093ade7214ae82326057845d8bf54a2d88c83843c5a721db",
+    "canonico_ids": "d69ecb339f1dc57de2f9cddd558658b5a272ffa42aec15c771773e8eabd59825"
+  },
+  "versiones": {
+    "sklearn": "1.8.0",
+    "numpy": "1.26.4",
+    "pandas": "2.3.3"
+  },
+  "mapa_de_clases_literal": {
+    "S": "espacio y todo lo que `str.isspace()` marca como espacio",
+    "D": "dígitos ASCII 0-9",
+    "P": "puntuación ASCII, es decir todo lo que no es alfanumérico, no es espacio y no es dígito",
+    "L": "letra minúscula, con y sin acento",
+    "M": "letra mayúscula, con y sin acento",
+    "O": "resto: emojis, flechas, caracteres de control, alfabetos no latinos"
+  },
+  "orden_del_alfabeto": [
+    "S",
+    "D",
+    "P",
+    "L",
+    "M",
+    "O"
+  ],
+  "rango_n_de_transiciones": [
+    1,
+    2
+  ],
+  "borde": "NO se anaden simbolos de borde (declarado antes de ver el banco; un borde inventaria transiciones inexistentes)",
+  "min_df": "ninguno: el vocabulario esta acotado por construccion (18/66/27/127 columnas reales segun el rango y el alfabeto)",
+  "normalizacion": "TfidfVectorizer(norm=\"l2\", sublinear_tf=True, lowercase=False, token_pattern=r\"\\S+\") sobre los documentos de n-gramas de clase repetidos por su frecuencia",
+  "modelo": {
+    "estimator": "sklearn.svm.LinearSVC",
+    "C": 1.0,
+    "loss": "squared_hinge",
+    "penalty": "l2",
+    "max_iter": 3000,
+    "tol": 0.0001,
+    "origen_de_los_hiperparametros": "receta del campeon, leida del manifiesto canonico; NO es un grid"
+  },
+  "bloque_de_referencia": {
+    "char_wb": {
+      "ngram_range": [
+        3,
+        5
+      ],
+      "min_df": 5,
+      "max_features": 300000
+    },
+    "word_para_el_brazo_de_integracion": {
+      "ngram_range": [
+        1,
+        2
+      ],
+      "min_df": 3,
+      "max_features": 300000
+    }
+  },
+  "cv": {
+    "n_folds": 5,
+    "semilla": 42,
+    "generador": "StratifiedKFold(n_splits=5, shuffle=True, random_state=42) sobre las filas de TRAIN con los mismos indices de fold del canonico",
+    "nota": "los indices de fold se leen de artifacts/p33_scores/todos/fold_idx.npy, que es la particion canonica, y NO se re-crean ni se barajan"
+  },
+  "condiciones_del_ruling": {
+    "i_mapa_literal": "el mapa de 7 clases es una tabla literal del codigo, con sha256, redactado a priori desde categorias Unicode sin ninguna estadistica del corpus",
+    "ii_sonda_de_permutaciones": "permutar el alfabeto en >= 3 permutaciones y exigir que el mapa real gane a los controles; si no gana, el veredicto es 'sin senal especifica de categoria' y L4 se cierra igual",
+    "iii_arbol_declarado": "arbol de decision declarado por adelantado, con el nodo SENAL_EXISTE_INTEGRACION_NEUTRA, y C1-A es ONE-SHOT en cualquier caso",
+    "iv_banco_no_canonico": "la medicion previa de +0.0031 se hizo en /tmp y es NO canonica: el runner la vuelve a medir dentro de si sobre la particion canonica",
+    "v_hipotesis_nulas_en_unidades": "hipotesis nulas expresadas en unidades de macro-F1",
+    "vi_registro_de_compliance": "sha256 del commit, mapa literal, prueba de transform stateless y fold-local con unico fit = TfidfVectorizer del train de cada fold, tabla 5/5 folds, bootstrap pareado y declaracion de que test, holdout y leaderboard no se tocaron",
+    "borde_declarado": "NO se anaden simbolos de borde: un borde inventaria transiciones que no existen en el texto. Decision metodologica declarada ANTES de ver el banco, para que no pueda re-tocarse. No afecta a la legalidad"
+  },
+  "hipotesis_nulas": {
+    "banco": {
+      "H0_banco": "delta del banco = 0 en unidades de macro-F1",
+      "unidad": "macro-F1",
+      "criterio": "IC95 del bootstrap pareado (2000, semilla 20261010) sobre el delta del banco contra el bloque identico sin C1-A"
+    },
+    "integracion": {
+      "H0_integracion": "delta integrado = 0 en unidades de macro-F1",
+      "unidad": "macro-F1",
+      "criterio": "IC95 del bootstrap pareado (2000, semilla 20261010) sobre el delta integrado de la combinacion contra el campeon, con los gates de la serie: delta >= +0.0015, >= 4/5 folds, control favorable"
+    },
+    "especificidad": {
+      "H0_especificidad": "el mapa real no es mejor que una permutacion del alfabeto",
+      "unidad": "macro-F1",
+      "criterio": "el mapa real debe ganar a >= 3 permutaciones; si no, el veredicto es 'sin senal especifica de categoria' y L4 se cierra igual"
+    }
+  },
+  "arbol_de_decision": {
+    "nodos": [
+      "SENAL_NO_EXISTENTE",
+      "SENAL_EXISTE_INTEGRACION_NEUTRA",
+      "SENAL_EXISTE_INTEGRACION_POSITIVA",
+      "SENAL_EXISTE_INTEGRACION_NEGATIVA",
+      "SIN_SENAL_ESPECIFICA_DE_CATEGORIA",
+      "DEFECTO_DE_IMPLEMENTACION"
+    ],
+    "SENAL_NO_EXISTENTE": "el banco no supera su H0: no hay senal ni en el bloque, y se cierra L4",
+    "SENAL_EXISTE_INTEGRACION_NEUTRA": "el banco supera su H0 pero la integracion no supera la suya: la senal es REAL y ORTOGONAL pero V30 ya la expresa. Se cierra L4 por mecanismo, **sin reabrir la familia sparse y sin autorizar un C1-B**, y el resultado es PUBLICABLE",
+    "SENAL_EXISTE_INTEGRACION_POSITIVA": "el banco y la integracion superan sus H0: se evaluan los gates de la serie y, si pasan, PROMISING exigiria segunda particion con autorizacion del usuario, que el script NO ejecuta",
+    "SENAL_EXISTE_INTEGRACION_NEGATIVA": "el banco supera su H0 pero la integracion es negativa: se reporta el banco y el nodo, y L4 se cierra",
+    "SIN_SENAL_ESPECIFICA_DE_CATEGORIA": "el mapa real no gana a las permutaciones: el bloque captura algo, pero no especifico de la CLASE de caracter, y L4 se cierra igual",
+    "DEFECTO_DE_IMPLEMENTACION": "las sondas o el triage detectan un defecto: la familia NO se cierra y el ciclo no cuenta",
+    "one_shot": "C1-A es ONE-SHOT en cualquier caso: positivo o negativo, no se reintenta con otro alfabeto, otro rango de n, otro mapa o otro corte"
+  },
+  "controles": {
+    "C1_sin_bloque": "el bloque char_wb IDENTICO y sin C1-A, con modelo, folds, semilla y vectorizador congelados: es la referencia del banco",
+    "C2_permutaciones": ">= 3 permutaciones del alfabeto de 7 clases derivadas de una semilla declarada, nunca de los datos: mide si la senal es especifica de la clase",
+    "C3_barajado": "el bloque C1-A con las transiciones barajadas dentro de cada documento, destruyendo el orden y conservando el recuento: separa 'hay transiciones' de 'el orden de las transiciones importa'"
+  },
+  "sondas": {
+    "banco_ree_medido": "el banco se vuelve a medir DENTRO del runner, sobre la particion canonica, con las sondas (i)-(iv); la medicion previa de /tmp es no canonica",
+    "tabla_5_de_5_folds": "tabla de macro-F1 por fold del banco y de la integracion",
+    "bootstrap_pareado": "IC95 pareado (2000, semilla 20261010) del banco y de la integracion",
+    "permutaciones": "resultado de las >= 3 permutaciones del alfabeto, exigido por la condicion (ii)",
+    "barajado": "resultado del control de barajado, exigido por C3",
+    "conformidad": "prueba de que el transform es stateless: dos llamadas con la misma entrada dan exactamente la misma matriz",
+    "fold_local": "el unico `fit` es el TfidfVectorizer del train de cada fold; se publica el vocabulario y el idf por fold con su sha256",
+    "mapa_literal": "sha256 del mapa literal y de la clase resultante, para que nadie pueda cambiarlo entre el pre-registro y la corrida"
+  },
+  "compliance": {
+    "embeddings": 0,
+    "transformers": 0,
+    "llm": 0,
+    "datos_externos": 0,
+    "metadatos": 0,
+    "test": 0,
+    "holdout": 0,
+    "leaderboard": 0,
+    "submission": 0,
+    "ruling": "kaggle-specialist: LEGAL, con los tests (a) parametros estimados y (b) abstraccion; el mapa descarta la identidad del caracter y no estima nada",
+    "ilegales_declarados": [
+      "mapa elegido con matriz de confusion o informacion mutua con la etiqueta",
+      "mapa distinto por clase objetivo",
+      "mapa derivado de covarianza o autovectores",
+      "mapa derivado de clustering de caracteres",
+      "frecuencias de transicion como vector denso",
+      "estadisticas de transicion sobre todo el corpus antes del split"
+    ]
+  },
+  "gates_de_la_serie": {
+    "baseline_abort": 5e-07,
+    "delta_min": 0.0015,
+    "folds_min": 4,
+    "n_bootstrap": 2000,
+    "semilla": 20261010,
+    "variabilidad_de_referencia": 0.0008876,
+    "nota": "los gates aplican a la INTEGRACION contra el campeon; el banco se evalua con su propia hipotesis nula, sin gates de la serie"
+  },
+  "medicion_previa_no_canonica": {
+    "banco_char_wb_mas_c1a": "+0.0030641 de macro-F1, 5/5 folds, IC95 [+0.0021, +0.0040], z de referencia +3.45",
+    "donde": "/tmp, con los folds canonicos leidos del artefacto, pero FUERA del runner y FUERA de la particion canonica como medicion de gate",
+    "valor_para_gate": "NINGUNO: se declara no canonica y el runner la vuelve a medir dentro de si, como sondas"
+  },
+  "contexto_de_expectativa": {
+    "D-087": "LB 0.70 no es alcanzable: un oraculo restringido a la informacion del campeon rinde +0.0568 frente al +0.0626 del objetivo",
+    "calibracion": "LB ~ 0.00223 + 1.02825 x CV, sostenida en n = 5 puntos, con el limite ya declarado en D-087 de que no se puede extrapolar lejos",
+    "tasas_de_absorcion_medidas": "D-067: un canal con +0.006820 de banco rindio +0.0000642 integrado (factor 0.0094). Por eso el delta esperado sobre V30 es +0.0000 a +0.0001 y la probabilidad de pasar el gate es de 5 % a 10 %",
+    "valor_de_este_experimento": "medir y publicar si la senal existe; NO compite por 0.70"
+  },
+  "ejecucion": {
+    "coste_estimado": "3-6 min (5 folds x 3 brazos, mas las permutaciones y el barajado)",
+    "presupuesto_declarado_seg": 2400.0,
+    "ram_tope_gb": 20.0,
+    "timeout_global_h": 24.0,
+    "hilos": 32,
+    "checkpoints": "experiments/v36_01_estado.json y checkpoints/v36_e1/",
+    "escritura_atomica": "tmp + os.replace"
+  },
+  "entregables": {
+    "runner": "scripts/v36_01_transiciones_clase.py -> experiments/v36_01_*.json, reports/v36_e1_transiciones_clase.md, reports/figures/v36_e1_curvas.png, reports/v36_novelty_registry.csv, fila anexada en reports/age_complete_experiment_history.csv, RUNLOG.md, experiments.csv",
+    "acta": "D-088 en DECISIONS.md, citando la clausula de reapertura de F10"
+  },
+  "invariantes": {
+    "sin_transformers": true,
+    "sin_llm": true,
+    "sin_embeddings": true,
+    "sin_datos_externos": true,
+    "sin_metadatos": true,
+    "test_solo_transform_predict": true,
+    "holdout_intocable": true,
+    "leaderboard_sin_tuning": true,
+    "campeon_intacto": true,
+    "un_experimento_un_script": true,
+    "p33_scores_intocable": true,
+    "sin_submission_sin_autorizacion": true
+  }
+}
