@@ -133,6 +133,7 @@ os.environ["OPENBLAS_NUM_THREADS"] = "32"
 
 import argparse
 import ast
+import contextlib
 import csv
 import io
 import json
@@ -782,6 +783,14 @@ def cargar_pesos(brazo: str, fold: int) -> tuple[np.ndarray, np.ndarray, dict]:
         return np.empty(0, dtype=np.int64), np.empty(0, dtype=np.float64), {}
     ruta = CKPT_DIR / f"fold{int(fold)}_{brazo}.npz"
     if not ruta.exists():
+        # El estado puede declarar el fold como hecho mientras el checkpoint no esta (por ejemplo
+        # si se borro a mano). Devolver vacios en ese caso dejaba el OOF en ceros SIN ningun error,
+        # que es peor que detenerse: se midiria un brazo que en realidad no se entreno.
+        estado = cargar_estado()
+        declarado = estado.get("brazos", {}).get(brazo, {}).get("folds", {}).get(str(fold))
+        if declarado is not None:
+            raise Detencion(f"[STOP] el estado declara el fold {fold} de {brazo} como hecho pero "
+                            f"su checkpoint {v35.ruta_relativa(ruta)} no existe (exit 2)", 2)
         return np.empty(0, dtype=np.int64), np.empty(0, dtype=np.float64), {}
     with np.load(ruta, allow_pickle=False) as paquete:
         indices = paquete["indices"]
@@ -2329,7 +2338,7 @@ def anotar_experiments_csv(resultado: dict) -> str | None:
                           f"dispersos de n-gramas de clase ({COLUMNAS_PUBLICADAS['total']} "
                           "columnas); sin embeddings",
         "modelo": "LinearSVC(C=1.0, squared_hinge, l2, max_iter=3000) con la receta del campeon; "
-                  "controles: sin bloque, 3 permutaciones del alfabeto y barajado",
+                  "controles: sin bloque, 3 remapeos aleatorios de caracteres y barajado entre documentos",
         "hiperparametros": "C=1.0 de la receta del campeon; sin grid; alfabeto "
                            f"{' '.join(ORDEN_ALFABETO)}; n={list(RANGO_N_EJECUTADO)}; sin min_df; sin "
                            f"borde; CV {N_FOLDS} folds sobre los indices canonicos",
@@ -2379,7 +2388,7 @@ def escribir_registro_novedad(resultado: dict) -> str:
             ("sondas obligatorias: mapa literal con sha256, conformidad stateless del transform, "
             "fold_local con unico fit = TfidfVectorizer del train de cada fold y sha256 de "
             "vocabulario e idf por fold, tabla 5/5 folds, IC95 pareado (2000, semilla 20261010), "
-            "3 permutaciones del alfabeto y control de barajado"),
+            "3 remapeos aleatorios de caracteres a las mismas 6 clases y control de barajado entre documentos"),
             ("experiments/v36_01_transiciones_clase.json | experiments/v36_01_estado.json | "
             "reports/v36_e1_transiciones_clase.md | reports/figures/v36_e1_curvas.png | "
             "reports/v36_novelty_registry.csv | artifacts/p36_scores/v36_e1/")]
@@ -2949,6 +2958,24 @@ def correr_mini(v30_completo: np.ndarray, clase_completo: np.ndarray, fold_compl
     sondas = ejecutar_sondas(estado, contexto["prereg"], textos, None, exigido=False)
     resultado = ensamblar_resultado(clase, fold_idx, v30, champ_pred, oofs, pesos, baseline, estado,
                                    sondas, contexto, NATURALEZA_MINI, remapeos)
+    # El mini mide de verdad las columnas del bloque C1-A: se rellena el contexto con el
+    # meta_c1a de cada fold, igual que hace la corrida real. Sin esto, `columnas_reales` queda
+    # como dict VACIO (el contexto del mini nace con columna_real={}) y resumen_consola, que
+    # ahora si ejercita el autoensayo, reventaba con KeyError 'total'.
+    columnas_mini = {"por_fold": {}}
+    for _fold in sorted(estado["brazos"][BRAZO_CANDIDATO]["folds"]):
+        _meta = estado["brazos"][BRAZO_CANDIDATO]["folds"][_fold]["meta_c1a"]
+        columnas_mini["por_fold"][_fold] = {"n_vocabulario": _meta["n_vocabulario"],
+                                                "n_bigramas": _meta["n_bigramas"],
+                                                "n_trigramas": _meta["n_trigramas"]}
+    columnas_mini["bigramas"] = columnas_mini["por_fold"][
+        min(columnas_mini["por_fold"])]["n_bigramas"]
+    columnas_mini["trigramas"] = columnas_mini["por_fold"][
+        min(columnas_mini["por_fold"])]["n_trigramas"]
+    columnas_mini["total"] = columnas_mini["por_fold"][
+        min(columnas_mini["por_fold"])]["n_vocabulario"]
+    contexto["columnas_c1a_reales"] = columnas_mini
+    resultado["columnas_reales"] = columnas_mini
     resultado["mini"] = {"n_filas": len(clase), "filas_por_clase": 250,
                          "folds_usados": [int(f) for f in np.unique(fold_idx)],
                          "fold_idx_leido_del_canonico": True,
@@ -3084,8 +3111,24 @@ def autoensayo_ruta_salida(contexto: dict) -> dict:
                                          encoding="utf-8")
             else:
                 Path(_destino).write_text("", encoding="utf-8")
-        sembrados = sum(1 for _nombre in ("RUNLOG", "EXPERIMENTS_CSV", "HISTORIA_CSV",
-                                          "NOVELTY_CSV") if Path(globals()[_nombre]).stat().st_size > 0)
+        # La siembra se verifica por IGUALDAD con el original, no por tamano: NOVELTY_CSV es un
+        # fichero NUEVO, luego vacio es su estado correcto y exigir contenido seria un falso
+        # positivo. Lo que hay que garantizar es que los preexistentes llegaron intactos.
+        sembrados, vacios_inesperados = 0, []
+        for _nombre in ("RUNLOG", "EXPERIMENTS_CSV", "HISTORIA_CSV", "NOVELTY_CSV"):
+            _origen, _destino = Path(originales[_nombre]), Path(globals()[_nombre])
+            if not _destino.exists():
+                raise Detencion(f"[STOP] el fichero aislado {_nombre} no se creo (exit 2)", 2)
+            if _origen.exists():
+                sembrados += 1
+                if _destino.read_text(encoding="utf-8") != _origen.read_text(encoding="utf-8"):
+                    raise Detencion(f"[STOP] la siembra de {_nombre} no reproduce el original "
+                                    f"(exit 2)", 2)
+            elif _destino.stat().st_size > 0:
+                vacios_inesperados.append(_nombre)
+        if vacios_inesperados:
+            raise Detencion(f"[STOP] ficheros aislados con contenido sin origen real: "
+                            f"{vacios_inesperados} (exit 2)", 2)
         try:
             for esperado, entrada in CAMINOS_NODO:
                 nodo, motivo, _ = decidir_nodo(**entrada)
@@ -3106,6 +3149,16 @@ def autoensayo_ruta_salida(contexto: dict) -> dict:
             escribir_registro_novedad(mini)
             for funcion in (anotar_runlog, anotar_experiments_csv, anotar_historial):
                 funcion(mini)
+            # resumen_consola se ejercita aqui porque NO lo cubria nadie: fue exactamente lo que
+            # dejo pasar el KeyError 'columnas_c1a_reales', que reventaba la corrida real DESPUES
+            # de escribir todos los artefactos. Se captura la salida para no inundar la consola.
+            with contextlib.redirect_stdout(io.StringIO()) as capturado:
+                resumen_consola(mini)
+            if not capturado.getvalue().strip():
+                raise Detencion("[STOP] resumen_consola no imprimio nada sobre el mini resultado (exit 2)", 2)
+            lineas_consola = capturado.getvalue().splitlines()
+            if not any("nodo del arbol" in linea for linea in lineas_consola):
+                raise Detencion("[STOP] resumen_consola no publico el nodo del arbol (exit 2)", 2)
             faltantes = [v35.ruta_relativa(ruta) for ruta in
                          (RESULTADOS_JSON, INFORME, FIGURA, NOVELTY_CSV, HISTORIA_CSV, RUNLOG,
                           EXPERIMENTS_CSV, ESTADO_JSON) if not ruta.exists() or ruta.stat().st_size
@@ -3148,7 +3201,7 @@ def parsear_argumentos() -> argparse.Namespace:
     """
     analizador = argparse.ArgumentParser(
         description="V36-E1 via C1-A: bloque de transiciones de clase de caracter (brecha L4) "
-                    "sobre el pre-registro congelado, con control de permutaciones del alfabeto y "
+                    "sobre el pre-registro congelado, con control de remapeo aleatorio de caracteres y "
                     "control de barajado, e integracion contra el campeon V30 + plug-in.")
     analizador.add_argument("--verificar", action="store_true",
                             help="solo verifica no-deriva, corre las ocho sondas sobre el "
@@ -3332,7 +3385,23 @@ def ejecutar(verificar: bool, humo: bool) -> int:
     columnas_reales["trigramas"] = columnas_reales["por_fold"]["0"]["n_trigramas"]
     columnas_reales["total"] = columnas_reales["por_fold"]["0"]["n_vocabulario"]
     contexto["columnas_c1a_reales"] = columnas_reales
+    # Las sondas que necesitan el resultado se ejecutan DESPUES de ensamblarlo: antes se pasaban
+    # con resultado=None, luego sondas_de_resultado era codigo muerto tambien en la corrida real
+    # y 5 sondas quedaban en None mientras el estado grababa False para ellas.
     sondas = ejecutar_sondas(estado, prereg, textos, None, exigido=True)
+    resultado = ensamblar_resultado(clase, fold_idx, v30, champ_pred, oofs, pesos, baseline, estado,
+                                   sondas, contexto,
+                                   "evidencia experimental: 5 folds de la particion canonica "
+                                   "leidos del artefacto, 0 folds de test, 0 particiones "
+                                   "reservadas", remapeos)
+    sondas.update(sondas_de_resultado(estado, resultado, exigido=True))
+    fallidas = [nombre for nombre in NOMBRES_SONDAS if sondas[nombre]["pass"] is False]
+    for nombre in fallidas:
+        print(f"  [STOP] sonda '{nombre}' fallida: "
+              f"{sondas[nombre].get('criterio', '')} (exit 4)", flush=True)
+    if fallidas:
+        raise Detencion(f"[STOP] sondas fallidas en la corrida real: {fallidas} (exit 4)", 4)
+    resultado["sondas"] = sondas
     estado["sondas"] = {nombre: bool(sondas[nombre]["pass"]) for nombre in NOMBRES_SONDAS}
     guardar_estado(estado)
     resultado = ensamblar_resultado(clase, fold_idx, v30, champ_pred, oofs, pesos, baseline, estado,
@@ -3416,7 +3485,7 @@ def resumen_consola(resultado: dict) -> None:
     veredicto = resultado["veredicto"]
     print("\n=== V36-E1 via C1-A: transiciones de clase de caracter (L4) ===")
     print(f"nodo del arbol        : {veredicto['nodo']}")
-    print(f"columnas del bloque   : {resultado['columnas_c1a_reales']['total']} "
+    print(f"columnas del bloque   : {resultado['columnas_reales']['total']} "
           f"({COLUMNAS_PUBLICADAS['bigramas']} bigramas + "
           f"{COLUMNAS_PUBLICADAS['trigramas']} trigramas de clase, sin borde, sin min_df)")
     print(f"banco                 : delta {banco['delta']:+.7f} ({banco['folds_positivos']}/5 "
