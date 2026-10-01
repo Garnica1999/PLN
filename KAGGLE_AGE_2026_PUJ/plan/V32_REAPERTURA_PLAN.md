@@ -31,7 +31,7 @@ sin autorizacion.
   hipotesis mecanica nueva**, no otro gate. `ml-architect` la redacta con la hipotesis mecanica
   explicita y el diseno; `kaggle-specialist` valida que el cierre one-shot de D-085 se respeta
   (miembros fuera de la lista cerrada, sin reabrir lo ya cubierto).
-- [ ] **F2''''' VIA C1 (representacion nueva sin embeddings)**: nueva familia de representacion
+- [x] **F2''''' VIA C1 (representacion nueva sin embeddings)**: nueva familia de representacion
   textual **sin embeddings**: n-gramas de caracter/subpalabra, rasgos de forma, estilometria y lo que
   el arquitecto audite como NO cubierto por los 39 mecanismos y las 6 familias linguisticas. Es la
   linea con mejor historial real del proyecto (las familias linguisticas fueron las unicas que

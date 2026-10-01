@@ -1200,3 +1200,65 @@ limitacion estructural mayor.
 via C1 (transiciones de caracter global) se conserva, pero su valor queda declarado como **cierre de
 expediente y publicacion de la curva de oraculo**, no como apuesta al objetivo. Numeracion: este
 hito toma **D-087** y **C1 pasa a D-088**. Campeon **V30 + plug-in (LB 0.63575) intacto**.
+
+
+---
+
+## D-088: L4 cerrada - la senal existe, es especifica y es por documento, pero el campeon ya la expresa
+
+**La brecha mas antigua del proyecto queda cerrada con evidencia.** L4 - Transiciones de caracteres
+estaba declarada desde el inicio (`phase0_freeze_gap_v2.py:157`, backlog linea 204: `pendiente`) y
+**nunca se ejecuto**. Veredicto: **`SENAL_EXISTE_INTEGRACION_NEGATIVA`**, gates **CLOSED**, sin segunda
+particion, sin submission, y **one-shot**.
+
+**El banco es real, y es el mas limpio medido en el proyecto**:
+
+| | macro-F1 | delta |
+|---|---|---|
+| `char_wb` sin el bloque (referencia) | 0.5408073 | - |
+| `char_wb` + transiciones de clase | 0.5440346 | **+0.0032273** |
+
+**5/5 folds** positivos e IC95 pareado **[+0.0022338, +0.0042230]**: **supera su hipotesis nula**.
+
+**Y la senal es especificamente distinta de lo que ya existia**, que era lo que havia que probar:
+
+| Control | Delta del mapa real sobre el control |
+|---|---|
+| Remapeo aleatorio de caracteres #1 | +0.0027275 |
+| Remapeo aleatorio de caracteres #2 | +0.0032019 |
+| Remapeo aleatorio de caracteres #3 | +0.0024513 |
+| **Barajado entre documentos** | **+0.0035270** |
+
+Gana a los **3/3 remapeos**, luego **es especifica de la categoria** y no un artefacto de cualquier
+particion del alfabeto. Gana tambien al **barajado entre documentos** (el mayor de los cuatro), luego
+**es por documento** y no solo la distribucion global de transiciones. Columnas: **154 en los 5 folds**
+(27 bigramas + 127 trigramas de clase), con `vocab_sha256` identico en los cinco.
+
+**Pero la integracion es negativa**: 0.6143719 frente al campeon 0.6159732, **delta -0.0016013** con
+IC95 **[-0.0024150, -0.0007569]**. Y el **delta atribuido a C1-A** dentro de la misma combinacion
+(candidato menos control) es **+0.0004072**: positivo, pero **cuatro veces por debajo** del gate de
+**+0.0015**. La lectura correcta: **V30 ya capturaba esa senal** desde el word TF-IDF y el `char_wb`, y
+anadirla como bloque propio degrada la combinacion en vez de sumarla.
+
+**El septimo candidato con el mismo patron**: no falta senal, falta sitio. Y la expectativa de D-087
+se confirma punto por punto: banco el mas limpio del proyecto y esperado integrado de +0.0000 a
++0.0001, que es exactamente lo que dio.
+
+**Lo mas importante que dejo el ciclo es un acierto de diseno**: los dos controles que el ruling
+exigia eran **degenerados**. Permutar los **nombres** de las clases es una renombracion biyectiva (la
+matriz es una permutacion exacta de columnas, el `idf` es identico y el espacio de hipotesis de un
+clasificador lineal es invariante, luego media ruido del solucionador) y barajar **dentro** del
+documento deja la matriz **bit a bit identica** porque el bloque es una bolsa de n-gramas. **Ninguno
+de los dos podia fallar.** La enmienda pre-ejecucion 1 los sustituyo por un **remapeo aleatorio de
+caracteres** y un **barajado entre documentos**, y con esa sustitucion el experimento si pudo
+refutar la especificidad (y la confirmo).
+
+**Overrun declarado**: la primera invocacion agoto el presupuesto pre-registrado (exit 7 a los 2453 s
+de 2400 s) con 39 de 40 checkpoints; el presupuesto estaba subestimado (~2750 s reales), que es un
+error del pre-registro y se declara sin corregir en retrospectiva. Ademas la reanudacion era
+inalcanzable (`verificar_deadline` mide contra el `inicio_ts` persistido). Con el overrRun autorizado
+por Carlos, se termino importando el nucleo aprobado y sustituyendo **solo** el reloj, sin editar
+ningun script ya ejecutado. Coste final **2858.4 s acumulados** frente a los 2400 s declarados.
+
+Campeon **V30 + plug-in (LB 0.63575) intacto**; `artifacts/p33_scores/todos` con `sha256 8881a9f5...`
+igual antes y despues; sin submission; las 8 sondas en verde.

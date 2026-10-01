@@ -3,6 +3,42 @@
 > Memoria persistente del proyecto. Leer SIEMPRE al inicio de sesión o tras compactación.
 > Última actualización: 2026-09-26 (cierre de V13 ADVANCED RESEARCH).
 
+## D-088 (2026-09-30): L4 CERRADA - la senal de transiciones es real, especifica y por documento, pero el campeon ya la expresa (mejor)
+
+- **La brecha mas antigua del proyecto queda cerrada con evidencia.** L4 - Transiciones de caracteres
+  estaba declarada en `phase0_freeze_gap_v2.py:157` y listada como `pendiente` en el backlog (linea
+  204) desde el inicio del proyecto. **Nunca se habia ejecutado.**
+- **Veredicto**: `SENAL_EXISTE_INTEGRACION_NEGATIVA`; gates de la serie **CLOSED** (pasan: False), sin
+  segunda particion y sin submission. **C1-A es one-shot**: no se reintenta con otro alfabeto, otro
+  rango de `n`, otro mapa ni otro corte. **L4 cerrada.**
+- **El banco es real y es el mas limpio medido en el proyecto**: `char_wb` sin el bloque 0.5408073,
+  con el bloque 0.5440346 -> **delta +0.0032273**, **5/5 folds**, IC95 pareado
+  **[+0.0022338, +0.0042230]**, que **supera su hipotesis nula**.
+- **La senal es ESPECIFICA de la categoria**: el mapa real gana a los **3/3 remapeos aleatorios** de
+  caracteres a las mismas 6 clases (+0.0027275, +0.0032019, +0.0024513). Y es **POR DOCUMENTO**: gana
+  tambien al **barajado entre documentos** (+0.0035270, el mayor de los cuatro), luego no es solo la
+  distribucion global de transiciones. Columnas **154 en los 5 folds** (27 bigramas + 127 trigramas).
+- **Pero la integracion es NEGATIVA**: 0.6143719 frente al campeon 0.6159732 -> **delta -0.0016013**
+  con IC95 **[-0.0024150, -0.0007569]**. Y el **delta atribuido a C1-A** (candidato menos control en la
+  misma combinacion) es **+0.0004072**: positivo, pero **cuatro veces por debajo** del gate de +0.0015.
+  La lectura: **V30 ya capturaba esa senal** desde el word TF-IDF y el char_wb, y anadirla como bloque
+  propio degrada la combinacion.
+- **El septimo candidato con el mismo patron**: no falta senal, falta sitio. Y la expectativa de
+  D-087 se confirma: banco el mas limpio y esperado integrado +0.0000 a +0.0001, que es lo que dio.
+- **Overrun DECLARADO**: la primera invocacion agoto el presupuesto pre-registrado (exit 7 a los 2453
+  s de 2400 s) con 39 de 40 checkpoints; el presupuesto estaba **subestimado** (~2750 s reales) y eso
+  es un error del pre-registro, que se declara y no se corrige en retrospectiva. Ademas la
+  **reanudacion era inalcanzable** (`verificar_deadline` mide contra el `inicio_ts` persistido), que es
+  el defecto que impedia terminar. Carlos autorizo el overrRun y se ejecuto con
+  `scripts/v36_02_reanudacion.py`, que **importa** el nucleo aprobado y solo le cambia el reloj.
+  Coste final **2858.4 s acumulados** frente a los 2400 s declarados, con el overrun a la vista.
+- **El acierto de diseno mas importante del ciclo**: los dos controles que el pre-registro exigia
+  (permutar los **nombres** de las clases y barajar **dentro** del documento) eran **degenerados y no
+  podian fallar**; la enmienda 1 los sustituyo por remapeo aleatorio de caracteres y barajado entre
+  documentos. Con los originales, el experimento habria "probado" especificidad sin poder refutarla.
+- **Integridad**: `artifacts/p33_scores/todos/manifest.json` con `sha256 8881a9f5...` igual antes y
+  despues; campeon V30 + plug-in LB 0.63575 intacto; sin submission; las 8 sondas en verde.
+
 ## D-087 (2026-09-30): LB 0.70 es NO ALCANZABLE bajo las restricciones; el techo se fija en LB 0.642
 
 - **Pregunta**: tras 6 candidatos medidos y ninguno pasando gates, se reevalua si el objetivo

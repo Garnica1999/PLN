@@ -2469,3 +2469,14 @@ intacto.
 - Dos controles eran **degenerados**: permutar los NOMBRES de las clases es una renombracion biyectiva (permutacion exacta de columnas, idf identico, diferencia maxima 3.3e-16) y el espacio de hipotesis lineal es invariante; y barajar dentro del documento deja la matriz bit a bit identica porque el bloque es una bolsa de n-gramas. **Ninguno de los dos podia fallar.**
 - Sustituidos por: **remapeo aleatorio de caracteres a las mismas 6 clases** (>= 3, con semilla declarada) y **barajado entre documentos**.
 - No cambia el protocolo: ni mapa, ni modelo, ni folds, ni gates, ni arbol, ni one-shot.
+
+---
+
+## V36-E1 (via C1-A) - transiciones de clase de caracter (brecha L4) - 2026-09-30
+
+- Nodo del arbol: **SENAL_EXISTE_INTEGRACION_NEGATIVA**; L4 se cierra L4 por el nodo del arbol; C1-A es ONE-SHOT: no se reintenta con otro alfabeto, otro rango de n, otro mapa ni otro corte.
+- Banco: delta +0.0032273 de macro-F1 (5/5 folds), IC95 [+0.0022338, +0.0042230]; supera su H0: True.
+- Integracion: delta frente al campeon -0.0016013, IC95 [-0.0024150, -0.0007569]; punto de partida 0.6159732 reproducido.
+- Controles: mapa real gana a 3/3 remapeos aleatorios de caracteres y al barajado entre documentos: True.
+- Enmienda pre-ejecucion 1 aplicada y verificada: 6 clases, rango n [2, 3], columnas observadas 27 + 127, mapa literal con sha256 cac5b2f32699a389 intacto.
+- Campeon V30 + plug-in intacto; sin test, holdout, leaderboard ni submission.

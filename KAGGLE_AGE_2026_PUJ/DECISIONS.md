@@ -3252,3 +3252,79 @@ No se usa el 0,63575 para optimizar pesos, crear variantes, seleccionar semillas
   6 bins, ni el paper de doi 10.1007/s44163-026-01695-1; y el LOO de la calibracion **infiere** que
   los 4 puntos ajustados son los del CSV a partir del propio leave-one-out, sin leer el script de
   ajuste.
+
+## D-088 - V36-E1: la brecha L4 cierra con senal REAL, ESPECIFICA y POR DOCUMENTO, pero el campeon ya la expresa mejor
+
+- **Observation**: primer (y unico) experimento de la via **C1-A** del ciclo V36, autorizado y
+  firmado por Carlos el 2026-09-30. Cierra la brecha **L4 - Transiciones de caracteres**, declarada en
+  `scripts/phase0_freeze_gap_v2.py:157` ("patrones letra->digito, letra->puntuacion, espacio->
+  puntuacion que el TF-IDF no expresa como feature explicita") y **nunca ejecutada**: el backlog del
+  mismo script la deja `pendiente` en la linea 204. Era **la brecha mas antigua y abierta** del
+  proyecto. No es un re-nombre de F10: la clausula de reapertura de ese gap audit dice literalmente
+  "solo se abre lo que cambie el MECANISMO: condicionar la palabra a su forma, su posicion o su
+  **categoria**", y C1-A es **condicionar el caracter a su categoria**.
+- **Ruling de legalidad** (`kaggle-specialist`): **LEGAL**, con dos tests que se aplican a variantes
+  futuras: **(a) parametros estimados**: si ninguno del constructor sale de datos, corpus, etiquetas
+  o metadatos, es un featurizer escrito a mano; **(b) abstraccion**: el mapa **descarta** la
+  identidad del caracter, luego es una abstraccion disenada y no un espacio semantico denso. Se
+  declararon ademas las variantes **ILEGALES** (mapa con matriz de confusion o informacion mutua con
+  la etiqueta, mapa por clase objetivo, mapa de covarianza o autovectores, mapa de clustering,
+  frecuencias de transicion como vector denso, y estadisticas sobre todo el corpus antes del split) y
+  las que requieren ruling explicito.
+- **Enmienda pre-ejecucion 1**, con **5 condiciones** del ruling y dos correcciones quehabia hacer:
+  el mapa tiene **6** clases (el texto decia 7, con `sha256 cac5b2f32699a389` verificado), el rango de
+  `n` era `[1, 2]` cuando el diseno son bigramas y trigramas `[2, 3]`, las columnas observadas son
+  **27 + 127 = 154** (medido), y **los dos controles originales eran DEGENERADOS**: permutar los
+  **nombres** de las clases es una renombracion biyectiva (permutacion exacta de columnas, `idf`
+  identico, y el espacio de hipotesis lineal es invariante, luego media ruido del solucionador y **no
+  podia fallar**), y barajar **dentro** del documento deja la matriz **bit a bit identica** porque el
+  bloque es una bolsa de n-gramas. Sustituidos por un **remapeo aleatorio de caracteres** a las
+  mismas 6 clases (>= 3, con semilla declarada) y un **barajado ENTRE documentos**.
+- **Resultado medido (5 folds de la particion canonica)**. **Banco**: `char_wb` identico sin el bloque
+  da **0.5408073** y con el bloque **0.5440346**, luego **delta = +0.0032273**, **5/5 folds
+  positivos**, IC95 pareado **[+0.0022338, +0.0042230]** sobre el cero: **supera su hipotesis nula**.
+  **Controles**: el mapa real gana a los **3/3 remapeos** (deltas del real sobre cada control
+  +0.0027275, +0.0032019, +0.0024513), luego la senal es **especifica de la categoria** y no un
+  artefacto de cualquier particion del alfabeto; y gana tambien al **barajado entre documentos**
+  (**+0.0035270**, el mayor de los cuatro), luego la senal es **por documento** y no solo la
+  distribucion marginal global de transiciones. **Integracion**: el punto de partida fue el campeon,
+  reproducido con diferencia **4.9e-08**, y la combinacion con C1-A da **0.6143719** frente a
+  **0.6159732**, luego **delta = -0.0016013** con IC95 **[-0.0024150, -0.0007569]**: la integracion es
+  **negativa y estadisticamente distinta de cero**. El **delta atribuido a C1-A** dentro de la misma
+  combinacion (candidato menos control) es **+0.0004072**: positivo, pero **cuatro veces por debajo**
+  del gate de **+0.0015**. Columnas **154 en los 5 folds** (27 bigramas + 127 trigramas) con
+  `vocab_sha256` identico en los cinco. Las **8 sondas** pasan.
+- **Defecto de implementacion y overrun, ambos DECLARADOS**. (i) La primera invocacion **agotó el
+  presupuesto pre-registrado**: exit 7 a los **2453 s** de los **2400 s** declarados, con **39 de 40
+  checkpoints** hechos (faltaba `fold4_integ_c1a`). El presupuesto del pre-registro estaba
+  **subestimado** (~2750 s reales): es un error del pre-registro y se declara, no se corrige en
+  retrospectiva. (ii) La **reanudacion era inalcanzable**: `verificar_deadline` mide contra
+  `estado["inicio_ts"]`, que esta **persistido**, luego una reanudacion hereda el reloj anterior y
+  muere (medido: exit 7 en 48 s tras reutilizar bien los 39 checkpoints). Carlos **autorizo el
+  overrun el 2026-09-30** y se ejecuto con `scripts/v36_02_reanudacion.py`, que **importa** el nucleo
+  aprobado y le sustituye **solo** la funcion de reloj: **no se edito ningun script ya ejecutado**.
+  Coste final **2858.4 s acumulados** frente a los 2400 s declarados, con el **overrun a la vista**.
+- **Decision**: veredicto **`SENAL_EXISTE_INTEGRACION_NEGATIVA`**: el banco supera su hipotesis nula
+  pero la integracion es negativa. Los gates de la serie dan **CLOSED** (pasan: False), **sin segunda
+  particion** y **sin submission**. **L4 queda CERRADA** y **C1-A es one-shot**: no se reintenta con
+  otro alfabeto, otro rango de `n`, otro mapa ni otro corte.
+- **Consequences**: (i) **la senal existe, es ortogonal, es especifica de la categoria y es por
+  documento**, y eso **no era evidentemente distinto de lo que V30 ya expresa**: por eso el delta
+  atribuido cae en +0.0004 y la integracion llega a ser **negativa**. La lectura correcta es que
+  **V30 ya capturaba esa senal desde el word TF-IDF y el char_wb**, y anadirla como bloque propio
+  **degrada** la combinacion en lugar de sumarla. Es el septimo candidato con el patron
+  que explica los seis anteriores: **no falta senal, falta sitio**; (ii) **la brecha mas antigua del
+  proyecto queda cerrada con evidencia**, que es lo que se buscaba: la documentacion de phase0
+  puede marcarse como resuelta; (iii) la expectativa de D-087 se confirma: el banco era el mas limpio
+  medido en el proyecto y aun asi el esperado integrado era de +0.0000 a +0.0001, que es lo que dio;
+  (iv) **los dos controles degenerados que la emenda 1 sustituyo eran la parte mas importante del
+  diseno**: con ellos, el experimento habria "probado" especificidad sin poder fallar.
+- **Evidence**: `experiments/v36_01_transiciones_clase.json`, `experiments/v36_01_estado.json`,
+  `experiments/v36_02_reanudacion.json`, `checkpoints/v36_e1/` (40 checkpoints),
+  `artifacts/p36_scores/v36_e1/`, `reports/v36_e1_transiciones_clase.md`,
+  `reports/v36_novelty_registry.csv`, `reports/v36_preregistro.md` (con su enmienda 1),
+  `experiments/v36_00_preregistro.json`, `scripts/v36_00_preregistro.py`,
+  `scripts/v36_00b_enmienda_preregistro.py`, `scripts/v36_01_transiciones_clase.py`,
+  `scripts/v36_02_reanudacion.py`. Integridad: `artifacts/p33_scores/todos/manifest.json` con
+  `sha256` `8881a9f5...` **igual antes y despues**; campeon V30 + plug-in **intacto**; sin
+  submission.
