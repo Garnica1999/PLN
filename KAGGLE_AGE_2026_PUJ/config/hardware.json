@@ -1,24 +1,29 @@
 {
-  "fecha": "2026-09-25",
+  "fecha": "2026-10-01",
+  "proposito": "auditoria de experimentos V1-V37 (solo lectura y analisis; sin reentrenamiento)",
   "python": "/home/carlos/venv/bin/python",
-  "version_python": "3.14.7",
+  "python_version": "3.14.7",
   "cpu": {
-    "nombre": "AMD Ryzen 9 5950X 16-Core Processor",
-    "nucleos_fisicos": 16,
-    "hilos": 32
+    "hilos_logicos": 32
   },
-  "ram_gb": 31.2,
+  "ram_gb": 31,
   "gpu": {
     "nombre": "AMD Radeon RX 9070 XT",
-    "tipo": "dedicada",
+    "tipo": null,
     "vram_gb": 15.9,
     "torch_cuda": true
   },
-  "sistema": "Linux 7.2.6-1-cachyos",
-  "uso_en_esta_fase": "CPU pura: la fase de lexicones es de conteo y agregados + combinador lineal; no se usa GPU (D-007).",
-  "reglas_derivadas": {
-    "n_jobs": -1,
-    "hilos_blas": 32,
-    "batch_na": "no aplica (sin redes neuronales en esta fase)"
-  }
+  "pci_display": [
+    "Advanced Micro Devices, Inc. [AMD/ATI] Navi 48 [Radeon RX 9070/9070 XT/9070 GRE] (rev c0)"
+  ],
+  "librerias": {
+    "torch": "2.14.0+rocm7.2",
+    "sklearn": "1.8.0",
+    "numpy": "1.26.4",
+    "pandas": "2.3.3"
+  },
+  "notas": [
+    "La auditoria NO entrena: la GPU se usa solo si un agente la necesita para inspeccion, nunca para repetir un experimento.",
+    "Toda lectura de metricas se hace desde artefactos ya existentes en disco (experiments/, artifacts/, reports/)."
+  ]
 }

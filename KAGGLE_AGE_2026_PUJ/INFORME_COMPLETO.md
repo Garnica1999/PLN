@@ -564,6 +564,80 @@ Artefactos: `reports/v37_diagnostico_pos.md`, `experiments/age_linguistic_14_dia
 
 ---
 
+## 12 ter. Auditoría del historial V1–V37 (D-090): el protocolo está limpio, pero una prueba publicada no se sostiene
+
+El 2026-10-01 se auditó el historial completo, no solo las fases recientes, porque el peso del registro
+está en las fases iniciales (113 de 195 filas en V1–V12) y ahí es donde los parámetros heredados
+acarrean más riesgo.
+
+**Lo primero que hay que leer bien**: 195 filas del registro **no son 195 experimentos**. La
+clasificación por tipo de registro, hecha con evidencia en disco, da **151 ejecuciones**, 21
+documentales, 12 pre-registros, 10 enmiendas y 1 corrida abortada. Toda la evidencia citada existe:
+**0 huecos de artefacto**.
+
+**El resultado más importante es positivo y conviene decirlo sin rodeos: el protocolo de competencia
+está limpio en lo esencial.** Un barrido del árbol sintaxis de 308 scripts encontró solo dos llamadas
+`fit` con receptor de tipo test, y ambas calibran sobre predicciones out-of-fold del train. No hubo
+calibración de umbrales sobre test, ni uso del leaderboard como conjunto de validación o función
+objetivo. `id` nunca se usó como característica, no hay fuga por autor ni temporal, y el campeón
+congelado es reproducible bit a bit. Las cuatro adopciones reales del proyecto tienen pre-registro,
+control negativo y confirmación externa: **cero adopciones sin pre-registro**.
+
+### El hallazgo que cambia una conclusión publicada
+
+`DECISIONS.md` D-087 afirmó que un modelo perfecto con la información que el campeón ya tiene "no
+llegaría" al objetivo de leaderboard 0,70. El script que lo calcula define su rejilla de umbrales así
+(`scripts/v35_00g_techo_analisis.py:69`):
+
+```python
+TAUS = (0.30, 0.35, 0.40, 0.45, 0.50)
+```
+
+**La rejilla empieza en 0,30 y sube**, y el "techo" se tomó como su máximo, mientras la curva del oráculo
+es monótona creciente al bajar τ. Reproducción sobre `artifacts/p33_scores/todos/`:
+
+| τ | filas corregibles | ganancia | ¿supera +0,0626? |
+|---|---|---|---|
+| 0,30 (máximo publicado) | 10.384 | +0,0593677 | no |
+| **0,2930 (el punto que D-087 usa como objetivo)** | 11.298 | **+0,0646335** | **sí** |
+
+El techo publicado de +0,0568 era un artefacto del redondeo de la rejilla. **Lo que sí se sostiene, y
+es un argumento más fuerte**: un recalibrador tendría que acertar el ~16 % de los errores con
+`p(y_true) ≥ 0,293`, es decir conocimiento casi-oracular. **LB 0,70 sigue siendo inalcanzable en la
+práctica; la prueba publicada no lo demuestra.** El IC95 [0,635, 0,653] que lo acompaña tampoco está
+calculado en ningún artefacto: sale de una tasa de captura aplicada a mano.
+
+### La reserva estructural: multiplicidad
+
+Con `macro_f1_std` mediano 0,0042, el error estándar de la media de 5 folds es **SE ≈ 0,00188**. Un
+gate de `Δ ≥ +0,0015` implica **≈ 32 falsos positivos esperados** en 151 corridas; `Δ ≥ +0,0030`
+implica ≈ 8. Una búsqueda de *multiplicidad / multiple comparisons / FWER / family-wise* en
+`DECISIONS.md`, `PROJECT_STATE.md`, `FINAL_REPORT.md` e `INFORME_COMPLETO.md` devuelve **cero**.
+
+Esto **no invalida las conclusiones** (las cuatro adopciones tienen IC95 pareado excluyendo 0), pero
+obliga a reformular el argumento central del proyecto: lo correcto es "ninguno pasó el gate **y su
+bootstrap pareado excluyendo 0**", no "ninguno pasó el gate".
+
+### Otros defectos relevantes
+
+| Defecto | Severidad | Impacto |
+|---|---|---|
+| `es_core_news_lg` sin fijar en `requirements.txt:49` | media | **el anotador de todos los resultados md/lg no es instalable desde el entorno declarado** |
+| El holdout de V12 está **quemado** (criterio de aceptación sobre el propio holdout) | media | es selección, no confirmación |
+| El registro de envíos cuenta 15/12 cuando hay 16 puntuados | media | subcuenta el leaderboard |
+| El 16,35 % de acuerdo md-lg se publica sin controlar por longitud | media | el acuerdo por token es 86,269 % |
+| El brazo `N1b` filtra spans con índices desalineados | media | sin impacto: los 6 brazos están bajo el gate |
+| `max_iter=40` del MLP, miembro del campeón con peso 0,25 | media | nunca se re-parametrizó |
+| `V18-P3/P4/P5` sin `torch.manual_seed` | baja | no reproducibles |
+
+La auditoría **también se corrigió a sí misma** en cinco puntos, y dos de ellos los detectó un revisor
+independiente: un clasificador afirmaba falsamente que tres experimentos ejecutados no lo habían sido,
+y una primera reparación del registro consumió el hueco equivocado.
+
+Detalle en `reports/auditoria_experimentos_v1_v37.md` y en `plan/auditoria/`.
+
+---
+
 ## 13. Índice de artefactos
 
 | Documento | Contenido |
@@ -582,13 +656,17 @@ Artefactos: `reports/v37_diagnostico_pos.md`, `experiments/age_linguistic_14_dia
 | `reports/v37_diagnostico_pos.md` | **V37 completo**: perfil `P(POS\|edad)`, estabilidad, cota de potencia y transiciones |
 | `experiments/age_linguistic_14_diagnostico_pos.json` | resultado de V37 con los 4 gates y los 6 criterios |
 | `reports/tables/v37_pos_*.csv` | 5 tablas de V37 (1.728 + 216 + 216 + 9 + 1.944 filas) |
-| `plan/V37_DIAGNOSTICO_POS_PLAN.md`, `plan/V37_ENMIENDAS_01.md` | spec de V37 y sus 15 enmiendas pre-ejecución |
+| `plan/V37_DIAGNOSTICO_POS_PLAN.md`, `plan/V37_ENMIENDAS_01.md` | spec de V37 y sus 15 enmiendas pre-ejecucion |
+| `reports/auditoria_experimentos_v1_v37.md` | **auditoria D-090 del historial V1-V37**: 20 defectos, protocolo limpio, techo de LB 0.70 refutado |
+| `reports/tables/auditoria_v1v37_inventario.csv` | inventario trazable: 197 filas x 24 columnas, 0 huecos |
+| `plan/auditoria/` | las 5 fases de la auditoria con sus hallazgos y reservas |
 | `experiments.csv` | 195 experimentos con pregunta, mecanismo, resultado y decisión |
-| `DECISIONS.md` | 89 decisiones con contexto, evidencia y consecuencias |
+| `DECISIONS.md` | 90 decisiones con contexto, evidencia y consecuencias |
 | `PROJECT_STATE.md`, `RUNLOG.md` | estado del proyecto y bitácora completa |
 
 ---
 
-*Documento generado el 2026-09-26 y actualizado el 2026-10-01 con V37 (D-089). Todas las cifras
+*Documento generado el 2026-09-26 y actualizado el 2026-10-01 con V37 (D-089) y con la auditoria del
+historial V1-V37 (D-090). Todas las cifras
 citadas salen de los artefactos en `experiments/` y `reports/`, y son verificables celda a celda
 contra ellos.*

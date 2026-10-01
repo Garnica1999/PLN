@@ -1,7 +1,63 @@
 # PROJECT_STATE — KAGGLE_AGE_2026_PUJ
 
 > Memoria persistente del proyecto. Leer SIEMPRE al inicio de sesión o tras compactación.
-> Última actualización: **2026-10-01 (cierre de V37 · D-089)**.
+> Última actualización: **2026-10-01 (auditoría del historial V1–V37 · D-090)**.
+
+## D-090 (2026-10-01): AUDITORIA DEL HISTORIAL V1-V37 - el protocolo esta limpio, pero la prueba del techo de LB 0.70 queda REFUTADA
+
+- **Que se audito**: las 195 filas de `experiments.csv`, de V1 a V37. Auditoria de evidencia, no de
+  opinion: 7 revisiones independientes (NLP, arquitectura, DL, Kaggle, revision de codigo, QA) y **cada
+  hallazgo se confirmo contra la fuente primaria con ruta y linea antes de aceptarse**. Sin reejecutar,
+  sin test/holdout/leaderboard, sin submissions, campeon intacto.
+- **195 filas NO son 195 experimentos**: son **151 ejecuciones** + 21 documentales + 12 pre-registros
+  + 10 enmiendas + 1 corrida abortada (`V35-E1-INTENTO-1`). Y **0 artefactos ausentes**: toda la
+  evidencia citada existe. Inventario reproducible con `scripts/auditoria_v1v37_inventario.py` (6/6).
+- **El protocolo de competencia esta limpio, verificado por AST sobre 308 scripts**: cero `fit` sobre
+  test (solo 2, ambos calibran sobre OOF de train), cero calibracion de umbrales sobre test, cero uso
+  del LB como validacion u objetivo, `id` nunca como feature, sin fuga de autor ni temporal, campeon
+  bit-a-bit reproducible (SHA256 `29cbe6cc…`, 112.892 filas, 6 clases, 0 nulos), y **cero adopciones
+  sin pre-registro**.
+- **K-01 (ALTA): la prueba del techo de LB 0.70 de D-087 no demuestra lo que afirma.**
+  `scripts/v35_00g_techo_analisis.py:69` define `TAUS = (0.30, 0.35, 0.40, 0.45, 0.50)`: la rejilla
+  **empieza en 0.30 y sube**, y el techo se tomo como su maximo. Reproducido en `tau = 0.2930` (el
+  punto que el propio D-087 usa como objetivo), el oraculo da **+0.0646**, por encima del +0.0626
+  exigido. Lo que **si** se sostiene es mas fuerte: un recalibrador tendria que acertar el ~16 % de los
+  errores con `p(y_true) >= 0.293`, o sea conocimiento casi-oracular. **LB 0.70 sigue inalcanzable en la
+  practica; la prueba publicada no lo demuestra.** Ademas su IC95 [0.635, 0.653] **no esta calculado
+  en ningun artefacto**: sale de una tasa de captura aplicada a mano (rango declarado, no estimado).
+- **A-01 (ALTA): la multiplicidad de ~151 corridas no esta cuantificada.** `grep` de multiplicidad /
+  multiple comparisons / FWER / family-wise en los 4 documentos maestros devuelve **cero**. Con
+  `macro_f1_std` mediano 0.0042, **SE ~ 0.00188**: un gate de `+0.0015` implica **~32 falsos positivos
+  esperados** y `+0.0030` implica **~8**; Bonferroni de familia 151 exigiria `+0.0147`. **No invalida
+  las conclusiones** (las 4 adopciones tienen IC95 pareado excluyendo 0 y confirmacion externa), pero
+  obliga a reformular: "ninguno paso el gate **y su bootstrap pareado excluyendo 0**".
+- **Otros confirmados**: K-02 el holdout de V12 esta **quemado** (criterio `+0.003` sobre el propio
+  holdout); K-03 el registro de envios cuenta 15/12 cuando hay **16 puntuados**; N-02
+  **`es_core_news_lg` sin fijar en `requirements.txt:49`** (el anotador de todos los resultados md/lg no
+  es instalable desde el entorno declarado, el hallazgo mas accionable); N-01 `N1b` filtra spans con
+  indices desalineados (~55,8 % de coincidencia, sin impacto por estar bajo el gate); N-03 el 16,35 % de
+  acuerdo md-lg se publica sin controlar longitud (por token es 86,269 %); A-03 `max_iter=40` del MLP
+  miembro del campeon con peso 0,25 sin revisar; A-06 V18-P3/P4/P5 sin `torch.manual_seed`.
+- **Correcciones aplicadas**: `V37-DIAG-POS` escrita con 21 de 22 campos (reparada con el patron de
+  `V36-E1`, recuperada del JSON sin inventar texto); SHA256 del pre-registro V37 corregido de `30d5d3cf…`
+  a `1d6d6573…` (el JSON lo registra bien: era transcripcion erronea, el pre-registro **no** se muto);
+  el clasificador de inventario que afirmaba falsamente que V33/V34/V35 no se ejecutaron; y 3 checks
+  tautologicos del propio script de auditoria.
+- **Notebook**: capitulo PARTE III anadido, 326 -> 330 celdas con **las 326 originales byte-identicas**,
+  y las cifras del capitulo **se leen del inventario**, no estan escritas a mano.
+- **4 reservas abiertas y declaradas**: sesgo del inner split de Optuna sin medir en la metrica,
+  `max_iter` del MLP sin revisar, IC95 del techo declarado, y falta el registro de autorizacion de los
+  4 envios posteriores (no hay evidencia de infraccion, si ausencia de evidencia).
+- **Campeon intacto** en 0.6159732487657944, verificado por hash y recomputado. Sin push, merge, rebase
+  ni reset. **Ninguna accion propuesta exige cambiar el campeon.**
+- **Artefactos**: `reports/auditoria_experimentos_v1_v37.md`,
+  `reports/tables/auditoria_v1v37_inventario.csv` (197 x 24, 0 huecos),
+  `experiments/auditoria_v1v37_inventario.json`,
+  `scripts/auditoria_v1v37_inventario.py`, `scripts/auditoria_v1v37_notebook.py`,
+  `plan/auditoria/{00_entorno_y_alcance,01_inventario,02a_familias_linguisticas,02b_arquitectura_y_dl,02c_protocolo_y_qa,04_notebook,05_sintesis_y_cierre}.md`,
+  `plan/auditoria/notebook_capitulos.md`, acta **D-090**.
+
+## D-089 (2026-10-01): `P(POS | edad)` CERRADA POR POTENCIA - el patrón existe y casi no lleva información de clase
 
 ## D-089 (2026-10-01): `P(POS | edad)` CERRADA POR POTENCIA - el patrón existe y casi no lleva información de clase
 
@@ -34,7 +90,7 @@
   test, holdout ni leaderboard. `artifacts/v37/a1_prob_oof.npy` queda persistido (E8) con su SHA256.
 - **Artefactos**: `reports/v37_diagnostico_pos.md`,
   `experiments/age_linguistic_14_diagnostico_pos.json`,
-  `experiments/age_linguistic_13_preregistro_v37.json` (pre-registro inmutable, sha256 `30d5d3cf...`),
+  `experiments/age_linguistic_13_preregistro_v37.json` (pre-registro inmutable, sha256 `1d6d6573d825dac9...`; el `30d5d3cf...` que se citaba antes era transcripción errónea, corregida en D-090),
   `scripts/age_linguistic_1{3,4}_*.py`, `reports/tables/v37_pos_*.csv`, `reports/figures/v37_pos_0*.png`,
   `plan/V37_DIAGNOSTICO_POS_PLAN.md`, `plan/V37_ENMIENDAS_01.md` (15 enmiendas que mandan sobre la
   spec), `plan/00_intent_v37.md`, `experimentos/v37_diagnostico_pos.log`.

@@ -3402,7 +3402,11 @@ No se usa el 0,63575 para optimizar pesos, crear variantes, seleccionar semillas
   leaderboard.
 - **Evidence**: `experiments/age_linguistic_14_diagnostico_pos.json` (resultado completo),
   `experiments/age_linguistic_13_preregistro_v37.json` (pre-registro congelado, inmutable, sha256
-  `30d5d3cf...`), `scripts/age_linguistic_13_preregistro_v37.py` y
+  `1d6d6573d825dac9...`, corregido en la auditoria D-090: el hash declarado aqui era
+  `30d5d3cf...` por error de transcripcion; el fichero real es el que registra el propio
+  `experiments/age_linguistic_14_diagnostico_pos.json` en `pre_registro.sha256`, con
+  `coincide_con_el_esperado: true`, luego el pre-registro no se muto),
+  `scripts/age_linguistic_13_preregistro_v37.py` y
   `scripts/age_linguistic_14_diagnostico_pos.py`, `reports/v37_diagnostico_pos.md`,
   `reports/tables/v37_pos_{por_edad,estabilidad,ic_por_grupo,contraste,transiciones}.csv` (1.728,
   216, 216, 9 y 1.944 filas), `reports/figures/v37_pos_0{1..5}_*.png`,
@@ -3410,3 +3414,103 @@ No se usa el 0,63575 para optimizar pesos, crear variantes, seleccionar semillas
   `experimentos/v37_diagnostico_pos.log`, `plan/V37_DIAGNOSTICO_POS_PLAN.md`,
   `plan/V37_ENMIENDAS_01.md`, `plan/00_intent_v37.md`. Sonda E9 reproducida en la corrida:
   `dif_abs_A1 = 3e-08`, `dif_abs_A2 = 0.0` frente a tolerancia `1e-06`.
+
+---
+
+## D-090 (2026-10-01): AUDITORIA DEL HISTORIAL V1-V37 - protocolo limpio en lo esencial, cuatro defectos reales de razonamiento, y el techo de LB 0.70 REFUTADO
+
+- **Status**: aceptada (cierre de la auditoria de los 195 registros de `experiments.csv`)
+- **Date**: 2026-10-01
+- **Context**: el ciclo V37 cerro la familia POS. Quedaba sin verificar si las ~151 corridas
+  anteriores se ejecutaron correctamente, con parametros logicos, y estan justificadas. Se launched
+  una auditoria de evidencia (no de opinion) sobre el historial completo V1-V37, con siete
+  revisiones independientes: `nlp-specialist`, `ml-architect`, `dl-specialist`,
+  `kaggle-specialist`, `ml-reviewer` y `ml-qa-engineer`, mas verificacion propia del auditor.
+  Restricciones: no reejecutar, no test/holdout/leaderboard, no submissions, campeon intacto.
+
+- **Decision**: (a) **195 filas NO son 195 experimentos**: son 151 ejecuciones + 33 documentos
+  (21 DOCUMENTAL + 12 PREREGISTRO) + 10 enmiendas + 1 corrida abortada. (b) **El protocolo de
+  competencia esta limpio** y se declara sin rodeos: cero `fit` sobre test (verificado por AST sobre
+  308 scripts), cero calibracion de umbrales sobre test, cero uso del LB como conjunto de validacion
+  ni como funcion objetivo, `id` nunca usado como feature, sin leakage de autor ni temporal, y el
+  campeon congelado bit-a-bit reproducible (SHA256 `29cbe6cc...` verificado, 112.892 filas, 6
+  clases, 0 nulos). (c) **Se corrigen cuatro defectos de razonamiento** y se registra **un defecto de
+  marco analitico** (multiplicidad) que el proyecto no habia cuantificado.
+
+- **Defectos corregidos en esta acta**:
+  1. **`V37-DIAG-POS` mal escrita** (21 campos en vez de 22). Una coma de mas hizo que la narrativa
+     de metricas aterrizara en `accuracy_mean` y que `decision` nunca se escribiera. Reparada con el
+     patron de `V36-E1` (cols 13-16 vacias), recuperada desde
+     `experiments/age_linguistic_14_diagnostico_pos.json` sin inventar texto.
+  2. **Hash del pre-registro V37 mal transcrito**: `DECISIONS.md` y `PROJECT_STATE.md` declaraban
+     `30d5d3cf...`; el real es `1d6d6573d825dac9...`, que es el que el propio JSON registra con
+     `coincide_con_el_esperado: true`. El pre-registro **no se muto**: era error de transcripcion.
+  3. **El techo de LB 0.70 (D-087) queda REFUTADO como prueba de imposibilidad**. La rejilla de
+     umbrales era `TAUS = (0.30, 0.35, 0.40, 0.45, 0.50)` (`scripts/v35_00g_techo_analisis.py:69`) y
+     el "techo" se tomo como el maximo de una rejilla que **nunca exploro por debajo de 0.30**.
+     Reproduccion propia sobre `artifacts/p33_scores/todos/` (base 0.6159732, 65.683 errores):
+
+     | tau | filas corregibles | ganancia macro-F1 | supera +0.0626? |
+     |---|---|---|---|
+     | 0.30 (maximo publicado) | 10.384 | +0.0593677 | no |
+     | **0.2930 (punto que el propio D-087 usa como objetivo)** | 11.298 | **+0.0646335** | **SI** |
+     | 0.28 | 13.199 | +0.0755813 | SI |
+     | 0.25 | 18.345 | +0.1054505 | SI |
+
+     La conclusion **correcta** es mas fuerte y distinta: el objetivo queda **exactamente en el borde**
+     de lo que un oraculo sobre la salida de V30 podria entregar, lo cual exige acertar el ~16 % de
+     los errores con `p(y_true) >= 0.293`, o sea conocimiento casi-oracular. No "imposible", sino
+     "al limite de lo que un recalibrador sin informacion nueva podría dar". **LB 0.70 sigue
+     siendo inalcanzable en la practica; la prueba publicada no lo demuestra.**
+  4. **El holdout de V12 esta quemado** (`experiments/phase19_holdout_VistaEstructura.json`:
+     criterio `Delta >= +0,003` sobre el propio holdout + `confirmado: true`). Es una puerta de
+     seleccion, no una confirmacion. Agravante mitigado: el CV ya habia dado +0.0031 en 5/5 folds,
+     luego el holdout fue un segundo gate sobre el mismo resultado, no el arbitro unico.
+
+- **Defecto de marco analitico, no de ejecucion**: la **multiplicidad de las ~151 corridas no esta
+  cuantificada**. `grep` de "multiplicidad / multiple comparisons / FWER / family-wise / sesgo de
+  seleccion" sobre `DECISIONS.md`, `PROJECT_STATE.md`, `FINAL_REPORT.md` e `INFORME_COMPLETO.md`
+  devuelve **cero**. Con `macro_f1_std` mediano 0.0042 en las 76 filas que lo declaran, el error
+  estandar de la media de 5 folds es **SE ~ 0.00188**: un gate de `Delta >= +0.0015` implica
+  z ~ 0.80 y **~32 falsos positivos esperados**; `Delta >= +0.0030` implica z ~ 1.60 y **~8**. Un
+  Bonferroni de familia 151 exigiria `Delta >= 0.0147`. El argumento central del proyecto ("151
+  corridas, 39 mecanismos cerrados, ninguno paso el gate") **no esta protegido contra
+  multiplicidad**. **Lo que salva las conclusiones**: las cuatro adopciones reales (V19-B1, V20,
+  V30, plug-in) tienen **IC95 pareado excluyendo 0** y confirmacion externa, y el unico control de
+  multiplicidad existente (Bonferroni de 18 pruebas por clase) es interno a V37.
+
+- **Defectos de codigo confirmados**: (a) `N1b` del canal NER filtra spans con `TOKEN_RE`, que
+  coincide con `len(pos_seq.split())` solo en **~56 %** de los documentos (spaCy parte `#TFZ` en
+  `#`+`TFZ`+espacio), luego opera sobre indices desalignados; **sin impacto** porque los seis brazos
+  quedan bajo el gate. (b) `es_core_news_lg` **no esta fijado en `requirements.txt:49`** (solo `md`),
+  luego el anotador usado en todos los resultados md/lg **no es instalable desde el entorno
+  declarado**; es el hallazgo mas accionable. (c) `V18-P3/P4/P5` no son reproducibles:
+  `src/config.py:75-85` siembra `random` y `numpy` pero **no `torch.manual_seed`**, y los tres
+  construyen `nn.Linear` cuya inicializacion queda fuera de control. (d) el inner split de Optuna usa
+  `scheme="stratified"` con `groups=np.arange(...)` en cinco scripts del camino al campeon
+  (V29-04, V29-06, V30-01, V30-02, V31-05), aunque `src/cv.py:11` lo documenta como *control para
+  cuantificar leakage*; **medido: sin impacto en solapamiento de texto exacto** (0.963 % ingenuo vs
+  1.030 % agrupado) y el impacto en la metrica de seleccion queda **sin medir**.
+
+- **Alternatives Considered**: (a) reejecutar los experimentos para confirmar -> descartado, el
+  brief lo prohibe y anadiria ruido a un campeon congelado; (b) auditar solo las fases recientes ->
+  descartado, el peso del historial esta en V1-V12 (113 de 195 filas) y ahi esta el mayor riesgo de
+  parametros heredados; (c) reoptimizar V29/V30 con inner split agrupado -> **no ejecutado**, queda
+  como accion futura propuesta (A-02), no se hace dentro de la auditoria.
+
+- **Consequences**: (+). El historial queda auditable y reproducible con
+  `scripts/auditoria_v1v37_inventario.py` (6/6 checks, ruff limpio, ASCII puro, no escribe en
+  `--verificar`). La afirmacion "no hubo fit sobre test" queda verificada por AST, no por
+  declaracion. D-087 queda corregido en su parte falsa. (-) Tres reservas abiertas: el sesgo del
+  inner split de Optuna sin medir, `max_iter=40` del MLP miembro del campeon con peso 0.25 sin
+  revisar (`experiments/v29_05_optuna_mlp.json` no existe), y el IC95 [0.635, 0.653] de D-087 que es
+  un rango declarado, no estimado. **Ninguna exige cambiar el campeon**, que sigue congelado en
+  0.6159732487657944 y verificado bit a bit.
+
+- **Evidence**: `plan/auditoria/{00_entorno_y_alcance,01_inventario,02a_familias_linguisticas,
+  02b_arquitectura_y_dl,02c_protocolo_y_qa}.md`,
+  `reports/tables/auditoria_v1v37_inventario.csv` (195 x 24, 0 huecos),
+  `experiments/auditoria_v1v37_inventario.json`,
+  `reports/auditoria_experimentos_v1_v37.md`, `scripts/auditoria_v1v37_inventario.py`,
+  `experiments/audit_01_resumen.json:65` (4.2554 % de test en cluster),
+  `reports/tables/audit_memorizacion.csv`, `artifacts/p33_scores/todos/`.
