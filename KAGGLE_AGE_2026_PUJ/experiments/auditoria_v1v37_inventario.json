@@ -2,12 +2,12 @@
   "resumen": {
     "generado_por": "scripts/auditoria_v1v37_inventario.py",
     "fecha": "2026-10-01",
-    "filas": 197,
+    "filas": 200,
     "por_tipo_registro": {
       "EJECUTADO": 151,
-      "DOCUMENTAL": 22,
+      "DOCUMENTAL": 26,
       "PREREGISTRO": 12,
-      "ENMIENDA": 11,
+      "ENMIENDA": 10,
       "BLOQUEADO": 1
     },
     "por_familia": {
@@ -19,7 +19,7 @@
       "V30-V31 campeon y tracks": 14,
       "V32-V33 reapertura y FTRL": 10,
       "V34-V36 falsacion FTRL y L4": 16,
-      "V37 diagnostico POS": 4
+      "V37 diagnostico POS": 7
     },
     "notebook": {
       "n_celdas": 330,
@@ -30,17 +30,17 @@
       "n_secciones": 204,
       "en_notebook": 27
     },
-    "en_decisiones": 32,
+    "en_decisiones": 35,
     "filas_con_artefacto_faltante": 0,
     "filas_sin_artefacto_citado": 8,
     "severidad": {
       "media": 151,
-      "info": 45,
+      "info": 48,
       "alta": 1
     },
     "dictamen": {
       "correcto_con_reservas": 151,
-      "documento_valido": 45,
+      "documento_valido": 48,
       "ejecucion_fallida_declarada": 1
     },
     "segundos": 0.0
@@ -4929,7 +4929,7 @@
       "en_notebook": "si",
       "seccion_notebook": "",
       "en_decisiones": "no",
-      "en_project_state": "no",
+      "en_project_state": "si",
       "dictamen_inventario": "ejecucion_fallida_declarada",
       "severidad": "alta",
       "observacion": "corrida abortada por defecto de implementacion; su evidencia esta en cuarentena"
@@ -5059,7 +5059,7 @@
       "en_notebook": "si",
       "seccion_notebook": "",
       "en_decisiones": "si",
-      "en_project_state": "no",
+      "en_project_state": "si",
       "dictamen_inventario": "correcto_con_reservas",
       "severidad": "media",
       "observacion": ""
@@ -5111,7 +5111,7 @@
       "en_notebook": "si",
       "seccion_notebook": "",
       "en_decisiones": "si",
-      "en_project_state": "no",
+      "en_project_state": "si",
       "dictamen_inventario": "correcto_con_reservas",
       "severidad": "media",
       "observacion": ""
@@ -5119,7 +5119,7 @@
     {
       "experiment_id": "AUD-INV",
       "fecha": "2026-10-01",
-      "tipo_registro": "ENMIENDA",
+      "tipo_registro": "DOCUMENTAL",
       "familia": "V37 diagnostico POS",
       "etapa": "Auditoria V1-V37 fase 1: inventario verificable de las 195 filas",
       "pregunta": "Cuantas filas del registro son ejecuciones reales y cuales documentos, y existe toda la evidencia citada?",
@@ -5140,7 +5140,7 @@
       "en_project_state": "no",
       "dictamen_inventario": "documento_valido",
       "severidad": "info",
-      "observacion": "enmienda pre-ejecucion declarada; no es una ejecucion"
+      "observacion": "trabajo documental o de auditoria; no entrena modelo"
     },
     {
       "experiment_id": "AUD-REV",
@@ -5163,6 +5163,84 @@
       "en_notebook": "no",
       "seccion_notebook": "",
       "en_decisiones": "no",
+      "en_project_state": "no",
+      "dictamen_inventario": "documento_valido",
+      "severidad": "info",
+      "observacion": "trabajo documental o de auditoria; no entrena modelo"
+    },
+    {
+      "experiment_id": "AUD-ENV-LG",
+      "fecha": "2026-10-01",
+      "tipo_registro": "DOCUMENTAL",
+      "familia": "V37 diagnostico POS",
+      "etapa": "Accion 1 de la auditoria: fijar es_core_news_lg en el entorno declarado",
+      "pregunta": "Es el anotador grande instalable desde el entorno declarado, como ya lo estaba el mediano?",
+      "macro_f1_mean": "",
+      "macro_f1_std": "",
+      "resultado": "sha256 fijado 7c6c212715a12f31aacde3361754436945ff7376fb24cde57d0c277c9c9b050b = hash del wheel real; COINCIDE",
+      "decision": "ADOPTADO; cierra el hallazgo N-02 de la auditoria D-090, que era el mas accionable",
+      "script_declarado": "",
+      "artefactos_citados": "requirements.txt | experiments/age_linguistic_resolucion.json | plan/auditoria/06_accion_inner_split.md",
+      "n_artefactos": 3,
+      "artefactos_existentes": 3,
+      "artefactos_faltantes": "",
+      "evidencia_log": "experimentos/v36_e1_transiciones_clase.log | experimentos/v37_diagnostico_pos.log | experiments/01_data_audit.log | experiments/02_eda.log | experiments/03_linguistic_analysis.log | experiments/04_feature_engineering.log | experiments/05_baselines.log | experiments/06_classical_models.log | experiments/07_modelos_densos.log | experiments/08_error_analysis.log | experiments/09_final_pipeline.log | experiments/99_entrega_consolidado.log | experiments/gpu_events.log | experiments/phase12_auditoria_estado.log | experiments/phase13_error_desacuerdo.log | experiments/phase14_consenso_familias.log | experiments/phase15_calibracion_scores.log | experiments/phase15b_diversidad_subsets.log | experiments/phase16_ordinal_greedy.log | experiments/phase16_ordinal_greedy_g2.log | experiments/phase17_estructura_v2_libres.log | experiments/phase18_limpieza_selectiva.log | experiments/phase19_holdout_VistaEstructura.log | experiments/phase20_informe.log | experiments/phase21_vista_estructural.log | experiments/phase22_estructura_ampliada.log | experiments/phase23_submission_candidato.log | experiments/phase24_diagnostico_matriz_test.log | experiments/phase25_submission_fresca.log | experiments/phase26_estabilidad_ajuste.log | experiments/phase27_reproduccion_v12.log | experiments/phase38.log | experiments/v32_e1_run.log | experiments/v32_e1_run2.log | experiments/v32_e2_run.log | experiments/v32_e3_run.log | experiments/v33_e1_run.log | experiments/v34_e1_run.log",
+      "evidencia_json": "experiments/age_linguistic_resolucion.json",
+      "en_notebook": "no",
+      "seccion_notebook": "",
+      "en_decisiones": "si",
+      "en_project_state": "no",
+      "dictamen_inventario": "documento_valido",
+      "severidad": "info",
+      "observacion": "trabajo documental o de auditoria; no entrena modelo"
+    },
+    {
+      "experiment_id": "AUD-IC95-TECHO",
+      "fecha": "2026-10-01",
+      "tipo_registro": "DOCUMENTAL",
+      "familia": "V37 diagnostico POS",
+      "etapa": "Accion 2 de la auditoria: etiquetar el IC95 del techo como declarado, no estimado",
+      "pregunta": "El IC95 [0.635, 0.653] del techo de LB 0.642 de D-087, esta medido o declarado?",
+      "macro_f1_mean": "",
+      "macro_f1_std": "",
+      "resultado": "IC95 etiquetado como rango declarado, no estimado; y la prueba del oraculo marcada como refutada",
+      "decision": "ADOPTADO; cierra el hallazgo A-05 de la auditoria D-090",
+      "script_declarado": "",
+      "artefactos_citados": "DECISIONS.md (D-087 + correccion D-090) | PROJECT_STATE.md | reports/auditoria_experimentos_v1_v37.md",
+      "n_artefactos": 3,
+      "artefactos_existentes": 3,
+      "artefactos_faltantes": "",
+      "evidencia_log": "experimentos/v36_e1_transiciones_clase.log | experimentos/v37_diagnostico_pos.log | experiments/01_data_audit.log | experiments/02_eda.log | experiments/03_linguistic_analysis.log | experiments/04_feature_engineering.log | experiments/05_baselines.log | experiments/06_classical_models.log | experiments/07_modelos_densos.log | experiments/08_error_analysis.log | experiments/09_final_pipeline.log | experiments/99_entrega_consolidado.log | experiments/gpu_events.log | experiments/phase12_auditoria_estado.log | experiments/phase13_error_desacuerdo.log | experiments/phase14_consenso_familias.log | experiments/phase15_calibracion_scores.log | experiments/phase15b_diversidad_subsets.log | experiments/phase16_ordinal_greedy.log | experiments/phase16_ordinal_greedy_g2.log | experiments/phase17_estructura_v2_libres.log | experiments/phase18_limpieza_selectiva.log | experiments/phase19_holdout_VistaEstructura.log | experiments/phase20_informe.log | experiments/phase21_vista_estructural.log | experiments/phase22_estructura_ampliada.log | experiments/phase23_submission_candidato.log | experiments/phase24_diagnostico_matriz_test.log | experiments/phase25_submission_fresca.log | experiments/phase26_estabilidad_ajuste.log | experiments/phase27_reproduccion_v12.log | experiments/phase38.log | experiments/v32_e1_run.log | experiments/v32_e1_run2.log | experiments/v32_e2_run.log | experiments/v32_e3_run.log | experiments/v33_e1_run.log | experiments/v34_e1_run.log",
+      "evidencia_json": "",
+      "en_notebook": "no",
+      "seccion_notebook": "",
+      "en_decisiones": "si",
+      "en_project_state": "no",
+      "dictamen_inventario": "documento_valido",
+      "severidad": "info",
+      "observacion": "trabajo documental o de auditoria; no entrena modelo"
+    },
+    {
+      "experiment_id": "AUD-INNER-SPLIT",
+      "fecha": "2026-10-01",
+      "tipo_registro": "DOCUMENTAL",
+      "familia": "V37 diagnostico POS",
+      "etapa": "Accion 3 de la auditoria: medir el sesgo del inner split que elige los hiperparametros del campeon",
+      "pregunta": "El inner split de Optuna deja pasar near-duplicates entre train interior y validacion interior?",
+      "macro_f1_mean": "",
+      "macro_f1_std": "",
+      "resultado": "inner ingenuo 3.907 % de solape de cluster frente a inner agrupado 0.000 % (diferencia 0.039071, casi el doble del umbral); outer agrupado 0.000 %; consistente en los 5 folds (3.787 %-4.152 %)",
+      "decision": "SESGO MATERIAL confirmado. El campeon es VALIDO porque su estimacion externa no tenia leakage, pero el proceso de seleccion no es reproducible bajo un esquema honesto. Re-optimizar queda PENDIENTE DE ",
+      "script_declarado": "scripts/auditoria_medir_inner_split_optuna.py",
+      "artefactos_citados": "scripts/auditoria_medir_inner_split_optuna.py | reports/tables/auditoria_inner_split_optuna.csv | experiments/auditoria_medir_inner_split_optuna.json | plan/auditoria/06_accion_inner_split.md",
+      "n_artefactos": 4,
+      "artefactos_existentes": 4,
+      "artefactos_faltantes": "",
+      "evidencia_log": "experimentos/v36_e1_transiciones_clase.log | experimentos/v37_diagnostico_pos.log | experiments/01_data_audit.log | experiments/02_eda.log | experiments/03_linguistic_analysis.log | experiments/04_feature_engineering.log | experiments/05_baselines.log | experiments/06_classical_models.log | experiments/07_modelos_densos.log | experiments/08_error_analysis.log | experiments/09_final_pipeline.log | experiments/99_entrega_consolidado.log | experiments/gpu_events.log | experiments/phase12_auditoria_estado.log | experiments/phase13_error_desacuerdo.log | experiments/phase14_consenso_familias.log | experiments/phase15_calibracion_scores.log | experiments/phase15b_diversidad_subsets.log | experiments/phase16_ordinal_greedy.log | experiments/phase16_ordinal_greedy_g2.log | experiments/phase17_estructura_v2_libres.log | experiments/phase18_limpieza_selectiva.log | experiments/phase19_holdout_VistaEstructura.log | experiments/phase20_informe.log | experiments/phase21_vista_estructural.log | experiments/phase22_estructura_ampliada.log | experiments/phase23_submission_candidato.log | experiments/phase24_diagnostico_matriz_test.log | experiments/phase25_submission_fresca.log | experiments/phase26_estabilidad_ajuste.log | experiments/phase27_reproduccion_v12.log | experiments/phase38.log | experiments/v32_e1_run.log | experiments/v32_e1_run2.log | experiments/v32_e2_run.log | experiments/v32_e3_run.log | experiments/v33_e1_run.log | experiments/v34_e1_run.log",
+      "evidencia_json": "experiments/auditoria_medir_inner_split_optuna.json",
+      "en_notebook": "no",
+      "seccion_notebook": "",
+      "en_decisiones": "si",
       "en_project_state": "no",
       "dictamen_inventario": "documento_valido",
       "severidad": "info",

@@ -1,0 +1,164 @@
+{
+  "generado_por": "scripts/auditoria_medir_inner_split_optuna.py",
+  "fecha": "2026-10-01",
+  "n_train": 169336,
+  "n_clusters": 164018,
+  "scripts_que_usan_inner_ingenuo": [
+    "v29_04_optuna_individual",
+    "v29_06_ensemble",
+    "v30_01_optuna_refinamiento",
+    "v30_02_ensemble",
+    "v31_05_integracion"
+  ],
+  "umbral_materialidad": 0.02,
+  "criterio": "diferencia de solape de cluster entre inner ingenuo e inner agrupado > 0.02 se considera material",
+  "por_nivel": {
+    "outer_agrupado": {
+      "overlap_exacto_medio": 0.00437,
+      "solape_cluster_medio": 0.0,
+      "solape_cluster_std": 0.0,
+      "n_val_medio": 33867
+    },
+    "inner_ingenuo_codigo_real": {
+      "overlap_exacto_medio": 0.010666,
+      "solape_cluster_medio": 0.039071,
+      "solape_cluster_std": 0.001297,
+      "n_val_medio": 27094
+    },
+    "inner_agrupado_propuesto": {
+      "overlap_exacto_medio": 0.004089,
+      "solape_cluster_medio": 0.0,
+      "solape_cluster_std": 0.0,
+      "n_val_medio": 27094
+    }
+  },
+  "diferencia_inner_ingenuo_menos_agrupado": 0.039071,
+  "referencia_outer_agrupado": 0.0,
+  "veredicto": "SESGO MATERIAL: el inner split ingenuo comparte mas near-duplicates que el agrupado; V29/V30 son re-optimizables con inner agrupado",
+  "no_entrena": true,
+  "no_toca_campeon": true,
+  "no_lee_test_holdout_lb": true,
+  "tabla": [
+    {
+      "nivel": "outer_agrupado",
+      "fold": 0,
+      "n_val": 33868,
+      "n_train": 135468,
+      "overlap_exacto": 0.004518,
+      "solape_cluster": 0.0
+    },
+    {
+      "nivel": "inner_ingenuo_codigo_real",
+      "fold": 0,
+      "n_val": 27094,
+      "n_train": 108374,
+      "overlap_exacto": 0.009891,
+      "solape_cluster": 0.038237
+    },
+    {
+      "nivel": "inner_agrupado_propuesto",
+      "fold": 0,
+      "n_val": 27094,
+      "n_train": 108374,
+      "overlap_exacto": 0.004097,
+      "solape_cluster": 0.0
+    },
+    {
+      "nivel": "outer_agrupado",
+      "fold": 1,
+      "n_val": 33868,
+      "n_train": 135468,
+      "overlap_exacto": 0.004399,
+      "solape_cluster": 0.0
+    },
+    {
+      "nivel": "inner_ingenuo_codigo_real",
+      "fold": 1,
+      "n_val": 27094,
+      "n_train": 108374,
+      "overlap_exacto": 0.010445,
+      "solape_cluster": 0.041522
+    },
+    {
+      "nivel": "inner_agrupado_propuesto",
+      "fold": 1,
+      "n_val": 27094,
+      "n_train": 108374,
+      "overlap_exacto": 0.003654,
+      "solape_cluster": 0.0
+    },
+    {
+      "nivel": "outer_agrupado",
+      "fold": 2,
+      "n_val": 33867,
+      "n_train": 135469,
+      "overlap_exacto": 0.004252,
+      "solape_cluster": 0.0
+    },
+    {
+      "nivel": "inner_ingenuo_codigo_real",
+      "fold": 2,
+      "n_val": 27094,
+      "n_train": 108375,
+      "overlap_exacto": 0.011368,
+      "solape_cluster": 0.038569
+    },
+    {
+      "nivel": "inner_agrupado_propuesto",
+      "fold": 2,
+      "n_val": 27094,
+      "n_train": 108375,
+      "overlap_exacto": 0.004798,
+      "solape_cluster": 0.0
+    },
+    {
+      "nivel": "outer_agrupado",
+      "fold": 3,
+      "n_val": 33866,
+      "n_train": 135470,
+      "overlap_exacto": 0.003868,
+      "solape_cluster": 0.0
+    },
+    {
+      "nivel": "inner_ingenuo_codigo_real",
+      "fold": 3,
+      "n_val": 27094,
+      "n_train": 108376,
+      "overlap_exacto": 0.010445,
+      "solape_cluster": 0.037868
+    },
+    {
+      "nivel": "inner_agrupado_propuesto",
+      "fold": 3,
+      "n_val": 27095,
+      "n_train": 108375,
+      "overlap_exacto": 0.00406,
+      "solape_cluster": 0.0
+    },
+    {
+      "nivel": "outer_agrupado",
+      "fold": 4,
+      "n_val": 33867,
+      "n_train": 135469,
+      "overlap_exacto": 0.004813,
+      "solape_cluster": 0.0
+    },
+    {
+      "nivel": "inner_ingenuo_codigo_real",
+      "fold": 4,
+      "n_val": 27094,
+      "n_train": 108375,
+      "overlap_exacto": 0.011183,
+      "solape_cluster": 0.03916
+    },
+    {
+      "nivel": "inner_agrupado_propuesto",
+      "fold": 4,
+      "n_val": 27094,
+      "n_train": 108375,
+      "overlap_exacto": 0.003838,
+      "solape_cluster": 0.0
+    }
+  ],
+  "segundos": 169.6
+}

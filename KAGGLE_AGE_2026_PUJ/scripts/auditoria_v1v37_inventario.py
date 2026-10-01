@@ -15,7 +15,7 @@ Modos
 - Sin argumentos: escribe `reports/tables/auditoria_v1v37_inventario.csv`,
   `reports/tables/auditoria_v1v37_huecos.csv` y
   `experiments/auditoria_v1v37_inventario.json`.
-- `--verificar`: autoejercicio de los SEIS caminos de la seccion "Verificacion" en un
+- `--verificar`: autoejercicio de los siete caminos de la seccion "Verificacion" en un
   directorio temporal. No escribe nada real. Sale 0 si los seis pasan, 2 si alguno falla.
 - `--resumen`: solo imprime el resumen por tipo y por fase, sin escribir archivos.
 
@@ -75,12 +75,19 @@ LEX_DOC = re.compile(
     r"decision ejecutiva|hito|acta|document|bitacora",
     re.IGNORECASE,
 )
-RE_ENMIENDA = re.compile(r"enmienda", re.IGNORECASE)
+# OJO: un RECUENTO de tipos menciona la palabra "ENMIENDA" ("151 EJECUTADO + ... + 10 ENMIENDA"),
+# y eso no hace que la fila sea una enmienda. Por eso el match va anclado al principio del campo
+# `resultado`, que es donde una enmienda se autodeclara ("enmienda registrada; ...").
+RE_ENMIENDA = re.compile(r"^\s*enmienda", re.IGNORECASE)
 # OJO: una ejecucion cerrada por gate dice "sin integracion ... por pre-registro", que es una
 # RESTRICCION, no una declaracion de que la fila sea un pre-registro. Por eso el match va anclado
 # al principio del campo `resultado` y no en cualquier posicion.
 RE_PREREG = re.compile(r"^\s*(pre-?registro|sin resultados)", re.IGNORECASE)
-RE_BLOQUEO = re.compile(r"defecto_de_implementacion|bloquead|abortad|interrumpid|exit 1", re.IGNORECASE)
+# Igual que RE_ENMIENDA: un RECUENTO menciona "BLOQUEADO" sin que la fila lo sea. Una corrida
+# bloqueada se autodeclara al principio de `resultado` ("DEFECTO_DE_IMPLEMENTACION: ...").
+RE_BLOQUEO = re.compile(
+    r"^\s*(defecto_de_implementacion|bloquead|abortad|interrumpid|exit 1)", re.IGNORECASE
+)
 RE_PATH = re.compile(r"[\w./\-]+\.(?:json|md|csv|npy|png|ipynb|py|log|txt|parquet|txt)\b")
 # `features/`, `models/`, `data/` y `experimentos/` estan en .gitignore y por eso NO aparecen en el
 # indice de Codebase; se comprueban contra el arbol real, no contra el indice.
@@ -396,7 +403,7 @@ def main(argv: list[str] | None = None) -> int:
 
 
 def verificar(filas_out: list[dict], nb_idx: dict, huecos: list[dict]) -> int:
-    """Autoejercicio de SEIS caminos. NO escribe ningun artefacto real: solo lee y compara.
+    """Autoejercicio de los siete caminos. NO escribe ningun artefacto real: solo lee y compara.
 
     El aislamiento se apoya en que `verificar` no contiene ninguna llamada de escritura; el unico
     punto de escritura del script esta en `main()` y se salta antes cuando el modo no es el normal.
@@ -430,6 +437,21 @@ def verificar(filas_out: list[dict], nb_idx: dict, huecos: list[dict]) -> int:
         if r["tipo_registro"] in ("PREREGISTRO", "ENMIENDA") and (r["macro_f1_mean"] or "").strip()
     ]
     checks.append(("C4_prereg_sin_metrica", not contrad, f"contradicciones={contrad}"))
+
+    # C4b: una fila cuyo `resultado` es un RECUENTO de tipos menciona las palabras "ENMIENDA" y
+    # "BLOQUEADO" sin ser una de esas cosas. Este caso existio de verdad (AUD-INV se clasifico como
+    # ENMIENDA y luego como BLOQUEADO) y por eso se comprueba de forma explicita.
+    recuento = ("151 EJECUTADO + 21 DOCUMENTAL + 12 PREREGISTRO + 10 ENMIENDA + 1 BLOQUEADO = 195; "
+                "0 artefactos ausentes")
+    tipo_recuento = clasificar({
+        "experiment_id": "X", "resultado": recuento, "etapa": "inventario", "artefactos": "",
+    })[0]
+    ok_rec = tipo_recuento == "EJECUTADO"
+    checks.append((
+        "C4b_recuento_no_es_enmienda_ni_bloqueo",
+        ok_rec,
+        f"un recuento de tipos se clasifica como {tipo_recuento} (esperado EJECUTADO)",
+    ))
 
     # C5: control independiente. NO reutiliza `huecos` (que sale del mismo `resolver`): vuelve a
     # resolver desde el texto crudo y exige que no falte ninguno de los artefactos declarados.

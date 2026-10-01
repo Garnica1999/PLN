@@ -137,6 +137,15 @@
   **LB 0.70** es alcanzable. **Respuesta: NO.** `P(LB >= 0.70) ~ 1 %` (rango 0.3 %-3 %).
   Techo defendible **LB 0.642 con IC95 [0.635, 0.653]** (equivalente a CV 0.6227), que es una
   **estimacion**, no una medicion.
+- **CORRECCION POSTERIOR (auditoria D-090, 2026-10-01)**: ver la cabecera D-090. Dos precisiones
+  obligatorias al citar esta acta: (i) el techo `0.642 [0.635, 0.653]` es un **rango declarado por
+  juicio**, no un intervalo estimado: ningun artefacto produce ese IC, sale de una tasa de captura del
+  4-9 % aplicada a mano. (ii) La **curva de oraculo** que lo acompana quedo **refutada** (K-01): la
+  rejilla `TAUS = (0.30, 0.35, 0.40, 0.45, 0.50)` **empezaba en 0.30 y subia**, y el techo se tomo
+  como su maximo; en `tau = 0.2930` el oraculo da **+0.0646**, por encima del objetivo +0.0626. **LB
+  0.70 sigue inalcanzable en la practica; lo que no se sostiene es el argumento.** La lectura correcta
+  es que el objetivo queda **en el borde** de lo que un oraculo sobre la salida del campeon podria
+  entregar.
 - **La pieza que faltaba**: la **curva de oraculo restringido**, ahora versionada en
   `scripts/v35_00g_techo_analisis.py` + `experiments/v35_00g_techo_analisis.json` +
   `reports/v35_techo_analisis.md`. Un oraculo que usa **solo la informacion del campeon** (corrige

@@ -3229,6 +3229,20 @@ No se usa el 0,63575 para optimizar pesos, crear variantes, seleccionar semillas
   la pieza que faltaba. La via **C1** (candidato A: transiciones de caracter global) se conserva, pero
   su valor queda declarado como **cierre de expediente, no apuesta al objetivo**. Numeracion: este
   hito toma **D-087** y **C1 pasa a D-088**.
+- **Correccion posterior (auditoria D-090, 2026-10-01)**: el techo de 0.642 y su IC95
+  [0.635, 0.653] son un **rango declarado por juicio de expertos, no un intervalo estimado**: no
+  existe en ningun artefacto un modelo probabilistico que lo produzca, y sale de una "tasa de captura
+  del 4 %-9 %" aplicada a mano. **Lease como tal en toda cita, y no como una medicion con
+  incertidumbre cuantificada.** Ademas, la **prueba** que lo accompanya queda refutada por la misma
+  auditoria (defecto K-01): la rejilla de umbrales del oraculo era
+  `TAUS = (0.30, 0.35, 0.40, 0.45, 0.50)`, es decir **empezaba en 0.30 y subia**, y el techo se tomo
+  como su maximo. Al reproducirla, en `tau = 0.2930` (el punto que esta misma acta usa como
+  definicion del objetivo) el oraculo entrega **+0.0646**, por encima del +0.0626 exigido: el
+  +0.0568 publicado era un artefacto del redondeo de la rejilla. **LB 0.70 sigue siendo inalcanzable en
+  la practica**; lo que no se sostiene es el argumento. La lectura correcta es que **el objetivo queda
+  exactamente en el borde** de lo que un oraculo sobre la salida del campeon podria entregar, lo que
+  exigiria acertar el ~16 % de los errores con `p(y_true) >= 0.293`, es decir conocimiento casi-oracular.
+  Ver `reports/auditoria_experimentos_v1_v37.md` y `plan/auditoria/02c_protocolo_y_qa.md`.
 - **Consequences**: (i) el objetivo no es **imposible en terminos absolutos**: es **inalcanzable
   porque el ejercicio prohibe exactamente las tres palancas que lo sostienen**, a saber
   embeddings/LLMs preentrenados (+0.03..+0.10 de macro-F1 segun TAG-it y DADIT), metadatos (buena
@@ -3514,3 +3528,79 @@ No se usa el 0,63575 para optimizar pesos, crear variantes, seleccionar semillas
   `reports/auditoria_experimentos_v1_v37.md`, `scripts/auditoria_v1v37_inventario.py`,
   `experiments/audit_01_resumen.json:65` (4.2554 % de test en cluster),
   `reports/tables/audit_memorizacion.csv`, `artifacts/p33_scores/todos/`.
+
+---
+
+## D-091 (2026-10-01): Cierre de la reserva A-02 - el inner split de Optuna tiene leakage MATERIAL (3,907 %), y tres acciones de la auditoria quedan cerradas
+
+- **Status**: aceptada
+- **Date**: 2026-10-01
+- **Context**: la auditoria D-090 dejo cuatro reservas abiertas. Carlos autorizo cerrarlas. Esta acta
+  registra el cierre de **tres** (fijar `es_core_news_lg`, etiquetar el IC95 del techo, y medir el
+  sesgo del inner split) y deja la cuarta **pendiente de decision** porque es la unica que exige
+  reentrenar y su resultado **no se puede prometer**.
+
+- **Decision**:
+
+  **(1) `es_core_news_lg` fijado en el entorno (cierra N-02, el hallazgo mas accionable).**
+  `requirements.txt:50` declara ahora `es_core_news_lg @ .../es_core_news_lg-3.8.0-py3-none-any.whl
+  #sha256=7c6c212715a12f31aacde3361754436945ff7376fb24cde57d0c277c9c9b050b`, con el hash publicado
+  por `explosion/spacy-models`. **El hash se verifico descargando el wheel real (567.975.270 bytes) y
+  comparando**, no se copio de la pagina sin comprobar. Antes, los resultados md/lg no eran
+  instalables desde el entorno declarado; ahora los dos anotadores lo son.
+
+  **(2) El IC95 del techo se etiqueta como DECLARADO (cierra A-05).** El `[0.635, 0.653]` de D-087 no
+  lo produce ningun artefacto: sale de una "tasa de captura del 4 %-9 %" aplicada a mano. Se anade la
+  correccion posterior a D-087 en `DECISIONS.md` y al bloque D-087 de `PROJECT_STATE.md`, con la nota
+  de que **la prueba que lo acompana quedo refutada** (K-01). El documento ya no puede leerse como si
+  tuviera una incertidumbre cuantificada.
+
+  **(3) El sesgo del inner split es MATERIAL, y se CORRIGE una medicion erronea propia.**
+  `scripts/auditoria_medir_inner_split_optuna.py` reconstruye las dos particiones interiores
+  **exactamente como las construye `v30_01_optuna_refinamiento.py:220-226`**, y mide sobre los 5
+  folds canonicos (169.336 filas, 164.018 clusters):
+
+  | Nivel | solape de cluster en la validacion interior |
+  |---|---|
+  | outer agrupado (canonico) | **0,000 %** |
+  | **inner ingenuo (codigo real)** | **3,907 %** |
+  | inner agrupado (propuesto) | **0,000 %** |
+
+  Criterio declarado **antes** de correr: diferencia > 0,02 = material. Medida: 0,039071, casi el doble.
+  Consistente en los 5 folds (3,787 %-4,152 %).
+
+  **Correccion importante**: D-090 registro "sin impacto medible (0,963 % vs 1,030 %)". **Ese numero
+  estaba mal** por dos motivos: (a) media solapamiento de **texto exacto**, cuando los clusters agrupan
+  por **Jaccard**, asi que no detectaba el leakage real; (b) comparaba el inner contra cero teorico, lo
+  cual es imposible porque el inner train hereda clusters que el propio outer split permitio. La
+  referencia correcta es el **inner agrupado**. Con la medicion correcta el leakage es del orden de
+  **cuatro por ciento**, no de uno.
+
+- **Que significa, y que NO significa**: el leakage estaba en la **SELECCION** de hiperparametros de
+  los 5 scripts del camino al campeon (`v29_04`, `v29_06`, `v30_01`, `v30_02`, `v31_05`). **La
+  estimacion externa de V29 y V30 se hizo con el outer split agrupado y es valida**, luego **la cifra
+  publicada del campeon no cambia**. Lo que no es reproducible bajo un esquema honesto es **el proceso
+  de seleccion**.
+
+- **Consequences**: (+). El entorno es reproducible por completo. La reserva A-02 pasa de "sin medir" a
+  **medida y confirmada como material**, y su direccion esta acotada: afecta al metodo de seleccion,
+  no al resultado reportado. (-) **Re-optimizar no es una mejora esperada**: si el leakage inflaba la
+  seleccion, el re-optimizado puede **bajar**, y ya hay precedente en `v30_02_ensemble.py:257` (el
+  mejor `corrected_cv` fue 0.6130051 frente a 0.6134471 del promedio ponderado, con D-066
+  reconociendolo). Por eso la accion 4 queda **pendiente de decision de Carlos** y no ejecutada:
+  hacer un re-optimizado sin pre-registro ni criterio de decision declarado seria incoherente con esta
+  misma acta, y mas con A-01 identificado como el defecto estructural del proyecto.
+
+- **Alternative Considered**: (a) re-optimizar V29 y V30 de inmediato (~2 h 10 min de CPU, coste real
+  medido: V29 5.152 s con 30 trials/fold, V30 2.449 s con 15) -> **no ejecutado, pendiente de
+  pre-registro y de decision**; (b) re-optimizar solo V30 (41 min) -> posible, misma objecion;
+  (c) cerrar la reserva por declaracion, sin re-optimizar -> disponible, cuesta cero horas y es
+  defendible: "la estimacion externa es valida; el proceso de seleccion no es reproducible bajo un
+  esquema honesto".
+
+- **Evidence**: `scripts/auditoria_medir_inner_split_optuna.py` (5/5 checks, no entrena),
+  `reports/tables/auditoria_inner_split_optuna.csv` (15 filas),
+  `experiments/auditoria_medir_inner_split_optuna.json`,
+  `requirements.txt:50`, `plan/auditoria/06_accion_inner_split.md`,
+  `plan/auditoria/07_accion_reoptimizar.md`. Filas de registro `AUD-ENV-LG`, `AUD-IC95-TECHO`,
+  `AUD-INNER-SPLIT`. Campeon **intacto** en 0.6159732487657944.

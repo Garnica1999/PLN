@@ -1,0 +1,16 @@
+nivel,fold,n_val,n_train,overlap_exacto,solape_cluster
+outer_agrupado,0,33868,135468,0.004518,0.0
+inner_ingenuo_codigo_real,0,27094,108374,0.009891,0.038237
+inner_agrupado_propuesto,0,27094,108374,0.004097,0.0
+outer_agrupado,1,33868,135468,0.004399,0.0
+inner_ingenuo_codigo_real,1,27094,108374,0.010445,0.041522
+inner_agrupado_propuesto,1,27094,108374,0.003654,0.0
+outer_agrupado,2,33867,135469,0.004252,0.0
+inner_ingenuo_codigo_real,2,27094,108375,0.011368,0.038569
+inner_agrupado_propuesto,2,27094,108375,0.004798,0.0
+outer_agrupado,3,33866,135470,0.003868,0.0
+inner_ingenuo_codigo_real,3,27094,108376,0.010445,0.037868
+inner_agrupado_propuesto,3,27095,108375,0.00406,0.0
+outer_agrupado,4,33867,135469,0.004813,0.0
+inner_ingenuo_codigo_real,4,27094,108375,0.011183,0.03916
+inner_agrupado_propuesto,4,27094,108375,0.003838,0.0

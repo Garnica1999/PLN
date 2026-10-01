@@ -257,3 +257,40 @@ Veredictos: **1 correcto con reservas (V32-E1), 3 correctos, 3 defecto confirmad
 - **Estado para la siguiente sesion**: nada pendiente. Las 6 acciones futuras propuestas (fijar `lg`,
   medir el inner split, cerrar la via MLP, etiquetar el IC95, anadir V36/V37 al notebook, registrar
   autorizaciones) requieren **autorizacion de Carlos** y no se ejecutaron.
+
+---
+
+## ACCIONES DE FOLLOW-UP DE LA AUDITORIA (D-091) · 2026-10-01
+
+- **Cerradas (3 de 4)**:
+  1. **`es_core_news_lg` fijado** en `requirements.txt:50` con el hash oficial de upstream
+     `7c6c212715a12f31aacde3361754436945ff7376fb24cde57d0c277c9c9b050b`, **verificado descargando el
+     wheel real (567.975.270 bytes)**. Cierra N-02, el hallazgo mas accionable de D-090.
+  2. **IC95 del techo etiquetado como DECLARADO**, no estimado, en D-087 (`DECISIONS.md`) y en
+     `PROJECT_STATE.md`, con la nota de que la prueba quedo refutada (K-01).
+  3. **Sesgo del inner split: MATERIAL.** `scripts/auditoria_medir_inner_split_optuna.py` (5/5),
+     5 folds, 169.336 filas, 164.018 clusters: inner ingenuo **3,907 %** de solape de cluster vs inner
+     agrupado **0,000 %** (diferencia 0,039071, casi 2x el umbral declarado de 0,02). Consistente en
+     los 5 folds (3,787 %-4,152 %). Afecta a 5 scripts: `v29_04`, `v29_06`, `v30_01`, `v30_02`,
+     `v31_05`.
+- **CORRIGE una medicion erronea propia de D-090**: alli registro "sin impacto medible (0,963 % vs
+  1,030 %)". Media **texto exacto** en vez de cluster (los clusters agrupan por Jaccard) y comparaba
+  contra cero teorico, imposible porque el inner train hereda clusters que el outer split permitio. La
+  referencia correcta es el inner agrupado. El leakage real es ~4x mayor.
+- **Alcance acotado**: el leakage estaba en la **SELECCION** de hiperparametros, no en la estimacion.
+  La estimacion externa de V29/V30 uso el outer agrupado y es **valida**, luego **la cifra del campeon
+  no cambia**. Lo que no es reproducible bajo esquema honesto es el proceso de seleccion.
+- **PENDIENTE (accion 4)**: re-optimizar V29/V30. Coste real medido ~2 h 10 min (V29 5.152 s con 30
+  trials/fold, V30 2.449 s con 15). **Re-optimizar NO es una mejora esperada: es una correccion cuyo
+  signo es desconocido** y puede BAJAR, con precedente en `v30_02_ensemble.py:257` (mejor
+  `corrected_cv` 0,6130051 vs 0,6134471 del promedio ponderado, D-066 lo reconoce). Requiere
+  pre-registro con criterio de decision. Detalle: `plan/auditoria/07_accion_reoptimizar.md`.
+- **Defecto del clasificador encontrado y fijado**: al anadir las filas `AUD-*`, su `resultado` es un
+  RECUENTO que menciona "ENMIENDA" y "BLOQUEADO", y los regex las clasificaban asi. Anclados a `^\s*`
+  y nuevo check **C4b**. El autocaso del inventario paso de **6 a 7 checks**.
+- **Otro defecto mio**: las 3 filas nuevas se escribieron al principio del CSV en vez de al final; el
+  validador de largo de campo lo cazo y se reordenaron, verificado byte a byte que las 197 previas
+  siguen identicas.
+- **Inventario**: 200 filas = 151 EJECUTADO + 26 DOCUMENTAL + 12 PREREGISTRO + 10 ENMIENDA +
+  1 BLOQUEADO. 7/7 checks. Acta **D-091**.
+- **Campeon intacto** 0.6159732487657944. Sin push/merge/rebase/reset.
