@@ -3328,3 +3328,85 @@ No se usa el 0,63575 para optimizar pesos, crear variantes, seleccionar semillas
   `scripts/v36_02_reanudacion.py`. Integridad: `artifacts/p33_scores/todos/manifest.json` con
   `sha256` `8881a9f5...` **igual antes y despues**; campeon V30 + plug-in **intacto**; sin
   submission.
+
+---
+
+## D-089 - V37: `P(POS | edad)` existe como patron pero esta casi vacio de informacion de clase; la familia POS queda CERRADA por potencia
+
+- **Observation**: peticion de Carlos del 2026-10-01: "estudiar las probabilidades condicionales de
+  cada tipo de palabra [...] para hallar algun patron", mas "si se te ocurre algun experimento para
+  este caso que no hallamos realizado es valido". Se confundio deliberadamente **dos** cosas distintas:
+  `P(edad | palabra)` (ya medida en V13-P1a, D-041) y `P(POS | edad)` (nunca medida). Esta acta
+  cierra la segunda. **Ningun experimento predictivo se ejecuto**: el plan aprobado por Carlos
+  preveia que, si la auditoria de novedad daba (i) o (ii), el paso (d) no se corria; dio (ii).
+- **Cota de potencia, y este es el numero que decide**: naive Bayes multinomial cerrado (Laplace
+  alpha = 1.0 fijo, 18 UPOS, leave-one-fold-out, sin seleccion de modelo y por tanto sin CV anidada)
+  sobre **proporciones** POS da `A1(md) = 0.1720532`. El **azar uniforme** es `0.1666667` y el suelo
+  estricto (prediccion constante de la mayoritaria) `0.0485421`. Luego `P(POS|edad)` **supera el
+  azar por +0.0054**, que es **por debajo del margen de 0.01** que el propio diseno declara como
+  minimo para considerarla senal (V5). El IC95 pareado de `A1 - A_perm` es `[+0.0900353,
+  +0.0942188]` y excluye cero, luego **el modelo no es degenerado**: es que la senal es **diminuta**.
+  Para referencia: P2 (secuencia POS con n-gramas 1-3) dio `0.2750921` y P1a (`P(clase|token)`
+  cross-fit) `0.3997`; el campeon esta en `0.6159732`.
+- **`A2` refuta una igualdad analitica**: la invariancia `A2 == A1` **solo se cumple sin priors**;
+  con `log pi_c` sin escalar, `A2 - A1 = +0.0331738` y **48.440 filas** cambian de prediccion. El
+  `kaggle-specialist` la afirmo en la auditoria y se refuto por medicion. `A2` queda como **brazo de
+  sensibilidad a la longitud**, no como "cuanto de A1 es longitud".
+- **`A_perm` casi Provoca un STOP falso**: el control de fuga por permutacion de etiquetas mide
+  `0.0799411`, que queda a `0.0072` del suelo estricto `0.0485421` y **rebasaba** el criterio que la
+  spec fijaba (`|A_perm - A0| <= 0.005`) en cinco sitios. La causa es que el NB permutado
+  **degenera hacia la clase mayoritaria** (predice la clase 0 en 159.653 de 169.336 filas), no hacia
+  el azar uniforme. Enmendado a criterio **unilateral** `A_perm <= 0.176667` mas el IC pareado
+  `A1 - A_perm` (E1). Anadido `A_perm_val` para cubrir el lado de la evaluacion (E3).
+- **El patron es real, estable y reproducible, y aun asi no es accionable**: `D = 0.5695637` con
+  IC95 `[0.37976, 0.684608]` (excluye cero) mide la divergencia entre clases en las **transiciones POS
+  de primer orden** frente al ruido de estimacion, con `R = 2.0645054` (IC95 `[1.5748, 2.3354]`) sobre
+  2.421.645 bigramas. Los floors estan **bien calibrados** (E4): bajo permutacion **0 celdas**
+  sobreviven V1..V4, frente a **20** en el dato real. **V2 pasa 20/20**, V3 se queda en 14/20 y V4
+  en 16/20. El cierre lo produce **G2**: 27/27 celdas estables pero solo **20/27** de acuerdo md-lg.
+- **Lo que si se responde**: el perfil si tiene gradiente de edad coherente con la literatura
+  (mas `NOUN`, `DET` y `ADJ`, menos `PRON`, `ADV`, `PUNCT` y `SPACE` al crecer la edad) y `SPACE`
+  cae de 1,956 % en 13-17 a 0,911 % en 35-49 (2,1x), lo que confirma que es senal de formato
+  **confundida con longitud** y no solo de edad (E10).
+- **Dos validaciones independientes previas al codigo** (`kaggle-specialist`: VALIDA CON RESERVAS, con
+  dos bloqueantes; `nlp-specialist`: VALIDA CON RESERVAS, sin ninguna familia legal no medida con
+  potencial) straighten **15 enmiendas pre-ejecucion declaradas** en `plan/V37_ENMIENDAS_01.md`, que
+  **mandan sobre la spec**. Tres correcciones bibliograficas: los 0,53/0,57/0,33 de Flekova y
+  Gurevych (2013) son del sistema **solo-edad de 3 grupos**, no del conjunto de 6 clases; los
+  "236.600/75.900 documentos" son de PAN-2012 y no aparecen en el paper; el 0,62 de Cruz, Haro y
+  Ortega (2013) es el accuracy del **ensemble apilado completo**, no del bloque POS (E14).
+- **La leccion de D-086 se confirma y se paga**: el autoejercicio estructural de `--verificar` **mato
+  25 defectos reales antes de gastar presupuesto**, entre ellos cuatro que habrian corrompido
+  resultados **en silencio**: `perfil_por_clase` con doble indexacion (el perfil por quintil),
+  `pos` de clusters sin deshacer la permutacion (fase D entera), arrays indexados por bigrama
+  mezclados con mascara por fila, y `n_filas_por_clase_y_quintil[q]` sobrescrito dentro del bucle de
+  clases. **Un runner sin autoejercicio en `--verificar` muere despues de entrenar**: aqui habria
+  publicado un `D` corrupto con total aspecto de resultado.
+- **Dos defectos detectados en el gate de QA y corregidos antes de cerrar**: (a) `cumple` de V2/V3/V4
+  era **imposible que fuera `True`** (las 88 celdas ajenas a `conjunta` valian `False` por
+  construccion, luego `all()` nunca pasaba: el informe decia "20/20 cumplen" y a la vez `False`);
+  (b) `dispersion` era el **maximo cruzado entre anotadores**, luego la columna del CSV no
+  reconciliaba con `p_max - p_min` de su propia fila. La columna es ahora **por anotador** y hay una
+  asercion que lo verifica en las 216 filas.
+- **Consequences**: (i) **la familia POS queda CERRADA por potencia, no por opinion**: la unica via
+  de margen (un canal de transiciones POS condicionado por edad) queda **NO ejecutada** y
+  **deshabilitada** sin autorizacion expresa de Carlos con hipotesis nueva escrita por adelantado;
+  (ii) **no se abre otra corrida predictiva**: con D-077 (P2, -0.0086357, 0/5 folds) y D-041 (P1a,
+  -0.0002) ya medidos, la expectativa de margen es **negativa**; (iii) **no queda ninguna familia
+  legal no medida con potencial** (E15): los subtipos UD de `dep_seq` y la morfologia completa caen
+  en la misma banda 0,19-0,24 que las seis familias ya cerradas, y `SPACE` aislado da exactamente
+  el suelo estricto; (iv) `artifacts/v37/a1_prob_oof.npy` **queda persistido** con las
+  probabilidades OOF por fila (E8) para que una spec posterior no tenga que recalcular, y su SHA256
+  esta declarado; (v) el campeon **V30 + plug-in sigue intacto** en `0.6159732487657944`: ni
+  `v30_prob` ni los seis pesos se han escrito, no hay submission, y no se ha tocado test, holdout ni
+  leaderboard.
+- **Evidence**: `experiments/age_linguistic_14_diagnostico_pos.json` (resultado completo),
+  `experiments/age_linguistic_13_preregistro_v37.json` (pre-registro congelado, inmutable, sha256
+  `30d5d3cf...`), `scripts/age_linguistic_13_preregistro_v37.py` y
+  `scripts/age_linguistic_14_diagnostico_pos.py`, `reports/v37_diagnostico_pos.md`,
+  `reports/tables/v37_pos_{por_edad,estabilidad,ic_por_grupo,contraste,transiciones}.csv` (1.728,
+  216, 216, 9 y 1.944 filas), `reports/figures/v37_pos_0{1..5}_*.png`,
+  `artifacts/v37/a1_prob_oof.npy` (sha256 declarado en el JSON),
+  `experimentos/v37_diagnostico_pos.log`, `plan/V37_DIAGNOSTICO_POS_PLAN.md`,
+  `plan/V37_ENMIENDAS_01.md`, `plan/00_intent_v37.md`. Sonda E9 reproducida en la corrida:
+  `dif_abs_A1 = 3e-08`, `dif_abs_A2 = 0.0` frente a tolerancia `1e-06`.

@@ -1,7 +1,43 @@
 # PROJECT_STATE — KAGGLE_AGE_2026_PUJ
 
 > Memoria persistente del proyecto. Leer SIEMPRE al inicio de sesión o tras compactación.
-> Última actualización: 2026-09-26 (cierre de V13 ADVANCED RESEARCH).
+> Última actualización: **2026-10-01 (cierre de V37 · D-089)**.
+
+## D-089 (2026-10-01): `P(POS | edad)` CERRADA POR POTENCIA - el patrón existe y casi no lleva información de clase
+
+- **Lo que se midió, y lo que no.** Carlos propuso "estudiar las probabilidades condicionales de cada
+  tipo de palabra para hallar algún patrón". Se confundían **dos** cosas: `P(edad | palabra)`, ya
+  medida en V13-P1a (D-041), y `P(POS | edad)`, **nunca medida**. Esta acta cierra la segunda.
+- **El número que decide**: NB multinomial cerrado (α = 1.0 fijo, 18 UPOS, leave-one-fold-out, sin
+  selección de modelo) sobre **proporciones** POS da **`A1(md) = 0.1720532`**, frente a **azar
+  uniforme 0.1666667** y **suelo estricto 0.0485421**. Supera el azar por **+0.0054**, por debajo del
+  margen de 0.01 que el propio diseño fijaba. El IC95 pareado `A1 − A_perm` = `[+0.0900353,
+  +0.0942188]` **excluye cero**, luego el modelo no es degenerado: la señal es diminuta.
+  Referencias: P2 `0.2750921` (integración −0.0086, D-077), P1a `0.3997` (integración −0.0002,
+  D-041), campeón `0.6159732`.
+- **El patrón sí es real**: transiciones POS de primer orden por edad, `D = 0.5695637` con IC95
+  `[0.37976, 0.684608]` (excluye cero), `R = 2.0645054`, sobre 2.421.645 bigramas. Los floors están
+  **bien calibrados**: bajo permutación **0 celdas** sobreviven V1..V4 frente a **20** reales. Gradiente
+  coherente con la literatura (más `NOUN`/`DET`/`ADJ`, menos `PRON`/`ADV`/`PUNCT`/`SPACE` con la edad;
+  `SPACE` cae de 1,956 % a 0,911 %, factor 2,1×, y está **confundido con longitud**).
+- **El cierre formal es G2** (inestabilidad entre anotadores): 27/27 celdas estables entre folds pero
+  solo **20/27** de acuerdo md-lg. No invalida la conclusión: ambos proyectan sobre el mismo
+  inventario de 18 UPOS y coinciden solo en el **16,3 %** de las secuencias fila a fila.
+- **El canal predictivo NO se ejecutó** y queda **deshabilitado** salvo autorización expresa con
+  hipótesis nueva escrita por adelantado. La auditoría de novedad dio `(ii) variante disfrazada`.
+- **Dos hallazgos de método que no deben perderse.** (1) El control de fuga `A_perm` habría dado un
+  `[STOP]` **falso** sobre un pipeline limpio: el NB permutado degenera hacia la clase mayoritaria
+  (159.653 de 169.336 filas), no hacia el azar uniforme. (2) El autoejercicio de `--verificar`
+  (lección de **D-086**) **mató 25 defectos reales antes de gastar presupuesto**, cuatro de ellos
+  silenciosos y uno de ellos la fase de transiciones completa.
+- **Campeón intacto**: `v30_prob` y los seis pesos del plug-in sin escribir; sin submission; sin tocar
+  test, holdout ni leaderboard. `artifacts/v37/a1_prob_oof.npy` queda persistido (E8) con su SHA256.
+- **Artefactos**: `reports/v37_diagnostico_pos.md`,
+  `experiments/age_linguistic_14_diagnostico_pos.json`,
+  `experiments/age_linguistic_13_preregistro_v37.json` (pre-registro inmutable, sha256 `30d5d3cf...`),
+  `scripts/age_linguistic_1{3,4}_*.py`, `reports/tables/v37_pos_*.csv`, `reports/figures/v37_pos_0*.png`,
+  `plan/V37_DIAGNOSTICO_POS_PLAN.md`, `plan/V37_ENMIENDAS_01.md` (15 enmiendas que mandan sobre la
+  spec), `plan/00_intent_v37.md`, `experimentos/v37_diagnostico_pos.log`.
 
 ## D-088 (2026-09-30): L4 CERRADA - la senal de transiciones es real, especifica y por documento, pero el campeon ya la expresa (mejor)
 

@@ -2,11 +2,13 @@
 
 - **Competición**: `tweet-age-2026-puj`
 - **Ámbito**: `KAGGLE_AGE_2026_PUJ/`
-- **Rama de las últimas fases**: `kaggle-age-2026-puj-v17`
-- **Fecha**: 2026-09-26
-- **Estado**: V12 congelado y entregado. V13 a V17 cerradas **sin ninguna adopción**.
-- **102 experimentos** registrados en `experiments.csv` · **47 decisiones** en `DECISIONS.md`
-  (D-001 a D-047) · **0 errores** de auditoría de idioma sobre 371 ficheros
+- **Rama de las últimas fases**: `proyecto-kaggle-age-2026-v32`
+- **Fecha**: 2026-10-01 (actualizado con V37)
+- **Estado**: V12 congelado y entregado. V13 a V17 cerradas **sin ninguna adopción**. Cierres
+  posteriores: D-087 (techo declarado LB 0.642; LB 0.70 **no alcanzable**) y D-088 (brecha L4 cerrada
+  con señal real pero ya absorbida por el campeón). V37 cierra la familia POS **por potencia**.
+- **195 experimentos** registrados en `experiments.csv` · **89 decisiones** en `DECISIONS.md`
+  (D-001 a D-089) · **0 errores** de auditoría de idioma
 
 Este documento es la cuenta completa y legible del proyecto: qué se entregó, cómo se decidió, qué se
 buscó después y por qué no se encontró. Los resultados que aquí se citan salen de los artefactos en
@@ -501,6 +503,67 @@ Una sola cosa, y es la única acción que este informe recomienda:
 
 ---
 
+## 12 bis. V37 — `P(POS | edad)`: el patrón existe y casi no lleva información de clase
+
+Esta fase responde a una pregunta que nunca se había medido, y que conviene no confundir con otra:
+`P(edad | palabra)` (ya medida en V13-P1a, D-041) frente a `P(POS | edad)` (nunca medida). Carlos
+propuso la segunda; se opto por medirla **sin entrenar nada del campeon**, y con una cota de potencia que permitiera responder si el patron era accionable.
+
+**El número que decide.** Un clasificador naive Bayes multinomial cerrado (Laplace α = 1.0 fijo, 18
+UPOS, leave-one-fold-out, sin ningún paso de selección y por tanto sin CV anidada) sobre
+**proporciones** POS alcanza **`A1(md) = 0.1720532`**. El azar uniforme es `0.1666667` y el suelo
+estricto (predicción constante de la mayoritaria) `0.0485421`. Es decir: la información POS marginal
+supera el azar **por +0.0054**, por debajo del margen de 0.01 que el propio diseño declaraba como
+mínimo para tratarla como señal.
+
+| Referencia | macro-F1 | Qué es |
+|---|---|---|
+| Azar uniforme (6 clases equiprobables) | 0.1666667 | suelo de azar |
+| `A1` = NB sobre proporciones POS | **0.1720532** | **la cota de este diagnóstico** |
+| `A2` = NB sobre conteos crudos | 0.2052270 | sensibilidad a longitud |
+| P2 (secuencia POS, n-gramas 1-3) | 0.2750921 | ya medido, integración −0.0086 (D-077) |
+| P1a (`P(clase \| token)` cross-fit) | 0.3997 | ya medido, integración −0.0002 (D-041) |
+| Campeón V30 + plug-in | 0.6159732 | intocado |
+
+El IC95 pareado de `A1 − A_perm` es `[+0.0900353, +0.0942188]` y **excluye cero**, luego el modelo no
+es degenerado: la señal es simplemente diminuta.
+
+**El patrón sí es real y reproducible.** En las transiciones POS de primer orden condicionadas por
+edad, `D = 0.5695637` con IC95 `[0.37976, 0.684608]` (excluye cero) y `R = 2.0645054` sobre 2.421.645
+bigramas. Los umbrales están **bien calibrados**: bajo permutación de etiquetas **0 celdas** sobreviven
+los floors de V1..V4, frente a **20** en el dato real. El gradiente por edad es coherente con la
+literatura: al crecer la edad suben `NOUN`, `DET` y `ADJ`, y bajan `PRON`, `ADV`, `PUNCT` y `SPACE`
+(este último cae de 1,956 % de los tokens en 13-17 a 0,911 % en 35-49, un factor 2,1×, lo que confirma
+que es señal de formato **confundida con longitud**).
+
+**El cierre lo produce la inestabilidad entre anotadores, no la falta de señal.** De 27 celdas
+evaluables, las 27 son estables entre folds pero solo **20 de 27** superan el umbral de acuerdo
+md-lg, y ese es el motivo formal de `DIAGNOSTICO_CERRADO`. Esto último no invalida la conclusión: los
+dos anotadores proyectan sobre el mismo inventario de 18 UPOS por construcción y coinciden en solo
+**16,3 %** de las secuencias fila a fila, de modo que su desacuerdo es una limitación del conjunto de
+datos, no una propiedad del fenómeno.
+
+**Qué no se ejecutó.** El plan aprobado preveía que, si la auditoría de novedad daba "(i) misma
+familia ya cerrada" o "(ii) variante disfrazada", el paso predictivo **no** se correría. Dio
+`(ii)`: una matriz de transiciones indexada por clase es una interacción de orden tres que un modelo
+lineal sobre n-gramas no expresa, pero el refinamiento por clase ya se había medido en la dirección
+dual (P1a) y la integración de un bloque de este tipo ya había fallado dos veces (D-077, D-088). **El
+canal queda deshabilitado** salvo autorización expresa con hipótesis nueva escrita por adelantado.
+
+**Dos hallazgos de método que conviene conservar.** El primero: el control de fuga por permutación
+`A_perm` habría producido un `[STOP]` **falso** sobre un pipeline limpio, porque el NB permutado
+degenera hacia la clase mayoritaria en lugar de hacia el azar uniforme. El segundo: el autoejercicio
+estructural de `--verificar` (lección de D-086) **mató 25 defectos reales antes de gastar
+presupuesto**, cuatro de los cuales habrían corrompido resultados **en silencio** —incluida la fase de
+transiciones completa—.
+
+Artefactos: `reports/v37_diagnostico_pos.md`, `experiments/age_linguistic_14_diagnostico_pos.json`,
+`reports/tables/v37_pos_*.csv` (5 tablas), `reports/figures/v37_pos_0{1..5}_*.png`,
+`artifacts/v37/a1_prob_oof.npy`, `plan/V37_DIAGNOSTICO_POS_PLAN.md`,
+`plan/V37_ENMIENDAS_01.md` (15 enmiendas pre-ejecución declaradas).
+
+---
+
 ## 13. Índice de artefactos
 
 | Documento | Contenido |
@@ -514,13 +577,18 @@ Una sola cosa, y es la única acción que este informe recomienda:
 | `reports/v17_candidate_comparison.csv` | todos los candidatos de V17 con su decisión |
 | `reports/v17_master_results.csv`, `reports/v17_hypothesis_registry.csv` | tablas maestras de la fase |
 | `reports/v17_reproducibility.md`, `reports/v17_compliance.md` | reproducibilidad y cumplimiento del brief |
-| `reports/figures/` | 18 figuras, 10 de ellas de V17 |
+| `reports/figures/` | 18 figuras, 10 de ellas de V17; 5 mas de V37 |
 | `notebooks/99_entrega_consolidado.ipynb` | 78 celdas, con la PARTE III de V16 y V17 ejecutada |
-| `experiments.csv` | 102 experimentos con pregunta, mecanismo, resultado y decisión |
-| `DECISIONS.md` | 47 decisiones con contexto, evidencia y consecuencias |
+| `reports/v37_diagnostico_pos.md` | **V37 completo**: perfil `P(POS\|edad)`, estabilidad, cota de potencia y transiciones |
+| `experiments/age_linguistic_14_diagnostico_pos.json` | resultado de V37 con los 4 gates y los 6 criterios |
+| `reports/tables/v37_pos_*.csv` | 5 tablas de V37 (1.728 + 216 + 216 + 9 + 1.944 filas) |
+| `plan/V37_DIAGNOSTICO_POS_PLAN.md`, `plan/V37_ENMIENDAS_01.md` | spec de V37 y sus 15 enmiendas pre-ejecución |
+| `experiments.csv` | 195 experimentos con pregunta, mecanismo, resultado y decisión |
+| `DECISIONS.md` | 89 decisiones con contexto, evidencia y consecuencias |
 | `PROJECT_STATE.md`, `RUNLOG.md` | estado del proyecto y bitácora completa |
 
 ---
 
-*Documento generado el 2026-09-26. Todas las cifras citadas salen de los artefactos en
-`experiments/` y `reports/`, y son verificables celda a celda contra ellos.*
+*Documento generado el 2026-09-26 y actualizado el 2026-10-01 con V37 (D-089). Todas las cifras
+citadas salen de los artefactos en `experiments/` y `reports/`, y son verificables celda a celda
+contra ellos.*
