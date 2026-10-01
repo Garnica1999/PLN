@@ -1,105 +1,98 @@
-<!-- P82-CERRADO 2026-10-01 -->
-## P82: CERRADO Y PUBLICADO. 23 de 23 CONFIRMADO, y el resultado es EXPLORATORIO
+<!-- P82-CERRADO 2026-10-01, cierre tecnico en D-280, resultado cientifico en D-279 -->
+## P82: CERRADO Y PUBLICADO. Corrida vigente 20261001T194000Z_p2731658. 23 de 23 CONFIRMADO, DETERMINISMO CONFIRMADO, y el resultado es EXPLORATORIO
 
 ```text
 A0..A22 CONFIRMADO   23 CONFIRMADO   0 REFUTADO   0 ERROR   0 STOP   0 sin ejecutar
-corrida buena 20261001T172549Z_p2427889, con los CINCO brazos
-270 ajustes de red   5850.165344 s reales contra 5400 de presupuesto, excedencia AUTORIZADA
-experiments/p82_01_rnn_atencion.py
-  b19802dfa44b3b38ce6caf42829944e7320be82953f56ef60fb10a04c69328e6
-reports/p82_rnn_atencion.json   94089 B
-  3d0bc0d16a1ea8b427e0f2e0cfd1a765d962370477829ce9d11a2c81de7a9686
-reports/p82_rnn_atencion.md      11887 B
-  af808f8ecc4949bad2fbe81610b56e2300524f95267c19e368017d62e1cdcc7a
+corrida vigente 20261001T194000Z_p2731658, la UNICA con el cronometro coherente
+DETERMINISMO: los cinco brazos identicos BIT A BIT con la corrida anterior de 98 minutos
+5918.260188 s reales contra 5400 de presupuesto, excedencia de 518.260188, AUTORIZADA
+experiments/p82_01_rnn_atencion.py   hash NUEVO, el delta es el arreglo
+  72c3c00fc4b235c4c8bd087abf9f4718a2409b1fdbae50049ccfe77d29fa941c   7278 lineas
+  antes b19802dfa44b3b38ce6caf42829944e7320be82953f56ef60fb10a04c69328e6
+reports/p82_rnn_atencion_20261001T194000Z_p2731658.json   98723 B   VIGENTE
+  8c1f613a8d8040815d2a6c3f7f95447861d435d9a75accb25c5a2df394d651db
+reports/p82_rnn_atencion_20261001T194000Z_p2731658.md     13266 B   VIGENTE
+  4e3dc8223cbe92727dc237d391946e55291dc68ec89326137fc611fb9c6ff30e
 ```
 
-**Lo que sale, en una linea: la atencion es indistinguible de cero en los dos nucleos, y la
-geometria del embedding se ve con diez de diez.**
+Las otras dos corridas **se conservan** y no se borran, porque son evidencia de la cadena: la de 98
+minutos con el defecto de redaccion del cronometro, y la del tramo 1 con solo tres brazos. Los
+**once parciales** tampoco: seis subdirectorios con marca de corrida mas cinco ficheros sueltos, 179
+ficheros. Y seis directorios de humo de 44 ficheros cada uno.
 
-### Los cinco brazos y las cinco comparaciones
+**El cronometro, coherente por fin.** `situacion_del_presupuesto`
+`EXCEDIDO_Y_TRAMO_2_EJECUTADO_CON_EXCEDENCIA_AUTORIZADA`, `excedio_el_presupuesto` True, y A19 con
+`situacion` igual, `excedido` True, `margen_segundos` -518.240782 y
+`la_nota_corresponde_a_la_situacion_real` True. **El informe ya no dice a la vez que se supero y que
+no se supero**, que es exactamente lo que hacia antes.
 
-| brazo | media | sd | | id | media | IC95 | signos + |
-|---|---|---|---|---|---|---|---|
-| B1 GRU sin atencion | 0.639659 | 0.011615 | | P1 B2-B1 | -0.002105 | [-0.012406, 0.008196] | 4/10 |
-| B2 GRU con atencion | 0.637554 | 0.014905 | | P2 B4-B3 | 0.002031 | [-0.016628, 0.020690] | 7/10 |
-| B3 LSTM sin atencion | 0.615163 | 0.012924 | | P3 B2-B5 | 0.076807 | [0.059823, 0.093791] | 10/10 |
-| B4 LSTM con atencion | 0.617194 | 0.020434 | | P4 B1-B5 | 0.078912 | [0.067144, 0.090680] | 10/10 |
-| B5 GRU con atencion, permutado | 0.560747 | 0.019137 | | P5 B1-B3 | 0.024496 | [0.013551, 0.035441] | 10/10 |
+### DETERMINISMO CONFIRMADO
 
-**La lectura.** El efecto de la atencion es indistinguible de cero en LOS DOS NUCLEOS y con **signos
-opuestos**, -0.002105 en GRU y +0.002031 en LSTM, los dos muy por debajo del minimo detectable de
-0.014342. El pre-registro decia que si la atencion tuviera el mismo signo en los dos nucleos seria
-la senal mas fuerte posible, y que con signos opuestos seria la prueba mas fuerte de que era ruido.
-**Salio lo segundo.**
+| brazo | corrida 98 min | corrida vigente | |
+|---|---|---|---|
+| B1 GRU sin atencion | 0.639659 sd 0.011615 | 0.639659 sd 0.011615 | identico |
+| B2 GRU con atencion | 0.637554 sd 0.014905 | 0.637554 sd 0.014905 | identico |
+| B3 LSTM sin atencion | 0.615163 sd 0.012924 | 0.615163 sd 0.012924 | identico |
+| B4 LSTM con atencion | 0.617194 sd 0.020434 | 0.617194 sd 0.020434 | identico |
+| B5 GRU con atencion, permutado | 0.560747 sd 0.019137 | 0.560747 sd 0.019137 | identico |
 
-**Y esto NO es que la atencion no aporte.** Es que este diseno, a diez semillas, no tiene potencia
-para distinguir el efecto de cero. El limite de deteccion se calculo ANTES de correr, con potencia
-0.8993 a diez semillas, y por eso el resultado es **EXPLORATORIO** y no confirmatorio. Un resultado
-negativo **NO** se lee como que la atencion no aporta: se lee como que el efecto es inferior a lo que
-este diseno resuelve. Que las veintitres afirmaciones pasen dice que el instrumento esta sano, no que
-la pregunta tenga respuesta.
+Las cinco comparaciones tambien identicas, **incluidos los dictados de delta por semilla**, que son
+diez numeros por comparacion y no una media: P1 -0.002105 con IC95 [-0.012406, 0.008196] y 4 de 10;
+P2 0.002031 con IC95 [-0.016628, 0.020690] y 7 de 10; P3 0.076807 con IC95 [0.059823, 0.093791] y
+10 de 10; P4 0.078912 con IC95 [0.067144, 0.090680] y 10 de 10; P5 0.024496 con IC95 [0.013551,
+0.035441] y 10 de 10. El criterio estaba escrito de antemano en el informe: si al reejecutar los
+brazos no dan las mismas medias, hay no determinismo y hay que parar antes de publicar. **Se cumplio.
+Que dos corridas independientes den lo mismo bit a bit es lo que hace que estas cifras sean
+evidencia y no una medida que se le parezca.**
 
-**Lo que si es solido:** la geometria del embedding importa, contra la matriz permutada 0.076807 con
-atencion y 0.078912 sin ella, con el signo coherente en **diez de diez** y el intervalo entero por
-encima de cero. Es la medicion que nlp-specialist pidio en la Fase 5 y que este proyecto nunca habia
-hecho. Separa **existe geometria** de **esa geometria esta asignada a estos tokens**: la respuesta
-es que si.
+### El resultado, que no cambia y queda confirmado con el determinismo por delante
 
-**Hallazgo no anticipado:** GRU supera a LSTM por **0.024496**, con diez de diez. No estaba en ninguna
-hipotesis del pre-registro y se registra como tal. El mejor brazo se queda a **0.137552** de V03.
+El efecto de la atencion es indistinguible de cero en LOS DOS NUCLEOS y con **signos opuestos**,
+-0.002105 en GRU y +0.002031 en LSTM, los dos muy por debajo del minimo detectable de 0.014342. El
+pre-registro decia que mismo signo en los dos seria la senal mas fuerte posible, y signos opuestos la
+prueba mas fuerte de que era ruido. **Salio lo segundo. Y esto NO es que la atencion no aporte:** es
+que este diseno, a diez semillas y con potencia 0.8993, no tiene potencia para distinguir el efecto de
+cero, y el limite de deteccion se calculo ANTES de correr. Un resultado negativo **NO** se lee como
+que la atencion no aporta. Lo solido, con diez de diez signos y el intervalo entero por encima de
+cero, es que **la geometria del embedding importa**, 0.076807 y 0.078912 contra la matriz permutada:
+la medicion que nlp-specialist pidio en la Fase 5 y que el proyecto nunca habia hecho. Y el hallazgo
+**no anticipado**: GRU supera a LSTM por **0.024496**, con diez de diez, sin estar en ninguna hipotesis
+del pre-registro. El mejor brazo se queda a **0.137552 de V03**.
 
-**Limite de deteccion.** Desviacion planificada 0.021588, medida 0.01440007631814541, MDE 0.014342,
-gap leido del informe de P78 0.117450, no escrito a mano.
+### El defecto y su arreglo
 
-### Lo que P82 deja declarado
+**La causa era un argumento asumido:** la nota definitiva recibia un `False` escrito a mano en vez de
+la comparacion real del reloj contra el presupuesto, y A19 se evaluaba antes de que el reloj llegara
+al presupuesto. Se arreglo de dos maneras, que son la misma idea: `construir_nota_de_tramos` **recibe
+el tiempo real y el presupuesto y calcula la excedencia dentro**, luego no existe forma de pasar un
+booleano por error; y **A19 es ahora la ultima** del pipeline, porque una afirmacion que vigila el
+presupuesto solo se mide al terminar. **El guard antitrunco no se toco ni se relajo:** como el destino
+canonico ya existia, la reejecucion escribio con sufijo de marca y **declaro en el propio informe que
+conserva el anterior**. Ademas se anadio la **auditoria AST** `auditar_booleanos_literales`, que
+detecta literales booleanos en posiciones que deben llegar calculadas, y se prueba **por mutacion**:
+con el `False` a mano el recuento de la puerta del humo **baja de 164 a 162**, que es la prueba de
+que la deteccion discrimina.
 
-**Primera medicion con early stopping estrictamente anidado con particion interna**, luego sus numeros
-**NO son comparables** con `v9_04` (0.694343) ni con `v10_11` (0.711639), que elegian el checkpoint
-con el mismo pliegue externo que luego puntuaban, la fuga que condeno a P73 y P74.
+**La leccion, y es la segunda vez en este fichero: un argumento asumido, un `True` o un `False`
+escrito a mano donde deberia haber una comparacion.** Ya paso con la tupla anidada que hacia que TODO
+saliera CONFIRMADO. El patron es el mismo y la defensa es la misma: una comprobacion que detecte el
+patron, mas un caso de humo que por mutacion demuestre que la deteccion discrimina. **Un argumento que
+se asume no se verifica nunca, y lo que se verifica solo cuando algo va mal.**
 
-**Limite permanente de P81 vigente:** sin anclaje a una implementacion externa de SGNS, porque gensim
-no esta instalado y no compila con Python 3.14.7. Autoriza afirmar sobre el **OBJETIVO** y no sobre
-la calidad relativa frente a una libreria.
+### Cierre de fase
 
-**Enmienda 1:** el coste de la atencion es **16448** sin sesgos y 16576 con sesgos, no 8256, porque
-8256 asumia una celda unidireccional de ancho 64 y los brazos son bidireccionales de salida 128.
-
-**Enmienda 2:** dispositivo elegido **por medicion**, GPU AMD Radeon RX 9070 XT, 16 hilos, sin
-precision mixta. 30 hilos es un 32 por ciento PEOR que 16. Los absolutos y los deltas son los de ese
-dispositivo y no se comparan con los de otro.
-
-**Tramo 2 autorizado por Carlos**, con excedencia del presupuesto registrada como autorizacion
-explicita, no como unnoticed. Hito declarado 2400, observado 3762.75905. El presupuesto no se toco.
-
-### Los ocho intentos, que se conservan
-
-Ocho intentos = seis corridas en modo completo mas dos de humo. En `reports/p82_parciales/` hay
-**cinco** subdirectorios con marca de corrida, con 143 ficheros, mas cinco ficheros sueltos en la raiz
-del mismo directorio de la marca `20261001T051317Z_p1023604`, que es el intento en CPU: 148 ficheros.
-El ultimo, `20261001T172549Z_p2427889`, es el bueno con los cinco brazos. El
-`20261001T141035Z_p2054042` es el que **se detuvo en A19 con STOP**. El informe del tramo 1, marca
-`20261001T080906Z_p1362206`, **solo tres brazos** B1, B2 y B5, 21 CONFIRMADO y 2 REFUTADO, **se
-conserva y no se borra**: es una corrida previa que no publico informe con los cinco brazos.
-
-**La leccion, para todo el proyecto:** un modo de humo que ejercita funciones con datos sinteticos NO
-verifica el contrato entre capas, y un caso de humo que no puede fallar no prueba nada. En P82 lo
-manifestaron dos constantes comparadas consigo mismas y cinco tuplas anidadas que hacian que TODO
-saliera CONFIRMADO, y ninguna la cazo el humo. Y un hallazgo relevante puede hacer fallar una
-comprobacion bien escrita si su criterio estaba mal definido: los netos negativos de A17 son el
-hallazgo central, no un error de datos, luego **hay que mirar el criterio antes de culpar a los
-datos**.
-
-**Defecto residual apuntado y NO corregido**, porque este encargo es de registro: el bloque de
-resumen del cronometro del informe dice `DENTRO_DE_PRESUPUESTO` cuando el tiempo real de 5850.165344
-s **supera** el presupuesto de 5400, y su `nota_tramo2` se publica vacia. A19, que recalcula desde el
-tiempo real, si detecta `EXCEDIDO_Y_TRAMO_2_EJECUTADO_CON_EXCEDENCIA_AUTORIZADA`, luego ninguna
-afirmacion esta mal. Queda para una corrida posterior que lo arregle. Ademas el hito observado en el
-informe es 3762.75905, y la Enmienda 2 habla de siete ficheros parciales donde en disco hay cinco.
+**P82 cierra la via de la RNN con atencion que Carlos autorizo abrir directamente, sobreescribiendo
+la recomendacion propia y la del especialista de competencia. El resultado no la respalda y no la
+refuta de forma concluyente**, porque el efecto es menor que lo que este diseno resuelve. El RNN
+completo se queda a **0.137552 de V03**, luego **no es candidato**. La unica contribucion solida de
+P82 es la medicion de la geometria del embedding contra la matriz permutada, que separa **existe
+geometria** de **esa geometria esta asignada a estos tokens**. Y P82 es la **primera medicion con
+early stopping estrictamente anidado**, luego sus numeros **no son comparables** con `v9_04`
+(0.694343) ni con `v10_11` (0.711639). Sigue vigente el limite permanente de P81: sin anclaje a una
+implementacion externa de SGNS, porque gensim no esta instalado y no compila con Python 3.14.7, luego
+se afirma sobre el objetivo y no sobre la calidad relativa frente a una libreria.
 
 ```text
-V03 remains the best verified leaderboard result.
-```
-
 V03 remains the best verified leaderboard result.
 ```
 

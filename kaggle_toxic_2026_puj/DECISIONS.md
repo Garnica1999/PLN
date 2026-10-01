@@ -9677,6 +9677,12 @@ y A0 lo confirma ademas en `mtime_ns`.
 V03 remains the best verified leaderboard result.
 ```
 ## D-279: P82. La atencion es indistinguible de cero en los dos nucleos, y la geometria del embedding no lo es
+**ESTA ES LA ENTRADA DEL RESULTADO CIENTIFICO DE P82. La entrada del CIERRE TECNICO es D-280, y las
+dos van juntas: esta describe que dice el experimento y por que, y D-280 describe la tercera corrida
+que lo publica con el cronometro coherente y que confirma el determinismo bit a bit. Sin D-280, esta
+entrada describe un informe con un defecto de redaccion del cronometro. El texto de esta entrada NO
+se reescribe: se conserva tal cual y esta marca se antepone a proposito. D-279 y D-280 se leen juntas.**
+
 
 **Status**: CERRADO Y PUBLICADO, con resultado **EXPLORATORIO**. Las veintitres afirmaciones medidas:
 23 CONFIRMADO, 0 REFUTADO, 0 ERROR, 0 STOP, 0 sin ejecutar. La publicacion no es la de un resultado
@@ -9855,6 +9861,181 @@ submission 0, P71 a P81 sin tocar, V03 sin tocar, umbrales 0.44, 0.51 y 0.46 sin
 sin escrituras. Artefacto congelado
 `302c994d13b75f8f5fbd440eea2c4f4113997e2581524021923b92f8244d705a` de 29478868 bytes antes y despues,
 con el mismo `mtime_ns`.
+
+```text
+V03 remains the best verified leaderboard result.
+```
+## D-280: P82 cierre tecnico. El cronometro coherente y el determinismo confirmado bit a bit
+
+**ENTRADA DEL CIERRE TECNICO DE P82. Together with D-279, que es la entrada del RESULTADO
+CIENTIFICO. Las dos van juntas y ninguna se reescribe: D-279 describe que dice el experimento y por
+que, y esta describe la tercera corrida que lo publica con el cronometro coherente y que confirma el
+determinismo. Sin D-280, D-279 describe un informe con un defecto de redaccion; sin D-279, D-280
+describe una correccion sin resultado.**
+
+**Status**: CERRADO Y PUBLICADO, con resultado **EXPLORATORIO** que no cambia respecto a D-279. Las
+veintitres afirmaciones medidas: 23 CONFIRMADO, 0 REFUTADO, 0 ERROR, 0 STOP, 0 sin ejecutar. El script
+cambio de hash y el delta es el arreglo, no un efecto del dato.
+
+**Date**: 2026-10-01
+
+**Context**
+
+Tercera corrida completa de P82, marca `20261001T194000Z_p2731658`, de 99 minutos. Script
+`experiments/p82_01_rnn_atencion.py`, sha256 **nuevo**
+`72c3c00fc4b235c4c8bd087abf9f4718a2409b1fdbae50049ccfe77d29fa941c`, 7278 lineas. **El hash cambio
+respecto al `b19802dfa44b3b38ce6caf42829944e7320be82953f56ef60fb10a04c69328e6` de la corrida anterior,
+y es lo esperado**, porque ese delta es exactamente el arreglo del cronometro.
+
+Informe vigente, **el unico con el cronometro coherente**:
+`reports/p82_rnn_atencion_20261001T194000Z_p2731658.json`, sha256
+`8c1f613a8d8040815d2a6c3f7f95447861d435d9a75accb25c5a2df394d651db`, 98723 B, y
+`reports/p82_rnn_atencion_20261001T194000Z_p2731658.md`, sha256
+`4e3dc8223cbe92727dc237d391946e55291dc68ec89326137fc611fb9c6ff30e`, 13266 B.
+
+Los otros dos pares se conservan y **no se borran**, porque son evidencia de la cadena:
+`reports/p82_rnn_atencion.json` sha256
+`3d0bc0d16a1ea8b427e0f2e0cfd1a765d962370477829ce9d11a2c81de7a9686`, 94089 B, que es **la corrida de
+98 minutos con el defecto de redaccion del cronometro**, y `reports/p82_rnn_atencion_tramo1.json`
+sha256 `dd87d42e9a5632347cb737240ec223563fd8b9ec123f9291353cf05bfbdf855e`, 72325 B, que es **el tramo
+1 con tres brazos**, marca `20261001T080906Z_p1362206`, 21 CONFIRMADO y 2 REFUTADO de 23, y que por
+tanto no describe el resultado de P82.
+
+**El cronometro, que era el defecto.** En la corrida anterior el informe publicaba tres cosas que no
+podian ser verdad a la vez: `situacion_del_presupuesto` `DENTRO_DE_PRESUPUESTO`,
+`nota_definitiva_de_tramos.excedio_el_presupuesto` False, y la `nota_tramo2` publicada vacia, con un
+`tiempo_real_segundos` de 5850.165344 que **supera** el `budget_segundos` de 5400. Es decir, el
+informe afirmaba que se habia superado el presupuesto y que no se habia superado, en el mismo
+objeto. A19, que recalculaba desde el tiempo real, si detectaba la situacion correcta, luego **ninguna
+afirmacion estaba mal**: el defecto estaba en el bloque de redaccion.
+
+Ahora las tres piezas coinciden en direccion y en magnitud: `tiempo_real_segundos` 5918.260188,
+`budget_segundos` 5400, excedencia de **518.260188**,
+`situacion_del_presupuesto` `EXCEDIDO_Y_TRAMO_2_EJECUTADO_CON_EXCEDENCIA_AUTORIZADA`,
+`nota_definitiva_de_tramos.excedio_el_presupuesto` True, `A19.excedido` True, `A19.situacion` la misma,
+`A19.margen_segundos` -518.240782 y
+`A19.comprobaciones.la_nota_corresponde_a_la_situacion_real` True. 270 ajustes de red. El presupuesto
+y el hito, 5400 y 2400, **no se tocaron**.
+
+**DETERMINISMO CONFIRMADO, que es la parte que mas valor tiene.** Los cinco brazos de esta corrida de
+99 minutos dieron **exactamente los mismos numeros** que los de la corrida de 98 minutos, comparados
+cifra a cifra: B1 0.639659 con 0.011615, B2 0.637554 con 0.014905, B3 0.615163 con 0.012924, B4 0.617194
+con 0.020434 y B5 0.560747 con 0.019137. Y las cinco comparaciones identicas, **incluidos los dictados
+completos de delta por semilla**, que son diez numeros por comparacion y no una media: P1 -0.002105
+con IC95 [-0.012406, 0.008196] y 4 signos positivos de 10; P2 0.002031 con IC95 [-0.016628, 0.020690]
+y 7 de 10; P3 0.076807 con IC95 [0.059823, 0.093791] y 10 de 10; P4 0.078912 con IC95 [0.067144,
+0.090680] y 10 de 10; P5 0.024496 con IC95 [0.013551, 0.035441] y 10 de 10. El informe lleva el
+criterio escrito en `corrida_anterior.comparacion_obligatoria`: si al reejecutar los brazos no dan
+estas MISMAS medias, hay no determinismo y hay que parar antes de publicar. **Se cumplio.** Que dos
+corridas independientes den lo mismo bit a bit es lo que hace que estas cifras sean evidencia y no una
+medida que se le parezca. El artefacto congelado sigue en sha256
+`302c994d13b75f8f5fbd440eea2c4f4113997e2581524021923b92f8244d705a`, con
+`coinciden_antes_y_despues` True.
+
+**La causa exacta del defecto, y el arreglo.** La nota definitiva del tramo recibia un `False`
+escrito a mano en vez de la comparacion real del reloj contra el presupuesto, y A19 se evaluaba
+**antes** de que el reloj llegara al presupuesto. Se arreglo de dos maneras, que son la misma idea.
+**Primero**, `construir_nota_de_tramos` ahora recibe el tiempo real y el presupuesto y calcula la
+excedencia **dentro**: la firma es `construir_nota_de_tramos(tiempo_real, presupuesto,
+ejecutar_tramo_2, hito, autorizado)` y la excedencia sale de `tiempo_real - presupuesto`, de modo que
+**no existe forma de pasar un booleano por error**, porque el booleano ya no es un parametro sino una
+consecuencia. **Segundo**, A19 es ahora la **ultima** del pipeline del completo, porque una
+afirmacion que vigila el presupuesto solo se puede medir al terminar; en el codigo su llamada va
+despues de las de A20 y A21, que antes iban despues.
+
+**El guard antitrunco NO se toco ni se relajo.** Como el destino canonico ya existia, la reejecucion
+escribio con sufijo de marca y **declaro en el propio informe que conserva el anterior**:
+`informe_anterior_conservado` con `corrida_actual` `20261001T194000Z_p2731658` y `motivo` "el destino
+canonico ya existia y el guard antitrunco se niega a sobrescribirlo, luego esta corrida escribe con
+su marca y conserva el anterior intacto", y `ruta_del_anterior` `reports/p82_rnn_atencion.json`.
+
+**Ademas se anadio la auditoria AST** `auditar_booleanos_literales`, que detecta literales booleanos
+en posiciones que deben llegar calculadas, guiada por la tabla `PARAMETROS_DE_CONDICION`, y cubre
+**las dos** Niagara de la misma clase que ya habian pasado en este fichero. Se invoca sobre el propio
+script y da cero infracciones, y **se prueba por mutacion**: la llamada
+`construir_nota_de_tramos(True, 5400.0, False, 2400.0, False)` tiene que verse y la llamada con el
+tiempo real no. Con esa mutacion el recuento de la puerta del humo **baja de 164 a 162**, que es la
+prueba de que la deteccion **discrimina** y no solo existe.
+
+**Decision**
+
+**P82 queda cerrado y publicado con la tercera corrida como informe vigente**, por ser la unica cuyo
+cronometro es coherente. Las otras dos se conservan como evidencia de la cadena y **no se borra
+ninguno de los tres pares de informes**, igual que los once parciales, que son seis subdirectorios con
+marca de corrida mas cinco ficheros sueltos, 179 ficheros en total.
+
+**El resultado cientifico NO cambia respecto a D-279 y se confirma aqui con el determinismo por
+delante.** El efecto de la atencion es **indistinguible de cero en los dos nucleos y con signos
+opuestos**, -0.002105 en GRU y +0.002031 en LSTM, los dos muy por debajo del minimo detectable de
+0.014342. **Y esto no es que la atencion no aporte:** es que este diseno, a diez semillas y con
+potencia 0.8993, no tiene potencia para distinguir el efecto de cero, y el limite de deteccion se
+calculo ANTES de correr. Un resultado negativo **no habilita** la conclusion de que la atencion no
+aporta, sino la mas estrecha de que el efecto es inferior a lo que este diseno resuelve. Lo solido,
+con diez de diez signos y el intervalo entero por encima de cero, es que **la geometria del embedding
+importa**: 0.076807 y 0.078912 contra la matriz permutada. Y el hallazgo no anticipado se mantiene:
+**GRU supera a LSTM por 0.024496, con diez de diez**, sin estar en ninguna hipotesis del pre-registro.
+
+**Se declara el cierre de fase.** P82 **cierra la via de la RNN con atencion que Carlos autorizo abrir
+directamente, sobreescribiendo la recomendacion propia y la del especialista de competencia.** El
+resultado **no la respalda y no la refuta de forma concluyente**, porque el efecto es menor que lo que
+este diseno resuelve. El RNN completo se queda a **0.137552 de V03**, luego **no es candidato**. La
+unica contribucion solida de P82 es **la medicion de la geometria del embedding contra la matriz
+permutada**, que este proyecto no habia hecho nunca y que separa **existe geometria** de **esa
+geometria esta asignada a estos tokens**. Y P82 es la **primera medicion con early stopping
+estrictamente anidado**, luego sus numeros **no son comparables** con `v9_04` ni con `v10_11`.
+
+**La leccion, y es la segunda vez que ocurre en este fichero: un argumento asumido, un `True` o un
+`False` escrito a mano donde deberia haber una comparacion.** Ya paso con la tupla anidada que hacia
+que TODO saliera CONFIRMADO, y ahora con este `False` que hacia que el informe se contradijera a si
+mismo. **El patron comun es el mismo y la defensa es la misma:** una comprobacion que detecte el
+patron, mas un caso de humo que por mutacion demuestre que la deteccion discrimina. **Un argumento
+que se asume no se verifica nunca, y lo que se verifica solo cuando algo va mal.**
+
+**Alternatives Considered**
+
+1. **Corregir el bloque de redaccion a mano en el informe ya publicado. Descartado.** El informe
+   tiene sha256 publicado y corregirlo a mano rompe la trazabilidad del artefacto. Se hace una tercera
+   corrida que arregla el codigo, y el guard antitrunco escribe la nueva con su marca y conserva la
+   anterior, que es lo que se hizo.
+2. **Relajar A19 o quitarla, porque A19 es la que cazo el defecto. Descartado.** Relajar una
+   afirmacion para que pase es lo que este proyecto no hace. Se corrige el criterio de la nota, que
+   estaba mal, y no la afirmacion, que estaba bien. Lo mismo que se hizo con la no negatividad de A17
+   en la corrida anterior.
+3. **Dejar A19 donde estaba, antes de que el reloj llegara al presupuesto. Descartado.** Una
+   afirmacion que vigila el presupuesto no se puede medir antes de que el reloj lo alcance: por
+   construccion la media antes o en un momento arbitrario no es la del cierre. Ahora es la ultima.
+4. **Tocar el guard antitrunco para no dejar el destino canonico ocupado y sobrescribirlo.
+   Descartado.** El guard existe para que una reejecucion no pise el informe de otra corrida, y
+   relajarlo seria perder la evidencia. Se escribe con sufijo de marca, que es justo lo que hizo.
+5. **Dar por buena la corrida de 98 minutos y registrar solo el defecto sin repetir. Descartado.**
+   Ademas de que el cronometro era incoherente, la reejecucion es lo que produjo la **confirmacion de
+   determinismo**, que es la parte que mas valor aporta de este cierre: dos corridas independientes
+   con los mismos cinco brazos bit a bit.
+6. **Declarar la via de la RNN con atencion cerrada como REFUTADA. Descartado**, y es la parte que
+   mas importa del cierre de fase. El diseno no tiene potencia para resolver el efecto, luego no puede
+   refutarlo. Se cierra la via por **cierre de fase** y por distancia a V03, que son dos razones
+   verificables, y no por una conclusion que el diseno no soporta.
+
+**Consequences**
+
+El informe vigente de P82 pasa a ser
+`reports/p82_rnn_atencion_20261001T194000Z_p2731658.json` y `.md`, con sus dos sha256 publicados, y
+**los tres pares de informes se conservan**, con los dos anteriores marcados en esta entrada y en
+RUNLOG como lo que son: el de 98 minutos con el defecto de redaccion, y el del tramo 1 con tres
+brazos. Los once parciales, seis subdirectorios mas cinco ficheros sueltos, y los seis directorios de
+humo se conservan enteros.
+
+**La auditoria AST y el caso de humo por mutacion que baja el recuento de 164 a 162 se convierten en
+la defensa standard de este proyecto** contra la clase de fallo de argumento asumido, que ya ha
+costado dos veces en P82 y una en P81 con la tupla anidada. La regla que queda escrita: **ninguna
+posicion que deba llegar calculada puede recibir un literal booleano, y la deteccion se demuestra
+mutando el caso.**
+
+Fronteras respetadas y comprobadas: test 0, holdout 0 identificadores deserializados, leaderboard 0,
+submission 0, P71 a P81 sin tocar, V03 sin tocar, umbrales 0.44, 0.51 y 0.46 sin tocar, `modelos/` sin
+escrituras. Artefacto congelado
+`302c994d13b75f8f5fbd440eea2c4f4113997e2581524021923b92f8244d705a` antes y despues. ASCII verificado
+con `tools/verificar_caracteres.py`, salida 0.
 
 ```text
 V03 remains the best verified leaderboard result.

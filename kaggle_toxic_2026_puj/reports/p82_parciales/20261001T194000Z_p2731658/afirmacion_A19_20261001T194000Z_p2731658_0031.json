@@ -1,0 +1,48 @@
+{
+  "marca_corrida": "20261001T194000Z_p2731658",
+  "resultado": {
+    "bloque": 4,
+    "coste_segundos": 2.4e-05,
+    "descripcion": "presupuesto de reloj respetado y tiempo real publicado",
+    "detalle": {
+      "comprobaciones": {
+        "la_nota_corresponde_a_la_situacion_real": true,
+        "presupuesto_comparado_contra_config": true,
+        "si_excede_exige_nota_de_tramo_2": true,
+        "tiempo_real_publicado_y_finito": true
+      },
+      "decision_del_tramo_2": {
+        "autorizado_por_una_persona": true,
+        "ejecutar_tramo_2": true,
+        "hito_observado": 3813.748548,
+        "hito_segundos": 2400,
+        "la_condicion_del_reloj_se_cumplio": true,
+        "motivo": "el hito se paso y la condicion del reloj habria saltado el tramo 2, pero una persona lo autorizo explicitamente con la bandera, luego se ejecuta",
+        "nota_tramo2": "TRAMO_2_EJECUTADO_CON_EXCEDENCIA_AUTORIZADA: el presupuesto de 5400.000 s se supero, el hito observado de 3813.749 s paso el hito de 2400 s, y el tramo 2 SE EJECUTO porque una persona lo autorizo de forma explicita; la excedencia queda declarada y no fue unnoticed",
+        "presupuesto_segundos": 5400,
+        "proyecta_superar_el_presupuesto": true,
+        "se_paso_el_hito": true
+      },
+      "excedido": true,
+      "las_tres_situaciones_posibles": [
+        "DENTRO_DE_PRESUPUESTO",
+        "EXCEDIDO_Y_TRAMO_2_NO_EJECUTADO_POR_PRESUPUESTO",
+        "EXCEDIDO_Y_TRAMO_2_EJECUTADO_CON_EXCEDENCIA_AUTORIZADA"
+      ],
+      "margen_segundos": -518.240782,
+      "nota_de_tramo_2": "TRAMO_2_EJECUTADO_CON_EXCEDENCIA_AUTORIZADA: el presupuesto de 5400.000 s se supero, el hito observado de 3813.749 s paso el hito de 2400 s, y el tramo 2 SE EJECUTO porque una persona lo autorizo de forma explicita; la excedencia queda declarada y no fue unnoticed",
+      "nota_leida_de": "construir_nota_de_tramos con el tiempo real medido aqui",
+      "presupuesto_segundos": 5400.0,
+      "se_evalua_al_final_del_pipeline": true,
+      "situacion": "EXCEDIDO_Y_TRAMO_2_EJECUTADO_CON_EXCEDENCIA_AUTORIZADA",
+      "tiempo_real_segundos": 5918.240782
+    },
+    "estado": "CONFIRMADO",
+    "exito": true,
+    "id": "A19",
+    "naturaleza": "CONFIRMAR",
+    "stop": true,
+    "tolerancia": "el tiempo real se publica con 6 decimales y se compara contra el presupuesto",
+    "traza": ""
+  }
+}

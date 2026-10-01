@@ -648,6 +648,49 @@ def afirmar_evaluadas_en_completo(codigo: str) -> tuple[bool, dict[str, Any]]:
     }
 
 
+# Para cada funcion, que PARAMETROS son condiciones y por tanto tienen que llegar
+# calculadas, nunca como literal booleano. Los parametros que SI son banderas legitimas
+# no se tocan: un False en autorizar_tramo2 es correcto, un False en tiempo_real no lo es.
+PARAMETROS_DE_CONDICION: Final[dict[str, tuple[int, ...]]] = {
+    "construir_nota_de_tramos": (0, 1),
+    "comprobar_presupuesto": (0, 2),
+}
+
+
+def auditar_booleanos_literales(codigo: str) -> list[str]:
+    """Detecta llamadas a funciones de informe con un LITERAL booleano donde va una condicion.
+
+    Cubre los dos fallos de la misma clase que ya han pasado en este fichero: la tupla
+    anidada, cuyo primer elemento era otra tupla, y el False escrito a mano en
+    construir_nota_de_tramos. Un argumento asumido donde deberia haber una comparacion.
+
+    Args:
+        codigo: fuente Python a auditar.
+
+    Returns:
+        Lista de infracciones, una por llamada.
+    """
+    arbol = ast.parse(codigo)
+    infracciones: list[str] = []
+    for nodo in ast.walk(arbol):
+        if not (isinstance(nodo, ast.Call) and isinstance(nodo.func, ast.Name)):
+            continue
+        posiciones = PARAMETROS_DE_CONDICION.get(nodo.func.id)
+        if posiciones is None:
+            continue
+        for indice in posiciones:
+            if indice >= len(nodo.args):
+                continue
+            argumento = nodo.args[indice]
+            if isinstance(argumento, ast.Constant) and isinstance(argumento.value, bool):
+                infracciones.append(
+                    f"linea {nodo.lineno}: {nodo.func.id} recibe el literal booleano "
+                    f"{argumento.value!r} en el parametro de condicion {indice}; "
+                    "use la comparacion real"
+                )
+    return sorted(infracciones)
+
+
 def auditar_evaluaciones_anidadas(codigo: str) -> list[str]:
     """Detecta llamadas a evaluar cuya comprobacion devuelva una tupla anidada.
 
@@ -2117,6 +2160,59 @@ def log_odds(y: np.ndarray, epsilon: float = 1e-6) -> np.ndarray:
     proporcion = np.clip(np.asarray(y, dtype=float).mean(axis=0), epsilon, 1.0 - epsilon)
     return np.log(proporcion / (1.0 - proporcion))
 
+
+RESULTADO_CIENTIFICO_RAZONADO: Final[dict[str, Any]] = {
+    "corrida": "20261001T141035Z_p2054042",
+    "duracion": "98 minutos, con la bandera de autorizacion del tramo 2",
+    "brazos": {
+        "B1": {"media": 0.639659, "desviacion": 0.011615},
+        "B2": {"media": 0.637554, "desviacion": 0.014905},
+        "B3": {"media": 0.615163, "desviacion": 0.012924},
+        "B4": {"media": 0.617194, "desviacion": 0.020434},
+        "B5": {"media": 0.560747, "desviacion": 0.019137},
+    },
+    "comparaciones": {
+        "P1": {"media": -0.002105, "ic95": [-0.012406, 0.008196], "signos_positivos": 4},
+        "P2": {"media": 0.002031, "ic95": [-0.016628, 0.020690], "signos_positivos": 7},
+        "P3": {"media": 0.076807, "ic95": [0.059823, 0.093791], "signos_positivos": 10},
+        "P4": {"media": 0.078912, "ic95": [0.067144, 0.090680], "signos_positivos": 10},
+        "P5": {"media": 0.024496, "ic95": [0.013551, 0.035441], "signos_positivos": 10},
+    },
+    "desviacion_medida": 0.014400,
+    "mde_con_la_desviacion_medida": 0.014342,
+    "gap_con_v03": 0.117450,
+    "ajustes_de_red": 270,
+    "defecto_de_redaccion": (
+        "esta corrida dio el resultado cientificico correcto con las veintitres "
+        "afirmaciones CONFIRMADO, pero el informe se contradia en el control de "
+        "presupuesto: decia a la vez que se habia superado el presupuesto y que no. Los "
+        "numeros cientificos de arriba son la referencia con la que hay que comparar esta "
+        "reejecucion"
+    ),
+    "comparacion_obligatoria": (
+        "si al reejecutar los brazos no dan estas MISMAS medias, hay no determinismo y hay "
+        "que parar antes de publicar"
+    ),
+}
+
+DISCREPANCIA_NOTA_DEFINITIVA_Y_MOMENTO_DE_A19: Final[str] = (
+    "DISCREPANCIA DECLARADA, corregida. DOS fallos de redaccion del control de "
+    "presupuesto. Primero: la nota definitiva del tramo recibia un False escrito a mano en "
+    "el primer argumento en vez de la comparacion real entre el tiempo consumido y el "
+    "presupuesto, luego decia SIEMPRE que no se habia excedido. Segundo: A19 se evaluaba en "
+    "un punto del pipeline que no es el final, con el reloj por debajo del presupuesto, luego "
+    "la afirmacion que vigila el presupuesto se media antes de que el presupuesto existiera. "
+    "El informe se contradia a si mismo: con 5850.165344 s reales contra 5400 de presupuesto "
+    "decia a la vez DENTRO_DE_PRESUPUESTO con excedio_el_presupuesto en false, y "
+    "autorizacion_del_tramo_2 decia que se habia superado por autorizacion. LAS DOS FORMAS "
+    "eran: relajar A19 o recalcular la nota al final, o calcular la excedencia UNA sola vez "
+    "en un unico sitio y derivar de ahi las entradas que la mencionan. Se elige la segunda, y "
+    "para que no vuelva la funcion recibe el TIEMPO REAL y el PRESUPUESTO en vez de un "
+    "booleano ya calculado, luego no hay forma de pasar un literal por error, y A19 se mueve "
+    "al FINAL del pipeline. Lo instructivo: el unico hallazgo que no dependia de los datos, "
+    "el del presupuesto, fue el que no supo decir bien; las veintitres afirmaciones estaban "
+    "CONFIRMADO, luego el defecto no estaba en la medicion sino en como se redactaba"
+)
 
 DISCREPANCIA_CRITERIO_DE_NETO: Final[str] = (
     "DISCREPANCIA DECLARADA, corregida. El criterio de no negatividad de A17 se aplicaba "
@@ -4085,7 +4181,7 @@ def construir_contexto_sintetico(
 # Suelo de cobertura igual al RECUENTO REAL de la puerta de humo con los dos casos
 # ejecutados. Subido desde 0 despues de que la puerta pasara entera: si algun caso deja
 # de registrarse, la puerta sale con codigo 1 aunque no haya ningun fallo explicito.
-SUELO_COBERTURA: Final[int] = 154
+SUELO_COBERTURA: Final[int] = 164
 
 
 class PuertaHumo:
@@ -4595,6 +4691,21 @@ def ejecutar_casos_de_tramo_2(puerta: PuertaHumo) -> None:
         and (not sin_bandera["autorizado_por_una_persona"]),
         "con la bandera queda autorizado=True y con el motivo",
     )
+    literales = auditar_booleanos_literales(Path(__file__).read_text(encoding="utf-8"))
+    puerta.registrar(
+        "la_auditoria_no_encuentra_booleanos_literales_en_llamadas_de_informe",
+        not literales,
+        f"n={len(literales)}",
+    )
+    con_literal = auditar_booleanos_literales(
+        "construir_nota_de_tramos(True, 5400.0, False, 2400.0, False)\n"
+        "construir_nota_de_tramos(5850.165344, 5400.0, False, 2400.0, False)\n"
+    )
+    puerta.registrar(
+        "la_auditoria_detecta_un_literal_booleano_pasado_a_mano",
+        len(con_literal) == 1,
+        "un False escrito a mano tiene que verse",
+    )
     puerta.registrar(
         "presupuesto_e_hito_no_cambiados_por_la_bandera",
         CONFIG["budget_segundos"] == 5400 and CONFIG["hito_segundos"] == 2400,
@@ -4615,8 +4726,43 @@ def ejecutar_casos_de_presupuesto(puerta: PuertaHumo) -> None:
     hito = 3666.928448
     dentro = presupuesto - 60.0
     excedido = presupuesto + 360.0
-    sin_autor = construir_nota_de_tramos(True, False, hito, False)["texto"]
-    con_autor = construir_nota_de_tramos(True, True, hito, True)["texto"]
+    sin_autor = construir_nota_de_tramos(
+        presupuesto + 360.0, presupuesto, False, hito, False
+    )["texto"]
+    con_autor = construir_nota_de_tramos(
+        presupuesto + 360.0, presupuesto, True, hito, True
+    )["texto"]
+    dentro_texto = construir_nota_de_tramos(
+        presupuesto - 60.0, presupuesto, True, hito, False
+    )["texto"]
+    puerta.registrar(
+        "nota_sin_exceder_texto_vacio_y_situacion_dentro",
+        dentro_texto == ""
+        and construir_nota_de_tramos(
+            presupuesto - 60.0, presupuesto, True, hito, False
+        )["situacion"] == "DENTRO_DE_PRESUPUESTO",
+        "tiempo por debajo del presupuesto no declara nada",
+    )
+    puerta.registrar(
+        "la_excedencia_se_CALCULA_dentro_y_no_se_recibe_como_literal",
+        construir_nota_de_tramos(
+            presupuesto + 450.165344, presupuesto, True, hito, True
+        )["excedencia_en_segundos"] == 450.165344
+        and construir_nota_de_tramos(
+            presupuesto - 1.0, presupuesto, True, hito, True
+        )["excedio_el_presupuesto"] is False,
+        "450.165344 s de excedencia medidos, y un tiempo menor no excede",
+    )
+    puerta.registrar(
+        "las_dos_entradas_que_hablan_del_presupuesto_dicen_LO_MISMO",
+        construir_nota_de_tramos(
+            presupuesto + 360.0, presupuesto, True, hito, True
+        )["situacion"]
+        == construir_nota_de_tramos(
+            presupuesto + 360.0, presupuesto, True, hito, True
+        )["situacion"],
+        "la situacion se calcula en un solo sitio y las demas la derivan",
+    )
     tres = [
         ("sin_exceder_el_presupuesto", comprobar_presupuesto(dentro, "", presupuesto)),
         ("exceder_sin_autorizacion_tramo_2_no_ejecutado", comprobar_presupuesto(excedido, sin_autor, presupuesto)),
@@ -6376,7 +6522,11 @@ def comprobar_cobertura_de_la_red_negativa() -> tuple[bool, dict[str, Any]]:
 
 
 def construir_nota_de_tramos(
-    excedido: bool, ejecutar_tramo_2: bool, hito: float, autorizado: bool
+    tiempo_real: float,
+    presupuesto: float,
+    ejecutar_tramo_2: bool,
+    hito: float,
+    autorizado: bool,
 ) -> dict[str, Any]:
     """Construye la nota de tramos con la REALIDAD, no con una constante unica.
 
@@ -6385,8 +6535,13 @@ def construir_nota_de_tramos(
     que afirma que el tramo 2 no se ejecuto cuando si se ejecuto es peor que uno que no
     dice nada.
 
+    LA EXCEDENCIA SE CALCULA AQUI, no se recibe. El primer parametro es el tiempo real y
+    el segundo el presupuesto, luego no existe forma de pasar un literal booleano por
+    error: esa es exactamente la clase de fallo que ya ha pasado dos veces en este fichero.
+
     Args:
-        excedido: si el tiempo real supero el presupuesto declarado.
+        tiempo_real: segundos de reloj realmente consumidos, o su proyeccion.
+        presupuesto: presupuesto declarado en segundos.
         ejecutar_tramo_2: si el tramo 2 se ejecuto.
         hito: hito observado, en segundos.
         autorizado: si una persona autorizo continuar.
@@ -6394,8 +6549,9 @@ def construir_nota_de_tramos(
     Returns:
         Diccionario con la situacion, el texto y las banderas.
     """
+    excedido = float(tiempo_real) > float(presupuesto)
     hito_texto = f"{float(hito):.3f} s"
-    presupuesto_texto = f"{CONFIG['budget_segundos']} s"
+    presupuesto_texto = f"{float(presupuesto):.3f} s"
     hito_cifra_texto = f"{CONFIG['hito_segundos']} s"
     if not excedido:
         situacion = "DENTRO_DE_PRESUPUESTO"
@@ -6422,6 +6578,9 @@ def construir_nota_de_tramos(
         "situacion": situacion,
         "texto": texto,
         "porque": porque,
+        "tiempo_real": round(float(tiempo_real), 6),
+        "presupuesto": round(float(presupuesto), 6),
+        "excedencia_en_segundos": round(float(tiempo_real) - float(presupuesto), 6),
         "excedio_el_presupuesto": bool(excedido),
         "se_ejecuto_el_tramo_2": bool(ejecutar_tramo_2),
         "autorizado_por_una_persona": bool(autorizado),
@@ -6444,7 +6603,9 @@ def decidir_tramo_2(hito: float, autorizado: bool) -> dict[str, Any]:
     proyecta_superar = hito * 1.6 > CONFIG["budget_segundos"]
     salta_por_reloj = bool(se_paso_el_hito and proyecta_superar)
     ejecutar = bool((not salta_por_reloj) or autorizado)
-    nota = construir_nota_de_tramos(salta_por_reloj, ejecutar, hito, autorizado)["texto"]
+    nota = construir_nota_de_tramos(
+        hito * 1.6, CONFIG["budget_segundos"], ejecutar, hito, autorizado
+    )["texto"]
     if ejecutar and autorizado:
         motivo = (
             "el hito se paso y la condicion del reloj habria saltado el tramo 2, pero una "
@@ -6610,8 +6771,14 @@ def ejecutar_p82_completo(
             "presupuesto",
             f"hito de {hito:.3f} s proyecta superar el presupuesto; {decision_tramo2['motivo']}",
         )
+    # UNA SOLA FUENTE DE VERDAD: el tiempo real y el presupuesto se miden aqui y la
+    # comparacion la hace construir_nota_de_tramos. No se pasa ningun literal.
     nota_definitiva = construir_nota_de_tramos(
-        False, decision_tramo2["ejecutar_tramo_2"], hito, autorizar_tramo2
+        time.perf_counter() - inicio_monotonic,
+        CONFIG["budget_segundos"],
+        decision_tramo2["ejecutar_tramo_2"],
+        hito,
+        autorizar_tramo2,
     )
     nota_tramo2 = nota_definitiva["texto"]
     tiempos_de_tramos["tramo_1"] = hito
@@ -6698,6 +6865,9 @@ def ejecutar_p82_completo(
         ),
         "las formulas se aplican tal cual, con la desviacion MEDIDA y no con la planificada",
     )
+    # A19 SE EVALUA AL FINAL DEL PIPELINE: vigila el presupuesto, luego se mide cuando el
+    # reloj ya esta completo. Antes se media a mitad, con el reloj por debajo de 5400, y
+    # decia que no habia excedido lo que aun no habia ocurrido.
     carga_preliminar = construir_carga_preliminar(
         progreso, progreso.marca, datetime.now(timezone.utc), "completo", intervalo,
         auditar_propio_script()[1],
@@ -6801,21 +6971,6 @@ def ejecutar_p82_completo(
         lambda: comprobar_formulacion_literal(carga_preliminar),
         "coincidencia exacta, cero margen",
     )
-    transcurrido = time.perf_counter() - inicio_monotonic
-    progreso.evaluar(
-        "A19",
-        lambda: comprobar_presupuesto(
-            round(transcurrido, 6),
-            construir_nota_de_tramos(
-                round(transcurrido, 6) > CONFIG["budget_segundos"],
-                decision_tramo2["ejecutar_tramo_2"],
-                decision_tramo2["hito_observado"],
-                decision_tramo2["autorizado_por_una_persona"],
-            )["texto"],
-            CONFIG["budget_segundos"],
-        ),
-        "el tiempo real se publica con 6 decimales y se compara contra el presupuesto",
-    )
     esperado_ib = len(corridas) * len(contexto.pliegues) * ajustes.n_semillas
     conteo_ib = sum(corrida.evaluations_ib for corrida in corridas.values())
     progreso.evaluar(
@@ -6841,6 +6996,28 @@ def ejecutar_p82_completo(
         "seis decimales, los diez valores presentes y el conteo de signos",
     )
 
+    transcurrido = time.perf_counter() - inicio_monotonic
+    nota_para_a19 = construir_nota_de_tramos(
+        round(transcurrido, 6),
+        CONFIG["budget_segundos"],
+        decision_tramo2["ejecutar_tramo_2"],
+        decision_tramo2["hito_observado"],
+        decision_tramo2["autorizado_por_una_persona"],
+    )["texto"]
+    progreso.evaluar(
+        "A19",
+        lambda: con_extra(
+            lambda: comprobar_presupuesto(
+                round(transcurrido, 6), nota_para_a19, CONFIG["budget_segundos"]
+            ),
+            {
+                "se_evalua_al_final_del_pipeline": True,
+                "nota_leida_de": "construir_nota_de_tramos con el tiempo real medido aqui",
+                "decision_del_tramo_2": decision_tramo2,
+            },
+        ),
+        "el tiempo real se publica con 6 decimales y se compara contra el presupuesto",
+    )
     huella_despues = huella_fichero(W2V_NPZ)
     progreso.registro["A0"].detalle["despues"] = huella_despues
     progreso.registro["A0"].detalle["coinciden_antes_y_despues"] = bool(
@@ -6890,10 +7067,13 @@ def ejecutar_p82_completo(
                 "tiempo_al_terminar_el_tramo_2": round(tiempos_de_tramos.get("tramo_2", 0.0), 6),
                 "nota_tramo2": nota_tramo2,
                 "declaracion": (
-                    "el presupuesto declarado se supero POR AUTORIZACION de una persona y "
-                    "no porque el reloj lo permitiera; el presupuesto y el hito no se "
-                    "cambiaron y la condicion del hito sigue intacta"
+                    "el tramo 2 se ejecuto porque una persona lo autorizo de forma "
+                    "explicita; la situacion del PRESUPUESTO no se dice aqui porque la "
+                    "calcula un unico sitio, nota_definitiva_de_tramos, y aqui solo se "
+                    "declara la autorizacion. El presupuesto y el hito no se cambiaron y la "
+                    "condicion del hito sigue intacta"
                 ),
+                "la_situacion_del_presupuesto_esta_en": "nota_definitiva_de_tramos",
             },
             "ajustes_de_red": progreso.contadores.get("ajustes_de_red", 0),
             "escrituras_fallidas": progreso.escrituras_fallidas,
@@ -7044,15 +7224,36 @@ def main() -> int:
                 print(f"[p82]   - {entrada}")
             print("[p82] el informe NO se escribe, para no declarar un resultado sin decidir")
             return 3
-        if not escribir_unico(REPORTE_JSON, a_json_legible(carga)):
-            print(f"[p82] el informe {REPORTE_JSON} ya existia y no se sobrescribe")
+        # DESTINO OCUPADO. El guard antitrunco NO se toca ni se relaja: si el destino
+        # canonico existe, no se sobrescribe. En su lugar se escribe con la marca de la
+        # corrida, y el informe declara cual es su nombre y que hay una corrida anterior.
+        destino_json = REPORTE_JSON
+        destino_md = REPORTE_MD
+        reejecucion = REPORTE_JSON.exists()
+        if reejecucion:
+            destino_json = REPORTS / f"p82_rnn_atencion_{marca}.json"
+            destino_md = REPORTS / f"p82_rnn_atencion_{marca}.md"
+            carga["informe_anterior_conservado"] = {
+                "ruta_del_anterior": str(REPORTE_JSON.relative_to(PROJECT_ROOT)),
+                "motivo": (
+                    "el destino canonico ya existia y el guard antitrunco se niega a "
+                    "sobrescribirlo, luego esta corrida escribe con su marca y conserva "
+                    "el anterior intacto"
+                ),
+                "corrida_actual": marca,
+            }
+            carga["corrida_anterior"] = RESULTADO_CIENTIFICO_RAZONADO
+        if not escribir_unico(destino_json, a_json_legible(carga)):
+            print(f"[p82] el informe {destino_json} ya existia y no se sobrescribe")
             return 4
-        escribir_unico(REPORTE_MD, construir_markdown(carga))
-        ok_fichero, detalle_fichero = leer_contraste_del_fichero(REPORTE_JSON)
+        escribir_unico(destino_md, construir_markdown(carga))
+        ok_fichero, detalle_fichero = leer_contraste_del_fichero(destino_json)
         if not ok_fichero:
             print(f"[p82] el JSON escrito no declara bien el contraste primario: {detalle_fichero}")
             return 5
-        print(f"[p82] corrida completa escrita en {REPORTE_JSON}")
+        print(f"[p82] corrida completa escrita en {destino_json}")
+        if reejecucion:
+            print(f"[p82] corrida anterior conservada en {REPORTE_JSON}")
         return 0
 
     casos = ["INCOMPLETO", "COMPLETO"] if argumentos.caso == "ambos" else [argumentos.caso]
