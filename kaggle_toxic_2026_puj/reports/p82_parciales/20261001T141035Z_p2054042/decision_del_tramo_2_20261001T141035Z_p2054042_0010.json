@@ -1,0 +1,12 @@
+{
+  "autorizado_por_una_persona": true,
+  "ejecutar_tramo_2": true,
+  "hito_observado": 3666.928448,
+  "hito_segundos": 2400,
+  "la_condicion_del_reloj_se_cumplio": true,
+  "motivo": "el hito se paso y la condicion del reloj habria saltado el tramo 2, pero una persona lo autorizo explicitamente con la bandera, luego se ejecuta",
+  "nota_tramo2": "",
+  "presupuesto_segundos": 5400,
+  "proyecta_superar_el_presupuesto": true,
+  "se_paso_el_hito": true
+}

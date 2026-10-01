@@ -1,0 +1,24 @@
+{
+  "marca_corrida": "20261001T051317Z_p1023604",
+  "resultado": {
+    "bloque": 0,
+    "coste_segundos": 1.2e-05,
+    "descripcion": "sha256 del congelado, tamano y mtime antes y despues",
+    "detalle": {
+      "antes": {
+        "mtime_ns": 1790744455825458351,
+        "ruta": "modelos/twitter_domain/w2v_twitter_100d.npz",
+        "sha256": "302c994d13b75f8f5fbd440eea2c4f4113997e2581524021923b92f8244d705a",
+        "size": 29478868
+      },
+      "motivo": "se comprueba de nuevo al final"
+    },
+    "estado": "CONFIRMADO",
+    "exito": true,
+    "id": "A0",
+    "naturaleza": "CONFIRMAR",
+    "stop": true,
+    "tolerancia": "coincidencia exacta de sha256, size y mtime_ns, antes y despues",
+    "traza": ""
+  }
+}

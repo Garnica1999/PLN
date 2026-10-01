@@ -1,0 +1,26 @@
+{
+  "marca_corrida": "20261001T172443Z_p2425748",
+  "resultado": {
+    "bloque": 4,
+    "coste_segundos": 1e-05,
+    "descripcion": "cada comprobacion sabe FALLAR, por mutacion",
+    "detalle": {
+      "mutaciones": {
+        "decision_epoca_sobre_ib": true,
+        "intervalo_bootstrap": true,
+        "mascara_despues_de_rnn": true,
+        "ocho_semillas": true,
+        "omitir_clip_en_reajuste": true,
+        "permutacion_con_sustitucion": true
+      },
+      "n": 6
+    },
+    "estado": "CONFIRMADO",
+    "exito": true,
+    "id": "A22",
+    "naturaleza": "CONFIRMAR",
+    "stop": true,
+    "tolerancia": "los seis fallos inyectados se detectan; cero tolerancias",
+    "traza": ""
+  }
+}

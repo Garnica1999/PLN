@@ -1,0 +1,43 @@
+{
+  "marca_corrida": "20261001T172549Z_p2427889",
+  "resultado": {
+    "bloque": 1,
+    "coste_segundos": 0.000295,
+    "descripcion": "early stopping estrictamente anidado, verificado por filas",
+    "detalle": {
+      "comprobaciones": {
+        "decision_dentro_de_ia": true,
+        "e_estrella_es_la_mediana": true,
+        "ib_nunca_en_decision": true,
+        "las_particiones_de_decision_son_distintas": true,
+        "tres_particiones_de_decision_por_combinacion": true
+      },
+      "distincion_publicada": "una EVALUACION por epoca de cada split, y una DECISION por split interno; A5 acota el segundo numero, que es exactamente 3",
+      "e_estrella": 19,
+      "epocas_internas": [
+        19,
+        25,
+        19
+      ],
+      "ib_en_alguna_decision": false,
+      "mediana": 19.0,
+      "n_esperadas": 3,
+      "n_evaluaciones_de_decision": 78,
+      "n_filas_distintas_vistas": 808,
+      "n_filas_por_particion": [
+        395,
+        395,
+        395
+      ],
+      "n_particiones_de_decision": 3,
+      "subconjunto_estricto_de_ia": true
+    },
+    "estado": "CONFIRMADO",
+    "exito": true,
+    "id": "A5",
+    "naturaleza": "CONFIRMAR",
+    "stop": true,
+    "tolerancia": "enteros exactos para los contadores; identidad de conjuntos para la pertenencia",
+    "traza": ""
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "marca_corrida": "20261001T080906Z_p1362206",
+  "resultado": {
+    "bloque": 0,
+    "coste_segundos": 8e-06,
+    "descripcion": "solo se leen las fuentes declaradas, contadores publicados",
+    "detalle": {
+      "filas_de_desarrollo": 1483,
+      "filas_holdout_descartadas": 248,
+      "filas_read_train": 1731,
+      "filas_test_leidas": 0
+    },
+    "estado": "CONFIRMADO",
+    "exito": true,
+    "id": "A1",
+    "naturaleza": "CONFIRMAR",
+    "stop": true,
+    "tolerancia": "enteros exactos; 1483 de desarrollo, 0 de test y 0 de holdout",
+    "traza": ""
+  }
+}

@@ -9676,3 +9676,186 @@ y A0 lo confirma ademas en `mtime_ns`.
 ```text
 V03 remains the best verified leaderboard result.
 ```
+## D-279: P82. La atencion es indistinguible de cero en los dos nucleos, y la geometria del embedding no lo es
+
+**Status**: CERRADO Y PUBLICADO, con resultado **EXPLORATORIO**. Las veintitres afirmaciones medidas:
+23 CONFIRMADO, 0 REFUTADO, 0 ERROR, 0 STOP, 0 sin ejecutar. La publicacion no es la de un resultado
+positivo, sino la de un limite de deteccion que se alcanzo y se declara.
+
+**Date**: 2026-10-01
+
+**Context**
+
+Script `experiments/p82_01_rnn_atencion.py`, sha256
+`b19802dfa44b3b38ce6caf42829944e7320be82953f56ef60fb10a04c69328e6`. Pre-registro
+`docs/p82_preregistro_rnn_atencion.md` commiteado en `e59548f`, enmienda 1
+`docs/p82_enmienda_1.md` sha256 `53c8555d1a5ef0fcebb06c4a6f061acf56e568d95242e907387f0af1b03420d8`
+en `dcdbd75`, enmienda 2 `docs/p82_enmienda_2.md` en `9400b3c`.
+
+Informe final `reports/p82_rnn_atencion.json`, sha256
+`3d0bc0d16a1ea8b427e0f2e0cfd1a765d962370477829ce9d11a2c81de7a9686`, 94089 B, y
+`reports/p82_rnn_atencion.md`, sha256
+`af808f8ecc4949bad2fbe81610b56e2300524f95267c19e368017d62e1cdcc7a`, 11887 B. Corrida buena, marca
+`20261001T172549Z_p2427889`, con los **cinco** brazos. 270 ajustes de red, 5850.165344 s reales
+contra 5400 de presupuesto. Artefacto congelado sin cambio, sha256
+`302c994d13b75f8f5fbd440eea2c4f4113997e2581524021923b92f8244d705a` antes y despues.
+
+**No hay entrada previa de P82 en este fichero que marcar.** El control por `grep` sobre DECISIONS.md
+no devuelve ninguna mencion de P82 ni de p82 antes de esta entrada, de modo que la corrida del tramo 1
+y los intentos fallidos **se describen aqui dentro**, y no como una entrada previa que haya que
+reescribir. La entrada anterior, D-278, es la corrida final de P81 y se conserva integra.
+
+El informe del tramo 1, `reports/p82_rnn_atencion_tramo1.json` sha256
+`dd87d42e9a5632347cb737240ec223563fd8b9ec123f9291353cf05bfbdf855e` y
+`reports/p82_rnn_atencion_tramo1.md` sha256
+`bd75cfca1d07a0a86a7986de2d9a94c3e2a5753dfb46cea51f37036bfd9f118d`, **se conserva y no se borra**: es
+la marca `20261001T080906Z_p1362206`, **solo tres brazos** B1, B2 y B5, con 21 CONFIRMADO y 2
+REFUTADO de 23. **Es una corrida previa que no publico informe con los cinco brazos**, luego no
+describe el resultado de P82 y no puede leerse como el.
+
+Los cinco brazos, media y desviacion entre las diez semillas: B1 GRU sin atencion 0.639659 con
+0.011615, B2 GRU con atencion 0.637554 con 0.014905, B3 LSTM sin atencion 0.615163 con 0.012924, B4
+LSTM con atencion 0.617194 con 0.020434, B5 GRU con atencion y matriz permutada 0.560747 con
+0.019137. Las cinco comparaciones pareadas con t de Student sobre los deltas por semilla: P1 B2 menos
+B1 en -0.002105 con IC95 [-0.012406, 0.008196] y 4 signos positivos de 10; P2 B4 menos B3 en
++0.002031 con IC95 [-0.016628, 0.020690] y 7 de 10; P3 B2 menos B5 en 0.076807 con IC95 [0.059823,
+0.093791] y 10 de 10; P4 B1 menos B5 en 0.078912 con IC95 [0.067144, 0.090680] y 10 de 10; P5 B1
+menos B3 en 0.024496 con IC95 [0.013551, 0.035441] y 10 de 10.
+
+**El resultado**, y es el que hay que leer bien. El efecto de la atencion es **indistinguible de
+cero en los dos nucleos y con signos opuestos**, -0.002105 en GRU y +0.002031 en LSTM, los dos muy
+por debajo del minimo detectable de 0.014342. El pre-registro, seccion 3, decia que si la atencion
+tuviera el mismo signo en los dos nucleos seria la senal mas fuerte posible, y que con signos
+opuestos seria la prueba mas fuerte de que era ruido. **Salio lo segundo, y se publica como el
+resultado principal de P82.** No se elige el brazo que sale bien.
+
+**La geometria del embedding si se ve, con el signo coherente en diez de diez semillas y el intervalo
+entero por encima de cero:** 0.076807 contra la matriz permutada con atencion y 0.078912 sin ella.
+Es la medicion que nlp-specialist pidio en la Fase 5 y que este proyecto nunca habia hecho, y separa
+**existe geometria** de **esa geometria esta asignada a estos tokens**. La respuesta es que si.
+
+**Y un hallazgo que no estaba en las hipotesis: GRU supera a LSTM por 0.024496, con diez de diez.** No
+figuraba en ninguna hipotesis del pre-registro y se registra como hallazgo no anticipado, no como
+confirmacion de algo pedido.
+
+La cronologia de los ocho intentos, con lo que se rompio y como se arreglo. La primera corrida salio
+por CPU porque **el script no tenia forma de usar la GPU**, ni una mencion a GPU, ROCm o cuda, ni una
+llamada `to` con argumento de dispositivo: 66 minutos sin cerrar el primer bloque, con 30 nucleos y
+la GPU al 7 por ciento, y se paro con su PID. **La causa era del script, no del encargo de
+ejecucion.** La medicion del coste por dispositivo dio que la GPU gana por un factor dos, no mas, y
+que 30 hilos es un 32 por ciento PEOR que 16, y con ella vino la Enmienda 2. La primera puerta se
+nego a publicar porque A4 y A22 no se evaluaban en el modo completo sino solo en el humo, y las dos
+tienen STOP, con veintitres afirmaciones declaradas y veintiuna medida. Al autorizar el tramo 2
+aparecio una contradiccion en A19, que exige nota cuando se excede el presupuesto, y la nota se
+escribia SOLO en la rama en que el tramo 2 no se ejecutaba: la primera corrida autorizada ejecuto los
+cinco brazos y **se detuvo en A19 con STOP**. Y luego, un bug de cableado de una linea, **encontrado
+aqui y no por el revisor**: el bucle del tramo 2 se controlaba con `if not nota_tramo2`, de modo que
+con la autorizacion, que produce una nota larga y no vacia, **el tramo 2 nunca se ejecutaba aunque se
+autorizara**. Ademas, el criterio de no negatividad de A17 se aplicaba tambien a `neto`, que es una
+resta, y los tres netos reales son negativos porque el brazo hace mas dano del que rescata frente a
+V03, luego la comprobacion trataba como error de datos el hallazgo central. Y dos afirmaciones
+comparaban una constante consigo misma, y cinco usaban tupla anidada, que es truthy y hacia que
+TODO saliera CONFIRMADO. **Ninguno lo cazo el humo.**
+
+**Decision**
+
+**P82 queda cerrado y publicado, y su resultado se declara EXPLORATORIO, no confirmatorio.** El
+intervalo de deteccion se calculo ANTES de correr, con potencia 0.8993 a diez semillas, y por eso un
+resultado negativo **no habilita** la conclusion de que la atencion no aporta: habilita la
+conclusion, que es mas estrecha, de que el efecto es inferior a lo que este diseno resuelve. La cadena
+literal queda dentro del informe.
+
+**La afirmacion que SI se sostiene y que se declara solida** es la de la geometria del embedding
+contra la matriz permutada, en los dos brazos, con diez de diez signos y el intervalo entero por
+encima de cero. Es la medicion que faltaba en la Fase 5.
+
+**El hallazgo no anticipado, GRU sobre LSTM por 0.024496, se registra como tal**, sin presentarlo
+como una hipotesis que se habia pedido.
+
+**El mejor brazo se queda a 0.137552 de V03**, y V03 sigue siendo el mejor resultado verificado.
+
+**P82 es la PRIMERA medicion con early stopping estrictamente anidado con particion interna**, luego
+sus numeros **no son comparables** con `v9_04` ni con `v10_11`, que elegian el checkpoint con el mismo
+pliegue externo que luego puntuaban, que es la fuga que condeno a P73 y a P74.
+
+**Sigue vigente el limite permanente de P81**: no hay anclaje a una implementacion externa de SGNS
+porque gensim no esta instalado y no compila con Python 3.14.7, luego P82 autoriza afirmar sobre el
+OBJETIVO del trainer y no sobre la calidad relativa frente a una libreria.
+
+**La Enmienda 1** corrige el coste de la atencion de 8256 a 16448 parametros, porque 8256 asumia una
+celda unidireccional de ancho 64 y los brazos son bidireccionales con salida de ancho 128. Real
+medido 16448 sin sesgos y 16576 con sesgos, y se publican las dos cifras. **La Enmienda 2** declara el
+dispositivo por medicion, GPU AMD Radeon RX 9070 XT, 16 hilos, sin precision mixta, con la
+consecuencia de que los absolutos y los deltas son los de ese dispositivo.
+
+**Carlos autorizo el tramo 2**, que excede el presupuesto declarado, y queda registrado como
+**autorizacion explicita**, no como excedencia unnoticed. El presupuesto y el hito no se cambiaron.
+
+**Los ocho intentos se conservan enteros.** En `reports/p82_parciales/` hay **cinco** subdirectorios
+con marca de corrida, no ocho, con 143 ficheros, mas cinco ficheros sueltos en la raiz del mismo
+directorio de la marca `20261001T051317Z_p1023604` que es el intento en CPU, para 148 ficheros en
+total. Los ocho intentos son seis corridas en modo completo mas dos de humo, con cuatro directorios
+de humo de 44 ficheros cada uno. Ademas, la Enmienda 2 afirma "siete ficheros parciales de A0 a A3 y
+A8" y en disco hay cinco, que son A0, A1, A2, A3 y A8: el recuento de la enmienda no cuadra con lo
+que quedo, y **no se corrige la enmienda**, que es parte del pre-registro ya commiteado, sino que se
+publica el numero real.
+
+**Alternatives Considered**
+
+1. **Leer el resultado negativo como que la atencion no aporta. Descartado**, y es el punto central
+   de esta entrada. El intervalo de deteccion se calculo antes de correr; un intervalo que contiene
+   el cero no distingue entre efecto nulo y efecto por debajo del minimo detectable. Confundir las dos
+   cosas es exactamente el fallo que el pre-registro de P82 queria evitar al declarar que el
+   resultado negativo se lee como un limite del diseno.
+2. **Elegir el brazo que sale bien, B4 frente a B3, o descartar los signos opuestos. Descartado.**
+   Los signos son opuestos y eso es el resultado, no un defecto de los datos. Elegir el lado favorable
+   seria la lectura que el propio pre-registro prohibe.
+3. **Declarar el resultado confirmatorio porque las veintitres afirmaciones son CONFIRMADO.
+   Descartado.** Las afirmaciones miden lo que declaran medir. Que las veintitres pasen no convierte
+   en confirmatorio un diseno cuya potencia declarada es 0.8993 y cuyo intervalo contiene el cero en
+   las dos comparaciones del primario. Son dos cosas distintas: el instrumento esta sano y la
+   pregunta queda sin respuesta.
+4. **Tratar los tres netos negativos de A17 como error de datos y relajar la afirmacion.
+   Descartado.** Los netos son negativos porque el brazo hace mas dano del que rescata frente a V03,
+   que es un hallazgo, y el criterio de no negatividad estaba mal definido por aplicar a una resta lo
+   que solo tiene sentido en un recuento. **Se corrige el criterio, no la afirmacion**, que es la
+   regla que este proyecto ya aplico en P81 con el bloque que no apoyaba a la suma.
+5. **Relajar A19 quitando la exigencia de nota cuando hay excedencia. Descartado.** Se construye la
+   nota con la situacion real. Relajar una afirmacion para que pase es justo lo que este proyecto no
+   hace, y A19 fue la que cazo el fallo de la nota.
+6. **Corregir ahora el bloque de resumen del cronometro del informe, que dice
+   `DENTRO_DE_PRESUPUESTO` cuando el tiempo real de 5850.165344 s supera el presupuesto de 5400.**
+   Descartado **en este encargo**, que es de registro y no de ejecucion, y el informe ya esta
+   publicado con su sha256. Queda apuntado como defecto residual para una corrida posterior. A19, que
+   recalcula desde el tiempo real, si detecta la situacion correcta
+   `EXCEDIDO_Y_TRAMO_2_EJECUTADO_CON_EXCEDENCIA_AUTORIZADA`, luego **ninguna afirmacion esta mal** y el
+   defecto es del resumen.
+
+**Consequences**
+
+P82 pasa a ser el artefacto que consume el proyecto, en `reports/p82_rnn_atencion.json` y
+`reports/p82_rnn_atencion.md`, con sus dos sha256 publicados y la cadena literal de lectura negativa
+dentro del propio informe. **El informe del tramo 1 se conserva** y queda marcado en esta entrada
+como corrida previa que no publico informe con los cinco brazos, con sus dos sha256. Los cinco
+subdirectorios de parciales, los cinco ficheros sueltos y los cuatro directorios de humo se
+conservan enteros y no se borran.
+
+**La leccion operativa, que aplica a todo el proyecto y no solo a P82:** un modo de humo que
+ejercita funciones con datos sinteticos **no verifica el contrato entre capas**, y un caso de humo
+que no puede fallar no prueba nada. En P82 eso se manifesto en tres formas a la vez, dos constantes
+comparadas consigo mismas y cinco tuplas anidadas que hacian que todo saliera CONFIRMADO porque una
+tupla no vacia es truthy y el estado nunca veia el booleano, y ninguna la cazo el humo. Y hay una
+segunda leccion, mas incomoda: **un hallazgo scientifico relevante puede hacer fallar una
+comprobacion bien escrita si el criterio de la comprobacion estaba mal definido**, luego hay que
+mirar el criterio antes de culpar a los datos. En P82, los netos negativos de A17 treated como error
+de datos era el hallazgo central del experimento disfrazado de fallo de instrumentacion.
+
+Fronteras respetadas y comprobadas: test 0, holdout 0 identificadores deserializados, leaderboard 0,
+submission 0, P71 a P81 sin tocar, V03 sin tocar, umbrales 0.44, 0.51 y 0.46 sin tocar, `modelos/`
+sin escrituras. Artefacto congelado
+`302c994d13b75f8f5fbd440eea2c4f4113997e2581524021923b92f8244d705a` de 29478868 bytes antes y despues,
+con el mismo `mtime_ns`.
+
+```text
+V03 remains the best verified leaderboard result.
+```

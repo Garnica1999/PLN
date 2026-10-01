@@ -1,0 +1,27 @@
+{
+  "marca_corrida": "20261001T141035Z_p2054042",
+  "resultado": {
+    "bloque": 4,
+    "coste_segundos": 2.1e-05,
+    "descripcion": "presupuesto de reloj respetado y tiempo real publicado",
+    "detalle": {
+      "comprobaciones": {
+        "presupuesto_comparado_contra_config": true,
+        "si_excede_exige_nota_de_tramo_2": false,
+        "tiempo_real_publicado_y_finito": true
+      },
+      "excedido": true,
+      "margen_segundos": -360.700236,
+      "nota_de_tramo_2": "",
+      "presupuesto_segundos": 5400.0,
+      "tiempo_real_segundos": 5760.700236
+    },
+    "estado": "REFUTADO",
+    "exito": false,
+    "id": "A19",
+    "naturaleza": "CONFIRMAR",
+    "stop": true,
+    "tolerancia": "el tiempo real se publica con 6 decimales y con la etapa",
+    "traza": ""
+  }
+}

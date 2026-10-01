@@ -4696,3 +4696,221 @@ suma**, y eso se publica tal cual.
 ```text
 V03 remains the best verified leaderboard result.
 ```
+## P82 - 2026-10-01 - CORRIDA FINAL. PUBLICADO. 23 de 23 CONFIRMADO, 0 REFUTADO, 0 ERROR, 0 STOP
+
+Corrida buena, marca `20261001T172549Z_p2427889`, con los CINCO brazos. Informe final escrito y
+verificado, y NO se ha vuelto a ejecutar ni editado nada para producing este registro.
+
+```text
+experiments/p82_01_rnn_atencion.py
+  b19802dfa44b3b38ce6caf42829944e7320be82953f56ef60fb10a04c69328e6
+reports/p82_rnn_atencion.json       94089 B
+  3d0bc0d16a1ea8b427e0f2e0cfd1a765d962370477829ce9d11a2c81de7a9686
+reports/p82_rnn_atencion.md          11887 B
+  af808f8ecc4949bad2fbe81610b56e2300524f95267c19e368017d62e1cdcc7a
+```
+
+**Las veintitres afirmaciones, las veintitres CONFIRMADO.** Cero REFUTADO, cero ERROR, cero STOP,
+cero sin ejecutar. A0 a A22.
+
+### Los cinco brazos, media y desviacion entre las diez semillas
+
+| brazo | nucleo | atencion | embedding | media | sd |
+|---|---|---|---|---|---|
+| B1 | GRU | NO | W2V_100d_congelado | 0.639659 | 0.011615 |
+| B2 | GRU | SI | W2V_100d_congelado | 0.637554 | 0.014905 |
+| B3 | LSTM | NO | W2V_100d_congelado | 0.615163 | 0.012924 |
+| B4 | LSTM | SI | W2V_100d_congelado | 0.617194 | 0.020434 |
+| B5 | GRU | SI | W2V_100d_permutado | 0.560747 | 0.019137 |
+
+### Las cinco comparaciones pareadas, con t de Student sobre los deltas por semilla
+
+| id | definicion | naturaleza | media | IC95 | signos + |
+|---|---|---|---|---|---|
+| P1 | B2 - B1, atencion en GRU | PRIMARIA | -0.002105 | [-0.012406, 0.008196] | 4 de 10 |
+| P2 | B4 - B3, atencion en LSTM | SECUNDARIA | 0.002031 | [-0.016628, 0.020690] | 7 de 10 |
+| P3 | B2 - B5, geometria del embedding | SECUNDARIA_DESCRIPTIVA | 0.076807 | [0.059823, 0.093791] | 10 de 10 |
+| P4 | B1 - B5, lo mismo sin atencion | DIAGNOSTICA_DESCRIPTIVA | 0.078912 | [0.067144, 0.090680] | 10 de 10 |
+| P5 | B1 - B3, GRU contra LSTM | DIAGNOSTICA_DESCRIPTIVA | 0.024496 | [0.013551, 0.035441] | 10 de 10 |
+
+Metodo del intervalo que decide: `t_pareado_sobre_semillas`, t de Student sobre los deltas POR
+SEMILLA. No es bootstrap.
+
+**Limite de deteccion.** Desviacion planificada 0.021588, desviacion **medida** en esta corrida
+0.01440007631814541, MDE con esa desviacion 0.014342, y gap **leido del informe de P78**
+0.117450, no escrito a mano. Potencia objetivo declarada 0.8, potencia real en el ancla con la
+desviacion medida 0.9979.
+
+**Cronometro.** 270 ajustes de red, 5850.165344 segundos reales de un presupuesto de 5400. El
+artefacto congelado se comprobo antes y despues y no cambio: sha256
+`302c994d13b75f8f5fbd440eea2c4f4113997e2581524021923b92f8244d705a`, 29478868 bytes, mismo
+`mtime_ns`, `coinciden_antes_y_despues` True. A0 lo confirma ademas en las tres cosas.
+
+### La lectura, que es lo que importa
+
+El efecto de la atencion es **indistinguible de cero en los dos nucleos y con signos opuestos**:
+-0.002105 en GRU y +0.002031 en LSTM, los dos muy por debajo del minimo detectable de 0.014342. El
+pre-registro decia que si la atencion tuviera el mismo signo en los dos nucleos seria la senal mas
+fuerte posible, y que con signos opuestos seria la prueba mas fuerte de que era ruido. **Salio lo
+segundo.**
+
+**Y esto NO es que la atencion no aporte.** Es que este diseno, a diez semillas, no tiene potencia
+para distinguir el efecto de cero. El limite de deteccion se calculo ANTES de correr, con potencia
+0.8993 a diez semillas, y por eso el resultado se declara **EXPLORATORIO** y no confirmatorio. Un
+resultado negativo NO se lee como que la atencion no aporta: se lee como que el efecto es inferior
+a lo que este diseno resuelve. Cadena literal del informe:
+
+```text
+UN_RESULTADO_NEGATIVO_AQUI_NO_AFIRMA_QUE_LA_ATENCION_NO_APORTA_AFIRMA_QUE_EL_EFECTO_ESINFERIOR_AL_LIMITE_DE_DETECCION_DE_ESTE_DISENO
+```
+
+Lo que si es solido, con el signo coherente en diez de diez semillas y el intervalo entero por
+encima de cero, es que **la geometria del embedding importa**: contra la matriz permutada,
+0.076807 (P3) y 0.078912 (P4). Esa es la medicion que nlp-specialist pidio en la Fase 5 y que este
+proyecto nunca habia hecho. Separa **existe geometria** de **esa geometria esta asignada a estos
+tokens**, y la respuesta es que si.
+
+**Y hay un hallazgo que no estaba en las hipotesis: GRU supera a LSTM por 0.024496, con diez de
+diez.** No estaba en ninguna hipotesis del pre-registro y se dice como tal, no como si se hubiera
+pedido. El mejor brazo se queda a **0.137552** de V03, que sigue siendo el mejor resultado
+verificado.
+
+### La cadena de incidencias, ocho intentos
+
+Uno por intento, y ninguno se borro. **Ocho intentos = seis corridas en modo completo mas dos de
+humo.** El detalle del recuento esta en la nota de recuento mas abajo, porque **no son ocho
+directorios de parciales**: hay cinco subdirectorios con marca de corrida dentro de
+`reports/p82_parciales/`, cinco ficheros sueltos en la raiz de ese mismo directorio, y cuatro
+directorios de humo aparte.
+
+1. **La primera corrida salio por CPU porque el script no tenia forma de usar la GPU.** Ni una sola
+   mencion a GPU, ROCm o cuda, ni una llamada `to` con argumento de dispositivo. Consumio 66
+   minutos sin cerrar el primer bloque, con 30 nucleos y la GPU al 7 por ciento. Se paro con su PID.
+   **La causa era del script y no del encargo de ejecucion**, y se corrigio en el script.
+2. **La medicion del coste por dispositivo** dio que la GPU gana por un factor dos, no mas
+   (1.24 s por ajuste frente a 2.43 s con 16 hilos), y que **30 hilos es un 32 por ciento PEOR que
+   16** (3.22 s frente a 2.43 s), por sobrecarga de planificacion con tensores pequenos. Ese dato
+   viene de un micro-benchmark con la clase real del script y esta en la Enmienda 2 con sus numeros.
+3. **La primera puerta se nego a publicar** porque A4 y A22 no se evaluaban en el modo completo sino
+   solo en el humo, y las dos tienen marca de STOP. El script declaraba veintitres afirmaciones y el
+   completo solo media veintiuna. La puerta lo detecto.
+4. **Al autorizar el tramo 2 aparecio una contradiccion en A19:** la nota de tramo 2 se escribia
+   SOLO cuando el tramo 2 no se ejecutaba, luego con la autorizacion la nota quedaba vacia y A19, que
+   exige nota cuando se excede el presupuesto, fallaba. La primera corrida autorizada ejecuto los
+   CINCO brazos y **se detuvo en A19 con STOP** tras 96 minutos contra 90 de presupuesto, con hito
+   observado de 3666.928448 s contra 2400 de hito. Los 29 parciales estan a salvo en
+   `reports/p82_parciales/20261001T141035Z_p2054042/`. **Se corrigio la nota, no A19**, porque A19
+   es correcta y fue ella la que cazo el fallo.
+5. **Un bug de cableado de una linea, encontrado aqui y no por el revisor:** el bucle del tramo 2 se
+   controlaba con `if not nota_tramo2`, y con la autorizacion la nota es un texto largo y no vacio,
+   luego **el tramo 2 NUNCA se ejecutaba aunque se autorizara**. Ahora se controla por
+   `if decision_tramo2["ejecutar_tramo_2"]`, el BOLEANO DE DECISION, que no es lo mismo que la nota.
+6. **El criterio de no negatividad de A17 se aplicaba tambien a `neto`, que es una resta.** Los tres
+   netos reales son negativos, porque el brazo hace mas dano del que rescata frente a V03 (AG -126,
+   HS -160, TR -94), y la comprobacion trataba como error de datos el hallazgo central del
+   experimento. **Corregido el criterio, no relajada la afirmacion.**
+7. **Dos afirmaciones comparaban una constante consigo misma** (LITERAL_TRAMO2 era una constante
+   unica, y la tabla de limite de deteccion tambien), **y cinco con tupla anidada**, que hacian que
+   TODO saliera CONFIRMADO, porque una tupla no vacia es truthy y el estado nunca veia el booleano.
+   **Ninguno lo cazo el humo.**
+8. **La leccion, que aplica a todo el proyecto: un modo de humo que ejercita funciones con datos
+   sinteticos NO verifica el contrato entre capas, y un caso de humo que no puede fallar no prueba
+   nada.** Ademas, un hallazgo scientifico relevante puede hacer fallar una comprobacion bien
+   escrita si el criterio de la comprobacion estaba mal definido, y hay que **mirar el criterio
+   antes de culpar a los datos**.
+
+### Recuento de parciales, que NO se borran
+
+```text
+reports/p82_parciales/  5 subdirectorios con marca de corrida, 143 ficheros
+  20261001T065649Z_p1233382    26 ficheros   intento 1
+  20261001T080906Z_p1362206    28 ficheros   intento 2, el del informe del tramo 1
+  20261001T141035Z_p2054042    29 ficheros   intento 3, el que se detuvo en A19 con STOP
+  20261001T161225Z_p2293418    29 ficheros   intento 4
+  20261001T172549Z_p2427889    31 ficheros   intento 5, el bueno, con los cinco brazos
+  raiz: 5 ficheros sueltos, de la marca 20261001T051317Z_p1023604, el intento en CPU
+  148 ficheros en total
+reports/humo_p82_*  4 directorios, 44 ficheros cada uno, 176 en total, 2 marcas de humo
+```
+
+**El informe del tramo 1 se conserva y no se borra**, porque es evidencia de una corrida con menos
+brazos, y no es el estado final de P82:
+
+```text
+reports/p82_rnn_atencion_tramo1.json
+  dd87d42e9a5632347cb737240ec223563fd8b9ec123f9291353cf05bfbdf855e
+reports/p82_rnn_atencion_tramo1.md
+  bd75cfca1d07a0a86a7986de2d9a94c3e2a5753dfb46cea51f37036bfd9f118d
+  marca 20261001T080906Z_p1362206, SOLO TRES BRAZOS, B1, B2 y B5
+  21 CONFIRMADO y 2 REFUTADO de 23, tiempo real 3913.429214 s
+  no publico los cinco brazos, luego no describe el resultado de P82
+```
+
+### Lo que P82 deja declarado para siempre
+
+**P82 es la PRIMERA medicion con early stopping estrictamente anidado con particion interna.** Por
+eso sus numeros **NO son comparables** con `v9_04` ni con `v10_11`, que elegian el checkpoint con el
+mismo pliegue externo que luego puntuaban, que es la fuga que condeno a P73 y a P74. Queda escrito en
+el pre-registro, seccion 4: los resultados de P82 no se comparan con `v9_04` (0.694343) ni con
+`v10_11` (0.711639) ni con DL-03 (0.736367).
+
+**Sigue vigente el limite permanente de P81:** no hay anclaje a una implementacion externa de SGNS
+porque gensim no esta instalado y no compila con Python 3.14.7. P82 autoriza afirmar sobre el
+**OBJETIVO** y no sobre la calidad relativa frente a una libreria.
+
+**Enmienda 1** corrige el coste de la atencion de 8256 a 16448 parametros, porque 8256 asumia una
+celda unidireccional de ancho 64 y los brazos son bidireccionales con salida de ancho 128. El valor
+real medido es **16448 sin sesgos** y **16576 con sesgos**, y el informe publica las dos cifras y
+declara la discrepancia en vez de retocarla. sha256 de la enmienda
+`53c8555d1a5ef0fcebb06c4a6f061acf56e568d95242e907387f0af1b03420d8`.
+
+**Enmienda 2** declara el dispositivo de calculo elegido **por medicion**, no por defecto: GPU AMD
+Radeon RX 9070 XT, 16 hilos, sin precision mixta, con la consecuencia de que los valores absolutos y
+los deltas son los de ese dispositivo y **no se comparan con los de otro**.
+
+**Carlos autorizo el tramo 2**, que excede el presupuesto declarado, y eso quedo registrado como
+**autorizacion explicita y no como unnoticed**. A19 lo atesta: situacion
+`EXCEDIDO_Y_TRAMO_2_EJECUTADO_CON_EXCEDENCIA_AUTORIZADA`, margen -450.139675, presupuesto 5400,
+hito declarado 2400, hito observado 3762.75905. El presupuesto y el hito **no se cambiaron**.
+
+### Dos discrepancias de recuento y una de reloj, contra el encargo de registro
+
+Se registran aqui porque son diferencias entre el encargo y lo que hay en disco y en el informe, y
+un registro que las calla seria un registro falso.
+
+1. **No hay ocho directorios de parciales.** Hay **cinco** subdirectorios con marca de corrida en
+   `reports/p82_parciales/`, mas **cinco ficheros sueltos** en la raiz de ese directorio, de la marca
+   `20261001T051317Z_p1023604`, que es el intento en CPU y que nunca llego a tener subdirectorio
+   propio. Los **ocho intentos** si son ocho: seis corridas en modo completo mas dos de humo. Son
+   cinco directorios, no ocho, y 148 ficheros.
+2. **La Enmienda 2 dice "siete ficheros parciales de A0 a A3 y A8" y en disco hay cinco**, que son
+   exactamente A0, A1, A2, A3 y A8. El recuento de la enmienda no cuadra con lo que quedo. No se
+   corrige la enmienda, que esta commiteada en `9400b3c` y es parte del pre-registro; se deja
+   publicado el numero real.
+3. **El hito observado del informe es 3762.75905, no 3730.334861.** Ademas hay **dos** cifras de
+   tiempo real en el mismo informe, cronometro `5850.165344` y A19 `5850.139675`, que difieren en
+   0.025669 s, y el **resumen de cronometro dice `DENTRO_DE_PRESUPUESTO`** con
+   `excedio_el_presupuesto` False y la nota publica vacia, cuando el tiempo real **supera** el
+   presupuesto en 450.165344 s. A19, que recalcula desde el tiempo real, si lo detecta bien. Es un
+   **defecto residual del bloque de resumen del informe, ya publicado y NO corregido aqui**, porque
+   este registro no edita informes. Queda apuntado para una corrida posterior que lo arregle, y no
+   cambia ninguno de los cinco brazos ni de las cinco comparaciones.
+
+### Fronteras respetadas
+
+```text
+test = 0   holdout = 0 identificadores deserializados   leaderboard = 0   submission = 0
+P71 a P81 sin tocar   V03 sin tocar   umbrales 0.44 / 0.51 / 0.46 sin tocar   modelos/ sin escrituras
+congelado 302c994d13b75f8f5fbd440eea2c4f4113997e2581524021923b92f8244d705a ANTES
+congelado 302c994d13b75f8f5fbd440eea2c4f4113997e2581524021923b92f8244d705a DESPUES
+```
+
+### Estado
+
+**P82 queda CERRADO Y PUBLICADO** con las veintitres afirmaciones CONFIRMADO, y su resultado es
+**EXPLORATORIO** por el limite de deteccion, no confirmatorio. La geometria del embedding esta
+medida y es solida; el efecto de la atencion es indistinguible de cero en este diseno.
+
+```text
+V03 remains the best verified leaderboard result.
+```

@@ -1,3 +1,110 @@
+<!-- P82-CERRADO 2026-10-01 -->
+## P82: CERRADO Y PUBLICADO. 23 de 23 CONFIRMADO, y el resultado es EXPLORATORIO
+
+```text
+A0..A22 CONFIRMADO   23 CONFIRMADO   0 REFUTADO   0 ERROR   0 STOP   0 sin ejecutar
+corrida buena 20261001T172549Z_p2427889, con los CINCO brazos
+270 ajustes de red   5850.165344 s reales contra 5400 de presupuesto, excedencia AUTORIZADA
+experiments/p82_01_rnn_atencion.py
+  b19802dfa44b3b38ce6caf42829944e7320be82953f56ef60fb10a04c69328e6
+reports/p82_rnn_atencion.json   94089 B
+  3d0bc0d16a1ea8b427e0f2e0cfd1a765d962370477829ce9d11a2c81de7a9686
+reports/p82_rnn_atencion.md      11887 B
+  af808f8ecc4949bad2fbe81610b56e2300524f95267c19e368017d62e1cdcc7a
+```
+
+**Lo que sale, en una linea: la atencion es indistinguible de cero en los dos nucleos, y la
+geometria del embedding se ve con diez de diez.**
+
+### Los cinco brazos y las cinco comparaciones
+
+| brazo | media | sd | | id | media | IC95 | signos + |
+|---|---|---|---|---|---|---|---|
+| B1 GRU sin atencion | 0.639659 | 0.011615 | | P1 B2-B1 | -0.002105 | [-0.012406, 0.008196] | 4/10 |
+| B2 GRU con atencion | 0.637554 | 0.014905 | | P2 B4-B3 | 0.002031 | [-0.016628, 0.020690] | 7/10 |
+| B3 LSTM sin atencion | 0.615163 | 0.012924 | | P3 B2-B5 | 0.076807 | [0.059823, 0.093791] | 10/10 |
+| B4 LSTM con atencion | 0.617194 | 0.020434 | | P4 B1-B5 | 0.078912 | [0.067144, 0.090680] | 10/10 |
+| B5 GRU con atencion, permutado | 0.560747 | 0.019137 | | P5 B1-B3 | 0.024496 | [0.013551, 0.035441] | 10/10 |
+
+**La lectura.** El efecto de la atencion es indistinguible de cero en LOS DOS NUCLEOS y con **signos
+opuestos**, -0.002105 en GRU y +0.002031 en LSTM, los dos muy por debajo del minimo detectable de
+0.014342. El pre-registro decia que si la atencion tuviera el mismo signo en los dos nucleos seria
+la senal mas fuerte posible, y que con signos opuestos seria la prueba mas fuerte de que era ruido.
+**Salio lo segundo.**
+
+**Y esto NO es que la atencion no aporte.** Es que este diseno, a diez semillas, no tiene potencia
+para distinguir el efecto de cero. El limite de deteccion se calculo ANTES de correr, con potencia
+0.8993 a diez semillas, y por eso el resultado es **EXPLORATORIO** y no confirmatorio. Un resultado
+negativo **NO** se lee como que la atencion no aporta: se lee como que el efecto es inferior a lo que
+este diseno resuelve. Que las veintitres afirmaciones pasen dice que el instrumento esta sano, no que
+la pregunta tenga respuesta.
+
+**Lo que si es solido:** la geometria del embedding importa, contra la matriz permutada 0.076807 con
+atencion y 0.078912 sin ella, con el signo coherente en **diez de diez** y el intervalo entero por
+encima de cero. Es la medicion que nlp-specialist pidio en la Fase 5 y que este proyecto nunca habia
+hecho. Separa **existe geometria** de **esa geometria esta asignada a estos tokens**: la respuesta
+es que si.
+
+**Hallazgo no anticipado:** GRU supera a LSTM por **0.024496**, con diez de diez. No estaba en ninguna
+hipotesis del pre-registro y se registra como tal. El mejor brazo se queda a **0.137552** de V03.
+
+**Limite de deteccion.** Desviacion planificada 0.021588, medida 0.01440007631814541, MDE 0.014342,
+gap leido del informe de P78 0.117450, no escrito a mano.
+
+### Lo que P82 deja declarado
+
+**Primera medicion con early stopping estrictamente anidado con particion interna**, luego sus numeros
+**NO son comparables** con `v9_04` (0.694343) ni con `v10_11` (0.711639), que elegian el checkpoint
+con el mismo pliegue externo que luego puntuaban, la fuga que condeno a P73 y P74.
+
+**Limite permanente de P81 vigente:** sin anclaje a una implementacion externa de SGNS, porque gensim
+no esta instalado y no compila con Python 3.14.7. Autoriza afirmar sobre el **OBJETIVO** y no sobre
+la calidad relativa frente a una libreria.
+
+**Enmienda 1:** el coste de la atencion es **16448** sin sesgos y 16576 con sesgos, no 8256, porque
+8256 asumia una celda unidireccional de ancho 64 y los brazos son bidireccionales de salida 128.
+
+**Enmienda 2:** dispositivo elegido **por medicion**, GPU AMD Radeon RX 9070 XT, 16 hilos, sin
+precision mixta. 30 hilos es un 32 por ciento PEOR que 16. Los absolutos y los deltas son los de ese
+dispositivo y no se comparan con los de otro.
+
+**Tramo 2 autorizado por Carlos**, con excedencia del presupuesto registrada como autorizacion
+explicita, no como unnoticed. Hito declarado 2400, observado 3762.75905. El presupuesto no se toco.
+
+### Los ocho intentos, que se conservan
+
+Ocho intentos = seis corridas en modo completo mas dos de humo. En `reports/p82_parciales/` hay
+**cinco** subdirectorios con marca de corrida, con 143 ficheros, mas cinco ficheros sueltos en la raiz
+del mismo directorio de la marca `20261001T051317Z_p1023604`, que es el intento en CPU: 148 ficheros.
+El ultimo, `20261001T172549Z_p2427889`, es el bueno con los cinco brazos. El
+`20261001T141035Z_p2054042` es el que **se detuvo en A19 con STOP**. El informe del tramo 1, marca
+`20261001T080906Z_p1362206`, **solo tres brazos** B1, B2 y B5, 21 CONFIRMADO y 2 REFUTADO, **se
+conserva y no se borra**: es una corrida previa que no publico informe con los cinco brazos.
+
+**La leccion, para todo el proyecto:** un modo de humo que ejercita funciones con datos sinteticos NO
+verifica el contrato entre capas, y un caso de humo que no puede fallar no prueba nada. En P82 lo
+manifestaron dos constantes comparadas consigo mismas y cinco tuplas anidadas que hacian que TODO
+saliera CONFIRMADO, y ninguna la cazo el humo. Y un hallazgo relevante puede hacer fallar una
+comprobacion bien escrita si su criterio estaba mal definido: los netos negativos de A17 son el
+hallazgo central, no un error de datos, luego **hay que mirar el criterio antes de culpar a los
+datos**.
+
+**Defecto residual apuntado y NO corregido**, porque este encargo es de registro: el bloque de
+resumen del cronometro del informe dice `DENTRO_DE_PRESUPUESTO` cuando el tiempo real de 5850.165344
+s **supera** el presupuesto de 5400, y su `nota_tramo2` se publica vacia. A19, que recalcula desde el
+tiempo real, si detecta `EXCEDIDO_Y_TRAMO_2_EJECUTADO_CON_EXCEDENCIA_AUTORIZADA`, luego ninguna
+afirmacion esta mal. Queda para una corrida posterior que lo arregle. Ademas el hito observado en el
+informe es 3762.75905, y la Enmienda 2 habla de siete ficheros parciales donde en disco hay cinco.
+
+```text
+V03 remains the best verified leaderboard result.
+```
+
+V03 remains the best verified leaderboard result.
+```
+
+---
+
 <!-- P81-CERRADO 2026-10-01 -->
 ## P81: CERRADO Y PUBLICADO. 20 de 20, 18 CONFIRMADO, 2 REFUTADO, 0 ERROR, salida 0
 

@@ -1,0 +1,51 @@
+{
+  "marca_corrida": "20261001T172443Z_p2425748",
+  "resultado": {
+    "bloque": 1,
+    "coste_segundos": 0.000209,
+    "descripcion": "relleno y OOV en celdas distintas, y el OOV ENTRA",
+    "detalle": {
+      "componentes_fila_oov": [
+        -0.024871,
+        -0.045872,
+        0.000897,
+        -0.016304,
+        0.000678,
+        0.022959,
+        0.033135,
+        0.069395
+      ],
+      "comprobaciones": {
+        "fila_oov_distinta_y_no_nula": true,
+        "forma_matriz_len_vocab_mas_dos": true,
+        "id_oov_es_len_vocab_mas_uno": true,
+        "id_oov_mayor_que_cero": true,
+        "id_relleno_es_cero": true,
+        "ids_distintos": true,
+        "peso_oov_entra_en_el_promedio": true,
+        "pesos_relleno_exactamente_cero": true,
+        "residuo_fila_relleno_cero": true
+      },
+      "convencion_de_longitud_efectiva": "una fila con cero tokens tiene longitud efectiva 1 para el empaquetado y para el softmax, de modo que su unica posicion recibe el peso; se publica cuantas hay",
+      "dim": 8,
+      "id_oov": 25,
+      "id_relleno": 0,
+      "maximo_peso_en_relleno": 0.0,
+      "n_filas_con_longitud_cruda_cero": 0,
+      "n_filas_matriz": 26,
+      "n_posiciones_oov": 0,
+      "n_vocab": 24,
+      "norma_fila_oov": 0.0971115306019783,
+      "proporcion_filas_con_oov_con_peso": 1.0,
+      "regla_fila_oov": "fila OOV = media de las filas del artefacto, L2 normalizada y escalada por la desviacion tipica del artefacto; derivada, congelada y no entrenable",
+      "residuo_fila_relleno": 0.0
+    },
+    "estado": "CONFIRMADO",
+    "exito": true,
+    "id": "A4",
+    "naturaleza": "CONFIRMAR",
+    "stop": true,
+    "tolerancia": "enteros exactos; 0.0 exacto en la fila de relleno y en los pesos de relleno",
+    "traza": ""
+  }
+}

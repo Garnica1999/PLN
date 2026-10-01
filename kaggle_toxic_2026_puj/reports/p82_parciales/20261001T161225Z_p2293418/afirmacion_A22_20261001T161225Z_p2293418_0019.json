@@ -1,0 +1,31 @@
+{
+  "marca_corrida": "20261001T161225Z_p2293418",
+  "resultado": {
+    "bloque": 4,
+    "coste_segundos": 0.000648,
+    "descripcion": "cada comprobacion sabe FALLAR, por mutacion",
+    "detalle": {
+      "casos_colgados": [],
+      "comprobaciones": {
+        "el_suelo_del_humo_alcanza_a_las_veintitres": true,
+        "las_seis_mutaciones_declaradas_son_las_registradas": true,
+        "las_veintitres_afirmaciones_tienen_caso_negativo_declarado": true,
+        "ningun_caso_declarado_que_no_aparezca_en_el_codigo": true,
+        "ningun_caso_declarado_que_no_exista": true
+      },
+      "limitacion_declarada": "comprueba la EXISTENCIA y la COBERTURA de la red de casos negativos; que cada caso discrimine de verdad lo demuestra el humo, y aqui no se reejecutan las seis mutaciones porque son una propiedad del instrumento, no del dato",
+      "n_afirmaciones": 23,
+      "n_con_caso_negativo": 23,
+      "n_mutaciones_registradas": 6,
+      "sin_caso": [],
+      "suelo_de_cobertura_del_humo": 154
+    },
+    "estado": "CONFIRMADO",
+    "exito": true,
+    "id": "A22",
+    "naturaleza": "CONFIRMAR",
+    "stop": true,
+    "tolerancia": "las seis mutaciones ya se ejecutan enteras en el humo; aqui se comprueba su existencia y cobertura, sin reejecutarlas",
+    "traza": ""
+  }
+}

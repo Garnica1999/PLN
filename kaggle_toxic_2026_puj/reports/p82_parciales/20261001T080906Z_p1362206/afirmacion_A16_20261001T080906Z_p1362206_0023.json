@@ -1,0 +1,19 @@
+{
+  "marca_corrida": "20261001T080906Z_p1362206",
+  "resultado": {
+    "bloque": 3,
+    "coste_segundos": 4e-06,
+    "descripcion": "las arquitecturas se reportan por separado, sin agregado",
+    "detalle": {
+      "n_filas": 3,
+      "n_filas_agregadas": 0
+    },
+    "estado": "REFUTADO",
+    "exito": false,
+    "id": "A16",
+    "naturaleza": "CONFIRMAR",
+    "stop": false,
+    "tolerancia": "cinco filas, cero filas agregadas, conteo de parametros publicado",
+    "traza": ""
+  }
+}
