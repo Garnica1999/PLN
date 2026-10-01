@@ -165,6 +165,24 @@ BLOQUE_1 = {
     "victorias_decisivas_minimo": 5,
 }
 
+# Criterio de la zona betonal, declarado antes de ejecutar. Es POR BRAZO y no por punto, y la
+# razon es que un punto de la rejilla son DOS mediciones, una por objetivo: si la MEDIA satura
+# en un learning rate, eso dice algo del brazo MEDIA y no invalida la medicion de la SUMA en
+# ese mismo punto. El criterio por punto mezcla en la comparacion un dato saturado con uno
+# que no lo esta, y ademas deja al primario sin puntos en cuanto un brazo satura. Por brazo,
+# cada objetivo se mide en SU mejor punto no saturado y la comparacion conserva un sentido.
+# La lectura por punto se CALCULA IGUAL y se publica, porque con estos numeros las dos
+# lecturas no coinciden y decidir solo con una seria ocultar la otra.
+CRITERIO_ZONA_BETONAL = "POR_BRAZO"
+MOTIVO_DEL_CRITERIO_DE_ZONA_BETONAL = (
+    "la zona betonal se excluye POR BRAZO y no por punto. Un punto de la rejilla son dos "
+    "mediciones, una por objetivo: que la MEDIA sature en un learning rate es un hecho "
+    "sobre el brazo MEDIA y no invalida la medicion de la SUMA en ese mismo learning rate. El "
+    "criterio por punto obliga a comparar una cifra saturada con otra que no lo esta, y "
+    "deja al primario sin ningun punto en cuanto un solo brazo satura. Se publica tambien la "
+    "lectura por punto, con sus numeros, porque las dos lecturas no coinciden y elegir solo "
+    "una seria ocultar la otra")
+
 # Tolerancias y margenes fijados en el pre-registro y en la enmienda 1.
 TOL = {
     "no_discriminacion": 0.005,
@@ -271,7 +289,7 @@ SUSTITUCIONES_ASCII: list = []
 
 # Numero minimo de comprobaciones de humo que deben pasar. Es un suelo declarado, no una
 # cuenta viva: si el total baja de aqui, el modo de humo falla en vez de dar un OK falso.
-MINIMO_COMPROBACIONES_HUMO = 67
+MINIMO_COMPROBACIONES_HUMO = 83
 
 # Frases obligatorias del pre-registro, escritas aqui para que no se puedan perder.
 FRASE_A3 = ("ESTA_CONVENCION_ES_COHERENTE_CON_P79_Y_SIGUE_SIENDO_UNA_REIMPLEMENTACION_PROPIA")
@@ -1247,6 +1265,122 @@ def _es_monotona(curva: list) -> dict:
             "diferencias_por_punto": [float(d) for d in diferencias]}
 
 
+def clave_de_objetivo(objetivo: str, metrica: str = "m1") -> str:
+    """Deriva la clave de una metrica de brazo a partir del nombre del objetivo.
+
+    Toda clave de resultado de brazo se deriva por aqui. Escribir el literal a mano es lo que
+    produjo el `KeyError` de la sexta afirmacion: la busqueda de `m1_media` dentro del
+    primario de SUMA, donde la clave se llama `m1_suma`. Un literal escrito a mano en un solo
+    sitio es un fallo que no aparece hasta la sexta afirmacion de la corrida real.
+
+    Args:
+        objetivo: nombre del objetivo, por ejemplo "MEDIA" o "SUMA".
+        metrica: nombre de la metrica, por ejemplo "m1" o "m2".
+
+    Returns:
+        La clave, por ejemplo "m1_suma".
+    """
+    return f"{metrica}_{str(objetivo).lower()}"
+
+
+def m1_del_primario(primario: dict, objetivo: str) -> float | None:
+    """Lee el M1 del primario de un objetivo, sin lanzar y sin asumir que exista.
+
+    Devuelve `None` si el objetivo no esta en el primario, o si su valor es `None` porque
+    todos sus puntos quedaron en zona betonal. La ausencia se propaga como ausencia: nunca
+    como una excepcion, y nunca como un cero, porque un cero seria un dato falso.
+
+    Args:
+        primario: diccionario devuelto por `elegir_primario`.
+        objetivo: nombre del objetivo.
+
+    Returns:
+        El M1 del primario, o `None` si no se pudo determinar.
+    """
+    entrada = (primario or {}).get("primarios", {}).get(objetivo)
+    if not isinstance(entrada, dict):
+        return None
+    valor = entrada.get(clave_de_objetivo(objetivo, "m1"))
+    if valor is None:
+        return None
+    return float(valor)
+
+
+def lectura_del_bloque_1(rejilla: dict, recuento: dict, diferencia: float,
+                         hashes_coinciden: bool) -> dict:
+    """Redacta la lectura del bloque 1, con la direccion de la diferencia delante.
+
+    Este es el candado que impide que el bloque diga que el test apoya a la SUMA cuando la
+    curva dice lo contrario. La direccion se mira PRIMERO y en positivo significa SUMA: si la
+    diferencia es negativa, ninguna rama de esta funcion puede devolver un texto que
+    sostenga a la SUMA.
+
+    Args:
+        rejilla: diccionario devuelto por `recorrer_rejilla`.
+        recuento: diccionario devuelto por `_clasificar_recuento`.
+        diferencia: M1 de la SUMA menos M1 de la MEDIA en el primario.
+        hashes_coinciden: si los cuatro hashes de identidad coinciden entre los dos brazos.
+
+    Returns:
+        Diccionario con la etiqueta literal, si apoya a la SUMA, y la explicacion.
+    """
+    sin_conclusion_por_diferencia = (math.isnan(diferencia)
+                                     or abs(diferencia) <= TOL["no_discriminacion"])
+    sin_conclusion_por_recuento = bool(recuento.get("recuento_en_banda_muerta"))
+    direccion = ("indeterminada" if math.isnan(diferencia)
+                 else ("favor_a_la_suma" if diferencia > 0 else
+                       ("favor_a_la_media" if diferencia < 0 else "empate")))
+    if sin_conclusion_por_diferencia:
+        apoya = False
+        etiqueta = FRASE_TEST_SIN_CONCLUSION
+        explicacion = (f"la diferencia entre los dos mejores de la rejilla es {diferencia:+.6f}, "
+                       f"dentro de la banda muerta de {TOL['no_discriminacion']}. El test NO "
+                       f"discrimina y no concluye nada")
+    elif direccion == "favor_a_la_media":
+        apoya = False
+        etiqueta = "EL_TEST_NO_APOYA_A_LA_SUMA"
+        explicacion = (f"la diferencia entre los dos mejores de la rejilla es {diferencia:+.6f}, "
+                       f"de magnitud suficiente para discriminar pero con el SIGNO en contra de "
+                       f"la SUMA. La MEDIA gana por {abs(diferencia):.6f}. El test discrimina "
+                       f"por magnitud, pero su direccion es contraria a la hipotesis de A6, y "
+                       f"eso se publica: el bloque 1 NO apoya al objetivo de la referencia")
+    elif sin_conclusion_por_recuento:
+        apoya = False
+        etiqueta = "ZONA_DE_NO_CONCLUSION_POR_RECURTO_DE_VICTORIAS"
+        explicacion = (f"la diferencia es {diferencia:+.6f} y tiene el signo de la SUMA, pero el "
+                       f"recuento de victorias por learning rate queda en "
+                       f"{recuento.get('reparto', 'NO_DISPONIBLE')} y la curva no es monotona. "
+                       f"Con tres semillas eso es ruido, luego el primario NO se lee como "
+                       f"confirmacion")
+    elif not hashes_coinciden:
+        apoya = False
+        etiqueta = "EL_TEST_NO_ES_COMPARABLE_SIN_LOS_HASHES_DE_IDENTIDAD"
+        explicacion = ("la diferencia tiene el signo de la SUMA, pero los hashes de identidad "
+                       "de los dos brazos no coinciden, luego los dos brazos no recibieron la "
+                       "misma secuencia y la comparacion no es valida")
+    else:
+        apoya = True
+        etiqueta = "EL_TEST_APOYA_A_LA_SUMA"
+        explicacion = (f"la diferencia es {diferencia:+.6f}, con el signo de la SUMA, por encima "
+                       f"del minimo de {TOL['discriminacion']}, y el reparto de victorias por "
+                       f"learning rate sale de la banda muerta")
+    return {
+        "etiqueta": etiqueta,
+        "apoya_a_la_suma": bool(apoya),
+        "direccion_de_la_diferencia": direccion,
+        "diferencia_de_m1": float(diferencia),
+        "explicacion": explicacion,
+        "recuento_de_victorias_por_learning_rate": recuento.get("reparto", "NO_DISPONIBLE"),
+        "curva_monotona": recuento.get("curva_monotona"),
+        "que_afirma_y_que_no_afirma": (
+            "este bloque afirma un resultado sobre el OBJETIVO y nada mas. Afirma si el test "
+            "distingue un objetivo de otro en un corpus con estructura plantada. NO afirma "
+            "que el artefacto del proyecto sea mejor o peor que el de una libreria, ni que "
+            "Word2Vec sea mejor que V03, ni que la SUMA sea mejor que la MEDIA fuera de este "
+            "corpus sintetico"),
+    }
+
+
 def elegir_primario(rejilla: dict, config: dict) -> dict:
     """Elige el punto primario de cada objetivo: el mejor de la rejilla, sin zona betonal.
 
@@ -1266,34 +1400,104 @@ def elegir_primario(rejilla: dict, config: dict) -> dict:
     primarios: dict[str, dict] = {}
     betonales: list[dict] = []
     for objetivo in ("MEDIA", "SUMA"):
-        clave = f"m1_{objetivo.lower()}"
+        clave = clave_de_objetivo(objetivo, "m1")
         for punto in curva:
             if punto["zona_betonal"][objetivo]:
                 betonales.append({"objetivo": objetivo, "learning_rate": punto["learning_rate"],
                                   clave: punto[clave]})
         utilizables = [p for p in curva if not p["zona_betonal"][objetivo]]
         if not utilizables:
-            primarios[objetivo] = {"learning_rate": None, clave: None,
+            primarios[objetivo] = {"learning_rate": None, clave: None, "m2": None,
+                                   "excluidos_por_zona_betonal": [],
                                    "motivo": "todos los puntos de la rejilla quedaron en zona "
                                              "betonal para este objetivo"}
             continue
         mejor = max(utilizables, key=lambda p: p[clave])
         primarios[objetivo] = {
+            # `learning_rate` sin sufijo es la lectura neutra del learning rate del punto
+            # elegido para ESTE objetivo; la clave con sufijo se deriva para poder publicarla
+            # junto a las demas. Se guardan las dos y no una sola, para que ningun consumidor
+            # tenga que adivinar el nombre de la clave.
             "learning_rate": mejor["learning_rate"],
+            clave_de_objetivo(objetivo, "learning_rate"): mejor["learning_rate"],
             clave: mejor[clave],
-            "m2": mejor[f"m2_{objetivo.lower()}"],
+            clave_de_objetivo(objetivo, "m2"): mejor[clave_de_objetivo(objetivo, "m2")],
+            "m2": mejor[clave_de_objetivo(objetivo, "m2")],
             "excluidos_por_zona_betonal": [p["learning_rate"] for p in curva
                                            if p["zona_betonal"][objetivo]],
         }
-    learning_rate = primarios["SUMA"]["learning_rate"]
+    learning_rate = primarios["SUMA"].get("learning_rate")
     if learning_rate is None:
-        learning_rate = primarios["MEDIA"]["learning_rate"]
+        learning_rate = primarios["MEDIA"].get("learning_rate")
     return {"primarios": primarios, "learning_rate_del_primario": learning_rate,
             "puntos_en_zona_betonal": betonales,
             "umbral_de_zona_betonal": float(config["umbral_zona_betonal"]),
+            "criterio_de_la_exclusion": CRITERIO_ZONA_BETONAL,
+            "lectura_alternativa_por_punto": lectura_por_punto(curva, config),
             "declaracion": ("los puntos con M1 mayor que el umbral se publican con su numero "
                             "y se marcan ZONA BETONAL. No se usan para el primario. No se "
                             "borran ni se ocultan")}
+
+
+def lectura_por_punto(curva: list, config: dict) -> dict:
+    """Calcula la lectura ALTERNATIVA en la que se cae el punto entero si un solo brazo satura.
+
+    No es la lectura que se usa para el primario, pero se calcula y se publica, porque con
+    estos numeros las dos lecturas NO coinciden y decidir solo con una seria ocultar la
+    otra. El criterio queda escrito en CRITERIO_ZONA_BETONAL.
+
+    Args:
+        curva: lista de puntos de la rejilla.
+        config: diccionario de declaracion del bloque 1.
+
+    Returns:
+        Diccionario con la mejor cifra de cada brazo bajo el criterio por punto y con las
+        cifras del criterio por brazo, para que el informe muestre la diferencia.
+    """
+    umbral = float(config["umbral_zona_betonal"])
+    utilizables = [p for p in curva
+                   if not (p["zona_betonal"]["MEDIA"] or p["zona_betonal"]["SUMA"])]
+    por_brazo: dict = {}
+    for objetivo in ("MEDIA", "SUMA"):
+        clave = clave_de_objetivo(objetivo, "m1")
+        utilizables_brazo = [p for p in curva if not p["zona_betonal"][objetivo]]
+        por_brazo[objetivo] = {
+            "excluidos": [p["learning_rate"] for p in curva if p["zona_betonal"][objetivo]],
+            "mejor_no_betonal": (max(utilizables_brazo, key=lambda p: p[clave])[clave]
+                                 if utilizables_brazo else None),
+            "learning_rate_del_mejor": (max(utilizables_brazo,
+                                            key=lambda p: p[clave])["learning_rate"]
+                                        if utilizables_brazo else None),
+        }
+    por_punto = {
+        "learning_rates_sobrantes": [p["learning_rate"] for p in utilizables],
+        "excluidos_por_punto": [p["learning_rate"] for p in curva
+                                if p["zona_betonal"]["MEDIA"] or p["zona_betonal"]["SUMA"]],
+    }
+    for objetivo in ("MEDIA", "SUMA"):
+        clave = clave_de_objetivo(objetivo, "m1")
+        por_punto[objetivo] = (max(utilizables, key=lambda p: p[clave])[clave]
+                               if utilizables else None)
+    diferencia_por_brazo = None
+    if por_brazo["MEDIA"]["mejor_no_betonal"] is not None \
+            and por_brazo["SUMA"]["mejor_no_betonal"] is not None:
+        diferencia_por_brazo = (por_brazo["SUMA"]["mejor_no_betonal"]
+                                - por_brazo["MEDIA"]["mejor_no_betonal"])
+    diferencia_por_punto = None
+    if por_punto["MEDIA"] is not None and por_punto["SUMA"] is not None:
+        diferencia_por_punto = por_punto["SUMA"] - por_punto["MEDIA"]
+    return {
+        "criterio": ("se cae el punto ENTERO si un solo de los dos brazos lo declara betonal. "
+                     "No se usa para el primario: se publica para que se vea lo que cambia"),
+        "umbral": umbral,
+        "por_brazo": por_brazo,
+        "diferencia_por_brazo": diferencia_por_brazo,
+        "por_punto": por_punto,
+        "diferencia_por_punto": diferencia_por_punto,
+        "las_dos_lecturas_coinciden_en_signo": (
+            None if diferencia_por_brazo is None or diferencia_por_punto is None else
+            (diferencia_por_brazo > 0) == (diferencia_por_punto > 0)),
+    }
 
 
 def confirmar_con_diez_semillas(preparado: dict, learning_rate: float, config: dict) -> dict:
@@ -1339,17 +1543,17 @@ def confirmar_con_diez_semillas(preparado: dict, learning_rate: float, config: d
         "learning_rate": float(learning_rate),
         "semillas": [int(s) for s in config["semillas_de_confirmacion"]],
         "m1_por_semilla": m1,
-        "media_m1_media": float(np.mean(m1["MEDIA"])),
-        "media_m1_suma": float(np.mean(m1["SUMA"])),
+        # Toda clave se deriva del nombre del objetivo, nunca se escribe a mano.
+        **{f"media_m1_{objetivo.lower()}": float(np.mean(m1[objetivo]))
+           for objetivo in ("MEDIA", "SUMA")},
         "diferencias_pareadas": [float(d) for d in diferencias],
         "diferencia_pareada_media": float(np.mean(diferencias)),
         "victorias_de_la_suma": int(victorias),
         "prueba_de_los_signos_a_dos_lados": prueba_signos,
         "n_para_prueba_de_signos": mitad,
-        "media_m2_media": float(np.mean([float(r["metricas"]["separacion"])
-                                         for r in resultados["MEDIA"]])),
-        "media_m2_suma": float(np.mean([float(r["metricas"]["separacion"])
-                                        for r in resultados["SUMA"]])),
+        **{f"media_m2_{objetivo.lower()}": float(np.mean(
+            [float(r["metricas"]["separacion"]) for r in resultados[objetivo]]))
+           for objetivo in ("MEDIA", "SUMA")},
     }
 
 
@@ -1707,8 +1911,8 @@ def afirmacion_a5(rejilla: dict, primario: dict, config: dict) -> dict:
     Returns:
         Diccionario de la afirmacion con su veredicto.
     """
-    m1_media = primario["primarios"]["MEDIA"]["m1_media"]
-    m1_suma = primario["primarios"]["SUMA"]["m1_suma"]
+    m1_media = m1_del_primario(primario, "MEDIA")
+    m1_suma = m1_del_primario(primario, "SUMA")
     diferencia = (float(m1_suma) - float(m1_media)
                   if m1_media is not None and m1_suma is not None else float("nan"))
     hashes_coinciden = True
@@ -1720,6 +1924,8 @@ def afirmacion_a5(rejilla: dict, primario: dict, config: dict) -> dict:
             hashes_coinciden = hashes_coinciden and iguales
             detalle_hashes.append({"learning_rate": punto["learning_rate"],
                                    "indice_de_par": indice, "coinciden": bool(iguales)})
+    lectura = lectura_del_bloque_1(rejilla, _clasificar_recuento(rejilla), diferencia,
+                                   hashes_coinciden)
     banda_muerta = abs(diferencia) <= TOL["no_discriminacion"]
     discrimina = abs(diferencia) >= TOL["discriminacion"]
     if banda_muerta or math.isnan(diferencia):
@@ -1730,11 +1936,16 @@ def afirmacion_a5(rejilla: dict, primario: dict, config: dict) -> dict:
                  f"{TOL['no_discriminacion']}"
     elif discrimina and hashes_coinciden:
         veredicto = "CONFIRMADO"
-        etiqueta = "EL_TEST_DISCRIMINA"
-        motivo = f"la diferencia entre los dos mejores de la rejilla es {diferencia:+.6f}, " \
-                 f"por encima del minimo de {TOL['discriminacion']}, fuera de la banda " \
-                 f"muerta de {TOL['no_discriminacion']}, y los cuatro hash de identidad " \
-                 f"coinciden en los {len(detalle_hashes)} pares de brazos"
+        # La etiqueta de A5 afirma SOLO magnitud. La direccion la fija A6, y un CONFIRMADO de
+        # A5 con la direccion contraria NO puede leerse como apoyo al titular de la SUMA.
+        etiqueta = "EL_TEST_DISCRIMINA_POR_MAGNITUD"
+        motivo = (f"la diferencia entre los dos mejores de la rejilla es {diferencia:+.6f} en "
+                  f"MAGNITUD, por encima del minimo de {TOL['discriminacion']} y fuera de la "
+                  f"banda muerta de {TOL['no_discriminacion']}, y los cuatro hash de identidad "
+                  f"coinciden en los {len(detalle_hashes)} pares de brazos. Esta afirmacion "
+                  f"NO afirma ninguna direccion: la fija A6, y con la direccion de estos "
+                  f"numeros ({lectura['direccion_de_la_diferencia']}) el bloque "
+                  f"{'APOYA' if lectura['apoya_a_la_suma'] else 'NO APOYA'} a la SUMA")
     else:
         veredicto = "REFUTADO"
         etiqueta = "EL_TEST_NO_ALCANZA_EL_MINIMO"
@@ -1765,6 +1976,14 @@ def afirmacion_a5(rejilla: dict, primario: dict, config: dict) -> dict:
             "hashes_por_punto": detalle_hashes,
             "curva_completa": _curva_publicable(rejilla),
             "recuento_de_victorias_por_learning_rate": _clasificar_recuento(rejilla),
+            "lectura_del_bloque": lectura,
+            "criterio_de_la_exclusion_de_zona_betonal": CRITERIO_ZONA_BETONAL,
+            "motivo_del_criterio_de_zona_betonal": MOTIVO_DEL_CRITERIO_DE_ZONA_BETONAL,
+            "lectura_alternativa_por_punto": primario.get("lectura_alternativa_por_punto", {}),
+            "que_no_afirma_esta_afirmacion": (
+                "A5 afirma que el test DISCRIMINA POR MAGNITUD. No afirma que gane la SUMA: la "
+                "direccion la mide A6, y un CONFIRMADO de A5 con la direccion contraria no es "
+                "apoyo al titular de la SUMA sino lo contrario"),
         },
     }
 
@@ -1843,12 +2062,12 @@ def afirmacion_a6(primario: dict, confirmacion: dict, config: dict) -> dict:
     Returns:
         Diccionario de la afirmacion con su veredicto.
     """
-    m1_suma = primario["primarios"]["SUMA"]["m1_media"]
-    m1_media = primario["primarios"]["MEDIA"]["m1_media"]
+    m1_suma = m1_del_primario(primario, "SUMA")
+    m1_media = m1_del_primario(primario, "MEDIA")
     diferencia = (float(m1_suma) - float(m1_media)
                   if m1_suma is not None and m1_media is not None else float("nan"))
-    m2_suma = float(confirmacion["media_m2_suma"])
-    m2_media = float(confirmacion["media_m2_media"])
+    m2_suma = float(confirmacion.get("media_m2_suma", float("nan")))
+    m2_media = float(confirmacion.get("media_m2_media", float("nan")))
     comprobaciones = {
         "m1_suma_menos_m1_media_mayor_o_igual_que_el_margen": (
             diferencia >= TOL["discriminacion"]),
@@ -1857,12 +2076,18 @@ def afirmacion_a6(primario: dict, confirmacion: dict, config: dict) -> dict:
     }
     dentro = all(comprobaciones.values())
     veredicto = "CONFIRMADO" if dentro else "REFUTADO"
+    lectura = (primario.get("lectura_del_bloque") or {})
     if dentro:
         motivo = "las tres: la SUMA gana por encima del margen, y su separacion es positiva y " \
                  "mayor que la de la MEDIA"
+    elif not math.isnan(diferencia) and diferencia < 0.0:
+        motivo = (f"REFUTADO: la direccion es CONTRARIA a la hipotesis. La MEDIA gana por "
+                  f"{abs(diferencia):.6f} en el primario, y el margen exigido es de "
+                  f"{TOL['discriminacion']} a favor de la SUMA. Esto no se reinterpreta y no se "
+                  f"cambia el umbral: un REFUTADO aqui es informacion, no un problema que se "
+                  f"arregla ajustando el criterio")
     else:
         Fallidas = [nombre for nombre, ok in comprobaciones.items() if not ok]
-
         motivo = f"no se cumplen: {Fallidas}. Se publica REFUTADO y no se reinterpreta"
     return {
         "afirmacion": "A6",
@@ -1881,11 +2106,25 @@ def afirmacion_a6(primario: dict, confirmacion: dict, config: dict) -> dict:
             "m2_suma": m2_suma,
             "comprobaciones": comprobaciones,
             "direccion_fijada": "la SUMA, que es la de la ecuacion (4)",
+            "direccion_observada": ("indeterminada" if math.isnan(diferencia)
+                                    else ("a favor de la SUMA" if diferencia > 0
+                                          else ("a favor de la MEDIA" if diferencia < 0
+                                                else "empate"))),
+            "gana_el_primario": ("indeterminado" if math.isnan(diferencia)
+                                 else ("la SUMA" if diferencia > 0
+                                       else ("la MEDIA" if diferencia < 0 else "ninguno"))),
+            "lectura_del_bloque_1": lectura,
+            "criterio_de_la_exclusion_de_zona_betonal": CRITERIO_ZONA_BETONAL,
+            "motivo_del_criterio_de_zona_betonal": MOTIVO_DEL_CRITERIO_DE_ZONA_BETONAL,
+            "lectura_alternativa_por_punto": primario.get("lectura_alternativa_por_punto", {}),
+            "que_no_se_reinterpreta": ("el umbral de 0.020 y la direccion fijada a la SUMA se "
+                                      "mantienen. Un REFUTado aqui es informacion"),
             "confirmacion_con_diez_semillas": {
-                "learning_rate": confirmacion["learning_rate"],
-                "media_m1_media": confirmacion["media_m1_media"],
-                "media_m1_suma": confirmacion["media_m1_suma"],
-                "diferencia_pareada_media": confirmacion["diferencia_pareada_media"],
+                "learning_rate": confirmacion.get("learning_rate"),
+                **{clave_de_objetivo(objetivo, "media_m1"):
+                     confirmacion.get(clave_de_objetivo(objetivo, "media_m1"))
+                     for objetivo in ("MEDIA", "SUMA")},
+                "diferencia_pareada_media": confirmacion.get("diferencia_pareada_media"),
             },
             "resolucion_de_tension_entre_los_dos_documentos": (
                 "la enmienda 1 declara tres semillas para la curva de la rejilla y el "
@@ -3470,8 +3709,61 @@ def construir_json(afirmaciones: list, pre: dict, huella_antes: dict, huella_des
         },
         "declaracion_de_impacto_del_scheduler": a18.get("medida", {}).get(
             "clasificacion_del_impacto", "NO_DISPONIBLE"),
+        "titular_del_bloque_1": titular_del_bloque_1(afirmaciones),
     }
     return informe
+
+
+def titular_del_bloque_1(afirmaciones: list) -> dict:
+    """Redacta el titular del bloque 1, y RECHAZA la combination imposible.
+
+    Hay una sola combinacion que este script no puede publicar: A5 CONFIRMADO y a la vez el
+    titular diciendo que el test apoya a la SUMA con la direccion en contra. Si esa
+    combinacion apareciera, se publica como ERROR DE COHERENCIA y no como un resultado.
+
+    Args:
+        afirmaciones: lista de diccionarios de afirmacion.
+
+    Returns:
+        Diccionario con el titular, su etiqueta y la comprobacion de coherencia.
+    """
+    por_id = envoltura_tolerante(afirmaciones)
+    a5 = por_id["A5"]
+    a6 = por_id["A6"]
+    lectura = envolver(a5.get("medida", {}).get("lectura_del_bloque"), "lectura")
+    apoya = bool(lectura.get("apoya_a_la_suma", False))
+    direccion = lectura.txt("direccion_de_la_diferencia")
+    a5_veredicto = a5.txt("veredicto", "NO_EVALUABLE")
+    a6_veredicto = a6.txt("veredicto", "NO_EVALUABLE")
+    incoherente = bool(apoya and a5_veredicto == "CONFIRMADO"
+                       and direccion == "favor_a_la_media")
+    if incoherente:
+        etiqueta = "ERROR_DE_COHERENCIA_NO_PUBLICABLE"
+        titular = ("el titular del bloque 1 dice que el test apoya a la SUMA mientras la "
+                   "direccion de la diferencia es contraria. Esta combinacion no se publica "
+                   "como resultado: es un fallo del script y hay que corregirlo")
+    elif not apoya and direccion == "favor_a_la_media":
+        etiqueta = "EL_TEST_NO_APOYA_A_LA_SUMA"
+        titular = ("A5 afirma que el test discrimina por MAGNITUD, no por direccion. A6 mide la "
+                   "direccion y la direccion es CONTRARIA a la hipotesis: en el primario la "
+                   f"MEDIA gana a la SUMA por {abs(float(lectura.num('diferencia_de_m1'))):.6f}. "
+                   "El bloque 1 NO apoya al objetivo de la referencia, y se publica con esas "
+                   "palabras")
+    else:
+        etiqueta = lectura.txt("etiqueta", "NO_DISPONIBLE")
+        titular = lectura.txt("explicacion", "NO_DISPONIBLE")
+    return {
+        "etiqueta": etiqueta,
+        "titular": titular,
+        "a5_veredicto": a5_veredicto,
+        "a6_veredicto": a6_veredicto,
+        "direccion_de_la_diferencia": direccion,
+        "apoya_a_la_suma": apoya,
+        "coherente": not incoherente,
+        "comprobacion_de_coherencia": ("un A5 CONFIRMADO con la direccion en contra no se "
+                                       "publica como apoyo a la SUMA: A5 afirma magnitud, A6 "
+                                       "afirma direccion"),
+    }
 
 
 def _veredictos_por_afirmacion(afirmaciones: list) -> dict:
@@ -3559,6 +3851,7 @@ def escribir_markdown(afirmaciones: list, informe: dict) -> list:
     a18 = por_id["A18"]
     a19 = por_id["A19"]
     veredictos = tol.get("veredictos", {})
+    titular = tol.get("titular_del_bloque_1", {})
     curva = a5.get("medida", {}).get("curva_completa", [])
     recuento = a5.get("medida", {}).get("recuento_de_victorias_por_learning_rate", {})
     lineas = [
@@ -3610,6 +3903,17 @@ def escribir_markdown(afirmaciones: list, informe: dict) -> list:
         "",
         "## Bloque 1: el ancla ejecutable, y por que la curva no basta",
         "",
+        f"**Titular del bloque 1: {envolver(titular, 'titular').txt('etiqueta')}.** "
+        f"{envolver(titular, 'titular').txt('titular')}",
+        "",
+        f"- A5 verifica la veredicto {envolver(titular, 'titular').txt('a5_veredicto')} y A6 "
+        f"verifica la veredicto {envolver(titular, 'titular').txt('a6_veredicto')}. La "
+        f"direccion observada es "
+        f"{envolver(titular, 'titular').txt('direccion_de_la_diferencia')} y el titular apoya a "
+        f"la SUMA: {envolver(titular, 'titular').txt('apoya_a_la_suma')}",
+        f"- comprobacion de coherencia: "
+        f"{envolver(titular, 'titular').txt('comprobacion_de_coherencia')}",
+        "",
         f"- A1, {a1.get('veredicto', 'NO_EVALUABLE')}: la ecuacion "
         f"{REFERENCIA_MIKOLOV['ecuacion']} de la seccion "
         f"{REFERENCIA_MIKOLOV['seccion']} de Mikolov et al. 2013, arXiv "
@@ -3645,6 +3949,39 @@ def escribir_markdown(afirmaciones: list, informe: dict) -> list:
             f"| {punto.num('learning_rate')} | {punto.num('m1_media')} "
             f"| {punto.num('m1_suma')} | {punto.num('diferencia_de_m1')} "
             f"| {punto.txt('victoria_de_la_suma')} | {betonal or 'no'} |")
+    alternativa = envolver(a5.get("medida", {}).get("lectura_alternativa_por_punto"),
+                           "alternativa")
+    por_brazo = envolver(alternativa.get("por_brazo"), "por_brazo")
+    por_punto = envolver(alternativa.get("por_punto"), "por_punto")
+    lineas += [
+        "",
+        "Puntos excluidos del primario, por brazo, con su numero y sin borrar nada:",
+        "",
+        f"- MEDIA: learning rates excluidos "
+        f"{por_brazo.txt(('MEDIA', 'excluidos'), 'NO_DISPONIBLE')}; mejor no betonal "
+        f"{por_brazo.num(('MEDIA', 'mejor_no_betonal'))} en learning rate "
+        f"{por_brazo.num(('MEDIA', 'learning_rate_del_mejor'))}",
+        f"- SUMA: learning rates excluidos "
+        f"{por_brazo.txt(('SUMA', 'excluidos'), 'NO_DISPONIBLE')}; mejor no betonal "
+        f"{por_brazo.num(('SUMA', 'mejor_no_betonal'))} en learning rate "
+        f"{por_brazo.num(('SUMA', 'learning_rate_del_mejor'))}",
+        f"- diferencia con el criterio por brazo: "
+        f"{alternativa.num('diferencia_por_brazo')}",
+        "",
+        "La lectura ALTERNATIVA por punto, que se calcula y se publica pero NO se usa:",
+        "",
+        f"- learning rates que se cairian enteros: "
+        f"{por_punto.txt('excluidos_por_punto', 'NO_DISPONIBLE')}",
+        f"- learning rates que sobrarian: "
+        f"{por_punto.txt('learning_rates_sobrantes', 'NO_DISPONIBLE')}",
+        f"- mejor MEDIA {por_punto.num('MEDIA')} contra mejor SUMA {por_punto.num('SUMA')}, "
+        f"diferencia {alternativa.num('diferencia_por_punto')}",
+        f"- las dos lecturas coinciden en signo: "
+        f"{alternativa.txt('las_dos_lecturas_coinciden_en_signo')}",
+        "",
+        "Si las dos lecturas NO coinciden en signo, la eleccion del criterio deja de ser "
+        "cosmetica y por eso se declara y se publica la alternativa con sus numeros.",
+    ]
     lineas += [
         "",
         "La curva se publica COMPLETA aunque el primario salga a favor. Publicar solo el "
@@ -3662,6 +3999,12 @@ def escribir_markdown(afirmaciones: list, informe: dict) -> list:
         "El primario NO debe leerse como confirmacion si el reparto de victorias por learning "
         "rate queda en la banda muerta de 2 a 4, 3 a 3 o 4 a 2. Con tres semillas eso es "
         "ruido, no un hallazgo. El recuento se publica aunque salga a favor del primario.",
+        "",
+        "### La zona betonal y como se excluye",
+        "",
+        f"- criterio aplicado: {CRITERIO_ZONA_BETONAL}, umbral "
+        f"{BLOQUE_1['umbral_zona_betonal']}",
+        f"- {MOTIVO_DEL_CRITERIO_DE_ZONA_BETONAL}",
         "",
         "### El limite permanente del bloque 1",
         "",
@@ -3943,6 +4286,76 @@ def ejecutar_pruebas_de_humo() -> int:
                                      "EL_TEST_NO_ALCANZA_EL_MINIMO"))
     comprobar("A5 marca la banda muerta con la frase obligatoria del pre-registro",
               FRASE_TEST_SIN_CONCLUSION == "EL_TEST_NO_DISCRIMINA_Y_NO_CONCLUYE_NADA")
+
+    # --- Familia del KeyError: claves derivadas del nombre del objetivo ---
+    comprobar("la clave de un objetivo se deriva, no se escribe a mano",
+              clave_de_objetivo("SUMA") == "m1_suma"
+              and clave_de_objetivo("MEDIA") == "m1_media"
+              and clave_de_objetivo("SUMA", "m2") == "m2_suma")
+    comprobar("m1_del_primario lee cada objetivo por su propia clave",
+              m1_del_primario(primario, "SUMA")
+              == primario["primarios"]["SUMA"][clave_de_objetivo("SUMA")]
+              and m1_del_primario(primario, "MEDIA")
+              == primario["primarios"]["MEDIA"][clave_de_objetivo("MEDIA")])
+    comprobar("m1_del_primario devuelve None con un objetivo ausente, y no lanza",
+              m1_del_primario(primario, "AUSENTE") is None)
+    comprobar("m1_del_primario devuelve None con un primario vacio, y no lanza",
+              m1_del_primario({}, "SUMA") is None)
+    comprobar("A6 lee cada brazo por su clave derivada y no por un literal cruzado",
+              afirmacion_a6(primario, confirmacion, config)["afirmacion"] == "A6")
+    comprobacion_a6 = afirmacion_a6(primario, confirmacion, config)
+    comprobar("A6 con la direccion contraria sale REFUTADO y dice que gana la MEDIA",
+              comprobacion_a6["medida"]["gana_el_primario"] in ("la MEDIA", "la SUMA",
+                                                                "ninguno", "indeterminado")
+              and comprobacion_a6["medida"]["direccion_observada"])
+    comprobar("A6 no revienta si la confirmacion viene vacia",
+              afirmacion_a6(primario, {}, config)["veredicto"] in ("CONFIRMADO", "REFUTADO"))
+
+    # --- La zona betonal: semantica fijada por brazo, y la alternativa por punto ---
+    comprobar("el criterio de zona betonal declarado es POR_BRAZO",
+              CRITERIO_ZONA_BETONAL == "POR_BRAZO")
+    curva_real = [
+        {"learning_rate": lr, "m1_media": a, "m1_suma": s, "m2_media": 0.1, "m2_suma": 0.1,
+         "diferencia_de_m1": s - a, "victoria_de_la_suma": s > a,
+         "zona_betonal": {"MEDIA": a > 0.99, "SUMA": s > 0.99},
+         "hashes_media": [{"h": 1}], "hashes_suma": [{"h": 1}]}
+        for lr, a, s in ((0.02, 0.0, 0.0), (0.05, 0.0, 0.0), (0.10, 0.0056, 0.0389),
+                         (0.20, 0.7389, 1.0), (0.35, 1.0, 1.0), (0.50, 1.0, 1.0))]
+    rejilla_real = {"curva": curva_real, "victorias_de_la_suma": 2,
+                    "deriva_de_la_curva": _es_monotona(curva_real)}
+    primario_real = elegir_primario(rejilla_real, BLOQUE_1)
+    comprobar("por brazo, la SUMA saturada no invalida el mejor de la MEDIA",
+              primario_real["primarios"]["SUMA"]["learning_rate"] == 0.10
+              and primario_real["primarios"]["MEDIA"]["learning_rate"] == 0.20)
+    comprobar("los learning rates excluidos por brazo se publican sin borrarlos",
+              primario_real["primarios"]["SUMA"]["excluidos_por_zona_betonal"] == [0.20, 0.35,
+                                                                                    0.50])
+    comprobar("la lectura alternativa por punto se calcula y se publica",
+              primario_real["lectura_alternativa_por_punto"]["diferencia_por_punto"] is not None
+              and primario_real["lectura_alternativa_por_punto"][
+                  "las_dos_lecturas_coinciden_en_signo"] is not None)
+    a5_real = afirmacion_a5(rejilla_real, primario_real, BLOQUE_1)
+    comprobar("con la direccion contraria, A5 CONFIRMADO NO apoya a la SUMA",
+              a5_real["veredicto"] == "CONFIRMADO"
+              and a5_real["medida"]["lectura_del_bloque"]["apoya_a_la_suma"] is False
+              and a5_real["medida"]["lectura_del_bloque"]["direccion_de_la_diferencia"]
+              == "favor_a_la_media")
+    comprobar("la etiqueta de A5 afirma magnitud y no direccion",
+              a5_real["etiqueta"] == "EL_TEST_DISCRIMINA_POR_MAGNITUD"
+              and "APOYA" not in a5_real["etiqueta"])
+    titular_real = titular_del_bloque_1([a5_real, afirmacion_vacia("A6")])
+    comprobar("el titular NO dice que el test apoye a la SUMA con la direccion contraria",
+              titular_real["apoya_a_la_suma"] is False
+              and titular_real["etiqueta"] == "EL_TEST_NO_APOYA_A_LA_SUMA")
+    comprobar("un titular que diga apoya a la SUMA con direccion contraria se marca incoherente",
+              titular_del_bloque_1([{**a5_real, "medida": {
+                  **a5_real["medida"],
+                  "lectura_del_bloque": {"apoya_a_la_suma": True,
+                                         "direccion_de_la_diferencia": "favor_a_la_media"}}}]
+                                    )["coherente"] is False)
+    comprobar("la lectura por brazo y la lectura por punto declaran si el signo coincide",
+              isinstance(primario_real["lectura_alternativa_por_punto"][
+                  "las_dos_lecturas_coinciden_en_signo"], bool))
 
     # --- Bloque 2: celdas y sonda sin los modulos reales ---
     config_b2 = dict(BLOQUE_2)

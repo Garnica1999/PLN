@@ -1,3 +1,135 @@
+<!-- P81-SEGUNDA-CORRIDA 2026-10-01 -->
+## P81 segunda corrida: 17 de 20 medidas, 15 CONFIRMADO y 2 REFUTADO, se para en A18
+
+```text
+A1..A5 CONFIRMADO   A6 REFUTADO   A7 REFUTADO   A8..A17 CONFIRMADO
+A0, A18 y A19 sin ejecutar
+15 CONFIRMADO   2 REFUTADO   0 NO APLICABLE   0 STOP   3 sin ejecutar
+567 s, codigo de salida 1, parada en A18 y NO en A6
+bloques 2, 3 y 4 completos; el bloque 5 no llego a empezar
+```
+
+```text
+experiments/p81_01_cierre_huecos.py
+  00756ef3432ca2ee29fd2c99987a84f19b3c6f801dc1ea70a34cdd4bc78c966c
+  4930 lineas, 83 de 83 en --humo
+reports/p81_cierre_huecos.json  NO EXISTE
+reports/p81_cierre_huecos.md    NO EXISTE
+ningun temporal .tmp_p81, nada publicado, nada vaciado
+```
+
+**El arreglo de A6 funciona y los candados hacen su trabajo.** La funcion que deriva toda clave de
+brazo a partir del nombre del objetivo elimina el `KeyError`, y el candado
+`ERROR_DE_COHERENCIA_NO_PUBLICABLE` ya no tiene nada que devolver porque la corrida cae del lado
+correcto.
+
+**Fallo literal, sin arreglar.**
+
+```text
+File ".../experiments/p81_01_cierre_huecos.py", line 3331, in afirmacion_a18
+    documentos = leer_primeras_n_lineas(CORPUS_TWITTER, RECRETE["lineas"], modulo_p72)
+File ".../experiments/p81_01_cierre_huecos.py", line 3407, in leer_primeras_n_lineas
+    tokens = modulo_p71.RE_TOKEN.findall(linea)
+AttributeError: module 'p72_01' has no attribute 'RE_TOKEN'
+```
+
+**Cableado de modulos.** El parametro se llama `modulo_p71` y de ahi usa `RE_TOKEN`, pero quien llama
+le pasa `modulo_p72`, que es `p72_01` y no lo tiene. `RE_TOKEN` esta en `p71_04`, que el script ya
+importa y que ya esta en `contexto["modulos"]["p71_04"]`, y `afirmacion_a18` no lo recibe: su unico
+argumento es `p72_01`. Necesita los dos modulos, uno para las constantes del curriculum y otro para el
+tokenizador, y le dieron uno.
+
+**Bloque 1: las dos lecturas de la zona betonal, y no coinciden en signo.**
+
+```text
+lr 0.02  MEDIA 0.0000  SUMA 0.0000   lr 0.20  MEDIA 0.7389  SUMA 1.0000
+lr 0.05  MEDIA 0.0000  SUMA 0.0000   lr 0.35  MEDIA 1.0000  SUMA 1.0000
+lr 0.10  MEDIA 0.0056  SUMA 0.0389   lr 0.50  MEDIA 1.0000  SUMA 1.0000
+```
+
+```text
+por BRAZO, el criterio declarado y el del primario, linea 178
+  MEDIA mejor no betonal 0.7389 en lr 0.20   SUMA mejor no betonal 0.0389 en lr 0.10
+  diferencia = -0.700000   GANA LA MEDIA por 0.700000   primario en lr 0.1
+por PUNTO, el alternativo que se calcula y se publica pero no se usa
+  MEDIA 0.0056   SUMA 0.0389   diferencia = +0.0333   GANA LA SUMA por 0.0333
+```
+
+**El signo se da la vuelta enteramente segun el criterio de exclusion**, y por eso el criterio queda
+escrito y la alternativa se publica: decidir solo con una seria ocultar la otra.
+
+**Recuento de victorias: la SUMA gana 2 de 6 puntos. La curva NO es monotona.** El prototipo no se
+reproduce: en 0.20 daba MEDIA 0.3611 contra SUMA 0.0000 y aqui la SUMA gana 1.0000 contra 0.7389; en
+0.35 daba MEDIA 0.4667 contra SUMA 0.8278 y aqui empatan en 1.0000.
+
+**El titular, literal, y sale como se esperaba.**
+
+```text
+A5: CONFIRMADO [EL_TEST_DISCRIMINA_POR_MAGNITUD]
+A6: REFUTADO   la direccion es CONTRARIA a la hipotesis. La MEDIA gana por 0.700000 en el
+               primario, y el margen exigido es de 0.02 a favor de la SUMA
+A7: REFUTADO   el efecto no se sostiene: ['el conteo de victorias por semilla', 'el control
+               negativo tambien recupera estructura']
+```
+
+**El test NO apoya a la suma, y es un resultado legitimo.** A5 etiqueta solo magnitud. A6 mide la
+direccion y la da contraria. A7 dice que el efecto no aguanta ni en el conteo de victorias por
+semilla ni en el control negativo, que tambien recupera estructura. Con diferencia `-0.700000`,
+`lectura_del_bloque_1` entra por la rama de la linea 1339 y devuelve **`EL_TEST_NO_APOYA_A_LA_SUMA`**
+con `apoya_a_la_suma` falso. **Ese titular no se publico en ningun fichero**, porque el fallo cae
+antes de `construir_json` y `escribir_markdown`: existio solo en memoria.
+
+**Sin retoque.** No se movio la tolerancia de 0.02, ni la banda muerta de 0.005, ni la rejilla, ni el
+criterio de zona betonal, ni el signo de la direccion.
+
+**Bloque 2: ejecutado completo, con las cifras perdidas.** A8 **CONFIRMADO**, las cuatro cifras
+medidas y el 11.2726 por ciento de la discusion de auditoria **no** reproducido con ninguna de las
+tres. A9 **CONFIRMADO**, celdas separadas de verdad. A10 **CONFIRMADO**, las seis magnitudes con al
+menos una cifra distinta de cero por condicion y por clase. A11 **CONFIRMADO**: **el canal de OOV es
+al menos tan grande como el de relleno en las dos clases.** A12 **CONFIRMADO**, variacion
+exactamente cero entre dos pasadas con la misma semilla.
+
+**Las cuatro cifras de la proporcion de OOV NO son recuperables.** Se midieron y se verificaron, y
+murieron en memoria porque el proceso no llego a escribir. Del reparto relleno contra OOV sobrevive
+solo el veredicto cualitativo de A11, sin magnitud. **El 0.155020 del prototipo y las tres cifras
+anteriores siguen sin reproducirse de forma verificable desde un fichero publicado.**
+
+**Lo que no se pudo verificar.** El ASCII byte a byte de los dos informes y el verificador oficial no
+se pueden ejecutar, porque los ficheros no existen. El recuento de `NO_DISPONIBLE` en el `.md` no
+aplica, porque no hay `.md`. **El bug que llenaba el informe de huecos en silencio no se ha
+reproducido**: el fallo es de cableado y ocurre antes de la escritura, y la defensa de escritura de
+P80 aguanta dos reventones seguidos.
+
+**Tres fallos seguidos, los tres de contrato asumido y no verificado en la frontera.** El primero, el
+`KeyError` de clave literal, corregido. Este, el modulo equivocado, sin corregir. Los 83 checks de
+humo pasan enteros en las dos versiones y no cubren ninguno, porque el humo verifica **recuentos** y
+no **contratos de frontera entre modulos**. No se arregla con mas checks de humo: hace falta un caso
+que recorra el camino real de `main`, o una asercion de contrato en la frontera.
+
+**CONCLUSION NUEVA.** La pata EJECUTABLE del anclaje **no apoya a la suma**: A5 discrimina por
+magnitud, A6 mide la direccion y es contraria, A7 no sostiene el efecto. Luego **la pata que sostiene
+que el objetivo no era SGNS es la DOCUMENTAL, la del codigo C de word2vec, y queda como unica
+base.** La reimplementacion propia no aporta apoyo ejecutable, y eso se dice sin rodeos.
+
+**Limite permanente.** El anclaje a una implementacion externa de SGNS queda **SIN HACER** porque
+gensim no esta instalado y con Python 3.14.7 no compila: autoriza afirmar sobre el **OBJETIVO**, no
+sobre la calidad relativa del artefacto frente a una libreria. **No se afirma que Word2Vec sea mejor
+que V03.**
+
+**Fronteras respetadas y comprobadas.**
+
+```text
+test = 0   holdout = 0 identificadores deserializados   leaderboard = 0   submission = 0
+P71 a P80 sin tocar   V03 sin tocar   umbrales 0.44 / 0.51 / 0.46 sin tocar   modelos/ sin escrituras
+congelado 302c994d13b75f8f5fbd440eea2c4f4113997e2581524021923b92f8244d705a ANTES
+congelado 302c994d13b75f8f5fbd440eea2c4f4113997e2581524021923b92f8244d705a DESPUES
+29478868 bytes, abierto en solo lectura
+```
+
+```text
+V03 remains the best verified leaderboard result.
+```
+
 <!-- P81-INCONCLUSO 2026-09-30 -->
 ## P81: INCONCLUSO. 5 de 20 afirmaciones medidas, todas CONFIRMADO, se para en A6 con un KeyError
 

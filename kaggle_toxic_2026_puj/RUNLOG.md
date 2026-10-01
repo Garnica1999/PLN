@@ -3864,3 +3864,206 @@ interesa; el bloque 2 no aporta nada todavia.
 ```text
 V03 remains the best verified leaderboard result.
 ```
+
+---
+
+## P81 - 2026-10-01 - SEGUNDA CORRIDA. Llega a A17 y se para en A18. 15 CONFIRMADO, 2 REFUTADO
+
+Corrige y completa la entrada anterior del 2026-09-30, que quedo describiendo una corrida que
+reventaba en A6. **Aquella corrida no publico informe**; esta tampoco, por un motivo distinto. Las
+dos entradas se conservan.
+
+Script `experiments/p81_01_cierre_huecos.py`, sha256
+`00756ef3432ca2ee29fd2c99987a84f19b3c6f801dc1ea70a34cdd4bc78c966c`, 4930 lineas, 83 de 83 en `--humo`,
+ejecutado por el orquestador. APROBADO por `ml-reviewer` en la version anterior; el delta posterior es
+el arreglo de A6 mas los candados de coherencia del titular. Specs vinculantes sin cambio:
+`55e6900c...faabc` en `86a9140` y `49622380...5801c6` en `c3dee26`.
+
+### Duracion y codigo de salida
+
+```text
+2026-09-30T23:59:01Z a 2026-10-01T00:08:28Z   567 s   codigo de salida 1
+sin traceback de bajo nivel, excepcion capturada por el manejador de la linea 4926
+```
+
+### Reproducibilidad, medida
+
+La corrida se repitio con cronometro de subprocess: 615.5 s, codigo de salida 1, **el mismo punto de
+fallo**. Los **17 veredictos son identicos uno a uno** entre las dos corridas, y la curva completa de
+los seis learning rates con los dos brazos es **identica bit a bit**. El fallo de A18 es estructural y
+no depende del azar de las semillas, como no dependia el de A6.
+
+### Punto exacto del fallo
+
+```text
+Traceback (most recent call last):
+  File ".../experiments/p81_01_cierre_huecos.py", line 4923, in <module>
+    main()
+  File ".../experiments/p81_01_cierre_huecos.py", line 4835, in main
+    a18 = afirmacion_a18(contexto["modulos"]["p72_01"])
+  File ".../experiments/p81_01_cierre_huecos.py", line 3331, in afirmacion_a18
+    documentos = leer_primeras_n_lineas(CORPUS_TWITTER, RECRETE["lineas"], modulo_p72)
+  File ".../experiments/p81_01_cierre_huecos.py", line 3407, in leer_primeras_n_lineas
+    tokens = modulo_p71.RE_TOKEN.findall(linea)
+               ^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'p72_01' has no attribute 'RE_TOKEN'
+```
+
+**Causa, sin arreglar.** `leer_primeras_n_lineas` recibe su tercer parametro con el nombre
+`modulo_p71` y de ahi usa `modulo_p71.RE_TOKEN`. Quien llama, `afirmacion_a18` linea 3331, le pasa
+`modulo_p72`, que es `p72_01`. `RE_TOKEN` esta definido en `p71_04`, que el script ya importa y que
+ademas esta cargado en `contexto["modulos"]["p71_04"]`, y `afirmacion_a18` **no lo recibe**: su unico
+argumento es `contexto["modulos"]["p72_01"]`, en la linea 4835. A18 necesita los dos modulos, uno
+para las constantes del curriculum y otro para el tokenizador, y solo le dieron uno.
+
+Es un fallo de **cableado de modulos**: el contrato del llamado se cumple para la mitad de lo que la
+funcion necesita. Y el nombre del parametro, `modulo_p71`, era la senal de que se pedia el otro modulo
+y se le paso el equivocado. Misma familia que los dos anteriores: **contrato asumido y no verificado
+en la frontera**.
+
+### Estado de las veinte afirmaciones
+
+```text
+CONFIRMADO 15   REFUTADO 2   NO APLICABLE 0   STOP 0   sin ejecutar 3
+A1 CONFIRMADO   A2 CONFIRMADO   A3 CONFIRMADO   A4 CONFIRMADO   A5 CONFIRMADO
+A6 REFUTADO     A7 REFUTADO
+A8 CONFIRMADO   A9 CONFIRMADO   A10 CONFIRMADO  A11 CONFIRMADO  A12 CONFIRMADO
+A13 CONFIRMADO  A14 CONFIRMADO  A15 CONFIRMADO  A16 CONFIRMADO  A17 CONFIRMADO
+A0, A18 y A19 sin ejecutar; el fallo corta el recorrido
+```
+
+Bloques 2, 3 y 4 **completos**: A8 a A12 del bloque 2, A13 y A14 del bloque 3, A15, A16 y A17 del
+bloque 4. Solo el bloque 5, el learning rate paso a paso, no llego a empezar.
+
+### Bloque 1: las dos lecturas de la zona betonal
+
+La curva completa de M1 por learning rate con los dos brazos, seis puntos, tres semillas, corpus
+plantado de 23004 pares, M3 del azar 0.000042 en 2000 permutaciones:
+
+```text
+lr 0.02  MEDIA 0.0000  SUMA 0.0000   lr 0.20  MEDIA 0.7389  SUMA 1.0000
+lr 0.05  MEDIA 0.0000  SUMA 0.0000   lr 0.35  MEDIA 1.0000  SUMA 1.0000
+lr 0.10  MEDIA 0.0056  SUMA 0.0389   lr 0.50  MEDIA 1.0000  SUMA 1.0000
+```
+
+**Lectura por brazo**, que es la que se usa para el primario y la que declara `CRITERIO_ZONA_BETONAL`
+en la linea 178: cada brazo excluye los puntos en los que ese brazo satura. La MEDIA conserva
+0.02, 0.05, 0.10 y 0.20 y su mejor cifra es **0.7389 en lr 0.20**. La SUMA pierde el 0.20, que
+satura a 1.0000, y su mejor cifra es **0.0389 en lr 0.10**.
+
+```text
+diferencia por BRAZO = 0.0389 - 0.7389 = -0.700000   gana la MEDIA por 0.700000
+primario declarado: lr 0.1
+```
+
+**Lectura por punto**, que se calcula y se publica pero **no** se usa: se cae el punto entero si un
+solo de los dos brazos lo declara betonal, luego quedan 0.02, 0.05 y 0.10. La mejor cifra de la
+MEDIA es 0.0056 y la de la SUMA 0.0389.
+
+```text
+diferencia por PUNTO = 0.0389 - 0.0056 = +0.0333   gana la SUMA por 0.0333
+```
+
+**Las dos lecturas NO coinciden en signo**, que es exactamente lo que declara el criterio de la
+linea 174: con estos numeros decidir solo con una seria ocultar la otra. El signo se da la vuelta
+enteramente segun el criterio de exclusion.
+
+**Recuento de victorias por learning rate: la SUMA gana 2 de 6 puntos, y la curva NO es monotona.**
+El prototipo no se reproduce: daba MEDIA 0.3611 contra SUMA 0.0000 en 0.20 y MEDIA 0.4667 contra
+SUMA 0.8278 en 0.35; aqui en 0.20 gana la SUMA 1.0000 contra 0.7389 y en 0.35 y 0.50 empatan en el
+techo de 1.0000.
+
+**El titular, tal como lo declara el script:**
+
+```text
+A5: CONFIRMADO [EL_TEST_DISCRIMINA_POR_MAGNITUD] | la diferencia entre los dos mejores de la rejilla
+es -0.700000 en MAGNITUD, por encima del minimo de 0.02 y fuera de la banda muerta de 0.005
+A6: REFUTADO | REFUTADO: la direccion es CONTRARIA a la hipotesis. La MEDIA gana por 0.700000 en
+el primario, y el margen exigido es de de 0.02 a favor de la SUMA
+A7: REFUTADO | el efecto no se sostiene: ['el conteo de victorias por semilla', 'el control negativo
+tambien recupera estructura']
+```
+
+**Sale exactamente lo que se esperaba y es un resultado legitimo: el test NO apoya a la suma.** El
+arreglo de A6 y los candados de coherencia hacen su trabajo. A5 etiqueta **solo** magnitud y ya no
+puede leerse como apoyo a la SUMA; A6 mide la direccion y la da contraria, 0.700000 a favor de la
+MEDIA contra los 0.02 exigidos a favor de la SUMA; y A7 se suma en REFUTADO porque el efecto no se
+sostiene ni en el conteo de victorias por semilla ni en el control negativo, que tambien recupera
+estructura.
+
+Con diferencia `-0.700000`, la funcion `lectura_del_bloque_1` de la linea 1309 entra por la rama de
+la linea 1339, `direccion == "favor_a_la_media"`, y devuelve **`EL_TEST_NO_APOYA_A_LA_SUMA`** con
+`apoya_a_la_suma` falso. **Ese titular no se publico en ningun fichero**, porque el fallo cae antes
+de `construir_json` y de `escribir_markdown`. Existe solo en memoria.
+
+**Sin retoque.** No se movio la tolerancia de 0.02, ni la banda muerta de 0.005, ni la rejilla, ni el
+criterio de zona betonal, ni el signo de la direccion. El REFUTADO de A6 y el REFUTADO de A7 se
+publican tal cual salen.
+
+### Bloque 2: ejecutado, con las cifras perdidas
+
+A8 a A12 los ejecuto el bloque 2 completo. A8 **CONFIRMADO**: "las cuatro cifras estan medidas y
+publicadas. La cifra de 11.2726 por ciento de la discusion de auditoria NO queda reproducida con
+ninguna de las tres". A9 **CONFIRMADO**, las celdas quedan separadas de verdad, identificadores
+distintos y fila de relleno identicamente cero. A10 **CONFIRMADO**, las seis magnitudes presentes con
+al menos una cifra distinta de cero por condicion y por clase. A11 **CONFIRMADO**: "el canal de OOV
+es al menos tan grande como el de relleno en las dos clases". A12 **CONFIRMADO**, dos pasadas con la
+misma semilla con variacion exactamente cero.
+
+**Las cuatro cifras de la proporcion de OOV NO son recuperables de esta corrida.** Se midieron y se
+verificaron, pero vivieron en memoria y el proceso murio antes de `escribir_markdown`: no hay JSON ni
+markdown donde leerlas, y la linea de registro de `_registrar` las corta a 150 caracteres, que es lo
+que queda en el log. Del reparto entre canal de relleno y canal de OOV solo sobrevive el veredicto
+cualitativo de A11, **el canal de OOV es al menos tan grande como el de relleno en las dos clases**,
+y ninguna magnitud. El 0.155020 del prototipo y las tres cifras anteriores **siguen sin reproducirse
+de forma verificable desde un fichero publicado**.
+
+### Salidas
+
+```text
+reports/p81_cierre_huecos.json   NO EXISTE
+reports/p81_cierre_huecos.md     NO EXISTE
+ningun temporal .tmp_p81 en reports/
+```
+
+El fallo cae antes de la escritura atomica, luego **nada se publico y nada se vacio**. La asercion
+ASCII byte a byte de los dos informes y el verificador oficial **no se pueden ejecutar**, porque los
+ficheros no existen. El recuento de `NO_DISPONIBLE` en el markdown **no aplica**, porque no hay
+markdown. El bug que llenaba el `.md` de huecos en silencio **no se ha reproducido**, porque el
+script no llego a escribir. Que el fallo siga siendo de cableado y no de escritura es la mejor
+noticia de las dos corridas: la defensa de escritura de P80 aguanta.
+
+### Fronteras respetadas
+
+```text
+test = 0   holdout = 0 identificadores deserializados   leaderboard = 0   submission = 0
+P71 a P80 sin tocar   V03 sin tocar   umbrales 0.44 / 0.51 / 0.46 sin tocar   modelos/ sin escrituras
+congelado 302c994d13b75f8f5fbd440eea2c4f4113997e2581524021923b92f8244d705a ANTES
+congelado 302c994d13b75f8f5fbd440eea2c4f4113997e2581524021923b92f8244d705a DESPUES
+29478868 bytes, abierto en solo lectura, misma huella
+```
+
+### Limite permanente, y una conclusion nueva
+
+**El anclaje a una implementacion externa de SGNS queda SIN HACER** porque gensim no esta instalado
+y con Python 3.14.7 no compila. Autoriza afirmar sobre el **OBJETIVO**, no sobre la calidad relativa
+del artefacto frente a una libreria. **Word2Vec no se afirma mejor que V03.**
+
+**Conclusion nueva de esta corrida.** Con los numeros reales, **la pata EJECUTABLE del anclaje no
+apoya a la suma**: A5 discrimina por magnitud, A6 mide la direccion y es contraria, y A7 no sostiene
+el efecto. Luego **la pata que sostiene que el objetivo no era SGNS es la DOCUMENTAL**, la del codigo
+C de word2vec, y **queda como unica base**. La reimplementacion propia no aporta apoyo
+ejecutable, y eso hay que decirlo sin rodeos: la conclusion del proyecto sobre el objetivo se apoya
+en la lectura del codigo de referencia y en nada medido aqui.
+
+### Estado
+
+**P81 sigue INCONCLUSO, y por segunda vez por un fallo de contrato en la frontera, no de calculo.**
+17 de 20 afirmaciones medidas: 15 CONFIRMADO, 2 REFUTADO, 0 STOP, 3 sin ejecutar. Bloques 2, 3 y 4
+completos. El bloque 1 **si** entrega la lectura que se buscaba: las dos lecturas de la zona betonal
+con su signo opuesto, el recuento de victorias de 2 de 6, y el titular esperado. Sin informe
+publicado, luego las cuatro cifras de OOV quedan sin publicar.
+
+```text
+V03 remains the best verified leaderboard result.
+```

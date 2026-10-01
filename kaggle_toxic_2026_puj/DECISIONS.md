@@ -8735,6 +8735,11 @@ V03 remains the best verified leaderboard result.
 
 ## D-274: P81. La auditoria de los cinco huecos arranca, mide cinco afirmaciones y se para en A6
 
+**CORRIDA FALLIDA QUE NO PUBLICO INFORME.** Esta entrada describe la corrida del 2026-09-30, que
+revento en A6 con un `KeyError` y no escribio ni JSON ni markdown. **No es el estado actual de
+P81.** La segunda corrida del 2026-10-01 llega hasta A17, completa los bloques 2, 3 y 4 y se
+para en A18; esta en **D-275**. Esta entrada se conserva integra y no se reescribe.
+
 **Status**: INCONCLUSA. 5 CONFIRMADO, 0 REFUTADO, 0 NO APLICABLE, 0 STOP, 15 sin ejecutar. Sin
 informe publicado en JSON ni en markdown.
 
@@ -8851,6 +8856,189 @@ despues de las dos corridas.
 Queda pendiente para el orquestador una correccion de una clave literal y **un caso de humo que la
 fije**, porque la suite actual demuestra que Smoke Test Driven Development con 67 comprobaciones no
 fijaba el contrato de claves que el resto del recorrido da por hecho.
+
+```text
+V03 remains the best verified leaderboard result.
+```
+
+---
+
+## D-275: P81 segunda corrida. El arreglo de A6 funciona, el titular sale como se esperaba y el fallo se mueve a A18
+
+**Status**: INCONCLUSA. 17 de 20 afirmaciones medidas: 15 CONFIRMADO, 2 REFUTADO, 0 NO APLICABLE,
+0 STOP, 3 sin ejecutar. Bloques 2, 3 y 4 completos. Sin informe publicado en JSON ni en markdown.
+
+**Date**: 2026-10-01
+
+**Context**
+
+Script `experiments/p81_01_cierre_huecos.py`, sha256
+`00756ef3432ca2ee29fd2c99987a84f19b3c6f801dc1ea70a34cdd4bc78c966c`, 4930 lineas, 83 de 83 en `--humo`,
+ejecutado por el orquestador. Los documentos vinculantes no cambian: pre-registro sha256
+`55e6900cce49bd7e2ee98b00e0c315081c04718edb18df4abd49f484755faabc` en `86a9140`, enmienda 1 sha256
+`496223801147a414e74a53fb7cf407ae48ad4671c74e45daba4dce19f15801c6` en `c3dee26`.
+
+La corrida anterior quedo registrada en D-274 y **no publico informe**. Esta tampoco, por un motivo
+distinto y mas lejos: 567 segundos, codigo de salida 1, y parada en **A18**, no en A6.
+
+El delta de la version nueva es el arreglo de A6 y los candados de coherencia del titular. Y los dos
+**cumplen exactamente lo que tenian que cumplir**. A6 ya no revienta: hay una funcion que deriva toda
+clave de brazo a partir del nombre del objetivo, luego el `KeyError` de una clave literal
+`m1_media` busca en el brazo SUMA desaparece. Y el candado que rechaza como
+`ERROR_DE_COHERENCIA_NO_PUBLICABLE` la combinacion imposible de un A5 CONFIRMADO con titular a favor
+de la SUMA y direccion contraria, ya no tiene nada que devolver, porque la corrida cae del lado
+correcto.
+
+### Lo que dice el bloque 1
+
+Curva completa de M1 por learning rate con los dos brazos, seis puntos de la enmienda 1 y tres
+semillas, sobre corpus plantado de 23004 pares con M3 del azar 0.000042 en 2000 permutaciones:
+
+```text
+lr 0.02  MEDIA 0.0000  SUMA 0.0000   lr 0.20  MEDIA 0.7389  SUMA 1.0000
+lr 0.05  MEDIA 0.0000  SUMA 0.0000   lr 0.35  MEDIA 1.0000  SUMA 1.0000
+lr 0.10  MEDIA 0.0056  SUMA 0.0389   lr 0.50  MEDIA 1.0000  SUMA 1.0000
+```
+
+**Las dos lecturas de la zona betonal, con numeros, y no coinciden en signo.** El criterio por brazo
+es el que se declara y el que se usa para el primario, en `CRITERIO_ZONA_BETONAL` linea 178: cada
+brazo excluye los puntos en los que ese mismo brazo satura. La MEDIA conserva 0.02, 0.05, 0.10 y
+0.20 y su mejor cifra es **0.7389 en lr 0.20**; la SUMA pierde el 0.20, que satura a 1.0000, y su
+mejor cifra es **0.0389 en lr 0.10**, luego el primario queda en **lr 0.1**.
+
+```text
+por BRAZO = 0.0389 - 0.7389 = -0.700000   gana la MEDIA por 0.700000
+```
+
+El criterio por punto se calcula y se publica pero no se usa: se cae el punto entero si un solo de los
+dos brazos lo declara betonal, luego quedan 0.02, 0.05 y 0.10, con mejor cifra de la MEDIA 0.0056 y
+de la SUMA 0.0389.
+
+```text
+por PUNTO = 0.0389 - 0.0056 = +0.0333   gana la SUMA por 0.0333
+```
+
+**El signo se da la vuelta enteramente segun el criterio de exclusion**, y por eso el criterio queda
+escrito y la alternativa se publica: decidir solo con una seria ocultar la otra.
+
+**Recuento de victorias por learning rate: la SUMA gana 2 de 6 puntos, y la curva NO es monotona.** El
+prototipo no se reproduce: daba MEDIA 0.3611 contra SUMA 0.0000 en 0.20, aqui la SUMA gana 1.0000
+contra 0.7389; daba MEDIA 0.4667 contra SUMA 0.8278 en 0.35, aqui empatan en el techo de 1.0000.
+
+### El titular, y sale como se esperaba
+
+```text
+A5: CONFIRMADO [EL_TEST_DISCRIMINA_POR_MAGNITUD]
+A6: REFUTADO   la direccion es CONTRARIA a la hipotesis. La MEDIA gana por 0.700000 en el
+               primario, y el margen exigido es de 0.02 a favor de la SUMA
+A7: REFUTADO   el efecto no se sostiene: ['el conteo de victorias por semilla', 'el control
+               negativo tambien recupera estructura']
+```
+
+**El test NO apoya a la suma, y es un resultado legitimo.** A5 etiqueta **solo** magnitud y su
+etiqueta nueva lo dice, `EL_TEST_DISCRIMINA_POR_MAGNITUD`, de modo que ya no puede leerse como apoyo
+al objetivo de la referencia. A6 mide la direccion y la encuentra contraria a la hipotesis fijada.
+A7 se suma en REFUTADO porque el efecto no aguanta ni en el conteo de victorias por semilla ni en el
+control negativo, que tambien recupera estructura: tres veredictos REFUTADO y no uno.
+
+Con diferencia `-0.700000`, `lectura_del_bloque_1` de la linea 1309 entra por la rama de la linea
+1339, `direccion == "favor_a_la_media"`, y devuelve **`EL_TEST_NO_APOYA_A_LA_SUMA`** con
+`apoya_a_la_suma` falso. **Ese titular no se publico en ningun fichero**: el fallo cae antes de
+`construir_json` y `escribir_markdown`, luego existio solo en memoria. Se registra aqui lo que el
+script decide, y se dice que no hay fichero que lo respalde.
+
+**No se retoque nada.** No se movio la tolerancia de 0.02, ni la banda muerta de 0.005, ni la rejilla
+de seis puntos, ni el criterio de zona betonal, ni el signo con el que se lee la direccion. Los dos
+REFUTADO y el recuento de 2 de 6 se publican tal cual salen.
+
+### Decision
+
+**P81 sigue INCONCLUSO, y por segunda vez por un fallo de contrato en la frontera, no de calculo.**
+Se conserva D-274 intacta y marcada como corrida fallida que no publico informe.
+
+Se acepta el resultado del bloque 1 tal cual, **a favor de que el test no apoye a la SUMA**, porque
+es lo que dicen los numeros y porque es la unica lectura honesta: la hipotesis preregistrada de que
+el objetivo de la referencia gana al objetivo alternativo queda **REFUTADA por direccion** en un
+corpus con estructura plantada, y el efecto tampoco se sostiene en las dos comprobaciones de A7.
+
+Se registra una **conclusion nueva**, que es lo que esta corrida anade al proyecto mas alla del
+numero.
+
+**La pata EJECUTABLE del anclaje no apoya a la suma. La conclusion de que el objetivo no era SGNS se
+sostiene en la pata DOCUMENTAL, la del codigo C de word2vec, y queda como unica base.** El bloque 1
+es un ancla ejecutable, y lo que dice es que el test discrimina por magnitud, que la direccion es
+contraria y que el efecto no se sostiene. No aporta apoyo a la hipotesis de la SUMA. Lo que sostiene
+la conclusion del proyecto es la lectura del codigo de referencia. Esa asimetria hay que dejarla
+escrita, porque un lector que solo mire el bloque 1 se llevaria la impression contraria.
+
+**Alternatives Considered**
+
+1. Retocar el REFUTADO de A6 moviendo la tolerancia, la rejilla o el criterio de zona betonal para que
+   salga a favor de la SUMA. **Descartado y prohibido.** El pre-registro fija los margenes antes de
+   ejecutar. Un resultado que sale en contra se publica en contra.
+2. Cambiar el criterio de zona betonal de por brazo a por punto, que da `+0.0333` a favor de la SUMA,
+   y con eso publicar un titular de apoyo. **Descartado.** El script declara por brazo, con
+   criterio, y publica la alternativa por punto precisamente para que se vea que las dos no
+   coinciden. Elegir la lectura que favorsce la hipotesis despues de ver las dos es lo que el
+   criterio escrito evita.
+3. Tratar el REFUTADO de A7 como ruido y quedarnos solo con A5. **Descartado.** A7 es la comprobacion
+   que pergunta si el efecto se sostiene, y dice que no, tanto en el conteo de victorias por semilla
+   como en el control negativo. Es la segunda mitad del mismo Titular.
+4. Reejecutar el script en bucle hasta que salga un titular de apoyo. **Descartado por prohibicion
+   expresa.** No se arregla nada y no se reintenta buscando un resultado.
+5. Dar P81 por cerrado porque 17 de 20 afirmaciones estan medidas. **Descartado.** Sin informe
+   publicado no hay artefacto, y las cuatro cifras de la proporcion de OOV quedan en memoria. Un cierre
+   sin fichero no es un cierre.
+
+**Consequences**
+
+**Sin informe.** `reports/p81_cierre_huecos.json` y `reports/p81_cierre_huecos.md` no existen, no hay
+temporal `.tmp_p81`, nada se publico y nada se vacio. El ASCII byte a byte de esos dos ficheros y el
+verificador oficial **no se pueden ejecutar**, porque no hay nada que verificar, y el recuento de
+`NO_DISPONIBLE` en el markdown **no aplica**. El bug que llenaba el `.md` de huecos en silencio **no
+se ha reproducido**: el fallo es de cableado y ocurre antes de la escritura, luego la defensa de
+escritura de P80 aguanta dos reventones seguidos.
+
+**Lo que se pierde, y es lo que mas duele.** El bloque 2 se ejecuto completo: A8 **CONFIRMADO**, con
+las cuatro cifras medidas y la constancia de que el 11.2726 por ciento de la discusion de auditoria
+**no** queda reproducido con ninguna de las tres cifras anteriores; A9 **CONFIRMADO**, celdas
+separadas de verdad; A10 **CONFIRMADO**, las seis magnitudes con al menos una cifra distinta de cero
+por condicion y por clase; A11 **CONFIRMADO**, **el canal de OOV es al menos tan grande como el de
+relleno en las dos clases**; y A12 **CONFIRMADO**, dos pasadas con la misma semilla con variacion
+exactamente cero. **Las cuatro cifras de la proporcion de OOV no son recuperables de esta corrida**:
+se midieron, se verificaron y murieron en memoria. El reparto entre canal de relleno y canal de OOV
+sobrevive solo como veredicto cualitativo, sin magnitud. El 0.155020 del prototipo y las tres cifras
+anteriores **siguen sin reproducirse de forma verificable desde un fichero publicado**, y eso hay
+que decirlo sin adornos: la afirmacion queda CONFIRMADA en el log y sin soporte published.
+
+**El fallo de esta vez es de cableado de modulos, y es el tercero de la misma familia.**
+`leer_primeras_n_lineas` de la linea 3402 recibe su tercer parametro con el nombre `modulo_p71` y usa
+`modulo_p71.RE_TOKEN` en la 3407; quien llama, `afirmacion_a18` en la 3331, le pasa `modulo_p72`, que
+es `p72_01` y **no tiene `RE_TOKEN`**. `RE_TOKEN` esta en `p71_04`, que el script ya importa y que
+ademas esta cargado en `contexto["modulos"]["p71_04"]`, y `afirmacion_a18` no lo recibe: su unico
+argumento es `contexto["modulos"]["p72_01"]`, en la linea 4835. A18 necesita los dos modulos, uno para
+las constantes del curriculum y otro para el tokenizador, y le dieron uno. El nombre del parametro era
+la senal de que se pedia el otro.
+
+**Tres fallos seguidos, los tres de contrato asumido y no verificado en la frontera**: el `KeyError`
+de clave literal de la primera version, corregido; este de modulo equivocado, sin corregir. La
+suite de humo de 83 comprobaciones pasa entera en las dos versiones y ninguno de los dos fallos lo
+cubre, porque el humo verifica **recuentos** y no **contratos de frontera** entre modulos. Eso no se
+resuelve con mas comprobaciones de humo, se resuelve con un caso de humo que recorra el camino real
+de `main` con modulos de prueba, o con una asercion de contrato en la frontera. Queda como
+recomendacion para el orquestador.
+
+**Limite permanente, sin cambio.** El anclaje a una implementacion externa de SGNS queda **SIN
+HACER**, porque gensim no esta instalado y con Python 3.14.7 no compila. Autoriza afirmar sobre el
+**OBJETIVO**, y **no** sobre la calidad relativa del artefacto frente a una libreria. **No se afirma
+que Word2Vec sea mejor que V03.** Y anade la conclusion nueva: la pata EJECUTABLE del anclaje no
+apoya a la suma, luego la base unica de la conclusion del proyecto es la DOCUMENTAL, la del codigo C
+de word2vec.
+
+Fronteras respetadas y comprobadas: test 0, holdout 0 identificadores deserializados, leaderboard 0,
+submission 0, P71 a P80 sin tocar, V03 sin tocar, umbrales 0.44, 0.51 y 0.46 sin tocar, `modelos/`
+sin escrituras. Artefacto congelado `302c994d13b75f8f5fbd440eea2c4f4113997e2581524021923b92f8244d705a`
+de 29478868 bytes antes y despues, abierto en solo lectura.
 
 ```text
 V03 remains the best verified leaderboard result.
