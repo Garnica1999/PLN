@@ -43,9 +43,19 @@ sin autorizacion.
   grids; cada uno con pre-registro congelado, `ml-coder`, `ml-reviewer`, `ml-qa-engineer` (GO/NO-GO) y
   `ml-trainer`. Cierre documentado por experimento (D-086 para B, D-087 para C1) con notebook, docs,
   registros de novedad, memorias y commits.
-- [ ] **F4''''' Cierre del ciclo**: actualizar `PROJECT_STATE.md`, `FINAL_REPORT.md`,
+- [x] **F4''''' Cierre del ciclo**: actualizar `PROJECT_STATE.md`, `FINAL_REPORT.md`,
   `DECISIONS.md`, RUNLOG, `experiments.csv` y este plan; re-indexar codebase; cierre de linea
   documentado para la via C1 si su veredicto lo procede.
+  **VIA C1-A EJECUTADA y CERRADA**: V36-E1 termino con veredicto
+  `SENAL_EXISTE_INTEGRACION_NEGATIVA` (acta **D-088**): el banco es **real** (delta **+0.0032273**,
+  **5/5 folds**, IC95 [+0.0022338, +0.0042230], supera su H0) y la senal es **especifica de la
+  categoria** (gana a los 3/3 remapeos aleatorios de caracteres) y **por documento** (gana al
+  barajado entre documentos, +0.0035270, el mayor de los cuatro), pero la **integracion es negativa**
+  (-0.0016013, IC95 [-0.0024150, -0.0007569]) y el delta atribuido a C1-A es **+0.0004072**, cuatro
+  veces por debajo del gate de +0.0015. **L4 queda CERRADA** y C1-A es **one-shot**. Con la
+  amendment de los dos controles que no podian fallar, la revision en dos rondas (la primera
+  REVOCO con 3 bugs bloqueantes de la ruta de salida) y el overrRun declarado con autorizacion de
+  Carlos (2858.4 s acumulados frente a los 2400 s declarados).
 
 **Restricciones de honestidad que se mantienen**: la calibracion del proyecto da LB ~ 0.00223 +
 1.02825 x CV, luego un salto de +0.0626 de CV llevaria a LB 0.70; ninguna de las dos vias tiene
