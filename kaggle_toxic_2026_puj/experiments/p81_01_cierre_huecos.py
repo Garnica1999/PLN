@@ -36,12 +36,15 @@ afirma que Word2Vec sea mejor que V03.
 
 from __future__ import annotations
 
+import contextlib
 import hashlib
 import importlib.util
+import io
 import json
 import math
 import re
 import sys
+import tempfile
 import traceback
 from datetime import datetime, timezone
 from pathlib import Path
@@ -71,10 +74,13 @@ ENMIENDA = DOCS / "p81_enmienda_1.md"
 ENMIENDA_SHA256 = "496223801147a414e74a53fb7cf407ae48ad4671c74e45daba4dce19f15801c6"
 COMMIT_ENMIENDA = "c3dee26"
 
-# Salidas de P81. Unicamente se escriben estos dos ficheros, mas el propio script.
+# Salidas de P81. Se escriben el informe JSON, el informe markdown y UN parcial PROPIO por
+# cada escritura incremental, mas el propio script. Dos parciales nunca comparten nombre:
+# ver `nombre_del_parcial`.
 JSON_INFORME = REPORTS / "p81_cierre_huecos.json"
 MD_INFORME = REPORTS / "p81_cierre_huecos.md"
-JSON_PARCIAL = REPORTS / "p81_cierre_huecos.parcial.json"
+STEM_PARCIAL = "p81_cierre_huecos.parcial"
+PATRON_DE_PARCIALES = "reports/p81_cierre_huecos.parcial_<corrida>_<motivo>.json"
 SUFIJO_TEMPORAL = ".tmp_p81"
 
 # Aislamiento de afirmaciones. Es un cambio de comportamiento DEL SCRIPT y se declara como
@@ -87,9 +93,16 @@ AISLAMIENTO = {
                     "ERROR, y la corrida CONTINUA con la siguiente"),
     "que_no_hace": ("el guard no convierte un fallo en un resultado. ERROR no es CONFIRMADO ni "
                     "REFUTADO: es la marca de que la comprobacion no se ejecuto"),
-    "escritura_incremental": ("se escribe reports/p81_cierre_huecos.parcial.json al terminar "
-                              "cada bloque, con su propio nombre, para que un fallo en la "
-                              "ultima afirmacion no tire el trabajo de las anteriores"),
+    "escritura_incremental": ("se escribe UN parcial PROPIO al terminar cada bloque y tras "
+                              "cada afirmacion del bloque 2, con la marca de la corrida y "
+                              "el motivo en el nombre, para que un fallo en la ultima "
+                              "afirmacion no tire el trabajo de las anteriores. Dos "
+                              "escrituras nunca comparten destino"),
+    "un_fallo_de_persistencia_no_tumba_la_corrida": (
+        "si un parcial no se puede escribir, eso se registra como AVISO con su causa en el "
+        "log y la corrida CONTINUA: perder la capacidad de guardar no puede impedir "
+        "terminar de medir. Lo unico que aborta es una Parada con marca STOP, que se "
+        "propaga"),
     "por_que_no_se_confunde_con_el_criterio_de_parada": (
         "el criterio de parada del pre-registro se sigue respetando para Parada con marca "
         "STOP. Lo que se aisla es el fallo TECNICIO de una afirmacion, que no es lo mismo "
@@ -311,7 +324,7 @@ SUSTITUCIONES_ASCII: list = []
 
 # Numero minimo de comprobaciones de humo que deben pasar. Es un suelo declarado, no una
 # cuenta viva: si el total baja de aqui, el modo de humo falla en vez de dar un OK falso.
-MINIMO_COMPROBACIONES_HUMO = 120
+MINIMO_COMPROBACIONES_HUMO = 126
 
 # Frases obligatorias del pre-registro, escritas aqui para que no se puedan perder.
 FRASE_A3 = ("ESTA_CONVENCION_ES_COHERENTE_CON_P79_Y_SIGUE_SIENDO_UNA_REIMPLEMENTACION_PROPIA")
@@ -486,6 +499,63 @@ def publicar_atomico(pares: list) -> None:
             raise SystemExit(f"STOP escritura atomica: falta el temporal {temporal}")
     for temporal, final in pares:
         temporal.replace(final)
+
+
+def marca_de_corrida(inicio: datetime) -> str:
+    """Construye la marca compacta de una corrida, para nombrar sus ficheros.
+
+    Args:
+        inicio: instante de arranque de la corrida.
+
+    Returns:
+        Marca de la forma "20260930T193800", en ASCII.
+    """
+    return inicio.astimezone(timezone.utc).strftime("%Y%m%dT%H%M%S")
+
+
+def nombre_del_parcial(motivo: str, marca: str) -> str:
+    """Construye el nombre PROPIO de un parcial, uno por escritura.
+
+    Un parcial se reescribe al terminar cada bloque y tras cada afirmacion del bloque 2, y
+    con un nombre fijo la segunda escritura chocaba con el guard antitrunco, que prohibe
+    sobrescribir un destino existente. Ese choque abortaba la corrida y se llevaba por
+    delante la primera medicion del bloque 2, que era justo lo que el parcial pretendia
+    salvar. Por eso cada escritura recibe un nombre propio, con la marca de la corrida y
+    el motivo dentro: dos escrituras nunca tienen el mismo destino y el guard antitrunco
+    no llega a dispararse por un parcial. La garantia de no sobrescribir jamas un artefacto
+    FINAL queda intacta, porque sigue aplicando a todos los destinos.
+
+    Args:
+        motivo: etiqueta de la escritura, por ejemplo "bloque 2, afirmacion 1 de 5 (A8)".
+        marca: marca de la corrida, de `marca_de_corrida`.
+
+    Returns:
+        Nombre de fichero en ASCII, terminado en ".json".
+    """
+    limpio = re.sub(r"[^0-9A-Za-z]+", "_", str(motivo)).strip("_")
+    if not limpio:
+        limpio = "sin_motivo"
+    if len(limpio) > 60:
+        # Se recorta, pero con la huella del motivo entero, para que dos motivos largos
+        # que comparten principio no acaben en el mismo destino.
+        huella = hashlib.sha256(str(motivo).encode("utf-8")).hexdigest()[:8]
+        limpio = f"{limpio[:48]}_{huella}"
+    return f"{STEM_PARCIAL}_{marca}_{limpio}.json"
+
+
+def ruta_del_parcial(motivo: str, marca: str, directorio: Path | None = None) -> Path:
+    """Devuelve la ruta del parcial de una escritura concreta.
+
+    Args:
+        motivo: etiqueta de la escritura.
+        marca: marca de la corrida.
+        directorio: carpeta de destino. Si es `None`, se usa `reports`.
+
+    Returns:
+        La ruta del parcial, todavia sin escribir.
+    """
+    return (directorio if directorio is not None else REPORTS) / nombre_del_parcial(
+        motivo, marca)
 
 
 def escribir_ascii_atomico(ruta: Path, texto: str, etiqueta: str) -> Path:
@@ -3442,8 +3512,21 @@ def leer_primeras_n_lineas(ruta: Path, lineas: int, modulo_p71) -> list:
     return documentos
 
 
+SENTINELA_A18_AISLADO = {
+    "afirmacion": "A18",
+    "veredicto": "ERROR",
+    "aislado_por_fallo_de_script": True,
+    "medida": {"estado_de_ejecucion": "NO_EVALUADA"},
+}
+
+
 def afirmacion_a19(a18: dict) -> dict:
     """A19. La declaracion de impacto esta atada a la medida.
+
+    Si A18 se aislo con ERROR, su resultado NO existe y a19 no se mide: sale con
+    veredicto ERROR y no REFUTADO. Un REFUTADO con marca STOP se presentaria como
+    fallado por el dato cuando en realidad es consecuencia de un fallo de script aguas
+    arriba. Por eso `main` pasa el sentinel y no un diccionario vacio.
 
     Se exige un campo `declaracion_de_impacto_del_scheduler` con el valor DESPRECIABLE o NO
     DESPRECIABLE, y se exige que ese valor sea igual al que dicta la regla de A18. Si dice
@@ -3453,6 +3536,28 @@ def afirmacion_a19(a18: dict) -> dict:
     Returns:
         Diccionario de la afirmacion con su veredicto.
     """
+    if a18.get("aislado_por_fallo_de_script"):
+        return {
+            "afirmacion": "A19",
+            "hueco": 5,
+            "naturaleza": "CONFIRMAR",
+            "stop": True,
+            "tolerancia": "no aplica: A19 no llego a ejecutarse",
+            "veredicto": "ERROR",
+            "motivo": ("A18 se aislo con veredicto ERROR por fallo propio del script, "
+                       "luego A19 no tiene medida que atar y no se evaluo. NO es un "
+                       "REFUTADO: un REFUTADO con marca STOP se presentaria como "
+                       "fallado por el dato cuando el fallo es de script aguas arriba"),
+            "medida": {
+                "estado_de_ejecucion": "NO_EVALUADA",
+                "motivo_de_no_ejecucion": ("A18 no existe porque se aislo con ERROR por "
+                                             "fallo propio del script"),
+                "declaracion_de_impacto_del_scheduler": "NO_DISPONIBLE",
+                "que_no_afirma": ("ERROR significa que la comprobacion no llego a "
+                                 "ejecutarse. NO es un CONFIRMADO, NO es un REFUTADO y "
+                                 "NO es un NO_EVALUABLE por el dato"),
+            },
+        }
     regla = a18.get("medida", {}).get("clasificacion_del_impacto", "NO_DISPONIBLE")
     declaracion = regla if regla in ("DESPRECIABLE", "NO DESPRECIABLE") else "NO_DISPONIBLE"
     coincide = declaracion == regla
@@ -3758,11 +3863,25 @@ def construir_json(afirmaciones: list, pre: dict, huella_antes: dict, huella_des
                 "script, y que la corrida continua con las demas. ERROR no es un CONFIRMADO, "
                 "no es un REFUTADO y no es un NO_EVALUABLE por el dato"),
             "json_parcial": {
-                "ruta": str(JSON_PARCIAL.relative_to(RAIZ)),
+                "patron_de_nombres": PATRON_DE_PARCIALES,
+                "un_propio_por_escritura": True,
                 "para_que_sirve": ("se escribe al terminar cada bloque para que un fallo en las "
                                   "ultimas afirmaciones no tire el trabajo de las anteriores"),
                 "se_conserva_al_terminar": True,
                 "checkpoint_por_afirmacion_en_el_bloque_2": True,
+                "por_que_nombres_propios": (
+                    "un parcial se reescribe al terminar cada bloque y tras cada afirmacion "
+                    "del bloque 2. Con un nombre fijo la segunda escritura chocaba con el "
+                    "guard antitrunco y abortaba la corrida, y con eso se perdia la primera "
+                    "medicion del bloque 2, que ya estaba medida. Un nombre propio por "
+                    "escritura quita el choque sin tocar la garantia de no sobrescribir "
+                    "nunca un artefacto final"),
+                "escritura_atomica": ("se escribe un temporal con sufijo, se verifica byte a "
+                                      "byte y solo despues se publica con os.replace"),
+                "un_fallo_no_tumba_la_corrida": (
+                    "un fallo al escribir un parcial degrada a AVISO, con su causa en el "
+                    "log, y la corrida sigue. Lo unico que aborta es una Parada con marca "
+                    "STOP"),
                 "por_que": ("el bloque 2 es el caro, unos diez minutos. Escribir el parcial "
                             "solo entre bloques dejaba que un fallo a mitad del bloque 2 "
                             "tirase todo lo ya medido, asi que ahora se escribe tras cada "
@@ -3793,12 +3912,21 @@ class RegistroDeAfirmaciones:
     afirmacion aislada con ERROR lo esta por fallo propio, y el informe lo declara.
 
     Escribe el JSON parcial en cuanto termina cada bloque, para que un fallo en la ultima
-    afirmacion no tire el trabajo de las anteriores.
+    afirmacion no tire el trabajo de las anteriores. Cada escritura va a su propio
+    fichero, con la marca de la corrida y el motivo en el nombre, y se publica con
+    temporal y `os.replace`.
+
+    Un fallo al escribir un parcial NO tumba la corrida: degrada a AVISO, se registra con
+    su causa y la corrida sigue. Perder la capacidad de guardar no puede impedir terminar
+    de medir. Lo unico que aborta es una `Parada` con marca STOP.
 
     Attributes:
         afirmaciones: lista acumulada de diccionarios de afirmacion.
         fallos: lista de fallos registrados, uno por afirmacion que lanzo.
         bloques_publicados: numero de bloques ya escritos a disco.
+        rutas_de_parciales: rutas de los parciales efectivamente publicados.
+        avisos_de_persistencia: avisos por parcial que no se pudo escribir.
+        marca: marca compacta de la corrida, usada en el nombre de los parciales.
         inicio: instante de arranque de la corrida.
     """
 
@@ -3812,7 +3940,10 @@ class RegistroDeAfirmaciones:
         self.fallos: list = []
         self.bloques_publicados = 0
         self.escrituras_del_bloque_2 = 0
+        self.rutas_de_parciales: list = []
+        self.avisos_de_persistencia: list = []
         self.inicio = inicio
+        self.marca = marca_de_corrida(inicio)
 
     def ejecutar(self, identificador: str, funcion, argumentos: tuple):
         """Ejecuta una afirmacion dentro de un guard y devuelve su diccionario, o `None`.
@@ -3846,19 +3977,56 @@ class RegistroDeAfirmaciones:
         _registrar(resultado)
         return resultado
 
-    def publicar_parcial(self, motivo: str, extra: dict | None = None):
+    def registrar_aviso_de_persistencia(self, destino: Path, motivo: str,
+                                        exc: BaseException) -> None:
+        """Registra como AVISO el fallo de escritura de un parcial, y no tumba la corrida.
+
+        El aviso queda en el log, que es donde se lee durante la corrida, y tambien en
+        memoria, para que el informe pueda contarlo. Perder la capacidad de guardar un
+        parcial no puede impedir terminar de medir.
+
+        Args:
+            destino: ruta del parcial que no se pudo escribir.
+            motivo: etiqueta de la escritura que se perdio.
+            exc: la excepcion que produjo el fallo.
+
+        Returns:
+            `None`, siempre: el valor que devuelve `publicar_parcial` cuando degrada.
+        """
+        self.avisos_de_persistencia.append({
+            "ruta": destino.name,
+            "motivo_de_la_escritura": motivo,
+            "tipo_de_excepcion": type(exc).__name__,
+            "mensaje": str(exc)[:300],
+            "que_significa": ("este parcial NO se escribio. La corrida CONTINUA: perder la "
+                              "capacidad de guardar no puede impedir terminar de medir"),
+        })
+        log(f"AVISO: no se pudo escribir el parcial {destino.name} ({motivo}): "
+            f"{type(exc).__name__}: {str(exc)[:140]}. La corrida sigue.")
+        return None
+
+    def publicar_parcial(self, motivo: str, extra: dict | None = None,
+                         directorio: Path | None = None):
         """Escribe el JSON parcial del estado actual, sin esperar al final de la corrida.
 
-        Se escribe en un fichero PARCIAL, con su propio nombre, para no competir con el
-        informe definitivo ni ocupar su nombre definitivo antes de tiempo.
+        Cada escritura va a un fichero PROPIO, con la marca de la corrida y el motivo en el
+        nombre, y se publica con temporal y `os.replace`. No se escribe nunca sobre un
+        destino ya publicado, ni propio ni final: el guard antitrunco se queda entero.
+
+        Un fallo al escribir un parcial degrada a AVISO, con su causa en el log, y la
+        corrida sigue. Un `SystemExit` aqui, venga del guard antitrunco o de la asercion
+        ASCII, es un fallo de persistencia de un PARCIAL y NO se relanza. Lo unico que
+        aborta es una `Parada` con marca STOP.
 
         Args:
             motivo: etiqueta de que motivo esta escritura.
             extra: diccionario con lo que falte para montar el informe.
+            directorio: carpeta de destino. Si es `None`, se usa `reports`.
 
         Returns:
             La ruta del JSON parcial, o `None` si no se pudo escribir.
         """
+        destino = ruta_del_parcial(motivo, self.marca, directorio)
         try:
             cuerpo = {
                 "familia": "P81_CIERRE_HUECOS",
@@ -3866,7 +4034,10 @@ class RegistroDeAfirmaciones:
                 "es_parcial": True,
                 "informe_completo": False,
                 "motivo_de_la_escritura": motivo,
+                "patron_de_nombres": PATRON_DE_PARCIALES,
+                "un_propio_por_escritura": True,
                 "bloques_publicados": self.bloques_publicados,
+                "parciales_publicados": len(self.rutas_de_parciales),
                 "fecha": datetime.now(timezone.utc).isoformat(timespec="seconds"),
                 "fecha_inicio": self.inicio.isoformat(timespec="seconds"),
                 "formulacion": FORMULACION,
@@ -3874,29 +4045,39 @@ class RegistroDeAfirmaciones:
                 "afirmaciones_aisladas_con_fallo": self.fallos,
                 "nota_de_robustez": (
                     "este JSON parcial existe para que un fallo en las ultimas afirmaciones "
-                    "no tire el trabajo de las anteriores. Se escribe al terminar cada bloque"),
+                    "no tire el trabajo de las anteriores. Se escribe al terminar cada bloque "
+                    "y tras cada afirmacion del bloque 2, con un nombre propio en cada "
+                    "escritura. Un fallo al escribirlo degrada a AVISO y no tumba la corrida"),
+                "avisos_de_persistencia": list(self.avisos_de_persistencia),
                 "aislamiento_declarado": AISLAMIENTO,
             }
             if extra:
                 cuerpo.update(extra)
-            temporal = escribir_ascii_atomico(JSON_PARCIAL,
+            temporal = escribir_ascii_atomico(destino,
                                              json.dumps(cuerpo, ensure_ascii=True, indent=2)
                                              + "\n", "json_parcial")
             sucios = [nombre for nombre, ok in verificar_ascii_byte_a_byte([temporal]).items()
                       if not ok]
             if sucios:
                 raise SystemExit(f"STOP asercion ASCII: bytes no ASCII en {sucios}")
-            publicar_atomico([(temporal, JSON_PARCIAL)])
+            publicar_atomico([(temporal, destino)])
             self.bloques_publicados += 1
-            log(f"JSON parcial escrito en {JSON_PARCIAL.relative_to(RAIZ)}: "
+            self.rutas_de_parciales.append(destino)
+            log(f"JSON parcial escrito en {destino.name}: "
                 f"{len(self.afirmaciones)} afirmaciones, "
-                f"{len(self.fallos)} aisladas con fallo")
-            return JSON_PARCIAL
-        except SystemExit:
+                f"{len(self.fallos)} aisladas con fallo, "
+                f"{len(self.rutas_de_parciales)} parciales propios")
+            return destino
+        except Parada:
+            # El criterio de parada del pre-registro se respeta siempre: una Parada con
+            # marca STOP que aparece en la capa de escritura aborta la corrida.
             raise
-        except Exception as exc:  # noqa: BLE001
-            log(f"aviso: no se pudo escribir el JSON parcial: {type(exc).__name__}: {exc}")
-            return None
+        except (SystemExit, Exception) as exc:  # noqa: BLE001
+            # El SystemExit del guard antitrunco, o el de la asercion ASCII, aqui son un
+            # fallo de persistencia de un PARCIAL y no una parada del pre-registro: se
+            # degrada a AVISO y la corrida sigue. El orden de estos except importa, y por
+            # eso `Parada` se captura antes, y en su propio bloque.
+            return self.registrar_aviso_de_persistencia(destino, motivo, exc)
 
 
 def _traza_resumida(exc: Exception) -> list:
@@ -4741,8 +4922,11 @@ def escribir_markdown(afirmaciones: list, informe: dict) -> list:
         f"- escrituras parciales dentro del bloque 2: "
         f"{envolver(tol.get('aislamiento_de_afirmaciones'), 'aisl').num('n_escrituras_parciales_del_bloque_2')}"
         f" de 5, una tras cada afirmacion del bloque",
-        f"- JSON parcial, escrito al terminar cada bloque y tras cada afirmacion del bloque 2: "
-        f"`{envolver(tol.get('aislamiento_de_afirmaciones'), 'aisl').txt(('json_parcial', 'ruta'))}`",
+        f"- JSON parcial, escrito al terminar cada bloque y tras cada afirmacion del bloque "
+        f"2, y con un nombre PROPIO en cada escritura: "
+        f"`{envolver(tol.get('aislamiento_de_afirmaciones'), 'aisl').txt(('json_parcial', 'patron_de_nombres'))}`",
+        "- un fallo al escribir un parcial no tumba la corrida: degrada a AVISO en el log. "
+        "Lo unico que aborta es una Parada con marca STOP.",
         "",
         "El contrato de llamada se verifica con `inspect.signature`: cada parametro recibe el "
         "objeto que su nombre declara, y un parametro llamado `modulo_p71` tiene que recibir un "
@@ -5073,6 +5257,233 @@ def _informe_declara_checkpoint_del_bloque_2() -> bool:
     parcial = envolver(seccion.get("json_parcial"), "parcial")
     return (seccion.num("n_escrituras_parciales_del_bloque_2") == 5
             and parcial.get("checkpoint_por_afirmacion_en_el_bloque_2") is True)
+
+
+def _escritor_que_falla(ruta: Path, texto: str, etiqueta: str) -> Path:
+    """Escritor de humo que falla como un disco lleno.
+
+    Args:
+        ruta: destino que se le pide.
+        texto: contenido pedido.
+        etiqueta: origen del texto.
+
+    Raises:
+        OSError: siempre.
+
+    Returns:
+        Nunca llega aqui.
+    """
+    raise OSError(f"disco lleno simulado al escribir {ruta} ({etiqueta})")
+
+
+def _escritor_que_dispara_el_guard(ruta: Path, texto: str, etiqueta: str) -> Path:
+    """Escritor de humo que lanza el mismo SystemExit que lanza el guard antitrunco.
+
+    Args:
+        ruta: destino que se le pide.
+        texto: contenido pedido.
+        etiqueta: origen del texto.
+
+    Raises:
+        SystemExit: siempre.
+
+    Returns:
+        Nunca llega aqui.
+    """
+    raise SystemExit(f"STOP escritura: {ruta} ya existe y solo se admiten temporales")
+
+
+def _escritor_que_para(ruta: Path, texto: str, etiqueta: str) -> Path:
+    """Escritor de humo que lanza una Parada con marca STOP, como lo haria una asercion.
+
+    Args:
+        ruta: destino que se le pide.
+        texto: contenido pedido.
+        etiqueta: origen del texto.
+
+    Raises:
+        Parada: siempre.
+
+    Returns:
+        Nunca llega aqui.
+    """
+    raise Parada("A5", f"parada de humo en la capa de escritura ({etiqueta})")
+
+
+def _tres_parciales_consecutivos_no_se_pisan() -> bool:
+    """Comprueba que tres escrituras seguidas de parcial dejan tres ficheros propios.
+
+    Es el caso que fallo en la corrida real: `publicar_parcial` publicaba sobre su nombre
+    definitivo, y la segunda escritura chocaba con el guard antitrunco y abortaba. Se exige
+    lo contrario: tres escrituras, tres ficheros, cada uno con SU contenido, y ni un
+    temporal huerfano.
+
+    Returns:
+        True si las tres escrituras quedan en disco y ninguna pisa a otra.
+    """
+    motivos = ["bloque 1", "bloque 2, afirmacion 1 de 5 (A8)", "fin del bloque 2"]
+    with tempfile.TemporaryDirectory(prefix="p81_humo_") as carpeta:
+        destino = Path(carpeta)
+        registro = RegistroDeAfirmaciones(datetime.now(timezone.utc))
+        rutas = [registro.publicar_parcial(motivo, {"n_de_la_prueba": indice},
+                                           directorio=destino)
+                 for indice, motivo in enumerate(motivos, start=1)]
+        if any(ruta is None for ruta in rutas):
+            return False
+        if len({ruta.name for ruta in rutas}) != len(motivos):
+            return False
+        leidos = [json.loads(ruta.read_text(encoding="ascii")) for ruta in rutas]
+        if [cuerpo.get("motivo_de_la_escritura") for cuerpo in leidos] != motivos:
+            return False
+        if [cuerpo.get("n_de_la_prueba") for cuerpo in leidos] != [1, 2, 3]:
+            return False
+        if not all(cuerpo.get("es_parcial") for cuerpo in leidos):
+            return False
+        if list(destino.glob("*" + SUFIJO_TEMPORAL)):
+            return False
+        return (len(list(destino.glob("*.json"))) == len(motivos)
+                and len(registro.rutas_de_parciales) == len(motivos)
+                and registro.avisos_de_persistencia == []
+                and registro.bloques_publicados == len(motivos))
+
+
+def _el_fallo_de_un_parcial_degrada_a_aviso() -> bool:
+    """Comprueba que un fallo de escritura de un parcial avisa y la corrida sigue.
+
+    Se inyectan los dos fallos que se vieron de verdad: una `OSError` de disco y el
+    `SystemExit` del guard antitrunco. Los dos tienen que acabar en AVISO, con su causa en
+    el log, y despues hay que poder seguir publicando y midiendo.
+
+    Returns:
+        True si el fallo degrada a AVISO, se registra con su causa y la corrida sigue.
+    """
+    escritores = (_escritor_que_falla, _escritor_que_dispara_el_guard)
+    with tempfile.TemporaryDirectory(prefix="p81_humo_") as carpeta:
+        destino = Path(carpeta)
+        registro = RegistroDeAfirmaciones(datetime.now(timezone.utc))
+        registro.ejecutar("X1", _afirmacion_que_devuelve_ok, ("antes",))
+        original = escribir_ascii_atomico
+        capturado = io.StringIO()
+        try:
+            with contextlib.redirect_stdout(capturado):
+                for indice, escritor in enumerate(escritores, start=1):
+                    globals()["escribir_ascii_atomico"] = escritor
+                    if registro.publicar_parcial(f"humo que falla {indice}",
+                                                 directorio=destino) is not None:
+                        return False
+                globals()["escribir_ascii_atomico"] = original
+                registro.ejecutar("X2", _afirmacion_que_devuelve_ok, ("despues",))
+                siguiente = registro.publicar_parcial("humo que si funciona",
+                                                      directorio=destino)
+        finally:
+            globals()["escribir_ascii_atomico"] = original
+        if siguiente is None or not siguiente.exists():
+            return False
+        tipos = [aviso.get("tipo_de_excepcion")
+                 for aviso in registro.avisos_de_persistencia]
+        if tipos != ["OSError", "SystemExit"]:
+            return False
+        if not all(aviso.get("mensaje") for aviso in registro.avisos_de_persistencia):
+            return False
+        if capturado.getvalue().count("AVISO:") != len(escritores):
+            return False
+        return (len(registro.afirmaciones) == 2
+                and registro.bloques_publicados == 1
+                and len(list(destino.glob("*.json"))) == 1
+                and not list(destino.glob("*" + SUFIJO_TEMPORAL)))
+
+
+def _escribir_un_final_dos_veces_aborta() -> bool:
+    """Comprueba que un artefacto FINAL ya publicado no se puede volver a escribir.
+
+    Es la garantia que este arreglo no puede perder: un final sobrescrito en silencio seria
+    una perdida silenciosa de una medicion. Se escribe y se publica un final, y el segundo
+    intento tiene que abortar dejando intacto el contenido original.
+
+    Returns:
+        True si el segundo intento aborta y el final conserva su primer contenido.
+    """
+    with tempfile.TemporaryDirectory(prefix="p81_humo_") as carpeta:
+        final = Path(carpeta) / "informe_final.json"
+        contenido = '{"medida": 1}\n'
+        temporal = escribir_ascii_atomico(final, contenido, "humo_final")
+        publicar_atomico([(temporal, final)])
+        if not final.exists():
+            return False
+        try:
+            escribir_ascii_atomico(final, '{"medida": 2}\n', "humo_final_repetido")
+        except SystemExit:
+            return (final.read_text(encoding="ascii") == contenido
+                    and not list(Path(carpeta).glob("*" + SUFIJO_TEMPORAL)))
+        return False
+
+
+def _una_parada_en_la_capa_de_escritura_aborta() -> bool:
+    """Comprueba que una Parada con marca STOP en la capa de escritura aborta.
+
+    Mientras que un fallo de escritura de un parcial degrada a AVISO, una `Parada` con marca
+    STOP tiene que seguir abortando la corrida: es el criterio de parada del pre-registro.
+
+    Returns:
+        True si la Parada se propaga fuera de `publicar_parcial` y no deja aviso.
+    """
+    with tempfile.TemporaryDirectory(prefix="p81_humo_") as carpeta:
+        destino = Path(carpeta)
+        registro = RegistroDeAfirmaciones(datetime.now(timezone.utc))
+        original = escribir_ascii_atomico
+        try:
+            globals()["escribir_ascii_atomico"] = _escritor_que_para
+            capturado = io.StringIO()
+            with contextlib.redirect_stdout(capturado):
+                registro.publicar_parcial("humo con parada", directorio=destino)
+        except Parada as parada:
+            return (parada.afirmacion == "A5"
+                    and registro.avisos_de_persistencia == []
+                    and not list(destino.glob("*.json")))
+        except (Exception, SystemExit):
+            return False
+        finally:
+            globals()["escribir_ascii_atomico"] = original
+        return False
+
+
+def _informe_declara_el_patron_de_parciales() -> bool:
+    """Comprueba que el informe declara el patron de nombres y la degradacion a AVISO.
+
+    Returns:
+        True si la seccion de robustez declara el patron y la politica de AVISO.
+    """
+    huella = {"ruta": "x", "sha256": "y", "bytes": 1, "mtime_ns": 2}
+    afirmaciones = [afirmacion_vacia(f"A{n}") for n in range(0, 20)]
+    informe = construir_json(afirmaciones, {}, huella, huella, {},
+                             envolver({}, "A18"), datetime.now(timezone.utc), {}, {}, [],
+                             {"cumple": True}, {"cuantas_en_afirmaciones": 0}, 5)
+    seccion = envolver(informe.get("aislamiento_de_afirmaciones"), "aisl")
+    parcial = envolver(seccion.get("json_parcial"), "parcial")
+    return (parcial.txt("patron_de_nombres") == PATRON_DE_PARCIALES
+            and parcial.get("un_propio_por_escritura") is True
+            and "un temporal" in parcial.txt("escritura_atomica")
+            and "AVISO" in parcial.txt("un_fallo_no_tumba_la_corrida")
+            and "STOP" in parcial.txt("un_fallo_no_tumba_la_corrida"))
+
+
+def _a19_con_a18_aislado_da_error() -> bool:
+    """Comprueba que A19 con A18 aislado sale ERROR, y no REFUTADO.
+
+    Sin el sentinel, A19 recibia un diccionario vacio y devolvia REFUTADO: un REFUTADO con
+    marca STOP se presenta como fallado por el dato cuando en realidad es consecuencia de un
+    fallo de script aguas arriba. El caso discrimina: con el sentinel sale ERROR y sin el
+    sentinel, con el diccionario vacio, sigue saliendo REFUTADO.
+
+    Returns:
+        True si A19 distingue el sentinel del diccionario vacio.
+    """
+    con_sentinel = afirmacion_a19(dict(SENTINELA_A18_AISLADO))
+    sin_medida = afirmacion_a19({})
+    return (con_sentinel.get("veredicto") == "ERROR"
+            and sin_medida.get("veredicto") == "REFUTADO"
+            and con_sentinel.get("stop") is True
+            and con_sentinel.get("medida", {}).get("estado_de_ejecucion") == "NO_EVALUADA")
 
 
 def _detecta_literal_cruzado() -> bool:
@@ -5492,8 +5903,6 @@ def ejecutar_pruebas_de_humo() -> int:
                                   {})["n_de_afirmaciones"]) == 0)
 
     # --- Escrituras: la comprobacion ASCII en memoria y el renombrado ---
-    import tempfile
-
     with tempfile.TemporaryDirectory(prefix="p81_humo_") as carpeta:
         destino = Path(carpeta) / "informe.md"
         temporal = escribir_ascii_atomico(destino, "# prueba\n" + FORMULACION + "\n",
@@ -5642,6 +6051,25 @@ def ejecutar_pruebas_de_humo() -> int:
               _checkpoint_cubre_las_afirmaciones_del_bloque_2())
     comprobar("el informe declara las escrituras parciales del bloque 2",
               _informe_declara_checkpoint_del_bloque_2())
+
+    # --- LA FRONTERA DE LA ESCRITURA: lo que el humo nunca llego a ejercitar ---
+    # El fallo real era un contrato asumido: el humo NUNCA llamo a `publicar_parcial`,
+    # y por eso la segunda escritura choco con el guard antitrunco en la corrida real y
+    # no en el humo. Es la misma clase de fallo que el KeyError de A6 y el cableado de
+    # A18. Estos cuatro casos se ejecutan de verdad, sobre un directorio temporal, y cada
+    # uno tiene que distinguir SI de NO.
+    comprobar("tres escrituras de parcial seguidas dejan tres ficheros y no se pisan",
+              _tres_parciales_consecutivos_no_se_pisan())
+    comprobar("un fallo de escritura de un parcial degrada a AVISO y la corrida sigue",
+              _el_fallo_de_un_parcial_degrada_a_aviso())
+    comprobar("escribir un artefacto final ya publicado SI aborta",
+              _escribir_un_final_dos_veces_aborta())
+    comprobar("una Parada con marca STOP en la capa de escritura SI aborta",
+              _una_parada_en_la_capa_de_escritura_aborta())
+    comprobar("el informe declara el patron de nombres de los parciales",
+              _informe_declara_el_patron_de_parciales())
+    comprobar("A19 con A18 aislado sale ERROR y no REFUTADO",
+              _a19_con_a18_aislado_da_error())
 
 
     veredicto = evaluar_humo(superadas, fallos)
@@ -5870,7 +6298,8 @@ def main() -> None:
         a18 = registro.ejecutar("A18", afirmacion_a18,
                                 (contexto["modulos"]["p71_04"],
                                  contexto["modulos"]["p72_01"]))
-        registro.ejecutar("A19", afirmacion_a19, (a18 if a18 is not None else {},))
+        registro.ejecutar("A19", afirmacion_a19,
+                          (a18 if a18 is not None else SENTINELA_A18_AISLADO,))
         cronometro["bloque_5"] = round(
             (datetime.now(timezone.utc) - marcas).total_seconds(), 3)
         registro.publicar_parcial("fin del bloque 5", {"cronometro": cronometro})

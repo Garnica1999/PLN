@@ -4265,3 +4265,278 @@ titular EL_TEST_NO_APOYA_A_LA_SUMA. Los bloques 2, 3, 4 y 5 no dejan nada. Ningu
 ```text
 V03 remains the best verified leaderboard result.
 ```
+
+---
+
+## P81 - 2026-10-01 - CUARTA CORRIDA. Las veinte medidas y diez parciales propios. Se para al serializar el informe final
+
+Corrige y completa las tres entradas anteriores de P81, que quedaron describiendo corridas que no
+publicaron informe completo. **Ninguna de las cuatro lo ha publicado.** Las cuatro entradas se
+conservan.
+
+Script `experiments/p81_01_cierre_huecos.py`, sha256
+`4f7f8488ed9b27106248d8035e3bb749318b0032788616e745421d2df09adb27`, 6402 lineas, 126 de 126 en `--humo`
+con salida 0, verificado por el orquestador. Specs sin cambio: `55e6900c...faabc` en `86a9140` y
+`49622380...5801c6` en `c3dee26`.
+
+### El arreglo funciona, y se nota
+
+La corrida anterior se comia a si misma: `publicar_parcial` publicaba sobre su nombre definitivo y la
+segunda escritura chocaba con el guard antitrunco. Ahora **cada escritura parcial va a un fichero
+PROPIO, con la marca de corrida y el motivo**, de modo que la invariante "nunca sobrescribir un
+destino existente" es cierta para todos los destinos sin excepciones. Y un fallo de escritura degrada
+a AVISO con su causa en el log, no a parada. Solo una `Parada` con marca STOP aborta.
+
+**Se escribieron los diez parciales propios**, uno al terminar cada bloque y uno tras cada
+afirmacion del bloque 2, con nombres que llevan la marca de corrida:
+
+```text
+p81_cierre_huecos.parcial_20261001T010045_fin_del_bloque_1.json     24897 B
+p81_cierre_huecos.parcial_20261001T010045_bloque_2_afirmacion_1_de_5_A8.json   27109 B
+p81_cierre_huecos.parcial_20261001T010045_bloque_2_afirmacion_2_de_5_A9.json   35086 B
+p81_cierre_huecos.parcial_20261001T010045_bloque_2_afirmacion_3_de_5_A10.json  38360 B
+p81_cierre_huecos.parcial_20261001T010045_bloque_2_afirmacion_4_de_5_A11.json  39471 B
+p81_cierre_huecos.parcial_20261001T010045_bloque_2_afirmacion_5_de_5_A12.json  41792 B
+p81_cierre_huecos.parcial_20261001T010045_fin_del_bloque_2.json     41798 B
+p81_cierre_huecos.parcial_20261001T010045_fin_del_bloque_3.json     45276 B
+p81_cierre_huecos.parcial_20261001T010045_fin_del_bloque_4.json     52548 B
+p81_cierre_huecos.parcial_20261001T010045_fin_del_bloque_5.json    148941 B
+```
+
+El `reports/p81_cierre_huecos.parcial.json` de la corrida rota **sigue ahi intacto**, sha256
+`4670cad89407db551705cb18ae3f1c90e70fa707266034d554faa3d7b588a3ae`, 24196 B. **No se ha borrado**,
+como se pidio: es evidencia de la corrida que fallo.
+
+### Duracion y codigo de salida
+
+```text
+65.1 s con cronometro de subprocess   codigo de salida 1
+no fueron los diez minutos porque el fallo es al final, no al principio: las veinte afirmaciones
+se midieron enteras antes de caer
+```
+
+### Punto exacto del fallo
+
+```text
+  File ".../experiments/p81_01_cierre_huecos.py", line 6395, in <module>
+    main()
+  File ".../experiments/p81_01_cierre_huecos.py", line 6349, in main
+    json.dumps(informe, ensure_ascii=True, indent=2)
+  File "/usr/lib/python3.14/json/encoder.py", line 202, in encode
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+                    f'is not JSON serializable')
+TypeError: Object of type module is not JSON serializable
+when serializing dict item 'p71_04'
+when serializing dict item 'contexto_de_modulos'
+```
+
+**Causa, sin arreglar.** La linea 3835 mete en el cuerpo del informe
+`"contexto_de_modulos": contexto.get("modulos", {})`, y ese diccionario contiene **objetos modulo
+vivos**, `p71_04`, `p72_01`, `v10_11` y `v9_04`. Un modulo no es serializable a JSON, luego la
+`json.dumps` de la linea 6349 revienta. Es la **ultima** sentencia efectiva de la corrida: todo lo
+demas, las veinte afirmaciones y los diez parciales, ya estaba escrito en disco.
+
+**La asimetria que lo explica:** los parciales serializan bien porque su cuerpo **no** incluye
+`contexto_de_modulos`, y el informe final si. El campo se anadio para poder auditar que modulos se
+cargaron, y para eso hace falta el modulo, y para eso el modulo no se puede volcar a JSON. Falta el
+paso intermedio: publicar **los nombres** de los modulos, no los objetos.
+
+Note que el guard de la linea 6344, que se niega a sobrescribir el informe si ya existe, se respeto
+correctamente: los dos ficheros no existian, se paso de largo, y la muerte vino despues.
+
+### Estado de las veinte afirmaciones
+
+```text
+CONFIRMADO 18   REFUTADO 2   ERROR 0   STOP 0   sin ejecutar 0
+A0 CONFIRMADO   A1..A5 CONFIRMADO   A6 REFUTADO   A7 REFUTADO
+A8..A19 CONFIRMADO
+LAS VEINTE MEDIDAS. Ninguna en ERROR, ninguna sin ejecutar.
+```
+
+A0 **CONFIRMADO**: intacto en sha256, tamano y `mtime_ns` antes y despues de la primera y la ultima
+lectura. Ninguna afirmacion quedo en ERROR, y el guard de aislamiento no necesito actuar porque no
+hubo ningun fallo dentro de una afirmacion.
+
+### Bloque 1: las dos lecturas, el reparto y el titular, tal cual se esperaba
+
+```text
+umbral de zona betonal 0.99
+
+por BRAZO, criterio declarado y el del primario
+  MEDIA  excluye 0.35 y 0.50          mejor no betonal 0.7388888888888889 en lr 0.20
+  SUMA   excluye 0.20, 0.35 y 0.50   mejor no betonal 0.03888888888888889 en lr 0.10
+  diferencia_por_brazo = -0.7000000000000001   GANA LA MEDIA por 0.700000   primario lr 0.1
+
+por PUNTO, alternativa calculada y publicada, no usada
+  sobran 0.02, 0.05 y 0.10   MEDIA 0.005555555555555556   SUMA 0.03888888888888889
+  diferencia_por_punto = +0.03333333333333333   GANA LA SUMA por 0.0333
+
+las_dos_lecturas_coinciden_en_signo = False
+```
+
+**Reparto de victorias por learning rate: la SUMA gana 2 de 6 y la MEDIA 4 de 6, "2 a 4".** Curva no
+monotona, **2 cambios de signo**, `recuento_en_banda_muerta: True`.
+
+**Titular literal:**
+
+```text
+EL_TEST_NO_APOYA_A_LA_SUMA   apoya_a_la_suma: False   direccion: favor_a_la_media
+```
+
+```text
+la diferencia entre los dos mejores de la rejilla es -0.700000, de magnitud suficiente para
+discriminar pero con el SIGNO en contra de la SUMA. La MEDIA gana por 0.700000. El test discrimina
+por magnitud, pero su direccion es contraria a la hipotesis de A6, y eso se publica: el bloque 1
+NO apoya al objetivo de la referencia
+```
+
+```text
+ZONA DE NO CONCLUSION: el reparto de victorias por learning rate queda en 2 a 4 y eso es ruido con
+tres semillas. El primario NO debe leerse como confirmacion
+```
+
+**Las cuatro cosas esperadas, y se publican sin ajustar:** A5 CONFIRMADO por magnitud, A6 REFUTADO por
+direccion, titular `EL_TEST_NO_APOYA_A_LA_SUMA` con la MEDIA ganando por 0.700000, reparto 2 a 4 en
+zona de no conclusion, y las dos lecturas con signo opuesto y `coinciden_en_signo` igual a False. **No
+se movio la tolerancia de 0.02, ni la banda muerta de 0.005, ni la rejilla, ni el criterio de zona
+betonal, ni el signo de la direccion.** El REFUTADO de A6 y el de A7 se publican tal cual salen.
+
+### Bloque 2: LAS CUATRO CIFRAS, por fin en disco, y el reparto con magnitud
+
+A8 **CONFIRMADO**. Estas son las cifras con el tokenizador real de `v9_04`, y **no habian sobrevivido
+a ninguna corrida anterior**:
+
+```text
+proporcion_de_posiciones_oov        = 0.04124873567093729   4.124874 % de las posiciones
+proporcion_de_posiciones_de_relleno = 0.7309191672285907    73.091917 % de las posiciones
+oov_sobre_tokens                     = 15.329496 %           sobre los tokens que entran
+numero_de_tipos_distintos_fuera_de_vocabulario = 2008
+```
+
+Y el resto del desglose, con los numeros que lo sostienen:
+
+```text
+n_filas_de_dev 1483   max_len_de_v9_04 64   posiciones_totales 94912
+tokens_que_entran_en_la_matriz 25539   tokens_cubiertos 21624   tokens_oov 3915
+posiciones_de_relleno 69373   vocabulario_usado 3439
+numero_de_filas_con_cero_tokens_cubiertos 1   fraccion_de_filas_sin_cubiertos 0.0006743088334457181
+codigo: v9_04.cargar_vec, v9_04.normalizar_emb_normal, v9_04.tokenizar y v9_04.secuencias
+```
+
+**Reparto entre canal de relleno y canal de OOV, con magnitud:** sobre las 94912 posiciones del
+desarrollo, el relleno son 69373, el **73.091917 %**, y el OOV son 3915 tokens, el **4.124874 %**.
+Sobre los 25539 tokens que llegan a la matriz, el OOV es el **15.329496 %**. El canal de OOV es una
+orden de magnitud mas pequeno que el de relleno en posiciones, y algo mas grande que la mitad en
+tokens.
+
+**Lo que A8 deja escrito sobre las cifras anteriores, y es lo importante:**
+
+```text
+cifra_de_la_discusion_en_por_ciento = 11.2726
+queda_reproducida = False
+variante_que_la_reproduce = null
+```
+
+```text
+las tres cifras de la discusion usan normalizaciones distintas y MAX_LEN 60, mientras que v9_04 usa
+MAX_LEN 64 y normalizar_emb_normal. Recalcular con el codigo real es lo unico que hace comparables
+los numeros
+```
+
+Las cifras que **no se arrastran** quedan listadas con su motivo: `p78_oov_normalizado 0.112658`,
+`p78_oov_crudo 0.313639`, `p78_maxlen 60`, `p80_oov_de_la_discusion 11.2726`, contra
+`v9_04_max_len 64`. **El 0.155020 del prototipo no reproduce ninguna de las cuatro**, y ahora eso esta
+medido y publicado en vez de estimado. El **4.124874 %** es la cifra buena.
+
+**Salvedad que hay que dejar escrita sobre A11.** A11 sale CONFIRMADO con el motivo "el canal de OOV es
+al menos tan grande que el de relleno en las dos clases", y las magnitudes de la sonda son:
+
+```text
+v9_04_BiGRU               canal_de_relleno_c1 0.0   canal_de_oov_c2b_menos_c2 0.0   c2 0.1146087   c2b 0.1146087
+v10_11_BiGRUAfinable      canal_de_relleno_c1 0.0   canal_de_oov_c2b_menos_c2 0.0   c2 0.1146087   c2b 0.1146087
+distancia_entre_c2_y_c2b = 0.0 en las dos clases   banda_muerta_de_la_diferencia = true
+```
+
+**Los dos canales miden exactamente 0.0**, luego la comparacion "el OOV es al menos tan grande" es una
+comparacion de **dos ceros**, y `banda_muerta_de_la_diferencia` lo declara. El veredicto es cierto y
+no informa nada: **la magnitud que respalda el reparto de canales es la de A8, no la de A11.** A11
+sigue siendo valido como prueba de que la sonda separa las celdas, no como medida del reparto.
+
+### Bloque 5: A18 y A19, los dos CONFIRMADO
+
+```text
+A18: CONFIRMADO | la serie esta medida y publicada, y la clasificacion sale de aplicar el umbral:
+     diferencia relativa de las medias 0.002143718728, umbral 0.005, luego DESPRECIABLE
+A19: CONFIRMADO | la etiqueta existe y coincide con la regla de A18
+```
+
+Detalles que se publican: `total_lotes_plan 1395`, `total_lotes_recorridos 1398`, `pasos_totales 1398`,
+`lr_inicial 6.4`, `lr_minimo 0.001`, y el recorte declarado, **primeras 2000 lineas del fichero, lote
+256, 53243 tokens**, con la advertencia de que los recuentos absolutos no son los de la corrida real
+y de que lo que se audita, la desviacion entre los dos totales, si escala de forma lineal. La serie
+completa de `lr` paso a paso esta publicada.
+
+A19 declara `coinciden: true`, `declaracion_de_impacto_del_scheduler: DESPRECIABLE` y
+`diferencia_relativa_de_las_medias 0.0021437187276626846` contra `umbral 0.005`, y dice explicitly que
+el desfase de una epoca **existe y es un defecto real de codigo**, porque el plan usa `range(EPOCAS)` y
+el entrenamiento usa `enumerate(..., start=1)`, y que lo que se cualifica es su consecuencia numerica.
+
+**Ninguno de los dos quedo en ERROR, y la contingencia de que A19 emita ERROR por A18 sin ejecutar no se
+disparo**, porque A18 si se ejecuto. El arreglo de esa regla esta correcto y no llego a hacer falta.
+**No hay ningun REFUTado que haya que descartar por fallo aguas arriba**: los dos REFUTADO, A6 y A7,
+son mediciones del bloque 1 y no dependen de A18.
+
+### Salidas
+
+```text
+reports/p81_cierre_huecos.json   NO EXISTE
+reports/p81_cierre_huecos.md     NO EXISTE
+10 parciales propios ESCRITOS, cada uno ASCII puro, 0 bytes por encima de 127
+reports/p81_cierre_huecos.parcial.json  el de la corrida rota, INTACTO y conservado
+ningun temporal .tmp_p81
+```
+
+El ASCII byte a byte de los **diez** parciales nuevos: **0 bytes por encima de 127 en los diez**. El
+`.json` y el `.md` finales **no se pueden verificar porque no existen**. El **verificador oficial**
+`tools/verificar_caracteres.py` sobre el proyecto entero: **salida 0, 0 caracteres no permitidos**.
+
+**NO_DISPONIBLE en el `.md`: no aplica, porque el `.md` no se llego a escribir.** En los diez
+parciales nuevos son **0**, y **0** tambien en el parcial viejo de la corrida rota. El bug que
+llenaba el informe de huecos en silencio **no se ha reproducido en cuatro corridas seguidas**.
+
+### Fronteras respetadas
+
+```text
+test = 0   holdout = 0 identificadores deserializados   leaderboard = 0   submission = 0
+P71 a P80 sin tocar   V03 sin tocar   umbrales 0.44 / 0.51 / 0.46 sin tocar   modelos/ sin escrituras
+congelado 302c994d13b75f8f5fbd440eea2c4f4113997e2581524021923b92f8244d705a ANTES
+congelado 302c994d13b75f8f5fbd440eea2c4f4113997e2581524021923b92f8244d705a DESPUES
+29478868 bytes, abierto en solo lectura. A0 lo confirma en sha256, tamano y mtime_ns.
+```
+
+### Conclusion y limite permanente
+
+**La pata EJECUTABLE del anclaje de H1 no apoya la suma.** A5 discrimina por magnitud, A6 mide la
+direccion y la encuentra contraria con la MEDIA ganando por 0.700000, y el reparto de 2 a 4 con dos
+cambios de signo en la curva deja el primario en zona de no conclusion con tres semillas. Luego **la
+base que sostiene que el objetivo no era SGNS es la pata DOCUMENTAL, el codigo C de word2vec, y queda
+como base unica.**
+
+**Limite permanente:** el anclaje a una implementacion externa de SGNS queda **SIN HACER** porque
+gensim no esta instalado y no compila con Python 3.14.7. Autoriza afirmar sobre el **OBJETIVO**, no
+sobre la calidad relativa del artefacto frente a una libreria. **No se afirma que Word2Vec sea mejor
+que V03.**
+
+### Estado
+
+**P81 sigue INCONCLUSO, y por cuarta vez por un fallo de contrato y no de calculo.** Las veinte
+afirmaciones estan medidas y **diez ficheros en disco las respaldan**, pero el informe completo en
+JSON y en markdown no se publico. La diferencia con las tres corridas anteriores es que **esta vez no
+se pierde ninguna medicion**: las cuatro cifras de OOV, el reparto con magnitud, las dos lecturas, el
+recuento, el titular, A18 y A19 estan todos en `reports/p81_cierre_huecos.parcial_20261001T010045_fin_del_bloque_5.json`.
+Lo unico que falta es el `.json` y el `.md` finales, y la causa es una sola: un objeto modulo dentro
+del cuerpo del informe.
+
+```text
+V03 remains the best verified leaderboard result.
+```

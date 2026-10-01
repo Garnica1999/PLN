@@ -1,3 +1,142 @@
+<!-- P81-CUARTA-CORRIDA 2026-10-01 -->
+## P81 cuarta corrida: LAS VEINTE medidas, 18 CONFIRMADO y 2 REFUTADO, 0 ERROR. El informe final muere en un modulo
+
+```text
+20 de 20 afirmaciones medidas   0 sin ejecutar
+18 CONFIRMADO   2 REFUTADO (A6 y A7)   0 ERROR   0 STOP
+A0 CONFIRMADO: el congelado intacto en sha256, tamano y mtime_ns antes y despues
+65.1 s con cronometro de subprocess, codigo de salida 1
+```
+
+```text
+experiments/p81_01_cierre_huecos.py
+  4f7f8488ed9b27106248d8035e3bb749318b0032788616e745421d2df09adb27
+  6402 lineas, 126 de 126 en --humo con salida 0
+10 parciales propios ESCRITOS, cada uno con marca de corrida y motivo, los 10 ASCII puros
+reports/p81_cierre_huecos.parcial.json  el de la corrida rota, INTACTO y conservado
+reports/p81_cierre_huecos.json           NO EXISTE
+reports/p81_cierre_huecos.md             NO EXISTE
+ningun temporal .tmp_p81, nada vaciado, nada renombrado
+```
+
+**El arreglo de la persistencia funciona.** Cada escritura parcial va a un fichero PROPIO, luego la
+invariante "nunca sobrescribir un destino existente" es cierta para todos los destinos sin
+excepciones, y un fallo de escritura degrada a AVISO con su causa en el log. Solo una Parada con marca
+STOP aborta. **Los 34 `aviso de contrato` de la corrida anterior desaparecen**: la tabla de origenes
+quedo construida.
+
+**Fallo literal, sin arreglar.**
+
+```text
+  File ".../experiments/p81_01_cierre_huecos.py", line 6349, in main
+    json.dumps(informe, ensure_ascii=True, indent=2)
+TypeError: Object of type module is not JSON serializable
+when serializing dict item 'p71_04'
+when serializing dict item 'contexto_de_modulos'
+```
+
+La linea 3835 mete `contexto_de_modulos` en el cuerpo del informe, y ese diccionario contiene
+**objetos modulo vivos**: `p71_04`, `p72_01`, `v10_11`, `v9_04`. Un modulo no es serializable. Los
+parciales si serializan porque **su cuerpo no incluye ese campo**; el informe final si.
+**Asimetria entre dos cuerpos del mismo informe.** El campo se anadio para auditar que modulos se
+cargaron, lo cual exige el modulo y por eso mismo no se puede volcar: falta publicar los **nombres**.
+Es la ultima sentencia efectiva de la corrida: las veinte mediciones y los diez parciales ya estaban
+en disco. El guard de la linea 6344, que se niega a sobrescribir el informe, se respeto bien.
+
+**Bloque 1, en disco, exactamente lo esperado.**
+
+```text
+por BRAZO (criterio declarado, el del primario)
+  MEDIA excluye 0.35, 0.50        mejor 0.7388888888888889 en lr 0.20
+  SUMA  excluye 0.20, 0.35, 0.50  mejor 0.03888888888888889 en lr 0.10
+  diferencia_por_brazo = -0.7000000000000001   GANA LA MEDIA por 0.700000   primario lr 0.1
+por PUNTO (publicada, no usada): sobran 0.02, 0.05, 0.10
+  MEDIA 0.005555555555555556   SUMA 0.03888888888888889
+  diferencia_por_punto = +0.03333333333333333   GANA LA SUMA por 0.0333
+las_dos_lecturas_coinciden_en_signo = False
+```
+
+**Reparto de victorias: la SUMA 2 de 6, la MEDIA 4 de 6, "2 a 4".** Curva no monotona, 2 cambios de
+signo, `recuento_en_banda_muerta: True`.
+**Titular literal:** `EL_TEST_NO_APOYA_A_LA_SUMA`, `apoya_a_la_suma: False`,
+`direccion: favor_a_la_media` -- "la diferencia entre los dos mejores de la rejilla es -0.700000, de
+magnitud suficiente para discriminar pero con el SIGNO en contra de la SUMA. La MEDIA gana por
+0.700000... el bloque 1 NO apoya al objetivo de la referencia", mas "ZONA DE NO CONCLUSION: el reparto
+de victorias por learning rate queda en 2 a 4 y eso es ruido con tres semillas. El primario NO debe
+leerse como confirmacion". **Sin ajustar nada**: tolerancia 0.02, banda muerta 0.005, rejilla, criterio
+y signo intactos.
+
+**Bloque 2: LAS CUATRO CIFRAS, que no habian sobrevivido a ninguna corrida.**
+
+```text
+proporcion_de_posiciones_oov        = 0.04124873567093729    4.124874 % de las posiciones
+proporcion_de_posiciones_de_relleno = 0.7309191672285907     73.091917 % de las posiciones
+oov_sobre_tokens                     = 15.329496 %            sobre los tokens que entran
+numero_de_tipos_distintos_fuera_de_vocabulario = 2008
+posiciones_totales 94912   tokens_que_entran 25539   tokens_cubiertos 21624   tokens_oov 3915
+posiciones_de_relleno 69373   vocabulario_usado 3439   n_filas_de_dev 1483   max_len 64
+filas_con_cero_tokens_cubiertos 1   fraccion_de_filas_sin_cubiertos 0.0006743088334457181
+```
+
+**Reparto relleno contra OOV CON MAGNITUD:** de 94912 posiciones, **69373 relleno = 73.091917 %**, y
+**3915 tokens OOV = 4.124874 %**. Sobre los 25539 tokens que llegan a la matriz, el OOV es el
+**15.329496 %**: una orden de magnitud mas pequeno que el relleno en posiciones.
+**El 11.2726 % de la discusion NO queda reproducido**, `variante_que_la_reproduce: null`, porque las tres
+cifras anteriores usan normalizaciones distintas y MAX_LEN 60 frente a MAX_LEN 64 y
+`normalizar_emb_normal` de `v9_04`. **El 0.155020 del prototipo no reproduce ninguna de las cuatro**,
+y ahora eso esta medido y publicado en vez de estimado.
+
+**Salvedad sobre A11.** CONFIRMADO, pero sus magnitudes son `canal_de_relleno_c1 = 0.0` y
+`canal_de_oov_c2b_menos_c2 = 0.0` en las dos clases, con distancia `0.0` y
+`banda_muerta_de_la_diferencia: True`. **Los dos canales miden exactamente cero**, luego "el OOV es al
+menos tan grande" es una comparacion de **dos ceros**: cierto y sin informacion. **La magnitud del
+reparto es la de A8, no la de A11.**
+
+**Bloque 5: A18 y A19 los dos CONFIRMADO.** A18: diferencia relativa de las medias 0.002143718728
+contra umbral 0.005, luego **DESPRECIABLE**, con `total_lotes_plan 1395` y
+`total_lotes_recorridos 1398` y el recorte declarado de las primeras 2000 lineas, 53243 tokens, con la
+advertencia de que los recuentos absolutos no son los de la corrida real. A19: la etiqueta coincide con
+la regla de A18, y dice explicitamente que el desfase de una epoca **existe y es un defecto real de
+codigo** y que lo que se cualifica es su consecuencia numerica. **Ninguno quedo en ERROR**, y la
+regla de que A19 emita ERROR si A18 no se ejecuto **no llego a dispararse** porque A18 si corrio.
+**No hay ningun REFUTado que descartar por fallo aguas arriba**: A6 y A7 son del bloque 1.
+
+**ASCII y verificador.** Los **diez** parciales nuevos: **0 bytes por encima de 127 cada uno**. El `.json`
+y el `.md` finales no se pueden verificar porque no existen. Verificador oficial
+`tools/verificar_caracteres.py` sobre el proyecto entero: **salida 0, 0 caracteres no permitidos**.
+**NO_DISPONIBLE en el `.md`: no aplica, no se escribio.** En los diez parciales nuevos **0**, y **0**
+en el parcial viejo. **El bug del informe lleno de huecos no se ha reproducido en cuatro corridas
+seguidas.**
+
+**Cinco fallos en la serie de P81, todos de contrato asumido y no verificado en la frontera**, solo dos
+de calculo: el `KeyError` de clave literal, el modulo equivocado de A18, la tabla de origenes a medio
+construir, el escritor incremental sobre su nombre definitivo, y ahora un objeto modulo dentro del
+informe. **Ninguno lo cubren los 126 checks de humo.** El hueco real de este ultimo es que nadie
+comprueba que **todo lo que se mete en el informe sea serializable**.
+
+**CONCLUSION.** La pata **EJECUTABLE** del anclaje de H1 **no apoya la suma**: A5 discrimina por
+magnitud, A6 mide la direccion y la encuentra contraria, la MEDIA gana por 0.700000, y el reparto 2 a
+4 con dos cambios de signo deja el primario en zona de no conclusion con tres semillas. Luego **la base
+que sostiene que el objetivo no era SGNS es la pata DOCUMENTAL, el codigo C de word2vec, y queda como
+base unica.**
+
+**Limite permanente.** El anclaje a una implementacion externa de SGNS queda **SIN HACER** porque gensim
+no esta instalado y no compila con Python 3.14.7: autoriza afirmar sobre el **OBJETIVO**, no sobre la
+calidad relativa del artefacto frente a una libreria. **No se afirma que Word2Vec sea mejor que V03.**
+
+**Fronteras respetadas y comprobadas.**
+
+```text
+test = 0   holdout = 0 identificadores deserializados   leaderboard = 0   submission = 0
+P71 a P80 sin tocar   V03 sin tocar   umbrales 0.44 / 0.51 / 0.46 sin tocar   modelos/ sin escrituras
+congelado 302c994d13b75f8f5fbd440eea2c4f4113997e2581524021923b92f8244d705a ANTES y DESPUES
+29478868 bytes, abierto en solo lectura, y A0 lo confirma tambien en mtime_ns
+```
+
+```text
+V03 remains the best verified leaderboard result.
+```
+
 <!-- P81-TERCERA-CORRIDA 2026-10-01 -->
 ## P81 tercera corrida: 6 CONFIRMADO, 2 REFUTADO, 0 ERROR, se para en A8. El escritor incremental se come a si mismo
 
