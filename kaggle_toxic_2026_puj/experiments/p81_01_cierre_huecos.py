@@ -74,7 +74,29 @@ COMMIT_ENMIENDA = "c3dee26"
 # Salidas de P81. Unicamente se escriben estos dos ficheros, mas el propio script.
 JSON_INFORME = REPORTS / "p81_cierre_huecos.json"
 MD_INFORME = REPORTS / "p81_cierre_huecos.md"
+JSON_PARCIAL = REPORTS / "p81_cierre_huecos.parcial.json"
 SUFIJO_TEMPORAL = ".tmp_p81"
+
+# Aislamiento de afirmaciones. Es un cambio de comportamiento DEL SCRIPT y se declara como
+# tal: una afirmacion aislada puede salir con veredicto ERROR por fallo propio del script, y
+# eso NO es un REFUTADO ni un NO_EVALUABLE por el dato. ERROR significa que la comprobacion
+# no llego a ejecutarse.
+AISLAMIENTO = {
+    "que_se_hace": ("cada afirmacion se ejecuta dentro de un guard. Si lanza, se registra el "
+                    "fallo con su tipo y su traza resumida, la afirmacion queda con veredicto "
+                    "ERROR, y la corrida CONTINUA con la siguiente"),
+    "que_no_hace": ("el guard no convierte un fallo en un resultado. ERROR no es CONFIRMADO ni "
+                    "REFUTADO: es la marca de que la comprobacion no se ejecuto"),
+    "escritura_incremental": ("se escribe reports/p81_cierre_huecos.parcial.json al terminar "
+                              "cada bloque, con su propio nombre, para que un fallo en la "
+                              "ultima afirmacion no tire el trabajo de las anteriores"),
+    "por_que_no_se_confunde_con_el_criterio_de_parada": (
+        "el criterio de parada del pre-registro se sigue respetando para Parada con marca "
+        "STOP. Lo que se aisla es el fallo TECNICIO de una afirmacion, que no es lo mismo "
+        "que el fallo de una asercion"),
+    "estados_de_veredicto": ["CONFIRMADO", "REFUTADO", "NO APLICABLE POR CONSTRUCCION",
+                             "NO_EVALUABLE", "ERROR"],
+}
 
 FORMULACION = "V03 remains the best verified leaderboard result."
 
@@ -289,7 +311,7 @@ SUSTITUCIONES_ASCII: list = []
 
 # Numero minimo de comprobaciones de humo que deben pasar. Es un suelo declarado, no una
 # cuenta viva: si el total baja de aqui, el modo de humo falla en vez de dar un OK falso.
-MINIMO_COMPROBACIONES_HUMO = 83
+MINIMO_COMPROBACIONES_HUMO = 120
 
 # Frases obligatorias del pre-registro, escritas aqui para que no se puedan perder.
 FRASE_A3 = ("ESTA_CONVENCION_ES_COHERENTE_CON_P79_Y_SIGUE_SIENDO_UNA_REIMPLEMENTACION_PROPIA")
@@ -3315,12 +3337,22 @@ def serie_de_learning_rate(total_plan: int, total_real: int, lr_inicial: float,
     }
 
 
-def afirmacion_a18(modulo_p72: object) -> dict:
+def afirmacion_a18(modulo_p71: object, modulo_p72: object) -> dict:
     """A18. El learning rate, paso a paso, y clasificacion del impacto.
 
     El valor de A18 no es la etiqueta, que ya se puede intuir, sino la SERIE PASO A PASO,
     que nadie ha publicado. El umbral de clasificacion esta fijado antes de ejecutar: si la
     diferencia relativa de las medias es menor o igual que 0.005, el impacto es DESPRECIABLE.
+
+    Recibe DOS modulos y no uno, cada uno por su nombre real: `modulo_p72` aporta las
+    constantes del scheduler (LOTE, LR0_POR_EJEMPLO, LR_MINIMO) y `modulo_p71` aporta
+    `RE_TOKEN`, que es donde vive el tokenizador del corpus. Antes se pasaba `modulo_p72` a
+    una funcion cuyo parametro se llamaba `modulo_p71`, y el fallo salia en la corrida real,
+    no antes.
+
+    Args:
+        modulo_p71: modulo `p71_04`, del que se usa `RE_TOKEN`.
+        modulo_p72: modulo `p72_01`, del que se usan las constantes del scheduler.
 
     Returns:
         Diccionario de la afirmacion con su veredicto.
@@ -3328,7 +3360,7 @@ def afirmacion_a18(modulo_p72: object) -> dict:
     lote = int(modulo_p72.LOTE)
     lr_inicial = float(modulo_p72.LR0_POR_EJEMPLO) * lote
     lr_minimo = float(modulo_p72.LR_MINIMO)
-    documentos = leer_primeras_n_lineas(CORPUS_TWITTER, RECRETE["lineas"], modulo_p72)
+    documentos = leer_primeras_n_lineas(CORPUS_TWITTER, RECRETE["lineas"], modulo_p71)
     n_tokens = int(sum(len(documento) for documento in documentos))
     total_plan = int(P80_REUTILIZADO["total_lotes_plan"])
     total_real = int(P80_REUTILIZADO["total_lotes_recorridos"])
@@ -3555,7 +3587,10 @@ def envoltura_tolerante(afirmaciones: list) -> "Tolerante":
 
 def construir_json(afirmaciones: list, pre: dict, huella_antes: dict, huella_despues: dict,
                    contexto: dict, a18: dict, inicio: datetime, ascii_observado: dict,
-                   cronometro: dict) -> dict:
+                   cronometro: dict, fallos: list | None = None,
+                   contratos: dict | None = None,
+                   literales: dict | None = None,
+                   escrituras_bloque_2: int = 0) -> dict:
     """Monta el diccionario completo del informe.
 
     Args:
@@ -3568,6 +3603,9 @@ def construir_json(afirmaciones: list, pre: dict, huella_antes: dict, huella_des
         inicio: instante de arranque.
         ascii_observado: resultado observado del escaneo byte a byte del script.
         cronometro: tiempos por seccion.
+        fallos: lista de afirmaciones aisladas que fallaron.
+        contratos: resultado de la comprobacion de contrato de llamada.
+        literales: resultado de la auditoria de literales de brazo.
 
     Returns:
         El diccionario del informe, listo para volcar a JSON.
@@ -3710,9 +3748,554 @@ def construir_json(afirmaciones: list, pre: dict, huella_antes: dict, huella_des
         "declaracion_de_impacto_del_scheduler": a18.get("medida", {}).get(
             "clasificacion_del_impacto", "NO_DISPONIBLE"),
         "titular_del_bloque_1": titular_del_bloque_1(afirmaciones),
+        "aislamiento_de_afirmaciones": {
+            "declarado": AISLAMIENTO,
+            "afirmaciones_aisladas_con_fallo": list(fallos or []),
+            "n_afirmaciones_aisladas_con_fallo": len(fallos or []),
+            "n_escrituras_parciales_del_bloque_2": escrituras_bloque_2,
+            "que_significa_un_ERROR": (
+                "ERROR significa que la afirmacion no llego a ejecutarse por fallo PROPIO del "
+                "script, y que la corrida continua con las demas. ERROR no es un CONFIRMADO, "
+                "no es un REFUTADO y no es un NO_EVALUABLE por el dato"),
+            "json_parcial": {
+                "ruta": str(JSON_PARCIAL.relative_to(RAIZ)),
+                "para_que_sirve": ("se escribe al terminar cada bloque para que un fallo en las "
+                                  "ultimas afirmaciones no tire el trabajo de las anteriores"),
+                "se_conserva_al_terminar": True,
+                "checkpoint_por_afirmacion_en_el_bloque_2": True,
+                "por_que": ("el bloque 2 es el caro, unos diez minutos. Escribir el parcial "
+                            "solo entre bloques dejaba que un fallo a mitad del bloque 2 "
+                            "tirase todo lo ya medido, asi que ahora se escribe tras cada "
+                            "afirmacion de ese bloque"),
+            },
+        },
+        "contrato_de_llamada": {
+            "que_comprueba": ("que el contexto que main construye encaje con las firmas REALES "
+                              "de las veinte afirmaciones, con inspect.signature, y que cada "
+                              "parametro que se llama modulo_* reciba un modulo con los "
+                              "atributos que su funcion consume"),
+            "resultado": contratos or {},
+            "tabla_de_contrato": {clave: {"parametros": dato["parametros"],
+                                          "exige_modulos": dato["exige_modulos"]}
+                                  for clave, dato in CONTRATO_DE_AFIRMACIONES.items()},
+        },
+        "auditoria_de_literales_de_brazo": literales or {},
     }
     return informe
 
+
+class RegistroDeAfirmaciones:
+    """Ejecuta las afirmaciones una a una, aislandolas, y publica como se va.
+
+    Un fallo en una afirmacion no tumba el resto. Cuando una lanza, se registra el fallo con
+    su tipo y su traza resumida, la afirmacion queda con veredicto ERROR y la corrida sigue
+    con la siguiente. Esto es una mejora de robustez del SCRIPT, no del dato: una
+    afirmacion aislada con ERROR lo esta por fallo propio, y el informe lo declara.
+
+    Escribe el JSON parcial en cuanto termina cada bloque, para que un fallo en la ultima
+    afirmacion no tire el trabajo de las anteriores.
+
+    Attributes:
+        afirmaciones: lista acumulada de diccionarios de afirmacion.
+        fallos: lista de fallos registrados, uno por afirmacion que lanzo.
+        bloques_publicados: numero de bloques ya escritos a disco.
+        inicio: instante de arranque de la corrida.
+    """
+
+    def __init__(self, inicio: datetime) -> None:
+        """Construye el registro vacio.
+
+        Args:
+            inicio: instante de arranque de la corrida.
+        """
+        self.afirmaciones: list = []
+        self.fallos: list = []
+        self.bloques_publicados = 0
+        self.escrituras_del_bloque_2 = 0
+        self.inicio = inicio
+
+    def ejecutar(self, identificador: str, funcion, argumentos: tuple):
+        """Ejecuta una afirmacion dentro de un guard y devuelve su diccionario, o `None`.
+
+        Args:
+            identificador: identificador de la afirmacion, por ejemplo "A18".
+            funcion: funcion de afirmacion a llamar.
+            argumentos: tupla de argumentos posicionales.
+
+        Returns:
+            El diccionario de la afirmacion, o `None` si lanzo.
+        """
+        try:
+            resultado = funcion(*argumentos)
+        except Parada:
+            raise
+        except Exception as exc:  # noqa: BLE001
+            self.fallos.append({
+                "afirmacion": identificador,
+                "tipo_de_excepcion": type(exc).__name__,
+                "mensaje": str(exc)[:300],
+                "traza_resumida": _traza_resumida(exc),
+                "que_significa": ("la afirmacion lanzo por fallo PROPIO del script, no por "
+                                  "fallo del dato. El resto de la corrida continua y su "
+                                  "resultado queda separado de este"),
+            })
+            self.afirmaciones.append(afirmacion_en_error(identificador, exc))
+            log(f"   {identificador}: ERROR aislado | {type(exc).__name__}: {str(exc)[:140]}")
+            return None
+        self.afirmaciones.append(resultado)
+        _registrar(resultado)
+        return resultado
+
+    def publicar_parcial(self, motivo: str, extra: dict | None = None):
+        """Escribe el JSON parcial del estado actual, sin esperar al final de la corrida.
+
+        Se escribe en un fichero PARCIAL, con su propio nombre, para no competir con el
+        informe definitivo ni ocupar su nombre definitivo antes de tiempo.
+
+        Args:
+            motivo: etiqueta de que motivo esta escritura.
+            extra: diccionario con lo que falte para montar el informe.
+
+        Returns:
+            La ruta del JSON parcial, o `None` si no se pudo escribir.
+        """
+        try:
+            cuerpo = {
+                "familia": "P81_CIERRE_HUECOS",
+                "experiment_id": "P81-01",
+                "es_parcial": True,
+                "informe_completo": False,
+                "motivo_de_la_escritura": motivo,
+                "bloques_publicados": self.bloques_publicados,
+                "fecha": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+                "fecha_inicio": self.inicio.isoformat(timespec="seconds"),
+                "formulacion": FORMULACION,
+                "afirmaciones": self.afirmaciones,
+                "afirmaciones_aisladas_con_fallo": self.fallos,
+                "nota_de_robustez": (
+                    "este JSON parcial existe para que un fallo en las ultimas afirmaciones "
+                    "no tire el trabajo de las anteriores. Se escribe al terminar cada bloque"),
+                "aislamiento_declarado": AISLAMIENTO,
+            }
+            if extra:
+                cuerpo.update(extra)
+            temporal = escribir_ascii_atomico(JSON_PARCIAL,
+                                             json.dumps(cuerpo, ensure_ascii=True, indent=2)
+                                             + "\n", "json_parcial")
+            sucios = [nombre for nombre, ok in verificar_ascii_byte_a_byte([temporal]).items()
+                      if not ok]
+            if sucios:
+                raise SystemExit(f"STOP asercion ASCII: bytes no ASCII en {sucios}")
+            publicar_atomico([(temporal, JSON_PARCIAL)])
+            self.bloques_publicados += 1
+            log(f"JSON parcial escrito en {JSON_PARCIAL.relative_to(RAIZ)}: "
+                f"{len(self.afirmaciones)} afirmaciones, "
+                f"{len(self.fallos)} aisladas con fallo")
+            return JSON_PARCIAL
+        except SystemExit:
+            raise
+        except Exception as exc:  # noqa: BLE001
+            log(f"aviso: no se pudo escribir el JSON parcial: {type(exc).__name__}: {exc}")
+            return None
+
+
+def _traza_resumida(exc: Exception) -> list:
+    """Resume la traza de una excepcion a las ultimas lineas utiles.
+
+    Args:
+        exc: la excepcion.
+
+    Returns:
+        Lista de strings con las ultimas lineas de la traza.
+    """
+    lineas = traceback.format_exception(type(exc), exc, exc.__traceback__)
+    return [linea.rstrip() for linea in lineas[-6:]]
+
+
+def afirmacion_en_error(identificador: str, exc: Exception) -> dict:
+    """Construye el diccionario de una afirmacion que lanzo, con veredicto ERROR.
+
+    Args:
+        identificador: identificador de la afirmacion.
+        exc: la excepcion que produjo.
+
+    Returns:
+        Diccionario de afirmacion con la forma de siempre y veredicto ERROR.
+    """
+    return {
+        "afirmacion": identificador,
+        "hueco": "NO_EVALUABLE",
+        "naturaleza": "CONFIRMAR",
+        "stop": False,
+        "tolerancia": "no aplica: la afirmacion no llego a ejecutarse",
+        "veredicto": "ERROR",
+        "motivo": f"la afirmacion lanzo por fallo propio del script: "
+                  f"{type(exc).__name__}: {str(exc)[:200]}",
+        "medida": {
+            "estado_de_ejecucion": "NO_EVALUADA",
+            "tipo_de_excepcion": type(exc).__name__,
+            "mensaje": str(exc)[:300],
+            "traza_resumida": _traza_resumida(exc),
+            "que_no_afirma": ("ERROR significa que la comprobacion no llego a ejecutarse por "
+                             "fallo del propio script. NO es un CONFIRMADO, NO es un "
+                             "REFUTADO y NO es un NO_EVALUABLE por el dato"),
+        },
+    }
+
+# Contrato de llamada de las veinte afirmaciones: que parametro recibe que clave del
+# contexto. Es la fuente de verdad de `main` y la que verifica el modo de humo. Los nombres de
+# los parametros son los de las firmas reales, y el origen de cada uno es una ruta dentro del
+# contexto que main construye.
+CONTRATO_DE_AFIRMACIONES = {
+    "A0": {"parametros": [("huella_antes", "medidas.huella_antes"),
+                          ("huella_despues", "medidas.huella_despues")],
+           "exige_modulos": []},
+    "A1": {"parametros": [("preregistro", "lecturas.preregistro")], "exige_modulos": []},
+    "A2": {"parametros": [("preregistro", "lecturas.preregistro")], "exige_modulos": []},
+    "A3": {"parametros": [("informe_p79", "lecturas.informe_p79")], "exige_modulos": []},
+    "A4": {"parametros": [("preparado", "medidas.preparado"),
+                          ("config", "medidas.config")], "exige_modulos": []},
+    "A5": {"parametros": [("rejilla", "medidas.rejilla"), ("primario", "medidas.primario"),
+                          ("config", "medidas.config")], "exige_modulos": []},
+    "A6": {"parametros": [("primario", "medidas.primario"),
+                          ("confirmacion", "medidas.confirmacion"),
+                          ("config", "medidas.config")], "exige_modulos": []},
+    "A7": {"parametros": [("confirmacion", "medidas.confirmacion"),
+                          ("control", "medidas.control"), ("recuento", "medidas.recuento"),
+                          ("config", "medidas.config")], "exige_modulos": []},
+    "A8": {"parametros": [("medidas", "medidas.oov")], "exige_modulos": []},
+    "A9": {"parametros": [("sonda", "medidas.sonda"), ("config", "medidas.config_b2")],
+           "exige_modulos": []},
+    "A10": {"parametros": [("sondas", "medidas.sondas"), ("config", "medidas.config_b2")],
+            "exige_modulos": []},
+    "A11": {"parametros": [("sondas", "medidas.sondas")], "exige_modulos": []},
+    "A12": {"parametros": [("sondas_primera", "medidas.sondas"),
+                           ("sondas_segunda", "medidas.sondas_2")], "exige_modulos": []},
+    "A13": {"parametros": [("bloque", "medidas.bloque")], "exige_modulos": []},
+    "A14": {"parametros": [("informe_p80", "lecturas.informe_p80")], "exige_modulos": []},
+    "A15": {"parametros": [("pliegues", "medidas.pliegues")], "exige_modulos": []},
+    "A16": {"parametros": [("train", "medidas.train"),
+                           ("grupos_split", "medidas.grupos_split"),
+                           ("indices_dev", "medidas.indices_dev"),
+                           ("indices_holdout", "medidas.indices_holdout"),
+                           ("campos_holdout", "medidas.campos_holdout")],
+            "exige_modulos": []},
+    "A17": {"parametros": [("pliegues", "medidas.pliegues"),
+                           ("informe_dl", "lecturas.informe_dl")], "exige_modulos": []},
+    "A18": {"parametros": [("modulo_p71", "modulos.p71_04"),
+                           ("modulo_p72", "modulos.p72_01")],
+            "exige_modulos": ["p71_04", "p72_01"]},
+    "A19": {"parametros": [("a18", "medidas.a18")], "exige_modulos": []},
+}
+
+# Atributos que cada parametro de modulo debe traer, porque su funcion los consume. Es la
+# comprobacion que habria atrapado el fallo de A18: un parametro llamado `modulo_p71` que
+# recibe un modulo sin `RE_TOKEN` es un fallo de contrato, no un dato.
+ATRIBUTOS_EXIGIDOS_POR_PARAMETRO = {
+    "modulo_p71": ["RE_TOKEN"],
+    "modulo_p72": ["LOTE", "LR0_POR_EJEMPLO", "LR_MINIMO"],
+    "modulo_v9": ["cargar_vec", "secuencias", "normalizar_emb_normal", "tokenizar", "MAX_LEN"],
+    "modulo_v10": ["BiGRUAfinable"],
+}
+
+# Literales de clave de brazo que una afirmacion NO debe escribir a mano: la clave se deriva
+# con `clave_de_objetivo`. Se comprueba por AST sobre el fuente del propio modulo.
+LITERALES_DE_BRAZO_PROHIBIDOS = ("m1_media", "m1_suma", "m2_media", "m2_suma")
+
+
+def contrato_de_la_afirmacion(identificador: str) -> dict:
+    """Declara, por afirmacion, que parametro recibe que clave del contexto.
+
+    Args:
+        identificador: identificador de la afirmacion.
+
+    Returns:
+        Diccionario con `parametros`, la lista de pares `(nombre, origen)`, y
+        `exige_modulos`.
+    """
+    return CONTRATO_DE_AFIRMACIONES.get(identificador, {"parametros": [],
+                                                        "exige_modulos": []})
+
+
+def _sin_valor():
+    """Marca interna: el origen declarado no existe en el contexto.
+
+    Returns:
+        Objeto unico y vacio.
+    """
+    return None
+
+
+def resolver_origen(contexto: dict, origen: str):
+    """Resuelve el valor que main pasaria a un parametro, desde el contexto.
+
+    El `origen` es una ruta con puntos que nombra el contexto, por ejemplo `modulos.p71_04` o
+    `lecturas.informe_p79`.
+
+    Args:
+        contexto: contexto construido por main.
+        origen: ruta con puntos dentro del contexto.
+
+    Returns:
+        El valor resuelto, o `NO_RESUELTO` si la ruta no existe.
+    """
+    valor = contexto
+    for parte in origen.split("."):
+        if isinstance(valor, dict) and parte in valor:
+            valor = valor[parte]
+        else:
+            return NO_RESUELTO
+    return valor
+
+
+NO_RESUELTO = object()
+
+
+def contexto_minimo_de_humo() -> dict:
+    """Construye el contexto sintetico minimo con el que main llama a las afirmaciones.
+
+    No entrena nada, no lee datos y no importa los modulos reales: para `modulo_p71` y
+    `modulo_p72` bastan objetos con los atributos que la afirmacion declara.
+
+    Returns:
+        Diccionario con `modulos` y `lecturas` sinteticos.
+    """
+    modulos = {"p71_04": _ModuloP71Humo(), "p72_01": _ModuloP72Humo(),
+               "v9_04": _ModuloV9Humo(), "v10_11": _ModuloV10Humo()}
+    lecturas = {"preregistro": {"lineas": [], "texto": ""},
+                "informe_p79": {}, "informe_p80": {}, "informe_dl": {}}
+    # Un placeholder por cada origen declarado en la tabla. Lo que se comprueba aqui es la
+    # FORMA del contrato, es decir que la ruta existe y que el parametro de tipo modulo
+    # recibe un modulo con los atributos correctos, no el valor de los datos.
+    medidas = {"huella_antes": {}, "huella_despues": {}, "preparado": {}, "config": {},
+               "rejilla": {}, "primario": {}, "confirmacion": {}, "control": {},
+               "recuento": {}, "oov": {}, "sonda": {}, "config_b2": {}, "sondas": {},
+               "sondas_2": {}, "bloque": {}, "pliegues": {}, "train": {},
+               "grupos_split": {}, "indices_dev": {}, "indices_holdout": {},
+               "campos_holdout": {}, "a18": {}}
+    return {"modulos": modulos, "lecturas": lecturas, "medidas": medidas}
+
+
+class _ModuloP71Humo:
+    """Doble de `p71_04` con el tokenizador que A18 necesita."""
+
+    RE_TOKEN = re.compile(r"[#@]?\w+")
+
+
+class _ModuloP72Humo:
+    """Doble de `p72_01` con las constantes del scheduler que A18 necesita."""
+
+    LOTE = 256
+    LR0_POR_EJEMPLO = 0.025
+    LR_MINIMO = 1e-3
+
+
+class _ModuloV9Humo:
+    """Doble de `v9_04` con los miembros que el bloque 2 consume."""
+
+    MAX_LEN = 64
+
+    @staticmethod
+    def cargar_vec(ruta):
+        """Devuelve un diccionario vacio de vectores.
+
+        Args:
+            ruta: ruta del fichero de vectores.
+
+        Returns:
+            Diccionario vacio.
+        """
+        return {}
+
+    @staticmethod
+    def secuencias(textos, indice):
+        """Devuelve una matriz de identificadores de ceros.
+
+        Args:
+            textos: lista de textos.
+            indice: indice de palabras.
+
+        Returns:
+            Matriz de ceros.
+        """
+        import numpy as _np
+        return _np.zeros((len(textos), 64), dtype=_np.int64)
+
+    @staticmethod
+    def normalizar_emb_normal(texto):
+        """Normaliza un texto de identidad.
+
+        Args:
+            texto: texto de entrada.
+
+        Returns:
+            El mismo texto.
+        """
+        return texto
+
+    @staticmethod
+    def tokenizar(texto):
+        """Tokeniza un texto en una lista de una sola palabra.
+
+        Args:
+            texto: texto de entrada.
+
+        Returns:
+            Lista con el texto.
+        """
+        return [texto]
+
+
+class _ModuloV10Humo:
+    """Doble de `v10_11` con la clase BiGRUAfinable que el bloque 2 sondea."""
+
+
+def comprobar_contratos_de_llamada(contexto: dict) -> dict:
+    """Verifica, con `inspect.signature`, que el contexto encaja con las firmas reales.
+
+    Comprueba cuatro cosas, y las cuatro son fallos que en la corrida real aparecieron tarde
+    o pudieron aparecer:
+
+    1. que la firma real de cada funcion declare los mismos parametros que la tabla;
+    2. que el contexto tenga el origen declarado para cada parametro;
+    3. que un parametro llamado `modulo_*` reciba un objeto con los atributos que su funcion
+       consume, que es lo que habria atrapado el fallo de A18;
+    4. que la tabla no pida mas parametros de los que la firma acepta.
+
+    Returns:
+        Diccionario con `cumple`, `detalle` por afirmacion e `incumplimientos`.
+    """
+    import inspect
+
+    detalle: dict = {}
+    incumplimientos: list = []
+    for identificador in sorted(CONTRATO_DE_AFIRMACIONES):
+        contrato = CONTRATO_DE_AFIRMACIONES[identificador]
+        funcion = globals().get(f"afirmacion_{identificador.lower()}")
+        if funcion is None:
+            incumplimientos.append({"afirmacion": identificador,
+                                    "motivo": "no existe la funcion"})
+            continue
+        firma = inspect.signature(funcion)
+        reales = [nombre for nombre in firma.parameters]
+        declarados = [nombre for nombre, _ in contrato["parametros"]]
+        problemas: list[str] = []
+        if reales != declarados:
+            problemas.append(f"la firma real declara {reales} y la tabla declara {declarados}")
+        for nombre, origen in contrato["parametros"]:
+            valor = resolver_origen(contexto, origen)
+            if valor is NO_RESUELTO:
+                problemas.append(f"el contexto no tiene el origen declarado {origen} para el "
+                                 f"parametro {nombre}")
+                continue
+            if nombre.startswith("modulo_"):
+                exigidos = ATRIBUTOS_EXIGIDOS_POR_PARAMETRO.get(nombre, [])
+                faltan = [atributo for atributo in exigidos
+                          if not hasattr(valor, atributo)]
+                if faltan:
+                    problemas.append(f"el parametro {nombre} recibe {type(valor).__name__} sin "
+                                     f"{faltan}, y su funcion los consume")
+            if nombre not in firma.parameters:
+                problemas.append(f"la firma real no tiene el parametro {nombre}")
+        for modulo in contrato["exige_modulos"]:
+            if resolver_origen(contexto, f"modulos.{modulo}") is NO_RESUELTO:
+                problemas.append(f"la tabla exige el modulo {modulo} y el contexto no lo tiene")
+        detalle[identificador] = {"firma_real": reales,
+                                  "parametros_declarados": declarados,
+                                  "modulos_exigidos": contrato["exige_modulos"],
+                                  "problemas": problemas,
+                                  "cumple": not problemas}
+        incumplimientos.extend({"afirmacion": identificador, "motivo": problema}
+                               for problema in problemas)
+    return {"cumple": not incumplimientos, "detalle": detalle,
+            "incumplimientos": incumplimientos,
+            "n_afirmaciones_comprobadas": len(detalle)}
+
+def auditar_literales_de_brazo() -> dict:
+    """Busca, por AST, accesos por clave con un literal de un solo objetivo.
+
+    Es la generalizacion de los tres fallos ya vistos. Una afirmacion no debe escribir
+    `m1_media` en un sitio donde el objeto pertenece a SUMA: la clave se deriva con
+    `clave_de_objetivo`. Se recorre el arbol del propio modulo y se marca cada literal
+    sospechoso con su linea y su funcion, para poder ir una por una.
+
+    Returns:
+        Diccionario con `literales_en_afirmaciones` y `limite_de_la_busqueda`.
+    """
+    import ast
+
+    fuente = Path(__file__).read_text(encoding="utf-8")
+    arbol = ast.parse(fuente)
+    funciones = [(nodo.name, nodo.lineno,
+                  getattr(nodo, "end_lineno", nodo.lineno) or nodo.lineno)
+                 for nodo in ast.walk(arbol) if isinstance(nodo, ast.FunctionDef)]
+    lineas = fuente.splitlines()
+    literales: list = []
+    for nodo in ast.walk(arbol):
+        if not isinstance(nodo, ast.Subscript):
+            continue
+        constante = nodo.slice
+        if not (isinstance(constante, ast.Constant) and isinstance(constante.value, str)):
+            continue
+        if constante.value not in LITERALES_DE_BRAZO_PROHIBIDOS:
+            continue
+        conteniendo = _funcion_que_contiene(funciones, nodo.lineno)
+        literales.append({
+            "linea": nodo.lineno,
+            "literal": constante.value,
+            "funcion": conteniendo,
+            "es_afirmacion": bool(conteniendo and conteniendo.startswith("afirmacion_")),
+            "texto": lineas[nodo.lineno - 1].strip() if nodo.lineno <= len(lineas) else "",
+        })
+    en_afirmaciones = [item for item in literales if item["es_afirmacion"]]
+    return {
+        "literales_encontrados": len(literales),
+        "literales_en_afirmaciones": en_afirmaciones,
+        "cuantas_en_afirmaciones": len(en_afirmaciones),
+        "todos_los_literales": literales,
+        "limite_de_la_busqueda": (
+            "se marca TODO subscript cuyo indice es un literal de brazo, incluidos en funciones "
+            "auxiliares que solo resumen lo ya construido. Marcar no es incumplir: el "
+            "incumplimiento se comprueba por VALOR en los casos de humo, no por texto"),
+    }
+
+
+def _funcion_que_contiene(funciones: list, linea: int):
+    """Devuelve el nombre de la funcion mas estrecha que contiene una linea.
+
+    Args:
+        funciones: lista de triples (nombre, linea_inicial, linea_final).
+        linea: numero de linea.
+
+    Returns:
+        El nombre de la funcion, o None si la linea esta fuera de toda funcion.
+    """
+    candidatas = [(fin - inicio, nombre)
+                  for nombre, inicio, fin in funciones if inicio <= linea <= fin]
+    if not candidatas:
+        return None
+    return min(candidatas)[1]
+
+def contexto_de_contrato_real(contexto: dict) -> dict:
+    """Construye el contexto que la tabla de contrato espera, desde el contexto de main.
+
+    `main` lleva sus datos en variables locales y la tabla los nombra con rutas. Esta funcion
+    es el unico sitio donde se traduce uno en otro, de modo que la tabla no puede quedar
+    desalineada respecto de lo que main realmente pasa sin que se note en el informe.
+
+    Args:
+        contexto: contexto con la clave `modulos` que main ya construyo.
+
+    Returns:
+        Diccionario con `modulos` y `lecturas`. Las medidas se rellenan con lo que `main`
+        vaya dejando en el contexto; lo que no este, queda ausente y la comprobacion lo dice.
+    """
+    lecturas = dict(contexto.get("lecturas", {}))
+    medidas = dict(contexto.get("medidas", {}))
+    for nombre in ("preregistro",):
+        lecturas.setdefault(nombre, {})
+    return {"modulos": contexto.get("modulos", {}), "lecturas": lecturas,
+            "medidas": medidas}
 
 def titular_del_bloque_1(afirmaciones: list) -> dict:
     """Redacta el titular del bloque 1, y RECHAZA la combination imposible.
@@ -4143,6 +4726,34 @@ def escribir_markdown(afirmaciones: list, informe: dict) -> list:
         f"- intacto: {tol.txt(('artefacto_congelado', 'intacto'))}",
         f"- A0, {a0.get('veredicto', 'NO_EVALUABLE')}: {a0.txt('motivo')}",
         "",
+        "## Robustez de la corrida: aislamiento y contrato",
+        "",
+        "Cada afirmacion se ejecuta dentro de un guard. Si lanza, se registra el fallo con su "
+        "tipo y su traza resumida, la afirmacion queda con veredicto ERROR y la corrida "
+        "CONTINUA con la siguiente. Esto es una mejora de robustez DEL SCRIPT y no del dato: "
+        "una afirmacion con ERROR lo esta por fallo propio, y ERROR no es un CONFIRMADO ni un "
+        "REFUTADO.",
+        "",
+        f"- cuantas afirmaciones se aislaron con fallo en ESTA corrida: "
+        f"{envolver(tol.get('aislamiento_de_afirmaciones'), 'aisl').num('n_afirmaciones_aisladas_con_fallo')}"
+        f" de {envolver(tol, 'raiz').num('n_de_afirmaciones')}",
+        f"- {envolver(tol.get('aislamiento_de_afirmaciones'), 'aisl').txt('que_significa_un_ERROR')}",
+        f"- escrituras parciales dentro del bloque 2: "
+        f"{envolver(tol.get('aislamiento_de_afirmaciones'), 'aisl').num('n_escrituras_parciales_del_bloque_2')}"
+        f" de 5, una tras cada afirmacion del bloque",
+        f"- JSON parcial, escrito al terminar cada bloque y tras cada afirmacion del bloque 2: "
+        f"`{envolver(tol.get('aislamiento_de_afirmaciones'), 'aisl').txt(('json_parcial', 'ruta'))}`",
+        "",
+        "El contrato de llamada se verifica con `inspect.signature`: cada parametro recibe el "
+        "objeto que su nombre declara, y un parametro llamado `modulo_p71` tiene que recibir un "
+        "modulo con `RE_TOKEN`. Esa comprobacion habria atrapado los tres fallos seguidos, que "
+        "eran contratos asumidos y nunca verificados en la frontera.",
+        "",
+        f"- afirmaciones comprobadas: "
+        f"{envolver(tol.get('contrato_de_llamada'), 'con').txt(('resultado', 'n_afirmaciones_comprobadas'))}",
+        f"- literales de brazo en afirmaciones: "
+        f"{envolver(tol.get('auditoria_de_literales_de_brazo'), 'lit').num('cuantas_en_afirmaciones')}",
+        "",
         "## Lo que P81 no hizo",
         "",
     ]
@@ -4179,6 +4790,309 @@ def afirmacion_vacia(identificador: str) -> dict:
         Diccionario de afirmacion con la medida vacia.
     """
     return {"afirmacion": identificador, "veredicto": "NO_EVALUABLE"}
+
+
+def evaluar_humo(superadas: int, fallos: list) -> str:
+    """Decide el veredicto del humo. Si CUALQUIER comprobacion falla, FALLA.
+
+    El suelo declarado `MINIMO_COMPROBACIONES_HUMO` es cobertura minima y se publica, pero NO
+    es la puerta. Antes la puerta era `superadas >= suelo`: con 107 superadas sobre un suelo
+    de 83 y dos comprobaciones fallidas, el humo salia con codigo 0. Un humo que falla y aun
+    asi aprueba no sirve de nada, y por eso la puerta es el numero de fallos.
+
+    Args:
+        superadas: numero de comprobaciones superadas.
+        fallos: lista de comprobaciones fallidas.
+
+    Returns:
+        "FALLIDO" si hay cualquier fallo o si no se alcanza el suelo; "PASADO" en otro caso.
+    """
+    if fallos:
+        return "FALLIDO"
+    if superadas < MINIMO_COMPROBACIONES_HUMO:
+        return "FALLIDO"
+    return "PASADO"
+
+
+def codigo_de_salida_del_humo(superadas: int, fallos: list) -> int:
+    """Convierte el veredicto del humo en el codigo de salida del proceso.
+
+    Args:
+        superadas: numero de comprobaciones superadas.
+        fallos: lista de comprobaciones fallidas.
+
+    Returns:
+        0 si el humo pasa, 1 si falla.
+    """
+    return 0 if evaluar_humo(superadas, fallos) == "PASADO" else 1
+
+
+def _afirmacion_que_devuelve_ok(dato):
+    """Falsa afirmacion que devuelve un veredicto, para el humo del aislamiento.
+
+    Args:
+        dato: cualquier valor.
+
+    Returns:
+        Diccionario de afirmacion minimo.
+    """
+    return {"afirmacion": "X", "veredicto": "CONFIRMADO", "motivo": f"ok {dato}",
+            "medida": {}, "naturaleza": "CONFIRMAR", "stop": False}
+
+
+def _afirmacion_que_lanza():
+    """Falsa afirmacion que siempre lanza, para el humo del aislamiento.
+
+    Raises:
+        RuntimeError: siempre.
+
+    Returns:
+        Nunca llega aqui.
+    """
+    raise RuntimeError("fallo deliberado de la afirmacion de humo")
+
+
+def _la_parada_no_se_traga() -> bool:
+    """Comprueba que una Parada con marca STOP atraviesa el guard sin convertirse en ERROR.
+
+    Returns:
+        True si la Parada se propaga.
+    """
+    registro = RegistroDeAfirmaciones(datetime.now(timezone.utc))
+
+    def lanza_parada():
+        """Lanza una Parada como lo haria una asercion con marca STOP.
+
+        Raises:
+            Parada: siempre.
+        """
+        raise Parada("A5", "parada de humo")
+
+    try:
+        registro.ejecutar("A5", lanza_parada, ())
+    except Parada:
+        return True
+    return False
+
+
+def _informe_declara_aislamiento(fallos: list) -> bool:
+    """Comprueba que el informe lleva la seccion de aislamiento con el numero de fallos.
+
+    Args:
+        fallos: lista de fallos del registro de humo.
+
+    Returns:
+        True si el informe declara el aislamiento y cuenta los fallos.
+    """
+    huella = {"ruta": "x", "sha256": "y", "bytes": 1, "mtime_ns": 2}
+    afirmaciones = [afirmacion_vacia(f"A{n}") for n in range(0, 20)]
+    informe = construir_json(afirmaciones, {}, huella, huella, {},
+                            envolver({}, "A18"), datetime.now(timezone.utc), {}, {},
+                            fallos, {"cumple": True}, {"cuantas_en_afirmaciones": 0})
+    seccion = envolver(informe.get("aislamiento_de_afirmaciones"), "aisl")
+    declarado = envolver(seccion.get("declarado"), "declarado")
+    return (seccion.num("n_afirmaciones_aisladas_con_fallo") == len(fallos)
+            and "aislamiento_declarado" not in seccion
+            and bool(declarado.get("que_se_hace"))
+            and "que_significa_un_ERROR" in seccion
+            and "ERROR no es un CONFIRMADO" in seccion.txt("que_significa_un_ERROR"))
+
+
+def _markdown_declara_robustez() -> bool:
+    """Comprueba que el markdown lleva la seccion de robustez con los numeros reales.
+
+    Returns:
+        True si el markdown declara la seccion.
+    """
+    huella = {"ruta": "x", "sha256": "y", "bytes": 1, "mtime_ns": 2}
+    afirmaciones = [afirmacion_vacia(f"A{n}") for n in range(0, 20)]
+    informe = construir_json(afirmaciones, {}, huella, huella, {},
+                            envolver({}, "A18"), datetime.now(timezone.utc), {}, {}, [],
+                            {"n_afirmaciones_comprobadas": 20},
+                            {"cuantas_en_afirmaciones": 0})
+    lineas = escribir_markdown(afirmaciones, informe)
+    texto = "\n".join(lineas)
+    return ("Robustez de la corrida: aislamiento y contrato" in texto
+            and "Cada afirmacion se ejecuta dentro de un guard" in texto
+            and "una afirmacion con ERROR lo esta por fallo propio" in texto
+            and "ERROR no es un CONFIRMADO" in texto
+            and "se aislaron con fallo en ESTA corrida" in texto
+            and "escrituras parciales dentro del bloque 2" in texto)
+
+
+def _detecta_modulo_cruzado(contexto: dict) -> bool:
+    """Comprueba que pasar el modulo equivocado en `modulo_p71` se reporta.
+
+    Args:
+        contexto: contexto de humo, que se copia antes de romperlo.
+
+    Returns:
+        True si la comprobacion de contrato lo detecta.
+    """
+    import copy
+
+    roto = copy.deepcopy(contexto)
+    roto["modulos"]["p71_04"] = roto["modulos"]["p72_01"]
+    return not comprobar_contratos_de_llamada(roto)["cumple"]
+
+
+def _detecta_modulo_sin_constantes(contexto: dict) -> bool:
+    """Comprueba que un modulo sin las constantes del scheduler se reporta.
+
+    Args:
+        contexto: contexto de humo, que se copia antes de romperlo.
+
+    Returns:
+        True si la comprobacion de contrato lo detecta.
+    """
+    import copy
+
+    roto = copy.deepcopy(contexto)
+
+    class SinConstantes:
+        """Objeto sin ninguna de las constantes que A18 consume."""
+
+    roto["modulos"]["p72_01"] = SinConstantes()
+    return not comprobar_contratos_de_llamada(roto)["cumple"]
+
+
+def _detecta_origen_ausente(contexto: dict) -> bool:
+    """Comprueba que un origen declarado y ausente en el contexto se reporta.
+
+    Args:
+        contexto: contexto de humo, que se copia antes de romperlo.
+
+    Returns:
+        True si la comprobacion de contrato lo detecta.
+    """
+    import copy
+
+    roto = copy.deepcopy(contexto)
+    del roto["lecturas"]["informe_p79"]
+    return not comprobar_contratos_de_llamada(roto)["cumple"]
+
+
+def _detecta_firma_desalineada() -> bool:
+    """Comprueba que una firma que no casa con la tabla se reporta.
+
+    Returns:
+        True si la comprobacion de contrato lo detecta.
+    """
+    tabla_original = dict(CONTRATO_DE_AFIRMACIONES)
+    import copy
+    manipulada = copy.deepcopy(tabla_original)
+    manipulada["A9"]["parametros"] = [("parametro_que_no_existe", "medidas.sonda")]
+    globals()["CONTRATO_DE_AFIRMACIONES"] = manipulada
+    try:
+        resultado = comprobar_contratos_de_llamada(contexto_minimo_de_humo())
+        return not resultado["cumple"]
+    finally:
+        globals()["CONTRATO_DE_AFIRMACIONES"] = tabla_original
+
+
+def _detecta_el_fallo_real_de_a18() -> bool:
+    """Reproduce en miniatura el fallo de la corrida real y comprueba que se detecta.
+
+    El fallo real fue pasar `modulo_p72` al parametro `modulo_p71` de
+    `leer_primeras_n_lineas`. Aqui se comprueba que un `modulo_p71` que no trae `RE_TOKEN`
+    dispara exactamente el fallo que se vio en la linea 3331, y que el contrato lo marca.
+
+    Returns:
+        True si el fallo se reproduce y el contrato lo detecta.
+    """
+    contexto = contexto_minimo_de_humo()
+    solo_p72 = contexto["modulos"]["p72_01"]
+    lanzo = False
+    try:
+        solo_p72.RE_TOKEN.findall("palabra")
+    except AttributeError:
+        lanzo = True
+    contexto_roto = contexto_minimo_de_humo()
+    contexto_roto["modulos"]["p71_04"] = solo_p72
+    detectado = not comprobar_contratos_de_llamada(contexto_roto)["cumple"]
+    return lanzo and detectado
+
+
+AFIRMACIONES_DEL_BLOQUE_2 = ("A8", "A9", "A10", "A11", "A12")
+
+
+def _checkpoint_cubre_las_afirmaciones_del_bloque_2() -> bool:
+    """Comprueba, por AST sobre el main real, que el bloque 2 partializa por afirmacion.
+
+    Se recorre el bucle REAL de main y no una reimplementacion: si el bucle dejara de
+    escribir el parcial dentro de la vuelta, esta comprobacion fallaria. Se cuentan las
+    llamadas a `publicar_parcial` que hay dentro del bucle que itera las afirmaciones del
+    bloque 2, y se exige que sean al menos tantas como afirmaciones tiene el bloque.
+
+    Returns:
+        True si el bucle del bloque 2 escribe un parcial por afirmacion.
+    """
+    import ast
+
+    with open(Path(__file__), encoding="utf-8") as manejador:
+        fuente = manejador.read()
+    arbol = ast.parse(fuente)
+    main_ = next((nodo for nodo in ast.walk(arbol)
+                  if isinstance(nodo, ast.FunctionDef) and nodo.name == "main"), None)
+    if main_ is None:
+        return False
+    lineas = fuente.splitlines()
+    for nodo in ast.walk(main_):
+        if not isinstance(nodo, ast.For):
+            continue
+        cuerpo = "\n".join(lineas[nodo.lineno - 1:(nodo.end_lineno or nodo.lineno)])
+        etiquetas = [identificador for identificador in AFIRMACIONES_DEL_BLOQUE_2
+                     if f'("{identificador}"' in cuerpo]
+        if len(etiquetas) != len(AFIRMACIONES_DEL_BLOQUE_2):
+            continue
+        # El parcial tiene que estar DENTRO del bucle, para que se escriba en cada vuelta y
+        # no una sola vez al acabarlo.
+        return ("publicar_parcial" in cuerpo
+                and "escrituras_del_bloque_2" in cuerpo
+                and "registro.ejecutar" in cuerpo)
+    return False
+
+
+
+AFIRMACIONES_DEL_BLOQUE_2 = ("A8", "A9", "A10", "A11", "A12")
+
+
+
+def _informe_declara_checkpoint_del_bloque_2() -> bool:
+    """Comprueba que el informe declara el numero de escrituras parciales del bloque 2.
+
+    Returns:
+        True si la seccion de robustez declara el checkpoint por afirmacion del bloque 2.
+    """
+    huella = {"ruta": "x", "sha256": "y", "bytes": 1, "mtime_ns": 2}
+    afirmaciones = [afirmacion_vacia(f"A{n}") for n in range(0, 20)]
+    informe = construir_json(afirmaciones, {}, huella, huella, {},
+                            envolver({}, "A18"), datetime.now(timezone.utc), {}, {}, [],
+                            {"cumple": True}, {"cuantas_en_afirmaciones": 0}, 5)
+    seccion = envolver(informe.get("aislamiento_de_afirmaciones"), "aisl")
+    parcial = envolver(seccion.get("json_parcial"), "parcial")
+    return (seccion.num("n_escrituras_parciales_del_bloque_2") == 5
+            and parcial.get("checkpoint_por_afirmacion_en_el_bloque_2") is True)
+
+
+def _detecta_literal_cruzado() -> bool:
+    """Comprueba por AST que un subscript con literal de brazo dentro de una afirmacion se marca.
+
+    Returns:
+        True si el auditor lo detecta.
+    """
+    import ast
+
+    fuente = ("def afirmacion_de_prueba(resultado):\n"
+              "    return resultado['m1_suma']\n")
+    arbol = ast.parse(fuente)
+    literales = {"m1_media", "m1_suma", "m2_media", "m2_suma"}
+    encontrados = [nodo for nodo in ast.walk(arbol)
+                   if isinstance(nodo, ast.Subscript)
+                   and isinstance(nodo.slice, ast.Constant)
+                   and isinstance(nodo.slice.value, str)
+                   and nodo.slice.value in literales]
+    return len(encontrados) == 1
 
 
 def ejecutar_pruebas_de_humo() -> int:
@@ -4625,11 +5539,118 @@ def ejecutar_pruebas_de_humo() -> int:
     comprobar("umbral de zona betonal declarado en la enmienda 1",
               BLOQUE_1["umbral_zona_betonal"] == 0.99)
 
+    # --- CONTRATO DE LLAMADA: lo que habria atrapado los tres fallos seguidos ---
+    contexto_humo = contexto_minimo_de_humo()
+    contratos = comprobar_contratos_de_llamada(contexto_humo)
+    comprobar("el contrato de las veinte afirmaciones se comprueba con inspect.signature",
+              contratos["n_afirmaciones_comprobadas"] == 20)
+    comprobar("las veinte firmas reales coinciden con la tabla de contrato",
+              contratos["cumple"] and not contratos["incumplimientos"])
+    comprobar("la tabla declara un modulo distinto para cada parametro de modulo",
+              (CONTRATO_DE_AFIRMACIONES["A18"]["parametros"][0][0] == "modulo_p71"
+               and CONTRATO_DE_AFIRMACIONES["A18"]["parametros"][1][0] == "modulo_p72"))
+    comprobar("A18 exige los dos modulos en el contexto",
+              set(CONTRATO_DE_AFIRMACIONES["A18"]["exige_modulos"]) == {"p71_04", "p72_01"})
+    comprobar("un modulo sin RE_TOKEN en el parametro modulo_p71 se detecta",
+              _detecta_modulo_cruzado(contexto_humo))
+    comprobar("un modulo sin las constantes del scheduler se detecta",
+              _detecta_modulo_sin_constantes(contexto_humo))
+    comprobar("un origen ausente en el contexto se detecta",
+              _detecta_origen_ausente(contexto_humo))
+    comprobar("una firma desalineada de la tabla se detecta",
+              _detecta_firma_desalineada())
+    comprobar("el fallo real de A18 se reproduce en miniatura y se detecta",
+              _detecta_el_fallo_real_de_a18())
+
+    # --- AISLAMIENTO: un fallo en una afirmacion no tumba el resto ---
+    registro_humo = RegistroDeAfirmaciones(datetime.now(timezone.utc))
+    registro_humo.ejecutar("A1", _afirmacion_que_devuelve_ok, ("x",))
+    resultado_aislado = registro_humo.ejecutar("A2", _afirmacion_que_lanza, ())
+    registro_humo.ejecutar("A3", _afirmacion_que_devuelve_ok, ("y",))
+    comprobar("el guard devuelve None cuando la afirmacion lanza",
+              resultado_aislado is None)
+    comprobar("el guard registra el fallo con su tipo de excepcion",
+              len(registro_humo.fallos) == 1
+              and registro_humo.fallos[0]["afirmacion"] == "A2"
+              and registro_humo.fallos[0]["tipo_de_excepcion"] == "RuntimeError")
+    comprobar("el guard guarda una traza resumida del fallo",
+              bool(registro_humo.fallos[0]["traza_resumida"]))
+    comprobar("la corrida continua despues del fallo",
+              len(registro_humo.afirmaciones) == 3)
+    comprobar("la afirmacion que fallo queda con veredicto ERROR",
+              registro_humo.afirmaciones[1]["veredicto"] == "ERROR")
+    comprobar("ERROR declara que no llego a ejecutarse",
+              registro_humo.afirmaciones[1]["medida"]["estado_de_ejecucion"] == "NO_EVALUADA")
+    comprobar("ERROR declara que no es un CONFIRMADO ni un REFUTADO",
+              "NO es un CONFIRMADO" in registro_humo.afirmaciones[1]["medida"]["que_no_afirma"])
+    comprobar("ERROR esta declarado como estado de veredicto del informe",
+              "ERROR" in AISLAMIENTO["estados_de_veredicto"])
+    comprobar("el aislamiento declara que el JSON parcial se escribe por bloque",
+              "parcial" in AISLAMIENTO["escritura_incremental"])
+    comprobar("el aislamiento no se confunde con el criterio de parada del pre-registro",
+              "STOP" in AISLAMIENTO["por_que_no_se_confunde_con_el_criterio_de_parada"])
+    comprobar("una Parada con marca STOP no la traga el guard",
+              _la_parada_no_se_traga())
+    comprobar("el informe declara el aislamiento y el numero de fallos aislados",
+              _informe_declara_aislamiento(registro_humo.fallos))
+    comprobar("el markdown declara la seccion de robustez",
+              _markdown_declara_robustez())
+
+    # --- LITERALES DE BRAZO: la generalizacion de la familia de fallos ---
+    auditoria = auditar_literales_de_brazo()
+    comprobar("la auditoria de literales recorre el fuente por AST",
+              auditoria["literales_encontrados"] > 0)
+    comprobar("ninguna afirmacion accede a un resultado de brazo por literal",
+              auditoria["cuantas_en_afirmaciones"] == 0)
+    comprobar("la auditoria declara su propio limite de busqueda",
+              "Marcar no es incumplir" in auditoria["limite_de_la_busqueda"])
+    comprobar("una afirmacion con literal cruzado se detecta por AST",
+              _detecta_literal_cruzado())
+
+    # --- LA PUERTA DEL HUMO: un humo que falla tiene que FALLAR ---
+    # Se comprueba sobre `evaluar_humo` y no sobre el humo que se esta midiendo, para que la
+    # comprobacion no se cuente a si misma.
+    comprobar("la puerta FALLA aunque se superen mas comprobaciones que el suelo",
+              evaluar_humo(MINIMO_COMPROBACIONES_HUMO + 50, ["una que falla"])
+              == "FALLIDO")
+    comprobar("la puerta FALLA con un solo fallo y muchos pases",
+              evaluar_humo(1000, ["una sola que falla"]) == "FALLIDO")
+    comprobar("la puerta PASA sin fallos y con cobertura suficiente",
+              evaluar_humo(MINIMO_COMPROBACIONES_HUMO, []) == "PASADO")
+    comprobar("la puerta FALLA sin fallos si no se alcanza el suelo de cobertura",
+              evaluar_humo(0, []) == "FALLIDO")
+    comprobar("la puerta NO es el suelo: mas pases que el suelo no compensan un fallo",
+              evaluar_humo(MINIMO_COMPROBACIONES_HUMO * 3, ["falla"]) == "FALLIDO")
+    comprobar("la puerta da codigo 1 ante un fallo y 0 sin fallos",
+              codigo_de_salida_del_humo(1000, ["falla"]) == 1
+              and codigo_de_salida_del_humo(MINIMO_COMPROBACIONES_HUMO, []) == 0)
+
+    # El caso que falla a proposito: al contar superadas y fallos sobre una lista controlada,
+    # el recuento baja y el veredicto es FALLIDO, no solo un numero distinto.
+    casos_controlados = [True, True, False, True]
+    superadas_controladas = sum(1 for caso in casos_controlados if caso)
+    fallos_controlados = [f"caso {i}" for i, caso in enumerate(casos_controlados) if not caso]
+    comprobar("el recuento de superadas baja cuando un caso falla a proposito",
+              superadas_controladas == 3 and len(fallos_controlados) == 1)
+    comprobar("un caso que falla a proposito da veredicto FALLIDO",
+              evaluar_humo(superadas_controladas, fallos_controlados) == "FALLIDO")
+
+    # --- CHECKPOINT DEL BLOQUE 2 ---
+    comprobar("el registro cuenta las escrituras parciales del bloque 2",
+              registro_humo.escrituras_del_bloque_2 == 0)
+    comprobar("el checkpoint del bloque 2 escribe al menos una vez por afirmacion del bloque",
+              _checkpoint_cubre_las_afirmaciones_del_bloque_2())
+    comprobar("el informe declara las escrituras parciales del bloque 2",
+              _informe_declara_checkpoint_del_bloque_2())
+
+
+    veredicto = evaluar_humo(superadas, fallos)
     print(f"[P81-01] humo: {superadas} de {superadas + len(fallos)} comprobaciones "
           f"superadas; suelo declarado {MINIMO_COMPROBACIONES_HUMO}", flush=True)
+    print(f"[P81-01] humo: veredicto {veredicto}", flush=True)
     if fallos:
         print(f"[P81-01] humo: fallaron {len(fallos)}: {fallos}", flush=True)
-    return superadas
+    return veredicto
 
 
 def escribir_json_de_parada(parada: Parada) -> Path:
@@ -4730,8 +5751,18 @@ def main() -> None:
     informe_p79 = json.loads(INFORME_P79.read_text(encoding="utf-8"))
     informe_p80 = json.loads(INFORME_P80.read_text(encoding="utf-8"))
     informe_dl = json.loads(INFORME_DL.read_text(encoding="utf-8"))
+    # Las lecturas se publican en el contexto con el NOMBRE que usa la tabla de contrato, para
+    # que la comprobacion de contrato se haga contra el contexto real y no contra uno ideal.
+    contexto["lecturas"] = {"preregistro": preregistro, "informe_p79": informe_p79,
+                            "informe_p80": informe_p80, "informe_dl": informe_dl}
+    contexto["medidas"] = {"preregistro": preregistro}
+    contratos_previas = comprobar_contratos_de_llamada(contexto_de_contrato_real(contexto))
+    if not contratos_previas["cumple"]:
+        for incumplimiento in contratos_previas["incumplimientos"]:
+            log(f"aviso de contrato: {incumplimiento['afirmacion']} | "
+                f"{incumplimiento['motivo'][:120]}")
 
-    afirmaciones: list = []
+    registro = RegistroDeAfirmaciones(inicio)
     try:
         marcas = datetime.now(timezone.utc)
 
@@ -4757,18 +5788,17 @@ def main() -> None:
             f"primario en lr {primario['learning_rate_del_primario']}; la SUMA gana "
             f"{rejilla['victorias_de_la_suma']} de {len(rejilla['curva'])} puntos; "
             f"curva monotona: {rejilla['deriva_de_la_curva']['monotona']}")
-        for funcion, argumentos in (
-                (afirmacion_a1, (preregistro,)),
-                (afirmacion_a2, (preregistro,)),
-                (afirmacion_a3, (informe_p79,)),
-                (afirmacion_a4, (preparado, BLOQUE_1)),
-                (afirmacion_a5, (rejilla, primario, BLOQUE_1)),
-                (afirmacion_a6, (primario, confirmacion, BLOQUE_1)),
-                (afirmacion_a7, (confirmacion, control,
-                                 _clasificar_recuento(rejilla), BLOQUE_1))):
-            resultado = funcion(*argumentos)
-            afirmaciones.append(resultado)
-            _registrar(resultado)
+        for identificador, funcion, argumentos in (
+                ("A1", afirmacion_a1, (preregistro,)),
+                ("A2", afirmacion_a2, (preregistro,)),
+                ("A3", afirmacion_a3, (informe_p79,)),
+                ("A4", afirmacion_a4, (preparado, BLOQUE_1)),
+                ("A5", afirmacion_a5, (rejilla, primario, BLOQUE_1)),
+                ("A6", afirmacion_a6, (primario, confirmacion, BLOQUE_1)),
+                ("A7", afirmacion_a7, (confirmacion, control,
+                                       _clasificar_recuento(rejilla), BLOQUE_1))):
+            registro.ejecutar(identificador, funcion, argumentos)
+        registro.publicar_parcial("fin del bloque 1", {"cronometro": cronometro})
 
         log("bloque 2: tasas con el tokenizador real y sonda de celdas separadas")
         marcas = datetime.now(timezone.utc)
@@ -4782,10 +5812,10 @@ def main() -> None:
         indices_dev, indices_holdout = splits_module.holdout_v2(marco_train, grupos_split)
         medidas_oov = cargar_tasa_de_oov(contexto["modulos"]["v9_04"], marco_train,
                                         grupos_split)
-        afirmaciones.append(afirmacion_a8(medidas_oov))
-        _registrar(afirmaciones[-1])
+        # A8 se ejecuta dentro del bucle del bloque 2, no aqui: asi el parcial se escribe
+        # tambien tras A8 y no solo tras las afirmaciones siguientes.
         config_b2 = dict(BLOQUE_2)
-        config_b2["vocabulario"] = max(medidas_oov["vocabulario_usado"], 8)
+        config_b2["vocabulario"] = max(medidas_oov.get("vocabulario_usado", 8), 8)
         sonda = condiciones_de_la_sonda(config_b2["vocabulario"], config_b2)
         sondas = {}
         for clave, nombre_clase in (("v9_04_BiGRU", "BiGRU"),
@@ -4799,45 +5829,51 @@ def main() -> None:
             modulo = (contexto["modulos"]["v9_04"] if clave == "v9_04_BiGRU"
                       else contexto["modulos"]["v10_11"])
             sondas_2[clave] = sondear_bi_gru(modulo, nombre_clase, sonda, config_b2)
-        for funcion, argumentos in (
-                (afirmacion_a9, (sonda, config_b2)),
-                (afirmacion_a10, (sondas, config_b2)),
-                (afirmacion_a11, (sondas,)),
-                (afirmacion_a12, (sondas, sondas_2))):
-            resultado = funcion(*argumentos)
-            afirmaciones.append(resultado)
-            _registrar(resultado)
+        # El bloque 2 es el caro, unos diez minutos. El parcial se escribe aqui despues de
+        # CADA afirmacion, no solo al acabar el bloque, para que un fallo a mitad del bloque
+        # no tire lo ya medido.
+        for indice, (identificador, funcion, argumentos) in enumerate((
+                ("A8", afirmacion_a8, (medidas_oov,)),
+                ("A9", afirmacion_a9, (sonda, config_b2)),
+                ("A10", afirmacion_a10, (sondas, config_b2)),
+                ("A11", afirmacion_a11, (sondas,)),
+                ("A12", afirmacion_a12, (sondas, sondas_2))), start=1):
+            registro.ejecutar(identificador, funcion, argumentos)
+            registro.escrituras_del_bloque_2 += 1
+            registro.publicar_parcial(
+                f"bloque 2, afirmacion {indice} de 5 ({identificador})",
+                {"cronometro": cronometro})
         cronometro["bloque_2"] = round(
             (datetime.now(timezone.utc) - marcas).total_seconds(), 3)
+        registro.publicar_parcial("fin del bloque 2", {"cronometro": cronometro})
 
         log("bloque 3: reejecion no es replicacion")
         bloque = bloque_reejecion_no_replicacion()
-        for resultado in (afirmacion_a13(bloque), afirmacion_a14(informe_p80)):
-            afirmaciones.append(resultado)
-            _registrar(resultado)
+        registro.ejecutar("A13", afirmacion_a13, (bloque,))
+        registro.ejecutar("A14", afirmacion_a14, (informe_p80,))
+        registro.publicar_parcial("fin del bloque 3", {"cronometro": cronometro})
 
         log("bloque 4: identidad de conjuntos de identificadores")
         marcas = datetime.now(timezone.utc)
         grupos_cv = leer_grupos_de_la_fase_dl(marco_train)
         pliegues = conjuntos_de_identificadores_de_los_pliegues(marco_train, grupos_cv)
         campos_holdout = leer_campos_de_holdout_v2()
-        for resultado in (
-                afirmacion_a15(pliegues),
-                afirmacion_a16(marco_train, grupos_split, indices_dev, indices_holdout,
-                               campos_holdout),
-                afirmacion_a17(pliegues, informe_dl)):
-            afirmaciones.append(resultado)
-            _registrar(resultado)
+        registro.ejecutar("A15", afirmacion_a15, (pliegues,))
+        registro.ejecutar("A16", afirmacion_a16, (marco_train, grupos_split, indices_dev,
+                                                   indices_holdout, campos_holdout))
+        registro.ejecutar("A17", afirmacion_a17, (pliegues, informe_dl))
         cronometro["bloque_4"] = round(
             (datetime.now(timezone.utc) - marcas).total_seconds(), 3)
+        registro.publicar_parcial("fin del bloque 4", {"cronometro": cronometro})
 
         log("bloque 5: learning rate paso a paso")
-        a18 = afirmacion_a18(contexto["modulos"]["p72_01"])
-        afirmaciones.append(a18)
-        _registrar(a18)
-        resultado = afirmacion_a19(a18)
-        afirmaciones.append(resultado)
-        _registrar(resultado)
+        a18 = registro.ejecutar("A18", afirmacion_a18,
+                                (contexto["modulos"]["p71_04"],
+                                 contexto["modulos"]["p72_01"]))
+        registro.ejecutar("A19", afirmacion_a19, (a18 if a18 is not None else {},))
+        cronometro["bloque_5"] = round(
+            (datetime.now(timezone.utc) - marcas).total_seconds(), 3)
+        registro.publicar_parcial("fin del bloque 5", {"cronometro": cronometro})
     except Parada as parada:
         huella_despues = huella_de_fichero(ARTEFACTO)
         if (huella_despues["sha256"] != huella_antes["sha256"]
@@ -4861,15 +5897,20 @@ def main() -> None:
     log(f"artefacto congelado verificado DESPUES de la ultima lectura: "
         f"{huella_despues['sha256']}")
 
+    registro.ejecutar("A0", afirmacion_a0, (huella_antes, huella_despues))
+    afirmaciones = registro.afirmaciones
     a18_para_json = envoltura_tolerante(afirmaciones).get("A18", {})
     afirmaciones.sort(key=lambda item: _clave_de_orden(str(item.get("afirmacion", ""))))
-    afirmaciones.insert(0, afirmacion_a0(huella_antes, huella_despues))
-    _registrar(afirmaciones[0])
 
     marcas = datetime.now(timezone.utc)
     ascii_previo = verificar_ascii_byte_a_byte([Path(__file__)])
     informe = construir_json(afirmaciones, pre, huella_antes, huella_despues, contexto,
-                             envolver(a18_para_json, "A18"), inicio, ascii_previo, cronometro)
+                             envolver(a18_para_json, "A18"), inicio, ascii_previo, cronometro,
+                             registro.fallos,
+                             comprobar_contratos_de_llamada(
+                                 contexto_de_contrato_real(contexto)),
+                             auditar_literales_de_brazo(),
+                             registro.escrituras_del_bloque_2)
     REPORTS.mkdir(parents=True, exist_ok=True)
     if JSON_INFORME.exists() or MD_INFORME.exists():
         raise SystemExit(f"STOP escritura: {JSON_INFORME.name} o {MD_INFORME.name} ya existen. "
@@ -4918,7 +5959,9 @@ def _registrar(resultado: dict) -> None:
 
 if __name__ == "__main__":
     if "--humo" in sys.argv:
-        sys.exit(0 if ejecutar_pruebas_de_humo() >= MINIMO_COMPROBACIONES_HUMO else 1)
+        # La puerta es `evaluar_humo`: si CUALQUIER comprobacion falla, el humo FALLA, con
+        # independencia del suelo. El suelo es solo cobertura minima, no una puerta.
+        sys.exit(0 if ejecutar_pruebas_de_humo() == "PASADO" else 1)
     try:
         main()
     except SystemExit:

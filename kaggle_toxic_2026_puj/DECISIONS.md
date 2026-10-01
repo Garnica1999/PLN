@@ -8864,6 +8864,10 @@ V03 remains the best verified leaderboard result.
 ---
 
 ## D-275: P81 segunda corrida. El arreglo de A6 funciona, el titular sale como se esperaba y el fallo se mueve a A18
+**SUPERADA POR D-276.** Esta entrada describe la segunda corrida del 2026-10-01, que llego hasta
+A17 y se paro en A18 con un fallo de cableado de modulos. **Tampoco publico informe.** La tercera
+corrida, en **D-276**, se para antes, a los 64 s, por un fallo del propio escritor incremental. Esta
+entrada se conserva integra y no se reescribe.
 
 **Status**: INCONCLUSA. 17 de 20 afirmaciones medidas: 15 CONFIRMADO, 2 REFUTADO, 0 NO APLICABLE,
 0 STOP, 3 sin ejecutar. Bloques 2, 3 y 4 completos. Sin informe publicado en JSON ni en markdown.
@@ -9034,6 +9038,211 @@ HACER**, porque gensim no esta instalado y con Python 3.14.7 no compila. Autoriz
 que Word2Vec sea mejor que V03.** Y anade la conclusion nueva: la pata EJECUTABLE del anclaje no
 apoya a la suma, luego la base unica de la conclusion del proyecto es la DOCUMENTAL, la del codigo C
 de word2vec.
+
+Fronteras respetadas y comprobadas: test 0, holdout 0 identificadores deserializados, leaderboard 0,
+submission 0, P71 a P80 sin tocar, V03 sin tocar, umbrales 0.44, 0.51 y 0.46 sin tocar, `modelos/`
+sin escrituras. Artefacto congelado `302c994d13b75f8f5fbd440eea2c4f4113997e2581524021923b92f8244d705a`
+de 29478868 bytes antes y despues, abierto en solo lectura.
+
+```text
+V03 remains the best verified leaderboard result.
+```
+
+---
+
+## D-276: P81 tercera corrida. El escritor incremental se come a si mismo y se para en A8
+
+**Status**: INCONCLUSA. 8 de 20 afirmaciones medidas: 6 CONFIRMADO, 2 REFUTADO, 0 ERROR, 0 STOP,
+12 sin ejecutar. Un unico fichero en disco, el parcial, con A1 a A7. Ni JSON ni markdown completos.
+
+**Date**: 2026-10-01
+
+**Context**
+
+Script `experiments/p81_01_cierre_huecos.py`, sha256
+`5b5db4b0f2cd514fec1cd667d898c808dd5a6d090f27ae4e9f15c7b7967e9100`, 120 de 120 en `--humo` con salida
+0, APROBADO por `ml-reviewer`. Specs sin cambio: `55e6900cce49bd7e2ee98b00e0c315081c04718edb18df4abd49f484755faabc`
+en `86a9140` y `496223801147a414e74a53fb7cf407ae48ad4671c74e45daba4dce19f15801c6` en `c3dee26`.
+
+Inventario: el fichero tiene **5973 lineas**, no 5975. El sha256 coincide completo con el declarado,
+luego es el fichero correcto y la diferencia de la cuenta viene de otro sitio.
+
+64.4 s y codigo de salida 1, cuando el presupuesto era de diez minutos. **Ninguna de las tres
+corridas ha publicado informe**, y las tres se paran por un fallo de contrato y no de calculo: A6 con
+un `KeyError` de clave literal, A18 con un modulo equivocado, y ahora la capa de persistencia.
+
+### El fallo, y la ironia de que lo reparaba
+
+```text
+[P81-01] | JSON parcial escrito en reports/p81_cierre_huecos.parcial.json: 7 afirmaciones, 0 aisladas con fallo
+[P81-01] |    A8: CONFIRMADO | las cuatro cifras estan medidas y publicadas...
+STOP escritura: .../reports/p81_cierre_huecos.parcial.json ya existe y solo se admiten temporales
+               hasta la publicacion atomica
+```
+
+**Dos defectos que se multiplican.**
+
+1. `publicar_parcial` escribe el parcial con `escribir_ascii_atomico` sobre `JSON_PARCIAL` y lo publica
+   con `publicar_atomico`, linea 3889, o sea **sobre su nombre definitivo**. La primera escritura, al
+   terminar el bloque 1, deja el parcial en disco. La segunda, tras A8, vuelve a pedir ese mismo
+   nombre y la linea 517 lo rechaza: ese es el guard de antitrunco heredado de P80, que prohibe
+   sobrescribir un destino existente. **Un escritor incremental que publica sobre su nombre final
+   choca de frente con un guard que prohibe sobrescribir el destino.**
+2. Ese `SystemExit` deberia haberse degradado a un aviso. La linea 3895 tiene `except SystemExit:
+   raise`, que **relevanta la excepcion antes de que la vea el `except Exception` de la 3897**, que es
+   el que iba a registrar `aviso: no se pudo escribir el JSON parcial`. **La red de seguridad que el
+   propio escritor declara tener no existe para este fallo.**
+
+La caracteristica que se anadio para que un fallo final **no tirase las mediciones anteriores es
+justo la que tira la corrida**, y se come la primera medicion del bloque 2, la que pretendia salvar.
+**Las cuatro cifras de A8 mueren por tercera vez consecutiva, y esta por el mecanismo que deberia
+impedirlas.** A8 llego a CONFIRMADO y su veredicto esta en el log, pero no quedo en disco: el parcial
+escrito al terminar el bloque 1 contiene siete afirmaciones, A1 a A7, y la escritura que iba a
+meter a A8 es la que revento. **El 0.155020 del prototipo y las tres cifras anteriores siguen sin
+reproducirse desde un fichero publicado**, y el motivo ya no es un fallo de calculo: es que la
+persistencia se cae antes de llegar a escribir el bloque 2.
+
+**El guard de aislamiento por afirmacion nunca actuo.** `afirmaciones_aisladas_con_fallo` esta vacio
+y **ninguna afirmacion quedo en ERROR**. El fallo no ocurrio dentro de una afirmacion: ocurrio en la
+capa de persistencia, entre A8 y la escritura que la iba a registrar. Es la unica vez que el guard
+tenia oportunidad de demostrar que aisla y no puede demostrar nada.
+
+### El bloque 1, por fin en disco
+
+Si esta publicado, en `reports/p81_cierre_huecos.parcial.json`, con numeros exactos:
+
+```text
+umbral de zona betonal 0.99
+
+por BRAZO, criterio declarado y el del primario
+  MEDIA  excluidos 0.35 y 0.50   mejor no betonal 0.7388888888888889 en lr 0.20
+  SUMA   excluidos 0.20, 0.35 y 0.50   mejor no betonal 0.03888888888888889 en lr 0.10
+  diferencia_por_brazo = -0.7000000000000001   GANA LA MEDIA por 0.700000   primario en lr 0.1
+
+por PUNTO, alternativa calculada y publicada, no usada
+  sobran 0.02, 0.05 y 0.10   MEDIA 0.005555555555555556   SUMA 0.03888888888888889
+  diferencia_por_punto = +0.03333333333333333   GANA LA SUMA por 0.0333
+
+las_dos_lecturas_coinciden_en_signo = False
+```
+
+El signo se da la vuelta enteramente segun el criterio de exclusion, y por eso el criterio queda
+escrito y la alternativa se publica: decidir solo con una seria ocultar la otra.
+
+```text
+victorias_de_la_suma 2   derrotas_de_la_suma 4   reparto "2 a 4"
+curva_monotona false   cambios_de_signo_en_la_curva 2   recuento_en_banda_muerta true
+```
+
+**Titular literal, y coincide con lo esperado en las cuatro cosas:**
+
+```text
+etiqueta: EL_TEST_NO_APOYA_A_LA_SUMA   apoya_a_la_suma: False   direccion: favor_a_la_media
+```
+
+```text
+la diferencia entre los dos mejores de la rejilla es -0.700000, de magnitud suficiente para
+discriminar pero con el SIGNO en contra de la SUMA. La MEDIA gana por 0.700000. El test discrimina
+por magnitud, pero su direccion es contraria a la hipotesis de A6, y eso se publica: el bloque 1
+NO apoya al objetivo de la referencia
+```
+
+Con su segunda capa de prudencia, que es el recuento:
+
+```text
+ZONA DE NO CONCLUSION: el reparto de victorias por learning rate queda en 2 a 4 y eso es ruido con
+tres semillas. El primario NO debe leerse como confirmacion
+```
+
+**A5 CONFIRMADO por magnitud, A6 REFUTADO por direccion, EL_TEST_NO_APOYA_A_LA_SUMA con la MEDIA
+ganando por 0.700000, y recuento 2 a 4 en zona de no conclusion.** Se publica tal cual. **No se movio
+la tolerancia de 0.02, ni la banda muerta de 0.005, ni la rejilla, ni el criterio de zona betonal, ni
+el signo de la direccion.** La hipotesis preregistrada de que el objetivo de la referencia gana al
+alternativo queda **REFUTADA por direccion**, y el recuento la deja ademas en zona de no conclusion
+con tres semillas.
+
+### Bloque 5: A18 y A19 nunca se ejecutaron
+
+El bloque 5 **no llego a empezar**: el recorrido se corta en la primera escritura del bloque 2. **A18 y
+A19 no tienen veredicto**, no por fallo propio sino porque nunca sefkikieron a ejecutar.
+**La contingencia de que A19 salga REFUTADO como consecuencia de un A18 en ERROR no se materializa**, y
+por tanto **no hay ningun REFUTado que haya que descartar por fallo aguas arriba**. Los dos REFUTADO
+reales, A6 y A7, son mediciones de verdad del bloque 1 y ninguno depende de A18. El fallo de A18 de la
+segunda corrida, el `AttributeError` de `RE_TOKEN` por modulo equivocado, **sigue sin corregir**: esta
+version lo deja sin tocar porque la corrida no llega a A18.
+
+**Decision**
+
+**P81 sigue INCONCLUSO por tercera vez.** Se conservan D-274 y D-275, ya marcadas como corridas que no
+publicaron informe, y esta entrada recoge la tercera.
+
+Se acepta el bloque 1 **tal cual sale**, a favor de que el test no apoye a la SUMA, porque es lo que
+dicen los numeros y porque ahora estan **en disco** y no solo en memoria: la diferencia de -0.700000,
+el reparto 2 a 4, el titular y la zona de no conclusion. Es la primera vez que el resultado del
+bloque 1 queda respaldado por un fichero.
+
+Se registra la **conclusion con el titular ya publicado**.
+
+**La pata EJECUTABLE del anclaje de H1 no apoya a la suma. La base que sostiene que el objetivo no
+era SGNS es la pata DOCUMENTAL, el codigo C de word2vec, y queda como base unica.** No es una
+interpretacion: A5 discrimina por magnitud, A6 mide la direccion y la encuentra contraria, la MEDIA
+gana por 0.700000, y el reparto de 2 a 4 con dos cambios de signo en la curva deja el primario en zona
+de no conclusion con tres semillas. La reimplementacion propia **no aporta apoyo ejecutable**, y eso se
+dice sin rodeos.
+
+**Alternatives Considered**
+
+1. Tratar el 64 s como un fallo de entorno y relanzar hasta que salga. **Descartado por prohibicion
+   expresa.** El fallo es estructural, no de azar.
+2. Aceptar el parcial como informe de P81 y cerrar. **Descartado.** Le faltan cuatro bloques, doce
+   afirmaciones, y las cifras del bloque 2 que eran el motivo de la corrida. Se le marca `es_parcial:
+   true` e `informe_completo: false`, y el propio script lo dice.
+3. Reutilizar el JSON parcial como `.json` final renombrandolo. **Descartado.** Seria publicar un
+   informe declarado incompleto como si fuera el informe, justo el retoque posterior al resultado que
+   el pre-registro prohibe.
+4. Descartar el REFUTADO de A6 o el de A7 por ser de un bloque cuyo guardado fallo. **Descartado.**
+   El unico fallo es de escritura, posterior a la medicion: los dos REFUTADO son medidas del bloque 1
+   y no dependen de nada que no se haya medido.
+5. Mover la tolerancia o la rejilla para que la lectura por punto, que da `+0.0333` a favor de la
+   SUMA, sea la del primario. **Descartado y prohibido.** El criterio por brazo esta declarado por
+   escrito y la alternativa se publica precisamente para que se vea que no coinciden en signo.
+
+**Consequences**
+
+**En disco queda una cosa, y es la buena:** `reports/p81_cierre_huecos.parcial.json`, 24196 bytes,
+**ASCII puro, 0 bytes por encima de 127**, con siete afirmaciones, las dos lecturas de la zona
+betonal, el recuento 2 a 4, el titular y la explicacion. `reports/p81_cierre_huecos.json` y `.md` **no
+existen**, sin temporal a la vista, nada se vacio y nada se renombro. El **verificador oficial**
+`tools/verificar_caracteres.py` sobre el proyecto entero: **codigo de salida 0, 0 caracteres no
+permitidos**. El recuento de `NO_DISPONIBLE` en el `.md` **no aplica porque el `.md` no se escribio**;
+en el unico informe que hay, el parcial, son **0**. **El bug que llenaba el informe de huecos en
+silencio no se ha reproducido en tres reventones seguidos**: la defensa de escritura de P80, que
+comprueba en memoria antes de abrir nada, ha aguantado las tres.
+
+**Se pierden, y es la mayor perdida del proyecto en P81:** las cuatro cifras de la proporcion de OOV
+con el tokenizador real de `v9_04`, por tercera vez; el reparto entre canal de relleno y canal de OOV
+**con magnitud**, tambien por tercera vez; y con ello los bloques 3, 4 y 5 enteros, con A13, A14, A15,
+A16, A17, A18 y A19, que en la segunda corrida ya habian dado 7 CONFIRMADO.
+
+**Aviso de contrato que hay que registrar.** Al arrancar salen **34 lineas** `aviso de contrato` sobre
+A0, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A15, A16, A17 y A19: el contexto no tiene el origen
+declarado `medidas.<parametro>` para la mayor parte de los parametros de las afirmaciones. **Son
+avisos, no fallos**, y la corrida continua. Pero el comprobador de contratos que se acaba de anadir
+**todavia no tiene declarada la procedencia de casi todo lo que le pasa**, luego esa tabla de origenes
+esta a medio construir.
+
+**Cuatro fallos seguidos, los cuatro de contrato asumido y no verificado en la frontera**, y el
+ultimo el mas instructivo porque es el guard antitrunco de P80 el que se enciende: el `KeyError` de
+clave literal, corregido; el modulo equivocado de A18, sin corregir; la tabla de origenes del
+comprobador de contratos, a medio construir; y ahora el escritor incremental publicando sobre su
+nombre final. **Ninguno de los cuatro lo cubren los 120 checks de humo**, porque el humo verifica
+recuentos y no contratos entre capas. Se repite la recomendacion: hace falta un caso que recorra el
+camino real de `main` de punta a punta, o una asercion de contrato en cada frontera.
+
+**Limite permanente, sin cambio.** El anclaje a una implementacion externa de SGNS queda **SIN HACER**,
+porque gensim no esta instalado y con Python 3.14.7 no compila. Autoriza afirmar sobre el **OBJETIVO**,
+y **no** sobre la calidad relativa del artefacto frente a una libreria. **No se afirma que Word2Vec sea
+mejor que V03.**
 
 Fronteras respetadas y comprobadas: test 0, holdout 0 identificadores deserializados, leaderboard 0,
 submission 0, P71 a P80 sin tocar, V03 sin tocar, umbrales 0.44, 0.51 y 0.46 sin tocar, `modelos/`
