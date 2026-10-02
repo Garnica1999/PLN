@@ -41,8 +41,8 @@ Bitacora viva: este documento se actualiza al cerrar cada fase.
 | Fase | Nombre | Estado | Evidencia |
 |---|---|---|---|
 | F0 | Preflight y asegurado del estado sucio | COMPLETADA | commit `1026ff1` |
-| F1 | Unificacion de workspaces en P67 | EN CURSO | `auditoria/manifiesto_unificacion.csv` |
-| F2 | Inventario unificado de experimentos | PENDIENTE | por definir |
+| F1 | Unificacion de workspaces en P67 | COMPLETADA | commit `9663afb`, manifiesto 154 filas |
+| F2 | Inventario unificado de experimentos | EN CURSO | por definir |
 | F3 | Auditoria por experimento (fugas, hiperparametros, calibracion, vacios, conexion codigo-corrida) | PENDIENTE | por definir |
 | F4 | Correccion de experimentos en vuelo (P83) y re-verificacion | PENDIENTE | por definir |
 | F5 | Notebook consolidado con cada experimento documentado | PENDIENTE | por definir |
@@ -72,3 +72,7 @@ Bitacora viva: este documento se actualiza al cerrar cada fase.
   `1142dc4`, 7.2 MB sin `build/`) a `tools/fastText`, ignorada por git como
   en el diseno original. Manifiesto con 153 filas en
   `auditoria/manifiesto_unificacion.csv`. Sin conflictos ni sobrescrituras.
+- 2026-10-02: F1 COMPLETADA. Commit `9663afb` (120 archivos). Verificador
+  oficial de caracteres en 0 errores sobre el arbol unificado. Git limpio.
+  El directorio `notebook_exec` del rerun estaba vacio y se registro como
+  ausente. F2 abierta: inventario unificado de experimentos.
