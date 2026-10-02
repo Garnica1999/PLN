@@ -36,3 +36,18 @@ el lider al cerrar cada pieza y cada subagente deja aqui su resumen (maximo
   (incluye holdout; es el diseno de refit final, se documenta), y el
   `leaderboard_log.csv` no es UTF-8 (cp1252). D2=0 sostenido con AST
   independiente (64 asserts, 0 tautologicos).
+- F3c completada: revision P69-P77 (`auditoria/revision_p69_p77.md`). Ocho
+  conclusiones verificadas. Hallazgo CRITICO: el delta de P72-03 se publica
+  contra el maximo de las nulas, no contra la media; A queda por encima de la
+  media (+0.0105) y solo 1 de 10 nulas lo supera. Hallazgos: P69 es
+  re-scoring, no reentrenamiento; P73 sostiene el signo pero no la magnitud.
+- F3d completada parcialmente: revision P78-P81
+  (`auditoria/revision_p78_p81.md`). P78 confirmado (E* real 8-17, no 10-17);
+  P79 con el recuento del scheduler no confirmado; P80 "19/19" impreciso
+  (18 mas 1 no aplicable) y la frase del pool de CV mezclaba fases.
+- F3d2 completada: revision P82 y su sonda (`auditoria/revision_p82.md`).
+  Conteo 23/23 exacto pero A7 contaminada: el determinismo "bit a bit" compara
+  dos pasadas de la misma corrida y declara igualdad con NaN y
+  `equal_nan=True` sobre mascaras. H3: el submission recalcula E* con
+  pliegues internos y no replica el pipeline de B1. H4: el MD de la sonda
+  niega un envio que el registro si tiene (LB 0.68150).
