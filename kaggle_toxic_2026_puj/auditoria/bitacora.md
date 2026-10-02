@@ -26,3 +26,13 @@ el lider al cerrar cada pieza y cada subagente deja aqui su resumen (maximo
   fallo conocido; `con_extra` de P83 sigue sin llamador. D2 (aserciones
   vacias) da 0 con el detector implementado. Sensibilidad probada con
   archivo plantado en /tmp/opencode.
+- F3b completada: revision adversarial del nucleo (`auditoria/revision_nucleo.md`).
+  6 de 7 afirmaciones CONFIRMADAS, incluida la recomputacion exacta de
+  `0.7772114525165721` y el +0.0036286 de la rejilla de umbrales sobre el
+  mismo OOF. REFUTADA parcialmente la afirmacion 5: `v33_01_validacion.py`
+  evaluo el MISMO holdout v2 el 2026-09-27 sin registrarlo, de modo que el
+  consumo real es 6 de 5; el registro de 5/5 solo cuenta lo declarado.
+  Hallazgos nuevos: refits de submission entrenan con las 1731 filas
+  (incluye holdout; es el diseno de refit final, se documenta), y el
+  `leaderboard_log.csv` no es UTF-8 (cp1252). D2=0 sostenido con AST
+  independiente (64 asserts, 0 tautologicos).
