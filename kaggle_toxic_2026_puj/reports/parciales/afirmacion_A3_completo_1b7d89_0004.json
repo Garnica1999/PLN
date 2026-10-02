@@ -1,0 +1,19 @@
+{
+  "marca_corrida": "completo_1b7d89",
+  "resultado": {
+    "bloque": 3,
+    "coste_segundos": 0.000144,
+    "descripcion": "el OOF de referencia es el canonico, coincide con el published",
+    "detalle": {
+      "error_mensaje": "las metricas del OOF canonico no traen corrected_cv, y recalcularlo es la unica forma de que A3 tenga un numero independiente; caer a una constante aqui haria que A3 se comparase consigo mismo",
+      "error_tipo": "AssertionError"
+    },
+    "estado": "ERROR",
+    "exito": false,
+    "id": "A3",
+    "naturaleza": "CONFIRMAR",
+    "stop": true,
+    "tolerancia": "diez milimasimas de diferencia entre el recalculado y el publicado",
+    "traza": "AssertionError: las metricas del OOF canonico no traen corrected_cv, y recalcularlo es la unica forma de que A3 tenga un numero independiente; caer a una constante aqui haria que A3 se comparase consigo mismo @ evaluar:1370 | <lambda>:7160 | corrected_cv_de_V03:171"
+  }
+}

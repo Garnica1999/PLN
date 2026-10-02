@@ -1,0 +1,66 @@
+{
+  "marca_corrida": "completo_1b7d89",
+  "resultado": {
+    "bloque": 0,
+    "coste_segundos": 0.015622,
+    "descripcion": "integridad de los artefactos congelados, sha256 tamano y mtime antes y despues",
+    "detalle": {
+      "antes": {
+        "oof": {
+          "mtime_ns": 1790698435954799478,
+          "ruta": "features/oof_v03_final.npz",
+          "sha256": "559265816ce4f6312c87f008f90324f0eec70a74d1e6247364c162793338feab",
+          "tamano": 143796
+        },
+        "v03": {
+          "mtime_ns": 1790698435936799215,
+          "ruta": "experiments/baseline_v03_frozen/pipeline_v03.json",
+          "sha256": "89ee399ae849296f7a9a76c21d49e15e616a202b6ef8a5b1d87afbf8c528a90b",
+          "tamano": 2222
+        },
+        "w2v": {
+          "mtime_ns": 1790744455825458351,
+          "ruta": "modelos/twitter_domain/w2v_twitter_100d.npz",
+          "sha256": "302c994d13b75f8f5fbd440eea2c4f4113997e2581524021923b92f8244d705a",
+          "tamano": 29478868
+        }
+      },
+      "comprobaciones": {
+        "el_oof_no_cambio": true,
+        "el_v03_no_cambio": true,
+        "el_word2vec_esta": true,
+        "el_word2vec_no_cambio": true,
+        "el_word2vec_tiene_el_sha256_declarado": true
+      },
+      "despues": {
+        "oof": {
+          "mtime_ns": 1790698435954799478,
+          "ruta": "features/oof_v03_final.npz",
+          "sha256": "559265816ce4f6312c87f008f90324f0eec70a74d1e6247364c162793338feab",
+          "tamano": 143796
+        },
+        "v03": {
+          "mtime_ns": 1790698435936799215,
+          "ruta": "experiments/baseline_v03_frozen/pipeline_v03.json",
+          "sha256": "89ee399ae849296f7a9a76c21d49e15e616a202b6ef8a5b1d87afbf8c528a90b",
+          "tamano": 2222
+        },
+        "w2v": {
+          "mtime_ns": 1790744455825458351,
+          "ruta": "modelos/twitter_domain/w2v_twitter_100d.npz",
+          "sha256": "302c994d13b75f8f5fbd440eea2c4f4113997e2581524021923b92f8244d705a",
+          "tamano": 29478868
+        }
+      },
+      "motivo_de_parada": "cualquier artefacto congelado difiere, y no se registra ningun otro numero",
+      "sha256_declarado_del_word2vec": "302c994d13b75f8f5fbd440eea2c4f4113997e2581524021923b92f8244d705a"
+    },
+    "estado": "CONFIRMADO",
+    "exito": true,
+    "id": "A0",
+    "naturaleza": "CONFIRMAR",
+    "stop": true,
+    "tolerancia": "sha256 identico antes y despues de toda la lectura",
+    "traza": ""
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "marca_corrida": "completo_dea5d4",
+  "resultado": {
+    "bloque": 14,
+    "coste_segundos": 0.007437,
+    "descripcion": "el calibrador se ajusta en internal, verificado por contadores",
+    "detalle": {
+      "error_mensaje": "A14: comprobaciones falsas ['el_alpha_no_usa_filas_del_calibrador', 'la_comprobacion_sabe_fallar_por_mutacion', 'las_filas_internas_y_externas_no_se_solapan']",
+      "error_tipo": "AssertionError"
+    },
+    "estado": "ERROR",
+    "exito": false,
+    "id": "A14",
+    "naturaleza": "CONFIRMAR",
+    "stop": true,
+    "tolerancia": "un ajuste del calibrador por combinacion de pliegue y semilla, solo interno",
+    "traza": "AssertionError: A14: comprobaciones falsas ['el_alpha_no_usa_filas_del_calibrador', 'la_comprobacion_sabe_fallar_por_mutacion', 'las_filas_internas_y_externas_no_se_solapan'] @ evaluar:1370 | <lambda>:7422 | afirmacion_a14:3675 | todo_verdadero:1252"
+  }
+}

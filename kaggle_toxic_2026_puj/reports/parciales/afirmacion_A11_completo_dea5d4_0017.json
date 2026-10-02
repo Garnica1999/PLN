@@ -1,0 +1,51 @@
+{
+  "marca_corrida": "completo_dea5d4",
+  "resultado": {
+    "bloque": 11,
+    "coste_segundos": 1.8e-05,
+    "descripcion": "la regla de lectura de 1.5 aplicada, sin reinterpretacion",
+    "detalle": {
+      "ambiguedad_declarada": "NO_SON_INDEPENDIENTES",
+      "comprobaciones": {
+        "el_campo_lectura_existe": true,
+        "el_caso_ambiguo_no_publica_afirmacion": true,
+        "el_valor_coincide_con_la_regla": true,
+        "el_valor_es_uno_de_las_cuatro": true,
+        "la_ambiguedad_esta_declarada": true
+      },
+      "lectura_de_la_regla": {
+        "ambiguedad_declarada": "NO_SON_INDEPENDIENTES",
+        "contiene_el_margen_por_pliegues": true,
+        "contiene_el_margen_por_semilla": true,
+        "extremo_desfavorable_por_pliegues": false,
+        "extremo_desfavorable_por_semilla": false,
+        "extremo_favorable_por_pliegues": false,
+        "extremo_favorable_por_semilla": false,
+        "fragilidad_declarada": "el numero de pliegues es cinco y un intervalo de cinco observaciones es fragil por construccion",
+        "intervalo_por_pliegues": {
+          "inferior": 0.0,
+          "n": 5,
+          "superior": 0.0
+        },
+        "intervalo_por_semillas": {
+          "inferior": 0.0,
+          "n": 5,
+          "superior": 0.0
+        },
+        "lectura": "NO_INFERIOR_SIN_AFIRMAR_SUPERIORIDAD",
+        "margen": 0.003,
+        "n_de_pliegues": 5,
+        "por_que_no_son_independientes": "los cinco pliegues particionan las mismas 1483 filas y cada una se repite en cinco semillas, luego son veinticinco unidades altamente correlacionadas sobre un unico conjunto y no se puede declarar un nivel de confianza del 95 por ciento sobre ninguno de los dos intervalos"
+      },
+      "lectura_en_el_informe": "NO_INFERIOR_SIN_AFIRMAR_SUPERIORIDAD",
+      "motivo_de_parada": "el valor no coincide con la regla, o el caso ambiguo publica una afirmacion"
+    },
+    "estado": "CONFIRMADO",
+    "exito": true,
+    "id": "A11",
+    "naturaleza": "CONFIRMAR",
+    "stop": true,
+    "tolerancia": "el valor publicado es el que sale de la regla y la ambiguedad esta declarada",
+    "traza": ""
+  }
+}

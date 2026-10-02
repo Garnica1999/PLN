@@ -1,0 +1,42 @@
+{
+  "marca_corrida": "completo_e36bf1",
+  "resultado": {
+    "bloque": 5,
+    "coste_segundos": 1.5e-05,
+    "descripcion": "la posterior de M1 esta aproximada y el metodo se declara",
+    "detalle": {
+      "cadena_literal": "LA_POSTERIOR_DE_M1_ES_APROXIMADA_Y_NO_ES_LA_POSTERIOR_EXACTA",
+      "cadena_presente": true,
+      "comprobaciones": {
+        "el_campo_aproximacion_de_la_posterior_esta": true,
+        "el_campo_iteraciones_esta": true,
+        "el_campo_nombre_esta": true,
+        "el_campo_prior_esta": true,
+        "el_campo_tolerancia_esta": true,
+        "la_cadena_literal_de_posterior_aproximada_esta": true
+      },
+      "metodo_declarado": {
+        "actualizacion_de_la_dispersion": "alpha_k igual a gamma_k partido por m_k al cuadrado mas alpha_0, con Newton amortiguado sobre la verosimilitud penalizada",
+        "aproximacion_de_la_posterior": "INFERENCIA VARIACIONAL DE CAMPO MEDIO, producto de gaussianas independientes",
+        "iteraciones_del_punto_de_variacion": 30,
+        "nombre": "logistica bayesiana dispersa con hiper-prior Gamma sobre columnas reescaladas",
+        "por_que_no_la_ingenua": "la actualizacion de MacKay ingenua da un conteo de parametros efectivo invariante a alpha_0, luego A6 no tendria objeto; la forma con hiper-prior Gamma sobre columnas estandarizadas es la que hace que el conteo se mueva",
+        "prior": "NORMAL de media cero y precision alpha_k, con un unico alpha_0 declarado",
+        "referencias": [
+          "Michael E. Tipping, Sparse Bayesian Learning and the Relevance Vector Machine, JMLR 2, 2001, 226 a 253",
+          "Yuanqing Ng y Andrew Y. Ng, Adaptive Sparsity for Nonparametric Variable Selection, JMLR 13, 2012, 1833 a 1861",
+          "Christopher M. Bishop, Pattern Recognition and Machine Learning, Springer, 2006, capitulo 11"
+        ],
+        "tolerancia_sobre_la_varianza_de_la_posterior": 1e-06
+      },
+      "motivo_de_parada": "el informe describe la posterior como exacta y el bloque 1 no describe lo que se ejecuto"
+    },
+    "estado": "CONFIRMADO",
+    "exito": true,
+    "id": "A5",
+    "naturaleza": "CONFIRMAR",
+    "stop": true,
+    "tolerancia": "las cinco claves del metodo y la cadena literal de la posterior aproximada",
+    "traza": ""
+  }
+}

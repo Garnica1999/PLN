@@ -1,0 +1,615 @@
+{
+  "afirmaciones_declaradas": {
+    "A0": {
+      "bloque": 0,
+      "que_hace": "integridad de los artefactos congelados, sha256 tamano y mtime antes y despues"
+    },
+    "A1": {
+      "bloque": 1,
+      "que_hace": "solo se leen las fuentes declaradas, cero test y cero holdout"
+    },
+    "A10": {
+      "bloque": 10,
+      "que_hace": "cobertura y anchura, y el control degenerado de V03"
+    },
+    "A11": {
+      "bloque": 11,
+      "que_hace": "la regla de lectura de 1.5 aplicada, sin reinterpretacion"
+    },
+    "A12": {
+      "bloque": 12,
+      "que_hace": "las cuatro medidas de complementariedad contra V03"
+    },
+    "A13": {
+      "bloque": 13,
+      "que_hace": "el rescate y el dano, sobre OOF, con los tres alphas"
+    },
+    "A14": {
+      "bloque": 14,
+      "que_hace": "el calibrador se ajusta en internal, verificado por contadores"
+    },
+    "A15": {
+      "bloque": 15,
+      "que_hace": "el limite de 5.5 verificado: anclaje externo presente o ausente"
+    },
+    "A16": {
+      "bloque": 16,
+      "que_hace": "la rejilla de alpha_0 y la sensibilidad de umbral, publicadas"
+    },
+    "A17": {
+      "bloque": 17,
+      "que_hace": "dimension seleccionada por pliegue, y la salvedad de sesgo"
+    },
+    "A18": {
+      "bloque": 18,
+      "que_hace": "las cadenas de formulacion, de las dos preguntas y del proyecto"
+    },
+    "A19": {
+      "bloque": 19,
+      "que_hace": "el F1 del miembro se publica como descriptiva, sin lectura inferencial"
+    },
+    "A2": {
+      "bloque": 2,
+      "que_hace": "umbrales de V03 intactos, V03 no reentrenado, cero reoptimizaciones"
+    },
+    "A3": {
+      "bloque": 3,
+      "que_hace": "el OOF de referencia es el canonico, coincide con el published"
+    },
+    "A4": {
+      "bloque": 4,
+      "que_hace": "la seleccion de variables se hace solo sobre el inner_train"
+    },
+    "A5": {
+      "bloque": 5,
+      "que_hace": "la posterior de M1 esta aproximada y el metodo se declara"
+    },
+    "A6": {
+      "bloque": 6,
+      "que_hace": "el numero efectivo es un parametro del metodo y se mueve con alpha_0"
+    },
+    "A7": {
+      "bloque": 7,
+      "que_hace": "M2 es exacto y coincide con un segundo camino de calculo"
+    },
+    "A8": {
+      "bloque": 8,
+      "que_hace": "las seis magnitudes de la pregunta 1 medidas y publicadas"
+    },
+    "A9": {
+      "bloque": 9,
+      "que_hace": "la curva de calibracion completa, con bins poblados"
+    }
+  },
+  "aislamiento_de_afirmaciones": {
+    "avisos": [],
+    "contadores": {},
+    "errores": [],
+    "escrituras_fallidas": 0
+  },
+  "ambiguedad_declarada": "NO_SON_INDEPENDIENTES",
+  "anclaje_externo": {
+    "encontradas": [],
+    "estado_del_limite": "SIN_HACER",
+    "librerias_comprobadas": [
+      "pymc",
+      "pymc3",
+      "pyro",
+      "stan",
+      "edward",
+      "theano",
+      "aesara",
+      "numpyro",
+      "tensorflow_probability",
+      "pystan",
+      "cmdstanpy",
+      "pyro-ppl"
+    ]
+  },
+  "casos_de_humo": [
+    {
+      "caso": "frontera_contrato_pasa",
+      "detalle": "15 filas",
+      "ok": true
+    },
+    {
+      "caso": "frontera_contrato_sabe_fallar",
+      "detalle": "un parametro inexistente lo detecta",
+      "ok": true
+    },
+    {
+      "caso": "frontera_las_veinte_en_el_completo",
+      "detalle": "20 evaluadas",
+      "ok": true
+    },
+    {
+      "caso": "frontera_las_veinte_sabe_fallar",
+      "detalle": "al quitar A19 faltan ['A19']",
+      "ok": true
+    },
+    {
+      "caso": "frontera_auditoria_ast_limpia",
+      "detalle": "literales=0 booleanos=5 anidadas=0",
+      "ok": false
+    },
+    {
+      "caso": "frontera_acceso_por_literal_detectado",
+      "detalle": "un subscript con literal de clave fisica",
+      "ok": true
+    },
+    {
+      "caso": "frontera_acceso_por_literal_perdonado_si_se_deriva",
+      "detalle": "la clave derivada no es infraccion",
+      "ok": true
+    },
+    {
+      "caso": "frontera_booleano_literal_detectado_0",
+      "detalle": "comprobar_presupuesto(1.0, 10, True)",
+      "ok": true
+    },
+    {
+      "caso": "frontera_booleano_literal_detectado_1",
+      "detalle": "registrar_lectura_pregunta_1('AFFIRMATIVO', False)",
+      "ok": true
+    },
+    {
+      "caso": "frontera_booleano_literal_detectado_2",
+      "detalle": "escribir_informe('a', 'b', {}, True)",
+      "ok": true
+    },
+    {
+      "caso": "frontera_booleano_calculado_perdonado",
+      "detalle": "una comparacion real no es infraccion",
+      "ok": true
+    },
+    {
+      "caso": "frontera_tupla_anidada_detectada_por_ast",
+      "detalle": "lambda cuyo cuerpo es una tupla anidada",
+      "ok": true
+    },
+    {
+      "caso": "frontera_tupla_simple_perdonada",
+      "detalle": "una lambda que devuelve la tupla del assertion no es infraccion",
+      "ok": true
+    },
+    {
+      "caso": "frontera_tupla_anidada_rechazada_en_runtime",
+      "detalle": "el primer elemento debe ser un booleano y no una tupla: ComprobacionAnidada",
+      "ok": true
+    },
+    {
+      "caso": "frontera_detalle_vacio_rechazado",
+      "detalle": "un detalle vacio no dice que se comprobo: ColeccionVacia",
+      "ok": true
+    },
+    {
+      "caso": "frontera_coleccion_vacia_rechazada",
+      "detalle": "una lista vacia no puede pasar: ColeccionVacia",
+      "ok": true
+    },
+    {
+      "caso": "frontera_coleccion_none_rechazada",
+      "detalle": "un None no puede pasar: ColeccionVacia",
+      "ok": true
+    },
+    {
+      "caso": "frontera_forma_incorrecta_rechazada",
+      "detalle": "una lista no es una tupla: ComprobacionAnidada",
+      "ok": true
+    },
+    {
+      "caso": "frontera_valor_truthy_rechazado",
+      "detalle": "el entero 1 es truthy y no es un booleano: ComprobacionAnidada",
+      "ok": true
+    },
+    {
+      "caso": "frontera_puerta_devuelve_1_con_un_fallo",
+      "detalle": "un fallo da 1",
+      "ok": true
+    },
+    {
+      "caso": "frontera_puerta_devuelve_0_sin_fallos",
+      "detalle": "sin fallos da 0",
+      "ok": true
+    },
+    {
+      "caso": "frontera_puerta_respeta_el_suelo",
+      "detalle": "no llega al suelo",
+      "ok": true
+    },
+    {
+      "caso": "frontera_puerta_vigila_las_stop",
+      "detalle": "una STOP no confirmada da 1",
+      "ok": true
+    },
+    {
+      "caso": "frontera_ascii_rechazado_en_memoria",
+      "detalle": "un caracter no latin se rechaza antes de abrir el destino: ValueError",
+      "ok": true
+    },
+    {
+      "caso": "frontera_ascii_puro_pasa",
+      "detalle": "ASCII",
+      "ok": true
+    },
+    {
+      "caso": "frontera_escritura_unica_rechaza_reescritura",
+      "detalle": "primero=True segundo=False",
+      "ok": true
+    },
+    {
+      "caso": "frontera_m2_devuelve_log_odds_por_variable",
+      "detalle": "p=8",
+      "ok": true
+    },
+    {
+      "caso": "frontera_m2_los_dos_caminos_coinciden",
+      "detalle": "diferencia=3.886e-16",
+      "ok": true
+    },
+    {
+      "caso": "frontera_m2_el_intervalo_se_centra_en_el_punto",
+      "detalle": "max|centro-punto|=5.451e-05 con 20000 muestras",
+      "ok": true
+    },
+    {
+      "caso": "frontera_m2_avisa_si_no_hay_log_odds",
+      "detalle": "sin los log-odds por variable el intervalo no se puede centrar: AssertionError",
+      "ok": true
+    },
+    {
+      "caso": "presupuesto_dentro",
+      "detalle": "presupuesto confirma con datos correctos",
+      "ok": true
+    },
+    {
+      "caso": "presupuesto_dentro_sabe_fallar",
+      "detalle": "presupuesto con el dato roto lanzo, que es saber fallar",
+      "ok": true
+    },
+    {
+      "caso": "presupuesto_banderal_contradictorio_rechazado",
+      "detalle": "el banderal tiene que concordar con la comparacion: AssertionError",
+      "ok": true
+    },
+    {
+      "caso": "lectura_afirmativa_cuando_ambos_extremos_son_favorables",
+      "detalle": "AFFIRMATIVO",
+      "ok": true
+    },
+    {
+      "caso": "lectura_ambigua_cuando_los_intervalos_se_contradicen",
+      "detalle": "AMBIGUO_Y_POR_LO_TANTO_NADA",
+      "ok": true
+    },
+    {
+      "caso": "intervalo_sin_extremos_rechazado",
+      "detalle": "un intervalo sin extremos no se puede leer: AssertionError",
+      "ok": true
+    },
+    {
+      "caso": "intervalo_t_pareado_sin_observaciones_rechazado",
+      "detalle": "el intervalo pareado exige al menos una observacion: ColeccionVacia",
+      "ok": true
+    },
+    {
+      "caso": "A0_huella",
+      "detalle": "A0 confirma con datos correctos",
+      "ok": true
+    },
+    {
+      "caso": "A0_huella_sabe_fallar",
+      "detalle": "A0 con el dato roto lanzo, que es saber fallar",
+      "ok": true
+    },
+    {
+      "caso": "A1_fuentes",
+      "detalle": "A1 confirma con datos correctos",
+      "ok": true
+    },
+    {
+      "caso": "A1_fuentes_sabe_fallar",
+      "detalle": "A1 con el dato roto lanzo, que es saber fallar",
+      "ok": true
+    },
+    {
+      "caso": "A1_detecta_holdout",
+      "detalle": "A1 lanzo AssertionError: A1: comprobaciones falsas ['las_filas_de_holdout_son_las_esperadas']",
+      "ok": false
+    },
+    {
+      "caso": "A2_umbrales",
+      "detalle": "A2 confirma con datos correctos",
+      "ok": true
+    },
+    {
+      "caso": "A2_umbrales_sabe_fallar",
+      "detalle": "A2 con el dato roto lanzo, que es saber fallar",
+      "ok": true
+    },
+    {
+      "caso": "A2_detecta_reoptimizacion",
+      "detalle": "A2 lanzo AssertionError: A2: comprobaciones falsas ['cero_reoptimizaciones_de_umbral']",
+      "ok": false
+    },
+    {
+      "caso": "A3_canonico",
+      "detalle": "A3 lanzo AssertionError: A3: comprobaciones falsas ['las_unidades_tweet_etiqueta_son_las_esperadas']",
+      "ok": false
+    },
+    {
+      "caso": "A3_canonico_sabe_fallar",
+      "detalle": "A3 con el dato roto lanzo, que es saber fallar",
+      "ok": true
+    },
+    {
+      "caso": "A4_seleccion_interna",
+      "detalle": "A4 confirma con datos correctos",
+      "ok": true
+    },
+    {
+      "caso": "A4_seleccion_interna_sabe_fallar",
+      "detalle": "A4 con el dato roto lanzo, que es saber fallar",
+      "ok": true
+    },
+    {
+      "caso": "A4_detecta_la_fuga",
+      "detalle": "A4 lanzo AssertionError: A4: comprobaciones falsas ['ninguna_llamada_recibio_filas_fuera_del_inner_train']",
+      "ok": false
+    },
+    {
+      "caso": "A4_detecta_conjunto_vacio",
+      "detalle": "A4 lanzo AssertionError: A4: comprobaciones falsas ['el_conjunto_permitido_no_esta_vacio']",
+      "ok": false
+    },
+    {
+      "caso": "A5_metodo_declarado",
+      "detalle": "A5 confirma con datos correctos",
+      "ok": true
+    },
+    {
+      "caso": "A5_metodo_declarado_sabe_fallar",
+      "detalle": "A5 con el dato roto lanzo, que es saber fallar",
+      "ok": true
+    },
+    {
+      "caso": "A6_el_numero_baja_con_alpha_0",
+      "detalle": "A6 confirma con datos correctos",
+      "ok": true
+    },
+    {
+      "caso": "A6_el_numero_baja_con_alpha_0_sabe_fallar",
+      "detalle": "A6 con el dato roto lanzo, que es saber fallar",
+      "ok": true
+    },
+    {
+      "caso": "A6_detecta_invariancia",
+      "detalle": "A6 lanzo AssertionError: A6: comprobaciones falsas ['al_menos_una_etiqueta_supera_el_cinco_por_ciento', 'el_numero_mueve_con_alpha_0']",
+      "ok": false
+    },
+    {
+      "caso": "A7_control_aritmetico",
+      "detalle": "A7 confirma con datos correctos",
+      "ok": true
+    },
+    {
+      "caso": "A7_control_aritmetico_sabe_fallar",
+      "detalle": "A7 con el dato roto lanzo, que es saber fallar",
+      "ok": true
+    },
+    {
+      "caso": "A7_detecta_camino_no_ejecutado",
+      "detalle": "A7 lanzo AssertionError: A7: comprobaciones falsas ['el_control_abarco_filas_reales', 'el_segundo_camino_se_ejecuto_de_verdad']",
+      "ok": false
+    },
+    {
+      "caso": "A8_seis_magnitudes",
+      "detalle": "A8 confirma con datos correctos",
+      "ok": true
+    },
+    {
+      "caso": "A8_seis_magnitudes_sabe_fallar",
+      "detalle": "A8 con el dato roto lanzo, que es saber fallar",
+      "ok": true
+    },
+    {
+      "caso": "A9_curva_poblada",
+      "detalle": "A9 lanzo AssertionError: A9: comprobaciones falsas ['AG_tiene_un_bin_con_20_unidades', 'HS_tiene_un_bin_con_20_unidades', 'TR_tiene_un_bin_con_20_unidades']",
+      "ok": false
+    },
+    {
+      "caso": "A9_curva_poblada_sabe_fallar",
+      "detalle": "A9 con el dato roto lanzo, que es saber fallar",
+      "ok": true
+    },
+    {
+      "caso": "A10_control_de_calibrador",
+      "detalle": "A10 confirma con datos correctos",
+      "ok": true
+    },
+    {
+      "caso": "A10_control_de_calibrador_sabe_fallar",
+      "detalle": "A10 con el dato roto lanzo, que es saber fallar",
+      "ok": true
+    },
+    {
+      "caso": "A11_lectura_de_la_regla",
+      "detalle": "A11 confirma con datos correctos",
+      "ok": true
+    },
+    {
+      "caso": "A11_lectura_de_la_regla_sabe_fallar",
+      "detalle": "A11 con el dato roto lanzo, que es saber fallar",
+      "ok": true
+    },
+    {
+      "caso": "A12_medidas",
+      "detalle": "A12 confirma con datos correctos",
+      "ok": true
+    },
+    {
+      "caso": "A12_medidas_sabe_fallar",
+      "detalle": "A12 con el dato roto lanzo, que es saber fallar",
+      "ok": true
+    },
+    {
+      "caso": "A13_tres_alphas",
+      "detalle": "A13 confirma con datos correctos",
+      "ok": true
+    },
+    {
+      "caso": "A13_tres_alphas_sabe_fallar",
+      "detalle": "A13 con el dato roto lanzo, que es saber fallar",
+      "ok": true
+    },
+    {
+      "caso": "A14_calibrador_interno",
+      "detalle": "A14 confirma con datos correctos",
+      "ok": true
+    },
+    {
+      "caso": "A14_calibrador_interno_sabe_fallar",
+      "detalle": "A14 con el dato roto lanzo, que es saber fallar",
+      "ok": true
+    },
+    {
+      "caso": "A14_detecta_solapamiento",
+      "detalle": "A14 lanzo AssertionError: A14: comprobaciones falsas ['las_filas_internas_y_externas_no_se_solapan']",
+      "ok": false
+    },
+    {
+      "caso": "A15_limite_declarado",
+      "detalle": "A15 confirma con datos correctos",
+      "ok": true
+    },
+    {
+      "caso": "A15_limite_declarado_sabe_fallar",
+      "detalle": "A15 con el dato roto lanzo, que es saber fallar",
+      "ok": true
+    },
+    {
+      "caso": "A16_rejillas",
+      "detalle": "A16 confirma con datos correctos",
+      "ok": true
+    },
+    {
+      "caso": "A16_rejillas_sabe_fallar",
+      "detalle": "A16 con el dato roto lanzo, que es saber fallar",
+      "ok": true
+    },
+    {
+      "caso": "A17_dimension",
+      "detalle": "A17 confirma con datos correctos",
+      "ok": true
+    },
+    {
+      "caso": "A17_dimension_sabe_fallar",
+      "detalle": "A17 con el dato roto lanzo, que es saber fallar",
+      "ok": true
+    },
+    {
+      "caso": "A18_cadenas",
+      "detalle": "A18 lanzo AssertionError: A18: comprobaciones falsas ['la_cadena_presente_1', 'la_cadena_presente_2', 'la_cadena_presente_3']",
+      "ok": false
+    },
+    {
+      "caso": "A18_cadenas_sabe_fallar",
+      "detalle": "A18 con el dato roto lanzo, que es saber fallar",
+      "ok": true
+    },
+    {
+      "caso": "A18_detecta_variante_prohibida",
+      "detalle": "A18 lanzo AssertionError: A18: comprobaciones falsas ['la_cadena_presente_1', 'la_cadena_presente_2', 'la_cadena_presente_3', 'la_variante_ausente_4']",
+      "ok": false
+    },
+    {
+      "caso": "A19_f1_descriptivo",
+      "detalle": "A19 confirma con datos correctos",
+      "ok": true
+    },
+    {
+      "caso": "A19_f1_descriptivo_sabe_fallar",
+      "detalle": "A19 con el dato roto lanzo, que es saber fallar",
+      "ok": true
+    },
+    {
+      "caso": "a6_datos_reales_sin_holdout",
+      "detalle": "holdout descartado=248 test=0",
+      "ok": true
+    },
+    {
+      "caso": "a6_medido_baja_con_alpha_0",
+      "detalle": "alpha_0 0.5=464.2 1.0=419.7 2.0=365.7",
+      "ok": true
+    },
+    {
+      "caso": "a6_medido_supera_el_cinco_por_ciento",
+      "detalle": "diferencia relativa=0.2694",
+      "ok": true
+    },
+    {
+      "caso": "a6_medido_no_reproduce_los_declarados",
+      "detalle": "los declarados 829/652/595 no salen: medidos 464.2/419.7/365.7",
+      "ok": true
+    },
+    {
+      "caso": "a6_medido_detecta_un_update_invariante",
+      "detalle": "la monotonia y la diferencia relativa son las que se exigen",
+      "ok": true
+    }
+  ],
+  "cifras_de_la_pregunta_1": {},
+  "cifras_de_la_pregunta_2": {},
+  "contexto": {
+    "evaluaciones_del_holdout": 0,
+    "filas_holdout_leidas": 0,
+    "filas_test_leidas": 0,
+    "n_filas": 40,
+    "n_grupos": 8,
+    "origen": "sintetico COMPLETO"
+  },
+  "detalle": {},
+  "dispositivo": "gpu_rocm",
+  "experimento": "P83",
+  "lectura_pregunta_1": "AFFIRMATIVO",
+  "limites": {
+    "no_se_consulta_el_leaderboard": true,
+    "no_se_genera_submission": true,
+    "no_se_lee_el_holdout": true,
+    "no_se_lee_test": true,
+    "umbrales_congelados": [
+      0.44,
+      0.51,
+      0.46
+    ],
+    "v03_congelado": "V03 remains the best verified leaderboard result."
+  },
+  "marca_corrida": "b3758f49",
+  "metodo_del_brazo_m1": {
+    "actualizacion_de_la_dispersion": "alpha_k igual a gamma_k partido por m_k al cuadrado mas alpha_0, con Newton amortiguado sobre la verosimilitud penalizada",
+    "aproximacion_de_la_posterior": "INFERENCIA VARIACIONAL DE CAMPO MEDIO, producto de gaussianas independientes",
+    "iteraciones_del_punto_de_variacion": 30,
+    "nombre": "logistica bayesiana dispersa con hiper-prior Gamma sobre columnas reescaladas",
+    "por_que_no_la_ingenua": "la actualizacion de MacKay ingenua da un conteo de parametros efectivo invariante a alpha_0, luego A6 no tendria objeto; la forma con hiper-prior Gamma sobre columnas estandarizadas es la que hace que el conteo se mueva",
+    "prior": "NORMAL de media cero y precision alpha_k, con un unico alpha_0 declarado",
+    "referencias": [
+      "Michael E. Tipping, Sparse Bayesian Learning and the Relevance Vector Machine, JMLR 2, 2001, 226 a 253",
+      "Yuanqing Ng y Andrew Y. Ng, Adaptive Sparsity for Nonparametric Variable Selection, JMLR 13, 2012, 1833 a 1861",
+      "Christopher M. Bishop, Pattern Recognition and Machine Learning, Springer, 2006, capitulo 11"
+    ],
+    "tolerancia_sobre_la_varianza_de_la_posterior": 1e-06
+  },
+  "modo": "humo",
+  "pre_registro": {
+    "ruta": "docs/p83_preregistro_bayesiano.md",
+    "sha256_declarado": "7f376fa644c8ee4c696d8f47d6fe79ace7560d96af52235c5c14a20cd9d9ad36",
+    "sha256_leido": "7f376fa644c8ee4c696d8f47d6fe79ace7560d96af52235c5c14a20cd9d9ad36"
+  },
+  "recuento_de_casos": {
+    "n_casos": 90,
+    "n_ok": 78
+  },
+  "script": "experiments/p83_01_bayesiano.py",
+  "texto_del_informe": "# P83: informe minimo de humo\n\nV03 remains the best verified leaderboard result.\nLA_POSTERIOR_DE_M1_ES_APROXIMADA_Y_NO_ES_LA_POSTERIOR_EXACTA\nEL_NUMERO_DE_PARAMETROS_EFECTIVOS_QUE_PRODUCE_ESTE_METODO_ES_UN_PARAMETRO_DEL_METODOY_ESTA_DETERMINADO_POR_LA_ESCALA_DE_LA_PRIOR_ALPHA_0_Y_POR_LA_VARIANZA_POSTERIORNO_ES_UN_NUMERO_DE_MUESTRAS_EFECTIVAS_DEL_CONJUNTO_DE_DATOS\nNO_SE_AFIRMA_QUE_WORD2VEC_SEA_MEJOR_QUE_V03\nNO_SE_AFIRMA_QUE_EL_BAYESIANO_SUPERE_A_V03\nNO_SON_INDEPENDIENTES\nLA_SELECCION_POR_VALOR_ABSOLUTO_PUEDE_FAVORECER_A_LAS_COLUMNAS_LARGASPOR_ESO_UN_BAYESIANO_QUE_DECLARA_MAS_VARIABLES_ACTIVAS_NO_HA_GANADO_POR_GANARSINO_QUE_HA_GANADO_POR_EL_CRITERIO_DE_SELECCION\nDESCRIPTIVA_Y_SIN_CUALQUIER_LECTURA_INFERENCIAL\nUN_F1_POR_DEBAJO_DE_V03_NO_REFUTA_NADA_SOBRE_LA_PREGUNTA_1PORQUE_LA_PREGUNTA_1_NO_COMPITE_POR_F1\nUN_F1_POR_DEBAJO_DE_V03_NO_REFUTA_NADA_SOBRE_LA_PREGUNTA_2PORQUE_LA_PREGUNTA_2_NO_BUSCA_SUPERAR_A_V03\n\n## Lectura de la pregunta 1: incertidumbre y calibracion\n\n- Lectura de la regla de 1.5: **AFFIRMATIVO**\n- El F1 no aparece en esta regla, porque la pregunta 1 no compite por F1.\n\n## Lectura de la pregunta 2: complementariedad de errores\n\n- El F1 no aparece en esta regla, porque la pregunta 2 no busca superar a V03.\n\n## Cifras\n\nEl bloque de lectura no lleva F1 porque la pregunta 1 no compite por F1.\n",
+  "veredictos": {}
+}

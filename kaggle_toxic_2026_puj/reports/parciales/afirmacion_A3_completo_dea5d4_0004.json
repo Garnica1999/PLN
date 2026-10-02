@@ -1,0 +1,33 @@
+{
+  "marca_corrida": "completo_dea5d4",
+  "resultado": {
+    "bloque": 3,
+    "coste_segundos": 0.000215,
+    "descripcion": "el OOF de referencia es el canonico, coincide con el published",
+    "detalle": {
+      "comprobaciones": {
+        "el_corrected_cv_recalculado_coincide_con_el_publicado": true,
+        "las_filas_de_desarrollo_son_las_esperadas": true,
+        "las_unidades_tweet_etiqueta_son_las_esperadas": true,
+        "los_grupos_son_los_esperados": true
+      },
+      "corrected_cv_publicado": 0.7772114525,
+      "corrected_cv_recalculado": 0.7772114525165721,
+      "diferencia": 1.6572077043974787e-11,
+      "motivo_de_parada": "el OOF de referencia no es el canonico y la pregunta 2 se queda sin contra",
+      "n_filas": 1483,
+      "n_grupos": 5,
+      "nota_de_independencia": "el corrected_cv se recalcula con metricas_multietiqueta sobre las filas de prediccion y se compara con el publicado del pre-registro; la constante guardada en el npz se publica pero no se usa como ninguno de los dos lados",
+      "tolerancia": 1e-09,
+      "unidades_tweet_etiqueta": 4449,
+      "valor_de_la_constante_guardada_en_el_npz": 0.7772114525165721
+    },
+    "estado": "CONFIRMADO",
+    "exito": true,
+    "id": "A3",
+    "naturaleza": "CONFIRMAR",
+    "stop": true,
+    "tolerancia": "diez milimasimas de diferencia entre el recalculado y el publicado",
+    "traza": ""
+  }
+}

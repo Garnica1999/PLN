@@ -1,0 +1,64 @@
+{
+  "marca_corrida": "completo_dea5d4",
+  "resultado": {
+    "bloque": 13,
+    "coste_segundos": 2.3e-05,
+    "descripcion": "el rescate y el dano, sobre OOF, con los tres alphas",
+    "detalle": {
+      "alpha_primario": 0.1,
+      "comprobaciones": {
+        "el_alpha_primario_esta": true,
+        "la_declaracion_de_la_escala_esta": true,
+        "la_declaracion_del_corrected_cv_esta": true,
+        "la_lectura_diagnostica_esta_publicada": true,
+        "los_tres_alphas_estan_completos": true,
+        "ninguna_cifra_falta": true
+      },
+      "configuraciones": {
+        "0.05": {
+          "corrected_cv": 0.7,
+          "dano": 0,
+          "delta": 0,
+          "neto": 0,
+          "piso": 0,
+          "pliegues_a_favor": 0,
+          "rescate": 0,
+          "techo": 0
+        },
+        "0.10": {
+          "corrected_cv": 0.701,
+          "dano": 1,
+          "delta": 1,
+          "neto": 1,
+          "piso": 1,
+          "pliegues_a_favor": 1,
+          "rescate": 1,
+          "techo": 1
+        },
+        "0.15": {
+          "corrected_cv": 0.702,
+          "dano": 2,
+          "delta": 2,
+          "neto": 2,
+          "piso": 2,
+          "pliegues_a_favor": 2,
+          "rescate": 2,
+          "techo": 2
+        }
+      },
+      "declaraciones": {
+        "corrected_cv_optimista": true,
+        "escala": true
+      },
+      "faltantes": [],
+      "tolerancia": "seis decimales para el corrected_cv, enteros exactos para los recuentos"
+    },
+    "estado": "CONFIRMADO",
+    "exito": true,
+    "id": "A13",
+    "naturaleza": "CONFIRMAR",
+    "stop": false,
+    "tolerancia": "ocho cifras por alpha y las dos declaraciones obligatorias",
+    "traza": ""
+  }
+}
