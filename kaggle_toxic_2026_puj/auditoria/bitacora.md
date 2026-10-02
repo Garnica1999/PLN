@@ -62,3 +62,19 @@ el lider al cerrar cada pieza y cada subagente deja aquí su resumen (maximo
   STOP corregidos; auditoria AST con lista blanca cerrada. Listón de
   calibración reproducido a 1e-7; complementariedad medida; pregunta 1
   NEGATIVA. Aviso de P83 actualizado a EJECUTADO EN COMPLETO. F5 abierta.
+
+- F5 COMPLETADA: commits `82aa067` y `2a94bb8`. Notebook de 451 celdas con la
+  tabla de 23 sondas en cp1252, asserts robustos de la fase v9 y las secciones
+  122 (auditoria F0-F4), 123 (P78 a P83), 124 (inventario y trazabilidad) y
+  125 (correcciones pendientes). Se corrigieron dos errores de sintaxis
+  preexistentes (celdas 270 y 433); el notebook compila entero.
+- F6 COMPLETADA: `auditoria/sugerencias_080.md` (476 lineas, 206 con enie o
+  tilde). Tres candidatos permitidos con expectativa honesta (SGNS corregido,
+  DL-01 con protocolo corregido, EM con shrinkage), familias descartadas con
+  motivo y referencias verificables (Saerens 2002, Alexandari 2020, Lipton
+  2014, Forman 2008, Basile 2019). Conclusion honesta: ninguna via permitida
+  promete 0.80 por si sola.
+- F7 COMPLETADA: verificador de caracteres en 0 errores; notebook validado y
+  sin errores de sintaxis; P83 con 20 de 20 CONFIRMADO en 193,8 s; inventario
+  483 experimentos y 376 scripts; unica pieza sin commitear era la hoja de
+  ruta, ya commiteada. GO documental.

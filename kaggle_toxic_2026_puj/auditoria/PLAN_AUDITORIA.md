@@ -45,9 +45,9 @@ Bitácora viva: este documento se actualiza al cerrar cada fase.
 | F2 | Inventario unificado de experimentos | COMPLETADA | commit `41f8a3f`, 483 experimentos y 376 scripts |
 | F3 | Auditoria por experimento (fugas, hiperparámetros, calibración, vacios, conexión código-corrida) | COMPLETADA | F3a escáner, F3b núcleo, F3c P69-P77, F3d P78-P82 |
 | F4 | Correccion de experimentos en vuelo (P83) y re-verificacion | COMPLETADA | commit `bfa8385`: completo en 193,76 s, 20/20, humo 206/206 |
-| F5 | Notebook consolidado con cada experimento documentado | EN CURSO | por definir |
-| F6 | Sugerencias hacia 0.80 con literatura publicada | PENDIENTE | por definir |
-| F7 | Verificacion final GO/NO-GO y cierre | PENDIENTE | por definir |
+| F5 | Notebook consolidado con cada experimento documentado | COMPLETADA | commit `82aa067` y `2a94bb8`: 451 celdas, secciones 122-125 |
+| F6 | Sugerencias hacia 0.80 con literatura publicada | COMPLETADA | `auditoria/sugerencias_080.md`, 476 lineas |
+| F7 | Verificacion final GO/NO-GO y cierre | COMPLETADA | verificador 0 errores, notebook 451 celdas sin errores, P83 20/20 |
 
 ## 4. Criterios de exito
 
@@ -82,3 +82,13 @@ Bitácora viva: este documento se actualiza al cerrar cada fase.
   P78 a P83 sin seccion propia. F3 abierta: auditoría por experimento, con
   un escaner estático del fallo de clase "código sin conectar" como primera
   pieza.
+
+## 6. Cierre
+
+Estado final: GO documental. La fase de auditoria deja el proyecto unificado
+en P67, con inventario completo, hallazgos con evidencia y el experimento en
+vuelo P83 ejecutado en completo (20 de 20 afirmaciones, humo 206 de 206).
+El notebook consolidado documenta P78 a P83 y la auditoria, y compila celda a
+celda. Queda declarado y NO ejecutado: la ejecucion end-to-end del notebook
+completo (pesada y con artefactos ausentes preexistentes) y cualquier
+sugerencia de la hoja de ruta 0.80, que requiere autorizacion por experimento.
