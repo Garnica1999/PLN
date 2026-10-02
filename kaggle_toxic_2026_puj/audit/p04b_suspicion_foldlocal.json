@@ -1,0 +1,27 @@
+{
+  "referencia_v03_recomputada": 0.777211,
+  "grafo_vecinos": {
+    "vecinos_k": 5,
+    "relaciones_cruzando_pliegues": 5819,
+    "relaciones_cruzadas_con_etiqueta_opuesta": 2139,
+    "filas_con_vecino_en_otro_pliegue": 1481,
+    "filas_con_vecino_opuesto_en_otro_pliegue": 1012
+  },
+  "esquema": "F1-completo",
+  "lamina": 0.5,
+  "delta_global_estilo_v6": 0.000142,
+  "delta_fold_local": 0.0,
+  "efecto_del_mecanismo": 0.000142,
+  "reportado_en_v6_ruido_par_csv": {
+    "variante": "F1-completo",
+    "lamina": "0.5",
+    "componentes": "confianza,margen,estructural,densidad",
+    "corrected_cv": "0.777353",
+    "delta_vs_V03": "0.000142",
+    "ic95_0": "-0.003279",
+    "ic95_1": "0.003549",
+    "f1_HS": "0.7619",
+    "f1_TR": "0.8161",
+    "f1_AG": "0.754"
+  }
+}

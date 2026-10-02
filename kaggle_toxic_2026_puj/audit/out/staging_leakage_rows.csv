@@ -1,0 +1,3 @@
+Experiment_ID,Leakage_Type,Potential,Detected,Evidence,Affected_Result,Severity,Decision
+GLOBAL/near-dup,L5_potencial,si,si,"clusters_near_duplicados ajusta TfidfVectorizer char_wb(4,4) sobre train+test (2885 textos); grupos mixtos=3; filas train en mixtos=7",protocolo de validacion v1/v2/v4-v8 (grupos de CV),HIGH,cuantificar impacto numerico en P6; ver contrafactual
+GLOBAL/splits,L0,no,no,src/splits.py: grupos_fusionados usa solo train; verificacion de no interseccion por fold ejecutada,n/a,INFO,mantener

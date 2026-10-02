@@ -1,0 +1,271 @@
+{
+  "integridad": {
+    "train_filas": 1731,
+    "test_filas": 1154,
+    "submission_filas": 1154,
+    "ids_unicos": true,
+    "ids_disjuntos_train_test": true,
+    "ids_test_iguales_submission": true,
+    "duplicados_exactos_train": 0,
+    "duplicados_exactos_test": 5,
+    "textos_compartidos_train_test": 0,
+    "textos_con_punto_y_coma": 21,
+    "regla_TR_implica_HS_violaciones": 0,
+    "AG_positivo_con_HS_cero": 26,
+    "longitud_mediana_chars": 91.0
+  },
+  "calidad_archivos": [
+    {
+      "archivo": "toxic_train.csv",
+      "bytes": 205417,
+      "bytes_esperados": 205417,
+      "encoding": "utf-8",
+      "bytes_no_utf8": 0,
+      "lineas": 1733,
+      "sha256": "3d40e7345b588860cf4744914be88ddc094e4f03591516c8176ab40b7f76d42f",
+      "texto_solo_ascii": true
+    },
+    {
+      "archivo": "toxic_test.csv",
+      "bytes": 127006,
+      "bytes_esperados": 127006,
+      "encoding": "cp1252",
+      "bytes_no_utf8": 6,
+      "lineas": 1156,
+      "sha256": "e91ff8258dadbbcd57593273ff1babd805f00074ae755507d64fa00942785e83",
+      "texto_solo_ascii": false
+    },
+    {
+      "archivo": "submission.csv",
+      "bytes": 13860,
+      "bytes_esperados": 13860,
+      "encoding": "utf-8",
+      "bytes_no_utf8": 0,
+      "lineas": 1156,
+      "sha256": "0dfb4d07dffc31d3d452f5e53508d259e6ab5c2ec0dcd67bd70e4b03c5016ecc",
+      "texto_solo_ascii": true
+    }
+  ],
+  "bytes_reales": {
+    "toxic_train.csv": 205417,
+    "toxic_test.csv": 127006,
+    "submission.csv": 13860
+  },
+  "bytes_esperados": {
+    "toxic_train.csv": 205417,
+    "toxic_test.csv": 127006,
+    "submission.csv": 13860
+  },
+  "encodings": {
+    "toxic_train.csv": "utf-8",
+    "toxic_test.csv": "cp1252"
+  },
+  "marginal": [
+    {
+      "etiqueta": "HS",
+      "positivos": 756,
+      "porcentaje_positivos": 43.67
+    },
+    {
+      "etiqueta": "TR",
+      "positivos": 519,
+      "porcentaje_positivos": 29.98
+    },
+    {
+      "etiqueta": "AG",
+      "positivos": 662,
+      "porcentaje_positivos": 38.24
+    }
+  ],
+  "combinaciones": [
+    {
+      "HS": 0,
+      "TR": 0,
+      "AG": 0,
+      "n": 949,
+      "porcentaje": 54.82
+    },
+    {
+      "HS": 1,
+      "TR": 1,
+      "AG": 1,
+      "n": 491,
+      "porcentaje": 28.37
+    },
+    {
+      "HS": 1,
+      "TR": 0,
+      "AG": 1,
+      "n": 145,
+      "porcentaje": 8.38
+    },
+    {
+      "HS": 1,
+      "TR": 0,
+      "AG": 0,
+      "n": 92,
+      "porcentaje": 5.31
+    },
+    {
+      "HS": 1,
+      "TR": 1,
+      "AG": 0,
+      "n": 28,
+      "porcentaje": 1.62
+    },
+    {
+      "HS": 0,
+      "TR": 0,
+      "AG": 1,
+      "n": 26,
+      "porcentaje": 1.5
+    }
+  ],
+  "correlaciones_phi": {
+    "HS-TR": 0.743145,
+    "HS-AG": 0.831364,
+    "TR-AG": 0.758913
+  },
+  "texto_no_ascii_train": 0,
+  "texto_no_ascii_test": 6,
+  "longitud_chars_mediana_train": 91.0,
+  "longitud_chars_mediana_test": 91.0,
+  "grupos_csv_filas": 2885,
+  "grupos_csv_por_split": {
+    "train": 1731,
+    "test": 1154
+  },
+  "grupos_near_dup": {
+    "total": 2872,
+    "tamano_gt1": 4,
+    "solo_train": 1724,
+    "solo_test": 1145,
+    "mixtos": 3,
+    "filas_train_en_mixtos": 7,
+    "filas_test_en_mixtos": 4,
+    "max_tamano": 6
+  },
+  "grupos_mixtos_detalle": [
+    {
+      "grupo": 112,
+      "n_train": 3,
+      "n_test": 2
+    },
+    {
+      "grupo": 338,
+      "n_train": 3,
+      "n_test": 1
+    },
+    {
+      "grupo": 1272,
+      "n_train": 1,
+      "n_test": 1
+    }
+  ],
+  "similitud_recomputada": [
+    {
+      "comparacion": "train-train",
+      "pares_ge_0.90": 3,
+      "pares_0.80_0.90": 4,
+      "similitud_maxima": 1.0
+    },
+    {
+      "comparacion": "train-test",
+      "pares_ge_0.90": 6,
+      "pares_0.80_0.90": 10,
+      "similitud_maxima": 1.0
+    }
+  ],
+  "similitud_guardada": [
+    {
+      "comparacion": "train-train",
+      "pares_ge_0.90": 3,
+      "pares_0.80_0.90": 4,
+      "similitud_maxima": 1.0
+    },
+    {
+      "comparacion": "train-test",
+      "pares_ge_0.90": 6,
+      "pares_0.80_0.90": 10,
+      "similitud_maxima": 1.0
+    }
+  ],
+  "contrafactual_grupos": {
+    "n_grupos_solo_train": 1727,
+    "n_grupos_plus": 1727,
+    "ari_solo_vs_plus": 1.0,
+    "filas_train_que_cambian_de_grupo": 0,
+    "grupos_mixtos_con_train": 3
+  },
+  "holdout_v2": {
+    "n_dev": 1483,
+    "n_holdout": 248,
+    "coincide_csv_ids": true,
+    "interseccion_csv": 248,
+    "solo_codigo": 0,
+    "solo_csv": 0
+  },
+  "huella_grupos_fusionados_vs_csv": {
+    "filas_discrepantes": 0
+  },
+  "pliegues_corregidos": [
+    {
+      "fold": 0,
+      "n_train": 1186,
+      "n_val": 297,
+      "HS_rate": 0.4343,
+      "TR_rate": 0.2963,
+      "AG_rate": 0.3838,
+      "grupos_compartidos": 0,
+      "combinaciones_ausentes": 0
+    },
+    {
+      "fold": 1,
+      "n_train": 1186,
+      "n_val": 297,
+      "HS_rate": 0.4377,
+      "TR_rate": 0.303,
+      "AG_rate": 0.3838,
+      "grupos_compartidos": 0,
+      "combinaciones_ausentes": 0
+    },
+    {
+      "fold": 2,
+      "n_train": 1187,
+      "n_val": 296,
+      "HS_rate": 0.4358,
+      "TR_rate": 0.3007,
+      "AG_rate": 0.3784,
+      "grupos_compartidos": 0,
+      "combinaciones_ausentes": 0
+    },
+    {
+      "fold": 3,
+      "n_train": 1187,
+      "n_val": 296,
+      "HS_rate": 0.4392,
+      "TR_rate": 0.3007,
+      "AG_rate": 0.3818,
+      "grupos_compartidos": 0,
+      "combinaciones_ausentes": 0
+    },
+    {
+      "fold": 4,
+      "n_train": 1186,
+      "n_val": 297,
+      "HS_rate": 0.4377,
+      "TR_rate": 0.2997,
+      "AG_rate": 0.3838,
+      "grupos_compartidos": 0,
+      "combinaciones_ausentes": 0
+    }
+  ],
+  "n_grupos_fusionados": 1645,
+  "tamano_grupo_fusionado_max": 14,
+  "contrafactual_splits": {
+    "n_grupos_solo_train": 1645,
+    "holdout_distinto": 0,
+    "filas_cambian_de_pliegue": 0,
+    "filas_comparables": 1483
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "name": "v4_reweighting",
+  "script": "experiments/29_reweighting_v4.py",
+  "exit": 1,
+  "duracion_s": 33.6,
+  "tracked_changed": [],
+  "features_changed": []
+}

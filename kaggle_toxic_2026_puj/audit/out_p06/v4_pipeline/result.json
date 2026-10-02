@@ -1,0 +1,843 @@
+{
+  "name": "v4_pipeline",
+  "scripts": [
+    [
+      "14_oof_corregido",
+      "experiments/14_oof_corregido_v2.py"
+    ],
+    [
+      "16_targeting",
+      "experiments/16_targeting_v2.py"
+    ],
+    [
+      "17_stacking",
+      "experiments/17_stacking_v2.py"
+    ],
+    [
+      "19_sintaxis",
+      "experiments/19_sintaxis_cita_negacion_v2.py"
+    ],
+    [
+      "20_emocion",
+      "experiments/20_emocion_nbsvm_ortografia_v2.py"
+    ],
+    [
+      "27_label_consistency",
+      "experiments/27_label_consistency_v4.py"
+    ],
+    [
+      "28_hardness",
+      "experiments/28_hardness_v4.py"
+    ],
+    [
+      "29_reweighting",
+      "experiments/29_reweighting_v4.py"
+    ],
+    [
+      "30_supervised_weighting",
+      "experiments/30_supervised_weighting_v4.py"
+    ],
+    [
+      "31_joint_label",
+      "experiments/31_joint_label_v4.py"
+    ],
+    [
+      "32_meta_shift",
+      "experiments/32_meta_shift_v4.py"
+    ],
+    [
+      "33_class_conditional",
+      "experiments/33_class_conditional_lm_v4.py"
+    ],
+    [
+      "34_structural_sparse",
+      "experiments/34_structural_sparse_v4.py"
+    ],
+    [
+      "35_discovery",
+      "experiments/35_discovery_v4.py"
+    ],
+    [
+      "36_candidatos",
+      "experiments/36_candidatos_v4.py"
+    ]
+  ],
+  "exits": {
+    "14_oof_corregido": {
+      "exit": 0,
+      "duracion_s": 6.6
+    },
+    "16_targeting": {
+      "exit": 0,
+      "duracion_s": 21.8
+    },
+    "17_stacking": {
+      "exit": 0,
+      "duracion_s": 23.9
+    },
+    "19_sintaxis": {
+      "exit": 0,
+      "duracion_s": 25.6
+    },
+    "20_emocion": {
+      "exit": 0,
+      "duracion_s": 30.5
+    },
+    "27_label_consistency": {
+      "exit": 0,
+      "duracion_s": 2.2
+    },
+    "28_hardness": {
+      "exit": 0,
+      "duracion_s": 1.6
+    },
+    "29_reweighting": {
+      "exit": 0,
+      "duracion_s": 32.0
+    },
+    "30_supervised_weighting": {
+      "exit": 0,
+      "duracion_s": 63.8
+    },
+    "31_joint_label": {
+      "exit": 0,
+      "duracion_s": 26.5
+    },
+    "32_meta_shift": {
+      "exit": 0,
+      "duracion_s": 36.1
+    },
+    "33_class_conditional": {
+      "exit": 0,
+      "duracion_s": 92.4
+    },
+    "34_structural_sparse": {
+      "exit": 0,
+      "duracion_s": 22.0
+    },
+    "35_discovery": {
+      "exit": 0,
+      "duracion_s": 2.7
+    },
+    "36_candidatos": {
+      "exit": 0,
+      "duracion_s": 310.2
+    }
+  },
+  "tracked_changed": [
+    "kaggle_toxic_2026_puj/experiments.csv",
+    "kaggle_toxic_2026_puj/reports/baseline_v03_dev_metrics.json",
+    "kaggle_toxic_2026_puj/reports/class_conditional_lm_v4.json",
+    "kaggle_toxic_2026_puj/reports/contexto.md",
+    "kaggle_toxic_2026_puj/reports/discovery_v4.json",
+    "kaggle_toxic_2026_puj/reports/emocion_nbsvm_ortografia_v2.json",
+    "kaggle_toxic_2026_puj/reports/error_taxonomy_v4.md",
+    "kaggle_toxic_2026_puj/reports/figuras/fig_29_stacking_v2.png",
+    "kaggle_toxic_2026_puj/reports/figuras/fig_38_structural_sparse_v4.png",
+    "kaggle_toxic_2026_puj/reports/hardness_v4.json",
+    "kaggle_toxic_2026_puj/reports/hardness_vs_noise_v4.md",
+    "kaggle_toxic_2026_puj/reports/implicit_hate_diagnostic_v4.json",
+    "kaggle_toxic_2026_puj/reports/joint_label_v4.json",
+    "kaggle_toxic_2026_puj/reports/label_consistency_v4.json",
+    "kaggle_toxic_2026_puj/reports/label_consistency_v4_ejemplos.md",
+    "kaggle_toxic_2026_puj/reports/meta_shift_v4.json",
+    "kaggle_toxic_2026_puj/reports/reweighting_v4.json",
+    "kaggle_toxic_2026_puj/reports/sintaxis_cita_negacion_v2.json",
+    "kaggle_toxic_2026_puj/reports/stacking_v2.csv",
+    "kaggle_toxic_2026_puj/reports/stacking_v2.json",
+    "kaggle_toxic_2026_puj/reports/structural_sparse_v4.csv",
+    "kaggle_toxic_2026_puj/reports/structural_sparse_v4.json",
+    "kaggle_toxic_2026_puj/reports/supervised_weighting_v4.json",
+    "kaggle_toxic_2026_puj/reports/targeting_v2.json",
+    "kaggle_toxic_2026_puj/reports/v4_candidate_comparison.md",
+    "kaggle_toxic_2026_puj/reports/v4_candidates.json",
+    "kaggle_toxic_2026_puj/tasks/todo.md"
+  ],
+  "features_changed": [
+    "hardness_v4.npz",
+    "label_consistency_v4.npz",
+    "oof_candidates_v4.npz",
+    "oof_joint_label_v4.npz",
+    "oof_meta_shift_v4.npz",
+    "oof_reweight_v4.npz",
+    "oof_tracks_g_v4.npz",
+    "oof_weighting_v4.npz",
+    "v2_meta_oof.npz",
+    "v2_oof_base_corrected.npz",
+    "v2_oof_cita_negacion.npz",
+    "v2_oof_emocion_nbsvm_ortografia.npz",
+    "v2_oof_syntax.npz",
+    "v2_oof_targeting.npz",
+    "v2_syntax_annotations.json.gz",
+    "v2_targeting_annotations.json.gz"
+  ],
+  "comparaciones": [
+    {
+      "rel": "reports/baseline_v03_dev_metrics.json",
+      "n_floats": 247,
+      "max_abs_float": 10.36,
+      "n_diffs": 1,
+      "diffs": [
+        {
+          "path": ".duracion_segundos",
+          "tipo": "float",
+          "orig": 16.13,
+          "nuevo": 5.77,
+          "diff": 10.36
+        }
+      ]
+    },
+    {
+      "rel": "reports/class_conditional_lm_v4.json",
+      "n_floats": 95,
+      "max_abs_float": 561.1,
+      "n_diffs": 2,
+      "diffs": [
+        {
+          "path": ".duracion_s",
+          "tipo": "float",
+          "orig": 652.15,
+          "nuevo": 91.05,
+          "diff": 561.1
+        },
+        {
+          "path": ".fecha",
+          "tipo": "valor",
+          "orig": "2026-09-25T19:49:11+00:00",
+          "nuevo": "2026-09-26T06:18:34+00:00"
+        }
+      ]
+    },
+    {
+      "rel": "reports/discovery_v4.json",
+      "n_floats": 166,
+      "max_abs_float": 1.53,
+      "n_diffs": 2,
+      "diffs": [
+        {
+          "path": ".duracion_s",
+          "tipo": "float",
+          "orig": 3.01,
+          "nuevo": 1.48,
+          "diff": 1.5299999999999998
+        },
+        {
+          "path": ".fecha",
+          "tipo": "valor",
+          "orig": "2026-09-25T19:41:08+00:00",
+          "nuevo": "2026-09-26T06:18:59+00:00"
+        }
+      ]
+    },
+    {
+      "rel": "reports/emocion_nbsvm_ortografia_v2.json",
+      "n_floats": 1174,
+      "max_abs_float": 10.19,
+      "n_diffs": 1,
+      "diffs": [
+        {
+          "path": ".duracion_segundos",
+          "tipo": "float",
+          "orig": 39.13,
+          "nuevo": 28.94,
+          "diff": 10.190000000000001
+        }
+      ]
+    },
+    {
+      "rel": "reports/hardness_v4.json",
+      "n_floats": 54,
+      "max_abs_float": 0.0,
+      "n_diffs": 1,
+      "diffs": [
+        {
+          "path": ".fecha",
+          "tipo": "valor",
+          "orig": "2026-09-25T19:56:22+00:00",
+          "nuevo": "2026-09-26T06:14:23+00:00"
+        }
+      ]
+    },
+    {
+      "rel": "reports/implicit_hate_diagnostic_v4.json",
+      "n_floats": 7,
+      "max_abs_float": 0.0,
+      "n_diffs": 1,
+      "diffs": [
+        {
+          "path": ".fecha",
+          "tipo": "valor",
+          "orig": "2026-09-25T19:33:30+00:00",
+          "nuevo": "2026-09-26T06:18:36+00:00"
+        }
+      ]
+    },
+    {
+      "rel": "reports/joint_label_v4.json",
+      "n_floats": 240,
+      "max_abs_float": 194.89,
+      "n_diffs": 2,
+      "diffs": [
+        {
+          "path": ".duracion_s",
+          "tipo": "float",
+          "orig": 220.17,
+          "nuevo": 25.28,
+          "diff": 194.89
+        },
+        {
+          "path": ".fecha",
+          "tipo": "valor",
+          "orig": "2026-09-25T19:33:16+00:00",
+          "nuevo": "2026-09-26T06:16:25+00:00"
+        }
+      ]
+    },
+    {
+      "rel": "reports/label_consistency_v4.json",
+      "n_floats": 26,
+      "max_abs_float": 0.45,
+      "n_diffs": 2,
+      "diffs": [
+        {
+          "path": ".duracion_s",
+          "tipo": "float",
+          "orig": 1.88,
+          "nuevo": 1.43,
+          "diff": 0.44999999999999996
+        },
+        {
+          "path": ".fecha",
+          "tipo": "valor",
+          "orig": "2026-09-25T19:03:29+00:00",
+          "nuevo": "2026-09-26T06:14:22+00:00"
+        }
+      ]
+    },
+    {
+      "rel": "reports/meta_shift_v4.json",
+      "n_floats": 62,
+      "max_abs_float": 122.88,
+      "n_diffs": 2,
+      "diffs": [
+        {
+          "path": ".duracion_s",
+          "tipo": "float",
+          "orig": 157.83,
+          "nuevo": 34.95,
+          "diff": 122.88000000000001
+        },
+        {
+          "path": ".fecha",
+          "tipo": "valor",
+          "orig": "2026-09-25T19:28:44+00:00",
+          "nuevo": "2026-09-26T06:17:01+00:00"
+        }
+      ]
+    },
+    {
+      "rel": "reports/reweighting_v4.json",
+      "n_floats": 207,
+      "max_abs_float": 42.31,
+      "n_diffs": 2,
+      "diffs": [
+        {
+          "path": ".duracion_s",
+          "tipo": "float",
+          "orig": 73.1,
+          "nuevo": 30.79,
+          "diff": 42.309999999999995
+        },
+        {
+          "path": ".fecha",
+          "tipo": "valor",
+          "orig": "2026-09-25T19:18:11+00:00",
+          "nuevo": "2026-09-26T06:14:55+00:00"
+        }
+      ]
+    },
+    {
+      "rel": "reports/sintaxis_cita_negacion_v2.json",
+      "n_floats": 427,
+      "max_abs_float": 13.6,
+      "n_diffs": 2,
+      "diffs": [
+        {
+          "path": ".duracion_segundos",
+          "tipo": "float",
+          "orig": 37.53,
+          "nuevo": 23.93,
+          "diff": 13.600000000000001
+        },
+        {
+          "path": ".modo_anotacion",
+          "tipo": "valor",
+          "orig": "spacy-cache",
+          "nuevo": "spacy"
+        }
+      ]
+    },
+    {
+      "rel": "reports/stacking_v2.json",
+      "n_floats": 1068,
+      "max_abs_float": 49.21,
+      "n_diffs": 40,
+      "diffs": [
+        {
+          "path": ".detalle_por_especificacion.META+CH+ESTR-ANID|bases_canales_ampliado|lr|0.3.corrected_cv",
+          "tipo": "float",
+          "orig": 0.7800349208740432,
+          "nuevo": 0.7802513535627408,
+          "diff": 0.00021643268869753207
+        },
+        {
+          "path": ".detalle_por_especificacion.META+CH+ESTR-ANID|bases_canales_ampliado|lr|0.3.delta_vs_v03",
+          "tipo": "float",
+          "orig": 0.0028349208740432452,
+          "nuevo": 0.0030513535627407773,
+          "diff": 0.00021643268869753207
+        },
+        {
+          "path": ".detalle_por_especificacion.META+CH+ESTR-ANID|bases_canales_ampliado|lr|0.3.delta_vs_v2a",
+          "tipo": "float",
+          "orig": -0.005285250084372972,
+          "nuevo": -0.00506881739567544,
+          "diff": 0.00021643268869753207
+        },
+        {
+          "path": ".detalle_por_especificacion.META+CH+ESTR-ANID|bases_canales_ampliado|lr|0.3.f1_pliegues[0]",
+          "tipo": "float",
+          "orig": 0.802079814509646,
+          "nuevo": 0.8031993845947335,
+          "diff": 0.0011195700850874513
+        },
+        {
+          "path": ".detalle_por_especificacion.META+CH+ESTR-ANID|bases_canales_ampliado|lr|0.3.f1_por_etiqueta.AG",
+          "tipo": "float",
+          "orig": 0.7564322469982847,
+          "nuevo": 0.7570815450643776,
+          "diff": 0.0006492980660929293
+        },
+        {
+          "path": ".detalle_por_especificacion.META+CH+ESTR-ANID|bases_canales_ampliado|lr|0.3.std_pliegues",
+          "tipo": "float",
+          "orig": 0.013237140942710118,
+          "nuevo": 0.0136111504725346,
+          "diff": 0.0003740095298244827
+        },
+        {
+          "path": ".detalle_por_especificacion.META+CH+ESTR-RIDGE|bases_canales_ampliado|ridge|1.corrected_cv",
+          "tipo": "float",
+          "orig": 0.7814059180456129,
+          "nuevo": 0.7814991570607024,
+          "diff": 9.323901508950794e-05
+        },
+        {
+          "path": ".detalle_por_especificacion.META+CH+ESTR-RIDGE|bases_canales_ampliado|ridge|1.delta_vs_v03",
+          "tipo": "float",
+          "orig": 0.0042059180456128775,
+          "nuevo": 0.0042991570607023855,
+          "diff": 9.323901508950794e-05
+        },
+        {
+          "path": ".detalle_por_especificacion.META+CH+ESTR-RIDGE|bases_canales_ampliado|ridge|1.delta_vs_v2a",
+          "tipo": "float",
+          "orig": -0.00391425291280334,
+          "nuevo": -0.003821013897713832,
+          "diff": 9.323901508950794e-05
+        },
+        {
+          "path": ".detalle_por_especificacion.META+CH+ESTR-RIDGE|bases_canales_ampliado|ridge|1.f1_pliegues[2]",
+          "tipo": "float",
+          "orig": 0.7890796010000325,
+          "nuevo": 0.7904781299547617,
+          "diff": 0.00139852895472925
+        }
+      ]
+    },
+    {
+      "rel": "reports/structural_sparse_v4.json",
+      "n_floats": 64,
+      "max_abs_float": 49.82,
+      "n_diffs": 25,
+      "diffs": [
+        {
+          "path": ".detalle[2].corrected_cv_umbrales_v03",
+          "tipo": "float",
+          "orig": 0.742592,
+          "nuevo": 0.742805,
+          "diff": 0.00021300000000001873
+        },
+        {
+          "path": ".detalle[2].delta_f1_ejemplo",
+          "tipo": "float",
+          "orig": -0.021803,
+          "nuevo": -0.021578,
+          "diff": 0.0002249999999999995
+        },
+        {
+          "path": ".detalle[2].f1_AG",
+          "tipo": "float",
+          "orig": 0.711071,
+          "nuevo": 0.711712,
+          "diff": 0.0006410000000000027
+        },
+        {
+          "path": ".detalle[2].f1_pliegues",
+          "tipo": "valor",
+          "orig": "0.7605;0.7349;0.7540;0.7184;0.7462",
+          "nuevo": "0.7605;0.7349;0.7540;0.7194;0.7462"
+        },
+        {
+          "path": ".detalle[2].ic95_alto",
+          "tipo": "float",
+          "orig": -0.011014,
+          "nuevo": -0.010564,
+          "diff": 0.000449999999999999
+        },
+        {
+          "path": ".detalle[2].ic95_bajo",
+          "tipo": "float",
+          "orig": -0.032597,
+          "nuevo": -0.032367,
+          "diff": 0.00023000000000000104
+        },
+        {
+          "path": ".detalle[2].std_pliegues",
+          "tipo": "float",
+          "orig": 0.016663,
+          "nuevo": 0.016304,
+          "diff": 0.0003590000000000017
+        },
+        {
+          "path": ".detalle[3].corrected_cv_umbral_0_5",
+          "tipo": "float",
+          "orig": 0.561043,
+          "nuevo": 0.560812,
+          "diff": 0.00023099999999998122
+        },
+        {
+          "path": ".detalle[3].corrected_cv_umbrales_v03",
+          "tipo": "float",
+          "orig": 0.560845,
+          "nuevo": 0.560614,
+          "diff": 0.00023100000000009224
+        },
+        {
+          "path": ".detalle[3].delta_f1_ejemplo",
+          "tipo": "float",
+          "orig": -0.111486,
+          "nuevo": -0.11171,
+          "diff": 0.00022400000000000198
+        }
+      ]
+    },
+    {
+      "rel": "reports/supervised_weighting_v4.json",
+      "n_floats": 188,
+      "max_abs_float": 642.12,
+      "n_diffs": 2,
+      "diffs": [
+        {
+          "path": ".duracion_s",
+          "tipo": "float",
+          "orig": 704.67,
+          "nuevo": 62.55,
+          "diff": 642.12
+        },
+        {
+          "path": ".fecha",
+          "tipo": "valor",
+          "orig": "2026-09-25T19:41:02+00:00",
+          "nuevo": "2026-09-26T06:15:59+00:00"
+        }
+      ]
+    },
+    {
+      "rel": "reports/targeting_v2.json",
+      "n_floats": 237,
+      "max_abs_float": 12.46,
+      "n_diffs": 2,
+      "diffs": [
+        {
+          "path": ".duracion_segundos",
+          "tipo": "float",
+          "orig": 7.74,
+          "nuevo": 20.2,
+          "diff": 12.459999999999999
+        },
+        {
+          "path": ".modo_anotacion",
+          "tipo": "valor",
+          "orig": "spacy-cache",
+          "nuevo": "spacy"
+        }
+      ]
+    },
+    {
+      "rel": "reports/v4_candidates.json",
+      "n_floats": 84,
+      "max_abs_float": 307.53,
+      "n_diffs": 2,
+      "diffs": [
+        {
+          "path": ".duracion_s",
+          "tipo": "float",
+          "orig": 1.41,
+          "nuevo": 308.94,
+          "diff": 307.53
+        },
+        {
+          "path": ".fecha",
+          "tipo": "valor",
+          "orig": "2026-09-25T19:52:20+00:00",
+          "nuevo": "2026-09-26T06:24:09+00:00"
+        }
+      ]
+    },
+    {
+      "rel": "reports/stacking_v2.csv",
+      "bytes_iguales": false
+    },
+    {
+      "rel": "reports/structural_sparse_v4.csv",
+      "bytes_iguales": false
+    }
+  ],
+  "controles": [
+    {
+      "rel": "reports/baseline_v03_dev_metrics.json",
+      "hits": [
+        {
+          "path": ".v03_con_umbrales_corrected.f1_media_columnas",
+          "orig": 0.7772114525165721,
+          "nuevo": 0.7772114525165721,
+          "ok": true
+        }
+      ],
+      "n": 1
+    },
+    {
+      "rel": "reports/class_conditional_lm_v4.json",
+      "hits": [
+        {
+          "path": ".referencia_v03",
+          "orig": 0.777211,
+          "nuevo": 0.777211,
+          "ok": true
+        }
+      ],
+      "n": 1
+    },
+    {
+      "rel": "reports/discovery_v4.json",
+      "hits": [
+        {
+          "path": ".robustez_duplicados.todos.f1_media",
+          "orig": 0.7772,
+          "nuevo": 0.7772,
+          "ok": true
+        }
+      ],
+      "n": 1
+    },
+    {
+      "rel": "reports/emocion_nbsvm_ortografia_v2.json",
+      "hits": [
+        {
+          "path": ".referencias.v03_umbrales",
+          "orig": 0.7772,
+          "nuevo": 0.7772,
+          "ok": true
+        },
+        {
+          "path": ".config.referencia_v03_umbrales",
+          "orig": 0.7772,
+          "nuevo": 0.7772,
+          "ok": true
+        },
+        {
+          "path": ".verificaciones.v03_umbrales",
+          "orig": 0.7772114525165721,
+          "nuevo": 0.7772114525165721,
+          "ok": true
+        }
+      ],
+      "n": 3
+    },
+    {
+      "rel": "reports/hardness_v4.json",
+      "hits": [
+        {
+          "path": ".metricas_v03_dev.f1_media_columnas",
+          "orig": 0.7772114525165721,
+          "nuevo": 0.7772114525165721,
+          "ok": true
+        }
+      ],
+      "n": 1
+    },
+    {
+      "rel": "reports/joint_label_v4.json",
+      "hits": [
+        {
+          "path": ".referencia_v03",
+          "orig": 0.777211,
+          "nuevo": 0.777211,
+          "ok": true
+        }
+      ],
+      "n": 1
+    },
+    {
+      "rel": "reports/meta_shift_v4.json",
+      "hits": [
+        {
+          "path": ".referencia_v03",
+          "orig": 0.777211,
+          "nuevo": 0.777211,
+          "ok": true
+        }
+      ],
+      "n": 1
+    },
+    {
+      "rel": "reports/reweighting_v4.json",
+      "hits": [
+        {
+          "path": ".referencia_v03_corrected_cv",
+          "orig": 0.777211,
+          "nuevo": 0.777211,
+          "ok": true
+        },
+        {
+          "path": ".referencia_recalculada_lr_none",
+          "orig": 0.777211,
+          "nuevo": 0.777211,
+          "ok": true
+        },
+        {
+          "path": ".detalle[0].corrected_cv_umbrales_v03",
+          "orig": 0.777211,
+          "nuevo": 0.777211,
+          "ok": true
+        },
+        {
+          "path": ".detalle[0].macro_f1",
+          "orig": 0.777211,
+          "nuevo": 0.777211,
+          "ok": true
+        }
+      ],
+      "n": 4
+    },
+    {
+      "rel": "reports/sintaxis_cita_negacion_v2.json",
+      "hits": [
+        {
+          "path": ".referencias.v03_umbrales",
+          "orig": 0.7772,
+          "nuevo": 0.7772,
+          "ok": true
+        },
+        {
+          "path": ".verificaciones.f1_v03_umbrales",
+          "orig": 0.7772114525165721,
+          "nuevo": 0.7772114525165721,
+          "ok": true
+        },
+        {
+          "path": ".config.referencia_v03_umbrales",
+          "orig": 0.7772,
+          "nuevo": 0.7772,
+          "ok": true
+        }
+      ],
+      "n": 3
+    },
+    {
+      "rel": "reports/stacking_v2.json",
+      "hits": [
+        {
+          "path": ".referencias.v03_umbrales_cv",
+          "orig": 0.7772,
+          "nuevo": 0.7772,
+          "ok": true
+        }
+      ],
+      "n": 1
+    },
+    {
+      "rel": "reports/structural_sparse_v4.json",
+      "hits": [
+        {
+          "path": ".referencia_v03",
+          "orig": 0.777211,
+          "nuevo": 0.777211,
+          "ok": true
+        }
+      ],
+      "n": 1
+    },
+    {
+      "rel": "reports/supervised_weighting_v4.json",
+      "hits": [
+        {
+          "path": ".referencia_v03",
+          "orig": 0.777211,
+          "nuevo": 0.777211,
+          "ok": true
+        },
+        {
+          "path": ".detalle[0].corrected_cv_umbrales_v03",
+          "orig": 0.777211,
+          "nuevo": 0.777211,
+          "ok": true
+        }
+      ],
+      "n": 2
+    },
+    {
+      "rel": "reports/targeting_v2.json",
+      "hits": [
+        {
+          "path": ".referencias.v03_umbrales",
+          "orig": 0.7772,
+          "nuevo": 0.7772,
+          "ok": true
+        },
+        {
+          "path": ".config.referencia_v03_umbrales",
+          "orig": 0.7772,
+          "nuevo": 0.7772,
+          "ok": true
+        },
+        {
+          "path": ".verificaciones.f1_v03_umbrales",
+          "orig": 0.7772114525165721,
+          "nuevo": 0.7772114525165721,
+          "ok": true
+        }
+      ],
+      "n": 3
+    },
+    {
+      "rel": "reports/v4_candidates.json",
+      "hits": [
+        {
+          "path": ".referencia_v03",
+          "orig": 0.777211,
+          "nuevo": 0.777211,
+          "ok": true
+        },
+        {
+          "path": ".detalle[4].corrected_cv_umbrales_v03",
+          "orig": 0.777211,
+          "nuevo": 0.777211,
+          "ok": true
+        }
+      ],
+      "n": 2
+    }
+  ]
+}

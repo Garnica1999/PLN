@@ -1,0 +1,11 @@
+{
+  "name": "pa01",
+  "script": "experiments/12_control_pseudo_autores.py",
+  "exit": 0,
+  "duracion_s": 3.6,
+  "tracked_changed": [
+    "kaggle_toxic_2026_puj/experiments.csv",
+    "kaggle_toxic_2026_puj/reports/control_pseudo_autores.json"
+  ],
+  "features_changed": []
+}

@@ -1,0 +1,64 @@
+cell,tipo,primera_linea,n_outputs,exec_count,tiene_error,tiene_warning,trazas,numeros_clave_en_salida,archivos_referenciados
+0,markdown,# Clasificacion multi-etiqueta de discurso de odio en tuits en espanol (HS / TR / AG),0,,0,0,0,,experiments.csv;submissions/leaderboard_log.csv
+1,markdown,## 1. Configuracion del notebook,0,,0,0,0,,
+2,code,"""""""Configuracion comun del notebook: rutas, semillas y utilidades de presentacion.",1,1,0,0,0,,
+3,markdown,## 2. Reglas y restricciones de la competencia,0,,0,0,0,,docs/competition_rules.md;experiments/19_sintaxis_cita_negacion_v2.py;reports/auditoria_final.md;submissions/leaderboard_log.csv
+4,code,"""""""Verificacion ejecutable de reglas: formato de la submission vigente (v03).",1,2,0,0,0,,submission.csv;toxic_submission_v03_lr_union_thr.csv
+5,markdown,"## 3. Datos: carga, auditoria de integridad y diccionario",0,,0,0,0,,submission.csv;toxic_test.csv;toxic_train.csv
+6,code,"""""""Carga oficial de los datos con src.data y auditoria de integridad.",1,3,0,0,0,,submission.csv;toxic_test.csv;toxic_train.csv
+7,code,"""""""Auditoria de integridad: encoding, quoting, near-duplicados y pseudo-autores.",1,4,0,0,0,,control_pseudo_autores.json;data_dictionary.csv;grupos_near_duplicados.csv;pseudo_autores.csv;submission.csv;toxic_test.csv;toxic_train.csv
+8,markdown,"## 4. EDA y textometria: senales, tamanos de efecto y estructura",0,,0,0,0,,
+9,code,"""""""Tablas del EDA con tamano de efecto: V de Cramer, delta de Cliff y epsilon cuadrado.",1,5,0,0,0,,fase2_longitudes_por_clase.csv;fase2_tests_categoricos.csv;fase2_tests_combinaciones.csv;fase2_tests_continuos.csv
+10,code,"""""""Figuras clave del EDA (generadas en la Fase 2; se muestran, no se recalculan).""""""",6,6,0,0,0,,fig_01_distribucion_etiquetas.png;fig_02_combinaciones_etiquetas.png;fig_15_heatmap_chi2_cramersv.png
+11,markdown,### INTERPRETACION de las figuras,0,,0,0,0,,
+12,markdown,## 5. Caracterizacion de TR: la discrepancia entre la definicion oficial y HatEval,0,,0,0,0,,reports/eda/fase2_tr0_con_referencia_colectiva.csv;reports/eda/tr_ejemplos_para_revision.csv
+13,code,"""""""Caracterizacion cuantitativa de TR dentro de HS=1.",1,7,0,0,0,,fase2_rasgos_TR.csv;fase2_resumen_tr_semantica.csv;fase2_tr0_con_referencia_colectiva.csv;reports/eda/fase2_resumen_tr_semantica.csv;tr_ejemplos_para_revision.csv
+14,code,"""""""Figura de rasgos que discriminan TR dentro de HS=1.""""""",2,8,0,0,0,,fig_16_rasgos_TR.png
+15,markdown,## 6. Preprocesamiento y representacion: barrido PRE / REP / MOD,0,,0,0,0,,
+16,code,"""""""Tablas del barrido PRE / REP / MOD (Fases 4-5).",1,9,0,0,0,0.7927,variantes_representaciones.csv
+17,markdown,### Literatura de referencia y su papel en las decisiones,0,,0,0,0,,reports/estado_arte.md
+18,markdown,"## 7. Modelos: baselines, clasicos, Optuna, ensembles, features densas y DL desde cero",0,,0,0,0,,
+19,code,"""""""Resumen del estudio de Optuna (50 trials) y de la decision de no adoptarlo.""""""",5,10,0,0,0,0.77602,fig_25_optuna_historia.png;optuna_estudio.json;optuna_trials.csv
+20,code,"""""""Tablas de ensembles, features densas y DL desde cero (resultados honestos, incluidos los negativos).""""""",3,11,0,0,0,"0.7927,0.7751",dl_desde_cero_resultados.csv;dl_desde_cero_resultados.json;ensembles_resultados.csv;features_densas_resultados.csv;fig_26_dl_curvas.png
+21,markdown,"## 8. Validacion (fase 1): protocolo agrupado, control por pseudo-autor y contraste con el leaderboard",0,,0,0,0,,
+22,code,"""""""Control por pseudo-autor (D-015) y tabla del leaderboard con los 12 sondeos.",1,12,0,0,0,"0.78306,0.7989,0.7927,0.78163,0.77895,0.77978,0.78150,0.77602,0.77227,0.77034,0.7751,0.75677,0.77993,0.51494",control_pseudo_autores.json;experiments/12_control_pseudo_autores.py;leaderboard_log.csv
+23,markdown,"## 9. Protocolo de validacion v2 (D-016): grupos fusionados, holdout congelado y bootstrap",0,,0,0,0,,RUNLOG.md;config/holdout_v2.json;features/v2_oof_base_corrected.npz;oof_bases.npz;oof_mod03b.npz;reports/holdout_evaluaciones_v2.csv;src/splits.py
+24,code,"""""""Verificacion en vivo del holdout congelado v2 (D-016) y de las referencias.",1,13,0,0,0,0.7772,RUNLOG.md;baseline_v03_dev_metrics.json;config/holdout_v2.json;data/processed/holdout_v2_ids.csv;holdout_evaluaciones_v2.csv;holdout_v2.json;holdout_v2_ids.csv;reports/baseline_v03_dev_metrics.json
+25,markdown,"## 10. Fase v2 (Advanced Research): paquetes P0-P7, resultados exactos y decisiones",0,,0,0,0,,reports/advanced_gap_analysis_v2.md;tasks/plan.md
+26,code,"""""""Tablas exactas de la fase v2 (P1 a P5): lineas cerradas sin mejora.",2,14,0,0,0,,cadenas_etiquetas_v2.csv;emocion_nbsvm_ortografia_v2.csv;sintaxis_cita_negacion_v2.csv;targeting_v2.csv
+27,code,"""""""P6 (stacking v2) y P7 (holdout congelado y sonda v08): el candidato que no transfirio.",1,15,0,0,0,"0.7772,0.78306,0.8285,0.8465,0.78163",leaderboard_log.csv;p7_holdout_resultados.json;stacking_v2.csv;stacking_v2.json
+28,code,"""""""Figuras de la fase v2 (generadas por los scripts 15-20; se muestran, no se recalculan).""""""",10,16,0,0,0,,fig_27_cadenas_v2.png;fig_28_targeting_v2.png;fig_29_stacking_v2.png;fig_30_sintaxis_cita_v2.png;fig_31_emocion_nbsvm_v2.png
+29,markdown,## 11. Las 12 sondas de leaderboard y la lectura honesta del resultado,0,,0,0,0,,submissions/leaderboard_log.csv
+30,code,"""""""Tabla completa de las 12 sondas de leaderboard y su lectura estadistica.",1,17,0,0,0,"0.78306,0.7989,0.7927,0.78163,0.77895,0.77978,0.78150,0.77602,0.77227,0.77034,0.7751,0.75677,0.77993,0.51494",leaderboard_log.csv;submissions/leaderboard_log.csv
+31,markdown,"## 12. Analisis de error: rebanadas debiles, patrones cualitativos e hipotesis H11-H15",0,,0,0,0,,
+32,code,"""""""Rebanadas debiles, regiones del corpus y matrices de confusion del modelo final.""""""",5,18,0,0,0,,error_rebanadas.csv;error_regiones.csv;fig_23_rebanadas_mas_debiles.png;fig_24_regiones_f1.png
+33,markdown,### Hipotesis derivadas del analisis de error,0,,0,0,0,,
+34,markdown,## 13. Modelo final: MOD-03b_BEST con umbrales por etiqueta (el candidato de la fase v2 no se adopto),0,,0,0,0,,experiments/04_refit_submissions_v02_v03.py;features/oof_mod03b.npz;submissions/toxic_submission_v03_lr_union_thr.csv
+35,code,"""""""Verificacion de las metricas OOF del modelo final con src.evaluation.",3,19,0,0,0,"0.7989,0.7927",fig_21_matrices_confusion_umbrales_optimos.png;oof_mod03b.npz
+36,code,"""""""Reconstruccion del modelo final y reproduccion exacta de la submission v03.",1,20,0,0,0,,experiments/04_refit_submissions_v02_v03.py;submissions/toxic_submission_v03_lr_union_thr.csv
+37,markdown,## 14. Verificacion de reproducibilidad de los numeros clave,0,,0,0,0,,config/holdout_v2.json;features/v2_meta_oof.npz;features/v2_oof_base_corrected.npz
+38,code,"""""""Verificacion de reproducibilidad de los numeros clave del proyecto.",3,21,0,0,0,"0.777211,0.7772,0.78306,0.78163",cadenas_etiquetas_v2.json;data/processed/holdout_v2_ids.csv;experiments.csv;features/v2_meta_oof.npz;holdout_v2.json;holdout_v2_ids.csv;leaderboard_log.csv;reports/cadenas_etiquetas_v2.json
+39,markdown,## 15. Limitaciones y conclusiones,0,,0,0,0,,
+40,markdown,## 16. Reproducibilidad,0,,0,0,0,,/.json;DECISIONS.md;PROJECT_STATE.md;RUNLOG.md;config/holdout_v2.json;data.py;data/processed/grupos_near_duplicados.csv;data/processed/holdout_v2_ids.csv
+41,code,"""""""Verificacion final de artefactos y del entorno de reproducibilidad.",1,22,0,0,0,,advanced_research_v2.md;auditoria_final.md;baseline_v03_dev_metrics.json;cadenas_etiquetas_v2.json;control_pseudo_autores.json;data_dictionary.csv;dl_desde_cero_resultados.csv;eda_resumen.md
+42,markdown,## 17. Cierre de la fase v4 Advanced Research v4,0,,0,0,0,,docs/advanced_research_v4_spec.md;reports/advanced_research_v4.md;reports/v4_candidate_comparison.md
+43,code,"""""""Verificacion de las cifras de cierre de la fase v4.",1,23,0,0,0,"0.777211,0.7772",auditoria_v4.json;label_consistency_v4.json;refit_final_v4.json;v4_candidates.csv
+44,markdown,## 18. Fase v5 y v5.1: representacion distribuida aprendida desde cero,0,,0,0,0,,
+45,code,"""""""Entrenamiento desde cero: mecanismo e interruptor.",1,24,0,0,0,,
+46,markdown,### 18.1 Corpus: como se construyo,0,,0,0,0,,
+47,code,"""""""Inventario de los tres corpora: escala, licencia, huellas y tiempo de entrenamiento.""""""",1,25,0,0,0,,corpus_manifest.json
+48,markdown,### 18.2 Cobertura: que parte del vocabulario de la competencia aparece en el corpus,0,,0,0,0,,
+49,code,"""""""Cobertura del vocabulario TOXIC por corpus y por grupo lexico.""""""",4,26,0,0,0,,embedding_coverage_registro_v5.csv;fig_56_curva_escala_conclusiva_v5_1.png
+50,markdown,### 18.3 FastText frente al control Word2Vec,0,,0,0,0,,
+51,code,"""""""FastText frente a Word2Vec-control: cobertura de vector, OOV y resultado downstream.""""""",1,27,0,0,0,,
+52,markdown,### 18.4 Pooling y downstream,0,,0,0,0,,
+53,code,"""""""Rejilla de poolings de v5 y la regla de escala del bloque denso.""""""",1,28,0,0,0,,embedding_downstream_results.csv
+54,markdown,### 18.5 Fusion con V03 y curva de escala del corpus,0,,0,0,0,,
+55,code,"""""""Fusion con V03 en las cinco configuraciones de corpus y curva de escala.""""""",4,29,0,0,0,,fig_49_curva_completa_v5.png
+56,markdown,### 18.6 Complementariedad: que arregla y que rompe,0,,0,0,0,,
+57,code,"""""""Salvage, damage y correccion neta frente a V03, con las rebanadas.""""""",4,30,0,0,0,,embedding_complementarity_v5_1.csv;embedding_window_slices_v5_1.csv;fig_57_complementariedad_v5_1.png
+58,markdown,### 18.7 Arquitectura: las cinco familias medidas en v5.1,0,,0,0,0,,
+59,code,"""""""Tabla maestra de la arquitectura y el mapa de calor de deltas.""""""",6,31,0,0,0,,embedding_architecture_maestra_v5_1.csv;fig_50_vector_size_v5_1.png;fig_55_heatmap_arquitectura_v5_1.png
+60,markdown,### 18.8 Contabilidad: entrenamientos = evaluaciones downstream,0,,0,0,0,,
+61,code,"""""""Contabilidad de la fase: tabla maestra de entrenamientos, tabla B de evaluaciones y asercion de presupuesto",2,32,0,0,0,,embedding_budget_v5_1.json;embedding_downstream_evaluations_v5_1.csv
+62,markdown,### 18.9 Conclusiones,0,,0,0,0,,

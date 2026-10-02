@@ -1,0 +1,7 @@
+Familia,Hipotesis,Mejor resultado,Cierre,Veredicto auditoria,Nota
+v4 tracks A/B/D/E/F/H + P8,mejoras locales via reweighting/label/meta/shift,mejor +0.0082 (A_cost_sensitive) pero holdout rechaza a P8-C,cerrada (D-029),CLOSED VALIDLY,gates pre-registrados y holdout aplicado; re-ejecucion parcial P6
+v5 (representacion 10M->50M),el corpus/arquitectura limita la mejora,complementariedad no supera gate,cerrada (D-032/D-033/D-034),CLOSED VALIDLY (con reproducibilidad pendiente),corpus y modelos locales; repro FastText en P6b
+v5.1 (5 ejes de arquitectura),vector_size/window/min_count/subwords/negative,todos inerte/inercia; baseline 3-6 optimo,cerrada (D-036..D-040),CLOSED VALIDLY,gates de dos niveles; presupuesto respetado
+v6 (7 tracks),weighting/bagging/skip-grams/ruido/aumento,max +0.0016 (I2) bajo gate +0.005,cerrada sin adopciones (D-052),CLOSED WITH CAVEAT,v6-07 con componente no fold-local (impacto 1.4e-4 -> 0)
+v7 (P8/P9/P0.1),"prior de grupo, perdida F1, umbral anidado",deltas -0.0019/-0.0024/-0.0019 vs sus controles,cerrada (D-056),CLOSED VALIDLY,protocolo anidado verificado en codigo y numeros
+v8 (P1..P10 y sondas),"tecnicas de clase, entrenamiento, ensemble, corrector",solo el promediado mejora local (+0.0051 OOF); LB por debajo de V03,cerrada (D-065/D-067),CLOSED VALIDLY (nota: numeracion de submissions),sondas verificadas en el log; colision de nombres v08-v12

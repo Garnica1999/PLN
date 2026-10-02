@@ -1,0 +1,12 @@
+{
+  "name": "v4_meta_shift",
+  "script": "experiments/32_meta_shift_v4.py",
+  "exit": 0,
+  "duracion_s": 40.9,
+  "tracked_changed": [
+    "kaggle_toxic_2026_puj/reports/meta_shift_v4.json"
+  ],
+  "features_changed": [
+    "oof_meta_shift_v4.npz"
+  ]
+}

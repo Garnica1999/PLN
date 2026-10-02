@@ -1,0 +1,11 @@
+{
+  "name": "v6_03",
+  "script": "experiments/v6_03_ponderacion_grupo.py",
+  "exit": 0,
+  "duracion_s": 15.7,
+  "tracked_changed": [
+    "kaggle_toxic_2026_puj/reports/v6_ponderacion_grupo.json",
+    "kaggle_toxic_2026_puj/reports/v6_ponderacion_grupo.md"
+  ],
+  "features_changed": []
+}

@@ -1,0 +1,10 @@
+familia,n_experimentos,mejor_delta,peor_delta,media_delta,LB_results,transfer_behavior,complementariedad,estado
+v1 baseline word,1,+0.000,-0.000,+0.000,0.75677 (B1),gap -0.0010 (excelente),n/a,cerrada (superada por union)
+v1/v2 union word+char,3,+0.0063 (thr),-0.0280 (optuna),n/a,0.7703-0.7831,gap -0.013 a -0.029,n/a,cerrada; V03 referencia
+v2 correccion de protocolo,2,n/a (metodo),n/a,n/a,n/a,grupos fusionados acercan local y LB,n/a,ADOPTADA (D-015/D-016)
+v2 metas/candidatos,12,+0.0102 (dev),-0.0014 (LB),n/a,0.7790-0.7816,gap -0.006 a +0.002,emocion+sintaxis casi perfecta,cerrada (D-024; V03 se mantiene)
+v4 reweighting/label/meta/shift,8,+0.0082 (A_cost),-0.0008,n/a,sin sondas (solo holdout),holdout rechazo D-029,canales no superan,cerrada (D-029)
+v5/v5.1 embeddings,27,n/a (complementariedad negativa),n/a,n/a,sin sondas,n/a,nula con V03,cerrada (D-032..D-043)
+v6 tracks,7,+0.0016 (I2),-0.0105 (H1),n/a,sin sondas,n/a,nula,cerrada (D-052); caveat F-22
+v7 tracks,3,-0.0019 (mejor),-0.0024,n/a,sin sondas,n/a,nula,cerrada (D-056)
+v8 tecnicas + sondas,10,+0.0051 (promediado OOF),-0.030 (LDA),n/a,3 sondas: 0.7747/0.7778/0.7712,gap -0.0025 a -0.0111,ninguna,cerrada (D-065/D-067)

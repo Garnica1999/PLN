@@ -1,0 +1,3 @@
+Experiment_ID,Leakage_Type,Potential,Detected,Evidence,Affected_Result,Severity,Decision
+GLOBAL/thresholds,L4-potencial(selection bias),si,si (documentado),optimizar umbrales sobre el mismo OOF infla +0.0036; anidado por reutilizacion deja +0.000925,v1/v2 fase 13a: 0.7989 reportado sobre umbrales optimizados en el mismo OOF,"MEDIUM (historico, corregido por D-016)",documentado; V03 usa umbrales congelados
+GLOBAL/corpus-test,L5,si,no,scan 2118 patrones sobre 32 txt + 1 gz; coincidencias 0,n/a,INFO,sin accion

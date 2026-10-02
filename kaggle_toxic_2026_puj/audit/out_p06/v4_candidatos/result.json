@@ -1,0 +1,8 @@
+{
+  "name": "v4_candidatos",
+  "script": "experiments/36_candidatos_v4.py",
+  "exit": 1,
+  "duracion_s": 1.9,
+  "tracked_changed": [],
+  "features_changed": []
+}
