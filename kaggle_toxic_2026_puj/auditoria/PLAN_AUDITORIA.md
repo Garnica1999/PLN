@@ -42,8 +42,8 @@ Bitacora viva: este documento se actualiza al cerrar cada fase.
 |---|---|---|---|
 | F0 | Preflight y asegurado del estado sucio | COMPLETADA | commit `1026ff1` |
 | F1 | Unificacion de workspaces en P67 | COMPLETADA | commit `9663afb`, manifiesto 154 filas |
-| F2 | Inventario unificado de experimentos | EN CURSO | por definir |
-| F3 | Auditoria por experimento (fugas, hiperparametros, calibracion, vacios, conexion codigo-corrida) | PENDIENTE | por definir |
+| F2 | Inventario unificado de experimentos | COMPLETADA | commit `41f8a3f`, 483 experimentos y 376 scripts |
+| F3 | Auditoria por experimento (fugas, hiperparametros, calibracion, vacios, conexion codigo-corrida) | EN CURSO | F3a: escaner estatico, 2165 hallazgos |
 | F4 | Correccion de experimentos en vuelo (P83) y re-verificacion | PENDIENTE | por definir |
 | F5 | Notebook consolidado con cada experimento documentado | PENDIENTE | por definir |
 | F6 | Sugerencias hacia 0.80 con literatura publicada | PENDIENTE | por definir |
@@ -76,3 +76,9 @@ Bitacora viva: este documento se actualiza al cerrar cada fase.
   oficial de caracteres en 0 errores sobre el arbol unificado. Git limpio.
   El directorio `notebook_exec` del rerun estaba vacio y se registro como
   ausente. F2 abierta: inventario unificado de experimentos.
+- 2026-10-02: F2 COMPLETADA. Commit `41f8a3f`. Inventario: 483 experimentos
+  (411 de registro + 72 scripts sin fila), 376 scripts, 43 filas malformadas
+  confirmadas (P67 a P77), 277 experimentos sin documentar en el notebook,
+  P78 a P83 sin seccion propia. F3 abierta: auditoria por experimento, con
+  un escaner estatico del fallo de clase "codigo sin conectar" como primera
+  pieza.
