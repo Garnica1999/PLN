@@ -25,7 +25,7 @@ Cuatro de los diez bloqueantes quedan CERRADOS y verificados:
    sobre el artefacto real: 0.7772114525165721, identico al valor guardado.
 1. X_ev_e tomaba el PRIMER elemento de la tupla de reescalar_columnas, que es la matriz
    de ENTRENAMIENTO, y no el segundo, que es la de evaluacion. Con 836 filas de
-   inner_train contra 297 de outer_validation. La misma línea reutilizada para la
+   inner_train contra 297 de outer_validation. La misma linea reutilizada para la
    calibracion tenia el error identico.
 2. decidir_alpha tiene ahora su llamada REAL, con filas igual a inner_train, y el
    ContextoDatos lleva proba_v03 para que la medicion interna tenga con que mezclarse.
@@ -54,7 +54,7 @@ La causa esta localizada y es la misma de siempre: A14 calcula dos interseccione
 los ATRIBUTOS VIVOS del instrumento, que tras veinticinco llamadas solo guardan la ultima
 combinacion, luego comparan una combinacion contra otra. Lo que hace falta es calcularlas
 REGISTRO CONTRA REGISTRO, que es el unico invariante que la regla 3.5 protege. Ese cambio
-se empezó a escribir y NO se aplico.
+se empezo a escribir y NO se aplico.
 
 LO QUE QUEDA DE LOS DIEZ, con el estado real:
 
