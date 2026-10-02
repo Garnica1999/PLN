@@ -51,3 +51,14 @@ el lider al cerrar cada pieza y cada subagente deja aquí su resumen (maximo
   `equal_nan=True` sobre mascaras. H3: el submission recalcula E* con
   pliegues internos y no replica el pipeline de B1. H4: el MD de la sonda
   niega un envio que el registro si tiene (LB 0.68150).
+
+- F4 COMPLETADA: P83 corregido y ejecutado en completo. Commit `bfa8385`.
+  Modo completo con salida 0 en 193,76 segundos (presupuesto 1500 aplicado),
+  20 de 20 afirmaciones CONFIRMADO; humo 206 de 206 con la defensa nueva que
+  falla si se anade una funcion sin llamador real. A14 mide registro contra
+  registro; funciones muertas conectadas (reproducir_liston,
+  comparar_contra_el_liston, comprobar_presupuesto, avisar, comprobar);
+  afirmaciones vacias convertidas en medidas; A16, A8 y la lista de siete sin
+  STOP corregidos; auditoria AST con lista blanca cerrada. Listón de
+  calibración reproducido a 1e-7; complementariedad medida; pregunta 1
+  NEGATIVA. Aviso de P83 actualizado a EJECUTADO EN COMPLETO. F5 abierta.

@@ -43,9 +43,9 @@ Bitácora viva: este documento se actualiza al cerrar cada fase.
 | F0 | Preflight y asegurado del estado sucio | COMPLETADA | commit `1026ff1` |
 | F1 | Unificacion de workspaces en P67 | COMPLETADA | commit `9663afb`, manifiesto 154 filas |
 | F2 | Inventario unificado de experimentos | COMPLETADA | commit `41f8a3f`, 483 experimentos y 376 scripts |
-| F3 | Auditoria por experimento (fugas, hiperparámetros, calibración, vacios, conexión código-corrida) | EN CURSO | F3a: escaner estático, 2165 hallazgos |
-| F4 | Correccion de experimentos en vuelo (P83) y re-verificacion | PENDIENTE | por definir |
-| F5 | Notebook consolidado con cada experimento documentado | PENDIENTE | por definir |
+| F3 | Auditoria por experimento (fugas, hiperparámetros, calibración, vacios, conexión código-corrida) | COMPLETADA | F3a escáner, F3b núcleo, F3c P69-P77, F3d P78-P82 |
+| F4 | Correccion de experimentos en vuelo (P83) y re-verificacion | COMPLETADA | commit `bfa8385`: completo en 193,76 s, 20/20, humo 206/206 |
+| F5 | Notebook consolidado con cada experimento documentado | EN CURSO | por definir |
 | F6 | Sugerencias hacia 0.80 con literatura publicada | PENDIENTE | por definir |
 | F7 | Verificacion final GO/NO-GO y cierre | PENDIENTE | por definir |
 
