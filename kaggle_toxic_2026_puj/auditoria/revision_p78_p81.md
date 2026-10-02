@@ -1,6 +1,6 @@
 # Revision adversarial P78 a P81 (parcial)
 
-Revisor: ml-reviewer (sesion del 2026-10-02). La sesion agoto pasos antes de
+Revisor: ml-reviewer (sesión del 2026-10-02). La sesión agoto pasos antes de
 llegar a P82; lo de P82 vive en `revision_p82.md`. No se modifico ningun
 archivo existente y el artefacto congelado del Word2Vec quedo verificado
 intacto (sha256 302c994d...).
@@ -11,12 +11,12 @@ intacto (sha256 302c994d...).
    5/5 pliegues, EPS_GATE=0.003, coincidente con el pre-registro (seccion 7).
    Protocolo anidado real: `epoca_estrella` usa solo `grupos[ia]` e `ids[ia]`
    (`p75_01_complementariedad_textcnn.py:112-160`) y `entrenar_fijo` no
-   selecciona sobre ib (`ib:211-215`); 60 unidades con una evaluacion cada una.
+   selecciona sobre ib (`ib:211-215`); 60 unidades con una evaluación cada una.
    El addendum declara sin adornos el IC que contiene cero y la sd entre
    semillas de 0.0216.
    - Discrepancia menor: el JSON dice "E* entre 10 y 17" y el registro da 8 a
      17, con 12 casos por debajo de 10.
-   - Matiz: `lr_de` esta disenado para 40 epocas; la funcion es la misma en
+   - Matiz: `lr_de` esta diseñado para 40 epocas; la funcion es la misma en
      los cuatro brazos, pero E* difiere por brazo (C 12-17, D 8-13), de modo
      que la trayectoria efectiva no es identica. No sesga el delta pareado por
      construccion, pero no anula la varianza.
@@ -40,7 +40,7 @@ intacto (sha256 302c994d...).
    DL (`11_dl_desde_cero.py:446,491,1362`). La correccion de P80 se sostiene;
    la frase mezclaba fases.
 4. P81: PARCIAL. El informe declara 18 CONFIRMADO mas 2 REFUTADO (A6 y A7) y
-   el titular EL_TEST_NO_APOYA_A_LA_SUMA, con A6 publicado como informacion
+   el titular EL_TEST_NO_APOYA_A_LA_SUMA, con A6 publicado como información
    sin reinterpretar (`p81_cierre_huecos.md:32-33,51-64`). Las cifras de
    relleno y OOV (0.73091917 y 0.04124873) no se verificaron contra el script,
    ni el resto de bloques.
@@ -49,7 +49,7 @@ intacto (sha256 302c994d...).
 
 - P82 completo (cinco brazos, determinismo, MDE, GPU e hilos) y la sonda
   P82-02: se movieron a `revision_p82.md`.
-- Transversal A (hiperparametros P78-P81 contra pre-registros): parcial.
+- Transversal A (hiperparámetros P78-P81 contra pre-registros): parcial.
 - Transversal B (early stopping sobre el pliegue evaluado en P75-P77): sin
   completar.
 - Transversal C (fugas test/holdout con AST completa): sin completar.

@@ -1,4 +1,4 @@
-# Revision adversarial del nucleo metodologico - P67
+# Revision adversarial del núcleo metodológico - P67
 
 Fecha: 2026-10-02. Revisor: ml-reviewer (subagente, sesgo a desprobar).
 Entorno: `/home/carlos/venv/bin/python` (ruff 0.16.3). Solo lectura salvo este informe.
@@ -39,11 +39,11 @@ Veredicto: **CONFIRMADO**.
 - Frontera dev/holdout: 1415 grupos dev, 230 holdout, interseccion 0; 0 ids del holdout dentro de
   `train_dev`.
 - 5 pliegues corregidos (StratifiedGroupKFold(5, shuffle=True, seed=42), `src/splits.py:153-177`):
-  interseccion de grupos train/validacion = 0 en los 5; el holdout nunca aparece como validacion.
+  interseccion de grupos train/validacion = 0 en los 5; el holdout nunca aparece como validación.
 
-Evidencia: `src/splits.py:71-113,130-150,153-196`; `config/holdout_v2.json`; ejecucion propia.
+Evidencia: `src/splits.py:71-113,130-150,153-196`; `config/holdout_v2.json`; ejecución propia.
 
-## A3. "metricas_multietiqueta recibe y_pred BINARIO en todos los call sites reales; no hay ningun sitio que le pase probabilidades. El caso historico de P83 (linea 6674) ya se corrigio"
+## A3. "metricas_multietiqueta recibe y_pred BINARIO en todos los call sites reales; no hay ningun sitio que le pase probabilidades. El caso histórico de P83 (línea 6674) ya se corrigio"
 
 Veredicto: **CONFIRMADO** (clasificacion estatica; ver limitacion).
 
@@ -61,36 +61,36 @@ Veredicto: **CONFIRMADO** (clasificacion estatica; ver limitacion).
   `19_sintaxis_cita_negacion_v2.py:1257` (`P2.predecir` = `16_targeting_v2.py:1550`, umbraliza).
 - Helpers usados como `y_pred` verificados en su cuerpo: `predecir_con_umbrales`,
   `predecir_con_umbral`, `predecir_binario`, `aplicar_umbrales`, `binarizar_*` todos aplican
-  comparacion o `astype(int)`.
-- P83: el caso historico (linea 6674 del script anterior) esta corregido. El script actual
+  comparación o `astype(int)`.
+- P83: el caso histórico (línea 6674 del script anterior) esta corregido. El script actual
   (`experiments/p83_01_bayesiano.py:7202-7205`) llama a `binarizar_con_umbrales_congelados`
   (definida en 2801-2813) con los umbrales leidos del artefacto congelado, y
   `docs/p83_AVISO_NO_EJECUTABLE.md:23-25,126-127` lo declara "CORREGIDO y verificado" reproduciendo
-  0.7772114525165721. La llamada actual a `metricas_multietiqueta` (linea 7205) recibe binario.
-- Limitacion: 159 sitios se clasificaron por nombre (`pred`, `prediccion`, ...), no por ejecucion.
+  0.7772114525165721. La llamada actual a `metricas_multietiqueta` (línea 7205) recibe binario.
+- Limitacion: 159 sitios se clasificaron por nombre (`pred`, `prediccion`, ...), no por ejecución.
   El modo de fallo conocido (matriz de probabilidades) haria que sklearn lanzara
   `ValueError: Classification metrics can't handle a mix of binary and continuous targets`
-  (citado en el propio P83), por lo que no podria inflar metricas en silencio.
+  (citado en el propio P83), por lo que no podria inflar métricas en silencio.
 
-Evidencia: analisis AST propio (282 sitios) + inspeccion manual de los 14 ambiguos;
+Evidencia: análisis AST propio (282 sitios) + inspeccion manual de los 14 ambiguos;
 `docs/p83_AVISO_NO_EJECUTABLE.md`.
 
-## A4. "Los umbrales de V03 estan congelados; optimizar umbrales sobre el mismo OOF infla la metrica en +0.0036 y ningun script vigente presenta esa reoptimizacion como mejora"
+## A4. "Los umbrales de V03 están congelados; optimizar umbrales sobre el mismo OOF infla la metrica en +0.0036 y ningun script vigente presenta esa reoptimizacion como mejora"
 
 Veredicto: **CONFIRMADO con matiz documentado**.
 
-- Rejilla propia 0.20-0.80 paso 0.01 sobre el OOF canonico completo: optimos HS 0.41, TR 0.48,
+- Rejilla propia 0.20-0.80 paso 0.01 sobre el OOF canónico completo: optimos HS 0.41, TR 0.48,
   AG 0.45 -> `f1_media_columnas = 0.7808400797718141`; delta contra los congelados
   0.44/0.51/0.46 = **+0.0036286** (contra 0.5 = +0.0090616). La cifra +0.0036 se reproduce.
 - Ningun script vigente la presenta como mejora: `04_refit_submissions_v02_v03.py:572-577` la
-  etiqueta como "cota optimista" y anade verificacion anidada (+0.0014, 2/5 pliegues);
+  etiqueta como "cota optimista" y añade verificacion anidada (+0.0014, 2/5 pliegues);
   `09_optuna_tfidf_lr.py:1128` avisa que umbral y metrica comparten OOF; `v10_04_calibracion_fuerte.py:6`
-  evita explicitamente esa comparacion; `v10_06_umbrales_estables.py:6-11` mide +0.000131 y corrige
+  evita explicitamente esa comparación; `v10_06_umbrales_estables.py:6-11` mide +0.000131 y corrige
   la cifra; `reports/v7_umbral_anidado.md:42-52` documenta que +0.0036 mezcla coste del protocolo
   (control congelado -0.0081) y que el efecto honesto del umbral es -0.0019; `v57_00_sintesis_estrategica.py:563`
   y D-072 lo corrigen por escrito.
 - Matiz: +0.0036 es el delta crudo pedido, pero el propio proyecto documenta que no es el efecto
-  causal del umbral. La afirmacion es cierta como numero y ya esta matizada en los informes.
+  causal del umbral. La afirmacion es cierta como número y ya esta matizada en los informes.
 
 Evidencia: recomputo propio; `experiments/04:572-577`; `v10_06:6-11,428-481`;
 `reports/v7_umbral_anidado.md`; `v10_04:6`; `v57_00:563`.
@@ -104,18 +104,18 @@ no registrado y usos literales para entrenar/gatear submissions.
   (P7-01-V03, P7-02-META, FIN-02, FIN-04, P8-C) -> la parte "5 de 5" es correcta para el registro.
 - Contraejemplo 1 (severidad ALTA): `experiments/v33_01_validacion.py:307-316` evalua el MISMO
   holdout v2 (248 filas de `holdout_v2_ids.csv`) con V03 y V32-05 y lo usa para
-  "validacion completa de V32-05 antes de la submission". `reports/v33_01_validacion.json`
+  "validación completa de V32-05 antes de la submission". `reports/v33_01_validacion.json`
   (fecha 2026-09-27) da V03 = 0.8284684313523535, identico a P7-01, y V32-05 = 0.8279491147252713.
   No aparece en el registro ni en `target_encoding_audit_v2.md` (que afirma "5 de 5") ni en RUNLOG.
   Cronologia: las 5 evaluaciones se cerraron el 2026-09-25 y el 2026-09-26 V10-01 ya declaro el
-  holdout agotado al crear holdout2 (`config/holdout2.json`); v33 corre despues (2026-09-27).
+  holdout agotado al crear holdout2 (`config/holdout2.json`); v33 corre después (2026-09-27).
 - Contraejemplo 2 (severidad MEDIA): `experiments/18_p7_holdout_y_submission_v08.py:1107-1111`
   reajusta las bases del meta "con el train completo (1731 filas)" = desarrollo + holdout para la
   submission v08; `25_submissions_candidatos.py:35,915-919` reproduce el criterio. Esta documentado
   y no reevalua el holdout con esos modelos, pero es literalmente entrenar con las 248 filas.
 - La seleccion del candidato final v4 si fue en desarrollo (criterios D-016 de nivel, pliegues e
-  IC95; `38_refit_final_v4.py:5-9`); el gate GO/NO-GO de P7 tambien se decidio con el holdout de
-  forma pre-registrada (evaluacion 2 de las 5). Esa parte del protocolo es deliberada.
+  IC95; `38_refit_final_v4.py:5-9`); el gate GO/NO-GO de P7 también se decidio con el holdout de
+  forma pre-registrada (evaluación 2 de las 5). Esa parte del protocolo es deliberada.
 
 Evidencia: `reports/holdout_evaluaciones_v2.csv`; `reports/v33_01_validacion.json`;
 `reports/p7_holdout_resultados.json`; `config/holdout2.json:4`; `experiments/18:1107-1111`;
@@ -133,21 +133,21 @@ Veredicto: **CONFIRMADO**.
   y `decode_bytes` (`src/data.py:81-93`) implementa la deteccion utf-8 -> cp1252.
 - Lecturas reales sin error: train (1731, 5), test (1154, 2), submission (1154, 4).
 
-Evidencia: salida de ejecucion propia; `src/data.py:9-18,81-93,140,155,167`.
+Evidencia: salida de ejecución propia; `src/data.py:9-18,81-93,140,155,167`.
 
-## A7. "El escaner estatico no encontro aserciones vacias (D2=0) en 376 scripts"
+## A7. "El escaner estático no encontro aserciones vacias (D2=0) en 376 scripts"
 
 Veredicto: **CONFIRMADO** (con alcance acotado).
 
 - `auditoria/escaner_resumen.md:15-16` declara 376 archivos `.py` barridos y
-  `D2_asercion_vacia = 0` en todas las severidades; el unico `D2` del CSV de hallazgos es una
+  `D2_asercion_vacia = 0` en todas las severidades; el único `D2` del CSV de hallazgos es una
   subcadena (`D3_rama_muerta`), no un hallazgo D2.
 - Comprobacion independiente propia (AST, patrones mas amplios que el escaner: `assert True`,
   `assert not False`, `x == x`, `x <= x`, `x >= x`, `x is x`, literales iguales/desiguales):
   64 asserts en `experiments/` + `src/` + `audit/`, **0 tautologicos**. Grep directo de los
   patrones obvios: 0 coincidencias.
 - Alcance: D2 solo cubre tautologias sintacticas. Otra clase de "chequeo vacio" existe y esta
-  documentada: P83 reconoce siete afirmaciones que "pasan en vacio" fabricando sus propios numeros
+  documentada: P83 reconoce siete afirmaciones que "pasan en vacio" fabricando sus propios números
   (`docs/p83_AVISO_NO_EJECUTABLE.md:149-155`). D2=0 no debe leerse como ausencia de chequeos vacios.
 
 Evidencia: `auditoria/escaner_resumen.md`; `auditoria/escaner_estatico.py:541-578`;
@@ -155,7 +155,7 @@ escaneo AST independiente.
 
 ## Hallazgos nuevos (no documentados en lo revisado)
 
-1. **ALTA - Evaluacion no registrada del holdout v2 en v33.** Uso del 2026-09-27, despues de que
+1. **ALTA - Evaluacion no registrada del holdout v2 en v33.** Uso del 2026-09-27, después de que
    las 5 evaluaciones se cerraran (2026-09-25) y de que V10-01 declarara el holdout agotado
    (2026-09-26). Se uso para gatear V32-05 antes de una submission. Rompe el presupuesto maximo de
    5 y la afirmacion de que ningun script lo usa para seleccionar. Evidencia en A5.
@@ -166,7 +166,7 @@ escaneo AST independiente.
    contradice la letra de "ningun script lo usa para entrenar".
 4. **INFO - La cifra +0.0036 es el delta crudo, no el efecto del umbral.** El proyecto ya lo
    corrige (v7 -0.0019; v10_06 +0.000131; D-072/V57); al citarla conviene mantener el matiz.
-5. **INFO - D2=0 no cubre las "afirmaciones que pasan en vacio" de P83** (fabricacion de numeros),
+5. **INFO - D2=0 no cubre las "afirmaciones que pasan en vacio" de P83** (fabricacion de números),
    documentadas en el propio aviso de no ejecutable.
 6. **BAJA - `submissions/leaderboard_log.csv` no es UTF-8** (byte 0xf1 = "n con virgulilla" en
    posicion 2305); se lee con cp1252 en las comprobaciones. No afecta al parser oficial
@@ -176,29 +176,29 @@ escaneo AST independiente.
 
 - `src/evaluation.py` define la metrica oficial con `zero_division=0`, documenta su trazabilidad y
   `metrica_macro` se valida contra la definicion oficial dentro de `bootstrap_diferencia_pareada`.
-- `src/splits.py` centraliza el protocolo v2 y anade `_verificar_sin_fuga` en la construccion de
+- `src/splits.py` centraliza el protocolo v2 y añade `_verificar_sin_fuga` en la construccion de
   cada particion: la independencia de grupos no depende del llamador.
 - El caso P83-A3 se corrigio binarizando con los umbrales leidos del artefacto (no constantes
   escritas a mano) y se verifico reproduciendo 0.7772114525165721.
 - Honestidad metodologica repetida y verificable sobre el sesgo de umbrales en 04, 09, v10_04,
   v10_06 y V57, con regla de adopcion pre-registrada y control anidado.
-- Idempotencia y validacion estricta de submissions en `04` (columnas, 1154 filas, orden de ids,
+- Idempotencia y validación estricta de submissions en `04` (columnas, 1154 filas, orden de ids,
   valores 0/1, relectura del archivo escrito).
 
 ## Verificaciones del checklist
 
 - Lint: ruff 0.16.3, `All checks passed!` sobre `src/` y los dos scripts del alcance; `py_compile` OK.
 - Venv: todas las ejecuciones con `/home/carlos/venv/bin/python`; sin paquetes ausentes.
-- Leakage/split 3 vias: OK segun A2; excepcion de presupuesto del holdout en A5 (v33).
-- Anti-overfitting: 14 y 04 reportan metricas OOF por pliegue; sin early stopping (ML clasico);
+- Leakage/split 3 vias: OK según A2; excepcion de presupuesto del holdout en A5 (v33).
+- Anti-overfitting: 14 y 04 reportan métricas OOF por pliegue; sin early stopping (ML clasico);
   no se auditaron curvas train/val en este alcance.
 - Trazabilidad: git status limpio; no se modifico ningun script previo; unica escritura este informe.
-- Emojis en codigo: 0 en los archivos del alcance.
+- Emojis en código: 0 en los archivos del alcance.
 - GPU/hilos: no aplica (sklearn/liblinear; sin DL en el alcance).
 
 ## No evaluable
 
 - Nada de las 7 afirmaciones quedo NO_EVALUABLE. Limitaciones declaradas: la clasificacion de
-  call sites de A3 es estatica (159 por nombre) y la ejecucion de v33 en el arbol P67 frente a su
+  call sites de A3 es estatica (159 por nombre) y la ejecución de v33 en el arbol P67 frente a su
   worktree de origen no puede determinarse con lo unificado; el reporte con fecha 2026-09-27 y los
   valores identicos a P7-01 sostienen el hallazgo.

@@ -1,0 +1,35 @@
+{
+  "marca_corrida": "completo_a7eac4",
+  "resultado": {
+    "bloque": 1,
+    "coste_segundos": 2.2e-05,
+    "descripcion": "solo se leen las fuentes declaradas, cero test y cero holdout",
+    "detalle": {
+      "comprobaciones": {
+        "el_pool_de_desarrollo_es_el_esperado": true,
+        "el_presupuesto_de_evaluaciones_no_se_ha_tocado": true,
+        "las_evaluaciones_del_holdout_son_las_esperadas": true,
+        "las_filas_de_holdout_son_las_esperadas": true,
+        "las_filas_de_test_son_las_esperadas": true
+      },
+      "evaluaciones_del_holdout_esperadas": 0,
+      "evaluaciones_del_holdout_gastadas": 0,
+      "evaluaciones_del_holdout_gastadas_por_p83": 0,
+      "filas_de_desarrollo_esperadas": 1483,
+      "filas_de_desarrollo_leidas": 1483,
+      "filas_de_holdout_esperadas": 0,
+      "filas_de_holdout_leidas": 0,
+      "filas_de_test_esperadas": 0,
+      "filas_de_test_leidas": 0,
+      "motivo_de_parada": "se ha leido test o el holdout, o se ha gastado una evaluacion del holdout",
+      "presupuesto_de_evaluaciones_del_holdout_del_proyecto": 5
+    },
+    "estado": "CONFIRMADO",
+    "exito": true,
+    "id": "A1",
+    "naturaleza": "CONFIRMAR",
+    "stop": true,
+    "tolerancia": "cero filas de test, cero de holdout y cero evaluaciones del holdout",
+    "traza": ""
+  }
+}

@@ -1,6 +1,6 @@
 # Revision adversarial P82 (RNN con atencion) y su sonda
 
-Revisor: ml-reviewer (sesion del 2026-10-02). Alcance: `experiments/p82_01_rnn_atencion.py`,
+Revisor: ml-reviewer (sesión del 2026-10-02). Alcance: `experiments/p82_01_rnn_atencion.py`,
 `experiments/p82_02_submission_rnn.py`, informe vigente
 `reports/p82_rnn_atencion_20261001T194000Z_p2731658.json/.md`, `reports/p82_submission_rnn.json/.md`,
 pre-registro y enmiendas, `submissions/submission_p82_sonda_rnn_b1.csv` y la fila del
@@ -21,7 +21,7 @@ Word2Vec quedo verificado intacto.
 3. Brazos y comparaciones: CONFIRMADOS exactos. B1 0.639659, B2 0.637554, B3 0.615163,
    B4 0.617194, B5 0.560747; P1 (B2-B1) -0.002105 IC95 [-0.012406, 0.008196] con 4/10
    positivos; P2 (B4-B3) +0.002031 con 7/10; MDE 0.014342. Los signos opuestos de P1 y P2
-   estan publicados correctamente.
+   están publicados correctamente.
 4. Dispositivo: CONFIRMADO. `resolver_dispositivo` (151-157), `DISPOSITIVO` (174) y
    `.to(DISPOSITIVO)` (1811, 1839, 2576-2578); `HILOS=16` (131) con
    `torch.set_num_threads(HILOS)` (7191). El 1.24 s (GPU ROCm) contra 2.43 s (CPU 16
@@ -44,10 +44,10 @@ Word2Vec quedo verificado intacto.
 
 ## Hallazgos nuevos
 
-- H1 (MEDIA-ALTA, metodologico): `p82_01:2979-2987` y la afirmacion A7 declaran variacion
+- H1 (MEDIA-ALTA, metodológico): `p82_01:2979-2987` y la afirmacion A7 declaran variacion
   cero de probabilidades sin medirla (NaN mas `equal_nan=True` sobre mascaras). Contamina
   la afirmacion 2 y debilita A7.
-- H2 (MEDIA, documental): `p82_01:2164-2196`: la comparacion obligatoria entre corridas es
+- H2 (MEDIA, documental): `p82_01:2164-2196`: la comparación obligatoria entre corridas es
   contra un diccionario hardcodeado, no automatica.
 - H3 (MEDIA, reproducibilidad): `p82_02:591-594`: el submission recalcula E* con cinco
   pliegues internos sobre los 1483 y no reutiliza los pliegues externos de la CV, de modo

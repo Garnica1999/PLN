@@ -1,12 +1,12 @@
 # Revision adversarial P69 a P77
 
-Revisor: ml-reviewer (sesion del 2026-10-02). Alcance: experiments/p69_*.py a
+Revisor: ml-reviewer (sesión del 2026-10-02). Alcance: experiments/p69_*.py a
 p77_*.py, reports/p69_* a p77_*, filas P69 a P77 de experiments.csv.
 
 ## Veredictos
 
 1. P69: CONFIRMADA CON SALVEDADES. CAND=0.7854160387 re-derivado; diferencia
-   contra el historico -3.2392e-11 (coincide con el 3.2e-11 declarado); delta
+   contra el histórico -3.2392e-11 (coincide con el 3.2e-11 declarado); delta
    +0.0082045862 exacto. PERO la afirmacion "R3 re-ejecutado" sobreafirma:
    `p69_01_auditoria_downweight.py:434-481` no re-entrena, carga
    `features/oof_weighting_v4.npz`. La reproducibilidad es de scoring,
@@ -26,7 +26,7 @@ p77_*.py, reports/p69_* a p77_*, filas P69 a P77 de experiments.csv.
    SENAL_DEBIL es procedimentalmente correcto, pero la lectura publica
    "no supera a las nulas" es enganosa. P72-04: el defecto del
    StandardScaler existio (presente en `p72_02:199`, ausente en `p72_03`,
-   anadido en `p72_04:60-64`) y no cambia el veredicto.
+   añadido en `p72_04:60-64`) y no cambia el veredicto.
 4. P73: CONFIRMADA CON CALIFICACION. A=0.6090700099, B=0.5774440627,
    delta=+0.0316259472, 4/5 pliegues. Segunda particion: 20261103
    delta=+0.0344649141 IC [+0.014094,+0.055680]; 20261104 delta=+0.0112854167
@@ -40,7 +40,7 @@ p77_*.py, reports/p69_* a p77_*, filas P69 a P77 de experiments.csv.
    (0.05 -> -0.0026005064; 0.10 -> -0.0052438938; 0.15 -> -0.0080173237);
    gate NO PASA; veredicto CASO 5 CNN_PERJUDICA.
 7. P76: CONFIRMADA. Ocho configuraciones verificadas; mejor
-   C_V03raw_CNNcal_alpha0.05 delta=-0.0017743921 (2/5). La calibracion mejora
+   C_V03raw_CNNcal_alpha0.05 delta=-0.0017743921 (2/5). La calibración mejora
    Brier y pendientes pero no transfiere; calibrar V03 lo empeora 0.0086
    (0.7772 -> 0.7686): su sobreconfianza es portante.
 8. P77: CONFIRMADA. AUC del gate 0.61-0.74; tres operadores monotonos
@@ -49,13 +49,13 @@ p77_*.py, reports/p69_* a p77_*, filas P69 a P77 de experiments.csv.
 
 ## Hallazgos nuevos
 
-- CRITICO (metodologico): `reports/twitter_word2vec_control_aleatorio.json` y
+- CRITICO (metodológico): `reports/twitter_word2vec_control_aleatorio.json` y
   `experiments/p72_03_control_aleatorio.py:337` publican
   `delta_contra_el_maximo` como un delta generico; la fila P72-03 de
   `experiments.csv:403` lo presenta sin aclarar que es contra el maximo. Debe
   corregirse la etiqueta en el registro y en el notebook.
 - IMPORTANTE: `p69_01_auditoria_downweight.py:434-481` carga el OOF
-  historico; la etiqueta correcta es "re-scoring trazable", no
+  histórico; la etiqueta correcta es "re-scoring trazable", no
   "reproduccion R3 del entrenamiento".
 - IMPORTANTE: `p69_01:539-543`: TOLERANCIA y coincide_folds se calculan pero
   el nivel R3 no los exige.
@@ -71,10 +71,10 @@ p77_*.py, reports/p69_* a p77_*, filas P69 a P77 de experiments.csv.
 
 ## Pendiente de completar (declarado por el revisor)
 
-- Transversal A: pre-registros de P73/P74/P77 contra constantes del codigo
-  (EPOCAS, PACIENCIA, TOL_ES, BATCH) linea a linea.
+- Transversal A: pre-registros de P73/P74/P77 contra constantes del código
+  (EPOCAS, PACIENCIA, TOL_ES, BATCH) línea a línea.
 - Transversal B: early stopping sobre el pliegue evaluado en P75/P76/P77.
-- Transversal C: auditoria AST completa de fugas test/holdout en los 11
+- Transversal C: auditoría AST completa de fugas test/holdout en los 11
   scripts.
 - Transversal D: cruce con los hallazgos D1/D3/D4 del escaner (lo completa el
-  lider en la bitacora).
+  lider en la bitácora).

@@ -1,0 +1,93 @@
+{
+  "marca_corrida": "completo_a7eac4",
+  "resultado": {
+    "bloque": 13,
+    "coste_segundos": 2.8e-05,
+    "descripcion": "el rescate y el dano, sobre OOF, con los tres alphas",
+    "detalle": {
+      "alpha_primario": 0.1,
+      "comprobaciones": {
+        "el_alpha_primario_esta": true,
+        "la_declaracion_de_la_escala_esta": true,
+        "la_declaracion_del_corrected_cv_esta": true,
+        "la_lectura_diagnostica_esta_publicada": true,
+        "los_tres_alphas_estan_completos": true,
+        "ninguna_cifra_falta": true
+      },
+      "configuraciones": {
+        "0.05": {
+          "aciertos_de_v03": 3692,
+          "aciertos_del_ensamblaje": 3578,
+          "alpha": 0.05,
+          "cambios_de_decision_para_igualar": 114,
+          "cambios_de_decision_para_superar": 115,
+          "corrected_cv": 0.7271627480532711,
+          "corrected_cv_v03": 0.7772114525165721,
+          "dano": 299,
+          "delta": -0.05004870446330101,
+          "lectura": "DIAGNOSTICA_Y_SIN_LECTURA_INFERENCIAL",
+          "neto": -114,
+          "piso": 3692,
+          "pliegues_a_favor": 0,
+          "que_no_se_afirma": "EL_RESCATE_Y_EL_DANO_SON_UN_RECUENTO_DE_CELDAS_Y_NO_SON_COMPARABLES_CON_EL_CORRECTED_CVNI_CON_NINGUN_MACRO_F1 | EL_CORRECTED_CV_DEL_ENSAMBLAJE_SOBRE_EL_OOF_NO_ES_UNA_MEJORA_DE_V03PORQUE_EL_OOF_YA_SE_USO_PARA_ELEGIR_EL_ALPHA_Y_PARA_CUALQUIER_OTRA_ELECCIONLUEGO_ES_UN_NUMERO_OPTIMISTA_Y_NO_PUBLICABLE_COMO_RESULTADO",
+          "rescate": 185,
+          "significado_del_techo_y_del_piso": "techo es el numero de celdas en las que V03 falla, que es el tope del rescate bruto; piso es el numero de celdas en las que V03 acierta, que es el suelo al que puede llevar el dano maximo",
+          "techo": 757
+        },
+        "0.10": {
+          "aciertos_de_v03": 3692,
+          "aciertos_del_ensamblaje": 3595,
+          "alpha": 0.1,
+          "cambios_de_decision_para_igualar": 97,
+          "cambios_de_decision_para_superar": 98,
+          "corrected_cv": 0.7331970644707427,
+          "corrected_cv_v03": 0.7772114525165721,
+          "dano": 278,
+          "delta": -0.044014388045829356,
+          "lectura": "DIAGNOSTICA_Y_SIN_LECTURA_INFERENCIAL",
+          "neto": -97,
+          "piso": 3692,
+          "pliegues_a_favor": 0,
+          "que_no_se_afirma": "EL_RESCATE_Y_EL_DANO_SON_UN_RECUENTO_DE_CELDAS_Y_NO_SON_COMPARABLES_CON_EL_CORRECTED_CVNI_CON_NINGUN_MACRO_F1 | EL_CORRECTED_CV_DEL_ENSAMBLAJE_SOBRE_EL_OOF_NO_ES_UNA_MEJORA_DE_V03PORQUE_EL_OOF_YA_SE_USO_PARA_ELEGIR_EL_ALPHA_Y_PARA_CUALQUIER_OTRA_ELECCIONLUEGO_ES_UN_NUMERO_OPTIMISTA_Y_NO_PUBLICABLE_COMO_RESULTADO",
+          "rescate": 181,
+          "significado_del_techo_y_del_piso": "techo es el numero de celdas en las que V03 falla, que es el tope del rescate bruto; piso es el numero de celdas en las que V03 acierta, que es el suelo al que puede llevar el dano maximo",
+          "techo": 757
+        },
+        "0.15": {
+          "aciertos_de_v03": 3692,
+          "aciertos_del_ensamblaje": 3600,
+          "alpha": 0.15,
+          "cambios_de_decision_para_igualar": 92,
+          "cambios_de_decision_para_superar": 93,
+          "corrected_cv": 0.7345389273646016,
+          "corrected_cv_v03": 0.7772114525165721,
+          "dano": 264,
+          "delta": -0.04267252515197051,
+          "lectura": "DIAGNOSTICA_Y_SIN_LECTURA_INFERENCIAL",
+          "neto": -92,
+          "piso": 3692,
+          "pliegues_a_favor": 0,
+          "que_no_se_afirma": "EL_RESCATE_Y_EL_DANO_SON_UN_RECUENTO_DE_CELDAS_Y_NO_SON_COMPARABLES_CON_EL_CORRECTED_CVNI_CON_NINGUN_MACRO_F1 | EL_CORRECTED_CV_DEL_ENSAMBLAJE_SOBRE_EL_OOF_NO_ES_UNA_MEJORA_DE_V03PORQUE_EL_OOF_YA_SE_USO_PARA_ELEGIR_EL_ALPHA_Y_PARA_CUALQUIER_OTRA_ELECCIONLUEGO_ES_UN_NUMERO_OPTIMISTA_Y_NO_PUBLICABLE_COMO_RESULTADO",
+          "rescate": 172,
+          "significado_del_techo_y_del_piso": "techo es el numero de celdas en las que V03 falla, que es el tope del rescate bruto; piso es el numero de celdas en las que V03 acierta, que es el suelo al que puede llevar el dano maximo",
+          "techo": 757
+        }
+      },
+      "declaraciones": {
+        "corrected_cv_optimista": true,
+        "escala": true,
+        "lectura_diagnostica": "DIAGNOSTICA_Y_SIN_LECTURA_INFERENCIAL"
+      },
+      "faltantes": [],
+      "naturaleza": "DESCRIPTIVA; el corrected_cv del ensamblaje sobre el OOF es optimista y no es publicable como resultado",
+      "tolerancia": "seis decimales para el corrected_cv, enteros exactos para los recuentos"
+    },
+    "estado": "CONFIRMADO",
+    "exito": true,
+    "id": "A13",
+    "naturaleza": "CONFIRMAR",
+    "stop": false,
+    "tolerancia": "ocho cifras por alpha, medidas, y las dos declaraciones obligatorias",
+    "traza": ""
+  }
+}

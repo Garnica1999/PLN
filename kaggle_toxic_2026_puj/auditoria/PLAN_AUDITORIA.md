@@ -1,18 +1,18 @@
-# PLAN DE AUDITORIA INTEGRAL Y UNIFICACION - kaggle_toxic_2026_puj
+# PLAN DE AUDITORÍA INTEGRAL Y UNIFICACIÓN - kaggle_toxic_2026_puj
 
-Estado general: EN EJECUCION.
+Estado general: EN EJECUCIÓN.
 Fecha de inicio: 2026-10-02.
-Worktree canonico: `/home/carlos/Git/PLN-v67`, rama `proyecto-kaggle-toxic-2026-p67`.
-Bitacora viva: este documento se actualiza al cerrar cada fase.
+Worktree canónico: `/home/carlos/Git/PLN-v67`, rama `proyecto-kaggle-toxic-2026-p67`.
+Bitácora viva: este documento se actualiza al cerrar cada fase.
 
 ## 1. Objetivo
 
 1. Unificar en el proyecto P67 los contenidos unicos de las 29 worktrees del
    repositorio, sin borrar ni reescribir historia.
-2. Auditar todos los experimentos: anomalias, hiperparametros mal configurados,
-   experimentos sin ejecutar, calibracion, fugas de datos y codigo desconectado.
+2. Auditar todos los experimentos: anomalias, hiperparámetros mal configurados,
+   experimentos sin ejecutar, calibración, fugas de datos y código desconectado.
 3. Declarar y documentar cada experimento en el notebook consolidado
-   `notebooks/10_final_pipeline.ipynb`, en espanol, con la enie y sin simbolos
+   `notebooks/10_final_pipeline.ipynb`, en español, con la enie y sin simbolos
    de otros alfabetos.
 4. Proponer, con literatura publicada, el camino hacia 0.80 de F1 en el
    leaderboard externo, respetando las reglas vigentes.
@@ -31,9 +31,9 @@ Bitacora viva: este documento se actualiza al cerrar cada fase.
 - Un experimento = un script nuevo y completo. Prohibido editar o borrar
   scripts de experimentos anteriores. Prohibido `rm`.
 - No se reescribe historia git ni se hace push sin autorizacion.
-- Codigo en ASCII. Documentos en espanol con acentos y enie, sin simbolos de
+- Codigo en ASCII. Documentos en español con acentos y enie, sin simbolos de
   otros alfabetos ni emojis; verificacion con `tools/verificar_caracteres.py`.
-- Cada subagente escribe su resumen (maximo 20 lineas) en
+- Cada subagente escribe su resumen (maximo 20 líneas) en
   `auditoria/bitacora.md` al terminar.
 
 ## 3. Fases
@@ -43,7 +43,7 @@ Bitacora viva: este documento se actualiza al cerrar cada fase.
 | F0 | Preflight y asegurado del estado sucio | COMPLETADA | commit `1026ff1` |
 | F1 | Unificacion de workspaces en P67 | COMPLETADA | commit `9663afb`, manifiesto 154 filas |
 | F2 | Inventario unificado de experimentos | COMPLETADA | commit `41f8a3f`, 483 experimentos y 376 scripts |
-| F3 | Auditoria por experimento (fugas, hiperparametros, calibracion, vacios, conexion codigo-corrida) | EN CURSO | F3a: escaner estatico, 2165 hallazgos |
+| F3 | Auditoria por experimento (fugas, hiperparámetros, calibración, vacios, conexión código-corrida) | EN CURSO | F3a: escaner estático, 2165 hallazgos |
 | F4 | Correccion de experimentos en vuelo (P83) y re-verificacion | PENDIENTE | por definir |
 | F5 | Notebook consolidado con cada experimento documentado | PENDIENTE | por definir |
 | F6 | Sugerencias hacia 0.80 con literatura publicada | PENDIENTE | por definir |
@@ -54,23 +54,23 @@ Bitacora viva: este documento se actualiza al cerrar cada fase.
 - `auditoria/inventario_experimentos.csv` cubre el 100 por ciento de los
   scripts de `experiments/` y de las filas de `experiments.csv`, con estado y
   evidencia por experimento.
-- Cada hallazgo de la auditoria tiene severidad, evidencia con archivo y
-  linea, y decision: corregido, documentado o descartado con motivo.
+- Cada hallazgo de la auditoría tiene severidad, evidencia con archivo y
+  línea, y decisión: corregido, documentado o descartado con motivo.
 - El notebook consolidado ejecuta sin errores y documenta cada experimento.
 - Las sugerencias hacia 0.80 citan fuentes verificables y distinguen lo
   permitido por las reglas de lo que exigiria cambiarlas.
 - `tools/verificar_caracteres.py` termina con 0 errores.
 
-## 5. Bitacora
+## 5. Bitácora
 
 - 2026-10-02: F0 completada. Estado sucio de P67 (P82 y P83, 187 archivos)
   asegurado en el commit `1026ff1`. Verificado: el verificador oficial de
   caracteres admite acentos y enie (solo persigue alfabetos no latinos).
 - 2026-10-02: F1 en curso. Importados 67 archivos unicos de la rama de
-  auditoria v8 (`audit/`, `reports/audit_*`) y 85 artefactos del rerun
+  auditoría v8 (`audit/`, `reports/audit_*`) y 85 artefactos del rerun
   (`audit/out_p06/`, scripts p06). Copiada la fuente de fastText (commit
   `1142dc4`, 7.2 MB sin `build/`) a `tools/fastText`, ignorada por git como
-  en el diseno original. Manifiesto con 153 filas en
+  en el diseño original. Manifiesto con 153 filas en
   `auditoria/manifiesto_unificacion.csv`. Sin conflictos ni sobrescrituras.
 - 2026-10-02: F1 COMPLETADA. Commit `9663afb` (120 archivos). Verificador
   oficial de caracteres en 0 errores sobre el arbol unificado. Git limpio.
@@ -79,6 +79,6 @@ Bitacora viva: este documento se actualiza al cerrar cada fase.
 - 2026-10-02: F2 COMPLETADA. Commit `41f8a3f`. Inventario: 483 experimentos
   (411 de registro + 72 scripts sin fila), 376 scripts, 43 filas malformadas
   confirmadas (P67 a P77), 277 experimentos sin documentar en el notebook,
-  P78 a P83 sin seccion propia. F3 abierta: auditoria por experimento, con
-  un escaner estatico del fallo de clase "codigo sin conectar" como primera
+  P78 a P83 sin seccion propia. F3 abierta: auditoría por experimento, con
+  un escaner estático del fallo de clase "código sin conectar" como primera
   pieza.

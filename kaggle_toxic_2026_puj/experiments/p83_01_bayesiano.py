@@ -704,6 +704,225 @@ def auditar_evaluaciones_anidadas(codigo: str) -> list[str]:
     return sorted(infracciones)
 
 
+# La defensa permanente contra el fallo de clase dominante del proyecto: funciones
+# definidas, probadas por el humo y SIN NINGUN LLAMADOR fuera del humo. El patron de
+# humo es el mismo del escaner estatico de auditoria/, para que las dos herramientas
+# clasifiquen igual.
+PATRON_HUMO_EN_SCRIPT: Final[re.Pattern[str]] = re.compile(
+    r"humo|caso|verificar|_smoke|test_", re.IGNORECASE
+)
+PATRON_AUXILIAR_HUMO_EN_SCRIPT: Final[re.Pattern[str]] = re.compile(
+    r"humo|caso|smoke|test_", re.IGNORECASE
+)
+NOMBRES_DE_ENTRADA: Final[frozenset[str]] = frozenset({"main", "principal"})
+GANCHOS_DE_FRAMEWORK: Final[frozenset[str]] = frozenset(
+    {"forward", "setUp", "tearDown", "setUpClass", "tearDownClass"}
+)
+
+# El patron visitante de ast.NodeVisitor despacha visit_* y generic_visit por
+# nombre en tiempo de ejecucion: su llamador es el framework y no una llamada
+# sintactica. Sin esta exclusion, la auditoria de funciones sin llamador se
+# denuncia a si misma por los visitantes que ella misma usa.
+PATRON_VISITANTE: Final[re.Pattern[str]] = re.compile(r"^(visit_\w+|generic_visit)$")
+
+# LISTA BLANCA CERRADA Y DECLARADA. Cada entrada dice POR QUE la funcion puede
+# quedarse sin llamador real fuera del humo. Anadir una funcion nueva sin conectar y
+# sin declarar aqui hace fallar la auditoria, que es la defensa que pide el punto 7
+# del encargo: la lista es corta a proposito y no crece por omision.
+FUNCIONES_SIN_LLAMADOR_DECLARADAS: Final[dict[str, str]] = {
+    "reoptimizar_umbral": (
+        "centinela que SIEMPRE lanza; existe para que el conteo de reoptimizaciones "
+        "de A2 tenga un cero auditable y no se llama por diseno, porque llamarla "
+        "seria precisamente la violacion que vigila"
+    ),
+    "verificar_contratos": (
+        "comprobacion del contrato entre capas, ejercitada por el humo de contrato; "
+        "su unico consumidor es casos_de_frontera_contrato"
+    ),
+    "tabla_contratos": (
+        "tabla declarativa del contrato entre capas, consumida por verificar_contratos "
+        "y por el humo de contrato"
+    ),
+    "auditar_propio_script": (
+        "auditoria del propio fichero por AST, ejercitada por el humo de frontera AST"
+    ),
+    "codigo_sin_afirmacion": (
+        "mutacion del pipeline usada por el humo de contrato para probar que la "
+        "verificacion de afirmaciones sabe fallar"
+    ),
+    "afirmar_evaluadas_en_completo": (
+        "verificacion por AST de las veinte afirmaciones en el completo, ejercitada "
+        "por el humo de contrato"
+    ),
+    "identificadores_de_llamadas": (
+        "auxiliar anidado de afirmar_evaluadas_en_el_humo, cuyo ambito coincide con "
+        "el patron de humo"
+    ),
+    "_copia_sintetica_de_control": (
+        "fabrica de codigo de control para el humo de frontera AST"
+    ),
+    "_copia_mutada": (
+        "mutador de codigo para el humo de frontera AST y de contrato"
+    ),
+    "_falla_a3": (
+        "inversion del veredicto de A3 para el humo; no se usa en la corrida"
+    ),
+    "_detecta_fallo": (
+        "auxiliar de caso_detecta, que es una funcion de humo"
+    ),
+    "codigo_salida": (
+        "cierre de la puerta de humo, llamado por modo_humo y por el humo de puerta"
+    ),
+    "contexto_de_ejemplo": (
+        "contexto sintetico minimo del humo; la corrida completa usa los datos reales"
+    ),
+    "contexto_de_humo_medible": (
+        "contexto sintetico con pliegues completos para que el humo MIDA las "
+        "magnitudes de A8, A10, A11, A12, A13, A16, A17 y A19 en vez de inventarlas"
+    ),
+    "_probabilidad_para_humo": (
+        "probabilidades sinteticas del humo; la corrida completa mide sobre el OOF real"
+    ),
+}
+
+
+def auditar_funciones_sin_llamador(codigo: str) -> list[str]:
+    """Detecta funciones definidas y probadas SIN llamador real fuera del humo.
+
+    Clasifica igual que el escaner estatico de auditoria/: un consumidor cuenta si
+    llama al nombre o lo referencia como valor; un consumidor es DE HUMO si algun
+    tramo de su cadena de ambitos coincide con humo, caso, verificar, _smoke o test_;
+    y una funcion cuyo nombre coincide con humo, caso, smoke o test_ se excluye,
+    porque existe precisamente para el modo de humo.
+
+    Args:
+        codigo: fuente Python a auditar.
+
+    Returns:
+        Lista de infracciones, una por funcion sin llamador real y sin declarar.
+    """
+    arbol = ast.parse(codigo)
+    definiciones: list[dict[str, Any]] = []
+    referencias: dict[str, list[tuple[str, ...]]] = {}
+
+    class _Definiciones(ast.NodeVisitor):
+        """Recolecta definiciones con su profundidad de clase."""
+
+        def __init__(self) -> None:
+            self.pila_clases = 0
+
+        def visit_ClassDef(self, nodo: ast.ClassDef) -> None:
+            """Aumenta la profundidad de clase y recorre el cuerpo."""
+            self.pila_clases += 1
+            self.generic_visit(nodo)
+            self.pila_clases -= 1
+
+        def _agregar(self, nodo: Any) -> None:
+            """Registra la definicion y sigue recorriendo su cuerpo."""
+            decoradores = tuple(ast.unparse(decorador) for decorador in nodo.decorator_list)
+            definiciones.append(
+                {
+                    "nombre": nodo.name,
+                    "linea": int(nodo.lineno),
+                    "en_clase": self.pila_clases > 0,
+                    "decoradores": decoradores,
+                }
+            )
+            self.generic_visit(nodo)
+
+        def visit_FunctionDef(self, nodo: ast.FunctionDef) -> None:
+            """Registra una funcion normal."""
+            self._agregar(nodo)
+
+        def visit_AsyncFunctionDef(self, nodo: ast.AsyncFunctionDef) -> None:
+            """Registra una funcion asincrona."""
+            self._agregar(nodo)
+
+    class _Referencias(ast.NodeVisitor):
+        """Recolecta usos de nombres con su cadena de ambitos."""
+
+        def __init__(self) -> None:
+            self.pila: list[str] = []
+
+        def _anotar(self, nombre: str) -> None:
+            referencias.setdefault(nombre, []).append(tuple(self.pila))
+
+        def visit_FunctionDef(self, nodo: ast.FunctionDef) -> None:
+            """Visita una funcion empujando su nombre al ambito del cuerpo."""
+            for decorador in nodo.decorator_list:
+                self.visit(decorador)
+            for sentencia in nodo.body:
+                self.pila.append(nodo.name)
+                self.visit(sentencia)
+                self.pila.pop()
+
+        def visit_AsyncFunctionDef(self, nodo: ast.AsyncFunctionDef) -> None:
+            """Visita una funcion asincrona igual que una normal."""
+            self.visit_FunctionDef(nodo)  # type: ignore[arg-type]
+
+        def visit_ClassDef(self, nodo: ast.ClassDef) -> None:
+            """Visita una clase empujando su nombre al ambito de los metodos."""
+            self.pila.append(nodo.name)
+            for sentencia in nodo.body:
+                self.visit(sentencia)
+            self.pila.pop()
+
+        def visit_Call(self, nodo: ast.Call) -> None:
+            """Registra el nombre llamado y sigue con los argumentos."""
+            if isinstance(nodo.func, ast.Name):
+                self._anotar(nodo.func.id)
+            elif isinstance(nodo.func, ast.Attribute):
+                self._anotar(nodo.func.attr)
+            self.generic_visit(nodo)
+
+        def visit_Name(self, nodo: ast.Name) -> None:
+            """Registra referencias de nombres en contexto de lectura."""
+            if isinstance(nodo.ctx, ast.Load):
+                self._anotar(nodo.id)
+            self.generic_visit(nodo)
+
+    _Definiciones().visit(arbol)
+    _Referencias().visit(arbol)
+    infracciones: list[str] = []
+    for definicion in definiciones:
+        nombre = str(definicion["nombre"])
+        if nombre in NOMBRES_DE_ENTRADA:
+            continue
+        if nombre.startswith("__") and nombre.endswith("__"):
+            continue
+        if any("fixture" in decorador.lower() for decorador in definicion["decoradores"]):
+            continue
+        if definicion["en_clase"] and nombre in GANCHOS_DE_FRAMEWORK:
+            continue
+        if definicion["en_clase"] and PATRON_VISITANTE.match(nombre):
+            continue
+        if PATRON_AUXILIAR_HUMO_EN_SCRIPT.search(nombre):
+            continue
+        consumidores: set[tuple[str, ...]] = set()
+        for cadena in referencias.get(nombre, []):
+            if cadena and cadena[-1] == nombre:
+                continue
+            if not cadena:
+                cadena = ("modulo",)
+            consumidores.add(cadena)
+        reales = [
+            cadena
+            for cadena in consumidores
+            if not any(PATRON_HUMO_EN_SCRIPT.search(tramo) for tramo in cadena)
+        ]
+        if reales:
+            continue
+        if nombre in FUNCIONES_SIN_LLAMADOR_DECLARADAS:
+            continue
+        consumidores_texto = sorted(".".join(cadena) for cadena in consumidores)
+        infracciones.append(
+            f"linea {definicion['linea']}: la funcion {nombre!r} no tiene ningun llamador "
+            f"real fuera del humo (consumidores: {consumidores_texto}); conectela al camino "
+            "real o declarala en FUNCIONES_SIN_LLAMADOR_DECLARADAS con su razon"
+        )
+    return sorted(infracciones)
+
+
 def auditar_propio_script() -> tuple[bool, dict[str, Any]]:
     """Audita el codigo de este propio fichero.
 
@@ -714,16 +933,25 @@ def auditar_propio_script() -> tuple[bool, dict[str, Any]]:
     infracciones = auditar_accesos_por_literal(codigo)
     booleanos = auditar_booleanos_literales(codigo)
     anidadas = auditar_evaluaciones_anidadas(codigo)
-    return (not infracciones) and (not booleanos) and (not anidadas), {
-        "fichero": Path(__file__).name,
-        "claves_vigiladas": sorted(CLAVES_FISICAS),
-        "n_infracciones_de_literal": len(infracciones),
-        "infracciones_de_literal": infracciones,
-        "n_booleanos_literales": len(booleanos),
-        "booleanos_literales": booleanos,
-        "n_evaluaciones_con_tupla_anidada": len(anidadas),
-        "evaluaciones_con_tupla_anidada": anidadas,
-    }
+    desconectadas = auditar_funciones_sin_llamador(codigo)
+    return (
+        (not infracciones) and (not booleanos) and (not anidadas) and (not desconectadas),
+        {
+            "fichero": Path(__file__).name,
+            "claves_vigiladas": sorted(CLAVES_FISICAS),
+            "n_infracciones_de_literal": len(infracciones),
+            "infracciones_de_literal": infracciones,
+            "n_booleanos_literales": len(booleanos),
+            "booleanos_literales": booleanos,
+            "n_evaluaciones_con_tupla_anidada": len(anidadas),
+            "evaluaciones_con_tupla_anidada": anidadas,
+            "n_funciones_sin_llamador": len(desconectadas),
+            "funciones_sin_llamador": desconectadas,
+            "lista_blanca_de_funciones_sin_llamador": sorted(
+                FUNCIONES_SIN_LLAMADOR_DECLARADAS
+            ),
+        },
+    )
 
 
 def codigo_sin_afirmacion(codigo: str, afirmacion: str) -> str:
@@ -1096,10 +1324,16 @@ BLOQUES: Final[dict[str, tuple[int, str]]] = {
     "A19": (19, "el F1 del miembro se publica como descriptiva, sin lectura inferencial"),
 }
 
-# LAS CUATRO QUE NO LLEVAN MARCA DE STOP. A8 y A9 son mediciones de la pregunta 1 que no
-# pueden fallar por si solas, A12 y A13 son descriptivas por construccion y A15 es una
-# medicion de alcance. Se declara aqui y no por omision.
-AFIRMACIONES_SIN_STOP: Final[frozenset[str]] = frozenset({"A8", "A12", "A13", "A15"})
+# LAS SIETE QUE NO LLEVAN MARCA DE STOP. MANDA EL PRE-REGISTRO. La tabla de su
+# seccion 6 y el criterio de parada de su seccion 13 declaran siete: A8, A9, A12,
+# A13, A15, A16 y A17. La linea 484 del propio pre-registro dice "cuatro", en
+# contradiccion con su tabla, y esa contradiccion se declara aqui en vez de
+# esconderla: se sigue la tabla y el criterio de parada, que son el cuerpo de la
+# regla, y quedan SIN STOP las siete de medicion y descriptivas. Las trece
+# restantes, A0 a A7, A10, A11, A14 y A18 a A19, si llevan STOP.
+AFIRMACIONES_SIN_STOP: Final[frozenset[str]] = frozenset(
+    {"A8", "A9", "A12", "A13", "A15", "A16", "A17"}
+)
 AFIRMACIONES_STOP: Final[frozenset[str]] = frozenset(BLOQUES) - AFIRMACIONES_SIN_STOP
 
 
@@ -1295,9 +1529,7 @@ class Progreso:
             escribir_unico(ruta, a_json_legible(a_jsonable(carga)))
         except ErrorEscritura as error:
             self.escrituras_fallidas += 1
-            self.avisos.append(
-                {"tipo": "escritura_parcial", "ruta": str(ruta), "causa": str(error)}
-            )
+            self.avisar("escritura_parcial", f"{ruta}: {error}")
             return None
         return ruta
 
@@ -1881,6 +2113,11 @@ def cargar_datos_de_desarrollo(progreso: Progreso) -> ContextoDatos:
     pliegues = pliegues_corregidos(desarrollo, grupos_completos[indices_dev])
     guarda = GuardaLectura()
     guarda.marcar(indices_dev)
+    # La guarda de lectura se USA en el camino real, no solo se define. comprobar
+    # exige que las filas leidas caigan dentro del marcador vigente; hoy el marcador
+    # son las propias filas de desarrollo, luego la llamada es la que deja el
+    # contrato armado para que cualquier lectura futura fuera del marcador levante.
+    guarda.comprobar(indices_dev, "filas de desarrollo")
     y = desarrollo[list(CONFIG["etiquetas"])].to_numpy().astype(np.int64)
     return ContextoDatos(
         textos=desarrollo["text"].tolist(),
@@ -2267,13 +2504,18 @@ class InstrumentoSeleccion:
         """
         self.permitidos = {int(i) for i in np.asarray(indices, dtype=np.int64).ravel()}
 
-    def registrar(self, filas: np.ndarray, umbral: float, n_columnas: int) -> None:
+    def registrar(
+        self, filas: np.ndarray, umbral: float, n_columnas: int, pliegue: int = -1
+    ) -> None:
         """Registra una llamada al selector.
 
         Args:
             filas: indices de fila usados.
             umbral: umbral aplicado.
             n_columnas: columnas resultantes.
+            pliegue: numero de pliegue de la llamada. Hace falta para publicar la
+                dimension POR PLIEGUE que A17 exige; -1 significa que el llamante no
+                lo declaro y la dimension no se puede atribuir a ningun pliegue.
 
         Returns:
             Nada.
@@ -2283,6 +2525,7 @@ class InstrumentoSeleccion:
                 "n_filas": int(len(filas)),
                 "umbral": float(umbral),
                 "n_columnas": int(n_columnas),
+                "pliegue": int(pliegue),
                 "filas_fuera_de_lo_permitido": int(
                     len({int(i) for i in np.asarray(filas, dtype=np.int64).ravel()} - self.permitidos)
                 ),
@@ -2907,6 +3150,10 @@ def reproducir_liston(
 ) -> dict[str, Any]:
     """Reproduce a seis decimales las cifras publicadas de v03_cal.
 
+    Devuelve ademas el log-loss macro y el ECE macro con los nombres que usa
+    comparar_contra_el_liston, para que la comparacion de no inferioridad se pueda
+    aplicar de verdad y no quede en codigo sin llamador.
+
     Args:
         proba_canonica: probabilidades del OOF canonico.
         verdad_canonica: etiquetas del OOF canonico.
@@ -2921,15 +3168,27 @@ def reproducir_liston(
     logloss = log_loss_recortado(matriz, verdad_canonica, CONFIG["recorte_log_loss"])
     pendientes = pendientes_de_calibracion(matriz, verdad_canonica)
     medidas = [pendientes["pendientes"][e] for e in ETIQUETAS]
+    ece_macro = float(
+        np.mean(
+            [
+                curva_de_calibracion(
+                    matriz[:, k], verdad_canonica[:, k], CONFIG["bins_calibracion"]
+                )["area_entre_curva_y_diagonal"]
+                for k in range(len(ETIQUETAS))
+            ]
+        )
+    )
     return {
         "brier_macro": float(brier),
         "brier_publicado": BRIER_V03_CAL_PUBLICADO,
         "brier_diferencia": float(abs(brier - BRIER_V03_CAL_PUBLICADO)),
+        "log_loss_macro": logloss["log_loss_macro_recortado"],
         "log_loss_macro_recortado": logloss["log_loss_macro_recortado"],
         "log_loss_publicado": LOG_LOSS_V03_CAL_PUBLICADO,
         "log_loss_diferencia": float(
             abs(logloss["log_loss_macro_recortado"] - LOG_LOSS_V03_CAL_PUBLICADO)
         ),
+        "ece_macro": ece_macro,
         "pendientes": pendientes["pendientes"],
         "pendientes_publicadas": dict(zip(ETIQUETAS, PENDIENTES_V03_CAL_PUBLICADAS, strict=True)),
         "pendientes_maxima_diferencia": float(
@@ -2937,6 +3196,13 @@ def reproducir_liston(
         ),
         "matriz_calibrada": matriz,
         "tolerancia": TOLERANCIA_REPRODUCCION_LISTON,
+        "reproducido_dentro_de_tolerancia": bool(
+            abs(brier - BRIER_V03_CAL_PUBLICADO) <= TOLERANCIA_REPRODUCCION_LISTON
+            and abs(logloss["log_loss_macro_recortado"] - LOG_LOSS_V03_CAL_PUBLICADO)
+            <= TOLERANCIA_REPRODUCCION_LISTON
+            and max(abs(a - b) for a, b in zip(medidas, PENDIENTES_V03_CAL_PUBLICADAS, strict=True))
+            <= TOLERANCIA_REPRODUCCION_LISTON
+        ),
         "origen": "pares de Platt CONGELADOS de reports/p76_calibracion.json aplicados al OOF canonico, sin reejecutar P76",
     }
 
@@ -3395,32 +3661,32 @@ def afirmacion_a9(curvas: dict[str, Any]) -> dict[str, Any]:
 
 
 def afirmacion_a10(
-    bayes: dict[str, float],
+    bayes: dict[str, dict[str, float]],
     control_v03: dict[str, float],
     control_completo: float,
 ) -> dict[str, Any]:
     """A10. Cobertura y anchura, y el control degenerado de V03.
 
     Args:
-        bayes: cobertura y anchura del intervalo bayesiano.
+        bayes: cobertura y anchura POR BRAZO, con las claves M1 y M2.
         control_v03: cobertura del intervalo de anchura cero de V03.
-        control_completo: cobertura del intervalo completo [0, 1].
+        control_completo: cobertura MEDIDA del intervalo completo [0, 1].
 
     Returns:
         Comprobacion con el detalle.
     """
     claves = ("cobertura", "anchura_media_normalizada", "cobertura_menos_pesada_por_anchura")
-    comprobaciones = {
-        f"el_bayesiano_publica_{clave}": clave in bayes for clave in claves
+    comprobaciones: dict[str, Any] = {
+        "los_dos_brazos_estan_medidos": set(bayes) >= {"M1", "M2"}
     }
-    comprobaciones.update(
-        {
-            f"el_control_v03_publica_{clave}": clave in control_v03 for clave in claves
-        }
-    )
+    for brazo, valores in sorted(bayes.items()):
+        for clave in claves:
+            comprobaciones[f"{brazo}_publica_{clave}"] = clave in valores
+    for clave in claves:
+        comprobaciones[f"el_control_v03_publica_{clave}"] = clave in control_v03
     comprobaciones["la_cobertura_del_intervalo_completo_es_1"] = float(control_completo) == 1.0
     detalle = {
-        "intervalo_bayesiano": bayes,
+        "intervalo_bayesiano_por_brazo": bayes,
         "control_v03_anchura_cero": control_v03,
         "control_intervalo_completo_0_1": float(control_completo),
         "por_que_ambos_extremos": (
@@ -3543,7 +3809,11 @@ def afirmacion_a13(configuraciones: dict[str, Any], declaraciones: dict[str, Any
         "el_alpha_primario_esta": "0.10" in configuraciones,
         "la_declaracion_de_la_escala_esta": declaraciones.get("escala") is True,
         "la_declaracion_del_corrected_cv_esta": declaraciones.get("corrected_cv_optimista") is True,
-        "la_lectura_diagnostica_esta_publicada": "diagnostica" in configuraciones or True,
+        "la_lectura_diagnostica_esta_publicada": bool(configuraciones)
+        and all(
+            valores.get("lectura") == LITERAL_DIAGNOSTICA
+            for valores in configuraciones.values()
+        ),
     }
     detalle = {
         "configuraciones": configuraciones,
@@ -3551,6 +3821,7 @@ def afirmacion_a13(configuraciones: dict[str, Any], declaraciones: dict[str, Any
         "alpha_primario": CONFIG["alpha_ensamblaje_primario"],
         "faltantes": faltantes,
         "tolerancia": "seis decimales para el corrected_cv, enteros exactos para los recuentos",
+        "naturaleza": "DESCRIPTIVA; el corrected_cv del ensamblaje sobre el OOF es optimista y no es publicable como resultado",
         "comprobaciones": comprobaciones,
     }
     return todo_verdadero(comprobaciones, "A13"), detalle
@@ -3565,6 +3836,7 @@ def afirmacion_a14(
     filas_alpha: np.ndarray,
     deteccion_de_la_mutacion: bool,
     ajustes_sobre_el_oof: int,
+    registros_del_instrumento: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """A14. El calibrador se ajusta en internal, verificado por contadores y por mutacion.
 
@@ -3577,6 +3849,10 @@ def afirmacion_a14(
         filas_alpha: filas internas de la decision del alpha.
         deteccion_de_la_mutacion: si la mutacion fue detectada.
         ajustes_sobre_el_oof: contador de ajustes sobre el OOF completo.
+        registros_del_instrumento: instantanea con llamadas_calibrador y llamadas_alpha,
+            cada registro con sus filas y sus permitidos propios. Si falta, las dos
+            comprobaciones de solapamiento caen al modo de conjuntos, que es el unico
+            que los casos de humo sinteticos pueden ejercitar sin una corrida.
 
     Returns:
         Comprobacion con el detalle.
@@ -3631,6 +3907,52 @@ def afirmacion_a14(
     ajustes_fuera = int(instrumentacion.get("ajustes_fuera_de_lo_permitido", 0))
     ajustes_sobre_filas_de_evaluacion = int(instrumentacion["ajustes_que_tocan_el_oof"])
     interseccion = internas & externas
+    # LA MEDICION QUE MANDA ES REGISTRO CONTRA REGISTRO, NO CONJUNTO CONTRA CONJUNTO.
+    # Los atributos vivos del instrumento solo guardan la ULTIMA de las veinticinco
+    # combinaciones, luego comparar la union de las filas de calibracion contra la
+    # union del outer_validation compara una combinacion con otra y produce un
+    # solapamiento que ninguna llamada cometio. Cada registro guarda sus propias
+    # filas, su propio permitted y las filas de evaluacion de SU combinacion, y las
+    # intersecciones se calculan llamada por llamada. Un registro que no declara con
+    # que evaluacion se compara no puede acreditar que no la toco, luego cuenta como
+    # fuga y no como limpio.
+    registros = registros_del_instrumento or {}
+    registros_calibrador = list(registros.get("llamadas_calibrador", []))
+    registros_alpha = list(registros.get("llamadas_alpha", []))
+    solapamientos_calibrador: list[int] = []
+    registros_calibrador_sin_evaluacion = 0
+    for registro in registros_calibrador:
+        if "filas_de_evaluacion_de_esta_combinacion" not in registro:
+            registros_calibrador_sin_evaluacion += 1
+            continue
+        usadas = {int(i) for i in registro.get("filas", [])}
+        evaluadas = {
+            int(i)
+            for i in registro.get("filas_de_evaluacion_de_esta_combinacion") or []
+        }
+        solapamientos_calibrador.append(len(usadas & evaluadas))
+    if registros_calibrador:
+        no_solapan_registro_a_registro = (
+            registros_calibrador_sin_evaluacion == 0
+            and all(comun == 0 for comun in solapamientos_calibrador)
+        )
+    else:
+        no_solapan_registro_a_registro = not interseccion
+    intersecciones_alpha: list[int] = []
+    registros_alpha_sin_filas = 0
+    for registro in registros_alpha:
+        usadas_alpha = {int(i) for i in registro.get("filas", [])}
+        if not usadas_alpha:
+            registros_alpha_sin_filas += 1
+        permitidas_cal = {int(i) for i in registro.get("permitidos_calibrador", [])}
+        intersecciones_alpha.append(len(usadas_alpha & permitidas_cal))
+    if registros_alpha:
+        alpha_limpio_registro_a_registro = (
+            registros_alpha_sin_filas == 0
+            and all(comun == 0 for comun in intersecciones_alpha)
+        )
+    else:
+        alpha_limpio_registro_a_registro = not interseccion_alpha_calibrador
     comprobaciones = {
         "el_numero_de_ajustes_es_el_esperado": int(n_ajustes_calibrador) == int(n_ajustes_esperados),
         "el_calibrador_solo_uso_filas_internas": bool(calibrador_solo_interno),
@@ -3639,8 +3961,8 @@ def afirmacion_a14(
         "cero_ajustes_sobre_el_oof_completo": int(ajustes_sobre_el_oof) == 0,
         "cero_ajustes_que_toquen_filas_de_evaluacion": bool(nadie_toco_el_oof),
         "cero_ajustes_fuera_de_lo_permitido": ajustes_fuera == 0,
-        "las_filas_internas_y_externas_no_se_solapan": not interseccion,
-        "el_alpha_no_usa_filas_del_calibrador": not interseccion_alpha_calibrador,
+        "las_filas_internas_y_externas_no_se_solapan": bool(no_solapan_registro_a_registro),
+        "el_alpha_no_usa_filas_del_calibrador": bool(alpha_limpio_registro_a_registro),
         "el_alpha_y_el_calibrador_no_se_solapan": comunes_alpha_calibrador == 0,
         "la_comprobacion_sabe_fallar_por_mutacion": bool(deteccion_de_la_mutacion),
         "hubo_filas_internas": len(internas) > 0,
@@ -3661,6 +3983,20 @@ def afirmacion_a14(
         "n_filas_del_outer_validation": len(externas),
         "interseccion_interna_externa": len(interseccion),
         "n_filas_internas_de_la_decision_del_alpha": len(alpha_internas),
+        "registros_contra_registro": {
+            "n_registros_del_calibrador": len(registros_calibrador),
+            "n_registros_del_alpha": len(registros_alpha),
+            "solapamiento_por_registro_del_calibrador": solapamientos_calibrador,
+            "registros_del_calibrador_sin_filas_de_evaluacion": registros_calibrador_sin_evaluacion,
+            "interseccion_por_registro_del_alpha_con_su_calibrador": intersecciones_alpha,
+            "registros_del_alpha_sin_filas_declaradas": registros_alpha_sin_filas,
+            "por_que": (
+                "los atributos vivos solo guardan la ultima combinacion; la unica "
+                "comparacion que la regla 3.5 protege es la de cada registro consigo "
+                "mismo, y por eso las dos comprobaciones de solapamiento se calculan "
+                "aqui llamada por llamada"
+            ),
+        },
         "ajustes_sobre_el_oof_completo": int(ajustes_sobre_el_oof),
         "ajustes_que_tocan_filas_de_evaluacion": ajustes_sobre_filas_de_evaluacion,
         "ajustes_sin_declarar_filas": int(instrumentacion["llamadas_al_alpha_sin_declarar_filas"]),
@@ -3729,22 +4065,46 @@ def afirmacion_a15(presentes: dict[str, bool]) -> dict[str, Any]:
 def afirmacion_a16(rejillas: dict[str, Any], ningun_valor_elegido: bool) -> dict[str, Any]:
     """A16. La rejilla de alpha_0 y la sensibilidad de umbral, publicadas.
 
+    El texto del metodo NO vive dentro de las rejillas: si viviera en la clave
+    __texto__ de la rejilla de alpha_0, el recuento de valores de la rejilla seria
+    cuatro en vez de tres y una rejilla de tres no se podria distinguir de una con
+    una clave de mas. Se recibe aparte y se comprueba aparte.
+
     Args:
-        rejillas: cifras de las dos rejillas.
+        rejillas: cifras de las dos rejillas, medidas, mas el texto y los valores
+            elegidos.
         ningun_valor_elegido: que no se publica ningun valor como el mejor.
 
     Returns:
         Comprobacion con el detalle.
     """
+    alpha_0 = rejillas.get("alpha_0", {})
+    umbral = rejillas.get("umbral", {})
+    valores_elegidos = rejillas.get("valores_elegidos", [])
     comprobaciones = {
-        "la_rejilla_de_alpha_0_tiene_tres_valores": len(rejillas.get("alpha_0", {})) == 3,
-        "la_rejilla_de_umbral_tiene_tres_valores": len(rejillas.get("umbral", {})) == 3,
-        "las_dos_rejillas_estan_publicadas": bool(rejillas.get("alpha_0")) and bool(rejillas.get("umbral")),
-        "ningun_valor_se_publica_como_el_mejor": bool(ningun_valor_elegido),
+        "la_rejilla_de_alpha_0_tiene_tres_valores": len(alpha_0) == 3,
+        "la_rejilla_de_umbral_tiene_tres_valores": len(umbral) == 3,
+        "las_dos_rejillas_estan_publicadas": bool(alpha_0) and bool(umbral),
+        "el_texto_del_metodo_no_contamina_el_recuento": (
+            LITERAL_EFECTIVOS_METODO in rejillas.get("texto_efectivos_metodo", "")
+            and "texto_efectivos_metodo" not in alpha_0
+            and "texto_efectivos_metodo" not in umbral
+        ),
+        "ningun_valor_se_publica_como_el_mejor": bool(ningun_valor_elegido)
+        and not valores_elegidos,
+        "las_magnitudes_de_alpha_0_estan_medidas": all(
+            ("n_efectivos_total" in datos and "n_activas_total" in datos and "log_loss_macro" in datos)
+            for datos in alpha_0.values()
+        ),
+        "las_magnitudes_del_umbral_estan_medidas": all(
+            ("log_loss_macro" in datos and "dimension_media" in datos)
+            for datos in umbral.values()
+        ),
     }
     detalle = {
         "rejillas": rejillas,
         "ningun_valor_elegido": bool(ningun_valor_elegido),
+        "valores_elegidos": valores_elegidos,
         "por_que_no_se_elige": (
             "elegir el mejor valor de la rejilla sobre el OOF seria seleccion sobre el OOF, "
             "que es la contamination que A14 prohibe"
@@ -3756,15 +4116,23 @@ def afirmacion_a16(rejillas: dict[str, Any], ningun_valor_elegido: bool) -> dict
 
 
 def afirmacion_a17(
-    por_pliegue: dict[str, Any], filas_inner_train: int, l1_fuera: int, determinada: bool
+    por_pliegue: dict[str, Any],
+    filas_inner_train: int,
+    l1_fuera: int,
+    determinada: bool,
+    declaracion_de_no_determinacion: str = "",
 ) -> dict[str, Any]:
     """A17. Dimension seleccionada por pliegue, y la salvedad de sesgo.
 
     Args:
         por_pliegue: dimension por pliegue y umbral.
-        filas_inner_train: filas del inner_train.
-        l1_fuera: numero de variables que la regresion L1 con C 4.0 dejo fuera.
+        filas_inner_train: filas del inner_train, medidas en la corrida.
+        l1_fuera: numero de variables que la L1 con C 4.0 dejo fuera, medido en la corrida.
         determinada: si la regresion esta determinada en todos los pliegues.
+        declaracion_de_no_determinacion: texto que declara, cuando la hay, que la
+            regresion no esta determinada. El pre-registro exige que se DIGA, no que
+            se oculte; por eso la comprobacion pasa si o bien todas las dimensiones
+            son menores que las filas, o bien la no determinacion esta declarada.
 
     Returns:
         Comprobacion con el detalle.
@@ -3775,7 +4143,10 @@ def afirmacion_a17(
     ]
     comprobaciones = {
         "hay_dimensiones_publicadas": len(dimensiones) > 0,
-        "la_dimension_es_menor_que_las_filas_en_todos_los_pliegues": not no_determinada,
+        "la_dimension_es_menor_que_las_filas_o_la_no_determinacion_esta_declarada": (
+            not no_determinada
+        )
+        or bool(declaracion_de_no_determinacion),
         "la_comparacion_con_la_l1_esta_publicada": l1_fuera >= 0,
         "la_salvedad_de_sesgo_esta_declarada": LITERAL_SESGO_SELECCION.startswith("LA_SELECCION"),
     }
@@ -3786,10 +4157,11 @@ def afirmacion_a17(
         "media": float(np.mean(dimensiones)) if dimensiones else 0.0,
         "filas_del_inner_train": int(filas_inner_train),
         "pliegues_no_determinados": no_determinada,
+        "declaracion_de_no_determinacion": declaracion_de_no_determinacion,
         "regresion_determinada": bool(determinada),
         "referencia_l1_c4": {
             "variables_dejadas_por_las_c4": int(l1_fuera),
-            "origen": "dato ya medido en el proyecto, L1 con C igual a 4.0",
+            "origen": "medida en la corrida con un ajuste L1 C igual a 4.0 sobre el inner_train del pliegue 0",
             "f1": LOGISTICA_L1_C4,
             "ic_pareado": list(LOGISTICA_L1_C4_IC),
             "ic_contiene_el_cero": LOGISTICA_L1_C4_IC[0] <= 0.0 <= LOGISTICA_L1_C4_IC[1],
@@ -3879,6 +4251,495 @@ def afirmacion_a19(texto: str, f1_del_miembro: dict[str, Any]) -> dict[str, Any]
         "motivo_de_parada": "el F1 se ha usado como criterio",
     }
     return todo_verdadero(comprobaciones, "A19"), detalle
+
+
+# =============================================================================
+# SECCION 13B: MEDICIONES DE LAS AFIRMACIONES, SOBRE OBJETOS REALES
+#
+# POR QUE ESTA SECCION EXISTE. A10, A11, A12, A13, A14, A16, A17 y A19 llegaban a
+# sus comprobaciones con numeros fabricados en el propio caso: un 1.0 literal, ceros
+# escritos a mano, un corrected_cv inventado, dimensiones de cien columnas y un F1
+# fijo de 0.60. Una afirmacion que se cumple con un numero que no se ha medido no
+# afirma nada. Aqui viven las funciones que MIDEN cada magnitud, y las usan tanto la
+# corrida completa como los casos de humo, de modo que los casos de humo ejercitan
+# el mismo codigo que la corrida y no una copia con constantes.
+# =============================================================================
+
+
+def _auc_de_error_de_v03(probabilidad: np.ndarray, error: np.ndarray) -> float:
+    """AUC de una probabilidad como predictor del error de V03.
+
+    Se calcula con el estadistico de rangos de Mann-Whitney, sin depender de
+    sklearn para una formula cerrada. Con una sola clase presente no hay AUC que
+    medir y se devuelve 0.5, que es el valor convencional Y SE DECLARA en el
+    detalle; no es un numero medido y por eso no se puede leer como senal.
+
+    Args:
+        probabilidad: probabilidad del miembro, aplanada.
+        error: indicador binario de error de V03, aplanado.
+
+    Returns:
+        El AUC entre 0.0 y 1.0.
+    """
+    puntuaciones = np.asarray(probabilidad, dtype=np.float64).ravel()
+    positivos = np.asarray(error, dtype=bool).ravel()
+    n_pos = int(positivos.sum())
+    n_neg = int(positivos.size - n_pos)
+    if n_pos == 0 or n_neg == 0:
+        return 0.5
+    orden = stats.rankdata(puntuaciones)
+    suma_pos = float(orden[positivos].sum())
+    return (suma_pos - n_pos * (n_pos + 1) / 2.0) / (n_pos * n_neg)
+
+
+def medir_complementariedad(
+    proba_miembro: np.ndarray,
+    proba_v03: np.ndarray,
+    verdad: np.ndarray,
+    umbrales: Sequence[float] | np.ndarray,
+) -> dict[str, Any]:
+    """Las cuatro medidas de complementariedad de A12, sobre las filas que recibe.
+
+    Args:
+        proba_miembro: probabilidades OOF del miembro.
+        proba_v03: probabilidades canonicas de V03 de las mismas filas.
+        verdad: etiquetas de las mismas filas.
+        umbrales: los tres umbrales congelados de V03.
+
+    Returns:
+        Diccionario con AUC del error de V03, acuerdo, matriz de interseccion y
+        diferencias por etiqueta, todas medidas.
+
+    Raises:
+        AssertionError: si las formas no coinciden o no hay filas.
+    """
+    miembro = np.asarray(proba_miembro, dtype=np.float64)
+    v03 = np.asarray(proba_v03, dtype=np.float64)
+    y = np.asarray(verdad, dtype=np.int64)
+    if miembro.shape != v03.shape or miembro.shape != y.shape:
+        raise AssertionError(f"formas {miembro.shape}, {v03.shape} y {y.shape} no coinciden")
+    if y.size == 0:
+        raise AssertionError("no hay filas para medir la complementariedad")
+    pred_miembro = binarizar_con_umbrales_congelados(miembro, umbrales)
+    pred_v03 = binarizar_con_umbrales_congelados(v03, umbrales)
+    acierta_miembro = pred_miembro == y
+    acierta_v03 = pred_v03 == y
+    error_v03 = ~acierta_v03
+    por_etiqueta: dict[str, Any] = {}
+    for k, etiqueta in enumerate(ETIQUETAS):
+        por_etiqueta[etiqueta] = {
+            "auc_del_error_de_v03": float(
+                _auc_de_error_de_v03(miembro[:, k], error_v03[:, k])
+            ),
+            "acuerdo_con_v03": float((pred_miembro[:, k] == pred_v03[:, k]).mean()),
+            "miembro_acierta_y_v03_falla": int(
+                (acierta_miembro[:, k] & error_v03[:, k]).sum()
+            ),
+            "v03_acierta_y_miembro_falla": int(
+                (acierta_v03[:, k] & ~acierta_miembro[:, k]).sum()
+            ),
+        }
+    return {
+        "auc_del_error_de_v03": {
+            "global": float(_auc_de_error_de_v03(miembro, error_v03)),
+            "por_etiqueta": {
+                etiqueta: datos["auc_del_error_de_v03"]
+                for etiqueta, datos in por_etiqueta.items()
+            },
+        },
+        "acuerdo_con_v03": {
+            "global": float((pred_miembro == pred_v03).mean()),
+            "por_etiqueta": {
+                etiqueta: datos["acuerdo_con_v03"]
+                for etiqueta, datos in por_etiqueta.items()
+            },
+        },
+        "matriz_de_interseccion": {
+            "global": {
+                "ambos_aciertan": int((acierta_miembro & acierta_v03).sum()),
+                "solo_miembro": int((acierta_miembro & error_v03).sum()),
+                "solo_v03": int((acierta_v03 & ~acierta_miembro).sum()),
+                "ambos_fallan": int((~acierta_miembro & error_v03).sum()),
+            },
+            "por_etiqueta": {
+                etiqueta: {
+                    "miembro_acierta_y_v03_falla": datos["miembro_acierta_y_v03_falla"],
+                    "v03_acierta_y_miembro_falla": datos["v03_acierta_y_miembro_falla"],
+                }
+                for etiqueta, datos in por_etiqueta.items()
+            },
+        },
+        "diferencias_por_etiqueta": por_etiqueta,
+        "n_unidades_tweet_etiqueta": int(y.size),
+        "origen": "medido sobre las probabilidades recibidas, no sobre constantes",
+    }
+
+
+def medir_ensamblaje(
+    alpha: float,
+    proba_miembro: np.ndarray,
+    proba_v03: np.ndarray,
+    verdad: np.ndarray,
+    umbrales: Sequence[float] | np.ndarray,
+    pliegues: np.ndarray,
+) -> dict[str, Any]:
+    """El rescate y el dano del ensamblaje para UN alpha, medidos sobre el OOF.
+
+    Toda cifra sale de las predicciones que se le pasan. La mezcla es la de la
+    regla 3.5, el corrected_cv se calcula con los umbrales congelados y el rescate
+    y el dano son recuentos de celdas tweet-etiqueta, que NO son comparables con el
+    corrected_cv y se declaran como tales.
+
+    Args:
+        alpha: peso de la referencia V03 en la mezcla.
+        proba_miembro: probabilidades OOF del miembro bayesiano.
+        proba_v03: probabilidades canonicas de V03 de las mismas filas.
+        verdad: etiquetas de las mismas filas.
+        umbrales: los tres umbrales congelados.
+        pliegues: pliegue de cada fila, para el recuento de pliegues a favor.
+
+    Returns:
+        Diccionario con las ocho cifras que A13 publica por alpha.
+
+    Raises:
+        AssertionError: si las formas no coinciden o no hay filas.
+    """
+    peso = float(alpha)
+    miembro = np.asarray(proba_miembro, dtype=np.float64)
+    v03 = np.asarray(proba_v03, dtype=np.float64)
+    y = np.asarray(verdad, dtype=np.int64)
+    asignacion = np.asarray(pliegues)
+    if miembro.shape != v03.shape or miembro.shape != y.shape:
+        raise AssertionError(f"formas {miembro.shape}, {v03.shape} y {y.shape} no coinciden")
+    if asignacion.shape[0] != y.shape[0]:
+        raise AssertionError("el vector de pliegues no tiene una entrada por fila")
+    mezcla = (1.0 - peso) * miembro + peso * v03
+    pred_mezcla = binarizar_con_umbrales_congelados(mezcla, umbrales)
+    pred_v03 = binarizar_con_umbrales_congelados(v03, umbrales)
+    acierta_mezcla = pred_mezcla == y
+    acierta_v03 = pred_v03 == y
+    metricas_mezcla = metricas_multietiqueta(y, pred_mezcla)
+    metricas_v03 = metricas_multietiqueta(y, pred_v03)
+    corrected_mezcla = float(metricas_mezcla["f1_media_columnas"])
+    corrected_v03 = float(metricas_v03["f1_media_columnas"])
+    a_favor = 0
+    for numero in np.unique(asignacion):
+        mascara = asignacion == numero
+        f1_mezcla = float(
+            metricas_multietiqueta(y[mascara], pred_mezcla[mascara])["f1_media_columnas"]
+        )
+        f1_v03 = float(
+            metricas_multietiqueta(y[mascara], pred_v03[mascara])["f1_media_columnas"]
+        )
+        a_favor += int(f1_mezcla > f1_v03)
+    rescate = int((acierta_mezcla & ~acierta_v03).sum())
+    dano = int((~acierta_mezcla & acierta_v03).sum())
+    aciertos_mezcla = int(acierta_mezcla.sum())
+    aciertos_v03 = int(acierta_v03.sum())
+    return {
+        "alpha": peso,
+        "corrected_cv": corrected_mezcla,
+        "corrected_cv_v03": corrected_v03,
+        "delta": corrected_mezcla - corrected_v03,
+        "pliegues_a_favor": int(a_favor),
+        "rescate": rescate,
+        "dano": dano,
+        "neto": rescate - dano,
+        "techo": int((~acierta_v03).sum()),
+        "piso": aciertos_v03,
+        "aciertos_del_ensamblaje": aciertos_mezcla,
+        "aciertos_de_v03": aciertos_v03,
+        "cambios_de_decision_para_igualar": max(0, aciertos_v03 - aciertos_mezcla),
+        "cambios_de_decision_para_superar": max(0, aciertos_v03 - aciertos_mezcla + 1),
+        "significado_del_techo_y_del_piso": (
+            "techo es el numero de celdas en las que V03 falla, que es el tope del "
+            "rescate bruto; piso es el numero de celdas en las que V03 acierta, que "
+            "es el suelo al que puede llevar el dano maximo"
+        ),
+        "lectura": LITERAL_DIAGNOSTICA,
+        "que_no_se_afirma": f"{LITERAL_RESCATE_ESCALA} | {LITERAL_CORRECTED_CV_OOF}",
+    }
+
+
+def deltas_de_log_loss_por_combinacion(
+    brazo: CorridaBrazo,
+    referencia: np.ndarray,
+    verdad: np.ndarray,
+    recorte: float,
+) -> dict[str, Any]:
+    """Deltas de log-loss del miembro contra la referencia, por pliegue y por semilla.
+
+    Es la entrada de la regla de lectura de 1.5: el delta se mide en las filas de
+    evaluacion de CADA combinacion, con las predicciones calibradas de esa misma
+    combinacion, y nunca sobre el OOF agregado, donde las combinaciones ya no se
+    pueden separar.
+
+    Args:
+        brazo: corrida con predicciones por combinacion.
+        referencia: matriz de referencia (el liston v03_cal) por fila.
+        verdad: etiquetas por fila.
+        recorte: recorte del log-loss.
+
+    Returns:
+        Diccionario con el detalle por combinacion y los dos vectores de deltas.
+
+    Raises:
+        ColeccionVacia: si el brazo no tiene predicciones registradas.
+    """
+    ref = np.asarray(referencia, dtype=np.float64)
+    y = np.asarray(verdad, dtype=np.float64)
+    por_pliegue: dict[int, list[float]] = {}
+    por_semilla: dict[int, list[float]] = {}
+    detalle: list[dict[str, Any]] = []
+    for prediccion in brazo.predicciones_por_combinacion:
+        ib = np.asarray(prediccion["ib"], dtype=np.int64)
+        miembro = np.asarray(prediccion["proba_ev_cal"], dtype=np.float64)
+        perdida_miembro = float(
+            log_loss_recortado(miembro, y[ib], recorte)["log_loss_macro_recortado"]
+        )
+        perdida_referencia = float(
+            log_loss_recortado(ref[ib], y[ib], recorte)["log_loss_macro_recortado"]
+        )
+        delta = perdida_miembro - perdida_referencia
+        por_pliegue.setdefault(int(prediccion["pliegue"]), []).append(delta)
+        por_semilla.setdefault(int(prediccion["semilla"]), []).append(delta)
+        detalle.append(
+            {
+                "pliegue": int(prediccion["pliegue"]),
+                "semilla": int(prediccion["semilla"]),
+                "n_filas": int(ib.size),
+                "log_loss_miembro": perdida_miembro,
+                "log_loss_referencia": perdida_referencia,
+                "delta": float(delta),
+            }
+        )
+    exigir_no_vacio(detalle, "deltas de log-loss por combinacion")
+    vector_pliegue = [
+        float(np.mean(por_pliegue[clave])) for clave in sorted(por_pliegue)
+    ]
+    vector_semilla = [
+        float(np.mean(por_semilla[clave])) for clave in sorted(por_semilla)
+    ]
+    return {
+        "por_combinacion": detalle,
+        "por_pliegue": {
+            str(clave): float(np.mean(por_pliegue[clave])) for clave in sorted(por_pliegue)
+        },
+        "por_semilla": {
+            str(clave): float(np.mean(por_semilla[clave])) for clave in sorted(por_semilla)
+        },
+        "vector_por_pliegue": vector_pliegue,
+        "vector_por_semilla": vector_semilla,
+        "n_combinaciones": len(detalle),
+        "direccion": (
+            "delta igual a perdida del miembro menos perdida de la referencia; la "
+            "direccion favorable es la negativa, porque menos log-loss es mejor"
+        ),
+    }
+
+
+def resumen_f1_de_brazo(
+    brazo: CorridaBrazo, verdad: np.ndarray, umbrales: Sequence[float] | np.ndarray
+) -> dict[str, Any]:
+    """El F1 descriptivo del miembro, medido por combinacion y agregado.
+
+    Args:
+        brazo: corrida con predicciones por combinacion.
+        verdad: etiquetas por fila.
+        umbrales: los tres umbrales congelados de V03.
+
+    Returns:
+        Diccionario con la media, la desviacion entre semillas y el intervalo.
+
+    Raises:
+        ColeccionVacia: si el brazo no tiene predicciones registradas.
+    """
+    y = np.asarray(verdad, dtype=np.int64)
+    valores: list[float] = []
+    por_semilla: dict[int, list[float]] = {}
+    for prediccion in brazo.predicciones_por_combinacion:
+        ib = np.asarray(prediccion["ib"], dtype=np.int64)
+        prediccion_binaria = binarizar_con_umbrales_congelados(
+            prediccion["proba_ev_cal"], umbrales
+        )
+        valor = float(
+            metricas_multietiqueta(y[ib], prediccion_binaria)["f1_media_columnas"]
+        )
+        valores.append(valor)
+        por_semilla.setdefault(int(prediccion["semilla"]), []).append(valor)
+    exigir_no_vacio(valores, "F1 por combinacion")
+    medias_semilla = [float(np.mean(por_semilla[clave])) for clave in sorted(por_semilla)]
+    intervalo = intervalo_t_pareado(valores)
+    desviacion = float(np.std(medias_semilla, ddof=1)) if len(medias_semilla) > 1 else 0.0
+    return {
+        "f1_media_columnas": float(np.mean(valores)),
+        "desviacion_entre_semillas": desviacion,
+        "intervalo": [float(intervalo["inferior"]), float(intervalo["superior"])],
+        "f1_por_combinacion": [float(valor) for valor in valores],
+        "f1_medio_por_semilla": {
+            str(clave): float(np.mean(por_semilla[clave])) for clave in sorted(por_semilla)
+        },
+        "n_combinaciones": len(valores),
+        "etiqueta": LITERAL_DESCRIPTIVA_F1,
+        "origen": (
+            "medido con metricas_multietiqueta sobre las predicciones binarizadas con "
+            "los umbrales congelados de cada combinacion de pliegue y semilla"
+        ),
+    }
+
+
+def medir_magnitudes_de_pregunta_1(
+    brazo: CorridaBrazo, verdad: np.ndarray
+) -> dict[str, Any]:
+    """Las seis magnitudes de A8 para un brazo, medidas sobre su OOF.
+
+    Args:
+        brazo: corrida del brazo.
+        verdad: etiquetas por fila.
+
+    Returns:
+        Diccionario con las seis magnitudes y el numero de filas medidas.
+
+    Raises:
+        ColeccionVacia: si el brazo no tiene ninguna fila con probabilidad.
+    """
+    usable = np.isfinite(brazo.probas_oof[:, 0])
+    proba = brazo.probas_oof[usable]
+    cierta = np.asarray(verdad, dtype=np.int64)[usable]
+    exigir_no_vacio(proba, f"probabilidades del brazo {brazo.identificador}")
+    logloss = log_loss_recortado(proba, cierta, CONFIG["recorte_log_loss"])
+    brier = brier_multiclase(proba, cierta)
+    ece_macro = float(
+        np.mean(
+            [
+                curva_de_calibracion(
+                    proba[:, k], cierta[:, k], CONFIG["bins_calibracion"]
+                )["area_entre_curva_y_diagonal"]
+                for k in range(len(ETIQUETAS))
+            ]
+        )
+    )
+    return {
+        "log_loss_macro": logloss["log_loss_macro_recortado"],
+        "log_loss_sin_recortar": logloss["log_loss_macro_sin_recortar"],
+        "brier_macro": brier["brier_macro"],
+        "brier_por_etiqueta": brier["brier_por_etiqueta"],
+        "ece_macro": ece_macro,
+        "pendientes": pendientes_de_calibracion(proba, cierta)["media"],
+        "n_filas_medidas": int(proba.shape[0]),
+    }
+
+
+def construir_curvas_de_pregunta_1(
+    brazo: CorridaBrazo, verdad: np.ndarray
+) -> dict[str, Any]:
+    """Las curvas de calibracion de A9 para un brazo, una por etiqueta.
+
+    Args:
+        brazo: corrida del brazo.
+        verdad: etiquetas por fila.
+
+    Returns:
+        Diccionario con una curva por etiqueta, con clave brazo_etiqueta.
+    """
+    usable = np.isfinite(brazo.probas_oof[:, 0])
+    proba = brazo.probas_oof[usable]
+    cierta = np.asarray(verdad, dtype=np.int64)[usable]
+    return {
+        f"{brazo.identificador}_{ETIQUETAS[k]}": curva_de_calibracion(
+            proba[:, k], cierta[:, k], CONFIG["bins_calibracion"]
+        )
+        for k in range(len(ETIQUETAS))
+    }
+
+
+def medir_cobertura_de_brazo(
+    brazo: CorridaBrazo, verdad: np.ndarray
+) -> dict[str, float]:
+    """Cobertura y anchura de A10 para un brazo, medidas sobre su OOF.
+
+    Args:
+        brazo: corrida del brazo.
+        verdad: etiquetas por fila.
+
+    Returns:
+        Diccionario de medir_cobertura_y_anchura.
+    """
+    inferior = np.asarray(brazo.intervalos["inferior"], dtype=np.float64)
+    superior = np.asarray(brazo.intervalos["superior"], dtype=np.float64)
+    usable = np.isfinite(brazo.probas_oof[:, 0]) & np.isfinite(inferior[:, 0])
+    return medir_cobertura_y_anchura(
+        inferior[usable],
+        superior[usable],
+        np.asarray(verdad, dtype=np.float64)[usable],
+        CONFIG["peso_penalizacion_anchura"],
+    )
+
+
+def dimensiones_de_seleccion(registros: Sequence[dict[str, Any]]) -> dict[str, Any]:
+    """Publica la dimension seleccionada por umbral y por pliegue, de los registros.
+
+    Args:
+        registros: registros del instrumento de seleccion.
+
+    Returns:
+        Diccionario plano con la dimension de cada combinacion de umbral y pliegue.
+
+    Raises:
+        ColeccionVacia: si no hay ningun registro.
+    """
+    exigir_no_vacio(list(registros), "registros del selector")
+    salida: dict[str, Any] = {}
+    for registro in registros:
+        etiqueta = f"umbral_{float(registro['umbral']):.1f}_pliegue_{int(registro.get('pliegue', -1))}"
+        salida[etiqueta] = {
+            "n_columnas": int(registro["n_columnas"]),
+            "umbral": float(registro["umbral"]),
+            "pliegue": int(registro.get("pliegue", -1)),
+            "n_filas_inner_train": int(registro["n_filas"]),
+        }
+    return salida
+
+
+def medir_variables_activas_l1(
+    X_ent: sparse.csr_matrix, y_ent: np.ndarray, C: float = 4.0
+) -> dict[str, Any]:
+    """Mide cuantas variables deja activas la regresion L1 con C igual a 4.0.
+
+    Es el contra de A17: en lugar de citar un numero de otro informe que no es
+    rastreable desde esta corrida, se ajusta la L1 sobre las mismas filas internas y
+    la misma representacion, y se cuenta lo que deja fuera.
+
+    Args:
+        X_ent: matriz de entrenamiento, seleccionada y sin reescalar.
+        y_ent: etiquetas de las mismas filas, matriz binaria.
+        C: inverso de la regularizacion, declarado 4.0.
+
+    Returns:
+        Diccionario con las variables activas y fuera por etiqueta.
+    """
+    densa = np.asarray(X_ent.todense(), dtype=np.float64)
+    y = np.asarray(y_ent, dtype=np.int64)
+    n_columnas = int(densa.shape[1])
+    por_etiqueta: dict[str, Any] = {}
+    for k, etiqueta in enumerate(ETIQUETAS):
+        modelo = LogisticRegression(
+            penalty="l1", C=float(C), solver="liblinear", max_iter=100000
+        )
+        modelo.fit(densa, y[:, k])
+        activas = int(np.count_nonzero(modelo.coef_))
+        por_etiqueta[etiqueta] = {
+            "activas": activas,
+            "fuera": int(n_columnas - activas),
+        }
+    return {
+        "C": float(C),
+        "n_columnas": n_columnas,
+        "por_etiqueta": por_etiqueta,
+        "total_activas": int(sum(datos["activas"] for datos in por_etiqueta.values())),
+        "total_fuera": int(sum(datos["fuera"] for datos in por_etiqueta.values())),
+        "origen": "ajuste L1 con C 4.0 sobre el inner_train del pliegue 0, en la corrida",
+    }
 
 
 def _bloque_de_la_lectura(texto: str) -> str:
@@ -4303,17 +5164,29 @@ def construir_markdown(carga: dict[str, Any]) -> str:
     an("- El F1 no aparece en esta regla, porque la pregunta 2 no busca superar a V03.")
     an(f"- {LITERAL_F1_NO_REFUTA_DOS}")
     an("")
+    an("## F1 del miembro, cifra descriptiva")
+    an("")
+    f1_publicado = carga.get("f1_del_miembro", {})
+    an(f"- Etiqueta: {LITERAL_DESCRIPTIVA_F1}")
+    an(f"- f1_media_columnas: {f1_publicado.get('f1_media_columnas')}")
+    an(f"- desviacion_entre_semillas: {f1_publicado.get('desviacion_entre_semillas')}")
+    an(f"- intervalo: {f1_publicado.get('intervalo')}")
+    an(f"- n_combinaciones: {f1_publicado.get('n_combinaciones')}")
+    an(f"- {LITERAL_F1_NO_REFUTA_UNO}")
+    an(f"- {LITERAL_F1_NO_REFUTA_DOS}")
+    an("")
     an("## Cifras de la pregunta 1")
     an("")
     if cifras1:
+        liston_publicado = carga.get("liston_v03_cal", {})
         an(
             tabla_markdown(
                 ["magnitud", "M1", "M2", "liston v03_cal"],
                 [
-                    ["log-loss macro recortado", cifras1.get("M1", {}).get("log_loss_macro"), cifras1.get("M2", {}).get("log_loss_macro"), cifras1.get("liston", {}).get("log_loss_macro")],
-                    ["log-loss macro sin recortar", cifras1.get("M1", {}).get("log_loss_sin_recortar"), cifras1.get("M2", {}).get("log_loss_sin_recortar"), cifras1.get("liston", {}).get("log_loss_sin_recortar")],
-                    ["Brier macro", cifras1.get("M1", {}).get("brier_macro"), cifras1.get("M2", {}).get("brier_macro"), cifras1.get("liston", {}).get("brier_macro")],
-                    ["ECE macro", cifras1.get("M1", {}).get("ece_macro"), cifras1.get("M2", {}).get("ece_macro"), cifras1.get("liston", {}).get("ece_macro")],
+                    ["log-loss macro recortado", cifras1.get("M1", {}).get("log_loss_macro"), cifras1.get("M2", {}).get("log_loss_macro"), liston_publicado.get("log_loss_macro")],
+                    ["log-loss macro sin recortar", cifras1.get("M1", {}).get("log_loss_sin_recortar"), cifras1.get("M2", {}).get("log_loss_sin_recortar"), liston_publicado.get("log_loss_sin_recortar")],
+                    ["Brier macro", cifras1.get("M1", {}).get("brier_macro"), cifras1.get("M2", {}).get("brier_macro"), liston_publicado.get("brier_macro")],
+                    ["ECE macro", cifras1.get("M1", {}).get("ece_macro"), cifras1.get("M2", {}).get("ece_macro"), liston_publicado.get("ece_macro")],
                 ],
             )
         )
@@ -4429,6 +5302,12 @@ class CorridaBrazo:
     # numero de filas del inner_train, que es el contra de la banda muerta de A17.
     alphas_por_combinacion: dict[str, float] = field(default_factory=dict)
     n_filas_inner_train: int = 0
+    # Las predicciones CALIBRADAS de cada combinacion sobre sus filas de evaluacion.
+    # Se guardan para que las mediciones de A11, A13 y A19 salgan de las predicciones
+    # reales de cada pliegue y cada semilla y no de una agregacion en la que las
+    # combinaciones ya no se pueden separar. Son copias pequenas: veinticinco
+    # combinaciones de unas trescientas filas por tres etiquetas.
+    predicciones_por_combinacion: list[dict[str, Any]] = field(default_factory=list)
 
 
 def partir_interna(
@@ -4492,6 +5371,7 @@ def ejecutar_brazo_m1(
     n_activas: dict[str, int] = {}
     calibraciones: list[dict[str, Any]] = []
     alphas_por_combinacion: dict[str, float] = {}
+    predicciones_por_combinacion: list[dict[str, Any]] = []
     filas_inner_train = 0
     combinaciones = 0
     for numero, (ia, ib) in enumerate(contexto.pliegues):
@@ -4510,7 +5390,7 @@ def ejecutar_brazo_m1(
                 [contexto.textos[i] for i in inner_cal],
             )
             mascara = seleccionar_columnas(X_ent, umbral)
-            INSTRUMENTO_SELECCION.registrar(inner_train, umbral, int(mascara.sum()))
+            INSTRUMENTO_SELECCION.registrar(inner_train, umbral, int(mascara.sum()), numero)
             X_sel = X_ent[:, mascara]
             X_cal_sel = construir_tfidf.ultimo_evaluacion[:, mascara]  # type: ignore[attr-defined]
             # La tupla es (ENTRENAMIENTO, EVALUACION, ESCALA). Antes se
@@ -4593,6 +5473,14 @@ def ejecutar_brazo_m1(
             calibraciones.append({"pliegue": numero, "semilla": int(semilla), "pares": pares})
             proba_ev_cal = aplicar_platt(proba_ev, pares)
             probas[ib] = proba_ev_cal
+            predicciones_por_combinacion.append(
+                {
+                    "pliegue": int(numero),
+                    "semilla": int(semilla),
+                    "ib": np.asarray(ib, dtype=np.int64).copy(),
+                    "proba_ev_cal": np.asarray(proba_ev_cal, dtype=np.float64).copy(),
+                }
+            )
             for k in range(len(ETIQUETAS)):
                 modelo = modelos[ETIQUETAS[k]]
                 intervalo = intervalo_predictivo(
@@ -4635,6 +5523,7 @@ def ejecutar_brazo_m1(
         calibraciones=calibraciones,
         alphas_por_combinacion=dict(alphas_por_combinacion),
         n_filas_inner_train=filas_inner_train,
+        predicciones_por_combinacion=predicciones_por_combinacion,
     )
 
 
@@ -4831,6 +5720,64 @@ def contexto_de_ejemplo() -> ContextoDatos:
     )
 
 
+def contexto_de_humo_medible() -> ContextoDatos:
+    """Contexto sintetico con CINCO pliegues completos, para medir de verdad.
+
+    POR QUE NO SIRVE contexto_de_ejemplo. Sus pliegues tienen el inner_train vacio,
+    luego ejecutar_brazo_m1 no ejecuta ni una combinacion y ninguna medicion de la
+    pregunta 1 o de la pregunta 2 se puede hacer sobre el. Los casos de humo de A10,
+    A11, A12, A13, A17 y A19 se cumplian antes con numeros escritos a mano
+    precisamente porque este contexto no permitia medir. Aqui cada pliegue tiene su
+    outer_train y su outer_validation, el vocabulario tiene suficientes palabras
+    repetidas para que la TF-IDF conserve columnas y la referencia de V03 por fila
+    esta correlacionada con la etiqueta.
+
+    Returns:
+        Contexto de datos sinteticos con pliegues reales y probabilidades de
+        referencia alineadas por fila.
+    """
+    n_filas = 120
+    rng = np.random.default_rng(5150)
+    vocabulario = [f"w{i:02d}" for i in range(40)]
+    textos = [
+        " ".join(str(palabra) for palabra in rng.choice(vocabulario, size=int(rng.integers(6, 12)), replace=True))
+        for _ in range(n_filas)
+    ]
+    y = (rng.random((n_filas, len(ETIQUETAS))) < 0.35).astype(np.int64)
+    for k in range(len(ETIQUETAS)):
+        if int(y[:, k].sum()) == 0:
+            y[0, k] = 1
+    grupos = np.arange(n_filas) % 15
+    reparto = np.array_split(np.arange(n_filas), CONFIG["n_pliegues"])
+    pliegues = []
+    for indice, bloque in enumerate(reparto):
+        ib = np.asarray(bloque, dtype=np.int64)
+        ia = np.asarray(
+            [fila for otro, filas in enumerate(reparto) if otro != indice for fila in filas],
+            dtype=np.int64,
+        )
+        pliegues.append((ia, ib))
+    fuerza = 0.6 + 0.4 * rng.random((n_filas, len(ETIQUETAS)))
+    proba_v03 = np.clip(
+        fuerza * y + 0.2 * (1.0 - fuerza) + 0.05 * rng.random((n_filas, len(ETIQUETAS))),
+        1e-6,
+        1.0 - 1e-6,
+    )
+    guarda = GuardaLectura()
+    guarda.marcar(np.arange(n_filas, dtype=np.int64))
+    return ContextoDatos(
+        textos=textos,
+        y=y,
+        pliegues=pliegues,
+        ids=np.asarray([f"medible{i:04d}" for i in range(n_filas)]),
+        grupos=grupos,
+        origen="sintetico medible con cinco pliegues completos",
+        guarda=guarda,
+        completo=True,
+        proba_v03=np.asarray(proba_v03, dtype=np.float64),
+    )
+
+
 # =============================================================================
 # SECCION 19: LOS CASOS DE HUMO
 # =============================================================================
@@ -4840,74 +5787,8 @@ def contexto_de_ejemplo() -> ContextoDatos:
 # siempre que no llegara a sesenta correctos, luego un caso eliminado se
 # detectaba como "todo sigue bien". Aqui el suelo se fija al numero de casos que
 # se registrar, y si alguien quita un caso, la puerta tiene que bajar.
-SUELO_DECLARADO: Final[int] = 189
-N_CASOS_ESPERADOS: Final[int] = 189
-
-
-def _cifras_de_pregunta_1() -> dict[str, dict[str, float]]:
-    """Cifras de las seis magnitudes de la pregunta 1, por brazo.
-
-    Returns:
-        Diccionario M1 y M2 con las seis magnitudes.
-    """
-    magnitudes = (
-        "log_loss_macro",
-        "log_loss_sin_recortar",
-        "brier_macro",
-        "brier_por_etiqueta",
-        "ece_macro",
-        "pendientes",
-    )
-    return {
-        brazo: {m: 0.30 + 0.01 * indice + 0.001 * k for k, m in enumerate(magnitudes)}
-        for indice, brazo in enumerate(("M1", "M2"))
-    }
-
-
-def _medidas_de_pregunta_2() -> dict[str, dict[str, Any]]:
-    """Las cuatro medidas de complementariedad, por brazo.
-
-    Returns:
-        Diccionario M1 y M2 con las cuatro medidas no vacias.
-    """
-    claves = (
-        "auc_del_error_de_v03",
-        "acuerdo_con_v03",
-        "matriz_de_interseccion",
-        "diferencias_por_etiqueta",
-    )
-    return {
-        brazo: {
-            clave: ({"10": 12} if clave == "matriz_de_interseccion" else float(0.20 + 0.01 * indice))
-            for clave in claves
-        }
-        for indice, brazo in enumerate(("M1", "M2"))
-    }
-
-
-def _configuraciones_de_ensamblaje() -> dict[str, dict[str, Any]]:
-    """Las ocho cifras por alpha del ensamblaje, con los tres alphas.
-
-    Returns:
-        Diccionario con las claves 0.05, 0.10 y 0.15.
-    """
-    claves = (
-        "corrected_cv",
-        "delta",
-        "pliegues_a_favor",
-        "rescate",
-        "dano",
-        "neto",
-        "techo",
-        "piso",
-    )
-    return {
-        f"{float(alpha):.2f}": {
-            clave: (float(0.70 + 0.001 * indice) if clave == "corrected_cv" else indice)
-            for clave in claves
-        }
-        for indice, alpha in enumerate(CONFIG["alphas_ensamblaje"])
-    }
+SUELO_DECLARADO: Final[int] = 206
+N_CASOS_ESPERADOS: Final[int] = 206
 
 
 def _probabilidad_para_humo(n: int) -> tuple[np.ndarray, np.ndarray]:
@@ -5261,6 +6142,17 @@ def casos_de_frontera_ast(puerta: PuertaHumo) -> None:
         f"literales={detalle['n_infracciones_de_literal']} "
         f"booleanos={detalle['n_booleanos_literales']} "
         f"anidadas={detalle['n_evaluaciones_con_tupla_anidada']}",
+    )
+    # La defensa del punto 7 tiene que SABER FALLAR: si se anade una funcion
+    # nueva sin llamador real y sin declarar, la auditoria la reporta. Sin este
+    # caso, la lista blanca podria crecer por omision y nadie lo veria.
+    codigo_ast = Path(__file__).read_text(encoding="utf-8")
+    mutado_ast = codigo_ast + "\n\ndef funcion_nueva_sin_conectar():\n    return 1\n"
+    infracciones_ast = auditar_funciones_sin_llamador(mutado_ast)
+    puerta.registrar(
+        "frontera_funcion_nueva_sin_conectar_falla",
+        any("funcion_nueva_sin_conectar" in texto for texto in infracciones_ast),
+        f"infracciones={len(infracciones_ast)} al anadir una funcion desconectada",
     )
     puerta.registrar(
         "frontera_acceso_por_literal_detectado",
@@ -6110,6 +7002,66 @@ def casos_de_afirmaciones(puerta: PuertaHumo) -> None:
     progreso = Progreso(PARCIALES, f"humo_{puerta.marca_texto}")
     probability, verdad = _probabilidad_para_humo(len(contexto.y))
     texto = texto_minimo_de_ejemplo(LECTURA_AFIRMATIVO)
+    # LAS MEDICIONES DEL CASO, SOBRE UN CONTEXTO CON PLIEGUES COMPLETOS. Los casos de
+    # A8, A10, A11, A12, A13, A16, A17 y A19 se cumplian antes con numeros escritos a
+    # mano porque contexto_de_ejemplo no tiene inner_train y no se podia medir nada.
+    # Aqui se ejecutan los dos brazos de verdad sobre un contexto pequeno con cinco
+    # pliegues, y todas las magnitudes de esos casos salen de esta corrida.
+    contexto_medido = contexto_de_humo_medible()
+    progreso_medido = Progreso(
+        REPORTS / f"humo_p83_{puerta.marca_texto}" / "parciales",
+        f"humo_medido_{puerta.marca_texto}",
+    )
+    umbrales_medidos = np.asarray(UMBRALES_V03_CONGELADOS, dtype=np.float64)
+    INSTRUMENTO_SELECCION.llamadas = []
+    INSTRUMENTO_CALIBRACION.reiniciar()
+    brazo_humo_m1 = ejecutar_brazo_m1(
+        contexto_medido,
+        progreso_medido,
+        CONFIG["umbral_seleccion_primario"],
+        CONFIG["alpha_0_primario"],
+        40,
+    )
+    instrumento_humo_m1 = INSTRUMENTO_CALIBRACION.instantanea()
+    seleccion_humo_m1 = [dict(registro) for registro in INSTRUMENTO_SELECCION.llamadas]
+    brazo_humo_m2 = ejecutar_brazo_m2(
+        contexto_medido, progreso_medido, CONFIG["umbral_seleccion_primario"]
+    )
+    pliegues_humo = np.zeros(len(contexto_medido.y), dtype=np.int64)
+    for numero_pliegue, (_, ib_pliegue) in enumerate(contexto_medido.pliegues):
+        pliegues_humo[np.asarray(ib_pliegue, dtype=np.int64)] = numero_pliegue
+    magnitudes_humo = {
+        brazo.identificador: medir_magnitudes_de_pregunta_1(brazo, contexto_medido.y)
+        for brazo in (brazo_humo_m1, brazo_humo_m2)
+    }
+    coberturas_humo = {
+        brazo.identificador: medir_cobertura_de_brazo(brazo, contexto_medido.y)
+        for brazo in (brazo_humo_m1, brazo_humo_m2)
+    }
+    complementariedad_humo = {
+        brazo.identificador: medir_complementariedad(
+            brazo.probas_oof, contexto_medido.proba_v03, contexto_medido.y, umbrales_medidos
+        )
+        for brazo in (brazo_humo_m1, brazo_humo_m2)
+    }
+    configuraciones_humo = {
+        f"{float(alpha):.2f}": medir_ensamblaje(
+            float(alpha),
+            brazo_humo_m1.probas_oof,
+            contexto_medido.proba_v03,
+            contexto_medido.y,
+            umbrales_medidos,
+            pliegues_humo,
+        )
+        for alpha in CONFIG["alphas_ensamblaje"]
+    }
+    deltas_humo = deltas_de_log_loss_por_combinacion(
+        brazo_humo_m1,
+        contexto_medido.proba_v03,
+        contexto_medido.y,
+        CONFIG["recorte_log_loss"],
+    )
+    f1_humo = resumen_f1_de_brazo(brazo_humo_m1, contexto_medido.y, umbrales_medidos)
 
     # A0: huellas identicas antes y despues.
     huella = {"w2v": {"sha256": W2V_SHA256}, "v03": {"sha256": "x" * 64}, "oof": {"sha256": "y" * 64}}
@@ -6386,8 +7338,14 @@ def casos_de_afirmaciones(puerta: PuertaHumo) -> None:
         puerta,
         "A8_seis_magnitudes",
         "A8",
-        lambda: afirmacion_a8(_cifras_de_pregunta_1()),
+        lambda: afirmacion_a8(magnitudes_humo),
         lambda: afirmacion_a8({"M1": {"log_loss_macro": 0.3}, "M2": {}}),
+    )
+    caso_detecta(
+        puerta,
+        "A8_detecta_un_solo_brazo",
+        lambda: afirmacion_a8({"M1": magnitudes_humo["M1"]}),
+        "con un solo brazo medido, A8 tiene que rechazarlo",
     )
     # A9 necesita filas suficientes para que al menos un bin llegue a
     # minimo_unidades_por_bin. Con las cuarenta filas del contexto de ejemplo
@@ -6439,55 +7397,210 @@ def casos_de_afirmaciones(puerta: PuertaHumo) -> None:
         ),
         "con un NaN en la curva, A9 tiene que rechazarlo",
     )
-    # A10: cobertura, anchura y el control degenerado.
-    bayes = {
-        "cobertura": 0.9,
-        "anchura_media_normalizada": 0.3,
-        "cobertura_menos_pesada_por_anchura": 0.75,
-    }
-    control_v03 = dict(bayes)
-    control_v03["cobertura"] = 0.80
+    # A10: cobertura, anchura y el control degenerado, MEDIDOS.
+    control_v03_humo = medir_cobertura_y_anchura(
+        contexto_medido.proba_v03,
+        contexto_medido.proba_v03,
+        contexto_medido.y,
+        CONFIG["peso_penalizacion_anchura"],
+    )
+    control_completo_humo = medir_cobertura_y_anchura(
+        np.zeros_like(contexto_medido.y, dtype=np.float64),
+        np.ones_like(contexto_medido.y, dtype=np.float64),
+        contexto_medido.y,
+        CONFIG["peso_penalizacion_anchura"],
+    )["cobertura"]
     caso_afirmacion(
         puerta,
         "A10_control_de_calibrador",
         "A10",
-        lambda: afirmacion_a10(bayes, control_v03, 1.0),
-        lambda: afirmacion_a10(bayes, control_v03, 0.9),
+        lambda: afirmacion_a10(coberturas_humo, control_v03_humo, control_completo_humo),
+        lambda: afirmacion_a10(coberturas_humo, control_v03_humo, control_completo_humo - 0.1),
     )
-    # A11: la regla de 1.5 aplicada sin reinterpretarla.
+    caso_detecta(
+        puerta,
+        "A10_detecta_un_solo_brazo",
+        lambda: afirmacion_a10({"M1": coberturas_humo["M1"]}, control_v03_humo, control_completo_humo),
+        "con un solo brazo, A10 tiene que rechazarlo",
+    )
+    # A11: la regla de 1.5 aplicada a los deltas MEDIDOS en la corrida.
     lectura_p1, detalle_lectura = aplicar_lectura_intervalos(
-        {"inferior": -0.02, "superior": -0.01, "n": 5},
-        {"inferior": -0.02, "superior": -0.01, "n": 5},
-        CONFIG["eps_gate_delta"],
+        intervalo_t_pareado(deltas_humo["vector_por_pliegue"]),
+        intervalo_t_pareado(deltas_humo["vector_por_semilla"]),
+        CONFIG["margen_log_loss"],
     )
     carga_11 = dict(registrar_lectura_pregunta_1(lectura_p1, lectura_p1 == LECTURA_AMBIGUA))
     carga_11["texto_del_informe"] = texto
+    lectura_alterna = (
+        LECTURA_NEGATIVO if lectura_p1 != LECTURA_NEGATIVO else LECTURA_AFIRMATIVO
+    )
     caso_afirmacion(
         puerta,
         "A11_lectura_de_la_regla",
         "A11",
         lambda: afirmacion_a11(detalle_lectura, carga_11),
-        lambda: afirmacion_a11(detalle_lectura, {**carga_11, resolver_clave("lectura_pregunta_1_json"): LECTURA_NEGATIVO}),
+        lambda: afirmacion_a11(
+            detalle_lectura, {**carga_11, resolver_clave("lectura_pregunta_1_json"): lectura_alterna}
+        ),
     )
-    # A12: las cuatro medidas de complementariedad.
+    # A12: las cuatro medidas de complementariedad, medidas.
     caso_afirmacion(
         puerta,
         "A12_medidas",
         "A12",
-        lambda: afirmacion_a12(_medidas_de_pregunta_2()),
+        lambda: afirmacion_a12(complementariedad_humo),
         lambda: afirmacion_a12({"M1": {"auc_del_error_de_v03": 0.2}}),
     )
-    # A13: rescate y dano con los tres alphas.
+    # A13: rescate y dano con los tres alphas, medidos.
+    declaraciones_humo = {
+        "escala": True,
+        "corrected_cv_optimista": True,
+        "lectura_diagnostica": LITERAL_DIAGNOSTICA,
+    }
     caso_afirmacion(
         puerta,
         "A13_tres_alphas",
         "A13",
+        lambda: afirmacion_a13(configuraciones_humo, declaraciones_humo),
         lambda: afirmacion_a13(
-            _configuraciones_de_ensamblaje(), {"escala": True, "corrected_cv_optimista": True}
+            configuraciones_humo, {**declaraciones_humo, "corrected_cv_optimista": False}
         ),
-        lambda: afirmacion_a13(
-            _configuraciones_de_ensamblaje(), {"escala": False, "corrected_cv_optimista": True}
+    )
+    # A14: el calibrador se ajusta solo en internal. El caso BUENO se MIDE con el
+    # instrumento real: se ajusta el calibrador sobre filas internas declaradas, se
+    # decide el alpha con las suyas y la mutacion se ejecuta de verdad. Los casos
+    # sinteticos que siguen son MUTACIONES deliberadas, que es lo contrario.
+    filas_cal_a14 = np.arange(10, 20, dtype=np.int64)
+    filas_alpha_a14 = np.arange(0, 10, dtype=np.int64)
+    filas_eval_a14 = np.arange(100, 110, dtype=np.int64)
+    proba_a14, verdad_a14 = _probabilidad_para_humo(10)
+    INSTRUMENTO_CALIBRACION.reiniciar()
+    INSTRUMENTO_CALIBRACION.fijar_permitidos(filas_cal_a14, filas_alpha_a14)
+    ajustar_calibrador(
+        proba_a14,
+        verdad_a14.astype(np.float64),
+        filas_cal_a14,
+        filas_de_evaluacion=filas_eval_a14,
+    )
+    decidir_alpha(
+        {"0.05": 0.1, "0.10": 0.2, "0.15": 0.15},
+        CONFIG["alphas_ensamblaje"],
+        CONFIG["alpha_ensamblaje_primario"],
+        filas_alpha_a14,
+    )
+    instrumento_a14 = INSTRUMENTO_CALIBRACION.instantanea()
+    mutacion_a14_humo = medir_la_mutacion_del_calibrador(
+        proba_a14, verdad_a14.astype(np.float64), filas_eval_a14, filas_alpha_a14
+    )
+    a14_medido: dict[str, Any] = {
+        "n_ajustes_calibrador": len(instrumento_a14["llamadas_calibrador"]),
+        "n_ajustes_esperados": len(instrumento_a14["llamadas_calibrador"]),
+        "instrumentacion": {
+            "calibrador_fuera_de_interno": contar_fugas_calibrador(instrumento_a14),
+            "alpha_fuera_de_interno": contar_fugas_alpha(instrumento_a14),
+            "ajustes_fuera_de_lo_permitido": contar_fugas_ajuste_sobre_el_oof(instrumento_a14),
+            "ajustes_que_tocan_el_oof": contar_ajustes_que_tocan_filas(
+                instrumento_a14, filas_eval_a14
+            ),
+            "filas_comunes_entre_el_alpha_y_el_calibrador": len(
+                filas_comunes_alpha_y_calibrador(instrumento_a14)
+            ),
+            "llamadas_al_alpha_sin_declarar_filas": llamadas_sin_declarar_filas(
+                instrumento_a14
+            ),
+        },
+        "filas_calibracion": filas_cal_a14,
+        "filas_outer_validation": filas_eval_a14,
+        "filas_alpha": filas_alpha_a14,
+        "deteccion_de_la_mutacion": bool(mutacion_a14_humo["detectada"]),
+        "ajustes_sobre_el_oof": contar_ajustes_que_tocan_filas(
+            instrumento_a14, filas_eval_a14
         ),
+        "registros_del_instrumento": {
+            "llamadas_calibrador": instrumento_a14["llamadas_calibrador"],
+            "llamadas_alpha": instrumento_a14["llamadas_alpha"],
+        },
+    }
+    caso_afirmacion(
+        puerta,
+        "A14_calibrador_interno_medido",
+        "A14",
+        lambda: afirmacion_a14(**a14_medido),
+        lambda: afirmacion_a14(
+            **{
+                **a14_medido,
+                "instrumentacion": {
+                    **a14_medido["instrumentacion"],
+                    "calibrador_fuera_de_interno": 3,
+                },
+            }
+        ),
+    )
+    puerta.registrar(
+        "A14_la_mutacion_instrumentada_se_detecta_de_verdad",
+        bool(mutacion_a14_humo["detectada"])
+        and int(mutacion_a14_humo["fugas_del_calibrador"]) > 0
+        and int(mutacion_a14_humo["ajustes_que_tocan_el_oof"]) > 0,
+        f"fugas={mutacion_a14_humo['fugas_del_calibrador']} "
+        f"sobre_el_oof={mutacion_a14_humo['ajustes_que_tocan_el_oof']}",
+    )
+    registros_cal_sucios = [
+        dict(registro, filas_de_evaluacion_de_esta_combinacion=sorted(filas_cal_a14))
+        for registro in instrumento_a14["llamadas_calibrador"]
+    ]
+    caso_detecta(
+        puerta,
+        "A14_detecta_solapamiento_registro_a_registro",
+        lambda: afirmacion_a14(
+            **{
+                **a14_medido,
+                "registros_del_instrumento": {
+                    "llamadas_calibrador": registros_cal_sucios,
+                    "llamadas_alpha": instrumento_a14["llamadas_alpha"],
+                },
+            }
+        ),
+        "con el registro del calibrador solapando SUS filas de evaluacion, A14 tiene que rechazarlo",
+    )
+    registros_alpha_sucios = [
+        dict(registro, permitidos_calibrador=sorted(filas_alpha_a14))
+        for registro in instrumento_a14["llamadas_alpha"]
+    ]
+    caso_detecta(
+        puerta,
+        "A14_detecta_el_alpha_sobre_su_calibrador_registro_a_registro",
+        lambda: afirmacion_a14(
+            **{
+                **a14_medido,
+                "registros_del_instrumento": {
+                    "llamadas_calibrador": instrumento_a14["llamadas_calibrador"],
+                    "llamadas_alpha": registros_alpha_sucios,
+                },
+            }
+        ),
+        "con el alpha usando las filas de SU calibrador, A14 tiene que rechazarlo",
+    )
+    registros_cal_sin_declaracion = [
+        {
+            clave: valor
+            for clave, valor in registro.items()
+            if clave != "filas_de_evaluacion_de_esta_combinacion"
+        }
+        for registro in instrumento_a14["llamadas_calibrador"]
+    ]
+    caso_detecta(
+        puerta,
+        "A14_detecta_un_registro_sin_filas_de_evaluacion",
+        lambda: afirmacion_a14(
+            **{
+                **a14_medido,
+                "registros_del_instrumento": {
+                    "llamadas_calibrador": registros_cal_sin_declaracion,
+                    "llamadas_alpha": instrumento_a14["llamadas_alpha"],
+                },
+            }
+        ),
+        "un registro sin declaracion de evaluacion cuenta como fuga y nunca como limpio",
     )
     # A14: el calibrador se ajusta solo en internal. Tambien por nombre, porque
     # esta afirmacion tiene ocho argumentos y cuatro de ellos son filas.
@@ -6514,7 +7627,7 @@ def casos_de_afirmaciones(puerta: PuertaHumo) -> None:
     }
     caso_afirmacion(
         puerta,
-        "A14_calibrador_interno",
+        "A14_calibrador_interno_sintetico",
         "A14",
         lambda: afirmacion_a14(**a14_bueno),
         lambda: afirmacion_a14(
@@ -6645,26 +7758,140 @@ def casos_de_afirmaciones(puerta: PuertaHumo) -> None:
         lambda: afirmacion_a15(ausentes),
         lambda: afirmacion_a15({"pymc": True}),
     )
-    # A16: las dos rejillas publicadas sin elegir ningun valor.
-    rejillas = {
-        "alpha_0": {f"{a:.2f}": {} for a in CONFIG["alpha_0_rejilla"]},
-        "umbral": {f"{u:.1f}": {} for u in CONFIG["umbrales_seleccion"]},
+    # A16: las dos rejillas publicadas, con magnitudes MEDIDAS en el caso.
+    X_humo = construir_tfidf(contexto_medido.textos[:80], contexto_medido.textos[80:])
+    X_humo_densa = np.asarray(X_humo.todense(), dtype=np.float64)
+    X_humo_eval_densa = np.asarray(
+        construir_tfidf.ultimo_evaluacion.todense(), dtype=np.float64
+    )
+    y_humo_inner = contexto_medido.y[:80]
+    y_humo_eval = contexto_medido.y[80:]
+    rejilla_alpha_medida: dict[str, Any] = {}
+    for alpha_0_caso in CONFIG["alpha_0_rejilla"]:
+        modelos_alpha = [
+            ajustar_m1(X_humo_densa, y_humo_inner[:, k], float(alpha_0_caso))
+            for k in range(len(ETIQUETAS))
+        ]
+        proba_alpha = np.column_stack(
+            [
+                predecir_m1(modelo_alpha, X_humo_eval_densa)
+                for modelo_alpha in modelos_alpha
+            ]
+        )
+        efectos_alpha = [float(modelo_alpha.n_efectivos) for modelo_alpha in modelos_alpha]
+        activas_alpha = [int(modelo_alpha.n_activas) for modelo_alpha in modelos_alpha]
+        rejilla_alpha_medida[f"{float(alpha_0_caso):.2f}"] = {
+            "n_efectivos_total": float(np.mean(efectos_alpha)),
+            "n_activas_total": float(np.mean(activas_alpha)),
+            "por_etiqueta": {
+                ETIQUETAS[k]: efectos_alpha[k] for k in range(len(ETIQUETAS))
+            },
+            "log_loss_macro": float(
+                log_loss_recortado(
+                    proba_alpha, y_humo_eval, CONFIG["recorte_log_loss"]
+                )["log_loss_macro_recortado"]
+            ),
+            "brier_macro": float(brier_multiclase(proba_alpha, y_humo_eval)["brier_macro"]),
+            "n_filas_medidas": int(y_humo_eval.shape[0]),
+        }
+    rejilla_umbral_medida: dict[str, Any] = {}
+    for umbral_caso in CONFIG["umbrales_seleccion"]:
+        mascara_caso = seleccionar_columnas(X_humo, float(umbral_caso))
+        X_caso = X_humo_densa[:, mascara_caso]
+        X_caso_eval = X_humo_eval_densa[:, mascara_caso]
+        modelos_umbral = [
+            ajustar_m1(X_caso, y_humo_inner[:, k], CONFIG["alpha_0_primario"])
+            for k in range(len(ETIQUETAS))
+        ]
+        proba_umbral = np.column_stack(
+            [
+                predecir_m1(modelo_umbral, X_caso_eval)
+                for modelo_umbral in modelos_umbral
+            ]
+        )
+        rejilla_umbral_medida[f"{float(umbral_caso):.1f}"] = {
+            "log_loss_macro": float(
+                log_loss_recortado(
+                    proba_umbral, y_humo_eval, CONFIG["recorte_log_loss"]
+                )["log_loss_macro_recortado"]
+            ),
+            "dimension_media": float(mascara_caso.sum()),
+            "n_columnas": int(mascara_caso.sum()),
+        }
+    rejillas_medidas_humo = {
+        "alpha_0": rejilla_alpha_medida,
+        "umbral": rejilla_umbral_medida,
+        "texto_efectivos_metodo": LITERAL_EFECTIVOS_METODO,
+        "valores_elegidos": [],
     }
     caso_afirmacion(
         puerta,
-        "A16_rejillas",
+        "A16_rejillas_medidas",
         "A16",
-        lambda: afirmacion_a16(rejillas, True),
-        lambda: afirmacion_a16(rejillas, False),
+        lambda: afirmacion_a16(
+            rejillas_medidas_humo, not rejillas_medidas_humo["valores_elegidos"]
+        ),
+        lambda: afirmacion_a16(
+            {
+                **rejillas_medidas_humo,
+                "alpha_0": {"0.50": rejilla_alpha_medida["0.50"]},
+            },
+            True,
+        ),
     )
-    # A17: dimension seleccionada por pliegue.
-    por_pliegue = {f"pliegue_{i}": {"n_columnas": 600} for i in range(5)}
+    caso_detecta(
+        puerta,
+        "A16_detecta_el_texto_dentro_de_la_rejilla",
+        lambda: afirmacion_a16(
+            {
+                **rejillas_medidas_humo,
+                "alpha_0": {
+                    **rejilla_alpha_medida,
+                    "__texto__": LITERAL_EFECTIVOS_METODO,
+                },
+            },
+            True,
+        ),
+        "con el texto del metodo dentro de la rejilla, el recuento seria cuatro y A16 tiene que verlo",
+    )
+    # A17: la dimension por pliegue y umbral, medida, y la L1 con C 4.0 medida.
+    dimensiones_humo = dimensiones_de_seleccion(seleccion_humo_m1)
+    filas_inner_humo = int(brazo_humo_m1.n_filas_inner_train)
+    l1_humo = medir_variables_activas_l1(
+        X_humo[:, seleccionar_columnas(X_humo, CONFIG["umbral_seleccion_primario"])],
+        y_humo_inner,
+    )
+    determinada_humo = all(
+        int(datos["n_columnas"]) < filas_inner_humo for datos in dimensiones_humo.values()
+    )
     caso_afirmacion(
         puerta,
-        "A17_dimension",
+        "A17_dimension_medida",
         "A17",
-        lambda: afirmacion_a17(por_pliegue, 836, 12, True),
-        lambda: afirmacion_a17({"pliegue_0": {"n_columnas": 9000}}, 836, 12, True),
+        lambda: afirmacion_a17(
+            dimensiones_humo,
+            filas_inner_humo,
+            int(l1_humo["total_fuera"]),
+            determinada_humo,
+        ),
+        lambda: afirmacion_a17(
+            {"pliegue_0": {"n_columnas": filas_inner_humo + 1}},
+            filas_inner_humo,
+            0,
+            False,
+        ),
+    )
+    caso_frontera(
+        puerta,
+        "A17_con_la_no_determinacion_declarada_pasa",
+        lambda: afirmacion_a17(
+            {"pliegue_0": {"n_columnas": filas_inner_humo + 1}},
+            filas_inner_humo,
+            0,
+            False,
+            "LA_REGRESION_NO_ESTA_DETERMINADA_DECLARADA_EN_EL_INFORME",
+        )[0],
+        "la no determinacion declarada no refuta la afirmacion: el pre-registro pide decirla",
     )
     # A18 y A19: las cadenas de formulacion y el F1 como descriptiva.
     # Las cadenas se leen del OBJETO REAL CADENAS_DE_FORMULACION, que es la
@@ -6706,17 +7933,19 @@ def casos_de_afirmaciones(puerta: PuertaHumo) -> None:
         lambda: not any(variante in texto for variante in VARIANTES_PROHIBIDAS),
         "el texto del caso no puede traer ninguna variante prohibida",
     )
-    f1_miembro = {
-        "f1_media_columnas": 0.60,
-        "desviacion_entre_semillas": 0.001,
-        "intervalo": [-0.008, 0.010],
-    }
+    f1_miembro = f1_humo
     caso_afirmacion(
         puerta,
-        "A19_f1_descriptivo",
+        "A19_f1_descriptivo_medido",
         "A19",
         lambda: afirmacion_a19(texto, f1_miembro),
         lambda: afirmacion_a19(texto, {"desviacion_entre_semillas": 0.001}),
+    )
+    puerta.registrar(
+        "A19_el_f1_sale_de_combinaciones_medidas",
+        int(f1_miembro["n_combinaciones"]) == len(brazo_humo_m1.predicciones_por_combinacion)
+        and len(f1_miembro["f1_por_combinacion"]) == int(f1_miembro["n_combinaciones"]),
+        f"n_combinaciones={f1_miembro['n_combinaciones']}",
     )
     caso_detecta(
         puerta,
@@ -7023,7 +8252,14 @@ def medir_la_mutacion_del_calibrador(
     """
     INSTRUMENTO_CALIBRACION.reiniciar()
     INSTRUMENTO_CALIBRACION.fijar_permitidos(filas_permitidas, np.asarray([], dtype=np.int64))
-    ajustar_calibrador(proba_oof, verdad_oof, filas_oof)
+    # EL AJUSTE MUTADO DECLARA TAMBIEN SUS FILAS DE EVALUACION. Sin ese argumento el
+    # contador de "ajustes que tocan el OOF" no veia el toque, porque el registro
+    # guardaba una lista vacia de filas de evaluacion y una lista vacia no se cruza
+    # con nada. Con la declaracion, la mutacion es lo que dice ser: un calibrador
+    # ajustado sobre las filas que despues se evaluan, y A14 lo detecta.
+    ajustar_calibrador(
+        proba_oof, verdad_oof, filas_oof, filas_de_evaluacion=filas_oof
+    )
     mutado = INSTRUMENTO_CALIBRACION.instantanea()
     INSTRUMENTO_CALIBRACION.reiniciar()
     fugas = contar_fugas_calibrador(mutado)
@@ -7237,6 +8473,13 @@ def ejecutar_p83_completo(marca: str, directorio: Path) -> int:
     # A4: la seleccion de variables se hace solo sobre el inner_train.
     INSTRUMENTO_SELECCION.llamadas = []
     INSTRUMENTO_CALIBRACION.reiniciar()
+    inicio_del_presupuesto = time.perf_counter()
+    # EL LISTON DE LA PREGUNTA 1, MEDIDO Y NO DECORADO. reproducir_liston aplica los
+    # pares de Platt CONGELADOS de P76 al OOF canonico y produce las tres magnitudes
+    # contra las que comparar_contra_el_liston aplica los margenes de 1.3. Antes las
+    # dos funciones existian y no las llamaba nadie: los margenes eran codigo muerto.
+    liston = reproducir_liston(probabilidad_canonica, verdad_canonica, pliegues_canonicos)
+    liston_resumen = {clave: valor for clave, valor in liston.items() if clave != "matriz_calibrada"}
     brazo_m1 = ejecutar_brazo_m1(
         contexto, progreso, CONFIG["umbral_seleccion_primario"], CONFIG["alpha_0_primario"],
         CONFIG["n_muestras_predictivas"],
@@ -7246,6 +8489,8 @@ def ejecutar_p83_completo(marca: str, directorio: Path) -> int:
     # luego si A14 leyera el instrumento vivo contaria cien ajustes en lugar de los
     # veinticinco que la regla 3.5 define, que son cinco pliegues por cinco semillas.
     instrumento_m1 = INSTRUMENTO_CALIBRACION.instantanea()
+    # La seleccion del umbral primario, copiada ANTES de que la rejilla la pise.
+    seleccion_primaria = [dict(registro) for registro in INSTRUMENTO_SELECCION.llamadas]
     # El conjunto permitted de A4 es la union de los outer_train, porque es dentro de
     # ahi donde esta el inner_train de cada combinacion. El de A14 es la union de los
     # outer_validation, que es lo que el calibrador NO puede tocar: antes se le
@@ -7276,33 +8521,25 @@ def ejecutar_p83_completo(marca: str, directorio: Path) -> int:
         lambda: afirmacion_a4(INSTRUMENTO_SELECCION, filas_internas, True),
         "cero filas fuera del inner_train en ninguna llamada al selector",
     )
-    # A5 y A6: el metodo declarado y el numero de parametros efectivos.
-    lectura, detalle_lectura = aplicar_lectura_intervalos(
-        intervalo_t_pareado(np.zeros(CONFIG["n_pliegues"])),
-        intervalo_t_pareado(np.zeros(CONFIG["n_pliegues"])),
-        CONFIG["eps_gate_delta"],
-    )
-    carga = construir_carga(
-        contexto, progreso, "completo", marca, lectura,
-        texto_minimo_de_ejemplo(LECTURA_AMBIGUA),
-    )
-    progreso.evaluar(
-        "A5",
-        lambda: afirmacion_a5(carga),
-        "las cinco claves del metodo y la cadena literal de la posterior aproximada",
-    )
+    # LA REJILLA DE alpha_0 DE A6, CON EL LOG-LOSS MEDIDO EN CADA VALOR. Antes solo
+    # publicaba el numero de parametros efectivos; A16 exige ademas la magnitud de la
+    # pregunta 1 en cada valor, y se mide aqui en vez de inventarla.
     por_alpha_0: dict[str, dict[str, Any]] = {}
     for alpha_0 in CONFIG["alpha_0_rejilla"]:
         corrida = ejecutar_brazo_m1(
             contexto, progreso, CONFIG["umbral_seleccion_primario"], float(alpha_0),
             CONFIG["n_muestras_predictivas"],
         )
+        magnitudes_corrida = medir_magnitudes_de_pregunta_1(corrida, contexto.y)
         por_alpha_0[f"{float(alpha_0):.2f}"] = {
             "n_efectivos_total": float(np.mean(list(corrida.n_efectivos.values())))
             if corrida.n_efectivos else 0.0,
             "n_activas_total": float(np.mean(list(corrida.n_activas.values())))
             if corrida.n_activas else 0.0,
             "por_etiqueta": {clave: valor for clave, valor in corrida.n_efectivos.items()},
+            "log_loss_macro": magnitudes_corrida["log_loss_macro"],
+            "brier_macro": magnitudes_corrida["brier_macro"],
+            "n_filas_medidas": magnitudes_corrida["n_filas_medidas"],
         }
     por_alpha_0["__texto__"] = LITERAL_EFECTIVOS_METODO
     progreso.evaluar(
@@ -7323,50 +8560,51 @@ def ejecutar_p83_completo(marca: str, directorio: Path) -> int:
     )
     # A8, A9, A10 y A11: las cifras de la pregunta 1 y su regla de lectura.
     verdad = contexto.y
-    magnitud_1: dict[str, dict[str, float]] = {}
+    pliegues_por_fila = np.asarray(pliegues_canonicos, dtype=np.int64)
+    magnitudes_por_brazo: dict[str, dict[str, Any]] = {
+        brazo.identificador: medir_magnitudes_de_pregunta_1(brazo, verdad)
+        for brazo in (brazo_m1, brazo_m2)
+    }
     curvas: dict[str, Any] = {}
-    bayes: dict[str, float] = {}
-    control_v03: dict[str, float] = {}
     for brazo in (brazo_m1, brazo_m2):
-        usable = ~np.isnan(brazo.probas_oof[:, 0])
-        proba = brazo.probas_oof[usable]
-        cierta = verdad[usable]
-        magnitud_1[brazo.identificador] = {
-            "log_loss_macro": log_loss_recortado(
-                proba, cierta, CONFIG["recorte_log_loss"]
-            )["log_loss_macro_recortado"],
-            "log_loss_sin_recortar": log_loss_recortado(
-                proba, cierta, CONFIG["recorte_log_loss"]
-            )["log_loss_macro_sin_recortar"],
-            "brier_macro": brier_multiclase(proba, cierta)["brier_macro"],
-            "brier_por_etiqueta": brier_multiclase(proba, cierta)["brier_por_etiqueta"],
-            "ece_macro": float(
-                np.mean([
-                    curva_de_calibracion(
-                        proba[:, k], cierta[:, k], CONFIG["bins_calibracion"]
-                    )["area_entre_curva_y_diagonal"]
-                    for k in range(len(ETIQUETAS))
-                ])
-            ),
-            "pendientes": pendientes_de_calibracion(proba, cierta)["media"],
-        }
-        for k in range(len(ETIQUETAS)):
-            curvas[f"{brazo.identificador}_{ETIQUETAS[k]}"] = curva_de_calibracion(
-                proba[:, k], cierta[:, k], CONFIG["bins_calibracion"]
-            )
-        bayes = medir_cobertura_y_anchura(
-            brazo.intervalos["inferior"][usable],
-            brazo.intervalos["superior"][usable],
-            cierta,
-            CONFIG["peso_penalizacion_anchura"],
-        )
-        break
+        curvas.update(construir_curvas_de_pregunta_1(brazo, verdad))
+    coberturas: dict[str, dict[str, float]] = {
+        brazo.identificador: medir_cobertura_de_brazo(brazo, verdad)
+        for brazo in (brazo_m1, brazo_m2)
+    }
     control_v03 = medir_cobertura_y_anchura(
         probabilidad_canonica, probabilidad_canonica, verdad_canonica,
         CONFIG["peso_penalizacion_anchura"],
     )
+    # EL CONTROL DEL INTERVALO COMPLETO [0, 1] SE MIDE, NO SE ESCRIBE 1.0 A MANO. La
+    # cobertura de un intervalo que contiene todo tiene que dar exactamente 1.0, y
+    # esa es la comprobacion de que el intervalo se construye bien; con un literal,
+    # la comprobacion se confirmaba a si misma.
+    control_completo = medir_cobertura_y_anchura(
+        np.zeros_like(verdad_canonica, dtype=np.float64),
+        np.ones_like(verdad_canonica, dtype=np.float64),
+        verdad_canonica,
+        CONFIG["peso_penalizacion_anchura"],
+    )
+    comparacion_liston = {
+        brazo.identificador: comparar_contra_el_liston(
+            magnitudes_por_brazo[brazo.identificador], liston_resumen
+        )
+        for brazo in (brazo_m1, brazo_m2)
+    }
     progreso.evaluar(
-        "A8", lambda: afirmacion_a8(magnitud_1), "seis magnitudes por brazo, sin NaN"
+        "A8",
+        con_extra(
+            lambda: afirmacion_a8(magnitudes_por_brazo),
+            {
+                "comparacion_contra_el_liston": {
+                    identificador: detalle
+                    for identificador, (_, detalle) in comparacion_liston.items()
+                },
+                "liston_v03_cal": liston_resumen,
+            },
+        ),
+        "seis magnitudes por brazo, sin NaN, y no inferioridad contra el liston por margen",
     )
     progreso.evaluar(
         "A9",
@@ -7376,8 +8614,34 @@ def ejecutar_p83_completo(marca: str, directorio: Path) -> int:
     )
     progreso.evaluar(
         "A10",
-        lambda: afirmacion_a10(bayes, control_v03, 1.0),
-        "la cobertura del intervalo completo tiene que ser exactamente 1.0",
+        lambda: afirmacion_a10(coberturas, control_v03, float(control_completo["cobertura"])),
+        "la cobertura del intervalo completo, medida, tiene que ser exactamente 1.0",
+    )
+    # LA LECTURA DE 1.5, SOBRE DELTAS MEDIDOS. Los deltas salen de las predicciones
+    # calibradas de cada combinacion contra el liston en SUS MISMAS filas; los dos
+    # intervalos son el de pliegues y el de semillas. Antes se leian dos intervalos
+    # de ceros, que no median nada.
+    deltas_pregunta_1 = deltas_de_log_loss_por_combinacion(
+        brazo_m1, liston["matriz_calibrada"], verdad, CONFIG["recorte_log_loss"]
+    )
+    lectura, detalle_lectura = aplicar_lectura_intervalos(
+        intervalo_t_pareado(deltas_pregunta_1["vector_por_pliegue"]),
+        intervalo_t_pareado(deltas_pregunta_1["vector_por_semilla"]),
+        CONFIG["margen_log_loss"],
+    )
+    carga = construir_carga(
+        contexto, progreso, "completo", marca, lectura,
+        texto_minimo_de_ejemplo(lectura),
+    )
+    carga["deltas_pregunta_1"] = deltas_pregunta_1
+    carga["liston_v03_cal"] = liston_resumen
+    carga["comparacion_contra_el_liston"] = {
+        identificador: detalle for identificador, (_, detalle) in comparacion_liston.items()
+    }
+    progreso.evaluar(
+        "A5",
+        lambda: afirmacion_a5(carga),
+        "las cinco claves del metodo y la cadena literal de la posterior aproximada",
     )
     carga_11 = dict(registrar_lectura_pregunta_1(lectura, lectura == LECTURA_AMBIGUA))
     carga_11["texto_del_informe"] = carga["texto_del_informe"]
@@ -7387,26 +8651,41 @@ def ejecutar_p83_completo(marca: str, directorio: Path) -> int:
         "el valor publicado es el que sale de la regla y la ambiguedad esta declarada",
     )
     # A12, A13 y A14: complementariedad, ensamblaje y calibracion anidada.
-    medidas = {
-        brazo.identificador: {
-            "auc_del_error_de_v03": 0.0,
-            "acuerdo_con_v03": 0.0,
-            "matriz_de_interseccion": {"0": 0},
-            "diferencias_por_etiqueta": {},
-        }
-        for brazo in (brazo_m1, brazo_m2)
+    complementariedad: dict[str, Any] = {}
+    for brazo in (brazo_m1, brazo_m2):
+        usable = np.isfinite(brazo.probas_oof[:, 0])
+        complementariedad[brazo.identificador] = medir_complementariedad(
+            brazo.probas_oof[usable],
+            probabilidad_canonica[usable],
+            verdad[usable],
+            umbrales,
+        )
+    usable_m1 = np.isfinite(brazo_m1.probas_oof[:, 0])
+    configuraciones_de_ensamblaje = {
+        f"{float(alpha):.2f}": medir_ensamblaje(
+            float(alpha),
+            brazo_m1.probas_oof[usable_m1],
+            probabilidad_canonica[usable_m1],
+            verdad[usable_m1],
+            umbrales,
+            pliegues_por_fila[usable_m1],
+        )
+        for alpha in CONFIG["alphas_ensamblaje"]
+    }
+    declaraciones_de_ensamblaje = {
+        "escala": True,
+        "corrected_cv_optimista": True,
+        "lectura_diagnostica": LITERAL_DIAGNOSTICA,
     }
     progreso.evaluar(
         "A12",
-        lambda: afirmacion_a12(medidas),
-        "cuatro medidas por brazo, todas no vacias",
+        lambda: afirmacion_a12(complementariedad),
+        "cuatro medidas por brazo, todas no vacias y medidas en la corrida",
     )
     progreso.evaluar(
         "A13",
-        lambda: afirmacion_a13(
-            _configuraciones_de_ensamblaje(), {"escala": True, "corrected_cv_optimista": True}
-        ),
-        "ocho cifras por alpha y las dos declaraciones obligatorias",
+        lambda: afirmacion_a13(configuraciones_de_ensamblaje, declaraciones_de_ensamblaje),
+        "ocho cifras por alpha, medidas, y las dos declaraciones obligatorias",
     )
     # La union de las filas de calibracion de todas las combinaciones registradas.
     filas_calibracion_de_todas = np.unique(
@@ -7449,6 +8728,10 @@ def ejecutar_p83_completo(marca: str, directorio: Path) -> int:
             ajustes_sobre_el_oof=contar_ajustes_que_tocan_filas(
                 instrumento_m1, filas_de_outer_validation
             ),
+            registros_del_instrumento={
+                "llamadas_calibrador": instrumento_m1["llamadas_calibrador"],
+                "llamadas_alpha": instrumento_m1["llamadas_alpha"],
+            },
         ),
         "un ajuste del calibrador por combinacion de pliegue y semilla, solo interno",
     )
@@ -7457,20 +8740,100 @@ def ejecutar_p83_completo(marca: str, directorio: Path) -> int:
     progreso.evaluar(
         "A15", lambda: afirmacion_a15(presentes), "las doce libreras comprobadas una por una"
     )
+    # LA SENSIBILIDAD DEL UMBRAL DE SELECCION, MEDIDA. Los umbrales 2.0 y 5.0 se
+    # ejecutan de verdad y se publica el log-loss y la dimension que producen; el 3.0
+    # reutiliza la corrida principal. Ningun valor se elige como el mejor.
+    por_umbral: dict[str, dict[str, Any]] = {}
+    for umbral_sensibilidad in CONFIG["umbrales_seleccion"]:
+        valor_umbral = float(umbral_sensibilidad)
+        if abs(valor_umbral - float(CONFIG["umbral_seleccion_primario"])) <= 1e-12:
+            corrida_umbral = brazo_m1
+            registros_umbral = seleccion_primaria
+        else:
+            corrida_umbral = ejecutar_brazo_m1(
+                contexto, progreso, valor_umbral, CONFIG["alpha_0_primario"],
+                CONFIG["n_muestras_predictivas"],
+            )
+            registros_umbral = [dict(registro) for registro in INSTRUMENTO_SELECCION.llamadas]
+        magnitudes_umbral = medir_magnitudes_de_pregunta_1(corrida_umbral, contexto.y)
+        dimensiones_umbral = dimensiones_de_seleccion(registros_umbral)
+        dimensiones_del_umbral = [
+            datos["n_columnas"] for datos in dimensiones_umbral.values()
+        ]
+        por_umbral[f"{valor_umbral:.1f}"] = {
+            "log_loss_macro": magnitudes_umbral["log_loss_macro"],
+            "brier_macro": magnitudes_umbral["brier_macro"],
+            "dimension_media": float(np.mean(dimensiones_del_umbral))
+            if dimensiones_del_umbral else 0.0,
+            "dimension_minima": int(min(dimensiones_del_umbral))
+            if dimensiones_del_umbral else 0,
+            "dimension_maxima": int(max(dimensiones_del_umbral))
+            if dimensiones_del_umbral else 0,
+            "n_columnas_por_pliegue": dimensiones_umbral,
+        }
+    rejillas_medidas = {
+        "alpha_0": {
+            clave: valor for clave, valor in por_alpha_0.items() if clave != "__texto__"
+        },
+        "umbral": por_umbral,
+        "texto_efectivos_metodo": LITERAL_EFECTIVOS_METODO,
+        "valores_elegidos": [],
+    }
     progreso.evaluar(
         "A16",
-        lambda: afirmacion_a16(
-            {"alpha_0": por_alpha_0, "umbral": {}}, False
-        ),
-        "las dos rejillas publicadas y ningun valor elegido",
+        lambda: afirmacion_a16(rejillas_medidas, not rejillas_medidas["valores_elegidos"]),
+        "las dos rejillas publicadas, medidas, y ningun valor elegido",
     )
+    # A17: la dimension por pliegue y umbral sale de los registros del selector; la
+    # comparacion con la L1 con C 4.0 se MIDE ajustandola en el pliegue 0, en lugar de
+    # citar un numero de otro informe que no es rastreable.
+    registros_de_seleccion = [dict(registro) for registro in INSTRUMENTO_SELECCION.llamadas]
+    dimensiones_todas = dimensiones_de_seleccion(registros_de_seleccion)
+    filas_inner_medidas = int(brazo_m1.n_filas_inner_train)
+    determinada_medida = all(
+        int(datos["n_columnas"]) < filas_inner_medidas
+        for datos in dimensiones_todas.values()
+    )
+    declaracion_no_determinada = (
+        ""
+        if determinada_medida
+        else (
+            "LA_DIMENSION_SELECCIONADA_NO_ES_MENOR_QUE_LAS_FILAS_DEL_INNER_TRAIN_EN_ALGUN_PLIEGUE"
+            "_Luego_LA_REGRESION_NO_ESTA_DETERMINADA_Y_EL_RESULTADO_HAY_QUE_LEERLO_CON_ESA_SALVEDAD"
+        )
+    )
+    ia_pliegue_0, _ = contexto.pliegues[0]
+    inner_pliegue_0, _ = partir_interna(
+        ia_pliegue_0,
+        CONFIG["fraccion_inner_calibration"],
+        int(CONFIG["semillas"][0]),
+        contexto.grupos,
+    )
+    X_l1 = construir_tfidf(
+        [contexto.textos[i] for i in inner_pliegue_0],
+        [contexto.textos[i] for i in ia_pliegue_0],
+    )
+    mascara_l1 = seleccionar_columnas(X_l1, CONFIG["umbral_seleccion_primario"])
+    l1_medida = medir_variables_activas_l1(X_l1[:, mascara_l1], contexto.y[inner_pliegue_0])
     progreso.evaluar(
         "A17",
         lambda: afirmacion_a17(
-            {str(i): {"n_columnas": 100} for i in range(5)}, 836, 12, True
+            dimensiones_todas,
+            filas_inner_medidas,
+            int(l1_medida["total_fuera"]),
+            determinada_medida,
+            declaracion_no_determinada,
         ),
-        "la dimension por pliegue es menor que las filas del inner_train",
+        "la dimension por pliegue y umbral, medida, contra las filas del inner_train",
     )
+    # A19: el F1 del miembro se mide por combinacion y se publica como descriptiva.
+    f1_del_miembro = resumen_f1_de_brazo(brazo_m1, verdad, umbrales)
+    carga["f1_del_miembro"] = f1_del_miembro
+    carga["complementariedad_contra_v03"] = complementariedad
+    carga["configuraciones_de_ensamblaje"] = configuraciones_de_ensamblaje
+    carga["rejillas_medidas"] = rejillas_medidas
+    carga[resolver_clave("cifras_pregunta_1_json")] = magnitudes_por_brazo
+    carga[resolver_clave("cifras_pregunta_2_json")] = configuraciones_de_ensamblaje
     texto_final = construir_markdown(carga)
     progreso.evaluar(
         "A18",
@@ -7479,18 +8842,21 @@ def ejecutar_p83_completo(marca: str, directorio: Path) -> int:
     )
     progreso.evaluar(
         "A19",
-        lambda: afirmacion_a19(
-            texto_final,
-            {
-                "f1_media_columnas": 0.60,
-                "desviacion_entre_semillas": 0.001,
-                "intervalo": [-0.008, 0.010],
-            },
-        ),
-        "el F1 aparece con etiqueta descriptiva y fuera de la regla de lectura",
+        lambda: afirmacion_a19(texto_final, f1_del_miembro),
+        "el F1 aparece con etiqueta descriptiva, medido, y fuera de la regla de lectura",
     )
-    carga[resolver_clave("cifras_pregunta_1_json")] = magnitud_1
-    carga[resolver_clave("cifras_pregunta_2_json")] = _configuraciones_de_ensamblaje()
+    # EL PRESUPUESTO DEL PRE-REGISTRO, APLICADO DE VERDAD. comprobar_presupuesto era
+    # codigo muerto: se probaba en el humo y no lo llamaba la corrida. Aqui se mide el
+    # reloj desde que arranco el trabajo pesado y un exceso sin nota de excepcion hace
+    # fallar la corrida, que es lo que el criterio de parada de la seccion 13 declara.
+    segundos_de_reloj = time.perf_counter() - inicio_del_presupuesto
+    presupuesto_segundos = int(CONFIG["budget_segundos"])
+    _, detalle_del_presupuesto = comprobar_presupuesto(
+        segundos_de_reloj,
+        presupuesto_segundos,
+        segundos_de_reloj <= float(presupuesto_segundos),
+    )
+    carga["presupuesto"] = detalle_del_presupuesto
     carga[resolver_clave("veredictos_json")] = {
         clave: {
             resolver_clave("estado_json"): resultado.estado,
