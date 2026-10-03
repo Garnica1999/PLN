@@ -80,6 +80,16 @@ CAPITULOS_MD = ROOT / "plan" / "auditoria" / "notebook_capitulos.md"
 SEP = "    ===CELDA==="
 # Las lineas anteriores al primer SEP son cabecera del archivo .md y NUNCA son un capitulo.
 CABECERA = "<!-- cabecera -->"
+# Primera linea de los capitulos tal como los insertaba la version anterior, que no ponia
+# encabezado. Sirven para retirar el bloque antiguo al migrar y no dejarlo duplicado.
+MARCADORES_HEREDADOS = (
+    "Esta parte documenta una **auditor",
+    "El recuento que sigue se **lee**",
+    # El capitulo se inserto primero como PARTE III, y ya existia otra PARTE III (V16 y V17),
+    # asi que se renombro a PARTE IV. El punto medio se escribe escapado para que este archivo
+    # siga siendo ASCII puro; el prefijo lleva "AUDITOR" para no confundirse con la otra PARTE III.
+    "# PARTE III \u00b7 AUDITOR",
+)
 
 
 def cargar_capitulos() -> list[str]:
@@ -156,7 +166,17 @@ def aplicar(nb_path: Path) -> dict:
     # Se hace con un escaneo secuencial: al encontrar una celda markdown cuyo inicio coincida con
     # un capitulo, se retiran esa celda y la siguiente si es de codigo de auditoria. Retirar solo
     # la markdown dejaba celdas de codigo huerfanas y el numero de celdas crecia en cada pasada.
+    #
+    # MARCADORES_HEREDADOS: la primera version insertaba el capitulo SIN encabezado (el titulo iba
+    # en un comentario HTML que se descartaba), asi que su primera linea era la prosa. Esos
+    # marcadores se reconocen para poder MIGRAR el bloque viejo en vez de duplicarlo.
+    # Los capitulos actuales se reconocen por IGUALDAD de su primera linea. Los heredados, por
+    # PREFIJO, porque se guardan truncados para no depender de tildes en este script ASCII.
     capitulos = [b.splitlines()[0].strip() for b in cargar_capitulos() if b.splitlines()]
+
+    def es_inicio_de_capitulo(primera: str) -> bool:
+        """True si la linea inicia un capitulo, actual o heredado."""
+        return primera in capitulos or any(primera.startswith(p) for p in MARCADORES_HEREDADOS)
     inicio_codigo = CODIGO_CELDA[0].strip()
     retiradas = 0
     nueva_lista: list[dict] = []
@@ -168,7 +188,7 @@ def aplicar(nb_path: Path) -> dict:
         # marcador es una sola linea y la celda es el capitulo completo
         celdas_texto = c.get("source", [])
         primera = celdas_texto[0].strip() if celdas_texto else ""
-        if c.get("cell_type") == "markdown" and primera in capitulos:
+        if c.get("cell_type") == "markdown" and es_inicio_de_capitulo(primera):
             retiradas += 1
             i += 1
             # su celda de codigo emparejada, si existe justo despues
@@ -243,15 +263,17 @@ def main(argv: list[str] | None = None) -> int:
                 aplicar(copia3)          # y se retira+reinserta: deja el bloque presente, no ausente
                 vacia = json.loads(copia3.read_text(encoding="utf-8"))
                 marcas = [b.splitlines()[0].strip() for b in cargar_capitulos()]
+
+                def es_capitulo(c: dict) -> bool:
+                    """True si la celda abre un capitulo (actual o heredado) o es su codigo."""
+                    primera = (c.get("source") or [""])[0].strip()
+                    if primera in marcas or any(primera.startswith(p) for p in MARCADORES_HEREDADOS):
+                        return True
+                    return (c.get("cell_type") == "code"
+                            and "".join(c.get("source", [])).startswith(CODIGO_CELDA[0].strip()))
+
                 sin_bloque = {
-                    "cells": [
-                        c for c in vacia["cells"]
-                        if not (
-                            (c.get("source") or [""])[0].strip() in marcas
-                            or (c.get("cell_type") == "code"
-                                and "".join(c.get("source", [])).startswith(CODIGO_CELDA[0].strip()))
-                        )
-                    ],
+                    "cells": [c for c in vacia["cells"] if not es_capitulo(c)],
                     "nbformat": vacia["nbformat"],
                     "nbformat_minor": vacia.get("nbformat_minor"),
                     "metadata": vacia.get("metadata", {}),

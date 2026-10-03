@@ -5,13 +5,13 @@ visible del notebook pueda llevar tildes. Los dos capitulos van separados por un
 
     ===CELDA===
 
-<!-- titulo: PARTE III · AUDITORÍA DEL HISTORIAL V1-V37 -->
+# PARTE IV · AUDITORÍA DEL HISTORIAL V1-V37
 
 Esta parte documenta una **auditoría de evidencia** del historial completo del proyecto,
 ejecutada el 2026-10-01 y registrada en el acta **D-090** de `DECISIONS.md`.
 
 No es una nueva búsqueda de señal ni una familia de experimentos: es una revisión de lo ya hecho.
-La pregunta era: *de las 195 filas del registro, ¿cuáles son ejecuciones reales, se ejecutaron
+La pregunta era: *de las 200 filas del registro, ¿cuáles son ejecuciones reales, se ejecutaron
 correctamente, usaron parámetros lógicos, están justificadas, y están documentadas con exactitud?*
 
 Restricciones que rigieron la auditoría: **no reejecutar** ningún script, **no abrir** test, holdout ni
@@ -19,8 +19,8 @@ leaderboard, **no generar** submissions, **no tocar** el campeón ni los scripts
 
 ### Qué encontró
 
-Lo primero, y más relevante para leer bien el registro: **195 filas no son 195 experimentos**. La
-clasificación por tipo de registro da **151 ejecuciones**, 33 documentos (21 documentales + 12
+Lo primero, y más relevante para leer bien el registro: **200 filas no son 200 experimentos**. La
+clasificación por tipo de registro da **151 ejecuciones**, 38 documentos (26 documentales + 12
 pre-registros), 10 enmiendas y 1 corrida abortada (`V35-E1-INTENTO-1`, `UnboundLocalError`, con la
 evidencia en cuarentena). Toda la evidencia citada existe en disco: **0 artefactos ausentes**.
 
@@ -107,7 +107,7 @@ Para que el informe sea legible también por lo que no hay:
 | Documento | Contenido |
 |---|---|
 | `reports/auditoria_experimentos_v1_v37.md` | informe principal, con las tablas y los números |
-| `reports/tables/auditoria_v1v37_inventario.csv` | matriz de 197 filas × 24 columnas, 0 huecos |
+| `reports/tables/auditoria_v1v37_inventario.csv` | matriz de 200 filas × 24 columnas, 0 huecos |
 | `plan/auditoria/01_inventario.md` | fase 1 y hallazgos H-01 a H-04 |
 | `plan/auditoria/02a_familias_linguisticas.md` | fase 2a, defectos N-01 a N-08 |
 | `plan/auditoria/02b_arquitectura_y_dl.md` | fase 2b, defectos A-01 a A-07 |
@@ -119,16 +119,16 @@ esta auditoría está escrita a mano**.
 
     ===CELDA===
 
-<!-- titulo: Inventario congelado de la auditoría -->
+## Inventario congelado de la auditoría
 
 El recuento que sigue se **lee** de `experiments/auditoria_v1v37_inventario.json`, que
-produce `scripts/auditoria_v1v37_inventario.py`. Ese script tiene un modo `--verificar` con 6 checks
+produce `scripts/auditoria_v1v37_inventario.py`. Ese script tiene un modo `--verificar` con 7 checks
 que **no escribe nada**, y su aislamiento está comprobado por hash del árbol antes y después.
 
 Regeneración:
 
 ```bash
-/home/carlos/venv/bin/python scripts/auditoria_v1v37_inventario.py --verificar   # 6/6, exit 0
+/home/carlos/venv/bin/python scripts/auditoria_v1v37_inventario.py --verificar   # 7/7, exit 0
 /home/carlos/venv/bin/python scripts/auditoria_v1v37_inventario.py             # escribe los 3 artefactos
 ```
 
