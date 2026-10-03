@@ -132,9 +132,53 @@ Regeneración:
 /home/carlos/venv/bin/python scripts/auditoria_v1v37_inventario.py             # escribe los 3 artefactos
 ```
 
-**Nota sobre el alcance de este capítulo**: el notebook llega hasta V35. Las fases **V36** (cierre de
-L4, D-088) y **V37** (diagnóstico `P(POS|edad)`, D-089) están documentadas en `reports/v36_e1_*.md` y
-`reports/v37_diagnostico_pos.md` y en el acta D-090, pero **no tienen sección propia aquí**. Queda
-registrado como deuda documental pendiente de reconciliación.
+**Alcance de este capítulo**: el notebook cubre las 200 filas del registro con sección propia. Las
+fases **V36** (cierre de L4, D-088) y **V37** (diagnóstico `P(POS|edad)`, D-089) tienen su sección
+arriba, con su metodología y su código.
+
+```python
+import json, pathlib
+RAIZ = pathlib.Path.cwd()
+while not (RAIZ / "experiments.csv").exists() and RAIZ != RAIZ.parent:
+    RAIZ = RAIZ.parent
+import csv
+
+# Este capitulo NO escribe numeros a mano: los lee del inventario congelado.
+inv = json.loads((RAIZ / 'experiments' / 'auditoria_v1v37_inventario.json').read_text(encoding='utf-8'))
+res = inv['resumen']
+
+print('filas del registro            :', res['filas'])
+print('por tipo de registro:')
+for k, v in sorted(res['por_tipo_registro'].items(), key=lambda kv: -kv[1]):
+    print(f'    {k:12} {v:4d}')
+
+print()
+print('por familia:')
+for k, v in sorted(res['por_familia'].items(), key=lambda kv: -kv[1]):
+    print(f'    {v:4d}  {k}')
+
+print()
+print('integridad de la evidencia:')
+print('    filas con artefacto ausente :', res['filas_con_artefacto_faltante'])
+print('    filas sin artefacto citado :', res['filas_sin_artefacto_citado'])
+
+print()
+print('notebook (antes de este capitulo):')
+for k in ('n_celdas', 'n_markdown', 'n_code', 'n_code_ejecutado', 'n_errores', 'n_secciones'):
+    print(f'    {k:18} {res["notebook"][k]}')
+
+# Las correcciones de la auditoria, verificables contra el estado actual del registro.
+filas_csv = list(csv.reader((RAIZ / 'experiments.csv').open(encoding='utf-8-sig')))
+encabezado, cuerpo = filas_csv[0], filas_csv[1:]
+print()
+print('correcciones aplicadas:')
+print('    experiments.csv filas x columnas:', len(cuerpo), 'x', len(encabezado))
+descuadradas = [n for n, f in enumerate(cuerpo, 2) if len(f) != len(encabezado)]
+print('    filas con largo distinto al encabezado:', descuadradas or 'ninguna')
+dic = {r[0]: dict(zip(encabezado, r)) for r in cuerpo}
+v37 = dic['V37-DIAG-POS']
+print('    V37-DIAG-POS duracion_seg      :', v37['duracion_seg'], '(reconstruido del JSON)')
+print('    V37-DIAG-POS accuracy_mean     :', repr(v37['accuracy_mean']), '(vacio = correcto)')
+```
 
     ===CELDA===

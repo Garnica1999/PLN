@@ -1,0 +1,50 @@
+{
+  "generado_por": "scripts/auditoria_v1v37_notebook_independiza.py",
+  "fecha": "2026-10-03",
+  "celdas_codigo": 167,
+  "imports_del_proyecto_antes": [
+    2,
+    60,
+    148,
+    170,
+    191,
+    214
+  ],
+  "imports_del_proyecto_despues": [],
+  "errores_de_sintaxis": [],
+  "celdas_con_simbolos_limpiados": 41,
+  "simbolos_raros_restantes": {},
+  "detalle": {
+    "arranque_reemplazada": true,
+    "miembros_reemplazada": true,
+    "imports_retirados": 0,
+    "celdas_tocadas": [
+      {
+        "celda": 2,
+        "accion": "arranque embebido"
+      },
+      {
+        "celda": 60,
+        "accion": "miembros embebidos"
+      },
+      {
+        "celda": 148,
+        "accion": "arranque embebido"
+      },
+      {
+        "celda": 170,
+        "accion": "arranque embebido"
+      },
+      {
+        "celda": 191,
+        "accion": "arranque embebido"
+      },
+      {
+        "celda": 214,
+        "accion": "arranque embebido"
+      }
+    ],
+    "celdas_con_simbolos_limpiados": 41
+  },
+  "segundos": 0.0
+}

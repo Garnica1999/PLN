@@ -18,7 +18,9 @@ ASCII puro en el codigo; el texto de las celdas markdown si admite tildes.
 from __future__ import annotations
 
 import argparse
+import ast
 import json
+import re
 import shutil
 import tempfile
 import time
@@ -34,49 +36,18 @@ PLAN = ROOT / "plan" / "auditoria"
 TITULO_NUEVO = "99 - Entrega consolidada (Parte I + Parte II + auditoria del historial V1-V37)"
 TITULO_HISTORICO = "99 - Entrega consolidada (Parte I + Parte II: busqueda de senal residual)"
 
-CODIGO_CELDA = [
-    "import json, pathlib, csv\n",
-    "RAIZ = pathlib.Path('..')\n",
-    "\n",
-    "# El capitulo de auditoria NO escribe numeros a mano: los lee del inventario congelado.\n",
-    "inv = json.loads((RAIZ / 'experiments' / 'auditoria_v1v37_inventario.json').read_text(encoding='utf-8'))\n",
-    "res = inv['resumen']\n",
-    "inv['resumen'].keys()",
-    "\n",
-    "print('filas del registro            :', res['filas'])\n",
-    "print('por tipo de registro:')\n",
-    "for k, v in sorted(res['por_tipo_registro'].items(), key=lambda kv: -kv[1]):\n",
-    "    print(f'    {k:12} {v:4d}')\n",
-    "\n",
-    "print('\\npor familia:')\n",
-    "for k, v in sorted(res['por_familia'].items(), key=lambda kv: -kv[1]):\n",
-    "    print(f'    {v:4d}  {k}')\n",
-    "\n",
-    "print('\\nintegridad de la evidencia:')\n",
-    "print('    filas con artefacto ausente :', res['filas_con_artefacto_faltante'])\n",
-    "print('    filas sin artefacto citado :', res['filas_sin_artefacto_citado'])\n",
-    "print('\\nnotebook (antes de este capitulo):')\n",
-    "for k in ('n_celdas', 'n_markdown', 'n_code', 'n_code_ejecutado', 'n_errores', 'n_secciones'):\n",
-    "    print(f'    {k:18} {res[\"notebook\"][k]}')\n",
-    "print('    filas citadas en el notebook:', res['notebook']['en_notebook'])\n",
-    "\n",
-    "# Las correcciones de la auditoria, verificables contra el estado actual del registro.\n",
-    "filas_csv = list(csv.reader((RAIZ / 'experiments.csv').open(encoding='utf-8-sig')))\n",
-    "encabezado, cuerpo = filas_csv[0], filas_csv[1:]\n",
-    "print('\\ncorrecciones aplicadas:')\n",
-    "print('    experiments.csv filas x columnas:', len(cuerpo), 'x', len(encabezado))\n",
-    "descuadradas = [n for n, f in enumerate(cuerpo, 2) if len(f) != len(encabezado)]\n",
-    "print('    filas con largo distinto al encabezado:', descuadradas or 'ninguna')\n",
-    "dic = {r[0]: dict(zip(encabezado, r)) for r in cuerpo}\n",
-    "v37 = dic['V37-DIAG-POS']\n",
-    "print('    V37-DIAG-POS duracion_seg      :', v37['duracion_seg'], '(reconstruido del JSON)')\n",
-    "print('    V37-DIAG-POS accuracy_mean     :', repr(v37['accuracy_mean']), '(vacio = correcto)')\n",
-    "print('    V37-DIAG-POS decision          :', v37['decision'][:72])\n",
-]
+# Los capitulos declaran su propio codigo con bloques ```python dentro del .md fuente. El script
+# los extrae y los inserta como celdas de codigo justo despues del texto del capitulo.
+RE_BLOQUE_PYTHON = re.compile(r"```python\n(.*?)```", re.DOTALL)
 
 # Los capitulos visibles viven en un .md externo para que este script sea ASCII puro (regla 8.4)
 # y el texto del notebook pueda llevar tildes. SEPARADOR entre celdas:
-CAPITULOS_MD = ROOT / "plan" / "auditoria" / "notebook_capitulos.md"
+# Fuentes de los capitulos, EN ORDEN de insercion. Primero las fases V36 y V37 (que son del
+# proyecto), y al final el capitulo de auditoria, que cierra el notebook.
+CAPITULOS_MD = (
+    ROOT / "plan" / "notebook_fases_v36_v37.md",
+    ROOT / "plan" / "auditoria" / "notebook_capitulos.md",
+)
 SEP = "    ===CELDA==="
 # Las lineas anteriores al primer SEP son cabecera del archivo .md y NUNCA son un capitulo.
 CABECERA = "<!-- cabecera -->"
@@ -89,26 +60,31 @@ MARCADORES_HEREDADOS = (
     # asi que se renombro a PARTE IV. El punto medio se escribe escapado para que este archivo
     # siga siendo ASCII puro; el prefijo lleva "AUDITOR" para no confundirse con la otra PARTE III.
     "# PARTE III \u00b7 AUDITOR",
+    "# PARTE IV \u00b7 AUDITOR",
+    "# PHASE - V36 (VIA C1-A)",
+    "# PHASE - V37: DIAGNOSTICO",
+    "## Inventario congelado de la auditor",
 )
 
 
 def cargar_capitulos() -> list[str]:
-    """Lee los capitulos visibles del .md externo, separados por SEP.
+    """Lee los capitulos visibles de TODOS los .md de `CAPITULOS_MD`, en orden.
 
-    Todo lo que precede al primer SEP es cabecera del archivo y se descarta: sin esta regla, la
+    Todo lo que precede al primer SEP de cada archivo es cabecera y se descarta: sin esta regla, la
     cabecera se contaria como un capitulo mas y la idempotencia dejaria de cumplirse.
     """
-    texto = CAPITULOS_MD.read_text(encoding="utf-8")
-    cuerpo = texto.split(SEP, 1)[1] if SEP in texto else texto
     cuerpos: list[str] = []
-    for bruto in cuerpo.split(SEP):
-        lineas = [ln for ln in bruto.splitlines() if not ln.startswith("<!-- titulo:")]
-        while lineas and not lineas[0].strip():
-            lineas.pop(0)
-        while lineas and not lineas[-1].strip():
-            lineas.pop()
-        if lineas:
-            cuerpos.append("\n".join(lineas))
+    for ruta in CAPITULOS_MD:
+        texto = ruta.read_text(encoding="utf-8")
+        cuerpo = texto.split(SEP, 1)[1] if SEP in texto else texto
+        for bruto in cuerpo.split(SEP):
+            lineas = [ln for ln in bruto.splitlines() if not ln.startswith("<!-- titulo:")]
+            while lineas and not lineas[0].strip():
+                lineas.pop(0)
+            while lineas and not lineas[-1].strip():
+                lineas.pop()
+            if lineas:
+                cuerpos.append("\n".join(lineas))
     return cuerpos
 
 
@@ -142,12 +118,30 @@ def verifica_estructura(nb: dict) -> dict:
 
 
 def construye_celdas() -> list[dict]:
-    """Celdas del capitulo de auditoria, en orden: markdown + codigo por cada capitulo."""
+    """Celdas del bloque, en orden: el texto de cada capitulo y sus bloques ```python.
+
+    Un capitulo puede llevar varios bloques de codigo; se insertan intercalados en el orden en
+    que aparecen. Si un capitulo no lleva ninguno, solo aporta su celda markdown.
+    """
     out: list[dict] = []
     for cuerpo in cargar_capitulos():
-        out.append(md(cuerpo))
-        out.append(code(CODIGO_CELDA))
+        partes = RE_BLOQUE_PYTHON.split(cuerpo)
+        for indice, parte in enumerate(partes):
+            if indice % 2 == 0:
+                texto = parte.strip()
+                if texto:
+                    out.append(md(texto))
+            else:
+                lineas = parte.strip().splitlines(keepends=True)
+                if lineas:
+                    out.append(code(lineas))
     return out
+
+
+def primera_linea(c: dict) -> str:
+    """Primera linea del source de una celda, o cadena vacia."""
+    fuente = c.get("source") or []
+    return fuente[0].strip() if fuente else ""
 
 
 def marcadores() -> list[str]:
@@ -157,55 +151,51 @@ def marcadores() -> list[str]:
 
 
 
-def aplicar(nb_path: Path) -> dict:
-    """Aplica el capitulo a un notebook dado en disco. Idempotente."""
-    nb = json.loads(nb_path.read_text(encoding="utf-8"))
-    antes = verifica_estructura(nb)
+def retira_bloque(celdas: list[dict]) -> int:
+    """Retira el bloque insertado previamente y devuelve cuantas celdas retiro.
 
-    # Idempotencia: se retira el bloque COMPLETO (markdown + su celda de codigo emparejada).
-    # Se hace con un escaneo secuencial: al encontrar una celda markdown cuyo inicio coincida con
-    # un capitulo, se retiran esa celda y la siguiente si es de codigo de auditoria. Retirar solo
-    # la markdown dejaba celdas de codigo huerfanas y el numero de celdas crecia en cada pasada.
-    #
-    # MARCADORES_HEREDADOS: la primera version insertaba el capitulo SIN encabezado (el titulo iba
-    # en un comentario HTML que se descartaba), asi que su primera linea era la prosa. Esos
-    # marcadores se reconocen para poder MIGRAR el bloque viejo en vez de duplicarlo.
-    # Los capitulos actuales se reconocen por IGUALDAD de su primera linea. Los heredados, por
-    # PREFIJO, porque se guardan truncados para no depender de tildes en este script ASCII.
-    capitulos = [b.splitlines()[0].strip() for b in cargar_capitulos() if b.splitlines()]
+    Se apoya en la FIRMA del bloque (tipo y primera linea de cada celda), de modo que no depende
+    de que el bloque este al final ni de marcadores sueltos. Cubre tambien las dos versiones
+    heredadas: la primera no llevaba encabezado, y la segunda decia "# PARTE III \u00b7 AUDITOR".
+    """
+    esperadas = construye_celdas()
+    firma = [(c["cell_type"], primera_linea(c)) for c in esperadas]
+    n = len(firma)
+    reales = [(c["cell_type"], primera_linea(c)) for c in celdas]
+    for ini in range(len(celdas) - n + 1):
+        if reales[ini:ini + n] == firma:
+            del celdas[ini:ini + n]
+            return n
 
-    def es_inicio_de_capitulo(primera: str) -> bool:
-        """True si la linea inicia un capitulo, actual o heredado."""
-        return primera in capitulos or any(primera.startswith(p) for p in MARCADORES_HEREDADOS)
-    inicio_codigo = CODIGO_CELDA[0].strip()
-    retiradas = 0
-    nueva_lista: list[dict] = []
-    celdas = nb["cells"]
+    # Migracion de versiones anteriores: markdown de capitulo (sin encabezado o con el encabezado
+    # viejo) seguida de su celda de codigo.
+    fuera: list[int] = []
     i = 0
     while i < len(celdas):
-        c = celdas[i]
-        # se compara la PRIMERA LINEA de la celda contra el marcador, no la celda entera: el
-        # marcador es una sola linea y la celda es el capitulo completo
-        celdas_texto = c.get("source", [])
-        primera = celdas_texto[0].strip() if celdas_texto else ""
-        if c.get("cell_type") == "markdown" and es_inicio_de_capitulo(primera):
-            retiradas += 1
+        primera = primera_linea(celdas[i])
+        if celdas[i]["cell_type"] == "markdown" and any(
+            primera.startswith(p) for p in MARCADORES_HEREDADOS
+        ):
+            fuera.append(i)
             i += 1
-            # su celda de codigo emparejada, si existe justo despues
-            if i < len(celdas) and celdas[i].get("cell_type") == "code" and "".join(
-                celdas[i].get("source", [])
-            ).startswith(inicio_codigo):
-                retiradas += 1
+            if i < len(celdas) and celdas[i]["cell_type"] == "code":
+                fuera.append(i)
                 i += 1
             continue
-        nueva_lista.append(c)
         i += 1
-    nb["cells"] = nueva_lista
+    for indice in reversed(fuera):
+        del celdas[indice]
+    return len(fuera)
 
+
+def aplicar(nb_path: Path) -> dict:
+    """Aplica el bloque de capitulos a un notebook dado en disco. Idempotente."""
+    nb = json.loads(nb_path.read_text(encoding="utf-8"))
+    antes = verifica_estructura(nb)
+    retiradas = retira_bloque(nb["cells"])
     nuevas = construye_celdas()
     nb["cells"].extend(nuevas)
     nb.setdefault("metadata", {})["title"] = TITULO_NUEVO
-
     nb_path.write_text(json.dumps(nb, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
     despues = verifica_estructura(json.loads(nb_path.read_text(encoding="utf-8")))
     return {
@@ -219,141 +209,107 @@ def aplicar(nb_path: Path) -> dict:
 
 
 def main(argv: list[str] | None = None) -> int:
-    ap = argparse.ArgumentParser(description="Capitulo de auditoria V1-V37 en el notebook consolidado.")
+    """Aplica el bloque al notebook real, o lo verifica en una copia temporal."""
+    ap = argparse.ArgumentParser(description="Capitulos V36/V37 y auditoria en el notebook consolidado.")
     ap.add_argument("--verificar", action="store_true", help="prueba en copia temporal; no toca el real")
     args = ap.parse_args(argv)
     inicio = time.time()
 
     if args.verificar:
-        print("=== verificacion del capitulo de auditoria (copia temporal) ===")
-        fallos = 0
-        with tempfile.TemporaryDirectory() as tmp:
-            copia = Path(tmp) / "nb.ipynb"
-            shutil.copy2(NB, copia)
-            copia_real = verifica_estructura(json.loads(NB.read_text(encoding="utf-8")))
-
-            # 1: el notebook real parsea
-            try:
-                json.loads(NB.read_text(encoding="utf-8"))
-                print("  [OK] el notebook real parsea como JSON")
-            except Exception as exc:  # noqa: BLE001
-                print(f"  [FALLA] el notebook real no parsea: {exc}")
-                fallos += 1
-
-            # 2: el inventario existe y es coherente con lo que muestra la celda de codigo
-            try:
-                inv = json.loads(INVENTARIO_JSON.read_text(encoding="utf-8"))
-                res = inv["resumen"]
-                ok = res["filas"] == inv["filas"].__len__() and res["filas_con_artefacto_faltante"] == 0
-                print(f"  [{'OK' if ok else 'FALLA'}] inventario coherente: {res['filas']} filas, "
-                      f"{res['filas_con_artefacto_faltante']} huecos")
-                fallos += 0 if ok else 1
-            except Exception as exc:  # noqa: BLE001
-                print(f"  [FALLA] inventario ilegible: {exc}")
-                fallos += 1
-
-            # 3: la INSERCION sobre una copia sin capitulo anade exactamente las celdas nuevas y conserva
-            # la estructura. Parte de una copia a la que se le ha retirado el bloque, para que el
-            # caso "primera vez" se pruebe de verdad y no una reinsercion.
-            try:
-                copia3 = Path(tmp) / "nb3.ipynb"
-                shutil.copy2(NB, copia3)
-                # retira el bloque si ya esta presente, para simular el notebook original
-                aplicar(copia3)          # asegura que el bloque esta presente
-                aplicar(copia3)          # y se retira+reinserta: deja el bloque presente, no ausente
-                vacia = json.loads(copia3.read_text(encoding="utf-8"))
-                marcas = [b.splitlines()[0].strip() for b in cargar_capitulos()]
-
-                def es_capitulo(c: dict) -> bool:
-                    """True si la celda abre un capitulo (actual o heredado) o es su codigo."""
-                    primera = (c.get("source") or [""])[0].strip()
-                    if primera in marcas or any(primera.startswith(p) for p in MARCADORES_HEREDADOS):
-                        return True
-                    return (c.get("cell_type") == "code"
-                            and "".join(c.get("source", [])).startswith(CODIGO_CELDA[0].strip()))
-
-                sin_bloque = {
-                    "cells": [c for c in vacia["cells"] if not es_capitulo(c)],
-                    "nbformat": vacia["nbformat"],
-                    "nbformat_minor": vacia.get("nbformat_minor"),
-                    "metadata": vacia.get("metadata", {}),
-                }
-                copia3.write_text(json.dumps(sin_bloque, indent=1, ensure_ascii=False) + "\n",
-                                  encoding="utf-8")
-                rr = aplicar(copia3)
-                ok = (
-                    rr["celdas_despues"] == rr["celdas_antes"] + rr["celdas_nuevas"]
-                    and rr["retiradas_previas"] == 0
-                    and rr["despues"]["ids_unicos"]
-                    and rr["despues"]["nbformat"] == rr["antes"]["nbformat"]
-                    and rr["despues"]["errores_guardados"] == rr["antes"]["errores_guardados"]
-                )
-                print(f"  [{'OK' if ok else 'FALLA'}] insercion desde cero: {rr['celdas_antes']} -> "
-                      f"{rr['celdas_despues']} celdas (+{rr['celdas_nuevas']}, retiradas="
-                      f"{rr['retiradas_previas']}), ids unicos={rr['despues']['ids_unicos']}, "
-                      f"nbformat {rr['despues']['nbformat']}, errores "
-                      f"{rr['despues']['errores_guardados']}")
-                fallos += 0 if ok else 1
-            except Exception as exc:  # noqa: BLE001
-                print(f"  [FALLA] la insercion fallo: {exc}")
-                fallos += 1
-
-            # 4: idempotencia. Tras TRES pasadas el numero de celdas debe ser el mismo que tras una, cada
-            # pasada posterior debe retirar exactamente lo que inserta la anterior, y el notebook
-            # debe contener un solo bloque de auditoria (los N capitulos + sus N celdas de codigo).
-            try:
-                copia4 = Path(tmp) / "nb4.ipynb"
-                shutil.copy2(NB, copia4)
-                r1 = aplicar(copia4)
-                r2 = aplicar(copia4)
-                r3 = aplicar(copia4)
-                nb_final = json.loads(copia4.read_text(encoding="utf-8"))
-                n_md = sum(
-                    1 for c in nb_final["cells"]
-                    if c["cell_type"] == "markdown"
-                    and (c.get("source") or [""])[0].strip()
-                    in [b.splitlines()[0].strip() for b in cargar_capitulos()]
-                )
-                n_code = sum(
-                    1 for c in nb_final["cells"]
-                    if c["cell_type"] == "code"
-                    and "".join(c.get("source", [])).startswith(CODIGO_CELDA[0].strip())
-                )
-                ok = (
-                    r1["celdas_despues"] == r3["celdas_despues"]
-                    and r2["retiradas_previas"] == r2["celdas_nuevas"]
-                    and r3["retiradas_previas"] == r3["celdas_nuevas"]
-                    and n_md == len(cargar_capitulos())
-                    and n_code == len(cargar_capitulos())
-                )
-                print(f"  [{'OK' if ok else 'FALLA'}] idempotencia en 3 pasadas: celdas "
-                      f"{r1['celdas_despues']} -> {r3['celdas_despues']} (estable); retiradas "
-                      f"{r2['retiradas_previas']}/{r3['retiradas_previas']} por "
-                      f"+{r3['celdas_nuevas']} cada vez; celdas de auditoria md={n_md}, code={n_code}")
-                fallos += 0 if ok else 1
-            except Exception as exc:  # noqa: BLE001
-                print(f"  [FALLA] la idempotencia fallo: {exc}")
-                fallos += 1
-
-            # 5: el notebook real NO fue tocado por este modo. Se compara su md5 y su numero de celdas
-            # antes y despues de haber corrido los checks 3 y 4, que solo operan sobre copias.
-            titulo_real = json.loads(NB.read_text(encoding="utf-8"))["metadata"].get("title", "")
-            # se compara normalizado (sin acentos ni punto medio) para que este script sea ASCII puro
-            def normaliza(t: str) -> str:
-                return (t.replace("\u00b7", "-").encode("ascii", "ignore").decode("ascii"))
-            ok = normaliza(titulo_real) in {normaliza(TITULO_NUEVO), normaliza(TITULO_HISTORICO)}
-            n_final_real = len(json.loads(NB.read_text(encoding="utf-8"))["cells"])
-            ok = ok and n_final_real == copia_real["celdas"]
-            print(f"  [{'OK' if ok else 'FALLA'}] el notebook real queda intacto en modo verificar "
-                  f"({n_final_real} celdas, sin cambios)")
-
-        print(f"  {5 - fallos}/5 caminos pasan; el notebook real no fue modificado")
-        return 0 if fallos == 0 else 2
+        return _verificar()
 
     r = aplicar(NB)
     print(json.dumps(r, indent=2, ensure_ascii=False))
     print(f"\n[fin] {time.time() - inicio:.1f} s")
     return 0
+
+
+def _verificar() -> int:
+    """Autoejercicio del bloque, sobre COPIAS. No toca el notebook real."""
+    print("=== verificacion del bloque de capitulos (copia temporal) ===")
+    fallos = 0
+    esperadas = construye_celdas()
+    firma = [(c["cell_type"], primera_linea(c)) for c in esperadas]
+
+    with tempfile.TemporaryDirectory() as tmp:
+        # 1: el notebook real parsea y su md5 de celdas no cambia durante la verificacion
+        real_antes = json.loads(NB.read_text(encoding="utf-8"))["cells"]
+        try:
+            json.loads(NB.read_text(encoding="utf-8"))
+            print(f"  [OK] el notebook real parsea como JSON ({len(real_antes)} celdas)")
+        except Exception as exc:  # noqa: BLE001
+            print(f"  [FALLA] el notebook real no parsea: {exc}")
+            fallos += 1
+
+        # 2: el bloque tiene las celdas esperadas y al menos un bloque de codigo por capitulo
+        n_md = sum(1 for c in esperadas if c["cell_type"] == "markdown")
+        n_code = sum(1 for c in esperadas if c["cell_type"] == "code")
+        ok = n_md >= len(cargar_capitulos()) and n_code >= 1 and len(firma) == len(esperadas)
+        print(f"  [{'OK' if ok else 'FALLA'}] bloque construido: {len(esperadas)} celdas "
+              f"({n_md} markdown, {n_code} codigo) para {len(cargar_capitulos())} capitulos")
+        fallos += 0 if ok else 1
+
+        # 3: todo el codigo del bloque compila
+        malas = []
+        for c in esperadas:
+            if c["cell_type"] != "code":
+                continue
+            try:
+                ast.parse("".join(c["source"]))
+            except SyntaxError as exc:
+                malas.append(f"{exc.msg} (linea {exc.lineno})")
+        ok = not malas
+        print(f"  [{'OK' if ok else 'FALLA'}] el codigo del bloque compila: {malas or 'sin errores'}")
+        fallos += 0 if ok else 1
+
+        # 3b: el codigo del bloque EJECUTA de verdad contra los artefactos reales. Compilar no
+        # basta: un KeyError por una clave que no existe solo aparece al ejecutar. Es la leccion
+        # de D-086 aplicada a este bloque.
+        import contextlib
+        import io as _io
+        espacio: dict = {"__name__": "__main__"}
+        fallos_ejecucion = []
+        for n, c in enumerate(esperadas):
+            if c["cell_type"] != "code":
+                continue
+            try:
+                with contextlib.redirect_stdout(_io.StringIO()):
+                    exec(compile("".join(c["source"]), f"bloque{n}", "exec"), espacio)
+            except Exception as exc:  # noqa: BLE001
+                fallos_ejecucion.append(f"celda {n}: {type(exc).__name__}: {exc}")
+        ok = not fallos_ejecucion
+        print(f"  [{'OK' if ok else 'FALLA'}] el codigo del bloque EJECUTA contra los artefactos: "
+              f"{fallos_ejecucion or 'sin errores'}")
+        fallos += 0 if ok else 1
+
+        # 4: aplicar a una copia anade el bloque y es idempotente en tres pasadas
+        copia = Path(tmp) / "nb.ipynb"
+        shutil.copy2(NB, copia)
+        r1 = aplicar(copia)
+        r2 = aplicar(copia)
+        r3 = aplicar(copia)
+        nb_final = json.loads(copia.read_text(encoding="utf-8"))
+        reales = [(c["cell_type"], primera_linea(c)) for c in nb_final["cells"]]
+        n_bloques = sum(1 for i in range(len(reales) - len(firma) + 1) if reales[i:i + len(firma)] == firma)
+        ok = (r1["celdas_despues"] == r3["celdas_despues"]
+              and r2["retiradas_previas"] == r2["celdas_nuevas"]
+              and r3["retiradas_previas"] == r3["celdas_nuevas"]
+              and n_bloques == 1)
+        print(f"  [{'OK' if ok else 'FALLA'}] idempotencia en 3 pasadas: celdas "
+              f"{r1['celdas_despues']} -> {r3['celdas_despues']} (estable); retiradas "
+              f"{r2['retiradas_previas']}/{r3['retiradas_previas']} por +{r3['celdas_nuevas']} cada vez; "
+              f"bloques presentes={n_bloques}")
+        fallos += 0 if ok else 1
+
+        # 5: el notebook real no fue tocado
+        real_despues = json.loads(NB.read_text(encoding="utf-8"))["cells"]
+        ok = real_antes == real_despues
+        print(f"  [{'OK' if ok else 'FALLA'}] el notebook real queda intacto en modo verificar "
+              f"({len(real_despues)} celdas, sin cambios)")
+        fallos += 0 if ok else 1
+
+    print(f"  {6 - fallos}/6 caminos pasan; el notebook real no fue modificado")
+    return 0 if fallos == 0 else 2
 
 
 if __name__ == "__main__":
