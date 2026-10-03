@@ -1,0 +1,11 @@
+{
+  "name": "v7_02",
+  "script": "experiments/v7_02_prior_grupo.py",
+  "exit": 0,
+  "duracion_s": 11.6,
+  "tracked_changed": [
+    "kaggle_toxic_2026_puj/reports/v7_prior_grupo.json",
+    "kaggle_toxic_2026_puj/reports/v7_prior_grupo.md"
+  ],
+  "features_changed": []
+}

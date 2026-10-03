@@ -1,0 +1,11 @@
+{
+  "name": "v6_02",
+  "script": "experiments/v6_02_label_factorization.py",
+  "exit": 0,
+  "duracion_s": 13.5,
+  "tracked_changed": [
+    "kaggle_toxic_2026_puj/reports/v6_label_factorization.json",
+    "kaggle_toxic_2026_puj/reports/v6_label_factorization.md"
+  ],
+  "features_changed": []
+}

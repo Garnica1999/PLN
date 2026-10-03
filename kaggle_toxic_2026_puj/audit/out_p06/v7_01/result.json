@@ -1,0 +1,11 @@
+{
+  "name": "v7_01",
+  "script": "experiments/v7_01_perdida_f1.py",
+  "exit": 0,
+  "duracion_s": 150.9,
+  "tracked_changed": [
+    "kaggle_toxic_2026_puj/reports/v7_perdida_f1.json",
+    "kaggle_toxic_2026_puj/reports/v7_perdida_f1.md"
+  ],
+  "features_changed": []
+}

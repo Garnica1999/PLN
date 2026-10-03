@@ -1,0 +1,11 @@
+{
+  "name": "v6_05",
+  "script": "experiments/v6_05_skipgrams.py",
+  "exit": 0,
+  "duracion_s": 51.3,
+  "tracked_changed": [
+    "kaggle_toxic_2026_puj/reports/v6_skipgrams.json",
+    "kaggle_toxic_2026_puj/reports/v6_skipgrams.md"
+  ],
+  "features_changed": []
+}

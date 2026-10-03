@@ -1,0 +1,11 @@
+{
+  "name": "v8_05",
+  "script": "experiments/v8_05_regularizacion_conjunta.py",
+  "exit": 0,
+  "duracion_s": 32.2,
+  "tracked_changed": [
+    "kaggle_toxic_2026_puj/reports/v8_regularizacion_conjunta.json",
+    "kaggle_toxic_2026_puj/reports/v8_regularizacion_conjunta.md"
+  ],
+  "features_changed": []
+}

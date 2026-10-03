@@ -1,0 +1,81 @@
+{
+  "experimento": "V6-04 (I0-I3)",
+  "fecha": "2026-09-26T05:50:40+00:00",
+  "referencia_v03": 0.777211,
+  "pesos_char": [
+    1.0,
+    0.5,
+    1.5,
+    2.0
+  ],
+  "gate_1": {
+    "delta": 0.003,
+    "pliegues_minimos": 4
+  },
+  "variantes": [
+    {
+      "variante": "I0-control",
+      "corrected_cv": 0.777211,
+      "delta_vs_V03": 0.0,
+      "ic95_0": 0.0,
+      "ic95_1": 0.0,
+      "f1_HS": 0.7617,
+      "f1_TR": 0.8157,
+      "f1_AG": 0.7542,
+      "salvage": 0,
+      "damage": 0,
+      "gate_1_delta": false,
+      "gate_1_ic95": false,
+      "pliegues_positivos": 0,
+      "gate_1_supera": false
+    },
+    {
+      "variante": "I1-char0.5",
+      "corrected_cv": 0.765493,
+      "delta_vs_V03": -0.011718,
+      "ic95_0": -0.019853,
+      "ic95_1": -0.003741,
+      "f1_HS": 0.7604,
+      "f1_TR": 0.8076,
+      "f1_AG": 0.7286,
+      "salvage": 8,
+      "damage": 2,
+      "gate_1_delta": false,
+      "gate_1_ic95": false,
+      "pliegues_positivos": 0,
+      "gate_1_supera": false
+    },
+    {
+      "variante": "I2-char1.5",
+      "corrected_cv": 0.778779,
+      "delta_vs_V03": 0.001568,
+      "ic95_0": -0.004777,
+      "ic95_1": 0.007779,
+      "f1_HS": 0.7642,
+      "f1_TR": 0.8117,
+      "f1_AG": 0.7605,
+      "salvage": 3,
+      "damage": 7,
+      "gate_1_delta": false,
+      "gate_1_ic95": false,
+      "pliegues_positivos": 3,
+      "gate_1_supera": false
+    },
+    {
+      "variante": "I3-char2.0",
+      "corrected_cv": 0.772508,
+      "delta_vs_V03": -0.004703,
+      "ic95_0": -0.014176,
+      "ic95_1": 0.004425,
+      "f1_HS": 0.7568,
+      "f1_TR": 0.8022,
+      "f1_AG": 0.7584,
+      "salvage": 7,
+      "damage": 17,
+      "gate_1_delta": false,
+      "gate_1_ic95": false,
+      "pliegues_positivos": 2,
+      "gate_1_supera": false
+    }
+  ]
+}
