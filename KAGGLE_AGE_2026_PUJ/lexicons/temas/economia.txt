@@ -1,0 +1,93 @@
+# familia: temas
+# subcategoria: economia
+# descripcion: Dominio económico y financiero: dinero, precios, bancos e inversión, con vocabulario de consumo cotidiano.
+# idioma: es
+# procedencia: elaborado en este proyecto (conocimiento linguistico general)
+# licencia: del proyecto; sin datos externos y sin etiquetas de edad
+# riesgo: ninguno
+# fecha: 2026-09-25
+# entradas_declaradas: 87
+# cribado_corpus: frecuencia minima 3 en el train
+Consumer
+IVA
+acciones
+ahorrar
+ahorro
+banco
+bancos
+barato
+billete
+billetes
+bolsa
+cambio
+capital
+caro
+carrito
+cliente
+compra
+comprar
+consumidor
+costo
+costos
+crisis
+crédito
+cuota
+cuotas
+cupón
+descuento
+descuentos
+desempleo
+deuda
+deudas
+dinero
+dólar
+economía
+efectivo
+empleo
+emprender
+emprendimiento
+empresa
+empresario
+envío
+euro
+factura
+gastar
+gasto
+gastos
+gratis
+impuesto
+inflación
+intereses
+interés
+inversión
+invertir
+logística
+lujo
+marca
+marketing
+mercado
+moneda
+negocio
+negocios
+nómina
+oferta
+ofertas
+pagar
+pago
+pagos
+paquete
+paquetes
+peso
+plata
+precio
+precios
+préstamo
+rebaja
+rentabilidad
+subasta
+sueldo
+tienda
+tiendas
+transferencia
+vender
+venta

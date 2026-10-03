@@ -1,0 +1,6 @@
+variante,macro_f1,delta_contra_v20,folds_positivos,ic95,frontera_1,frontera_2,rescates,danos,neto,cambios,estado
+V20 (champion),0.6097782,0.0,-,-,0.5075,0.5029,0,0,0,0,CHAMPION
+A control exacto: maximo acumulado,0.6097782,0.0,0/5,"[+0.0000, +0.0000]",0.5075,0.5029,0,0,0,0,
+B proyeccion monotona por PAVA,0.6097927,1.4e-05,3/5,"[-0.0000, +0.0001]",0.5074,0.5028,16,11,5,41,
+C decision por conteo de umbrales,0.5983871,-0.011391,0/5,"[-0.0130, -0.0098]",0.545,0.5456,8361,11680,-3319,33182,
+D decision por edad esperada,0.5834541,-0.026324,0/5,"[-0.0282, -0.0244]",0.541,0.5738,11295,17709,-6414,47138,

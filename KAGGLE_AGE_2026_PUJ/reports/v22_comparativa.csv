@@ -1,0 +1,3 @@
+candidato,macro_f1,delta_contra_v20,folds_positivos,ic95,f1_13_17,f1_18_24,rescates,danos,neto,cambios,estado
+"A: V20, cinco modelos independientes",0.6097782,0.0,-,-,0.6818,0.517,0,0,0,0,CONTROL
+"B: un solo LightGBM multiclase, cinco CDF por suma",0.609615,-0.000163,3/5,"[-0.0008, +0.0004]",0.6823,0.5177,1375,1388,-13,4451,WRONG_OBJECTIVE

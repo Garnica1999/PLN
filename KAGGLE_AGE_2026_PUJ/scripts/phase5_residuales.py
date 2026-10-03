@@ -1,7 +1,7 @@
 """FASE 5 / L2 — Residualización por longitud (brief §12 y §42).
 
 Observación
-    La longitud domina el error (54,5% en ≤10 caracteres → 35,1% en 130-141) y es la feature más
+    La longitud domina el error (54,5% en ≤10 caracteres -> 35,1% en 130-141) y es la feature más
     informativa del EDA (ε² = 0,126). Muchas features derivadas (riqueza léxica, menciones, hashtags,
     puntuación, tamaños de vocabulario) crecen mecánicamente con la longitud, de modo que su señal
     puede ser en parte **un eco de la longitud** y no información de edad independiente.

@@ -87,7 +87,7 @@ def main() -> int:
     confirmed = delta_holdout >= 0.003
     payload["holdout"] = {"resultados": holdout_results, "delta": round(delta_holdout, 4),
                           "criterio": "Δ ≥ +0,003", "confirmado": bool(confirmed)}
-    print(f"[holdout] Δ = {delta_holdout:+.4f} → "
+    print(f"[holdout] Δ = {delta_holdout:+.4f} -> "
           f"{'CONFIRMADO' if confirmed else 'NO confirmado'}", flush=True)
 
     # ---------------------------------------------------------------- Candidato v11

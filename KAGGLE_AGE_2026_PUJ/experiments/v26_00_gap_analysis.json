@@ -1,0 +1,262 @@
+{
+  "fase": "V26 00 gap analysis",
+  "fecha": "2026-09-27",
+  "experimenta": false,
+  "baseline": {
+    "nombre": "V20",
+    "corrected_cv": 0.6097782,
+    "reproducido": true,
+    "lb": 0.62689,
+    "hash_submission": "2c964af78c90bf08",
+    "tamanos_de_fold": [
+      33868,
+      33868,
+      33867,
+      33866,
+      33867
+    ]
+  },
+  "estructura_de_v20": {
+    "features": 279,
+    "predicciones_de_modelos_base": 84,
+    "meta_modelo": "LightGBM, cinco binarios para la cadena de umbrales y uno para el arbol del blend",
+    "nota": "V20 YA es un meta-modelo; V26 no tiene que construirlo"
+  },
+  "hipotesis": [
+    {
+      "ID": "H01",
+      "family": "probability calibration",
+      "hypothesis": "isotonica, Platt o temperatura sobre las salidas del ensemble",
+      "already_tested": true,
+      "status": "CLOSED",
+      "functional_equivalence_search": "grep de `isotonic|calibracion|temperature` devuelve 21 scripts; phase15_calibracion_scores y submission_v01_calibracion son medidas sobre la salida",
+      "conclusion": "Medido y cerrado: la recalibracion de las salidas no aporta sobre el macro-F1",
+      "truly_new": false,
+      "priority": 0,
+      "reason": "familia agotada, con numero, en fases anteriores",
+      "possible_new_formulation": ""
+    },
+    {
+      "ID": "H02",
+      "family": "probability normalization (afin)",
+      "hypothesis": "centrar y escalar las probabilidades de los miembros antes del meta-modelo",
+      "already_tested": false,
+      "status": "GENUINELY_OPEN",
+      "functional_equivalence_search": "grep de `StandardScaler` devuelve 67 scripts, pero ninguno los aplica a las 84 columnas de predicciones de miembros antes del meta-modelo de V20; V16 los aplica dentro del combinador logistico, que es un meta-modelo distinto (lineal, no arbol)",
+      "conclusion": "No se midio nunca sobre el meta-modelo real de V20, y la invariancia que lo haria trivial es FALSA en esta implementacion de LightGBM",
+      "truly_new": true,
+      "priority": 1,
+      "reason": "track prioritario del brief, y la medicion de invariancia lo hace no trivial",
+      "possible_new_formulation": "aplicar la transformacion dentro de cada training fold, con la referencia aprendida solo de train"
+    },
+    {
+      "ID": "H03",
+      "family": "rank transformation / percentil",
+      "hypothesis": "sustituir la magnitud absoluta de la confianza por su posicion relativa en la distribucion",
+      "already_tested": false,
+      "status": "GENUINELY_OPEN",
+      "functional_equivalence_search": "los 8 scripts que contienen `percentile` o `quantile` los usan sobre LONGITUD de palabra, nunca sobre probabilidades de modelos",
+      "conclusion": "Genuinamente nueva, y no trivial: el percentil colapsa empates y si cambia el arbol",
+      "truly_new": true,
+      "priority": 2,
+      "reason": "mismo mecanismo que H02 pero con colapso de empates, luego informacion adicional",
+      "possible_new_formulation": "aplicar la transformacion dentro de cada training fold, con la referencia aprendida solo de train"
+    },
+    {
+      "ID": "H04",
+      "family": "model weighting",
+      "hypothesis": "reponder los miembros del ensemble segun su contribucion",
+      "already_tested": true,
+      "status": "CLOSED",
+      "functional_equivalence_search": "v16_arquitectura.py midio `peso_aprendido` (delta -0,0003) y `combinador_logistico` (+0,0006); V18 midio re-peso de clases; V22 intento ponderar las fronteras",
+      "conclusion": "Medido tres veces con tres familias distintas, ninguna mejora el global",
+      "truly_new": false,
+      "priority": 0,
+      "reason": "familia agotada",
+      "possible_new_formulation": ""
+    },
+    {
+      "ID": "H05",
+      "family": "diversity weighting",
+      "hypothesis": "ponderar por complementariedad en lugar de por fiabilidad",
+      "already_tested": true,
+      "status": "CLOSED",
+      "functional_equivalence_search": "29 scripts contienen `diversidad` o `complementariedad`; V17 completo midio interseccion de errores por miembro y la funcion de decision local (D-047)",
+      "conclusion": "La complementariedad es real y grande pero no identificable, segun D-047",
+      "truly_new": false,
+      "priority": 0,
+      "reason": "familia agotada, con la razon ya identificada",
+      "possible_new_formulation": ""
+    },
+    {
+      "ID": "H06",
+      "family": "stacking de segundo nivel",
+      "hypothesis": "apilar las salidas del ensemble en un modelo de segundo nivel",
+      "already_tested": true,
+      "status": "CLOSED",
+      "functional_equivalence_search": "72 scripts contienen `stacking` o `meta`; el propio `advanced_02_features.py` apila 14 miembros sobre 279 columnas para producir las 279 que consume V20",
+      "conclusion": "V20 ya ES el segundo nivel: las 84 columnas de miembros son la salida de un apilado previo",
+      "truly_new": false,
+      "priority": 0,
+      "reason": "V20 ya es el resultado de este stacking, luego repetirlo seria redundante",
+      "possible_new_formulation": ""
+    },
+    {
+      "ID": "H07",
+      "family": "interaction terms",
+      "hypothesis": "productos explicitos entre las probabilidades de dos miembros",
+      "already_tested": true,
+      "status": "CLOSED",
+      "functional_equivalence_search": "12 scripts contienen `interaccion` o `interaction`; advanced_05c combino 273, 324 y 329 columnas con interacciones y no supero la referencia",
+      "conclusion": "Medido: ampliar la matriz con interacciones no mejora",
+      "truly_new": false,
+      "priority": 0,
+      "reason": "ademas el meta-modelo de arbol ya aprende interacciones por splits",
+      "possible_new_formulation": ""
+    },
+    {
+      "ID": "H08",
+      "family": "nonlinear meta-model",
+      "hypothesis": "un meta-modelo no lineal distinto del LightGBM de V20",
+      "already_tested": true,
+      "status": "CLOSED",
+      "functional_equivalence_search": "9 scripts contienen meta-modelos no lineales; V21 uso HistGradientBoosting, RBF-SVM, MLP y uniones lineales sobre las 279, y todos quedaron por debajo de LightGBM (D-056)",
+      "conclusion": "Ninguna clase de funcion no lineal supero al boosting; ExtraTrees tambien quedo 0,0236 debajo (D-053)",
+      "truly_new": false,
+      "priority": 0,
+      "reason": "la pregunta ya tiene respuesta y es negativa",
+      "possible_new_formulation": ""
+    },
+    {
+      "ID": "H09",
+      "family": "class-specific meta models",
+      "hypothesis": "un meta-modelo distinto por clase",
+      "already_tested": true,
+      "status": "CLOSED",
+      "functional_equivalence_search": "66 scripts; D-037 cerro nueve hipotesis de capa de decision ordinal y V17 cerro tres meta-combinadores por frontera (P1b, P5, P9)",
+      "conclusion": "Cerrado con numero en D-037 y D-047",
+      "truly_new": false,
+      "priority": 0,
+      "reason": "familia agotada",
+      "possible_new_formulation": ""
+    },
+    {
+      "ID": "H10",
+      "family": "ordinal constraints",
+      "hypothesis": "imponer el orden entre las salidas de las cinco fronteras",
+      "already_tested": true,
+      "status": "CLOSED",
+      "functional_equivalence_search": "100 scripts; V20 las impone con maximo acumulado, D-054 cerro la reconstruccion, D-055 los pesos, D-056 los clasificadores de B1, D-057 el modelo compartido y D-058 el CORAL",
+      "conclusion": "La familia ordinal esta cerrada en sus cinco subfamilias",
+      "truly_new": false,
+      "priority": 0,
+      "reason": "no abrir una sexta sin evidencia nueva",
+      "possible_new_formulation": ""
+    },
+    {
+      "ID": "H11",
+      "family": "monotone constraints en LightGBM",
+      "hypothesis": "imponer la monotonia DENTRO del meta-modelo con el parametro nativo",
+      "already_tested": false,
+      "status": "GENUINELY_OPEN",
+      "functional_equivalence_search": "`monotone_constraints` devuelve **cero** resultados en todo el proyecto. V20 impone la monotonia DESPUES, con maximo acumulado sobre cinco modelos independientes",
+      "conclusion": "Genuinamente nueva: nadie ha usado la herramienta que LightGBM ofrece para esto",
+      "truly_new": true,
+      "priority": 3,
+      "reason": "mecanismo distinto al de V20, pero aplica a las fronteras y no a la evidencia de los miembros",
+      "possible_new_formulation": "aplicar la transformacion dentro de cada training fold, con la referencia aprendida solo de train"
+    },
+    {
+      "ID": "H12",
+      "family": "OOF reliability modeling",
+      "hypothesis": "estimar fiabilidad por miembro y por clase, y usarla como evidencia",
+      "already_tested": false,
+      "status": "GENUINELY_OPEN",
+      "functional_equivalence_search": "`reliability` y `calibracion_error` no existen como concepto en el proyecto; los 4 matches de `reliability` son la palabra española `familia`",
+      "conclusion": "Genuinamente nueva, y no es solo calibracion porque es fiabilidad POR MIEMBRO Y POR CLASE",
+      "truly_new": true,
+      "priority": 2,
+      "reason": "el brief la situa como M4, solo si M2/M3 muestran senal",
+      "possible_new_formulation": "aplicar la transformacion dentro de cada training fold, con la referencia aprendida solo de train"
+    },
+    {
+      "ID": "H13",
+      "family": "residual correction",
+      "hypothesis": "corregir con un modelo de residuo lo que el ensemble no captura",
+      "already_tested": true,
+      "status": "CLOSED",
+      "functional_equivalence_search": "20 scripts contienen `residual` o `residuo`; V18 midio destilacion y V15 la poda",
+      "conclusion": "La destilacion de V18 es la forma canonica de este mecanismo y cerro con 0 adopciones",
+      "truly_new": false,
+      "priority": 0,
+      "reason": "familia agotada",
+      "possible_new_formulation": ""
+    },
+    {
+      "ID": "H14",
+      "family": "rank transformation DENTRO del blend",
+      "hypothesis": "aplicar la normalizacion a los cuatro miembros del blend, no solo a las columnas de entrada",
+      "already_tested": false,
+      "status": "GENUINELY_OPEN",
+      "functional_equivalence_search": "ningun script normaliza las salidas de logreg, mlp y arbol antes de combinarlas; el blend es una media aritmetica de cuatro escalas distintas",
+      "conclusion": "Genuinamente nueva y distinta de H02: H02 acts antes del meta-modelo, esto despues",
+      "truly_new": true,
+      "priority": 2,
+      "reason": "el blend suma cuatro probabilidades con escalas y calibraciones distintas",
+      "possible_new_formulation": "aplicar la transformacion dentro de cada training fold, con la referencia aprendida solo de train"
+    },
+    {
+      "ID": "H15",
+      "family": "supervised feature selection",
+      "hypothesis": "podar o seleccionar features con supervision",
+      "already_tested": true,
+      "status": "CLOSED",
+      "functional_equivalence_search": "V25 midio mutual information top 50 por ciento dentro de cada fold (D-060); V15 midio poda no supervisada (D-045)",
+      "conclusion": "Cerrado: la seleccion no elimina ruido, elimina senal, y las probabilidades de los miembros son lo que el MI ordena alto",
+      "truly_new": false,
+      "priority": 0,
+      "reason": "no reabrir, salvo defecto metodologico demostrado",
+      "possible_new_formulation": ""
+    }
+  ],
+  "abiertas": [
+    "H02",
+    "H03",
+    "H12",
+    "H14",
+    "H11"
+  ],
+  "duplicaciones_bloqueadas": [
+    "otra K u otro porcentaje en feature selection (V25 cerrado, D-060)",
+    "otra variante de feature selection equivalente: RFE, chi2, ANOVA, variantes de MI",
+    "otra formulacion ordinal: PAVA, coste ordinal, CORAL, umbrales anidados, modelo compartido",
+    "otra combinacion lineal del ensemble: V16 midio combinador logistico y peso aprendido",
+    "otra especializacion de la primera frontera ordinal: B1 (V21 cerrado, D-056)",
+    "varias veces seguidas el mismo eje de parametros del champion (V19.x cerrado, D-052)"
+  ],
+  "seleccion": {
+    "V26_SELECTED_TRACK": "H02",
+    "mecanismo": "centrado y escalado de las 84 columnas de predicciones de modelos base, con la media y la desviacion estimadas SOLO dentro de cada training fold, antes de alimentar los cinco LightGBM de V20",
+    "por_que_no_es_trivial": "un arbol es invariante a una transformacion monotona en teoria, pero la medicion muestra que en esta LightGBM con colsample_bytree 0,5 y subsample 0,8 un z-score afin cambia la prediccion bit a bit, con diferencia maxima 0,219 sobre las 135.468 filas del fold",
+    "coste": "bajo: una transformacion por fold, sin entrenamiento nuevo ni features nuevas",
+    "riesgo": "puede empeorar: la escala de las probabilidades de los miembros esta calibrada por construccion y recentrarla puede desalinear el meta-modelo",
+    "alternativas_descartadas_por_ahora": {
+      "H03": "mismo mecanismo con colapso de empates; se reserva",
+      "H11": "nueva pero aplica a las fronteras y no a la evidencia de los miembros",
+      "H12": "el brief la condiciona a que M2 o M3 muestren senal",
+      "H14": "nueva y distinta, se reserva como segundo experimento si H02 no muestra senal"
+    },
+    "presupuesto": {
+      "principal": 8,
+      "reserva": 4,
+      "absoluto": 12,
+      "primer_experimento": 1
+    }
+  },
+  "presupuesto": {
+    "principal": 8,
+    "reserva": 4,
+    "absoluto": 12
+  },
+  "segundos": 44.3
+}

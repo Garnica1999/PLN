@@ -1,0 +1,76 @@
+{
+  "fase": "V30 05 segunda particion",
+  "fecha": "2026-09-30",
+  "experimenta": false,
+  "candidato": "E1 Optuna macro-F1",
+  "pesos_congelados": {
+    "v20_f3b_oof_candidato": 0.3548,
+    "v29_lgbm_optuna": 0.3354,
+    "v30_lgbm_refinado": 0.3098
+  },
+  "semilla_nueva": 987654,
+  "grupos": "los mismos grupos de dup_clusters, sin cambiar",
+  "reoptimizado": false,
+  "solapes_con_la_particion_original": [
+    7155,
+    7272,
+    7167,
+    7229,
+    7220
+  ],
+  "particion_realmente_distinta": false,
+  "corrected_cv_V20_segunda": 0.6104285,
+  "corrected_cv_candidato_segunda": 0.6143347,
+  "delta_vs_V20_recomputado": 0.003906,
+  "delta_vs_canonico_V20": 0.004557,
+  "criterio_del_delta": "el gate se evalua contra el V20 **recomputado en esta misma particion**, porque los folds son distintos; contra el canonico se informa tambien, pero no decide",
+  "delta_vs_V20_particion_original": 0.003227,
+  "diferencia_de_delta_entre_particiones": 0.000679,
+  "folds_positivos": 5,
+  "folds": [
+    {
+      "fold": 0,
+      "n_train": 135468,
+      "n_val": 33868,
+      "corrected_cv_V20": 0.6122675,
+      "corrected_cv_candidato": 0.6150008,
+      "delta": 0.002733
+    },
+    {
+      "fold": 1,
+      "n_train": 135469,
+      "n_val": 33867,
+      "corrected_cv_V20": 0.6139561,
+      "corrected_cv_candidato": 0.6186241,
+      "delta": 0.004668
+    },
+    {
+      "fold": 2,
+      "n_train": 135469,
+      "n_val": 33867,
+      "corrected_cv_V20": 0.613809,
+      "corrected_cv_candidato": 0.6163075,
+      "delta": 0.002498
+    },
+    {
+      "fold": 3,
+      "n_train": 135469,
+      "n_val": 33867,
+      "corrected_cv_V20": 0.6107416,
+      "corrected_cv_candidato": 0.6143509,
+      "delta": 0.003609
+    },
+    {
+      "fold": 4,
+      "n_train": 135469,
+      "n_val": 33867,
+      "corrected_cv_V20": 0.6013498,
+      "corrected_cv_candidato": 0.6073941,
+      "delta": 0.006044
+    }
+  ],
+  "cumple_gate_historico": true,
+  "es_strong_marginal": false,
+  "criterio_del_brief": "se ejecuta si el candidato tiene 5/5 folds y delta >= +0,002 en la particion original. La configuracion se aplica **congelada**.",
+  "segundos": 1222.7
+}

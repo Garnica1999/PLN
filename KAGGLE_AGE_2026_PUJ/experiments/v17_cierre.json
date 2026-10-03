@@ -1,0 +1,112 @@
+{
+  "fase": "V17 · cierre",
+  "fecha": "2026-09-26",
+  "commit": "66be95da0f0821f8a66bfd55f3a6113c622f979f",
+  "candidatos": [
+    {
+      "Candidato": "V12 (referencia congelada)",
+      "Track": "-",
+      "Global_MacroF1": 0.6005,
+      "Delta_Global": 0.0,
+      "Folds_Positivos": "-",
+      "Boundary_18_24_25_34": 0.4963,
+      "Boundary_25_34_35_49": 0.4974,
+      "Bootstrap_CI95": "-",
+      "Decision": "REFERENCIA",
+      "Nota": "0,6005 pooled; 0,6004 es la media por fold, no el mismo estimador"
+    },
+    {
+      "Candidato": "V16 A2 combinador logistico",
+      "Track": "A2",
+      "Global_MacroF1": 0.6011,
+      "Delta_Global": 0.0006,
+      "Folds_Positivos": "3/5",
+      "Boundary_18_24_25_34": 0.5065,
+      "Boundary_25_34_35_49": 0.5131,
+      "Bootstrap_CI95": "[-0,0003; +0,0015]",
+      "Decision": "NO ADOPTAR (V16)",
+      "Nota": "evidencia que motiva V17"
+    },
+    {
+      "Candidato": "V17 P1b compuerta de ambiguedad",
+      "Track": "P3",
+      "Global_MacroF1": 0.6007,
+      "Delta_Global": 0.000159,
+      "Folds_Positivos": "-",
+      "Boundary_18_24_25_34": "-",
+      "Boundary_25_34_35_49": "-",
+      "Bootstrap_CI95": "-",
+      "Decision": "CERRADA",
+      "Nota": "inelegible: el optimo de la tabla esta sesgado"
+    },
+    {
+      "Candidato": "V17 P1c regla conjunta",
+      "Track": "P3.3",
+      "Global_MacroF1": 0.6005,
+      "Delta_Global": 6e-06,
+      "Folds_Positivos": "-",
+      "Boundary_18_24_25_34": "-",
+      "Boundary_25_34_35_49": "-",
+      "Bootstrap_CI95": "-",
+      "Decision": "CERRADA",
+      "Nota": "el techo con arbitro perfecto si era +0.0107"
+    },
+    {
+      "Candidato": "V17 P9 arbitro aprendido",
+      "Track": "P9",
+      "Global_MacroF1": 0.6004,
+      "Delta_Global": -0.0001,
+      "Folds_Positivos": "0/5",
+      "Boundary_18_24_25_34": "-",
+      "Boundary_25_34_35_49": "-",
+      "Bootstrap_CI95": "[-0.000172; -5.5e-05]",
+      "Decision": "NO ADOPTAR",
+      "Nota": "47 entradas existentes, protocolo anidado"
+    },
+    {
+      "Candidato": "V17 P5 combinador local",
+      "Track": "P5",
+      "Global_MacroF1": 0.6003,
+      "Delta_Global": -0.0002,
+      "Folds_Positivos": "1/5",
+      "Boundary_18_24_25_34": 0.4953,
+      "Boundary_25_34_35_49": 0.4968,
+      "Bootstrap_CI95": "[-0.000486; 7.6e-05]",
+      "Decision": "NO ADOPTAR",
+      "Nota": "las fronteras empeoran"
+    },
+    {
+      "Candidato": "V17 techo con arbitro perfecto (no alcanzable)",
+      "Track": "-",
+      "Global_MacroF1": 0.6112,
+      "Delta_Global": 0.010732,
+      "Folds_Positivos": "-",
+      "Boundary_18_24_25_34": 0.010732,
+      "Boundary_25_34_35_49": 0.007721,
+      "Bootstrap_CI95": "-",
+      "Decision": "COTA, NO RESULTADO",
+      "Nota": "requiere elegir con la etiqueta; sirve de techo, no de candidato"
+    }
+  ],
+  "pistas_cerradas": [
+    "P2",
+    "P2.3",
+    "P3",
+    "P3.3",
+    "P5",
+    "P6",
+    "P7",
+    "P8",
+    "P9",
+    "P10"
+  ],
+  "pistas_complementarias": [
+    "P4",
+    "P1",
+    "P1.1"
+  ],
+  "pistas_promising": [],
+  "pistas_finalist": [],
+  "veredicto": "la senal local existe y es grande, el techo con arbitro perfecto supera el gate de adopcion, y ninguna senal disponible la identifica; los errores de V12 en la frontera son errores confiados",
+  "segundos": 0
+}

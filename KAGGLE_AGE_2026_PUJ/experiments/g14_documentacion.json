@@ -1,0 +1,16 @@
+{
+  "fase": "G14 documentacion",
+  "fecha": "2026-10-06",
+  "experimenta": false,
+  "commit": "2bc7ed15b7b81f2658b3143e34fe890a5786e633",
+  "decision": "NOT_ACTIONABLE",
+  "documentos": [
+    "DECISIONS.md (D-068)",
+    "PROJECT_STATE.md",
+    "RUNLOG.md",
+    "FINAL_REPORT.md",
+    "experiments.csv (G14-AUDIT)",
+    "notebook"
+  ],
+  "experimentos_de_entrenamiento": 0
+}

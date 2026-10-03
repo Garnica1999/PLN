@@ -1,0 +1,74 @@
+{
+  "fase": "V22 01 coste ordinal",
+  "fecha": "2026-09-27",
+  "champion_congelado": {
+    "nombre": "V20",
+    "lb": 0.62689,
+    "cv": 0.6097782,
+    "intacto": true
+  },
+  "mecanismo": "cambiar el argmax de V20 por el coste esperado minimo con C[i][j] = |i-j|^alfa; no se reentrena ningun discriminador",
+  "unica_variable": {
+    "alfa": [
+      1,
+      2
+    ]
+  },
+  "control": {
+    "macro_f1": 0.6097782,
+    "reproducido": true
+  },
+  "resultados": [
+    {
+      "alfa": 1,
+      "macro_f1": 0.5949198,
+      "delta": -0.014858,
+      "delta_por_fold": [
+        -0.015712,
+        -0.015301,
+        -0.013165,
+        -0.014866,
+        -0.015255
+      ],
+      "rescates": 8086,
+      "danos": 12081,
+      "neto": -3995,
+      "cambios": 33473,
+      "f1_por_clase": {
+        "13-17": 0.6606,
+        "18-24": 0.5214,
+        "25-34": 0.485,
+        "35-49": 0.5368,
+        "50-64": 0.6421,
+        "65-xx": 0.7236
+      }
+    },
+    {
+      "alfa": 2,
+      "macro_f1": 0.5392168,
+      "delta": -0.070561,
+      "delta_por_fold": [
+        -0.070201,
+        -0.073741,
+        -0.070195,
+        -0.071862,
+        -0.067045
+      ],
+      "rescates": 12741,
+      "danos": 26579,
+      "neto": -13838,
+      "cambios": 60715,
+      "f1_por_clase": {
+        "13-17": 0.6018,
+        "18-24": 0.4926,
+        "25-34": 0.4649,
+        "35-49": 0.4918,
+        "50-64": 0.5617,
+        "65-xx": 0.6225
+      }
+    }
+  ],
+  "supera_el_gate": false,
+  "submission_generada": false,
+  "segundos": 32.7
+}

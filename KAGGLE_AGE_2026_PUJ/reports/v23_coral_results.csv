@@ -1,0 +1,4 @@
+modelo,macro_f1,delta_vs_v20,media_folds,desviacion_folds,folds_positivos,violaciones_monotonia,salvage,damage,neto,cambios,ambos_aciertos,ambos_fallos,frontera_18_24_25_34,frontera_25_34_35_49
+V20 (control A),0.6097782,0.0,0.609785,0.003092,3,18927,0,0,0,0,103331,66005,0.5075,0.5029
+cinco binarios lineales (control B),0.4690055,-0.140773,0.469012,0.005385,0,no medido,5468,28811,-23343,49212,74520,60537,0.4912,0.4897
+CORAL pesos compartidos,0.4837017,-0.126077,0.483656,0.004743,0,0,12234,34853,-22619,67763,68478,53771,0.4067,0.3466

@@ -1,0 +1,1581 @@
+{
+  "fase": "V36-E1 via C1-A ejecucion (checkpoint resumible)",
+  "fecha": "2026-09-30",
+  "inicio_ts": 1790821155.2559173,
+  "rss_pico_gb": 2.6743087768554688,
+  "brazos": {
+    "banco_referencia": {
+      "folds": {
+        "0": {
+          "brazo": "banco_referencia",
+          "bloque_de_referencia": "char_wb",
+          "variante_c1a": null,
+          "fold": 0,
+          "n_train": 135468,
+          "n_val": 33868,
+          "n_features": 224123,
+          "n_features_c1a": 0,
+          "n_iter": 50,
+          "intercepto": [
+            -0.352514831809565,
+            -0.24144706716251457,
+            -0.6708999759643156,
+            -0.9443443082641464,
+            -1.026931845481414,
+            -1.1964467043548221
+          ],
+          "meta_bloque_referencia": {
+            "n_vocabulario": 224123,
+            "vocab_sha256": "8c3a0143963d6ac91d549aafd4312c279c5000c5001818f87a12442ef339f1dc",
+            "idf_sha256": "00314bc8b4e1ba0377b0ac0bed19808b028d49d8dc95485ae505335041d07160",
+            "n_filas_fit": 135468,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true
+          },
+          "meta_c1a": null,
+          "tiempo_seg": 21.79001760482788,
+          "macro_f1_fold_val": 0.5443047547909831
+        },
+        "1": {
+          "brazo": "banco_referencia",
+          "bloque_de_referencia": "char_wb",
+          "variante_c1a": null,
+          "fold": 1,
+          "n_train": 135468,
+          "n_val": 33868,
+          "n_features": 223708,
+          "n_features_c1a": 0,
+          "n_iter": 51,
+          "intercepto": [
+            -0.34460482933178244,
+            -0.24174263953370978,
+            -0.6797878179797704,
+            -0.9295150565066537,
+            -1.0357948242756507,
+            -1.210433228730119
+          ],
+          "meta_bloque_referencia": {
+            "n_vocabulario": 223708,
+            "vocab_sha256": "ed5fe8c0cf542b6425d00d0347f11a3408823aafacb5f8682c38673a7a4e8f2f",
+            "idf_sha256": "114bab23246100ee9b6004dfad9bf82c9ba2bf5daf0d33951aedb52da0f4e135",
+            "n_filas_fit": 135468,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true
+          },
+          "meta_c1a": null,
+          "tiempo_seg": 25.329895734786987,
+          "macro_f1_fold_val": 0.5420067817469266
+        },
+        "2": {
+          "brazo": "banco_referencia",
+          "bloque_de_referencia": "char_wb",
+          "variante_c1a": null,
+          "fold": 2,
+          "n_train": 135469,
+          "n_val": 33867,
+          "n_features": 224296,
+          "n_features_c1a": 0,
+          "n_iter": 51,
+          "intercepto": [
+            -0.35857932099062106,
+            -0.24399038278880625,
+            -0.6622525362773465,
+            -0.9452537381082768,
+            -1.0303971938048884,
+            -1.210084791536695
+          ],
+          "meta_bloque_referencia": {
+            "n_vocabulario": 224296,
+            "vocab_sha256": "4d87c13fccef9585569c5050a1bff9bb516f87a35bad58e3ff02dc90941ef438",
+            "idf_sha256": "56a5efa4c1c4955542ea3a2b79864de9be4f2885f0b4b370b080905e2514343e",
+            "n_filas_fit": 135469,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true
+          },
+          "meta_c1a": null,
+          "tiempo_seg": 12.9613938331604,
+          "macro_f1_fold_val": 0.5458865604044408
+        },
+        "3": {
+          "brazo": "banco_referencia",
+          "bloque_de_referencia": "char_wb",
+          "variante_c1a": null,
+          "fold": 3,
+          "n_train": 135470,
+          "n_val": 33866,
+          "n_features": 224207,
+          "n_features_c1a": 0,
+          "n_iter": 51,
+          "intercepto": [
+            -0.35598615347733115,
+            -0.24755471218611885,
+            -0.6627708945415327,
+            -0.9485398199221267,
+            -1.0321549841337792,
+            -1.211019486797056
+          ],
+          "meta_bloque_referencia": {
+            "n_vocabulario": 224207,
+            "vocab_sha256": "bb759c65f09979e02788012ea95c5b91871191f84ba8d25f079bbddefa790e54",
+            "idf_sha256": "10551bf60e04fea954ee94a44c022b20971966a5a0573a43c24035aa313a729e",
+            "n_filas_fit": 135470,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true
+          },
+          "meta_c1a": null,
+          "tiempo_seg": 12.865796089172363,
+          "macro_f1_fold_val": 0.5382011132450911
+        },
+        "4": {
+          "brazo": "banco_referencia",
+          "bloque_de_referencia": "char_wb",
+          "variante_c1a": null,
+          "fold": 4,
+          "n_train": 135469,
+          "n_val": 33867,
+          "n_features": 224628,
+          "n_features_c1a": 0,
+          "n_iter": 51,
+          "intercepto": [
+            -0.3497901734755977,
+            -0.24784106240200304,
+            -0.6777911473953799,
+            -0.9389825207673912,
+            -1.0268329981378268,
+            -1.2038466323083648
+          ],
+          "meta_bloque_referencia": {
+            "n_vocabulario": 224628,
+            "vocab_sha256": "917346bfd3b26223308fe39c4f43a90f424d06fe523a53ce6e03dee75fe5cee7",
+            "idf_sha256": "45c1fc2aef4826e881554dce644fb5d512c193d0551a32310d1580e5c0fafee4",
+            "n_filas_fit": 135469,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true
+          },
+          "meta_c1a": null,
+          "tiempo_seg": 14.004473209381104,
+          "macro_f1_fold_val": 0.5335904450729486
+        }
+      },
+      "folds_completados": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    "banco_c1a": {
+      "folds": {
+        "0": {
+          "brazo": "banco_c1a",
+          "bloque_de_referencia": "char_wb",
+          "variante_c1a": "real",
+          "fold": 0,
+          "n_train": 135468,
+          "n_val": 33868,
+          "n_features": 224277,
+          "n_features_c1a": 154,
+          "n_iter": 72,
+          "intercepto": [
+            -0.29804270341993333,
+            -0.39190124042298297,
+            -0.7801384328896711,
+            -0.9588820500435649,
+            -0.9238287761441354,
+            -1.064068637433981
+          ],
+          "meta_bloque_referencia": {
+            "n_vocabulario": 224123,
+            "vocab_sha256": "8c3a0143963d6ac91d549aafd4312c279c5000c5001818f87a12442ef339f1dc",
+            "idf_sha256": "00314bc8b4e1ba0377b0ac0bed19808b028d49d8dc95485ae505335041d07160",
+            "n_filas_fit": 135468,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true
+          },
+          "meta_c1a": {
+            "n_vocabulario": 154,
+            "vocab_sha256": "117293fcbf25c3696ff3c8042b501d1058efe9256436e1dd2b6f47f0a05ffd16",
+            "idf_sha256": "275d30ed194ddd699514d045a94a5a9574585a9e4836c13bf2331bf2b4bd6cfe",
+            "n_filas_fit": 135468,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true,
+            "n_bigramas": 27,
+            "n_trigramas": 127
+          },
+          "tiempo_seg": 33.669034481048584,
+          "macro_f1_fold_val": 0.5481312026422657
+        },
+        "1": {
+          "brazo": "banco_c1a",
+          "bloque_de_referencia": "char_wb",
+          "variante_c1a": "real",
+          "fold": 1,
+          "n_train": 135468,
+          "n_val": 33868,
+          "n_features": 223862,
+          "n_features_c1a": 154,
+          "n_iter": 74,
+          "intercepto": [
+            -0.3112820380109137,
+            -0.4079268345684953,
+            -0.7463648251009231,
+            -0.9311912300940128,
+            -0.9357263408988884,
+            -1.0640143825629556
+          ],
+          "meta_bloque_referencia": {
+            "n_vocabulario": 223708,
+            "vocab_sha256": "ed5fe8c0cf542b6425d00d0347f11a3408823aafacb5f8682c38673a7a4e8f2f",
+            "idf_sha256": "114bab23246100ee9b6004dfad9bf82c9ba2bf5daf0d33951aedb52da0f4e135",
+            "n_filas_fit": 135468,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true
+          },
+          "meta_c1a": {
+            "n_vocabulario": 154,
+            "vocab_sha256": "117293fcbf25c3696ff3c8042b501d1058efe9256436e1dd2b6f47f0a05ffd16",
+            "idf_sha256": "09a1435cd4b7a371f5bbe38955e6e132162f2d47ec7b25c5770724cdaf05d8ef",
+            "n_filas_fit": 135468,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true,
+            "n_bigramas": 27,
+            "n_trigramas": 127
+          },
+          "tiempo_seg": 39.6324987411499,
+          "macro_f1_fold_val": 0.5440765991572319
+        },
+        "2": {
+          "brazo": "banco_c1a",
+          "bloque_de_referencia": "char_wb",
+          "variante_c1a": "real",
+          "fold": 2,
+          "n_train": 135469,
+          "n_val": 33867,
+          "n_features": 224450,
+          "n_features_c1a": 154,
+          "n_iter": 73,
+          "intercepto": [
+            -0.32998559957475526,
+            -0.3815926033904158,
+            -0.7733480083856055,
+            -0.9598050438254431,
+            -0.9184186107991372,
+            -1.033886875000489
+          ],
+          "meta_bloque_referencia": {
+            "n_vocabulario": 224296,
+            "vocab_sha256": "4d87c13fccef9585569c5050a1bff9bb516f87a35bad58e3ff02dc90941ef438",
+            "idf_sha256": "56a5efa4c1c4955542ea3a2b79864de9be4f2885f0b4b370b080905e2514343e",
+            "n_filas_fit": 135469,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true
+          },
+          "meta_c1a": {
+            "n_vocabulario": 154,
+            "vocab_sha256": "117293fcbf25c3696ff3c8042b501d1058efe9256436e1dd2b6f47f0a05ffd16",
+            "idf_sha256": "e9e8ae1cc655f2afe0a32608076dbad008e2fcacebb03f3f2f5bec084a6e4748",
+            "n_filas_fit": 135469,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true,
+            "n_bigramas": 27,
+            "n_trigramas": 127
+          },
+          "tiempo_seg": 22.348621368408203,
+          "macro_f1_fold_val": 0.547808448162368
+        },
+        "3": {
+          "brazo": "banco_c1a",
+          "bloque_de_referencia": "char_wb",
+          "variante_c1a": "real",
+          "fold": 3,
+          "n_train": 135470,
+          "n_val": 33866,
+          "n_features": 224361,
+          "n_features_c1a": 154,
+          "n_iter": 74,
+          "intercepto": [
+            -0.261062873190122,
+            -0.4294802782235233,
+            -0.7614511725739814,
+            -0.9606171331555675,
+            -0.9088266197572072,
+            -1.0691585002471287
+          ],
+          "meta_bloque_referencia": {
+            "n_vocabulario": 224207,
+            "vocab_sha256": "bb759c65f09979e02788012ea95c5b91871191f84ba8d25f079bbddefa790e54",
+            "idf_sha256": "10551bf60e04fea954ee94a44c022b20971966a5a0573a43c24035aa313a729e",
+            "n_filas_fit": 135470,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true
+          },
+          "meta_c1a": {
+            "n_vocabulario": 154,
+            "vocab_sha256": "117293fcbf25c3696ff3c8042b501d1058efe9256436e1dd2b6f47f0a05ffd16",
+            "idf_sha256": "d5a043497d36eea841cfcdf388075a4effb18c1f89155fe10ecece29906003a6",
+            "n_filas_fit": 135470,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true,
+            "n_bigramas": 27,
+            "n_trigramas": 127
+          },
+          "tiempo_seg": 21.937071561813354,
+          "macro_f1_fold_val": 0.542267442287157
+        },
+        "4": {
+          "brazo": "banco_c1a",
+          "bloque_de_referencia": "char_wb",
+          "variante_c1a": "real",
+          "fold": 4,
+          "n_train": 135469,
+          "n_val": 33867,
+          "n_features": 224782,
+          "n_features_c1a": 154,
+          "n_iter": 73,
+          "intercepto": [
+            -0.2767755615647479,
+            -0.4191508638470349,
+            -0.7868241516091901,
+            -0.984081237382521,
+            -0.9106046090524378,
+            -1.000436201859177
+          ],
+          "meta_bloque_referencia": {
+            "n_vocabulario": 224628,
+            "vocab_sha256": "917346bfd3b26223308fe39c4f43a90f424d06fe523a53ce6e03dee75fe5cee7",
+            "idf_sha256": "45c1fc2aef4826e881554dce644fb5d512c193d0551a32310d1580e5c0fafee4",
+            "n_filas_fit": 135469,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true
+          },
+          "meta_c1a": {
+            "n_vocabulario": 154,
+            "vocab_sha256": "117293fcbf25c3696ff3c8042b501d1058efe9256436e1dd2b6f47f0a05ffd16",
+            "idf_sha256": "354e048e60979ffc808b86a520bafae7951a56e9f877c8f43358f048fd42d271",
+            "n_filas_fit": 135469,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true,
+            "n_bigramas": 27,
+            "n_trigramas": 127
+          },
+          "tiempo_seg": 22.02705144882202,
+          "macro_f1_fold_val": 0.5378290185652013
+        }
+      },
+      "folds_completados": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    "banco_c1a_remapeo1": {
+      "folds": {
+        "0": {
+          "brazo": "banco_c1a_remapeo1",
+          "bloque_de_referencia": "char_wb",
+          "variante_c1a": "remapeo1",
+          "fold": 0,
+          "n_train": 135468,
+          "n_val": 33868,
+          "n_features": 224159,
+          "n_features_c1a": 36,
+          "n_iter": 71,
+          "intercepto": [
+            -0.16989689624731422,
+            -0.3044240900152761,
+            -0.7687735757564261,
+            -1.0381886348428513,
+            -1.127702221266139,
+            -1.031588812525384
+          ],
+          "meta_bloque_referencia": {
+            "n_vocabulario": 224123,
+            "vocab_sha256": "8c3a0143963d6ac91d549aafd4312c279c5000c5001818f87a12442ef339f1dc",
+            "idf_sha256": "00314bc8b4e1ba0377b0ac0bed19808b028d49d8dc95485ae505335041d07160",
+            "n_filas_fit": 135468,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true
+          },
+          "meta_c1a": {
+            "n_vocabulario": 36,
+            "vocab_sha256": "f79e0169cc18f59b1f509eb51dcde25c821ee5c58f20835fef61fa549521ff18",
+            "idf_sha256": "a00299b0e6b6c2f92a7f8247eb723c7c05070fa1f925744d86684090f529f675",
+            "n_filas_fit": 135468,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true,
+            "n_bigramas": 9,
+            "n_trigramas": 27
+          },
+          "tiempo_seg": 35.032877922058105,
+          "macro_f1_fold_val": 0.5443110035736493
+        },
+        "1": {
+          "brazo": "banco_c1a_remapeo1",
+          "bloque_de_referencia": "char_wb",
+          "variante_c1a": "remapeo1",
+          "fold": 1,
+          "n_train": 135468,
+          "n_val": 33868,
+          "n_features": 223744,
+          "n_features_c1a": 36,
+          "n_iter": 71,
+          "intercepto": [
+            -0.16187667649342466,
+            -0.3003970797532246,
+            -0.827788733498609,
+            -0.948637987491061,
+            -1.2346384532181283,
+            -0.9954522008213822
+          ],
+          "meta_bloque_referencia": {
+            "n_vocabulario": 223708,
+            "vocab_sha256": "ed5fe8c0cf542b6425d00d0347f11a3408823aafacb5f8682c38673a7a4e8f2f",
+            "idf_sha256": "114bab23246100ee9b6004dfad9bf82c9ba2bf5daf0d33951aedb52da0f4e135",
+            "n_filas_fit": 135468,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true
+          },
+          "meta_c1a": {
+            "n_vocabulario": 36,
+            "vocab_sha256": "f79e0169cc18f59b1f509eb51dcde25c821ee5c58f20835fef61fa549521ff18",
+            "idf_sha256": "7049e4988e5d133fd80a3147acb159d28c309975b694b212fc9142c36af11fcc",
+            "n_filas_fit": 135468,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true,
+            "n_bigramas": 9,
+            "n_trigramas": 27
+          },
+          "tiempo_seg": 35.05792164802551,
+          "macro_f1_fold_val": 0.5431528594959204
+        },
+        "2": {
+          "brazo": "banco_c1a_remapeo1",
+          "bloque_de_referencia": "char_wb",
+          "variante_c1a": "remapeo1",
+          "fold": 2,
+          "n_train": 135469,
+          "n_val": 33867,
+          "n_features": 224332,
+          "n_features_c1a": 36,
+          "n_iter": 72,
+          "intercepto": [
+            -0.2528723631195049,
+            -0.25830838867785233,
+            -0.796875550725137,
+            -0.9787296289025753,
+            -1.2187823600861738,
+            -0.980762792761916
+          ],
+          "meta_bloque_referencia": {
+            "n_vocabulario": 224296,
+            "vocab_sha256": "4d87c13fccef9585569c5050a1bff9bb516f87a35bad58e3ff02dc90941ef438",
+            "idf_sha256": "56a5efa4c1c4955542ea3a2b79864de9be4f2885f0b4b370b080905e2514343e",
+            "n_filas_fit": 135469,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true
+          },
+          "meta_c1a": {
+            "n_vocabulario": 36,
+            "vocab_sha256": "f79e0169cc18f59b1f509eb51dcde25c821ee5c58f20835fef61fa549521ff18",
+            "idf_sha256": "fb1e4652a85a1359efd53da643c74ed9f5893ffb1780401a27f76d38e0392eda",
+            "n_filas_fit": 135469,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true,
+            "n_bigramas": 9,
+            "n_trigramas": 27
+          },
+          "tiempo_seg": 21.77783441543579,
+          "macro_f1_fold_val": 0.5469849236530366
+        },
+        "3": {
+          "brazo": "banco_c1a_remapeo1",
+          "bloque_de_referencia": "char_wb",
+          "variante_c1a": "remapeo1",
+          "fold": 3,
+          "n_train": 135470,
+          "n_val": 33866,
+          "n_features": 224243,
+          "n_features_c1a": 36,
+          "n_iter": 72,
+          "intercepto": [
+            -0.2186806358861522,
+            -0.2572902113447197,
+            -0.786190222839582,
+            -0.9921241054589258,
+            -1.1562986368402184,
+            -1.0127613122021475
+          ],
+          "meta_bloque_referencia": {
+            "n_vocabulario": 224207,
+            "vocab_sha256": "bb759c65f09979e02788012ea95c5b91871191f84ba8d25f079bbddefa790e54",
+            "idf_sha256": "10551bf60e04fea954ee94a44c022b20971966a5a0573a43c24035aa313a729e",
+            "n_filas_fit": 135470,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true
+          },
+          "meta_c1a": {
+            "n_vocabulario": 36,
+            "vocab_sha256": "f79e0169cc18f59b1f509eb51dcde25c821ee5c58f20835fef61fa549521ff18",
+            "idf_sha256": "b02a508117ce196f271996772f1e84a70cf1cc6bd2239f973dd6dd7c9dd6164b",
+            "n_filas_fit": 135470,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true,
+            "n_bigramas": 9,
+            "n_trigramas": 27
+          },
+          "tiempo_seg": 19.6191725730896,
+          "macro_f1_fold_val": 0.5376789686991192
+        },
+        "4": {
+          "brazo": "banco_c1a_remapeo1",
+          "bloque_de_referencia": "char_wb",
+          "variante_c1a": "remapeo1",
+          "fold": 4,
+          "n_train": 135469,
+          "n_val": 33867,
+          "n_features": 224664,
+          "n_features_c1a": 36,
+          "n_iter": 71,
+          "intercepto": [
+            -0.15637035323748744,
+            -0.27913465234018875,
+            -0.7911258467788265,
+            -1.187276453746661,
+            -1.0613372331085302,
+            -1.0619456743428
+          ],
+          "meta_bloque_referencia": {
+            "n_vocabulario": 224628,
+            "vocab_sha256": "917346bfd3b26223308fe39c4f43a90f424d06fe523a53ce6e03dee75fe5cee7",
+            "idf_sha256": "45c1fc2aef4826e881554dce644fb5d512c193d0551a32310d1580e5c0fafee4",
+            "n_filas_fit": 135469,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true
+          },
+          "meta_c1a": {
+            "n_vocabulario": 36,
+            "vocab_sha256": "f79e0169cc18f59b1f509eb51dcde25c821ee5c58f20835fef61fa549521ff18",
+            "idf_sha256": "970894659e7e2fbb8dc7bad8d1190a37537d943ae21755dc08052c94050d9d74",
+            "n_filas_fit": 135469,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true,
+            "n_bigramas": 9,
+            "n_trigramas": 27
+          },
+          "tiempo_seg": 20.859107732772827,
+          "macro_f1_fold_val": 0.5343582808666887
+        }
+      },
+      "folds_completados": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    "banco_c1a_remapeo2": {
+      "folds": {
+        "0": {
+          "brazo": "banco_c1a_remapeo2",
+          "bloque_de_referencia": "char_wb",
+          "variante_c1a": "remapeo2",
+          "fold": 0,
+          "n_train": 135468,
+          "n_val": 33868,
+          "n_features": 224159,
+          "n_features_c1a": 36,
+          "n_iter": 71,
+          "intercepto": [
+            -0.2588847443750042,
+            -0.3860800063849136,
+            -0.7569874767691531,
+            -0.8790004934965573,
+            -0.9680305972651535,
+            -0.9901602404148002
+          ],
+          "meta_bloque_referencia": {
+            "n_vocabulario": 224123,
+            "vocab_sha256": "8c3a0143963d6ac91d549aafd4312c279c5000c5001818f87a12442ef339f1dc",
+            "idf_sha256": "00314bc8b4e1ba0377b0ac0bed19808b028d49d8dc95485ae505335041d07160",
+            "n_filas_fit": 135468,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true
+          },
+          "meta_c1a": {
+            "n_vocabulario": 36,
+            "vocab_sha256": "f79e0169cc18f59b1f509eb51dcde25c821ee5c58f20835fef61fa549521ff18",
+            "idf_sha256": "1fbdcb5f57c354ea432013683dc3af22c23dded85e298bcbcdbb59474c301e43",
+            "n_filas_fit": 135468,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true,
+            "n_bigramas": 9,
+            "n_trigramas": 27
+          },
+          "tiempo_seg": 34.41391658782959,
+          "macro_f1_fold_val": 0.5439612244896005
+        },
+        "1": {
+          "brazo": "banco_c1a_remapeo2",
+          "bloque_de_referencia": "char_wb",
+          "variante_c1a": "remapeo2",
+          "fold": 1,
+          "n_train": 135468,
+          "n_val": 33868,
+          "n_features": 223744,
+          "n_features_c1a": 36,
+          "n_iter": 71,
+          "intercepto": [
+            -0.24756140690659498,
+            -0.3980077173494444,
+            -0.7753339841694722,
+            -0.8329428199869626,
+            -0.989940025092403,
+            -0.995952571400214
+          ],
+          "meta_bloque_referencia": {
+            "n_vocabulario": 223708,
+            "vocab_sha256": "ed5fe8c0cf542b6425d00d0347f11a3408823aafacb5f8682c38673a7a4e8f2f",
+            "idf_sha256": "114bab23246100ee9b6004dfad9bf82c9ba2bf5daf0d33951aedb52da0f4e135",
+            "n_filas_fit": 135468,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true
+          },
+          "meta_c1a": {
+            "n_vocabulario": 36,
+            "vocab_sha256": "f79e0169cc18f59b1f509eb51dcde25c821ee5c58f20835fef61fa549521ff18",
+            "idf_sha256": "1a5ad113bb3a41e9a1dbfc1998f6fad04d903f10f1750945ed80e72cffa00284",
+            "n_filas_fit": 135468,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true,
+            "n_bigramas": 9,
+            "n_trigramas": 27
+          },
+          "tiempo_seg": 32.579646587371826,
+          "macro_f1_fold_val": 0.542828702644412
+        },
+        "2": {
+          "brazo": "banco_c1a_remapeo2",
+          "bloque_de_referencia": "char_wb",
+          "variante_c1a": "remapeo2",
+          "fold": 2,
+          "n_train": 135469,
+          "n_val": 33867,
+          "n_features": 224332,
+          "n_features_c1a": 36,
+          "n_iter": 72,
+          "intercepto": [
+            -0.30167871559223763,
+            -0.36857683708139966,
+            -0.7706842681125214,
+            -0.8344185282165741,
+            -0.9967242825622677,
+            -0.9950383582743701
+          ],
+          "meta_bloque_referencia": {
+            "n_vocabulario": 224296,
+            "vocab_sha256": "4d87c13fccef9585569c5050a1bff9bb516f87a35bad58e3ff02dc90941ef438",
+            "idf_sha256": "56a5efa4c1c4955542ea3a2b79864de9be4f2885f0b4b370b080905e2514343e",
+            "n_filas_fit": 135469,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true
+          },
+          "meta_c1a": {
+            "n_vocabulario": 36,
+            "vocab_sha256": "f79e0169cc18f59b1f509eb51dcde25c821ee5c58f20835fef61fa549521ff18",
+            "idf_sha256": "6fb6ff38be4974d728c16c9971fd38923cf550a84784bd887e807b17df369027",
+            "n_filas_fit": 135469,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true,
+            "n_bigramas": 9,
+            "n_trigramas": 27
+          },
+          "tiempo_seg": 21.26768469810486,
+          "macro_f1_fold_val": 0.5448157566935893
+        },
+        "3": {
+          "brazo": "banco_c1a_remapeo2",
+          "bloque_de_referencia": "char_wb",
+          "variante_c1a": "remapeo2",
+          "fold": 3,
+          "n_train": 135470,
+          "n_val": 33866,
+          "n_features": 224243,
+          "n_features_c1a": 36,
+          "n_iter": 72,
+          "intercepto": [
+            -0.26584801127018687,
+            -0.39762003956513187,
+            -0.768798229422016,
+            -0.8491954028745357,
+            -0.9626423047499498,
+            -0.9949088683029079
+          ],
+          "meta_bloque_referencia": {
+            "n_vocabulario": 224207,
+            "vocab_sha256": "bb759c65f09979e02788012ea95c5b91871191f84ba8d25f079bbddefa790e54",
+            "idf_sha256": "10551bf60e04fea954ee94a44c022b20971966a5a0573a43c24035aa313a729e",
+            "n_filas_fit": 135470,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true
+          },
+          "meta_c1a": {
+            "n_vocabulario": 36,
+            "vocab_sha256": "f79e0169cc18f59b1f509eb51dcde25c821ee5c58f20835fef61fa549521ff18",
+            "idf_sha256": "65ba827bc4a9c35e3063e8a78db09240078cf1752fa5647e497f357457d21367",
+            "n_filas_fit": 135470,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true,
+            "n_bigramas": 9,
+            "n_trigramas": 27
+          },
+          "tiempo_seg": 21.30604314804077,
+          "macro_f1_fold_val": 0.5384636725846251
+        },
+        "4": {
+          "brazo": "banco_c1a_remapeo2",
+          "bloque_de_referencia": "char_wb",
+          "variante_c1a": "remapeo2",
+          "fold": 4,
+          "n_train": 135469,
+          "n_val": 33867,
+          "n_features": 224664,
+          "n_features_c1a": 36,
+          "n_iter": 71,
+          "intercepto": [
+            -0.2323635764620519,
+            -0.362377713316033,
+            -0.7872795766162543,
+            -0.8898046488880756,
+            -0.9757556034378312,
+            -0.9958423035679455
+          ],
+          "meta_bloque_referencia": {
+            "n_vocabulario": 224628,
+            "vocab_sha256": "917346bfd3b26223308fe39c4f43a90f424d06fe523a53ce6e03dee75fe5cee7",
+            "idf_sha256": "45c1fc2aef4826e881554dce644fb5d512c193d0551a32310d1580e5c0fafee4",
+            "n_filas_fit": 135469,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true
+          },
+          "meta_c1a": {
+            "n_vocabulario": 36,
+            "vocab_sha256": "f79e0169cc18f59b1f509eb51dcde25c821ee5c58f20835fef61fa549521ff18",
+            "idf_sha256": "bdbab348b3041c7b1d4b3b086acc99a5918e284f6c48860a3474da34b4ef85c7",
+            "n_filas_fit": 135469,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true,
+            "n_bigramas": 9,
+            "n_trigramas": 27
+          },
+          "tiempo_seg": 19.53414797782898,
+          "macro_f1_fold_val": 0.5340361537638534
+        }
+      },
+      "folds_completados": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    "banco_c1a_remapeo3": {
+      "folds": {
+        "0": {
+          "brazo": "banco_c1a_remapeo3",
+          "bloque_de_referencia": "char_wb",
+          "variante_c1a": "remapeo3",
+          "fold": 0,
+          "n_train": 135468,
+          "n_val": 33868,
+          "n_features": 224159,
+          "n_features_c1a": 36,
+          "n_iter": 72,
+          "intercepto": [
+            -0.11418303656030308,
+            -0.36614817413023,
+            -0.850655952358349,
+            -1.0961178906988995,
+            -1.0980287188498263,
+            -1.1907358676852522
+          ],
+          "meta_bloque_referencia": {
+            "n_vocabulario": 224123,
+            "vocab_sha256": "8c3a0143963d6ac91d549aafd4312c279c5000c5001818f87a12442ef339f1dc",
+            "idf_sha256": "00314bc8b4e1ba0377b0ac0bed19808b028d49d8dc95485ae505335041d07160",
+            "n_filas_fit": 135468,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true
+          },
+          "meta_c1a": {
+            "n_vocabulario": 36,
+            "vocab_sha256": "4b7742d3b70b28a1319c6a5a7bb85a5be3c27fc63f448863da251c1ddfec558e",
+            "idf_sha256": "7849f5d35b16559aa763b5ef6385e711c332a771801397eb6a782ee551377f22",
+            "n_filas_fit": 135468,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true,
+            "n_bigramas": 9,
+            "n_trigramas": 27
+          },
+          "tiempo_seg": 34.65499424934387,
+          "macro_f1_fold_val": 0.5456006811559257
+        },
+        "1": {
+          "brazo": "banco_c1a_remapeo3",
+          "bloque_de_referencia": "char_wb",
+          "variante_c1a": "remapeo3",
+          "fold": 1,
+          "n_train": 135468,
+          "n_val": 33868,
+          "n_features": 223744,
+          "n_features_c1a": 36,
+          "n_iter": 71,
+          "intercepto": [
+            -0.1371642257803321,
+            -0.40004537591245687,
+            -0.8506025064925274,
+            -1.0219145313179103,
+            -1.043465215953111,
+            -1.2474463434457856
+          ],
+          "meta_bloque_referencia": {
+            "n_vocabulario": 223708,
+            "vocab_sha256": "ed5fe8c0cf542b6425d00d0347f11a3408823aafacb5f8682c38673a7a4e8f2f",
+            "idf_sha256": "114bab23246100ee9b6004dfad9bf82c9ba2bf5daf0d33951aedb52da0f4e135",
+            "n_filas_fit": 135468,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true
+          },
+          "meta_c1a": {
+            "n_vocabulario": 36,
+            "vocab_sha256": "4b7742d3b70b28a1319c6a5a7bb85a5be3c27fc63f448863da251c1ddfec558e",
+            "idf_sha256": "f4b917682f51545e511cf001a60cdf43f790a34e8d42a8a2be1d90e53cb2efd4",
+            "n_filas_fit": 135468,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true,
+            "n_bigramas": 9,
+            "n_trigramas": 27
+          },
+          "tiempo_seg": 30.73507571220398,
+          "macro_f1_fold_val": 0.542240133809205
+        },
+        "2": {
+          "brazo": "banco_c1a_remapeo3",
+          "bloque_de_referencia": "char_wb",
+          "variante_c1a": "remapeo3",
+          "fold": 2,
+          "n_train": 135469,
+          "n_val": 33867,
+          "n_features": 224332,
+          "n_features_c1a": 36,
+          "n_iter": 72,
+          "intercepto": [
+            -0.19442910890170137,
+            -0.3352230485711224,
+            -0.8653359764361398,
+            -1.0619738764965063,
+            -1.1141292951260693,
+            -1.0749334394241934
+          ],
+          "meta_bloque_referencia": {
+            "n_vocabulario": 224296,
+            "vocab_sha256": "4d87c13fccef9585569c5050a1bff9bb516f87a35bad58e3ff02dc90941ef438",
+            "idf_sha256": "56a5efa4c1c4955542ea3a2b79864de9be4f2885f0b4b370b080905e2514343e",
+            "n_filas_fit": 135469,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true
+          },
+          "meta_c1a": {
+            "n_vocabulario": 36,
+            "vocab_sha256": "4b7742d3b70b28a1319c6a5a7bb85a5be3c27fc63f448863da251c1ddfec558e",
+            "idf_sha256": "8687e6f62421aa248f9716dea68b930307bec85660c35d6d010901bab3ba8327",
+            "n_filas_fit": 135469,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true,
+            "n_bigramas": 9,
+            "n_trigramas": 27
+          },
+          "tiempo_seg": 22.44884467124939,
+          "macro_f1_fold_val": 0.5465563454045518
+        },
+        "3": {
+          "brazo": "banco_c1a_remapeo3",
+          "bloque_de_referencia": "char_wb",
+          "variante_c1a": "remapeo3",
+          "fold": 3,
+          "n_train": 135470,
+          "n_val": 33866,
+          "n_features": 224243,
+          "n_features_c1a": 36,
+          "n_iter": 71,
+          "intercepto": [
+            -0.1812700252535562,
+            -0.34071388581963197,
+            -0.8460926597312324,
+            -1.0235290848722314,
+            -1.1052753105603834,
+            -1.2446120222984445
+          ],
+          "meta_bloque_referencia": {
+            "n_vocabulario": 224207,
+            "vocab_sha256": "bb759c65f09979e02788012ea95c5b91871191f84ba8d25f079bbddefa790e54",
+            "idf_sha256": "10551bf60e04fea954ee94a44c022b20971966a5a0573a43c24035aa313a729e",
+            "n_filas_fit": 135470,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true
+          },
+          "meta_c1a": {
+            "n_vocabulario": 36,
+            "vocab_sha256": "4b7742d3b70b28a1319c6a5a7bb85a5be3c27fc63f448863da251c1ddfec558e",
+            "idf_sha256": "4ae6436dbafa5d3405378be4aa0d220b8ca443e4f5f1b3232adfded869902408",
+            "n_filas_fit": 135470,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true,
+            "n_bigramas": 9,
+            "n_trigramas": 27
+          },
+          "tiempo_seg": 22.126089572906494,
+          "macro_f1_fold_val": 0.5390639302426933
+        },
+        "4": {
+          "brazo": "banco_c1a_remapeo3",
+          "bloque_de_referencia": "char_wb",
+          "variante_c1a": "remapeo3",
+          "fold": 4,
+          "n_train": 135469,
+          "n_val": 33867,
+          "n_features": 224664,
+          "n_features_c1a": 36,
+          "n_iter": 71,
+          "intercepto": [
+            -0.08392673532896812,
+            -0.3753535414420657,
+            -0.8359072444581597,
+            -1.1405787161145744,
+            -1.0500690868993017,
+            -1.256558935531466
+          ],
+          "meta_bloque_referencia": {
+            "n_vocabulario": 224628,
+            "vocab_sha256": "917346bfd3b26223308fe39c4f43a90f424d06fe523a53ce6e03dee75fe5cee7",
+            "idf_sha256": "45c1fc2aef4826e881554dce644fb5d512c193d0551a32310d1580e5c0fafee4",
+            "n_filas_fit": 135469,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true
+          },
+          "meta_c1a": {
+            "n_vocabulario": 36,
+            "vocab_sha256": "4b7742d3b70b28a1319c6a5a7bb85a5be3c27fc63f448863da251c1ddfec558e",
+            "idf_sha256": "d5c29ddec68b8c52d108ffb8e7eaf9935b48d853e02ab0682003f2f3b565db3c",
+            "n_filas_fit": 135469,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true,
+            "n_bigramas": 9,
+            "n_trigramas": 27
+          },
+          "tiempo_seg": 21.852758407592773,
+          "macro_f1_fold_val": 0.5344047516481633
+        }
+      },
+      "folds_completados": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    "banco_c1a_entre_docs": {
+      "folds": {
+        "0": {
+          "brazo": "banco_c1a_entre_docs",
+          "bloque_de_referencia": "char_wb",
+          "variante_c1a": "entre_documentos",
+          "fold": 0,
+          "n_train": 135468,
+          "n_val": 33868,
+          "n_features": 224277,
+          "n_features_c1a": 154,
+          "n_iter": 71,
+          "intercepto": [
+            -0.3241041518271949,
+            -0.2572976235330652,
+            -0.6373582202312739,
+            -0.9687257958731382,
+            -1.011800716812448,
+            -1.2364458789542099
+          ],
+          "meta_bloque_referencia": {
+            "n_vocabulario": 224123,
+            "vocab_sha256": "8c3a0143963d6ac91d549aafd4312c279c5000c5001818f87a12442ef339f1dc",
+            "idf_sha256": "00314bc8b4e1ba0377b0ac0bed19808b028d49d8dc95485ae505335041d07160",
+            "n_filas_fit": 135468,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true
+          },
+          "meta_c1a": {
+            "n_vocabulario": 154,
+            "vocab_sha256": "117293fcbf25c3696ff3c8042b501d1058efe9256436e1dd2b6f47f0a05ffd16",
+            "idf_sha256": "d30be22642945e22e0118bdb987a2cca257585a360d6aeb07d0eb021de290019",
+            "n_filas_fit": 135468,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true,
+            "n_bigramas": 27,
+            "n_trigramas": 127
+          },
+          "tiempo_seg": 34.51084542274475,
+          "macro_f1_fold_val": 0.544211332960196
+        },
+        "1": {
+          "brazo": "banco_c1a_entre_docs",
+          "bloque_de_referencia": "char_wb",
+          "variante_c1a": "entre_documentos",
+          "fold": 1,
+          "n_train": 135468,
+          "n_val": 33868,
+          "n_features": 223862,
+          "n_features_c1a": 154,
+          "n_iter": 71,
+          "intercepto": [
+            -0.32657021822566845,
+            -0.28213517932370585,
+            -0.6428612148387974,
+            -0.9582252945071968,
+            -1.0128809659384546,
+            -1.2098923975955127
+          ],
+          "meta_bloque_referencia": {
+            "n_vocabulario": 223708,
+            "vocab_sha256": "ed5fe8c0cf542b6425d00d0347f11a3408823aafacb5f8682c38673a7a4e8f2f",
+            "idf_sha256": "114bab23246100ee9b6004dfad9bf82c9ba2bf5daf0d33951aedb52da0f4e135",
+            "n_filas_fit": 135468,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true
+          },
+          "meta_c1a": {
+            "n_vocabulario": 154,
+            "vocab_sha256": "117293fcbf25c3696ff3c8042b501d1058efe9256436e1dd2b6f47f0a05ffd16",
+            "idf_sha256": "bc0506ce09f26164eb337cd2fd5b6eedcd8fed23cc9c8f653a774c17f6608b1a",
+            "n_filas_fit": 135468,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true,
+            "n_bigramas": 27,
+            "n_trigramas": 127
+          },
+          "tiempo_seg": 27.904673099517822,
+          "macro_f1_fold_val": 0.5419126395343018
+        },
+        "2": {
+          "brazo": "banco_c1a_entre_docs",
+          "bloque_de_referencia": "char_wb",
+          "variante_c1a": "entre_documentos",
+          "fold": 2,
+          "n_train": 135469,
+          "n_val": 33867,
+          "n_features": 224450,
+          "n_features_c1a": 154,
+          "n_iter": 71,
+          "intercepto": [
+            -0.3356812823100083,
+            -0.268420834763006,
+            -0.6589419487729937,
+            -0.9657895296798127,
+            -1.016855350222607,
+            -1.206181364986465
+          ],
+          "meta_bloque_referencia": {
+            "n_vocabulario": 224296,
+            "vocab_sha256": "4d87c13fccef9585569c5050a1bff9bb516f87a35bad58e3ff02dc90941ef438",
+            "idf_sha256": "56a5efa4c1c4955542ea3a2b79864de9be4f2885f0b4b370b080905e2514343e",
+            "n_filas_fit": 135469,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true
+          },
+          "meta_c1a": {
+            "n_vocabulario": 154,
+            "vocab_sha256": "117293fcbf25c3696ff3c8042b501d1058efe9256436e1dd2b6f47f0a05ffd16",
+            "idf_sha256": "6d38d9db2e534fc34236e7453a2bc68415864f0d99eef9c65af56399633a7f4f",
+            "n_filas_fit": 135469,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true,
+            "n_bigramas": 27,
+            "n_trigramas": 127
+          },
+          "tiempo_seg": 22.334885835647583,
+          "macro_f1_fold_val": 0.5450030171014417
+        },
+        "3": {
+          "brazo": "banco_c1a_entre_docs",
+          "bloque_de_referencia": "char_wb",
+          "variante_c1a": "entre_documentos",
+          "fold": 3,
+          "n_train": 135470,
+          "n_val": 33866,
+          "n_features": 224361,
+          "n_features_c1a": 154,
+          "n_iter": 71,
+          "intercepto": [
+            -0.3258299175399767,
+            -0.2492264431455496,
+            -0.6840962077822124,
+            -0.9822886869717213,
+            -0.9811827087258259,
+            -1.2174683569537863
+          ],
+          "meta_bloque_referencia": {
+            "n_vocabulario": 224207,
+            "vocab_sha256": "bb759c65f09979e02788012ea95c5b91871191f84ba8d25f079bbddefa790e54",
+            "idf_sha256": "10551bf60e04fea954ee94a44c022b20971966a5a0573a43c24035aa313a729e",
+            "n_filas_fit": 135470,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true
+          },
+          "meta_c1a": {
+            "n_vocabulario": 154,
+            "vocab_sha256": "117293fcbf25c3696ff3c8042b501d1058efe9256436e1dd2b6f47f0a05ffd16",
+            "idf_sha256": "a9b0f14801630d49e83e8a7698160f1279b56110628c92858966e7b14784e8d4",
+            "n_filas_fit": 135470,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true,
+            "n_bigramas": 27,
+            "n_trigramas": 127
+          },
+          "tiempo_seg": 21.9302921295166,
+          "macro_f1_fold_val": 0.5384062998819953
+        },
+        "4": {
+          "brazo": "banco_c1a_entre_docs",
+          "bloque_de_referencia": "char_wb",
+          "variante_c1a": "entre_documentos",
+          "fold": 4,
+          "n_train": 135469,
+          "n_val": 33867,
+          "n_features": 224782,
+          "n_features_c1a": 154,
+          "n_iter": 71,
+          "intercepto": [
+            -0.31276394594339524,
+            -0.26559446025040084,
+            -0.7011140090418602,
+            -0.9361111174840382,
+            -0.9891508538798249,
+            -1.2190369100187148
+          ],
+          "meta_bloque_referencia": {
+            "n_vocabulario": 224628,
+            "vocab_sha256": "917346bfd3b26223308fe39c4f43a90f424d06fe523a53ce6e03dee75fe5cee7",
+            "idf_sha256": "45c1fc2aef4826e881554dce644fb5d512c193d0551a32310d1580e5c0fafee4",
+            "n_filas_fit": 135469,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true
+          },
+          "meta_c1a": {
+            "n_vocabulario": 154,
+            "vocab_sha256": "117293fcbf25c3696ff3c8042b501d1058efe9256436e1dd2b6f47f0a05ffd16",
+            "idf_sha256": "e70aec0fe3639e9db2cf3f820de84455c4ef416b9e3bbdaffa3ae9727baba16c",
+            "n_filas_fit": 135469,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true,
+            "n_bigramas": 27,
+            "n_trigramas": 127
+          },
+          "tiempo_seg": 22.239080667495728,
+          "macro_f1_fold_val": 0.5329489877787669
+        }
+      },
+      "folds_completados": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    "integ_control": {
+      "folds": {
+        "0": {
+          "brazo": "integ_control",
+          "bloque_de_referencia": "palabra",
+          "variante_c1a": null,
+          "fold": 0,
+          "n_train": 135468,
+          "n_val": 33868,
+          "n_features": 118409,
+          "n_features_c1a": 0,
+          "n_iter": 39,
+          "intercepto": [
+            -0.5948406938727304,
+            -0.4405755948422606,
+            -0.6420948588981128,
+            -0.8008667962880738,
+            -0.8547071196005983,
+            -0.9672570002757707
+          ],
+          "meta_bloque_referencia": {
+            "n_vocabulario": 118409,
+            "vocab_sha256": "f7d4a7efa7669d595122d323d9e14f319714fc91686d386dba84c451adb9d7b2",
+            "idf_sha256": "ec9b876fc50d30dae4df1e35472d9e9c333188bb38856ff891b6a28e67eb7630",
+            "n_filas_fit": 135468,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true
+          },
+          "meta_c1a": null,
+          "tiempo_seg": 102.31221318244934,
+          "macro_f1_fold_val": 0.4997966803887253
+        },
+        "1": {
+          "brazo": "integ_control",
+          "bloque_de_referencia": "palabra",
+          "variante_c1a": null,
+          "fold": 1,
+          "n_train": 135468,
+          "n_val": 33868,
+          "n_features": 118337,
+          "n_features_c1a": 0,
+          "n_iter": 61,
+          "intercepto": [
+            -0.5942847595941058,
+            -0.44107645180336796,
+            -0.6491036640783762,
+            -0.7878350395569458,
+            -0.8450142471040123,
+            -0.9802362154741173
+          ],
+          "meta_bloque_referencia": {
+            "n_vocabulario": 118337,
+            "vocab_sha256": "dae18845defd827742ee12b90dc8c87749962e5928f863e3de11d6e7b4a396eb",
+            "idf_sha256": "7b7dd9e81ded5836f28f69e484d5a309a3237d0809a7d007abee66ecf87b5c37",
+            "n_filas_fit": 135468,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true
+          },
+          "meta_c1a": null,
+          "tiempo_seg": 74.98909163475037,
+          "macro_f1_fold_val": 0.4983094145197176
+        },
+        "2": {
+          "brazo": "integ_control",
+          "bloque_de_referencia": "palabra",
+          "variante_c1a": null,
+          "fold": 2,
+          "n_train": 135469,
+          "n_val": 33867,
+          "n_features": 118232,
+          "n_features_c1a": 0,
+          "n_iter": 40,
+          "intercepto": [
+            -0.602673130152895,
+            -0.45748382477486454,
+            -0.6376581959866594,
+            -0.787284844138814,
+            -0.8371091696410817,
+            -0.977942247768204
+          ],
+          "meta_bloque_referencia": {
+            "n_vocabulario": 118232,
+            "vocab_sha256": "c8970e0849516420c4562a6298ab0a15cb841108a1a385620ed896a3ab5193dd",
+            "idf_sha256": "52768cc065aace56e5a1dfe6f64c97116d3c54239946fd6ba97110eda9d91c70",
+            "n_filas_fit": 135469,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true
+          },
+          "meta_c1a": null,
+          "tiempo_seg": 57.906392335891724,
+          "macro_f1_fold_val": 0.49968137939082685
+        },
+        "3": {
+          "brazo": "integ_control",
+          "bloque_de_referencia": "palabra",
+          "variante_c1a": null,
+          "fold": 3,
+          "n_train": 135470,
+          "n_val": 33866,
+          "n_features": 118356,
+          "n_features_c1a": 0,
+          "n_iter": 51,
+          "intercepto": [
+            -0.5923068292580763,
+            -0.4466714801233446,
+            -0.6383094432622741,
+            -0.7897693088800238,
+            -0.8508961980020736,
+            -0.9825642047874925
+          ],
+          "meta_bloque_referencia": {
+            "n_vocabulario": 118356,
+            "vocab_sha256": "58db146ee417eda26a89ff22276297114cb35feb7e248e4efd4197fa14ad24a6",
+            "idf_sha256": "1fffe5cd32d29249395227d6ff4e83c428e182dacbec5140df081d68117f864d",
+            "n_filas_fit": 135470,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true
+          },
+          "meta_c1a": null,
+          "tiempo_seg": 59.2189302444458,
+          "macro_f1_fold_val": 0.5005992981132966
+        },
+        "4": {
+          "brazo": "integ_control",
+          "bloque_de_referencia": "palabra",
+          "variante_c1a": null,
+          "fold": 4,
+          "n_train": 135469,
+          "n_val": 33867,
+          "n_features": 118363,
+          "n_features_c1a": 0,
+          "n_iter": 25,
+          "intercepto": [
+            -0.5933699352924156,
+            -0.4483302942778348,
+            -0.6380639490339493,
+            -0.7927219766838316,
+            -0.8536021015845952,
+            -0.9758805833748897
+          ],
+          "meta_bloque_referencia": {
+            "n_vocabulario": 118363,
+            "vocab_sha256": "28c0a2ff12d328c247d17015338ebfbd76432c72374fe9ae55ffd1f466af55c1",
+            "idf_sha256": "6e89ced0089e2c740a64efb545582f54534939a6fbb9af8681e3a4b74ec2a5f0",
+            "n_filas_fit": 135469,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true
+          },
+          "meta_c1a": null,
+          "tiempo_seg": 57.5880126953125,
+          "macro_f1_fold_val": 0.49155869252403533
+        }
+      },
+      "folds_completados": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    "integ_c1a": {
+      "folds": {
+        "0": {
+          "brazo": "integ_c1a",
+          "bloque_de_referencia": "palabra",
+          "variante_c1a": "real",
+          "fold": 0,
+          "n_train": 135468,
+          "n_val": 33868,
+          "n_features": 118563,
+          "n_features_c1a": 154,
+          "n_iter": 48,
+          "intercepto": [
+            -0.3173136684720855,
+            -0.4191616317611967,
+            -0.8260210526006869,
+            -0.9306910303333057,
+            -0.8631215911870243,
+            -0.906277694246744
+          ],
+          "meta_bloque_referencia": {
+            "n_vocabulario": 118409,
+            "vocab_sha256": "f7d4a7efa7669d595122d323d9e14f319714fc91686d386dba84c451adb9d7b2",
+            "idf_sha256": "ec9b876fc50d30dae4df1e35472d9e9c333188bb38856ff891b6a28e67eb7630",
+            "n_filas_fit": 135468,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true
+          },
+          "meta_c1a": {
+            "n_vocabulario": 154,
+            "vocab_sha256": "117293fcbf25c3696ff3c8042b501d1058efe9256436e1dd2b6f47f0a05ffd16",
+            "idf_sha256": "275d30ed194ddd699514d045a94a5a9574585a9e4836c13bf2331bf2b4bd6cfe",
+            "n_filas_fit": 135468,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true,
+            "n_bigramas": 27,
+            "n_trigramas": 127
+          },
+          "tiempo_seg": 356.05083656311035,
+          "macro_f1_fold_val": 0.5103355824547052
+        },
+        "1": {
+          "brazo": "integ_c1a",
+          "bloque_de_referencia": "palabra",
+          "variante_c1a": "real",
+          "fold": 1,
+          "n_train": 135468,
+          "n_val": 33868,
+          "n_features": 118491,
+          "n_features_c1a": 154,
+          "n_iter": 43,
+          "intercepto": [
+            -0.3304769400237423,
+            -0.45365496965117874,
+            -0.7895765639054777,
+            -0.896921051365777,
+            -0.8569309113697468,
+            -0.9190387683733575
+          ],
+          "meta_bloque_referencia": {
+            "n_vocabulario": 118337,
+            "vocab_sha256": "dae18845defd827742ee12b90dc8c87749962e5928f863e3de11d6e7b4a396eb",
+            "idf_sha256": "7b7dd9e81ded5836f28f69e484d5a309a3237d0809a7d007abee66ecf87b5c37",
+            "n_filas_fit": 135468,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true
+          },
+          "meta_c1a": {
+            "n_vocabulario": 154,
+            "vocab_sha256": "117293fcbf25c3696ff3c8042b501d1058efe9256436e1dd2b6f47f0a05ffd16",
+            "idf_sha256": "09a1435cd4b7a371f5bbe38955e6e132162f2d47ec7b25c5770724cdaf05d8ef",
+            "n_filas_fit": 135468,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true,
+            "n_bigramas": 27,
+            "n_trigramas": 127
+          },
+          "tiempo_seg": 219.79122591018677,
+          "macro_f1_fold_val": 0.5088457210740097
+        },
+        "2": {
+          "brazo": "integ_c1a",
+          "bloque_de_referencia": "palabra",
+          "variante_c1a": "real",
+          "fold": 2,
+          "n_train": 135469,
+          "n_val": 33867,
+          "n_features": 118386,
+          "n_features_c1a": 154,
+          "n_iter": 37,
+          "intercepto": [
+            -0.34826690718854864,
+            -0.42557170602767236,
+            -0.8208122200869601,
+            -0.9355296829686027,
+            -0.8149773562421385,
+            -0.9065044224439855
+          ],
+          "meta_bloque_referencia": {
+            "n_vocabulario": 118232,
+            "vocab_sha256": "c8970e0849516420c4562a6298ab0a15cb841108a1a385620ed896a3ab5193dd",
+            "idf_sha256": "52768cc065aace56e5a1dfe6f64c97116d3c54239946fd6ba97110eda9d91c70",
+            "n_filas_fit": 135469,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true
+          },
+          "meta_c1a": {
+            "n_vocabulario": 154,
+            "vocab_sha256": "117293fcbf25c3696ff3c8042b501d1058efe9256436e1dd2b6f47f0a05ffd16",
+            "idf_sha256": "e9e8ae1cc655f2afe0a32608076dbad008e2fcacebb03f3f2f5bec084a6e4748",
+            "n_filas_fit": 135469,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true,
+            "n_bigramas": 27,
+            "n_trigramas": 127
+          },
+          "tiempo_seg": 187.51279091835022,
+          "macro_f1_fold_val": 0.5100957857920326
+        },
+        "3": {
+          "brazo": "integ_c1a",
+          "bloque_de_referencia": "palabra",
+          "variante_c1a": "real",
+          "fold": 3,
+          "n_train": 135470,
+          "n_val": 33866,
+          "n_features": 118510,
+          "n_features_c1a": 154,
+          "n_iter": 37,
+          "intercepto": [
+            -0.286743192692438,
+            -0.4561468857558713,
+            -0.8075671791514417,
+            -0.9389933256462054,
+            -0.8300426673734966,
+            -0.9457055870943671
+          ],
+          "meta_bloque_referencia": {
+            "n_vocabulario": 118356,
+            "vocab_sha256": "58db146ee417eda26a89ff22276297114cb35feb7e248e4efd4197fa14ad24a6",
+            "idf_sha256": "1fffe5cd32d29249395227d6ff4e83c428e182dacbec5140df081d68117f864d",
+            "n_filas_fit": 135470,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true
+          },
+          "meta_c1a": {
+            "n_vocabulario": 154,
+            "vocab_sha256": "117293fcbf25c3696ff3c8042b501d1058efe9256436e1dd2b6f47f0a05ffd16",
+            "idf_sha256": "d5a043497d36eea841cfcdf388075a4effb18c1f89155fe10ecece29906003a6",
+            "n_filas_fit": 135470,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true,
+            "n_bigramas": 27,
+            "n_trigramas": 127
+          },
+          "tiempo_seg": 208.6601173877716,
+          "macro_f1_fold_val": 0.5092378578540474
+        },
+        "4": {
+          "brazo": "integ_c1a",
+          "bloque_de_referencia": "palabra",
+          "variante_c1a": "real",
+          "fold": 4,
+          "n_train": 135469,
+          "n_val": 33867,
+          "n_features": 118517,
+          "n_features_c1a": 154,
+          "n_iter": 33,
+          "intercepto": [
+            -0.2978204575493219,
+            -0.4555704968297791,
+            -0.8373707669488066,
+            -0.9358942081923685,
+            -0.8351832724961807,
+            -0.89232506661205
+          ],
+          "meta_bloque_referencia": {
+            "n_vocabulario": 118363,
+            "vocab_sha256": "28c0a2ff12d328c247d17015338ebfbd76432c72374fe9ae55ffd1f466af55c1",
+            "idf_sha256": "6e89ced0089e2c740a64efb545582f54534939a6fbb9af8681e3a4b74ec2a5f0",
+            "n_filas_fit": 135469,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true
+          },
+          "meta_c1a": {
+            "n_vocabulario": 154,
+            "vocab_sha256": "117293fcbf25c3696ff3c8042b501d1058efe9256436e1dd2b6f47f0a05ffd16",
+            "idf_sha256": "354e048e60979ffc808b86a520bafae7951a56e9f877c8f43358f048fd42d271",
+            "n_filas_fit": 135469,
+            "n_filas_total": 169336,
+            "columnas_val_igualan_train": true,
+            "n_bigramas": 27,
+            "n_trigramas": 127
+          },
+          "tiempo_seg": 188.25632119178772,
+          "macro_f1_fold_val": 0.4996293058822261
+        }
+      },
+      "folds_completados": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    }
+  },
+  "sondas": {
+    "banco_ree_medido": true,
+    "tabla_5_de_5_folds": true,
+    "bootstrap_pareado": true,
+    "permutaciones": true,
+    "barajado": true,
+    "conformidad": true,
+    "fold_local": true,
+    "mapa_literal": true
+  },
+  "triage": null,
+  "resultados": {
+    "nodo": "SENAL_EXISTE_INTEGRACION_NEGATIVA",
+    "escrito": true
+  }
+}

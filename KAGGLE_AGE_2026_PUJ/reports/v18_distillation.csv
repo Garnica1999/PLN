@@ -1,0 +1,15 @@
+brazo,frontera,student,v12,teacher_validado,recuperacion_sobre_disponible
+control_sin_destilacion,18-24|25-34,0.4957,0.4963,0.7136,-0.0028
+control_sin_destilacion,25-34|35-49,0.495,0.4974,0.7493,-0.0095
+student_destilado,18-24|25-34,0.498,0.4963,0.7136,0.0078
+student_destilado,25-34|35-49,0.4966,0.4974,0.7493,-0.0032
+student_destilado,18-24|25-34,0.4969,0.4963,0.7136,0.0028
+student_destilado,25-34|35-49,0.4973,0.4974,0.7493,-0.0004
+student_destilado,18-24|25-34,0.496,0.4963,0.7136,-0.0014
+student_destilado,25-34|35-49,0.4943,0.4974,0.7493,-0.0123
+student_destilado,18-24|25-34,0.4956,0.4963,0.7136,-0.0032
+student_destilado,25-34|35-49,0.4949,0.4974,0.7493,-0.0099
+student_destilado,18-24|25-34,0.4964,0.4963,0.7136,0.0005
+student_destilado,25-34|35-49,0.4937,0.4974,0.7493,-0.0147
+student_destilado,18-24|25-34,0.4936,0.4963,0.7136,-0.0124
+student_destilado,25-34|35-49,0.495,0.4974,0.7493,-0.0095

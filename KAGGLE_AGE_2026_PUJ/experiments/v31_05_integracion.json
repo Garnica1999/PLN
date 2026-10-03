@@ -1,0 +1,185 @@
+{
+  "fase": "V31+ 05 integracion del canal en el meta-espacio de V30",
+  "fecha": "2026-09-30",
+  "experimenta": true,
+  "baseline_v30": 0.6134471,
+  "brazos": [
+    {
+      "etiqueta": "v30_congelado",
+      "n_miembros": 3,
+      "macro_f1": 0.6134471,
+      "folds": [
+        0.6162361,
+        0.6166868,
+        0.6131736,
+        0.6135122,
+        0.6076541
+      ],
+      "delta_vs_v30": 0.0,
+      "folds_positivos": 0,
+      "barajado": false,
+      "pesos_por_fold": [],
+      "segundos": 0.0,
+      "papel": "referencia absoluta, pesos congelados del manifest de V30"
+    },
+    {
+      "etiqueta": "v30_reopt",
+      "n_miembros": 3,
+      "macro_f1": 0.6137948,
+      "folds": [
+        0.6168289,
+        0.617461,
+        0.6134162,
+        0.6139097,
+        0.6073749
+      ],
+      "pesos_por_fold": [
+        [
+          0.2471,
+          0.4115,
+          0.3414
+        ],
+        [
+          0.2573,
+          0.3649,
+          0.3778
+        ],
+        [
+          0.2328,
+          0.4254,
+          0.3418
+        ],
+        [
+          0.253,
+          0.3952,
+          0.3518
+        ],
+        [
+          0.2247,
+          0.3765,
+          0.3988
+        ]
+      ],
+      "barajado": false,
+      "segundos": 11.3,
+      "delta_vs_v30": 0.0003477,
+      "folds_positivos": 0,
+      "papel": "control: subir de 3 pesos fijos a 3 pesos optimizados. Si esto ya da gain, el gain de N1 no puede atribuirse al canal"
+    },
+    {
+      "etiqueta": "v30_mas_canal",
+      "n_miembros": 4,
+      "macro_f1": 0.613859,
+      "folds": [
+        0.6168767,
+        0.6174296,
+        0.6135501,
+        0.6139106,
+        0.6075466
+      ],
+      "pesos_por_fold": [
+        [
+          0.2526,
+          0.3715,
+          0.3758,
+          0.0001
+        ],
+        [
+          0.275,
+          0.3747,
+          0.3218,
+          0.0285
+        ],
+        [
+          0.2512,
+          0.4104,
+          0.3363,
+          0.0021
+        ],
+        [
+          0.2661,
+          0.4241,
+          0.3078,
+          0.002
+        ],
+        [
+          0.2597,
+          0.3473,
+          0.3777,
+          0.0153
+        ]
+      ],
+      "barajado": false,
+      "segundos": 11.6,
+      "delta_vs_v30": 0.0004119,
+      "delta_vs_reopt": 6.42e-05,
+      "folds_positivos": 14,
+      "papel": "la integracion de verdad: cuatro miembros, pesos optimizados con estructura anidada"
+    },
+    {
+      "etiqueta": "v30_mas_canal_barajado",
+      "n_miembros": 4,
+      "macro_f1": 0.6134855,
+      "folds": [
+        0.616182,
+        0.6168466,
+        0.6134143,
+        0.6132128,
+        0.6077906
+      ],
+      "pesos_por_fold": [
+        [
+          0.2836,
+          0.45,
+          0.2422,
+          0.0242
+        ],
+        [
+          0.2659,
+          0.3646,
+          0.3517,
+          0.0178
+        ],
+        [
+          0.2148,
+          0.3829,
+          0.3897,
+          0.0125
+        ],
+        [
+          0.3625,
+          0.2345,
+          0.4022,
+          0.0008
+        ],
+        [
+          0.2595,
+          0.3882,
+          0.3483,
+          0.0041
+        ]
+      ],
+      "barajado": true,
+      "segundos": 9.6,
+      "delta_vs_v30": 3.84e-05,
+      "delta_vs_reopt": -0.0003093,
+      "folds_positivos": 0,
+      "papel": "control de atribucion: mismos 4 miembros, mismos pesos, misma optimizacion, pero con las probabilidades del canal permutadas al azar"
+    }
+  ],
+  "veredicto": "APORTE MARGINAL: el canal aporta +0.0000642 sobre el reoptimizado, por debajo del gate de +0,0015. No se abre grid",
+  "aporte_del_canal_sobre_control_barajado": 0.0003735,
+  "aporte_del_canal_sobre_reoptimizado": 6.42e-05,
+  "protocolo": {
+    "folds": "StratifiedGroupKFold 5, dup_clusters, identicos a V20",
+    "pesos": "Optuna TPESampler, semilla 20260930, 60 trials, ajustados DENTRO de outer_train con 4 folds internos; outer_validation nunca se ve",
+    "metrica": "macro-F1 de 6 clases"
+  },
+  "restricciones": {
+    "usa_test": false,
+    "usa_red": false,
+    "usa_embeddings": false,
+    "reutiliza_oof_de_v30": true
+  },
+  "segundos": 67.9
+}

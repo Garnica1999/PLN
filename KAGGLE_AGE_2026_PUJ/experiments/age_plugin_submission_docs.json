@@ -1,0 +1,12 @@
+{
+  "fase": "documentacion de la submission",
+  "fecha": "2026-10-12",
+  "commit": "fd1899ad8329cd9df95ca95e53a34953737bbbb7",
+  "estado": {
+    "V30": "FROZEN",
+    "plug-in": "PROMISING_CONFIRMED",
+    "submission": "PREPARED"
+  },
+  "sha256": "29cbe6cca4312a65f5176bad25c7d4ae4624d348f3e55586dfa36767a3abd6c0",
+  "subida_a_kaggle": false
+}

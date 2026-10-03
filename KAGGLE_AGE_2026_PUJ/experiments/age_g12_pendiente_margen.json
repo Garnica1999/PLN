@@ -1,0 +1,120 @@
+{
+  "fase": "G12 correccion con pendiente en el margen de V30",
+  "fecha": "2026-10-05",
+  "experimenta": true,
+  "baseline_v30": 0.6134471,
+  "candidato": "ortografia+composicion+discurso",
+  "hipotesis": "G12: la correccion del score de V30 deberia pesar mas donde V30 ya es confiado, porque su margen predice sus propios errores con AUC 0,8005 frente al 0,5411 del residuo. P33 probo un beta COMPARTIDO y un intercepto, ambos constantes; esta hipotesis propone una PENDIENTE sobre el margen, que es un mecanismo distinto en 2 parametros",
+  "mecanismo": "z_final[c] = z_V30[c] + (gamma0 + gamma1 * u(margen_V30)) * residual[c], con u el margen top1-top2 normalizado. gamma1 libre, sin forzar el signo. La correccion pesa mas en la zona que el residuo puede discriminar y se atenua en la que no. NO es un selector keep/replace",
+  "gammas": [
+    {
+      "fold": 0,
+      "gamma0": -0.05,
+      "gamma1": 0.5,
+      "f1_inner_val": 0.613317
+    },
+    {
+      "fold": 1,
+      "gamma0": -0.05,
+      "gamma1": 0.5,
+      "f1_inner_val": 0.615554
+    },
+    {
+      "fold": 2,
+      "gamma0": 0.2,
+      "gamma1": -0.5,
+      "f1_inner_val": 0.612414
+    },
+    {
+      "fold": 3,
+      "gamma0": 0.2,
+      "gamma1": -0.5,
+      "f1_inner_val": 0.611667
+    },
+    {
+      "fold": 4,
+      "gamma0": -0.05,
+      "gamma1": 0.5,
+      "f1_inner_val": 0.618393
+    }
+  ],
+  "resultados": [
+    {
+      "brazo": "constante",
+      "corrected_cv": 0.6137848,
+      "delta_vs_v30": 0.0003377,
+      "folds": [
+        0.617272,
+        0.615972,
+        0.613,
+        0.613504,
+        0.609184
+      ],
+      "folds_positivos": 2,
+      "ratio_sobre_variabilidad": 0.38,
+      "auc_ovr": 0.8942651497048143
+    },
+    {
+      "brazo": "pendiente",
+      "corrected_cv": 0.6137489,
+      "delta_vs_v30": 0.0003018,
+      "folds": [
+        0.617282,
+        0.61603,
+        0.613051,
+        0.613569,
+        0.608826
+      ],
+      "folds_positivos": 3,
+      "ratio_sobre_variabilidad": 0.34,
+      "auc_ovr": 0.8942497433114873
+    },
+    {
+      "brazo": "pendiente_barajado",
+      "corrected_cv": 0.613013,
+      "delta_vs_v30": -0.0004341,
+      "folds": [
+        0.615961,
+        0.615581,
+        0.612758,
+        0.613474,
+        0.607326
+      ],
+      "folds_positivos": 0,
+      "ratio_sobre_variabilidad": 0.489,
+      "auc_ovr": 0.8942533090417731
+    },
+    {
+      "brazo": "pendiente_ruido",
+      "corrected_cv": 0.613626,
+      "delta_vs_v30": 0.0001789,
+      "folds": [
+        0.616524,
+        0.617407,
+        0.613293,
+        0.613088,
+        0.607838
+      ],
+      "folds_positivos": 4,
+      "ratio_sobre_variabilidad": 0.202,
+      "auc_ovr": 0.8942997553289592
+    }
+  ],
+  "veredicto": "SIN APORTE, Y EL AUC TAMBIEN CAE",
+  "motivo": "la pendiente (+0.0003018) no mejora al peso constante (+0.0003377), y ademas los cuatro brazos BAJAN el AUC frente a V30 (0.89594 -> 0.89425). Eso es mas fuerte que el fallo de P33 y P34: aquellos no tocaban la ordenacion y solo fracasaban al convertirla en decision; aqui la ordenacion tambien empeora, asi que el residuo no aporta informacion en ninguno de los dos niveles",
+  "protocolo": {
+    "gammas_por_fold": "elegidos en inner_val sobre rejilla FIJA de 4x4",
+    "a_c_b_c": "en inner_train",
+    "outer_val": "nunca participa",
+    "variable_de_la_pendiente": "(top1 - top2) de V30, normalizado a [0,1]",
+    "semilla": 20261005
+  },
+  "restricciones": {
+    "usa_test": false,
+    "usa_holdout": false,
+    "usa_red": false,
+    "selector_keep_replace": false,
+    "leaderboard_para_ajustar": false
+  },
+  "segundos": 2.8
+}

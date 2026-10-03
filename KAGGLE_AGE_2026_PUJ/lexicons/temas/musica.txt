@@ -1,0 +1,83 @@
+# familia: temas
+# subcategoria: musica
+# descripcion: Dominio musical: géneros, instrumentos y escenas.
+# idioma: es
+# procedencia: elaborado en este proyecto (conocimiento linguistico general)
+# licencia: del proyecto; sin datos externos y sin etiquetas de edad
+# riesgo: ninguno
+# fecha: 2026-09-25
+# entradas_declaradas: 81
+# cribado_corpus: frecuencia minima 3 en el train
+acorde
+acordes
+auriculares
+bachata
+bailando
+bailar
+baile
+bajo
+banda
+bandas
+batería
+bolero
+canciones
+canción
+cantando
+cantar
+cantautor
+clip
+clásico
+concierto
+conciertos
+corrido
+cover
+cumbia
+disco
+discos
+duración
+electrónica
+estudio
+festival
+flamenco
+grabación
+grupo
+grupos
+guitarra
+hip
+hop
+house
+instrumento
+jazz
+letra
+letras
+melodía
+merengue
+metal
+mezcla
+micrófono
+música
+notas
+original
+piano
+playlist
+pop
+punk
+reggaetón
+remix
+repetir
+reproductor
+ritmo
+ritmos
+rock
+salsa
+single
+tambor
+techno
+teclado
+tono
+trap
+version
+verso
+violín
+álbum
+ópera

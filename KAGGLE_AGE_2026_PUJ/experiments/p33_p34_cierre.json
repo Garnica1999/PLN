@@ -1,0 +1,74 @@
+{
+  "fase": "cierre documental de P33 y P34",
+  "fecha": "2026-10-04",
+  "experimenta": false,
+  "commit": "ca3c315e42c26569f3c7c529af9b2b8a3b77e1e9",
+  "baseline_v30": 0.6134471,
+  "leaderboard": 0.63302,
+  "bootstrap": {
+    "P33": {
+      "metodo": "bootstrap PAREADO de la diferencia, 2000 remuestreos, unidad = fila entera, semilla 20261004. Pareado porque se comparan los mismos indices en los dos brazos; un bootstrap no pareado mediria la suma de dos incertidumbres",
+      "n_remuestreos": 2000,
+      "semilla": 20261004,
+      "media": -0.0002162,
+      "ic95": [
+        -0.0006956,
+        0.0002533
+      ],
+      "contiene_cero": true,
+      "desviacion": 0.0002447,
+      "p_delta_positivo": 0.189
+    },
+    "P34": {
+      "metodo": "bootstrap PAREADO de la diferencia, 2000 remuestreos, unidad = fila entera, semilla 20261004. Pareado porque se comparan los mismos indices en los dos brazos; un bootstrap no pareado mediria la suma de dos incertidumbres",
+      "n_remuestreos": 2000,
+      "semilla": 20261004,
+      "media": -0.0002207,
+      "ic95": [
+        -0.0006645,
+        0.0002135
+      ],
+      "contiene_cero": true,
+      "desviacion": 0.0002227,
+      "p_delta_positivo": 0.1585
+    }
+  },
+  "reproduccion": {
+    "P33_reconstruido": 0.6132264,
+    "P33_artefacto": 0.6132319,
+    "P33_coincide": false,
+    "P34_reconstruido": 0.613231,
+    "P34_artefacto": 0.6132432,
+    "P34_coincide": false
+  },
+  "figuras": [
+    "p33p34_01_brazos.png",
+    "p33p34_02_delta_por_fold.png",
+    "p33p34_03_rescate_danio.png",
+    "p33p34_04_auc_por_pareja.png"
+  ],
+  "csv": [
+    "p33_master_results.csv",
+    "p33_residual_analysis.csv",
+    "p33_score_corrections.csv",
+    "p33_attribution_controls.csv",
+    "p33_high_confidence_rescue.csv",
+    "p33_reproducibility.csv",
+    "p33_training_variability.csv",
+    "p34_bootstrap.csv",
+    "p34_alternate_partition.csv",
+    "p34_complementarity.csv",
+    "p34_error_intersection.csv"
+  ],
+  "decisiones": {
+    "P33": "CLOSED (integracion global) con residual COMPLEMENTARY_BUT_NOT_TRANSFERABLE",
+    "P34": "INVALIDATED"
+  },
+  "restricciones": {
+    "usa_test": false,
+    "usa_holdout": false,
+    "usa_red": false,
+    "divide_score_por_suma": false
+  },
+  "segundos": 958.6
+}

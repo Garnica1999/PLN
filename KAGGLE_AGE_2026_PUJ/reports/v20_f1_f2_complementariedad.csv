@@ -1,0 +1,5 @@
+candidato,ambos_correctos,ambos_incorrectos,solo_candidato,solo_v19,neto,predicciones_modificadas
+F1a arbol de V19 sobre el bloque de clase condicional,46732,53343,12956,56305,-43349,96158
+F1b cuarto miembro: bloque de clase condicional,100924,64156,2143,2113,30,6912
+"F2a ExtraTrees sobre las 279, en solitario",90903,58696,7603,12134,-4531,30821
+F2b cuarto miembro: ExtraTrees sobre las 279,100969,64471,1828,2068,-240,6174

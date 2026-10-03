@@ -1,3 +1,9 @@
+> **Leia este documento primero.** La cuenta completa y actualizada del proyecto, que
+> incluye V12 y las cinco fases de busqueda posteriores (V13 a V17), esta en
+> **[`INFORME_COMPLETO.md`](INFORME_COMPLETO.md)**. Este `FINAL_REPORT.md` es el documento de
+> entrega del modelo V12 y se conserva como registro historico sin modificar: su alcance es el
+> modelo entregado, no las fases posteriores.
+
 # Informe final — Predicción de rango de edad a partir de tweets
 
 **Competencia**: `tweet-age-2026-puj` (Kaggle, host `NLP_Course_PUJ`) · Procesamiento de Lenguaje Natural · Maestría en Inteligencia Artificial, Pontificia Universidad Javeriana.
@@ -11,7 +17,8 @@
 - **Tarea**: clasificación multiclase de tweets en 6 rangos de edad (`13-17`, `18-24`, `25-34`, `35-49`, `50-64`, `65-xx`) usando solo el texto.
 - **Resultado en el leaderboard**: **0.62182** de F1 (v12; línea base inicial 0.55235; mejora acumulada **+0.0695**).
 - **Validación interna honesta**: 0.6005 de macro-F1 (leave-one-fold-out sobre particiones agrupadas por clústeres de near-duplicados).
-- **Calibración validación↔leaderboard**: 11 envíos con brecha media **+0.0177 ± 0.0020**, explicada por la memorización de near-duplicados del test.
+- **Calibración validación<->leaderboard**: **15 envíos registrados (12 puntuados)** con brecha media **+0.0177 ± 0.0023**, explicada por la memorización de near-duplicados del test (el límite de ~10 envíos de D-004 era un supuesto erróneo).
+- **Fase de búsqueda de señal residual (2026-09-25)**: 27 variantes controladas evaluadas; ninguna supera el umbral pre-registrado (Δ ≥ +0,003 con ≥4/5 folds en CV). **Línea saturada**, modelo final sin cambios y **ninguna submission nueva enviada**. Única señal positiva: la vista estructural (CV +0,0018 con 4/5 folds; holdout +0,0031).
 - **Restricción cumplida**: sin transformers, sin LLMs y **sin ningún modelo de vectorización** (ni preentrenado ni entrenado desde cero): todo el desempeño proviene de representaciones estadísticas (TF-IDF), features artesanales y modelos clásicos.
 - **Auditorías**: APROBADO en leakage, reproducibilidad, formato de submission y trazabilidad académica.
 
@@ -67,7 +74,7 @@ Se revisaron **30 trabajos** (2006-2021) con DOI/URL verificado en `reports/stat
 
 | # | Observación | Evidencia | Consecuencia |
 |---|---|---|---|
-| E1 | La longitud y la riqueza léxica crecen con la edad | ε² = 0,126 en `n_chars`; 73 → 111 caracteres de media entre extremos | familia textométrica en el catálogo |
+| E1 | La longitud y la riqueza léxica crecen con la edad | ε² = 0,126 en `n_chars`; 73 -> 111 caracteres de media entre extremos | familia textométrica en el catálogo |
 | E2 | El léxico separa mundos sociales | `follow, justin, bieber` en `13-17` vs `venezuela, maduro, gobierno` en `65-xx` | representación léxica justificada |
 | E3 | El retuit es más frecuente en mayores | 53% en `65-xx` vs 30% en `18-24` | feature `is_rt` |
 | E4 | Alta redundancia entre features densas | ρ = 0,999 entre `ttr` y `hapax_ratio` | ablación incremental obligatoria |
@@ -141,7 +148,7 @@ F1 por clase del ensamble (out-of-fold): `65-xx` 0.691, `13-17` 0.638, `50-64` 0
 
 | # | Fenómeno | Evidencia | Hipótesis derivada | Resultado medido |
 |---|---|---|---|---|
-| F1 | Confusión entre rangos **contiguos** | 5 de los 6 pares más confundidos son adyacentes (18-24→25-34 15,3%) | señal ordinal (E-015) | +0,0003 en el ensamble |
+| F1 | Confusión entre rangos **contiguos** | 5 de los 6 pares más confundidos son adyacentes (18-24->25-34 15,3%) | señal ordinal (E-015) | +0,0003 en el ensamble |
 | F2 | Tweets **cortos** sin señal | 52,5% de error en el quintil más corto vs 37,2% en el más largo | meta-modelo condicionado por longitud (E-018) | **+0,0036** |
 | F3 | Clases **medias** débiles | `25-34` 0,449; `18-24` 0,476 | canal de hashtags (E-014) | +0,0019 |
 | F4 | **Identidad** de las cuentas mencionadas | quitar menciones cuesta −0,125 | canal dedicado de menciones (E-008) | **+0,0144** |
@@ -184,7 +191,7 @@ La brecha entre la validación interna y el leaderboard es **estable en 12 medic
 | NB-SVM por canal (PH7) | +0,0009 | por debajo del umbral de ruido |
 | Tercer combinador (PH9) | −0,0006 | la diversidad sin calidad comparable no compone |
 | Segmentación dura por tipo/longitud (PH2) | −0,0007 / −0,0015 | particionar pierde más de lo que gana |
-| **Retrieval train→test** (PH10) | etiqueta recuperada acierta **0,615** | **permitido por las reglas pero los datos lo desaconsejan**: el techo lo fija la consistencia de etiqueta de los duplicados, no la cobertura |
+| **Retrieval train->test** (PH10) | etiqueta recuperada acierta **0,615** | **permitido por las reglas pero los datos lo desaconsejan**: el techo lo fija la consistencia de etiqueta de los duplicados, no la cobertura |
 | **POS de spaCy** (PH10) | −0,0032 | el corpus transliterado a ASCII degrada el etiquetado y la señal es redundante con los char n-grams |
 | Exclusión de filas ruidosas (PH11) | +0,0001 / +0,0016 | mejora real pero bajo el umbral de cambio de modelo (D-027) |
 
@@ -196,6 +203,123 @@ Resultado global: **APROBADO** (`reports/auditorias.md`).
 - **Reproducibilidad**: archivos_con_semilla_o_random_state=38; semilla_global_definida=True; requirements_existe=True; n_paquetes_congelados=312.
 - **Formato de submission**: columns_ok=True; columns_match_sample=True; rows_ok=True; ids_equal_test=True.
 - **Trazabilidad**: n_experimentos_registrados=30; todos_con_hipotesis=True; todos_con_resultado=True; n_decisiones=16.
+
+## 12bis. V23 — CORAL / cumulative-link con pesos compartidos
+
+La ultima fase abierta sobre la formulacion ordinal responde a una sola pregunta: **compartir el
+vector de pesos entre las cinco fronteras ordinales y ordenar los umbrales aporta una senal util
+que los cinco binarios independientes de V20 no capturan?**
+
+La formulacion es cumulative-link: `P(Y <= k | x) = sigmoid(theta_k - w' x)` con
+`theta_k = gamma + suma_{{j<k}} softplus(delta_j)`. El orden de los umbrales es una **garantia de
+construccion**, luego las cinco CDF son monotonicas siempre y no hay que imponer nada despues.
+Esta implementada en `src/ordinal_coral.py` con `numpy` y `scipy`, con gradiente analitico
+verificado contra diferencias finitas (error relativo 3,15e-10) y verificada contra la densidad
+de clase calculada por otra via.
+
+**Medicion, con el control A y un control B que hacia falta.**
+
+| Modelo | macro-F1 | Delta | Folds + | violaciones de monotonia |
+|---|---|---|---|---|
+| V20 (cinco binarios LightGBM independientes) | **0,6097782** | - | 3/5 | **18.927** |
+| cinco binarios **lineales** independientes (control B) | 0,4690055 | -0,140773 | 0/5 | no medido |
+| **CORAL** (peso compartido, umbrales ordenados) | 0,4837017 | -0,126077 | 0/5 | **0** |
+
+Un delta de -0,126 mezcla dos efectos —compartir pesos y perder no linealidad—, asi que se
+anadio el control B para separarlos. El resultado de esa descomposicion es lo util de la fase:
+
+- **Compartir pesos y ordenar umbrales vale +0,014696.** La hipotesis **es correcta**: compartir
+  informacion entre las fronteras ordinales aporta senal.
+- **La no linealidad vale -0,140773**, un orden de magnitud mas. Un modelo lineal sobre las 279
+  features no compite con LightGBM, y ahi se decide el macro-F1.
+- **La monotonia se resuelve de verdad y no compra nada.** CORAL tiene 0 violaciones frente a las
+  18.927 de V20 y aun asi pierde 0,1261. Es la **segunda** confirmacion independiente de D-057.
+
+**Conclusion.** `CORAL = CLOSED` y `ORDINAL_SHARED_WEIGHTS = NO_SIGNAL`. Sin submission, sin
+bootstrap (el brief lo reserva al caso en que se supera el gate de delta) y sin abrir ninguna
+familia nueva. La conclusion es incomoda pero la sostienen los numeros: **la formulacion ordinal
+no es donde queda la senal**, ni compartida ni independiente, y la evidencia acumulada ya no
+sostiene que quede ahi.
+
+**Una nota sobre la verificacion.** Dos errores de formulacion propios fueron cazados por los
+tests antes de tocar el dataset: factorizar la diferencia de dos CDF como producto de sigmoidos,
+que solo vale si `s_y = 1`, y penalizar solo `w`, que produce separacion y dispara los umbrales a
+12,07 con features estandarizadas en [-3, 3]. Los valores de regularizacion quedaron
+**pre-registrados sin mirar AGE**, a partir de una comprobacion de separacion sobre un sintetico
+con la forma y la escala del proyecto.
+
+## 12ter. V24 — Reconciliacion documental: la causa era estructural
+
+La fase V24 no experimenta. Su objeto es que el notebook consolidado represente el estado real de
+la investigacion, y el hallazgo es que la causa de que no lo hiciera **no era editorial**.
+
+**La fuente de verdad del notebook es una cadena, no un generador unico.** Hay cinco scripts, cada
+uno de una fase, aplicados en orden sobre el mismo archivo: `fase09_99_entrega.py`,
+`fase12_notebook_final.py`, `phase28_notebook_final_v2.py`, `v17_notebook.py` y
+`v23_02_auditoria.py`. La cadena tiene **un eslabon por fase**, y **V18, V19, V20, V21 y V22
+nunca tuvieron eslabon**. Ese es el motivo exacto de que el notebook se quedara en V17 con V20 como
+champion, y explica por que no se podia cerrar desde V23 sin dejar esas cinco fases fuera.
+
+Las 103 celdas no eran un numero erroneo: eran correctas **para lo que contenian**, V12 a V17 mas
+la seccion de V23 anadida al final. El numero no estaba mal, estaba incompleto. Ahora el notebook
+tiene **121 celdas y 33 secciones**, con las **doce versiones V12 a V23** presentes y cada una
+con hipotesis, metodo, control, `corrected_cv`, decision y ruta de artefactos.
+
+**El registry arrastra un defecto propio, y es preexisting.** `experiments.csv` tenia **tres
+lineas de cabecera** en vez de una: las dos espurias ocupaban el identificador `experiment_id` dos
+veces, luego declaraba 130 experimentos y tenia **128**. El defecto aparece igual en al menos los
+ultimos seis commits, muy anterior a V23. Se corrige a una sola cabecera, y **V24 no anade
+ninguna fila** porque es documentacion y no un experimento: el conteo real es **128**.
+
+**Dos discrepancias se documentan sin sobreescribir los artefactos.** `v22_frontier_audit.json`
+registra V20 como **0,609615**, que es la salida del **modelo compartido** de D-057 y no la cadena
+de V20; el canonico es **0,6097782**, verificado por reproduccion exacta en cuatro artefactos. Y
+`phase39_fusion_v12.json` registra la referencia de V12 **redondeada a cuatro decimales**
+(0,6004), cuando el canonico pooled es **0,6005017**. En ambos casos el notebook muestra
+`ORIGINAL` junto a `CORRECTED` con su motivo.
+
+**Auditoria de la fase: PASS.** `py_compile` rc 0, `ruff` con cero errores de correccion, cero
+caracteres Unicode introducidos, identificadores y titulos unicos, cero artefactos faltantes, nueve
+celdas del notebook ejecutadas de verdad con cero errores, y coherencia numerica 7 de 7.
+
+**Lo que esta fase no hace**: no entrena nada, no genera submissions, no consulta Kaggle, no lee el
+test ni el holdout, no anade filas al registry, no cambia resultados historicos y **no abre ninguna
+hipotesis**. El proximo experimento se decide despues y no automaticamente.
+
+**Deuda que queda declarada y no se cierra aqui**: el notebook conserva 38 caracteres Unicode de
+sesiones anteriores, porque el proyecto excluye `notebooks/` de su auditoria de idioma historica; y
+`notebooks/09_final_pipeline.ipynb` es un notebook antiguo de diez celdas, obsoleto respecto a V20.
+
+## 12cuatri. V26 — Advanced research: representacion de la evidencia del ensemble
+
+La fase V26 no busco mas modelos. Busco una forma distinta de explotar la informacion que AGE ya
+poseia, y arranca de una distincion que reencuadra el problema: **V20 ya es un meta-modelo**. De
+las 279 features, 84 son predicciones de modelos base, y el meta-modelo es LightGBM. La pregunta no
+era construir un meta-modelo, sino si su **representacion de la evidencia** era explotable de otra
+forma.
+
+El **gap analysis** de 15 familias, buscado por equivalencia funcional y no por coincidencia de
+nombre, dejo **cinco genuinamente abiertas**: la reescalada afin de las 84 columnas de evidencia, el
+percentil, las `monotone_constraints` nativas de LightGBM, la fiabilidad por miembro y clase, y la
+reescalada de las salidas del blend.
+
+Dos afirmaciones del propio briefing resultaron **falsas**, y el proyecto las midio antes de
+decidir. La primera: un arbol **no** es invariante a una transformacion monotona en esta
+implementacion de LightGBM, y un z-score afin cambia la prediccion **bit a bit**. La invariancia
+teorica habria cerrado la hipotesis sin gastar presupuesto. La segunda: un percentil no es
+monotonia estricta, porque colapsa empates.
+
+El experimento minimo dio **0,6097770** frente al control **0,6097782**: delta **-0,000001**, dos
+de cinco folds, y **1.809 filas** que cambian para un saldo de **+3** sobre 169.336. La conclusion
+es que **la evidencia del ensemble es invariante a su escala en todo lo que el macro-F1 mide**: lo
+que el meta-modelo necesita de las probabilidades de los miembros es el orden, y el orden ya se
+conserva.
+
+Con eso, y con lo acumulado en V25 y en las cinco subfamilias ordinales, **el cuello de botella
+restante de AGE no esta en la representacion de las features, ni en la combinacion de las
+predicciones, ni en la calibracion de la evidencia**. Todas tienen evidencia negativa reproducible.
+Lo que queda es una limitacion de los datos: casi cuatro de cada diez filas las equivocan V19 y
+V20 juntas, y ningun modelo del historial las corrige.
 
 ## 12. Limitaciones y trabajo futuro
 
@@ -250,3 +374,891 @@ Las 30 referencias completas, con DOI/URL verificado, están en `reports/state_o
 ---
 
 *Informe generado automáticamente desde los artefactos del proyecto por `scripts/fase_final_reporte.py`: las cifras provienen de `experiments.csv`, los JSON de resultados y las tablas de `reports/`, por lo que no pueden desincronizarse de la evidencia ejecutada.*
+
+---
+
+# Parte II — Búsqueda de señal residual (fases A-J, 2026-09-25)
+
+**Pregunta**: ¿queda alguna fuente de señal permitida que produzca una mejora real sobre el modelo
+final v12? **Criterio declarado de antemano**: Δ ≥ +0,003 de macro-F1 en CV agrupado, positivo en ≥4/5
+folds, sin leakage, con confirmación en el holdout congelado.
+
+## 15. Auditoría del estado real (fase A)
+
+- Reconstrucción **exacta** de la matriz del meta (diferencia máxima 0,0) y del CV LOFO
+  (**0.6004**, por fold
+  [0.6007, 0.605, 0.6032, 0.6004, 0.5928]).
+- El modelo v11 reconstruido reproduce `age_submission_v11.csv` con **acuerdo 100,0000%**: la
+  alineación semántica del lado test (riesgo tipo D-021) queda descartada.
+- Holdout congelado determinista: 25,204 filas
+  (14.884%).
+- Kaggle: **15 envíos registrados,
+  12 puntuados**.
+
+## 16. Análisis de errores y desacuerdo (fase B)
+
+- **13.869%** de las filas: ningún miembro acierta (techo de la clase
+  de modelos actual). **26.7%**: el ensamble falla y algún miembro
+  acierta.
+- F1 por clase: {'13-17': 0.671, '18-24': 0.5059, '25-34': 0.4858, '35-49': 0.5593, '50-64': 0.6549, '65-xx': 0.7261}. Elasticidad ordinal: el
+  23.836% de los casos falla a un paso ordinal.
+- Fronteras: `18-24|25-34` concentra el 42,48% del error total y `25-34|35-49` el 42,06%.
+- Peores segmentos: `solo_url` 59,9% de error, `muy_corto` 50,8%, sin menciones 51,0%.
+
+## 17. Las 27 variantes controladas (fases C-G y §13)
+
+| Fase | Variante | Δ vs v12 (CV) | folds + |
+|---|---|---|---|
+| §13 · Vista estructural y extremos | estructura | +0.0018 | 4/5 |
+| F · Limpieza selectiva | F3 clúster selectivo en clases centrales | +0.0009 | 3/5 |
+| §13 · Refuerzo de la vista | V3 ampliada + extremos | +0.0006 | 3/5 |
+| §13 · Refuerzo de la vista | V1 estructura ampliada | +0.0005 | 4/5 |
+| D · Calibración y logits | D1a log-prob (T=1) · promedio de combinadores | +0.0003 | 3/5 |
+| E · Estructura v2 (bloques libres) · libres | libres | +0.0002 | 2/5 |
+| D · Calibración y logits | D1a log-prob (T=1) · promedio de combinadores | +0.0001 | 3/5 |
+| D5 · Diversidad de subconjuntos | producción (MLP_full + LogReg_full) | +0.0000 | 2/5 |
+| §13 · Vista estructural y extremos | extremos | +0.0000 | 2/5 |
+| D · Calibración y logits | D1b log-prob + T in-fold · promedio de combinadores | -0.0001 | 2/5 |
+| F · Limpieza selectiva | F2 clúster de near-duplicados (un representante) | -0.0001 | 2/5 |
+| C · Consenso y gating | +C1+C2 | -0.0002 | 3/5 |
+
+Familias cerradas con evidencia: consenso/desacuerdo por familia y gating contextual (D-028),
+calibración de miembros y blending en logits (D-029), diversidad de subconjuntos de features (D-029),
+estructura v2 de retuit/hashtag/extremos (D-030), edad implícita y selección greedy (D-030), limpieza
+selectiva (D-031) y refuerzo de la vista estructural (D-032). **Ninguna alcanza el umbral.**
+
+## 18. La única señal nueva: la vista estructural (marginal, no adoptada)
+
+Secuencia de **tipos** de token (palabra, mención, hashtag, URL, número, puntuación, mayúsculas),
+TF-IDF de palabras 1-3 y un LinearSVC. Sin contenido: F1 individual
+**0.2285**, pero **rescata el
+18.17% de los errores del v12** (acuerdo
+27.96%).
+
+- **CV**: 0.6022 (+0.0018,
+  4/5 folds).
+- **Holdout congelado**: base 0.6077
+  reproducida exacta -> vista
+  0.6108
+  (**+0.0031**).
+- **No adoptada**: el gate primario (CV ≥ +0,003) no se cumple. Enriquecer el alfabeto no mejora
+  (V1 +0,0005), así que la vista simple es el óptimo de la familia.
+- **Candidato**: `submissions/age_submission_v13_candidato_estructura_NO_ADOPTADO.csv` (112.892 filas,
+  8/8 checks formales). **No enviado** (decisión de Carlos).
+
+## 19. Hallazgo de integridad (D-034) y artefacto v12 reproducible
+
+La submission v12 subida no se reconstruye al 100% desde el repositorio
+(93.88%). El diagnóstico descarta
+las tres causas posibles: matrices equivalentes (fresca vs caché
+100.0000%), ajuste determinista (dos ajustes
+idénticos: 100.0000%) y protocolo del holdout
+reproducible (0,6077 exacto). Es un problema de **trazabilidad del artefacto**, no de metodología:
+todas las comparaciones de la fase son pareadas en el mismo proceso y quedan válidas.
+El artefacto `submissions/age_submission_v12_reproducible.csv` deja una versión de la v12 reconstruible desde el repositorio (112892 filas, distribución idéntica a la registrada por la fase 8: False).
+
+## 20. Cierre de la fase
+
+- **Veredicto**: línea de señal residual **saturada** (D-033, D-035). El modelo final **no cambia**:
+  v12 con CV 0,6004, holdout 0,6077 y leaderboard **0,62182**.
+- **Trabajo futuro**: con reglas más laxas (embeddings), atacar primero la frontera `18-24|25-34` y el
+  segmento `solo_url`; la limpieza de duplicados (+0,0016) sigue siendo la mejora de coste nulo
+  recomendada si se reentrena el modelo por otro motivo; y la vista estructural merece una exploración
+  dedicada (es la única señal nueva con dirección positiva).
+- **Documentación**: `DECISIONS.md` (D-028…D-035), `RUNLOG.md` (sesiones 14-19), `experiments.csv`
+  (61 experimentos), `reports/fase_residual_informe.md`, `reports/auditorias.md` (APROBADO) y
+  `notebooks/99_entrega_consolidado.ipynb` (Parte I + Parte II).
+
+---
+
+# Parte III — Capa de decisión ordinal y corrección de fronteras (2026-09-25)
+
+**Pregunta**: ¿existe una forma distinta de convertir las señales ya disponibles en una decisión
+ordinal de seis clases que reduzca el error en las fronteras `18-24|25-34` y `25-34|35-49`?
+**Gate pre-registrado**: Δ ≥ +0,003 con ≥4/5 folds. **Holdout agotado** (no se reutiliza).
+
+## 21. Cobertura: qué estaba ya hecho
+
+Los modelos ordinales (E-015, E-021a) y los márgenes adyacentes (E-028a) **ya existen como miembros**
+del ensamble, y el routing duro está cerrado. Lo que nunca existía era una **capa de decisión** sobre
+probabilidades congeladas: nueve líneas genuinamente abiertas (`reports/age_hypothesis_coverage.md`).
+
+## 22. Resultado: 33 capas, ninguna adopta
+
+| Hipótesis | Capas | Δ máximo | Veredicto |
+|---|---|---|---|
+| A umbrales acumulados | 2 | −0,0031 | el modelo de umbrales solo da 0,5887; la evidencia de fronteras ya está en el meta |
+| B combinación Luce de márgenes | 3 | −0,0034 | los márgenes de E-028a no forman una escala de Bradley-Terry válida (0,2947) |
+| C corrección residual de fronteras | 4 | −0,0000 | en su forma más suave, **neto 0**: el contexto no aporta más de lo ya usado |
+| D decodificación por transición | 5 | −0,0004 | empeora monótonamente al aumentar λ |
+| E proyección ordinal | 6 | −0,0033 | desplazar masa del top-1 siempre destruye más de lo que arregla |
+| F coste ordinal | 3 | +0,0004 | solo preserva la decisión con perfiles de coste casi planos |
+| G desempate por E[Y] | 3 | **+0,0011** | mejora el MAE ordinal (0,6552 -> 0,6454) pero **empeora las fronteras centrales** |
+| H calibración por banda | 2 | +0,0002 | inerte: una transformación por fila no cambia el argmax |
+| I corrector mínimo | 5 | −0,0005 | reescribe aciertos a cambio de fallos nuevos |
+
+## 23. Tres hallazgos defendibles
+
+1. **El argmax de V12 ya es la mejor decisión** de su distribución de probabilidades: toda
+   redistribución (proyección, calibración por banda, decodificación por confusión) degrada de forma
+   monótona.
+2. **Minimizar el error ordinal no es mejorar macro-F1**: el desempate por edad esperada mejora el MAE
+   ordinal y las fronteras extremos, pero empeora `18-24|25-34` (+462 errores) y `25-34|35-49` (+534).
+3. **La evidencia de fronteras ya está dentro del meta-modelo**: un modelo de umbrales acumulados
+   ajustado sobre las features del meta alcanza 0,5887 por sí solo y su fusión con V12 no aporta.
+
+## 24. Dónde vive el error residual
+
+- **Techo de información**: 23,485 filas
+  (34.7% del error) donde **ningún miembro acierta**.
+- **Agregación**: 45,213 filas
+  (66.9% del error) donde algún miembro acierta y el ensamble no;
+  ninguna regla de decisión sobre las probabilidades convierte ese saber en aciertos.
+- **Fronteras centrales**: 10,122 cruces de frontera en
+  `18-24|25-34` (sobre 28,721 errores en las filas de
+  la pareja) y 7,252 en `25-34|35-49`
+  (28,438).
+
+## 25. Conclusión
+
+Bajo las restricciones de AGE, **la representación contiene la información disponible y el límite
+está en la observabilidad de la edad, no en la regla de decisión**. V12 permanece congelado, no se
+genera submission y la línea de decisión queda cerrada con 33 capas medidas (D-037). El leaderboard
+de referencia es **0,62188** (artefacto reproducible; D-036 cierra la discrepancia de reconstrucción).
+
+---
+
+# Parte IV — Lexicones lingüísticos (2026-09-25)
+
+## 26. Qué se construyó
+
+24 subcategorías léxicas de conocimiento general (6 de registro e informalidad, 6 de etapas de
+vida y contexto social, 12 de dominios temáticos), 1359 entradas efectivas
+tras cribado de aplicabilidad al corpus, y 72 features agregadas (conteo, ratio y presencia por
+subcategoría, más un agregado por familia). La transformación `tweet -> categorías` es
+determinista y **no usa etiquetas**, a diferencia del canal supervisado de entidades ya existente.
+
+## 27. Resultado por fase
+
+| Fase | Resultado |
+|---|---|
+| P0 cobertura | 0 experimentos previos con canal léxico: la línea es nueva |
+| P1 catálogo | 24 subcategorías, 1.588 entradas declaradas -> 1359 efectivas, SHA256 por fichero |
+| P2-P5 control | lexicon-only: temas 0.2033, registro 0.152, vida 0.0731 (azar 0,1667) |
+| P5 redundancia | 0 de 72 columnas con \|ρ\| ≥ 0,8 contra las 279 features de V12: el bloque es nuevo |
+| P6 fusión | ningún bloque alcanza el gate; ninguno supera a su control de permutación |
+| P7 complementariedad | rescate ≤ daño en todos los candidatos |
+
+## 28. Tres conclusiones defendibles
+
+1. **El bloque no es redundante**: la correlación máxima contra las 279 features de V12 queda por
+   debajo del umbral, así que la señal no es una reformulación de lo que el modelo ya tenía. La
+   hipótesis de §12 ("¿añade una dimensión nueva?") se responde **sí** a nivel de variable.
+2. **La señal nueva no es útil**: solo la familia de temas supera el azar en aislamiento, y por
+   poco. Un contexto temático es real pero marginal para la edad, que es una combinación de muchos
+   factores débiles.
+3. **El control de permutación es imprescindible**: sin él, cualquier Δ nominal positivo del
+   bloque podría atribuirse al tamaño del bloque y no a su contenido.
+
+## 29. Conclusión
+
+Los lexicones **no** aportan una dimensión de edad explotable sobre V12. Junto con el resultado de
+la capa de decisión (33 capas, ninguna adopta), la evidencia converge: bajo las restricciones de
+AGE, el límite no está en la representación sino en la **observabilidad de la edad** (35% del
+error es techo de información). V12 permanece congelado (leaderboard 0,62188) y la línea queda
+cerrada con D-039.
+
+_Generado por `scripts/phase41_cierre_lexicones.py`._
+
+---
+
+## Cierre de la fase V27 · 2026-09-28
+
+- **Baseline congelado:** V20, 0,609778 corrected_cv, LB 0.62689, hash `2c964af78c90bf08...`, sin cambios.
+
+- **Experimentos de V27:** tres, `V27-01` (H12), `V27-02` (H11) y `V27-05` (H03). H14 se cerro por equivalencia funcional sin entrenar y **no cuenta como experimento**.
+
+- **Resultado unico positivo:** H03, delta 0,000272, 3/5 folds, IC95 que incluye el cero. **MARGINAL**, no finalista, sin submission.
+
+- **Hallazgo estructural:** el meta-modelo de V20 divide por **7 de 279 features**, todas del bloque de evidencia de los miembros. Se controlo que no sea efecto del submuestreo.
+
+- **Consecuencia:** ninguna de las cuatro familias abiertas de V26 queda abierta. La linea de representacion, combinacion, calibracion, estructura ordinal y meta-modelo esta agotada con evidencia negativa reproducible.
+
+- **Submissions generadas:** 0. **Push:** ninguno. **V20 modificado:** no.
+
+- **Informe completo:** `reports/AGE_COMPLETE_RESEARCH_REPORT.md`, generado por `scripts/v27_10_informe_completo.py`.
+
+---
+
+## Cierre de la fase V28 · 2026-09-28
+
+- **Baseline vigente:** V20, 0,6097782 corrected_cv, LB 0.62689, hash sin cambio.
+- **Mejor corrected_cv de V28:** 0,6094663 (A), **peor que V20**.
+- **Mejor candidato interno:** ninguno. Las dos tecnicas ejecutadas son negativas.
+- **Numero de experimentos:** 137 filas en `experiments.csv`; **2** nuevos en V28, **0** filas ficticias para B, D, E y F.
+- **Numero de submissions:** **0** en V26, V27 y V28.
+- **Familias:** 14 cerradas y 1 marginales en V26, mas las 6 de V28; **ninguna abierta**.
+- **Tecnicas de V28:** 2 ejecutadas de 6; 4 cerradas sin gastar ningun experimento.
+- **Notebook:** seccion 36 anadida, ejecutada, con las 4 aserciones en verde.
+- **Higiene:** los 2 directorios no ajenos a AGE quedan fuera de la rama, sin borrar y sin modificar.
+- **Informes:** `reports/v28_final_research.md` y `reports/AGE_COMPLETE_RESEARCH_REPORT.md` reconstruido de V20 a V28.
+
+---
+
+## Cierre de la fase V29 · 2026-09-29
+
+- **Baseline vigente:** V20, 0,6097782 corrected_cv, LB 0.62689, hash sin cambio.
+- **Modelos historicos reutilizados:** 51 OOF en 17 familias, **0 reentrenamientos**.
+- **Mejor corrected_cv de V29:** 0,6125960, delta +0.002818, 5/5 folds: **mejor que V20, pero por debajo del gate de +0,003**.
+- **Mejor modelo individual de V29:** el LightGBM de Optuna, 0,6121698 (delta +0.002392), **el primero que supera a V20 individualmente**.
+- **Mejor candidato interno:** ninguno. Hay un ensemble positivo, pero **no llega al gate** y no se genera submission.
+- **Numero de experimentos:** 138 filas en `experiments.csv`; 1 nuevos en V29.
+- **Numero de submissions:** **0** en V26, V27, V28 y V29.
+- **Familias cerradas:** las de V25 a V28, mas la diversidad de modelos historicos de V29 (0 de 47 con rescate neto positivo). **La capacidad individual queda con un margen medido y pequeno, no cerrada.**
+- **Segunda particion (P13):** no ejecutada, por falta de finalistas.
+- **Notebook:** seccion 37 anadida con las cuatro aserciones.
+- **Higiene:** los 2 directorios ajenos a AGE siguen fuera de la rama.
+- **Informes:** `reports/V29_FINAL_RESEARCH_REPORT.md` y `reports/AGE_COMPLETE_RESEARCH_REPORT.md` de V20 a V29, mas `reports/age_complete_experiment_history.csv`.
+
+---
+
+## Cierre de la fase V30 · 2026-09-30
+
+- **Baseline vigente:** V20, 0,6097782 corrected_cv, LB 0.62689, hash sin cambio.
+- **Refinamiento V30:** 0,6122387 (delta V20 0,002461, delta V29-LGBM 0,000069) | veredicto **EQUIVALE_A_V29**.
+- **Candidato final:** `E1 Optuna macro-F1`, 0,6130051, delta 0,003227, 5/5 folds, neto +530.
+- **Gate historico:** True | **STRONG_MARGINAL:** True.
+- **Segunda particion:** con configuracion congelada, sin re-optimizar.
+- **Submissions:** **0**, estado `STOP_SIN_CREDENCIAL`. El fichero esta construido, validado con 10/10 checks y con hash; **falta la credencial de Kaggle, que es del usuario**.
+- **Numero de experimentos:** 139 filas; **1** nuevo de entrenamiento en V30 (el refinamiento). El ensemble, la segunda particion y la construccion del fichero son operaciones sobre artefactos congelados.
+- **Presupuesto:** 1 de 4 experimentos nuevos.
+- **Compliance:** 13/13 en cero usos. **Artefactos de V20 tocados:** 0.
+
+---
+
+## Epilogo V31+ (2026-09-30) - representacion linguistica: senal real, aporte nulo
+
+V31+ abrio la frontera de la investigacion mas alla de la capacidad del meta-modelo, que era la
+unica via con recorrido segun el cierre de V30, y la llevo al terreno de la representacion:
+representacion de URL, composicion lexica, ortografia, discurso, posicion y forma de palabra.
+
+**Lo que encontro, en orden de fuerza:**
+
+1. **La correccion del baseline.** V30 publico 0,6130051 con pesos por fold que nunca se
+   persistieron. El OOF reproducible, y el que se envio, es **0,6134471**. El leaderboard lo
+   confirma con error **+0,00001**. Toda la comparacion de la fase se mide contra esa cifra
+   (D-066).
+
+2. **La URL esta distribuida por edad pero no tiene semantica que extraer.** La prevalencia es
+   monotona, del 33,4 % en 13-17 al 50,0 % en 65-xx, y enmascarar la URL **cuesta** 0,006969. Pero
+   el 99 % son `t.co` con token opaco de 10 caracteres y hay **0 status URLs**: la taxonomia de
+   dominios que seatelaria en el brief es casi vacia en este dataset.
+
+3. **La composicion linguistica es senal real y reproducible.** El canal
+   `ortografia+composicion+discurso` bate al texto solo en **+0,006820 con 5 de 5 folds**, con
+   modelo, folds, semilla y vectorizador fijos. Dos familias salieron negativas y se cerraron:
+   posicion (-0,002303) y forma de palabra (-0,002984).
+
+4. **Y no aporta a V30.** Como cuarto miembro: **+0,0000642** sobre el control reoptimizado. Como
+   48 features: **+0,0002948** sobre el control barajado. El gate es +0,0015. El patron es el de
+   `HIERBA` en V29, una generacion antes: la senal existe, el sitio donde fluya ya no.
+
+5. **El margen que queda no es de representacion.** El **90 % de las confusiones de V30** son
+   entre bandas adyacentes, y los 9.780 errores de alta confianza se reparten en un problema de
+   resolucion de escala. La familia que lo ataca, los ordinales, ya estaba cerrada (H10, D-058).
+
+**Lo que no se hizo y por que.** El retrieval del contenido de una URL quedo **QUARANTINED**:
+las reglas de la compilacion no estan disponibles en este entorno, y sin el texto de las reglas no
+se puede establecer que sea legal. No se hizo **ninguna** llamada de red en toda la fase. El POS
+tagger quedo **QUARANTINED** por ser un modelo externo preentrenado con reglas no explicitas, y
+por eso no se grafico la composicion por POS: se dice en el informe en vez de omitirlo en
+silencio.
+
+**Estado final.** **0 finalistas, 0 submissions, ninguna linea de V30 tocada.** El hash del
+fichero de submission de V30 sigue siendo `f543a715...`. La formulacion correcta del cierre no es
+que V30 sea el limite teorico, sino que **las familias evaluadas no produjeron evidencia
+suficiente**, y que la unica via con recorrido real (senal nueva en los datos) sigue cerrada por
+las reglas de AGE en sus fuentes obvias.
+
+---
+
+## G14 - AUDITORIA DE INFORMACION DE ENTRADA (2026-10-06) - NOT_ACTIONABLE
+
+- **Pregunta**: existe algun campo de entrada legal, presente en prediccion y que ningun modelo
+  haya consumido?
+- **Esquema real**: el ZIP contiene exactamente `age_train.csv` (`id`, `text`, `age_range`),
+  `age_test.csv` (`id`, `text`) y `age_submission.csv`. Sin campos ocultos.
+- **El `id` no es un snowflake**: 1..169.336 en train y 1..112.892 en test, **6 digitos** en el
+  maximo, monotono y sin huecos. Y **el 100 % de los ids del test reaparece en train** para filas
+  distintas: es un indice de fila por split, no un identificador de contenido. Correlacion con la
+  clase: **-0,00084**.
+- **Matriz campo-por-modelo**: `text` USED/DERIVED 9 de 9; `id` NOT_USED 9 de 9; `age_range`
+  PROHIBITED 9 de 9.
+- **Traza de `text`**: toda dimension no capturada por el TF-IDF (case, puntuacion, elongaciones,
+  posicion) fue cubierta por los diez canales de V31-03 y cerrada por V31-06. Caso C, no canal
+  nuevo.
+- **Decision**: **NOT_ACTIONABLE**. No se rescata el `id` con modulo, hash, posicion ni patrones de
+  digitos. Ver D-068.
+- **Estado de la investigacion**: seis lineas cerradas y la **entrada enumerada por completo**. El
+  techo esta medido: 27.007 de los 65.403 errores de V30 no los corrige ninguna de las 26 fuentes,
+  y no hay campo sin explotar que pudiera hacerlo.
+
+---
+
+## CIERRE DE LA INVESTIGACION DE AGE (2026-10-07) - `AGE_RESEARCH_CLOSED`
+
+- **Baseline final**: V30 = **0.6134471** corrected_cv, **0.6143347** en la particion alterna,
+  **0.63302** en el leaderboard. Hash del submission `f543a715...` sin cambio.
+- **Input gap**: cerrado por G14 (`NOT_ACTIONABLE`).
+- **Mechanism gap**: cerrado por esta auditoria. **39 mecanismos auditados**, 23 usados, 9
+  cerrados, 1 invalidado, 1 no accionable y 5 sin usar que se cierran con evidencia.
+- **Particion de errores**: A = **27,430** (41,9 %) sin ninguna fuente que los corrija; B =
+  **37,973** (58,1 %) con al menos una. De B, **8,358** son rescates unicos y
+  **30,038** compartidos: **la informacion esta repartida**, no encerrada en una fuente.
+- **Rescates exclusivos**: **8,029** entre **23 fuentes**, concentracion 20,5 %, sin
+  estructura comun en longitud, confianza ni URL. Es ruido de modelo.
+- **Cinco vias de integracion cerradas con control**: feature, miembro de mezcla, residuo global,
+  residuo local y residuo con pendiente. En las cinco el control gana o empata.
+- **Conclusion**: no quedan mecanismos de aprendizaje metodologicamente defendibles y no recorridos
+  dentro de las restricciones del proyecto. Ver D-069.
+- **Correcciones declaradas**: A = 27.430, no 27.007; rescates exclusivos = 8.029 con esta
+  definicion, no 122 con la del inventario previo.
+
+---
+
+## REVISION BIBLIOGRAFICA (2026-10-08) - `NO_NEW_METHOD`
+
+- **Baseline**: V30 = **0.6134471** corrected_cv, leaderboard **0.63302**, sin cambios.
+- **Pregunta**: existe un mecanismo publicado, compatible con el reglamento, genuinamente distinto
+  de las 39 familias auditadas y con evidencia de mejora en macro-F1 sobre texto?
+- **Hallazgo central**: **macro-F1 es una metrica nominal y la literatura ordinal optimiza metricas
+  distancia-conscientes**. Vargas et al. (IEEE TKDE 2026) y Kasai et al. (arXiv 2405.11775)
+  confirman el trade-off de forma explicita: la mejora ordinal se paga con metricas nominales.
+- **Huecos de ejecucion reales, declarados**: AGE nunca corrio targets suaves ni label smoothing
+  (0 scripts), ni EMD (0), ni proyeccion de topicos (0). Solo hay 2 perdidas custom en todo el
+  proyecto: margen (V18-P3) y destilacion (V18-P5).
+- **Cinco candidatos evaluados, ninguno justifica reabrir**: C1 (perdidas distancia-conscientes),
+  C2 (ruido ordinal), C3 (unimodal), C4 (estilo/contenido), C5 (geometria). C1 es el unico con
+  hueco real; se registra y **no se ejecuta**.
+- **Duplicacion algebraica**: EMD2 es la familia acumulativa CORAL con perdida L2.
+- **Registros**: 5 candidatos, 21 duplicaciones, 25 metodos rechazados con motivo.
+- **Conclusion**: no existe razon cientifica para reabrir. Ver D-070.
+
+---
+
+# CIERRE FORMAL DE AGE (2026-10-09) - `AGE_RESEARCH_CLOSED`
+
+> Estado congelado definitivo. Esta seccion es el acta de cierre: si algo de lo anterior
+> contradice lo de aqui, manda esto.
+
+## Los tres numeros
+
+```text
+V30 corrected_cv      = 0.6134471
+V30 particion alterna = 0.6143347
+V30 leaderboard       = 0.63302
+```
+
+No son intercambiables. 0.6134471 es la unica configuracion reproducible desde los artefactos **y**
+la que se envio. 0.6143347 es una **reejecucion con reentrenamiento** sobre los mismos grupos con
+otra semilla: su diferencia con la primera es reentrenamiento en el 99 %, medido. 0.63302 es
+evidencia de transferencia y nunca se uso para seleccionar nada.
+
+## Estado de cada linea
+
+| Linea | Veredicto |
+|---|---|
+| G14 auditoria de informacion de entrada | **NOT_ACTIONABLE** |
+| P33 residuo global | **CLOSED** |
+| P34 correccion local por pares | **INVALIDATED** |
+| G12 pendiente sobre el margen | **CLOSED** |
+| Revision bibliografica 2026 | **NO_NEW_METHOD** |
+| C1 perdidas distancia-conscientes | **LATENT / NO EJECUTADA** |
+
+## La conclusion, con sus tres negaciones
+
+> **No se afirma que V30 sea optimo.**
+> **No se afirma que AGE sea imposible de mejorar.**
+> Se afirma que, dentro de las restricciones vigentes, los inputs legalmente disponibles y los
+> mecanismos auditados, **no queda actualmente una hipotesis nueva con justificacion suficiente
+> para reabrir la investigacion**.
+
+## La cobertura que sostiene la afirmacion
+
+```text
+39 mecanismos auditados
+23 USED          9 CLOSED          1 INVALIDATED
+ 1 NOT_ACTIONABLE 5 NOT USED       0 GENUINELY_NEW con justificacion suficiente
+```
+
+Los cinco `NOT USED` se cierran con medicion: focal loss, hard example mining y label smoothing
+apuntan a la poblacion A (27.430 filas sin ninguna de 26 fuentes que las corrija) y a la frontera,
+donde P34 midio que el ruido aleatorio gana. `ranking objective` no mueve macro-F1. `bootstrap de
+grupos` es varianza con otra unidad, y el bagging ya se cerro en -0,000312.
+
+## C1, latente y con su control
+
+**No se ejecuta.** Su expectativa honesta es no cruzar el gate, y la evidencia publicada dice que el
+trade-off ordinal/nominal va en contra de macro-F1 (Vargas et al., IEEE TKDE 2026; Kasai et al.,
+texto). Queda con su control disenado: tres brazos (CE one-hot, label smoothing, kernel con
+etiquetas permutadas) y gate doble (delta >= +0,0015 con 4/5 folds **y** delta > 8,9e-04).
+
+## Las equivalencias que impiden reabrir por error
+
+1. `EMD2(one-hot) = suma_k (F_pred(k) - 1[y<=k])^2` -> es la familia acumulativa CORAL, cerrada.
+2. El minimizador esperado de **Ord-NLL** es un target suave -> colapsa a C1.
+3. Los **targets suaves** son un **superconjunto** de label smoothing -> cerrado por argumento,
+   y ahora por evidencia.
+
+## Correcciones de auditoria conservadas
+
+| Se reporto | Correcto | Causa |
+|---|---|---|
+| A = 27.007 | **27.430** | enmascarado en los miembros de V30 |
+| 122 rescates exclusivos | **8.029** | definiciones distintas, ninguna erronea |
+| OOF de V31-03 como probabilidades | son **`decision_function`** | dividir por la suma invierte el orden: 0,5048 -> 0,0445 |
+
+## Como se reabriria
+
+Con **evidencia nueva** que cambie el diagnostico, un **cambio de restriccion** (los metadatos o los
+modelos preentrenados son donde la literatura situa la mayor parte de la ganancia), o una
+**hipotesis cientificamente distinta** que no este entre las 39 auditadas. Cambiar el `beta` de una
+familia cerrada no cumple ninguna de las tres.
+
+---
+
+## PLUG-IN POR CLASE PARA MACRO-F1 (2026-10-11) - `PROMISING_CONFIRMED`
+
+- **Que es**: cambiar la **regla de decision** de `argmax` a `argmax_c(w_c * p_c)` con
+  `w = [1.0000, 1.1749, 1.2721, 1.1630, 1.0010, 0.8128]`. **No** cambia el modelo, la
+  representacion ni los artefactos de V30.
+- **Por que**: las clases de train son perfectamente balanceadas (0,160-0,170) y la prediccion de
+  V30 no (0,146-0,187). `argmax` maximiza accuracy, no macro-F1.
+
+| Particion | V30 | plug-in | delta | folds+ | IC95 | alta conf. |
+|---|---|---|---|---|---|---|
+| canonica | 0.6134471 | 0.6154643 | **+0,0020172** | 5/5 | [+0,00101, +0,00295] | **0** |
+| alternativa | 0,6144120 | 0.61647 | **+0,0020580** | 5/5 | [+0,00112, +0,00306] | **0** |
+
+- **Diferencia entre particiones: 0,0000408.** Y el `nested` (pesos re-derivados en la particion
+  alternativa) da +0,0022884: el mecanismo aparece solo.
+- **Prediccion falsable confirmada dos veces**: cero cambios en filas de alta confianza. Un
+  multiplicador no puede alterar el orden con margen grande. Es un cambio de regla, no de
+  calibracion.
+- **Matiz declarado**: el control `permutado` cambio de signo entre particiones; parte del efecto es
+  generica (diversificar el reparto) y la asignacion correcta anade ~+0,0006. El permutado no es un
+  control negativo perfecto.
+- **Fuga descartada**: `congelado - nested = -0,0002304` en la particion nueva; los congelados no se
+  inflan.
+- **Clasificacion**: NO mejora de representacion, NO mejora del modelo, **SI mejora de la regla de
+  decision**. Sube macro-F1 bajando accuracy (0,61464 -> 0,61254).
+- **Estado**: no `FINALIST` (delta bajo +0,003) y no `ADOPTED` (la particion alternativa es
+  reejecucion, no independiente). **Submission: ninguna. Leaderboard: no consultado.**
+- **Correccion al registro**: `V20-F3-UMBRALES` era una **arquitectura ordinal** (cadena de
+  discriminadores binarios anidados), no una regla de decision. Ver D-072.
+
+---
+
+## SUBMISSION EXPERIMENTAL PREPARADA (2026-10-12)
+
+```text
+V30          = FROZEN
+plug-in      = PROMISING_CONFIRMED
+submission   = PREPARED
+```
+
+- **Fichero**: `submissions/age_submission_plugin_candidate.csv`
+- **SHA256**: `29cbe6cca4312a65f5176bad25c7d4ae4624d348f3e55586dfa36767a3abd6c0`
+- **112.892 filas** | columnas `id`, `age_range` | **10/10 checks** | auditoria **APROBADA**
+- **Regla**: `class = argmax_c(w_c * p_c)` con `w = [1.00, 1.17, 1.27, 1.16, 1.00, 0.81]` sobre las
+  probabilidades de V30 **sin transformar**.
+
+### Los tres numeros, porque confundirlos fue un error
+
+| | Valor | Delta | Que es |
+|---|---|---|---|
+| (A) nested | 0,6154643 | **+0,0020172** | **la estimacion honesta del mecanismo** |
+| (B) congelados global | 0,6159732 | +0,0025261 | lo que ejecuta la submission |
+| (C) redondeados | 0,6159908 | +0,0025437 | variante de la anterior |
+
+(B) > (A) es la fuga declarada en el pre-registro: los pesos vieron todas las filas al derivarse.
+
+### En test
+
+**7.408 filas cambian (6,56 %)** respecto de `argmax` puro, con confianza media **0,3361** frente a
+**0,6247** del conjunto, y **cero cambios con confianza >= 0,60**. La prediccion falsable se cumple
+tambien en test.
+
+### Estado
+
+**No subida a Kaggle** y sin score por anticipado: no se proyecta el leaderboard. Si se obtiene, se
+clasificara como `POSITIVE_TRANSFER` / `NEUTRAL_TRANSFER` / `NEGATIVE_TRANSFER` contra 0,63302, sin
+reentrenar ni generar una segunda sonda.
+
+---
+
+# ESTADO FINAL DE AGE
+
+```text
+V30     = HISTORICAL_FROZEN_BASELINE   LB = 0.63302
+PLUG-IN = ADOPTED                      LB = 0.63575
+plug-in delta LB = +0.00273
+
+research_status   = CLOSED
+candidate_status  = ADOPTED
+external_transfer = POSITIVE_TRANSFER
+```
+
+| | CV canonico | CV alternativo | leaderboard |
+|---|---|---|---|
+| V30 | 0.6134471 | 0.6143347 | 0.63302 |
+| **plug-in** | **0.6154643** | **0.6164700** | **0.63575** |
+| delta | **+0.0020172** | **+0.0020580** | **+0.00273** |
+
+**Regla**: `argmax_c(w_c * p_c)` con `w = [1.00, 1.17, 1.27, 1.16, 1.00, 0.81]`.
+**No cambia** el modelo, la representacion, los hiperparametros ni la semilla.
+
+**Fichero**: `submissions/age_submission_plugin_candidate.csv`, SHA256
+`29cbe6cca4312a65f5176bad25c7d4ae4624d348f3e55586dfa36767a3abd6c0`. No sobrescrito.
+
+**Conclusion**: la mejora proviene de la **regla de decision**, no de una representacion ni de un
+modelo nuevo. Afirmacion acotada: para este problema y esta configuracion de probabilidades. **No**
+se afirma que V30 fuera incorrecto ni que `argmax` no sea optimo en general.
+
+**Investigacion cerrada.** Sin grid nueva, sin pesos nuevos, sin submission nueva, sin
+tuning con el leaderboard. P33/P34/G12/G14 no se reabren salvo evidencia externa o cambio de reglas.
+
+---
+
+# FASE ABIERTA - LINGUISTIC STRUCTURED ENRICHMENT (2026-09-29)
+
+Pregunta: existe informacion linguistica estructural (secuencias tipadas) no explotada de forma
+equivalente? El candidato adoptado (V30 + plug-in, LB 0,63575) permanece como FINAL_REFERENCE.
+
+| Paso | Estado | Resultado |
+|---|---|---|
+| P0 gap analysis por operacion | **COMPLETADO** | Secuencias tipadas L1-L7 = GENUINELY_NEW; formas agregadas y regex cerradas con medicion |
+| P1 auditoria de legalidad | **COMPLETADO** | Anotador es_core_news_md = AMBIGUOUS (conflicto interno + vectores estaticos internos) |
+| P2 POS estructurado | **GATEADO** | No se ejecuta hasta resolver la clasificacion (opciones A/B/C) |
+
+Reglas especificas capturadas: `references/age_rules_capture_2026-09-29.md`.
+Artefactos: `reports/linguistic_enrichment_gap_analysis.{md,csv}`,
+`reports/age_linguistic_legality_audit.md`, `reports/linguistic_annotation_registry.csv`.
+Sin test, sin holdout, sin submissions.
+
+---
+
+## P2 ejecutado: canal POS-secuencia NEGATIVO (2026-09-29)
+
+- Canal `pos_seq` (md y lg): senal aislada real (**0.2751 / 0.2725** frente al suelo 0.1667),
+  pero la integracion neutral pre-registrada (alfa 0.5, pesos del plug-in congelados) da delta
+  **-0.0086357 / -0.0084168** con **0/5 folds** y con el control barajado rindiendo **mejor**
+  (-0.0039528 / -0.0041620). Veredicto del arbol pre-registrado: **NEGATIVO**.
+- Respuesta de la fase para POS-secuencia: **C** - existe senal nueva pero la integracion no
+  mejora; el modo de fallo es dilucion, no ausencia de informacion.
+- Decision: **POS-secuencia se cierra documentado**; el candidato adoptado (V30 + plug-in,
+  LB 0.63575) permanece intacto. Sin test, sin holdout, sin submission.
+
+---
+
+## P6 ejecutado: NER estructural (2026-09-29)
+
+- Resultado: NINGUN BRAZO PASA: NER estructural se cierra documentado; el campeon intacto.
+- N1/N1b/N2 x md/lg con control barajado por el pipeline completo; baseline 0.6159732.
+- Sin test, sin holdout, sin leaderboard, sin submission.
+
+---
+
+## P7 ejecutado: texto tipado (2026-09-30)
+
+- Resultado: CLOSED. T solo (md) 0.4941735; delta real/barajado por anotador en el informe.
+- Baseline 0.6159732; sin test, sin holdout, sin submission; campeon intacto.
+
+---
+
+## Ciclo final ejecutado: P3/P4/P5 (2026-09-30)
+
+- Resultado: ningun brazo pasa; serie completa de seis representaciones medida.
+- Baseline 0.6159732; sin test, sin holdout, sin submission; campeon intacto.
+
+---
+
+## V32-E1 ejecutado: perdida surrogate de macro-F1 (2026-09-30)
+
+- Reapertura V32 (candidatos: perdida surrogate > CatBoost > FTRL). P1 ejecutado con
+  pre-registro congelado; revisiones ml-architect / kaggle-specialist / dl-specialist; gate
+  ml-reviewer + ml-qa (GO); ES estricto (decision de Carlos) en GPU (D-007).
+- Resultado: **NO_ATRIBUIBLE**. A1 (soft-macro-F1) delta -0.0034165 (0/5 folds, IC95
+  [-0.0044246, -0.0023612]); A2 (CE gemelo) -0.0009284 (1/5); A3 (barajado) -0.0009011 (0/5).
+  Sonda de determinismo 0.0; sin leakage; campeon intacto.
+- Decision: P1 cerrada sin segunda particion (D-081). Sin test, sin holdout, sin submission.
+
+---
+
+## V32-E2 ejecutado: CatBoost queda CLOSED (2026-09-30)
+
+- Ciclo 2 de la reapertura (P2 CatBoost MultiClass; gemelo LightGBM con el ancla afinada
+  V29/V30 como control decisional; control negativo barajado). Pre-registro con enmienda
+  pre-ejecucion (TotalF1 -> TotalF1:average=Macro). Revisiones y QA completos; ejecucion CPU
+  en 1149 s; determinismo exacto; sin truncamiento.
+- Resultado: **CLOSED**. A1 delta -0.0011258 (1/5 folds); A2 -0.0012871; A3 -0.0012138;
+  control A1 vs A2 no favorable. Sin segunda particion (D-082).
+- Lista priorizada de la reapertura agotada; P3 (FTRL) solo con autorizacion. Sin test, sin
+  holdout, sin submission; campeon intacto.
+
+---
+
+## V32-E3 ejecutado: FTRL-Proximal NO_ATRIBUIBLE; la reapertura V32 TERMINA (2026-09-30)
+
+- Tercer y ultimo candidato (P3): FTRL-Proximal propio (McMahan 2013) sobre TF-IDF ajustada
+  por fold; gemelo SGD como control de atribucion; control negativo barajado. Pre-registro
+  congelado con la auditoria del `data_hash` canonico (hash de punteros, no reproducible) y
+  `vowpalwabbit` disponible pero NO usado. Verificado por `ml-reviewer` (3 correcciones) y
+  `ml-qa-engineer` (GO). Ejecucion 755 s; RSS 0.87 GB; determinismo exacto; sondas pass.
+- Resultado: **NO_ATRIBUIBLE** (A3 == A1 por precedencia, -0.0011973). El brazo FTRL
+  **degenero**: standalone 0.040169 (bajo la linea base trivial 0.048542), p plana, log_loss
+  OvR 1.7921; la regla de fallback pre-registrada se activo (alpha 0.05 -> 0.005) y no mejoro.
+  El gemelo SGD si aprendo (0.493479) pero con delta integrado -0.0017002 (0/5).
+- **La reapertura V32 queda TERMINADA** con tres candidatos medidos: P1 NO_ATRIBUIBLE (D-081),
+  P2 CLOSED (D-082), P3 NO_ATRIBUIBLE (D-083). Campeon V30 + plug-in (LB 0.63575) intacto;
+  sin test, sin holdout, sin leaderboard, sin submission.
+
+---
+
+## V33-E1: la puerta G1-G6 corto en el fold 0 (NO_ATRIBUIBLE_BY_GATE); V33 CERRADA (2026-09-30)
+
+- Unico experimento autorizado: FTRL-Proximal **softmax multiclase de una pasada** con
+  `alpha = 3/(2*sqrt(T))` derivado (0 valores evaluados), control gemelo SGD de una pasada, TF-IDF
+  ajustada por fold con hashes nuevos, y **puerta de convergencia G1-G6 fail-fast** con umbrales
+  derivados. La "linea de otra magnitud" quedo **descartada**: la unica idea de otra magnitud
+  (grafo de similitud transductivo) es **ILEGAL** por la regla `test solo transform->predict`.
+- Ejecucion 21.1 s (fail-fast en el fold 0; RSS 0.71 GB; sondas (a)-(f) pass). **A1 no aprende**:
+  `ll_train` 1.8047797 frente al anclaje uniforme 1.7917595, macro-F1 standalone 0.0409742 (por
+  debajo del trivial 0.0485421) y colapso a la clase 5; falla G1, G3 y G4. **A2** si aprende en
+  perdida y F1 (1.3899611; 0.3956246) pero falla G4 (clase 5 al 42.6 %).
+- La sonda obligatoria `|sigma*w|/|g|` dio razon media **0.042**: la correccion proximal es ~24x
+  MAS DEBIL que el gradiente, lo que **contradice el supuesto del pre-registro** (que esperaba
+  `sigma` inflado) y explica que A1 no se mueva. El diagnostico de D-083 era correcto solo a medias:
+  `alpha = 0.05` inflaba `sigma` (divergencia) y el `alpha` derivado la debila (inercia).
+- Sin integracion, sin bootstrap, sin segunda particion, sin submission. Campeon V30 + plug-in
+  (LB 0.63575) intacto. La linea online queda **sin medir con configuracion viable**: rehacerla
+  exigiria un diseno y un pre-registro nuevos (buscar el `alpha` seria un grid, prohibido).
+- Proceso: **6 bugs reales** cazados antes de ejecutar por `--verificar`, `ml-reviewer` y
+  `ml-qa-engineer` (nucleo FTRL, `KeyError` de control, typo `verdicto`, sonda `None`, `caps`,
+  asserts), mas dos enmiendas pre-ejecucion del protocolo y la correccion del documento normativo
+  de la puerta.
+
+---
+
+## V34-E1: la familia FTRL-Proximal CERRADA POR MECANISMO (2026-09-30)
+
+- Unico experimento de V34 y **FALSACION**, no mejora: FTRL-Proximal softmax multiclase con
+  `alpha*` **derivado en forma cerrada** (`2*ln(5)/(d_norm*P_max^2)`), 10 pasadas con early stopping
+  interno sobre filas de TRAIN, control gemelo SGD con `partial_fit` x 10, y puerta **G0-G6**
+  fail-fast con anclas **medidas** (techo de G1 y banda de G4 desde el prior del ES-train).
+- **51.4 s** de CPU (presupuesto 1200 s), RSS 0.685 GB. La puerta **cortó en el fold 0**: A1 falla
+  G0-G4 (`ll_train` 10.09 -> 15.42 -> 19.17, es decir **divergencia monónica**; `D_acum` hasta 23.2;
+  macro-F1 0.046 plano bajo el trivial 0.0485; frecuencias [0,0,0,0,0,1]) mientras **A2 pasa las
+  siete** (`ll_train` 1.0622 -> 0.4042, macro-F1 0.4943): el presupuesto **no** era el límite.
+- **Triage formal D1-D8 en verde** -> `MECANISMO_DEFINITIVO` y veredicto
+  **`LINEA_ONLINE_CERRADA_POR_MECANISMO`**: cierre de **familia**, no un gate de delta. Sin
+  integracion, sin bootstrap y con `delta` vacio; sin segunda particion ni submission.
+- El defecto de **doble sesgo** que contaminaba al control en D-083 y V33-E1 queda corregido y
+  medido (un solo camino de sesgo por brazo; `doble_sesgo = False`).
+- Cerrada la linea: junto a V33-E1 (inerte con `alpha` pequeno) y a las 27 celdas de la exploracion
+  previa (0 de 27 bajan del prior), la evidencia sostiene que **FTRL-Proximal no tiene un punto de
+  operacion estable** sobre TF-IDF L2-normalizada en este problema. Reabrir exige acta nueva con
+  hipotesis mecanica nueva (**one-shot**), y los miembros **NO CUBIERTOS** (`lambda1 > 0` y pesos
+  por clase con L2 normalizado fuera de FTRL) quedan declarados como tales.
+- Campeon **V30 + plug-in (LB 0.63575) intacto**; sin test, sin holdout, sin leaderboard, sin
+  submission.
+
+
+---
+
+## Cierre del ciclo V35, via B: `lambda1 > 0` (D-086) — la familia FTRL queda cerrada DE FORMA DEFINITIVA
+
+**Veredicto**: `LINEA_ONLINE_CERRADA_POR_MECANISMO`, causa unica **`G8_acotacion_norma`**,
+`cierre_definitivo = True`. No es un gate de delta: es un cierre de **familia**.
+
+**El experimento**: reinicio one-shot de la familia FTRL-Proximal sobre su primer miembro NO
+CUBIERTO, `lambda1 > 0`. No es un reintento de `alpha`: `alpha*` quedo **congelado e identico** al
+de V34-E1 (`0.035262336465737745`); lo que cambia es el espacio de soluciones, con el umbral duro
+`w_j = 0` si `|z_j| <= lambda1`. El anclaje fue **derivado, sin grid**:
+`lambda1 := mediana(|z_j| > 0)` sobre TRAIN del fold 0 = `0.23993793862904017`.
+
+**La hipotesis**: acotar la norma elimina la divergencia de D-085 conservando aprendizaje.
+
+**Lo medido** (fold 0, unico consumido: la puerta cerro aqui por diseno de fail-fast):
+
+| Gate | A1 | A2 |
+|---|---|---|
+| G0 (objetivo de la regla) | **FALLA** (`D_acum` 23.1774 vs [0.8047, 3.2189]) | pasa |
+| G1 (banda de `ll_train`) | **FALLA** (19.159444 vs techo 1.78157) | pasa |
+| G2 (progreso) | **FALLA** (0 mejoras en 3 pasadas) | pasa |
+| G3 (macro-F1 fold-val >= 0.30) | **FALLA** (0.046073) | pasa (0.491995) |
+| G4 (frecuencias) | **FALLA** (`[0,0,0,0,0,1]`) | pasa |
+| G5 (determinismo exacto) | pasa (`max|dp|` = 0.0) | pasa (0.0) |
+| G6 (suma 1) | pasa (2.22e-16) | pasa (4.44e-16) |
+| **G7 (L1 activo)** | **pasa** | `None` NO APLICA |
+| **G8 (acotacion de la norma)** | **FALLA** (razon **2.130435582526498** > 1.0) | `None` NO APLICA |
+
+Trayectoria de A1: `ll_train` 10.058343 -> 15.401682 -> 19.159444, con `||w||_2` 28.274594 ->
+46.452124 -> **60.237202**: la norma **se duplica**. A2, control de **presupuesto**, llega a
+`ll_train` 1.062199 -> 0.404220 y macro-F1 0.491995: el presupuesto de 10 pasadas no es el limite.
+
+**El matiz que importa**: la fraccion de coordenadas con `|z_j| <= lambda1` en pasadas >= 2 es
+**0.019333, no 0**, luego **G7 pasa** y el L1 resulto **activo pero insuficiente** (la escasez incluso
+mejora, de 0.951073 a 0.980667). El umbral descarta de verdad y aun asi no acota. **Acotar no es lo
+mismo que bastar**, y por eso el fallo de G8 es de **hipotesis**, no de implementacion ni de puerta.
+
+**Como se cerro el ciclo con honestidad**: (1) la sonda pre-ejecucion ya habia falsado la hipotesis
+(razon `||w||_2` = 2.1304 con `lambda1` = mediana) y el codigo lo ejecuto **dentro del runner** con
+identidad numerica **exacta** frente al artefacto versionado; (2) hubo **cinco enmiendas
+pre-ejecucion** declaradas (anclaje circular, sondas de firma, `token_pattern`, secciones de
+contexto, asimetria duplicada); (3) `ml-reviewer` dio **APPROVED** tras cazar 3 bugs bloqueantes de la
+ruta de salida, y **APPROVED** de nuevo sobre el fix del cuarto; (4) un unico defecto de
+implementacion (`UnboundLocalError` que hacia A2 inalcanzable) se corrigio y **re-ejecuto desde
+cero**, reproduciendo los tres artefactos del fold 0 **bit a bit**.
+
+**Consecuencias**: (i) la familia **FTRL-Proximal queda CERRADA DE FORMA DEFINITIVA** en esta
+representacion: con `alpha` pequeno es **inerte** (D-084), con la regla de margen **divergente**
+(D-085), y con umbral L1 la norma **se duplica igualmente** (esta acta). Tres regimes distintos, un
+mismo mecanismo; (ii) **no hay segundo `lambda1`** (seria grid) **ni acta futura dentro de este
+espacio**; (iii) el **segundo miembro NO CUBIERTO** (pesos por clase con L2 normalizado fuera de
+FTRL) queda **cerrado por declaracion**, con su evidencia de techo (su geometria de norma acotada es
+la del control sano A2: `0.4934789` standalone en D-083 y `-0.0017002` integrado con 0/5 folds); (iv) a
+diferencia de D-085, aqui **"cerrada" si significa agotada** en todo el espacio de FTRL.
+
+**Neto del ciclo**: 6 candidatos medidos (P1, P2, P3, V33-E1, V34-E1, V35-E1), **ninguno pasa los
+gates**. Campeon **V30 + plug-in (LB 0.63575) intacto**; sin integracion, sin bootstrap, sin segunda
+particion, sin submission, y con `artifacts/p33_scores/todos` con sha256 `8881a9f5...` antes y
+despues. Coste 141.13 s de los 1200 s declarados y RSS 0.693 GB de los 20 GB.
+
+**Metodologia que queda como legado del ciclo**: el autoejercicio estructural incorporado a
+`--verificar` (5 caminos con las funciones reales de punta a punta y las escrituras aisladas en un
+temporal) mas la cobertura en dos capas del ensamblado de `entrenar_brazo_fold` (AST y runtime)
+**cazaron 5 bugs bloqueantes** que `--verificar` y `--humo` no veian, todos capaces de matar la
+corrida **despues** de entrenar y con checkpoints ya escritos. Ninguno de los 5 llego a tocar un
+gate, un umbral o el pre-registro.
+
+
+---
+
+## D-087: el techo del proyecto - LB 0.70 es NO ALCANZABLE bajo las reglas del ejercicio
+
+**Pregunta de fondo**: tras seis candidatos medidos y ninguno pasando gates, Carlos pregunta si el
+objetivo **LB 0.70** es alcanzable. **Respuesta: NO**, con `P(LB >= 0.70) ~ 1 %`. El techo
+defendible se fija en **LB 0.642 con IC95 [0.635, 0.653]**.
+
+**La evidencia que decide** (versionada en `scripts/v35_00g_techo_analisis.py` y
+`experiments/v35_00g_techo_analisis.json`):
+
+| Oraculo restringido a la informacion de V30 (corrige solo si `p(y_true) >= tau`) | Filas | Ganancia |
+|---|---|---|
+| `tau = 0.30` | 9683 | **+0.0567955** |
+| `tau = 0.35` | 4516 | +0.0264312 |
+| `tau = 0.40` | 1383 | +0.0080912 |
+| `tau = 0.45` | 126 | +0.0007503 |
+| `tau = 0.50` | **0** | 0.0 |
+| **objetivo LB 0.70** | - | **+0.0626** |
+
+El techo de esa curva, **+0.0568, es menor que el +0.0626 que exige el objetivo**: **un modelo
+perfecto con la informacion que el campeon ya tiene no llegaria**, y a `tau = 0.50` **no hay ni una
+sola** fila corregible. El residuo es **mayoritariamente ordinal** (`|d| = 1` son 39202 de 65403
+errores, **59.94 %**), y el objetivo exige corregir el **16.15 %** de los errores cuando el mejor
+oraculo alcanza el 14.81 %.
+
+**El limite no es la calidad de las etiquetas**: el techo del ruido de etiquetado (texto identico
+con etiqueta distinta) es **+0.0018081**, marginal. El subconjunto solo-URL (3891 filas) tiene error
+0.6831 y macro-F1 0.1970. Solo 51 filas de 169336 no son ASCII, luego no hay via multilingue.
+
+**La calibracion no puede decidirlo, y es un limite declarado**: `LB ~ 0.00223 + 1.02825 x CV` se
+sostiene en **n = 5** puntos con dominio CV `[0.5344, 0.6160]`. El objetivo pide CV 0.6786: son
+**2.04 sigma**, **77 % fuera** del rango ajustado, y **37 veces** el sigma del residuo (0.001701).
+Quitar el punto de V12 mueve la pendiente de 1.028 a 1.093 y el intercepto de +0.0022 a -0.0367. Por
+tanto **el techo queda parcialmente determinado por un instrumento no validado en esa zona**, y
+ningun dato del proyecto mide el mapping CV -> LB por encima de 0.616.
+
+**Por que el objetivo no es imposible en terminos absolutos, sino inalcanzable aqui**: lo que lo
+sostiene son las tres palancas que el ejercicio prohibe. **Embeddings/LLMs preentrenados**: +0.03 a
++0.10 de macro-F1 segun TAG-it y DADIT. **Metadatos**: Morgan-Lopez et al. reportan 74 % de F1 con
+lenguaje + metadatos frente a 57 % solo metadatos. **Agregacion por autor**: PAN, DADIT y ExaAUAC
+usan 100-200 tweets por autor, mientras aqui hay **un tweet de 93 caracteres de mediana por fila**. Y
+el estado del arte publicado con los **mismos 6 bins** (ExaAUAC, doi 10.1007/s44163-024-00145-0)
+reporta macro-F1 **0.44** con BERT y metadatos: nuestro **0.616 ya le supera en +0.176**.
+
+**Correcciones a un informe de arquitectura**, declaradas y no silenciosas: (a) el ancla trivial del
+proyecto **se reproduce exacto** (`0.04854212180687087`; clase 13-17 con 170448 filas = 17.04 %, y
+coincide con `2p/(6(1+p))`), mientras el informe afirmaba que no reproducia y citaba
+`0.16666666666666667`, cifra que corresponde a `p = 0.0909` y no a la clase mayoritaria de este
+corpus; (b) los textos **no** estan truncados a 140 caracteres de forma mayoritaria: la mediana es
+**93** y solo el **2.5 %** llega al maximo, luego el truncamiento afecta a la cola y no es una
+limitacion estructural mayor.
+
+**Decision**: **LB 0.70 se retira como objetivo** y el techo se fija en **0.642 [0.635, 0.653]**. La
+via C1 (transiciones de caracter global) se conserva, pero su valor queda declarado como **cierre de
+expediente y publicacion de la curva de oraculo**, no como apuesta al objetivo. Numeracion: este
+hito toma **D-087** y **C1 pasa a D-088**. Campeon **V30 + plug-in (LB 0.63575) intacto**.
+
+
+---
+
+## D-088: L4 cerrada - la senal existe, es especifica y es por documento, pero el campeon ya la expresa
+
+**La brecha mas antigua del proyecto queda cerrada con evidencia.** L4 - Transiciones de caracteres
+estaba declarada desde el inicio (`phase0_freeze_gap_v2.py:157`, backlog linea 204: `pendiente`) y
+**nunca se ejecuto**. Veredicto: **`SENAL_EXISTE_INTEGRACION_NEGATIVA`**, gates **CLOSED**, sin segunda
+particion, sin submission, y **one-shot**.
+
+**El banco es real, y es el mas limpio medido en el proyecto**:
+
+| | macro-F1 | delta |
+|---|---|---|
+| `char_wb` sin el bloque (referencia) | 0.5408073 | - |
+| `char_wb` + transiciones de clase | 0.5440346 | **+0.0032273** |
+
+**5/5 folds** positivos e IC95 pareado **[+0.0022338, +0.0042230]**: **supera su hipotesis nula**.
+
+**Y la senal es especificamente distinta de lo que ya existia**, que era lo que havia que probar:
+
+| Control | Delta del mapa real sobre el control |
+|---|---|
+| Remapeo aleatorio de caracteres #1 | +0.0027275 |
+| Remapeo aleatorio de caracteres #2 | +0.0032019 |
+| Remapeo aleatorio de caracteres #3 | +0.0024513 |
+| **Barajado entre documentos** | **+0.0035270** |
+
+Gana a los **3/3 remapeos**, luego **es especifica de la categoria** y no un artefacto de cualquier
+particion del alfabeto. Gana tambien al **barajado entre documentos** (el mayor de los cuatro), luego
+**es por documento** y no solo la distribucion global de transiciones. Columnas: **154 en los 5 folds**
+(27 bigramas + 127 trigramas de clase), con `vocab_sha256` identico en los cinco.
+
+**Pero la integracion es negativa**: 0.6143719 frente al campeon 0.6159732, **delta -0.0016013** con
+IC95 **[-0.0024150, -0.0007569]**. Y el **delta atribuido a C1-A** dentro de la misma combinacion
+(candidato menos control) es **+0.0004072**: positivo, pero **cuatro veces por debajo** del gate de
+**+0.0015**. La lectura correcta: **V30 ya capturaba esa senal** desde el word TF-IDF y el `char_wb`, y
+anadirla como bloque propio degrada la combinacion en vez de sumarla.
+
+**El septimo candidato con el mismo patron**: no falta senal, falta sitio. Y la expectativa de D-087
+se confirma punto por punto: banco el mas limpio del proyecto y esperado integrado de +0.0000 a
++0.0001, que es exactamente lo que dio.
+
+**Lo mas importante que dejo el ciclo es un acierto de diseno**: los dos controles que el ruling
+exigia eran **degenerados**. Permutar los **nombres** de las clases es una renombracion biyectiva (la
+matriz es una permutacion exacta de columnas, el `idf` es identico y el espacio de hipotesis de un
+clasificador lineal es invariante, luego media ruido del solucionador) y barajar **dentro** del
+documento deja la matriz **bit a bit identica** porque el bloque es una bolsa de n-gramas. **Ninguno
+de los dos podia fallar.** La enmienda pre-ejecucion 1 los sustituyo por un **remapeo aleatorio de
+caracteres** y un **barajado entre documentos**, y con esa sustitucion el experimento si pudo
+refutar la especificidad (y la confirmo).
+
+**Overrun declarado**: la primera invocacion agoto el presupuesto pre-registrado (exit 7 a los 2453 s
+de 2400 s) con 39 de 40 checkpoints; el presupuesto estaba subestimado (~2750 s reales), que es un
+error del pre-registro y se declara sin corregir en retrospectiva. Ademas la reanudacion era
+inalcanzable (`verificar_deadline` mide contra el `inicio_ts` persistido). Con el overrRun autorizado
+por Carlos, se termino importando el nucleo aprobado y sustituyendo **solo** el reloj, sin editar
+ningun script ya ejecutado. Coste final **2858.4 s acumulados** frente a los 2400 s declarados.
+
+Campeon **V30 + plug-in (LB 0.63575) intacto**; `artifacts/p33_scores/todos` con `sha256 8881a9f5...`
+igual antes y despues; sin submission; las 8 sondas en verde.

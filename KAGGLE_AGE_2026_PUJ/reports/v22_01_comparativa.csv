@@ -1,0 +1,4 @@
+variante,alfa,macro_f1,delta,rescates,danos,neto,cambios,estado
+"V20 (argmax, control)",-,0.6097782,0.0,0,0,0,0,CONTROL
+coste esperado minimo con alfa 1,1,0.5949198,-0.014858,8086,12081,-3995,33473,NO_SIGNAL
+coste esperado minimo con alfa 2,2,0.5392168,-0.070561,12741,26579,-13838,60715,NO_SIGNAL

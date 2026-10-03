@@ -1,0 +1,1029 @@
+{
+  "fase": "V18 · P5 destilacion del conocimiento de frontera",
+  "fecha": "2026-09-26",
+  "teacher": {
+    "tipo": "especialista binario sobre las 279 variables de V12",
+    "validado_en_frontera": {
+      "18-24|25-34": 0.7136,
+      "25-34|35-49": 0.7493
+    },
+    "nota": "ya validado en P0' con el protocolo completo de 5 folds"
+  },
+  "cross_fitting": {
+    "inner_folds": 5,
+    "agrupado": true,
+    "cobertura": "todo outer_train, cada ejemplo predicho por un teacher que no lo uso para entrenarse",
+    "diagnostico_teacher_sobre_outer_validacion": true
+  },
+  "cuadricula": [
+    {
+      "lambda": 0.3,
+      "temperatura": 1.0
+    },
+    {
+      "lambda": 0.3,
+      "temperatura": 2.0
+    },
+    {
+      "lambda": 0.3,
+      "temperatura": 4.0
+    },
+    {
+      "lambda": 1.0,
+      "temperatura": 1.0
+    },
+    {
+      "lambda": 1.0,
+      "temperatura": 2.0
+    },
+    {
+      "lambda": 1.0,
+      "temperatura": 4.0
+    }
+  ],
+  "seleccion": "dentro del train exterior, particion interior agrupada del 25%",
+  "pre_registrado": {
+    "epocas": 30,
+    "lote": 512,
+    "tasa_aprendizaje": 0.001
+  },
+  "senales": [
+    "probabilidad de la clase superior de cada pareja",
+    "solo filas de la pareja",
+    "sin pseudo-etiqueta dura",
+    "la etiqueta verdadera es el objetivo principal"
+  ],
+  "referencia": {
+    "macro_f1": 0.6005,
+    "f1_por_clase": {
+      "13-17": 0.671,
+      "18-24": 0.5059,
+      "25-34": 0.4858,
+      "35-49": 0.5593,
+      "50-64": 0.6549,
+      "65-xx": 0.7261
+    },
+    "fronteras": {
+      "18-24|25-34": 0.4963,
+      "25-34|35-49": 0.4974
+    }
+  },
+  "resultados": [
+    {
+      "brazo": "control_sin_destilacion",
+      "lambda": 0.0,
+      "temperatura": 1.0,
+      "combinaciones_elegidas": [
+        {
+          "fold": 0,
+          "lambda": 0.0,
+          "temperatura": 1.0
+        },
+        {
+          "fold": 1,
+          "lambda": 0.0,
+          "temperatura": 1.0
+        },
+        {
+          "fold": 2,
+          "lambda": 0.0,
+          "temperatura": 1.0
+        },
+        {
+          "fold": 3,
+          "lambda": 0.0,
+          "temperatura": 1.0
+        },
+        {
+          "fold": 4,
+          "lambda": 0.0,
+          "temperatura": 1.0
+        }
+      ],
+      "macro_cabeza": 0.5872,
+      "macro_combinada": 0.5983,
+      "accuracy": 0.5986,
+      "delta": -0.0022,
+      "media_folds": 0.598127,
+      "media_folds_referencia": 0.60041,
+      "por_fold": [
+        0.5993,
+        0.6029,
+        0.602,
+        0.5981,
+        0.5885
+      ],
+      "folds_positivos": 0,
+      "bootstrap_ic95": [
+        -0.002936,
+        -0.001394,
+        0.0
+      ],
+      "f1_por_clase": {
+        "13-17": 0.6669,
+        "18-24": 0.5043,
+        "25-34": 0.4846,
+        "35-49": 0.5561,
+        "50-64": 0.6548,
+        "65-xx": 0.7233
+      },
+      "f1_clase_25_34": 0.4846,
+      "f1_clase_25_34_referencia": 0.4858,
+      "frontera_18_24_25_34": 0.4957,
+      "frontera_25_34_35_49": 0.495,
+      "rescate": 2112,
+      "dano": 2473,
+      "neto": -361,
+      "matriz_confusion": [
+        [
+          18692,
+          6289,
+          1660,
+          808,
+          858,
+          556
+        ],
+        [
+          4753,
+          15143,
+          4348,
+          1864,
+          1537,
+          1031
+        ],
+        [
+          1911,
+          5779,
+          13121,
+          3449,
+          2468,
+          1619
+        ],
+        [
+          879,
+          2259,
+          3805,
+          14883,
+          3751,
+          2653
+        ],
+        [
+          557,
+          1116,
+          1836,
+          2589,
+          19325,
+          2637
+        ],
+        [
+          400,
+          796,
+          1032,
+          1708,
+          3023,
+          20201
+        ]
+      ],
+      "teacher_por_fold_validacion": {
+        "18-24|25-34": [],
+        "25-34|35-49": []
+      },
+      "criterios": {
+        "efecto_minimo": false,
+        "folds_positivos": false,
+        "significacion": false
+      },
+      "adopta": false
+    },
+    {
+      "brazo": "student_destilado",
+      "lambda": 0.3,
+      "temperatura": 1.0,
+      "combinaciones_elegidas": [
+        {
+          "fold": 0,
+          "lambda": 1.0,
+          "temperatura": 1.0
+        },
+        {
+          "fold": 1,
+          "lambda": 0.3,
+          "temperatura": 2.0
+        },
+        {
+          "fold": 2,
+          "lambda": 0.3,
+          "temperatura": 2.0
+        },
+        {
+          "fold": 3,
+          "lambda": 1.0,
+          "temperatura": 1.0
+        },
+        {
+          "fold": 4,
+          "lambda": 0.3,
+          "temperatura": 4.0
+        }
+      ],
+      "macro_cabeza": 0.5883,
+      "macro_combinada": 0.599,
+      "accuracy": 0.5991,
+      "delta": -0.0015,
+      "media_folds": 0.598885,
+      "media_folds_referencia": 0.60041,
+      "por_fold": [
+        0.5983,
+        0.6046,
+        0.6017,
+        0.598,
+        0.5918
+      ],
+      "folds_positivos": 0,
+      "bootstrap_ic95": [
+        -0.002287,
+        -0.000778,
+        0.00025
+      ],
+      "f1_por_clase": {
+        "13-17": 0.6688,
+        "18-24": 0.5041,
+        "25-34": 0.4856,
+        "35-49": 0.5571,
+        "50-64": 0.6552,
+        "65-xx": 0.7231
+      },
+      "f1_clase_25_34": 0.4856,
+      "f1_clase_25_34_referencia": 0.4858,
+      "frontera_18_24_25_34": 0.498,
+      "frontera_25_34_35_49": 0.4966,
+      "rescate": 1979,
+      "dano": 2255,
+      "neto": -276,
+      "matriz_confusion": [
+        [
+          18671,
+          6284,
+          1697,
+          790,
+          857,
+          564
+        ],
+        [
+          4718,
+          15104,
+          4435,
+          1825,
+          1556,
+          1038
+        ],
+        [
+          1857,
+          5754,
+          13292,
+          3354,
+          2449,
+          1641
+        ],
+        [
+          835,
+          2222,
+          3944,
+          14805,
+          3746,
+          2678
+        ],
+        [
+          523,
+          1084,
+          1946,
+          2508,
+          19341,
+          2658
+        ],
+        [
+          368,
+          799,
+          1085,
+          1639,
+          3032,
+          20237
+        ]
+      ],
+      "teacher_por_fold_validacion": {
+        "18-24|25-34": [
+          0.7118,
+          0.7146,
+          0.7089,
+          0.7187,
+          0.7142
+        ],
+        "25-34|35-49": [
+          0.7526,
+          0.7502,
+          0.7475,
+          0.7551,
+          0.7409
+        ]
+      },
+      "criterios": {
+        "efecto_minimo": false,
+        "folds_positivos": false,
+        "significacion": false
+      },
+      "adopta": false
+    },
+    {
+      "brazo": "student_destilado",
+      "lambda": 0.3,
+      "temperatura": 2.0,
+      "combinaciones_elegidas": [
+        {
+          "fold": 0,
+          "lambda": 0.3,
+          "temperatura": 1.0
+        },
+        {
+          "fold": 1,
+          "lambda": 0.3,
+          "temperatura": 1.0
+        },
+        {
+          "fold": 2,
+          "lambda": 0.3,
+          "temperatura": 1.0
+        },
+        {
+          "fold": 3,
+          "lambda": 0.3,
+          "temperatura": 1.0
+        },
+        {
+          "fold": 4,
+          "lambda": 1.0,
+          "temperatura": 4.0
+        }
+      ],
+      "macro_cabeza": 0.5889,
+      "macro_combinada": 0.5991,
+      "accuracy": 0.5992,
+      "delta": -0.0014,
+      "media_folds": 0.599006,
+      "media_folds_referencia": 0.60041,
+      "por_fold": [
+        0.5998,
+        0.6037,
+        0.6022,
+        0.598,
+        0.5913
+      ],
+      "folds_positivos": 0,
+      "bootstrap_ic95": [
+        -0.002204,
+        -0.000696,
+        0.0
+      ],
+      "f1_por_clase": {
+        "13-17": 0.6689,
+        "18-24": 0.5044,
+        "25-34": 0.486,
+        "35-49": 0.5572,
+        "50-64": 0.6545,
+        "65-xx": 0.7234
+      },
+      "f1_clase_25_34": 0.486,
+      "f1_clase_25_34_referencia": 0.4858,
+      "frontera_18_24_25_34": 0.4969,
+      "frontera_25_34_35_49": 0.4973,
+      "rescate": 1947,
+      "dano": 2210,
+      "neto": -263,
+      "matriz_confusion": [
+        [
+          18736,
+          6217,
+          1686,
+          800,
+          880,
+          544
+        ],
+        [
+          4759,
+          15076,
+          4405,
+          1850,
+          1579,
+          1007
+        ],
+        [
+          1891,
+          5712,
+          13259,
+          3399,
+          2508,
+          1578
+        ],
+        [
+          843,
+          2196,
+          3941,
+          14875,
+          3803,
+          2572
+        ],
+        [
+          543,
+          1110,
+          1875,
+          2532,
+          19452,
+          2548
+        ],
+        [
+          388,
+          791,
+          1052,
+          1702,
+          3162,
+          20065
+        ]
+      ],
+      "teacher_por_fold_validacion": {
+        "18-24|25-34": [
+          0.7118,
+          0.7146,
+          0.7089,
+          0.7187,
+          0.7142
+        ],
+        "25-34|35-49": [
+          0.7526,
+          0.7502,
+          0.7475,
+          0.7551,
+          0.7409
+        ]
+      },
+      "criterios": {
+        "efecto_minimo": false,
+        "folds_positivos": false,
+        "significacion": false
+      },
+      "adopta": false
+    },
+    {
+      "brazo": "student_destilado",
+      "lambda": 0.3,
+      "temperatura": 4.0,
+      "combinaciones_elegidas": [
+        {
+          "fold": 0,
+          "lambda": 0.3,
+          "temperatura": 1.0
+        },
+        {
+          "fold": 1,
+          "lambda": 0.3,
+          "temperatura": 4.0
+        },
+        {
+          "fold": 2,
+          "lambda": 1.0,
+          "temperatura": 1.0
+        },
+        {
+          "fold": 3,
+          "lambda": 1.0,
+          "temperatura": 4.0
+        },
+        {
+          "fold": 4,
+          "lambda": 0.3,
+          "temperatura": 2.0
+        }
+      ],
+      "macro_cabeza": 0.5883,
+      "macro_combinada": 0.5988,
+      "accuracy": 0.599,
+      "delta": -0.0017,
+      "media_folds": 0.598653,
+      "media_folds_referencia": 0.60041,
+      "por_fold": [
+        0.5994,
+        0.6024,
+        0.6029,
+        0.5987,
+        0.5899
+      ],
+      "folds_positivos": 0,
+      "bootstrap_ic95": [
+        -0.002407,
+        -0.000927,
+        0.0
+      ],
+      "f1_por_clase": {
+        "13-17": 0.6683,
+        "18-24": 0.5066,
+        "25-34": 0.4832,
+        "35-49": 0.5565,
+        "50-64": 0.6543,
+        "65-xx": 0.7243
+      },
+      "f1_clase_25_34": 0.4832,
+      "f1_clase_25_34_referencia": 0.4858,
+      "frontera_18_24_25_34": 0.496,
+      "frontera_25_34_35_49": 0.4943,
+      "rescate": 1940,
+      "dano": 2235,
+      "neto": -295,
+      "matriz_confusion": [
+        [
+          18658,
+          6364,
+          1590,
+          849,
+          867,
+          535
+        ],
+        [
+          4683,
+          15318,
+          4167,
+          1919,
+          1573,
+          1016
+        ],
+        [
+          1884,
+          5884,
+          12966,
+          3551,
+          2489,
+          1573
+        ],
+        [
+          845,
+          2295,
+          3752,
+          14998,
+          3787,
+          2553
+        ],
+        [
+          528,
+          1134,
+          1827,
+          2623,
+          19400,
+          2548
+        ],
+        [
+          380,
+          804,
+          1023,
+          1735,
+          3127,
+          20091
+        ]
+      ],
+      "teacher_por_fold_validacion": {
+        "18-24|25-34": [
+          0.7118,
+          0.7146,
+          0.7089,
+          0.7187,
+          0.7142
+        ],
+        "25-34|35-49": [
+          0.7526,
+          0.7502,
+          0.7475,
+          0.7551,
+          0.7409
+        ]
+      },
+      "criterios": {
+        "efecto_minimo": false,
+        "folds_positivos": false,
+        "significacion": false
+      },
+      "adopta": false
+    },
+    {
+      "brazo": "student_destilado",
+      "lambda": 1.0,
+      "temperatura": 1.0,
+      "combinaciones_elegidas": [
+        {
+          "fold": 0,
+          "lambda": 1.0,
+          "temperatura": 4.0
+        },
+        {
+          "fold": 1,
+          "lambda": 0.3,
+          "temperatura": 4.0
+        },
+        {
+          "fold": 2,
+          "lambda": 1.0,
+          "temperatura": 1.0
+        },
+        {
+          "fold": 3,
+          "lambda": 1.0,
+          "temperatura": 2.0
+        },
+        {
+          "fold": 4,
+          "lambda": 0.3,
+          "temperatura": 2.0
+        }
+      ],
+      "macro_cabeza": 0.5873,
+      "macro_combinada": 0.5986,
+      "accuracy": 0.5988,
+      "delta": -0.0019,
+      "media_folds": 0.598516,
+      "media_folds_referencia": 0.60041,
+      "por_fold": [
+        0.5997,
+        0.6027,
+        0.6017,
+        0.5986,
+        0.5899
+      ],
+      "folds_positivos": 0,
+      "bootstrap_ic95": [
+        -0.002667,
+        -0.001162,
+        0.0
+      ],
+      "f1_por_clase": {
+        "13-17": 0.6685,
+        "18-24": 0.5044,
+        "25-34": 0.4847,
+        "35-49": 0.5559,
+        "50-64": 0.6543,
+        "65-xx": 0.7237
+      },
+      "f1_clase_25_34": 0.4847,
+      "f1_clase_25_34_referencia": 0.4858,
+      "frontera_18_24_25_34": 0.4956,
+      "frontera_25_34_35_49": 0.4949,
+      "rescate": 1984,
+      "dano": 2309,
+      "neto": -325,
+      "matriz_confusion": [
+        [
+          18709,
+          6260,
+          1654,
+          840,
+          862,
+          538
+        ],
+        [
+          4788,
+          15155,
+          4243,
+          1893,
+          1585,
+          1012
+        ],
+        [
+          1872,
+          5798,
+          13103,
+          3485,
+          2481,
+          1608
+        ],
+        [
+          830,
+          2278,
+          3812,
+          14896,
+          3812,
+          2602
+        ],
+        [
+          529,
+          1129,
+          1861,
+          2548,
+          19398,
+          2595
+        ],
+        [
+          385,
+          797,
+          1043,
+          1699,
+          3096,
+          20140
+        ]
+      ],
+      "teacher_por_fold_validacion": {
+        "18-24|25-34": [
+          0.7118,
+          0.7146,
+          0.7089,
+          0.7187,
+          0.7142
+        ],
+        "25-34|35-49": [
+          0.7526,
+          0.7502,
+          0.7475,
+          0.7551,
+          0.7409
+        ]
+      },
+      "criterios": {
+        "efecto_minimo": false,
+        "folds_positivos": false,
+        "significacion": false
+      },
+      "adopta": false
+    },
+    {
+      "brazo": "student_destilado",
+      "lambda": 1.0,
+      "temperatura": 2.0,
+      "combinaciones_elegidas": [
+        {
+          "fold": 0,
+          "lambda": 0.3,
+          "temperatura": 4.0
+        },
+        {
+          "fold": 1,
+          "lambda": 0.3,
+          "temperatura": 4.0
+        },
+        {
+          "fold": 2,
+          "lambda": 0.3,
+          "temperatura": 2.0
+        },
+        {
+          "fold": 3,
+          "lambda": 1.0,
+          "temperatura": 2.0
+        },
+        {
+          "fold": 4,
+          "lambda": 1.0,
+          "temperatura": 4.0
+        }
+      ],
+      "macro_cabeza": 0.5877,
+      "macro_combinada": 0.5991,
+      "accuracy": 0.5993,
+      "delta": -0.0014,
+      "media_folds": 0.59906,
+      "media_folds_referencia": 0.60041,
+      "por_fold": [
+        0.5987,
+        0.6033,
+        0.6029,
+        0.599,
+        0.5913
+      ],
+      "folds_positivos": 0,
+      "bootstrap_ic95": [
+        -0.002162,
+        -0.000631,
+        0.0
+      ],
+      "f1_por_clase": {
+        "13-17": 0.6686,
+        "18-24": 0.5063,
+        "25-34": 0.4834,
+        "35-49": 0.5578,
+        "50-64": 0.6537,
+        "65-xx": 0.7249
+      },
+      "f1_clase_25_34": 0.4834,
+      "f1_clase_25_34_referencia": 0.4858,
+      "frontera_18_24_25_34": 0.4964,
+      "frontera_25_34_35_49": 0.4937,
+      "rescate": 2067,
+      "dano": 2307,
+      "neto": -240,
+      "matriz_confusion": [
+        [
+          18692,
+          6305,
+          1634,
+          809,
+          893,
+          530
+        ],
+        [
+          4715,
+          15267,
+          4218,
+          1856,
+          1626,
+          994
+        ],
+        [
+          1885,
+          5869,
+          13042,
+          3423,
+          2560,
+          1568
+        ],
+        [
+          848,
+          2272,
+          3807,
+          14892,
+          3846,
+          2565
+        ],
+        [
+          527,
+          1107,
+          1864,
+          2518,
+          19478,
+          2566
+        ],
+        [
+          384,
+          808,
+          1051,
+          1669,
+          3133,
+          20115
+        ]
+      ],
+      "teacher_por_fold_validacion": {
+        "18-24|25-34": [
+          0.7118,
+          0.7146,
+          0.7089,
+          0.7187,
+          0.7142
+        ],
+        "25-34|35-49": [
+          0.7526,
+          0.7502,
+          0.7475,
+          0.7551,
+          0.7409
+        ]
+      },
+      "criterios": {
+        "efecto_minimo": false,
+        "folds_positivos": false,
+        "significacion": false
+      },
+      "adopta": false
+    },
+    {
+      "brazo": "student_destilado",
+      "lambda": 1.0,
+      "temperatura": 4.0,
+      "combinaciones_elegidas": [
+        {
+          "fold": 0,
+          "lambda": 1.0,
+          "temperatura": 2.0
+        },
+        {
+          "fold": 1,
+          "lambda": 0.3,
+          "temperatura": 2.0
+        },
+        {
+          "fold": 2,
+          "lambda": 1.0,
+          "temperatura": 1.0
+        },
+        {
+          "fold": 3,
+          "lambda": 0.3,
+          "temperatura": 2.0
+        },
+        {
+          "fold": 4,
+          "lambda": 0.3,
+          "temperatura": 1.0
+        }
+      ],
+      "macro_cabeza": 0.588,
+      "macro_combinada": 0.5986,
+      "accuracy": 0.5989,
+      "delta": -0.0019,
+      "media_folds": 0.598421,
+      "media_folds_referencia": 0.60041,
+      "por_fold": [
+        0.5989,
+        0.6044,
+        0.6004,
+        0.598,
+        0.5904
+      ],
+      "folds_positivos": 0,
+      "bootstrap_ic95": [
+        -0.002698,
+        -0.001176,
+        0.0
+      ],
+      "f1_por_clase": {
+        "13-17": 0.6678,
+        "18-24": 0.505,
+        "25-34": 0.483,
+        "35-49": 0.5567,
+        "50-64": 0.6548,
+        "65-xx": 0.7241
+      },
+      "f1_clase_25_34": 0.483,
+      "f1_clase_25_34_referencia": 0.4858,
+      "frontera_18_24_25_34": 0.4936,
+      "frontera_25_34_35_49": 0.495,
+      "rescate": 1982,
+      "dano": 2301,
+      "neto": -319,
+      "matriz_confusion": [
+        [
+          18733,
+          6270,
+          1616,
+          828,
+          875,
+          541
+        ],
+        [
+          4779,
+          15140,
+          4230,
+          1927,
+          1588,
+          1012
+        ],
+        [
+          1921,
+          5826,
+          13006,
+          3506,
+          2487,
+          1601
+        ],
+        [
+          876,
+          2200,
+          3801,
+          14998,
+          3802,
+          2553
+        ],
+        [
+          549,
+          1079,
+          1823,
+          2642,
+          19447,
+          2520
+        ],
+        [
+          386,
+          775,
+          1027,
+          1751,
+          3138,
+          20083
+        ]
+      ],
+      "teacher_por_fold_validacion": {
+        "18-24|25-34": [
+          0.7118,
+          0.7146,
+          0.7089,
+          0.7187,
+          0.7142
+        ],
+        "25-34|35-49": [
+          0.7526,
+          0.7502,
+          0.7475,
+          0.7551,
+          0.7409
+        ]
+      },
+      "criterios": {
+        "efecto_minimo": false,
+        "folds_positivos": false,
+        "significacion": false
+      },
+      "adopta": false
+    }
+  ],
+  "dispositivo": "cuda",
+  "segundos": 4773.5
+}

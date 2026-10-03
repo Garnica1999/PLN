@@ -1,0 +1,251 @@
+{
+  "fase": "V20 F1 y F2",
+  "fecha": "2026-09-27",
+  "champion_congelado": {
+    "nombre": "V19 boosting",
+    "lb": 0.62578,
+    "cv": 0.6079388,
+    "intacto": true
+  },
+  "auditoria": {
+    "experimentos_revisados": 117,
+    "mecanismos_cruzados": 28,
+    "nunca_probados": [
+      "RandomForest/ExtraTrees",
+      "HistGradientBoosting",
+      "CatBoost",
+      "transformacion de clase condicional de las 122 features numericas"
+    ],
+    "id_cerrado_con_medicion": {
+      "es_indice_de_fila": true,
+      "correlacion_de_rango_con_la_clase": 0.00123
+    }
+  },
+  "f1": {
+    "features_transformadas": 122,
+    "columnas": 976,
+    "construccion": "in-fold, solo con las filas de entrenamiento de cada fold",
+    "comparacion_emparejada_mismo_aprendiz": {
+      "arbol_sobre_las_279": 0.6072312,
+      "arbol_sobre_las_122_crudas": 0.3440624,
+      "arbol_sobre_las_976_del_bloque": 0.3438942
+    }
+  },
+  "f2": {
+    "modelo": "ExtraTreesClassifier",
+    "hiperparametros": {
+      "n_estimators": 500,
+      "max_depth": 12,
+      "min_samples_leaf": 40,
+      "max_features": 0.35,
+      "bootstrap": true,
+      "n_jobs": 32,
+      "random_state": 42
+    },
+    "pre_registrado": true
+  },
+  "resultados": [
+    {
+      "candidato": "F1a arbol de V19 sobre el bloque de clase condicional",
+      "macro_f1": 0.3438942,
+      "macro_f1_v19": 0.6079388,
+      "delta_contra_v19": -0.264045,
+      "delta_contra_v12": -0.256608,
+      "media_folds": 0.343521,
+      "desviacion_folds": 0.004384,
+      "por_fold": [
+        0.342777,
+        0.348006,
+        0.34669,
+        0.344624,
+        0.335509
+      ],
+      "delta_por_fold": [
+        -0.26794,
+        -0.262082,
+        -0.26276,
+        -0.263349,
+        -0.26599
+      ],
+      "folds_positivos": 0,
+      "bootstrap_ic95_contra_v19": [
+        -0.266861,
+        -0.261293,
+        0.0
+      ],
+      "f1_por_clase": {
+        "13-17": 0.4185,
+        "18-24": 0.3256,
+        "25-34": 0.2263,
+        "35-49": 0.2639,
+        "50-64": 0.3901,
+        "65-xx": 0.4389
+      },
+      "frontera_1": 0.2525,
+      "frontera_1_v19": 0.5038,
+      "frontera_2": 0.2113,
+      "frontera_2_v19": 0.5013,
+      "complementariedad": {
+        "ambos_correctos": 46732,
+        "ambos_incorrectos": 53343,
+        "solo_candidato": 12956,
+        "solo_v19": 56305,
+        "neto": -43349,
+        "predicciones_modificadas": 96158
+      },
+      "clase": "NO_SIGNAL"
+    },
+    {
+      "candidato": "F1b cuarto miembro: bloque de clase condicional",
+      "macro_f1": 0.6078424,
+      "macro_f1_v19": 0.6079388,
+      "delta_contra_v19": -9.6e-05,
+      "delta_contra_v12": 0.007341,
+      "media_folds": 0.607843,
+      "desviacion_folds": 0.003687,
+      "por_fold": [
+        0.610819,
+        0.610277,
+        0.609223,
+        0.608206,
+        0.600691
+      ],
+      "delta_por_fold": [
+        0.000101,
+        0.000189,
+        -0.000227,
+        0.000234,
+        -0.000807
+      ],
+      "folds_positivos": 3,
+      "bootstrap_ic95_contra_v19": [
+        -0.000862,
+        0.000655,
+        0.39725
+      ],
+      "f1_por_clase": {
+        "13-17": 0.6803,
+        "18-24": 0.5166,
+        "25-34": 0.4933,
+        "35-49": 0.5664,
+        "50-64": 0.6615,
+        "65-xx": 0.729
+      },
+      "frontera_1": 0.5032,
+      "frontera_1_v19": 0.5038,
+      "frontera_2": 0.4974,
+      "frontera_2_v19": 0.5013,
+      "complementariedad": {
+        "ambos_correctos": 100924,
+        "ambos_incorrectos": 64156,
+        "solo_candidato": 2143,
+        "solo_v19": 2113,
+        "neto": 30,
+        "predicciones_modificadas": 6912
+      },
+      "clase": "NO_SIGNAL"
+    },
+    {
+      "candidato": "F2a ExtraTrees sobre las 279, en solitario",
+      "macro_f1": 0.5836218,
+      "macro_f1_v19": 0.6079388,
+      "delta_contra_v19": -0.024317,
+      "delta_contra_v12": -0.01688,
+      "media_folds": 0.583598,
+      "desviacion_folds": 0.004187,
+      "por_fold": [
+        0.586755,
+        0.585578,
+        0.587511,
+        0.58203,
+        0.576116
+      ],
+      "delta_por_fold": [
+        -0.023963,
+        -0.024509,
+        -0.021939,
+        -0.025943,
+        -0.025382
+      ],
+      "folds_positivos": 0,
+      "bootstrap_ic95_contra_v19": [
+        -0.025962,
+        -0.022673,
+        0.0
+      ],
+      "f1_por_clase": {
+        "13-17": 0.6575,
+        "18-24": 0.5024,
+        "25-34": 0.4644,
+        "35-49": 0.5392,
+        "50-64": 0.6305,
+        "65-xx": 0.7077
+      },
+      "frontera_1": 0.5084,
+      "frontera_1_v19": 0.5038,
+      "frontera_2": 0.4771,
+      "frontera_2_v19": 0.5013,
+      "complementariedad": {
+        "ambos_correctos": 90903,
+        "ambos_incorrectos": 58696,
+        "solo_candidato": 7603,
+        "solo_v19": 12134,
+        "neto": -4531,
+        "predicciones_modificadas": 30821
+      },
+      "clase": "NO_SIGNAL: cierra la clase de funcion alternativa, y con ella queda demostrado que el efecto de V19 es del BOOSTING y no de la no linealidad en general"
+    },
+    {
+      "candidato": "F2b cuarto miembro: ExtraTrees sobre las 279",
+      "macro_f1": 0.6069645,
+      "macro_f1_v19": 0.6079388,
+      "delta_contra_v19": -0.000974,
+      "delta_contra_v12": 0.006463,
+      "media_folds": 0.606971,
+      "desviacion_folds": 0.003151,
+      "por_fold": [
+        0.608684,
+        0.609698,
+        0.608859,
+        0.606607,
+        0.601006
+      ],
+      "delta_por_fold": [
+        -0.002034,
+        -0.000389,
+        -0.000591,
+        -0.001366,
+        -0.000492
+      ],
+      "folds_positivos": 0,
+      "bootstrap_ic95_contra_v19": [
+        -0.001702,
+        -0.000225,
+        0.00475
+      ],
+      "f1_por_clase": {
+        "13-17": 0.6793,
+        "18-24": 0.5154,
+        "25-34": 0.4934,
+        "35-49": 0.5656,
+        "50-64": 0.6598,
+        "65-xx": 0.7282
+      },
+      "frontera_1": 0.5084,
+      "frontera_1_v19": 0.5038,
+      "frontera_2": 0.5,
+      "frontera_2_v19": 0.5013,
+      "complementariedad": {
+        "ambos_correctos": 100969,
+        "ambos_incorrectos": 64471,
+        "solo_candidato": 1828,
+        "solo_v19": 2068,
+        "neto": -240,
+        "predicciones_modificadas": 6174
+      },
+      "clase": "NO_SIGNAL"
+    }
+  ],
+  "submission_generada": false,
+  "segundos": 34.6
+}

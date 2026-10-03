@@ -1,0 +1,101 @@
+{
+  "fase": "V29 02 P2 diversidad OOF",
+  "fecha": "2026-09-29",
+  "experimenta": false,
+  "n_modelos": 51,
+  "n_parejas": 1275,
+  "referencia_diversidad_interna_v20": {
+    "corr_errores_media": 0.780242,
+    "tasa_discrepancia_media": 0.16443,
+    "tasa_discrepancia_maxima": 0.190586,
+    "parejas": [
+      {
+        "modelo_a": "V20_logreg",
+        "modelo_b": "V20_mlp",
+        "alcance": "dentro de V20",
+        "corr_probabilidades": 0.963043,
+        "corr_errores": 0.751908,
+        "tasa_discrepancia": 0.185655,
+        "ambos_acierto": 90775,
+        "a_acierta_b_falla": 9463,
+        "b_acierta_a_falla": 10780,
+        "ambos_fallan": 58318
+      },
+      {
+        "modelo_a": "V20_logreg",
+        "modelo_b": "V20_arbol",
+        "alcance": "dentro de V20",
+        "corr_probabilidades": 0.966175,
+        "corr_errores": 0.788668,
+        "tasa_discrepancia": 0.154994,
+        "ambos_acierto": 92956,
+        "a_acierta_b_falla": 7282,
+        "b_acierta_a_falla": 9937,
+        "ambos_fallan": 59161
+      },
+      {
+        "modelo_a": "V20_logreg",
+        "modelo_b": "V20_cadena",
+        "alcance": "dentro de V20",
+        "corr_probabilidades": 0.960415,
+        "corr_errores": 0.7635,
+        "tasa_discrepancia": 0.17607,
+        "ambos_acierto": 91675,
+        "a_acierta_b_falla": 8563,
+        "b_acierta_a_falla": 10712,
+        "ambos_fallan": 58386
+      },
+      {
+        "modelo_a": "V20_mlp",
+        "modelo_b": "V20_arbol",
+        "alcance": "dentro de V20",
+        "corr_probabilidades": 0.96297,
+        "corr_errores": 0.763756,
+        "tasa_discrepancia": 0.175893,
+        "ambos_acierto": 92648,
+        "a_acierta_b_falla": 8907,
+        "b_acierta_a_falla": 10245,
+        "ambos_fallan": 57536
+      },
+      {
+        "modelo_a": "V20_mlp",
+        "modelo_b": "V20_cadena",
+        "alcance": "dentro de V20",
+        "corr_probabilidades": 0.956774,
+        "corr_errores": 0.746089,
+        "tasa_discrepancia": 0.190586,
+        "ambos_acierto": 91669,
+        "a_acierta_b_falla": 9886,
+        "b_acierta_a_falla": 10718,
+        "ambos_fallan": 57063
+      },
+      {
+        "modelo_a": "V20_arbol",
+        "modelo_b": "V20_cadena",
+        "alcance": "dentro de V20",
+        "corr_probabilidades": 0.989859,
+        "corr_errores": 0.867531,
+        "tasa_discrepancia": 0.10338,
+        "ambos_acierto": 97284,
+        "a_acierta_b_falla": 5609,
+        "b_acierta_a_falla": 5103,
+        "ambos_fallan": 61340
+      }
+    ]
+  },
+  "rescate_unico_maximo": 15291,
+  "modelo_con_mas_rescate": "oof_E015_softmax",
+  "dano_unico_maximo": 82992,
+  "modelo_con_mas_dano": "v23_binarios_lineales_oof",
+  "corr_errores_vs_v20_minima": 0.082124,
+  "modelo_mas_diverso_vs_v20": "v23_binarios_lineales_oof",
+  "gemelos_de_argmax": [
+    [
+      "v19_oof_arbol_5folds",
+      "v22_seis_compartida"
+    ]
+  ],
+  "nota_gemelos": "artefactos con argmax identico: difieren en las magnitudes pero toman las MISMAS decisiones, asi que en un ensemble con votedecisiones aportan cero",
+  "criterio": "cinco medidas simultaneas; no se resumen en un numero porque un score unico ocultaria la tension entre rescate y dano",
+  "segundos": 46.9
+}

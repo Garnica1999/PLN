@@ -1,0 +1,76 @@
+{
+  "fase": "P6 pre-registro congelado",
+  "fecha": "2026-09-29",
+  "commit": "b50dfb0b0a6e111ded2c427e5fb926a291d624b6",
+  "hashes": {
+    "anotacion_md_parquet": "dacbc3055ccde0d9a53f335f65b63df666b2ac1a4eee4a94e5b46fd7cd8c5745",
+    "anotacion_lg_parquet": "81287d541c082ea888ad1b5d06b83680bc5078c624c2da32f0473139d67a739c",
+    "corpus_train": "39c6c8270366fe155f3c8dd232e31867bee659af8908121d04b6bd89bd163748",
+    "canonico_y_true": "b1c928f9b9f5575547c1090a1fd83cf32a048b694af35a980b460c0bd66d48e6",
+    "canonico_fold_idx": "74d18330c40c3598a1936706ae9434c5fdf29119d357d38353cf298812fe6fb5",
+    "canonico_v30_prob": "3d77352486605971093ade7214ae82326057845d8bf54a2d88c83843c5a721db",
+    "manifest_plugin": "8d635e6a546b5a0e3829872b5e182be745910bd2a0945759a6a44b6eb7e643f7"
+  },
+  "pesos_plugin": [
+    1.0,
+    1.1749,
+    1.2721,
+    1.163,
+    1.001,
+    0.8128
+  ],
+  "baseline_primario": 0.6159732,
+  "referencia_nested": 0.6154643,
+  "representaciones": {
+    "N1": {
+      "definicion": "un token ENT_<TIPO> por span de entidad, en orden; vacio si no hay",
+      "vectorizador": "TfidfVectorizer(analyzer='word', ngram_range=(1,3), min_df=5, sublinear_tf=True, lowercase=True, token_pattern=r'(?u)\\S+')",
+      "rol": "primaria (brief seccion 8)"
+    },
+    "N1b": {
+      "definicion": "N1 excluyendo spans que contienen menciones (@), hashtags (#), URL o RT",
+      "vectorizador": "identico a N1",
+      "rol": "atribucion (revision Kaggle Specialist)"
+    },
+    "N2": {
+      "definicion": "por span: ENT_<TIPO>, <TIPO>_L_<POSizq|START>, <TIPO>_R_<POSder|END>",
+      "vectorizador": "TfidfVectorizer(analyzer='word', ngram_range=(1,2), min_df=5, max_features=2000, sublinear_tf=True, lowercase=True, token_pattern=r'(?u)\\S+')",
+      "rol": "extension (brief seccion 9; guarda de dimensionalidad del revisor ML)"
+    }
+  },
+  "canal_modelo": "LogisticRegression(C=1.0, max_iter=2000, solver='lbfgs')",
+  "canal_vacio": "filas con secuencia vacia -> probabilidad uniforme 1/6 (identico en todos los brazos)",
+  "integracion": {
+    "mecanismo": "combinador logistico anidado sobre dos bloques de probabilidad",
+    "features": "[p_V30 normalizadas por fila (L2, 6 dims) concatenadas con p_canal normalizadas por fila (L2, 6 dims)] = 12 features",
+    "modelo": "LogisticRegression(C=1.0, max_iter=2000, solver='lbfgs') ajustado SOLO en las filas de train de cada fold (con OOF estricto del canal, no in-sample)",
+    "decision": "argmax_c(w_c * p_combinada_c) con la regla y los pesos del plug-in CONGELADOS",
+    "suposicion_declarada": "los pesos del plug-in no son invariantes a escala; aplicarlos a p_combinada es una suposicion pre-registrada (regla congelada, brief seccion 24)",
+    "por_que_no_es_la_familia_cerrada": "V31-06 anadio features del canal al meta-modelo de V30 (refit de V30); P33/P34/G12 inyectaron un residuo en el score. Aqui V30 es caja negra (solo interfaz de probabilidad), sin features externas ni residuo, y la regla de decision queda congelada. Es un candidato nuevo."
+  },
+  "semillas": {
+    "bootstrap": 20261010,
+    "barajado": 20261029
+  },
+  "gates": {
+    "delta_min": 0.0015,
+    "folds_min": 4,
+    "control": "barajado entre tweets, pipeline completo"
+  },
+  "umbral_alta_confianza": 0.6,
+  "n_bootstrap": 2000,
+  "variabilidad_entrenamiento": 0.0008876,
+  "sklearn_version": "1.8.0",
+  "no_hacer": [
+    "grid NER",
+    "variantes de pesos",
+    "varios modelos NER",
+    "multiples semillas",
+    "tuning del anotador",
+    "test",
+    "holdout",
+    "leaderboard",
+    "submission"
+  ],
+  "segundos": 0.1
+}

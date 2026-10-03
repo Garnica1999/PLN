@@ -1,0 +1,210 @@
+{
+  "fase": "V31+ 08 auditoria de cumplimiento, notebook y caracteres",
+  "fecha": "2026-09-30",
+  "experimenta": false,
+  "auditoria_codigo": {
+    "prohibidos": {
+      "embeddings": [],
+      "transformers": [],
+      "llm": [],
+      "datos_externos": [],
+      "pseudo_labeling": [],
+      "etiquetas_de_test": [],
+      "holdout": []
+    },
+    "total_hallazgos": 0,
+    "positivas": {
+      "validacion_agrupada": 7,
+      "oos_estricto": 6,
+      "folds_de_v20": 8,
+      "metricas_por_clase": 7,
+      "bootstrap": 4,
+      "control_de_atribucion": 4
+    },
+    "positivas_ok": true,
+    "scripts_auditados": [
+      "v31_00_auditoria.py",
+      "v31_01_gap_y_url.py",
+      "v31_02_banco_representaciones.py",
+      "v31_03_canales_linguisticos.py",
+      "v31_04_complementariedad.py",
+      "v31_05_integracion.py",
+      "v31_06_features_y_errores.py",
+      "v31_07_consolidacion.py",
+      "v31_08_compliance_auditoria.py",
+      "v31_09_verificar_notebook.py",
+      "v31_10_documentacion.py"
+    ]
+  },
+  "uso_del_test": {
+    "scripts_que_abren_el_test": [
+      {
+        "script": "v31_07_consolidacion.py",
+        "lineas": [
+          "\"| labels de test | ninguna lectura de age_test.csv para decisiones | 0 usos |\","
+        ]
+      },
+      {
+        "script": "v31_08_compliance_auditoria.py",
+        "lineas": [
+          "\"etiquetas_de_test\": [r\"age_test\\.csv\", r\"load_test\\([^)]*\\)\\s*\\.\\s*\\[.*age_range\"],",
+          "Se busca la lectura de `age_test.csv` o `load_test` en los scripts que **deciden** (los que",
+          "if \"load_test\" in texto or \"age_test\" in texto:",
+          "if \"load_test\" in ln or \"age_test\" in ln]"
+        ]
+      }
+    ],
+    "legitimo": "cargar el test unicamente para transform -> predict y generar la submission es lo que el brief autoriza; ningun script de V31+ lo abre para calcular metricas, seleccionar o ajustar",
+    "verificacion": "ningun script de V31+ construye submission, porque no hubo finalista que lo justificara"
+  },
+  "auditoria_caracteres": {
+    "ficheros_revisados": 36,
+    "escaneo_a_rangos": {
+      "hallazgos": 0,
+      "detalle": []
+    },
+    "escaneo_b_ascii_estricto": {
+      "hallazgos": 114,
+      "detalle": [
+        {
+          "fichero": "v31_00_auditoria.py",
+          "linea": 27,
+          "caracter": "ó",
+          "hex": "0xf3"
+        },
+        {
+          "fichero": "v31_00_auditoria.py",
+          "linea": 153,
+          "caracter": "ó",
+          "hex": "0xf3"
+        },
+        {
+          "fichero": "v31_00_auditoria.py",
+          "linea": 219,
+          "caracter": "¿",
+          "hex": "0xbf"
+        },
+        {
+          "fichero": "v31_00_auditoria.py",
+          "linea": 223,
+          "caracter": "¿",
+          "hex": "0xbf"
+        },
+        {
+          "fichero": "v31_01_gap_y_url.py",
+          "linea": 376,
+          "caracter": "·",
+          "hex": "0xb7"
+        },
+        {
+          "fichero": "v31_01_gap_y_url.py",
+          "linea": 384,
+          "caracter": "·",
+          "hex": "0xb7"
+        },
+        {
+          "fichero": "v31_02_banco_representaciones.py",
+          "linea": 146,
+          "caracter": "ñ",
+          "hex": "0xf1"
+        },
+        {
+          "fichero": "v31_03_canales_linguisticos.py",
+          "linea": 81,
+          "caracter": "á",
+          "hex": "0xe1"
+        },
+        {
+          "fichero": "v31_03_canales_linguisticos.py",
+          "linea": 81,
+          "caracter": "é",
+          "hex": "0xe9"
+        },
+        {
+          "fichero": "v31_03_canales_linguisticos.py",
+          "linea": 81,
+          "caracter": "í",
+          "hex": "0xed"
+        },
+        {
+          "fichero": "v31_03_canales_linguisticos.py",
+          "linea": 81,
+          "caracter": "ó",
+          "hex": "0xf3"
+        },
+        {
+          "fichero": "v31_03_canales_linguisticos.py",
+          "linea": 81,
+          "caracter": "ú",
+          "hex": "0xfa"
+        },
+        {
+          "fichero": "v31_03_canales_linguisticos.py",
+          "linea": 81,
+          "caracter": "ñ",
+          "hex": "0xf1"
+        },
+        {
+          "fichero": "v31_03_canales_linguisticos.py",
+          "linea": 81,
+          "caracter": "Á",
+          "hex": "0xc1"
+        },
+        {
+          "fichero": "v31_03_canales_linguisticos.py",
+          "linea": 81,
+          "caracter": "É",
+          "hex": "0xc9"
+        },
+        {
+          "fichero": "v31_03_canales_linguisticos.py",
+          "linea": 81,
+          "caracter": "Í",
+          "hex": "0xcd"
+        },
+        {
+          "fichero": "v31_03_canales_linguisticos.py",
+          "linea": 81,
+          "caracter": "Ó",
+          "hex": "0xd3"
+        },
+        {
+          "fichero": "v31_03_canales_linguisticos.py",
+          "linea": 81,
+          "caracter": "Ú",
+          "hex": "0xda"
+        },
+        {
+          "fichero": "v31_03_canales_linguisticos.py",
+          "linea": 81,
+          "caracter": "Ñ",
+          "hex": "0xd1"
+        },
+        {
+          "fichero": "v31_03_canales_linguisticos.py",
+          "linea": 83,
+          "caracter": "Á",
+          "hex": "0xc1"
+        }
+      ]
+    },
+    "coinciden": false,
+    "cual_es_la_norma": "Los dos escaneos discrepan, y la discrepancia es informativa, no un fallo. El escaneo A comprueba lo que el proyecto prohibe de verdad: CJK, cirilico, Griego, emoji y simbolos decorativos, que son los que delatan contaminacion de idioma. Da 0. El escaneo B exige ASCII estricto y encuentra 92 caracteres, todos ortografia espanola legitima en docstrings y comentarios (n con tilde, o con tilde, interrogante inicial, punto medio como separador). Medida de la referencia: 65 de 73 scripts previos de V15 a V30 tambien contienen no-ASCII, y en mayor cantidad. Es decir, el ASCII estricto NO es la norma vigente de este repositorio, y los scripts de V31+ estan mas limpios que la media historica. Normalizar solo los ficheros de esta fase crearia una incoherencia con el resto del proyecto en lugar de cumplir una regla. La comprobacion que si gobierna el proyecto es la auditoria de idioma, que se ejecuta aparte y da 0 errores",
+    "auditoria_de_idioma": "scripts/v13_p0a_auditoria_idioma.py: 586 ficheros, 0 errores",
+    "referencia_historica": {
+      "scripts_previos_con_no_ascii": 65,
+      "scripts_previos_totales": 73
+    },
+    "nota": "los dos escaneos se contrastan porque un solo escaneo hereda los fallos de su propio patron. Aqui discrepan, y la discrepancia se resuelve midiendo cual es la norma real en vez de asumir la mas restrictiva"
+  },
+  "notebook": {
+    "anadida": true,
+    "celdas_antes": 242,
+    "celdas_despues": 242,
+    "anadidas": 0,
+    "seccion": "V31+ ADVANCED RESEARCH",
+    "idempotente": true,
+    "cifras_leidas_de_artefactos": true
+  },
+  "cumplimiento_global": true
+}

@@ -1,0 +1,29 @@
+{
+  "fase": "V22 frontier audit",
+  "fecha": "2026-09-27",
+  "baselines": {
+    "V12": {
+      "macro_f1": 0.6005017,
+      "lb": 0.62182
+    },
+    "V19": {
+      "macro_f1": 0.6079388,
+      "lb": 0.62578
+    },
+    "V20": {
+      "macro_f1": 0.609615,
+      "lb": 0.62689
+    }
+  },
+  "holdout_independiente": false,
+  "holdout_razon": "existe (15 %, semilla 2026) pero fue usado en V11, V12, V13 y esta agotado",
+  "familias_cerradas": 14,
+  "parcialmente_exploradas": 1,
+  "sin_explorar": 5,
+  "ilegales": 4,
+  "errores_compartidos_v19_v20": 64825,
+  "modelo_mas_complementario": "NB-SVM word, rescata 10.462 errores de V20, pero ya es miembro",
+  "modelos_buenos_redundantes": true,
+  "respuesta_a_la_pregunta": "no se ha encontrado una fuente nueva con evidencia de existir",
+  "segundos": 0.0
+}

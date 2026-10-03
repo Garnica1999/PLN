@@ -1,6 +1,6 @@
-"""FASE 10 — Las dos vías autorizadas: retrieval train→test y POS de spaCy.
+"""FASE 10 — Las dos vías autorizadas: retrieval train->test y POS de spaCy.
 
-VÍA A — Retrieval train→test (inferencia, no entrenamiento)
+VÍA A — Retrieval train->test (inferencia, no entrenamiento)
     Para cada fila se busca su **clúster de near-duplicados** (construido sobre texto con Jaccard
     ≥ 0,8, sin etiquetas) y se resume la distribución de etiquetas de los miembros de **train** de
     ese clúster. Cumple las reglas: no entrena con test, no usa etiquetas de test, no ajusta
@@ -162,7 +162,7 @@ def main() -> int:
     print(f"[base v12] combinador MLP: {base_mean:.4f} ± {base_std:.4f}", flush=True)
 
     # ---------------------------------------------------------------- VÍA A
-    print("\n[A] retrieval train→test (in-fold)...", flush=True)
+    print("\n[A] retrieval train->test (in-fold)...", flush=True)
     retrieval = np.zeros((len(y), 12), dtype=np.float32)
     recovered_labels = np.empty(len(y), dtype=object)
     for fold in folds:

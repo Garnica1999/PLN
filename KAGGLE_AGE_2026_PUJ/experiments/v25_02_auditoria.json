@@ -1,0 +1,43 @@
+{
+  "fase": "V25 02 auditoria de notebook",
+  "fecha": "2026-09-27",
+  "experimenta": false,
+  "celdas_antes": 121,
+  "celdas_despues": 136,
+  "estructura": {
+    "celdas": 136,
+    "ids_unicos": true,
+    "titulos_unicos": true,
+    "secciones": 34,
+    "titulo_v25_presente": true,
+    "artefactos_referenciados": 67,
+    "artefactos_faltantes": []
+  },
+  "ejecucion": {
+    "celdas_ejecutadas": 11,
+    "errores": 0,
+    "fallos": [],
+    "salidas_clave": [
+      "e21d474c: experimentos registrados: 128 | decisiones documentadas: 59",
+      "v25sel0002: features auditadas: 279",
+      "v25sel0003: veredicto: LEGAL: construidas con las etiquetas del training fold y con la misma particion de folds que V20",
+      "v25sel0006: T0 reproduce: True | valor: 0.6097782 | T1: 0.6091492 | delta: -0.008383",
+      "v25sel0012: features: 279 | en los 5 folds: 137 | en ninguno: 138",
+      "v25sel0015: v25_frecuencia_seleccion.png | <IPython.core.display.Image object>"
+    ]
+  },
+  "unicode_introducidos": [],
+  "unicode_heredado_del_notebook": 38,
+  "unicode_en_scripts": [],
+  "coherencia": {
+    "t0_es_el_canonico": true,
+    "t1_coincide_con_el_json": true,
+    "inventario_de_279": true,
+    "inventario_73_label_informed": true,
+    "frecuencia_de_279": true,
+    "decision_cerrada": true,
+    "sin_submission": true
+  },
+  "todo_ok": true,
+  "segundos": 0.4
+}

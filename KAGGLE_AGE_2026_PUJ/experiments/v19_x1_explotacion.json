@@ -1,0 +1,128 @@
+{
+  "fase": "V19 X1 explotacion del champion",
+  "fecha": "2026-09-27",
+  "champion": {
+    "nombre": "V19 boosting",
+    "lb": 0.62578,
+    "cv_5folds": 0.6079388,
+    "cv_4folds": 0.6090431
+  },
+  "recomendacion_del_especialista": "cerrar la explotacion; como maximo 2 configs diagnosticas",
+  "tasa_base_del_subespacio_de_parametros": 0.0008,
+  "gate": 0.003,
+  "resolucion_del_aparato_entre_particiones": 0.0011,
+  "residuo_de_la_calibracion_sobre_v19": -0.0016,
+  "puerta_de_saturacion": {
+    "arboles": 1800,
+    "cortes_medios": 6.8222,
+    "cortes_maximos_por_arbol": 7,
+    "hojas_medias": 7.8222,
+    "techo_de_cortes_por_arbol": 7,
+    "ocupacion_del_techo": 0.974603,
+    "arboles_al_techo": 1519,
+    "arboles_por_debajo_de_5_cortes": 7,
+    "distribucion_de_cortes": {
+      "4": 7,
+      "5": 25,
+      "6": 249,
+      "7": 1519
+    },
+    "umbral_de_la_tesis": 0.95,
+    "la_tesis_se_sostiene": true
+  },
+  "configuraciones": [
+    {
+      "configuracion": "A profundidad max_depth 4 con num_leaves 8",
+      "cambios": {
+        "max_depth": 4
+      },
+      "macro_f1": 0.6079208,
+      "macro_f1_v19": 0.6079388,
+      "delta_contra_v19": -1.8e-05,
+      "delta_contra_v12": 0.007419,
+      "media_folds": 0.607929,
+      "por_fold": [
+        0.609896,
+        0.610094,
+        0.610072,
+        0.607418,
+        0.602164
+      ],
+      "folds_positivos_contra_v19": 3,
+      "bootstrap_ic95_contra_v19": [
+        -0.000426,
+        0.000385,
+        0.46875
+      ],
+      "frontera_1": 0.5035,
+      "frontera_1_v19": 0.5038,
+      "frontera_2": 0.5013,
+      "frontera_2_v19": 0.5013,
+      "complementariedad": {
+        "ambos_correctos": 102420,
+        "ambos_incorrectos": 65679,
+        "solo_challenger": 620,
+        "solo_v19": 617,
+        "neto": 3
+      },
+      "cv_4_folds": 0.6090404,
+      "cv_4_folds_v19": 0.6090431,
+      "delta_4_folds": -3e-06,
+      "criterios_de_submission": {
+        "delta_5_folds": false,
+        "cinco_de_cinco_folds": false,
+        "ic95_excluye_cero": false,
+        "confirmacion_4_folds": false
+      },
+      "merece_submission": false
+    },
+    {
+      "configuracion": "B regularizacion min_child_samples 800",
+      "cambios": {
+        "min_child_samples": 800
+      },
+      "macro_f1": 0.6076698,
+      "macro_f1_v19": 0.6079388,
+      "delta_contra_v19": -0.000269,
+      "delta_contra_v12": 0.007168,
+      "media_folds": 0.607677,
+      "por_fold": [
+        0.610427,
+        0.609694,
+        0.609296,
+        0.607543,
+        0.601422
+      ],
+      "folds_positivos_contra_v19": 0,
+      "bootstrap_ic95_contra_v19": [
+        -0.000634,
+        8.3e-05,
+        0.0725
+      ],
+      "frontera_1": 0.5038,
+      "frontera_1_v19": 0.5038,
+      "frontera_2": 0.5012,
+      "frontera_2_v19": 0.5013,
+      "complementariedad": {
+        "ambos_correctos": 102532,
+        "ambos_incorrectos": 65844,
+        "solo_challenger": 455,
+        "solo_v19": 505,
+        "neto": -50
+      },
+      "cv_4_folds": 0.6088761,
+      "cv_4_folds_v19": 0.6090431,
+      "delta_4_folds": -0.000167,
+      "criterios_de_submission": {
+        "delta_5_folds": false,
+        "cinco_de_cinco_folds": false,
+        "ic95_excluye_cero": false,
+        "confirmacion_4_folds": false
+      },
+      "merece_submission": false
+    }
+  ],
+  "submission_generada": false,
+  "razon_del_cierre": "el techo conjunto de las dos configuraciones queda por debajo del gate y por debajo de la resolucion del aparato de medicion",
+  "segundos": 60.3
+}

@@ -1,0 +1,222 @@
+{
+  "fase": "V13 · P0 gap audit",
+  "fecha": "2026-09-25",
+  "experimentos_en_historial": 72,
+  "variables_articulo_ausentes": [
+    "V14",
+    "V15",
+    "V16",
+    "V17",
+    "V18"
+  ],
+  "pistas": 26,
+  "verificaciones_mapeo": [
+    {
+      "variable": "V1",
+      "nombre": "Avg_character (media de caracteres por palabra)",
+      "estado_declarado": "EXISTE",
+      "columnas_v12": [
+        "avg_word_len",
+        "wlen_mean"
+      ],
+      "columnas_no_encontradas": [],
+      "verificada": true
+    },
+    {
+      "variable": "V2",
+      "nombre": "Kurtosis_character (curtosis de la longitud de palabra)",
+      "estado_declarado": "EXISTE",
+      "columnas_v12": [
+        "wlen_kurtosis"
+      ],
+      "columnas_no_encontradas": [],
+      "verificada": true
+    },
+    {
+      "variable": "V3",
+      "nombre": "Lexical_diversity",
+      "estado_declarado": "EXISTE",
+      "columnas_v12": [
+        "ttr",
+        "cttr",
+        "hapax_ratio",
+        "root_ttr",
+        "maas",
+        "yule_k",
+        "simpson_d",
+        "char_entropy"
+      ],
+      "columnas_no_encontradas": [],
+      "verificada": true
+    },
+    {
+      "variable": "V4",
+      "nombre": "Label_word (media de palabras por publicacion)",
+      "estado_declarado": "EXISTE",
+      "columnas_v12": [
+        "n_words"
+      ],
+      "columnas_no_encontradas": [],
+      "verificada": true
+    },
+    {
+      "variable": "V5",
+      "nombre": "Kurtosis_avg_character",
+      "estado_declarado": "EXISTE",
+      "columnas_v12": [
+        "wlen_cv",
+        "wlen_std"
+      ],
+      "columnas_no_encontradas": [],
+      "verificada": true
+    },
+    {
+      "variable": "V6",
+      "nombre": "Kurtosis_label_word",
+      "estado_declarado": "PARCIAL",
+      "columnas_v12": [
+        "std_word_len"
+      ],
+      "columnas_no_encontradas": [],
+      "verificada": true
+    },
+    {
+      "variable": "V7",
+      "nombre": "Skew_avg_character (asimetria de la longitud)",
+      "estado_declarado": "EXISTE",
+      "columnas_v12": [
+        "wlen_skew"
+      ],
+      "columnas_no_encontradas": [],
+      "verificada": true
+    },
+    {
+      "variable": "V8",
+      "nombre": "Skew_label_word",
+      "estado_declarado": "PARCIAL",
+      "columnas_v12": [
+        "wlen_range",
+        "wlen_iqr"
+      ],
+      "columnas_no_encontradas": [],
+      "verificada": true
+    },
+    {
+      "variable": "V9",
+      "nombre": "Label_emoji",
+      "estado_declarado": "INERTE",
+      "columnas_v12": [
+        "n_emoji",
+        "has_emoji"
+      ],
+      "columnas_no_encontradas": [],
+      "verificada": true
+    },
+    {
+      "variable": "V10",
+      "nombre": "Label_hashtag",
+      "estado_declarado": "EXISTE",
+      "columnas_v12": [
+        "n_hashtag"
+      ],
+      "columnas_no_encontradas": [],
+      "verificada": true
+    },
+    {
+      "variable": "V11",
+      "nombre": "Label_mention",
+      "estado_declarado": "EXISTE",
+      "columnas_v12": [
+        "n_mention",
+        "starts_mention"
+      ],
+      "columnas_no_encontradas": [],
+      "verificada": true
+    },
+    {
+      "variable": "V12",
+      "nombre": "URL (informacion complementaria)",
+      "estado_declarado": "EXISTE",
+      "columnas_v12": [
+        "n_url"
+      ],
+      "columnas_no_encontradas": [],
+      "verificada": true
+    },
+    {
+      "variable": "V13",
+      "nombre": "Label_retweets",
+      "estado_declarado": "EXISTE",
+      "columnas_v12": [
+        "is_rt"
+      ],
+      "columnas_no_encontradas": [],
+      "verificada": true
+    },
+    {
+      "variable": "V14",
+      "nombre": "Person_1_singular (yo)",
+      "estado_declarado": "AUSENTE",
+      "columnas_v12": [],
+      "columnas_no_encontradas": [],
+      "verificada": true
+    },
+    {
+      "variable": "V15",
+      "nombre": "Person_2_singular (tu)",
+      "estado_declarado": "AUSENTE",
+      "columnas_v12": [],
+      "columnas_no_encontradas": [],
+      "verificada": true
+    },
+    {
+      "variable": "V16",
+      "nombre": "Person_3_singular (el/ella)",
+      "estado_declarado": "AUSENTE",
+      "columnas_v12": [],
+      "columnas_no_encontradas": [],
+      "verificada": true
+    },
+    {
+      "variable": "V17",
+      "nombre": "Person_1_plural (nosotros)",
+      "estado_declarado": "AUSENTE",
+      "columnas_v12": [],
+      "columnas_no_encontradas": [],
+      "verificada": true
+    },
+    {
+      "variable": "V18",
+      "nombre": "Person_3_plural (ellos/ellas)",
+      "estado_declarado": "AUSENTE",
+      "columnas_v12": [],
+      "columnas_no_encontradas": [],
+      "verificada": true
+    }
+  ],
+  "miembros_ensamble": [
+    "('oof_E013_margenes",
+    "('oof_E016_margenes",
+    "('oof_E-009",
+    "('oof_E-011",
+    "('oof_E-010",
+    "('oof_E014_margenes",
+    "('oof_E015_ordinal",
+    "('oof_E015_softmax",
+    "('oof_E017_probabilidades",
+    "('oof_E019b_densas_svd",
+    "('oof_E021a_ordinal",
+    "('oof_E021b_rocchio",
+    "('oof_E028a_pares",
+    "('oof_ADV05_nbsvm"
+  ],
+  "techo_informacion_pct": 13.869,
+  "agregacion_pct": 26.7,
+  "deltas_lexicones": {
+    "V12 + Registro": 0.0001,
+    "V12 + Vida": 0.0,
+    "V12 + Temas": -0.0009,
+    "V12 + Registro + Vida + Temas": -0.0018
+  },
+  "capas_decision_no_adoptadas": 0
+}

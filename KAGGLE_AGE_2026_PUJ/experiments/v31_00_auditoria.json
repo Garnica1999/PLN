@@ -1,0 +1,109 @@
+{
+  "fase": "V31+ 00 P0 auditoria y baseline",
+  "fecha": "2026-09-30",
+  "experimenta": false,
+  "baseline_v30": {
+    "configuracion_reproducible": "pesos medios entre folds, que es lo que uso la submission",
+    "miembros": [
+      "v20_f3b_oof_candidato",
+      "v29_lgbm_optuna",
+      "v30_lgbm_refinado"
+    ],
+    "pesos_usados": {
+      "v20_f3b_oof_candidato": 0.3548,
+      "v29_lgbm_optuna": 0.3354,
+      "v30_lgbm_refinado": 0.3098
+    },
+    "corrected_cv_recomputado": 0.6134471,
+    "reproduce": true,
+    "desviacion": 4.1e-08,
+    "folds": [
+      0.6162361,
+      0.6166868,
+      0.6131736,
+      0.6135122,
+      0.6076541
+    ],
+    "cv_publicado_en_v30": 0.6130051,
+    "cv_publicado_es_reproducible": false,
+    "motivo_de_la_diferencia": "el CV publicado se compuso con los pesos **por fold** que Optuna optimizo, y esos pesos no se persistieron en el artefacto; el JSON solo guarda la media. La submission uso los pesos medios, cuyo OOF es el que se reproduce aqui",
+    "baseline_operativo": 0.6134471,
+    "cifra_publicada": 0.6130051,
+    "delta_entre_las_dos_cifras": 0.000442,
+    "cual_manda": "la de los pesos medios, porque es la unica reproducible, es exactamente la que se envio, y la que casa con el leaderboard hasta la quinta decimal"
+  },
+  "integridad_submission_v30": {
+    "existe": true,
+    "sha256": "f543a715a1881c6128a860301b84a7273c3db8f8a709545be1e6267822e713be",
+    "hash_esperado": "f543a715a1881c6128a860301b84a7273c3db8f8a709545be1e6267822e713be",
+    "intacto": true,
+    "filas": 112892,
+    "columnas": [
+      "id",
+      "age_range"
+    ],
+    "ids_unicos": true,
+    "sin_nan": true,
+    "clases": [
+      "13-17",
+      "18-24",
+      "25-34",
+      "35-49",
+      "50-64",
+      "65-xx"
+    ],
+    "bytes": 1356504
+  },
+  "evidencia_de_transferencia": {
+    "calibracion": "LB = 0.00223 + 1.02825 * CV",
+    "lb_predicho_para_v30": 0.63301,
+    "lb_predicho_con_la_cifra_publicada": 0.63255,
+    "error_si_se_usara_la_cifra_publicada": 0.00047,
+    "lb_real_de_v30": 0.63302,
+    "error_de_transferencia": 1e-05,
+    "nota_sobre_la_cifra": "la comparacion se hace contra el baseline **operativo** (0,6134471), no contra el 0,6130051 publicado. Con el operativo el error cae a +0,00001; con el publicado seria +0,00047. Esa diferencia es la evidencia de que lo que se envio fue el operativo",
+    "mejora_de_lb_sobre_v20": 0.00613,
+    "caso_del_punto_32": "A: CV robusto, segunda particion robusta y LB mejora. **successful transfer**",
+    "implicacion_para_el_diseno": "la calibracion interna acierta con un error de 0.00001 con el baseline operativo, asi que un delta de +0,003 en CV equivale a unos 0.00308 en el leaderboard. Los cortes de esta fase se pueden fijar en CV sin convertir el leaderboard en un objetivo",
+    "lb_por_candidado": {
+      "CV 0.6097782": 0.62923,
+      "CV 0.6121698": 0.63169,
+      "CV 0.6130051": 0.63255,
+      "CV 0.6134471": 0.63301,
+      "CV 0.6143347": 0.63392
+    },
+    "uso_del_leaderboard": "una sola lectura, como evidencia de transferencia. No es funcion objetivo, no se usa para seleccionar nada y no se volvera a consultar durante la fase"
+  },
+  "auditoria_url_legality": {
+    "hipotesis": "A5: si una fila contiene la URL del propio tweet, recuperar el texto original y reemplazar la representacion por el contenido real",
+    "estado": "QUARANTINED",
+    "clasificacion": "AMBIGUOUS",
+    "motivo": "las reglas oficiales de la compilacion no estan disponibles: no hay copia local de AGE, la API de Kaggle no autentica desde este entorno, y el unico fichero de reglas presente pertenece a otra compilacion y esta mal titulado. Sin el texto de las reglas no se puede establecer que la recuperacion de contenido externo este permitida, y recuperarla podria ser informacion externa, transductiva o fuga de metadatos",
+    "decision": "QUARANTINED. No se implementa la recuperacion, no se hace ninguna llamada de red y ningun candidato que dependa de contenido recuperado puede llegar a una submission. Los tracks A1 a A4, que usan **solo el texto del train**, no se ven afectados y se ejecutan con normalidad",
+    "como se levanta el cuarentena": "que el organizador confirme por escrito que la recuperacion de contenido desde URLs propias esta permitida y que no se use junto a metadatos",
+    "hallazgos": {
+      "reglas_locales_de_AGE": [],
+      "api_kaggle_accesible": false,
+      "archivo_de_reglas_en_otro_proyecto": {
+        "ruta": "kaggle_toxic_2026_puj/docs/competition_rules.md",
+        "pertenece_a_otra_competicion": true,
+        "nota": "el fichero se titula 'Reglas oficiales de la competencia' pero su contenido describe la competencia de toxicidad (HS, TR, AG), no la de edad. **No se usa como fuente de reglas de AGE**, porque daria por cubierto un requisito que no esta cubierto"
+      },
+      "sin_autenticacion": true,
+      "motivo_api": "la API de Kaggle rechaza la llamada por autenticacion, asi que las reglas oficiales no se pueden leer desde aqui"
+    }
+  },
+  "estado_congelado": {
+    "V20": 0.6097782,
+    "V29_lgbm": 0.6121698,
+    "V30": 0.6130051,
+    "V30_operativo": 0.6134471,
+    "V30_segunda": 0.6143347,
+    "LB_V20": 0.62689,
+    "LB_V30": 0.63302
+  },
+  "artefactos_de_v30_tocados": [],
+  "problemas": [],
+  "v31_autorizado": true,
+  "segundos": 37.8
+}

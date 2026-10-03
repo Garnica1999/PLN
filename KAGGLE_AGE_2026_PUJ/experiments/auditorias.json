@@ -15,7 +15,7 @@
       "auditoria_ok": true
     },
     "reproducibilidad": {
-      "archivos_con_semilla_o_random_state": 54,
+      "archivos_con_semilla_o_random_state": 75,
       "semilla_global_definida": true,
       "requirements_existe": true,
       "n_paquetes_congelados": 312,
@@ -49,10 +49,10 @@
       "auditoria_ok": true
     },
     "academica": {
-      "n_experimentos_registrados": 48,
+      "n_experimentos_registrados": 72,
       "todos_con_hipotesis": true,
       "todos_con_resultado": true,
-      "n_decisiones": 27,
+      "n_decisiones": 39,
       "n_referencias": 30,
       "referencias_con_doi_o_url": 30,
       "anios_cubiertos": [
@@ -88,5 +88,5 @@
     }
   },
   "resultado_global": true,
-  "segundos": 0.2
+  "segundos": 0.3
 }

@@ -1,4 +1,4 @@
-"""E-028 — Supervisión ordinal fina: pares adyacentes y jerarquía gruesa→fina.
+"""E-028 — Supervisión ordinal fina: pares adyacentes y jerarquía gruesa->fina.
 
 Contexto (Fase 17 y D-016)
     La confusión del ensamble es casi toda entre rangos **contiguos** y las clases medias son las
@@ -9,7 +9,7 @@ Hipótesis
     H23  **Clasificadores de pares adyacentes**: un SVM entrenado *solo* con las dos clases de cada
          frontera (p. ej. 18-24 vs 25-34) concentra capacidad en la ambigüedad real y produce
          márgenes más nítidos en la frontera, información nueva para el meta-modelo.
-    H24  **Jerarquía gruesa→fina**: agrupar en jóvenes (13-24), medios (25-49) y mayores (50-xx)
+    H24  **Jerarquía gruesa->fina**: agrupar en jóvenes (13-24), medios (25-49) y mayores (50-xx)
          da un problema más separable (más datos por clase, fronteras más limpias); sus márgenes
          son una vista distinta de la del clasificador de 6 clases.
 

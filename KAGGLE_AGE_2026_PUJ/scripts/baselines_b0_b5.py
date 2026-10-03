@@ -1,11 +1,11 @@
 """Fase 12 — Baselines B0, B1 y B5 (los B2, B3 y B4 ya están medidos en la matriz).
 
-B0  DummyClassifier(strategy="prior")                → suelo estadístico.
-B1  TF-IDF word 1-2 + LogisticRegression             → ¿un modelo probabilístico mejora al SVM?
-B2  TF-IDF word 1-2 + LinearSVC                      → ya medido (E-002b = 0,4971).
-B3  TF-IDF char_wb 3-5 + LinearSVC                   → ya medido (E-003b = 0,5408).
-B4  TF-IDF word 1-2 ∪ char_wb 3-5 + LinearSVC        → ya medido (E-001 = 0,5344).
-B5  Features densas (textometría + estilo) + LightGBM → ¿la señal densa compite con la dispersa?
+B0  DummyClassifier(strategy="prior")                -> suelo estadístico.
+B1  TF-IDF word 1-2 + LogisticRegression             -> ¿un modelo probabilístico mejora al SVM?
+B2  TF-IDF word 1-2 + LinearSVC                      -> ya medido (E-002b = 0,4971).
+B3  TF-IDF char_wb 3-5 + LinearSVC                   -> ya medido (E-003b = 0,5408).
+B4  TF-IDF word 1-2 ∪ char_wb 3-5 + LinearSVC        -> ya medido (E-001 = 0,5344).
+B5  Features densas (textometría + estilo) + LightGBM -> ¿la señal densa compite con la dispersa?
 
 Protocolo idéntico a la matriz: StratifiedGroupKFold 5 folds agrupado por clúster.
 

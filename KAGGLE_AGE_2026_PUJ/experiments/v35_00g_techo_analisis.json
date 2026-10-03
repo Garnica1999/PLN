@@ -1,0 +1,155 @@
+{
+  "fase": "V35 - acta D-087: analisis del techo alcanzable",
+  "fecha": "2026-09-30",
+  "categoria": "analisis descriptivo del residuo; no entrena, no selecciona, no integra y no decide nada. Su unico proposito es medir un techo",
+  "restricciones": {
+    "test_tocado": false,
+    "holdout_tocado": false,
+    "leaderboard_tocado": false,
+    "escritura_en_p33_scores": false,
+    "lecturas": [
+      "artifacts/p33_scores/todos (solo lectura)",
+      "data/raw/age_train.csv (longitudes de texto)"
+    ]
+  },
+  "script": "KAGGLE_AGE_2026_PUJ/scripts/v35_00g_techo_analisis.py",
+  "sha256_del_script": "5b948201a9cb84bb7d5c49a0df9bf4c49c122c4d09b8c161bff03042a70759bc",
+  "n_filas": 169336,
+  "n_clases": 6,
+  "hashes": {
+    "y_true": "b1c928f9b9f5575547c1090a1fd83cf32a048b694af35a980b460c0bd66d48e6",
+    "v30_prob": "3d77352486605971093ade7214ae82326057845d8bf54a2d88c83843c5a721db",
+    "fold_idx": "74d18330c40c3598a1936706ae9434c5fdf29119d357d38353cf298812fe6fb5",
+    "ids": "d69ecb339f1dc57de2f9cddd558658b5a272ffa42aec15c771773e8eabd59825"
+  },
+  "ancla_trivial": {
+    "clase_mayoritaria": "13-17",
+    "fraccion": 0.17044810317947748,
+    "macro_f1": 0.04854212180687087,
+    "accuracy": 0.17044810317947748,
+    "formula_2p_sobre_6_1_p": 0.04854212180687087,
+    "verificada": true,
+    "nota": "se verifica aqui y no se copia de otras actas; un informe de arquitectura afirmo que este ancla no reproducia y que la trivial era 0.16666666666666667, lo cual es erroneo (esa cifra corresponde a p = 0.0909, que no es la clase mayoritaria de este corpus)"
+  },
+  "base": {
+    "macro_f1_argmax_v30": 0.6134471410431589,
+    "macro_f1_con_plugin": 0.6159732487657944,
+    "cv_declarado_del_campeon": 0.6159732,
+    "accuracy": 0.6137678934190013,
+    "n_errores": 65403,
+    "porcentaje_error": 0.3862321065809987
+  },
+  "descomposicion_ordinal": {
+    "adyacentes": {
+      "n": 39202,
+      "porcentaje_de_los_errores": 0.5993914652233078
+    },
+    "lejanos_2": {
+      "n": 15519,
+      "porcentaje_de_los_errores": 0.2372826934544287
+    },
+    "lejanos_3": {
+      "n": 6779,
+      "porcentaje_de_los_errores": 0.10364967967830221
+    },
+    "todos_los_lejanos": {
+      "n": 26201,
+      "porcentaje_de_los_errores": 0.4006085347766922
+    }
+  },
+  "oraculo_por_tipo_de_error": {
+    "adyacentes": 0.23148407883511035,
+    "lejanos_2": 0.09341575871455265,
+    "lejanos_3": 0.04054675728730772,
+    "todos_los_lejanos": 0.15709394186714787
+  },
+  "curva_de_oraculo_restringido": {
+    "0.30": {
+      "filas_corregibles": 9683,
+      "ganancia_macro_f1": 0.056795452466427365,
+      "supera_el_objetivo": false
+    },
+    "0.35": {
+      "filas_corregibles": 4516,
+      "ganancia_macro_f1": 0.0264312259708549,
+      "supera_el_objetivo": false
+    },
+    "0.40": {
+      "filas_corregibles": 1383,
+      "ganancia_macro_f1": 0.008091194789387357,
+      "supera_el_objetivo": false
+    },
+    "0.45": {
+      "filas_corregibles": 126,
+      "ganancia_macro_f1": 0.0007502828875232126,
+      "supera_el_objetivo": false
+    },
+    "0.50": {
+      "filas_corregibles": 0,
+      "ganancia_macro_f1": 0.0,
+      "supera_el_objetivo": false
+    }
+  },
+  "techo_de_la_curva": 0.056795452466427365,
+  "objetivo_delta": 0.0626,
+  "veredicto_del_objetivo": "NO alcanzable con la informacion actual: un modelo perfecto con la informacion del campeon rinde +0.0567955, por debajo del +0.0626 que exige el objetivo",
+  "fraccion_de_errores_a_corregir_para_el_objetivo": 0.161491063101081,
+  "limites_estructurales_del_dato": {
+    "len_le_20": {
+      "n": 5194,
+      "error": 0.480361956103196,
+      "macro_f1_subconjunto": 0.5248784986300657,
+      "porcentaje_del_corpus": 0.03067274531109746
+    },
+    "len_le_3": {
+      "n": 213,
+      "error": 0.6056338028169014,
+      "macro_f1_subconjunto": 0.13630526508897448,
+      "porcentaje_del_corpus": 0.0012578542070203619
+    },
+    "contiene_url": {
+      "n": 68562,
+      "error": 0.3851696274904466,
+      "macro_f1_subconjunto": 0.6002325422059939,
+      "porcentaje_del_corpus": 0.4048873246090613
+    },
+    "solo_url": {
+      "n": 3891,
+      "error": 0.6831148804934464,
+      "macro_f1_subconjunto": 0.1969828530514174,
+      "porcentaje_del_corpus": 0.022977984598667737
+    },
+    "texto_identico_etiqueta_distinta": {
+      "n_grupos": 713,
+      "n_filas": 1958,
+      "porcentaje_del_corpus": 0.011562810034487645,
+      "error": 0.3079673135852911,
+      "techo_del_oraculo_de_mayoria": 0.0018080711395047633
+    }
+  },
+  "longitudes_de_texto": {
+    "mediana": 93.0,
+    "maximo": 140,
+    "p90": 139.0,
+    "fraccion_en_el_maximo": 0.024867718618604432
+  },
+  "filas_no_ascii": 51,
+  "calibracion": {
+    "intercepto": 0.002228,
+    "pendiente": 1.028251,
+    "n": 5,
+    "sigma_residuo": 0.001701,
+    "r2": 0.99783,
+    "rmse": 0.001318,
+    "dominio_cv": [
+      0.5344,
+      0.616
+    ],
+    "cv_objetivo": 0.6786008474584512,
+    "delta_necesario": 0.0626,
+    "distancia_en_sigmas_de_la_calibracion": 36.80188124632569,
+    "fraccion_fuera_del_dominio_ajustado": 0.767156862745098,
+    "lectura": "el ajuste se sostiene en 5 puntos y su dominio es CV [0.5344, 0.6160]; el objetivo pide +0.0626, que es mas de 2 sigma y 77 % fuera del rango, luego extrapolar la calibracion hasta alli NO es un instrumento de decision"
+  },
+  "duracion_seg": 1.3984782695770264
+}

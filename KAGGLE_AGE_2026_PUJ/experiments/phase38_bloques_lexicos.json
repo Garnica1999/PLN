@@ -1,0 +1,178 @@
+{
+  "fase": "P2-P5 — bloques lexicos, control lexicon-only, redundancia y ablacion",
+  "fecha": "2026-09-25",
+  "umbral_correlacion_redundancia": 0.8,
+  "variables_de_contraste": [
+    "n_chars",
+    "n_words",
+    "n_unique_words",
+    "ttr",
+    "stopword_ratio",
+    "content_ratio",
+    "n_mention",
+    "n_hashtag",
+    "n_url"
+  ],
+  "familias": {
+    "registro": {
+      "n_features": 19,
+      "columnas_con_varianza": 19,
+      "media_ratio": 0.01261,
+      "filas_con_alguna_senal_pct": 55.755,
+      "control_lexicon_only": {
+        "logreg": {
+          "macro_f1": 0.152,
+          "std": 0.0014,
+          "per_fold": [
+            0.1513,
+            0.1501,
+            0.1528,
+            0.1541,
+            0.1516
+          ]
+        },
+        "linearsvc": {
+          "macro_f1": 0.1483,
+          "std": 0.0021,
+          "per_fold": [
+            0.1485,
+            0.1444,
+            0.1491,
+            0.1507,
+            0.1486
+          ]
+        }
+      },
+      "n_subcategorias": 6
+    },
+    "vida": {
+      "n_features": 16,
+      "columnas_con_varianza": 16,
+      "media_ratio": 0.001,
+      "filas_con_alguna_senal_pct": 6.25,
+      "control_lexicon_only": {
+        "logreg": {
+          "macro_f1": 0.0731,
+          "std": 0.0011,
+          "per_fold": [
+            0.0726,
+            0.0714,
+            0.0746,
+            0.0735,
+            0.0734
+          ]
+        },
+        "linearsvc": {
+          "macro_f1": 0.0729,
+          "std": 0.0009,
+          "per_fold": [
+            0.0727,
+            0.0714,
+            0.0733,
+            0.073,
+            0.074
+          ]
+        }
+      },
+      "n_subcategorias": 5
+    },
+    "temas": {
+      "n_features": 37,
+      "columnas_con_varianza": 37,
+      "media_ratio": 0.00717,
+      "filas_con_alguna_senal_pct": 58.023,
+      "control_lexicon_only": {
+        "logreg": {
+          "macro_f1": 0.2033,
+          "std": 0.0022,
+          "per_fold": [
+            0.2001,
+            0.2033,
+            0.2068,
+            0.2026,
+            0.2039
+          ]
+        },
+        "linearsvc": {
+          "macro_f1": 0.2018,
+          "std": 0.0022,
+          "per_fold": [
+            0.1995,
+            0.1994,
+            0.205,
+            0.2016,
+            0.2036
+          ]
+        }
+      },
+      "n_subcategorias": 12
+    }
+  },
+  "features_redundantes": 3,
+  "features_totales": 72,
+  "redundantes_por_denso": 3,
+  "redundantes_por_v12": 3,
+  "max_correlacion_v12": 0.966,
+  "sha256_lexicons": {
+    "registro/abreviaciones_internet": "6bcdecf00870529a07a96588cf39968b4ee383ef6c3217cef72d9faf5df3a35a",
+    "registro/deformacion_ortografica": "34f6f6712143538c40ef325c2c19556abe14ed01056b73d649d65b1815c9113b",
+    "registro/marcas_risa": "2adc3755ef28998e046d9a219dc026372181099f0871f27beabf60444cb8e7c7",
+    "registro/muletillas_coloquiales": "15a5f12aeab693fa8f995d8881b6026e9b5b729aa0f55ef8ed2163f6af5f0fb9",
+    "registro/slang_juvenil": "85318edddf74454663e06faf333d101915d8d41e536c2744e86902dd20a00892",
+    "registro/vulgaridad_generica": "be0c1d463ea664966fc1539b3f8df2a147815b65c892a2d56fdb52594d35032f",
+    "temas/deporte": "d8d3e340764018839d73d23944e5ec9136ef60a37b8d576ad2c14c8cbd082485",
+    "temas/economia": "2c55f701378040c0046729f20d60dc51bdccbefaff1d1d53c9b24ead71199f29",
+    "temas/entretenimiento": "bc59a91aa19054a30c5bd29f5e397cd82d777743ec811c867fecf0e988fefec9",
+    "temas/musica": "d47bb7085cc8396984387062d804b6cff48851fc45ed10b2dd9e50555eb88a5c",
+    "temas/noticias": "79858a06ef890b3fbd4930ea643c75b6640067dd714f230331a923f098c816a2",
+    "temas/politica": "9a3c3e065abedd8e685f8e64071e44d74edb9b1403433d3f4ec2efe29e28de95",
+    "temas/redes_sociales": "62ada1ca20779ec0f8bf98c743dab6bfd60cc0d3d453c4558ee651a3152354a2",
+    "temas/religion": "81470a4332926e0a7621f457dbabda6747f2e63bf400dc59bf9dd1f56e8a426b",
+    "temas/salud": "fe8e27e49698a3696990a55dcfcb7ab7633b49511d88b101a5289e3be358883c",
+    "temas/tecnologia": "8938556fd6c718c69e591beefe33279f09dfb3c7945cc96af2f4371a1d6abb4f",
+    "temas/television": "e9385e53c9f0602d132fa536efae65dc2b0acf25fc7339b12976f6709c89027a",
+    "temas/videojuegos": "54984146f629446025851646661e9e0771a28c14987e96c465424dac3a1a978f",
+    "vida/empleo": "3b6661df2a499ba924c7be2cf36f37f3946e6682ab34e4c5ee72fdd896bcebae",
+    "vida/escuela": "0d137be427f5cf14e8142a863ff950f3f0e6ad977d48f15cd7871a79c423f8df",
+    "vida/etapa_vejez": "1c72c47ee34666c59d590c348230297bd08b3b1005cf9aedf9aaae236cd870a3",
+    "vida/parentalidad": "e8d8f083019bbd7b55242fd44fde298b997af0505ebcfe9fd6be18deb20135f7",
+    "vida/universidad": "fe838addf7a777e0e5b62a5e9d067760c517f943882997fa94c84c2783048d99"
+  },
+  "subcategorias_retiradas_por_minimo": {
+    "vida/hogar": 2
+  },
+  "nota_cribado": "el cribado de frecuencia minima usa el vocabulario del train completo: es seleccion no supervisada y transductiva, sin usar etiquetas en ningun punto",
+  "ablation_mejores": [
+    {
+      "familia": "temas",
+      "subcategoria": "religion",
+      "n_features": 3,
+      "macro_f1": 0.1419
+    },
+    {
+      "familia": "registro",
+      "subcategoria": "abreviaciones_internet",
+      "n_features": 3,
+      "macro_f1": 0.1247
+    },
+    {
+      "familia": "temas",
+      "subcategoria": "television",
+      "n_features": 3,
+      "macro_f1": 0.1178
+    },
+    {
+      "familia": "registro",
+      "subcategoria": "muletillas_coloquiales",
+      "n_features": 3,
+      "macro_f1": 0.0912
+    },
+    {
+      "familia": "temas",
+      "subcategoria": "politica",
+      "n_features": 3,
+      "macro_f1": 0.0862
+    }
+  ],
+  "segundos": 314.1
+}

@@ -1,0 +1,68 @@
+# familia: temas
+# subcategoria: deporte
+# descripcion: Dominio deportivo: disciplinas, competiciones y práctica, de portada amplia para no depender de un solo deporte.
+# idioma: es
+# procedencia: elaborado en este proyecto (conocimiento linguistico general)
+# licencia: del proyecto; sin datos externos y sin etiquetas de edad
+# riesgo: ninguno
+# fecha: 2026-09-25
+# entradas_declaradas: 61
+# cribado_corpus: frecuencia minima 3 en el train
+afición
+americano
+atletismo
+baloncesto
+barcelona
+basket
+basquet
+béisbol
+campeona
+campeonato
+carrera
+carreras
+champions
+ciclismo
+ciclista
+clasificación
+coche
+defensa
+delantero
+entrenador
+equipo
+equipos
+estadio
+final
+finales
+fútbol
+gimnasio
+gol
+goles
+gym
+hincha
+hinchada
+hockey
+jugador
+jugadores
+liga
+madrid
+maratón
+marca
+medalla
+moto
+motor
+mundial
+nacional
+natación
+nieve
+olímpica
+partido
+pesas
+piloto
+portero
+rugby
+skate
+tabla
+tenis
+tribuna
+técnico
+árbitro

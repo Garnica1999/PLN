@@ -1,0 +1,5 @@
+frontera,modelo,filas_par,accuracy_v12_par,accuracy_especialista_par,mejora_par,filas_actuables,accuracy_v12_actuables,accuracy_especialista_actuables,rescate,dano,neto,macro_f1_global,filas_modificadas
+18-24|25-34,logreg,57023,0.4963,0.4944,-0.0019,57019,0.4964,0.4944,1023,1132,-109,0.5998,3383
+18-24|25-34,mlp,57023,0.4963,0.4946,-0.0017,57019,0.4964,0.4947,1482,1578,-96,0.5999,4953
+25-34|35-49,logreg,56577,0.4974,0.4942,-0.0032,51160,0.55,0.5465,695,875,-180,0.5994,2604
+25-34|35-49,mlp,56577,0.4974,0.4945,-0.0029,51160,0.55,0.5468,1262,1425,-163,0.5994,4568

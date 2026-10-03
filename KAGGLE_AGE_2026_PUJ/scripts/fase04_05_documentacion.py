@@ -105,15 +105,15 @@ descomposicion[["id", "representacion", "texto", "macro_f1", "delta_vs_crudo", "
     nbutil.md(
         """
 **OBSERVACIÓN (cuantitativa).** Partiendo del texto crudo (0,5344):
-- quitar **solo las menciones** → **0,4094** (−0,1251, 0/5 folds a favor);
-- sustituir menciones por el marcador `<user>` → **0,4107** (−0,1237);
-- quitar solo URLs → 0,5277 (−0,0067);
-- quitar solo puntuación → 0,5264 (−0,0080);
-- normalización completa (URLs+menciones+RT+puntuación+minúsculas) → 0,3902 (−0,1442).
+- quitar **solo las menciones** -> **0,4094** (−0,1251, 0/5 folds a favor);
+- sustituir menciones por el marcador `<user>` -> **0,4107** (−0,1237);
+- quitar solo URLs -> 0,5277 (−0,0067);
+- quitar solo puntuación -> 0,5264 (−0,0080);
+- normalización completa (URLs+menciones+RT+puntuación+minúsculas) -> 0,3902 (−0,1442).
 
 Además, tras normalizar, **7.240 tweets quedan vacíos** (frente a 104 originales) y 13.137 se
 quedan con ≤1 token: hay muchísimos tweets que son *solo URL*, *solo menciones* o *solo hashtags*
-(p. ej. `#TFZ @M_MartinezRed @RaisAlGhousia …` → `tfz`).
+(p. ej. `#TFZ @M_MartinezRed @RaisAlGhousia …` -> `tfz`).
 
 **INTERPRETACIÓN.** La señal no está solo en lo que se dice, sino en **a quién se menciona** y en
 la **forma** del tweet. La identidad de las cuentas mencionadas (fandoms, medios, políticos)

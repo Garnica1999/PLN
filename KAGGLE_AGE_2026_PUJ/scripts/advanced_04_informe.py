@@ -1,7 +1,7 @@
 """Fase avanzada — Paso 4: informe de investigación, catálogo corregido y memoria actualizada.
 
 Produce:
-    - ``reports/advanced_feature_catalog.csv`` corregido (mapeo columna → familia).
+    - ``reports/advanced_feature_catalog.csv`` corregido (mapeo columna -> familia).
     - ``reports/advanced_research_report.md`` (informe del §82 del brief).
     - Actualizaciones de ``PROJECT_STATE.md``, ``DECISIONS.md``, ``RUNLOG.md`` y ``experiments.csv``.
     - ``reports/submissions_registry.csv`` (§59 del brief).
@@ -126,7 +126,7 @@ def research_report(results: dict, holdout: dict) -> str:
     add("`reports/research_backlog.md`: 18 líneas priorizadas con justificación técnica, incluidas "
         "las **cerradas por resultado negativo previo** (especialistas por longitud, BM25, kNN, "
         "meta LightGBM, jerarquía gruesa) y las que **requieren verificación de reglas** "
-        "(retrieval train→test, POS tagger preentrenado).")
+        "(retrieval train->test, POS tagger preentrenado).")
     add("")
 
     add("## 3. Nuevas features construidas")
@@ -183,7 +183,7 @@ def research_report(results: dict, holdout: dict) -> str:
     for label, payload in holdout_data["resultados"].items():
         add(f"| {label} | {payload['macro_f1']:.4f} | {payload['accuracy']:.4f} |")
     add("")
-    add(f"**Δ = {holdout_data['delta_macro_f1']:+.4f} → confirmado.** El holdout reproduce la "
+    add(f"**Δ = {holdout_data['delta_macro_f1']:+.4f} -> confirmado.** El holdout reproduce la "
         f"mejora del CV de desarrollo e incluso la supera, lo que descarta que el resultado sea "
         f"producto del ajuste al CV.")
     add("")
@@ -240,7 +240,7 @@ def research_report(results: dict, holdout: dict) -> str:
     add("")
     add("**REQUIERE_VERIFICACIÓN — no implementado.** El brief lo autoriza solo si las reglas lo "
         "permiten. La competencia prohíbe usar el test para entrenar, para construir vocabularios o "
-        "para seleccionar cualquier cosa; un lookup train→test en inferencia es técnicamente "
+        "para seleccionar cualquier cosa; un lookup train->test en inferencia es técnicamente "
         "inferencia y no entrenamiento, pero la decisión D-001 (interpretación amplia) no cubre "
         "este caso y el riesgo académico es real. Se deja **explícitamente sin implementar** y "
         "documentado como línea abierta. Nota cuantitativa: el techo de esa vía está acotado por "
@@ -260,7 +260,7 @@ def research_report(results: dict, holdout: dict) -> str:
         "BM25 sin normalización L2 (E-025): −0,0002; la normalización por documento es esencial.",
         "kNN sobre SVD (E-026): 0,3088 individual, sin aporte.",
         "Meta-modelo LightGBM (E-022): 0,5858 vs 0,5860 de la regresión logística.",
-        "Jerarquía gruesa→fina (E-028b): +0,0003 redundante con los pares adyacentes.",
+        "Jerarquía gruesa->fina (E-028b): +0,0003 redundante con los pares adyacentes.",
         "Hashtags supervisados: neutros (−0,0001) individualmente.",
         "Deep learning denso como clasificador (E-019): 0,3381 / 0,4071.",
     ]:
@@ -269,7 +269,7 @@ def research_report(results: dict, holdout: dict) -> str:
 
     add("## 13. Líneas futuras")
     add("")
-    add("- **Retrieval train→test** si se obtiene confirmación explícita de las reglas (techo "
+    add("- **Retrieval train->test** si se obtiene confirmación explícita de las reglas (techo "
         "acotado: 4,26% de cobertura × 92,8% de pureza).")
     add("- **Frontera `18-24|25-34`**: es el punto de mayor error; un modelo dedicado con features "
         "supervisadas de entidades (no solo TF-IDF) es la apuesta natural.")

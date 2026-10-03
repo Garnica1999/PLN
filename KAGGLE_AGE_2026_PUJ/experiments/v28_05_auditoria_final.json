@@ -1,0 +1,143 @@
+{
+  "fase": "V28 05 compliance y auditoria final",
+  "fecha": "2026-09-28",
+  "experimenta": false,
+  "compliance": {
+    "comprobaciones": [
+      {
+        "comprobacion": "transformers",
+        "uso_en_codigo": 0,
+        "menciones_en_prosa": 2,
+        "cumplida": true,
+        "detalle": "scripts/v28_07_informes.py: 0 uso, 1 mencion; reports/v28_final_research.md: 0 uso, 1 mencion"
+      },
+      {
+        "comprobacion": "BERT",
+        "uso_en_codigo": 0,
+        "menciones_en_prosa": 0,
+        "cumplida": true,
+        "detalle": ""
+      },
+      {
+        "comprobacion": "RoBERTa",
+        "uso_en_codigo": 0,
+        "menciones_en_prosa": 0,
+        "cumplida": true,
+        "detalle": ""
+      },
+      {
+        "comprobacion": "LLM",
+        "uso_en_codigo": 0,
+        "menciones_en_prosa": 2,
+        "cumplida": true,
+        "detalle": "scripts/v28_07_informes.py: 0 uso, 1 mencion; reports/v28_final_research.md: 0 uso, 1 mencion"
+      },
+      {
+        "comprobacion": "embeddings",
+        "uso_en_codigo": 0,
+        "menciones_en_prosa": 2,
+        "cumplida": true,
+        "detalle": "scripts/v28_07_informes.py: 0 uso, 1 mencion; reports/v28_final_research.md: 0 uso, 1 mencion"
+      },
+      {
+        "comprobacion": "external_classifier",
+        "uso_en_codigo": 0,
+        "menciones_en_prosa": 0,
+        "cumplida": true,
+        "detalle": ""
+      },
+      {
+        "comprobacion": "external_labels",
+        "uso_en_codigo": 0,
+        "menciones_en_prosa": 0,
+        "cumplida": true,
+        "detalle": ""
+      },
+      {
+        "comprobacion": "pseudo_labeling",
+        "uso_en_codigo": 0,
+        "menciones_en_prosa": 0,
+        "cumplida": true,
+        "detalle": ""
+      },
+      {
+        "comprobacion": "test_labels",
+        "uso_en_codigo": 0,
+        "menciones_en_prosa": 0,
+        "cumplida": true,
+        "detalle": ""
+      },
+      {
+        "comprobacion": "test_calibration",
+        "uso_en_codigo": 0,
+        "menciones_en_prosa": 0,
+        "cumplida": true,
+        "detalle": ""
+      },
+      {
+        "comprobacion": "test_feature_selection",
+        "uso_en_codigo": 0,
+        "menciones_en_prosa": 0,
+        "cumplida": true,
+        "detalle": ""
+      },
+      {
+        "comprobacion": "test_threshold_tuning",
+        "uso_en_codigo": 0,
+        "menciones_en_prosa": 0,
+        "cumplida": true,
+        "detalle": ""
+      },
+      {
+        "comprobacion": "holdout_reuse",
+        "uso_en_codigo": 0,
+        "menciones_en_prosa": 3,
+        "cumplida": true,
+        "detalle": "scripts/v28_07_informes.py: 0 uso, 2 mencion; reports/v28_final_research.md: 0 uso, 1 mencion"
+      },
+      {
+        "comprobacion": "leaderboard_tuning",
+        "uso_en_codigo": 0,
+        "menciones_en_prosa": 0,
+        "cumplida": true,
+        "detalle": ""
+      }
+    ],
+    "todas_cumplidas": true,
+    "ficheros_auditados": 19,
+    "excluidos": [
+      "experiments/v28_05_auditoria_final.json",
+      "reports/v28_compliance.md",
+      "scripts/v28_05_compliance_auditoria.py"
+    ],
+    "criterio": "una mencion dentro de un literal o en un informe no es uso; el codigo se mide tras eliminar los literales con el tokenizer"
+  },
+  "higiene_del_repositorio": {
+    "home": {
+      "existe": true,
+      "versionado_por_git": false,
+      "git_status": [
+        "?? home/"
+      ],
+      "sigue_fuera_de_la_rama": true
+    },
+    "kaggle_toxic_2026_puj/tools": {
+      "existe": true,
+      "versionado_por_git": false,
+      "git_status": [
+        "?? kaggle_toxic_2026_puj/tools/"
+      ],
+      "sigue_fuera_de_la_rama": true
+    }
+  },
+  "trazabilidad": {
+    "problemas": [],
+    "coherente": true
+  },
+  "cv_v20": 0.6097782,
+  "hash_submission_v20": "2c964af78c90bf0884b4107665b5100f0c1aa2d9059c47692e613578b6cf660d",
+  "data_hash": "32393abca28db4c9",
+  "submissions_generadas_en_v28": 0,
+  "artefactos_de_v20_tocados": [],
+  "segundos": 0.2
+}

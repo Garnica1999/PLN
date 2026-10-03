@@ -1,0 +1,63 @@
+{
+  "fase": "pre-registro de la validacion confirmatoria",
+  "fecha": "2026-10-11",
+  "experimenta": false,
+  "commit_del_preregistro": "e1ad973740b873397b59e015f8386c4b143f69cf",
+  "pesos_congelados": [
+    1.0,
+    1.1749,
+    1.2721,
+    1.163,
+    1.001,
+    0.8128
+  ],
+  "procedencia_de_los_pesos": {
+    "formula": "w = (1/5) * suma_k argmax_w macro_F1(y[idx_k], argmax_c(w_c*p_c[idx_k])) con idx_k = { i : fold_canonico(i) != k }",
+    "metodo": "ascenso por coordenadas en log-espacio, rejilla exp(linspace(-0.7,0.7,29)), clase 0 anclada en 1.0",
+    "particion_de_origen": "la canonica de V20/V30, semilla 42",
+    "caveat_declarado": "la union de los cinco idx cubre las 169.336 filas, asi que la evaluacion con pesos congelados NO es fuera de muestra para los pesos. En la canonica los congelados dieron +0,0025437 frente a +0,0020172 de los anidados: la version congelada puntua mas alto, que es la firma de haber visto los datos"
+  },
+  "auditoria_teorica": {
+    "teoria": [
+      "Lipton, Elkan & Naryanaswamy ICML 2014: umbral optimo para F1 en el caso BINARIO; umbral = F*/2 si las probabilidades estan calibradas",
+      "Dembczynski et al. arXiv 1402.1892: reglas plug-in en el caso MULTIETIQUETA",
+      "arXiv 2511.21794: umbral multidimensional en el simplex para multiclase; regla de inferencia sin reentrenar"
+    ],
+    "no_es_teoria": [
+      "no existe teorema revisado de que argmax_c(w_c*p_c) sea OPTIMO para macro-F1 multiclase con una sola etiqueta por fila",
+      "los pesos multiplicativos por clase son una ADAPTACION propia, heuristica estandar pero sin garantia",
+      "es una familia restringida: solo reescala clases, no expresa cualquier region de decision"
+    ],
+    "lo_que_si_se_sostiene": "dos hechos medidos, no teoricos: (1) argmax maximiza accuracy y no macro-F1, y el reparto predicho esta desviado hacia las clases faciles; (2) la familia contiene a argmax, asi que la mejora se mide en validacion"
+  },
+  "protocolo": {
+    "particion_alternativa": "StratifiedGroupKFold 5, mismos dup_clusters, semilla 987654",
+    "reentrenamiento": "V20 y los dos LightGBM desde cero con las configuraciones CONGELADAS de V30",
+    "mezcla": {
+      "v20_f3b_oof_candidato": 0.3548,
+      "v29_lgbm_optuna": 0.3354,
+      "v30_lgbm_refinado": 0.3098
+    },
+    "regla": "argmax_c(w_c * p_c) con w congelado",
+    "controles": [
+      "uniforme",
+      "permutado",
+      "aleatorio"
+    ],
+    "criterio": "delta >= +0,0015 Y >=4/5 folds positivos Y real>permutado Y real>aleatorio",
+    "semilla_bootstrap": 20261010,
+    "umbral_alta_confianza": 0.6
+  },
+  "no_se_hace": [
+    "reajustar pesos",
+    "buscar otra rejilla",
+    "elegir otra semilla",
+    "tercera particion",
+    "usar el test",
+    "usar el holdout",
+    "consultar el leaderboard",
+    "generar submission",
+    "proyectar score"
+  ],
+  "segundos": 0.0
+}

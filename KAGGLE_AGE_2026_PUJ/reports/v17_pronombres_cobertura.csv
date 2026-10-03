@@ -1,0 +1,8 @@
+categoria,formas,documentos_con_la_categoria,apariciones_totales,formas_sobre_el_minimo,formas_totales,detalle
+primera_singular,yo mi mis mio mia mios mias conmigo me nos,26399,33594,7,10,"yo:4,287 mi:8,153 mis:1,546 mio:327 mia:176 mios:42 mias:17 conmigo:310 me:12,625 nos:2,993"
+primera_plural,nosotros nuestra nuestros nuestras,2320,2452,4,4,"nosotros:504 nuestra:1,000 nuestros:631 nuestras:268"
+segunda,tu tus tuyo tuya tuyos tuyas contigo usted ustedes te ti vos otros,15406,19615,9,13,"tu:4,817 tus:938 tuyo:106 tuya:69 tuyos:33 tuyas:11 contigo:463 usted:642 ustedes:574 te:7,797 ti:1,123 vos:370 otros:464"
+tercera_singular,su sus suyo suya suyos suyas consigo ella el,40158,50419,4,9,"su:5,714 sus:2,247 suyo:43 suya:33 suyos:15 suyas:13 consigo:24 ella:608 el:34,240"
+tercera_plural,ellos ellas,743,762,1,2,ellos:639 ellas:105
+impersonal,se lo le les,29344,36290,4,4,"se:15,400 lo:11,464 le:4,526 les:1,742"
+ambigua,el los las una un este esta esto ese esa aquel,74269,114140,10,11,"el:34,240 los:17,245 las:10,540 una:9,100 un:14,305 este:4,288 esta:6,814 esto:1,603 ese:1,538 esa:1,507 aquel:85"

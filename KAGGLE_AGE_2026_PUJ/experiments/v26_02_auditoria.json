@@ -1,0 +1,122 @@
+{
+  "fase": "V26 02 auditoria",
+  "fecha": "2026-09-27",
+  "experimenta": false,
+  "compliance": {
+    "checks": [
+      {
+        "comprobacion": "transformers",
+        "codigo": [],
+        "artefactos": [],
+        "cumplida": true
+      },
+      {
+        "comprobacion": "BERT",
+        "codigo": [],
+        "artefactos": [],
+        "cumplida": true
+      },
+      {
+        "comprobacion": "RoBERTa",
+        "codigo": [],
+        "artefactos": [],
+        "cumplida": true
+      },
+      {
+        "comprobacion": "LLM",
+        "codigo": [],
+        "artefactos": [],
+        "cumplida": true
+      },
+      {
+        "comprobacion": "embeddings",
+        "codigo": [],
+        "artefactos": [],
+        "cumplida": true
+      },
+      {
+        "comprobacion": "external_classifier",
+        "codigo": [],
+        "artefactos": [],
+        "cumplida": true
+      },
+      {
+        "comprobacion": "external_labels",
+        "codigo": [],
+        "artefactos": [],
+        "cumplida": true
+      },
+      {
+        "comprobacion": "pseudo_labeling",
+        "codigo": [],
+        "artefactos": [],
+        "cumplida": true
+      },
+      {
+        "comprobacion": "test_labels",
+        "codigo": [],
+        "artefactos": [],
+        "cumplida": true
+      },
+      {
+        "comprobacion": "test_training",
+        "codigo": [],
+        "artefactos": [],
+        "cumplida": true
+      },
+      {
+        "comprobacion": "test_calibration",
+        "codigo": [],
+        "artefactos": [],
+        "cumplida": true
+      },
+      {
+        "comprobacion": "test_feature_selection",
+        "codigo": [],
+        "artefactos": [],
+        "cumplida": true
+      },
+      {
+        "comprobacion": "test_threshold_tuning",
+        "codigo": [],
+        "artefactos": [],
+        "cumplida": true
+      },
+      {
+        "comprobacion": "holdout_reuse",
+        "codigo": [],
+        "artefactos": [],
+        "cumplida": true
+      },
+      {
+        "comprobacion": "leaderboard_tuning",
+        "codigo": [],
+        "artefactos": [],
+        "cumplida": true
+      }
+    ],
+    "todas_cumplidas": true
+  },
+  "coherencia": {
+    "baseline_reproducido": true,
+    "cv20_es_el_canonico": true,
+    "notebook_tiene_la_seccion": true,
+    "ids_unicos": true,
+    "titulos_unicos": true,
+    "decision_registrada": true,
+    "sin_submission": true
+  },
+  "notebook": {
+    "celdas_antes": 136,
+    "celdas_despues": 146,
+    "ejecutadas": 7,
+    "errores": 0,
+    "fallos": []
+  },
+  "unicode_introducidos": [],
+  "unicode_heredado": 38,
+  "unicode_scripts": [],
+  "lint_rc": 0,
+  "todo_ok": true,
+  "segundos": 0.7
+}

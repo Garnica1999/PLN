@@ -1,0 +1,3 @@
+variante,macro_f1,delta_contra_v20,folds_positivos,ic95,frontera_1,frontera_2,primer_umbral_bal,rescates,danos,neto,cambios,estado
+V20 (champion),0.6097782,0.0,-,-,0.5075,0.5029,0.7632,0,0,0,0,CHAMPION
+primer umbral con class_weight balanced (peso 3.0),0.593202,-0.016576,0/5,"[-0.0178, -0.0153]",0.4117,0.5088,0.843,5234,6574,-1340,18164,

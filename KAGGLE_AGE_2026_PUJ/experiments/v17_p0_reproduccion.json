@@ -1,0 +1,107 @@
+{
+  "fase": "V17 · P0' reconciliacion de referencia y verificacion de A2",
+  "fecha": "2026-09-26",
+  "entrenamiento": "ninguno (inerte)",
+  "referencia": {
+    "pooled": 0.6005017473,
+    "pooled_redondeado": 0.6005,
+    "media_folds": 0.6004103057,
+    "media_folds_redondeada": 0.6004,
+    "diferencia": -9.14416e-05,
+    "canonico": 0.6005,
+    "estimador_canonico": "pooled",
+    "motivo": "el umbral de D-042 y el IC95 del bootstrap viven en pooled, y las cinco fases modernas miden alli; usar la media por fold regalaria +0,0001 y romperia la comparabilidad",
+    "por_fold": [
+      0.60065636,
+      0.60502888,
+      0.60320352,
+      0.60039292,
+      0.59276984
+    ]
+  },
+  "a2_verificado": [
+    {
+      "arquitectura": "promedio_fijo",
+      "macro_f1": 0.6005,
+      "publicado": 0.6005,
+      "coincide": true,
+      "delta_absoluto": 0.0,
+      "18-24|25-34": 0.4963,
+      "25-34|35-49": 0.4974,
+      "por_fold": [
+        0.600656,
+        0.605029,
+        0.603204,
+        0.600393,
+        0.59277
+      ]
+    },
+    {
+      "arquitectura": "peso_aprendido",
+      "macro_f1": 0.6002,
+      "publicado": 0.6002,
+      "coincide": true,
+      "delta_absoluto": 0.0,
+      "18-24|25-34": 0.4959,
+      "25-34|35-49": 0.4972,
+      "por_fold": [
+        0.599034,
+        0.605029,
+        0.603204,
+        0.60021,
+        0.59277
+      ]
+    },
+    {
+      "arquitectura": "combinador_logistico",
+      "macro_f1": 0.6011,
+      "publicado": 0.6011,
+      "coincide": true,
+      "delta_absoluto": 0.0,
+      "18-24|25-34": 0.5065,
+      "25-34|35-49": 0.5131,
+      "por_fold": [
+        0.601807,
+        0.604701,
+        0.604433,
+        0.602363,
+        0.591428
+      ]
+    }
+  ],
+  "todo_coincide": true,
+  "a2": {
+    "delta": 0.000598,
+    "bootstrap_ic95": [
+      -0.000256,
+      0.001529,
+      0.9095
+    ],
+    "frontera_18_24_25_34": 0.5065,
+    "frontera_25_34_35_49": 0.5131,
+    "ganancia_frontera_18_24_25_34": 0.0102,
+    "ganancia_frontera_25_34_35_49": 0.0157,
+    "segunda_particion": {
+      "por_fold": [
+        0.6009,
+        0.6015,
+        0.6043,
+        0.6056
+      ],
+      "por_fold_referencia": [
+        0.6013,
+        0.5998,
+        0.6039,
+        0.6048
+      ],
+      "positivos": 3
+    },
+    "fuente_segunda_particion": "citada de experiments/v16_arquitectura.json; no recalculada"
+  },
+  "banda_ruido_permutados": [
+    0.6,
+    0.6003,
+    0.6
+  ],
+  "segundos": 34.3
+}

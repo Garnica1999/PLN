@@ -1,0 +1,86 @@
+{
+  "fase": "cierre final: transferencia externa positiva",
+  "fecha": "2026-10-13",
+  "experimenta": false,
+  "commit": "0ba624dc707c4f523f8e96103a4e4e89b6521252",
+  "comparacion": [
+    {
+      "metodo": "V30",
+      "CV_canonico": 0.6134471,
+      "CV_alternativo": 0.6143347,
+      "LB": 0.63302,
+      "delta_CV_canonico": 0.0,
+      "delta_CV_alternativo": 0.0,
+      "delta_LB": 0.0,
+      "rol": "baseline historico congelado"
+    },
+    {
+      "metodo": "plug-in",
+      "CV_canonico": 0.6154643,
+      "CV_alternativo": 0.61647,
+      "LB": 0.63575,
+      "delta_CV_canonico": 0.0020172,
+      "delta_CV_alternativo": 0.002058,
+      "delta_LB": 0.00273,
+      "rol": "campeon adoptado"
+    }
+  ],
+  "calibracion": [
+    {
+      "metodo": "V30",
+      "CV": 0.6134471,
+      "LB_predicho": 0.63301,
+      "LB_real": 0.63302,
+      "error": 1e-05
+    },
+    {
+      "metodo": "plug-in (nested)",
+      "CV": 0.6154643,
+      "LB_predicho": 0.63508,
+      "LB_real": 0.63575,
+      "error": 0.00067
+    },
+    {
+      "metodo": "plug-in (global)",
+      "CV": 0.6159732,
+      "LB_predicho": 0.6356,
+      "LB_real": 0.63575,
+      "error": 0.00015
+    }
+  ],
+  "estado": {
+    "V30": "HISTORICAL_FROZEN_BASELINE",
+    "plug_in": "ADOPTED",
+    "research_status": "CLOSED",
+    "candidate_status": "ADOPTED",
+    "external_transfer": "POSITIVE_TRANSFER"
+  },
+  "leaderboards": {
+    "V30": 0.63302,
+    "plug_in": 0.63575,
+    "delta": 0.00273
+  },
+  "submission": {
+    "path": "submissions/age_submission_plugin_candidate.csv",
+    "sha256": "29cbe6cca4312a65f5176bad25c7d4ae4624d348f3e55586dfa36767a3abd6c0",
+    "filas": 112892,
+    "score": 0.63575,
+    "fecha_de_registro": "2026-09-30T03:35:46+00:00"
+  },
+  "correccion_historica_vigente": {
+    "V20-F3-UMBRALES": "arquitectura ordinal (cadena de cinco discriminadores binarios anidados con monotonia), NO una regla de decision post-hoc",
+    "consecuencia": "la familia de reglas de decision no habia sido auditada correctamente antes de esta fase"
+  },
+  "no_se_hace": [
+    "grid nueva",
+    "pesos nuevos",
+    "modelo nuevo",
+    "representacion nueva",
+    "submission nueva",
+    "tuning con el leaderboard",
+    "reabrir P33/P34/G12/G14"
+  ],
+  "submissions_nuevas": 0,
+  "tuning_post_leaderboard": 0,
+  "segundos": 0.2
+}

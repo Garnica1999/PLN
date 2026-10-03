@@ -4,7 +4,7 @@
 genera la submission, la valida y verifica la reproducibilidad contra la v06 del leaderboard.
 
 ``99_entrega_consolidado.ipynb`` es el **artefacto calificado** (30% de la nota): narra el proyecto
-completo con el formato OBSERVACIÓN → HIPÓTESIS → MÉTODO → RESULTADO → INTERPRETACIÓN → DECISIÓN,
+completo con el formato OBSERVACIÓN -> HIPÓTESIS -> MÉTODO -> RESULTADO -> INTERPRETACIÓN -> DECISIÓN,
 reproduce las cifras clave y verifica el artefacto final.
 """
 
@@ -302,8 +302,8 @@ logística lo iguala con probabilidades; ComplementNB es débil (0,5370) pero mu
 **MÉTODO.** Sobre esas piezas se construyó un ensamble por **stacking** con evaluación
 leave-one-fold-out, añadiendo componentes guiados por el análisis de errores.
 
-**RESULTADO.** Progresión de la validación interna: 0,5344 (baseline) → 0,5557 (menciones) →
-0,5656 (stacking) → 0,5748 (+hashtags, +700k, +palabra) → 0,5784 (+densas en el meta) →
+**RESULTADO.** Progresión de la validación interna: 0,5344 (baseline) -> 0,5557 (menciones) ->
+0,5656 (stacking) -> 0,5748 (+hashtags, +700k, +palabra) -> 0,5784 (+densas en el meta) ->
 **0,5851** (+MLP denso como miembro diverso).
 
 **DECISIÓN.** El modelo final es el ensamble de 10 fuentes con meta-modelo enriquecido (D-013,

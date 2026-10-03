@@ -1,0 +1,93 @@
+# familia: temas
+# subcategoria: salud
+# descripcion: Dominio de salud y cuidado personal: cuerpo, síntoma, atención e instituciones, con vocabulario cotidiano.
+# idioma: es
+# procedencia: elaborado en este proyecto (conocimiento linguistico general)
+# licencia: del proyecto; sin datos externos y sin etiquetas de edad
+# riesgo: ninguno
+# fecha: 2026-09-25
+# entradas_declaradas: 96
+# cribado_corpus: frecuencia minima 3 en el train
+HISTORIA
+aislamiento
+alergia
+ambulancia
+ansiedad
+articulación
+barriga
+bienestar
+cabeza
+cansancio
+cicatriz
+cirugía
+clínica
+consultorio
+dentista
+depresión
+descanso
+dientes
+dieta
+doler
+dolor
+dolores
+dormir
+ejercicio
+emergencia
+enferma
+enfermedad
+enfermedades
+enfermero
+enfermería
+enfermo
+espalda
+estrés
+estómago
+fatiga
+fiebre
+gafas
+gimnasio
+granos
+gripa
+gripe
+gym
+herida
+heridas
+higiene
+hospital
+hospitales
+hueso
+huesos
+inyección
+lavado
+medicamento
+medicamentos
+medicina
+mental
+mocos
+médica
+médico
+músculo
+músculos
+nutrición
+ortodoncia
+oído
+oídos
+pastilla
+pastillas
+peso
+piel
+psicólogo
+psiquiatra
+resfriado
+salud
+saludable
+sangre
+sueño
+terapia
+tos
+toser
+urgencias
+vacuna
+vacunas
+virus
+vitaminas

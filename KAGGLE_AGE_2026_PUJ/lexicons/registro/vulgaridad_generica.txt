@@ -1,0 +1,49 @@
+# familia: registro
+# subcategoria: vulgaridad_generica
+# descripcion: Vulgaridad genérica del español, sin destinatario: mide registro, no edad.
+# idioma: es
+# procedencia: elaborado en este proyecto (conocimiento linguistico general)
+# licencia: del proyecto; sin datos externos y sin etiquetas de edad
+# riesgo: ninguno
+# fecha: 2026-09-25
+# entradas_declaradas: 52
+# cribado_corpus: frecuencia minima 3 en el train
+bolas
+bolos
+cabron
+cabrona
+cagada
+cago
+carajo
+carajos
+chinga
+chingada
+chingón
+cojones
+concha
+gilipollas
+hijueputa
+hostia
+huevadas
+huevo
+huevos
+mamon
+mamón
+mierd
+mierda
+mierdas
+nalgas
+pendejada
+pene
+perra
+perras
+polla
+puta
+putas
+puto
+putos
+verga
+vergas
+weas
+wey
+zorra

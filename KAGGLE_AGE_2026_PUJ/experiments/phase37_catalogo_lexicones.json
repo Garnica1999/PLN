@@ -1,0 +1,29 @@
+{
+  "fase": "P1 — catalogo de lexicones y cribado de aplicabilidad",
+  "fecha": "2026-09-25",
+  "subcategorias": 24,
+  "entradas_declaradas": 1588,
+  "entradas_efectivas": 1359,
+  "descartadas": 229,
+  "min_frecuencia_corpus": 3,
+  "tokens_unicos_tras_ambiguedad": 1081,
+  "tokens_ambiguos_descartados": 131,
+  "cobertura_por_familia": {
+    "registro": {
+      "tokens_corpus": 97723,
+      "tokens_cubiertos": 5587,
+      "cobertura_pct": 5.7172
+    },
+    "vida": {
+      "tokens_corpus": 97723,
+      "tokens_cubiertos": 609,
+      "cobertura_pct": 0.6232
+    },
+    "temas": {
+      "tokens_corpus": 97723,
+      "tokens_cubiertos": 9807,
+      "cobertura_pct": 10.0355
+    }
+  },
+  "subcategorias_vacias": []
+}

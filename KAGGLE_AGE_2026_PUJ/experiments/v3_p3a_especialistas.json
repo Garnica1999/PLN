@@ -1,0 +1,90 @@
+{
+  "fase": "V13 · P3a especialistas binarios de frontera",
+  "fecha": "2026-09-26",
+  "n_variables": 279,
+  "referencia_macro_f1": 0.6005,
+  "macro_f1_con_puerta": 0.5993,
+  "delta_global": -0.0012,
+  "filas_modificadas": 6944,
+  "por_frontera": [
+    {
+      "frontera": "18-24|25-34",
+      "modelo": "logreg",
+      "filas_par": 57023,
+      "accuracy_v12_par": 0.4963,
+      "accuracy_especialista_par": 0.4944,
+      "mejora_par": -0.0019,
+      "filas_actuables": 57019,
+      "accuracy_v12_actuables": 0.4964,
+      "accuracy_especialista_actuables": 0.4944,
+      "rescate": 1023,
+      "dano": 1132,
+      "neto": -109,
+      "macro_f1_global": 0.5998,
+      "filas_modificadas": 3383
+    },
+    {
+      "frontera": "18-24|25-34",
+      "modelo": "mlp",
+      "filas_par": 57023,
+      "accuracy_v12_par": 0.4963,
+      "accuracy_especialista_par": 0.4946,
+      "mejora_par": -0.0017,
+      "filas_actuables": 57019,
+      "accuracy_v12_actuables": 0.4964,
+      "accuracy_especialista_actuables": 0.4947,
+      "rescate": 1482,
+      "dano": 1578,
+      "neto": -96,
+      "macro_f1_global": 0.5999,
+      "filas_modificadas": 4953
+    },
+    {
+      "frontera": "25-34|35-49",
+      "modelo": "logreg",
+      "filas_par": 56577,
+      "accuracy_v12_par": 0.4974,
+      "accuracy_especialista_par": 0.4942,
+      "mejora_par": -0.0032,
+      "filas_actuables": 51160,
+      "accuracy_v12_actuables": 0.55,
+      "accuracy_especialista_actuables": 0.5465,
+      "rescate": 695,
+      "dano": 875,
+      "neto": -180,
+      "macro_f1_global": 0.5994,
+      "filas_modificadas": 2604
+    },
+    {
+      "frontera": "25-34|35-49",
+      "modelo": "mlp",
+      "filas_par": 56577,
+      "accuracy_v12_par": 0.4974,
+      "accuracy_especialista_par": 0.4945,
+      "mejora_par": -0.0029,
+      "filas_actuables": 51160,
+      "accuracy_v12_actuables": 0.55,
+      "accuracy_especialista_actuables": 0.5468,
+      "rescate": 1262,
+      "dano": 1425,
+      "neto": -163,
+      "macro_f1_global": 0.5994,
+      "filas_modificadas": 4568
+    }
+  ],
+  "criterios": {
+    "mejora_minima": 0.01,
+    "rescate_minimo": 1000,
+    "mejoras": {
+      "18-24|25-34": -0.0017,
+      "25-34|35-49": -0.0029
+    },
+    "netos": {
+      "18-24|25-34": -96,
+      "25-34|35-49": -163
+    },
+    "rescate_total": -259
+  },
+  "pasa": false,
+  "segundos": 154.6
+}

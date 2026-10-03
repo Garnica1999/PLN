@@ -1,0 +1,78 @@
+# familia: temas
+# subcategoria: religion
+# descripcion: Dominio religioso y de la espiritualidad práctica: practicantes, instituciones y vocabulario litúrgico, sin doctrina ni juicios de valor.
+# idioma: es
+# procedencia: elaborado en este proyecto (conocimiento linguistico general)
+# licencia: del proyecto; sin datos externos y sin etiquetas de edad
+# riesgo: ninguno
+# fecha: 2026-09-25
+# entradas_declaradas: 79
+# cribado_corpus: frecuencia minima 3 en el train
+accion
+alma
+almas
+altar
+amparo
+bautismo
+bendecir
+bendito
+biblia
+capilla
+cementerio
+cielo
+comunión
+confirmación
+creer
+cristo
+cruz
+culto
+cura
+de
+demonio
+diablo
+diezmo
+difunto
+dios
+entierro
+espiritual
+espíritu
+eternidad
+eucaristía
+evangelio
+fe
+fraile
+funeral
+gracia
+gracias
+iglesia
+iglesias
+infierno
+jesús
+luto
+maldito
+matrimonio
+milagro
+misa
+monja
+nuestro
+ofrenda
+oraciones
+oración
+padre
+parroquia
+pecado
+perdona
+perdón
+procesión
+párroco
+rezar
+rezo
+salmo
+santidad
+santo
+santuario
+satanas
+satán
+secta
+señor
+templo

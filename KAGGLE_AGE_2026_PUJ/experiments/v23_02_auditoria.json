@@ -1,0 +1,366 @@
+{
+  "fase": "V23 02 auditoria",
+  "fecha": "2026-09-27",
+  "notebook": {
+    "celdas": 103,
+    "nbformat": "4.5",
+    "formato_valido": true,
+    "ids_unicos": true,
+    "ids_repetidos": [],
+    "titulos_unicos": true,
+    "titulos_repetidos": [],
+    "secciones_de_titulo": 32,
+    "importes": 11,
+    "artefactos_referenciados": 40,
+    "artefactos_faltantes": [],
+    "figuras_referenciadas": [],
+    "figuras_faltantes": []
+  },
+  "unicode_hallazgos": [
+    {
+      "fichero": "notebooks/99_entrega_consolidado.ipynb",
+      "linea": 16,
+      "caracter": "→",
+      "codepoint": "U+2192",
+      "categoria": "unicode inesperado",
+      "nombre": "RIGHTWARDS ARROW"
+    },
+    {
+      "fichero": "notebooks/99_entrega_consolidado.ipynb",
+      "linea": 214,
+      "caracter": "²",
+      "codepoint": "U+00B2",
+      "categoria": "unicode inesperado",
+      "nombre": "SUPERSCRIPT TWO"
+    },
+    {
+      "fichero": "notebooks/99_entrega_consolidado.ipynb",
+      "linea": 328,
+      "caracter": "−",
+      "codepoint": "U+2212",
+      "categoria": "unicode inesperado",
+      "nombre": "MINUS SIGN"
+    },
+    {
+      "fichero": "notebooks/99_entrega_consolidado.ipynb",
+      "linea": 330,
+      "caracter": "−",
+      "codepoint": "U+2212",
+      "categoria": "unicode inesperado",
+      "nombre": "MINUS SIGN"
+    },
+    {
+      "fichero": "notebooks/99_entrega_consolidado.ipynb",
+      "linea": 334,
+      "caracter": "∪",
+      "codepoint": "U+222A",
+      "categoria": "unicode inesperado",
+      "nombre": "UNION"
+    },
+    {
+      "fichero": "notebooks/99_entrega_consolidado.ipynb",
+      "linea": 483,
+      "caracter": "∪",
+      "codepoint": "U+222A",
+      "categoria": "unicode inesperado",
+      "nombre": "UNION"
+    },
+    {
+      "fichero": "notebooks/99_entrega_consolidado.ipynb",
+      "linea": 689,
+      "caracter": "→",
+      "codepoint": "U+2192",
+      "categoria": "unicode inesperado",
+      "nombre": "RIGHTWARDS ARROW"
+    },
+    {
+      "fichero": "notebooks/99_entrega_consolidado.ipynb",
+      "linea": 690,
+      "caracter": "→",
+      "codepoint": "U+2192",
+      "categoria": "unicode inesperado",
+      "nombre": "RIGHTWARDS ARROW"
+    },
+    {
+      "fichero": "notebooks/99_entrega_consolidado.ipynb",
+      "linea": 691,
+      "caracter": "−",
+      "codepoint": "U+2212",
+      "categoria": "unicode inesperado",
+      "nombre": "MINUS SIGN"
+    },
+    {
+      "fichero": "notebooks/99_entrega_consolidado.ipynb",
+      "linea": 798,
+      "caracter": "→",
+      "codepoint": "U+2192",
+      "categoria": "unicode inesperado",
+      "nombre": "RIGHTWARDS ARROW"
+    },
+    {
+      "fichero": "notebooks/99_entrega_consolidado.ipynb",
+      "linea": 814,
+      "caracter": "→",
+      "codepoint": "U+2192",
+      "categoria": "unicode inesperado",
+      "nombre": "RIGHTWARDS ARROW"
+    },
+    {
+      "fichero": "notebooks/99_entrega_consolidado.ipynb",
+      "linea": 829,
+      "caracter": "→",
+      "codepoint": "U+2192",
+      "categoria": "unicode inesperado",
+      "nombre": "RIGHTWARDS ARROW"
+    },
+    {
+      "fichero": "notebooks/99_entrega_consolidado.ipynb",
+      "linea": 835,
+      "caracter": "−",
+      "codepoint": "U+2212",
+      "categoria": "unicode inesperado",
+      "nombre": "MINUS SIGN"
+    },
+    {
+      "fichero": "notebooks/99_entrega_consolidado.ipynb",
+      "linea": 835,
+      "caracter": "−",
+      "codepoint": "U+2212",
+      "categoria": "unicode inesperado",
+      "nombre": "MINUS SIGN"
+    },
+    {
+      "fichero": "notebooks/99_entrega_consolidado.ipynb",
+      "linea": 835,
+      "caracter": "→",
+      "codepoint": "U+2192",
+      "categoria": "unicode inesperado",
+      "nombre": "RIGHTWARDS ARROW"
+    },
+    {
+      "fichero": "notebooks/99_entrega_consolidado.ipynb",
+      "linea": 904,
+      "caracter": "−",
+      "codepoint": "U+2212",
+      "categoria": "unicode inesperado",
+      "nombre": "MINUS SIGN"
+    },
+    {
+      "fichero": "notebooks/99_entrega_consolidado.ipynb",
+      "linea": 905,
+      "caracter": "−",
+      "codepoint": "U+2212",
+      "categoria": "unicode inesperado",
+      "nombre": "MINUS SIGN"
+    },
+    {
+      "fichero": "notebooks/99_entrega_consolidado.ipynb",
+      "linea": 907,
+      "caracter": "−",
+      "codepoint": "U+2212",
+      "categoria": "unicode inesperado",
+      "nombre": "MINUS SIGN"
+    },
+    {
+      "fichero": "notebooks/99_entrega_consolidado.ipynb",
+      "linea": 911,
+      "caracter": "−",
+      "codepoint": "U+2212",
+      "categoria": "unicode inesperado",
+      "nombre": "MINUS SIGN"
+    },
+    {
+      "fichero": "notebooks/99_entrega_consolidado.ipynb",
+      "linea": 912,
+      "caracter": "−",
+      "codepoint": "U+2212",
+      "categoria": "unicode inesperado",
+      "nombre": "MINUS SIGN"
+    },
+    {
+      "fichero": "notebooks/99_entrega_consolidado.ipynb",
+      "linea": 912,
+      "caracter": "−",
+      "codepoint": "U+2212",
+      "categoria": "unicode inesperado",
+      "nombre": "MINUS SIGN"
+    },
+    {
+      "fichero": "notebooks/99_entrega_consolidado.ipynb",
+      "linea": 913,
+      "caracter": "−",
+      "codepoint": "U+2212",
+      "categoria": "unicode inesperado",
+      "nombre": "MINUS SIGN"
+    },
+    {
+      "fichero": "notebooks/99_entrega_consolidado.ipynb",
+      "linea": 916,
+      "caracter": "−",
+      "codepoint": "U+2212",
+      "categoria": "unicode inesperado",
+      "nombre": "MINUS SIGN"
+    },
+    {
+      "fichero": "notebooks/99_entrega_consolidado.ipynb",
+      "linea": 917,
+      "caracter": "→",
+      "codepoint": "U+2192",
+      "categoria": "unicode inesperado",
+      "nombre": "RIGHTWARDS ARROW"
+    },
+    {
+      "fichero": "notebooks/99_entrega_consolidado.ipynb",
+      "linea": 918,
+      "caracter": "−",
+      "codepoint": "U+2212",
+      "categoria": "unicode inesperado",
+      "nombre": "MINUS SIGN"
+    },
+    {
+      "fichero": "notebooks/99_entrega_consolidado.ipynb",
+      "linea": 968,
+      "caracter": "∪",
+      "codepoint": "U+222A",
+      "categoria": "unicode inesperado",
+      "nombre": "UNION"
+    },
+    {
+      "fichero": "notebooks/99_entrega_consolidado.ipynb",
+      "linea": 980,
+      "caracter": "↔",
+      "codepoint": "U+2194",
+      "categoria": "unicode inesperado",
+      "nombre": "LEFT RIGHT ARROW"
+    },
+    {
+      "fichero": "notebooks/99_entrega_consolidado.ipynb",
+      "linea": 1003,
+      "caracter": "↔",
+      "codepoint": "U+2194",
+      "categoria": "unicode inesperado",
+      "nombre": "LEFT RIGHT ARROW"
+    },
+    {
+      "fichero": "notebooks/99_entrega_consolidado.ipynb",
+      "linea": 1147,
+      "caracter": "↔",
+      "codepoint": "U+2194",
+      "categoria": "unicode inesperado",
+      "nombre": "LEFT RIGHT ARROW"
+    },
+    {
+      "fichero": "notebooks/99_entrega_consolidado.ipynb",
+      "linea": 1228,
+      "caracter": "−",
+      "codepoint": "U+2212",
+      "categoria": "unicode inesperado",
+      "nombre": "MINUS SIGN"
+    },
+    {
+      "fichero": "notebooks/99_entrega_consolidado.ipynb",
+      "linea": 1686,
+      "caracter": "§",
+      "codepoint": "U+00A7",
+      "categoria": "unicode inesperado",
+      "nombre": "SECTION SIGN"
+    },
+    {
+      "fichero": "notebooks/99_entrega_consolidado.ipynb",
+      "linea": 1702,
+      "caracter": "§",
+      "codepoint": "U+00A7",
+      "categoria": "unicode inesperado",
+      "nombre": "SECTION SIGN"
+    },
+    {
+      "fichero": "notebooks/99_entrega_consolidado.ipynb",
+      "linea": 1710,
+      "caracter": "§",
+      "codepoint": "U+00A7",
+      "categoria": "unicode inesperado",
+      "nombre": "SECTION SIGN"
+    },
+    {
+      "fichero": "notebooks/99_entrega_consolidado.ipynb",
+      "linea": 1758,
+      "caracter": "§",
+      "codepoint": "U+00A7",
+      "categoria": "unicode inesperado",
+      "nombre": "SECTION SIGN"
+    },
+    {
+      "fichero": "notebooks/99_entrega_consolidado.ipynb",
+      "linea": 1779,
+      "caracter": "§",
+      "codepoint": "U+00A7",
+      "categoria": "unicode inesperado",
+      "nombre": "SECTION SIGN"
+    },
+    {
+      "fichero": "notebooks/99_entrega_consolidado.ipynb",
+      "linea": 1781,
+      "caracter": "§",
+      "codepoint": "U+00A7",
+      "categoria": "unicode inesperado",
+      "nombre": "SECTION SIGN"
+    },
+    {
+      "fichero": "notebooks/99_entrega_consolidado.ipynb",
+      "linea": 1782,
+      "caracter": "§",
+      "codepoint": "U+00A7",
+      "categoria": "unicode inesperado",
+      "nombre": "SECTION SIGN"
+    },
+    {
+      "fichero": "notebooks/99_entrega_consolidado.ipynb",
+      "linea": 1788,
+      "caracter": "§",
+      "codepoint": "U+00A7",
+      "categoria": "unicode inesperado",
+      "nombre": "SECTION SIGN"
+    }
+  ],
+  "ejecucion": {
+    "celdas_ejecutadas": 16,
+    "errores": 0,
+    "fallos": [],
+    "salidas_clave": [
+      "e21d474c: experimentos registrados: 128 | decisiones documentadas: 57",
+      "v23coral0105: V20 reproduce el control historico: 0.6097782",
+      "v23coral0121: decision : CORAL = CLOSED",
+      "v23coral0122: compartir pesos (CORAL menos control B) : +0.014696",
+      "v23coral0124: v23_coral_monotonicidad.png"
+    ]
+  },
+  "coherencia_numerica": {
+    "control_a_reproduce": true,
+    "control_a_igual_a_historico": true,
+    "violaciones_v20_igual_a_D057": true,
+    "coral_sin_violaciones": true,
+    "celdas_suman_el_total": true,
+    "neto_igual_a_delta_de_aciertos": true,
+    "csv_igual_a_json": true,
+    "tests_pasan": true,
+    "sin_cifras_manuales": true
+  },
+  "hashes": {
+    "experiments/v23_00_tests.json": "4065c1f046693635171e581e4fcabfec95d4a3392866854bf415d26b6fd68ec8",
+    "experiments/v23_01_coral.json": "abea3b75f0efd83f1f644dc2d9c4a430450b55e5a757fdc2adf3beaab9cb4ef1",
+    "reports/v23_00_tests_coral.md": "359363218fda45075440c70c882b86d494d8c6eeb52584a0140bbdd60c90ea36",
+    "reports/v23_coral_analysis.md": "5e04ee38246c565ef83749cf4dc2b9f5384c3a3def6a88af8719ab88502170a5",
+    "reports/v23_coral_results.csv": "5e421fa3cf5cf45c4d08415aba9bfaa6b2dbf58c5fd2bb8dd8eeeb51d425e2ac",
+    "features/v23_coral_cdf_oof.npy": "31f62e443d7889f457ea168dadd90586a9407eddf331df6e1f5a02d87c5f0d45",
+    "features/v23_binarios_lineales_oof.npy": "86fd9ec415e6a57046b27fc656fb17b7b7a2cda0d16c8b7ea1b6bd3982e228db",
+    "reports/figures/v23_coral_monotonicidad.png": "a0e5fcbb0942bed5ae662062ea9ed561aac431170ac3329b34e9297ef2c31cd1",
+    "reports/figures/v23_coral_complementariedad.png": "015dfcd0b65aabe373c29c7c8f4b90a5c0e35b1b9c727282f4f81fa9b343a5c3",
+    "reports/figures/v23_coral_folds.png": "96dc87727328640da7bd7d7ad187235680c35af7daa3a44498a8ce6f1afa0593"
+  },
+  "unicode_introducidos_por_v23": 0,
+  "unicode_preexistentes_del_notebook": 38,
+  "artefactos_ausentes": [],
+  "deuda_notebook": "el notebook consolidado no contiene V18 a V22 y su ultima seccion es la 30 (V17)",
+  "todo_ok": true,
+  "segundos": 0.6
+}

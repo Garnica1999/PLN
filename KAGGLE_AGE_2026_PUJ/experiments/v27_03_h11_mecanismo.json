@@ -1,0 +1,114 @@
+{
+  "fase": "V27 03 correccion del mecanismo de H11",
+  "fecha": "2026-09-28",
+  "correccion": "`v27_02` conto la clave `split_feature`, que no existe en `dump_model()`. La clave real es `tree_structure`, una estructura anidada que hay que recorrer en profundidad. Por eso el diagnostico daba 0/0 splits.",
+  "el_resultado_de_H11_no_cambia": {
+    "delta": -0.000355,
+    "folds_positivos": "2/5",
+    "decision": "H11 CLOSED",
+    "nota": "el experimento se ejecuto bien; lo que estaba mal era solo la medida"
+  },
+  "mecanismo_corregido": {
+    "umbral_1": {
+      "arboles": 1800,
+      "splits_totales": 3998,
+      "splits_en_features_restringidas": 0,
+      "proporcion_en_restringidas": 0.0,
+      "hojas": 5798,
+      "cambia_respecto_a_modelo_libre": true
+    },
+    "umbral_2": {
+      "arboles": 1800,
+      "splits_totales": 4031,
+      "splits_en_features_restringidas": 0,
+      "proporcion_en_restringidas": 0.0,
+      "hojas": 5831,
+      "cambia_respecto_a_modelo_libre": true
+    },
+    "umbral_3": {
+      "arboles": 1800,
+      "splits_totales": 4046,
+      "splits_en_features_restringidas": 0,
+      "proporcion_en_restringidas": 0.0,
+      "hojas": 5846,
+      "cambia_respecto_a_modelo_libre": true
+    },
+    "umbral_4": {
+      "arboles": 1800,
+      "splits_totales": 4045,
+      "splits_en_features_restringidas": 0,
+      "proporcion_en_restringidas": 0.0,
+      "hojas": 5845,
+      "cambia_respecto_a_modelo_libre": true
+    },
+    "umbral_5": {
+      "arboles": 1800,
+      "splits_totales": 3983,
+      "splits_en_features_restringidas": 0,
+      "proporcion_en_restringidas": 0.0,
+      "hojas": 5783,
+      "cambia_respecto_a_modelo_libre": true
+    }
+  },
+  "splits_totales_global": 20103,
+  "splits_en_restringidas_global": 0,
+  "proporcion_global": 0.0,
+  "features_mas_usadas_por_split": [
+    {
+      "indice": 0,
+      "splits": 3000,
+      "nombre": "E013_margenes_c0"
+    },
+    {
+      "indice": 1,
+      "splits": 3000,
+      "nombre": "E013_margenes_c1"
+    },
+    {
+      "indice": 3,
+      "splits": 3000,
+      "nombre": "E013_margenes_c3"
+    },
+    {
+      "indice": 2,
+      "splits": 3000,
+      "nombre": "E013_margenes_c2"
+    },
+    {
+      "indice": 4,
+      "splits": 2976,
+      "nombre": "E013_margenes_c4"
+    },
+    {
+      "indice": 5,
+      "splits": 2919,
+      "nombre": "E013_margenes_c5"
+    },
+    {
+      "indice": 6,
+      "splits": 2208,
+      "nombre": "E016_margenes_c0"
+    }
+  ],
+  "conclusion_de_mecanismo": "las restricciones se aplican y cambian las predicciones, pero en una proporcion de splits tan baja que la restriccion apenas condiciona el modelo",
+  "modelos_con_probabilidad": [
+    "E-009",
+    "E-010",
+    "E-011",
+    "E015_softmax",
+    "E017_probabilidades",
+    "E021a_ordinal",
+    "E021b_rocchio"
+  ],
+  "excluidos": {
+    "E019b_densas_svd": "TruncatedSVD de features densas, no de clases",
+    "E013_margenes": "margen, no probabilidad de clase",
+    "E016_margenes": "margen, no probabilidad de clase",
+    "E014_margenes": "margen, no probabilidad de clase",
+    "E015_ordinal": "un solo valor, no cubre las seis clases",
+    "E028a_pares": "cinco columnas de pares, no cubre las seis clases",
+    "ADV05_nbsvm": "score NB-SVM, no probabilidad de clase",
+    "nbsvm_word": "score NB-SVM, no probabilidad de clase"
+  },
+  "segundos": 75.9
+}

@@ -1,0 +1,317 @@
+{
+  "fase": "P2.0 anotacion determinista md y lg",
+  "fecha": "2026-09-29",
+  "commit": "2d7fc44fb497abc993c7fef7e7dfc75da59c5b4a",
+  "documentos": 169336,
+  "solo_train": true,
+  "no_test": true,
+  "sin_etiquetas": true,
+  "fichas": {
+    "md": {
+      "modelo": "es_core_news_md",
+      "clave": "md",
+      "filas": 169336,
+      "parquet": "features/linguistic/anotacion_md_train.parquet",
+      "sha256_parquet": "dacbc3055ccde0d9a53f335f65b63df666b2ac1a4eee4a94e5b46fd7cd8c5745",
+      "sha256_meta_json": "889a2fd05d217fa7c1bcffa867af7fc30911bc7b48523f87b5b2525846553ef5",
+      "componentes": [
+        "tok2vec",
+        "morphologizer",
+        "parser",
+        "attribute_ruler",
+        "lemmatizer",
+        "ner"
+      ],
+      "n_process": 4,
+      "batch_size": 512,
+      "segundos": 101.0,
+      "ritmo_docs_por_seg": 1676.9
+    },
+    "lg": {
+      "modelo": "es_core_news_lg",
+      "clave": "lg",
+      "filas": 169336,
+      "parquet": "features/linguistic/anotacion_lg_train.parquet",
+      "sha256_parquet": "81287d541c082ea888ad1b5d06b83680bc5078c624c2da32f0473139d67a739c",
+      "sha256_meta_json": "5007184c49f3cf23f50a902e8e4707877887be91c5c10fa05524276ed6a0f0e4",
+      "componentes": [
+        "tok2vec",
+        "morphologizer",
+        "parser",
+        "attribute_ruler",
+        "lemmatizer",
+        "ner"
+      ],
+      "n_process": 4,
+      "batch_size": 512,
+      "segundos": 107.4,
+      "ritmo_docs_por_seg": 1576.6
+    }
+  },
+  "estadisticas": {
+    "md": {
+      "documentos": 169336,
+      "documentos_con_tokens": 169232,
+      "documentos_vacios": 104,
+      "media_tokens": 15.3,
+      "media_oraciones": 1.541,
+      "documentos_con_oracion": 169232,
+      "tokens_totales": 2590877,
+      "top_pos": [
+        [
+          "PROPN",
+          555247
+        ],
+        [
+          "NOUN",
+          367687
+        ],
+        [
+          "PUNCT",
+          298169
+        ],
+        [
+          "VERB",
+          259041
+        ],
+        [
+          "ADP",
+          256109
+        ],
+        [
+          "DET",
+          204663
+        ],
+        [
+          "ADJ",
+          153005
+        ],
+        [
+          "PRON",
+          128176
+        ],
+        [
+          "ADV",
+          81202
+        ],
+        [
+          "AUX",
+          70702
+        ],
+        [
+          "CCONJ",
+          60364
+        ],
+        [
+          "SCONJ",
+          54393
+        ],
+        [
+          "NUM",
+          50600
+        ],
+        [
+          "SPACE",
+          32865
+        ],
+        [
+          "INTJ",
+          10349
+        ],
+        [
+          "SYM",
+          7373
+        ],
+        [
+          "X",
+          484
+        ],
+        [
+          "PART",
+          448
+        ]
+      ],
+      "entidades_por_tipo": {
+        "MISC": 349625,
+        "LOC": 92681,
+        "ORG": 86279,
+        "PER": 84352
+      },
+      "pct_con_url": 41.6,
+      "pct_con_hashtag": 20.2,
+      "pct_con_mencion": 63.9
+    },
+    "lg": {
+      "documentos": 169336,
+      "documentos_con_tokens": 169232,
+      "documentos_vacios": 104,
+      "media_tokens": 15.3,
+      "media_oraciones": 1.555,
+      "documentos_con_oracion": 169232,
+      "tokens_totales": 2590877,
+      "top_pos": [
+        [
+          "PROPN",
+          580383
+        ],
+        [
+          "NOUN",
+          360912
+        ],
+        [
+          "PUNCT",
+          306596
+        ],
+        [
+          "ADP",
+          256414
+        ],
+        [
+          "VERB",
+          234012
+        ],
+        [
+          "DET",
+          205107
+        ],
+        [
+          "ADJ",
+          137392
+        ],
+        [
+          "PRON",
+          126065
+        ],
+        [
+          "ADV",
+          83262
+        ],
+        [
+          "AUX",
+          73272
+        ],
+        [
+          "CCONJ",
+          62684
+        ],
+        [
+          "NUM",
+          56901
+        ],
+        [
+          "SCONJ",
+          54623
+        ],
+        [
+          "SPACE",
+          32865
+        ],
+        [
+          "SYM",
+          13936
+        ],
+        [
+          "INTJ",
+          5764
+        ],
+        [
+          "PART",
+          473
+        ],
+        [
+          "X",
+          216
+        ]
+      ],
+      "entidades_por_tipo": {
+        "MISC": 400883,
+        "PER": 95255,
+        "ORG": 93144,
+        "LOC": 90948
+      },
+      "pct_con_url": 41.6,
+      "pct_con_hashtag": 20.2,
+      "pct_con_mencion": 63.9
+    }
+  },
+  "acuerdo": {
+    "exacto_pos_seq": 0.16345,
+    "exacto_lemma_pos_seq": 0.14438,
+    "exacto_morph_seq": 0.14399,
+    "exacto_dep_seq": 0.12456,
+    "exacto_ent_seq": 0.28915,
+    "pct_docs_igual_longitud": 100.0,
+    "acuerdo_pos_por_token": 86.269,
+    "cortes": [
+      {
+        "corte": "con_http",
+        "documentos": 70475,
+        "pct_con_tokens_md": 100.0,
+        "pct_con_tokens_lg": 100.0,
+        "acuerdo_pos_exacto_pct": 10.32
+      },
+      {
+        "corte": "con_hashtag",
+        "documentos": 34283,
+        "pct_con_tokens_md": 100.0,
+        "pct_con_tokens_lg": 100.0,
+        "acuerdo_pos_exacto_pct": 4.16
+      },
+      {
+        "corte": "con_mencion",
+        "documentos": 108186,
+        "pct_con_tokens_md": 100.0,
+        "pct_con_tokens_lg": 100.0,
+        "acuerdo_pos_exacto_pct": 8.49
+      },
+      {
+        "corte": "longitud<=40",
+        "documentos": 27533,
+        "pct_con_tokens_md": 99.62,
+        "pct_con_tokens_lg": 99.62,
+        "acuerdo_pos_exacto_pct": 37.06
+      },
+      {
+        "corte": "longitud_41-93",
+        "documentos": 57494,
+        "pct_con_tokens_md": 100.0,
+        "pct_con_tokens_lg": 100.0,
+        "acuerdo_pos_exacto_pct": 18.78
+      },
+      {
+        "corte": "longitud>93",
+        "documentos": 84309,
+        "pct_con_tokens_md": 100.0,
+        "pct_con_tokens_lg": 100.0,
+        "acuerdo_pos_exacto_pct": 7.92
+      }
+    ],
+    "ejemplos_discrepancia": [
+      {
+        "fila": 0,
+        "texto": "Ud y su flia fueron las mas beneficiadas con Obredecht eso no es ninguna calumnia ud le debe decir l",
+        "md": "PROPN CCONJ DET NOUN AUX DET ADV ADJ ADP PROPN PRON ADV AUX DET NOUN PRON PRON AUX VERB DET NOUN ADP PROPN PRO",
+        "lg": "PROPN CCONJ DET PROPN AUX DET ADV ADJ ADP PROPN PRON ADV AUX DET NOUN PROPN PRON AUX VERB DET NOUN ADP PROPN P"
+      },
+      {
+        "fila": 1,
+        "texto": "http://t.co/Jp4hFcwMF6",
+        "md": "PROPN",
+        "lg": "PRON"
+      },
+      {
+        "fila": 2,
+        "texto": "Hasta el 1 de oct Medellin estara respirando periodismo, incentivando la etica, innovacion y coheren",
+        "md": "ADP DET NUM ADP NOUN PROPN AUX VERB NOUN PUNCT VERB DET NOUN PUNCT NOUN CCONJ NOUN PUNCT DET NOUN NUM",
+        "lg": "ADP DET NUM ADP NOUN PROPN AUX VERB NOUN PUNCT VERB DET NOUN PUNCT PROPN CCONJ NOUN PUNCT DET VERB NOUN"
+      },
+      {
+        "fila": 3,
+        "texto": "#TFZ  @M_MartinezRed  @RaisAlGhousia  @LuiguiSoutto  @followhelp1212  @NathalyIsabe  @Nijia2o  @elto",
+        "md": "PROPN PROPN SPACE NOUN SPACE ADJ SPACE NOUN SPACE PROPN SPACE PROPN SPACE ADJ SPACE ADJ",
+        "lg": "AUX PROPN SPACE VERB SPACE NOUN SPACE NOUN SPACE PROPN SPACE PROPN SPACE VERB SPACE ADJ"
+      }
+    ]
+  },
+  "segundos_total": 214.1
+}

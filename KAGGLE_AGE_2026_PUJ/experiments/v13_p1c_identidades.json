@@ -1,0 +1,27 @@
+{
+  "fase": "V13 · P1c identidad frente a evidencia lexica",
+  "fecha": "2026-09-25",
+  "variantes": {
+    "completo": {
+      "logreg": 0.3997,
+      "linearsvc": 0.3917
+    },
+    "sin_cuentas": {
+      "logreg": 0.341,
+      "linearsvc": 0.3319
+    },
+    "sin_cuentas_ni_hashtags": {
+      "logreg": 0.2992,
+      "linearsvc": 0.2914
+    }
+  },
+  "identificadores_detectados": {
+    "menciones": 33519,
+    "hashtags": 17405
+  },
+  "suelo_azar": 0.1667,
+  "caida_al_excluir_cuentas": 0.0587,
+  "proporcion_de_la_mejora_que_es_identidad": 25.2,
+  "suavizado": 20.0,
+  "segundos": 1086.4
+}

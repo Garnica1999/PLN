@@ -1,0 +1,122 @@
+{
+  "fase": "V18 · P0' reproduccion y cierre del confound",
+  "fecha": "2026-09-26",
+  "referencia_pooled": 0.6005,
+  "a2_pooled": 0.6011,
+  "fronteras_v12": {
+    "18-24|25-34": 0.4963,
+    "25-34|35-49": 0.4974
+  },
+  "fronteras_a2": {
+    "18-24|25-34": 0.5065,
+    "25-34|35-49": 0.5131
+  },
+  "especialista_reproducido": {
+    "18-24|25-34": 0.6864,
+    "25-34|35-49": 0.7218
+  },
+  "rejilla": [
+    {
+      "Frontera": "18-24|25-34",
+      "Representacion": "densa_279",
+      "Modelo": "LogisticRegression",
+      "n_filas": 57023,
+      "V12": 0.4963,
+      "Especialista": 0.7136,
+      "Delta_vs_V12": 0.2173,
+      "Rescate": 13523,
+      "Dano": 1132,
+      "Neto": 12391
+    },
+    {
+      "Frontera": "18-24|25-34",
+      "Representacion": "densa_279",
+      "Modelo": "LinearSVC(C=0.2)",
+      "n_filas": 57023,
+      "V12": 0.4963,
+      "Especialista": 0.7075,
+      "Delta_vs_V12": 0.2112,
+      "Rescate": 13655,
+      "Dano": 1613,
+      "Neto": 12042
+    },
+    {
+      "Frontera": "18-24|25-34",
+      "Representacion": "dispersa_tfidf",
+      "Modelo": "LogisticRegression",
+      "n_filas": 57023,
+      "V12": 0.4963,
+      "Especialista": 0.4992,
+      "Delta_vs_V12": 0.0029,
+      "Rescate": 14316,
+      "Dano": 14153,
+      "Neto": 163
+    },
+    {
+      "Frontera": "18-24|25-34",
+      "Representacion": "dispersa_tfidf",
+      "Modelo": "LinearSVC(C=0.2)",
+      "n_filas": 57023,
+      "V12": 0.4963,
+      "Especialista": 0.5003,
+      "Delta_vs_V12": 0.004,
+      "Rescate": 14324,
+      "Dano": 14097,
+      "Neto": 227
+    },
+    {
+      "Frontera": "25-34|35-49",
+      "Representacion": "densa_279",
+      "Modelo": "LogisticRegression",
+      "n_filas": 56577,
+      "V12": 0.4974,
+      "Especialista": 0.7493,
+      "Delta_vs_V12": 0.2519,
+      "Rescate": 15127,
+      "Dano": 875,
+      "Neto": 14252
+    },
+    {
+      "Frontera": "25-34|35-49",
+      "Representacion": "densa_279",
+      "Modelo": "LinearSVC(C=0.2)",
+      "n_filas": 56577,
+      "V12": 0.4974,
+      "Especialista": 0.7444,
+      "Delta_vs_V12": 0.247,
+      "Rescate": 15306,
+      "Dano": 1330,
+      "Neto": 13976
+    },
+    {
+      "Frontera": "25-34|35-49",
+      "Representacion": "dispersa_tfidf",
+      "Modelo": "LogisticRegression",
+      "n_filas": 56577,
+      "V12": 0.4974,
+      "Especialista": 0.4996,
+      "Delta_vs_V12": 0.0023,
+      "Rescate": 14102,
+      "Dano": 13973,
+      "Neto": 129
+    },
+    {
+      "Frontera": "25-34|35-49",
+      "Representacion": "dispersa_tfidf",
+      "Modelo": "LinearSVC(C=0.2)",
+      "n_filas": 56577,
+      "V12": 0.4974,
+      "Especialista": 0.4963,
+      "Delta_vs_V12": -0.0011,
+      "Rescate": 14061,
+      "Dano": 14122,
+      "Neto": -61
+    }
+  ],
+  "veredicto_confound": "modelo_o_ambos",
+  "reconstruccion_dispersa_valida": false,
+  "nota_reconstruccion": "las celdas dispersas no reproducen a E-028a y quedan invalidas; la columna densa es valida",
+  "mejor_denso": 0.7493,
+  "peor_disperso": 0.4963,
+  "segundos": 349.9
+}

@@ -1,0 +1,79 @@
+{
+  "fase": "V19 · B1 confirmacion",
+  "fecha": "2026-09-27",
+  "referencia_v12": 0.6005017473,
+  "combinacion_candidata": {
+    "logreg": 0.3333333333333333,
+    "mlp": 0.3333333333333333,
+    "arbol": 0.3333333333333333,
+    "estado": "pre-registrada"
+  },
+  "segunda_particion_4_folds": {
+    "macro_f1": 0.6090431,
+    "delta": 0.008541,
+    "media_folds": 0.609036,
+    "por_fold": [
+      0.6077,
+      0.606,
+      0.6102,
+      0.6122
+    ],
+    "fronteras": {
+      "18-24|25-34": 0.5083,
+      "25-34|35-49": 0.5018
+    }
+  },
+  "control_alineacion": {
+    "acuerdo_logreg_sola": 0.862302,
+    "acuerdo_promedio_reconstruido": 0.905733,
+    "ejecutado": true,
+    "referencia_orden_desplazado": 0.9388
+  },
+  "umbral_acuerdo": 0.9,
+  "fidelidad_de_referencia_del_proyecto": 0.9388,
+  "prueba_fuerte_de_orden": {
+    "columna_de_maximo_en_train": 255,
+    "columna_de_maximo_en_test": 255,
+    "mismo_indice": true,
+    "rango_test_200_273": [
+      -6.389,
+      50672.75
+    ],
+    "rango_train_200_273": [
+      -6.292,
+      59439.0
+    ]
+  },
+  "auditoria_fuga": {
+    "naturaleza_del_bloque": "agregados label-informed, no probabilidades",
+    "identificacion_diferencia_maxima": 0.001775568183802534,
+    "macro_f1_del_bloque_solo": 0.5597155,
+    "media_folds_del_bloque_solo": 0.559717,
+    "separacion_pooled_menos_media_folds": 1.4999999999876223e-06
+  },
+  "criterios": {
+    "segunda_particion_supera_el_gate": true,
+    "folds_4_sobre_el_gate": true,
+    "sin_fuga_en_el_bloque_supervisado": true,
+    "alineacion_verificada": true
+  },
+  "pasa": true,
+  "hiperparametros_arbol": {
+    "objective": "multiclass",
+    "num_class": 6,
+    "n_estimators": 300,
+    "learning_rate": 0.05,
+    "num_leaves": 8,
+    "max_depth": 3,
+    "min_child_samples": 200,
+    "colsample_bytree": 0.5,
+    "subsample": 0.8,
+    "subsample_freq": 1,
+    "reg_lambda": 1.0,
+    "n_jobs": 32,
+    "random_state": 42,
+    "verbose": -1
+  },
+  "submission_generada": false,
+  "segundos": 162.7
+}

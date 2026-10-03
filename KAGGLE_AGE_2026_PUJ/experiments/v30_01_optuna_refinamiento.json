@@ -1,0 +1,255 @@
+{
+  "fase": "V30 01 refinamiento local del LightGBM",
+  "fecha": "2026-09-30",
+  "experimenta": true,
+  "experimento_id": "V30-01",
+  "espacio_local": {
+    "num_leaves": 56,
+    "max_depth": 7,
+    "learning_rate": 0.03,
+    "min_child_samples": 54,
+    "subsample": 0.78,
+    "colsample_bytree": 0.6,
+    "reg_alpha": 0.015,
+    "reg_lambda": 0.0005
+  },
+  "justificacion_del_espacio": "centrado en la mediana de los cinco mejores trials de V29, no en la region entera; `HIERBA` de V20 esta sub-parametrizada (8 hojas frente a 43-87 de V29, min_child_samples 200 frente a 22-94)",
+  "siembra_por_fold": {
+    "0": {
+      "num_leaves": 87,
+      "max_depth": 5,
+      "learning_rate": 0.0430166950028842,
+      "min_child_samples": 76,
+      "subsample": 0.6581570543882859,
+      "subsample_freq": 1,
+      "colsample_bytree": 0.70766450002428,
+      "reg_alpha": 0.6147385859030499,
+      "reg_lambda": 9.792145504680492e-05,
+      "n_estimators": 816
+    },
+    "1": {
+      "num_leaves": 55,
+      "max_depth": 6,
+      "learning_rate": 0.033526986553363,
+      "min_child_samples": 54,
+      "subsample": 0.8941120537508466,
+      "subsample_freq": 1,
+      "colsample_bytree": 0.6299160105578635,
+      "reg_alpha": 4.026902217415037e-07,
+      "reg_lambda": 6.6850377528309e-07,
+      "n_estimators": 1372
+    },
+    "2": {
+      "num_leaves": 57,
+      "max_depth": 8,
+      "learning_rate": 0.0221243429735215,
+      "min_child_samples": 94,
+      "subsample": 0.9225205673898446,
+      "subsample_freq": 1,
+      "colsample_bytree": 0.52058407816027,
+      "reg_alpha": 1.8772169842126896,
+      "reg_lambda": 0.0181940457692546,
+      "n_estimators": 912
+    },
+    "3": {
+      "num_leaves": 43,
+      "max_depth": 9,
+      "learning_rate": 0.0300028683641043,
+      "min_child_samples": 22,
+      "subsample": 0.6998254389554196,
+      "subsample_freq": 1,
+      "colsample_bytree": 0.5250455092128341,
+      "reg_alpha": 1.0090819656249398e-05,
+      "reg_lambda": 7.87982213180386e-06,
+      "n_estimators": 863
+    },
+    "4": {
+      "num_leaves": 56,
+      "max_depth": 7,
+      "learning_rate": 0.0208110771899144,
+      "min_child_samples": 29,
+      "subsample": 0.7762118181212365,
+      "subsample_freq": 1,
+      "colsample_bytree": 0.6242271327287489,
+      "reg_alpha": 1.3833851148235308e-05,
+      "reg_lambda": 0.0004885693686069,
+      "n_estimators": 1084
+    }
+  },
+  "trials_por_fold": 15,
+  "trials_totales": 75,
+  "sampler": "TPESampler(seed=20300930 + fold) con trial 0 encolado",
+  "max_estimadores": 1500,
+  "early_stopping_rondas": 60,
+  "corrected_cv": 0.6122387,
+  "delta_vs_V20": 0.002461,
+  "delta_vs_lgbm_v29": 6.9e-05,
+  "media_por_fold": 0.612242,
+  "desviacion_por_fold": 0.003614,
+  "folds_outer_val": [
+    0.615979,
+    0.616113,
+    0.611859,
+    0.610876,
+    0.606381
+  ],
+  "folds_lgbm_v29": [
+    0.614494,
+    0.615897,
+    0.612268,
+    0.612263,
+    0.605929
+  ],
+  "delta_por_fold_contra_v29": [
+    0.001485,
+    0.000216,
+    -0.000409,
+    -0.001387,
+    0.000452
+  ],
+  "folds_mejor_que_v29": 3,
+  "mejores_trial_outlier": 0,
+  "detalle_por_fold": {
+    "0": {
+      "mejor_trial": 4,
+      "valor_mejor_inner": 0.61267,
+      "mediana_trial": 0.610101,
+      "min_trial": 0.60768,
+      "desviacion_trial": 0.00136,
+      "mejor_sobre_mediana_en_sigmas": 1.8885,
+      "mejor_es_outlier": false,
+      "macro_f1_outer_val": 0.615979,
+      "diagnostico_refit": {
+        "iteraciones": 999,
+        "max_iteraciones": 1011,
+        "early_stopping": true
+      },
+      "segundos": 479.3,
+      "params_mejores": {
+        "num_leaves": 41.0,
+        "max_depth": 10.0,
+        "learning_rate": 0.015612823179143214,
+        "min_child_samples": 79.0,
+        "subsample": 0.775913545060191,
+        "colsample_bytree": 0.5969526009433974,
+        "reg_alpha": 1.0941449983677585e-05,
+        "reg_lambda": 0.00036896192791107643,
+        "n_estimators": 1011.0
+      }
+    },
+    "1": {
+      "mejor_trial": 3,
+      "valor_mejor_inner": 0.611625,
+      "mediana_trial": 0.610502,
+      "min_trial": 0.60774,
+      "desviacion_trial": 0.000938,
+      "mejor_sobre_mediana_en_sigmas": 1.1971,
+      "mejor_es_outlier": false,
+      "macro_f1_outer_val": 0.616113,
+      "diagnostico_refit": {
+        "iteraciones": 1173,
+        "max_iteraciones": 1486,
+        "early_stopping": true
+      },
+      "segundos": 546.9,
+      "params_mejores": {
+        "num_leaves": 32.0,
+        "max_depth": 7.0,
+        "learning_rate": 0.017387326275059966,
+        "min_child_samples": 23.0,
+        "subsample": 0.8215355497227395,
+        "colsample_bytree": 0.8291548707315466,
+        "reg_alpha": 0.8747434883808647,
+        "reg_lambda": 2.053077365511584e-05,
+        "n_estimators": 1486.0
+      }
+    },
+    "2": {
+      "mejor_trial": 5,
+      "valor_mejor_inner": 0.617228,
+      "mediana_trial": 0.615592,
+      "min_trial": 0.613978,
+      "desviacion_trial": 0.000949,
+      "mejor_sobre_mediana_en_sigmas": 1.7237,
+      "mejor_es_outlier": false,
+      "macro_f1_outer_val": 0.611859,
+      "diagnostico_refit": {
+        "iteraciones": 644,
+        "max_iteraciones": 1023,
+        "early_stopping": true
+      },
+      "segundos": 488.6,
+      "params_mejores": {
+        "num_leaves": 63.0,
+        "max_depth": 7.0,
+        "learning_rate": 0.02867292541012883,
+        "min_child_samples": 110.0,
+        "subsample": 0.7807106452264457,
+        "colsample_bytree": 0.4021908926823267,
+        "reg_alpha": 1.1486360263326448e-05,
+        "reg_lambda": 0.00031823134119350724,
+        "n_estimators": 1023.0
+      }
+    },
+    "3": {
+      "mejor_trial": 11,
+      "valor_mejor_inner": 0.618832,
+      "mediana_trial": 0.616098,
+      "min_trial": 0.614087,
+      "desviacion_trial": 0.001289,
+      "mejor_sobre_mediana_en_sigmas": 2.1203,
+      "mejor_es_outlier": false,
+      "macro_f1_outer_val": 0.610876,
+      "diagnostico_refit": {
+        "iteraciones": 1129,
+        "max_iteraciones": 1477,
+        "early_stopping": true
+      },
+      "segundos": 470.6,
+      "params_mejores": {
+        "num_leaves": 42.0,
+        "max_depth": 7.0,
+        "learning_rate": 0.015729268043126833,
+        "min_child_samples": 41.0,
+        "subsample": 0.999685646683389,
+        "colsample_bytree": 0.596195315949217,
+        "reg_alpha": 0.004978399116554409,
+        "reg_lambda": 1.8436108646384413e-08,
+        "n_estimators": 1477.0
+      }
+    },
+    "4": {
+      "mejor_trial": 13,
+      "valor_mejor_inner": 0.617436,
+      "mediana_trial": 0.616016,
+      "min_trial": 0.613743,
+      "desviacion_trial": 0.00099,
+      "mejor_sobre_mediana_en_sigmas": 1.4346,
+      "mejor_es_outlier": false,
+      "macro_f1_outer_val": 0.606381,
+      "diagnostico_refit": {
+        "iteraciones": 398,
+        "max_iteraciones": 1000,
+        "early_stopping": true
+      },
+      "segundos": 430.2,
+      "params_mejores": {
+        "num_leaves": 64.0,
+        "max_depth": 6.0,
+        "learning_rate": 0.03818854692388361,
+        "min_child_samples": 52.0,
+        "subsample": 0.8731483359860639,
+        "colsample_bytree": 0.46934472778342573,
+        "reg_alpha": 1.927060050589197e-08,
+        "reg_lambda": 0.004339321331656464,
+        "n_estimators": 1000.0
+      }
+    }
+  },
+  "oof_guardado": "v30_lgbm_refinado_oof.npy",
+  "estado_vs_v29": "EQUIVALE_A_V29",
+  "criterio_de_consolidacion": "delta frente al LightGBM de V29 superior a +0,0005; entre -0,0005 y +0,0005 se considera equivalente y se decide por complementariedad en la fase de ensemble",
+  "cv_v20": 0.6097782,
+  "cv_lgbm_v29": 0.6121698,
+  "segundos": 2449.0
+}

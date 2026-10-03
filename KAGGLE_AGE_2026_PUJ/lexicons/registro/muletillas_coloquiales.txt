@@ -1,0 +1,62 @@
+# familia: registro
+# subcategoria: muletillas_coloquiales
+# descripcion: Muletillas y marcas discursivas del español hablado: encuadran la intervención en lugar de informar.
+# idioma: es
+# procedencia: elaborado en este proyecto (conocimiento linguistico general)
+# licencia: del proyecto; sin datos externos y sin etiquetas de edad
+# riesgo: ninguno
+# fecha: 2026-09-25
+# entradas_declaradas: 56
+# cribado_corpus: frecuencia minima 3 en el train
+aca
+acá
+adios
+ahora
+ahorita
+ahí
+al
+allí
+alé
+anda
+antes
+apenas
+avisen
+avísame
+ayer
+buenas
+bueno
+buenos
+casi
+chao
+che
+claro
+dale
+después
+déjate
+entonces
+epa
+final
+fíjate
+hasta
+hoy
+luego
+manana
+mañana
+mira
+miren
+nah
+nao
+obvio
+oiga
+oye
+ps
+pues
+recién
+saludos
+todavia
+todavía
+toma
+tómate
+vai
+vamos
+venga

@@ -77,7 +77,7 @@ def main() -> int:
         "archivo": path,
         "recordatorio": ("Subida manual. Al recibir el score público, comparar contra "
                          "macro-F1=0,5344 y weighted-F1=0,5335 del CV agrupado para identificar "
-                         "la métrica oficial (D-002) y la brecha CV↔LB."),
+                         "la métrica oficial (D-002) y la brecha CV<->LB."),
     }
     (cfg.EXPERIMENTS / "submission_v01_resumen.json").write_text(
         json.dumps(summary, indent=2, ensure_ascii=False), encoding="utf-8")

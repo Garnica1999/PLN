@@ -1,0 +1,175 @@
+{
+  "fase": "V35 via B - sonda pre-ejecucion del anclaje de lambda1",
+  "fecha": "2026-09-30",
+  "script": "KAGGLE_AGE_2026_PUJ/scripts/v34_01_ftrl_softmax_multipasada.py",
+  "sha256_del_nucleo": "cf443fc86bf291ca5ba47f92a40a7a80b25a0d9edb050b3929508c9bd56e29da",
+  "categoria": "exploracion metodologica previa; datos de fold-train; metrica de perdida; sin seleccion; NO es un grid",
+  "restricciones": {
+    "fold": 0,
+    "particion": "ES-train (90 % del fold-train) via StratifiedShuffleSplit(test_size=0.10, random_state=20261010+0)",
+    "vectorizador": "canonico de v31_02, ajustado SOLO en ES-train",
+    "fold_val_tocado": false,
+    "test_tocado": false,
+    "leaderboard_tocado": false,
+    "particiones_reservadas_tocadas": false
+  },
+  "config": {
+    "alpha": 0.035262336465737745,
+    "alpha_formula": "2*M/(d_norm*P_max**2) con M = ln(5)",
+    "M": 1.6094379124341003,
+    "P_max": 10,
+    "lambda2": 1.0,
+    "beta": 1.0,
+    "power_t": 0.0,
+    "x0": 1.0,
+    "n_filas_es_train": 121921,
+    "n_coordenadas": 107793,
+    "pasadas_por_caso": 3,
+    "ordenes": "los mismos ordenes congelados por pasada del ciclo V34"
+  },
+  "anclaje": {
+    "definicion": "lambda1 := mediana(|z_j| > 0) medida en el stream de TRAIN del fold 0 al final de la pasada 1",
+    "valor": 0.23993793862904017,
+    "mediana_sobre_alpha": 6.804368702629027,
+    "frac_z_menor_igual_alpha": 0.1445579335702071,
+    "cuantiles_de_abs_z": {
+      "q1": 0.00010707276487313874,
+      "q25": 0.063655343376633,
+      "q50": 0.23993793862904017,
+      "q75": 0.6777203538570445,
+      "q99": 7.910165751736505
+    },
+    "sha256_del_snapshot_z": "ec1d1a7b13454f8b7309446576318487b9325df018c5b454b228a6a336630f66",
+    "sensibilidad_declarada": "q=0.25 y q=0.75 escalan lambda1 ~ 1/sqrt(q); esa sensibilidad SOLO se ejecuta en gemelo sintetico"
+  },
+  "flag_tecnico_1": {
+    "afirmacion": "lambda1 = alpha es un no-op",
+    "requiere": "mediana(|z|) > alpha",
+    "mediana_sobre_alpha": 6.804368702629027,
+    "resuelto": true,
+    "lectura": "la mediana supera a alpha, luego el caso 'lambda1 = alpha' es efectivamente un no-op en este setting"
+  },
+  "flag_tecnico_2": {
+    "afirmacion": "un lambda1 fijo acota ||w||_2",
+    "matiz": "solo acota si z permanece acotado; |w_j| <= |z_j|/lambda2 sigue valiendo con lambda1 > 0",
+    "normas_por_caso": {
+      "lambda1_0": [
+        29.194850667547023,
+        47.27989643345345,
+        60.98360849536189
+      ],
+      "lambda1_alpha": [
+        29.02889262656771,
+        47.14299208512644,
+        60.86346392574805
+      ],
+      "lambda1_mediana": [
+        28.27459446151044,
+        46.45212395628998,
+        60.23720212230849
+      ]
+    },
+    "razon_max_min_lambda1_mediana": 2.130435582526498,
+    "lectura": "razon <= 1.0 seria acotacion efectiva; > 1.0 indica que el L1 no acota la norma por si solo, que es exactamente lo que G8 comprueba en el runner"
+  },
+  "gemelo_real": [
+    {
+      "nombre": "lambda1_0",
+      "lambda1": 0.0,
+      "trayectoria": [
+        {
+          "pasada": 1,
+          "ll_train": 10.086313578600262,
+          "norma_w_l2": 29.194850667547023,
+          "coordenadas_vivas": 107793,
+          "clases_vivas": 646758,
+          "escasez_efectiva": 1.0
+        },
+        {
+          "pasada": 2,
+          "ll_train": 15.42062521362065,
+          "norma_w_l2": 47.27989643345345,
+          "coordenadas_vivas": 107793,
+          "clases_vivas": 646758,
+          "escasez_efectiva": 1.0
+        },
+        {
+          "pasada": 3,
+          "ll_train": 19.174420615478212,
+          "norma_w_l2": 60.98360849536189,
+          "coordenadas_vivas": 107793,
+          "clases_vivas": 646758,
+          "escasez_efectiva": 1.0
+        }
+      ],
+      "ll_train_final": 19.174420615478212,
+      "norma_w_l2_final": 60.98360849536189
+    },
+    {
+      "nombre": "lambda1_alpha",
+      "lambda1": 0.035262336465737745,
+      "trayectoria": [
+        {
+          "pasada": 1,
+          "ll_train": 10.083240868084,
+          "norma_w_l2": 29.02889262656771,
+          "coordenadas_vivas": 106971,
+          "clases_vivas": 553204,
+          "escasez_efectiva": 0.9923742729119701
+        },
+        {
+          "pasada": 2,
+          "ll_train": 15.418472712408523,
+          "norma_w_l2": 47.14299208512644,
+          "coordenadas_vivas": 106971,
+          "clases_vivas": 556058,
+          "escasez_efectiva": 0.9923742729119701
+        },
+        {
+          "pasada": 3,
+          "ll_train": 19.172685241471445,
+          "norma_w_l2": 60.86346392574805,
+          "coordenadas_vivas": 106971,
+          "clases_vivas": 556341,
+          "escasez_efectiva": 0.9923742729119701
+        }
+      ],
+      "ll_train_final": 19.172685241471445,
+      "norma_w_l2_final": 60.86346392574805
+    },
+    {
+      "nombre": "lambda1_mediana",
+      "lambda1": 0.23993793862904017,
+      "trayectoria": [
+        {
+          "pasada": 1,
+          "ll_train": 10.058343327445655,
+          "norma_w_l2": 28.27459446151044,
+          "coordenadas_vivas": 102519,
+          "clases_vivas": 318023,
+          "escasez_efectiva": 0.9510728897052684
+        },
+        {
+          "pasada": 2,
+          "ll_train": 15.40168213060249,
+          "norma_w_l2": 46.45212395628998,
+          "coordenadas_vivas": 105709,
+          "clases_vivas": 393702,
+          "escasez_efectiva": 0.9806666481125862
+        },
+        {
+          "pasada": 3,
+          "ll_train": 19.1594443184596,
+          "norma_w_l2": 60.23720212230849,
+          "coordenadas_vivas": 105709,
+          "clases_vivas": 398032,
+          "escasez_efectiva": 0.9806666481125862
+        }
+      ],
+      "ll_train_final": 19.1594443184596,
+      "norma_w_l2_final": 60.23720212230849
+    }
+  ],
+  "veredicto_preliminar": "el anclaje por mediana es utilizable y el caso lambda1 = alpha es no-op; la divergencia se amortigua pero no se elimina, de modo que la hipotesis de acotacion sigue siendo la que G8 debe poner a prueba",
+  "duracion_seg": 72.03192114830017
+}

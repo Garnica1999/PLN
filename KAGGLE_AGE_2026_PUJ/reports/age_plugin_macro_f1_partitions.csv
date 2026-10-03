@@ -1,0 +1,3 @@
+particion,V30,plug_in,delta,folds_positivos,bootstrap_ic95_lo,bootstrap_ic95_hi,contiene_cero,permutado_delta,aleatorio_delta,real_menos_permutado,real_menos_aleatorio,cambios_alta_confianza,reajusta_pesos
+canonica (semilla 42),0.6134471,0.6154643,0.0020172,5,0.0010143,0.002948,False,-0.0027902,-0.004686,0.0048074,0.0067032,0,False
+alternativa (semilla 987654),0.614412,0.61647,0.002058,5,0.0011204,0.0030622,False,0.0014417,-0.0161893,0.0006163,0.0182473,0,False

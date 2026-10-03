@@ -1,0 +1,398 @@
+{
+  "fase": "V37-DIAG-POS",
+  "fecha": "2026-10-01",
+  "estado": "congelado antes de calcular nada; inmutable una vez escrito",
+  "spec": "plan/V37_DIAGNOSTICO_POS_PLAN.md",
+  "spec_sha256": "9e5c8e898199a8adf7f0b8c7cf123073fa09773e79a051e59307bba2bc46e510",
+  "enmiendas": "plan/V37_ENMIENDAS_01.md",
+  "enmiendas_sha256": "d4d48c18d7028c9d320893dbabf83b41602310015dde8beaafff9b5556aaa18c",
+  "enmiendas_aplicadas": [
+    "E1",
+    "E2",
+    "E3",
+    "E4",
+    "E5",
+    "E6",
+    "E7",
+    "E8",
+    "E9",
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E15"
+  ],
+  "hashes": {
+    "features/linguistic/anotacion_md_train.parquet": "dacbc3055ccde0d9a53f335f65b63df666b2ac1a4eee4a94e5b46fd7cd8c5745",
+    "features/linguistic/anotacion_lg_train.parquet": "81287d541c082ea888ad1b5d06b83680bc5078c624c2da32f0473139d67a739c",
+    "artifacts/p33_scores/todos/y_true.npy": "b1c928f9b9f5575547c1090a1fd83cf32a048b694af35a980b460c0bd66d48e6",
+    "artifacts/p33_scores/todos/fold_idx.npy": "74d18330c40c3598a1936706ae9434c5fdf29119d357d38353cf298812fe6fb5",
+    "artifacts/p33_scores/todos/v30_prob.npy": "3d77352486605971093ade7214ae82326057845d8bf54a2d88c83843c5a721db",
+    "artifacts/p33_scores/todos/cand_prob.npy": "57be29623543c2616011f8fc77aff89b71faecdad6b599f1b4f4b133655a8134",
+    "artifacts/p33_scores/todos/cand_pred.npy": "2fd8ab0292e8b7364dd003ff3e23902b01786a612c3e9a57641d88788efca369",
+    "artifacts/p33_scores/todos/ids.npy": "d69ecb339f1dc57de2f9cddd558658b5a272ffa42aec15c771773e8eabd59825",
+    "artifacts/p33_scores/todos/manifest.json": "8881a9f53e8613aa943681e7fd9a42a3a281aa66b5d7c796d13d2758c6226076",
+    "features/dup_clusters.parquet": "4c4ca6761e0bcf5b6ff93ae6a5c6e3e9f66426e788a5b813c0b6293b2e33cc22",
+    "data/raw/age_train.csv": "39c6c8270366fe155f3c8dd232e31867bee659af8908121d04b6bd89bd163748",
+    "reports/age_submission_plugin_manifest.json": "8d635e6a546b5a0e3829872b5e182be745910bd2a0945759a6a44b6eb7e643f7",
+    "plan/V37_DIAGNOSTICO_POS_PLAN.md": "9e5c8e898199a8adf7f0b8c7cf123073fa09773e79a051e59307bba2bc46e510",
+    "plan/V37_ENMIENDAS_01.md": "d4d48c18d7028c9d320893dbabf83b41602310015dde8beaafff9b5556aaa18c"
+  },
+  "hashes_coinciden_con_anclajes": true,
+  "manifest_canonico_sha256_declarados": {
+    "cand_pred.npy": "2fd8ab0292e8b7364dd003ff3e23902b01786a612c3e9a57641d88788efca369",
+    "cand_prob.npy": "57be29623543c2616011f8fc77aff89b71faecdad6b599f1b4f4b133655a8134",
+    "fold_idx.npy": "74d18330c40c3598a1936706ae9434c5fdf29119d357d38353cf298812fe6fb5",
+    "ids.npy": "d69ecb339f1dc57de2f9cddd558658b5a272ffa42aec15c771773e8eabd59825",
+    "v30_prob.npy": "3d77352486605971093ade7214ae82326057845d8bf54a2d88c83843c5a721db",
+    "y_true.npy": "b1c928f9b9f5575547c1090a1fd83cf32a048b694af35a980b460c0bd66d48e6"
+  },
+  "etiquetas_pos": [
+    "ADJ",
+    "ADP",
+    "ADV",
+    "AUX",
+    "CCONJ",
+    "DET",
+    "INTJ",
+    "NOUN",
+    "NUM",
+    "PART",
+    "PRON",
+    "PROPN",
+    "PUNCT",
+    "SCONJ",
+    "SPACE",
+    "SYM",
+    "VERB",
+    "X"
+  ],
+  "n_etiquetas": 18,
+  "vocab_seleccion": "ninguna",
+  "anotadores": [
+    "md",
+    "lg"
+  ],
+  "n_clases": 6,
+  "clases": [
+    "13-17",
+    "18-24",
+    "25-34",
+    "35-49",
+    "50-64",
+    "65-xx"
+  ],
+  "constantes": {
+    "modelo_cota": "naive bayes multinomial sobre proporciones por token; sin ajustar, sin tuneo, sin grilla",
+    "suavizado": {
+      "tipo": "laplace",
+      "alpha": 1.0,
+      "nota": "valor fijo declarado a priori; no hay grilla"
+    },
+    "vocab_seleccion": "ninguna",
+    "priores": "frecuencia de clase empirica del train de cada fold",
+    "estabilidad_numerica": {
+      "clip_log_theta": [
+        -30.0,
+        0.0
+      ],
+      "eps_log_pi": 1e-12
+    },
+    "regla_filas_sin_tokens": "x = 0 para las filas con n_tokens == 0 (0/0 indefinido), luego pred = argmax_c pi_c; se incluyen y se cuentan (enmienda E5)",
+    "semillas": {
+      "bootstrap_cluster": 20261010,
+      "permute_control": 20261010,
+      "hash_agrupador": 0,
+      "sgkf_folds": 42,
+      "muestra_correlacion_fase_c": 20261012
+    },
+    "n_bootstrap": 2000,
+    "quintiles_longitud": "percentiles 20/40/60/80 de n_tokens sobre la particion canonica",
+    "piso_estricto_macro_f1": 0.0485421,
+    "azar_uniforme_macro_f1": 0.166667,
+    "margen_sobre_azar": 0.01,
+    "criterio_a_perm_max": 0.176667,
+    "criterio_a_perm_val_max": 0.176667,
+    "banda_a_perm_esperada": [
+      0.0485421,
+      0.166667
+    ],
+    "baseline_primario": 0.6159732,
+    "baseline_primario_exacto": 0.6159732487657944,
+    "baseline_primario_nota": "la spec escribe a la vez 0.6159732487657944 y '== 0.6159732 con tolerancia 1e-9'; ambas cosas no pueden ser ciertas a la vez (|0.6159732487657944 - 0.6159732| = 4.88e-8 > 1e-9). Se ancla el valor EXACTO con tolerancia 1e-9 y se reporta el redondeo a 7 decimales",
+    "pesos_plugin": [
+      1.0,
+      1.1749,
+      1.2721,
+      1.163,
+      1.001,
+      0.8128
+    ],
+    "b_criterio_eliminado": "|A_perm - A0| <= 0.005 se ELIMINA en los cinco sitios de la spec (enmienda E1); el unico criterio de A_perm es el unilateral A_perm <= 0.176667",
+    "umbrales": {
+      "V1": {
+        "delta_min": 0.01,
+        "n_etiquetas_min": 3,
+        "n_clases_min": 4,
+        "alfa_bonferroni": 0.05,
+        "n_pruebas_por_clase": 18,
+        "enunciado": "existe delta[c,t] >= 0.010 con z_bonferroni significativo para al menos 3 etiquetas y al menos 4 de las 6 clases"
+      },
+      "V2": {
+        "dispersion_max": 0.005,
+        "enunciado": "esas mismas etiquetas cumplen dispersion[c,t] <= 0.005"
+      },
+      "V3": {
+        "max_dc_md_lg_max": 0.005,
+        "enunciado": "esas mismas etiquetas cumplen max_dc_md_lg[c,t] <= 0.005"
+      },
+      "V4": {
+        "delta_estandarizado_min": 0.008,
+        "enunciado": "la version estandarizada por longitud conserva |p_est[c,t] - ref[t]| >= 0.008 para esas mismas etiquetas"
+      },
+      "V5": {
+        "a1_min": 0.176667,
+        "tipo": "sanity floor (enmienda E7; la novedad NO se decide con V5)",
+        "enunciado": "A1 > azar_uniforme + 0.010 en md y lg"
+      },
+      "V6": {
+        "a_perm_max": 0.176667,
+        "a_perm_val_max": 0.176667,
+        "tipo": "control de fuga unilateral (enmiendas E1 y E3)",
+        "enunciado": "A_perm <= 0.176667 y A_perm_val <= 0.176667 en md y lg, y el IC95 pareado de A1 - A_perm excluye cero"
+      }
+    },
+    "gates": {
+      "G1": {
+        "soporte_min": 1000,
+        "n_etiquetas_min": 12,
+        "n_clases_min": 5,
+        "criterio_fuga": "A_perm <= 0.176667 (E1)"
+      },
+      "G2": {
+        "n_tokens_min": 5000,
+        "dispersion_max": 0.005,
+        "max_dc_md_lg_max": 0.005,
+        "celdas_evaluables_min": 1
+      },
+      "G3": {
+        "exigencia": "TC.1 + TC.2 + TC.3 completos; no tiene umbral de paso"
+      },
+      "G4": {
+        "exigencia": "auditoria de novedad con las 5 razones de 6.2 y medicion D1 completa; no autoriza ninguna corrida predictiva"
+      }
+    },
+    "sonda_previa": {
+      "declarada_antes_de_congelar": true,
+      "A1": 0.1720532,
+      "A2": 0.205227,
+      "A_perm": 0.06575,
+      "tolerancia": 1e-06,
+      "modelos": "los exactos de la seccion 5.2, sin ajustar nada",
+      "nota": "A2 NO es identico a A1 (E2): con priors, A2 - A1 = +0.0331738 y 48440 filas cambian de prediccion; A2 es el brazo de sensibilidad a la longitud"
+    },
+    "regla_reproduccion_sonda_e9": {
+      "A1_y_A2": "tolerancia 1e-6; si falla, STOP con codigo 2",
+      "A_perm": "El valor exacto de A_perm depende del flujo del RNG, que la spec NO fija (no dice si el generador se crea una vez o uno por fold, ni cual familia de RNG, ni si la permutacion es global o por fold). Por eso el criterio de integridad de A_perm no es la igualdad a 5 decimales sino el que MANDAN las enmiendas: E1 fija un unico criterio unilateral A_perm <= 0.176667 y obliga a reportar el valor dentro de la banda declarada [0.0485421, 0.166667] sin pass/fail en el extremo inferior. La corrida congelada exige: (i) A_perm <= 0.176667, (ii) A_perm dentro de la banda declarada, (iii) el valor medido y la diferencia frente a la sonda se reportan explicitas. Si (i) o (ii) falla, STOP con codigo 2 por fuga suspected",
+      "esquema_de_permutacion_declarado": "un unico numpy.random.default_rng(20261010) creado antes del bucle de folds; para cada k se consume rng.permutation(n_train_k) y se reescriben las etiquetas de las filas de train_k. Las filas de validacion conservan su etiqueta real"
+    },
+    "banda_de_expectativa_de_A_perm": {
+      "extremo_inferior": "A0 = 0.0485421 (prediccion constante de la mayoritaria)",
+      "motivo_inferior": "E1: al permutar las etiquetas de train_k se conserva el multisej y por tanto los priors, pero theta[c,.] de cada clase es un subconjunto aleatorio; las clases con menos tokens reciben mas suavizado de Laplace y pierden verosimilitud, de modo que el permutado DEGENERA HACIA LA CLASE MAYORITARIA en vez de caer al azar uniforme",
+      "extremo_superior": "azar uniforme = 0.166667"
+    },
+    "prueba_concreta_si_pasara": "Si el patron resultara potente (V1..V6 los cinco true), la spec posterior que se ejecutaria esta escrita por adelantado y es esta: 'P(POS_{i+1} | POS_i, edad) con LogReg L2 C=1.0 sobre indicadores de uni/bi/trigramas POS multiplicados por un indicador de edad, LeaveOneOut por cluster, integrado con el campeon por alfa 0.5 con los pesos congelados, gate delta >= +0.0015 y 4/5 folds'. Esa prueba NO se ejecuta en V37: V37 no produce ninguna corrida predictiva (enmienda E8)",
+    "referencias_previas": [
+      {
+        "acta": "D-026",
+        "que_midio": "26 features POS con es_core_news_md: 18 proporciones UPOS + pos_unique + pos_entropy + diversidad de bigramas + de trigramas + content_ratio + function_ratio + verb_noun + adj_noun + pos_tokens",
+        "numero": -0.0032,
+        "tipo": "integracion",
+        "unidades": "26 ratios por fila"
+      },
+      {
+        "acta": "D-044/V14",
+        "que_midio": "37 ratios agregados (morfologia verbal y nominal, lemas, entidades, sintaxis)",
+        "aislado_logreg": 0.2409,
+        "aislado_svc": 0.227,
+        "integracion": -0.0015,
+        "folds_positivos": "1/5",
+        "unidades": "37 ratios agregados"
+      },
+      {
+        "acta": "V31",
+        "que_midio": "canales regex sin tagger: pronombres 1P/2P/3P/plural, palabras funcionales, tiempo verbal, negacion, densidad",
+        "banco": 0.00682,
+        "integracion": 6.42e-05,
+        "unidades": "regex sobre forma lexical"
+      },
+      {
+        "acta": "D-041/P1a",
+        "que_midio": "P(clase | token) con suavizado empirico-bayesiano y cross-fit interno",
+        "bloque_solo": 0.3997,
+        "integracion": -0.0002,
+        "folds_positivos": "3/5",
+        "controles_permutados": [
+          0.6,
+          0.6003,
+          0.6
+        ],
+        "unidades": "direccion dual de la misma tabla"
+      },
+      {
+        "acta": "D-077/P2",
+        "que_midio": "pos_seq -> TfidfVectorizer(word, 1-3 grams, min_df=5, sublinear_tf) + LogReg C=1.0 por fold",
+        "md_solo": 0.2750921,
+        "lg_solo": 0.272549,
+        "integracion_md": -0.0086357,
+        "integracion_lg": -0.0084168,
+        "folds_positivos": "0/5",
+        "control_barajado_filas": -0.0039528,
+        "control_barajado_intra": -0.008031,
+        "unidades": "n-gramas 1-3 sin indexar por edad"
+      },
+      {
+        "acta": "V13 P17/P20/P19",
+        "que_midio": "pronombres / modalidad / arboles de conjunciones",
+        "valores": [
+          0.1918,
+          0.127,
+          0.1539
+        ],
+        "unidades": "regex"
+      },
+      {
+        "acta": "D-078/D-079/D-080",
+        "que_midio": "NER estructural, lemma_POS, texto tipado",
+        "numero": "cerrados; 0 rescates de 9780 errores de alta confianza",
+        "unidades": "-"
+      },
+      {
+        "acta": "D-088/V36-E1",
+        "que_midio": "bloque de transiciones de clase de caracter (C1-A)",
+        "numero": "cerrada: senal real y especifica por documento, pero el campeon ya la expresa mejor",
+        "unidades": "transiciones de caracter"
+      },
+      {
+        "acta": "D-087",
+        "que_midio": "techo alcanzable LB",
+        "numero": 0.642,
+        "unidades": "-"
+      }
+    ],
+    "estado_del_arte": [
+      {
+        "referencia": "Flekova, L.; Gurevych, I. (2013). Can We Hide in the Web? Large Scale Simultaneous Age and Gender Author Profiling in Social Media. CLEF 2013 / PAN, CEUR-WS Vol-1179.",
+        "dataset": "PAN-2012 AP",
+        "metrica": "edad accuracy 0.57 ES / 0.53 EN",
+        "lectura": "0,57 ES / 0,53 EN son del sistema SOLO-EDAD de 3 GRUPOS (mayoritario 0,33), NO del conjunto de 6 clases; el conjunto de 6 clases llega a 0,38 ES y 0,29 EN con mayoritario 0,17. Las cifras de 236.600 / 75.900 documentos son de PAN-2012 y no aparecen en el paper. Cita clave: en espanol se prefieren trigramas y cuadrigramas POS"
+      },
+      {
+        "referencia": "Cruz, F.L.; Haro, R.; Ortega, F.J. (2013). ITALICA at PAN 2013: An Ensemble Learning Approach to Author Profiling. CLEF 2013 / PAN, CEUR-WS Vol-1179.",
+        "dataset": "PAN-2013 AP",
+        "metrica": "edad 0.62 ES",
+        "lectura": "el 0,62 es el ACCURACY del ensemble apilado COMPLETO (BoW + POS + estilisticos + JRip), NO del bloque POS. No es legitimo citarlo como 'los n-gramas POS dan 0,62'"
+      },
+      {
+        "referencia": "Posadas-Duran, J.P. et al. (2015). Syntactic N-grams as Features for the Author Profiling Task. CLEF 2015 / PAN, CEUR-WS Vol-1391, paper 136.",
+        "dataset": "PAN-2015 AP",
+        "metrica": "RMSE por Rasch (habilidad)",
+        "lectura": "negativo para edad: su uso no es muy exitoso para edad y genero"
+      },
+      {
+        "referencia": "Modaresi, P.; Liebeck, M.; Conrad, S. (2016). Exploring the Effects of Cross-Genre Machine Learning for Author Profiling in PAN 2016. CLEF 2016, CEUR-WS Vol-1609, paper 970.",
+        "dataset": "PAN-2016 AP",
+        "metrica": "edad 0.5179 ES",
+        "lectura": "negativo DIRECTO sobre el objeto de la fase A: la distribucion de POS L2-normalizada empeoro los resultados y el perfil POS no fue una buena feature independiente del genero"
+      },
+      {
+        "referencia": "Johannsen, A.; Hovy, D.; Sogaard, A. (2015). Cross-lingual syntactic variation over age and gender. CoNLL 2015, ACL Anthology K15-1011.",
+        "dataset": "Trustpilot, 11 idiomas",
+        "metrica": "sin metrica de clasificacion",
+        "lectura": "el paper reporta GENERO sobre clases lexicas BabelNet (adverbios, adjetivos), NO sobre treelets POS; se retira la afirmacion de 'tres treelets atomicos para genero'. Para edad el soporte es menor que para genero y no es pervasivo"
+      },
+      {
+        "referencia": "Flekova, L.; Preotiuc-Pietro, D.; Ungar, L. (2016). Exploring Stylistic Variation with Age and Income on Twitter. ACL 2016, P16-2051.",
+        "dataset": "4.279 usuarios con edad (574.095 tweets)",
+        "metrica": "Pearson CV 10 folds",
+        "lectura": "antecedente mas proximo a P(POS|edad): mide el ratio de cada POS con universal tagset. nouns/determiners/adjectives suben con la edad; pronombres e interjecciones tienen el signo clasico pero DEBIL. Unidad = usuario"
+      },
+      {
+        "referencia": "Morgan-Lopez, A.A.; Kim, A.E.; Chew, R.F.; Ruddle, P. (2017). Predicting age groups of Twitter users based on language and metadata features. PLoS ONE 12(8):e0183537.",
+        "dataset": "3.184 usuarios, hasta 200 tweets por usuario",
+        "metrica": "F1 0.739 mejor modelo",
+        "lectura": "limite de la evidencia publicada: 3 clases y POR USUARIO; aqui 6 clases y 1 tweet por fila, luego no es comparable"
+      }
+    ],
+    "nota_estado_del_arte": "Las cuatro referencias centrales se reencuadran como PRIOR ART con metricas de otra tarea (3 grupos y accuracy contra 6 clases y macro-F1, mayoritario 0,33 contra 0,0485). Nunca como 'otros con mejores numeros' (enmienda E14). La cota de la seccion 5 es una construccion propia de este plan, cerrada y sin hiperparametros: no se presenta como replicar literatura",
+    "enmienda_E15_familias_cerradas": {
+      "subtipos_UD_de_dep_seq": {
+        "n_ratios": 22,
+        "sonda": 0.2147
+      },
+      "morfologia_completa": {
+        "n_ratios": 23,
+        "sonda": 0.2064,
+        "campos": [
+          "PronType",
+          "Case",
+          "VerbForm",
+          "Degree"
+        ]
+      },
+      "sonda_SPACE_aislado": 0.04854,
+      "nota": "las dos familias derivables de los artefactos congelados caen en la misma banda 0.19-0.24 que las seis ya cerradas, muy por debajo de P2 (0.2751), y con fusion siempre <= 0. SPACE aislado da 0.04854 = exactamente la prediccion constante de la mayoritaria: su aporte es renormalizacion, no senal propia. No existe ninguna familia legal no medida con potencial"
+    },
+    "no_hacer": [
+      "test, holdout, leaderboard o submission: nunca, ni para diagnostico",
+      "transformers, LLM o embeddings, preentrenados o entrenados",
+      "datos, etiquetas o lexicons externos",
+      "metadatos (follower, perfil, timestamp)",
+      "agregar por autor: un tweet por fila, siempre",
+      "grillas de hiperparametros: ni alpha, ni C, ni subconjuntos de etiquetas ni de folds",
+      "tocar test o submissions/",
+      "reentrenar o reevaluar el campeon: V30 se lee, no se corre",
+      "editar o borrar scripts ya ejecutados",
+      "fabricar metricas: si algo no se midio, se dice que no se midio",
+      "declarar que el paso (d) es nuevo cuando la auditoria dice lo contrario",
+      "cambiar el pre-registro una vez congelado (se versiona como _v37b)"
+    ],
+    "rebalanceo": {
+      "aplica": false,
+      "ratio_max_min": 1.0627,
+      "motivo": "clases casi perfectamente balanceadas; la spec lo declara NO APLICA para no introducir rebalanceo por inercia"
+    }
+  },
+  "etiqueta_space": "SPACE",
+  "unidades_muestreo": {
+    "modelo": "un tweet por fila",
+    "bootstrap": "cluster de duplicado (164018 grupos)",
+    "error_analitico": "tweet; se etiqueta como secundario (E11)",
+    "prohibido": "agregar por autor"
+  },
+  "no_hacer": [
+    "test, holdout, leaderboard o submission: nunca, ni para diagnostico",
+    "transformers, LLM o embeddings, preentrenados o entrenados",
+    "datos, etiquetas o lexicons externos",
+    "metadatos (follower, perfil, timestamp)",
+    "agregar por autor: un tweet por fila, siempre",
+    "grillas de hiperparametros: ni alpha, ni C, ni subconjuntos de etiquetas ni de folds",
+    "tocar test o submissions/",
+    "reentrenar o reevaluar el campeon: V30 se lee, no se corre",
+    "editar o borrar scripts ya ejecutados",
+    "fabricar metricas: si algo no se midio, se dice que no se midio",
+    "declarar que el paso (d) es nuevo cuando la auditoria dice lo contrario",
+    "cambiar el pre-registro una vez congelado (se versiona como _v37b)"
+  ],
+  "reproduccion_folds": {
+    "definicion": "StratifiedGroupKFold(n_splits=5, shuffle=True, random_state=42) sobre dup_clusters['cluster'][:169336]",
+    "uso": "los folds se LEEN de fold_idx.npy; la reconstruccion es solo una asercion",
+    "si_no_reproduce": "[STOP] codigo 2 y se usa el .npy leido"
+  },
+  "auditoria_de_novedad": {
+    "canal_predictivo_del_paso_d": "NO SE EJECUTA",
+    "medicion_descriptiva_d1": "SI se ejecuta: divergencia entre clases frente a ruido de estimacion, con IC95 pareado por bootstrap de grupos de duplicados",
+    "autorizacion_para_habilitar": "autorizacion expresa de Carlos con hipotesis nueva escrita por adelantado"
+  }
+}

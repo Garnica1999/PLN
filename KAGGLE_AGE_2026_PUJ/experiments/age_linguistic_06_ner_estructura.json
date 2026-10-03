@@ -1,0 +1,522 @@
+{
+  "fase": "P6 canal NER estructural",
+  "fecha": "2026-09-29",
+  "commit": "979610757ddb112d7cf7b7e172a0ac5141340a10",
+  "verificacion": {
+    "hashes_ok": true,
+    "constantes_ok": true
+  },
+  "baseline_primario": 0.6159732,
+  "brazos": {
+    "N1|md": {
+      "corrected_cv": 0.6150475,
+      "delta_vs_baseline": -0.0009257,
+      "delta_vs_nested": -0.0004168,
+      "folds": [
+        0.618244,
+        0.617449,
+        0.615874,
+        0.615697,
+        0.608021
+      ],
+      "folds_positivos": 1,
+      "filas_que_cambian": 6858,
+      "ic95": [
+        -0.0017437,
+        -0.0001536
+      ],
+      "p_delta_positivo": 0.009,
+      "argmax_sin_regla": 0.6129705,
+      "pasa_gate": false
+    },
+    "N1b|md": {
+      "corrected_cv": 0.6149695,
+      "delta_vs_baseline": -0.0010038,
+      "delta_vs_nested": -0.0004948,
+      "folds": [
+        0.618318,
+        0.617266,
+        0.615921,
+        0.615755,
+        0.607646
+      ],
+      "folds_positivos": 2,
+      "filas_que_cambian": 6889,
+      "ic95": [
+        -0.0018144,
+        -0.0002271
+      ],
+      "p_delta_positivo": 0.0045,
+      "argmax_sin_regla": 0.6128692,
+      "pasa_gate": false
+    },
+    "N2|md": {
+      "corrected_cv": 0.6147417,
+      "delta_vs_baseline": -0.0012316,
+      "delta_vs_nested": -0.0007226,
+      "folds": [
+        0.617988,
+        0.617197,
+        0.615128,
+        0.615531,
+        0.607907
+      ],
+      "folds_positivos": 1,
+      "filas_que_cambian": 6976,
+      "ic95": [
+        -0.0019965,
+        -0.000443
+      ],
+      "p_delta_positivo": 0.0015,
+      "argmax_sin_regla": 0.6131574,
+      "pasa_gate": false
+    },
+    "N1|lg": {
+      "corrected_cv": 0.6149505,
+      "delta_vs_baseline": -0.0010228,
+      "delta_vs_nested": -0.0005138,
+      "folds": [
+        0.618286,
+        0.617357,
+        0.61548,
+        0.615879,
+        0.607796
+      ],
+      "folds_positivos": 2,
+      "filas_que_cambian": 6857,
+      "ic95": [
+        -0.0018194,
+        -0.0002481
+      ],
+      "p_delta_positivo": 0.0035,
+      "argmax_sin_regla": 0.6127628,
+      "pasa_gate": false
+    },
+    "N1b|lg": {
+      "corrected_cv": 0.614653,
+      "delta_vs_baseline": -0.0013202,
+      "delta_vs_nested": -0.0008113,
+      "folds": [
+        0.617833,
+        0.616996,
+        0.615569,
+        0.61542,
+        0.607492
+      ],
+      "folds_positivos": 0,
+      "filas_que_cambian": 6906,
+      "ic95": [
+        -0.002123,
+        -0.0005463
+      ],
+      "p_delta_positivo": 0.0005,
+      "argmax_sin_regla": 0.6129467,
+      "pasa_gate": false
+    },
+    "N2|lg": {
+      "corrected_cv": 0.6149611,
+      "delta_vs_baseline": -0.0010122,
+      "delta_vs_nested": -0.0005032,
+      "folds": [
+        0.617518,
+        0.617018,
+        0.616378,
+        0.615756,
+        0.608163
+      ],
+      "folds_positivos": 1,
+      "filas_que_cambian": 7044,
+      "ic95": [
+        -0.0017945,
+        -0.0002442
+      ],
+      "p_delta_positivo": 0.004,
+      "argmax_sin_regla": 0.6131611,
+      "pasa_gate": false
+    }
+  },
+  "brazos_barajados": {
+    "N1|md": {
+      "corrected_cv": 0.6147829,
+      "delta_vs_baseline": -0.0011904,
+      "delta_vs_nested": -0.0006814,
+      "folds": [
+        0.618223,
+        0.616937,
+        0.615443,
+        0.615543,
+        0.607818
+      ],
+      "folds_positivos": 1,
+      "filas_que_cambian": 6810,
+      "ic95": [
+        -0.0020026,
+        -0.0004103
+      ],
+      "p_delta_positivo": 0.002,
+      "argmax_sin_regla": 0.6130017
+    },
+    "N1b|md": {
+      "corrected_cv": 0.6147221,
+      "delta_vs_baseline": -0.0012511,
+      "delta_vs_nested": -0.0007422,
+      "folds": [
+        0.618199,
+        0.616901,
+        0.615386,
+        0.615458,
+        0.607712
+      ],
+      "folds_positivos": 1,
+      "filas_que_cambian": 6813,
+      "ic95": [
+        -0.0020424,
+        -0.0004638
+      ],
+      "p_delta_positivo": 0.001,
+      "argmax_sin_regla": 0.6130225
+    },
+    "N2|md": {
+      "corrected_cv": 0.614949,
+      "delta_vs_baseline": -0.0010243,
+      "delta_vs_nested": -0.0005153,
+      "folds": [
+        0.618431,
+        0.617383,
+        0.615526,
+        0.61577,
+        0.60768
+      ],
+      "folds_positivos": 2,
+      "filas_que_cambian": 6851,
+      "ic95": [
+        -0.0018074,
+        -0.0002394
+      ],
+      "p_delta_positivo": 0.0035,
+      "argmax_sin_regla": 0.6130127
+    },
+    "N1|lg": {
+      "corrected_cv": 0.6147858,
+      "delta_vs_baseline": -0.0011874,
+      "delta_vs_nested": -0.0006785,
+      "folds": [
+        0.618163,
+        0.617082,
+        0.615498,
+        0.615549,
+        0.607684
+      ],
+      "folds_positivos": 1,
+      "filas_que_cambian": 6804,
+      "ic95": [
+        -0.0019748,
+        -0.0004161
+      ],
+      "p_delta_positivo": 0.0015,
+      "argmax_sin_regla": 0.6130337
+    },
+    "N1b|lg": {
+      "corrected_cv": 0.6148005,
+      "delta_vs_baseline": -0.0011727,
+      "delta_vs_nested": -0.0006638,
+      "folds": [
+        0.61837,
+        0.617119,
+        0.615391,
+        0.615519,
+        0.607645
+      ],
+      "folds_positivos": 1,
+      "filas_que_cambian": 6797,
+      "ic95": [
+        -0.0019642,
+        -0.0003933
+      ],
+      "p_delta_positivo": 0.002,
+      "argmax_sin_regla": 0.6129877
+    },
+    "N2|lg": {
+      "corrected_cv": 0.6148034,
+      "delta_vs_baseline": -0.0011698,
+      "delta_vs_nested": -0.0006609,
+      "folds": [
+        0.618174,
+        0.617124,
+        0.615393,
+        0.615634,
+        0.607739
+      ],
+      "folds_positivos": 1,
+      "filas_que_cambian": 6821,
+      "ic95": [
+        -0.0019631,
+        -0.0003985
+      ],
+      "p_delta_positivo": 0.0015,
+      "argmax_sin_regla": 0.6129796
+    }
+  },
+  "detalle_canal": {
+    "N1|md": {
+      "vocabularios": [
+        84,
+        84,
+        84,
+        84,
+        84
+      ],
+      "segundos_por_fold": [
+        1.5,
+        1.3,
+        1.3,
+        1.4,
+        1.4
+      ],
+      "filas_vacias": 31881,
+      "pct_no_vacias": 81.17,
+      "top_features": [
+        {
+          "feature": "ent_loc ent_org",
+          "peso_medio_abs": 3.146
+        },
+        {
+          "feature": "ent_loc ent_loc",
+          "peso_medio_abs": 3.0857
+        },
+        {
+          "feature": "ent_org ent_org",
+          "peso_medio_abs": 2.7661
+        },
+        {
+          "feature": "ent_per ent_org",
+          "peso_medio_abs": 2.664
+        },
+        {
+          "feature": "ent_loc ent_per",
+          "peso_medio_abs": 2.6025
+        },
+        {
+          "feature": "ent_org ent_org ent_org",
+          "peso_medio_abs": 2.5984
+        },
+        {
+          "feature": "ent_per ent_loc",
+          "peso_medio_abs": 2.5938
+        },
+        {
+          "feature": "ent_org ent_loc",
+          "peso_medio_abs": 2.3705
+        },
+        {
+          "feature": "ent_misc ent_org ent_per",
+          "peso_medio_abs": 2.2358
+        },
+        {
+          "feature": "ent_loc ent_misc ent_per",
+          "peso_medio_abs": 2.2235
+        },
+        {
+          "feature": "ent_per ent_per",
+          "peso_medio_abs": 2.2202
+        },
+        {
+          "feature": "ent_misc ent_per ent_loc",
+          "peso_medio_abs": 2.1518
+        },
+        {
+          "feature": "ent_misc ent_per ent_misc",
+          "peso_medio_abs": 2.1504
+        },
+        {
+          "feature": "ent_misc ent_org ent_loc",
+          "peso_medio_abs": 2.0812
+        },
+        {
+          "feature": "ent_org ent_misc ent_loc",
+          "peso_medio_abs": 1.9802
+        }
+      ],
+      "canal_solo": 0.1833881
+    },
+    "N1b|md": {
+      "vocabularios": [
+        84,
+        84,
+        84,
+        84,
+        84
+      ],
+      "segundos_por_fold": [
+        1.2,
+        1.4,
+        1.2,
+        1.3,
+        1.4
+      ],
+      "filas_vacias": 66931,
+      "pct_no_vacias": 60.47,
+      "canal_solo": 0.1637729
+    },
+    "N2|md": {
+      "vocabularios": [
+        1435,
+        1432,
+        1429,
+        1439,
+        1431
+      ],
+      "segundos_por_fold": [
+        4.2,
+        4.0,
+        4.0,
+        3.2,
+        4.1
+      ],
+      "filas_vacias": 31881,
+      "pct_no_vacias": 81.17,
+      "canal_solo": 0.2278264
+    },
+    "N1|lg": {
+      "vocabularios": [
+        84,
+        84,
+        84,
+        84,
+        84
+      ],
+      "segundos_por_fold": [
+        1.4,
+        1.4,
+        1.3,
+        1.5,
+        1.4
+      ],
+      "filas_vacias": 28733,
+      "pct_no_vacias": 83.03,
+      "canal_solo": 0.1877987
+    },
+    "N1b|lg": {
+      "vocabularios": [
+        84,
+        84,
+        84,
+        84,
+        84
+      ],
+      "segundos_por_fold": [
+        1.5,
+        1.3,
+        1.5,
+        1.3,
+        1.4
+      ],
+      "filas_vacias": 66435,
+      "pct_no_vacias": 60.77,
+      "canal_solo": 0.1522344
+    },
+    "N2|lg": {
+      "vocabularios": [
+        1449,
+        1445,
+        1450,
+        1446,
+        1442
+      ],
+      "segundos_por_fold": [
+        3.9,
+        3.3,
+        3.7,
+        4.2,
+        4.4
+      ],
+      "filas_vacias": 28733,
+      "pct_no_vacias": 83.03,
+      "canal_solo": 0.2309944
+    }
+  },
+  "combinador": {
+    "N1|md": {
+      "peso_bloque_canal_ratio_por_fold": [
+        0.074,
+        0.0629,
+        0.0707,
+        0.0618,
+        0.0615
+      ],
+      "peso_bloque_canal_ratio_media": 0.0662
+    },
+    "N1b|md": {
+      "peso_bloque_canal_ratio_por_fold": [
+        0.0743,
+        0.0693,
+        0.0694,
+        0.0653,
+        0.0714
+      ],
+      "peso_bloque_canal_ratio_media": 0.0699
+    },
+    "N2|md": {
+      "peso_bloque_canal_ratio_por_fold": [
+        0.1293,
+        0.1175,
+        0.1659,
+        0.1318,
+        0.1124
+      ],
+      "peso_bloque_canal_ratio_media": 0.1314
+    },
+    "N1|lg": {
+      "peso_bloque_canal_ratio_por_fold": [
+        0.0715,
+        0.0681,
+        0.0649,
+        0.0708,
+        0.0693
+      ],
+      "peso_bloque_canal_ratio_media": 0.0689
+    },
+    "N1b|lg": {
+      "peso_bloque_canal_ratio_por_fold": [
+        0.2256,
+        0.1993,
+        0.2081,
+        0.0903,
+        0.084
+      ],
+      "peso_bloque_canal_ratio_media": 0.1615
+    },
+    "N2|lg": {
+      "peso_bloque_canal_ratio_por_fold": [
+        0.1364,
+        0.1347,
+        0.1487,
+        0.1621,
+        0.151
+      ],
+      "peso_bloque_canal_ratio_media": 0.1466
+    }
+  },
+  "promising": false,
+  "compliance": {
+    "hallazgos": [
+      {
+        "script": "age_linguistic_06_ner_estructura.py",
+        "hallazgo": "lectura de test"
+      },
+      {
+        "script": "age_linguistic_06_ner_estructura.py",
+        "hallazgo": "embeddings"
+      },
+      {
+        "script": "age_linguistic_06_ner_estructura.py",
+        "hallazgo": "LLM"
+      }
+    ],
+    "limpio": false
+  },
+  "sin_test": true,
+  "sin_holdout": true,
+  "sin_submission": true,
+  "segundos_total": 192.4
+}

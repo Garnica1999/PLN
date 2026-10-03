@@ -1,0 +1,435 @@
+{
+  "fase": "V34-E1 pre-registro congelado",
+  "fecha": "2026-09-30",
+  "commit": "3e97be707840e4fa95f53eaf62386f9307d1d6ab",
+  "experimento": "FALSACION de la linea FTRL-Proximal: multi-pasada con ES interno y regla de margen en forma cerrada para alpha (control: SGD multi-pasada)",
+  "carácter": "falsacion con la forma mas fuerte de la hipotesis; NO es un intento de mejora; su valor es cerrar la familia con evidencia reproducible",
+  "baseline_primario": 0.6159732,
+  "referencia_nested": 0.6154643,
+  "pesos_plugin": [
+    1.0,
+    1.1749,
+    1.2721,
+    1.163,
+    1.001,
+    0.8128
+  ],
+  "hashes": {
+    "corpus_archivo": "39c6c8270366fe155f3c8dd232e31867bee659af8908121d04b6bd89bd163748",
+    "corpus_textos": "53c1a348a7954f3e59d7c67caddd6477a06f7d3441724c201052b4b5273445fc",
+    "vectorizador": "9bae157614458dbdf26fb7aed4c78d2954c36e895f830341e59b23fa63e2b51b",
+    "manifest_canonico": "8881a9f53e8613aa943681e7fd9a42a3a281aa66b5d7c796d13d2758c6226076",
+    "exploracion_script": "9d898ab8cf5908effd119fe78047cd0ee1375a2958539f8e4c4ab0468fe3e457",
+    "exploracion_json": "92d24f8545c6b50ba2c3dda4f9e09e18298a4d18f596aa9d51a0ebe56d0b5753",
+    "exploracion_md": "4b11f38f82816a29d40b3edf888697c2c9eab141eee6819ae1d60940662beb97",
+    "canonico_y_true": "b1c928f9b9f5575547c1090a1fd83cf32a048b694af35a980b460c0bd66d48e6",
+    "canonico_fold_idx": "74d18330c40c3598a1936706ae9434c5fdf29119d357d38353cf298812fe6fb5",
+    "canonico_v30_prob": "3d77352486605971093ade7214ae82326057845d8bf54a2d88c83843c5a721db",
+    "canonico_ids": "d69ecb339f1dc57de2f9cddd558658b5a272ffa42aec15c771773e8eabd59825",
+    "canonico_cand_pred": "2fd8ab0292e8b7364dd003ff3e23902b01786a612c3e9a57641d88788efca369",
+    "canonico_cand_prob": "57be29623543c2616011f8fc77aff89b71faecdad6b599f1b4f4b133655a8134"
+  },
+  "versiones": {
+    "sklearn": "1.8.0",
+    "numpy": "1.26.4",
+    "pandas": "2.3.3"
+  },
+  "exploracion_previa": {
+    "categoria": "exploracion metodologica previa; datos de fold-train; metrica de perdida; sin seleccion",
+    "no_es_un_grid": true,
+    "justificacion": "falsacion previa a la eleccion de la regla de margen; ningun valor se selecciono y ningun umbral de G0-G4 se calibro con estas celdas",
+    "n_celdas": 27,
+    "presupuesto": {
+      "filas": 30000,
+      "pasadas": 10,
+      "particion": "fold-train del fold 0 de la particion canonica (artifacts/p33_scores/todos/fold_idx.npy, filas con fold != 0)",
+      "vectorizador": "ajustado solo en fold-train; sesgo como columna x0 = 1.0",
+      "beta": 1.0,
+      "lambda1": 0.0,
+      "celdas": 27
+    },
+    "semilla": {
+      "subconjunto": 7,
+      "ordenes_por_pasada": "1000+pasada",
+      "gemelo_sgd": 20261010,
+      "receta_subconjunto": "np.random.default_rng(7).choice(135468, 30000, replace=False) y ordenado",
+      "receta_ordenes": "np.random.default_rng(1000+p).permutation(30000) con p = 0..9"
+    },
+    "mejor_celda": {
+      "alpha": 0.176316,
+      "lambda2": 1.0,
+      "power_t": 1.0,
+      "variante_l2": "denominador",
+      "ll_train": 1.7917637845854677,
+      "ll_train_por_pasada": [
+        1.7917696842526687,
+        1.7917716777730002,
+        1.7917658228674516,
+        1.7917653014849761,
+        1.7917649089434695,
+        1.7917645991062012,
+        1.7917643542741704,
+        1.7917641386059568,
+        1.7917639578505964,
+        1.7917638004680334
+      ],
+      "ll_train_primera_pasada": 1.7917696842526687,
+      "w_max_abs": 8.5713617359527e-05,
+      "segundos": 15.53495717048645
+    },
+    "peor_celda": {
+      "alpha": 0.08,
+      "lambda2": 1.0,
+      "power_t": 0.0,
+      "variante_l2": "denominador",
+      "ll_train": 28.86405543322685,
+      "ll_train_por_pasada": [
+        6.619641948795725,
+        14.602905488283511,
+        19.525974239930235,
+        23.308567470356742,
+        26.36235464001544,
+        28.090011316004798,
+        28.67280995070414,
+        28.835989206100518,
+        28.86391988238942,
+        28.86405543322721
+      ],
+      "ll_train_primera_pasada": 6.619641948795725,
+      "w_max_abs": 26.440453725708704,
+      "segundos": 15.750387191772461
+    },
+    "h_prior_subconjunto": 1.7914536815044917,
+    "log_uniforme": 1.791759469228055,
+    "referencia_gemelo_sgd": {
+      "descripcion": "SGDClassifier(log_loss, alpha=1e-6, learning_rate=optimal, shuffle=False), NO es una celda de la exploracion: es el control sano con el mismo presupuesto y el que demuestra que el presupuesto no es el limite",
+      "pasadas": 10,
+      "ll_train": 0.15803953554913736,
+      "frecuencias_por_clase": [
+        0.1654,
+        0.1688,
+        0.1746,
+        0.1806,
+        0.1579,
+        0.1528
+      ],
+      "w_max_abs": 23.9044888820568
+    },
+    "ninguna_celda_bajo_h_prior": true,
+    "no_repetida_en_el_runner": true,
+    "declaracion": "exploracion metodologica previa sobre filas de fold-train con la sola metrica de perdida; ningun valor se selecciono y NINGUN umbral de G0-G4 se calibro con estas celdas; no se repite dentro del runner (seria tuning disfrazado)"
+  },
+  "anclas": {
+    "macro_f1_trivial_clase_mayoritaria": 0.04854212180687087,
+    "clase_mayoritaria": "13-17",
+    "gemelo_sgd_d083": 0.4934789,
+    "log_uniforme_k6": 1.791759469228055,
+    "log_k_menos_1": 1.6094379124341003,
+    "h_prior_subconjunto_exploracion": 1.7914536815044917,
+    "d_norm_referencia": 0.912815416414756,
+    "alpha_esperado_para_d_norm_referencia": 0.035263162376364156
+  },
+  "corpus": {
+    "receta": "src.data.load_train() sobre data/raw/age_train.csv (sep=cfg.TRAIN_SEP, encoding utf-8-sig, clean_text aplicado); orden de filas = orden del CSV = orden canonico de ids.npy",
+    "hash_contenido": "sha256 con longitud (8 bytes LE) + bytes UTF-8 por texto, en orden",
+    "prohibido": "el data_hash del manifiesto canonico (2ada573b...) queda invalidado en D-083: es un hash de punteros, no de contenido"
+  },
+  "representacion": {
+    "vectorizador": {
+      "analyzer": "word",
+      "ngram_range": [
+        1,
+        2
+      ],
+      "min_df": 3,
+      "max_df": 0.5,
+      "sublinear_tf": true,
+      "lowercase": true,
+      "strip_accents": null,
+      "token_pattern": "(?u)\\b\\w+\\b"
+    },
+    "norm_dtype": "defaults de sklearn (norm='l2', dtype float64)",
+    "ajuste": "POR FOLD: fit solo en ES-train (el 10 % del fold-train va al ES interno y NO se vectoriza con el) — declarado por coherencia con la regla de alpha, que se deriva sobre las filas que se entrenan",
+    "sesgo": "A1 materializa el sesgo como coordenada x0=1.0 (un solo camino); A2 usa fit_intercept=True SIN columna de sesgo pre-anadida (enmienda pre-ejecucion 1)"
+  },
+  "regla_alpha": {
+    "formula": "alpha* = M*(2 - power_t)/(d_norm * P_max**(2 - power_t))",
+    "con_power_t_cero": "alpha* = 2*M/(d_norm * P_max**2)",
+    "M": {
+      "valor": 1.6094379124341003,
+      "definicion": "ln(K-1) = ln(5)",
+      "unidad": "log-odds (nats)",
+      "fuente": "constante DECLARADA, ancla ya usada en V33-E1 (|log(1/5)|)",
+      "sensibilidad": "alpha* es lineal en M: si M se multiplica por c, alpha* se multiplica por c (sensibilidad proporcional 1.0)"
+    },
+    "d_norm": {
+      "definicion": "sqrt(1 - sum_c prior_c^2) sobre el prior MEDIDO del subconjunto ES-train del fold",
+      "unidades": "adimensional (0, 1]",
+      "fuente": "medido en runtime con las filas que se entrenan; NO el prior del fold-train completo (el ES consume el 10 %)",
+      "sensibilidad": "alpha* es proporcional a 1/d_norm; con prior uniforme d_norm = 0.9128709 y alpha* seria 0.0352631 (valor de referencia calculado con el prior medido del fold-train completo en la exploracion del arquitecto)"
+    },
+    "P_max": {
+      "valor": 10,
+      "unidad": "pasadas",
+      "fuente": "ancla D-083: el presupuesto con el que el gemelo SGD aprendio",
+      "nota": "entra A LA VEZ como presupuesto y como ancla: hay UN SOLO grado de libertad (no es busqueda); cambiarlo re-deriva alpha* y esta prohibido tras la ejecucion"
+    },
+    "valores_evaluados": 0,
+    "aplicacion": "se calcula UNA vez (fold 0), se congela y se aplica a los 5 folds; si no reproduce la formula en runtime -> exit 2 ANTES de entrenar",
+    "esperado_aproximado": 0.0352631
+  },
+  "budgeto": {
+    "pasadas_maximas": 10,
+    "pasadas_minimas": 3,
+    "paciencia": 2,
+    "mejora_minima": 0.0001,
+    "orden_por_pasada": "np.random.default_rng(20261010+fold+pasada).permutation de las filas ES-train; un orden distinto por pasada y por fold",
+    "particion_es": {
+      "generador": "sklearn.model_selection.StratifiedShuffleSplit(n_splits=1, test_size=0.1, random_state=20261010+fold) sobre las filas de fold-train",
+      "metrica": "macro-F1 del brazo sobre el 10 % de TRAIN (nunca fold-val)",
+      "restauracion": "al parar se restaura el mejor w (seleccion sobre TRAIN)",
+      "simetria": "ambos brazos reciben el MISMO P_max, la MISMA particion (sha256 de los indices), los MISMOS ordenes por pasada (sha256) y reportan su pasada de parada; el ES no elige entre brazos"
+    },
+    "prohibido": "usar fold-val, test o el leaderboard para parar, seleccionar o comparar brazos"
+  },
+  "control": {
+    "estimator": "sklearn.linear_model.SGDClassifier",
+    "loss": "log_loss",
+    "alpha_reg": 1e-06,
+    "learning_rate": "optimal",
+    "shuffle": false,
+    "fit_intercept": true,
+    "max_iter": 10,
+    "tol": null,
+    "random_state": "20261010+fold",
+    "n_jobs": 32,
+    "pasadas": 10,
+    "matriz": "la MISMA TF-IDF por fold, **SIN columna de sesgo pre-anadida** (un solo camino de sesgo por brazo)",
+    "por_que": "es el precedente que SI aprende (0.3956246 en V33-E1 con una pasada; 0.4934789 con diez en D-083) y por eso demuestra que el presupuesto no es el limite",
+    "enmienda_pre_ejecucion_1": {
+      "defecto_corregido": "D-083 y V33-E1 entregaron al control la matriz con sesgo pre-anadido Y fit_intercept=True (doble sesgo)",
+      "motivacion": "correccion de un defecto de implementacion, NO de conveniencia: no altera el criterio de exito y no favorece a A1",
+      "exigencia": "tabla de simetria de sesgo con UN solo camino por brazo, verificada por sonda: max|gradiente de la coordenada de sesgo| en A1 y paridad con intercept_ de A2"
+    },
+    "asimetria_declarada": {
+      "lambda2_ftrl": 1.0,
+      "alpha_reg_sgd": 1e-06,
+      "no_equivalencia_estructural": "con lambda2 = 1e-6 el L2-en-acumulador y el L2-en-denominador dan resultado IDENTICO (es un no-op, medido en la exploracion previa): por eso no existe una equivalencia FTRL<->SGD a escala 1e-6",
+      "sonda_exigida": "publicar que el veredicto NO se apoya en esta asimetria: el cierre se sostiene en A1 frente a la DERIVACION (la regla y la exploracion), no en A1 frente a A2"
+    },
+    "ajuste": {
+      "modo": "partial_fit_por_pasada",
+      "llamadas": 10,
+      "t_acumulado": "t_ se acumula entre llamadas (401 si se usara fit repetido, por el reinicio de self.t_ en BaseSGDClassifier._fit)",
+      "es_por_pasada": true,
+      "restaura_mejor_coef": true,
+      "max_iter": null,
+      "nota": "el numero de pasadas (10) es el que el pre-registro congelo; lo que se corrige es como se ejecuta, porque fit(max_iter=1, warm_start=True) no acumula el schedule"
+    },
+    "desvio_declarado_partial_fit": {
+      "no_bit_identico_a_fit_max_iter_10": true,
+      "medicion": "4.5e-5 a 2 pasadas y 2.0e1 a 4 pasadas en un problema sintetico",
+      "motivo_de_la_eleccion": "es la unica via que permite evaluar el early stopping despues de cada pasada, que el pre-registro exige (P_min 3, paciencia 2, restaurar el mejor coef_), y da el mismo presupuesto que A1"
+    }
+  },
+  "puerta": {
+    "momento": "dentro del fold 0, ANTES de los folds 1-4 y ANTES de integrar",
+    "aplica_a": [
+      "A1_ftrl_multipasada",
+      "A2_sgd_multipasada"
+    ],
+    "fold_0": "consumido-diagnostico: G3 y G4 leen el fold-val del fold 0, que es parte de la validacion canonica; su fallo NO toca delta",
+    "consecuencia_si_falla": "veredicto NO_ATRIBUIBLE_BY_GATE: STOP documentado, sin fallback, sin segundo alpha, sin integrar, sin bootstrap",
+    "gates": {
+      "G0_objetivo_de_la_regla": {
+        "criterio": "A1: M/2 <= D_acum <= 2*M con D_acum = rango medio de logits (max - min) sobre ES-train al parar; A2: ll_train <= H(prior)_ES - 0.01",
+        "anclaje": "M = ln(5) separa la tasa base del uniforme; factor 2 declarado cubre la linealizacion de primer orden",
+        "que_es_G0": "es un gate NUEVO de este ciclo: comprueba que la regla de alpha consiguio su objetivo declarado, no solo que hubo perdida"
+      },
+      "G1_banda_ll_train": {
+        "criterio": "0.05 <= ll_train <= H(prior)_ES - 0.01",
+        "anclaje": "piso 0.05 = detector de humo; techo anclado en la entropia del prior MEDIDO del ES-train, NO en ln 6: exigir 0.01 bajo el prior obliga a aprender algo real (el gemelo sano da 0.1580)",
+        "nota": "el techo de D-084 (0.9*ln6 = 1.6125835223052496) queda muy por debajo del prior medido y habria feito por amplitud, no pormargen de aprendizaje"
+      },
+      "G2_progreso": {
+        "criterio": "la mejor ll_train por pasada mejora en >= 1 de las primeras P_min = 3 pasadas",
+        "anclaje": "un modelo que no aprende nada tiene ll_train plana; tolerancia 1e-6"
+      },
+      "G3_macro_f1_fold_val": {
+        "criterio": "macro-F1 standalone en el fold-val >= 0.30",
+        "anclaje": "trivial 0.04854212180687087 y gemelo SGD de D-083 0.4934789"
+      },
+      "G4_frecuencias": {
+        "criterio": "frecuencia predicha por clase en [0.5*prior_c, 1.5*prior_c]",
+        "anclaje": "prior MEDIDO del ES-train: deriva de los datos de train, no de un objetivo",
+        "mejora_sobre_D084": "D-084 uso la banda arbitraria [0.10, 0.30], que rechazo al gemelo sano (42.6 % en la clase 5) y al propio prior"
+      },
+      "G5_determinismo": {
+        "criterio": "max|delta p| = 0.0 EXACTO entre dos corridas identicas del fold 0 (ambos brazos)"
+      },
+      "G6_suma_unidad": {
+        "criterio": "max|sum_c p_c - 1| <= 1e-09",
+        "anclaje": "softmax de 6 logits"
+      }
+    }
+  },
+  "arbol": {
+    "NO_ATRIBUIBLE_BY_GATE": "la puerta falla en A1 o A2: STOP documentado, sin fallback, sin segundo alpha, sin integrar, sin bootstrap; delta intacto",
+    "LINEA_ONLINE_CERRADA_POR_MECANISMO": {
+      "semantica": "cierre de FAMILIA, NO un gate de delta: se concede SOLO si (a) triage formal registrado que clasifica el fallo como MECANISMO_DEFINITIVO y no como DEFECTO_DE_IMPLEMENTACION (bug, sesgo duplicado, presupuesto truncado, ES mal configurado) decidido ANTES de elegir nodo; si es defecto -> se corrige y se re-emite; (b) la tabla de mecanismo esta PUBLICADA dentro del runner (ll_train y D_acum por pasada de A1 y A2, razon |sigma*w|/|g|), no importada de /tmp; (c) la lista exhaustiva de la familia esta registrada con el estado de cada miembro",
+      "condiciones": "si A1 falla y A2 pasa G0-G4; el delta queda intacto y vacio en informe e historial, con el motivo de no calculo",
+      "one_shot": "reabrir la familia exige acta nueva con hipotesis mecanica nueva, no otro gate"
+    },
+    "PROMISING": "gates completos y control favorable -> segunda particion SOLO con autorizacion del usuario; el script no la ejecuta",
+    "MARGINAL": "delta > 0 sin gates completos, o con cap activo",
+    "CLOSED": "delta <= 0",
+    "submission": "jamas automatica; requeriria gate completo + segunda particion + autorizacion explicita"
+  },
+  "familia_cerrada": [
+    {
+      "miembro": "FTRL-Proximal propio, K=6 softmax (un solo juego de pesos)",
+      "estado": "CUBIERTO",
+      "evidencia": "V33-E1 (D-084, una pasada) y este ciclo (V34, multi-pasada con ES interno)"
+    },
+    {
+      "miembro": "FTRL-Proximal OvR (6 sigmoides)",
+      "estado": "CUBIERTO",
+      "evidencia": "D-083 (diez pasadas, alpha 0.05, divergencia)"
+    },
+    {
+      "miembro": "power_t (decaimiento) en {0.25, 0.5, 1.0}",
+      "estado": "CUBIERTO",
+      "evidencia": "exploracion previa (27 celdas): power_t con su alpha de margen da ll_train 1.8094 / 1.7929 / 1.7918, nunca bajo H(prior)"
+    },
+    {
+      "miembro": "lambda2 en {.05, .2, 1, 1e-6} y L2 en acumulador vs denominador",
+      "estado": "CUBIERTO",
+      "evidencia": "exploracion previa (27 celdas); con lambda2 = 1e-6 ambas variantes L2 son identicas (no-op medido)"
+    },
+    {
+      "miembro": "presupuesto de una pasada",
+      "estado": "CUBIERTO",
+      "evidencia": "V33-E1 (A1 y A2 con una pasada) y D-083 (diez pasadas)"
+    },
+    {
+      "miembro": "FTRL-Proximal con features preentrenadas o normalizacion aprendida",
+      "estado": "EXCLUIDO",
+      "evidencia": "prohibido por las reglas (embeddings, preentrenados o entrenados) y sin cobertura historica"
+    },
+    {
+      "miembro": "FTRL-Proximal con regularizacion L1 (lambda1 > 0)",
+      "estado": "NO CUBIERTO",
+      "evidencia": "no medido; queda EXCLUIDO del cierre de familia, no se declara cerrado"
+    },
+    {
+      "miembro": "FTRL-Proximal multiclase con matriz de pesos por clase y L2 normalizado fuera de FTRL",
+      "estado": "NO CUBIERTO",
+      "evidencia": "no medido"
+    }
+  ],
+  "sondas": {
+    "a_vectorizado_vs_lazo": {
+      "tolerancia": 1e-12,
+      "nota": "reutilizada de D-084"
+    },
+    "b_raiz_analitica_lambda0": {
+      "residuo_max": 1e-09
+    },
+    "c_totalf1_macro": {
+      "tolerancia": 1e-06
+    },
+    "d_sin_nan_logloss_finito": true,
+    "e_logloss_multiclase_propio": {
+      "tolerancia": 1e-09
+    },
+    "f_filas_suman_uno": {
+      "tolerancia": 1e-09
+    },
+    "g_reproducibilidad_alpha": {
+      "criterio": "alpha*, d_norm y prior recalculados en runtime desde el ES-train; |alpha*_run - alpha*_formula| = 0 exacto + sha256 de prior y de alpha*; si no reproduce -> exit 2 ANTES de entrenar"
+    },
+    "h_estabilidad_es": {
+      "criterio": "dos corridas identicas: misma pasada de parada, mismo ll_train y sha256 de w identicos (tolerancia 0)"
+    },
+    "i_simetria_presupuesto": {
+      "criterio": "sha256 de la particion ES y de los ordenes por pasada identicos en ambos brazos"
+    },
+    "j_tabla_de_mecanismo": {
+      "criterio": "publicar ll_train y D_acum por pasada de A1 y A2, mas la razon |sigma*w|/|g|: la falsacion se reproduce DENTRO del runner, NO se importa de /tmp"
+    },
+    "politica": "si alguna falla -> exit 4 ANTES de entrenar; cualquier ajuste exige enmienda pre-ejecucion"
+  },
+  "publicado_no_gate": [
+    "ll_train por pasada de A1 y A2",
+    "D_acum por pasada de A1 y A2",
+    "razon |sigma*w|/|g| por pasada",
+    "w_max_abs por pasada",
+    "frecuencias predichas por clase al parar"
+  ],
+  "compliance": {
+    "embeddings": 0,
+    "transformers": 0,
+    "llm": 0,
+    "datos_externos": 0,
+    "test": 0,
+    "holdout": 0,
+    "leaderboard": 0,
+    "submission": 0,
+    "ast_audit": "importes Y literales de ruta: vowpal, vw, torch, transformers, gensim, fasttext, sentence-transformers, word2vec, glove, spacy-vectors; y 0 rutas de test/holdout/submission/leaderboard",
+    "lecturas_de_datos": "solo data/raw/age_train.csv y las 4 particiones reservadas de artifacts/p33_scores/todos; se audita que no se lea nada mas",
+    "auditorias_exigidas": [
+      "6 .npy canonicos + manifest",
+      "sha256 del archivo y del array de textos (nunca el data_hash del manifiesto)",
+      "sha256 del vectorizador",
+      "vocabulario e idf por fold",
+      "sonda de refit en los 5 folds",
+      "sondas (a)-(j)",
+      "tabla de simetria de sesgo",
+      "sonda de reproducibilidad de alpha*",
+      "estabilidad del ES",
+      "simetria de presupuesto",
+      "RSS pico con ru_maxrss",
+      "escritura atomica"
+    ]
+  },
+  "ejecucion": {
+    "coste_medido_en_exploracion": 453.9961459636688,
+    "coste_estimado_runner": "~590 s (FTRL ~77 s por fold con 10 pasadas, A2 ~1.5 s por fold, sondas ~1 s, refit ~15 s, sondas de determinismo y estabilidad del ES ~158 s)",
+    "presupuesto_declarado_seg": 1200.0,
+    "limite_por_proyeccion_h": 20.0,
+    "timeout_global_h": 24.0,
+    "ram_tope_gb": 20.0,
+    "ram_medicion": "resource.getrusage(ru_maxrss)",
+    "rss_esperado": "< 1.5 GB (z, n, w = 3 x 118410 x 6 x 8 B = 17 MB) vs 0.71 GB medido en V33-E1",
+    "checkpoints": "experiments/v34_01_estado.json y checkpoints/v34_e1/*.npz, resumible por fold y por brazo"
+  },
+  "entregables": {
+    "exploracion_previa": "scripts/v34_00b_exploracion_alpha.py (ya ejecutado) + experiments/v34_00b_exploracion_alpha.json + reports/v34_exploracion_alpha.md",
+    "preregistro": "scripts/v34_00_preregistro.py -> experiments/v34_00_preregistro.json, reports/v34_preregistro.md, reports/v34_convergence_gate.md (NORMATIVO)",
+    "runner": "scripts/v34_01_ftrl_softmax_multipasada.py -> experiments/v34_01_ftrl_softmax_multipasada.json, experiments/v34_01_estado.json, artifacts/p34_scores/v34_e1/{a1_ftrl_multipasada,a2_sgd_multipasada}.npy, checkpoints/v34_e1/fold{k}_{brazo}.npz (w, z, n, pasada_de_parada) con escritura atomica, reports/v34_e1_ftrl_multipasada.md, reports/figures/v34_e1_curvas.png, reports/v34_novelty_registry.csv (NUEVO), fila anexada en reports/age_complete_experiment_history.csv, RUNLOG.md y fila V34-E1 en experiments.csv",
+    "acta": "D-085 con: clasificacion de triage, tabla de las 27 celdas y su lectura, anclas M/d_norm/P_max con sensibilidad, tabla de simetria de sesgo, estado de sondas (a)-(j), lista de miembros de familia cubiertos vs no cubiertos, y confirmacion de que NO se toco p33_scores/todos ni v33_01, sin submission, sin LB y sin segunda particion",
+    "rutas_prohibidas": "artifacts/p33_scores/todos/** y cualquier script ya ejecutado"
+  },
+  "enmiendas": [
+    {
+      "fecha": "2026-09-30",
+      "objeto": "control.a2_sgd.ajuste (presupuesto de 10 pasadas)",
+      "de": "fit(max_iter=P_MAX=10, tol=None, shuffle=False) en una sola llamada por fold",
+      "a": "partial_fit x 10, una llamada por orden congelado de cada pasada, con t_ acumulado, ES evaluado despues de cada pasada y restauracion del mejor coef_",
+      "motivo": "defecto medido de API: BaseSGDClassifier._fit hace self.t_ = 1.0 en cada llamada, luego fit(max_iter=1, warm_start=True) repetido reinicia el schedule 10 veces y queda en t_ = 401 (medido) en vez de t_ = 4001; el control recibiria un presupuesto de un orden de magnitud menor que A1",
+      "medicion": "t_ = 401 con fit repetido; t_ = 4001 con partial_fit y con fit(max_iter=10); diferencias partial_fit vs fit(max_iter=10): 4.5e-5 a 2 pasadas y 2.0e1 a 4 pasadas en un problema sintetico",
+      "desvio_declarado": "partial_fit x 10 no es identico bit a bit a fit(max_iter=10); es la unica forma de evaluar el ES por pasada que el protocolo exige, y mantiene el presupuesto de 10 pasada declarado",
+      "afecta_a_gates": false,
+      "estado_datos": "sin resultados; enmienda pre-ejecucion"
+    },
+    {
+      "fecha": "2026-09-30",
+      "objeto": "representacion.vectorizador.token_pattern (fidelidad de la receta canonica)",
+      "de": "(?u)\\\\b\\\\w\\\\b (dobles backslashes: typo del pre-registro; sha256 del dict 33311e5eddc0b0bb)",
+      "a": "(?u)\\b\\w+\\b (receta canonica de v31_02_banco_representaciones.py, usada por v32_04, v33_00, el runner v34_01 y la exploracion previa; sha256 del dict 9bae157614458dbd)",
+      "motivo": "el pre-registro de V34 se apartaba de la representacion canonica del proyecto por un typo mio; el check de no-deriva del runner lo detecto al comparar su espejo con el JSON",
+      "afecta_a_gates": false,
+      "estado_datos": "sin resultados; enmienda pre-ejecucion"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "fase": "documentacion del plug-in por clase",
+  "fecha": "2026-10-11",
+  "experimenta": false,
+  "commit": "51f045689a93712fda12ad20c2f8e121a19defed",
+  "estado": "PROMISING_CONFIRMED",
+  "documentos": [
+    "DECISIONS.md (D-072)",
+    "PROJECT_STATE.md",
+    "RUNLOG.md",
+    "FINAL_REPORT.md",
+    "experiments.csv (AGE-PLUGIN-CANON, AGE-PLUGIN-ALT)",
+    "notebook"
+  ],
+  "reports": [
+    "age_plugin_macro_f1_confirmatory.md",
+    "age_plugin_macro_f1_partitions.csv",
+    "age_plugin_macro_f1_final_decision.md"
+  ],
+  "submission_generada": false,
+  "leaderboard_consultado": false
+}

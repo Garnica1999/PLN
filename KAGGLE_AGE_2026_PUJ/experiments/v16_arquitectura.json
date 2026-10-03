@@ -1,0 +1,171 @@
+{
+  "fase": "V16 arquitectura del meta-modelo",
+  "fecha": "2026-09-26",
+  "n_variables": 279,
+  "variables_nuevas": 0,
+  "arquitecturas": {
+    "peso_aprendido": {
+      "macro_f1": 0.6002,
+      "accuracy": 0.6004,
+      "delta": -0.0003,
+      "folds_positivos": 0,
+      "por_fold": [
+        0.599,
+        0.605,
+        0.6032,
+        0.6002,
+        0.5928
+      ],
+      "elecciones": [
+        {
+          "fold": 0,
+          "peso": 0.1
+        },
+        {
+          "fold": 1,
+          "peso": 0.5
+        },
+        {
+          "fold": 2,
+          "peso": 0.5
+        },
+        {
+          "fold": 3,
+          "peso": 0.4
+        },
+        {
+          "fold": 4,
+          "peso": 0.5
+        }
+      ]
+    },
+    "combinador_logistico": {
+      "macro_f1": 0.6011,
+      "accuracy": 0.599,
+      "delta": 0.0006,
+      "folds_positivos": 3,
+      "por_fold": [
+        0.6018,
+        0.6047,
+        0.6044,
+        0.6024,
+        0.5914
+      ],
+      "elecciones": [
+        {
+          "fold": 0,
+          "peso": null
+        },
+        {
+          "fold": 1,
+          "peso": null
+        },
+        {
+          "fold": 2,
+          "peso": null
+        },
+        {
+          "fold": 3,
+          "peso": null
+        },
+        {
+          "fold": 4,
+          "peso": null
+        }
+      ]
+    }
+  },
+  "referencia": {
+    "macro_f1": 0.6005,
+    "per_fold": [
+      0.6007,
+      0.605,
+      0.6032,
+      0.6004,
+      0.5928
+    ]
+  },
+  "elegida": "combinador_logistico",
+  "segunda_particion": {
+    "por_fold": [
+      0.6009,
+      0.6015,
+      0.6043,
+      0.6056
+    ],
+    "por_fold_referencia": [
+      0.6013,
+      0.5998,
+      0.6039,
+      0.6048
+    ],
+    "positivos": 3
+  },
+  "bootstrap_ic95": [
+    -0.0003,
+    0.0015,
+    0.9095
+  ],
+  "criterios": {
+    "efecto_minimo": false,
+    "folds_positivos": true,
+    "significacion": false,
+    "segunda_particion": true,
+    "fronteras": true
+  },
+  "adopta": false,
+  "fronteras_referencia": {
+    "18-24|25-34": {
+      "filas": 57023,
+      "accuracy": 0.4963,
+      "macro_f1": 0.5923,
+      "cruces": 10122,
+      "cruces_resueltos": 0,
+      "pct_cruces_resueltos": 0.0
+    },
+    "25-34|35-49": {
+      "filas": 56577,
+      "accuracy": 0.4974,
+      "macro_f1": 0.6115,
+      "cruces": 7252,
+      "cruces_resueltos": 0,
+      "pct_cruces_resueltos": 0.0
+    }
+  },
+  "fronteras_mejor": {
+    "18-24|25-34": {
+      "filas": 57023,
+      "accuracy": 0.5065,
+      "macro_f1": 0.5977,
+      "cruces": 10683,
+      "cruces_resueltos": 0,
+      "pct_cruces_resueltos": 0.0
+    },
+    "25-34|35-49": {
+      "filas": 56577,
+      "accuracy": 0.5131,
+      "macro_f1": 0.6206,
+      "cruces": 7906,
+      "cruces_resueltos": 0,
+      "pct_cruces_resueltos": 0.0
+    }
+  },
+  "complementariedad": {
+    "global": {
+      "rescate": 2692,
+      "dano": 2987,
+      "neto": -295
+    },
+    "18-24|25-34": {
+      "rescate": 1525,
+      "dano": 945,
+      "neto": 580
+    },
+    "25-34|35-49": {
+      "rescate": 1516,
+      "dano": 627,
+      "neto": 889
+    }
+  },
+  "segundos": 2983.4
+}

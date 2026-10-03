@@ -1,0 +1,11 @@
+{
+  "fase": "V17 · integracion en el notebook consolidado",
+  "fecha": "2026-09-26",
+  "notebook": "notebooks/99_entrega_consolidado.ipynb",
+  "celdas_antes": 46,
+  "celdas_despues": 78,
+  "celdas_nuevas": 32,
+  "celdas_de_codigo_nuevas": 11,
+  "celdas_nuevas_con_salida": 11,
+  "segundos": 2.2
+}

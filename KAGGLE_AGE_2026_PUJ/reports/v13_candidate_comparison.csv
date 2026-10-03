@@ -1,0 +1,7 @@
+candidato,tipo,macro_f1,delta,folds_positivos,control_permutado,frontera_18_24_25_34,frontera_25_34_35_49,veredicto
+V12 (referencia congelada),referencia,0.6004,0.0,-,-,0.4963,0.4974,"congelado (LB 0,62188)"
+V12 + evidencia por token (P1),fusion,0.6003,-0.0002,3/5,0.6003,0.5015,0.5017,NO ADOPTAR
+V12 + especialistas de frontera (P3),especialista,0.5993,-0.0012,-,-,0.4944,0.4942,NO ADOPTAR
+"V12 + lexicones (fase anterior, D-039)",fusion,0.6004,0.0,-,0.5994,-,-,NO ADOPTAR
+capa de decision ordinal (D-037),capa de decision,0.6015,0.0011,4/5,-,-,-,NO ADOPTAR: no alcanza el gate y el neto de rescate es negativo
+mejor puerta por confianza sobre P1 (P16d),puerta,0.6005,0.0,0/5 (0 filas desviadas),-,0.4963,0.4974,la mejor puerta es no usar el bloque

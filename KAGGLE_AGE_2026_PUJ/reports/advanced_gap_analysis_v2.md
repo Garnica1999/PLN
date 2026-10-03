@@ -34,7 +34,7 @@ Generado por `scripts/phase0_freeze_gap_v2.py`. Cada fila indica si el fenómeno
 1. **L1 — Errores universales y de intersección** (ausente): nunca se midió cuántos tweets tienen al menos un modelo base acertando mientras el ensamble falla. Es el diagnóstico que decide si el problema es de información o de ponderación.
 2. **L2 — Residualización por longitud** (ausente): la longitud domina el error y confunde a las features de riqueza; el residuo puede contener señal de edad ortogonal.
 3. **L3 — Separación contenido/estilo** (sin representación explícita): el contenido se comparte entre cohortes (RT de humor y deportes en 18-24 y 25-34, ya documentado); el estilo podría conservar señal demográfica.
-4. **L4 — Transiciones de caracteres** (ausente): patrones letra→dígito, letra→puntuación, espacio→puntuación que el TF-IDF no expresa como feature explícita.
+4. **L4 — Transiciones de caracteres** (ausente): patrones letra->dígito, letra->puntuación, espacio->puntuación que el TF-IDF no expresa como feature explícita.
 5. **L5 — Tipología de tweets y umbral de información** (sin taxonomía explícita): el error puede depender del tipo estructural, no solo de la longitud.
 6. **L6 — Matriz de complementariedad y ponderación condicional** (sin matriz formal): guiada por L1.
 7. **L7 — NB-SVM por canal** (extensión barata de algo ya validado: +0,0007 en char+mención).

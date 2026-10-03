@@ -1,0 +1,137 @@
+{
+  "fecha": "2026-09-26",
+  "referencia_pooled": 0.6005017473,
+  "lb": 0.62188,
+  "macro_medida": 0.6005017,
+  "masa_por_clase": [
+    {
+      "clase": "13-17",
+      "filas": 28863,
+      "porcentaje": 17.04,
+      "f1": 0.671
+    },
+    {
+      "clase": "18-24",
+      "filas": 28676,
+      "porcentaje": 16.93,
+      "f1": 0.5059
+    },
+    {
+      "clase": "25-34",
+      "filas": 28347,
+      "porcentaje": 16.74,
+      "f1": 0.4858
+    },
+    {
+      "clase": "35-49",
+      "filas": 28230,
+      "porcentaje": 16.67,
+      "f1": 0.5593
+    },
+    {
+      "clase": "50-64",
+      "filas": 28060,
+      "porcentaje": 16.57,
+      "f1": 0.6549
+    },
+    {
+      "clase": "65-xx",
+      "filas": 27160,
+      "porcentaje": 16.04,
+      "f1": 0.7261
+    }
+  ],
+  "masa_de_la_frontera": {
+    "18-24 + 25-34": 33.67
+  },
+  "correcciones_para_el_gate": 478,
+  "elasticidad_1000": [
+    {
+      "frontera": "18-24|25-34",
+      "delta": 0.006147
+    },
+    {
+      "frontera": "25-34|35-49",
+      "delta": 0.006271
+    }
+  ],
+  "calibracion_lb": {
+    "n": 4,
+    "pendiente": 1.02825,
+    "intercepto": 0.00223,
+    "r2": 0.9968,
+    "residuo_desviacion": 0.00147,
+    "gap_min": 0.01716,
+    "gap_max": 0.02132,
+    "gap_medio": 0.01853,
+    "gap_desviacion": 0.00164,
+    "gate_lb_equivalente": 0.00308,
+    "lb_previsto_para_el_gate": 0.62278,
+    "lb_envio_v12": 0.62182,
+    "lb_replica_v12": 0.62188,
+    "pares": [
+      {
+        "envio": "v01",
+        "cv": 0.5344444,
+        "lb": 0.55235,
+        "gap": 0.01791,
+        "fuente_cv": "experiments/E-001_resultados.json"
+      },
+      {
+        "envio": "v07",
+        "cv": 0.586,
+        "lb": 0.60372,
+        "gap": 0.01772,
+        "fuente_cv": "RUNLOG.md, fila 52"
+      },
+      {
+        "envio": "v08",
+        "cv": 0.5866,
+        "lb": 0.60376,
+        "gap": 0.01716,
+        "fuente_cv": "RUNLOG.md, fila 58"
+      },
+      {
+        "envio": "v12",
+        "cv": 0.6005017473,
+        "lb": 0.62182,
+        "gap": 0.02132,
+        "fuente_cv": "referencia canonica de V12"
+      }
+    ],
+    "envios_solo_con_lb": [
+      "age_submission_v02.csv",
+      "age_submission_v03.csv",
+      "age_submission_v04.csv",
+      "age_submission_v05.csv",
+      "age_submission_v06.csv",
+      "age_submission_v09.csv",
+      "age_submission_v11.csv"
+    ],
+    "puntuaciones_por_fichero": {
+      "age_submission_v01.csv": 0.55235,
+      "age_submission_v02.csv": 0.57018,
+      "age_submission_v03.csv": 0.58081,
+      "age_submission_v04.csv": 0.59178,
+      "age_submission_v05.csv": 0.59518,
+      "age_submission_v06.csv": 0.60273,
+      "age_submission_v07.csv": 0.60372,
+      "age_submission_v08.csv": 0.60376,
+      "age_submission_v09.csv": 0.60807,
+      "age_submission_v11.csv": 0.61744,
+      "age_submission_v12.csv": 0.62182
+    }
+  },
+  "techo_v17_registrado": {},
+  "envios_con_lb_sin_cv_verificable": [
+    "age_submission_v02.csv",
+    "age_submission_v03.csv",
+    "age_submission_v04.csv",
+    "age_submission_v05.csv",
+    "age_submission_v06.csv",
+    "age_submission_v09.csv",
+    "age_submission_v11.csv"
+  ],
+  "nota": "no se ejecuta ninguna sonda ni variante: este script solo verifica, sobre artefactos existentes, las cifras que sostienen la decision de cierre",
+  "segundos": 35.5
+}

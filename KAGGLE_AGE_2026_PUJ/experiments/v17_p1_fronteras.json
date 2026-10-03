@@ -1,0 +1,90 @@
+{
+  "fase": "V17 · P1 y P1.1 matriz por miembro en fronteras y complementariedad local",
+  "fecha": "2026-09-26",
+  "entrenamiento": "ninguno (inerte)",
+  "n_filas": 169336,
+  "n_miembros": 13,
+  "interseccion": [
+    {
+      "Frontera": "18-24|25-34",
+      "n_filas": 57023,
+      "V12_acierto": 0.4963,
+      "Especialista_acierto": 0.6864,
+      "Ambos_acierto": 24783,
+      "Solo_V12": 3519,
+      "Solo_especialista": 14356,
+      "Ninguno": 14365,
+      "Techo_con_enrutamiento": 0.7481,
+      "Correccion_neta_posible": 10837
+    },
+    {
+      "Frontera": "25-34|35-49",
+      "n_filas": 56577,
+      "V12_acierto": 0.4974,
+      "Especialista_acierto": 0.7218,
+      "Ambos_acierto": 25267,
+      "Solo_V12": 2872,
+      "Solo_especialista": 15571,
+      "Ninguno": 12867,
+      "Techo_con_enrutamiento": 0.7726,
+      "Correccion_neta_posible": 12699
+    }
+  ],
+  "analisis": [
+    {
+      "Frontera": "18-24|25-34",
+      "V12_acc_frontera": 0.4963,
+      "Especialista_acc_frontera": 0.6864,
+      "Techo_enrutamiento": 0.7481,
+      "Correccion_neta_possible": 10837,
+      "Fraccion_ambigua_margen": 0.0991,
+      "Mediana_margen_salvables": 0.4935,
+      "Mediana_margen_danables": 0.3763,
+      "Separacion_de_margen": 0.1172
+    },
+    {
+      "Frontera": "25-34|35-49",
+      "V12_acc_frontera": 0.4974,
+      "Especialista_acc_frontera": 0.7218,
+      "Techo_enrutamiento": 0.7726,
+      "Correccion_neta_possible": 12699,
+      "Fraccion_ambigua_margen": 0.0914,
+      "Mediana_margen_salvables": 0.4974,
+      "Mediana_margen_danables": 0.4404,
+      "Separacion_de_margen": 0.0569
+    }
+  ],
+  "separacion_de_margen_positiva": true,
+  "cota_maxima_por_frontera": {
+    "18-24|25-34": 0.7481,
+    "25-34|35-49": 0.7726
+  },
+  "mejores_miembros_25_34_35_49": [
+    {
+      "Member": "E028a_especialista_par",
+      "Accuracy": 0.7218,
+      "Neto": 12699
+    },
+    {
+      "Member": "oof_E015_softmax",
+      "Accuracy": 0.5143,
+      "Neto": 958
+    },
+    {
+      "Member": "oof_E021a_ordinal",
+      "Accuracy": 0.4789,
+      "Neto": -1046
+    },
+    {
+      "Member": "oof_E-011",
+      "Accuracy": 0.4727,
+      "Neto": -1395
+    },
+    {
+      "Member": "oof_E-009",
+      "Accuracy": 0.47,
+      "Neto": -1545
+    }
+  ],
+  "segundos": 2.6
+}

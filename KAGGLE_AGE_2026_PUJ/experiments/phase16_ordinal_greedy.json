@@ -1,0 +1,152 @@
+{
+  "fase": "G — ordinal auxiliar y greedy de miembros",
+  "fecha": "2026-09-25",
+  "baseline": {
+    "macro_f1": 0.6004,
+    "std": 0.0042,
+    "per_fold": [
+      0.6007,
+      0.605,
+      0.6032,
+      0.6004,
+      0.5928
+    ],
+    "origen": "fase 12"
+  },
+  "g2_greedy": {
+    "macro_f1": 0.577,
+    "std": 0.003,
+    "per_fold": [
+      0.5803,
+      0.5784,
+      0.5792,
+      0.575,
+      0.5722
+    ],
+    "delta_vs_v12": -0.0234,
+    "selecciones": [
+      {
+        "fold": 0,
+        "paso_optimo": 9,
+        "historial_train": [
+          0.5653,
+          0.5674,
+          0.5683,
+          0.5683,
+          0.5714,
+          0.5742,
+          0.5753,
+          0.5762,
+          0.5765,
+          0.5764
+        ],
+        "miembros": {
+          "oof_ADV05_nbsvm.npy": 3,
+          "oof_E016_margenes.npy": 1,
+          "oof_E-011.npy": 1,
+          "oof_E-010.npy": 1,
+          "oof_E014_margenes.npy": 1,
+          "oof_E017_probabilidades.npy": 1,
+          "oof_E019b_densas_svd.npy": 1
+        }
+      },
+      {
+        "fold": 1,
+        "paso_optimo": 8,
+        "historial_train": [
+          0.5654,
+          0.5682,
+          0.5686,
+          0.5689,
+          0.5709,
+          0.5744,
+          0.5759,
+          0.5767,
+          0.5765,
+          0.5765
+        ],
+        "miembros": {
+          "oof_ADV05_nbsvm.npy": 3,
+          "oof_E016_margenes.npy": 1,
+          "oof_E-009.npy": 1,
+          "oof_E014_margenes.npy": 1,
+          "oof_E017_probabilidades.npy": 1,
+          "oof_E019b_densas_svd.npy": 1
+        }
+      },
+      {
+        "fold": 2,
+        "paso_optimo": 9,
+        "historial_train": [
+          0.5657,
+          0.5677,
+          0.5684,
+          0.5686,
+          0.5709,
+          0.5745,
+          0.576,
+          0.5766,
+          0.5769,
+          0.5768
+        ],
+        "miembros": {
+          "oof_ADV05_nbsvm.npy": 4,
+          "oof_E016_margenes.npy": 1,
+          "oof_E-011.npy": 1,
+          "oof_E014_margenes.npy": 1,
+          "oof_E017_probabilidades.npy": 1,
+          "oof_E019b_densas_svd.npy": 1
+        }
+      },
+      {
+        "fold": 3,
+        "paso_optimo": 10,
+        "historial_train": [
+          0.5656,
+          0.5682,
+          0.5689,
+          0.5695,
+          0.5719,
+          0.5759,
+          0.5768,
+          0.5772,
+          0.5776,
+          0.5778
+        ],
+        "miembros": {
+          "oof_ADV05_nbsvm.npy": 4,
+          "oof_E019b_densas_svd.npy": 2,
+          "oof_E016_margenes.npy": 1,
+          "oof_E-011.npy": 1,
+          "oof_E014_margenes.npy": 1,
+          "oof_E017_probabilidades.npy": 1
+        }
+      },
+      {
+        "fold": 4,
+        "paso_optimo": 10,
+        "historial_train": [
+          0.5673,
+          0.5698,
+          0.5705,
+          0.5708,
+          0.574,
+          0.5764,
+          0.5774,
+          0.5783,
+          0.579,
+          0.5791
+        ],
+        "miembros": {
+          "oof_ADV05_nbsvm.npy": 4,
+          "oof_E014_margenes.npy": 3,
+          "oof_E016_margenes.npy": 1,
+          "oof_E017_probabilidades.npy": 1,
+          "oof_E019b_densas_svd.npy": 1
+        }
+      }
+    ],
+    "adoptado": false
+  },
+  "segundos": 65.7
+}

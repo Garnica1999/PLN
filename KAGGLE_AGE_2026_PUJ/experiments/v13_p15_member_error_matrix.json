@@ -1,0 +1,266 @@
+{
+  "fase": "V13 · P15 matriz de errores por miembro",
+  "fecha": "2026-09-25",
+  "filas": 169336,
+  "exactitud_v12": 0.6007,
+  "errores_v12": 67610,
+  "errores_con_rescate": 45213,
+  "pct_error_rescatable": 66.873,
+  "errores_techo_informacion": 22397,
+  "techo_puerta_por_confianza": 0.6821,
+  "mejor_miembro": "oof_E019b_densas_svd",
+  "pct_rescate_exclusivo_maximo": 5.662,
+  "pct_rescate_exclusivo_top3": 13.856,
+  "separacion_margen_maxima": -0.0103,
+  "cubrimiento_greedy": [
+    {
+      "tipo": "greedy",
+      "etiqueta": "oof_E019b_densas_svd",
+      "filas": null,
+      "pct_del_error_v12": 19.274,
+      "rescates_nuevos": 13031,
+      "acumulado": 13031
+    },
+    {
+      "tipo": "greedy",
+      "etiqueta": "oof_E015_softmax",
+      "filas": null,
+      "pct_del_error_v12": 37.165,
+      "rescates_nuevos": 12096,
+      "acumulado": 25127
+    },
+    {
+      "tipo": "greedy",
+      "etiqueta": "oof_E028a_pares",
+      "filas": null,
+      "pct_del_error_v12": 46.14,
+      "rescates_nuevos": 6068,
+      "acumulado": 31195
+    },
+    {
+      "tipo": "greedy",
+      "etiqueta": "oof_E017_probabilidades",
+      "filas": null,
+      "pct_del_error_v12": 54.014,
+      "rescates_nuevos": 5324,
+      "acumulado": 36519
+    },
+    {
+      "tipo": "greedy",
+      "etiqueta": "oof_E021b_rocchio",
+      "filas": null,
+      "pct_del_error_v12": 59.438,
+      "rescates_nuevos": 3667,
+      "acumulado": 40186
+    },
+    {
+      "tipo": "greedy",
+      "etiqueta": "oof_E-010",
+      "filas": null,
+      "pct_del_error_v12": 62.961,
+      "rescates_nuevos": 2382,
+      "acumulado": 42568
+    },
+    {
+      "tipo": "greedy",
+      "etiqueta": "oof_E-011",
+      "filas": null,
+      "pct_del_error_v12": 65.366,
+      "rescates_nuevos": 1626,
+      "acumulado": 44194
+    },
+    {
+      "tipo": "greedy",
+      "etiqueta": "oof_ADV05_nbsvm",
+      "filas": null,
+      "pct_del_error_v12": 66.148,
+      "rescates_nuevos": 529,
+      "acumulado": 44723
+    },
+    {
+      "tipo": "greedy",
+      "etiqueta": "oof_E021a_ordinal",
+      "filas": null,
+      "pct_del_error_v12": 66.471,
+      "rescates_nuevos": 218,
+      "acumulado": 44941
+    },
+    {
+      "tipo": "greedy",
+      "etiqueta": "oof_E014_margenes",
+      "filas": null,
+      "pct_del_error_v12": 66.768,
+      "rescates_nuevos": 201,
+      "acumulado": 45142
+    },
+    {
+      "tipo": "greedy",
+      "etiqueta": "oof_E016_margenes",
+      "filas": null,
+      "pct_del_error_v12": 66.827,
+      "rescates_nuevos": 40,
+      "acumulado": 45182
+    },
+    {
+      "tipo": "greedy",
+      "etiqueta": "oof_E-009",
+      "filas": null,
+      "pct_del_error_v12": 66.861,
+      "rescates_nuevos": 23,
+      "acumulado": 45205
+    },
+    {
+      "tipo": "greedy",
+      "etiqueta": "oof_E013_margenes",
+      "filas": null,
+      "pct_del_error_v12": 66.873,
+      "rescates_nuevos": 8,
+      "acumulado": 45213
+    }
+  ],
+  "familias": [
+    {
+      "familia": "svm_lineal",
+      "miembros": 3,
+      "rescates_anyo": 11140,
+      "pct_del_error_rescatable": 6.579,
+      "pct_exclusiva_de_la_familia": 1.997,
+      "exactitud_media": 0.5645
+    },
+    {
+      "familia": "prob_lineal",
+      "miembros": 3,
+      "rescates_anyo": 19651,
+      "pct_del_error_rescatable": 11.605,
+      "pct_exclusiva_de_la_familia": 14.65,
+      "exactitud_media": 0.539
+    },
+    {
+      "familia": "bayes",
+      "miembros": 1,
+      "rescates_anyo": 10866,
+      "pct_del_error_rescatable": 6.417,
+      "pct_exclusiva_de_la_familia": 16.072,
+      "exactitud_media": 0.5408
+    },
+    {
+      "familia": "ordinal",
+      "miembros": 3,
+      "rescates_anyo": 26872,
+      "pct_del_error_rescatable": 15.869,
+      "pct_exclusiva_de_la_familia": 22.529,
+      "exactitud_media": 0.4182
+    },
+    {
+      "familia": "prototipos",
+      "miembros": 1,
+      "rescates_anyo": 13435,
+      "pct_del_error_rescatable": 7.934,
+      "pct_exclusiva_de_la_familia": 19.871,
+      "exactitud_media": 0.404
+    },
+    {
+      "familia": "denso",
+      "miembros": 1,
+      "rescates_anyo": 13031,
+      "pct_del_error_rescatable": 7.695,
+      "pct_exclusiva_de_la_familia": 19.274,
+      "exactitud_media": 0.4107
+    },
+    {
+      "familia": "nbsvm",
+      "miembros": 1,
+      "rescates_anyo": 9499,
+      "pct_del_error_rescatable": 5.61,
+      "pct_exclusiva_de_la_familia": 14.05,
+      "exactitud_media": 0.5635
+    }
+  ],
+  "interseccion": [
+    {
+      "tipo": "simultaneos",
+      "etiqueta": "0",
+      "filas": 22397,
+      "pct_del_error_v12": 33.127
+    },
+    {
+      "tipo": "simultaneos",
+      "etiqueta": "1",
+      "filas": 16044,
+      "pct_del_error_v12": 23.73
+    },
+    {
+      "tipo": "simultaneos",
+      "etiqueta": "2",
+      "filas": 10168,
+      "pct_del_error_v12": 15.039
+    },
+    {
+      "tipo": "simultaneos",
+      "etiqueta": "3",
+      "filas": 5197,
+      "pct_del_error_v12": 7.687
+    },
+    {
+      "tipo": "simultaneos",
+      "etiqueta": "4",
+      "filas": 2684,
+      "pct_del_error_v12": 3.97
+    },
+    {
+      "tipo": "simultaneos",
+      "etiqueta": "5",
+      "filas": 1828,
+      "pct_del_error_v12": 2.704
+    },
+    {
+      "tipo": "simultaneos",
+      "etiqueta": "6",
+      "filas": 1568,
+      "pct_del_error_v12": 2.319
+    },
+    {
+      "tipo": "simultaneos",
+      "etiqueta": "7",
+      "filas": 1686,
+      "pct_del_error_v12": 2.494
+    },
+    {
+      "tipo": "simultaneos",
+      "etiqueta": "8",
+      "filas": 1820,
+      "pct_del_error_v12": 2.692
+    },
+    {
+      "tipo": "simultaneos",
+      "etiqueta": "9",
+      "filas": 1674,
+      "pct_del_error_v12": 2.476
+    },
+    {
+      "tipo": "simultaneos",
+      "etiqueta": "10",
+      "filas": 1344,
+      "pct_del_error_v12": 1.988
+    },
+    {
+      "tipo": "simultaneos",
+      "etiqueta": "11",
+      "filas": 811,
+      "pct_del_error_v12": 1.2
+    },
+    {
+      "tipo": "simultaneos",
+      "etiqueta": "12",
+      "filas": 307,
+      "pct_del_error_v12": 0.454
+    },
+    {
+      "tipo": "simultaneos",
+      "etiqueta": "13",
+      "filas": 82,
+      "pct_del_error_v12": 0.121
+    }
+  ],
+  "segundos": 0.6
+}

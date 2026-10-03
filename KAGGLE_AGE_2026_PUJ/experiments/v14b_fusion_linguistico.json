@@ -1,0 +1,177 @@
+{
+  "fase": "V14 · B fusion linguisticas bajo el gate D-042",
+  "fecha": "2026-09-26",
+  "columnas_bloque": 33,
+  "redundantes_retiradas": [
+    "longitud_media_palabra",
+    "lema_distintos_por_token",
+    "lema_hapax_ratio",
+    "tokens_por_frase"
+  ],
+  "nombres_bloque": [
+    "verbo_preterito_ratio",
+    "verbo_imperfecto_ratio",
+    "verbo_presente_ratio",
+    "verbo_subjuntivo_ratio",
+    "verbo_infinitivo_ratio",
+    "verbo_gerundio_ratio",
+    "verbo_participio_ratio",
+    "verbo_primera_persona_ratio",
+    "verbo_segunda_persona_ratio",
+    "verbo_tercera_persona_ratio",
+    "verbo_por_documento",
+    "sustantivo_femenino_ratio",
+    "sustantivo_masculino_ratio",
+    "sustantivo_singular_ratio",
+    "sustantivo_plural_ratio",
+    "diminutivo_ratio",
+    "aumentativo_ratio",
+    "forma_distintas_por_lemma",
+    "ent_per_ratio",
+    "ent_org_ratio",
+    "ent_loc_ratio",
+    "ent_misc_ratio",
+    "entidades_distintas_por_documento",
+    "entidades_por_documento",
+    "profundidad_media",
+    "coordinacion_ratio",
+    "subordinacion_ratio",
+    "hijos_por_token",
+    "pasiva_ratio",
+    "determinante_ratio",
+    "conjuncion_ratio",
+    "adjetivo_ratio",
+    "adverbio_ratio"
+  ],
+  "referencia": {
+    "macro_f1": 0.6005,
+    "per_fold": [
+      0.6007,
+      0.605,
+      0.6032,
+      0.6004,
+      0.5928
+    ]
+  },
+  "candidata": {
+    "macro_f1": 0.599,
+    "per_fold": [
+      0.6035,
+      0.6026,
+      0.6007,
+      0.5989,
+      0.5893
+    ]
+  },
+  "delta": -0.0015,
+  "folds_positivos": 1,
+  "controles_permutados": [
+    {
+      "semilla": 1000,
+      "macro_f1": 0.5962,
+      "delta": -0.0043
+    },
+    {
+      "semilla": 1001,
+      "macro_f1": 0.5975,
+      "delta": -0.003
+    },
+    {
+      "semilla": 1002,
+      "macro_f1": 0.5986,
+      "delta": -0.0019
+    }
+  ],
+  "mejor_control": {
+    "semilla": 1002,
+    "macro_f1": 0.5986,
+    "delta": -0.0019
+  },
+  "segunda_particion": {
+    "folds": 4,
+    "por_fold_candidata": [
+      0.5984,
+      0.5973,
+      0.6004,
+      0.6011
+    ],
+    "por_fold_referencia": [
+      0.6013,
+      0.5998,
+      0.6039,
+      0.6048
+    ],
+    "positivos": 0,
+    "media": -0.0031
+  },
+  "bootstrap_ic95": [
+    -0.0027,
+    -0.0002,
+    0.0095
+  ],
+  "criterios": {
+    "efecto_minimo": false,
+    "folds_positivos": false,
+    "significacion": false,
+    "segunda_particion": false,
+    "control_permutado": true,
+    "fronteras": false
+  },
+  "adopta": false,
+  "complementariedad": {
+    "global": {
+      "rescate": 5732,
+      "dano": 5888,
+      "neto": -156
+    },
+    "18-24|25-34": {
+      "rescate": 2528,
+      "dano": 2778,
+      "neto": -250
+    },
+    "25-34|35-49": {
+      "rescate": 2168,
+      "dano": 2161,
+      "neto": 7
+    }
+  },
+  "fronteras": {
+    "referencia": {
+      "18-24|25-34": {
+        "filas": 57023,
+        "accuracy": 0.4963,
+        "macro_f1": 0.5923,
+        "cruces": 10122,
+        "cruces_resueltos": 0,
+        "pct_cruces_resueltos": 0.0
+      },
+      "25-34|35-49": {
+        "filas": 56577,
+        "accuracy": 0.4974,
+        "macro_f1": 0.6115,
+        "cruces": 7252,
+        "cruces_resueltos": 0,
+        "pct_cruces_resueltos": 0.0
+      }
+    },
+    "candidata": {
+      "18-24|25-34": {
+        "filas": 57023,
+        "accuracy": 0.4919,
+        "macro_f1": 0.5902,
+        "cruces": 9913,
+        "cruces_resueltos": 0,
+        "pct_cruces_resueltos": 0.0
+      },
+      "25-34|35-49": {
+        "filas": 56577,
+        "accuracy": 0.4975,
+        "macro_f1": 0.6117,
+        "cruces": 7242,
+        "cruces_resueltos": 0,
+        "pct_cruces_resueltos": 0.0
+      }
+    }
+  },
+  "segundos": 3446.5
+}

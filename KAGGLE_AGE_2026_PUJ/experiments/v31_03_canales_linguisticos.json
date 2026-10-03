@@ -1,0 +1,355 @@
+{
+  "fase": "V31+ 03 canales linguisticos",
+  "fecha": "2026-09-30",
+  "experimenta": true,
+  "baseline_v30": 0.6134471,
+  "arquitectura": {
+    "dos_bloques": "texto crudo + canal estructural, vectorizados por separado",
+    "peso_canal": 1.0,
+    "por_que": "el canal estructural no puede contaminar el bloque textual, y asi se puede quitar entero para medir su aporte"
+  },
+  "protocolo": {
+    "folds": "StratifiedGroupKFold 5, dup_clusters, identicos a V20",
+    "modelo": "LinearSVC(C=1.0)",
+    "metrica": "macro-F1 de 6 clases"
+  },
+  "variantes": [
+    {
+      "representacion": "raw",
+      "canales": [
+        "ninguno"
+      ],
+      "macro_f1": 0.4979941,
+      "folds": [
+        0.4997643,
+        0.4983362,
+        0.499694,
+        0.5006074,
+        0.4915207
+      ],
+      "f1_por_clase": [
+        0.56542,
+        0.39682,
+        0.37578,
+        0.45643,
+        0.55521,
+        0.63831
+      ],
+      "segundos": 154.8,
+      "delta_vs_raw": 0.0,
+      "delta_por_fold": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "folds_positivos": 0
+    },
+    {
+      "representacion": "url",
+      "canales": [
+        "url"
+      ],
+      "macro_f1": 0.4998877,
+      "folds": [
+        0.5016193,
+        0.5004532,
+        0.5017887,
+        0.5029466,
+        0.4925833
+      ],
+      "f1_por_clase": [
+        0.56699,
+        0.39796,
+        0.37737,
+        0.4581,
+        0.55643,
+        0.64249
+      ],
+      "segundos": 289.3,
+      "delta_vs_raw": 0.0018936,
+      "delta_por_fold": [
+        0.001855,
+        0.002117,
+        0.0020947,
+        0.0023392,
+        0.0010626
+      ],
+      "folds_positivos": 5
+    },
+    {
+      "representacion": "ortografia",
+      "canales": [
+        "ortografia"
+      ],
+      "macro_f1": 0.4999868,
+      "folds": [
+        0.5007508,
+        0.5023762,
+        0.4999842,
+        0.5035369,
+        0.4932083
+      ],
+      "f1_por_clase": [
+        0.56687,
+        0.39714,
+        0.37754,
+        0.45908,
+        0.55942,
+        0.63987
+      ],
+      "segundos": 375.7,
+      "delta_vs_raw": 0.0019927,
+      "delta_por_fold": [
+        0.0009865,
+        0.00404,
+        0.0002902,
+        0.0029295,
+        0.0016876
+      ],
+      "folds_positivos": 5
+    },
+    {
+      "representacion": "composicion",
+      "canales": [
+        "composicion"
+      ],
+      "macro_f1": 0.5016523,
+      "folds": [
+        0.5034304,
+        0.5020396,
+        0.5035991,
+        0.5048419,
+        0.4942894
+      ],
+      "f1_por_clase": [
+        0.57206,
+        0.39679,
+        0.37939,
+        0.45834,
+        0.55891,
+        0.64443
+      ],
+      "segundos": 502.3,
+      "delta_vs_raw": 0.0036582,
+      "delta_por_fold": [
+        0.0036661,
+        0.0037034,
+        0.0039051,
+        0.0042345,
+        0.0027687
+      ],
+      "folds_positivos": 5
+    },
+    {
+      "representacion": "discurso",
+      "canales": [
+        "discurso"
+      ],
+      "macro_f1": 0.5030002,
+      "folds": [
+        0.5042836,
+        0.5045567,
+        0.5052963,
+        0.5058075,
+        0.4950025
+      ],
+      "f1_por_clase": [
+        0.57363,
+        0.39953,
+        0.38042,
+        0.46236,
+        0.56019,
+        0.64187
+      ],
+      "segundos": 391.3,
+      "delta_vs_raw": 0.0050061,
+      "delta_por_fold": [
+        0.0045193,
+        0.0062205,
+        0.0056023,
+        0.0052001,
+        0.0034818
+      ],
+      "folds_positivos": 5
+    },
+    {
+      "representacion": "posicion",
+      "canales": [
+        "posicion"
+      ],
+      "macro_f1": 0.4956907,
+      "folds": [
+        0.4977685,
+        0.4935314,
+        0.4978,
+        0.4981265,
+        0.4911818
+      ],
+      "f1_por_clase": [
+        0.56477,
+        0.39132,
+        0.37316,
+        0.45498,
+        0.55317,
+        0.63675
+      ],
+      "segundos": 422.5,
+      "delta_vs_raw": -0.0023034,
+      "delta_por_fold": [
+        -0.0019958,
+        -0.0048048,
+        -0.001894,
+        -0.0024809,
+        -0.0003389
+      ],
+      "folds_positivos": 0
+    },
+    {
+      "representacion": "forma_palabra",
+      "canales": [
+        "forma_palabra"
+      ],
+      "macro_f1": 0.4950099,
+      "folds": [
+        0.4989054,
+        0.4942708,
+        0.4969673,
+        0.498006,
+        0.4868438
+      ],
+      "f1_por_clase": [
+        0.56262,
+        0.39873,
+        0.37726,
+        0.45112,
+        0.54943,
+        0.63089
+      ],
+      "segundos": 46.9,
+      "delta_vs_raw": -0.0029842,
+      "delta_por_fold": [
+        -0.0008589,
+        -0.0040654,
+        -0.0027267,
+        -0.0026014,
+        -0.0046769
+      ],
+      "folds_positivos": 0
+    },
+    {
+      "representacion": "ortografia+composicion",
+      "canales": [
+        "ortografia",
+        "composicion"
+      ],
+      "macro_f1": 0.5029735,
+      "folds": [
+        0.5044634,
+        0.5039356,
+        0.5037292,
+        0.505785,
+        0.4968969
+      ],
+      "f1_por_clase": [
+        0.57369,
+        0.39797,
+        0.38144,
+        0.45975,
+        0.56143,
+        0.64356
+      ],
+      "segundos": 625.7,
+      "delta_vs_raw": 0.0049794,
+      "delta_por_fold": [
+        0.0046991,
+        0.0055994,
+        0.0040352,
+        0.0051776,
+        0.0053762
+      ],
+      "folds_positivos": 5
+    },
+    {
+      "representacion": "ortografia+composicion+discurso",
+      "canales": [
+        "ortografia",
+        "composicion",
+        "discurso"
+      ],
+      "macro_f1": 0.5048142,
+      "folds": [
+        0.5074953,
+        0.5057616,
+        0.5037671,
+        0.5084518,
+        0.498528
+      ],
+      "f1_por_clase": [
+        0.57559,
+        0.39926,
+        0.38322,
+        0.46011,
+        0.56447,
+        0.64624
+      ],
+      "segundos": 794.9,
+      "delta_vs_raw": 0.0068201,
+      "delta_por_fold": [
+        0.007731,
+        0.0074254,
+        0.0040731,
+        0.0078444,
+        0.0070073
+      ],
+      "folds_positivos": 5
+    },
+    {
+      "representacion": "todos",
+      "canales": [
+        "url",
+        "ortografia",
+        "composicion",
+        "discurso",
+        "posicion",
+        "forma_palabra"
+      ],
+      "macro_f1": 0.4961184,
+      "folds": [
+        0.5003411,
+        0.4957964,
+        0.4965668,
+        0.4994695,
+        0.4883497
+      ],
+      "f1_por_clase": [
+        0.56769,
+        0.39591,
+        0.38053,
+        0.45026,
+        0.55165,
+        0.63067
+      ],
+      "segundos": 141.7,
+      "delta_vs_raw": -0.0018757,
+      "delta_por_fold": [
+        0.0005768,
+        -0.0025398,
+        -0.0031272,
+        -0.0011379,
+        -0.003171
+      ],
+      "folds_positivos": 1
+    }
+  ],
+  "restricciones": {
+    "usa_test": false,
+    "usa_red": false,
+    "usa_embeddings": false,
+    "usa_parser_externo": false,
+    "pos_tagger": "DESCARTADO como predictor, porque es un modelo externo preentrenado y las reglas de AGE no son explicitas sobre eso: cae en AMBIGUOUS igual que el retrieval de URLs",
+    "lexicones": "escritos a mano en este archivo, ningun recurso importado"
+  },
+  "segundos": 3801.8
+}

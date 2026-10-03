@@ -1,0 +1,8 @@
+Candidato,Track,Global_MacroF1,Delta_Global,Folds_Positivos,Boundary_18_24_25_34,Boundary_25_34_35_49,Bootstrap_CI95,Decision,Nota
+V12 (referencia congelada),-,0.6005,0.0,-,0.4963,0.4974,-,REFERENCIA,"0,6005 pooled; 0,6004 es la media por fold, no el mismo estimador"
+V16 A2 combinador logistico,A2,0.6011,0.0006,3/5,0.5065,0.5131,"[-0,0003; +0,0015]",NO ADOPTAR (V16),evidencia que motiva V17
+V17 P1b compuerta de ambiguedad,P3,0.6007,0.000159,-,-,-,-,CERRADA,inelegible: el optimo de la tabla esta sesgado
+V17 P1c regla conjunta,P3.3,0.6005,6e-06,-,-,-,-,CERRADA,el techo con arbitro perfecto si era +0.0107
+V17 P9 arbitro aprendido,P9,0.6004,-0.0001,0/5,-,-,[-0.000172; -5.5e-05],NO ADOPTAR,"47 entradas existentes, protocolo anidado"
+V17 P5 combinador local,P5,0.6003,-0.0002,1/5,0.4953,0.4968,[-0.000486; 7.6e-05],NO ADOPTAR,las fronteras empeoran
+V17 techo con arbitro perfecto (no alcanzable),-,0.6112,0.010732,-,0.010732,0.007721,-,"COTA, NO RESULTADO","requiere elegir con la etiqueta; sirve de techo, no de candidato"

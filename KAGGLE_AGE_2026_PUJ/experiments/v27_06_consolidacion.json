@@ -1,0 +1,94 @@
+{
+  "fase": "V27 06 consolidacion",
+  "fecha": "2026-09-28",
+  "experimenta": false,
+  "h14_decision": "H14 = CLOSED by functional equivalence, sin experimento",
+  "h14_equivalencias": [
+    {
+      "caso": "reescalado afin de cada columna del blend",
+      "familia": "H02",
+      "artefacto": "experiments/v26_01_rank_representacion.json",
+      "resultado": "delta -0,000001, CLOSED"
+    },
+    {
+      "caso": "percentil de cada columna del blend",
+      "familia": "H03",
+      "artefacto": "experiments/v27_05_h03_percentil.json",
+      "resultado": "delta +0,000272, MARGINAL"
+    },
+    {
+      "caso": "temperatura o isotonica sobre la salida",
+      "familia": "H01",
+      "artefacto": "DECISIONS.md D-029",
+      "resultado": "recalibracion medida y cerrada"
+    },
+    {
+      "caso": "cambiar el combinador del blend",
+      "familia": "H04 + H06",
+      "artefacto": "DECISIONS.md D-046, D-051",
+      "resultado": "peso aprendido y combinador logistico medidos"
+    }
+  ],
+  "estado_final_de_las_cuatro": {
+    "H02": {
+      "estado": "CLOSED",
+      "modo": "tested",
+      "motivo": "z-score de las 84 columnas de evidencia: delta -0,000001, 2/5 folds, IC95 [-0,000375, +0,000397], 1.809 filas cambian y neto +3 sobre 169.336. La evidencia del ensemble es invariante a su escala en todo lo que mide el macro-F1",
+      "mejor_resultado": "0,6097770"
+    },
+    "H12": {
+      "estado": "CLOSED",
+      "modo": "tested",
+      "motivo": "la fiabilidad por modelo y clase es una tabla constante por fila, y una columna constante no puede generar splits en ningun arbol: delta 0,000000 y 0 filas cambian. LightGBM con columnas constantes devuelve predicciones identicas bit a bit, medido. La unica variante que la haria dependiente de la fila es un producto fiabilidad por evidencia, que es una interaccion entre miembros y esta cerrada como H07",
+      "mejor_resultado": "0,6097782 (identico al control)"
+    },
+    "H11": {
+      "estado": "CLOSED",
+      "modo": "tested",
+      "motivo": "delta -0,000355, 2/5 folds, IC95 [-0,000803, +0,000127]. Las 42 features con relacion monotona defendible son probabilidades de clase en los indices 12 a 53, y ninguna se usa para dividir: el meta-modelo de V20 abre solo 7 de sus 279 features",
+      "mejor_resultado": "0,6094234"
+    },
+    "H14": {
+      "estado": "CLOSED",
+      "modo": "closed by functional equivalence",
+      "motivo": "reescalar la salida del blend es, caso por caso, H02, H03, H01 o un cambio de combinador, y los cuatro estan cerrados con numero",
+      "mejor_resultado": "no se midio, por equivalencia"
+    },
+    "H03": {
+      "estado": "MARGINAL",
+      "modo": "tested",
+      "motivo": "delta +0,000272, 3/5 folds, IC95 [-0,000109, +0,000639] que incluye el cero, y un gate de +0,003: el efecto es once veces menor que el umbral y doce veces menor que la oscilacion entre modelos vecinos. Es el unico resultado positivo de V26 y V27, y no alcanza ni el gate de delta ni el de estabilidad",
+      "mejor_resultado": "0,6100505"
+    }
+  },
+  "experimentos_consumidos_en_V27": 3,
+  "orden_de_informe": [
+    "H02",
+    "H12",
+    "H11",
+    "H14",
+    "H03"
+  ],
+  "hipotesis_cerradas_sin_entrenamiento": [
+    "H14"
+  ],
+  "resultados": {
+    "H12": {
+      "delta": 0.0,
+      "decision": "H12 CLOSED"
+    },
+    "H11": {
+      "delta": -0.000355,
+      "decision": "H11 CLOSED"
+    },
+    "H03": {
+      "delta": 0.000272,
+      "decision": "H03 MARGINAL"
+    },
+    "H02": {
+      "delta": -1e-06,
+      "decision": "H02 CLOSED"
+    }
+  },
+  "segundos": 0.0
+}

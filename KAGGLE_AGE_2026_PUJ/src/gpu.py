@@ -5,10 +5,10 @@ Si está ocupada, el módulo NO inicia trabajo, NO interrumpe procesos ajenos y 
 control informando la situación (modo espera acotado y opcional).
 
 Detección (en este orden):
-1. ``rocm-smi --showpids`` → señal primaria de cómputo (PIDs en la cola KFD).
-2. ``rocm-smi --showuse --showmemuse`` → uso y VRAM contra umbrales calibrados sobre la
+1. ``rocm-smi --showpids`` -> señal primaria de cómputo (PIDs en la cola KFD).
+2. ``rocm-smi --showuse --showmemuse`` -> uso y VRAM contra umbrales calibrados sobre la
    línea base medida del escritorio (≈7% uso / ≈13% VRAM el 2026-09-22).
-3. ``torch.cuda.mem_get_info()`` → confirmación de VRAM libre a nivel de dispositivo.
+3. ``torch.cuda.mem_get_info()`` -> confirmación de VRAM libre a nivel de dispositivo.
 
 Nota: escanear handles de ``/dev/kfd`` produce falsos positivos (Plasma, Firefox, Steam
 mantienen el dispositivo abierto sin cargar cómputo), por eso no se usa como señal.

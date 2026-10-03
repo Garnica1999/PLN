@@ -203,7 +203,7 @@ def main() -> int:
                                  .reindex(cfg.CLASSES).fillna(0).astype(int).to_dict(),
         "segundos": round(time.time() - started, 1),
         "archivo": path,
-        "recordatorio": ("Subida manual. Con la brecha CV↔LB estable (≈ +0,015), el LB esperado "
+        "recordatorio": ("Subida manual. Con la brecha CV<->LB estable (≈ +0,015), el LB esperado "
                          "ronda 0,59."),
     }
     (cfg.EXPERIMENTS / "submission_v04_resumen.json").write_text(

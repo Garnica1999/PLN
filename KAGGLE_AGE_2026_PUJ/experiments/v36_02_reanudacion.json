@@ -1,0 +1,28 @@
+{
+  "fase": "V36-E1 - reanudacion autorizada con overrun declarado",
+  "fecha": "2026-09-30",
+  "motivo": "la primera invocacion agoto el presupuesto pre-registrado (exit 7) y dejo 39 de 40 checkpoints; ademas verificar_deadline media contra inicio_ts PERSISTIDO, luego la reanudacion era inalcanzable (exit 7 en 48 s)",
+  "autorizacion": "Carlos, 2026-09-30: overrun autorizado y declarado",
+  "presupuesto_preregistrado": 2400.0,
+  "presupuesto_preregistrado_superado": true,
+  "coste_real_primera_invocacion": 2453.0,
+  "tope_invocacion_autorizado": 900.0,
+  "tope_global_acumulado_autorizado": 3300.0,
+  "correccion_unica": "verificar_deadline mide por invocacion y añade un tope global acumulado; el nucleo NO se modifica, se importa",
+  "nucleo_importado": "KAGGLE_AGE_2026_PUJ/scripts/v36_01_transiciones_clase.py",
+  "sha256_del_nucleo": "a2b0ca3d7a867f44f1e3c0458e9211156e0ad7647599de86d77a8e33bc10d5c4",
+  "checkpoints_al_entrar": 39,
+  "brazos_incompletos_al_entrar": {
+    "integ_c1a": [
+      "0",
+      "1",
+      "2",
+      "3"
+    ]
+  },
+  "se_reentrena_algo": false,
+  "codigo_de_salida_del_nucleo": 0,
+  "duracion_de_esta_invocacion": 405.3937158584595,
+  "coste_invocaciones_previas": 2453.0,
+  "duracion_total_acumulada": 2858.3937158584595
+}

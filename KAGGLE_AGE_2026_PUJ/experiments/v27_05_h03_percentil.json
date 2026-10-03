@@ -1,0 +1,160 @@
+{
+  "fase": "V27 05 H03 percentil",
+  "fecha": "2026-09-28",
+  "hipotesis": "la evidencia de los modelos base tiene una estructura de rango util que una transformacion afín no puede expresar",
+  "distincion_con_H02": "H02 es afín, estrictamente creciente e inyectiva, luego conserva el orden fino. H03 colapsa empates: conserva el orden entre filas y destruye la distancia, que es la unica forma de aportar algo que H02 no aportaba",
+  "configuracion_unica": "percentil empirico, sin discretizar a ningun numero de cortes",
+  "referencia": "ordenada dentro de cada training fold, aplicada despues a la validacion",
+  "columnas_transformadas": 84,
+  "fraccion_de_valores_unicos_del_primer_canal": [
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "control_t0": {
+    "corrected_cv": 0.6097782,
+    "reproducido": true
+  },
+  "candidatos": {
+    "T0 V20 control": {
+      "modelo": "T0 V20 control",
+      "corrected_cv": 0.6097782,
+      "delta_vs_V20": 0.0,
+      "fold_1": 0.6132028,
+      "fold_2": 0.612081,
+      "fold_3": 0.6104461,
+      "fold_4": 0.6088426,
+      "fold_5": 0.604351,
+      "media": 0.609785,
+      "desviacion": 0.003092,
+      "delta_por_fold": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "folds_positivos": 0,
+      "rescue": 0,
+      "damage": 0,
+      "net": 0,
+      "changed_rows": 0,
+      "f1_por_clase": {
+        "13-17": 0.6818,
+        "18-24": 0.517,
+        "25-34": 0.4965,
+        "35-49": 0.5687,
+        "50-64": 0.6637,
+        "65-xx": 0.731
+      },
+      "complementariedad_por_clase": {
+        "13-17": {
+          "rescata": 0,
+          "danio": 0
+        },
+        "18-24": {
+          "rescata": 0,
+          "danio": 0
+        },
+        "25-34": {
+          "rescata": 0,
+          "danio": 0
+        },
+        "35-49": {
+          "rescata": 0,
+          "danio": 0
+        },
+        "50-64": {
+          "rescata": 0,
+          "danio": 0
+        },
+        "65-xx": {
+          "rescata": 0,
+          "danio": 0
+        }
+      },
+      "frontera_1": 0.5075
+    },
+    "T1 evidencia en percentil": {
+      "modelo": "T1 evidencia en percentil",
+      "corrected_cv": 0.6100505,
+      "delta_vs_V20": 0.000272,
+      "fold_1": 0.612533,
+      "fold_2": 0.6125461,
+      "fold_3": 0.6116516,
+      "fold_4": 0.609659,
+      "fold_5": 0.6038965,
+      "media": 0.610057,
+      "desviacion": 0.003255,
+      "delta_por_fold": [
+        -0.00067,
+        0.000465,
+        0.001206,
+        0.000816,
+        -0.000455
+      ],
+      "folds_positivos": 3,
+      "rescue": 564,
+      "damage": 513,
+      "net": 51,
+      "changed_rows": 1764,
+      "f1_por_clase": {
+        "13-17": 0.6822,
+        "18-24": 0.5172,
+        "25-34": 0.4963,
+        "35-49": 0.5697,
+        "50-64": 0.6638,
+        "65-xx": 0.7311
+      },
+      "complementariedad_por_clase": {
+        "13-17": {
+          "rescata": 93,
+          "danio": 59
+        },
+        "18-24": {
+          "rescata": 120,
+          "danio": 128
+        },
+        "25-34": {
+          "rescata": 127,
+          "danio": 136
+        },
+        "35-49": {
+          "rescata": 109,
+          "danio": 80
+        },
+        "50-64": {
+          "rescata": 70,
+          "danio": 64
+        },
+        "65-xx": {
+          "rescata": 45,
+          "danio": 46
+        }
+      },
+      "frontera_1": 0.5072
+    }
+  },
+  "delta": 0.000272,
+  "gate": {
+    "delta_minimo": 0.003,
+    "folds_minimos": 4,
+    "cumple_delta": false,
+    "cumple_folds": false,
+    "bootstrap": {
+      "delta": 0.000272,
+      "ic95": [
+        -0.000109,
+        0.000639
+      ],
+      "proporcion_positiva": 0.9155,
+      "ic95_incluye_cero": true
+    }
+  },
+  "decision": "H03 MARGINAL",
+  "estado": "MARGINAL",
+  "submission_generada": false,
+  "segundos": 153.2
+}

@@ -154,8 +154,8 @@ def gap_analysis_v2() -> str:
         "3. **L3 — Separación contenido/estilo** (sin representación explícita): el contenido se "
         "comparte entre cohortes (RT de humor y deportes en 18-24 y 25-34, ya documentado); el "
         "estilo podría conservar señal demográfica.",
-        "4. **L4 — Transiciones de caracteres** (ausente): patrones letra→dígito, letra→puntuación, "
-        "espacio→puntuación que el TF-IDF no expresa como feature explícita.",
+        "4. **L4 — Transiciones de caracteres** (ausente): patrones letra->dígito, letra->puntuación, "
+        "espacio->puntuación que el TF-IDF no expresa como feature explícita.",
         "5. **L5 — Tipología de tweets y umbral de información** (sin taxonomía explícita): el error "
         "puede depender del tipo estructural, no solo de la longitud.",
         "6. **L6 — Matriz de complementariedad y ponderación condicional** (sin matriz formal): "
@@ -206,7 +206,7 @@ def main() -> int:
         "| L7 | NB-SVM por canal | Cada canal aporta una vista diversa | 25 min | pendiente |",
         "| L6 | Meta 2.0 y complementariedad | La ponderación por tipo recupera errores | 30 min | pendiente |",
         "",
-        "Puerta de decisión tras L1/L5: si `one_model_right` > 5% → priorizar L6; si < 2% → L3/L2.",
+        "Puerta de decisión tras L1/L5: si `one_model_right` > 5% -> priorizar L6; si < 2% -> L3/L2.",
     ])
     (cfg.REPORTS / "research_backlog_v2.md").write_text(backlog, encoding="utf-8")
     print("[backlog] reports/research_backlog_v2.md")

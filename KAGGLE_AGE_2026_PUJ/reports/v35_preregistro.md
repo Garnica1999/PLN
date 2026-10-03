@@ -1,0 +1,111 @@
+# V35 - E1 (via B) - Pre-registro congelado: `lambda1 > 0` sobre el nucleo FTRL de V34
+
+**Fecha**: 2026-09-30. **Estado**: CONGELADO antes de ejecutar (commit `c0c762e`).
+**Baseline recomputado**: 0.6159732 (nested 0.6154643); ancla trivial 0.0485421218068709 (clase 13-17).
+
+## Que es y que NO es
+
+- **Acta de reinicio**: **D-086**, anexada a `DECISIONS.md` al cierre. Miembro NO CUBIERTO: `lambda1 > 0`.
+- **No es un reintento de `alpha`**: `alpha*` queda CONGELADO e identico al de V34-E1 (0.035262336465737745). Lo que cambia es el espacio de soluciones.
+- **Miembros cerrados e INTOCABLES**: OvR (6 sigmoides); power_t (decaimiento); multi-pasada; lambda2 en {.05, .2, 1, 1e-6}; L2 en acumulador vs denominador; alpha.
+
+## Anclaje de lambda1 (derivado, cero grid)
+
+- `lambda1 := mediana(|z_j| > 0)` al final de la pasada 1 sobre **TRAIN** del fold 0 = **0.23993793862904017** (medido; `alpha*` = 0.035262336465737745, luego mediana/alpha = 6.8044).
+- **Flag 1 resuelto**: `lambda1 = alpha` es no-op precisamente porque la mediana supera a `alpha` por un factor 6.80.
+- **Flag 2 resuelto en negativo**: `lambda1` fijo **no acota** `||w||_2` (razon max/min = 2.1304 con la mediana), luego la hipotesis de acotacion queda **refutada por medicion**.
+- Prohibido re-derivar `lambda1` tras ver las gates: un segundo `lambda1` seria grid.
+
+## Puerta
+
+- **G0-G6**: las de V34 **sin cambios** (techo anclado en `H(prior)_ES` - 0.01; banda de frecuencias en `[0.5*prior_c, 1.5*prior_c]` del prior **medido**).
+- **G7 (L1 activo)**: escasez efectiva > 0 en todas las pasadas y no degradada mas alla de una tolerancia declarada de 0.02 respecto de la pasada 1. Anclada a la magnitud medida (NO al 0.5 arbitrario, NO al piso 0 tautologico). **Solo A1**.
+- **G8 (acotacion)**: razon max/min de `||w||_2` <= **1.0**, anclada a la hipotesis misma (acotar implica no crecer), no a un factor arbitrario. **Solo A1**.
+- **Rama pre-declarada**: G7 o G8 fallan -> `LINEA_ONLINE_CERRADA_POR_MECANISMO` (cierre DEFINITIVO de la familia); G7 y G8 pasan y G0-G4 fallan -> `HIPOTESIS_CONJUNTA_REFUTADA` (acota pero no aprende; no es cierre por conveniencia).
+- **Asimetria declarada**: A2 es control de **PRESUPUESTO**, no gemelo mecanico; ninguna conclusion puede descansar en el contraste A1 vs A2 (queda contaminado).
+
+## Sondas nuevas (no-gate) dentro del runner
+
+- (k) caso `lambda1 = 0`, (l) caso `lambda1 = alpha`, (m) caso `lambda1 = mediana`: se reproducen aqui los tres casos del gemelo, porque la decision de mecanismo no puede descansar en evidencia importada de `/tmp`.
+
+## Regla terminal one-shot
+
+- Si `lambda1 > 0` falla, el segundo miembro NO CUBIERTO (pesos por clase con L2 normalizado fuera de FTRL) queda cerrado por declaracion si lambda1 > 0 falla, con su evidencia de techo.
+- Una unica re-emision, solo por `DEFECTO_DE_IMPLEMENTACION`.
+
+## Prediccion registrada antes de ejecutar
+
+- con la sonda pre-ejecucion ya falsada la hipotesis de acotacion (razon ||w||_2 = 2.1304 con lambda1 = mediana), el veredicto mas probable es LINEA_ONLINE_CERRADA_POR_MECANISMO por fallo de G8. El ciclo NO puede terminar en PROMISING: alpha esta congelado e identico al que ya divergio
+
+## Materiales congelados (SHA256, 16)
+
+| Artefacto | SHA256 |
+|---|---|
+| sonda_lambda1_script | `4330c00a3f517467...` |
+| sonda_lambda1_json | `e6554eb25269a3a4...` |
+| nucleo_v34 | `cf443fc86bf291ca...` |
+| manifest_canonico | `8881a9f53e8613aa...` |
+| canonico_y_true | `b1c928f9b9f55755...` |
+| canonico_fold_idx | `74d18330c40c3598...` |
+| canonico_v30_prob | `3d77352486605971...` |
+| canonico_ids | `d69ecb339f1dc57d...` |
+| canonico_cand_pred | `2fd8ab0292e8b736...` |
+| canonico_cand_prob | `57be29623543c261...` |
+| corpus_archivo | `39c6c8270366fe15...` |
+| corpus_textos | `53c1a348a7954f3e...` |
+| vectorizador | `33311e5eddc0b0bb...` |
+
+## Compliance e invariantes
+
+- 0 embeddings, 0 transformers, 0 LLM, 0 datos externos; sin test, sin holdout, sin leaderboard, sin submission; un script nuevo; NO se edita ningun script ya ejecutado; `artifacts/p33_scores/todos` intocable.
+- AST audit de imports y literales; lecturas limitadas al corpus y a las particiones reservadas.
+- Coste esperado ~51 s con presupuesto declarado de 1200 s; RSS con tope 20 GB medido con `ru_maxrss`; checkpoints por fold y por brazo con escritura atomica.
+
+## Enmienda pre-ejecucion 1 (2026-09-30): el anclaje se verifica con el NUCLEO DE ANCLAJE
+
+- **Defecto (circularidad)**: el pre-registro pedia verificar la mediana `|z_j|` desde el
+  `z` de A1 ya regularizado y exigir diferencia exacta 0. Es imposible: `z` depende de
+  `w` y `w` depende de `lambda1`, luego el `z` de A1 nunca reproduce el umbral que lo
+  define. Medido: con `lambda1` = mediana la mediana es 0.2333793834039217
+  (diferencia -0.006558555225118473); con `lambda1 = 0` es 0.23993793862904017
+  (diferencia exacta 0.0).
+- **Correccion**: la reproducibilidad se verifica con el **nucleo de anclaje**
+  (`lambda1 = 0.0`) sobre el mismo stream de la pasada 1 del fold 0 de A1, exigiendo
+  diferencia exacta 0 y `sha256` identico (`ec1d1a7b13454f8b...`) al de la sonda
+  pre-ejecucion versionada. Se publica ademas, como diagnostico secundario, la mediana
+  del core ya regularizado (0.2333793834039217) y su diferencia
+  (-0.006558555225118473) como magnitud del acoplamiento `z <- w(lambda1)`.
+- **No cambia el protocolo ni el numero**: `lambda1` sigue siendo la mediana medida
+  sobre TRAIN al final de la primera pasada (acta D-086); lo que se corrige es COMO se
+  comprueba que se reproduce. Sin segundo `lambda1`, sin fallback, sin re-derivacion
+  posterior a las gates; ningun gate, puerta ni criterio de exito cambian.
+- Sin resultados: enmienda **pre-ejecucion**.
+
+## Enmienda pre-ejecucion 2 (2026-09-30): sondas (k)-(m) de firma; la identidad va en fold 0
+
+- **Supuesto falso**: el pre-registro decia que las sondas (k)-(m) reproducen los tres casos del gemelo, sin decir donde. Sobre el miniproblema es imposible: 1350 x 51 frente a 121921 x 107793 del gemelo, y con `lambda1 = 0.2399` el mini apenas poda (escasez efectiva 1.0 en los tres casos).
+- **Correccion**: en el miniproblema de `--verificar` son **NO-GATE y de firma de mecanismo** (orden de las tres normas `||w||_2` y signo de la razon, con deltas como diagnostico). La **identidad numerica exacta** corre **dentro del runner, en el fold 0 de la corrida real**, sobre el stream real de ES-train, con diferencia relativa <= 1e-09 en `ll_train` y `||w||_2`, y diferencia **exacta 0** mas `sha256` identico en la mediana del anclaje.
+- **No cambia el protocolo**: son no-gate por pre-registro, no tocan el anclaje, ni los gates, ni la puerta, ni el arbol, ni el criterio de exito. La decision de mecanismo se apoya en la trayectoria interna de A1 (la que alimenta G8) mas el triage; ademas `lambda1 = 0` ya tiene evidencia real versionada de V34-E1 y `lambda1 = mediana` es el propio A1, luego la repeticion es confirmacion.
+- Sin resultados: enmienda **pre-ejecucion**.
+
+## Enmienda pre-ejecucion 3 (2026-09-30): `token_pattern` del vectorizador corregido
+
+- **Defecto**: el pre-registro congelo `'(?u)\\b\\w+\\b'` (backslashes dobles, hash `33311e5eddc0b0bb`). Medido: `re.compile` de ese patron **no encuentra match en `'hola mundo'`**, luego el vocabulario seria **vacio** y la representacion inservible. Es un error de redaccion del pre-registro (cadena cruda con las barras ya escapadas): ningun fold se ha entrenado y el codigo nunca uso el patron defectuoso.
+- **Correccion**: `'(?u)\b\w+\b'` (una sola barra) con hash `9bae157614458dbd`, que es el que declaran los pre-registros de V33 y V34 y el que produjo las 107793 coordenadas que registran el nucleo de V34 y la sonda pre-ejecucion de esta via.
+- **No cambia el protocolo**: no toca modelo, nucleo FTRL, anclaje, gates, puerta, arbol, criterio de exito, presupuesto ni datos; corrige el literal de un parametro para que el pre-registro vuelva a ser la fuente unica de verdad. Mismo precedente que `v34_00e`.
+- Sin resultados: enmienda **pre-ejecucion**.
+
+## Enmienda pre-ejecucion 4 (2026-09-30): se restituyen las 6 secciones de contexto
+
+- **Defecto**: el runner hace 17 lecturas `prereg[...]` de secciones top-level **inexistentes** en el pre-registro de V35 (`control`, `corpus`, `anclas`, `representacion`, `budgeto`, `regla_alpha`; las 6 si estan en el de V34-E1). La corrida moria **despues** de entrenar, con checkpoints y OOF ya escritos, y `verificar_constantes` no lo detectaba. Lo encontro `ml-reviewer` ejecutando de verdad `construir_resultado`, `escribir_informe` y `resumen_consola` con un estado simulado, porque `--verificar` y `--humo` **no** ejecutan la ruta de salida.
+- **Correccion**: las 6 secciones se copian **verbatim** del pre-registro de V34-E1 (mismo corpus, mismo vectorizador canonico, mismo presupuesto y mismo control), cada una con su clave `origen` para que la copia sea auditable, y se anulan **solo** los puntos donde V35 difiere: `control.asimetria_declarada` (A1 tiene L1 y A2 no, luego A2 es control de PRESUPUESTO, no gemelo mecanico), `regla_alpha.aplicacion` (`alpha*` CONGELADO e identico a V34-E1, no se re-deriva) y las anclas medidas en V35.
+- Nota explicita sobre los dos valores de `alpha`: 0.0352631 es la referencia con el prior del fold-train completo (`d_norm` 0.912815416414756) y 0.035262336465737745 es el efectivo del fold 0 con el prior MEDIDO del ES-train (`d_norm` 0.9128367962785974); son dos priors distintos, no una contradiccion.
+- **No cambia el protocolo**: ni modelo, ni nucleo, ni anclaje de `lambda1`, ni `alpha*`, ni gates, ni puerta, ni arbol, ni criterio de exito, ni presupuesto, ni datos. Se restituye contexto ya congelado que el informe publica.
+- Sin resultados: enmienda **pre-ejecucion**.
+
+## Enmienda pre-ejecucion 5 (2026-09-30): una sola declaracion de asimetria
+
+- **Defecto**: la enmienda 4 marco el texto de asimetria de V34 como anulado pero no lo sustituyo, luego el pre-registro declaraba **dos** no-equivalencias estructurales para el mismo par de brazos y solo una era la de V35. El runner ya no imprimia el texto de V34 (la linea del informe lee la asimetria de la sonda), asi que el riesgo era de lectura del documento de registro.
+- **Correccion**: `control.asimetria_declarada.no_equivalencia_estructural` pasa a ser **el texto de V35** (A1 tiene L1 y A2 no, luego A2 es control de PRESUPUESTO y no gemelo mecanico), y el texto de V34 queda integro y con su valor en `control.anulaciones_v35.no_equivalencia_estructural_texto_anulado_de_v34`. No queda ningun texto de V34 presentado como declaracion vigente.
+- **No cambia el protocolo**: la asimetria ya estaba fijada por el especialista antes de congelar y el runner ya la respetaba; es desambiguacion documental. Ni modelo, ni nucleo, ni anclaje, ni `alpha*`, ni gates, ni puerta, ni arbol, ni presupuesto.
+- Sin resultados: enmienda **pre-ejecucion**.

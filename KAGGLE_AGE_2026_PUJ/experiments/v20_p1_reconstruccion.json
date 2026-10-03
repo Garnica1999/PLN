@@ -1,0 +1,167 @@
+{
+  "fase": "V20 P1 ORDINAL_RECONSTRUCTION",
+  "fecha": "2026-09-27",
+  "champion_congelado": {
+    "nombre": "V20 cadena de umbrales anidados",
+    "lb": 0.62689,
+    "cv": 0.6097782,
+    "intacto": true
+  },
+  "contexto_de_la_auditoria": {
+    "descalibracion_de_las_cinco": "entre -0,0003 y +0,0002",
+    "filas_que_violan_la_monotomia": "11,18 %",
+    "magnitud_media_de_la_violacion": 0.002457,
+    "conclusion": "no hay margen en recalibrar ni en proyectar; el margen de esta subfamilia es pequeno y eso es medible"
+  },
+  "metodos": {
+    "maximo_acumulado": "A control exacto: maximo acumulado",
+    "pava": "B proyeccion monotona por PAVA",
+    "contar_umbrales": "C decision por conteo de umbrales",
+    "edad_esperada": "D decision por edad esperada"
+  },
+  "resultados": [
+    {
+      "variante": "A control exacto: maximo acumulado",
+      "metodo": "maximo_acumulado",
+      "macro_f1": 0.6097782,
+      "delta_contra_v20": 0.0,
+      "media_folds": 0.609785,
+      "desviacion_folds": 0.003092,
+      "delta_por_fold": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "folds_positivos": 0,
+      "bootstrap_ic95_contra_v20": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "frontera_1": 0.5075,
+      "frontera_1_v20": 0.5075,
+      "frontera_2": 0.5029,
+      "frontera_2_v20": 0.5029,
+      "complementariedad": {
+        "ambos_correctos": 103331,
+        "ambos_incorrectos": 66005,
+        "solo_candidato": 0,
+        "solo_v20": 0,
+        "neto": 0,
+        "predicciones_modificadas": 0
+      },
+      "rescates": 0,
+      "danos": 0
+    },
+    {
+      "variante": "B proyeccion monotona por PAVA",
+      "metodo": "pava",
+      "macro_f1": 0.6097927,
+      "delta_contra_v20": 1.4e-05,
+      "media_folds": 0.609799,
+      "desviacion_folds": 0.003073,
+      "delta_por_fold": [
+        -4.2e-05,
+        7.3e-05,
+        -4e-05,
+        3.5e-05,
+        4.8e-05
+      ],
+      "folds_positivos": 3,
+      "bootstrap_ic95_contra_v20": [
+        -4.3e-05,
+        7.3e-05,
+        0.6865
+      ],
+      "frontera_1": 0.5074,
+      "frontera_1_v20": 0.5075,
+      "frontera_2": 0.5028,
+      "frontera_2_v20": 0.5029,
+      "complementariedad": {
+        "ambos_correctos": 103320,
+        "ambos_incorrectos": 65989,
+        "solo_candidato": 16,
+        "solo_v20": 11,
+        "neto": 5,
+        "predicciones_modificadas": 41
+      },
+      "rescates": 16,
+      "danos": 11
+    },
+    {
+      "variante": "C decision por conteo de umbrales",
+      "metodo": "contar_umbrales",
+      "macro_f1": 0.5983871,
+      "delta_contra_v20": -0.011391,
+      "media_folds": 0.598391,
+      "desviacion_folds": 0.003646,
+      "delta_por_fold": [
+        -0.011546,
+        -0.011731,
+        -0.009882,
+        -0.010998,
+        -0.012812
+      ],
+      "folds_positivos": 0,
+      "bootstrap_ic95_contra_v20": [
+        -0.012997,
+        -0.009792,
+        0.0
+      ],
+      "frontera_1": 0.545,
+      "frontera_1_v20": 0.5075,
+      "frontera_2": 0.5456,
+      "frontera_2_v20": 0.5029,
+      "complementariedad": {
+        "ambos_correctos": 91651,
+        "ambos_incorrectos": 57644,
+        "solo_candidato": 8361,
+        "solo_v20": 11680,
+        "neto": -3319,
+        "predicciones_modificadas": 33182
+      },
+      "rescates": 8361,
+      "danos": 11680
+    },
+    {
+      "variante": "D decision por edad esperada",
+      "metodo": "edad_esperada",
+      "macro_f1": 0.5834541,
+      "delta_contra_v20": -0.026324,
+      "media_folds": 0.583442,
+      "desviacion_folds": 0.004522,
+      "delta_por_fold": [
+        -0.023341,
+        -0.028723,
+        -0.025632,
+        -0.025422,
+        -0.028597
+      ],
+      "folds_positivos": 0,
+      "bootstrap_ic95_contra_v20": [
+        -0.028234,
+        -0.024385,
+        0.0
+      ],
+      "frontera_1": 0.541,
+      "frontera_1_v20": 0.5075,
+      "frontera_2": 0.5738,
+      "frontera_2_v20": 0.5029,
+      "complementariedad": {
+        "ambos_correctos": 85622,
+        "ambos_incorrectos": 54710,
+        "solo_candidato": 11295,
+        "solo_v20": 17709,
+        "neto": -6414,
+        "predicciones_modificadas": 47138
+      },
+      "rescates": 11295,
+      "danos": 17709
+    }
+  ],
+  "control_reproducido": true,
+  "submission_generada": false,
+  "segundos": 34.8
+}

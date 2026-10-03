@@ -1,0 +1,10 @@
+magnitud,media_por_documento,documentos_con_valor,porcentaje_con_valor,maximo
+verbos,1.92,131918,77.9,18
+sustantivos,5.895,164911,97.39,32
+entidades,3.372,137387,81.13,58
+tokens,12.966,169186,99.91,58
+lemas,12.018,169186,99.91,31
+frases,1.541,169232,99.94,16
+personas,0.488,42274,24.96,18
+organizaciones,0.492,45986,27.16,23
+lugares,0.525,44284,26.15,22

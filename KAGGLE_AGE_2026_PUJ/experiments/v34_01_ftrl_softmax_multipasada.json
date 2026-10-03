@@ -1,0 +1,1888 @@
+{
+  "fase": "V34-E1 ejecucion",
+  "fecha": "2026-09-30",
+  "commit": "817535621719a88d6f134d2249c6b0a3aa0cfb4a",
+  "prereg": {
+    "json": "experiments/v34_00_preregistro.json",
+    "sha256": "3c5f2d93b7e86822ffc298a285f5b4fe2ed5b17475957625a59096c269ece648",
+    "informe": "reports/v34_preregistro.md",
+    "puerta": "reports/v34_convergence_gate.md",
+    "commit_congelado": "3e97be707840e4fa95f53eaf62386f9307d1d6ab",
+    "enmiendas": [
+      {
+        "fecha": "2026-09-30",
+        "objeto": "control.a2_sgd.ajuste (presupuesto de 10 pasadas)",
+        "de": "fit(max_iter=P_MAX=10, tol=None, shuffle=False) en una sola llamada por fold",
+        "a": "partial_fit x 10, una llamada por orden congelado de cada pasada, con t_ acumulado, ES evaluado despues de cada pasada y restauracion del mejor coef_",
+        "motivo": "defecto medido de API: BaseSGDClassifier._fit hace self.t_ = 1.0 en cada llamada, luego fit(max_iter=1, warm_start=True) repetido reinicia el schedule 10 veces y queda en t_ = 401 (medido) en vez de t_ = 4001; el control recibiria un presupuesto de un orden de magnitud menor que A1",
+        "medicion": "t_ = 401 con fit repetido; t_ = 4001 con partial_fit y con fit(max_iter=10); diferencias partial_fit vs fit(max_iter=10): 4.5e-5 a 2 pasadas y 2.0e1 a 4 pasadas en un problema sintetico",
+        "desvio_declarado": "partial_fit x 10 no es identico bit a bit a fit(max_iter=10); es la unica forma de evaluar el ES por pasada que el protocolo exige, y mantiene el presupuesto de 10 pasada declarado",
+        "afecta_a_gates": false,
+        "estado_datos": "sin resultados; enmienda pre-ejecucion"
+      },
+      {
+        "fecha": "2026-09-30",
+        "objeto": "representacion.vectorizador.token_pattern (fidelidad de la receta canonica)",
+        "de": "(?u)\\\\b\\\\w\\\\b (dobles backslashes: typo del pre-registro; sha256 del dict 33311e5eddc0b0bb)",
+        "a": "(?u)\\b\\w+\\b (receta canonica de v31_02_banco_representaciones.py, usada por v32_04, v33_00, el runner v34_01 y la exploracion previa; sha256 del dict 9bae157614458dbd)",
+        "motivo": "el pre-registro de V34 se apartaba de la representacion canonica del proyecto por un typo mio; el check de no-deriva del runner lo detecto al comparar su espejo con el JSON",
+        "afecta_a_gates": false,
+        "estado_datos": "sin resultados; enmienda pre-ejecucion"
+      }
+    ]
+  },
+  "verificacion": {
+    "constantes": {
+      "fase": true,
+      "fecha": true,
+      "baseline_primario": true,
+      "referencia_nested": true,
+      "pesos_plugin": true,
+      "versiones_claves": true,
+      "hashes_claves": true,
+      "anclas_claves": true,
+      "anclas_cifras": true,
+      "anclas_logaritmicas": true,
+      "regla_formula": true,
+      "regla_especializada": true,
+      "regla_M_valor": true,
+      "regla_M_unidad": true,
+      "regla_M_sensibilidad": true,
+      "regla_d_norm_definicion": true,
+      "regla_d_norm_sensibilidad": true,
+      "regla_P_max": true,
+      "regla_cero_valores": true,
+      "regla_aplicacion": true,
+      "regla_esperado": true,
+      "regla_anchos_fija": true,
+      "presupuesto_p_max": true,
+      "presupuesto_p_min": true,
+      "presupuesto_paciencia": true,
+      "presupuesto_mejora": true,
+      "presupuesto_orden": true,
+      "presupuesto_es_generador": true,
+      "presupuesto_es_metrica": true,
+      "presupuesto_es_restauracion": true,
+      "presupuesto_es_simetria": true,
+      "presupuesto_prohibido": true,
+      "test_size_es": true,
+      "nucleo_lambda1_beta": true,
+      "nucleo_lambda2": true,
+      "nucleo_power_t": true,
+      "nucleo_variante_l2": true,
+      "nucleo_sesgo_x0": true,
+      "ajuste_por_fold_es_train": true,
+      "control_estimador": true,
+      "control_loss": true,
+      "control_alpha": true,
+      "control_learning_rate": true,
+      "control_shuffle": true,
+      "control_fit_intercept": true,
+      "control_tol": true,
+      "control_max_iter": true,
+      "control_pasadas": true,
+      "control_n_jobs": true,
+      "control_random_state": true,
+      "control_sin_sesgo_preanadido": true,
+      "enmienda_2_ajuste_modo": true,
+      "enmienda_2_ajuste_llamadas": true,
+      "enmienda_2_ajuste_es_por_pasada": true,
+      "enmienda_2_ajuste_restaura": true,
+      "enmienda_2_ajuste_max_iter_null": true,
+      "enmienda_2_ajuste_t_acumulado": true,
+      "enmienda_2_ajuste_nota": true,
+      "enmienda_2_estimador_sin_max_iter_de_pasadas": true,
+      "enmienda_2_desvio_declarado": true,
+      "enmiendas_pre_ejecucion": true,
+      "enmienda_defecto": true,
+      "enmienda_exigencia": true,
+      "asimetria_no_equivalencia": true,
+      "puerta_momento": true,
+      "puerta_aplica_a": true,
+      "puerta_fold_0": true,
+      "puerta_consecuencia": true,
+      "puerta_gates_nombres": true,
+      "puerta_G0": true,
+      "puerta_G1": true,
+      "puerta_G2": true,
+      "puerta_G3": true,
+      "puerta_G4": true,
+      "puerta_G5": true,
+      "puerta_G6": true,
+      "sondas_nombres": true,
+      "sonda_a": true,
+      "sonda_b": true,
+      "sonda_c": true,
+      "sonda_d": true,
+      "sonda_e": true,
+      "sonda_f": true,
+      "sonda_g": true,
+      "sonda_h": true,
+      "sonda_i": true,
+      "sonda_j": true,
+      "sondas_politica": true,
+      "publicado_no_gate": true,
+      "arbol_nodos": true,
+      "arbol_mecanismo_semantica": true,
+      "arbol_mecanismo_tabla": true,
+      "arbol_mecanismo_condicion": true,
+      "arbol_mecanismo_one_shot": true,
+      "arbol_no_atribuible": true,
+      "arbol_promising": true,
+      "arbol_submission": true,
+      "familia_miembros": true,
+      "familia_estados": true,
+      "familia_no_cubiertos": true,
+      "ejecucion_presupuesto": true,
+      "ejecucion_timeout": true,
+      "ejecucion_ram": true,
+      "ejecucion_checkpoints": true,
+      "ejecucion_coste_esperado": true,
+      "compliance_cifras": true,
+      "compliance_ast_audit": true,
+      "compliance_lecturas": true,
+      "compliance_auditorias": true,
+      "corpus_receta": true,
+      "corpus_hash_contenido": true,
+      "corpus_prohibido": true,
+      "exploracion_no_es_grid": true,
+      "vectorizador_config": true,
+      "vectorizador_norm": true,
+      "hilos_efectivos": true,
+      "entregables": true,
+      "entregables_novelty": true,
+      "entregables_historia": true
+    },
+    "versiones": {
+      "instaladas": {
+        "sklearn": "1.8.0",
+        "numpy": "1.26.4",
+        "pandas": "2.3.3"
+      },
+      "esperadas": {
+        "sklearn": "1.8.0",
+        "numpy": "1.26.4",
+        "pandas": "2.3.3"
+      },
+      "checks": {
+        "sklearn": true,
+        "numpy": true,
+        "pandas": true
+      }
+    },
+    "constantes_control": {
+      "control_prereg": {
+        "estimator": "sklearn.linear_model.SGDClassifier",
+        "loss": "log_loss",
+        "alpha_reg": 1e-06,
+        "learning_rate": "optimal",
+        "shuffle": false,
+        "fit_intercept": true,
+        "max_iter": 10,
+        "tol": null,
+        "random_state": "20261010+fold",
+        "n_jobs": 32,
+        "pasadas": 10,
+        "matriz": "la MISMA TF-IDF por fold, **SIN columna de sesgo pre-anadida** (un solo camino de sesgo por brazo)",
+        "por_que": "es el precedente que SI aprende (0.3956246 en V33-E1 con una pasada; 0.4934789 con diez en D-083) y por eso demuestra que el presupuesto no es el limite",
+        "enmienda_pre_ejecucion_1": {
+          "defecto_corregido": "D-083 y V33-E1 entregaron al control la matriz con sesgo pre-anadido Y fit_intercept=True (doble sesgo)",
+          "motivacion": "correccion de un defecto de implementacion, NO de conveniencia: no altera el criterio de exito y no favorece a A1",
+          "exigencia": "tabla de simetria de sesgo con UN solo camino por brazo, verificada por sonda: max|gradiente de la coordenada de sesgo| en A1 y paridad con intercept_ de A2"
+        },
+        "asimetria_declarada": {
+          "lambda2_ftrl": 1.0,
+          "alpha_reg_sgd": 1e-06,
+          "no_equivalencia_estructural": "con lambda2 = 1e-6 el L2-en-acumulador y el L2-en-denominador dan resultado IDENTICO (es un no-op, medido en la exploracion previa): por eso no existe una equivalencia FTRL<->SGD a escala 1e-6",
+          "sonda_exigida": "publicar que el veredicto NO se apoya en esta asimetria: el cierre se sostiene en A1 frente a la DERIVACION (la regla y la exploracion), no en A1 frente a A2"
+        },
+        "ajuste": {
+          "modo": "partial_fit_por_pasada",
+          "llamadas": 10,
+          "t_acumulado": "t_ se acumula entre llamadas (401 si se usara fit repetido, por el reinicio de self.t_ en BaseSGDClassifier._fit)",
+          "es_por_pasada": true,
+          "restaura_mejor_coef": true,
+          "max_iter": null,
+          "nota": "el numero de pasadas (10) es el que el pre-registro congelo; lo que se corrige es como se ejecuta, porque fit(max_iter=1, warm_start=True) no acumula el schedule"
+        },
+        "desvio_declarado_partial_fit": {
+          "no_bit_identico_a_fit_max_iter_10": true,
+          "medicion": "4.5e-5 a 2 pasadas y 2.0e1 a 4 pasadas en un problema sintetico",
+          "motivo_de_la_eleccion": "es la unica via que permite evaluar el early stopping despues de cada pasada, que el pre-registro exige (P_min 3, paciencia 2, restaurar el mejor coef_), y da el mismo presupuesto que A1"
+        }
+      },
+      "ejecutable": {
+        "modo": "partial_fit_por_pasada",
+        "llamadas": 10,
+        "max_iter": 1,
+        "warm_start": true,
+        "tol": null,
+        "shuffle": false,
+        "average": false,
+        "fit_intercept": true,
+        "alpha_reg": 1e-06,
+        "learning_rate": "optimal",
+        "random_state": "20261010+fold",
+        "n_jobs": 32
+      }
+    },
+    "hashes": {
+      "canonico_y_true": true,
+      "canonico_fold_idx": true,
+      "canonico_v30_prob": true,
+      "canonico_ids": true,
+      "canonico_cand_pred": true,
+      "canonico_cand_prob": true,
+      "manifest_canonico": true,
+      "corpus_archivo": true,
+      "corpus_textos": true,
+      "vectorizador": true,
+      "exploracion_script": true,
+      "exploracion_json": true,
+      "exploracion_md": true
+    },
+    "hashes_recomputados": {
+      "canonico_y_true": "b1c928f9b9f5575547c1090a1fd83cf32a048b694af35a980b460c0bd66d48e6",
+      "canonico_fold_idx": "74d18330c40c3598a1936706ae9434c5fdf29119d357d38353cf298812fe6fb5",
+      "canonico_v30_prob": "3d77352486605971093ade7214ae82326057845d8bf54a2d88c83843c5a721db",
+      "canonico_ids": "d69ecb339f1dc57de2f9cddd558658b5a272ffa42aec15c771773e8eabd59825",
+      "canonico_cand_pred": "2fd8ab0292e8b7364dd003ff3e23902b01786a612c3e9a57641d88788efca369",
+      "canonico_cand_prob": "57be29623543c2616011f8fc77aff89b71faecdad6b599f1b4f4b133655a8134",
+      "manifest_canonico": "8881a9f53e8613aa943681e7fd9a42a3a281aa66b5d7c796d13d2758c6226076",
+      "corpus_archivo": "39c6c8270366fe155f3c8dd232e31867bee659af8908121d04b6bd89bd163748",
+      "corpus_textos": "53c1a348a7954f3e59d7c67caddd6477a06f7d3441724c201052b4b5273445fc",
+      "vectorizador": "9bae157614458dbdf26fb7aed4c78d2954c36e895f830341e59b23fa63e2b51b",
+      "exploracion_script": "9d898ab8cf5908effd119fe78047cd0ee1375a2958539f8e4c4ab0468fe3e457",
+      "exploracion_json": "92d24f8545c6b50ba2c3dda4f9e09e18298a4d18f596aa9d51a0ebe56d0b5753",
+      "exploracion_md": "4b11f38f82816a29d40b3edf888697c2c9eab141eee6819ae1d60940662beb97"
+    },
+    "hashes_esperados": {
+      "corpus_archivo": "39c6c8270366fe155f3c8dd232e31867bee659af8908121d04b6bd89bd163748",
+      "corpus_textos": "53c1a348a7954f3e59d7c67caddd6477a06f7d3441724c201052b4b5273445fc",
+      "vectorizador": "9bae157614458dbdf26fb7aed4c78d2954c36e895f830341e59b23fa63e2b51b",
+      "manifest_canonico": "8881a9f53e8613aa943681e7fd9a42a3a281aa66b5d7c796d13d2758c6226076",
+      "exploracion_script": "9d898ab8cf5908effd119fe78047cd0ee1375a2958539f8e4c4ab0468fe3e457",
+      "exploracion_json": "92d24f8545c6b50ba2c3dda4f9e09e18298a4d18f596aa9d51a0ebe56d0b5753",
+      "exploracion_md": "4b11f38f82816a29d40b3edf888697c2c9eab141eee6819ae1d60940662beb97",
+      "canonico_y_true": "b1c928f9b9f5575547c1090a1fd83cf32a048b694af35a980b460c0bd66d48e6",
+      "canonico_fold_idx": "74d18330c40c3598a1936706ae9434c5fdf29119d357d38353cf298812fe6fb5",
+      "canonico_v30_prob": "3d77352486605971093ade7214ae82326057845d8bf54a2d88c83843c5a721db",
+      "canonico_ids": "d69ecb339f1dc57de2f9cddd558658b5a272ffa42aec15c771773e8eabd59825",
+      "canonico_cand_pred": "2fd8ab0292e8b7364dd003ff3e23902b01786a612c3e9a57641d88788efca369",
+      "canonico_cand_prob": "57be29623543c2616011f8fc77aff89b71faecdad6b599f1b4f4b133655a8134"
+    },
+    "hashes_corpus_recomputados": {
+      "corpus_archivo": "39c6c8270366fe155f3c8dd232e31867bee659af8908121d04b6bd89bd163748",
+      "corpus_textos": "53c1a348a7954f3e59d7c67caddd6477a06f7d3441724c201052b4b5273445fc",
+      "vectorizador": "9bae157614458dbdf26fb7aed4c78d2954c36e895f830341e59b23fa63e2b51b",
+      "exploracion_script": "9d898ab8cf5908effd119fe78047cd0ee1375a2958539f8e4c4ab0468fe3e457",
+      "exploracion_json": "92d24f8545c6b50ba2c3dda4f9e09e18298a4d18f596aa9d51a0ebe56d0b5753",
+      "exploracion_md": "4b11f38f82816a29d40b3edf888697c2c9eab141eee6819ae1d60940662beb97"
+    },
+    "receta_hash_textos": "sha256 con longitud (8 bytes LE) + bytes UTF-8 por texto, en orden",
+    "corpus_prohibido": "el data_hash del manifiesto canonico (2ada573b...) queda invalidado en D-083: es un hash de punteros, no de contenido",
+    "corpus_receta": "src.data.load_train() sobre data/raw/age_train.csv (sep=cfg.TRAIN_SEP, encoding utf-8-sig, clean_text aplicado); orden de filas = orden del CSV = orden canonico de ids.npy",
+    "baseline_recomputado": 0.6159732487657944,
+    "baseline_esperado": 0.6159732,
+    "baseline_ok": true,
+    "ids_alineados": true,
+    "etiquetas_alineadas": true,
+    "linea_base_mayoritaria": {
+      "clase_indice": 0,
+      "clase": "13-17",
+      "frecuencia": 0.17044810317947748,
+      "macro_f1_linea_base": 0.04854212180687087,
+      "n_filas": 169336,
+      "ancla_congelada": 0.04854212180687087,
+      "diferencia": 0.0
+    },
+    "anclas": {
+      "macro_f1_trivial_clase_mayoritaria": 0.04854212180687087,
+      "clase_mayoritaria": "13-17",
+      "gemelo_sgd_d083": 0.4934789,
+      "log_uniforme_k6": 1.791759469228055,
+      "log_k_menos_1": 1.6094379124341003,
+      "h_prior_subconjunto_exploracion": 1.7914536815044917,
+      "d_norm_referencia": 0.912815416414756,
+      "alpha_esperado_para_d_norm_referencia": 0.035263162376364156
+    }
+  },
+  "compliance": {
+    "ast_audit": true,
+    "literales_de_ruta_revisados": 26,
+    "modulos_revisados": 28,
+    "particiones_reservadas_vigiladas": [
+      "test",
+      "holdout",
+      "submission",
+      "leaderboard"
+    ],
+    "familias_vetadas": [
+      "vowpal",
+      "vw",
+      "torch",
+      "transformers",
+      "gensim",
+      "fasttext",
+      "sentence-transformers",
+      "word2vec",
+      "glove",
+      "spacy-vectors"
+    ],
+    "violaciones": [],
+    "embeddings": 0,
+    "transformers": 0,
+    "llm": 0,
+    "datos_externos": 0,
+    "test": 0,
+    "holdout": 0,
+    "leaderboard": 0,
+    "submission": 0,
+    "lecturas": {
+      "lecturas_permitidas": [
+        "data/raw/age_train.csv",
+        "artifacts/p33_scores/todos"
+      ],
+      "escrituras_permitidas": [
+        "artifacts/p34_scores/v34_e1",
+        "checkpoints/v34_e1",
+        "experiments/",
+        "reports/"
+      ],
+      "funciones_lectoras": [
+        "cargar_preregistro",
+        "cargar_canonico",
+        "cargar_corpus",
+        "verificar_hashes",
+        "auditar_ast_propio",
+        "auditar_lecturas_de_datos",
+        "ajustar_vectorizador_fold",
+        "indices_fold",
+        "particion_es",
+        "generar_ordenes",
+        "anadir_sesgo",
+        "refit_vectorizador"
+      ],
+      "funciones_escriptoras": [
+        "escribir_json",
+        "escribir_json_atomico",
+        "guardar_estado",
+        "guardar_oof",
+        "guardar_pesos",
+        "figura_curvas",
+        "escribir_informe",
+        "anotar_runlog",
+        "anotar_experiments_csv",
+        "escribir_registro_novedad",
+        "anotar_historial"
+      ],
+      "funciones_revisadas": 115,
+      "literales_en_funciones_revisados": 26,
+      "literales_de_ruta_totales": 26,
+      "roles_por_funcion": {
+        "__init__": "mixta",
+        "ajustar_sgd": "mixta",
+        "alfa_pasada": "mixta",
+        "alpha_derivado": "mixta",
+        "alpha_derivado_general": "mixta",
+        "anadir_sesgo": "lectora",
+        "anotar_experiments_csv": "escritora",
+        "anotar_historial": "escritora",
+        "anotar_runlog": "escritora",
+        "asegurar_brazo_cargado": "mixta",
+        "asegurar_calibracion": "mixta",
+        "auditar_ast_propio": "lectora",
+        "auditar_lecturas_de_datos": "lectora",
+        "bootstrap_delta": "mixta",
+        "calcular_gates": "mixta",
+        "cargar": "mixta",
+        "cargar_canonico": "lectora",
+        "cargar_corpus": "lectora",
+        "cargar_estado": "mixta",
+        "cargar_preregistro": "lectora",
+        "cerrar_puerta": "mixta",
+        "combinador_oof": "mixta",
+        "como_nativo": "mixta",
+        "construir_resultado": "mixta",
+        "coord_sesgo": "mixta",
+        "d_norm_de_prior": "mixta",
+        "diagnostico_brazo": "mixta",
+        "ejecutar": "mixta",
+        "ejecutar_sondas": "mixta",
+        "entrar_brazo_mini_segunda": "mixta",
+        "entrenar_brazo_fold": "mixta",
+        "entrenar_brazo_mini": "mixta",
+        "entrenar_con_puerta": "mixta",
+        "entropia_de_prior": "mixta",
+        "es_literal_de_ruta": "mixta",
+        "escribir_informe": "escritora",
+        "escribir_json": "escritora",
+        "escribir_json_atomico": "escritora",
+        "escribir_registro_novedad": "escritora",
+        "estado": "mixta",
+        "estado_nuevo": "mixta",
+        "evaluar_combinacion": "mixta",
+        "evaluar_es": "mixta",
+        "evaluar_puerta_preliminar": "mixta",
+        "figura_curvas": "escritora",
+        "fila_a_pasada": "mixta",
+        "frecuencias": "mixta",
+        "ftrl_softmax_lazo_ingenuo": "mixta",
+        "ftrl_softmax_multipasada": "mixta",
+        "generar_ordenes": "lectora",
+        "guardar_estado": "escritora",
+        "guardar_oof": "escritora",
+        "guardar_pesos": "escritora",
+        "indices_fold": "lectora",
+        "linea_base_mayoritaria": "mixta",
+        "literales_de_ruta": "mixta",
+        "log_loss_multiclase": "mixta",
+        "log_loss_propio": "mixta",
+        "logits_a_prob": "mixta",
+        "logits_de_sgd": "mixta",
+        "macro": "mixta",
+        "macro_de_conteos": "mixta",
+        "main": "mixta",
+        "mascara_de_folds": "mixta",
+        "max_abs_suma_menos_uno": "mixta",
+        "mecanismo_fold_0": "mixta",
+        "mecanismo_markdown": "mixta",
+        "modulos_importados": "mixta",
+        "nombres_entregables": "mixta",
+        "normaliza": "mixta",
+        "normaliza_l2": "mixta",
+        "parsear_argumentos": "mixta",
+        "pasar": "mixta",
+        "preparar_fold": "mixta",
+        "prior_de_es_train": "mixta",
+        "problema_aleatorio": "mixta",
+        "problema_mini": "mixta",
+        "refit_vectorizador": "lectora",
+        "registrar_fold": "mixta",
+        "resumen_consola": "mixta",
+        "rss_gb": "mixta",
+        "ruta_oof": "mixta",
+        "ruta_pesos": "mixta",
+        "ruta_relativa": "mixta",
+        "sha256_archivo": "mixta",
+        "sha256_bytes": "mixta",
+        "sha256_f64": "mixta",
+        "sha256_f64_2d": "mixta",
+        "sha256_i64": "mixta",
+        "sha256_pesos": "mixta",
+        "sha256_textos": "mixta",
+        "softmax": "mixta",
+        "sonda_a_vectorizado_vs_lazo": "mixta",
+        "sonda_asimetria_no_equivalente": "mixta",
+        "sonda_b_raiz_analitica_lambda0": "mixta",
+        "sonda_c_totalf1_macro": "mixta",
+        "sonda_d_sin_nan_logloss_finito": "mixta",
+        "sonda_determinismo_fold0": "mixta",
+        "sonda_e_logloss_multiclase_propio": "mixta",
+        "sonda_f_filas_suman_uno": "mixta",
+        "sonda_g_reproducibilidad_alpha": "mixta",
+        "sonda_h_estabilidad_es": "mixta",
+        "sonda_i_simetria_presupuesto": "mixta",
+        "sonda_j_tabla_de_mecanismo": "mixta",
+        "tabla_sesgo_markdown": "mixta",
+        "tabla_simetria_sesgo": "mixta",
+        "tr_idx_tamano": "mixta",
+        "triage_formal": "mixta",
+        "verificar_constantes": "mixta",
+        "verificar_deadline": "mixta",
+        "verificar_hashes": "lectora",
+        "verificar_invariantes": "mixta",
+        "verificar_ram": "mixta",
+        "verificar_versiones": "mixta"
+      },
+      "literales_de_modulo_revisados": 24,
+      "corpus_en_runtime": "/home/carlos/Git/PLN/KAGGLE_AGE_2026_PUJ/data/raw/age_train.csv",
+      "violaciones": []
+    },
+    "auditorias_exigidas": [
+      "6 .npy canonicos + manifest",
+      "sha256 del archivo y del array de textos (nunca el data_hash del manifiesto)",
+      "sha256 del vectorizador",
+      "vocabulario e idf por fold",
+      "sonda de refit en los 5 folds",
+      "sondas (a)-(j)",
+      "tabla de simetria de sesgo",
+      "sonda de reproducibilidad de alpha*",
+      "estabilidad del ES",
+      "simetria de presupuesto",
+      "RSS pico con ru_maxrss",
+      "escritura atomica"
+    ],
+    "nota_ast_audit": "importes Y literales de ruta: vowpal, vw, torch, transformers, gensim, fasttext, sentence-transformers, word2vec, glove, spacy-vectors; y 0 rutas de test/holdout/submission/leaderboard"
+  },
+  "config": {
+    "vectorizador": {
+      "analyzer": "word",
+      "ngram_range": [
+        1,
+        2
+      ],
+      "min_df": 3,
+      "max_df": 0.5,
+      "sublinear_tf": true,
+      "lowercase": true,
+      "strip_accents": null,
+      "token_pattern": "(?u)\\b\\w+\\b"
+    },
+    "vectorizador_fit": {
+      "ngram_range": [
+        1,
+        2
+      ]
+    },
+    "nota_ngram_range": "la config congelada declara ngram_range como lista; sklearn 1.8.0 exige tupla y en el fit se convierte (mismo valor); el sha256 congelado del dict usa SIEMPRE la lista",
+    "norm_dtype": "defaults de sklearn (norm='l2', dtype float64)",
+    "ajuste_vectorizador": "POR FOLD: fit solo en ES-train (el 10 % del fold-train va al ES interno y NO se vectoriza con el) \u2014 declarado por coherencia con la regla de alpha, que se deriva sobre las filas que se entrenan",
+    "sesgo": "A1 materializa el sesgo como coordenada x0=1.0 (un solo camino); A2 usa fit_intercept=True SIN columna de sesgo pre-anadida (enmienda pre-ejecucion 1)",
+    "presupuesto": {
+      "p_max": 10,
+      "p_min": 3,
+      "paciencia": 2,
+      "mejora_minima": 0.0001,
+      "test_size_es": 0.1,
+      "orden_por_pasada": "np.random.default_rng(20261010+fold+pasada).permutation de las filas ES-train; un orden distinto por pasada y por fold",
+      "particion_es": "sklearn.model_selection.StratifiedShuffleSplit(n_splits=1, test_size=0.1, random_state=20261010+fold) sobre las filas de fold-train",
+      "restauracion": "al parar se restaura el mejor w (seleccion sobre TRAIN)",
+      "prohibido": "usar fold-val, test o el leaderboard para parar, seleccionar o comparar brazos"
+    },
+    "regla_alpha": {
+      "formula": "alpha* = M*(2 - power_t)/(d_norm * P_max**(2 - power_t))",
+      "con_power_t_cero": "alpha* = 2*M/(d_norm * P_max**2)",
+      "M": 1.6094379124341003,
+      "valores_evaluados": 0,
+      "ancla_d_norm": 0.912815416414756,
+      "ancla_alpha": 0.035263162376364156,
+      "ancla_n_train_fold": 135468,
+      "alpha_por_fold": {
+        "0": 0.035262336465737745
+      }
+    },
+    "control": {
+      "ejecutable": {
+        "modo": "partial_fit_por_pasada",
+        "llamadas": 10,
+        "max_iter": 1,
+        "warm_start": true,
+        "tol": null,
+        "shuffle": false,
+        "average": false,
+        "fit_intercept": true,
+        "alpha_reg": 1e-06,
+        "learning_rate": "optimal",
+        "random_state": "20261010+fold",
+        "n_jobs": 32
+      },
+      "espejo_prereg": {
+        "modo": "partial_fit_por_pasada",
+        "llamadas": 10,
+        "t_acumulado": "t_ se acumula entre llamadas (401 si se usara fit repetido, por el reinicio de self.t_ en BaseSGDClassifier._fit)",
+        "es_por_pasada": true,
+        "restaura_mejor_coef": true,
+        "max_iter": null,
+        "nota": "el numero de pasadas (10) es el que el pre-registro congelo; lo que se corrige es como se ejecuta, porque fit(max_iter=1, warm_start=True) no acumula el schedule"
+      },
+      "nota_kwargs": "el estimador NO se construye con max_iter = 10: se construye con max_iter = 1 y se llama a partial_fit una vez por orden congelado de cada pasada"
+    },
+    "pesos_plugin": [
+      1.0,
+      1.1749,
+      1.2721,
+      1.163,
+      1.001,
+      0.8128
+    ],
+    "hilos": 32,
+    "seeds": {
+      "global": 20261010,
+      "es_segunda_particion": 987654,
+      "sgd_random_state": "20261010+fold"
+    },
+    "integracion": {
+      "c_logreg": 1.0,
+      "max_iter_logreg": 2000,
+      "clip": 1e-12,
+      "n_bootstrap": 2000,
+      "pesos_plugin": [
+        1.0,
+        1.1749,
+        1.2721,
+        1.163,
+        1.001,
+        0.8128
+      ],
+      "decision": "argmax(p_comb * pesos plugin congelados)"
+    },
+    "coste": {
+      "presupuesto_declarado_seg": 1200.0,
+      "proyeccion_max_h": 20.0,
+      "timeout_global_h": 24.0,
+      "ram_tope_gb": 20.0,
+      "variabilidad_referencia": 0.0008876,
+      "gate_delta": 0.0015,
+      "gate_folds": 4,
+      "umbral_alta_confianza": 0.6,
+      "tolerancia_determinismo": 1e-09
+    }
+  },
+  "sondas": {
+    "a_vectorizado_vs_lazo": {
+      "descripcion": "FTRL softmax multiclase multi-pasada (3 pasadas) vectorizada vs lazo ingenuo, problema aleatorio 200x50x6",
+      "alpha": 0.035318988698263484,
+      "n_pasadas": 3,
+      "max_abs_diff": 1.1102230246251565e-15,
+      "tolerancia": 1e-12,
+      "pass": true
+    },
+    "b_raiz_analitica_lambda0": {
+      "descripcion": "lambda1=lambda2=0 con feature constante: raiz analitica alpha*z/(beta+sqrt(n)) y paso unico alpha*g/(beta+|g|) con p=1/6",
+      "alpha": 0.03526101798176724,
+      "residuo_raiz": 1.3877787807814457e-17,
+      "residuo_un_paso": 0.0,
+      "residuo_max": 1.3877787807814457e-17,
+      "umbral": 1e-09,
+      "pass": true
+    },
+    "c_totalf1_macro": {
+      "metrica": "TotalF1:average=Macro",
+      "total_f1_average_macro": 0.1675788789443113,
+      "total_f1_default": 0.16783582644676073,
+      "macro_f1_sklearn": 0.1675788789443113,
+      "delta_criterio": 0.0,
+      "delta_default_vs_macro": 0.00025694750244942277,
+      "tolerancia": 1e-06,
+      "pass": true
+    },
+    "d_sin_nan_logloss_finito": {
+      "descripcion": "softmax multiclase sin NaN/inf y log_loss multiclase finito",
+      "n_filas": 400,
+      "p_finita": true,
+      "w_finito": true,
+      "log_loss_multiclase": 2.4480015696609216,
+      "log_loss_finito": true,
+      "p_min": 0.016314734983637884,
+      "p_max": 0.659817373638535,
+      "pass": true
+    },
+    "e_logloss_multiclase_propio": {
+      "descripcion": "log_loss multiclase propio -media log p[i,y[i]] contra sklearn.metrics.log_loss con filas que suman 1",
+      "log_loss_propio": 3.0386560477650857,
+      "log_loss_sklearn": 3.0386560477650857,
+      "delta": 0.0,
+      "max_abs_suma_menos_uno": 2.220446049250313e-16,
+      "tolerancia": 1e-09,
+      "pass": true
+    },
+    "f_filas_suman_uno": {
+      "descripcion": "max|sum_c p_c - 1| del softmax de 6 logits, sin temperatura",
+      "max_abs_suma_menos_uno_por_caso": {
+        "ftrl_una_pasada": 4.440892098500626e-16,
+        "aleatorio": 3.3306690738754696e-16,
+        "extremos_1e3": 4.440892098500626e-16
+      },
+      "peor": 4.440892098500626e-16,
+      "tolerancia": 1e-09,
+      "pass": true
+    },
+    "g_reproducibilidad_alpha": {
+      "fold": 0,
+      "n_es_train": 121921,
+      "prior": [
+        0.17044643662699616,
+        0.1693473642768678,
+        0.16739528055052041,
+        0.16671451185603792,
+        0.16570566186300964,
+        0.160390744826568
+      ],
+      "prior_sha256": "bc9e6d3043c04219e42a2cfd023bd69c9a844811c674c25510623ab9b605cdf3",
+      "d_norm": 0.9128367962785974,
+      "d_norm_referencia_ancla": 0.912815416414756,
+      "d_norm_uniforme": 0.9128709291752768,
+      "h_prior_es": 1.7915714394468476,
+      "M": 1.6094379124341003,
+      "P_max": 10,
+      "power_t": 0.0,
+      "alpha_run": 0.035262336465737745,
+      "alpha_formula_general": 0.035262336465737745,
+      "alpha_sha256": "83a538cb56b1c4cc63b82da9a7c0ea0a61843128d0f20706bc38b8ca9ce1815e",
+      "alpha_ancla_referencia": 0.035263162376364156,
+      "alpha_esperado_aproximado": 0.0352631,
+      "diferencia_exacta": 0.0,
+      "diferencia_es_cero_exacto": true,
+      "ancla_reproduce": true,
+      "M_es_ln_K_menos_1": true,
+      "criterio": "alpha*, d_norm y prior recalculados en runtime desde el ES-train; |alpha*_run - alpha*_formula| = 0 exacto + sha256 de prior y alpha*; si no reproduce -> exit 2 ANTES de entrenar",
+      "pass": true
+    },
+    "h_estabilidad_es": {
+      "descripcion": "dos corridas identicas del fold 0 de cada brazo: misma pasada de parada, mismo ll_train y sha256 de los pesos IDENTICOS (tolerancia 0)",
+      "problema": "mini (dimension reducida); sobre el fold 0 real la misma comprobacion es el gate G5",
+      "brazos": {
+        "A1_ftrl_multipasada": {
+          "pasada_de_parada": [
+            3,
+            3
+          ],
+          "ll_train": [
+            23.291927429575324,
+            23.291927429575324
+          ],
+          "sha256_w": [
+            "5506914d23a1afc6d02df7e4d01c9e3129c8881cb75220494198d688bdeb1074",
+            "5506914d23a1afc6d02df7e4d01c9e3129c8881cb75220494198d688bdeb1074"
+          ],
+          "pasada_igual": true,
+          "ll_train_igual": true,
+          "pesos_identicos": true,
+          "max_abs_diff_ll_train": 0.0,
+          "tolerancia": 0.0,
+          "pass": true
+        },
+        "A2_sgd_multipasada": {
+          "pasada_de_parada": [
+            10,
+            10
+          ],
+          "ll_train": [
+            21.132546449429192,
+            21.132546449429192
+          ],
+          "sha256_w": [
+            "9add1b9961840769f5d205c331a17b6851b0fff6b3e3379573c0c9c07b4e9546",
+            "9add1b9961840769f5d205c331a17b6851b0fff6b3e3379573c0c9c07b4e9546"
+          ],
+          "pasada_igual": true,
+          "ll_train_igual": true,
+          "pesos_identicos": true,
+          "max_abs_diff_ll_train": 0.0,
+          "tolerancia": 0.0,
+          "pass": true
+        }
+      },
+      "pass": true
+    },
+    "i_simetria_presupuesto": {
+      "descripcion": "sha256 de la particion ES y de los ordenes por pasada identicos en ambos brazos; los ordenes se generan UNA vez por fold y se pasan a los dos brazos",
+      "n_pasadas": 10,
+      "n_filas_es_train": 1350,
+      "es_train_sha256": "dfdea2b4de523d74164fd7ba3417aae24427d72e20f6379f6149f07074e7d887",
+      "es_val_sha256": "aa7793610f1d9fbf6e955510162a416d4de69e6a213e589ccd35e2626e55176e",
+      "es_train_y_es_val_distintos": true,
+      "ordenes_sha256_A1": [
+        "5527b3bf48498f6c7af9a4c217f786ef814b967a9f18e16e3101d0118f03c2cf",
+        "d63099d9e190ffed51f0304e957834bf3f07cc35b064f1f3e30473a8e663482c",
+        "8120ddea7d21175db580a9efba7fe35ba70958bd8ff81af8ee95a3068fbba231",
+        "da67bea03e7b96275c1011c5c4043e7c6030b3cca84472c4c75e516fdbbf211a",
+        "1a1e44e40d43ec31c076ffe7b71f8b44081dac934f907002334809a330b9b7d9",
+        "c4eae4e67956acb90f0753cf7f5bf49d5f3870bbe8474a2d24a474cd3ba5dcfc",
+        "3e6bb3464b5e8bedfcc0f0ca2e462b0539d707dc0d6cd90a23da38215f625db7",
+        "21a7c7923f0b8534d7dc40c165c7956d3ffa02b3fc7dfb6dce088d58561d6b5a",
+        "35783832e43b77e700dd0e770643aa9ae97807cc3fe437130894891f46140c9e",
+        "5f8b0bbdd9a9a39c8a0f6543791b74b099b888177edb908f3564700a3135d14d"
+      ],
+      "ordenes_sha256_A2": [
+        "5527b3bf48498f6c7af9a4c217f786ef814b967a9f18e16e3101d0118f03c2cf",
+        "d63099d9e190ffed51f0304e957834bf3f07cc35b064f1f3e30473a8e663482c",
+        "8120ddea7d21175db580a9efba7fe35ba70958bd8ff81af8ee95a3068fbba231",
+        "da67bea03e7b96275c1011c5c4043e7c6030b3cca84472c4c75e516fdbbf211a",
+        "1a1e44e40d43ec31c076ffe7b71f8b44081dac934f907002334809a330b9b7d9",
+        "c4eae4e67956acb90f0753cf7f5bf49d5f3870bbe8474a2d24a474cd3ba5dcfc",
+        "3e6bb3464b5e8bedfcc0f0ca2e462b0539d707dc0d6cd90a23da38215f625db7",
+        "21a7c7923f0b8534d7dc40c165c7956d3ffa02b3fc7dfb6dce088d58561d6b5a",
+        "35783832e43b77e700dd0e770643aa9ae97807cc3fe437130894891f46140c9e",
+        "5f8b0bbdd9a9a39c8a0f6543791b74b099b888177edb908f3564700a3135d14d"
+      ],
+      "ordenes_identicos_entre_brazos": true,
+      "generador_reproducible": true,
+      "criterio": "sha256 de la particion ES y de los ordenes por pasada identicos en ambos brazos",
+      "pass": true
+    },
+    "j_tabla_de_mecanismo": {
+      "descripcion": "tabla de mecanismo: ll_train y D_acum por pasada de A1 y A2, razon |sigma*w|/|g| y w_max_abs; la falsacion se reproduce dentro del runner, NO se importa de /tmp",
+      "es_gate": false,
+      "prior_es": [
+        0.1637037037037037,
+        0.17037037037037037,
+        0.17407407407407408,
+        0.15703703703703703,
+        0.17333333333333334,
+        0.16148148148148148
+      ],
+      "h_prior_es": 1.7910330945259374,
+      "M": 1.6094379124341003,
+      "banda_D_acum_objetivo": [
+        0.8047189562170501,
+        3.2188758248682006
+      ],
+      "techo_G1_ll_train": 1.7810330945259374,
+      "alpha": 0.035266126860731356,
+      "d_norm": 0.912738684795126,
+      "brazos": {
+        "A1_ftrl_multipasada": {
+          "pasada_de_parada": 3,
+          "mejor_pasada": 1,
+          "trayectoria": [
+            {
+              "pasada": 1,
+              "ll_train": 20.75178783276184,
+              "D_acum": 24.780842652315084,
+              "macro_f1_es": 0.04597701149425287,
+              "w_max_abs": 0.764204723026567,
+              "razon_sigma_sobre_g": 0.29504269647971393,
+              "razon_sigma_sobre_g_pasada": 0.29504269647971393
+            },
+            {
+              "pasada": 2,
+              "ll_train": 23.288751769042282,
+              "D_acum": 35.74495746676843,
+              "macro_f1_es": 0.04597701149425287,
+              "w_max_abs": 1.097416078020549,
+              "razon_sigma_sobre_g": 0.308085042638388,
+              "razon_sigma_sobre_g_pasada": 0.3211004673346566
+            },
+            {
+              "pasada": 3,
+              "ll_train": 23.291927429575324,
+              "D_acum": 44.117498189416224,
+              "macro_f1_es": 0.04597701149425287,
+              "w_max_abs": 1.351627943128209,
+              "razon_sigma_sobre_g": 0.31341713637208424,
+              "razon_sigma_sobre_g_pasada": 0.32407031755572013
+            }
+          ]
+        },
+        "A2_sgd_multipasada": {
+          "pasada_de_parada": 10,
+          "mejor_pasada": 5,
+          "trayectoria": [
+            {
+              "pasada": 1,
+              "ll_train": 23.218397532402122,
+              "D_acum": 850.9579428137029,
+              "macro_f1_es": 0.04563492063492064,
+              "w_max_abs": 198.27616122958102,
+              "t_": 1351.0
+            },
+            {
+              "pasada": 2,
+              "ll_train": 22.32896401547598,
+              "D_acum": 943.356237349402,
+              "macro_f1_es": 0.07764948084496957,
+              "w_max_abs": 217.21151455780978,
+              "t_": 2701.0
+            },
+            {
+              "pasada": 3,
+              "ll_train": 21.398214975853033,
+              "D_acum": 486.87608722147564,
+              "macro_f1_es": 0.07642591326801852,
+              "w_max_abs": 215.13521626255553,
+              "t_": 4051.0
+            },
+            {
+              "pasada": 4,
+              "ll_train": 22.90221564095283,
+              "D_acum": 1009.1512779286732,
+              "macro_f1_es": 0.047892720306513405,
+              "w_max_abs": 182.4688825636612,
+              "t_": 5401.0
+            },
+            {
+              "pasada": 5,
+              "ll_train": 21.813654350512216,
+              "D_acum": 643.3806745368904,
+              "macro_f1_es": 0.10565208065208065,
+              "w_max_abs": 255.55056581988273,
+              "t_": 6751.0
+            },
+            {
+              "pasada": 6,
+              "ll_train": 22.769714811161514,
+              "D_acum": 756.641072638577,
+              "macro_f1_es": 0.04816955684007707,
+              "w_max_abs": 156.45185866025,
+              "t_": 8101.0
+            },
+            {
+              "pasada": 7,
+              "ll_train": 21.699843705831434,
+              "D_acum": 552.7729872228016,
+              "macro_f1_es": 0.09929879644165358,
+              "w_max_abs": 159.27610073148463,
+              "t_": 9451.0
+            },
+            {
+              "pasada": 8,
+              "ll_train": 22.73930845653149,
+              "D_acum": 793.2675619418843,
+              "macro_f1_es": 0.04980842911877395,
+              "w_max_abs": 188.29095739062862,
+              "t_": 10801.0
+            },
+            {
+              "pasada": 9,
+              "ll_train": 22.43855753642265,
+              "D_acum": 700.5057005380704,
+              "macro_f1_es": 0.07494369369369369,
+              "w_max_abs": 201.01132791947964,
+              "t_": 12151.0
+            },
+            {
+              "pasada": 10,
+              "ll_train": 21.132546449429192,
+              "D_acum": 508.72439748299104,
+              "macro_f1_es": 0.09134636241377814,
+              "w_max_abs": 178.42304006681084,
+              "t_": 13501.0
+            }
+          ]
+        }
+      }
+    },
+    "todas_pasan": true,
+    "politica": "si alguna falla -> exit 4 ANTES de entrenar; cualquier ajuste exige enmienda pre-ejecucion",
+    "duracion_seg": 2.1307849884033203
+  },
+  "asimetrias": {
+    "descripcion": "el veredicto NO se apoya en la asimetria de regularizacion entre brazos: es una NO-EQUIVALENCIA ESTRUCTURAL medida",
+    "valores": {
+      "lambda2_ftrl": 1.0,
+      "alpha_reg_sgd": 1e-06,
+      "cociente": 1000000.0
+    },
+    "no_equivalencia_estructural": "con lambda2 = 1e-6 el L2-en-acumulador y el L2-en-denominador dan resultado IDENTICO (es un no-op, medido en la exploracion previa): por eso no existe una equivalencia FTRL<->SGD a escala 1e-6",
+    "criterio_exigido": "publicar que el veredicto NO se apoya en esta asimetria: el cierre se sostiene en A1 frente a la DERIVACION (la regla y la exploracion), no en A1 frente a A2",
+    "apoyo_del_veredicto": "A1 frente a la DERIVACION (regla de margen y tabla de mecanismo publicada dentro del runner); A2 es el control sano que demuestra que el presupuesto no es el limite",
+    "lectura_correcta_de_a2": "el gemelo no es un equivalente de FTRL a 1e-6: se lee como 'el presupuesto de 10 pasadas NO es el limite'",
+    "lambda2_ftrl": 1.0,
+    "alpha_reg_sgd": 1e-06,
+    "cociente": 1000000.0,
+    "control_ajuste": "partial_fit_por_pasada con 10 llamadas; el numero de pasadas (10) es el que el pre-registro congelo; lo que se corrige es como se ejecuta, porque fit(max_iter=1, warm_start=True) no acumula el schedule",
+    "desvio_declarado_partial_fit": "4.5e-5 a 2 pasadas y 2.0e1 a 4 pasadas en un problema sintetico; motivo: es la unica via que permite evaluar el early stopping despues de cada pasada, que el pre-registro exige (P_min 3, paciencia 2, restaurar el mejor coef_), y da el mismo presupuesto que A1",
+    "pass": true
+  },
+  "simetria_sesgo": {
+    "descripcion": "tabla de simetria de sesgo exigida por la enmienda pre-ejecucion 1: UN solo camino de sesgo por brazo, verificado por sonda",
+    "A1_camino": "coordenada de sesgo x0=1.0 materializada dentro de FTRL (propio z, propio n, sin termino de sesgo aparte)",
+    "A2_camino": "fit_intercept=True sobre la MISMA matriz SIN columna de sesgo pre-anadida (enmienda 1: se corrige el doble sesgo de D-083/V33-E1)",
+    "doble_sesgo": false,
+    "declaracion": "no hay doble sesgo en ningun brazo: A1 materializa el sesgo como coordenada unica y A2 lo aporta solo por intercept_; el defecto de D-083 y V33-E1 (matriz con sesgo pre-anadido Y fit_intercept=True) NO se reproduce aqui",
+    "por_brazo": {
+      "A1_ftrl_multipasada": {
+        "fuente": [
+          "coordenada de sesgo x0=1.0 dentro de FTRL (propio z, propio n)"
+        ],
+        "n_caminos_de_sesgo": [
+          1
+        ],
+        "sesgo_por_fold": {
+          "0": {
+            "n_caminos": 1,
+            "fuente": "coordenada de sesgo x0=1.0 dentro de FTRL (propio z, propio n)",
+            "max_abs_gradiente_coordenada_sesgo": 0.9999999999999999,
+            "gradiente_acumulado_por_clase": [
+              66267.74075765582,
+              64938.46574917698,
+              64285.68660690661,
+              64004.889587257145,
+              63797.75436282685,
+              290635.68909585645
+            ],
+            "desplazamiento_por_clase": [
+              -2.8914575019573014,
+              -3.004536918666736,
+              -2.9801185203517804,
+              -2.9783869453349423,
+              -2.950112961776939,
+              6.606918286767391
+            ],
+            "max_abs_desplazamiento": 6.606918286767391,
+            "coord_sesgo_sha256": "34d917d5b001496e128807c115ac695bbbd86a2435bbee8fb585e7a51da68edd",
+            "sha256_w": "fb93798d830c368b71954437f52d579eb19ff7dcc3441f5dcd29c478c6c1f75c"
+          }
+        }
+      },
+      "A2_sgd_multipasada": {
+        "fuente": [
+          "fit_intercept=True sobre la matriz SIN columna de sesgo pre-anadida (un solo camino)"
+        ],
+        "n_caminos_de_sesgo": [
+          1
+        ],
+        "sesgo_por_fold": {
+          "0": {
+            "n_caminos": 1,
+            "fuente": "fit_intercept=True sobre la matriz SIN columna de sesgo pre-anadida (un solo camino)",
+            "intercept_": [
+              -1.9183893512422898,
+              -1.2893783696669183,
+              -1.89437036122244,
+              -2.451892878830996,
+              -2.7145594691904047,
+              -3.4519030282446312
+            ],
+            "max_abs_intercept": 3.4519030282446312,
+            "intercept_sha256": "fdf6018022dfda14226a5ed0ff78b4beee37ae36be1b674d1b69236dbffa2193",
+            "sha256_w": "b13dd9deba4e95813845780f2be6a158409d800df1003dbb1d7d290a505b6eda"
+          }
+        }
+      }
+    },
+    "comparacion_por_fold": {
+      "0": {
+        "A1_max_abs_gradiente_coordenada_sesgo": 0.9999999999999999,
+        "A1_desplazamiento_por_clase": [
+          -2.8914575019573014,
+          -3.004536918666736,
+          -2.9801185203517804,
+          -2.9783869453349423,
+          -2.950112961776939,
+          6.606918286767391
+        ],
+        "A1_max_abs_desplazamiento": 6.606918286767391,
+        "A2_intercept": [
+          -1.9183893512422898,
+          -1.2893783696669183,
+          -1.89437036122244,
+          -2.451892878830996,
+          -2.7145594691904047,
+          -3.4519030282446312
+        ],
+        "A2_max_abs_intercept": 3.4519030282446312,
+        "razon_A1_sobre_A2": 0.2896952758573064,
+        "razon_desplazamiento_sobre_intercept": 1.913993015651762,
+        "mismo_orden_de_magnitud": true
+      }
+    }
+  },
+  "puerta": {
+    "momento": "dentro del fold 0, ANTES de los folds 1-4 y ANTES de integrar",
+    "aplica_a": [
+      "A1_ftrl_multipasada",
+      "A2_sgd_multipasada"
+    ],
+    "fold_0_consumido_diagnostico": true,
+    "nota_fold_0": "G3 y G4 leen el fold-val del fold 0, que es parte de la validacion canonica; su fallo NO toca delta",
+    "gates": {
+      "A1_ftrl_multipasada": {
+        "G0_objetivo_de_la_regla": {
+          "criterio": "A1: M/2 <= D_acum <= 2*M con D_acum = rango medio de logits (max - min) sobre ES-train al parar",
+          "valor": 23.194917527044645,
+          "rango": [
+            0.8047189562170501,
+            3.2188758248682006
+          ],
+          "M": 1.6094379124341003,
+          "anclaje": "M = ln(5) separa la tasa base del uniforme; factor 2 declarado cubre la linealizacion de primer orden",
+          "que_es_G0": "comprueba que la regla de alpha consiguio su objetivo declarado, no solo que hubo perdida",
+          "pass": false
+        },
+        "G1_banda_ll_train": {
+          "criterio": "0.05 <= ll_train <= H(prior)_ES - 0.01",
+          "valor": 19.17442061547821,
+          "piso": 0.05,
+          "techo": 1.7815714394468476,
+          "h_prior_es": 1.7915714394468476,
+          "anclaje": "techo anclado en la entropia del prior MEDIDO del ES-train, NO en ln 6",
+          "pass": false
+        },
+        "G2_progreso": {
+          "criterio": "la mejor ll_train por pasada mejora en >= 1 de las primeras P_min = 3 pasadas",
+          "ll_train_por_pasada": [
+            10.086313578600265,
+            15.420625213620653,
+            19.17442061547821
+          ],
+          "mejoras_en_las_primeras_P_min": 0,
+          "tolerancia": 1e-06,
+          "anclaje": "un modelo que no aprende nada tiene ll_train plana",
+          "pass": false
+        },
+        "G3_macro_f1_fold_val": {
+          "criterio": "macro-F1 standalone en el fold-val >= 0.3",
+          "valor": 0.04607294317217981,
+          "minimo": 0.3,
+          "anclas": {
+            "trivial": 0.04854212180687087,
+            "gemelo_sgd_d083": 0.4934789
+          },
+          "pass": false
+        },
+        "G4_frecuencias": {
+          "criterio": "frecuencia predicha por clase en [0.5*prior_c, 1.5*prior_c]",
+          "valores": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "prior_es": [
+            0.17044643662699616,
+            0.1693473642768678,
+            0.16739528055052041,
+            0.16671451185603792,
+            0.16570566186300964,
+            0.160390744826568
+          ],
+          "rango_por_clase": [
+            [
+              0.08522321831349808,
+              0.2556696549404942
+            ],
+            [
+              0.0846736821384339,
+              0.2540210464153017
+            ],
+            [
+              0.08369764027526021,
+              0.2510929208257806
+            ],
+            [
+              0.08335725592801896,
+              0.2500717677840569
+            ],
+            [
+              0.08285283093150482,
+              0.24855849279451447
+            ],
+            [
+              0.080195372413284,
+              0.24058611723985202
+            ]
+          ],
+          "anclaje": "prior MEDIDO del ES-train",
+          "pass": false
+        },
+        "G5_determinismo": {
+          "criterio": "max|delta p| = 0.0 EXACTO entre dos corridas identicas del fold 0 (ambos brazos)",
+          "valor": 0.0,
+          "tolerancia": 0.0,
+          "sha256_w": "fb93798d830c368b71954437f52d579eb19ff7dcc3441f5dcd29c478c6c1f75c",
+          "pasada_de_parada": 3,
+          "ll_train": 19.17442061547821,
+          "pass": true
+        },
+        "G6_suma_unidad": {
+          "criterio": "max|sum_c p_c - 1| <= 1e-09",
+          "valor": 2.220446049250313e-16,
+          "tolerancia": 1e-09,
+          "anclaje": "softmax de 6 logits",
+          "pass": true
+        }
+      },
+      "A2_sgd_multipasada": {
+        "G0_objetivo_de_la_regla": {
+          "criterio": "A2: ll_train <= H(prior)_ES - 0.01",
+          "valor": 0.4042196354629878,
+          "techo": 1.7815714394468476,
+          "h_prior_es": 1.7915714394468476,
+          "anclaje": "prior MEDIDO del ES-train; el control sano debe aprender de verdad",
+          "que_es_G0": "en A2 comprueba que el presupuesto no es el limite",
+          "pass": true
+        },
+        "G1_banda_ll_train": {
+          "criterio": "0.05 <= ll_train <= H(prior)_ES - 0.01",
+          "valor": 0.4042196354629878,
+          "piso": 0.05,
+          "techo": 1.7815714394468476,
+          "h_prior_es": 1.7915714394468476,
+          "anclaje": "techo anclado en la entropia del prior MEDIDO del ES-train, NO en ln 6",
+          "pass": true
+        },
+        "G2_progreso": {
+          "criterio": "la mejor ll_train por pasada mejora en >= 1 de las primeras P_min = 3 pasadas",
+          "ll_train_por_pasada": [
+            1.0621988075152096,
+            0.53150291338037,
+            0.46136712737751984,
+            0.4448820595778469,
+            0.44331860641441856,
+            0.4161367286176657,
+            0.4135696447419864,
+            0.4124644129409522,
+            0.4099931648709885,
+            0.4042196354629878
+          ],
+          "mejoras_en_las_primeras_P_min": 2,
+          "tolerancia": 1e-06,
+          "anclaje": "un modelo que no aprende nada tiene ll_train plana",
+          "pass": true
+        },
+        "G3_macro_f1_fold_val": {
+          "criterio": "macro-F1 standalone en el fold-val >= 0.3",
+          "valor": 0.49199473325810494,
+          "minimo": 0.3,
+          "anclas": {
+            "trivial": 0.04854212180687087,
+            "gemelo_sgd_d083": 0.4934789
+          },
+          "pass": true
+        },
+        "G4_frecuencias": {
+          "criterio": "frecuencia predicha por clase en [0.5*prior_c, 1.5*prior_c]",
+          "valores": [
+            0.16142081020432267,
+            0.18265028935868666,
+            0.15085036022203852,
+            0.1547478445730483,
+            0.18899846462737688,
+            0.16133223101452698
+          ],
+          "prior_es": [
+            0.17044643662699616,
+            0.1693473642768678,
+            0.16739528055052041,
+            0.16671451185603792,
+            0.16570566186300964,
+            0.160390744826568
+          ],
+          "rango_por_clase": [
+            [
+              0.08522321831349808,
+              0.2556696549404942
+            ],
+            [
+              0.0846736821384339,
+              0.2540210464153017
+            ],
+            [
+              0.08369764027526021,
+              0.2510929208257806
+            ],
+            [
+              0.08335725592801896,
+              0.2500717677840569
+            ],
+            [
+              0.08285283093150482,
+              0.24855849279451447
+            ],
+            [
+              0.080195372413284,
+              0.24058611723985202
+            ]
+          ],
+          "anclaje": "prior MEDIDO del ES-train",
+          "pass": true
+        },
+        "G5_determinismo": {
+          "criterio": "max|delta p| = 0.0 EXACTO entre dos corridas identicas del fold 0 (ambos brazos)",
+          "valor": 0.0,
+          "tolerancia": 0.0,
+          "sha256_w": "b13dd9deba4e95813845780f2be6a158409d800df1003dbb1d7d290a505b6eda",
+          "pasada_de_parada": 10,
+          "ll_train": 0.4042196354629878,
+          "pass": true
+        },
+        "G6_suma_unidad": {
+          "criterio": "max|sum_c p_c - 1| <= 1e-09",
+          "valor": 4.440892098500626e-16,
+          "tolerancia": 1e-09,
+          "anclaje": "softmax de 6 logits",
+          "pass": true
+        }
+      }
+    },
+    "brazos_fallidos": {
+      "A1_ftrl_multipasada": [
+        "G0_objetivo_de_la_regla",
+        "G1_banda_ll_train",
+        "G2_progreso",
+        "G3_macro_f1_fold_val",
+        "G4_frecuencias"
+      ],
+      "A2_sgd_multipasada": []
+    },
+    "pasa": false,
+    "g5_evaluada": true,
+    "consecuencia_si_falla": "veredicto NO_ATRIBUIBLE_BY_GATE: STOP documentado, sin fallback, sin segundo alpha, sin integrar, sin bootstrap",
+    "prohibido": "usar fold-val, la particion reservada o el leaderboard para parar, seleccionar o comparar brazos; reintentar con otro alpha tras el fallo (seria grid)"
+  },
+  "triage": {
+    "se_ejecuta_si": "A1 falla la puerta y A2 pasa G0-G4",
+    "checklist": {
+      "D1_sondas_abcde_en_verde": {
+        "valor": true,
+        "criterio": "sondas (a)-(e) con pass = True (vectorizado vs lazo, raiz analitica, TotalF1 Macro, sin NaN, log_loss propio vs sklearn)"
+      },
+      "D2_sondas_fghi_en_verde": {
+        "valor": true,
+        "criterio": "sondas (f)-(i) con pass = True (filas que suman 1, reproducibilidad de alpha*, estabilidad del ES, simetria de presupuesto)"
+      },
+      "D3_sesgo_unico_por_brazo": {
+        "valor": true,
+        "criterio": "A1 con una sola coordenada de sesgo (n_features == n_vocabulario, n_coordinates_a1 == n_vocabulario + 1) y A2 con fit_intercept=True sobre la matriz sin columna de sesgo"
+      },
+      "D4_presupuesto_no_truncado": {
+        "valor": true,
+        "criterio": "pasada_de_parada en [P_min=3, P_max=10], Trayectoria con tantas entradas como pasadas y ordenes/particion ES identicos en A1 y A2"
+      },
+      "D5_es_bien_configurado": {
+        "valor": true,
+        "criterio": "mejor_pasada <= pasada_de_parada (se restaura el mejor w) y particion ES identica en ambos brazos, ajustada SOLO en ES-train; la metrica del ES es el macro-F1 del 10 % de TRAIN, nunca fold-val"
+      },
+      "D6_determinismo_exacto": {
+        "valor": true,
+        "criterio": "G5 evaluado con max|delta p| = 0.0 EXACTO en los dos brazos (sonda h)"
+      },
+      "D7_alpha_reproducible": {
+        "valor": true,
+        "criterio": "sonda (g) con diferencia exacta 0 entre las dos rutas de alpha* y mismo sha256 de alpha* en los dos brazos"
+      },
+      "D8_sin_segundo_alpha_ni_fallback": {
+        "valor": true,
+        "criterio": "un unico alpha por fold, identico en A1 y A2, igual a la forma cerrada 2*M/(d_norm*P_max^2) al cero binario: no hay grid ni reintento"
+      }
+    },
+    "hay_indicador_de_defecto": false,
+    "clasificacion": "MECANISMO_DEFINITIVO",
+    "mecanismo_publicado_dentro_del_runner": true,
+    "nodo_concedido": true,
+    "motivo_de_no_calculo": null,
+    "uno_shot": "reabrir la familia exige acta nueva con hipotesis mecanica nueva, no otro gate",
+    "condicion_arbol_activada": true
+  },
+  "mecanismo_fold_0": {
+    "fold_0": true,
+    "brazos": {
+      "A1_ftrl_multipasada": [
+        {
+          "pasada": 1,
+          "ll_train": 10.086313578600265,
+          "D_acum": 12.106445830162356,
+          "macro_f1_es": 0.04607718405428329,
+          "w_max_abs": 6.606918286767391,
+          "razon_sigma_sobre_g": 0.1511369037531884,
+          "razon_sigma_sobre_g_pasada": 0.1511369037531884,
+          "perdida_online": 5.580719290678409
+        },
+        {
+          "pasada": 2,
+          "ll_train": 15.420625213620653,
+          "D_acum": 18.496805973578457,
+          "macro_f1_es": 0.04607718405428329,
+          "w_max_abs": 9.996246476222327,
+          "razon_sigma_sobre_g": 0.1979543241924467,
+          "razon_sigma_sobre_g_pasada": 0.24493132300417023,
+          "perdida_online": 12.937109086097173
+        },
+        {
+          "pasada": 3,
+          "ll_train": 19.17442061547821,
+          "D_acum": 23.194917527044645,
+          "macro_f1_es": 0.04607718405428329,
+          "w_max_abs": 12.504073695333586,
+          "razon_sigma_sobre_g": 0.21964801880388646,
+          "razon_sigma_sobre_g_pasada": 0.26310934888900717,
+          "perdida_online": 17.367234936626122
+        }
+      ],
+      "A2_sgd_multipasada": [
+        {
+          "pasada": 1,
+          "ll_train": 1.0621988075152096,
+          "D_acum": 9.009318183124304,
+          "macro_f1_es": 0.4507238550998481,
+          "w_max_abs": 36.851097308207834,
+          "t_": 121922.0
+        },
+        {
+          "pasada": 2,
+          "ll_train": 0.53150291338037,
+          "D_acum": 6.504952133264232,
+          "macro_f1_es": 0.4783218879835666,
+          "w_max_abs": 28.975537013589275,
+          "t_": 243843.0
+        },
+        {
+          "pasada": 3,
+          "ll_train": 0.46136712737751984,
+          "D_acum": 5.946399805412504,
+          "macro_f1_es": 0.4846075615775398,
+          "w_max_abs": 26.40142144815189,
+          "t_": 365764.0
+        },
+        {
+          "pasada": 4,
+          "ll_train": 0.4448820595778469,
+          "D_acum": 5.6863165739339845,
+          "macro_f1_es": 0.48594479392195905,
+          "w_max_abs": 25.635766863845546,
+          "t_": 487685.0
+        },
+        {
+          "pasada": 5,
+          "ll_train": 0.44331860641441856,
+          "D_acum": 5.572205768520885,
+          "macro_f1_es": 0.4921236862256317,
+          "w_max_abs": 25.259161527755204,
+          "t_": 609606.0
+        },
+        {
+          "pasada": 6,
+          "ll_train": 0.4161367286176657,
+          "D_acum": 5.4994739625788895,
+          "macro_f1_es": 0.4937403871043837,
+          "w_max_abs": 25.091526790541643,
+          "t_": 731527.0
+        },
+        {
+          "pasada": 7,
+          "ll_train": 0.4135696447419864,
+          "D_acum": 5.395290221282304,
+          "macro_f1_es": 0.4969814311737142,
+          "w_max_abs": 24.82520224675737,
+          "t_": 853448.0
+        },
+        {
+          "pasada": 8,
+          "ll_train": 0.4124644129409522,
+          "D_acum": 5.374681722507983,
+          "macro_f1_es": 0.49313499246502346,
+          "w_max_abs": 24.749555178199547,
+          "t_": 975369.0
+        },
+        {
+          "pasada": 9,
+          "ll_train": 0.4099931648709885,
+          "D_acum": 5.3219146180107195,
+          "macro_f1_es": 0.4987334207184772,
+          "w_max_abs": 24.729735032756043,
+          "t_": 1097290.0
+        },
+        {
+          "pasada": 10,
+          "ll_train": 0.4042196354629878,
+          "D_acum": 5.255189045039075,
+          "macro_f1_es": 0.49427587880931695,
+          "w_max_abs": 24.650374742441638,
+          "t_": 1219211.0
+        }
+      ]
+    },
+    "alpha": 0.035262336465737745,
+    "d_norm": 0.9128367962785974,
+    "h_prior_es": 1.7915714394468476,
+    "M": 1.6094379124341003,
+    "banda_D_acum_objetivo": [
+      0.8047189562170501,
+      3.2188758248682006
+    ],
+    "banda_ll_train": [
+      0.05,
+      1.7815714394468476
+    ],
+    "ll_train_A1_final": 19.17442061547821,
+    "ll_train_A2_final": 0.4042196354629878,
+    "w_max_abs_A1_final": 12.504073695333586,
+    "w_max_abs_A2_final": 24.650374742441638
+  },
+  "refit": {
+    "descripcion": "sonda de refit del vectorizador en los 5 folds, ajustada SIEMPRE sobre ES-train",
+    "folds": {},
+    "reproducido": null,
+    "nota": "no se ejecuta: la puerta cerro el ciclo antes de terminar los folds"
+  },
+  "vocabulario_idf_por_fold": {
+    "0": {
+      "n_vocabulario": 107792,
+      "vocab_sha256": "b8605131d60d10118670ff5e78dbf54a4883f0726ea8d3b13e9fc799bfa18618",
+      "idf_sha256": "1257b741569c36c48043b2c9eadb31bf1bd1f142f50091a06982dbc9ca8aa832",
+      "n_filas_fit_es_train": 121921
+    }
+  },
+  "particiones_es_por_fold": {
+    "0": {
+      "es_train_sha256": "be8169b0bd1adafc458cfe00593382c970bb29f34f5bafd52e4f3a5d78e470b6",
+      "es_val_sha256": "2897aae6711911e9d7e036eef028e50bc1641f96b8656b758c8b4847f9264ae2",
+      "n_filas_fit_es_train": 121921,
+      "n_filas_es_val": 13547,
+      "n_train_fold": 135468,
+      "prior": [
+        0.17044643662699616,
+        0.1693473642768678,
+        0.16739528055052041,
+        0.16671451185603792,
+        0.16570566186300964,
+        0.160390744826568
+      ],
+      "prior_sha256": "bc9e6d3043c04219e42a2cfd023bd69c9a844811c674c25510623ab9b605cdf3",
+      "prior_es": [
+        0.17044643662699616,
+        0.1693473642768678,
+        0.16739528055052041,
+        0.16671451185603792,
+        0.16570566186300964,
+        0.160390744826568
+      ],
+      "d_norm": 0.9128367962785974,
+      "h_prior_es": 1.7915714394468476,
+      "alpha": 0.035262336465737745,
+      "alpha_sha256": "83a538cb56b1c4cc63b82da9a7c0ea0a61843128d0f20706bc38b8ca9ce1815e"
+    }
+  },
+  "determinismo": {
+    "sonda_por_brazo": {
+      "A1_ftrl_multipasada": {
+        "max_abs_diff_repeticion": 0.0,
+        "max_abs_diff_p": 0.0,
+        "sha256_w": "fb93798d830c368b71954437f52d579eb19ff7dcc3441f5dcd29c478c6c1f75c",
+        "sha256_w_primera": "fb93798d830c368b71954437f52d579eb19ff7dcc3441f5dcd29c478c6c1f75c",
+        "pasada_de_parada": 3,
+        "pasada_de_parada_primera": 3,
+        "ll_train": 19.17442061547821,
+        "ll_train_primera": 19.17442061547821,
+        "clasicacion": "exacto",
+        "tolerancia_declarada": 1e-09,
+        "variabilidad_referencia": 0.0008876,
+        "gate_delta": 0.0015,
+        "no_concluyente": false,
+        "solape_con_gate": false,
+        "sha256_w_identico": true,
+        "pasada_identica": true,
+        "ll_train_identico": true,
+        "pass": true
+      },
+      "A2_sgd_multipasada": {
+        "max_abs_diff_repeticion": 0.0,
+        "max_abs_diff_p": 0.0,
+        "sha256_w": "b13dd9deba4e95813845780f2be6a158409d800df1003dbb1d7d290a505b6eda",
+        "sha256_w_primera": "b13dd9deba4e95813845780f2be6a158409d800df1003dbb1d7d290a505b6eda",
+        "pasada_de_parada": 10,
+        "pasada_de_parada_primera": 10,
+        "ll_train": 0.4042196354629878,
+        "ll_train_primera": 0.4042196354629878,
+        "clasicacion": "exacto",
+        "tolerancia_declarada": 1e-09,
+        "variabilidad_referencia": 0.0008876,
+        "gate_delta": 0.0015,
+        "no_concluyente": false,
+        "solape_con_gate": false,
+        "sha256_w_identico": true,
+        "pasada_identica": true,
+        "ll_train_identico": true,
+        "pass": true
+      }
+    },
+    "no_concluyente": true,
+    "tolerancia_declarada": 1e-09,
+    "variabilidad_referencia": 0.0008876,
+    "nota": "la rama de cierre no llega a los gates de delta: el determinismo se publica solo como diagnostico del fold 0 y el cap queda activo por construccion"
+  },
+  "control": null,
+  "calibracion": null,
+  "rss_pico_gb": 0.6847686767578125,
+  "ram_tope_gb": 20.0,
+  "sin_leakage": null,
+  "entrenamiento": {
+    "A1_ftrl_multipasada": {
+      "folds": {
+        "0": {
+          "n_vocabulario": 107792,
+          "vocab_sha256": "b8605131d60d10118670ff5e78dbf54a4883f0726ea8d3b13e9fc799bfa18618",
+          "idf_sha256": "1257b741569c36c48043b2c9eadb31bf1bd1f142f50091a06982dbc9ca8aa832",
+          "n_filas_fit_es_train": 121921,
+          "n_filas_es_val": 13547,
+          "n_train_fold": 135468,
+          "n_val_fold": 33868,
+          "n_features_es_train": 107792,
+          "n_features_es_val": 107792,
+          "n_coordinates_a1": 107793,
+          "alpha_efectivo": 0.035262336465737745,
+          "d_norm": 0.9128367962785974,
+          "h_prior_es": 1.7915714394468476,
+          "prior_es": [
+            0.17044643662699616,
+            0.1693473642768678,
+            0.16739528055052041,
+            0.16671451185603792,
+            0.16570566186300964,
+            0.160390744826568
+          ],
+          "prior_es_sha256": "bc9e6d3043c04219e42a2cfd023bd69c9a844811c674c25510623ab9b605cdf3",
+          "alpha_sha256": "83a538cb56b1c4cc63b82da9a7c0ea0a61843128d0f20706bc38b8ca9ce1815e",
+          "es_train_sha256": "be8169b0bd1adafc458cfe00593382c970bb29f34f5bafd52e4f3a5d78e470b6",
+          "es_val_sha256": "2897aae6711911e9d7e036eef028e50bc1641f96b8656b758c8b4847f9264ae2",
+          "ordenes_sha256": [
+            "a82da8487c49d28eb7a658ad4b4ddeaf5a4066d13ae764261c487b0f14acc31b",
+            "91f7c9aceca3d277798ac260ed3524a1dc03b404b86dbc241953be485d887fd9",
+            "6cfac0a1a0747e25270dcdd8db791c4ea9ff46368c0e6f02ece098556d199dfc",
+            "2d76bd70d4ab16c8d52f2b9f3642cedf7eba722faee84ac165b24d21433c8dca",
+            "6a050486ce4161674ce0af81b6084c5d50aa6dc102766f14fd4b96b23529d8df",
+            "36c64022d0dbaa326b82e7882d4e908b3e3ca35932bc150f14bd4e2273721ce6",
+            "e3697d357361bcf213b6333614cb4f627a0b5058a9abd5238c51bc4f8ad4cd67",
+            "9890efbc70d2806fc5fa52c5777a4f2721169bf65f06266151e4995a2015f61e",
+            "0e324654a4507eb538b855bec708120d6990c24fc40c75c73e72e2b1bf9bd53a",
+            "6a688ce096e9135f0b5e3a46a533eb94ad9047a60f27175c564868ca3a853549"
+          ],
+          "pasada_de_parada": 3,
+          "mejor_pasada": 1,
+          "trayectoria": [
+            {
+              "pasada": 1,
+              "ll_train": 10.086313578600265,
+              "D_acum": 12.106445830162356,
+              "macro_f1_es": 0.04607718405428329,
+              "w_max_abs": 6.606918286767391,
+              "razon_sigma_sobre_g": 0.1511369037531884,
+              "razon_sigma_sobre_g_pasada": 0.1511369037531884,
+              "perdida_online": 5.580719290678409
+            },
+            {
+              "pasada": 2,
+              "ll_train": 15.420625213620653,
+              "D_acum": 18.496805973578457,
+              "macro_f1_es": 0.04607718405428329,
+              "w_max_abs": 9.996246476222327,
+              "razon_sigma_sobre_g": 0.1979543241924467,
+              "razon_sigma_sobre_g_pasada": 0.24493132300417023,
+              "perdida_online": 12.937109086097173
+            },
+            {
+              "pasada": 3,
+              "ll_train": 19.17442061547821,
+              "D_acum": 23.194917527044645,
+              "macro_f1_es": 0.04607718405428329,
+              "w_max_abs": 12.504073695333586,
+              "razon_sigma_sobre_g": 0.21964801880388646,
+              "razon_sigma_sobre_g_pasada": 0.26310934888900717,
+              "perdida_online": 17.367234936626122
+            }
+          ],
+          "sesgo": {
+            "n_caminos": 1,
+            "fuente": "coordenada de sesgo x0=1.0 dentro de FTRL (propio z, propio n)",
+            "max_abs_gradiente_coordenada_sesgo": 0.9999999999999999,
+            "gradiente_acumulado_por_clase": [
+              66267.74075765582,
+              64938.46574917698,
+              64285.68660690661,
+              64004.889587257145,
+              63797.75436282685,
+              290635.68909585645
+            ],
+            "desplazamiento_por_clase": [
+              -2.8914575019573014,
+              -3.004536918666736,
+              -2.9801185203517804,
+              -2.9783869453349423,
+              -2.950112961776939,
+              6.606918286767391
+            ],
+            "max_abs_desplazamiento": 6.606918286767391,
+            "coord_sesgo_sha256": "34d917d5b001496e128807c115ac695bbbd86a2435bbee8fb585e7a51da68edd",
+            "sha256_w": "fb93798d830c368b71954437f52d579eb19ff7dcc3441f5dcd29c478c6c1f75c"
+          },
+          "t_": 121921.0,
+          "n_actualizaciones": 121921,
+          "macro_f1_standalone_fold_val": 0.04607294317217981,
+          "frecuencias_fold_val": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "max_abs_suma_menos_uno": 2.220446049250313e-16,
+          "tiempo_seg": 20.631643295288086
+        }
+      },
+      "folds_completados": [
+        "0"
+      ],
+      "oof_artefacto": {
+        "archivo": "artifacts/p34_scores/v34_e1/a1_ftrl_multipasada.npy",
+        "existe": true,
+        "sha256": "06e7661820d43c8de66a50758e050a975ec487cae592eea9968d62904a0fd890"
+      }
+    },
+    "A2_sgd_multipasada": {
+      "folds": {
+        "0": {
+          "n_vocabulario": 107792,
+          "vocab_sha256": "b8605131d60d10118670ff5e78dbf54a4883f0726ea8d3b13e9fc799bfa18618",
+          "idf_sha256": "1257b741569c36c48043b2c9eadb31bf1bd1f142f50091a06982dbc9ca8aa832",
+          "n_filas_fit_es_train": 121921,
+          "n_filas_es_val": 13547,
+          "n_train_fold": 135468,
+          "n_val_fold": 33868,
+          "n_features_es_train": 107792,
+          "n_features_es_val": 107792,
+          "n_coordinates_a1": 107793,
+          "alpha_efectivo": 0.035262336465737745,
+          "d_norm": 0.9128367962785974,
+          "h_prior_es": 1.7915714394468476,
+          "prior_es": [
+            0.17044643662699616,
+            0.1693473642768678,
+            0.16739528055052041,
+            0.16671451185603792,
+            0.16570566186300964,
+            0.160390744826568
+          ],
+          "prior_es_sha256": "bc9e6d3043c04219e42a2cfd023bd69c9a844811c674c25510623ab9b605cdf3",
+          "alpha_sha256": "83a538cb56b1c4cc63b82da9a7c0ea0a61843128d0f20706bc38b8ca9ce1815e",
+          "es_train_sha256": "be8169b0bd1adafc458cfe00593382c970bb29f34f5bafd52e4f3a5d78e470b6",
+          "es_val_sha256": "2897aae6711911e9d7e036eef028e50bc1641f96b8656b758c8b4847f9264ae2",
+          "ordenes_sha256": [
+            "a82da8487c49d28eb7a658ad4b4ddeaf5a4066d13ae764261c487b0f14acc31b",
+            "91f7c9aceca3d277798ac260ed3524a1dc03b404b86dbc241953be485d887fd9",
+            "6cfac0a1a0747e25270dcdd8db791c4ea9ff46368c0e6f02ece098556d199dfc",
+            "2d76bd70d4ab16c8d52f2b9f3642cedf7eba722faee84ac165b24d21433c8dca",
+            "6a050486ce4161674ce0af81b6084c5d50aa6dc102766f14fd4b96b23529d8df",
+            "36c64022d0dbaa326b82e7882d4e908b3e3ca35932bc150f14bd4e2273721ce6",
+            "e3697d357361bcf213b6333614cb4f627a0b5058a9abd5238c51bc4f8ad4cd67",
+            "9890efbc70d2806fc5fa52c5777a4f2721169bf65f06266151e4995a2015f61e",
+            "0e324654a4507eb538b855bec708120d6990c24fc40c75c73e72e2b1bf9bd53a",
+            "6a688ce096e9135f0b5e3a46a533eb94ad9047a60f27175c564868ca3a853549"
+          ],
+          "pasada_de_parada": 10,
+          "mejor_pasada": 9,
+          "trayectoria": [
+            {
+              "pasada": 1,
+              "ll_train": 1.0621988075152096,
+              "D_acum": 9.009318183124304,
+              "macro_f1_es": 0.4507238550998481,
+              "w_max_abs": 36.851097308207834,
+              "t_": 121922.0
+            },
+            {
+              "pasada": 2,
+              "ll_train": 0.53150291338037,
+              "D_acum": 6.504952133264232,
+              "macro_f1_es": 0.4783218879835666,
+              "w_max_abs": 28.975537013589275,
+              "t_": 243843.0
+            },
+            {
+              "pasada": 3,
+              "ll_train": 0.46136712737751984,
+              "D_acum": 5.946399805412504,
+              "macro_f1_es": 0.4846075615775398,
+              "w_max_abs": 26.40142144815189,
+              "t_": 365764.0
+            },
+            {
+              "pasada": 4,
+              "ll_train": 0.4448820595778469,
+              "D_acum": 5.6863165739339845,
+              "macro_f1_es": 0.48594479392195905,
+              "w_max_abs": 25.635766863845546,
+              "t_": 487685.0
+            },
+            {
+              "pasada": 5,
+              "ll_train": 0.44331860641441856,
+              "D_acum": 5.572205768520885,
+              "macro_f1_es": 0.4921236862256317,
+              "w_max_abs": 25.259161527755204,
+              "t_": 609606.0
+            },
+            {
+              "pasada": 6,
+              "ll_train": 0.4161367286176657,
+              "D_acum": 5.4994739625788895,
+              "macro_f1_es": 0.4937403871043837,
+              "w_max_abs": 25.091526790541643,
+              "t_": 731527.0
+            },
+            {
+              "pasada": 7,
+              "ll_train": 0.4135696447419864,
+              "D_acum": 5.395290221282304,
+              "macro_f1_es": 0.4969814311737142,
+              "w_max_abs": 24.82520224675737,
+              "t_": 853448.0
+            },
+            {
+              "pasada": 8,
+              "ll_train": 0.4124644129409522,
+              "D_acum": 5.374681722507983,
+              "macro_f1_es": 0.49313499246502346,
+              "w_max_abs": 24.749555178199547,
+              "t_": 975369.0
+            },
+            {
+              "pasada": 9,
+              "ll_train": 0.4099931648709885,
+              "D_acum": 5.3219146180107195,
+              "macro_f1_es": 0.4987334207184772,
+              "w_max_abs": 24.729735032756043,
+              "t_": 1097290.0
+            },
+            {
+              "pasada": 10,
+              "ll_train": 0.4042196354629878,
+              "D_acum": 5.255189045039075,
+              "macro_f1_es": 0.49427587880931695,
+              "w_max_abs": 24.650374742441638,
+              "t_": 1219211.0
+            }
+          ],
+          "sesgo": {
+            "n_caminos": 1,
+            "fuente": "fit_intercept=True sobre la matriz SIN columna de sesgo pre-anadida (un solo camino)",
+            "intercept_": [
+              -1.9183893512422898,
+              -1.2893783696669183,
+              -1.89437036122244,
+              -2.451892878830996,
+              -2.7145594691904047,
+              -3.4519030282446312
+            ],
+            "max_abs_intercept": 3.4519030282446312,
+            "intercept_sha256": "fdf6018022dfda14226a5ed0ff78b4beee37ae36be1b674d1b69236dbffa2193",
+            "sha256_w": "b13dd9deba4e95813845780f2be6a158409d800df1003dbb1d7d290a505b6eda"
+          },
+          "t_": 1219211.0,
+          "n_actualizaciones": 1219211,
+          "macro_f1_standalone_fold_val": 0.49199473325810494,
+          "frecuencias_fold_val": [
+            0.16142081020432267,
+            0.18265028935868666,
+            0.15085036022203852,
+            0.1547478445730483,
+            0.18899846462737688,
+            0.16133223101452698
+          ],
+          "max_abs_suma_menos_uno": 4.440892098500626e-16,
+          "tiempo_seg": 1.584244728088379
+        }
+      },
+      "folds_completados": [
+        "0"
+      ],
+      "oof_artefacto": {
+        "archivo": "artifacts/p34_scores/v34_e1/a2_sgd_multipasada.npy",
+        "existe": true,
+        "sha256": "202798561c41960901dbc833a8dc05af196fcd076ec7916f4746216604c3f6b4"
+      }
+    }
+  },
+  "integracion": null,
+  "complementariedad": null,
+  "gates": {},
+  "caps": {},
+  "veredicto": "LINEA_ONLINE_CERRADA_POR_MECANISMO",
+  "motivo_de_no_calculo": "la puerta G0-G6 se cerro en el fold 0 (pasa = False, brazos con gates fallidos: {'A1_ftrl_multipasada': ['G0_objetivo_de_la_regla', 'G1_banda_ll_train', 'G2_progreso', 'G3_macro_f1_fold_val', 'G4_frecuencias'], 'A2_sgd_multipasada': []}); el pre-registro prohibe integrar y hacer bootstrap: delta y bootstrap quedan VACIOS",
+  "siguiente_paso": "cierre de FAMILIA, NO un gate de delta: se concede SOLO si (a) triage formal registrado que clasifica el fallo como MECANISMO_DEFINITIVO y no como DEFECTO_DE_IMPLEMENTACION (bug, sesgo duplicado, presupuesto truncado, ES mal configurado) decidido ANTES de elegir nodo; si es defecto -> se corrige y se re-emite; (b) la tabla de mecanismo esta PUBLICADA dentro del runner (ll_train y D_acum por pasada de A1 y A2, razon |sigma*w|/|g|), no importada de /tmp; (c) la lista exhaustiva de la familia esta registrada con el estado de cada miembro",
+  "duracion_seg": 51.38321781158447,
+  "duracion_sondas_seg": 2.1307849884033203,
+  "tiempos_por_brazo_fold_seg": {
+    "A1_ftrl_multipasada": {
+      "0": 20.631643295288086
+    },
+    "A2_sgd_multipasada": {
+      "0": 1.584244728088379
+    }
+  }
+}

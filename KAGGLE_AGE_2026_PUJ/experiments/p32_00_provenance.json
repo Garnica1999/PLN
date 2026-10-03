@@ -1,0 +1,183 @@
+{
+  "fase": "P32+ 00 P00 procedencia del baseline",
+  "fecha": "2026-10-01",
+  "experimenta": false,
+  "commit": "fc77f1c53dc591181375a3af70ac8ef40e2c10be",
+  "baseline_recalculado": 0.6134471,
+  "tabla_provenance": [
+    {
+      "metric": "V20 corrected_cv (primera particion)",
+      "value": 0.6097782,
+      "partition": "StratifiedGroupKFold 5 sobre dup_clusters, semilla 42 (folds de V20)",
+      "git_commit": "372127a",
+      "artifact": "experiments/v20_*",
+      "seed": "42",
+      "training_conditions": "279 features, cadena de V20 con HIERBA sub-parametrizado",
+      "reproducibility": "R3 bit a bit (dif 0,00e+00)"
+    },
+    {
+      "metric": "V29 mejor LightGBM individual",
+      "value": 0.6121698,
+      "partition": "mismos folds de V20",
+      "git_commit": "b044db8",
+      "artifact": "experiments/v29_04_optuna_lightgbm.json",
+      "seed": "Optuna por fold",
+      "training_conditions": "279 features, Optuna anidada, holdout interior del 20%",
+      "reproducibility": "R2 (Optuna con semilla fija, determinista aqui)"
+    },
+    {
+      "metric": "V30 CV PUBLICADO (pesos por fold)",
+      "value": 0.6130051,
+      "partition": "folds de V20",
+      "git_commit": "7bd3d42",
+      "artifact": "experiments/v30_02_ensemble.json (campo tabla)",
+      "seed": "42",
+      "training_conditions": "mezcla de 3 miembros con los pesos POR FOLD que Optuna optimizo",
+      "reproducibility": "R1 NO REPRODUCIBLE: esos pesos por fold no se persistieron"
+    },
+    {
+      "metric": "V30 CV OPERATIVO (pesos medios)",
+      "value": 0.6134471,
+      "partition": "folds de V20",
+      "git_commit": "7bd3d42 / fc77f1c",
+      "artifact": "experiments/v30_02_ensemble.json (manifest) + features/*.npy",
+      "seed": "42",
+      "training_conditions": "la MISMA mezcla, con los pesos MEDIOS entre folds, que es lo que uso la submission",
+      "reproducibility": "R3 reproduce exactamente; es el que se envio"
+    },
+    {
+      "metric": "V30 segunda particion (candidata)",
+      "value": 0.6143347,
+      "partition": "mismos grupos dup_clusters, semilla 987654, solapes por fold 7155-7272 (~21% del fold de validacion)",
+      "git_commit": "7bd3d42",
+      "artifact": "experiments/v30_05_segunda_particion.json",
+      "seed": "987654",
+      "training_conditions": "configuracion CONGELADA, pero V20 y los dos LightGBM REENTRENADOS desde cero sobre los folds nuevos",
+      "reproducibility": "R2: depende de la reentrenada, y LightGBM ya se midio no reproducible bit a bit entre ejecuciones con distinta carga de CPU"
+    },
+    {
+      "metric": "V20 segunda particion (recomputado)",
+      "value": 0.6104285,
+      "partition": "la misma segunda particion",
+      "git_commit": "7bd3d42",
+      "artifact": "experiments/v30_05_segunda_particion.json",
+      "seed": "987654",
+      "training_conditions": "V20 reentrenado en los folds nuevos",
+      "reproducibility": "R2"
+    },
+    {
+      "metric": "leaderboard de V30",
+      "value": 0.63302,
+      "partition": "test oficial de AGE, 112.892 filas",
+      "git_commit": "posterior a 7bd3d42",
+      "artifact": "submissions/age_submission_v30_final_candidate.csv",
+      "seed": "n/a",
+      "training_conditions": "pesos MEDIOS congelados; solo transform -> predict",
+      "reproducibility": "fichero intacto, sha256 f543a715a1881c61"
+    },
+    {
+      "metric": "leaderboard de V20",
+      "value": 0.62689,
+      "partition": "test oficial de AGE",
+      "git_commit": "372127a",
+      "artifact": "n/a",
+      "seed": "n/a",
+      "training_conditions": "n/a",
+      "reproducibility": "n/a"
+    },
+    {
+      "metric": "V30 CV recalculado en este script",
+      "value": 0.6134471,
+      "partition": "folds de V20",
+      "git_commit": "fc77f1c53dc591181375a3af70ac8ef40e2c10be",
+      "artifact": "experiments/p32_00_provenance.json",
+      "seed": "42",
+      "training_conditions": "reconstruccion desde el pool OOF y el manifest de pesos",
+      "reproducibility": "coincide con el operativo: True"
+    }
+  ],
+  "resolucion_de_la_discrepancia": {
+    "primera_particion": 0.6134471,
+    "segunda_particion": 0.6143347,
+    "diferencia": 0.0008876,
+    "no_son_el_mismo_protocolo": "la segunda particion reentreno desde cero los tres miembros sobre los mismos grupos con otra semilla, asi que difiere en dos cosas a la vez: la reparticion de filas y el reentrenamiento de los modelos",
+    "solapes_por_fold": [
+      7155,
+      7272,
+      7167,
+      7229,
+      7220
+    ],
+    "fraccion_de_solape": 0.2128,
+    "por_que_no_son_equivalentes": "no son dos mediciones independientes del mismo estimador: comparten alrededor del 21% de cada fold de validacion, y ademas la segunda anade reentrenamiento, que en este proyecto ya se midio no reproducible bit a bit",
+    "el_baseline_tambien_se_movio": {
+      "V20_primera": 0.6097782,
+      "V20_segunda": 0.6104285,
+      "diferencia": 0.0006503
+    },
+    "lectura": "La diferencia **NO es ruido de estimador ni de reagrupacion**: reagrupar las mismas predicciones con la estructura de la segunda particion la mueve en 8,6e-06. Es reentrenamiento: la segunda particion de V30 reentreno los tres miembros desde cero sobre conjuntos de entrenamiento distintos, de modo que 0,6143347 y 0,6134471 **no son dos mediciones del mismo modelo**, son dos modelos distintos de la misma familia. El V20 se movio +0,0006503 en la misma direccion, lo que confirma que el efecto es de los datos de entrenamiento y no del candidato. Y como el delta candidato-minus-V20 **crecio** (+0,003227 -> +0,003906), la conclusion de V30 se ve reforzada, no debilitada",
+    "implicacion_de_calibracion": "la escala de \"misma receta, distinto reparto de entrenamiento\" es de unos 9e-04. El gate de PROMISING pide +0,0015, o sea solo 1,7 veces esa escala, mientras que el ruido del estimador puro es de 1,6e-05, unas 55 veces menor. Traducido: el gate de la fase esta calibrado contra un estimador muy estable y por tanto es exigente **a pesar** del ruido de entrenamiento, no a causa de el",
+    "cual_usar": "0.6134471 para comparar, porque es la unica reproducible desde artefactos y la que se envio. 0.6143347 se reporta como lo que es: una reejecucion con otra semilla y reentrenamiento, no una segunda medicion independiente"
+  },
+  "ruido_de_reparticion": {
+    "n_resplits": 200,
+    "metodo": "las mismas predicciones por fila, re-agrupadas en 5 folds con asignacion aleatoria de GRUPOS enteros (nunca filas sueltas, para no dejar pasar near-duplicates entre train y validacion)",
+    "cv_original": 0.6134471,
+    "media": 0.6134188,
+    "desviacion_tipica": 1.61e-05,
+    "minimo": 0.6133689,
+    "maximo": 0.6134624,
+    "ic95_del_estimador": [
+      0.6133817,
+      0.6134481
+    ],
+    "rango_total": 9.35e-05,
+    "cuantas_veces_la_primera_cifra": 0.948,
+    "calibracion_del_gate": {
+      "una_sigma": 1.61e-05,
+      "dos_sigma": 3.21e-05,
+      "tres_sigma": 4.82e-05,
+      "lectura": "OJO: esta es la escala del RUIDO DEL ESTIMADOR, reagrupando las mismas predicciones. Es real pero despreciable. La escala que de verdad calibra los gates es la de REENTRENAMIENTO con otro reparto, medida aparte en este mismo script y del orden de 9e-04, unas 55 veces mayor"
+    }
+  },
+  "contribucion_de_la_reagrupacion": {
+    "media_folds_con_particion_original": 0.6134526,
+    "media_folds_con_particion_segunda": 0.613444,
+    "contribucion_de_la_reagrupacion": -8.5e-06,
+    "diferencia_total_entre_las_dos_cifras": 0.0008876,
+    "fraccion_explicada_por_reagrupacion": 0.00962,
+    "maximo_desviacion_de_proporcion_de_clase_entre_particiones": 3.4e-05,
+    "lectura": "reagrupar las mismas predicciones con la estructura de la segunda particion mueve el numero en menos de 1e-05, y las proporciones de clase de los folds son identicas. La reagrupacion **no explica** la diferencia: la segunda particion de V30 produjo **otro modelo**, porque reentreno los tres miembros desde cero sobre conjuntos de entrenamiento distintos"
+  },
+  "descomposicion_de_la_diferencia": {
+    "diferencia_total": 0.0008876,
+    "por_reagrupacion": -8.5e-06,
+    "por_reentrenamiento": 0.0008961,
+    "por_reentrenamiento_del_baseline_V20": 0.0006503,
+    "lectura": "el 99% de la diferencia es reentrenamiento sobre otros datos de entrenamiento, y afecta por igual al baseline y al candidato"
+  },
+  "calibracion_de_los_gates": {
+    "una_sigma": 1.61e-05,
+    "dos_sigma": 3.21e-05,
+    "tres_sigma": 4.82e-05,
+    "lectura": "OJO: esta es la escala del RUIDO DEL ESTIMADOR, reagrupando las mismas predicciones. Es real pero despreciable. La escala que de verdad calibra los gates es la de REENTRENAMIENTO con otro reparto, medida aparte en este mismo script y del orden de 9e-04, unas 55 veces mayor"
+  },
+  "meta_v30": {
+    "miembros": [
+      "v20_f3b_oof_candidato",
+      "v29_lgbm_optuna",
+      "v30_lgbm_refinado"
+    ],
+    "pesos": {
+      "v20_f3b_oof_candidato": 0.3548,
+      "v29_lgbm_optuna": 0.3354,
+      "v30_lgbm_refinado": 0.3098
+    }
+  },
+  "restricciones": {
+    "usa_test": false,
+    "usa_red": false,
+    "reentrena_v30": false
+  },
+  "segundos": 74.6
+}

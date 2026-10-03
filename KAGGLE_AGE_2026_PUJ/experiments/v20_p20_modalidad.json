@@ -1,0 +1,178 @@
+{
+  "fase": "V13 · P20 incertidumbre y modalidad",
+  "fecha": "2026-09-25",
+  "categorias": {
+    "duda": [
+      "creo",
+      "quiza",
+      "quizas",
+      "acaso",
+      "parece",
+      "imagino",
+      "supongo",
+      "dudo",
+      "ojala",
+      "creeria",
+      "pienso",
+      "supos",
+      "quedo"
+    ],
+    "certeza": [
+      "seguro",
+      "seguramente",
+      "totalmente",
+      "completamente",
+      "claramente",
+      "obviamente",
+      "exactamente",
+      "precisamente",
+      "indiscutible",
+      "evidente"
+    ],
+    "modalidad": [
+      "puede",
+      "pueden",
+      "podria",
+      "deberia",
+      "debe",
+      "deben",
+      "tendria",
+      "haria",
+      "habria",
+      "suele",
+      "solian",
+      "habia",
+      "hara"
+    ],
+    "negacion": [
+      "no",
+      "nunca",
+      "jamas",
+      "nada",
+      "nadie",
+      "ninguno",
+      "ningun",
+      "ninguna",
+      "tampoco",
+      "imposible"
+    ],
+    "grado": [
+      "muy",
+      "mucho",
+      "poco",
+      "bastante",
+      "demasiado",
+      "super",
+      "total",
+      "mas",
+      "menos",
+      "tanto",
+      "tan",
+      "demasiados"
+    ]
+  },
+  "n_caracteristicas": 23,
+  "cobertura": [
+    {
+      "categoria": "duda",
+      "formas": "creo quiza quizas acaso parece imagino supongo dudo ojala creeria pienso supos quedo",
+      "documentos_con_la_categoria": 2775,
+      "apariciones_totales": 2853,
+      "formas_sobre_el_minimo": 4,
+      "formas_totales": 13,
+      "detalle": "creo:810 quiza:35 quizas:56 acaso:68 parece:618 imagino:90 supongo:34 dudo:36 ojala:560 creeria:2 pienso:155 supos:0 quedo:341"
+    },
+    {
+      "categoria": "certeza",
+      "formas": "seguro seguramente totalmente completamente claramente obviamente exactamente precisamente indiscutible evidente",
+      "documentos_con_la_categoria": 734,
+      "apariciones_totales": 742,
+      "formas_sobre_el_minimo": 1,
+      "formas_totales": 10,
+      "detalle": "seguro:301 seguramente:46 totalmente:154 completamente:52 claramente:28 obviamente:40 exactamente:51 precisamente:25 indiscutible:5 evidente:33"
+    },
+    {
+      "categoria": "modalidad",
+      "formas": "puede pueden podria deberia debe deben tendria haria habria suele solian habia hara",
+      "documentos_con_la_categoria": 4689,
+      "apariciones_totales": 4877,
+      "formas_sobre_el_minimo": 7,
+      "formas_totales": 13,
+      "detalle": "puede:1,616 pueden:494 podria:267 deberia:295 debe:996 deben:341 tendria:56 haria:65 habria:116 suele:56 solian:3 habia:327 hara:136"
+    },
+    {
+      "categoria": "negacion",
+      "formas": "no nunca jamas nada nadie ninguno ningun ninguna tampoco imposible",
+      "documentos_con_la_categoria": 27431,
+      "apariciones_totales": 34058,
+      "formas_sobre_el_minimo": 7,
+      "formas_totales": 10,
+      "detalle": "no:24,241 nunca:1,465 jamas:328 nada:2,192 nadie:1,060 ninguno:80 ningun:278 ninguna:163 tampoco:210 imposible:188"
+    },
+    {
+      "categoria": "grado",
+      "formas": "muy mucho poco bastante demasiado super total mas menos tanto tan demasiados",
+      "documentos_con_la_categoria": 16866,
+      "apariciones_totales": 18946,
+      "formas_sobre_el_minimo": 10,
+      "formas_totales": 12,
+      "detalle": "muy:2,616 mucho:1,531 poco:615 bastante:111 demasiado:242 super:385 total:367 mas:8,355 menos:1,079 tanto:882 tan:1,875 demasiados:18"
+    }
+  ],
+  "suelo_azar": 0.1667,
+  "redundantes_contra_v12": 0,
+  "correlacion_maxima_v12": 0.4067,
+  "control": [
+    {
+      "modelo": "logreg",
+      "macro_f1": 0.127,
+      "std": 0.0013,
+      "per_fold": [
+        0.1247,
+        0.1281,
+        0.1274,
+        0.1281,
+        0.1265
+      ],
+      "suelo_azar": 0.1667,
+      "supera_el_azar": false
+    },
+    {
+      "modelo": "linearsvc",
+      "macro_f1": 0.1259,
+      "std": 0.0012,
+      "per_fold": [
+        0.1241,
+        0.1264,
+        0.1259,
+        0.1278,
+        0.1255
+      ],
+      "suelo_azar": 0.1667,
+      "supera_el_azar": false
+    }
+  ],
+  "supera_el_azar": false,
+  "prechequeo": {
+    "errores_v12": 67610,
+    "rescate": 10390,
+    "dano": 80413,
+    "neto": -70023,
+    "umbral": 1014,
+    "pasa": false,
+    "por_frontera": {
+      "18-24|25-34": {
+        "rescate": 1510,
+        "dano": 25774,
+        "neto": -24264
+      },
+      "25-34|35-49": {
+        "rescate": 266,
+        "dano": 27834,
+        "neto": -27568
+      }
+    }
+  },
+  "fase_siguiente": "cierre sin fusionar",
+  "segundos": 116.5
+}

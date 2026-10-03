@@ -1,0 +1,271 @@
+{
+  "fase": "V24 reconciliacion documental",
+  "fecha": "2026-09-27",
+  "experimenta": false,
+  "submission_generada": false,
+  "cadena_generadores": [
+    {
+      "script": "scripts/fase09_99_entrega.py",
+      "que_hace": "crea el notebook con la Parte I",
+      "fecha": "2026-09-25"
+    },
+    {
+      "script": "scripts/fase12_notebook_final.py",
+      "que_hace": "regenera con la fase avanzada (V13)",
+      "fecha": "2026-09-25"
+    },
+    {
+      "script": "scripts/phase28_notebook_final_v2.py",
+      "que_hace": "regenera con la Parte II (V14 a V16)",
+      "fecha": "2026-09-25"
+    },
+    {
+      "script": "scripts/v17_notebook.py",
+      "que_hace": "anade la Parte III (V17)",
+      "fecha": "2026-09-26"
+    },
+    {
+      "script": "scripts/v23_02_auditoria.py",
+      "que_hace": "anade la seccion 31 (V23)",
+      "fecha": "2026-09-27"
+    }
+  ],
+  "fases_sin_eslabon": [
+    "V18",
+    "V19",
+    "V20",
+    "V21",
+    "V22"
+  ],
+  "causa_raiz": "la fuente de verdad del notebook es una cadena de cinco scripts con un eslabon por fase; V18 a V22 nunca tuvieron eslabon",
+  "tabla_maestra": [
+    {
+      "version": "V12",
+      "familia": "ensamble de 14 miembros sobre 279 variables",
+      "hipotesis": "una combinacion de miembros various aporta sobre un solo modelo",
+      "corrected_cv": 0.6005017473,
+      "lb": 0.62182,
+      "lb_etiqueta": "oficial",
+      "decision": "champion hasta V19",
+      "cifra_original": 0.6004,
+      "cifra_corregida": 0.6005017473,
+      "artefacto": "reports/v17_master_results.csv, experiments/phase39_fusion_v12.json",
+      "delta_vs_v20": -0.0092765,
+      "motivo_discrepancia": "phase39_fusion_v12.json registra la referencia de V12 redondeada a cuatro decimales. El valor canonico pooled es 0,6005017, que usan v18_cierre.referencia_pooled y v22_frontier_audit.baselines.V12. La tabla maestra manda el canonico."
+    },
+    {
+      "version": "V13",
+      "familia": "features supervisadas de entidad, NB-SVM, interacciones",
+      "hipotesis": "un bloque label-informed aporta sobre el TF-IDF",
+      "corrected_cv": 0.5904400071052566,
+      "lb": null,
+      "lb_etiqueta": "-",
+      "decision": "CERRADA sin adopciones (D-041)",
+      "cifra_original": null,
+      "cifra_corregida": null,
+      "artefacto": "experiments/advanced_05c_combinacion_final.json, reports/advanced_research_report.md",
+      "delta_vs_v20": -0.0193382
+    },
+    {
+      "version": "V14",
+      "familia": "variables linguisticas externas (spaCy y lexiconos)",
+      "hipotesis": "relajar el recurso linguistico externo anade senal",
+      "corrected_cv": 0.599,
+      "lb": null,
+      "lb_etiqueta": "-",
+      "decision": "CERRADA: -0,0015 sobre referencia (D-044)",
+      "cifra_original": null,
+      "cifra_corregida": null,
+      "artefacto": "experiments/v14b_fusion_linguistico.json, reports/v14_fusion_linguistico.md",
+      "delta_vs_v20": -0.0107782
+    },
+    {
+      "version": "V15",
+      "familia": "correlacion de entrada y poda no supervisada",
+      "hipotesis": "podar variables redundantes mejora el modelo",
+      "corrected_cv": 0.5965,
+      "lb": null,
+      "lb_etiqueta": "-",
+      "decision": "CERRADA: poda -0.004, 0 de 5 folds (D-045)",
+      "cifra_original": null,
+      "cifra_corregida": null,
+      "artefacto": "experiments/v15b_poda.json, reports/v15_poda.md",
+      "delta_vs_v20": -0.0132782
+    },
+    {
+      "version": "V16",
+      "familia": "arquitectura del meta-modelo sobre las 279",
+      "hipotesis": "un combinador aprendido sobre las 279 aporta en las fronteras",
+      "corrected_cv": 0.6011,
+      "lb": null,
+      "lb_etiqueta": "-",
+      "decision": "CERRADA: aporta en frontera, no en la global (D-046)",
+      "cifra_original": null,
+      "cifra_corregida": null,
+      "artefacto": "experiments/v16_arquitectura.json, reports/v16_arquitectura.md",
+      "delta_vs_v20": -0.0086782
+    },
+    {
+      "version": "V17",
+      "familia": "especialistas de frontera y decision local",
+      "hipotesis": "una senal local grande es identificable y exploitable",
+      "corrected_cv": 0.6011,
+      "lb": null,
+      "lb_etiqueta": "-",
+      "decision": "CERRADA: la senal existe pero no es identificable (D-047)",
+      "cifra_original": null,
+      "cifra_corregida": null,
+      "artefacto": "reports/v17_master_results.csv, experiments/v17_cierre.json",
+      "delta_vs_v20": -0.0086782
+    },
+    {
+      "version": "V18",
+      "familia": "funcion de entrenamiento (peso, margen, multiobjetivo, destilacion)",
+      "hipotesis": "otra funcion objetivo cobra la senal de frontera",
+      "corrected_cv": 0.6005017473,
+      "lb": null,
+      "lb_etiqueta": "-",
+      "decision": "CERRADA: 0 adopciones (D-049)",
+      "cifra_original": null,
+      "cifra_corregida": null,
+      "artefacto": "experiments/v18_cierre.json, reports/v18_master_results.csv",
+      "delta_vs_v20": -0.0092765
+    },
+    {
+      "version": "V19",
+      "familia": "boosting sobre la primera frontera ordinal",
+      "hipotesis": "el combinador de V12 desperdicia un bloque de 73 variables",
+      "corrected_cv": 0.6079388,
+      "lb": 0.62578,
+      "lb_etiqueta": "oficial",
+      "decision": "ADOPTADO, luego superado por V20 (D-051, D-052)",
+      "cifra_original": null,
+      "cifra_corregida": null,
+      "artefacto": "experiments/v19_b1_challenger.json, reports/v19_b1_challenger.md",
+      "delta_vs_v20": -0.0018394
+    },
+    {
+      "version": "V20",
+      "familia": "cinco umbrales ordinales anidados",
+      "hipotesis": "clasificar cinco acumulados en vez de seis clases usa el orden",
+      "corrected_cv": 0.6097782,
+      "lb": 0.62689,
+      "lb_etiqueta": "oficial",
+      "decision": "CHAMPION vigente (D-054)",
+      "cifra_original": 0.609615,
+      "cifra_corregida": 0.6097782,
+      "artefacto": "experiments/v20_f3c_candidato.json, reports/v20_f3c_candidato.md",
+      "delta_vs_v20": 0.0,
+      "motivo_discrepancia": "v22_frontier_audit.json registro 0,609615, que es la salida del MODELO COMPARTIDO de D-057 y no la cadena de V20. El valor canonico de V20 es 0,6097782, verificado por reproduccion exacta en cuatro artefactos. El artefacto historico NO se modifica: se documenta aqui la diferencia."
+    },
+    {
+      "version": "V21",
+      "familia": "especialista dedicado en la primera frontera",
+      "hipotesis": "otro clasificador mejora B1 (13-17 frente al resto)",
+      "corrected_cv": 0.6097782,
+      "lb": null,
+      "lb_etiqueta": "-",
+      "decision": "CERRADA: NO_SIGNAL (D-056)",
+      "cifra_original": null,
+      "cifra_corregida": null,
+      "artefacto": "experiments/v21_b1.json, reports/v21_b1.md",
+      "delta_vs_v20": 0.0
+    },
+    {
+      "version": "V22",
+      "familia": "frontera audit, modelo compartido y coste ordinal",
+      "hipotesis": "compartir representacion o penalizar la distancia ordinal mejora la global",
+      "corrected_cv": 0.6097782,
+      "lb": null,
+      "lb_etiqueta": "-",
+      "decision": "CERRADA: compartido -0,000163, coste ordinal -0.014858 (D-057)",
+      "cifra_original": null,
+      "cifra_corregida": null,
+      "artefacto": "experiments/v22_ordinal.json, reports/v22_ordinal.md",
+      "delta_vs_v20": 0.0
+    },
+    {
+      "version": "V23",
+      "familia": "CORAL / cumulative-link con pesos compartidos",
+      "hipotesis": "compartir pesos entre las cinco fronteras aporta senal util",
+      "corrected_cv": 0.4837017,
+      "lb": null,
+      "lb_etiqueta": "-",
+      "decision": "CERRADA: NO_SIGNAL (D-058)",
+      "cifra_original": null,
+      "cifra_corregida": null,
+      "artefacto": "experiments/v23_01_coral.json, reports/v23_coral_analysis.md",
+      "delta_vs_v20": -0.1260765
+    }
+  ],
+  "registry": {
+    "cabeceras_antes": 3,
+    "cabeceras_corregidas": 2,
+    "corregido": true,
+    "filas_antes": 130,
+    "filas_despues": 128,
+    "ids_duplicados_antes": [
+      "experiment_id"
+    ],
+    "ids_duplicados_despues": [],
+    "ids_vacios": [],
+    "columnas": 22
+  },
+  "notebook": {
+    "celdas": 121,
+    "nbformat": "4.5",
+    "formato_valido": true,
+    "ids_unicos": true,
+    "titulos_unicos": true,
+    "secciones": 33,
+    "versiones_presentes": {
+      "12": true,
+      "13": true,
+      "14": true,
+      "15": true,
+      "16": true,
+      "17": true,
+      "18": true,
+      "19": true,
+      "20": true,
+      "21": true,
+      "22": true,
+      "23": true
+    },
+    "versiones_ausentes": [],
+    "artefactos_referenciados": 61,
+    "artefactos_faltantes": [],
+    "champion_presente": true,
+    "deuda_documentada": true
+  },
+  "ejecucion": {
+    "celdas_ejecutadas": 9,
+    "errores": 0,
+    "fallos": [],
+    "salidas_clave": [
+      "e21d474c: experimentos registrados: 128 | decisiones documentadas: 58",
+      "v24doc0004: referencia pooled: 0.6005017473",
+      "v24doc0017: <IPython.core.display.Image object>"
+    ]
+  },
+  "unicode_v24": [],
+  "unicode_preexistente_notebook": 38,
+  "coherencia": {
+    "v20_canonico_correcto": true,
+    "v20_en_la_tabla_maestra": true,
+    "v23_en_la_tabla_maestra": true,
+    "v23_cerrado": true,
+    "sin_filas_de_v24": true,
+    "registry_sin_duplicados": true,
+    "todas_las_fases_en_la_tabla": true
+  },
+  "py_compile_rc": 0,
+  "ruff_rc": 1,
+  "ruff_errores_correccion": [],
+  "ruff_avisos_estilo": 54,
+  "ruff_isc004_en_scripts_commiteados": 12,
+  "ruff_nota": "el proyecto no tiene configuracion de ruff; se aplican sus defaults. Los ISC004 son de estilo y el proyecto los incumple de forma sistematica: scripts ya commiteados tienen mas. El gate exige cero errores de correccion, que son los que empiezan por F o E9",
+  "todo_ok": true,
+  "hash_notebook": "387d58c45e70df0e4448a505181606d4840de42d3a0bef4b0d9b1a59907f77dc",
+  "segundos": 0.9
+}

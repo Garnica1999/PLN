@@ -1,0 +1,113 @@
+{
+  "fase": "F — limpieza selectiva y reponderación",
+  "fecha": "2026-09-25",
+  "baseline": {
+    "macro_f1": 0.6004,
+    "std": 0.0042,
+    "per_fold": [
+      0.6007,
+      0.605,
+      0.6032,
+      0.6004,
+      0.5928
+    ],
+    "origen": "fase 12"
+  },
+  "variantes": [
+    {
+      "variante": "F2 clúster de near-duplicados (un representante)",
+      "macro_f1": 0.6003,
+      "std": 0.0041,
+      "per_fold": [
+        0.6027,
+        0.6021,
+        0.6019,
+        0.6028,
+        0.5922
+      ],
+      "tamanos_train": [
+        {
+          "fold": 0,
+          "train_original": 135468,
+          "train_tras_limpieza": 131211,
+          "filas_eliminadas": 4257
+        },
+        {
+          "fold": 1,
+          "train_original": 135468,
+          "train_tras_limpieza": 131214,
+          "filas_eliminadas": 4254
+        },
+        {
+          "fold": 2,
+          "train_original": 135469,
+          "train_tras_limpieza": 131212,
+          "filas_eliminadas": 4257
+        },
+        {
+          "fold": 3,
+          "train_original": 135470,
+          "train_tras_limpieza": 131213,
+          "filas_eliminadas": 4257
+        },
+        {
+          "fold": 4,
+          "train_original": 135469,
+          "train_tras_limpieza": 131222,
+          "filas_eliminadas": 4247
+        }
+      ],
+      "delta_vs_v12": -0.0001,
+      "folds_positivos": 2
+    },
+    {
+      "variante": "F3 clúster selectivo en clases centrales",
+      "macro_f1": 0.6013,
+      "std": 0.0035,
+      "per_fold": [
+        0.6045,
+        0.602,
+        0.6029,
+        0.6025,
+        0.5946
+      ],
+      "tamanos_train": [
+        {
+          "fold": 0,
+          "train_original": 135468,
+          "train_tras_limpieza": 133726,
+          "filas_eliminadas": 1742
+        },
+        {
+          "fold": 1,
+          "train_original": 135468,
+          "train_tras_limpieza": 133724,
+          "filas_eliminadas": 1744
+        },
+        {
+          "fold": 2,
+          "train_original": 135469,
+          "train_tras_limpieza": 133727,
+          "filas_eliminadas": 1742
+        },
+        {
+          "fold": 3,
+          "train_original": 135470,
+          "train_tras_limpieza": 133726,
+          "filas_eliminadas": 1744
+        },
+        {
+          "fold": 4,
+          "train_original": 135469,
+          "train_tras_limpieza": 133729,
+          "filas_eliminadas": 1740
+        }
+      ],
+      "delta_vs_v12": 0.0009,
+      "folds_positivos": 3
+    }
+  ],
+  "mejor": "F3 clúster selectivo en clases centrales",
+  "adoptado": false,
+  "segundos": 1236.8
+}

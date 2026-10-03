@@ -1,0 +1,6 @@
+brazo,lambda,macro_lineal,delta_lineal,frontera_1_lineal,frontera_2_lineal,macro_combinada,delta_combinada,frontera_1_combinada,frontera_2_combinada
+A_control,0.0,0.5876,0.0939,0.4865,0.4833,0.5983,-0.0022,0.4957,0.4949
+B1_generico,0.1,0.5861,0.0924,0.4727,0.476,0.5985,-0.002,0.4892,0.4918
+B2_generico,0.5,0.5693,0.0756,0.4243,0.4474,0.5935,-0.007,0.4651,0.4802
+C1_central,0.1,0.5852,0.0915,0.5257,0.4281,0.599,-0.0015,0.5172,0.4706
+C2_central,0.5,0.555,0.0613,0.51,0.2969,0.5903,-0.0102,0.5193,0.4013

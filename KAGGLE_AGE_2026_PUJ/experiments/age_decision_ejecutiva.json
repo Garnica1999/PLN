@@ -1,0 +1,56 @@
+{
+  "fecha": "2026-09-26",
+  "decision": "CLOSE AGE - V12 REMAINS CHAMPION",
+  "champion": "V12",
+  "pooled": 0.6005017473,
+  "lb_envio": 0.62182,
+  "lb_replica": 0.62188,
+  "experimentos": 109,
+  "adopciones_ultimas_seis_fases": 0,
+  "experimento_adicional": false,
+  "submission_adicional": false,
+  "masa_de_la_frontera": 33.67,
+  "correcciones_para_el_gate": 478,
+  "elasticidad_1000": {
+    "18-24|25-34": 0.006147,
+    "25-34|35-49": 0.006271
+  },
+  "calibracion": {
+    "pendiente": 1.02825,
+    "r2": 0.9968,
+    "gate_lb_equivalente": 0.00308,
+    "lb_previsto_para_el_gate": 0.62278
+  },
+  "elasticidad_medida": {
+    "18-24|25-34": {
+      "250": 0.001541,
+      "500": 0.00308,
+      "1000": 0.006147,
+      "2000": 0.012245,
+      "5000": 0.030258
+    },
+    "25-34|35-49": {
+      "250": 0.001573,
+      "500": 0.003143,
+      "1000": 0.006271,
+      "2000": 0.012481,
+      "5000": 0.03078
+    }
+  },
+  "condiciones_fallidas": [
+    "1 competitive",
+    "2 new information",
+    "3 not tested"
+  ],
+  "mejores_por_fase": {
+    "P1": 0.6005,
+    "P3": 0.599,
+    "P4": 0.5993,
+    "P5": 0.5991,
+    "P5_control": 0.5983
+  },
+  "cierre_v18": "la senal existe y es grande en las 279 variables, y ninguna funcion objetivo  la cobra: la macro-F1 de seis clases es una media y la frontera es una minoria de la masa",
+  "razon_del_cierre": "identificabilidad de las filas corregibles, no magnitud ni informacion ni funcion objetivo",
+  "reapertura": "solo con fuente de informacion nueva, regla nueva del concurso o evidencia externa",
+  "segundos": 0.0
+}

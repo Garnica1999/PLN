@@ -3,7 +3,7 @@
 El notebook resultante:
     1. **Verifica** los valores contra los artefactos reales (JSON/CSV) con aserciones, de modo que
        no puede desincronizarse de lo ejecutado.
-    2. Narra la cadena completa OBSERVACIÓN → HIPÓTESIS → MÉTODO → RESULTADO → INTERPRETACIÓN →
+    2. Narra la cadena completa OBSERVACIÓN -> HIPÓTESIS -> MÉTODO -> RESULTADO -> INTERPRETACIÓN ->
        DECISIÓN de las 12 fases del proyecto, incluidas la fase avanzada de segunda generación y las
        líneas cerradas (retrieval, POS, ruido de etiqueta).
     3. Muestra el modelo final y su verificación de reproducibilidad.
@@ -64,7 +64,7 @@ Inteligencia Artificial, Pontificia Universidad Javeriana.
 **Tarea**: clasificar cada tweet en uno de 6 rangos de edad (`13-17`, `18-24`, `25-34`, `35-49`,
 `50-64`, `65-xx`) usando únicamente su texto.
 
-**Resultado final**: **0,62182 de F1** en el leaderboard (línea base inicial 0,55235 → **+0,0695**),
+**Resultado final**: **0,62182 de F1** en el leaderboard (línea base inicial 0,55235 -> **+0,0695**),
 con validación interna honesta de 0,6005 y confirmación en holdout congelado de 0,6077.
 
 **Restricciones respetadas**: sin transformers, sin LLMs y sin ningún modelo de vectorización
@@ -257,8 +257,8 @@ posición.
 73 supervisadas calculadas **siempre in-fold** (`P(clase|mención)`, `P(clase|hashtag)`,
 `P(clase|fuente de RT)`, rareza de corpus y log-odds por clase).
 
-**RESULTADO.** CV 0,5866 → **0,5897 (+0,0031)**, positiva en **5/5 folds**; holdout congelado
-0,5914 → **0,5966 (+0,0052)**. Aportes: menciones supervisadas +0,0016 · fuente de RT +0,0007 ·
+**RESULTADO.** CV 0,5866 -> **0,5897 (+0,0031)**, positiva en **5/5 folds**; holdout congelado
+0,5914 -> **0,5966 (+0,0052)**. Aportes: menciones supervisadas +0,0016 · fuente de RT +0,0007 ·
 rareza +0,0003 · léxico por clase +0,0001 · hashtags −0,0001.
 
 **DECISIÓN (D-017).** Adoptadas; el modelo pasa a 267 features.
@@ -277,7 +277,7 @@ tabla = pd.DataFrame([
      for nombre, datos in avanzada["aporte_supervisado"].items()]
   + [{"configuracion": "+ todas (candidato)", "macro_f1": avanzada["con_todo"]["macro_f1"]}])
 display(tabla.round(4))
-print(f"holdout congelado: baseline {holdout1['resultados']['baseline']['macro_f1']:.4f} → "
+print(f"holdout congelado: baseline {holdout1['resultados']['baseline']['macro_f1']:.4f} -> "
       f"candidato {holdout1['resultados']['candidato']['macro_f1']:.4f} "
       f"({holdout1['delta_macro_f1']:+.4f})")
 """
@@ -289,13 +289,13 @@ print(f"holdout congelado: baseline {holdout1['resultados']['baseline']['macro_f
 **OBSERVACIÓN (diagnóstico de intersección).** En el **25,94%** de los tweets el ensamble falla
 mientras **al menos un modelo base acierta**, y los rescatadores son sistemáticamente los modelos
 débiles pero diversos (softmax ordinal 36,1%; centroides 31,1%; MLP 30,5%). El error depende además
-del tipo de tweet (`solo_url` 61,1% frente a `mencion_alta` 19,2%) y de la longitud (54,5% → 35,1%).
+del tipo de tweet (`solo_url` 61,1% frente a `mencion_alta` 19,2%) y de la longitud (54,5% -> 35,1%).
 
 **HIPÓTESIS.** El meta-modelo lineal aplica pesos globales y no puede condicionar su confianza al
 contexto del tweet.
 
 **RESULTADO.** El **MLP como meta-modelo**: 0,5967 vs 0,5906 del LogReg (**+0,0061, 5/5 folds**);
-segmentación dura: −0,0007/−0,0015 (falla, por segunda vez). Holdout: 0,5981 → **0,6024**.
+segmentación dura: −0,0007/−0,0015 (falla, por segunda vez). Holdout: 0,5981 -> **0,6024**.
 
 **SEGUNDO HALLAZGO.** Promediar **dos combinadores diversos** (MLP + LogReg, ponderación fija
 0,5/0,5): CV **0,6005**, holdout **0,6077** (+0,0043 sobre el MLP solo). Un tercer combinador no
@@ -346,7 +346,7 @@ for linea, delta in (("residuales de longitud", -0.0019), ("contenido vs estilo 
 | Estilo puro como representación | 0,2793 | cerrada (manda el contenido) |
 | NB-SVM por canal | +0,0009 | cerrada |
 | Tercer combinador | −0,0006 | cerrada (diversidad sin calidad no compone) |
-| **Retrieval train→test** | etiqueta de duplicados solo acierta **0,615** | **cerrada**: permitido por reglas, pero su techo lo fija la consistencia de etiqueta, no la cobertura |
+| **Retrieval train->test** | etiqueta de duplicados solo acierta **0,615** | **cerrada**: permitido por reglas, pero su techo lo fija la consistencia de etiqueta, no la cobertura |
 | **POS de spaCy** | −0,0032 | cerrada (el corpus ASCII degrada el etiquetado) |
 | Exclusión de filas ruidosas | +0,0001 / +0,0016 | mejora real pero bajo el umbral (D-027) |
 """
@@ -384,7 +384,7 @@ print(f"ruido de etiqueta: contradictorias {rul['delta_sin_contradictorias']:+.4
 | v11 | meta-modelo MLP(64) | 0,5966 | 0,61744 |
 | **v12** | **+ NB-SVM palabra y promedio de combinadores** | **0,6005** | **0,62182** |
 
-**Calibración de la validación**: en 10 envíos, la brecha CV↔LB fue **+0,0177 ± 0,0023** (estable y
+**Calibración de la validación**: en 10 envíos, la brecha CV<->LB fue **+0,0177 ± 0,0023** (estable y
 explicada por la memorización de near-duplicados del test, que el CV agrupado bloquea por diseño).
 El **holdout congelado** (15% de clústeres, semilla 2026) predijo el leaderboard mejor que el CV en
 las dos últimas rondas (D-024).
@@ -404,7 +404,7 @@ progresion["brecha"] = (progresion["lb"] - progresion["cv"]).round(4)
 progress = progresion["lb"].iloc[-1] - progresion["lb"].iloc[0]
 assert abs(progress - 0.06947) < 0.0005, progress
 brecha = progresion["brecha"].mean()
-print(f"mejora acumulada: +{progress:.4f} | brecha CV↔LB media: {brecha:+.4f}")
+print(f"mejora acumulada: +{progress:.4f} | brecha CV<->LB media: {brecha:+.4f}")
 display(progresion)
 """
     ),

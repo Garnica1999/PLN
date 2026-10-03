@@ -1,0 +1,11 @@
+criterio,valor
+ambos_correctos,73746.0
+solo_v30_correcto,30187.0
+solo_canal_correcto,11761.0
+ambos_incorrectos,53642.0
+n,169336.0
+rescate,11761.0
+danio,30187.0
+neto,-18426.0
+acuerdo,0.75228
+tasa_error_compartida,0.31678

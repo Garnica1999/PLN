@@ -1,0 +1,95 @@
+{
+  "fase": "P7 pre-registro congelado",
+  "fecha": "2026-09-30",
+  "commit": "d33f8c9465b8a50b47012e7eeea178e115cad6c0",
+  "hashes": {
+    "anotacion_md_parquet": "dacbc3055ccde0d9a53f335f65b63df666b2ac1a4eee4a94e5b46fd7cd8c5745",
+    "anotacion_lg_parquet": "81287d541c082ea888ad1b5d06b83680bc5078c624c2da32f0473139d67a739c",
+    "modelo_md_meta_json": "889a2fd05d217fa7c1bcffa867af7fc30911bc7b48523f87b5b2525846553ef5",
+    "modelo_lg_meta_json": "5007184c49f3cf23f50a902e8e4707877887be91c5c10fa05524276ed6a0f0e4",
+    "corpus_train": "39c6c8270366fe155f3c8dd232e31867bee659af8908121d04b6bd89bd163748",
+    "canonico_y_true": "b1c928f9b9f5575547c1090a1fd83cf32a048b694af35a980b460c0bd66d48e6",
+    "canonico_fold_idx": "74d18330c40c3598a1936706ae9434c5fdf29119d357d38353cf298812fe6fb5",
+    "canonico_v30_prob": "3d77352486605971093ade7214ae82326057845d8bf54a2d88c83843c5a721db",
+    "manifest_plugin": "8d635e6a546b5a0e3829872b5e182be745910bd2a0945759a6a44b6eb7e643f7"
+  },
+  "pesos_plugin": [
+    1.0,
+    1.1749,
+    1.2721,
+    1.163,
+    1.001,
+    0.8128
+  ],
+  "baseline_primario": 0.6159732,
+  "referencia_nested": 0.6154643,
+  "vec_a": "TfidfVectorizer(analyzer=\"word\", ngram_range=(1,2), min_df=3, max_df=0.5, sublinear_tf=True, lowercase=True, strip_accents=None, token_pattern=r\"(?u)\\b\\w+\\b\")",
+  "vec_b": "TfidfVectorizer(analyzer=\"word\", ngram_range=(1,2), min_df=5, sublinear_tf=True, lowercase=True, token_pattern=r\"(?u)\\S+\")",
+  "modelo_canal": "LogisticRegression(C=1.0, max_iter=2000, solver='lbfgs', tol=1e-3)",
+  "escala_por_bloque": 1.0,
+  "integracion": {
+    "mecanismo": "combinador logistico anidado sobre dos bloques de probabilidad (identico a P6)",
+    "features": "[p_V30 L2 por fila (6) || p_texto_tipado L2 por fila (6)] = 12 features",
+    "modelo": "LogisticRegression(C=1.0, max_iter=2000, solver='lbfgs') ajustado SOLO en el train de cada fold, con predicciones OOF del canal (nunca in-sample)",
+    "decision": "argmax_c(w_c * p_combinada_c) con regla y pesos del plug-in CONGELADOS",
+    "justificacion": "igual que P6 (procedimiento equivalente); evita la mezcla fija que diluyo en P2; V30 queda como caja negra; sin features externas ni residuos",
+    "ablacion_sin_canal": "el brazo A (V30 + plug-in, 0.6159732) ES la ablacion sin canal que exige la condicion 4 de D-076; se reporta explicitamente como tal"
+  },
+  "control": {
+    "que": "el bloque B (lemma_POS) se permuta DENTRO DE CADA FOLD (5 permutaciones, semilla 20261030; el mismo mapeo para md y lg); el bloque A (texto) queda intacto",
+    "que_preserva": "misma dimensionalidad, misma frecuencia de tokens, misma distribucion marginal por fold (el IDF por fold queda identico al original)",
+    "que_rompe": "solo la correspondencia tweet <-> estructura tipada",
+    "por_que_dentro_de_fold": "recomendacion del revisor ML: aisla el emparejamiento token-etiqueta sin mover la marginal de ningun split; queda registrado tambien el barajado global como alternativa no usada"
+  },
+  "semillas": {
+    "bootstrap": 20261010,
+    "barajado": 20261030
+  },
+  "gates": {
+    "delta_min": 0.0015,
+    "folds_min": 4
+  },
+  "umbral_alta_confianza": 0.6,
+  "n_bootstrap": 2000,
+  "cubos_longitud": {
+    "cortos<=40": [
+      0,
+      40
+    ],
+    "medios_41-93": [
+      41,
+      93
+    ],
+    "largos_94-130": [
+      94,
+      130
+    ],
+    "muy_largos>130": [
+      131,
+      1000000000
+    ]
+  },
+  "variabilidad_entrenamiento": 0.0008876,
+  "sklearn_version": "1.8.0",
+  "smoke": {
+    "segundos_por_fold": 19.1,
+    "n_iter": 123,
+    "warnings": 0
+  },
+  "anotadores": [
+    "md",
+    "lg"
+  ],
+  "no_hacer": [
+    "grid",
+    "multiples semillas",
+    "multiples tokenizadores",
+    "multiples dimensiones",
+    "multiples combinadores",
+    "test",
+    "holdout",
+    "leaderboard",
+    "submission"
+  ],
+  "segundos": 0.1
+}

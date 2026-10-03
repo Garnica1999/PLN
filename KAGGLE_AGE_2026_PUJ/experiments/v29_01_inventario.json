@@ -1,0 +1,172 @@
+{
+  "fase": "V29 01 P1 inventario historico",
+  "fecha": "2026-09-29",
+  "experimenta": false,
+  "n_filas_train": 169336,
+  "n_clases": 6,
+  "artefactos_6_columnas": 51,
+  "artefactos_reutilizables": 51,
+  "descartados_por_forma": [
+    {
+      "artefacto": "age_supervised_features.npy",
+      "motivo": "tiene 73 columnas, no 6: es una CDF de umbrales o una decision binaria, su argmax no es una clase"
+    },
+    {
+      "artefacto": "length_residuals.npy",
+      "motivo": "tiene 46 columnas, no 6: es una CDF de umbrales o una decision binaria, su argmax no es una clase"
+    },
+    {
+      "artefacto": "lexicon_features_registro.npy",
+      "motivo": "tiene 19 columnas, no 6: es una CDF de umbrales o una decision binaria, su argmax no es una clase"
+    },
+    {
+      "artefacto": "lexicon_features_temas.npy",
+      "motivo": "tiene 37 columnas, no 6: es una CDF de umbrales o una decision binaria, su argmax no es una clase"
+    },
+    {
+      "artefacto": "lexicon_features_vida.npy",
+      "motivo": "tiene 16 columnas, no 6: es una CDF de umbrales o una decision binaria, su argmax no es una clase"
+    },
+    {
+      "artefacto": "meta_features_train_v11.npy",
+      "motivo": "tiene 273 columnas, no 6: es una CDF de umbrales o una decision binaria, su argmax no es una clase"
+    },
+    {
+      "artefacto": "oof_E028a_pares.npy",
+      "motivo": "tiene 5 columnas, no 6: es una CDF de umbrales o una decision binaria, su argmax no es una clase"
+    },
+    {
+      "artefacto": "oof_E028b_grupos.npy",
+      "motivo": "tiene 3 columnas, no 6: es una CDF de umbrales o una decision binaria, su argmax no es una clase"
+    },
+    {
+      "artefacto": "v13_p1_tokens_fold0.npy",
+      "motivo": "tiene 36 columnas, no 6: es una CDF de umbrales o una decision binaria, su argmax no es una clase"
+    },
+    {
+      "artefacto": "v13_p1_tokens_fold1.npy",
+      "motivo": "tiene 36 columnas, no 6: es una CDF de umbrales o una decision binaria, su argmax no es una clase"
+    },
+    {
+      "artefacto": "v13_p1_tokens_fold2.npy",
+      "motivo": "tiene 36 columnas, no 6: es una CDF de umbrales o una decision binaria, su argmax no es una clase"
+    },
+    {
+      "artefacto": "v13_p1_tokens_fold3.npy",
+      "motivo": "tiene 36 columnas, no 6: es una CDF de umbrales o una decision binaria, su argmax no es una clase"
+    },
+    {
+      "artefacto": "v13_p1_tokens_fold4.npy",
+      "motivo": "tiene 36 columnas, no 6: es una CDF de umbrales o una decision binaria, su argmax no es una clase"
+    },
+    {
+      "artefacto": "v14_linguistico.npy",
+      "motivo": "tiene 37 columnas, no 6: es una CDF de umbrales o una decision binaria, su argmax no es una clase"
+    },
+    {
+      "artefacto": "v17_pronombres.npy",
+      "motivo": "tiene 26 columnas, no 6: es una CDF de umbrales o una decision binaria, su argmax no es una clase"
+    },
+    {
+      "artefacto": "v19_conjunciones.npy",
+      "motivo": "tiene 36 columnas, no 6: es una CDF de umbrales o una decision binaria, su argmax no es una clase"
+    },
+    {
+      "artefacto": "v20_f1_bloque_clase_condicional.npy",
+      "motivo": "tiene 976 columnas, no 6: es una CDF de umbrales o una decision binaria, su argmax no es una clase"
+    },
+    {
+      "artefacto": "v20_f3_oof_cumuladas.npy",
+      "motivo": "tiene 5 columnas, no 6: es una CDF de umbrales o una decision binaria, su argmax no es una clase"
+    },
+    {
+      "artefacto": "v20_modalidad.npy",
+      "motivo": "tiene 23 columnas, no 6: es una CDF de umbrales o una decision binaria, su argmax no es una clase"
+    },
+    {
+      "artefacto": "v21_b1_oof_binaria_correcta.npy",
+      "motivo": "tiene 5 columnas, no 6: es una CDF de umbrales o una decision binaria, su argmax no es una clase"
+    },
+    {
+      "artefacto": "v22_cdf_compartida.npy",
+      "motivo": "tiene 5 columnas, no 6: es una CDF de umbrales o una decision binaria, su argmax no es una clase"
+    },
+    {
+      "artefacto": "v23_coral_cdf_oof.npy",
+      "motivo": "tiene 5 columnas, no 6: es una CDF de umbrales o una decision binaria, su argmax no es una clase"
+    }
+  ],
+  "familias_presentes": {
+    "cuarto de V20": {
+      "n_modelos": 4,
+      "mejor_cv": 0.6097782
+    },
+    "arbol / boosting": {
+      "n_modelos": 7,
+      "mejor_cv": 0.6082721
+    },
+    "desconocida": {
+      "n_modelos": 8,
+      "mejor_cv": 0.6082295
+    },
+    "lineal": {
+      "n_modelos": 2,
+      "mejor_cv": 0.6011052
+    },
+    "combinador / meta-modelo": {
+      "n_modelos": 7,
+      "mejor_cv": 0.6005017
+    },
+    "perceptron multicapa": {
+      "n_modelos": 2,
+      "mejor_cv": 0.599369
+    },
+    "logistica multiclase": {
+      "n_modelos": 2,
+      "mejor_cv": 0.5919774
+    },
+    "ExtraTrees": {
+      "n_modelos": 1,
+      "mejor_cv": 0.5836218
+    },
+    "cabeza de modelo multiclase": {
+      "n_modelos": 8,
+      "mejor_cv": 0.5658609
+    },
+    "NB-SVM (lineal sobre binarios)": {
+      "n_modelos": 2,
+      "mejor_cv": 0.5641065
+    },
+    "solo contenido": {
+      "n_modelos": 1,
+      "mejor_cv": 0.5537293
+    },
+    "estructura ordinal": {
+      "n_modelos": 1,
+      "mejor_cv": 0.5527027
+    },
+    "SGD": {
+      "n_modelos": 1,
+      "mejor_cv": 0.4774174
+    },
+    "BM25 (lineal disperso)": {
+      "n_modelos": 1,
+      "mejor_cv": 0.4688409
+    },
+    "denso textometrico (SVD)": {
+      "n_modelos": 2,
+      "mejor_cv": 0.4075327
+    },
+    "vecinos mas cercanos": {
+      "n_modelos": 1,
+      "mejor_cv": 0.3088251
+    },
+    "solo estilo": {
+      "n_modelos": 1,
+      "mejor_cv": 0.2793018
+    }
+  },
+  "criterio_de_reutilizacion": "6 columnas de clase, homogeneidad entre folds > 0,90, ningun fold desviado mas de 0,02 del resto, y no duplicado",
+  "limitacion_declarada": "el homogeneo entre folds es una comprobacion de coherencia, no una prueba de que el artefacto sea estrictamente out-of-fold. El criterio estricto se aplica mas adelante, al usar un OOF como evidencia externa de una optimizacion de pesos.",
+  "segundos": 36.4
+}

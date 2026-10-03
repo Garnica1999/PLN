@@ -1,0 +1,180 @@
+{
+  "fase": "V14 · A variables linguisticas",
+  "fecha": "2026-09-26",
+  "modelo": "es_core_news_md",
+  "sha256_meta": "889a2fd05d217fa7c1bcffa867af7fc30911bc7b48523f87b5b2525846553ef5",
+  "n_caracteristicas": 37,
+  "nombres": [
+    "verbo_preterito_ratio",
+    "verbo_imperfecto_ratio",
+    "verbo_presente_ratio",
+    "verbo_subjuntivo_ratio",
+    "verbo_infinitivo_ratio",
+    "verbo_gerundio_ratio",
+    "verbo_participio_ratio",
+    "verbo_primera_persona_ratio",
+    "verbo_segunda_persona_ratio",
+    "verbo_tercera_persona_ratio",
+    "verbo_por_documento",
+    "sustantivo_femenino_ratio",
+    "sustantivo_masculino_ratio",
+    "sustantivo_singular_ratio",
+    "sustantivo_plural_ratio",
+    "diminutivo_ratio",
+    "aumentativo_ratio",
+    "lema_distintos_por_token",
+    "lema_hapax_ratio",
+    "forma_distintas_por_lemma",
+    "ent_per_ratio",
+    "ent_org_ratio",
+    "ent_loc_ratio",
+    "ent_misc_ratio",
+    "entidades_distintas_por_documento",
+    "entidades_por_documento",
+    "profundidad_media",
+    "coordinacion_ratio",
+    "subordinacion_ratio",
+    "hijos_por_token",
+    "pasiva_ratio",
+    "tokens_por_frase",
+    "determinante_ratio",
+    "conjuncion_ratio",
+    "adjetivo_ratio",
+    "adverbio_ratio",
+    "longitud_media_palabra"
+  ],
+  "cobertura": [
+    {
+      "magnitud": "verbos",
+      "media_por_documento": 1.92,
+      "documentos_con_valor": 131918,
+      "porcentaje_con_valor": 77.9,
+      "maximo": 18
+    },
+    {
+      "magnitud": "sustantivos",
+      "media_por_documento": 5.895,
+      "documentos_con_valor": 164911,
+      "porcentaje_con_valor": 97.39,
+      "maximo": 32
+    },
+    {
+      "magnitud": "entidades",
+      "media_por_documento": 3.372,
+      "documentos_con_valor": 137387,
+      "porcentaje_con_valor": 81.13,
+      "maximo": 58
+    },
+    {
+      "magnitud": "tokens",
+      "media_por_documento": 12.966,
+      "documentos_con_valor": 169186,
+      "porcentaje_con_valor": 99.91,
+      "maximo": 58
+    },
+    {
+      "magnitud": "lemas",
+      "media_por_documento": 12.018,
+      "documentos_con_valor": 169186,
+      "porcentaje_con_valor": 99.91,
+      "maximo": 31
+    },
+    {
+      "magnitud": "frases",
+      "media_por_documento": 1.541,
+      "documentos_con_valor": 169232,
+      "porcentaje_con_valor": 99.94,
+      "maximo": 16
+    },
+    {
+      "magnitud": "personas",
+      "media_por_documento": 0.488,
+      "documentos_con_valor": 42274,
+      "porcentaje_con_valor": 24.96,
+      "maximo": 18
+    },
+    {
+      "magnitud": "organizaciones",
+      "media_por_documento": 0.492,
+      "documentos_con_valor": 45986,
+      "porcentaje_con_valor": 27.16,
+      "maximo": 23
+    },
+    {
+      "magnitud": "lugares",
+      "media_por_documento": 0.525,
+      "documentos_con_valor": 44284,
+      "porcentaje_con_valor": 26.15,
+      "maximo": 22
+    }
+  ],
+  "suelo_azar": 0.1667,
+  "redundantes_contra_v12": 4,
+  "correlacion_maxima_v12": 0.9824,
+  "control": [
+    {
+      "modelo": "logreg",
+      "macro_f1": 0.2409,
+      "std": 0.0009,
+      "per_fold": [
+        0.2408,
+        0.2418,
+        0.2421,
+        0.24,
+        0.24
+      ],
+      "suelo_azar": 0.1667,
+      "supera_el_azar": true
+    },
+    {
+      "modelo": "linearsvc",
+      "macro_f1": 0.227,
+      "std": 0.0019,
+      "per_fold": [
+        0.2297,
+        0.2271,
+        0.2274,
+        0.227,
+        0.2239
+      ],
+      "suelo_azar": 0.1667,
+      "supera_el_azar": true
+    }
+  ],
+  "mejor_control": {
+    "modelo": "logreg",
+    "macro_f1": 0.2409,
+    "std": 0.0009,
+    "per_fold": [
+      0.2408,
+      0.2418,
+      0.2421,
+      0.24,
+      0.24
+    ],
+    "suelo_azar": 0.1667,
+    "supera_el_azar": true
+  },
+  "prechequeo": {
+    "errores_v12": 67610,
+    "rescate": 12444,
+    "dano": 71126,
+    "neto": -58682,
+    "umbral": 1014,
+    "pasa": false,
+    "por_frontera": {
+      "18-24|25-34": {
+        "rescate": 4228,
+        "dano": 22260,
+        "neto": -18032
+      },
+      "25-34|35-49": {
+        "rescate": 2760,
+        "dano": 24894,
+        "neto": -22134
+      }
+    }
+  },
+  "gate": "D-042: delta >= +0,001, 3/5 folds, IC95 pareado que excluya el cero, segunda particion",
+  "segundos": 736.4
+}

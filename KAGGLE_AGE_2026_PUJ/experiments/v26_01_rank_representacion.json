@@ -1,0 +1,152 @@
+{
+  "fase": "V26 01 representacion afin de la evidencia",
+  "fecha": "2026-09-27",
+  "hipotesis_seleccionada": "H02",
+  "champion_congelado": {
+    "nombre": "V20",
+    "lb": 0.62689,
+    "cv": 0.6097782,
+    "intacto": true
+  },
+  "mecanismo": "media y desviacion de las 84 columnas de predicciones de modelos base, estimadas solo dentro de cada training fold; las otras 195 quedan bit a bit iguales; los tres miembros historicos del blend no se reentrenan",
+  "control_t0": {
+    "corrected_cv": 0.6097782,
+    "reproducido": true
+  },
+  "candidatos": {
+    "T0 V20 control": {
+      "ID": "M1-T0",
+      "modelo": "T0 V20 control",
+      "corrected_cv": 0.6097782,
+      "delta_vs_V20": 0.0,
+      "fold_1": 0.6132028,
+      "fold_2": 0.612081,
+      "fold_3": 0.6104461,
+      "fold_4": 0.6088426,
+      "fold_5": 0.604351,
+      "media": 0.609785,
+      "desviacion": 0.003092,
+      "delta_por_fold": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "folds_positivos": 0,
+      "rescue": 0,
+      "damage": 0,
+      "net": 0,
+      "changed_rows": 0,
+      "f1_por_clase": {
+        "13-17": 0.6818,
+        "18-24": 0.517,
+        "25-34": 0.4965,
+        "35-49": 0.5687,
+        "50-64": 0.6637,
+        "65-xx": 0.731
+      },
+      "complementariedad_por_clase": {
+        "13-17": {
+          "rescata": 0,
+          "danio": 0
+        },
+        "18-24": {
+          "rescata": 0,
+          "danio": 0
+        },
+        "25-34": {
+          "rescata": 0,
+          "danio": 0
+        },
+        "35-49": {
+          "rescata": 0,
+          "danio": 0
+        },
+        "50-64": {
+          "rescata": 0,
+          "danio": 0
+        },
+        "65-xx": {
+          "rescata": 0,
+          "danio": 0
+        }
+      },
+      "frontera_18_24_25_34": 0.5075,
+      "frontera_25_34_35_49": 0.5029
+    },
+    "T1 evidencia de miembros reescalada": {
+      "ID": "V26-01",
+      "modelo": "T1 evidencia de miembros reescalada",
+      "corrected_cv": 0.609777,
+      "delta_vs_V20": -1e-06,
+      "fold_1": 0.6130589,
+      "fold_2": 0.6121728,
+      "fold_3": 0.6103951,
+      "fold_4": 0.6095025,
+      "fold_5": 0.6037881,
+      "media": 0.609783,
+      "desviacion": 0.003251,
+      "delta_por_fold": [
+        -0.000144,
+        9.2e-05,
+        -5.1e-05,
+        0.00066,
+        -0.000563
+      ],
+      "folds_positivos": 2,
+      "rescue": 555,
+      "damage": 552,
+      "net": 3,
+      "changed_rows": 1809,
+      "f1_por_clase": {
+        "13-17": 0.6823,
+        "18-24": 0.5166,
+        "25-34": 0.4961,
+        "35-49": 0.5687,
+        "50-64": 0.6641,
+        "65-xx": 0.7309
+      },
+      "complementariedad_por_clase": {
+        "13-17": {
+          "rescata": 99,
+          "danio": 73
+        },
+        "18-24": {
+          "rescata": 116,
+          "danio": 142
+        },
+        "25-34": {
+          "rescata": 110,
+          "danio": 127
+        },
+        "35-49": {
+          "rescata": 105,
+          "danio": 87
+        },
+        "50-64": {
+          "rescata": 80,
+          "danio": 66
+        },
+        "65-xx": {
+          "rescata": 45,
+          "danio": 57
+        }
+      },
+      "frontera_18_24_25_34": 0.5067,
+      "frontera_25_34_35_49": 0.5029
+    }
+  },
+  "delta": -1e-06,
+  "gate": {
+    "delta_minimo": 0.003,
+    "folds_minimos": 4,
+    "cumple_delta": false,
+    "cumple_folds": false,
+    "bootstrap": null
+  },
+  "decision": "H02 CLOSED",
+  "estado": "CLOSED",
+  "submission_generada": false,
+  "segundos": 2345.5
+}

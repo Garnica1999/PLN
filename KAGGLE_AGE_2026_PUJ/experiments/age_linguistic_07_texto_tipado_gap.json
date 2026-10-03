@@ -1,0 +1,56 @@
+{
+  "fase": "P7-P0 auditoria de novedad del texto tipado",
+  "fecha": "2026-09-30",
+  "clasificacion": {
+    "P7-TEXT-TIPADO": "GENUINELY_NEW",
+    "P7-DUP-LEMA-AGG": "CLOSED",
+    "P7-DUP-SUFIJOS": "CLOSED"
+  },
+  "operaciones": {
+    "archivos_barridos": 270,
+    "consumidores_lemma_pos_seq": [],
+    "constructores_tokens_tipados": [],
+    "literales_tipados": [
+      {
+        "archivo": "v29_01_inventario.py",
+        "ejemplos": [
+          "oof_ADV"
+        ]
+      },
+      {
+        "archivo": "age_linguistic_p0p1_gap_y_legalidad.py",
+        "ejemplos": [
+          "casa_NOUN",
+          "coches_NOUN",
+          "compra_VERB",
+          "querer_VERB"
+        ]
+      }
+    ],
+    "joins_lema_pos": []
+  },
+  "cobertura": {
+    "md": {
+      "documentos": 169336,
+      "documentos_no_vacios": 169232,
+      "pct_no_vacios": 99.94,
+      "tokens_totales": 2590877,
+      "vocab_unigramas": 284904,
+      "vocab_bigramas": 978705,
+      "ejemplo": "ud_PROPN y_CCONJ su_DET flia_NOUN ser_AUX el_DET mas_ADV beneficiado_ADJ con_ADP obredecht_PROPN ese_PRON no_ADV ser_AUX"
+    },
+    "lg": {
+      "documentos": 169336,
+      "documentos_no_vacios": 169232,
+      "pct_no_vacios": 99.94,
+      "tokens_totales": 2590877,
+      "vocab_unigramas": 283659,
+      "vocab_bigramas": 979878,
+      "ejemplo": "ud_PROPN y_CCONJ su_DET flia_PROPN ser_AUX el_DET mas_ADV beneficiado_ADJ con_ADP obredecht_PROPN ese_PRON no_ADV ser_AU"
+    }
+  },
+  "sin_test": true,
+  "sin_holdout": true,
+  "sin_entrenamiento": true,
+  "segundos": 2.3
+}

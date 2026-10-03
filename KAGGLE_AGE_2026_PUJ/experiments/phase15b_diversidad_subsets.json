@@ -1,0 +1,133 @@
+{
+  "fase": "D5 — diversidad de subconjuntos",
+  "fecha": "2026-09-25",
+  "baseline": {
+    "macro_f1": 0.6004,
+    "std": 0.0042,
+    "per_fold": [
+      0.6007,
+      0.605,
+      0.6032,
+      0.6004,
+      0.5928
+    ],
+    "origen": "fase 12"
+  },
+  "variantes": [
+    {
+      "variante": "mlp_full",
+      "macro_f1": 0.5976,
+      "std": 0.0046,
+      "per_fold": [
+        0.5981,
+        0.6008,
+        0.602,
+        0.5983,
+        0.5889
+      ],
+      "delta_vs_v12": -0.0028,
+      "folds_positivos": 0
+    },
+    {
+      "variante": "logreg_full",
+      "macro_f1": 0.5915,
+      "std": 0.0048,
+      "per_fold": [
+        0.595,
+        0.5951,
+        0.593,
+        0.5925,
+        0.5821
+      ],
+      "delta_vs_v12": -0.0089,
+      "folds_positivos": 0
+    },
+    {
+      "variante": "mlp_subset",
+      "macro_f1": 0.5851,
+      "std": 0.0047,
+      "per_fold": [
+        0.5886,
+        0.5883,
+        0.5885,
+        0.5837,
+        0.5763
+      ],
+      "delta_vs_v12": -0.0153,
+      "folds_positivos": 0
+    },
+    {
+      "variante": "logreg_subset",
+      "macro_f1": 0.5879,
+      "std": 0.005,
+      "per_fold": [
+        0.5915,
+        0.5921,
+        0.5897,
+        0.5881,
+        0.5783
+      ],
+      "delta_vs_v12": -0.0125,
+      "folds_positivos": 0
+    },
+    {
+      "variante": "producción (MLP_full + LogReg_full)",
+      "macro_f1": 0.6004,
+      "std": 0.0042,
+      "per_fold": [
+        0.6007,
+        0.605,
+        0.6032,
+        0.6004,
+        0.5928
+      ],
+      "delta_vs_v12": 0.0,
+      "folds_positivos": 2
+    },
+    {
+      "variante": "3 vías (+ MLP_subset)",
+      "macro_f1": 0.5987,
+      "std": 0.0045,
+      "per_fold": [
+        0.5978,
+        0.6021,
+        0.6031,
+        0.6002,
+        0.5904
+      ],
+      "delta_vs_v12": -0.0017,
+      "folds_positivos": 0
+    },
+    {
+      "variante": "3 vías (+ LogReg_subset)",
+      "macro_f1": 0.599,
+      "std": 0.0052,
+      "per_fold": [
+        0.5989,
+        0.6036,
+        0.6033,
+        0.5999,
+        0.5892
+      ],
+      "delta_vs_v12": -0.0014,
+      "folds_positivos": 1
+    },
+    {
+      "variante": "4 vías",
+      "macro_f1": 0.5976,
+      "std": 0.0045,
+      "per_fold": [
+        0.5981,
+        0.6013,
+        0.6013,
+        0.5983,
+        0.5889
+      ],
+      "delta_vs_v12": -0.0028,
+      "folds_positivos": 0
+    }
+  ],
+  "mejor": "producción (MLP_full + LogReg_full)",
+  "adoptado": false,
+  "segundos": 751.6
+}

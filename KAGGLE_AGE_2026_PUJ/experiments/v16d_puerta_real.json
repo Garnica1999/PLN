@@ -1,0 +1,80 @@
+{
+  "fase": "V13 · P16d puerta realizable",
+  "fecha": "2026-09-25",
+  "macro_v12": 0.6005,
+  "macro_bloque": 0.4,
+  "techo_puerta_perfecta": 0.677,
+  "separacion_confianza_bloque_auc": 0.7173,
+  "mejor_puerta": {
+    "umbral_bloque": 0.0,
+    "umbral_v12": 0.0,
+    "filas_desviadas": 0.0,
+    "fraccion_desviada": 0.0,
+    "macro_f1": 0.6005,
+    "delta": 0.0,
+    "18-24|25-34_accuracy": 0.4963,
+    "25-34|35-49_accuracy": 0.4974
+  },
+  "seleccion_por_mitades": [
+    {
+      "elegido_en": "A",
+      "umbrales": [
+        0.0,
+        0.0
+      ],
+      "macro_en_la_mitad_elegida": 0.6029,
+      "macro_en_la_otra_mitad": 0.5989,
+      "delta_en_la_otra_mitad": 0.0
+    },
+    {
+      "elegido_en": "B",
+      "umbrales": [
+        0.0,
+        0.0
+      ],
+      "macro_en_la_mitad_elegida": 0.5989,
+      "macro_en_la_otra_mitad": 0.6029,
+      "delta_en_la_otra_mitad": 0.0
+    }
+  ],
+  "delta_sin_honestidad": 0.0,
+  "nombres_bloque": [
+    "especifica_media_c0",
+    "especifica_media_c1",
+    "especifica_media_c2",
+    "especifica_media_c3",
+    "especifica_media_c4",
+    "especifica_media_c5",
+    "especifica_mejor_c0",
+    "especifica_mejor_c1",
+    "especifica_mejor_c2",
+    "especifica_mejor_c3",
+    "especifica_mejor_c4",
+    "especifica_mejor_c5",
+    "especifica_margen",
+    "especifica_entropia",
+    "especifica_cobertura",
+    "especifica_n_conocidos",
+    "especifica_ventaja",
+    "especifica_confianza",
+    "frecuente_media_c0",
+    "frecuente_media_c1",
+    "frecuente_media_c2",
+    "frecuente_media_c3",
+    "frecuente_media_c4",
+    "frecuente_media_c5",
+    "frecuente_mejor_c0",
+    "frecuente_mejor_c1",
+    "frecuente_mejor_c2",
+    "frecuente_mejor_c3",
+    "frecuente_mejor_c4",
+    "frecuente_mejor_c5",
+    "frecuente_margen",
+    "frecuente_entropia",
+    "frecuente_cobertura",
+    "frecuente_n_conocidos",
+    "frecuente_ventaja",
+    "frecuente_confianza"
+  ],
+  "segundos": 175.3
+}

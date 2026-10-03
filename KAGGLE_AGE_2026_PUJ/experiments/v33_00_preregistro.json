@@ -1,0 +1,298 @@
+{
+  "fase": "V33-E1 pre-registro congelado",
+  "fecha": "2026-09-30",
+  "commit": "7e59b06a0b1699814adf436f76acd2c324a56bf5",
+  "experimento": "challenger FTRL-Proximal softmax multiclase, una pasada online (control: SGD log_loss de una pasada)",
+  "baseline_primario": 0.6159732,
+  "referencia_nested": 0.6154643,
+  "pesos_plugin": [
+    1.0,
+    1.1749,
+    1.2721,
+    1.163,
+    1.001,
+    0.8128
+  ],
+  "hashes": {
+    "corpus_archivo": "39c6c8270366fe155f3c8dd232e31867bee659af8908121d04b6bd89bd163748",
+    "corpus_textos": "53c1a348a7954f3e59d7c67caddd6477a06f7d3441724c201052b4b5273445fc",
+    "vectorizador": "9bae157614458dbdf26fb7aed4c78d2954c36e895f830341e59b23fa63e2b51b",
+    "ancla_d083_json": "aa791c89b0b89ceacd343c8d6422d48e6e242b34ba7b65a9c2722796b0242118",
+    "manifest_canonico": "8881a9f53e8613aa943681e7fd9a42a3a281aa66b5d7c796d13d2758c6226076",
+    "canonico_y_true": "b1c928f9b9f5575547c1090a1fd83cf32a048b694af35a980b460c0bd66d48e6",
+    "canonico_fold_idx": "74d18330c40c3598a1936706ae9434c5fdf29119d357d38353cf298812fe6fb5",
+    "canonico_v30_prob": "3d77352486605971093ade7214ae82326057845d8bf54a2d88c83843c5a721db",
+    "canonico_ids": "d69ecb339f1dc57de2f9cddd558658b5a272ffa42aec15c771773e8eabd59825",
+    "canonico_cand_pred": "2fd8ab0292e8b7364dd003ff3e23902b01786a612c3e9a57641d88788efca369",
+    "canonico_cand_prob": "57be29623543c2616011f8fc77aff89b71faecdad6b599f1b4f4b133655a8134"
+  },
+  "versiones": {
+    "sklearn": "1.8.0",
+    "numpy": "1.26.4",
+    "pandas": "2.3.3"
+  },
+  "anclas": {
+    "macro_f1_trivial_clase_mayoritaria": 0.04854212180687087,
+    "clase_mayoritaria": "0",
+    "gemelo_sgd_d083": 0.4934789,
+    "log_uniforme_k6": 1.791759469228055,
+    "n_train_fold_esperado": 135468,
+    "alpha_esperado_para_n_train": 0.0040754249463367
+  },
+  "corpus": {
+    "receta": "src.data.load_train() sobre data/raw/age_train.csv (sep=cfg.TRAIN_SEP, encoding utf-8-sig, clean_text aplicado); texto = columna TEXT_COL; orden de filas = orden del CSV = orden canonico de ids.npy",
+    "hash_contenido": "sha256 con longitud (8 bytes LE) + bytes UTF-8 por texto, en orden",
+    "prohibido": "el data_hash del manifiesto canonico (2ada573b...) queda invalidado en D-083: es un hash de punteros de memoria, no de contenido"
+  },
+  "representacion": {
+    "vectorizador": {
+      "analyzer": "word",
+      "ngram_range": [
+        1,
+        2
+      ],
+      "min_df": 3,
+      "max_df": 0.5,
+      "sublinear_tf": true,
+      "lowercase": true,
+      "strip_accents": null,
+      "token_pattern": "(?u)\\b\\w+\\b"
+    },
+    "norm_dtype": "defaults de sklearn (norm='l2', dtype float64)",
+    "ajuste": "POR FOLD: fit solo en fold-train (idf, min_df y max_df nunca globales)",
+    "reutilizacion": "se reusa la RECETA de v31_02_banco_representaciones.py, NO los artefactos de D-083: los sha256 de vocabulario e idf por fold se recalculan y se congelan en este ciclo"
+  },
+  "a1_ftrl_softmax": {
+    "algoritmo": "FTRL-Proximal softmax multiclase (McMahan 2013), implementacion propia exacta",
+    "clases": "K=6 en un solo juego de pesos (softmax); p suma 1 y es comparable con la mezcla",
+    "alpha": {
+      "formula": "alpha = 3/(2*sqrt(T))",
+      "T": "n_train_fold del fold",
+      "origen": "derivado del desplazamiento acumulado del intercepto: 2*alpha*sqrt(T) debe ser del orden de 1.8x el log-odds de la tasa base |log(1/5)|",
+      "valores_evaluados": 0,
+      "rango_esperado": "0.00404 a 0.00409 (varia con T por construccion, no por busqueda)",
+      "nota": "con alpha=0.05 (D-083) el desplazamiento seria 36.8, 36x mayor"
+    },
+    "lambda1": 0.0,
+    "lambda2": 1.0,
+    "beta": 1.0,
+    "bias_x0": 1.0,
+    "power_t": null,
+    "pasadas": 1,
+    "orden": "fold-train barajado UNA vez con np.random.default_rng(20261010+fold); orden congelado y reutilizado por el control",
+    "dtype": "float64",
+    "probabilidades": "softmax de los 6 logits, sin temperatura (L04/C03 cerradas)",
+    "alternativa_no_usada": "vowpalwabbit 9.11.8 instalado y NO usado"
+  },
+  "a2_sgd_control": {
+    "estimator": "sklearn.linear_model.SGDClassifier",
+    "loss": "log_loss",
+    "learning_rate": "optimal",
+    "alpha": 1e-06,
+    "max_iter": 1,
+    "tol": null,
+    "fit_intercept": true,
+    "average": false,
+    "random_state": "20261010+fold",
+    "n_jobs": 32,
+    "pasadas": 1,
+    "por_que": "misma representacion, mismo presupuesto (1 pasada), mismo barajado, misma semilla y misma evaluacion: lo unico libre es el eje proximal/adaptativo",
+    "asimetria_declarada": "alpha 1e-6 frente a 0.004 (cuatro ordenes de magnitud) y laregularidad del intercepto: por eso la sonda |sigma*w|/|g| es OBLIGATORIA",
+    "shuffle": false
+  },
+  "puerta_convergencia": {
+    "momento": "dentro del fold 0, ANTES de los folds 1-4 y ANTES de integrar",
+    "aplica_a": [
+      "A1_ftrl_softmax",
+      "A2_sgd_1p"
+    ],
+    "fold_0": "consumido-diagnostico: G3 y G4 leen el fold-val del fold 0, que es parte de la validacion canonica; su fallo NO toca delta",
+    "consecuencia_si_falla": "veredicto NO_ATRIBUIBLE_BY_GATE: sin fallback, sin segundo alpha, sin integrar, sin bootstrap; se documenta y termina",
+    "prohibido": "reintentar con otro alpha tras el fallo (seria grid)",
+    "umbrales_derivados": {
+      "G1_ll_train_banda": {
+        "rango": [
+          0.05,
+          1.6125835223052496
+        ],
+        "anclaje": "suelo 0.05 = detector de humo (con una sola pasada y una actualizacion por ejemplo no hay memorizacion posible); techo 0.9*log(6) = 1.6125835223052495: el ll_train debe mejorar el uniforme en al menos un 10 % relativo. Enmenda 1 pre-ejecucion: la banda congelada [0.25, 0.60] era inalcanzable para cualquier modelo sano (en D-083 el gemelo sano dio log_loss multiclase 1.3568 > 0.60) y cerraba el experimento por construccion"
+      },
+      "G2_monotonia": {
+        "puntos": [
+          0.25,
+          0.5,
+          1.0
+        ],
+        "tolerancia": 1e-06,
+        "anclaje": "caza directamente la firma 11.72 -> 23.03 de D-083"
+      },
+      "G3_macro_f1_fold_val": {
+        "minimo": 0.3,
+        "anclaje": "trivial 0.0485421 y gemelo SGD de D-083 0.4934789"
+      },
+      "G4_frecuencia_por_clase": {
+        "rango": [
+          0.1,
+          0.3
+        ],
+        "anclaje": "proporciones reales de clase del train"
+      },
+      "G5_determinismo": {
+        "criterio": "max|delta p| = 0.0 exacto entre dos corridas identicas"
+      },
+      "G6_suma_unidad": {
+        "tolerancia": 1e-09,
+        "criterio": "max|sum_c p_c - 1|"
+      }
+    }
+  },
+  "sonda_atribucion": {
+    "descripcion": "razon media |sigma*w| / |g| por coordenada en el fold 0",
+    "obligatoria": true,
+    "consecuencia_si_no_se_publica": "el veredicto queda capado a MARGINAL",
+    "motivo": "el control cambia dos variables (alpha y regularizacion del intercepto): la razon sigma/g es la que desambigua la causa (correccion inflada frente a multi-pasada)"
+  },
+  "sondas": {
+    "a_vectorizado_vs_lazo": {
+      "tolerancia": 1e-12
+    },
+    "b_raiz_analitica_lambda0": {
+      "residuo_max": 1e-09
+    },
+    "c_totalf1_macro": {
+      "tolerancia": 1e-06
+    },
+    "d_sin_nan_logloss_finito": true,
+    "e_logloss_multiclase_propio": {
+      "tolerancia": 1e-09,
+      "nota": "NUEVA en V33: D-083 solo probo el OvR, que no normaliza"
+    },
+    "f_filas_suman_uno": {
+      "tolerancia": 1e-09
+    },
+    "politica": "si alguna falla -> exit 4 ANTES de entrenar; cualquier ajuste exige enmienda pre-ejecucion (precedente f0bf731)"
+  },
+  "sobre_refit": {
+    "descripcion": "reajustar el vectorizador en los 5 folds y comprobar que los sha256 de vocabulario e idf coinciden con los de la corrida",
+    "exigido_por": "kaggle-specialist",
+    "tolerancia": "identicos bit a bit entre las dos corridas"
+  },
+  "determinismo": {
+    "semilla": 20261010,
+    "orden": "default_rng(20261010+fold) una vez por fold",
+    "hilos": "OMP/MKL/OPENBLAS_NUM_THREADS = 32 antes de numpy; FTRL mono-hilo",
+    "esperado": "exacto bit a bit",
+    "sonda": "reentrenar el fold 0 de A1 y de A2 y comparar bit a bit",
+    "tolerancias": "0 exacto; <=1e-9 conforme; >1e-9 con rango publicado y delta_gate > rango; rango >= 0.0008876 o solape con el gate => no concluyente"
+  },
+  "integracion": {
+    "mecanismo": "combinador logistico anidado sobre [L2(v30_prob) || L2(p_brazo)] (12 features, L2 por fila con clip 1e-12); LogReg(C=1.0, max_iter=2000, lbfgs) por fold (fit fold!=k, predice fold==k)",
+    "decision": "argmax(p_comb * w_plugin CONGELADO)",
+    "diagnosticos": [
+      "argmax_sin_regla",
+      "delta vs nested 0.6154643",
+      "log_loss por brazo",
+      "macro-F1 diagonal 6x6",
+      "rescate/dano/neto",
+      "alta confianza"
+    ]
+  },
+  "gates": {
+    "baseline_abort": 5e-07,
+    "delta_min": 0.0015,
+    "folds_min": 4,
+    "control": "delta_int(A1) > delta_int(A2)",
+    "bootstrap": {
+      "n": 2000,
+      "semilla": 20261010,
+      "ic95_sin_cero": true,
+      "diagnostico_adicional": "IC95 pareado de la diferencia (A1-A2)"
+    },
+    "sin_leakage": true,
+    "determinismo_concluyente": true,
+    "sonda_atribucion_publicada": true,
+    "caps": [
+      "sin la sonda |sigma*w|/|g| publicada -> veredicto capado a MARGINAL",
+      "determinismo no concluyente -> el veredicto no puede ser PROMISING"
+    ]
+  },
+  "arbol": {
+    "NO_ATRIBUIBLE_BY_GATE": "la puerta G1-G6 falla en A1 o A2: STOP documentado, sin fallback, sin integrar (nodo nuevo, no un gate de delta)",
+    "PROMISING": "gates completos -> segunda particion SOLO con autorizacion del usuario (semilla 987654); el script no la ejecuta",
+    "MARGINAL": "delta > 0 sin gates completos, o con cap activo (sonda o determinismo)",
+    "CLOSED": "delta <= 0 -> se cierra V33; el campeon permanece",
+    "submission": "jamas automatica; requeriria gate completo + segunda particion + autorizacion explicita"
+  },
+  "novedad": {
+    "que_es": "FTRL-Proximal softmax multiclase propio, semantica online de una pasada, un solo juego de pesos, sobre la TF-IDF por fold",
+    "no_es": "no es un embedding, no es un vector aprendido, no es una representacion nueva y no usa datos externos",
+    "diferencia_con_d083": "D-083 fue OvR con 10 pasadas proximales y alpha 0.05; aqui softmax, 1 pasada y alpha derivado",
+    "registro": "artefactos NUEVOS escritos por el runner: reports/v33_novelty_registry.csv (1 fila) y una fila anexada en reports/age_complete_experiment_history.csv (mismo esquema); acta D-084 por ANEXADO en DECISIONS.md; no se edita scripts/age_cobertura_metodologica.py ni ningun script ejecutado"
+  },
+  "via_b_descartada": {
+    "B1_grafo_transductivo": "ILEGAL (usa features de test sin etiqueta para modificar predicciones de train; su forma legal es un kNN re-ponderado = mecanismo M09 ya cerrado)",
+    "B2_aumentacion_masking": "descartada por analogia con C04 (bagging, -0.000312)",
+    "B3_cabeza_multitarea": "refutada por algebra: con tronco lineal es una reparametrizacion de la misma matriz de pesos"
+  },
+  "compliance": {
+    "embeddings": 0,
+    "transformers": 0,
+    "llm": 0,
+    "datos_externos": 0,
+    "test": 0,
+    "holdout": 0,
+    "leaderboard": 0,
+    "submission": 0,
+    "ast_audit": "importes Y literales de ruta: vowpal, vw, torch, transformers, gensim, fasttext, sentence-transformers, word2vec, glove, spacy-vectors; mas 0 rutas de test/holdout/submission/leaderboard",
+    "auditorias_exigidas": [
+      "6 .npy canonicos + manifest",
+      "sha256 del archivo y del array de textos (nunca el data_hash del manifiesto)",
+      "sha256 del vectorizador",
+      "vocabulario e idf por fold",
+      "sonda de refit en los 5 folds",
+      "sondas (a)-(f)",
+      "sonda de atribucion |sigma*w|/|g|",
+      "sondas de determinismo A1 y A2",
+      "RSS pico con ru_maxrss",
+      "escritura atomica"
+    ]
+  },
+  "ejecucion": {
+    "coste_estimado": "~13-16 min CPU (1 pasada por fold y por brazo; TF-IDF ~90 s por fold compartido; determinismo: 2 reentrenamientos del fold 0)",
+    "ram_tope_gb": 20.0,
+    "ram_medicion": "resource.getrusage(ru_maxrss)",
+    "calibracion": "tras el fold 0: proyeccion = 9 x t_fold0; si supera 20.0 h -> parar y reportar",
+    "timeout_global": "24.0 h",
+    "checkpoints": "experiments/v33_01_estado.json (resumible por fold)",
+    "escritura_atomica": "tmp + os.replace en artifacts/p33_scores/v33_e1/"
+  },
+  "entregables": {
+    "preregistro": "scripts/v33_00_preregistro.py -> experiments/v33_00_preregistro.json, reports/v33_preregistro.md, reports/v33_convergence_gate.md",
+    "runner": "scripts/v33_01_ftrl_softmax_online.py -> experiments/v33_01_ftrl_softmax_online.json, experiments/v33_01_estado.json, artifacts/p33_scores/v33_e1/{a1_ftrl_softmax,a2_sgd_1p}.npy, reports/v33_e1_ftrl_softmax_online.md, reports/figures/v33_e1_curvas.png, reports/v33_novelty_registry.csv, fila anexada en reports/age_complete_experiment_history.csv, RUNLOG.md y fila V33-E1 en experiments.csv"
+  },
+  "enmiendas": [
+    {
+      "fecha": "2026-09-30",
+      "objeto": "puerta G1 banda de log_loss multiclase de train",
+      "de": [
+        0.25,
+        0.6
+      ],
+      "a": [
+        0.05,
+        1.6125835223052496
+      ],
+      "motivo": "la banda congelada era inalcanzable para un modelo sano (techo 0.60 muy por deajo del log_loss multiclase 1.3568 que ya midio el gemelo en D-083)",
+      "derivacion": "suelo 0.05 = detector de humo (una pasada no memoriza); techo 0.9*log(6) = 1.6125835223052495 = mejorar el uniforme >= 10 % relativo",
+      "estado_datos": "sin resultados; enmienda pre-ejecucion"
+    },
+    {
+      "fecha": "2026-09-30",
+      "objeto": "a2_sgd_control.shuffle",
+      "de": "(no congelado; default de sklearn True)",
+      "a": false,
+      "motivo": "con shuffle=True el control aplicaba su propia permutacion encima del orden congelado, rompiendo la condicion 'mismo barajado' del propio protocolo",
+      "estado_datos": "sin resultados; enmienda pre-ejecucion"
+    }
+  ]
+}

@@ -1,0 +1,168 @@
+{
+  "fase": "V17 · P1b curva de compromiso de la compuerta",
+  "fecha": "2026-09-26",
+  "entrenamiento": "ninguno (inerte)",
+  "aviso": "los umbrales de esta tabla estan sesgados hacia arriba porque se eligieron mirando las mismas filas; no son resultado. La forma de la curva y el techo si",
+  "referencia_pooled": 0.600502,
+  "umbrales": [
+    0.02,
+    0.05,
+    0.1,
+    0.2,
+    0.35,
+    0.6
+  ],
+  "curva": [
+    {
+      "Frontera": "18-24|25-34",
+      "Umbral": 0.02,
+      "Filas_activadas": 608,
+      "Fraccion_activada": 0.0036,
+      "Rescate": 98,
+      "Dano": 93,
+      "Neto": 5,
+      "Accuracy_en_activadas": 0.324,
+      "MacroF1_global": 0.600528,
+      "Delta_global": 2.6e-05
+    },
+    {
+      "Frontera": "18-24|25-34",
+      "Umbral": 0.05,
+      "Filas_activadas": 1545,
+      "Fraccion_activada": 0.0091,
+      "Rescate": 242,
+      "Dano": 213,
+      "Neto": 29,
+      "Accuracy_en_activadas": 0.31,
+      "MacroF1_global": 0.60066,
+      "Delta_global": 0.000159
+    },
+    {
+      "Frontera": "18-24|25-34",
+      "Umbral": 0.1,
+      "Filas_activadas": 2891,
+      "Fraccion_activada": 0.0171,
+      "Rescate": 432,
+      "Dano": 410,
+      "Neto": 22,
+      "Accuracy_en_activadas": 0.3103,
+      "MacroF1_global": 0.60062,
+      "Delta_global": 0.000118
+    },
+    {
+      "Frontera": "18-24|25-34",
+      "Umbral": 0.2,
+      "Filas_activadas": 5478,
+      "Fraccion_activada": 0.0323,
+      "Rescate": 750,
+      "Dano": 751,
+      "Neto": -1,
+      "Accuracy_en_activadas": 0.3111,
+      "MacroF1_global": 0.600487,
+      "Delta_global": -1.4e-05
+    },
+    {
+      "Frontera": "18-24|25-34",
+      "Umbral": 0.35,
+      "Filas_activadas": 8929,
+      "Fraccion_activada": 0.0527,
+      "Rescate": 1134,
+      "Dano": 1156,
+      "Neto": -22,
+      "Accuracy_en_activadas": 0.3218,
+      "MacroF1_global": 0.600372,
+      "Delta_global": -0.00013
+    },
+    {
+      "Frontera": "18-24|25-34",
+      "Umbral": 0.6,
+      "Filas_activadas": 13487,
+      "Fraccion_activada": 0.0796,
+      "Rescate": 1498,
+      "Dano": 1674,
+      "Neto": -176,
+      "Accuracy_en_activadas": 0.3365,
+      "MacroF1_global": 0.599488,
+      "Delta_global": -0.001014
+    },
+    {
+      "Frontera": "25-34|35-49",
+      "Umbral": 0.02,
+      "Filas_activadas": 419,
+      "Fraccion_activada": 0.0025,
+      "Rescate": 60,
+      "Dano": 55,
+      "Neto": 5,
+      "Accuracy_en_activadas": 0.3174,
+      "MacroF1_global": 0.600536,
+      "Delta_global": 3.5e-05
+    },
+    {
+      "Frontera": "25-34|35-49",
+      "Umbral": 0.05,
+      "Filas_activadas": 966,
+      "Fraccion_activada": 0.0057,
+      "Rescate": 138,
+      "Dano": 117,
+      "Neto": 21,
+      "Accuracy_en_activadas": 0.295,
+      "MacroF1_global": 0.600643,
+      "Delta_global": 0.000141
+    },
+    {
+      "Frontera": "25-34|35-49",
+      "Umbral": 0.1,
+      "Filas_activadas": 1913,
+      "Fraccion_activada": 0.0113,
+      "Rescate": 261,
+      "Dano": 264,
+      "Neto": -3,
+      "Accuracy_en_activadas": 0.2933,
+      "MacroF1_global": 0.600512,
+      "Delta_global": 1e-05
+    },
+    {
+      "Frontera": "25-34|35-49",
+      "Umbral": 0.2,
+      "Filas_activadas": 3626,
+      "Fraccion_activada": 0.0214,
+      "Rescate": 475,
+      "Dano": 483,
+      "Neto": -8,
+      "Accuracy_en_activadas": 0.3012,
+      "MacroF1_global": 0.600504,
+      "Delta_global": 2e-06
+    },
+    {
+      "Frontera": "25-34|35-49",
+      "Umbral": 0.35,
+      "Filas_activadas": 5794,
+      "Fraccion_activada": 0.0342,
+      "Rescate": 715,
+      "Dano": 764,
+      "Neto": -49,
+      "Accuracy_en_activadas": 0.3098,
+      "MacroF1_global": 0.600271,
+      "Delta_global": -0.00023
+    },
+    {
+      "Frontera": "25-34|35-49",
+      "Umbral": 0.6,
+      "Filas_activadas": 8487,
+      "Fraccion_activada": 0.0501,
+      "Rescate": 945,
+      "Dano": 1098,
+      "Neto": -153,
+      "Accuracy_en_activadas": 0.3211,
+      "MacroF1_global": 0.599656,
+      "Delta_global": -0.000845
+    }
+  ],
+  "mejor_delta_por_frontera": {
+    "18-24|25-34": 0.000159,
+    "25-34|35-49": 0.000141
+  },
+  "supera_gate_exploratorio": false,
+  "supera_gate_adopcion": false,
+  "segundos": 0.9
+}

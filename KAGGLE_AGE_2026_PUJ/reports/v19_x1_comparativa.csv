@@ -1,0 +1,4 @@
+configuracion,cambio,cv_5folds,cv_4folds,delta_contra_v19,folds_positivos,frontera_1,frontera_2,solo_challenger,solo_v19,neto,merece_submission
+V19 (champion),-,0.6079388,0.6090431,0.0,-,0.5083,0.5018,0,0,0,-
+A profundidad max_depth 4 con num_leaves 8,"{""max_depth"": 4}",0.6079208,0.6090404,-1.8e-05,3/5,0.5035,0.5013,620,617,3,False
+B regularizacion min_child_samples 800,"{""min_child_samples"": 800}",0.6076698,0.6088761,-0.000269,0/5,0.5038,0.5012,455,505,-50,False

@@ -1,0 +1,251 @@
+{
+  "fase": "V30 06 cierre",
+  "fecha": "2026-09-30",
+  "experimenta": false,
+  "refinamiento": {
+    "corrected_cv": 0.6122387,
+    "delta_vs_V20": 0.002461,
+    "delta_vs_lgbm_v29": 6.9e-05,
+    "estado_vs_v29": "EQUIVALE_A_V29",
+    "folds_mejor_que_v29": 3
+  },
+  "ensemble": {
+    "E1 Optuna macro-F1": {
+      "corrected_cv": 0.6130051,
+      "delta_vs_V20": 0.003227,
+      "folds_positivos": 5,
+      "cumple_gate_historico": true,
+      "es_strong_marginal": false
+    },
+    "E2 Optuna macro-F1 menos lambda por entropia": {
+      "corrected_cv": 0.6121866,
+      "delta_vs_V20": 0.002408,
+      "folds_positivos": 5,
+      "cumple_gate_historico": false,
+      "es_strong_marginal": true
+    }
+  },
+  "candidato_principal": "E1 Optuna macro-F1",
+  "bootstrap": {
+    "delta": 0.003227,
+    "ic95": [
+      0.00229,
+      0.004219
+    ],
+    "proporcion_positiva": 1.0,
+    "ic95_incluye_cero": false,
+    "nota": "calculado **solo** para el candidato principal, y no se usa para elegir hiperparametros ni pesos: es evidencia de decision de la submission, no senal de entrenamiento"
+  },
+  "compliance": {
+    "comprobaciones": [
+      {
+        "comprobacion": "transformers",
+        "uso_en_codigo": 0,
+        "menciones_en_prosa": 0,
+        "cumplida": true,
+        "ficheros": []
+      },
+      {
+        "comprobacion": "BERT",
+        "uso_en_codigo": 0,
+        "menciones_en_prosa": 0,
+        "cumplida": true,
+        "ficheros": []
+      },
+      {
+        "comprobacion": "RoBERTa",
+        "uso_en_codigo": 0,
+        "menciones_en_prosa": 0,
+        "cumplida": true,
+        "ficheros": []
+      },
+      {
+        "comprobacion": "LLM",
+        "uso_en_codigo": 0,
+        "menciones_en_prosa": 0,
+        "cumplida": true,
+        "ficheros": []
+      },
+      {
+        "comprobacion": "embeddings",
+        "uso_en_codigo": 0,
+        "menciones_en_prosa": 0,
+        "cumplida": true,
+        "ficheros": []
+      },
+      {
+        "comprobacion": "external_classifier",
+        "uso_en_codigo": 0,
+        "menciones_en_prosa": 0,
+        "cumplida": true,
+        "ficheros": []
+      },
+      {
+        "comprobacion": "external_labels",
+        "uso_en_codigo": 0,
+        "menciones_en_prosa": 0,
+        "cumplida": true,
+        "ficheros": []
+      },
+      {
+        "comprobacion": "pseudo_labeling",
+        "uso_en_codigo": 0,
+        "menciones_en_prosa": 0,
+        "cumplida": true,
+        "ficheros": []
+      },
+      {
+        "comprobacion": "test_labels",
+        "uso_en_codigo": 0,
+        "menciones_en_prosa": 0,
+        "cumplida": true,
+        "ficheros": []
+      },
+      {
+        "comprobacion": "test_training",
+        "uso_en_codigo": 0,
+        "menciones_en_prosa": 0,
+        "cumplida": true,
+        "ficheros": []
+      },
+      {
+        "comprobacion": "test_calibration",
+        "uso_en_codigo": 0,
+        "menciones_en_prosa": 0,
+        "cumplida": true,
+        "ficheros": []
+      },
+      {
+        "comprobacion": "test_threshold_tuning",
+        "uso_en_codigo": 0,
+        "menciones_en_prosa": 1,
+        "cumplida": true,
+        "ficheros": [
+          "scripts/v30_07_informes.py"
+        ]
+      },
+      {
+        "comprobacion": "holdout_reuse",
+        "uso_en_codigo": 0,
+        "menciones_en_prosa": 0,
+        "cumplida": true,
+        "ficheros": []
+      },
+      {
+        "comprobacion": "leaderboard_tuning",
+        "uso_en_codigo": 0,
+        "menciones_en_prosa": 0,
+        "cumplida": true,
+        "ficheros": []
+      },
+      {
+        "comprobacion": "toxic_test",
+        "uso_en_codigo": 0,
+        "menciones_en_prosa": 0,
+        "cumplida": true,
+        "ficheros": []
+      }
+    ],
+    "todas_cumplidas": true,
+    "holdouts_abiertos": [],
+    "ficheros_auditados": 21
+  },
+  "reproducibilidad": {
+    "control_v20_bit_a_bit": true,
+    "control_v20_cv": 0.6097782,
+    "control_lgbm_v29": true,
+    "control_ensemble_v29_desviacion": 0.0,
+    "control_ensemble_v29_reproduce": true,
+    "optuna_refinamiento": {
+      "trials_por_fold": 15,
+      "trials_totales": 75,
+      "sampler": "TPESampler(seed=20300930 + fold) con trial 0 encolado",
+      "max_estimadores": 1500,
+      "early_stopping_rondas": 60,
+      "best_trial_outlier": 0
+    },
+    "optuna_pesos_trials": 300,
+    "segunda_particion_semilla": 987654,
+    "segunda_particion_reoptimizada": false,
+    "declaracion": "Optuna con TPESampler y semilla fija resulto **exactamente reproducible** en la reoptimizacion de los pesos del ensemble de V29 (desviacion 0,000000), lo que demuestra que en esta maquina y con estas versiones de libreria el metodo es determinista. Aun asi no se declara exactitud bit a bit entre versiones distintas de LightGBM u Optuna."
+  },
+  "auditoria_submission": {
+    "fichero_existe": true,
+    "sha256_en_disco": "f543a715a1881c6128a860301b84a7273c3db8f8a709545be1e6267822e713be",
+    "sha256_de_la_construccion": "f543a715a1881c6128a860301b84a7273c3db8f8a709545be1e6267822e713be",
+    "hash_coincide": true,
+    "filas": 112892,
+    "checks": {
+      "rows_ok": true,
+      "columns_ok": true,
+      "ids_equal_test": true,
+      "ids_same_order": true,
+      "ids_unique": true,
+      "no_nan": true,
+      "labels_valid": true,
+      "labels_width_ok": true,
+      "sin_filas_vacias": true,
+      "schema_verificado": true
+    },
+    "checks_superados": 10,
+    "checks_total": 10,
+    "candidato": "E1 Optuna macro-F1",
+    "pesos_congelados": {
+      "v20_f3b_oof_candidato": 0.3548,
+      "v29_lgbm_optuna": 0.3354,
+      "v30_lgbm_refinado": 0.3098
+    },
+    "distribucion": {
+      "13-17": 18141,
+      "18-24": 20767,
+      "25-34": 17135,
+      "35-49": 16406,
+      "50-64": 20794,
+      "65-xx": 19649
+    },
+    "comparacion_con_envio_v20": {
+      "envio_de_referencia": "age_submission_v20_candidato_umbrales.csv",
+      "decisiones_distintas": 7253,
+      "proporcion": 0.064247,
+      "distribucion_envio_v20": {
+        "13-17": 18384,
+        "18-24": 20440,
+        "25-34": 17372,
+        "35-49": 16323,
+        "50-64": 20790,
+        "65-xx": 19583
+      }
+    },
+    "uso_del_test": "solo transform y predict. Ninguna etiqueta, ninguna estadistica, ningun ajuste de umbral. Los pesos y los hiperparametros estaban congelados antes de entrar aqui.",
+    "subido": false,
+    "estado_upload": "STOP_SIN_CREDENCIAL",
+    "numero_de_submissions": 0,
+    "causa_del_stop": "el fichero ~/.kaggle/kaggle.json existe pero solo contiene la clave `token`, que es el formato antiguo; el CLI 2.2.4 exige `username` y `key`, o bien autenticacion OAuth. Sin eso la API rechaza la llamada."
+  },
+  "higiene": {
+    "home": {
+      "existe": true,
+      "versionado_por_git": false,
+      "sigue_fuera_de_la_rama": true
+    },
+    "kaggle_toxic_2026_puj/tools": {
+      "existe": true,
+      "versionado_por_git": false,
+      "sigue_fuera_de_la_rama": true
+    }
+  },
+  "auditoria": [],
+  "coherente": true,
+  "presupuesto_autorizado": 4,
+  "presupuesto_gastado": 0,
+  "experimentos_registrados": 139,
+  "finalistas": 0,
+  "submissions": 0,
+  "subido": false,
+  "estado_upload": "STOP_SIN_CREDENCIAL",
+  "baseline_vigente": 0.6097782,
+  "leaderboard_v20": 0.62689,
+  "hash_submission_v20": "2c964af78c90bf0884b4107665b5100f0c1aa2d9059c47692e613578b6cf660d",
+  "artefactos_de_v20_tocados": [],
+  "segundos": 0.3
+}

@@ -1,0 +1,82 @@
+{
+  "fase": "cierre confirmatorio del plug-in por clase",
+  "fecha": "2026-10-11",
+  "experimenta": true,
+  "baseline_v30": 0.6134471,
+  "bootstrap_particion_alternativa": {
+    "media": 0.0020659,
+    "ic95": [
+      0.0011204,
+      0.0030622
+    ],
+    "contiene_cero": false,
+    "p_delta_positivo": 1.0,
+    "n": 2000,
+    "semilla": 20261010,
+    "metodo": "pareado, unidad la fila, mismos indices en los dos brazos"
+  },
+  "comparacion_de_particiones": [
+    {
+      "particion": "canonica (semilla 42)",
+      "V30": 0.6134471,
+      "plug_in": 0.6154643,
+      "delta": 0.0020172,
+      "folds_positivos": 5,
+      "bootstrap_ic95_lo": 0.0010143,
+      "bootstrap_ic95_hi": 0.002948,
+      "contiene_cero": false,
+      "permutado_delta": -0.0027902,
+      "aleatorio_delta": -0.004686,
+      "real_menos_permutado": 0.0048074,
+      "real_menos_aleatorio": 0.0067032,
+      "cambios_alta_confianza": 0,
+      "reajusta_pesos": false
+    },
+    {
+      "particion": "alternativa (semilla 987654)",
+      "V30": 0.614412,
+      "plug_in": 0.61647,
+      "delta": 0.002058,
+      "folds_positivos": 5,
+      "bootstrap_ic95_lo": 0.0011204,
+      "bootstrap_ic95_hi": 0.0030622,
+      "contiene_cero": false,
+      "permutado_delta": 0.0014417,
+      "aleatorio_delta": -0.0161893,
+      "real_menos_permutado": 0.0006163,
+      "real_menos_aleatorio": 0.0182473,
+      "cambios_alta_confianza": 0,
+      "reajusta_pesos": false
+    }
+  ],
+  "diferencia_entre_particiones": 4.08e-05,
+  "veredicto": "PROMISING_CONFIRMED",
+  "matiz_del_control_permutado": {
+    "canonica": -0.0027902,
+    "alternativa": 0.0014417,
+    "lectura": "el permutado cambio de signo, asi que parte del efecto es generica (cualquier perturbacion que diversifique el reparto ayuda) y la asignacion correcta anade unos +0,0006 sobre eso. El permutado no es un control negativo perfecto porque hereda la parte generica; lo que aisla es la diferencia"
+  },
+  "fuga_descartada": {
+    "preocupacion": "los pesos congelados vieron las 169.336 filas al derivarse",
+    "evidencia": "congelado - nested = -0,0002304 en la particion alternativa: los congelados quedan ligeramente por DEBAJO de los re-derivados en limpio. En la canonica quedaban por encima; aqui no se inflan"
+  },
+  "nested": {
+    "delta": 0.0022884,
+    "folds_positivos": 5,
+    "lectura": "el mecanismo aparece SOLO en la particion nueva, sin depender de los pesos concretos: es el test limpio y pasa"
+  },
+  "clasificacion": {
+    "es_mejora_de_representacion": false,
+    "es_mejora_del_modelo": false,
+    "es_mejora_de_la_regla_de_decision": true,
+    "precision": "el candidato sube macro-F1 BAJANDO accuracy de 0,61464 a 0,61254, porque la metrica premia el recall de las clases debiles y argmax favorecia a las faciles"
+  },
+  "restricciones": {
+    "usa_test": false,
+    "usa_holdout": false,
+    "usa_leaderboard": false,
+    "genera_submission": false,
+    "reajusta_pesos": false
+  },
+  "segundos": 108.1
+}

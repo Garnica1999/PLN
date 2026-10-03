@@ -1,0 +1,63 @@
+medida,clase,valor,global,enriquecimiento
+prevalencia de URL,13-17,0.334373,0.402011,0.8317
+prevalencia de URL,18-24,0.299484,0.402011,0.745
+prevalencia de URL,25-34,0.38124,0.402011,0.9483
+prevalencia de URL,35-49,0.454516,0.402011,1.1306
+prevalencia de URL,50-64,0.44943,0.402011,1.118
+prevalencia de URL,65-xx,0.500258,0.402011,1.2444
+twitter status,13-17,0.0,0.0,0.0
+twitter status,18-24,0.0,0.0,0.0
+twitter status,25-34,0.0,0.0,0.0
+twitter status,35-49,0.0,0.0,0.0
+twitter status,50-64,0.0,0.0,0.0
+twitter status,65-xx,0.0,0.0,0.0
+URL acortada,13-17,0.000104,0.000319,0.3259
+URL acortada,18-24,0.000244,0.000319,0.7655
+URL acortada,25-34,0.001058,0.000319,3.3187
+URL acortada,35-49,0.000177,0.000319,0.5554
+URL acortada,50-64,0.000214,0.000319,0.6705
+URL acortada,65-xx,0.00011,0.000319,0.3464
+URL externa,13-17,0.004885,0.011321,0.4315
+URL externa,18-24,0.005335,0.011321,0.4713
+URL externa,25-34,0.008467,0.011321,0.7479
+URL externa,35-49,0.015197,0.011321,1.3424
+URL externa,50-64,0.012473,0.011321,1.1018
+URL externa,65-xx,0.022239,0.011321,1.9644
+solo URL,13-17,0.015833,0.023752,0.6666
+solo URL,18-24,0.018726,0.023752,0.7884
+solo URL,25-34,0.016474,0.023752,0.6936
+solo URL,35-49,0.023804,0.023752,1.0022
+solo URL,50-64,0.031682,0.023752,1.3339
+solo URL,65-xx,0.036819,0.023752,1.5502
+texto + URL,13-17,0.318539,0.37826,0.8421
+texto + URL,18-24,0.280757,0.37826,0.7422
+texto + URL,25-34,0.364765,0.37826,0.9643
+texto + URL,35-49,0.430712,0.37826,1.1387
+texto + URL,50-64,0.417748,0.37826,1.1044
+texto + URL,65-xx,0.463439,0.37826,1.2252
+multiples URL,13-17,0.0132,0.031818,0.4149
+multiples URL,18-24,0.015762,0.031818,0.4954
+multiples URL,25-34,0.023107,0.031818,0.7262
+multiples URL,35-49,0.038966,0.031818,1.2246
+multiples URL,50-64,0.034462,0.031818,1.0831
+multiples URL,65-xx,0.067489,0.031818,2.1211
+URL con query string,13-17,0.000104,0.000224,0.4632
+URL con query string,18-24,0.000314,0.000224,1.3986
+URL con query string,25-34,0.000247,0.000224,1.1004
+URL con query string,35-49,0.000354,0.000224,1.5785
+URL con query string,50-64,0.000214,0.000224,0.9529
+URL con query string,65-xx,0.00011,0.000224,0.4922
+longitud media del texto,13-17,73.47,90.11,0.8154
+longitud media de la URL mas larga,13-17,7.46,8.93,0.8353
+longitud media del texto,18-24,72.57,90.11,0.8053
+longitud media de la URL mas larga,18-24,6.69,8.93,0.7491
+longitud media del texto,25-34,84.77,90.11,0.9407
+longitud media de la URL mas larga,25-34,8.47,8.93,0.9481
+longitud media del texto,35-49,96.03,90.11,1.0657
+longitud media de la URL mas larga,35-49,10.11,8.93,1.1319
+longitud media del texto,50-64,104.41,90.11,1.1587
+longitud media de la URL mas larga,50-64,10.02,8.93,1.1217
+longitud media del texto,65-xx,110.97,90.11,1.2314
+longitud media de la URL mas larga,65-xx,10.99,8.93,1.2312
+longitud media del texto en filas CON url,todas,94.79,,1.0519
+longitud media del texto en filas SIN url,todas,86.96,,

@@ -1,0 +1,372 @@
+{
+  "fase": "V28 01 P1 gap analysis",
+  "fecha": "2026-09-28",
+  "experimenta": false,
+  "busquedas": {
+    "ovo_sklearn": {
+      "ficheros": 0,
+      "muestras": [],
+      "existe": false
+    },
+    "ovr_sklearn": {
+      "ficheros": 8,
+      "muestras": [
+        "scripts/baselines_b0_b5.py (2)",
+        "scripts/experimento_e009_modelos_clasicos.py (2)",
+        "scripts/experimento_e016_e017.py (2)"
+      ],
+      "existe": true
+    },
+    "voting": {
+      "ficheros": 0,
+      "muestras": [],
+      "existe": false
+    },
+    "cadena_clasificadores": {
+      "ficheros": 0,
+      "muestras": [],
+      "existe": false
+    },
+    "dirichlet_evidencia": {
+      "ficheros": 3,
+      "muestras": [
+        "scripts/fase03_linguistic.py (4)",
+        "scripts/fase_final_reporte.py (1)",
+        "src/eda.py (5)"
+      ],
+      "existe": true
+    },
+    "subespacio_features": {
+      "ficheros": 1,
+      "muestras": [
+        "scripts/v19_x1_explotacion.py (3)"
+      ],
+      "existe": true
+    },
+    "colsample": {
+      "ficheros": 12,
+      "muestras": [
+        "scripts/baselines_b0_b5.py (1)",
+        "scripts/experimento_e022_ensamble_final.py (1)",
+        "scripts/v19_b1_boosting.py (1)"
+      ],
+      "existe": true
+    },
+    "bagging_filas": {
+      "ficheros": 6,
+      "muestras": [
+        "scripts/v19_b1_boosting.py (1)",
+        "scripts/v20_f1_f2.py (1)",
+        "scripts/v21_b1.py (1)"
+      ],
+      "existe": true
+    },
+    "geometria_consenso": {
+      "ficheros": 1,
+      "muestras": [
+        "scripts/advanced_04_incertidumbre.py (9)"
+      ],
+      "existe": true
+    }
+  },
+  "bloque_incertidumbre_ya_medido": {
+    "existe": true,
+    "comparable": true,
+    "baseline_v09": {
+      "n_features": 267,
+      "macro_f1": 0.5897
+    },
+    "con_incertidumbre": {
+      "n_features": 318,
+      "macro_f1": 0.5898
+    },
+    "delta": 0.0001,
+    "fuente": "reports/tables/advanced_04_variantes.csv"
+  },
+  "confusion_v20": {
+    "matriz": [
+      [
+        18968,
+        6222,
+        1471,
+        816,
+        842,
+        544
+      ],
+      [
+        4571,
+        15659,
+        4022,
+        1823,
+        1562,
+        1039
+      ],
+      [
+        1680,
+        5926,
+        13278,
+        3349,
+        2468,
+        1646
+      ],
+      [
+        766,
+        2212,
+        3655,
+        15173,
+        3742,
+        2682
+      ],
+      [
+        459,
+        1092,
+        1756,
+        2466,
+        19727,
+        2560
+      ],
+      [
+        337,
+        794,
+        957,
+        1503,
+        3043,
+        20526
+      ]
+    ],
+    "clases": [
+      "13-17",
+      "18-24",
+      "25-34",
+      "35-49",
+      "50-64",
+      "65-xx"
+    ],
+    "errores_totales": 66005,
+    "accuracy": 0.610213,
+    "pares_ordenados": [
+      {
+        "par": "13-17|18-24",
+        "total": 10793,
+        "a_hacia_b": 6222,
+        "b_hacia_a": 4571
+      },
+      {
+        "par": "18-24|25-34",
+        "total": 9948,
+        "a_hacia_b": 4022,
+        "b_hacia_a": 5926
+      },
+      {
+        "par": "25-34|35-49",
+        "total": 7004,
+        "a_hacia_b": 3349,
+        "b_hacia_a": 3655
+      },
+      {
+        "par": "35-49|50-64",
+        "total": 6208,
+        "a_hacia_b": 3742,
+        "b_hacia_a": 2466
+      },
+      {
+        "par": "50-64|65-xx",
+        "total": 5603,
+        "a_hacia_b": 2560,
+        "b_hacia_a": 3043
+      },
+      {
+        "par": "25-34|50-64",
+        "total": 4224,
+        "a_hacia_b": 2468,
+        "b_hacia_a": 1756
+      },
+      {
+        "par": "35-49|65-xx",
+        "total": 4185,
+        "a_hacia_b": 2682,
+        "b_hacia_a": 1503
+      },
+      {
+        "par": "18-24|35-49",
+        "total": 4035,
+        "a_hacia_b": 1823,
+        "b_hacia_a": 2212
+      },
+      {
+        "par": "13-17|25-34",
+        "total": 3151,
+        "a_hacia_b": 1471,
+        "b_hacia_a": 1680
+      },
+      {
+        "par": "18-24|50-64",
+        "total": 2654,
+        "a_hacia_b": 1562,
+        "b_hacia_a": 1092
+      },
+      {
+        "par": "25-34|65-xx",
+        "total": 2603,
+        "a_hacia_b": 1646,
+        "b_hacia_a": 957
+      },
+      {
+        "par": "18-24|65-xx",
+        "total": 1833,
+        "a_hacia_b": 1039,
+        "b_hacia_a": 794
+      },
+      {
+        "par": "13-17|35-49",
+        "total": 1582,
+        "a_hacia_b": 816,
+        "b_hacia_a": 766
+      },
+      {
+        "par": "13-17|50-64",
+        "total": 1301,
+        "a_hacia_b": 842,
+        "b_hacia_a": 459
+      },
+      {
+        "par": "13-17|65-xx",
+        "total": 881,
+        "a_hacia_b": 544,
+        "b_hacia_a": 337
+      }
+    ],
+    "pares_adyacentes": [
+      {
+        "par": "13-17|18-24",
+        "total": 10793,
+        "a_hacia_b": 6222,
+        "b_hacia_a": 4571
+      },
+      {
+        "par": "18-24|25-34",
+        "total": 9948,
+        "a_hacia_b": 4022,
+        "b_hacia_a": 5926
+      },
+      {
+        "par": "25-34|35-49",
+        "total": 7004,
+        "a_hacia_b": 3349,
+        "b_hacia_a": 3655
+      },
+      {
+        "par": "35-49|50-64",
+        "total": 6208,
+        "a_hacia_b": 3742,
+        "b_hacia_a": 2466
+      },
+      {
+        "par": "50-64|65-xx",
+        "total": 5603,
+        "a_hacia_b": 2560,
+        "b_hacia_a": 3043
+      }
+    ],
+    "errores_en_5_adyacentes": 39556,
+    "proporcion_errores_en_5_adyacentes": 0.599288,
+    "criterio_de_seleccion": "pares con al menos 5000 confusiones mutuas en la confusion del control V20, fijada antes de ejecutar C",
+    "pares_seleccionados": [
+      "13-17|18-24",
+      "18-24|25-34",
+      "25-34|35-49",
+      "35-49|50-64",
+      "50-64|65-xx"
+    ],
+    "los_5_adyacentes_estan_todos": true
+  },
+  "tecnicas": [
+    {
+      "ID": "A",
+      "tecnica": "Meta-model bagging",
+      "veredicto": "PARTIALLY_TESTED",
+      "experimentos": 1,
+      "mecanismo": "bagging de filas para reducir la varianza de la estimacion",
+      "equivalencia_buscada": "bagging, bagging_fraction, subsample_freq, bootstrap de filas",
+      "evidencia": "`HIERBA` ya tiene `subsample=0.8` con `subsample_freq=1`, y en LightGBM eso hace que **cada uno de los 300 arboles se ajuste sobre una muestra aleatoria del 80% de las filas**. El meta-modelo de V20 **ya esta embolsado** a nivel de arbol.",
+      "por_que_no_esta_cerrada": "A anade un **segundo nivel**: N ajustes independientes en vez de un unico modelo con 300 arboles. Es un estimador distinto, aunque el mecanismo de remuestreo de filas no es nuevo en el proyecto. Se ejecuta UNA vez con N fijo y sin rejilla.",
+      "confundidor_a_controlar": "el numero de estimadores sube de 300 a 300 x N, luego parte de la mejora podria ser capacidad y no varianza. El control lo exige."
+    },
+    {
+      "ID": "B",
+      "tecnica": "Compact consensus geometry",
+      "veredicto": "ALREADY_CLOSED",
+      "experimentos": 0,
+      "mecanismo": "representacion compacta de incertidumbre y consenso entre miembros",
+      "equivalencia_buscada": "entropy, entropia, top1, top2, margin, agreement, consenso",
+      "evidencia": "`scripts/advanced_04_incertidumbre.py` implementa un **superconjunto** de lo que B propone: por miembro, confianza (probabilidad maxima), margen (top-1 menos top-2) y entropia de Shannon; entre miembros, reparto de votos por clase, pluralidad, desacuerdo y desviacion de scores por clase; y conf_media, conf_desv, entropia_media y entropia_desv.",
+      "resultado_ya_medido": "`reports/tables/advanced_04_variantes.csv`: v09 con 267 features da 0.5897, y **anadiendo el bloque de incertibilidad completo (318 features) da 0.5898: delta **0.0001**.",
+      "por_que_no_se_reabre": "No es una familia parecida, es **literalmente el mismo conjunto de features**, con 51 columnas mas y medido. Repetirlo con un subconjunto mas pequeno seria buscar un resultado negativo con menos presupuesto."
+    },
+    {
+      "ID": "C",
+      "tecnica": "Pairwise class decomposition",
+      "veredicto": "GENUINELY_NEW",
+      "experimentos": 1,
+      "mecanismo": "descomponer la decision multiclase en decisiones binarias disjuntas",
+      "equivalencia_buscada": "OneVsOneClassifier, VotingClassifier, ClassifierChain, pairwise, one_vs_rest",
+      "evidencia": "`OneVsOneClassifier`, `VotingClassifier` y `ClassifierChain` tienen **0**, **0** y **0** ficheros respectivamente: no existe. `OneVsRestClassifier` si aparece, pero en 8 ficheros y **siempre sobre modelos base**, nunca sobre el meta-modelo; ademas one-vs-rest no es one-vs-one.",
+      "distincion_con_lo_cerrado": "V20 entrena **cinco binarios anidados** de `clase <= k-1`, donde cada uno mezcla todas las clases por debajo del umbral. C entrena **cinco binarios disjuntos**, uno por par adyacente, sin solape y sin restriccion de orden. No es CORAL (pesos compartidos y umbrales ordenados) ni cumulative-link: aqui cada frontera la aprende un clasificador independiente con la matriz completa de 279 features.",
+      "motivacion_medida": "La confusion del control V20 muestra que los **cinco pares adyacentes concentran 59.9% de los 66,005 errores**: 13-17|18-24 (10,793), 18-24|25-34 (9,948), 25-34|35-49 (7,004), 35-49|50-64 (6,208), 50-64|65-xx (5,603). Ese es el objetivo mecanico de C.",
+      "criterio_de_pares_fijado": "pares con al menos 5000 confusiones mutuas en la confusion del control V20, fijada antes de ejecutar C",
+      "pares_seleccionados": [
+        "13-17|18-24",
+        "18-24|25-34",
+        "25-34|35-49",
+        "35-49|50-64",
+        "50-64|65-xx"
+      ]
+    },
+    {
+      "ID": "D",
+      "tecnica": "Dirichlet / evidence fusion",
+      "veredicto": "FUNCTIONALLY_DUPLICATED",
+      "experiments": 0,
+      "experimentos": 0,
+      "mecanismo": "fusion probabilistica explicita de la evidencia de los miembros",
+      "equivalencia_buscada": "dirichlet, dempster, evidential, evidence_fusion, belief_mass",
+      "evidencia": "La palabra `dirichlet` aparece en 3 ficheros, y **todos son el prior estadistico de Monroe et al. para ordenar terminos por log-odds en el EDA**, no fusion de evidencia. `dempster`, `evidential` y `belief_mass` tienen 0.",
+      "por_que_no_se_ejecuta": "Una fusion de evidencia tipo logarithmic opinion pool es un **cambio de combinador**, y los combinadores ya estan cerrados: **H04** (ponderar los miembros) y **H06** (apilar un segundo nivel), este ultimo con el argumento de que **V20 ya ES el segundo nivel**. Ademas el pool tendria que *sustituir* al meta-modelo LightGBM, quitando la capacidad que V27-04 demostro que usa. Ejecutarlo seria medir un Combinador ya cerrado, no un mecanismo nuevo."
+    },
+    {
+      "ID": "E",
+      "tecnica": "Meta-model con incertidumbre explicita",
+      "veredicto": "CLOSED_BY_DUPLICATION",
+      "experimentos": 0,
+      "mecanismo": "condicionar el meta-modelo al riesgo segun desacuerdo entre miembros",
+      "equivalencia_buscada": "misma que B, con la regla critica del punto 23 del brief",
+      "evidencia": "B ya incorpora entropia, margen, reparto de votos y desacuerdo, que son exactamente las tres magnitudes que E propone representar: consenso, desacuerdo y confianza.",
+      "por_que_no_se_ejecuta": "La **regla critica del punto 23** del propio brief lo dice: si B ya incorpora entropy, agreement, margin y disagreement, E debe considerarse duplicada salvo que introduzca un mecanismo **diferente de integracion**. E solo cambia como se integran las mismas magnitudes en un meta-modelo, y esa integracion es H06, cerrada. Como B esta cerrada por equivalencia con un numero medido, E cae con ella."
+    },
+    {
+      "ID": "F",
+      "tecnica": "Randomized meta-subspace",
+      "veredicto": "FUNCTIONALLY_DUPLICATED",
+      "experimentos": 0,
+      "mecanismo": "entrenar meta-modelos sobre subespacios aleatorios de columnas",
+      "equivalencia_buscada": "colsample_bytree, feature_fraction, subspace, subespacio",
+      "evidencia": "`HIERBA` ya tiene **`colsample_bytree=0.5`**: cada arbol ve un subconjunto aleatorio de la mitad de las 279 columnas, y **se mantienen todas las columnas disponibles**. Eso es exactamente el mecanismo que F describe, y la distincion que el brief traza frente a V25 (V25 eliminaba columnas; F las aleatoriza) ya esta implementada.",
+      "medido_ademas": "V27-04 lo comprobó como control: quitar `colsample_bytree` **no cambia** el numero de features distintas que el modelo abre (siguen siendo 7). La aleatorizacion del subespacio no es lo que decide cuales se usan.",
+      "por_que_no_se_ejecuta": "Ejecutarlo seria medir un hiperparametro que ya esta activo, y ademas con una fraccion distinta, lo que el brief prohibe como rejilla."
+    }
+  ],
+  "resumen": {
+    "ALREADY_CLOSED": 1,
+    "CLOSED_BY_DUPLICATION": 1,
+    "FUNCTIONALLY_DUPLICATED": 2,
+    "GENUINELY_NEW": 1,
+    "PARTIALLY_TESTED": 1
+  },
+  "supervivientes": [
+    "A",
+    "C"
+  ],
+  "presupuesto_maximo": 8,
+  "presupuesto_que_gasta": 2,
+  "segundos": 1.0
+}

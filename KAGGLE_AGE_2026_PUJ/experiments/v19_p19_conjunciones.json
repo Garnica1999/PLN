@@ -1,0 +1,267 @@
+{
+  "fase": "V13 · P19 arboles de conjunciones",
+  "fecha": "2026-09-26",
+  "familias": {
+    "causal": [
+      "porque",
+      "pues",
+      "dado",
+      "puesto",
+      "visto"
+    ],
+    "concesiva": [
+      "aunque",
+      "aun",
+      "siquiera",
+      "pese"
+    ],
+    "condicional": [
+      "si",
+      "caso",
+      "mientras",
+      "siempre",
+      "salvo"
+    ],
+    "temporal": [
+      "cuando",
+      "entonces",
+      "antes",
+      "despues",
+      "apenas",
+      "mientras"
+    ],
+    "comparativa": [
+      "como",
+      "cual",
+      "cuanto",
+      "tanto",
+      "igual",
+      "similar"
+    ],
+    "consecutiva": [
+      "luego",
+      "asi",
+      "modo",
+      "consecuencia",
+      "entonces"
+    ],
+    "adversativa": [
+      "pero",
+      "ahora",
+      "cambio",
+      "embargo",
+      "consigo"
+    ],
+    "sustitutiva": [
+      "que",
+      "quien",
+      "cuyo",
+      "cual"
+    ],
+    "disyuntiva": [
+      "o",
+      "ora",
+      "ahora",
+      "ya"
+    ]
+  },
+  "n_caracteristicas": 36,
+  "profundidades_probadas": [
+    4,
+    6,
+    8
+  ],
+  "cobertura": [
+    {
+      "funcion": "causal",
+      "formas": "porque pues dado puesto visto",
+      "documentos_con_la_familia": 3823,
+      "apariciones_totales": 3978,
+      "formas_sobre_el_minimo": 4,
+      "formas_totales": 5,
+      "detalle": "porque:2,375 pues:678 dado:232 puesto:139 visto:440"
+    },
+    {
+      "funcion": "concesiva",
+      "formas": "aunque aun siquiera pese",
+      "documentos_con_la_familia": 1305,
+      "apariciones_totales": 1334,
+      "formas_sobre_el_minimo": 2,
+      "formas_totales": 4,
+      "detalle": "aunque:476 aun:680 siquiera:107 pese:47"
+    },
+    {
+      "funcion": "condicional",
+      "formas": "si caso mientras siempre salvo",
+      "documentos_con_la_familia": 11421,
+      "apariciones_totales": 12333,
+      "formas_sobre_el_minimo": 4,
+      "formas_totales": 5,
+      "detalle": "si:8,380 caso:431 mientras:574 siempre:2,184 salvo:53"
+    },
+    {
+      "funcion": "temporal",
+      "formas": "cuando entonces antes despues apenas mientras",
+      "documentos_con_la_familia": 6656,
+      "apariciones_totales": 7004,
+      "formas_sobre_el_minimo": 5,
+      "formas_totales": 6,
+      "detalle": "cuando:3,960 entonces:387 antes:806 despues:942 apenas:128 mientras:574"
+    },
+    {
+      "funcion": "comparativa",
+      "formas": "como cual cuanto tanto igual similar",
+      "documentos_con_la_familia": 9438,
+      "apariciones_totales": 10098,
+      "formas_sobre_el_minimo": 5,
+      "formas_totales": 6,
+      "detalle": "como:7,199 cual:622 cuanto:282 tanto:882 igual:655 similar:20"
+    },
+    {
+      "funcion": "consecutiva",
+      "formas": "luego asi modo consecuencia entonces",
+      "documentos_con_la_familia": 3942,
+      "apariciones_totales": 4053,
+      "formas_sobre_el_minimo": 3,
+      "formas_totales": 5,
+      "detalle": "luego:462 asi:2,996 modo:108 consecuencia:22 entonces:387"
+    },
+    {
+      "funcion": "adversativa",
+      "formas": "pero ahora cambio embargo consigo",
+      "documentos_con_la_familia": 8037,
+      "apariciones_totales": 8300,
+      "formas_sobre_el_minimo": 3,
+      "formas_totales": 5,
+      "detalle": "pero:5,340 ahora:2,268 cambio:506 embargo:57 consigo:24"
+    },
+    {
+      "funcion": "sustitutiva",
+      "formas": "que quien cuyo cual",
+      "documentos_con_la_familia": 41720,
+      "apariciones_totales": 53241,
+      "formas_sobre_el_minimo": 3,
+      "formas_totales": 4,
+      "detalle": "que:39,912 quien:2,039 cuyo:10 cual:622"
+    },
+    {
+      "funcion": "disyuntiva",
+      "formas": "o ora ahora ya",
+      "documentos_con_la_familia": 7293,
+      "apariciones_totales": 7646,
+      "formas_sobre_el_minimo": 2,
+      "formas_totales": 4,
+      "detalle": "o:0 ora:12 ahora:2,268 ya:5,147"
+    }
+  ],
+  "suelo_azar": 0.1667,
+  "redundantes_contra_v12": 0,
+  "correlacion_maxima_v12": 0.5593,
+  "control": [
+    {
+      "modelo": "arbol_profundidad_4",
+      "macro_f1": 0.1489,
+      "std": 0.0008,
+      "per_fold": [
+        0.1492,
+        0.1479,
+        0.1481,
+        0.1502,
+        0.149
+      ],
+      "suelo_azar": 0.1667,
+      "supera_el_azar": false
+    },
+    {
+      "modelo": "arbol_profundidad_6",
+      "macro_f1": 0.1512,
+      "std": 0.0039,
+      "per_fold": [
+        0.1536,
+        0.148,
+        0.1537,
+        0.1554,
+        0.1452
+      ],
+      "suelo_azar": 0.1667,
+      "supera_el_azar": false
+    },
+    {
+      "modelo": "arbol_profundidad_8",
+      "macro_f1": 0.1539,
+      "std": 0.0017,
+      "per_fold": [
+        0.1532,
+        0.1547,
+        0.1566,
+        0.1537,
+        0.1513
+      ],
+      "suelo_azar": 0.1667,
+      "supera_el_azar": false
+    },
+    {
+      "modelo": "logreg",
+      "macro_f1": 0.1539,
+      "std": 0.0008,
+      "per_fold": [
+        0.1539,
+        0.1535,
+        0.1556,
+        0.1531,
+        0.1536
+      ],
+      "suelo_azar": 0.1667,
+      "supera_el_azar": false
+    },
+    {
+      "modelo": "linearsvc",
+      "macro_f1": 0.1522,
+      "std": 0.0016,
+      "per_fold": [
+        0.1517,
+        0.1499,
+        0.1549,
+        0.1526,
+        0.1521
+      ],
+      "suelo_azar": 0.1667,
+      "supera_el_azar": false
+    }
+  ],
+  "mejor_control": {
+    "modelo": "arbol_profundidad_8",
+    "macro_f1": 0.1539,
+    "std": 0.0017,
+    "per_fold": [
+      0.1532,
+      0.1547,
+      0.1566,
+      0.1537,
+      0.1513
+    ],
+    "suelo_azar": 0.1667,
+    "supera_el_azar": false
+  },
+  "prechequeo": {
+    "errores_v12": 67610,
+    "rescate": 0,
+    "dano": 0,
+    "neto": 0,
+    "umbral": 1014,
+    "pasa": false,
+    "por_frontera": {
+      "18-24|25-34": {
+        "rescate": 0,
+        "dano": 0,
+        "neto": 0
+      },
+      "25-34|35-49": {
+        "rescate": 0,
+        "dano": 0,
+        "neto": 0
+      }
+    }
+  },
+  "segundos": 309.6
+}

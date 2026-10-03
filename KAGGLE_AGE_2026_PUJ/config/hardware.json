@@ -1,0 +1,29 @@
+{
+  "fecha": "2026-10-01",
+  "proposito": "auditoria de experimentos V1-V37 (solo lectura y analisis; sin reentrenamiento)",
+  "python": "/home/carlos/venv/bin/python",
+  "python_version": "3.14.7",
+  "cpu": {
+    "hilos_logicos": 32
+  },
+  "ram_gb": 31,
+  "gpu": {
+    "nombre": "AMD Radeon RX 9070 XT",
+    "tipo": null,
+    "vram_gb": 15.9,
+    "torch_cuda": true
+  },
+  "pci_display": [
+    "Advanced Micro Devices, Inc. [AMD/ATI] Navi 48 [Radeon RX 9070/9070 XT/9070 GRE] (rev c0)"
+  ],
+  "librerias": {
+    "torch": "2.14.0+rocm7.2",
+    "sklearn": "1.8.0",
+    "numpy": "1.26.4",
+    "pandas": "2.3.3"
+  },
+  "notas": [
+    "La auditoria NO entrena: la GPU se usa solo si un agente la necesita para inspeccion, nunca para repetir un experimento.",
+    "Toda lectura de metricas se hace desde artefactos ya existentes en disco (experiments/, artifacts/, reports/)."
+  ]
+}

@@ -1,0 +1,29 @@
+# familia: registro
+# subcategoria: marcas_risa
+# descripcion: Marcas de risa y onomatopeyas del español escrito y su equivalente fonético, sin emojis (el corpus no los tiene, D-009).
+# idioma: es
+# procedencia: elaborado en este proyecto (conocimiento linguistico general)
+# licencia: del proyecto; sin datos externos y sin etiquetas de edad
+# riesgo: ninguno
+# fecha: 2026-09-25
+# entradas_declaradas: 28
+# cribado_corpus: frecuencia minima 3 en el train
+ajaj
+ajajaj
+hahaha
+hehehe
+jaja
+jajaj
+jajaja
+jajajaja
+jajajajaj
+je
+jeje
+jejeje
+jijiji
+jijijiji
+kkkk
+lol
+xd
+xdd
+xddd

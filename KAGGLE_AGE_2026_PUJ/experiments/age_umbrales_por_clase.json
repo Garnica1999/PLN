@@ -1,0 +1,163 @@
+{
+  "fase": "umbrales por clase para macro-F1",
+  "fecha": "2026-10-10",
+  "experimenta": true,
+  "baseline_v30": 0.6134471,
+  "por_que_no_es_duplicado": "V20-F3-UMBRALES era una cadena de cinco discriminadores binarios anidados, o sea una ARQUITECTURA ordinal. P33/P34/G12 inyectaban un residuo de otra fuente. PH32/PH33 calibraban las probabilidades. Esto no anade informacion: cambia la REGLA DE DECISION con la informacion existente, que es otra cosa",
+  "evidencia_que_lo_motiva": {
+    "clases_balanceadas_en_train": [
+      0.1704,
+      0.1693,
+      0.1674,
+      0.1667,
+      0.1657,
+      0.1604
+    ],
+    "prediccion_de_v30_no_balanceada": [
+      0.1581,
+      0.1874,
+      0.1519,
+      0.146,
+      0.1856,
+      0.1709
+    ],
+    "f1_por_clase": [
+      0.6854,
+      0.5208,
+      0.4992,
+      0.5731,
+      0.6671,
+      0.7351
+    ],
+    "lectura": "las clases son perfectamente balanceadas y argmax favorece a las faciles, que es exactamente el caso en el que la regla plug-in supera a argmax para macro-F1"
+  },
+  "resultados": [
+    {
+      "brazo": "uniforme",
+      "corrected_cv": 0.6134471,
+      "delta_vs_v30": 0.0,
+      "folds": [
+        0.616236,
+        0.616687,
+        0.613174,
+        0.613512,
+        0.607654
+      ],
+      "folds_positivos": 0,
+      "rescate": 0,
+      "danio": 0,
+      "neto": 0,
+      "filas_que_cambian": 0,
+      "ratio_sobre_variabilidad": 0.0
+    },
+    {
+      "brazo": "plug_in",
+      "corrected_cv": 0.6154643,
+      "delta_vs_v30": 0.0020172,
+      "folds": [
+        0.618077,
+        0.618517,
+        0.615878,
+        0.615083,
+        0.609751
+      ],
+      "folds_positivos": 5,
+      "rescate": 3342,
+      "danio": 3699,
+      "neto": -357,
+      "filas_que_cambian": 11226,
+      "ratio_sobre_variabilidad": 2.273
+    },
+    {
+      "brazo": "permutado",
+      "corrected_cv": 0.6106569,
+      "delta_vs_v30": -0.0027902,
+      "folds": [
+        0.61522,
+        0.611907,
+        0.614637,
+        0.607446,
+        0.602234
+      ],
+      "folds_positivos": 1,
+      "rescate": 3716,
+      "danio": 4301,
+      "neto": -585,
+      "filas_que_cambian": 12945,
+      "ratio_sobre_variabilidad": 3.144
+    },
+    {
+      "brazo": "aleatorio",
+      "corrected_cv": 0.6087611,
+      "delta_vs_v30": -0.004686,
+      "folds": [
+        0.60743,
+        0.610265,
+        0.611848,
+        0.612852,
+        0.601041
+      ],
+      "folds_positivos": 0,
+      "rescate": 4027,
+      "danio": 4683,
+      "neto": -656,
+      "filas_que_cambian": 14385,
+      "ratio_sobre_variabilidad": 5.279
+    }
+  ],
+  "pesos_por_fold": [
+    [
+      1.0,
+      1.2214,
+      1.3499,
+      1.2214,
+      1.0513,
+      0.8607
+    ],
+    [
+      1.0,
+      1.1052,
+      1.2214,
+      1.1052,
+      0.9512,
+      0.7788
+    ],
+    [
+      1.0,
+      1.2214,
+      1.284,
+      1.2214,
+      1.0513,
+      0.9048
+    ],
+    [
+      1.0,
+      1.2214,
+      1.284,
+      1.1618,
+      1.0,
+      0.7788
+    ],
+    [
+      1.0,
+      1.1052,
+      1.2214,
+      1.1052,
+      0.9512,
+      0.7408
+    ]
+  ],
+  "veredicto": "PROMISING: cruza el gate doble",
+  "protocolo": {
+    "pesos": "ascenso por coordenadas en log-espacio, ajustados SOLO en los otros 4 folds (anidado)",
+    "semilla": 20261010,
+    "grados_de_libertad": "5 (la clase 0 se ancla en 1.0; multiplicar todos los pesos por una constante no cambia ningun argmax)"
+  },
+  "restricciones": {
+    "usa_test": false,
+    "usa_holdout": false,
+    "entrena_modelos": false,
+    "usa_leaderboard": false
+  },
+  "segundos": 75.2
+}

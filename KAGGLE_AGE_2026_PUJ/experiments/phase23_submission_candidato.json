@@ -1,0 +1,36 @@
+{
+  "fase": "candidato marginal — vista estructural",
+  "fecha": "2026-09-25",
+  "adoptado": false,
+  "motivo": "Δ CV +0,0018 (< +0,003 pre-registrado); holdout +0,0031",
+  "control_v12": {
+    "acuerdo_con_submission_v12": 0.9388
+  },
+  "control_candidato": {
+    "filas": 112892,
+    "checks": {
+      "columns_ok": true,
+      "columns_match_sample": true,
+      "rows_ok": true,
+      "ids_equal_test": true,
+      "ids_unique": true,
+      "ids_same_order": true,
+      "no_nan": true,
+      "labels_valid": true
+    },
+    "distribucion": {
+      "13-17": 18670,
+      "18-24": 19927,
+      "25-34": 17275,
+      "35-49": 17086,
+      "50-64": 19960,
+      "65-xx": 19974
+    },
+    "min_clase": 17086,
+    "max_clase": 19974,
+    "acuerdo_con_v12_pct": 89.5289,
+    "predicciones_distintas": 11821,
+    "archivo": "/home/carlos/Git/PLN/KAGGLE_AGE_2026_PUJ/submissions/age_submission_v13_candidato_estructura_NO_ADOPTADO.csv"
+  },
+  "segundos": 332.8
+}

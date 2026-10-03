@@ -1,0 +1,3 @@
+configuracion,ambos_correctos,ambos_incorrectos,solo_challenger,solo_v19,neto
+A profundidad max_depth 4 con num_leaves 8,102420,65679,620,617,3
+B regularizacion min_child_samples 800,102532,65844,455,505,-50

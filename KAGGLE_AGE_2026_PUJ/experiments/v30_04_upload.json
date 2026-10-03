@@ -1,0 +1,51 @@
+{
+  "fase": "V30 04 unica submission autorizada",
+  "fecha": "2026-09-30",
+  "archivo": "age_submission_v30_final_candidate.csv",
+  "sha256": "f543a715a1881c6128a860301b84a7273c3db8f8a709545be1e6267822e713be",
+  "bytes": 1356504,
+  "filas": 112892,
+  "nombre_sonda": "AGE_V30_FINAL_CANDIDATE",
+  "descripcion": "AGE V30 final candidate: V20 + LightGBM refinado con Optuna anidada",
+  "competicion": "playground-series-s4e11",
+  "candidato": "E1 Optuna macro-F1",
+  "pesos_congelados": {
+    "v20_f3b_oof_candidato": 0.3548,
+    "v29_lgbm_optuna": 0.3354,
+    "v30_lgbm_refinado": 0.3098
+  },
+  "checks_superados": 10,
+  "checks_total": 10,
+  "credencial": {
+    "fichero_presente": true,
+    "claves": [
+      "token"
+    ],
+    "formato": "token_solo",
+    "variables_de_entorno": {
+      "KAGGLE_USERNAME": false,
+      "KAGGLE_KEY": false,
+      "KAGGLE_API_TOKEN": false
+    },
+    "campos_vacios": []
+  },
+  "identidad_api": {
+    "comando": "competitions list",
+    "returncode": 1,
+    "autenticado": false,
+    "primera_linea_util": "Authentication required to call the Kaggle API."
+  },
+  "intentos": [],
+  "numero_de_submissions": 0,
+  "reglas": [
+    "exactamente una submission",
+    "sin variantes ni reintento con otro modelo",
+    "sin imprimir credenciales",
+    "el score no se usa para volver a optimizar"
+  ],
+  "estado": "STOP_SIN_CREDENCIAL",
+  "causa": "el fichero ~/.kaggle/kaggle.json existe pero solo contiene la clave `token`, que es el formato antiguo; el CLI 2.2.4 exige `username` y `key`, o bien autenticacion OAuth. Sin eso la API rechaza la llamada.",
+  "subido": false,
+  "solucion_para_el_usuario": "`kaggle auth login` (flujo OAuth, abre el navegador y cachea el token) o dejar un ~/.kaggle/kaggle.json con las claves `username` y `key`. Ambas vias las hace el usuario en su terminal; ninguna credencial tiene que pasar por esta conversacion.",
+  "fichero_listo_para_subir": true
+}

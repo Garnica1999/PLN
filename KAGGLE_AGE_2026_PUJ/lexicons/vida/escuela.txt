@@ -1,0 +1,37 @@
+# familia: vida
+# subcategoria: escuela
+# descripcion: Entorno de la segunda enseñanza: léxico de aula, tareas y evaluaciones.
+# idioma: es
+# procedencia: elaborado en este proyecto (conocimiento linguistico general)
+# licencia: del proyecto; sin datos externos y sin etiquetas de edad
+# riesgo: ninguno
+# fecha: 2026-09-25
+# entradas_declaradas: 33
+# cribado_corpus: frecuencia minima 3 en el train
+Escolares
+apuntes
+asistencia
+aula
+bachillerato
+boleta
+boletin
+colegio
+examen
+exámenes
+icfes
+liceo
+materia
+materias
+mochila
+nota
+notas
+parcial
+primaria
+promedio
+recreo
+salón
+secundaria
+tarea
+tareas
+trimestre
+uniforme

@@ -1,0 +1,145 @@
+{
+  "fase": "V17 · P5 meta-combinador local por frontera",
+  "fecha": "2026-09-26",
+  "n_entradas": 47,
+  "entradas_nuevas": 0,
+  "combinador": {
+    "modelo": "LogReg",
+    "C": 1.0,
+    "fuerzas": [
+      0.0,
+      0.25,
+      0.5,
+      0.75,
+      1.0
+    ],
+    "inyeccion": "redistribucion de la masa del par conservando el total",
+    "protocolo": "anidado: ajuste en el par del train exterior, fuerza elegida en bloque interior agrupado"
+  },
+  "referencia": {
+    "macro_f1": 0.6005,
+    "por_fold": [
+      0.6007,
+      0.605,
+      0.6032,
+      0.6004,
+      0.5928
+    ]
+  },
+  "candidata": {
+    "macro_f1": 0.6003,
+    "accuracy": 0.6006,
+    "por_fold": [
+      0.6007,
+      0.6054,
+      0.6032,
+      0.5994,
+      0.5924
+    ]
+  },
+  "delta": -0.0002,
+  "folds_positivos": 1,
+  "bootstrap_ic95": [
+    -0.000486,
+    7.6e-05,
+    0.0855
+  ],
+  "fronteras_referencia": {
+    "18-24|25-34": 0.4963,
+    "25-34|35-49": 0.4974
+  },
+  "fronteras_candidata": {
+    "18-24|25-34": 0.4953,
+    "25-34|35-49": 0.4968
+  },
+  "criterios": {
+    "efecto_minimo": false,
+    "folds_positivos": false,
+    "significacion": false,
+    "fronteras": false
+  },
+  "adopta": false,
+  "fuerzas": [
+    {
+      "Fold": 0,
+      "Frontera": "18-24|25-34",
+      "Filas_par_train": 45618,
+      "Fuerza_elegida": 1.0,
+      "MacroF1_interior": 0.1996,
+      "MacroF1_interior_sin_inyeccion": 0.199
+    },
+    {
+      "Fold": 0,
+      "Frontera": "25-34|35-49",
+      "Filas_par_train": 45261,
+      "Fuerza_elegida": 0.25,
+      "MacroF1_interior": 0.206,
+      "MacroF1_interior_sin_inyeccion": 0.206
+    },
+    {
+      "Fold": 1,
+      "Frontera": "18-24|25-34",
+      "Filas_par_train": 45618,
+      "Fuerza_elegida": 1.0,
+      "MacroF1_interior": 0.1978,
+      "MacroF1_interior_sin_inyeccion": 0.1973
+    },
+    {
+      "Fold": 1,
+      "Frontera": "25-34|35-49",
+      "Filas_par_train": 45262,
+      "Fuerza_elegida": 0.25,
+      "MacroF1_interior": 0.2026,
+      "MacroF1_interior_sin_inyeccion": 0.2025
+    },
+    {
+      "Fold": 2,
+      "Frontera": "18-24|25-34",
+      "Filas_par_train": 45619,
+      "Fuerza_elegida": 0.75,
+      "MacroF1_interior": 0.1979,
+      "MacroF1_interior_sin_inyeccion": 0.1966
+    },
+    {
+      "Fold": 2,
+      "Frontera": "25-34|35-49",
+      "Filas_par_train": 45262,
+      "Fuerza_elegida": 0.0,
+      "MacroF1_interior": 0.2032,
+      "MacroF1_interior_sin_inyeccion": 0.2032
+    },
+    {
+      "Fold": 3,
+      "Frontera": "18-24|25-34",
+      "Filas_par_train": 45619,
+      "Fuerza_elegida": 1.0,
+      "MacroF1_interior": 0.1994,
+      "MacroF1_interior_sin_inyeccion": 0.1989
+    },
+    {
+      "Fold": 3,
+      "Frontera": "25-34|35-49",
+      "Filas_par_train": 45262,
+      "Fuerza_elegida": 0.75,
+      "MacroF1_interior": 0.2047,
+      "MacroF1_interior_sin_inyeccion": 0.204
+    },
+    {
+      "Fold": 4,
+      "Frontera": "18-24|25-34",
+      "Filas_par_train": 45618,
+      "Fuerza_elegida": 0.5,
+      "MacroF1_interior": 0.2025,
+      "MacroF1_interior_sin_inyeccion": 0.202
+    },
+    {
+      "Fold": 4,
+      "Frontera": "25-34|35-49",
+      "Filas_par_train": 45261,
+      "Fuerza_elegida": 0.5,
+      "MacroF1_interior": 0.2066,
+      "MacroF1_interior_sin_inyeccion": 0.2058
+    }
+  ],
+  "segundos": 50.2
+}

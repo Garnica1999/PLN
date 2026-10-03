@@ -1,0 +1,76 @@
+{
+  "fase": "V30 00 P0 control absoluto",
+  "fecha": "2026-09-30",
+  "experimenta": false,
+  "control_v20": {
+    "corrected_cv_recomputado": 0.6097782,
+    "canonico": 0.6097782,
+    "reproduce_macro_f1": true,
+    "max_abs_diferencia_vs_artefacto": 0.0,
+    "reproduce_bit_a_bit": true,
+    "folds": [
+      33868,
+      33868,
+      33867,
+      33866,
+      33867
+    ],
+    "folds_esperados": [
+      33868,
+      33868,
+      33867,
+      33866,
+      33867
+    ],
+    "n_features": 279,
+    "folds_identicos": true
+  },
+  "control_lightgbm_v29": {
+    "corrected_cv_del_oof_en_disco": 0.6121698,
+    "corrected_cv_del_artefacto": 0.6121698,
+    "esperado": 0.6121698,
+    "coincide_con_artefacto": true,
+    "coincide_con_esperado": true,
+    "delta_vs_V20": 0.0023916,
+    "n_trials_por_fold": 30,
+    "n_trials_totales": 150,
+    "iteraciones_por_fold": [
+      499,
+      620,
+      698,
+      731,
+      638
+    ],
+    "best_trial_por_fold": [
+      18,
+      17,
+      26,
+      13,
+      26
+    ]
+  },
+  "control_ensemble_v29": {
+    "corrected_cv_reoptimizado": 0.612596,
+    "corrected_cv_de_V29": 0.612596,
+    "desviacion": 0.0,
+    "tolerancia": 0.002,
+    "reproduce": true,
+    "delta_vs_V20": 0.0028178,
+    "folds_por_fold": [
+      0.613386,
+      0.615891,
+      0.613724,
+      0.612996,
+      0.607049
+    ],
+    "folds_positivos": 5,
+    "n_miembros_pool": 16,
+    "declaracion": "Optuna es un metodo de busqueda estocastica. Con TPESampler y semilla fija el resultado es reproducible en la misma version de las librerias, pero no se declara exactitud bit a bit entre reproducciones. La desviacion medida se registra al lado del resultado."
+  },
+  "v30_autorizado": true,
+  "cv_v20": 0.6097782,
+  "hash_submission_v20": "2c964af78c90bf0884b4107665b5100f0c1aa2d9059c47692e613578b6cf660d",
+  "data_hash": "32393abca28db4c9",
+  "artefactos_de_v20_tocados": [],
+  "segundos": 127.7
+}

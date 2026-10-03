@@ -1,0 +1,7 @@
+anotador,brazo,corrected_cv,delta_vs_baseline,folds_positivos,filas_que_cambian
+md,real,0.6073376,-0.0086357,0,19373
+md,barajado_filas,0.6120204,-0.0039528,0,13289
+md,barajado_intra,0.6079423,-0.008031,0,18433
+lg,real,0.6075564,-0.0084168,0,19167
+lg,barajado_filas,0.6118112,-0.004162,0,13513
+lg,barajado_intra,0.6088148,-0.0071584,0,18241

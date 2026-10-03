@@ -1,0 +1,52 @@
+# familia: registro
+# subcategoria: deformacion_ortografica
+# descripcion: Deformación ortográfica del registro escrito informal: voseo y formas recortadas, sin depender de emojis ni de mayúsculas.
+# idioma: es
+# procedencia: elaborado en este proyecto (conocimiento linguistico general)
+# licencia: del proyecto; sin datos externos y sin etiquetas de edad
+# riesgo: ninguno
+# fecha: 2026-09-25
+# entradas_declaradas: 57
+# cribado_corpus: frecuencia minima 3 en el train
+abuelita
+abuelito
+amiguita
+amiguito
+anda
+bebe
+besito
+callate
+casita
+chabón
+chiquita
+chiquito
+comprá
+culia
+culiao
+dejate
+fantasia
+fantastic
+fijate
+habla
+hablá
+haces
+levantate
+mama
+mami
+mamita
+mire
+nena
+nene
+papa
+papi
+papito
+pelotuda
+pelotudo
+podes
+primita
+primito
+queres
+sos
+tenes
+tomá
+vos

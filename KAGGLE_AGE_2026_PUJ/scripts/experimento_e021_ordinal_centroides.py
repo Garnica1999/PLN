@@ -1,8 +1,8 @@
 """E-021 — Miembros ordinales y de centroides para el ensamble.
 
 Contexto (Fase 17)
-    La confusión del ensamble es casi toda entre **rangos contiguos** (18-24↔25-34 15,3%;
-    35-49↔50-64 14,2%) y las clases extremas se clasifican bien. El clasificador nominal
+    La confusión del ensamble es casi toda entre **rangos contiguos** (18-24<->25-34 15,3%;
+    35-49<->50-64 14,2%) y las clases extremas se clasifican bien. El clasificador nominal
     desaprovecha esa estructura.
 
 Hipótesis

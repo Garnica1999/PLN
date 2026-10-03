@@ -26,7 +26,7 @@ CELLS = [
 
 **Fase 2 del plan.** Pregunta rectora: *¿qué información del tweet permite inferir el rango
 de edad?* Aquí se mide, no se asume: cada familia de features se somete a prueba con tamaño
-de efecto y se documenta con el formato OBSERVACIÓN → INTERPRETACIÓN → HIPÓTESIS →
+de efecto y se documenta con el formato OBSERVACIÓN -> INTERPRETACIÓN -> HIPÓTESIS ->
 CONSECUENCIA.
 
 **Reglas.** Todo se calcula **solo sobre train**. Las features densas de este notebook son

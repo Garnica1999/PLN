@@ -1,0 +1,118 @@
+{
+  "fase": "V13 · P16 suficiencia de V12 sobre los bloques nuevos",
+  "fecha": "2026-09-25",
+  "metodo": "reconstruccion lineal ridge dentro de cada fold + control block-only",
+  "rejilla_alfa": [
+    0.01,
+    0.1,
+    1.0,
+    10.0,
+    100.0,
+    1000.0,
+    10000.0,
+    100000.0,
+    1000000.0,
+    10000000.0
+  ],
+  "alfas_por_bloque": {
+    "P1 tokens": [
+      0.01,
+      0.01,
+      0.01,
+      0.01,
+      0.01
+    ],
+    "P17 pronombres": [
+      0.01,
+      0.01,
+      0.01,
+      0.01,
+      0.01
+    ],
+    "P20 modalidad": [
+      0.01,
+      0.01,
+      0.01,
+      0.01,
+      0.01
+    ]
+  },
+  "suelo_azar": 0.1667,
+  "por_bloque": {
+    "P1 tokens": {
+      "r2_mediano": 0.0949,
+      "r2_maximo": 0.4243,
+      "variables_por_encima_de_0_5": 0,
+      "variables_por_encima_de_0_8": 0,
+      "control_original": 0.3997,
+      "control_reconstruido": 0.0485
+    },
+    "P17 pronombres": {
+      "r2_mediano": 0.0205,
+      "r2_maximo": 0.0788,
+      "variables_por_encima_de_0_5": 0,
+      "variables_por_encima_de_0_8": 0,
+      "control_original": 0.1918,
+      "control_reconstruido": 0.0485
+    },
+    "P20 modalidad": {
+      "r2_mediano": 0.0086,
+      "r2_maximo": 0.0424,
+      "variables_por_encima_de_0_5": 0,
+      "variables_por_encima_de_0_8": 0,
+      "control_original": 0.127,
+      "control_reconstruido": 0.0485
+    }
+  },
+  "controles": [
+    {
+      "bloque": "P1 tokens",
+      "modelo": "logreg",
+      "control_original": 0.3915,
+      "control_reconstruido": 0.0485,
+      "diferencia": -0.3429,
+      "suelo_azar": 0.1667
+    },
+    {
+      "bloque": "P1 tokens",
+      "modelo": "linearsvc",
+      "control_original": 0.3841,
+      "control_reconstruido": 0.0485,
+      "diferencia": -0.3355,
+      "suelo_azar": 0.1667
+    },
+    {
+      "bloque": "P17 pronombres",
+      "modelo": "logreg",
+      "control_original": 0.1918,
+      "control_reconstruido": 0.0485,
+      "diferencia": -0.1432,
+      "suelo_azar": 0.1667
+    },
+    {
+      "bloque": "P17 pronombres",
+      "modelo": "linearsvc",
+      "control_original": 0.1881,
+      "control_reconstruido": 0.0485,
+      "diferencia": -0.1395,
+      "suelo_azar": 0.1667
+    },
+    {
+      "bloque": "P20 modalidad",
+      "modelo": "logreg",
+      "control_original": 0.127,
+      "control_reconstruido": 0.0485,
+      "diferencia": -0.0784,
+      "suelo_azar": 0.1667
+    },
+    {
+      "bloque": "P20 modalidad",
+      "modelo": "linearsvc",
+      "control_original": 0.1259,
+      "control_reconstruido": 0.0485,
+      "diferencia": -0.0774,
+      "suelo_azar": 0.1667
+    }
+  ],
+  "segundos": 2724.4
+}

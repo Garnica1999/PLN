@@ -1,0 +1,10 @@
+dimension,se_conserva,representacion_que_lo_captura,probado_en,estado
+contenido lexico,"si, integro",TF-IDF de palabra (1-2) y char_wb (3-5),desde el baseline E-001,EN USO
+case (mayusculas y minusculas),"no en el TF-IDF, que aplica lowercase","canal `ortografia`: bloques CAPS, ratio de mayusculas, CAPS por palabra","V31-03 (+0,001993 en banco) y V31-06 (sin aporte en la integracion)","PROBADO, SIN APORTE CERRADO"
+puntuacion,"no en el TF-IDF, que tokeniza con \w+","canal `ortografia`: repeticiones, y canal `discurso`: preguntas, exclamaciones, suspension",V31-03 y V31-06,"PROBADO, SIN APORTE CERRADO"
+elongaciones y caracteres repetidos,no,"canal `ortografia`: REPETICION, REPVOCAL, REPCONSON, REPLONG",V31-03 y V31-06,"PROBADO, SIN APORTE CERRADO"
+URLs,"si, como token de la propia URL","canal `url` (presencia, tipo, longitud, posicion) y la taxonomia de P32/P33","V31-02, V31-03, P33-P02","PROBADO, SIN APORTE CERRADO"
+menciones y hashtags,si como token,"el propio TF-IDF de palabra, y el canal `discurso` para la posicion",features estructuradas de V20 y V31,EN USO
+longitud,si,"bloque estructurado de 279 features (LENBUCKET, NTOKENS) y los slices de longitud de V31-F",V20 y V31,EN USO
+posicion de los elementos,no,canales `posicion` y `forma_palabra` de V31-03,"V31-03: **negativos** (-0,002303 y -0,002984, 0/5 folds)",PROBADO Y CERRADO NEGATIVO
+acentos y ortografia,"si, en el texto original","el TF-IDF de palabra sin strip_accents, y las listas de marcadores de V31",V31-03,EN USO

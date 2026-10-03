@@ -1,0 +1,445 @@
+{
+  "fase": "B — errores y desacuerdo",
+  "fecha": "2026-09-25",
+  "global": {
+    "macro_f1": 0.6005,
+    "accuracy": 0.6007,
+    "f1_por_clase": {
+      "13-17": 0.671,
+      "18-24": 0.5059,
+      "25-34": 0.4858,
+      "35-49": 0.5593,
+      "50-64": 0.6549,
+      "65-xx": 0.7261
+    },
+    "error_por_distancia_ordinal": {
+      "0": 60.073,
+      "1": 23.836,
+      "2": 9.562,
+      "3": 4.086,
+      "4": 1.907,
+      "5": 0.535
+    },
+    "matriz_confusion": [
+      [
+        18773,
+        6205,
+        1640,
+        811,
+        901,
+        533
+      ],
+      [
+        4723,
+        15144,
+        4355,
+        1848,
+        1603,
+        1003
+      ],
+      [
+        1861,
+        5767,
+        13158,
+        3463,
+        2522,
+        1576
+      ],
+      [
+        826,
+        2223,
+        3789,
+        14981,
+        3824,
+        2587
+      ],
+      [
+        538,
+        1072,
+        1847,
+        2573,
+        19493,
+        2537
+      ],
+      [
+        373,
+        788,
+        1031,
+        1664,
+        3127,
+        20177
+      ]
+    ],
+    "matriz_confusion_normalizada": [
+      [
+        0.6504,
+        0.215,
+        0.0568,
+        0.0281,
+        0.0312,
+        0.0185
+      ],
+      [
+        0.1647,
+        0.5281,
+        0.1519,
+        0.0644,
+        0.0559,
+        0.035
+      ],
+      [
+        0.0657,
+        0.2034,
+        0.4642,
+        0.1222,
+        0.089,
+        0.0556
+      ],
+      [
+        0.0293,
+        0.0787,
+        0.1342,
+        0.5307,
+        0.1355,
+        0.0916
+      ],
+      [
+        0.0192,
+        0.0382,
+        0.0658,
+        0.0917,
+        0.6947,
+        0.0904
+      ],
+      [
+        0.0137,
+        0.029,
+        0.038,
+        0.0613,
+        0.1151,
+        0.7429
+      ]
+    ]
+  },
+  "votos": {
+    "miembros_que_votan": 13,
+    "n_aciertos_por_fila": {
+      "0": 23485,
+      "1": 19283,
+      "2": 13633,
+      "3": 8287,
+      "4": 5236,
+      "5": 3915,
+      "6": 3785,
+      "7": 4918,
+      "8": 7459,
+      "9": 12209,
+      "10": 16907,
+      "11": 21074,
+      "12": 20363,
+      "13": 8782
+    },
+    "pct_todos_fallan": 13.869,
+    "pct_exactamente_uno_acierta": 11.387,
+    "pct_rescatable": 26.7,
+    "pct_empate_top2": 1.752,
+    "consenso_medio_global": 0.7422,
+    "consenso_medio_correctas": 0.781,
+    "consenso_medio_incorrectas": 0.6839,
+    "entropia_media_correctas": 0.5855,
+    "entropia_media_incorrectas": 0.7917,
+    "share_ensamble_medio_correctas": 0.717,
+    "share_ensamble_medio_incorrectas": 0.5342
+  },
+  "familias": [
+    {
+      "familia": "ordinal",
+      "miembros": 3,
+      "exactitud_global": 0.4569,
+      "pct_acierta_cuando_ensamble_falla": 19.96,
+      "unica_familia_que_acierta_pct": 2.499
+    },
+    {
+      "familia": "prototipos",
+      "miembros": 1,
+      "exactitud_global": 0.404,
+      "pct_acierta_cuando_ensamble_falla": 19.87,
+      "unica_familia_que_acierta_pct": 2.151
+    },
+    {
+      "familia": "denso",
+      "miembros": 1,
+      "exactitud_global": 0.4107,
+      "pct_acierta_cuando_ensamble_falla": 19.27,
+      "unica_familia_que_acierta_pct": 3.441
+    },
+    {
+      "familia": "bayes",
+      "miembros": 1,
+      "exactitud_global": 0.5408,
+      "pct_acierta_cuando_ensamble_falla": 16.07,
+      "unica_familia_que_acierta_pct": 1.042
+    },
+    {
+      "familia": "prob_lineal",
+      "miembros": 2,
+      "exactitud_global": 0.5565,
+      "pct_acierta_cuando_ensamble_falla": 15.32,
+      "unica_familia_que_acierta_pct": 0.498
+    },
+    {
+      "familia": "svm_lineal",
+      "miembros": 3,
+      "exactitud_global": 0.5637,
+      "pct_acierta_cuando_ensamble_falla": 14.5,
+      "unica_familia_que_acierta_pct": 0.102
+    },
+    {
+      "familia": "nbsvm",
+      "miembros": 1,
+      "exactitud_global": 0.5635,
+      "pct_acierta_cuando_ensamble_falla": 14.05,
+      "unica_familia_que_acierta_pct": 0.373
+    }
+  ],
+  "segmentos": [
+    {
+      "segmento": "longitud",
+      "valor": "L1",
+      "filas": 42917,
+      "error_pct": 47.7,
+      "rescatable_pct": 32.99
+    },
+    {
+      "segmento": "longitud",
+      "valor": "L2",
+      "filas": 42110,
+      "error_pct": 41.48,
+      "rescatable_pct": 28.29
+    },
+    {
+      "segmento": "longitud",
+      "valor": "L3",
+      "filas": 43444,
+      "error_pct": 36.35,
+      "rescatable_pct": 23.95
+    },
+    {
+      "segmento": "longitud",
+      "valor": "L4",
+      "filas": 40865,
+      "error_pct": 33.96,
+      "rescatable_pct": 21.38
+    },
+    {
+      "segmento": "tokens",
+      "valor": "T1",
+      "filas": 44555,
+      "error_pct": 45.65,
+      "rescatable_pct": 31.68
+    },
+    {
+      "segmento": "tokens",
+      "valor": "T2",
+      "filas": 43834,
+      "error_pct": 38.44,
+      "rescatable_pct": 25.85
+    },
+    {
+      "segmento": "tokens",
+      "valor": "T3",
+      "filas": 44754,
+      "error_pct": 35.27,
+      "rescatable_pct": 22.66
+    },
+    {
+      "segmento": "tokens",
+      "valor": "T4",
+      "filas": 36193,
+      "error_pct": 40.44,
+      "rescatable_pct": 26.6
+    },
+    {
+      "segmento": "menciones",
+      "valor": "0",
+      "filas": 61150,
+      "error_pct": 51.04,
+      "rescatable_pct": 34.72
+    },
+    {
+      "segmento": "menciones",
+      "valor": "1",
+      "filas": 77427,
+      "error_pct": 37.76,
+      "rescatable_pct": 25.01
+    },
+    {
+      "segmento": "menciones",
+      "valor": "2+",
+      "filas": 30759,
+      "error_pct": 23.29,
+      "rescatable_pct": 15.01
+    },
+    {
+      "segmento": "hashtags",
+      "valor": "0",
+      "filas": 135053,
+      "error_pct": 42.19,
+      "rescatable_pct": 28.35
+    },
+    {
+      "segmento": "hashtags",
+      "valor": "1+",
+      "filas": 34263,
+      "error_pct": 31.0,
+      "rescatable_pct": 20.17
+    },
+    {
+      "segmento": "hashtags",
+      "valor": "nan",
+      "filas": 20,
+      "error_pct": 45.0,
+      "rescatable_pct": 35.0
+    },
+    {
+      "segmento": "url",
+      "valor": "con_url",
+      "filas": 68562,
+      "error_pct": 39.6,
+      "rescatable_pct": 26.1
+    },
+    {
+      "segmento": "url",
+      "valor": "sin_url",
+      "filas": 100774,
+      "error_pct": 40.15,
+      "rescatable_pct": 27.11
+    },
+    {
+      "segmento": "retuit",
+      "valor": "no_rt",
+      "filas": 107741,
+      "error_pct": 42.09,
+      "rescatable_pct": 28.6
+    },
+    {
+      "segmento": "retuit",
+      "valor": "rt",
+      "filas": 61595,
+      "error_pct": 36.14,
+      "rescatable_pct": 23.38
+    },
+    {
+      "segmento": "tipo",
+      "valor": "hashtag_alto",
+      "filas": 2537,
+      "error_pct": 20.3,
+      "rescatable_pct": 13.84
+    },
+    {
+      "segmento": "tipo",
+      "valor": "mencion_alta",
+      "filas": 5494,
+      "error_pct": 18.84,
+      "rescatable_pct": 11.69
+    },
+    {
+      "segmento": "tipo",
+      "valor": "muy_corto",
+      "filas": 2677,
+      "error_pct": 50.8,
+      "rescatable_pct": 36.72
+    },
+    {
+      "segmento": "tipo",
+      "valor": "rt_con_comentario",
+      "filas": 49210,
+      "error_pct": 35.85,
+      "rescatable_pct": 22.43
+    },
+    {
+      "segmento": "tipo",
+      "valor": "rt_puro",
+      "filas": 12376,
+      "error_pct": 37.29,
+      "rescatable_pct": 27.18
+    },
+    {
+      "segmento": "tipo",
+      "valor": "solo_mencion",
+      "filas": 414,
+      "error_pct": 34.78,
+      "rescatable_pct": 25.12
+    },
+    {
+      "segmento": "tipo",
+      "valor": "solo_texto",
+      "filas": 59221,
+      "error_pct": 43.48,
+      "rescatable_pct": 29.73
+    },
+    {
+      "segmento": "tipo",
+      "valor": "solo_url",
+      "filas": 7661,
+      "error_pct": 59.89,
+      "rescatable_pct": 40.07
+    },
+    {
+      "segmento": "tipo",
+      "valor": "url_alta",
+      "filas": 29746,
+      "error_pct": 40.21,
+      "rescatable_pct": 27.09
+    }
+  ],
+  "fronteras": [
+    {
+      "frontera": "13-17|18-24",
+      "filas": 57539,
+      "exactitud_dentro": 0.5895,
+      "errores": 23622,
+      "pct_del_error_total": 34.94,
+      "pct_de_cruces_entre_la_pareja": 18.99
+    },
+    {
+      "frontera": "18-24|25-34",
+      "filas": 57023,
+      "exactitud_dentro": 0.4963,
+      "errores": 28721,
+      "pct_del_error_total": 42.48,
+      "pct_de_cruces_entre_la_pareja": 17.75
+    },
+    {
+      "frontera": "25-34|35-49",
+      "filas": 56577,
+      "exactitud_dentro": 0.4974,
+      "errores": 28438,
+      "pct_del_error_total": 42.06,
+      "pct_de_cruces_entre_la_pareja": 12.82
+    },
+    {
+      "frontera": "35-49|50-64",
+      "filas": 56290,
+      "exactitud_dentro": 0.6124,
+      "errores": 21816,
+      "pct_del_error_total": 32.27,
+      "pct_de_cruces_entre_la_pareja": 11.36
+    },
+    {
+      "frontera": "50-64|65-xx",
+      "filas": 55220,
+      "exactitud_dentro": 0.7184,
+      "errores": 15550,
+      "pct_del_error_total": 23.0,
+      "pct_de_cruces_entre_la_pareja": 10.26
+    }
+  ],
+  "figura": "/home/carlos/Git/PLN/KAGGLE_AGE_2026_PUJ/reports/figures/phase13_matriz_confusion_v12.png",
+  "ordinal_continuo": {
+    "correlacion_con_indice_real": 0.7415,
+    "orientacion": "creciente",
+    "desviacion_media_absoluta_en_clases": 38.7577
+  },
+  "segundos": 35.5
+}

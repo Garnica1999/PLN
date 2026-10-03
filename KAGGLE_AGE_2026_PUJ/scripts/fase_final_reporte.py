@@ -83,7 +83,7 @@ def main() -> int:
         f"**+{mejor_lb - envios.iloc[0]['lb_publico']:.4f}**).")
     add(f"- **Validación interna honesta**: {envios.iloc[-1]['cv_macro_f1']:.4f} de macro-F1 "
         f"(leave-one-fold-out sobre particiones agrupadas por clústeres de near-duplicados).")
-    add(f"- **Calibración validación↔leaderboard**: {len(evaluados)} envíos con brecha media "
+    add(f"- **Calibración validación<->leaderboard**: {len(evaluados)} envíos con brecha media "
         f"**+{brecha_media:.4f} ± {brecha_std:.4f}**, explicada por la memorización de "
         f"near-duplicados del test.")
     add(f"- **Restricción cumplida**: sin transformers, sin LLMs y **sin ningún modelo de "
@@ -183,7 +183,7 @@ def main() -> int:
     add("| # | Observación | Evidencia | Consecuencia |")
     add("|---|---|---|---|")
     add("| E1 | La longitud y la riqueza léxica crecen con la edad | ε² = 0,126 en `n_chars`; "
-        "73 → 111 caracteres de media entre extremos | familia textométrica en el catálogo |")
+        "73 -> 111 caracteres de media entre extremos | familia textométrica en el catálogo |")
     add("| E2 | El léxico separa mundos sociales | `follow, justin, bieber` en `13-17` vs "
         "`venezuela, maduro, gobierno` en `65-xx` | representación léxica justificada |")
     add("| E3 | El retuit es más frecuente en mayores | 53% en `65-xx` vs 30% en `18-24` | "
@@ -261,7 +261,7 @@ def main() -> int:
     add("| # | Fenómeno | Evidencia | Hipótesis derivada | Resultado medido |")
     add("|---|---|---|---|---|")
     add("| F1 | Confusión entre rangos **contiguos** | 5 de los 6 pares más confundidos son "
-        "adyacentes (18-24→25-34 15,3%) | señal ordinal (E-015) | +0,0003 en el ensamble |")
+        "adyacentes (18-24->25-34 15,3%) | señal ordinal (E-015) | +0,0003 en el ensamble |")
     add("| F2 | Tweets **cortos** sin señal | 52,5% de error en el quintil más corto vs 37,2% en el "
         "más largo | meta-modelo condicionado por longitud (E-018) | **+0,0036** |")
     add("| F3 | Clases **medias** débiles | `25-34` 0,449; `18-24` 0,476 | canal de hashtags "
@@ -312,7 +312,7 @@ def main() -> int:
     add("| NB-SVM por canal (PH7) | +0,0009 | por debajo del umbral de ruido |")
     add("| Tercer combinador (PH9) | −0,0006 | la diversidad sin calidad comparable no compone |")
     add("| Segmentación dura por tipo/longitud (PH2) | −0,0007 / −0,0015 | particionar pierde más de lo que gana |")
-    add("| **Retrieval train→test** (PH10) | etiqueta recuperada acierta **0,615** | **permitido por las reglas pero los datos lo desaconsejan**: el techo lo fija la consistencia de etiqueta de los duplicados, no la cobertura |")
+    add("| **Retrieval train->test** (PH10) | etiqueta recuperada acierta **0,615** | **permitido por las reglas pero los datos lo desaconsejan**: el techo lo fija la consistencia de etiqueta de los duplicados, no la cobertura |")
     add("| **POS de spaCy** (PH10) | −0,0032 | el corpus transliterado a ASCII degrada el etiquetado y la señal es redundante con los char n-grams |")
     add("| Exclusión de filas ruidosas (PH11) | +0,0001 / +0,0016 | mejora real pero bajo el umbral de cambio de modelo (D-027) |")
     add("")
@@ -394,7 +394,7 @@ def main() -> int:
 
     (cfg.ROOT / "FINAL_REPORT.md").write_text("\n".join(lineas), encoding="utf-8")
     print(f"FINAL_REPORT.md escrito: {len(lineas)} líneas")
-    print(f"brecha media CV↔LB: +{brecha_media:.4f} ± {brecha_std:.4f}")
+    print(f"brecha media CV<->LB: +{brecha_media:.4f} ± {brecha_std:.4f}")
     print(f"mejor configuración de representación: {mejor_fila['id']} ({mejor_fila['macro_f1']:.4f})")
     return 0
 

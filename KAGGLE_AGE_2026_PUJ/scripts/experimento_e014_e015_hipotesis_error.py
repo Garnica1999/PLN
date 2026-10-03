@@ -2,7 +2,7 @@
 
 Contexto
     El error se concentra en las clases medias (18-24 F1=0,476; 25-34 F1=0,449) y la confusión
-    es casi toda entre clases **adyacentes** (18-24↔25-34 15,3%; 35-49↔50-64 14,2%). Además, los
+    es casi toda entre clases **adyacentes** (18-24<->25-34 15,3%; 35-49<->50-64 14,2%). Además, los
     tweets cortos concentran el error (52,5% en el quintil más corto vs 37,2% en el más largo).
 
 E-014 — Canal de hashtags

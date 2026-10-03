@@ -1,0 +1,118 @@
+{
+  "fase": "C — consenso, desacuerdo y gating",
+  "fecha": "2026-09-25",
+  "features_nuevas": {
+    "n": 46,
+    "nombres": [
+      "c1_familia_svm_lineal_vota_moda",
+      "c1_familia_prob_lineal_vota_moda",
+      "c1_familia_bayes_vota_moda",
+      "c1_familia_ordinal_vota_moda",
+      "c1_familia_prototipos_vota_moda",
+      "c1_familia_denso_vota_moda",
+      "c1_familia_nbsvm_vota_moda",
+      "c1_n_familias_con_moda",
+      "c1_entropia_familias",
+      "c1_margen_moda",
+      "c1_n_familias_con_svm",
+      "c2_js_svm_lineal_ordinal",
+      "c2_js_svm_lineal_prob_lineal",
+      "c2_js_svm_lineal_nbsvm",
+      "c2_js_ordinal_nbsvm",
+      "c2_js_denso_ordinal",
+      "c2_js_media",
+      "c2_js_max",
+      "c3_reparto_x_banda_0_13-17",
+      "c3_reparto_x_banda_0_18-24",
+      "c3_reparto_x_banda_0_25-34",
+      "c3_reparto_x_banda_0_35-49",
+      "c3_reparto_x_banda_0_50-64",
+      "c3_reparto_x_banda_0_65-xx",
+      "c3_reparto_x_banda_1_13-17",
+      "c3_reparto_x_banda_1_18-24",
+      "c3_reparto_x_banda_1_25-34",
+      "c3_reparto_x_banda_1_35-49",
+      "c3_reparto_x_banda_1_50-64",
+      "c3_reparto_x_banda_1_65-xx",
+      "c3_reparto_x_banda_2_13-17",
+      "c3_reparto_x_banda_2_18-24",
+      "c3_reparto_x_banda_2_25-34",
+      "c3_reparto_x_banda_2_35-49",
+      "c3_reparto_x_banda_2_50-64",
+      "c3_reparto_x_banda_2_65-xx",
+      "c3_reparto_x_banda_3_13-17",
+      "c3_reparto_x_banda_3_18-24",
+      "c3_reparto_x_banda_3_25-34",
+      "c3_reparto_x_banda_3_35-49",
+      "c3_reparto_x_banda_3_50-64",
+      "c3_reparto_x_banda_3_65-xx",
+      "c3_entropia_x_contexto_0",
+      "c3_entropia_x_contexto_1",
+      "c3_entropia_x_contexto_2",
+      "c3_entropia_x_contexto_3"
+    ]
+  },
+  "baseline": {
+    "macro_f1": 0.6004,
+    "std": 0.0042,
+    "per_fold": [
+      0.6007,
+      0.605,
+      0.6032,
+      0.6004,
+      0.5928
+    ],
+    "origen": "reproducción de la fase 12"
+  },
+  "variantes": [
+    {
+      "variante": "+C1",
+      "n_features": 290,
+      "macro_f1": 0.5986,
+      "std": 0.0032,
+      "per_fold": [
+        0.6012,
+        0.6007,
+        0.5991,
+        0.5994,
+        0.5924
+      ],
+      "delta_vs_v12": -0.0018,
+      "folds_positivos": 1
+    },
+    {
+      "variante": "+C1+C2",
+      "n_features": 297,
+      "macro_f1": 0.6002,
+      "std": 0.0051,
+      "per_fold": [
+        0.6013,
+        0.6051,
+        0.6019,
+        0.6023,
+        0.5904
+      ],
+      "delta_vs_v12": -0.0002,
+      "folds_positivos": 3
+    },
+    {
+      "variante": "+C1+C2+C3",
+      "n_features": 325,
+      "macro_f1": 0.5998,
+      "std": 0.0056,
+      "per_fold": [
+        0.6014,
+        0.6042,
+        0.6034,
+        0.6014,
+        0.5889
+      ],
+      "delta_vs_v12": -0.0006,
+      "folds_positivos": 3
+    }
+  ],
+  "mejor": "+C1+C2",
+  "criterio": "Δ ≥ +0,003 y ≥4/5 folds positivos",
+  "adoptado": false,
+  "segundos": 1755.8
+}

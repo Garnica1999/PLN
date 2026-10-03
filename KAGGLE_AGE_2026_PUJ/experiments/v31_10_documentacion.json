@@ -1,0 +1,22 @@
+{
+  "fase": "V31+ 10 documentacion",
+  "fecha": "2026-09-30",
+  "experimenta": false,
+  "decisiones": {
+    "D-066": "el baseline correcto es 0,6134471, no 0,6130051",
+    "D-067": "las familias linguisticas son senal real y no aportan a V30"
+  },
+  "documentos_actualizados": [
+    "DECISIONS.md",
+    "PROJECT_STATE.md",
+    "RUNLOG.md",
+    "FINAL_REPORT.md"
+  ],
+  "cifras_de_la_fase": {
+    "baseline_operativo": 0.6134471,
+    "baseline_publicado": 0.6130051,
+    "lb": 0.63302,
+    "segunda_particion": 0.6143347,
+    "delta_vs_v30": 0.0
+  }
+}

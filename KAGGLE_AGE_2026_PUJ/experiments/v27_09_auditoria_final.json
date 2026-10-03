@@ -1,0 +1,150 @@
+{
+  "fase": "V27 09 compliance y auditoria final",
+  "fecha": "2026-09-28",
+  "experimenta": false,
+  "compliance": {
+    "comprobaciones": [
+      {
+        "comprobacion": "transformers",
+        "codigo": 0,
+        "artefactos": 0,
+        "solo_mencion_en_prosa": 1,
+        "cumplida": true,
+        "detalle": "scripts/v27_10_informe_completo.py: 0 uso, 1 mencion"
+      },
+      {
+        "comprobacion": "BERT",
+        "codigo": 0,
+        "artefactos": 0,
+        "solo_mencion_en_prosa": 0,
+        "cumplida": true,
+        "detalle": ""
+      },
+      {
+        "comprobacion": "RoBERTa",
+        "codigo": 0,
+        "artefactos": 0,
+        "solo_mencion_en_prosa": 0,
+        "cumplida": true,
+        "detalle": ""
+      },
+      {
+        "comprobacion": "LLM",
+        "codigo": 0,
+        "artefactos": 0,
+        "solo_mencion_en_prosa": 1,
+        "cumplida": true,
+        "detalle": "scripts/v27_10_informe_completo.py: 0 uso, 1 mencion"
+      },
+      {
+        "comprobacion": "embeddings",
+        "codigo": 0,
+        "artefactos": 0,
+        "solo_mencion_en_prosa": 1,
+        "cumplida": true,
+        "detalle": "scripts/v27_10_informe_completo.py: 0 uso, 1 mencion"
+      },
+      {
+        "comprobacion": "external_classifier",
+        "codigo": 0,
+        "artefactos": 0,
+        "solo_mencion_en_prosa": 0,
+        "cumplida": true,
+        "detalle": ""
+      },
+      {
+        "comprobacion": "external_labels",
+        "codigo": 0,
+        "artefactos": 0,
+        "solo_mencion_en_prosa": 0,
+        "cumplida": true,
+        "detalle": ""
+      },
+      {
+        "comprobacion": "pseudo_labeling",
+        "codigo": 0,
+        "artefactos": 0,
+        "solo_mencion_en_prosa": 0,
+        "cumplida": true,
+        "detalle": ""
+      },
+      {
+        "comprobacion": "test_labels",
+        "codigo": 0,
+        "artefactos": 0,
+        "solo_mencion_en_prosa": 0,
+        "cumplida": true,
+        "detalle": ""
+      },
+      {
+        "comprobacion": "test_training",
+        "codigo": 0,
+        "artefactos": 0,
+        "solo_mencion_en_prosa": 0,
+        "cumplida": true,
+        "detalle": ""
+      },
+      {
+        "comprobacion": "test_calibration",
+        "codigo": 0,
+        "artefactos": 0,
+        "solo_mencion_en_prosa": 0,
+        "cumplida": true,
+        "detalle": ""
+      },
+      {
+        "comprobacion": "test_feature_selection",
+        "codigo": 0,
+        "artefactos": 0,
+        "solo_mencion_en_prosa": 0,
+        "cumplida": true,
+        "detalle": ""
+      },
+      {
+        "comprobacion": "test_threshold_tuning",
+        "codigo": 0,
+        "artefactos": 0,
+        "solo_mencion_en_prosa": 0,
+        "cumplida": true,
+        "detalle": ""
+      },
+      {
+        "comprobacion": "holdout_reuse",
+        "codigo": 0,
+        "artefactos": 0,
+        "solo_mencion_en_prosa": 2,
+        "cumplida": true,
+        "detalle": "scripts/v27_10_informe_completo.py: 0 uso, 2 mencion"
+      },
+      {
+        "comprobacion": "leaderboard_tuning",
+        "codigo": 0,
+        "artefactos": 0,
+        "solo_mencion_en_prosa": 0,
+        "cumplida": true,
+        "detalle": ""
+      }
+    ],
+    "todas_cumplidas": true,
+    "ficheros_auditados": 18,
+    "excluidos": [
+      "experiments/v27_09_auditoria_final.json",
+      "reports/v27_compliance.md",
+      "scripts/v27_09_compliance_auditoria.py"
+    ],
+    "criterio": "una mencion dentro de un literal de cadena o en un informe no es uso; el codigo se mide tras eliminar los literales con el tokenizer"
+  },
+  "auditoria_cruzada": {
+    "problemas": [],
+    "coherente": true,
+    "filas_registro": 135,
+    "filas_maestra": 8,
+    "celdas_notebook": 168,
+    "codigo_notebook_valido": true
+  },
+  "cv_v20": 0.6097782,
+  "hash_submission_v20": "2c964af78c90bf0884b4107665b5100f0c1aa2d9059c47692e613578b6cf660d",
+  "data_hash": "32393abca28db4c9",
+  "submissions_generadas_en_v27": 0,
+  "segundos": 0.3
+}

@@ -1,0 +1,2052 @@
+{
+  "fase": "V36-E1 via C1-A",
+  "fecha": "2026-09-30",
+  "naturaleza": "evidencia experimental: 5 folds de la particion canonica leidos del artefacto, 0 folds de test, 0 particiones reservadas",
+  "naturaleza_autoensayo": null,
+  "baseline_recomputado": 0.6159732487657944,
+  "pesos_plugin": [
+    1.0,
+    1.1749,
+    1.2721,
+    1.163,
+    1.001,
+    0.8128
+  ],
+  "mapa_de_clases_literal": {
+    "S": "espacio y todo lo que `str.isspace()` marca como espacio",
+    "D": "d\u00edgitos ASCII 0-9",
+    "P": "puntuaci\u00f3n ASCII, es decir todo lo que no es alfanum\u00e9rico, no es espacio y no es d\u00edgito",
+    "L": "letra min\u00fascula, con y sin acento",
+    "M": "letra may\u00fascula, con y sin acento",
+    "O": "resto: emojis, flechas, caracteres de control, alfabetos no latinos"
+  },
+  "orden_del_alfabeto": [
+    "S",
+    "D",
+    "P",
+    "L",
+    "M",
+    "O"
+  ],
+  "tabla_puntuacion_ascii": [
+    "!",
+    "\"",
+    "#",
+    "$",
+    "%",
+    "&",
+    "'",
+    "(",
+    ")",
+    "*",
+    "+",
+    ",",
+    "-",
+    ".",
+    "/",
+    ":",
+    ";",
+    "<",
+    "=",
+    ">",
+    "?",
+    "@",
+    "[",
+    "\\",
+    "]",
+    "^",
+    "_",
+    "`",
+    "{",
+    "|",
+    "}",
+    "~"
+  ],
+  "rango_n_ejecutado": [
+    2,
+    3
+  ],
+  "n_clases_del_alfabeto": 6,
+  "enmienda_pre_ejecucion_1": "n_classes declaradas, rango_n_de_transiciones, columnas observadas, y los dos controles de especificidad y de barajado",
+  "columnas_observadas": {
+    "bigramas": 27,
+    "trigramas": 127,
+    "total": 154
+  },
+  "columnas_reales": {
+    "por_fold": {
+      "0": {
+        "n_vocabulario": 154,
+        "n_bigramas": 27,
+        "n_trigramas": 127
+      },
+      "1": {
+        "n_vocabulario": 154,
+        "n_bigramas": 27,
+        "n_trigramas": 127
+      },
+      "2": {
+        "n_vocabulario": 154,
+        "n_bigramas": 27,
+        "n_trigramas": 127
+      },
+      "3": {
+        "n_vocabulario": 154,
+        "n_bigramas": 27,
+        "n_trigramas": 127
+      },
+      "4": {
+        "n_vocabulario": 154,
+        "n_bigramas": 27,
+        "n_trigramas": 127
+      }
+    },
+    "bigramas": 27,
+    "trigramas": 127,
+    "total": 154
+  },
+  "modelo": {
+    "C": 1.0,
+    "loss": "squared_hinge",
+    "penalty": "l2",
+    "max_iter": 3000,
+    "tol": 0.0001
+  },
+  "vectorizadores": {
+    "char_wb": {
+      "analyzer": "char_wb",
+      "ngram_range": [
+        3,
+        5
+      ],
+      "min_df": 5,
+      "max_features": 300000,
+      "sublinear_tf": true,
+      "lowercase": true
+    },
+    "palabra": {
+      "analyzer": "word",
+      "ngram_range": [
+        1,
+        2
+      ],
+      "min_df": 3,
+      "max_features": 300000,
+      "sublinear_tf": true,
+      "lowercase": true,
+      "strip_accents": null,
+      "token_pattern": "(?u)\\b\\w+\\b"
+    },
+    "c1a": {
+      "norm": "l2",
+      "sublinear_tf": true,
+      "lowercase": false,
+      "token_pattern": "\\S+"
+    }
+  },
+  "remapeos": [
+    {
+      "indice": 1,
+      "n_caracteres_del_universo": 96,
+      "mapa_sha256": "668554fe2fb10fd336d156889c3815be25735136759b29239cbd056c15098bb5",
+      "caracteres_que_coinciden_con_el_mapa_real": 17,
+      "fraccion_que_coincide": 0.17708333333333334,
+      "n_clases_distintas": 6,
+      "n_clases_del_mapa_real_en_este_universo": 6,
+      "semilla": 42
+    },
+    {
+      "indice": 2,
+      "n_caracteres_del_universo": 96,
+      "mapa_sha256": "9915b14bd49b85343bccfa0ef76f13acb1af7c71f6345712038104f40f22615d",
+      "caracteres_que_coinciden_con_el_mapa_real": 22,
+      "fraccion_que_coincide": 0.22916666666666666,
+      "n_clases_distintas": 6,
+      "n_clases_del_mapa_real_en_este_universo": 6,
+      "semilla": 42
+    },
+    {
+      "indice": 3,
+      "n_caracteres_del_universo": 96,
+      "mapa_sha256": "af96d8b8dcb4d7320486b0edd7d78452fafa7279b854d05aae47f5319cec2ee2",
+      "caracteres_que_coinciden_con_el_mapa_real": 26,
+      "fraccion_que_coincide": 0.2708333333333333,
+      "n_clases_distintas": 6,
+      "n_clases_del_mapa_real_en_este_universo": 6,
+      "semilla": 42
+    }
+  ],
+  "variantes": [
+    "real",
+    "remapeo1",
+    "remapeo2",
+    "remapeo3",
+    "entre_documentos"
+  ],
+  "controles_originales_degenerados": {
+    "permutacion_de_nombres": {
+      "n_columnas_real": 154,
+      "n_columnas_control": 154,
+      "vocabulario_es_la_imagen_exacta": true,
+      "la_permutacion_de_columnas_es_biyectiva": true,
+      "max_abs_diferencia_idf": 0.0,
+      "max_abs_diferencia_de_la_matriz": 0.0,
+      "por_que_no_puede_fallar": "el bloque es isometa por permutacion de columnas y el espacio de hipotesis de un clasificador lineal es invariante bajo esa permutacion: el control mide ruido del solucionador"
+    },
+    "barajado_dentro_del_documento": {
+      "n_columnas_real": 154,
+      "n_columnas_control": 154,
+      "mismo_vocabulario": true,
+      "idf_identico": true,
+      "misma_estructura_dispersa": true,
+      "max_abs_diferencia_de_valores": 1.6653345369377348e-16,
+      "por_que_no_puede_fallar": "el documento es un multiconjunto de n-gramas: barajar dentro de el deja el mismo recuento por token y la misma matriz, luego 'el orden importa' es intestable"
+    },
+    "max_abs_diferencia_de_valores_declarada_en_la_enmienda": 3.3e-16,
+    "conclusion": "los dos controles originales NO pueden fallar: uno es una renombracion biyectiva (bloque isometa por permutacion de columnas, idf identico y espacio de hipotesis lineal invariante) y el otro es un barajado de un multiconjunto (misma matriz). Por eso la enmienda pre-ejecucion 1 los sustituyo por el remapeo aleatorio de caracteres y por el barajado entre documentos",
+    "pass": true,
+    "es_gate": false
+  },
+  "banco": {
+    "banco_referencia": {
+      "macro_f1": 0.540807303656521,
+      "folds": [
+        0.5443047547909831,
+        0.5420067817469266,
+        0.5458865604044408,
+        0.5382011132450911,
+        0.5335904450729486
+      ],
+      "n_cambios_respecto_a_referencia": 0
+    },
+    "banco_c1a": {
+      "macro_f1": 0.5440345606399838,
+      "folds": [
+        0.5481312026422657,
+        0.5440765991572319,
+        0.547808448162368,
+        0.542267442287157,
+        0.5378290185652013
+      ],
+      "n_cambios_respecto_a_referencia": 13071
+    },
+    "banco_c1a_remapeo1": {
+      "macro_f1": 0.5413070786328652,
+      "folds": [
+        0.5443110035736493,
+        0.5431528594959204,
+        0.5469849236530366,
+        0.5376789686991192,
+        0.5343582808666887
+      ],
+      "n_cambios_respecto_a_referencia": 3522
+    },
+    "banco_c1a_remapeo2": {
+      "macro_f1": 0.5408326469503124,
+      "folds": [
+        0.5439612244896005,
+        0.542828702644412,
+        0.5448157566935893,
+        0.5384636725846251,
+        0.5340361537638534
+      ],
+      "n_cambios_respecto_a_referencia": 4579
+    },
+    "banco_c1a_remapeo3": {
+      "macro_f1": 0.5415832707452269,
+      "folds": [
+        0.5456006811559257,
+        0.542240133809205,
+        0.5465563454045518,
+        0.5390639302426933,
+        0.5344047516481633
+      ],
+      "n_cambios_respecto_a_referencia": 5545
+    },
+    "banco_c1a_entre_docs": {
+      "macro_f1": 0.5405075772885354,
+      "folds": [
+        0.544211332960196,
+        0.5419126395343018,
+        0.5450030171014417,
+        0.5384062998819953,
+        0.5329489877787669
+      ],
+      "n_cambios_respecto_a_referencia": 6046
+    },
+    "delta": {
+      "definicion": "macro-F1 del banco CANDIDATO (char_wb + C1-A) menos el del banco REFERENCIA (char_wb IDENTICO sin C1-A), con los mismos folds, la misma semilla y el mismo modelo",
+      "macro_f1_referencia": 0.540807303656521,
+      "macro_f1_candidato": 0.5440345606399838,
+      "delta": 0.003227256983462823,
+      "folds_referencia": [
+        0.5443047547909831,
+        0.5420067817469266,
+        0.5458865604044408,
+        0.5382011132450911,
+        0.5335904450729486
+      ],
+      "folds_candidato": [
+        0.5481312026422657,
+        0.5440765991572319,
+        0.547808448162368,
+        0.542267442287157,
+        0.5378290185652013
+      ],
+      "deltas_por_fold": [
+        0.0038264478512826106,
+        0.002069817410305319,
+        0.001921887757927121,
+        0.0040663290420658305,
+        0.004238573492252651
+      ],
+      "folds_positivos": 5,
+      "delta_medio_bootstrap": 0.003225682475021683,
+      "ic95": [
+        0.0022337769042578446,
+        0.004222951804101088
+      ],
+      "p_delta_positivo": 1.0,
+      "ic95_sin_cero": true,
+      "supera_h0": true,
+      "h0": "delta del banco = 0; se rechaza si el IC95 pareado no contiene el cero y el delta es positivo"
+    }
+  },
+  "controles": {
+    "remapeos": [
+      {
+        "brazo": "banco_c1a_remapeo1",
+        "remapeo": "668554fe2fb10fd336d156889c3815be25735136759b29239cbd056c15098bb5",
+        "caracteres_del_universo": 96,
+        "caracteres_que_coinciden_con_el_mapa_real": 17,
+        "fraccion_que_coincide": 0.17708333333333334,
+        "n_clases_distintas": 6,
+        "semilla": 42,
+        "macro_f1": 0.5413070786328652,
+        "macro_f1_mapa_real": 0.5440345606399838,
+        "delta_real_menos_control": 0.002727482007118587,
+        "delta_medio_bootstrap": 0.0027198523184472022,
+        "ic95": [
+          0.001732124917609801,
+          0.0036731020850553483
+        ],
+        "n_cambios_de_prediccion": 13149,
+        "el_mapa_real_gana": true
+      },
+      {
+        "brazo": "banco_c1a_remapeo2",
+        "remapeo": "9915b14bd49b85343bccfa0ef76f13acb1af7c71f6345712038104f40f22615d",
+        "caracteres_del_universo": 96,
+        "caracteres_que_coinciden_con_el_mapa_real": 22,
+        "fraccion_que_coincide": 0.22916666666666666,
+        "n_clases_distintas": 6,
+        "semilla": 42,
+        "macro_f1": 0.5408326469503124,
+        "macro_f1_mapa_real": 0.5440345606399838,
+        "delta_real_menos_control": 0.0032019136896713762,
+        "delta_medio_bootstrap": 0.0032050138123275104,
+        "ic95": [
+          0.0022526441367049315,
+          0.0042020179006464365
+        ],
+        "n_cambios_de_prediccion": 13283,
+        "el_mapa_real_gana": true
+      },
+      {
+        "brazo": "banco_c1a_remapeo3",
+        "remapeo": "af96d8b8dcb4d7320486b0edd7d78452fafa7279b854d05aae47f5319cec2ee2",
+        "caracteres_del_universo": 96,
+        "caracteres_que_coinciden_con_el_mapa_real": 26,
+        "fraccion_que_coincide": 0.2708333333333333,
+        "n_clases_distintas": 6,
+        "semilla": 42,
+        "macro_f1": 0.5415832707452269,
+        "macro_f1_mapa_real": 0.5440345606399838,
+        "delta_real_menos_control": 0.0024512898947568473,
+        "delta_medio_bootstrap": 0.0024475811000849042,
+        "ic95": [
+          0.0014353868273286803,
+          0.0034521035419473683
+        ],
+        "n_cambios_de_prediccion": 13011,
+        "el_mapa_real_gana": true
+      }
+    ],
+    "entre_documentos": {
+      "brazo": "banco_c1a_entre_docs",
+      "semilla": 42,
+      "que_hace": "baraja QUE documento de transiciones ocupa cada fila: conserva la distribucion marginal global de n-gramas de clase y el vocabulario, y destruye la asociacion entre el texto de una fila y sus transiciones",
+      "macro_f1": 0.5405075772885354,
+      "macro_f1_mapa_real": 0.5440345606399838,
+      "delta_real_menos_control": 0.0035269833514484095,
+      "delta_medio_bootstrap": 0.003537932128870526,
+      "ic95": [
+        0.0025358477848083844,
+        0.004614446302720956
+      ],
+      "n_cambios_de_prediccion": 14535,
+      "el_mapa_real_gana": true
+    },
+    "tolerancia_de_ventaja": 1e-12,
+    "regla": "el mapa real debe ganar a los tres remapeos aleatorios de caracteres a las mismas 6 clases (condicion (ii) corregida); si no gana, el veredicto es SIN_SENAL_ESPECIFICA_DE_CATEGORIA y L4 se cierra igual",
+    "n_remapeos_ganados": 3,
+    "especificidad_ok": true,
+    "control_favorable": true
+  },
+  "integracion_candidata": {
+    "evaluacion": {
+      "corrected_cv": 0.6143719166156899,
+      "delta_vs_baseline": -0.0016012833843100927,
+      "delta_vs_nested": -0.0010923833843100583,
+      "folds": [
+        0.6172367173109397,
+        0.6175732144693861,
+        0.6147565165317564,
+        0.6152216119604167,
+        0.6070963767704761
+      ],
+      "folds_base": [
+        0.6179513056079525,
+        0.618989749556428,
+        0.616749609745851,
+        0.6157068735135643,
+        0.6104846950407401
+      ],
+      "deltas_por_fold": [
+        -0.0007145882970128747,
+        -0.0014165350870419813,
+        -0.0019930932140945767,
+        -0.0004852615531476534,
+        -0.003388318270263979
+      ],
+      "folds_positivos": 0,
+      "filas_que_cambian": 8436,
+      "argmax_sin_regla": 0.6122476727544756,
+      "delta_sin_regla_vs_baseline": -0.0037255272455244404,
+      "delta_sin_regla_vs_nested": -0.003216627245524406,
+      "log_loss_p_comb": 1.0283903509022911,
+      "delta_medio_bootstrap": -0.0015853846450963936,
+      "ic95": [
+        -0.0024149903713018505,
+        -0.0007569300499821219
+      ],
+      "p_delta_positivo": 0.0005,
+      "ic95_sin_cero": true,
+      "delta_integrado_vs_campeon": -0.0016013321501044953,
+      "ic95_pareado_vs_campeon": [
+        -0.0024149903713018505,
+        -0.0007569300499821219
+      ],
+      "delta_medio_bootstrap_vs_campeon": -0.0015853846450963936,
+      "ic95_sin_cero_vs_campeon": true,
+      "supera_h0": false,
+      "detalle_combinador": {
+        "ratio_bloque_brazo_por_fold": [
+          0.426008954502803,
+          0.42450905317918963,
+          0.4345027273250095,
+          0.41304995574536424,
+          0.42650329566158596
+        ],
+        "n_iter_por_fold": [
+          43,
+          45,
+          43,
+          45,
+          42
+        ],
+        "mecanismo": "[L2(v30)||L2(p_brazo)] con LogReg(C=1.0, max_iter=2000) por fold; decision argmax(p_comb * w_plugin congelado)"
+      },
+      "diagnostico_del_canal": {
+        "standalone_cv": 0.507643620694097,
+        "standalone_folds": [
+          0.5103355824547052,
+          0.5088457210740097,
+          0.5100957857920326,
+          0.5092378578540474,
+          0.4996293058822261
+        ],
+        "log_loss_prob": 1.3627220650993583,
+        "log_loss_l2": 1.3627220650993583,
+        "f1_por_clase": [
+          0.5785338502007477,
+          0.40221128098816616,
+          0.38401727071479536,
+          0.4635291086120263,
+          0.5694135864808456,
+          0.6481566271680006
+        ],
+        "matriz_esperada": [
+          [
+            0.35288703183968095,
+            0.17964259947335784,
+            0.14070200092383975,
+            0.11911960297491678,
+            0.10525129116848675,
+            0.10239747361972198
+          ],
+          [
+            0.18774693246214033,
+            0.24961348610569947,
+            0.17608157120335935,
+            0.14436717516414196,
+            0.12394720198563962,
+            0.11824363307901929
+          ],
+          [
+            0.14729709230443447,
+            0.17741351667944902,
+            0.24178704462978157,
+            0.16277585192362956,
+            0.14142150816164142,
+            0.12930498630106532
+          ],
+          [
+            0.12206239448759962,
+            0.14303787436848733,
+            0.1620278593827847,
+            0.2778957302687858,
+            0.15418255523960242,
+            0.1407935862527417
+          ],
+          [
+            0.1086937509358665,
+            0.12279952558151566,
+            0.13922930836692657,
+            0.1529017101753125,
+            0.3301366589975255,
+            0.14623904594285694
+          ],
+          [
+            0.10064095369271817,
+            0.11245405672308341,
+            0.12362849945805883,
+            0.13664590038092683,
+            0.14519234827169336,
+            0.38143824147351907
+          ]
+        ],
+        "diagonal_ok": true,
+        "max_abs_suma_menos_uno": 4.440892098500626e-16,
+        "vs_campeon": {
+          "rescate": 12095,
+          "danio": 29695,
+          "neto": -17600,
+          "rescates_alta_confianza": 1214,
+          "errores_alta_confianza_campeon": 9780,
+          "por_clase": [
+            {
+              "clase": "13-17",
+              "filas": 28863,
+              "f1": 0.5785338502007477,
+              "rescate": 2596,
+              "danio": 3730,
+              "rescates_alta_confianza": 84
+            },
+            {
+              "clase": "18-24",
+              "filas": 28676,
+              "f1": 0.40221128098816616,
+              "rescate": 2339,
+              "danio": 7079,
+              "rescates_alta_confianza": 400
+            },
+            {
+              "clase": "25-34",
+              "filas": 28347,
+              "f1": 0.38401727071479536,
+              "rescate": 2113,
+              "danio": 6384,
+              "rescates_alta_confianza": 222
+            },
+            {
+              "clase": "35-49",
+              "filas": 28230,
+              "f1": 0.4635291086120263,
+              "rescate": 1959,
+              "danio": 4926,
+              "rescates_alta_confianza": 225
+            },
+            {
+              "clase": "50-64",
+              "filas": 28060,
+              "f1": 0.5694135864808456,
+              "rescate": 1679,
+              "danio": 4267,
+              "rescates_alta_confianza": 168
+            },
+            {
+              "clase": "65-xx",
+              "filas": 27160,
+              "f1": 0.6481566271680006,
+              "rescate": 1409,
+              "danio": 3309,
+              "rescates_alta_confianza": 115
+            }
+          ]
+        }
+      },
+      "punto_de_partida": {
+        "definicion": "argmax(v30 * pesos plug-in) sobre la particion canonica",
+        "baseline_primario_declarado": 0.6159732,
+        "delta_vs_nested": -0.0010923833843100583,
+        "n_cambios_de_prediccion": 8436
+      }
+    }
+  },
+  "integracion_control": {
+    "evaluacion": {
+      "corrected_cv": 0.6139647156575356,
+      "delta_vs_baseline": -0.0020084843424643672,
+      "delta_vs_nested": -0.001499584342464333,
+      "folds": [
+        0.6165817568931827,
+        0.6172862580865024,
+        0.6143208037924122,
+        0.6152637829241535,
+        0.6063962269906472
+      ],
+      "folds_base": [
+        0.6179513056079525,
+        0.618989749556428,
+        0.616749609745851,
+        0.6157068735135643,
+        0.6104846950407401
+      ],
+      "deltas_por_fold": [
+        -0.0013695487147697971,
+        -0.0017034914699256554,
+        -0.0024288059534388617,
+        -0.0004430905894108328,
+        -0.004088468050092886
+      ],
+      "folds_positivos": 0,
+      "filas_que_cambian": 8019,
+      "argmax_sin_regla": 0.6120043723204299,
+      "delta_sin_regla_vs_baseline": -0.003968827679570075,
+      "delta_sin_regla_vs_nested": -0.0034599276795700407,
+      "log_loss_p_comb": 1.0297109396183086,
+      "delta_medio_bootstrap": -0.001998093512336319,
+      "ic95": [
+        -0.00281366363331238,
+        -0.0011781808088108005
+      ],
+      "p_delta_positivo": 0.0,
+      "ic95_sin_cero": true,
+      "delta_integrado_vs_campeon": -0.00200853310825877,
+      "ic95_pareado_vs_campeon": [
+        -0.00281366363331238,
+        -0.0011781808088108005
+      ],
+      "delta_medio_bootstrap_vs_campeon": -0.001998093512336319,
+      "ic95_sin_cero_vs_campeon": true,
+      "supera_h0": false,
+      "detalle_combinador": {
+        "ratio_bloque_brazo_por_fold": [
+          0.3767825640586927,
+          0.3748407495538365,
+          0.3837662724723443,
+          0.36711644885483113,
+          0.37779632717486783
+        ],
+        "n_iter_por_fold": [
+          47,
+          41,
+          45,
+          44,
+          49
+        ],
+        "mecanismo": "[L2(v30)||L2(p_brazo)] con LogReg(C=1.0, max_iter=2000) por fold; decision argmax(p_comb * w_plugin congelado)"
+      },
+      "diagnostico_del_canal": {
+        "standalone_cv": 0.49799819927677674,
+        "standalone_folds": [
+          0.4997966803887253,
+          0.4983094145197176,
+          0.49968137939082685,
+          0.5005992981132966,
+          0.49155869252403533
+        ],
+        "log_loss_prob": 1.3834762473305442,
+        "log_loss_l2": 1.3834762473305442,
+        "f1_por_clase": [
+          0.5654126404445299,
+          0.3967698061883713,
+          0.3756732002198205,
+          0.45657320411333874,
+          0.5552336354142101,
+          0.6383267092803897
+        ],
+        "matriz_esperada": [
+          [
+            0.34462164368074744,
+            0.17605186879925835,
+            0.14154643230792077,
+            0.12212939223396486,
+            0.10955901536739378,
+            0.1060916476107134
+          ],
+          [
+            0.18454684807037874,
+            0.24319102081544294,
+            0.17458014094935442,
+            0.14686276829572217,
+            0.1284866353222592,
+            0.12233258654684066
+          ],
+          [
+            0.14882295238403453,
+            0.17568083114911245,
+            0.23774938172683766,
+            0.1615099251499263,
+            0.1437018862085221,
+            0.1325350233815648
+          ],
+          [
+            0.12614473611535124,
+            0.14516143389053654,
+            0.1603278470831579,
+            0.2731387529371043,
+            0.1529471160282325,
+            0.14228011394561632
+          ],
+          [
+            0.11237475479225195,
+            0.12531050864577564,
+            0.13989977081076124,
+            0.15140665229934916,
+            0.3225170785852597,
+            0.1484912348666053
+          ],
+          [
+            0.10282971271632094,
+            0.11395908030435216,
+            0.12446145785066576,
+            0.1364014359440483,
+            0.1454736060771707,
+            0.3768747071074383
+          ]
+        ],
+        "diagonal_ok": true,
+        "max_abs_suma_menos_uno": 4.440892098500626e-16,
+        "vs_campeon": {
+          "rescate": 11753,
+          "danio": 31054,
+          "neto": -19301,
+          "rescates_alta_confianza": 1211,
+          "errores_alta_confianza_campeon": 9780,
+          "por_clase": [
+            {
+              "clase": "13-17",
+              "filas": 28863,
+              "f1": 0.5654126404445299,
+              "rescate": 2298,
+              "danio": 3968,
+              "rescates_alta_confianza": 89
+            },
+            {
+              "clase": "18-24",
+              "filas": 28676,
+              "f1": 0.3967698061883713,
+              "rescate": 2479,
+              "danio": 7191,
+              "rescates_alta_confianza": 416
+            },
+            {
+              "clase": "25-34",
+              "filas": 28347,
+              "f1": 0.3756732002198205,
+              "rescate": 2136,
+              "danio": 6648,
+              "rescates_alta_confianza": 215
+            },
+            {
+              "clase": "35-49",
+              "filas": 28230,
+              "f1": 0.45657320411333874,
+              "rescate": 1897,
+              "danio": 5113,
+              "rescates_alta_confianza": 229
+            },
+            {
+              "clase": "50-64",
+              "filas": 28060,
+              "f1": 0.5552336354142101,
+              "rescate": 1617,
+              "danio": 4639,
+              "rescates_alta_confianza": 155
+            },
+            {
+              "clase": "65-xx",
+              "filas": 27160,
+              "f1": 0.6383267092803897,
+              "rescate": 1326,
+              "danio": 3495,
+              "rescates_alta_confianza": 107
+            }
+          ]
+        }
+      },
+      "punto_de_partida": {
+        "definicion": "argmax(v30 * pesos plug-in) sobre la particion canonica",
+        "baseline_primario_declarado": 0.6159732,
+        "delta_vs_nested": -0.001499584342464333,
+        "n_cambios_de_prediccion": 8019
+      }
+    }
+  },
+  "integracion_atribuible": {
+    "macro_f1_candidato": 0.6143719166156899,
+    "macro_f1_control": 0.6139647156575356,
+    "delta_atribuido_al_bloque_c1a": 0.0004072009581542746,
+    "delta_medio_bootstrap": 0.0004127088672399255,
+    "ic95": [
+      -1.4725281020627755e-05,
+      0.0008279038740691358
+    ],
+    "p_delta_positivo": 0.9705,
+    "ic95_sin_cero": false,
+    "n_cambios_entre_integraciones": 2263,
+    "delta_mecanico_del_combinador": -0.0020084843424643672
+  },
+  "gates": {
+    "gates": {
+      "delta_min": {
+        "valor": -0.0016013321501044953,
+        "umbral": 0.0015,
+        "pasa": false
+      },
+      "folds_min": {
+        "valor": 0,
+        "umbral": 4,
+        "pasa": false
+      },
+      "control_favorable": {
+        "valor": true,
+        "umbral": true,
+        "pasa": true
+      },
+      "ic95_pareado_sin_cero": {
+        "valor": true,
+        "umbral": true,
+        "pasa": true
+      },
+      "variabilidad_de_referencia": {
+        "valor": 0.0008876,
+        "umbral": null,
+        "escala": "delta integrado / variabilidad de referencia"
+      }
+    },
+    "todos_pasan": false,
+    "delta_sobre_variabilidad": -1.8041146350884354,
+    "delta_atribuido_al_bloque_c1a": 0.0004072009581542746,
+    "delta_mecanico_del_combinador": -0.0020084843424643672,
+    "ic95_atribuido": [
+      -1.4725281020627755e-05,
+      0.0008279038740691358
+    ],
+    "etiqueta_de_la_serie": "CLOSED",
+    "segunda_particion_requerida": false,
+    "segunda_particion_ejecutada": false,
+    "motivo_de_no_ejecutar_la_segunda_particion": "C1-A es ONE-SHOT y este script no ejecuta una segunda particion sin autorizacion del usuario (invariante del ciclo)",
+    "n_bootstrap": 2000,
+    "semilla": 20261010
+  },
+  "tabla_de_sesgo": {
+    "descripcion": "todos los brazos son LinearSVC: un solo camino de sesgo (intercept_) y matriz sin columna de sesgo pre-anadida",
+    "doble_sesgo": false,
+    "declaracion": "no hay doble sesgo en ningun brazo: el sesgo lo aporta solo el intercept_ de LinearSVC; el defecto de D-083 y V33-E1 (matriz con sesgo pre-anadido y fit_intercept) NO se reproduce",
+    "por_brazo": {
+      "banco_referencia": {
+        "n_caminos_de_sesgo": 1,
+        "intercepto_por_fold": {
+          "0": [
+            -0.352514831809565,
+            -0.24144706716251457,
+            -0.6708999759643156,
+            -0.9443443082641464,
+            -1.026931845481414,
+            -1.1964467043548221
+          ],
+          "1": [
+            -0.34460482933178244,
+            -0.24174263953370978,
+            -0.6797878179797704,
+            -0.9295150565066537,
+            -1.0357948242756507,
+            -1.210433228730119
+          ],
+          "2": [
+            -0.35857932099062106,
+            -0.24399038278880625,
+            -0.6622525362773465,
+            -0.9452537381082768,
+            -1.0303971938048884,
+            -1.210084791536695
+          ],
+          "3": [
+            -0.35598615347733115,
+            -0.24755471218611885,
+            -0.6627708945415327,
+            -0.9485398199221267,
+            -1.0321549841337792,
+            -1.211019486797056
+          ],
+          "4": [
+            -0.3497901734755977,
+            -0.24784106240200304,
+            -0.6777911473953799,
+            -0.9389825207673912,
+            -1.0268329981378268,
+            -1.2038466323083648
+          ]
+        },
+        "max_abs_intercept": 1.211019486797056
+      },
+      "banco_c1a": {
+        "n_caminos_de_sesgo": 1,
+        "intercepto_por_fold": {
+          "0": [
+            -0.29804270341993333,
+            -0.39190124042298297,
+            -0.7801384328896711,
+            -0.9588820500435649,
+            -0.9238287761441354,
+            -1.064068637433981
+          ],
+          "1": [
+            -0.3112820380109137,
+            -0.4079268345684953,
+            -0.7463648251009231,
+            -0.9311912300940128,
+            -0.9357263408988884,
+            -1.0640143825629556
+          ],
+          "2": [
+            -0.32998559957475526,
+            -0.3815926033904158,
+            -0.7733480083856055,
+            -0.9598050438254431,
+            -0.9184186107991372,
+            -1.033886875000489
+          ],
+          "3": [
+            -0.261062873190122,
+            -0.4294802782235233,
+            -0.7614511725739814,
+            -0.9606171331555675,
+            -0.9088266197572072,
+            -1.0691585002471287
+          ],
+          "4": [
+            -0.2767755615647479,
+            -0.4191508638470349,
+            -0.7868241516091901,
+            -0.984081237382521,
+            -0.9106046090524378,
+            -1.000436201859177
+          ]
+        },
+        "max_abs_intercept": 1.0691585002471287
+      },
+      "banco_c1a_remapeo1": {
+        "n_caminos_de_sesgo": 1,
+        "intercepto_por_fold": {
+          "0": [
+            -0.16989689624731422,
+            -0.3044240900152761,
+            -0.7687735757564261,
+            -1.0381886348428513,
+            -1.127702221266139,
+            -1.031588812525384
+          ],
+          "1": [
+            -0.16187667649342466,
+            -0.3003970797532246,
+            -0.827788733498609,
+            -0.948637987491061,
+            -1.2346384532181283,
+            -0.9954522008213822
+          ],
+          "2": [
+            -0.2528723631195049,
+            -0.25830838867785233,
+            -0.796875550725137,
+            -0.9787296289025753,
+            -1.2187823600861738,
+            -0.980762792761916
+          ],
+          "3": [
+            -0.2186806358861522,
+            -0.2572902113447197,
+            -0.786190222839582,
+            -0.9921241054589258,
+            -1.1562986368402184,
+            -1.0127613122021475
+          ],
+          "4": [
+            -0.15637035323748744,
+            -0.27913465234018875,
+            -0.7911258467788265,
+            -1.187276453746661,
+            -1.0613372331085302,
+            -1.0619456743428
+          ]
+        },
+        "max_abs_intercept": 1.2346384532181283
+      },
+      "banco_c1a_remapeo2": {
+        "n_caminos_de_sesgo": 1,
+        "intercepto_por_fold": {
+          "0": [
+            -0.2588847443750042,
+            -0.3860800063849136,
+            -0.7569874767691531,
+            -0.8790004934965573,
+            -0.9680305972651535,
+            -0.9901602404148002
+          ],
+          "1": [
+            -0.24756140690659498,
+            -0.3980077173494444,
+            -0.7753339841694722,
+            -0.8329428199869626,
+            -0.989940025092403,
+            -0.995952571400214
+          ],
+          "2": [
+            -0.30167871559223763,
+            -0.36857683708139966,
+            -0.7706842681125214,
+            -0.8344185282165741,
+            -0.9967242825622677,
+            -0.9950383582743701
+          ],
+          "3": [
+            -0.26584801127018687,
+            -0.39762003956513187,
+            -0.768798229422016,
+            -0.8491954028745357,
+            -0.9626423047499498,
+            -0.9949088683029079
+          ],
+          "4": [
+            -0.2323635764620519,
+            -0.362377713316033,
+            -0.7872795766162543,
+            -0.8898046488880756,
+            -0.9757556034378312,
+            -0.9958423035679455
+          ]
+        },
+        "max_abs_intercept": 0.9967242825622677
+      },
+      "banco_c1a_remapeo3": {
+        "n_caminos_de_sesgo": 1,
+        "intercepto_por_fold": {
+          "0": [
+            -0.11418303656030308,
+            -0.36614817413023,
+            -0.850655952358349,
+            -1.0961178906988995,
+            -1.0980287188498263,
+            -1.1907358676852522
+          ],
+          "1": [
+            -0.1371642257803321,
+            -0.40004537591245687,
+            -0.8506025064925274,
+            -1.0219145313179103,
+            -1.043465215953111,
+            -1.2474463434457856
+          ],
+          "2": [
+            -0.19442910890170137,
+            -0.3352230485711224,
+            -0.8653359764361398,
+            -1.0619738764965063,
+            -1.1141292951260693,
+            -1.0749334394241934
+          ],
+          "3": [
+            -0.1812700252535562,
+            -0.34071388581963197,
+            -0.8460926597312324,
+            -1.0235290848722314,
+            -1.1052753105603834,
+            -1.2446120222984445
+          ],
+          "4": [
+            -0.08392673532896812,
+            -0.3753535414420657,
+            -0.8359072444581597,
+            -1.1405787161145744,
+            -1.0500690868993017,
+            -1.256558935531466
+          ]
+        },
+        "max_abs_intercept": 1.256558935531466
+      },
+      "banco_c1a_entre_docs": {
+        "n_caminos_de_sesgo": 1,
+        "intercepto_por_fold": {
+          "0": [
+            -0.3241041518271949,
+            -0.2572976235330652,
+            -0.6373582202312739,
+            -0.9687257958731382,
+            -1.011800716812448,
+            -1.2364458789542099
+          ],
+          "1": [
+            -0.32657021822566845,
+            -0.28213517932370585,
+            -0.6428612148387974,
+            -0.9582252945071968,
+            -1.0128809659384546,
+            -1.2098923975955127
+          ],
+          "2": [
+            -0.3356812823100083,
+            -0.268420834763006,
+            -0.6589419487729937,
+            -0.9657895296798127,
+            -1.016855350222607,
+            -1.206181364986465
+          ],
+          "3": [
+            -0.3258299175399767,
+            -0.2492264431455496,
+            -0.6840962077822124,
+            -0.9822886869717213,
+            -0.9811827087258259,
+            -1.2174683569537863
+          ],
+          "4": [
+            -0.31276394594339524,
+            -0.26559446025040084,
+            -0.7011140090418602,
+            -0.9361111174840382,
+            -0.9891508538798249,
+            -1.2190369100187148
+          ]
+        },
+        "max_abs_intercept": 1.2364458789542099
+      },
+      "integ_control": {
+        "n_caminos_de_sesgo": 1,
+        "intercepto_por_fold": {
+          "0": [
+            -0.5948406938727304,
+            -0.4405755948422606,
+            -0.6420948588981128,
+            -0.8008667962880738,
+            -0.8547071196005983,
+            -0.9672570002757707
+          ],
+          "1": [
+            -0.5942847595941058,
+            -0.44107645180336796,
+            -0.6491036640783762,
+            -0.7878350395569458,
+            -0.8450142471040123,
+            -0.9802362154741173
+          ],
+          "2": [
+            -0.602673130152895,
+            -0.45748382477486454,
+            -0.6376581959866594,
+            -0.787284844138814,
+            -0.8371091696410817,
+            -0.977942247768204
+          ],
+          "3": [
+            -0.5923068292580763,
+            -0.4466714801233446,
+            -0.6383094432622741,
+            -0.7897693088800238,
+            -0.8508961980020736,
+            -0.9825642047874925
+          ],
+          "4": [
+            -0.5933699352924156,
+            -0.4483302942778348,
+            -0.6380639490339493,
+            -0.7927219766838316,
+            -0.8536021015845952,
+            -0.9758805833748897
+          ]
+        },
+        "max_abs_intercept": 0.9825642047874925
+      },
+      "integ_c1a": {
+        "n_caminos_de_sesgo": 1,
+        "intercepto_por_fold": {
+          "0": [
+            -0.3173136684720855,
+            -0.4191616317611967,
+            -0.8260210526006869,
+            -0.9306910303333057,
+            -0.8631215911870243,
+            -0.906277694246744
+          ],
+          "1": [
+            -0.3304769400237423,
+            -0.45365496965117874,
+            -0.7895765639054777,
+            -0.896921051365777,
+            -0.8569309113697468,
+            -0.9190387683733575
+          ],
+          "2": [
+            -0.34826690718854864,
+            -0.42557170602767236,
+            -0.8208122200869601,
+            -0.9355296829686027,
+            -0.8149773562421385,
+            -0.9065044224439855
+          ],
+          "3": [
+            -0.286743192692438,
+            -0.4561468857558713,
+            -0.8075671791514417,
+            -0.9389933256462054,
+            -0.8300426673734966,
+            -0.9457055870943671
+          ],
+          "4": [
+            -0.2978204575493219,
+            -0.4555704968297791,
+            -0.8373707669488066,
+            -0.9358942081923685,
+            -0.8351832724961807,
+            -0.89232506661205
+          ]
+        },
+        "max_abs_intercept": 0.9457055870943671
+      }
+    }
+  },
+  "sondas": {
+    "banco_ree_medido": {
+      "pass": true,
+      "delta": 0.003227256983462823,
+      "ic95": [
+        0.0022337769042578446,
+        0.004222951804101088
+      ],
+      "supera_h0": true,
+      "criterio": "el banco se vuelve a medir DENTRO del runner sobre la particion canonica; la medicion previa de +0.0031 se declara no canonica y no se usa",
+      "naturaleza": "evidencia experimental: 5 folds de la particion canonica leidos del artefacto, 0 folds de test, 0 particiones reservadas"
+    },
+    "tabla_5_de_5_folds": {
+      "pass": true,
+      "folds_banco": [
+        0.0038264478512826106,
+        0.002069817410305319,
+        0.001921887757927121,
+        0.0040663290420658305,
+        0.004238573492252651
+      ],
+      "folds_integracion": [
+        -0.0007145882970128747,
+        -0.0014165350870419813,
+        -0.0019930932140945767,
+        -0.0004852615531476534,
+        -0.003388318270263979
+      ],
+      "criterio": "tabla de macro-F1 por fold del banco y de la integracion, 5 de 5"
+    },
+    "bootstrap_pareado": {
+      "pass": true,
+      "ic95_banco": [
+        0.0022337769042578446,
+        0.004222951804101088
+      ],
+      "ic95_integracion": [
+        -0.0024149903713018505,
+        -0.0007569300499821219
+      ],
+      "n_bootstrap": 2000,
+      "semilla": 20261010,
+      "criterio": "IC95 pareado (2000, semilla 20261010) del banco y de la integracion"
+    },
+    "permutaciones": {
+      "pass": true,
+      "n_remapeos": 3,
+      "n_ganados": 3,
+      "deltas": [
+        0.002727482007118587,
+        0.0032019136896713762,
+        0.0024512898947568473
+      ],
+      "criterio": "condicion (ii) CORREGIDA: >= 3 remapeos aleatorios de caracteres a las mismas 6 clases, con semilla declarada, y el mapa real debe ganarlos; el control de permutacion de NOMBRES se sustituyo porque era degenerado"
+    },
+    "barajado": {
+      "pass": true,
+      "delta": 0.0035269833514484095,
+      "n_cambios_de_prediccion": 14535,
+      "criterio": "control C3 CORREGIDO: barajado ENTRE documentos, que conserva la distribucion marginal global y destruye la asociacion por documento; el barajado dentro del documento se sustituyo porque era degenerado"
+    },
+    "conformidad": {
+      "sha256_primera_llamada": "2532145473b2e8cf0a4db0d680409a70ee2b63f719f8525eaf7f17ea6a1d747a",
+      "sha256_segunda_llamada": "2532145473b2e8cf0a4db0d680409a70ee2b63f719f8525eaf7f17ea6a1d747a",
+      "matrices_identicas": true,
+      "val_identicos": true,
+      "n_filas_una_llamada": 390,
+      "n_columnas": 141,
+      "secuencia_de_prueba": "MLLLPSLLLLLSDDDP",
+      "n_tokens_de_prueba": 29,
+      "n_tokens_esperados_sin_borde": 29,
+      "sin_borde": true,
+      "pass": true,
+      "criterio": "dos llamadas con la misma entrada dan exactamente la misma matriz (sha256 identico) y el numero de n-gramas de un texto de longitud L es (L-1)+(L-2), sin ningun simbolo de borde",
+      "nombre": "conformidad"
+    },
+    "fold_local": {
+      "por_brazo": {
+        "banco_referencia": {
+          "n_folds_registrados": 5,
+          "folds": {
+            "0": {
+              "n_filas_fit_bloque_referencia": 135468,
+              "n_filas_totales": 169336,
+              "n_vocabulario_bloque_referencia": 224123,
+              "vocab_sha256_bloque_referencia": "8c3a0143963d6ac91d549aafd4312c279c5000c5001818f87a12442ef339f1dc",
+              "idf_sha256_bloque_referencia": "00314bc8b4e1ba0377b0ac0bed19808b028d49d8dc95485ae505335041d07160",
+              "n_filas_fit_c1a": null,
+              "n_vocabulario_c1a": null,
+              "n_bigramas_de_clase": null,
+              "n_trigramas_de_clase": null,
+              "vocab_sha256_c1a": null,
+              "idf_sha256_c1a": null,
+              "columnas_val_igualan_train_c1a": null
+            },
+            "1": {
+              "n_filas_fit_bloque_referencia": 135468,
+              "n_filas_totales": 169336,
+              "n_vocabulario_bloque_referencia": 223708,
+              "vocab_sha256_bloque_referencia": "ed5fe8c0cf542b6425d00d0347f11a3408823aafacb5f8682c38673a7a4e8f2f",
+              "idf_sha256_bloque_referencia": "114bab23246100ee9b6004dfad9bf82c9ba2bf5daf0d33951aedb52da0f4e135",
+              "n_filas_fit_c1a": null,
+              "n_vocabulario_c1a": null,
+              "n_bigramas_de_clase": null,
+              "n_trigramas_de_clase": null,
+              "vocab_sha256_c1a": null,
+              "idf_sha256_c1a": null,
+              "columnas_val_igualan_train_c1a": null
+            },
+            "2": {
+              "n_filas_fit_bloque_referencia": 135469,
+              "n_filas_totales": 169336,
+              "n_vocabulario_bloque_referencia": 224296,
+              "vocab_sha256_bloque_referencia": "4d87c13fccef9585569c5050a1bff9bb516f87a35bad58e3ff02dc90941ef438",
+              "idf_sha256_bloque_referencia": "56a5efa4c1c4955542ea3a2b79864de9be4f2885f0b4b370b080905e2514343e",
+              "n_filas_fit_c1a": null,
+              "n_vocabulario_c1a": null,
+              "n_bigramas_de_clase": null,
+              "n_trigramas_de_clase": null,
+              "vocab_sha256_c1a": null,
+              "idf_sha256_c1a": null,
+              "columnas_val_igualan_train_c1a": null
+            },
+            "3": {
+              "n_filas_fit_bloque_referencia": 135470,
+              "n_filas_totales": 169336,
+              "n_vocabulario_bloque_referencia": 224207,
+              "vocab_sha256_bloque_referencia": "bb759c65f09979e02788012ea95c5b91871191f84ba8d25f079bbddefa790e54",
+              "idf_sha256_bloque_referencia": "10551bf60e04fea954ee94a44c022b20971966a5a0573a43c24035aa313a729e",
+              "n_filas_fit_c1a": null,
+              "n_vocabulario_c1a": null,
+              "n_bigramas_de_clase": null,
+              "n_trigramas_de_clase": null,
+              "vocab_sha256_c1a": null,
+              "idf_sha256_c1a": null,
+              "columnas_val_igualan_train_c1a": null
+            },
+            "4": {
+              "n_filas_fit_bloque_referencia": 135469,
+              "n_filas_totales": 169336,
+              "n_vocabulario_bloque_referencia": 224628,
+              "vocab_sha256_bloque_referencia": "917346bfd3b26223308fe39c4f43a90f424d06fe523a53ce6e03dee75fe5cee7",
+              "idf_sha256_bloque_referencia": "45c1fc2aef4826e881554dce644fb5d512c193d0551a32310d1580e5c0fafee4",
+              "n_filas_fit_c1a": null,
+              "n_vocabulario_c1a": null,
+              "n_bigramas_de_clase": null,
+              "n_trigramas_de_clase": null,
+              "vocab_sha256_c1a": null,
+              "idf_sha256_c1a": null,
+              "columnas_val_igualan_train_c1a": null
+            }
+          }
+        },
+        "banco_c1a": {
+          "n_folds_registrados": 5,
+          "folds": {
+            "0": {
+              "n_filas_fit_bloque_referencia": 135468,
+              "n_filas_totales": 169336,
+              "n_vocabulario_bloque_referencia": 224123,
+              "vocab_sha256_bloque_referencia": "8c3a0143963d6ac91d549aafd4312c279c5000c5001818f87a12442ef339f1dc",
+              "idf_sha256_bloque_referencia": "00314bc8b4e1ba0377b0ac0bed19808b028d49d8dc95485ae505335041d07160",
+              "n_filas_fit_c1a": 135468,
+              "n_vocabulario_c1a": 154,
+              "n_bigramas_de_clase": 27,
+              "n_trigramas_de_clase": 127,
+              "vocab_sha256_c1a": "117293fcbf25c3696ff3c8042b501d1058efe9256436e1dd2b6f47f0a05ffd16",
+              "idf_sha256_c1a": "275d30ed194ddd699514d045a94a5a9574585a9e4836c13bf2331bf2b4bd6cfe",
+              "columnas_val_igualan_train_c1a": true
+            },
+            "1": {
+              "n_filas_fit_bloque_referencia": 135468,
+              "n_filas_totales": 169336,
+              "n_vocabulario_bloque_referencia": 223708,
+              "vocab_sha256_bloque_referencia": "ed5fe8c0cf542b6425d00d0347f11a3408823aafacb5f8682c38673a7a4e8f2f",
+              "idf_sha256_bloque_referencia": "114bab23246100ee9b6004dfad9bf82c9ba2bf5daf0d33951aedb52da0f4e135",
+              "n_filas_fit_c1a": 135468,
+              "n_vocabulario_c1a": 154,
+              "n_bigramas_de_clase": 27,
+              "n_trigramas_de_clase": 127,
+              "vocab_sha256_c1a": "117293fcbf25c3696ff3c8042b501d1058efe9256436e1dd2b6f47f0a05ffd16",
+              "idf_sha256_c1a": "09a1435cd4b7a371f5bbe38955e6e132162f2d47ec7b25c5770724cdaf05d8ef",
+              "columnas_val_igualan_train_c1a": true
+            },
+            "2": {
+              "n_filas_fit_bloque_referencia": 135469,
+              "n_filas_totales": 169336,
+              "n_vocabulario_bloque_referencia": 224296,
+              "vocab_sha256_bloque_referencia": "4d87c13fccef9585569c5050a1bff9bb516f87a35bad58e3ff02dc90941ef438",
+              "idf_sha256_bloque_referencia": "56a5efa4c1c4955542ea3a2b79864de9be4f2885f0b4b370b080905e2514343e",
+              "n_filas_fit_c1a": 135469,
+              "n_vocabulario_c1a": 154,
+              "n_bigramas_de_clase": 27,
+              "n_trigramas_de_clase": 127,
+              "vocab_sha256_c1a": "117293fcbf25c3696ff3c8042b501d1058efe9256436e1dd2b6f47f0a05ffd16",
+              "idf_sha256_c1a": "e9e8ae1cc655f2afe0a32608076dbad008e2fcacebb03f3f2f5bec084a6e4748",
+              "columnas_val_igualan_train_c1a": true
+            },
+            "3": {
+              "n_filas_fit_bloque_referencia": 135470,
+              "n_filas_totales": 169336,
+              "n_vocabulario_bloque_referencia": 224207,
+              "vocab_sha256_bloque_referencia": "bb759c65f09979e02788012ea95c5b91871191f84ba8d25f079bbddefa790e54",
+              "idf_sha256_bloque_referencia": "10551bf60e04fea954ee94a44c022b20971966a5a0573a43c24035aa313a729e",
+              "n_filas_fit_c1a": 135470,
+              "n_vocabulario_c1a": 154,
+              "n_bigramas_de_clase": 27,
+              "n_trigramas_de_clase": 127,
+              "vocab_sha256_c1a": "117293fcbf25c3696ff3c8042b501d1058efe9256436e1dd2b6f47f0a05ffd16",
+              "idf_sha256_c1a": "d5a043497d36eea841cfcdf388075a4effb18c1f89155fe10ecece29906003a6",
+              "columnas_val_igualan_train_c1a": true
+            },
+            "4": {
+              "n_filas_fit_bloque_referencia": 135469,
+              "n_filas_totales": 169336,
+              "n_vocabulario_bloque_referencia": 224628,
+              "vocab_sha256_bloque_referencia": "917346bfd3b26223308fe39c4f43a90f424d06fe523a53ce6e03dee75fe5cee7",
+              "idf_sha256_bloque_referencia": "45c1fc2aef4826e881554dce644fb5d512c193d0551a32310d1580e5c0fafee4",
+              "n_filas_fit_c1a": 135469,
+              "n_vocabulario_c1a": 154,
+              "n_bigramas_de_clase": 27,
+              "n_trigramas_de_clase": 127,
+              "vocab_sha256_c1a": "117293fcbf25c3696ff3c8042b501d1058efe9256436e1dd2b6f47f0a05ffd16",
+              "idf_sha256_c1a": "354e048e60979ffc808b86a520bafae7951a56e9f877c8f43358f048fd42d271",
+              "columnas_val_igualan_train_c1a": true
+            }
+          }
+        },
+        "banco_c1a_remapeo1": {
+          "n_folds_registrados": 5,
+          "folds": {
+            "0": {
+              "n_filas_fit_bloque_referencia": 135468,
+              "n_filas_totales": 169336,
+              "n_vocabulario_bloque_referencia": 224123,
+              "vocab_sha256_bloque_referencia": "8c3a0143963d6ac91d549aafd4312c279c5000c5001818f87a12442ef339f1dc",
+              "idf_sha256_bloque_referencia": "00314bc8b4e1ba0377b0ac0bed19808b028d49d8dc95485ae505335041d07160",
+              "n_filas_fit_c1a": 135468,
+              "n_vocabulario_c1a": 36,
+              "n_bigramas_de_clase": 9,
+              "n_trigramas_de_clase": 27,
+              "vocab_sha256_c1a": "f79e0169cc18f59b1f509eb51dcde25c821ee5c58f20835fef61fa549521ff18",
+              "idf_sha256_c1a": "a00299b0e6b6c2f92a7f8247eb723c7c05070fa1f925744d86684090f529f675",
+              "columnas_val_igualan_train_c1a": true
+            },
+            "1": {
+              "n_filas_fit_bloque_referencia": 135468,
+              "n_filas_totales": 169336,
+              "n_vocabulario_bloque_referencia": 223708,
+              "vocab_sha256_bloque_referencia": "ed5fe8c0cf542b6425d00d0347f11a3408823aafacb5f8682c38673a7a4e8f2f",
+              "idf_sha256_bloque_referencia": "114bab23246100ee9b6004dfad9bf82c9ba2bf5daf0d33951aedb52da0f4e135",
+              "n_filas_fit_c1a": 135468,
+              "n_vocabulario_c1a": 36,
+              "n_bigramas_de_clase": 9,
+              "n_trigramas_de_clase": 27,
+              "vocab_sha256_c1a": "f79e0169cc18f59b1f509eb51dcde25c821ee5c58f20835fef61fa549521ff18",
+              "idf_sha256_c1a": "7049e4988e5d133fd80a3147acb159d28c309975b694b212fc9142c36af11fcc",
+              "columnas_val_igualan_train_c1a": true
+            },
+            "2": {
+              "n_filas_fit_bloque_referencia": 135469,
+              "n_filas_totales": 169336,
+              "n_vocabulario_bloque_referencia": 224296,
+              "vocab_sha256_bloque_referencia": "4d87c13fccef9585569c5050a1bff9bb516f87a35bad58e3ff02dc90941ef438",
+              "idf_sha256_bloque_referencia": "56a5efa4c1c4955542ea3a2b79864de9be4f2885f0b4b370b080905e2514343e",
+              "n_filas_fit_c1a": 135469,
+              "n_vocabulario_c1a": 36,
+              "n_bigramas_de_clase": 9,
+              "n_trigramas_de_clase": 27,
+              "vocab_sha256_c1a": "f79e0169cc18f59b1f509eb51dcde25c821ee5c58f20835fef61fa549521ff18",
+              "idf_sha256_c1a": "fb1e4652a85a1359efd53da643c74ed9f5893ffb1780401a27f76d38e0392eda",
+              "columnas_val_igualan_train_c1a": true
+            },
+            "3": {
+              "n_filas_fit_bloque_referencia": 135470,
+              "n_filas_totales": 169336,
+              "n_vocabulario_bloque_referencia": 224207,
+              "vocab_sha256_bloque_referencia": "bb759c65f09979e02788012ea95c5b91871191f84ba8d25f079bbddefa790e54",
+              "idf_sha256_bloque_referencia": "10551bf60e04fea954ee94a44c022b20971966a5a0573a43c24035aa313a729e",
+              "n_filas_fit_c1a": 135470,
+              "n_vocabulario_c1a": 36,
+              "n_bigramas_de_clase": 9,
+              "n_trigramas_de_clase": 27,
+              "vocab_sha256_c1a": "f79e0169cc18f59b1f509eb51dcde25c821ee5c58f20835fef61fa549521ff18",
+              "idf_sha256_c1a": "b02a508117ce196f271996772f1e84a70cf1cc6bd2239f973dd6dd7c9dd6164b",
+              "columnas_val_igualan_train_c1a": true
+            },
+            "4": {
+              "n_filas_fit_bloque_referencia": 135469,
+              "n_filas_totales": 169336,
+              "n_vocabulario_bloque_referencia": 224628,
+              "vocab_sha256_bloque_referencia": "917346bfd3b26223308fe39c4f43a90f424d06fe523a53ce6e03dee75fe5cee7",
+              "idf_sha256_bloque_referencia": "45c1fc2aef4826e881554dce644fb5d512c193d0551a32310d1580e5c0fafee4",
+              "n_filas_fit_c1a": 135469,
+              "n_vocabulario_c1a": 36,
+              "n_bigramas_de_clase": 9,
+              "n_trigramas_de_clase": 27,
+              "vocab_sha256_c1a": "f79e0169cc18f59b1f509eb51dcde25c821ee5c58f20835fef61fa549521ff18",
+              "idf_sha256_c1a": "970894659e7e2fbb8dc7bad8d1190a37537d943ae21755dc08052c94050d9d74",
+              "columnas_val_igualan_train_c1a": true
+            }
+          }
+        },
+        "banco_c1a_remapeo2": {
+          "n_folds_registrados": 5,
+          "folds": {
+            "0": {
+              "n_filas_fit_bloque_referencia": 135468,
+              "n_filas_totales": 169336,
+              "n_vocabulario_bloque_referencia": 224123,
+              "vocab_sha256_bloque_referencia": "8c3a0143963d6ac91d549aafd4312c279c5000c5001818f87a12442ef339f1dc",
+              "idf_sha256_bloque_referencia": "00314bc8b4e1ba0377b0ac0bed19808b028d49d8dc95485ae505335041d07160",
+              "n_filas_fit_c1a": 135468,
+              "n_vocabulario_c1a": 36,
+              "n_bigramas_de_clase": 9,
+              "n_trigramas_de_clase": 27,
+              "vocab_sha256_c1a": "f79e0169cc18f59b1f509eb51dcde25c821ee5c58f20835fef61fa549521ff18",
+              "idf_sha256_c1a": "1fbdcb5f57c354ea432013683dc3af22c23dded85e298bcbcdbb59474c301e43",
+              "columnas_val_igualan_train_c1a": true
+            },
+            "1": {
+              "n_filas_fit_bloque_referencia": 135468,
+              "n_filas_totales": 169336,
+              "n_vocabulario_bloque_referencia": 223708,
+              "vocab_sha256_bloque_referencia": "ed5fe8c0cf542b6425d00d0347f11a3408823aafacb5f8682c38673a7a4e8f2f",
+              "idf_sha256_bloque_referencia": "114bab23246100ee9b6004dfad9bf82c9ba2bf5daf0d33951aedb52da0f4e135",
+              "n_filas_fit_c1a": 135468,
+              "n_vocabulario_c1a": 36,
+              "n_bigramas_de_clase": 9,
+              "n_trigramas_de_clase": 27,
+              "vocab_sha256_c1a": "f79e0169cc18f59b1f509eb51dcde25c821ee5c58f20835fef61fa549521ff18",
+              "idf_sha256_c1a": "1a5ad113bb3a41e9a1dbfc1998f6fad04d903f10f1750945ed80e72cffa00284",
+              "columnas_val_igualan_train_c1a": true
+            },
+            "2": {
+              "n_filas_fit_bloque_referencia": 135469,
+              "n_filas_totales": 169336,
+              "n_vocabulario_bloque_referencia": 224296,
+              "vocab_sha256_bloque_referencia": "4d87c13fccef9585569c5050a1bff9bb516f87a35bad58e3ff02dc90941ef438",
+              "idf_sha256_bloque_referencia": "56a5efa4c1c4955542ea3a2b79864de9be4f2885f0b4b370b080905e2514343e",
+              "n_filas_fit_c1a": 135469,
+              "n_vocabulario_c1a": 36,
+              "n_bigramas_de_clase": 9,
+              "n_trigramas_de_clase": 27,
+              "vocab_sha256_c1a": "f79e0169cc18f59b1f509eb51dcde25c821ee5c58f20835fef61fa549521ff18",
+              "idf_sha256_c1a": "6fb6ff38be4974d728c16c9971fd38923cf550a84784bd887e807b17df369027",
+              "columnas_val_igualan_train_c1a": true
+            },
+            "3": {
+              "n_filas_fit_bloque_referencia": 135470,
+              "n_filas_totales": 169336,
+              "n_vocabulario_bloque_referencia": 224207,
+              "vocab_sha256_bloque_referencia": "bb759c65f09979e02788012ea95c5b91871191f84ba8d25f079bbddefa790e54",
+              "idf_sha256_bloque_referencia": "10551bf60e04fea954ee94a44c022b20971966a5a0573a43c24035aa313a729e",
+              "n_filas_fit_c1a": 135470,
+              "n_vocabulario_c1a": 36,
+              "n_bigramas_de_clase": 9,
+              "n_trigramas_de_clase": 27,
+              "vocab_sha256_c1a": "f79e0169cc18f59b1f509eb51dcde25c821ee5c58f20835fef61fa549521ff18",
+              "idf_sha256_c1a": "65ba827bc4a9c35e3063e8a78db09240078cf1752fa5647e497f357457d21367",
+              "columnas_val_igualan_train_c1a": true
+            },
+            "4": {
+              "n_filas_fit_bloque_referencia": 135469,
+              "n_filas_totales": 169336,
+              "n_vocabulario_bloque_referencia": 224628,
+              "vocab_sha256_bloque_referencia": "917346bfd3b26223308fe39c4f43a90f424d06fe523a53ce6e03dee75fe5cee7",
+              "idf_sha256_bloque_referencia": "45c1fc2aef4826e881554dce644fb5d512c193d0551a32310d1580e5c0fafee4",
+              "n_filas_fit_c1a": 135469,
+              "n_vocabulario_c1a": 36,
+              "n_bigramas_de_clase": 9,
+              "n_trigramas_de_clase": 27,
+              "vocab_sha256_c1a": "f79e0169cc18f59b1f509eb51dcde25c821ee5c58f20835fef61fa549521ff18",
+              "idf_sha256_c1a": "bdbab348b3041c7b1d4b3b086acc99a5918e284f6c48860a3474da34b4ef85c7",
+              "columnas_val_igualan_train_c1a": true
+            }
+          }
+        },
+        "banco_c1a_remapeo3": {
+          "n_folds_registrados": 5,
+          "folds": {
+            "0": {
+              "n_filas_fit_bloque_referencia": 135468,
+              "n_filas_totales": 169336,
+              "n_vocabulario_bloque_referencia": 224123,
+              "vocab_sha256_bloque_referencia": "8c3a0143963d6ac91d549aafd4312c279c5000c5001818f87a12442ef339f1dc",
+              "idf_sha256_bloque_referencia": "00314bc8b4e1ba0377b0ac0bed19808b028d49d8dc95485ae505335041d07160",
+              "n_filas_fit_c1a": 135468,
+              "n_vocabulario_c1a": 36,
+              "n_bigramas_de_clase": 9,
+              "n_trigramas_de_clase": 27,
+              "vocab_sha256_c1a": "4b7742d3b70b28a1319c6a5a7bb85a5be3c27fc63f448863da251c1ddfec558e",
+              "idf_sha256_c1a": "7849f5d35b16559aa763b5ef6385e711c332a771801397eb6a782ee551377f22",
+              "columnas_val_igualan_train_c1a": true
+            },
+            "1": {
+              "n_filas_fit_bloque_referencia": 135468,
+              "n_filas_totales": 169336,
+              "n_vocabulario_bloque_referencia": 223708,
+              "vocab_sha256_bloque_referencia": "ed5fe8c0cf542b6425d00d0347f11a3408823aafacb5f8682c38673a7a4e8f2f",
+              "idf_sha256_bloque_referencia": "114bab23246100ee9b6004dfad9bf82c9ba2bf5daf0d33951aedb52da0f4e135",
+              "n_filas_fit_c1a": 135468,
+              "n_vocabulario_c1a": 36,
+              "n_bigramas_de_clase": 9,
+              "n_trigramas_de_clase": 27,
+              "vocab_sha256_c1a": "4b7742d3b70b28a1319c6a5a7bb85a5be3c27fc63f448863da251c1ddfec558e",
+              "idf_sha256_c1a": "f4b917682f51545e511cf001a60cdf43f790a34e8d42a8a2be1d90e53cb2efd4",
+              "columnas_val_igualan_train_c1a": true
+            },
+            "2": {
+              "n_filas_fit_bloque_referencia": 135469,
+              "n_filas_totales": 169336,
+              "n_vocabulario_bloque_referencia": 224296,
+              "vocab_sha256_bloque_referencia": "4d87c13fccef9585569c5050a1bff9bb516f87a35bad58e3ff02dc90941ef438",
+              "idf_sha256_bloque_referencia": "56a5efa4c1c4955542ea3a2b79864de9be4f2885f0b4b370b080905e2514343e",
+              "n_filas_fit_c1a": 135469,
+              "n_vocabulario_c1a": 36,
+              "n_bigramas_de_clase": 9,
+              "n_trigramas_de_clase": 27,
+              "vocab_sha256_c1a": "4b7742d3b70b28a1319c6a5a7bb85a5be3c27fc63f448863da251c1ddfec558e",
+              "idf_sha256_c1a": "8687e6f62421aa248f9716dea68b930307bec85660c35d6d010901bab3ba8327",
+              "columnas_val_igualan_train_c1a": true
+            },
+            "3": {
+              "n_filas_fit_bloque_referencia": 135470,
+              "n_filas_totales": 169336,
+              "n_vocabulario_bloque_referencia": 224207,
+              "vocab_sha256_bloque_referencia": "bb759c65f09979e02788012ea95c5b91871191f84ba8d25f079bbddefa790e54",
+              "idf_sha256_bloque_referencia": "10551bf60e04fea954ee94a44c022b20971966a5a0573a43c24035aa313a729e",
+              "n_filas_fit_c1a": 135470,
+              "n_vocabulario_c1a": 36,
+              "n_bigramas_de_clase": 9,
+              "n_trigramas_de_clase": 27,
+              "vocab_sha256_c1a": "4b7742d3b70b28a1319c6a5a7bb85a5be3c27fc63f448863da251c1ddfec558e",
+              "idf_sha256_c1a": "4ae6436dbafa5d3405378be4aa0d220b8ca443e4f5f1b3232adfded869902408",
+              "columnas_val_igualan_train_c1a": true
+            },
+            "4": {
+              "n_filas_fit_bloque_referencia": 135469,
+              "n_filas_totales": 169336,
+              "n_vocabulario_bloque_referencia": 224628,
+              "vocab_sha256_bloque_referencia": "917346bfd3b26223308fe39c4f43a90f424d06fe523a53ce6e03dee75fe5cee7",
+              "idf_sha256_bloque_referencia": "45c1fc2aef4826e881554dce644fb5d512c193d0551a32310d1580e5c0fafee4",
+              "n_filas_fit_c1a": 135469,
+              "n_vocabulario_c1a": 36,
+              "n_bigramas_de_clase": 9,
+              "n_trigramas_de_clase": 27,
+              "vocab_sha256_c1a": "4b7742d3b70b28a1319c6a5a7bb85a5be3c27fc63f448863da251c1ddfec558e",
+              "idf_sha256_c1a": "d5c29ddec68b8c52d108ffb8e7eaf9935b48d853e02ab0682003f2f3b565db3c",
+              "columnas_val_igualan_train_c1a": true
+            }
+          }
+        },
+        "banco_c1a_entre_docs": {
+          "n_folds_registrados": 5,
+          "folds": {
+            "0": {
+              "n_filas_fit_bloque_referencia": 135468,
+              "n_filas_totales": 169336,
+              "n_vocabulario_bloque_referencia": 224123,
+              "vocab_sha256_bloque_referencia": "8c3a0143963d6ac91d549aafd4312c279c5000c5001818f87a12442ef339f1dc",
+              "idf_sha256_bloque_referencia": "00314bc8b4e1ba0377b0ac0bed19808b028d49d8dc95485ae505335041d07160",
+              "n_filas_fit_c1a": 135468,
+              "n_vocabulario_c1a": 154,
+              "n_bigramas_de_clase": 27,
+              "n_trigramas_de_clase": 127,
+              "vocab_sha256_c1a": "117293fcbf25c3696ff3c8042b501d1058efe9256436e1dd2b6f47f0a05ffd16",
+              "idf_sha256_c1a": "d30be22642945e22e0118bdb987a2cca257585a360d6aeb07d0eb021de290019",
+              "columnas_val_igualan_train_c1a": true
+            },
+            "1": {
+              "n_filas_fit_bloque_referencia": 135468,
+              "n_filas_totales": 169336,
+              "n_vocabulario_bloque_referencia": 223708,
+              "vocab_sha256_bloque_referencia": "ed5fe8c0cf542b6425d00d0347f11a3408823aafacb5f8682c38673a7a4e8f2f",
+              "idf_sha256_bloque_referencia": "114bab23246100ee9b6004dfad9bf82c9ba2bf5daf0d33951aedb52da0f4e135",
+              "n_filas_fit_c1a": 135468,
+              "n_vocabulario_c1a": 154,
+              "n_bigramas_de_clase": 27,
+              "n_trigramas_de_clase": 127,
+              "vocab_sha256_c1a": "117293fcbf25c3696ff3c8042b501d1058efe9256436e1dd2b6f47f0a05ffd16",
+              "idf_sha256_c1a": "bc0506ce09f26164eb337cd2fd5b6eedcd8fed23cc9c8f653a774c17f6608b1a",
+              "columnas_val_igualan_train_c1a": true
+            },
+            "2": {
+              "n_filas_fit_bloque_referencia": 135469,
+              "n_filas_totales": 169336,
+              "n_vocabulario_bloque_referencia": 224296,
+              "vocab_sha256_bloque_referencia": "4d87c13fccef9585569c5050a1bff9bb516f87a35bad58e3ff02dc90941ef438",
+              "idf_sha256_bloque_referencia": "56a5efa4c1c4955542ea3a2b79864de9be4f2885f0b4b370b080905e2514343e",
+              "n_filas_fit_c1a": 135469,
+              "n_vocabulario_c1a": 154,
+              "n_bigramas_de_clase": 27,
+              "n_trigramas_de_clase": 127,
+              "vocab_sha256_c1a": "117293fcbf25c3696ff3c8042b501d1058efe9256436e1dd2b6f47f0a05ffd16",
+              "idf_sha256_c1a": "6d38d9db2e534fc34236e7453a2bc68415864f0d99eef9c65af56399633a7f4f",
+              "columnas_val_igualan_train_c1a": true
+            },
+            "3": {
+              "n_filas_fit_bloque_referencia": 135470,
+              "n_filas_totales": 169336,
+              "n_vocabulario_bloque_referencia": 224207,
+              "vocab_sha256_bloque_referencia": "bb759c65f09979e02788012ea95c5b91871191f84ba8d25f079bbddefa790e54",
+              "idf_sha256_bloque_referencia": "10551bf60e04fea954ee94a44c022b20971966a5a0573a43c24035aa313a729e",
+              "n_filas_fit_c1a": 135470,
+              "n_vocabulario_c1a": 154,
+              "n_bigramas_de_clase": 27,
+              "n_trigramas_de_clase": 127,
+              "vocab_sha256_c1a": "117293fcbf25c3696ff3c8042b501d1058efe9256436e1dd2b6f47f0a05ffd16",
+              "idf_sha256_c1a": "a9b0f14801630d49e83e8a7698160f1279b56110628c92858966e7b14784e8d4",
+              "columnas_val_igualan_train_c1a": true
+            },
+            "4": {
+              "n_filas_fit_bloque_referencia": 135469,
+              "n_filas_totales": 169336,
+              "n_vocabulario_bloque_referencia": 224628,
+              "vocab_sha256_bloque_referencia": "917346bfd3b26223308fe39c4f43a90f424d06fe523a53ce6e03dee75fe5cee7",
+              "idf_sha256_bloque_referencia": "45c1fc2aef4826e881554dce644fb5d512c193d0551a32310d1580e5c0fafee4",
+              "n_filas_fit_c1a": 135469,
+              "n_vocabulario_c1a": 154,
+              "n_bigramas_de_clase": 27,
+              "n_trigramas_de_clase": 127,
+              "vocab_sha256_c1a": "117293fcbf25c3696ff3c8042b501d1058efe9256436e1dd2b6f47f0a05ffd16",
+              "idf_sha256_c1a": "e70aec0fe3639e9db2cf3f820de84455c4ef416b9e3bbdaffa3ae9727baba16c",
+              "columnas_val_igualan_train_c1a": true
+            }
+          }
+        },
+        "integ_control": {
+          "n_folds_registrados": 5,
+          "folds": {
+            "0": {
+              "n_filas_fit_bloque_referencia": 135468,
+              "n_filas_totales": 169336,
+              "n_vocabulario_bloque_referencia": 118409,
+              "vocab_sha256_bloque_referencia": "f7d4a7efa7669d595122d323d9e14f319714fc91686d386dba84c451adb9d7b2",
+              "idf_sha256_bloque_referencia": "ec9b876fc50d30dae4df1e35472d9e9c333188bb38856ff891b6a28e67eb7630",
+              "n_filas_fit_c1a": null,
+              "n_vocabulario_c1a": null,
+              "n_bigramas_de_clase": null,
+              "n_trigramas_de_clase": null,
+              "vocab_sha256_c1a": null,
+              "idf_sha256_c1a": null,
+              "columnas_val_igualan_train_c1a": null
+            },
+            "1": {
+              "n_filas_fit_bloque_referencia": 135468,
+              "n_filas_totales": 169336,
+              "n_vocabulario_bloque_referencia": 118337,
+              "vocab_sha256_bloque_referencia": "dae18845defd827742ee12b90dc8c87749962e5928f863e3de11d6e7b4a396eb",
+              "idf_sha256_bloque_referencia": "7b7dd9e81ded5836f28f69e484d5a309a3237d0809a7d007abee66ecf87b5c37",
+              "n_filas_fit_c1a": null,
+              "n_vocabulario_c1a": null,
+              "n_bigramas_de_clase": null,
+              "n_trigramas_de_clase": null,
+              "vocab_sha256_c1a": null,
+              "idf_sha256_c1a": null,
+              "columnas_val_igualan_train_c1a": null
+            },
+            "2": {
+              "n_filas_fit_bloque_referencia": 135469,
+              "n_filas_totales": 169336,
+              "n_vocabulario_bloque_referencia": 118232,
+              "vocab_sha256_bloque_referencia": "c8970e0849516420c4562a6298ab0a15cb841108a1a385620ed896a3ab5193dd",
+              "idf_sha256_bloque_referencia": "52768cc065aace56e5a1dfe6f64c97116d3c54239946fd6ba97110eda9d91c70",
+              "n_filas_fit_c1a": null,
+              "n_vocabulario_c1a": null,
+              "n_bigramas_de_clase": null,
+              "n_trigramas_de_clase": null,
+              "vocab_sha256_c1a": null,
+              "idf_sha256_c1a": null,
+              "columnas_val_igualan_train_c1a": null
+            },
+            "3": {
+              "n_filas_fit_bloque_referencia": 135470,
+              "n_filas_totales": 169336,
+              "n_vocabulario_bloque_referencia": 118356,
+              "vocab_sha256_bloque_referencia": "58db146ee417eda26a89ff22276297114cb35feb7e248e4efd4197fa14ad24a6",
+              "idf_sha256_bloque_referencia": "1fffe5cd32d29249395227d6ff4e83c428e182dacbec5140df081d68117f864d",
+              "n_filas_fit_c1a": null,
+              "n_vocabulario_c1a": null,
+              "n_bigramas_de_clase": null,
+              "n_trigramas_de_clase": null,
+              "vocab_sha256_c1a": null,
+              "idf_sha256_c1a": null,
+              "columnas_val_igualan_train_c1a": null
+            },
+            "4": {
+              "n_filas_fit_bloque_referencia": 135469,
+              "n_filas_totales": 169336,
+              "n_vocabulario_bloque_referencia": 118363,
+              "vocab_sha256_bloque_referencia": "28c0a2ff12d328c247d17015338ebfbd76432c72374fe9ae55ffd1f466af55c1",
+              "idf_sha256_bloque_referencia": "6e89ced0089e2c740a64efb545582f54534939a6fbb9af8681e3a4b74ec2a5f0",
+              "n_filas_fit_c1a": null,
+              "n_vocabulario_c1a": null,
+              "n_bigramas_de_clase": null,
+              "n_trigramas_de_clase": null,
+              "vocab_sha256_c1a": null,
+              "idf_sha256_c1a": null,
+              "columnas_val_igualan_train_c1a": null
+            }
+          }
+        },
+        "integ_c1a": {
+          "n_folds_registrados": 5,
+          "folds": {
+            "0": {
+              "n_filas_fit_bloque_referencia": 135468,
+              "n_filas_totales": 169336,
+              "n_vocabulario_bloque_referencia": 118409,
+              "vocab_sha256_bloque_referencia": "f7d4a7efa7669d595122d323d9e14f319714fc91686d386dba84c451adb9d7b2",
+              "idf_sha256_bloque_referencia": "ec9b876fc50d30dae4df1e35472d9e9c333188bb38856ff891b6a28e67eb7630",
+              "n_filas_fit_c1a": 135468,
+              "n_vocabulario_c1a": 154,
+              "n_bigramas_de_clase": 27,
+              "n_trigramas_de_clase": 127,
+              "vocab_sha256_c1a": "117293fcbf25c3696ff3c8042b501d1058efe9256436e1dd2b6f47f0a05ffd16",
+              "idf_sha256_c1a": "275d30ed194ddd699514d045a94a5a9574585a9e4836c13bf2331bf2b4bd6cfe",
+              "columnas_val_igualan_train_c1a": true
+            },
+            "1": {
+              "n_filas_fit_bloque_referencia": 135468,
+              "n_filas_totales": 169336,
+              "n_vocabulario_bloque_referencia": 118337,
+              "vocab_sha256_bloque_referencia": "dae18845defd827742ee12b90dc8c87749962e5928f863e3de11d6e7b4a396eb",
+              "idf_sha256_bloque_referencia": "7b7dd9e81ded5836f28f69e484d5a309a3237d0809a7d007abee66ecf87b5c37",
+              "n_filas_fit_c1a": 135468,
+              "n_vocabulario_c1a": 154,
+              "n_bigramas_de_clase": 27,
+              "n_trigramas_de_clase": 127,
+              "vocab_sha256_c1a": "117293fcbf25c3696ff3c8042b501d1058efe9256436e1dd2b6f47f0a05ffd16",
+              "idf_sha256_c1a": "09a1435cd4b7a371f5bbe38955e6e132162f2d47ec7b25c5770724cdaf05d8ef",
+              "columnas_val_igualan_train_c1a": true
+            },
+            "2": {
+              "n_filas_fit_bloque_referencia": 135469,
+              "n_filas_totales": 169336,
+              "n_vocabulario_bloque_referencia": 118232,
+              "vocab_sha256_bloque_referencia": "c8970e0849516420c4562a6298ab0a15cb841108a1a385620ed896a3ab5193dd",
+              "idf_sha256_bloque_referencia": "52768cc065aace56e5a1dfe6f64c97116d3c54239946fd6ba97110eda9d91c70",
+              "n_filas_fit_c1a": 135469,
+              "n_vocabulario_c1a": 154,
+              "n_bigramas_de_clase": 27,
+              "n_trigramas_de_clase": 127,
+              "vocab_sha256_c1a": "117293fcbf25c3696ff3c8042b501d1058efe9256436e1dd2b6f47f0a05ffd16",
+              "idf_sha256_c1a": "e9e8ae1cc655f2afe0a32608076dbad008e2fcacebb03f3f2f5bec084a6e4748",
+              "columnas_val_igualan_train_c1a": true
+            },
+            "3": {
+              "n_filas_fit_bloque_referencia": 135470,
+              "n_filas_totales": 169336,
+              "n_vocabulario_bloque_referencia": 118356,
+              "vocab_sha256_bloque_referencia": "58db146ee417eda26a89ff22276297114cb35feb7e248e4efd4197fa14ad24a6",
+              "idf_sha256_bloque_referencia": "1fffe5cd32d29249395227d6ff4e83c428e182dacbec5140df081d68117f864d",
+              "n_filas_fit_c1a": 135470,
+              "n_vocabulario_c1a": 154,
+              "n_bigramas_de_clase": 27,
+              "n_trigramas_de_clase": 127,
+              "vocab_sha256_c1a": "117293fcbf25c3696ff3c8042b501d1058efe9256436e1dd2b6f47f0a05ffd16",
+              "idf_sha256_c1a": "d5a043497d36eea841cfcdf388075a4effb18c1f89155fe10ecece29906003a6",
+              "columnas_val_igualan_train_c1a": true
+            },
+            "4": {
+              "n_filas_fit_bloque_referencia": 135469,
+              "n_filas_totales": 169336,
+              "n_vocabulario_bloque_referencia": 118363,
+              "vocab_sha256_bloque_referencia": "28c0a2ff12d328c247d17015338ebfbd76432c72374fe9ae55ffd1f466af55c1",
+              "idf_sha256_bloque_referencia": "6e89ced0089e2c740a64efb545582f54534939a6fbb9af8681e3a4b74ec2a5f0",
+              "n_filas_fit_c1a": 135469,
+              "n_vocabulario_c1a": 154,
+              "n_bigramas_de_clase": 27,
+              "n_trigramas_de_clase": 127,
+              "vocab_sha256_c1a": "117293fcbf25c3696ff3c8042b501d1058efe9256436e1dd2b6f47f0a05ffd16",
+              "idf_sha256_c1a": "354e048e60979ffc808b86a520bafae7951a56e9f877c8f43358f048fd42d271",
+              "columnas_val_igualan_train_c1a": true
+            }
+          }
+        }
+      },
+      "n_checks": 230,
+      "n_checks_ok": 230,
+      "columnas_observadas_exigidas": true,
+      "pass": true,
+      "criterio": "el unico fit de cada bloque es el TfidfVectorizer del train de su fold; el fold-val aporta las mismas columnas; el vocabulario y el idf se publican por fold con sha256; en la corrida real el bloque del mapa real debe dar 27 bigramas y 127 trigramas de clase",
+      "nombre": "fold_local"
+    },
+    "mapa_literal": {
+      "sha256_mapa": "cac5b2f32699a38915774fdea9763d87d7153d791d853c95aa3cdb7340be1b94",
+      "sha256_orden_alfabeto": "42fbfb1168092f115f43635b6e7c9e1ce6f1525ad17d87b4d994cd70ac811604",
+      "sha256_tabla_puntuacion_ascii": "284b2bc601f2fcafe964159263157400310ebbd95c68b3cc235cef5c293dbb9a",
+      "sha256_clase_del_texto_de_prueba": "ed961d59a98cd2c86bff1d6cf7b36e47afdd83d94cd7db469e5d4faeb4ee104c",
+      "texto_de_prueba": "Hola, mundo 123! Anadir mas cosas: cuanto? -> 5\u0416",
+      "secuencia_de_clases": "MLLLPSLLLLLSDDDPSMLLLLLSLLLSLLLLLPSLLLLLLPSPPSDM",
+      "n_tokens_del_documento": 93,
+      "n_caracteres_ascii_en_la_tabla": 32,
+      "pass": true,
+      "criterio": "sha256 del mapa y del alfabeto iguales a los congelados, mapa identico al del pre-registro y tabla de puntuacion ASCII de 32 caracteres",
+      "nombre": "mapa_literal"
+    }
+  },
+  "verificacion": {
+    "constantes": {
+      "mapa_literal_igual": true,
+      "orden_alfabeto_igual": true,
+      "enmienda1_n_clases_del_alfabeto": true,
+      "enmienda1_alfabeto_de_6_clases": true,
+      "enmienda1_rango_n_es_2_3": true,
+      "enmienda1_columnas_observadas": true,
+      "enmienda1_mapa_intacto": true,
+      "enmienda1_no_toca_el_protocolo": true,
+      "enmienda1_pre_ejecucion": true,
+      "enmienda1_una_sola_con_ese_objeto": true,
+      "modelo_estimator": true,
+      "modelo_C": true,
+      "modelo_loss": true,
+      "modelo_penalty": true,
+      "modelo_max_iter": true,
+      "modelo_tol": true,
+      "char_wb_analyzer": true,
+      "char_wb_ngram": true,
+      "char_wb_min_df": true,
+      "char_wb_max_features": true,
+      "palabra_ngram": true,
+      "palabra_min_df": true,
+      "palabra_max_features": true,
+      "normalizacion_c1a": true,
+      "cv_n_folds": true,
+      "cv_semilla": true,
+      "gate_delta_min": true,
+      "gate_folds_min": true,
+      "gate_n_bootstrap": true,
+      "gate_semilla": true,
+      "gate_variabilidad": true,
+      "gate_baseline_abort": true,
+      "compliance_a_cero": true,
+      "baseline_primario": true,
+      "referencia_nested": true,
+      "pesos_plugin": true,
+      "hash_mapa": true,
+      "sha16_del_mapa_es_el_congelado": true,
+      "hash_orden": true,
+      "remapeos_al_menos_3": true,
+      "controles_corregidos_en_el_prereg": true,
+      "sin_permutacion_de_nombres_en_los_brazos": true,
+      "budget_presupuesto": true,
+      "budget_ram": true,
+      "budget_hilos": true
+    },
+    "versiones": {
+      "sklearn": true,
+      "numpy": true,
+      "pandas": true
+    },
+    "hashes": {
+      "corpus_archivo": true,
+      "corpus_textos": true,
+      "canonico_y_true": true,
+      "canonico_fold_idx": true,
+      "canonico_v30_prob": true,
+      "canonico_ids": true,
+      "manifest_canonico": true,
+      "clase_en_rango_canonico": true,
+      "cinco_folds_canonicos": true,
+      "forma_v30": true,
+      "forma_ids": true,
+      "textos_alineados": true
+    }
+  },
+  "cumplimiento": {
+    "literales_de_ruta_revisados": 17,
+    "modulos_revisados": 26,
+    "violaciones": [],
+    "escrituras_tocan_canonico": false,
+    "compliance_del_prereg": {
+      "embeddings": 0,
+      "transformers": 0,
+      "llm": 0,
+      "datos_externos": 0,
+      "metadatos": 0,
+      "test": 0,
+      "holdout": 0,
+      "leaderboard": 0,
+      "submission": 0,
+      "ruling": "kaggle-specialist: LEGAL, con los tests (a) parametros estimados y (b) abstraccion; el mapa descarta la identidad del caracter y no estima nada",
+      "ilegales_declarados": [
+        "mapa elegido con matriz de confusion o informacion mutua con la etiqueta",
+        "mapa distinto por clase objetivo",
+        "mapa derivado de covarianza o autovectores",
+        "mapa derivado de clustering de caracteres",
+        "frecuencias de transicion como vector denso",
+        "estadisticas de transicion sobre todo el corpus antes del split"
+      ]
+    },
+    "test_solo_transform_predict": true,
+    "holdout_intocable": true,
+    "leaderboard_sin_tuning": true,
+    "campeon_intacto": true,
+    "p33_scores_intocable": true,
+    "sin_submission": true,
+    "folds_leidos_del_canonico": true
+  },
+  "tabla_bias": null,
+  "veredicto": {
+    "nodo": "SENAL_EXISTE_INTEGRACION_NEGATIVA",
+    "motivo": "el banco supero su hipotesis nula pero la integracion es negativa: se reporta el banco y el nodo, y L4 se cierra",
+    "traza": {
+      "sondas_ok": true,
+      "especificidad_ok": true,
+      "banco_supera_h0": true,
+      "integracion_supera_h0": false,
+      "delta_integrado": -0.0016013321501044953
+    },
+    "cierra_L4": "se cierra L4 por el nodo del arbol; C1-A es ONE-SHOT: no se reintenta con otro alfabeto, otro rango de n, otro mapa ni otro corte",
+    "one_shot": "C1-A es ONE-SHOT en cualquier caso; no se ejecuta una segunda particion sin autorizacion del usuario"
+  },
+  "recursos": {
+    "rss_pico_gb": 1.7421340942382812,
+    "presupuesto_declarado_seg": 2400.0,
+    "ram_tope_gb": 20.0,
+    "hilos": 32,
+    "duracion_seg": 403.12433314323425
+  }
+}

@@ -1,0 +1,86 @@
+# familia: temas
+# subcategoria: redes_sociales
+# descripcion: Dominio de plataformas y de las prácticas que las acompañan: seguidores, interacción, publicación y jerga de la plataforma.
+# idioma: es
+# procedencia: elaborado en este proyecto (conocimiento linguistico general)
+# licencia: del proyecto; sin datos externos y sin etiquetas de edad
+# riesgo: ninguno
+# fecha: 2026-09-25
+# entradas_declaradas: 84
+# cribado_corpus: frecuencia minima 3 en el train
+bio
+biografía
+bloqueado
+bloquear
+comentario
+comentarios
+contacto
+contraseña
+correo
+cuenta
+cuentas
+dejar
+denunciar
+difundir
+difusión
+electrónico
+enlace
+etiquetas
+explorar
+facebook
+favorito
+favoritos
+firma
+follow
+following
+gusta
+hashtag
+historias
+instagram
+like
+linkedin
+mencionar
+menciones
+mención
+nombre
+notificaciones
+notificación
+perfil
+perfiles
+post
+posts
+privado
+publicación
+publicar
+público
+red
+redes
+reportar
+responder
+respuesta
+retuit
+seguidor
+seguidores
+seguimiento
+seguir
+siguiendo
+silenciar
+snapchat
+social
+sociales
+story
+sugerencias
+tendencia
+timeline
+trending
+tumblr
+tweet
+tweeting
+tweets
+twitter
+unfollow
+usuario
+usuarios
+viral
+whatsapp
+youtube

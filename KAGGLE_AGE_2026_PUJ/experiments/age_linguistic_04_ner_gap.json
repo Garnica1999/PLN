@@ -1,0 +1,115 @@
+{
+  "fase": "P6-P0 auditoria P3-P5 y verificacion NER",
+  "fecha": "2026-09-29",
+  "clasificacion": {
+    "P3-LEMMA-POS": "PARTIALLY_COVERED",
+    "P4-MORFOLOGIA": "PARTIALLY_COVERED",
+    "P5-DEPENDENCIAS": "GENUINELY_NEW",
+    "P6-NER-ESTRUCTURAL": "GENUINELY_NEW"
+  },
+  "estadisticas": {
+    "md": {
+      "documentos": 169336,
+      "docs_con_entidad": 137455,
+      "pct_docs_con_entidad": 81.17,
+      "tokens_en_entidades": 612937,
+      "spans": 296172,
+      "spans_por_doc": 1.749,
+      "tipos": {
+        "PER": 84352,
+        "LOC": 92681,
+        "ORG": 86279,
+        "MISC": 349625
+      }
+    },
+    "lg": {
+      "documentos": 169336,
+      "docs_con_entidad": 140603,
+      "pct_docs_con_entidad": 83.03,
+      "tokens_en_entidades": 680230,
+      "spans": 309445,
+      "spans_por_doc": 1.827,
+      "tipos": {
+        "PER": 95255,
+        "LOC": 90948,
+        "ORG": 93144,
+        "MISC": 400883
+      }
+    }
+  },
+  "composicion_pct_palabra": {
+    "md": 71.9,
+    "lg": 71.5
+  },
+  "acuerdo_ent_md_lg": 28.91,
+  "cortes": {
+    "md": [
+      {
+        "corte": "con_http",
+        "documentos": 70475,
+        "pct_con_entidad": 86.77
+      },
+      {
+        "corte": "con_hashtag",
+        "documentos": 34283,
+        "pct_con_entidad": 91.7
+      },
+      {
+        "corte": "con_mencion",
+        "documentos": 108186,
+        "pct_con_entidad": 91.13
+      },
+      {
+        "corte": "longitud<=40",
+        "documentos": 27528,
+        "pct_con_entidad": 54.57
+      },
+      {
+        "corte": "longitud_41-93",
+        "documentos": 57497,
+        "pct_con_entidad": 76.32
+      },
+      {
+        "corte": "longitud>93",
+        "documentos": 84311,
+        "pct_con_entidad": 93.17
+      }
+    ],
+    "lg": [
+      {
+        "corte": "con_http",
+        "documentos": 70475,
+        "pct_con_entidad": 87.22
+      },
+      {
+        "corte": "con_hashtag",
+        "documentos": 34283,
+        "pct_con_entidad": 96.3
+      },
+      {
+        "corte": "con_mencion",
+        "documentos": 108186,
+        "pct_con_entidad": 92.94
+      },
+      {
+        "corte": "longitud<=40",
+        "documentos": 27528,
+        "pct_con_entidad": 56.64
+      },
+      {
+        "corte": "longitud_41-93",
+        "documentos": 57497,
+        "pct_con_entidad": 79.19
+      },
+      {
+        "corte": "longitud>93",
+        "documentos": 84311,
+        "pct_con_entidad": 94.27
+      }
+    ]
+  },
+  "sin_test": true,
+  "sin_holdout": true,
+  "sin_entrenamiento": true,
+  "segundos": 4.1
+}

@@ -1,0 +1,4 @@
+brazo,delta_vs_v30,delta_sobre_ruido,shuffle_control,atribuible_al_residuo
+barajado,-0.0003849,,True,0.0001697
+ruido,-0.0001613,,False,-5.39e-05
+con_intercepto,-0.0002152,,False,0.0

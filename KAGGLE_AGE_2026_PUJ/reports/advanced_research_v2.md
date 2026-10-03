@@ -61,7 +61,7 @@ La generación del candidato reveló una submission degenerada (78.576 filas pre
 | meta LogReg (v10) | 0.5981 | accuracy 0.5989 |
 | meta MLP (v11) | 0.6024 | accuracy 0.6026 |
 
-**Δ = +0.0043** (criterio: Δ ≥ +0,003) → **CONFIRMADO**.
+**Δ = +0.0043** (criterio: Δ ≥ +0,003) -> **CONFIRMADO**.
 
 ## 7. Candidato v11
 
@@ -84,9 +84,9 @@ La generación del candidato reveló una submission degenerada (78.576 filas pre
 
 - **L2 — Residualización por longitud**: separar señal de edad de 'tweet simplemente más largo'; es la línea con mejor relación coste/información de las que quedan.
 - **L3 — Contenido vs estilo**: representación explícita de estilo (palabras funcionales, puntuación, estructura) frente a contenido; explicaría por qué las fronteras centrales resisten.
-- **L4 — Transiciones de carácter**: estadística de transición letra↔dígito↔puntuación.
+- **L4 — Transiciones de carácter**: estadística de transición letra<->dígito<->puntuación.
 - **L7 — NB-SVM por canal**: word, hashtag y mención puros como miembros independientes.
-- **Retrieval train→test**: sigue **REQUIERE_VERIFICACIÓN** de reglas; no implementado.
+- **Retrieval train->test**: sigue **REQUIERE_VERIFICACIÓN** de reglas; no implementado.
 
 ## 10. Conclusión de la fase
 

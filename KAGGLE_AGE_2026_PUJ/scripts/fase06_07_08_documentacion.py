@@ -103,7 +103,7 @@ c_table
     nbutil.md(
         """
 **INTERPRETACIÓN.** Con 314k features dispersas y 169k documentos, el óptimo está en
-**C = 0,2** (0,5628): más regularización que el valor por defecto (C = 1,0 → 0,5557) reduce la
+**C = 0,2** (0,5628): más regularización que el valor por defecto (C = 1,0 -> 0,5557) reduce la
 varianza sin sesgar. La curva es suave y unimodal, sin indicios de inestabilidad.
 
 **DECISIÓN.** C = 0,2 como valor congelado del SVM en el pipeline final.
@@ -265,8 +265,8 @@ confundidos.head(8)
     ),
     nbutil.md(
         """
-**OBSERVACIÓN.** La confusión es **casi toda entre clases adyacentes**: 18-24→25-34 (15,3%),
-35-49→25-34 (14,4%), 35-49→50-64 (14,2%), 25-34→35-49 (12,5%), 65-xx→50-64 (12,7%).
+**OBSERVACIÓN.** La confusión es **casi toda entre clases adyacentes**: 18-24->25-34 (15,3%),
+35-49->25-34 (14,4%), 35-49->50-64 (14,2%), 25-34->35-49 (12,5%), 65-xx->50-64 (12,7%).
 
 **INTERPRETACIÓN.** El clasificador nominal desaprovecha la **estructura ordinal** del problema:
 equivocarse por un rango vecino es mucho más frecuente que por dos o más.
@@ -291,7 +291,7 @@ print("figura:", cfg.FIGURES / "fase17_error_longitud.png")
 más largo. Los retuits y los near-duplicados se clasifican mejor (38,5% y 27,5% de error).
 
 **INTERPRETACIÓN.** Los tweets cortos no contienen suficiente señal textual; los duplicados, en
-cambio, se memorizan (lo que también explica la brecha positiva CV↔LB).
+cambio, se memorizan (lo que también explica la brecha positiva CV<->LB).
 
 **CONSECUENCIA.** Se enriquece el meta-modelo con las features densas (longitud incluida) para que
 **condicione** la combinación según el tipo de tweet (E-018: +0,0036).

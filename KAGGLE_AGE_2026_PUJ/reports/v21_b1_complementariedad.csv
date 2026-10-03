@@ -1,0 +1,5 @@
+candidato,ambos_correctos,ambos_incorrectos,solo_candidato,solo_v20,neto
+V20 (control exacto),103331,66005,0,0,0
+LinearSVC C 0.2,94648,59779,6226,8683,-2457
+LinearSVC C 1.0,94646,59777,6228,8685,-2457
+boosting especializado B1,103049,65729,276,282,-6

@@ -1,0 +1,221 @@
+{
+  "fase": "validacion de los umbrales por clase",
+  "fecha": "2026-10-10",
+  "experimenta": true,
+  "baseline_v30": 0.6134471,
+  "delta": 0.0020172,
+  "bootstrap": {
+    "media": 0.0020178,
+    "ic95": [
+      0.0010143,
+      0.002948
+    ],
+    "contiene_cero": false,
+    "p_delta_positivo": 1.0,
+    "n": 2000
+  },
+  "firma_teorica": {
+    "accuracy_argmax": 0.61377,
+    "accuracy_plug_in": 0.61166,
+    "delta_accuracy": -0.00211,
+    "clases_que_suben_f1": 5,
+    "lectura": "firma teorica correcta: suben las clases infra-predichas y baja la accuracy global"
+  },
+  "per_class": [
+    {
+      "clase": "13-17",
+      "f1_argmax": 0.68537,
+      "f1_plug_in": 0.68092,
+      "delta_f1": -0.00445,
+      "recall_argmax": 0.66064,
+      "recall_plug_in": 0.61924,
+      "delta_recall": -0.0414,
+      "n_predicho_argmax": 26780,
+      "n_predicho_plug_in": 23634
+    },
+    {
+      "clase": "18-24",
+      "f1_argmax": 0.52084,
+      "f1_plug_in": 0.52727,
+      "delta_f1": 0.00643,
+      "recall_argmax": 0.54865,
+      "recall_plug_in": 0.56988,
+      "delta_recall": 0.02124,
+      "n_predicho_argmax": 31738,
+      "n_predicho_plug_in": 33311
+    },
+    {
+      "clase": "25-34",
+      "f1_argmax": 0.49916,
+      "f1_plug_in": 0.50108,
+      "delta_f1": 0.00192,
+      "recall_argmax": 0.47606,
+      "recall_plug_in": 0.52027,
+      "delta_recall": 0.0442,
+      "n_predicho_argmax": 25724,
+      "n_predicho_plug_in": 30518
+    },
+    {
+      "clase": "35-49",
+      "f1_argmax": 0.57314,
+      "f1_plug_in": 0.57379,
+      "delta_f1": 0.00064,
+      "recall_argmax": 0.53751,
+      "recall_plug_in": 0.5508,
+      "delta_recall": 0.01328,
+      "n_predicho_argmax": 24720,
+      "n_predicho_plug_in": 25968
+    },
+    {
+      "clase": "50-64",
+      "f1_argmax": 0.66706,
+      "f1_plug_in": 0.66815,
+      "delta_f1": 0.00109,
+      "recall_argmax": 0.70713,
+      "recall_plug_in": 0.69401,
+      "delta_recall": -0.01311,
+      "n_predicho_argmax": 31431,
+      "n_predicho_plug_in": 30232
+    },
+    {
+      "clase": "65-xx",
+      "f1_argmax": 0.73511,
+      "f1_plug_in": 0.74158,
+      "delta_f1": 0.00647,
+      "recall_argmax": 0.75924,
+      "recall_plug_in": 0.72128,
+      "delta_recall": -0.03796,
+      "n_predicho_argmax": 28943,
+      "n_predicho_plug_in": 25673
+    }
+  ],
+  "alta_confianza": {
+    "n_filas_alta": 76033,
+    "n_cambian": 11226,
+    "n_alta_que_cambian": 0,
+    "prediccion_confirmada": true,
+    "confianza_media_de_las_que_cambian": 0.33455
+  },
+  "pesos": {
+    "media": [
+      1.0,
+      1.1749,
+      1.2721,
+      1.163,
+      1.001,
+      0.8128
+    ],
+    "desviacion": [
+      0.0,
+      0.0569,
+      0.0479,
+      0.052,
+      0.0447,
+      0.0604
+    ],
+    "clases_movidas": 4,
+    "con_signo_consistente": 4,
+    "por_fold": [
+      [
+        1.0,
+        1.2214,
+        1.3499,
+        1.2214,
+        1.0513,
+        0.8607
+      ],
+      [
+        1.0,
+        1.1052,
+        1.2214,
+        1.1052,
+        0.9512,
+        0.7788
+      ],
+      [
+        1.0,
+        1.2214,
+        1.284,
+        1.2214,
+        1.0513,
+        0.9048
+      ],
+      [
+        1.0,
+        1.2214,
+        1.284,
+        1.1618,
+        1.0,
+        0.7788
+      ],
+      [
+        1.0,
+        1.1052,
+        1.2214,
+        1.1052,
+        0.9512,
+        0.7408
+      ]
+    ]
+  },
+  "sensibilidad": [
+    {
+      "rejilla": "gruesa",
+      "corrected_cv": 0.6154513,
+      "delta": 0.0020042
+    },
+    {
+      "rejilla": "media",
+      "corrected_cv": 0.6154643,
+      "delta": 0.0020172
+    },
+    {
+      "rejilla": "fina",
+      "corrected_cv": 0.6155914,
+      "delta": 0.0021443
+    }
+  ],
+  "rango_entre_rejillas": 0.0001401,
+  "validaciones": [
+    {
+      "validacion": "firma_teorica_accuracy_baja",
+      "valor": -0.002108,
+      "aprobado": true
+    },
+    {
+      "validacion": "firma_teorica_no_todas_suben",
+      "valor": 5,
+      "aprobado": true
+    },
+    {
+      "validacion": "bootstrap_ic95_contiene_cero",
+      "valor": [
+        0.0010143,
+        0.002948
+      ],
+      "aprobado": true
+    },
+    {
+      "validacion": "cero_cambios_en_alta_confianza",
+      "valor": 0,
+      "aprobado": true
+    },
+    {
+      "validacion": "pesos_estables_en_las_clases_que_se_mueven",
+      "valor": "4 clases movidas, 4 con signo consistente",
+      "aprobado": true
+    },
+    {
+      "validacion": "sensibilidad_a_la_rejilla",
+      "valor": 0.0001401,
+      "aprobado": true
+    }
+  ],
+  "todas_pasan": true,
+  "restricciones": {
+    "usa_test": false,
+    "usa_holdout": false,
+    "entrena_modelos": false
+  },
+  "segundos": 528.4
+}

@@ -10,4 +10,4 @@
 | L7 | NB-SVM por canal | Cada canal aporta una vista diversa | 25 min | pendiente |
 | L6 | Meta 2.0 y complementariedad | La ponderación por tipo recupera errores | 30 min | pendiente |
 
-Puerta de decisión tras L1/L5: si `one_model_right` > 5% → priorizar L6; si < 2% → L3/L2.
+Puerta de decisión tras L1/L5: si `one_model_right` > 5% -> priorizar L6; si < 2% -> L3/L2.

@@ -1,0 +1,304 @@
+{
+  "fase": "P33+ 00 persistencia, control y anomalia URL",
+  "fecha": "2026-10-02",
+  "experimenta": false,
+  "commit": "1e00bfada15e48c3f2166f461ce83062f9fd91bd",
+  "baseline_v30": 0.6134471,
+  "persistencia": {
+    "data_hash": "2ada573b27b9cb503cda0bb80344b092b9601a3105fe9b56d2127e261f2edf8e",
+    "candidatos": [
+      {
+        "candidato": "ortografia+composicion+discurso",
+        "carpeta": "ortografia_composicion_discurso",
+        "macro_f1": 0.5048142,
+        "n_hashes": 6
+      },
+      {
+        "candidato": "discurso",
+        "carpeta": "discurso",
+        "macro_f1": 0.5030002,
+        "n_hashes": 6
+      },
+      {
+        "candidato": "ortografia+composicion",
+        "carpeta": "ortografia_composicion",
+        "macro_f1": 0.5029735,
+        "n_hashes": 6
+      },
+      {
+        "candidato": "composicion",
+        "carpeta": "composicion",
+        "macro_f1": 0.5016523,
+        "n_hashes": 6
+      },
+      {
+        "candidato": "ortografia",
+        "carpeta": "ortografia",
+        "macro_f1": 0.4999868,
+        "n_hashes": 6
+      },
+      {
+        "candidato": "url",
+        "carpeta": "url",
+        "macro_f1": 0.4998877,
+        "n_hashes": 6
+      },
+      {
+        "candidato": "raw",
+        "carpeta": "raw",
+        "macro_f1": 0.4979941,
+        "n_hashes": 6
+      },
+      {
+        "candidato": "todos",
+        "carpeta": "todos",
+        "macro_f1": 0.4961184,
+        "n_hashes": 6
+      },
+      {
+        "candidato": "posicion",
+        "carpeta": "posicion",
+        "macro_f1": 0.4956907,
+        "n_hashes": 6
+      },
+      {
+        "candidato": "forma_palabra",
+        "carpeta": "forma_palabra",
+        "macro_f1": 0.4950099,
+        "n_hashes": 6
+      }
+    ],
+    "raiz": "artifacts/p33_scores"
+  },
+  "control_score_space": [
+    {
+      "candidato": "ortografia+composicion+discurso",
+      "macro_f1": 0.5048142,
+      "prob_media": 0.166667,
+      "prob_std": 0.124735,
+      "confianza_media": 0.37843,
+      "margen_medio": 0.18687,
+      "correlacion_con_v30": 0.78438,
+      "acuerdo_con_v30": 0.63125,
+      "auc_cand_vs_error_v30": 0.31246,
+      "auc_invertido": 0.68754,
+      "auc_margen_cand_vs_error": 0.67717,
+      "auc_margen_v30_vs_error": 0.80051,
+      "rescate_unico": 11761,
+      "danio": 30187,
+      "neto": -18426
+    },
+    {
+      "candidato": "discurso",
+      "macro_f1": 0.5030002,
+      "prob_media": 0.166667,
+      "prob_std": 0.12057,
+      "confianza_media": 0.36977,
+      "margen_medio": 0.18081,
+      "correlacion_con_v30": 0.78561,
+      "acuerdo_con_v30": 0.62892,
+      "auc_cand_vs_error_v30": 0.3106,
+      "auc_invertido": 0.6894,
+      "auc_margen_cand_vs_error": 0.67748,
+      "auc_margen_v30_vs_error": 0.80051,
+      "rescate_unico": 11661,
+      "danio": 30346,
+      "neto": -18685
+    },
+    {
+      "candidato": "ortografia+composicion",
+      "macro_f1": 0.5029735,
+      "prob_media": 0.166667,
+      "prob_std": 0.123544,
+      "confianza_media": 0.37588,
+      "margen_medio": 0.18488,
+      "correlacion_con_v30": 0.78268,
+      "acuerdo_con_v30": 0.62786,
+      "auc_cand_vs_error_v30": 0.31297,
+      "auc_invertido": 0.68703,
+      "auc_margen_cand_vs_error": 0.67651,
+      "auc_margen_v30_vs_error": 0.80051,
+      "rescate_unico": 11797,
+      "danio": 30549,
+      "neto": -18752
+    },
+    {
+      "candidato": "composicion",
+      "macro_f1": 0.5016523,
+      "prob_media": 0.166667,
+      "prob_std": 0.121396,
+      "confianza_media": 0.37163,
+      "margen_medio": 0.1816,
+      "correlacion_con_v30": 0.78274,
+      "acuerdo_con_v30": 0.62487,
+      "auc_cand_vs_error_v30": 0.31356,
+      "auc_invertido": 0.68644,
+      "auc_margen_cand_vs_error": 0.67637,
+      "auc_margen_v30_vs_error": 0.80051,
+      "rescate_unico": 11741,
+      "danio": 30724,
+      "neto": -18983
+    },
+    {
+      "candidato": "ortografia",
+      "macro_f1": 0.4999868,
+      "prob_media": 0.166667,
+      "prob_std": 0.120904,
+      "confianza_media": 0.37003,
+      "margen_medio": 0.18105,
+      "correlacion_con_v30": 0.7798,
+      "acuerdo_con_v30": 0.62293,
+      "auc_cand_vs_error_v30": 0.30986,
+      "auc_invertido": 0.69014,
+      "auc_margen_cand_vs_error": 0.67841,
+      "auc_margen_v30_vs_error": 0.80051,
+      "rescate_unico": 11657,
+      "danio": 30877,
+      "neto": -19220
+    },
+    {
+      "candidato": "url",
+      "macro_f1": 0.4998877,
+      "prob_media": 0.166667,
+      "prob_std": 0.11904,
+      "confianza_media": 0.36649,
+      "margen_medio": 0.17814,
+      "correlacion_con_v30": 0.78113,
+      "acuerdo_con_v30": 0.62189,
+      "auc_cand_vs_error_v30": 0.31038,
+      "auc_invertido": 0.68962,
+      "auc_margen_cand_vs_error": 0.67873,
+      "auc_margen_v30_vs_error": 0.80051,
+      "rescate_unico": 11639,
+      "danio": 30929,
+      "neto": -19290
+    },
+    {
+      "candidato": "raw",
+      "macro_f1": 0.4979941,
+      "prob_media": 0.166667,
+      "prob_std": 0.118665,
+      "confianza_media": 0.36559,
+      "margen_medio": 0.17787,
+      "correlacion_con_v30": 0.77935,
+      "acuerdo_con_v30": 0.61875,
+      "auc_cand_vs_error_v30": 0.3102,
+      "auc_invertido": 0.6898,
+      "auc_margen_cand_vs_error": 0.6774,
+      "auc_margen_v30_vs_error": 0.80051,
+      "rescate_unico": 11614,
+      "danio": 31196,
+      "neto": -19582
+    },
+    {
+      "candidato": "todos",
+      "macro_f1": 0.4961184,
+      "prob_media": 0.166667,
+      "prob_std": 0.141495,
+      "confianza_media": 0.41177,
+      "margen_medio": 0.21729,
+      "correlacion_con_v30": 0.75931,
+      "acuerdo_con_v30": 0.60571,
+      "auc_cand_vs_error_v30": 0.32259,
+      "auc_invertido": 0.67741,
+      "auc_margen_cand_vs_error": 0.66742,
+      "auc_margen_v30_vs_error": 0.80051,
+      "rescate_unico": 12437,
+      "danio": 32404,
+      "neto": -19967
+    },
+    {
+      "candidato": "posicion",
+      "macro_f1": 0.4956907,
+      "prob_media": 0.166667,
+      "prob_std": 0.122258,
+      "confianza_media": 0.3735,
+      "margen_medio": 0.18298,
+      "correlacion_con_v30": 0.77061,
+      "acuerdo_con_v30": 0.61353,
+      "auc_cand_vs_error_v30": 0.31778,
+      "auc_invertido": 0.68222,
+      "auc_margen_cand_vs_error": 0.67107,
+      "auc_margen_v30_vs_error": 0.80051,
+      "rescate_unico": 11879,
+      "danio": 31838,
+      "neto": -19959
+    },
+    {
+      "candidato": "forma_palabra",
+      "macro_f1": 0.4950099,
+      "prob_media": 0.166667,
+      "prob_std": 0.133362,
+      "confianza_media": 0.39421,
+      "margen_medio": 0.20417,
+      "correlacion_con_v30": 0.76511,
+      "acuerdo_con_v30": 0.60606,
+      "auc_cand_vs_error_v30": 0.31512,
+      "auc_invertido": 0.68488,
+      "auc_margen_cand_vs_error": 0.67234,
+      "auc_margen_v30_vs_error": 0.80051,
+      "rescate_unico": 12097,
+      "danio": 32230,
+      "neto": -20133
+    }
+  ],
+  "url_anomaly": {
+    "n_filas_afectadas": 1685,
+    "n_ocurrencias": 1685,
+    "distribucion_dominios": {
+      "t": 593,
+      "t.": 565,
+      "t.c": 527
+    },
+    "distribucion_por_clase": {
+      "13-17": 129,
+      "18-24": 121,
+      "25-34": 185,
+      "35-49": 342,
+      "50-64": 314,
+      "65-xx": 594
+    },
+    "consistente_con_tco_truncado": {
+      "n_tco_enteros": 0,
+      "n_Truncados": 1685,
+      "longitud_ruta_tco_enteros": {
+        "mediana": 0.0,
+        "min": 0,
+        "max": 0
+      },
+      "lectura": "si: los truncados son prefijos exactos de `t.co` (`t`, `t.`, `t.c`) y no aparecen como dominio propio en ninguna otra parte del corpus. No son un dominio distinto, son el mismo `t.co` cortado al final del texto"
+    },
+    "efecto_en_la_normalizacion": {
+      "longitud_media_texto_afectado": 138.35,
+      "longitud_media_tras_quitar_urls": 122.21,
+      "fraccion_de_texto_suprimida": 0.11667,
+      "lectura": "quitar la URL deja casi todo el texto, asi que la normalizacion existente no esta perdiendo contenido de edad: la URL es un sufijo que se elimina limpio. Por eso la anomalia **no requiere ninguna intervencion**"
+    },
+    "ejemplos": [
+      "http://t.",
+      "http://t.c",
+      "https://t.c",
+      "https://t.c",
+      "https://t.c",
+      "https://t.",
+      "http://t",
+      "https://t."
+    ],
+    "decision": "**DATASET/URL PARSING ANOMALY**, conservada como diagnostico. **No se construye ninguna feature** a partir de ella, no se reinterpreta como senal util, y no se entrena ningun modelo para estas filas, tal como pide el brief"
+  },
+  "variabilidad_de_entrenamiento": 0.0008876,
+  "correccion_de_p32": {
+    "defecto": "los OOF de V31-03 son decision_function de SVM, no probabilidades, y todas sus filas suman NEGATIVO. La primera version de P32 los dividio por esa suma para normalizar, lo que invierte el orden de las clases",
+    "efecto": "el macro_f1 de P32 era correcto porque se computaba sobre el valor crudo, pero el log loss, el Brier, la confianza, el margen, la entropia y **los AUC estaban equivocados**. El AUC de 0,33 que P32 reporto no es el AUC real",
+    "prueba": "F1 con argmax crudo 0,5048 | F1 tras dividir por la suma 0,0445 | F1 con softmax 0,5048. La caida a 0,0445 demuestra la inversion de orden",
+    "correccion": "se usa softmax desplazado, que preserva el argmax. Los numeros de control de este script son los validos",
+    "alcance": "no afecta a ninguna conclusion de V30 ni de V31+, porque V30 y sus miembros si guardan probabilidades reales (LightGBM y las cadenas de V20). Solo afecta a las metricas de score de P32"
+  },
+  "restricciones": {
+    "usa_test": false,
+    "usa_red": false,
+    "llamadas_http": 0,
+    "construye_feature_de_anomalia": false
+  },
+  "segundos": 37.3
+}

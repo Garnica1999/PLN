@@ -1,0 +1,65 @@
+{
+  "fase": "acta de cierre formal",
+  "fecha": "2026-10-09",
+  "experimenta": false,
+  "commit": "44cf69031f0e5b783a833aacbd9c30df42f79040",
+  "conclusion": "AGE_RESEARCH_CLOSED",
+  "estado_congelado": {
+    "V30_corrected_cv": 0.6134471,
+    "V30_particion_alterna": 0.6143347,
+    "V30_leaderboard": 0.63302
+  },
+  "lineas": {
+    "G14": "NOT_ACTIONABLE",
+    "P33": "CLOSED",
+    "P34": "INVALIDATED",
+    "G12": "CLOSED",
+    "revision_bibliografica": "NO_NEW_METHOD",
+    "C1": "LATENT / NO EJECUTADA"
+  },
+  "cobertura": {
+    "mecanismos_auditados": 39,
+    "USED": 23,
+    "CLOSED": 9,
+    "INVALIDATED": 1,
+    "NOT_ACTIONABLE": 1,
+    "NOT_USED": 5,
+    "GENUINELY_NEW_con_justificacion_suficiente": 0
+  },
+  "conclusion_metodologica": {
+    "no_se_afirma_que_v30_sea_optimo": true,
+    "no_se_afirma_que_age_sea_imposible_de_mejorar": true,
+    "se_afirma": "dentro de las restricciones vigentes, los inputs legalmente disponibles y los mecanismos auditados, no queda actualmente una hipotesis nueva con justificacion suficiente para reabrir la investigacion"
+  },
+  "evidencia_conservada": {
+    "equivalencias_algebraicas": [
+      "EMD2(one-hot) = suma_k (F_pred(k) - 1[y<=k])^2 -> familia acumulativa CORAL",
+      "el minimizador esperado de Ord-NLL es un target suave -> colapsa a C1",
+      "los targets suaves son un superconjunto de label smoothing"
+    ],
+    "errores_corregidos": [
+      "A = 27.430, no 27.007",
+      "rescates exclusivos = 8.029 con esta definicion, no 122",
+      "los OOF de V31-03 son decision_function, no probabilidades",
+      "label smoothing estaba cerrado por argumento, no por medicion"
+    ],
+    "falsos_positivos_declarados": [
+      "complement matcheaba 'complementario' (391 veces)",
+      "sord matcheaba 'tensordot' (15 veces)"
+    ]
+  },
+  "como_se_reabriria": [
+    "evidencia nueva",
+    "cambio de restriccion",
+    "hipotesis cientificamente distinta"
+  ],
+  "restricciones": {
+    "entrenamiento": 0,
+    "submissions": 0,
+    "usa_test": false,
+    "usa_holdout": false,
+    "usa_leaderboard_para_elegir": false,
+    "toca_v30": false
+  },
+  "segundos": 0.8
+}

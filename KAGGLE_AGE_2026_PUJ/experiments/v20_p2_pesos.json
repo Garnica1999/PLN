@@ -1,0 +1,66 @@
+{
+  "fase": "V20 P2 pesos ordinales",
+  "fecha": "2026-09-27",
+  "champion_congelado": {
+    "nombre": "V20 cadena de umbrales anidados",
+    "lb": 0.62689,
+    "cv": 0.6097782,
+    "intacto": true
+  },
+  "hipotesis": "el primer umbral esta desbalanceado 17/83 y LightGBM poda los cortes que separan al grupo pequeno; subir el peso del lado minoritario deberia mejorar su exactitud balanceada sin tocar las otras cuatro fronteras",
+  "evidencia_que_la_justifica": {
+    "caida_del_blend_al_degradar_cada_frontera": {
+      "1": -0.0129,
+      "2": -0.0072,
+      "3": -0.004,
+      "4": -0.0018,
+      "5": -0.0024
+    },
+    "exactitud_balanceada_cruda_del_primer_umbral": 0.7632
+  },
+  "configuracion": {
+    "unico_parametro_cambiado": "class_weight balanced en el primer umbral",
+    "las_otras_cuatro": "intactas"
+  },
+  "resultado": {
+    "variante": "primer umbral con class_weight balanced (peso 3.0)",
+    "macro_f1": 0.593202,
+    "delta_contra_v20": -0.016576,
+    "media_folds": 0.593206,
+    "desviacion_folds": 0.004085,
+    "delta_por_fold": [
+      -0.014157,
+      -0.017618,
+      -0.017164,
+      -0.015906,
+      -0.018048
+    ],
+    "folds_positivos": 0,
+    "bootstrap_ic95_contra_v20": [
+      -0.01778,
+      -0.0153,
+      0.0
+    ],
+    "frontera_1": 0.4117,
+    "frontera_1_v20": 0.5075,
+    "frontera_2": 0.5088,
+    "frontera_2_v20": 0.5029,
+    "primer_umbral": {
+      "exactitud_balanceada_cruda": 0.7632,
+      "exactitud_balanceada_pesada": 0.843,
+      "delta": 0.07974
+    },
+    "complementariedad": {
+      "ambos_correctos": 96757,
+      "ambos_incorrectos": 60771,
+      "solo_candidato": 5234,
+      "solo_v20": 6574,
+      "neto": -1340,
+      "predicciones_modificadas": 18164
+    },
+    "rescates": 5234,
+    "danos": 6574
+  },
+  "submission_generada": false,
+  "segundos": 123.3
+}
