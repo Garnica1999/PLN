@@ -1,0 +1,34 @@
+{
+  "marca_corrida": "20261001T161024Z_p2289660",
+  "resultado": {
+    "bloque": 4,
+    "coste_segundos": 1.8e-05,
+    "descripcion": "presupuesto de reloj respetado y tiempo real publicado",
+    "detalle": {
+      "comprobaciones": {
+        "la_nota_corresponde_a_la_situacion_real": true,
+        "presupuesto_comparado_contra_config": true,
+        "si_excede_exige_nota_de_tramo_2": true,
+        "tiempo_real_publicado_y_finito": true
+      },
+      "excedido": false,
+      "las_tres_situaciones_posibles": [
+        "DENTRO_DE_PRESUPUESTO",
+        "EXCEDIDO_Y_TRAMO_2_NO_EJECUTADO_POR_PRESUPUESTO",
+        "EXCEDIDO_Y_TRAMO_2_EJECUTADO_CON_EXCEDENCIA_AUTORIZADA"
+      ],
+      "margen_segundos": 5379.623587,
+      "nota_de_tramo_2": "",
+      "presupuesto_segundos": 5400.0,
+      "situacion": "DENTRO_DE_PRESUPUESTO",
+      "tiempo_real_segundos": 20.376413
+    },
+    "estado": "CONFIRMADO",
+    "exito": true,
+    "id": "A19",
+    "naturaleza": "CONFIRMAR",
+    "stop": true,
+    "tolerancia": "el tiempo real se publica con 6 decimales y con la etapa",
+    "traza": ""
+  }
+}

@@ -1,0 +1,150 @@
+{
+  "fecha": "2026-10-02T19:15:58+00:00",
+  "script": "experiments/p84_04_sgns_corregido_anclado.py",
+  "algebraica": {
+    "K": 10,
+    "N_suma": -6.958468590394986,
+    "K_por_N_media": -6.958468590394987,
+    "error_relativo_N": 1.2763992653873705e-16,
+    "P_media_log_sigma_positivo": -0.7062724722950421,
+    "loss_suma": 7.6647410626900285,
+    "K_loss_media_mas_(K-1)_P": 7.664741062690029,
+    "error_relativo_loss": 1.1587846379097492e-16,
+    "tolerancia_relativa": 1e-09,
+    "pasa": true
+  },
+  "gradiente": {
+    "eps": 1e-06,
+    "n_entradas_probadas": 16,
+    "error_relativo_max": 4.4209981849124934e-08,
+    "tolerancia": 1e-05,
+    "pasa": true
+  },
+  "ejecutable": {
+    "corpus_plantado": {
+      "ruta": "/home/carlos/Git/PLN-v67/kaggle_toxic_2026_puj/experimentos/p84_04_tmp/ancla_plantado.txt",
+      "sha256_corpus": "e8cb4905712c62cb8db9aa4481b3ac2a1d151d15eaa38a9f651d2a1a26ce5879",
+      "oraciones": 20000,
+      "tokens": 119858,
+      "vocabulario_objetivo": 16,
+      "k_pureza": 5,
+      "familias": {
+        "fA00": "A",
+        "fA01": "A",
+        "fA02": "A",
+        "fA03": "A",
+        "fA04": "A",
+        "fA05": "A",
+        "fA06": "A",
+        "fA07": "A",
+        "fB00": "B",
+        "fB01": "B",
+        "fB02": "B",
+        "fB03": "B",
+        "fB04": "B",
+        "fB05": "B",
+        "fB06": "B",
+        "fB07": "B"
+      }
+    },
+    "comando_oficial": [
+      "/home/carlos/Git/PLN-v67/kaggle_toxic_2026_puj/tools/fastText/build/fasttext",
+      "skipgram",
+      "-input",
+      "/home/carlos/Git/PLN-v67/kaggle_toxic_2026_puj/experimentos/p84_04_tmp/ancla_plantado.txt",
+      "-output",
+      "/home/carlos/Git/PLN-v67/kaggle_toxic_2026_puj/experimentos/p84_04_tmp/ancla_oficial",
+      "-minn",
+      "0",
+      "-maxn",
+      "0",
+      "-dim",
+      "32",
+      "-neg",
+      "10",
+      "-epoch",
+      "5",
+      "-thread",
+      "1",
+      "-seed",
+      "20260926",
+      "-minCount",
+      "1",
+      "-verbose",
+      "0"
+    ],
+    "intentos_oficial": [
+      {
+        "intento": 1,
+        "codigo": -6,
+        "motivo": "  what():  Encountered NaN."
+      },
+      {
+        "intento": 2,
+        "codigo": 0,
+        "motivo": "ok (vec finito)"
+      }
+    ],
+    "config_nuestra": {
+      "dim": 32,
+      "epocas": 5,
+      "negativos": 10,
+      "min_count": 1,
+      "ventana": 5,
+      "lote": 256,
+      "lr_inicial": 6.4
+    },
+    "pureza_oficial": {
+      "pureza_media": 1.0,
+      "pureza_por_palabra": {
+        "fA02": 1.0,
+        "fA01": 1.0,
+        "fA05": 1.0,
+        "fB03": 1.0,
+        "fA03": 1.0,
+        "fB00": 1.0,
+        "fA04": 1.0,
+        "fB02": 1.0,
+        "fA00": 1.0,
+        "fB01": 1.0,
+        "fB07": 1.0,
+        "fB04": 1.0,
+        "fB05": 1.0,
+        "fA06": 1.0,
+        "fB06": 1.0,
+        "fA07": 1.0
+      },
+      "n_palabras": 16,
+      "k": 5
+    },
+    "pureza_nuestra": {
+      "pureza_media": 1.0,
+      "pureza_por_palabra": {
+        "fA02": 1.0,
+        "fA01": 1.0,
+        "fA05": 1.0,
+        "fB03": 1.0,
+        "fA03": 1.0,
+        "fB00": 1.0,
+        "fA04": 1.0,
+        "fB02": 1.0,
+        "fA00": 1.0,
+        "fB01": 1.0,
+        "fB07": 1.0,
+        "fB04": 1.0,
+        "fB05": 1.0,
+        "fA06": 1.0,
+        "fB06": 1.0,
+        "fA07": 1.0
+      },
+      "n_palabras": 16,
+      "k": 5
+    },
+    "tolerancia_pureza": 0.05,
+    "pasa": true,
+    "nota": "el ancla verifica SEMANTICA de implementacion, no direccion de rendimiento; no exige que la SUMA gane (P81 A6)"
+  },
+  "veredicto": "ANCLA LOGRADA",
+  "ok": true,
+  "advertencia": ""
+}

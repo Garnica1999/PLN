@@ -1,0 +1,16 @@
+tipo,clave,valor,valor2,valor3
+eda_citas,filas,1,0.0674,0.0
+eda_citas,diferencial_de_error,0.0,,
+eda_menciones,filas,702,47.3365,0.148623
+eda_menciones,diferencial_de_error,-0.040878,,
+brazo,V03_mencion,0.7585094002,-0.0187020523,0
+brazo,V03_margen,0.766131252,-0.0110802005,1
+brazo,V03_random,0.767748702,-0.0094627505,2
+brecha,V03_mencion_contra_aleatorio,-0.0092393017,,
+brecha,V03_mencion_contra_el_margen,-0.0076218518,,
+
+bin,n,F1_de_V03,F1_V03_mencion,F1_V03_margen,F1_V03_random
+CORTA,167,0.947956,0.951468,0.9379,0.937061
+MEDIA,602,0.796405,0.78174,0.782453,0.792719
+LARGA,547,0.68335,0.637837,0.680556,0.666973
+MUY_LARGA,167,0.560571,0.553216,0.559525,0.542279

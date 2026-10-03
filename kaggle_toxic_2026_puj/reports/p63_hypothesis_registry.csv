@@ -1,0 +1,9 @@
+ID,Track,Hypothesis,Historical evidence,Novelty,Expected mechanism,Method,Status,Result,Decision
+P63-00,ID forensics,el id es un contador,V15-00 lo afirma sin medirlo,ALTA,procedencia,forense estructural sin etiquetas,cerrado,D. STRUCTURED_IDENTIFIER,"no es un contador, es un indice de coleccion"
+P63-00b,gap analysis,que queda abierto,344 experimentos y lectura del codigo,n/a,n/a,lectura funcional,cerrado,5 abiertas,cinco lineas vivas
+P63-02,A id predictivo,el indice porta senal de etiqueta,nunca probado,ALTA,procedencia,id-only contra capacidad y permutacion,cerrado,0.4191359898217959,CLOSED
+P63-03,B estructura relacional,el grupo modifica la confiabilidad,el grupo solo se ha usado para repartir,ALTA,confiabilidad,"dos alcances, con fuga a la vista",cerrado,0.6727442905142497,"CLOSED, el bloque esta 92,92 por ciento vacio"
+P63-04,D composicion en ratios,la composicion agregada aporta,"P62 cerro el canal de alta dimension, no los ratios",MEDIA,perfil categorial agregado,42 ratios contra control de capacidad,cerrado,brecha +0.0083528268,CLOSED con brecha positiva
+P63-05,E1 estructura del tweet largo,la interaccion posicion por longitud,V30-01 la escribio y no la probo,ALTA,ambiguedad estructural local,21 rasgos de posicion con cortes congelados,cerrado,MUY_LARGA -0.009437,"CLOSED, V30-01 refutada en su prediccion"
+P63-06,H integracion y techo,los bloques se ayudan entre si,nunca probado,MEDIA,complementariedad,control del ancho total,cerrado,brecha +0.0085891400,MARGINAL
+P63-07,K residuo de V03,los bloques explican el residuo,nunca preguntado,ALTA,dilucion frente a redundancia,meta-objetivo de error con el margen como referencia,cerrado,brecha contra aleatorio +0.012325 pero sobre el margen -0.024608,CLOSED por redundancia con la confianza

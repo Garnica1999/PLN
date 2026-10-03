@@ -1,0 +1,37 @@
+bloque,clave,valor
+corpus,fuente,mmaguero/covid19-spanishtweets-earlylateapril2020
+corpus,url,https://www.kaggle.com/datasets/mmaguero/covid19-spanishtweets-earlylateapril2020
+corpus,proveedor,mmaguero
+corpus,licencia,"CC BY-SA 4.0, licencia real y explicita"
+corpus,periodo_de_coleccion,"29 de marzo de 2020 a 1 de mayo de 2020, CERRADO y documentado"
+corpus,idioma,espanol declarado por el proveedor
+corpus,tiene_etiquetas,False
+corpus,clasificacion_en_la_auditoria,ALLOWED
+corpus,documentos_usados,361994
+corpus,tokens_usados,10000029
+corpus,sha256_del_corpus_tokenizado,1ef872c189d0f405bc1a3f8281cafe08e6b099958e6b8a3816db1460df91f8b9
+corpus,fecha_de_descarga,2026-09-29
+corpus,solapamiento_con_train,"0 exactas y 0 normalizadas, medido contra el TEXTO de train"
+corpus,solapamiento_con_test,NO se midio: el encargo prohibe comparar contra el test
+configuracion,vector_size,200
+configuracion,window,5
+configuracion,min_count,3
+configuracion,negative,10
+configuracion,sample,0.0001
+configuracion,epochs,5
+configuracion,sg,1
+configuracion,seed,20261016
+configuracion,lote,8192
+configuracion,lr,0.025
+configuracion,optimizador,"0,025 x lote"
+configuracion,lr_inicial,6.4
+artefacto,w2v_twitter.npz,script=p71_04|valido=False|sha=1d79156f25f26265750a1bf08ab6e21b
+artefacto,w2v_twitter_sgd.npz,script=p71_06|valido=False|sha=eaf4bfb8648f237f53b6d4c150bc9889
+artefacto,w2v_twitter_lrfix.npz,script=p71_08|valido=True|sha=00bee165447a384c05ee8b7feb69309c
+artefacto,w2v_general_lrfix.npz,script=p71_08|valido=True|sha=e3681fed4346fa82a3d751d836bfa710
+confirmacion,entrenamiento desde cero,True|el skip-gram esta implementado en el propio script
+confirmacion,sin pesos preentrenados de terceros,True|no hay carga de vectores externos en el cuerpo del script
+confirmacion,sin labels externas,True|el corpus es texto no etiquetado; no hay fichero de etiquetas
+confirmacion,el corpus no incorpora labels de toxicidad,True|la ficha del corpus declara que no hay etiquetas; el JSON de auditoria menciona las categorias prohibidas solo para auditarlas
+confirmacion,sin texto de toxic_test usado a proposito,"True|el corpus se descargo de Kaggle antes de existir, y el solapamiento se midio contra TRAIN"
+confirmacion,sin metadata de Twitter como feature,True|solo la columna `text` entra en el entrenamiento

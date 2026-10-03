@@ -1,0 +1,112 @@
+{
+  "experimento": "V8-11 (complejidad e idiosincrasias)",
+  "fecha": "2026-09-26T04:13:39+00:00",
+  "referencia_v03_local": 0.777211,
+  "referencia_v03_externa": 0.78306,
+  "umbrales_idiosincrasia": [
+    0.01,
+    0.02,
+    0.05
+  ],
+  "variantes": [
+    {
+      "clave": "solo_complejidad",
+      "metrica": 0.780705,
+      "diferencia": 0.003493,
+      "ic95_0": -0.005728,
+      "ic95_1": 0.013226,
+      "pliegues_positivos": 2,
+      "repeticiones_que_mejoran": 1,
+      "metricas_por_repeticion": [
+        0.777877,
+        0.767585,
+        0.776929,
+        0.768149,
+        0.776223
+      ],
+      "celdas": 201,
+      "tasa_acierto": 0.5174,
+      "minimo_requerido": 0.5478,
+      "filtro_pasa": false,
+      "gate_delta": true,
+      "gate_ic95": false,
+      "gate_pliegues": false,
+      "gate_supera": false
+    },
+    {
+      "clave": "complejidad_mas_idiosincrasias",
+      "metrica": 0.77759,
+      "diferencia": 0.000378,
+      "ic95_0": -0.009926,
+      "ic95_1": 0.011383,
+      "pliegues_positivos": 0,
+      "repeticiones_que_mejoran": 1,
+      "metricas_por_repeticion": [
+        0.772485,
+        0.768898,
+        0.773874,
+        0.768213,
+        0.778129
+      ],
+      "celdas": 281,
+      "tasa_acierto": 0.4484,
+      "minimo_requerido": 0.5342,
+      "filtro_pasa": false,
+      "gate_delta": false,
+      "gate_ic95": false,
+      "gate_pliegues": false,
+      "gate_supera": false
+    }
+  ],
+  "mejor": "solo_complejidad",
+  "integridad": [
+    {
+      "comprobacion": "numero de filas",
+      "resultado": "correcto",
+      "detalle": "1154 frente a 1154 en la prueba"
+    },
+    {
+      "comprobacion": "nombres y orden de columnas",
+      "resultado": "correcto",
+      "detalle": "['id', 'HS', 'TR', 'AG']"
+    },
+    {
+      "comprobacion": "valores de etiqueta",
+      "resultado": "correcto",
+      "detalle": "[0, 1]"
+    },
+    {
+      "comprobacion": "sin valores ausentes",
+      "resultado": "correcto",
+      "detalle": "0 celdas ausentes"
+    },
+    {
+      "comprobacion": "sin identificadores duplicados",
+      "resultado": "correcto",
+      "detalle": "0 repetidos"
+    },
+    {
+      "comprobacion": "identificadores en el orden de la prueba",
+      "resultado": "correcto",
+      "detalle": "coinciden con el orden original"
+    },
+    {
+      "comprobacion": "filas distintas del entrenamiento",
+      "resultado": "correcto",
+      "detalle": "1731 frente a 1154"
+    }
+  ],
+  "integridad_correcta": true,
+  "comparacion_con_v03": {
+    "celdas_totales": 3462,
+    "celdas_que_cambian": 191,
+    "filas_que_cambian": 153,
+    "por_etiqueta": {
+      "HS": 80,
+      "TR": 38,
+      "AG": 73
+    }
+  },
+  "fichero_de_envio": "submissions/toxic_submission_v14_complejidad_idiosincrasias.csv",
+  "nota": "La frecuencia de documento que define lo idiosincratico se calcula solo con el tren de cada pliegue. Cada rama se mide en cinco repeticiones de la particion, porque la fase v8 demostro que la estimacion es inestable entre particiones."
+}

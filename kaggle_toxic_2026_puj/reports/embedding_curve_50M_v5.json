@@ -1,0 +1,463 @@
+{
+  "experimento": "EBD-13..14 (P7)",
+  "fecha": "2026-09-25T23:14:25+00:00",
+  "arquitectura": {
+    "dim": 200,
+    "ventana": 5,
+    "min_count": 3,
+    "negativos": 10,
+    "epocas": 5,
+    "hilos": 16,
+    "bucket": 200000,
+    "subpalabras": [
+      3,
+      6
+    ],
+    "semilla": 42
+  },
+  "modelos": {
+    "FASTTEXT-WIKI-50M": {
+      "corpus": "data/external/corpora/wikipedia_es_50M/emb_normal/tokens_50M.txt",
+      "vocab_size": 247863,
+      "dim": 200,
+      "sha256": "1045aba32c6440e313da0c7d054d98efe17a96c6d01f24079e541ac309089836",
+      "segundos_entrenamiento": 576.8,
+      "tipos_con_vector": 6059,
+      "minn": 3
+    },
+    "WORD2VEC-WIKI-50M": {
+      "corpus": "data/external/corpora/wikipedia_es_50M/emb_normal/tokens_50M.txt",
+      "vocab_size": 247863,
+      "dim": 200,
+      "sha256": "53314bccc6c89369a83a08d6ee1cb7e5d8eb3976388c55b720aca4a788f73979",
+      "segundos_entrenamiento": 454.2,
+      "tipos_con_vector": 4412,
+      "minn": 0
+    }
+  },
+  "comparaciones": [
+    {
+      "variante": "FUSION-FASTTEXT-WIKI-50M",
+      "corrected_cv_frozen_v03": 0.780267,
+      "delta_vs_v03": 0.003056,
+      "ic95_0": -0.004902,
+      "ic95_1": 0.011204,
+      "celdas_mejoradas": 35,
+      "celdas_empeoradas": 24,
+      "solo_candidato": 9,
+      "solo_v03": 5,
+      "f1_HS": 0.772,
+      "f1_TR": 0.8189,
+      "f1_AG": 0.7614
+    },
+    {
+      "variante": "EMB-FASTTEXT-WIKI-50M",
+      "corrected_cv_frozen_v03": 0.668703,
+      "delta_vs_v03": -0.108508,
+      "ic95_0": -0.131333,
+      "ic95_1": -0.08635,
+      "celdas_mejoradas": 93,
+      "celdas_empeoradas": 156,
+      "solo_candidato": 21,
+      "solo_v03": 85,
+      "f1_HS": 0.6884,
+      "f1_TR": 0.7045,
+      "f1_AG": 0.6446
+    },
+    {
+      "variante": "FUSION-WORD2VEC-WIKI-50M",
+      "corrected_cv_frozen_v03": 0.777271,
+      "delta_vs_v03": 6e-05,
+      "ic95_0": -0.008659,
+      "ic95_1": 0.008846,
+      "celdas_mejoradas": 37,
+      "celdas_empeoradas": 28,
+      "solo_candidato": 10,
+      "solo_v03": 6,
+      "f1_HS": 0.7657,
+      "f1_TR": 0.8202,
+      "f1_AG": 0.7576
+    },
+    {
+      "variante": "EMB-WORD2VEC-WIKI-50M",
+      "corrected_cv_frozen_v03": 0.66039,
+      "delta_vs_v03": -0.116821,
+      "ic95_0": -0.140167,
+      "ic95_1": -0.093924,
+      "celdas_mejoradas": 90,
+      "celdas_empeoradas": 154,
+      "solo_candidato": 20,
+      "solo_v03": 72,
+      "f1_HS": 0.6635,
+      "f1_TR": 0.7017,
+      "f1_AG": 0.6457
+    }
+  ],
+  "curva": [
+    {
+      "corpus": "wikipedia 10M",
+      "variante": "FUSION-FASTTEXT-WIKI-10M",
+      "f1_fusion": 0.7818,
+      "f1_embedding": 0.653,
+      "cobertura_tipo": 0.6839,
+      "cobertura_token": 0.8833
+    },
+    {
+      "corpus": "web 10M",
+      "variante": "FUSION-FASTTEXT-WEB-10M",
+      "f1_fusion": 0.7812,
+      "f1_embedding": 0.6638,
+      "cobertura_tipo": 0.8256,
+      "cobertura_token": 0.9512
+    },
+    {
+      "corpus": "mixto 20M",
+      "variante": "FUSION-FASTTEXT-MIXTO-20M",
+      "f1_fusion": 0.7776,
+      "f1_embedding": 0.6658,
+      "cobertura_tipo": 0.8413,
+      "cobertura_token": 0.9553
+    },
+    {
+      "corpus": "wikipedia 50M",
+      "variante": "FUSION-FASTTEXT-WIKI-50M",
+      "f1_fusion": 0.780267,
+      "f1_embedding": 0.668703,
+      "cobertura_tipo": 0.7703,
+      "cobertura_token": 0.9238
+    }
+  ],
+  "rebanadas": [
+    {
+      "rebanada": "interpersonal (TR=1)",
+      "variante": "FUSION-FASTTEXT-WIKI-50M",
+      "n_filas": 445,
+      "f1_por_celda": 0.9213
+    },
+    {
+      "rebanada": "interpersonal (TR=1)",
+      "variante": "EMB-FASTTEXT-WIKI-50M",
+      "n_filas": 445,
+      "f1_por_celda": 0.8608
+    },
+    {
+      "rebanada": "interpersonal (TR=1)",
+      "variante": "FUSION-WORD2VEC-WIKI-50M",
+      "n_filas": 445,
+      "f1_por_celda": 0.9195
+    },
+    {
+      "rebanada": "interpersonal (TR=1)",
+      "variante": "EMB-WORD2VEC-WIKI-50M",
+      "n_filas": 445,
+      "f1_por_celda": 0.8619
+    },
+    {
+      "rebanada": "interpersonal (TR=1)",
+      "variante": "V03-CONGELADO",
+      "n_filas": 445,
+      "f1_por_celda": 0.9129
+    },
+    {
+      "rebanada": "afiliacion (AG=1)",
+      "variante": "FUSION-FASTTEXT-WIKI-50M",
+      "n_filas": 567,
+      "f1_por_celda": 0.8942
+    },
+    {
+      "rebanada": "afiliacion (AG=1)",
+      "variante": "EMB-FASTTEXT-WIKI-50M",
+      "n_filas": 567,
+      "f1_por_celda": 0.8346
+    },
+    {
+      "rebanada": "afiliacion (AG=1)",
+      "variante": "FUSION-WORD2VEC-WIKI-50M",
+      "n_filas": 567,
+      "f1_por_celda": 0.8926
+    },
+    {
+      "rebanada": "afiliacion (AG=1)",
+      "variante": "EMB-WORD2VEC-WIKI-50M",
+      "n_filas": 567,
+      "f1_por_celda": 0.8334
+    },
+    {
+      "rebanada": "afiliacion (AG=1)",
+      "variante": "V03-CONGELADO",
+      "n_filas": 567,
+      "f1_por_celda": 0.8846
+    },
+    {
+      "rebanada": "sin_hate_explicito (HS=0)",
+      "variante": "FUSION-FASTTEXT-WIKI-50M",
+      "n_filas": 835,
+      "f1_por_celda": 0.0644
+    },
+    {
+      "rebanada": "sin_hate_explicito (HS=0)",
+      "variante": "EMB-FASTTEXT-WIKI-50M",
+      "n_filas": 835,
+      "f1_por_celda": 0.0208
+    },
+    {
+      "rebanada": "sin_hate_explicito (HS=0)",
+      "variante": "FUSION-WORD2VEC-WIKI-50M",
+      "n_filas": 835,
+      "f1_por_celda": 0.0578
+    },
+    {
+      "rebanada": "sin_hate_explicito (HS=0)",
+      "variante": "EMB-WORD2VEC-WIKI-50M",
+      "n_filas": 835,
+      "f1_por_celda": 0.0182
+    },
+    {
+      "rebanada": "sin_hate_explicito (HS=0)",
+      "variante": "V03-CONGELADO",
+      "n_filas": 835,
+      "f1_por_celda": 0.0667
+    },
+    {
+      "rebanada": "colectivos",
+      "variante": "FUSION-FASTTEXT-WIKI-50M",
+      "n_filas": 93,
+      "f1_por_celda": 0.5891
+    },
+    {
+      "rebanada": "colectivos",
+      "variante": "EMB-FASTTEXT-WIKI-50M",
+      "n_filas": 93,
+      "f1_por_celda": 0.4556
+    },
+    {
+      "rebanada": "colectivos",
+      "variante": "FUSION-WORD2VEC-WIKI-50M",
+      "n_filas": 93,
+      "f1_por_celda": 0.5819
+    },
+    {
+      "rebanada": "colectivos",
+      "variante": "EMB-WORD2VEC-WIKI-50M",
+      "n_filas": 93,
+      "f1_por_celda": 0.5685
+    },
+    {
+      "rebanada": "colectivos",
+      "variante": "V03-CONGELADO",
+      "n_filas": 93,
+      "f1_por_celda": 0.574
+    },
+    {
+      "rebanada": "insultos",
+      "variante": "FUSION-FASTTEXT-WIKI-50M",
+      "n_filas": 855,
+      "f1_por_celda": 0.8406
+    },
+    {
+      "rebanada": "insultos",
+      "variante": "EMB-FASTTEXT-WIKI-50M",
+      "n_filas": 855,
+      "f1_por_celda": 0.7293
+    },
+    {
+      "rebanada": "insultos",
+      "variante": "FUSION-WORD2VEC-WIKI-50M",
+      "n_filas": 855,
+      "f1_por_celda": 0.8386
+    },
+    {
+      "rebanada": "insultos",
+      "variante": "EMB-WORD2VEC-WIKI-50M",
+      "n_filas": 855,
+      "f1_por_celda": 0.7417
+    },
+    {
+      "rebanada": "insultos",
+      "variante": "V03-CONGELADO",
+      "n_filas": 855,
+      "f1_por_celda": 0.8357
+    },
+    {
+      "rebanada": "elongaciones",
+      "variante": "FUSION-FASTTEXT-WIKI-50M",
+      "n_filas": 57,
+      "f1_por_celda": 0.7067
+    },
+    {
+      "rebanada": "elongaciones",
+      "variante": "EMB-FASTTEXT-WIKI-50M",
+      "n_filas": 57,
+      "f1_por_celda": 0.5652
+    },
+    {
+      "rebanada": "elongaciones",
+      "variante": "FUSION-WORD2VEC-WIKI-50M",
+      "n_filas": 57,
+      "f1_por_celda": 0.7256
+    },
+    {
+      "rebanada": "elongaciones",
+      "variante": "EMB-WORD2VEC-WIKI-50M",
+      "n_filas": 57,
+      "f1_por_celda": 0.7203
+    },
+    {
+      "rebanada": "elongaciones",
+      "variante": "V03-CONGELADO",
+      "n_filas": 57,
+      "f1_por_celda": 0.6853
+    },
+    {
+      "rebanada": "coloquial",
+      "variante": "FUSION-FASTTEXT-WIKI-50M",
+      "n_filas": 214,
+      "f1_por_celda": 0.8184
+    },
+    {
+      "rebanada": "coloquial",
+      "variante": "EMB-FASTTEXT-WIKI-50M",
+      "n_filas": 214,
+      "f1_por_celda": 0.6763
+    },
+    {
+      "rebanada": "coloquial",
+      "variante": "FUSION-WORD2VEC-WIKI-50M",
+      "n_filas": 214,
+      "f1_por_celda": 0.8299
+    },
+    {
+      "rebanada": "coloquial",
+      "variante": "EMB-WORD2VEC-WIKI-50M",
+      "n_filas": 214,
+      "f1_por_celda": 0.6569
+    },
+    {
+      "rebanada": "coloquial",
+      "variante": "V03-CONGELADO",
+      "n_filas": 214,
+      "f1_por_celda": 0.8177
+    },
+    {
+      "rebanada": "hashtags",
+      "variante": "FUSION-FASTTEXT-WIKI-50M",
+      "n_filas": 144,
+      "f1_por_celda": 0.5575
+    },
+    {
+      "rebanada": "hashtags",
+      "variante": "EMB-FASTTEXT-WIKI-50M",
+      "n_filas": 144,
+      "f1_por_celda": 0.396
+    },
+    {
+      "rebanada": "hashtags",
+      "variante": "FUSION-WORD2VEC-WIKI-50M",
+      "n_filas": 144,
+      "f1_por_celda": 0.5273
+    },
+    {
+      "rebanada": "hashtags",
+      "variante": "EMB-WORD2VEC-WIKI-50M",
+      "n_filas": 144,
+      "f1_por_celda": 0.4586
+    },
+    {
+      "rebanada": "hashtags",
+      "variante": "V03-CONGELADO",
+      "n_filas": 144,
+      "f1_por_celda": 0.5311
+    },
+    {
+      "rebanada": "menciones",
+      "variante": "FUSION-FASTTEXT-WIKI-50M",
+      "n_filas": 702,
+      "f1_por_celda": 0.8479
+    },
+    {
+      "rebanada": "menciones",
+      "variante": "EMB-FASTTEXT-WIKI-50M",
+      "n_filas": 702,
+      "f1_por_celda": 0.734
+    },
+    {
+      "rebanada": "menciones",
+      "variante": "FUSION-WORD2VEC-WIKI-50M",
+      "n_filas": 702,
+      "f1_por_celda": 0.846
+    },
+    {
+      "rebanada": "menciones",
+      "variante": "EMB-WORD2VEC-WIKI-50M",
+      "n_filas": 702,
+      "f1_por_celda": 0.7403
+    },
+    {
+      "rebanada": "menciones",
+      "variante": "V03-CONGELADO",
+      "n_filas": 702,
+      "f1_por_celda": 0.8462
+    },
+    {
+      "rebanada": "urls",
+      "variante": "FUSION-FASTTEXT-WIKI-50M",
+      "n_filas": 458,
+      "f1_por_celda": 0.6721
+    },
+    {
+      "rebanada": "urls",
+      "variante": "EMB-FASTTEXT-WIKI-50M",
+      "n_filas": 458,
+      "f1_por_celda": 0.5728
+    },
+    {
+      "rebanada": "urls",
+      "variante": "FUSION-WORD2VEC-WIKI-50M",
+      "n_filas": 458,
+      "f1_por_celda": 0.6743
+    },
+    {
+      "rebanada": "urls",
+      "variante": "EMB-WORD2VEC-WIKI-50M",
+      "n_filas": 458,
+      "f1_por_celda": 0.56
+    },
+    {
+      "rebanada": "urls",
+      "variante": "V03-CONGELADO",
+      "n_filas": 458,
+      "f1_por_celda": 0.6578
+    },
+    {
+      "rebanada": "cita",
+      "variante": "FUSION-FASTTEXT-WIKI-50M",
+      "n_filas": 37,
+      "f1_por_celda": 0.846
+    },
+    {
+      "rebanada": "cita",
+      "variante": "EMB-FASTTEXT-WIKI-50M",
+      "n_filas": 37,
+      "f1_por_celda": 0.6369
+    },
+    {
+      "rebanada": "cita",
+      "variante": "FUSION-WORD2VEC-WIKI-50M",
+      "n_filas": 37,
+      "f1_por_celda": 0.8402
+    },
+    {
+      "rebanada": "cita",
+      "variante": "EMB-WORD2VEC-WIKI-50M",
+      "n_filas": 37,
+      "f1_por_celda": 0.6325
+    },
+    {
+      "rebanada": "cita",
+      "variante": "V03-CONGELADO",
+      "n_filas": 37,
+      "f1_por_celda": 0.8449
+    }
+  ],
+  "referencia_v03": 0.777211
+}

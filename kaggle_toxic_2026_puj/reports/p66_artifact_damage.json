@@ -1,0 +1,35 @@
+{
+  "familia": "P66_ARTIFACT_DAMAGE",
+  "experiment_id": "P67-03",
+  "fecha": "2026-09-29T17:10:47+00:00",
+  "artefacto_afectado": "reports/p66_score_fusion.csv",
+  "registros_perdidos": 214,
+  "registros_tras_restaurar": 214,
+  "restaurado": true,
+  "codigo_historico_modificado": false,
+  "motivo_de_no_modificarlo": "preservar la correspondencia historica entre codigo y resultados de las fases anteriores",
+  "causa": {
+    "script": "experiments/p66_01_regenerar_scores.py",
+    "linea": 86,
+    "codigo": "CSV_REG = REPORTS / \"p66_score_fusion.csv\"",
+    "explicacion": "el regenerador de P66 declara un nombre de fichero que pertenece a p66_02_fusion_espacio_scores.py, y lo abre en modo escritura. Al re-ejecutarlo escribe su tabla de verificacion de 8 filas encima de los 214 registros de la fase de fusion"
+  },
+  "cuando_ocurre": "cada vez que alguien re-ejecuta p66_01. Y hay que re-ejecutarlo en cualquier worktree nuevo, porque features/ esta en .gitignore y el npz de scores no viaja entre worktrees",
+  "como_se_detecto": "comparando git show --stat del commit contra el numero de filas esperado. El sintoma fue '222 lineas borradas' en el stat",
+  "como_se_restauro": "git checkout HEAD~1 -- reports/p66_score_fusion.csv reports/p66_score_regeneration.json",
+  "hermano_intacto": {
+    "fichero": "reports/p66_score_fusion.json",
+    "estado": "intacto. El regenerador escribe el CSV, no el JSON, y la reconciliacion lee el JSON. El dano fue solo del CSV"
+  },
+  "arreglo_correcto": {
+    "cambio": "que CSV_REG de p66_01 apunte a \"p66_score_regeneration.csv\"",
+    "tamano": "una linea",
+    "por_que_no_se_aplica": "exigiria editar el codigo de una fase anterior, y el encargo prohibe hacerlo. Se documenta la via limpia en su lugar"
+  },
+  "marca": "DO_NOT_RERUN_UNGUARDED",
+  "procedimiento_seguro": [
+    "/home/carlos/venv/bin/python experiments/p66_01_regenerar_scores.py",
+    "git checkout HEAD -- reports/p66_score_fusion.csv",
+    "git checkout HEAD -- reports/p66_score_regeneration.json"
+  ]
+}

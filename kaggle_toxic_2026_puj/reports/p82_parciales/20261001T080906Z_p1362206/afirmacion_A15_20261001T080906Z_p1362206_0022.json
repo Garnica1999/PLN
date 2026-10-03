@@ -1,0 +1,19 @@
+{
+  "marca_corrida": "20261001T080906Z_p1362206",
+  "resultado": {
+    "bloque": 3,
+    "coste_segundos": 7e-06,
+    "descripcion": "el control permutado usa el mismo protocolo y las 10 semillas",
+    "detalle": {
+      "n_combinaciones_b5": 50,
+      "n_semillas_b5": 10
+    },
+    "estado": "CONFIRMADO",
+    "exito": true,
+    "id": "A15",
+    "naturaleza": "CONFIRMAR",
+    "stop": true,
+    "tolerancia": "coincidencia exacta de los identificadores de semilla y de split",
+    "traza": ""
+  }
+}

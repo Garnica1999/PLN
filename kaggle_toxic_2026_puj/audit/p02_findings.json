@@ -1,0 +1,181 @@
+{
+  "conteos": {
+    "A": {
+      "filas": 128,
+      "filas_malformadas": 0,
+      "filas_malformadas_lineas": []
+    },
+    "B": {
+      "filas": 188,
+      "filas_malformadas": 6,
+      "filas_malformadas_lineas": [
+        147,
+        148,
+        149,
+        150,
+        151,
+        152
+      ]
+    },
+    "C": {
+      "filas": 202,
+      "filas_malformadas": 6,
+      "filas_malformadas_lineas": [
+        147,
+        148,
+        149,
+        150,
+        151,
+        152
+      ]
+    }
+  },
+  "ids_duplicados": {
+    "A": [],
+    "B": [
+      "KAGGLE_TOXIC_2026_PUJ"
+    ],
+    "C": [
+      "KAGGLE_TOXIC_2026_PUJ"
+    ]
+  },
+  "ids_vacios": {
+    "A": 0,
+    "B": 0,
+    "C": 0
+  },
+  "commits_sobre_experiments_csv": 47,
+  "filas_introducidas_por_fase": {
+    "v1-inicial": 115,
+    "v2": 13,
+    "v4": 15,
+    "v5": 26,
+    "v6": 10,
+    "v7": 4,
+    "v8": 14
+  },
+  "filas_eliminadas_en_alguna_revision": [],
+  "filas_modificadas_tras_introduccion": {
+    "FIN-08-C-EMO": [
+      "f5d23cb",
+      "abd4ec4"
+    ],
+    "FIN-09-C-SYN": [
+      "f5d23cb",
+      "abd4ec4"
+    ],
+    "FIN-10-C-EMO-SYN": [
+      "f5d23cb",
+      "abd4ec4"
+    ],
+    "V6-07": [
+      "834d565"
+    ]
+  },
+  "archivos_texto_indexados": 328,
+  "scripts_sin_fila_que_los_referencie": [
+    "00_auditoria_datos.py",
+    "01_eda_linguistico.py",
+    "06_error_analysis.py",
+    "24_informe_final_candidatos.py",
+    "30_supervised_weighting_v4.py",
+    "37_auditoria_v4.py",
+    "embedding_02_fasttext_baseline_v5.py",
+    "embedding_06_auditoria_v5.py",
+    "embedding_22_auditoria_final_v5_1.py",
+    "v7_00_gap_audit.py"
+  ],
+  "n_scripts_en_disco_C": 91,
+  "huerfanos_citados_en_texto": {
+    "00_auditoria_datos.py": true,
+    "01_eda_linguistico.py": true,
+    "06_error_analysis.py": true,
+    "24_informe_final_candidatos.py": true,
+    "30_supervised_weighting_v4.py": true,
+    "37_auditoria_v4.py": true,
+    "embedding_02_fasttext_baseline_v5.py": true,
+    "embedding_06_auditoria_v5.py": true,
+    "embedding_22_auditoria_final_v5_1.py": false,
+    "v7_00_gap_audit.py": true
+  },
+  "huecos_numeracion": {
+    "EBD": [
+      11,
+      12
+    ]
+  },
+  "filas_cuarentena": [
+    {
+      "surface": "B",
+      "line": 147,
+      "fields": 9,
+      "preview": "KAGGLE_TOXIC_2026_PUJ | 2026-09-25 | experiments/embedding_02_fasttext_baseline_v5.py | EMB-NORMAL (identico a P1, verificado token a token sobre lo"
+    },
+    {
+      "surface": "B",
+      "line": 148,
+      "fields": 9,
+      "preview": "KAGGLE_TOXIC_2026_PUJ | 2026-09-25 | experiments/embedding_02_fasttext_baseline_v5.py | EMB-NORMAL (identico a P1, verificado token a token sobre lo"
+    },
+    {
+      "surface": "B",
+      "line": 149,
+      "fields": 9,
+      "preview": "KAGGLE_TOXIC_2026_PUJ | 2026-09-25 | experiments/embedding_02_fasttext_baseline_v5.py | EMB-NORMAL (identico a P1, verificado token a token sobre lo"
+    },
+    {
+      "surface": "B",
+      "line": 150,
+      "fields": 9,
+      "preview": "KAGGLE_TOXIC_2026_PUJ | 2026-09-25 | experiments/embedding_02_fasttext_baseline_v5.py | EMB-NORMAL (identico a P1, verificado token a token sobre lo"
+    },
+    {
+      "surface": "B",
+      "line": 151,
+      "fields": 9,
+      "preview": "KAGGLE_TOXIC_2026_PUJ | 2026-09-25 | experiments/embedding_02_fasttext_baseline_v5.py | EMB-NORMAL (identico a P1, verificado token a token sobre lo"
+    },
+    {
+      "surface": "B",
+      "line": 152,
+      "fields": 9,
+      "preview": "KAGGLE_TOXIC_2026_PUJ | 2026-09-25 | experiments/embedding_02_fasttext_baseline_v5.py | EMB-NORMAL (identico a P1, verificado token a token sobre lo"
+    },
+    {
+      "surface": "C",
+      "line": 147,
+      "fields": 9,
+      "preview": "KAGGLE_TOXIC_2026_PUJ | 2026-09-25 | experiments/embedding_02_fasttext_baseline_v5.py | EMB-NORMAL (identico a P1, verificado token a token sobre lo"
+    },
+    {
+      "surface": "C",
+      "line": 148,
+      "fields": 9,
+      "preview": "KAGGLE_TOXIC_2026_PUJ | 2026-09-25 | experiments/embedding_02_fasttext_baseline_v5.py | EMB-NORMAL (identico a P1, verificado token a token sobre lo"
+    },
+    {
+      "surface": "C",
+      "line": 149,
+      "fields": 9,
+      "preview": "KAGGLE_TOXIC_2026_PUJ | 2026-09-25 | experiments/embedding_02_fasttext_baseline_v5.py | EMB-NORMAL (identico a P1, verificado token a token sobre lo"
+    },
+    {
+      "surface": "C",
+      "line": 150,
+      "fields": 9,
+      "preview": "KAGGLE_TOXIC_2026_PUJ | 2026-09-25 | experiments/embedding_02_fasttext_baseline_v5.py | EMB-NORMAL (identico a P1, verificado token a token sobre lo"
+    },
+    {
+      "surface": "C",
+      "line": 151,
+      "fields": 9,
+      "preview": "KAGGLE_TOXIC_2026_PUJ | 2026-09-25 | experiments/embedding_02_fasttext_baseline_v5.py | EMB-NORMAL (identico a P1, verificado token a token sobre lo"
+    },
+    {
+      "surface": "C",
+      "line": 152,
+      "fields": 9,
+      "preview": "KAGGLE_TOXIC_2026_PUJ | 2026-09-25 | experiments/embedding_02_fasttext_baseline_v5.py | EMB-NORMAL (identico a P1, verificado token a token sobre lo"
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+variante,huecos,n_features_palabras,n_features_char,corrected_cv,delta_vs_V03,ic95_0,ic95_1,f1_HS,f1_TR,f1_AG,salvage,damage,pliegues_positivos,gate_1_supera
+C1-0-control,ninguno,2744,18238,0.777211,0.0,0.0,0.0,0.7617,0.8157,0.7542,0,0,0,False
+C1-1-hueco1,1,3874,18238,0.775055,-0.002156,-0.008362,0.003932,0.7648,0.8103,0.75,2,5,2,False
+C1-2-huecos12,"1,2",5025,18238,0.777107,-0.000104,-0.008523,0.008235,0.7644,0.8123,0.7547,3,8,2,False

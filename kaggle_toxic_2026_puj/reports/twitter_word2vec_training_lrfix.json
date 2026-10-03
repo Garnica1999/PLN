@@ -1,0 +1,70 @@
+{
+  "familia": "P71_TWITTER_WORD2VEC",
+  "experiment_id": "P71-08",
+  "fase": "P1b-ter learning rate corregido",
+  "fecha": "2026-09-30T02:09:34+00:00",
+  "el_bug_aislado": {
+    "que": "la loss promediada sobre lotes de 8192 hace el gradiente 8192 veces mas pequeno. El learning rate efectivo por ejemplo era 0,025/8192 = 3e-6",
+    "como_se_aislo": "corpus diminuto de dos familias de diez palabras que nunca se mezclan. Con lr 0,5 la loss baja de 1,3863 a 0,2094",
+    "el_forward_es_correcto": true,
+    "la_salida_a_cero_no_es_fatal": true,
+    "por_que_fallaron_los_intentos_previos": "los cuatro probaban otra cosa: escala de la entrada, optimizador, lote sin escalar el lr, o decaimiento. Ninguno tocaba el cociente entre lr y lote"
+  },
+  "la_correccion": {
+    "lr_inicial": 6.4,
+    "regla": "0,025 x lote",
+    "lote": 256,
+    "lr_minimo": 0.001,
+    "salida_inicializada": "aleatoria uniforme [-0,05, 0,05]"
+  },
+  "lo_que_no_cambia": [
+    "dim",
+    "ventana",
+    "min_count",
+    "negativos",
+    "muestreo",
+    "epocas",
+    "sg",
+    "semilla",
+    "corpus",
+    "tokenizacion"
+  ],
+  "corpus_twitter": {
+    "etiqueta": "twitter",
+    "tokens": 10000029,
+    "vocabulario": 77657,
+    "loss_por_epoca": [
+      1.272136,
+      1.174189,
+      1.132058,
+      1.108284,
+      1.095145
+    ],
+    "segundos": 1402.9,
+    "modelo": "modelos/twitter_domain/w2v_twitter_lrfix.npz",
+    "sha256_modelo": "00bee165447a384c05ee8b7feb69309c04a3caced456e981c327be3507df3762",
+    "baja": true
+  },
+  "corpus_general": {
+    "etiqueta": "general",
+    "tokens": 10002400,
+    "vocabulario": 100097,
+    "loss_por_epoca": [
+      1.25416,
+      1.140164,
+      1.094067,
+      1.069379,
+      1.055625
+    ],
+    "segundos": 2491.5,
+    "modelo": "modelos/twitter_domain/w2v_general_lrfix.npz",
+    "sha256_modelo": "e3681fed4346fa82a3d751d836bfa71036222f8010bbd870b07fd54a38716a5b",
+    "baja": true
+  },
+  "reproducibilidad": {
+    "nivel": "R2",
+    "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "corrected_cv_v03": 0.7772114525165721
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

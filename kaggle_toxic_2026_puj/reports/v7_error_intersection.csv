@@ -1,0 +1,10 @@
+ambito,magnitud,valor
+fila,filas del desarrollo,1483
+fila,V03 acierta la fila entera,340
+fila,"rescate total de P8-0-control (V03 falla, el candidato acierta)",0
+fila,"dano total de P8-0-control (V03 acierta, el candidato falla)",0
+fila,correccion neta,0
+etiqueta,F1 de V03 en HS,0.761689
+etiqueta,F1 de V03 en TR,0.81573
+etiqueta,F1 de V03 en AG,0.754215
+global,metrica primaria de V03,0.777211

@@ -1,0 +1,299 @@
+{
+  "experiment_id": "V4-F01..F04 + discovery",
+  "fecha": "2026-09-25T19:41:08+00:00",
+  "duracion_s": 3.01,
+  "shift": {
+    "n_variables": 10,
+    "n_significativos": 2,
+    "detalle": [
+      {
+        "variable": "n_caracteres",
+        "media_train": 104.3125,
+        "media_test": 101.7184,
+        "desviacion_train": 59.9223,
+        "desviacion_test": 56.4698,
+        "delta": -2.5942,
+        "ic95_bajo": -6.9861,
+        "ic95_alto": 1.5566,
+        "desplazamiento_significativo": false
+      },
+      {
+        "variable": "n_tokens",
+        "media_train": 18.2224,
+        "media_test": 17.682,
+        "desviacion_train": 10.5759,
+        "desviacion_test": 9.9368,
+        "delta": -0.5404,
+        "ic95_bajo": -1.3057,
+        "ic95_alto": 0.1803,
+        "desplazamiento_significativo": false
+      },
+      {
+        "variable": "longitud_media_palabra",
+        "media_train": 4.7387,
+        "media_test": 4.7973,
+        "desviacion_train": 1.0264,
+        "desviacion_test": 1.0456,
+        "delta": 0.0586,
+        "ic95_bajo": -0.0208,
+        "ic95_alto": 0.1391,
+        "desplazamiento_significativo": false
+      },
+      {
+        "variable": "entropia_tokens",
+        "media_train": 4.2268,
+        "media_test": 4.1435,
+        "desviacion_train": 1.1617,
+        "desviacion_test": 1.146,
+        "delta": -0.0834,
+        "ic95_bajo": -0.1645,
+        "ic95_alto": 0.0039,
+        "desplazamiento_significativo": false
+      },
+      {
+        "variable": "densidad_url",
+        "media_train": 0.0188,
+        "media_test": 0.0181,
+        "desviacion_train": 0.0334,
+        "desviacion_test": 0.0336,
+        "delta": -0.0007,
+        "ic95_bajo": -0.0032,
+        "ic95_alto": 0.0018,
+        "desplazamiento_significativo": false
+      },
+      {
+        "variable": "densidad_mencion",
+        "media_train": 0.0594,
+        "media_test": 0.0612,
+        "desviacion_train": 0.0927,
+        "desviacion_test": 0.1016,
+        "delta": 0.0017,
+        "ic95_bajo": -0.0052,
+        "ic95_alto": 0.0094,
+        "desplazamiento_significativo": false
+      },
+      {
+        "variable": "densidad_hashtag",
+        "media_train": 0.0085,
+        "media_test": 0.0167,
+        "desviacion_train": 0.0412,
+        "desviacion_test": 0.0867,
+        "delta": 0.0082,
+        "ic95_bajo": 0.0031,
+        "ic95_alto": 0.0138,
+        "desplazamiento_significativo": true
+      },
+      {
+        "variable": "proporcion_out_of_vocabulario",
+        "media_train": 0.0,
+        "media_test": 0.2082,
+        "desviacion_train": 0.0,
+        "desviacion_test": 0.1258,
+        "delta": 0.2082,
+        "ic95_bajo": 0.2012,
+        "ic95_alto": 0.2159,
+        "desplazamiento_significativo": true
+      },
+      {
+        "variable": "proporcion_mayusculas",
+        "media_train": 0.1033,
+        "media_test": 0.1033,
+        "desviacion_train": 0.1622,
+        "desviacion_test": 0.168,
+        "delta": 0.0,
+        "ic95_bajo": -0.0119,
+        "ic95_alto": 0.0127,
+        "desplazamiento_significativo": false
+      },
+      {
+        "variable": "proporcion_no_alfanumerico",
+        "media_train": 0.0452,
+        "media_test": 0.0459,
+        "desviacion_train": 0.0408,
+        "desviacion_test": 0.0443,
+        "delta": 0.0007,
+        "ic95_bajo": -0.0024,
+        "ic95_alto": 0.004,
+        "desplazamiento_significativo": false
+      }
+    ]
+  },
+  "robustez_duplicados": {
+    "todos": {
+      "n": 1483,
+      "f1_media": 0.7772,
+      "f1_por_etiqueta": {
+        "HS": 0.7617,
+        "TR": 0.8157,
+        "AG": 0.7542
+      },
+      "error_medio_por_etiqueta": 0.1702
+    },
+    "textos_unicos": {
+      "n": 1415,
+      "f1_media": 0.7568,
+      "f1_por_etiqueta": {
+        "HS": 0.7435,
+        "TR": 0.7929,
+        "AG": 0.7342
+      },
+      "error_medio_por_etiqueta": 0.1767
+    },
+    "en_cluster_near_duplicado": {
+      "n": 68,
+      "f1_media": 0.9769,
+      "f1_por_etiqueta": {
+        "HS": 0.9804,
+        "TR": 0.9903,
+        "AG": 0.96
+      },
+      "error_medio_por_etiqueta": 0.0343
+    }
+  },
+  "vecindad": {
+    "n_vecindario_discrepante": 684,
+    "error_medio_dentro": 0.1798,
+    "error_medio_fuera": 0.1619,
+    "delta": 0.018,
+    "ic95": [
+      -0.013,
+      0.0491
+    ]
+  },
+  "propagacion_near_duplicado": {
+    "tweets_de_test_con_texto_identico_a_train": 0,
+    "porcentaje_del_test": 0.0,
+    "techo_maximo_de_F1_en_puntos": 0.0,
+    "nota": "No se aplica: la propagacion de etiquetas usaria etiquetas de train para predecir test, lo que es legal pero con un techo de impacto despreciable; ademas §58 pide separarlo en un canal propio."
+  },
+  "correccion_canales": [
+    {
+      "model": "v2_meta_oof",
+      "n": 1483,
+      "correct_v03": 1042,
+      "wrong_v03": 441,
+      "new_correct": 69,
+      "new_wrong": 107,
+      "net_change": -38,
+      "correction_rate": 0.1565,
+      "f1_propio": 0.778
+    },
+    {
+      "model": "v2_oof_targeting",
+      "n": 1483,
+      "correct_v03": 1042,
+      "wrong_v03": 441,
+      "new_correct": 93,
+      "new_wrong": 135,
+      "net_change": -42,
+      "correction_rate": 0.2109,
+      "f1_propio": 0.7419
+    },
+    {
+      "model": "v2_oof_cita_negacion",
+      "n": 1483,
+      "correct_v03": 1042,
+      "wrong_v03": 441,
+      "new_correct": 81,
+      "new_wrong": 98,
+      "net_change": -17,
+      "correction_rate": 0.1837,
+      "f1_propio": 0.761
+    },
+    {
+      "model": "v2_oof_syntax",
+      "n": 1483,
+      "correct_v03": 1042,
+      "wrong_v03": 441,
+      "new_correct": 63,
+      "new_wrong": 129,
+      "net_change": -66,
+      "correction_rate": 0.1429,
+      "f1_propio": 0.7416
+    },
+    {
+      "model": "v2_oof_emocion_nbsvm_ortografia",
+      "n": 1483,
+      "correct_v03": 1042,
+      "wrong_v03": 441,
+      "new_correct": 40,
+      "new_wrong": 102,
+      "net_change": -62,
+      "correction_rate": 0.0907,
+      "f1_propio": 0.7518
+    }
+  ],
+  "fusion_tardia": {
+    "canales": [],
+    "corrected_cv": null,
+    "nota": "sin canales complementarios"
+  },
+  "taxonomia": {
+    "FP_HS": {
+      "n": 173,
+      "porcentaje": 11.67,
+      "ids_ejemplo": "23930;21532;24427;23475;23543;22307;20157;24128"
+    },
+    "FN_HS": {
+      "n": 143,
+      "porcentaje": 9.64,
+      "ids_ejemplo": "22678;20379;21145;20144;20956;21904;21643;23631"
+    },
+    "FP_TR": {
+      "n": 82,
+      "porcentaje": 5.53,
+      "ids_ejemplo": "23930;23543;23414;22049;24101;20935;23839;24213"
+    },
+    "FN_TR": {
+      "n": 82,
+      "porcentaje": 5.53,
+      "ids_ejemplo": "20956;21904;22883;22620;22163;22168;22065;24864"
+    },
+    "FP_AG": {
+      "n": 135,
+      "porcentaje": 9.1,
+      "ids_ejemplo": "22434;23930;21532;24427;23475;22307;23414;22634"
+    },
+    "FN_AG": {
+      "n": 142,
+      "porcentaje": 9.58,
+      "ids_ejemplo": "22678;20379;23719;20144;20337;20956;24441;21643"
+    },
+    "ALL_THREE": {
+      "n": 98,
+      "porcentaje": 6.61,
+      "ids_ejemplo": "23930;23414;22049;20956;20935;23320;21892;23068"
+    },
+    "IMPLICIT": {
+      "n": 143,
+      "porcentaje": 9.64,
+      "ids_ejemplo": "22678;20379;21145;20144;20956;21904;21643;23631"
+    },
+    "QUOTED": {
+      "n": 16,
+      "porcentaje": 1.08,
+      "ids_ejemplo": "24039;24596;24441;20707;24638;22203;22228;21522"
+    },
+    "COLLECTIVE": {
+      "n": 142,
+      "porcentaje": 9.58,
+      "ids_ejemplo": "22678;20379;23719;20144;20337;20956;24441;21643"
+    },
+    "DIRECTED": {
+      "n": 82,
+      "porcentaje": 5.53,
+      "ids_ejemplo": "20956;21904;22883;22620;22163;22168;22065;24864"
+    },
+    "AFFILIATIVE": {
+      "n": 83,
+      "porcentaje": 5.6,
+      "ids_ejemplo": "23930;21532;23475;22307;20034;23414;24982;20935"
+    },
+    "NEWS": {
+      "n": 156,
+      "porcentaje": 10.52,
+      "ids_ejemplo": "22434;21532;24427;20379;22307;20157;24128;24596"
+    }
+  },
+  "uso_de_test": "solo variables no supervisadas y conteo de coincidencias; sin labels"
+}

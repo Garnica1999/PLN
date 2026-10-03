@@ -1,0 +1,4 @@
+delta,experiment_id,freno_de_transferencia,corrected_cv,tipo,ic95_1,pliegues_positivos,control_de_codigo,tema,ic95_0,gate_supera,variante,distancia_al_gate
+-0.001066,V7-02,no aplica: por debajo de +0.005,0.776145,experimento,0.002149,1,,"track P8, prior de etiqueta del grupo",-0.004508,False,P8-1-desviacion,0.004066
+-0.001681,V7-02,no aplica: por debajo de +0.005,0.77553,experimento,0.001571,1,,"track P8, prior de etiqueta del grupo",-0.005144,False,P8-2-desviacion-soporte,0.004681
+-0.001895,V7-03,no aplica: por debajo de +0.005,0.767228,experimento,0.005712,2,,"track P0.1, umbral anidado estricto",-0.009193,False,P0-1-anidado,0.004895

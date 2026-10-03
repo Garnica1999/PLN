@@ -1,0 +1,9 @@
+id
+componentes
+token_count
+ruta
+nota
+processed_sha256
+processed_ruta
+processed_bytes
+corpus_version

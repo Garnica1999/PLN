@@ -1,0 +1,1131 @@
+{
+  "experimento": "V10-11 (P4, BiGRU con afinamiento)",
+  "fecha": "2026-09-26T21:03:19+00:00",
+  "referencias": {
+    "v03_tfidf_union_lr": 0.7772114525165721,
+    "v9_04_bi_gru_congelado": 0.6943,
+    "v9_04_media_mas_regresion_lineal": 0.6636
+  },
+  "protocolo": "Mismos pliegues corregidos, misma longitud de secuencia y mismos umbrales congelados de V03 que V9-04, para que la comparacion sea directa. La mejor epoca se elige por la perdida de validacion, con paciencia 3 y un maximo de 14 epocas.",
+  "decision_sobre_sobreentrenamiento": {
+    "decision": "early stopping estricto",
+    "quien_la_fijo": "el pre-registro en tasks/plan_v10.md, antes de ejecutar nada",
+    "motivo": "El objetivo es medir el techo de la variante, y sobreentrenar no daria un techo sino un sobreajuste. Ademas la mejor epoca se elige por la perdida de validacion, que es la misma senal que se usa para las curvas de aprendizaje; la metrica de la competencia se evalua una sola vez al final y no se usa para ajustar."
+  },
+  "variantes": [
+    "congelado",
+    "afinado",
+    "afinando_todo"
+  ],
+  "resultados": {
+    "congelado": {
+      "f1_media_columnas": 0.693994,
+      "f1_por_etiqueta": {
+        "HS": 0.674249,
+        "TR": 0.751515,
+        "AG": 0.656219
+      },
+      "mejor_epoca_por_pliegue": [
+        12,
+        10,
+        10,
+        8,
+        13
+      ],
+      "epocas_ejecutadas_por_pliegue": [
+        14,
+        13,
+        13,
+        11,
+        14
+      ]
+    },
+    "afinado": {
+      "f1_media_columnas": 0.711639,
+      "f1_por_etiqueta": {
+        "HS": 0.694064,
+        "TR": 0.764977,
+        "AG": 0.675875
+      },
+      "mejor_epoca_por_pliegue": [
+        12,
+        11,
+        10,
+        8,
+        12
+      ],
+      "epocas_ejecutadas_por_pliegue": [
+        14,
+        14,
+        13,
+        11,
+        14
+      ]
+    },
+    "afinando_todo": {
+      "f1_media_columnas": 0.699086,
+      "f1_por_etiqueta": {
+        "HS": 0.669804,
+        "TR": 0.743743,
+        "AG": 0.683712
+      },
+      "mejor_epoca_por_pliegue": [
+        7,
+        7,
+        7,
+        7,
+        8
+      ],
+      "epocas_ejecutadas_por_pliegue": [
+        10,
+        10,
+        10,
+        10,
+        11
+      ]
+    }
+  },
+  "delta_afinado_menos_congelado": 0.017645,
+  "delta_afinado_menos_todo": 0.012553,
+  "delta_afinado_menos_v03": -0.065572,
+  "gana_a_v03": false,
+  "h1_abierta": false,
+  "trazas": {
+    "congelado": [
+      {
+        "mejor_epoca": 12,
+        "epocas_ejecutadas": 14,
+        "mejor_perdida_validacion": 0.449277,
+        "perdida_entrenamiento_en_la_mejor_epoca": 0.360489,
+        "traza": [
+          {
+            "epoca": 1,
+            "perdida_entrenamiento": 0.62724,
+            "perdida_validacion": 0.624537
+          },
+          {
+            "epoca": 2,
+            "perdida_entrenamiento": 0.582806,
+            "perdida_validacion": 0.59088
+          },
+          {
+            "epoca": 3,
+            "perdida_entrenamiento": 0.552495,
+            "perdida_validacion": 0.577544
+          },
+          {
+            "epoca": 4,
+            "perdida_entrenamiento": 0.532826,
+            "perdida_validacion": 0.56359
+          },
+          {
+            "epoca": 5,
+            "perdida_entrenamiento": 0.511,
+            "perdida_validacion": 0.54528
+          },
+          {
+            "epoca": 6,
+            "perdida_entrenamiento": 0.49894,
+            "perdida_validacion": 0.53284
+          },
+          {
+            "epoca": 7,
+            "perdida_entrenamiento": 0.476339,
+            "perdida_validacion": 0.504352
+          },
+          {
+            "epoca": 8,
+            "perdida_entrenamiento": 0.45832,
+            "perdida_validacion": 0.494301
+          },
+          {
+            "epoca": 9,
+            "perdida_entrenamiento": 0.439482,
+            "perdida_validacion": 0.479853
+          },
+          {
+            "epoca": 10,
+            "perdida_entrenamiento": 0.414095,
+            "perdida_validacion": 0.475338
+          },
+          {
+            "epoca": 11,
+            "perdida_entrenamiento": 0.385919,
+            "perdida_validacion": 0.462817
+          },
+          {
+            "epoca": 12,
+            "perdida_entrenamiento": 0.360489,
+            "perdida_validacion": 0.449277
+          },
+          {
+            "epoca": 13,
+            "perdida_entrenamiento": 0.349802,
+            "perdida_validacion": 0.453338
+          },
+          {
+            "epoca": 14,
+            "perdida_entrenamiento": 0.348624,
+            "perdida_validacion": 0.498403
+          }
+        ]
+      },
+      {
+        "mejor_epoca": 10,
+        "epocas_ejecutadas": 13,
+        "mejor_perdida_validacion": 0.470939,
+        "perdida_entrenamiento_en_la_mejor_epoca": 0.409896,
+        "traza": [
+          {
+            "epoca": 1,
+            "perdida_entrenamiento": 0.633142,
+            "perdida_validacion": 0.626446
+          },
+          {
+            "epoca": 2,
+            "perdida_entrenamiento": 0.5881,
+            "perdida_validacion": 0.584103
+          },
+          {
+            "epoca": 3,
+            "perdida_entrenamiento": 0.563695,
+            "perdida_validacion": 0.562659
+          },
+          {
+            "epoca": 4,
+            "perdida_entrenamiento": 0.554121,
+            "perdida_validacion": 0.547439
+          },
+          {
+            "epoca": 5,
+            "perdida_entrenamiento": 0.536025,
+            "perdida_validacion": 0.535118
+          },
+          {
+            "epoca": 6,
+            "perdida_entrenamiento": 0.503224,
+            "perdida_validacion": 0.513229
+          },
+          {
+            "epoca": 7,
+            "perdida_entrenamiento": 0.469649,
+            "perdida_validacion": 0.498806
+          },
+          {
+            "epoca": 8,
+            "perdida_entrenamiento": 0.447975,
+            "perdida_validacion": 0.493368
+          },
+          {
+            "epoca": 9,
+            "perdida_entrenamiento": 0.418509,
+            "perdida_validacion": 0.476093
+          },
+          {
+            "epoca": 10,
+            "perdida_entrenamiento": 0.409896,
+            "perdida_validacion": 0.470939
+          },
+          {
+            "epoca": 11,
+            "perdida_entrenamiento": 0.374076,
+            "perdida_validacion": 0.471128
+          },
+          {
+            "epoca": 12,
+            "perdida_entrenamiento": 0.382002,
+            "perdida_validacion": 0.490256
+          },
+          {
+            "epoca": 13,
+            "perdida_entrenamiento": 0.332548,
+            "perdida_validacion": 0.471567
+          }
+        ]
+      },
+      {
+        "mejor_epoca": 10,
+        "epocas_ejecutadas": 13,
+        "mejor_perdida_validacion": 0.446025,
+        "perdida_entrenamiento_en_la_mejor_epoca": 0.390938,
+        "traza": [
+          {
+            "epoca": 1,
+            "perdida_entrenamiento": 0.630818,
+            "perdida_validacion": 0.619438
+          },
+          {
+            "epoca": 2,
+            "perdida_entrenamiento": 0.586332,
+            "perdida_validacion": 0.57615
+          },
+          {
+            "epoca": 3,
+            "perdida_entrenamiento": 0.561419,
+            "perdida_validacion": 0.544387
+          },
+          {
+            "epoca": 4,
+            "perdida_entrenamiento": 0.545576,
+            "perdida_validacion": 0.532085
+          },
+          {
+            "epoca": 5,
+            "perdida_entrenamiento": 0.534202,
+            "perdida_validacion": 0.533161
+          },
+          {
+            "epoca": 6,
+            "perdida_entrenamiento": 0.502554,
+            "perdida_validacion": 0.495404
+          },
+          {
+            "epoca": 7,
+            "perdida_entrenamiento": 0.477218,
+            "perdida_validacion": 0.478354
+          },
+          {
+            "epoca": 8,
+            "perdida_entrenamiento": 0.445201,
+            "perdida_validacion": 0.481101
+          },
+          {
+            "epoca": 9,
+            "perdida_entrenamiento": 0.428148,
+            "perdida_validacion": 0.464286
+          },
+          {
+            "epoca": 10,
+            "perdida_entrenamiento": 0.390938,
+            "perdida_validacion": 0.446025
+          },
+          {
+            "epoca": 11,
+            "perdida_entrenamiento": 0.414372,
+            "perdida_validacion": 0.454113
+          },
+          {
+            "epoca": 12,
+            "perdida_entrenamiento": 0.357336,
+            "perdida_validacion": 0.449703
+          },
+          {
+            "epoca": 13,
+            "perdida_entrenamiento": 0.340359,
+            "perdida_validacion": 0.459126
+          }
+        ]
+      },
+      {
+        "mejor_epoca": 8,
+        "epocas_ejecutadas": 11,
+        "mejor_perdida_validacion": 0.497024,
+        "perdida_entrenamiento_en_la_mejor_epoca": 0.410409,
+        "traza": [
+          {
+            "epoca": 1,
+            "perdida_entrenamiento": 0.622756,
+            "perdida_validacion": 0.624181
+          },
+          {
+            "epoca": 2,
+            "perdida_entrenamiento": 0.579811,
+            "perdida_validacion": 0.587649
+          },
+          {
+            "epoca": 3,
+            "perdida_entrenamiento": 0.549816,
+            "perdida_validacion": 0.562262
+          },
+          {
+            "epoca": 4,
+            "perdida_entrenamiento": 0.529008,
+            "perdida_validacion": 0.547585
+          },
+          {
+            "epoca": 5,
+            "perdida_entrenamiento": 0.512155,
+            "perdida_validacion": 0.544279
+          },
+          {
+            "epoca": 6,
+            "perdida_entrenamiento": 0.468804,
+            "perdida_validacion": 0.517973
+          },
+          {
+            "epoca": 7,
+            "perdida_entrenamiento": 0.442899,
+            "perdida_validacion": 0.505114
+          },
+          {
+            "epoca": 8,
+            "perdida_entrenamiento": 0.410409,
+            "perdida_validacion": 0.497024
+          },
+          {
+            "epoca": 9,
+            "perdida_entrenamiento": 0.458493,
+            "perdida_validacion": 0.520155
+          },
+          {
+            "epoca": 10,
+            "perdida_entrenamiento": 0.419306,
+            "perdida_validacion": 0.540242
+          },
+          {
+            "epoca": 11,
+            "perdida_entrenamiento": 0.371206,
+            "perdida_validacion": 0.499494
+          }
+        ]
+      },
+      {
+        "mejor_epoca": 13,
+        "epocas_ejecutadas": 14,
+        "mejor_perdida_validacion": 0.419556,
+        "perdida_entrenamiento_en_la_mejor_epoca": 0.350145,
+        "traza": [
+          {
+            "epoca": 1,
+            "perdida_entrenamiento": 0.624111,
+            "perdida_validacion": 0.624454
+          },
+          {
+            "epoca": 2,
+            "perdida_entrenamiento": 0.581511,
+            "perdida_validacion": 0.5862
+          },
+          {
+            "epoca": 3,
+            "perdida_entrenamiento": 0.556986,
+            "perdida_validacion": 0.566942
+          },
+          {
+            "epoca": 4,
+            "perdida_entrenamiento": 0.538068,
+            "perdida_validacion": 0.553349
+          },
+          {
+            "epoca": 5,
+            "perdida_entrenamiento": 0.519134,
+            "perdida_validacion": 0.534855
+          },
+          {
+            "epoca": 6,
+            "perdida_entrenamiento": 0.500635,
+            "perdida_validacion": 0.519954
+          },
+          {
+            "epoca": 7,
+            "perdida_entrenamiento": 0.468415,
+            "perdida_validacion": 0.487883
+          },
+          {
+            "epoca": 8,
+            "perdida_entrenamiento": 0.444768,
+            "perdida_validacion": 0.470565
+          },
+          {
+            "epoca": 9,
+            "perdida_entrenamiento": 0.423997,
+            "perdida_validacion": 0.457847
+          },
+          {
+            "epoca": 10,
+            "perdida_entrenamiento": 0.402171,
+            "perdida_validacion": 0.438755
+          },
+          {
+            "epoca": 11,
+            "perdida_entrenamiento": 0.380401,
+            "perdida_validacion": 0.441419
+          },
+          {
+            "epoca": 12,
+            "perdida_entrenamiento": 0.365359,
+            "perdida_validacion": 0.428414
+          },
+          {
+            "epoca": 13,
+            "perdida_entrenamiento": 0.350145,
+            "perdida_validacion": 0.419556
+          },
+          {
+            "epoca": 14,
+            "perdida_entrenamiento": 0.352121,
+            "perdida_validacion": 0.423558
+          }
+        ]
+      }
+    ],
+    "afinado": [
+      {
+        "mejor_epoca": 12,
+        "epocas_ejecutadas": 14,
+        "mejor_perdida_validacion": 0.454846,
+        "perdida_entrenamiento_en_la_mejor_epoca": 0.334529,
+        "traza": [
+          {
+            "epoca": 1,
+            "perdida_entrenamiento": 0.626891,
+            "perdida_validacion": 0.624269
+          },
+          {
+            "epoca": 2,
+            "perdida_entrenamiento": 0.581607,
+            "perdida_validacion": 0.59004
+          },
+          {
+            "epoca": 3,
+            "perdida_entrenamiento": 0.550108,
+            "perdida_validacion": 0.576181
+          },
+          {
+            "epoca": 4,
+            "perdida_entrenamiento": 0.528417,
+            "perdida_validacion": 0.560955
+          },
+          {
+            "epoca": 5,
+            "perdida_entrenamiento": 0.503997,
+            "perdida_validacion": 0.54093
+          },
+          {
+            "epoca": 6,
+            "perdida_entrenamiento": 0.490167,
+            "perdida_validacion": 0.527
+          },
+          {
+            "epoca": 7,
+            "perdida_entrenamiento": 0.465191,
+            "perdida_validacion": 0.498934
+          },
+          {
+            "epoca": 8,
+            "perdida_entrenamiento": 0.444153,
+            "perdida_validacion": 0.489181
+          },
+          {
+            "epoca": 9,
+            "perdida_entrenamiento": 0.397637,
+            "perdida_validacion": 0.454993
+          },
+          {
+            "epoca": 10,
+            "perdida_entrenamiento": 0.410697,
+            "perdida_validacion": 0.496987
+          },
+          {
+            "epoca": 11,
+            "perdida_entrenamiento": 0.359825,
+            "perdida_validacion": 0.461933
+          },
+          {
+            "epoca": 12,
+            "perdida_entrenamiento": 0.334529,
+            "perdida_validacion": 0.454846
+          },
+          {
+            "epoca": 13,
+            "perdida_entrenamiento": 0.327983,
+            "perdida_validacion": 0.471526
+          },
+          {
+            "epoca": 14,
+            "perdida_entrenamiento": 0.295696,
+            "perdida_validacion": 0.509545
+          }
+        ]
+      },
+      {
+        "mejor_epoca": 11,
+        "epocas_ejecutadas": 14,
+        "mejor_perdida_validacion": 0.455577,
+        "perdida_entrenamiento_en_la_mejor_epoca": 0.353462,
+        "traza": [
+          {
+            "epoca": 1,
+            "perdida_entrenamiento": 0.632852,
+            "perdida_validacion": 0.62616
+          },
+          {
+            "epoca": 2,
+            "perdida_entrenamiento": 0.587105,
+            "perdida_validacion": 0.583193
+          },
+          {
+            "epoca": 3,
+            "perdida_entrenamiento": 0.561648,
+            "perdida_validacion": 0.561117
+          },
+          {
+            "epoca": 4,
+            "perdida_entrenamiento": 0.550393,
+            "perdida_validacion": 0.545077
+          },
+          {
+            "epoca": 5,
+            "perdida_entrenamiento": 0.529533,
+            "perdida_validacion": 0.53096
+          },
+          {
+            "epoca": 6,
+            "perdida_entrenamiento": 0.492367,
+            "perdida_validacion": 0.50712
+          },
+          {
+            "epoca": 7,
+            "perdida_entrenamiento": 0.456451,
+            "perdida_validacion": 0.492375
+          },
+          {
+            "epoca": 8,
+            "perdida_entrenamiento": 0.4323,
+            "perdida_validacion": 0.486482
+          },
+          {
+            "epoca": 9,
+            "perdida_entrenamiento": 0.398701,
+            "perdida_validacion": 0.470562
+          },
+          {
+            "epoca": 10,
+            "perdida_entrenamiento": 0.389011,
+            "perdida_validacion": 0.467525
+          },
+          {
+            "epoca": 11,
+            "perdida_entrenamiento": 0.353462,
+            "perdida_validacion": 0.455577
+          },
+          {
+            "epoca": 12,
+            "perdida_entrenamiento": 0.37543,
+            "perdida_validacion": 0.49226
+          },
+          {
+            "epoca": 13,
+            "perdida_entrenamiento": 0.301336,
+            "perdida_validacion": 0.47745
+          },
+          {
+            "epoca": 14,
+            "perdida_entrenamiento": 0.290459,
+            "perdida_validacion": 0.468011
+          }
+        ]
+      },
+      {
+        "mejor_epoca": 10,
+        "epocas_ejecutadas": 13,
+        "mejor_perdida_validacion": 0.439084,
+        "perdida_entrenamiento_en_la_mejor_epoca": 0.374119,
+        "traza": [
+          {
+            "epoca": 1,
+            "perdida_entrenamiento": 0.630427,
+            "perdida_validacion": 0.619051
+          },
+          {
+            "epoca": 2,
+            "perdida_entrenamiento": 0.585218,
+            "perdida_validacion": 0.575082
+          },
+          {
+            "epoca": 3,
+            "perdida_entrenamiento": 0.559167,
+            "perdida_validacion": 0.542678
+          },
+          {
+            "epoca": 4,
+            "perdida_entrenamiento": 0.541492,
+            "perdida_validacion": 0.529241
+          },
+          {
+            "epoca": 5,
+            "perdida_entrenamiento": 0.527876,
+            "perdida_validacion": 0.529126
+          },
+          {
+            "epoca": 6,
+            "perdida_entrenamiento": 0.492217,
+            "perdida_validacion": 0.489766
+          },
+          {
+            "epoca": 7,
+            "perdida_entrenamiento": 0.46597,
+            "perdida_validacion": 0.47354
+          },
+          {
+            "epoca": 8,
+            "perdida_entrenamiento": 0.437177,
+            "perdida_validacion": 0.479693
+          },
+          {
+            "epoca": 9,
+            "perdida_entrenamiento": 0.408875,
+            "perdida_validacion": 0.457445
+          },
+          {
+            "epoca": 10,
+            "perdida_entrenamiento": 0.374119,
+            "perdida_validacion": 0.439084
+          },
+          {
+            "epoca": 11,
+            "perdida_entrenamiento": 0.376458,
+            "perdida_validacion": 0.473924
+          },
+          {
+            "epoca": 12,
+            "perdida_entrenamiento": 0.352327,
+            "perdida_validacion": 0.443452
+          },
+          {
+            "epoca": 13,
+            "perdida_entrenamiento": 0.30075,
+            "perdida_validacion": 0.465427
+          }
+        ]
+      },
+      {
+        "mejor_epoca": 8,
+        "epocas_ejecutadas": 11,
+        "mejor_perdida_validacion": 0.495588,
+        "perdida_entrenamiento_en_la_mejor_epoca": 0.389924,
+        "traza": [
+          {
+            "epoca": 1,
+            "perdida_entrenamiento": 0.622378,
+            "perdida_validacion": 0.623895
+          },
+          {
+            "epoca": 2,
+            "perdida_entrenamiento": 0.578544,
+            "perdida_validacion": 0.586748
+          },
+          {
+            "epoca": 3,
+            "perdida_entrenamiento": 0.547094,
+            "perdida_validacion": 0.560714
+          },
+          {
+            "epoca": 4,
+            "perdida_entrenamiento": 0.523926,
+            "perdida_validacion": 0.54485
+          },
+          {
+            "epoca": 5,
+            "perdida_entrenamiento": 0.503331,
+            "perdida_validacion": 0.540642
+          },
+          {
+            "epoca": 6,
+            "perdida_entrenamiento": 0.458852,
+            "perdida_validacion": 0.514939
+          },
+          {
+            "epoca": 7,
+            "perdida_entrenamiento": 0.429988,
+            "perdida_validacion": 0.500415
+          },
+          {
+            "epoca": 8,
+            "perdida_entrenamiento": 0.389924,
+            "perdida_validacion": 0.495588
+          },
+          {
+            "epoca": 9,
+            "perdida_entrenamiento": 0.455884,
+            "perdida_validacion": 0.543945
+          },
+          {
+            "epoca": 10,
+            "perdida_entrenamiento": 0.387256,
+            "perdida_validacion": 0.528863
+          },
+          {
+            "epoca": 11,
+            "perdida_entrenamiento": 0.339754,
+            "perdida_validacion": 0.507256
+          }
+        ]
+      },
+      {
+        "mejor_epoca": 12,
+        "epocas_ejecutadas": 14,
+        "mejor_perdida_validacion": 0.425238,
+        "perdida_entrenamiento_en_la_mejor_epoca": 0.345199,
+        "traza": [
+          {
+            "epoca": 1,
+            "perdida_entrenamiento": 0.623783,
+            "perdida_validacion": 0.624148
+          },
+          {
+            "epoca": 2,
+            "perdida_entrenamiento": 0.5805,
+            "perdida_validacion": 0.585324
+          },
+          {
+            "epoca": 3,
+            "perdida_entrenamiento": 0.554939,
+            "perdida_validacion": 0.565474
+          },
+          {
+            "epoca": 4,
+            "perdida_entrenamiento": 0.534192,
+            "perdida_validacion": 0.550819
+          },
+          {
+            "epoca": 5,
+            "perdida_entrenamiento": 0.513019,
+            "perdida_validacion": 0.53073
+          },
+          {
+            "epoca": 6,
+            "perdida_entrenamiento": 0.491968,
+            "perdida_validacion": 0.51455
+          },
+          {
+            "epoca": 7,
+            "perdida_entrenamiento": 0.456753,
+            "perdida_validacion": 0.482306
+          },
+          {
+            "epoca": 8,
+            "perdida_entrenamiento": 0.425845,
+            "perdida_validacion": 0.467202
+          },
+          {
+            "epoca": 9,
+            "perdida_entrenamiento": 0.407221,
+            "perdida_validacion": 0.454624
+          },
+          {
+            "epoca": 10,
+            "perdida_entrenamiento": 0.380496,
+            "perdida_validacion": 0.435974
+          },
+          {
+            "epoca": 11,
+            "perdida_entrenamiento": 0.374536,
+            "perdida_validacion": 0.453243
+          },
+          {
+            "epoca": 12,
+            "perdida_entrenamiento": 0.345199,
+            "perdida_validacion": 0.425238
+          },
+          {
+            "epoca": 13,
+            "perdida_entrenamiento": 0.339891,
+            "perdida_validacion": 0.441694
+          },
+          {
+            "epoca": 14,
+            "perdida_entrenamiento": 0.335779,
+            "perdida_validacion": 0.435741
+          }
+        ]
+      }
+    ],
+    "afinando_todo": [
+      {
+        "mejor_epoca": 7,
+        "epocas_ejecutadas": 10,
+        "mejor_perdida_validacion": 0.476068,
+        "perdida_entrenamiento_en_la_mejor_epoca": 0.33149,
+        "traza": [
+          {
+            "epoca": 1,
+            "perdida_entrenamiento": 0.623674,
+            "perdida_validacion": 0.62181
+          },
+          {
+            "epoca": 2,
+            "perdida_entrenamiento": 0.570546,
+            "perdida_validacion": 0.58251
+          },
+          {
+            "epoca": 3,
+            "perdida_entrenamiento": 0.528723,
+            "perdida_validacion": 0.564548
+          },
+          {
+            "epoca": 4,
+            "perdida_entrenamiento": 0.490489,
+            "perdida_validacion": 0.540006
+          },
+          {
+            "epoca": 5,
+            "perdida_entrenamiento": 0.446869,
+            "perdida_validacion": 0.51256
+          },
+          {
+            "epoca": 6,
+            "perdida_entrenamiento": 0.417361,
+            "perdida_validacion": 0.508414
+          },
+          {
+            "epoca": 7,
+            "perdida_entrenamiento": 0.33149,
+            "perdida_validacion": 0.476068
+          },
+          {
+            "epoca": 8,
+            "perdida_entrenamiento": 0.278025,
+            "perdida_validacion": 0.494636
+          },
+          {
+            "epoca": 9,
+            "perdida_entrenamiento": 0.245694,
+            "perdida_validacion": 0.565377
+          },
+          {
+            "epoca": 10,
+            "perdida_entrenamiento": 0.180547,
+            "perdida_validacion": 0.549395
+          }
+        ]
+      },
+      {
+        "mejor_epoca": 7,
+        "epocas_ejecutadas": 10,
+        "mejor_perdida_validacion": 0.467468,
+        "perdida_entrenamiento_en_la_mejor_epoca": 0.346037,
+        "traza": [
+          {
+            "epoca": 1,
+            "perdida_entrenamiento": 0.630177,
+            "perdida_validacion": 0.623539
+          },
+          {
+            "epoca": 2,
+            "perdida_entrenamiento": 0.577807,
+            "perdida_validacion": 0.574919
+          },
+          {
+            "epoca": 3,
+            "perdida_entrenamiento": 0.543222,
+            "perdida_validacion": 0.54805
+          },
+          {
+            "epoca": 4,
+            "perdida_entrenamiento": 0.517151,
+            "perdida_validacion": 0.526144
+          },
+          {
+            "epoca": 5,
+            "perdida_entrenamiento": 0.471992,
+            "perdida_validacion": 0.499379
+          },
+          {
+            "epoca": 6,
+            "perdida_entrenamiento": 0.40227,
+            "perdida_validacion": 0.471353
+          },
+          {
+            "epoca": 7,
+            "perdida_entrenamiento": 0.346037,
+            "perdida_validacion": 0.467468
+          },
+          {
+            "epoca": 8,
+            "perdida_entrenamiento": 0.336444,
+            "perdida_validacion": 0.483584
+          },
+          {
+            "epoca": 9,
+            "perdida_entrenamiento": 0.233309,
+            "perdida_validacion": 0.468289
+          },
+          {
+            "epoca": 10,
+            "perdida_entrenamiento": 0.183371,
+            "perdida_validacion": 0.482336
+          }
+        ]
+      },
+      {
+        "mejor_epoca": 7,
+        "epocas_ejecutadas": 10,
+        "mejor_perdida_validacion": 0.451661,
+        "perdida_entrenamiento_en_la_mejor_epoca": 0.366891,
+        "traza": [
+          {
+            "epoca": 1,
+            "perdida_entrenamiento": 0.626835,
+            "perdida_validacion": 0.615514
+          },
+          {
+            "epoca": 2,
+            "perdida_entrenamiento": 0.57497,
+            "perdida_validacion": 0.565514
+          },
+          {
+            "epoca": 3,
+            "perdida_entrenamiento": 0.53907,
+            "perdida_validacion": 0.528673
+          },
+          {
+            "epoca": 4,
+            "perdida_entrenamiento": 0.505452,
+            "perdida_validacion": 0.507239
+          },
+          {
+            "epoca": 5,
+            "perdida_entrenamiento": 0.472462,
+            "perdida_validacion": 0.500493
+          },
+          {
+            "epoca": 6,
+            "perdida_entrenamiento": 0.413528,
+            "perdida_validacion": 0.461938
+          },
+          {
+            "epoca": 7,
+            "perdida_entrenamiento": 0.366891,
+            "perdida_validacion": 0.451661
+          },
+          {
+            "epoca": 8,
+            "perdida_entrenamiento": 0.303048,
+            "perdida_validacion": 0.458105
+          },
+          {
+            "epoca": 9,
+            "perdida_entrenamiento": 0.237535,
+            "perdida_validacion": 0.453787
+          },
+          {
+            "epoca": 10,
+            "perdida_entrenamiento": 0.197246,
+            "perdida_validacion": 0.484092
+          }
+        ]
+      },
+      {
+        "mejor_epoca": 7,
+        "epocas_ejecutadas": 10,
+        "mejor_perdida_validacion": 0.480846,
+        "perdida_entrenamiento_en_la_mejor_epoca": 0.303087,
+        "traza": [
+          {
+            "epoca": 1,
+            "perdida_entrenamiento": 0.618904,
+            "perdida_validacion": 0.621288
+          },
+          {
+            "epoca": 2,
+            "perdida_entrenamiento": 0.56693,
+            "perdida_validacion": 0.578737
+          },
+          {
+            "epoca": 3,
+            "perdida_entrenamiento": 0.522489,
+            "perdida_validacion": 0.548191
+          },
+          {
+            "epoca": 4,
+            "perdida_entrenamiento": 0.478123,
+            "perdida_validacion": 0.525357
+          },
+          {
+            "epoca": 5,
+            "perdida_entrenamiento": 0.424019,
+            "perdida_validacion": 0.515849
+          },
+          {
+            "epoca": 6,
+            "perdida_entrenamiento": 0.358268,
+            "perdida_validacion": 0.526356
+          },
+          {
+            "epoca": 7,
+            "perdida_entrenamiento": 0.303087,
+            "perdida_validacion": 0.480846
+          },
+          {
+            "epoca": 8,
+            "perdida_entrenamiento": 0.235951,
+            "perdida_validacion": 0.513472
+          },
+          {
+            "epoca": 9,
+            "perdida_entrenamiento": 0.224949,
+            "perdida_validacion": 0.585913
+          },
+          {
+            "epoca": 10,
+            "perdida_entrenamiento": 0.167646,
+            "perdida_validacion": 0.606865
+          }
+        ]
+      },
+      {
+        "mejor_epoca": 8,
+        "epocas_ejecutadas": 11,
+        "mejor_perdida_validacion": 0.447,
+        "perdida_entrenamiento_en_la_mejor_epoca": 0.27732,
+        "traza": [
+          {
+            "epoca": 1,
+            "perdida_entrenamiento": 0.620764,
+            "perdida_validacion": 0.621334
+          },
+          {
+            "epoca": 2,
+            "perdida_entrenamiento": 0.571149,
+            "perdida_validacion": 0.577338
+          },
+          {
+            "epoca": 3,
+            "perdida_entrenamiento": 0.536298,
+            "perdida_validacion": 0.552546
+          },
+          {
+            "epoca": 4,
+            "perdida_entrenamiento": 0.499477,
+            "perdida_validacion": 0.529769
+          },
+          {
+            "epoca": 5,
+            "perdida_entrenamiento": 0.459707,
+            "perdida_validacion": 0.499317
+          },
+          {
+            "epoca": 6,
+            "perdida_entrenamiento": 0.419312,
+            "perdida_validacion": 0.486734
+          },
+          {
+            "epoca": 7,
+            "perdida_entrenamiento": 0.356039,
+            "perdida_validacion": 0.466125
+          },
+          {
+            "epoca": 8,
+            "perdida_entrenamiento": 0.27732,
+            "perdida_validacion": 0.447
+          },
+          {
+            "epoca": 9,
+            "perdida_entrenamiento": 0.230934,
+            "perdida_validacion": 0.479633
+          },
+          {
+            "epoca": 10,
+            "perdida_entrenamiento": 0.193863,
+            "perdida_validacion": 0.465418
+          },
+          {
+            "epoca": 11,
+            "perdida_entrenamiento": 0.160757,
+            "perdida_validacion": 0.530002
+          }
+        ]
+      }
+    ]
+  }
+}

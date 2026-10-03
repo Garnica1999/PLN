@@ -1,0 +1,114 @@
+{
+  "familia": "P69_SEGUNDA_PARTICION",
+  "experiment_id": "P69-02",
+  "fecha": "2026-09-29T17:51:33+00:00",
+  "naturaleza": "REPRODUCCION en segunda particion. Regla congelada. 0 tecnicas nuevas, 0 grid, 0 submissions, 0 test, 0 holdout, 0 leaderboard",
+  "regla_congelada": {
+    "pesos": "error_score del OOF propio, z sobre el IQR, clip(1-0.5z,0.5,1.5)",
+    "clasificador": "LogisticRegression(C=2.0, max_iter=1000, solver=liblinear)",
+    "representacion": "TF-IDF word(1,2) min_df=2 + char_wb(3,5) min_df=2, por pliegue",
+    "umbrales": [
+      0.44,
+      0.51,
+      0.46
+    ],
+    "barrido_de_clase": "3 rondas x 3 etiquetas x (0.8, 1.0, 1.2, 1.5)",
+    "protocolo_de_pliegues": "StratifiedGroupKFold sobre grupos fusionados"
+  },
+  "lo_unico_que_cambia": {
+    "semilla_de_particion": 20260928,
+    "grupos_partidos": 0
+  },
+  "V03_particion_nueva": {
+    "corrected_cv": 0.7674405718
+  },
+  "candidato": {
+    "corrected_cv": 0.7779658848,
+    "delta_vs_su_V03": 0.010525313,
+    "pliegues_mejorados": 5,
+    "deltas_por_pliegue": [
+      0.026302,
+      0.004643,
+      0.002975,
+      0.020868,
+      0.003209
+    ],
+    "multiplicadores_por_fold": [
+      [
+        1.5,
+        1.2,
+        1.2
+      ],
+      [
+        1.2,
+        1.2,
+        1.5
+      ],
+      [
+        1.5,
+        1.5,
+        1.2
+      ],
+      [
+        1.5,
+        1.5,
+        1.0
+      ],
+      [
+        1.2,
+        1.5,
+        1.2
+      ]
+    ]
+  },
+  "pesos": {
+    "IQR": 0.020355,
+    "peso_medio": 0.860056,
+    "fraccion_retirada": 0.139944,
+    "n_con_peso_mayor_que_1": 0
+  },
+  "celdas": [
+    {
+      "etiqueta": "HS",
+      "rescate": 37,
+      "damage": 30,
+      "neto": 7
+    },
+    {
+      "etiqueta": "TR",
+      "rescate": 21,
+      "damage": 25,
+      "neto": -4
+    },
+    {
+      "etiqueta": "AG",
+      "rescate": 28,
+      "damage": 19,
+      "neto": 9
+    }
+  ],
+  "celdas_global": {
+    "rescate": 86,
+    "damage": 74,
+    "neto": 12
+  },
+  "referencia_canonica": {
+    "delta": 0.0082045862,
+    "pliegues_mejorados": 5,
+    "deltas_por_pliegue": [
+      0.002243,
+      0.001592,
+      0.003378,
+      0.023607,
+      0.010356
+    ]
+  },
+  "resolucion": "CONFIRMED",
+  "lectura": "la segunda particion reproduce la direccion con al menos 4 de 5 pliegues. El efecto no es un artefacto de la particion canonica",
+  "reproducibilidad": {
+    "nivel": "R2",
+    "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "corrected_cv_v03_canonico": 0.7772114525165721
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

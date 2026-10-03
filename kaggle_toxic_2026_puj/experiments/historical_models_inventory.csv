@@ -1,0 +1,37 @@
+artefacto,claves_de_probabilidad,descripcion,estado_de_integridad,fichero,filas,lb_conocido,variantes
+v2_oof_base_corrected,"proba#0,proba#1,proba#2,proba#3","4 bases TF-IDF word y char, OOF corregido de la fase v2",OK,v2_oof_base_corrected.npz,1483,,4
+v2_oof_targeting,"proba#0,proba#1","canal de targeting simbolico, 2 variantes",OK,v2_oof_targeting.npz,1483,,2
+v2_oof_syntax,"proba#0,proba#1,proba#2,proba#3,proba#4,proba#5,proba#6,proba#7","canal de sintaxis y citacion, 8 variantes",OK,v2_oof_syntax.npz,1483,,8
+v2_oof_emocion_nbsvm_ortografia,"proba#0,proba#1,proba#2,proba#3,proba#4,proba#5,proba#6,proba#7,proba#8,proba#9,proba#10","canal de emocion, NBSVM y ortografia",OK,v2_oof_emocion_nbsvm_ortografia.npz,1483,,11
+v2_oof_cita_negacion,"proba#0,proba#1,proba#2,proba#3,proba#4","canales de cita y negacion, 5 variantes",OK,v2_oof_cita_negacion.npz,1483,,5
+v2_meta_oof,proba,"meta de stacking v2, que dio 0.7853 local y 0.78163 externo",OK,v2_meta_oof.npz,1483,,1
+oof_candidates_v4,"A_cost_sensitive_downweight,B_meta36,C_meta36_downweight,D_svd300_rbf",candidatos de la fase v4: downweight y meta de 36 features,OK,oof_candidates_v4.npz,1483,,4
+oof_meta_shift_v4,"meta_control,meta_shift,meta_shift_cuantil,meta_shift_platt","meta con desplazamiento de calibracion, la causa de la mala transferencia",OK,oof_meta_shift_v4.npz,1483,,4
+oof_joint_label_v4,"joint__lr6_bal_C0.5,joint__lr6_bal_C1.0,joint__lr6_bal_C2.0,joint__lr4_mapeo_bal_C0.5,joint__lr4_mapeo_bal_C1.0,joint__lr4_mapeo_bal_C2.0,joint__lr4_excluir_bal_C0.5,joint__lr4_excluir_bal_C1.0,joint__lr4_excluir_bal_C2.0,joint__lr6_unb_C0.5,joint__lr6_unb_C1.0,joint__lr6_unb_C2.0","label powerset de V4-E, 12 variantes",OK,oof_joint_label_v4.npz,1483,,12
+oof_reweight_v4,"lr__none,lr__mild_up,lr__medium_up,lr__medium_down,lr__down_violacion,lr__clipped_extremos,lr__medium_up_por_etiqueta,svc__none,svc__mild_up,svc__medium_up,svc__medium_down,svc__down_violacion,svc__clipped_extremos","instance weighting por dureza, 14 variantes",OK,oof_reweight_v4.npz,1483,,13
+oof_weighting_v4,"geo__v03_sublinear (control),geo__binario,geo__bm25_k0.6_b0.3,geo__bm25_k1.2_b0.0,geo__bm25_k1.2_b0.75,geo__bm25_k2.0_b0.3,peso__log_odds_por_etiqueta,peso__chi2_por_etiqueta,peso__mi_por_etiqueta,clase__barrio_anidado_por_etiqueta,combo__downweight_violacion_x_clase,peso__log_odds_C2,peso__log_odds_C10,peso__log_odds_C50,peso__log_odds_C200","ponderacion de la geometria de la matriz, 15 variantes",OK,oof_weighting_v4.npz,1483,,15
+oof_tracks_g_v4,"lm__standalone,meta_v03_9feat,meta_v03_lm_36feat,alt__ridge,alt__sgd,alt__passive_aggressive,svd__rbf_svc,svd__hist_gb,svd__extra_trees","tracks G: standalone y metas de 9, 36 y 45 features",OK,oof_tracks_g_v4.npz,1483,,9
+oof_mod03b,proba,"MOD-03b, mejor OOF de la primera fase con 0.7927",OK,oof_mod03b.npz,1731,,1
+oof_ens04_v04,proba_ens,"ENS-04, el ensemble de la mediana que dio 0.7751 externo",OK,oof_ens04_v04.npz,1731,,1
+v01_baseline_tfidf_lr,"labels binarias, no probabilidades","prediccion de test historica ya generada, no se regenera",OK,toxic_submission_v01_baseline_tfidf_lr.csv,1154,0.75677,1
+v02_lr_union,"labels binarias, no probabilidades","prediccion de test historica ya generada, no se regenera",OK,toxic_submission_v02_lr_union.csv,1154,0.77993,1
+v03_lr_union_thr,"labels binarias, no probabilidades","prediccion de test historica ya generada, no se regenera",OK,toxic_submission_v03_lr_union_thr.csv,1154,0.78306,1
+v04_ens04_mediana,"labels binarias, no probabilidades","prediccion de test historica ya generada, no se regenera",OK,toxic_submission_v04_ens04_mediana.csv,1154,0.7751,1
+v05_optuna,"labels binarias, no probabilidades","prediccion de test historica ya generada, no se regenera",OK,toxic_submission_v05_optuna.csv,1154,0.77602,1
+v06_robustez_c1,"labels binarias, no probabilidades","prediccion de test historica ya generada, no se regenera",OK,toxic_submission_v06_robustez_c1.csv,1154,0.77227,1
+v07_robustez_mindf5,"labels binarias, no probabilidades","prediccion de test historica ya generada, no se regenera",OK,toxic_submission_v07_robustez_mindf5.csv,1154,0.77034,1
+v08_meta_v2,"labels binarias, no probabilidades","prediccion de test historica ya generada, no se regenera",OK,toxic_submission_v08_meta_v2.csv,1154,0.78163,1
+v08_p1_fold_ensemble,"labels binarias, no probabilidades","prediccion de test historica ya generada, no se regenera",OK,toxic_submission_v08_p1_fold_ensemble.csv,1154,0.7747,1
+v09_candidate_a,"labels binarias, no probabilidades","prediccion de test historica ya generada, no se regenera",OK,toxic_submission_v09_candidate_a.csv,1154,0.77895,1
+v09_p5_c_por_etiqueta,"labels binarias, no probabilidades","prediccion de test historica ya generada, no se regenera",OK,toxic_submission_v09_p5_c_por_etiqueta.csv,1154,0.77781,1
+v10_candidate_b,"labels binarias, no probabilidades","prediccion de test historica ya generada, no se regenera",OK,toxic_submission_v10_candidate_b.csv,1154,0.77978,1
+v10_p6_peso_por_etiqueta,"labels binarias, no probabilidades","prediccion de test historica ya generada, no se regenera",OK,toxic_submission_v10_p6_peso_por_etiqueta.csv,1154,,1
+v11_candidate_c,"labels binarias, no probabilidades","prediccion de test historica ya generada, no se regenera",OK,toxic_submission_v11_candidate_c.csv,1154,0.7815,1
+v11_p7_corrector_margenes,"labels binarias, no probabilidades","prediccion de test historica ya generada, no se regenera",OK,toxic_submission_v11_p7_corrector_margenes.csv,1154,,1
+v12_descartado_meta36_downweight,"labels binarias, no probabilidades","prediccion de test historica ya generada, no se regenera",OK,toxic_submission_v12_descartado_meta36_downweight.csv,1154,,1
+v12_p7_promedio_repeticiones,"labels binarias, no probabilidades","prediccion de test historica ya generada, no se regenera",OK,toxic_submission_v12_p7_promedio_repeticiones.csv,1154,0.77122,1
+v13_p10_ensemble_cinco_modelos,"labels binarias, no probabilidades","prediccion de test historica ya generada, no se regenera",OK,toxic_submission_v13_p10_ensemble_cinco_modelos.csv,1154,,1
+v14_complejidad_idiosincrasias,"labels binarias, no probabilidades","prediccion de test historica ya generada, no se regenera",OK,toxic_submission_v14_complejidad_idiosincrasias.csv,1154,,1
+v15_seleccion_por_grupo,"labels binarias, no probabilidades","prediccion de test historica ya generada, no se regenera",OK,toxic_submission_v15_seleccion_por_grupo.csv,1154,,1
+v17_prior_shift_em,"labels binarias, no probabilidades","prediccion de test historica ya generada, no se regenera",OK,toxic_submission_v17_prior_shift_em.csv,1154,,1
+v18_near_dup_propagacion,"labels binarias, no probabilidades","prediccion de test historica ya generada, no se regenera",OK,toxic_submission_v18_near_dup_propagacion.csv,1154,,1

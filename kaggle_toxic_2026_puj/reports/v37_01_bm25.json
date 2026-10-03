@@ -1,0 +1,285 @@
+{
+  "familia": "BM25_WEIGHTING",
+  "experimento": "V37-01 (BM25 sobre el bloque word de V03, con char TF-IDF intacto)",
+  "fecha": "2026-09-27T20:33:59+00:00",
+  "estado": "OOF_EVALUATED",
+  "pregunta": "cambiar exclusivamente el weighting de los word n-grams desde TF-IDF hacia BM25, manteniendo char TF-IDF y el clasificador de V03, mejora la generalizacion aprovechando mejor la longitud y la frecuencia de terminos",
+  "alcance": "solo cambia el weighting del bloque word. char TF-IDF, clasificador, umbrales y pliegues intactos",
+  "formula": "idf * tf * (k1+1) / (tf + k1*(1-b+b*dl/avgdl))",
+  "parametros": {
+    "k1": 1.2,
+    "b": 0.75,
+    "idf": "log(1 + (N - df + 0.5)/(df + 0.5))",
+    "document_length": "numero de terminos del documento",
+    "avgdl": "longitud media del training fold"
+  },
+  "controles_matematicos": {
+    "1_saturacion_tf": {
+      "peso_tf1": 2.0,
+      "peso_tf4": 3.3846153846153846,
+      "multiplicador": 1.6923076923076923,
+      "esperado": "menor que 4: la TF se satura y no crece linealmente",
+      "cumple": true
+    },
+    "2_longitud": {
+      "peso_corto_dl5": 2.885245901639345,
+      "peso_largo_dl40": 1.4193548387096775,
+      "esperado": "el documento largo pesa menos por termino",
+      "cumple": true
+    },
+    "3_crecimiento_tf": {
+      "de_tf1_a_tf2": 1.375,
+      "esperado": "entre 1 y 2: crece pero no linealmente",
+      "cumple": true
+    },
+    "4_idf": {
+      "idf_raro_df1": 4.209655408733095,
+      "idf_frecuente_df90": 0.10977066613537904,
+      "esperado": "el termino raro tiene mayor idf",
+      "cumple": true
+    },
+    "5_k1_y_b": {
+      "k1_alto_satura_menos": false,
+      "multiplicador_con_k1_alto": 2.5,
+      "b_alto_penaliza_largos": true,
+      "nota": "k1 controla la saturacion de TF; b controla la penalizacion por longitud"
+    }
+  },
+  "control": {
+    "corrected_cv": 0.7772114525165721,
+    "f1_por_etiqueta": {
+      "HS": 0.7616892911010558,
+      "TR": 0.8157303370786517,
+      "AG": 0.7542147293700089
+    },
+    "train_f1": 0.970864604949201,
+    "gap_train_oof": 0.19365315243262893,
+    "metricas_por_pliegue": [
+      {
+        "f1_media_columnas": 0.7960101143044023,
+        "f1_macro6": 0.8355934550524347,
+        "f1_micro": 0.7926829268292683,
+        "f1_samples": 0.3383838383838384,
+        "exact_match": 0.734006734006734,
+        "f1_por_etiqueta": {
+          "HS": 0.7786259541984732,
+          "TR": 0.8275862068965517,
+          "AG": 0.7818181818181819
+        },
+        "pliegue": 1
+      },
+      {
+        "f1_media_columnas": 0.7940339497874405,
+        "f1_macro6": 0.8299584761236635,
+        "f1_micro": 0.7912408759124088,
+        "f1_samples": 0.3489337822671156,
+        "exact_match": 0.7104377104377104,
+        "f1_por_etiqueta": {
+          "HS": 0.7835820895522388,
+          "TR": 0.8279569892473119,
+          "AG": 0.7705627705627706
+        },
+        "pliegue": 2
+      },
+      {
+        "f1_media_columnas": 0.7788600288600289,
+        "f1_macro6": 0.815470061805838,
+        "f1_micro": 0.7756874095513748,
+        "f1_samples": 0.3466216216216216,
+        "exact_match": 0.6993243243243243,
+        "f1_por_etiqueta": {
+          "HS": 0.7681159420289855,
+          "TR": 0.8152173913043478,
+          "AG": 0.7532467532467533
+        },
+        "pliegue": 3
+      },
+      {
+        "f1_media_columnas": 0.738598013128522,
+        "f1_macro6": 0.7854431411794273,
+        "f1_micro": 0.7348148148148148,
+        "f1_samples": 0.3233108108108108,
+        "exact_match": 0.6587837837837838,
+        "f1_por_etiqueta": {
+          "HS": 0.7293233082706767,
+          "TR": 0.7821229050279329,
+          "AG": 0.7043478260869566
+        },
+        "pliegue": 4
+      },
+      {
+        "f1_media_columnas": 0.7790564997088775,
+        "f1_macro6": 0.8244089783905003,
+        "f1_micro": 0.7735849056603774,
+        "f1_samples": 0.31470258136924806,
+        "exact_match": 0.7104377104377104,
+        "f1_por_etiqueta": {
+          "HS": 0.7480314960629921,
+          "TR": 0.8263473053892215,
+          "AG": 0.7627906976744186
+        },
+        "pliegue": 5
+      }
+    ]
+  },
+  "bm25": {
+    "corrected_cv": 0.7744254376363603,
+    "delta_vs_v03": -0.0027860148802117957,
+    "f1_por_etiqueta": {
+      "HS": 0.7626990144048522,
+      "TR": 0.8094701240135288,
+      "AG": 0.7511071744906997
+    },
+    "train_f1": 0.9732411307102445,
+    "gap_train_oof": 0.19881569307388425,
+    "metricas_por_pliegue": [
+      {
+        "f1_media_columnas": 0.7920084881631175,
+        "f1_macro6": 0.8331455871052548,
+        "f1_micro": 0.7883435582822086,
+        "f1_samples": 0.3282828282828283,
+        "exact_match": 0.7272727272727273,
+        "f1_por_etiqueta": {
+          "HS": 0.7716535433070866,
+          "TR": 0.8275862068965517,
+          "AG": 0.7767857142857143
+        },
+        "pliegue": 1
+      },
+      {
+        "f1_media_columnas": 0.7919927451086192,
+        "f1_macro6": 0.829316821089265,
+        "f1_micro": 0.7893961708394698,
+        "f1_samples": 0.3445566778900112,
+        "exact_match": 0.7138047138047138,
+        "f1_por_etiqueta": {
+          "HS": 0.7790262172284644,
+          "TR": 0.8216216216216217,
+          "AG": 0.775330396475771
+        },
+        "pliegue": 2
+      },
+      {
+        "f1_media_columnas": 0.7778968522679559,
+        "f1_macro6": 0.8152416283627889,
+        "f1_micro": 0.7750362844702468,
+        "f1_samples": 0.3481981981981982,
+        "exact_match": 0.6959459459459459,
+        "f1_por_etiqueta": {
+          "HS": 0.7737226277372263,
+          "TR": 0.8131868131868132,
+          "AG": 0.7467811158798283
+        },
+        "pliegue": 3
+      },
+      {
+        "f1_media_columnas": 0.7403278069165987,
+        "f1_macro6": 0.7865711319428225,
+        "f1_micro": 0.7374631268436578,
+        "f1_samples": 0.32635135135135135,
+        "exact_match": 0.6655405405405406,
+        "f1_por_etiqueta": {
+          "HS": 0.7388059701492538,
+          "TR": 0.7752808988764045,
+          "AG": 0.7068965517241379
+        },
+        "pliegue": 4
+      },
+      {
+        "f1_media_columnas": 0.7702325061479991,
+        "f1_macro6": 0.8178539039295644,
+        "f1_micro": 0.7660910518053375,
+        "f1_samples": 0.3140291806958473,
+        "exact_match": 0.6936026936026936,
+        "f1_por_etiqueta": {
+          "HS": 0.75,
+          "TR": 0.8095238095238095,
+          "AG": 0.7511737089201878
+        },
+        "pliegue": 5
+      }
+    ],
+    "stats_por_pliegue": {
+      "1": {
+        "avgdl_training": 17.502529510961214,
+        "factor_normalizacion_min": 0.30738737694156587,
+        "factor_normalizacion_max": 0.49864966280299106
+      },
+      "2": {
+        "avgdl_training": 17.930016863406408,
+        "factor_normalizacion_min": 0.29182929696684695,
+        "factor_normalizacion_max": 0.49227409086142265
+      },
+      "3": {
+        "avgdl_training": 17.8972198820556,
+        "factor_normalizacion_min": 0.3061678953584702,
+        "factor_normalizacion_max": 0.49988651774851106
+      },
+      "4": {
+        "avgdl_training": 17.887110362257793,
+        "factor_normalizacion_min": 0.30547064719362244,
+        "factor_normalizacion_max": 0.5079745975947761
+      },
+      "5": {
+        "avgdl_training": 17.92664418212479,
+        "factor_normalizacion_min": 0.2991227916540359,
+        "factor_normalizacion_max": 0.5030157819949368
+      }
+    }
+  },
+  "complementariedad": {
+    "rescates": 25,
+    "danios": 31,
+    "neto": -6,
+    "celdas_modificadas": 56,
+    "correlacion_de_decisiones": 0.98741290177568,
+    "por_label": {
+      "HS": {
+        "rescates": 15,
+        "danios": 12,
+        "neto": 3,
+        "celdas_modificadas": 27
+      },
+      "TR": {
+        "rescates": 2,
+        "danios": 7,
+        "neto": -5,
+        "celdas_modificadas": 9
+      },
+      "AG": {
+        "rescates": 8,
+        "danios": 12,
+        "neto": -4,
+        "celdas_modificadas": 20
+      }
+    }
+  },
+  "por_longitud": {
+    "corto": {
+      "n_filas": 514,
+      "bm25_macro_f1": 0.876758371587154,
+      "v03_macro_f1": 0.8762584013442671,
+      "delta": 0.000499970242886838
+    },
+    "medio": {
+      "n_filas": 515,
+      "bm25_macro_f1": 0.7099388481192449,
+      "v03_macro_f1": 0.71436017631128,
+      "delta": -0.004421328192035112
+    },
+    "largo": {
+      "n_filas": 454,
+      "bm25_macro_f1": 0.6244327673148758,
+      "v03_macro_f1": 0.6297838384000211,
+      "delta": -0.005351071085145209
+    }
+  },
+  "evidencia_historica": "experiments/30_supervised_weighting_v4.py ya probo BM25 con resultado 0.7748-0.7755, por debajo de V03. No era equivalente porque aplicaba BM25 a word y char, pero es evidencia previa negativa",
+  "decision": "OVERFIT",
+  "gastos": {
+    "submissions": 0,
+    "modelos_entrenados": 3,
+    "memoria_pico_mb": 231.3,
+    "segundos": 14.5
+  }
+}

@@ -1,0 +1,258 @@
+{
+  "familia": "P65_COHESION",
+  "naturaleza": "DIAGNOSTICO Y EXPERIMENTO. 1 candidato y 2 controles, 0 submissions, 0 Kaggle, 0 holdout, 0 test",
+  "fecha": "2026-09-29T14:45:46+00:00",
+  "experiment_id": "P65-03",
+  "track": "P14-P15-cohesion-documental",
+  "script": "experiments/p65_03_cohesion.py",
+  "pregunta": "los tweets largos que V03 no resuelve se distinguen por repetir su propia evidencia o por cambiar de vocabulario a mitad",
+  "por_que_es_nueva": "V10-07 es shift de covariables ENTRE tren y prueba, que es otro objeto, y 16_targeting_v2 mide distancias entre un target y un insulto con un lexico inducido, que es una distancia entre categorias semanticas y no un par lexico de anchura desconocida. Ninguno de los dos mide cuanto se repite un documento",
+  "rasgos": [
+    "coseno_medio",
+    "coseno_minimo",
+    "coseno_desviacion",
+    "jaccard_medio",
+    "repeticion_cruzada",
+    "cambio_lexico"
+  ],
+  "definiciones": {
+    "coseno_medio": "coseno medio entre todas las parejas de segmentos, sobre vectores de conteo dentro del documento",
+    "coseno_minimo": "el peor par",
+    "coseno_desviacion": "dispersion de esos cosenos, que es cuanto varia la cohesion",
+    "jaccard_medio": "solapamiento de vocabulario medio entre pares de segmentos",
+    "repeticion_cruzada": "uno menos el cociente de tipos distintos sobre ocurrencias",
+    "cambio_lexico": "uno menos el coseno medio, que es la lectura directa de la hipotesis de cambio de tema"
+  },
+  "documentos_de_un_segmento": "tienen los seis valores neutros por definicion y no se les inventa una cohesion que no pueden tener",
+  "eda_por_estrato": [
+    {
+      "estrato": "todas",
+      "n": 1483,
+      "coseno_medio": 0.514672,
+      "coseno_minimo": 0.505854,
+      "coseno_desviacion": 0.012115,
+      "jaccard_medio": 0.507157,
+      "repeticion_cruzada": 0.015004,
+      "cambio_lexico": 0.485328
+    },
+    {
+      "estrato": "CORTA",
+      "n": 167,
+      "coseno_medio": 0.706587,
+      "coseno_minimo": 0.706587,
+      "coseno_desviacion": 0.0,
+      "jaccard_medio": 0.706587,
+      "repeticion_cruzada": 0.0,
+      "cambio_lexico": 0.293413
+    },
+    {
+      "estrato": "MEDIA",
+      "n": 602,
+      "coseno_medio": 0.599523,
+      "coseno_minimo": 0.596278,
+      "coseno_desviacion": 0.004,
+      "jaccard_medio": 0.596764,
+      "repeticion_cruzada": 0.004715,
+      "cambio_lexico": 0.400477
+    },
+    {
+      "estrato": "LARGA",
+      "n": 547,
+      "coseno_medio": 0.436785,
+      "coseno_minimo": 0.425026,
+      "coseno_desviacion": 0.015267,
+      "jaccard_medio": 0.424957,
+      "repeticion_cruzada": 0.019631,
+      "cambio_lexico": 0.563215
+    },
+    {
+      "estrato": "MUY_LARGA",
+      "n": 167,
+      "coseno_medio": 0.272003,
+      "coseno_minimo": 0.24391,
+      "coseno_desviacion": 0.043161,
+      "jaccard_medio": 0.253951,
+      "repeticion_cruzada": 0.051947,
+      "cambio_lexico": 0.727997
+    },
+    {
+      "estrato": "V03 correcto",
+      "n": 1042,
+      "coseno_medio": 0.558776,
+      "coseno_minimo": 0.550479,
+      "coseno_desviacion": 0.010835,
+      "jaccard_medio": 0.552019,
+      "repeticion_cruzada": 0.013105,
+      "cambio_lexico": 0.441224
+    },
+    {
+      "estrato": "V03 incorrecto",
+      "n": 441,
+      "coseno_medio": 0.410462,
+      "coseno_minimo": 0.400414,
+      "coseno_desviacion": 0.01514,
+      "jaccard_medio": 0.401156,
+      "repeticion_cruzada": 0.019493,
+      "cambio_lexico": 0.589538
+    },
+    {
+      "estrato": "error de alta confianza",
+      "n": 295,
+      "coseno_medio": 0.429102,
+      "coseno_minimo": 0.41988,
+      "coseno_desviacion": 0.014617,
+      "jaccard_medio": 0.420284,
+      "repeticion_cruzada": 0.017838,
+      "cambio_lexico": 0.570898
+    },
+    {
+      "estrato": "solo multi segmento",
+      "n": 751,
+      "coseno_medio": 0.041623,
+      "coseno_minimo": 0.02421,
+      "coseno_desviacion": 0.023924,
+      "jaccard_medio": 0.026782,
+      "repeticion_cruzada": 0.029629,
+      "cambio_lexico": 0.958377
+    }
+  ],
+  "auc_contra_el_error": {
+    "coseno_medio": 0.428915,
+    "coseno_minimo": 0.425493,
+    "coseno_desviacion": 0.533615,
+    "jaccard_medio": 0.428973,
+    "repeticion_cruzada": 0.541231,
+    "cambio_lexico": 0.571084,
+    "n_tokens_como_referencia": 0.600506
+  },
+  "referencia_de_longitud": 0.600506,
+  "mejor_rasgo": "coseno_minimo",
+  "ventaja_sobre_la_referencia": -0.025999,
+  "el_bloque_usa_las_mismas_cantidades": true,
+  "resultados": {
+    "V03_cohesion": {
+      "corrected_cv": 0.774502446353145,
+      "folds": [
+        0.7925389169267606,
+        0.7915718827007323,
+        0.776050329523534,
+        0.7371701701354652,
+        0.7754408394813325
+      ],
+      "por_bin": {
+        "CORTA": {
+          "n": 167,
+          "F1": 0.943582,
+          "F1_de_V03": 0.947956
+        },
+        "MEDIA": {
+          "n": 602,
+          "F1": 0.796617,
+          "F1_de_V03": 0.796405
+        },
+        "LARGA": {
+          "n": 547,
+          "F1": 0.680597,
+          "F1_de_V03": 0.68335
+        },
+        "MUY_LARGA": {
+          "n": 167,
+          "F1": 0.542579,
+          "F1_de_V03": 0.560571
+        }
+      },
+      "rescate": 36,
+      "damage": 45
+    },
+    "V03_aleatorio": {
+      "corrected_cv": 0.7654188849452824,
+      "folds": [
+        0.7839440220411428,
+        0.7918018186044752,
+        0.7594220217583217,
+        0.7358006541285969,
+        0.7556136635100291
+      ],
+      "por_bin": {
+        "CORTA": {
+          "n": 167,
+          "F1": 0.938804,
+          "F1_de_V03": 0.947956
+        },
+        "MEDIA": {
+          "n": 602,
+          "F1": 0.782081,
+          "F1_de_V03": 0.796405
+        },
+        "LARGA": {
+          "n": 547,
+          "F1": 0.669444,
+          "F1_de_V03": 0.68335
+        },
+        "MUY_LARGA": {
+          "n": 167,
+          "F1": 0.559656,
+          "F1_de_V03": 0.560571
+        }
+      },
+      "rescate": 63,
+      "damage": 105
+    },
+    "V03_margen": {
+      "corrected_cv": 0.7661312520165589,
+      "folds": [
+        0.7688570389043375,
+        0.7832395247029393,
+        0.762560125060125,
+        0.749561403508772,
+        0.7663992177260909
+      ],
+      "por_bin": {
+        "CORTA": {
+          "n": 167,
+          "F1": 0.9379,
+          "F1_de_V03": 0.947956
+        },
+        "MEDIA": {
+          "n": 602,
+          "F1": 0.782453,
+          "F1_de_V03": 0.796405
+        },
+        "LARGA": {
+          "n": 547,
+          "F1": 0.680556,
+          "F1_de_V03": 0.68335
+        },
+        "MUY_LARGA": {
+          "n": 167,
+          "F1": 0.559525,
+          "F1_de_V03": 0.560571
+        }
+      },
+      "rescate": 78,
+      "damage": 168
+    }
+  },
+  "brechas": {
+    "contra_anchura": 0.0090835614,
+    "contra_margen": 0.0083711943
+  },
+  "gate": {
+    "delta_min": 0.0015,
+    "pliegues_min": 4,
+    "delta": -0.0027090062,
+    "pliegues_mejorados": 0
+  },
+  "lectura": "INFORMACION_SI_INTEGRACION_NO",
+  "veredicto": "la cohesion documental lleva informacion que no es capacidad ni confianza: +0.0090835614 contra el control de anchura y +0.0083711943 contra el margen. Y el global es -0.0027090062 con 0 de 5, luego no entra. Quinto caso del mismo patron, y esta vez la lectura es mas nitida porque el diagnostico y el bloque usan LAS MISMAS seis cantidades: no hay ninguna representacion nueva que descartar, solo una que no cabe",
+  "decision": "COMPLEMENTARY",
+  "experimentos_registrados": 1,
+  "reproducibilidad": {
+    "nivel": "R2",
+    "git_commit": "e9a5797",
+    "seed": 42,
+    "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "corrected_cv": 0.7772114525165721
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

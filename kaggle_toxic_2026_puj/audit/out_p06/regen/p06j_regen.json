@@ -1,0 +1,202 @@
+{
+  "exits": {
+    "02_baseline": {
+      "exit": 0,
+      "duracion_s": 1.7
+    },
+    "04_refit_v02_v03": {
+      "exit": 0,
+      "duracion_s": 4.2
+    },
+    "05_ensembles": {
+      "exit": 0,
+      "duracion_s": 6.7
+    },
+    "07_submission_v04": {
+      "exit": 0,
+      "duracion_s": 4.2
+    },
+    "10_sondas_robustez": {
+      "exit": 0,
+      "duracion_s": 8.1
+    },
+    "14_oof_corregido": {
+      "exit": 0,
+      "duracion_s": 11.7
+    },
+    "16_targeting": {
+      "exit": 0,
+      "duracion_s": 15.4
+    },
+    "17_stacking": {
+      "exit": 0,
+      "duracion_s": 23.4
+    },
+    "19_sintaxis": {
+      "exit": 0,
+      "duracion_s": 102.4
+    },
+    "20_emocion": {
+      "exit": 0,
+      "duracion_s": 74.6
+    },
+    "v8_01_ensamble_folds": {
+      "exit": 0,
+      "duracion_s": 6.8
+    },
+    "25_candidatos_submission": {
+      "exit": 0,
+      "duracion_s": 40.5
+    },
+    "v8_08_corrector": {
+      "exit": 0,
+      "duracion_s": 59.3
+    },
+    "v8_10_ensemble5": {
+      "exit": 0,
+      "duracion_s": 53.3
+    },
+    "v8_11_idiosincrasias": {
+      "exit": 0,
+      "duracion_s": 76.3
+    },
+    "v8_12_seleccion_grupo": {
+      "exit": 0,
+      "duracion_s": 619.1
+    },
+    "v8_13_clasificadores": {
+      "exit": 0,
+      "duracion_s": 721.7
+    }
+  },
+  "submissions": [
+    {
+      "archivo": "toxic_submission_v01_baseline_tfidf_lr.csv",
+      "regenerada": true,
+      "congelada": true,
+      "sha_regen": "0c02c8aad81a8458",
+      "sha_congelada": "0c02c8aad81a8458",
+      "byte_igual": 1
+    },
+    {
+      "archivo": "toxic_submission_v02_lr_union.csv",
+      "regenerada": true,
+      "congelada": true,
+      "sha_regen": "228068c6ce0475e8",
+      "sha_congelada": "228068c6ce0475e8",
+      "byte_igual": 1
+    },
+    {
+      "archivo": "toxic_submission_v03_lr_union_thr.csv",
+      "regenerada": true,
+      "congelada": true,
+      "sha_regen": "7d7478f271e6edfd",
+      "sha_congelada": "7d7478f271e6edfd",
+      "byte_igual": 1
+    },
+    {
+      "archivo": "toxic_submission_v04_ens04_mediana.csv",
+      "regenerada": true,
+      "congelada": true,
+      "sha_regen": "c37cf1f5f9159b22",
+      "sha_congelada": "c37cf1f5f9159b22",
+      "byte_igual": 1
+    },
+    {
+      "archivo": "toxic_submission_v06_robustez_c1.csv",
+      "regenerada": true,
+      "congelada": true,
+      "sha_regen": "fc943e688259c89c",
+      "sha_congelada": "fc943e688259c89c",
+      "byte_igual": 1
+    },
+    {
+      "archivo": "toxic_submission_v07_robustez_mindf5.csv",
+      "regenerada": true,
+      "congelada": true,
+      "sha_regen": "4ba99f4daa62a9c0",
+      "sha_congelada": "4ba99f4daa62a9c0",
+      "byte_igual": 1
+    },
+    {
+      "archivo": "toxic_submission_v08_p1_fold_ensemble.csv",
+      "regenerada": true,
+      "congelada": true,
+      "sha_regen": "3bbcc6bb1c7e58ca",
+      "sha_congelada": "3bbcc6bb1c7e58ca",
+      "byte_igual": 1
+    },
+    {
+      "archivo": "toxic_submission_v09_candidate_a.csv",
+      "regenerada": true,
+      "congelada": true,
+      "sha_regen": "8e5a95d3bd6a3e4e",
+      "sha_congelada": "8e5a95d3bd6a3e4e",
+      "byte_igual": 1
+    },
+    {
+      "archivo": "toxic_submission_v10_candidate_b.csv",
+      "regenerada": true,
+      "congelada": true,
+      "sha_regen": "92caa41e379f1018",
+      "sha_congelada": "92caa41e379f1018",
+      "byte_igual": 1
+    },
+    {
+      "archivo": "toxic_submission_v11_candidate_c.csv",
+      "regenerada": true,
+      "congelada": true,
+      "sha_regen": "066d46ca12e95fde",
+      "sha_congelada": "066d46ca12e95fde",
+      "byte_igual": 1
+    },
+    {
+      "archivo": "toxic_submission_v11_p7_corrector_margenes.csv",
+      "regenerada": true,
+      "congelada": true,
+      "sha_regen": "47d8252d65a28768",
+      "sha_congelada": "47d8252d65a28768",
+      "byte_igual": 1
+    },
+    {
+      "archivo": "toxic_submission_v12_p7_promedio_repeticiones.csv",
+      "regenerada": true,
+      "congelada": true,
+      "sha_regen": "6157ef15e2da21db",
+      "sha_congelada": "6157ef15e2da21db",
+      "byte_igual": 1
+    },
+    {
+      "archivo": "toxic_submission_v13_p10_ensemble_cinco_modelos.csv",
+      "regenerada": true,
+      "congelada": true,
+      "sha_regen": "6157ef15e2da21db",
+      "sha_congelada": "6157ef15e2da21db",
+      "byte_igual": 1
+    },
+    {
+      "archivo": "toxic_submission_v14_complejidad_idiosincrasias.csv",
+      "regenerada": true,
+      "congelada": true,
+      "sha_regen": "b5830069732a0fa3",
+      "sha_congelada": "b5830069732a0fa3",
+      "byte_igual": 1
+    },
+    {
+      "archivo": "toxic_submission_v15_seleccion_por_grupo.csv",
+      "regenerada": true,
+      "congelada": true,
+      "sha_regen": "6dc95fa3ca171376",
+      "sha_congelada": "6dc95fa3ca171376",
+      "byte_igual": 1
+    },
+    {
+      "archivo": "toxic_submission_v16_clasificadores_alternativos.csv",
+      "regenerada": true,
+      "congelada": true,
+      "sha_regen": "61e11c2035561e43",
+      "sha_congelada": "61e11c2035561e43",
+      "byte_igual": 1
+    }
+  ]
+}

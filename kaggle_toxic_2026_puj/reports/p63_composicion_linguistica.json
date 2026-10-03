@@ -1,0 +1,207 @@
+{
+  "familia": "P63_COMPOSICION",
+  "naturaleza": "EXPERIMENTO. 2 candidatos y 2 controles de capacidad, 0 submissions, 0 Kaggle, 0 holdout, 0 test",
+  "fecha": "2026-09-29T06:28:07+00:00",
+  "experiment_id": "P63-04",
+  "track": "D-composicion-agregada",
+  "script": "experiments/p63_05_composicion_linguistica.py",
+  "pregunta": "la composicion agregada como RATIOS aporta informacion que sobreviva al control de capacidad, donde el canal POS de alta dimension no",
+  "distincion_con_p62": "P62 midio un canal palabra__POS de alta dimension cuyo coste de dilucion fue +0,011585 y cuyo valor fue +0,002014. Eso es una afirmacion sobre una REPRESENTACION, no sobre la gramatica. Aqui cambia la FORMA del bloque, que es el eje que la curva de presupuesto de P62 marco como relevante: pocas columnas acotadas no compiten por el presupuesto L2 de un espacio de 21000 dimensiones",
+  "n_columnas": 42,
+  "columnas": [
+    "ort_mayusculas",
+    "ort_digitos",
+    "ort_interrogaciones",
+    "ort_exclamaciones",
+    "ort_elipsis",
+    "ort_elongacion",
+    "ort_puntuacion_repetida",
+    "ort_comillas",
+    "ort_urls",
+    "ort_menciones",
+    "ort_hashtags",
+    "ort_puntuacion_total",
+    "cat_sustantivos",
+    "cat_verbos",
+    "cat_adjetivos",
+    "cat_adverbios",
+    "cat_pronombres",
+    "cat_determinantes",
+    "cat_preposiciones",
+    "cat_conjunciones",
+    "cat_auxiliares",
+    "cat_interjecciones",
+    "cat_verbos_sobre_sustantivos",
+    "cat_adjetivos_sobre_sustantivos",
+    "cat_adjetivos_sobre_verbos",
+    "cat_pron_sobre_sustantivos",
+    "per_1sg",
+    "per_1pl",
+    "per_2sg",
+    "per_2pl",
+    "per_3",
+    "per_2_total",
+    "per_1_total",
+    "lex_ttr",
+    "lex_hapax",
+    "lex_long_media",
+    "lex_long_mediana",
+    "lex_unicos_log",
+    "lex_palabras_largas",
+    "lex_palabras_cortas",
+    "lex_n_tokens_log",
+    "lex_longitud_maxima"
+  ],
+  "recursos": "spaCy es_core_news_md 3.8.0 con exclude=['ner'], ya autorizado por D-003 y ya anotado en P62. Ningun lexicon cerrado, ningun corpus externo, ningun tagger nuevo",
+  "protocolo": {
+    "frecuencia_de_documento": "el hapax y el recuento de unicos usan la frecuencia de documento ajustada SOLO con las filas de entrenamiento del pliegue",
+    "confound_de_escala": "todos los brazos se reescalan a la norma de fila de V03",
+    "control_de_capacidad": "V03 mas un bloque de columnas aleatorias del mismo ancho, con la misma desviacion por columna",
+    "clasificador": "IDENTICO a V03 en los cuatro brazos",
+    "pliegues": "los canonicos, por grupo",
+    "umbrales": "0,44 / 0,51 / 0,46"
+  },
+  "resultados": {
+    "V03_comp": {
+      "corrected_cv": 0.7669427506352032,
+      "folds": [
+        0.7594839371155161,
+        0.7718161677023888,
+        0.775,
+        0.7394984419133412,
+        0.7907587727481804
+      ],
+      "por_etiqueta": {
+        "HS": {
+          "F1": 0.748538,
+          "rescate": 48,
+          "damage": 76
+        },
+        "TR": {
+          "F1": 0.803132,
+          "rescate": 26,
+          "damage": 38
+        },
+        "AG": {
+          "F1": 0.749158,
+          "rescate": 55,
+          "damage": 76
+        }
+      },
+      "rescate": 129,
+      "damage": 190,
+      "n_columnas": 42
+    },
+    "V03_random": {
+      "corrected_cv": 0.7585899238651749,
+      "folds": [
+        0.7669964608992728,
+        0.7730896554425967,
+        0.7529463969303856,
+        0.7419425620586163,
+        0.7579705601737426
+      ],
+      "por_etiqueta": {
+        "HS": {
+          "F1": 0.750552,
+          "rescate": 57,
+          "damage": 80
+        },
+        "TR": {
+          "F1": 0.79148,
+          "rescate": 21,
+          "damage": 43
+        },
+        "AG": {
+          "F1": 0.733738,
+          "rescate": 53,
+          "damage": 83
+        }
+      },
+      "rescate": 131,
+      "damage": 206,
+      "n_columnas": 42
+    },
+    "comp_solo": {
+      "corrected_cv": 0.5753556704836026,
+      "folds": [
+        0.5857301235350015,
+        0.597851870168883,
+        0.5816876125580465,
+        0.5509296697029918,
+        0.5590347995469679
+      ],
+      "por_etiqueta": {
+        "HS": {
+          "F1": 0.578372,
+          "rescate": 129,
+          "damage": 507
+        },
+        "TR": {
+          "F1": 0.585413,
+          "rescate": 60,
+          "damage": 328
+        },
+        "AG": {
+          "F1": 0.562283,
+          "rescate": 121,
+          "damage": 473
+        }
+      },
+      "rescate": 310,
+      "damage": 1308,
+      "n_columnas": 42
+    },
+    "random_solo": {
+      "corrected_cv": 0.4698541556558955,
+      "folds": [
+        0.4911808453128854,
+        0.4475754635582663,
+        0.5140190330063747,
+        0.4481971681149637,
+        0.44510567443027416
+      ],
+      "por_etiqueta": {
+        "HS": {
+          "F1": 0.548703,
+          "rescate": 147,
+          "damage": 614
+        },
+        "TR": {
+          "F1": 0.381651,
+          "rescate": 83,
+          "damage": 593
+        },
+        "AG": {
+          "F1": 0.479208,
+          "rescate": 145,
+          "damage": 657
+        }
+      },
+      "rescate": 375,
+      "damage": 1864,
+      "n_columnas": 42
+    }
+  },
+  "brecha_especifica": 0.0083528268,
+  "brecha_en_solitario": 0.1055015148,
+  "gate": {
+    "delta_min": 0.0015,
+    "pliegues_min": 4,
+    "delta": -0.0102687019,
+    "pliegues_mejorados": 2,
+    "pliegues_del_control": 1,
+    "superado": false
+  },
+  "veredicto": "el bloque de composicion en forma de ratios vale -0.0102687019 frente a V03 con 2/5 pliegues, el control de capacidad del mismo ancho vale -0.0186215287 con 1/5, luego la BRECHA especifica es +0.0083528268. En solitario el bloque vale 0.5753556705 frente a 0.4698541557 del aleatorio, o sea +0.1055015148. Eso separa dos cosas que P62 no pudo separar: la composicion categorial SI porta informacion, y lo que no porta es una mejora que sobreviva al control de capacidad",
+  "decision": "CLOSED. La composicion agregada no aporta sobre V03",
+  "experimentos_registrados": 1,
+  "reproducibilidad": {
+    "nivel": "R2",
+    "git_commit": "93906a2",
+    "seed": 42,
+    "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "corrected_cv": 0.7772114525165721
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

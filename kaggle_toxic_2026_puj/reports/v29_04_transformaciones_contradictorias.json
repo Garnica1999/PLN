@@ -1,0 +1,1488 @@
+{
+  "familia": "FUZZY_TEMPLATE_MATCHING",
+  "experimento": "V29-04 (que transformacion genera ejemplos casi identicos con etiquetas distintas)",
+  "fecha": "2026-09-27T10:25:29+00:00",
+  "estado": "DIAGNOSTIC_ONLY",
+  "pregunta": "que tipo de transformacion separa dos textos casi identicos que llevan etiquetas distintas",
+  "alcance": "analisis de pares. No produce ninguna senal para un predictor, no entrena nada y no genera submission. El conjunto de insultos se deriva del propio train, sin lexicon externo",
+  "metodo": "D_jaccard_char35_agresivo",
+  "controles": {
+    "documentos_con_representacion_vacia": {
+      "n_documentos_con_representacion_vacia": 1,
+      "ids": [
+        21055
+      ],
+      "textos_originales": [
+        "#NOME?"
+      ],
+      "efecto": "la normalizacion agresiva borra por completo al menos un documento del corpus. Afecta a una fila de 1731 y no a los resultados, pero explica por que el control de auto-similitud de V29-02 daba 1,0e+00 en los metodos con normalizacion agresiva y 0,0e+00 en el metodo historico, que no borra hashtags ni puntuacion"
+    },
+    "similitud consigo mismo, minimo": 0.0,
+    "simetria, asimetria maxima": 0.0,
+    "rango": [
+      0.0,
+      1.0
+    ],
+    "min_apoyo_para_insulto": 10,
+    "razon_insulto": 2.0,
+    "delta_insulto_sobre_la_base": 1.5,
+    "n_insultos_detectados": 31
+  },
+  "insultos_mas_frecuentes": [
+    "perra",
+    "cllate",
+    "zorra",
+    "hija",
+    "guarra",
+    "novia",
+    "sos",
+    "subsaharianos",
+    "siempre",
+    "maldita",
+    "sudaca",
+    "ella",
+    "casa",
+    "ilegal",
+    "jajajaja"
+  ],
+  "pares_por_umbral": [
+    {
+      "umbral": 0.9,
+      "n_pares": 39,
+      "n_contradictorios": 0,
+      "n_misma_etiqueta": 39,
+      "fraccion_contradictoria": 0.0
+    },
+    {
+      "umbral": 0.85,
+      "n_pares": 39,
+      "n_contradictorios": 0,
+      "n_misma_etiqueta": 39,
+      "fraccion_contradictoria": 0.0
+    },
+    {
+      "umbral": 0.75,
+      "n_pares": 55,
+      "n_contradictorios": 4,
+      "n_misma_etiqueta": 51,
+      "fraccion_contradictoria": 0.07272727272727272
+    },
+    {
+      "umbral": 0.7,
+      "n_pares": 62,
+      "n_contradictorios": 7,
+      "n_misma_etiqueta": 55,
+      "fraccion_contradictoria": 0.11290322580645161
+    },
+    {
+      "umbral": 0.6,
+      "n_pares": 185,
+      "n_contradictorios": 27,
+      "n_misma_etiqueta": 158,
+      "fraccion_contradictoria": 0.14594594594594595
+    }
+  ],
+  "categorias_por_umbral": {
+    "0.90": {
+      "negacion": {
+        "n_en_contradictorios": 0,
+        "n_en_concordantes": 0,
+        "razon_de_razones": 0.0,
+        "p_fisher": 1.0
+      },
+      "insulto": {
+        "n_en_contradictorios": 0,
+        "n_en_concordantes": 1,
+        "razon_de_razones": 0.0,
+        "p_fisher": 1.0
+      },
+      "mencion": {
+        "n_en_contradictorios": 0,
+        "n_en_concordantes": 0,
+        "razon_de_razones": 0.0,
+        "p_fisher": 1.0
+      },
+      "hashtag": {
+        "n_en_contradictorios": 0,
+        "n_en_concordantes": 0,
+        "razon_de_razones": 0.0,
+        "p_fisher": 1.0
+      },
+      "url": {
+        "n_en_contradictorios": 0,
+        "n_en_concordantes": 0,
+        "razon_de_razones": 0.0,
+        "p_fisher": 1.0
+      },
+      "ortografia": {
+        "n_en_contradictorios": 0,
+        "n_en_concordantes": 2,
+        "razon_de_razones": 0.0,
+        "p_fisher": 1.0
+      },
+      "truncamiento": {
+        "n_en_contradictorios": 0,
+        "n_en_concordantes": 20,
+        "razon_de_razones": 0.0,
+        "p_fisher": 1.0
+      },
+      "solo_puntuacion": {
+        "n_en_contradictorios": 0,
+        "n_en_concordantes": 0,
+        "razon_de_razones": 0.0,
+        "p_fisher": 1.0
+      },
+      "repeticion": {
+        "n_en_contradictorios": 0,
+        "n_en_concordantes": 0,
+        "razon_de_razones": 0.0,
+        "p_fisher": 1.0
+      },
+      "numerico": {
+        "n_en_contradictorios": 0,
+        "n_en_concordantes": 0,
+        "razon_de_razones": 0.0,
+        "p_fisher": 1.0
+      },
+      "sin_clasificar": {
+        "n_en_contradictorios": 0,
+        "n_en_concordantes": 18,
+        "razon_de_razones": 0.0,
+        "p_fisher": 1.0
+      }
+    },
+    "0.85": {
+      "negacion": {
+        "n_en_contradictorios": 0,
+        "n_en_concordantes": 0,
+        "razon_de_razones": 0.0,
+        "p_fisher": 1.0
+      },
+      "insulto": {
+        "n_en_contradictorios": 0,
+        "n_en_concordantes": 1,
+        "razon_de_razones": 0.0,
+        "p_fisher": 1.0
+      },
+      "mencion": {
+        "n_en_contradictorios": 0,
+        "n_en_concordantes": 0,
+        "razon_de_razones": 0.0,
+        "p_fisher": 1.0
+      },
+      "hashtag": {
+        "n_en_contradictorios": 0,
+        "n_en_concordantes": 0,
+        "razon_de_razones": 0.0,
+        "p_fisher": 1.0
+      },
+      "url": {
+        "n_en_contradictorios": 0,
+        "n_en_concordantes": 0,
+        "razon_de_razones": 0.0,
+        "p_fisher": 1.0
+      },
+      "ortografia": {
+        "n_en_contradictorios": 0,
+        "n_en_concordantes": 2,
+        "razon_de_razones": 0.0,
+        "p_fisher": 1.0
+      },
+      "truncamiento": {
+        "n_en_contradictorios": 0,
+        "n_en_concordantes": 20,
+        "razon_de_razones": 0.0,
+        "p_fisher": 1.0
+      },
+      "solo_puntuacion": {
+        "n_en_contradictorios": 0,
+        "n_en_concordantes": 0,
+        "razon_de_razones": 0.0,
+        "p_fisher": 1.0
+      },
+      "repeticion": {
+        "n_en_contradictorios": 0,
+        "n_en_concordantes": 0,
+        "razon_de_razones": 0.0,
+        "p_fisher": 1.0
+      },
+      "numerico": {
+        "n_en_contradictorios": 0,
+        "n_en_concordantes": 0,
+        "razon_de_razones": 0.0,
+        "p_fisher": 1.0
+      },
+      "sin_clasificar": {
+        "n_en_contradictorios": 0,
+        "n_en_concordantes": 18,
+        "razon_de_razones": 0.0,
+        "p_fisher": 1.0
+      }
+    },
+    "0.75": {
+      "negacion": {
+        "n_en_contradictorios": 0,
+        "n_en_concordantes": 0,
+        "razon_de_razones": 0.0,
+        "p_fisher": 1.0
+      },
+      "insulto": {
+        "n_en_contradictorios": 0,
+        "n_en_concordantes": 1,
+        "razon_de_razones": 0.0,
+        "p_fisher": 1.0
+      },
+      "mencion": {
+        "n_en_contradictorios": 0,
+        "n_en_concordantes": 0,
+        "razon_de_razones": 0.0,
+        "p_fisher": 1.0
+      },
+      "hashtag": {
+        "n_en_contradictorios": 0,
+        "n_en_concordantes": 0,
+        "razon_de_razones": 0.0,
+        "p_fisher": 1.0
+      },
+      "url": {
+        "n_en_contradictorios": 0,
+        "n_en_concordantes": 0,
+        "razon_de_razones": 0.0,
+        "p_fisher": 1.0
+      },
+      "ortografia": {
+        "n_en_contradictorios": 0,
+        "n_en_concordantes": 3,
+        "razon_de_razones": 0.0,
+        "p_fisher": 1.0
+      },
+      "truncamiento": {
+        "n_en_contradictorios": 0,
+        "n_en_concordantes": 20,
+        "razon_de_razones": 0.0,
+        "p_fisher": 0.28471947339871867
+      },
+      "solo_puntuacion": {
+        "n_en_contradictorios": 0,
+        "n_en_concordantes": 0,
+        "razon_de_razones": 0.0,
+        "p_fisher": 1.0
+      },
+      "repeticion": {
+        "n_en_contradictorios": 0,
+        "n_en_concordantes": 0,
+        "razon_de_razones": 0.0,
+        "p_fisher": 1.0
+      },
+      "numerico": {
+        "n_en_contradictorios": 0,
+        "n_en_concordantes": 3,
+        "razon_de_razones": 0.0,
+        "p_fisher": 1.0
+      },
+      "sin_clasificar": {
+        "n_en_contradictorios": 4,
+        "n_en_concordantes": 26,
+        "razon_de_razones": 1.9615384615384617,
+        "p_fisher": 0.11744440046326837
+      }
+    },
+    "0.70": {
+      "negacion": {
+        "n_en_contradictorios": 0,
+        "n_en_concordantes": 0,
+        "razon_de_razones": 0.0,
+        "p_fisher": 1.0
+      },
+      "insulto": {
+        "n_en_contradictorios": 0,
+        "n_en_concordantes": 1,
+        "razon_de_razones": 0.0,
+        "p_fisher": 1.0
+      },
+      "mencion": {
+        "n_en_contradictorios": 0,
+        "n_en_concordantes": 0,
+        "razon_de_razones": 0.0,
+        "p_fisher": 1.0
+      },
+      "hashtag": {
+        "n_en_contradictorios": 0,
+        "n_en_concordantes": 0,
+        "razon_de_razones": 0.0,
+        "p_fisher": 1.0
+      },
+      "url": {
+        "n_en_contradictorios": 0,
+        "n_en_concordantes": 0,
+        "razon_de_razones": 0.0,
+        "p_fisher": 1.0
+      },
+      "ortografia": {
+        "n_en_contradictorios": 0,
+        "n_en_concordantes": 5,
+        "razon_de_razones": 0.0,
+        "p_fisher": 1.0
+      },
+      "truncamiento": {
+        "n_en_contradictorios": 0,
+        "n_en_concordantes": 20,
+        "razon_de_razones": 0.0,
+        "p_fisher": 0.08546775290750953
+      },
+      "solo_puntuacion": {
+        "n_en_contradictorios": 0,
+        "n_en_concordantes": 0,
+        "razon_de_razones": 0.0,
+        "p_fisher": 1.0
+      },
+      "repeticion": {
+        "n_en_contradictorios": 0,
+        "n_en_concordantes": 0,
+        "razon_de_razones": 0.0,
+        "p_fisher": 1.0
+      },
+      "numerico": {
+        "n_en_contradictorios": 0,
+        "n_en_concordantes": 3,
+        "razon_de_razones": 0.0,
+        "p_fisher": 1.0
+      },
+      "sin_clasificar": {
+        "n_en_contradictorios": 7,
+        "n_en_concordantes": 28,
+        "razon_de_razones": 1.9642857142857144,
+        "p_fisher": 0.015479075972924652
+      }
+    },
+    "0.60": {
+      "negacion": {
+        "n_en_contradictorios": 0,
+        "n_en_concordantes": 0,
+        "razon_de_razones": 0.0,
+        "p_fisher": 1.0
+      },
+      "insulto": {
+        "n_en_contradictorios": 1,
+        "n_en_concordantes": 15,
+        "razon_de_razones": 0.3901234567901234,
+        "p_fisher": 0.47435448762410115
+      },
+      "mencion": {
+        "n_en_contradictorios": 0,
+        "n_en_concordantes": 0,
+        "razon_de_razones": 0.0,
+        "p_fisher": 1.0
+      },
+      "hashtag": {
+        "n_en_contradictorios": 0,
+        "n_en_concordantes": 0,
+        "razon_de_razones": 0.0,
+        "p_fisher": 1.0
+      },
+      "url": {
+        "n_en_contradictorios": 0,
+        "n_en_concordantes": 0,
+        "razon_de_razones": 0.0,
+        "p_fisher": 1.0
+      },
+      "ortografia": {
+        "n_en_contradictorios": 0,
+        "n_en_concordantes": 14,
+        "razon_de_razones": 0.0,
+        "p_fisher": 0.2283075032571662
+      },
+      "truncamiento": {
+        "n_en_contradictorios": 1,
+        "n_en_concordantes": 39,
+        "razon_de_razones": 0.1500474833808167,
+        "p_fisher": 0.011183166817270563
+      },
+      "solo_puntuacion": {
+        "n_en_contradictorios": 0,
+        "n_en_concordantes": 0,
+        "razon_de_razones": 0.0,
+        "p_fisher": 1.0
+      },
+      "repeticion": {
+        "n_en_contradictorios": 0,
+        "n_en_concordantes": 0,
+        "razon_de_razones": 0.0,
+        "p_fisher": 1.0
+      },
+      "numerico": {
+        "n_en_contradictorios": 0,
+        "n_en_concordantes": 5,
+        "razon_de_razones": 0.0,
+        "p_fisher": 1.0
+      },
+      "sin_clasificar": {
+        "n_en_contradictorios": 25,
+        "n_en_concordantes": 93,
+        "razon_de_razones": 1.5730784547988848,
+        "p_fisher": 0.0004185407868411773
+      }
+    }
+  },
+  "veredicto_por_categoria": [
+    {
+      "umbral": "0.90",
+      "categoria": "negacion",
+      "veredicto": "SIN_SOPORTE",
+      "razon_de_razones": 0.0,
+      "p_fisher": 1.0,
+      "n_en_contradictorios": 0,
+      "n_en_concordantes": 0
+    },
+    {
+      "umbral": "0.90",
+      "categoria": "insulto",
+      "veredicto": "SIN_SOPORTE",
+      "razon_de_razones": 0.0,
+      "p_fisher": 1.0,
+      "n_en_contradictorios": 0,
+      "n_en_concordantes": 1
+    },
+    {
+      "umbral": "0.90",
+      "categoria": "mencion",
+      "veredicto": "SIN_SOPORTE",
+      "razon_de_razones": 0.0,
+      "p_fisher": 1.0,
+      "n_en_contradictorios": 0,
+      "n_en_concordantes": 0
+    },
+    {
+      "umbral": "0.90",
+      "categoria": "hashtag",
+      "veredicto": "SIN_SOPORTE",
+      "razon_de_razones": 0.0,
+      "p_fisher": 1.0,
+      "n_en_contradictorios": 0,
+      "n_en_concordantes": 0
+    },
+    {
+      "umbral": "0.90",
+      "categoria": "url",
+      "veredicto": "SIN_SOPORTE",
+      "razon_de_razones": 0.0,
+      "p_fisher": 1.0,
+      "n_en_contradictorios": 0,
+      "n_en_concordantes": 0
+    },
+    {
+      "umbral": "0.90",
+      "categoria": "ortografia",
+      "veredicto": "SIN_SOPORTE",
+      "razon_de_razones": 0.0,
+      "p_fisher": 1.0,
+      "n_en_contradictorios": 0,
+      "n_en_concordantes": 2
+    },
+    {
+      "umbral": "0.90",
+      "categoria": "truncamiento",
+      "veredicto": "INVIRTIDA",
+      "razon_de_razones": 0.0,
+      "p_fisher": 1.0,
+      "n_en_contradictorios": 0,
+      "n_en_concordantes": 20
+    },
+    {
+      "umbral": "0.90",
+      "categoria": "solo_puntuacion",
+      "veredicto": "SIN_SOPORTE",
+      "razon_de_razones": 0.0,
+      "p_fisher": 1.0,
+      "n_en_contradictorios": 0,
+      "n_en_concordantes": 0
+    },
+    {
+      "umbral": "0.90",
+      "categoria": "repeticion",
+      "veredicto": "SIN_SOPORTE",
+      "razon_de_razones": 0.0,
+      "p_fisher": 1.0,
+      "n_en_contradictorios": 0,
+      "n_en_concordantes": 0
+    },
+    {
+      "umbral": "0.90",
+      "categoria": "numerico",
+      "veredicto": "SIN_SOPORTE",
+      "razon_de_razones": 0.0,
+      "p_fisher": 1.0,
+      "n_en_contradictorios": 0,
+      "n_en_concordantes": 0
+    },
+    {
+      "umbral": "0.90",
+      "categoria": "sin_clasificar",
+      "veredicto": "INVIRTIDA",
+      "razon_de_razones": 0.0,
+      "p_fisher": 1.0,
+      "n_en_contradictorios": 0,
+      "n_en_concordantes": 18
+    },
+    {
+      "umbral": "0.85",
+      "categoria": "negacion",
+      "veredicto": "SIN_SOPORTE",
+      "razon_de_razones": 0.0,
+      "p_fisher": 1.0,
+      "n_en_contradictorios": 0,
+      "n_en_concordantes": 0
+    },
+    {
+      "umbral": "0.85",
+      "categoria": "insulto",
+      "veredicto": "SIN_SOPORTE",
+      "razon_de_razones": 0.0,
+      "p_fisher": 1.0,
+      "n_en_contradictorios": 0,
+      "n_en_concordantes": 1
+    },
+    {
+      "umbral": "0.85",
+      "categoria": "mencion",
+      "veredicto": "SIN_SOPORTE",
+      "razon_de_razones": 0.0,
+      "p_fisher": 1.0,
+      "n_en_contradictorios": 0,
+      "n_en_concordantes": 0
+    },
+    {
+      "umbral": "0.85",
+      "categoria": "hashtag",
+      "veredicto": "SIN_SOPORTE",
+      "razon_de_razones": 0.0,
+      "p_fisher": 1.0,
+      "n_en_contradictorios": 0,
+      "n_en_concordantes": 0
+    },
+    {
+      "umbral": "0.85",
+      "categoria": "url",
+      "veredicto": "SIN_SOPORTE",
+      "razon_de_razones": 0.0,
+      "p_fisher": 1.0,
+      "n_en_contradictorios": 0,
+      "n_en_concordantes": 0
+    },
+    {
+      "umbral": "0.85",
+      "categoria": "ortografia",
+      "veredicto": "SIN_SOPORTE",
+      "razon_de_razones": 0.0,
+      "p_fisher": 1.0,
+      "n_en_contradictorios": 0,
+      "n_en_concordantes": 2
+    },
+    {
+      "umbral": "0.85",
+      "categoria": "truncamiento",
+      "veredicto": "INVIRTIDA",
+      "razon_de_razones": 0.0,
+      "p_fisher": 1.0,
+      "n_en_contradictorios": 0,
+      "n_en_concordantes": 20
+    },
+    {
+      "umbral": "0.85",
+      "categoria": "solo_puntuacion",
+      "veredicto": "SIN_SOPORTE",
+      "razon_de_razones": 0.0,
+      "p_fisher": 1.0,
+      "n_en_contradictorios": 0,
+      "n_en_concordantes": 0
+    },
+    {
+      "umbral": "0.85",
+      "categoria": "repeticion",
+      "veredicto": "SIN_SOPORTE",
+      "razon_de_razones": 0.0,
+      "p_fisher": 1.0,
+      "n_en_contradictorios": 0,
+      "n_en_concordantes": 0
+    },
+    {
+      "umbral": "0.85",
+      "categoria": "numerico",
+      "veredicto": "SIN_SOPORTE",
+      "razon_de_razones": 0.0,
+      "p_fisher": 1.0,
+      "n_en_contradictorios": 0,
+      "n_en_concordantes": 0
+    },
+    {
+      "umbral": "0.85",
+      "categoria": "sin_clasificar",
+      "veredicto": "INVIRTIDA",
+      "razon_de_razones": 0.0,
+      "p_fisher": 1.0,
+      "n_en_contradictorios": 0,
+      "n_en_concordantes": 18
+    },
+    {
+      "umbral": "0.75",
+      "categoria": "negacion",
+      "veredicto": "SIN_SOPORTE",
+      "razon_de_razones": 0.0,
+      "p_fisher": 1.0,
+      "n_en_contradictorios": 0,
+      "n_en_concordantes": 0
+    },
+    {
+      "umbral": "0.75",
+      "categoria": "insulto",
+      "veredicto": "SIN_SOPORTE",
+      "razon_de_razones": 0.0,
+      "p_fisher": 1.0,
+      "n_en_contradictorios": 0,
+      "n_en_concordantes": 1
+    },
+    {
+      "umbral": "0.75",
+      "categoria": "mencion",
+      "veredicto": "SIN_SOPORTE",
+      "razon_de_razones": 0.0,
+      "p_fisher": 1.0,
+      "n_en_contradictorios": 0,
+      "n_en_concordantes": 0
+    },
+    {
+      "umbral": "0.75",
+      "categoria": "hashtag",
+      "veredicto": "SIN_SOPORTE",
+      "razon_de_razones": 0.0,
+      "p_fisher": 1.0,
+      "n_en_contradictorios": 0,
+      "n_en_concordantes": 0
+    },
+    {
+      "umbral": "0.75",
+      "categoria": "url",
+      "veredicto": "SIN_SOPORTE",
+      "razon_de_razones": 0.0,
+      "p_fisher": 1.0,
+      "n_en_contradictorios": 0,
+      "n_en_concordantes": 0
+    },
+    {
+      "umbral": "0.75",
+      "categoria": "ortografia",
+      "veredicto": "SIN_SOPORTE",
+      "razon_de_razones": 0.0,
+      "p_fisher": 1.0,
+      "n_en_contradictorios": 0,
+      "n_en_concordantes": 3
+    },
+    {
+      "umbral": "0.75",
+      "categoria": "truncamiento",
+      "veredicto": "INVIRTIDA",
+      "razon_de_razones": 0.0,
+      "p_fisher": 0.28471947339871867,
+      "n_en_contradictorios": 0,
+      "n_en_concordantes": 20
+    },
+    {
+      "umbral": "0.75",
+      "categoria": "solo_puntuacion",
+      "veredicto": "SIN_SOPORTE",
+      "razon_de_razones": 0.0,
+      "p_fisher": 1.0,
+      "n_en_contradictorios": 0,
+      "n_en_concordantes": 0
+    },
+    {
+      "umbral": "0.75",
+      "categoria": "repeticion",
+      "veredicto": "SIN_SOPORTE",
+      "razon_de_razones": 0.0,
+      "p_fisher": 1.0,
+      "n_en_contradictorios": 0,
+      "n_en_concordantes": 0
+    },
+    {
+      "umbral": "0.75",
+      "categoria": "numerico",
+      "veredicto": "SIN_SOPORTE",
+      "razon_de_razones": 0.0,
+      "p_fisher": 1.0,
+      "n_en_contradictorios": 0,
+      "n_en_concordantes": 3
+    },
+    {
+      "umbral": "0.75",
+      "categoria": "sin_clasificar",
+      "veredicto": "RUIDO",
+      "razon_de_razones": 1.9615384615384617,
+      "p_fisher": 0.11744440046326837,
+      "n_en_contradictorios": 4,
+      "n_en_concordantes": 26
+    },
+    {
+      "umbral": "0.70",
+      "categoria": "negacion",
+      "veredicto": "SIN_SOPORTE",
+      "razon_de_razones": 0.0,
+      "p_fisher": 1.0,
+      "n_en_contradictorios": 0,
+      "n_en_concordantes": 0
+    },
+    {
+      "umbral": "0.70",
+      "categoria": "insulto",
+      "veredicto": "SIN_SOPORTE",
+      "razon_de_razones": 0.0,
+      "p_fisher": 1.0,
+      "n_en_contradictorios": 0,
+      "n_en_concordantes": 1
+    },
+    {
+      "umbral": "0.70",
+      "categoria": "mencion",
+      "veredicto": "SIN_SOPORTE",
+      "razon_de_razones": 0.0,
+      "p_fisher": 1.0,
+      "n_en_contradictorios": 0,
+      "n_en_concordantes": 0
+    },
+    {
+      "umbral": "0.70",
+      "categoria": "hashtag",
+      "veredicto": "SIN_SOPORTE",
+      "razon_de_razones": 0.0,
+      "p_fisher": 1.0,
+      "n_en_contradictorios": 0,
+      "n_en_concordantes": 0
+    },
+    {
+      "umbral": "0.70",
+      "categoria": "url",
+      "veredicto": "SIN_SOPORTE",
+      "razon_de_razones": 0.0,
+      "p_fisher": 1.0,
+      "n_en_contradictorios": 0,
+      "n_en_concordantes": 0
+    },
+    {
+      "umbral": "0.70",
+      "categoria": "ortografia",
+      "veredicto": "SIN_SOPORTE",
+      "razon_de_razones": 0.0,
+      "p_fisher": 1.0,
+      "n_en_contradictorios": 0,
+      "n_en_concordantes": 5
+    },
+    {
+      "umbral": "0.70",
+      "categoria": "truncamiento",
+      "veredicto": "INVIRTIDA",
+      "razon_de_razones": 0.0,
+      "p_fisher": 0.08546775290750953,
+      "n_en_contradictorios": 0,
+      "n_en_concordantes": 20
+    },
+    {
+      "umbral": "0.70",
+      "categoria": "solo_puntuacion",
+      "veredicto": "SIN_SOPORTE",
+      "razon_de_razones": 0.0,
+      "p_fisher": 1.0,
+      "n_en_contradictorios": 0,
+      "n_en_concordantes": 0
+    },
+    {
+      "umbral": "0.70",
+      "categoria": "repeticion",
+      "veredicto": "SIN_SOPORTE",
+      "razon_de_razones": 0.0,
+      "p_fisher": 1.0,
+      "n_en_contradictorios": 0,
+      "n_en_concordantes": 0
+    },
+    {
+      "umbral": "0.70",
+      "categoria": "numerico",
+      "veredicto": "SIN_SOPORTE",
+      "razon_de_razones": 0.0,
+      "p_fisher": 1.0,
+      "n_en_contradictorios": 0,
+      "n_en_concordantes": 3
+    },
+    {
+      "umbral": "0.70",
+      "categoria": "sin_clasificar",
+      "veredicto": "DISCRIMINANTE",
+      "razon_de_razones": 1.9642857142857144,
+      "p_fisher": 0.015479075972924652,
+      "n_en_contradictorios": 7,
+      "n_en_concordantes": 28
+    },
+    {
+      "umbral": "0.60",
+      "categoria": "negacion",
+      "veredicto": "SIN_SOPORTE",
+      "razon_de_razones": 0.0,
+      "p_fisher": 1.0,
+      "n_en_contradictorios": 0,
+      "n_en_concordantes": 0
+    },
+    {
+      "umbral": "0.60",
+      "categoria": "insulto",
+      "veredicto": "INVIRTIDA",
+      "razon_de_razones": 0.3901234567901234,
+      "p_fisher": 0.47435448762410115,
+      "n_en_contradictorios": 1,
+      "n_en_concordantes": 15
+    },
+    {
+      "umbral": "0.60",
+      "categoria": "mencion",
+      "veredicto": "SIN_SOPORTE",
+      "razon_de_razones": 0.0,
+      "p_fisher": 1.0,
+      "n_en_contradictorios": 0,
+      "n_en_concordantes": 0
+    },
+    {
+      "umbral": "0.60",
+      "categoria": "hashtag",
+      "veredicto": "SIN_SOPORTE",
+      "razon_de_razones": 0.0,
+      "p_fisher": 1.0,
+      "n_en_contradictorios": 0,
+      "n_en_concordantes": 0
+    },
+    {
+      "umbral": "0.60",
+      "categoria": "url",
+      "veredicto": "SIN_SOPORTE",
+      "razon_de_razones": 0.0,
+      "p_fisher": 1.0,
+      "n_en_contradictorios": 0,
+      "n_en_concordantes": 0
+    },
+    {
+      "umbral": "0.60",
+      "categoria": "ortografia",
+      "veredicto": "INVIRTIDA",
+      "razon_de_razones": 0.0,
+      "p_fisher": 0.2283075032571662,
+      "n_en_contradictorios": 0,
+      "n_en_concordantes": 14
+    },
+    {
+      "umbral": "0.60",
+      "categoria": "truncamiento",
+      "veredicto": "INVIRTIDA",
+      "razon_de_razones": 0.1500474833808167,
+      "p_fisher": 0.011183166817270563,
+      "n_en_contradictorios": 1,
+      "n_en_concordantes": 39
+    },
+    {
+      "umbral": "0.60",
+      "categoria": "solo_puntuacion",
+      "veredicto": "SIN_SOPORTE",
+      "razon_de_razones": 0.0,
+      "p_fisher": 1.0,
+      "n_en_contradictorios": 0,
+      "n_en_concordantes": 0
+    },
+    {
+      "umbral": "0.60",
+      "categoria": "repeticion",
+      "veredicto": "SIN_SOPORTE",
+      "razon_de_razones": 0.0,
+      "p_fisher": 1.0,
+      "n_en_contradictorios": 0,
+      "n_en_concordantes": 0
+    },
+    {
+      "umbral": "0.60",
+      "categoria": "numerico",
+      "veredicto": "SIN_SOPORTE",
+      "razon_de_razones": 0.0,
+      "p_fisher": 1.0,
+      "n_en_contradictorios": 0,
+      "n_en_concordantes": 5
+    },
+    {
+      "umbral": "0.60",
+      "categoria": "sin_clasificar",
+      "veredicto": "DISCRIMINANTE",
+      "razon_de_razones": 1.5730784547988848,
+      "p_fisher": 0.0004185407868411773,
+      "n_en_contradictorios": 25,
+      "n_en_concordantes": 93
+    }
+  ],
+  "n_categorias_discriminantes": 2,
+  "criterio_de_discriminante": "una categoria es DISCRIMINANTE si aparece mas en los pares contradictorios que en los concordantes con razon de razones mayor que 1,5 y p de Fisher menor que 0,05, exigiendo al menos 10 pares de soporte. Sin ese control, contar categorias en los contradictorios seria concluir que el sol es causa de la lluvia",
+  "ejemplos_contradictorios": [
+    {
+      "similitud": 0.8182,
+      "id_a": 23172,
+      "id_b": 20628,
+      "labels_a": [
+        0,
+        0,
+        0
+      ],
+      "labels_b": [
+        1,
+        1,
+        1
+      ],
+      "categorias": [],
+      "tokens_solo_a": [],
+      "tokens_solo_b": [
+        "mex"
+      ]
+    },
+    {
+      "similitud": 0.7692,
+      "id_a": 24559,
+      "id_b": 24865,
+      "labels_a": [
+        1,
+        1,
+        1
+      ],
+      "labels_b": [
+        0,
+        0,
+        0
+      ],
+      "categorias": [],
+      "tokens_solo_a": [],
+      "tokens_solo_b": [
+        "de",
+        "ijo"
+      ]
+    },
+    {
+      "similitud": 0.75,
+      "id_a": 23172,
+      "id_b": 21531,
+      "labels_a": [
+        0,
+        0,
+        0
+      ],
+      "labels_b": [
+        1,
+        1,
+        1
+      ],
+      "categorias": [],
+      "tokens_solo_a": [
+        "mi",
+        "tu"
+      ],
+      "tokens_solo_b": [
+        "t"
+      ]
+    },
+    {
+      "similitud": 0.75,
+      "id_a": 22524,
+      "id_b": 21385,
+      "labels_a": [
+        1,
+        1,
+        0
+      ],
+      "labels_b": [
+        1,
+        1,
+        1
+      ],
+      "categorias": [],
+      "tokens_solo_a": [
+        "jeje"
+      ],
+      "tokens_solo_b": [
+        "v"
+      ]
+    },
+    {
+      "similitud": 0.7273,
+      "id_a": 22655,
+      "id_b": 23172,
+      "labels_a": [
+        1,
+        1,
+        1
+      ],
+      "labels_b": [
+        0,
+        0,
+        0
+      ],
+      "categorias": [],
+      "tokens_solo_a": [
+        "una"
+      ],
+      "tokens_solo_b": [
+        "mi"
+      ]
+    },
+    {
+      "similitud": 0.7273,
+      "id_a": 22955,
+      "id_b": 23172,
+      "labels_a": [
+        1,
+        1,
+        1
+      ],
+      "labels_b": [
+        0,
+        0,
+        0
+      ],
+      "categorias": [],
+      "tokens_solo_a": [
+        "una"
+      ],
+      "tokens_solo_b": [
+        "mi"
+      ]
+    },
+    {
+      "similitud": 0.7097,
+      "id_a": 21531,
+      "id_b": 22628,
+      "labels_a": [
+        1,
+        1,
+        1
+      ],
+      "labels_b": [
+        1,
+        1,
+        0
+      ],
+      "categorias": [],
+      "tokens_solo_a": [],
+      "tokens_solo_b": [
+        "bien"
+      ]
+    },
+    {
+      "similitud": 0.6923,
+      "id_a": 24865,
+      "id_b": 21833,
+      "labels_a": [
+        0,
+        0,
+        0
+      ],
+      "labels_b": [
+        1,
+        1,
+        1
+      ],
+      "categorias": [],
+      "tokens_solo_a": [
+        "de",
+        "ijo",
+        "ya"
+      ],
+      "tokens_solo_b": []
+    },
+    {
+      "similitud": 0.6923,
+      "id_a": 23563,
+      "id_b": 24865,
+      "labels_a": [
+        1,
+        1,
+        1
+      ],
+      "labels_b": [
+        0,
+        0,
+        0
+      ],
+      "categorias": [],
+      "tokens_solo_a": [],
+      "tokens_solo_b": [
+        "de",
+        "ijo",
+        "ya"
+      ]
+    },
+    {
+      "similitud": 0.6923,
+      "id_a": 20731,
+      "id_b": 24865,
+      "labels_a": [
+        1,
+        1,
+        1
+      ],
+      "labels_b": [
+        0,
+        0,
+        0
+      ],
+      "categorias": [],
+      "tokens_solo_a": [],
+      "tokens_solo_b": [
+        "de",
+        "ijo",
+        "ya"
+      ]
+    },
+    {
+      "similitud": 0.6923,
+      "id_a": 24552,
+      "id_b": 24865,
+      "labels_a": [
+        1,
+        1,
+        1
+      ],
+      "labels_b": [
+        0,
+        0,
+        0
+      ],
+      "categorias": [],
+      "tokens_solo_a": [],
+      "tokens_solo_b": [
+        "de",
+        "ijo",
+        "ya"
+      ]
+    },
+    {
+      "similitud": 0.6923,
+      "id_a": 24231,
+      "id_b": 24865,
+      "labels_a": [
+        1,
+        1,
+        1
+      ],
+      "labels_b": [
+        0,
+        0,
+        0
+      ],
+      "categorias": [],
+      "tokens_solo_a": [],
+      "tokens_solo_b": [
+        "de",
+        "ijo",
+        "ya"
+      ]
+    },
+    {
+      "similitud": 0.6857,
+      "id_a": 20455,
+      "id_b": 20396,
+      "labels_a": [
+        0,
+        0,
+        0
+      ],
+      "labels_b": [
+        1,
+        1,
+        1
+      ],
+      "categorias": [],
+      "tokens_solo_a": [
+        "d",
+        "hijo",
+        "q"
+      ],
+      "tokens_solo_b": []
+    },
+    {
+      "similitud": 0.6857,
+      "id_a": 20455,
+      "id_b": 24203,
+      "labels_a": [
+        0,
+        0,
+        0
+      ],
+      "labels_b": [
+        1,
+        1,
+        1
+      ],
+      "categorias": [],
+      "tokens_solo_a": [
+        "d",
+        "hijo",
+        "q"
+      ],
+      "tokens_solo_b": []
+    },
+    {
+      "similitud": 0.6857,
+      "id_a": 20455,
+      "id_b": 23838,
+      "labels_a": [
+        0,
+        0,
+        0
+      ],
+      "labels_b": [
+        1,
+        1,
+        1
+      ],
+      "categorias": [],
+      "tokens_solo_a": [
+        "d",
+        "hijo",
+        "q"
+      ],
+      "tokens_solo_b": []
+    },
+    {
+      "similitud": 0.6429,
+      "id_a": 22568,
+      "id_b": 24865,
+      "labels_a": [
+        1,
+        1,
+        1
+      ],
+      "labels_b": [
+        0,
+        0,
+        0
+      ],
+      "categorias": [],
+      "tokens_solo_a": [
+        "vs"
+      ],
+      "tokens_solo_b": [
+        "de",
+        "ijo",
+        "ya"
+      ]
+    },
+    {
+      "similitud": 0.6429,
+      "id_a": 22939,
+      "id_b": 22608,
+      "labels_a": [
+        0,
+        0,
+        0
+      ],
+      "labels_b": [
+        1,
+        1,
+        1
+      ],
+      "categorias": [],
+      "tokens_solo_a": [
+        "mars"
+      ],
+      "tokens_solo_b": [
+        "odio",
+        "te"
+      ]
+    },
+    {
+      "similitud": 0.6429,
+      "id_a": 23172,
+      "id_b": 22273,
+      "labels_a": [
+        0,
+        0,
+        0
+      ],
+      "labels_b": [
+        1,
+        1,
+        0
+      ],
+      "categorias": [
+        "truncamiento"
+      ],
+      "tokens_solo_a": [],
+      "tokens_solo_b": [
+        "cierto"
+      ]
+    },
+    {
+      "similitud": 0.6383,
+      "id_a": 22524,
+      "id_b": 22277,
+      "labels_a": [
+        1,
+        1,
+        0
+      ],
+      "labels_b": [
+        1,
+        1,
+        1
+      ],
+      "categorias": [],
+      "tokens_solo_a": [
+        "jeje"
+      ],
+      "tokens_solo_b": [
+        "cara",
+        "d"
+      ]
+    },
+    {
+      "similitud": 0.625,
+      "id_a": 21796,
+      "id_b": 24790,
+      "labels_a": [
+        1,
+        1,
+        1
+      ],
+      "labels_b": [
+        0,
+        0,
+        0
+      ],
+      "categorias": [],
+      "tokens_solo_a": [
+        "hija"
+      ],
+      "tokens_solo_b": [
+        "amc",
+        "hijo"
+      ]
+    },
+    {
+      "similitud": 0.6136,
+      "id_a": 20455,
+      "id_b": 21796,
+      "labels_a": [
+        0,
+        0,
+        0
+      ],
+      "labels_b": [
+        1,
+        1,
+        1
+      ],
+      "categorias": [
+        "insulto"
+      ],
+      "tokens_solo_a": [
+        "d",
+        "hijo",
+        "q"
+      ],
+      "tokens_solo_b": [
+        "de",
+        "hija"
+      ]
+    },
+    {
+      "similitud": 0.6,
+      "id_a": 21869,
+      "id_b": 23172,
+      "labels_a": [
+        1,
+        1,
+        1
+      ],
+      "labels_b": [
+        0,
+        0,
+        0
+      ],
+      "categorias": [],
+      "tokens_solo_a": [
+        "hermana"
+      ],
+      "tokens_solo_b": []
+    },
+    {
+      "similitud": 0.6,
+      "id_a": 21128,
+      "id_b": 21833,
+      "labels_a": [
+        0,
+        0,
+        0
+      ],
+      "labels_b": [
+        1,
+        1,
+        1
+      ],
+      "categorias": [],
+      "tokens_solo_a": [
+        "boca",
+        "la",
+        "tio"
+      ],
+      "tokens_solo_b": []
+    },
+    {
+      "similitud": 0.6,
+      "id_a": 21128,
+      "id_b": 23563,
+      "labels_a": [
+        0,
+        0,
+        0
+      ],
+      "labels_b": [
+        1,
+        1,
+        1
+      ],
+      "categorias": [],
+      "tokens_solo_a": [
+        "boca",
+        "la",
+        "tio"
+      ],
+      "tokens_solo_b": []
+    },
+    {
+      "similitud": 0.6,
+      "id_a": 21128,
+      "id_b": 20731,
+      "labels_a": [
+        0,
+        0,
+        0
+      ],
+      "labels_b": [
+        1,
+        1,
+        1
+      ],
+      "categorias": [],
+      "tokens_solo_a": [
+        "boca",
+        "la",
+        "tio"
+      ],
+      "tokens_solo_b": []
+    }
+  ],
+  "gastos": {
+    "submissions": 0,
+    "modelos_entrenados": 0,
+    "memoria_pico_mb": 373.1,
+    "segundos": 11.2
+  }
+}

@@ -1,0 +1,377 @@
+script,familia,tipo,en_registro,citado_en_reportes,en_notebook,nota
+experiments/00_auditoria_datos.py,otras,auditoria,SI,,SI,sin cita en reports/resultados/figuras
+experiments/01_eda_linguistico.py,otras,experimento,SI,,SI,sin cita en reports/resultados/figuras
+experiments/02_baseline_tfidf_lr.py,otras,experimento,SI,,SI,sin cita en reports/resultados/figuras
+experiments/03_variantes_representaciones.py,otras,experimento,SI,,SI,sin cita en reports/resultados/figuras
+experiments/04_refit_submissions_v02_v03.py,otras,submission,SI,,SI,sin cita en reports/resultados/figuras
+experiments/05_ensembles.py,otras,experimento,SI,,SI,sin cita en reports/resultados/figuras
+experiments/06_error_analysis.py,otras,experimento,SI,,SI,sin cita en reports/resultados/figuras
+experiments/07_submission_v04_ens04.py,otras,submission,SI,,SI,sin cita en reports/resultados/figuras
+experiments/08_features_densas_h11_h12.py,otras,experimento,SI,,SI,sin cita en reports/resultados/figuras
+experiments/09_optuna_tfidf_lr.py,otras,experimento,SI,,SI,sin cita en reports/resultados/figuras
+experiments/10_sondas_robustez.py,otras,experimento,SI,,SI,sin cita en reports/resultados/figuras
+experiments/11_dl_desde_cero.py,otras,experimento,SI,,SI,sin cita en reports/resultados/figuras
+experiments/12_control_pseudo_autores.py,otras,experimento,SI,,SI,sin cita en reports/resultados/figuras
+experiments/13_holdout_v2.py,otras,experimento,SI,,SI,sin cita en reports/resultados/figuras
+experiments/14_oof_corregido_v2.py,otras,experimento,SI,,SI,sin cita en reports/resultados/figuras
+experiments/15_cadenas_etiquetas_v2.py,otras,experimento,SI,,SI,sin cita en reports/resultados/figuras
+experiments/16_targeting_v2.py,otras,experimento,SI,,SI,sin cita en reports/resultados/figuras
+experiments/17_stacking_v2.py,otras,experimento,SI,,SI,sin cita en reports/resultados/figuras
+experiments/18_p7_holdout_y_submission_v08.py,otras,submission,SI,,SI,sin cita en reports/resultados/figuras
+experiments/19_sintaxis_cita_negacion_v2.py,otras,experimento,SI,,SI,sin cita en reports/resultados/figuras
+experiments/20_emocion_nbsvm_ortografia_v2.py,otras,experimento,SI,,SI,sin cita en reports/resultados/figuras
+experiments/21_backlog_restante_v2.py,otras,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/22_artefactos_auditoria_v2.py,otras,auditoria,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/23_candidatos_finales.py,otras,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/24_informe_final_candidatos.py,otras,cierre,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/25_submissions_candidatos.py,otras,submission,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/26_scaffold_v4.py,otras,scaffold,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/27_label_consistency_v4.py,otras,experimento,SI,,SI,sin cita en reports/resultados/figuras
+experiments/28_hardness_v4.py,otras,experimento,SI,,SI,sin cita en reports/resultados/figuras
+experiments/29_reweighting_v4.py,otras,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/30_supervised_weighting_v4.py,otras,experimento,SI,,SI,sin cita en reports/resultados/figuras
+experiments/31_joint_label_v4.py,otras,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/32_meta_shift_v4.py,otras,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/33_class_conditional_lm_v4.py,otras,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/34_structural_sparse_v4.py,otras,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/35_discovery_v4.py,otras,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/36_candidatos_v4.py,otras,experimento,SI,,SI,sin cita en reports/resultados/figuras
+experiments/37_auditoria_v4.py,otras,auditoria,NO,,NO,sin fila de registro en experiments.csv; sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/38_refit_final_v4.py,otras,experimento,SI,,SI,sin cita en reports/resultados/figuras
+experiments/embedding_00_scaffold_v5.py,embedding,scaffold,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/embedding_01_corpus_wikipedia_v5.py,embedding,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/embedding_02_fasttext_baseline_v5.py,embedding,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/embedding_03_fusion_complementariedad_v5.py,embedding,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/embedding_04_corpus_mc4_v5.py,embedding,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/embedding_05_fasttext_web_v5.py,embedding,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/embedding_06_auditoria_v5.py,embedding,auditoria,NO,,NO,sin fila de registro en experiments.csv; sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/embedding_07_corpus_50M_v5.py,embedding,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/embedding_08_fasttext_50M_v5.py,embedding,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/embedding_09_corpus_5M_v5.py,embedding,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/embedding_10_fasttext_5M_v5.py,embedding,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/embedding_11_auditoria_firmas_v5_1.py,embedding,auditoria,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/embedding_12_vector_size_v5_1.py,embedding,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/embedding_13_window_v5_1.py,embedding,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/embedding_14_min_count_v5_1.py,embedding,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/embedding_15_subwords_v5_1.py,embedding,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/embedding_16_negative_v5_1.py,embedding,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/embedding_17_comparacion_final_v5_1.py,embedding,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/embedding_18_complementariedad_v5_1.py,embedding,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/embedding_19_notebook_v5_1.py,embedding,integracion_notebook,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/embedding_20_validacion_notebook_v5_1.py,embedding,integracion_notebook,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/embedding_21_documentacion_v5_1.py,embedding,integracion_notebook,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/embedding_22_auditoria_final_v5_1.py,embedding,auditoria,NO,,NO,sin fila de registro en experiments.csv; sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p59_00_registro_hipotesis.py,p59,registro,NO,,NO,sin fila de registro en experiments.csv; sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p59_01_voronoi_local.py,p59,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p59_02_voronoi_bloque.py,p59,experimento,SI,reports/p59_02_voronoi_bloque.json,SI,
+experiments/p59_03_confident_learning.py,p59,experimento,SI,reports/p59_confident_learning.csv;reports/p59_confident_learning.json;reports/p59_confident_learning.md,NO,sin mencion en el notebook
+experiments/p59_04_influence.py,p59,experimento,SI,reports/p59_influence_analysis.csv;reports/p59_influence_analysis.json;reports/p59_influence_analysis.md,NO,sin mencion en el notebook
+experiments/p59_05_nmf_gap_analysis.py,p59,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p59_06_robust_loss.py,p59,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p59_07_local_window.py,p59,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p59_08_calibracion_local.py,p59,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p59_09_fusion_local.py,p59,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p59_10_grafo_regularizacion.py,p59,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p59_11_generativo_ngram.py,p59,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p59_12_informe_final.py,p59,cierre,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p59_90_integrar_notebook.py,p59,integracion_notebook,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p60_00_registro_hipotesis.py,p60,registro,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p60_01_contrastive.py,p60,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p60_02_asl.py,p60,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p60_03_dro.py,p60,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p60_04_distribucion.py,p60,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p60_05_ruido_por_etiqueta.py,p60,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p60_06_intervencion_ag.py,p60,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p60_07_transporte.py,p60,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p60_09_polyloss.py,p60,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p60_10_metareweight.py,p60,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p60_11_cerrar.py,p60,cierre,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p60_12_total.py,p60,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p60_13_notebook.py,p60,integracion_notebook,SI,reports/p60_notebook_integration.json,NO,sin mencion en el notebook
+experiments/p60_14_auditoria.py,p60,auditoria,NO,,NO,sin fila de registro en experiments.csv; sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p60_registrar.py,p60,registro,NO,,NO,sin fila de registro en experiments.csv; sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p61_00_reconciliacion.py,p61,auditoria,NO,,NO,sin fila de registro en experiments.csv; sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p61_01_eda_probabilidades.py,p61,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p61_02_inventario.py,p61,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p61_03_lightgbm.py,p61,experimento,SI,reports/p61_lightgbm_capacidad.json;reports/p61_lightgbm_capacidad.md,NO,sin mencion en el notebook
+experiments/p61_05_ensemble.py,p61,experimento,SI,reports/p61_ensemble.json;reports/p61_ensemble.md;reports/p61_ensemble_pool_selection.csv;reports/p61_ensemble_results.csv;reports/p61_ensemble_weights.csv,NO,sin mencion en el notebook
+experiments/p61_08_segunda_particion.py,p61,experimento,SI,reports/p61_segunda_particion.csv;reports/p61_segunda_particion.json;reports/p61_segunda_particion.md,NO,sin mencion en el notebook
+experiments/p61_09_cerrar.py,p61,cierre,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p61_10_notebook.py,p61,integracion_notebook,SI,reports/p61_notebook_integration.json,NO,sin mencion en el notebook
+experiments/p62_00_auditoria_y_gap.py,p62,auditoria,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p62_01_eda_linguistica.py,p62,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p62_03_pista_l.py,p62,experimento,SI,reports/p62_pista_l_word_pos.json;reports/p62_pista_l_word_pos.md,NO,sin mencion en el notebook
+experiments/p62_04_pista_m.py,p62,experimento,SI,reports/p62_pista_m_dependencias.json;reports/p62_pista_m_dependencias.md,NO,sin mencion en el notebook
+experiments/p62_05_cerrar.py,p62,cierre,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p62_06_notebook.py,p62,integracion_notebook,NO,reports/p62_notebook_integration.json,NO,sin fila de registro en experiments.csv; sin mencion en el notebook
+experiments/p62_07_presupuesto_canal.py,p62,experimento,SI,reports/p62_presupuesto_canal.csv;reports/p62_presupuesto_canal.json;reports/p62_presupuesto_canal.md,NO,sin mencion en el notebook
+experiments/p62_08_pos_o_no_pos.py,p62,experimento,SI,reports/p62_pos_o_no_pos.csv;reports/p62_pos_o_no_pos.json;reports/p62_pos_o_no_pos.md,NO,sin mencion en el notebook
+experiments/p62_09_cobertura.py,p62,experimento,SI,reports/p62_cobertura_vocabulario.csv;reports/p62_cobertura_vocabulario.json;reports/p62_cobertura_vocabulario.md,NO,sin mencion en el notebook
+experiments/p62_10_techo_cortos.py,p62,experimento,SI,reports/p62_techo_cortos.csv;reports/p62_techo_cortos.json;reports/p62_techo_cortos.md,NO,sin mencion en el notebook
+experiments/p62_11_cerrar.py,p62,cierre,NO,,NO,sin fila de registro en experiments.csv; sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p63_01_gap_analysis.py,p63,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p63_02_id_forensics.py,p63,experimento,SI,reports/p63_id_forensics.csv;reports/p63_id_forensics.json;reports/p63_id_forensics.md;reports/p63_id_forensics_blocks.csv;reports/p63_id_forensics_ocupacion.csv,NO,sin mencion en el notebook
+experiments/p63_03_id_auditoria_predictiva.py,p63,auditoria,SI,reports/p63_id_auditoria_predictiva.csv;reports/p63_id_auditoria_predictiva.json;reports/p63_id_auditoria_predictiva.md,NO,sin mencion en el notebook
+experiments/p63_04_estructura_relacional.py,p63,experimento,SI,reports/p63_estructura_relacional.csv;reports/p63_estructura_relacional.json;reports/p63_estructura_relacional.md,NO,sin mencion en el notebook
+experiments/p63_05_composicion_linguistica.py,p63,experimento,SI,reports/p63_composicion_linguistica.csv;reports/p63_composicion_linguistica.json;reports/p63_composicion_linguistica.md,NO,sin mencion en el notebook
+experiments/p63_06_estructura_tweet_largo.py,p63,experimento,SI,reports/p63_estructura_tweet_largo.csv;reports/p63_estructura_tweet_largo.json;reports/p63_estructura_tweet_largo.md,NO,sin mencion en el notebook
+experiments/p63_07_integracion_y_techo.py,p63,experimento,SI,reports/p63_integracion_y_techo.csv;reports/p63_integracion_y_techo.json;reports/p63_integracion_y_techo.md,NO,sin mencion en el notebook
+experiments/p63_08_residuo_de_v03.py,p63,experimento,SI,reports/p63_residuo_de_v03.csv;reports/p63_residuo_de_v03.json;reports/p63_residuo_de_v03.md,NO,sin mencion en el notebook
+experiments/p63_09_dataset_auxiliar.py,p63,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p63_10_cerrar.py,p63,cierre,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p64_01_gap_analysis.py,p64,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p64_02_segmentacion_eda.py,p64,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p64_03_evidencia_segmental.py,p64,experimento,SI,reports/p64_evidencia_segmental.json;reports/p64_evidencia_segmental.md,NO,sin mencion en el notebook
+experiments/p64_04_leave_one_out.py,p64,experimento,SI,reports/p64_leave_one_out.json;reports/p64_leave_one_out.md,NO,sin mencion en el notebook
+experiments/p64_05_especializacion_larga.py,p64,experimento,SI,reports/p64_especializacion_larga.json;reports/p64_especializacion_larga.md,NO,sin mencion en el notebook
+experiments/p64_05_multiple_instance.py,p64,experimento,SI,reports/p64_multiple_instance.json;reports/p64_multiple_instance.md,NO,sin mencion en el notebook
+experiments/p64_06_cerrar.py,p64,cierre,NO,,NO,sin fila de registro en experiments.csv; sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p64_06_quote_mention.py,p64,experimento,SI,reports/p64_quote_mention.csv;reports/p64_quote_mention.json;reports/p64_quote_mention.md,NO,sin mencion en el notebook
+experiments/p64_07_negacion.py,p64,experimento,SI,reports/p64_negacion.csv;reports/p64_negacion.json;reports/p64_negacion.md,NO,sin mencion en el notebook
+experiments/p64_08_lda.py,p64,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p65_00_audit_gap.py,p65,auditoria,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p65_01_ngrams.py,p65,experimento,SI,reports/p65_ngrams.json;reports/p65_ngrams.md,NO,sin mencion en el notebook
+experiments/p65_02_huecos_contraste.py,p65,experimento,SI,reports/p65_huecos_contraste.json;reports/p65_huecos_contraste.md,NO,sin mencion en el notebook
+experiments/p65_03_cohesion.py,p65,experimento,SI,reports/p65_cohesion.csv;reports/p65_cohesion.json;reports/p65_cohesion.md,NO,sin mencion en el notebook
+experiments/p65_04_especialista.py,p65,experimento,SI,reports/p65_especialista.json;reports/p65_especialista.md,NO,sin mencion en el notebook
+experiments/p65_05_cerrar.py,p65,cierre,NO,,NO,sin fila de registro en experiments.csv; sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p66_00_audit_gap.py,p66,auditoria,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p66_01_regenerar_scores.py,p66,experimento,SI,,SI,sin cita en reports/resultados/figuras
+experiments/p66_02_fusion_espacio_scores.py,p66,experimento,SI,,SI,sin cita en reports/resultados/figuras
+experiments/p66_03_complementariedad_bootstrap.py,p66,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p66_04_cerrar.py,p66,cierre,NO,,NO,sin fila de registro en experiments.csv; sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p67_00_reconciliacion.py,p67,auditoria,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p67_01_controles_decisivos.py,p67,experimento,SI,reports/p67_controles_decisivos.json;reports/p67_controles_decisivos.md,NO,sin mencion en el notebook
+experiments/p67_02_cerrar.py,p67,cierre,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p67_03_cierre_documental.py,p67,cierre,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p67_04_gap_analysis.py,p67,experimento,SI,reports/post_p67_gap_analysis.csv;reports/post_p67_gap_analysis.json;reports/post_p67_gap_analysis.md,NO,sin mencion en el notebook
+experiments/p68_01_enrutado_por_estructura.py,p68,experimento,SI,reports/p68_enrutado_por_estructura.json;reports/p68_enrutado_por_estructura.md,NO,sin mencion en el notebook
+experiments/p68_02_h2_auditoria.py,p68,auditoria,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p69_01_auditoria_downweight.py,p69,auditoria,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p69_02_segunda_particion.py,p69,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p69_03_cierre_downweight.py,p69,cierre,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p69_04_tercera_particion.py,p69,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p69_05_permutacion.py,p69,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p69_06_particiones_corregidas.py,p69,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p69_07_cierre_final.py,p69,cierre,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p69_08_paquete_candidato.py,p69,cierre,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p69_09_reconciliar_estado.py,p69,auditoria,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p69_10_submission_candidato.py,p69,submission,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p70_01_sensibilidad_tamano.py,p70,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p70_02_postmortem.py,p70,cierre,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p70_03_correccion_postmortem.py,p70,cierre,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p71_00_auditoria_corpus.py,p71,auditoria,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p71_01_auditoria_ampliada.py,p71,auditoria,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p71_02_correccion_criterio.py,p71,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p71_03_preparar_corpus.py,p71,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p71_04_entrenar_word2vec.py,p71,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p71_05_downstream.py,p71,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p71_06_word2vec_optimizador.py,p71,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p71_07_invalidar_veredicto.py,p71,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p71_08_word2vec_corregido.py,p71,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p71_09_downstream_lrfix.py,p71,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p71_10_downstream_corregido.py,p71,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p72_00_auditoria_implementacion.py,p72,auditoria,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p72_01_dimensiones.py,p72,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p72_02_dimension_downstream.py,p72,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p72_03_control_aleatorio.py,p72,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p72_04_control_aleatorio_normalizado.py,p72,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p73_01_solapamiento_corpus.py,p73,experimento,SI,reports/p73_solapamiento_corpus.csv;reports/p73_solapamiento_corpus.json,NO,sin mencion en el notebook
+experiments/p73_02_textcnn_vs_random.py,p73,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p73_03_segunda_particion.py,p73,experimento,SI,reports/p73_segunda_particion.csv;reports/p73_segunda_particion.json,NO,sin mencion en el notebook
+experiments/p73_04_auditoria_cierre.py,p73,auditoria,NO,reports/p73_auditoria_cierre.csv;reports/p73_auditoria_cierre.json,NO,sin fila de registro en experiments.csv; sin mencion en el notebook
+experiments/p74_01_null_replicado.py,p74,experimento,SI,reports/p74_null_replicado.json,NO,sin mencion en el notebook
+experiments/p75_01_complementariedad_textcnn.py,p75,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p75_02_slices_recuperadas.py,p75,experimento,SI,reports/p75_slices_recuperadas.json,SI,
+experiments/p76_01_calibracion_nested.py,p76,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p77_01_operador_selectivo.py,p77,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/p78_01_control_anidado.py,p78,experimento,SI,reports/p78_control_anidado.json,NO,sin mencion en el notebook
+experiments/p79_01_auditoria_sgns.py,p79,auditoria,SI,reports/p79_auditoria_sgns.json,NO,sin mencion en el notebook
+experiments/p80_01_auditoria_w2v.py,p80,auditoria,SI,reports/p80_auditoria_w2v.json;reports/p80_auditoria_w2v.md,NO,sin mencion en el notebook
+experiments/p81_01_cierre_huecos.py,p81,cierre,SI,reports/p81_cierre_huecos.json;reports/p81_cierre_huecos.md;reports/p81_cierre_huecos.parcial.json;reports/p81_cierre_huecos.parcial_20261001T010045_bloque_2_afirmacion_1_de_5_A8.json;reports/p81_cierre_huecos.parcial_20261001T010045_bloque_2_afirmacion_2_de_5_A9.json,NO,sin mencion en el notebook
+experiments/p82_01_rnn_atencion.py,p82,experimento,SI,reports/humo_p82_20261001T161024Z_p2289660_completo/p82_rnn_atencion.json;reports/humo_p82_20261001T161024Z_p2289660_completo/p82_rnn_atencion.md;reports/humo_p82_20261001T161024Z_p2289660_incompleto/p82_rnn_atencion.json;reports/humo_p82_20261001T161024Z_p2289660_incompleto/p82_rnn_atencion.md;reports/humo_p82_20261001T172443Z_p2425748_completo/p82_rnn_atencion.json,NO,sin mencion en el notebook
+experiments/p82_02_submission_rnn.py,p82,submission,SI,reports/p82_submission_rnn.json;reports/p82_submission_rnn.md,NO,sin mencion en el notebook
+experiments/p83_01_bayesiano.py,p83,experimento,SI,reports/p83_bayesiano.json;reports/p83_bayesiano.md,NO,sin mencion en el notebook
+experiments/v10_01_holdout2.py,v10,experimento,SI,reports/v10_01_holdout2.json;reports/v10_01_holdout2.md,NO,sin mencion en el notebook
+experiments/v10_02_ruido_particion.py,v10,experimento,SI,reports/v10_02_ruido_particion.json;reports/v10_02_ruido_particion.md,SI,
+experiments/v10_03_arnes_evaluacion.py,v10,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v10_04_calibracion_fuerte.py,v10,experimento,SI,reports/v10_04_calibracion_fuerte.json;reports/v10_04_calibracion_fuerte.md,SI,
+experiments/v10_05_regla_f1_optima.py,v10,experimento,SI,reports/v10_05_regla_f1_optima.json;reports/v10_05_regla_f1_optima.md,NO,sin mencion en el notebook
+experiments/v10_06_umbrales_estables.py,v10,experimento,SI,reports/v10_06_umbrales_estables.json;reports/v10_06_umbrales_estables.md,NO,sin mencion en el notebook
+experiments/v10_07_shift_features.py,v10,experimento,SI,reports/v10_07_shift_features.csv;reports/v10_07_shift_features.json;reports/v10_07_shift_features.md,SI,
+experiments/v10_08_confirmacion_dev2.py,v10,experimento,SI,reports/v10_08_confirmacion_dev2.json;reports/v10_08_confirmacion_dev2.md,NO,sin mencion en el notebook
+experiments/v10_09_correlacion_eliminacion.py,v10,experimento,SI,reports/v10_09_correlacion_eliminacion.json;reports/v10_09_correlacion_eliminacion.md,NO,sin mencion en el notebook
+experiments/v10_10_regla_conservacion.py,v10,experimento,SI,reports/v10_10_regla_conservacion.json;reports/v10_10_regla_conservacion.md,SI,
+experiments/v10_11_bigru_finetuning.py,v10,experimento,SI,reports/v10_11_bigru_finetuning.json;reports/v10_11_bigru_finetuning.md,SI,
+experiments/v11_00_reconciliacion.py,v11,auditoria,SI,reports/v11_00_reconciliacion.json;reports/v11_00_reconciliacion.md,NO,sin mencion en el notebook
+experiments/v11_01_reproduccion_v9_02.py,v11,experimento,SI,reports/v11_01_reproduccion_v9_02.json;reports/v11_01_reproduccion_v9_02.md,NO,sin mencion en el notebook
+experiments/v11_02_auditoria_legalidad.py,v11,auditoria,SI,reports/v11_02_auditoria_legalidad.json;reports/v11_02_auditoria_legalidad.md,NO,sin mencion en el notebook
+experiments/v11_03_auditoria_cumplimiento.py,v11,auditoria,SI,reports/v11_03_auditoria_cumplimiento.json;reports/v11_03_auditoria_cumplimiento.md,NO,sin mencion en el notebook
+experiments/v11_05_registro.py,v11,registro,SI,reports/v11_05_registro.json;reports/v11_05_registro.md,NO,sin mencion en el notebook
+experiments/v11_06_validacion_estimadores.py,v11,experimento,SI,reports/v11_06_validacion_estimadores.json;reports/v11_06_validacion_estimadores.md,NO,sin mencion en el notebook
+experiments/v11_07_correccion_prior.py,v11,experimento,SI,reports/v11_07_correccion_prior.json;reports/v11_07_correccion_prior.md,NO,sin mencion en el notebook
+experiments/v11_08_cierre_y_tabla_maestra.py,v11,cierre,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v11_09_cierre_entregables.py,v11,cierre,SI,reports/v11_09_cierre_entregables.json;reports/v11_09_cierre_entregables.md,NO,sin mencion en el notebook
+experiments/v11_ayudas.py,v11,ayudas,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v12_00_auditoria_brecha.py,v12,auditoria,SI,reports/v12_auditoria_brecha.json,NO,sin mencion en el notebook
+experiments/v12_01_regularizacion_grupo.py,v12,experimento,SI,reports/v12_01_regularizacion_grupo.json;reports/v12_01_regularizacion_grupo.md,NO,sin mencion en el notebook
+experiments/v12_02_perdida_y_estructura.py,v12,experimento,SI,reports/v12_02_perdida_y_estructura.json;reports/v12_02_perdida_y_estructura.md,NO,sin mencion en el notebook
+experiments/v12_03_entrenamiento_por_pares.py,v12,experimento,SI,reports/v12_03_entrenamiento_por_pares.json;reports/v12_03_entrenamiento_por_pares.md,NO,sin mencion en el notebook
+experiments/v12_04_auditoria_v6b.py,v12,auditoria,SI,reports/v12_04_auditoria_v6b.json;reports/v12_04_auditoria_v6b.md,NO,sin mencion en el notebook
+experiments/v12_05_informe_final.py,v12,cierre,SI,reports/v12_05_informe_final.json,NO,sin mencion en el notebook
+experiments/v12_05_registrar.py,v12,registro,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v13_00_auditoria_hs.py,v13,auditoria,SI,reports/v13_00_auditoria_hs.json,NO,sin mencion en el notebook
+experiments/v13_01_aislamiento_hs.py,v13,experimento,SI,reports/v13_01_aislamiento_hs.json;reports/v13_01_aislamiento_hs.md,NO,sin mencion en el notebook
+experiments/v13_02_informe_final.py,v13,cierre,SI,reports/v13_02_informe_final.json,NO,sin mencion en el notebook
+experiments/v14_00_auditoria_partial_label.py,v14,auditoria,SI,reports/v14_00_auditoria_partial_label.json,NO,sin mencion en el notebook
+experiments/v14_01_informe_final.py,v14,cierre,SI,reports/v14_01_informe_final.json,NO,sin mencion en el notebook
+experiments/v15_00_inventario_senal.py,v15,experimento,SI,reports/v15_00_inventario_senal.json;reports/v15_00_inventario_senal.md,NO,sin mencion en el notebook
+experiments/v15_01_gap_y_ortogonalidad.py,v15,experimento,SI,reports/v15_01_gap_y_ortogonalidad.json;reports/v15_01_gap_y_ortogonalidad.md,NO,sin mencion en el notebook
+experiments/v15_02_informe_cierre.py,v15,cierre,SI,reports/v15_02_informe_cierre.json,NO,sin mencion en el notebook
+experiments/v16_00_prevalencia_y_curva_lb.py,v16,experimento,SI,resultados/v16_00_prevalencia_y_curva_lb.csv,NO,sin mencion en el notebook
+experiments/v16_01_generar_submissions.py,v16,submission,NO,,NO,sin fila de registro en experiments.csv; sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v16_02_promedio_umbrales.py,v16,experimento,SI,reports/v16_02_promedio_umbrales.json;reports/v16_02_promedio_umbrales.md,NO,sin mencion en el notebook
+experiments/v16_03_vecinos_de_capacidad.py,v16,experimento,SI,reports/v16_03_vecinos_de_capacidad.json;reports/v16_03_vecinos_de_capacidad.md,NO,sin mencion en el notebook
+experiments/v17_00_inventario_y_complementariedad.py,v17,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v17_01_informe_final.py,v17,cierre,NO,reports/v17_01_informe_final.json,NO,sin fila de registro en experiments.csv; sin mencion en el notebook
+experiments/v18_01_cambio_y_senal.py,v18,experimento,SI,reports/v18_01_cambio_y_senal.json;reports/v18_01_cambio_y_senal.md,NO,sin mencion en el notebook
+experiments/v19_00_metrica_verificada.py,v19,experimento,SI,reports/v19_00_metrica_verificada.json;reports/v19_00_metrica_verificada.md,NO,sin mencion en el notebook
+experiments/v19_01_valor_de_cada_correccion.py,v19,experimento,SI,reports/v19_01_valor_de_cada_correccion.json;reports/v19_01_valor_de_cada_correccion.md,NO,sin mencion en el notebook
+experiments/v19_02_restriccion_tr_implica_hs.py,v19,experimento,SI,reports/v19_02_restriccion_tr_implica_hs.json;reports/v19_02_restriccion_tr_implica_hs.md,NO,sin mencion en el notebook
+experiments/v19_03_diagnosticos_y_dictamen.py,v19,auditoria,SI,reports/v19_03_diagnosticos_y_dictamen.json;reports/v19_03_diagnosticos_y_dictamen.md,NO,sin mencion en el notebook
+experiments/v20_01_informacion_incremental.py,v20,experimento,SI,reports/v20_01_informacion_incremental.json;reports/v20_01_informacion_incremental.md,NO,sin mencion en el notebook
+experiments/v20_02_inferencia_y_candidata.py,v20,experimento,SI,reports/v20_02_inferencia_y_candidata.json;reports/v20_02_inferencia_y_candidata.md,NO,sin mencion en el notebook
+experiments/v21_01_triaje_competitivo.py,v21,experimento,SI,reports/v21_01_triaje_competitivo.json;reports/v21_01_triaje_competitivo.md,NO,sin mencion en el notebook
+experiments/v22_01_auditoria_preprocessing.py,v22,auditoria,NO,reports/v22_01_auditoria_preprocessing.json;reports/v22_01_auditoria_preprocessing.md,NO,sin fila de registro en experiments.csv; sin mencion en el notebook
+experiments/v22_02_preprocessing_historic_vs_raw.py,v22,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v22_03_all_but_the_top.py,v22,experimento,SI,reports/v22_03_all_but_the_top.json;reports/v22_03_all_but_the_top.md,NO,sin mencion en el notebook
+experiments/v23_01_auditoria_rbf_svc.py,v23,auditoria,NO,reports/v23_01_auditoria_rbf_svc.json;reports/v23_01_auditoria_rbf_svc.md,NO,sin fila de registro en experiments.csv; sin mencion en el notebook
+experiments/v23_02_submission_rbf_sigmoid.py,v23,submission,NO,reports/v23_02_submission_rbf_sigmoid.json,NO,sin fila de registro en experiments.csv; sin mencion en el notebook
+experiments/v24_01_modelo_transferencia_complejidad.py,v24,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v24_03_sonda_knn_predictor.py,v24,experimento,SI,reports/v24_03_sonda_knn_predictor.md,NO,sin mencion en el notebook
+experiments/v24_03b_perfil_de_celdas.py,v24,experimento,SI,reports/v24_03b_perfil_de_celdas.md,NO,sin mencion en el notebook
+experiments/v25_01_factorization_machine.py,v25,experimento,SI,reports/v25_01_factorization_machine.json,NO,sin mencion en el notebook
+experiments/v25_02_fm_paralela_lambda.py,v25,experimento,SI,reports/v25_02_fm_paralela_lambda.json;reports/v25_02_fm_paralela_lambda.md,NO,sin mencion en el notebook
+experiments/v26_01_geometria_kernel.py,v26,experimento,SI,reports/v26_01_geometria_kernel.json;reports/v26_01_geometria_kernel.md,NO,sin mencion en el notebook
+experiments/v26_02_tsetlin.py,v26,experimento,SI,reports/v26_02_tsetlin.json;reports/v26_02_tsetlin.md,NO,sin mencion en el notebook
+experiments/v26_03_tsetlin_oficial.py,v26,experimento,SI,reports/v26_03_tsetlin_oficial.json;reports/v26_03_tsetlin_oficial.md,SI,
+experiments/v26_04_integrar_notebook.py,v26,integracion_notebook,NO,,NO,sin fila de registro en experiments.csv; sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v27_01_char_spectrum_kernel.py,v27,experimento,SI,reports/v27_01_char_spectrum_kernel.json;reports/v27_01_char_spectrum_kernel.md,SI,
+experiments/v27_02_integrar_notebook.py,v27,integracion_notebook,NO,,NO,sin fila de registro en experiments.csv; sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v28_01_diagnostico_errores.py,v28,auditoria,SI,reports/v28_01_diagnostico_errores.json;reports/v28_01_diagnostico_errores.md,SI,
+experiments/v28_02_integrar_notebook.py,v28,integracion_notebook,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v28_03_ambiguedad_etiquetas.py,v28,experimento,SI,reports/v28_03_ambiguedad_etiquetas.json;reports/v28_03_ambiguedad_etiquetas.md,SI,
+experiments/v28_04_integrar_seccion_ambiguedad.py,v28,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v29_01_auditoria_near_duplicate.py,v29,auditoria,SI,reports/v29_01_auditoria_near_duplicate.json;reports/v29_01_auditoria_near_duplicate.md,NO,sin mencion en el notebook
+experiments/v29_02_similitudes_laxas.py,v29,experimento,SI,reports/v29_02_similitudes_laxas.json;reports/v29_02_similitudes_laxas.md,NO,sin mencion en el notebook
+experiments/v29_03_vecinos_corrigen_errores.py,v29,experimento,SI,reports/v29_03_vecinos_corrigen_errores.json;reports/v29_03_vecinos_corrigen_errores.md,NO,sin mencion en el notebook
+experiments/v29_04_transformaciones_contradictorias.py,v29,experimento,SI,reports/v29_04_transformaciones_contradictorias.json;reports/v29_04_transformaciones_contradictorias.md,NO,sin mencion en el notebook
+experiments/v29_05_integrar_notebook.py,v29,integracion_notebook,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v30_01_perfil_error_residual.py,v30,experimento,SI,reports/v30_01_perfil_error_residual.json;reports/v30_01_perfil_error_residual.md,SI,
+experiments/v30_02_integrar_notebook.py,v30,integracion_notebook,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v31_01_url_estructural.py,v31,experimento,SI,reports/v31_01_url_estructural.json;reports/v31_01_url_estructural.md,NO,sin mencion en el notebook
+experiments/v31_02_mencion_hashtag.py,v31,experimento,SI,reports/v31_02_mencion_hashtag.json;reports/v31_02_mencion_hashtag.md,NO,sin mencion en el notebook
+experiments/v31_03_enfasis_ortografico.py,v31,experimento,SI,reports/v31_03_enfasis_ortografico.json;reports/v31_03_enfasis_ortografico.md,NO,sin mencion en el notebook
+experiments/v31_04_interacciones_url.py,v31,experimento,SI,reports/v31_04_interacciones_url.json;reports/v31_04_interacciones_url.md,NO,sin mencion en el notebook
+experiments/v31_05_integrar_notebook.py,v31,integracion_notebook,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v32_00_reproducibilidad.py,v32,experimento,SI,reports/v32_00_reproducibilidad.json;reports/v32_00_reproducibilidad.md,NO,sin mencion en el notebook
+experiments/v32_01_fold4.py,v32,experimento,SI,reports/v32_01_fold4.json;reports/v32_01_fold4.md,NO,sin mencion en el notebook
+experiments/v32_02_aislar_fuente.py,v32,experimento,SI,reports/v32_02_aislar_fuente.json;reports/v32_02_aislar_fuente.md,NO,sin mencion en el notebook
+experiments/v32_03_mencion_longitud.py,v32,experimento,SI,reports/v32_03_mencion_longitud.json;reports/v32_03_mencion_longitud.md,NO,sin mencion en el notebook
+experiments/v32_04_hashtag_longitud.py,v32,experimento,SI,reports/v32_04_hashtag_longitud.json;reports/v32_04_hashtag_longitud.md,NO,sin mencion en el notebook
+experiments/v32_05_cuatro_bins.py,v32,experimento,SI,reports/v32_05_cuatro_bins.json;reports/v32_05_cuatro_bins.md,NO,sin mencion en el notebook
+experiments/v32_06_context_gated.py,v32,experimento,SI,reports/v32_06_context_gated.json;reports/v32_06_context_gated.md,NO,sin mencion en el notebook
+experiments/v32_07_integrar_notebook.py,v32,integracion_notebook,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v33_01_validacion.py,v33,experimento,SI,reports/v33_01_validacion.json;reports/v33_01_validacion.md,SI,
+experiments/v33_02_generar_submission.py,v33,submission,SI,reports/v33_02_generar_submission.json;reports/v33_02_generar_submission.md,NO,sin mencion en el notebook
+experiments/v33_04_integrar_notebook.py,v33,integracion_notebook,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v34_01_frontera.py,v34,experimento,SI,reports/v34_01_frontera.json;reports/v34_01_frontera.md,SI,
+experiments/v34_02_integrar_notebook.py,v34,integracion_notebook,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v35_01_sgd.py,v35,experimento,SI,reports/v35_01_sgd.json;reports/v35_01_sgd.md,SI,
+experiments/v35_02_integrar_notebook.py,v35,integracion_notebook,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v36_01_hashing.py,v36,experimento,SI,reports/v36_01_hashing.json;reports/v36_01_hashing.md,NO,sin mencion en el notebook
+experiments/v36_02_integrar_notebook.py,v36,integracion_notebook,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v37_01_bm25.py,v37,experimento,SI,reports/v37_01_bm25.json;reports/v37_01_bm25.md,SI,
+experiments/v37_02_integrar_notebook.py,v37,integracion_notebook,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v38_01_embedding_supervisado.py,v38,experimento,SI,reports/v38_01_embedding_supervisado.json;reports/v38_01_embedding_supervisado.md,SI,
+experiments/v38_02_integrar_notebook.py,v38,integracion_notebook,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v38_03_integrar_v39.py,v38,integracion_notebook,NO,,NO,sin fila de registro en experiments.csv; sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v39_02_integrar_notebook.py,v39,integracion_notebook,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v40_01_pls.py,v40,experimento,SI,reports/v40_01_pls.json;reports/v40_01_pls.md,SI,
+experiments/v40_02_integrar_notebook.py,v40,integracion_notebook,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v42_01_pls_correcto.py,v42,experimento,SI,reports/v42_01_pls_correcto.json;reports/v42_01_pls_correcto.md,NO,sin mencion en el notebook
+experiments/v42_02_integrar_notebook.py,v42,integracion_notebook,NO,,NO,sin fila de registro en experiments.csv; sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v43_01_vw_optimizers.py,v43,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v44_01_vw_optimizers.py,v44,experimento,SI,reports/v44_01_vw_optimizers.json;reports/v44_01_vw_optimizers.md,SI,
+experiments/v44_02_pls_correcto.py,v44,experimento,SI,reports/v44_02_pls_correcto.json;reports/v44_02_pls_correcto.md,NO,sin mencion en el notebook
+experiments/v44_03_integrar_notebook.py,v44,integracion_notebook,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v45_00_metrica_audit.py,v45,auditoria,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v45_01_joint_label_structure.py,v45,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v45_02_integrar_notebook.py,v45,integracion_notebook,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v46_00_champion_audit.py,v46,auditoria,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v46_01_integrar_notebook.py,v46,integracion_notebook,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v47_00_auditoria_datos.py,v47,auditoria,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v47_01_ajuste_pliegues.py,v47,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v47_01_especializacion.py,v47,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v47_01_especializacion_por_etiqueta.py,v47,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v47_01_integrar_notebook.py,v47,integracion_notebook,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v48_00_eda_traceability.py,v48,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v48_01_residual_atlas.py,v48,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v48_02_integrar_notebook.py,v48,integracion_notebook,NO,,NO,sin fila de registro en experiments.csv; sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v49_00_rescate_forense.py,v49,auditoria,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v49_01_integrar_notebook.py,v49,integracion_notebook,NO,,NO,sin fila de registro en experiments.csv; sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v50_00_brecha_y_oracle.py,v50,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v50_01_selector.py,v50,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v50_02_integrar_notebook.py,v50,integracion_notebook,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v51_00_utilidad_y_asimetria.py,v51,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v51_01_selector_utilidad.py,v51,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v51_02_accion_utilidad_esperada.py,v51,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v51_03_integrar_notebook.py,v51,integracion_notebook,NO,,NO,sin fila de registro en experiments.csv; sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v52_00_auditoria_y_techo.py,v52,auditoria,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v52_01_integrar_notebook.py,v52,integracion_notebook,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v53_00_politica_fina.py,v53,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v53_01_integrar_notebook.py,v53,integracion_notebook,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v54_00_atlas_no_rescatable.py,v54,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v54_01_integrar_notebook.py,v54,integracion_notebook,NO,,NO,sin fila de registro en experiments.csv; sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v55_00_auditoria_pipeline.py,v55,auditoria,NO,,NO,sin fila de registro en experiments.csv; sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v55_01_integrar_notebook.py,v55,integracion_notebook,NO,,NO,sin fila de registro en experiments.csv; sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v56_00_transferencia_umbrales.py,v56,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v56_01_integrar_notebook.py,v56,integracion_notebook,NO,,NO,sin fila de registro en experiments.csv; sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v57_00_sintesis_estrategica.py,v57,cierre,NO,,NO,sin fila de registro en experiments.csv; sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v57_01_integrar_notebook.py,v57,integracion_notebook,NO,,NO,sin fila de registro en experiments.csv; sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v58_00_auditoria_candidatos.py,v58,auditoria,NO,,NO,sin fila de registro en experiments.csv; sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v58_01_integrar_notebook.py,v58,integracion_notebook,NO,,NO,sin fila de registro en experiments.csv; sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v6_00_gap_analysis.py,v6,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v6_01_estructura_errores.py,v6,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v6_02_label_factorization.py,v6,experimento,SI,reports/v6_label_factorization.csv;reports/v6_label_factorization.json;reports/v6_label_factorization.md,NO,sin mencion en el notebook
+experiments/v6_03_ponderacion_grupo.py,v6,experimento,SI,reports/v6_ponderacion_grupo.csv;reports/v6_ponderacion_grupo.json;reports/v6_ponderacion_grupo.md,NO,sin mencion en el notebook
+experiments/v6_04_char_weight.py,v6,experimento,SI,reports/v6_char_weight.csv;reports/v6_char_weight.json;reports/v6_char_weight.md,NO,sin mencion en el notebook
+experiments/v6_05_skipgrams.py,v6,experimento,SI,reports/v6_skipgrams.csv;reports/v6_skipgrams.json;reports/v6_skipgrams.md,NO,sin mencion en el notebook
+experiments/v6_06_bagging_grupos.py,v6,experimento,SI,reports/v6_bagging_grupos.csv;reports/v6_bagging_grupos.json;reports/v6_bagging_grupos.md,NO,sin mencion en el notebook
+experiments/v6_07_ruido_par.py,v6,experimento,SI,reports/v6_ruido_par.csv;reports/v6_ruido_par.json;reports/v6_ruido_par.md,NO,sin mencion en el notebook
+experiments/v6_08_aumento.py,v6,experimento,SI,reports/v6_aumento.csv;reports/v6_aumento.json;reports/v6_aumento.md,NO,sin mencion en el notebook
+experiments/v6_09_entregables.py,v6,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v7_00_gap_audit.py,v7,auditoria,SI,reports/v7_gap_audit.csv;reports/v7_gap_audit.md,NO,sin mencion en el notebook
+experiments/v7_01_perdida_f1.py,v7,experimento,SI,reports/v7_perdida_f1.csv;reports/v7_perdida_f1.json;reports/v7_perdida_f1.md,NO,sin mencion en el notebook
+experiments/v7_02_prior_grupo.py,v7,experimento,SI,reports/v7_prior_grupo.csv;reports/v7_prior_grupo.json;reports/v7_prior_grupo.md,NO,sin mencion en el notebook
+experiments/v7_03_umbral_anidado.py,v7,experimento,SI,reports/v7_umbral_anidado.csv;reports/v7_umbral_anidado.json;reports/v7_umbral_anidado.md,NO,sin mencion en el notebook
+experiments/v7_04_entregables.py,v7,experimento,SI,,NO,sin cita en reports/resultados/figuras; sin mencion en el notebook
+experiments/v8_00_gap_audit.py,v8,auditoria,SI,reports/v8_gap_audit.csv;reports/v8_gap_audit.md,NO,sin mencion en el notebook
+experiments/v8_01_ensamble_folds.py,v8,experimento,SI,reports/v8_ensamble_folds.csv;reports/v8_ensamble_folds.json;reports/v8_ensamble_folds.md,NO,sin mencion en el notebook
+experiments/v8_02_resolucion_liderboard.py,v8,experimento,SI,reports/v8_resolucion_liderboard.csv;reports/v8_resolucion_liderboard.json;reports/v8_resolucion_liderboard.md,NO,sin mencion en el notebook
+experiments/v8_03_estabilidad_features.py,v8,experimento,SI,reports/v8_estabilidad_features.csv;reports/v8_estabilidad_features.json;reports/v8_estabilidad_features.md,NO,sin mencion en el notebook
+experiments/v8_04_log_count_ratio.py,v8,experimento,SI,reports/v8_log_count_ratio.csv;reports/v8_log_count_ratio.json;reports/v8_log_count_ratio.md,NO,sin mencion en el notebook
+experiments/v8_05_regularizacion_conjunta.py,v8,experimento,SI,reports/v8_regularizacion_conjunta.csv;reports/v8_regularizacion_conjunta.json;reports/v8_regularizacion_conjunta.md,NO,sin mencion en el notebook
+experiments/v8_06_c_por_etiqueta.py,v8,experimento,SI,reports/v8_c_por_etiqueta.csv;reports/v8_c_por_etiqueta.json;reports/v8_c_por_etiqueta.md,NO,sin mencion en el notebook
+experiments/v8_07_peso_por_etiqueta.py,v8,experimento,SI,reports/v8_peso_por_etiqueta.csv;reports/v8_peso_por_etiqueta.json;reports/v8_peso_por_etiqueta.md,NO,sin mencion en el notebook
+experiments/v8_08_corrector_margenes.py,v8,experimento,SI,reports/v8_corrector_margenes.csv;reports/v8_corrector_margenes.json;reports/v8_corrector_margenes.md,NO,sin mencion en el notebook
+experiments/v8_09_curva_transferencia.py,v8,experimento,SI,reports/v8_curva_transferencia.csv;reports/v8_curva_transferencia.json;reports/v8_curva_transferencia.md,NO,sin mencion en el notebook
+experiments/v8_10_ensemble_cinco_modelos.py,v8,experimento,SI,reports/v8_ensemble_cinco_modelos.json;reports/v8_ensemble_cinco_modelos.md,NO,sin mencion en el notebook
+experiments/v8_11_complejidad_idiosincrasias.py,v8,experimento,SI,reports/v8_complejidad_idiosincrasias.csv;reports/v8_complejidad_idiosincrasias.json;reports/v8_complejidad_idiosincrasias.md,NO,sin mencion en el notebook
+experiments/v8_12_seleccion_por_grupo.py,v8,experimento,SI,reports/v8_seleccion_por_grupo.csv;reports/v8_seleccion_por_grupo.json;reports/v8_seleccion_por_grupo.md,NO,sin mencion en el notebook
+experiments/v8_13_clasificadores_alternativos.py,v8,experimento,SI,reports/v8_clasificadores_alternativos.csv;reports/v8_clasificadores_alternativos.json;reports/v8_clasificadores_alternativos.md,NO,sin mencion en el notebook
+experiments/v9_01_sensibilidad_fugas.py,v9,experimento,SI,reports/v9_01_sensibilidad_fugas.json;reports/v9_01_sensibilidad_fugas.md,SI,
+experiments/v9_02_prior_shift_em.py,v9,experimento,SI,reports/v9_02_prior_shift_em.csv;reports/v9_02_prior_shift_em.json;reports/v9_02_prior_shift_em.md,SI,
+experiments/v9_03_near_dup_test.py,v9,experimento,SI,reports/v9_03_near_dup_test.csv;reports/v9_03_near_dup_test.json;reports/v9_03_near_dup_test.md,NO,sin mencion en el notebook
+experiments/v9_04_dl_secuencial_fasttext.py,v9,experimento,SI,reports/v9_04_dl_secuencial_fasttext.json;reports/v9_04_dl_secuencial_fasttext.md,SI,
+experiments/v9_05_proyecciones_supervisadas.py,v9,experimento,SI,reports/v9_05_proyecciones_supervisadas.json;reports/v9_05_proyecciones_supervisadas.md,SI,

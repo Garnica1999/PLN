@@ -1,0 +1,16 @@
+Label,Train_Prevalence,Estimated_Test_Prevalence,Shift_Factor,Estimator,Uncertainty,Simulation_Error,Decision_Impact
+HS,0.436952,0.31199,0.714015,"EM de Saerens ponderado, sobre isotonica anidada",sin cuantificar en este experimento,0.020022,PENDIENTE_V11_07
+HS,0.436952,0.35434,0.810936,"EM de Saerens ponderado, sobre isotonica anidada",sin cuantificar en este experimento,0.01367,PENDIENTE_V11_07
+HS,0.436952,0.396726,0.90794,"EM de Saerens ponderado, sobre isotonica anidada",sin cuantificar en este experimento,0.008822,PENDIENTE_V11_07
+HS,0.436952,0.439143,1.005015,"EM de Saerens ponderado, sobre isotonica anidada",sin cuantificar en este experimento,0.005015,PENDIENTE_V11_07
+HS,0.436952,0.481588,1.102152,"EM de Saerens ponderado, sobre isotonica anidada",sin cuantificar en este experimento,0.001956,PENDIENTE_V11_07
+TR,0.300067,0.210419,0.701241,"EM de Saerens ponderado, sobre isotonica anidada",sin cuantificar en este experimento,0.001772,PENDIENTE_V11_07
+TR,0.300067,0.239885,0.799439,"EM de Saerens ponderado, sobre isotonica anidada",sin cuantificar en este experimento,-0.000701,PENDIENTE_V11_07
+TR,0.300067,0.269366,0.897687,"EM de Saerens ponderado, sobre isotonica anidada",sin cuantificar en este experimento,-0.002569,PENDIENTE_V11_07
+TR,0.300067,0.298859,0.995973,"EM de Saerens ponderado, sobre isotonica anidada",sin cuantificar en este experimento,-0.004027,PENDIENTE_V11_07
+TR,0.300067,0.328359,1.094285,"EM de Saerens ponderado, sobre isotonica anidada",sin cuantificar en este experimento,-0.005195,PENDIENTE_V11_07
+AG,0.382333,0.271876,0.711096,"EM de Saerens ponderado, sobre isotonica anidada",sin cuantificar en este experimento,0.015852,PENDIENTE_V11_07
+AG,0.382333,0.309158,0.80861,"EM de Saerens ponderado, sobre isotonica anidada",sin cuantificar en este experimento,0.010762,PENDIENTE_V11_07
+AG,0.382333,0.346487,0.906244,"EM de Saerens ponderado, sobre isotonica anidada",sin cuantificar en este experimento,0.006938,PENDIENTE_V11_07
+AG,0.382333,0.383855,1.003982,"EM de Saerens ponderado, sobre isotonica anidada",sin cuantificar en este experimento,0.003982,PENDIENTE_V11_07
+AG,0.382333,0.42126,1.101814,"EM de Saerens ponderado, sobre isotonica anidada",sin cuantificar en este experimento,0.001649,PENDIENTE_V11_07

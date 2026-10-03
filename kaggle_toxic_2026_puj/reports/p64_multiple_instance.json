@@ -1,0 +1,342 @@
+{
+  "familia": "P64_MULTIPLE_INSTANCE",
+  "naturaleza": "EXPERIMENTO. 3 mecanismos y 2 controles, 0 submissions, 0 Kaggle, 0 holdout, 0 test",
+  "fecha": "2026-09-29T14:15:07+00:00",
+  "experiment_id": "P64-05",
+  "track": "P9-P19-multiple-instance-y-agregador-aprendido",
+  "script": "experiments/p64_05_multiple_instance.py",
+  "pregunta": "una agregacion aprendida de unidades internas del tweet supera a la bolsa de palabras del tweet completo",
+  "por_que_no_es_un_rerun_de_P59_07": "P59-07 cambio la unidad a una ventana de 32 tokens con avance 16 y explico su fracaso por COBERTURA: solo el 9,6 por ciento de las filas tenia mas de una unidad. Aqui la unidad es el segmento por puntuacion, que llega al 50,6 por ciento, 5,29 veces mas. El concepto se prueba con el selector de unidad corregido, y un resultado negativo aqui es sobre el CONCEPTO y no sobre el tamano",
+  "mecanismos": {
+    "MI_seg": "el segmento es la instancia del clasificador, hereda la etiqueta del documento, y el score del documento es el maximo de sus segmentos",
+    "MI_lineal": "el bloque de evidencia y de contribucion, mas los margenes de V03 y la longitud, al LogisticRegression de V03",
+    "MI_arbol": "el mismo bloque a un HistGradientBoosting de profundidad 3, que es lo mas pequeno que puede representar una interaccion entre dos descriptores de evidencia"
+  },
+  "por_que_se_permite_el_brazo_no_lineal": "la regla es pasar primero por LogisticRegression y solo probar un modelo no lineal pequeno si hay evidencia de que la senal existe y un lineal no la alcanza. Esa evidencia esta medida y no supuesta: P64-03 y P64-04 medialos dos bloques por debajo del margen mientras las lecturas distribucionales muestran una estructura interna grande y real. Una sola configuracion, declarada antes, sin busqueda alrededor",
+  "parametros_del_arbol": {
+    "max_depth": 3,
+    "max_iter": 120,
+    "learning_rate": 0.06,
+    "l2_regularization": 1.0,
+    "min_samples_leaf": 20,
+    "random_state": 42
+  },
+  "n_columnas_del_bloque_denso": 88,
+  "columnas": [
+    "ev_HS_seg_max",
+    "ev_HS_seg_min",
+    "ev_HS_seg_media",
+    "ev_HS_seg_mediana",
+    "ev_HS_seg_top2_media",
+    "ev_HS_seg_top3_media",
+    "ev_HS_seg_top3_fraccion",
+    "ev_HS_seg_desviacion",
+    "ev_HS_seg_rango",
+    "ev_HS_seg_entropia",
+    "ev_HS_seg_margen_max",
+    "ev_HS_seg_margen_medio",
+    "ev_HS_evidencia_positiva",
+    "ev_HS_evidencia_negativa",
+    "ev_HS_evidencia_conflicto",
+    "ev_HS_segmentos_en_desacuerdo",
+    "ev_TR_seg_max",
+    "ev_TR_seg_min",
+    "ev_TR_seg_media",
+    "ev_TR_seg_mediana",
+    "ev_TR_seg_top2_media",
+    "ev_TR_seg_top3_media",
+    "ev_TR_seg_top3_fraccion",
+    "ev_TR_seg_desviacion",
+    "ev_TR_seg_rango",
+    "ev_TR_seg_entropia",
+    "ev_TR_seg_margen_max",
+    "ev_TR_seg_margen_medio",
+    "ev_TR_evidencia_positiva",
+    "ev_TR_evidencia_negativa",
+    "ev_TR_evidencia_conflicto",
+    "ev_TR_segmentos_en_desacuerdo",
+    "ev_AG_seg_max",
+    "ev_AG_seg_min",
+    "ev_AG_seg_media",
+    "ev_AG_seg_mediana",
+    "ev_AG_seg_top2_media",
+    "ev_AG_seg_top3_media",
+    "ev_AG_seg_top3_fraccion",
+    "ev_AG_seg_desviacion",
+    "ev_AG_seg_rango",
+    "ev_AG_seg_entropia",
+    "ev_AG_seg_margen_max",
+    "ev_AG_seg_margen_medio",
+    "ev_AG_evidencia_positiva",
+    "ev_AG_evidencia_negativa",
+    "ev_AG_evidencia_conflicto",
+    "ev_AG_segmentos_en_desacuerdo",
+    "loo_HS_loo_max",
+    "loo_HS_loo_min",
+    "loo_HS_loo_rango",
+    "loo_HS_loo_desviacion",
+    "loo_HS_loo_entropia",
+    "loo_HS_loo_concentracion",
+    "loo_HS_loo_positiva",
+    "loo_HS_loo_negativa",
+    "loo_HS_loo_conflicto",
+    "loo_HS_loo_brecha",
+    "loo_HS_loo_cambia_de_signo",
+    "loo_HS_loo_fraccion_implicita",
+    "loo_TR_loo_max",
+    "loo_TR_loo_min",
+    "loo_TR_loo_rango",
+    "loo_TR_loo_desviacion",
+    "loo_TR_loo_entropia",
+    "loo_TR_loo_concentracion",
+    "loo_TR_loo_positiva",
+    "loo_TR_loo_negativa",
+    "loo_TR_loo_conflicto",
+    "loo_TR_loo_brecha",
+    "loo_TR_loo_cambia_de_signo",
+    "loo_TR_loo_fraccion_implicita",
+    "loo_AG_loo_max",
+    "loo_AG_loo_min",
+    "loo_AG_loo_rango",
+    "loo_AG_loo_desviacion",
+    "loo_AG_loo_entropia",
+    "loo_AG_loo_concentracion",
+    "loo_AG_loo_positiva",
+    "loo_AG_loo_negativa",
+    "loo_AG_loo_conflicto",
+    "loo_AG_loo_brecha",
+    "loo_AG_loo_cambia_de_signo",
+    "loo_AG_loo_fraccion_implicita",
+    "margen_HS",
+    "margen_TR",
+    "margen_AG",
+    "n_tokens"
+  ],
+  "protocolo": {
+    "vectorizadores": "los de V03, ajustados dentro de cada pliegue de entrenamiento",
+    "instancias_de_segmento": "los segmentos de ENTRENAMIENTO entrenan el clasificador y los de validacion solo se puntuan",
+    "pseudo_labeling": "ninguno. El segmento hereda la etiqueta de su documento para entrenar, que es multiple-instance learning y no pseudo-labeling, y ningun segmento de validacion recibe etiqueta ni participa de ningun ajuste",
+    "control_de_anchura": "MI_aleatorio, un bloque aleatorio de la misma anchura",
+    "control_del_margen": "V03 mas sus margenes",
+    "confound_de_escala": "el bloque denso se normaliza a la norma media del bloque base",
+    "umbrales": "0,44 / 0,51 / 0,46 congelados, sin reajustar"
+  },
+  "resultados": {
+    "MI_seg": {
+      "corrected_cv": 0.7222777580346693,
+      "folds": [
+        0.7188560481663929,
+        0.723258593016129,
+        0.7209884858401447,
+        0.7214311465447091,
+        0.7271698201583762
+      ],
+      "por_bin": {
+        "CORTA": {
+          "n": 167,
+          "F1": 0.911688,
+          "F1_de_V03": 0.947956,
+          "delta": -0.036269
+        },
+        "MEDIA": {
+          "n": 602,
+          "F1": 0.757254,
+          "F1_de_V03": 0.796405,
+          "delta": -0.039151
+        },
+        "LARGA": {
+          "n": 547,
+          "F1": 0.625453,
+          "F1_de_V03": 0.68335,
+          "delta": -0.057897
+        },
+        "MUY_LARGA": {
+          "n": 167,
+          "F1": 0.51635,
+          "F1_de_V03": 0.560571,
+          "delta": -0.04422
+        }
+      },
+      "rescate": 222,
+      "damage": 622
+    },
+    "MI_lineal": {
+      "corrected_cv": 0.7630276291750445,
+      "folds": [
+        0.7801065036933398,
+        0.773682884042063,
+        0.7691372106474459,
+        0.7308576476322703,
+        0.7606776556776557
+      ],
+      "por_bin": {
+        "CORTA": {
+          "n": 167,
+          "F1": 0.940687,
+          "F1_de_V03": 0.947956,
+          "delta": -0.007269
+        },
+        "MEDIA": {
+          "n": 602,
+          "F1": 0.784789,
+          "F1_de_V03": 0.796405,
+          "delta": -0.011616
+        },
+        "LARGA": {
+          "n": 547,
+          "F1": 0.665539,
+          "F1_de_V03": 0.68335,
+          "delta": -0.017811
+        },
+        "MUY_LARGA": {
+          "n": 167,
+          "F1": 0.558359,
+          "F1_de_V03": 0.560571,
+          "delta": -0.002212
+        }
+      },
+      "rescate": 70,
+      "damage": 143
+    },
+    "MI_arbol": {
+      "corrected_cv": 0.7680427725927054,
+      "folds": [
+        0.7737096019107016,
+        0.7790198593839434,
+        0.7839096450450164,
+        0.737379185712277,
+        0.7648560728420929
+      ],
+      "por_bin": {
+        "CORTA": {
+          "n": 167,
+          "F1": 0.940328,
+          "F1_de_V03": 0.947956,
+          "delta": -0.007628
+        },
+        "MEDIA": {
+          "n": 602,
+          "F1": 0.785011,
+          "F1_de_V03": 0.796405,
+          "delta": -0.011394
+        },
+        "LARGA": {
+          "n": 547,
+          "F1": 0.673178,
+          "F1_de_V03": 0.68335,
+          "delta": -0.010173
+        },
+        "MUY_LARGA": {
+          "n": 167,
+          "F1": 0.556843,
+          "F1_de_V03": 0.560571,
+          "delta": -0.003728
+        }
+      },
+      "rescate": 133,
+      "damage": 159
+    },
+    "MI_aleatorio": {
+      "corrected_cv": 0.751657750924462,
+      "folds": [
+        0.7452890528905289,
+        0.7526847980855136,
+        0.7733942403924757,
+        0.7220774898722636,
+        0.7666145960957281
+      ],
+      "por_bin": {
+        "CORTA": {
+          "n": 167,
+          "F1": 0.938279,
+          "F1_de_V03": 0.947956,
+          "delta": -0.009677
+        },
+        "MEDIA": {
+          "n": 602,
+          "F1": 0.773819,
+          "F1_de_V03": 0.796405,
+          "delta": -0.022586
+        },
+        "LARGA": {
+          "n": 547,
+          "F1": 0.646954,
+          "F1_de_V03": 0.68335,
+          "delta": -0.036396
+        },
+        "MUY_LARGA": {
+          "n": 167,
+          "F1": 0.480878,
+          "F1_de_V03": 0.560571,
+          "delta": -0.079693
+        }
+      },
+      "rescate": 147,
+      "damage": 251
+    },
+    "V03_margen": {
+      "corrected_cv": 0.7586603805512331,
+      "folds": [
+        0.7543440992555093,
+        0.7785674800600173,
+        0.7583319917772359,
+        0.7394852468470513,
+        0.7622391683739282
+      ],
+      "por_bin": {
+        "CORTA": {
+          "n": 167,
+          "F1": 0.933531,
+          "F1_de_V03": 0.947956,
+          "delta": -0.014426
+        },
+        "MEDIA": {
+          "n": 602,
+          "F1": 0.773038,
+          "F1_de_V03": 0.796405,
+          "delta": -0.023367
+        },
+        "LARGA": {
+          "n": 547,
+          "F1": 0.673254,
+          "F1_de_V03": 0.68335,
+          "delta": -0.010096
+        },
+        "MUY_LARGA": {
+          "n": 167,
+          "F1": 0.559192,
+          "F1_de_V03": 0.560571,
+          "delta": -0.001379
+        }
+      },
+      "rescate": 81,
+      "damage": 209
+    }
+  },
+  "brechas": {
+    "mi_seg_contra_anchura": -0.0293799929,
+    "mi_lineal_contra_margen": 0.0043672486,
+    "mi_arbol_contra_margen": 0.009382392,
+    "arbol_contra_lineal": 0.0050151434
+  },
+  "gate": {
+    "delta_min": 0.0015,
+    "pliegues_min": 4,
+    "mejor": "MI_arbol",
+    "delta": -0.0091686799,
+    "pliegues_mejorados": 1,
+    "superado": false
+  },
+  "lectura": "NO_LINEAL_UTIL",
+  "veredicto": "el modelo no lineal mejora al lineal en +0.0050151434 y supera al margen en +0.0093823920, luego la senal existe y es no lineal, aunque no llega al gate de +0.0015",
+  "decision": "COMPLEMENTARY",
+  "experimentos_registrados": 1,
+  "reproducibilidad": {
+    "nivel": "R2",
+    "git_commit": "1c9c738",
+    "seed": 42,
+    "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "corrected_cv": 0.7772114525165721
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

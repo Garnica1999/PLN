@@ -1,0 +1,19 @@
+magnitud,valor
+corrected_cv_V03,0.7772114525165721
+brazo_0_corrected_cv,0.7772647318762402
+brazo_1_corrected_cv,0.7773636094411688
+delta_grafo_puro,9.88775649285456e-05
+delta_vs_V03,0.0001521569245966914
+pliegues_mejorados,2
+folds_brazo_1,0.786608 0.788215 0.791001 0.746941 0.773815
+folds_brazo_0,0.796010 0.795526 0.778860 0.736317 0.780042
+rescate,35
+damage,40
+neto,-5
+cambian,75
+lambda,0.1
+k_vecinos,10
+gate_delta_superado,False
+gate_pliegues_superado,False
+gate_superado,False
+decision,"MARGINAL, y en la practica indistinguible del ruido. La regularizacion por grafo mueve la metrica en +0.0000988776 frente a un gate de +0,003, y el efecto puro del grafo es +0.0000988776 y la dispersion entre pliegues es 0.0441, luego el efecto es 446 veces mas pequeno que el ruido del propio instrumento. El recuento de celdas es rescate 35 contra damage 40, neto -5, con acierto 0.4667 en las 75 celdas que cambian, es decir una moneda al aire. NO se demuestra, NO se convierte en voto kNN para rescatarlo (parrafo 22), y NO se hace rejilla de lambda ni de k. Bootstrap NO ejecutado"

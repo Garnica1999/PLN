@@ -1,0 +1,422 @@
+{
+  "familia": "P64_ESPECIALIZACION_LARGA",
+  "naturaleza": "EXPERIMENTO. 3 candidatos y 2 controles, 0 submissions, 0 Kaggle, 0 holdout, 0 test",
+  "fecha": "2026-09-29T07:26:45+00:00",
+  "experiment_id": "P64-04",
+  "track": "P8-especializacion-larga",
+  "script": "experiments/p64_05_especializacion_larga.py",
+  "pregunta": "los bloques de evidencia funcionan SOLO en LARGA y MUY_LARGA, donde P63 midio que esta el margen residual",
+  "por_que_es_una pregunta_separada": "P64-03 y P64-04 fallaron en el promedio sobre 1483 filas, y ese promedio lo dominan las cortas: CORTA y MUY_LARGA tienen 167 filas cada una, luego un numero global dice casi nada de ningun extremo",
+  "margen_residual_por_rebanada": {
+    "CORTA": 0.0,
+    "MEDIA": 0.0093,
+    "LARGA": 0.0217,
+    "MUY_LARGA": 0.089
+  },
+  "metrica_primaria": "el corrected_cv GLOBAL. Los cortes se heredan congelados de P63 y la decision NO se toma sobre la mejor rebanada, porque adoptar algo que solo ayuda en un estrato es como se entra en una especializacion que no transfiere",
+  "bloques": {
+    "G1_concentracion": {
+      "columnas": [
+        "max",
+        "top2_media",
+        "top3_fraccion",
+        "margen_max"
+      ],
+      "n": 12,
+      "mecanismo": "un segmento domina la decision",
+      "por_que_no_es_el_max_pooling_de_P59": "aqui el max es un RASGO que un modelo lineal pesa, no un agregador que sustituye la prediccion, luego el sesgo al alza que hundio a P59-07 no aplica"
+    },
+    "G2_conflicto": {
+      "columnas": [
+        "concentracion",
+        "conflicto",
+        "cambia_de_signo",
+        "entropia"
+      ],
+      "n": 12,
+      "mecanismo": "la decision descansa en un reparto contradictorio"
+    }
+  },
+  "nombres": {
+    "G1": [
+      "HS_seg_max",
+      "HS_seg_top2_media",
+      "HS_seg_top3_fraccion",
+      "HS_seg_margen_max",
+      "TR_seg_max",
+      "TR_seg_top2_media",
+      "TR_seg_top3_fraccion",
+      "TR_seg_margen_max",
+      "AG_seg_max",
+      "AG_seg_top2_media",
+      "AG_seg_top3_fraccion",
+      "AG_seg_margen_max"
+    ],
+    "G2": [
+      "HS_loo_concentracion",
+      "HS_loo_conflicto",
+      "HS_loo_cambia_de_signo",
+      "HS_loo_entropia",
+      "TR_loo_concentracion",
+      "TR_loo_conflicto",
+      "TR_loo_cambia_de_signo",
+      "TR_loo_entropia",
+      "AG_loo_concentracion",
+      "AG_loo_conflicto",
+      "AG_loo_cambia_de_signo",
+      "AG_loo_entropia"
+    ]
+  },
+  "protocolo": {
+    "bloques_reutilizados": "los de P64-03 y P64-04, ya calculados con los coeficientes de V03 del pliegue de entrenamiento. No se recalcula nada, luego este script no introduce ningun modelo nuevo",
+    "control_de_capacidad": "V03 mas un bloque aleatorio de la anchura conjunta",
+    "control_del_margen": "V03 mas sus margenes, evaluado EN EL MISMO ESTRATO",
+    "confound_de_escala": "el bloque denso se normaliza a norma de fila uno",
+    "umbrales": "0,44 / 0,51 / 0,46 congelados"
+  },
+  "resultados": {
+    "V03_G1": {
+      "corrected_cv": 0.7608159383095066,
+      "folds": [
+        0.7671787664372718,
+        0.7610994554385787,
+        0.7763109960694085,
+        0.7331240188383045,
+        0.7664344082883409
+      ],
+      "por_bin": {
+        "CORTA": {
+          "n": 167,
+          "F1": 0.939792,
+          "F1_de_V03": 0.947956,
+          "delta": -0.008165
+        },
+        "MEDIA": {
+          "n": 602,
+          "F1": 0.780404,
+          "F1_de_V03": 0.796405,
+          "delta": -0.016001
+        },
+        "LARGA": {
+          "n": 547,
+          "F1": 0.668548,
+          "F1_de_V03": 0.68335,
+          "delta": -0.014802
+        },
+        "MUY_LARGA": {
+          "n": 167,
+          "F1": 0.555622,
+          "F1_de_V03": 0.560571,
+          "delta": -0.004949
+        }
+      },
+      "rescate": 81,
+      "damage": 181
+    },
+    "V03_G2": {
+      "corrected_cv": 0.7687139413606506,
+      "folds": [
+        0.7821131854707005,
+        0.7765663736759071,
+        0.7651869544078367,
+        0.7399841606125325,
+        0.780739385987582
+      ],
+      "por_bin": {
+        "CORTA": {
+          "n": 167,
+          "F1": 0.937348,
+          "F1_de_V03": 0.947956,
+          "delta": -0.010608
+        },
+        "MEDIA": {
+          "n": 602,
+          "F1": 0.794218,
+          "F1_de_V03": 0.796405,
+          "delta": -0.002187
+        },
+        "LARGA": {
+          "n": 547,
+          "F1": 0.669537,
+          "F1_de_V03": 0.68335,
+          "delta": -0.013813
+        },
+        "MUY_LARGA": {
+          "n": 167,
+          "F1": 0.554275,
+          "F1_de_V03": 0.560571,
+          "delta": -0.006296
+        }
+      },
+      "rescate": 76,
+      "damage": 121
+    },
+    "V03_ambos": {
+      "corrected_cv": 0.7587037655769205,
+      "folds": [
+        0.778914667768603,
+        0.7604495694690839,
+        0.7662132465209615,
+        0.7233333333333333,
+        0.7648464327944636
+      ],
+      "por_bin": {
+        "CORTA": {
+          "n": 167,
+          "F1": 0.93785,
+          "F1_de_V03": 0.947956,
+          "delta": -0.010107
+        },
+        "MEDIA": {
+          "n": 602,
+          "F1": 0.780008,
+          "F1_de_V03": 0.796405,
+          "delta": -0.016397
+        },
+        "LARGA": {
+          "n": 547,
+          "F1": 0.66103,
+          "F1_de_V03": 0.68335,
+          "delta": -0.02232
+        },
+        "MUY_LARGA": {
+          "n": 167,
+          "F1": 0.55869,
+          "F1_de_V03": 0.560571,
+          "delta": -0.001881
+        }
+      },
+      "rescate": 76,
+      "damage": 175
+    },
+    "V03_random": {
+      "corrected_cv": 0.7691613889669808,
+      "folds": [
+        0.7893957115009748,
+        0.7733206609217981,
+        0.7679326643069612,
+        0.7405743246987885,
+        0.7760180047218125
+      ],
+      "por_bin": {
+        "CORTA": {
+          "n": 167,
+          "F1": 0.937633,
+          "F1_de_V03": 0.947956,
+          "delta": -0.010323
+        },
+        "MEDIA": {
+          "n": 602,
+          "F1": 0.786767,
+          "F1_de_V03": 0.796405,
+          "delta": -0.009638
+        },
+        "LARGA": {
+          "n": 547,
+          "F1": 0.685129,
+          "F1_de_V03": 0.68335,
+          "delta": 0.001779
+        },
+        "MUY_LARGA": {
+          "n": 167,
+          "F1": 0.529416,
+          "F1_de_V03": 0.560571,
+          "delta": -0.031155
+        }
+      },
+      "rescate": 110,
+      "damage": 143
+    },
+    "V03_margen": {
+      "corrected_cv": 0.7661312520165589,
+      "folds": [
+        0.7688570389043375,
+        0.7832395247029393,
+        0.762560125060125,
+        0.749561403508772,
+        0.7663992177260909
+      ],
+      "por_bin": {
+        "CORTA": {
+          "n": 167,
+          "F1": 0.9379,
+          "F1_de_V03": 0.947956,
+          "delta": -0.010056
+        },
+        "MEDIA": {
+          "n": 602,
+          "F1": 0.782453,
+          "F1_de_V03": 0.796405,
+          "delta": -0.013952
+        },
+        "LARGA": {
+          "n": 547,
+          "F1": 0.680556,
+          "F1_de_V03": 0.68335,
+          "delta": -0.002794
+        },
+        "MUY_LARGA": {
+          "n": 167,
+          "F1": 0.559525,
+          "F1_de_V03": 0.560571,
+          "delta": -0.001046
+        }
+      },
+      "rescate": 78,
+      "damage": 168
+    }
+  },
+  "por_estrado": {
+    "CORTA": {
+      "V03_G1": {
+        "n": 167,
+        "F1": 0.939792,
+        "F1_de_V03": 0.947956,
+        "delta": -0.008165
+      },
+      "V03_G2": {
+        "n": 167,
+        "F1": 0.937348,
+        "F1_de_V03": 0.947956,
+        "delta": -0.010608
+      },
+      "V03_ambos": {
+        "n": 167,
+        "F1": 0.93785,
+        "F1_de_V03": 0.947956,
+        "delta": -0.010107
+      },
+      "V03_random": {
+        "n": 167,
+        "F1": 0.937633,
+        "F1_de_V03": 0.947956,
+        "delta": -0.010323
+      },
+      "V03_margen": {
+        "n": 167,
+        "F1": 0.9379,
+        "F1_de_V03": 0.947956,
+        "delta": -0.010056
+      }
+    },
+    "MEDIA": {
+      "V03_G1": {
+        "n": 602,
+        "F1": 0.780404,
+        "F1_de_V03": 0.796405,
+        "delta": -0.016001
+      },
+      "V03_G2": {
+        "n": 602,
+        "F1": 0.794218,
+        "F1_de_V03": 0.796405,
+        "delta": -0.002187
+      },
+      "V03_ambos": {
+        "n": 602,
+        "F1": 0.780008,
+        "F1_de_V03": 0.796405,
+        "delta": -0.016397
+      },
+      "V03_random": {
+        "n": 602,
+        "F1": 0.786767,
+        "F1_de_V03": 0.796405,
+        "delta": -0.009638
+      },
+      "V03_margen": {
+        "n": 602,
+        "F1": 0.782453,
+        "F1_de_V03": 0.796405,
+        "delta": -0.013952
+      }
+    },
+    "LARGA": {
+      "V03_G1": {
+        "n": 547,
+        "F1": 0.668548,
+        "F1_de_V03": 0.68335,
+        "delta": -0.014802
+      },
+      "V03_G2": {
+        "n": 547,
+        "F1": 0.669537,
+        "F1_de_V03": 0.68335,
+        "delta": -0.013813
+      },
+      "V03_ambos": {
+        "n": 547,
+        "F1": 0.66103,
+        "F1_de_V03": 0.68335,
+        "delta": -0.02232
+      },
+      "V03_random": {
+        "n": 547,
+        "F1": 0.685129,
+        "F1_de_V03": 0.68335,
+        "delta": 0.001779
+      },
+      "V03_margen": {
+        "n": 547,
+        "F1": 0.680556,
+        "F1_de_V03": 0.68335,
+        "delta": -0.002794
+      }
+    },
+    "MUY_LARGA": {
+      "V03_G1": {
+        "n": 167,
+        "F1": 0.555622,
+        "F1_de_V03": 0.560571,
+        "delta": -0.004949
+      },
+      "V03_G2": {
+        "n": 167,
+        "F1": 0.554275,
+        "F1_de_V03": 0.560571,
+        "delta": -0.006296
+      },
+      "V03_ambos": {
+        "n": 167,
+        "F1": 0.55869,
+        "F1_de_V03": 0.560571,
+        "delta": -0.001881
+      },
+      "V03_random": {
+        "n": 167,
+        "F1": 0.529416,
+        "F1_de_V03": 0.560571,
+        "delta": -0.031155
+      },
+      "V03_margen": {
+        "n": 167,
+        "F1": 0.559525,
+        "F1_de_V03": 0.560571,
+        "delta": -0.001046
+      }
+    }
+  },
+  "mejor_bloque_en_muy_larga": "V03_ambos",
+  "delta_del_mejor_en_muy_larga": -0.001881,
+  "delta_del_margen_en_muy_larga": -0.001046,
+  "delta_del_aleatorio_en_muy_larga": -0.031155,
+  "gate_global": {
+    "delta_min": 0.0015,
+    "pliegues_min": 4,
+    "delta": -0.0185076869,
+    "pliegues_mejorados": 0,
+    "superado": false
+  },
+  "lectura": "NADA_EN_EL_ESTRATO",
+  "veredicto": "ni V03_ambos ni los demas ganan en la region larga por encima del margen: el mejor es V03_ambos con -0.001881 frente a -0.001046 del margen en el mismo estrato. La hipotesis de la fase queda confirmada como DESCRIPCION y cerrada como REPRESENTACION, y la region larga no es una excepcion que la resuelva: ahi la estructura interna es mas repartida y mas contradictoria, y V03 ya la lleva dentro de su confianza",
+  "decision": "CLOSED. La evidencia no funciona ni donde P63 dijo que estaba el margen",
+  "experimentos_registrados": 1,
+  "reproducibilidad": {
+    "nivel": "R2",
+    "git_commit": "9987634",
+    "seed": 42,
+    "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "corrected_cv": 0.7772114525165721
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

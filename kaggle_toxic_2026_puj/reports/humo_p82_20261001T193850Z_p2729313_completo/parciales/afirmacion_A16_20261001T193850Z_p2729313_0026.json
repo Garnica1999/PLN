@@ -1,0 +1,25 @@
+{
+  "marca_corrida": "20261001T193850Z_p2729313",
+  "resultado": {
+    "bloque": 3,
+    "coste_segundos": 9e-06,
+    "descripcion": "las arquitecturas se reportan por separado, sin agregado",
+    "detalle": {
+      "coincide_con_la_enmienda": false,
+      "fuente_de_la_referencia": "docs/p82_enmienda_1.md sha256 53c8555d1a5ef0fcebb06c4a6f061acf56e568d95242e907387f0af1b03420d8",
+      "n_filas": 5,
+      "n_filas_agregadas": 0,
+      "parametros_atencion_real_b2_con_sesgos": 280,
+      "parametros_atencion_real_b2_sin_sesgos": 264,
+      "preregistrado": 8256,
+      "referencia_enmienda_1": 16448
+    },
+    "estado": "CONFIRMADO",
+    "exito": true,
+    "id": "A16",
+    "naturaleza": "CONFIRMAR",
+    "stop": false,
+    "tolerancia": "cinco filas, cero filas agregadas, conteo de parametros publicado",
+    "traza": ""
+  }
+}

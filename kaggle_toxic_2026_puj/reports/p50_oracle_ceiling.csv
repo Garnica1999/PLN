@@ -1,0 +1,6 @@
+metrica,valor,etiqueta,rescate,damage,net,delta,fuente,nota
+macro_f1_V03,0.7772114525,macro,,,,,features/oof_v03_final.npz,corrected_cv canonico
+macro_f1_oracle,0.9870178614,macro,,,,0.2098064089,calculado,"USA y_true, no es modelo, no es evaluacion valida"
+macro_f1_oracle,0.9930715935,HS,307,0,307,0.2313823024,calculado,V03 en esta etiqueta = 0.7616892911
+macro_f1_oracle,0.9865168539,TR,152,0,152,0.1707865169,calculado,V03 en esta etiqueta = 0.8157303371
+macro_f1_oracle,0.9814651368,AG,256,0,256,0.2272504074,calculado,V03 en esta etiqueta = 0.7542147294

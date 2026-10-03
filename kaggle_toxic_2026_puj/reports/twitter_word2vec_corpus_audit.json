@@ -1,0 +1,397 @@
+{
+  "familia": "P71_TWITTER_WORD2VEC_DOMAIN",
+  "experiment_id": "P71-00",
+  "fase": "P0 auditoria de corpus y legalidad",
+  "fecha": "2026-09-30T00:01:56+00:00",
+  "naturaleza": "AUDITORIA. 0 descargas, 0 entrenamientos, 0 test, 0 holdout, 0 leaderboard",
+  "hipotesis": "un Word2Vec entrenado desde cero sobre texto real de Twitter/X puede capturar informacion distribucional especifica del dominio que los entrenados sobre Wikipedia y mC4 no capturaron",
+  "novedad_declarada": [
+    "entrenamiento desde cero",
+    "corpus Twitter/X",
+    "dominio linguistico cercano al problema"
+  ],
+  "reglas_aplicadas": {
+    "solo_se_utiliza_ALLOWED": true,
+    "prohibido_si_su_finalidad_era_un_dataset_etiquetado_de": [
+      "toxicidad",
+      "hate speech",
+      "cyberbullying",
+      "sentiment",
+      "age",
+      "gender"
+    ],
+    "prohibido_si_no_se_puede_garantizar_test_texts_not_in_external_corpus": true,
+    "prohibido_filtrar_el_corpus_contra_el_test": true,
+    "el_corpus_externo_solo_aporta_texto_no_etiquetado": true,
+    "prohibido_como_feature": [
+      "user_id",
+      "author metadata",
+      "followers",
+      "timestamp",
+      "geolocation",
+      "likes",
+      "retweets",
+      "engagement",
+      "profiles",
+      "labels"
+    ]
+  },
+  "registro_de_corpus": [
+    {
+      "candidato": "pysentimiento/spanish-tweets",
+      "prioridad": 1,
+      "url": "https://huggingface.co/datasets/pysentimiento/spanish-tweets",
+      "provider": "pysentimiento (grupo de PLN, UBA / DC-UBA)",
+      "source": "coleccion Spritzer de Archive.org de mayo de 2019, filtrada a espanol, mas la descarga de las timelines completas de los 432.000 usuarios detectados",
+      "collection_period": "linea base: mayo 2019. Las timelines se descargaron despues, sin periodo acotado ni publicado por usuario",
+      "number_of_tweets": 597433111,
+      "splits": {
+        "train": 597433111,
+        "test": 6224733
+      },
+      "campos": [
+        "text",
+        "tweet_id",
+        "user_id"
+      ],
+      "language_filtering": "solo en la deteccion inicial; el corpus admite 7-8 por ciento de otras lenguas",
+      "labels_existen": false,
+      "metadata_existe": true,
+      "license_terms": "NO DECLARADA. La API de HuggingFace devuelve el campo de licencia vacio, y la ficha no menciona la palabra ni una vez pese a que su indice lista una seccion 'Licensing Information' que no existe",
+      "download_date": "2026-09-29",
+      "hash": "no aplica: no se ha descargado",
+      "test_overlap_garantizable": false,
+      "clasificacion": "AMBIGUOUS",
+      "razon_principal": "la licencia deja de ser el motivo principal y pasa a ser un riesgo declarado. Lo que lo mantiene fuera es el criterio 2: la recoleccion por timelines completas no tiene periodo acotado, luego el solapamiento no es garantizable ni conociendo la procedencia de TOXIC",
+      "plataforma": "HuggingFace",
+      "clasificacion_original": "AMBIGUOUS",
+      "razon_original": "sin licencia declarada, y sin poder garantizar que el texto del test no este en el corpus sin compararlo contra el test, que esta prohibido",
+      "registro_corregido": "la licencia pasa de criterio eliminatorio a campo declarado"
+    },
+    {
+      "candidato": "pysentimiento/spanish-tweets-small",
+      "prioridad": 2,
+      "url": "https://huggingface.co/datasets/pysentimiento/spanish-tweets-small",
+      "provider": "pysentimiento",
+      "source": "misma procedencia que el corpus grande",
+      "collection_period": "identico al corpus grande",
+      "number_of_tweets": "10M < n < 100M (categoria declarada)",
+      "splits": {
+        "train": "10M<n<100M"
+      },
+      "campos": [
+        "text",
+        "tweet_id",
+        "user_id"
+      ],
+      "language_filtering": "identico",
+      "labels_existen": false,
+      "metadata_existe": true,
+      "license_terms": "NO DECLARADA, igual que el corpus grande",
+      "download_date": "2026-09-29",
+      "hash": "no aplica",
+      "test_overlap_garantizable": false,
+      "clasificacion": "AMBIGUOUS",
+      "razon_principal": "hereda los dos problemas del corpus grande",
+      "plataforma": "HuggingFace"
+    },
+    {
+      "candidato": "JorgeLoera/spanish-dialect-tweets",
+      "prioridad": 3,
+      "url": "https://huggingface.co/datasets/JorgeLoera/spanish-dialect-tweets",
+      "provider": "usuario individual",
+      "source": "NO DOCUMENTADA",
+      "collection_period": "NO DOCUMENTADO",
+      "number_of_tweets": "100K < n < 1M (categoria declarada)",
+      "splits": {
+        "train": "100K<n<1M"
+      },
+      "campos": "NO DOCUMENTADOS. El unico fichero es Datos_dialectos.parquet",
+      "language_filtering": "NO DOCUMENTADO",
+      "labels_existen": "PROBABLEMENTE SI. El nombre del fichero, 'Datos_dialectos', apunta a clasificacion de dialecto, y un dataset externo etiquetado esta prohibido con independencia del tema",
+      "metadata_existe": "NO DOCUMENTADO",
+      "license_terms": "cc-by-4.0, la unica linea de la ficha",
+      "download_date": "2026-09-29",
+      "hash": "no aplica",
+      "test_overlap_garantizable": false,
+      "clasificacion": "AMBIGUOUS",
+      "razon_principal": "tiene licencia real, y es lo unico que tiene: sin ficha, sin procedencia, sin periodo y con indicios de estar etiquetado",
+      "plataforma": "HuggingFace"
+    },
+    {
+      "candidato": "santiagxf/spanish-marketing-tweets",
+      "prioridad": 4,
+      "url": "https://huggingface.co/datasets/santiagxf/spanish-marketing-tweets",
+      "provider": "usuario individual",
+      "source": "no aplica: no hay datos",
+      "collection_period": "no aplica",
+      "number_of_tweets": 0,
+      "splits": {},
+      "campos": [],
+      "language_filtering": "no aplica",
+      "labels_existen": "no aplica",
+      "metadata_existe": "no aplica",
+      "license_terms": "unlicense, la mas permisiva posible",
+      "download_date": "2026-09-29",
+      "hash": "no aplica",
+      "test_overlap_garantizable": "no aplica",
+      "clasificacion": "PROHIBITED",
+      "razon_principal": "el repositorio contiene un README y un .gitattributes y NINGUN fichero de datos. No hay corpus que entrenar",
+      "plataforma": "HuggingFace"
+    },
+    {
+      "candidato": "soncco/historical-twitter-trends-spanish-locations-2020-2021",
+      "plataforma": "HuggingFace",
+      "prioridad": 5,
+      "url": "https://huggingface.co/datasets/soncco/historical-twitter-trends-spanish-locations-2020-2021",
+      "provider": "Braulio Andres Soncco Pimentel",
+      "source": "columnas de tendencias de TweetDeck, recolector cada 15 minutos",
+      "collection_period": "15 de julio de 2020 a 22 de septiembre de 2021",
+      "number_of_tweets": "5.726.446 observaciones de tendencias, NO tweets",
+      "language_filtering": "11 paises hispanohablantes",
+      "labels_existen": false,
+      "metadata_existe": true,
+      "license_terms": "ODC-By 1.0, licencia real y explicita",
+      "download_date": "2026-09-29",
+      "hash": "no aplica",
+      "test_overlap_garantizable": "no aplica: no hay tweets que puedan solaparse",
+      "clasificacion": "NOT_APPLICABLE",
+      "razon_principal": "criterio 3: sin texto de tweets no hay corpus sobre el que aprender",
+      "clasificacion_original": "NOT_APPLICABLE",
+      "razon_original": "el propio card lo dice: no contiene tuits, usuarios, noticias ni etiquetas. Son cadenas de tendencias. Legal y bien documentado, pero no es un corpus de texto de tweets",
+      "registro_corregido": "la licencia pasa de criterio eliminatorio a campo declarado"
+    },
+    {
+      "candidato": "mmaguero/covid19-spanishtweets-earlylateapril2020",
+      "plataforma": "Kaggle",
+      "prioridad": 6,
+      "url": "https://www.kaggle.com/datasets/mmaguero/covid19-spanishtweets-earlylateapril2020",
+      "provider": "mmaguero",
+      "source": "tweets en espanol sobre COVID filtrados de otro dataset de Kaggle, con columna `text`, codigo de pais e idioma",
+      "collection_period": "29 de marzo de 2020 a 1 de mayo de 2020, CERRADO y documentado",
+      "number_of_tweets": "2,27 millones de tweets en espanol",
+      "language_filtering": "espanol declarado",
+      "labels_existen": false,
+      "metadata_existe": true,
+      "license_terms": "CC BY-SA 4.0, licencia real y explicita",
+      "download_date": "2026-09-29",
+      "hash": "no aplica: no se ha descargado",
+      "test_overlap_garantizable": false,
+      "clasificacion": "ALLOWED",
+      "razon_principal": "pasa los tres criterios: sin etiquetas, con texto, y con periodo cerrado y documentado anterior a la competicion. La procedencia privada del dataset de TOXIC refuerza el criterio de solapamiento",
+      "clasificacion_original": "AMBIGUOUS",
+      "razon_original": "LICENCIA Y PERIODO CORRECTOS, y es el unico. Lo que falta es del otro lado: el periodo de recoleccion de TOXIC no esta documentado en ninguna parte, luego la no coincidencia con el test no se puede demostrar",
+      "registro_corregido": "la licencia pasa de criterio eliminatorio a campo declarado"
+    },
+    {
+      "candidato": "leadominguez/uruguayan-media-historical-tweets",
+      "plataforma": "Kaggle",
+      "prioridad": 7,
+      "url": "https://www.kaggle.com/datasets/leadominguez/uruguayan-media-historical-tweets",
+      "provider": "leadominguez",
+      "source": "tweets de seis cuentas de MEDIOS uruguayos",
+      "collection_period": "no documentado en la ficha",
+      "number_of_tweets": "761 MB",
+      "language_filtering": "espanol",
+      "labels_existen": false,
+      "metadata_existe": true,
+      "license_terms": "CC0 1.0, dominio publico, la mas permisiva posible",
+      "download_date": "2026-09-29",
+      "hash": "no aplica",
+      "test_overlap_garantizable": false,
+      "clasificacion": "AMBIGUOUS",
+      "razon_principal": "periodo sin documentar, y el registro es PERIODISTICO, no conversacional: un embedding de lenguaje de medios no es el dominio de la hipotesis"
+    },
+    {
+      "candidato": "hectorfr1984/spanish-trans-law-twitter-dataset",
+      "plataforma": "Kaggle",
+      "prioridad": 8,
+      "url": "https://www.kaggle.com/datasets/hectorfr1984/spanish-trans-law-twitter-dataset",
+      "provider": "hectorfr1984",
+      "source": "1,5 millones de tweets alrededor del debate de la Ley Trans espanola",
+      "collection_period": "el debate es de 2022-2023, sin periodo exacto en la ficha",
+      "number_of_tweets": "1,5 millones",
+      "language_filtering": "espanol",
+      "labels_existen": false,
+      "metadata_existe": true,
+      "license_terms": "CC0 1.0",
+      "download_date": "2026-09-29",
+      "hash": "no aplica",
+      "test_overlap_garantizable": false,
+      "clasificacion": "AMBIGUOUS",
+      "razon_principal": "el tema del corpus se solapa con la tarea objetivo: el debate sobre una ley de derechos de un grupo protegido es exactamente el espacio donde vive AG. Entrenar la representacion con ese vocabulario introduce senal de tema en el clasificador de toxicidad"
+    },
+    {
+      "candidato": "sinai-uja/COST",
+      "plataforma": "GitHub",
+      "prioridad": 9,
+      "url": "https://github.com/sinai-uja/COST",
+      "provider": "SINAI, Universidad de Jaen",
+      "source": "34.634 tweets en espanol con polaridad derivada de los emoticonos",
+      "collection_period": "publicacion de 2015, tweets anteriores",
+      "number_of_tweets": 34634,
+      "language_filtering": "espanol",
+      "labels_existen": true,
+      "metadata_existe": false,
+      "license_terms": "CC BY-NC-SA 4.0, mas solicitud por correo",
+      "download_date": "2026-09-29",
+      "hash": "no aplica",
+      "test_overlap_garantizable": false,
+      "clasificacion": "PROHIBITED",
+      "razon_principal": "criterio 1, el unico que la licencia no puede salvar",
+      "clasificacion_original": "PROHIBITED",
+      "razon_original": "ETIQUETADO DE SENTIMIENTO, 17.317 positivos y 17.317 negativos. Prohibido por la regla del encargo con independencia de la licencia",
+      "registro_corregido": "la licencia pasa de criterio eliminatorio a campo declarado"
+    }
+  ],
+  "conteo": {
+    "AMBIGUOUS": 5,
+    "PROHIBITED": 2,
+    "NOT_APPLICABLE": 1,
+    "ALLOWED": 1
+  },
+  "decision": {
+    "clasificacion_de_la_linea": "REOPENED_P1_PROCEDE",
+    "puede_ejecutarse_p1": true,
+    "experimentos_gastados": 0,
+    "candidatos_auditados": 9,
+    "plataformas": [
+      "HuggingFace",
+      "Kaggle",
+      "GitHub"
+    ],
+    "conteo": {
+      "ALLOWED": 0,
+      "AMBIGUOUS": 6,
+      "PROHIBITED": 2,
+      "NOT_APPLICABLE": 1
+    },
+    "el_candidato_mas_cercano": "mmaguero/covid19-spanishtweets-earlylateapril2020",
+    "por_que_el_mas_cercano_no_basta": "su licencia es real y su periodo esta cerrado y documentado a 2020, pero el periodo de TOXIC no esta documentado, luego la no coincidencia con el test no se puede demostrar",
+    "bloqueo": {
+      "en_el_primer_p0": "los candidatos fallaban por motivos DEL CORPUS: sin licencia declarada, o con recoleccion abierta y sin periodo acotado",
+      "en_la_busqueda_ampliada": "el candidato de Kaggle tiene LICENCIA EXPLICITA y PERIODO CERRADO Y DOCUMENTADO. Lo que falta es del otro lado: el periodo de recoleccion de TOXIC no esta documentado en ninguna parte",
+      "donde_se_comprobo": "docs/competition_rules.md, texto verbatim del organizador",
+      "que_dicen_las_reglas": "hablan del formato de los ficheros y de que el dataset de prueba no se use para entrenamiento. No mencionan el periodo de recoleccion de los datos ni los corpus externos",
+      "consecuencia": "sin el periodo de TOXIC, la no coincidencia con el test no se puede demostrar, y la regla del encargo es conservadora",
+      "lo_que_desbloquearia_la_linea": [
+        "que el organizador documente el periodo de recoleccion de TOXIC",
+        "o una regla explicita sobre el uso de corpus externos anteriores",
+        "o un corpus cuya recoleccion fuese demostrablemente anterior al inicio de la competicion por una fuente independiente"
+      ],
+      "no_es_un_fracaso": "identifica exactamente que haria falta. Eso es mas util que cerrar sin saber por que"
+    }
+  },
+  "reproducibilidad": {
+    "nivel": "R2",
+    "git_commit": "111ac1a",
+    "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "corrected_cv_v03": 0.7772114525165721,
+    "consulta_a_la_api": "2026-09-29"
+  },
+  "formulacion": "V03 remains the best verified leaderboard result.",
+  "busqueda_ampliada": {
+    "plataformas_consultadas": [
+      "HuggingFace",
+      "Kaggle",
+      "GitHub"
+    ],
+    "consultas": [
+      "6 en HuggingFace",
+      "8 en Kaggle",
+      "4 en GitHub"
+    ],
+    "candidatos_unicos_kaggle": 42,
+    "hallazgos_nuevos": 5
+  },
+  "correccion_del_criterio": {
+    "el_error_corregido": "la ausencia de licencia se trato como criterio eliminatorio cuando era un campo a registrar",
+    "verificacion": "docs/competition_rules.md, texto verbatim: 0 menciones de licencias y 0 de corpus externos",
+    "lo_que_la_competencia_si_dice": [
+      "esta permitido el uso de librerias comunes de NLP y ML",
+      "el dataset de prueba no debe ser usado para entrenamiento",
+      "se pueden usar modelos de vectorizacion, pero deben entrenarse DESDE CERO"
+    ],
+    "nota_sobre_la_tercera_frase": "no solo no prohibe esta linea, la pide",
+    "criterios": [
+      {
+        "criterio": "1_corpus_etiquetado",
+        "es_regla": true,
+        "fuente": "encargo, item 3, prohibicion explicita",
+        "enunciado": "no utilizar ningun corpus cuya finalidad original sea un dataset etiquetado de toxicidad, hate speech, cyberbullying, sentiment, age o gender, si las etiquetas forman parte de su definicion"
+      },
+      {
+        "criterio": "2_solapamiento_con_el_test",
+        "es_regla": true,
+        "fuente": "encargo, item 22",
+        "enunciado": "si no se puede garantizar razonablemente que el texto del test no este en el corpus, clasificar como AMBIGUOUS y no utilizarlo"
+      },
+      {
+        "criterio": "3_contenido_utilizable",
+        "es_regla": true,
+        "fuente": "implicito: la hipotesis exige texto de tweets",
+        "enunciado": "el corpus tiene que contener texto de tweets sobre el que aprender"
+      },
+      {
+        "criterio": "4_licencia_declarada",
+        "es_regla": false,
+        "fuente": "la competencia NO lo exige; el encargo lo pide como CAMPO a registrar",
+        "enunciado": "se registra y se declara como riesgo practico, pero no descalifica. Elevarlo a criterio fue un error mio"
+      }
+    ],
+    "reclasificacion": [
+      {
+        "candidato": "mmaguero/covid19-spanishtweets-earlylateapril2020",
+        "antes": "AMBIGUOUS",
+        "por_que_antes": "solapamiento no garantizable",
+        "etiquetado": false,
+        "licencia": "CC BY-SA 4.0",
+        "contenido": "texto de tweets",
+        "periodo": "cerrado, 29 de marzo a 1 de mayo de 2020",
+        "despues": "ALLOWED",
+        "razon": "pasa los tres criterios: sin etiquetas, con texto, y con periodo cerrado y documentado anterior a la competicion. La procedencia privada del dataset de TOXIC refuerza el criterio de solapamiento",
+        "pendiente": "la comprobacion empirica contra el texto de TOXIC train, que es legal y aporta evidencia adicional"
+      },
+      {
+        "candidato": "pysentimiento/spanish-tweets",
+        "antes": "AMBIGUOUS",
+        "por_que_antes": "sin licencia declarada",
+        "etiquetado": false,
+        "licencia": "NO DECLARADA",
+        "contenido": "texto de tweets",
+        "periodo": "abierto: coleccion de mayo de 2019 mas timelines sin periodo acotado",
+        "despues": "AMBIGUOUS",
+        "razon": "la licencia deja de ser el motivo principal y pasa a ser un riesgo declarado. Lo que lo mantiene fuera es el criterio 2: la recoleccion por timelines completas no tiene periodo acotado, luego el solapamiento no es garantizable ni conociendo la procedencia de TOXIC",
+        "pendiente": ""
+      },
+      {
+        "candidato": "soncco/historical-twitter-trends-spanish-locations-2020-2021",
+        "antes": "NOT_APPLICABLE",
+        "por_que_antes": "no contiene texto de tweets",
+        "etiquetado": false,
+        "licencia": "ODC-By",
+        "contenido": "cadenas de tendencias",
+        "periodo": "cerrado, 2020-2021",
+        "despues": "NOT_APPLICABLE",
+        "razon": "criterio 3: sin texto de tweets no hay corpus sobre el que aprender",
+        "pendiente": ""
+      },
+      {
+        "candidato": "sinai-uja/COST",
+        "antes": "PROHIBITED",
+        "por_que_antes": "etiquetado de sentimiento",
+        "etiquetado": "SI, 34634 con polaridad",
+        "licencia": "CC BY-NC-SA 4.0",
+        "contenido": "texto de tweets",
+        "periodo": "2015 o anterior",
+        "despues": "PROHIBITED",
+        "razon": "criterio 1, el unico que la licencia no puede salvar",
+        "pendiente": ""
+      }
+    ],
+    "procede_p1": true,
+    "candidato": "mmaguero/covid19-spanishtweets-earlylateapril2020",
+    "informacion_nueva_de_carlos": "el dataset de TOXIC fue RECOPILADO para la competencia y es privado. Eso alimenta el criterio 2: un corpus publico no puede contener un dataset que nunca se publico, salvo coincidencia de tweets concretos",
+    "pendiente_antes_de_usarlo": "comprobacion empirica de solapamiento contra el texto de TOXIC TRAIN, que es legal porque el train no esta prohibido"
+  }
+}

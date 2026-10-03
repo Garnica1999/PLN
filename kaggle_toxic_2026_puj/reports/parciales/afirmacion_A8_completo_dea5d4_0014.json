@@ -1,0 +1,19 @@
+{
+  "marca_corrida": "completo_dea5d4",
+  "resultado": {
+    "bloque": 8,
+    "coste_segundos": 0.000189,
+    "descripcion": "las seis magnitudes de la pregunta 1 medidas y publicadas",
+    "detalle": {
+      "error_mensaje": "A8: comprobaciones falsas ['los_dos_brazos_estan_medidos']",
+      "error_tipo": "AssertionError"
+    },
+    "estado": "ERROR",
+    "exito": false,
+    "id": "A8",
+    "naturaleza": "CONFIRMAR",
+    "stop": false,
+    "tolerancia": "seis magnitudes por brazo, sin NaN",
+    "traza": "AssertionError: A8: comprobaciones falsas ['los_dos_brazos_estan_medidos'] @ evaluar:1370 | <lambda>:7369 | afirmacion_a8:3352 | todo_verdadero:1252"
+  }
+}

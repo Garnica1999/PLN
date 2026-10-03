@@ -1,0 +1,2 @@
+Artefacto,Linea_del_plan,Estado,Motivo_de_vacio,Donde_esta_el_contenido_real
+v11_error_intersection.csv,transversal,VACIO CON MOTIVO DOCUMENTADO,"La interseccion de errores es una medida entre DOS o mas candidatos, y en v11 solo hay uno vivo, V03. La interseccion de un conjunto consigo mismo es el propio conjunto, luego la tabla seria trivial y sin contenido informativo","no aplica, no hay segundo candidato con el que intersectar"

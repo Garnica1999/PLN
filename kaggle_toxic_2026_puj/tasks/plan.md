@@ -50,3 +50,73 @@ de features (-0.009 a -0.032).
 Una linea se cierra cuando la hipotesis fue probada, las variantes razonables
 fueron evaluadas, no hay mejora y el resultado es estable (documentado en
 RUNLOG + experiments.csv + DECISIONS).
+
+## P80 - Auditoria del entrenador Word2Vec (Fase 1 del plan maestro p80_p82)
+
+Estado: PRE-REGISTRADO, NO EJECUTADO. Se anade al final de este fichero; lo
+anterior no se modifica. Plan maestro: `/home/carlos/.opencode/plan/p80_p82_auditoria_w2v_rnn_bayesiano.md`,
+Fase 1. Pre-registro: `docs/p80_preregistro_auditoria_w2v.md`.
+
+### Pregunta
+
+Esta bien entrenado el Word2Vec 100d congelado, o su trainer tiene defectos
+que lo invalidan como representacion reutilizable? Se responde con AUDITORIA
+pura: cero entrenamientos, cero cambios en el artefacto.
+
+### Fijado antes de ejecutar
+
+- 19 afirmaciones numeradas (A1 a A19), cada una con tolerancia, criterio de
+  exito, criterio de fallo y marca de STOP. Tabla de Naturaleza: CONFIRMAR,
+  REFUTAR o NO APLICABLE POR CONSTRUCCION.
+- Hallazgos cubiertos: H1 ratio 1/K exacto de la loss y del gradiente (A1-A5),
+  H2 desfase de semillas del scheduler leido por AST sin heuristica de
+  encabezado (A6-A8), H3 identidad de la loss con el signo correcto y control
+  negativo (A9-A10), H4 matriz de salida no reconstruible y cifras absolutas
+  que no son evidencia (A11-A13), H5 pooling y epoca de los BiGRU (A14),
+  H6 padding enmascarado despues de la GRU con umbral fijado (A15-A16),
+  H7 DL-03 con todo train sin excluir el holdout v2 (A17-A19).
+- A5 retira la cota [1/K, 1] sobre la razon de la norma total del gradiente:
+  P79 la afirmo sin demostrarla y su propia medida del artefacto la incumple
+  (0.08033795 con K=10, por debajo de 0.1).
+- A16 fija el unico umbral que puede cambiar un veredicto: diferencia relativa
+  1e-3 entre el relleno a longitud real y el relleno al maximo de tanda.
+- Formulacion literal obligatoria: `V03 remains the best verified leaderboard result.`
+  Prohibido afirmar que Word2Vec sea mejor que V03.
+
+### Alcance de lectura
+
+Lee: `p71_04`, `p71_08`, `p72_01`, `v9_04`, `v10_11`, `11_dl_desde_coro.py`,
+`reports/p79_auditoria_sgns.json` (contraste, no evidencia),
+`reports/dl_desde_cero_resultados.json`, los informes de procedencia del
+congelado, las primeras 2000 lineas del corpus tokenizado, y de
+`config/holdout_v2.json` SOLO los dos recuentos de filas.
+
+No lee: test, ninguna particion del holdout, la lista de ids del holdout,
+leaderboard, submissions, el parquet de features, ni el OOF de V03.
+
+El artefacto congelado se abre solo en lectura, con sha256, `st_size` y
+`st_mtime_ns` comprobados antes de la primera lectura y despues de la ultima.
+sha256 declarado: `302c994d13b75f8f5fbd440eea2c4f4113997e2581524021923b92f8244d705a`.
+
+### Secuencia
+
+1. P80.1 Pre-registro escrito, verificado en ASCII byte a byte y commiteado.
+   Gate 1: sin commit no se ejecuta.
+2. P80.2 `experiments/p80_01_auditoria_w2v.py`, script unico y completo.
+3. P80.3 Revision de codigo por `ml-reviewer` (5 ejes ML), OBLIGATORIA, con
+   atencion a replicacion circular, comparaciones con el signo mal puesto, uso
+   de una matriz que no existe y aserciones que no abortan. Gate 3: lint OK,
+   sin leakage, venv correcto.
+4. P80.4 Ejecucion por `ml-trainer`, veredicto por hallazgo, y correccion de
+   las tres afirmaciones erroneas de P79 en documento NUEVO. P79 no se edita.
+5. P80.5 Dictamenes de `dl-specialist`, `nlp-specialist`, `ml-reviewer` y
+   `kaggle-specialist`, en paralelo, registrados como dictamenes. Si contradicen
+   a los datos, ganan los datos y se documenta por que.
+6. P80.6 Gate 4 cerrado y actualizados DECISIONS, RUNLOG y PROJECT_STATE.
+
+### Decision que P80 desbloquea, y solo si los datos la dan
+
+Si H5 y H6 invalidan los BiGRU previos, la via RNN se cierra con evidencia y
+no se abre P81. Si son reinterpretables y H1 deja margen real en el vector, se
+pre-registra P81 con early stopping estrictamente anidado y relleno correcto,
+sin atencion. El gap a V03 es de 0.117 y son horas de GPU: lo decide Carlos.

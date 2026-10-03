@@ -1,0 +1,125 @@
+{
+  "familia": "P62_TECHO_CORTOS",
+  "naturaleza": "DIAGNOSTICO. 0 experimentos, 0 modelos, 0 submissions, 0 Kaggle, 0 holdout, 0 test. No se entrena nada",
+  "fecha": "2026-09-29T05:45:54+00:00",
+  "script": "experiments/p62_10_techo_cortos.py",
+  "pregunta": "el fallo de V03 en los tweets cortos es un techo de informacion, o queda margen",
+  "definicion_de_la_region": {
+    "max_tokens": 6,
+    "cuando_se_declaro": "en la EDA linguistica de P62, antes de que existiera ningun candidato, y aqui se reutiliza sin re-recortar"
+  },
+  "metodo": [
+    "AUC de la puntuacion de V03 DENTRO de cada region, positivos contra negativos, con la definicion de rangos implementada aqui para no depender de una libreria",
+    "mejor F1 alcanzable moviendo SOLO el corte, recorriendo las puntuaciones observadas, que es el techo de cualquier funcion monotona de la puntuacion",
+    "techo de grupo por mayoria dentro de los grupos de casi duplicados, que es el limite duro y la unica evidencia de etiqueta contradictoria"
+  ],
+  "por_region": {
+    "HS": {
+      "corta": {
+        "n": 136,
+        "n_positivos": 94,
+        "n_negativos": 42,
+        "F1_de_V03": 0.941176,
+        "tasa_de_error": 0.080882,
+        "tasa_de_error_de_alta_confianza": 0.058824,
+        "AUC_dentro_de_la_region": 0.961499,
+        "mejor_F1_alcanzable_moviendo_el_corte": 0.941799,
+        "corte_optimo": 0.402695,
+        "distancia_de_V03_al_techo": 0.000622
+      },
+      "larga": {
+        "n": 1347,
+        "n_positivos": 554,
+        "n_negativos": 793,
+        "F1_de_V03": 0.732221,
+        "tasa_de_error": 0.226429,
+        "tasa_de_error_de_alta_confianza": 0.134373,
+        "AUC_dentro_de_la_region": 0.850786,
+        "mejor_F1_alcanzable_moviendo_el_corte": 0.741235,
+        "corte_optimo": 0.404092,
+        "distancia_de_V03_al_techo": 0.009014
+      }
+    },
+    "TR": {
+      "corta": {
+        "n": 136,
+        "n_positivos": 84,
+        "n_negativos": 52,
+        "F1_de_V03": 0.970414,
+        "tasa_de_error": 0.036765,
+        "tasa_de_error_de_alta_confianza": 0.029412,
+        "AUC_dentro_de_la_region": 0.987179,
+        "mejor_F1_alcanzable_moviendo_el_corte": 0.97076,
+        "corte_optimo": 0.460876,
+        "distancia_de_V03_al_techo": 0.000346
+      },
+      "larga": {
+        "n": 1347,
+        "n_positivos": 361,
+        "n_negativos": 986,
+        "F1_de_V03": 0.779473,
+        "tasa_de_error": 0.11804,
+        "tasa_de_error_de_alta_confianza": 0.079436,
+        "AUC_dentro_de_la_region": 0.924168,
+        "mejor_F1_alcanzable_moviendo_el_corte": 0.785124,
+        "corte_optimo": 0.498356,
+        "distancia_de_V03_al_techo": 0.005651
+      }
+    },
+    "AG": {
+      "corta": {
+        "n": 136,
+        "n_positivos": 85,
+        "n_negativos": 51,
+        "F1_de_V03": 0.931818,
+        "tasa_de_error": 0.088235,
+        "tasa_de_error_de_alta_confianza": 0.073529,
+        "AUC_dentro_de_la_region": 0.943022,
+        "mejor_F1_alcanzable_moviendo_el_corte": 0.931818,
+        "corte_optimo": 0.49894,
+        "distancia_de_V03_al_techo": 0.0
+      },
+      "larga": {
+        "n": 1347,
+        "n_positivos": 482,
+        "n_negativos": 865,
+        "F1_de_V03": 0.721346,
+        "tasa_de_error": 0.196733,
+        "tasa_de_error_de_alta_confianza": 0.115813,
+        "AUC_dentro_de_la_region": 0.856559,
+        "mejor_F1_alcanzable_moviendo_el_corte": 0.724638,
+        "corte_optimo": 0.448149,
+        "distancia_de_V03_al_techo": 0.003292
+      }
+    }
+  },
+  "techo_de_grupo": {
+    "HS": {
+      "grupos_con_etiqueta_uniforme": 26,
+      "grupos_contradictorios": 11,
+      "filas_de_la_region_corta_en_grupos_contradictorios": 3,
+      "fraccion_de_la_region_corta_en_grupos_contradictorios": 0.031915
+    },
+    "TR": {
+      "grupos_con_etiqueta_uniforme": 29,
+      "grupos_contradictorios": 8,
+      "filas_de_la_region_corta_en_grupos_contradictorios": 3,
+      "fraccion_de_la_region_corta_en_grupos_contradictorios": 0.035714
+    },
+    "AG": {
+      "grupos_con_etiqueta_uniforme": 25,
+      "grupos_contradictorios": 12,
+      "filas_de_la_region_corta_en_grupos_contradictorios": 3,
+      "fraccion_de_la_region_corta_en_grupos_contradictorios": 0.035294
+    }
+  },
+  "auc_medio_region_corta": 0.9639,
+  "margen_medio_al_techo_region_corta": 0.000323,
+  "veredicto": "V03 ORDENA bien la region corta, con un AUC interno de 0.9639, y el margen hasta el techo moviendo solo el corte es de +0.0003, luego es un problema de donde se dibuja la linea y no de que dice el texto. Eso es un techo EN LA PRACTICA: la unica palanca que lo moveria es el umbral, que V8-09 y P59-T ya cerraron. Ninguna representacion lo ataca",
+  "reproducibilidad": {
+    "nivel": "R2",
+    "git_commit": "e1acc44",
+    "tagger": "spaCy es_core_news_md 3.8.0, D-003"
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

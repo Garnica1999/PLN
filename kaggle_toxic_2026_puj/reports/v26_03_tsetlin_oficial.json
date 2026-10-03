@@ -1,0 +1,196 @@
+{
+  "experimento": "V26-03 (Tsetlin Machine con pyTsetlinMachine publicado, sobre word12 binario)",
+  "fecha": "2026-09-27T09:26:47+00:00",
+  "implementacion": {
+    "libreria": "pyTsetlinMachine",
+    "version": "0.6.6",
+    "licencia": "MIT",
+    "commit": "d6c1cf0e4aaa4a8ae2f2818ba27878fb89d31dc5",
+    "fecha_del_commit": "2025-04-01",
+    "repositorio": "https://github.com/cair/pyTsetlinMachine/",
+    "clase_usada": "MultiClassTsetlinMachine",
+    "python": "3.14.7",
+    "numpy": "1.26.4",
+    "plataforma": "Linux x86_64",
+    "modificaciones_al_codigo_de_la_libreria": "ninguna",
+    "nota_de_compilacion": "el makefile del proyecto usa -Werror y con gcc moderno falla por variables sin usar. Se recompilo con los mismos flags de optimizacion quitando -Werror, que es un cambio de build y no de codigo fuente.",
+    "por_que_esta_permitida": "las reglas de la competicion prohiben transformers y LLM, y exigen que los modelos de vectorizacion se entrenen desde cero. pyTsetlinMachine es un modelo de reconocimiento de patrones entrenado desde cero, sin datos externos ni pesos preentrenados, luego cumple."
+  },
+  "controles": {
+    "v03_congelado_intacto": true,
+    "sha256_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "smoke_test_xor": {
+      "n_filas": 1000,
+      "n_features": 8,
+      "clases": 2,
+      "clausulas": 100,
+      "T": 50,
+      "s": 10.0,
+      "epochs": 25,
+      "segundos": 0.052,
+      "exactitud_train": 1.0,
+      "f1_clase_0": 2.0,
+      "f1_clase_1": 2.0,
+      "dos_ajustes_identicos": true,
+      "nota_reproducibilidad": "pyTsetlinMachine no expone random_state: usa fast_rand() de la libreria C. Dos ajustes consecutivos en el mismo proceso pueden diferir, y esa irreproducibilidad se reporta en vez de ocultarla."
+    },
+    "representacion": {
+      "vectorizador": "CountVectorizer",
+      "parametros": {
+        "analyzer": "word",
+        "ngram_range": [
+          1,
+          2
+        ],
+        "min_df": 2,
+        "binary": true
+      },
+      "ajustado_dentro_de_cada_pliegue": true,
+      "test_leido": false,
+      "dimensiones_por_pliegue": [
+        2673,
+        2766,
+        2745,
+        2776,
+        2744
+      ]
+    }
+  },
+  "control_lineal_sobre_la_misma_matriz": {
+    "k": 0,
+    "corrected_cv": 0.748064402342127,
+    "delta_vs_v03": -0.029147050174445077,
+    "f1_por_etiqueta": {
+      "HS": 0.7285491419656787,
+      "TR": 0.8146503884572697,
+      "AG": 0.7009936766034327
+    },
+    "f1_macro6": 0.796436331409338,
+    "f1_train": 0.9902671700591854,
+    "gap_train_oof": 0.2422027677170584,
+    "sd_entre_pliegues": 0.03015355255979031,
+    "f1_por_pliegue": [
+      0.7408416861753281,
+      0.7710325431900361,
+      0.7746825123874305,
+      0.6922929894976558,
+      0.760222472420053
+    ],
+    "rescates": 119,
+    "danos": 208,
+    "neto": -89,
+    "delta_vs_control": 0.0,
+    "celdas": 327,
+    "celdas_totales": 4449,
+    "celdas_coincidentes": 4122,
+    "fraccion_coincidente": 0.9265003371544167,
+    "ambos_malos": 638,
+    "correlacion_predicciones": 0.8440337188034781,
+    "por_etiqueta": {
+      "HS": {
+        "f1": 0.7285491419656787,
+        "f1_v03": 0.7616892911010558,
+        "f1_control": 0.7285491419656787,
+        "celdas": 144,
+        "rescates": 56,
+        "danos": 88
+      },
+      "TR": {
+        "f1": 0.8146503884572697,
+        "f1_v03": 0.8157303370786517,
+        "f1_control": 0.8146503884572697,
+        "celdas": 59,
+        "rescates": 28,
+        "danos": 31
+      },
+      "AG": {
+        "f1": 0.7009936766034327,
+        "f1_v03": 0.7542147293700089,
+        "f1_control": 0.7009936766034327,
+        "celdas": 124,
+        "rescates": 35,
+        "danos": 89
+      }
+    },
+    "segundos": 0.0
+  },
+  "benchmark_del_control": 0.751393,
+  "resultados_tsetlin": [
+    {
+      "k": 200,
+      "corrected_cv": 0.5833966591490077,
+      "delta_vs_v03": -0.19381479336756435,
+      "f1_por_etiqueta": {
+        "HS": 0.5753968253968254,
+        "TR": 0.6131191432396251,
+        "AG": 0.5616740088105727
+      },
+      "f1_macro6": 0.7013281817304892,
+      "f1_train": 0.6574856052057395,
+      "gap_train_oof": 0.07408894605673177,
+      "sd_entre_pliegues": 0.027006197329843613,
+      "f1_por_pliegue": [
+        0.5669447276795153,
+        0.5801818935459488,
+        0.6104575163398692,
+        0.6123240237127354,
+        0.5409212018961056
+      ],
+      "rescates": 289,
+      "danos": 647,
+      "neto": -358,
+      "delta_vs_control": -0.16466774319311928,
+      "celdas": 936,
+      "celdas_totales": 4449,
+      "celdas_coincidentes": 3513,
+      "fraccion_coincidente": 0.7896156439649359,
+      "ambos_malos": 468,
+      "correlacion_predicciones": 0.5513471281585479,
+      "por_etiqueta": {
+        "HS": {
+          "f1": 0.5753968253968254,
+          "f1_v03": 0.7616892911010558,
+          "f1_control": 0.7285491419656787,
+          "celdas": 378,
+          "rescates": 133,
+          "danos": 245
+        },
+        "TR": {
+          "f1": 0.6131191432396251,
+          "f1_v03": 0.8157303370786517,
+          "f1_control": 0.8146503884572697,
+          "celdas": 247,
+          "rescates": 61,
+          "danos": 186
+        },
+        "AG": {
+          "f1": 0.5616740088105727,
+          "f1_v03": 0.7542147293700089,
+          "f1_control": 0.7009936766034327,
+          "celdas": 311,
+          "rescates": 95,
+          "danos": 216
+        }
+      },
+      "segundos": 146.5
+    }
+  ],
+  "reproducibilidad": {
+    "k": 200,
+    "primera": 0.5833966591490077,
+    "repetida": 0.5804037027374532,
+    "diferencia": 0.0029929564115545038,
+    "mismo_numero_de_cambios": false,
+    "mismas_predicciones": false,
+    "causa": "pyTsetlinMachine usa fast_rand() de la libreria C y no expone random_state"
+  },
+  "corte": {
+    "k": 200,
+    "motivo": "no mejora al control (-0.164668), neto de celdas no positivo (-358)"
+  },
+  "gastos": {
+    "submissions": 0,
+    "memoria_pico_mb": 316.3,
+    "segundos_totales": 60.8
+  }
+}

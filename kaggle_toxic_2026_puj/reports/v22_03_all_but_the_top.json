@@ -1,0 +1,76 @@
+{
+  "experimento": "V22-03 (P4: All-But-The-Top sobre el embedding de V5)",
+  "fecha": "2026-09-27T05:39:01+00:00",
+  "referencia": "Mu y Viswanath 2018 (arXiv:1702.01417); Levy et al. 2015 TACL",
+  "embedding": "FastText skipgram 200d sobre wikipedia_es 10M, sin reentrenar",
+  "donde_se_aplica_el_pca": "sobre la matriz de los 6.059 vectores de tipo que el pipeline consulta, antes del pooling, que es donde los autores colocan el procedimiento. La eleccion no es libre: el pipeline solo tiene vectores de esos tipos",
+  "renormalizacion": "ninguna, siguiendo a los autores",
+  "control_de_cordura": {
+    "d0": 0.7817662818999719,
+    "publicado": 0.781766,
+    "desviacion": 2.8189997192118454e-07,
+    "dentro_de_tolerancia": true
+  },
+  "espectro": {
+    "varianza_acumulada": [
+      0.053059745338250926,
+      0.08629965715698748,
+      0.11603565256031831,
+      0.14485769820307134,
+      0.16843831036569046,
+      0.18812387601625083,
+      0.20732854960510685,
+      0.22386177268099136,
+      0.2385379127500369,
+      0.25242457063746326
+    ]
+  },
+  "configuraciones": [
+    {
+      "d": 1,
+      "varianza_eliminada": 0.053059745338250926,
+      "corrected_cv": 0.7799349651438051,
+      "delta_vs_v03": 0.002723512627233027,
+      "delta_vs_control": -0.0018313167561667676,
+      "emb_solo": 0.6595478828760126,
+      "celdas": 133,
+      "rescates": 67,
+      "danios": 66,
+      "neto": 1
+    },
+    {
+      "d": 2,
+      "varianza_eliminada": 0.08629965715698748,
+      "corrected_cv": 0.7756453190214936,
+      "delta_vs_v03": -0.0015661334950785033,
+      "delta_vs_control": -0.006120962878478298,
+      "emb_solo": 0.6612548425511432,
+      "celdas": 114,
+      "rescates": 51,
+      "danios": 63,
+      "neto": -12
+    },
+    {
+      "d": 5,
+      "varianza_eliminada": 0.16843831036569046,
+      "corrected_cv": 0.7781440573206305,
+      "delta_vs_v03": 0.0009326048040584345,
+      "delta_vs_control": -0.00362222457934136,
+      "emb_solo": 0.6589307796173679,
+      "celdas": 108,
+      "rescates": 53,
+      "danios": 55,
+      "neto": -2
+    }
+  ],
+  "veredicto": {
+    "valor": "ALL_BUT_THE_TOP_NO_APORTA",
+    "razon": "Ninguna eliminacion de componentes principales mejora la fusion por encima del control, que ya es el embedding sin post-procesar. La hipotesis de que los componentes dominantes ocultan senal recuperable no se sostiene en este pipeline",
+    "mejor_d": 1
+  },
+  "gastos": {
+    "modelos_entrenados": 0,
+    "configuraciones": 3,
+    "submissions": 0
+  }
+}

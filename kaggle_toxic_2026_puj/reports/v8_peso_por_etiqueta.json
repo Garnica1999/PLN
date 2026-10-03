@@ -1,0 +1,245 @@
+{
+  "experimento": "V8-07 (P6)",
+  "fecha": "2026-09-26T03:43:15+00:00",
+  "referencia_v03_local": 0.777211,
+  "referencia_v03_externa": 0.78306,
+  "ruido_en_aciertos_netos": 19.2,
+  "rejilla_peso": [
+    0.5,
+    0.75,
+    1.0,
+    1.5,
+    2.0,
+    3.0
+  ],
+  "variantes": [
+    {
+      "clave": "anidado_por_etiqueta",
+      "descripcion": "multiplicador de peso por etiqueta, elegido con validacion anidada",
+      "metrica": 0.771913,
+      "diferencia": -0.005298,
+      "ic95_0": -0.012103,
+      "ic95_1": 0.001907,
+      "pliegues_positivos": 1,
+      "f1_por_etiqueta": {
+        "HS": 0.7571533382245048,
+        "TR": 0.8029504741833509,
+        "AG": 0.7556357078449053
+      },
+      "celdas": 148,
+      "tasa_acierto": 0.3919,
+      "minimo_requerido": 0.5649,
+      "filtro_pasa": false,
+      "gate_delta": false,
+      "gate_ic95": false,
+      "gate_pliegues": false,
+      "gate_supera": false
+    },
+    {
+      "clave": "control_global",
+      "descripcion": "un unico multiplicador para las tres, con el mismo procedimiento interno",
+      "metrica": 0.770354,
+      "diferencia": -0.006857,
+      "ic95_0": -0.018037,
+      "ic95_1": 0.005671,
+      "pliegues_positivos": 0,
+      "f1_por_etiqueta": {
+        "HS": 0.7622950819672131,
+        "TR": 0.8029504741833509,
+        "AG": 0.7458167330677291
+      },
+      "celdas": 325,
+      "tasa_acierto": 0.3508,
+      "minimo_requerido": 0.5295,
+      "filtro_pasa": false,
+      "gate_delta": false,
+      "gate_ic95": false,
+      "gate_pliegues": false,
+      "gate_supera": false
+    },
+    {
+      "clave": "sin_equilibrar",
+      "descripcion": "ninguna ponderacion de clase, el extremo del multiplicador",
+      "metrica": 0.0,
+      "diferencia": -0.777211,
+      "ic95_0": -0.799204,
+      "ic95_1": -0.753762,
+      "pliegues_positivos": 0,
+      "f1_por_etiqueta": {
+        "HS": 0.0,
+        "TR": 0.0,
+        "AG": 0.0
+      },
+      "celdas": 1683,
+      "tasa_acierto": 0.2317,
+      "minimo_requerido": 0.5057,
+      "filtro_pasa": false,
+      "gate_delta": false,
+      "gate_ic95": false,
+      "gate_pliegues": false,
+      "gate_supera": false
+    }
+  ],
+  "multiplicadores_finales": {
+    "HS": 1.0,
+    "TR": 2.0,
+    "AG": 1.0
+  },
+  "integridad": [
+    {
+      "comprobacion": "numero de filas",
+      "resultado": "correcto",
+      "detalle": "1154 frente a 1154 en la prueba"
+    },
+    {
+      "comprobacion": "nombres y orden de columnas",
+      "resultado": "correcto",
+      "detalle": "['id', 'HS', 'TR', 'AG']"
+    },
+    {
+      "comprobacion": "valores de etiqueta",
+      "resultado": "correcto",
+      "detalle": "[0, 1]"
+    },
+    {
+      "comprobacion": "sin valores ausentes",
+      "resultado": "correcto",
+      "detalle": "0 celdas ausentes"
+    },
+    {
+      "comprobacion": "sin identificadores duplicados",
+      "resultado": "correcto",
+      "detalle": "0 repetidos"
+    },
+    {
+      "comprobacion": "identificadores en el orden de la prueba",
+      "resultado": "correcto",
+      "detalle": "coinciden con el orden original"
+    },
+    {
+      "comprobacion": "filas distintas del entrenamiento",
+      "resultado": "correcto",
+      "detalle": "1731 frente a 1154"
+    }
+  ],
+  "integridad_correcta": true,
+  "comparacion_con_v03": {
+    "celdas_totales": 3462,
+    "celdas_que_cambian": 139,
+    "filas_que_cambian": 124,
+    "por_etiqueta": {
+      "HS": 53,
+      "TR": 50,
+      "AG": 36
+    }
+  },
+  "elecciones_por_pliegue": [
+    {
+      "pliegue": 1,
+      "multiplicador_global": 1.0,
+      "por_etiqueta": [
+        {
+          "etiqueta": "HS",
+          "multiplicador": 1.5,
+          "f1_interna": 0.779221
+        },
+        {
+          "etiqueta": "TR",
+          "multiplicador": 1.0,
+          "f1_interna": 0.83871
+        },
+        {
+          "etiqueta": "AG",
+          "multiplicador": 1.0,
+          "f1_interna": 0.779221
+        }
+      ]
+    },
+    {
+      "pliegue": 2,
+      "multiplicador_global": 3.0,
+      "por_etiqueta": [
+        {
+          "etiqueta": "HS",
+          "multiplicador": 1.0,
+          "f1_interna": 0.775194
+        },
+        {
+          "etiqueta": "TR",
+          "multiplicador": 3.0,
+          "f1_interna": 0.817814
+        },
+        {
+          "etiqueta": "AG",
+          "multiplicador": 1.0,
+          "f1_interna": 0.746575
+        }
+      ]
+    },
+    {
+      "pliegue": 3,
+      "multiplicador_global": 1.0,
+      "por_etiqueta": [
+        {
+          "etiqueta": "HS",
+          "multiplicador": 0.75,
+          "f1_interna": 0.781065
+        },
+        {
+          "etiqueta": "TR",
+          "multiplicador": 1.0,
+          "f1_interna": 0.853659
+        },
+        {
+          "etiqueta": "AG",
+          "multiplicador": 0.75,
+          "f1_interna": 0.75
+        }
+      ]
+    },
+    {
+      "pliegue": 4,
+      "multiplicador_global": 2.0,
+      "por_etiqueta": [
+        {
+          "etiqueta": "HS",
+          "multiplicador": 2.0,
+          "f1_interna": 0.785714
+        },
+        {
+          "etiqueta": "TR",
+          "multiplicador": 2.0,
+          "f1_interna": 0.845528
+        },
+        {
+          "etiqueta": "AG",
+          "multiplicador": 1.0,
+          "f1_interna": 0.761589
+        }
+      ]
+    },
+    {
+      "pliegue": 5,
+      "multiplicador_global": 3.0,
+      "por_etiqueta": [
+        {
+          "etiqueta": "HS",
+          "multiplicador": 1.0,
+          "f1_interna": 0.758808
+        },
+        {
+          "etiqueta": "TR",
+          "multiplicador": 3.0,
+          "f1_interna": 0.816794
+        },
+        {
+          "etiqueta": "AG",
+          "multiplicador": 1.0,
+          "f1_interna": 0.755853
+        }
+      ]
+    }
+  ],
+  "fichero_de_envio": "submissions/toxic_submission_v10_p6_peso_por_etiqueta.csv",
+  "nota": "El multiplicador se aplica sobre el peso de clase equilibrado, no en su lugar, de modo que el valor uno reproduce exactamente el balanceo de V03. La eleccion usa sub-pliegues de grupo propios dentro del tren de cada pliegue. Por D-063 el envio es manual y el filtro es priorizacion."
+}

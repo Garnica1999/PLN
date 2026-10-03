@@ -1,0 +1,60 @@
+{
+  "experimento": "V8-10 (P10, correccion)",
+  "fecha": "2026-09-26T04:04:30+00:00",
+  "referencia_v03_local": 0.777211,
+  "referencia_v03_externa": 0.78306,
+  "lb_de_la_version_de_veinticinco": 0.77122,
+  "modelos": 5,
+  "metrica_oof_ensemble": 0.782277,
+  "diferencia_oof": 0.005066,
+  "ic95": [
+    -0.003707,
+    0.014138
+  ],
+  "celdas_oof": 182,
+  "tasa_acierto_oof": 0.5495,
+  "contraccion_oof": 0.000591,
+  "tasa_de_la_submission_nueva": 0.3608,
+  "celdas_contra_v03": 127,
+  "celdas_contra_la_version_de_veinticinco": 0,
+  "integridad": [
+    {
+      "comprobacion": "numero de filas",
+      "resultado": "correcto",
+      "detalle": "1154 frente a 1154 en la prueba"
+    },
+    {
+      "comprobacion": "nombres y orden de columnas",
+      "resultado": "correcto",
+      "detalle": "['id', 'HS', 'TR', 'AG']"
+    },
+    {
+      "comprobacion": "valores de etiqueta",
+      "resultado": "correcto",
+      "detalle": "[0, 1]"
+    },
+    {
+      "comprobacion": "sin valores ausentes",
+      "resultado": "correcto",
+      "detalle": "0 celdas ausentes"
+    },
+    {
+      "comprobacion": "sin identificadores duplicados",
+      "resultado": "correcto",
+      "detalle": "0 repetidos"
+    },
+    {
+      "comprobacion": "identificadores en el orden de la prueba",
+      "resultado": "correcto",
+      "detalle": "coinciden con el orden original"
+    },
+    {
+      "comprobacion": "filas distintas del entrenamiento",
+      "resultado": "correcto",
+      "detalle": "1731 frente a 1154"
+    }
+  ],
+  "integridad_correcta": true,
+  "fichero_de_envio": "submissions/toxic_submission_v13_p10_ensemble_cinco_modelos.csv",
+  "nota": "Un modelo por repeticion, que es lo que el OOF promedia. La version anterior promedia veinticinco y por eso se desacoplaba de su validacion."
+}

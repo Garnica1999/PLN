@@ -1,0 +1,1135 @@
+{
+  "afirmaciones_declaradas": {
+    "A0": {
+      "bloque": 0,
+      "que_hace": "integridad de los artefactos congelados, sha256 tamano y mtime antes y despues"
+    },
+    "A1": {
+      "bloque": 1,
+      "que_hace": "solo se leen las fuentes declaradas, cero test y cero holdout"
+    },
+    "A10": {
+      "bloque": 10,
+      "que_hace": "cobertura y anchura, y el control degenerado de V03"
+    },
+    "A11": {
+      "bloque": 11,
+      "que_hace": "la regla de lectura de 1.5 aplicada, sin reinterpretacion"
+    },
+    "A12": {
+      "bloque": 12,
+      "que_hace": "las cuatro medidas de complementariedad contra V03"
+    },
+    "A13": {
+      "bloque": 13,
+      "que_hace": "el rescate y el dano, sobre OOF, con los tres alphas"
+    },
+    "A14": {
+      "bloque": 14,
+      "que_hace": "el calibrador se ajusta en internal, verificado por contadores"
+    },
+    "A15": {
+      "bloque": 15,
+      "que_hace": "el limite de 5.5 verificado: anclaje externo presente o ausente"
+    },
+    "A16": {
+      "bloque": 16,
+      "que_hace": "la rejilla de alpha_0 y la sensibilidad de umbral, publicadas"
+    },
+    "A17": {
+      "bloque": 17,
+      "que_hace": "dimension seleccionada por pliegue, y la salvedad de sesgo"
+    },
+    "A18": {
+      "bloque": 18,
+      "que_hace": "las cadenas de formulacion, de las dos preguntas y del proyecto"
+    },
+    "A19": {
+      "bloque": 19,
+      "que_hace": "el F1 del miembro se publica como descriptiva, sin lectura inferencial"
+    },
+    "A2": {
+      "bloque": 2,
+      "que_hace": "umbrales de V03 intactos, V03 no reentrenado, cero reoptimizaciones"
+    },
+    "A3": {
+      "bloque": 3,
+      "que_hace": "el OOF de referencia es el canonico, coincide con el published"
+    },
+    "A4": {
+      "bloque": 4,
+      "que_hace": "la seleccion de variables se hace solo sobre el inner_train"
+    },
+    "A5": {
+      "bloque": 5,
+      "que_hace": "la posterior de M1 esta aproximada y el metodo se declara"
+    },
+    "A6": {
+      "bloque": 6,
+      "que_hace": "el numero efectivo es un parametro del metodo y se mueve con alpha_0"
+    },
+    "A7": {
+      "bloque": 7,
+      "que_hace": "M2 es exacto y coincide con un segundo camino de calculo"
+    },
+    "A8": {
+      "bloque": 8,
+      "que_hace": "las seis magnitudes de la pregunta 1 medidas y publicadas"
+    },
+    "A9": {
+      "bloque": 9,
+      "que_hace": "la curva de calibracion completa, con bins poblados"
+    }
+  },
+  "aislamiento_de_afirmaciones": {
+    "avisos": [],
+    "contadores": {},
+    "errores": [],
+    "escrituras_fallidas": 0
+  },
+  "ambiguedad_declarada": "NO_SON_INDEPENDIENTES",
+  "anclaje_externo": {
+    "encontradas": [],
+    "estado_del_limite": "SIN_HACER",
+    "librerias_comprobadas": [
+      "pymc",
+      "pymc3",
+      "pyro",
+      "stan",
+      "edward",
+      "theano",
+      "aesara",
+      "numpyro",
+      "tensorflow_probability",
+      "pystan",
+      "cmdstanpy",
+      "pyro-ppl"
+    ]
+  },
+  "casos_de_humo": [
+    {
+      "caso": "frontera_contrato_pasa",
+      "detalle": "15 filas",
+      "ok": true
+    },
+    {
+      "caso": "frontera_contrato_sabe_fallar",
+      "detalle": "un parametro inexistente lo detecta",
+      "ok": true
+    },
+    {
+      "caso": "frontera_las_veinte_en_el_completo",
+      "detalle": "20 evaluadas",
+      "ok": true
+    },
+    {
+      "caso": "frontera_las_veinte_sabe_fallar",
+      "detalle": "al quitar A19 faltan ['A19']",
+      "ok": true
+    },
+    {
+      "caso": "frontera_humo_y_completo_coinciden",
+      "detalle": "completo=20 humo=20 solo_completo=[] solo_humo=[]",
+      "ok": true
+    },
+    {
+      "caso": "frontera_humo_y_completo_saben_fallar",
+      "detalle": "al quitar A7 del completo, declaradas sin conectar=['A7']",
+      "ok": true
+    },
+    {
+      "caso": "frontera_auditoria_ast_limpia",
+      "detalle": "literales=0 booleanos=0 anidadas=0",
+      "ok": true
+    },
+    {
+      "caso": "frontera_acceso_por_literal_detectado",
+      "detalle": "un subscript con literal de clave fisica",
+      "ok": true
+    },
+    {
+      "caso": "frontera_acceso_por_literal_perdonado_si_se_deriva",
+      "detalle": "la clave derivada no es infraccion",
+      "ok": true
+    },
+    {
+      "caso": "frontera_booleano_literal_detectado_0",
+      "detalle": "comprobar_presupuesto(1.0, 10, True)",
+      "ok": true
+    },
+    {
+      "caso": "frontera_booleano_literal_detectado_1",
+      "detalle": "registrar_lectura_pregunta_1('AFFIRMATIVO', False)",
+      "ok": true
+    },
+    {
+      "caso": "frontera_booleano_literal_detectado_2",
+      "detalle": "escribir_informe('a', 'b', {}, True)",
+      "ok": true
+    },
+    {
+      "caso": "frontera_booleano_calculado_perdonado",
+      "detalle": "una comparacion real no es infraccion",
+      "ok": true
+    },
+    {
+      "caso": "frontera_booleano_literal_ausente_en_el_script",
+      "detalle": "el script real no tiene ningun booleano literal en posicion de condicion",
+      "ok": true
+    },
+    {
+      "caso": "frontera_el_cuerpo_limpio_no_es_infraccion",
+      "detalle": "una comprobar_presupuesto con una comparacion real no es infraccion",
+      "ok": true
+    },
+    {
+      "caso": "frontera_la_mutacion_en_el_cuerpo_se_ve",
+      "detalle": "un literal en el CUERPO da 1 infracciones",
+      "ok": true
+    },
+    {
+      "caso": "frontera_la_auditoria_distingue_el_cuerpo_con_y_sin_literal",
+      "detalle": "con literal hay infraccion y sin literal no la hay",
+      "ok": true
+    },
+    {
+      "caso": "frontera_la_mutacion_del_cuerpo_no_es_un_no_op",
+      "detalle": "el codigo mutado tiene que ser distinto del original, o la mutacion no sirvio",
+      "ok": true
+    },
+    {
+      "caso": "frontera_la_copia_mutada_rechaza_un_sustituto_ya_presente",
+      "detalle": "sustituir un trozo por si mismo es un no-op y tiene que rechazarse: AssertionError",
+      "ok": true
+    },
+    {
+      "caso": "frontera_la_copia_mutada_rechaza_un_original_inexistente",
+      "detalle": "si el original no esta, la mutacion no aplica y tiene que rechazarse: AssertionError",
+      "ok": true
+    },
+    {
+      "caso": "frontera_una_comparacion_en_el_cuerpo_no_es_infraccion",
+      "detalle": "una comparacion real asignada dentro del cuerpo es legitima",
+      "ok": true
+    },
+    {
+      "caso": "frontera_acceso_por_literal_ausente_en_el_script",
+      "detalle": "el script real no accede a ninguna clave fisica por literal",
+      "ok": true
+    },
+    {
+      "caso": "frontera_tupla_anidada_ausente_en_el_script",
+      "detalle": "el script real no tiene ninguna evaluacion con tupla anidada",
+      "ok": true
+    },
+    {
+      "caso": "frontera_la_mutacion_de_literal_se_ve_en_la_copia",
+      "detalle": "la copia con un literal inyectado da 1 infracciones",
+      "ok": true
+    },
+    {
+      "caso": "frontera_tupla_anidada_detectada_por_ast",
+      "detalle": "lambda cuyo cuerpo es una tupla anidada",
+      "ok": true
+    },
+    {
+      "caso": "frontera_tupla_simple_perdonada",
+      "detalle": "una lambda que devuelve la tupla del assertion no es infraccion",
+      "ok": true
+    },
+    {
+      "caso": "frontera_tupla_anidada_rechazada_en_runtime",
+      "detalle": "el primer elemento debe ser un booleano y no una tupla: ComprobacionAnidada",
+      "ok": true
+    },
+    {
+      "caso": "frontera_detalle_vacio_rechazado",
+      "detalle": "un detalle vacio no dice que se comprobo: ColeccionVacia",
+      "ok": true
+    },
+    {
+      "caso": "frontera_coleccion_vacia_rechazada",
+      "detalle": "una lista vacia no puede pasar: ColeccionVacia",
+      "ok": true
+    },
+    {
+      "caso": "frontera_coleccion_none_rechazada",
+      "detalle": "un None no puede pasar: ColeccionVacia",
+      "ok": true
+    },
+    {
+      "caso": "frontera_forma_incorrecta_rechazada",
+      "detalle": "una lista no es una tupla: ComprobacionAnidada",
+      "ok": true
+    },
+    {
+      "caso": "frontera_valor_truthy_rechazado",
+      "detalle": "el entero 1 es truthy y no es un booleano: ComprobacionAnidada",
+      "ok": true
+    },
+    {
+      "caso": "frontera_puerta_devuelve_1_con_un_fallo",
+      "detalle": "un fallo da 1",
+      "ok": true
+    },
+    {
+      "caso": "frontera_puerta_devuelve_0_sin_fallos",
+      "detalle": "sin fallos da 0",
+      "ok": true
+    },
+    {
+      "caso": "frontera_puerta_respeta_el_suelo",
+      "detalle": "no llega al suelo",
+      "ok": true
+    },
+    {
+      "caso": "frontera_puerta_vigila_las_stop",
+      "detalle": "una STOP no confirmada da 1",
+      "ok": true
+    },
+    {
+      "caso": "frontera_ascii_rechazado_en_memoria",
+      "detalle": "un caracter no latin se rechaza antes de abrir el destino: ValueError",
+      "ok": true
+    },
+    {
+      "caso": "frontera_ascii_puro_pasa",
+      "detalle": "ASCII",
+      "ok": true
+    },
+    {
+      "caso": "frontera_escritura_unica_rechaza_reescritura",
+      "detalle": "primero=True segundo=False",
+      "ok": true
+    },
+    {
+      "caso": "frontera_m2_devuelve_log_odds_por_variable",
+      "detalle": "p=8",
+      "ok": true
+    },
+    {
+      "caso": "frontera_m2_los_dos_caminos_coinciden",
+      "detalle": "diferencia=3.886e-16",
+      "ok": true
+    },
+    {
+      "caso": "frontera_m2_el_intervalo_se_centra_en_el_punto",
+      "detalle": "max|centro-punto|=5.451e-05 con 20000 muestras",
+      "ok": true
+    },
+    {
+      "caso": "frontera_m2_avisa_si_no_hay_log_odds",
+      "detalle": "sin los log-odds por variable el intervalo no se puede centrar: AssertionError",
+      "ok": true
+    },
+    {
+      "caso": "la_regla_3_5_el_contador_ve_la_fuga_del_calibrador",
+      "detalle": "una fila no permitida da 1 fuga(s), y tiene que ser mayor que cero",
+      "ok": true
+    },
+    {
+      "caso": "la_regla_3_5_la_fuga_es_exactamente_una",
+      "detalle": "el numero de fugas tiene que ser exactamente 1 y es 1",
+      "ok": true
+    },
+    {
+      "caso": "la_regla_3_5_el_recibido_no_es_el_permitido",
+      "detalle": "el conjunto recibido tiene una fila mas que el permitido",
+      "ok": true
+    },
+    {
+      "caso": "la_regla_3_5_el_contador_da_cero_dentro_de_lo_permitido",
+      "detalle": "con filas dentro de lo permitido da 0",
+      "ok": true
+    },
+    {
+      "caso": "la_regla_3_5_un_ajuste_sin_filas_declaradas_no_pasa",
+      "detalle": "sin declarar filas da 1, que tiene que ser mayor que cero",
+      "ok": true
+    },
+    {
+      "caso": "la_regla_3_5_el_contador_ve_la_fuga_del_alpha",
+      "detalle": "una fila no permitida da 1 fuga(s) en el alpha",
+      "ok": true
+    },
+    {
+      "caso": "la_regla_3_5_el_contador_da_cero_en_el_alpha_dentro_de_lo_permitido",
+      "detalle": "con filas dentro de lo permitido da 0",
+      "ok": true
+    },
+    {
+      "caso": "la_regla_3_5_el_alpha_y_el_calibrador_no_se_solapan",
+      "detalle": "interseccion de 0 filas",
+      "ok": true
+    },
+    {
+      "caso": "la_regla_3_5_la_no_solapacion_detecta_el_solapamiento",
+      "detalle": "con el permitido del calibrador en las filas del alpha, la interseccion es 10 de 10",
+      "ok": true
+    },
+    {
+      "caso": "la_regla_3_5_el_solapamiento_tambien_es_fuga_del_calibrador",
+      "detalle": "y ademas son 10 filas fuera de lo permitido",
+      "ok": true
+    },
+    {
+      "caso": "la_regla_3_5_el_calibrador_real_registra_sus_filas",
+      "detalle": "la llamada registrada trae 10 indices",
+      "ok": true
+    },
+    {
+      "caso": "la_regla_3_5_el_calibrador_real_no_tiene_fugas",
+      "detalle": "fugas=0 ajustes_fuera=0",
+      "ok": true
+    },
+    {
+      "caso": "la_regla_3_5_un_calibrador_sobre_el_oof_se_ve",
+      "detalle": "declarando el OOF: fugas=50 ajustes_fuera=1",
+      "ok": true
+    },
+    {
+      "caso": "la_regla_3_5_el_alpha_sin_filas_no_pasa",
+      "detalle": "un alpha sin declarar filas da 1",
+      "ok": true
+    },
+    {
+      "caso": "presupuesto_dentro",
+      "detalle": "presupuesto confirma con datos correctos",
+      "ok": true
+    },
+    {
+      "caso": "presupuesto_dentro_sabe_fallar",
+      "detalle": "presupuesto con el dato roto lanzo, que es saber fallar",
+      "ok": true
+    },
+    {
+      "caso": "presupuesto_banderal_contradictorio_rechazado",
+      "detalle": "el banderal tiene que concordar con la comparacion: AssertionError",
+      "ok": true
+    },
+    {
+      "caso": "presup_un_exceso_real_falla_sin_depender_del_banderal",
+      "detalle": "200 s contra un presupuesto de 100 s tiene que fallar aunque el banderal sea coherente: AssertionError",
+      "ok": true
+    },
+    {
+      "caso": "presup_un_exceso_con_banderal_coherente_tambien_falla",
+      "detalle": "el banderal coherente con el exceso no absuelve el exceso: AssertionError",
+      "ok": true
+    },
+    {
+      "caso": "presup_un_exceso_con_nota_no_es_fracaso",
+      "detalle": "con nota declarada, el exceso se publica y no rompe",
+      "ok": true
+    },
+    {
+      "caso": "presup_una_nota_falsa_dentro_tambien_falla",
+      "detalle": "una nota de excepcion sin exceso es una contradiccion y tiene que verse: AssertionError",
+      "ok": true
+    },
+    {
+      "caso": "lectura_afirmativa_cuando_ambos_extremos_son_favorables",
+      "detalle": "AFFIRMATIVO",
+      "ok": true
+    },
+    {
+      "caso": "lectura_ambigua_cuando_los_intervalos_se_contradicen",
+      "detalle": "AMBIGUO_Y_POR_LO_TANTO_NADA",
+      "ok": true
+    },
+    {
+      "caso": "intervalo_sin_extremos_rechazado",
+      "detalle": "un intervalo sin extremos no se puede leer: AssertionError",
+      "ok": true
+    },
+    {
+      "caso": "intervalo_t_pareado_sin_observaciones_rechazado",
+      "detalle": "el intervalo pareado exige al menos una observacion: ColeccionVacia",
+      "ok": true
+    },
+    {
+      "caso": "margenes_los_tres_estan_declarados",
+      "detalle": "log-loss 0.005, Brier 0.0015, ECE 0.01",
+      "ok": true
+    },
+    {
+      "caso": "margenes_no_inferior",
+      "detalle": "margenes confirma con datos correctos",
+      "ok": true
+    },
+    {
+      "caso": "margenes_no_inferior_sabe_fallar",
+      "detalle": "margenes con el dato roto devuelve False",
+      "ok": true
+    },
+    {
+      "caso": "margenes_un_exceso_pequeno_sigue_siendo_no_inferior",
+      "detalle": "0.0049, 0.0014 y 0.009 caben en 0.005, 0.0015 y 0.010",
+      "ok": true
+    },
+    {
+      "caso": "margenes_mejor_no_es_fallo",
+      "detalle": "un delta favorable grande sigue siendo no inferior",
+      "ok": true
+    },
+    {
+      "caso": "margenes_mejor_no_produce_lectura_afirmativa",
+      "detalle": "la lectura es NO_INFERIOR_SIN_AFIRMAR_SUPERIORIDAD, nunca afirmativa",
+      "ok": true
+    },
+    {
+      "caso": "margenes_el_resultado_declara_el_limite_de_v03",
+      "detalle": "el detalle lleva la frase obligatoria de V03",
+      "ok": true
+    },
+    {
+      "caso": "margenes_el_exceso_de_log_loss_macro_flipping_la_lectura",
+      "detalle": "un exceso de log_loss_macro mayor que margen_log_loss tiene que dar negativo",
+      "ok": true
+    },
+    {
+      "caso": "margenes_el_exceso_de_brier_macro_flipping_la_lectura",
+      "detalle": "un exceso de brier_macro mayor que margen_brier tiene que dar negativo",
+      "ok": true
+    },
+    {
+      "caso": "margenes_el_exceso_de_ece_macro_flipping_la_lectura",
+      "detalle": "un exceso de ece_macro mayor que margen_ece tiene que dar negativo",
+      "ok": true
+    },
+    {
+      "caso": "margenes_el_delta_sale_de_lo_medido",
+      "detalle": "cambiar lo medido cambia el delta, luego no sale de una constante",
+      "ok": true
+    },
+    {
+      "caso": "margenes_sin_magnitudes_comparables_falla",
+      "detalle": "sin ninguna magnitud comparable la comparacion no puede pasar por vacia: ColeccionVacia",
+      "ok": true
+    },
+    {
+      "caso": "margenes_la_rejilla_de_alpha_tiene_los_tres_declarados",
+      "detalle": "rejilla [0.05, 0.1, 0.15]",
+      "ok": true
+    },
+    {
+      "caso": "margenes_el_alpha_primario_es_el_declarado",
+      "detalle": "primario 0.1",
+      "ok": true
+    },
+    {
+      "caso": "margenes_el_primario_no_se_promueven_a_sino_dos",
+      "detalle": "el primario aparece una sola vez en la rejilla",
+      "ok": true
+    },
+    {
+      "caso": "limite_5_5_se_comprueban_las_doce",
+      "detalle": "12 nombres comprobados, y son 12",
+      "ok": true
+    },
+    {
+      "caso": "limite_5_5_el_estado_sale_de_la_medida",
+      "detalle": "encontradas: []",
+      "ok": true
+    },
+    {
+      "caso": "limite_5_5_A15_confirma_con_las_doce_ausentes",
+      "detalle": "estado del limite: SIN_HACER",
+      "ok": true
+    },
+    {
+      "caso": "limite_5_5_queda_SIN_HACER_en_este_venv",
+      "detalle": "sin librerias de inferencia bayesiana, el limite queda SIN HACER",
+      "ok": true
+    },
+    {
+      "caso": "limite_5_5_se_publica_lo_que_no_se_autoriza",
+      "detalle": "el informe declara que no se afirma la correccion de la inferencia variacional",
+      "ok": true
+    },
+    {
+      "caso": "limite_5_5_el_estima_cambia_si_hay_libreria",
+      "detalle": "con una libreria presente el estado tiene que ser HECHO, luego se deriva",
+      "ok": true
+    },
+    {
+      "caso": "markdown_se_construye_sin_error",
+      "detalle": "3883 caracteres",
+      "ok": true
+    },
+    {
+      "caso": "markdown_es_ascii_puro",
+      "detalle": "el markdown del informe no tiene ningun caracter no latino",
+      "ok": true
+    },
+    {
+      "caso": "markdown_lleva_la_frase_obligatoria_de_v03",
+      "detalle": "aparece 2 veces",
+      "ok": true
+    },
+    {
+      "caso": "markdown_declara_el_limite_de_5_5",
+      "detalle": "el limite de anclaje externo esta escrito en el informe",
+      "ok": true
+    },
+    {
+      "caso": "markdown_no_afirma_que_el_bayesiano_supere_a_v03",
+      "detalle": "ninguna variante prohibida en el markdown",
+      "ok": true
+    },
+    {
+      "caso": "markdown_pone_la_lectura_de_la_regla",
+      "detalle": "la lectura publicada es NO_INFERIOR_SIN_AFIRMAR_SUPERIORIDAD",
+      "ok": true
+    },
+    {
+      "caso": "markdown_el_json_tambien_es_ascii_y_terminado",
+      "detalle": "6905 caracteres de JSON",
+      "ok": true
+    },
+    {
+      "caso": "markdown_el_json_escapa_el_no_ascii_por_construccion",
+      "detalle": "ensure_ascii escapa el caracter, luego el JSON nunca lleva un byte no latino",
+      "ok": true
+    },
+    {
+      "caso": "markdown_escribir_unico_rechaza_un_no_ascii",
+      "detalle": "el destino nunca se abre con un texto que no es ASCII puro: ErrorEscritura",
+      "ok": true
+    },
+    {
+      "caso": "A0_huella",
+      "detalle": "A0 confirma con datos correctos",
+      "ok": true
+    },
+    {
+      "caso": "A0_huella_sabe_fallar",
+      "detalle": "A0 con el dato roto lanzo, que es saber fallar",
+      "ok": true
+    },
+    {
+      "caso": "A1_fuentes",
+      "detalle": "A1 confirma con datos correctos",
+      "ok": true
+    },
+    {
+      "caso": "A1_fuentes_sabe_fallar",
+      "detalle": "A1 con el dato roto lanzo, que es saber fallar",
+      "ok": true
+    },
+    {
+      "caso": "A1_detecta_holdout",
+      "detalle": "con 248 filas de holdout leidas, A1 tiene que rechazarlo",
+      "ok": true
+    },
+    {
+      "caso": "A1_detecta_test",
+      "detalle": "con una fila de test leida, A1 tiene que rechazarlo",
+      "ok": true
+    },
+    {
+      "caso": "A1_detecta_una_evaluacion_del_holdout",
+      "detalle": "con una evaluacion del holdout gastada, A1 tiene que rechazarlo",
+      "ok": true
+    },
+    {
+      "caso": "A2_umbrales",
+      "detalle": "A2 confirma con datos correctos",
+      "ok": true
+    },
+    {
+      "caso": "A2_umbrales_sabe_fallar",
+      "detalle": "A2 con el dato roto lanzo, que es saber fallar",
+      "ok": true
+    },
+    {
+      "caso": "A2_detecta_reoptimizacion",
+      "detalle": "con una reoptimizacion registrada, A2 tiene que rechazarla",
+      "ok": true
+    },
+    {
+      "caso": "A2_detecta_umbral_movido",
+      "detalle": "con un umbral distinto del congelado, A2 tiene que rechazarlo",
+      "ok": true
+    },
+    {
+      "caso": "A3_canonico",
+      "detalle": "A3 confirma con datos correctos",
+      "ok": true
+    },
+    {
+      "caso": "A3_canonico_sabe_fallar",
+      "detalle": "A3 con el dato roto lanzo, que es saber fallar",
+      "ok": true
+    },
+    {
+      "caso": "A3_detecta_la_constante_guardada_en_vez_de_la_recalculada",
+      "detalle": "con un corrected_cv que no cuadra, A3 tiene que fallar",
+      "ok": true
+    },
+    {
+      "caso": "A3_binariza_por_encima_del_umbral",
+      "detalle": "toda probabilidad por encima o igual al umbral tiene que dar 1",
+      "ok": true
+    },
+    {
+      "caso": "A3_binariza_por_debajo_del_umbral",
+      "detalle": "toda probabilidad por debajo del umbral tiene que dar 0",
+      "ok": true
+    },
+    {
+      "caso": "A3_la_binarizacion_conserva_la_forma_y_es_binaria",
+      "detalle": "forma (24, 3) y valores [0, 1]",
+      "ok": true
+    },
+    {
+      "caso": "A3_binarizar_con_umbrales_no_congelados_falla",
+      "detalle": "con un umbral reoptimizado la binarizacion tiene que rechazarlo, que es lo que A2 prohibe: AssertionError",
+      "ok": true
+    },
+    {
+      "caso": "A3_binarizar_sin_los_tres_umbrales_falla",
+      "detalle": "con dos umbrales no se puede binarizar una matriz de tres columnas: AssertionError",
+      "ok": true
+    },
+    {
+      "caso": "A4_seleccion_interna",
+      "detalle": "A4 confirma con datos correctos",
+      "ok": true
+    },
+    {
+      "caso": "A4_seleccion_interna_sabe_fallar",
+      "detalle": "A4 con el dato roto lanzo, que es saber fallar",
+      "ok": true
+    },
+    {
+      "caso": "A4_detecta_la_fuga",
+      "detalle": "con una llamada al selector fuera del inner_train, A4 tiene que rechazarla",
+      "ok": true
+    },
+    {
+      "caso": "A4_detecta_conjunto_vacio",
+      "detalle": "con el conjunto permitido vacio, A4 tiene que rechazarlo en vez de pasar por vacuidad",
+      "ok": true
+    },
+    {
+      "caso": "A4_detecta_sin_ninguna_llamada",
+      "detalle": "sin ninguna llamada registrada, A4 tiene que rechazarlo",
+      "ok": true
+    },
+    {
+      "caso": "A4_detecta_mutacion_no_detectada",
+      "detalle": "con la mutacion declarada como no detectada, A4 tiene que rechazarlo",
+      "ok": true
+    },
+    {
+      "caso": "A5_metodo_declarado",
+      "detalle": "A5 confirma con datos correctos",
+      "ok": true
+    },
+    {
+      "caso": "A5_metodo_declarado_sabe_fallar",
+      "detalle": "A5 con el dato roto lanzo, que es saber fallar",
+      "ok": true
+    },
+    {
+      "caso": "A6_el_numero_baja_con_alpha_0",
+      "detalle": "A6 confirma con datos correctos",
+      "ok": true
+    },
+    {
+      "caso": "A6_el_numero_baja_con_alpha_0_sabe_fallar",
+      "detalle": "A6 con el dato roto lanzo, que es saber fallar",
+      "ok": true
+    },
+    {
+      "caso": "A6_detecta_invariancia",
+      "detalle": "con un numero de parametros efectivos casi invariante, A6 tiene que rechazarlo",
+      "ok": true
+    },
+    {
+      "caso": "A6_detecta_direccion_invertida",
+      "detalle": "con mas parametros efectivos en alpha_0 grande, A6 tiene que rechazar la direccion",
+      "ok": true
+    },
+    {
+      "caso": "A6_detecta_cadena_literal_ausente",
+      "detalle": "sin la cadena literal del metodo, A6 tiene que rechazarlo",
+      "ok": true
+    },
+    {
+      "caso": "A7_control_aritmetico",
+      "detalle": "A7 confirma con datos correctos",
+      "ok": true
+    },
+    {
+      "caso": "A7_control_aritmetico_sabe_fallar",
+      "detalle": "A7 con el dato roto lanzo, que es saber fallar",
+      "ok": true
+    },
+    {
+      "caso": "A7_detecta_camino_no_ejecutado",
+      "detalle": "con cero ejecuciones del segundo camino, A7 tiene que rechazarlo",
+      "ok": true
+    },
+    {
+      "caso": "A7_detecta_sin_filas_comparadas",
+      "detalle": "sin filas comparadas, A7 tiene que rechazarlo",
+      "ok": true
+    },
+    {
+      "caso": "A7_detecta_diferencia_sobre_tolerancia",
+      "detalle": "con una diferencia de 1e-11 sobre la tolerancia de 1e-12, A7 tiene que rechazarla",
+      "ok": true
+    },
+    {
+      "caso": "A8_seis_magnitudes",
+      "detalle": "A8 confirma con datos correctos",
+      "ok": true
+    },
+    {
+      "caso": "A8_seis_magnitudes_sabe_fallar",
+      "detalle": "A8 con el dato roto lanzo, que es saber fallar",
+      "ok": true
+    },
+    {
+      "caso": "A9_curva_poblada",
+      "detalle": "A9 confirma con datos correctos",
+      "ok": true
+    },
+    {
+      "caso": "A9_curva_poblada_sabe_fallar",
+      "detalle": "A9 con el dato roto lanzo, que es saber fallar",
+      "ok": true
+    },
+    {
+      "caso": "A9_el_caso_tiene_de_verdad_un_bin_poblado",
+      "detalle": "sin esta comprobacion el caso podria volver a pasar con la curva vacia",
+      "ok": true
+    },
+    {
+      "caso": "A9_detecta_demasiados_bins_vacios",
+      "detalle": "con diez bins vacios de diez, A9 tiene que rechazarlo",
+      "ok": true
+    },
+    {
+      "caso": "A9_detecta_curva_con_nan",
+      "detalle": "con un NaN en la curva, A9 tiene que rechazarlo",
+      "ok": true
+    },
+    {
+      "caso": "A10_control_de_calibrador",
+      "detalle": "A10 confirma con datos correctos",
+      "ok": true
+    },
+    {
+      "caso": "A10_control_de_calibrador_sabe_fallar",
+      "detalle": "A10 con el dato roto lanzo, que es saber fallar",
+      "ok": true
+    },
+    {
+      "caso": "A11_lectura_de_la_regla",
+      "detalle": "A11 confirma con datos correctos",
+      "ok": true
+    },
+    {
+      "caso": "A11_lectura_de_la_regla_sabe_fallar",
+      "detalle": "A11 con el dato roto lanzo, que es saber fallar",
+      "ok": true
+    },
+    {
+      "caso": "A12_medidas",
+      "detalle": "A12 confirma con datos correctos",
+      "ok": true
+    },
+    {
+      "caso": "A12_medidas_sabe_fallar",
+      "detalle": "A12 con el dato roto lanzo, que es saber fallar",
+      "ok": true
+    },
+    {
+      "caso": "A13_tres_alphas",
+      "detalle": "A13 confirma con datos correctos",
+      "ok": true
+    },
+    {
+      "caso": "A13_tres_alphas_sabe_fallar",
+      "detalle": "A13 con el dato roto lanzo, que es saber fallar",
+      "ok": true
+    },
+    {
+      "caso": "A14_calibrador_interno",
+      "detalle": "A14 confirma con datos correctos",
+      "ok": true
+    },
+    {
+      "caso": "A14_calibrador_interno_sabe_fallar",
+      "detalle": "A14 con el dato roto lanzo, que es saber fallar",
+      "ok": true
+    },
+    {
+      "caso": "A14_sin_instrumentacion_del_calibrador_falla",
+      "detalle": "sin la clave del calibrador, A14 tiene que fallar y no leer cero fugas: AssertionError",
+      "ok": true
+    },
+    {
+      "caso": "A14_sin_instrumentacion_del_alpha_falla",
+      "detalle": "sin la clave del alpha, A14 tiene que fallar y no leer cero fugas: AssertionError",
+      "ok": true
+    },
+    {
+      "caso": "A3_sin_la_clave_del_corrected_cv_falla",
+      "detalle": "sin corrected_cv no hay nada recalculado que comparar: AssertionError",
+      "ok": true
+    },
+    {
+      "caso": "A3_con_un_corrected_cv_no_finito_falla",
+      "detalle": "un NaN no es un numero que se pueda comparar: AssertionError",
+      "ok": true
+    },
+    {
+      "caso": "A3_con_un_corrected_cv_que_no_es_numero_falla",
+      "detalle": "una cadena no es un numero recalculado: AssertionError",
+      "ok": true
+    },
+    {
+      "caso": "A3_lee_el_valor_que_viene_del_objeto",
+      "detalle": "el extractor devuelve el valor del objeto, no una constante",
+      "ok": true
+    },
+    {
+      "caso": "A14_detecta_solapamiento",
+      "detalle": "con filas internas y externas solapadas, A14 tiene que rechazarlo",
+      "ok": true
+    },
+    {
+      "caso": "A14_detecta_calibrador_sobre_el_oof",
+      "detalle": "con un ajuste del calibrador sobre el OOF, A14 tiene que rechazarlo",
+      "ok": true
+    },
+    {
+      "caso": "A14_detecta_alpha_fuera_de_interno",
+      "detalle": "con la decision del alpha fuera de las internas, A14 tiene que rechazarlo",
+      "ok": true
+    },
+    {
+      "caso": "A14_detecta_numero_de_ajustes_distinto",
+      "detalle": "con un ajuste menos de los esperados, A14 tiene que rechazarlo",
+      "ok": true
+    },
+    {
+      "caso": "A14_detecta_mutacion_no_detectada",
+      "detalle": "con la mutacion declarada como no detectada, A14 tiene que rechazarlo",
+      "ok": true
+    },
+    {
+      "caso": "A14_detecta_el_alpha_sobre_filas_del_calibrador",
+      "detalle": "con el alpha eligiendo sobre las mismas filas que calibran, A14 tiene que rechazarlo",
+      "ok": true
+    },
+    {
+      "caso": "A14_detecta_ajustes_fuera_de_lo_permitido",
+      "detalle": "con un ajuste fuera de lo permitido, A14 tiene que rechazarlo",
+      "ok": true
+    },
+    {
+      "caso": "A15_limite_declarado",
+      "detalle": "A15 confirma con datos correctos",
+      "ok": true
+    },
+    {
+      "caso": "A15_limite_declarado_sabe_fallar",
+      "detalle": "A15 con el dato roto lanzo, que es saber fallar",
+      "ok": true
+    },
+    {
+      "caso": "A16_rejillas",
+      "detalle": "A16 confirma con datos correctos",
+      "ok": true
+    },
+    {
+      "caso": "A16_rejillas_sabe_fallar",
+      "detalle": "A16 con el dato roto lanzo, que es saber fallar",
+      "ok": true
+    },
+    {
+      "caso": "A17_dimension",
+      "detalle": "A17 confirma con datos correctos",
+      "ok": true
+    },
+    {
+      "caso": "A17_dimension_sabe_fallar",
+      "detalle": "A17 con el dato roto lanzo, que es saber fallar",
+      "ok": true
+    },
+    {
+      "caso": "A18_cadenas",
+      "detalle": "A18 confirma con datos correctos",
+      "ok": true
+    },
+    {
+      "caso": "A18_cadenas_sabe_fallar",
+      "detalle": "A18 con el dato roto lanzo, que es saber fallar",
+      "ok": true
+    },
+    {
+      "caso": "A18_detecta_la_cadena_0_ausente",
+      "detalle": "sin V03 remains the best verified leaderboard result... A18 tiene que rechazarlo",
+      "ok": true
+    },
+    {
+      "caso": "A18_detecta_la_cadena_1_ausente",
+      "detalle": "sin LA_PREGUNTA_UNO_NO_COMPITE_POR_F1_Y_NO_ACE_POR_E... A18 tiene que rechazarlo",
+      "ok": true
+    },
+    {
+      "caso": "A18_detecta_la_cadena_2_ausente",
+      "detalle": "sin LA_PREGUNTA_DOS_NO_BUSCA_SUPERAR_A_V03_SU_CRITER... A18 tiene que rechazarlo",
+      "ok": true
+    },
+    {
+      "caso": "A18_detecta_la_cadena_3_ausente",
+      "detalle": "sin CON_1483_FILAS_Y_CELDAS_RARISIMAS_EL_PAPEL_ESPER... A18 tiene que rechazarlo",
+      "ok": true
+    },
+    {
+      "caso": "A18_detecta_la_variante_prohibida_0",
+      "detalle": "con la variante V03 is not the best verified leaderboard... A18 tiene que rechazarla",
+      "ok": true
+    },
+    {
+      "caso": "A18_detecta_la_variante_prohibida_1",
+      "detalle": "con la variante V03 remains the best verified result... A18 tiene que rechazarla",
+      "ok": true
+    },
+    {
+      "caso": "A18_detecta_la_variante_prohibida_2",
+      "detalle": "con la variante Word2Vec es mejor que V03... A18 tiene que rechazarla",
+      "ok": true
+    },
+    {
+      "caso": "A18_detecta_la_variante_prohibida_3",
+      "detalle": "con la variante Word2Vec improves sobre V03... A18 tiene que rechazarla",
+      "ok": true
+    },
+    {
+      "caso": "A18_detecta_la_variante_prohibida_4",
+      "detalle": "con la variante el bayesiano supera a V03... A18 tiene que rechazarla",
+      "ok": true
+    },
+    {
+      "caso": "A18_detecta_la_variante_prohibida_5",
+      "detalle": "con la variante el bayesiano mejora a V03... A18 tiene que rechazarla",
+      "ok": true
+    },
+    {
+      "caso": "A18_el_texto_de_ejemplo_trae_las_cuatro_cadenas",
+      "detalle": "el texto del caso tiene que traer las cuatro cadenas del objeto real",
+      "ok": true
+    },
+    {
+      "caso": "A18_el_texto_de_ejemplo_no_trae_variantes",
+      "detalle": "el texto del caso no puede traer ninguna variante prohibida",
+      "ok": true
+    },
+    {
+      "caso": "A19_f1_descriptivo",
+      "detalle": "A19 confirma con datos correctos",
+      "ok": true
+    },
+    {
+      "caso": "A19_f1_descriptivo_sabe_fallar",
+      "detalle": "A19 con el dato roto lanzo, que es saber fallar",
+      "ok": true
+    },
+    {
+      "caso": "A19_detecta_f1_en_la_regla_de_lectura",
+      "detalle": "con el F1 dentro del bloque de lectura, A19 tiene que rechazarlo",
+      "ok": true
+    },
+    {
+      "caso": "A19_detecta_etiqueta_descriptiva_ausente",
+      "detalle": "sin la etiqueta descriptiva, A19 tiene que rechazarlo",
+      "ok": true
+    },
+    {
+      "caso": "a6_datos_reales_sin_holdout",
+      "detalle": "holdout descartado=248 test=0",
+      "ok": true
+    },
+    {
+      "caso": "a6_medido_baja_con_alpha_0",
+      "detalle": "alpha_0 0.5=464.2 1.0=419.7 2.0=365.7",
+      "ok": true
+    },
+    {
+      "caso": "a6_medido_supera_el_cinco_por_ciento",
+      "detalle": "diferencia relativa=0.2694",
+      "ok": true
+    },
+    {
+      "caso": "a6_medido_no_reproduce_los_declarados",
+      "detalle": "los declarados 829/652/595 no salen: medidos 464.2/419.7/365.7",
+      "ok": true
+    },
+    {
+      "caso": "a6_medido_detecta_un_update_invariante",
+      "detalle": "la monotonia y la diferencia relativa son las que se exigen",
+      "ok": true
+    }
+  ],
+  "cifras_de_la_pregunta_1": {},
+  "cifras_de_la_pregunta_2": {},
+  "contexto": {
+    "evaluaciones_del_holdout": 0,
+    "filas_holdout_leidas": 0,
+    "filas_test_leidas": 0,
+    "n_filas": 40,
+    "n_grupos": 8,
+    "origen": "sintetico COMPLETO"
+  },
+  "detalle": {},
+  "dispositivo": "gpu_rocm",
+  "experimento": "P83",
+  "lectura_pregunta_1": "AFFIRMATIVO",
+  "limites": {
+    "no_se_consulta_el_leaderboard": true,
+    "no_se_genera_submission": true,
+    "no_se_lee_el_holdout": true,
+    "no_se_lee_test": true,
+    "umbrales_congelados": [
+      0.44,
+      0.51,
+      0.46
+    ],
+    "v03_congelado": "V03 remains the best verified leaderboard result."
+  },
+  "marca_corrida": "d1f8c8bb",
+  "metodo_del_brazo_m1": {
+    "actualizacion_de_la_dispersion": "alpha_k igual a gamma_k partido por m_k al cuadrado mas alpha_0, con Newton amortiguado sobre la verosimilitud penalizada",
+    "aproximacion_de_la_posterior": "INFERENCIA VARIACIONAL DE CAMPO MEDIO, producto de gaussianas independientes",
+    "iteraciones_del_punto_de_variacion": 30,
+    "nombre": "logistica bayesiana dispersa con hiper-prior Gamma sobre columnas reescaladas",
+    "por_que_no_la_ingenua": "la actualizacion de MacKay ingenua da un conteo de parametros efectivo invariante a alpha_0, luego A6 no tendria objeto; la forma con hiper-prior Gamma sobre columnas estandarizadas es la que hace que el conteo se mueva",
+    "prior": "NORMAL de media cero y precision alpha_k, con un unico alpha_0 declarado",
+    "referencias": [
+      "Michael E. Tipping, Sparse Bayesian Learning and the Relevance Vector Machine, JMLR 2, 2001, 226 a 253",
+      "Yuanqing Ng y Andrew Y. Ng, Adaptive Sparsity for Nonparametric Variable Selection, JMLR 13, 2012, 1833 a 1861",
+      "Christopher M. Bishop, Pattern Recognition and Machine Learning, Springer, 2006, capitulo 11"
+    ],
+    "tolerancia_sobre_la_varianza_de_la_posterior": 1e-06
+  },
+  "modo": "humo",
+  "pre_registro": {
+    "ruta": "docs/p83_preregistro_bayesiano.md",
+    "sha256_declarado": "7f376fa644c8ee4c696d8f47d6fe79ace7560d96af52235c5c14a20cd9d9ad36",
+    "sha256_leido": "7f376fa644c8ee4c696d8f47d6fe79ace7560d96af52235c5c14a20cd9d9ad36"
+  },
+  "recuento_de_casos": {
+    "n_casos": 194,
+    "n_ok": 194
+  },
+  "script": "experiments/p83_01_bayesiano.py",
+  "texto_del_informe": "# P83: informe minimo de humo\n\nV03 remains the best verified leaderboard result.\nLA_PREGUNTA_UNO_NO_COMPITE_POR_F1_Y_NO_ACE_POR_ELIMINADO_EL_ORDENAMIENTO_POR_F1\nLA_PREGUNTA_DOS_NO_BUSCA_SUPERAR_A_V03_SU_CRITERIO_ES_TENER_UN_PERFIL_DE_ERRORDISTINTO_Y_MEDIBLE\nCON_1483_FILAS_Y_CELDAS_RARISIMAS_EL_PAPEL_ESPERADO_DEL_BAYESIANO_ES_MIEMBRO_DIVERSONO_CAMPEON\nLA_POSTERIOR_DE_M1_ES_APROXIMADA_Y_NO_ES_LA_POSTERIOR_EXACTA\nEL_NUMERO_DE_PARAMETROS_EFECTIVOS_QUE_PRODUCE_ESTE_METODO_ES_UN_PARAMETRO_DEL_METODOY_ESTA_DETERMINADO_POR_LA_ESCALA_DE_LA_PRIOR_ALPHA_0_Y_POR_LA_VARIANZA_POSTERIORNO_ES_UN_NUMERO_DE_MUESTRAS_EFECTIVAS_DEL_CONJUNTO_DE_DATOS\nNO_SE_AFIRMA_QUE_WORD2VEC_SEA_MEJOR_QUE_V03\nNO_SE_AFIRMA_QUE_EL_BAYESIANO_SUPERE_A_V03\nNO_SON_INDEPENDIENTES\nLA_SELECCION_POR_VALOR_ABSOLUTO_PUEDE_FAVORECER_A_LAS_COLUMNAS_LARGASPOR_ESO_UN_BAYESIANO_QUE_DECLARA_MAS_VARIABLES_ACTIVAS_NO_HA_GANADO_POR_GANARSINO_QUE_HA_GANADO_POR_EL_CRITERIO_DE_SELECCION\nDESCRIPTIVA_Y_SIN_CUALQUIER_LECTURA_INFERENCIAL\nUN_F1_POR_DEBAJO_DE_V03_NO_REFUTA_NADA_SOBRE_LA_PREGUNTA_1PORQUE_LA_PREGUNTA_1_NO_COMPITE_POR_F1\nUN_F1_POR_DEBAJO_DE_V03_NO_REFUTA_NADA_SOBRE_LA_PREGUNTA_2PORQUE_LA_PREGUNTA_2_NO_BUSCA_SUPERAR_A_V03\n\n## Lectura de la pregunta 1: incertidumbre y calibracion\n\n- Lectura de la regla de 1.5: **AFFIRMATIVO**\n- El F1 no aparece en esta regla, porque la pregunta 1 no compite por F1.\n\n## Lectura de la pregunta 2: complementariedad de errores\n\n- El F1 no aparece en esta regla, porque la pregunta 2 no busca superar a V03.\n\n## Cifras\n\nEl bloque de lectura no lleva F1 porque la pregunta 1 no compite por F1.\n",
+  "veredictos": {}
+}

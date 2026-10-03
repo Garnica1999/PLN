@@ -1,0 +1,26 @@
+{
+  "familia": "P60_CIERRE",
+  "fecha": "2026-09-28T18:06:36+00:00",
+  "commit": "5a33594",
+  "baseline": {
+    "corrected_cv": "0.7772114525165721",
+    "lb": 0.78306,
+    "sha256": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e"
+  },
+  "pistas": 8,
+  "pistas_cerradas_sin_experimento": 4,
+  "experimentos_consumidos": 8,
+  "auditorias_sin_experimento": 1,
+  "decisiones": {
+    "CLOSED": 7,
+    "MARGINAL": 1
+  },
+  "bootstraps_ejecutados": 0,
+  "finalistas": 0,
+  "submissiones": 0,
+  "consultas_kaggle": 0,
+  "uso_test": 0,
+  "uso_holdout": 0,
+  "decision_final": "P60 = CLOSED; V03 remains final",
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

@@ -1,0 +1,204 @@
+{
+  "familia": "P69_AUDITORIA_DOWNWEIGHT",
+  "experiment_id": "P69-01",
+  "fecha": "2026-10-02T10:52:31+00:00",
+  "naturaleza": "AUDITORIA + REPRODUCCION. 0 tecnicas nuevas, 0 grid, 0 submissions, 0 test, 0 holdout, 0 leaderboard",
+  "pregunta": "existe evidencia reproducible y auditable de que A_cost_sensitive_downweight mejora V03",
+  "procedencia": {
+    "experiment_id_original": "V4-X01 (candidato A)",
+    "nombre_en_el_gate": "A_cost_sensitive_downweight",
+    "clave_del_oof": "combo__downweight_violacion_x_clase",
+    "mecanismo_segun_el_codigo": "downweight coste-sensible por violacion del umbral, combinado con un barrido anidado del multiplicador de class_weight por etiqueta",
+    "cadena_de_generacion": [
+      {
+        "orden": 1,
+        "script": "experiments/27_label_consistency_v4.py",
+        "commit": "01ad7ea",
+        "artefacto": "features/label_consistency_v4.npz"
+      },
+      {
+        "orden": 2,
+        "script": "experiments/28_hardness_v4.py",
+        "commit": "01ad7ea",
+        "artefacto": "features/hardness_v4.npz"
+      },
+      {
+        "orden": 3,
+        "script": "experiments/30_supervised_weighting_v4.py",
+        "commit": "c96cb0f",
+        "artefacto": "features/oof_weighting_v4.npz"
+      },
+      {
+        "orden": 4,
+        "script": "experiments/36_candidatos_v4.py",
+        "commit": "5d06ce7",
+        "artefacto": "reports/v4_candidates.json"
+      }
+    ],
+    "script_que_reporta": "experiments/36_candidatos_v4.py",
+    "script_que_construye": "experiments/30_supervised_weighting_v4.py",
+    "el_reportador_NO_calcula_el_candidato": true,
+    "lo_carga_de": "features/oof_weighting_v4.npz",
+    "fecha_del_registro": "2026-09-25",
+    "dataset": "desarrollo (particion dev), 1483 filas",
+    "folds": "pliegues_corregidos con grupos near-duplicado fusionados, 5 pliegues",
+    "seed": 42,
+    "representacion": "TF-IDF word(1,2) min_df=2 sin sublinear_tf + char_wb(3,5) min_df=2, ajustado por pliegue",
+    "clasificador": "LogisticRegression(C=2.0, max_iter=1000, solver=liblinear)",
+    "class_weight": "barrido anidado de multiplicadores (0.8, 1.0, 1.2, 1.5), 3 rondas",
+    "thresholds": [
+      0.44,
+      0.51,
+      0.46
+    ],
+    "score_reportado": 0.7854160387,
+    "delta_reportado": 0.0082045862,
+    "pliegues_mejorados": 5,
+    "veredicto_externo": "no existe: nunca se envio al leaderboard"
+  },
+  "hipotesis_reconstruida": {
+    "depende_de_p_V03": true,
+    "depende_de_y": true,
+    "depende_del_margen": true,
+    "depende_de_label": "NO para el peso: se promedia sobre las 3 etiquetas",
+    "unidad": "por tweet (ejemplo), NO por par tweet-etiqueta",
+    "mediana_de_error_score": 0.0,
+    "IQR": 0.016266,
+    "peso_minimo": 0.5,
+    "peso_maximo": 1.0,
+    "peso_medio": 0.86337,
+    "n_con_peso_mayor_que_1": 0,
+    "n_con_peso_menor_que_1": 441,
+    "n_con_peso_igual_1": 1042,
+    "n_en_el_suelo_0_5": 371,
+    "suma_de_pesos": 1280.38,
+    "suma_neutra": 1483,
+    "fraccion_de_peso_eliminada": 0.13663
+  },
+  "causa_del_criterio_6": {
+    "categoria": "A_falta_de_artefacto",
+    "criterio": "6_artefacto_de_prediccion_completo",
+    "criterio_en_el_csv": "False",
+    "submission_existe": "NO EXISTE",
+    "texto_del_cierre": "sin artefacto de prediccion y sin veredicto externo. No puede ser finalista porque el criterio 6 exige artefacto y la directiva 12 prohibe crear uno",
+    "que_faltaba_exactamente": "un CSV de submission. El candidato NUNCA se convirtio en prediccion sobre el conjunto de prueba, luego no hay artefacto que auditar ni enviar",
+    "por_que_no_se_creo": "la directiva 12 de la fase v4 prohibia generar artefactos nuevos durante la auditoria. La ausencia del fichero es una decision de gobernanza, no un fallo del experimento",
+    "no_es_ninguna_de_las_otras": {
+      "B_artefacto_corrupto": "no aplica: no hay artefacto que pueda estar corrupto",
+      "C_no_trazable": "el OOF SI era trazable, pero vivia en features/, ignorado por git",
+      "D_score_no_reproducible": "es lo que esta auditoria comprueba, no la causa",
+      "E_codigo_no_recuperable": "el codigo SI es recuperable y sin drift",
+      "F_inconsistencia_reporte_artefacto": "hay una: P58 describe el mecanismo como 'meta', y el codigo no construye ningun meta-modelo. Se documenta abajo"
+    },
+    "dato_reportado_en_el_csv": {
+      "honest_cv": "0.7854160387",
+      "fold_consistency": "5/5",
+      "ic95_pareado": "[-0.000225, +0.011688]",
+      "rescue": "99",
+      "damage": "74",
+      "net": "25",
+      "celdas_que_cambian": "173"
+    },
+    "la_inconsistencia_documental": {
+      "de_que_se_trata": "el CSV de P58 describe el mecanismo como 'meta con downweight coste-sensible por violacion del umbral'. El codigo de 30_supervised_weighting_v4.py NO construye ningun meta-modelo: entrena LogisticRegression directamente sobre la representacion de V03 con sample_weight",
+      "consecuencia": "la etiqueta 'meta' puede inducir a creer que el candidato pertenece a la familia de stacking, que ya fue rechazada por transferencia. No pertenece",
+      "fuente_autoritativa": "el codigo, no la etiqueta"
+    }
+  },
+  "ORIGINAL": {
+    "corrected_cv": 0.7854160387,
+    "delta_vs_V03": 0.0082045862,
+    "deltas_por_pliegue": [
+      0.002243,
+      0.001592,
+      0.003378,
+      0.023607,
+      0.010356
+    ],
+    "pliegues_mejorados": 5,
+    "rescate": 99,
+    "damage": 74,
+    "neto": 25,
+    "celdas_que_cambian": 173,
+    "ic95_pareado": [
+      -0.000225,
+      0.011688
+    ],
+    "LB": null
+  },
+  "REPRODUCED": {
+    "corrected_cv": 0.7854160387,
+    "delta_vs_V03": 0.0082045862,
+    "deltas_por_pliegue": [
+      0.002243,
+      0.001592,
+      0.003378,
+      0.023607,
+      0.010356
+    ],
+    "pliegues_mejorados": 5,
+    "bootstrap_delta_ejemplo": 0.0056192403,
+    "bootstrap_ic95_bajo": -0.0002247696,
+    "bootstrap_ic95_alto": 0.0116880198,
+    "nivel_reproducibilidad": "R3"
+  },
+  "celdas": [
+    {
+      "etiqueta": "HS",
+      "V03_correcto_candidato_incorrecto": 23,
+      "V03_incorrecto_candidato_correcto": 42,
+      "ambos_correctos": 1144,
+      "ambos_incorrectos": 274,
+      "rescate": 42,
+      "damage": 23,
+      "neto": 19
+    },
+    {
+      "etiqueta": "TR",
+      "V03_correcto_candidato_incorrecto": 19,
+      "V03_incorrecto_candidato_correcto": 14,
+      "ambos_correctos": 1300,
+      "ambos_incorrectos": 150,
+      "rescate": 14,
+      "damage": 19,
+      "neto": -5
+    },
+    {
+      "etiqueta": "AG",
+      "V03_correcto_candidato_incorrecto": 32,
+      "V03_incorrecto_candidato_correcto": 43,
+      "ambos_correctos": 1174,
+      "ambos_incorrectos": 234,
+      "rescate": 43,
+      "damage": 32,
+      "neto": 11
+    },
+    {
+      "etiqueta": "GLOBAL (celdas)",
+      "V03_correcto_candidato_incorrecto": 74,
+      "V03_incorrecto_candidato_correcto": 99,
+      "ambos_correctos": 3618,
+      "ambos_incorrectos": 658,
+      "rescate": 99,
+      "damage": 74,
+      "neto": 25
+    }
+  ],
+  "gates": {
+    "reproduccion_valida": true,
+    "cinco_de_cinco_folds": true,
+    "bootstrap_compatible_con_mejora": false,
+    "delta_positivo": true
+  },
+  "resolucion": "MARGINAL",
+  "reproducibilidad": {
+    "nivel": "R3",
+    "git_commit": "c8eea22",
+    "seed": 42,
+    "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "corrected_cv_v03": 0.7772114525165721,
+    "artefacto": "oof_weighting_v4.npz",
+    "sha256_artefacto": "92f2ef7ee9563eaa97ca64ece7b0a7b3b9f5e94a1cd47272d33e279c6b08da73"
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

@@ -1,0 +1,9 @@
+brazo,auc_HS,auc_TR,auc_AG,auc_media
+margen_solo,0.747593,0.793786,0.730044,0.757141
+margen_comp,0.729332,0.758197,0.710068,0.732533
+margen_pos,0.722797,0.771574,0.70399,0.732787
+margen_aleatorio,0.706412,0.765456,0.688756,0.720208
+delta_comp_sobre_margen,-0.024608
+delta_pos_sobre_margen,-0.024354
+brecha_comp_vs_aleatorio,0.012325
+brecha_pos_vs_aleatorio,0.012579

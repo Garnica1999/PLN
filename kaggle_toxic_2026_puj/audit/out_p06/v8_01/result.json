@@ -1,0 +1,11 @@
+{
+  "name": "v8_01",
+  "script": "experiments/v8_01_ensamble_folds.py",
+  "exit": 0,
+  "duracion_s": 8.1,
+  "tracked_changed": [
+    "kaggle_toxic_2026_puj/reports/v8_ensamble_folds.json",
+    "kaggle_toxic_2026_puj/reports/v8_ensamble_folds.md"
+  ],
+  "features_changed": []
+}

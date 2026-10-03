@@ -1,0 +1,150 @@
+{
+  "familia": "P67_CIERRE_DOCUMENTAL",
+  "experiment_id": "P67-03",
+  "fecha": "2026-09-29T17:10:47+00:00",
+  "decision": "MIXED_CON_ATRIBUCION_PARCIAL",
+  "evidencia_congelada": [
+    {
+      "evidencia": "C-A calibracion escalar",
+      "medida": "delta del reentreno anidado de un escalar por etiqueta",
+      "valor": -0.0029731513,
+      "unidad": "delta de corrected_cv",
+      "lo_que_prueba": "que la calibracion NO explica el efecto: el modelo de calibracion mas barato posible es peor que el umbral congelado",
+      "lo_que_no_prueba": "nada a favor de MI_arbol. Es un control negativo, y su valor es negativo",
+      "fuente": "reports/p67_controles_decisivos.json"
+    },
+    {
+      "evidencia": "C-E AUC del residuo de MI_arbol",
+      "medida": "AUC contra la etiqueta, fuera de la banda de margen",
+      "valor": 0.579597,
+      "unidad": "AUC",
+      "lo_que_prueba": "que hay senal que no es movimiento de frontera: fuera de la banda no hay margen que mover",
+      "lo_que_no_prueba": "que esa senal sea exclusiva de MI_arbol, ni que sea explotable",
+      "fuente": "reports/p67_controles_decisivos.json"
+    },
+    {
+      "evidencia": "C-E desviacion del residuo de MI_arbol",
+      "medida": "desviacion estandar del residuo",
+      "valor": 0.833791,
+      "unidad": "desviacion estandar",
+      "lo_que_prueba": "que el residuo no es colineal con V03",
+      "lo_que_no_prueba": "que la magnitud implique utilidad",
+      "fuente": "reports/p67_controles_decisivos.json"
+    },
+    {
+      "evidencia": "C-E del candidato mas redundante",
+      "medida": "desviacion estandar del residuo de huecos_1_2",
+      "valor": 0.219333,
+      "unidad": "desviacion estandar",
+      "lo_que_prueba": "el contraste que da sentido al anterior",
+      "lo_que_no_prueba": "nada por si sola",
+      "fuente": "reports/p67_controles_decisivos.json"
+    },
+    {
+      "evidencia": "C-B atribucion",
+      "medida": "candidatos con delta positivo bajo la misma operacion",
+      "valor": "4 de 7",
+      "unidad": "conteo",
+      "lo_que_prueba": "que parte del efecto es de la OPERACION y no de MI_arbol",
+      "lo_que_no_prueba": "que MI_arbol no aporte nada: es el mas alto de los siete",
+      "fuente": "reports/p67_controles_decisivos.json"
+    },
+    {
+      "evidencia": "efecto defendible del blend de P66",
+      "medida": "delta de MI_arbol|blend_prob",
+      "valor": 0.0033068923,
+      "unidad": "delta de corrected_cv",
+      "lo_que_prueba": "que con 3 de 5 pliegues el blend crece mas que el residual",
+      "lo_que_no_prueba": "NO es adoptable: falla el gate de 4 de 5 pliegues, y no es comparable con el residual porque es OTRO mecanismo",
+      "fuente": "reports/p66_score_fusion.json"
+    },
+    {
+      "evidencia": "efecto del residual de P66",
+      "medida": "delta de MI_arbol|residual",
+      "valor": 0.0026743167,
+      "unidad": "delta de corrected_cv",
+      "lo_que_prueba": "que pasa el gate de delta y el de 4 de 5 pliegues",
+      "lo_que_no_prueba": "que sea robusto: su IC95 por grupos incluye el cero",
+      "fuente": "reports/p67_p66_reconciliation.json"
+    },
+    {
+      "evidencia": "bootstrap del residual",
+      "medida": "IC95 por grupos de near-duplicados",
+      "valor": "[-0.004431163444677563, 0.010210874472249717]",
+      "unidad": "intervalo",
+      "lo_que_prueba": "que la incertidumbre domina el efecto",
+      "lo_que_no_prueba": "que el signo sea negativo. El punto esta por encima de cero, lo que no esta es el intervalo",
+      "fuente": "reports/p66_complementarity.json"
+    },
+    {
+      "evidencia": "atribucion historica del blend",
+      "medida": "brecha de atribucion de P66",
+      "valor": 0.0093216366,
+      "unidad": "delta de corrected_cv",
+      "lo_que_prueba": "nada: esta INVALIDADA como medida de informacion atribuida",
+      "lo_que_no_prueba": "no se debe usar. Se conserva solo para trazabilidad, marcada como invalida",
+      "fuente": "reports/p67_p66_reconciliation.json"
+    },
+    {
+      "evidencia": "control de azar con beta fijo",
+      "medida": "delta de la misma operacion con un score de ruido, escala igualada",
+      "valor": "senal real +0.0034274786 frente a azar -0.0036763898 en el mismo beta",
+      "unidad": "delta de corrected_cv",
+      "lo_que_prueba": "que la operacion DISTINGUE senal de ruido: la senal real es positiva en los seis betas y el azar negativo en los seis",
+      "lo_que_no_prueba": "que el efecto sea atribuible a MI_arbol, ni que sea robusto o explotable",
+      "fuente": "reports/p67_interpretation.md"
+    },
+    {
+      "evidencia": "equivalencia algebraica del mecanismo residual",
+      "medida": "maxima diferencia entre la forma residual y la forma blend",
+      "valor": "8.882e-16",
+      "unidad": "error numerico",
+      "lo_que_prueba": "que el mecanismo residual de P66 es EXACTAMENTE un blend lineal de logits mas un desplazamiento de umbral",
+      "lo_que_no_prueba": "que el efecto sea falso. Solo dice que no es un mecanismo nuevo",
+      "fuente": "reports/p67_interpretation.md"
+    }
+  ],
+  "ratio_de_varianza": 3.8015,
+  "control_de_azar": {
+    "crudo": -0.0017593058,
+    "crudo_desviacion_del_residuo": 1.400012,
+    "igualado": -0.0030780979,
+    "igualado_desviacion_del_residuo": 0.833791,
+    "senal_real_desviacion_del_residuo": 0.833791,
+    "nota": "el crudo no es comparable porque su perturbacion es 1.68 veces la de la senal real"
+  },
+  "atribucion_historica_invalida": 0.0093216366,
+  "ascii": {
+    "oficial": "PASA",
+    "independiente": "PASA",
+    "bytes_mayores_127": 0,
+    "ficheros_revisados": 34,
+    "deuda_historica_registro": 300,
+    "bytes_no_ascii_en_lineas_de_P67": 0
+  },
+  "dano_p66": {
+    "artefacto": "reports/p66_score_fusion.csv",
+    "registros_perdidos": 214,
+    "restaurado": true,
+    "codigo_historico_modificado": false,
+    "marca": "DO_NOT_RERUN_UNGUARDED"
+  },
+  "figuras_nuevas": [
+    "p67_07_v03_vs_mecanismos.png",
+    "p67_08_delta_ordenado.png",
+    "p67_09_real_barajado_azar.png",
+    "p67_10_atribucion_por_candidato.png",
+    "p67_11_rescate_dano_neto.png",
+    "p67_12_auc_del_residuo.png",
+    "p67_13_varianza_del_residuo.png",
+    "p67_14_tres_referencias_mi_arbol.png"
+  ],
+  "reproducibilidad": {
+    "nivel": "R2",
+    "git_commit": "1a3a13f",
+    "seed": 42,
+    "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "corrected_cv": 0.7772114525165721
+  },
+  "formulacion": "Se detecto senal residual, pero los mecanismos de integracion evaluados no han conseguido aislar una mejora robusta y atribuible sobre V03."
+}

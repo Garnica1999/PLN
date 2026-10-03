@@ -1,0 +1,78 @@
+rebanada,variante,n_filas,f1_por_celda
+interpersonal (TR=1),V03-CONGELADO,445,0.9129
+interpersonal (TR=1),EMB-B0-200-LR,445,0.8514
+interpersonal (TR=1),EMB-B0-200-SVC,445,0.8646
+interpersonal (TR=1),FUSION-B0-200,445,0.9199
+interpersonal (TR=1),EMB-NEG-5-LR,445,0.8594
+interpersonal (TR=1),EMB-NEG-5-SVC,445,0.8749
+interpersonal (TR=1),FUSION-NEG-5,445,0.9199
+afiliacion (AG=1),V03-CONGELADO,567,0.8846
+afiliacion (AG=1),EMB-B0-200-LR,567,0.8231
+afiliacion (AG=1),EMB-B0-200-SVC,567,0.8427
+afiliacion (AG=1),FUSION-B0-200,567,0.8925
+afiliacion (AG=1),EMB-NEG-5-LR,567,0.8314
+afiliacion (AG=1),EMB-NEG-5-SVC,567,0.8519
+afiliacion (AG=1),FUSION-NEG-5,567,0.8927
+sin_hate_explicito (HS=0),V03-CONGELADO,835,0.0667
+sin_hate_explicito (HS=0),EMB-B0-200-LR,835,0.0175
+sin_hate_explicito (HS=0),EMB-B0-200-SVC,835,0.0152
+sin_hate_explicito (HS=0),FUSION-B0-200,835,0.0657
+sin_hate_explicito (HS=0),EMB-NEG-5-LR,835,0.0105
+sin_hate_explicito (HS=0),EMB-NEG-5-SVC,835,0.0177
+sin_hate_explicito (HS=0),FUSION-NEG-5,835,0.0667
+colectivos,V03-CONGELADO,93,0.574
+colectivos,EMB-B0-200-LR,93,0.4791
+colectivos,EMB-B0-200-SVC,93,0.5029
+colectivos,FUSION-B0-200,93,0.589
+colectivos,EMB-NEG-5-LR,93,0.4872
+colectivos,EMB-NEG-5-SVC,93,0.4864
+colectivos,FUSION-NEG-5,93,0.5903
+insultos,V03-CONGELADO,855,0.8357
+insultos,EMB-B0-200-LR,855,0.7249
+insultos,EMB-B0-200-SVC,855,0.7221
+insultos,FUSION-B0-200,855,0.8389
+insultos,EMB-NEG-5-LR,855,0.7429
+insultos,EMB-NEG-5-SVC,855,0.7439
+insultos,FUSION-NEG-5,855,0.8385
+elongaciones,V03-CONGELADO,57,0.6853
+elongaciones,EMB-B0-200-LR,57,0.5545
+elongaciones,EMB-B0-200-SVC,57,0.5992
+elongaciones,FUSION-B0-200,57,0.7221
+elongaciones,EMB-NEG-5-LR,57,0.5828
+elongaciones,EMB-NEG-5-SVC,57,0.6176
+elongaciones,FUSION-NEG-5,57,0.7221
+coloquial,V03-CONGELADO,214,0.8177
+coloquial,EMB-B0-200-LR,214,0.6368
+coloquial,EMB-B0-200-SVC,214,0.6434
+coloquial,FUSION-B0-200,214,0.823
+coloquial,EMB-NEG-5-LR,214,0.7116
+coloquial,EMB-NEG-5-SVC,214,0.7102
+coloquial,FUSION-NEG-5,214,0.8226
+hashtags,V03-CONGELADO,144,0.5311
+hashtags,EMB-B0-200-LR,144,0.3493
+hashtags,EMB-B0-200-SVC,144,0.3616
+hashtags,FUSION-B0-200,144,0.5462
+hashtags,EMB-NEG-5-LR,144,0.3111
+hashtags,EMB-NEG-5-SVC,144,0.344
+hashtags,FUSION-NEG-5,144,0.544
+menciones,V03-CONGELADO,702,0.8462
+menciones,EMB-B0-200-LR,702,0.7374
+menciones,EMB-B0-200-SVC,702,0.7375
+menciones,FUSION-B0-200,702,0.8483
+menciones,EMB-NEG-5-LR,702,0.7476
+menciones,EMB-NEG-5-SVC,702,0.7483
+menciones,FUSION-NEG-5,702,0.8478
+urls,V03-CONGELADO,458,0.6578
+urls,EMB-B0-200-LR,458,0.5304
+urls,EMB-B0-200-SVC,458,0.5488
+urls,FUSION-B0-200,458,0.6782
+urls,EMB-NEG-5-LR,458,0.5455
+urls,EMB-NEG-5-SVC,458,0.5579
+urls,FUSION-NEG-5,458,0.6787
+cita,V03-CONGELADO,37,0.8449
+cita,EMB-B0-200-LR,37,0.6343
+cita,EMB-B0-200-SVC,37,0.6674
+cita,FUSION-B0-200,37,0.8393
+cita,EMB-NEG-5-LR,37,0.6743
+cita,EMB-NEG-5-SVC,37,0.6965
+cita,FUSION-NEG-5,37,0.8557

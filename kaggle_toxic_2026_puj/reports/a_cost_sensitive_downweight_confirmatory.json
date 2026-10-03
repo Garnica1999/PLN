@@ -1,0 +1,158 @@
+{
+  "familia": "P69_TERCERA_PARTICION",
+  "experiment_id": "P69-04",
+  "fecha": "2026-09-29T18:03:23+00:00",
+  "naturaleza": "CONFIRMACION pre-registrada. 1 particion. 0 tecnicas nuevas, 0 grid, 0 submissions, 0 test, 0 holdout, 0 leaderboard",
+  "pre_registro": {
+    "documento": "docs/p69_especificacion_congelada.md",
+    "commit": "915991b",
+    "escrito_antes_de_ejecutar": true
+  },
+  "semilla_tercera_particion": 20261001,
+  "particiones": [
+    {
+      "nombre": "canonica",
+      "V03": 0.7772114525,
+      "delta": 0.0082045862,
+      "pliegues": 5,
+      "rescate": 99,
+      "damage": 74,
+      "deltas": [
+        0.002243,
+        0.001592,
+        0.003378,
+        0.023607,
+        0.010356
+      ]
+    },
+    {
+      "nombre": "segunda",
+      "V03": 0.7674405718,
+      "delta": 0.010525313,
+      "pliegues": 5,
+      "rescate": 86,
+      "damage": 74,
+      "deltas": [
+        0.026302,
+        0.004643,
+        0.002975,
+        0.020868,
+        0.003209
+      ]
+    },
+    {
+      "nombre": "tercera",
+      "V03": 0.7739813065,
+      "delta": 0.0047946703,
+      "pliegues": 4,
+      "rescate": 78,
+      "damage": 69,
+      "deltas": [
+        0.00188,
+        -0.006834,
+        0.012343,
+        0.012575,
+        0.00444
+      ]
+    }
+  ],
+  "resumen": {
+    "media": 0.0078415232,
+    "mediana": 0.0082045862,
+    "minimo": 0.0047946703,
+    "maximo": 0.010525313,
+    "particiones_positivas": 3
+  },
+  "tercera": {
+    "V03": 0.7739813065,
+    "candidato": 0.7787759768,
+    "delta": 0.0047946703,
+    "pliegues_positivos": 4,
+    "deltas_por_pliegue": [
+      0.00188,
+      -0.006834,
+      0.012343,
+      0.012575,
+      0.00444
+    ],
+    "rescate": 78,
+    "damage": 69,
+    "neto": 9,
+    "por_etiqueta": [
+      {
+        "etiqueta": "HS",
+        "rescate": 43,
+        "damage": 27,
+        "neto": 16,
+        "V03_ok_cand_ko": 27,
+        "V03_ko_cand_ok": 43,
+        "ambos_ok": 1126,
+        "ambos_ko": 287
+      },
+      {
+        "etiqueta": "TR",
+        "rescate": 18,
+        "damage": 14,
+        "neto": 4,
+        "V03_ok_cand_ko": 14,
+        "V03_ko_cand_ok": 18,
+        "ambos_ok": 1298,
+        "ambos_ko": 153
+      },
+      {
+        "etiqueta": "AG",
+        "rescate": 17,
+        "damage": 28,
+        "neto": -11,
+        "V03_ok_cand_ko": 28,
+        "V03_ko_cand_ok": 17,
+        "ambos_ok": 1181,
+        "ambos_ko": 257
+      }
+    ],
+    "multiplicadores_por_fold": [
+      [
+        1.5,
+        1.5,
+        1.0
+      ],
+      [
+        0.8,
+        1.2,
+        1.2
+      ],
+      [
+        1.0,
+        1.2,
+        1.5
+      ],
+      [
+        1.2,
+        1.0,
+        1.2
+      ],
+      [
+        1.2,
+        1.5,
+        1.2
+      ]
+    ],
+    "pesos": {
+      "IQR": 0.018063,
+      "peso_medio": 0.861795,
+      "n_con_peso_mayor_que_1": 0,
+      "n_con_peso_menor_que_1": 456,
+      "fraccion_retirada": 0.138205
+    }
+  },
+  "caso": "CASO A",
+  "resolucion": "PROMISING_UNCONFIRMED",
+  "lectura": "tres de tres particiones positivas y la tercera con 4 de 5 pliegues. Se pasa al test de permutacion",
+  "procede_permutacion": true,
+  "reproducibilidad": {
+    "nivel": "R2",
+    "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "corrected_cv_v03_canonico": 0.7772114525165721
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

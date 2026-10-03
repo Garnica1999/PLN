@@ -1,0 +1,41 @@
+{
+  "marca_corrida": "20261001T051317Z_p1023604",
+  "resultado": {
+    "bloque": 1,
+    "coste_segundos": 5e-06,
+    "descripcion": "el relleno se aplica ANTES de la RNN, verificado por estado",
+    "detalle": {
+      "GRU": {
+        "banda_muerta": 1e-09,
+        "con_atencion": false,
+        "diferencia_relativa_primer_paso": 0.0,
+        "diferencia_relativa_secuencia_completa": 0.0,
+        "funcion_de_empaquetado": "pack_padded_sequence",
+        "longitud_real": 8,
+        "nota": "las secuencias de P82 son de tokens a la izquierda y relleno a la derecha, igual que las de v9_04; con relleno al principio el empaquetado NO lo neutraliza, porque toma las primeras posiciones como validas",
+        "nucleo": "GRU",
+        "posicion_del_relleno": "al final, porque pack_padded_sequence lo exige",
+        "tolerancia": 1e-06
+      },
+      "LSTM": {
+        "banda_muerta": 1e-09,
+        "con_atencion": true,
+        "diferencia_relativa_primer_paso": 0.0,
+        "diferencia_relativa_secuencia_completa": 0.0,
+        "funcion_de_empaquetado": "pack_padded_sequence",
+        "longitud_real": 8,
+        "nota": "las secuencias de P82 son de tokens a la izquierda y relleno a la derecha, igual que las de v9_04; con relleno al principio el empaquetado NO lo neutraliza, porque toma las primeras posiciones como validas",
+        "nucleo": "LSTM",
+        "posicion_del_relleno": "al final, porque pack_padded_sequence lo exige",
+        "tolerancia": 1e-06
+      }
+    },
+    "estado": "CONFIRMADO",
+    "exito": true,
+    "id": "A3",
+    "naturaleza": "CONFIRMAR",
+    "stop": true,
+    "tolerancia": "1e-6 en norma relativa del vector de estado; banda muerta 1e-9",
+    "traza": ""
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "marca_corrida": "completo_b652fe",
+  "resultado": {
+    "bloque": 10,
+    "coste_segundos": 2.2e-05,
+    "descripcion": "cobertura y anchura, y el control degenerado de V03",
+    "detalle": {
+      "comprobaciones": {
+        "el_bayesiano_publica_anchura_media_normalizada": true,
+        "el_bayesiano_publica_cobertura": true,
+        "el_bayesiano_publica_cobertura_menos_pesada_por_anchura": true,
+        "el_control_v03_publica_anchura_media_normalizada": true,
+        "el_control_v03_publica_cobertura": true,
+        "el_control_v03_publica_cobertura_menos_pesada_por_anchura": true,
+        "la_cobertura_del_intervalo_completo_es_1": true
+      },
+      "control_intervalo_completo_0_1": 1.0,
+      "control_v03_anchura_cero": {
+        "anchura_media_normalizada": 0.0,
+        "cobertura": 0.0,
+        "cobertura_menos_pesada_por_anchura": 0.0,
+        "peso_de_la_penalizacion": 0.5
+      },
+      "intervalo_bayesiano": {
+        "anchura_media_normalizada": 0.5873079665980738,
+        "cobertura": 0.0,
+        "cobertura_menos_pesada_por_anchura": -0.2936539832990369,
+        "peso_de_la_penalizacion": 0.5
+      },
+      "motivo_de_parada": "la cobertura del intervalo completo no da 1.0 y el intervalo no se construye bien",
+      "por_que_ambos_extremos": "un intervalo estrecho que no cubre pierde contra el control de V03 y un intervalo [0, 1] tiene cobertura 1 y no dice nada, luego los dos extremos acorralan la metrica",
+      "que_no_se_autoriza": "decir que el modelo sabe mas, porque la cobertura no mide saber"
+    },
+    "estado": "CONFIRMADO",
+    "exito": true,
+    "id": "A10",
+    "naturaleza": "CONFIRMAR",
+    "stop": true,
+    "tolerancia": "la cobertura del intervalo completo tiene que ser exactamente 1.0",
+    "traza": ""
+  }
+}

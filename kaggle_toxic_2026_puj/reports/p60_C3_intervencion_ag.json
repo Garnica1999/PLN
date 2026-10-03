@@ -1,0 +1,188 @@
+{
+  "familia": "P60_C3_LABEL_DEPENDENT_NOISE_INTERVENCION",
+  "naturaleza": "EXPERIMENTO. 1 candidato, 0 submissions, 0 Kaggle, 0 holdout, 0 test. V03 no se modifica",
+  "fecha": "2026-09-28T15:48:27+00:00",
+  "experiment_id": "P60-05",
+  "track": "P60-C3",
+  "script": "experiments/p60_06_intervencion_ag.py",
+  "paper": "Noisy Multi-Label Text Classification via Instance-Label Pair Correction, Findings of NAACL 2024, DOI 10.18653/v1/2024.findings-naacl.93",
+  "pregunta": "C2 mostro senal incremental solo en AG y con el indicador estructural. Un reescalado suave de la supervision en esa region aporta algo, o la region es ademas util como negativa?",
+  "hipotesis": "descontar la supervision de AG en la region indefinida, con un factor derivado de las tasas de error de training, corrige parte de los errores de AG sin perder la senal de las negativas utiles",
+  "mecanismo": "el peso por ejemplo de AG se multiplica por (1 - e_indefinida) / (1 - e_definida) dentro de la region, que es un ratio de fiabilidad leido de los datos y no un parametro elegido",
+  "modelo": "el mismo LogisticRegression lineal de V03, C=2,0, con el mismo L-BFGS-B de la pista L, de modo que el delta ansla el reescalado",
+  "perdida": "logistica ponderada por clase, con un reescalado suave en una region",
+  "rasgos": "los 27.431 del TF-IDF de V03, sin cambio",
+  "adaptacion_legal": {
+    "dominio_original": "multi-etiqueta de texto con ruido a nivel de par",
+    "adaptacion": "tres etiquetas anidadas y una region sin definir distinta por etiqueta",
+    "que_cambia": "el peso, no la etiqueta: no se cambia ninguna etiqueta dura ni se hace limpieza masiva",
+    "que_es_invariante": "la identificacion de la region por la estructura de etiquetas"
+  },
+  "gap_analysis": {
+    "filas_ruido_por_etiqueta": 0,
+    "precedente_mas_cercano": "V14-00, perdida enmascarada sobre la region indefinida",
+    "por_que_no_es_duplicacion": "V14-00 puso peso EXACTAMENTE CERO, lo que demostro equivalente a descartar las filas, y dio -0,116581. Ahi el factor era 0 por construccion. Aqui el factor es un ratio de fiabilidad DERIVADO, distinto de cero y cercano a 1, luego es una intervencion distinta y no un rescate de la anterior",
+    "veredicto": "NUEVA"
+  },
+  "configuracion_pre_registrada": {
+    "etiqueta_objetivo": "AG",
+    "por_que_solo_una": "C2 dio ganancia incremental medible solo en AG. En TR el control tiene AUC exactamente 1,0000, luego no hay margen residual; en HS no existe region indefinida",
+    "region": "HS = 0 o TR = 0, para AG",
+    "factor": "(1 - e_indefinida) / (1 - e_definida), medido en TRAINING del pliegue",
+    "deteccion_del_factor": "derivado de los datos, un valor por pliegue, sin rejilla",
+    "rejilla": "ninguna sobre el factor",
+    "pesos_de_clase": "los mismos balanceados de V03",
+    "regularizacion": "C = 2.0 con el mismo L2",
+    "umbrales": "0,44 / 0,51 / 0,46 congelados"
+  },
+  "region_medida_en_el_oof": {
+    "filas": 1038,
+    "n": 1483,
+    "error_dentro": 0.196532,
+    "error_fuera": 0.164045,
+    "enriquecimiento": 1.198036,
+    "auc_control_global": 0.996079,
+    "auc_control_dentro_de_la_region": 0.181373
+  },
+  "factores_derivados": [
+    {
+      "pliegue": 1,
+      "filas_indefinidas_en_training": 829,
+      "error_dentro": 0.016888,
+      "error_fuera": 0.019608,
+      "factor_derivado_w_soft": 1.002774,
+      "convergio_control": true,
+      "convergio_intervencion": true,
+      "iteraciones_control": 38,
+      "iteraciones_intervencion": 32
+    },
+    {
+      "pliegue": 2,
+      "filas_indefinidas_en_training": 831,
+      "error_dentro": 0.018051,
+      "error_fuera": 0.011268,
+      "factor_derivado_w_soft": 0.99314,
+      "convergio_control": true,
+      "convergio_intervencion": true,
+      "iteraciones_control": 35,
+      "iteraciones_intervencion": 38
+    },
+    {
+      "pliegue": 3,
+      "filas_indefinidas_en_training": 831,
+      "error_dentro": 0.016847,
+      "error_fuera": 0.025281,
+      "factor_derivado_w_soft": 1.008652,
+      "convergio_control": true,
+      "convergio_intervencion": true,
+      "iteraciones_control": 38,
+      "iteraciones_intervencion": 43
+    },
+    {
+      "pliegue": 4,
+      "filas_indefinidas_en_training": 831,
+      "error_dentro": 0.015644,
+      "error_fuera": 0.019663,
+      "factor_derivado_w_soft": 1.0041,
+      "convergio_control": true,
+      "convergio_intervencion": true,
+      "iteraciones_control": 38,
+      "iteraciones_intervencion": 31
+    },
+    {
+      "pliegue": 5,
+      "filas_indefinidas_en_training": 830,
+      "error_dentro": 0.019277,
+      "error_fuera": 0.014045,
+      "factor_derivado_w_soft": 0.994693,
+      "convergio_control": true,
+      "convergio_intervencion": true,
+      "iteraciones_control": 34,
+      "iteraciones_intervencion": 34
+    }
+  ],
+  "control": {
+    "brazo_0": {
+      "corrected_cv": 0.7772647318762402,
+      "folds": [
+        0.7960101143044023,
+        0.7955257641824806,
+        0.7788600288600289,
+        0.7363173444113459,
+        0.7800420484520435
+      ],
+      "f1_por_etiqueta": {
+        "HS": 0.7622641509,
+        "TR": 0.8153153153,
+        "AG": 0.7542147294
+      },
+      "rescate": 2,
+      "damage": 1,
+      "neto": 1,
+      "cambian": 3
+    },
+    "delta_brazo_0_vs_V03": 5.32794e-05,
+    "max_abs_diff_prob": 0.0069079398120527324,
+    "clona_a_V03": true
+  },
+  "resultado": {
+    "brazo_0_corrected_cv": 0.7772647319,
+    "brazo_1_corrected_cv": 0.7772647319,
+    "delta_intervencion_puro": 0.0,
+    "delta_vs_V03": 5.32794e-05,
+    "folds_brazo_1": [
+      0.79601,
+      0.795526,
+      0.77886,
+      0.736317,
+      0.780042
+    ],
+    "folds_brazo_0": [
+      0.79601,
+      0.795526,
+      0.77886,
+      0.736317,
+      0.780042
+    ],
+    "pliegues_mejorados": 0,
+    "f1_por_etiqueta": {
+      "HS": 0.7622641509,
+      "TR": 0.8153153153,
+      "AG": 0.7542147294
+    },
+    "f1_por_etiqueta_control": {
+      "HS": 0.7622641509,
+      "TR": 0.8153153153,
+      "AG": 0.7542147294
+    },
+    "factor_min": 0.99314,
+    "factor_max": 1.008652,
+    "factor_medio": 1.000672,
+    "rescate": 2,
+    "damage": 1,
+    "neto": 1,
+    "cambian": 3,
+    "cambian_en_ag": 0,
+    "cambian_en_las_otras": 0,
+    "gate": {
+      "delta_min": 0.003,
+      "pliegues_min": 4,
+      "supera_delta": false,
+      "supera_pliegues": false,
+      "superado": false
+    },
+    "bootstrap": null
+  },
+  "convergencia": true,
+  "interpretacion": "La intervencion resulto ser un no-op exacto, con delta 0,0000000000 y cero celdas cambiadas, y el motivo es util. El factor se derivo de las tasas de error IN-SAMPLE del modelo ajustada a las filas de training del pliegue, y esas tasas son 0,016 a 0,019 tanto dentro como fuera de la region, luego el ratio de fiabilidad salio entre 0,993 y 1,009 y el descuento fue despreciable. Ese fue un fallo de estimador del factor, no de la hipotesis, y conviene decirlo: el enriquecimiento real medido out-of-fold es solo de 1,198 veces, luego el ratio correcto habria sido 0,9614, un descuento del cuatro por ciento. Aun asi, cuatro por ciento sobre mil filas no mueve la frontera, y V14-00 ya demostro que la version dura, con factor cero, da -0,116581. El eje queda acotado entre dos extremos medidos: factor cero es catastrofico y factor uno es un no-op, y el encargo prohibe gastar una plaza de reserva en rederivar el factor para perseguir un numero mejor, asi que ese intervalo queda sin explorar y se declara como tal en vez de ocultarlo. El dato cientificamente mas valioso de este script no es el delta sino que el AUC del control DENTRO de la region es 0,1814, muy por debajo de 0,5: dentro de la region indefinida la confianza esta ANTICORRELACIONADA con el error. Eso es exactamente lo que hace que la senal estructural tenga ganancia incremental, y explica por que C2 la encontro donde la encontro. Ademas el control de TR tiene AUC exactamente 1,0000, luego TR no tiene margen de deteccion alguno, y HS no tiene region indefinida. La conclusion de la pista C es que el ruido dependiente de etiqueta existe y es LOCALIZABLE en AG, pero que su correccion no es accionable en este corpus, lo cual cierra la pista por la via suave y confirma V14-00 por la via dura",
+  "decision": "CLOSED. La intervencion resulto ser un no-op exacto: el factor derivado quedo entre 0,993 y 1,009 y no cambio ni una celda. V14-00 ya habia cerrado la version dura de la misma idea",
+  "experimentos_registrados": 1,
+  "formulacion": "V03 remains the best verified leaderboard result.",
+  "gastos": {
+    "submissions": 0,
+    "consultas_kaggle": 0,
+    "uso_holdout": 0,
+    "uso_test": 0,
+    "segundos": 135.0
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "experimento": "V20-02 (inferencia de V03 en test y candidata de la regla de V20 para la submission)",
+  "fecha": "2026-09-27T04:07:26+00:00",
+  "champion": {
+    "version": "V03",
+    "lb": 0.78306
+  },
+  "candidato": {
+    "nombre": "HS via logit(HS)*logit(TR)+logit(AG)",
+    "diseno": [
+      "logit(HS)",
+      "logit(HS)*logit(TR)",
+      "logit(AG)"
+    ],
+    "modelo": "LogisticRegression(C=1.0, solver='liblinear')",
+    "ajuste": "exclusivamente las 1483 filas del OOF de V03",
+    "umbral_de_test": -0.6082042959699345,
+    "umbrales_por_pliegue_de_v20": {
+      "1": -0.5731852938340971,
+      "2": -0.5969090727983519,
+      "3": -0.5540497625929229,
+      "4": -0.6665129478831603,
+      "5": -0.5528627927068916
+    },
+    "media_por_pliegue": -0.5887039739630848,
+    "desviacion_por_pliegue": 0.04703162271776425,
+    "etiquetas_modificadas": [
+      "HS"
+    ]
+  },
+  "controles": {
+    "test_sin_etiquetas": true,
+    "filas_de_test": 1154,
+    "ids_unicos": true,
+    "inferencia_reproduce_la_submission_congelada": true,
+    "celdas_distintas_de_la_congelada": 0,
+    "sha256_submission_congelada": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "sha256_v03_regenerada": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "identicas": true,
+    "solo_cambia_HS": true,
+    "umbral_derivado_solo_del_oof": true
+  },
+  "cambios_en_test": {
+    "filas_modificadas": 51,
+    "celdas_modificadas": 51,
+    "por_etiqueta": {
+      "HS": 51,
+      "TR": 0,
+      "AG": 0
+    },
+    "tipos": {
+      "0->1": 51,
+      "1->0": 0
+    }
+  },
+  "cambios_en_oof": {
+    "celdas": 64,
+    "rescates": 25,
+    "danios": 39
+  },
+  "artefactos": {
+    "v03_regenerada": "submissions/toxic_submission_v20_03_reproduccion_v03.csv",
+    "v20": "submissions/toxic_submission_v20_01_regla_hs_interaccion.csv",
+    "diff": "resultados/v20_03_diff_v03_v20.csv"
+  },
+  "gastos": {
+    "submissions": 0,
+    "modelos_entrenados": 0,
+    "uso_de_test": "solo inferencia"
+  }
+}

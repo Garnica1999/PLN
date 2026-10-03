@@ -1,0 +1,68 @@
+{
+  "experimento": "V6-01 (P0-bis, ANALYSIS)",
+  "fecha": "2026-09-26T01:20:30+00:00",
+  "n_desarrollo": 1483,
+  "v03_corrected_cv": 0.777211,
+  "v03_filas_acertadas": 340,
+  "interseccion": {
+    "M3-SVC": {
+      "candidato": "M3-SVC",
+      "filas": 1483,
+      "v03_acierta_candidato_falla": 13,
+      "v03_falla_candidato_acierta": 10,
+      "ambos_aciertan": 327,
+      "ninguno_acierta": 1133,
+      "correccion_neta": -3,
+      "info_disponible_pct": 0.87
+    },
+    "M4-CHAR-LR": {
+      "candidato": "M4-CHAR-LR",
+      "filas": 1483,
+      "v03_acierta_candidato_falla": 20,
+      "v03_falla_candidato_acierta": 12,
+      "ambos_aciertan": 320,
+      "ninguno_acierta": 1131,
+      "correccion_neta": -8,
+      "info_disponible_pct": 1.05
+    },
+    "M1-WORD-LR": {
+      "candidato": "M1-WORD-LR",
+      "filas": 1483,
+      "v03_acierta_candidato_falla": 6,
+      "v03_falla_candidato_acierta": 9,
+      "ambos_aciertan": 334,
+      "ninguno_acierta": 1134,
+      "correccion_neta": 3,
+      "info_disponible_pct": 0.79
+    }
+  },
+  "estructura_etiquetas": {
+    "n_desarrollo": 1483,
+    "combinaciones": {
+      "000": 813,
+      "001": 22,
+      "100": 79,
+      "101": 124,
+      "110": 24,
+      "111": 421
+    },
+    "frecuencias": {
+      "HS=1": 648,
+      "TR=1": 445,
+      "AG=1": 567,
+      "TR=1 y HS=0": 0,
+      "AG=1 y HS=0": 22
+    },
+    "condicionales": {
+      "P(TR=1 | HS=1)": 0.6867,
+      "P(TR=1 | HS=0)": 0.0,
+      "P(AG=1 | HS=1)": 0.841,
+      "P(AG=1 | HS=0)": 0.0263
+    },
+    "implicacion_tr_hs": {
+      "casos_TR1_HS0": 0,
+      "casos_TR1_HS1": 445,
+      "determinista": true
+    }
+  }
+}

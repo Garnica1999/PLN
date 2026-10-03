@@ -1,0 +1,4 @@
+variante,corrected_cv,delta,ic95_0,ic95_1,f1_HS,f1_TR,f1_AG,salvage,damage,pliegues_positivos
+P0-0-referencia-completa,0.777211,0.0,0.0,0.0,0.7617,0.8157,0.7542,0,0,0
+P0-1-control-frozen,0.769123,-0.008089,-0.017013,0.000642,0.7596,0.805,0.7429,6,10,2
+P0-1-anidado,0.767228,-0.001895,-0.009193,0.005712,0.7631,0.8116,0.727,6,10,2

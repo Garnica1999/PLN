@@ -1,0 +1,91 @@
+{
+  "familia": "P71_TWITTER_WORD2VEC",
+  "experiment_id": "P71-06",
+  "fase": "P1b-bis optimizador corregido",
+  "fecha": "2026-09-30T01:32:10+00:00",
+  "por_que": "la loss subia en la corrida anterior. El encargo fija la configuracion del modelo pero NO el optimizador; Adam con lr 0,025 deshacia lo aprendido",
+  "lo_que_cambia": {
+    "optimizador": "Adam -> SGD con decaimiento lineal",
+    "lr_inicial": 0.025,
+    "lr_minimo": 0.0001
+  },
+  "lo_que_NO_cambia": [
+    "dim",
+    "ventana",
+    "min_count",
+    "negativos",
+    "muestreo",
+    "epocas",
+    "sg",
+    "semilla",
+    "corpus",
+    "tokenizacion"
+  ],
+  "configuracion": {
+    "vector_size": 200,
+    "window": 5,
+    "min_count": 3,
+    "negative": 10,
+    "sample": 0.0001,
+    "epochs": 5,
+    "sg": 1,
+    "seed": 20261016,
+    "optimizador": "SGD con decaimiento lineal"
+  },
+  "corpus_twitter": {
+    "etiqueta": "twitter",
+    "tokens": 10000029,
+    "vocabulario": 77657,
+    "loss_por_epoca": [
+      1.386295,
+      1.386295,
+      1.386295,
+      1.386295,
+      1.386295
+    ],
+    "segundos": 309.8,
+    "modelo": "modelos/twitter_domain/w2v_twitter_sgd.npz",
+    "sha256_modelo": "eaf4bfb8648f237f53b6d4c150bc988925f8f3e8d195282e9bd73976b321533d"
+  },
+  "corpus_general": {
+    "etiqueta": "general",
+    "tokens": 10002400,
+    "vocabulario": 100097,
+    "loss_por_epoca": [
+      1.386295,
+      1.386295,
+      1.386295,
+      1.386295,
+      1.386295
+    ],
+    "segundos": 427.5,
+    "modelo": "modelos/twitter_domain/w2v_general_sgd.npz",
+    "sha256_modelo": "3b238153737be07ff3bf8657ae60f44af19a363fe67103b536c5d2669927755b"
+  },
+  "loss_anterior_adam": {
+    "twitter": [
+      1.706327,
+      1.81141,
+      1.841703,
+      1.865799,
+      1.88408
+    ],
+    "general": [
+      1.887839,
+      2.068209,
+      2.125895,
+      2.163865,
+      2.189914
+    ]
+  },
+  "la_loss_baja": {
+    "twitter": false,
+    "general": false
+  },
+  "reproducibilidad": {
+    "nivel": "R2",
+    "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "corrected_cv_v03": 0.7772114525165721
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

@@ -1,0 +1,47 @@
+{
+  "familia": "P71_TWITTER_WORD2VEC",
+  "experiment_id": "P71-03",
+  "fase": "P1a preparacion de corpus",
+  "fecha": "2026-09-30T00:31:26+00:00",
+  "naturaleza": "PREPARACION. 0 entrenamientos todavia",
+  "objetivo_tokens": 10000000,
+  "semilla_muestreo": 20261015,
+  "tokenizacion": {
+    "version": "EMB-NORMAL-TW v1",
+    "minusculas": true,
+    "conserva_tildes": true,
+    "url": "a marcador 'url'",
+    "mencion": "a marcador '@usuario' conservando el prefijo",
+    "hashtag": "CONSERVADO con su contenido; v5 lo colapsaba a 'hashtag'",
+    "numero": "a marcador 'numero'",
+    "alargamientos": "NO se colapsan",
+    "patron_token": "[#@]?\\w+(?:['\\u2019]\\w+)*",
+    "diferencia_con_v5": "v5 colapsa hashtags y menciones a marcadores sin contenido. Aqui se conserva el contenido del hashtag porque ahi vive parte de la senal de dominio de Twitter. Se usa el MISMO tokenizador en los dos corpus para aislar el dominio"
+  },
+  "corpus_twitter": {
+    "fuente": "data/external/corpora/twitter_domain/covid19-tweets-early-late-april_lang_es_lang_es.csv",
+    "documentos": 361994,
+    "tokens": 10000029,
+    "archivo": "data/external/corpora/twitter_domain/corpus_twitter_tokens.txt",
+    "sha256": "1ef872c189d0f405bc1a3f8281cafe08e6b099958e6b8a3816db1460df91f8b9"
+  },
+  "corpus_general": {
+    "fuentes": [
+      "data/external/corpora/wikipedia_es/emb_normal/tokens_10M.txt",
+      "data/external/corpora/wikipedia_es/emb_normal/tokens_shard_00.txt",
+      "data/external/corpora/wikipedia_es/emb_normal/tokens_shard_01.txt",
+      "data/external/corpora/wikipedia_es/emb_normal/tokens_shard_02.txt"
+    ],
+    "documentos": 2847,
+    "tokens": 10002400,
+    "archivo": "data/external/corpora/twitter_domain/corpus_general_tokens.txt",
+    "sha256": "00b839da6fbc377ee5375acc9a236e831e46ecf92cc544188b81aef1a826e871"
+  },
+  "diferencia_de_tokens": 0.000237,
+  "reproducibilidad": {
+    "nivel": "R2",
+    "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "corrected_cv_v03": 0.7772114525165721
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

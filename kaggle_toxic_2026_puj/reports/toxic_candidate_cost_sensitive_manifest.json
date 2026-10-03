@@ -1,0 +1,169 @@
+{
+  "candidato": "A_cost_sensitive_downweight",
+  "descripcion_correcta": "downweight basado en violacion de margen del propio V03",
+  "descripciones_que_NO_aplican": [
+    "meta-model",
+    "stacking",
+    "residual correction",
+    "rescue weighting"
+  ],
+  "por_que_esas_no_aplican": "P58 lo etiquetaba como 'meta'; el codigo no construye ningun meta-modelo. Y 'rescue weighting' es P68-H2, que va en direccion OPUESTA: alli se SUBE el peso de los casos que otro modelo rescata",
+  "hypothesis": {
+    "enunciado": "los ejemplos con violacion alta del margen de V03 reciben menos peso en el entrenamiento, y eso mueve la frontera de forma util",
+    "regla": [
+      "margen_favor = (p_V03 - umbral) * (2*y - 1)",
+      "violacion_l = clip(-margen_favor, 0, None)  por etiqueta",
+      "error_score = violacion_l.mean(axis=1)  por ejemplo",
+      "z = (error_score - mediana) / IQR",
+      "peso = clip(1 - 0.5*z, 0.5, 1.5)",
+      "clase = pesos de clase explicitos con multiplicador anidado"
+    ],
+    "signo": "la regla SOLO baja pesos; ningun ejemplo supera 1"
+  },
+  "git_commit_de_este_manifest": "d57a3cb",
+  "git_commit_original": "c96cb0f",
+  "fecha_original": "2026-09-25",
+  "data_hash": {
+    "oof_v03_final_npz": "559265816ce4f6312c87f008f90324f0",
+    "oof_weighting_v4_npz": "92f2ef7ee9563eaa97ca64ece7b0a7b3",
+    "hardness_v4_npz": "f9613389d15420d8b21db4853315aa37",
+    "submission_v03_csv": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "modelo_v03_joblib": "263ed5bd0fc0de7cabfbaa85e88fca6f"
+  },
+  "representation": {
+    "word": {
+      "analyzer": "word",
+      "ngram_range": [
+        1,
+        2
+      ],
+      "min_df": 2,
+      "sublinear_tf": true
+    },
+    "char": {
+      "analyzer": "char_wb",
+      "ngram_range": [
+        3,
+        5
+      ],
+      "min_df": 2,
+      "sublinear_tf": true
+    },
+    "ajuste": "por pliegue, solo con textos del entrenamiento"
+  },
+  "classifier": {
+    "tipo": "LogisticRegression",
+    "C": 2.0,
+    "max_iter": 1000,
+    "solver": "liblinear",
+    "class_weight": "explicito con multiplicador",
+    "sample_weight": "el de la regla congelada"
+  },
+  "thresholds": [
+    0.44,
+    0.51,
+    0.46
+  ],
+  "weight_function": "clip(1 - 0.5*z, 0.5, 1.5), z = (error_score - mediana) / IQR",
+  "seed": 42,
+  "fold_protocol": {
+    "metodo": "StratifiedGroupKFold",
+    "grupos": "near-duplicate UNION pseudo-autor, fusionados",
+    "n_pliegues": 5,
+    "canonica": "RANDOM_STATE",
+    "segunda": 20260928,
+    "tercera": 20261001,
+    "pre_registro": "docs/p69_especificacion_congelada.md, commit 915991b"
+  },
+  "canonical_result": {
+    "corrected_cv": 0.7854160387,
+    "V03": 0.7772114525,
+    "delta": 0.0082045862,
+    "pliegues_mejorados": 5,
+    "nivel_reproducibilidad": "R3"
+  },
+  "second_partition": {
+    "delta": 0.010525313,
+    "pliegues_mejorados": 5,
+    "semilla": 20260928
+  },
+  "third_partition": {
+    "delta": 0.0048825807,
+    "pliegues_mejorados": 4,
+    "semilla": 20261001,
+    "nota": "corregida tras el defecto de class_weight/sample_weight"
+  },
+  "permutation": {
+    "n": 1000,
+    "semilla": 20261002,
+    "p_empirico": 0.000999,
+    "n_ge_observado": 0,
+    "nulo_media": -0.001320991,
+    "nulo_maximo": 0.004597167,
+    "que_prueba": "la asignacion real de pesos contiene mas informacion que asignaciones equivalentes permutadas",
+    "que_NO_prueba": [
+      "generalizacion poblacional definitiva",
+      "mejora garantizada de leaderboard"
+    ]
+  },
+  "bootstrap": {
+    "por_grupos_ic95": [
+      -0.0006906975,
+      0.0118175641
+    ],
+    "incluye_cero": true,
+    "tamano": {
+      "filas": 1483,
+      "grupos": 1415
+    }
+  },
+  "artifact_hashes": {
+    "especificacion_congelada": "40fca5710535a2e31c94875458f9afae",
+    "informe_final_evidencia": "c8a933284c1d4a5d487e3dccd5e3fb93",
+    "particiones_csv": "4dda98e06f1aa0a7c51c8a840b513aa5",
+    "permutacion_csv": "c90a7b5cef40958bf1cbf61c380803e2"
+  },
+  "compliance": {
+    "test_development_use": 0,
+    "holdout_use": 0,
+    "leaderboard_tuning": 0,
+    "submissions_nuevas": 0,
+    "verificado_por": "operacion + fichero concreto, no por busqueda textual"
+  },
+  "estados": [
+    {
+      "estado": "ORIGINAL",
+      "valor": "+0.0082045862",
+      "nota": "2026-09-25, nunca enviado, nunca auditado"
+    },
+    {
+      "estado": "REPRODUCED",
+      "valor": "+0.0082045862",
+      "nota": "R3, diferencia 3,2e-11"
+    },
+    {
+      "estado": "SECOND_PARTITION",
+      "valor": "+0.0105253130",
+      "nota": "5 de 5 pliegues, semilla 20260928"
+    },
+    {
+      "estado": "THIRD_PARTITION_CORRECTED",
+      "valor": "+0.0048825807",
+      "nota": "4 de 5 pliegues, semilla 20261001"
+    },
+    {
+      "estado": "PERMUTATION",
+      "valor": "p = 0.000999",
+      "nota": "0 de 1000 superan al observado"
+    },
+    {
+      "estado": "FINAL_STATUS",
+      "valor": "PROMISING_UNCONFIRMED",
+      "nota": "5 de 6 componentes"
+    }
+  ],
+  "research_status": "EXPERIMENTAL_RESEARCH_CLOSED",
+  "candidate_status": "PROMISING_UNCONFIRMED",
+  "governance_status": "PENDING",
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

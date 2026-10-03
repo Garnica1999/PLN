@@ -1,0 +1,23 @@
+magnitud,valor
+brazo_0_corrected_cv,0.7772647318762402
+brazo_1_corrected_cv,0.7772647318762402
+delta_intervencion_puro,0.0
+delta_vs_V03,5.327935966814579e-05
+corrected_cv_V03,0.7772114525165721
+pliegues_mejorados,0
+folds_brazo_1,0.796010 0.795526 0.778860 0.736317 0.780042
+folds_brazo_0,0.796010 0.795526 0.778860 0.736317 0.780042
+rescate,2
+damage,1
+neto,1
+cambian,3
+cambian_en_ag,0
+cambian_en_las_otras,0
+factor_min,0.993140
+factor_max,1.008652
+factor_medio,1.000672
+convergio,True
+gate_delta_superado,False
+gate_pliegues_superado,False
+gate_superado,False
+decision,"CLOSED. La intervencion resulto ser un no-op exacto: el factor derivado quedo entre 0,993 y 1,009 y no cambio ni una celda. V14-00 ya habia cerrado la version dura de la misma idea"

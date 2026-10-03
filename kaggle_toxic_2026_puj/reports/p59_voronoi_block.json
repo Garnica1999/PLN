@@ -1,0 +1,372 @@
+{
+  "familia": "P59_A_RESUMEN",
+  "bloque": {
+    "familia": "P59_A_VORONOI_BLOCK",
+    "naturaleza": "EXPERIMENTO. 1 candidato, 15 ajustes de clasificador lineal, 0 submissions, 0 consultas a Kaggle, 0 uso de holdout, 0 uso de test. V03 no se modifica",
+    "fecha": "2026-09-28T04:12:17+00:00",
+    "experimento_id": "P59-02",
+    "brazos": {
+      "A_V03_crudo": {
+        "corrected_cv": 0.7772114525,
+        "nota": "OOF canonico congelado"
+      },
+      "B_LR_1_rasgo": {
+        "corrected_cv": 0.7743581357,
+        "delta": -0.0028533168,
+        "nota": "el coste de envolver la puntuacion de V03 en un ajuste nuevo"
+      },
+      "C_LR_9_rasgos": {
+        "corrected_cv": 0.7796406441,
+        "delta": 0.0024291916,
+        "rasgos": [
+          "d_same",
+          "d_opp",
+          "margen",
+          "pureza",
+          "cuota_opuesta",
+          "cuota_densa",
+          "soporte_celda",
+          "inconsistencia"
+        ]
+      }
+    },
+    "gates_pre_registrados": {
+      "delta_minimo": 0.003,
+      "pliegues_minimos": 4,
+      "tolerancia_H0": 0.01,
+      "aislamiento_vs_B": true,
+      "fijados_antes_de_ejecutar": true
+    },
+    "resultado_gates": {
+      "H0": true,
+      "H1": false,
+      "H2": false,
+      "H3": true,
+      "superados": false
+    },
+    "pliegues": {
+      "mejora_C_vs_A": 3,
+      "mejora_C_vs_B": 5,
+      "f1_C": [
+        0.795476,
+        0.789583,
+        0.780166,
+        0.752228,
+        0.781744
+      ],
+      "f1_A": [
+        0.79601,
+        0.794034,
+        0.77886,
+        0.738598,
+        0.779056
+      ]
+    },
+    "bootstrap": {
+      "delta_C_menos_A": [
+        -0.008991,
+        0.000674
+      ],
+      "delta_C_menos_B": [
+        -0.007193,
+        0.001798
+      ],
+      "n_repeticiones": 2000,
+      "semilla": 42,
+      "incluye_cero": true
+    },
+    "complementariedad": {
+      "rescate": 55,
+      "damage": 73,
+      "neto": -18,
+      "cambian": 128,
+      "acierto_en_las_que_cambian": 0.4297,
+      "ambos_correctos": 3619,
+      "ambos_fallan": 702,
+      "por_etiqueta": {
+        "HS": {
+          "f1": 0.7624720774,
+          "f1_v03": 0.7616892911,
+          "rescate": 12,
+          "damage": 15
+        },
+        "TR": {
+          "f1": 0.8175965665,
+          "f1_v03": 0.8157303371,
+          "rescate": 18,
+          "damage": 24
+        },
+        "AG": {
+          "f1": 0.7588532884,
+          "f1_v03": 0.7542147294,
+          "rescate": 25,
+          "damage": 34
+        }
+      },
+      "brazo_B": {
+        "rescate": 44,
+        "damage": 56,
+        "neto": -12,
+        "cambian": 100
+      },
+      "ensemble": {
+        "f1": 0.7796870436,
+        "ganancia": 0.0024755911
+      }
+    },
+    "residuo_42_celdas": {
+      "rescatadas_por_el_candidato": 1,
+      "nota": "el parrafo 44 prohibe aceptar una mejora que solo mueva ejemplos faciles; medir cuantas de las 42 toca es el control de eso"
+    },
+    "decision": "CLOSED. No supera los gates del parrafo 41. La geometria local predice los errores de V03 con AUC 0,725 y aun asi no aporta nada accionable: ese es el mismo resultado que V6-07 obtuvo con sus senales de sospecha, y confirma que predecir la dificultad de un ejemplo no es lo mismo que mejorar la decision. No se reintenta con mas prototipos, mas vecinos ni otra constante",
+    "registrado_en_experiments_csv": true,
+    "formulacion": "V03 remains the best verified leaderboard result.",
+    "gastos": {
+      "submissions": 0,
+      "ajustes_lineales": 30,
+      "consultas_kaggle": 0,
+      "uso_holdout": 0,
+      "uso_test": 0,
+      "segundos": 80.8
+    }
+  },
+  "diagnostico_p59_01": {
+    "familia": "P59_A_VORONOI_LOCAL_GEOMETRY",
+    "naturaleza": "DIAGNOSTIC_ONLY. 0 modelos nuevos, 0 submissions, 0 consultas a Kaggle, 0 uso de holdout, 0 uso de test. V03 no se modifica",
+    "fecha": "2026-09-28T04:09:08+00:00",
+    "novelty": {
+      "veredicto": "PARTIALLY_DUPLICATE",
+      "ya_hecho": [
+        "V29-03: 48 configuraciones de kNN, ninguna con net positivo",
+        "V4-F01-F04: la vecindad explica el error, IC95 [-0.013,+0.049], no significativo",
+        "V6-07: la sospecha es un buen marcador de dificultad, no un cleaner"
+      ],
+      "nuevo_aqui": [
+        "teselacion de prototipos de clase, celdas, margen y soporte de celda",
+        "la comparacion contra las 42 celdas no rescatables de P54"
+      ]
+    },
+    "metrica": {
+      "definicion": "coseno de la union TF-IDF de V03",
+      "propiedad": "cada bloque TF-IDF viene normalizado a norma 1, luego la norma de la union es sqrt(2) para toda fila y distancia_coseno_union = (cos_palabra + cos_caracter) / 2 exactamente"
+    },
+    "configuracion": {
+      "prototipos_por_clase_y_etiqueta": 8,
+      "vecinos": 15,
+      "metodo_medoides": "farthest-first (BUILD) mas actualizaciones de Lloyd, sin azar",
+      "pesos_inconsistencia": {
+        "d_same": 1.0,
+        "desacuerdo": 1.0,
+        "soporte_celda": 1.0,
+        "cuota_opuesta": 1.0
+      },
+      "nota": "ningun parametro se ajusto por rejilla; todos se fijaron antes de ejecutar"
+    },
+    "controles": {
+      "sha256_v03_verificado": true,
+      "oof_reproducido": true,
+      "umbrales_verificados": true,
+      "grupos_partidos_entre_pliegues": 0,
+      "etiquetas_crudo_identicas_al_oof": true,
+      "ids_de_test_en_el_trabajo": 0,
+      "tests_unitarios": [
+        {
+          "test": "distancia coseno invariante a escala",
+          "ok": true,
+          "detalle": "max |d - d_escalada| = 0.000e+00"
+        },
+        {
+          "test": "distancia coseno igual a 1 - cos(angulo)",
+          "ok": true,
+          "detalle": "max |d - (1-cos)| = 2.220e-16"
+        },
+        {
+          "test": "sitio mas proximo coincide con la fuerza bruta (q=0)",
+          "ok": true,
+          "detalle": "bruto=0 vector=0"
+        },
+        {
+          "test": "sitio mas proximo coincide con la fuerza bruta (q=12)",
+          "ok": true,
+          "detalle": "bruto=0 vector=0"
+        },
+        {
+          "test": "sitio mas proximo coincide con la fuerza bruta (q=25)",
+          "ok": true,
+          "detalle": "bruto=33 vector=33"
+        },
+        {
+          "test": "sitio mas proximo coincide con la fuerza bruta (q=39)",
+          "ok": true,
+          "detalle": "bruto=0 vector=0"
+        },
+        {
+          "test": "distancia de un sitio consigo mismo es 0",
+          "ok": true,
+          "detalle": "max |diag| = 0.000e+00"
+        },
+        {
+          "test": "los medoides son miembros del conjunto y son distintos",
+          "ok": true,
+          "detalle": "n=8 distintos=8 iteraciones=1 conv=True"
+        },
+        {
+          "test": "los medoides son deterministas",
+          "ok": true,
+          "detalle": "iguales=True"
+        },
+        {
+          "test": "si n <= k se devuelven todos los miembros",
+          "ok": true,
+          "detalle": "n_devueltos=5"
+        },
+        {
+          "test": "la particion en grupos tiene coste minimo dentro de sus medoides",
+          "ok": true,
+          "detalle": "coste_medoides=0.0000 coste_punto_mas_cercano=0.0000"
+        }
+      ]
+    },
+    "diagnostico": [
+      {
+        "objetivo": "error de V03 sobre las 4449 celdas",
+        "n": 757,
+        "n_neg": 3692,
+        "auc": 0.725194,
+        "media_pos": 0.486425,
+        "media_neg": 0.380444,
+        "nota": "objetivo primario del parrafo 13",
+        "ic95_bajo": 0.706052,
+        "ic95_alto": 0.744615
+      },
+      {
+        "objetivo": "celda no rescatable dentro de los 757 errores",
+        "n": 42,
+        "n_neg": 4407,
+        "auc": 0.471798,
+        "media_pos": 0.383868,
+        "media_neg": 0.398616,
+        "nota": "objetivo decisivo del parrafo 60: identificar las no rescatables",
+        "ic95_bajo": 0.395401,
+        "ic95_alto": 0.546918
+      },
+      {
+        "objetivo": "celda rescatable dentro de los 757 errores",
+        "n": 715,
+        "n_neg": 3734,
+        "auc": 0.737695,
+        "media_pos": 0.492449,
+        "media_neg": 0.380483,
+        "nota": "el objetivo contrario, para ver la direccion del efecto",
+        "ic95_bajo": "",
+        "ic95_alto": ""
+      },
+      {
+        "objetivo": "error de V03 en HS",
+        "n": 316,
+        "n_neg": 4133,
+        "auc": 0.735766,
+        "media_pos": 0.50154,
+        "media_neg": 0.390597,
+        "nota": "columna HS",
+        "ic95_bajo": "",
+        "ic95_alto": ""
+      },
+      {
+        "objetivo": "no rescatable en HS",
+        "n": 9,
+        "n_neg": 4440,
+        "auc": 0.505531,
+        "media_pos": 0.401932,
+        "media_neg": 0.39847,
+        "nota": "columna HS",
+        "ic95_bajo": "",
+        "ic95_alto": ""
+      },
+      {
+        "objetivo": "error de V03 en TR",
+        "n": 164,
+        "n_neg": 4285,
+        "auc": 0.664526,
+        "media_pos": 0.471423,
+        "media_neg": 0.395685,
+        "nota": "columna TR",
+        "ic95_bajo": "",
+        "ic95_alto": ""
+      },
+      {
+        "objetivo": "no rescatable en TR",
+        "n": 12,
+        "n_neg": 4437,
+        "auc": 0.488637,
+        "media_pos": 0.391779,
+        "media_neg": 0.398495,
+        "nota": "columna TR",
+        "ic95_bajo": "",
+        "ic95_alto": ""
+      },
+      {
+        "objetivo": "error de V03 en AG",
+        "n": 277,
+        "n_neg": 4172,
+        "auc": 0.678121,
+        "media_pos": 0.478063,
+        "media_neg": 0.393193,
+        "nota": "columna AG",
+        "ic95_bajo": "",
+        "ic95_alto": ""
+      },
+      {
+        "objetivo": "no rescatable en AG",
+        "n": 21,
+        "n_neg": 4428,
+        "auc": 0.447993,
+        "media_pos": 0.371606,
+        "media_neg": 0.398604,
+        "nota": "columna AG",
+        "ic95_bajo": "",
+        "ic95_alto": ""
+      }
+    ],
+    "auc_primario": 0.725194,
+    "ic95_primario": [
+      0.706052,
+      0.744615
+    ],
+    "auc_no_rescatable": 0.471798,
+    "ic95_no_rescatable": [
+      0.395401,
+      0.546918
+    ],
+    "no_rescatable_excluye_0_5": false,
+    "puerta_exploratoria": 0.6,
+    "puerta_superada": true,
+    "comparacion_42_celdas": {
+      "n_C": 42,
+      "n_B": 715,
+      "rango_medio_C": 0.472058,
+      "rango_medio_B": 0.69954,
+      "separacion_rangos": -0.227482,
+      "frac_C_en_tercio_superior": 0.285714,
+      "frac_B_en_tercio_superior": 0.630769
+    },
+    "poblaciones_p54": {
+      "A": 3692,
+      "B": 715,
+      "C": 42,
+      "tweets_distintos_C": 33
+    },
+    "decision": "MARGINAL. La geometria local predice los errores de V03, pero no distingue las celdas no rescatables, que es el objetivo fuerte del parrafo 60, y su IC95 [0.3954, 0.5469] incluye 0.5, luego no hay senal en ninguna direccion. El parrafo 14 solo tendria sentido para reordenar errores ya identificados, no para recuperar los que P54 declaro no recuperables",
+    "experimentos_registrados": 0,
+    "por_que_no_se_registra": "el parrafo 50 no registra gap analysis, oracle ni visualizaciones. Este paso no entrena clasificador ni evalua corrected_cv, luego es diagnostico y no experimento",
+    "formulacion": "V03 remains the best verified leaderboard result.",
+    "gastos": {
+      "submissions": 0,
+      "modelos_nuevos": 0,
+      "consultas_kaggle": 0,
+      "uso_holdout": 0,
+      "uso_test": 0,
+      "segundos": 90.0
+    }
+  }
+}

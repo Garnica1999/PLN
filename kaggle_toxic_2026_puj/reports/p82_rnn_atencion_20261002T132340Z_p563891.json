@@ -1,0 +1,2620 @@
+{
+  "afirmaciones_declaradas": {
+    "A0": {
+      "bloque": 0,
+      "que_hace": "sha256 del congelado, tamano y mtime antes y despues",
+      "stop": true
+    },
+    "A1": {
+      "bloque": 0,
+      "que_hace": "solo se leen las fuentes declaradas, contadores publicados",
+      "stop": true
+    },
+    "A10": {
+      "bloque": 2,
+      "que_hace": "tabla de limite de deteccion recalculada con la sd medida",
+      "stop": true
+    },
+    "A11": {
+      "bloque": 2,
+      "que_hace": "el intervalo que decide es un t pareado de semillas",
+      "stop": true
+    },
+    "A12": {
+      "bloque": 2,
+      "que_hace": "la lectura EXPLORATORIA esta atada a la regla",
+      "stop": true
+    },
+    "A13": {
+      "bloque": 3,
+      "que_hace": "existe brazo sin atencion de la MISMA corrida y es el control",
+      "stop": true
+    },
+    "A14": {
+      "bloque": 3,
+      "que_hace": "la permutacion conserva el multiconjunto exacto",
+      "stop": true
+    },
+    "A15": {
+      "bloque": 3,
+      "que_hace": "el control permutado usa el mismo protocolo y las 10 semillas",
+      "stop": true
+    },
+    "A16": {
+      "bloque": 3,
+      "que_hace": "las arquitecturas se reportan por separado, sin agregado",
+      "stop": false
+    },
+    "A17": {
+      "bloque": 4,
+      "que_hace": "interseccion y rescue damage net contra V03 sobre OOF",
+      "stop": false
+    },
+    "A18": {
+      "bloque": 4,
+      "que_hace": "la formulacion literal esta escrita y no sustituida",
+      "stop": true
+    },
+    "A19": {
+      "bloque": 4,
+      "que_hace": "presupuesto de reloj respetado y tiempo real publicado",
+      "stop": true
+    },
+    "A2": {
+      "bloque": 0,
+      "que_hace": "los tres umbrales de V03 intactos y no reoptimizados",
+      "stop": true
+    },
+    "A20": {
+      "bloque": 4,
+      "que_hace": "ib se evalua una vez por brazo, semilla y pliegue",
+      "stop": true
+    },
+    "A21": {
+      "bloque": 4,
+      "que_hace": "los 10 deltas por semilla del primario, con su signo",
+      "stop": false
+    },
+    "A22": {
+      "bloque": 4,
+      "que_hace": "cada comprobacion sabe FALLAR, por mutacion",
+      "stop": true
+    },
+    "A3": {
+      "bloque": 1,
+      "que_hace": "el relleno se aplica ANTES de la RNN, verificado por estado",
+      "stop": true
+    },
+    "A4": {
+      "bloque": 1,
+      "que_hace": "relleno y OOV en celdas distintas, y el OOV ENTRA",
+      "stop": true
+    },
+    "A5": {
+      "bloque": 1,
+      "que_hace": "early stopping estrictamente anidado, verificado por filas",
+      "stop": true
+    },
+    "A6": {
+      "bloque": 1,
+      "que_hace": "clip_grad_norm_ en todos los bucles, norma pre-clip publicada",
+      "stop": true
+    },
+    "A7": {
+      "bloque": 1,
+      "que_hace": "determinismo, dos pasadas misma semilla, variacion cero",
+      "stop": true
+    },
+    "A8": {
+      "bloque": 1,
+      "que_hace": "cifras de cobertura medidas y publicadas, y MAX_LEN",
+      "stop": false
+    },
+    "A9": {
+      "bloque": 2,
+      "que_hace": "al menos 10 semillas, pareadas, conteo publicado",
+      "stop": true
+    }
+  },
+  "aislamiento_de_afirmaciones": {
+    "avisos": [],
+    "errores": [],
+    "escrituras_fallidas": 0,
+    "nota": "ERROR no es ni CONFIRMADO ni REFUTADO ni NO_EVALUABLE; la corrida continua",
+    "traza_por_afirmacion": {}
+  },
+  "auditoria_de_accesos_por_literal": {
+    "claves_vigiladas": [
+      "caso",
+      "comparacion_primaria",
+      "con_tra_manode",
+      "control_sin_atencion",
+      "detalle",
+      "estado",
+      "naturaleza_del_resultado",
+      "resumen_de_naturalezas",
+      "umbrales",
+      "veredictos"
+    ],
+    "evaluaciones_con_tupla_anidada": [],
+    "fichero": "p82_01_rnn_atencion.py",
+    "infracciones": [],
+    "n_evaluaciones_con_tupla_anidada": 0,
+    "n_infracciones": 0
+  },
+  "brazos": {
+    "B1": {
+      "atencion": false,
+      "convencion_de_conteo": "la referencia de la enmienda, 16448, cuenta PESOS SIN SESGOS, que es la misma convencion del 8256 pre-registrado: W_h de 128x64 mas W_s de 128x64 mas v de 64; el conteo con sesgos es 128 mas y se publica tambien",
+      "desviacion": 0.011615,
+      "embedding": "W2V_100d_congelado",
+      "evaluaciones_de_ib": 50,
+      "fuente_de_la_referencia": "docs/p82_enmienda_1.md sha256 53c8555d1a5ef0fcebb06c4a6f061acf56e568d95242e907387f0af1b03420d8",
+      "media": 0.639659,
+      "nucleo": "GRU",
+      "papel": "CONTROL_INTERNO_PRIMARIO",
+      "parametros_atencion": 0,
+      "parametros_atencion_preregistrados": 8256,
+      "parametros_atencion_referencia_enmienda_1": 16448,
+      "parametros_atencion_sin_sesgos": 0,
+      "parametros_entrenables": 64131,
+      "resumen_norma_preclip": {
+        "maximo": 1.8365150690078735,
+        "mediana": 0.2119419276714325,
+        "n": 82139,
+        "percentil_95": 0.5613073289394378
+      }
+    },
+    "B2": {
+      "atencion": true,
+      "convencion_de_conteo": "la referencia de la enmienda, 16448, cuenta PESOS SIN SESGOS, que es la misma convencion del 8256 pre-registrado: W_h de 128x64 mas W_s de 128x64 mas v de 64; el conteo con sesgos es 128 mas y se publica tambien",
+      "desviacion": 0.014905,
+      "embedding": "W2V_100d_congelado",
+      "evaluaciones_de_ib": 50,
+      "fuente_de_la_referencia": "docs/p82_enmienda_1.md sha256 53c8555d1a5ef0fcebb06c4a6f061acf56e568d95242e907387f0af1b03420d8",
+      "media": 0.637554,
+      "nucleo": "GRU",
+      "papel": "BRAZO_PRIMARIO",
+      "parametros_atencion": 16576,
+      "parametros_atencion_preregistrados": 8256,
+      "parametros_atencion_referencia_enmienda_1": 16448,
+      "parametros_atencion_sin_sesgos": 16448,
+      "parametros_entrenables": 81091,
+      "resumen_norma_preclip": {
+        "maximo": 1.8056939840316772,
+        "mediana": 0.2438349649310112,
+        "n": 70800,
+        "percentil_95": 0.49916751235723505
+      }
+    },
+    "B3": {
+      "atencion": false,
+      "convencion_de_conteo": "la referencia de la enmienda, 16448, cuenta PESOS SIN SESGOS, que es la misma convencion del 8256 pre-registrado: W_h de 128x64 mas W_s de 128x64 mas v de 64; el conteo con sesgos es 128 mas y se publica tambien",
+      "desviacion": 0.012924,
+      "embedding": "W2V_100d_congelado",
+      "evaluaciones_de_ib": 50,
+      "fuente_de_la_referencia": "docs/p82_enmienda_1.md sha256 53c8555d1a5ef0fcebb06c4a6f061acf56e568d95242e907387f0af1b03420d8",
+      "media": 0.615163,
+      "nucleo": "LSTM",
+      "papel": "CONTROL_INTERNO_SECUNDARIO",
+      "parametros_atencion": 0,
+      "parametros_atencion_preregistrados": 8256,
+      "parametros_atencion_referencia_enmienda_1": 16448,
+      "parametros_atencion_sin_sesgos": 0,
+      "parametros_entrenables": 85379,
+      "resumen_norma_preclip": {
+        "maximo": 43.23503112792969,
+        "mediana": 0.22787050902843475,
+        "n": 74819,
+        "percentil_95": 0.6413768291473385
+      }
+    },
+    "B4": {
+      "atencion": true,
+      "convencion_de_conteo": "la referencia de la enmienda, 16448, cuenta PESOS SIN SESGOS, que es la misma convencion del 8256 pre-registrado: W_h de 128x64 mas W_s de 128x64 mas v de 64; el conteo con sesgos es 128 mas y se publica tambien",
+      "desviacion": 0.020434,
+      "embedding": "W2V_100d_congelado",
+      "evaluaciones_de_ib": 50,
+      "fuente_de_la_referencia": "docs/p82_enmienda_1.md sha256 53c8555d1a5ef0fcebb06c4a6f061acf56e568d95242e907387f0af1b03420d8",
+      "media": 0.617194,
+      "nucleo": "LSTM",
+      "papel": "BRAZO_SECUNDARIO",
+      "parametros_atencion": 16576,
+      "parametros_atencion_preregistrados": 8256,
+      "parametros_atencion_referencia_enmienda_1": 16448,
+      "parametros_atencion_sin_sesgos": 16448,
+      "parametros_entrenables": 102339,
+      "resumen_norma_preclip": {
+        "maximo": 16.660295486450195,
+        "mediana": 0.2723659873008728,
+        "n": 69477,
+        "percentil_95": 0.6815741300582885
+      }
+    },
+    "B5": {
+      "atencion": true,
+      "convencion_de_conteo": "la referencia de la enmienda, 16448, cuenta PESOS SIN SESGOS, que es la misma convencion del 8256 pre-registrado: W_h de 128x64 mas W_s de 128x64 mas v de 64; el conteo con sesgos es 128 mas y se publica tambien",
+      "desviacion": 0.019137,
+      "embedding": "W2V_100d_permutado",
+      "evaluaciones_de_ib": 50,
+      "fuente_de_la_referencia": "docs/p82_enmienda_1.md sha256 53c8555d1a5ef0fcebb06c4a6f061acf56e568d95242e907387f0af1b03420d8",
+      "media": 0.560747,
+      "nucleo": "GRU",
+      "papel": "CONTROL_DE_GEOMETRIA",
+      "parametros_atencion": 16576,
+      "parametros_atencion_preregistrados": 8256,
+      "parametros_atencion_referencia_enmienda_1": 16448,
+      "parametros_atencion_sin_sesgos": 16448,
+      "parametros_entrenables": 81091,
+      "resumen_norma_preclip": {
+        "maximo": 1.2728497982025146,
+        "mediana": 0.2279236614704132,
+        "n": 55771,
+        "percentil_95": 0.4900694489479065
+      }
+    }
+  },
+  "cobertura": {
+    "cifras": {
+      "convencion_de_fila_vacia": "una fila con cero tokens tiene longitud efectiva 1 para el empaquetado y para el softmax, de modo que su unica posicion recibe el peso; se publica cuantas hay",
+      "fraccion_filas_truncadas": 0.0,
+      "longitud_media_tokens_por_fila": 17.221173297370196,
+      "longitud_mediana_tokens_por_fila": 15.0,
+      "max_len": 64,
+      "n_filas_sin_tokens": 0,
+      "proporcion_oov_sobre_tokens_que_llegan": 0.10595559732174321,
+      "proporcion_posiciones_oov": 0.02851062036412677,
+      "proporcion_posiciones_relleno": 0.7309191672285907,
+      "referencia_oov_p81": 0.153295,
+      "referencia_relleno_p81": 0.7309191672285907,
+      "reproduccion_referencia_oov_de_p81": "NO_REPRODUCIDA",
+      "reproduccion_referencia_relleno_de_p81": "REPRODUCIDA",
+      "tipos_distintos_fuera_de_vocabulario": 1623,
+      "tokenizador": "tokenizar(normalizar_emb_normal(texto)) recortado a MAX_LEN; es el tokenizador de P82 y las cifras de A8 se miden con el, no se arrastran"
+    },
+    "comprobaciones": {
+      "linea_de_reproduccion_declarada": true,
+      "max_len_positivo": true,
+      "ocho_cifras_presentes": true,
+      "proporciones_en_rango": true,
+      "todas_finitas": true
+    },
+    "faltan": [],
+    "n_cifras_exigidas": 8,
+    "no_finitas": [],
+    "proporciones_fuera_de_rango": []
+  },
+  "comparacion_primaria": {
+    "con_tra_manode": "B1",
+    "control_literal": "B1",
+    "control_sin_atencion": "B1",
+    "corrida": "P82",
+    "definicion": "B2 - B1",
+    "experimento_contraste": "NINGUNO",
+    "id": "P1"
+  },
+  "comparaciones": {
+    "P1": {
+      "conteo_signos_positivos": 4,
+      "definicion": "B2 - B1",
+      "deltas_por_semilla": {
+        "20261401": -0.0023435298717113806,
+        "20261402": -0.008669179706972119,
+        "20261403": 0.022223319094477834,
+        "20261404": -0.0018919129183280203,
+        "20261405": -0.017371204297148557,
+        "20261406": 0.015008644069631316,
+        "20261407": -0.024978154010735554,
+        "20261408": 0.0003047020878096385,
+        "20261409": -0.011044664549485939,
+        "20261410": 0.007711448754985084
+      },
+      "desviacion": 0.0144,
+      "intervalo": [
+        -0.012406,
+        0.008196
+      ],
+      "media": -0.002105,
+      "naturaleza": "PRIMARIA"
+    },
+    "P2": {
+      "conteo_signos_positivos": 7,
+      "definicion": "B4 - B3",
+      "deltas_por_semilla": {
+        "20261401": 0.03699815150164787,
+        "20261402": 0.016410253895554616,
+        "20261403": 0.013439524665047498,
+        "20261404": -0.059337099057662934,
+        "20261405": 0.007236912680336105,
+        "20261406": 0.017437713180563974,
+        "20261407": 0.0020613562414957265,
+        "20261408": -0.00521128747855204,
+        "20261409": 0.009753063475333112,
+        "20261410": -0.018479529588854793
+      },
+      "desviacion": 0.026083,
+      "intervalo": [
+        -0.016628,
+        0.02069
+      ],
+      "media": 0.002031,
+      "naturaleza": "SECUNDARIA"
+    },
+    "P3": {
+      "conteo_signos_positivos": 10,
+      "definicion": "B2 - B5",
+      "deltas_por_semilla": {
+        "20261401": 0.07136950838255196,
+        "20261402": 0.06974395493141605,
+        "20261403": 0.09300978543235905,
+        "20261404": 0.09463808138835039,
+        "20261405": 0.06688223865735643,
+        "20261406": 0.09506930077641962,
+        "20261407": 0.04050277825428794,
+        "20261408": 0.05432976471958917,
+        "20261409": 0.06176673893636986,
+        "20261410": 0.12075756250844227
+      },
+      "desviacion": 0.023742,
+      "intervalo": [
+        0.059823,
+        0.093791
+      ],
+      "media": 0.076807,
+      "naturaleza": "SECUNDARIA_DESCRIPTIVA"
+    },
+    "P4": {
+      "conteo_signos_positivos": 10,
+      "definicion": "B1 - B5",
+      "deltas_por_semilla": {
+        "20261401": 0.07371303825426334,
+        "20261402": 0.07841313463838817,
+        "20261403": 0.07078646633788122,
+        "20261404": 0.09652999430667841,
+        "20261405": 0.08425344295450499,
+        "20261406": 0.0800606567067883,
+        "20261407": 0.0654809322650235,
+        "20261408": 0.05402506263177953,
+        "20261409": 0.0728114034858558,
+        "20261410": 0.11304611375345719
+      },
+      "desviacion": 0.016451,
+      "intervalo": [
+        0.067144,
+        0.09068
+      ],
+      "media": 0.078912,
+      "naturaleza": "DIAGNOSTICA_DESCRIPTIVA"
+    },
+    "P5": {
+      "conteo_signos_positivos": 10,
+      "definicion": "B1 - B3",
+      "deltas_por_semilla": {
+        "20261401": 0.037800541550197186,
+        "20261402": 0.04566555317847798,
+        "20261403": 0.026516155606210123,
+        "20261404": 0.003932701911698033,
+        "20261405": 0.03938434545830771,
+        "20261406": 0.005697323900254014,
+        "20261407": 0.038776298222706784,
+        "20261408": 0.01266211106215076,
+        "20261409": 0.013325378027827961,
+        "20261410": 0.021198265325993226
+      },
+      "desviacion": 0.0153,
+      "intervalo": [
+        0.013551,
+        0.035441
+      ],
+      "media": 0.024496,
+      "naturaleza": "DIAGNOSTICA_DESCRIPTIVA"
+    }
+  },
+  "contadores": {
+    "ajustes_de_red": 270,
+    "evaluaciones_de_ib": 270,
+    "filas_artefacto_w2v": 77657,
+    "filas_holdout_descartadas": 248,
+    "filas_read_train": 1731,
+    "filas_test_leidas": 0,
+    "filas_truncadas": 0,
+    "n_pliegues": 5,
+    "n_vocabulario": 3824
+  },
+  "contrato_de_capa": {
+    "filas": [
+      {
+        "esperados": [
+          "y_true",
+          "y_pred"
+        ],
+        "faltan": [],
+        "nombre": "metricas_multietiqueta",
+        "obtenidos": [
+          "y_true",
+          "y_pred"
+        ],
+        "ok": true,
+        "origen": "src/evaluation.py"
+      },
+      {
+        "esperados": [
+          "path"
+        ],
+        "faltan": [],
+        "nombre": "read_train",
+        "obtenidos": [
+          "path"
+        ],
+        "ok": true,
+        "origen": "src/data.py"
+      },
+      {
+        "esperados": [
+          "train",
+          "grupos"
+        ],
+        "faltan": [],
+        "nombre": "holdout_v2",
+        "obtenidos": [
+          "train",
+          "grupos"
+        ],
+        "ok": true,
+        "origen": "src/splits.py"
+      },
+      {
+        "esperados": [
+          "train_dev",
+          "grupos_dev",
+          "n_splits"
+        ],
+        "faltan": [],
+        "nombre": "pliegues_corregidos",
+        "obtenidos": [
+          "train_dev",
+          "grupos_dev",
+          "n_splits"
+        ],
+        "ok": true,
+        "origen": "src/splits.py"
+      },
+      {
+        "esperados": [
+          "texto"
+        ],
+        "faltan": [],
+        "nombre": "tokenizar",
+        "obtenidos": [
+          "texto"
+        ],
+        "ok": true,
+        "origen": "src/embedding_utils.py"
+      },
+      {
+        "esperados": [
+          "texto"
+        ],
+        "faltan": [],
+        "nombre": "normalizar_emb_normal",
+        "obtenidos": [
+          "texto"
+        ],
+        "ok": true,
+        "origen": "src/embedding_utils.py"
+      },
+      {
+        "esperados": [
+          "input",
+          "lengths",
+          "batch_first",
+          "enforce_sorted"
+        ],
+        "faltan": [],
+        "nombre": "pack_padded_sequence",
+        "obtenidos": [
+          "input",
+          "lengths",
+          "batch_first",
+          "enforce_sorted"
+        ],
+        "ok": true,
+        "origen": "torch.nn.utils.rnn"
+      },
+      {
+        "esperados": [
+          "sequence",
+          "batch_first",
+          "padding_value",
+          "total_length"
+        ],
+        "faltan": [],
+        "nombre": "pad_packed_sequence",
+        "obtenidos": [
+          "sequence",
+          "batch_first",
+          "padding_value",
+          "total_length"
+        ],
+        "ok": true,
+        "origen": "torch.nn.utils.rnn"
+      },
+      {
+        "esperados": [
+          "parameters",
+          "max_norm"
+        ],
+        "faltan": [],
+        "nombre": "clip_grad_norm_",
+        "obtenidos": [
+          "parameters",
+          "max_norm",
+          "norm_type",
+          "error_if_nonfinite",
+          "foreach"
+        ],
+        "ok": true,
+        "origen": "torch.nn.utils"
+      },
+      {
+        "esperados": [
+          "matriz",
+          "init",
+          "semilla",
+          "ids",
+          "largos",
+          "y",
+          "grupos",
+          "ia",
+          "k"
+        ],
+        "faltan": [],
+        "nombre": "epoca_estrella",
+        "obtenidos": [
+          "matriz",
+          "init",
+          "semilla",
+          "ids",
+          "largos",
+          "y",
+          "grupos",
+          "ia",
+          "k"
+        ],
+        "ok": true,
+        "origen": "paridad con p75_01 epoca_estrella"
+      },
+      {
+        "esperados": [
+          "matriz",
+          "init",
+          "semilla",
+          "ids",
+          "largos",
+          "y",
+          "ia",
+          "ib",
+          "epocas"
+        ],
+        "faltan": [],
+        "nombre": "entrenar_fijo",
+        "obtenidos": [
+          "matriz",
+          "init",
+          "semilla",
+          "ids",
+          "largos",
+          "y",
+          "ia",
+          "ib",
+          "epocas"
+        ],
+        "ok": true,
+        "origen": "paridad con p75_01 entrenar_fijo"
+      }
+    ],
+    "n_filas": 11
+  },
+  "corrida_anterior": {
+    "ajustes_de_red": 270,
+    "brazos": {
+      "B1": {
+        "desviacion": 0.011615,
+        "media": 0.639659
+      },
+      "B2": {
+        "desviacion": 0.014905,
+        "media": 0.637554
+      },
+      "B3": {
+        "desviacion": 0.012924,
+        "media": 0.615163
+      },
+      "B4": {
+        "desviacion": 0.020434,
+        "media": 0.617194
+      },
+      "B5": {
+        "desviacion": 0.019137,
+        "media": 0.560747
+      }
+    },
+    "comparacion_obligatoria": "si al reejecutar los brazos no dan estas MISMAS medias, hay no determinismo y hay que parar antes de publicar",
+    "comparaciones": {
+      "P1": {
+        "ic95": [
+          -0.012406,
+          0.008196
+        ],
+        "media": -0.002105,
+        "signos_positivos": 4
+      },
+      "P2": {
+        "ic95": [
+          -0.016628,
+          0.02069
+        ],
+        "media": 0.002031,
+        "signos_positivos": 7
+      },
+      "P3": {
+        "ic95": [
+          0.059823,
+          0.093791
+        ],
+        "media": 0.076807,
+        "signos_positivos": 10
+      },
+      "P4": {
+        "ic95": [
+          0.067144,
+          0.09068
+        ],
+        "media": 0.078912,
+        "signos_positivos": 10
+      },
+      "P5": {
+        "ic95": [
+          0.013551,
+          0.035441
+        ],
+        "media": 0.024496,
+        "signos_positivos": 10
+      }
+    },
+    "corrida": "20261001T141035Z_p2054042",
+    "defecto_de_redaccion": "esta corrida dio el resultado cientificico correcto con las veintitres afirmaciones CONFIRMADO, pero el informe se contradia en el control de presupuesto: decia a la vez que se habia superado el presupuesto y que no. Los numeros cientificos de arriba son la referencia con la que hay que comparar esta reejecucion",
+    "desviacion_medida": 0.0144,
+    "duracion": "98 minutos, con la bandera de autorizacion del tramo 2",
+    "gap_con_v03": 0.11745,
+    "mde_con_la_desviacion_medida": 0.014342
+  },
+  "cronometro": {
+    "ajustes_de_red": 270,
+    "autorizacion_del_tramo_2": {
+      "autorizado_por_una_persona": true,
+      "bandela_de_linea_de_comandos": "--autorizar-tramo2",
+      "brazos_del_tramo_1": [
+        "B1",
+        "B2",
+        "B5"
+      ],
+      "brazos_del_tramo_2": [
+        "B3",
+        "B4"
+      ],
+      "brazos_efectivamente_ejecutados": [
+        "B1",
+        "B2",
+        "B3",
+        "B4",
+        "B5"
+      ],
+      "declaracion": "el tramo 2 se ejecuto porque una persona lo autorizo de forma explicita; la situacion del PRESUPUESTO no se dice aqui porque la calcula un unico sitio, nota_definitiva_de_tramos, y aqui solo se declara la autorizacion. El presupuesto y el hito no se cambiaron y la condicion del hito sigue intacta",
+      "la_situacion_del_presupuesto_esta_en": "nota_definitiva_de_tramos",
+      "nota_tramo2": "",
+      "tiempo_al_terminar_el_tramo_2": 5162.517711,
+      "tiempo_del_tramo_1": 3640.913065
+    },
+    "budget_segundos": 5400,
+    "decision_del_tramo_2": {
+      "autorizado_por_una_persona": true,
+      "ejecutar_tramo_2": true,
+      "hito_observado": 3640.913065,
+      "hito_segundos": 2400,
+      "la_condicion_del_reloj_se_cumplio": true,
+      "motivo": "el hito se paso y la condicion del reloj habria saltado el tramo 2, pero una persona lo autorizo explicitamente con la bandera, luego se ejecuta",
+      "nota_tramo2": "TRAMO_2_EJECUTADO_CON_EXCEDENCIA_AUTORIZADA: el presupuesto de 5400.000 s se supero, el hito observado de 3640.913 s paso el hito de 2400 s, y el tramo 2 SE EJECUTO porque una persona lo autorizo de forma explicita; la excedencia queda declarada y no fue unnoticed",
+      "presupuesto_segundos": 5400,
+      "proyecta_superar_el_presupuesto": true,
+      "se_paso_el_hito": true
+    },
+    "escrituras_fallidas": 0,
+    "etapa": "completo",
+    "hito_segundos": 2400,
+    "nota_definitiva_de_tramos": {
+      "autorizado_por_una_persona": true,
+      "excedencia_en_segundos": -237.482341,
+      "excedio_el_presupuesto": false,
+      "porque": "el tiempo real no supero el presupuesto, luego no hay nada que declarar",
+      "presupuesto": 5400.0,
+      "se_ejecuto_el_tramo_2": true,
+      "situacion": "DENTRO_DE_PRESUPUESTO",
+      "texto": "",
+      "tiempo_real": 5162.517659
+    },
+    "nota_tramo2_publicada": "",
+    "situacion_del_presupuesto": "DENTRO_DE_PRESUPUESTO",
+    "tiempo_real_segundos": 5659.089639
+  },
+  "declaracion_word2vec": "NO_SE_AFIRMA_QUE_WORD2VEC_SEA_MEJOR_QUE_V03",
+  "detalle": {
+    "A0": {
+      "antes": {
+        "mtime_ns": 1790744455825458351,
+        "ruta": "modelos/twitter_domain/w2v_twitter_100d.npz",
+        "sha256": "302c994d13b75f8f5fbd440eea2c4f4113997e2581524021923b92f8244d705a",
+        "size": 29478868
+      },
+      "coinciden_antes_y_despues": true,
+      "despues": {
+        "mtime_ns": 1790744455825458351,
+        "ruta": "modelos/twitter_domain/w2v_twitter_100d.npz",
+        "sha256": "302c994d13b75f8f5fbd440eea2c4f4113997e2581524021923b92f8244d705a",
+        "size": 29478868
+      },
+      "dispositivo": [
+        true,
+        {
+          "comprobaciones": {
+            "el_dispositivo_declarado_no_esta_vacio": true,
+            "generador_de_permutaciones_en_cpu": true,
+            "matriz_de_embeddings_en_el_dispositivo_declarado": true,
+            "todos_los_parametros_en_el_dispositivo_declarado": true
+          },
+          "dispositivo": {
+            "device_de_la_matriz_de_embeddings": "cuda:0",
+            "device_declarado": "cuda:0",
+            "devices_de_los_parametros": [
+              "cuda:0"
+            ],
+            "embeddings_en_el_declarado": true,
+            "todos_en_el_declarado": true
+          },
+          "generador_de_permutaciones": "cpu",
+          "informacion_publicada": {
+            "consecuencia_declarada": "los valores absolutos de los cinco brazos y las deltas pareadas son los de este dispositivo y no deben compararse con los de una corrida en otro. El pareamiento DENTRO de la corrida se conserva porque los cinco brazos se ejecutan en el mismo dispositivo",
+            "coste_de_la_transferencia_del_indice": {
+              "microsegundos_medidos": "medicion del revisor de P82: 500 indexaciones en 0.0164 s",
+              "microsegundos_por_lote": 33.0,
+              "milisegundos_por_ajuste_a_30_epocas": 500.0,
+              "milisegundos_por_epoca": 16.0,
+              "minutos_para_1000_ajustes": 8.0,
+              "por_que_se_acepta": "es deliberado y lo exige la enmienda 2: el generador se queda en CPU para que el hash de A9 sea estable entre dispositivos. Pagar unos 0.5 s por ajuste a cambio de que A9 siga siendo una invariante auditable es el intercambio correcto, y se publica en vez de omitirse",
+              "que_pasa": "la permutacion de lotes nace con torch.randperm SIN device, luego vive en CPU, y se usa como indice sobre tensores que estan en el dispositivo. PyTorch lo acepta y paga una indexacion GPU por lote"
+            },
+            "cuda_disponible": true,
+            "dispositivo": "cuda",
+            "enmienda_2": "docs/p82_enmienda_2.md",
+            "enmienda_2_sha256": "af731b8966de8f6a6461bba182926763aa2bdb3405c8dad58fad165bd7bdd696",
+            "generador_de_permutaciones_en": "cpu",
+            "hilos_fijados": 16,
+            "medicion_del_coste_por_ajuste_en_segundos": {
+              "cpu_16_hilos": 2.43,
+              "cpu_30_hilos": 3.22,
+              "gpu_rocm": 1.24
+            },
+            "motivo_de_los_hilos": "16 por medicion, no por conveniencia: con 30 hilos un ajuste tarda 3.22 s frente a 2.43 s con 16, un 32 por ciento mas, por sobrecarga de planificacion con tensores pequenos. La GPU con ROCm tarda 1.24 s por ajuste",
+            "motivo_de_no_usar_precision_mixta": "no se usa autocast, ni GradScaler, ni float16, ni bfloat16. En un diseno cuyo nucleo es el pareamiento entre brazos, una via que cambia la precision introduce variabilidad numerica y seria el tipo de cosa que este proyecto ha pagado dos veces. Todo el calculo va en float32",
+            "motivo_del_generador_en_cpu": "el generador de permutaciones se queda en CPU a proposito: A9 hashea la secuencia de lotes, y ese hash tiene que ser estable y auditable aunque los datos esten en GPU. Si el generador fuera a GPU el hash dependeria del dispositivo y A9 perderia sentido como invariante de emparejamiento",
+            "nombre_del_dispositivo": "AMD Radeon RX 9070 XT",
+            "precision_mixta": "NO USADA"
+          }
+        }
+      ],
+      "motivo": "se comprueba de nuevo al final"
+    },
+    "A1": {
+      "filas_de_desarrollo": 1483,
+      "filas_holdout_descartadas": 248,
+      "filas_read_train": 1731,
+      "filas_test_leidas": 0
+    },
+    "A10": {
+      "gap_leido_de_p78": 0.11745,
+      "mde_con_sd_medida": 0.014342,
+      "prueba_de_la_aritmetica": {
+        "diferencia_maxima": 1.000000000001e-06,
+        "intervalo_calculado": [
+          -0.028735,
+          0.078521
+        ],
+        "intervalo_publicado_por_p78": [
+          -0.028736,
+          0.078522
+        ],
+        "porque_esa_tolerancia": "la seccion 3.1 del pre-registro declara la diferencia de la ultima cifra y considera que el ancla reproduce el intervalo publicado",
+        "tolerancia": 1.5e-06
+      },
+      "sd_medida": 0.01440007631814541,
+      "sd_planificada": 0.021588,
+      "sensibilidad_con_sd_medida": [
+        {
+          "factor": 1.0,
+          "mde_a_n_10": 0.014342,
+          "mde_sobre_gap": 0.12,
+          "potencia_en_el_ancla": 0.9979,
+          "sd_supuesta": 0.0144
+        },
+        {
+          "factor": 1.5,
+          "mde_a_n_10": 0.021514,
+          "mde_sobre_gap": 0.18,
+          "potencia_en_el_ancla": 0.899,
+          "sd_supuesta": 0.0216
+        },
+        {
+          "factor": 2.0,
+          "mde_a_n_10": 0.028685,
+          "mde_sobre_gap": 0.24,
+          "potencia_en_el_ancla": 0.6826,
+          "sd_supuesta": 0.0288
+        },
+        {
+          "factor": 3.0,
+          "mde_a_n_10": 0.043027,
+          "mde_sobre_gap": 0.37,
+          "potencia_en_el_ancla": 0.3705,
+          "sd_supuesta": 0.0432
+        }
+      ],
+      "tabla_del_preregistro": {
+        "filas": [
+          {
+            "coincide": true,
+            "diferencia": 0.0,
+            "mde_publicado": 0.070464,
+            "mde_recalculado": 0.070464,
+            "n": 3,
+            "potencia_en_el_ancla": 0.2179,
+            "semiancho_ic95": 0.053628
+          },
+          {
+            "coincide": true,
+            "diferencia": 0.0,
+            "mde_publicado": 0.036311,
+            "mde_recalculado": 0.036311,
+            "n": 5,
+            "potencia_en_el_ancla": 0.5,
+            "semiancho_ic95": 0.026805
+          },
+          {
+            "coincide": true,
+            "diferencia": 0.0,
+            "mde_publicado": 0.024956,
+            "mde_recalculado": 0.024956,
+            "n": 8,
+            "potencia_en_el_ancla": 0.798,
+            "semiancho_ic95": 0.018048
+          },
+          {
+            "coincide": true,
+            "diferencia": 0.0,
+            "mde_publicado": 0.021502,
+            "mde_recalculado": 0.021502,
+            "n": 10,
+            "potencia_en_el_ancla": 0.8993,
+            "semiancho_ic95": 0.015443
+          },
+          {
+            "coincide": true,
+            "diferencia": 0.0,
+            "mde_publicado": 0.019184,
+            "mde_recalculado": 0.019184,
+            "n": 12,
+            "potencia_en_el_ancla": 0.9522,
+            "semiancho_ic95": 0.013716
+          },
+          {
+            "coincide": true,
+            "diferencia": 0.0,
+            "mde_publicado": 0.014258,
+            "mde_recalculado": 0.014258,
+            "n": 20,
+            "potencia_en_el_ancla": 0.9983,
+            "semiancho_ic95": 0.010103
+          },
+          {
+            "coincide": true,
+            "diferencia": 0.0,
+            "mde_publicado": 0.011425,
+            "mde_recalculado": 0.011425,
+            "n": 30,
+            "potencia_en_el_ancla": 1.0,
+            "semiancho_ic95": 0.008061
+          },
+          {
+            "coincide": true,
+            "diferencia": 0.0,
+            "mde_publicado": 0.008726,
+            "mde_recalculado": 0.008726,
+            "n": 50,
+            "potencia_en_el_ancla": 1.0,
+            "semiancho_ic95": 0.006135
+          }
+        ],
+        "sd_usada": 0.021588
+      }
+    },
+    "A11": {
+      "comprobaciones": {
+        "metodo_es_t_pareado": true,
+        "no_es_bootstrap": true,
+        "recalculo_independiente_coincide": true
+      },
+      "intervalo_publicado": {
+        "critico_t": 2.262157162798205,
+        "desviacion": 0.01440007631814541,
+        "error_tipico": 0.004553703964559096,
+        "inferior": -0.012406247175437712,
+        "limite": 0.010301194040689942,
+        "media": -0.0021050531347477698,
+        "n": 10,
+        "pvalor": 0.6548576427239733,
+        "superior": 0.008196140905942173,
+        "t": -0.46227272372800976
+      },
+      "metodo": "t_pareado_sobre_semillas",
+      "recalculo_independiente": {
+        "critico_t": 2.262157162798205,
+        "desviacion": 0.01440007631814541,
+        "error_tipico": 0.004553703964559096,
+        "inferior": -0.012406247175437712,
+        "limite": 0.010301194040689942,
+        "media": -0.0021050531347477698,
+        "n": 10,
+        "pvalor": 0.6548576427239733,
+        "superior": 0.008196140905942173,
+        "t": -0.46227272372800976
+      }
+    },
+    "A12": {
+      "comprobaciones": {
+        "literal_de_semillas_presente": true,
+        "literal_negativo_presente": true,
+        "naturaleza_exploratoria_en_el_texto": true,
+        "naturaleza_exploratoria_en_la_carga": true
+      },
+      "leido_de": "construir_markdown sobre la carga de la corrida",
+      "n_caracteres": 7606,
+      "naturaleza_del_resultado": "EXPLORATORIO"
+    },
+    "A13": {
+      "bloque_leido": {
+        "con_tra_manode": "B1",
+        "control_literal": "B1",
+        "control_sin_atencion": "B1",
+        "corrida": "P82",
+        "definicion": "B2 - B1",
+        "experimento_contraste": "NINGUNO",
+        "id": "P1"
+      },
+      "comprobaciones": {
+        "control_canonico_es_B1": true,
+        "control_literal_del_preregistro_es_B1": true,
+        "corrida_es_P82": true,
+        "experimento_contraste_es_NINGUNO": true
+      },
+      "control_literal": "B1",
+      "leido_de": "el diccionario de carga que la corrida produce"
+    },
+    "A14": {
+      "comprobaciones": {
+        "doble_permutacion_reproducible": true,
+        "misma_forma": true,
+        "suma_de_trazas_igual": true,
+        "suma_hashes_de_filas_igual": true
+      },
+      "forma": [
+        3826,
+        100
+      ],
+      "nota_trazas": "suma de las trazas de las FILAS, entendidas como el cuadrado de la norma de cada fila, porque la matriz no es cuadrada",
+      "suma_hashes_original": 616163312548851721,
+      "suma_hashes_permutada": 616163312548851721,
+      "suma_trazas_original": 19068.003208,
+      "suma_trazas_permutada": 19068.003208,
+      "traza_literal_de_la_matriz_original_informativa": -2.60137,
+      "traza_literal_de_la_matriz_permutada_informativa": -1.175781
+    },
+    "A15": {
+      "n_combinaciones_b5": 50,
+      "n_semillas_b5": 10
+    },
+    "A16": {
+      "n_filas": 5,
+      "n_filas_agregadas": 0
+    },
+    "A17": {
+      "alineado_con_el_desarrollo": true,
+      "cifras": {
+        "AG": {
+          "aciertos_comunes": 1206,
+          "auc_probabilidad_brazo_como_predictor_de_error_de_v03": 0.5095670863492406,
+          "dano": 241,
+          "neto": -126,
+          "rescate": 115,
+          "tasa_dano": 0.1998341625207297,
+          "tasa_rescate": 0.09535655058043117
+        },
+        "HS": {
+          "aciertos_comunes": 1167,
+          "auc_probabilidad_brazo_como_predictor_de_error_de_v03": 0.4997613701691017,
+          "dano": 308,
+          "neto": -160,
+          "rescate": 148,
+          "tasa_dano": 0.2639245929734362,
+          "tasa_rescate": 0.1268209083119109
+        },
+        "TR": {
+          "aciertos_comunes": 1319,
+          "auc_probabilidad_brazo_como_predictor_de_error_de_v03": 0.6150261654246565,
+          "dano": 156,
+          "neto": -94,
+          "rescate": 62,
+          "tasa_dano": 0.11827141774071266,
+          "tasa_rescate": 0.04700530705079606
+        },
+        "naturaleza": "DESCRIPTIVO_NO_COMPARABLE_CON_CORRECTED_CV",
+        "oof_de_v03_alineado_con_el_desarrollo": true,
+        "semilla_de_referencia": 20261401,
+        "unidades_tweet_etiqueta": 4449
+      },
+      "comprobaciones": {
+        "el_neto_por_etiqueta_es_un_entero_que_puede_ser_negativo": true,
+        "la_lectura_del_signo_del_neto_queda_publicada": true,
+        "las_tres_etiquetas_publicadas": true,
+        "los_tres_recuentos_por_etiqueta_son_enteros_y_no_negativos": true,
+        "ninguna_cifra_ausente": true,
+        "unidades_declaradas": true
+      },
+      "faltan": [],
+      "signo_del_neto": {
+        "branco_detracta": true,
+        "el_neto_es_negativo_por_etiqueta": {
+          "AG": true,
+          "HS": true,
+          "TR": true
+        },
+        "el_neto_negativo_en": [
+          "AG",
+          "HS",
+          "TR"
+        ],
+        "el_signo_del_neto_por_etiqueta": {
+          "AG": -126,
+          "HS": -160,
+          "TR": -94
+        },
+        "lectura": "un neto negativo significa que el brazo hace MAS DANO que rescate frente a V03, es decir que detracta en vez de aportar; no es un error de las cifras",
+        "suma_de_netos": -380
+      }
+    },
+    "A18": {
+      "comprobaciones": {
+        "la_negacion_existe_y_no_se_afirma_lo_contrario": true,
+        "literal_v03_en_el_texto": true,
+        "literal_v03_en_la_carga": true,
+        "marca_de_no_word2vec_en_el_texto": true,
+        "marca_de_no_word2vec_en_la_carga": true
+      },
+      "formulacion": "V03 remains the best verified leaderboard result.",
+      "leido_de": "construir_markdown(carga de la corrida)",
+      "n_caracteres": 7606
+    },
+    "A19": {
+      "comprobaciones": {
+        "la_nota_corresponde_a_la_situacion_real": true,
+        "presupuesto_comparado_contra_config": true,
+        "si_excede_exige_nota_de_tramo_2": true,
+        "tiempo_real_publicado_y_finito": true
+      },
+      "decision_del_tramo_2": {
+        "autorizado_por_una_persona": true,
+        "ejecutar_tramo_2": true,
+        "hito_observado": 3640.913065,
+        "hito_segundos": 2400,
+        "la_condicion_del_reloj_se_cumplio": true,
+        "motivo": "el hito se paso y la condicion del reloj habria saltado el tramo 2, pero una persona lo autorizo explicitamente con la bandera, luego se ejecuta",
+        "nota_tramo2": "TRAMO_2_EJECUTADO_CON_EXCEDENCIA_AUTORIZADA: el presupuesto de 5400.000 s se supero, el hito observado de 3640.913 s paso el hito de 2400 s, y el tramo 2 SE EJECUTO porque una persona lo autorizo de forma explicita; la excedencia queda declarada y no fue unnoticed",
+        "presupuesto_segundos": 5400,
+        "proyecta_superar_el_presupuesto": true,
+        "se_paso_el_hito": true
+      },
+      "excedido": true,
+      "las_tres_situaciones_posibles": [
+        "DENTRO_DE_PRESUPUESTO",
+        "EXCEDIDO_Y_TRAMO_2_NO_EJECUTADO_POR_PRESUPUESTO",
+        "EXCEDIDO_Y_TRAMO_2_EJECUTADO_CON_EXCEDENCIA_AUTORIZADA"
+      ],
+      "margen_segundos": -259.069638,
+      "nota_de_tramo_2": "TRAMO_2_EJECUTADO_CON_EXCEDENCIA_AUTORIZADA: el presupuesto de 5400.000 s se supero, el hito observado de 3640.913 s paso el hito de 2400 s, y el tramo 2 SE EJECUTO porque una persona lo autorizo de forma explicita; la excedencia queda declarada y no fue unnoticed",
+      "nota_leida_de": "construir_nota_de_tramos con el tiempo real medido aqui",
+      "presupuesto_segundos": 5400.0,
+      "se_evalua_al_final_del_pipeline": true,
+      "situacion": "EXCEDIDO_Y_TRAMO_2_EJECUTADO_CON_EXCEDENCIA_AUTORIZADA",
+      "tiempo_real_segundos": 5659.069638
+    },
+    "A2": {
+      "auditoria_de_llamadas_a_reoptimizar": {
+        "prohibidas": [],
+        "sondas_permitidas": [
+          "linea 4457 en caso_reoptimizacion_bloqueada: llamada a reoptimizar_umbral"
+        ]
+      },
+      "coinciden_json_y_oof": true,
+      "fuente": "experiments/baseline_v03_frozen/pipeline_v03.json",
+      "metodo_declarado": "rejilla 0.20-0.80 paso 0.01 sobre probabilidades OOF",
+      "n_reoptimizaciones": 0,
+      "umbrales_json": {
+        "AG": 0.46,
+        "HS": 0.44,
+        "TR": 0.51
+      },
+      "umbrales_oof": [
+        0.44,
+        0.51,
+        0.46
+      ]
+    },
+    "A20": {
+      "esperado": 250,
+      "n_abortos": 0,
+      "n_evaluaciones_de_ib": 250
+    },
+    "A21": {
+      "conteo_signos_positivos": 4,
+      "deltas_por_semilla": {
+        "20261401": -0.0023435298717113806,
+        "20261402": -0.008669179706972119,
+        "20261403": 0.022223319094477834,
+        "20261404": -0.0018919129183280203,
+        "20261405": -0.017371204297148557,
+        "20261406": 0.015008644069631316,
+        "20261407": -0.024978154010735554,
+        "20261408": 0.0003047020878096385,
+        "20261409": -0.011044664549485939,
+        "20261410": 0.007711448754985084
+      },
+      "desviacion": 0.01440007631814541,
+      "media": -0.0021050531347477698,
+      "n": 10
+    },
+    "A22": {
+      "casos_colgados": [],
+      "comprobaciones": {
+        "el_suelo_del_humo_alcanza_a_las_veintitres": true,
+        "las_seis_mutaciones_declaradas_son_las_registradas": true,
+        "las_veintitres_afirmaciones_tienen_caso_negativo_declarado": true,
+        "ningun_caso_declarado_que_no_aparezca_en_el_codigo": true,
+        "ningun_caso_declarado_que_no_exista": true
+      },
+      "limitacion_declarada": "comprueba la EXISTENCIA y la COBERTURA de la red de casos negativos; que cada caso discrimine de verdad lo demuestra el humo, y aqui no se reejecutan las seis mutaciones porque son una propiedad del instrumento, no del dato",
+      "n_afirmaciones": 23,
+      "n_con_caso_negativo": 23,
+      "n_mutaciones_registradas": 6,
+      "sin_caso": [],
+      "suelo_de_cobertura_del_humo": 164
+    },
+    "A3": {
+      "GRU": {
+        "banda_muerta": 1e-09,
+        "con_atencion": false,
+        "diferencia_relativa_primer_paso": 0.0,
+        "diferencia_relativa_secuencia_completa": 0.0,
+        "funcion_de_empaquetado": "pack_padded_sequence",
+        "longitud_real": 8,
+        "nota": "las secuencias de P82 son de tokens a la izquierda y relleno a la derecha, igual que las de v9_04; con relleno al principio el empaquetado NO lo neutraliza, porque toma las primeras posiciones como validas",
+        "nucleo": "GRU",
+        "posicion_del_relleno": "al final, porque pack_padded_sequence lo exige",
+        "tolerancia": 1e-06
+      },
+      "LSTM": {
+        "banda_muerta": 1e-09,
+        "con_atencion": true,
+        "diferencia_relativa_primer_paso": 0.0,
+        "diferencia_relativa_secuencia_completa": 0.0,
+        "funcion_de_empaquetado": "pack_padded_sequence",
+        "longitud_real": 8,
+        "nota": "las secuencias de P82 son de tokens a la izquierda y relleno a la derecha, igual que las de v9_04; con relleno al principio el empaquetado NO lo neutraliza, porque toma las primeras posiciones como validas",
+        "nucleo": "LSTM",
+        "posicion_del_relleno": "al final, porque pack_padded_sequence lo exige",
+        "tolerancia": 1e-06
+      }
+    },
+    "A4": {
+      "componentes_fila_oov": [
+        -0.002836,
+        -0.012965,
+        -0.019758,
+        -0.047065,
+        -0.017548,
+        -0.019493,
+        0.002975,
+        -0.003812,
+        0.013217,
+        -0.001911,
+        0.012716,
+        0.014609,
+        0.014639,
+        -0.002576,
+        -0.041263,
+        -0.022924,
+        -0.030102,
+        -0.024174,
+        0.012442,
+        0.017377,
+        0.008799,
+        -0.02141,
+        0.00398,
+        0.02105,
+        0.020736,
+        -0.028618,
+        -0.027995,
+        -0.048428,
+        -0.008514,
+        0.012504,
+        0.01059,
+        -0.038008,
+        -0.002902,
+        0.018936,
+        0.02854,
+        -0.008128,
+        0.024661,
+        0.020113,
+        -0.011676,
+        0.020777,
+        0.008123,
+        -0.027468,
+        0.019962,
+        0.011557,
+        -0.015518,
+        -0.020689,
+        0.022841,
+        0.032314,
+        -0.021756,
+        -0.006732,
+        0.000349,
+        -0.042493,
+        0.025571,
+        -0.010056,
+        -0.037689,
+        0.017395,
+        0.003888,
+        -0.060587,
+        -0.02472,
+        0.014181,
+        -0.033199,
+        0.014739,
+        -0.020463,
+        0.010134,
+        -0.012775,
+        0.009982,
+        0.031163,
+        -0.003018,
+        -0.017761,
+        -0.044102,
+        0.004381,
+        -0.020379,
+        -0.004182,
+        -0.004818,
+        -0.008845,
+        0.020452,
+        0.019586,
+        0.02136,
+        -0.018236,
+        -0.035282,
+        0.014216,
+        0.034049,
+        -0.001288,
+        -0.007493,
+        -0.00626,
+        0.014756,
+        0.0593,
+        0.007083,
+        -0.009252,
+        -0.004734,
+        0.004601,
+        -0.054314,
+        -0.015277,
+        -0.018041,
+        0.011108,
+        -0.017636,
+        -0.001293,
+        0.011336,
+        -0.008876,
+        0.008328
+      ],
+      "comprobaciones": {
+        "fila_oov_distinta_y_no_nula": true,
+        "forma_matriz_len_vocab_mas_dos": true,
+        "id_oov_es_len_vocab_mas_uno": true,
+        "id_oov_mayor_que_cero": true,
+        "id_relleno_es_cero": true,
+        "ids_distintos": true,
+        "peso_oov_entra_en_el_promedio": true,
+        "pesos_relleno_exactamente_cero": true,
+        "residuo_fila_relleno_cero": true
+      },
+      "convencion_de_longitud_efectiva": "una fila con cero tokens tiene longitud efectiva 1 para el empaquetado y para el softmax, de modo que su unica posicion recibe el peso; se publica cuantas hay",
+      "dim": 100,
+      "id_oov": 3825,
+      "id_relleno": 0,
+      "maximo_peso_en_relleno": 0.0,
+      "n_filas_con_longitud_cruda_cero": 0,
+      "n_filas_matriz": 3826,
+      "n_posiciones_oov": 2706,
+      "n_vocab": 3824,
+      "norma_fila_oov": 0.22280950844287872,
+      "proporcion_filas_con_oov_con_peso": 1.0,
+      "regla_fila_oov": "fila OOV = media de las filas del artefacto, L2 normalizada y escalada por la desviacion tipica del artefacto; derivada, congelada y no entrenable",
+      "residuo_fila_relleno": 0.0
+    },
+    "A5": {
+      "comprobaciones": {
+        "decision_dentro_de_ia": true,
+        "e_estrella_es_la_mediana": true,
+        "ib_nunca_en_decision": true,
+        "las_particiones_de_decision_son_distintas": true,
+        "tres_particiones_de_decision_por_combinacion": true
+      },
+      "distincion_publicada": "una EVALUACION por epoca de cada split, y una DECISION por split interno; A5 acota el segundo numero, que es exactamente 3",
+      "e_estrella": 19,
+      "epocas_internas": [
+        19,
+        25,
+        19
+      ],
+      "ib_en_alguna_decision": false,
+      "mediana": 19.0,
+      "n_esperadas": 3,
+      "n_evaluaciones_de_decision": 78,
+      "n_filas_distintas_vistas": 808,
+      "n_filas_por_particion": [
+        395,
+        395,
+        395
+      ],
+      "n_particiones_de_decision": 3,
+      "subconjunto_estricto_de_ia": true
+    },
+    "A6": {
+      "comprobaciones": {
+        "llamadas_igual_a_pasos": true,
+        "serie_con_al_menos_cinco": true,
+        "serie_no_vacia": true,
+        "umbral_exacto_1p0": true
+      },
+      "llamadas_clip": 353006,
+      "n_normas": 353006,
+      "n_normas_no_nulas": 353006,
+      "pasos_optimizador": 353006,
+      "resumen_norma_preclip": {
+        "maximo": 43.23503112792969,
+        "mediana": 0.23490183800458908,
+        "percentil_95": 0.583976998925209
+      },
+      "umbral": 1.0
+    },
+    "A7": {
+      "n_filas_comparadas": 891,
+      "n_filas_con_nan_en_alguna_pasada": 3558,
+      "patron_de_nan_identico": true,
+      "perdidas": [
+        0.5629572868347168,
+        0.5629572868347168
+      ],
+      "probabilidades_identicas": true,
+      "tolerancia": "cero exacto",
+      "variacion_maxima_probabilidades": 0.0,
+      "variacion_perdida": 0.0
+    },
+    "A8": {
+      "cifras": {
+        "convencion_de_fila_vacia": "una fila con cero tokens tiene longitud efectiva 1 para el empaquetado y para el softmax, de modo que su unica posicion recibe el peso; se publica cuantas hay",
+        "fraccion_filas_truncadas": 0.0,
+        "longitud_media_tokens_por_fila": 17.221173297370196,
+        "longitud_mediana_tokens_por_fila": 15.0,
+        "max_len": 64,
+        "n_filas_sin_tokens": 0,
+        "proporcion_oov_sobre_tokens_que_llegan": 0.10595559732174321,
+        "proporcion_posiciones_oov": 0.02851062036412677,
+        "proporcion_posiciones_relleno": 0.7309191672285907,
+        "referencia_oov_p81": 0.153295,
+        "referencia_relleno_p81": 0.7309191672285907,
+        "reproduccion_referencia_oov_de_p81": "NO_REPRODUCIDA",
+        "reproduccion_referencia_relleno_de_p81": "REPRODUCIDA",
+        "tipos_distintos_fuera_de_vocabulario": 1623,
+        "tokenizador": "tokenizar(normalizar_emb_normal(texto)) recortado a MAX_LEN; es el tokenizador de P82 y las cifras de A8 se miden con el, no se arrastran"
+      },
+      "comprobaciones": {
+        "linea_de_reproduccion_declarada": true,
+        "max_len_positivo": true,
+        "ocho_cifras_presentes": true,
+        "proporciones_en_rango": true,
+        "todas_finitas": true
+      },
+      "faltan": [],
+      "n_cifras_exigidas": 8,
+      "no_finitas": [],
+      "proporciones_fuera_de_rango": []
+    },
+    "A9": {
+      "BRECHA_resumen": {
+        "fraccion_de_la_brecha": 0.0,
+        "n_combinaciones_comparadas": 100,
+        "n_discrepancias": 0,
+        "n_hashes_ausentes": 0
+      },
+      "comparaciones_no_pareables_en_init": [
+        "P5, GRU contra LSTM"
+      ],
+      "comparaciones_pareadas": [
+        "P1",
+        "P3",
+        "P4"
+      ],
+      "comprobaciones": {
+        "al_menos_diez_semillas": true,
+        "conjunto_exacto_20261401_20261410": true,
+        "hash_de_init_y_secuencia_identicos_dentro_de_cada_nucleo": true,
+        "ningun_hash_de_secuencia_ausente": true,
+        "todos_los_brazos_comparten_las_diez_semillas": true
+      },
+      "conjunto_correcto": true,
+      "conjunto_esperado": [
+        20261401,
+        20261402,
+        20261403,
+        20261404,
+        20261405,
+        20261406,
+        20261407,
+        20261408,
+        20261409,
+        20261410
+      ],
+      "grupos_por_nucleo": {
+        "GRU": {
+          "BRECHA_discrepancias": [],
+          "BRECHA_n_discrepancias_de_secuencia": 0,
+          "brazos": [
+            "B1",
+            "B2",
+            "B5"
+          ],
+          "claves_de_secuencia_ausentes": [],
+          "hashes_de_init_por_semilla": {
+            "20261401": {
+              "B1": "7f9c3793f0d4a8d6b4f824cdb706ee1c53699e68b8e2d0e1e088b0da6aba6ebf",
+              "B2": "7f9c3793f0d4a8d6b4f824cdb706ee1c53699e68b8e2d0e1e088b0da6aba6ebf",
+              "B5": "7f9c3793f0d4a8d6b4f824cdb706ee1c53699e68b8e2d0e1e088b0da6aba6ebf"
+            },
+            "20261402": {
+              "B1": "f2347bdfe7dc35f88d572ec652646c285fe1eef8e59f1ed8476c453b28996b05",
+              "B2": "f2347bdfe7dc35f88d572ec652646c285fe1eef8e59f1ed8476c453b28996b05",
+              "B5": "f2347bdfe7dc35f88d572ec652646c285fe1eef8e59f1ed8476c453b28996b05"
+            },
+            "20261403": {
+              "B1": "754ff3efb90a846ba2d025528aa3bc7f9a650f24ef5aa20c0d5e916d6fe2f68a",
+              "B2": "754ff3efb90a846ba2d025528aa3bc7f9a650f24ef5aa20c0d5e916d6fe2f68a",
+              "B5": "754ff3efb90a846ba2d025528aa3bc7f9a650f24ef5aa20c0d5e916d6fe2f68a"
+            },
+            "20261404": {
+              "B1": "9920896c95365e983bcfab9f52daf5a1016f2a739b375643b059f1382ff14365",
+              "B2": "9920896c95365e983bcfab9f52daf5a1016f2a739b375643b059f1382ff14365",
+              "B5": "9920896c95365e983bcfab9f52daf5a1016f2a739b375643b059f1382ff14365"
+            },
+            "20261405": {
+              "B1": "36e82f310cd22aeefdda30bb40f5ec6d4c99bc03bca4d01b338ced483c5c1e60",
+              "B2": "36e82f310cd22aeefdda30bb40f5ec6d4c99bc03bca4d01b338ced483c5c1e60",
+              "B5": "36e82f310cd22aeefdda30bb40f5ec6d4c99bc03bca4d01b338ced483c5c1e60"
+            },
+            "20261406": {
+              "B1": "0098c0b4d4537540284afa8ae36782f376904027538f1dc579c99321de57deaf",
+              "B2": "0098c0b4d4537540284afa8ae36782f376904027538f1dc579c99321de57deaf",
+              "B5": "0098c0b4d4537540284afa8ae36782f376904027538f1dc579c99321de57deaf"
+            },
+            "20261407": {
+              "B1": "24e6a17b0a39644383a4e4def7cbee6ebfd2047c3c12d637d83f7d96bc0fcce2",
+              "B2": "24e6a17b0a39644383a4e4def7cbee6ebfd2047c3c12d637d83f7d96bc0fcce2",
+              "B5": "24e6a17b0a39644383a4e4def7cbee6ebfd2047c3c12d637d83f7d96bc0fcce2"
+            },
+            "20261408": {
+              "B1": "42845380d35c03f357f05e6bdf5785f366934e08960dad7a9243984c9b4e0a9e",
+              "B2": "42845380d35c03f357f05e6bdf5785f366934e08960dad7a9243984c9b4e0a9e",
+              "B5": "42845380d35c03f357f05e6bdf5785f366934e08960dad7a9243984c9b4e0a9e"
+            },
+            "20261409": {
+              "B1": "69415ee02d7d4332d34001d112539bb21b80241c8569c57f25703c6f26649377",
+              "B2": "69415ee02d7d4332d34001d112539bb21b80241c8569c57f25703c6f26649377",
+              "B5": "69415ee02d7d4332d34001d112539bb21b80241c8569c57f25703c6f26649377"
+            },
+            "20261410": {
+              "B1": "96f9745b837fc86f532b9da0f9aa8d723fb709ab419e4a4fa08e692fcefb95ae",
+              "B2": "96f9745b837fc86f532b9da0f9aa8d723fb709ab419e4a4fa08e692fcefb95ae",
+              "B5": "96f9745b837fc86f532b9da0f9aa8d723fb709ab419e4a4fa08e692fcefb95ae"
+            }
+          },
+          "hashes_de_secuencia_por_combinacion": {
+            "0_20261401": {
+              "B1": "14d60f9d8572e133fdaf2c5388cc7b0ecbce1d780579b31a1f53fc17d461f9ab",
+              "B2": "14d60f9d8572e133fdaf2c5388cc7b0ecbce1d780579b31a1f53fc17d461f9ab",
+              "B5": "14d60f9d8572e133fdaf2c5388cc7b0ecbce1d780579b31a1f53fc17d461f9ab"
+            },
+            "0_20261402": {
+              "B1": "2cf031526574fcbad296e69a0c3086d258f7578c7e96866d83452f8eda1c7767",
+              "B2": "2cf031526574fcbad296e69a0c3086d258f7578c7e96866d83452f8eda1c7767",
+              "B5": "2cf031526574fcbad296e69a0c3086d258f7578c7e96866d83452f8eda1c7767"
+            },
+            "0_20261403": {
+              "B1": "91ba62ff7976575f68dc6b533cf2e68c6ede5051ca66a279a5c830d7577814db",
+              "B2": "91ba62ff7976575f68dc6b533cf2e68c6ede5051ca66a279a5c830d7577814db",
+              "B5": "91ba62ff7976575f68dc6b533cf2e68c6ede5051ca66a279a5c830d7577814db"
+            },
+            "0_20261404": {
+              "B1": "0c3f4970a9bc89b836bd92f487f0542bdd4be3be21f207512df8f7a0fe1a2a90",
+              "B2": "0c3f4970a9bc89b836bd92f487f0542bdd4be3be21f207512df8f7a0fe1a2a90",
+              "B5": "0c3f4970a9bc89b836bd92f487f0542bdd4be3be21f207512df8f7a0fe1a2a90"
+            },
+            "0_20261405": {
+              "B1": "c1ed4c1229540633d21bf232b6e920e2718e7f547d4a0aec70bc651cea931a8b",
+              "B2": "c1ed4c1229540633d21bf232b6e920e2718e7f547d4a0aec70bc651cea931a8b",
+              "B5": "c1ed4c1229540633d21bf232b6e920e2718e7f547d4a0aec70bc651cea931a8b"
+            },
+            "0_20261406": {
+              "B1": "bd850cdecf27be5a257762366e86814b77227e6e2c017083f2d931197075b89f",
+              "B2": "bd850cdecf27be5a257762366e86814b77227e6e2c017083f2d931197075b89f",
+              "B5": "bd850cdecf27be5a257762366e86814b77227e6e2c017083f2d931197075b89f"
+            },
+            "0_20261407": {
+              "B1": "d4367265d79929e4d135219226184bbab1e1bdb5a3af4eff87d38bb96a7f5586",
+              "B2": "d4367265d79929e4d135219226184bbab1e1bdb5a3af4eff87d38bb96a7f5586",
+              "B5": "d4367265d79929e4d135219226184bbab1e1bdb5a3af4eff87d38bb96a7f5586"
+            },
+            "0_20261408": {
+              "B1": "d0c7dfd14ca4837a64f267430227e6ecb7f9b375dd4ef4dcc1cb6fc48920b332",
+              "B2": "d0c7dfd14ca4837a64f267430227e6ecb7f9b375dd4ef4dcc1cb6fc48920b332",
+              "B5": "d0c7dfd14ca4837a64f267430227e6ecb7f9b375dd4ef4dcc1cb6fc48920b332"
+            },
+            "0_20261409": {
+              "B1": "220418bca98292345c8d19209404b955f83b6a0274b78cfb8959e11e2d8b72d2",
+              "B2": "220418bca98292345c8d19209404b955f83b6a0274b78cfb8959e11e2d8b72d2",
+              "B5": "220418bca98292345c8d19209404b955f83b6a0274b78cfb8959e11e2d8b72d2"
+            },
+            "0_20261410": {
+              "B1": "4b3e0326454a7394c2312fc290ada20cf4b3c3f83824b2dab0423b96af6a8d6d",
+              "B2": "4b3e0326454a7394c2312fc290ada20cf4b3c3f83824b2dab0423b96af6a8d6d",
+              "B5": "4b3e0326454a7394c2312fc290ada20cf4b3c3f83824b2dab0423b96af6a8d6d"
+            },
+            "1_20261401": {
+              "B1": "14d60f9d8572e133fdaf2c5388cc7b0ecbce1d780579b31a1f53fc17d461f9ab",
+              "B2": "14d60f9d8572e133fdaf2c5388cc7b0ecbce1d780579b31a1f53fc17d461f9ab",
+              "B5": "14d60f9d8572e133fdaf2c5388cc7b0ecbce1d780579b31a1f53fc17d461f9ab"
+            },
+            "1_20261402": {
+              "B1": "2cf031526574fcbad296e69a0c3086d258f7578c7e96866d83452f8eda1c7767",
+              "B2": "2cf031526574fcbad296e69a0c3086d258f7578c7e96866d83452f8eda1c7767",
+              "B5": "2cf031526574fcbad296e69a0c3086d258f7578c7e96866d83452f8eda1c7767"
+            },
+            "1_20261403": {
+              "B1": "91ba62ff7976575f68dc6b533cf2e68c6ede5051ca66a279a5c830d7577814db",
+              "B2": "91ba62ff7976575f68dc6b533cf2e68c6ede5051ca66a279a5c830d7577814db",
+              "B5": "91ba62ff7976575f68dc6b533cf2e68c6ede5051ca66a279a5c830d7577814db"
+            },
+            "1_20261404": {
+              "B1": "0c3f4970a9bc89b836bd92f487f0542bdd4be3be21f207512df8f7a0fe1a2a90",
+              "B2": "0c3f4970a9bc89b836bd92f487f0542bdd4be3be21f207512df8f7a0fe1a2a90",
+              "B5": "0c3f4970a9bc89b836bd92f487f0542bdd4be3be21f207512df8f7a0fe1a2a90"
+            },
+            "1_20261405": {
+              "B1": "c1ed4c1229540633d21bf232b6e920e2718e7f547d4a0aec70bc651cea931a8b",
+              "B2": "c1ed4c1229540633d21bf232b6e920e2718e7f547d4a0aec70bc651cea931a8b",
+              "B5": "c1ed4c1229540633d21bf232b6e920e2718e7f547d4a0aec70bc651cea931a8b"
+            },
+            "1_20261406": {
+              "B1": "bd850cdecf27be5a257762366e86814b77227e6e2c017083f2d931197075b89f",
+              "B2": "bd850cdecf27be5a257762366e86814b77227e6e2c017083f2d931197075b89f",
+              "B5": "bd850cdecf27be5a257762366e86814b77227e6e2c017083f2d931197075b89f"
+            },
+            "1_20261407": {
+              "B1": "d4367265d79929e4d135219226184bbab1e1bdb5a3af4eff87d38bb96a7f5586",
+              "B2": "d4367265d79929e4d135219226184bbab1e1bdb5a3af4eff87d38bb96a7f5586",
+              "B5": "d4367265d79929e4d135219226184bbab1e1bdb5a3af4eff87d38bb96a7f5586"
+            },
+            "1_20261408": {
+              "B1": "d0c7dfd14ca4837a64f267430227e6ecb7f9b375dd4ef4dcc1cb6fc48920b332",
+              "B2": "d0c7dfd14ca4837a64f267430227e6ecb7f9b375dd4ef4dcc1cb6fc48920b332",
+              "B5": "d0c7dfd14ca4837a64f267430227e6ecb7f9b375dd4ef4dcc1cb6fc48920b332"
+            },
+            "1_20261409": {
+              "B1": "220418bca98292345c8d19209404b955f83b6a0274b78cfb8959e11e2d8b72d2",
+              "B2": "220418bca98292345c8d19209404b955f83b6a0274b78cfb8959e11e2d8b72d2",
+              "B5": "220418bca98292345c8d19209404b955f83b6a0274b78cfb8959e11e2d8b72d2"
+            },
+            "1_20261410": {
+              "B1": "4b3e0326454a7394c2312fc290ada20cf4b3c3f83824b2dab0423b96af6a8d6d",
+              "B2": "4b3e0326454a7394c2312fc290ada20cf4b3c3f83824b2dab0423b96af6a8d6d",
+              "B5": "4b3e0326454a7394c2312fc290ada20cf4b3c3f83824b2dab0423b96af6a8d6d"
+            },
+            "2_20261401": {
+              "B1": "0a110941ed21ad066e3663a9be6e7ff0b65bc4c4306b9e6e66b8e52d6a6eaefa",
+              "B2": "0a110941ed21ad066e3663a9be6e7ff0b65bc4c4306b9e6e66b8e52d6a6eaefa",
+              "B5": "0a110941ed21ad066e3663a9be6e7ff0b65bc4c4306b9e6e66b8e52d6a6eaefa"
+            },
+            "2_20261402": {
+              "B1": "3806d52f029be8feefaa78edf10a311888a409b4b7d5b8227fdcc27b6d0e3e7a",
+              "B2": "3806d52f029be8feefaa78edf10a311888a409b4b7d5b8227fdcc27b6d0e3e7a",
+              "B5": "3806d52f029be8feefaa78edf10a311888a409b4b7d5b8227fdcc27b6d0e3e7a"
+            },
+            "2_20261403": {
+              "B1": "cf6418f34e42c62def6c39173759bf75ebd17ced7d68da908199d4758d2025be",
+              "B2": "cf6418f34e42c62def6c39173759bf75ebd17ced7d68da908199d4758d2025be",
+              "B5": "cf6418f34e42c62def6c39173759bf75ebd17ced7d68da908199d4758d2025be"
+            },
+            "2_20261404": {
+              "B1": "0075f3b457ef56bebb851fddea7c5491ad701b7ee7988a4acb93afb8627b8e01",
+              "B2": "0075f3b457ef56bebb851fddea7c5491ad701b7ee7988a4acb93afb8627b8e01",
+              "B5": "0075f3b457ef56bebb851fddea7c5491ad701b7ee7988a4acb93afb8627b8e01"
+            },
+            "2_20261405": {
+              "B1": "f3074007919d1c19923dc12d2236cc761efd81d8217bf71ec427af100f24fc86",
+              "B2": "f3074007919d1c19923dc12d2236cc761efd81d8217bf71ec427af100f24fc86",
+              "B5": "f3074007919d1c19923dc12d2236cc761efd81d8217bf71ec427af100f24fc86"
+            },
+            "2_20261406": {
+              "B1": "d6c133e006aa4b31ceef56211e6f679a06c3c4e819d404b18d08eb3a0c4380ef",
+              "B2": "d6c133e006aa4b31ceef56211e6f679a06c3c4e819d404b18d08eb3a0c4380ef",
+              "B5": "d6c133e006aa4b31ceef56211e6f679a06c3c4e819d404b18d08eb3a0c4380ef"
+            },
+            "2_20261407": {
+              "B1": "172358aa54a449239ac6fed64587399d752b4f38687b8ac114ff459812cbf073",
+              "B2": "172358aa54a449239ac6fed64587399d752b4f38687b8ac114ff459812cbf073",
+              "B5": "172358aa54a449239ac6fed64587399d752b4f38687b8ac114ff459812cbf073"
+            },
+            "2_20261408": {
+              "B1": "5a499744fe75f197c9d95c64d7d7956699ceb8210b98c7031fb306d4438128c0",
+              "B2": "5a499744fe75f197c9d95c64d7d7956699ceb8210b98c7031fb306d4438128c0",
+              "B5": "5a499744fe75f197c9d95c64d7d7956699ceb8210b98c7031fb306d4438128c0"
+            },
+            "2_20261409": {
+              "B1": "6e42f8cf3bafee3b965ab6a4cf1d491eb923d7c29a770c23144f4d5bdb478c4f",
+              "B2": "6e42f8cf3bafee3b965ab6a4cf1d491eb923d7c29a770c23144f4d5bdb478c4f",
+              "B5": "6e42f8cf3bafee3b965ab6a4cf1d491eb923d7c29a770c23144f4d5bdb478c4f"
+            },
+            "2_20261410": {
+              "B1": "9df0f6ecacecea4a11cf189fd6b145df819032a6d492e01831df4e2690312c9c",
+              "B2": "9df0f6ecacecea4a11cf189fd6b145df819032a6d492e01831df4e2690312c9c",
+              "B5": "9df0f6ecacecea4a11cf189fd6b145df819032a6d492e01831df4e2690312c9c"
+            },
+            "3_20261401": {
+              "B1": "0a110941ed21ad066e3663a9be6e7ff0b65bc4c4306b9e6e66b8e52d6a6eaefa",
+              "B2": "0a110941ed21ad066e3663a9be6e7ff0b65bc4c4306b9e6e66b8e52d6a6eaefa",
+              "B5": "0a110941ed21ad066e3663a9be6e7ff0b65bc4c4306b9e6e66b8e52d6a6eaefa"
+            },
+            "3_20261402": {
+              "B1": "3806d52f029be8feefaa78edf10a311888a409b4b7d5b8227fdcc27b6d0e3e7a",
+              "B2": "3806d52f029be8feefaa78edf10a311888a409b4b7d5b8227fdcc27b6d0e3e7a",
+              "B5": "3806d52f029be8feefaa78edf10a311888a409b4b7d5b8227fdcc27b6d0e3e7a"
+            },
+            "3_20261403": {
+              "B1": "cf6418f34e42c62def6c39173759bf75ebd17ced7d68da908199d4758d2025be",
+              "B2": "cf6418f34e42c62def6c39173759bf75ebd17ced7d68da908199d4758d2025be",
+              "B5": "cf6418f34e42c62def6c39173759bf75ebd17ced7d68da908199d4758d2025be"
+            },
+            "3_20261404": {
+              "B1": "0075f3b457ef56bebb851fddea7c5491ad701b7ee7988a4acb93afb8627b8e01",
+              "B2": "0075f3b457ef56bebb851fddea7c5491ad701b7ee7988a4acb93afb8627b8e01",
+              "B5": "0075f3b457ef56bebb851fddea7c5491ad701b7ee7988a4acb93afb8627b8e01"
+            },
+            "3_20261405": {
+              "B1": "f3074007919d1c19923dc12d2236cc761efd81d8217bf71ec427af100f24fc86",
+              "B2": "f3074007919d1c19923dc12d2236cc761efd81d8217bf71ec427af100f24fc86",
+              "B5": "f3074007919d1c19923dc12d2236cc761efd81d8217bf71ec427af100f24fc86"
+            },
+            "3_20261406": {
+              "B1": "d6c133e006aa4b31ceef56211e6f679a06c3c4e819d404b18d08eb3a0c4380ef",
+              "B2": "d6c133e006aa4b31ceef56211e6f679a06c3c4e819d404b18d08eb3a0c4380ef",
+              "B5": "d6c133e006aa4b31ceef56211e6f679a06c3c4e819d404b18d08eb3a0c4380ef"
+            },
+            "3_20261407": {
+              "B1": "172358aa54a449239ac6fed64587399d752b4f38687b8ac114ff459812cbf073",
+              "B2": "172358aa54a449239ac6fed64587399d752b4f38687b8ac114ff459812cbf073",
+              "B5": "172358aa54a449239ac6fed64587399d752b4f38687b8ac114ff459812cbf073"
+            },
+            "3_20261408": {
+              "B1": "5a499744fe75f197c9d95c64d7d7956699ceb8210b98c7031fb306d4438128c0",
+              "B2": "5a499744fe75f197c9d95c64d7d7956699ceb8210b98c7031fb306d4438128c0",
+              "B5": "5a499744fe75f197c9d95c64d7d7956699ceb8210b98c7031fb306d4438128c0"
+            },
+            "3_20261409": {
+              "B1": "6e42f8cf3bafee3b965ab6a4cf1d491eb923d7c29a770c23144f4d5bdb478c4f",
+              "B2": "6e42f8cf3bafee3b965ab6a4cf1d491eb923d7c29a770c23144f4d5bdb478c4f",
+              "B5": "6e42f8cf3bafee3b965ab6a4cf1d491eb923d7c29a770c23144f4d5bdb478c4f"
+            },
+            "3_20261410": {
+              "B1": "9df0f6ecacecea4a11cf189fd6b145df819032a6d492e01831df4e2690312c9c",
+              "B2": "9df0f6ecacecea4a11cf189fd6b145df819032a6d492e01831df4e2690312c9c",
+              "B5": "9df0f6ecacecea4a11cf189fd6b145df819032a6d492e01831df4e2690312c9c"
+            },
+            "4_20261401": {
+              "B1": "14d60f9d8572e133fdaf2c5388cc7b0ecbce1d780579b31a1f53fc17d461f9ab",
+              "B2": "14d60f9d8572e133fdaf2c5388cc7b0ecbce1d780579b31a1f53fc17d461f9ab",
+              "B5": "14d60f9d8572e133fdaf2c5388cc7b0ecbce1d780579b31a1f53fc17d461f9ab"
+            },
+            "4_20261402": {
+              "B1": "2cf031526574fcbad296e69a0c3086d258f7578c7e96866d83452f8eda1c7767",
+              "B2": "2cf031526574fcbad296e69a0c3086d258f7578c7e96866d83452f8eda1c7767",
+              "B5": "2cf031526574fcbad296e69a0c3086d258f7578c7e96866d83452f8eda1c7767"
+            },
+            "4_20261403": {
+              "B1": "91ba62ff7976575f68dc6b533cf2e68c6ede5051ca66a279a5c830d7577814db",
+              "B2": "91ba62ff7976575f68dc6b533cf2e68c6ede5051ca66a279a5c830d7577814db",
+              "B5": "91ba62ff7976575f68dc6b533cf2e68c6ede5051ca66a279a5c830d7577814db"
+            },
+            "4_20261404": {
+              "B1": "0c3f4970a9bc89b836bd92f487f0542bdd4be3be21f207512df8f7a0fe1a2a90",
+              "B2": "0c3f4970a9bc89b836bd92f487f0542bdd4be3be21f207512df8f7a0fe1a2a90",
+              "B5": "0c3f4970a9bc89b836bd92f487f0542bdd4be3be21f207512df8f7a0fe1a2a90"
+            },
+            "4_20261405": {
+              "B1": "c1ed4c1229540633d21bf232b6e920e2718e7f547d4a0aec70bc651cea931a8b",
+              "B2": "c1ed4c1229540633d21bf232b6e920e2718e7f547d4a0aec70bc651cea931a8b",
+              "B5": "c1ed4c1229540633d21bf232b6e920e2718e7f547d4a0aec70bc651cea931a8b"
+            },
+            "4_20261406": {
+              "B1": "bd850cdecf27be5a257762366e86814b77227e6e2c017083f2d931197075b89f",
+              "B2": "bd850cdecf27be5a257762366e86814b77227e6e2c017083f2d931197075b89f",
+              "B5": "bd850cdecf27be5a257762366e86814b77227e6e2c017083f2d931197075b89f"
+            },
+            "4_20261407": {
+              "B1": "d4367265d79929e4d135219226184bbab1e1bdb5a3af4eff87d38bb96a7f5586",
+              "B2": "d4367265d79929e4d135219226184bbab1e1bdb5a3af4eff87d38bb96a7f5586",
+              "B5": "d4367265d79929e4d135219226184bbab1e1bdb5a3af4eff87d38bb96a7f5586"
+            },
+            "4_20261408": {
+              "B1": "d0c7dfd14ca4837a64f267430227e6ecb7f9b375dd4ef4dcc1cb6fc48920b332",
+              "B2": "d0c7dfd14ca4837a64f267430227e6ecb7f9b375dd4ef4dcc1cb6fc48920b332",
+              "B5": "d0c7dfd14ca4837a64f267430227e6ecb7f9b375dd4ef4dcc1cb6fc48920b332"
+            },
+            "4_20261409": {
+              "B1": "220418bca98292345c8d19209404b955f83b6a0274b78cfb8959e11e2d8b72d2",
+              "B2": "220418bca98292345c8d19209404b955f83b6a0274b78cfb8959e11e2d8b72d2",
+              "B5": "220418bca98292345c8d19209404b955f83b6a0274b78cfb8959e11e2d8b72d2"
+            },
+            "4_20261410": {
+              "B1": "4b3e0326454a7394c2312fc290ada20cf4b3c3f83824b2dab0423b96af6a8d6d",
+              "B2": "4b3e0326454a7394c2312fc290ada20cf4b3c3f83824b2dab0423b96af6a8d6d",
+              "B5": "4b3e0326454a7394c2312fc290ada20cf4b3c3f83824b2dab0423b96af6a8d6d"
+            }
+          },
+          "init_identico_por_semilla": {
+            "20261401": true,
+            "20261402": true,
+            "20261403": true,
+            "20261404": true,
+            "20261405": true,
+            "20261406": true,
+            "20261407": true,
+            "20261408": true,
+            "20261409": true,
+            "20261410": true
+          },
+          "n_claves_de_secuencia_ausentes": 0,
+          "n_combinaciones_comparadas": 50,
+          "secuencia_de_lotes_identica_por_combinacion": {
+            "0_20261401": true,
+            "0_20261402": true,
+            "0_20261403": true,
+            "0_20261404": true,
+            "0_20261405": true,
+            "0_20261406": true,
+            "0_20261407": true,
+            "0_20261408": true,
+            "0_20261409": true,
+            "0_20261410": true,
+            "1_20261401": true,
+            "1_20261402": true,
+            "1_20261403": true,
+            "1_20261404": true,
+            "1_20261405": true,
+            "1_20261406": true,
+            "1_20261407": true,
+            "1_20261408": true,
+            "1_20261409": true,
+            "1_20261410": true,
+            "2_20261401": true,
+            "2_20261402": true,
+            "2_20261403": true,
+            "2_20261404": true,
+            "2_20261405": true,
+            "2_20261406": true,
+            "2_20261407": true,
+            "2_20261408": true,
+            "2_20261409": true,
+            "2_20261410": true,
+            "3_20261401": true,
+            "3_20261402": true,
+            "3_20261403": true,
+            "3_20261404": true,
+            "3_20261405": true,
+            "3_20261406": true,
+            "3_20261407": true,
+            "3_20261408": true,
+            "3_20261409": true,
+            "3_20261410": true,
+            "4_20261401": true,
+            "4_20261402": true,
+            "4_20261403": true,
+            "4_20261404": true,
+            "4_20261405": true,
+            "4_20261406": true,
+            "4_20261407": true,
+            "4_20261408": true,
+            "4_20261409": true,
+            "4_20261410": true
+          }
+        },
+        "LSTM": {
+          "BRECHA_discrepancias": [],
+          "BRECHA_n_discrepancias_de_secuencia": 0,
+          "brazos": [
+            "B3",
+            "B4"
+          ],
+          "claves_de_secuencia_ausentes": [],
+          "hashes_de_init_por_semilla": {
+            "20261401": {
+              "B3": "213bfbae89050ddff399581a5859452c2a176d77bab07e5dea266fe002a161d5",
+              "B4": "213bfbae89050ddff399581a5859452c2a176d77bab07e5dea266fe002a161d5"
+            },
+            "20261402": {
+              "B3": "842e509e0ed0f7b37e652b6a78f9b066fefe9edcc33020a39a8d2e14b8dc60c4",
+              "B4": "842e509e0ed0f7b37e652b6a78f9b066fefe9edcc33020a39a8d2e14b8dc60c4"
+            },
+            "20261403": {
+              "B3": "4b5d506893c90563a635b595a4edf23ef0a9d6d2b394bcaf75a9d8a303207c86",
+              "B4": "4b5d506893c90563a635b595a4edf23ef0a9d6d2b394bcaf75a9d8a303207c86"
+            },
+            "20261404": {
+              "B3": "373344c1a2124172721d2bed66ddf2aaa36382074c6ad6b70d68119857e85fba",
+              "B4": "373344c1a2124172721d2bed66ddf2aaa36382074c6ad6b70d68119857e85fba"
+            },
+            "20261405": {
+              "B3": "6423ec04e1242ffb8e3bd1d820535a0b9a149c0e39959fdfc505de94c4165c13",
+              "B4": "6423ec04e1242ffb8e3bd1d820535a0b9a149c0e39959fdfc505de94c4165c13"
+            },
+            "20261406": {
+              "B3": "a642ef0ffc4005e5095a94bb433ce1df7f9635902b2e6e659d1d846e6a0dbe58",
+              "B4": "a642ef0ffc4005e5095a94bb433ce1df7f9635902b2e6e659d1d846e6a0dbe58"
+            },
+            "20261407": {
+              "B3": "68a216fef517fa80fa910a306ddd0d58344a2405843e5e01fcf7972bb2478496",
+              "B4": "68a216fef517fa80fa910a306ddd0d58344a2405843e5e01fcf7972bb2478496"
+            },
+            "20261408": {
+              "B3": "26e8648abc17c1ae8cfa3989dd4d855bf4c24b684fd3642186396b979112f5de",
+              "B4": "26e8648abc17c1ae8cfa3989dd4d855bf4c24b684fd3642186396b979112f5de"
+            },
+            "20261409": {
+              "B3": "8b4584843ecabb7ebe634cc568a370c97e5aeb68e08b63c901ac638c9d9ee3ce",
+              "B4": "8b4584843ecabb7ebe634cc568a370c97e5aeb68e08b63c901ac638c9d9ee3ce"
+            },
+            "20261410": {
+              "B3": "4cce475b2473cd01fa7dcdb8acaaaf8161e045183e77440d9683566b1b452f3b",
+              "B4": "4cce475b2473cd01fa7dcdb8acaaaf8161e045183e77440d9683566b1b452f3b"
+            }
+          },
+          "hashes_de_secuencia_por_combinacion": {
+            "0_20261401": {
+              "B3": "14d60f9d8572e133fdaf2c5388cc7b0ecbce1d780579b31a1f53fc17d461f9ab",
+              "B4": "14d60f9d8572e133fdaf2c5388cc7b0ecbce1d780579b31a1f53fc17d461f9ab"
+            },
+            "0_20261402": {
+              "B3": "2cf031526574fcbad296e69a0c3086d258f7578c7e96866d83452f8eda1c7767",
+              "B4": "2cf031526574fcbad296e69a0c3086d258f7578c7e96866d83452f8eda1c7767"
+            },
+            "0_20261403": {
+              "B3": "91ba62ff7976575f68dc6b533cf2e68c6ede5051ca66a279a5c830d7577814db",
+              "B4": "91ba62ff7976575f68dc6b533cf2e68c6ede5051ca66a279a5c830d7577814db"
+            },
+            "0_20261404": {
+              "B3": "0c3f4970a9bc89b836bd92f487f0542bdd4be3be21f207512df8f7a0fe1a2a90",
+              "B4": "0c3f4970a9bc89b836bd92f487f0542bdd4be3be21f207512df8f7a0fe1a2a90"
+            },
+            "0_20261405": {
+              "B3": "c1ed4c1229540633d21bf232b6e920e2718e7f547d4a0aec70bc651cea931a8b",
+              "B4": "c1ed4c1229540633d21bf232b6e920e2718e7f547d4a0aec70bc651cea931a8b"
+            },
+            "0_20261406": {
+              "B3": "bd850cdecf27be5a257762366e86814b77227e6e2c017083f2d931197075b89f",
+              "B4": "bd850cdecf27be5a257762366e86814b77227e6e2c017083f2d931197075b89f"
+            },
+            "0_20261407": {
+              "B3": "d4367265d79929e4d135219226184bbab1e1bdb5a3af4eff87d38bb96a7f5586",
+              "B4": "d4367265d79929e4d135219226184bbab1e1bdb5a3af4eff87d38bb96a7f5586"
+            },
+            "0_20261408": {
+              "B3": "d0c7dfd14ca4837a64f267430227e6ecb7f9b375dd4ef4dcc1cb6fc48920b332",
+              "B4": "d0c7dfd14ca4837a64f267430227e6ecb7f9b375dd4ef4dcc1cb6fc48920b332"
+            },
+            "0_20261409": {
+              "B3": "220418bca98292345c8d19209404b955f83b6a0274b78cfb8959e11e2d8b72d2",
+              "B4": "220418bca98292345c8d19209404b955f83b6a0274b78cfb8959e11e2d8b72d2"
+            },
+            "0_20261410": {
+              "B3": "4b3e0326454a7394c2312fc290ada20cf4b3c3f83824b2dab0423b96af6a8d6d",
+              "B4": "4b3e0326454a7394c2312fc290ada20cf4b3c3f83824b2dab0423b96af6a8d6d"
+            },
+            "1_20261401": {
+              "B3": "14d60f9d8572e133fdaf2c5388cc7b0ecbce1d780579b31a1f53fc17d461f9ab",
+              "B4": "14d60f9d8572e133fdaf2c5388cc7b0ecbce1d780579b31a1f53fc17d461f9ab"
+            },
+            "1_20261402": {
+              "B3": "2cf031526574fcbad296e69a0c3086d258f7578c7e96866d83452f8eda1c7767",
+              "B4": "2cf031526574fcbad296e69a0c3086d258f7578c7e96866d83452f8eda1c7767"
+            },
+            "1_20261403": {
+              "B3": "91ba62ff7976575f68dc6b533cf2e68c6ede5051ca66a279a5c830d7577814db",
+              "B4": "91ba62ff7976575f68dc6b533cf2e68c6ede5051ca66a279a5c830d7577814db"
+            },
+            "1_20261404": {
+              "B3": "0c3f4970a9bc89b836bd92f487f0542bdd4be3be21f207512df8f7a0fe1a2a90",
+              "B4": "0c3f4970a9bc89b836bd92f487f0542bdd4be3be21f207512df8f7a0fe1a2a90"
+            },
+            "1_20261405": {
+              "B3": "c1ed4c1229540633d21bf232b6e920e2718e7f547d4a0aec70bc651cea931a8b",
+              "B4": "c1ed4c1229540633d21bf232b6e920e2718e7f547d4a0aec70bc651cea931a8b"
+            },
+            "1_20261406": {
+              "B3": "bd850cdecf27be5a257762366e86814b77227e6e2c017083f2d931197075b89f",
+              "B4": "bd850cdecf27be5a257762366e86814b77227e6e2c017083f2d931197075b89f"
+            },
+            "1_20261407": {
+              "B3": "d4367265d79929e4d135219226184bbab1e1bdb5a3af4eff87d38bb96a7f5586",
+              "B4": "d4367265d79929e4d135219226184bbab1e1bdb5a3af4eff87d38bb96a7f5586"
+            },
+            "1_20261408": {
+              "B3": "d0c7dfd14ca4837a64f267430227e6ecb7f9b375dd4ef4dcc1cb6fc48920b332",
+              "B4": "d0c7dfd14ca4837a64f267430227e6ecb7f9b375dd4ef4dcc1cb6fc48920b332"
+            },
+            "1_20261409": {
+              "B3": "220418bca98292345c8d19209404b955f83b6a0274b78cfb8959e11e2d8b72d2",
+              "B4": "220418bca98292345c8d19209404b955f83b6a0274b78cfb8959e11e2d8b72d2"
+            },
+            "1_20261410": {
+              "B3": "4b3e0326454a7394c2312fc290ada20cf4b3c3f83824b2dab0423b96af6a8d6d",
+              "B4": "4b3e0326454a7394c2312fc290ada20cf4b3c3f83824b2dab0423b96af6a8d6d"
+            },
+            "2_20261401": {
+              "B3": "0a110941ed21ad066e3663a9be6e7ff0b65bc4c4306b9e6e66b8e52d6a6eaefa",
+              "B4": "0a110941ed21ad066e3663a9be6e7ff0b65bc4c4306b9e6e66b8e52d6a6eaefa"
+            },
+            "2_20261402": {
+              "B3": "3806d52f029be8feefaa78edf10a311888a409b4b7d5b8227fdcc27b6d0e3e7a",
+              "B4": "3806d52f029be8feefaa78edf10a311888a409b4b7d5b8227fdcc27b6d0e3e7a"
+            },
+            "2_20261403": {
+              "B3": "cf6418f34e42c62def6c39173759bf75ebd17ced7d68da908199d4758d2025be",
+              "B4": "cf6418f34e42c62def6c39173759bf75ebd17ced7d68da908199d4758d2025be"
+            },
+            "2_20261404": {
+              "B3": "0075f3b457ef56bebb851fddea7c5491ad701b7ee7988a4acb93afb8627b8e01",
+              "B4": "0075f3b457ef56bebb851fddea7c5491ad701b7ee7988a4acb93afb8627b8e01"
+            },
+            "2_20261405": {
+              "B3": "f3074007919d1c19923dc12d2236cc761efd81d8217bf71ec427af100f24fc86",
+              "B4": "f3074007919d1c19923dc12d2236cc761efd81d8217bf71ec427af100f24fc86"
+            },
+            "2_20261406": {
+              "B3": "d6c133e006aa4b31ceef56211e6f679a06c3c4e819d404b18d08eb3a0c4380ef",
+              "B4": "d6c133e006aa4b31ceef56211e6f679a06c3c4e819d404b18d08eb3a0c4380ef"
+            },
+            "2_20261407": {
+              "B3": "172358aa54a449239ac6fed64587399d752b4f38687b8ac114ff459812cbf073",
+              "B4": "172358aa54a449239ac6fed64587399d752b4f38687b8ac114ff459812cbf073"
+            },
+            "2_20261408": {
+              "B3": "5a499744fe75f197c9d95c64d7d7956699ceb8210b98c7031fb306d4438128c0",
+              "B4": "5a499744fe75f197c9d95c64d7d7956699ceb8210b98c7031fb306d4438128c0"
+            },
+            "2_20261409": {
+              "B3": "6e42f8cf3bafee3b965ab6a4cf1d491eb923d7c29a770c23144f4d5bdb478c4f",
+              "B4": "6e42f8cf3bafee3b965ab6a4cf1d491eb923d7c29a770c23144f4d5bdb478c4f"
+            },
+            "2_20261410": {
+              "B3": "9df0f6ecacecea4a11cf189fd6b145df819032a6d492e01831df4e2690312c9c",
+              "B4": "9df0f6ecacecea4a11cf189fd6b145df819032a6d492e01831df4e2690312c9c"
+            },
+            "3_20261401": {
+              "B3": "0a110941ed21ad066e3663a9be6e7ff0b65bc4c4306b9e6e66b8e52d6a6eaefa",
+              "B4": "0a110941ed21ad066e3663a9be6e7ff0b65bc4c4306b9e6e66b8e52d6a6eaefa"
+            },
+            "3_20261402": {
+              "B3": "3806d52f029be8feefaa78edf10a311888a409b4b7d5b8227fdcc27b6d0e3e7a",
+              "B4": "3806d52f029be8feefaa78edf10a311888a409b4b7d5b8227fdcc27b6d0e3e7a"
+            },
+            "3_20261403": {
+              "B3": "cf6418f34e42c62def6c39173759bf75ebd17ced7d68da908199d4758d2025be",
+              "B4": "cf6418f34e42c62def6c39173759bf75ebd17ced7d68da908199d4758d2025be"
+            },
+            "3_20261404": {
+              "B3": "0075f3b457ef56bebb851fddea7c5491ad701b7ee7988a4acb93afb8627b8e01",
+              "B4": "0075f3b457ef56bebb851fddea7c5491ad701b7ee7988a4acb93afb8627b8e01"
+            },
+            "3_20261405": {
+              "B3": "f3074007919d1c19923dc12d2236cc761efd81d8217bf71ec427af100f24fc86",
+              "B4": "f3074007919d1c19923dc12d2236cc761efd81d8217bf71ec427af100f24fc86"
+            },
+            "3_20261406": {
+              "B3": "d6c133e006aa4b31ceef56211e6f679a06c3c4e819d404b18d08eb3a0c4380ef",
+              "B4": "d6c133e006aa4b31ceef56211e6f679a06c3c4e819d404b18d08eb3a0c4380ef"
+            },
+            "3_20261407": {
+              "B3": "172358aa54a449239ac6fed64587399d752b4f38687b8ac114ff459812cbf073",
+              "B4": "172358aa54a449239ac6fed64587399d752b4f38687b8ac114ff459812cbf073"
+            },
+            "3_20261408": {
+              "B3": "5a499744fe75f197c9d95c64d7d7956699ceb8210b98c7031fb306d4438128c0",
+              "B4": "5a499744fe75f197c9d95c64d7d7956699ceb8210b98c7031fb306d4438128c0"
+            },
+            "3_20261409": {
+              "B3": "6e42f8cf3bafee3b965ab6a4cf1d491eb923d7c29a770c23144f4d5bdb478c4f",
+              "B4": "6e42f8cf3bafee3b965ab6a4cf1d491eb923d7c29a770c23144f4d5bdb478c4f"
+            },
+            "3_20261410": {
+              "B3": "9df0f6ecacecea4a11cf189fd6b145df819032a6d492e01831df4e2690312c9c",
+              "B4": "9df0f6ecacecea4a11cf189fd6b145df819032a6d492e01831df4e2690312c9c"
+            },
+            "4_20261401": {
+              "B3": "14d60f9d8572e133fdaf2c5388cc7b0ecbce1d780579b31a1f53fc17d461f9ab",
+              "B4": "14d60f9d8572e133fdaf2c5388cc7b0ecbce1d780579b31a1f53fc17d461f9ab"
+            },
+            "4_20261402": {
+              "B3": "2cf031526574fcbad296e69a0c3086d258f7578c7e96866d83452f8eda1c7767",
+              "B4": "2cf031526574fcbad296e69a0c3086d258f7578c7e96866d83452f8eda1c7767"
+            },
+            "4_20261403": {
+              "B3": "91ba62ff7976575f68dc6b533cf2e68c6ede5051ca66a279a5c830d7577814db",
+              "B4": "91ba62ff7976575f68dc6b533cf2e68c6ede5051ca66a279a5c830d7577814db"
+            },
+            "4_20261404": {
+              "B3": "0c3f4970a9bc89b836bd92f487f0542bdd4be3be21f207512df8f7a0fe1a2a90",
+              "B4": "0c3f4970a9bc89b836bd92f487f0542bdd4be3be21f207512df8f7a0fe1a2a90"
+            },
+            "4_20261405": {
+              "B3": "c1ed4c1229540633d21bf232b6e920e2718e7f547d4a0aec70bc651cea931a8b",
+              "B4": "c1ed4c1229540633d21bf232b6e920e2718e7f547d4a0aec70bc651cea931a8b"
+            },
+            "4_20261406": {
+              "B3": "bd850cdecf27be5a257762366e86814b77227e6e2c017083f2d931197075b89f",
+              "B4": "bd850cdecf27be5a257762366e86814b77227e6e2c017083f2d931197075b89f"
+            },
+            "4_20261407": {
+              "B3": "d4367265d79929e4d135219226184bbab1e1bdb5a3af4eff87d38bb96a7f5586",
+              "B4": "d4367265d79929e4d135219226184bbab1e1bdb5a3af4eff87d38bb96a7f5586"
+            },
+            "4_20261408": {
+              "B3": "d0c7dfd14ca4837a64f267430227e6ecb7f9b375dd4ef4dcc1cb6fc48920b332",
+              "B4": "d0c7dfd14ca4837a64f267430227e6ecb7f9b375dd4ef4dcc1cb6fc48920b332"
+            },
+            "4_20261409": {
+              "B3": "220418bca98292345c8d19209404b955f83b6a0274b78cfb8959e11e2d8b72d2",
+              "B4": "220418bca98292345c8d19209404b955f83b6a0274b78cfb8959e11e2d8b72d2"
+            },
+            "4_20261410": {
+              "B3": "4b3e0326454a7394c2312fc290ada20cf4b3c3f83824b2dab0423b96af6a8d6d",
+              "B4": "4b3e0326454a7394c2312fc290ada20cf4b3c3f83824b2dab0423b96af6a8d6d"
+            }
+          },
+          "init_identico_por_semilla": {
+            "20261401": true,
+            "20261402": true,
+            "20261403": true,
+            "20261404": true,
+            "20261405": true,
+            "20261406": true,
+            "20261407": true,
+            "20261408": true,
+            "20261409": true,
+            "20261410": true
+          },
+          "n_claves_de_secuencia_ausentes": 0,
+          "n_combinaciones_comparadas": 50,
+          "secuencia_de_lotes_identica_por_combinacion": {
+            "0_20261401": true,
+            "0_20261402": true,
+            "0_20261403": true,
+            "0_20261404": true,
+            "0_20261405": true,
+            "0_20261406": true,
+            "0_20261407": true,
+            "0_20261408": true,
+            "0_20261409": true,
+            "0_20261410": true,
+            "1_20261401": true,
+            "1_20261402": true,
+            "1_20261403": true,
+            "1_20261404": true,
+            "1_20261405": true,
+            "1_20261406": true,
+            "1_20261407": true,
+            "1_20261408": true,
+            "1_20261409": true,
+            "1_20261410": true,
+            "2_20261401": true,
+            "2_20261402": true,
+            "2_20261403": true,
+            "2_20261404": true,
+            "2_20261405": true,
+            "2_20261406": true,
+            "2_20261407": true,
+            "2_20261408": true,
+            "2_20261409": true,
+            "2_20261410": true,
+            "3_20261401": true,
+            "3_20261402": true,
+            "3_20261403": true,
+            "3_20261404": true,
+            "3_20261405": true,
+            "3_20261406": true,
+            "3_20261407": true,
+            "3_20261408": true,
+            "3_20261409": true,
+            "3_20261410": true,
+            "4_20261401": true,
+            "4_20261402": true,
+            "4_20261403": true,
+            "4_20261404": true,
+            "4_20261405": true,
+            "4_20261406": true,
+            "4_20261407": true,
+            "4_20261408": true,
+            "4_20261409": true,
+            "4_20261410": true
+          }
+        }
+      },
+      "magnitud_que_se_compara": "hash sha256 acumulado de las primeras 64 permutaciones del generador sembrado con semilla mas 7, tomado al inicio de la combinacion",
+      "n_semillas": 10,
+      "porque_no_el_punto_de_parada": "con early stopping anidado cada brazo para en un numero de epocas distinto; el ultimo lote ejecutado depende de ese estado y divergiria entre brazos perfectamente pareados",
+      "profundidad_del_hash_de_lotes": 64,
+      "que_se_empareja": "la SECUENCIA COMPLETA de lotes, no el punto de parada",
+      "semillas_usadas": [
+        20261401,
+        20261402,
+        20261403,
+        20261404,
+        20261405,
+        20261406,
+        20261407,
+        20261408,
+        20261409,
+        20261410
+      ]
+    }
+  },
+  "directorio_de_parciales": "/home/carlos/Git/PLN-v67/kaggle_toxic_2026_puj/reports/p82_parciales/20261002T132340Z_p563891",
+  "dispositivo_de_calculo": {
+    "consecuencia_declarada": "los valores absolutos de los cinco brazos y las deltas pareadas son los de este dispositivo y no deben compararse con los de una corrida en otro. El pareamiento DENTRO de la corrida se conserva porque los cinco brazos se ejecutan en el mismo dispositivo",
+    "coste_de_la_transferencia_del_indice": {
+      "microsegundos_medidos": "medicion del revisor de P82: 500 indexaciones en 0.0164 s",
+      "microsegundos_por_lote": 33.0,
+      "milisegundos_por_ajuste_a_30_epocas": 500.0,
+      "milisegundos_por_epoca": 16.0,
+      "minutos_para_1000_ajustes": 8.0,
+      "por_que_se_acepta": "es deliberado y lo exige la enmienda 2: el generador se queda en CPU para que el hash de A9 sea estable entre dispositivos. Pagar unos 0.5 s por ajuste a cambio de que A9 siga siendo una invariante auditable es el intercambio correcto, y se publica en vez de omitirse",
+      "que_pasa": "la permutacion de lotes nace con torch.randperm SIN device, luego vive en CPU, y se usa como indice sobre tensores que estan en el dispositivo. PyTorch lo acepta y paga una indexacion GPU por lote"
+    },
+    "cuda_disponible": true,
+    "dispositivo": "cuda",
+    "enmienda_2": "docs/p82_enmienda_2.md",
+    "enmienda_2_sha256": "af731b8966de8f6a6461bba182926763aa2bdb3405c8dad58fad165bd7bdd696",
+    "generador_de_permutaciones_en": "cpu",
+    "hilos_fijados": 16,
+    "medicion_del_coste_por_ajuste_en_segundos": {
+      "cpu_16_hilos": 2.43,
+      "cpu_30_hilos": 3.22,
+      "gpu_rocm": 1.24
+    },
+    "motivo_de_los_hilos": "16 por medicion, no por conveniencia: con 30 hilos un ajuste tarda 3.22 s frente a 2.43 s con 16, un 32 por ciento mas, por sobrecarga de planificacion con tensores pequenos. La GPU con ROCm tarda 1.24 s por ajuste",
+    "motivo_de_no_usar_precision_mixta": "no se usa autocast, ni GradScaler, ni float16, ni bfloat16. En un diseno cuyo nucleo es el pareamiento entre brazos, una via que cambia la precision introduce variabilidad numerica y seria el tipo de cosa que este proyecto ha pagado dos veces. Todo el calculo va en float32",
+    "motivo_del_generador_en_cpu": "el generador de permutaciones se queda en CPU a proposito: A9 hashea la secuencia de lotes, y ese hash tiene que ser estable y auditable aunque los datos esten en GPU. Si el generador fuera a GPU el hash dependeria del dispositivo y A9 perderia sentido como invariante de emparejamiento",
+    "nombre_del_dispositivo": "AMD Radeon RX 9070 XT",
+    "precision_mixta": "NO USADA"
+  },
+  "experimento": "P82",
+  "fecha_inicio_utc": "2026-10-02T14:57:59.149417+00:00",
+  "formulacion": "V03 remains the best verified leaderboard result.",
+  "informe_anterior_conservado": {
+    "corrida_actual": "20261002T132340Z_p563891",
+    "motivo": "el destino canonico ya existia y el guard antitrunco se niega a sobrescribirlo, luego esta corrida escribe con su marca y conserva el anterior intacto",
+    "ruta_del_anterior": "reports/p82_rnn_atencion.json"
+  },
+  "interseccion_y_rescate": {
+    "AG": {
+      "aciertos_comunes": 1206,
+      "auc_probabilidad_brazo_como_predictor_de_error_de_v03": 0.5095670863492406,
+      "dano": 241,
+      "neto": -126,
+      "rescate": 115,
+      "tasa_dano": 0.1998341625207297,
+      "tasa_rescate": 0.09535655058043117
+    },
+    "HS": {
+      "aciertos_comunes": 1167,
+      "auc_probabilidad_brazo_como_predictor_de_error_de_v03": 0.4997613701691017,
+      "dano": 308,
+      "neto": -160,
+      "rescate": 148,
+      "tasa_dano": 0.2639245929734362,
+      "tasa_rescate": 0.1268209083119109
+    },
+    "TR": {
+      "aciertos_comunes": 1319,
+      "auc_probabilidad_brazo_como_predictor_de_error_de_v03": 0.6150261654246565,
+      "dano": 156,
+      "neto": -94,
+      "rescate": 62,
+      "tasa_dano": 0.11827141774071266,
+      "tasa_rescate": 0.04700530705079606
+    },
+    "naturaleza": "DESCRIPTIVO_NO_COMPARABLE_CON_CORRECTED_CV",
+    "oof_de_v03_alineado_con_el_desarrollo": true,
+    "semilla_de_referencia": 20261401,
+    "unidades_tweet_etiqueta": 4449
+  },
+  "lecturas_por_fuente": {
+    "filas_de_desarrollo_usadas": 1483,
+    "filas_holdout_descartadas": 248,
+    "filas_holdout_leidas": 0,
+    "filas_test_leidas": 0,
+    "read_train_filas": 1731
+  },
+  "limite_deteccion": {
+    "gap_leido_de_p78": 0.11745,
+    "mde_con_sd_medida": 0.014342,
+    "n_semillas": 10,
+    "potencia_objetivo": 0.8,
+    "prueba_de_la_aritmetica": {
+      "diferencia_maxima": 1.000000000001e-06,
+      "intervalo_calculado": [
+        -0.028735,
+        0.078521
+      ],
+      "intervalo_publicado_por_p78": [
+        -0.028736,
+        0.078522
+      ],
+      "porque_esa_tolerancia": "la seccion 3.1 del pre-registro declara la diferencia de la ultima cifra y considera que el ancla reproduce el intervalo publicado",
+      "tolerancia": 1.5e-06
+    },
+    "sd_medida": 0.01440007631814541,
+    "sd_planificada": 0.021588,
+    "sensibilidad_con_sd_medida": [
+      {
+        "factor": 1.0,
+        "mde_a_n_10": 0.014342,
+        "mde_sobre_gap": 0.12,
+        "potencia_en_el_ancla": 0.9979,
+        "sd_supuesta": 0.0144
+      },
+      {
+        "factor": 1.5,
+        "mde_a_n_10": 0.021514,
+        "mde_sobre_gap": 0.18,
+        "potencia_en_el_ancla": 0.899,
+        "sd_supuesta": 0.0216
+      },
+      {
+        "factor": 2.0,
+        "mde_a_n_10": 0.028685,
+        "mde_sobre_gap": 0.24,
+        "potencia_en_el_ancla": 0.6826,
+        "sd_supuesta": 0.0288
+      },
+      {
+        "factor": 3.0,
+        "mde_a_n_10": 0.043027,
+        "mde_sobre_gap": 0.37,
+        "potencia_en_el_ancla": 0.3705,
+        "sd_supuesta": 0.0432
+      }
+    ],
+    "tabla_del_preregistro": {
+      "filas": [
+        {
+          "coincide": true,
+          "diferencia": 0.0,
+          "mde_publicado": 0.070464,
+          "mde_recalculado": 0.070464,
+          "n": 3,
+          "potencia_en_el_ancla": 0.2179,
+          "semiancho_ic95": 0.053628
+        },
+        {
+          "coincide": true,
+          "diferencia": 0.0,
+          "mde_publicado": 0.036311,
+          "mde_recalculado": 0.036311,
+          "n": 5,
+          "potencia_en_el_ancla": 0.5,
+          "semiancho_ic95": 0.026805
+        },
+        {
+          "coincide": true,
+          "diferencia": 0.0,
+          "mde_publicado": 0.024956,
+          "mde_recalculado": 0.024956,
+          "n": 8,
+          "potencia_en_el_ancla": 0.798,
+          "semiancho_ic95": 0.018048
+        },
+        {
+          "coincide": true,
+          "diferencia": 0.0,
+          "mde_publicado": 0.021502,
+          "mde_recalculado": 0.021502,
+          "n": 10,
+          "potencia_en_el_ancla": 0.8993,
+          "semiancho_ic95": 0.015443
+        },
+        {
+          "coincide": true,
+          "diferencia": 0.0,
+          "mde_publicado": 0.019184,
+          "mde_recalculado": 0.019184,
+          "n": 12,
+          "potencia_en_el_ancla": 0.9522,
+          "semiancho_ic95": 0.013716
+        },
+        {
+          "coincide": true,
+          "diferencia": 0.0,
+          "mde_publicado": 0.014258,
+          "mde_recalculado": 0.014258,
+          "n": 20,
+          "potencia_en_el_ancla": 0.9983,
+          "semiancho_ic95": 0.010103
+        },
+        {
+          "coincide": true,
+          "diferencia": 0.0,
+          "mde_publicado": 0.011425,
+          "mde_recalculado": 0.011425,
+          "n": 30,
+          "potencia_en_el_ancla": 1.0,
+          "semiancho_ic95": 0.008061
+        },
+        {
+          "coincide": true,
+          "diferencia": 0.0,
+          "mde_publicado": 0.008726,
+          "mde_recalculado": 0.008726,
+          "n": 50,
+          "potencia_en_el_ancla": 1.0,
+          "semiancho_ic95": 0.006135
+        }
+      ],
+      "sd_usada": 0.021588
+    }
+  },
+  "marca_corrida": "20261002T132340Z_p563891",
+  "metodo_del_intervalo_que_decide": "t_pareado_sobre_semillas",
+  "modo": "completo",
+  "naturaleza_del_resultado": "EXPLORATORIO",
+  "nota_tramo2": "",
+  "pre_registro": {
+    "ruta": "docs/p82_preregistro_rnn_atencion.md",
+    "sha256_declarado": "ba74ae71a3b54a273c7f0ac5d55e4d4fd7d1ede641f5fbd022c2ae6377a62061"
+  },
+  "protocolo": {
+    "clip_max_norm": 1.0,
+    "dim_oculto": 64,
+    "embedding": {
+      "claves": [
+        "W",
+        "palabras"
+      ],
+      "desviacion_tipica": 0.11604515463113785,
+      "dim": 100,
+      "n_filas": 77657
+    },
+    "max_len": 64,
+    "n_brazos": 5,
+    "n_internos": 3,
+    "n_pliegues": 5,
+    "origen_de_datos": "read_train menos el holdout",
+    "semillas": [
+      20261401,
+      20261402,
+      20261403,
+      20261404,
+      20261405,
+      20261406,
+      20261407,
+      20261408,
+      20261409,
+      20261410
+    ]
+  },
+  "regla_de_lectura": {
+    "literal_negativo": "UN_RESULTADO_NEGATIVO_AQUI_NO_AFIRMA_QUE_LA_ATENCION_NO_APORTA_AFIRMA_QUE_EL_EFECTO_ESINFERIOR_AL_LIMITE_DE_DETECCION_DE_ESTE_DISENO",
+    "literal_semillas": "DIEZ_SEMILLAS_ES_EL_MAXIMO_QUE_CABE_NO_EL_OPTIMO_ESTADISTICO",
+    "naturaleza": "EXPLORATORIO"
+  },
+  "resumen_de_naturalezas": {
+    "CONFIRMAR": {
+      "ids": [
+        "A0",
+        "A1",
+        "A10",
+        "A11",
+        "A12",
+        "A13",
+        "A14",
+        "A15",
+        "A16",
+        "A17",
+        "A18",
+        "A19",
+        "A2",
+        "A20",
+        "A21",
+        "A22",
+        "A3",
+        "A4",
+        "A5",
+        "A6",
+        "A7",
+        "A8",
+        "A9"
+      ],
+      "n": 23
+    },
+    "ERROR": {
+      "ids": [],
+      "n": 0
+    },
+    "NO_APLICABLE_POR_CONSTRUCCION": {
+      "ids": [],
+      "n": 0
+    },
+    "NO_EVALUABLE": {
+      "ids": [],
+      "n": 0
+    },
+    "REFUTAR": {
+      "ids": [],
+      "n": 0
+    }
+  },
+  "script": "experiments/p82_01_rnn_atencion.py",
+  "veredictos": {
+    "A0": {
+      "bloque": 0,
+      "estado": "CONFIRMADO",
+      "stop": true
+    },
+    "A1": {
+      "bloque": 0,
+      "estado": "CONFIRMADO",
+      "stop": true
+    },
+    "A10": {
+      "bloque": 2,
+      "estado": "CONFIRMADO",
+      "stop": true
+    },
+    "A11": {
+      "bloque": 2,
+      "estado": "CONFIRMADO",
+      "stop": true
+    },
+    "A12": {
+      "bloque": 2,
+      "estado": "CONFIRMADO",
+      "stop": true
+    },
+    "A13": {
+      "bloque": 3,
+      "estado": "CONFIRMADO",
+      "stop": true
+    },
+    "A14": {
+      "bloque": 3,
+      "estado": "CONFIRMADO",
+      "stop": true
+    },
+    "A15": {
+      "bloque": 3,
+      "estado": "CONFIRMADO",
+      "stop": true
+    },
+    "A16": {
+      "bloque": 3,
+      "estado": "CONFIRMADO",
+      "stop": false
+    },
+    "A17": {
+      "bloque": 4,
+      "estado": "CONFIRMADO",
+      "stop": false
+    },
+    "A18": {
+      "bloque": 4,
+      "estado": "CONFIRMADO",
+      "stop": true
+    },
+    "A19": {
+      "bloque": 4,
+      "estado": "CONFIRMADO",
+      "stop": true
+    },
+    "A2": {
+      "bloque": 0,
+      "estado": "CONFIRMADO",
+      "stop": true
+    },
+    "A20": {
+      "bloque": 4,
+      "estado": "CONFIRMADO",
+      "stop": true
+    },
+    "A21": {
+      "bloque": 4,
+      "estado": "CONFIRMADO",
+      "stop": false
+    },
+    "A22": {
+      "bloque": 4,
+      "estado": "CONFIRMADO",
+      "stop": true
+    },
+    "A3": {
+      "bloque": 1,
+      "estado": "CONFIRMADO",
+      "stop": true
+    },
+    "A4": {
+      "bloque": 1,
+      "estado": "CONFIRMADO",
+      "stop": true
+    },
+    "A5": {
+      "bloque": 1,
+      "estado": "CONFIRMADO",
+      "stop": true
+    },
+    "A6": {
+      "bloque": 1,
+      "estado": "CONFIRMADO",
+      "stop": true
+    },
+    "A7": {
+      "bloque": 1,
+      "estado": "CONFIRMADO",
+      "stop": true
+    },
+    "A8": {
+      "bloque": 1,
+      "estado": "CONFIRMADO",
+      "stop": false
+    },
+    "A9": {
+      "bloque": 2,
+      "estado": "CONFIRMADO",
+      "stop": true
+    }
+  }
+}

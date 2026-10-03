@@ -1,0 +1,18 @@
+magnitud,valor
+corrected_cv_V03,0.7772114525165721
+corrected_cv_B1_crudo,0.7765868373082134
+corrected_cv_U,0.7786914599722236
+delta_vs_V03,0.0014800074556514664
+pliegues_mejorados,2
+folds_U,0.794156 0.796920 0.775050 0.738598 0.789724
+alphas_por_pliegue,0.30 0.45 0.55 0.00 0.75
+rescate,17
+damage,11
+neto,6
+cambian,28
+gate_delta_superado,False
+gate_pliegues_superado,False
+gate_superado,False
+alpha_oracle_diagnostico,0.65
+delta_oracle_diagnostico,+0.0006441507
+decision,"MARGINAL. La fusion mejora la metrica pero no alcanza el gate delta >= +0,003. NO se demuestra. Bootstrap NO ejecutado"

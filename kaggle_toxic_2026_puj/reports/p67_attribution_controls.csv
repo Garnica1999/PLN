@@ -1,0 +1,23 @@
+control,clave,valor,detalle
+C-A,delta_del_reentreno_anidado_del_umbral,-0.0029731513,un escalar por etiqueta sobre 101 valores
+C-A,umbrales_reentrenados,0.3850|0.4450|0.5200,congelados: 0.44 / 0.51 / 0.46
+C-A,delta_del_residual_MI_arbol,0.0026743167,"el valor valido de P66, aqui solo como referencia"
+C-B,MI_arbol,0.0026743167,barajado -0.0014390421
+C-B,negacion,0.0011549795,barajado -0.0054335321
+C-B,word_1_3,-0.0001400584,barajado 0.0038763165
+C-B,cohesion,3.25761e-05,barajado -0.0070646241
+C-B,huecos_1_2,0.000350531,barajado -0.0064731429
+C-B,contraste,0.0,barajado -0.001787895
+C-B,huecos_6_10,-0.0028447979,barajado 0.0004009382
+C-B,candidatos_con_delta_positivo,4,de 7
+C-D,HS,0.484994,tasa base 0.401899 | rescates en banda 1.0 | fuera 0
+C-D,TR,2.505773,tasa base 0.323171 | rescates en banda 0.75 | fuera 4
+C-D,AG,1.024139,tasa base 0.400722 | rescates en banda 0.916667 | fuera 2
+C-E,MI_arbol,0.572628,dentro 0.567424 | fuera 0.579597 | var 0.833791
+C-E,negacion,0.472985,dentro 0.492127 | fuera 0.465626 | var 0.204325
+C-E,word_1_3,0.499251,dentro 0.484706 | fuera 0.504894 | var 0.146912
+C-E,cohesion,0.455979,dentro 0.45134 | fuera 0.452727 | var 0.111987
+C-E,huecos_1_2,0.516186,dentro 0.524327 | fuera 0.516491 | var 0.219333
+C-E,contraste,0.437045,dentro 0.457961 | fuera 0.432401 | var 0.080671
+C-E,huecos_6_10,0.471673,dentro 0.444546 | fuera 0.476209 | var 0.186302
+veredicto,categoria,MIXED_CON_ATRIBUCION_PARCIAL,"Los cuatro controles NO dicen lo mismo y eso es el hallazgo. El reentreno anidado de UN escalar por etiqueta da -0.0029731513, es DECISIVO: la calibracion NO explica el efecto y V03 no estaba simplemente mal calibrado en esta particion. Y el AUC del residuo de MI_arbol se mantiene fuera de la banda, en 0.579597, lo que un movimiento de frontera no puede producir. PERO la misma correccion da positivo con 4 de los 7 candidatos, luego una parte del efecto pertenece a la OPERACION y no a MI_arbol. El enriquecimiento de los rescates es 1.3383, mayor que uno, luego hay concentracion real en la banda pero no exclusiva"

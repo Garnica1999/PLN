@@ -1,0 +1,11 @@
+variable,media_train,media_test,desviacion_train,desviacion_test,delta,ic95_bajo,ic95_alto,desplazamiento_significativo
+n_caracteres,104.3125,101.7184,59.9223,56.4698,-2.5942,-6.9861,1.5566,False
+n_tokens,18.2224,17.682,10.5759,9.9368,-0.5404,-1.3057,0.1803,False
+longitud_media_palabra,4.7387,4.7973,1.0264,1.0456,0.0586,-0.0208,0.1391,False
+entropia_tokens,4.2268,4.1435,1.1617,1.146,-0.0834,-0.1645,0.0039,False
+densidad_url,0.0188,0.0181,0.0334,0.0336,-0.0007,-0.0032,0.0018,False
+densidad_mencion,0.0594,0.0612,0.0927,0.1016,0.0017,-0.0052,0.0094,False
+densidad_hashtag,0.0085,0.0167,0.0412,0.0867,0.0082,0.0031,0.0138,True
+proporcion_out_of_vocabulario,0.0,0.2082,0.0,0.1258,0.2082,0.2012,0.2159,True
+proporcion_mayusculas,0.1033,0.1033,0.1622,0.168,0.0,-0.0119,0.0127,False
+proporcion_no_alfanumerico,0.0452,0.0459,0.0408,0.0443,0.0007,-0.0024,0.004,False

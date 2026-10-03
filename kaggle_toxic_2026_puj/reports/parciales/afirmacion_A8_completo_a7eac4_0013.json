@@ -1,0 +1,152 @@
+{
+  "marca_corrida": "completo_a7eac4",
+  "resultado": {
+    "bloque": 8,
+    "coste_segundos": 3.4e-05,
+    "descripcion": "las seis magnitudes de la pregunta 1 medidas y publicadas",
+    "detalle": {
+      "cifras_por_brazo": {
+        "M1": {
+          "brier_macro": 0.14167180615398664,
+          "brier_por_etiqueta": {
+            "AG": 0.15654787896486652,
+            "HS": 0.16737546344043328,
+            "TR": 0.10109207605666011
+          },
+          "ece_macro": 0.031658918536293115,
+          "log_loss_macro": 0.4432757507690348,
+          "log_loss_sin_recortar": 0.4432757507690348,
+          "n_filas_medidas": 1483,
+          "pendientes": 0.9736575454733568
+        },
+        "M2": {
+          "brier_macro": 0.14880603089223432,
+          "brier_por_etiqueta": {
+            "AG": 0.1653176573817833,
+            "HS": 0.17581182666905174,
+            "TR": 0.1052886086258679
+          },
+          "ece_macro": 0.032623222871789544,
+          "log_loss_macro": 0.45992445512665364,
+          "log_loss_sin_recortar": 0.45992445512665364,
+          "n_filas_medidas": 1483,
+          "pendientes": 0.9439487062939853
+        }
+      },
+      "comparacion_contra_el_liston": {
+        "M1": {
+          "deltas_contra_el_liston": {
+            "brier_macro": 0.019217478331500518,
+            "ece_macro": 0.003662077360342214,
+            "log_loss_macro": 0.05226661441582686
+          },
+          "dentro_de_su_margen": {
+            "brier_macro": false,
+            "ece_macro": true,
+            "log_loss_macro": false
+          },
+          "direccion": "el margen de 1.3 es de NO INFERIORIDAD, luego solo el lado desfavorable se penaliza y estar mejor que el liston no es un fallo",
+          "faltan": [],
+          "lectura": "NEGATIVO",
+          "magnitudes": [
+            "log_loss_macro",
+            "brier_macro",
+            "ece_macro"
+          ],
+          "margenes": {
+            "brier_macro": 0.0015,
+            "ece_macro": 0.01,
+            "log_loss_macro": 0.005
+          },
+          "que_no_se_afirma": "que el bayesiano supere a V03 en calibracion, ni que su margen sea superior; V03 remains the best verified leaderboard result."
+        },
+        "M2": {
+          "deltas_contra_el_liston": {
+            "brier_macro": 0.026351703069748197,
+            "ece_macro": 0.0046263816958386425,
+            "log_loss_macro": 0.0689153187734457
+          },
+          "dentro_de_su_margen": {
+            "brier_macro": false,
+            "ece_macro": true,
+            "log_loss_macro": false
+          },
+          "direccion": "el margen de 1.3 es de NO INFERIORIDAD, luego solo el lado desfavorable se penaliza y estar mejor que el liston no es un fallo",
+          "faltan": [],
+          "lectura": "NEGATIVO",
+          "magnitudes": [
+            "log_loss_macro",
+            "brier_macro",
+            "ece_macro"
+          ],
+          "margenes": {
+            "brier_macro": 0.0015,
+            "ece_macro": 0.01,
+            "log_loss_macro": 0.005
+          },
+          "que_no_se_afirma": "que el bayesiano supere a V03 en calibracion, ni que su margen sea superior; V03 remains the best verified leaderboard result."
+        }
+      },
+      "comprobaciones": {
+        "existe_M1_brier_macro": true,
+        "existe_M1_brier_por_etiqueta": true,
+        "existe_M1_ece_macro": true,
+        "existe_M1_log_loss_macro": true,
+        "existe_M1_log_loss_sin_recortar": true,
+        "existe_M1_pendientes": true,
+        "existe_M2_brier_macro": true,
+        "existe_M2_brier_por_etiqueta": true,
+        "existe_M2_ece_macro": true,
+        "existe_M2_log_loss_macro": true,
+        "existe_M2_log_loss_sin_recortar": true,
+        "existe_M2_pendientes": true,
+        "los_dos_brazos_estan_medidos": true,
+        "ninguna_magnitud_es_nan": true,
+        "ninguna_magnitud_falta": true
+      },
+      "con_nan": [],
+      "etiqueta_del_f1": "DESCRIPTIVA_Y_SIN_CUALQUIER_LECTURA_INFERENCIAL",
+      "faltantes": [],
+      "liston_v03_cal": {
+        "brier_diferencia": 6.7217751387183e-07,
+        "brier_macro": 0.12245432782248612,
+        "brier_publicado": 0.122455,
+        "ece_macro": 0.0279968411759509,
+        "log_loss_diferencia": 1.363532079468044e-07,
+        "log_loss_macro": 0.39100913635320794,
+        "log_loss_macro_recortado": 0.39100913635320794,
+        "log_loss_publicado": 0.391009,
+        "origen": "pares de Platt CONGELADOS de reports/p76_calibracion.json aplicados al OOF canonico, sin reejecutar P76",
+        "pendientes": {
+          "AG": 0.9741544369500666,
+          "HS": 0.9965694564628117,
+          "TR": 0.9989420790784712
+        },
+        "pendientes_maxima_diferencia": 4.5646281165989677e-07,
+        "pendientes_publicadas": {
+          "AG": 0.974154,
+          "HS": 0.996569,
+          "TR": 0.998942
+        },
+        "reproducido_dentro_de_tolerancia": true,
+        "tolerancia": 5e-06
+      },
+      "magnitudes": [
+        "log_loss_macro",
+        "log_loss_sin_recortar",
+        "brier_macro",
+        "brier_por_etiqueta",
+        "ece_macro",
+        "pendientes"
+      ],
+      "tolerancia": "seis decimales; no hay cota de exito numerico, lo que falla es la medicion"
+    },
+    "estado": "CONFIRMADO",
+    "exito": true,
+    "id": "A8",
+    "naturaleza": "CONFIRMAR",
+    "stop": false,
+    "tolerancia": "seis magnitudes por brazo, sin NaN, y no inferioridad contra el liston por margen",
+    "traza": ""
+  }
+}

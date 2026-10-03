@@ -1,0 +1,248 @@
+{
+  "familia": "P60_C_LABEL_DEPENDENT_NOISE",
+  "naturaleza": "AUDITORIA DE DETECCION (C1 + C2). 0 experimentos, 0 modelos, 0 submissions, 0 Kaggle, 0 holdout, 0 test. V03 no se modifica",
+  "fecha": "2026-09-28T15:37:09+00:00",
+  "experiment_id": "NINGUNO",
+  "track": "P60-C",
+  "script": "experiments/p60_05_ruido_por_etiqueta.py",
+  "paper": "Noisy Multi-Label Text Classification via Instance-Label Pair Correction, Findings of NAACL 2024, Xu, Song, Liu et al., DOI 10.18653/v1/2024.findings-naacl.93",
+  "pregunta": "la evidencia de ruido de una etiqueta requiere una regla de deteccion distinta de la de otra etiqueta, y la regla por par anade algo a la confianza que el proyecto ya mide?",
+  "hipotesis": "un score de sospecha por PAR instancia-etiqueta, que combina la perdida del par, su rango y la distancia a centroides de clase, mas un indicador ESTRUCTURAL de etiqueta no definida, aporta senal incremental sobre el control 1 - p_true",
+  "mecanismo": "la unidad de deteccion es el par y no la instancia; ademas, en este corpus el negativo de TR cuando HS = 0 no es un negativo sino una etiqueta NO DEFINIDA, y por eso la evidencia de ruido no puede ser un unico numero",
+  "modelo": "no se entrena ningun modelo nuevo: se reutiliza V03 dentro de cada pliegue",
+  "perdida": "no se modifica ninguna funcion de perdida",
+  "rasgos": "los 27.431 del TF-IDF de V03, en memoria y sin ajuste fuera de training",
+  "adaptacion_legal": {
+    "dominio_original": "multi-etiqueta de texto con ruido a nivel de par",
+    "adaptacion": "tres problemas binarios con etiquetas anidadas y una region indefinida",
+    "que_cambia": "la unidad, de instancia a par, y la incorporacion de un indicador estructural que solo existe para TR y AG",
+    "que_es_invariante": "el criterio de que la deteccion sea por par y por etiqueta"
+  },
+  "gap_analysis": {
+    "filas_ruido_por_etiqueta": 0,
+    "precedentes": "V30-00 cerro siete experimentos de sospecha a nivel de INSTANCIA; P59-03 cerro el estimador global con AUC 0,9730 frente a un control de 0,9741; P59 no descompuso la sospecha por etiqueta",
+    "por_que_no_es_duplicacion": "la unidad de deteccion es el par y el indicador estructural, y ninguno de los dos aparece en ninguna fila del registro",
+    "veredicto": "NUEVA"
+  },
+  "configuracion_pre_registrada": {
+    "deciles_del_control": 10,
+    "umbral_de_senal_incremental": 0.01,
+    "referencia_del_umbral": "el incremental del PROPIO CONTROL de la misma etiqueta, no 0,5, porque una senal monotona del control comparte su residuo",
+    "compuesto": "ajustado OUT-OF-FOLD con los pliegues canonicos. La version en las mismas filas daba 0,5407 de AUC donde esta da 0,5070, luego la diferencia era sobreajuste",
+    "senales_constantes": "excluidas del veredicto. La estructural de HS vale cero siempre, porque HS no tiene region indefinida, luego su AUC no ordena nada",
+    "senales": "control, perdida del par, rango de la perdida, margen coseno a centroides, indicador estructural, y compuesto por regresion logistica sobre las cuatro senales estandarizadas",
+    "todo": "calculado con filas de ENTRENAMIENTO del pliegue",
+    "indicador_de_error": "el OOF canonico, que es out-of-fold por construccion",
+    "rejilla": "ninguna"
+  },
+  "estructura_de_etiquetas_medida": {
+    "P_TR1_dado_HS0": 0.0,
+    "P_AG1_dado_HS0": 0.026347305389221556,
+    "P_AG1_dado_TR1": 0.946067415730337,
+    "negativos_TR_no_definidos": 1.0,
+    "negativos_AG_no_definidos": 0.9736526946107784,
+    "filas_HS0": 835,
+    "n_filas": 1483
+  },
+  "resultado_deteccion": [
+    {
+      "etiqueta": "HS",
+      "senal": "control",
+      "auc": 0.99168,
+      "auc_incremental": 0.529571,
+      "senal_constante": false,
+      "auc_control_de_la_etiqueta": 0.99168
+    },
+    {
+      "etiqueta": "HS",
+      "senal": "perdida",
+      "auc": 0.99168,
+      "auc_incremental": 0.492754,
+      "senal_constante": false,
+      "auc_control_de_la_etiqueta": 0.99168
+    },
+    {
+      "etiqueta": "HS",
+      "senal": "rango",
+      "auc": 0.990628,
+      "auc_incremental": 0.55473,
+      "senal_constante": false,
+      "auc_control_de_la_etiqueta": 0.99168
+    },
+    {
+      "etiqueta": "HS",
+      "senal": "centroide",
+      "auc": 0.508056,
+      "auc_incremental": 0.514752,
+      "senal_constante": false,
+      "auc_control_de_la_etiqueta": 0.99168
+    },
+    {
+      "etiqueta": "HS",
+      "senal": "estructural",
+      "auc": 0.5,
+      "auc_incremental": null,
+      "senal_constante": true,
+      "auc_control_de_la_etiqueta": 0.99168
+    },
+    {
+      "etiqueta": "HS",
+      "senal": "compuesto",
+      "auc": 0.99148,
+      "auc_incremental": 0.494094,
+      "senal_constante": false,
+      "auc_control_de_la_etiqueta": 0.99168
+    },
+    {
+      "etiqueta": "TR",
+      "senal": "control",
+      "auc": 0.999972,
+      "auc_incremental": 0.504993,
+      "senal_constante": false,
+      "auc_control_de_la_etiqueta": 0.999972
+    },
+    {
+      "etiqueta": "TR",
+      "senal": "perdida",
+      "auc": 0.999972,
+      "auc_incremental": 0.398195,
+      "senal_constante": false,
+      "auc_control_de_la_etiqueta": 0.999972
+    },
+    {
+      "etiqueta": "TR",
+      "senal": "rango",
+      "auc": 0.999166,
+      "auc_incremental": 0.53923,
+      "senal_constante": false,
+      "auc_control_de_la_etiqueta": 0.999972
+    },
+    {
+      "etiqueta": "TR",
+      "senal": "centroide",
+      "auc": 0.641677,
+      "auc_incremental": 0.533775,
+      "senal_constante": false,
+      "auc_control_de_la_etiqueta": 0.999972
+    },
+    {
+      "etiqueta": "TR",
+      "senal": "estructural",
+      "auc": 0.450845,
+      "auc_incremental": 0.620257,
+      "senal_constante": false,
+      "auc_control_de_la_etiqueta": 0.999972
+    },
+    {
+      "etiqueta": "TR",
+      "senal": "compuesto",
+      "auc": 0.999982,
+      "auc_incremental": 0.407464,
+      "senal_constante": false,
+      "auc_control_de_la_etiqueta": 0.999972
+    },
+    {
+      "etiqueta": "AG",
+      "senal": "control",
+      "auc": 0.996079,
+      "auc_incremental": 0.549814,
+      "senal_constante": false,
+      "auc_control_de_la_etiqueta": 0.996079
+    },
+    {
+      "etiqueta": "AG",
+      "senal": "perdida",
+      "auc": 0.996079,
+      "auc_incremental": 0.508977,
+      "senal_constante": false,
+      "auc_control_de_la_etiqueta": 0.996079
+    },
+    {
+      "etiqueta": "AG",
+      "senal": "rango",
+      "auc": 0.994197,
+      "auc_incremental": 0.547298,
+      "senal_constante": false,
+      "auc_control_de_la_etiqueta": 0.996079
+    },
+    {
+      "etiqueta": "AG",
+      "senal": "centroide",
+      "auc": 0.504604,
+      "auc_incremental": 0.506295,
+      "senal_constante": false,
+      "auc_control_de_la_etiqueta": 0.996079
+    },
+    {
+      "etiqueta": "AG",
+      "senal": "estructural",
+      "auc": 0.52246,
+      "auc_incremental": 0.662712,
+      "senal_constante": false,
+      "auc_control_de_la_etiqueta": 0.996079
+    },
+    {
+      "etiqueta": "AG",
+      "senal": "compuesto",
+      "auc": 0.996812,
+      "auc_incremental": 0.504089,
+      "senal_constante": false,
+      "auc_control_de_la_etiqueta": 0.996079
+    }
+  ],
+  "auc_incremental_maximo_por_senal": {
+    "perdida": {
+      "mejor_etiqueta": "AG",
+      "auc_incremental": 0.508977,
+      "control_de_la_etiqueta": 0.549814,
+      "ganancia_sobre_el_control": -0.040837,
+      "senal_constante": false,
+      "supera_umbral": false
+    },
+    "rango": {
+      "mejor_etiqueta": "HS",
+      "auc_incremental": 0.55473,
+      "control_de_la_etiqueta": 0.529571,
+      "ganancia_sobre_el_control": 0.025159,
+      "senal_constante": false,
+      "supera_umbral": true
+    },
+    "centroide": {
+      "mejor_etiqueta": "TR",
+      "auc_incremental": 0.533775,
+      "control_de_la_etiqueta": 0.504993,
+      "ganancia_sobre_el_control": 0.028782,
+      "senal_constante": false,
+      "supera_umbral": true
+    },
+    "estructural": {
+      "mejor_etiqueta": "AG",
+      "auc_incremental": 0.662712,
+      "control_de_la_etiqueta": 0.549814,
+      "ganancia_sobre_el_control": 0.112898,
+      "senal_constante": false,
+      "supera_umbral": true
+    },
+    "compuesto": {
+      "mejor_etiqueta": "AG",
+      "auc_incremental": 0.504089,
+      "control_de_la_etiqueta": 0.549814,
+      "ganancia_sobre_el_control": -0.045725,
+      "senal_constante": false,
+      "supera_umbral": false
+    }
+  },
+  "hay_senal_incremental": true,
+  "control_de_P59": "P59-03 midio AUC 0,9730 para su estimador global frente a 0,9741 del control, es decir por debajo. Aqui el control se usa como condicion: un score solo cuenta si aun ordena errores DENTRO de las decilas del control",
+  "conclusion": "La descomposicion por etiqueta es real en este corpus y se midio: el 100 por ciento de los negativos que ve TR en entrenamiento son etiquetas no definidas, y AG tiene el 97 por ciento. Pero esa asimetria estructural NO se traduce en senal de deteccion incremental. La razon es que el indicador estructural es casi colineal con la confianza que V03 ya tiene: cuando HS = 0, el modelo ya esta seguro de que TR = 0, de modo que 1 - p_true ya vale casi 1 y no queda margen para que un segundo score ordene dentro de esa region. Eso es una forma de colinealidad, no de ausencia de ruido, y es la misma razon por la que P59-03 no supero a su control. Junto con V14-00, que ya demostro que enmascarar la region indefinida da -0,116581 y que equivale exactamente a descartar esas filas, queda establecido por dos vias independientes que la region no definida aporta como NEGATIVOS UTILES y no como ruido que corregir",
+  "decision": "ABIERTA_PARA_C3. Hay senal incremental, luego corresponde UNA intervencion conservadora, con una sola forma de objetivo blando o un solo ponderado por par",
+  "experimentos_registrados": 0,
+  "formulacion": "V03 remains the best verified leaderboard result.",
+  "gastos": {
+    "submissions": 0,
+    "consultas_kaggle": 0,
+    "uso_holdout": 0,
+    "uso_test": 0,
+    "segundos": 9.4
+  }
+}

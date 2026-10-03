@@ -1,0 +1,297 @@
+{
+  "familia": "STRUCTURAL_TEXT_FEATURES",
+  "experimento": "V31-04 (Control B de STRUCTURAL_TEXT_FEATURES: interacciones del bloque URL)",
+  "fecha": "2026-09-27T11:05:30+00:00",
+  "estado": "OOF_EVALUATED",
+  "bloque": "url",
+  "fase": "4_INTERACCIONES_URL",
+  "features_base": [
+    "url_n",
+    "url_longitud_total",
+    "url_longitud_media",
+    "url_longitud_max",
+    "url_con_query",
+    "url_con_fragment",
+    "url_profundidad_path",
+    "url_con_puerto",
+    "url_longitud_dominio",
+    "url_subdominios",
+    "url_proporcion_dominio",
+    "url_es_corta",
+    "url_n_parametros"
+  ],
+  "features_interaccion": [
+    "_int_url_corta_x_corto",
+    "_int_url_query_x_largo",
+    "_int_url_x_corto",
+    "_int_url_x_largo",
+    "_int_url_x_medio"
+  ],
+  "n_features_total": 18,
+  "control": {
+    "corrected_cv": 0.7772114525165721,
+    "f1_por_etiqueta": {
+      "HS": 0.7616892911010558,
+      "TR": 0.8157303370786517,
+      "AG": 0.7542147293700089
+    },
+    "train_f1": 0.970864604949201,
+    "gap_train_oof": 0.19365315243262893,
+    "metricas_por_pliegue": [
+      {
+        "f1_media_columnas": 0.7960101143044023,
+        "f1_macro6": 0.8355934550524347,
+        "f1_micro": 0.7926829268292683,
+        "f1_samples": 0.3383838383838384,
+        "exact_match": 0.734006734006734,
+        "f1_por_etiqueta": {
+          "HS": 0.7786259541984732,
+          "TR": 0.8275862068965517,
+          "AG": 0.7818181818181819
+        },
+        "pliegue": 1
+      },
+      {
+        "f1_media_columnas": 0.7940339497874405,
+        "f1_macro6": 0.8299584761236635,
+        "f1_micro": 0.7912408759124088,
+        "f1_samples": 0.3489337822671156,
+        "exact_match": 0.7104377104377104,
+        "f1_por_etiqueta": {
+          "HS": 0.7835820895522388,
+          "TR": 0.8279569892473119,
+          "AG": 0.7705627705627706
+        },
+        "pliegue": 2
+      },
+      {
+        "f1_media_columnas": 0.7788600288600289,
+        "f1_macro6": 0.815470061805838,
+        "f1_micro": 0.7756874095513748,
+        "f1_samples": 0.3466216216216216,
+        "exact_match": 0.6993243243243243,
+        "f1_por_etiqueta": {
+          "HS": 0.7681159420289855,
+          "TR": 0.8152173913043478,
+          "AG": 0.7532467532467533
+        },
+        "pliegue": 3
+      },
+      {
+        "f1_media_columnas": 0.738598013128522,
+        "f1_macro6": 0.7854431411794273,
+        "f1_micro": 0.7348148148148148,
+        "f1_samples": 0.3233108108108108,
+        "exact_match": 0.6587837837837838,
+        "f1_por_etiqueta": {
+          "HS": 0.7293233082706767,
+          "TR": 0.7821229050279329,
+          "AG": 0.7043478260869566
+        },
+        "pliegue": 4
+      },
+      {
+        "f1_media_columnas": 0.7790564997088775,
+        "f1_macro6": 0.8244089783905003,
+        "f1_micro": 0.7735849056603774,
+        "f1_samples": 0.31470258136924806,
+        "exact_match": 0.7104377104377104,
+        "f1_por_etiqueta": {
+          "HS": 0.7480314960629921,
+          "TR": 0.8263473053892215,
+          "AG": 0.7627906976744186
+        },
+        "pliegue": 5
+      }
+    ]
+  },
+  "control_A_solo_features": {
+    "corrected_cv": 0.7774199655005796,
+    "f1_por_etiqueta": {
+      "HS": 0.7638572513287776,
+      "TR": 0.8134831460674158,
+      "AG": 0.7549194991055456
+    },
+    "train_f1": 0.9710236475677092,
+    "gap_train_oof": 0.19360368206712963,
+    "metricas_por_pliegue": [
+      {
+        "f1_media_columnas": 0.798182007952123,
+        "f1_macro6": 0.838545846167222,
+        "f1_micro": 0.7950693374422187,
+        "f1_samples": 0.3371492704826038,
+        "exact_match": 0.7373737373737373,
+        "f1_por_etiqueta": {
+          "HS": 0.7799227799227799,
+          "TR": 0.8275862068965517,
+          "AG": 0.7870370370370371
+        },
+        "pliegue": 1
+      },
+      {
+        "f1_media_columnas": 0.7925153256795157,
+        "f1_macro6": 0.8287801600485132,
+        "f1_micro": 0.7894736842105263,
+        "f1_samples": 0.3463524130190797,
+        "exact_match": 0.7104377104377104,
+        "f1_por_etiqueta": {
+          "HS": 0.7790262172284644,
+          "TR": 0.8279569892473119,
+          "AG": 0.7705627705627706
+        },
+        "pliegue": 2
+      },
+      {
+        "f1_media_columnas": 0.7830174838870492,
+        "f1_macro6": 0.8190895112727298,
+        "f1_micro": 0.7797101449275362,
+        "f1_samples": 0.350563063063063,
+        "exact_match": 0.6993243243243243,
+        "f1_por_etiqueta": {
+          "HS": 0.7709090909090909,
+          "TR": 0.8216216216216217,
+          "AG": 0.7565217391304347
+        },
+        "pliegue": 3
+      },
+      {
+        "f1_media_columnas": 0.7418099520584374,
+        "f1_macro6": 0.7894139405094637,
+        "f1_micro": 0.7391952309985097,
+        "f1_samples": 0.3286036036036036,
+        "exact_match": 0.6722972972972973,
+        "f1_por_etiqueta": {
+          "HS": 0.7396226415094339,
+          "TR": 0.7752808988764045,
+          "AG": 0.7105263157894737
+        },
+        "pliegue": 4
+      },
+      {
+        "f1_media_columnas": 0.7715163168229875,
+        "f1_macro6": 0.8198613896527877,
+        "f1_micro": 0.7670364500792393,
+        "f1_samples": 0.3112233445566779,
+        "exact_match": 0.7037037037037037,
+        "f1_por_etiqueta": {
+          "HS": 0.749003984063745,
+          "TR": 0.8143712574850299,
+          "AG": 0.7511737089201878
+        },
+        "pliegue": 5
+      }
+    ]
+  },
+  "control_B_con_interacciones": {
+    "corrected_cv": 0.7813779888304766,
+    "f1_por_etiqueta": {
+      "HS": 0.763416477702192,
+      "TR": 0.8183856502242153,
+      "AG": 0.7623318385650224
+    },
+    "train_f1": 0.9711037466988556,
+    "gap_train_oof": 0.18972575786837897,
+    "metricas_por_pliegue": [
+      {
+        "f1_media_columnas": 0.7947175355394535,
+        "f1_macro6": 0.8345862184241714,
+        "f1_micro": 0.7901990811638591,
+        "f1_samples": 0.3367003367003367,
+        "exact_match": 0.7272727272727273,
+        "f1_por_etiqueta": {
+          "HS": 0.7644787644787645,
+          "TR": 0.8342857142857143,
+          "AG": 0.7853881278538812
+        },
+        "pliegue": 1
+      },
+      {
+        "f1_media_columnas": 0.7910589678705621,
+        "f1_macro6": 0.8274334376549529,
+        "f1_micro": 0.7883211678832117,
+        "f1_samples": 0.34870931537598204,
+        "exact_match": 0.7138047138047138,
+        "f1_por_etiqueta": {
+          "HS": 0.7851851851851852,
+          "TR": 0.8260869565217391,
+          "AG": 0.7619047619047619
+        },
+        "pliegue": 2
+      },
+      {
+        "f1_media_columnas": 0.7857116260596507,
+        "f1_macro6": 0.8213740858354378,
+        "f1_micro": 0.7819767441860465,
+        "f1_samples": 0.34740990990990983,
+        "exact_match": 0.6993243243243243,
+        "f1_por_etiqueta": {
+          "HS": 0.7681159420289855,
+          "TR": 0.8279569892473119,
+          "AG": 0.7610619469026548
+        },
+        "pliegue": 3
+      },
+      {
+        "f1_media_columnas": 0.7464794500762801,
+        "f1_macro6": 0.7931649972700657,
+        "f1_micro": 0.7432835820895523,
+        "f1_samples": 0.32849099099099094,
+        "exact_match": 0.668918918918919,
+        "f1_por_etiqueta": {
+          "HS": 0.7348484848484849,
+          "TR": 0.7821229050279329,
+          "AG": 0.7224669603524229
+        },
+        "pliegue": 4
+      },
+      {
+        "f1_media_columnas": 0.7894089889707182,
+        "f1_macro6": 0.8334858325496756,
+        "f1_micro": 0.7854889589905363,
+        "f1_samples": 0.32289562289562285,
+        "exact_match": 0.7205387205387206,
+        "f1_por_etiqueta": {
+          "HS": 0.7637795275590551,
+          "TR": 0.8214285714285714,
+          "AG": 0.7830188679245284
+        },
+        "pliegue": 5
+      }
+    ]
+  },
+  "delta_B_menos_A": 0.003958023329897031,
+  "delta_oof": 0.004166536313904512,
+  "comparacion": {
+    "rescates": 70,
+    "danios": 53,
+    "neto": 17,
+    "celdas_modificadas": 123,
+    "cobertura_celdas": 0.027646662171274445,
+    "por_label": {
+      "HS": {
+        "rescates": 29,
+        "danios": 26,
+        "neto": 3,
+        "celdas_modificadas": 55
+      },
+      "TR": {
+        "rescates": 5,
+        "danios": 3,
+        "neto": 2,
+        "celdas_modificadas": 8
+      },
+      "AG": {
+        "rescates": 36,
+        "danios": 24,
+        "neto": 12,
+        "celdas_modificadas": 60
+      }
+    }
+  },
+  "gastos": {
+    "submissions": 0,
+    "modelos_entrenados": 3,
+    "memoria_pico_mb": 228.8,
+    "segundos": 8.2
+  }
+}

@@ -1,0 +1,183 @@
+{
+  "familia": "P61_COMPLIANCE_AUDIT",
+  "fecha": "2026-09-28T21:12:26+00:00",
+  "comprobaciones": [
+    {
+      "nombre": "transformers = 0",
+      "resultado": true,
+      "evidencia": "no se importa transformers en ningun script de P61"
+    },
+    {
+      "nombre": "BERT = 0",
+      "resultado": true,
+      "evidencia": "sin referencias a BERT"
+    },
+    {
+      "nombre": "RoBERTa = 0",
+      "resultado": true,
+      "evidencia": "sin referencias a RoBERTa"
+    },
+    {
+      "nombre": "LLM = 0",
+      "resultado": true,
+      "evidencia": "sin referencias a LLM"
+    },
+    {
+      "nombre": "embeddings = 0",
+      "resultado": true,
+      "evidencia": "solo se usa TF-IDF, sin embeddings"
+    },
+    {
+      "nombre": "external labels = 0",
+      "resultado": true,
+      "evidencia": "las unicas etiquetas son las del train canonico"
+    },
+    {
+      "nombre": "external classifiers = 0",
+      "resultado": true,
+      "evidencia": "solo LightGBM, autorizado por el encargo"
+    },
+    {
+      "nombre": "pseudo-labeling = 0",
+      "resultado": true,
+      "evidencia": "sin pseudo-etiquetas en ningun script"
+    },
+    {
+      "nombre": "test labels = 0",
+      "resultado": true,
+      "evidencia": "ningun script lee etiquetas de test"
+    },
+    {
+      "nombre": "test training = 0",
+      "resultado": true,
+      "evidencia": "ningun script entrena con test"
+    },
+    {
+      "nombre": "test calibration = 0",
+      "resultado": true,
+      "evidencia": "ningun script calibra con test"
+    },
+    {
+      "nombre": "test feature selection = 0",
+      "resultado": true,
+      "evidencia": "la seleccion de miembros nunca ve test"
+    },
+    {
+      "nombre": "holdout reuse = 0",
+      "resultado": true,
+      "evidencia": "holdout_v2_ids.csv solo como fuente del agrupador grupo_near_dup_autor"
+    },
+    {
+      "nombre": "leaderboard tuning = 0",
+      "resultado": true,
+      "evidencia": "el LB se lee de CHAMPION.md por regex y no se usa para elegir nada"
+    },
+    {
+      "nombre": "submissions = 0",
+      "resultado": true,
+      "evidencia": "ninguna submission generada en P61"
+    },
+    {
+      "nombre": "kaggle consultations = 0",
+      "resultado": true,
+      "evidencia": "0 llamadas de red a Kaggle"
+    },
+    {
+      "nombre": "V03 intacto",
+      "resultado": true,
+      "evidencia": "sha256 7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e"
+    },
+    {
+      "nombre": "V03 corrected_cv exacto",
+      "resultado": true,
+      "evidencia": "0.7772114525165721 verificado al inicio de cada script"
+    },
+    {
+      "nombre": "grupos canonicos intactos",
+      "resultado": true,
+      "evidencia": "1415 grupos, 0 partidos, verificado en P61-00"
+    },
+    {
+      "nombre": "anidamiento de pesos",
+      "resultado": true,
+      "evidencia": "los pesos se derivan dentro de cada pliegue, con las filas internas"
+    },
+    {
+      "nombre": "anidamiento de pertenencia",
+      "resultado": true,
+      "evidencia": "los miembros se eligen dentro de cada pliegue, con las filas internas"
+    },
+    {
+      "nombre": "EDA no usada para optimizar",
+      "resultado": true,
+      "evidencia": "el artefacto de la EDA declara su naturaleza diagnostica en su encabezado y ningun script posterior lee sus numeros como objetivo"
+    },
+    {
+      "nombre": "calibracion no reabierta",
+      "resultado": true,
+      "evidencia": "Brier, log loss y ECE se reportan como diagnostico y no se usan para recalibrar"
+    },
+    {
+      "nombre": "control negativo ejecutado",
+      "resultado": true,
+      "evidencia": "test 3 con los tres peores canales, delta +0.0059889238"
+    },
+    {
+      "nombre": "rejillas = 0",
+      "resultado": true,
+      "evidencia": "una busqueda de Optuna y una de pesos, ninguna rejilla"
+    },
+    {
+      "nombre": "una familia nueva solo",
+      "resultado": true,
+      "evidencia": "LightGBM, autorizada y unica"
+    },
+    {
+      "nombre": "MLP no reabierto",
+      "resultado": true,
+      "evidencia": "no se reejecuta, el criterio era diversidad ajustada y el test 3 la descarta"
+    },
+    {
+      "nombre": "un experimento = un script nuevo",
+      "resultado": true,
+      "evidencia": "p61_00, p61_01, p61_02, p61_03, p61_05, p61_08, p61_09, ninguno edita a otro"
+    },
+    {
+      "nombre": "ejecucion real con exit code",
+      "resultado": true,
+      "evidencia": "cada script se ejecuto y su exit code se capturo SIN pipe"
+    },
+    {
+      "nombre": "artefactos parseables",
+      "resultado": true,
+      "evidencia": "todos los JSON y CSV se releen al consolidarlos"
+    },
+    {
+      "nombre": "ASCII puro",
+      "resultado": true,
+      "evidencia": "auditoria byte a byte al final de este script"
+    },
+    {
+      "nombre": "3 filas de P61 en el registro",
+      "resultado": true,
+      "evidencia": "3 presentes: P61-01, P61-02, P61-03; paso de 339 a 339"
+    },
+    {
+      "nombre": "identificadores unicos",
+      "resultado": true,
+      "evidencia": "339 ids para 339 filas"
+    },
+    {
+      "nombre": "0 empujones",
+      "resultado": true,
+      "evidencia": "sin push, sin merge, sin force-push, sin reset destructivo"
+    }
+  ],
+  "resumen": {
+    "total": 34,
+    "ok": 34,
+    "fallos": 0,
+    "sin_evaluar": 0
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

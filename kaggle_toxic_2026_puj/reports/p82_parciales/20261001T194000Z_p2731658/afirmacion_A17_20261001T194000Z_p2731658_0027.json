@@ -1,0 +1,80 @@
+{
+  "marca_corrida": "20261001T194000Z_p2731658",
+  "resultado": {
+    "bloque": 4,
+    "coste_segundos": 2.8e-05,
+    "descripcion": "interseccion y rescue damage net contra V03 sobre OOF",
+    "detalle": {
+      "alineado_con_el_desarrollo": true,
+      "cifras": {
+        "AG": {
+          "aciertos_comunes": 1206,
+          "auc_probabilidad_brazo_como_predictor_de_error_de_v03": 0.5095670863492406,
+          "dano": 241,
+          "neto": -126,
+          "rescate": 115,
+          "tasa_dano": 0.1998341625207297,
+          "tasa_rescate": 0.09535655058043117
+        },
+        "HS": {
+          "aciertos_comunes": 1167,
+          "auc_probabilidad_brazo_como_predictor_de_error_de_v03": 0.4997613701691017,
+          "dano": 308,
+          "neto": -160,
+          "rescate": 148,
+          "tasa_dano": 0.2639245929734362,
+          "tasa_rescate": 0.1268209083119109
+        },
+        "TR": {
+          "aciertos_comunes": 1319,
+          "auc_probabilidad_brazo_como_predictor_de_error_de_v03": 0.6150261654246565,
+          "dano": 156,
+          "neto": -94,
+          "rescate": 62,
+          "tasa_dano": 0.11827141774071266,
+          "tasa_rescate": 0.04700530705079606
+        },
+        "naturaleza": "DESCRIPTIVO_NO_COMPARABLE_CON_CORRECTED_CV",
+        "oof_de_v03_alineado_con_el_desarrollo": true,
+        "semilla_de_referencia": 20261401,
+        "unidades_tweet_etiqueta": 4449
+      },
+      "comprobaciones": {
+        "el_neto_por_etiqueta_es_un_entero_que_puede_ser_negativo": true,
+        "la_lectura_del_signo_del_neto_queda_publicada": true,
+        "las_tres_etiquetas_publicadas": true,
+        "los_tres_recuentos_por_etiqueta_son_enteros_y_no_negativos": true,
+        "ninguna_cifra_ausente": true,
+        "unidades_declaradas": true
+      },
+      "faltan": [],
+      "signo_del_neto": {
+        "branco_detracta": true,
+        "el_neto_es_negativo_por_etiqueta": {
+          "AG": true,
+          "HS": true,
+          "TR": true
+        },
+        "el_neto_negativo_en": [
+          "AG",
+          "HS",
+          "TR"
+        ],
+        "el_signo_del_neto_por_etiqueta": {
+          "AG": -126,
+          "HS": -160,
+          "TR": -94
+        },
+        "lectura": "un neto negativo significa que el brazo hace MAS DANO que rescate frente a V03, es decir que detracta en vez de aportar; no es un error de las cifras",
+        "suma_de_netos": -380
+      }
+    },
+    "estado": "CONFIRMADO",
+    "exito": true,
+    "id": "A17",
+    "naturaleza": "CONFIRMAR",
+    "stop": false,
+    "tolerancia": "enteros exactos para los recuentos, seis decimales para los AUC",
+    "traza": ""
+  }
+}

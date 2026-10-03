@@ -1,0 +1,192 @@
+{
+  "experiment_id": "V4-AUDIT",
+  "fecha": "2026-09-25T19:56:20+00:00",
+  "duracion_s": 3.31,
+  "reglas": {
+    "n_scripts": 12,
+    "scripts": [
+      "26_scaffold_v4.py",
+      "27_label_consistency_v4.py",
+      "28_hardness_v4.py",
+      "29_reweighting_v4.py",
+      "30_supervised_weighting_v4.py",
+      "31_joint_label_v4.py",
+      "32_meta_shift_v4.py",
+      "33_class_conditional_lm_v4.py",
+      "34_structural_sparse_v4.py",
+      "35_discovery_v4.py",
+      "36_candidatos_v4.py",
+      "38_refit_final_v4.py"
+    ],
+    "violaciones": [],
+    "ok": true
+  },
+  "uso_del_test": {
+    "usos": [
+      {
+        "script": "26_scaffold_v4.py",
+        "lee_test": false,
+        "uso": "no lee el test"
+      },
+      {
+        "script": "27_label_consistency_v4.py",
+        "lee_test": true,
+        "uso": "lee el test para analisis no supervisado (sin labels)"
+      },
+      {
+        "script": "28_hardness_v4.py",
+        "lee_test": false,
+        "uso": "no lee el test"
+      },
+      {
+        "script": "29_reweighting_v4.py",
+        "lee_test": false,
+        "uso": "no lee el test"
+      },
+      {
+        "script": "30_supervised_weighting_v4.py",
+        "lee_test": false,
+        "uso": "no lee el test"
+      },
+      {
+        "script": "31_joint_label_v4.py",
+        "lee_test": false,
+        "uso": "no lee el test"
+      },
+      {
+        "script": "32_meta_shift_v4.py",
+        "lee_test": false,
+        "uso": "no lee el test"
+      },
+      {
+        "script": "33_class_conditional_lm_v4.py",
+        "lee_test": false,
+        "uso": "no lee el test"
+      },
+      {
+        "script": "34_structural_sparse_v4.py",
+        "lee_test": false,
+        "uso": "no lee el test"
+      },
+      {
+        "script": "35_discovery_v4.py",
+        "lee_test": true,
+        "uso": "lee el test para analisis no supervisado (sin labels)"
+      },
+      {
+        "script": "36_candidatos_v4.py",
+        "lee_test": false,
+        "uso": "no lee el test"
+      },
+      {
+        "script": "37_auditoria_v4.py",
+        "lee_test": true,
+        "uso": "lee el test solo para transform/predict y escribe submission"
+      },
+      {
+        "script": "38_refit_final_v4.py",
+        "lee_test": true,
+        "uso": "lee el test solo para transform/predict y escribe submission"
+      }
+    ],
+    "ok": true
+  },
+  "reproducibilidad": {
+    "script": "28_hardness_v4.py",
+    "ejecuciones": [
+      {
+        "hardness_v4.csv": "7162b9c09cee6fadab3727d517ae88e96c47967ace79bf8953086162396c520c",
+        "hardness_v4.json": "6ea9856efe52a4fba49717fdbc5c09f8e146db2e7739778efc38239fa5b98d68",
+        "hardness_v4.npz": "f9613389d15420d8b21db4853315aa374e783c15ff812be681802b563cbf4873"
+      },
+      {
+        "hardness_v4.csv": "7162b9c09cee6fadab3727d517ae88e96c47967ace79bf8953086162396c520c",
+        "hardness_v4.json": "92657e2d03ee63de2b4edd47aaf6f8ccb396c05a8639fe12359ae4c0b2b8adb1",
+        "hardness_v4.npz": "f9613389d15420d8b21db4853315aa374e783c15ff812be681802b563cbf4873"
+      }
+    ],
+    "ok": true,
+    "detalle": {
+      "artefactos_deterministas": [
+        "hardness_v4.csv",
+        "hardness_v4.npz"
+      ],
+      "coinciden": true,
+      "campos_variables_del_json": [
+        "correlacion_dureza_errores",
+        "correlacion_error_score_errores",
+        "correlacion_frontera_errores",
+        "correlacion_p_true_errores",
+        "corte_dureza",
+        "duracion_s",
+        "experiment_id",
+        "fecha",
+        "hardness_media",
+        "hardness_mediana",
+        "hardness_p90",
+        "lectura",
+        "media_model_disagreement_global",
+        "media_nn_disagreement_global",
+        "n_acerto_pos_bajo_conf",
+        "n_canales",
+        "n_cluster_contradictorio_dev",
+        "n_cola_p_true_bajo_0_1",
+        "n_con_error",
+        "n_dev",
+        "n_error_todas",
+        "porcentaje_bce_de_la_cola",
+        "porcentaje_con_error",
+        "porcentaje_error_todas"
+      ]
+    },
+    "nota": "El JSON incluye marca de tiempo, por lo que la comparacion de integridad se hace sobre el CSV y el NPZ, que son deterministas dado que el script usa semillas fijas y no paralelismo no determinista."
+  },
+  "inventario": {
+    "inventario": {
+      "reports/v4_gap_analysis.md": "7322a02898ee431f2f96513624578f35ee3286fd9a68ad15e3da14ec424b5a15",
+      "reports/research_backlog_v4.md": "b96bc88cfb9c4e8f761655b20687321d97940c0796753c0cecea0fc21a3efd60",
+      "reports/signal_coverage_v4.csv": "a5f221512ec7b5605aad96ae93a63169aee3eda0fad087b3562e767bcb9c0ac5",
+      "reports/baseline_v03_v4_check.json": "1c4e0bd0b7fda11b3a07fe5ae62db5795164e599b48a9295f52ba663efe4b591",
+      "reports/label_consistency_v4.csv": "9ef10beac8fc9cdd1acc6cf23c5adb18f5416f6ee52ffbc67cbe8fa3468aea9f",
+      "reports/label_consistency_v4.json": "5ef0922554645e2754aee4030c766597253ebf0c02fd6577e5be479248c07697",
+      "reports/label_consistency_v4_ejemplos.md": "32d61fad2bd395b7bf413696149b571f0fb0d596fa0ec4989b63ea71f031771e",
+      "reports/hardness_v4.csv": "7162b9c09cee6fadab3727d517ae88e96c47967ace79bf8953086162396c520c",
+      "reports/hardness_v4.json": "92657e2d03ee63de2b4edd47aaf6f8ccb396c05a8639fe12359ae4c0b2b8adb1",
+      "reports/hardness_vs_noise_v4.md": "656f188ba7ac5e6bc16edfcd8053be5c4598c503b5f6068e6415e460c32861ec",
+      "reports/reweighting_v4.csv": "201a7705d2315c2e9d659f480d51b5c02c91851ff9b42ea8276543244b871f1b",
+      "reports/reweighting_v4.json": "189027f8769cefc9d2077ba96125cf54f232c595e3b34d432ff433e25bc19b83",
+      "reports/supervised_weighting_v4.csv": "1e0700efd79c44af63a2517b4460a8d6c8369d084fb7408820166a0464393592",
+      "reports/supervised_weighting_v4.json": "36de8e207e87e94949211e7c9f236435a81ed0459835fa96e27e25eabe9e2b51",
+      "reports/joint_label_v4.csv": "c8e4cfae60c16068fb56a61e8948e24bf397568f62d6b0559708a4bb63071f16",
+      "reports/joint_label_v4.json": "697b7f0c3176a7b9268b6a099f230d2057954d52466f50233f3979694a6ca186",
+      "reports/meta_shift_v4.csv": "d772e52822f30466262411efefd2e0e4c39c54b39b20b7b8df8a301d34992f15",
+      "reports/meta_shift_v4.json": "398bcdb33ce212385decbdfaaf13395fa9e280f3ebf0ccaebd3088ba2a8edcc1",
+      "reports/class_conditional_lm_v4.csv": "9e390a3c23787d2dec1d7bdb050f0af8be86ecf336f66988af7d42caa329aedf",
+      "reports/class_conditional_lm_v4.json": "8201cc60b4d0896a9f0d5d22617e42f1a6da3db01660dcf5226f0ea5b942f471",
+      "reports/structural_sparse_v4.csv": "1ac778026de17c96882901916ac949aeb8672717217ff73a5994f4de772f2916",
+      "reports/structural_sparse_v4.json": "62be6ce4e6415e4be295cdb860d5c9e740223c6d0c4bddf63dc2ebab30bc75de",
+      "reports/implicit_hate_diagnostic_v4.json": "49decd7355d97d47d8698031b84dca4d2e559e5f04dcf88e24e9033345420382",
+      "reports/distribution_shift_v4.csv": "99c9f5091b84b35052d2c47cb4f57151ca5c566fbb6a5fee2aeeeeb330ca8854",
+      "reports/correction_opportunities_v4.csv": "99ce5922ef8309887ecd0cf25a99baa92c5af3c5a95ec12ccad868c6c813b5f0",
+      "reports/correction_matrix_v4.csv": "7484a334521b6557d1b077b89818e85300e4b1c1d9b8523eeda37033694482d2",
+      "reports/error_taxonomy_v4.md": "9e2c36094f1caecb80c2a9439d4202069b38b64e7ac76dc508723623f8579984",
+      "reports/discovery_v4.json": "5ce4c78da09006a7d6b47afcc3b73c2580229b0b36ff2788dae1878a303450d4",
+      "reports/v4_candidates.csv": "8735f8bab9364cd35b23d8b214aa4855a098ea167f99e4d92349ed8143dae306",
+      "reports/v4_candidate_comparison.md": "39a3386e52b5b32dfdf5b5ae8718c9e1a200a668e76a99016cfaa5d8a938e71d",
+      "reports/v4_candidates.json": "63d5e85df8f8161e634bb9c69249b2867480dd8346856c35ba80b629a76adc65",
+      "features/hardness_v4.npz": "f9613389d15420d8b21db4853315aa374e783c15ff812be681802b563cbf4873",
+      "features/label_consistency_v4.npz": "8c90b9dd7f68fb8f3afdc9687b5adb99aed239162414575a43b87e6cf50c7587",
+      "features/oof_reweight_v4.npz": "a7d0ffbcfae9402172c109c2eabcb7623cbe3ed691ecb5db3efc02ef7418ad94",
+      "features/oof_weighting_v4.npz": "92f2ef7ee9563eaa97ca64ece7b0a7b3b9f5e94a1cd47272d33e279c6b08da73",
+      "features/oof_joint_label_v4.npz": "3bbd11c62cb034f69d6309beb7eb9cdd64df522a2ac1291cad77bda7784f644a",
+      "features/oof_meta_shift_v4.npz": "106d9c0fd43c70572dfcf507b2d0129e61724353b5c356f2d3287aa193f994b7",
+      "features/oof_tracks_g_v4.npz": "ae276a4a533e7bb5a53ac4721863a5158ac1cd326fbbcf440207668521caa1f3",
+      "features/oof_candidates_v4.npz": "c5d7992cd853936f8d243d7a19560c5b9bfd37f16fbc47a07d67e9413b52e532",
+      "experiments/baseline_v03_frozen/model_v03.joblib": "263ed5bd0fc0de7cabfbaa85e88fca6fa65cf0a1b4e60a6e796b5120e26d13ca",
+      "experiments/baseline_v03_frozen/submission_v03.csv": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e"
+    },
+    "ausentes": [],
+    "n": 41
+  },
+  "veredicto": "GO"
+}

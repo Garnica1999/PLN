@@ -1,0 +1,5 @@
+objeto,corrected_cv,delta_vs_v03,usa_y_true,n_celdas_cambiadas,definicion
+V03_inaccion,0.7772114525,0.0,no,0,no cambiar nunca
+estrato_oof_accion_del_training_fold,0.7549322355,-0.022279217,solo en entrenamiento,407,"accion constante por estrato observable, elegida sin leakage"
+STRATUM_ORACLE,0.7753804469,-0.0018310056,si,424,mejor accion constante por cada uno de los 18 estratos
+TRUE_ORACLE,0.9870178614,0.2098064089,si,715,mejor accion celda a celda

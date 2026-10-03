@@ -1,0 +1,199 @@
+{
+  "familia": "FUZZY_TEMPLATE_MATCHING",
+  "experimento": "V29-01 (auditoria del metodo de near-duplicate actual y de su cobertura)",
+  "fecha": "2026-09-27T10:23:20+00:00",
+  "estado": "AUDIT_ONLY",
+  "pregunta": "como se definieron los near-duplicates historicos y por que solo el 7,08 % de las filas del desarrollo entra en grupos de tamano 2 o mas",
+  "alcance": "auditoria documental y numerica. No se entrena nada, no se produce ninguna senal para un modelo y no se genera submission",
+  "metodo_historico": {
+    "normalizacion": "minusculas, URLs sustituidas por espacio, espacios colapsados",
+    "no_normaliza": "menciones, hashtags, puntuacion ni digitos",
+    "representacion": "TfidfVectorizer(analyzer='char_wb', ngram_range=(4,4), min_df=1)",
+    "similitud": "coseno (producto de filas con norma L2)",
+    "umbral_de_union": 0.85,
+    "otros_umbrales_del_modulo": {
+      "NEAR_DUPLICATE_THRESHOLD": 0.9,
+      "NEAR_DUPLICATE_BAND": 0.8,
+      "nota": "solo se usan para el resumen descriptivo, no para agrupar"
+    },
+    "agrupacion": "componentes conexas con union-find",
+    "datos": "train + test concatenados (2885 filas); el test participa en las componentes"
+  },
+  "controles": {
+    "coseno_de_si_mismo_max_desviacion": 0.0,
+    "simetria_max_asimetria": 0.0,
+    "coseno_explicito_vs_producto_error": 2.220446049250313e-16,
+    "identidad_del_particionado": true,
+    "pares_sobre_umbral": 29,
+    "grupos_de_tamano_2_o_mas": 4
+  },
+  "desglose_de_cobertura": {
+    "near_duplicate_puro": {
+      "filas_en_grupo_2_o_mas": 6,
+      "cobertura": 0.004045853000674309
+    },
+    "pseudo_autor": {
+      "filas_en_grupo_2_o_mas": 99,
+      "cobertura": 0.0667565745111261
+    },
+    "grupos_fusionados_usados_por_v03": {
+      "filas_en_grupo_2_o_mas": 105,
+      "cobertura": 0.07080242751180041
+    },
+    "filas_que_entran_solo_por_pseudo_autor": 99,
+    "autores_distintos": 740,
+    "filas_con_autor": 822
+  },
+  "fracciones_de_rasgos": {
+    "con_mentcion": 0.4682842287694974,
+    "con_hashtag": 0.09428076256499134,
+    "con_url_antes_de_normalizar": 0.3119584055459272
+  },
+  "barrido_de_umbral_metodo_actual": [
+    {
+      "umbral": 0.95,
+      "pares": 22,
+      "grupos_2_o_mas_total": 3,
+      "filas_dev_2_o_mas": 3,
+      "cobertura_dev": 0.0020229265003371545,
+      "grupo_maximo": 6
+    },
+    {
+      "umbral": 0.9,
+      "pares": 24,
+      "grupos_2_o_mas_total": 4,
+      "filas_dev_2_o_mas": 4,
+      "cobertura_dev": 0.0026972353337828725,
+      "grupo_maximo": 6
+    },
+    {
+      "umbral": 0.85,
+      "pares": 29,
+      "grupos_2_o_mas_total": 4,
+      "filas_dev_2_o_mas": 6,
+      "cobertura_dev": 0.004045853000674309,
+      "grupo_maximo": 6
+    },
+    {
+      "umbral": 0.8,
+      "pares": 37,
+      "grupos_2_o_mas_total": 7,
+      "filas_dev_2_o_mas": 10,
+      "cobertura_dev": 0.006743088334457181,
+      "grupo_maximo": 7
+    },
+    {
+      "umbral": 0.75,
+      "pares": 59,
+      "grupos_2_o_mas_total": 10,
+      "filas_dev_2_o_mas": 17,
+      "cobertura_dev": 0.011463250168577209,
+      "grupo_maximo": 13
+    },
+    {
+      "umbral": 0.7,
+      "pares": 96,
+      "grupos_2_o_mas_total": 17,
+      "filas_dev_2_o_mas": 29,
+      "cobertura_dev": 0.019554956169925825,
+      "grupo_maximo": 20
+    },
+    {
+      "umbral": 0.6,
+      "pares": 222,
+      "grupos_2_o_mas_total": 29,
+      "filas_dev_2_o_mas": 45,
+      "cobertura_dev": 0.030343897505057317,
+      "grupo_maximo": 27
+    },
+    {
+      "umbral": 0.5,
+      "pares": 519,
+      "grupos_2_o_mas_total": 58,
+      "filas_dev_2_o_mas": 99,
+      "cobertura_dev": 0.0667565745111261,
+      "grupo_maximo": 47
+    },
+    {
+      "umbral": 0.4,
+      "pares": 1163,
+      "grupos_2_o_mas_total": 116,
+      "filas_dev_2_o_mas": 213,
+      "cobertura_dev": 0.14362778152393796,
+      "grupo_maximo": 71
+    },
+    {
+      "umbral": 0.3,
+      "pares": 2709,
+      "grupos_2_o_mas_total": 126,
+      "filas_dev_2_o_mas": 419,
+      "cobertura_dev": 0.2825354012137559,
+      "grupo_maximo": 336
+    }
+  ],
+  "comparacion_de_normalizacion": [
+    {
+      "umbral": 0.85,
+      "historica_cobertura_dev": 0.004045853000674309,
+      "historica_pares": 29,
+      "agresiva_cobertura_dev": 0.030343897505057317,
+      "agresiva_pares": 242,
+      "ganancia_de_normalizacion": 0.026298044504383007
+    },
+    {
+      "umbral": 0.8,
+      "historica_cobertura_dev": 0.006743088334457181,
+      "historica_pares": 37,
+      "agresiva_cobertura_dev": 0.033715441672285906,
+      "agresiva_pares": 319,
+      "ganancia_de_normalizacion": 0.026972353337828724
+    },
+    {
+      "umbral": 0.75,
+      "historica_cobertura_dev": 0.011463250168577209,
+      "historica_pares": 59,
+      "agresiva_cobertura_dev": 0.04652730950775455,
+      "agresiva_pares": 459,
+      "ganancia_de_normalizacion": 0.03506405933917734
+    },
+    {
+      "umbral": 0.7,
+      "historica_cobertura_dev": 0.019554956169925825,
+      "historica_pares": 96,
+      "agresiva_cobertura_dev": 0.060687795010114634,
+      "agresiva_pares": 629,
+      "ganancia_de_normalizacion": 0.04113283884018881
+    },
+    {
+      "umbral": 0.6,
+      "historica_cobertura_dev": 0.030343897505057317,
+      "historica_pares": 222,
+      "agresiva_cobertura_dev": 0.09238031018206339,
+      "agresiva_pares": 1268,
+      "ganancia_de_normalizacion": 0.06203641267700607
+    },
+    {
+      "umbral": 0.5,
+      "historica_cobertura_dev": 0.0667565745111261,
+      "historica_pares": 519,
+      "agresiva_cobertura_dev": 0.1638570465273095,
+      "agresiva_pares": 2577,
+      "ganancia_de_normalizacion": 0.09710047201618341
+    }
+  ],
+  "cuant_escalado": {
+    "similitud_maxima_entre_pares": 1.0,
+    "pares_por_encima_de_0.85": 29,
+    "n_train": 1731,
+    "n_test": 1154,
+    "pares_train_train": 1497315,
+    "nota_escalado": "con 1731 filas de train hay 1,5 millones de pares, de modo que MinHash o LSH no aportan nada: la matriz densa cabe en memoria y es mas simple de auditar"
+  },
+  "gastos": {
+    "filas": 1483,
+    "submissions": 0,
+    "modelos_entrenados": 0,
+    "memoria_pico_mb": 425.8,
+    "segundos": 1.5
+  }
+}

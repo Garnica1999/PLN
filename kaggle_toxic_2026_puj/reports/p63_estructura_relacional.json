@@ -1,0 +1,132 @@
+{
+  "familia": "P63_ESTRUCTURA_RELACIONAL",
+  "naturaleza": "EXPERIMENTO. 5 brazos, uno de ellos diagnostico y excluido como candidato, 0 submissions, 0 Kaggle, 0 holdout, 0 test",
+  "fecha": "2026-09-29T06:21:35+00:00",
+  "experiment_id": "P63-03",
+  "track": "B-estructura-relacional",
+  "script": "experiments/p63_04_estructura_relacional.py",
+  "pregunta": "la estructura de repeticion del registro puede modificar la confiabilidad de una prediccion, en celdas donde los vecinos no son buenos clasificadores",
+  "novedad": "el grupo canonico se ha usado siempre para REPARTIR los datos y nunca para DESCRIBIR una fila. P59-10 lo uso como regularizador, no como rasgo, y dio +0,0000988776",
+  "protocolo_de_fugas": {
+    "alcance_entrenamiento": "el conteo usa SOLO las filas del pliegue de entrenamiento. Es el unico alcance que puede entrar como feature",
+    "alcance_completo": "el conteo usa todas las filas, validacion incluida. Es FUGA y se reporta como diagnostico para que su tamano quede a la vista, y NUNCA se concatena a V03",
+    "por_que_no_es_trampa": "reportar los dos no sirve para conseguir un numero mayor: el alcance completo se etiqueta como fuga en la tabla, en el JSON y en el informe, y su celda va marked como NO permisible"
+  },
+  "rasgos_del_bloque": [
+    "tamano_de_grupo",
+    "log_tamano",
+    "es_unico",
+    "es_par",
+    "es_grupo_grande",
+    "n_en_universo"
+  ],
+  "rasgos_que_NO_se_usan_y_por_que": {
+    "contradiccion_de_etiqueta_dentro_del_grupo": "se midio y se descarto. Un grupo conHS contradictoria no puede acertarla todas, luego es un techo y no una feature",
+    "label_lookup": "prohibido explicitamente por el encargo",
+    "propagacion_de_etiquetas": "prohibido explicitamente por el encargo"
+  },
+  "contradiccion_por_etiqueta": {
+    "HS": 11,
+    "TR": 8,
+    "AG": 12
+  },
+  "diagnostico_de_degeneracion": {
+    "n_grupos": 1415,
+    "n_filas_en_grupos_singleton": 1378,
+    "fraccion_singleton": 0.929198,
+    "n_filas_no_singleton": 105,
+    "tamano_maximo_de_grupo": 7,
+    "n_perfiles_distintos_del_bloque": 7,
+    "n_columnas": 6,
+    "perfiles_sobre_columnas": 1.1667
+  },
+  "n_columnas": 6,
+  "resultados": {
+    "V03_rel": {
+      "corrected_cv": 0.6727442905142497,
+      "folds": [
+        0.7020353911638465,
+        0.6728939238794119,
+        0.7013544251447478,
+        0.7055771612940397,
+        0.6132556635621226
+      ],
+      "rescate": 285,
+      "damage": 1124,
+      "net": -839
+    },
+    "V03_random": {
+      "corrected_cv": 0.7558082301113161,
+      "folds": [
+        0.7755996472663139,
+        0.7737620404287071,
+        0.7455599818054613,
+        0.7341292127913266,
+        0.7498049800925951
+      ],
+      "rescate": 98,
+      "damage": 185,
+      "net": -87
+    },
+    "rel_solo": {
+      "corrected_cv": 0.5205452541495444,
+      "folds": [
+        0.38679277612144886,
+        0.3878812743237776,
+        0.5394720312367371,
+        0.5417445126663764,
+        0.5415945731147966
+      ],
+      "rescate": 371,
+      "damage": 2165,
+      "net": -1794
+    },
+    "rel_whole": {
+      "corrected_cv": 0.3999237486897429,
+      "folds": [
+        0.40907005249890144,
+        0.40746230635006414,
+        0.3989649193010538,
+        0.4063628003005326,
+        0.3771153846153846
+      ],
+      "rescate": 373,
+      "damage": 1818,
+      "net": -1445
+    },
+    "random_solo": {
+      "corrected_cv": 0.4721428239972129,
+      "folds": [
+        0.46554185162318706,
+        0.5093829875011812,
+        0.4507541068640457,
+        0.4586809277634482,
+        0.4728438228438228
+      ],
+      "rescate": 364,
+      "damage": 1996,
+      "net": -1632
+    }
+  },
+  "brecha_especifica_contra_capacidad": -0.0830639396,
+  "tamano_de_la_fuga_no_usado": -0.1206215055,
+  "gate": {
+    "delta_min": 0.0015,
+    "pliegues_min": 4,
+    "delta": -0.104467162,
+    "pliegues_mejorados": 0,
+    "superado": false
+  },
+  "bootstrap": null,
+  "veredicto": "El bloque relacional vale -0.1044671620 frente a V03 con 0/5 pliegues, y el control de capacidad de igual ancho vale -0.0214032224, luego la brecha especifica es -0.0830639396. La causa NO es que la estructura relacional sea inutil: es que esta CASI VACIA. 1378 de 1483 filas, el 92.92 por ciento, estan en un grupo singleton, y el bloque entero tiene 7 perfiles distintos sobre 6 columnas. En solitario el bloque SI supera al aleatorio, +0.0484024302, o sea hay una senal debil en las 105 filas no singleton, pero son pocas para mover el agregado. Medir el mismo rasgo con validacion incluida, que es fuga, daria -0.1206215055",
+  "decision": "CLOSED. La estructura de repeticion no aporta sobre V03",
+  "experimentos_registrados": 1,
+  "reproducibilidad": {
+    "nivel": "R2",
+    "git_commit": "f90e925",
+    "seed": 42,
+    "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "corrected_cv": 0.7772114525165721
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

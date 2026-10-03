@@ -1,0 +1,10 @@
+{
+  "contador_antes": 0,
+  "contador_durante": 1,
+  "contador_restaurado": 0,
+  "marca_corrida": "20261002T104743Z_p289246",
+  "prohibidas": [],
+  "sondas_permitidas": [
+    "linea 4457 en caso_reoptimizacion_bloqueada: llamada a reoptimizar_umbral"
+  ]
+}

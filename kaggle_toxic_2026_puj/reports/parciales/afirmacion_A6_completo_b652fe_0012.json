@@ -1,0 +1,83 @@
+{
+  "marca_corrida": "completo_b652fe",
+  "resultado": {
+    "bloque": 6,
+    "coste_segundos": 2.5e-05,
+    "descripcion": "el numero efectivo es un parametro del metodo y se mueve con alpha_0",
+    "detalle": {
+      "cadena_literal": "EL_NUMERO_DE_PARAMETROS_EFECTIVOS_QUE_PRODUCE_ESTE_METODO_ES_UN_PARAMETRO_DEL_METODOY_ESTA_DETERMINADO_POR_LA_ESCALA_DE_LA_PRIOR_ALPHA_0_Y_POR_LA_VARIANZA_POSTERIORNO_ES_UN_NUMERO_DE_MUESTRAS_EFECTIVAS_DEL_CONJUNTO_DE_DATOS",
+      "comprobaciones": {
+        "al_menos_una_etiqueta_supera_el_cinco_por_ciento": true,
+        "el_numero_mueve_con_alpha_0": true,
+        "la_cadena_literal_del_metodo_esta": true,
+        "la_direccion_es_la_esperada": true,
+        "los_tres_valores_de_la_rejilla_estan_publicados": true
+      },
+      "diferencia_relativa_entre_extremos": 0.23395942998323552,
+      "direccion": "mas parametros efectivos con alpha_0 mas pequeno, que es la direccion fisica esperada: un alpha_0 mas pequeno deja la dispersion mas libre",
+      "motivo_de_parada": "el numero de parametros efectivos no se mueve con alpha_0 y no es el numero que dice ser",
+      "n_efectivos_por_alpha_0": {
+        "0.50": {
+          "n_activas_total": 6.0,
+          "n_efectivos_total": 456.7722281544299,
+          "por_etiqueta": {
+            "AG": 446.42991281314335,
+            "HS": 443.99171319117136,
+            "TR": 479.8950584589751
+          }
+        },
+        "1.00": {
+          "n_activas_total": 13.0,
+          "n_efectivos_total": 418.89253397720495,
+          "por_etiqueta": {
+            "AG": 407.4401559201983,
+            "HS": 402.308485641683,
+            "TR": 446.92896036973366
+          }
+        },
+        "2.00": {
+          "n_activas_total": 45.0,
+          "n_efectivos_total": 370.1679464134697,
+          "por_etiqueta": {
+            "AG": 358.79367229203217,
+            "HS": 350.0706270031783,
+            "TR": 401.6395399451984
+          }
+        },
+        "__texto__": "EL_NUMERO_DE_PARAMETROS_EFECTIVOS_QUE_PRODUCE_ESTE_METODO_ES_UN_PARAMETRO_DEL_METODOY_ESTA_DETERMINADO_POR_LA_ESCALA_DE_LA_PRIOR_ALPHA_0_Y_POR_LA_VARIANZA_POSTERIORNO_ES_UN_NUMERO_DE_MUESTRAS_EFECTIVAS_DEL_CONJUNTO_DE_DATOS"
+      },
+      "por_etiqueta": {
+        "AG": {
+          "alpha_0_0.5": 446.42991281314335,
+          "alpha_0_2.0": 358.79367229203217,
+          "diferencia_relativa": 0.24425246956357022,
+          "supera_el_cinco_por_ciento": true
+        },
+        "HS": {
+          "alpha_0_0.5": 443.99171319117136,
+          "alpha_0_2.0": 350.0706270031783,
+          "diferencia_relativa": 0.2682918215447432,
+          "supera_el_cinco_por_ciento": true
+        },
+        "TR": {
+          "alpha_0_0.5": 479.8950584589751,
+          "alpha_0_2.0": 401.6395399451984,
+          "diferencia_relativa": 0.1948401756571433,
+          "supera_el_cinco_por_ciento": true
+        }
+      },
+      "rejilla_de_alpha_0": [
+        0.5,
+        1.0,
+        2.0
+      ]
+    },
+    "estado": "CONFIRMADO",
+    "exito": true,
+    "id": "A6",
+    "naturaleza": "CONFIRMAR",
+    "stop": true,
+    "tolerancia": "diferencia relativa mayor que 0.05 entre los extremos de la rejilla de alpha_0",
+    "traza": ""
+  }
+}

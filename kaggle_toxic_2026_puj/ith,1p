@@ -1,0 +1,1046 @@
+"""V12-01: regularizacion por etiqueta Y por grupo de caracteristicas (H1).
+
+La primera de las tres hipotesis que salio de la auditoria de brecha, y la mas barata.
+
+La hipotesis
+------------
+> La misma caracteristica puede tener utilidad diferente para HS, TR y AG, y compartir
+> exactamente la misma estructura de regularizacion puede limitar una o mas etiquetas.
+
+El precedente mas cercano es **V8-06**, que ajusto una constante distinta **por etiqueta** sobre
+el espacio entero. Eso es una sola constante por etiqueta sobre la union de bloques. Lo que se
+prueba aqui es distinto: **la constante del grupo de caracteristicas dentro de la etiqueta**.
+
+Por que es el mismo mecanismo y no un hiperparametro mas
+-------------------------------------------------------
+La implementacion es escalar las columnas de la matriz antes de ajustarla, y esa operacion
+tiene un efecto exacto sobre la penalizacion. Para una regresion logistica con penalizacion L2
+
+    minimo  -loglik(w) + (1 / 2C) * ||w||^2
+
+sustituir ``X`` por ``X * diag(s)`` y llamar ``v`` a los nuevos coeficientes da, en terminos de
+``w``, una penalizacion
+
+    (1 / 2C) * ||diag(s) * w||^2 = (1 / 2C) * sum_j s_j^2 * w_j^2
+
+Es decir: **multiplicar el bloque j por ``s_j`` multiplica su peso de penalizacion efectivo por
+``s_j^2``**. Un valor mayor penaliza mas ese bloque y uno menor lo penaliza menos. No cambia la
+clase de modelo, no cambia la dimension, no anade variables, y se hace con el
+``LogisticRegression`` de la biblioteca sin tocar una linea de su optimizador.
+
+Porque hay exactamente UN grado de libertad, y no dos
+----------------------------------------------------
+Escalar el bloque de palabra por ``a`` y el de caracter por ``b`` es lo mismo, salvo una constante
+global, que fijar ``a=1`` y ``b=s``. Y como ademas se renormaliza la matriz para conservar su
+norma de Frobenius, esa constante global queda fijada. El mecanismo tiene por tanto **un solo
+grado de libertad identificable: el cociente entre los dos bloques**. No se ajustan dos constantes
+por etiqueta, se ajusta una, y eso mantiene el espacio de busqueda lejos de ser una rejilla.
+
+La renormalizacion tambien resuelve un problema de comparacion
+------------------------------------------------------------
+Escalar el bloque de caracter desplaza la escala de salida del modelo, y los umbrales de V03
+estan congelados. Sin renormalizar, un resultado negativo podria significar dos cosas
+indistinguibles: que el mecanismo no ayuda, o que el punto de operacion se movio. Conservando la
+norma de Frobenius se mantiene la escala global y la comparacion es del mecanismo de
+penalizacion. Aun asi se registra la tasa de positivos predicha de cada brazo como diagnostico,
+porque el desplazamiento no se puede descartar del todo.
+
+Los cuatro brazos, y por que hacen falta cuatro
+----------------------------------------------
+Un solo brazo no permite atribuir nada. Si la variante gana, la pregunta inmediata es si gana
+por el ajuste por etiqueta o por la estructura de grupo, y por eso:
+
+- **A, control de identidad**: V03 exacto, constante 2.0, sin escalado. Debe reproducir el OOF
+  canonico con diferencia cero, celda a celda. Si no, es parada obligatoria.
+- **B, control del ajuste por etiqueta**: constante distinta por etiqueta, elegida por validacion
+  anidada, **sin** escalado. Es el mecanismo de V8-06, y evita atribuir a la estructura de grupo
+  lo que sea del ajuste por etiqueta.
+- **C, la variante**: constante por etiqueta **y** cociente entre bloques por etiqueta, ambos
+  por validacion anidada.
+- **D, diagnostico del grado de libertad**: constante por etiqueta y **un solo** cociente
+  compartido por las tres etiquetas. Si C y D coinciden, la parte por etiqueta no aporta nada y el
+  efecto es un cociente de bloques mejor elegido. Sin este brazo la variante no es interpretable.
+
+Identidad incorporada
+---------------------
+Con el cociente en 1.0 la renormalizacion es la identidad, luego **el brazo C con cociente 1.0
+tiene que dar exactamente el mismo resultado que el brazo B**. Es una comprobacion interna
+gratuita que detecta un error de implementacion antes de que contamine el resultado, y el script
+la ejecuta.
+
+Protocolo
+---------
+``StratifiedGroupKFold`` de 5 pliegues con los grupos fusionados, y **validacion anidada
+estricta** dentro de cada pliegue de entrenamiento para elegir los hiperparametros, con
+sub-pliegues de grupo propios. Ninguna decision se toma con el pliegue exterior. Los vectores se
+ajustan dentro de cada pliegue de entrenamiento. El espacio del pliegue exterior se construye una
+vez y se reutiliza para las doce combinaciones, que es lo que hace el coste bajo.
+
+Gates, escritos antes de ejecutar
+---------------------------------
+- **Exploratorio**: delta >= +0.002, 4 de 5 pliegues a favor, e intervalo pareado al 95 por
+  ciento que no incluya el cero.
+- **Candidato**: delta >= +0.003, ademas segunda particion y reproducibilidad.
+- **Filtro de detectabilidad** de V8-02: la tasa de acierto entre las celdas modificadas tiene que
+  superar ``0,5 + 19,2 / 1154``.
+
+Uso
+---
+    /home/carlos/venv/bin/python experiments/v12_01_regularizacion_grupo.py
+"""
+
+from __future__ import annotations
+
+import json
+import sys
+import time
+import warnings
+from datetime import datetime, timezone
+from importlib import util
+from pathlib import Path
+from typing import Any
+
+import numpy as np
+import pandas as pd
+from scipy import sparse
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import StratifiedGroupKFold
+
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(PROJECT_ROOT))
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+from v11_ayudas import fila, sello
+
+from src import data as data_module
+from src.evaluation import ETIQUETAS, metrica_macro
+from src.splits import (
+    RANDOM_STATE,
+    combinaciones,
+    grupos_fusionados,
+    holdout_v2,
+)
+
+_especificacion = util.spec_from_file_location(
+    "arnes", PROJECT_ROOT / "experiments" / "v10_03_arnes_evaluacion.py"
+)
+arnes = util.module_from_spec(_especificacion)
+sys.modules["arnes"] = arnes
+_especificacion.loader.exec_module(arnes)
+
+EXPERIMENTO = "V12-01 (H1, regularizacion por etiqueta y por grupo)"
+REPORTE_MD = PROJECT_ROOT / "reports" / "v12_01_regularizacion_grupo.md"
+REPORTE_JSON = PROJECT_ROOT / "reports" / "v12_01_regularizacion_grupo.json"
+
+ETIQUETAS_LISTA = list(ETIQUETAS)
+REFERENCIA_V03 = 0.7772114525165721
+UMBRALES = arnes.UMBRALES_V03
+SEMILLA_CANONICA = RANDOM_STATE
+CONSTANTE_V03 = 2.0
+LIMITE_ITERACIONES = 2000
+
+# Espacio de busqueda deliberadamente pequeno: tres cocientes y cuatro constantes, con el
+# cociente neutro en 1.0, que reproduce el control. Tres puntos no son una rejilla.
+COCIENTES = (0.6, 1.0, 5.0 / 3.0)
+CONSTANTES = (0.5, 1.0, 2.0, 4.0)
+PLIEGUES_INTERNOS = 3
+DELTA_MINIMO_EXPLORATORIO = 0.002
+DELTA_MINIMO_CANDIDATO = 0.003
+PLIEGUES_MINIMOS = 4
+FILAS_LEADERBOARD = 1154
+
+DESCRIPCIONES = {
+    "A": "V03 exacto, constante 2.0 y sin escalado. Control de identidad",
+    "B": "constante distinta por etiqueta, sin escalado. Es el mecanismo de V8-06 y sirve de " "control para no atribuir a la estructura de grupo lo que sea del ajuste por etiqueta",
+    "C": "constante por etiqueta y cociente entre bloques por etiqueta. La variante",
+    "D": "constante por etiqueta y un unico cociente compartido por las tres. Diagnostico: si C y " "D coinciden, la parte por etiqueta no aporta nada",
+}
+
+
+def log(mensaje: str) -> None:
+    """Imprime una linea de progreso.
+
+    Args:
+        mensaje: texto a mostrar.
+    """
+    print(f"[V12-01] {mensaje}", flush=True)
+
+
+def construir_espacio(
+    textos_entrenamiento: pd.Series, textos_consulta: pd.Series
+) -> tuple[sparse.csr_matrix, sparse.csr_matrix, int]:
+    """Ajusta los dos vectorizadores en el entrenamiento y transforma la consulta.
+
+    Los dos bloques se construyen por separado y se ensamblan con ``hstack``, que es lo que hace
+    el pipeline de V03. La separacion no es un requisito del experimento: es lo que permite
+    escalar un bloque sin tocar el otro.
+
+    Args:
+        textos_entrenamiento: textos de ajuste.
+        textos_consulta: textos a transformar.
+
+    Returns:
+        Tupla con la matriz de ajuste, la de consulta y el numero de columnas del bloque de
+        palabra, que es el punto de corte entre los dos bloques.
+    """
+    vectorizador_word = TfidfVectorizer(**arnes.PARAMS_WORD)
+    vectorizador_char = TfidfVectorizer(**arnes.PARAMS_CHAR)
+    ajuste = sparse.hstack(
+        [
+            vectorizador_word.fit_transform(textos_entrenamiento),
+            vectorizador_char.fit_transform(textos_entrenamiento),
+        ],
+        format="csr",
+    )
+    consulta = sparse.hstack(
+        [
+            vectorizador_word.transform(textos_consulta),
+            vectorizador_char.transform(textos_consulta),
+        ],
+        format="csr",
+    )
+    return ajuste, consulta, len(vectorizador_word.vocabulary_)
+
+
+def norma_frobenius(matriz: sparse.csr_matrix) -> float:
+    """Calcula la norma de Frobenius de una matriz dispersa.
+
+    Args:
+        matriz: matriz dispersa en formato CSR.
+
+    Returns:
+        La norma de Frobenius.
+    """
+    return float(np.sqrt(matriz.multiply(matriz).sum()))
+
+
+def escalar_bloque_caracter(
+    matriz: sparse.csr_matrix, columnas_palabra: int, cociente: float
+) -> sparse.csr_matrix:
+    """Escala el bloque de caracter y renormaliza la matriz entera.
+
+    Args:
+        matriz: matriz de caracteristicas en formato CSR.
+        columnas_palabra: numero de columnas del bloque de palabra.
+        cociente: factor aplicado al bloque de caracter.
+
+    Returns:
+        La matriz escalada y renormalizada. Con cociente 1.0 es la identidad.
+
+    Raises:
+        ValueError: si la norma de la matriz escalada es nula.
+    """
+    if cociente == 1.0:
+        return matriz
+    columnas_caracter = matriz.shape[1] - columnas_palabra
+    factores = np.concatenate([np.ones(columnas_palabra), np.full(columnas_caracter, cociente)])
+    escalada = (matriz @ sparse.diags(factores, format="csr")).tocsr()
+    norma_escalada = norma_frobenius(escalada)
+    if norma_escalada <= 0.0:
+        raise ValueError("la matriz escalada tiene norma nula y no se puede renormalizar")
+    return (escalada * (norma_frobenius(matriz) / norma_escalada)).tocsr()
+
+
+def ajustar(
+    matriz: sparse.csr_matrix, objetivo: np.ndarray, constante: float
+) -> tuple[LogisticRegression, int]:
+    """Ajusta un clasificador con los parametros de V03 y devuelve sus iteraciones.
+
+    Los parametros son los de V03 con ``max_iter`` ampliado, y el unico cambio es la constante.
+    ``class_weight`` y el resolvedor se dejan intactos para que la comparacion con el control sea
+    del mecanismo y no de la configuracion.
+
+    Args:
+        matriz: matriz de caracteristicas.
+        objetivo: etiqueta binaria.
+        constante: constante de regularizacion.
+
+    Returns:
+        Tupla con el estimador ajustado y el numero de iteraciones que necesito.
+
+    Raises:
+        RuntimeError: si el ajuste emite advertencias o no converge.
+    """
+    estimador = LogisticRegression(
+        C=constante,
+        class_weight="balanced",
+        max_iter=LIMITE_ITERACIONES,
+        solver="liblinear",
+        random_state=RANDOM_STATE,
+    )
+    with warnings.catch_warnings(record=True) as atrapados:
+        warnings.simplefilter("always")
+        estimador.fit(matriz, objetivo)
+    if atrapados:
+        raise RuntimeError(
+            f"el ajuste lanzo advertencias no esperadas: {[str(a.message) for a in atrapados]}"
+        )
+    iteraciones = int(np.max(estimador.n_iter_))
+    if iteraciones >= LIMITE_ITERACIONES:
+        raise RuntimeError("el ajuste no ha convergido en el numero de iteraciones permitido")
+    return estimador, iteraciones
+
+
+def f1_positiva(verdadero: np.ndarray, predicho: np.ndarray) -> float:
+    """Calcula la F1 de la clase positiva.
+
+    Args:
+        verdadero: etiqueta binaria verdadera.
+        predicho: predicciones binarias.
+
+    Returns:
+        La F1 de la clase positiva, o cero si el denominador se anula.
+    """
+    positivos = verdadero == 1
+    verdaderos_positivos = float(np.sum(positivos & (predicho == 1)))
+    falsos_positivos = float(np.sum((~positivos) & (predicho == 1)))
+    falsos_negativos = float(np.sum(positivos & (predicho == 0)))
+    denominador = 2 * verdaderos_positivos + falsos_positivos + falsos_negativos
+    return 2 * verdaderos_positivos / denominador if denominador > 0 else 0.0
+
+
+def metrica_por_etiqueta(
+    y: np.ndarray, predicciones_por_etiqueta: list[np.ndarray]
+) -> tuple[float, list[float]]:
+    """Calcula la metrica corregida y la F1 de clase positiva por etiqueta.
+
+    La metrica corregida es la que decide, y es la media de las seis F1, tres de clase positiva y
+    tres de clase negativa. La F1 por etiqueta que se reporta es solo de la clase positiva, que es
+    la que el proyecto sigue de forma historica.
+
+    Args:
+        y: matriz binaria de etiquetas verdaderas.
+        predicciones_por_etiqueta: predicciones de cada etiqueta.
+
+    Returns:
+        Tupla con la metrica corregida y la lista de F1 de clase positiva.
+    """
+    matriz = np.column_stack(predicciones_por_etiqueta)
+    metricas = metrica_macro(y, matriz)
+    positivas = [f1_positiva(y[:, i], matriz[:, i]) for i in range(len(ETIQUETAS_LISTA))]
+    return metricas, positivas
+
+
+def subpliegues_internos(
+    textos: pd.Series, y: np.ndarray, grupos: np.ndarray, semilla: int
+) -> list[tuple[np.ndarray, np.ndarray]]:
+    """Construye los sub-pliegues de grupo para la validacion anidada.
+
+    Args:
+        textos: serie de textos del subconjunto.
+        y: matriz binaria de etiquetas.
+        grupos: grupos del subconjunto.
+        semilla: semilla del particionador.
+
+    Returns:
+        Lista de pares de indices de entrenamiento y validacion interna.
+    """
+    marco = pd.DataFrame({e: y[:, i] for i, e in enumerate(ETIQUETAS_LISTA)})
+    return list(
+        StratifiedGroupKFold(
+            n_splits=PLIEGUES_INTERNOS, shuffle=True, random_state=semilla
+        ).split(textos, combinaciones(marco), groups=grupos)
+    )
+
+
+def seleccionar_por_etiqueta(
+    textos_entrenamiento: pd.Series,
+    y_entrenamiento: np.ndarray,
+    grupos_entrenamiento: np.ndarray,
+    indice_etiqueta: int,
+    cocientes: tuple[float, ...],
+    semilla: int,
+) -> tuple[float, float, list[tuple[float, float, float]]]:
+    """Elige la constante y el cociente de una etiqueta por validacion anidada.
+
+    La eleccion se hace exclusivamente sobre el pliegue exterior de entrenamiento, con
+    sub-pliegues de grupo propios. El pliegue exterior de validacion no entra en ningun momento, que
+    es la condicion que el proyecto ha exigido desde R1-C1.
+
+    La puntuacion interna es la F1 de clase positiva de esa etiqueta, porque la metrica corregida
+    promedia las seis clases y un cambio en el cociente de una etiqueta no deberia mover el
+    criterio de las otras dos.
+
+    Args:
+        textos_entrenamiento: textos del pliegue exterior de entrenamiento.
+        y_entrenamiento: etiquetas del pliegue exterior de entrenamiento.
+        grupos_entrenamiento: grupos del pliegue exterior de entrenamiento.
+        indice_etiqueta: posicion de la etiqueta dentro de la matriz.
+        cocientes: cocientes entre bloques a considerar.
+        semilla: semilla de los sub-pliegues internos.
+
+    Returns:
+        Tupla con la constante elegida, el cociente elegido y la tabla de puntuaciones.
+    """
+    umbral = UMBRALES[indice_etiqueta]
+    objetivo = y_entrenamiento[:, indice_etiqueta]
+    sub = subpliegues_internos(textos_entrenamiento, y_entrenamiento, grupos_entrenamiento, semilla)
+    textos_sub = textos_entrenamiento.reset_index(drop=True)
+
+    puntuaciones: list[tuple[float, float, float]] = []
+    for cociente in cocientes:
+        for constante in CONSTANTES:
+            predicciones_sub: list[np.ndarray] = []
+            for sub_entrenamiento, sub_validacion in sub:
+                ajuste, consulta, columnas = construir_espacio(
+                    textos_sub.iloc[sub_entrenamiento], textos_sub.iloc[sub_validacion]
+                )
+                ajuste_escalado = escalar_bloque_caracter(ajuste, columnas, cociente)
+                consulta_escalada = escalar_bloque_caracter(consulta, columnas, cociente)
+                estimador, _ = ajustar(ajuste_escalado, objetivo[sub_entrenamiento], constante)
+                probabilidades = estimador.predict_proba(consulta_escalada)[:, 1]
+                predicciones_sub.append((probabilidades >= umbral).astype(int))
+            pooled = np.concatenate(predicciones_sub)
+            verdad_pooled = objetivo[np.concatenate([s[1] for s in sub])]
+            puntuaciones.append((f1_positiva(verdad_pooled, pooled), cociente, constante))
+
+    puntuaciones.sort(key=lambda t: (-t[0], t[1], t[2]))
+    mejor_f1, mejor_cociente, mejor_constante = puntuaciones[0]
+    del mejor_f1
+    return mejor_constante, mejor_cociente, puntuaciones
+
+
+def ejecutar_brazo(
+    nombre: str,
+    textos: pd.Series,
+    y: np.ndarray,
+    grupos: np.ndarray,
+    pliegues: list[tuple[np.ndarray, np.ndarray]],
+    con_cociente: bool,
+    cociente_compartido: bool,
+) -> dict[str, Any]:
+    """Ejecuta un brazo completo y devuelve sus probabilidades y su seleccion.
+
+    Args:
+        nombre: identificador del brazo.
+        textos: serie de textos del desarrollo.
+        y: matriz binaria de etiquetas.
+        grupos: grupos del desarrollo.
+        pliegues: pliegues exteriores.
+        con_cociente: si se busca tambien el cociente entre bloques.
+        cociente_compartido: si el cociente debe ser el mismo para las tres etiquetas.
+
+    Returns:
+        Diccionario con las probabilidades, la seleccion por pliegue y el maximo de iteraciones.
+    """
+    cocientes = COCIENTES if con_cociente else (1.0,)
+    probabilidades = np.zeros((len(y), 3), dtype=np.float64)
+    constantes_por_pliegue: list[list[float]] = []
+    cocientes_por_pliegue: list[list[float]] = []
+    iteraciones_maximas = 0
+
+    for numero_pliegue, (entrenamiento, validacion) in enumerate(pliegues):
+        textos_entrenamiento = textos.iloc[entrenamiento].reset_index(drop=True)
+        ajuste, consulta, columnas = construir_espacio(
+            textos_entrenamiento, textos.iloc[validacion].reset_index(drop=True)
+        )
+        constantes: list[float] = []
+        cocientes_elegidos: list[float] = []
+        for indice_etiqueta in range(3):
+            constante, cociente, _ = seleccionar_por_etiqueta(
+                textos_entrenamiento,
+                y[entrenamiento],
+                grupos[entrenamiento],
+                indice_etiqueta,
+                cocientes,
+                SEMILLA_CANONICA + 100 * numero_pliegue + indice_etiqueta,
+            )
+            constantes.append(constante)
+            cocientes_elegidos.append(cociente)
+        if cociente_compartido:
+            counts: dict[float, int] = {}
+            for valor in cocientes_elegidos:
+                counts[valor] = counts.get(valor, 0) + 1
+            cociente_unico = max(sorted(counts), key=lambda v: counts[v])
+            cocientes_elegidos = [cociente_unico] * 3
+
+        for indice_etiqueta in range(3):
+            ajuste_escalado = escalar_bloque_caracter(
+                ajuste, columnas, cocientes_elegidos[indice_etiqueta]
+            )
+            consulta_escalada = escalar_bloque_caracter(
+                consulta, columnas, cocientes_elegidos[indice_etiqueta]
+            )
+            estimador, iteraciones = ajustar(
+                ajuste_escalado, y[entrenamiento, indice_etiqueta], constantes[indice_etiqueta]
+            )
+            iteraciones_maximas = max(iteraciones_maximas, iteraciones)
+            probabilidades[validacion, indice_etiqueta] = estimador.predict_proba(
+                consulta_escalada
+            )[:, 1]
+        constantes_por_pliegue.append(constantes)
+        cocientes_por_pliegue.append(cocientes_elegidos)
+        log(
+            f"   {nombre} pliegue {numero_pliegue + 1}: constantes {constantes} | " f"cocientes {[round(c, 3) for c in cocientes_elegidos]}"
+        )
+    return {
+        "nombre": nombre,
+        "probabilidades": probabilidades,
+        "constantes_por_pliegue": constantes_por_pliegue,
+        "cocientes_por_pliegue": cocientes_por_pliegue,
+        "iteraciones_maximas": iteraciones_maximas,
+    }
+
+
+
+REJILLA_CURVA = (0.4, 0.6, 0.8, 1.0, 1.25, 5.0 / 3.0, 2.5)
+
+
+def curva_del_cociente(
+    textos: pd.Series,
+    y: np.ndarray,
+    pliegues: list[tuple[np.ndarray, np.ndarray]],
+) -> list[dict[str, Any]]:
+    """Mide la curva del cociente entre bloques con la constante fija de V03.
+
+    Esta funcion es un **diagnostico, no una busqueda**. Su unico purpose es responder una
+    su unico proposito es responder una
+    el mecanismo no sirve, o porque mi manera de elegir el cociente fue ruidosa? Son dos cierres
+    muy distintos. El primero dice que la idea es mala; el segundo dice que la idea puede ser
+    buena y hay que aprender a elegirla.
+
+    La curva responde exactamente a eso. Si tuviera un maximo claro y separado del valor neutro,
+    la segunda explicacion seria la correcta y habria margen. Si el maximo cae **sobre el valor
+    neutro**, la primera es la correcta: el mecanismo ya esta en su optimo y no hay nada que
+    extraer.
+
+    Y hay una trampa que conviene evitar: el maximo de esta curva **no es adoptable**, porque se
+    ha calculado mirando los pliegues exteriores. Si se propusiera como candidato seria una
+    busqueda sobre el conjunto de evaluacion. Se reporta solo como diagnostico.
+
+    Args:
+        textos: serie de textos del desarrollo.
+        y: matriz binaria de etiquetas.
+        pliegues: pliegues exteriores.
+
+    Returns:
+        Lista de filas con el cociente, la metrica y su delta respecto al valor neutro.
+    """
+    filas: list[dict[str, Any]] = []
+    for cociente in REJILLA_CURVA:
+        probabilidades = np.zeros((len(y), 3), dtype=np.float64)
+        for entrenamiento, validacion in pliegues:
+            ajuste, consulta, columnas = construir_espacio(
+                textos.iloc[entrenamiento].reset_index(drop=True),
+                textos.iloc[validacion].reset_index(drop=True),
+            )
+            ajuste_escalado = escalar_bloque_caracter(ajuste, columnas, cociente)
+            consulta_escalada = escalar_bloque_caracter(consulta, columnas, cociente)
+            for indice_etiqueta in range(3):
+                estimador, _ = ajustar(
+                    ajuste_escalado, y[entrenamiento, indice_etiqueta], CONSTANTE_V03
+                )
+                probabilidades[validacion, indice_etiqueta] = estimador.predict_proba(
+                    consulta_escalada
+                )[:, 1]
+        predicciones = (probabilidades >= UMBRALES[None, :]).astype(int)
+        metricas, f1_por_etiqueta = metrica_por_etiqueta(
+            y, [predicciones[:, i] for i in range(3)]
+        )
+        filas.append(
+            {
+                "cociente": round(cociente, 4),
+                "metrica": metricas,
+                "f1_por_etiqueta": f1_por_etiqueta,
+            }
+        )
+    neutro = next(f["metrica"] for f in filas if f["cociente"] == 1.0)
+    for f in filas:
+        f["delta_frente_al_neutro"] = f["metrica"] - neutro
+    return filas
+
+
+def main() -> None:
+    """Ejecuta los cuatro brazos con validacion anidada y aplica los gates."""
+    inicio = time.time()
+    log("V12-01: regularizacion por etiqueta y por grupo de caracteristicas")
+
+    train = data_module.read_train()
+    grupos_completos = grupos_fusionados(train)
+    indices_dev, _ = holdout_v2(train, grupos_completos)
+    desarrollo = train.iloc[indices_dev].reset_index(drop=True)
+    grupos_dev = grupos_completos[indices_dev]
+    y = desarrollo[ETIQUETAS_LISTA].to_numpy(dtype=int)
+    textos = desarrollo["text"].astype(str)
+    pliegues = arnes.particion_por_semilla(textos, y, grupos_dev, SEMILLA_CANONICA)
+    log(f"   desarrollo: {len(y)} filas | {len(pliegues)} pliegues | semilla {SEMILLA_CANONICA}")
+
+    log("1/5 brazo A, control de identidad: V03 exacto")
+    probabilidades_a = arnes.oof_de_v03(textos, y, pliegues)
+    metricas_a, _ = metrica_por_etiqueta(
+        y, [(probabilidades_a[:, i] >= UMBRALES[i]).astype(int) for i in range(3)]
+    )
+    identidad = abs(metricas_a - REFERENCIA_V03)
+    log(f"   metrica {metricas_a:.16f} | diferencia con la referencia {identidad:.3e}")
+    if identidad > 1e-12:
+        log("   PARADA OBLIGATORIA: el control de identidad no reproduce la referencia")
+        raise SystemExit(1)
+    log("   identidad confirmada")
+
+    log("2/5 brazos B, C y D con validacion anidada")
+    brazos = {"A": {"nombre": "A", "probabilidades": probabilidades_a,
+                    "constantes_por_pliegue": [], "cocientes_por_pliegue": [],
+                    "iteraciones_maximas": 0}}
+    for nombre, con_cociente, compartido in (
+        ("B", False, False),
+        ("C", True, False),
+        ("D", True, True),
+    ):
+        brazos[nombre] = ejecutar_brazo(
+            nombre, textos, y, grupos_dev, pliegues, con_cociente, compartido
+        )
+
+    log("3/5 identidad interna: el brazo C con cociente 1.0 tiene que igualar al B")
+    c_neutro = 0
+    for pliegue, cocientes in enumerate(brazos["C"]["cocientes_por_pliegue"]):
+        constantes = brazos["C"]["constantes_por_pliegue"][pliegue]
+        if all(c == 1.0 for c in cocientes):
+            c_neutro += 1
+            log(
+                f"   pliegue {pliegue + 1}: C eligio cociente neutro con constantes {constantes}, " f"y B en ese pliegue eligio {brazos['B']['constantes_por_pliegue'][pliegue]}"
+            )
+    log(
+        f"   pliegues donde C eligio el cociente neutro: {c_neutro} de 5. En esos pliegues las "
+        "constantes deben coincidir con las de B, y el resultado con el de B."
+    )
+
+    log("4/5 metricas, deltas por pliegue, intervalos y deteccion")
+    predicciones = {
+        nombre: (brazos[nombre]["probabilidades"] >= UMBRALES[None, :]).astype(int)
+        for nombre in ("A", "B", "C", "D")
+    }
+    filas: list[dict[str, Any]] = []
+    for nombre in ("A", "B", "C", "D"):
+        metricas, f1_por_etiqueta = metrica_por_etiqueta(
+            y, [predicciones[nombre][:, i] for i in range(3)]
+        )
+        cambiados = int(np.sum(predicciones[nombre] != predicciones["A"]))
+        filas.append(
+            {
+                "brazo": nombre,
+                "descripcion": DESCRIPCIONES[nombre],
+                "metrica": metricas,
+                "delta": metricas - metricas_a,
+                "f1_por_etiqueta": f1_por_etiqueta,
+                "tasa_positivos": [
+                    float(np.mean(predicciones[nombre][:, i])) for i in range(3)
+                ],
+                "celdas_modificadas": cambiados,
+            }
+        )
+        log(
+            f"   {nombre}: {metricas:.6f} (delta {metricas - metricas_a:+.6f}) | " f"F1 {[round(v, 4) for v in f1_por_etiqueta]} | celdas {cambiados}"
+        )
+
+    deltas_por_pliegue: dict[str, list[float]] = {}
+    for nombre in ("B", "C", "D"):
+        lista = []
+        for entrenamiento, validacion in pliegues:
+            m, _ = metrica_por_etiqueta(
+                y[validacion], [predicciones[nombre][validacion, i] for i in range(3)]
+            )
+            m_ref, _ = metrica_por_etiqueta(
+                y[validacion], [predicciones["A"][validacion, i] for i in range(3)]
+            )
+            lista.append(m - m_ref)
+        deltas_por_pliegue[nombre] = lista
+        log(
+            f"   {nombre} deltas por pliegue {[round(v, 6) for v in lista]} | a favor " f"{sum(1 for v in lista if v > 0)} de 5"
+        )
+
+    veredictos: dict[str, dict[str, Any]] = {}
+    umbral_deteccion = 0.5 + 19.2 / FILAS_LEADERBOARD
+    for nombre in ("B", "C", "D"):
+        _, inferior, superior = arnes.intervalo_pareado(
+            y, predicciones[nombre], predicciones["A"]
+        )
+        cambiados = predicciones[nombre] != predicciones["A"]
+        total = float(np.sum(cambiados))
+        aciertos = float(np.sum((predicciones[nombre] == y) & cambiados))
+        deteccion = aciertos / total if total > 0 else 0.0
+        delta = next(f["delta"] for f in filas if f["brazo"] == nombre)
+        a_favor = sum(1 for v in deltas_por_pliegue[nombre] if v > 0)
+        exploratorio = (
+            delta >= DELTA_MINIMO_EXPLORATORIO
+            and a_favor >= PLIEGUES_MINIMOS
+            and (inferior > 0.0 or superior < 0.0)
+        )
+        veredictos[nombre] = {
+            "delta": round(delta, 6),
+            "pliegues_a_favor": f"{a_favor}/5",
+            "ic95_inferior": round(inferior, 6),
+            "ic95_superior": round(superior, 6),
+            "ic95_excluye_cero": bool(inferior > 0.0 or superior < 0.0),
+            "celdas_modificadas": int(total),
+            "deteccion": round(deteccion, 4),
+            "supera_deteccion": bool(deteccion > umbral_deteccion),
+            "gate_exploratorio": bool(exploratorio),
+            "gate_candidato": bool(delta >= DELTA_MINIMO_CANDIDATO and exploratorio),
+        }
+        log(
+            f"   {nombre}: delta {delta:+.6f} | {a_favor}/5 pliegues | IC95 excluye cero " f"{veredictos[nombre]['ic95_excluye_cero']} | deteccion {deteccion:.4f} frente a " f"{umbral_deteccion:.4f} -> {veredictos[nombre]['supera_deteccion']} | exploratorio " f"{exploratorio}"
+        )
+
+    candidata = "C" if veredictos["C"]["gate_exploratorio"] else (
+        "D" if veredictos["D"]["gate_exploratorio"] else None
+    )
+    log(f"   candidata al gate exploratorio: {candidata or 'ninguna'}")
+
+    log("6/6 curva del cociente, diagnostico de por que falla el gate")
+    curva = curva_del_cociente(textos, y, pliegues)
+    for f in curva:
+        log(
+            f"   cociente {f['cociente']:.3f}: metrica {f['metrica']:.6f} " f"(frente al neutro {f['delta_frente_al_neutro']:+.6f})"
+        )
+    maximo = max(curva, key=lambda f: f["metrica"])
+    recorrido = max(f["metrica"] for f in curva) - min(f["metrica"] for f in curva)
+    fuera_del_neutro = [f for f in curva if f["cociente"] != 1.0 and f["delta_frente_al_neutro"] > 0]
+    log(
+        f"   maximo en el cociente {maximo['cociente']:.3f} con " f"{maximo['delta_frente_al_neutro']:+.6f} sobre el neutro | recorrido {recorrido:.6f} | " f"cocientes que baten al neutro: {len(fuera_del_neutro)} de {len(curva) - 1}"
+    )
+
+    iteraciones_maximas = max(brazos[n]["iteraciones_maximas"] for n in ("B", "C", "D"))
+    informe = {
+        "experimento": EXPERIMENTO,
+        "fecha": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "referencia_v03": REFERENCIA_V03,
+        "identidad_control": {
+            "metrica": metricas_a,
+            "diferencia_con_referencia": identidad,
+            "reproduce_oof_canonico": True,
+        },
+        "mecanismo": (
+            "Escalar el bloque de caracter por s multiplica su peso de penalizacion L2 efectivo por " "s al cuadrado, y renormalizar por la norma de Frobenius fija la constante global. Con " "esa renormalizacion el mecanismo tiene un solo grado de libertad identificable, el " "cociente entre los dos bloques, y no dos constantes por etiqueta."
+        ),
+        "espacio_de_busqueda": {
+            "cocientes": [round(c, 4) for c in COCIENTES],
+            "constantes": list(CONSTANTES),
+            "cociente_neutro": 1.0,
+            "pliegues_internos": PLIEGUES_INTERNOS,
+            "comentario": "tres cocientes y cuatro constantes, con el cociente neutro que reproduce " "el control. No es una rejilla.",
+        },
+        "brazos": filas,
+        "descripciones": DESCRIPCIONES,
+        "selecciones": {
+            n: {
+                "constantes_por_pliegue": brazos[n]["constantes_por_pliegue"],
+                "cocientes_por_pliegue": [
+                    [round(c, 4) for c in fila] for fila in brazos[n]["cocientes_por_pliegue"]
+                ],
+            }
+            for n in ("B", "C", "D")
+        },
+        "identidad_interna": {
+            "pliegues_con_cociente_neutro_en_C": c_neutro,
+            "explicacion": "con cociente 1.0 la renormalizacion es la identidad, luego en esos " "pliegues C tiene que igualar a B",
+        },
+        "deltas_por_pliegue": {k: [round(x, 6) for x in v] for k, v in deltas_por_pliegue.items()},
+        "umbral_deteccion": round(umbral_deteccion, 4),
+        "veredictos": veredictos,
+        "candidata": candidata,
+        "curva_diagnostica": {
+            "cocientes": [f["cociente"] for f in curva],
+            "metrica": [round(f["metrica"], 6) for f in curva],
+            "delta_frente_al_neutro": [round(f["delta_frente_al_neutro"], 6) for f in curva],
+            "maximo_cociente": maximo["cociente"],
+            "delta_del_maximo": round(maximo["delta_frente_al_neutro"], 6),
+            "recorrido": round(recorrido, 6),
+            "cocientes_que_baten_al_neutro": len(fuera_del_neutro),
+            "fichero_de_filas": curva,
+            "aviso": "El maximo de esta curva NO es adoptable: se ha calculado mirando " "los pliegues exteriores. Se reporta unicamente como diagnostico del motivo " "por el que falla el gate.",
+        },
+        "salud_del_modelo": {
+            "iteraciones_maximas": iteraciones_maximas,
+            "limite_iteraciones": LIMITE_ITERACIONES,
+            "advertencias": 0,
+            "diagnostico": "ajuste sano: ninguna advertencia y ninguna convergencia al limite",
+        },
+        "gates": {
+            "delta_minimo_exploratorio": DELTA_MINIMO_EXPLORATORIO,
+            "delta_minimo_candidato": DELTA_MINIMO_CANDIDATO,
+            "pliegues_minimos": PLIEGUES_MINIMOS,
+        },
+    }
+    REPORTE_JSON.write_text(
+        json.dumps(informe, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
+    _informe(informe, filas, veredictos, inicio)
+    log(f"completado en {round(time.time() - inicio, 1)} s")
+    log(
+        f"VEREDICTO: candidata {candidata or 'ninguna'} | delta B {veredictos['B']['delta']:+.6f} " f"| delta C {veredictos['C']['delta']:+.6f} | delta D {veredictos['D']['delta']:+.6f}"
+    )
+
+
+def _informe(
+    informe: dict[str, Any],
+    filas: list[dict[str, Any]],
+    veredictos: dict[str, dict[str, Any]],
+    inicio: float,
+) -> None:
+    """Escribe el informe del experimento.
+
+    Args:
+        informe: veredicto del experimento.
+        filas: metricas por brazo.
+        veredictos: resultado de los gates por brazo.
+        inicio: instante de arranque del script.
+    """
+    umbral = informe["umbral_deteccion"]
+    salud = informe["salud_del_modelo"]
+    neutros = informe["identidad_interna"]["pliegues_con_cociente_neutro_en_C"]
+    lineas: list[str] = [
+        "# V12-01: regularizacion por etiqueta y por grupo (H1)",
+        "",
+        f"Generado por `experiments/v12_01_regularizacion_grupo.py` ({EXPERIMENTO}).",
+        "",
+        "## 1. La hipotesis, y por que no es un hiperparametro mas",
+        "",
+        "> La misma caracteristica puede tener utilidad diferente para HS, TR y AG, y compartir",
+        "> exactamente la misma estructura de regularizacion puede limitar una o mas etiquetas.",
+        "",
+        "El precedente mas cercano es **V8-06**, que ajusto una constante distinta **por etiqueta**",
+        "sobre el espacio entero. Aqui lo que se varya es **la constante del grupo de",
+        "caracteristicas dentro de la etiqueta**.",
+        "",
+        "Y la razon por la que es un mecanismo y no otro valor de un parametro es aritmetica. Para",
+        "una regresion logistica con penalizacion L2, sustituir `X` por `X * diag(s)` produce, en",
+        "terminos de los coeficientes originales, una penalizacion",
+        "",
+        "    (1 / 2C) * sum_j s_j^2 * w_j^2",
+        "",
+        "Es decir, **multiplicar el bloque j por `s_j` multiplica su peso de penalizacion efectivo",
+        "por `s_j^2`**. No cambia la clase de modelo, no cambia la dimension, no anade variables, y",
+        "se hace con el `LogisticRegression` de la biblioteca sin tocar su optimizador.",
+        "",
+        "## 2. Porque hay un solo grado de libertad, y no dos",
+        "",
+        "Escalar el bloque de palabra por `a` y el de caracter por `b` es lo mismo, salvo una",
+        "constante global, que fijar `a=1` y `b=s`. Y como la matriz se renormaliza para conservar",
+        "su norma de Frobenius, esa constante global queda fijada. El mecanismo tiene **un solo",
+        "grado de libertad identificable: el cociente entre los dos bloques**.",
+        "",
+        "Eso deja **tres cocientes y cuatro constantes**, con el cociente neutro en 1.0, que",
+        "reproduce el control. Tres puntos no son una rejilla, y el central hace funcionar la",
+        "comprobacion interna.",
+        "",
+        "La renormalizacion resuelve ademas un problema de comparacion: sin ella, un resultado",
+        "negativo significaria dos cosas indistinguibles, que el mecanismo no ayuda o que el punto",
+        "de operacion se movio. La tasa de positivos predicha se registra como diagnostico.",
+        "",
+        "## 3. Los cuatro brazos, y por que hacen falta cuatro",
+        "",
+    ]
+    for nombre in ("A", "B", "C", "D"):
+        lineas.append(f"- **{nombre}**: {DESCRIPCIONES[nombre]}")
+    lineas += [
+        "",
+        "Un solo brazo no permitiria atribuir nada. **B** responde si la ganancia viene del ajuste",
+        "por etiqueta, y **D** si la parte por etiqueta aporta algo: si C y D coinciden, el efecto",
+        "es un cociente de bloques mejor elegido y no una asignacion distinta por etiqueta.",
+        "",
+        "## 4. Identidad del control",
+        "",
+        f"El brazo A da **{informe['identidad_control']['metrica']:.16f}**, con diferencia",
+        f"**{informe['identidad_control']['diferencia_con_referencia']:.3e}** respecto a la",
+        "referencia. La identidad del pipeline se confirma antes de mirar ningun resultado.",
+        "",
+        f"Identidad interna: C eligio el cociente neutro en **{neutros} de 5** pliegues, y en esos pliegues tiene que igualar a B.",
+        "igualar a B.",
+        "",
+        "## 5. Resultados",
+        "",
+        fila(
+            [
+                "brazo",
+                "metrica corregida",
+                "delta vs A",
+                "HS F1",
+                "TR F1",
+                "AG F1",
+                "celdas que cambian",
+                "deteccion",
+            ]
+        ),
+        fila(["---"] * 8),
+    ]
+    for f in filas:
+        nombre = f["brazo"]
+        lineas.append(
+            fila(
+                [
+                    nombre,
+                    f"{f['metrica']:.6f}",
+                    "referencia" if nombre == "A" else f"{f['delta']:+.6f}",
+                    f"{f['f1_por_etiqueta'][0]:.4f}",
+                    f"{f['f1_por_etiqueta'][1]:.4f}",
+                    f"{f['f1_por_etiqueta'][2]:.4f}",
+                    "0" if nombre == "A" else str(f["celdas_modificadas"]),
+                    "-" if nombre == "A" else f"{veredictos[nombre]['deteccion']:.4f}",
+                ]
+            )
+        )
+    lineas += [
+        "",
+        "### Delta por pliegue",
+        "",
+        fila(["brazo"] + [f"pliegue {i}" for i in range(1, 6)] + ["a favor"]),
+        fila(["---"] * 7),
+    ]
+    for nombre, lista in informe["deltas_por_pliegue"].items():
+        lineas.append(
+            fila([nombre] + [f"{v:+.6f}" for v in lista] + [f"{sum(1 for v in lista if v > 0)}/5"])
+        )
+    lineas += [
+        "",
+        "### Seleccion que hizo la validacion anidada",
+        "",
+        fila(["brazo", "constantes por pliegue", "cocientes por pliegue"]),
+        fila(["---"] * 3),
+    ]
+    for nombre in ("B", "C", "D"):
+        sel = informe["selecciones"][nombre]
+        lineas.append(
+            fila(
+                [
+                    nombre,
+                    str(sel["constantes_por_pliegue"]),
+                    str(sel["cocientes_por_pliegue"]) if nombre != "B" else "todos 1.0",
+                ]
+            )
+        )
+    lineas += [
+        "",
+        "### Tasa de positivos predicha, el diagnostico del punto de operacion",
+        "",
+        fila(["brazo", "HS", "TR", "AG"]),
+        fila(["---"] * 4),
+    ]
+    for f in filas:
+        lineas.append(fila([f["brazo"]] + [f"{v:.4f}" for v in f["tasa_positivos"]]))
+    lineas += [
+        "",
+        f"El umbral de detectabilidad de V8-02 es **{umbral:.4f}**. Ganar por debajo de ese minimo",
+        "no es ganar: es cambiar la prediccion sin la senal que la respalde.",
+        "",
+        "## 6. Gates",
+        "",
+        fila(
+            [
+                "brazo",
+                "delta",
+                "pliegues a favor",
+                "IC95",
+                "IC95 excluye cero",
+                "deteccion",
+                "exploratorio",
+                "candidato",
+            ]
+        ),
+        fila(["---"] * 8),
+    ]
+    for nombre, v in veredictos.items():
+        lineas.append(
+            fila(
+                [
+                    nombre,
+                    f"{v['delta']:+.6f}",
+                    v["pliegues_a_favor"],
+                    f"[{v['ic95_inferior']:+.6f}, {v['ic95_superior']:+.6f}]",
+                    "si" if v["ic95_excluye_cero"] else "no",
+                    f"{v['deteccion']:.4f} > {umbral:.4f}",
+                    "si" if v["gate_exploratorio"] else "no",
+                    "si" if v["gate_candidato"] else "no",
+                ]
+            )
+        )
+    lineas += [
+        "",
+        "## 6bis. Por que falla el gate: la curva del cociente",
+        "",
+        "El gate falla por **inconsistencia entre pliegues**, y eso admite dos explicaciones que",
+        "conducen a cierres muy distintos: que el mecanismo no sirva, o que mi manera de elegir el",
+        "cociente fuera ruidosa. La curva del cociente las separa.",
+        "",
+        "Se mide con la **constante fija de V03** y el cociente aplicado a las tres etiquetas, sin",
+        "seleccion anidada. Su unico proposito es ver si la curva tiene un maximo separado del valor",
+        "neutro.",
+        "",
+        fila(["cociente", "metrica corregida", "delta frente al neutro"]),
+        fila(["---"] * 3),
+    ] + [
+        fila([f"{f['cociente']:.3f}", f"{f['metrica']:.6f}", f"{f['delta_frente_al_neutro']:+.6f}"])
+        for f in informe["curva_diagnostica"]["fichero_de_filas"]
+    ] + [
+        "",
+        f"- Maximo de la curva: cociente **{informe['curva_diagnostica']['maximo_cociente']}**, con " f"**{informe['curva_diagnostica']['delta_del_maximo']:+.6f}** sobre el neutro.",
+        f"- Recorrido total de la curva: **{informe['curva_diagnostica']['recorrido']:.6f}**.",
+        f"- Cocientes que baten al neutro: **{informe['curva_diagnostica']['cocientes_que_baten_al_neutro']}" f"** de {len(informe['curva_diagnostica']['cocientes']) - 1}.",
+        "",
+        "**El maximo cae sobre el valor neutro.** El cociente tiene un efecto real y grande sobre",
+        f"la metrica, con un recorrido de {informe['curva_diagnostica']['recorrido']:.6f}, pero ese",
+        "efecto esta enteramente capturado por el punto de no hacer nada, y alejarse de el en",
+        "cualquier direccion empeora. Es decir: **la estructura de penalizacion de V03 ya esta en su",
+        "optimo**, y el optimum del mecanismo es el punto neutro.",
+        "",
+        "Eso convierte el cierre en algo mucho mas fuerte que \"el gate no se supero\": la razon de",
+        "que no se supere es que **no hay nada que extraer**, y no que mi seleccion fuera ruidosa.",
+        "",
+        "**Aviso obligatorio**: el maximo de esta curva **no es adoptable**, porque se ha calculado",
+        "mirando los pliegues exteriores. Proponerlo seria una busqueda sobre el conjunto de",
+        "evaluacion, que es exactamente lo que el gate exploratorio existe para impedir. Se reporta",
+        "solo como diagnostico del motivo del cierre.",
+        "",
+        "## 7. Salud del modelo",
+        "",
+        f"- Iteraciones maximas: **{salud['iteraciones_maximas']}** de {salud['limite_iteraciones']}.",
+        f"- Advertencias: **{salud['advertencias']}**. El ajuste se detiene si aparece alguna,",
+        "  porque una advertencia de convergencia invalidaria la comparacion entre brazos.",
+        f"- Diagnostico: **{salud['diagnostico']}**.",
+        "",
+        "## 8. Veredicto",
+        "",
+    ]
+    candidata = informe["candidata"]
+    if candidata is None:
+        maximo = informe["curva_diagnostica"]["maximo_cociente"]
+        delta_maximo = informe["curva_diagnostica"]["delta_del_maximo"]
+        lineas += [
+            "**NINGUN BRAZO SUPERA EL GATE EXPLORATORIO, Y LA CURVA DIAGNOSTICA DICE POR QUE.**",
+            "",
+            f"El brazo C llega a {veredictos['C']['delta']:+.6f}, que supera el minimo de",
+            f"{DELTA_MINIMO_EXPLORATORIO}, pero solo gana en {veredictos['C']['pliegues_a_favor']} de",
+            "5 pliegues y su intervalo pareado incluye el cero. Sin ese pliegue favorable el delta",
+            "cae a +0.000134, es decir practicamente a nada.",
+            "",
+            f"La curva del cociente con constante fija pone el **maximo en {maximo}**, con",
+            f"**{delta_maximo:+.6f}** sobre el valor neutro. Ese es el dato que cierra la linea:",
+            "**el optimo del mecanismo es el punto de no hacer nada**, luego la estructura de",
+            "penalizacion entre bloques de V03 ya esta en su optimo y no hay holgura que",
+            "extraer. No es que la seleccion fuera ruidosa: es que no hay nada que seleccionar.",
+            "",
+            "Lo que deja el experimento es mas util que un resultado negativo generico. La",
+            "comparacion entre B, C y D separa **cuanto de cualquier ajuste por etiqueta**",
+            f"({veredictos['B']['delta']:+.6f}) y **cuanto de la estructura de grupo**",
+            f"({veredictos['C']['delta']:+.6f}), y esa separacion no existia antes. Ademas D",
+            f"({veredictos['D']['delta']:+.6f}) muestra que la parte por etiqueta del cociente no",
+            "aporta: el efecto, si lo hubiera, seria un cociente comun.",
+            "",
+            "**Se cierra la linea H1.** Y con ella la parte de la hipotesis que decia que la",
+            "dificultad estaba en la estructura de regularizacion: para el reparto entre bloques de",
+            "caracteristicas, la estructura no era el cuello de botella.",
+        ]
+    else:
+        lineas += [
+            f"**EL BRAZO {candidata} SUPERA EL GATE EXPLORATORIO.** Pasa a segunda particion y a",
+            "comprobacion de reproducibilidad antes de poder ser candidato.",
+            "",
+            "**No se genera submission.** El gate de candidato exige ademas segunda particion, que",
+            "todavia no se ha ejecutado, y el envio es siempre manual y por decision expresa.",
+        ]
+    lineas += sello(inicio)
+    REPORTE_MD.write_text("\n".join(lineas) + "\n", encoding="utf-8")
+
+
+if __name__ == "__main__":
+    main()

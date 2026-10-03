@@ -1,0 +1,27 @@
+{
+  "run1": {
+    "comando": "skipgram -input /home/carlos/Git/PLN-toxic-rerun/kaggle_toxic_2026_puj/data/external/corpora/wikipedia_es/emb_normal/tokens_10M.txt -output /home/carlos/Git/PLN-toxic-rerun/kaggle_toxic_2026_puj/audit/out_p06/fasttext/baseline_seed42_run1 -dim 200 -ws 5 -minCount 3 -neg 10 -epoch 5 -thread 16 -seed 42 -minn 3 -maxn 6 -bucket 200000 -verbose 0",
+    "sha256_vec": "39897db18e64c809d076fa3c8a230922bd8c21a998c26ed9dd6ea0471f0ed858"
+  },
+  "run2": {
+    "comando": "skipgram -input /home/carlos/Git/PLN-toxic-rerun/kaggle_toxic_2026_puj/data/external/corpora/wikipedia_es/emb_normal/tokens_10M.txt -output /home/carlos/Git/PLN-toxic-rerun/kaggle_toxic_2026_puj/audit/out_p06/fasttext/baseline_seed42_run2 -dim 200 -ws 5 -minCount 3 -neg 10 -epoch 5 -thread 16 -seed 42 -minn 3 -maxn 6 -bucket 200000 -verbose 0",
+    "sha256_vec": "db82f40f9fe701242760a88f720d2bc14f4f47c82151455fd4a599528edbf464"
+  },
+  "determinismo_intra_config": false,
+  "almacenado": {
+    "ruta": "/home/carlos/Git/PLN/kaggle_toxic_2026_puj/data/external/embeddings/fasttext_baseline.vec",
+    "sha256": "e54a363da986aeac4f16d73e49fc9e7fa740450c240a026a23bf004289dadc0f"
+  },
+  "igual_al_almacenado": false,
+  "vocabulario": {
+    "n_almacenado": 100098,
+    "n_run1": 100098,
+    "igual": true,
+    "en_comun": 100098
+  },
+  "comparacion_semantica_run1_vs_almacenado": {
+    "palabras_evaluadas": 12,
+    "solapamiento_medio_top10": 0.8333,
+    "coseno_centrado_medio": 0.2927
+  }
+}

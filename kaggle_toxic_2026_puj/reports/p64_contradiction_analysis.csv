@@ -1,0 +1,19 @@
+tipo,clave,loo_concentracion,loo_conflicto,loo_cambia_de_signo,loo_fraccion_implicita,loo_entropia,n
+contradiccion,todas multi,0.707987,0.018153,0.716822,0.660186,0.663482,751
+contradiccion,V03 correcto,0.726222,0.015605,0.676389,0.688001,0.639037,480
+contradiccion,V03 incorrecto,0.67569,0.022667,0.788438,0.61092,0.706779,271
+contradiccion,error de alta confianza,0.688065,0.020101,0.753788,0.618361,0.686052,176
+contradiccion,CORTA,0.755398,0.02024,0.613333,0.69,0.610779,50
+contradiccion,MEDIA,0.741432,0.020217,0.697706,0.663893,0.655111,247
+contradiccion,LARGA,0.711391,0.01758,0.710769,0.650234,0.663903,325
+contradiccion,MUY_LARGA,0.616998,0.014839,0.808786,0.666604,0.69888,129
+auc_contra_el_acierto,concentracion,0.449595
+auc_contra_el_acierto,conflicto,0.380911
+auc_contra_el_acierto,cambia_de_signo,0.398551
+auc_contra_el_acierto,fraccion_implicita,0.454946
+auc_contra_el_acierto,margen_de_V03,0.770875
+brazo,V03_loo,0.7656662317,-0.0115452208
+brazo,V03_random,0.7679574277,-0.0092540248
+brazo,V03_margen,0.766131252,-0.0110802005
+brecha_contra_capacidad,,-0.002291196
+brecha_contra_el_margen,,-0.0004650203

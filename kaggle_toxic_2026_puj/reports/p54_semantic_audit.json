@@ -1,0 +1,826 @@
+{
+  "familia": "P54_NONRESCUABLE_SEMANTIC_AUDIT",
+  "experimento": "V54-00 (atlas semantico de los errores no rescatables)",
+  "fecha": "2026-09-28T02:35:28+00:00",
+  "estado": "AUDIT_ONLY",
+  "poblaciones": {
+    "A_correcto": 3692,
+    "B_rescatable": 715,
+    "C_no_rescatable": 42,
+    "errores_totales": 757,
+    "verificado_contra_P49": true,
+    "tweets_distintos_en_C": 33,
+    "soporte_efectivo": 33,
+    "advertencia_de_soporte": "las 42 celdas NO son 42 observaciones independientes: proceden de 33 tweets distintos"
+  },
+  "direccion_del_error_en_C": [
+    {
+      "direccion": "FP (V03=1, y=0)",
+      "n": 22
+    },
+    {
+      "direccion": "FN (V03=0, y=1)",
+      "n": 20
+    }
+  ],
+  "distribucion": [
+    {
+      "atributo": "n_chars",
+      "tipo": "numerica",
+      "A": 102.5612,
+      "B": 115.0531,
+      "C": 116.881,
+      "mediana_C": 76.5
+    },
+    {
+      "atributo": "n_tokens",
+      "tipo": "numerica",
+      "A": 18.4716,
+      "B": 21.1888,
+      "C": 22.619,
+      "mediana_C": 13.5
+    },
+    {
+      "atributo": "margen",
+      "tipo": "numerica",
+      "A": 0.2977,
+      "B": 0.1582,
+      "C": 0.3185,
+      "mediana_C": 0.3484
+    },
+    {
+      "atributo": "proba",
+      "tipo": "numerica",
+      "A": 0.4005,
+      "B": 0.474,
+      "C": 0.5417,
+      "mediana_C": 0.6227
+    },
+    {
+      "atributo": "n_canales_ok",
+      "tipo": "numerica",
+      "A": 16.958,
+      "B": 5.8364,
+      "C": 0.0,
+      "mediana_C": 0.0
+    },
+    {
+      "atributo": "frac_caps",
+      "tipo": "numerica",
+      "A": 0.1036,
+      "B": 0.0899,
+      "C": 0.0773,
+      "mediana_C": 0.0414
+    },
+    {
+      "atributo": "n_menciones",
+      "tipo": "numerica",
+      "A": 0.75,
+      "B": 0.614,
+      "C": 0.619,
+      "mediana_C": 0.5
+    },
+    {
+      "atributo": "n_hashtags",
+      "tipo": "numerica",
+      "A": 0.172,
+      "B": 0.179,
+      "C": 0.0476,
+      "mediana_C": 0.0
+    },
+    {
+      "atributo": "n_urls",
+      "tipo": "numerica",
+      "A": 0.6571,
+      "B": 0.7133,
+      "C": 0.5238,
+      "mediana_C": 0.0
+    },
+    {
+      "atributo": "n_tramos_cita",
+      "tipo": "numerica",
+      "A": 0.1544,
+      "B": 0.1832,
+      "C": 0.2381,
+      "mediana_C": 0.0
+    },
+    {
+      "atributo": "n_colectivos",
+      "tipo": "numerica",
+      "A": 0.3115,
+      "B": 0.4042,
+      "C": 0.5238,
+      "mediana_C": 0.0
+    },
+    {
+      "atributo": "n_marcadores_atribucion",
+      "tipo": "numerica",
+      "A": 0.0753,
+      "B": 0.0853,
+      "C": 0.0714,
+      "mediana_C": 0.0
+    },
+    {
+      "atributo": "n_segunda",
+      "tipo": "numerica",
+      "A": 0.8229,
+      "B": 0.7944,
+      "C": 0.8571,
+      "mediana_C": 1.0
+    },
+    {
+      "atributo": "n_negaciones",
+      "tipo": "numerica",
+      "A": 0.3499,
+      "B": 0.4769,
+      "C": 0.7619,
+      "mediana_C": 0.5
+    },
+    {
+      "atributo": "n_risas",
+      "tipo": "numerica",
+      "A": 0.0599,
+      "B": 0.049,
+      "C": 0.0476,
+      "mediana_C": 0.0
+    },
+    {
+      "atributo": "n_imperativos",
+      "tipo": "numerica",
+      "A": 0.1647,
+      "B": 0.1385,
+      "C": 0.0952,
+      "mediana_C": 0.0
+    },
+    {
+      "atributo": "n_targets",
+      "tipo": "numerica",
+      "A": 3.2389,
+      "B": 3.1776,
+      "C": 3.119,
+      "mediana_C": 2.0
+    },
+    {
+      "atributo": "n_propn",
+      "tipo": "numerica",
+      "A": 2.4889,
+      "B": 2.5636,
+      "C": 2.5,
+      "mediana_C": 2.0
+    },
+    {
+      "atributo": "tiene_insulto",
+      "tipo": "binaria",
+      "A": 0.5336,
+      "B": 0.5035,
+      "C": 0.6667,
+      "mediana_C": NaN
+    },
+    {
+      "atributo": "mi_mas_insulto",
+      "tipo": "binaria",
+      "A": 0.013,
+      "B": 0.0364,
+      "C": 0.0952,
+      "mediana_C": NaN
+    },
+    {
+      "atributo": "grupo_marginal",
+      "tipo": "binaria",
+      "A": 0.0799,
+      "B": 0.1413,
+      "C": 0.2143,
+      "mediana_C": NaN
+    },
+    {
+      "atributo": "negacion",
+      "tipo": "binaria",
+      "A": 0.2235,
+      "B": 0.2909,
+      "C": 0.4048,
+      "mediana_C": NaN
+    },
+    {
+      "atributo": "marcador_contraste",
+      "tipo": "binaria",
+      "A": 0.0563,
+      "B": 0.0587,
+      "C": 0.119,
+      "mediana_C": NaN
+    },
+    {
+      "atributo": "negacion_y_contraste",
+      "tipo": "binaria",
+      "A": 0.0311,
+      "B": 0.035,
+      "C": 0.0238,
+      "mediana_C": NaN
+    },
+    {
+      "atributo": "tiene_elongacion",
+      "tipo": "binaria",
+      "A": 0.1774,
+      "B": 0.228,
+      "C": 0.1667,
+      "mediana_C": NaN
+    },
+    {
+      "atributo": "tiene_leet",
+      "tipo": "binaria",
+      "A": 0.2199,
+      "B": 0.2238,
+      "C": 0.2143,
+      "mediana_C": NaN
+    },
+    {
+      "atributo": "tiene_mayusculas_sostenidas",
+      "tipo": "binaria",
+      "A": 0.9439,
+      "B": 0.9455,
+      "C": 0.9286,
+      "mediana_C": NaN
+    },
+    {
+      "atributo": "rt_presente",
+      "tipo": "binaria",
+      "A": 0.0,
+      "B": 0.0,
+      "C": 0.0,
+      "mediana_C": NaN
+    },
+    {
+      "atributo": "tiene_mencion_inicial",
+      "tipo": "binaria",
+      "A": 0.4196,
+      "B": 0.3441,
+      "C": 0.4762,
+      "mediana_C": NaN
+    }
+  ],
+  "rescate_sobre_no_rescate": [
+    {
+      "atributo": "tiene_insulto",
+      "n_C": 28,
+      "n_B": 360,
+      "n_A": 1970,
+      "pct_C": 0.666667,
+      "pct_B": 0.503497,
+      "pct_A": 0.533586,
+      "enrichment_C_sobre_B": 1.3241,
+      "p_C_sobre_B": 0.024242,
+      "enrichment_C_sobre_A": 1.2494,
+      "p_C_sobre_A": 0.056575,
+      "soporte_absoluto": 28
+    },
+    {
+      "atributo": "mi_mas_insulto",
+      "n_C": 4,
+      "n_B": 26,
+      "n_A": 48,
+      "pct_C": 0.095238,
+      "pct_B": 0.036364,
+      "pct_A": 0.013001,
+      "enrichment_C_sobre_B": 2.619,
+      "p_C_sobre_B": 0.065571,
+      "enrichment_C_sobre_A": 7.3254,
+      "p_C_sobre_A": 0.002157,
+      "soporte_absoluto": 4
+    },
+    {
+      "atributo": "grupo_marginal",
+      "n_C": 9,
+      "n_B": 101,
+      "n_A": 295,
+      "pct_C": 0.214286,
+      "pct_B": 0.141259,
+      "pct_A": 0.079902,
+      "enrichment_C_sobre_B": 1.517,
+      "p_C_sobre_B": 0.129547,
+      "enrichment_C_sobre_A": 2.6818,
+      "p_C_sobre_A": 0.005229,
+      "soporte_absoluto": 9
+    },
+    {
+      "atributo": "negacion",
+      "n_C": 17,
+      "n_B": 208,
+      "n_A": 825,
+      "pct_C": 0.404762,
+      "pct_B": 0.290909,
+      "pct_A": 0.223456,
+      "enrichment_C_sobre_B": 1.3914,
+      "p_C_sobre_B": 0.075785,
+      "enrichment_C_sobre_A": 1.8114,
+      "p_C_sobre_A": 0.006367,
+      "soporte_absoluto": 17
+    },
+    {
+      "atributo": "marcador_contraste",
+      "n_C": 5,
+      "n_B": 42,
+      "n_A": 208,
+      "pct_C": 0.119048,
+      "pct_B": 0.058741,
+      "pct_A": 0.056338,
+      "enrichment_C_sobre_B": 2.0266,
+      "p_C_sobre_B": 0.098313,
+      "enrichment_C_sobre_A": 2.1131,
+      "p_C_sobre_A": 0.085807,
+      "soporte_absoluto": 5
+    },
+    {
+      "atributo": "negacion_y_contraste",
+      "n_C": 1,
+      "n_B": 25,
+      "n_A": 115,
+      "pct_C": 0.02381,
+      "pct_B": 0.034965,
+      "pct_A": 0.031148,
+      "enrichment_C_sobre_B": 0.681,
+      "p_C_sobre_B": 0.775711,
+      "enrichment_C_sobre_A": 0.7644,
+      "p_C_sobre_A": 0.735269,
+      "soporte_absoluto": 1
+    },
+    {
+      "atributo": "tiene_elongacion",
+      "n_C": 7,
+      "n_B": 163,
+      "n_A": 655,
+      "pct_C": 0.166667,
+      "pct_B": 0.227972,
+      "pct_A": 0.177411,
+      "enrichment_C_sobre_B": 0.7311,
+      "p_C_sobre_B": 0.873636,
+      "enrichment_C_sobre_A": 0.9394,
+      "p_C_sobre_A": 0.634986,
+      "soporte_absoluto": 7
+    },
+    {
+      "atributo": "tiene_leet",
+      "n_C": 9,
+      "n_B": 160,
+      "n_A": 812,
+      "pct_C": 0.214286,
+      "pct_B": 0.223776,
+      "pct_A": 0.219935,
+      "enrichment_C_sobre_B": 0.9576,
+      "p_C_sobre_B": 0.618244,
+      "enrichment_C_sobre_A": 0.9743,
+      "p_C_sobre_A": 0.595259,
+      "soporte_absoluto": 9
+    },
+    {
+      "atributo": "tiene_mayusculas_sostenidas",
+      "n_C": 39,
+      "n_B": 676,
+      "n_A": 3485,
+      "pct_C": 0.928571,
+      "pct_B": 0.945455,
+      "pct_A": 0.943933,
+      "enrichment_C_sobre_B": 0.9821,
+      "p_C_sobre_B": 0.805345,
+      "enrichment_C_sobre_A": 0.9837,
+      "p_C_sobre_A": 0.79208,
+      "soporte_absoluto": 39
+    },
+    {
+      "atributo": "rt_presente",
+      "n_C": 0,
+      "n_B": 0,
+      "n_A": 0,
+      "pct_C": 0.0,
+      "pct_B": 0.0,
+      "pct_A": 0.0,
+      "enrichment_C_sobre_B": NaN,
+      "p_C_sobre_B": NaN,
+      "enrichment_C_sobre_A": NaN,
+      "p_C_sobre_A": NaN,
+      "soporte_absoluto": 0
+    },
+    {
+      "atributo": "tiene_mencion_inicial",
+      "n_C": 20,
+      "n_B": 246,
+      "n_A": 1549,
+      "pct_C": 0.47619,
+      "pct_B": 0.344056,
+      "pct_A": 0.419556,
+      "enrichment_C_sobre_B": 1.384,
+      "p_C_sobre_B": 0.052754,
+      "enrichment_C_sobre_A": 1.135,
+      "p_C_sobre_A": 0.27686,
+      "soporte_absoluto": 20
+    }
+  ],
+  "margen": [
+    {
+      "bin_de_margen": "[0,0.10)",
+      "n_A": 368,
+      "n_B": 280,
+      "n_C": 2,
+      "pct_de_C": 0.047619,
+      "pct_de_B": 0.391608
+    },
+    {
+      "bin_de_margen": "[0.10,0.20)",
+      "n_A": 541,
+      "n_B": 203,
+      "n_C": 4,
+      "pct_de_C": 0.095238,
+      "pct_de_B": 0.283916
+    },
+    {
+      "bin_de_margen": "[0.20,1]",
+      "n_A": 2783,
+      "n_B": 232,
+      "n_C": 36,
+      "pct_de_C": 0.857143,
+      "pct_de_B": 0.324476
+    }
+  ],
+  "alta_confianza": {
+    "umbral": 0.7,
+    "tabla": [
+      {
+        "label": "HS",
+        "n": 1483,
+        "errores": 316,
+        "errores_alta_confianza": 97,
+        "pct_de_alta_confianza": 0.306962,
+        "de_esos_no_rescatables": 7,
+        "de_esos_rescatables": 90
+      },
+      {
+        "label": "TR",
+        "n": 1483,
+        "errores": 164,
+        "errores_alta_confianza": 72,
+        "pct_de_alta_confianza": 0.439024,
+        "de_esos_no_rescatables": 11,
+        "de_esos_rescatables": 61
+      },
+      {
+        "label": "AG",
+        "n": 1483,
+        "errores": 277,
+        "errores_alta_confianza": 99,
+        "pct_de_alta_confianza": 0.357401,
+        "de_esos_no_rescatables": 18,
+        "de_esos_rescatables": 81
+      }
+    ],
+    "n_C_en_alta_confianza": 36
+  },
+  "eda_reconciliation": [
+    {
+      "hallazgo_eda": "cita",
+      "columna": "n_tramos_cita",
+      "antecedente": "V19, V32 y P50: analizado y cerrado",
+      "n_C": 1,
+      "n_B": 44,
+      "n_A": 138,
+      "pct_C": 0.02381,
+      "pct_B": 0.061538,
+      "pct_A": 0.037378,
+      "rescue_enrichment_C_sobre_B": 0.3869,
+      "p_rescue_enrichment": 0.930579,
+      "nonrescue_enrichment_C_sobre_A": 0.637,
+      "p_nonrescue_enrichment": 0.798098
+    },
+    {
+      "hallazgo_eda": "colectivo",
+      "columna": "n_colectivos",
+      "antecedente": "V05, V20 y P50: analizado y cerrado",
+      "n_C": 12,
+      "n_B": 208,
+      "n_A": 869,
+      "pct_C": 0.285714,
+      "pct_B": 0.290909,
+      "pct_A": 0.235374,
+      "rescue_enrichment_C_sobre_B": 0.9821,
+      "p_rescue_enrichment": 0.587377,
+      "nonrescue_enrichment_C_sobre_A": 1.2139,
+      "p_nonrescue_enrichment": 0.271686
+    },
+    {
+      "hallazgo_eda": "hashtags",
+      "columna": "n_hashtags",
+      "antecedente": "P49 lo encontro enriquecido en errores",
+      "n_C": 1,
+      "n_B": 78,
+      "n_A": 353,
+      "pct_C": 0.02381,
+      "pct_B": 0.109091,
+      "pct_A": 0.095612,
+      "rescue_enrichment_C_sobre_B": 0.2183,
+      "p_rescue_enrichment": 0.992184,
+      "nonrescue_enrichment_C_sobre_A": 0.249,
+      "p_nonrescue_enrichment": 0.985314
+    },
+    {
+      "hallazgo_eda": "urls",
+      "columna": "n_urls",
+      "antecedente": "V31 lo analizo como estructura",
+      "n_C": 9,
+      "n_B": 244,
+      "n_A": 1121,
+      "pct_C": 0.214286,
+      "pct_B": 0.341259,
+      "pct_A": 0.303629,
+      "rescue_enrichment_C_sobre_B": 0.6279,
+      "p_rescue_enrichment": 0.975057,
+      "nonrescue_enrichment_C_sobre_A": 0.7057,
+      "p_nonrescue_enrichment": 0.927366
+    },
+    {
+      "hallazgo_eda": "mencion_inicial",
+      "columna": "tiene_mencion_inicial",
+      "antecedente": "V14 y P50",
+      "n_C": 20,
+      "n_B": 246,
+      "n_A": 1549,
+      "pct_C": 0.47619,
+      "pct_B": 0.344056,
+      "pct_A": 0.419556,
+      "rescue_enrichment_C_sobre_B": 1.384,
+      "p_rescue_enrichment": 0.052754,
+      "nonrescue_enrichment_C_sobre_A": 1.135,
+      "p_nonrescue_enrichment": 0.27686
+    },
+    {
+      "hallazgo_eda": "negacion",
+      "columna": "n_negaciones",
+      "antecedente": "V19, V32 y P49",
+      "n_C": 21,
+      "n_B": 231,
+      "n_A": 906,
+      "pct_C": 0.5,
+      "pct_B": 0.323077,
+      "pct_A": 0.245395,
+      "rescue_enrichment_C_sobre_B": 1.5476,
+      "p_rescue_enrichment": 0.012914,
+      "nonrescue_enrichment_C_sobre_A": 2.0375,
+      "p_nonrescue_enrichment": 0.00032
+    },
+    {
+      "hallazgo_eda": "insulto",
+      "columna": "tiene_insulto",
+      "antecedente": "V06, V17 y V18",
+      "n_C": 28,
+      "n_B": 360,
+      "n_A": 1970,
+      "pct_C": 0.666667,
+      "pct_B": 0.503497,
+      "pct_A": 0.533586,
+      "rescue_enrichment_C_sobre_B": 1.3241,
+      "p_rescue_enrichment": 0.024242,
+      "nonrescue_enrichment_C_sobre_A": 1.2494,
+      "p_nonrescue_enrichment": 0.056575
+    },
+    {
+      "hallazgo_eda": "atribucion",
+      "columna": "n_marcadores_atribucion",
+      "antecedente": "V01 y P50",
+      "n_C": 3,
+      "n_B": 59,
+      "n_A": 244,
+      "pct_C": 0.071429,
+      "pct_B": 0.082517,
+      "pct_A": 0.066089,
+      "rescue_enrichment_C_sobre_B": 0.8656,
+      "p_rescue_enrichment": 0.684606,
+      "nonrescue_enrichment_C_sobre_A": 1.0808,
+      "p_nonrescue_enrichment": 0.531115
+    },
+    {
+      "hallazgo_eda": "elongacion",
+      "columna": "tiene_elongacion",
+      "antecedente": "P47 y V06-08",
+      "n_C": 7,
+      "n_B": 163,
+      "n_A": 655,
+      "pct_C": 0.166667,
+      "pct_B": 0.227972,
+      "pct_A": 0.177411,
+      "rescue_enrichment_C_sobre_B": 0.7311,
+      "p_rescue_enrichment": 0.873636,
+      "nonrescue_enrichment_C_sobre_A": 0.9394,
+      "p_nonrescue_enrichment": 0.634986
+    },
+    {
+      "hallazgo_eda": "segunda_persona",
+      "columna": "n_segunda",
+      "antecedente": "V01 y P50",
+      "n_C": 23,
+      "n_B": 303,
+      "n_A": 1690,
+      "pct_C": 0.547619,
+      "pct_B": 0.423776,
+      "pct_A": 0.457746,
+      "rescue_enrichment_C_sobre_B": 1.2922,
+      "p_rescue_enrichment": 0.07182,
+      "nonrescue_enrichment_C_sobre_A": 1.1963,
+      "p_nonrescue_enrichment": 0.155261
+    },
+    {
+      "hallazgo_eda": "risas",
+      "columna": "n_risas",
+      "antecedente": "P49: enriquecido en errores",
+      "n_C": 2,
+      "n_B": 35,
+      "n_A": 215,
+      "pct_C": 0.047619,
+      "pct_B": 0.048951,
+      "pct_A": 0.058234,
+      "rescue_enrichment_C_sobre_B": 0.9728,
+      "p_rescue_enrichment": 0.615895,
+      "nonrescue_enrichment_C_sobre_A": 0.8177,
+      "p_nonrescue_enrichment": 0.710563
+    },
+    {
+      "hallazgo_eda": "propn",
+      "columna": "n_propn",
+      "antecedente": "V01 y P50",
+      "n_C": 37,
+      "n_B": 599,
+      "n_A": 3000,
+      "pct_C": 0.880952,
+      "pct_B": 0.837762,
+      "pct_A": 0.812568,
+      "rescue_enrichment_C_sobre_B": 1.0516,
+      "p_rescue_enrichment": 0.303365,
+      "nonrescue_enrichment_C_sobre_A": 1.0842,
+      "p_nonrescue_enrichment": 0.175142
+    },
+    {
+      "hallazgo_eda": "imperativos",
+      "columna": "n_imperativos",
+      "antecedente": "V01",
+      "n_C": 4,
+      "n_B": 91,
+      "n_A": 559,
+      "pct_C": 0.095238,
+      "pct_B": 0.127273,
+      "pct_A": 0.151408,
+      "rescue_enrichment_C_sobre_B": 0.7483,
+      "p_rescue_enrichment": 0.799311,
+      "nonrescue_enrichment_C_sobre_A": 0.629,
+      "p_nonrescue_enrichment": 0.897637
+    },
+    {
+      "hallazgo_eda": "rt",
+      "columna": "rt_presente",
+      "antecedente": "V29",
+      "n_C": 0,
+      "n_B": 0,
+      "n_A": 0,
+      "pct_C": 0.0,
+      "pct_B": 0.0,
+      "pct_A": 0.0,
+      "rescue_enrichment_C_sobre_B": NaN,
+      "p_rescue_enrichment": NaN,
+      "nonrescue_enrichment_C_sobre_A": NaN,
+      "p_nonrescue_enrichment": NaN
+    },
+    {
+      "hallazgo_eda": "leet",
+      "columna": "tiene_leet",
+      "antecedente": "V01 y P50",
+      "n_C": 9,
+      "n_B": 160,
+      "n_A": 812,
+      "pct_C": 0.214286,
+      "pct_B": 0.223776,
+      "pct_A": 0.219935,
+      "rescue_enrichment_C_sobre_B": 0.9576,
+      "p_rescue_enrichment": 0.618244,
+      "nonrescue_enrichment_C_sobre_A": 0.9743,
+      "p_nonrescue_enrichment": 0.595259
+    }
+  ],
+  "test_del_mecanismo": [
+    {
+      "atributo": "negacion",
+      "n_C": 17,
+      "n_B": 208,
+      "n_A": 825,
+      "pct_C": 0.404762,
+      "pct_A": 0.223456,
+      "enrichment_C_sobre_A": 1.8114,
+      "p": 0.006367
+    },
+    {
+      "atributo": "marcador_contraste",
+      "n_C": 5,
+      "n_B": 42,
+      "n_A": 208,
+      "pct_C": 0.119048,
+      "pct_A": 0.056338,
+      "enrichment_C_sobre_A": 2.1131,
+      "p": 0.085807
+    },
+    {
+      "atributo": "negacion_y_contraste",
+      "n_C": 1,
+      "n_B": 25,
+      "n_A": 115,
+      "pct_C": 0.02381,
+      "pct_A": 0.031148,
+      "enrichment_C_sobre_A": 0.7644,
+      "p": 0.735269
+    }
+  ],
+  "taxonomia": [
+    {
+      "category": "FP:insulto_lexico_sin_escalada",
+      "n": 21,
+      "percentage_C": 0.5,
+      "percentage_B": 0.503497,
+      "enrichment_C": 0.9931,
+      "evidence_strength": "d razonable",
+      "p_value_vs_B": 0.579097,
+      "examples": "@ladivaza Vamos DIVAZA TU PUEDES  TU ERES LA MAS PERRA | Talvez quede como zorra pero te lo mereces Socia | @saancisco Callate puta tu eres el traidor.",
+      "already_tested": "boundary de etiqueta, no es un gap de informacion",
+      "potential_mechanism": ""
+    },
+    {
+      "category": "FN:narrativa_sobre_grupo_marginal",
+      "n": 9,
+      "percentage_C": 0.214286,
+      "percentage_B": 0.503497,
+      "enrichment_C": 0.4256,
+      "evidence_strength": "d moderada",
+      "p_value_vs_B": 0.999971,
+      "examples": "Mierda para aquellos que saltan la valla de Melilla y Ceuta. Cabrones  | @OmarPrietoGob Omar Prieto: Extranjero sin identificacin ser puesto en | Al final un iletrado sin papeles. https://t.co/nQ4IptGJLd",
+      "already_tested": "boundary de etiqueta, no es un gap de informacion",
+      "potential_mechanism": ""
+    },
+    {
+      "category": "FN:insulto_con_agresividad_no_activada",
+      "n": 6,
+      "percentage_C": 0.142857,
+      "percentage_B": 0.503497,
+      "enrichment_C": 0.2837,
+      "evidence_strength": "d moderada",
+      "p_value_vs_B": 1.0,
+      "examples": "este tipo es un complice d todos estos aos d bobolucion robolucion aho | Si ella me quiere ensear las tetas? pues vale no voy a ver nada nuevo  | Aveces me pregunto si a esas chavas no les ensearon algo de valores...",
+      "already_tested": "boundary de etiqueta, no es un gap de informacion",
+      "potential_mechanism": ""
+    },
+    {
+      "category": "FN:agresividad_o_target_no_lexicalizada",
+      "n": 4,
+      "percentage_C": 0.095238,
+      "percentage_B": 0.503497,
+      "enrichment_C": 0.1892,
+      "evidence_strength": "d debil",
+      "p_value_vs_B": 1.0,
+      "examples": "Despus dicen que los rabes no estn locos. Que manera tan sdica de quer | racismo es que en la fila del banco me pidan guardar el celular a m y  | Yo siempre he pensado que en mi otra vida fui negra mamona. Ahora me t",
+      "already_tested": "boundary de etiqueta, no es un gap de informacion",
+      "potential_mechanism": ""
+    },
+    {
+      "category": "FN:discurso_citado_o_atribuido",
+      "n": 1,
+      "percentage_C": 0.02381,
+      "percentage_B": 0.503497,
+      "enrichment_C": 0.0473,
+      "evidence_strength": "d debil",
+      "p_value_vs_B": 1.0,
+      "examples": "\"\"Una CIS racista y transfoba nos va a explicar lo que es la transfobi",
+      "already_tested": "boundary de etiqueta, no es un gap de informacion",
+      "potential_mechanism": ""
+    },
+    {
+      "category": "FP:error_no_lexicalizado",
+      "n": 1,
+      "percentage_C": 0.02381,
+      "percentage_B": 0.503497,
+      "enrichment_C": 0.0473,
+      "evidence_strength": "d debil",
+      "p_value_vs_B": 1.0,
+      "examples": "Tu novia la que tiene likes rabes JAJAJA",
+      "already_tested": "boundary de etiqueta, no es un gap de informacion",
+      "potential_mechanism": ""
+    }
+  ],
+  "candidatos_a_hipotesis": [
+    {
+      "atributo": "tiene_insulto",
+      "n_C": 28,
+      "enrichment_C_sobre_B": 1.3241,
+      "p": 0.024242,
+      "rescate_absoluto_si_se_arregla": 28
+    }
+  ],
+  "P54_RESEARCH_GAP": "NONE",
+  "gastos": {
+    "submissions": 0,
+    "modelos_entrenados": 0,
+    "consultas_kaggle": 0,
+    "uso_holdout": 0,
+    "uso_test": 0,
+    "segundos": 0.2
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "name": "v6_06",
+  "script": "experiments/v6_06_bagging_grupos.py",
+  "exit": 0,
+  "duracion_s": 71.8,
+  "tracked_changed": [
+    "kaggle_toxic_2026_puj/reports/v6_bagging_grupos.json",
+    "kaggle_toxic_2026_puj/reports/v6_bagging_grupos.md"
+  ],
+  "features_changed": []
+}

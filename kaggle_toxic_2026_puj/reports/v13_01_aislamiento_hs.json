@@ -1,0 +1,241 @@
+{
+  "experimento": "V13-01 (aislamiento de la evidencia de TR y AG sobre HS)",
+  "fecha": "2026-09-26T23:56:17+00:00",
+  "referencia_v03": 0.7772114525165721,
+  "identidad_control": {
+    "metrica": 0.7772114525165721,
+    "diferencia_con_referencia": 0.0,
+    "f1_por_etiqueta": {
+      "HS": 0.7616892911010558,
+      "TR": 0.8157303370786517,
+      "AG": 0.7542147293700089
+    }
+  },
+  "pregunta": "Pueden los scores de TR y AG corregir los errores del clasificador de HS, sin usar el score propio de HS y sin convertir HS en una llave?",
+  "auditoria_de_leakage": {
+    "verificacion": [
+      {
+        "pliegue": 1,
+        "filas_de_entrenamiento": 1186,
+        "filas_con_feature_oof": 1186,
+        "sub_pliegues": 4,
+        "cada_fila_recibida_una_vez": true
+      },
+      {
+        "pliegue": 2,
+        "filas_de_entrenamiento": 1186,
+        "filas_con_feature_oof": 1186,
+        "sub_pliegues": 4,
+        "cada_fila_recibida_una_vez": true
+      },
+      {
+        "pliegue": 3,
+        "filas_de_entrenamiento": 1187,
+        "filas_con_feature_oof": 1187,
+        "sub_pliegues": 4,
+        "cada_fila_recibida_una_vez": true
+      },
+      {
+        "pliegue": 4,
+        "filas_de_entrenamiento": 1187,
+        "filas_con_feature_oof": 1187,
+        "sub_pliegues": 4,
+        "cada_fila_recibida_una_vez": true
+      },
+      {
+        "pliegue": 5,
+        "filas_de_entrenamiento": 1186,
+        "filas_con_feature_oof": 1186,
+        "sub_pliegues": 4,
+        "cada_fila_recibida_una_vez": true
+      }
+    ],
+    "comprobaciones": [
+      "Cada feature del meta proviene de un sub-pliegue interno que no contenia la fila.",
+      "La union de los sub-pliegues retenidos es exactamente el entrenamiento exterior, sin filas repetidas ni ausentes, comprobado pliegue a pliegue.",
+      "El meta se ajusta solo con features OOF y con las etiquetas del entrenamiento exterior.",
+      "La validacion exterior se puntua con bases ajustadas sobre todo el entrenamiento exterior, que es el regimen de inferencia real.",
+      "Los vectorizadores de cada sub-pliegue se ajustan solo con el sub-entrenamiento.",
+      "El test no se carga. El holdout2 no se toca. Ninguna etiqueta verdadera se usa como feature en ningun punto."
+    ]
+  },
+  "protocolo_oof": "Para cada pliegue exterior, TR y AG se ajustan en sub-pliegues internos y predicen el sub-pliegue retenido; esas predicciones OOF son las unicas features del meta. La validacion exterior se puntua con bases ajustadas sobre todo el entrenamiento exterior. Ninguna feature es in-sample.",
+  "macro_f1_con_hs_corregido": {
+    "B_solo_TR_AG": {
+      "metrica_macro": 0.7696699743868587,
+      "delta_macro": -0.007541478129713397,
+      "f1_por_etiqueta": {
+        "HS": 0.7390648567119156,
+        "TR": 0.8157303370786517,
+        "AG": 0.7542147293700089
+      },
+      "hs_rescatados": 31,
+      "hs_danados": 41,
+      "hs_cambiados": 174
+    },
+    "C_propio_mas_TR_AG": {
+      "metrica_macro": 0.7777457092095196,
+      "delta_macro": 0.0005342566929474879,
+      "f1_por_etiqueta": {
+        "HS": 0.763292061179898,
+        "TR": 0.8157303370786517,
+        "AG": 0.7542147293700089
+      },
+      "hs_rescatados": 20,
+      "hs_danados": 1,
+      "hs_cambiados": 51
+    }
+  },
+  "gate_de_candidato": 0.003,
+  "auc_de_hs": {
+    "V03_con_su_propio_score": 0.8677245156114008,
+    "B_solo_TR_AG": {
+      "auc_medio": 0.8433324291307793,
+      "auc_por_pliegue": [
+        0.8567737172388337,
+        0.8445877475817596,
+        0.8477927865199832,
+        0.8276645041705284,
+        0.8398433901427914
+      ],
+      "desviacion": 0.00958953704905794
+    },
+    "C_propio_mas_TR_AG": {
+      "auc_medio": 0.8709760225058879,
+      "auc_por_pliegue": [
+        0.8718623108157992,
+        0.8871027176416398,
+        0.8787077008773151,
+        0.8428637627432808,
+        0.8743436204514048
+      ],
+      "desviacion": 0.01498181910377985
+    },
+    "aporte_del_score_propio": 0.024392086480621522
+  },
+  "f1_de_v03_por_etiqueta": {
+    "HS": 0.7616892911010558,
+    "TR": 0.8157303370786517,
+    "AG": 0.7542147293700089
+  },
+  "advertencias_de_ajuste": [],
+  "umbral_de_hs_usado": 0.44,
+  "nota_sobre_el_umbral": "Se usa el umbral congelado de V03 para HS. El enunciado prohibe cambiar umbrales en esta fase, y ademas un umbral reoptimizado sobre la misma validacion inflaria el resultado. El AUC mide la capacidad sin umbral, y el macro-F1 mide el efecto con el umbral congelado.",
+  "procedencia_del_techo": {
+    "delta_oraculo": 0.046270530536371646,
+    "celdas_cambiadas_por_el_oraculo": 196,
+    "celdas_cambiadas_en_la_columna_hs": 0,
+    "celdas_cambiadas_en_la_columna_tr": 78,
+    "celdas_cambiadas_en_la_columna_ag": 118,
+    "filas_afectadas": 134,
+    "filas_afectadas_todas_con_hs_verdadero_cero": true,
+    "conclusion": "El techo de +0.046271 NO proviene de corregir los errores de HS. El oraculo no cambia ni una sola celda de la columna HS. Proviene de poner TR y AG a cero en las 835 filas donde el HS verdadero es cero, lo que borra 196 falsos positivos. Es un efecto aguas abajo de la condicion de HS, no una mejora de la estimacion de HS."
+  },
+  "mecanismo_del_fracaso": {
+    "hallazgo": "Corregir la etiqueta de HS solo mueve la columna HS. Los brazos dejan TR y AG exactamente igual, con delta cero, porque el meta produce una probabilidad para HS y no altera lo que el sistema decide sobre TR y AG.",
+    "delta_de_hs_del_brazo_c": 0.0016027700788422417,
+    "delta_de_tr_del_brazo_c": 0.0,
+    "delta_de_ag_del_brazo_c": 0.0,
+    "por_que_el_brazo_b_dana": "Con el score propio de HS excluido, la AUC sigue siendo alta, 0.8433, pero la F1 de HS cae 0.0226. Es la medida de que la informacion existe y no es utilizable con el umbral congelado: un AUC alto no implica una buena decision en el punto de corte."
+  },
+  "regimenes": [
+    {
+      "regimen": "A",
+      "descripcion": "HS real 0 y HS predicho 0",
+      "HS_verdadero": 0,
+      "HS_predicho": 0,
+      "filas": 662,
+      "TR_aciertos": 651,
+      "TR_falsos_positivos": 11,
+      "AG_aciertos": 640,
+      "AG_falsos_positivos": 14,
+      "TR_verdaderas_positivas": 0,
+      "AG_verdaderas_positivas": 15
+    },
+    {
+      "regimen": "B",
+      "descripcion": "HS real 0 y HS predicho 1",
+      "HS_verdadero": 0,
+      "HS_predicho": 1,
+      "filas": 173,
+      "TR_aciertos": 106,
+      "TR_falsos_positivos": 67,
+      "AG_aciertos": 83,
+      "AG_falsos_positivos": 90,
+      "TR_verdaderas_positivas": 0,
+      "AG_verdaderas_positivas": 7
+    },
+    {
+      "regimen": "C",
+      "descripcion": "HS real 1 y HS predicho 0",
+      "HS_verdadero": 1,
+      "HS_predicho": 0,
+      "filas": 143,
+      "TR_aciertos": 95,
+      "TR_falsos_positivos": 0,
+      "AG_aciertos": 54,
+      "AG_falsos_positivos": 2,
+      "TR_verdaderas_positivas": 57,
+      "AG_verdaderas_positivas": 99
+    },
+    {
+      "regimen": "D",
+      "descripcion": "HS real 1 y HS predicho 1",
+      "HS_verdadero": 1,
+      "HS_predicho": 1,
+      "filas": 505,
+      "TR_aciertos": 467,
+      "TR_falsos_positivos": 4,
+      "AG_aciertos": 429,
+      "AG_falsos_positivos": 29,
+      "TR_verdaderas_positivas": 388,
+      "AG_verdaderas_positivas": 446
+    }
+  ],
+  "techo": {
+    "delta_oraculo": 0.046270530536371646,
+    "mecanismos": [
+      {
+        "mecanismo": "V03 referencia",
+        "delta_macro": 0.0,
+        "fraccion_del_techo": 0.0,
+        "distancia_al_techo_restante": 0.046271,
+        "nota": "punto de partida"
+      },
+      {
+        "mecanismo": "V4-E conjunto",
+        "delta_macro": -0.005922,
+        "fraccion_del_techo": -0.128,
+        "distancia_al_techo_restante": 0.052193,
+        "nota": "ya cerrado como NO_SIGNAL"
+      },
+      {
+        "mecanismo": "E2-18 meta Ridge",
+        "delta_macro": 0.010189,
+        "fraccion_del_techo": 0.2202,
+        "distancia_al_techo_restante": 0.036082,
+        "nota": "adoptado en su gate, rechazado en el externo"
+      },
+      {
+        "mecanismo": "V6-B condicional suave B1",
+        "delta_macro": -0.0107,
+        "fraccion_del_techo": -0.2312,
+        "distancia_al_techo_restante": 0.056971,
+        "nota": "cerrado, es la formulacion prohibida"
+      },
+      {
+        "mecanismo": "orculo con HS verdadera",
+        "delta_macro": 0.046271,
+        "fraccion_del_techo": 1.0,
+        "distancia_al_techo_restante": 0.0,
+        "nota": "techo diagnostico, no adoptable"
+      }
+    ]
+  },
+  "meta_historico": {
+    "metrica_local": 0.7874,
+    "leaderboard": 0.78163,
+    "delta_local": 0.010188547483427901,
+    "nota": "E2-18-META-BASES-RIDGE fue ADOPTADO en su gate con esta metrica local y sin embargo no se envio, porque el leaderboard fue peor que el de V03. Es el precedente de riesgo de transferencia que esta fase debe respetar."
+  }
+}

@@ -1,0 +1,256 @@
+{
+  "experimento": "V12-03 (H3, entrenamiento por pares sobre TF-IDF disperso)",
+  "fecha": "2026-09-26T23:37:10+00:00",
+  "referencia_v03": 0.7772114525165721,
+  "identidad_control": {
+    "metrica": 0.7772114525165721,
+    "diferencia_con_referencia": 0.0,
+    "reproduce_oof_canonico": true
+  },
+  "pregunta": "Puede una funcion de entrenamiento por pares sobre TF-IDF disperso explotar la estructura relativa entre HS, TR y AG que el objetivo binario independiente no esta aprovechando?",
+  "mecanismo": "Tres clasificadores binarios entrenados **jointemente** con un termino de margen por pares que expresa la relacion de orden entre las tres etiquetas: cuando HS=1 se espera que el logit de HS supere a los de TR y AG, y cuando HS=0 se espera lo contrario. El termino no introduce informacion nueva, no cambia el espacio ni los umbrales, y **no convierte HS en una decision binaria previa**, que es el defecto del post-proceso duro.",
+  "distincion_de_mecanismo": "No es la cadena cerrada E2-01, que anade el score de la etiqueta previa como feature: aqui los tres clasificadores se acoplan en la funcion objetivo. No es el post-proceso duro, que usa HS predicho como llave en la prediccion: aqui la prediccion es la de V03 con los mismos umbrales. Y no son los pares de ejemplos que describia la auditoria de brecha, sino pares de **etiquetas** dentro de cada ejemplo, que es lo que ataca la pregunta de la fase.",
+  "verificacion_del_gradiente": [
+    {
+      "lambda": 0.0,
+      "coordenadas_comprobadas": 12,
+      "residuo_maximo": 1.5569230032985715e-07,
+      "tolerancia": 1e-06,
+      "correcto": true,
+      "punto": "aleatorio",
+      "punto_de_comprobacion": "ajuste del primer pliegue"
+    },
+    {
+      "lambda": 0.0,
+      "coordenadas_comprobadas": 12,
+      "residuo_maximo": 1.0432018608327875e-07,
+      "tolerancia": 1e-06,
+      "correcto": true,
+      "punto": "cerca de la solucion"
+    },
+    {
+      "lambda": 0.25,
+      "coordenadas_comprobadas": 12,
+      "residuo_maximo": 2.1629254677579812e-07,
+      "tolerancia": 1e-06,
+      "correcto": true,
+      "punto": "aleatorio"
+    },
+    {
+      "lambda": 0.25,
+      "coordenadas_comprobadas": 12,
+      "residuo_maximo": 1.1521704469316663e-07,
+      "tolerancia": 1e-06,
+      "correcto": true,
+      "punto": "cerca de la solucion"
+    },
+    {
+      "lambda": 1.0,
+      "coordenadas_comprobadas": 12,
+      "residuo_maximo": 3.6271005254828736e-07,
+      "tolerancia": 1e-06,
+      "correcto": true,
+      "punto": "aleatorio"
+    },
+    {
+      "lambda": 1.0,
+      "coordenadas_comprobadas": 12,
+      "residuo_maximo": 2.7741508368261947e-07,
+      "tolerancia": 1e-06,
+      "correcto": true,
+      "punto": "cerca de la solucion",
+      "punto_de_comprobacion": "ajuste del primer pliegue"
+    }
+  ],
+  "brazos": [
+    {
+      "brazo": "lambda=0.0",
+      "lambda": 0.0,
+      "metrica": 0.7772647318762402,
+      "delta": 5.327935966814579e-05,
+      "f1_por_etiqueta": [
+        0.7622641509433963,
+        0.8153153153153153,
+        0.7542147293700089
+      ],
+      "celdas_modificadas": 3,
+      "deteccion": 0.6667,
+      "dependencia": {
+        "f1_tr_donde_esta_definida": 0.8927250308261405,
+        "f1_ag_donde_esta_definida": 0.8328267477203647,
+        "f1_hs_global": 0.7622641509433963,
+        "falsos_positivos_tr_zona_no_definida": 77,
+        "falsos_positivos_ag_zona_no_definida": 104,
+        "falsos_positivos_tr_zona_no_definida_predichos": 77,
+        "falsos_positivos_ag_zona_no_definida_predichos": 118
+      }
+    },
+    {
+      "brazo": "lambda=0.25",
+      "lambda": 0.25,
+      "metrica": 0.7747423300591328,
+      "delta": -0.0024691224574392434,
+      "f1_por_etiqueta": [
+        0.7523961661341853,
+        0.8185840707964602,
+        0.7532467532467533
+      ],
+      "celdas_modificadas": 118,
+      "deteccion": 0.4915,
+      "dependencia": {
+        "f1_tr_donde_esta_definida": 0.9024390243902439,
+        "f1_ag_donde_esta_definida": 0.8413654618473896,
+        "f1_hs_global": 0.7523961661341853,
+        "falsos_positivos_tr_zona_no_definida": 84,
+        "falsos_positivos_ag_zona_no_definida": 121,
+        "falsos_positivos_tr_zona_no_definida_predichos": 84,
+        "falsos_positivos_ag_zona_no_definida_predichos": 137
+      }
+    },
+    {
+      "brazo": "lambda=1.0",
+      "lambda": 1.0,
+      "metrica": 0.7692735230902598,
+      "delta": -0.007937929426312329,
+      "f1_por_etiqueta": [
+        0.7435064935064936,
+        0.8134490238611713,
+        0.7508650519031141
+      ],
+      "celdas_modificadas": 199,
+      "deteccion": 0.4523,
+      "dependencia": {
+        "f1_tr_donde_esta_definida": 0.9090909090909091,
+        "f1_ag_donde_esta_definida": 0.8473205257836198,
+        "f1_hs_global": 0.7435064935064936,
+        "falsos_positivos_tr_zona_no_definida": 97,
+        "falsos_positivos_ag_zona_no_definida": 130,
+        "falsos_positivos_tr_zona_no_definida_predichos": 97,
+        "falsos_positivos_ag_zona_no_definida_predichos": 145
+      }
+    }
+  ],
+  "deltas_por_pliegue": {
+    "lambda=0.0": [
+      0.0,
+      0.001492,
+      0.0,
+      -0.002281,
+      0.000986
+    ],
+    "lambda=0.25": [
+      -0.009131,
+      -0.002267,
+      0.001458,
+      0.000322,
+      -0.002888
+    ],
+    "lambda=1.0": [
+      -0.011271,
+      -0.015922,
+      -0.011989,
+      0.006564,
+      -0.006954
+    ]
+  },
+  "curva_de_lambda": {
+    "lambda": [
+      0.0,
+      0.1,
+      0.25,
+      0.5,
+      1.0,
+      2.0
+    ],
+    "metrica": [
+      0.777265,
+      0.777187,
+      0.774742,
+      0.771042,
+      0.769274,
+      0.766954
+    ],
+    "delta": [
+      5.3e-05,
+      -2.4e-05,
+      -0.002469,
+      -0.006169,
+      -0.007938,
+      -0.010258
+    ],
+    "maximo_lambda": 0.0,
+    "delta_del_maximo": 5.3e-05,
+    "recorrido": 0.010311,
+    "control_lambda_cero": 5.3e-05,
+    "aviso": "El maximo de esta curva NO es adoptable: se ha calculado mirando los pliegues exteriores. Se reporta solo como diagnostico del motivo del cierre."
+  },
+  "mejor_delta_de_pares": -0.002469,
+  "umbral_deteccion": 0.5166,
+  "veredictos": {
+    "lambda=0.0": {
+      "delta": 5.3e-05,
+      "pliegues_a_favor": "2/5",
+      "ic95_inferior": -0.001094,
+      "ic95_superior": 0.001182,
+      "ic95_excluye_cero": false,
+      "celdas_modificadas": 3,
+      "deteccion": 0.6667,
+      "supera_deteccion": true,
+      "gate_exploratorio": false,
+      "gate_candidato": false
+    },
+    "lambda=0.25": {
+      "delta": -0.002469,
+      "pliegues_a_favor": "2/5",
+      "ic95_inferior": -0.008159,
+      "ic95_superior": 0.003328,
+      "ic95_excluye_cero": false,
+      "celdas_modificadas": 118,
+      "deteccion": 0.4915,
+      "supera_deteccion": false,
+      "gate_exploratorio": false,
+      "gate_candidato": false
+    },
+    "lambda=1.0": {
+      "delta": -0.007938,
+      "pliegues_a_favor": "1/5",
+      "ic95_inferior": -0.015542,
+      "ic95_superior": 0.000206,
+      "ic95_excluye_cero": false,
+      "celdas_modificadas": 199,
+      "deteccion": 0.4523,
+      "supera_deteccion": false,
+      "gate_exploratorio": false,
+      "gate_candidato": false
+    }
+  },
+  "candidatas_exploratorias": [],
+  "candidatas": [],
+  "dependencia_de_referencia": {
+    "f1_tr_donde_esta_definida": 0.8940886699507389,
+    "f1_ag_donde_esta_definida": 0.8328267477203647,
+    "f1_hs_global": 0.7616892911010558,
+    "falsos_positivos_tr_zona_no_definida": 78,
+    "falsos_positivos_ag_zona_no_definida": 104,
+    "falsos_positivos_tr_zona_no_definida_predichos": 78,
+    "falsos_positivos_ag_zona_no_definida_predichos": 118
+  },
+  "salud_del_modelo": {
+    "iteraciones_maximas_lbfgsb": 91,
+    "evaluaciones_maximas": 104,
+    "norma_gradiente_maxima": 0.042812,
+    "limite": 2000,
+    "gradiente_verificado": true,
+    "maxls": 100,
+    "nota_maxls": "Con el valor por defecto de 20 pasos la busqueda lineal abortaba con ABNORMAL sin converger. Con 100 pasos converge en 20 iteraciones y 48 evaluaciones, menos que las 27 iteraciones y 165 evaluaciones del intento fallido."
+  },
+  "gates": {
+    "delta_minimo_exploratorio": 0.002,
+    "delta_minimo_candidato": 0.003,
+    "pliegues_minimos": 4
+  },
+  "contexto_del_techo": {
+    "techo_hs_verdadero": 0.046271,
+    "fraccion_del_techo_capturada": 0.0
+  }
+}

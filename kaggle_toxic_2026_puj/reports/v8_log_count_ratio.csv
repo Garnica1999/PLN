@@ -1,0 +1,4 @@
+clave,es_nueva,metrica,diferencia,ic95_0,ic95_1,pliegues_positivos,gate_delta,gate_ic95,gate_pliegues,gate_supera,celdas,filas,acierta_entre_celdas,tasa_acierto,minimo_requerido,filtro_pasa,admisible
+nb_tfidf,True,0.718716,-0.058496,-0.076109,-0.040607,0,False,False,False,False,597,423,195,0.3266,0.5161,False,False
+nb_tfidf_suavizado,True,0.781957,0.004745,-0.007079,0.017144,3,True,False,False,False,303,230,160,0.5281,0.5317,False,False
+nb_counts_c2,False,0.702184,-0.075027,-0.094235,-0.055611,0,False,False,False,False,715,495,230,0.3217,0.5134,False,False

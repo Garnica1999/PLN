@@ -1,0 +1,337 @@
+{
+  "familia": "P51_UTILITY_AWARE_CONTEXTUAL_GATING",
+  "experimento": "V51-01 (selector utilitario S1-U)",
+  "fecha": "2026-09-28T01:41:53+00:00",
+  "target": "delta_F1 > 0, con los conteos del pliegue de entrenamiento",
+  "controles": {
+    "B0_V03": {
+      "corrected_cv": 0.7772114525,
+      "delta_vs_v03": 0.0,
+      "por_etiqueta": {
+        "HS": 0.7616892911,
+        "TR": 0.8157303371,
+        "AG": 0.7542147294
+      },
+      "celdas_cambiadas": 0,
+      "abstencion_rate": 1.0,
+      "rescate": 0,
+      "damage": 0,
+      "net": 0
+    },
+    "B1_siempre_KEEP": {
+      "corrected_cv": 0.7772114525,
+      "delta_vs_v03": 0.0,
+      "por_etiqueta": {
+        "HS": 0.7616892911,
+        "TR": 0.8157303371,
+        "AG": 0.7542147294
+      },
+      "celdas_cambiadas": 0,
+      "abstencion_rate": 1.0,
+      "rescate": 0,
+      "damage": 0,
+      "net": 0
+    },
+    "B2_P50_S1": {
+      "corrected_cv": 0.7657442265,
+      "delta_vs_v03": -0.011467226,
+      "net": -19
+    }
+  },
+  "equilibrio_analitico": {
+    "umbral_subir_sobre_P_y1": 0.389157,
+    "umbral_bajar_sobre_P_y1": 0.389157,
+    "coinciden": true,
+    "tasa_base_subir": 0.178571,
+    "tasa_base_bajar": 0.376111,
+    "elevacion_necesaria_subir": 2.1793,
+    "elevacion_necesaria_bajar": 1.0347
+  },
+  "auc_por_canal": {
+    "min": 0.550736,
+    "max": 0.924883,
+    "media": 0.809114
+  },
+  "s1u_umbral_0p5": {
+    "corrected_cv": 0.0294622851,
+    "delta_vs_v03": -0.7477491674,
+    "por_etiqueta": {
+      "HS": 0.0121212121,
+      "TR": 0.0421940928,
+      "AG": 0.0340715503
+    },
+    "celdas_cambiadas": 1744,
+    "abstencion_rate": 0.608002,
+    "rescate": 414,
+    "damage": 1330,
+    "net": -916
+  },
+  "s1u_umbral_analitico": {
+    "corrected_cv": 0.7721856247,
+    "delta_vs_v03": -0.0050258278,
+    "por_etiqueta": {
+      "HS": 0.7534883721,
+      "TR": 0.8096809681,
+      "AG": 0.7533875339
+    },
+    "celdas_cambiadas": 159,
+    "abstencion_rate": 0.964262,
+    "rescate": 76,
+    "damage": 83,
+    "net": -7
+  },
+  "diagnosticos_de_calibracion": {
+    "D1_puerta_promediada": {
+      "corrected_cv": 0.2894748704,
+      "delta_vs_v03": -0.4877365821,
+      "por_etiqueta": {
+        "HS": 0.3202614379,
+        "TR": 0.2488167681,
+        "AG": 0.2993464052
+      },
+      "celdas_cambiadas": 3896,
+      "abstencion_rate": 0.124298,
+      "rescate": 715,
+      "damage": 3181,
+      "net": -2466
+    },
+    "D2_umbral_analitico": {
+      "corrected_cv": 0.2894748704,
+      "delta_vs_v03": -0.4877365821,
+      "por_etiqueta": {
+        "HS": 0.3202614379,
+        "TR": 0.2488167681,
+        "AG": 0.2993464052
+      },
+      "celdas_cambiadas": 3896,
+      "abstencion_rate": 0.124298,
+      "rescate": 715,
+      "damage": 3181,
+      "net": -2466
+    },
+    "D3_solo_direccion_bajar": {
+      "corrected_cv": 0.3178181685,
+      "delta_vs_v03": -0.459393284,
+      "por_etiqueta": {
+        "HS": 0.2766798419,
+        "TR": 0.3864042934,
+        "AG": 0.2903703704
+      },
+      "celdas_cambiadas": 1350,
+      "abstencion_rate": 0.696561,
+      "rescate": 368,
+      "damage": 982,
+      "net": -614
+    }
+  },
+  "pliegues": [
+    {
+      "pliegue": 0,
+      "n_filas": 297,
+      "f1_v03": 0.7960101143,
+      "f1_selector": 0.0372418761,
+      "delta": -0.7587682382
+    },
+    {
+      "pliegue": 1,
+      "n_filas": 297,
+      "f1_v03": 0.7940339498,
+      "f1_selector": 0.0237511671,
+      "delta": -0.7702827827
+    },
+    {
+      "pliegue": 2,
+      "n_filas": 296,
+      "f1_v03": 0.7788600289,
+      "f1_selector": 0.0307454603,
+      "delta": -0.7481145686
+    },
+    {
+      "pliegue": 3,
+      "n_filas": 296,
+      "f1_v03": 0.7385980131,
+      "f1_selector": 0.0361879666,
+      "delta": -0.7024100465
+    },
+    {
+      "pliegue": 4,
+      "n_filas": 297,
+      "f1_v03": 0.7790564997,
+      "f1_selector": 0.0193479454,
+      "delta": -0.7597085543
+    }
+  ],
+  "pliegues_positivos": 0,
+  "interseccion_de_errores": {
+    "ambos_correctos": 2362,
+    "ambos_incorrectos": 343,
+    "v03_mal_selector_bien": 414,
+    "v03_bien_selector_mal": 1330
+  },
+  "por_margen": [
+    {
+      "bin": "[0,0.10)",
+      "n_celdas": 650,
+      "cambiadas": 445,
+      "rescate": 207,
+      "damage": 238,
+      "net": -31
+    },
+    {
+      "bin": "[0.10,0.20)",
+      "n_celdas": 748,
+      "cambiadas": 281,
+      "rescate": 88,
+      "damage": 193,
+      "net": -105
+    },
+    {
+      "bin": "[0.20,1]",
+      "n_celdas": 3051,
+      "cambiadas": 1018,
+      "rescate": 119,
+      "damage": 899,
+      "net": -780
+    }
+  ],
+  "por_direccion": [
+    {
+      "direccion": "sube_0_a_1",
+      "n": 61,
+      "rescate": 24,
+      "damage": 37,
+      "net": -13
+    },
+    {
+      "direccion": "baja_1_a_0",
+      "n": 1683,
+      "rescate": 390,
+      "damage": 1293,
+      "net": -903
+    }
+  ],
+  "p50_por_direccion": {
+    "nota": "P50 trato las dos direcciones por igual y su argmax eligio cita:NEG 109 veces con net -1706. Se compara aqui si P51 repite o evita ese comportamiento",
+    "acciones_elegidas": [
+      {
+        "accion": "KEEP_V03",
+        "n_elegida": 4158,
+        "net_real_del_canal": 0
+      },
+      {
+        "accion": "base:M1_word_lr",
+        "n_elegida": 7,
+        "net_real_del_canal": -62
+      },
+      {
+        "accion": "base:M2_union_lr_c2",
+        "n_elegida": 10,
+        "net_real_del_canal": 11
+      },
+      {
+        "accion": "base:M3_union_svc",
+        "n_elegida": 0,
+        "net_real_del_canal": -7
+      },
+      {
+        "accion": "base:M4_char_lr",
+        "n_elegida": 1,
+        "net_real_del_canal": -103
+      },
+      {
+        "accion": "synt:SYN-POS",
+        "n_elegida": 81,
+        "net_real_del_canal": -705
+      },
+      {
+        "accion": "synt:SYN-DEPS",
+        "n_elegida": 0,
+        "net_real_del_canal": -775
+      },
+      {
+        "accion": "synt:SYN-MORPH",
+        "n_elegida": 2,
+        "net_real_del_canal": -837
+      },
+      {
+        "accion": "synt:SYN-3",
+        "n_elegida": 8,
+        "net_real_del_canal": -641
+      },
+      {
+        "accion": "cita:CITA",
+        "n_elegida": 2,
+        "net_real_del_canal": -99
+      },
+      {
+        "accion": "cita:NEG",
+        "n_elegida": 109,
+        "net_real_del_canal": -1706
+      },
+      {
+        "accion": "emoc:EMO-EST@C=2.0",
+        "n_elegida": 3,
+        "net_real_del_canal": -575
+      },
+      {
+        "accion": "emoc:EMO-LEX@C=1.0",
+        "n_elegida": 3,
+        "net_real_del_canal": -593
+      },
+      {
+        "accion": "emoc:EMO-ALL@C=1.0",
+        "n_elegida": 0,
+        "net_real_del_canal": -552
+      },
+      {
+        "accion": "emoc:NB-WORD-LR@C=1.0",
+        "n_elegida": 30,
+        "net_real_del_canal": -46
+      },
+      {
+        "accion": "emoc:NB-CHAR-LR@C=1.0",
+        "n_elegida": 7,
+        "net_real_del_canal": -92
+      },
+      {
+        "accion": "emoc:NB-UNION-LR@C=1.0",
+        "n_elegida": 7,
+        "net_real_del_canal": -11
+      },
+      {
+        "accion": "emoc:NB-UNION-SVC@C=1.0",
+        "n_elegida": 10,
+        "net_real_del_canal": -57
+      },
+      {
+        "accion": "emoc:ORT-A@C=1.0",
+        "n_elegida": 0,
+        "net_real_del_canal": -62
+      },
+      {
+        "accion": "emoc:ORT-ABCD@C=2.0",
+        "n_elegida": 0,
+        "net_real_del_canal": -62
+      },
+      {
+        "accion": "emoc:ORT-AE@C=2.0",
+        "n_elegida": 11,
+        "net_real_del_canal": -84
+      }
+    ]
+  },
+  "gate": {
+    "delta_minimo": 0.003,
+    "delta_obtenido": -0.7477491674,
+    "pliegues_positivos": 0,
+    "pasado": false
+  },
+  "caso": "A",
+  "gastos": {
+    "submissions": 0,
+    "consultas_kaggle": 0,
+    "uso_holdout": 0,
+    "uso_test": 0,
+    "segundos": 0.3
+  }
+}

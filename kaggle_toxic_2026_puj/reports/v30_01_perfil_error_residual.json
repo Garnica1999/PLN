@@ -1,0 +1,1848 @@
+{
+  "familia": "RESIDUAL_ERROR_PROFILE",
+  "experimento": "V30-01 (perfil del error residual de V03, orientado a encontrar el siguiente eje)",
+  "fecha": "2026-09-27T10:50:32+00:00",
+  "estado": "DIAGNOSTIC_ONLY",
+  "pregunta": "en que regiones concretas del texto esta perdiendo V03 y que informacion de esas regiones todavia no estamos explotando",
+  "alcance": "no se entrena ningun modelo, no se modifica V03, no se construye predictor y no se produce submission. Las caracteristicas describen el error, no alimentan un clasificador",
+  "poblaciones_historicas": {
+    "definicion": "la de experiments/28_hardness_v4.py lineas 593-598: Posible ruido si cluster_contradictorio > 0; Dificil coherente si hardness_score >= percentil 80; Facil en otro caso. hardness_score = 1 - |(p - umbral) * (2y - 1)| por etiqueta con los umbrales congelados de V03",
+    "umbral_de_dureza_p80": 0.8326726463284142,
+    "conteo": {
+      "Facil": 1151,
+      "Dificil coherente": 289,
+      "Posible ruido": 43
+    },
+    "cluster_contradictorio_filas": 43
+  },
+  "rasgos": [
+    "caracteres",
+    "tokens",
+    "alfabeticos",
+    "frac_alfabeticos",
+    "digitos",
+    "urls",
+    "menciones",
+    "hashtags",
+    "puntuacion",
+    "frac_puntuacion",
+    "mayusculas",
+    "frac_mayusculas",
+    "caracteres_repetidos",
+    "densidad_lexica",
+    "longitud_media_token",
+    "frac_mayus_completas",
+    "pos_primera_mencion",
+    "pos_primera_hashtag",
+    "tiene_url",
+    "tiene_mencion",
+    "tiene_hashtag",
+    "es_muy_corto",
+    "es_largo"
+  ],
+  "cuantiles": [
+    0.1,
+    0.25,
+    0.5,
+    0.75,
+    0.9
+  ],
+  "perfil_por_poblacion": {
+    "caracteres": {
+      "global": {
+        "p10": 41.0,
+        "p25": 60.0,
+        "p50": 92.0,
+        "p75": 131.5,
+        "p90": 192.79999999999995
+      },
+      "por_poblacion": {
+        "Facil": {
+          "p10": 40.0,
+          "p25": 57.0,
+          "p50": 90.0,
+          "p75": 132.5,
+          "p90": 195.0
+        },
+        "Dificil coherente": {
+          "p10": 46.0,
+          "p25": 66.0,
+          "p50": 92.0,
+          "p75": 123.0,
+          "p90": 158.39999999999998
+        },
+        "Posible ruido": {
+          "p10": 54.2,
+          "p25": 94.5,
+          "p50": 142.0,
+          "p75": 196.5,
+          "p90": 233.4
+        }
+      }
+    },
+    "tokens": {
+      "global": {
+        "p10": 6.0,
+        "p25": 10.0,
+        "p50": 15.0,
+        "p75": 23.0,
+        "p90": 32.0
+      },
+      "por_poblacion": {
+        "Facil": {
+          "p10": 6.0,
+          "p25": 9.0,
+          "p50": 15.0,
+          "p75": 23.0,
+          "p90": 32.0
+        },
+        "Dificil coherente": {
+          "p10": 8.0,
+          "p25": 11.0,
+          "p50": 15.0,
+          "p75": 22.0,
+          "p90": 29.0
+        },
+        "Posible ruido": {
+          "p10": 7.2,
+          "p25": 14.0,
+          "p50": 23.0,
+          "p75": 28.5,
+          "p90": 36.0
+        }
+      }
+    },
+    "alfabeticos": {
+      "global": {
+        "p10": 33.0,
+        "p25": 46.0,
+        "p50": 72.0,
+        "p75": 103.0,
+        "p90": 153.0
+      },
+      "por_poblacion": {
+        "Facil": {
+          "p10": 32.0,
+          "p25": 45.0,
+          "p50": 71.0,
+          "p75": 103.5,
+          "p90": 154.0
+        },
+        "Dificil coherente": {
+          "p10": 36.0,
+          "p25": 50.0,
+          "p50": 72.0,
+          "p75": 96.0,
+          "p90": 124.39999999999998
+        },
+        "Posible ruido": {
+          "p10": 45.4,
+          "p25": 77.5,
+          "p50": 114.0,
+          "p75": 158.5,
+          "p90": 187.8
+        }
+      }
+    },
+    "frac_alfabeticos": {
+      "global": {
+        "p10": 0.7413494326122197,
+        "p25": 0.7721518987341772,
+        "p50": 0.7954545454545454,
+        "p75": 0.8159754601226994,
+        "p90": 0.8366740004552007
+      },
+      "por_poblacion": {
+        "Facil": {
+          "p10": 0.74,
+          "p25": 0.7722772277227723,
+          "p50": 0.7966101694915254,
+          "p75": 0.8169872895912058,
+          "p90": 0.8382352941176471
+        },
+        "Dificil coherente": {
+          "p10": 0.7418629938383472,
+          "p25": 0.7692307692307693,
+          "p50": 0.7901234567901234,
+          "p75": 0.8085106382978723,
+          "p90": 0.8263016639828233
+        },
+        "Posible ruido": {
+          "p10": 0.7707616707616708,
+          "p25": 0.7852742448330683,
+          "p50": 0.803680981595092,
+          "p75": 0.8214285714285714,
+          "p90": 0.8349019607843138
+        }
+      }
+    },
+    "digitos": {
+      "global": {
+        "p10": 0.0,
+        "p25": 0.0,
+        "p50": 0.0,
+        "p75": 2.0,
+        "p90": 3.7999999999999545
+      },
+      "por_poblacion": {
+        "Facil": {
+          "p10": 0.0,
+          "p25": 0.0,
+          "p50": 0.0,
+          "p75": 2.0,
+          "p90": 4.0
+        },
+        "Dificil coherente": {
+          "p10": 0.0,
+          "p25": 0.0,
+          "p50": 0.0,
+          "p75": 1.0,
+          "p90": 3.0
+        },
+        "Posible ruido": {
+          "p10": 0.0,
+          "p25": 0.0,
+          "p50": 0.0,
+          "p75": 2.0,
+          "p90": 3.6000000000000085
+        }
+      }
+    },
+    "urls": {
+      "global": {
+        "p10": 0.0,
+        "p25": 0.0,
+        "p50": 0.0,
+        "p75": 1.0,
+        "p90": 1.0
+      },
+      "por_poblacion": {
+        "Facil": {
+          "p10": 0.0,
+          "p25": 0.0,
+          "p50": 0.0,
+          "p75": 1.0,
+          "p90": 1.0
+        },
+        "Dificil coherente": {
+          "p10": 0.0,
+          "p25": 0.0,
+          "p50": 0.0,
+          "p75": 0.0,
+          "p90": 1.0
+        },
+        "Posible ruido": {
+          "p10": 0.0,
+          "p25": 0.0,
+          "p50": 0.0,
+          "p75": 1.0,
+          "p90": 1.0
+        }
+      }
+    },
+    "menciones": {
+      "global": {
+        "p10": 0.0,
+        "p25": 0.0,
+        "p50": 0.0,
+        "p75": 1.0,
+        "p90": 2.0
+      },
+      "por_poblacion": {
+        "Facil": {
+          "p10": 0.0,
+          "p25": 0.0,
+          "p50": 0.0,
+          "p75": 1.0,
+          "p90": 2.0
+        },
+        "Dificil coherente": {
+          "p10": 0.0,
+          "p25": 0.0,
+          "p50": 0.0,
+          "p75": 1.0,
+          "p90": 2.0
+        },
+        "Posible ruido": {
+          "p10": 1.0,
+          "p25": 1.0,
+          "p50": 1.0,
+          "p75": 1.5,
+          "p90": 3.8000000000000043
+        }
+      }
+    },
+    "hashtags": {
+      "global": {
+        "p10": 0.0,
+        "p25": 0.0,
+        "p50": 0.0,
+        "p75": 0.0,
+        "p90": 0.0
+      },
+      "por_poblacion": {
+        "Facil": {
+          "p10": 0.0,
+          "p25": 0.0,
+          "p50": 0.0,
+          "p75": 0.0,
+          "p90": 0.0
+        },
+        "Dificil coherente": {
+          "p10": 0.0,
+          "p25": 0.0,
+          "p50": 0.0,
+          "p75": 0.0,
+          "p90": 0.0
+        },
+        "Posible ruido": {
+          "p10": 0.0,
+          "p25": 0.0,
+          "p50": 0.0,
+          "p75": 0.0,
+          "p90": 1.0
+        }
+      }
+    },
+    "puntuacion": {
+      "global": {
+        "p10": 0.0,
+        "p25": 0.0,
+        "p50": 2.0,
+        "p75": 6.0,
+        "p90": 9.0
+      },
+      "por_poblacion": {
+        "Facil": {
+          "p10": 0.0,
+          "p25": 0.0,
+          "p50": 2.0,
+          "p75": 6.0,
+          "p90": 9.0
+        },
+        "Dificil coherente": {
+          "p10": 0.0,
+          "p25": 0.0,
+          "p50": 2.0,
+          "p75": 5.0,
+          "p90": 7.0
+        },
+        "Posible ruido": {
+          "p10": 0.20000000000000018,
+          "p25": 1.0,
+          "p50": 4.0,
+          "p75": 7.0,
+          "p90": 9.0
+        }
+      }
+    },
+    "frac_puntuacion": {
+      "global": {
+        "p10": 0.0,
+        "p25": 0.0,
+        "p50": 0.02242152466367713,
+        "p75": 0.05387266461091965,
+        "p90": 0.08513097072419104
+      },
+      "por_poblacion": {
+        "Facil": {
+          "p10": 0.0,
+          "p25": 0.0,
+          "p50": 0.023696682464454975,
+          "p75": 0.055867665418227214,
+          "p90": 0.08771929824561403
+        },
+        "Dificil coherente": {
+          "p10": 0.0,
+          "p25": 0.0,
+          "p50": 0.018018018018018018,
+          "p75": 0.045871559633027525,
+          "p90": 0.08067774519387422
+        },
+        "Posible ruido": {
+          "p10": 0.001342281879194632,
+          "p25": 0.01266025641025641,
+          "p50": 0.032490974729241874,
+          "p75": 0.04290315159880377,
+          "p90": 0.057478202548625124
+        }
+      }
+    },
+    "mayusculas": {
+      "global": {
+        "p10": 1.0,
+        "p25": 2.0,
+        "p50": 5.0,
+        "p75": 9.0,
+        "p90": 23.0
+      },
+      "por_poblacion": {
+        "Facil": {
+          "p10": 1.0,
+          "p25": 2.0,
+          "p50": 5.0,
+          "p75": 9.0,
+          "p90": 20.0
+        },
+        "Dificil coherente": {
+          "p10": 1.0,
+          "p25": 1.0,
+          "p50": 5.0,
+          "p75": 8.0,
+          "p90": 40.19999999999999
+        },
+        "Posible ruido": {
+          "p10": 2.0,
+          "p25": 3.5,
+          "p50": 8.0,
+          "p75": 12.5,
+          "p90": 49.000000000000064
+        }
+      }
+    },
+    "frac_mayusculas": {
+      "global": {
+        "p10": 0.013157894736842105,
+        "p25": 0.028846153846153848,
+        "p50": 0.0603448275862069,
+        "p75": 0.11583184257602863,
+        "p90": 0.3154887218045112
+      },
+      "por_poblacion": {
+        "Facil": {
+          "p10": 0.013513513513513514,
+          "p25": 0.029411764705882353,
+          "p50": 0.06,
+          "p75": 0.11242977528089887,
+          "p90": 0.25842696629213485
+        },
+        "Dificil coherente": {
+          "p10": 0.011139301679352422,
+          "p25": 0.024691358024691357,
+          "p50": 0.06097560975609756,
+          "p75": 0.13636363636363635,
+          "p90": 0.44967948717948675
+        },
+        "Posible ruido": {
+          "p10": 0.028785211267605634,
+          "p25": 0.04514879739094986,
+          "p50": 0.06666666666666667,
+          "p75": 0.1298913043478261,
+          "p90": 0.3695342867620099
+        }
+      }
+    },
+    "caracteres_repetidos": {
+      "global": {
+        "p10": 0.0,
+        "p25": 0.0,
+        "p50": 0.0,
+        "p75": 0.0,
+        "p90": 1.0
+      },
+      "por_poblacion": {
+        "Facil": {
+          "p10": 0.0,
+          "p25": 0.0,
+          "p50": 0.0,
+          "p75": 0.0,
+          "p90": 1.0
+        },
+        "Dificil coherente": {
+          "p10": 0.0,
+          "p25": 0.0,
+          "p50": 0.0,
+          "p75": 0.0,
+          "p90": 1.0
+        },
+        "Posible ruido": {
+          "p10": 0.0,
+          "p25": 0.0,
+          "p50": 0.0,
+          "p75": 0.0,
+          "p90": 0.8000000000000043
+        }
+      }
+    },
+    "densidad_lexica": {
+      "global": {
+        "p10": 0.8378378378378378,
+        "p25": 0.9,
+        "p50": 0.9629629629629629,
+        "p75": 1.0,
+        "p90": 1.0
+      },
+      "por_poblacion": {
+        "Facil": {
+          "p10": 0.8444444444444444,
+          "p25": 0.9,
+          "p50": 1.0,
+          "p75": 1.0,
+          "p90": 1.0
+        },
+        "Dificil coherente": {
+          "p10": 0.8143518518518518,
+          "p25": 0.8846153846153846,
+          "p50": 0.9473684210526315,
+          "p75": 1.0,
+          "p90": 1.0
+        },
+        "Posible ruido": {
+          "p10": 0.8366666666666667,
+          "p25": 0.9,
+          "p50": 0.9473684210526315,
+          "p75": 1.0,
+          "p90": 1.0
+        }
+      }
+    },
+    "longitud_media_token": {
+      "global": {
+        "p10": 4.801904761904762,
+        "p25": 5.372685185185185,
+        "p50": 6.095238095238095,
+        "p75": 7.0,
+        "p90": 8.180748663101603
+      },
+      "por_poblacion": {
+        "Facil": {
+          "p10": 4.846153846153846,
+          "p25": 5.424812030075188,
+          "p50": 6.1891891891891895,
+          "p75": 7.134848484848485,
+          "p90": 8.266666666666667
+        },
+        "Dificil coherente": {
+          "p10": 4.682417582417583,
+          "p25": 5.103448275862069,
+          "p50": 5.6923076923076925,
+          "p75": 6.388888888888889,
+          "p90": 7.2733333333333325
+        },
+        "Posible ruido": {
+          "p10": 5.505263157894737,
+          "p25": 6.075187969924812,
+          "p50": 6.666666666666667,
+          "p75": 7.148706896551724,
+          "p90": 8.766666666666671
+        }
+      }
+    },
+    "frac_mayus_completas": {
+      "global": {
+        "p10": 0.0,
+        "p25": 0.0,
+        "p50": 0.0,
+        "p75": 0.04,
+        "p90": 0.25
+      },
+      "por_poblacion": {
+        "Facil": {
+          "p10": 0.0,
+          "p25": 0.0,
+          "p50": 0.0,
+          "p75": 0.03571428571428571,
+          "p90": 0.21052631578947367
+        },
+        "Dificil coherente": {
+          "p10": 0.0,
+          "p25": 0.0,
+          "p50": 0.0,
+          "p75": 0.05263157894736842,
+          "p90": 0.42032085561497273
+        },
+        "Posible ruido": {
+          "p10": 0.0,
+          "p25": 0.0,
+          "p50": 0.0,
+          "p75": 0.05131578947368421,
+          "p90": 0.2450000000000001
+        }
+      }
+    },
+    "pos_primera_mencion": {
+      "global": {
+        "p10": -1.0,
+        "p25": -1.0,
+        "p50": -1.0,
+        "p75": 0.0,
+        "p90": 0.0
+      },
+      "por_poblacion": {
+        "Facil": {
+          "p10": -1.0,
+          "p25": -1.0,
+          "p50": -1.0,
+          "p75": 0.0,
+          "p90": 0.0
+        },
+        "Dificil coherente": {
+          "p10": -1.0,
+          "p25": -1.0,
+          "p50": -1.0,
+          "p75": 0.0,
+          "p90": 0.0
+        },
+        "Posible ruido": {
+          "p10": 0.0,
+          "p25": 0.0,
+          "p50": 0.0,
+          "p75": 0.14277950310559007,
+          "p90": 0.7255770447605165
+        }
+      }
+    },
+    "pos_primera_hashtag": {
+      "global": {
+        "p10": -1.0,
+        "p25": -1.0,
+        "p50": -1.0,
+        "p75": -1.0,
+        "p90": -1.0
+      },
+      "por_poblacion": {
+        "Facil": {
+          "p10": -1.0,
+          "p25": -1.0,
+          "p50": -1.0,
+          "p75": -1.0,
+          "p90": -1.0
+        },
+        "Dificil coherente": {
+          "p10": -1.0,
+          "p25": -1.0,
+          "p50": -1.0,
+          "p75": -1.0,
+          "p90": -1.0
+        },
+        "Posible ruido": {
+          "p10": -1.0,
+          "p25": -1.0,
+          "p50": -1.0,
+          "p75": -1.0,
+          "p90": 0.23340336134453854
+        }
+      }
+    },
+    "tiene_url": {
+      "global": {
+        "p10": 0.0,
+        "p25": 0.0,
+        "p50": 0.0,
+        "p75": 1.0,
+        "p90": 1.0
+      },
+      "por_poblacion": {
+        "Facil": {
+          "p10": 0.0,
+          "p25": 0.0,
+          "p50": 0.0,
+          "p75": 1.0,
+          "p90": 1.0
+        },
+        "Dificil coherente": {
+          "p10": 0.0,
+          "p25": 0.0,
+          "p50": 0.0,
+          "p75": 0.0,
+          "p90": 1.0
+        },
+        "Posible ruido": {
+          "p10": 0.0,
+          "p25": 0.0,
+          "p50": 0.0,
+          "p75": 1.0,
+          "p90": 1.0
+        }
+      }
+    },
+    "tiene_mencion": {
+      "global": {
+        "p10": 0.0,
+        "p25": 0.0,
+        "p50": 0.0,
+        "p75": 1.0,
+        "p90": 1.0
+      },
+      "por_poblacion": {
+        "Facil": {
+          "p10": 0.0,
+          "p25": 0.0,
+          "p50": 0.0,
+          "p75": 1.0,
+          "p90": 1.0
+        },
+        "Dificil coherente": {
+          "p10": 0.0,
+          "p25": 0.0,
+          "p50": 0.0,
+          "p75": 1.0,
+          "p90": 1.0
+        },
+        "Posible ruido": {
+          "p10": 1.0,
+          "p25": 1.0,
+          "p50": 1.0,
+          "p75": 1.0,
+          "p90": 1.0
+        }
+      }
+    },
+    "tiene_hashtag": {
+      "global": {
+        "p10": 0.0,
+        "p25": 0.0,
+        "p50": 0.0,
+        "p75": 0.0,
+        "p90": 0.0
+      },
+      "por_poblacion": {
+        "Facil": {
+          "p10": 0.0,
+          "p25": 0.0,
+          "p50": 0.0,
+          "p75": 0.0,
+          "p90": 0.0
+        },
+        "Dificil coherente": {
+          "p10": 0.0,
+          "p25": 0.0,
+          "p50": 0.0,
+          "p75": 0.0,
+          "p90": 0.0
+        },
+        "Posible ruido": {
+          "p10": 0.0,
+          "p25": 0.0,
+          "p50": 0.0,
+          "p75": 0.0,
+          "p90": 1.0
+        }
+      }
+    },
+    "es_muy_corto": {
+      "global": {
+        "p10": 0.0,
+        "p25": 0.0,
+        "p50": 0.0,
+        "p75": 0.0,
+        "p90": 0.0
+      },
+      "por_poblacion": {
+        "Facil": {
+          "p10": 0.0,
+          "p25": 0.0,
+          "p50": 0.0,
+          "p75": 0.0,
+          "p90": 0.0
+        },
+        "Dificil coherente": {
+          "p10": 0.0,
+          "p25": 0.0,
+          "p50": 0.0,
+          "p75": 0.0,
+          "p90": 0.0
+        },
+        "Posible ruido": {
+          "p10": 0.0,
+          "p25": 0.0,
+          "p50": 0.0,
+          "p75": 0.0,
+          "p90": 0.0
+        }
+      }
+    },
+    "es_largo": {
+      "global": {
+        "p10": 0.0,
+        "p25": 0.0,
+        "p50": 0.0,
+        "p75": 0.0,
+        "p90": 1.0
+      },
+      "por_poblacion": {
+        "Facil": {
+          "p10": 0.0,
+          "p25": 0.0,
+          "p50": 0.0,
+          "p75": 0.0,
+          "p90": 1.0
+        },
+        "Dificil coherente": {
+          "p10": 0.0,
+          "p25": 0.0,
+          "p50": 0.0,
+          "p75": 0.0,
+          "p90": 1.0
+        },
+        "Posible ruido": {
+          "p10": 0.0,
+          "p25": 0.0,
+          "p50": 0.0,
+          "p75": 1.0,
+          "p90": 1.0
+        }
+      }
+    }
+  },
+  "separacion_facil_vs_dificil": {
+    "caracteres": {
+      "d_cohen_dificil_menos_facil": -0.09445775189539368,
+      "p_mannwhitney": 0.8134348558198227,
+      "media_facil": 104.50912250217202,
+      "media_dificil": 99.32179930795847
+    },
+    "tokens": {
+      "d_cohen_dificil_menos_facil": 0.05314811160150604,
+      "p_mannwhitney": 0.06360633434597633,
+      "media_facil": 16.966985230234577,
+      "media_dificil": 17.4878892733564
+    },
+    "alfabeticos": {
+      "d_cohen_dificil_menos_facil": -0.10078347562754256,
+      "p_mannwhitney": 0.9106763658642085,
+      "media_facil": 82.5099913119027,
+      "media_dificil": 78.13148788927336
+    },
+    "frac_alfabeticos": {
+      "d_cohen_dificil_menos_facil": -0.13650842485622822,
+      "p_mannwhitney": 0.005429590651395237,
+      "media_facil": 0.7922457204563856,
+      "media_dificil": 0.7867888501871068
+    },
+    "digitos": {
+      "d_cohen_dificil_menos_facil": -0.16229298449141172,
+      "p_mannwhitney": 0.016795347658751365,
+      "media_facil": 1.165942658557776,
+      "media_dificil": 0.8788927335640139
+    },
+    "urls": {
+      "d_cohen_dificil_menos_facil": -0.33586582199685777,
+      "p_mannwhitney": 4.739266524895363e-06,
+      "media_facil": 0.36142484795829716,
+      "media_dificil": 0.20069204152249134
+    },
+    "menciones": {
+      "d_cohen_dificil_menos_facil": 0.03567595633891384,
+      "p_mannwhitney": 0.4290436065278127,
+      "media_facil": 0.6880973066898349,
+      "media_dificil": 0.7231833910034602
+    },
+    "hashtags": {
+      "d_cohen_dificil_menos_facil": -0.025735011425750597,
+      "p_mannwhitney": 0.47679921986723506,
+      "media_facil": 0.17202432667245873,
+      "media_dificil": 0.1522491349480969
+    },
+    "puntuacion": {
+      "d_cohen_dificil_menos_facil": -0.2343179509398799,
+      "p_mannwhitney": 0.007759351002736719,
+      "media_facil": 3.8184187662901823,
+      "media_dificil": 2.847750865051903
+    },
+    "frac_puntuacion": {
+      "d_cohen_dificil_menos_facil": -0.1300931253611447,
+      "p_mannwhitney": 0.06579662835621752,
+      "media_facil": 0.0352364118870076,
+      "media_dificil": 0.03010779691301231
+    },
+    "mayusculas": {
+      "d_cohen_dificil_menos_facil": 0.13208460698925625,
+      "p_mannwhitney": 0.5739298622659603,
+      "media_facil": 9.467419635099914,
+      "media_dificil": 12.2560553633218
+    },
+    "frac_mayusculas": {
+      "d_cohen_dificil_menos_facil": 0.10224575299654862,
+      "p_mannwhitney": 0.9828303325927791,
+      "media_facil": 0.12348254996040335,
+      "media_dificil": 0.14493092360546767
+    },
+    "caracteres_repetidos": {
+      "d_cohen_dificil_menos_facil": 0.014938171814324518,
+      "p_mannwhitney": 0.5678981826487913,
+      "media_facil": 0.2867072111207645,
+      "media_dificil": 0.2975778546712803
+    },
+    "densidad_lexica": {
+      "d_cohen_dificil_menos_facil": -0.16705252637781784,
+      "p_mannwhitney": 0.007518405801699481,
+      "media_facil": 0.9441592890126929,
+      "media_dificil": 0.9318368599827528
+    },
+    "longitud_media_token": {
+      "d_cohen_dificil_menos_facil": -0.3677045157348516,
+      "p_mannwhitney": 1.3065349329204671e-09,
+      "media_facil": 6.462951784046502,
+      "media_dificil": 5.927436440204874
+    },
+    "frac_mayus_completas": {
+      "d_cohen_dificil_menos_facil": 0.11406457295289475,
+      "p_mannwhitney": 0.4478044953853558,
+      "media_facil": 0.07906003314086965,
+      "media_dificil": 0.10541230789271888
+    },
+    "pos_primera_mencion": {
+      "d_cohen_dificil_menos_facil": 0.013432873250628039,
+      "p_mannwhitney": 0.7722385329370276,
+      "media_facil": -0.5113275074337793,
+      "media_dificil": -0.5040085364789366
+    },
+    "pos_primera_hashtag": {
+      "d_cohen_dificil_menos_facil": -0.007894252406559686,
+      "p_mannwhitney": 0.5627808936887765,
+      "media_facil": -0.864497394572379,
+      "media_dificil": -0.8679770137185426
+    },
+    "tiene_url": {
+      "d_cohen_dificil_menos_facil": -0.3085869675414608,
+      "p_mannwhitney": 8.829518745768873e-06,
+      "media_facil": 0.3318853171155517,
+      "media_dificil": 0.1972318339100346
+    },
+    "tiene_mencion": {
+      "d_cohen_dificil_menos_facil": 0.046312050835878533,
+      "p_mannwhitney": 0.48089955752252556,
+      "media_facil": 0.45438748913987836,
+      "media_dificil": 0.47750865051903113
+    },
+    "tiene_hashtag": {
+      "d_cohen_dificil_menos_facil": -0.04682340341644487,
+      "p_mannwhitney": 0.48521090120246746,
+      "media_facil": 0.09643788010425716,
+      "media_dificil": 0.08304498269896193
+    },
+    "es_muy_corto": {
+      "d_cohen_dificil_menos_facil": -0.28643825647585874,
+      "p_mannwhitney": 0.00042931782624357364,
+      "media_facil": 0.04865334491746308,
+      "media_dificil": 0.0034602076124567475
+    },
+    "es_largo": {
+      "d_cohen_dificil_menos_facil": -0.05718598280472759,
+      "p_mannwhitney": 0.39091768210491606,
+      "media_facil": 0.20243266724587317,
+      "media_dificil": 0.17993079584775087
+    }
+  },
+  "por_label": {
+    "HS": {
+      "n_errores": 316,
+      "tasa_de_error": 0.21308159136884694,
+      "n_fp": 173,
+      "n_fn": 143,
+      "fp_entre_predichos": 0.2551622418879056,
+      "fn_entre_positivos": 0.22067901234567902,
+      "rasgos_de_mayor_efecto": [
+        {
+          "rasgo": "tokens",
+          "d_cohen": 0.27481807059452623,
+          "p": 1.9998211217572614e-05,
+          "media_si_error": 19.474683544303797,
+          "media_si_correcto": 16.59383033419023
+        },
+        {
+          "rasgo": "es_muy_corto",
+          "d_cohen": -0.2582678611989843,
+          "p": 0.0007060517204285223,
+          "media_si_error": 0.006329113924050633,
+          "media_si_correcto": 0.04798628963153385
+        },
+        {
+          "rasgo": "caracteres",
+          "d_cohen": 0.25700667678244044,
+          "p": 2.5528084397443414e-05,
+          "media_si_error": 117.06962025316456,
+          "media_si_correcto": 101.35561268209084
+        },
+        {
+          "rasgo": "alfabeticos",
+          "d_cohen": 0.2493233281846605,
+          "p": 4.8596448497029066e-05,
+          "media_si_error": 92.17088607594937,
+          "media_si_correcto": 80.10111396743787
+        },
+        {
+          "rasgo": "densidad_lexica",
+          "d_cohen": -0.2476731746220364,
+          "p": 3.542041263548432e-05,
+          "media_si_error": 0.9270052092329836,
+          "media_si_correcto": 0.9453988222575223
+        },
+        {
+          "rasgo": "tiene_mencion",
+          "d_cohen": -0.21626763379289102,
+          "p": 0.0007378247991313764,
+          "media_si_error": 0.38924050632911394,
+          "media_si_correcto": 0.4961439588688946
+        }
+      ]
+    },
+    "TR": {
+      "n_errores": 164,
+      "tasa_de_error": 0.11058664868509778,
+      "n_fp": 82,
+      "n_fn": 82,
+      "fp_entre_predichos": 0.1842696629213483,
+      "fn_entre_positivos": 0.1842696629213483,
+      "rasgos_de_mayor_efecto": [
+        {
+          "rasgo": "es_muy_corto",
+          "d_cohen": -0.30318433526049776,
+          "p": 0.006175355930742101,
+          "media_si_error": 0.0,
+          "media_si_correcto": 0.04397270659590599
+        },
+        {
+          "rasgo": "longitud_media_token",
+          "d_cohen": -0.28481896885628016,
+          "p": 0.00014942295519450787,
+          "media_si_error": 5.996716616215225,
+          "media_si_correcto": 6.420481029847009
+        },
+        {
+          "rasgo": "urls",
+          "d_cohen": -0.20423596317705855,
+          "p": 0.02883475436064642,
+          "media_si_error": 0.24390243902439024,
+          "media_si_correcto": 0.3434420015163002
+        },
+        {
+          "rasgo": "tiene_url",
+          "d_cohen": -0.17873245379439595,
+          "p": 0.0369074357788848,
+          "media_si_error": 0.23780487804878048,
+          "media_si_correcto": 0.31766489764973466
+        },
+        {
+          "rasgo": "puntuacion",
+          "d_cohen": -0.15656508491861656,
+          "p": 0.2756834584372799,
+          "media_si_error": 3.048780487804878,
+          "media_si_correcto": 3.721758908263836
+        },
+        {
+          "rasgo": "hashtags",
+          "d_cohen": -0.13046537673383493,
+          "p": 0.26243495532156136,
+          "media_si_error": 0.0975609756097561,
+          "media_si_correcto": 0.18119787717968158
+        }
+      ]
+    },
+    "AG": {
+      "n_errores": 277,
+      "tasa_de_error": 0.1867835468644639,
+      "n_fp": 135,
+      "n_fn": 142,
+      "fp_entre_predichos": 0.24107142857142858,
+      "fn_entre_positivos": 0.25044091710758376,
+      "rasgos_de_mayor_efecto": [
+        {
+          "rasgo": "tokens",
+          "d_cohen": 0.33721445806427014,
+          "p": 1.0318020931158382e-06,
+          "media_si_error": 20.12274368231047,
+          "media_si_correcto": 16.538142620232172
+        },
+        {
+          "rasgo": "alfabeticos",
+          "d_cohen": 0.3217988486224526,
+          "p": 5.308584682643158e-06,
+          "media_si_error": 95.66787003610108,
+          "media_si_correcto": 79.6882255389718
+        },
+        {
+          "rasgo": "caracteres",
+          "d_cohen": 0.3196998890853494,
+          "p": 3.2905703955026376e-06,
+          "media_si_error": 120.88808664259928,
+          "media_si_correcto": 100.98673300165838
+        },
+        {
+          "rasgo": "es_muy_corto",
+          "d_cohen": -0.2443526723798286,
+          "p": 0.002407108495497123,
+          "media_si_error": 0.007220216606498195,
+          "media_si_correcto": 0.04643449419568822
+        },
+        {
+          "rasgo": "densidad_lexica",
+          "d_cohen": -0.24370852458691564,
+          "p": 3.4915838024873786e-05,
+          "media_si_error": 0.9269169734696854,
+          "media_si_correcto": 0.944824270349128
+        },
+        {
+          "rasgo": "tiene_mencion",
+          "d_cohen": -0.21676697078398952,
+          "p": 0.001291756387414491,
+          "media_si_error": 0.3862815884476534,
+          "media_si_correcto": 0.49336650082918737
+        }
+      ]
+    }
+  },
+  "interaccion_por_region": {
+    "decil 1 de longitud (mas corto)": {
+      "n_filas": 167,
+      "fraccion": 0.11260957518543493,
+      "HS": {
+        "tasa_error_en_region": 0.07784431137724551,
+        "tasa_error_fuera": 0.23024316109422494,
+        "exceso": -0.15239884971697942
+      },
+      "TR": {
+        "tasa_error_en_region": 0.03592814371257485,
+        "tasa_error_fuera": 0.12006079027355623,
+        "exceso": -0.08413264656098138
+      },
+      "AG": {
+        "tasa_error_en_region": 0.08383233532934131,
+        "tasa_error_fuera": 0.19984802431610943,
+        "exceso": -0.11601568898676812
+      }
+    },
+    "decil 10 de longitud (mas largo)": {
+      "n_filas": 158,
+      "fraccion": 0.10654079568442347,
+      "HS": {
+        "tasa_error_en_region": 0.3037974683544304,
+        "tasa_error_fuera": 0.20226415094339623,
+        "exceso": 0.10153331741103416
+      },
+      "TR": {
+        "tasa_error_en_region": 0.11392405063291139,
+        "tasa_error_fuera": 0.11018867924528301,
+        "exceso": 0.003735371387628375
+      },
+      "AG": {
+        "tasa_error_en_region": 0.2911392405063291,
+        "tasa_error_fuera": 0.17433962264150943,
+        "exceso": 0.11679961786481968
+      }
+    },
+    "texto corto (tercio inferior de tokens)": {
+      "n_filas": 514,
+      "fraccion": 0.3465947403910991,
+      "HS": {
+        "tasa_error_en_region": 0.1614785992217899,
+        "tasa_error_fuera": 0.24045407636738905,
+        "exceso": -0.07897547714559916
+      },
+      "TR": {
+        "tasa_error_en_region": 0.09922178988326848,
+        "tasa_error_fuera": 0.11661506707946337,
+        "exceso": -0.017393277196194892
+      },
+      "AG": {
+        "tasa_error_en_region": 0.13618677042801555,
+        "tasa_error_fuera": 0.21362229102167182,
+        "exceso": -0.07743552059365627
+      }
+    },
+    "texto largo (tercio superior de tokens)": {
+      "n_filas": 499,
+      "fraccion": 0.33648010788941335,
+      "HS": {
+        "tasa_error_en_region": 0.25250501002004005,
+        "tasa_error_fuera": 0.19308943089430894,
+        "exceso": 0.059415579125731116
+      },
+      "TR": {
+        "tasa_error_en_region": 0.11222444889779559,
+        "tasa_error_fuera": 0.10975609756097561,
+        "exceso": 0.002468351336819982
+      },
+      "AG": {
+        "tasa_error_en_region": 0.24248496993987975,
+        "tasa_error_fuera": 0.15853658536585366,
+        "exceso": 0.08394838457402609
+      }
+    },
+    "con URL": {
+      "n_filas": 458,
+      "fraccion": 0.3088334457181389,
+      "HS": {
+        "tasa_error_en_region": 0.2445414847161572,
+        "tasa_error_fuera": 0.19902439024390245,
+        "exceso": 0.04551709447225474
+      },
+      "TR": {
+        "tasa_error_en_region": 0.0851528384279476,
+        "tasa_error_fuera": 0.12195121951219512,
+        "exceso": -0.03679838108424752
+      },
+      "AG": {
+        "tasa_error_en_region": 0.22270742358078602,
+        "tasa_error_fuera": 0.17073170731707318,
+        "exceso": 0.051975716263712834
+      }
+    },
+    "sin URL": {
+      "n_filas": 1025,
+      "fraccion": 0.6911665542818611,
+      "HS": {
+        "tasa_error_en_region": 0.19902439024390245,
+        "tasa_error_fuera": 0.2445414847161572,
+        "exceso": -0.04551709447225474
+      },
+      "TR": {
+        "tasa_error_en_region": 0.12195121951219512,
+        "tasa_error_fuera": 0.0851528384279476,
+        "exceso": 0.03679838108424752
+      },
+      "AG": {
+        "tasa_error_en_region": 0.17073170731707318,
+        "tasa_error_fuera": 0.22270742358078602,
+        "exceso": -0.051975716263712834
+      }
+    },
+    "con mencion": {
+      "n_filas": 702,
+      "fraccion": 0.4733648010788941,
+      "HS": {
+        "tasa_error_en_region": 0.1752136752136752,
+        "tasa_error_fuera": 0.2471190781049936,
+        "exceso": -0.07190540289131839
+      },
+      "TR": {
+        "tasa_error_en_region": 0.11823361823361823,
+        "tasa_error_fuera": 0.10371318822023047,
+        "exceso": 0.014520430013387764
+      },
+      "AG": {
+        "tasa_error_en_region": 0.15242165242165243,
+        "tasa_error_fuera": 0.2176696542893726,
+        "exceso": -0.06524800186772017
+      }
+    },
+    "sin mencion": {
+      "n_filas": 781,
+      "fraccion": 0.5266351989211059,
+      "HS": {
+        "tasa_error_en_region": 0.2471190781049936,
+        "tasa_error_fuera": 0.1752136752136752,
+        "exceso": 0.07190540289131839
+      },
+      "TR": {
+        "tasa_error_en_region": 0.10371318822023047,
+        "tasa_error_fuera": 0.11823361823361823,
+        "exceso": -0.014520430013387764
+      },
+      "AG": {
+        "tasa_error_en_region": 0.2176696542893726,
+        "tasa_error_fuera": 0.15242165242165243,
+        "exceso": 0.06524800186772017
+      }
+    },
+    "con hashtag": {
+      "n_filas": 144,
+      "fraccion": 0.09710047201618341,
+      "HS": {
+        "tasa_error_en_region": 0.2569444444444444,
+        "tasa_error_fuera": 0.2083644510828977,
+        "exceso": 0.048579993361546725
+      },
+      "TR": {
+        "tasa_error_en_region": 0.08333333333333333,
+        "tasa_error_fuera": 0.1135175504107543,
+        "exceso": -0.03018421707742097
+      },
+      "AG": {
+        "tasa_error_en_region": 0.20833333333333334,
+        "tasa_error_fuera": 0.18446601941747573,
+        "exceso": 0.023867313915857613
+      }
+    },
+    "sin hashtag": {
+      "n_filas": 1339,
+      "fraccion": 0.9028995279838166,
+      "HS": {
+        "tasa_error_en_region": 0.2083644510828977,
+        "tasa_error_fuera": 0.2569444444444444,
+        "exceso": -0.048579993361546725
+      },
+      "TR": {
+        "tasa_error_en_region": 0.1135175504107543,
+        "tasa_error_fuera": 0.08333333333333333,
+        "exceso": 0.03018421707742097
+      },
+      "AG": {
+        "tasa_error_en_region": 0.18446601941747573,
+        "tasa_error_fuera": 0.20833333333333334,
+        "exceso": -0.023867313915857613
+      }
+    },
+    "densidad lexica baja (tercio inferior)": {
+      "n_filas": 524,
+      "fraccion": 0.3533378287255563,
+      "HS": {
+        "tasa_error_en_region": 0.25763358778625955,
+        "tasa_error_fuera": 0.18873826903023982,
+        "exceso": 0.06889531875601973
+      },
+      "TR": {
+        "tasa_error_en_region": 0.11068702290076336,
+        "tasa_error_fuera": 0.1105318039624609,
+        "exceso": 0.00015521893830246214
+      },
+      "AG": {
+        "tasa_error_en_region": 0.23282442748091603,
+        "tasa_error_fuera": 0.1616266944734098,
+        "exceso": 0.07119773300750623
+      }
+    },
+    "densidad lexica alta (tercio superior)": {
+      "n_filas": 730,
+      "fraccion": 0.49224544841537426,
+      "HS": {
+        "tasa_error_en_region": 0.16986301369863013,
+        "tasa_error_fuera": 0.2549800796812749,
+        "exceso": -0.08511706598264476
+      },
+      "TR": {
+        "tasa_error_en_region": 0.10547945205479452,
+        "tasa_error_fuera": 0.11553784860557768,
+        "exceso": -0.010058396550783166
+      },
+      "AG": {
+        "tasa_error_en_region": 0.14657534246575343,
+        "tasa_error_fuera": 0.22576361221779548,
+        "exceso": -0.07918826975204205
+      }
+    },
+    "casi todo en mayusculas (frac > 0,7)": {
+      "n_filas": 72,
+      "fraccion": 0.048550236008091704,
+      "HS": {
+        "tasa_error_en_region": 0.19444444444444445,
+        "tasa_error_fuera": 0.21403260099220411,
+        "exceso": -0.019588156547759666
+      },
+      "TR": {
+        "tasa_error_en_region": 0.125,
+        "tasa_error_fuera": 0.10985116938341602,
+        "exceso": 0.01514883061658398
+      },
+      "AG": {
+        "tasa_error_en_region": 0.19444444444444445,
+        "tasa_error_fuera": 0.18639262934089298,
+        "exceso": 0.008051815103551463
+      }
+    },
+    "alta puntuacion (> 0,10 por caracter)": {
+      "n_filas": 96,
+      "fraccion": 0.06473364801078894,
+      "HS": {
+        "tasa_error_en_region": 0.19791666666666666,
+        "tasa_error_fuera": 0.21413121845710165,
+        "exceso": -0.01621455179043499
+      },
+      "TR": {
+        "tasa_error_en_region": 0.08333333333333333,
+        "tasa_error_fuera": 0.11247296322999278,
+        "exceso": -0.029139629896659455
+      },
+      "AG": {
+        "tasa_error_en_region": 0.14583333333333334,
+        "tasa_error_fuera": 0.18961788031723142,
+        "exceso": -0.04378454698389808
+      }
+    },
+    "con caracteres repetidos": {
+      "n_filas": 275,
+      "fraccion": 0.18543492919757248,
+      "HS": {
+        "tasa_error_en_region": 0.29818181818181816,
+        "tasa_error_fuera": 0.19370860927152317,
+        "exceso": 0.10447320891029499
+      },
+      "TR": {
+        "tasa_error_en_region": 0.08727272727272728,
+        "tasa_error_fuera": 0.11589403973509933,
+        "exceso": -0.028621312462372053
+      },
+      "AG": {
+        "tasa_error_en_region": 0.23272727272727273,
+        "tasa_error_fuera": 0.1763245033112583,
+        "exceso": 0.05640276941601444
+      }
+    },
+    "mencion en el primer tercio": {
+      "n_filas": 639,
+      "fraccion": 0.4308833445718139,
+      "HS": {
+        "tasa_error_en_region": 0.1674491392801252,
+        "tasa_error_fuera": 0.2476303317535545,
+        "exceso": -0.08018119247342931
+      },
+      "TR": {
+        "tasa_error_en_region": 0.1267605633802817,
+        "tasa_error_fuera": 0.09834123222748815,
+        "exceso": 0.028419331152793534
+      },
+      "AG": {
+        "tasa_error_en_region": 0.1486697965571205,
+        "tasa_error_fuera": 0.2156398104265403,
+        "exceso": -0.06697001386941978
+      }
+    },
+    "hashtag en el primer tercio": {
+      "n_filas": 64,
+      "fraccion": 0.04315576534052596,
+      "HS": {
+        "tasa_error_en_region": 0.265625,
+        "tasa_error_fuera": 0.21071176885130374,
+        "exceso": 0.05491323114869626
+      },
+      "TR": {
+        "tasa_error_en_region": 0.03125,
+        "tasa_error_fuera": 0.11416490486257928,
+        "exceso": -0.08291490486257928
+      },
+      "AG": {
+        "tasa_error_en_region": 0.171875,
+        "tasa_error_fuera": 0.18745595489781536,
+        "exceso": -0.015580954897815358
+      }
+    }
+  },
+  "cruces": {
+    "longitud x URL": {
+      "filas": [
+        {
+          "tramo": "corto",
+          "condicion": "no",
+          "n_filas": 396,
+          "tasa_error": {
+            "HS": 0.13383838383838384,
+            "TR": 0.09343434343434344,
+            "AG": 0.12121212121212122
+          }
+        },
+        {
+          "tramo": "corto",
+          "condicion": "si",
+          "n_filas": 118,
+          "tasa_error": {
+            "HS": 0.2542372881355932,
+            "TR": 0.11864406779661017,
+            "AG": 0.1864406779661017
+          }
+        },
+        {
+          "tramo": "medio",
+          "condicion": "no",
+          "n_filas": 323,
+          "tasa_error": {
+            "HS": 0.23529411764705882,
+            "TR": 0.14551083591331268,
+            "AG": 0.18575851393188855
+          }
+        },
+        {
+          "tramo": "medio",
+          "condicion": "si",
+          "n_filas": 147,
+          "tasa_error": {
+            "HS": 0.2108843537414966,
+            "TR": 0.06802721088435375,
+            "AG": 0.17687074829931973
+          }
+        },
+        {
+          "tramo": "largo",
+          "condicion": "no",
+          "n_filas": 306,
+          "tasa_error": {
+            "HS": 0.24509803921568626,
+            "TR": 0.13398692810457516,
+            "AG": 0.21895424836601307
+          }
+        },
+        {
+          "tramo": "largo",
+          "condicion": "si",
+          "n_filas": 193,
+          "tasa_error": {
+            "HS": 0.26424870466321243,
+            "TR": 0.07772020725388601,
+            "AG": 0.27979274611398963
+          }
+        }
+      ]
+    },
+    "longitud x mencion": {
+      "filas": [
+        {
+          "tramo": "corto",
+          "condicion": "no",
+          "n_filas": 220,
+          "tasa_error": {
+            "HS": 0.22727272727272727,
+            "TR": 0.11818181818181818,
+            "AG": 0.18636363636363637
+          }
+        },
+        {
+          "tramo": "corto",
+          "condicion": "si",
+          "n_filas": 294,
+          "tasa_error": {
+            "HS": 0.11224489795918367,
+            "TR": 0.08503401360544217,
+            "AG": 0.09863945578231292
+          }
+        },
+        {
+          "tramo": "medio",
+          "condicion": "no",
+          "n_filas": 272,
+          "tasa_error": {
+            "HS": 0.23529411764705882,
+            "TR": 0.10661764705882353,
+            "AG": 0.20220588235294118
+          }
+        },
+        {
+          "tramo": "medio",
+          "condicion": "si",
+          "n_filas": 198,
+          "tasa_error": {
+            "HS": 0.21717171717171718,
+            "TR": 0.1414141414141414,
+            "AG": 0.15656565656565657
+          }
+        },
+        {
+          "tramo": "largo",
+          "condicion": "no",
+          "n_filas": 289,
+          "tasa_error": {
+            "HS": 0.27335640138408307,
+            "TR": 0.08996539792387544,
+            "AG": 0.2560553633217993
+          }
+        },
+        {
+          "tramo": "largo",
+          "condicion": "si",
+          "n_filas": 210,
+          "tasa_error": {
+            "HS": 0.22380952380952382,
+            "TR": 0.14285714285714285,
+            "AG": 0.22380952380952382
+          }
+        }
+      ]
+    },
+    "longitud x hashtag": {
+      "filas": [
+        {
+          "tramo": "corto",
+          "condicion": "no",
+          "n_filas": 489,
+          "tasa_error": {
+            "HS": 0.15337423312883436,
+            "TR": 0.09815950920245399,
+            "AG": 0.1329243353783231
+          }
+        },
+        {
+          "tramo": "corto",
+          "condicion": "si",
+          "n_filas": 25,
+          "tasa_error": {
+            "HS": 0.32,
+            "TR": 0.12,
+            "AG": 0.2
+          }
+        },
+        {
+          "tramo": "medio",
+          "condicion": "no",
+          "n_filas": 422,
+          "tasa_error": {
+            "HS": 0.23696682464454977,
+            "TR": 0.13033175355450238,
+            "AG": 0.19194312796208532
+          }
+        },
+        {
+          "tramo": "medio",
+          "condicion": "si",
+          "n_filas": 48,
+          "tasa_error": {
+            "HS": 0.14583333333333334,
+            "TR": 0.041666666666666664,
+            "AG": 0.10416666666666667
+          }
+        },
+        {
+          "tramo": "largo",
+          "condicion": "no",
+          "n_filas": 428,
+          "tasa_error": {
+            "HS": 0.24299065420560748,
+            "TR": 0.11448598130841121,
+            "AG": 0.23598130841121495
+          }
+        },
+        {
+          "tramo": "largo",
+          "condicion": "si",
+          "n_filas": 71,
+          "tasa_error": {
+            "HS": 0.30985915492957744,
+            "TR": 0.09859154929577464,
+            "AG": 0.28169014084507044
+          }
+        }
+      ]
+    },
+    "longitud x label": {
+      "filas": [
+        {
+          "tramo": "corto",
+          "n_filas": 514,
+          "tasa_error": {
+            "HS": 0.1614785992217899,
+            "TR": 0.09922178988326848,
+            "AG": 0.13618677042801555
+          }
+        },
+        {
+          "tramo": "medio",
+          "n_filas": 470,
+          "tasa_error": {
+            "HS": 0.2276595744680851,
+            "TR": 0.12127659574468085,
+            "AG": 0.1829787234042553
+          }
+        },
+        {
+          "tramo": "largo",
+          "n_filas": 499,
+          "tasa_error": {
+            "HS": 0.25250501002004005,
+            "TR": 0.11222444889779559,
+            "AG": 0.24248496993987975
+          }
+        }
+      ]
+    }
+  },
+  "estabilidad_por_pliegue": {
+    "decil 1 de longitud (mas corto)": {
+      "pliegues_con_la_misma_direccion": 0,
+      "de_total": 5,
+      "delta_por_pliegue": [
+        -0.21641791044776118,
+        -0.10323105059947166,
+        -0.20350877192982456,
+        -0.18614897425306348,
+        -0.08881157297198317
+      ],
+      "resumen": "0/5 pliegues con la misma direccion, delta medio -0.1596"
+    },
+    "decil 10 de longitud (mas largo)": {
+      "pliegues_con_la_misma_direccion": 5,
+      "de_total": 5,
+      "delta_por_pliegue": [
+        0.011329755515802009,
+        0.0547817047817048,
+        0.11423908608731129,
+        0.1482251082251082,
+        0.2848302126309108
+      ],
+      "resumen": "5/5 pliegues con la misma direccion, delta medio +0.1227"
+    },
+    "texto corto (tercio inferior de tokens)": {
+      "pliegues_con_la_misma_direccion": 0,
+      "de_total": 5,
+      "delta_por_pliegue": [
+        -0.08846393034825872,
+        -0.013084112149532728,
+        -0.10989550115292157,
+        -0.08040816326530614,
+        -0.10422322775263951
+      ],
+      "resumen": "0/5 pliegues con la misma direccion, delta medio -0.0792"
+    },
+    "texto largo (tercio superior de tokens)": {
+      "pliegues_con_la_misma_direccion": 5,
+      "de_total": 5,
+      "delta_por_pliegue": [
+        0.02483896154596918,
+        0.01927860696517414,
+        0.09632653061224491,
+        0.10342572564012273,
+        0.05371812653366051
+      ],
+      "resumen": "5/5 pliegues con la misma direccion, delta medio +0.0595"
+    },
+    "con URL": {
+      "pliegues_con_la_misma_direccion": 4,
+      "de_total": 5,
+      "delta_por_pliegue": [
+        0.006763285024154603,
+        0.1302134646962233,
+        0.03688019297775397,
+        0.0950338228015179,
+        -0.03262936642978681
+      ],
+      "resumen": "4/5 pliegues con la misma direccion, delta medio +0.0473"
+    },
+    "sin URL": {
+      "pliegues_con_la_misma_direccion": 1,
+      "de_total": 5,
+      "delta_por_pliegue": [
+        -0.006763285024154603,
+        -0.1302134646962233,
+        -0.03688019297775397,
+        -0.0950338228015179,
+        0.03262936642978681
+      ],
+      "resumen": "1/5 pliegues con la misma direccion, delta medio -0.0473"
+    },
+    "con mencion": {
+      "pliegues_con_la_misma_direccion": 0,
+      "de_total": 5,
+      "delta_por_pliegue": [
+        -0.00985915492957748,
+        -0.03423349699945444,
+        -0.10924254227191496,
+        -0.10206694713736966,
+        -0.10473065354115396
+      ],
+      "resumen": "0/5 pliegues con la misma direccion, delta medio -0.0720"
+    },
+    "sin mencion": {
+      "pliegues_con_la_misma_direccion": 5,
+      "de_total": 5,
+      "delta_por_pliegue": [
+        0.00985915492957748,
+        0.03423349699945444,
+        0.10924254227191496,
+        0.10206694713736966,
+        0.10473065354115396
+      ],
+      "resumen": "5/5 pliegues con la misma direccion, delta medio +0.0720"
+    },
+    "con hashtag": {
+      "pliegues_con_la_misma_direccion": 3,
+      "de_total": 5,
+      "delta_por_pliegue": [
+        -0.015151515151515138,
+        -0.031135531135531136,
+        0.1318124207858048,
+        0.1257995735607676,
+        0.01674709054782858
+      ],
+      "resumen": "3/5 pliegues con la misma direccion, delta medio +0.0456"
+    },
+    "sin hashtag": {
+      "pliegues_con_la_misma_direccion": 2,
+      "de_total": 5,
+      "delta_por_pliegue": [
+        0.015151515151515138,
+        0.031135531135531136,
+        -0.1318124207858048,
+        -0.1257995735607676,
+        -0.01674709054782858
+      ],
+      "resumen": "2/5 pliegues con la misma direccion, delta medio -0.0456"
+    },
+    "densidad lexica baja (tercio inferior)": {
+      "pliegues_con_la_misma_direccion": 5,
+      "de_total": 5,
+      "delta_por_pliegue": [
+        0.054603427660422504,
+        0.02202380952380953,
+        0.14780058651026393,
+        0.07967423833586815,
+        0.03560323383084579
+      ],
+      "resumen": "5/5 pliegues con la misma direccion, delta medio +0.0679"
+    },
+    "densidad lexica alta (tercio superior)": {
+      "pliegues_con_la_misma_direccion": 0,
+      "de_total": 5,
+      "delta_por_pliegue": [
+        -0.08772566451964076,
+        -0.022993197278911554,
+        -0.11001461988304095,
+        -0.07881592814920038,
+        -0.1238761238761239
+      ],
+      "resumen": "0/5 pliegues con la misma direccion, delta medio -0.0847"
+    },
+    "casi todo en mayusculas (frac > 0,7)": {
+      "pliegues_con_la_misma_direccion": 2,
+      "de_total": 5,
+      "delta_por_pliegue": [
+        -0.0896057347670251,
+        -0.05502271580010096,
+        0.11954022988505744,
+        0.0732142857142857,
+        -0.05197132616487457
+      ],
+      "resumen": "2/5 pliegues con la misma direccion, delta medio -0.0008"
+    },
+    "alta puntuacion (> 0,10 por caracter)": {
+      "pliegues_con_la_misma_direccion": 3,
+      "de_total": 5,
+      "delta_por_pliegue": [
+        -0.14474789915966385,
+        0.023960647413519498,
+        -0.07896103896103898,
+        0.05397427788319631,
+        0.06630824372759858
+      ],
+      "resumen": "3/5 pliegues con la misma direccion, delta medio -0.0159"
+    },
+    "con caracteres repetidos": {
+      "pliegues_con_la_misma_direccion": 4,
+      "de_total": 5,
+      "delta_por_pliegue": [
+        0.11586668565731378,
+        -0.01581027667984189,
+        0.0956244566792234,
+        0.14047619047619048,
+        0.16072716779685473
+      ],
+      "resumen": "4/5 pliegues con la misma direccion, delta medio +0.0994"
+    },
+    "mencion en el primer tercio": {
+      "pliegues_con_la_misma_direccion": 0,
+      "de_total": 5,
+      "delta_por_pliegue": [
+        -0.027413091715976334,
+        -0.027413091715976334,
+        -0.11666589013651402,
+        -0.10037363347017852,
+        -0.1319035604149145
+      ],
+      "resumen": "0/5 pliegues con la misma direccion, delta medio -0.0808"
+    },
+    "hashtag en el primer tercio": {
+      "pliegues_con_la_misma_direccion": 4,
+      "de_total": 5,
+      "delta_por_pliegue": [
+        0.019939424533064104,
+        -0.10839160839160839,
+        0.10178571428571428,
+        0.16223776223776226,
+        0.0964247020585049
+      ],
+      "resumen": "4/5 pliegues con la misma direccion, delta medio +0.0544"
+    }
+  },
+  "gastos": {
+    "submissions": 0,
+    "modelos_entrenados": 0,
+    "memoria_pico_mb": 198.3,
+    "segundos": 0.2
+  }
+}

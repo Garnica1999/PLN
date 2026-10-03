@@ -1,0 +1,67 @@
+{
+  "familia": "P69_PERMUTACION",
+  "experiment_id": "P69-05",
+  "fecha": "2026-09-29T18:44:22+00:00",
+  "naturaleza": "TEST DE PERMUTACION pre-registrado. 1000 permutaciones. 0 tecnicas nuevas, 0 grid, 0 submissions, 0 test, 0 holdout, 0 leaderboard",
+  "pre_registro": {
+    "documento": "docs/p69_especificacion_congelada.md",
+    "commit": "915991b",
+    "escrito_antes_de_ejecutar": true
+  },
+  "diseno": {
+    "n_permutaciones": 1000,
+    "semilla": 20261002,
+    "prueba": "unilateral",
+    "estadistico": "delta_corrected_cv = CV(ponderado) - CV(V03)",
+    "que_se_baraja": "los pesos dentro del pliegue de ENTRENAMIENTO",
+    "que_se_conserva": [
+      "regla de pesos",
+      "distribucion de pesos",
+      "numero de ejemplos ponderados",
+      "particion",
+      "multiplicadores de class weight"
+    ],
+    "p_empirico": "(1 + #(delta_perm >= delta_obs)) / (N + 1)"
+  },
+  "observado": {
+    "delta_real": 0.0082045862,
+    "delta_registrado": 0.0082045862,
+    "coincide": true
+  },
+  "nulo": {
+    "media": -0.001320991,
+    "desviacion": 0.0020508746,
+    "mediana": -0.0012968408,
+    "minimo": -0.0078934583,
+    "maximo": 0.004597167,
+    "percentil_95": 0.0020341831,
+    "percentil_99": 0.0030856337
+  },
+  "test": {
+    "n_permutaciones_ge_observado": 0,
+    "p_empirico": 0.000999,
+    "alpha": 0.05,
+    "favorece": true,
+    "veredicto": "STRONGLY_SUPPORTED_BUT_NOT_AUTOMATICALLY_ADOPTED",
+    "lectura": "la asignacion REAL de pesos contiene mas informacion que una asignacion equivalente pero permutada. La mejora depende de QUE ejemplos reciben menos peso, no solo de cuanto peso se retira"
+  },
+  "decision": {
+    "tres_particiones_positivas": true,
+    "permutacion_favorable": true,
+    "bootstrap_por_grupos_compatible": false,
+    "rescue_damage_favorable": true,
+    "compliance_completo": true,
+    "provenance_completo": true
+  },
+  "estado_final": "PROMISING_UNCONFIRMED",
+  "lo_que_no_responde": [
+    "si V03 esta definitivamente peor",
+    "si la mejora en Kaggle sera positiva"
+  ],
+  "reproducibilidad": {
+    "nivel": "R2",
+    "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "corrected_cv_v03": 0.7772114525165721
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

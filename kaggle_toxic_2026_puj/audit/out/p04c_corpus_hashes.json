@@ -1,0 +1,47 @@
+[
+  {
+    "id": "E-CORP-01",
+    "archivo": "data/external/corpora/wikipedia_es/emb_normal/tokens_10M.txt",
+    "estado": "OK",
+    "sha256_ok": "00b839da6fbc377e",
+    "sha256_manifest": "00b839da6fbc377e",
+    "bytes_ok": 63152231,
+    "bytes_manifest": 63152231
+  },
+  {
+    "id": "E-CORP-06",
+    "archivo": "data/external/corpora/mc4_es/emb_normal/tokens_10M.txt",
+    "estado": "OK",
+    "sha256_ok": "361498bf3eca104d",
+    "sha256_manifest": "361498bf3eca104d",
+    "bytes_ok": 62000589,
+    "bytes_manifest": 62000589
+  },
+  {
+    "id": "E-CORP-08",
+    "archivo": "data/external/corpora/wikipedia_es_50M/emb_normal/tokens_50M.txt",
+    "estado": "OK",
+    "sha256_ok": "8088bce2a9283fbc",
+    "sha256_manifest": "8088bce2a9283fbc",
+    "bytes_ok": 310983187,
+    "bytes_manifest": 310983187
+  },
+  {
+    "id": "E-CORP-09",
+    "archivo": "data/external/corpora/wikipedia_es_5M/emb_normal/tokens_5M.txt",
+    "estado": "OK",
+    "sha256_ok": "62aaa19af45c31f8",
+    "sha256_manifest": "62aaa19af45c31f8",
+    "bytes_ok": 31485618,
+    "bytes_manifest": 31485618
+  },
+  {
+    "id": "E-CORP-07",
+    "archivo": "data/external/corpora/mixto/emb_normal/tokens_20M.txt",
+    "estado": "OK",
+    "sha256_ok": "1c562286dabe9dc4",
+    "sha256_manifest": "1c562286dabe9dc4",
+    "bytes_ok": 125137300,
+    "bytes_manifest": 125137300
+  }
+]

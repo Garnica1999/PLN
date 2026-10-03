@@ -1,0 +1,12 @@
+experimento,fuente_del_indicador,indicador,resultado,estado,veredicto
+V4-B03,propio,dureza OOF de V03: margen y violacion del umbral,"upweighting de la dureza EMPEORA: medium_up -0,0096. Solo mejora down_violacion, que BAJA el peso de los que mas violan",CLOSED,la familia de reweighting se cierra sin adopcion
+V4-B04,propio,dureza de la propia etiqueta,"0,7686 frente a 0,7772: empeora",CLOSED,la ponderacion independiente por etiqueta empeora
+V4-B05,propio,contradiccion textual del ejemplo,"downweight +0,0005 y remove -0,0004: nada",CLOSED,las dos estrategias de contradiccion no mueven la metrica
+V4-C01..C05,propio,violacion del umbral combinada con el peso de clase,"EL UNICO CASO QUE FUNCIONA: 0,785416, +0,008205, 5 de 5 pliegues. Pero falla el criterio 6 (artefacto) del gate de V4-X01 y no tiene veredicto externo",NO ADOPTADO,no pasa el gate de artefacto aunque gane en CV
+V6-03,propio,repeticiones del ejemplo,la ponderacion por tamano de grupo no corrige el problema,CLOSED,V03 no sobrepondera de la forma que se suponia
+V6-07 / V30-00,propio,inconsistencia del par instancia-etiqueta detectada en el propio modelo,el entrenamiento robusto OOF no reduce el impacto de forma utilizable,CLOSED,el ruido textual no explica el error (D-026)
+P60-07 (P60_I),propio,"eps_i = <g_i, G>/<G, G>, alineacion del gradiente del ejemplo con el de un objetivo meta","-0,3011 frente a V03, con pesos casi degenerados",CLOSED,el ponderado por alineacion de gradiente no mejora
+P60-08,propio,"region de error, modulada por la perdida y NO por un sample_weight",reformula el reparto del gradiente entre regiones de error,CLOSED,se declara explicitamente 'sin recurrir a ponderar ejemplos': el propio proyecto considero esta via equivalente y la cerro
+V8-07,propio,peso de clase elegido con validacion anidada,no mejora sobre balanced,CLOSED,el multiplicador por etiqueta no aporta
+V51-01 / V51-02,ajeno,P(canal acierta) estimado por canal y celda: es el unico antecedente que mira a OTRO modelo,"-0,0101586431, con 121 rescates y 183 danos, neto -62",INVALIDATED,"el mapa de rescates de otros modelos SE CONSTRUYO y NO se pudo explotar en decision. P50 midio el techo del oracle en +0,2098 y el selector no lo alcanzo"
+P68-H2 (propuesta),ajeno,R_i = (pred_V03 != y) AND (pred_OTRO == y),no ejecutado,DUPLICATE,"es el indicador de V4-B03 INTERSECADO con la correccion de otro modelo. El primer termino ya se midio solo, y el segundo solo QUITA filas"

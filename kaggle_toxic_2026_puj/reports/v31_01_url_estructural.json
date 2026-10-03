@@ -1,0 +1,146 @@
+{
+  "familia": "STRUCTURAL_TEXT_FEATURES",
+  "experimento": "V31-01 (Fase 1 de STRUCTURAL_TEXT_FEATURES: bloque URL estructural)",
+  "fecha": "2026-09-27T10:59:22+00:00",
+  "estado": "OOF_EVALUATED",
+  "bloque": "url",
+  "fase": "1_URL_ESTRUCTURAL",
+  "pregunta": "la estructura de URL y dominio aporta informacion OOF adicional a V03 mediante features estructurales aditivas",
+  "alcance": "solo el bloque URL. No se prueban mencion, hashtag ni enfasis, y no se combinan bloques",
+  "features": [
+    "url_n",
+    "url_longitud_total",
+    "url_longitud_media",
+    "url_longitud_max",
+    "url_con_query",
+    "url_con_fragment",
+    "url_profundidad_path",
+    "url_con_puerto",
+    "url_longitud_dominio",
+    "url_subdominios",
+    "url_proporcion_dominio",
+    "url_es_corta",
+    "url_n_parametros"
+  ],
+  "n_features": 13,
+  "control": {
+    "corrected_cv": 0.7772114525165721,
+    "reproduce_v03": true,
+    "f1_por_etiqueta": {
+      "HS": 0.7616892911010558,
+      "TR": 0.8157303370786517,
+      "AG": 0.7542147293700089
+    }
+  },
+  "challenger": {
+    "corrected_cv": 0.7774199655005796,
+    "delta_oof": 0.00020851298400748064,
+    "f1_por_etiqueta": {
+      "HS": 0.7638572513287776,
+      "TR": 0.8134831460674158,
+      "AG": 0.7549194991055456
+    },
+    "train_f1": 0.9710236475677092,
+    "gap_train_oof": 0.19360368206712963,
+    "metricas_por_pliegue": [
+      {
+        "f1_media_columnas": 0.798182007952123,
+        "f1_macro6": 0.838545846167222,
+        "f1_micro": 0.7950693374422187,
+        "f1_samples": 0.3371492704826038,
+        "exact_match": 0.7373737373737373,
+        "f1_por_etiqueta": {
+          "HS": 0.7799227799227799,
+          "TR": 0.8275862068965517,
+          "AG": 0.7870370370370371
+        },
+        "pliegue": 1
+      },
+      {
+        "f1_media_columnas": 0.7925153256795157,
+        "f1_macro6": 0.8287801600485132,
+        "f1_micro": 0.7894736842105263,
+        "f1_samples": 0.3463524130190797,
+        "exact_match": 0.7104377104377104,
+        "f1_por_etiqueta": {
+          "HS": 0.7790262172284644,
+          "TR": 0.8279569892473119,
+          "AG": 0.7705627705627706
+        },
+        "pliegue": 2
+      },
+      {
+        "f1_media_columnas": 0.7830174838870492,
+        "f1_macro6": 0.8190895112727298,
+        "f1_micro": 0.7797101449275362,
+        "f1_samples": 0.350563063063063,
+        "exact_match": 0.6993243243243243,
+        "f1_por_etiqueta": {
+          "HS": 0.7709090909090909,
+          "TR": 0.8216216216216217,
+          "AG": 0.7565217391304347
+        },
+        "pliegue": 3
+      },
+      {
+        "f1_media_columnas": 0.7418099520584374,
+        "f1_macro6": 0.7894139405094637,
+        "f1_micro": 0.7391952309985097,
+        "f1_samples": 0.3286036036036036,
+        "exact_match": 0.6722972972972973,
+        "f1_por_etiqueta": {
+          "HS": 0.7396226415094339,
+          "TR": 0.7752808988764045,
+          "AG": 0.7105263157894737
+        },
+        "pliegue": 4
+      },
+      {
+        "f1_media_columnas": 0.7715163168229875,
+        "f1_macro6": 0.8198613896527877,
+        "f1_micro": 0.7670364500792393,
+        "f1_samples": 0.3112233445566779,
+        "exact_match": 0.7037037037037037,
+        "f1_por_etiqueta": {
+          "HS": 0.749003984063745,
+          "TR": 0.8143712574850299,
+          "AG": 0.7511737089201878
+        },
+        "pliegue": 5
+      }
+    ]
+  },
+  "comparacion": {
+    "rescates": 35,
+    "danios": 29,
+    "neto": 6,
+    "celdas_modificadas": 64,
+    "cobertura_celdas": 0.014385255113508653,
+    "por_label": {
+      "HS": {
+        "rescates": 15,
+        "danios": 10,
+        "neto": 5,
+        "celdas_modificadas": 25
+      },
+      "TR": {
+        "rescates": 1,
+        "danios": 3,
+        "neto": -2,
+        "celdas_modificadas": 4
+      },
+      "AG": {
+        "rescates": 19,
+        "danios": 16,
+        "neto": 3,
+        "celdas_modificadas": 35
+      }
+    }
+  },
+  "gastos": {
+    "submissions": 0,
+    "modelos_entrenados": 2,
+    "memoria_pico_mb": 228.7,
+    "segundos": 22.3
+  }
+}

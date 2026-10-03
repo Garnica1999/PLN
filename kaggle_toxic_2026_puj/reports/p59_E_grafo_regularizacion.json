@@ -1,0 +1,160 @@
+{
+  "familia": "P59_E_GRAPH_REGULARIZATION",
+  "naturaleza": "EXPERIMENTO. 1 candidato, 0 submissions, 0 Kaggle, 0 holdout, 0 test. V03 no se modifica",
+  "fecha": "2026-09-28T14:31:40+00:00",
+  "experiment_id": "P59-10",
+  "track": "P59-E",
+  "dependencia": "ninguna. Comparte con el resto solo V03, los pliegues, el dataset y la compliance",
+  "E1_gap_check": {
+    "veredicto": "NUEVA",
+    "filas_con_regularizacion_por_grafo": 0,
+    "filas_con_manifold_regularization": 0,
+    "filas_con_termino_cuadratico_sobre_grafo": 0,
+    "filas_con_pagerank_o_random_walk": 0,
+    "filas_con_GNN": 0,
+    "precedente_mas_cercano": "V4-F01-F04 usa la vecindad para PROPAGAR ETIQUETAS, que es predecir, y cerro con techo nulo porque hubo 0 solapamientos literales train-test",
+    "otros_que_usan_vecindad_para_predecir_o_pesar": [
+      "V4-A01",
+      "V4-A02",
+      "V4-F01-F04",
+      "E2-20-ESPECIALISTAS",
+      "V6-07"
+    ],
+    "distincion": "E regulariza un objetivo. Esos predicen o ponderan. Ninguno regulariza",
+    "previo_descriptivo_nulo": "V4-F01-F04 midio que un vecino discrepante aporta solo +0,018 de error con IC95 [-0,013, +0,049], no significativo. Un grafo puede regularizar sin que los vecinos compartan error, luego no cierra la pista, pero E se ejecuta sabiendo que el diagnostico previo salio nulo"
+  },
+  "configuracion_pre_registrada": {
+    "grafo": "coseno kNN con k = 10 sobre el TF-IDF de V03, filas de ENTRENAMIENTO",
+    "afinidad": "simetrizada, con cotos validos solo, reescalada a norma espectral unitaria",
+    "objetivo": "0,5 w'w + (lambda/2) w'X'WX w + C sum_i omega_i perdida(s_i)",
+    "lambda": 0.1,
+    "lambda_por_que_ese": "el grafo se escapa por construccion: el mayor autovalor de X'WX se pone a 1, luego lambda = 0,1 significa una curvatura de suavizado de al menos diez veces menor que la del L2. Un solo valor, fijado antes de mirar validation, y el magnitud es un juicio declarado, no una magnitud derivada",
+    "clasificador": "LogisticRegression C=2.0 balanced, la escala de V03",
+    "umbrales": "0,44 / 0,51 / 0,46 congelados",
+    "optimizador": "L-BFGS-B, gradiente analitico, maxiter 2000, gtol 1e-10",
+    "rejilla": "ninguna. No se varia lambda ni k",
+    "rol_del_grafo": "SOLO regulariza. Nunca produce una prediccion, nunca vota, nunca recupera"
+  },
+  "control": {
+    "corrected_cv_V03": "0.7772114525165721",
+    "brazo_0_lambda_0": {
+      "corrected_cv": 0.7772647319,
+      "delta_vs_V03": 5.32794e-05,
+      "max_abs_diff_prob": 0.006907940172857008,
+      "clona_a_V03": true
+    }
+  },
+  "diagnostico_grafo": [
+    {
+      "k": 10,
+      "aristas_dirigidas": 16382,
+      "densidad": 0.011646556651661174,
+      "max_autovalor_W": 10.743947819774935,
+      "norma_media": 0.03741858851085814,
+      "pliegue": 1
+    },
+    {
+      "k": 10,
+      "aristas_dirigidas": 16396,
+      "densidad": 0.011656509758310132,
+      "max_autovalor_W": 12.462500010783234,
+      "norma_media": 0.03190385549803566,
+      "pliegue": 2
+    },
+    {
+      "k": 10,
+      "aristas_dirigidas": 16456,
+      "densidad": 0.011679462074751113,
+      "max_autovalor_W": 12.793067773462276,
+      "norma_media": 0.03135645926855734,
+      "pliegue": 3
+    },
+    {
+      "k": 10,
+      "aristas_dirigidas": 16464,
+      "densidad": 0.011685139985336795,
+      "max_autovalor_W": 11.953702317653367,
+      "norma_media": 0.0334224803441004,
+      "pliegue": 4
+    },
+    {
+      "k": 10,
+      "aristas_dirigidas": 16398,
+      "densidad": 0.011657931630688557,
+      "max_autovalor_W": 12.178112219739276,
+      "norma_media": 0.03278322522485573,
+      "pliegue": 5
+    }
+  ],
+  "resultado": {
+    "brazo_0_corrected_cv": 0.7772647319,
+    "brazo_1_corrected_cv": 0.7773636094,
+    "delta_grafo_puro_brazo1_menos_brazo0": 9.88776e-05,
+    "delta_vs_V03_brazo1_menos_V03": 0.0001521569,
+    "folds_brazo_1": [
+      0.786608,
+      0.788215,
+      0.791001,
+      0.746941,
+      0.773815
+    ],
+    "folds_brazo_0": [
+      0.79601,
+      0.795526,
+      0.77886,
+      0.736317,
+      0.780042
+    ],
+    "pliegues_mejorados": 2,
+    "f1_por_etiqueta": {
+      "HS": {
+        "f1": 0.7625468165,
+        "f1_ref": 0.7622641509,
+        "rescate": 12,
+        "damage": 14
+      },
+      "TR": {
+        "f1": 0.815819209,
+        "f1_ref": 0.8153153153,
+        "rescate": 10,
+        "damage": 9
+      },
+      "AG": {
+        "f1": 0.7537248028,
+        "f1_ref": 0.7542147294,
+        "rescate": 13,
+        "damage": 17
+      }
+    },
+    "rescate": 35,
+    "damage": 40,
+    "neto": -5,
+    "cambian": 75,
+    "acierto_en_las_que_cambian": 0.4667,
+    "gate": {
+      "delta_min": 0.003,
+      "pliegues_min": 4,
+      "supera_delta": false,
+      "supera_pliegues": false,
+      "superado": false
+    },
+    "bootstrap": null
+  },
+  "convergencia": {
+    "brazo_0_todas": true,
+    "brazo_1_todas": true,
+    "gradiente_max_brazo_0": 1.0272375469212304e-05,
+    "gradiente_max_brazo_1": 2.5772409819917536e-06,
+    "warnings": 0
+  },
+  "decision": "MARGINAL, y en la practica indistinguible del ruido. La regularizacion por grafo mueve la metrica en +0.0000988776 frente a un gate de +0,003, y el efecto puro del grafo es +0.0000988776 y la dispersion entre pliegues es 0.0441, luego el efecto es 446 veces mas pequeno que el ruido del propio instrumento. El recuento de celdas es rescate 35 contra damage 40, neto -5, con acierto 0.4667 en las 75 celdas que cambian, es decir una moneda al aire. NO se demuestra, NO se convierte en voto kNN para rescatarlo (parrafo 22), y NO se hace rejilla de lambda ni de k. Bootstrap NO ejecutado",
+  "experimentos_registrados": 1,
+  "formulacion": "V03 remains the best verified leaderboard result.",
+  "gastos": {
+    "submissions": 0,
+    "consultas_kaggle": 0,
+    "uso_holdout": 0,
+    "uso_test": 0,
+    "segundos": 8.6
+  }
+}

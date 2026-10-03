@@ -1,0 +1,7 @@
+ambito,v03_ko_a_ok_rescue,v03_ok_a_ko_damage,ambos_ok,ambos_ko,net
+GLOBAL,2096,602,1081,670,1494
+HS,536,231,447,269,305
+TR,904,170,275,134,734
+AG,656,201,359,267,455
+
+nota,"solo es accionable si A supera a B; si no, NO se evalua ninguna fusion"

@@ -1,0 +1,4 @@
+label,n_estimaciones,media,mediana,std,min,max,V03,V03_dentro_del_rango,desviacion_de_la_mediana,estimaciones
+HS,5,0.418,0.41,0.019235,0.4,0.45,0.44,True,-0.03,0.40 0.41 0.42 0.41 0.45
+TR,5,0.472,0.46,0.021679,0.46,0.51,0.51,True,-0.05,0.47 0.46 0.46 0.51 0.46
+AG,5,0.454,0.45,0.042778,0.4,0.51,0.46,True,-0.01,0.40 0.48 0.43 0.51 0.45

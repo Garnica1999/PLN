@@ -1,0 +1,21 @@
+magnitud,valor
+brazo_0_corrected_cv,0.7772647318762402
+brazo_1_corrected_cv,0.476160246265845
+delta_meta_puro,-0.3011044856103952
+delta_vs_V03,-0.30105120625072707
+corrected_cv_V03,0.7772114525165721
+pliegues_mejorados,0
+folds_brazo_1,0.437334 0.342296 0.611580 0.558078 0.337719
+folds_brazo_0,0.796010 0.795526 0.778860 0.736317 0.780042
+rescate,318
+damage,890
+neto,-572
+cambian,1208
+fraccion_meta,0.25
+fraccion_negativa_media,0.207683
+razon_p90_sobre_abs_p10_media,5.349795
+convergio,True
+gate_delta_superado,False
+gate_pliegues_superado,False
+gate_superado,False
+decision,"CLOSED. El ponderado derivado de la alineacion de gradiente no mejora sobre el control, y los pesos que produce estan casi degenerados"

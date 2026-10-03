@@ -1,0 +1,573 @@
+{
+  "familia": "P63_ID_FORENSICS",
+  "naturaleza": "DIAGNOSTICO. 0 experimentos, 0 modelos, 0 features, 0 submissions, 0 Kaggle, 0 holdout, 0 test. No se entrena nada y no se usa id como variable predictiva",
+  "fecha": "2026-09-29T06:10:53+00:00",
+  "experiment_id": "P63-00",
+  "script": "experiments/p63_02_id_forensics.py",
+  "pregunta": "como esta construido el id, y es de verdad un contador administrativo como afirmo V15-00",
+  "seccion_1_lectura_y_tipos": {
+    "n_rows": 1731,
+    "n_unique_ids": 1731,
+    "n_repeated_ids": 0,
+    "duplicate_rate": 0.0,
+    "max_multiplicity": 1,
+    "min_value": 20002,
+    "max_value": 24999,
+    "range": 4997,
+    "rango_teorico_de_valores": 4998,
+    "valores_faltantes": 0,
+    "valores_no_enteros": 0,
+    "primer_valor": 20430,
+    "primer_valor_es_uno": false
+  },
+  "seccion_2_numerica_y_saltos": {
+    "monotono": false,
+    "fraccion_creciente_entre_filas_consecutivas": 0.5121387283,
+    "salto_mediano_entre_filas_consecutivas": 49,
+    "salto_minimo_entre_filas_consecutivas": -4949,
+    "salto_maximo_entre_filas_consecutivas": 4753,
+    "n_saltos_distintos_entre_filas": 1549,
+    "salto_mediano_sobre_valores_ordenados": 2,
+    "salto_minimo_sobre_valores_ordenados": 1,
+    "salto_maximo_sobre_valores_ordenados": 31,
+    "n_huecos_sobre_valores_ordenados": 1105,
+    "n_valores_ausentes_en_el_rango": 3267,
+    "densidad_de_ocupacion_del_rango": 0.3463385354
+  },
+  "seccion_3_digitos_y_entropia": {
+    "longitud_decimal": {
+      "5": 1731
+    },
+    "longitud_binaria": {
+      "15": 1731
+    },
+    "distribucion_de_digitos": {
+      "0": 841,
+      "1": 848,
+      "2": 2643,
+      "3": 846,
+      "4": 879,
+      "5": 540,
+      "6": 530,
+      "7": 501,
+      "8": 519,
+      "9": 508
+    },
+    "frecuencia_de_digitos": {
+      "0": 0.485846,
+      "1": 0.48989,
+      "2": 1.526863,
+      "3": 0.488735,
+      "4": 0.507799,
+      "5": 0.311958,
+      "6": 0.306181,
+      "7": 0.289428,
+      "8": 0.299827,
+      "9": 0.293472
+    },
+    "entropia_de_digitos": 3.058769,
+    "entropia_maxima_teorica": 3.321928,
+    "entropia_normalizada": 0.920781,
+    "prefijos_2_digitos_mas_frecuentes": {
+      "24": 370,
+      "21": 356,
+      "22": 345,
+      "23": 335,
+      "20": 325
+    },
+    "sufijos_2_digitos_mas_frecuentes": {
+      "32": 27,
+      "42": 26,
+      "68": 26,
+      "55": 24,
+      "60": 23,
+      "64": 23,
+      "81": 23,
+      "24": 22,
+      "74": 22,
+      "95": 21
+    },
+    "bits_de_alta_posicion_constantes": 15,
+    "escala_observada": 24999,
+    "bits_necesarios_para_un_snowflake": 63,
+    "orden_de_gran_magnitud_que_un_snowflake_daria": 18
+  },
+  "seccion_3_bis_relacion_con_orden_de_filas": {
+    "spearman_id_vs_indice_de_fila": -0.022613,
+    "spearman_id_mod_2_vs_indice_de_fila": -0.043888,
+    "spearman_id_mod_10_vs_indice_de_fila": 0.011531,
+    "spearman_id_entre_bits_altos_y_bajos": -0.027917
+  },
+  "seccion_4_bloques": {
+    "n_bloques": 10,
+    "ancho_de_bloque": 500,
+    "corte_declarado_antes": true,
+    "bloques": [
+      {
+        "bloque": 0,
+        "id_desde": 20002,
+        "id_hasta": 20501,
+        "ancho": 500,
+        "n_train": 179,
+        "n_test": 115,
+        "densidad_train": 0.358,
+        "prevalencia_HS": 0.402235,
+        "prevalencia_TR": 0.290503,
+        "prevalencia_AG": 0.335196,
+        "prevalencia_cualquiera": 0.402235
+      },
+      {
+        "bloque": 1,
+        "id_desde": 20502,
+        "id_hasta": 21001,
+        "ancho": 500,
+        "n_train": 147,
+        "n_test": 126,
+        "densidad_train": 0.294,
+        "prevalencia_HS": 0.47619,
+        "prevalencia_TR": 0.346939,
+        "prevalencia_AG": 0.442177,
+        "prevalencia_cualquiera": 0.489796
+      },
+      {
+        "bloque": 2,
+        "id_desde": 21002,
+        "id_hasta": 21501,
+        "ancho": 500,
+        "n_train": 189,
+        "n_test": 121,
+        "densidad_train": 0.378,
+        "prevalencia_HS": 0.433862,
+        "prevalencia_TR": 0.296296,
+        "prevalencia_AG": 0.407407,
+        "prevalencia_cualquiera": 0.455026
+      },
+      {
+        "bloque": 3,
+        "id_desde": 21502,
+        "id_hasta": 22001,
+        "ancho": 500,
+        "n_train": 166,
+        "n_test": 110,
+        "densidad_train": 0.332,
+        "prevalencia_HS": 0.439759,
+        "prevalencia_TR": 0.289157,
+        "prevalencia_AG": 0.373494,
+        "prevalencia_cualquiera": 0.451807
+      },
+      {
+        "bloque": 4,
+        "id_desde": 22002,
+        "id_hasta": 22501,
+        "ancho": 500,
+        "n_train": 168,
+        "n_test": 124,
+        "densidad_train": 0.336,
+        "prevalencia_HS": 0.386905,
+        "prevalencia_TR": 0.267857,
+        "prevalencia_AG": 0.363095,
+        "prevalencia_cualquiera": 0.416667
+      },
+      {
+        "bloque": 5,
+        "id_desde": 22502,
+        "id_hasta": 23001,
+        "ancho": 500,
+        "n_train": 177,
+        "n_test": 114,
+        "densidad_train": 0.354,
+        "prevalencia_HS": 0.446328,
+        "prevalencia_TR": 0.316384,
+        "prevalencia_AG": 0.378531,
+        "prevalencia_cualquiera": 0.468927
+      },
+      {
+        "bloque": 6,
+        "id_desde": 23002,
+        "id_hasta": 23501,
+        "ancho": 500,
+        "n_train": 166,
+        "n_test": 123,
+        "densidad_train": 0.332,
+        "prevalencia_HS": 0.391566,
+        "prevalencia_TR": 0.283133,
+        "prevalencia_AG": 0.36747,
+        "prevalencia_cualquiera": 0.39759
+      },
+      {
+        "bloque": 7,
+        "id_desde": 23502,
+        "id_hasta": 24001,
+        "ancho": 500,
+        "n_train": 169,
+        "n_test": 109,
+        "densidad_train": 0.338,
+        "prevalencia_HS": 0.502959,
+        "prevalencia_TR": 0.284024,
+        "prevalencia_AG": 0.431953,
+        "prevalencia_cualquiera": 0.514793
+      },
+      {
+        "bloque": 8,
+        "id_desde": 24002,
+        "id_hasta": 24501,
+        "ancho": 500,
+        "n_train": 179,
+        "n_test": 101,
+        "densidad_train": 0.358,
+        "prevalencia_HS": 0.469274,
+        "prevalencia_TR": 0.329609,
+        "prevalencia_AG": 0.396648,
+        "prevalencia_cualquiera": 0.480447
+      },
+      {
+        "bloque": 9,
+        "id_desde": 24502,
+        "id_hasta": 24999,
+        "ancho": 498,
+        "n_train": 191,
+        "n_test": 110,
+        "densidad_train": 0.383534,
+        "prevalencia_HS": 0.424084,
+        "prevalencia_TR": 0.298429,
+        "prevalencia_AG": 0.340314,
+        "prevalencia_cualquiera": 0.445026
+      }
+    ],
+    "rango_prevalencia_entre_bloques": 0.117203,
+    "densidad_min": 0.294,
+    "densidad_max": 0.383534
+  },
+  "seccion_5_id_contra_texto_y_grupos": {
+    "n_textos_unicos_normalizados": 1731,
+    "n_textos_repetidos": 0,
+    "mismo_texto_implica_mismo_id": true,
+    "mismo_id_implica_mismo_texto": true,
+    "n_grupos_con_mas_de_un_id_en_train": 6,
+    "distancia_intra_grupo_mediana": 1328,
+    "distancia_intra_grupo_media": 1169.5,
+    "distancia_entre_ids_aleatorios_esperada": 1657.982,
+    "tamanano_de_la_otra_submuestra_como_referencia": 1154
+  },
+  "seccion_6_namespace_train_test": {
+    "n_ids_train": 1731,
+    "n_ids_test": 1154,
+    "n_ids_duplicados_dentro_de_train": 0,
+    "n_ids_duplicados_dentro_de_test": 0,
+    "interseccion": 0,
+    "union": 2885,
+    "rango_train": [
+      20002,
+      24999
+    ],
+    "rango_test": [
+      20001,
+      24998
+    ],
+    "rango_union": [
+      20001,
+      24999
+    ],
+    "valores_del_rango_no_usados": 2114,
+    "solapamiento_de_rangos": true,
+    "grupos_canonicos_dev": 1415,
+    "grupos_canonicos_holdout": 230,
+    "corrected_cv_del_oof_canonico": 0.7772114525165721,
+    "coherencia_oof": true
+  },
+  "seccion_6_bis_ocupacion_del_bloque": {
+    "n_bloques": 10,
+    "ancho_de_bloque": 500,
+    "bloques": [
+      {
+        "bloque": 0,
+        "id_desde": 20001,
+        "id_hasta": 20500,
+        "ancho": 500,
+        "n_train": 178,
+        "n_test": 116,
+        "n_usados": 294,
+        "n_sin_usar": 206,
+        "fraccion_ocupada": 0.588,
+        "proporcion_de_train_entre_los_usados": 0.605442
+      },
+      {
+        "bloque": 1,
+        "id_desde": 20501,
+        "id_hasta": 21000,
+        "ancho": 500,
+        "n_train": 148,
+        "n_test": 126,
+        "n_usados": 274,
+        "n_sin_usar": 226,
+        "fraccion_ocupada": 0.548,
+        "proporcion_de_train_entre_los_usados": 0.540146
+      },
+      {
+        "bloque": 2,
+        "id_desde": 21001,
+        "id_hasta": 21500,
+        "ancho": 500,
+        "n_train": 189,
+        "n_test": 120,
+        "n_usados": 309,
+        "n_sin_usar": 191,
+        "fraccion_ocupada": 0.618,
+        "proporcion_de_train_entre_los_usados": 0.61165
+      },
+      {
+        "bloque": 3,
+        "id_desde": 21501,
+        "id_hasta": 22000,
+        "ancho": 500,
+        "n_train": 166,
+        "n_test": 110,
+        "n_usados": 276,
+        "n_sin_usar": 224,
+        "fraccion_ocupada": 0.552,
+        "proporcion_de_train_entre_los_usados": 0.601449
+      },
+      {
+        "bloque": 4,
+        "id_desde": 22001,
+        "id_hasta": 22500,
+        "ancho": 500,
+        "n_train": 168,
+        "n_test": 125,
+        "n_usados": 293,
+        "n_sin_usar": 207,
+        "fraccion_ocupada": 0.586,
+        "proporcion_de_train_entre_los_usados": 0.573379
+      },
+      {
+        "bloque": 5,
+        "id_desde": 22501,
+        "id_hasta": 23000,
+        "ancho": 500,
+        "n_train": 177,
+        "n_test": 114,
+        "n_usados": 291,
+        "n_sin_usar": 209,
+        "fraccion_ocupada": 0.582,
+        "proporcion_de_train_entre_los_usados": 0.608247
+      },
+      {
+        "bloque": 6,
+        "id_desde": 23001,
+        "id_hasta": 23500,
+        "ancho": 500,
+        "n_train": 165,
+        "n_test": 123,
+        "n_usados": 288,
+        "n_sin_usar": 212,
+        "fraccion_ocupada": 0.576,
+        "proporcion_de_train_entre_los_usados": 0.572917
+      },
+      {
+        "bloque": 7,
+        "id_desde": 23501,
+        "id_hasta": 24000,
+        "ancho": 500,
+        "n_train": 170,
+        "n_test": 109,
+        "n_usados": 279,
+        "n_sin_usar": 221,
+        "fraccion_ocupada": 0.558,
+        "proporcion_de_train_entre_los_usados": 0.609319
+      },
+      {
+        "bloque": 8,
+        "id_desde": 24001,
+        "id_hasta": 24500,
+        "ancho": 500,
+        "n_train": 179,
+        "n_test": 100,
+        "n_usados": 279,
+        "n_sin_usar": 221,
+        "fraccion_ocupada": 0.558,
+        "proporcion_de_train_entre_los_usados": 0.641577
+      },
+      {
+        "bloque": 9,
+        "id_desde": 24501,
+        "id_hasta": 24999,
+        "ancho": 499,
+        "n_train": 191,
+        "n_test": 111,
+        "n_usados": 302,
+        "n_sin_usar": 197,
+        "fraccion_ocupada": 0.60521,
+        "proporcion_de_train_entre_los_usados": 0.63245
+      }
+    ],
+    "fraccion_ocupada_min": 0.548,
+    "fraccion_ocupada_max": 0.618,
+    "fraccion_ocupada_media": 0.577121,
+    "proporcion_train_min": 0.540146,
+    "proporcion_train_max": 0.641577,
+    "n_bloques_sin_posiciones_sin_usar": 0
+  },
+  "seccion_7_pruebas_de_categoria": [
+    {
+      "prueba": "escala",
+      "categoria": "A. OPAQUE_ADMINISTRATIVE",
+      "apoya": false,
+      "evidencia": "vive en el intervalo contiguo [20001, 24999], y un identificador administrativo opaco se suele repartir por todo el rango posible"
+    },
+    {
+      "prueba": "bloques",
+      "categoria": "A. OPAQUE_ADMINISTRATIVE",
+      "apoya": false,
+      "evidencia": "la densidad de ocupacion es casi constante entre los 10 bloques, de 0.2940 a 0.3835, lo que es propio de una submuestra uniforme de una coleccion y no de un contador de filas"
+    },
+    {
+      "prueba": "azar",
+      "categoria": "B. RANDOM_UNIQUE_IDENTIFIER",
+      "apoya": false,
+      "evidencia": "si 1731 valores se sorteasen con reemplazo de un rango de 4999 posiciones, se esperarian 29.27 por ciento de colisiones y aqui hay cero; ademas el rango NO empieza en uno, lo que un generador aleatorio de ids no hace"
+    },
+    {
+      "prueba": "monotonia",
+      "categoria": "C. SEQUENTIAL_IDENTIFIER",
+      "apoya": false,
+      "evidencia": "solo el 51.21 por ciento de los pares consecutivos de filas crecen, es decir un Kendall de +0.024277, y el fichero esta barajado"
+    },
+    {
+      "prueba": "huecos",
+      "categoria": "C. SEQUENTIAL_IDENTIFIER",
+      "apoya": false,
+      "evidencia": "faltan 2114 posiciones del rango y hay 1105 huecos, asi que no es una serie correlativa"
+    },
+    {
+      "prueba": "bloques_de_id",
+      "categoria": "D. STRUCTURED_IDENTIFIER",
+      "apoya": true,
+      "evidencia": "el id es un indice dentro de un bloque contiguo de 4999 posiciones del que train y test son muestras disjuntas, y eso es una estructura, aunque sea de procedencia y no de contenido"
+    },
+    {
+      "prueba": "dentro_de_bloques",
+      "categoria": "D. STRUCTURED_IDENTIFIER",
+      "apoya": false,
+      "evidencia": "no hay sub-bloques internos: la densidad de ocupacion varia solo de 0.2940 a 0.3835 entre bloques de 500 posiciones, y la prevalencia de cualquier etiqueta varia solo 0.117203"
+    },
+    {
+      "prueba": "densidad_por_bloque",
+      "categoria": "E. POSSIBLE_SOURCE_IDENTIFIER",
+      "apoya": false,
+      "evidencia": "la ocupacion del bloque va de 0.5480 a 0.6180 sin una sola posicion sin usar en 10 bloques, y la proporcion de train entre los usados se mantiene entre 0.5401 y 0.6416, que NO es lo que se veria si cada subcoleccion hubiera aportado una fraccion distinta"
+    },
+    {
+      "prueba": "particion_algebraica",
+      "categoria": "E. POSSIBLE_SOURCE_IDENTIFIER",
+      "apoya": false,
+      "evidencia": "la proporcion de train entre los usados se mantiene en una franja estrecha en los 10 bloques, lo que es consistente con una particion por azar de un bloque unico y no con varias fuentes"
+    },
+    {
+      "prueba": "escala",
+      "categoria": "F. POSSIBLE_TIME_ENCODED_IDENTIFIER",
+      "apoya": false,
+      "evidencia": "los valores llegan a 24999, unas 5 cifras, y un esquema temporal como Snowflake ocupa 63 bits y produce 18 o 19 cifras, luego la MAGNITUD refute la hipotesis por si sola"
+    },
+    {
+      "prueba": "crecimiento",
+      "categoria": "F. POSSIBLE_TIME_ENCODED_IDENTIFIER",
+      "apoya": false,
+      "evidencia": "la longitud binaria es constante en todo el rango, asi que no hay un campo de tiempo de ancho fijo embebido en los bits altos"
+    },
+    {
+      "prueba": "huecos_temporales",
+      "categoria": "F. POSSIBLE_TIME_ENCODED_IDENTIFIER",
+      "apoya": false,
+      "evidencia": "los huecos entre valores ordenados van de 1 a 31 sin ninguna progresion, lo que descarta una cadencia de muestreo temporal"
+    },
+    {
+      "prueba": "alternativas",
+      "categoria": "G. UNKNOWN",
+      "apoya": false,
+      "evidencia": "hay evidencia que descarta A, B, C y F, y evidencia parcial a favor de D y E, pero nada que distinga definitivamente una subfuente de un indice de corpus"
+    }
+  ],
+  "reglas_de_clasificacion": [
+    {
+      "categoria": "F. POSSIBLE_TIME_ENCODED_IDENTIFIER",
+      "condicion": "el rango tiene 63 bits, la longitud binaria varia dentro del rango y los huecos muestran una cadencia temporal",
+      "se_cumple": false
+    },
+    {
+      "categoria": "C. SEQUENTIAL_IDENTIFIER",
+      "condicion": "el id empieza en uno y crece de forma monotona con el orden de las filas, o forma una serie correlativa sin huecos",
+      "se_cumple": false
+    },
+    {
+      "categoria": "B. RANDOM_UNIQUE_IDENTIFIER",
+      "condicion": "los valores se repartirian por todo el rango posible y habria colisiones esperables",
+      "se_cumple": false
+    },
+    {
+      "categoria": "E. POSSIBLE_SOURCE_IDENTIFIER",
+      "condicion": "la ocupacion o la proporcion de train varia de forma SystematicA entre bloques del rango, delatando subcolecciones con distinta tasa de inclusion",
+      "se_cumple": false
+    },
+    {
+      "categoria": "D. STRUCTURED_IDENTIFIER",
+      "condicion": "el id es un indice dentro de un bloque contiguo del que las dos particiones son muestras disjuntas, y la ocupacion es uniforme, lo que indica una coleccion unica submuestreada",
+      "se_cumple": true
+    },
+    {
+      "categoria": "A. OPAQUE_ADMINISTRATIVE",
+      "condicion": "el id no se puede colocar en ninguna de las categorias anteriores",
+      "se_cumple": false
+    },
+    {
+      "categoria": "G. UNKNOWN",
+      "condicion": "ninguna regla se cumple con evidencia suficiente",
+      "se_cumple": false
+    }
+  ],
+  "criterio_de_confianza": {
+    "categorias_descartadas_con_evidencia": [
+      "F. POSSIBLE_TIME_ENCODED_IDENTIFIER",
+      "C. SEQUENTIAL_IDENTIFIER",
+      "B. RANDOM_UNIQUE_IDENTIFIER",
+      "E. POSSIBLE_SOURCE_IDENTIFIER"
+    ],
+    "n_descartes": 4,
+    "criterio_de_confianza": "alta con 4 o mas descartes, media-alta con 2 o 3, media por debajo; nunca por recuento de pruebas a favor"
+  },
+  "clasificacion": {
+    "categoria": "D. STRUCTURED_IDENTIFIER",
+    "confianza": "alta",
+    "lectura": "El id es un INDICE DE COLECCION: un entero dentro del bloque contiguo [20001, 24999], del que train y test son muestras disjuntas que en conjunto ocupan 2885 de 4999 posiciones, dejando 2114 sin usar. Hay ESTRUCTURA, pero es de PROCEDENCIA y no de contenido: el numero dice de que coleccion salio la fila y en que posicion ocupaba, y no dice quien la escribio, ni cuando, ni nada del texto. Por eso queda como senal de procedencia y no como senal linguistica",
+    "evidencia": [
+      "el id es un indice dentro de un bloque contiguo de 4999 posiciones del que train y test son muestras disjuntas, y eso es una estructura, aunque sea de procedencia y no de contenido"
+    ],
+    "contraevidencia": [
+      "vive en el intervalo contiguo [20001, 24999], y un identificador administrativo opaco se suele repartir por todo el rango posible",
+      "la densidad de ocupacion es casi constante entre los 10 bloques, de 0.2940 a 0.3835, lo que es propio de una submuestra uniforme de una coleccion y no de un contador de filas",
+      "si 1731 valores se sorteasen con reemplazo de un rango de 4999 posiciones, se esperarian 29.27 por ciento de colisiones y aqui hay cero; ademas el rango NO empieza en uno, lo que un generador aleatorio de ids no hace",
+      "solo el 51.21 por ciento de los pares consecutivos de filas crecen, es decir un Kendall de +0.024277, y el fichero esta barajado",
+      "faltan 2114 posiciones del rango y hay 1105 huecos, asi que no es una serie correlativa",
+      "no hay sub-bloques internos: la densidad de ocupacion varia solo de 0.2940 a 0.3835 entre bloques de 500 posiciones, y la prevalencia de cualquier etiqueta varia solo 0.117203",
+      "la ocupacion del bloque va de 0.5480 a 0.6180 sin una sola posicion sin usar en 10 bloques, y la proporcion de train entre los usados se mantiene entre 0.5401 y 0.6416, que NO es lo que se veria si cada subcoleccion hubiera aportado una fraccion distinta",
+      "la proporcion de train entre los usados se mantiene en una franja estrecha en los 10 bloques, lo que es consistente con una particion por azar de un bloque unico y no con varias fuentes",
+      "los valores llegan a 24999, unas 5 cifras, y un esquema temporal como Snowflake ocupa 63 bits y produce 18 o 19 cifras, luego la MAGNITUD refute la hipotesis por si sola",
+      "la longitud binaria es constante en todo el rango, asi que no hay un campo de tiempo de ancho fijo embebido en los bits altos",
+      "los huecos entre valores ordenados van de 1 a 31 sin ninguna progresion, lo que descarta una cadencia de muestreo temporal",
+      "hay evidencia que descarta A, B, C y F, y evidencia parcial a favor de D y E, pero nada que distinga definitivamente una subfuente de un indice de corpus"
+    ]
+  },
+  "lo_que_no_se_concluye": [
+    "que el id sea util: eso exige una prueba predictiva, y este script no entrena",
+    "que el id sea legal: eso exige una auditoria de legalidad aparte",
+    "que el id sea transferible: eso exige una segunda particion",
+    "que el bloque sea una senal: la prevalencia por bloque se Midio para DESCRIBIR bloques ya localizados estructuralmente, y no es una feature"
+  ],
+  "uso_autorizado": "NINGUNO como feature en esta fase. Solo diagnostico",
+  "reproducibilidad": {
+    "nivel": "R2",
+    "git_commit": "b29084a",
+    "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "corrected_cv": 0.7772114525165721
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

@@ -1,0 +1,50 @@
+bloque,magnitud,valor,nota
+metrica,corrected_cv_calculado,0.7772114525165721,objetivo 0.7772114525165721
+metrica,diferencia_reproduccion,0.000e+00,tolerancia 1e-12
+metrica,f1_HS,0.7616892911,TP 505 FP 173 FN 143 TN 662
+metrica,f1_TR,0.8157303371,TP 363 FP 82 FN 82 TN 956
+metrica,f1_AG,0.7542147294,TP 425 FP 135 FN 142 TN 781
+metrica,media_de_pliegues,0.7773117212,no intercambiable
+metrica,global_oof,0.7772114525,el que reporta el proyecto
+metrica,f1_score_macro,0.7772114525165721,identidad demostrada
+metrica,discrepancias_aleatorios,0,600 casos aleatorios
+metrica,hypothesis_macro_3,0.7772114525,candidata del host
+metrica,hypothesis_micro,0.7735566856,candidata del host
+metrica,hypothesis_samples,0.3343897505,candidata del host
+metrica,hypothesis_weighted,0.7736231399,candidata del host
+metrica,lb_v03,0.78306,del log local
+metrica,brecha_samples,+0.44867,discriminante de escala
+metrica,samples_excluido,True,
+metrica,spearman_macro3_vs_micro,0.983591,ranking de umbrales
+metrica,spearman_macro3_vs_samples,0.489635,ranking de umbrales
+metrica,spearman_macro3_vs_weighted,0.992105,ranking de umbrales
+metrica,METRIC_MATCH,True,
+joint,estado_0,949,train 54.824 pct
+joint,estado_1,26,train 1.502 pct
+joint,estado_2,0,train 0.000 pct
+joint,estado_3,0,train 0.000 pct
+joint,estado_4,92,train 5.315 pct
+joint,estado_5,145,train 8.377 pct
+joint,estado_6,28,train 1.618 pct
+joint,estado_7,491,train 28.365 pct
+joint,estados_no_observados,"[2, 3]",TR=1 implica HS=1
+joint,casos_TR1_HS0,0,train global
+joint,filas_estado_correcto,1042,70.263 pct
+joint,A_tres_correctas,1042,70.263 pct
+joint,B_falla_una,223,15.037 pct
+joint,C_falla_dos,120,8.092 pct
+joint,D_falla_tres,98,6.608 pct
+joint,chi2_independencia,343.156,gl 20
+joint,p_independencia,0.000e+00,rechaza independencia
+joint,control_v03,0.7772114525,
+joint,forzar_TR0_si_HS0,0.7765657080,-0.0006457445
+joint,forzar_AG0_si_HS0,0.7736697906,-0.0035416619
+joint,mecanismo_Label Powerset,V4-E01-E03,"TRACK E cerrado como NO_SIGNAL (V4-E01, V4-E02 y V4-E03); se confirma que la dependencia e"
+joint,mecanismo_Classifier chain HS->TR->AG,E2-01-HS-TR-AG,No adoptada (no supera la regla D-016)
+joint,mecanismo_Classifier chain HS->AG->TR,E2-01-HS-AG-TR,No adoptada (no supera la regla D-016)
+joint,mecanismo_Cadena con espacios normalizados,E2-01-HS-TR-AG-STD,No adoptada (no supera la regla D-016)
+joint,mecanismo_Espacio separado por etiqueta,E2-21-ESPACIOS,CERRADA sin mejora
+joint,mecanismo_Acoplamiento suave entre cabeceras,V8-05,"**P4 cerrado como negativo, sin submission y sin variante.** El mecanismo esta descartado:"
+joint,mecanismo_Meta-modelo sobre scores OOF,E2-02-META,ADOPTADA (Gate P1)
+joint,mecanismo_Meta-modelo con canales,E2-18-META-BASES,No adoptado / diagnostico
+joint,mecanismo_Correccion estructural dura,P45-01 (esta fase),NEGATIVA en ambos casos

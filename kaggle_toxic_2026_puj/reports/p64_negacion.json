@@ -1,0 +1,254 @@
+{
+  "familia": "P64_NEGACION",
+  "naturaleza": "EXPERIMENTO. 3 mecanismos y 2 controles, 0 submissions, 0 Kaggle, 0 holdout, 0 test",
+  "fecha": "2026-09-29T14:24:46+00:00",
+  "experiment_id": "P64-07",
+  "track": "P13-alcance-de-negacion",
+  "script": "experiments/p64_07_negacion.py",
+  "pregunta": "la negacion cambia la evidencia de las palabras que alcanza, y eso es algo que V03, que ve la bolsa, no puede representar",
+  "por_que_no_es_una_bandera": "la hipotesis no es que exista una bandera de negacion, sino la INTERACCION entre un marcador, una distancia y la evidencia afectada. Las marcas se emiten a distancia 1, 2 y 3 en las dos direcciones, luego el mismo par a distancia distinta es una columna distinta, y eso es lo que una bolsa no puede expresar",
+  "mecanismos": {
+    "NEG_alcance": "canal sparse de los pares negador y palabra alcanzada, con el alcance en el nombre del token",
+    "NEG_efecto": "el cambio en la evidencia de V03 al quitar el segmento con negador",
+    "NEG_ambos": "los dos juntos, con el presupuesto L2 recalibrado"
+  },
+  "eda": {
+    "filas_con_negador": 389,
+    "porcentaje": 26.2306,
+    "error_con_negador": 0.217652,
+    "error_sin_negador": 0.15326,
+    "diferencial": 0.064392,
+    "negadores_en_uso": [
+      "nada",
+      "nadie",
+      "ni",
+      "ningun",
+      "ninguna",
+      "no",
+      "nunca",
+      "sin",
+      "tampoco"
+    ],
+    "marcas_emitidas": 3132,
+    "filas_con_marca_de_alcance": 389
+  },
+  "marcadores": [
+    "no",
+    "nunca",
+    "nadie",
+    "nada",
+    "ni",
+    "sin",
+    "tampoco",
+    "ningun",
+    "ninguna",
+    "ninguno",
+    "jamas"
+  ],
+  "alcances": [
+    1,
+    2,
+    3
+  ],
+  "columnas_del_canal_de_alcance": 353,
+  "protocolo": {
+    "lexico": "lista cerrada escrita a mano y declarada antes. Sin lexico externo",
+    "corpus_externo": "ninguno",
+    "cosas_aprendidas_de_etiquetas": "ninguna, luego no hay nada que pueda filtrar",
+    "ajuste_del_canal": "dentro de cada pliegue de entrenamiento",
+    "control_de_anchura": "un bloque aleatorio de las mismas columnas",
+    "control_del_margen": "V03 mas sus margenes",
+    "umbrales": "0,44 / 0,51 / 0,46 congelados"
+  },
+  "resultados": {
+    "NEG_alcance": {
+      "corrected_cv": 0.7750287751135065,
+      "folds": [
+        0.7834247251226468,
+        0.7865564236831775,
+        0.7783923266276207,
+        0.7449966126733597,
+        0.7817654404573836
+      ],
+      "por_bin": {
+        "CORTA": {
+          "n": 167,
+          "F1": 0.947956,
+          "F1_de_V03": 0.947956
+        },
+        "MEDIA": {
+          "n": 602,
+          "F1": 0.799806,
+          "F1_de_V03": 0.796405
+        },
+        "LARGA": {
+          "n": 547,
+          "F1": 0.67329,
+          "F1_de_V03": 0.68335
+        },
+        "MUY_LARGA": {
+          "n": 167,
+          "F1": 0.549049,
+          "F1_de_V03": 0.560571
+        }
+      },
+      "rescate": 56,
+      "damage": 62
+    },
+    "NEG_efecto": {
+      "corrected_cv": 0.7537595332182082,
+      "folds": [
+        0.7653821245486258,
+        0.7719379498832946,
+        0.7476746193935586,
+        0.7254985451706762,
+        0.7593493461604325
+      ],
+      "por_bin": {
+        "CORTA": {
+          "n": 167,
+          "F1": 0.930063,
+          "F1_de_V03": 0.947956
+        },
+        "MEDIA": {
+          "n": 602,
+          "F1": 0.776758,
+          "F1_de_V03": 0.796405
+        },
+        "LARGA": {
+          "n": 547,
+          "F1": 0.667505,
+          "F1_de_V03": 0.68335
+        },
+        "MUY_LARGA": {
+          "n": 167,
+          "F1": 0.482577,
+          "F1_de_V03": 0.560571
+        }
+      },
+      "rescate": 99,
+      "damage": 192
+    },
+    "NEG_ambos": {
+      "corrected_cv": 0.7675657053590665,
+      "folds": [
+        0.7915013473377787,
+        0.7758416337910173,
+        0.7605118815437141,
+        0.7319029060712414,
+        0.7792425838837064
+      ],
+      "por_bin": {
+        "CORTA": {
+          "n": 167,
+          "F1": 0.941663,
+          "F1_de_V03": 0.947956
+        },
+        "MEDIA": {
+          "n": 602,
+          "F1": 0.794011,
+          "F1_de_V03": 0.796405
+        },
+        "LARGA": {
+          "n": 547,
+          "F1": 0.677254,
+          "F1_de_V03": 0.68335
+        },
+        "MUY_LARGA": {
+          "n": 167,
+          "F1": 0.498303,
+          "F1_de_V03": 0.560571
+        }
+      },
+      "rescate": 83,
+      "damage": 119
+    },
+    "V03_random": {
+      "corrected_cv": 0.7548721605090964,
+      "folds": [
+        0.7707559988080299,
+        0.7762330738432603,
+        0.7418157362324641,
+        0.7203473985393427,
+        0.7662754989673671
+      ],
+      "por_bin": {
+        "CORTA": {
+          "n": 167,
+          "F1": 0.939515,
+          "F1_de_V03": 0.947956
+        },
+        "MEDIA": {
+          "n": 602,
+          "F1": 0.776236,
+          "F1_de_V03": 0.796405
+        },
+        "LARGA": {
+          "n": 547,
+          "F1": 0.654653,
+          "F1_de_V03": 0.68335
+        },
+        "MUY_LARGA": {
+          "n": 167,
+          "F1": 0.518332,
+          "F1_de_V03": 0.560571
+        }
+      },
+      "rescate": 141,
+      "damage": 220
+    },
+    "V03_margen": {
+      "corrected_cv": 0.7661312520165589,
+      "folds": [
+        0.7688570389043375,
+        0.7832395247029393,
+        0.762560125060125,
+        0.749561403508772,
+        0.7663992177260909
+      ],
+      "por_bin": {
+        "CORTA": {
+          "n": 167,
+          "F1": 0.9379,
+          "F1_de_V03": 0.947956
+        },
+        "MEDIA": {
+          "n": 602,
+          "F1": 0.782453,
+          "F1_de_V03": 0.796405
+        },
+        "LARGA": {
+          "n": 547,
+          "F1": 0.680556,
+          "F1_de_V03": 0.68335
+        },
+        "MUY_LARGA": {
+          "n": 167,
+          "F1": 0.559525,
+          "F1_de_V03": 0.560571
+        }
+      },
+      "rescate": 78,
+      "damage": 168
+    }
+  },
+  "brechas": {
+    "alcance_contra_aleatorio": 0.0201566146,
+    "alcance_contra_el_margen": 0.0088975231,
+    "efecto_contra_aleatorio": -0.0011126273,
+    "efecto_contra_el_margen": -0.0123717188,
+    "ambos_contra_el_margen": 0.0014344533
+  },
+  "lectura": "INFORMACION_SI_INTEGRACION_NO",
+  "veredicto": "Este es el resultado mas positivo de la fase y hay que decirlo con precision, porque es distinto de todos los anteriores. El canal de alcance de negacion supera al control de anchura en +0.0201566146 y al margen de V03 en +0.0088975231. Las dos brechas son positivas: la informacion existe, no es capacidad y no es lo que V03 ya sabe de si mismo. Y a la vez el global es -0.0021826774 con 2 de 5 pliegues, luego no mejora a V03.\n\nLa lectura honesta es que el cuello de botella NO es la informacion, es la INTEGRACION. Un canal sparse de 350 columnas que compite por el presupuesto L2 de un espacio de 20000 dimensiones no logra entrar aunque lleve dentro algo que el resto del modelo no tiene. Y eso es una afirmacion sobre el ARQUITECTURA de la adicion y no sobre la senal. El efecto sobre la evidencia, en cambio, si es redundante: -0.0123717188 contra el margen, luego quitar el segmento con negador no le dice a V03 nada que no sepa ya.\n\nLa negacion si esta asociada al error, con +0.0644 puntos, y emite 3132 marcas de alcance sobre 389 filas. La estructura existe. Lo que falta no es saberla, sino un sitio donde caber",
+  "decision": "COMPLEMENTARY",
+  "experimentos_registrados": 1,
+  "reproducibilidad": {
+    "nivel": "R2",
+    "git_commit": "1c9c738",
+    "seed": 42,
+    "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "corrected_cv": 0.7772114525165721
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

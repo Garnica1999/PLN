@@ -1,0 +1,133 @@
+{
+  "experimento": "V8-01 (P1)",
+  "fecha": "2026-09-26T02:52:57+00:00",
+  "referencia_v03_local": 0.777211,
+  "referencia_v03_externa": 0.78306,
+  "umbrales_v03": {
+    "HS": 0.44,
+    "TR": 0.51,
+    "AG": 0.46
+  },
+  "numero_de_modelos": 5,
+  "tolerancia_control": 0.0005,
+  "control_correcto": true,
+  "metrica_promedio_desarrollo": 0.777211,
+  "metrica_oof_canonico": 0.777211,
+  "diferencia_maxima_por_celda": 0.0,
+  "identificadores_en_el_mismo_orden": true,
+  "metrica_resubstitucion_modelo_completo": 0.969085,
+  "contraccion_de_probabilidades_sobre_prueba": 0.001334,
+  "desviacion_de_probabilidades_promedio": 0.295165,
+  "f1_por_etiqueta_promedio": {
+    "HS": 0.7616892911010558,
+    "TR": 0.8157303370786517,
+    "AG": 0.7542147293700089
+  },
+  "f1_por_etiqueta_modelo_completo_resubstitucion": {
+    "HS": 0.9684684684684685,
+    "TR": 0.9680968096809681,
+    "AG": 0.9706896551724138
+  },
+  "desplazamiento_sobre_prueba": [
+    {
+      "etiqueta": "HS",
+      "tasa_promedio": 0.4376083188908146,
+      "tasa_modelo_completo": 0.44280762564991333,
+      "tasa_entrenamiento": 0.43695212407282535
+    },
+    {
+      "etiqueta": "TR",
+      "tasa_promedio": 0.2833622183708839,
+      "tasa_modelo_completo": 0.28422876949740034,
+      "tasa_entrenamiento": 0.3000674308833446
+    },
+    {
+      "etiqueta": "AG",
+      "tasa_promedio": 0.35528596187175043,
+      "tasa_modelo_completo": 0.36048526863084923,
+      "tasa_entrenamiento": 0.38233310856372216
+    }
+  ],
+  "detalle_modelos": [
+    {
+      "modelo": 1,
+      "n_entrenamiento": 1186,
+      "n_validacion": 297,
+      "metrica_en_su_validacion": 0.79601
+    },
+    {
+      "modelo": 2,
+      "n_entrenamiento": 1186,
+      "n_validacion": 297,
+      "metrica_en_su_validacion": 0.794034
+    },
+    {
+      "modelo": 3,
+      "n_entrenamiento": 1187,
+      "n_validacion": 296,
+      "metrica_en_su_validacion": 0.77886
+    },
+    {
+      "modelo": 4,
+      "n_entrenamiento": 1187,
+      "n_validacion": 296,
+      "metrica_en_su_validacion": 0.738598
+    },
+    {
+      "modelo": 5,
+      "n_entrenamiento": 1186,
+      "n_validacion": 297,
+      "metrica_en_su_validacion": 0.779056
+    }
+  ],
+  "integridad": [
+    {
+      "comprobacion": "numero de filas",
+      "resultado": "correcto",
+      "detalle": "1154 filas en el fichero frente a 1154 en la prueba"
+    },
+    {
+      "comprobacion": "nombres y orden de columnas",
+      "resultado": "correcto",
+      "detalle": "columnas ['id', 'HS', 'TR', 'AG'] frente a las esperadas ['id', 'HS', 'TR', 'AG']"
+    },
+    {
+      "comprobacion": "valores de etiqueta",
+      "resultado": "correcto",
+      "detalle": "valores distintos: [0, 1]"
+    },
+    {
+      "comprobacion": "sin valores ausentes",
+      "resultado": "correcto",
+      "detalle": "0 celdas ausentes"
+    },
+    {
+      "comprobacion": "sin identificadores duplicados",
+      "resultado": "correcto",
+      "detalle": "0 identificadores repetidos"
+    },
+    {
+      "comprobacion": "identificadores en el orden del conjunto de prueba",
+      "resultado": "correcto",
+      "detalle": "coinciden con el orden original"
+    },
+    {
+      "comprobacion": "numero de filas distinto del entrenamiento",
+      "resultado": "correcto",
+      "detalle": "entrenamiento 1731 frente a prueba 1154"
+    },
+    {
+      "comprobacion": "etiquetas dentro de cero y uno",
+      "resultado": "correcto",
+      "detalle": "todas las celdas de etiqueta estan en el intervalo"
+    },
+    {
+      "comprobacion": "sin cadenas vacias",
+      "resultado": "correcto",
+      "detalle": "0 identificadores vacios"
+    }
+  ],
+  "integridad_correcta": true,
+  "fichero_de_envio": "submissions/toxic_submission_v08_p1_fold_ensemble.csv",
+  "nota": "La metrica local de la columna de desarrollo coincide con la de V03 por construccion, porque promedia por pliegue es la definicion del OOF. Lo unico nuevo es el promedio sobre la prueba, y eso solo se mide en el externo. La comparacion con el modelo unico es registro, no ajuste."
+}

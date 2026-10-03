@@ -1,0 +1,18 @@
+{
+  "experimento": "V9-01 (H5)",
+  "fecha": "2026-09-26",
+  "pregunta": "Cambia V03 con grupos near-dup solo-train?",
+  "referencia_v03": 0.777211,
+  "corrected_cv_solo_train": 0.7772114525165721,
+  "delta": 4.525165721025459e-07,
+  "delta_preciso_vs_canon": 0.0,
+  "veredicto": "REPRODUCE EXACTO",
+  "ari_vs_grupos_vigentes": 1.0,
+  "n_grupos_solo_train": 1645,
+  "f1_por_etiqueta": {
+    "HS": 0.7616892911010558,
+    "TR": 0.8157303370786517,
+    "AG": 0.7542147293700089
+  },
+  "duracion_segundos": 5.2
+}

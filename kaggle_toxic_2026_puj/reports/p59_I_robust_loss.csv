@@ -1,0 +1,22 @@
+magnitud,valor
+brazo_A_sklearn_corrected_cv,0.7772114525165721
+brazo_B_irls_peso1_corrected_cv,0.7772647318762402
+brazo_C_tukey_corrected_cv,0.7785171129078273
+delta_vs_V03,0.0013056603912552367
+pliegues_mejorados,4
+folds_candidato,0.797005 0.796920 0.775584 0.740185 0.783794
+folds_V03,0.796010 0.794034 0.778860 0.738598 0.779056
+rescate,8
+damage,4
+neto,4
+cambian,12
+acierto_en_las_que_cambian,0.6667
+f1_HS_tukey,0.7631975867
+f1_TR_tukey,0.8174692049
+f1_AG_tukey,0.7548845471
+gate_delta_superado,False
+gate_pliegues_superado,True
+gate_superado,False
+convergencia_C,True
+iteraciones_C_max,45
+decision,"MARGINAL. La perdida robusta mejora la metrica pero no alcanza el gate delta >= +0,003, luego no se demuestra. NO se prueba una segunda funcion"

@@ -1,0 +1,78 @@
+{
+  "familia": "P67_CIERRE",
+  "experiment_id": "P67-02",
+  "fecha": "2026-09-29T16:51:20+00:00",
+  "pregunta": "si el residuo de MI_arbol es senal complementaria, calibracion o resultado inestable",
+  "categoria_del_mecanismo": "MIXED_CON_ATRIBUCION_PARCIAL",
+  "razon": "Los cuatro controles NO dicen lo mismo y eso es el hallazgo. El reentreno anidado de UN escalar por etiqueta da -0.0029731513, es DECISIVO: la calibracion NO explica el efecto y V03 no estaba simplemente mal calibrado en esta particion. Y el AUC del residuo de MI_arbol se mantiene fuera de la banda, en 0.579597, lo que un movimiento de frontera no puede producir. PERO la misma correccion da positivo con 4 de los 7 candidatos, luego una parte del efecto pertenece a la OPERACION y no a MI_arbol. El enriquecimiento de los rescates es 1.3383, mayor que uno, luego hay concentracion real en la banda pero no exclusiva",
+  "reconciliacion": {
+    "final_valid_p66_result": 0.0026743167,
+    "mecanismo": "MI_arbol con CORRECCION RESIDUAL anidada",
+    "blend_prob": 0.0033068923,
+    "blend_estado": "NON_COMPARABLE",
+    "brecha_del_blend": "INVALIDATED",
+    "brecha_del_residual": "CORRECTED"
+  },
+  "controles": {
+    "C-A_reentreno_anidado_del_umbral": -0.0029731513,
+    "C-B_candidatos_positivos": 4,
+    "C-D_enriquecimiento_promedio": 1.338302,
+    "C-E_auc_mi_arbol_fuera_de_la_banda": 0.579597
+  },
+  "tracks_omitidos": [
+    {
+      "track": "P15 reproduccion independiente completa",
+      "estado": "SKIPPED - PREREQUISITE NOT MET",
+      "por_que": "solo se justifica para un candidato que pase los gates de atribucion y robustez. Este no los pasa: su IC95 de P66 incluye el cero y el control de sustitucion cruzada muestra que el efecto no es especifico de MI_arbol"
+    },
+    {
+      "track": "P16 segunda particion de entrenamiento",
+      "estado": "SKIPPED - PREREQUISITE NOT MET",
+      "por_que": "identica. Confirmar una segunda particion un efecto de 4 filas de 1483 cuestionaria la particion y no el efecto"
+    },
+    {
+      "track": "P08 correccion condicionada por la confianza",
+      "estado": "SKIPPED - PREREQUISITE NOT MET",
+      "por_que": "el encargo la condiciona a que P5 o P6 muestren senal residual reproducible. El reentreno del umbral da -0,0029731513 y el enriquecimiento es 1,34, luego no hay base para anadir grados de libertad"
+    },
+    {
+      "track": "P09 correccion dependiente de la longitud",
+      "estado": "SKIPPED - PREREQUISITE NOT MET",
+      "por_que": "condicionada a que P3 demuestre relacion reproducible entre el residuo y el numero de tokens. No se ha medido esa relacion y anadirla sin ella seria un grado de libertad mas, no una hipotesis"
+    },
+    {
+      "track": "P10 correccion especifica por etiqueta",
+      "estado": "SKIPPED - PREREQUISITE NOT MET",
+      "por_que": "el encargo dice conservar el beta compartido si el modelo de tres parametros no lo supera. No hay evidencia de heterogeneidad que lo justifique"
+    },
+    {
+      "track": "P11 analisis pairwise de etiquetas",
+      "estado": "SKIPPED - NO INDEPENDIENTE",
+      "por_que": "depende de que una pareja muestre senal complementaria, y la unica senal medible es la de MI_arbol sobre las tres etiquetas por separado, que ya esta medida"
+    }
+  ],
+  "tracks_principales_ejecutados": 1,
+  "tracks_principales_previstos": 12,
+  "tracks_reserva_ejecutados": 0,
+  "tracks_reserva_previstos": 4,
+  "figuras": [
+    "p67_01_sustitucion_cruzada.png",
+    "p67_02_enriquecimiento.png",
+    "p67_03_auc_por_banda.png",
+    "p67_04_varianza_residuo.png",
+    "p67_05_controles_principales.png",
+    "p67_06_bootstrap_heredado.png"
+  ],
+  "comprobaciones_de_cumplimiento": 24,
+  "fallos_de_cumplimiento": 0,
+  "reproducibilidad": {
+    "nivel": "R2",
+    "git_commit": "c6ae671",
+    "seed": 42,
+    "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "corrected_cv": 0.7772114525165721,
+    "leaderboard": 0.78306,
+    "n_filas": 1483
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

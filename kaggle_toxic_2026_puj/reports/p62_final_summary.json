@@ -1,0 +1,117 @@
+{
+  "familia": "P62_FINAL",
+  "fecha": "2026-09-29T05:50:51+00:00",
+  "pregunta": "V03 falla porque le falta informacion textual, o porque word+char no expresa la estructura con la que las palabras se combinan",
+  "respuesta": "las dos cosas: la synergy palabra-POS es real, 17.41 por ciento de la senal de la palabra, pero no cabe porque repaga solo el 17.4 por ciento de su coste; y ampliar la cobertura de vocabulario tampoco es la via",
+  "correccion_de_lectura": "la EDA nombro estructura_corta a un perfil cuyo cuartil alto es lo largo, y la delta se leio al reves. V03 es MEJOR en los cortos: AUC 0.9639 y F1 0,94 contra 0,72 en los largos. El limite esta en el orden de los textos largos y ambiguos",
+  "experimentos": 5,
+  "presupuesto": 8,
+  "reservas_gastadas": 0,
+  "experimentos_registrados": [
+    "P62-03",
+    "P62-04",
+    "P62-05"
+  ],
+  "lectura_en_tres_partes": {
+    "L": {
+      "coste_de_anadir_un_bloque": 0.0115854689,
+      "valor_de_la_estructura_linguistica": 0.0020137043,
+      "fraccion_repagada": 0.173813,
+      "saldo": -0.0095717646
+    },
+    "M": {
+      "coste_de_anadir_un_bloque": 0.0004432824,
+      "valor_de_la_estructura_lexica": -0.0107929661,
+      "fraccion_repagada": -24.347831,
+      "saldo": -0.0112362485
+    },
+    "aportaciones_cobertura": {
+      "A_palabras_min_df_1": -0.0040227339,
+      "B_palabras_y_char_min_df_1": -0.0116799367,
+      "C_min_df_1_mas_canal_POS": -0.0033508936,
+      "canal_POS_sobre_cobertura_completa": 0.0006718403
+    }
+  },
+  "curva_de_presupuesto": [
+    {
+      "K": 0,
+      "ruido": 0.7772114525165721,
+      "delta_ruido": 0.0,
+      "real": 0.7772114525165721,
+      "delta_real": 0.0,
+      "valor": 0.0
+    },
+    {
+      "K": 16,
+      "ruido": 0.7780667139652649,
+      "delta_ruido": 0.0008552614486928567,
+      "real": 0.7764050796108534,
+      "delta_real": -0.0008063729057187219,
+      "valor": -0.0016616343544115786
+    },
+    {
+      "K": 32,
+      "ruido": 0.7774930913921453,
+      "delta_ruido": 0.000281638875573198,
+      "real": 0.7735938370859006,
+      "delta_real": -0.003617615430671517,
+      "valor": -0.003899254306244715
+    },
+    {
+      "K": 64,
+      "ruido": 0.7759317704334577,
+      "delta_ruido": -0.001279682083114353,
+      "real": 0.7729974032728165,
+      "delta_real": -0.004214049243755569,
+      "valor": -0.002934367160641216
+    },
+    {
+      "K": 128,
+      "ruido": 0.7754964520848971,
+      "delta_ruido": -0.00171500043167494,
+      "real": 0.7667815924976593,
+      "delta_real": -0.010429860018912773,
+      "valor": -0.008714859587237833
+    },
+    {
+      "K": 256,
+      "ruido": 0.7762787289320365,
+      "delta_ruido": -0.0009327235845355553,
+      "real": 0.7684648849816735,
+      "delta_real": -0.008746567534898553,
+      "valor": -0.007813843950362998
+    },
+    {
+      "K": 512,
+      "ruido": 0.7704720617338765,
+      "delta_ruido": -0.006739390782695587,
+      "real": 0.7694731115071084,
+      "delta_real": -0.0077383410094636895,
+      "valor": -0.0009989502267681027
+    },
+    {
+      "K": 1024,
+      "ruido": 0.7682894416093875,
+      "delta_ruido": -0.008922010907184585,
+      "real": 0.7703508309924126,
+      "delta_real": -0.006860621524159449,
+      "valor": 0.002061389383025136
+    }
+  ],
+  "regla_general": "en un espacio disperso grande con pocos datos, anadir un canal categorial se paga con mas de lo que la categoria repara, y la parte que se paga es medible y separable del contenido",
+  "hallazgo_de_instrumentacion": "un control por reetiquetacion es un no-op demostrable, porque permutar columnas es simetria del modelo lineal regularizado",
+  "pistas_cerradas_sin_experimento": [
+    "N secuencias POS",
+    "P contraste estructural",
+    "O composicion lexica, por condicion no cumplida"
+  ],
+  "submissions": 0,
+  "kaggle": 0,
+  "holdout": 0,
+  "test": 0,
+  "cumplimiento": {
+    "comprobaciones": 21,
+    "fallos": 0
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

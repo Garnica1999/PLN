@@ -1,0 +1,158 @@
+{
+  "familia": "P59_H_NMF_GAP_ANALYSIS",
+  "naturaleza": "GAP_ANALYSIS_ONLY. 0 modelos, 0 entrenamientos, 0 submissions, 0 consultas a Kaggle, 0 uso de holdout, 0 uso de test. No consume presupuesto de experimentos (parrafo 50)",
+  "fecha": "2026-09-28T05:27:37+00:00",
+  "H_NOVELTY": true,
+  "H_NOVELTY_evidencia": [
+    "V4-B03: la coincidencia con 'nmf' esta dentro de la cadena 'Track B', falso positivo",
+    "V14-01: la coincidencia esta dentro de una frase de cierre, falso positivo",
+    "ninguna de las 324 filas describe una factorizacion no negativa"
+  ],
+  "FUNCTIONAL_EQUIVALENCE": "EQUIVALENCIA_FUNCIONAL_SUFICIENTE. NMF reconstruye la matriz de evidencia peor que una SVD truncada del mismo rango, luego la informacion que aporta ya estaba disponible con una compresion lineal conocida, y la no negatividad no aporta nada sobre ella",
+  "FUNCTIONAL_EQUIVALENCE_detalle": {
+    "vecino_mas_cercano": {
+      "experimento": "V25-01 y V25-02",
+      "mecanismo": "Factorization Machine binaria, k en {1,4,8,16}, interaccion de segundo orden de BAJO RANGO sobre la representacion exacta de V03",
+      "resultado": "corrected_cv 0,782699 con +0,005487; decision 'no candidata, cerrar V25'",
+      "solape": "ambos comprimen una estructura de producto en k factores latentes y aplican una cabeza lineal",
+      "diferencia_no_cosmetica": "NMF impone W >= 0 y H >= 0, luego un componente es un conjunto aditivo y disjunto de entradas que no pueden cancelarse y se lee como un tema; un factor de FM es una mezcla con signo de interacciones"
+    },
+    "svd": {
+      "donde_si_se_uso": "sobre TEXTO: DL-MLP SVD 300, svd300_rbf, V26-01",
+      "sobre_matriz_meta": "nunca",
+      "nota": "no hay equivalencia que citar para SVD sobre evidencia de ensemble"
+    }
+  },
+  "bloqueo_de_especificacion": {
+    "problema": "el parrafo 3 pide usar exactamente la entrada de V20, y V20 no es un experimento de este proyecto",
+    "espacio_de_ids": {
+      "V17": "NO EXISTE",
+      "V18": "NO EXISTE",
+      "V19": "NO EXISTE",
+      "V20": "NO EXISTE",
+      "V21": "NO EXISTE",
+      "V24": "NO EXISTE",
+      "V25": [
+        "V25-02",
+        "V25-01"
+      ]
+    },
+    "que_si_existe_con_ese_nombre": [
+      "toxic_submission_v20_01_regla_hs_interaccion.csv, etiqueta de lote",
+      "toxic_submission_v20_03_reproduccion_v03.csv, control de reproduccion",
+      "mapeo de leaderboard \"56597267\": V20-01"
+    ],
+    "segundo_bloqueo": "la matriz de 44 columnas del meta tampoco esta en disco. v2_meta_oof.npz guarda los 44 NOMBRES y la proba resultante, no los valores. Reconstruirla obligaria a reentrenar las 4 bases, que contradice el parrafo 3",
+    "tercer_bloqueo": "NMF exige matriz no negativa. El meta de 44 columnas tiene margenes con signo, luego NMF no es aplicable ahi sin recortar o desplazar los datos, y el parrafo 3 prohibe modificar los datos"
+  },
+  "opciones_ejecutables": [
+    {
+      "id": "H-opcion-1",
+      "entrada": "features/p50_celda_features.npz, 20 canales + V03 = 63 columnas por etiqueta",
+      "pros": "en disco, no negativa por construccion, 1483 ids y los mismos pliegues canonicos",
+      "contras": "no es el meta de 44 columnas; es evidencia de canales, no de 4 bases"
+    },
+    {
+      "id": "H-opcion-2",
+      "entrada": "features/v2_oof_base_corrected.npz, 4 bases x 3 etiquetas = 12 columnas",
+      "pros": "es el insumo real del meta de 44 columnas",
+      "contras": "12 columnas apenas admiten compresion; el rango util es ~12 y NMF no puede reducir mucho sin perder informacion"
+    },
+    {
+      "id": "H-opcion-3",
+      "entrada": "reconstruir la matriz de 44 columnas reentrenando las 4 bases",
+      "pros": "seria el meta canonico",
+      "contras": "contradice el parrafo 3 y reabre una familia cerrada; ademas exige no negatividad, luego habria que recortar los margenes"
+    }
+  ],
+  "medicion_de_equivalencia": {
+    "matriz": {
+      "forma": [
+        4449,
+        21
+      ],
+      "negativos": 0
+    },
+    "rank_unico": 8,
+    "rank_justificacion": "muestras por columna 211.9; el rango util esta acotado por min(n, p_dim) = 21; 8 es el mismo orden de magnitud que el k = 8 que ya uso el precedente V25-01, luego es comparable y no una rejilla; el coste son dos factorizaciones de segundos",
+    "error_reconstruccion_relativo": {
+      "SVD": 0.09104,
+      "NMF": 0.093047,
+      "brecha_SVD_menos_NMF": -0.002007
+    },
+    "convergencia_nmf_iteraciones": 4008,
+    "esparsidad_pesos": {
+      "NMF": 0.535714,
+      "SVD": 0.02381
+    },
+    "pesos_negativos": {
+      "NMF": 0,
+      "SVD": 82
+    },
+    "varianza_explicada_SVD": [
+      0.639643,
+      0.131769,
+      0.107976,
+      0.03463,
+      0.022907,
+      0.015268,
+      0.010044,
+      0.009547
+    ],
+    "componentes_nmf": [
+      [
+        "canal08_HS",
+        "canal19_HS",
+        "v03_HS"
+      ],
+      [
+        "canal09_HS",
+        "canal02_HS",
+        "canal16_HS"
+      ],
+      [
+        "canal11_HS",
+        "canal12_HS",
+        "canal03_HS"
+      ],
+      [
+        "canal14_HS",
+        "canal15_HS",
+        "canal16_HS"
+      ],
+      [
+        "canal10_HS",
+        "canal09_HS",
+        "canal08_HS"
+      ],
+      [
+        "canal04_HS",
+        "canal05_HS",
+        "canal07_HS"
+      ],
+      [
+        "canal06_HS",
+        "canal07_HS",
+        "canal10_HS"
+      ],
+      [
+        "canal13_HS",
+        "canal18_HS",
+        "canal19_HS"
+      ]
+    ],
+    "componentes_top5_distintos": 8
+  },
+  "decision_preliminar": "CLOSED",
+  "experimentos_registrados": 0,
+  "por_que_no_se_registra": "el parrafo 50 no registra gap analysis",
+  "formulacion": "V03 remains the best verified leaderboard result.",
+  "gastos": {
+    "submissions": 0,
+    "modelos": 0,
+    "consultas_kaggle": 0,
+    "uso_holdout": 0,
+    "uso_test": 0,
+    "segundos": 5.5
+  }
+}

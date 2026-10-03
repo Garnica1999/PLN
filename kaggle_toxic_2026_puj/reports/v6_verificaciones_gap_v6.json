@@ -1,0 +1,178 @@
+{
+  "experimento": "V6-00 (P0, ANALYSIS)",
+  "fecha": "2026-09-26T01:18:08+00:00",
+  "nota": "Evidencia cruda de cada verificacion. Cada fila de la tabla de brecha cita las claves de este diccionario: 'presente' significa que el track es una duplicacion y 'ausente' que es genuinamente nuevo.",
+  "verificaciones": {
+    "I_word_char_weight": {
+      "patron": "char_weight\\s*=|word_weight\\s*=|block_weight\\s*=",
+      "donde": "codigo",
+      "presente": false,
+      "n_ficheros": 0,
+      "ficheros": []
+    },
+    "A_group_weight": {
+      "patron": "peso_grupo|p(group|)_weight|peso_por_grupo|group_size\\s*=\\s*np\\.|np\\.sqrt\\([^)]*grupo",
+      "donde": "codigo",
+      "presente": false,
+      "n_ficheros": 0,
+      "ficheros": []
+    },
+    "H_group_bagging": {
+      "patron": "BaggingClassifier|bootstrap_grupo|grupo_bootstrap|bootstrap_por_grupo",
+      "donde": "codigo",
+      "presente": false,
+      "n_ficheros": 0,
+      "ficheros": []
+    },
+    "C1_skipgram": {
+      "patron": "skip_?gram\\(|skip_?gram\\s*=|max_gap\\s*=|ngrama_salto|skip_bigram\\(",
+      "donde": "codigo",
+      "presente": false,
+      "n_ficheros": 0,
+      "ficheros": []
+    },
+    "C3_interacciones": {
+      "patron": "interacciones_hstack|token_interaccion|INSULT_NEAR_|interaccion_sparse",
+      "donde": "todo",
+      "presente": true,
+      "n_ficheros": 2,
+      "ficheros": [
+        {
+          "fichero": "structural_sparse_v4.csv",
+          "ocurrencias": 1
+        },
+        {
+          "fichero": "spec_compliance_v4.md",
+          "ocurrencias": 1
+        }
+      ]
+    },
+    "C2_ventanas": {
+      "patron": "ventanas_hstack|canal_ventana|ventana_posicional|posicion_relativa",
+      "donde": "todo",
+      "presente": true,
+      "n_ficheros": 2,
+      "ficheros": [
+        {
+          "fichero": "structural_sparse_v4.csv",
+          "ocurrencias": 1
+        },
+        {
+          "fichero": "spec_compliance_v4.md",
+          "ocurrencias": 1
+        }
+      ]
+    },
+    "C4_shape": {
+      "patron": "[\\\"']ORT-[A-Z]\\b|canal_ortograf|forma_token|shape_token",
+      "donde": "todo",
+      "presente": true,
+      "n_ficheros": 1,
+      "ficheros": [
+        {
+          "fichero": "20_emocion_nbsvm_ortografia_v2.py",
+          "ocurrencias": 16
+        }
+      ]
+    },
+    "D_textcnn": {
+      "patron": "Conv1d\\(|class TextCNN|TextCNN\\(",
+      "donde": "codigo",
+      "presente": true,
+      "n_ficheros": 1,
+      "ficheros": [
+        {
+          "fichero": "11_dl_desde_cero.py",
+          "ocurrencias": 1
+        }
+      ]
+    },
+    "B_factorizacion": {
+      "patron": "p_tr_dado_hs|prob_ag_dado_hs|p_tr_hs1|modelo_tr_hs1|factoriza_prob|ag_hs1|ag_hs0",
+      "donde": "codigo",
+      "presente": false,
+      "n_ficheros": 0,
+      "ficheros": []
+    },
+    "E_knn_predictor": {
+      "patron": "KNeighborsClassifier|prediccion_knn|knn_prob|experto_knn|prob_knn",
+      "donde": "codigo",
+      "presente": false,
+      "n_ficheros": 0,
+      "ficheros": []
+    },
+    "E_knn_medida": {
+      "patron": "knn_disagreement|sim_cercana|vecino_ids",
+      "donde": "codigo",
+      "presente": true,
+      "n_ficheros": 3,
+      "ficheros": [
+        {
+          "fichero": "28_hardness_v4.py",
+          "ocurrencias": 21
+        },
+        {
+          "fichero": "27_label_consistency_v4.py",
+          "ocurrencias": 3
+        },
+        {
+          "fichero": "35_discovery_v4.py",
+          "ocurrencias": 3
+        }
+      ]
+    },
+    "F_pair_noise": {
+      "patron": "instance_label|par_sospechoso|sospecha_par|soft_label|target_suavizado|sCORE_ruido_instancia",
+      "donde": "codigo",
+      "presente": false,
+      "n_ficheros": 0,
+      "ficheros": []
+    },
+    "G_label_conditional": {
+      "patron": "espacio_hs\\b|espacio_tr\\b|espacio_ag\\b|feature_space_label|espacios_por_etiqueta",
+      "donde": "codigo",
+      "presente": false,
+      "n_ficheros": 0,
+      "ficheros": []
+    },
+    "J_augmentation": {
+      "patron": "def aumentar\\(|data_augment|texto_sintetico|clon_texto|variante_augment|augmentar_train",
+      "donde": "codigo",
+      "presente": false,
+      "n_ficheros": 0,
+      "ficheros": []
+    },
+    "J_normalizacion": {
+      "patron": "PRE-0\\d",
+      "donde": "todo",
+      "presente": true,
+      "n_ficheros": 8,
+      "ficheros": [
+        {
+          "fichero": "03_variantes_representaciones.py",
+          "ocurrencias": 24
+        },
+        {
+          "fichero": "24_informe_final_candidatos.py",
+          "ocurrencias": 11
+        },
+        {
+          "fichero": "variantes_representaciones.csv",
+          "ocurrencias": 10
+        },
+        {
+          "fichero": "final_candidate_screening.md",
+          "ocurrencias": 10
+        },
+        {
+          "fichero": "contexto.md",
+          "ocurrencias": 5
+        },
+        {
+          "fichero": "05_ensembles.py",
+          "ocurrencias": 3
+        }
+      ]
+    }
+  }
+}

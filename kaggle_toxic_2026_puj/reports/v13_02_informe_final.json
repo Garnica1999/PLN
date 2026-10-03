@@ -1,0 +1,364 @@
+{
+  "experimento": "V13-02 (informe final y cierre de la linea de inferencia estructurada)",
+  "fecha": "2026-09-26T23:57:55+00:00",
+  "experimentos_de_la_fase": 2,
+  "presupuesto": {
+    "principales": 8,
+    "reserva": 4,
+    "usados": 2
+  },
+  "referencia_v03": 0.7772114525165721,
+  "lb_v03": 0.78306,
+  "gate_exploratorio": 0.002,
+  "gate_candidato": 0.003,
+  "candidatas_adoptables": [],
+  "candidatas_marginales": [
+    "C_propio_mas_TR_AG"
+  ],
+  "candidatas_rechazadas": [
+    "B_solo_TR_AG"
+  ],
+  "identidad_control": {
+    "metrica": 0.7772114525165721,
+    "diferencia_con_referencia": 0.0,
+    "f1_por_etiqueta": {
+      "HS": 0.7616892911010558,
+      "TR": 0.8157303370786517,
+      "AG": 0.7542147293700089
+    }
+  },
+  "auc_de_hs": {
+    "V03_con_su_propio_score": 0.8677245156114008,
+    "B_solo_TR_AG": {
+      "auc_medio": 0.8433324291307793,
+      "auc_por_pliegue": [
+        0.8567737172388337,
+        0.8445877475817596,
+        0.8477927865199832,
+        0.8276645041705284,
+        0.8398433901427914
+      ],
+      "desviacion": 0.00958953704905794
+    },
+    "C_propio_mas_TR_AG": {
+      "auc_medio": 0.8709760225058879,
+      "auc_por_pliegue": [
+        0.8718623108157992,
+        0.8871027176416398,
+        0.8787077008773151,
+        0.8428637627432808,
+        0.8743436204514048
+      ],
+      "desviacion": 0.01498181910377985
+    },
+    "aporte_del_score_propio": 0.024392086480621522
+  },
+  "macro_f1_con_hs_corregido": {
+    "B_solo_TR_AG": {
+      "metrica_macro": 0.7696699743868587,
+      "delta_macro": -0.007541478129713397,
+      "f1_por_etiqueta": {
+        "HS": 0.7390648567119156,
+        "TR": 0.8157303370786517,
+        "AG": 0.7542147293700089
+      },
+      "hs_rescatados": 31,
+      "hs_danados": 41,
+      "hs_cambiados": 174
+    },
+    "C_propio_mas_TR_AG": {
+      "metrica_macro": 0.7777457092095196,
+      "delta_macro": 0.0005342566929474879,
+      "f1_por_etiqueta": {
+        "HS": 0.763292061179898,
+        "TR": 0.8157303370786517,
+        "AG": 0.7542147293700089
+      },
+      "hs_rescatados": 20,
+      "hs_danados": 1,
+      "hs_cambiados": 51
+    }
+  },
+  "procedencia_del_techo": {
+    "delta_oraculo": 0.046270530536371646,
+    "celdas_cambiadas_por_el_oraculo": 196,
+    "celdas_cambiadas_en_la_columna_hs": 0,
+    "celdas_cambiadas_en_la_columna_tr": 78,
+    "celdas_cambiadas_en_la_columna_ag": 118,
+    "filas_afectadas": 134,
+    "filas_afectadas_todas_con_hs_verdadero_cero": true,
+    "conclusion": "El techo de +0.046271 NO proviene de corregir los errores de HS. El oraculo no cambia ni una sola celda de la columna HS. Proviene de poner TR y AG a cero en las 835 filas donde el HS verdadero es cero, lo que borra 196 falsos positivos. Es un efecto aguas abajo de la condicion de HS, no una mejora de la estimacion de HS."
+  },
+  "mecanismo_del_fracaso": {
+    "hallazgo": "Corregir la etiqueta de HS solo mueve la columna HS. Los brazos dejan TR y AG exactamente igual, con delta cero, porque el meta produce una probabilidad para HS y no altera lo que el sistema decide sobre TR y AG.",
+    "delta_de_hs_del_brazo_c": 0.0016027700788422417,
+    "delta_de_tr_del_brazo_c": 0.0,
+    "delta_de_ag_del_brazo_c": 0.0,
+    "por_que_el_brazo_b_dana": "Con el score propio de HS excluido, la AUC sigue siendo alta, 0.8433, pero la F1 de HS cae 0.0226. Es la medida de que la informacion existe y no es utilizable con el umbral congelado: un AUC alto no implica una buena decision en el punto de corte."
+  },
+  "f1_de_v03_por_etiqueta": {
+    "HS": 0.7616892911010558,
+    "TR": 0.8157303370786517,
+    "AG": 0.7542147293700089
+  },
+  "auditoria_de_leakage": {
+    "verificacion": [
+      {
+        "pliegue": 1,
+        "filas_de_entrenamiento": 1186,
+        "filas_con_feature_oof": 1186,
+        "sub_pliegues": 4,
+        "cada_fila_recibida_una_vez": true
+      },
+      {
+        "pliegue": 2,
+        "filas_de_entrenamiento": 1186,
+        "filas_con_feature_oof": 1186,
+        "sub_pliegues": 4,
+        "cada_fila_recibida_una_vez": true
+      },
+      {
+        "pliegue": 3,
+        "filas_de_entrenamiento": 1187,
+        "filas_con_feature_oof": 1187,
+        "sub_pliegues": 4,
+        "cada_fila_recibida_una_vez": true
+      },
+      {
+        "pliegue": 4,
+        "filas_de_entrenamiento": 1187,
+        "filas_con_feature_oof": 1187,
+        "sub_pliegues": 4,
+        "cada_fila_recibida_una_vez": true
+      },
+      {
+        "pliegue": 5,
+        "filas_de_entrenamiento": 1186,
+        "filas_con_feature_oof": 1186,
+        "sub_pliegues": 4,
+        "cada_fila_recibida_una_vez": true
+      }
+    ],
+    "comprobaciones": [
+      "Cada feature del meta proviene de un sub-pliegue interno que no contenia la fila.",
+      "La union de los sub-pliegues retenidos es exactamente el entrenamiento exterior, sin filas repetidas ni ausentes, comprobado pliegue a pliegue.",
+      "El meta se ajusta solo con features OOF y con las etiquetas del entrenamiento exterior.",
+      "La validacion exterior se puntua con bases ajustadas sobre todo el entrenamiento exterior, que es el regimen de inferencia real.",
+      "Los vectorizadores de cada sub-pliegue se ajustan solo con el sub-entrenamiento.",
+      "El test no se carga. El holdout2 no se toca. Ninguna etiqueta verdadera se usa como feature en ningun punto."
+    ]
+  },
+  "auditoria_de_v6b": {
+    "veredicto": "CERRADA. La formulacion candidata es V6-B, ya evaluada.",
+    "detalle": "V6-02 implementa p(TR|X) = p(HS|X) * p(TR|HS=1,X) con cinco productos y cero condicionales cuya condicion mencione HS, y su encabezado declara 'sin routing duro'. Es exactamente la formulacion que el enunciado prohibe repetir.",
+    "resultados": {
+      "B1": -0.0107,
+      "B2": -0.0008,
+      "B3": -0.0115
+    },
+    "por_que_no_se_repite": "Repetirla con otra implementacion, otro umbral o un multiplicador equivalente seria una violacion de la clausula de no reabrir familias cerradas, y el enunciado lo prohibe de forma expresa."
+  },
+  "decision_sobre_linea_abierta": {
+    "linea": "inferencia estructurada de etiquetas",
+    "estado": "CERRADA FORMALMENTE",
+    "motivo": "Los cuatro mecanismos propuestos estaban ya probados, y lo unico genuinely nuevo, que es aislar si TR y AG llevan informacion sobre los errores de HS, se ha medido: la llevan, y no es utilizable. El techo de +0.046271 no esta en la estimacion de HS sino en la aplicacion de la condicion de HS a las decisiones de TR y AG, y esa via ya esta cerrada por medicion: el post-proceso duro da -0.004187 porque su llave se equivoca en 143 filas.",
+    "lo_que_no_se_afirma": "No se afirma que TOXIC no pueda mejorar. Se afirma que la inferencia estructurada de etiquetas, en la forma condicionada por HS, no es una linea rentable con los mecanismos permitidos."
+  },
+  "maestra": [
+    {
+      "experimento": "V13-01",
+      "mecanismo": "B_solo_TR_AG",
+      "delta_macro": -0.007541,
+      "delta_hs_f1": -0.022624,
+      "delta_tr_f1": 0.0,
+      "delta_ag_f1": 0.0,
+      "hs_rescatados": 31,
+      "hs_danados": 41,
+      "hs_cambiados": 174,
+      "supera_gate_exploratorio": false,
+      "supera_gate_candidato": false,
+      "estado": "RECHAZADA"
+    },
+    {
+      "experimento": "V13-01",
+      "mecanismo": "C_propio_mas_TR_AG",
+      "delta_macro": 0.000534,
+      "delta_hs_f1": 0.001603,
+      "delta_tr_f1": 0.0,
+      "delta_ag_f1": 0.0,
+      "hs_rescatados": 20,
+      "hs_danados": 1,
+      "hs_cambiados": 51,
+      "supera_gate_exploratorio": false,
+      "supera_gate_candidato": false,
+      "estado": "MARGINAL"
+    }
+  ],
+  "registro_de_hipotesis": [
+    {
+      "hipotesis": "P1 clasificacion conjunta de estados",
+      "mecanismo": "label powerset marginalizado a las tres etiquetas",
+      "historico_equivalente": "V4-E, 7 variantes",
+      "delta_macro": -0.005922,
+      "fraccion_del_techo": -0.128,
+      "supera_gate": false,
+      "estado": "CERRADA por la auditoria, sin ejecutar. V4-E dio 0.771289"
+    },
+    {
+      "hipotesis": "P2 meta-modelo de HS con scores OOF de TR y AG",
+      "mecanismo": "regresion logistica por etiqueta sobre scores OOF",
+      "historico_equivalente": "E2-02 y E2-18, con un conjunto de features mas rico",
+      "delta_macro": 0.010189,
+      "fraccion_del_techo": 0.2202,
+      "supera_gate": true,
+      "estado": "CERRADA por la auditoria, sin ejecutar. Alcanzo el gate en local y perdio en el externo, 0.78163 frente a 0.78306"
+    },
+    {
+      "hipotesis": "P3 inferencia conjunta continua por scores",
+      "mecanismo": "combinacion de margenes en inferencia",
+      "historico_equivalente": "el mismo meta y V8-08",
+      "delta_macro": "",
+      "fraccion_del_techo": "",
+      "supera_gate": false,
+      "estado": "CERRADA por la auditoria, sin ejecutar"
+    },
+    {
+      "hipotesis": "P4 perdida de coherencia",
+      "mecanismo": "perdida que acopla las etiquetas",
+      "historico_equivalente": "H2 para la version dura, H3 para la de ranking",
+      "delta_macro": -0.004187,
+      "fraccion_del_techo": -0.0905,
+      "supera_gate": false,
+      "estado": "CERRADA por la auditoria, sin ejecutar. Ademas la invariante de AG NO es dura, con 22 filas reales que la rompen, luego no puede imponerse a mano"
+    },
+    {
+      "hipotesis": "Aislacion: TR y AG solos",
+      "mecanismo": "meta de HS con features OOF, y su macro-F1 final",
+      "historico_equivalente": "NINGUNO. Es lo unico genuinamente nuevo de la fase",
+      "delta_macro": -0.007541,
+      "fraccion_del_techo": -0.163,
+      "supera_gate": false,
+      "estado": "RECHAZADA"
+    },
+    {
+      "hipotesis": "Aislacion: propio mas TR y AG",
+      "mecanismo": "meta de HS con features OOF, y su macro-F1 final",
+      "historico_equivalente": "NINGUNO. Es lo unico genuinamente nuevo de la fase",
+      "delta_macro": 0.000534,
+      "fraccion_del_techo": 0.0115,
+      "supera_gate": false,
+      "estado": "MARGINAL, no adoptada"
+    }
+  ],
+  "cumplimiento": {
+    "comprobaciones": [
+      {
+        "restriccion": "Auditoria historica ejecutada antes de cualquier experimento",
+        "cumple": true,
+        "evidencia": "V13-00 es el primer experimento de la fase y no entrena nada"
+      },
+      {
+        "restriccion": "Test no utilizado",
+        "cumple": true,
+        "evidencia": "solo se carga el desarrollo de 1483 filas"
+      },
+      {
+        "restriccion": "Holdout2 no utilizado",
+        "cumple": true,
+        "evidencia": "no se ha cargado en ningun punto"
+      },
+      {
+        "restriccion": "Sin submissions",
+        "cumple": true,
+        "evidencia": "0 ficheros de submission generados"
+      },
+      {
+        "restriccion": "Sin leaderboard",
+        "cumple": true,
+        "evidencia": "ninguna decision usa la puntuacion externa"
+      },
+      {
+        "restriccion": "Segunda particion no ejecutada",
+        "cumple": true,
+        "evidencia": "no hay candidata que la justifique"
+      },
+      {
+        "restriccion": "V03 intacta",
+        "cumple": true,
+        "evidencia": "control de identidad con diferencia exactamente cero"
+      },
+      {
+        "restriccion": "Features del meta estrictamente OOF",
+        "cumple": true,
+        "evidencia": "cobertura exacta en los 5 pliegues externos"
+      },
+      {
+        "restriccion": "Ninguna prediccion in-sample como feature",
+        "cumple": true,
+        "evidencia": "verificado por la cobertura de sub-pliegues, con parada obligatoria si falla"
+      },
+      {
+        "restriccion": "La etiqueta verdadera de HS no se usa como feature",
+        "cumple": true,
+        "evidencia": "el meta se ajusta contra la etiqueta, nunca la recibe como entrada"
+      },
+      {
+        "restriccion": "Sin routing duro sobre HS predicho",
+        "cumple": true,
+        "evidencia": "los brazos no condicionan TR ni AG a ninguna decision de HS"
+      },
+      {
+        "restriccion": "Sin factorizacion condicional suave",
+        "cumple": true,
+        "evidencia": "ningun producto de probabilidades; la auditoria lo comprueba estructuralmente"
+      },
+      {
+        "restriccion": "Sin nuevo vectorizador ni representacion",
+        "cumple": true,
+        "evidencia": "solo word(1,2) y char_wb(3,5) de V03"
+      },
+      {
+        "restriccion": "Sin cambio de umbrales",
+        "cumple": true,
+        "evidencia": "el de HS se usa congelado en 0.44"
+      },
+      {
+        "restriccion": "Estados conjuntos medidos antes de imponer reglas",
+        "cumple": true,
+        "evidencia": "6 estados observados en la auditoria"
+      },
+      {
+        "restriccion": "Regimenes de error descompuestos",
+        "cumple": true,
+        "evidencia": "los cuatro regimenes A, B, C y D"
+      },
+      {
+        "restriccion": "Fraccion del techo medida por mecanismo",
+        "cumple": true,
+        "evidencia": "en la tabla maestra y en el informe"
+      },
+      {
+        "restriccion": "Presupuesto respetado",
+        "cumple": true,
+        "evidencia": "2 de 8 principales, 0 de 4 de reserva"
+      },
+      {
+        "restriccion": "Ningun resultado editado a posteriori",
+        "cumple": true,
+        "evidencia": "los dos experimentos se escribieron antes de ver sus resultados"
+      },
+      {
+        "restriccion": "V03 no modificada",
+        "cumple": true,
+        "evidencia": "sha256 y artefactos intactos"
+      }
+    ],
+    "todas_cumplidas": true,
+    "gastos": {
+      "submissions": 0,
+      "evaluaciones_de_holdout2": 0,
+      "consultas_de_leaderboard": 0,
+      "segunda_particion": 0
+    }
+  }
+}

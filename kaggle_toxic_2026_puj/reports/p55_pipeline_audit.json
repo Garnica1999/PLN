@@ -1,0 +1,269 @@
+{
+  "familia": "P55_FINAL_PIPELINE_AUDIT",
+  "experimento": "V55-00 (auditoria estrategica del pipeline final de V03)",
+  "fecha": "2026-09-28T02:49:03+00:00",
+  "estado": "AUDIT_ONLY",
+  "pipeline_real": {
+    "umbrales_adoptados_de": "experiments/04_refit_submissions_v02_v03.py sobre features/oof_mod03b.npz con grupos D-004",
+    "corrected_cv_reportado_de": "experiments/14_oof_corregido_v2.py sobre v2_oof_base_corrected.npz con grupos D-016",
+    "vectorizador_dentro_del_pliegue": true,
+    "modelo_final": "refit sobre el 100 por ciento del train con los mismos hiperparametros, y umbrales los mismos del OOF D-004",
+    "discrepancia": "los umbrales y la metrica reportada provienen de protocolos de agrupacion distintos, y D-004 es el mas debil"
+  },
+  "umbrales": {
+    "V03": {
+      "HS": 0.44,
+      "TR": 0.51,
+      "AG": 0.46
+    },
+    "optimos_in_sample_D016": {
+      "HS": 0.41,
+      "TR": 0.48,
+      "AG": 0.45
+    },
+    "macro_f1_V03": 0.7772114525,
+    "macro_f1_in_sample": 0.7808400798,
+    "macro_f1_anidado": 0.77813677,
+    "delta_in_sample": 0.0036286273,
+    "delta_anidado": 0.0009253174,
+    "anidados_por_pliegue": [
+      {
+        "fold": 0,
+        "n_validacion": 297,
+        "umbral_HS": 0.4,
+        "umbral_TR": 0.5,
+        "umbral_AG": 0.47,
+        "umbral_V03_HS": 0.44,
+        "umbral_V03_TR": 0.51,
+        "umbral_V03_AG": 0.46
+      },
+      {
+        "fold": 1,
+        "n_validacion": 297,
+        "umbral_HS": 0.41,
+        "umbral_TR": 0.48,
+        "umbral_AG": 0.45,
+        "umbral_V03_HS": 0.44,
+        "umbral_V03_TR": 0.51,
+        "umbral_V03_AG": 0.46
+      },
+      {
+        "fold": 2,
+        "n_validacion": 296,
+        "umbral_HS": 0.4,
+        "umbral_TR": 0.5,
+        "umbral_AG": 0.45,
+        "umbral_V03_HS": 0.44,
+        "umbral_V03_TR": 0.51,
+        "umbral_V03_AG": 0.46
+      },
+      {
+        "fold": 3,
+        "n_validacion": 296,
+        "umbral_HS": 0.41,
+        "umbral_TR": 0.48,
+        "umbral_AG": 0.45,
+        "umbral_V03_HS": 0.44,
+        "umbral_V03_TR": 0.51,
+        "umbral_V03_AG": 0.46
+      },
+      {
+        "fold": 4,
+        "n_validacion": 297,
+        "umbral_HS": 0.41,
+        "umbral_TR": 0.48,
+        "umbral_AG": 0.45,
+        "umbral_V03_HS": 0.44,
+        "umbral_V03_TR": 0.51,
+        "umbral_V03_AG": 0.46
+      }
+    ],
+    "advertencia": "el delta in-sample NO es una mejora esperable, porque el umbral se eligio sobre el mismo OOF que se puntua; el delta anidado si es una estimacion honesta"
+  },
+  "tasa_positiva": {
+    "con_umbrales_V03": [
+      0.457181,
+      0.300067,
+      0.377613
+    ],
+    "con_optimos_in_sample": [
+      0.494268,
+      0.309508,
+      0.384356
+    ],
+    "con_anidados": [
+      0.496966,
+      0.307485,
+      0.380984
+    ]
+  },
+  "tamano_de_entrenamiento": [
+    {
+      "fraccion_de_grupos": 0.8,
+      "macro_f1": 0.7756814919,
+      "umbral_HS": 0.41,
+      "umbral_TR": 0.48,
+      "umbral_AG": 0.49,
+      "delta_vs_100": -0.0024552781
+    },
+    {
+      "fraccion_de_grupos": 0.9,
+      "macro_f1": 0.777515123,
+      "umbral_HS": 0.41,
+      "umbral_TR": 0.48,
+      "umbral_AG": 0.44,
+      "delta_vs_100": -0.000621647
+    },
+    {
+      "fraccion_de_grupos": 1.0,
+      "macro_f1": 0.77813677,
+      "umbral_HS": 0.41,
+      "umbral_TR": 0.48,
+      "umbral_AG": 0.45,
+      "delta_vs_100": 0.0
+    }
+  ],
+  "balance_de_pliegues": [
+    {
+      "pliegue": 0,
+      "n_filas": 297,
+      "n_grupos": 283,
+      "tasa_HS": 0.434343,
+      "tasa_TR": 0.296296,
+      "tasa_AG": 0.383838,
+      "macro_f1_de_V03": 0.7960101143
+    },
+    {
+      "pliegue": 1,
+      "n_filas": 297,
+      "n_grupos": 284,
+      "tasa_HS": 0.43771,
+      "tasa_TR": 0.30303,
+      "tasa_AG": 0.383838,
+      "macro_f1_de_V03": 0.7940339498
+    },
+    {
+      "pliegue": 2,
+      "n_filas": 296,
+      "n_grupos": 283,
+      "tasa_HS": 0.435811,
+      "tasa_TR": 0.300676,
+      "tasa_AG": 0.378378,
+      "macro_f1_de_V03": 0.7788600289
+    },
+    {
+      "pliegue": 3,
+      "n_filas": 296,
+      "n_grupos": 282,
+      "tasa_HS": 0.439189,
+      "tasa_TR": 0.300676,
+      "tasa_AG": 0.381757,
+      "macro_f1_de_V03": 0.7385980131
+    },
+    {
+      "pliegue": 4,
+      "n_filas": 297,
+      "n_grupos": 283,
+      "tasa_HS": 0.43771,
+      "tasa_TR": 0.299663,
+      "tasa_AG": 0.383838,
+      "macro_f1_de_V03": 0.7790564997
+    }
+  ],
+  "integridad_de_artefactos": [
+    {
+      "artefacto": "submissions/toxic_submission_v03_lr_union_thr.csv",
+      "existe": true,
+      "sha256": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+      "coincide_con_el_esperado": true,
+      "nota": "campeon congelado"
+    },
+    {
+      "artefacto": "features/oof_mod03b.npz (OOF D-004 que produjo los umbrales)",
+      "existe": false,
+      "sha256": "",
+      "coincide_con_el_esperado": null,
+      "nota": "ARTEFACTO AUSENTE: los umbrales adoptados no son auditables"
+    },
+    {
+      "artefacto": "features/v2_oof_base_corrected.npz",
+      "existe": true,
+      "sha256": "27dfa83736b979518a94bc93e32bb9cae07bc82eaff92234fe9e15d1f9822774",
+      "coincide_con_el_esperado": null,
+      "nota": ""
+    },
+    {
+      "artefacto": "features/oof_v03_final.npz",
+      "existe": true,
+      "sha256": "559265816ce4f6312c87f008f90324f0eec70a74d1e6247364c162793338feab",
+      "coincide_con_el_esperado": null,
+      "nota": ""
+    },
+    {
+      "artefacto": "features/v2_structured_features.parquet",
+      "existe": true,
+      "sha256": "9f5b79764f1b447611245e3b0c5933ff3bf93208f111f29f8754bcf987ff174c",
+      "coincide_con_el_esperado": null,
+      "nota": ""
+    },
+    {
+      "artefacto": "data/raw/toxic_train.csv",
+      "existe": true,
+      "sha256": "3d40e7345b588860cf4744914be88ddc094e4f03591516c8176ab40b7f76d42f",
+      "coincide_con_el_esperado": null,
+      "nota": ""
+    },
+    {
+      "artefacto": "data/processed/holdout_v2_ids.csv",
+      "existe": true,
+      "sha256": "e5b62e5f22c4c63a8c43df4019969504d44c0baa5b503c19ba3560032f5ee6cd",
+      "coincide_con_el_esperado": null,
+      "nota": ""
+    },
+    {
+      "artefacto": "data/processed/grupos_near_duplicados.csv",
+      "existe": true,
+      "sha256": "afabf9ae1c295ea8f203120bf28578cb4bdb4e8f16b89178d820baeaac62e622",
+      "coincide_con_el_esperado": null,
+      "nota": ""
+    },
+    {
+      "artefacto": "experiments/04_refit_submissions_v02_v03.py",
+      "existe": true,
+      "sha256": "3035b599a901d2cfc93df8ae8de657d8e3aab2393af94dce022d2f9040057ed8",
+      "coincide_con_el_esperado": null,
+      "nota": ""
+    },
+    {
+      "artefacto": "experiments/14_oof_corregido_v2.py",
+      "existe": true,
+      "sha256": "f0e8065bfbbc210e3a05f5b9b216b69698712feac8ecdf1a87732579d0a5ee44",
+      "coincide_con_el_esperado": null,
+      "nota": ""
+    }
+  ],
+  "brecha_oof_lb": {
+    "oof": 0.7772114525165721,
+    "lb": 0.78306,
+    "delta": 0.00584855,
+    "sigma_de_pliegues": 0.023095,
+    "delta_en_sigma": 0.253,
+    "sabido": "el LB fue mas alto que el OOF",
+    "desconocido": "la causa, y ninguna consulta a Kaggle es legal en esta fase",
+    "plausible_no_probado": [
+      "variacion de muestreo entre dev y test",
+      "el OOF subestima por umbrales heredados de un protocolo mas debil"
+    ]
+  },
+  "P55_PROCEDURAL_GAP": "B",
+  "hay_discrepancia": true,
+  "impacto_alcanza_el_gate_de_0p003": false,
+  "gastos": {
+    "submissions": 0,
+    "modelos_entrenados": 0,
+    "consultas_kaggle": 0,
+    "uso_holdout": 0,
+    "uso_test": 0,
+    "segundos": 4.8
+  }
+}

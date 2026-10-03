@@ -1,0 +1,116 @@
+{
+  "familia": "P60_NOTEBOOK_INTEGRATION",
+  "fecha": "2026-09-28T18:03:37+00:00",
+  "notebook": "notebooks/10_final_pipeline.ipynb",
+  "celdas_antes": 264,
+  "celdas_despues": 264,
+  "secciones_integradas": [
+    67,
+    68,
+    69,
+    70,
+    71,
+    72,
+    73,
+    74,
+    75,
+    76,
+    77,
+    78,
+    79,
+    80
+  ],
+  "secciones_anadidas_esta_pasada": 0,
+  "idempotente": true,
+  "celdas_codigo_ejecutadas": 14,
+  "celdas_codigo_fallidas": 0,
+  "resultados": [
+    {
+      "seccion": 67,
+      "exit_code": 0,
+      "stdout_lineas": 12,
+      "stderr": ""
+    },
+    {
+      "seccion": 68,
+      "exit_code": 0,
+      "stdout_lineas": 18,
+      "stderr": ""
+    },
+    {
+      "seccion": 69,
+      "exit_code": 0,
+      "stdout_lineas": 10,
+      "stderr": ""
+    },
+    {
+      "seccion": 70,
+      "exit_code": 0,
+      "stdout_lineas": 10,
+      "stderr": ""
+    },
+    {
+      "seccion": 71,
+      "exit_code": 0,
+      "stdout_lineas": 10,
+      "stderr": ""
+    },
+    {
+      "seccion": 72,
+      "exit_code": 0,
+      "stdout_lineas": 37,
+      "stderr": ""
+    },
+    {
+      "seccion": 73,
+      "exit_code": 0,
+      "stdout_lineas": 20,
+      "stderr": ""
+    },
+    {
+      "seccion": 74,
+      "exit_code": 0,
+      "stdout_lineas": 10,
+      "stderr": ""
+    },
+    {
+      "seccion": 75,
+      "exit_code": 0,
+      "stdout_lineas": 10,
+      "stderr": ""
+    },
+    {
+      "seccion": 76,
+      "exit_code": 0,
+      "stdout_lineas": 10,
+      "stderr": ""
+    },
+    {
+      "seccion": 77,
+      "exit_code": 0,
+      "stdout_lineas": 10,
+      "stderr": ""
+    },
+    {
+      "seccion": 78,
+      "exit_code": 0,
+      "stdout_lineas": 6,
+      "stderr": ""
+    },
+    {
+      "seccion": 79,
+      "exit_code": 0,
+      "stdout_lineas": 14,
+      "stderr": ""
+    },
+    {
+      "seccion": 80,
+      "exit_code": 0,
+      "stdout_lineas": 12,
+      "stderr": ""
+    }
+  ],
+  "cifras_escritas_a_mano": 0,
+  "nota": "Toda cifra de las celdas de codigo se lee de un artefacto en tiempo de ejecucion. Las unicas cifras que aparecen en literales son las que se COMPARAN contra el artefacto, de modo que una divergencia entre el informe y el artefacto se ve en la celda",
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

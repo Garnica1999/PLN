@@ -1,0 +1,586 @@
+{
+  "experimento": "EBD-24 (P7)",
+  "fecha": "2026-09-26T00:37:03+00:00",
+  "referencia_v03": 0.777211,
+  "granularidad": "filas (1.483); la F1 por fila es la media de sus tres etiquetas",
+  "variantes": [
+    {
+      "variante": "B0-200",
+      "nota": "baseline 200d/w5/min3/sub3-6/neg10",
+      "corrected_cv": 0.781766,
+      "delta_real_vs_V03": 0.004555,
+      "filas_totales": 1483,
+      "ambas_correctas": 335,
+      "salvage": 8,
+      "damage": 5,
+      "correccion_neta": 3,
+      "fraccion_de_filas": 0.002023,
+      "ninguna_correcta": 1135
+    },
+    {
+      "variante": "WS-3",
+      "nota": "mejor delta de fusion de v5.1",
+      "corrected_cv": 0.782959,
+      "delta_real_vs_V03": 0.005748,
+      "filas_totales": 1483,
+      "ambas_correctas": 338,
+      "salvage": 8,
+      "damage": 2,
+      "correccion_neta": 6,
+      "fraccion_de_filas": 0.004046,
+      "ninguna_correcta": 1135
+    },
+    {
+      "variante": "VS-100",
+      "nota": "mejor delta tras el baseline",
+      "corrected_cv": 0.782257,
+      "delta_real_vs_V03": 0.005046,
+      "filas_totales": 1483,
+      "ambas_correctas": 336,
+      "salvage": 7,
+      "damage": 4,
+      "correccion_neta": 3,
+      "fraccion_de_filas": 0.002023,
+      "ninguna_correcta": 1136
+    },
+    {
+      "variante": "NEG-5",
+      "nota": "mejor embedding aislado (0.6664)",
+      "corrected_cv": 0.781125,
+      "delta_real_vs_V03": 0.003914,
+      "filas_totales": 1483,
+      "ambas_correctas": 334,
+      "salvage": 8,
+      "damage": 6,
+      "correccion_neta": 2,
+      "fraccion_de_filas": 0.001349,
+      "ninguna_correcta": 1135
+    }
+  ],
+  "interaccion_ortografica": {
+    "B0-200": {
+      "n_dentro": 1289,
+      "n_fuera": 194,
+      "delta_dentro": 0.006717,
+      "delta_fuera": -0.004496,
+      "diferencia": 0.011214,
+      "ic95": [
+        -0.00393,
+        0.027266
+      ],
+      "excluye_cero": false
+    },
+    "WS-3": {
+      "n_dentro": 1289,
+      "n_fuera": 194,
+      "delta_dentro": 0.008349,
+      "delta_fuera": -0.004496,
+      "diferencia": 0.012845,
+      "ic95": [
+        -0.002357,
+        0.029223
+      ],
+      "excluye_cero": false
+    },
+    "VS-100": {
+      "n_dentro": 1289,
+      "n_fuera": 194,
+      "delta_dentro": 0.007753,
+      "delta_fuera": -0.005914,
+      "diferencia": 0.013667,
+      "ic95": [
+        -0.002075,
+        0.02996
+      ],
+      "excluye_cero": false
+    },
+    "NEG-5": {
+      "n_dentro": 1289,
+      "n_fuera": 194,
+      "delta_dentro": 0.006597,
+      "delta_fuera": -0.006147,
+      "diferencia": 0.012744,
+      "ic95": [
+        -0.003066,
+        0.029503
+      ],
+      "excluye_cero": false
+    }
+  },
+  "ejemplos_salvage": [
+    {
+      "id": 21776,
+      "etiqueta": "HS",
+      "y": 1,
+      "v03": 0,
+      "fusion": 1,
+      "texto": "@Barbijaputa Puta = Jaque mate"
+    },
+    {
+      "id": 21776,
+      "etiqueta": "TR",
+      "y": 1,
+      "v03": 0,
+      "fusion": 1,
+      "texto": "@Barbijaputa Puta = Jaque mate"
+    },
+    {
+      "id": 21776,
+      "etiqueta": "AG",
+      "y": 1,
+      "v03": 0,
+      "fusion": 1,
+      "texto": "@Barbijaputa Puta = Jaque mate"
+    },
+    {
+      "id": 21085,
+      "etiqueta": "TR",
+      "y": 1,
+      "v03": 0,
+      "fusion": 1,
+      "texto": "Me encanta mi vestido de mujerzuela zorra suripanta. No se los voa ensearan."
+    },
+    {
+      "id": 21085,
+      "etiqueta": "AG",
+      "y": 1,
+      "v03": 0,
+      "fusion": 1,
+      "texto": "Me encanta mi vestido de mujerzuela zorra suripanta. No se los voa ensearan."
+    },
+    {
+      "id": 22560,
+      "etiqueta": "HS",
+      "y": 1,
+      "v03": 0,
+      "fusion": 1,
+      "texto": "@CarlaEUrena @FelipeCalderon Callateeeee !! Puta gallina cacarea !! Ni idea tienes de nada ."
+    },
+    {
+      "id": 22560,
+      "etiqueta": "TR",
+      "y": 1,
+      "v03": 0,
+      "fusion": 1,
+      "texto": "@CarlaEUrena @FelipeCalderon Callateeeee !! Puta gallina cacarea !! Ni idea tienes de nada ."
+    },
+    {
+      "id": 22560,
+      "etiqueta": "AG",
+      "y": 1,
+      "v03": 0,
+      "fusion": 1,
+      "texto": "@CarlaEUrena @FelipeCalderon Callateeeee !! Puta gallina cacarea !! Ni idea tienes de nada ."
+    },
+    {
+      "id": 24097,
+      "etiqueta": "TR",
+      "y": 1,
+      "v03": 0,
+      "fusion": 1,
+      "texto": "@Ojo_Publico @YeniVilcatoma2 Que PERRA ERES! ni un perro se porta como tu! No mereces ser mujer! el pais te repudia! y te pasar la factura!"
+    },
+    {
+      "id": 22702,
+      "etiqueta": "HS",
+      "y": 1,
+      "v03": 0,
+      "fusion": 1,
+      "texto": "Sos una malparida no mereces ser feliz puta puta puta"
+    },
+    {
+      "id": 23771,
+      "etiqueta": "HS",
+      "y": 1,
+      "v03": 0,
+      "fusion": 1,
+      "texto": "@CFKArgentina HIJA DE PUTA..CHORRA CONCHUDA. TE MERECES LA PENA DE .MUERTEE."
+    },
+    {
+      "id": 20378,
+      "etiqueta": "TR",
+      "y": 1,
+      "v03": 0,
+      "fusion": 1,
+      "texto": "harassand Pepe querido no te merecas el maltrato de esta puta https://t.co/PupvavRFpF"
+    },
+    {
+      "id": 22608,
+      "etiqueta": "HS",
+      "y": 1,
+      "v03": 0,
+      "fusion": 1,
+      "texto": "@humorethan cllate la boca puta te odio"
+    }
+  ],
+  "ejemplos_damage": [
+    {
+      "id": 20069,
+      "etiqueta": "AG",
+      "y": 1,
+      "v03": 1,
+      "fusion": 0,
+      "texto": "@chechechacon Tu eres una puta sentenciada y estas con concha en el congreso. Mentiste en tu cv y a las justas terminaste primaria. No te hagas la santa hipocri"
+    },
+    {
+      "id": 24942,
+      "etiqueta": "HS",
+      "y": 1,
+      "v03": 1,
+      "fusion": 0,
+      "texto": "Casi llor en esta parte del captulo. Fue perra pero no mereca tanto. https://t.co/A9aaecTVpx"
+    },
+    {
+      "id": 24942,
+      "etiqueta": "TR",
+      "y": 1,
+      "v03": 1,
+      "fusion": 0,
+      "texto": "Casi llor en esta parte del captulo. Fue perra pero no mereca tanto. https://t.co/A9aaecTVpx"
+    },
+    {
+      "id": 24942,
+      "etiqueta": "AG",
+      "y": 1,
+      "v03": 1,
+      "fusion": 0,
+      "texto": "Casi llor en esta parte del captulo. Fue perra pero no mereca tanto. https://t.co/A9aaecTVpx"
+    }
+  ],
+  "rebanadas": [
+    {
+      "rebanada": "interpersonal (TR=1)",
+      "variante": "V03-CONGELADO",
+      "n_filas": 445,
+      "f1_por_celda": 0.9129
+    },
+    {
+      "rebanada": "interpersonal (TR=1)",
+      "variante": "FUSION-B0-200",
+      "n_filas": 445,
+      "f1_por_celda": 0.9199
+    },
+    {
+      "rebanada": "interpersonal (TR=1)",
+      "variante": "FUSION-WS-3",
+      "n_filas": 445,
+      "f1_por_celda": 0.9208
+    },
+    {
+      "rebanada": "interpersonal (TR=1)",
+      "variante": "FUSION-VS-100",
+      "n_filas": 445,
+      "f1_por_celda": 0.9195
+    },
+    {
+      "rebanada": "interpersonal (TR=1)",
+      "variante": "FUSION-NEG-5",
+      "n_filas": 445,
+      "f1_por_celda": 0.9199
+    },
+    {
+      "rebanada": "afiliacion (AG=1)",
+      "variante": "V03-CONGELADO",
+      "n_filas": 567,
+      "f1_por_celda": 0.8846
+    },
+    {
+      "rebanada": "afiliacion (AG=1)",
+      "variante": "FUSION-B0-200",
+      "n_filas": 567,
+      "f1_por_celda": 0.8925
+    },
+    {
+      "rebanada": "afiliacion (AG=1)",
+      "variante": "FUSION-WS-3",
+      "n_filas": 567,
+      "f1_por_celda": 0.8932
+    },
+    {
+      "rebanada": "afiliacion (AG=1)",
+      "variante": "FUSION-VS-100",
+      "n_filas": 567,
+      "f1_por_celda": 0.8925
+    },
+    {
+      "rebanada": "afiliacion (AG=1)",
+      "variante": "FUSION-NEG-5",
+      "n_filas": 567,
+      "f1_por_celda": 0.8927
+    },
+    {
+      "rebanada": "sin_hate_explicito (HS=0)",
+      "variante": "V03-CONGELADO",
+      "n_filas": 835,
+      "f1_por_celda": 0.0667
+    },
+    {
+      "rebanada": "sin_hate_explicito (HS=0)",
+      "variante": "FUSION-B0-200",
+      "n_filas": 835,
+      "f1_por_celda": 0.0657
+    },
+    {
+      "rebanada": "sin_hate_explicito (HS=0)",
+      "variante": "FUSION-WS-3",
+      "n_filas": 835,
+      "f1_por_celda": 0.0639
+    },
+    {
+      "rebanada": "sin_hate_explicito (HS=0)",
+      "variante": "FUSION-VS-100",
+      "n_filas": 835,
+      "f1_por_celda": 0.069
+    },
+    {
+      "rebanada": "sin_hate_explicito (HS=0)",
+      "variante": "FUSION-NEG-5",
+      "n_filas": 835,
+      "f1_por_celda": 0.0667
+    },
+    {
+      "rebanada": "colectivos",
+      "variante": "V03-CONGELADO",
+      "n_filas": 93,
+      "f1_por_celda": 0.574
+    },
+    {
+      "rebanada": "colectivos",
+      "variante": "FUSION-B0-200",
+      "n_filas": 93,
+      "f1_por_celda": 0.589
+    },
+    {
+      "rebanada": "colectivos",
+      "variante": "FUSION-WS-3",
+      "n_filas": 93,
+      "f1_por_celda": 0.585
+    },
+    {
+      "rebanada": "colectivos",
+      "variante": "FUSION-VS-100",
+      "n_filas": 93,
+      "f1_por_celda": 0.5873
+    },
+    {
+      "rebanada": "colectivos",
+      "variante": "FUSION-NEG-5",
+      "n_filas": 93,
+      "f1_por_celda": 0.5903
+    },
+    {
+      "rebanada": "insultos",
+      "variante": "V03-CONGELADO",
+      "n_filas": 855,
+      "f1_por_celda": 0.8357
+    },
+    {
+      "rebanada": "insultos",
+      "variante": "FUSION-B0-200",
+      "n_filas": 855,
+      "f1_por_celda": 0.8389
+    },
+    {
+      "rebanada": "insultos",
+      "variante": "FUSION-WS-3",
+      "n_filas": 855,
+      "f1_por_celda": 0.8405
+    },
+    {
+      "rebanada": "insultos",
+      "variante": "FUSION-VS-100",
+      "n_filas": 855,
+      "f1_por_celda": 0.8399
+    },
+    {
+      "rebanada": "insultos",
+      "variante": "FUSION-NEG-5",
+      "n_filas": 855,
+      "f1_por_celda": 0.8385
+    },
+    {
+      "rebanada": "elongaciones",
+      "variante": "V03-CONGELADO",
+      "n_filas": 57,
+      "f1_por_celda": 0.6853
+    },
+    {
+      "rebanada": "elongaciones",
+      "variante": "FUSION-B0-200",
+      "n_filas": 57,
+      "f1_por_celda": 0.7221
+    },
+    {
+      "rebanada": "elongaciones",
+      "variante": "FUSION-WS-3",
+      "n_filas": 57,
+      "f1_por_celda": 0.7213
+    },
+    {
+      "rebanada": "elongaciones",
+      "variante": "FUSION-VS-100",
+      "n_filas": 57,
+      "f1_por_celda": 0.7197
+    },
+    {
+      "rebanada": "elongaciones",
+      "variante": "FUSION-NEG-5",
+      "n_filas": 57,
+      "f1_por_celda": 0.7221
+    },
+    {
+      "rebanada": "coloquial",
+      "variante": "V03-CONGELADO",
+      "n_filas": 214,
+      "f1_por_celda": 0.8177
+    },
+    {
+      "rebanada": "coloquial",
+      "variante": "FUSION-B0-200",
+      "n_filas": 214,
+      "f1_por_celda": 0.823
+    },
+    {
+      "rebanada": "coloquial",
+      "variante": "FUSION-WS-3",
+      "n_filas": 214,
+      "f1_por_celda": 0.8234
+    },
+    {
+      "rebanada": "coloquial",
+      "variante": "FUSION-VS-100",
+      "n_filas": 214,
+      "f1_por_celda": 0.828
+    },
+    {
+      "rebanada": "coloquial",
+      "variante": "FUSION-NEG-5",
+      "n_filas": 214,
+      "f1_por_celda": 0.8226
+    },
+    {
+      "rebanada": "hashtags",
+      "variante": "V03-CONGELADO",
+      "n_filas": 144,
+      "f1_por_celda": 0.5311
+    },
+    {
+      "rebanada": "hashtags",
+      "variante": "FUSION-B0-200",
+      "n_filas": 144,
+      "f1_por_celda": 0.5462
+    },
+    {
+      "rebanada": "hashtags",
+      "variante": "FUSION-WS-3",
+      "n_filas": 144,
+      "f1_por_celda": 0.531
+    },
+    {
+      "rebanada": "hashtags",
+      "variante": "FUSION-VS-100",
+      "n_filas": 144,
+      "f1_por_celda": 0.5462
+    },
+    {
+      "rebanada": "hashtags",
+      "variante": "FUSION-NEG-5",
+      "n_filas": 144,
+      "f1_por_celda": 0.544
+    },
+    {
+      "rebanada": "menciones",
+      "variante": "V03-CONGELADO",
+      "n_filas": 702,
+      "f1_por_celda": 0.8462
+    },
+    {
+      "rebanada": "menciones",
+      "variante": "FUSION-B0-200",
+      "n_filas": 702,
+      "f1_por_celda": 0.8483
+    },
+    {
+      "rebanada": "menciones",
+      "variante": "FUSION-WS-3",
+      "n_filas": 702,
+      "f1_por_celda": 0.8504
+    },
+    {
+      "rebanada": "menciones",
+      "variante": "FUSION-VS-100",
+      "n_filas": 702,
+      "f1_por_celda": 0.8491
+    },
+    {
+      "rebanada": "menciones",
+      "variante": "FUSION-NEG-5",
+      "n_filas": 702,
+      "f1_por_celda": 0.8478
+    },
+    {
+      "rebanada": "urls",
+      "variante": "V03-CONGELADO",
+      "n_filas": 458,
+      "f1_por_celda": 0.6578
+    },
+    {
+      "rebanada": "urls",
+      "variante": "FUSION-B0-200",
+      "n_filas": 458,
+      "f1_por_celda": 0.6782
+    },
+    {
+      "rebanada": "urls",
+      "variante": "FUSION-WS-3",
+      "n_filas": 458,
+      "f1_por_celda": 0.6787
+    },
+    {
+      "rebanada": "urls",
+      "variante": "FUSION-VS-100",
+      "n_filas": 458,
+      "f1_por_celda": 0.6759
+    },
+    {
+      "rebanada": "urls",
+      "variante": "FUSION-NEG-5",
+      "n_filas": 458,
+      "f1_por_celda": 0.6787
+    },
+    {
+      "rebanada": "cita",
+      "variante": "V03-CONGELADO",
+      "n_filas": 37,
+      "f1_por_celda": 0.8449
+    },
+    {
+      "rebanada": "cita",
+      "variante": "FUSION-B0-200",
+      "n_filas": 37,
+      "f1_por_celda": 0.8393
+    },
+    {
+      "rebanada": "cita",
+      "variante": "FUSION-WS-3",
+      "n_filas": 37,
+      "f1_por_celda": 0.8501
+    },
+    {
+      "rebanada": "cita",
+      "variante": "FUSION-VS-100",
+      "n_filas": 37,
+      "f1_por_celda": 0.8557
+    },
+    {
+      "rebanada": "cita",
+      "variante": "FUSION-NEG-5",
+      "n_filas": 37,
+      "f1_por_celda": 0.8557
+    }
+  ],
+  "mascara_ortografica": {
+    "n_filas": 1289,
+    "definicion": "filas con algun tipo de los grupos elongaciones o formas_raras"
+  }
+}

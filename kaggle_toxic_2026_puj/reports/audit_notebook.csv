@@ -1,0 +1,10 @@
+familia,codigo_ejecutable,resultados_en_notebook,mencion_de_decision,detalle,estado
+V03 (referencia),no,si,si,"code={'TfidfVectorizer': 0, 'LogisticRegression': 0}; texto={'V03': 74, '0.777211': 6}; cifras={'0.777211': 6, '0.78306': 33}",documentado_sin_codigo
+v2 (correccion de protocolo),si,si,si,"code={'grupos_fusionados': 3, 'pseudo': 22}; texto={'D-015': 9, '0.7838': 6}; cifras={'0.783825': 0, '0.792659': 2}",reproducible_en_notebook
+v4 (holdout),no,si,si,"code={}; texto={'D-029': 0, 'holdout': 62}; cifras={'0.8163': 1, '0.8285': 4}",documentado_sin_codigo
+v5/v5.1 (embeddings),si,no,si,"code={'fasttext': 3, 'entrenar_fasttext': 0}; texto={'EBD': 0, 'D-030': 2, 'D-031': 0}; cifras={'0.776613': 0}",documentado_sin_codigo
+v6 (tracks cerrados),no,si,si,"code={}; texto={'V6-': 0, 'track': 1}; cifras={'0.777211': 6}",documentado_sin_codigo
+v7 (umbral anidado),no,no,si,"code={}; texto={'V7-': 0, 'anidado': 7}; cifras={'0.767228': 0, '0.769123': 0}",documentado_sin_codigo
+v8 (tecnicas),no,no,no,"code={}; texto={'V8-': 0, 'curva de transferencia': 0}; cifras={'0.780036': 0}",ausente
+finales (FIN/meta v08),no,si,si,"code={}; texto={'FIN-': 2, 'meta': 81}; cifras={'0.8285': 4, '0.8465': 5, '0.78163': 14}",documentado_sin_codigo
+Ejecucion en vivo (auditoria),si,si,si,nbconvert --execute -> falla en celda 30 (assert 12 sondas vs 15 del log v8),falla_en_estado_final (B-14)

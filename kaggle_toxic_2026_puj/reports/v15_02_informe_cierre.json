@@ -1,0 +1,265 @@
+{
+  "experimento": "V15-02 (informe de cierre de la frontera final)",
+  "fecha": "2026-09-27T00:43:43+00:00",
+  "A_estado_del_proyecto": {
+    "lb_v03": 0.78306,
+    "corrected_cv_v03": 0.7772114525165721,
+    "mejor_resultado_local": 0.8465,
+    "mejor_resultado_local_id": "S08",
+    "mejor_resultado_local_suerte": "NO ADOPTADA en LB (0.78163 < 0.78306): la senal del meta no transfiere; se mantiene v03 como modelo final",
+    "experimentos_en_el_registro": 242,
+    "adopciones_positivas": 24,
+    "rechazos_explicitos": 59,
+    "familias_cerradas": 18,
+    "detalle_de_familias": [
+      {
+        "familia": "Representacion basica TF-IDF",
+        "cierre": "V03 y todas las variantes de word y char"
+      },
+      {
+        "familia": "Subpalabras",
+        "cierre": "cubierta exactamente por char_wb(3,5)"
+      },
+      {
+        "familia": "Embeddings desde cero",
+        "cierre": "track v5, cerrado sin candidata"
+      },
+      {
+        "familia": "Pooling, secuenciales, GRU y fine-tuning",
+        "cierre": "cerrados en el track de embeddings"
+      },
+      {
+        "familia": "Meta-modelos y stacking",
+        "cierre": "E2-02 y E2-18, +0.0102 local y rechazo por transferencia"
+      },
+      {
+        "familia": "Routing duro",
+        "cierre": "H2, -0.004187, la llave falla en 143 filas"
+      },
+      {
+        "familia": "Factorizacion condicional",
+        "cierre": "V6-B, B1 -0.0107, B2 -0.0008, B3 -0.0115"
+      },
+      {
+        "familia": "Label powerset",
+        "cierre": "V4-E, 0.771289 frente a 0.777211, NO_SIGNAL"
+      },
+      {
+        "familia": "Objetivo de ranking o por pares",
+        "cierre": "H3, -0.002469, y V12-01, +0.002738 sostenido por un pliegue"
+      },
+      {
+        "familia": "Perdidas a medida",
+        "cierre": "H2a, GCE +0.001616, marginal bajo el gate exploratorio"
+      },
+      {
+        "familia": "Perdida enmascarada o partially-label",
+        "cierre": "V14, identica a H2-M con diferencia 0.000e+00"
+      },
+      {
+        "familia": "Instance weighting y downweight",
+        "cierre": "V4-B05, V4-C, V6-03, V6-07, V8-07, todos negativos"
+      },
+      {
+        "familia": "Rasgos estructurales",
+        "cierre": "E2-18, -0.0052 y -0.0051 en dos estimaciones"
+      },
+      {
+        "familia": "Correccion de la estimacion de HS",
+        "cierre": "V13, la correccion deja TR y AG con delta exactamente cero"
+      },
+      {
+        "familia": "Inferencia estructurada de etiquetas",
+        "cierre": "V13, cerrada formalmente"
+      },
+      {
+        "familia": "Bagging y ensembles de repeticiones",
+        "cierre": "cerrados, no superan la referencia"
+      },
+      {
+        "familia": "Prior shift y calibracion",
+        "cierre": "v11, cerrada"
+      },
+      {
+        "familia": "Transduccion",
+        "cierre": "cerrada en su momento"
+      }
+    ]
+  },
+  "B_cuello_de_botella": {
+    "delta_oraculo": 0.046271,
+    "origen_del_techo": "El oraculo no cambia ni una sola celda de la columna HS: pone TR y AG a cero en las 835 filas donde el HS verdadero es cero, borrando 196 falsos positivos, 78 de TR y 118 de AG. Es un efecto aguas abajo de la condicion semantica",
+    "por_que_mejorar_hs_no_sirve": "V13 lo midio: corregir la etiqueta de HS deja TR y AG con delta exactamente cero, porque el meta produce una probabilidad para HS y no altera lo que el sistema decide sobre las otras dos etiquetas",
+    "formulacion_correcta": "El techo del oraculo procede de conocer la condicion semantica HS al evaluar TR y AG. Mejorar HS por si sola no produce beneficio. Y anadir la condicion como llave tampoco, porque la llave falla en 143 filas y da -0.004187"
+  },
+  "C_inventario_de_senal": {
+    "clases": 12,
+    "inexistentes": 3,
+    "cubiertas_por_v03": 3,
+    "medidas": 4,
+    "categorias": [
+      {
+        "categoria": "E identidad o metadata",
+        "senal": "user ID, autor, perfil",
+        "veredicto": "NO EXISTE. El fichero bruto tiene solo id, text, HS, TR y AG"
+      },
+      {
+        "categoria": "E identidad o metadata",
+        "senal": "fecha o timestamp",
+        "veredicto": "NO EXISTE como campo. Hay fechas dentro del texto, y ahi si llegan a V03"
+      },
+      {
+        "categoria": "E identidad o metadata",
+        "senal": "id de fila",
+        "veredicto": "PROHIBIDA por la seccion 3.E. Es un contador, con valores 20002, 20003, 20005"
+      },
+      {
+        "categoria": "D no supervisada permitida",
+        "senal": "corpus externo mc4_es y mixto",
+        "veredicto": "NO UTILIZABLE. La seccion 3.D prohibe asumir que no este etiquetada implica que este permitida, y el track que los uso quedo cerrado sin candidata"
+      },
+      {
+        "categoria": "C supervisada",
+        "senal": "margenes, probabilidades y scores OOF",
+        "veredicto": "CERRADA. El meta de E2-18 dio 0.7874 y se rechazo por transferencia, con el leaderboard en 0.78163 frente a 0.78306"
+      },
+      {
+        "categoria": "C supervisada",
+        "senal": "relaciones entre HS, TR y AG",
+        "veredicto": "CERRADA en cinco familias distintas. V13 demostro que corregir HS deja TR y AG con delta exactamente cero"
+      },
+      {
+        "categoria": "A textual directa",
+        "senal": "n-gramas de palabra y de caracter",
+        "veredicto": "ES EL NUCLEO DE V03. No es senal residual, es la senal que ya se usa"
+      },
+      {
+        "categoria": "A textual directa",
+        "senal": "subpalabras implicitas",
+        "veredicto": "CUBIERTA por la representacion actual"
+      },
+      {
+        "categoria": "B estructura del texto",
+        "senal": "longitud, menciones, hashtags, URLs, comillas",
+        "veredicto": "MEDIDA Y NEGATIVA DOS VECES. META+CH+ESTR-RIDGE 0.7822 frente a META-BASES-RIDGE 0.7874, y META+CH+ESTR-ANID 0.7802 frente a META-BASES-ANID 0.7853"
+      },
+      {
+        "categoria": "B estructura del texto",
+        "senal": "proporciones y densidades de las anteriores",
+        "veredicto": "MEDIDA en el track de emocion, ortografia y NBSVM, que quedo cerrado"
+      },
+      {
+        "categoria": "A textual directa",
+        "senal": "posicion de la mencion en el texto",
+        "veredicto": "IMPLEMENTADA como feature en dos canales, ambos cerrados. No es nueva, pero su poder aislado es de 0.5598 de AUC contra HS, y es la unica clase que V03 no puede representar por construccion. Se aisla para P3"
+      },
+      {
+        "categoria": "A textual directa",
+        "senal": "orden entre palabras distantes",
+        "veredicto": "NO REPRESENTADO por V03, porque la ventana de word(1,2) es de dos y un modelo lineal no interacciona dimensiones. Es la otra mitad de la brecha teorica, y comparte raiz con la posicion"
+      }
+    ]
+  },
+  "D_senal_residual": {
+    "clase": "posicion en el documento",
+    "por_que_no_la_representa_v03": "TfidfVectorizer extrae n-gramas sin registrar la posicion en el documento, y char_wb hace lo mismo dentro de cada palabra",
+    "complementariedad_measure": {
+      "rasgos": {
+        "primer_token_es_mencion": {
+          "auc_global": 0.5598100096104087,
+          "auc_en_estratos": 0.5547447819432321,
+          "p_empirico": 0.0,
+          "veredicto": "COMPLEMENTARIA"
+        },
+        "posicion_primera_mencion": {
+          "auc_global": 0.5490472758187329,
+          "auc_en_estratos": 0.5490833947679834,
+          "p_empirico": 0.0,
+          "veredicto": "COMPLEMENTARIA"
+        },
+        "mencion_en_primeros_dos": {
+          "auc_global": 0.5593036149922377,
+          "auc_en_estratos": 0.5546663059814737,
+          "p_empirico": 0.0,
+          "veredicto": "COMPLEMENTARIA"
+        },
+        "proporcion_antes_de_la_mencion": {
+          "auc_global": 0.4390626155097213,
+          "auc_en_estratos": 0.44525554301190795,
+          "p_empirico": 1.0,
+          "veredicto": "YA VISIBLE EN V03"
+        }
+      },
+      "permutaciones": 500
+    },
+    "por_que_no_es_utilizable": "Las tres complementarias dan deltas negativos y, sobre todo, acierto CERO entre las celdas modificadas, frente al umbral de detectabilidad de 0.5166"
+  },
+  "E_resultado_v15": {
+    "experimentos": 3,
+    "experimentos_que_miden": 2,
+    "candidatas_evaluadas": 4,
+    "candidatas_complementarias": 3,
+    "candidatas_anadidas_a_v03": 3,
+    "resultados_de_anadicion": [
+      {
+        "rasgo": "primer_token_es_mencion",
+        "delta": -0.002867672876445959,
+        "celdas_modificadas": 50,
+        "acierto_entre_modificadas": 0.0,
+        "intervalo": {
+          "delta": -0.002867672876445959,
+          "inferior": -0.0077178487409443,
+          "superior": 0.0015789713193651012,
+          "excluye_cero": false,
+          "remuestreos": 2000
+        },
+        "supera_deteccion": false,
+        "supera_gate": false
+      },
+      {
+        "rasgo": "posicion_primera_mencion",
+        "delta": -0.0013516304303348159,
+        "celdas_modificadas": 14,
+        "acierto_entre_modificadas": 0.0,
+        "intervalo": {
+          "delta": -0.0013516304303348159,
+          "inferior": -0.0033476606419909597,
+          "superior": 0.000540821347250045,
+          "excluye_cero": false,
+          "remuestreos": 2000
+        },
+        "supera_deteccion": false,
+        "supera_gate": false
+      },
+      {
+        "rasgo": "mencion_en_primeros_dos",
+        "delta": -0.003037046092015938,
+        "celdas_modificadas": 57,
+        "acierto_entre_modificadas": 0.0,
+        "intervalo": {
+          "delta": -0.003037046092015938,
+          "inferior": -0.007854702966130908,
+          "superior": 0.0014231870034114107,
+          "excluye_cero": false,
+          "remuestreos": 2000
+        },
+        "supera_deteccion": false,
+        "supera_gate": false
+      }
+    ],
+    "candidatas_adoptadas": [],
+    "gastos": {
+      "submissions": 0,
+      "evaluaciones_de_holdout2": 0,
+      "consultas_de_leaderboard": 0,
+      "segunda_particion": 0
+    },
+    "reproducibilidad": "Control de identidad de V03 exacto en cada ejecucion, con diferencia 0.000e+00, y las dos verificaciones del null por permutacion con 500 remuestreos y semilla fija"
+  },
+  "F_decision": {
+    "estado": "CLOSED",
+    "texto": "CLOSED. V03 continua siendo la mejor solucion reproducible bajo las restricciones actuales. Las principales familias de representacion, objetivo, arquitectura, estructura de etiquetas, routing y adaptacion ya fueron exploradas. No queda una fuente de senal permitida y genuinamente nueva identificada en el input disponible.",
+    "matiz_que_no_se_omite": "La senal residual existe y es demostrable: la posicion discrimina dentro de los estratos de V03 con valor p empirico inferior a 1 entre 500. Lo que no existe es una fuente de senal que sea EFFECTIVA, y esa distincion es la que cierra la fase",
+    "prohibicion_de_v16": "No se abre una V16 para buscar microganancias. La seccion 14 prohibe la dinamica de experimento negativo seguido de reformulacion, y las tres adiciones de V15 son negativas con acierto cero, que es el caso mas limpio de ese patron"
+  }
+}

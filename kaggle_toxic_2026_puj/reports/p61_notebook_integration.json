@@ -1,0 +1,32 @@
+{
+  "familia": "P61_NOTEBOOK",
+  "celdas_de_codigo_ejecutadas": 16,
+  "celdas_de_codigo_con_fallo": 0,
+  "verificacion": "el script ejecuta sus propias celdas antes de escribir el informe, de modo que un error de sintaxis o de clave no puede quedar en el notebook sin deteccion",
+  "fecha": "2026-09-28T21:12:19+00:00",
+  "notebook": "notebooks/10_final_pipeline.ipynb",
+  "celdas_antes": 314,
+  "celdas_despues": 314,
+  "secciones": [
+    81,
+    82,
+    83,
+    84,
+    85,
+    86,
+    87,
+    88
+  ],
+  "regla": "todos los numeros se leen de los artefactos, ninguno transcrito a mano; las celdas fallan ruidosamente si falta un artefacto",
+  "artefactos_leidos": [
+    "p61_p60_reconciliation.json",
+    "p61_probability_eda.json",
+    "p61_model_inventory.json",
+    "p61_lightgbm_capacidad.json",
+    "p61_ensemble.json",
+    "p61_segunda_particion.json",
+    "p61_final_summary.json"
+  ],
+  "idempotencia": "delimitado por <!-- P61-NOTEBOOK-INICIO --> y <!-- P61-NOTEBOOK-FIN -->; una segunda pasada reemplaza el bloque en vez de duplicarlo",
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

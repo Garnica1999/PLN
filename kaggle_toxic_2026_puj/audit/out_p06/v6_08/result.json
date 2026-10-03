@@ -1,0 +1,11 @@
+{
+  "name": "v6_08",
+  "script": "experiments/v6_08_aumento.py",
+  "exit": 0,
+  "duracion_s": 27.8,
+  "tracked_changed": [
+    "kaggle_toxic_2026_puj/reports/v6_aumento.json",
+    "kaggle_toxic_2026_puj/reports/v6_aumento.md"
+  ],
+  "features_changed": []
+}

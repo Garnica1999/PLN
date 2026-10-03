@@ -1,0 +1,42 @@
+{
+  "marca_corrida": "20261001T161024Z_p2289660",
+  "resultado": {
+    "bloque": 0,
+    "coste_segundos": 0.080526,
+    "descripcion": "los tres umbrales de V03 intactos y no reoptimizados",
+    "detalle": {
+      "auditoria_de_llamadas_a_reoptimizar": {
+        "prohibidas": [],
+        "sondas_permitidas": [
+          "linea 4336 en caso_reoptimizacion_bloqueada: llamada a reoptimizar_umbral"
+        ]
+      },
+      "coinciden_json_y_oof": true,
+      "fuente": "experiments/baseline_v03_frozen/pipeline_v03.json",
+      "metodo_declarado": "rejilla 0.20-0.80 paso 0.01 sobre probabilidades OOF",
+      "n_reoptimizaciones": 0,
+      "umbrales_esperados": [
+        0.44,
+        0.51,
+        0.46
+      ],
+      "umbrales_json": {
+        "AG": 0.46,
+        "HS": 0.44,
+        "TR": 0.51
+      },
+      "umbrales_oof": [
+        0.44,
+        0.51,
+        0.46
+      ]
+    },
+    "estado": "CONFIRMADO",
+    "exito": true,
+    "id": "A2",
+    "naturaleza": "CONFIRMAR",
+    "stop": true,
+    "tolerancia": "igualdad exacta de los tres umbrales, y contador de reoptimizacion igual a 0",
+    "traza": ""
+  }
+}

@@ -1,0 +1,181 @@
+{
+  "familia": "P59_I_ROBUST_LOSS",
+  "naturaleza": "EXPERIMENTO. 1 candidato, 0 submissions, 0 consultas a Kaggle, 0 uso de holdout, 0 uso de test. V03 no se modifica",
+  "fecha": "2026-09-28T06:33:15+00:00",
+  "experimento_id": "P59-06",
+  "track": "P59-I",
+  "gap_analysis": {
+    "filas_que_mencionan_una_perdida_redescendiente": 0,
+    "patron_buscado": "tukey|biweight|geman|mcclure|cauchy|fair|redescend|m-estimador|rlm|irls",
+    "V34_01": "lista 'margin/robust loss' con profundidad (0) UNEXPLORED",
+    "V35_01": "modified_huber sobre SGDClassifier, otra resolucion; Huber esta acotada pero NO es redescendiente y el registro dice 'NO es una nueva clase de funcion'",
+    "funcion_elegida": "biweight de Tukey",
+    "criterio": "la redescendencia canonica: influencia exactamente nula mas alla de un corte fijo, que es justo la propiedad que la hipotesis necesita. tau = 4,685 es la constante normal-consistente estandar, fijada antes de ejecutar y NO ajustada"
+  },
+  "distincion_de_V30": {
+    "V30_y_V6_07": "sample_weight = 1 - lambda * sospecha, con suelo 0,1",
+    "de_donde_sale_la_sospecha": "NearestNeighbors sobre TF-IDF, senal externa al objetivo",
+    "cuando_se_fija": "antes de ajustar, y no se recalcula nunca",
+    "I_aqui": "el peso es funcion determinista del residuo ACTUAL del propio objetivo",
+    "diferencias_tres": [
+      "el peso es endogeno y se recalcula en cada iteracion",
+      "la redescendencia permite influencia exactamente cero, un suelo de 0,1 no",
+      "lo que se resuelve es una ecuacion M-estimadora, no la logistica con pesos reasignados"
+    ],
+    "veredicto": "CLOSED_BY_FUNCTIONAL_DUPLICATION = FALSE"
+  },
+  "control": {
+    "brazo_A_sklearn": {
+      "corrected_cv": "0.7772114525165721",
+      "max_abs_diff_prob_vs_canonica": 0.0,
+      "celdas_distintas": 0
+    },
+    "brazo_B_irls_peso_1": {
+      "corrected_cv": "0.7772647318762402",
+      "max_abs_diff_prob_vs_A": 0.00690794019604557,
+      "clona_a_A": true
+    },
+    "nota": "el brazo B es el que hace legible al C: sin el, C - A podria hablar de mi optimizador y no de la perdida"
+  },
+  "comparabilidad": {
+    "solver": "L-BFGS-B propio con gradiente analitico, frente a liblinear de sklearn",
+    "procedimiento": "descenso con busqueda de linea sobre el objetivo con gradiente analitico",
+    "regularizacion": "0,5 w'w + C suma_i omega_i perdida(s_i), identica a liblinear",
+    "intercepto": "parametro explicito, no penalizado, igual que en liblinear",
+    "criterio_de_convergencia": "norma del gradiente < 1e-05 (1 + ||w||)",
+    "criterio_de_convergencia_real": "gradiente analitico verificado contra diferencias centrales con error relativo 1e-09",
+    "iteraciones_maximas": 2000,
+    "tolerancia_del_optimizador": 1e-10,
+    "por_que_no_un_newton_propio": "un Newton con el intercepto absorbido por recentrado resta dos terminos grandes, y a d = 27.431 esa resta pierde toda la precision: medido, el mismo esquema da coseno 0,99999 con d = 25 y corrected_cv 0,4674 con d = 27.431",
+    "justificacion_de_comparabilidad": "misma penalizacion, misma escala, mismos umbrales de decision, mismos pliegues y misma semilla. La unica variable es el objetivo. La normalizacion L(dev) = sigma^2 rho(sqrt(dev)/sigma) hace que L coincida con el log-loss hasta segundo orden, luego la regularizacion efectiva no cambia. Si el brazo B clona a A, la capacidad del optimizador no puede explicar la diferencia"
+  },
+  "resultado": {
+    "brazo_A_corrected_cv": 0.7772114525,
+    "brazo_B_corrected_cv": 0.7772647319,
+    "brazo_C_corrected_cv": 0.7785171129,
+    "delta_vs_V03": 0.0013056604,
+    "folds": [
+      0.797005,
+      0.79692,
+      0.775584,
+      0.740185,
+      0.783794
+    ],
+    "folds_V03": [
+      0.79601,
+      0.794034,
+      0.77886,
+      0.738598,
+      0.779056
+    ],
+    "pliegues_mejorados": 4,
+    "f1_por_etiqueta": {
+      "HS": {
+        "f1": 0.7631975867,
+        "f1_ref": 0.7616892911,
+        "rescate": 2,
+        "damage": 0
+      },
+      "TR": {
+        "f1": 0.8174692049,
+        "f1_ref": 0.8157303371,
+        "rescate": 2,
+        "damage": 1
+      },
+      "AG": {
+        "f1": 0.7548845471,
+        "f1_ref": 0.7542147294,
+        "rescate": 4,
+        "damage": 3
+      }
+    },
+    "complementariedad": {
+      "rescate": 8,
+      "damage": 4,
+      "neto": 4,
+      "cambian": 12,
+      "acierto_en_las_que_cambian": 0.6667,
+      "ambos_correctos": 3688,
+      "ambos_fallan": 749,
+      "por_etiqueta": {
+        "HS": {
+          "f1": 0.7631975867,
+          "f1_ref": 0.7616892911,
+          "rescate": 2,
+          "damage": 0
+        },
+        "TR": {
+          "f1": 0.8174692049,
+          "f1_ref": 0.8157303371,
+          "rescate": 2,
+          "damage": 1
+        },
+        "AG": {
+          "f1": 0.7548845471,
+          "f1_ref": 0.7542147294,
+          "rescate": 4,
+          "damage": 3
+        }
+      }
+    },
+    "gate": {
+      "delta_min": 0.003,
+      "pliegues_min": 4,
+      "supera_delta": false,
+      "supera_pliegues": true,
+      "superado": false
+    },
+    "bootstrap": null
+  },
+  "convergencia": {
+    "brazo_B_todas_convergen": true,
+    "brazo_C_norma_gradiente_max": 5.009454082349887e-06,
+    "brazo_C_todas_convergen": true,
+    "iteraciones_B_min": 29,
+    "iteraciones_B_max": 43,
+    "iteraciones_C_min": 27,
+    "iteraciones_C_max": 45,
+    "norma_gradiente_B_max": 7.0962664196741006e-06,
+    "norma_gradiente_C_max": 5.009454082349887e-06,
+    "fraccion_recortada_min": 0.0,
+    "fraccion_recortada_max": 0.0,
+    "fraccion_recortada_media": 0.0,
+    "warnings": 0
+  },
+  "mecanismo": {
+    "coseno_coeficientes_medio": 0.999295,
+    "coseno_coeficientes_min": 0.998859,
+    "cambio_relativo_de_norma_medio": 0.045852,
+    "cambio_relativo_de_norma_max": 0.052762,
+    "celdas_que_cambian": 12,
+    "cambios_en_error_de_alta_confianza": 0,
+    "cambios_en_error_de_baja_confianza": 8,
+    "cambios_que_rompen_un_acierto": 4,
+    "residuo_mediano_antes": 0.591951,
+    "residuo_mediano_despues": 0.594386,
+    "residuo_p99_antes": 1.276045,
+    "residuo_p99_despues": 1.347712,
+    "residuo_mediano_en_la_cola_5pct_antes": 1.119519,
+    "residuo_mediano_en_la_cola_5pct_despues": 1.157738
+  },
+  "influencia_post_hoc": {
+    "nota": "analisis posterior, no se uso para modificar I1",
+    "suma_influencia_V03": 7816.845842010965,
+    "suma_influencia_robusto": 7904.0884773912185,
+    "ratio": 1.011161,
+    "max_influencia_V03": 2.477584139228119,
+    "max_influencia_robusto": 2.7366078524836563,
+    "spearman_entre_ambas": 0.99924
+  },
+  "residuo_42_celdas_rescatadas": 0,
+  "decision": "MARGINAL. La perdida robusta mejora la metrica pero no alcanza el gate delta >= +0,003, luego no se demuestra. NO se prueba una segunda funcion",
+  "experimentos_registrados": 1,
+  "formulacion": "V03 remains the best verified leaderboard result.",
+  "gastos": {
+    "submissions": 0,
+    "consultas_kaggle": 0,
+    "uso_holdout": 0,
+    "uso_test": 0,
+    "segundos": 53.2
+  }
+}

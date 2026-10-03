@@ -1,0 +1,302 @@
+{
+  "experimento": "V8-00 (P0, analisis)",
+  "fecha": "2026-09-26T02:47:26+00:00",
+  "nota": "Evidencia cruda de cada comprobacion. 'presente' significa que el mecanismo ya esta implementado y por tanto la linea es una duplicacion; 'ausente' significa que no existe y la linea es genuinamente nueva.",
+  "comprobaciones": {
+    "P1_ensamble_inferencia": {
+      "etiqueta": "Promedio de los cinco modelos de pliegue al predecir",
+      "patron": "promedio_folds|media_folds|ensamble_folds|fold_ensemble|prediccion_folds",
+      "resultado": {
+        "presente": false,
+        "n_ficheros": 0,
+        "ficheros": []
+      }
+    },
+    "P2_log_count_ratio": {
+      "etiqueta": "Re ponderacion supervisada por razon logaritmica de recuentos",
+      "patron": "log_count_ratio|logcount_ratio|nb_svm|nbsvm|count_ratio",
+      "resultado": {
+        "presente": true,
+        "n_ficheros": 8,
+        "ficheros": [
+          {
+            "fichero": "20_emocion_nbsvm_ortografia_v2.py",
+            "ocurrencias": 31
+          },
+          {
+            "fichero": "22_artefactos_auditoria_v2.py",
+            "ocurrencias": 24
+          },
+          {
+            "fichero": "v7_00_gap_audit.py",
+            "ocurrencias": 4
+          },
+          {
+            "fichero": "24_informe_final_candidatos.py",
+            "ocurrencias": 3
+          },
+          {
+            "fichero": "23_candidatos_finales.py",
+            "ocurrencias": 2
+          }
+        ]
+      }
+    },
+    "P3_estabilidad_features": {
+      "etiqueta": "Estabilidad de features entre submuestras",
+      "patron": "estabilidad_feature|feature_stability|estabilidad_submuestra|interseccion_estable",
+      "resultado": {
+        "presente": false,
+        "n_ficheros": 0,
+        "ficheros": []
+      }
+    },
+    "P3b_medidas_complejidad": {
+      "etiqueta": "Medidas de complejidad de la distribucion",
+      "patron": "kurtosis|asimetria|skewness",
+      "resultado": {
+        "presente": true,
+        "n_ficheros": 1,
+        "ficheros": [
+          {
+            "fichero": "v6_00_gap_analysis.py",
+            "ocurrencias": 1
+          }
+        ]
+      }
+    },
+    "P3c_agrupacion_jerarquica": {
+      "etiqueta": "Seleccion de features por grupo con criterio de informacion",
+      "patron": "criterio_aic|desviacion_residual|seleccion_por_grupo|grupo_jerarquic",
+      "resultado": {
+        "presente": false,
+        "n_ficheros": 0,
+        "ficheros": []
+      }
+    },
+    "P4_regularizacion_conjunta": {
+      "etiqueta": "Regularizacion conjunta entre las tres etiquetas",
+      "patron": "regularizacion_conjunta|bajo_rango|low_rank_entre_etiquetas|grupo_escasez",
+      "resultado": {
+        "presente": false,
+        "n_ficheros": 0,
+        "ficheros": []
+      }
+    },
+    "P5_c_por_etiqueta": {
+      "etiqueta": "Constante de regularizacion distinta por etiqueta",
+      "patron": "c_por_etiqueta|constante_por_etiqueta",
+      "resultado": {
+        "presente": false,
+        "n_ficheros": 0,
+        "ficheros": []
+      }
+    },
+    "P6_peso_por_etiqueta": {
+      "etiqueta": "Peso de clase distinto por etiqueta",
+      "patron": "peso_clase_por_etiqueta|class_weight_por_etiqueta|pesos_por_etiqueta",
+      "resultado": {
+        "presente": true,
+        "n_ficheros": 1,
+        "ficheros": [
+          {
+            "fichero": "30_supervised_weighting_v4.py",
+            "ocurrencias": 4
+          }
+        ]
+      }
+    },
+    "P7_corrector_por_margen": {
+      "etiqueta": "Corrector que usa la geometria de los margenes",
+      "patron": "corrector_margen|dispersion_de_margenes|rango_de_margenes",
+      "resultado": {
+        "presente": false,
+        "n_ficheros": 0,
+        "ficheros": []
+      }
+    },
+    "P8_calibracion_por_transferencia": {
+      "etiqueta": "Calibracion condicionada al resultado externo",
+      "patron": "calibracion_por_transferencia|transfer_calibration|calibrar_por_transfer",
+      "resultado": {
+        "presente": false,
+        "n_ficheros": 0,
+        "ficheros": []
+      }
+    },
+    "P9_desacuerdo_entre_pliegues": {
+      "etiqueta": "Desacuerdo entre los cinco modelos como senal de incertidumbre",
+      "patron": "desacuerdo_entre_pliegues|disagreement_folds",
+      "resultado": {
+        "presente": false,
+        "n_ficheros": 0,
+        "ficheros": []
+      }
+    },
+    "P10_segunda_semilla": {
+      "etiqueta": "Confirmacion con una segunda semilla",
+      "patron": "segunda_semilla|confirmacion_semilla|repeticion_por_semilla",
+      "resultado": {
+        "presente": false,
+        "n_ficheros": 0,
+        "ficheros": []
+      }
+    }
+  },
+  "tecnicas_de_clase": [
+    {
+      "tecnica": "Palabras funcionales como rasgos",
+      "familia": "atribucion de autoria",
+      "veredicto": "cerrada",
+      "ficheros": "03_variantes_representaciones.py, 16_targeting_v2.py, 20_emocion_nbsvm_ortografia_v2.py",
+      "por_que_cierra": "Las palabras funcionales se usan como parojos dentro del vectorizador, y los rasgos lexicales densos se midieron en B5-DENSE."
+    },
+    {
+      "tecnica": "N-gramas de POS",
+      "familia": "atribucion de autoria",
+      "veredicto": "cerrada",
+      "ficheros": "16_targeting_v2.py, 19_sintaxis_cita_negacion_v2.py, 22_artefactos_auditoria_v2.py",
+      "por_que_cierra": "E2-03-POS con sus dos variantes, cerrado. Los canales de sintaxis y de dependencia tambien, en E2-04."
+    },
+    {
+      "tecnica": "Arboles de la linguistica sistemica funcional",
+      "familia": "atribucion de autoria",
+      "veredicto": "cerrada",
+      "ficheros": "",
+      "por_que_cierra": "B5-DENSE midio las conjunciones explicitas de registro y objetivo, y HIB-UNION las conjunciones densas. Ambas cerradas."
+    },
+    {
+      "tecnica": "Morfologia: prefijos y sufijos",
+      "familia": "atribucion de autoria",
+      "veredicto": "cerrada",
+      "ficheros": "embedding_05_fasttext_web_v5.py, v7_00_gap_audit.py, 05_ensembles.py",
+      "por_que_cierra": "La linea ortografica de E2-10 y la normalizacion de PRE-00 a PRE-09 cubrieron la superficie de la palabra. Cerradas con resultado adverso."
+    },
+    {
+      "tecnica": "Medidas de complejidad por longitudes medias",
+      "familia": "atribucion de autoria",
+      "veredicto": "cerrada",
+      "ficheros": "30_supervised_weighting_v4.py, 01_eda_linguistico.py, 00_auditoria_datos.py",
+      "por_que_cierra": "El analisis linguistico inicial midio largas y diversidad, y los rasgos densos de B5-DENSE los incluyeron."
+    },
+    {
+      "tecnica": "Medidas de complejidad por entropia",
+      "familia": "atribucion de autoria",
+      "veredicto": "cerrada",
+      "ficheros": "01_eda_linguistico.py, 23_candidatos_finales.py, 17_stacking_v2.py",
+      "por_que_cierra": "La entropia existe como estadistico descriptivo del analisis inicial y como senal por fila guardada en el OOF canonico, pero **nunca se uso como rasgo de un modelo**."
+    },
+    {
+      "tecnica": "Medidas de complejidad por asimetria y kurtosis",
+      "familia": "atribucion de autoria",
+      "veredicto": "nueva",
+      "ficheros": "",
+      "por_que_cierra": ""
+    },
+    {
+      "tecnica": "Diversidad lexica: tipo sobre token y hapax",
+      "familia": "atribucion de autoria",
+      "veredicto": "cerrada",
+      "ficheros": "01_eda_linguistico.py, 09_optuna_tfidf_lr.py, 19_sintaxis_cita_negacion_v2.py",
+      "por_que_cierra": "El analisis inicial los midio como estadistico descriptivo. Como rasgo de un modelo no se probaron, pero el precedente de los rasgos lexicales densos es adverso."
+    },
+    {
+      "tecnica": "Palabras inestables medidas por traduccion de ida y vuelta",
+      "familia": "atribucion de autoria",
+      "veredicto": "nueva",
+      "ficheros": "",
+      "por_que_cierra": ""
+    },
+    {
+      "tecnica": "Estabilidad de features entre submuestras",
+      "familia": "atribucion de autoria",
+      "veredicto": "nueva",
+      "ficheros": "",
+      "por_que_cierra": ""
+    },
+    {
+      "tecnica": "Idiosincrasias y lexico regional",
+      "familia": "atribucion de autoria",
+      "veredicto": "nueva",
+      "ficheros": "",
+      "por_que_cierra": ""
+    },
+    {
+      "tecnica": "Seleccion de rasgos por grupo con criterio de informacion",
+      "familia": "atribucion de autoria",
+      "veredicto": "nueva",
+      "ficheros": "",
+      "por_que_cierra": ""
+    },
+    {
+      "tecnica": "Correlacion entre rasgos para detectar redundancia",
+      "familia": "atribucion de autoria",
+      "veredicto": "nueva",
+      "ficheros": "",
+      "por_que_cierra": ""
+    },
+    {
+      "tecnica": "Union de varias vistas de texto en un rasgo",
+      "familia": "atribucion de autoria",
+      "veredicto": "cerrada",
+      "ficheros": "07_submission_v04_ens04.py, 04_refit_submissions_v02_v03.py, 09_optuna_tfidf_lr.py",
+      "por_que_cierra": "La doble vista con normalizacion es la linea P4 de la fase v6, cerrada con resultado adverso. La union de cuatro vistas del articulo de difusores incluye ademas rasgos de un clasificador, que es distinto, pero el techo lo acota la interseccion de errores."
+    },
+    {
+      "tecnica": "Ponderacion por razon logaritmica de recuentos",
+      "familia": "clasificacion de texto",
+      "veredicto": "cerrada",
+      "ficheros": "20_emocion_nbsvm_ortografia_v2.py, 22_artefactos_auditoria_v2.py, v7_00_gap_audit.py",
+      "por_que_cierra": "E2-15 midio el peso de Naive Bayes sobre palabras, sobre caracteres, la razon logaritmica de recuentos y su margen con la maquina de margen. Cerrada en un rango de -0.016 a -0.039."
+    },
+    {
+      "tecnica": "Analisis discriminante lineal",
+      "familia": "clasificacion de texto",
+      "veredicto": "nueva",
+      "ficheros": "",
+      "por_que_cierra": ""
+    },
+    {
+      "tecnica": "Vecinos mas cercanos como clasificador",
+      "familia": "clasificacion de texto",
+      "veredicto": "cerrada",
+      "ficheros": "v6_00_gap_analysis.py",
+      "por_que_cierra": "La afinidad de vecindad se midio en V4-F03 y fue nula para ordenar el error. Como clasificador no se probo, pero su techo lo acota la interseccion de errores, medida en +0.0027."
+    },
+    {
+      "tecnica": "Bosques aleatorios y arboles de decision",
+      "familia": "clasificacion de texto",
+      "veredicto": "nueva",
+      "ficheros": "",
+      "por_que_cierra": ""
+    },
+    {
+      "tecnica": "Validacion cruzada repetida con repeticiones",
+      "familia": "clasificacion de texto",
+      "veredicto": "nueva",
+      "ficheros": "",
+      "por_que_cierra": ""
+    },
+    {
+      "tecnica": "Indexacion por frecuencia o por conteo simple",
+      "familia": "clasificacion de texto",
+      "veredicto": "cerrada",
+      "ficheros": "20_emocion_nbsvm_ortografia_v2.py, 30_supervised_weighting_v4.py, 19_sintaxis_cita_negacion_v2.py",
+      "por_que_cierra": "Se uso de verdad en la linea ortografica de E2-10, que construyo representaciones de conteo sobre palabras y sobre caracteres. El material de clase lo propone como indice, no como rasgo, y ese uso ya esta cubierto."
+    },
+    {
+      "tecnica": "Seleccion de caracteristicas por correlacion o informacion mutua",
+      "familia": "clasificacion de texto",
+      "veredicto": "cerrada",
+      "ficheros": "01_eda_linguistico.py, 00_auditoria_datos.py, 30_supervised_weighting_v4.py",
+      "por_que_cierra": "La especificacion de v8 la da por probada y en efecto el analisis de la fase v2 la midio como via de seleccion. Ademas la propia especificacion pide no volver a ella."
+    },
+    {
+      "tecnica": "Preprocesamiento: quitar marcas, parojos y raices",
+      "familia": "clasificacion de texto",
+      "veredicto": "cerrada",
+      "ficheros": "",
+      "por_que_cierra": "PRE-00 a PRE-09 midio diez transformaciones deterministas de superficie, todas descartadas."
+    }
+  ]
+}

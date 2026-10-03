@@ -1,0 +1,569 @@
+{
+  "familia": "P49_RESCUE_FORENSICS",
+  "experimento": "V49-00 (P0 reconciliacion forense del rescate OOF)",
+  "fecha": "2026-09-28T00:53:18+00:00",
+  "estado": "AUDIT_ONLY",
+  "pregunta": "Que significa 715, que significa 147, y la cifra grande es senal o un artefacto de azar?",
+  "tensores": {
+    "recuperados": true,
+    "ubicaciones": [
+      "/home/carlos/Git/PLN/kaggle_toxic_2026_puj/features"
+    ],
+    "canales_reconstruidos": 20,
+    "validacion_contra_hardness_v4": {
+      "max_abs_diff": 0.0,
+      "ok": true
+    }
+  },
+  "reproduccion_de_147": {
+    "valor_registrado": 147,
+    "valor_reproducido": 147,
+    "cobertura_registrada": 0.19418758256274768,
+    "cobertura_reproducida": 0.194187582563,
+    "reproduce": true,
+    "damage_reproducido": 90
+  },
+  "matriz_de_rescate_por_canal": [
+    {
+      "canal": "base:M1_word_lr",
+      "aciertos_totales": 3630,
+      "macro_f1_aprox": 0.748598,
+      "rescate": 123,
+      "damage": 185,
+      "net": -62,
+      "cobertura_errores_v03": 0.162483
+    },
+    {
+      "canal": "base:M2_union_lr_c2",
+      "aciertos_totales": 3703,
+      "macro_f1_aprox": 0.771778,
+      "rescate": 71,
+      "damage": 60,
+      "net": 11,
+      "cobertura_errores_v03": 0.093791
+    },
+    {
+      "canal": "base:M3_union_svc",
+      "aciertos_totales": 3685,
+      "macro_f1_aprox": 0.767715,
+      "rescate": 98,
+      "damage": 105,
+      "net": -7,
+      "cobertura_errores_v03": 0.129458
+    },
+    {
+      "canal": "base:M4_char_lr",
+      "aciertos_totales": 3589,
+      "macro_f1_aprox": 0.737732,
+      "rescate": 153,
+      "damage": 256,
+      "net": -103,
+      "cobertura_errores_v03": 0.202114
+    },
+    {
+      "canal": "synt:SYN-POS",
+      "aciertos_totales": 2987,
+      "macro_f1_aprox": 0.56371,
+      "rescate": 309,
+      "damage": 1014,
+      "net": -705,
+      "cobertura_errores_v03": 0.40819
+    },
+    {
+      "canal": "synt:SYN-DEPS",
+      "aciertos_totales": 2917,
+      "macro_f1_aprox": 0.551442,
+      "rescate": 302,
+      "damage": 1077,
+      "net": -775,
+      "cobertura_errores_v03": 0.398943
+    },
+    {
+      "canal": "synt:SYN-MORPH",
+      "aciertos_totales": 2855,
+      "macro_f1_aprox": 0.547727,
+      "rescate": 297,
+      "damage": 1134,
+      "net": -837,
+      "cobertura_errores_v03": 0.392338
+    },
+    {
+      "canal": "synt:SYN-3",
+      "aciertos_totales": 3051,
+      "macro_f1_aprox": 0.586493,
+      "rescate": 295,
+      "damage": 936,
+      "net": -641,
+      "cobertura_errores_v03": 0.389696
+    },
+    {
+      "canal": "cita:CITA",
+      "aciertos_totales": 3593,
+      "macro_f1_aprox": 0.743704,
+      "rescate": 186,
+      "damage": 285,
+      "net": -99,
+      "cobertura_errores_v03": 0.245707
+    },
+    {
+      "canal": "cita:NEG",
+      "aciertos_totales": 1986,
+      "macro_f1_aprox": 0.526681,
+      "rescate": 337,
+      "damage": 2043,
+      "net": -1706,
+      "cobertura_errores_v03": 0.445178
+    },
+    {
+      "canal": "emoc:EMO-EST@C=2.0",
+      "aciertos_totales": 3117,
+      "macro_f1_aprox": 0.589714,
+      "rescate": 300,
+      "damage": 875,
+      "net": -575,
+      "cobertura_errores_v03": 0.396301
+    },
+    {
+      "canal": "emoc:EMO-LEX@C=1.0",
+      "aciertos_totales": 3099,
+      "macro_f1_aprox": 0.620457,
+      "rescate": 306,
+      "damage": 899,
+      "net": -593,
+      "cobertura_errores_v03": 0.404227
+    },
+    {
+      "canal": "emoc:EMO-ALL@C=1.0",
+      "aciertos_totales": 3140,
+      "macro_f1_aprox": 0.623013,
+      "rescate": 305,
+      "damage": 857,
+      "net": -552,
+      "cobertura_errores_v03": 0.402906
+    },
+    {
+      "canal": "emoc:NB-WORD-LR@C=1.0",
+      "aciertos_totales": 3646,
+      "macro_f1_aprox": 0.753785,
+      "rescate": 168,
+      "damage": 214,
+      "net": -46,
+      "cobertura_errores_v03": 0.221929
+    },
+    {
+      "canal": "emoc:NB-CHAR-LR@C=1.0",
+      "aciertos_totales": 3600,
+      "macro_f1_aprox": 0.737962,
+      "rescate": 184,
+      "damage": 276,
+      "net": -92,
+      "cobertura_errores_v03": 0.243065
+    },
+    {
+      "canal": "emoc:NB-UNION-LR@C=1.0",
+      "aciertos_totales": 3681,
+      "macro_f1_aprox": 0.761203,
+      "rescate": 191,
+      "damage": 202,
+      "net": -11,
+      "cobertura_errores_v03": 0.252312
+    },
+    {
+      "canal": "emoc:NB-UNION-SVC@C=1.0",
+      "aciertos_totales": 3635,
+      "macro_f1_aprox": 0.742878,
+      "rescate": 217,
+      "damage": 274,
+      "net": -57,
+      "cobertura_errores_v03": 0.286658
+    },
+    {
+      "canal": "emoc:ORT-A@C=1.0",
+      "aciertos_totales": 3630,
+      "macro_f1_aprox": 0.748598,
+      "rescate": 123,
+      "damage": 185,
+      "net": -62,
+      "cobertura_errores_v03": 0.162483
+    },
+    {
+      "canal": "emoc:ORT-ABCD@C=2.0",
+      "aciertos_totales": 3630,
+      "macro_f1_aprox": 0.753364,
+      "rescate": 106,
+      "damage": 168,
+      "net": -62,
+      "cobertura_errores_v03": 0.140026
+    },
+    {
+      "canal": "emoc:ORT-AE@C=2.0",
+      "aciertos_totales": 3608,
+      "macro_f1_aprox": 0.749615,
+      "rescate": 102,
+      "damage": 186,
+      "net": -84,
+      "cobertura_errores_v03": 0.134742
+    }
+  ],
+  "prueba_de_azar": {
+    "canales": 20,
+    "p_medio_de_acierto_en_celda_de_error": 0.2756,
+    "canales_medios_que_acierten": 5.51,
+    "irrecuperables_observadas": 42,
+    "irrecuperables_esperadas_independencia": 1.2,
+    "es_azar": false,
+    "interpretacion": "Si las irrecuperables observadas son del orden de las esperadas bajo independencia, la cifra de rescatables es un artefacto de tener muchos canales y no senal. Si las observadas superan con claridad a las esperadas, los canales fallan juntos con V03 y la cifra es senal de un hueco de representacion compartido"
+  },
+  "margen_sobre_rescate_observado": [
+    {
+      "etiqueta": "HS",
+      "bin": "[0,0.10)",
+      "n_errores": 121,
+      "rescatables_observados": 121,
+      "irrecuperables_observados": 0,
+      "tasa_rescate_observada": 1.0,
+      "canales_medios": 9.339
+    },
+    {
+      "etiqueta": "HS",
+      "bin": "[0.10,0.20)",
+      "n_errores": 98,
+      "rescatables_observados": 96,
+      "irrecuperables_observados": 2,
+      "tasa_rescate_observada": 0.9796,
+      "canales_medios": 5.031
+    },
+    {
+      "etiqueta": "HS",
+      "bin": "[0.20,1]",
+      "n_errores": 97,
+      "rescatables_observados": 90,
+      "irrecuperables_observados": 7,
+      "tasa_rescate_observada": 0.9278,
+      "canales_medios": 2.918
+    },
+    {
+      "etiqueta": "TR",
+      "bin": "[0,0.10)",
+      "n_errores": 54,
+      "rescatables_observados": 54,
+      "irrecuperables_observados": 0,
+      "tasa_rescate_observada": 1.0,
+      "canales_medios": 7.278
+    },
+    {
+      "etiqueta": "TR",
+      "bin": "[0.10,0.20)",
+      "n_errores": 38,
+      "rescatables_observados": 37,
+      "irrecuperables_observados": 1,
+      "tasa_rescate_observada": 0.9737,
+      "canales_medios": 4.842
+    },
+    {
+      "etiqueta": "TR",
+      "bin": "[0.20,1]",
+      "n_errores": 72,
+      "rescatables_observados": 61,
+      "irrecuperables_observados": 11,
+      "tasa_rescate_observada": 0.8472,
+      "canales_medios": 2.431
+    },
+    {
+      "etiqueta": "AG",
+      "bin": "[0,0.10)",
+      "n_errores": 107,
+      "rescatables_observados": 105,
+      "irrecuperables_observados": 2,
+      "tasa_rescate_observada": 0.9813,
+      "canales_medios": 8.766
+    },
+    {
+      "etiqueta": "AG",
+      "bin": "[0.10,0.20)",
+      "n_errores": 71,
+      "rescatables_observados": 70,
+      "irrecuperables_observados": 1,
+      "tasa_rescate_observada": 0.9859,
+      "canales_medios": 4.563
+    },
+    {
+      "etiqueta": "AG",
+      "bin": "[0.20,1]",
+      "n_errores": 99,
+      "rescatables_observados": 81,
+      "irrecuperables_observados": 18,
+      "tasa_rescate_observada": 0.8182,
+      "canales_medios": 2.556
+    }
+  ],
+  "slices_error_dense_vs_rescue_dense": [
+    {
+      "slice": "negacion",
+      "n_filas": 386,
+      "n_errores_v03": 252,
+      "n_rescatables": 231,
+      "n_irrecuperables": 21,
+      "lift_error": 1.279,
+      "lift_rescate": 1.2413,
+      "lift_irrecuperable": 1.921,
+      "clase": "RESCUE_DENSE"
+    },
+    {
+      "slice": "longitud_corta",
+      "n_filas": 458,
+      "n_errores_v03": 163,
+      "n_rescatables": 145,
+      "n_irrecuperables": 18,
+      "lift_error": 0.6972,
+      "lift_rescate": 0.6567,
+      "lift_irrecuperable": 1.3877,
+      "clase": "NEUTRAL"
+    },
+    {
+      "slice": "segunda_persona",
+      "n_filas": 672,
+      "n_errores_v03": 326,
+      "n_rescatables": 303,
+      "n_irrecuperables": 23,
+      "lift_error": 0.9504,
+      "lift_rescate": 0.9352,
+      "lift_irrecuperable": 1.2085,
+      "clase": "NEUTRAL"
+    },
+    {
+      "slice": "colectivo",
+      "n_filas": 363,
+      "n_errores_v03": 220,
+      "n_rescatables": 208,
+      "n_irrecuperables": 12,
+      "lift_error": 1.1873,
+      "lift_rescate": 1.1885,
+      "lift_irrecuperable": 1.1673,
+      "clase": "RESCUE_DENSE"
+    },
+    {
+      "slice": "menciones",
+      "n_filas": 701,
+      "n_errores_v03": 313,
+      "n_rescatables": 292,
+      "n_irrecuperables": 21,
+      "lift_error": 0.8747,
+      "lift_rescate": 0.864,
+      "lift_irrecuperable": 1.0578,
+      "clase": "NEUTRAL"
+    },
+    {
+      "slice": "atribucion",
+      "n_filas": 102,
+      "n_errores_v03": 62,
+      "n_rescatables": 59,
+      "n_irrecuperables": 3,
+      "lift_error": 1.1908,
+      "lift_rescate": 1.1997,
+      "lift_irrecuperable": 1.0385,
+      "clase": "RESCUE_DENSE"
+    },
+    {
+      "slice": "leet",
+      "n_filas": 327,
+      "n_errores_v03": 169,
+      "n_rescatables": 160,
+      "n_irrecuperables": 9,
+      "lift_error": 1.0125,
+      "lift_rescate": 1.0149,
+      "lift_irrecuperable": 0.9718,
+      "clase": "NEUTRAL"
+    },
+    {
+      "slice": "puntuacion_interna",
+      "n_filas": 612,
+      "n_errores_v03": 322,
+      "n_rescatables": 306,
+      "n_irrecuperables": 16,
+      "lift_error": 1.0307,
+      "lift_rescate": 1.0371,
+      "lift_irrecuperable": 0.9231,
+      "clase": "NEUTRAL"
+    },
+    {
+      "slice": "elongacion",
+      "n_filas": 275,
+      "n_errores_v03": 170,
+      "n_rescatables": 163,
+      "n_irrecuperables": 7,
+      "lift_error": 1.211,
+      "lift_rescate": 1.2294,
+      "lift_irrecuperable": 0.8988,
+      "clase": "RESCUE_DENSE"
+    },
+    {
+      "slice": "risas",
+      "n_filas": 84,
+      "n_errores_v03": 37,
+      "n_rescatables": 35,
+      "n_irrecuperables": 2,
+      "lift_error": 0.8629,
+      "lift_rescate": 0.8642,
+      "lift_irrecuperable": 0.8407,
+      "clase": "NEUTRAL"
+    },
+    {
+      "slice": "margen_bajo",
+      "n_filas": 428,
+      "n_errores_v03": 428,
+      "n_rescatables": 418,
+      "n_irrecuperables": 10,
+      "lift_error": 1.959,
+      "lift_rescate": 2.0257,
+      "lift_irrecuperable": 0.825,
+      "clase": "RESCUE_DENSE"
+    },
+    {
+      "slice": "urls",
+      "n_filas": 458,
+      "n_errores_v03": 253,
+      "n_rescatables": 244,
+      "n_irrecuperables": 9,
+      "lift_error": 1.0822,
+      "lift_rescate": 1.105,
+      "lift_irrecuperable": 0.6939,
+      "clase": "NEUTRAL"
+    },
+    {
+      "slice": "cita",
+      "n_filas": 61,
+      "n_errores_v03": 45,
+      "n_rescatables": 44,
+      "n_irrecuperables": 1,
+      "lift_error": 1.4452,
+      "lift_rescate": 1.4961,
+      "lift_irrecuperable": 0.5788,
+      "clase": "RESCUE_DENSE"
+    },
+    {
+      "slice": "hashtags",
+      "n_filas": 144,
+      "n_errores_v03": 79,
+      "n_rescatables": 78,
+      "n_irrecuperables": 1,
+      "lift_error": 1.0748,
+      "lift_rescate": 1.1235,
+      "lift_irrecuperable": 0.2452,
+      "clase": "NEUTRAL"
+    },
+    {
+      "slice": "rt",
+      "n_filas": 0,
+      "n_errores_v03": 0,
+      "n_rescatables": 0,
+      "n_irrecuperables": 0,
+      "lift_error": 0.0,
+      "lift_rescate": 0.0,
+      "lift_irrecuperable": 0.0,
+      "clase": "NEUTRAL"
+    }
+  ],
+  "tabla_de_reconciliacion": [
+    {
+      "metrica": "celdas_de_error_de_V03",
+      "valor": 757,
+      "numerador": "",
+      "denominador": "",
+      "unidad": "label-cell",
+      "definicion": "celdas (tweet, etiqueta) con pred != y_true sobre 1483x3",
+      "fuente": "features/oof_v03_final.npz",
+      "observado": "si",
+      "cota": "no",
+      "reproducible": "si",
+      "estado": "VERIFIED"
+    },
+    {
+      "metrica": "filas_con_algun_error",
+      "valor": 441,
+      "numerador": "",
+      "denominador": "",
+      "unidad": "tweet",
+      "definicion": "tweets con al menos una de las tres labels mal",
+      "fuente": "features/oof_v03_final.npz",
+      "observado": "si",
+      "cota": "no",
+      "reproducible": "si",
+      "estado": "VERIFIED"
+    },
+    {
+      "metrica": "rescate_de_una_variante",
+      "valor": 147,
+      "numerador": 147,
+      "denominador": 757,
+      "unidad": "label-cell",
+      "definicion": "celdas de error de V03 que C_meta36_downweight (umbrales 0.5) acierta. Es la cobertura_de_errores_v03 de V17-00",
+      "fuente": "features/oof_candidates_v4.npz",
+      "observado": "si",
+      "cota": "no",
+      "reproducible": "si",
+      "estado": "VERIFIED"
+    },
+    {
+      "metrica": "rescate_de_la_union_de_8_variantes",
+      "valor": 263,
+      "numerador": 263,
+      "denominador": 757,
+      "unidad": "label-cell",
+      "definicion": "celdas de error de V03 que acierta al menos una de las 8 variantes inventariadas por V17-00",
+      "fuente": "reports/v17_00_inventario_complementariedad.json",
+      "observado": "si",
+      "cota": "no",
+      "reproducible": "no",
+      "estado": "REPORTED_NOT_REPRODUCED"
+    },
+    {
+      "metrica": "celdas_con_al_menos_un_canal_que_acerte",
+      "valor": 715,
+      "numerador": 715,
+      "denominador": 757,
+      "unidad": "label-cell",
+      "definicion": "celdas de error de V03 que acierta al menos uno de los 20 canales OOF de la fase v2, binarizados a 0.5",
+      "fuente": "features/v2_oof_*.npz (worktrees PLN y PLN-v8)",
+      "observado": "si",
+      "cota": "no",
+      "reproducible": "si",
+      "estado": "VERIFIED"
+    },
+    {
+      "metrica": "celdas_irrecuperables",
+      "valor": 42,
+      "numerador": 42,
+      "denominador": 757,
+      "unidad": "label-cell",
+      "definicion": "celdas de error de V03 que no acierta ninguno de los 20 canales OOF de la fase v2",
+      "fuente": "features/v2_oof_*.npz",
+      "observado": "si",
+      "cota": "no",
+      "reproducible": "si",
+      "estado": "VERIFIED"
+    },
+    {
+      "metrica": "irrecuperables_esperadas_si_independencia",
+      "valor": 1.2,
+      "numerador": "",
+      "denominador": "",
+      "unidad": "label-cell",
+      "definicion": "celdas de error de V03 con cero aciertos esperadas si los 20 canales fallaran de forma independiente, con la probabilidad marginal observada",
+      "fuente": "calculado en este script",
+      "observado": "no",
+      "cota": "si",
+      "reproducible": "si",
+      "estado": "UPPER_BOUND_NULL"
+    }
+  ],
+  "decision": "A",
+  "gastos": {
+    "submissions": 0,
+    "modelos_entrenados": 0,
+    "consultas_kaggle": 0,
+    "uso_holdout": 0,
+    "uso_test": 0,
+    "segundos": 0.1
+  }
+}

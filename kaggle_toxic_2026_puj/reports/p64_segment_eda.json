@@ -1,0 +1,191 @@
+{
+  "familia": "P64_SEGMENTACION_EDA",
+  "naturaleza": "DIAGNOSTICO. 0 experimentos, 0 modelos, 0 features, 0 submissions, 0 Kaggle, 0 holdout, 0 test",
+  "fecha": "2026-09-29T07:18:33+00:00",
+  "experiment_id": "P64-01",
+  "script": "experiments/p64_02_segmentacion_eda.py",
+  "pregunta": "los tweets que V03 no puede resolver contienen una estructura segmental distinta?",
+  "esquemas": {
+    "S1": "puntuacion fuerte, cualquier secuencia de punto, exclamacion o interrogacion",
+    "S2": "puntuacion fuerte mas salto de linea",
+    "S3": "delimitadores fuertes: dos o mas de esos signos, o punto y coma, o dos puntos",
+    "S4": "mencion, hashtag y comilla de apertura abren unidad propia"
+  },
+  "primario_declarado_antes": "S1",
+  "porque_s1_sigue_primario": "S4 da mas unidades pero son mas pequenas y mas homogeneas. El objetivo es evidencia local que compita con la global, no trocear mas. S4 se reporta como sensibilidad para la linea de citas del encargo",
+  "determinismo": "las cuatro reglas son expresiones regulares sobre el texto, sin modelo, sin lexicon, sin etiqueta y sin consulta a spaCy",
+  "cobertura": {
+    "S1": {
+      "n_multi_segmento": 751,
+      "porcentaje_multi": 50.6406,
+      "segmentos_medianos": 2.0,
+      "segmentos_maximos": 13,
+      "tasa_de_error": 0.170151,
+      "tasa_de_error_multi": 0.195295,
+      "tasa_de_error_uni": 0.144353,
+      "vacio_o_uno": 0
+    },
+    "S2": {
+      "n_multi_segmento": 751,
+      "porcentaje_multi": 50.6406,
+      "segmentos_medianos": 2.0,
+      "segmentos_maximos": 13,
+      "tasa_de_error": 0.170151,
+      "tasa_de_error_multi": 0.195295,
+      "tasa_de_error_uni": 0.144353,
+      "vacio_o_uno": 0
+    },
+    "S3": {
+      "n_multi_segmento": 602,
+      "porcentaje_multi": 40.5934,
+      "segmentos_medianos": 1.0,
+      "segmentos_maximos": 9,
+      "tasa_de_error": 0.170151,
+      "tasa_de_error_multi": 0.193245,
+      "tasa_de_error_uni": 0.15437,
+      "vacio_o_uno": 0
+    },
+    "S4": {
+      "n_multi_segmento": 1018,
+      "porcentaje_multi": 68.6446,
+      "segmentos_medianos": 2.0,
+      "segmentos_maximos": 31,
+      "tasa_de_error": 0.170151,
+      "tasa_de_error_multi": 0.184676,
+      "tasa_de_error_uni": 0.138351,
+      "vacio_o_uno": 0
+    }
+  },
+  "perfil_rasgos": [
+    "n_segmentos",
+    "log_n_segmentos",
+    "es_multi_segmento",
+    "fraccion_del_segmento_mas_largo",
+    "fraccion_del_segmento_mas_corto",
+    "desviacion_de_la_longitud",
+    "entropia_de_la_longitud"
+  ],
+  "eda_por_estrato": [
+    {
+      "estrato": "todas",
+      "n": 1483,
+      "tasa_de_error": 0.170151,
+      "n_segmentos": 1.958867,
+      "log_n_segmentos": 1.010836,
+      "es_multi_segmento": 0.506406,
+      "fraccion_del_segmento_mas_largo": 0.862339,
+      "fraccion_del_segmento_mas_corto": 0.568098,
+      "desviacion_de_la_longitud": 0.261861,
+      "entropia_de_la_longitud": 0.168367
+    },
+    {
+      "estrato": "CORTA",
+      "n": 167,
+      "tasa_de_error": 0.065868,
+      "n_segmentos": 1.389222,
+      "log_n_segmentos": 0.840384,
+      "es_multi_segmento": 0.299401,
+      "fraccion_del_segmento_mas_largo": 0.958383,
+      "fraccion_del_segmento_mas_corto": 0.77994,
+      "desviacion_de_la_longitud": 0.041175,
+      "entropia_de_la_longitud": 0.092684
+    },
+    {
+      "estrato": "MEDIA",
+      "n": 602,
+      "tasa_de_error": 0.168882,
+      "n_segmentos": 1.616279,
+      "log_n_segmentos": 0.913185,
+      "es_multi_segmento": 0.410299,
+      "fraccion_del_segmento_mas_largo": 0.916042,
+      "fraccion_del_segmento_mas_corto": 0.656444,
+      "desviacion_de_la_longitud": 0.146007,
+      "entropia_de_la_longitud": 0.115235
+    },
+    {
+      "estrato": "LARGA",
+      "n": 547,
+      "tasa_de_error": 0.186472,
+      "n_segmentos": 2.102377,
+      "log_n_segmentos": 1.063819,
+      "es_multi_segmento": 0.59415,
+      "fraccion_del_segmento_mas_largo": 0.833007,
+      "fraccion_del_segmento_mas_corto": 0.489205,
+      "desviacion_de_la_longitud": 0.342846,
+      "entropia_de_la_longitud": 0.191343
+    },
+    {
+      "estrato": "MUY_LARGA",
+      "n": 167,
+      "tasa_de_error": 0.225549,
+      "n_segmentos": 3.293413,
+      "log_n_segmentos": 1.359759,
+      "es_multi_segmento": 0.772455,
+      "fraccion_del_segmento_mas_largo": 0.668786,
+      "fraccion_del_segmento_mas_corto": 0.296201,
+      "desviacion_de_la_longitud": 0.634916,
+      "entropia_de_la_longitud": 0.360322
+    },
+    {
+      "estrato": "V03 correcto",
+      "n": 1042,
+      "tasa_de_error": 0.0,
+      "n_segmentos": 1.84453,
+      "log_n_segmentos": 0.975512,
+      "es_multi_segmento": 0.460653,
+      "fraccion_del_segmento_mas_largo": 0.882566,
+      "fraccion_del_segmento_mas_corto": 0.607854,
+      "desviacion_de_la_longitud": 0.23383,
+      "entropia_de_la_longitud": 0.148412
+    },
+    {
+      "estrato": "V03 incorrecto",
+      "n": 441,
+      "tasa_de_error": 0.572184,
+      "n_segmentos": 2.229025,
+      "log_n_segmentos": 1.0943,
+      "es_multi_segmento": 0.614512,
+      "fraccion_del_segmento_mas_largo": 0.814547,
+      "fraccion_del_segmento_mas_corto": 0.474162,
+      "desviacion_de_la_longitud": 0.328093,
+      "entropia_de_la_longitud": 0.215516
+    },
+    {
+      "estrato": "error de alta confianza",
+      "n": 295,
+      "tasa_de_error": 0.649718,
+      "n_segmentos": 2.20339,
+      "log_n_segmentos": 1.083302,
+      "es_multi_segmento": 0.59661,
+      "fraccion_del_segmento_mas_largo": 0.825029,
+      "fraccion_del_segmento_mas_corto": 0.486701,
+      "desviacion_de_la_longitud": 0.331626,
+      "entropia_de_la_longitud": 0.206568
+    }
+  ],
+  "separacion": {
+    "auc_por_rasgo": {
+      "n_segmentos": 0.588351,
+      "log_n_segmentos": 0.588351,
+      "es_multi_segmento": 0.57693,
+      "fraccion_del_segmento_mas_largo": 0.413968,
+      "fraccion_del_segmento_mas_corto": 0.419111,
+      "desviacion_de_la_longitud": 0.578305,
+      "entropia_de_la_longitud": 0.589847,
+      "n_tokens_como_referencia": 0.600506
+    },
+    "auc_de_referencia_por_longitud": 0.600506,
+    "mejor_rasgo": "entropia_de_la_longitud",
+    "ventaja_sobre_la_referencia_de_longitud": -0.010659
+  },
+  "veredicto": "el perfil segmental es PEOR que la referencia trivial de longitud, con una ventaja de -0.010659. Es una asociacion de la longitud disfrazada de estructura, y queda cerrado como rasgo",
+  "decision": "PERFIL CERRADO. Continuar con descomposicion de evidencia",
+  "experimentos_registrados": 1,
+  "reproducibilidad": {
+    "nivel": "R2",
+    "git_commit": "aa5c006",
+    "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "corrected_cv": 0.7772114525165721
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

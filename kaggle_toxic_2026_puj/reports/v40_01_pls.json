@@ -1,0 +1,268 @@
+{
+  "familia": "SUPERVISED_PLS_PROJECTION",
+  "experimento": "V40-01 (PLS como proyeccion supervisada, con control SVD matched)",
+  "fecha": "2026-09-27T21:01:17+00:00",
+  "estado": "OOF_EVALUATED",
+  "pregunta": "una proyeccion latente supervisada X -> Z, aprendida usando simultaneamente TF-IDF y las tres etiquetas HS/TR/AG, puede producir una representacion que generaliza mejor o aporta errores utiles que V03 no captura",
+  "alcance": "PLSRegression con deflacion de X. No se usa PLSSVD ni PLSCanonical como implementacion principal. No se introduce ninguna feature nueva",
+  "restriccion_critica_respetada": "se usa PLSRegression, no PLSSVD ni PLSCanonical. V38 demostro que limitar la representacion a rango 3 destruye la hipotesis; PLSRegression con deflacion de X no tiene esa limitacion",
+  "metodo": "matriz termino x etiqueta (conteos de co-ocurrencia con cada etiqueta), factorizada con SVD truncado de baja dimension. Los vectores de termino son las filas de U S",
+  "dimension": 8,
+  "target": "Y = [HS, TR, AG] como matriz binaria n x 3",
+  "vocabulario_y_parametros": {
+    "vocabulario_pliegue_1": 5899,
+    "parametros_del_embedding": 11814,
+    "nota": "el vocabulario y los parametros se registran por pliegue en el JSON"
+  },
+  "benchmark_de_memoria": {
+    "x_sparse": "(1186, 20441)",
+    "x_dense_mb": 193.9,
+    "tiempo_matriz_s": 0.15,
+    "tiempo_pls_s": 5.34,
+    "memoria_antes_mb": 228.4,
+    "memoria_tras_matriz_mb": 228.4,
+    "memoria_tras_pls_mb": 778.3,
+    "folds_en_paralelo": false
+  },
+  "control": {
+    "corrected_cv": 0.7772114525165721,
+    "f1_por_etiqueta": {
+      "HS": 0.7616892911010558,
+      "TR": 0.8157303370786517,
+      "AG": 0.7542147293700089
+    },
+    "train_f1": 0.970864604949201,
+    "gap_train_oof": 0.19365315243262893,
+    "metricas_por_pliegue": [
+      {
+        "f1_media_columnas": 0.7960101143044023,
+        "f1_macro6": 0.8355934550524347,
+        "f1_micro": 0.7926829268292683,
+        "f1_samples": 0.3383838383838384,
+        "exact_match": 0.734006734006734,
+        "f1_por_etiqueta": {
+          "HS": 0.7786259541984732,
+          "TR": 0.8275862068965517,
+          "AG": 0.7818181818181819
+        },
+        "pliegue": 1
+      },
+      {
+        "f1_media_columnas": 0.7940339497874405,
+        "f1_macro6": 0.8299584761236635,
+        "f1_micro": 0.7912408759124088,
+        "f1_samples": 0.3489337822671156,
+        "exact_match": 0.7104377104377104,
+        "f1_por_etiqueta": {
+          "HS": 0.7835820895522388,
+          "TR": 0.8279569892473119,
+          "AG": 0.7705627705627706
+        },
+        "pliegue": 2
+      },
+      {
+        "f1_media_columnas": 0.7788600288600289,
+        "f1_macro6": 0.815470061805838,
+        "f1_micro": 0.7756874095513748,
+        "f1_samples": 0.3466216216216216,
+        "exact_match": 0.6993243243243243,
+        "f1_por_etiqueta": {
+          "HS": 0.7681159420289855,
+          "TR": 0.8152173913043478,
+          "AG": 0.7532467532467533
+        },
+        "pliegue": 3
+      },
+      {
+        "f1_media_columnas": 0.738598013128522,
+        "f1_macro6": 0.7854431411794273,
+        "f1_micro": 0.7348148148148148,
+        "f1_samples": 0.3233108108108108,
+        "exact_match": 0.6587837837837838,
+        "f1_por_etiqueta": {
+          "HS": 0.7293233082706767,
+          "TR": 0.7821229050279329,
+          "AG": 0.7043478260869566
+        },
+        "pliegue": 4
+      },
+      {
+        "f1_media_columnas": 0.7790564997088775,
+        "f1_macro6": 0.8244089783905003,
+        "f1_micro": 0.7735849056603774,
+        "f1_samples": 0.31470258136924806,
+        "exact_match": 0.7104377104377104,
+        "f1_por_etiqueta": {
+          "HS": 0.7480314960629921,
+          "TR": 0.8263473053892215,
+          "AG": 0.7627906976744186
+        },
+        "pliegue": 5
+      }
+    ]
+  },
+  "svd_matched": {
+    "corrected_cv": 0.6632953247504835,
+    "delta_vs_v03": -0.11391612776608862,
+    "varianza_explicada_por_pliegue": {
+      "1": 0.06820286285779054,
+      "2": 0.06692724328676491,
+      "3": 0.0680624316707333,
+      "4": 0.06815807083875261,
+      "5": 0.06820851522613586
+    }
+  },
+  "pls": {
+    "corrected_cv": 0.7634690853666665,
+    "delta_vs_v03": -0.013742367149905621,
+    "delta_vs_svd": 0.100173760616183,
+    "f1_por_etiqueta": {
+      "HS": 0.7418622255866768,
+      "TR": 0.8027522935779816,
+      "AG": 0.745792736935341
+    },
+    "train_f1": 0.9888260459697003,
+    "gap_train_oof": 0.22535696060303378,
+    "metricas_por_pliegue": [
+      {
+        "f1_media_columnas": 0.7687975557830757,
+        "f1_macro6": 0.8120776778144533,
+        "f1_micro": 0.7643504531722054,
+        "f1_samples": 0.3224466891133558,
+        "exact_match": 0.696969696969697,
+        "f1_por_etiqueta": {
+          "HS": 0.7396226415094339,
+          "TR": 0.8023255813953488,
+          "AG": 0.7644444444444445
+        },
+        "pliegue": 1
+      },
+      {
+        "f1_media_columnas": 0.7872333961503785,
+        "f1_macro6": 0.8253405355261377,
+        "f1_micro": 0.7852941176470588,
+        "f1_samples": 0.3492704826038159,
+        "exact_match": 0.7272727272727273,
+        "f1_por_etiqueta": {
+          "HS": 0.7777777777777778,
+          "TR": 0.8066298342541437,
+          "AG": 0.777292576419214
+        },
+        "pliegue": 2
+      },
+      {
+        "f1_media_columnas": 0.7720792939588828,
+        "f1_macro6": 0.8121515755027938,
+        "f1_micro": 0.7687776141384389,
+        "f1_samples": 0.3306306306306306,
+        "exact_match": 0.6959459459459459,
+        "f1_por_etiqueta": {
+          "HS": 0.762962962962963,
+          "TR": 0.8131868131868132,
+          "AG": 0.7400881057268722
+        },
+        "pliegue": 3
+      },
+      {
+        "f1_media_columnas": 0.7265500279251479,
+        "f1_macro6": 0.7748867591511769,
+        "f1_micro": 0.7218934911242604,
+        "f1_samples": 0.30844594594594593,
+        "exact_match": 0.6418918918918919,
+        "f1_por_etiqueta": {
+          "HS": 0.7018867924528301,
+          "TR": 0.768361581920904,
+          "AG": 0.7094017094017094
+        },
+        "pliegue": 4
+      },
+      {
+        "f1_media_columnas": 0.7628057862009904,
+        "f1_macro6": 0.8125611046266773,
+        "f1_micro": 0.7552,
+        "f1_samples": 0.2945005611672278,
+        "exact_match": 0.6868686868686869,
+        "f1_por_etiqueta": {
+          "HS": 0.7250996015936255,
+          "TR": 0.825,
+          "AG": 0.7383177570093458
+        },
+        "pliegue": 5
+      }
+    ],
+    "convergencia": {
+      "1": {
+        "n_iter": 4
+      },
+      "2": {
+        "n_iter": 4
+      },
+      "3": {
+        "n_iter": 4
+      },
+      "4": {
+        "n_iter": 4
+      },
+      "5": {
+        "n_iter": 4
+      }
+    }
+  },
+  "complementariedad": {
+    "rescates": 92,
+    "danios": 135,
+    "neto": -43,
+    "celdas_modificadas": 227,
+    "correlacion_de_decisiones": 0.948977298269274,
+    "por_label": {
+      "HS": {
+        "rescates": 38,
+        "danios": 63,
+        "neto": -25,
+        "celdas_modificadas": 101
+      },
+      "TR": {
+        "rescates": 18,
+        "danios": 26,
+        "neto": -8,
+        "celdas_modificadas": 44
+      },
+      "AG": {
+        "rescates": 36,
+        "danios": 46,
+        "neto": -10,
+        "celdas_modificadas": 82
+      }
+    }
+  },
+  "memorization": {
+    "train_f1": 0.9888260459697003,
+    "oof_f1": 0.7634690853666665,
+    "gap": 0.22535696060303378,
+    "convergencia_por_pliegue": {
+      "1": {
+        "n_iter": 4
+      },
+      "2": {
+        "n_iter": 4
+      },
+      "3": {
+        "n_iter": 4
+      },
+      "4": {
+        "n_iter": 4
+      },
+      "5": {
+        "n_iter": 4
+      }
+    },
+    "depende_de_terminos_raros": true
+  },
+  "decision": "OVERFIT",
+  "gastos": {
+    "submissions": 0,
+    "modelos_entrenados": 3,
+    "memoria_pico_mb": 814.8,
+    "segundos": 47.9
+  }
+}

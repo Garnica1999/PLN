@@ -1,0 +1,58 @@
+{
+  "marca_corrida": "completo_a7eac4",
+  "resultado": {
+    "bloque": 18,
+    "coste_segundos": 6.3e-05,
+    "descripcion": "las cadenas de formulacion, de las dos preguntas y del proyecto",
+    "detalle": {
+      "cadenas_presentes": {
+        "CON_1483_FILAS_Y_CELDAS_RARISIMAS_EL_PAPEL_ESPERADO_DEL_BAYESIANO_ES_MIEMBRO_DIVERSONO_CAMPEON": true,
+        "LA_PREGUNTA_DOS_NO_BUSCA_SUPERAR_A_V03_SU_CRITERIO_ES_TENER_UN_PERFIL_DE_ERRORDISTINTO_Y_MEDIBLE": true,
+        "LA_PREGUNTA_UNO_NO_COMPITE_POR_F1_Y_NO_ACE_POR_ELIMINADO_EL_ORDENAMIENTO_POR_F1": true,
+        "V03 remains the best verified leaderboard result.": true
+      },
+      "cadenas_requeridas": [
+        "V03 remains the best verified leaderboard result.",
+        "LA_PREGUNTA_UNO_NO_COMPITE_POR_F1_Y_NO_ACE_POR_ELIMINADO_EL_ORDENAMIENTO_POR_F1",
+        "LA_PREGUNTA_DOS_NO_BUSCA_SUPERAR_A_V03_SU_CRITERIO_ES_TENER_UN_PERFIL_DE_ERRORDISTINTO_Y_MEDIBLE",
+        "CON_1483_FILAS_Y_CELDAS_RARISIMAS_EL_PAPEL_ESPERADO_DEL_BAYESIANO_ES_MIEMBRO_DIVERSONO_CAMPEON"
+      ],
+      "comprobaciones": {
+        "la_cadena_presente_0": true,
+        "la_cadena_presente_1": true,
+        "la_cadena_presente_2": true,
+        "la_cadena_presente_3": true,
+        "la_variante_ausente_0": true,
+        "la_variante_ausente_1": true,
+        "la_variante_ausente_2": true,
+        "la_variante_ausente_3": true,
+        "la_variante_ausente_4": true,
+        "la_variante_ausente_5": true
+      },
+      "motivo_de_parada": "falta una cadena de formulacion o aparece una variante",
+      "variantes_encontradas": {
+        "V03 is not the best verified leaderboard result": false,
+        "V03 remains the best verified result": false,
+        "Word2Vec es mejor que V03": false,
+        "Word2Vec improves sobre V03": false,
+        "el bayesiano mejora a V03": false,
+        "el bayesiano supera a V03": false
+      },
+      "variantes_prohibidas": [
+        "V03 is not the best verified leaderboard result",
+        "V03 remains the best verified result",
+        "Word2Vec es mejor que V03",
+        "Word2Vec improves sobre V03",
+        "el bayesiano supera a V03",
+        "el bayesiano mejora a V03"
+      ]
+    },
+    "estado": "CONFIRMADO",
+    "exito": true,
+    "id": "A18",
+    "naturaleza": "CONFIRMAR",
+    "stop": true,
+    "tolerancia": "las cuatro cadenas de formulacion presentes y ninguna variante prohibida",
+    "traza": ""
+  }
+}

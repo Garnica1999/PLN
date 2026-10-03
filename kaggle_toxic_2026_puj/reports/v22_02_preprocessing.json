@@ -1,0 +1,63 @@
+{
+  "experimento": "V22-02 (P1 control, P2 y P3: RAW frente al pipeline historico)",
+  "fecha": "2026-09-27T05:38:10+00:00",
+  "embedding": "FastText skipgram 200d sobre wikipedia_es 10M (fasttext-baseline de V5)",
+  "sin_entrenar": true,
+  "diccionario": "SIFTS del binario, identico en los dos brazos",
+  "control_de_cordura": {
+    "historiano": 0.7817662818999719,
+    "publicado": 0.781766,
+    "desviacion": 2.8189997192118454e-07,
+    "dentro_de_tolerancia": true
+  },
+  "cobertura": {
+    "HISTORICO": {
+      "tokens": 25539,
+      "tipos": 5447,
+      "cobertura_token": 1.0,
+      "cobertura_tipo": 1.0,
+      "longitud_media": 17.221173297370196,
+      "filas_con_documento_nulo": 0
+    },
+    "CRUDO": {
+      "tokens": 26996,
+      "tipos": 8080,
+      "cobertura_token": 0.74140613424211,
+      "cobertura_tipo": 0.5501237623762376,
+      "longitud_media": 18.203641267700608,
+      "filas_con_documento_nulo": 68
+    }
+  },
+  "resultados": [
+    {
+      "brazo": "HISTORICO",
+      "corrected_cv": 0.7817662818999719,
+      "delta_vs_v03": 0.004554829383399794,
+      "emb_solo": 0.6660854141835781,
+      "celdas": 136,
+      "rescates": 73,
+      "danios": 63,
+      "neto": 10
+    },
+    {
+      "brazo": "CRUDO",
+      "corrected_cv": 0.7688950909813549,
+      "delta_vs_v03": -0.008316361535217198,
+      "emb_solo": 0.6409332738122195,
+      "celdas": 133,
+      "rescates": 50,
+      "danios": 83,
+      "neto": -33
+    }
+  ],
+  "comparacion": {
+    "metricas": "HISTORICO - CRUDO",
+    "valor": 0.012871190918616993,
+    "veredicto": "HIPOTESIS_DE_PREPROCESSING_REFUTADA",
+    "razon": "El pipeline historico ya era el correcto. La Hipotesis 1 de V22 afirmaba que el embedding se usaba sobre un texto de tarea incompatible con el del corpus, pero V5.1 ya aplicaba normalizar_emb_normal al texto de la tarea, y apartarse de esa normalizacion empeora la metrica en vez de mejorarla. No habia un mismatch que corregir: habia una decision de diseno ya tomada correctamente"
+  },
+  "gastos": {
+    "modelos_entrenados": 0,
+    "submissions": 0
+  }
+}

@@ -1,0 +1,5 @@
+variante,lamina,componentes,corrected_cv,delta_vs_V03,ic95_0,ic95_1,f1_HS,f1_TR,f1_AG,salvage,damage,pliegues_positivos,gate_1_supera
+F0-control,0.0,ninguna,0.777211,0.0,0.0,0.0,0.7617,0.8157,0.7542,0,0,0,False
+F1-completo,0.5,"confianza,margen,estructural,densidad",0.777353,0.000142,-0.003279,0.003549,0.7619,0.8161,0.754,3,2,2,False
+F2-estructural,1.0,estructural,0.776179,-0.001032,-0.002576,0.000373,0.7615,0.8157,0.7513,0,0,1,False
+F3-agresivo,1.0,"confianza,margen,estructural,densidad",0.773089,-0.004122,-0.011144,0.002659,0.765,0.8058,0.7484,5,6,1,False

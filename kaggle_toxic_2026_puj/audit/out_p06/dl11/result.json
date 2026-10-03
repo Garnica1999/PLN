@@ -1,0 +1,14 @@
+{
+  "name": "dl11",
+  "script": "experiments/11_dl_desde_cero.py",
+  "exit": 0,
+  "duracion_s": 116.1,
+  "tracked_changed": [
+    "kaggle_toxic_2026_puj/experiments.csv",
+    "kaggle_toxic_2026_puj/reports/contexto.md",
+    "kaggle_toxic_2026_puj/reports/dl_desde_cero_resultados.csv",
+    "kaggle_toxic_2026_puj/reports/dl_desde_cero_resultados.json",
+    "kaggle_toxic_2026_puj/reports/figuras/fig_26_dl_curvas.png"
+  ],
+  "features_changed": []
+}

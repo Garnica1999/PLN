@@ -1,0 +1,11 @@
+{
+  "deteccion": {
+    "decision_epoca_sobre_ib": true,
+    "intervalo_bootstrap": true,
+    "mascara_despues_de_rnn": true,
+    "ocho_semillas": true,
+    "omitir_clip_en_reajuste": true,
+    "permutacion_con_sustitucion": true
+  },
+  "marca_corrida": "20261002T104743Z_p289246"
+}

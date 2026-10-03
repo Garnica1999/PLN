@@ -1,0 +1,89 @@
+{
+  "familia": "P73_TEXTCNN_WORD2VEC_RANDOM",
+  "experiment_id": "P73-03",
+  "fase": "segunda particion agrupada, robustez del hallazgo positivo",
+  "fecha": "2026-09-30T07:30:08+00:00",
+  "naturaleza": "ROBUSTEZ. Dos particiones adicionales sobre las MISMAS matrices y el mismo protocolo. Ninguna sustituye a la particion congelada",
+  "que_cambia": "solo el reparto en pliegues: la agrupacion por near-duplicados no cambia",
+  "que_NO_cambia": [
+    "semilla del modelo",
+    "arquitectura",
+    "dimension",
+    "corpus",
+    "matriz de embeddings entrenada",
+    "matriz aleatoria",
+    "init de la red",
+    "umbrales",
+    "regla de evaluacion"
+  ],
+  "semillas_de_particion": [
+    20261103,
+    20261104
+  ],
+  "resultados": [
+    {
+      "particion": "particion_20261103",
+      "a": 0.6134269894,
+      "b": 0.5789620754,
+      "delta": 0.0344649141,
+      "delta_por_pliegue": [
+        0.082937,
+        0.059817,
+        0.02162,
+        -0.020864,
+        0.03357
+      ],
+      "pliegues_que_gana_a": 4,
+      "bootstrap_media": 0.0342906151,
+      "ic95_bajo": 0.0140937289,
+      "ic95_alto": 0.0556797535,
+      "ic95_excluye_cero": true,
+      "todo_finito": true,
+      "sha_matriz_a": "c1b774e52e0e1dc131311bddea967e2a72a96e29",
+      "sha_matriz_b": "7cf929a9e79f8963ce37b0567e450e9f43a3d961"
+    },
+    {
+      "particion": "particion_20261104",
+      "a": 0.5876116947,
+      "b": 0.576326278,
+      "delta": 0.0112854167,
+      "delta_por_pliegue": [
+        0.016843,
+        -0.025835,
+        0.046331,
+        0.010448,
+        0.011194
+      ],
+      "pliegues_que_gana_a": 4,
+      "bootstrap_media": 0.0110342706,
+      "ic95_bajo": -0.0092762603,
+      "ic95_alto": 0.0316722737,
+      "ic95_excluye_cero": false,
+      "todo_finito": true,
+      "sha_matriz_a": "c1b774e52e0e1dc131311bddea967e2a72a96e29",
+      "sha_matriz_b": "7cf929a9e79f8963ce37b0567e450e9f43a3d961"
+    }
+  ],
+  "delta_medio": 0.0228751654,
+  "delta_minimo": 0.0112854167,
+  "delta_maximo": 0.0344649141,
+  "todas_positivas": true,
+  "todos_los_intervalos_excluyen_cero": false,
+  "segundos": 187.5,
+  "veredicto": "PARCIAL",
+  "referencia_p73_02": {
+    "delta": 0.0316259472,
+    "ic95": [
+      0.0100657802,
+      0.0534837793
+    ],
+    "particion": "la congelada"
+  },
+  "limites": [
+    "el hallazgo positivo de P73-02 viene de UNA sola tirada del control aleatorio. Dos particiones adicionales no miden la varianza de esa tirada, que es la amenaza principal y no se puede medir con el mandato vigente",
+    "el mandato de la fase prohibe otra semilla del modelo, luego esto mide varianza de PARTICION, no varianza de inicializacion"
+  ],
+  "test_tocado": false,
+  "holdout_tocado": false,
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

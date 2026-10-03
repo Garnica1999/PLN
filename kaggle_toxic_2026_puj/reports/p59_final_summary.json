@@ -1,0 +1,121 @@
+{
+  "familia": "P59_FINAL",
+  "fecha": "2026-09-28T14:38:20+00:00",
+  "baseline": {
+    "corrected_cv": "0.7772114525165721",
+    "LB": 0.78306,
+    "sha256": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e"
+  },
+  "pistas": [
+    {
+      "track": "P59-A",
+      "estado": "CLOSED",
+      "experimentos": 1,
+      "corrected_cv": 0.7796406441,
+      "delta_vs_V03": 0.0024291916,
+      "folds": "3/5",
+      "neto": -18
+    },
+    {
+      "track": "P59-C",
+      "estado": "MARGINAL",
+      "experimentos": 0,
+      "corrected_cv": null,
+      "delta_vs_V03": null,
+      "folds": "n/a",
+      "neto": null
+    },
+    {
+      "track": "P59-D",
+      "estado": "CLOSED",
+      "experimentos": 0,
+      "corrected_cv": null,
+      "delta_vs_V03": null,
+      "folds": "n/a",
+      "neto": null
+    },
+    {
+      "track": "P59-G",
+      "estado": "CLOSED_BY_DUPLICATION",
+      "experimentos": 0,
+      "corrected_cv": null,
+      "delta_vs_V03": null,
+      "folds": "n/a",
+      "neto": null
+    },
+    {
+      "track": "P59-H",
+      "estado": "CLOSED_BY_FUNCTIONAL_EQUIVALENCE",
+      "experimentos": 0,
+      "corrected_cv": null,
+      "delta_vs_V03": null,
+      "folds": "n/a",
+      "neto": null
+    },
+    {
+      "track": "P59-I",
+      "estado": "MARGINAL",
+      "experimentos": 1,
+      "corrected_cv": 0.7785171129,
+      "delta_vs_V03": 0.0013056604,
+      "folds": "4/5",
+      "neto": 4
+    },
+    {
+      "track": "P59-B",
+      "estado": "CLOSED",
+      "experimentos": 1,
+      "corrected_cv": 0.7765868373,
+      "delta_vs_V03": -0.0006246152,
+      "folds": "3/5",
+      "neto": -1
+    },
+    {
+      "track": "P59-T",
+      "estado": "CLOSED_BY_DUPLICATION",
+      "experimentos": 0,
+      "corrected_cv": null,
+      "delta_vs_V03": null,
+      "folds": "n/a",
+      "neto": null
+    },
+    {
+      "track": "P59-U",
+      "estado": "MARGINAL",
+      "experimentos": 1,
+      "corrected_cv": 0.77869146,
+      "delta_vs_V03": 0.0014800075,
+      "folds": "2/5",
+      "neto": 6
+    },
+    {
+      "track": "P59-E",
+      "estado": "MARGINAL",
+      "experimentos": 1,
+      "corrected_cv": 0.7773636094,
+      "delta_vs_V03": 9.88776e-05,
+      "folds": "2/5",
+      "neto": -5
+    },
+    {
+      "track": "P59-F",
+      "estado": "CLOSED_BY_DUPLICATION",
+      "experimentos": 0,
+      "corrected_cv": null,
+      "delta_vs_V03": null,
+      "folds": "n/a",
+      "neto": null
+    }
+  ],
+  "experimentos_consumidos": 5,
+  "presupuesto": {
+    "principales": 12,
+    "reserva": 2,
+    "usados": 5
+  },
+  "candidatos": 0,
+  "finalistas": 0,
+  "submissions": 0,
+  "conclusion": "P59 no encontro una fuente de informacion nueva que mejore V03. La dificultad se detecta y no se corrige; la frontera se mueve y las decisiones no; la calibracion mueve la metrica sin corregir nada",
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

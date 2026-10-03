@@ -1,0 +1,114 @@
+{
+  "familia": "P52_POLICY_ORACLE_AND_COMPLEMENTARITY",
+  "experimento": "V52-00 (auditoria de P51, utilidad y techo de politica)",
+  "fecha": "2026-09-28T01:57:52+00:00",
+  "estado": "AUDIT_ONLY",
+  "auditoria_de_p51": {
+    "target_S1U": "(u > 0) con u = utilidad[v, c] y utilidad construida con los conteos del pliegue de entrenamiento",
+    "target_S2U": "el mismo target binario; S2-U cambia la agregacion, no el target",
+    "umbral_S1U": 0.5,
+    "umbral_equilibrio_teorico": 0.389157,
+    "utilidad": "FN->TP escala con TP+FP+FN, FP->TN solo con TP, forma cerrada de v19_01_valor_de_correccion.py",
+    "espacio_de_acciones": "KEEP_V03 mas 20 canales, restringido a celdas en discrepancia",
+    "cross_fitting": "5 pliegues canonicos de TOXIC agrupados, objetivo y ajuste dentro del training fold",
+    "variables": 15,
+    "mezcla_direcciones": "SI: P51 usa una mascara unica de discrepancia y un solo clasificador por canal, luego mezcla las dos direcciones. P52 las separa, que es lo que exige la seccion 7",
+    "variables_que_entra": "P(j) = (canal_j == y) sobre celdas en discrepancia"
+  },
+  "utilidad_rederivada": {
+    "ganancia_up_FN_a_TP": 0.001402553801,
+    "ganancia_down_FP_a_TN": 0.000901233451,
+    "razon": 1.572947,
+    "equilibrio_up": 0.389157,
+    "equilibrio_down": 0.610843,
+    "suma_de_equilibrios": 1.0,
+    "tasa_base_up": 0.178571,
+    "tasa_base_down": 0.376111,
+    "elevacion_necesaria_up": 2.1793,
+    "elevacion_necesaria_down": 1.6241,
+    "reproduce_equilibrio_de_p51": true,
+    "reproduce_elevacion_subir_de_p51": true,
+    "corrige_elevacion_bajar_de_p51": true,
+    "elevacion_bajar_registrada_en_p51": 1.0347,
+    "nota_correccion": "P51 dividio (1 - equilibrio) por la tasa base al bajar, cuando el rescate al bajar es P(y=0) y su equilibrio es el propio eq_down. La elevacion real es mayor, luego la direccion 1->0 era mas dificil de lo que P51 reporto"
+  },
+  "techos": {
+    "V03": 0.7772114525,
+    "estrato_oof": 0.7549322355,
+    "STRATUM_ORACLE": 0.7753804469,
+    "TRUE_ORACLE": 0.9870178614,
+    "n_estratos": 18,
+    "hueco_coarsing_TRUE_menos_estrato": 0.2116374145,
+    "hueco_estrato_menos_V03": -0.0018310056
+  },
+  "exclusividad": {
+    "canales_con_net_exclusivo_positivo": 2,
+    "hhi_del_reparto_de_rescates": 0.002004,
+    "rescate_maximo_de_un_canal": 337,
+    "rescate_minimo_de_un_canal": 71,
+    "celdas_con_rescate_unico": 78
+  },
+  "pares": {
+    "analizados": 190,
+    "lift_union_maximo": 1.0,
+    "pares_con_exclusividad_bilateral": 0
+  },
+  "correlacion_de_error_en_regimen_v03_wrong": {
+    "minima": -0.159824,
+    "maxima": 1.0,
+    "media": 0.185938,
+    "pares_por_encima_de_0p5": 14,
+    "n_grupos_a_distancia_0p65": 6
+  },
+  "curva_de_valor": [
+    {
+      "umbral": 0.1,
+      "n_cambiadas": 233,
+      "net": 225
+    },
+    {
+      "umbral": 0.2,
+      "n_cambiadas": 233,
+      "net": 225
+    },
+    {
+      "umbral": 0.3,
+      "n_cambiadas": 233,
+      "net": 225
+    },
+    {
+      "umbral": 0.3892,
+      "n_cambiadas": 233,
+      "net": 225
+    },
+    {
+      "umbral": 0.4,
+      "n_cambiadas": 233,
+      "net": 225
+    },
+    {
+      "umbral": 0.5,
+      "n_cambiadas": 203,
+      "net": 203
+    },
+    {
+      "umbral": 0.6,
+      "n_cambiadas": 203,
+      "net": 203
+    },
+    {
+      "umbral": 0.7,
+      "n_cambiadas": 203,
+      "net": 203
+    }
+  ],
+  "caso": "C",
+  "gastos": {
+    "submissions": 0,
+    "modelos_entrenados": 0,
+    "consultas_kaggle": 0,
+    "uso_holdout": 0,
+    "uso_test": 0,
+    "segundos": 0.1
+  }
+}

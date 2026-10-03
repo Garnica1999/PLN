@@ -1,0 +1,11 @@
+{
+  "name": "v7_03",
+  "script": "experiments/v7_03_umbral_anidado.py",
+  "exit": 0,
+  "duracion_s": 13.1,
+  "tracked_changed": [
+    "kaggle_toxic_2026_puj/reports/v7_umbral_anidado.json",
+    "kaggle_toxic_2026_puj/reports/v7_umbral_anidado.md"
+  ],
+  "features_changed": []
+}

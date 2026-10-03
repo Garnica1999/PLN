@@ -1,0 +1,143 @@
+{
+  "familia": "P61_FINAL",
+  "fecha": "2026-09-28T21:12:26+00:00",
+  "pregunta": "el limite de V03 se debe a la capacidad, a la diversidad, a la forma de las probabilidades o a una combinacion",
+  "respuesta": "ninguno de los tres mecanismos resulta explotable; el diagnostico senala representacion, porque el 60 al 68 por ciento de los errores son de alta confianza con distancia al umbral mayor que la de los aciertos",
+  "experimentos": 3,
+  "presupuesto": 8,
+  "gastado": 3,
+  "reservas_gastadas": 0,
+  "submissions": 0,
+  "kaggle": 0,
+  "holdout": 0,
+  "test": 0,
+  "p61_01_lightgbm": {
+    "cambio_de_familia_1_menos_0": -0.0302397191,
+    "optimizacion_2_menos_1": 0.0043934168,
+    "total_2_menos_0": -0.0258463023
+  },
+  "p61_02_ensemble_delta": 0.006304507,
+  "p61_03_segunda_particion": {
+    "test1": -0.0011527969,
+    "test2_medio": -0.0015908404,
+    "test3_control_negativo": 0.0059889238,
+    "bootstrap": [
+      -0.011307,
+      0.031095
+    ]
+  },
+  "inventario": {
+    "modelos_por_encima_de_V03": 0,
+    "modelos_por_encima_de_V03_nombre": [],
+    "modelos_con_rescate_unico": 19,
+    "modelos_con_neto_positivo": 0,
+    "modelos_bajo_0,770_con_rescate": [
+      "base:M1_word_lr",
+      "base:M4_char_lr",
+      "synt:SYN-POS",
+      "synt:SYN-DEPS",
+      "synt:SYN-MORPH",
+      "synt:SYN-3",
+      "cita:CITA",
+      "cita:NEG",
+      "emoc:EMO-EST@C=2.0",
+      "emoc:EMO-LEX@C=1.0",
+      "emoc:EMO-ALL@C=1.0",
+      "emoc:NB-WORD-LR@C=1.0",
+      "emoc:NB-CHAR-LR@C=1.0",
+      "emoc:NB-UNION-LR@C=1.0",
+      "emoc:NB-UNION-SVC@C=1.0",
+      "emoc:ORT-A@C=1.0",
+      "emoc:ORT-ABCD@C=2.0",
+      "emoc:ORT-AE@C=2.0"
+    ],
+    "veredicto": "NO HAY combinacion de calidad y diversidad infrautilizada entre los canales historicos: ninguno supera a V03, ninguno tiene neto positivo frente a V03, y los que aportan rescates unicos estan entre 0,04 y 0,21 por debajo en corrected_cv y aportan menos rescates que danos"
+  },
+  "eda": {
+    "n_celdas": 4449,
+    "errores_de_alta_confianza": {
+      "HS": [
+        {
+          "delta": 0.1,
+          "n_errores_de_alta_confianza": 189,
+          "n_errores_totales": 316,
+          "porcentaje_de_los_errores": 0.598101
+        },
+        {
+          "delta": 0.2,
+          "n_errores_de_alta_confianza": 90,
+          "n_errores_totales": 316,
+          "porcentaje_de_los_errores": 0.28481
+        },
+        {
+          "delta": 0.3,
+          "n_errores_de_alta_confianza": 42,
+          "n_errores_totales": 316,
+          "porcentaje_de_los_errores": 0.132911
+        }
+      ],
+      "TR": [
+        {
+          "delta": 0.1,
+          "n_errores_de_alta_confianza": 111,
+          "n_errores_totales": 164,
+          "porcentaje_de_los_errores": 0.676829
+        },
+        {
+          "delta": 0.2,
+          "n_errores_de_alta_confianza": 71,
+          "n_errores_totales": 164,
+          "porcentaje_de_los_errores": 0.432927
+        },
+        {
+          "delta": 0.3,
+          "n_errores_de_alta_confianza": 40,
+          "n_errores_totales": 164,
+          "porcentaje_de_los_errores": 0.243902
+        }
+      ],
+      "AG": [
+        {
+          "delta": 0.1,
+          "n_errores_de_alta_confianza": 166,
+          "n_errores_totales": 277,
+          "porcentaje_de_los_errores": 0.599278
+        },
+        {
+          "delta": 0.2,
+          "n_errores_de_alta_confianza": 96,
+          "n_errores_totales": 277,
+          "porcentaje_de_los_errores": 0.34657
+        },
+        {
+          "delta": 0.3,
+          "n_errores_de_alta_confianza": 48,
+          "n_errores_totales": 277,
+          "porcentaje_de_los_errores": 0.173285
+        }
+      ]
+    },
+    "calibracion": {
+      "HS": {
+        "brier": 0.14855146,
+        "log_loss": 0.46078122,
+        "ece": 0.04875444,
+        "n_cubos": 10
+      },
+      "TR": {
+        "brier": 0.0893074,
+        "log_loss": 0.30819653,
+        "ece": 0.06822897,
+        "n_cubos": 10
+      },
+      "AG": {
+        "brier": 0.1394537,
+        "log_loss": 0.44177054,
+        "ece": 0.05959063,
+        "n_cubos": 10
+      }
+    }
+  },
+  "criterio_de_cierre_cumplido": true,
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

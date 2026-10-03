@@ -1,0 +1,11 @@
+{
+  "experimento": "V9-05 (H3)",
+  "fecha": "2026-09-26",
+  "sdr_6_features_umbrales_v03": 0.706633519325746,
+  "svd_6_componentes_umbrales_v03": 0.653145221941144,
+  "referencia_v03": 0.7772114525165721,
+  "delta_sdr_vs_svd": 0.053488,
+  "delta_mejor_vs_v03": -0.070578,
+  "veredicto": "SDR SUPERA A SVD",
+  "duracion_segundos": 2.04
+}

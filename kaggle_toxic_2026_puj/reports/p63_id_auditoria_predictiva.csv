@@ -1,0 +1,6 @@
+brazo,corrected_cv,delta_vs_V03,descripcion
+V03,0.7772114525,0.0,"control congelado, leido del OOF canonico"
+id_solo,0.4191359898,-0.3580754627,"percentil de rango, 10 bins y 10 modulos"
+random_solo,0.4240383,-0.3531731525,"control de capacidad, 21 rasgos aleatorios"
+id_solo_permutado_max,0.4379545936,-0.3392568589,"maximo de 20 permutaciones, el suelo a superar"
+random_solo_permutado_media,0.4192740806,-0.3579373719,media del control de capacidad con etiquetas mezcladas

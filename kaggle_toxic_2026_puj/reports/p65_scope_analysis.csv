@@ -1,0 +1,5 @@
+mecanismo,filas,porcentaje,marcas_o_pares,error_con,error_sin,diferencial,brecha_capacidad,brecha_margen
+alcance_de_contraste,85,5.73,485,0.184314,0.169289,0.015025,-0.0025975101,0.0086950072
+hueco_1_2,1483,100.0,45193,,,,-0.0012639075,0.0100286097
+hueco_3_5,1472,99.26,56744,,,,-0.0067644265,0.0045280907
+hueco_6_10,1314,88.6,68018,,,,-0.0076514298,0.0036410874

@@ -29,5 +29,6 @@
     "solo_finalistas": true,
     "registro": "RUNLOG.md"
   },
-  "hash_ids_csv": "e5b62e5f22c4c63a8c43df4019969504d44c0baa5b503c19ba3560032f5ee6cd"
+  "hash_ids_csv": "e5b62e5f22c4c63a8c43df4019969504d44c0baa5b503c19ba3560032f5ee6cd",
+  "correccion_auditoria_2026_10_02": "se detecto un sexto uso no registrado del holdout (experiments/v33_01_validacion.py, 2026-09-27, mismo valor que P7-01); el registro reports/holdout_evaluaciones_v2.csv se completo el 2026-10-02 y el limite de 5 quedo excedido; no se anaden mas evaluaciones"
 }

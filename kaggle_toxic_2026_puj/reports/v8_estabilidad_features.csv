@@ -1,0 +1,4 @@
+umbral_estabilidad,caracteristicas_medias,caracteristicas_min,caracteristicas_max,metrica,diferencia,ic95_0,ic95_1,pliegues_positivos,gate_delta,gate_ic95,gate_pliegues,gate_supera,celdas,filas,tasa_acierto,minimo_requerido,filtro_pasa
+0.5,1636,1609,1674,0.773904,-0.003308,-0.012178,0.005577,1,False,False,False,False,184,160,0.4402,0.5522,False
+0.7,927,900,954,0.772583,-0.004628,-0.015327,0.006313,1,False,False,False,False,266,224,0.4436,0.5361,False
+0.9,455,432,479,0.758321,-0.01889,-0.031545,-0.006104,0,False,False,False,False,374,294,0.393,0.5257,False

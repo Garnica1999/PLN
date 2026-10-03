@@ -1,0 +1,7 @@
+area,claim,evidence,status
+thresholds,optimizar umbrales sobre el mismo OOF infla la metrica,+0.0036 (0.777211 -> 0.7808),CONFIRMADO
+thresholds,reutilizar OOF de otros pliegues como calibracion deja sesgo residual,nested reuso = 0.778137 vs congelado 0.777211 (delta +0.000925); E2-16 citaba 0.776613,CUANTIFICADO
+thresholds,el optimo historico 0.44/0.51/0.46 se reproduce sobre el OOF guardado,"optimos = {'HS': 0.44, 'TR': 0.51, 'AG': 0.46}; ganancia vs 0.5 = +0.0063 (la ganancia es sesgo de seleccion si se reporta sobre el mismo OOF)",CONFIRMADO
+test_contamination,ningun texto de test aparece en los corpus externos (txt + gz),2118 patrones sobre 32 txt y 1 gz; coincidencias = 0,LIMPIO
+features,features/v2_structured_features.parquet contiene solo ids de train,2885 ids; fuera de train = 1154,REVISAR
+corpus,el manifiesto no registra sha256 por archivo construido (solo fuentes),corpus_construidos con 4 entradas; sin campos de hash utilizables,UNKNOWN

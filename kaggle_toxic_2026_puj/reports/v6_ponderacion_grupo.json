@@ -1,0 +1,82 @@
+{
+  "experimento": "V6-03 (A0-A3)",
+  "fecha": "2026-09-26T01:29:42+00:00",
+  "referencia_v03": 0.777211,
+  "esquemas": {
+    "A0-control": "w = 1 para todos (control: debe reproducir V03 exactamente)",
+    "A1-sqrt": "w = 1 / sqrt(g): el grupo grande pierde peso sin desaparecer",
+    "A2-inversa": "w = 1 / g: la version agresiva, el grupo grande casi no pesa",
+    "A3-tope": "w = min(1 / g, 0.25): limita el dano de A2 en grupos enormes"
+  },
+  "tope_a3": 0.25,
+  "gate_1": {
+    "delta": 0.003,
+    "pliegues_minimos": 4
+  },
+  "variantes": [
+    {
+      "variante": "A0-control",
+      "corrected_cv": 0.777211,
+      "delta_vs_V03": 0.0,
+      "ic95_0": 0.0,
+      "ic95_1": 0.0,
+      "f1_HS": 0.7617,
+      "f1_TR": 0.8157,
+      "f1_AG": 0.7542,
+      "salvage": 0,
+      "damage": 0,
+      "gate_1_delta": false,
+      "gate_1_ic95": false,
+      "pliegues_positivos": 0,
+      "gate_1_supera": false
+    },
+    {
+      "variante": "A1-sqrt",
+      "corrected_cv": 0.777768,
+      "delta_vs_V03": 0.000557,
+      "ic95_0": -0.0029,
+      "ic95_1": 0.004046,
+      "f1_HS": 0.7638,
+      "f1_TR": 0.8153,
+      "f1_AG": 0.7542,
+      "salvage": 0,
+      "damage": 2,
+      "gate_1_delta": false,
+      "gate_1_ic95": false,
+      "pliegues_positivos": 3,
+      "gate_1_supera": false
+    },
+    {
+      "variante": "A2-inversa",
+      "corrected_cv": 0.777415,
+      "delta_vs_V03": 0.000204,
+      "ic95_0": -0.004486,
+      "ic95_1": 0.005122,
+      "f1_HS": 0.7674,
+      "f1_TR": 0.8153,
+      "f1_AG": 0.7496,
+      "salvage": 2,
+      "damage": 3,
+      "gate_1_delta": false,
+      "gate_1_ic95": false,
+      "pliegues_positivos": 2,
+      "gate_1_supera": false
+    },
+    {
+      "variante": "A3-tope",
+      "corrected_cv": 0.762334,
+      "delta_vs_V03": -0.014877,
+      "ic95_0": -0.024033,
+      "ic95_1": -0.005747,
+      "f1_HS": 0.7532,
+      "f1_TR": 0.7939,
+      "f1_AG": 0.7399,
+      "salvage": 12,
+      "damage": 5,
+      "gate_1_delta": false,
+      "gate_1_ic95": false,
+      "pliegues_positivos": 1,
+      "gate_1_supera": false
+    }
+  ]
+}

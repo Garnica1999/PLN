@@ -1,0 +1,4 @@
+id,descripcion,unico_parametro,C,min_df,umbrales,corrected_cv,delta_cv,celdas_modificadas,neto_0a1_menos_1a0,fichero,sha256,submission_id,kaggle_f1,delta_lb
+v16_ch7_C1p5,V03 exacta salvo C=1.5,"C, de 2.0 a 1.5",1.5,2,"0.44/0.51/0.46, los de V03 sin cambio",0.7766532665707371,-0.0005581859458350102,101,5,toxic_submission_v16_ch7_C1p5.csv,197feee3a4b6a64a3def249b0b0265491172da521e98c4b25bbd40e7d9530456,,,
+v16_ch8_C2p5,V03 exacta salvo C=2.5,"C, de 2.0 a 2.5",2.5,2,"0.44/0.51/0.46, los de V03 sin cambio",0.7767521531575442,-0.0004592993590278871,115,-17,toxic_submission_v16_ch8_C2p5.csv,2a533a442ab0a8a30b4ba46f56b6a32386baf848730da02e0a5a2bc286c3fb90,,,
+v16_ch9_mindf1,V03 exacta salvo min_df=1,"min_df, de 2 a 1",2.0,1,"0.44/0.51/0.46, los de V03 sin cambio",0.7655315158596597,-0.01167993665691236,140,-22,toxic_submission_v16_ch9_mindf1.csv,827da9e7f695b7b69c6cc03558d796d18670f47227a8916cc663c42eb9b94449,,,

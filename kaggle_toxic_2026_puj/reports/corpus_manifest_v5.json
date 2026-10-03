@@ -1,0 +1,919 @@
+{
+  "schema": "kaggle_toxic_2026_puj.corpus_manifest.v5",
+  "creado": "2026-09-25T21:07:57+00:00",
+  "preprocessing_version": "v5.0-EMB-NORMAL",
+  "autorizacion": {
+    "decision": "D-030",
+    "alcance": "corpus externos no etiquetados solo para aprender la representacion distribuida",
+    "prohibido": [
+      "entrenamiento supervisado con datos externos",
+      "generacion de labels",
+      "pseudo-labeling",
+      "ajuste de thresholds"
+    ],
+    "evidencia_documental": "no existe documento escrito archivado; se registra solo lo comunicado por el usuario"
+  },
+  "referencia": {
+    "modelo": "V03",
+    "corrected_cv": 0.777211,
+    "kaggle_lb": 0.78306
+  },
+  "escalas_planificadas": [
+    {
+      "tokens": 10000000,
+      "estado": "planificada",
+      "id": "E-CORP-01"
+    },
+    {
+      "tokens": 50000000,
+      "estado": "condicionada",
+      "id": "E-CORP-02"
+    },
+    {
+      "tokens": 100000000,
+      "estado": "condicionada",
+      "id": "E-CORP-03"
+    },
+    {
+      "tokens": 250000000,
+      "estado": "condicionada",
+      "id": "E-CORP-04"
+    },
+    {
+      "tokens": 500000000,
+      "estado": "condicionada",
+      "id": "E-CORP-05"
+    }
+  ],
+  "fuentes": [
+    {
+      "nombre": "wikipedia_es",
+      "prioridad": 1,
+      "rol": "general",
+      "url": "https://dumps.wikimedia.org/eswiki/latest/",
+      "recurso": "eswiki-latest-pages-articles.xml.bz2 (y variante multistream)",
+      "licencia": "CC BY-SA 4.0 (atribucion obligatoria)",
+      "acceso": "publico, sin registro",
+      "tamano_comprimido_bytes": 5191883818,
+      "version": "latest (fecha del dump en la entrada de descarga)",
+      "estado": "verificada_disponible",
+      "nota": "Fuente principal de P1; se descargara por multistream solo el tramo necesario para 10M tokens."
+    },
+    {
+      "nombre": "m_c4_es",
+      "prioridad": 2,
+      "rol": "web",
+      "url": "https://huggingface.co/datasets/allenai/c4",
+      "recurso": "config `es`, shards .json.gz",
+      "licencia": "ODC-BY (Common Crawl); se documenta con el corpus",
+      "acceso": "publico, sin gating (verificado el 2026-09-25)",
+      "tamano_comprimido_bytes": null,
+      "version": "a fijar al descargar (commit del dataset)",
+      "estado": "verificada_disponible",
+      "nota": "Fuente web principal de P2, en sustitucion de OSCAR, que esta gated."
+    },
+    {
+      "nombre": "oscar_es",
+      "prioridad": 4,
+      "rol": "web",
+      "url": "https://huggingface.co/datasets/oscar-corpus/OSCAR-2301",
+      "recurso": "shards por idioma",
+      "licencia": "CC BY 4.0 (segun ficha del dataset)",
+      "acceso": "gated manual: requiere cuenta y aceptacion de terminos",
+      "tamano_comprimido_bytes": null,
+      "version": "OSCAR-2301",
+      "estado": "no_utilizable_sin_acceso_autorizado",
+      "nota": "Solo se usa si el usuario consigue acceso legitimo. No se aplican mecanismos para saltar el gating."
+    },
+    {
+      "nombre": "hplt_es",
+      "prioridad": 4,
+      "rol": "web",
+      "url": "https://huggingface.co/datasets/HPLT/HPLT2.0_cleaned",
+      "recurso": "config `es`",
+      "licencia": "a verificar antes de usar (no asumida)",
+      "acceso": "publico, sin gating (verificado el 2026-09-25)",
+      "tamano_comprimido_bytes": null,
+      "version": "HPLT 2.0 cleaned",
+      "estado": "candidata_requiere_evaluacion_previa",
+      "nota": "Solo se incorpora si aporta informacion marginal frente a Wikipedia y mC4."
+    },
+    {
+      "nombre": "cereal_es",
+      "prioridad": 4,
+      "rol": "web",
+      "url": "https://github.com/lang-uk/cereal",
+      "recurso": "distribucion web espanola",
+      "licencia": "a verificar",
+      "acceso": "no localizada en la auditoria inicial (404)",
+      "tamano_comprimido_bytes": null,
+      "version": "n/d",
+      "estado": "no_localizada",
+      "nota": "No es requisito para continuar (D-030)."
+    }
+  ],
+  "corpus_construidos": [
+    {
+      "id": "E-CORP-01",
+      "source": "wikipedia_es",
+      "url": "https://dumps.wikimedia.org/eswiki/latest/eswiki-latest-pages-articles-multistream1.xml-p1p159400.bz2",
+      "resource": "eswiki-latest-pages-articles-multistream1.xml-p1p159400.bz2",
+      "version": "eswiki latest (dump del 2026-09-25)",
+      "license": "CC BY-SA 4.0 (atribucion obligatoria) y texto de MediaWiki bajo CC BY-SA/GFDL",
+      "download_date": "2026-09-25",
+      "raw_file": "eswiki-latest-pages-articles-multistream1.xml-p1p159400.bz2",
+      "raw_sha256": "3248f107590e6a00e458fdce09616bb22726d78fe3f40106f5a1a7b05d50dabc",
+      "raw_size": 320394578,
+      "document_count": 2847,
+      "token_count": 10002400,
+      "vocabulary_size": 271209,
+      "shards": [
+        "data/external/corpora/wikipedia_es/emb_normal/tokens_shard_00.txt",
+        "data/external/corpora/wikipedia_es/emb_normal/tokens_shard_01.txt",
+        "data/external/corpora/wikipedia_es/emb_normal/tokens_shard_02.txt",
+        "data/external/corpora/wikipedia_es/emb_normal/tokens_shard_03.txt",
+        "data/external/corpora/wikipedia_es/emb_normal/tokens_shard_04.txt"
+      ],
+      "clean_size": 63152231,
+      "preprocessing": {
+        "version": "v5.0-EMB-NORMAL",
+        "variante": "EMB-NORMAL",
+        "minusculas": true,
+        "tildes": "conservadas",
+        "corrector_ortografico": false,
+        "urls": "marcador `url`",
+        "menciones": "marcador `usuario`",
+        "hashtags": "marcador `hashtag`",
+        "numeros": "marcador `numero`",
+        "deduplicacion": "sha1 del texto limpio",
+        "minimo_tokens_documento": 20
+      },
+      "pipeline": {
+        "articulos_leidos": 2855,
+        "duplicados_descartados": 0,
+        "documentos_cortos_descartados": 8,
+        "sin_texto_util": 0
+      },
+      "auditoria_fuga": {
+        "n_gramas": 8,
+        "textos_con_coincidencia": 0,
+        "cumple": true
+      },
+      "cobertura_toxic": {
+        "train": {
+          "n_types": 6059,
+          "n_tokens": 29646,
+          "type_coverage": 0.7042,
+          "token_coverage": 0.8831,
+          "frequency_weighted_coverage": 0.8831,
+          "oov_rate_types": 0.2958,
+          "oov_rate_tokens": 0.1169,
+          "n_word_oov": 1792,
+          "n_representation_oov": 0,
+          "representation_oov_rate": 0.0,
+          "mediana_norma_probe": 2.972006,
+          "n_word_oov_resolubles_por_ascii": 155,
+          "tasa_oov_por_ascii": 0.0865,
+          "n_word_oov_resolubles_por_esqueleto": 1208,
+          "tasa_oov_por_esqueleto": 0.6741,
+          "type_coverage_proyeccion_ascii": 0.7298,
+          "type_coverage_proyeccion_esqueleto": 0.9036,
+          "ejemplos_oov_resolubles_por_ascii": [
+            {
+              "tipo": "ademas",
+              "ascii": "ademas"
+            },
+            {
+              "tipo": "afirmo",
+              "ascii": "afirmo"
+            },
+            {
+              "tipo": "agarro",
+              "ascii": "agarro"
+            },
+            {
+              "tipo": "agil",
+              "ascii": "agil"
+            },
+            {
+              "tipo": "alfonsin",
+              "ascii": "alfonsin"
+            },
+            {
+              "tipo": "algun",
+              "ascii": "algun"
+            },
+            {
+              "tipo": "apunto",
+              "ascii": "apunto"
+            },
+            {
+              "tipo": "arabe",
+              "ascii": "arabe"
+            },
+            {
+              "tipo": "arabes",
+              "ascii": "arabes"
+            },
+            {
+              "tipo": "arrastrara",
+              "ascii": "arrastrara"
+            },
+            {
+              "tipo": "atencion",
+              "ascii": "atencion"
+            },
+            {
+              "tipo": "atras",
+              "ascii": "atras"
+            },
+            {
+              "tipo": "biologa",
+              "ascii": "biologa"
+            },
+            {
+              "tipo": "cabron",
+              "ascii": "cabron"
+            },
+            {
+              "tipo": "callate",
+              "ascii": "callate"
+            }
+          ],
+          "ejemplos_oov_resolubles_por_esqueleto": [
+            {
+              "tipo": "aadidle",
+              "esqueleto": "ddl"
+            },
+            {
+              "tipo": "ablarme",
+              "esqueleto": "blrm"
+            },
+            {
+              "tipo": "abrazarte",
+              "esqueleto": "brzrt"
+            },
+            {
+              "tipo": "acabarn",
+              "esqueleto": "cbrn"
+            },
+            {
+              "tipo": "acabas",
+              "esqueleto": "cbs"
+            },
+            {
+              "tipo": "acmbaro",
+              "esqueleto": "cmbr"
+            },
+            {
+              "tipo": "acompaada",
+              "esqueleto": "cmpd"
+            },
+            {
+              "tipo": "acordais",
+              "esqueleto": "crds"
+            },
+            {
+              "tipo": "acosos",
+              "esqueleto": "css"
+            },
+            {
+              "tipo": "acostaria",
+              "esqueleto": "cstr"
+            },
+            {
+              "tipo": "acten",
+              "esqueleto": "ctn"
+            },
+            {
+              "tipo": "activist",
+              "esqueleto": "ctvst"
+            },
+            {
+              "tipo": "actuacin",
+              "esqueleto": "ctcn"
+            },
+            {
+              "tipo": "acusacin",
+              "esqueleto": "cscn"
+            },
+            {
+              "tipo": "ademas",
+              "esqueleto": "dms"
+            }
+          ]
+        },
+        "test": {
+          "n_types": 4503,
+          "n_tokens": 19204,
+          "type_coverage": 0.7213,
+          "token_coverage": 0.8837,
+          "frequency_weighted_coverage": 0.8837,
+          "oov_rate_types": 0.2787,
+          "oov_rate_tokens": 0.1163,
+          "n_word_oov": 1255,
+          "n_representation_oov": 0,
+          "representation_oov_rate": 0.0,
+          "mediana_norma_probe": 2.977799,
+          "n_word_oov_resolubles_por_ascii": 109,
+          "tasa_oov_por_ascii": 0.0869,
+          "n_word_oov_resolubles_por_esqueleto": 848,
+          "tasa_oov_por_esqueleto": 0.6757,
+          "type_coverage_proyeccion_ascii": 0.7455,
+          "type_coverage_proyeccion_esqueleto": 0.9096,
+          "ejemplos_oov_resolubles_por_ascii": [
+            {
+              "tipo": "abon",
+              "ascii": "abon"
+            },
+            {
+              "tipo": "aceptalo",
+              "ascii": "aceptalo"
+            },
+            {
+              "tipo": "ademas",
+              "ascii": "ademas"
+            },
+            {
+              "tipo": "aguila",
+              "ascii": "aguila"
+            },
+            {
+              "tipo": "ahi",
+              "ascii": "ahi"
+            },
+            {
+              "tipo": "albondigas",
+              "ascii": "albondigas"
+            },
+            {
+              "tipo": "amig",
+              "ascii": "amig"
+            },
+            {
+              "tipo": "arabe",
+              "ascii": "arabe"
+            },
+            {
+              "tipo": "arabes",
+              "ascii": "arabes"
+            },
+            {
+              "tipo": "baha",
+              "ascii": "baha"
+            },
+            {
+              "tipo": "basicamente",
+              "ascii": "basicamente"
+            },
+            {
+              "tipo": "bida",
+              "ascii": "bida"
+            },
+            {
+              "tipo": "biologa",
+              "ascii": "biologa"
+            },
+            {
+              "tipo": "cabron",
+              "ascii": "cabron"
+            },
+            {
+              "tipo": "callate",
+              "ascii": "callate"
+            }
+          ],
+          "ejemplos_oov_resolubles_por_esqueleto": [
+            {
+              "tipo": "abandononde",
+              "esqueleto": "bndnnd"
+            },
+            {
+              "tipo": "aburre",
+              "esqueleto": "brr"
+            },
+            {
+              "tipo": "aceptalo",
+              "esqueleto": "cptl"
+            },
+            {
+              "tipo": "aceptas",
+              "esqueleto": "cpts"
+            },
+            {
+              "tipo": "aclaren",
+              "esqueleto": "clrn"
+            },
+            {
+              "tipo": "acorralen",
+              "esqueleto": "crrln"
+            },
+            {
+              "tipo": "acosadores",
+              "esqueleto": "csdrs"
+            },
+            {
+              "tipo": "acosos",
+              "esqueleto": "css"
+            },
+            {
+              "tipo": "actuacin",
+              "esqueleto": "ctcn"
+            },
+            {
+              "tipo": "acueste",
+              "esqueleto": "cst"
+            },
+            {
+              "tipo": "ademas",
+              "esqueleto": "dms"
+            },
+            {
+              "tipo": "adems",
+              "esqueleto": "dms"
+            },
+            {
+              "tipo": "administracin",
+              "esqueleto": "dmnstrcn"
+            },
+            {
+              "tipo": "adrede",
+              "esqueleto": "drd"
+            },
+            {
+              "tipo": "agolpados",
+              "esqueleto": "glpds"
+            }
+          ]
+        },
+        "train+test": {
+          "n_types": 8555,
+          "n_tokens": 48850,
+          "type_coverage": 0.6839,
+          "token_coverage": 0.8833,
+          "frequency_weighted_coverage": 0.8833,
+          "oov_rate_types": 0.3161,
+          "oov_rate_tokens": 0.1167,
+          "n_word_oov": 2704,
+          "n_representation_oov": 0,
+          "representation_oov_rate": 0.0,
+          "mediana_norma_probe": 2.967605,
+          "n_word_oov_resolubles_por_ascii": 230,
+          "tasa_oov_por_ascii": 0.0851,
+          "n_word_oov_resolubles_por_esqueleto": 1802,
+          "tasa_oov_por_esqueleto": 0.6664,
+          "type_coverage_proyeccion_ascii": 0.7108,
+          "type_coverage_proyeccion_esqueleto": 0.8946,
+          "ejemplos_oov_resolubles_por_ascii": [
+            {
+              "tipo": "abon",
+              "ascii": "abon"
+            },
+            {
+              "tipo": "aceptalo",
+              "ascii": "aceptalo"
+            },
+            {
+              "tipo": "ademas",
+              "ascii": "ademas"
+            },
+            {
+              "tipo": "afirmo",
+              "ascii": "afirmo"
+            },
+            {
+              "tipo": "agarro",
+              "ascii": "agarro"
+            },
+            {
+              "tipo": "agil",
+              "ascii": "agil"
+            },
+            {
+              "tipo": "aguila",
+              "ascii": "aguila"
+            },
+            {
+              "tipo": "ahi",
+              "ascii": "ahi"
+            },
+            {
+              "tipo": "albondigas",
+              "ascii": "albondigas"
+            },
+            {
+              "tipo": "alfonsin",
+              "ascii": "alfonsin"
+            },
+            {
+              "tipo": "algun",
+              "ascii": "algun"
+            },
+            {
+              "tipo": "amig",
+              "ascii": "amig"
+            },
+            {
+              "tipo": "apunto",
+              "ascii": "apunto"
+            },
+            {
+              "tipo": "arabe",
+              "ascii": "arabe"
+            },
+            {
+              "tipo": "arabes",
+              "ascii": "arabes"
+            }
+          ],
+          "ejemplos_oov_resolubles_por_esqueleto": [
+            {
+              "tipo": "aadidle",
+              "esqueleto": "ddl"
+            },
+            {
+              "tipo": "abandononde",
+              "esqueleto": "bndnnd"
+            },
+            {
+              "tipo": "ablarme",
+              "esqueleto": "blrm"
+            },
+            {
+              "tipo": "abrazarte",
+              "esqueleto": "brzrt"
+            },
+            {
+              "tipo": "aburre",
+              "esqueleto": "brr"
+            },
+            {
+              "tipo": "acabarn",
+              "esqueleto": "cbrn"
+            },
+            {
+              "tipo": "acabas",
+              "esqueleto": "cbs"
+            },
+            {
+              "tipo": "aceptalo",
+              "esqueleto": "cptl"
+            },
+            {
+              "tipo": "aceptas",
+              "esqueleto": "cpts"
+            },
+            {
+              "tipo": "aclaren",
+              "esqueleto": "clrn"
+            },
+            {
+              "tipo": "acmbaro",
+              "esqueleto": "cmbr"
+            },
+            {
+              "tipo": "acompaada",
+              "esqueleto": "cmpd"
+            },
+            {
+              "tipo": "acordais",
+              "esqueleto": "crds"
+            },
+            {
+              "tipo": "acorralen",
+              "esqueleto": "crrln"
+            },
+            {
+              "tipo": "acosadores",
+              "esqueleto": "csdrs"
+            }
+          ]
+        }
+      },
+      "limitaciones": [
+        "Solo una parte del dump (paginas 1-159400): el orden del dump se respeta, por lo que la muestra se concentra en articulos antiguos.",
+        "El corpus no contiene registro web informal; esa limitacion se mide en la cobertura por grupo (coloquial, hashtags, elongation).",
+        "Wikipedia es texto enciclopedico: no es representativo de tweets."
+      ],
+      "processed_sha256": "00b839da6fbc377ee5375acc9a236e831e46ecf92cc544188b81aef1a826e871",
+      "processed_ruta": "data/external/corpora/wikipedia_es/emb_normal/tokens_10M.txt",
+      "processed_bytes": 63152231,
+      "corpus_version": "v5.0-EMB-NORMAL"
+    },
+    {
+      "id": "E-CORP-06",
+      "source": "m_c4_es",
+      "url": "https://huggingface.co/datasets/allenai/c4",
+      "resource": "multilingual/c4-es.tfrecord-00000-of-02048.json.gz (rango 0-41943039)",
+      "version": "allenai/c4, config multilingual/c4-es, shard 0 de 2048",
+      "license": "ODC-BY 1.0 (declarada en la ficha del dataset; el contenido deriva de Common Crawl)",
+      "download_date": "2026-09-25",
+      "raw_file": "c4es_shard0_tramo_40MB.json.gz",
+      "raw_sha256": "96ed39f4c18e17ade9f7e2f2b07e6b7da3138408ced77d45385873578195053f",
+      "raw_size": 41943040,
+      "document_count": 16738,
+      "token_count": 10000239,
+      "vocabulary_size": 309131,
+      "shards": [
+        "data/external/corpora/mc4_es/emb_normal/tokens_shard_00.txt",
+        "data/external/corpora/mc4_es/emb_normal/tokens_shard_01.txt",
+        "data/external/corpora/mc4_es/emb_normal/tokens_shard_02.txt",
+        "data/external/corpora/mc4_es/emb_normal/tokens_shard_03.txt",
+        "data/external/corpora/mc4_es/emb_normal/tokens_shard_04.txt"
+      ],
+      "preprocessing": {
+        "version": "v5.0-EMB-NORMAL",
+        "variante": "EMB-NORMAL",
+        "limpieza_especifica_web": [
+          "lineas repetidas dentro del documento (boilerplate de C4)",
+          "lineas < 40 caracteres sin digitos",
+          "lineas con mas de una URL",
+          "documentos con > 30 % de URL o > 25 % de digitos"
+        ],
+        "minimo_tokens_documento": 20
+      },
+      "pipeline": {
+        "documentos_leidos": 17092,
+        "sin_cuerpo_util": 87,
+        "duplicados_descartados": 1,
+        "documentos_cortos_descartados": 266
+      },
+      "cobertura_toxic": {
+        "web_10M": {
+          "n_types": 8555,
+          "n_tokens": 48850,
+          "type_coverage": 0.8256,
+          "token_coverage": 0.9512,
+          "oov_rate_types": 0.1744,
+          "n_word_oov": 1492
+        },
+        "mixto_20M": {
+          "n_types": 8555,
+          "n_tokens": 48850,
+          "type_coverage": 0.8413,
+          "token_coverage": 0.9553,
+          "oov_rate_types": 0.1587,
+          "n_word_oov": 1358
+        }
+      },
+      "limitaciones": [
+        "Es un **tramo** del shard 0 (13,9 % de 303 MB), no el shard completo: C4 no reordena dentro del shard, por lo que el tema de los primeros documentos puede sesgar la muestra. Se mitiga con la limpieza de boilerplate y con la medicion de cobertura, que es el criterio de decision.",
+        "El contenido de Common Crawl incluye paginas comerciales y de spam; la cobertura sube, pero la calidad semantica del corpus no esta garantizada."
+      ],
+      "processed_sha256": "361498bf3eca104d527759de68980ea358002aeeb27e57d0de8562fac79b4f97",
+      "processed_ruta": "data/external/corpora/mc4_es/emb_normal/tokens_10M.txt",
+      "processed_bytes": 62000589,
+      "corpus_version": "v5.0-EMB-NORMAL"
+    },
+    {
+      "id": "E-CORP-08",
+      "source": "wikipedia_es",
+      "url": "https://dumps.wikimedia.org/eswiki/latest/eswiki-latest-pages-articles-multistream1.xml-p1p159400.bz2",
+      "resource": "misma parte 1 del dump que E-CORP-01; sin descarga adicional",
+      "version": "eswiki latest (dump del 2026-09-25)",
+      "license": "CC BY-SA 4.0 (atribucion obligatoria) y texto de MediaWiki bajo CC BY-SA/GFDL",
+      "download_date": "2026-09-25",
+      "raw_sha256": "3248f107590e6a00e458fdce09616bb22726d78fe3f40106f5a1a7b05d50dabc",
+      "token_count": 50000028,
+      "document_count": 21529,
+      "vocabulary_size": 646957,
+      "shards": [
+        "data/external/corpora/wikipedia_es_50M/emb_normal/tokens_shard_00.txt",
+        "data/external/corpora/wikipedia_es_50M/emb_normal/tokens_shard_01.txt",
+        "data/external/corpora/wikipedia_es_50M/emb_normal/tokens_shard_02.txt",
+        "data/external/corpora/wikipedia_es_50M/emb_normal/tokens_shard_03.txt",
+        "data/external/corpora/wikipedia_es_50M/emb_normal/tokens_shard_04.txt",
+        "data/external/corpora/wikipedia_es_50M/emb_normal/tokens_shard_05.txt",
+        "data/external/corpora/wikipedia_es_50M/emb_normal/tokens_shard_06.txt",
+        "data/external/corpora/wikipedia_es_50M/emb_normal/tokens_shard_07.txt",
+        "data/external/corpora/wikipedia_es_50M/emb_normal/tokens_shard_08.txt",
+        "data/external/corpora/wikipedia_es_50M/emb_normal/tokens_shard_09.txt"
+      ],
+      "preprocessing": {
+        "version": "v5.0-EMB-NORMAL",
+        "nota": "pipeline identico al de E-CORP-01, reutilizado por importacion"
+      },
+      "pipeline": {
+        "articulos_leidos": 21561,
+        "duplicados_descartados": 0,
+        "documentos_cortos_descartados": 32
+      },
+      "cobertura_toxic": {
+        "n_types": 8555,
+        "type_coverage": 0.7703,
+        "token_coverage": 0.9238,
+        "oov_rate_types": 0.2297,
+        "n_word_oov": 1965,
+        "por_grupo": {
+          "elongaciones": {
+            "n_types": 113,
+            "n_tokens": 127,
+            "type_coverage": 0.1062,
+            "token_coverage": 0.1417,
+            "oov_rate": 0.8938,
+            "frecuencia_media_corpus": 3.7
+          },
+          "coloquial": {
+            "n_types": 56,
+            "n_tokens": 461,
+            "type_coverage": 0.25,
+            "token_coverage": 0.7223,
+            "oov_rate": 0.75,
+            "frecuencia_media_corpus": 2099.6
+          },
+          "insultos": {
+            "n_types": 72,
+            "n_tokens": 2402,
+            "type_coverage": 0.4583,
+            "token_coverage": 0.9617,
+            "oov_rate": 0.5417,
+            "frecuencia_media_corpus": 32.4
+          },
+          "formas_raras": {
+            "n_types": 6518,
+            "n_tokens": 7618,
+            "type_coverage": 0.7301,
+            "token_coverage": 0.746,
+            "oov_rate": 0.2699,
+            "frecuencia_media_corpus": 799.7
+          }
+        }
+      },
+      "racional_de_expansion": {
+        "id": "RATIONALE_FOR_CORPUS_EXPANSION-50M",
+        "fecha": "2026-09-25",
+        "experimento": "E-CORP-08",
+        "escala_anterior": 10000000,
+        "escala_nueva": 50000000,
+        "condiciones_de_la_seccion_30_que_se_cumplen": [
+          {
+            "condicion": "1. Cobertura",
+            "evidencia": "A 10M tokens se consumieron 2.847 de los 159.400 articulos disponibles en la parte 1 del dump (1,8 %). Los 50M tokens usan del orden de 12.000 articulos, todos dentro del archivo ya descargado: no hay descarga nueva."
+          },
+          {
+            "condicion": "2. Ganancia marginal de vocabulario",
+            "evidencia": "El corpus de 10M tiene 271.209 tipos crudos y 100.098 tras min_count=3. Los 50M amplian el mismo rango de articulos del dump, que incluye articulos de dominios distintos (biografias, municipios, musica, deporte) que el corte anterior no alcanzo."
+          },
+          {
+            "condicion": "3. Mejora downstream (mecanismo plausible, no demostrado)",
+            "evidencia": "En P4-P5 se observo que una mejor cobertura **si** mejora el embedding aislado (0.6530 -> 0.6658). Ese mecanismo justifica medir si mas tokens, con arquitectura fija, mejora tambien el modelo aislado y, con el, la aportacion marginal."
+          }
+        ],
+        "lo_que_no_se_afirma": "No se afirma que 50M tokens mejoren la aportacion complementaria. D-032 predice que no, y este experimento se lanza precisamente para medir esa prediccion en vez de suponerla.",
+        "coste": "Construccion ~1 min; entrenamiento 5 epocas x 50M tokens a 641.584 palabras/s = ~6,5 min por modelo. Descarga adicional: 0 bytes.",
+        "criterio_de_parada": "Si la aportacion complementaria no crece (IC95 tocando el 0) y el embedding aislado mejora solo marginalmente, no se escala a 100M: la conclusion de D-032 se confirma en la dimension de tamano y la fase se cierra."
+      },
+      "verificacion_prefijo": {
+        "tokens_10M": 10002400,
+        "tokens_50M": 50000000,
+        "los_10M_incluidos_son_identicos": true
+      },
+      "processed_sha256": "8088bce2a9283fbc835ab62efe3fb25f40af346f9a8003fe3d101619bbc32463",
+      "processed_ruta": "data/external/corpora/wikipedia_es_50M/emb_normal/tokens_50M.txt",
+      "processed_bytes": 310983187,
+      "corpus_version": "v5.0-EMB-NORMAL"
+    },
+    {
+      "id": "E-CORP-09",
+      "source": "wikipedia_es",
+      "url": "https://dumps.wikimedia.org/eswiki/latest/eswiki-latest-pages-articles-multistream1.xml-p1p159400.bz2",
+      "resource": "mismo tramo del dump que E-CORP-01; sin descarga adicional",
+      "version": "eswiki latest (dump del 2026-09-25)",
+      "license": "CC BY-SA 4.0 y texto de MediaWiki bajo CC BY-SA/GFDL",
+      "download_date": "2026-09-25",
+      "raw_sha256": "3248f107590e6a00e458fdce09616bb22726d78fe3f40106f5a1a7b05d50dabc",
+      "token_count": 5011404,
+      "document_count": 1694,
+      "vocabulary_size": 173942,
+      "shards": [
+        "data/external/corpora/wikipedia_es_5M/emb_normal/tokens_shard_00.txt"
+      ],
+      "preprocessing": {
+        "version": "v5.0-EMB-NORMAL",
+        "nota": "pipeline identico al de E-CORP-01 y E-CORP-08, importado sin reimplementar"
+      },
+      "pipeline": {
+        "articulos_leidos": 1699,
+        "duplicados_descartados": 0,
+        "documentos_cortos_descartados": 5
+      },
+      "cobertura_toxic": {
+        "n_types": 8555,
+        "type_coverage": 0.6302,
+        "token_coverage": 0.8646,
+        "n_word_oov": 3164,
+        "por_grupo": {
+          "elongaciones": {
+            "n_types": 113,
+            "n_tokens": 127,
+            "type_coverage": 0.0177,
+            "token_coverage": 0.0236,
+            "oov_rate": 0.9823,
+            "frecuencia_media_corpus": 2.5
+          },
+          "coloquial": {
+            "n_types": 56,
+            "n_tokens": 461,
+            "type_coverage": 0.2143,
+            "token_coverage": 0.692,
+            "oov_rate": 0.7857,
+            "frecuencia_media_corpus": 275.4
+          },
+          "insultos": {
+            "n_types": 72,
+            "n_tokens": 2402,
+            "type_coverage": 0.1667,
+            "token_coverage": 0.7544,
+            "oov_rate": 0.8333,
+            "frecuencia_media_corpus": 4.0
+          },
+          "formas_raras": {
+            "n_types": 6518,
+            "n_tokens": 7618,
+            "type_coverage": 0.5786,
+            "token_coverage": 0.5975,
+            "oov_rate": 0.4214,
+            "frecuencia_media_corpus": 99.1
+          }
+        }
+      },
+      "reduccion": {
+        "id": "REDUCCION_A_5M",
+        "fecha": "2026-09-25",
+        "motivo": "Completar la curva de aprendizaje de la seccion 10 por debajo del punto de partida de 10M, a peticion del usuario, para comprobar si la curva es monotona y si existe un suelo de calidad de la representacion por debajo de 10M tokens.",
+        "gobernanza": "La seccion 30 exige RATIONALE_FOR_CORPUS_EXPANSION para expandir. Una reduccion no es una expansion, de modo que no le aplica; se registra el motivo. Ademas la reduccion es un subconjunto exacto de un corpus ya construido: no hay descarga adicional, ni coste irreversible, ni riesgo de perder un corpus existente.",
+        "coste": "Construccion ~10 s; entrenamiento ~1 min por modelo con 5 epocas."
+      },
+      "verificacion_prefijo": {
+        "tokens_5M": 5011404,
+        "es_prefijo_exacto_de_10M": true
+      },
+      "processed_sha256": "62aaa19af45c31f8fe9e48340cac91ab74ba0a6d19b45a1ef6b853a80b310b59",
+      "processed_ruta": "data/external/corpora/wikipedia_es_5M/emb_normal/tokens_5M.txt",
+      "processed_bytes": 31485618,
+      "corpus_version": "v5.0-EMB-NORMAL"
+    }
+  ],
+  "reglas": [
+    "Ningun corpus se usa para aprendizaje supervisado (D-030).",
+    "Ningun texto de toxic_test.csv entra en el corpus.",
+    "La adaptacion de dominio con textos de TOXIC es in-fold y secundaria (spec 27).",
+    "Toda expansion exige RATIONALE_FOR_CORPUS_EXPANSION previo (spec 30)."
+  ],
+  "entorno": {
+    "nucleos": 32,
+    "ram_disponible_gb": 18.0,
+    "disco_libre_gb": 450.2,
+    "fasttext_sha256": "0307cde9a9e9dc02f2b688e4645ffbb38b8be2f80c33530777d7abd8a031f167",
+    "fasttext_commit": "1142dc4c4ecbc19cc16eee5cdd28472e689267e6"
+  },
+  "corpus_construidos_mixto": {
+    "id": "E-CORP-07",
+    "componentes": [
+      "wikipedia_10M",
+      "web_10M"
+    ],
+    "token_count": 20000045,
+    "ruta": "data/external/corpora/mixto/emb_normal/tokens_20M.txt",
+    "nota": "Union de los dos corpora a efectos de vocabulario; el archivo se construye concatenando los shards en el orden indicado.",
+    "processed_sha256": "1c562286dabe9dc4534c2acd4a313bcfa61329dfe73e5d30d35b8bf4c36d63c7",
+    "processed_ruta": "data/external/corpora/mixto/emb_normal/tokens_20M.txt",
+    "processed_bytes": 125137300,
+    "corpus_version": "v5.0-EMB-NORMAL"
+  },
+  "racionales_de_expansion": [
+    {
+      "id": "RATIONALE_FOR_CORPUS_EXPANSION-50M",
+      "fecha": "2026-09-25",
+      "experimento": "E-CORP-08",
+      "escala_anterior": 10000000,
+      "escala_nueva": 50000000,
+      "condiciones_de_la_seccion_30_que_se_cumplen": [
+        {
+          "condicion": "1. Cobertura",
+          "evidencia": "A 10M tokens se consumieron 2.847 de los 159.400 articulos disponibles en la parte 1 del dump (1,8 %). Los 50M tokens usan del orden de 12.000 articulos, todos dentro del archivo ya descargado: no hay descarga nueva."
+        },
+        {
+          "condicion": "2. Ganancia marginal de vocabulario",
+          "evidencia": "El corpus de 10M tiene 271.209 tipos crudos y 100.098 tras min_count=3. Los 50M amplian el mismo rango de articulos del dump, que incluye articulos de dominios distintos (biografias, municipios, musica, deporte) que el corte anterior no alcanzo."
+        },
+        {
+          "condicion": "3. Mejora downstream (mecanismo plausible, no demostrado)",
+          "evidencia": "En P4-P5 se observo que una mejor cobertura **si** mejora el embedding aislado (0.6530 -> 0.6658). Ese mecanismo justifica medir si mas tokens, con arquitectura fija, mejora tambien el modelo aislado y, con el, la aportacion marginal."
+        }
+      ],
+      "lo_que_no_se_afirma": "No se afirma que 50M tokens mejoren la aportacion complementaria. D-032 predice que no, y este experimento se lanza precisamente para medir esa prediccion en vez de suponerla.",
+      "coste": "Construccion ~1 min; entrenamiento 5 epocas x 50M tokens a 641.584 palabras/s = ~6,5 min por modelo. Descarga adicional: 0 bytes.",
+      "criterio_de_parada": "Si la aportacion complementaria no crece (IC95 tocando el 0) y el embedding aislado mejora solo marginalmente, no se escala a 100M: la conclusion de D-032 se confirma en la dimension de tamano y la fase se cierra."
+    }
+  ],
+  "reducciones_de_corpus": [
+    {
+      "id": "REDUCCION_A_5M",
+      "fecha": "2026-09-25",
+      "motivo": "Completar la curva de aprendizaje de la seccion 10 por debajo del punto de partida de 10M, a peticion del usuario, para comprobar si la curva es monotona y si existe un suelo de calidad de la representacion por debajo de 10M tokens.",
+      "gobernanza": "La seccion 30 exige RATIONALE_FOR_CORPUS_EXPANSION para expandir. Una reduccion no es una expansion, de modo que no le aplica; se registra el motivo. Ademas la reduccion es un subconjunto exacto de un corpus ya construido: no hay descarga adicional, ni coste irreversible, ni riesgo de perder un corpus existente.",
+      "coste": "Construccion ~10 s; entrenamiento ~1 min por modelo con 5 epocas."
+    }
+  ]
+}

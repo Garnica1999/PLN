@@ -1,0 +1,372 @@
+{
+  "familia": "P50_CONTEXTUAL_CHANNEL_SELECTION",
+  "experimento": "V50-01 (baselines y selector contextual cross-fitted)",
+  "fecha": "2026-09-28T01:26:13+00:00",
+  "pregunta": "dado un techo del oracle de +0,2098, ?se puede identificar por celda que canal escuchar?",
+  "configuracion": {
+    "acciones": 21,
+    "incluye_keep_v03": true,
+    "modelo": "LogisticRegression(C=1.0, liblinear)",
+    "variables": 53,
+    "variables_por_accion": 15,
+    "cross_fitting": "5 pliegues canonicos de TOXIC, agrupados",
+    "auc_maxima": 0.7672,
+    "correlacion_auc_con_net": {
+      "spearman_rho": 0.555933,
+      "p_valor": 0.010921,
+      "n_canales": 20
+    },
+    "reparto_de_acciones_elegidas": [
+      {
+        "accion": "KEEP_V03",
+        "n_elegida": 4158,
+        "net_real_del_canal": 0
+      },
+      {
+        "accion": "base:M1_word_lr",
+        "n_elegida": 7,
+        "net_real_del_canal": -62
+      },
+      {
+        "accion": "base:M2_union_lr_c2",
+        "n_elegida": 10,
+        "net_real_del_canal": 11
+      },
+      {
+        "accion": "base:M3_union_svc",
+        "n_elegida": 0,
+        "net_real_del_canal": -7
+      },
+      {
+        "accion": "base:M4_char_lr",
+        "n_elegida": 1,
+        "net_real_del_canal": -103
+      },
+      {
+        "accion": "synt:SYN-POS",
+        "n_elegida": 81,
+        "net_real_del_canal": -705
+      },
+      {
+        "accion": "synt:SYN-DEPS",
+        "n_elegida": 0,
+        "net_real_del_canal": -775
+      },
+      {
+        "accion": "synt:SYN-MORPH",
+        "n_elegida": 2,
+        "net_real_del_canal": -837
+      },
+      {
+        "accion": "synt:SYN-3",
+        "n_elegida": 8,
+        "net_real_del_canal": -641
+      },
+      {
+        "accion": "cita:CITA",
+        "n_elegida": 2,
+        "net_real_del_canal": -99
+      },
+      {
+        "accion": "cita:NEG",
+        "n_elegida": 109,
+        "net_real_del_canal": -1706
+      },
+      {
+        "accion": "emoc:EMO-EST@C=2.0",
+        "n_elegida": 3,
+        "net_real_del_canal": -575
+      },
+      {
+        "accion": "emoc:EMO-LEX@C=1.0",
+        "n_elegida": 3,
+        "net_real_del_canal": -593
+      },
+      {
+        "accion": "emoc:EMO-ALL@C=1.0",
+        "n_elegida": 0,
+        "net_real_del_canal": -552
+      },
+      {
+        "accion": "emoc:NB-WORD-LR@C=1.0",
+        "n_elegida": 30,
+        "net_real_del_canal": -46
+      },
+      {
+        "accion": "emoc:NB-CHAR-LR@C=1.0",
+        "n_elegida": 7,
+        "net_real_del_canal": -92
+      },
+      {
+        "accion": "emoc:NB-UNION-LR@C=1.0",
+        "n_elegida": 7,
+        "net_real_del_canal": -11
+      },
+      {
+        "accion": "emoc:NB-UNION-SVC@C=1.0",
+        "n_elegida": 10,
+        "net_real_del_canal": -57
+      },
+      {
+        "accion": "emoc:ORT-A@C=1.0",
+        "n_elegida": 0,
+        "net_real_del_canal": -62
+      },
+      {
+        "accion": "emoc:ORT-ABCD@C=2.0",
+        "n_elegida": 0,
+        "net_real_del_canal": -62
+      },
+      {
+        "accion": "emoc:ORT-AE@C=2.0",
+        "n_elegida": 11,
+        "net_real_del_canal": -84
+      }
+    ]
+  },
+  "v03": {
+    "corrected_cv": 0.7772114525165721,
+    "celdas_de_error": 757
+  },
+  "baselines": [
+    {
+      "selector": "B0_V03",
+      "corrected_cv": 0.7772114525,
+      "delta_vs_v03": 0.0,
+      "celdas_cambiadas": 0,
+      "rescate": 0,
+      "damage": 0,
+      "net": 0
+    },
+    {
+      "selector": "B1_mayoria_canales",
+      "corrected_cv": 0.3502747884,
+      "delta_vs_v03": -0.4269366641,
+      "celdas_cambiadas": 2006,
+      "rescate": 361,
+      "damage": 1645,
+      "net": -1284
+    },
+    {
+      "selector": "B2_canal_mas_fiable_base:M1_word_lr",
+      "corrected_cv": 0.3616799365,
+      "delta_vs_v03": -0.415531516,
+      "celdas_cambiadas": 2028,
+      "rescate": 373,
+      "damage": 1655,
+      "net": -1282
+    },
+    {
+      "selector": "B3_V03_salvo_mayoria",
+      "corrected_cv": 0.3502747884,
+      "delta_vs_v03": -0.4269366641,
+      "celdas_cambiadas": 2006,
+      "rescate": 361,
+      "damage": 1645,
+      "net": -1284
+    }
+  ],
+  "s1": {
+    "corrected_cv": 0.7657442265,
+    "delta_vs_v03": -0.011467226,
+    "celdas_cambiadas": 291,
+    "tasa_de_abstencion": 0.934592,
+    "rescate": 48,
+    "damage": 67,
+    "net": -19,
+    "accuracy_de_la_accion_elegida": 0.825579,
+    "auc_por_accion": [
+      {
+        "accion": 0,
+        "auc": 0.767238
+      },
+      {
+        "accion": "base:M1_word_lr",
+        "auc": 0.617209
+      },
+      {
+        "accion": "base:M2_union_lr_c2",
+        "auc": 0.614721
+      },
+      {
+        "accion": "base:M3_union_svc",
+        "auc": 0.614848
+      },
+      {
+        "accion": "base:M4_char_lr",
+        "auc": 0.604818
+      },
+      {
+        "accion": "synt:SYN-POS",
+        "auc": 0.582754
+      },
+      {
+        "accion": "synt:SYN-DEPS",
+        "auc": 0.569764
+      },
+      {
+        "accion": "synt:SYN-MORPH",
+        "auc": 0.551803
+      },
+      {
+        "accion": "synt:SYN-3",
+        "auc": 0.595983
+      },
+      {
+        "accion": "cita:CITA",
+        "auc": 0.603374
+      },
+      {
+        "accion": "cita:NEG",
+        "auc": 0.723659
+      },
+      {
+        "accion": "emoc:EMO-EST@C=2.0",
+        "auc": 0.607649
+      },
+      {
+        "accion": "emoc:EMO-LEX@C=1.0",
+        "auc": 0.552382
+      },
+      {
+        "accion": "emoc:EMO-ALL@C=1.0",
+        "auc": 0.571113
+      },
+      {
+        "accion": "emoc:NB-WORD-LR@C=1.0",
+        "auc": 0.615691
+      },
+      {
+        "accion": "emoc:NB-CHAR-LR@C=1.0",
+        "auc": 0.616517
+      },
+      {
+        "accion": "emoc:NB-UNION-LR@C=1.0",
+        "auc": 0.62698
+      },
+      {
+        "accion": "emoc:NB-UNION-SVC@C=1.0",
+        "auc": 0.631539
+      },
+      {
+        "accion": "emoc:ORT-A@C=1.0",
+        "auc": 0.617209
+      },
+      {
+        "accion": "emoc:ORT-ABCD@C=2.0",
+        "auc": 0.609875
+      },
+      {
+        "accion": "emoc:ORT-AE@C=2.0",
+        "auc": 0.596787
+      }
+    ]
+  },
+  "pliegues": [
+    {
+      "pliegue": 0,
+      "n_filas": 297,
+      "f1_v03": 0.7960101143,
+      "f1_selector": 0.7786242237,
+      "delta": -0.0173858906
+    },
+    {
+      "pliegue": 1,
+      "n_filas": 297,
+      "f1_v03": 0.7940339498,
+      "f1_selector": 0.7815857737,
+      "delta": -0.0124481761
+    },
+    {
+      "pliegue": 2,
+      "n_filas": 296,
+      "f1_v03": 0.7788600289,
+      "f1_selector": 0.7765841654,
+      "delta": -0.0022758634
+    },
+    {
+      "pliegue": 3,
+      "n_filas": 296,
+      "f1_v03": 0.7385980131,
+      "f1_selector": 0.7272043962,
+      "delta": -0.0113936169
+    },
+    {
+      "pliegue": 4,
+      "n_filas": 297,
+      "f1_v03": 0.7790564997,
+      "f1_selector": 0.7643558985,
+      "delta": -0.0147006012
+    }
+  ],
+  "pliegues_positivos": 0,
+  "interseccion_de_errores": {
+    "ambos_correctos": 3625,
+    "ambos_malos": 709,
+    "v03_mal_selector_bien": 48,
+    "v03_bien_selector_mal": 67
+  },
+  "margen": [
+    {
+      "bin": "[0,0.10)",
+      "n_celdas": 650,
+      "n_errores_v03": 282,
+      "n_cambiadas": 112,
+      "rescate": 45,
+      "damage": 67,
+      "net": -22
+    },
+    {
+      "bin": "[0.10,0.20)",
+      "n_celdas": 748,
+      "n_errores_v03": 207,
+      "n_cambiadas": 3,
+      "rescate": 3,
+      "damage": 0,
+      "net": 3
+    },
+    {
+      "bin": "[0.20,1]",
+      "n_celdas": 3051,
+      "n_errores_v03": 268,
+      "n_cambiadas": 0,
+      "rescate": 0,
+      "damage": 0,
+      "net": 0
+    }
+  ],
+  "confianza": [
+    {
+      "bin": "[0.45,0.55)",
+      "n": 168,
+      "frac_accionada": 0.7798,
+      "accuracy_de_la_accion_elegida": 0.5119
+    },
+    {
+      "bin": "[0.55,0.70)",
+      "n": 606,
+      "frac_accionada": 0.2541,
+      "accuracy_de_la_accion_elegida": 0.5726
+    },
+    {
+      "bin": "[0.70,1]",
+      "n": 3675,
+      "frac_accionada": 0.0016,
+      "accuracy_de_la_accion_elegida": 0.8816
+    }
+  ],
+  "gate": {
+    "delta_minimo": 0.003,
+    "delta_obtenido": -0.011467226,
+    "pliegues_positivos_requeridos": 4,
+    "pasado": false
+  },
+  "caso": "B",
+  "gastos": {
+    "submissions": 0,
+    "consultas_kaggle": 0,
+    "uso_holdout": 0,
+    "uso_test": 0,
+    "segundos": 0.6
+  }
+}

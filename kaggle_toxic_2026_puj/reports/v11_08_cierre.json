@@ -1,0 +1,94 @@
+{
+  "experimento": "V11-08 (cierre de fase y tabla maestra)",
+  "fecha": "2026-09-26T22:04:38+00:00",
+  "commit": "ad726ee",
+  "referencia_v03": 0.7772114525165721,
+  "lb_v03": 0.78306,
+  "experimentos_de_la_fase": 7,
+  "preguntas_respondidas": 10,
+  "preguntas_unknown": 2,
+  "preguntas": [
+    {
+      "numero": 1,
+      "pregunta": "V9-02 era reproducible?",
+      "respuesta": "SI, exactamente",
+      "evidencia": "V11-01: diferencias de -4.51e-07 a +3.29e-07 e iteraciones del EM identicas. Nivel R3"
+    },
+    {
+      "numero": 2,
+      "pregunta": "El shift de prevalencia es real bajo simulacion?",
+      "respuesta": "SI, por construccion y recuperado por los estimadores",
+      "evidencia": "V11-06: error relativo medio de 0.0069 para EM y exacto para clasificar-y-contar"
+    },
+    {
+      "numero": 3,
+      "pregunta": "El estimador EM es estable?",
+      "respuesta": "SI, con un sesgo pequeno y acotado",
+      "evidencia": "V11-06: converge en 16 a 26 iteraciones con sesgo de 0.7 por ciento relativo"
+    },
+    {
+      "numero": 4,
+      "pregunta": "Otro estimador de shift confirma sus resultados?",
+      "respuesta": "SI, y confirma mejor: clasificar-y-contar es exacto bajo shift puro",
+      "evidencia": "V11-06: los dos mecanismos son conceptualmente distintos y los dos recuperan el shift"
+    },
+    {
+      "numero": 5,
+      "pregunta": "La correccion de prior funciona bajo shift controlado?",
+      "respuesta": "NO",
+      "evidencia": "V11-07: macro medio de -0.000293, con HS a -0.001032 y 1 de 5 particiones"
+    },
+    {
+      "numero": 6,
+      "pregunta": "La calibracion mejora la calidad probabilistica?",
+      "respuesta": "SI, y de forma clara: el ECE baja de 0.0583 a 0.0174",
+      "evidencia": "V10-04: isotonica recortada, reduccion del 29.94 por ciento frente a Platt"
+    },
+    {
+      "numero": 7,
+      "pregunta": "La calibracion mas shift supera a shift solo?",
+      "respuesta": "UNKNOWN, y es la mayor laguna de la fase",
+      "evidencia": "No medible: el shift real exige usar la prueba, que esta prohibido. Y shift solo ya es negativo, de modo que la combinacion no tiene una base desde la que mejorar"
+    },
+    {
+      "numero": 8,
+      "pregunta": "La decision F1 plugin aporta algo realmente nuevo?",
+      "respuesta": "NO, medido por otra via",
+      "evidencia": "V10-05: baja los umbrales entre 0.0029 y 0.0073 como se derivo, y empeora -0.003921, porque los umbrales de V03 ya estan por encima del optimo plugin"
+    },
+    {
+      "numero": 9,
+      "pregunta": "Existe una relacion estable umbral y prevalencia?",
+      "respuesta": "UNKNOWN",
+      "evidencia": "No medido en esta fase. Es la linea P7, que cae junto con el shift, y su pre-registro queda sin ejecutar"
+    },
+    {
+      "numero": 10,
+      "pregunta": "La parametrizacion compacta reduce varianza?",
+      "respuesta": "NO, medido en v10",
+      "evidencia": "V10-06: ninguna parametrizacion mas restringida mantiene la ganancia de tres umbrales libres con menor dispersion"
+    },
+    {
+      "numero": 11,
+      "pregunta": "La mejora sobrevive al holdout2?",
+      "respuesta": "NO APLICA, y hay que decirlo con claridad",
+      "evidencia": "Ningun candidato llego a la mesa de finales, asi que no se gasto ninguna de las tres evaluaciones disponibles. El holdout2 sigue integro con sus tres evaluaciones"
+    },
+    {
+      "numero": 12,
+      "pregunta": "La metodologia justifica una nueva submission?",
+      "respuesta": "NO",
+      "evidencia": "V11-02 prohibe el uso de la prueba y V11-07 cierra el mecanismo. No hay candidato que proponer y ademas no habria via legal para enviarlo"
+    }
+  ],
+  "lineas_que_caen": {
+    "P5_calibracion_mas_shift": "cae porque su premisa es que el shift es explotable, y V11-07 mostro que no lo es",
+    "P7_decision_condicionada_por_prevalencia": "cae por la misma razon: la curva umbral-prevalencia solo tendria valor si corregir el umbral por la prevalencia ayudara, y el mecanismo se midio negativo",
+    "P10_sonda_de_transferencia": "cae por la auditoria de legalidad, no por un resultado"
+  },
+  "lineas_que_siguen_legitimas": {
+    "P4_calibracion_anidada": "no depende del shift; ya se midio en V10-04 como NO ACCIONABLE, porque la calibracion mejora el ECE y no la F1",
+    "P6_regla_f1_plugin": "no depende del shift; ya se midio en V10-05 y empeoro -0.003921",
+    "P8_parametrizacion_estable": "no depende del shift; ya se midio en V10-06 y no supero el gate"
+  }
+}

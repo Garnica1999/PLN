@@ -1,0 +1,280 @@
+{
+  "familia": "P64_EVIDENCIA_SEGMENTAL",
+  "naturaleza": "EXPERIMENTO. 1 candidato y 2 controles, 0 submissions, 0 Kaggle, 0 holdout, 0 test",
+  "fecha": "2026-09-29T07:20:57+00:00",
+  "experiment_id": "P64-02",
+  "track": "P4-evidencia-segmental",
+  "script": "experiments/p64_03_evidencia_segmental.py",
+  "pregunta": "donde esta la evidencia de V03 DENTRO del tweet, y la distribucion interna aporta algo que V03 no tenga",
+  "por_que_es_nuevo_respecto_a_P59": "P59-07 agrego por MAXIMO, que sesga al alza y termino con neto -4 y acierto 0,423 en las celdas que cambiaban. Aqui se mide la DISPERSION: desviacion, rango, entropia, concentracion y conflicto. Y P59 no computo nunca la contribucion de un segmento al score completo",
+  "por_que_no_es_pseudo_labeling": "cada segmento se puntua con los coeficientes de V03 aprendidos SOLO en las filas de entrenamiento del pliegue. Ningun segmento recibe etiqueta, ninguna contribuye a ninguna funcion objetivo y ninguno se usa como objetivo. Es descomposicion de un modelo que ya existe",
+  "segmentacion": "S1, la primaria declarada en P64-02",
+  "n_columnas": 48,
+  "rasgos_por_etiqueta": [
+    "seg_max",
+    "seg_min",
+    "seg_media",
+    "seg_mediana",
+    "seg_top2_media",
+    "seg_top3_media",
+    "seg_top3_fraccion",
+    "seg_desviacion",
+    "seg_rango",
+    "seg_entropia",
+    "seg_margen_max",
+    "seg_margen_medio",
+    "evidencia_positiva",
+    "evidencia_negativa",
+    "evidencia_conflicto",
+    "segmentos_en_desacuerdo"
+  ],
+  "protocolo": {
+    "vectorizadores": "los de V03, ajustados dentro de cada pliegue de entrenamiento",
+    "clasificadores_de_segmento": "los de V03, ajustados SOLO con las filas de entrenamiento del pliegue",
+    "control_de_capacidad": "V03 mas un bloque aleatorio de la misma anchura",
+    "control_del_margen": "V03 mas los margenes de V03, que es el control que P63-07 mostrn decisivo",
+    "confound_de_escala": "el bloque denso se normaliza a norma de fila uno",
+    "umbrales": "0,44 / 0,51 / 0,46 congelados, sin reajustar"
+  },
+  "resultados": {
+    "V03_seg": {
+      "corrected_cv": 0.7520352870492927,
+      "folds": [
+        0.6869166129913418,
+        0.7878539253539255,
+        0.7665886313916546,
+        0.737252800084173,
+        0.7632457521668812
+      ],
+      "por_bin": {
+        "CORTA": {
+          "n": 167,
+          "F1": 0.937521,
+          "F1_de_V03": 0.947956,
+          "delta": -0.010435
+        },
+        "MEDIA": {
+          "n": 602,
+          "F1": 0.775865,
+          "F1_de_V03": 0.796405,
+          "delta": -0.02054
+        },
+        "LARGA": {
+          "n": 547,
+          "F1": 0.648275,
+          "F1_de_V03": 0.68335,
+          "delta": -0.035075
+        },
+        "MUY_LARGA": {
+          "n": 167,
+          "F1": 0.46707,
+          "F1_de_V03": 0.560571,
+          "delta": -0.093501
+        }
+      },
+      "rescate": 71,
+      "damage": 136
+    },
+    "V03_random": {
+      "corrected_cv": 0.7603432553642248,
+      "folds": [
+        0.7603233280710527,
+        0.7868177574059927,
+        0.754282734077801,
+        0.7395732287036635,
+        0.7606065877541485
+      ],
+      "por_bin": {
+        "CORTA": {
+          "n": 167,
+          "F1": 0.933047,
+          "F1_de_V03": 0.947956,
+          "delta": -0.014909
+        },
+        "MEDIA": {
+          "n": 602,
+          "F1": 0.78072,
+          "F1_de_V03": 0.796405,
+          "delta": -0.015685
+        },
+        "LARGA": {
+          "n": 547,
+          "F1": 0.670192,
+          "F1_de_V03": 0.68335,
+          "delta": -0.013158
+        },
+        "MUY_LARGA": {
+          "n": 167,
+          "F1": 0.5168,
+          "F1_de_V03": 0.560571,
+          "delta": -0.043771
+        }
+      },
+      "rescate": 126,
+      "damage": 194
+    },
+    "V03_margen": {
+      "corrected_cv": 0.7661312520165589,
+      "folds": [
+        0.7688570389043375,
+        0.7832395247029393,
+        0.762560125060125,
+        0.749561403508772,
+        0.7663992177260909
+      ],
+      "por_bin": {
+        "CORTA": {
+          "n": 167,
+          "F1": 0.9379,
+          "F1_de_V03": 0.947956,
+          "delta": -0.010056
+        },
+        "MEDIA": {
+          "n": 602,
+          "F1": 0.782453,
+          "F1_de_V03": 0.796405,
+          "delta": -0.013952
+        },
+        "LARGA": {
+          "n": 547,
+          "F1": 0.680556,
+          "F1_de_V03": 0.68335,
+          "delta": -0.002794
+        },
+        "MUY_LARGA": {
+          "n": 167,
+          "F1": 0.559525,
+          "F1_de_V03": 0.560571,
+          "delta": -0.001046
+        }
+      },
+      "rescate": 78,
+      "damage": 168
+    }
+  },
+  "brecha_contra_capacidad": -0.0083079683,
+  "brecha_contra_el_margen": -0.014095965,
+  "distribucion_por_estrato": [
+    {
+      "estrato": "todas",
+      "n": 1483,
+      "HS_evidencia_positiva": 0.117346,
+      "HS_evidencia_negativa": 0.10811,
+      "HS_evidencia_conflicto": 0.014351,
+      "HS_segmentos_en_desacuerdo": 0.392179,
+      "HS_seg_desviacion": 0.064899,
+      "HS_seg_entropia": 0.223652,
+      "HS_seg_top3_fraccion": 0.97531
+    },
+    {
+      "estrato": "V03 correcto",
+      "n": 1042,
+      "HS_evidencia_positiva": 0.124701,
+      "HS_evidencia_negativa": 0.124662,
+      "HS_evidencia_conflicto": 0.011089,
+      "HS_segmentos_en_desacuerdo": 0.43909,
+      "HS_seg_desviacion": 0.057642,
+      "HS_seg_entropia": 0.19747,
+      "HS_seg_top3_fraccion": 0.980546
+    },
+    {
+      "estrato": "V03 incorrecto",
+      "n": 441,
+      "HS_evidencia_positiva": 0.099967,
+      "HS_evidencia_negativa": 0.069003,
+      "HS_evidencia_conflicto": 0.02206,
+      "HS_segmentos_en_desacuerdo": 0.281335,
+      "HS_seg_desviacion": 0.082044,
+      "HS_seg_entropia": 0.285517,
+      "HS_seg_top3_fraccion": 0.962937
+    },
+    {
+      "estrato": "error de alta confianza",
+      "n": 295,
+      "HS_evidencia_positiva": 0.118601,
+      "HS_evidencia_negativa": 0.074027,
+      "HS_evidencia_conflicto": 0.020059,
+      "HS_segmentos_en_desacuerdo": 0.292662,
+      "HS_seg_desviacion": 0.078875,
+      "HS_seg_entropia": 0.277478,
+      "HS_seg_top3_fraccion": 0.962667
+    },
+    {
+      "estrato": "CORTA",
+      "n": 167,
+      "HS_evidencia_positiva": 0.273335,
+      "HS_evidencia_negativa": 0.072873,
+      "HS_evidencia_conflicto": 0.011507,
+      "HS_segmentos_en_desacuerdo": 0.266467,
+      "HS_seg_desviacion": 0.045926,
+      "HS_seg_entropia": 0.10481,
+      "HS_seg_top3_fraccion": 1.0
+    },
+    {
+      "estrato": "MEDIA",
+      "n": 602,
+      "HS_evidencia_positiva": 0.132192,
+      "HS_evidencia_negativa": 0.108506,
+      "HS_evidencia_conflicto": 0.012444,
+      "HS_segmentos_en_desacuerdo": 0.393189,
+      "HS_seg_desviacion": 0.05547,
+      "HS_seg_entropia": 0.156537,
+      "HS_seg_top3_fraccion": 0.993984
+    },
+    {
+      "estrato": "LARGA",
+      "n": 547,
+      "HS_evidencia_positiva": 0.06997,
+      "HS_evidencia_negativa": 0.117756,
+      "HS_evidencia_conflicto": 0.014582,
+      "HS_segmentos_en_desacuerdo": 0.446446,
+      "HS_seg_desviacion": 0.070422,
+      "HS_seg_entropia": 0.262714,
+      "HS_seg_top3_fraccion": 0.974935
+    },
+    {
+      "estrato": "MUY_LARGA",
+      "n": 167,
+      "HS_evidencia_positiva": 0.063015,
+      "HS_evidencia_negativa": 0.110328,
+      "HS_evidencia_conflicto": 0.023314,
+      "HS_segmentos_en_desacuerdo": 0.336496,
+      "HS_seg_desviacion": 0.099769,
+      "HS_seg_entropia": 0.456486,
+      "HS_seg_top3_fraccion": 0.884528
+    }
+  ],
+  "auc_para_predecir_el_error": {
+    "evidencia_positiva_HS": 0.556752,
+    "evidencia_conflicto_HS": 0.604785,
+    "desacuerdo_HS": 0.394698,
+    "desviacion_HS": 0.590605,
+    "evidencia_positiva_agregada": 0.565074,
+    "margen_de_V03_para_predecir_el_ACIERTO": 0.770875,
+    "evidencia_positiva_HS_contra_el_ACIERTO": 0.443248,
+    "evidencia_conflicto_HS_contra_el_ACIERTO": 0.395215,
+    "desacuerdo_HS_contra_el_ACIERTO": 0.605302,
+    "desviacion_HS_contra_el_ACIERTO": 0.409395,
+    "evidencia_positiva_agregada_contra_el_ACIERTO": 0.434926
+  },
+  "ventaja_del_mejor_rasgo_sobre_el_margen": -0.165573,
+  "gate": {
+    "delta_min": 0.0015,
+    "pliegues_min": 4,
+    "delta": -0.0251761655,
+    "pliegues_mejorados": 0,
+    "superado": false
+  },
+  "lectura": "REDUNDANTE_CON_LA_CONFIANZA",
+  "veredicto": "La distribucion de la evidencia interna NO supera al margen de V03, con una brecha de -0.0140959650, y tampoco supera al control de capacidad, con -0.0083079683. Lo que la evidencia interna sabe sobre los fallos de V03 ya esta en su confianza: el mejor rasgo alcanza 0.605302 de AUC contra el acierto frente a 0.770875 del margen, y la diferencia es de -0.165573 a favor del margen. En eso la descomposicion se parece al perfil, que tambien habia perdido contra la referencia trivial de longitud.\n\nPERO LA TABLA DE DISTRIBUCION DICE UNA COSA QUE EL VEREDICTO DE INTEGRACION NO PUEDE TRAGARSE, y es el hallazgo real de la fase. Entre las filas que V03 resuelve y las que falla con alta confianza, el CONFLICTO INTERNO SE DUPLICA: 0.0111 frente a 0.0201. Y la entropia de la distribucion de evidencia dentro del tweet crece de forma monotona con la longitud, de 0.1048 en la region CORTA a 0.4565 en MUY_LARGA, y la fraccion de evidencia en los tres primeros segmentos cae de 1.0000 a 0.8845, o sea que en los tweets largos la senal deja de estar concentrada y se reparte.\n\nLa hipotesis de la fase queda CONFIRMADA COMO DESCRIPCION y REFUTADA COMO REPRESENTACION, y las dos cosas a la vez. La estructura interna es real y diferente, y es exactamente la que la bolsa de n-gramas aplana. Lo que no funciona es anadirla a V03, porque V03 ya la lleva dentro en su confianza, y eso es un resultado sobre la REPRESENTACION y no sobre la ESTRUCTURA",
+  "decision": "CLOSED como representacion, y CONFIRMADA como descripcion. La estructura interna es real, V03 ya la ve en su confianza, y anadirla no aporta",
+  "experimentos_registrados": 1,
+  "reproducibilidad": {
+    "nivel": "R2",
+    "git_commit": "4fa0e42",
+    "seed": 42,
+    "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "corrected_cv": 0.7772114525165721
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

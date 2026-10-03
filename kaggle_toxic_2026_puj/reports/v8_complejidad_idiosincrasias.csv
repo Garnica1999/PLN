@@ -1,0 +1,3 @@
+clave,metrica,diferencia,ic95_0,ic95_1,pliegues_positivos,repeticiones_que_mejoran,celdas,tasa_acierto,minimo_requerido,filtro_pasa,gate_supera
+solo_complejidad,0.780705,0.003493,-0.005728,0.013226,2,1,201,0.5174,0.5478,False,False
+complejidad_mas_idiosincrasias,0.77759,0.000378,-0.009926,0.011383,0,1,281,0.4484,0.5342,False,False

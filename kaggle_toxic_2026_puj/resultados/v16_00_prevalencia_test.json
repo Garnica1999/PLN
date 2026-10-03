@@ -1,0 +1,25 @@
+{
+  "metodo": "La plantilla v00 predice 1 en las tres columnas, y la F1 binaria de la clase positiva con prediccion todo-uno es exactamente 2p/(1+p). La unica incognita del LB 0.51494 es la prevalencia de cada columna del test. Se supone que el test es train escalado por un factor comun k y se resuelve por biseccion.",
+  "lb_plantilla": 0.51494,
+  "lb_reconstruido_con_prevalencia_de_train": 0.5408583779265498,
+  "factor_k_test_sobre_train": 0.9351767340249353,
+  "reduccion_relativa_de_prevalencia": 0.06482326597506471,
+  "prevalencias_train": {
+    "HS": 0.43674176776429807,
+    "TR": 0.29982668977469673,
+    "AG": 0.3824378971692663
+  },
+  "prevalencias_test_estimadas": {
+    "HS": 0.40843073999009305,
+    "TR": 0.28039094451700836,
+    "AG": 0.3576470236421185
+  },
+  "positivos_test_estimados_por_etiqueta": {
+    "HS": 471,
+    "TR": 324,
+    "AG": 413
+  },
+  "incertidumbre_k_por_0.001_de_lb": 0.0024585150113125565,
+  "tasa_positivos_v03_predicha": 0.3645291738879261,
+  "tasa_positivos_test_objetivo": 0.34882290271640665
+}

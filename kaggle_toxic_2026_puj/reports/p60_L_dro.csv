@@ -1,0 +1,24 @@
+magnitud,valor
+brazo_0_corrected_cv,0.7772647318762402
+brazo_1_corrected_cv,0.7776009859864678
+delta_agrupado_puro,0.0003362541102275296
+delta_vs_V03,0.0003895334698956754
+corrected_cv_V03,0.7772114525165721
+pliegues_mejorados,2
+folds_brazo_1,0.794831 0.795526 0.780345 0.738598 0.779056
+folds_brazo_0,0.796010 0.795526 0.778860 0.736317 0.780042
+rescate,2
+damage,1
+neto,1
+cambian,3
+eta,1.0
+n_grupos,4 (cuartiles de longitud)
+convergio,True
+gate_delta_superado,False
+gate_pliegues_superado,False
+gate_superado,False
+decision,"MARGINAL. El mecanismo se ACTIVA pero con +2,5 por ciento de sobreponderacion del grupo peor, solo cambian 3 de 4449 celdas y el grupo que peor lo tenia empeora; ademas no alcanza el gate de +0,003"
+delta_cuartil_Q1,+0.000082
+delta_cuartil_Q2,+0.000000
+delta_cuartil_Q3,+0.002730
+delta_cuartil_Q4,-0.000858

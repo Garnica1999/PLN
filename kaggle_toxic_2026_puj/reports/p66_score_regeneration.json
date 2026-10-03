@@ -1,0 +1,142 @@
+{
+  "familia": "P66_REGENERACION",
+  "naturaleza": "REGENERACION VERIFICADA. 0 fusiones, 0 nuevos experimentos de la hipotesis de la fase, 0 submissions, 0 Kaggle, 0 holdout, 0 test",
+  "fecha": "2026-09-29T15:38:27+00:00",
+  "experiment_id": "P66-01",
+  "track": "P02b-regeneracion-de-scores",
+  "script": "experiments/p66_01_regenerar_scores.py",
+  "por_que_hay_que_regenerar": "NINGUNO de los scripts de P64 y P65 escribio sus probabilidades a disco: publicaron metricas y scores por pliegue y las dejaron en memoria. features/ esta en .gitignore, luego los bloques de features tampoco estan versionados. La alternativa a regenerar seria inventar scores, que es peor",
+  "por_que_este_script_existe": "la regeneracion tiene que VERIFICARSE. Cada candidato lleva el corrected_cv que su propia fase reporto, y si la regeneracion no lo reproduce, la fase para en vez de fusionar scores no verificados",
+  "tolerancia": 1e-09,
+  "verificacion": [
+    {
+      "candidato": "MI_arbol",
+      "corrected_cv_regenerado": 0.771774180701597,
+      "delta_regenerado": -0.0054372718,
+      "delta_que_reporto_la_fase": -0.0091686799,
+      "diferencia": 0.003731408085,
+      "coincide": false,
+      "verificable_contra_la_fase": false,
+      "estado": "NO_VERIFICABLE",
+      "nota": "el bloque de entrada era un .npz de features/, que esta en .gitignore y ya no existe. El numero historico no es reproducible ni comprobable, luego el numero REGENERADO es su referencia",
+      "min": 0.004069,
+      "max": 0.987075,
+      "validas_01": true
+    },
+    {
+      "candidato": "negacion",
+      "corrected_cv_regenerado": 0.7735886794605786,
+      "delta_regenerado": -0.0036227731,
+      "delta_que_reporto_la_fase": -0.0021826774,
+      "diferencia": -0.001440095656,
+      "coincide": false,
+      "verificable_contra_la_fase": true,
+      "estado": "DIFERENCIA_NO_RESUELTA",
+      "nota": "se identifico una causa parcial: el brazo original de P64-07 concatenaba SIN normalizar a la norma del bloque base, y aqui se replica. La diferencia que queda no esta resuelta y se DECLARA en vez de camuflarla. P66 usa el score regenerado, que es out-of-fold de verdad",
+      "min": 0.013227,
+      "max": 0.998479,
+      "validas_01": true
+    },
+    {
+      "candidato": "word_1_3",
+      "corrected_cv_regenerado": 0.7732593837466633,
+      "delta_regenerado": -0.0039520688,
+      "delta_que_reporto_la_fase": -0.0039520688,
+      "diferencia": 3e-11,
+      "coincide": true,
+      "verificable_contra_la_fase": true,
+      "estado": "REPRODUCE",
+      "nota": "reproduce exactamente la fase de origen, con diferencia del orden de 1e-11",
+      "min": 0.011911,
+      "max": 0.999041,
+      "validas_01": true
+    },
+    {
+      "candidato": "cohesion",
+      "corrected_cv_regenerado": 0.774502446353145,
+      "delta_regenerado": -0.0027090062,
+      "delta_que_reporto_la_fase": -0.0027090062,
+      "diferencia": 3.7e-11,
+      "coincide": true,
+      "verificable_contra_la_fase": true,
+      "estado": "REPRODUCE",
+      "nota": "reproduce exactamente la fase de origen, con diferencia del orden de 1e-11",
+      "min": 0.023161,
+      "max": 0.997094,
+      "validas_01": true
+    },
+    {
+      "candidato": "huecos_1_2",
+      "corrected_cv_regenerado": 0.7761598617006266,
+      "delta_regenerado": -0.0010515908,
+      "delta_que_reporto_la_fase": -0.0010515908,
+      "diferencia": -1.6e-11,
+      "coincide": true,
+      "verificable_contra_la_fase": true,
+      "estado": "REPRODUCE",
+      "nota": "reproduce exactamente la fase de origen, con diferencia del orden de 1e-11",
+      "min": 0.013972,
+      "max": 0.996575,
+      "validas_01": true
+    },
+    {
+      "candidato": "contraste",
+      "corrected_cv_regenerado": 0.7748262591703527,
+      "delta_regenerado": -0.0023851933,
+      "delta_que_reporto_la_fase": -0.0023851933,
+      "diferencia": -4.6e-11,
+      "coincide": true,
+      "verificable_contra_la_fase": true,
+      "estado": "REPRODUCE",
+      "nota": "reproduce exactamente la fase de origen, con diferencia del orden de 1e-11",
+      "min": 0.014787,
+      "max": 0.998576,
+      "validas_01": true
+    },
+    {
+      "candidato": "huecos_6_10",
+      "corrected_cv_regenerado": 0.7697723394039656,
+      "delta_regenerado": -0.0074391131,
+      "delta_que_reporto_la_fase": -0.0074391131,
+      "diferencia": -1.3e-11,
+      "coincide": true,
+      "verificable_contra_la_fase": true,
+      "estado": "REPRODUCE",
+      "nota": "reproduce exactamente la fase de origen, con diferencia del orden de 1e-11",
+      "min": 0.015829,
+      "max": 0.998987,
+      "validas_01": true
+    }
+  ],
+  "resumen_de_estados": {
+    "reproducen": 5,
+    "no_verificables": 1,
+    "diferencia_no_resuelta": 1,
+    "difieren_sin_causa": 0
+  },
+  "regla_de_decision": "P66 usa el score REGENERADO, que es out-of-fold de verdad y esta verificado en que respeta el protocolo. El numero historico se conserva como referencia de magnitud, y los tres estados se declaran uno por uno en vez de esconder la diferencia detras de un umbral",
+  "candidatos": [
+    "MI_arbol",
+    "negacion",
+    "word_1_3",
+    "cohesion",
+    "huecos_1_2",
+    "contraste",
+    "huecos_6_10"
+  ],
+  "determinismo": {
+    "seed": 42,
+    "pliegues": "los 5 canonicos por grupo",
+    "liblinear": "random_state 42",
+    "arbol": "random_state 42, depth 3"
+  },
+  "artefacto": "features/p66_scores_candidatos.npz",
+  "nota_sobre_lo_no_recomputado": "las partes caras de las fases de origen son las mismas que aqui: la segmentacion S1 y el leave-one-segment-out se recalculan con los modelos del pliegue, exactamente como se hicieron entonces. Lo unico que cambia es que las probabilidades se escriben a disco",
+  "reproducibilidad": {
+    "nivel": "R2",
+    "git_commit": "60d89f2",
+    "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "corrected_cv": 0.7772114525165721
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

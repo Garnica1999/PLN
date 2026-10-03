@@ -1,0 +1,516 @@
+{
+  "familia": "POST_P67_GAP_ANALYSIS",
+  "experiment_id": "P67-04",
+  "fecha": "2026-09-29T17:15:50+00:00",
+  "pregunta_central": "cuando V03 falla, que estructura observable solo desde train permite que otro modelo acierte, y que mecanismo distinto de una transformacion de scores la explota",
+  "interseccion_de_errores": {
+    "V03_acierta": 3692,
+    "A_nadie_alcanza": 542,
+    "B_alguien_alcanza": 215,
+    "fraccion_de_los_errores_de_V03_que_alguien_alcanza": 0.284016,
+    "por_etiqueta": [
+      {
+        "etiqueta": "HS",
+        "celdas": 1483,
+        "errores_de_V03": 316,
+        "A_nadie_alcanza": 218,
+        "B_alguien_alcanza": 98,
+        "fraccion_B": 0.310127,
+        "B_que_MI_arbol_alcanza": 58,
+        "A_que_MI_arbol_tambien_falla": 218,
+        "B_que_negacion_alcanza": 23,
+        "A_que_negacion_tambien_falla": 218,
+        "B_que_word_1_3_alcanza": 21,
+        "A_que_word_1_3_tambien_falla": 218,
+        "B_que_cohesion_alcanza": 20,
+        "A_que_cohesion_tambien_falla": 218,
+        "B_que_huecos_1_2_alcanza": 35,
+        "A_que_huecos_1_2_tambien_falla": 218,
+        "B_que_contraste_alcanza": 2,
+        "A_que_contraste_tambien_falla": 218,
+        "B_que_huecos_6_10_alcanza": 21,
+        "A_que_huecos_6_10_tambien_falla": 218
+      },
+      {
+        "etiqueta": "TR",
+        "celdas": 1483,
+        "errores_de_V03": 164,
+        "A_nadie_alcanza": 125,
+        "B_alguien_alcanza": 39,
+        "fraccion_B": 0.237805,
+        "B_que_MI_arbol_alcanza": 29,
+        "A_que_MI_arbol_tambien_falla": 125,
+        "B_que_negacion_alcanza": 9,
+        "A_que_negacion_tambien_falla": 125,
+        "B_que_word_1_3_alcanza": 6,
+        "A_que_word_1_3_tambien_falla": 125,
+        "B_que_cohesion_alcanza": 3,
+        "A_que_cohesion_tambien_falla": 125,
+        "B_que_huecos_1_2_alcanza": 11,
+        "A_que_huecos_1_2_tambien_falla": 125,
+        "B_que_contraste_alcanza": 1,
+        "A_que_contraste_tambien_falla": 125,
+        "B_que_huecos_6_10_alcanza": 7,
+        "A_que_huecos_6_10_tambien_falla": 125
+      },
+      {
+        "etiqueta": "AG",
+        "celdas": 1483,
+        "errores_de_V03": 277,
+        "A_nadie_alcanza": 199,
+        "B_alguien_alcanza": 78,
+        "fraccion_B": 0.281588,
+        "B_que_MI_arbol_alcanza": 52,
+        "A_que_MI_arbol_tambien_falla": 199,
+        "B_que_negacion_alcanza": 21,
+        "A_que_negacion_tambien_falla": 199,
+        "B_que_word_1_3_alcanza": 6,
+        "A_que_word_1_3_tambien_falla": 199,
+        "B_que_cohesion_alcanza": 13,
+        "A_que_cohesion_tambien_falla": 199,
+        "B_que_huecos_1_2_alcanza": 24,
+        "A_que_huecos_1_2_tambien_falla": 199,
+        "B_que_contraste_alcanza": 3,
+        "A_que_contraste_tambien_falla": 199,
+        "B_que_huecos_6_10_alcanza": 16,
+        "A_que_huecos_6_10_tambien_falla": 199
+      }
+    ],
+    "por_rebanada": [
+      {
+        "rebanada": "CORTA",
+        "filas": 167,
+        "errores_de_V03": 33,
+        "B": 6,
+        "A": 27,
+        "fraccion_B_de_los_errores": 0.181818
+      },
+      {
+        "rebanada": "MEDIA",
+        "filas": 602,
+        "errores_de_V03": 305,
+        "B": 81,
+        "A": 224,
+        "fraccion_B_de_los_errores": 0.265574
+      },
+      {
+        "rebanada": "LARGA",
+        "filas": 547,
+        "errores_de_V03": 306,
+        "B": 96,
+        "A": 210,
+        "fraccion_B_de_los_errores": 0.313725
+      },
+      {
+        "rebanada": "MUY_LARGA",
+        "filas": 167,
+        "errores_de_V03": 113,
+        "B": 32,
+        "A": 81,
+        "fraccion_B_de_los_errores": 0.283186
+      }
+    ]
+  },
+  "atribucion_entre_modelos": {
+    "rescate_exclusivo_por_candidato": {
+      "MI_arbol": 77,
+      "negacion": 14,
+      "word_1_3": 4,
+      "cohesion": 6,
+      "huecos_1_2": 16,
+      "contraste": 0,
+      "huecos_6_10": 5
+    },
+    "rescate_compartido_por_candidato": {
+      "MI_arbol": 62,
+      "negacion": 39,
+      "word_1_3": 29,
+      "cohesion": 30,
+      "huecos_1_2": 54,
+      "contraste": 6,
+      "huecos_6_10": 39
+    },
+    "suma_de_exclusivos": 122,
+    "fraccion_exclusiva_de_B": 0.567442,
+    "pares": [
+      {
+        "par": "word_1_3|huecos_1_2",
+        "rescate_compartido": 26,
+        "rescate_solo_primero": 7,
+        "rescate_solo_segundo": 44,
+        "jaccard_de_rescates": 0.337662,
+        "dano_compartido": 37
+      },
+      {
+        "par": "word_1_3|huecos_6_10",
+        "rescate_compartido": 19,
+        "rescate_solo_primero": 14,
+        "rescate_solo_segundo": 25,
+        "jaccard_de_rescates": 0.327586,
+        "dano_compartido": 28
+      },
+      {
+        "par": "huecos_1_2|huecos_6_10",
+        "rescate_compartido": 27,
+        "rescate_solo_primero": 43,
+        "rescate_solo_segundo": 17,
+        "jaccard_de_rescates": 0.310345,
+        "dano_compartido": 32
+      },
+      {
+        "par": "cohesion|huecos_6_10",
+        "rescate_compartido": 13,
+        "rescate_solo_primero": 23,
+        "rescate_solo_segundo": 31,
+        "jaccard_de_rescates": 0.19403,
+        "dano_compartido": 17
+      },
+      {
+        "par": "MI_arbol|huecos_1_2",
+        "rescate_compartido": 32,
+        "rescate_solo_primero": 107,
+        "rescate_solo_segundo": 38,
+        "jaccard_de_rescates": 0.180791,
+        "dano_compartido": 21
+      },
+      {
+        "par": "negacion|huecos_6_10",
+        "rescate_compartido": 14,
+        "rescate_solo_primero": 39,
+        "rescate_solo_segundo": 30,
+        "jaccard_de_rescates": 0.168675,
+        "dano_compartido": 14
+      },
+      {
+        "par": "cohesion|huecos_1_2",
+        "rescate_compartido": 15,
+        "rescate_solo_primero": 21,
+        "rescate_solo_segundo": 55,
+        "jaccard_de_rescates": 0.164835,
+        "dano_compartido": 19
+      },
+      {
+        "par": "negacion|cohesion",
+        "rescate_compartido": 12,
+        "rescate_solo_primero": 41,
+        "rescate_solo_segundo": 24,
+        "jaccard_de_rescates": 0.155844,
+        "dano_compartido": 14
+      },
+      {
+        "par": "word_1_3|cohesion",
+        "rescate_compartido": 9,
+        "rescate_solo_primero": 24,
+        "rescate_solo_segundo": 27,
+        "jaccard_de_rescates": 0.15,
+        "dano_compartido": 13
+      },
+      {
+        "par": "negacion|word_1_3",
+        "rescate_compartido": 11,
+        "rescate_solo_primero": 42,
+        "rescate_solo_segundo": 22,
+        "jaccard_de_rescates": 0.146667,
+        "dano_compartido": 12
+      },
+      {
+        "par": "MI_arbol|huecos_6_10",
+        "rescate_compartido": 23,
+        "rescate_solo_primero": 116,
+        "rescate_solo_segundo": 21,
+        "jaccard_de_rescates": 0.14375,
+        "dano_compartido": 22
+      },
+      {
+        "par": "MI_arbol|negacion",
+        "rescate_compartido": 24,
+        "rescate_solo_primero": 115,
+        "rescate_solo_segundo": 29,
+        "jaccard_de_rescates": 0.142857,
+        "dano_compartido": 14
+      },
+      {
+        "par": "negacion|huecos_1_2",
+        "rescate_compartido": 15,
+        "rescate_solo_primero": 38,
+        "rescate_solo_segundo": 55,
+        "jaccard_de_rescates": 0.138889,
+        "dano_compartido": 16
+      },
+      {
+        "par": "MI_arbol|word_1_3",
+        "rescate_compartido": 14,
+        "rescate_solo_primero": 125,
+        "rescate_solo_segundo": 19,
+        "jaccard_de_rescates": 0.088608,
+        "dano_compartido": 17
+      },
+      {
+        "par": "MI_arbol|cohesion",
+        "rescate_compartido": 14,
+        "rescate_solo_primero": 125,
+        "rescate_solo_segundo": 22,
+        "jaccard_de_rescates": 0.086957,
+        "dano_compartido": 13
+      },
+      {
+        "par": "negacion|contraste",
+        "rescate_compartido": 4,
+        "rescate_solo_primero": 49,
+        "rescate_solo_segundo": 2,
+        "jaccard_de_rescates": 0.072727,
+        "dano_compartido": 2
+      },
+      {
+        "par": "contraste|huecos_6_10",
+        "rescate_compartido": 2,
+        "rescate_solo_primero": 4,
+        "rescate_solo_segundo": 42,
+        "jaccard_de_rescates": 0.041667,
+        "dano_compartido": 5
+      },
+      {
+        "par": "MI_arbol|contraste",
+        "rescate_compartido": 4,
+        "rescate_solo_primero": 135,
+        "rescate_solo_segundo": 2,
+        "jaccard_de_rescates": 0.028369,
+        "dano_compartido": 5
+      },
+      {
+        "par": "huecos_1_2|contraste",
+        "rescate_compartido": 2,
+        "rescate_solo_primero": 68,
+        "rescate_solo_segundo": 4,
+        "jaccard_de_rescates": 0.027027,
+        "dano_compartido": 5
+      },
+      {
+        "par": "word_1_3|contraste",
+        "rescate_compartido": 1,
+        "rescate_solo_primero": 32,
+        "rescate_solo_segundo": 5,
+        "jaccard_de_rescates": 0.026316,
+        "dano_compartido": 5
+      },
+      {
+        "par": "cohesion|contraste",
+        "rescate_compartido": 1,
+        "rescate_solo_primero": 35,
+        "rescate_solo_segundo": 5,
+        "jaccard_de_rescates": 0.02439,
+        "dano_compartido": 2
+      }
+    ],
+    "no_se_promedian_predicciones": true
+  },
+  "clasificacion_de_familias": [
+    {
+      "familia": "Representacion: segmentacion de evidencia (MI_seg)",
+      "tipo": "representacion",
+      "evidencia": "P64-05, delta -0,0549336945, el peor de los tres MI",
+      "clasificacion": "CLOSED",
+      "por_que": "el concepto esta cerrado con cobertura corregida. La segmentacion densa destruye senal en vez de crearla",
+      "experimentos": "P64-05",
+      "fallo_conocido": "la segmentacion pierde la composicion global del documento",
+      "reformulacion": "ninguna que no sea otra concatenacion equivalente. La representacion no es el problema",
+      "coste": "alto",
+      "riesgo_leakage": "bajo",
+      "prioridad": "descartada",
+      "genuinamente_nueva": false
+    },
+    {
+      "familia": "Representacion: MI_arbol (multiple instance con gradient boosting)",
+      "tipo": "representacion",
+      "evidencia": "P66 y P67: AUC del residuo 0,5796 fuera de banda, 0,5654 contra el error, positiva en los SEIS betas de la correccion residual",
+      "clasificacion": "PARTIALLY_OPEN",
+      "por_que": "la senal EXISTE y esta medida. Lo que no existe es un mecanismo de integracion que la convierta en mejora robusta",
+      "experimentos": "P64-05, P66-02, P66-03, P67-01",
+      "mecanismo": "arbol de decision sobre evidencia segmental densa, no lineal",
+      "mecanismo_integracion_probado": "blend de probabilidad, blend de logits, residualizacion, fusion LR. Los cuatro son la misma familia por algebra",
+      "fallo_conocido": "la senal no cabe en un espacio de 20000 dimensiones por concatenacion, y las transformaciones de score dan 4 celdas de 1483",
+      "reformulacion": "usa MI_arbol como un EXPERTO que decide sobre un SUBCONJUNTO de filas, en vez de como una columna o un score que se mezcla. Eso no es ni concatenar ni mezclar: es descomponer la decision",
+      "coste": "medio",
+      "riesgo_leakage": "medio",
+      "prioridad": "ALTA",
+      "genuinamente_nueva": false
+    },
+    {
+      "familia": "Representacion: n-gramas de orden superior (word 1,3 y skip-grams)",
+      "tipo": "representacion",
+      "evidencia": "P65: word(1,3) -0,0039 con brecha de capacidad +0,0597; skip-grams -0,0001 en V6-05 y los huecos 1-2 reproducen el -0,0001",
+      "clasificacion": "CLOSED",
+      "por_que": "la reproduccion del -0,0001 de V6-05 con una implementacion nueva es un control de implementacion que confirma el cierre",
+      "experimentos": "V6-05, R2-MINDF5, P65-02",
+      "fallo_conocido": "el presupuesto L2 del espacio de features, no la disponibilidad",
+      "reformulacion": "ninguna. Es otra bolsa de palabras mas ancha",
+      "coste": "alto",
+      "riesgo_leakage": "bajo",
+      "prioridad": "descartada",
+      "genuinamente_nueva": false
+    },
+    {
+      "familia": "Representacion: cohesion documental, huecos y contraste",
+      "tipo": "representacion",
+      "evidencia": "P65: cohesion -0,0027, huecos 3-5 y 6-10 y contraste tampoco aportan. Las brechas de capacidad son amplias y el cv baja",
+      "clasificacion": "CLOSED",
+      "por_que": "tres medidas de estructura de largo alcance, las tres neutras o peores",
+      "experimentos": "P65-03",
+      "fallo_conocido": "es el indicador multi-segmento disfrazado, ventaja -0,025999",
+      "reformulacion": "ninguna por concatenacion",
+      "coste": "alto",
+      "riesgo_leakage": "bajo",
+      "prioridad": "descartada",
+      "genuinamente_nueva": false
+    },
+    {
+      "familia": "Representacion: negacion",
+      "tipo": "representacion",
+      "evidencia": "P64-06: COMPLEMENTARY, brecha de capacidad +0,0201566146",
+      "clasificacion": "COMPLEMENTARY",
+      "por_que": "es complementaria y esta medida, pero su residuo tiene AUC 0,472985, por DEBAJO del azar: su parte unica es antisimetrica con el error",
+      "experimentos": "P64-06, P67-01",
+      "fallo_conocido": "el residuo no sobrevive en ninguna banda",
+      "reformulacion": "ninguna que cambie el mecanismo",
+      "coste": "medio",
+      "riesgo_leakage": "bajo",
+      "prioridad": "baja",
+      "genuinamente_nueva": false
+    },
+    {
+      "familia": "Representacion: especialista por longitud",
+      "tipo": "representacion",
+      "evidencia": "P65: especialista y reentrenado dan +0,0000000000 entre si, BIT A BIT IDENTICOS",
+      "clasificacion": "INVALIDATED",
+      "por_que": "el criterio de longitud no cambia NADA del modelo. La longitud no es el mecanismo, y quedo demostrado por identidad, no por parecido",
+      "experimentos": "P65-05",
+      "fallo_conocido": "gana +0,0212 en MUY_LARGA y pierde -0,0257 en LARGA",
+      "reformulacion": "ninguna: el resultado dice que no hay mecanismo que reformular",
+      "coste": "bajo",
+      "riesgo_leakage": "bajo",
+      "prioridad": "descartada",
+      "genuinamente_nueva": false
+    },
+    {
+      "familia": "Integracion: concatenacion de features",
+      "tipo": "integracion",
+      "evidencia": "P64 y P65: SIETE representaciones baten a sus dos controles y NINGUNA mejora el corrected_cv al concatenarse",
+      "clasificacion": "CLOSED",
+      "por_que": "la ley de P65 lo cierra: el cuello es el presupuesto L2 de un espacio de veinte mil dimensiones, no la disponibilidad de la senal",
+      "experimentos": "P64 completo, P65 completo",
+      "mecanismo": "anadir columnas",
+      "fallo_conocido": "el espacio no tiene presupuesto para la columna nueva",
+      "reformulacion": "solo si la senal entra por un camino que NO sea una columna: por ejemplo decidiendo sobre un subconjunto",
+      "coste": "alto",
+      "riesgo_leakage": "bajo",
+      "prioridad": "descartada",
+      "genuinamente_nueva": false
+    },
+    {
+      "familia": "Integracion: blend, stacking y residualizacion de scores",
+      "tipo": "integracion",
+      "evidencia": "P66 y P67. Y el hallazgo algebraico: z + beta*R == (1-beta*b0)*z_V03 + beta*z_C - beta*a, con diferencia 8,882e-16",
+      "clasificacion": "DUPLICATE",
+      "por_que": "los cinco mecanismos de P66 son MENOS de los que parecian. `residual` pertenece algebraicamente a la familia de `blend_logit`",
+      "experimentos": "V6-05, P59-09, P66-02, P66-03, P67-01",
+      "mecanismo": "transformar el score",
+      "fallo_conocido": "4 celdas de 1483, IC95 incluye el cero, 4 de 7 candidatos responden",
+      "reformulacion": "ninguna dentro de la familia. Cualquier otra variante es la misma transformacion con otro nombre",
+      "coste": "bajo",
+      "riesgo_leakage": "medio",
+      "prioridad": "descartada",
+      "genuinamente_nueva": false
+    },
+    {
+      "familia": "Decision: correccion de umbral y calibracion",
+      "tipo": "decision",
+      "evidencia": "P67-01: un escalar por etiqueta reentrenado de forma anidada da -0,0029731513, PEOR que el umbral congelado",
+      "clasificacion": "CLOSED",
+      "por_que": "el modelo de calibracion mas barato posible empeora el resultado",
+      "experimentos": "P67-01",
+      "mecanismo": "mover la frontera",
+      "fallo_conocido": "el umbral congelado ya estaba bien puesto en esta particion",
+      "reformulacion": "ninguna",
+      "coste": "bajo",
+      "riesgo_leakage": "alto",
+      "prioridad": "descartada",
+      "genuinamente_nueva": false
+    },
+    {
+      "familia": "Decision: ensemble con pesos anidados",
+      "tipo": "decision",
+      "evidencia": "P61: CLOSED. El control negativo decide",
+      "clasificacion": "CLOSED",
+      "por_que": "los pesos anidados no baten al mejor miembro",
+      "experimentos": "P61",
+      "fallo_conocido": "la diversidad superficial no se traduce en ganancia",
+      "reformulacion": "solo con diversidad REAL, no con correlaciones de 0,93 a 0,99",
+      "coste": "medio",
+      "riesgo_leakage": "medio",
+      "prioridad": "descartada",
+      "genuinamente_nueva": false
+    }
+  ],
+  "conteo_por_clasificacion": {
+    "CLOSED": 6,
+    "PARTIALLY_OPEN": 1,
+    "COMPLEMENTARY": 1,
+    "INVALIDATED": 1,
+    "DUPLICATE": 1
+  },
+  "criterio_de_genuinamente_nueva": {
+    "cambia_el_mecanismo": true,
+    "no_cuentan": [
+      "otro C",
+      "otra semilla",
+      "otro umbral",
+      "otro numero de features",
+      "otra concatenacion",
+      "otro blend",
+      "otro stacking",
+      "otra residualizacion",
+      "otra correccion de umbral"
+    ],
+    "razon_demostrada_para_descartar_la_ultima_fila": "residual es algebraicamente blend_logit, diferencia 8.882e-16"
+  },
+  "hipotesis_nueva": {
+    "id": "P68-H1",
+    "mecanismo": "descomposicion de la decision por enrutado sobre estructura del EJEMPLO",
+    "enunciado": "delegar un subconjunto de filas a un experto entrenado para ese subconjunto, con el enrutador aprendido ANIDADO y basado en features observables en train, nunca en el score ni en la etiqueta",
+    "evidencia_previa": "el analisis de errores de este script: la poblacion B existe, esta medida y tiene tamano",
+    "novedad": "no concatena columnas (P64/P65, cerrado), no mezcla scores (P66/P67, DUPLICATE por algebra), no mueve el umbral (P67-01, cerrado), no es un ensemble de pesos (P61, cerrado). Cambia QUIEN decide cada fila",
+    "control": "enrutador con las MISMAS features pero etiqueta del enrutador BARAJADA, mas un enrutador aleatorio de igual anchura",
+    "modo_de_fallo_esperado": "que el enrutador aprenda a mirar la longitud o el margen de V03 y que el especialista no aporte nada: se vera en la importancia de features del enrutador",
+    "criterio_de_exito": "delta >= +0,0015 y >= 4 de 5 pliegues y control pasado",
+    "presupuesto": "1 principal + 1 control",
+    "riesgo_de_leakage": "MEDIO. El enrutador es un modelo supervisado: su etiqueta tiene que construirse SOLO con informacion de train del pliegue, y su entrenamiento tiene que ser anidado. Si el enrutador ve el OOF completo, hay leakage"
+  },
+  "hay_objetivo_medible": true,
+  "presupuesto": {
+    "experimentos_historicos_totales": 373,
+    "de_P67": 4,
+    "de_P66": 4,
+    "de_P65": 5,
+    "de_P64": 5,
+    "P67_tracks_principales_previstos": 12,
+    "P67_tracks_principales_ejecutados": 1,
+    "P67_tracks_reserva_previstos": 4,
+    "P67_tracks_reserva_ejecutados": 0,
+    "P67_familias_cerradas": 6,
+    "P67_familias_invalidadas": 1,
+    "P67_familias_duplicadas": 1,
+    "P67_familias_marginales": 0,
+    "P67_familias_complementarias": 1,
+    "P67_familias_parcialmente_abiertas": 1,
+    "restante_principal_de_P67": 11,
+    "restante_reserva_de_P67": 4,
+    "nota": "el presupuesto sin gastar NO se gasta por gastarlo. Un presupuesto sin usar es preferible a experimentos de baja informacion"
+  },
+  "reproducibilidad": {
+    "nivel": "R2",
+    "git_commit": "ed7855c",
+    "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "corrected_cv": 0.7772114525165721
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

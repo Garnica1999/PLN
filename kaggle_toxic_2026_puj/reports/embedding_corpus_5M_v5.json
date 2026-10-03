@@ -1,0 +1,119 @@
+{
+  "experimento": "E-CORP-09",
+  "fecha": "2026-09-25T23:18:33+00:00",
+  "duracion_s": 8.1,
+  "motivo": {
+    "id": "REDUCCION_A_5M",
+    "fecha": "2026-09-25",
+    "motivo": "Completar la curva de aprendizaje de la seccion 10 por debajo del punto de partida de 10M, a peticion del usuario, para comprobar si la curva es monotona y si existe un suelo de calidad de la representacion por debajo de 10M tokens.",
+    "gobernanza": "La seccion 30 exige RATIONALE_FOR_CORPUS_EXPANSION para expandir. Una reduccion no es una expansion, de modo que no le aplica; se registra el motivo. Ademas la reduccion es un subconjunto exacto de un corpus ya construido: no hay descarga adicional, ni coste irreversible, ni riesgo de perder un corpus existente.",
+    "coste": "Construccion ~10 s; entrenamiento ~1 min por modelo con 5 epocas."
+  },
+  "corpus": {
+    "documentos": 1694,
+    "tokens": 5011404,
+    "tipos": 173942,
+    "articulos_leidos": 1699,
+    "duplicados": 0,
+    "cortos": 5,
+    "sin_texto_util": 0,
+    "shards": [
+      "data/external/corpora/wikipedia_es_5M/emb_normal/tokens_shard_00.txt"
+    ],
+    "ejemplos_titulo": [
+      "Andorra",
+      "Argentina",
+      "Geografía de Andorra",
+      "Demografía de Andorra",
+      "Artes visuales"
+    ],
+    "segundos": 7.0,
+    "vocabulario_path": "data/external/corpora/wikipedia_es_5M/emb_normal/vocabulario.txt"
+  },
+  "tokens": 5011404,
+  "cobertura_5M": {
+    "n_types": 8555,
+    "type_coverage": 0.6302,
+    "token_coverage": 0.8646,
+    "n_word_oov": 3164,
+    "por_grupo": {
+      "elongaciones": {
+        "n_types": 113,
+        "n_tokens": 127,
+        "type_coverage": 0.0177,
+        "token_coverage": 0.0236,
+        "oov_rate": 0.9823,
+        "frecuencia_media_corpus": 2.5
+      },
+      "coloquial": {
+        "n_types": 56,
+        "n_tokens": 461,
+        "type_coverage": 0.2143,
+        "token_coverage": 0.692,
+        "oov_rate": 0.7857,
+        "frecuencia_media_corpus": 275.4
+      },
+      "insultos": {
+        "n_types": 72,
+        "n_tokens": 2402,
+        "type_coverage": 0.1667,
+        "token_coverage": 0.7544,
+        "oov_rate": 0.8333,
+        "frecuencia_media_corpus": 4.0
+      },
+      "formas_raras": {
+        "n_types": 6518,
+        "n_tokens": 7618,
+        "type_coverage": 0.5786,
+        "token_coverage": 0.5975,
+        "oov_rate": 0.4214,
+        "frecuencia_media_corpus": 99.1
+      }
+    }
+  },
+  "cobertura_10M": {
+    "n_types": 8555,
+    "type_coverage": 0.6839,
+    "token_coverage": 0.8833,
+    "n_word_oov": 2704,
+    "por_grupo": {
+      "elongaciones": {
+        "n_types": 113,
+        "n_tokens": 127,
+        "type_coverage": 0.0354,
+        "token_coverage": 0.0394,
+        "oov_rate": 0.9646,
+        "frecuencia_media_corpus": 2.5
+      },
+      "coloquial": {
+        "n_types": 56,
+        "n_tokens": 461,
+        "type_coverage": 0.2143,
+        "token_coverage": 0.692,
+        "oov_rate": 0.7857,
+        "frecuencia_media_corpus": 463.2
+      },
+      "insultos": {
+        "n_types": 72,
+        "n_tokens": 2402,
+        "type_coverage": 0.2222,
+        "token_coverage": 0.7777,
+        "oov_rate": 0.7778,
+        "frecuencia_media_corpus": 6.6
+      },
+      "formas_raras": {
+        "n_types": 6518,
+        "n_tokens": 7618,
+        "type_coverage": 0.6359,
+        "token_coverage": 0.6565,
+        "oov_rate": 0.3641,
+        "frecuencia_media_corpus": 185.9
+      }
+    }
+  },
+  "tipos_nuevos_que_aporta_el_salto_10M": 97267,
+  "tipos_nuevos_relevantes": 460,
+  "verificacion_prefijo": {
+    "es_prefijo_exacto": true
+  }
+}

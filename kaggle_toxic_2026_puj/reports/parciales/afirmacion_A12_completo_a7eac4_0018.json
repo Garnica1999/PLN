@@ -1,0 +1,158 @@
+{
+  "marca_corrida": "completo_a7eac4",
+  "resultado": {
+    "bloque": 12,
+    "coste_segundos": 1.3e-05,
+    "descripcion": "las cuatro medidas de complementariedad contra V03",
+    "detalle": {
+      "comprobaciones": {
+        "M1_tiene_acuerdo_con_v03": true,
+        "M1_tiene_auc_del_error_de_v03": true,
+        "M1_tiene_diferencias_por_etiqueta": true,
+        "M1_tiene_matriz_de_interseccion": true,
+        "M2_tiene_acuerdo_con_v03": true,
+        "M2_tiene_auc_del_error_de_v03": true,
+        "M2_tiene_diferencias_por_etiqueta": true,
+        "M2_tiene_matriz_de_interseccion": true,
+        "los_dos_brazos_estan_medidos": true,
+        "ninguna_medida_falta": true
+      },
+      "faltantes": [],
+      "medidas": {
+        "M1": {
+          "acuerdo_con_v03": {
+            "global": 0.8846931894807822,
+            "por_etiqueta": {
+              "AG": 0.8712070128118679,
+              "HS": 0.8610923803101821,
+              "TR": 0.9217801753202967
+            }
+          },
+          "auc_del_error_de_v03": {
+            "global": 0.6008081309726052,
+            "por_etiqueta": {
+              "AG": 0.5562590177871174,
+              "HS": 0.548900133415769,
+              "TR": 0.6706207585199431
+            }
+          },
+          "diferencias_por_etiqueta": {
+            "AG": {
+              "acuerdo_con_v03": 0.8712070128118679,
+              "auc_del_error_de_v03": 0.5562590177871174,
+              "miembro_acierta_y_v03_falla": 78,
+              "v03_acierta_y_miembro_falla": 113
+            },
+            "HS": {
+              "acuerdo_con_v03": 0.8610923803101821,
+              "auc_del_error_de_v03": 0.548900133415769,
+              "miembro_acierta_y_v03_falla": 77,
+              "v03_acierta_y_miembro_falla": 129
+            },
+            "TR": {
+              "acuerdo_con_v03": 0.9217801753202967,
+              "auc_del_error_de_v03": 0.6706207585199431,
+              "miembro_acierta_y_v03_falla": 37,
+              "v03_acierta_y_miembro_falla": 79
+            }
+          },
+          "matriz_de_interseccion": {
+            "global": {
+              "ambos_aciertan": 3371,
+              "ambos_fallan": 565,
+              "solo_miembro": 192,
+              "solo_v03": 321
+            },
+            "por_etiqueta": {
+              "AG": {
+                "miembro_acierta_y_v03_falla": 78,
+                "v03_acierta_y_miembro_falla": 113
+              },
+              "HS": {
+                "miembro_acierta_y_v03_falla": 77,
+                "v03_acierta_y_miembro_falla": 129
+              },
+              "TR": {
+                "miembro_acierta_y_v03_falla": 37,
+                "v03_acierta_y_miembro_falla": 79
+              }
+            }
+          },
+          "n_unidades_tweet_etiqueta": 4449,
+          "origen": "medido sobre las probabilidades recibidas, no sobre constantes"
+        },
+        "M2": {
+          "acuerdo_con_v03": {
+            "global": 0.8608676106990335,
+            "por_etiqueta": {
+              "AG": 0.851652056641942,
+              "HS": 0.8064733648010789,
+              "TR": 0.9244774106540796
+            }
+          },
+          "auc_del_error_de_v03": {
+            "global": 0.5701216239618383,
+            "por_etiqueta": {
+              "AG": 0.514524249989523,
+              "HS": 0.526832297462931,
+              "TR": 0.6448482775199246
+            }
+          },
+          "diferencias_por_etiqueta": {
+            "AG": {
+              "acuerdo_con_v03": 0.851652056641942,
+              "auc_del_error_de_v03": 0.514524249989523,
+              "miembro_acierta_y_v03_falla": 76,
+              "v03_acierta_y_miembro_falla": 144
+            },
+            "HS": {
+              "acuerdo_con_v03": 0.8064733648010789,
+              "auc_del_error_de_v03": 0.526832297462931,
+              "miembro_acierta_y_v03_falla": 102,
+              "v03_acierta_y_miembro_falla": 185
+            },
+            "TR": {
+              "acuerdo_con_v03": 0.9244774106540796,
+              "auc_del_error_de_v03": 0.6448482775199246,
+              "miembro_acierta_y_v03_falla": 29,
+              "v03_acierta_y_miembro_falla": 83
+            }
+          },
+          "matriz_de_interseccion": {
+            "global": {
+              "ambos_aciertan": 3280,
+              "ambos_fallan": 550,
+              "solo_miembro": 207,
+              "solo_v03": 412
+            },
+            "por_etiqueta": {
+              "AG": {
+                "miembro_acierta_y_v03_falla": 76,
+                "v03_acierta_y_miembro_falla": 144
+              },
+              "HS": {
+                "miembro_acierta_y_v03_falla": 102,
+                "v03_acierta_y_miembro_falla": 185
+              },
+              "TR": {
+                "miembro_acierta_y_v03_falla": 29,
+                "v03_acierta_y_miembro_falla": 83
+              }
+            }
+          },
+          "n_unidades_tweet_etiqueta": 4449,
+          "origen": "medido sobre las probabilidades recibidas, no sobre constantes"
+        }
+      },
+      "naturaleza": "EXPLORATORIA, y su resultado no puede producir ninguna afirmacion sobre el leaderboard",
+      "tolerancia": "seis decimales, enteros exactos para los conteos"
+    },
+    "estado": "CONFIRMADO",
+    "exito": true,
+    "id": "A12",
+    "naturaleza": "CONFIRMAR",
+    "stop": false,
+    "tolerancia": "cuatro medidas por brazo, todas no vacias y medidas en la corrida",
+    "traza": ""
+  }
+}
