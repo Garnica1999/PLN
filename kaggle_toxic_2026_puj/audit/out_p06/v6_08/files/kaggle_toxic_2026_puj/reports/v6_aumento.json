@@ -1,0 +1,67 @@
+{
+  "experimento": "V6-08 (J0-J2)",
+  "fecha": "2026-09-26T05:53:42+00:00",
+  "referencia_v03": 0.777211,
+  "transformaciones": [
+    "espaciado",
+    "elongacion",
+    "puntuacion"
+  ],
+  "gate_1": {
+    "delta": 0.003,
+    "pliegues_minimos": 4
+  },
+  "variantes": [
+    {
+      "variante": "J0-control",
+      "corrected_cv": 0.777211,
+      "delta_vs_V03": 0.0,
+      "ic95_0": 0.0,
+      "ic95_1": 0.0,
+      "f1_HS": 0.7617,
+      "f1_TR": 0.8157,
+      "f1_AG": 0.7542,
+      "salvage": 0,
+      "damage": 0,
+      "filas_entrenamiento": 1186,
+      "gate_1_delta": false,
+      "gate_1_ic95": false,
+      "pliegues_positivos": 0,
+      "gate_1_supera": false
+    },
+    {
+      "variante": "J1-una-copia",
+      "corrected_cv": 0.771128,
+      "delta_vs_V03": -0.006083,
+      "ic95_0": -0.01406,
+      "ic95_1": 0.001809,
+      "f1_HS": 0.76,
+      "f1_TR": 0.8054,
+      "f1_AG": 0.748,
+      "salvage": 4,
+      "damage": 9,
+      "filas_entrenamiento": 2372,
+      "gate_1_delta": false,
+      "gate_1_ic95": false,
+      "pliegues_positivos": 1,
+      "gate_1_supera": false
+    },
+    {
+      "variante": "J2-dos-copias",
+      "corrected_cv": 0.770898,
+      "delta_vs_V03": -0.006313,
+      "ic95_0": -0.014472,
+      "ic95_1": 0.001601,
+      "f1_HS": 0.7607,
+      "f1_TR": 0.8063,
+      "f1_AG": 0.7457,
+      "salvage": 3,
+      "damage": 10,
+      "filas_entrenamiento": 3558,
+      "gate_1_delta": false,
+      "gate_1_ic95": false,
+      "pliegues_positivos": 1,
+      "gate_1_supera": false
+    }
+  ]
+}

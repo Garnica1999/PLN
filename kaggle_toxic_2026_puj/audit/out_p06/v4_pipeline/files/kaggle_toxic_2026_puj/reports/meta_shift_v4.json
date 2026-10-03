@@ -1,0 +1,98 @@
+{
+  "experiment_id": "V4-H01",
+  "fecha": "2026-09-26T06:17:01+00:00",
+  "duracion_s": 34.95,
+  "referencia_v03": 0.777211,
+  "referencia_meta_v2_dev": 0.7874,
+  "medidas_shift": [
+    {
+      "ks_medio": 0.0612,
+      "ks_maximo": 0.0854,
+      "diferencia_media_absoluta": 0.0115
+    },
+    {
+      "ks_medio": 0.0683,
+      "ks_maximo": 0.1115,
+      "diferencia_media_absoluta": 0.00897
+    },
+    {
+      "ks_medio": 0.064,
+      "ks_maximo": 0.1046,
+      "diferencia_media_absoluta": 0.00974
+    },
+    {
+      "ks_medio": 0.0531,
+      "ks_maximo": 0.0786,
+      "diferencia_media_absoluta": 0.00696
+    },
+    {
+      "ks_medio": 0.0656,
+      "ks_maximo": 0.1063,
+      "diferencia_media_absoluta": 0.01471
+    }
+  ],
+  "ks_medio_global": 0.0624,
+  "dano_por_shift": -0.003639,
+  "recuperacion_cuantil": 5.1e-05,
+  "recuperacion_platt": -0.017149,
+  "cumple_criterio_D016": true,
+  "decision": "ADOPTAR: la alineacion recupera la ventaja del meta",
+  "detalle": [
+    {
+      "variante": "meta_control",
+      "corrected_cv_umbrales_v03": 0.779135,
+      "corrected_cv_umbral_0_5": 0.76414,
+      "f1_HS": 0.771472,
+      "f1_TR": 0.805288,
+      "f1_AG": 0.760643,
+      "pliegues_mejorados": 2,
+      "std_pliegues": 0.014875,
+      "delta_f1_ejemplo": 0.00989,
+      "ic95_bajo": 0.003147,
+      "ic95_alto": 0.017082,
+      "f1_pliegues": "0.7873;0.7934;0.7854;0.7561;0.7724"
+    },
+    {
+      "variante": "meta_shift",
+      "corrected_cv_umbrales_v03": 0.782774,
+      "corrected_cv_umbral_0_5": 0.774411,
+      "f1_HS": 0.770992,
+      "f1_TR": 0.812352,
+      "f1_AG": 0.764977,
+      "pliegues_mejorados": 4,
+      "std_pliegues": 0.019575,
+      "delta_f1_ejemplo": 0.00989,
+      "ic95_bajo": 0.003147,
+      "ic95_alto": 0.016633,
+      "f1_pliegues": "0.7989;0.8014;0.7839;0.7533;0.7751"
+    },
+    {
+      "variante": "meta_shift_cuantil",
+      "corrected_cv_umbrales_v03": 0.782825,
+      "corrected_cv_umbral_0_5": 0.77254,
+      "f1_HS": 0.771581,
+      "f1_TR": 0.812352,
+      "f1_AG": 0.764543,
+      "pliegues_mejorados": 4,
+      "std_pliegues": 0.019866,
+      "delta_f1_ejemplo": 0.010115,
+      "ic95_bajo": 0.003596,
+      "ic95_alto": 0.016858,
+      "f1_pliegues": "0.7989;0.8014;0.7859;0.7533;0.7730"
+    },
+    {
+      "variante": "meta_shift_platt",
+      "corrected_cv_umbrales_v03": 0.765625,
+      "corrected_cv_umbral_0_5": 0.769454,
+      "f1_HS": 0.759945,
+      "f1_TR": 0.792527,
+      "f1_AG": 0.744402,
+      "pliegues_mejorados": 1,
+      "std_pliegues": 0.010927,
+      "delta_f1_ejemplo": -0.030344,
+      "ic95_bajo": -0.042032,
+      "ic95_alto": -0.018881,
+      "f1_pliegues": "0.7762;0.7767;0.7519;0.7582;0.7659"
+    }
+  ]
+}

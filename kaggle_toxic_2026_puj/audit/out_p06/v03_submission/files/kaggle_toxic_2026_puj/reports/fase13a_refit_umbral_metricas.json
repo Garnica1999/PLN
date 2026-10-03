@@ -1,0 +1,173 @@
+{
+  "metadata": {
+    "fecha": "2026-09-22",
+    "script": "experiments/04_refit_submissions_v02_v03.py",
+    "competencia": "KAGGLE_TOXIC_2026_PUJ",
+    "fase": "Fase 13a (refit del ganador, umbrales y submissions v02/v03)",
+    "configuracion": "LogisticRegression(class_weight=balanced, C=2.0, liblinear) x3",
+    "representacion": "union TF-IDF word (1,2) + char_wb (3,5), min_df=2, sublinear_tf",
+    "validacion": "StratifiedGroupKFold(5, shuffle=True, random_state=42) agrupado por near-duplicado y estratificado por HSxTRxAG",
+    "postproceso_jerarquico": "no usado (empeora en -0.0056, Fase 4-5)",
+    "dimension_final": 27431,
+    "segundos_oof": 1.43,
+    "segundos_umbrales": 0.31,
+    "segundos_refit": 0.39
+  },
+  "replicacion": {
+    "f1_media_columnas": 0.7926588861781015,
+    "f1_media_columnas_redondeada": 0.7927,
+    "f1_referencia_fase_4_5": 0.7926588861781015,
+    "diferencia": 0.0,
+    "tolerancia": 1e-06,
+    "metricas_oof": {
+      "f1_media_columnas": 0.7926588861781015,
+      "f1_macro6": 0.8349033705135338,
+      "f1_micro": 0.7898358920063525,
+      "f1_samples": 0.32462930868476797,
+      "exact_match": 0.7313691507798961,
+      "f1_por_etiqueta": {
+        "HS": 0.7799174690508941,
+        "TR": 0.8287081339712918,
+        "AG": 0.7693510555121188
+      }
+    }
+  },
+  "umbrales": {
+    "rejilla": {
+      "inicio": 0.2,
+      "fin": 0.8,
+      "paso": 0.01
+    },
+    "por_etiqueta": {
+      "HS": {
+        "umbral_optimo": 0.44,
+        "f1_umbral_0.5": 0.7799174690508941,
+        "f1_umbral_optimo": 0.7897106109324759,
+        "ganancia": 0.009793141881581757
+      },
+      "TR": {
+        "umbral_optimo": 0.51,
+        "f1_umbral_0.5": 0.8287081339712918,
+        "f1_umbral_optimo": 0.8296438883541867,
+        "ganancia": 0.0009357543828948378
+      },
+      "AG": {
+        "umbral_optimo": 0.46,
+        "f1_umbral_0.5": 0.7693510555121188,
+        "f1_umbral_optimo": 0.7774436090225564,
+        "ganancia": 0.008092553510437583
+      }
+    },
+    "umbrales_optimos": {
+      "HS": 0.44,
+      "TR": 0.51,
+      "AG": 0.46
+    },
+    "f1_media_columnas_umbral_0.5": 0.7926588861781015,
+    "f1_media_columnas_umbrales_optimos": 0.7989327027697396,
+    "macro6_umbral_0.5": 0.8349033705135338,
+    "macro6_umbrales_optimos": 0.8355729797695343,
+    "ganancia": 0.0062738165916380595,
+    "por_pliegue": [
+      {
+        "pliegue": 1,
+        "n_validacion": 347,
+        "f1_umbral_0.5": 0.8012933474593567,
+        "f1_umbrales_optimos": 0.8114494086979857,
+        "delta": 0.010156061238629
+      },
+      {
+        "pliegue": 2,
+        "n_validacion": 346,
+        "f1_umbral_0.5": 0.7898597924054527,
+        "f1_umbrales_optimos": 0.796127116816772,
+        "delta": 0.006267324411319275
+      },
+      {
+        "pliegue": 3,
+        "n_validacion": 346,
+        "f1_umbral_0.5": 0.7775283841161178,
+        "f1_umbrales_optimos": 0.7805739794785843,
+        "delta": 0.0030455953624665133
+      },
+      {
+        "pliegue": 4,
+        "n_validacion": 346,
+        "f1_umbral_0.5": 0.7933831988833077,
+        "f1_umbrales_optimos": 0.7910414168726659,
+        "delta": -0.002341782010641724
+      },
+      {
+        "pliegue": 5,
+        "n_validacion": 346,
+        "f1_umbral_0.5": 0.8014490275429229,
+        "f1_umbrales_optimos": 0.8151976860061424,
+        "delta": 0.013748658463219487
+      }
+    ],
+    "pliegues_mejorados": 4,
+    "pliegues_con_mejora_mayor_umbral": 3,
+    "regla": "adoptar si ganancia >= 0.005 absoluta y mejora en >= 3/5 pliegues",
+    "adoptado": true,
+    "advertencia_sesgo_optimista": "La ganancia de umbrales medida en el mismo OOF con el que se eligieron es una cota optimista. Verificacion anidada del revisor (umbral ajustado en los pliegues no evaluados): delta medio +0.0014, rango -0.0069..+0.0094, 2/5 pliegues positivos. Conclusion: v03 es una apuesta, v02 es el control."
+  },
+  "submissions": {
+    "v02": {
+      "ruta": "submissions/toxic_submission_v02_lr_union.csv",
+      "umbrales": {
+        "HS": 0.5,
+        "TR": 0.5,
+        "AG": 0.5
+      },
+      "positivos": 1172,
+      "prediccion_test": {
+        "positivos_test": {
+          "HS": 439,
+          "TR": 338,
+          "AG": 395
+        },
+        "tasa_positivos_test": {
+          "HS": 0.3804,
+          "TR": 0.2929,
+          "AG": 0.3423
+        },
+        "tasa_positivos_train": {
+          "HS": 0.4367,
+          "TR": 0.2998,
+          "AG": 0.3824
+        }
+      }
+    },
+    "v03_generada": true,
+    "v03": {
+      "ruta": "submissions/toxic_submission_v03_lr_union_thr.csv",
+      "umbrales": {
+        "HS": 0.44,
+        "TR": 0.51,
+        "AG": 0.46
+      },
+      "positivos": 1262,
+      "prediccion_test": {
+        "positivos_test": {
+          "HS": 506,
+          "TR": 334,
+          "AG": 422
+        },
+        "tasa_positivos_test": {
+          "HS": 0.4385,
+          "TR": 0.2894,
+          "AG": 0.3657
+        },
+        "tasa_positivos_train": {
+          "HS": 0.4367,
+          "TR": 0.2998,
+          "AG": 0.3824
+        }
+      }
+    }
+  },
+  "artefactos": {
+    "oof_npz": "features/oof_mod03b.npz",
+    "modelo_joblib": "models/mod03b_lr_union.joblib"
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "experiment_id": "V4-A01",
+  "fecha": "2026-09-26T06:14:22+00:00",
+  "duracion_s": 1.43,
+  "n_train": 1731,
+  "umbrales": {
+    "jaccard": 0.8,
+    "cosimilitud": 0.85
+  },
+  "criterios": {
+    "exacto": {
+      "clusters_2plus": 0
+    },
+    "normalizado": {
+      "clusters_2plus": 4
+    },
+    "jaccard": {
+      "clusters_2plus": 15
+    },
+    "cosimilitud": {
+      "clusters_2plus": 13
+    },
+    "combinado": {
+      "clusters_2plus": 15
+    }
+  },
+  "tweets_en_un_cluster": 84,
+  "porcentaje_en_un_cluster": 4.853,
+  "clusters_contradictorios": 2,
+  "tweets_en_cluster_contradictorio": 50,
+  "desacuerdo_global_por_etiqueta": {
+    "HS": {
+      "n_tweets_en_cluster_contradictorio": 48,
+      "porcentaje_del_train": 2.773,
+      "n_positivos": 40,
+      "n_negativos": 8
+    },
+    "TR": {
+      "n_tweets_en_cluster_contradictorio": 48,
+      "porcentaje_del_train": 2.773,
+      "n_positivos": 40,
+      "n_negativos": 8
+    },
+    "AG": {
+      "n_tweets_en_cluster_contradictorio": 50,
+      "porcentaje_del_train": 2.889,
+      "n_positivos": 39,
+      "n_negativos": 11
+    }
+  },
+  "tweets_de_test_con_texto_normalizado_igual_a_algun_tweet_de_train": 15,
+  "nota_test": "El test solo se usa para CONTAR coincidencias de texto; no se leen sus etiquetas (no existen) ni se usa para ajustar nada."
+}
