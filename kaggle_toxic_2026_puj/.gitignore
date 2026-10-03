@@ -38,3 +38,6 @@ experimentos/*.pid
 
 # Embeddings y checkpoints de P84: reproducibles con semilla fija; los npz pesan ~75 MB.
 modelos/p84/*
+
+# Binarios fastText del audit (cientos de MB, reproducibles con semilla).
+audit/out_p06/fasttext/
