@@ -1,0 +1,11 @@
+{
+  "name": "v6_07",
+  "script": "experiments/v6_07_ruido_par.py",
+  "exit": 0,
+  "duracion_s": 31.2,
+  "tracked_changed": [
+    "kaggle_toxic_2026_puj/reports/v6_ruido_par.json",
+    "kaggle_toxic_2026_puj/reports/v6_ruido_par.md"
+  ],
+  "features_changed": []
+}

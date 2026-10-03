@@ -1,0 +1,91 @@
+{
+  "familia": "P71_TWITTER_WORD2VEC",
+  "experiment_id": "P71-10",
+  "fase": "P1e downstream corregido",
+  "fecha": "2026-09-30T04:03:36+00:00",
+  "naturaleza": "EXPERIMENTO. Protocolo de V03, escala igualada, control de azar",
+  "defectos_corregidos": [
+    "el vectorizador se ajustaba sobre todo el desarrollo en vez de dentro de cada pliegue",
+    "C=1.0 sin class_weight, cuando V03 usa C=2.0 balanced",
+    "la escala del bloque denso no estaba igualada a la del disperso"
+  ],
+  "verificacion_del_protocolo": {
+    "cv_reconstruido": 0.7772114525,
+    "cv_canonico": 0.7772114525165721,
+    "reproduce": true
+  },
+  "cobertura": {
+    "twitter": {
+      "vocabulario": 77657,
+      "tokens_por_fila_media": 18.2,
+      "tokens_cubiertos_media": 12.49,
+      "fraccion_cubierta": 0.686361,
+      "filas_sin_ningun_token": 70
+    },
+    "general": {
+      "vocabulario": 100097,
+      "tokens_por_fila_media": 18.2,
+      "tokens_cubiertos_media": 11.99,
+      "fraccion_cubierta": 0.658542,
+      "filas_sin_ningun_token": 72
+    }
+  },
+  "barrido_de_escala": [
+    {
+      "escala": 0.0,
+      "twitter": 0.7772114525,
+      "general": 0.7772114525,
+      "azar": 0.7772114525
+    },
+    {
+      "escala": 0.05,
+      "twitter": 0.776423007,
+      "general": 0.7759209207,
+      "azar": 0.7768959381
+    },
+    {
+      "escala": 0.1,
+      "twitter": 0.7754055212,
+      "general": 0.7738008512,
+      "azar": 0.7773837941
+    },
+    {
+      "escala": 0.2,
+      "twitter": 0.7727440994,
+      "general": 0.7709826864,
+      "azar": 0.7723627969
+    },
+    {
+      "escala": 0.5,
+      "twitter": 0.7640541982,
+      "general": 0.7600033143,
+      "azar": 0.7569328758
+    },
+    {
+      "escala": 1.0,
+      "twitter": 0.749166797,
+      "general": 0.7483612525,
+      "azar": 0.7254400725
+    }
+  ],
+  "exceso_sobre_el_ruido": {
+    "twitter_max": 0.0237267245,
+    "general_max": 0.02292118,
+    "alguno_aporta": true
+  },
+  "mejor": {
+    "escala": 0.0,
+    "twitter": 0.7772114525,
+    "general": 0.7772114525,
+    "azar": 0.7772114525
+  },
+  "ganador": "GENERAL",
+  "ventaja": 0.0,
+  "veredicto": "CLOSED",
+  "reproducibilidad": {
+    "nivel": "R2",
+    "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "corrected_cv_v03": 0.7772114525165721
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

@@ -1,0 +1,69 @@
+{
+  "familia": "P71_TWITTER_WORD2VEC",
+  "experiment_id": "P71-07",
+  "fase": "invalidacion del veredicto",
+  "fecha": "2026-09-30T01:43:30+00:00",
+  "naturaleza": "AUDITORIA DEL PROPIO RESULTADO. 0 experimentos nuevos",
+  "disparador": "Carlos observo que la loss subia por epoca y pregunto si el modelo no estaba aprendiendo. Tenia razon",
+  "evidencia": {
+    "loss_observada_clavada": 1.386295,
+    "loss_del_estado_cero": 1.386294,
+    "coincide": true,
+    "interpretacion": "la loss es la de los productos punto nulos, o sea los embeddings de salida no se mueven de cero",
+    "curvas_adam_previas": {
+      "twitter": [
+        1.706327,
+        1.81141,
+        1.841703,
+        1.865799,
+        1.88408
+      ],
+      "general": [
+        1.887839,
+        2.068209,
+        2.125895,
+        2.163865,
+        2.189914
+      ]
+    }
+  },
+  "intentos_que_no_funcionaron": [
+    {
+      "cambio": "escala de inicializacion 0.5/dim -> 1/sqrt(dim) (28x)",
+      "loss": 1.3863
+    },
+    {
+      "cambio": "learning rate 0.025 -> 0.5 (20x)",
+      "loss": 1.3863
+    },
+    {
+      "cambio": "lote 8192 -> 256 con el lr escalado por el lote",
+      "loss": 1.3863
+    },
+    {
+      "cambio": "Adam -> SGD con decaimiento lineal",
+      "loss": 1.3863
+    }
+  ],
+  "lo_que_si_se_movio": "con el lr escalado por el lote los pesos cambian, dW=0.000763, pero la loss no baja en ninguna configuracion",
+  "consecuencia": {
+    "las_representaciones_no_entrenaron": true,
+    "el_veredicto_CLOSED_es_valido": false,
+    "veredicto_anterior": "CLOSED",
+    "veredicto_corregido": "INVALID_DUE_TO_UNTRAINED_REPRESENTATIONS",
+    "que_dice_sobre_la_hipotesis": "NADA. La hipotesis sigue sin ponerse a prueba, igual que en P0 antes de tener corpus"
+  },
+  "bug_no_aislado": true,
+  "lo_que_haria_falta": [
+    "aislar por que la loss no baja aunque los pesos cambien",
+    "candidato: el gradiente hacia la salida se anula o el optimizador no ve esos parametros",
+    "candidato: la inicializacion a cero de la salida combinada con la escala de la entrada",
+    "alternativa: usar un skip-gram con softmax negativo implementado y verificado contra una implementacion de referencia"
+  ],
+  "reproducibilidad": {
+    "nivel": "R2",
+    "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "corrected_cv_v03": 0.7772114525165721
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

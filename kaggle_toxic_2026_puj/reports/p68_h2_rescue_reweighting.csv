@@ -1,0 +1,13 @@
+seccion,estado,detalle
+novedad,DUPLICATE,unico cambio: la fuente del indicador. El indicador es un subconjunto estricto del de V4-B03
+hipotesis,NO EJECUTADA,"R_i = (pred_V03 != y) AND (pred_OTRO == y), con w = 2"
+protocolo nested,NO EJECUTADO,no se gasto presupuesto en un mecanismo duplicado
+construccion del rescue map,YA EXISTE,"P50 y P51 lo construyeron: techo del oracle +0,2098 y -0,0102 real"
+pesos,NO EJECUTADOS,w = 2 propuesto
+real,NO EJECUTADO,n/a
+shuffled,NO EJECUTADO,n/a
+random,NO EJECUTADO,n/a
+resultados,NO EJECUTADOS,el coste de esta hipotesis es 0 experimentos
+bootstrap,NO APLICA,solo se calcula para un candidato que pase el gate inicial
+complementarity,MEDIDA,"122 rescates exclusivos, 122 en el gap analysis previo"
+decision,DUPLICATE,no se ejecuta; se cierra la fase de investigacion porque no quedan ejes

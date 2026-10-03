@@ -27,6 +27,11 @@ Ejecución
     /home/carlos/venv/bin/python experiments/00_auditoria_datos.py
 """
 
+# Nota de auditoria forense (B-07, 2026-09-26): el clustering de near-duplicados se
+# ajusta sobre train+test (2885 textos). Impacto medido sobre las particiones: 0.0
+# (ARI=1.0; holdout y pliegues identicos). Si se repara, clusterizar solo con train y
+# regenerar data/processed/grupos_near_duplicados.csv. No se modifico la logica
+# historica.
 from __future__ import annotations
 
 import json

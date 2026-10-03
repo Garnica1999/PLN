@@ -1,0 +1,258 @@
+{
+  "experimento": "V8-04 (P2)",
+  "fecha": "2026-09-26T03:16:13+00:00",
+  "referencia_v03_local": 0.777211,
+  "referencia_v03_externa": 0.78306,
+  "ruido_en_aciertos_netos": 19.2,
+  "control_correcto": true,
+  "variantes": [
+    {
+      "clave": "nb_tfidf",
+      "descripcion": "TF-IDF de V03 multiplicada por el ratio, constante 2.0",
+      "es_nueva": true,
+      "alfa": 1e-06,
+      "metrica": 0.718716,
+      "diferencia": -0.058496,
+      "ic95_0": -0.076109,
+      "ic95_1": -0.040607,
+      "pliegues_positivos": 0,
+      "aciertos_por_pliegue": [
+        -54,
+        -46,
+        -37,
+        -42,
+        -28
+      ],
+      "f1_por_etiqueta": {
+        "HS": 0.7264770240700219,
+        "TR": 0.7415730337078652,
+        "AG": 0.6880973066898349
+      },
+      "celdas": 597,
+      "filas": 423,
+      "acierta_entre_celdas": 195,
+      "tasa_acierto": 0.3266,
+      "minimo_requerido": 0.5161,
+      "filtro_pasa": false,
+      "gate_delta": false,
+      "gate_ic95": false,
+      "gate_pliegues": false,
+      "gate_supera": false,
+      "admisible": false
+    },
+    {
+      "clave": "nb_tfidf_suavizado",
+      "descripcion": "igual que la anterior con mas suavizado, para medir sensibilidad",
+      "es_nueva": true,
+      "alfa": 0.001,
+      "metrica": 0.781957,
+      "diferencia": 0.004745,
+      "ic95_0": -0.007079,
+      "ic95_1": 0.017144,
+      "pliegues_positivos": 3,
+      "aciertos_por_pliegue": [
+        -7,
+        -5,
+        15,
+        9,
+        5
+      ],
+      "f1_por_etiqueta": {
+        "HS": 0.7699180938198064,
+        "TR": 0.8071348940914158,
+        "AG": 0.7688172043010753
+      },
+      "celdas": 303,
+      "filas": 230,
+      "acierta_entre_celdas": 160,
+      "tasa_acierto": 0.5281,
+      "minimo_requerido": 0.5317,
+      "filtro_pasa": false,
+      "gate_delta": true,
+      "gate_ic95": false,
+      "gate_pliegues": false,
+      "gate_supera": false,
+      "admisible": false
+    },
+    {
+      "clave": "nb_counts_c2",
+      "descripcion": "control: conteos con ratio y constante 2.0, el metodo canonico",
+      "es_nueva": false,
+      "alfa": 1e-06,
+      "metrica": 0.702184,
+      "diferencia": -0.075027,
+      "ic95_0": -0.094235,
+      "ic95_1": -0.055611,
+      "pliegues_positivos": 0,
+      "aciertos_por_pliegue": [
+        -71,
+        -52,
+        -60,
+        -30,
+        -42
+      ],
+      "f1_por_etiqueta": {
+        "HS": 0.7088989441930619,
+        "TR": 0.7222832052689352,
+        "AG": 0.6753698868581375
+      },
+      "celdas": 715,
+      "filas": 495,
+      "acierta_entre_celdas": 230,
+      "tasa_acierto": 0.3217,
+      "minimo_requerido": 0.5134,
+      "filtro_pasa": false,
+      "gate_delta": false,
+      "gate_ic95": false,
+      "gate_pliegues": false,
+      "gate_supera": false,
+      "admisible": false
+    }
+  ],
+  "elegida": null,
+  "submission_generada": false,
+  "estadisticas_ratio": [
+    {
+      "pliegue": 1,
+      "etiqueta": "HS",
+      "caracteristicas": 20441,
+      "ratio_medio": -0.6154476792279744,
+      "ratio_desviacion": 3.4108782242233904,
+      "ratio_maximo": 9.846920987755963,
+      "ratio_minimo": -8.394653003826997
+    },
+    {
+      "pliegue": 1,
+      "etiqueta": "TR",
+      "caracteristicas": 20441,
+      "ratio_medio": -2.110340101042869,
+      "ratio_desviacion": 3.5953424742465314,
+      "ratio_maximo": 10.221072573791742,
+      "ratio_minimo": -9.688862388139697
+    },
+    {
+      "pliegue": 1,
+      "etiqueta": "AG",
+      "caracteristicas": 20441,
+      "ratio_medio": -0.9671434612165115,
+      "ratio_desviacion": 3.4716043572611297,
+      "ratio_maximo": 9.982926016995625,
+      "ratio_minimo": -9.001766531985108
+    },
+    {
+      "pliegue": 2,
+      "etiqueta": "HS",
+      "caracteristicas": 21044,
+      "ratio_medio": -0.5751860298161807,
+      "ratio_desviacion": 3.4084060054995793,
+      "ratio_maximo": 9.771702296268911,
+      "ratio_minimo": -9.007960132972324
+    },
+    {
+      "pliegue": 2,
+      "etiqueta": "TR",
+      "caracteristicas": 21044,
+      "ratio_medio": -2.126303696231395,
+      "ratio_desviacion": 3.5934618139220325,
+      "ratio_maximo": 10.149541799015637,
+      "ratio_minimo": -9.402491441530548
+    },
+    {
+      "pliegue": 2,
+      "etiqueta": "AG",
+      "caracteristicas": 21044,
+      "ratio_medio": -0.9357490666133825,
+      "ratio_desviacion": 3.465129903214864,
+      "ratio_maximo": 9.905778255093635,
+      "ratio_minimo": -8.915114517781047
+    },
+    {
+      "pliegue": 3,
+      "etiqueta": "HS",
+      "caracteristicas": 20802,
+      "ratio_medio": -0.588758455854516,
+      "ratio_desviacion": 3.4329016678943804,
+      "ratio_maximo": 9.899700213357413,
+      "ratio_minimo": -8.494343370298623
+    },
+    {
+      "pliegue": 3,
+      "etiqueta": "TR",
+      "caracteristicas": 20802,
+      "ratio_medio": -2.127695531082144,
+      "ratio_desviacion": 3.599856478082244,
+      "ratio_maximo": 10.276657602685109,
+      "ratio_minimo": -9.445358726449024
+    },
+    {
+      "pliegue": 3,
+      "etiqueta": "AG",
+      "caracteristicas": 20802,
+      "ratio_medio": -0.9636181410830896,
+      "ratio_desviacion": 3.4614080946179806,
+      "ratio_maximo": 10.031300488454038,
+      "ratio_minimo": -8.48668538195167
+    },
+    {
+      "pliegue": 4,
+      "etiqueta": "HS",
+      "caracteristicas": 21038,
+      "ratio_medio": -0.6300855300242141,
+      "ratio_desviacion": 3.413280376380039,
+      "ratio_maximo": 9.82467364736004,
+      "ratio_minimo": -8.534061985171506
+    },
+    {
+      "pliegue": 4,
+      "etiqueta": "TR",
+      "caracteristicas": 21038,
+      "ratio_medio": -2.1615504369526866,
+      "ratio_desviacion": 3.5753335243157753,
+      "ratio_maximo": 10.199701239273237,
+      "ratio_minimo": -9.600375311858532
+    },
+    {
+      "pliegue": 4,
+      "etiqueta": "AG",
+      "caracteristicas": 21038,
+      "ratio_medio": -1.0168496060345287,
+      "ratio_desviacion": 3.4563239989298973,
+      "ratio_maximo": 9.956545007367739,
+      "ratio_minimo": -8.5058355630245
+    },
+    {
+      "pliegue": 5,
+      "etiqueta": "HS",
+      "caracteristicas": 20982,
+      "ratio_medio": -0.6330938170870969,
+      "ratio_desviacion": 3.3766837396607747,
+      "ratio_maximo": 9.9150790881476,
+      "ratio_minimo": -8.535530795058504
+    },
+    {
+      "pliegue": 5,
+      "etiqueta": "TR",
+      "caracteristicas": 20982,
+      "ratio_medio": -2.108941042506118,
+      "ratio_desviacion": 3.591882930365955,
+      "ratio_maximo": 10.290108142581081,
+      "ratio_minimo": -9.51436968034465
+    },
+    {
+      "pliegue": 5,
+      "etiqueta": "AG",
+      "caracteristicas": 20982,
+      "ratio_medio": -1.007730837164256,
+      "ratio_desviacion": 3.445617717062887,
+      "ratio_maximo": 10.049156003080475,
+      "ratio_minimo": -8.442692373986421
+    }
+  ],
+  "correlacion_importancias_con_ratio": {
+    "pliegue": 1,
+    "celdas_que_el_ratio_cambia": 108,
+    "total_celdas_del_pliegue": 891,
+    "fraccion": 0.1212
+  },
+  "nota": "El ratio se calcula dentro del tren de cada pliegue y por etiqueta. E2-15 ya lo hacia por etiqueta, de modo que la parte nueva de esta linea es aplicarlo sobre la TF-IDF de V03 y con la constante 2.0, no el ratio por etiqueta."
+}

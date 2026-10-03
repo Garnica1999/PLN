@@ -1,0 +1,433 @@
+{
+  "experimento": "V22-01 (P0: auditoria del preprocessing del corpus frente al de la tarea)",
+  "fecha": "2026-09-27T05:36:21+00:00",
+  "diccionario_de_vectores": {
+    "origen": "SIFTS del binario de fastText, no el .vec",
+    "tipos_consultados": 6059,
+    "tipos_con_vector_util": 6059,
+    "nulos_descartados": 0
+  },
+  "metricas": {
+    "desarrollo_raw": {
+      "filas": 1483,
+      "tokens_totales": 26996,
+      "tipos_efectivos": 8080,
+      "tokens_con_vector": 20015,
+      "tokens_oov": 6981,
+      "cobertura_tipo": 0.5501237623762376,
+      "cobertura_token": 0.74140613424211,
+      "longitud_media": 18.203641267700608,
+      "longitud_mediana": 16.0,
+      "filas_sin_tokens": 0,
+      "top_oov": [
+        [
+          "https",
+          489
+        ],
+        [
+          "Y",
+          85
+        ],
+        [
+          "PUTA",
+          84
+        ],
+        [
+          "A",
+          77
+        ],
+        [
+          "Callate",
+          72
+        ],
+        [
+          "Cllate",
+          70
+        ],
+        [
+          "LA",
+          66
+        ],
+        [
+          "QUE",
+          66
+        ],
+        [
+          "DE",
+          65
+        ],
+        [
+          "No",
+          63
+        ],
+        [
+          "El",
+          57
+        ],
+        [
+          "La",
+          54
+        ],
+        [
+          "Tu",
+          50
+        ],
+        [
+          "NO",
+          44
+        ],
+        [
+          "Que",
+          43
+        ],
+        [
+          "TU",
+          35
+        ],
+        [
+          "Los",
+          33
+        ],
+        [
+          "CALLATE",
+          32
+        ],
+        [
+          "Si",
+          32
+        ],
+        [
+          "TE",
+          31
+        ]
+      ],
+      "por_grupo": {}
+    },
+    "desarrollo_consistent": {
+      "filas": 1483,
+      "tokens_totales": 25539,
+      "tipos_efectivos": 5447,
+      "tokens_con_vector": 25539,
+      "tokens_oov": 0,
+      "cobertura_tipo": 1.0,
+      "cobertura_token": 1.0,
+      "longitud_media": 17.221173297370196,
+      "longitud_mediana": 15.0,
+      "filas_sin_tokens": 0,
+      "top_oov": [],
+      "por_grupo": {}
+    },
+    "test_raw": {
+      "filas": 1154,
+      "tokens_totales": 20284,
+      "tipos_efectivos": 6587,
+      "tokens_con_vector": 12987,
+      "tokens_oov": 7297,
+      "cobertura_tipo": 0.2720510095642933,
+      "cobertura_token": 0.640258331690002,
+      "longitud_media": 17.577123050259964,
+      "longitud_mediana": 16.0,
+      "filas_sin_tokens": 0,
+      "top_oov": [
+        [
+          "https",
+          354
+        ],
+        [
+          "Cllate",
+          66
+        ],
+        [
+          "Callate",
+          57
+        ],
+        [
+          "PUTA",
+          54
+        ],
+        [
+          "DE",
+          54
+        ],
+        [
+          "Y",
+          48
+        ],
+        [
+          "QUE",
+          47
+        ],
+        [
+          "LA",
+          43
+        ],
+        [
+          "La",
+          43
+        ],
+        [
+          "No",
+          41
+        ],
+        [
+          "Que",
+          38
+        ],
+        [
+          "NO",
+          35
+        ],
+        [
+          "El",
+          35
+        ],
+        [
+          "A",
+          32
+        ],
+        [
+          "Me",
+          32
+        ],
+        [
+          "TE",
+          28
+        ],
+        [
+          "CALLATE",
+          26
+        ],
+        [
+          "Tu",
+          21
+        ],
+        [
+          "T",
+          21
+        ],
+        [
+          "Lo",
+          19
+        ]
+      ]
+    },
+    "test_consistent": {
+      "filas": 1154,
+      "tokens_totales": 19204,
+      "tipos_efectivos": 4503,
+      "tokens_con_vector": 16427,
+      "tokens_oov": 2777,
+      "cobertura_tipo": 0.4457028647568288,
+      "cobertura_token": 0.8553947094355343,
+      "longitud_media": 16.641247833622185,
+      "longitud_mediana": 15.0,
+      "filas_sin_tokens": 0,
+      "top_oov": [
+        [
+          "unga",
+          6
+        ],
+        [
+          "segundo",
+          5
+        ],
+        [
+          "bao",
+          5
+        ],
+        [
+          "dio",
+          4
+        ],
+        [
+          "hacerlo",
+          4
+        ],
+        [
+          "ok",
+          4
+        ],
+        [
+          "gabacha",
+          4
+        ],
+        [
+          "abierta",
+          3
+        ],
+        [
+          "ensearte",
+          3
+        ],
+        [
+          "chinos",
+          3
+        ],
+        [
+          "estilo",
+          3
+        ],
+        [
+          "ahi",
+          3
+        ],
+        [
+          "san",
+          3
+        ],
+        [
+          "buscan",
+          3
+        ],
+        [
+          "har",
+          3
+        ],
+        [
+          "acusa",
+          3
+        ],
+        [
+          "felicitaciones",
+          3
+        ],
+        [
+          "pens",
+          3
+        ],
+        [
+          "new",
+          3
+        ],
+        [
+          "leche",
+          3
+        ]
+      ]
+    }
+  },
+  "mismatch": {
+    "tipos_solo_raw": 3635,
+    "tipos_solo_consistent": 1002,
+    "tipos_comunes": 4445,
+    "delta_cobertura_token_desarrollo": 0.25859386575789,
+    "delta_cobertura_tipo_desarrollo": 0.4498762376237624,
+    "veredicto": "EVIDENCIADO"
+  },
+  "marcas": {
+    "desarrollo": {
+      "hashtag_crus": 255,
+      "menciones_crudas": 1081,
+      "urls_crudas": 493,
+      "numeros_crus": 1063,
+      "marcadores_en_normalizado": {
+        "url": 65,
+        "hashtag": 140,
+        "usuario": 345,
+        "numero": 187
+      },
+      "elongaciones_crudas": 105
+    },
+    "test": {
+      "hashtag_crus": 235,
+      "menciones_crudas": 799,
+      "urls_crudas": 362,
+      "numeros_crus": 857,
+      "marcadores_en_normalizado": {
+        "url": 65,
+        "hashtag": 120,
+        "usuario": 252,
+        "numero": 168
+      },
+      "elongaciones_crudas": 68
+    }
+  },
+  "top_oov_raw_desarrollo": [
+    [
+      "https",
+      489
+    ],
+    [
+      "Y",
+      85
+    ],
+    [
+      "PUTA",
+      84
+    ],
+    [
+      "A",
+      77
+    ],
+    [
+      "Callate",
+      72
+    ],
+    [
+      "Cllate",
+      70
+    ],
+    [
+      "LA",
+      66
+    ],
+    [
+      "QUE",
+      66
+    ],
+    [
+      "DE",
+      65
+    ],
+    [
+      "No",
+      63
+    ],
+    [
+      "El",
+      57
+    ],
+    [
+      "La",
+      54
+    ],
+    [
+      "Tu",
+      50
+    ],
+    [
+      "NO",
+      44
+    ],
+    [
+      "Que",
+      43
+    ],
+    [
+      "TU",
+      35
+    ],
+    [
+      "Los",
+      33
+    ],
+    [
+      "CALLATE",
+      32
+    ],
+    [
+      "Si",
+      32
+    ],
+    [
+      "TE",
+      31
+    ]
+  ],
+  "top_oov_consistent_desarrollo": [],
+  "gastos": {
+    "modelos_entrenados": 0,
+    "evaluaciones": 0,
+    "submissions": 0
+  }
+}

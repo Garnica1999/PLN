@@ -1,0 +1,11 @@
+objetivo,n,n_neg,auc,ic95_bajo,ic95_alto,media_pos,media_neg,nota
+error de V03 sobre las 4449 celdas,757,3692,0.725194,0.706052,0.744615,0.486425,0.380444,objetivo primario del parrafo 13
+celda no rescatable dentro de los 757 errores,42,4407,0.471798,0.395401,0.546918,0.383868,0.398616,objetivo decisivo del parrafo 60: identificar las no rescatables
+celda rescatable dentro de los 757 errores,715,3734,0.737695,,,0.492449,0.380483,"el objetivo contrario, para ver la direccion del efecto"
+error de V03 en HS,316,4133,0.735766,,,0.50154,0.390597,columna HS
+no rescatable en HS,9,4440,0.505531,,,0.401932,0.39847,columna HS
+error de V03 en TR,164,4285,0.664526,,,0.471423,0.395685,columna TR
+no rescatable en TR,12,4437,0.488637,,,0.391779,0.398495,columna TR
+error de V03 en AG,277,4172,0.678121,,,0.478063,0.393193,columna AG
+no rescatable en AG,21,4428,0.447993,,,0.371606,0.398604,columna AG
+P59-02 bloque de geometria sobre V03,128,,,-0.008991,+0.000674,,,CLOSED | corrected_cv 0.779641 | 3/5 pliegues | neto -18

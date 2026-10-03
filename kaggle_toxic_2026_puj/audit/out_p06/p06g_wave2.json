@@ -1,0 +1,35 @@
+{
+  "submissions": [],
+  "notebook": {
+    "returncode": 1,
+    "celdas": 0,
+    "errores": [],
+    "stderr_tail": "aderboard\"\u001b[39m\n\u001b[32m     51\u001b[39m \u001b[38;5;28;01massert\u001b[39;00m abs(float(tabla[\u001b[33m\"gap_recalculado\"\u001b[39m].dropna().iloc[\u001b[32m0\u001b[39m]) - float(tabla[\u001b[33m\"diferencia\"\u001b[39m].dropna().iloc[\u001b[32m0\u001b[39m])) < \u001b[32m1e-9\u001b[39m\n\u001b[32m     52\u001b[39m \u001b[38;5;28;01massert\u001b[39;00m tabla[\u001b[33m\"submission_id\"\u001b[39m].is_unique\n\u001b[32m     53\u001b[39m \n\n\u001b[31mAssertionError\u001b[39m: El proyecto declara 12 sondas de leaderboard\n\n"
+  },
+  "v01_submission": {
+    "name": "v01_submission",
+    "script": "experiments/02_baseline_tfidf_lr.py",
+    "exit": 0,
+    "duracion_s": 1.5,
+    "tracked_changed": [
+      "kaggle_toxic_2026_puj/experiments.csv",
+      "kaggle_toxic_2026_puj/reports/baseline_b1_metricas.json"
+    ],
+    "features_changed": []
+  },
+  "v03_submission": {
+    "name": "v03_submission",
+    "script": "experiments/04_refit_submissions_v02_v03.py",
+    "exit": 0,
+    "duracion_s": 3.4,
+    "tracked_changed": [
+      "kaggle_toxic_2026_puj/experiments.csv",
+      "kaggle_toxic_2026_puj/reports/contexto.md",
+      "kaggle_toxic_2026_puj/reports/fase13a_refit_umbral_metricas.json",
+      "kaggle_toxic_2026_puj/submissions/leaderboard_log.csv"
+    ],
+    "features_changed": [
+      "oof_mod03b.npz"
+    ]
+  }
+}

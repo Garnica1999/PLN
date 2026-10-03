@@ -1,0 +1,848 @@
+[
+  {
+    "name": "v03_oof",
+    "script": "experiments/14_oof_corregido_v2.py",
+    "exit": 0,
+    "duracion_s": 6.7,
+    "tracked_changed": [
+      "kaggle_toxic_2026_puj/experiments.csv",
+      "kaggle_toxic_2026_puj/reports/baseline_v03_dev_metrics.json"
+    ],
+    "features_changed": [
+      "v2_oof_base_corrected.npz"
+    ],
+    "comparaciones": [
+      {
+        "rel": "reports/baseline_v03_dev_metrics.json",
+        "n_floats": 247,
+        "max_abs_float": 10.3,
+        "n_diffs": 1,
+        "diffs": [
+          {
+            "path": ".duracion_segundos",
+            "tipo": "float",
+            "orig": 16.13,
+            "nuevo": 5.83,
+            "diff": 10.299999999999999
+          }
+        ]
+      }
+    ],
+    "controles": [
+      {
+        "rel": "reports/baseline_v03_dev_metrics.json",
+        "hits": [
+          {
+            "path": ".v03_con_umbrales_corrected.f1_media_columnas",
+            "orig": 0.7772114525165721,
+            "nuevo": 0.7772114525165721,
+            "ok": true
+          }
+        ],
+        "n": 1
+      }
+    ]
+  },
+  {
+    "name": "pa01",
+    "script": "experiments/12_control_pseudo_autores.py",
+    "exit": 0,
+    "duracion_s": 3.6,
+    "tracked_changed": [
+      "kaggle_toxic_2026_puj/experiments.csv",
+      "kaggle_toxic_2026_puj/reports/control_pseudo_autores.json"
+    ],
+    "features_changed": [],
+    "comparaciones": [
+      {
+        "rel": "reports/control_pseudo_autores.json",
+        "n_floats": 63,
+        "max_abs_float": 0.71,
+        "n_diffs": 1,
+        "diffs": [
+          {
+            "path": ".duracion_segundos",
+            "tipo": "float",
+            "orig": 2.04,
+            "nuevo": 2.75,
+            "diff": 0.71
+          }
+        ]
+      }
+    ],
+    "controles": []
+  },
+  {
+    "name": "v6_02",
+    "script": "experiments/v6_02_label_factorization.py",
+    "exit": 0,
+    "duracion_s": 13.5,
+    "tracked_changed": [
+      "kaggle_toxic_2026_puj/reports/v6_label_factorization.json",
+      "kaggle_toxic_2026_puj/reports/v6_label_factorization.md"
+    ],
+    "features_changed": [],
+    "comparaciones": [
+      {
+        "rel": "reports/v6_label_factorization.json",
+        "n_floats": 88,
+        "max_abs_float": 0.0,
+        "n_diffs": 1,
+        "diffs": [
+          {
+            "path": ".fecha",
+            "tipo": "valor",
+            "orig": "2026-09-26T01:25:58+00:00",
+            "nuevo": "2026-09-26T05:49:29+00:00"
+          }
+        ]
+      }
+    ],
+    "controles": [
+      {
+        "rel": "reports/v6_label_factorization.json",
+        "hits": [
+          {
+            "path": ".referencia_v03",
+            "orig": 0.777211,
+            "nuevo": 0.777211,
+            "ok": true
+          },
+          {
+            "path": ".variantes[0].corrected_cv_frozen",
+            "orig": 0.777211,
+            "nuevo": 0.777211,
+            "ok": true
+          }
+        ],
+        "n": 2
+      }
+    ]
+  },
+  {
+    "name": "v6_03",
+    "script": "experiments/v6_03_ponderacion_grupo.py",
+    "exit": 0,
+    "duracion_s": 15.7,
+    "tracked_changed": [
+      "kaggle_toxic_2026_puj/reports/v6_ponderacion_grupo.json",
+      "kaggle_toxic_2026_puj/reports/v6_ponderacion_grupo.md"
+    ],
+    "features_changed": [],
+    "comparaciones": [
+      {
+        "rel": "reports/v6_ponderacion_grupo.json",
+        "n_floats": 44,
+        "max_abs_float": 0.0,
+        "n_diffs": 1,
+        "diffs": [
+          {
+            "path": ".fecha",
+            "tipo": "valor",
+            "orig": "2026-09-26T01:29:42+00:00",
+            "nuevo": "2026-09-26T05:49:45+00:00"
+          }
+        ]
+      }
+    ],
+    "controles": [
+      {
+        "rel": "reports/v6_ponderacion_grupo.json",
+        "hits": [
+          {
+            "path": ".referencia_v03",
+            "orig": 0.777211,
+            "nuevo": 0.777211,
+            "ok": true
+          },
+          {
+            "path": ".variantes[0].corrected_cv",
+            "orig": 0.777211,
+            "nuevo": 0.777211,
+            "ok": true
+          }
+        ],
+        "n": 2
+      }
+    ]
+  },
+  {
+    "name": "v6_04",
+    "script": "experiments/v6_04_char_weight.py",
+    "exit": 0,
+    "duracion_s": 55.1,
+    "tracked_changed": [
+      "kaggle_toxic_2026_puj/reports/v6_char_weight.json",
+      "kaggle_toxic_2026_puj/reports/v6_char_weight.md"
+    ],
+    "features_changed": [],
+    "comparaciones": [
+      {
+        "rel": "reports/v6_char_weight.json",
+        "n_floats": 47,
+        "max_abs_float": 0.0,
+        "n_diffs": 1,
+        "diffs": [
+          {
+            "path": ".fecha",
+            "tipo": "valor",
+            "orig": "2026-09-26T01:32:40+00:00",
+            "nuevo": "2026-09-26T05:50:40+00:00"
+          }
+        ]
+      }
+    ],
+    "controles": [
+      {
+        "rel": "reports/v6_char_weight.json",
+        "hits": [
+          {
+            "path": ".referencia_v03",
+            "orig": 0.777211,
+            "nuevo": 0.777211,
+            "ok": true
+          },
+          {
+            "path": ".variantes[0].corrected_cv",
+            "orig": 0.777211,
+            "nuevo": 0.777211,
+            "ok": true
+          }
+        ],
+        "n": 2
+      }
+    ]
+  },
+  {
+    "name": "v6_05",
+    "script": "experiments/v6_05_skipgrams.py",
+    "exit": 0,
+    "duracion_s": 51.3,
+    "tracked_changed": [
+      "kaggle_toxic_2026_puj/reports/v6_skipgrams.json",
+      "kaggle_toxic_2026_puj/reports/v6_skipgrams.md"
+    ],
+    "features_changed": [],
+    "comparaciones": [
+      {
+        "rel": "reports/v6_skipgrams.json",
+        "n_floats": 42,
+        "max_abs_float": 0.0,
+        "n_diffs": 1,
+        "diffs": [
+          {
+            "path": ".fecha",
+            "tipo": "valor",
+            "orig": "2026-09-26T01:35:50+00:00",
+            "nuevo": "2026-09-26T05:51:31+00:00"
+          }
+        ]
+      }
+    ],
+    "controles": [
+      {
+        "rel": "reports/v6_skipgrams.json",
+        "hits": [
+          {
+            "path": ".referencia_v03",
+            "orig": 0.777211,
+            "nuevo": 0.777211,
+            "ok": true
+          },
+          {
+            "path": ".variantes[0].corrected_cv",
+            "orig": 0.777211,
+            "nuevo": 0.777211,
+            "ok": true
+          }
+        ],
+        "n": 2
+      }
+    ]
+  },
+  {
+    "name": "v6_06",
+    "script": "experiments/v6_06_bagging_grupos.py",
+    "exit": 0,
+    "duracion_s": 71.8,
+    "tracked_changed": [
+      "kaggle_toxic_2026_puj/reports/v6_bagging_grupos.json",
+      "kaggle_toxic_2026_puj/reports/v6_bagging_grupos.md"
+    ],
+    "features_changed": [],
+    "comparaciones": [
+      {
+        "rel": "reports/v6_bagging_grupos.json",
+        "n_floats": 28,
+        "max_abs_float": 0.0,
+        "n_diffs": 1,
+        "diffs": [
+          {
+            "path": ".fecha",
+            "tipo": "valor",
+            "orig": "2026-09-26T01:38:52+00:00",
+            "nuevo": "2026-09-26T05:52:43+00:00"
+          }
+        ]
+      }
+    ],
+    "controles": [
+      {
+        "rel": "reports/v6_bagging_grupos.json",
+        "hits": [
+          {
+            "path": ".referencia_v03",
+            "orig": 0.777211,
+            "nuevo": 0.777211,
+            "ok": true
+          },
+          {
+            "path": ".variantes[0].corrected_cv",
+            "orig": 0.777211,
+            "nuevo": 0.777211,
+            "ok": true
+          }
+        ],
+        "n": 2
+      }
+    ]
+  },
+  {
+    "name": "v6_07",
+    "script": "experiments/v6_07_ruido_par.py",
+    "exit": 0,
+    "duracion_s": 31.2,
+    "tracked_changed": [
+      "kaggle_toxic_2026_puj/reports/v6_ruido_par.json",
+      "kaggle_toxic_2026_puj/reports/v6_ruido_par.md"
+    ],
+    "features_changed": [],
+    "comparaciones": [
+      {
+        "rel": "reports/v6_ruido_par.json",
+        "n_floats": 55,
+        "max_abs_float": 0.0,
+        "n_diffs": 1,
+        "diffs": [
+          {
+            "path": ".fecha",
+            "tipo": "valor",
+            "orig": "2026-09-26T01:41:28+00:00",
+            "nuevo": "2026-09-26T05:53:14+00:00"
+          }
+        ]
+      }
+    ],
+    "controles": [
+      {
+        "rel": "reports/v6_ruido_par.json",
+        "hits": [
+          {
+            "path": ".referencia_v03",
+            "orig": 0.777211,
+            "nuevo": 0.777211,
+            "ok": true
+          },
+          {
+            "path": ".variantes[0].corrected_cv",
+            "orig": 0.777211,
+            "nuevo": 0.777211,
+            "ok": true
+          }
+        ],
+        "n": 2
+      }
+    ]
+  },
+  {
+    "name": "v6_08",
+    "script": "experiments/v6_08_aumento.py",
+    "exit": 0,
+    "duracion_s": 27.8,
+    "tracked_changed": [
+      "kaggle_toxic_2026_puj/reports/v6_aumento.json",
+      "kaggle_toxic_2026_puj/reports/v6_aumento.md"
+    ],
+    "features_changed": [],
+    "comparaciones": [
+      {
+        "rel": "reports/v6_aumento.json",
+        "n_floats": 36,
+        "max_abs_float": 0.0,
+        "n_diffs": 1,
+        "diffs": [
+          {
+            "path": ".fecha",
+            "tipo": "valor",
+            "orig": "2026-09-26T01:42:48+00:00",
+            "nuevo": "2026-09-26T05:53:42+00:00"
+          }
+        ]
+      }
+    ],
+    "controles": [
+      {
+        "rel": "reports/v6_aumento.json",
+        "hits": [
+          {
+            "path": ".referencia_v03",
+            "orig": 0.777211,
+            "nuevo": 0.777211,
+            "ok": true
+          },
+          {
+            "path": ".variantes[0].corrected_cv",
+            "orig": 0.777211,
+            "nuevo": 0.777211,
+            "ok": true
+          }
+        ],
+        "n": 2
+      }
+    ]
+  },
+  {
+    "name": "v7_01",
+    "script": "experiments/v7_01_perdida_f1.py",
+    "exit": 0,
+    "duracion_s": 150.9,
+    "tracked_changed": [
+      "kaggle_toxic_2026_puj/reports/v7_perdida_f1.json",
+      "kaggle_toxic_2026_puj/reports/v7_perdida_f1.md"
+    ],
+    "features_changed": [],
+    "comparaciones": [
+      {
+        "rel": "reports/v7_perdida_f1.json",
+        "n_floats": 37,
+        "max_abs_float": 0.0,
+        "n_diffs": 1,
+        "diffs": [
+          {
+            "path": ".fecha",
+            "tipo": "valor",
+            "orig": "2026-09-26T02:08:56+00:00",
+            "nuevo": "2026-09-26T05:56:13+00:00"
+          }
+        ]
+      }
+    ],
+    "controles": [
+      {
+        "rel": "reports/v7_perdida_f1.json",
+        "hits": [
+          {
+            "path": ".referencia_v03",
+            "orig": 0.777211,
+            "nuevo": 0.777211,
+            "ok": true
+          },
+          {
+            "path": ".variantes[0].corrected_cv",
+            "orig": 0.777165,
+            "nuevo": 0.777165,
+            "ok": true
+          }
+        ],
+        "n": 2
+      }
+    ]
+  },
+  {
+    "name": "v7_02",
+    "script": "experiments/v7_02_prior_grupo.py",
+    "exit": 0,
+    "duracion_s": 11.6,
+    "tracked_changed": [
+      "kaggle_toxic_2026_puj/reports/v7_prior_grupo.json",
+      "kaggle_toxic_2026_puj/reports/v7_prior_grupo.md"
+    ],
+    "features_changed": [],
+    "comparaciones": [
+      {
+        "rel": "reports/v7_prior_grupo.json",
+        "n_floats": 50,
+        "max_abs_float": 0.0,
+        "n_diffs": 1,
+        "diffs": [
+          {
+            "path": ".fecha",
+            "tipo": "valor",
+            "orig": "2026-09-26T02:13:11+00:00",
+            "nuevo": "2026-09-26T05:56:25+00:00"
+          }
+        ]
+      }
+    ],
+    "controles": [
+      {
+        "rel": "reports/v7_prior_grupo.json",
+        "hits": [
+          {
+            "path": ".referencia_v03",
+            "orig": 0.777211,
+            "nuevo": 0.777211,
+            "ok": true
+          },
+          {
+            "path": ".variantes[0].corrected_cv",
+            "orig": 0.777211,
+            "nuevo": 0.777211,
+            "ok": true
+          }
+        ],
+        "n": 2
+      }
+    ]
+  },
+  {
+    "name": "v7_03",
+    "script": "experiments/v7_03_umbral_anidado.py",
+    "exit": 0,
+    "duracion_s": 13.1,
+    "tracked_changed": [
+      "kaggle_toxic_2026_puj/reports/v7_umbral_anidado.json",
+      "kaggle_toxic_2026_puj/reports/v7_umbral_anidado.md"
+    ],
+    "features_changed": [],
+    "comparaciones": [
+      {
+        "rel": "reports/v7_umbral_anidado.json",
+        "n_floats": 219,
+        "max_abs_float": 0.0,
+        "n_diffs": 1,
+        "diffs": [
+          {
+            "path": ".fecha",
+            "tipo": "valor",
+            "orig": "2026-09-26T02:16:14+00:00",
+            "nuevo": "2026-09-26T05:56:38+00:00"
+          }
+        ]
+      }
+    ],
+    "controles": [
+      {
+        "rel": "reports/v7_umbral_anidado.json",
+        "hits": [
+          {
+            "path": ".referencia_v03",
+            "orig": 0.777211,
+            "nuevo": 0.777211,
+            "ok": true
+          },
+          {
+            "path": ".variantes[0].corrected_cv",
+            "orig": 0.777211,
+            "nuevo": 0.777211,
+            "ok": true
+          }
+        ],
+        "n": 2
+      }
+    ]
+  },
+  {
+    "name": "v4_reweighting",
+    "script": "experiments/29_reweighting_v4.py",
+    "exit": 1,
+    "duracion_s": 33.6,
+    "tracked_changed": [],
+    "features_changed": [],
+    "comparaciones": [],
+    "controles": []
+  },
+  {
+    "name": "v4_meta_shift",
+    "script": "experiments/32_meta_shift_v4.py",
+    "exit": 0,
+    "duracion_s": 40.9,
+    "tracked_changed": [
+      "kaggle_toxic_2026_puj/reports/meta_shift_v4.json"
+    ],
+    "features_changed": [
+      "oof_meta_shift_v4.npz"
+    ],
+    "comparaciones": [
+      {
+        "rel": "reports/meta_shift_v4.json",
+        "n_floats": 62,
+        "max_abs_float": 118.1,
+        "n_diffs": 2,
+        "diffs": [
+          {
+            "path": ".duracion_s",
+            "tipo": "float",
+            "orig": 157.83,
+            "nuevo": 39.73,
+            "diff": 118.10000000000002
+          },
+          {
+            "path": ".fecha",
+            "tipo": "valor",
+            "orig": "2026-09-25T19:28:44+00:00",
+            "nuevo": "2026-09-26T05:57:52+00:00"
+          }
+        ]
+      }
+    ],
+    "controles": [
+      {
+        "rel": "reports/meta_shift_v4.json",
+        "hits": [
+          {
+            "path": ".referencia_v03",
+            "orig": 0.777211,
+            "nuevo": 0.777211,
+            "ok": true
+          }
+        ],
+        "n": 1
+      }
+    ]
+  },
+  {
+    "name": "v4_candidatos",
+    "script": "experiments/36_candidatos_v4.py",
+    "exit": 1,
+    "duracion_s": 1.9,
+    "tracked_changed": [],
+    "features_changed": [],
+    "comparaciones": [],
+    "controles": []
+  },
+  {
+    "name": "v8_01",
+    "script": "experiments/v8_01_ensamble_folds.py",
+    "exit": 0,
+    "duracion_s": 8.1,
+    "tracked_changed": [
+      "kaggle_toxic_2026_puj/reports/v8_ensamble_folds.json",
+      "kaggle_toxic_2026_puj/reports/v8_ensamble_folds.md"
+    ],
+    "features_changed": [],
+    "comparaciones": [
+      {
+        "rel": "reports/v8_ensamble_folds.json",
+        "n_floats": 48,
+        "max_abs_float": 0.0,
+        "n_diffs": 1,
+        "diffs": [
+          {
+            "path": ".fecha",
+            "tipo": "valor",
+            "orig": "2026-09-26T02:52:57+00:00",
+            "nuevo": "2026-09-26T05:58:02+00:00"
+          }
+        ]
+      }
+    ],
+    "controles": [
+      {
+        "rel": "reports/v8_ensamble_folds.json",
+        "hits": [
+          {
+            "path": ".referencia_v03_local",
+            "orig": 0.777211,
+            "nuevo": 0.777211,
+            "ok": true
+          },
+          {
+            "path": ".metrica_promedio_desarrollo",
+            "orig": 0.777211,
+            "nuevo": 0.777211,
+            "ok": true
+          },
+          {
+            "path": ".metrica_oof_canonico",
+            "orig": 0.777211,
+            "nuevo": 0.777211,
+            "ok": true
+          }
+        ],
+        "n": 3
+      }
+    ]
+  },
+  {
+    "name": "v8_03",
+    "script": "experiments/v8_03_estabilidad_features.py",
+    "exit": 0,
+    "duracion_s": 13.1,
+    "tracked_changed": [
+      "kaggle_toxic_2026_puj/reports/v8_estabilidad_features.json",
+      "kaggle_toxic_2026_puj/reports/v8_estabilidad_features.md"
+    ],
+    "features_changed": [],
+    "comparaciones": [
+      {
+        "rel": "reports/v8_estabilidad_features.json",
+        "n_floats": 66,
+        "max_abs_float": 0.0,
+        "n_diffs": 1,
+        "diffs": [
+          {
+            "path": ".fecha",
+            "tipo": "valor",
+            "orig": "2026-09-26T03:10:44+00:00",
+            "nuevo": "2026-09-26T05:58:16+00:00"
+          }
+        ]
+      }
+    ],
+    "controles": [
+      {
+        "rel": "reports/v8_estabilidad_features.json",
+        "hits": [
+          {
+            "path": ".referencia_v03_local",
+            "orig": 0.777211,
+            "nuevo": 0.777211,
+            "ok": true
+          }
+        ],
+        "n": 1
+      }
+    ]
+  },
+  {
+    "name": "v8_05",
+    "script": "experiments/v8_05_regularizacion_conjunta.py",
+    "exit": 0,
+    "duracion_s": 32.2,
+    "tracked_changed": [
+      "kaggle_toxic_2026_puj/reports/v8_regularizacion_conjunta.json",
+      "kaggle_toxic_2026_puj/reports/v8_regularizacion_conjunta.md"
+    ],
+    "features_changed": [],
+    "comparaciones": [
+      {
+        "rel": "reports/v8_regularizacion_conjunta.json",
+        "n_floats": 149,
+        "max_abs_float": 0.0,
+        "n_diffs": 1,
+        "diffs": [
+          {
+            "path": ".fecha",
+            "tipo": "valor",
+            "orig": "2026-09-26T03:31:47+00:00",
+            "nuevo": "2026-09-26T05:58:48+00:00"
+          }
+        ]
+      }
+    ],
+    "controles": [
+      {
+        "rel": "reports/v8_regularizacion_conjunta.json",
+        "hits": [
+          {
+            "path": ".referencia_v03_local",
+            "orig": 0.777211,
+            "nuevo": 0.777211,
+            "ok": true
+          }
+        ],
+        "n": 1
+      }
+    ]
+  },
+  {
+    "name": "dl11",
+    "script": "experiments/11_dl_desde_cero.py",
+    "exit": 0,
+    "duracion_s": 116.1,
+    "tracked_changed": [
+      "kaggle_toxic_2026_puj/experiments.csv",
+      "kaggle_toxic_2026_puj/reports/contexto.md",
+      "kaggle_toxic_2026_puj/reports/dl_desde_cero_resultados.csv",
+      "kaggle_toxic_2026_puj/reports/dl_desde_cero_resultados.json",
+      "kaggle_toxic_2026_puj/reports/figuras/fig_26_dl_curvas.png"
+    ],
+    "features_changed": [],
+    "comparaciones": [
+      {
+        "rel": "reports/dl_desde_cero_resultados.json",
+        "n_floats": 1215,
+        "max_abs_float": 235782144.0,
+        "n_diffs": 44,
+        "diffs": [
+          {
+            "path": ".arquitecturas[0].curvas[0].segundos",
+            "tipo": "float",
+            "orig": 1.4,
+            "nuevo": 1.7,
+            "diff": 0.30000000000000004
+          },
+          {
+            "path": ".arquitecturas[0].curvas[1].segundos",
+            "tipo": "float",
+            "orig": 0.56,
+            "nuevo": 0.62,
+            "diff": 0.05999999999999994
+          },
+          {
+            "path": ".arquitecturas[0].curvas[2].segundos",
+            "tipo": "float",
+            "orig": 0.69,
+            "nuevo": 0.72,
+            "diff": 0.030000000000000027
+          },
+          {
+            "path": ".arquitecturas[0].curvas[3].segundos",
+            "tipo": "float",
+            "orig": 1.0,
+            "nuevo": 1.07,
+            "diff": 0.07000000000000006
+          },
+          {
+            "path": ".arquitecturas[0].curvas[4].segundos",
+            "tipo": "float",
+            "orig": 0.45,
+            "nuevo": 0.51,
+            "diff": 0.06
+          },
+          {
+            "path": ".arquitecturas[0].pliegues[0].segundos",
+            "tipo": "float",
+            "orig": 1.4,
+            "nuevo": 1.7,
+            "diff": 0.30000000000000004
+          },
+          {
+            "path": ".arquitecturas[0].pliegues[1].segundos",
+            "tipo": "float",
+            "orig": 0.56,
+            "nuevo": 0.62,
+            "diff": 0.05999999999999994
+          },
+          {
+            "path": ".arquitecturas[0].pliegues[2].segundos",
+            "tipo": "float",
+            "orig": 0.69,
+            "nuevo": 0.72,
+            "diff": 0.030000000000000027
+          },
+          {
+            "path": ".arquitecturas[0].pliegues[3].segundos",
+            "tipo": "float",
+            "orig": 1.0,
+            "nuevo": 1.07,
+            "diff": 0.07000000000000006
+          },
+          {
+            "path": ".arquitecturas[0].pliegues[4].segundos",
+            "tipo": "float",
+            "orig": 0.45,
+            "nuevo": 0.51,
+            "diff": 0.06
+          }
+        ]
+      },
+      {
+        "rel": "reports/dl_desde_cero_resultados.csv",
+        "bytes_iguales": false
+      }
+    ],
+    "controles": []
+  }
+]

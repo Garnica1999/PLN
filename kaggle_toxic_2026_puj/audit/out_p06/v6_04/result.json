@@ -1,0 +1,11 @@
+{
+  "name": "v6_04",
+  "script": "experiments/v6_04_char_weight.py",
+  "exit": 0,
+  "duracion_s": 55.1,
+  "tracked_changed": [
+    "kaggle_toxic_2026_puj/reports/v6_char_weight.json",
+    "kaggle_toxic_2026_puj/reports/v6_char_weight.md"
+  ],
+  "features_changed": []
+}

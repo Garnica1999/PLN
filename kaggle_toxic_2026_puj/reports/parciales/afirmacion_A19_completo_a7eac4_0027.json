@@ -1,0 +1,76 @@
+{
+  "marca_corrida": "completo_a7eac4",
+  "resultado": {
+    "bloque": 19,
+    "coste_segundos": 0.000107,
+    "descripcion": "el F1 del miembro se publica como descriptiva, sin lectura inferencial",
+    "detalle": {
+      "bloque_de_la_lectura_sin_f1": true,
+      "comprobaciones": {
+        "el_f1_esta_publicado": true,
+        "el_f1_no_aparece_en_la_regla_de_lectura": true,
+        "el_intervalo_esta_publicado": true,
+        "la_desviacion_entre_semillas_esta": true,
+        "la_etiqueta_descriptiva_esta": true,
+        "la_frase_sobre_la_pregunta_1_esta": true,
+        "la_frase_sobre_la_pregunta_2_esta": true
+      },
+      "etiqueta": "DESCRIPTIVA_Y_SIN_CUALQUIER_LECTURA_INFERENCIAL",
+      "f1_del_miembro": {
+        "desviacion_entre_semillas": 0.004391366887091081,
+        "etiqueta": "DESCRIPTIVA_Y_SIN_CUALQUIER_LECTURA_INFERENCIAL",
+        "f1_media_columnas": 0.7155415037123107,
+        "f1_medio_por_semilla": {
+          "20261401": 0.7092477642752562,
+          "20261402": 0.7141479489375369,
+          "20261403": 0.7149469232232789,
+          "20261404": 0.7189986972152285,
+          "20261405": 0.7203661849102527
+        },
+        "f1_por_combinacion": [
+          0.7177708006279436,
+          0.6993131544765823,
+          0.707134167656211,
+          0.7114809000523286,
+          0.7030895691609977,
+          0.739616466340102,
+          0.7131231429514692,
+          0.7392880896618887,
+          0.7358322699952691,
+          0.7176637918201779,
+          0.736895157409601,
+          0.7282995047006041,
+          0.7337638124367981,
+          0.7238613569661004,
+          0.747536244352939,
+          0.6786917017570167,
+          0.6943459080883189,
+          0.6726092896174863,
+          0.704604469847955,
+          0.7009341840918687,
+          0.6732646952416178,
+          0.7356580344707093,
+          0.7219392567440105,
+          0.7192144892144893,
+          0.7326071351252805
+        ],
+        "intervalo": [
+          0.7068499033519289,
+          0.7242331040726926
+        ],
+        "n_combinaciones": 25,
+        "origen": "medido con metricas_multietiqueta sobre las predicciones binarizadas con los umbrales congelados de cada combinacion de pliegue y semilla"
+      },
+      "frase_sobre_la_pregunta_1": "UN_F1_POR_DEBAJO_DE_V03_NO_REFUTA_NADA_SOBRE_LA_PREGUNTA_1PORQUE_LA_PREGUNTA_1_NO_COMPITE_POR_F1",
+      "frase_sobre_la_pregunta_2": "UN_F1_POR_DEBAJO_DE_V03_NO_REFUTA_NADA_SOBRE_LA_PREGUNTA_2PORQUE_LA_PREGUNTA_2_NO_BUSCA_SUPERAR_A_V03",
+      "motivo_de_parada": "el F1 se ha usado como criterio"
+    },
+    "estado": "CONFIRMADO",
+    "exito": true,
+    "id": "A19",
+    "naturaleza": "CONFIRMAR",
+    "stop": true,
+    "tolerancia": "el F1 aparece con etiqueta descriptiva, medido, y fuera de la regla de lectura",
+    "traza": ""
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "name": "v8_03",
+  "script": "experiments/v8_03_estabilidad_features.py",
+  "exit": 0,
+  "duracion_s": 13.1,
+  "tracked_changed": [
+    "kaggle_toxic_2026_puj/reports/v8_estabilidad_features.json",
+    "kaggle_toxic_2026_puj/reports/v8_estabilidad_features.md"
+  ],
+  "features_changed": []
+}

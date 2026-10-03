@@ -1,0 +1,174 @@
+{
+  "familia": "P62_GAP_ANALYSIS",
+  "naturaleza": "AUDITORIA. 0 experimentos, 0 modelos, 0 submissions, 0 Kaggle, 0 holdout, 0 test. No se repite nada de P61",
+  "fecha": "2026-09-29T05:08:48+00:00",
+  "commit": "ab9fbf5",
+  "baseline_verificado": {
+    "sha256": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "corrected_cv": "0.7772114525165721",
+    "grupos": 1415,
+    "grupos_partidos": 0
+  },
+  "p61_verificada": {
+    "experimentos": [
+      "P61-01",
+      "P61-02",
+      "P61-03"
+    ],
+    "ensemble_mejor_delta": 0.006304507,
+    "ensemble_gate": true,
+    "control_negativo": 0.0059889238,
+    "finalistas": [
+      "con_nuevo_k3_A",
+      "con_nuevo_k4_A"
+    ],
+    "conclusion_heredada": "los errores son de alta confianza, luego el limite no es de decision; LightGBM no llega sobre la misma representacion, luego no es de capacidad del clasificador; el ensemble sobre OOF no transfiere, luego no es de combinacion. Queda la representacion"
+  },
+  "tagger": {
+    "herramienta": "spaCy",
+    "version_spacy": "3.8.13",
+    "modelo": "es_core_news_md",
+    "version_modelo": "3.8.0",
+    "idioma": "es",
+    "licencia": "GNU GPL 3.0",
+    "componentes_excluidos": [
+      "ner"
+    ],
+    "vectores_preentrenados": false,
+    "autorizacion": "D-003, ya vigente: anotador simbolico permitido, vectores prohibidos con assert en el codigo de features",
+    "estado_normativo": "PERMITIDO, no ambiguo",
+    "uso_previos_en_el_proyecto": "E2-03 y E2-04, y las 20 canales del pool de P50 que proceden de esa anotacion"
+  },
+  "fenomenos": [
+    {
+      "id": "L",
+      "tipo": "pista",
+      "fenomeno": "el mismo lexema con distinto significado predictivo segun su categoria gramatical, representado como token palabra__POS",
+      "experimentos_previos": "E2-03-POS, E2-03-POS-TXT (familia sintaxis/cita/negacion, paquete 19), y las 36 columnas pos_* de v2_structured_features.parquet",
+      "representacion_existente": "DOS formas, ambas sin la identidad de la palabra. (a) DENSE: pos_VERB_n y pos_VERB_frac, un conteo y una proporcion por tweet para cada una de las 18 categorias. (b) SPARSE pero categorial: la funcion secuencia_pos emite f'{token.pos}_{token.head_pos}' y se vectoriza con ngram_range (1,4)",
+      "tipo_representacion": "densas por tweet, mas tokens categoriales sin palabra",
+      "identidad_lexical_entra": false,
+      "delta_historico": "E2-03-POS -0,2135 con 0/5 pliegues; E2-03-POS-TXT -0,0116 con 0/5 pliegues",
+      "veredicto": "genuinely_new",
+      "por_que": "ninguna de las dos formas existentes combina la identidad de la palabra con su categoria. El token palabra__POS no aparece en ningun sitio del codigo, y eso es una comprobable, no una interpretacion. La version categorial fallo, lo cual acota donde puede estar la senal: en el termino de interaccion, no en la etiqueta",
+      "experimentos_consumidos": 1
+    },
+    {
+      "id": "M",
+      "tipo": "pista",
+      "fenomeno": "la relacion sintactica entre dos palabras concretas, representada como token cabeza__relacion__dependiente",
+      "experimentos_previos": "E2-04-DEPS, E2-04-DEPS-TXT, y las 31 columnas dep_* de v2_structured_features.parquet",
+      "representacion_existente": "DOS formas, ninguna con la palabra dependiente. (a) DENSE: dep_amod_n y las demas 30, un conteo por relacion y tweet. (b) SPARSE: la funcion secuencia_deps emite f'{dep}_{token.head_pos}' y, segun el inventario de artefactos, tambien DEP_HEAD; es decir relacion mas POS de la cabeza, y la cabeza en forma de lema, pero NUNCA la palabra dependiente",
+      "tipo_representacion": "densas por tweet, mas tokens relacion-POS-cabeza sin dependiente",
+      "identidad_lexical_entra": "solo la de la cabeza, en un token aislado",
+      "delta_historico": "E2-04-DEPS -0,2258 con 0/5 pliegues; E2-04-DEPS-TXT -0,0119 con 1/5 pliegues",
+      "veredicto": "genuinely_new",
+      "por_que": "el triple lexical cabeza__relacion__dependiente no existe. La version existente acerca la cabeza y la relacion pero pierde el dependiente, que es justamente el elemento que distingue un insulto dirigido a alguien de un adjetivo suelto",
+      "experimentos_consumidos": 1
+    },
+    {
+      "id": "N",
+      "tipo": "pista",
+      "fenomeno": "secuencias de POS de longitud dos a cuatro, como VERB_NOUN, ADJ_NOUN, PRON_VERB_ADJ, representadas como tokens sparse",
+      "experimentos_previos": "E2-03-POS y E2-03-POS-TXT, mediante la funcion secuencia_pos con PARAMS_POS ngram_range (1,4)",
+      "representacion_existente": "exactamente la propuesta. secuencia_pos une por espacio los pares POS_dependiente_POS_cabeza y TfidfVectorizer con ngram_range (1,4) genera los n-gramas de longitud uno a cuatro, que incluyen VERB_NOUN, PRON_VERB_ADJ y demas",
+      "tipo_representacion": "sparse categorial, identica a la propuesta",
+      "identidad_lexical_entra": false,
+      "delta_historico": "E2-03-POS-TXT -0,0116 con 0/5 pliegues",
+      "veredicto": "functionally_equivalent",
+      "por_que": "la representacion propuesta y la existente son el mismo objeto. Repetirla gastaria un experimento para confirmar un numero que ya esta en el registro con el mismo clasificador, los mismos pliegues y la misma regla de decision. Se cierra SIN consumir experimento, que es lo que autoriza el parrafo 43",
+      "experimentos_consumidos": 0
+    },
+    {
+      "id": "O",
+      "tipo": "pista",
+      "fenomeno": "canal sparse de composicion lexica: familia verbal, familia adjectival, familia nominal, clase pronominal y patron de funcionales",
+      "experimentos_previos": "E2-02-META-BASES y su combinacion con canales, E2-15-NB-WORD, E2-15-NBSVM, E2-15-NBSVM-SVC, y V25-01 con factorization machines por etiqueta",
+      "representacion_existente": "varias. E2-15 es Naive Bayes sobre lemas, que es justamente la composicion lexica como likelihood. V25-01 es un modelo de interaccion de bajo rango sobre las mismas bases. Ninguno de los dos es un canal sparse que conviva con el TF-IDF de V03 en el mismo espacio de regresion logistica",
+      "tipo_representacion": "modelos paralelos, no canal sparse anadido a V03",
+      "identidad_lexical_entra": true,
+      "delta_historico": "E2-15-NB-WORD -0,0234 con 0/5; E2-15-NBSVM -0,0160 con 2/5; V25-01 0,782699 sin candidato",
+      "veredicto": "partially_tested",
+      "por_que": "la composicion lexica como likelihood y como interaccion ya se probo y fue peor que V03. Lo que no se probo es usarla como CANAL sparse dentro del espacio de V03. La diferencia es real, pero es estructural, y solo se justifica si L y M funcionan; si el patron es que anadir canales categoriales no aporta, lo mas probable es que este tampoco. Se abre de forma CONDICIONAL, no de forma previa",
+      "experimentos_consumidos": 1
+    },
+    {
+      "id": "P",
+      "tipo": "pista",
+      "fenomeno": "tokens de contraste estructural: NEG+ADJ, QUOTE+TOXIC, MENTION+INSULT, PRONOUN+INSULT, COLLECTIVE+INSULT, VERB+TARGET",
+      "experimentos_previos": "E2-05-CH-TGT, E2-05-CH-TGT-DIST, E2-06-TXT-CH, E2-06-TXT-TGT-SPARSE, E2-07-CITA, E2-07-CITA-TXT, E2-07-CITA-NEG-TXT, E2-08-NEG, E2-08-NEG-TXT",
+      "representacion_existente": "las nueve filas anteriores. E2-07 y E2-08 construyen rasgos de cita y de negacion CON ALCANCE, incluyendo el recuento de insultos que caen dentro del alcance de la negacion y el de los que estan en comillas, lo cual es mas fino que un token NEG+ADJ. E2-05 cubre el emparejamiento entre posiciones de insulto y de target",
+      "tipo_representacion": "rasgos densos con alcance sintactico calculado",
+      "identidad_lexical_entra": true,
+      "delta_historico": "E2-07-CITA-NEG-TXT -0,0220 con 1/5; E2-08-NEG-TXT -0,0115 con 0/5; E2-05-CH-TGT -0,1696 con 0/5; E2-06-TXT-TGT-SPARSE -0,0285 con 1/5",
+      "veredicto": "functionally_equivalent",
+      "por_que": "el alcance de la negacion y el aislamiento de la cita ya se calcularon y se midieron, y el emparejamiento insulto-target tambien. Los tokens propuestos son una reexpresion mas tosca de lo ya medido, salvo por la identidad lexica de las dos piezas, que es la unica diferencia real. Esa diferencia se solapa con M, que es donde se prueba de forma limpia, asi que se cierra aqui para no gastar dos experimentos en la misma idea",
+      "experimentos_consumidos": 0
+    },
+    {
+      "id": "EDA-1",
+      "tipo": "eda",
+      "fenomeno": "composicion de POS por clase y proporcion por tweet",
+      "experimentos_previos": "",
+      "representacion_existente": "las 36 columnas pos_* son exactamente esto, en forma densa. El EDA de P62 lo vuelve a medir, pero como DESCRIPCION y no como feature, que es lo que el parrafo 4 establece",
+      "tipo_representacion": "no aplica",
+      "identidad_lexical_entra": "",
+      "delta_historico": "",
+      "veredicto": "already_tested",
+      "por_que": "",
+      "experimentos_consumidos": 0
+    },
+    {
+      "id": "EDA-2",
+      "tipo": "eda",
+      "fenomeno": "enriquecimiento de verbos, adjetivos y sustantivos por etiqueta",
+      "experimentos_previos": "",
+      "representacion_existente": "E2-15-NB-WORD y V25-01 operan sobre lemas; E2-09-EMO-EST y las familias de emocion, sobre categorizacion. El enriquecimiento como estadistica descriptiva global no es una feature y por tanto no esta cerrado, pero tampoco puede alimentar un modelo sin pasar por dentro del pliegue, por el parrafo 45",
+      "tipo_representacion": "no aplica",
+      "identidad_lexical_entra": "",
+      "delta_historico": "",
+      "veredicto": "already_tested",
+      "por_que": "",
+      "experimentos_consumidos": 0
+    },
+    {
+      "id": "EDA-3",
+      "tipo": "eda",
+      "fenomeno": "perfil pronominal y de targeting",
+      "experimentos_previos": "",
+      "representacion_existente": "E2-05-CH-TGT y las col_* de las features estructuradas cubren segunda persona, plural generico y densidad de targeting, con -0,1696 y 0/5. El perfil por clase como descripcion sigue sin hacerse y es util para el diagnostico de la seccion 47",
+      "tipo_representacion": "no aplica",
+      "identidad_lexical_entra": "",
+      "delta_historico": "",
+      "veredicto": "already_tested",
+      "por_que": "",
+      "experimentos_consumidos": 0
+    },
+    {
+      "id": "EDA-4",
+      "tipo": "eda",
+      "fenomeno": "marcadores discursivos y modalidad",
+      "experimentos_previos": "",
+      "representacion_existente": "no hay fila del registro que las nombre. Lo mas cercano es la familia E2-07 de cita y atribucion, que cubre el habla referida pero no la modalidad. Es el unico fenomeno del encargo sin precedente claro, y aun asi se registra como hueco de datos y no como pista, porque el presupuesto de ocho experimentos ya tiene candidatos con mas respaldo",
+      "tipo_representacion": "no aplica",
+      "identidad_lexical_entra": "",
+      "delta_historico": "",
+      "veredicto": "partially_tested",
+      "por_que": "",
+      "experimentos_consumidos": 0
+    }
+  ],
+  "comprobaciones_contra_el_codigo": {
+    "existe_word__pos": false,
+    "secuencia_pos_emite_pos_headpos": true,
+    "params_pos_ngram_1_4": true,
+    "params_deps_ngram_1_3": true,
+    "no_hay_triple_lexical": true
+  },
+  "presupuesto": {
+    "principales_disponibles": 8,
+    "comprometidos": 3,
+    "reservas": 4
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

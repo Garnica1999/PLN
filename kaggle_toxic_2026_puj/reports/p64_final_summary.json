@@ -1,0 +1,42 @@
+{
+  "familia": "P64_FINAL",
+  "fecha": "2026-09-29T07:31:17+00:00",
+  "pregunta": "la informacion faltante en los tweets largos esta en nuevas palabras o en como se distribuye la evidencia interna",
+  "respuesta": "las dos mitades: la estructura interna es real, repartida y contradictoria, y es la que la bolsa de n-gramas aplana; y V03 ya la lleva dentro de su confianza, luego anadirla no aporta ni en el promedio ni en la region larga",
+  "experimentos": 4,
+  "presupuesto": 22,
+  "reservas_gastadas": 0,
+  "cobertura_ganada_sobre_P59": 5.2887,
+  "resultados": {
+    "P64-00": null,
+    "P64-01": null,
+    "P64-02": 0.7520352870492927,
+    "P64-03": 0.7656662316818297,
+    "P64-04": 0.7587037655769205
+  },
+  "cambio_de_signo_por_longitud": {
+    "todas multi": 0.716822,
+    "V03 correcto": 0.676389,
+    "V03 incorrecto": 0.788438,
+    "error de alta confianza": 0.753788,
+    "CORTA": 0.613333,
+    "MEDIA": 0.697706,
+    "LARGA": 0.710769,
+    "MUY_LARGA": 0.808786
+  },
+  "brechas": {
+    "evidencia_contra_margen": -0.014095965,
+    "leave_one_out_contra_margen": -0.0004650203
+  },
+  "regla_general": "una vez conocido el margen de V03, cualquier descripcion de como se reparte la evidencia interna queda dentro de la confianza y no aporta. Y el perfil de la segmentacion es longitud disfrazada de estructura, con un AUC inferior al de contar tokens",
+  "submissions": 0,
+  "kaggle": 0,
+  "holdout": 0,
+  "test": 0,
+  "leaderboard": 0,
+  "cumplimiento": {
+    "comprobaciones": 26,
+    "fallos": 0
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

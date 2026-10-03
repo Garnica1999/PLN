@@ -1,0 +1,140 @@
+{
+  "familia": "P71_TWITTER_WORD2VEC",
+  "experiment_id": "P71-05",
+  "fase": "P1c downstream",
+  "fecha": "2026-09-30T01:17:37+00:00",
+  "naturaleza": "EXPERIMENTO. 2 corpus, 2 downstreams cada uno. 0 test, 0 holdout, 0 leaderboard",
+  "v03_referencia": 0.7772114525,
+  "resultados": {
+    "v03": 0.7772114525,
+    "twitter": {
+      "vocabulario": 77657,
+      "dim": 200,
+      "filas_con_vector_no_cero": 1483,
+      "embedding_only_cv": 0.5659498481,
+      "embedding_only_delta": -0.2112616044,
+      "embedding_f1_pliegues": [
+        0.534779,
+        0.534517,
+        0.624949,
+        0.537168,
+        0.594461
+      ],
+      "fusion_cv": 0.6417716007,
+      "fusion_delta": -0.1354398518,
+      "fusion_f1_pliegues": [
+        0.644478,
+        0.62034,
+        0.686841,
+        0.585784,
+        0.669804
+      ],
+      "segundos": 4.3
+    },
+    "general": {
+      "vocabulario": 100097,
+      "dim": 200,
+      "filas_con_vector_no_cero": 1483,
+      "embedding_only_cv": 0.5663833893,
+      "embedding_only_delta": -0.2108280632,
+      "embedding_f1_pliegues": [
+        0.543644,
+        0.569526,
+        0.591262,
+        0.56716,
+        0.557286
+      ],
+      "fusion_cv": 0.6498321813,
+      "fusion_delta": -0.1273792712,
+      "fusion_f1_pliegues": [
+        0.656515,
+        0.64075,
+        0.652074,
+        0.641144,
+        0.658188
+      ],
+      "segundos": 4.5
+    }
+  },
+  "control_de_dominio": {
+    "delta_embedding": -0.0004335412,
+    "delta_fusion": -0.0080605806,
+    "ganador": "GENERAL_MEJORA"
+  },
+  "complementariedad": {
+    "twitter": {
+      "rescue": 262,
+      "damage": 643,
+      "por_etiqueta": {
+        "HS": {
+          "rescue": 108,
+          "damage": 245
+        },
+        "TR": {
+          "rescue": 51,
+          "damage": 170
+        },
+        "AG": {
+          "rescue": 103,
+          "damage": 228
+        }
+      },
+      "net": -381
+    },
+    "general": {
+      "rescue": 266,
+      "damage": 627,
+      "por_etiqueta": {
+        "HS": {
+          "rescue": 113,
+          "damage": 245
+        },
+        "TR": {
+          "rescue": 54,
+          "damage": 152
+        },
+        "AG": {
+          "rescue": 99,
+          "damage": 230
+        }
+      },
+      "net": -361
+    }
+  },
+  "gates": {
+    "twitter": {
+      "delta_fusion": -0.1354398518,
+      "delta_mayor_igual_00015": false,
+      "pliegues_positivos": 0,
+      "cuatro_de_cinco": false,
+      "complementariedad_neta_positiva": false,
+      "pasa_gate": false
+    },
+    "general": {
+      "delta_fusion": -0.1273792712,
+      "delta_mayor_igual_00015": false,
+      "pliegues_positivos": 0,
+      "cuatro_de_cinco": false,
+      "complementariedad_neta_positiva": false,
+      "pasa_gate": false
+    }
+  },
+  "veredicto": "CLOSED",
+  "decision_del_encargo": {
+    "A_twitter_mejora_claramente": false,
+    "B_mejora_embedding_pero_no_fusion": false,
+    "C_no_mejora_al_general": true,
+    "D_empeora": true,
+    "resultado": "CLOSED"
+  },
+  "reproducibilidad": {
+    "nivel": "R2",
+    "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "corrected_cv_v03": 0.7772114525165721,
+    "modelos": [
+      77657,
+      100097
+    ]
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

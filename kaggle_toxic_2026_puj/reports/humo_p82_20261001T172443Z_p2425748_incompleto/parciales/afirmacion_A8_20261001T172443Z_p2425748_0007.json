@@ -1,0 +1,45 @@
+{
+  "marca_corrida": "20261001T172443Z_p2425748",
+  "resultado": {
+    "bloque": 1,
+    "coste_segundos": 0.000232,
+    "descripcion": "cifras de cobertura medidas y publicadas, y MAX_LEN",
+    "detalle": {
+      "cifras": {
+        "convencion_de_fila_vacia": "una fila con cero tokens tiene longitud efectiva 1 para el empaquetado y para el softmax, de modo que su unica posicion recibe el peso; se publica cuantas hay",
+        "fraccion_filas_truncadas": 0.2,
+        "longitud_media_tokens_por_fila": 5.783333333333333,
+        "longitud_mediana_tokens_por_fila": 3.0,
+        "max_len": 12,
+        "n_filas_sin_tokens": 12,
+        "proporcion_oov_sobre_tokens_que_llegan": 0.30677290836653387,
+        "proporcion_posiciones_oov": 0.10694444444444444,
+        "proporcion_posiciones_relleno": 0.6513888888888889,
+        "referencia_oov_p81": 0.153295,
+        "referencia_relleno_p81": 0.7309191672285907,
+        "reproduccion_referencia_oov_de_p81": "NO_REPRODUCIDA",
+        "reproduccion_referencia_relleno_de_p81": "NO_REPRODUCIDA",
+        "tipos_distintos_fuera_de_vocabulario": 10,
+        "tokenizador": "tokenizar(normalizar_emb_normal(texto)) recortado a MAX_LEN; es el tokenizador de P82 y las cifras de A8 se miden con el, no se arrastran"
+      },
+      "comprobaciones": {
+        "linea_de_reproduccion_declarada": true,
+        "max_len_positivo": true,
+        "ocho_cifras_presentes": true,
+        "proporciones_en_rango": true,
+        "todas_finitas": true
+      },
+      "faltan": [],
+      "n_cifras_exigidas": 8,
+      "no_finitas": [],
+      "proporciones_fuera_de_rango": []
+    },
+    "estado": "CONFIRMADO",
+    "exito": true,
+    "id": "A8",
+    "naturaleza": "CONFIRMAR",
+    "stop": false,
+    "tolerancia": "ocho cifras medidas y linea de reproduccion declarada",
+    "traza": ""
+  }
+}

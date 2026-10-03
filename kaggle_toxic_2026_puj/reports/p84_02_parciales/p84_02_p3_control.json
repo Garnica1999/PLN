@@ -1,0 +1,154 @@
+{
+  "experiment_id": "P84-02",
+  "modo_humo": false,
+  "pliegue": 3,
+  "brazo": "control",
+  "etiquetas": [
+    "HS",
+    "TR",
+    "AG"
+  ],
+  "E_estrella": 20,
+  "epocas_por_split": [
+    20,
+    20,
+    20
+  ],
+  "intentos_por_split": [
+    1,
+    2,
+    1
+  ],
+  "equivalencias": [
+    {
+      "semilla": 20261401,
+      "intentos_p73": 1,
+      "intentos_local": 1,
+      "equivalentes": true
+    },
+    {
+      "semilla": 20261408,
+      "intentos_p73": 2,
+      "intentos_local": 2,
+      "equivalentes": true
+    },
+    {
+      "semilla": 20261415,
+      "intentos_p73": 1,
+      "intentos_local": 1,
+      "equivalentes": true
+    }
+  ],
+  "prevalencias": [
+    {
+      "max_delta_prevalencia": 0.047724,
+      "tolerancia": 0.07,
+      "cumple": true
+    },
+    {
+      "max_delta_prevalencia": 0.021744,
+      "tolerancia": 0.07,
+      "cumple": true
+    },
+    {
+      "max_delta_prevalencia": 0.041547,
+      "tolerancia": 0.07,
+      "cumple": true
+    }
+  ],
+  "f1_por_epoca": {
+    "0": {
+      "5": {
+        "HS": 0.48979592,
+        "TR": 0.02439024,
+        "AG": 0.02020202
+      },
+      "10": {
+        "HS": 0.60493827,
+        "TR": 0.79166667,
+        "AG": 0.62666667
+      },
+      "20": {
+        "HS": 0.77073171,
+        "TR": 0.81879195,
+        "AG": 0.76136364
+      }
+    },
+    "1": {
+      "5": {
+        "HS": 0.42758621,
+        "TR": 0.20779221,
+        "AG": 0.15238095
+      },
+      "10": {
+        "HS": 0.51219512,
+        "TR": 0.66666667,
+        "AG": 0.48571429
+      },
+      "20": {
+        "HS": 0.6519337,
+        "TR": 0.73170732,
+        "AG": 0.63694268
+      }
+    },
+    "2": {
+      "5": {
+        "HS": 0.53424658,
+        "TR": 0.19178082,
+        "AG": 0.3030303
+      },
+      "10": {
+        "HS": 0.54666667,
+        "TR": 0.67241379,
+        "AG": 0.5511811
+      },
+      "20": {
+        "HS": 0.69767442,
+        "TR": 0.76422764,
+        "AG": 0.67123288
+      }
+    }
+  },
+  "umbrales_anidados": {
+    "HS": 0.3,
+    "TR": 0.39,
+    "AG": 0.34
+  },
+  "f1_val_05": {
+    "HS": 0.70886076,
+    "TR": 0.77018634,
+    "AG": 0.67357513
+  },
+  "f1_train_05": {
+    "HS": 0.99034749,
+    "TR": 0.98295455,
+    "AG": 0.98560354
+  },
+  "rutas_train_outer": {
+    "HS": "/home/carlos/Git/PLN-v67/kaggle_toxic_2026_puj/experimentos/p84_02_tmp/train_ext_f3_control_HS.txt",
+    "TR": "/home/carlos/Git/PLN-v67/kaggle_toxic_2026_puj/experimentos/p84_02_tmp/train_ext_f3_control_TR.txt",
+    "AG": "/home/carlos/Git/PLN-v67/kaggle_toxic_2026_puj/experimentos/p84_02_tmp/train_ext_f3_control_AG.txt"
+  },
+  "resumenes_train_outer": {
+    "HS": {
+      "ruta": "/home/carlos/Git/PLN-v67/kaggle_toxic_2026_puj/experimentos/p84_02_tmp/train_ext_f3_control_HS.txt",
+      "n_lineas": 1187,
+      "n_positivos": 519,
+      "n_negativos": 668
+    },
+    "TR": {
+      "ruta": "/home/carlos/Git/PLN-v67/kaggle_toxic_2026_puj/experimentos/p84_02_tmp/train_ext_f3_control_TR.txt",
+      "n_lineas": 1187,
+      "n_positivos": 356,
+      "n_negativos": 831
+    },
+    "AG": {
+      "ruta": "/home/carlos/Git/PLN-v67/kaggle_toxic_2026_puj/experimentos/p84_02_tmp/train_ext_f3_control_AG.txt",
+      "n_lineas": 1187,
+      "n_positivos": 455,
+      "n_negativos": 732
+    }
+  },
+  "segundos": 12.98,
+  "incidencias": []
+}

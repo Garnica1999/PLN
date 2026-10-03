@@ -1,0 +1,172 @@
+"""P4d: ensambla reports/audit_leakage.csv (entregable de la fase P4).
+
+Cada fila cita la evidencia cruda (ficheros de audit/ y reports/). Sin acentos
+(norma de artefactos ASCII del proyecto).
+"""
+from __future__ import annotations
+
+import csv
+from pathlib import Path
+
+PROJ = Path("/home/carlos/Git/PLN-toxic-audit/kaggle_toxic_2026_puj")
+
+ROWS = [
+    {
+        "Experiment_ID": "GLOBAL/near-dup-groups",
+        "Leakage_Type": "L1 (transductive metadata, sin impacto)",
+        "Potential": "si",
+        "Detected": "mecanismo si; impacto no",
+        "Evidence": ("00_auditoria_datos.py: clusters_near_duplicados(train, test, 0.85) ajusta "
+                     "TfidfVectorizer char_wb(4,4) sobre 2885 textos (train+test). 3 grupos mixtos "
+                     "con 7 filas train y 4 test. Contrafactual solo-train: ARI=1.0, 0 filas cambian "
+                     "de grupo; holdout y pliegues IDENTICOS. Evidencia: audit/p01_findings.json; "
+                     "audit/p04_leakage_checks.csv"),
+        "Affected_Result": "protocolo de validacion v1/v2/v4-v8 (grupos de CV)",
+        "Severity": "LOW",
+        "Decision": "documentar; no re-abrir (impacto nulo demostrado)",
+    },
+    {
+        "Experiment_ID": "GLOBAL/thresholds-historicos",
+        "Leakage_Type": "L4 (selection bias / optimismo)",
+        "Potential": "si",
+        "Detected": "si (documentado y cuantificado)",
+        "Evidence": ("Umbrales 0.44/0.51/0.46 hallados por rejilla sobre el MISMO OOF que luego se "
+                     "reporta (reports/fase13a_refit_umbral_metricas.json; 0.7989). Recomputacion "
+                     "independiente: lax mismo-OOF = 0.780840 vs congelado 0.777211 => +0.003629 "
+                     "(coincide con la cifra +0.0036 citada en v6/v7); anidado por reutilizacion de "
+                     "otros pliegues = 0.778137 (residuo +0.000925). Optimos historicos reproducidos "
+                     "exactos sobre el OOF guardado. Evidencia: audit/p04_findings.json"),
+        "Affected_Result": "0.7989 historico (v03 local pre-correccion); no afecta a corrected_cv",
+        "Severity": "MEDIUM (historico, ya corregido por D-016)",
+        "Decision": ("V03 usa umbrales congelados (0.777211); el 0.7989 no es comparable con las "
+                     "cifras corregidas; sesgo ya marcado como advertencia en fase13a"),
+    },
+    {
+        "Experiment_ID": "V6-07",
+        "Leakage_Type": "L4 (validacion; pesos con etiquetas del pliegue evaluado)",
+        "Potential": "si",
+        "Detected": "si (cuantificado con contrafactual fold-local)",
+        "Evidence": ("v6_07_ruido_par.py: detectar_sospecha usa y de TODO el desarrollo (l.155-193) y "
+                     "esos pesos entran al ajuste por pliegue (l.244-251). Cuantificacion: 5819 "
+                     "relaciones vecinas cruzan pliegues, 2139 con etiqueta opuesta; 1012 filas "
+                     "afectadas. Contrafactual fold-local (etiquetas restringidas al entrenamiento): "
+                     "delta F1-completo pasa de +0.000142 a 0.000000. Reproduccion exacta del valor "
+                     "reportado (0.777353). Evidencia: audit/p04b_suspicion_foldlocal.json"),
+        "Affected_Result": "variante F1-completo (+0.000142, no adoptada)",
+        "Severity": "LOW",
+        "Decision": ("familia cerrada se mantiene; si se reabre, la deteccion debe ser fold-local; "
+                     "la conclusion v6 (mide dificultad, no ruido) no cambia"),
+    },
+    {
+        "Experiment_ID": "GLOBAL/test-contamination",
+        "Leakage_Type": "L5 (contaminacion de test)",
+        "Potential": "si",
+        "Detected": "no",
+        "Evidence": ("2118 patrones (1087 de 1154 textos de test con >=30 chars) escaneados con "
+                     "grep -F sobre 32 archivos txt de corpus, el shard gz y el dump bz2 completo "
+                     "(eswiki p1p159400): 0 coincidencias. El manifiesto registra auditoria propia de "
+                     "8-gramas para E-CORP-01: 0 coincidencias. Exactos train-test = 0. Evidencia: "
+                     "audit/p04_findings.json (scan_corpus)"),
+        "Affected_Result": "n/a",
+        "Severity": "INFO",
+        "Decision": "sin accion",
+    },
+    {
+        "Experiment_ID": "GLOBAL/embeddings-v5",
+        "Leakage_Type": "L7 (recurso externo autorizado D-030)",
+        "Potential": "si (recurso externo)",
+        "Detected": "no (cumple el alcance autorizado)",
+        "Evidence": ("corpus_manifest_v5.json: fuentes con URL/licencia/fecha; solo corpus no "
+                     "etiquetado para aprender representacion; prohibiciones explicitas (sin labels, "
+                     "sin pseudo-labeling, sin thresholds). 5/5 hashes processed verificados "
+                     "(p04c). Word2Vec y FastText entrenados desde cero; pysentimiento/VADER-es "
+                     "descartado por prohibicion. E-CORP-06/08/09 no registran auditoria propia de "
+                     "n-gramas (solo E-CORP-01). Evidencia: audit/p04c_corpus_hashes.json; "
+                     "audit/p04_leakage_checks.csv"),
+        "Affected_Result": "fase v5/v5.1 completa (cerrada sin adopcion)",
+        "Severity": "INFO (compliant)",
+        "Decision": ("mantener; mejora documental menor: extender la auditoria de n-gramas a los "
+                     "otros corpus si se reabre la familia"),
+    },
+    {
+        "Experiment_ID": "GLOBAL/parquet-features",
+        "Leakage_Type": "L0",
+        "Potential": "no",
+        "Detected": "no",
+        "Evidence": ("features/v2_structured_features.parquet: 125 columnas deterministas basadas en "
+                     "texto/reglas/spaCy simbolico (manifiesto fold-safety); 2885 filas = train+dev+"
+                     "holdout+test por diseno (features para submission). Spot-check: las etiquetas "
+                     "solo se usan para validar alineacion de stores OOF (22_artefactos l.377-471). "
+                     "Evidencia: reports/v2_structured_features_manifest.md; audit/p04_findings.json"),
+        "Affected_Result": "canales estructurados v2",
+        "Severity": "INFO",
+        "Decision": "sin accion",
+    },
+    {
+        "Experiment_ID": "GLOBAL/splits",
+        "Leakage_Type": "L0",
+        "Potential": "no",
+        "Detected": "no",
+        "Evidence": ("src/splits.py: grupos fusionados solo con train; 0 grupos compartidos por "
+                     "pliegue (verificado en P1); holdout 248 sin cruces; pliegues 296-297 filas "
+                     "balanceados. Evidencia: audit/p01_findings.json"),
+        "Affected_Result": "todo el proyecto",
+        "Severity": "INFO",
+        "Decision": "sin accion",
+    },
+    {
+        "Experiment_ID": "GLOBAL/stacking-metas",
+        "Leakage_Type": "L0",
+        "Potential": "no",
+        "Detected": "no",
+        "Evidence": ("05_ensembles.py: mascara_ajuste[validacion]=False (l.1286-1290, l.1468-1470): "
+                     "meta y umbrales se ajustan por pliegue fuera de la validacion evaluada; "
+                     "17_stacking_v2.py: meta solo con OOF (evaluar_meta_por_pliegue) y bases "
+                     "anidadas. Evidencia: reports/target_encoding_audit_v2.md (verificado por "
+                     "muestreo de codigo en P4)"),
+        "Affected_Result": "ensembles v1 y meta v2",
+        "Severity": "INFO",
+        "Decision": "sin accion",
+    },
+    {
+        "Experiment_ID": "GLOBAL/target-encoding",
+        "Leakage_Type": "L0",
+        "Potential": "no",
+        "Detected": "no",
+        "Evidence": ("21_backlog_restante_v2.py l.1195-1227: tablas_target_encoding solo con "
+                     "idx_ajuste (verificado en codigo); 16_targeting_v2: lexicos condicionales con "
+                     "documentos de entrenamiento; targeting_v2.json verifica el OOF congelado a "
+                     "3.2e-12. Evidencia: audit/p04_leakage_checks.csv"),
+        "Affected_Result": "E2-13 y canal targeting (cerrados sin mejora)",
+        "Severity": "INFO",
+        "Decision": "sin accion",
+    },
+    {
+        "Experiment_ID": "GLOBAL/holdout",
+        "Leakage_Type": "L0 (protocolo de uso)",
+        "Potential": "si (recurso unico)",
+        "Detected": "uso registrado, dentro de la regla",
+        "Evidence": ("config/holdout_v2.json: max 5 evaluaciones, solo finalistas, registro en "
+                     "RUNLOG. reports/holdout_evaluaciones_v2.csv: 5/5 usadas (P7-01 V03 0.8285; "
+                     "P7-02 meta 0.8465; FIN-02 0.8364; FIN-04 0.8336; P8-C-meta36 0.8163 con "
+                     "delta -0.0122 vs V03). En cada uso, umbrales congelados y sin re-optimizar. "
+                     "Nota: target_encoding_audit_v2.md afirma '2/5' (desactualizado)."),
+        "Affected_Result": "D-029 (rechazo del candidato v4), submission v08, descartes FIN-*",
+        "Severity": "LOW (documentacion)",
+        "Decision": ("el holdout ya no admite mas evaluaciones segun la propia regla; corregir el "
+                     "texto desactualizado en P8"),
+    },
+]
+
+
+def main() -> None:
+    out = PROJ / "reports" / "audit_leakage.csv"
+    with out.open("w", newline="", encoding="ascii") as fh:
+        writer = csv.DictWriter(fh, fieldnames=list(ROWS[0].keys()))
+        writer.writeheader()
+        writer.writerows(ROWS)
+    print("filas:", len(ROWS), "->", out)
+
+
+if __name__ == "__main__":
+    main()

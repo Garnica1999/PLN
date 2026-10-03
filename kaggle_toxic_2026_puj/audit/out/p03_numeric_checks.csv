@@ -1,0 +1,64 @@
+check_id,artifact,claim,expected,recomputed,status
+A1,features/oof_v03_final.npz,"umbrales == [0.44,0.51,0.46]","[0.44, 0.51, 0.46]","[0.44, 0.51, 0.46]",PASS
+A2,features/oof_v03_final.npz,pred == proba >= umbrales,0 discrepancias,0 discrepancias,PASS
+A3,features/oof_v03_final.npz,V03 no aplica postproceso jerarquico (pred guardado = umbral directo),celdas que cambiarian: 55,celdas que cambiarian: 55,INFO
+A4,features/oof_v03_final.npz,corrected_cv almacenado == F1(OOF),0.7772114525165721,0.777211,PASS
+A5,features/oof_v03_final.npz,f1_por_etiqueta almacenado == F1(OOF),"[0.761689, 0.81573, 0.754215]","[0.761689, 0.81573, 0.754215]",PASS
+A6,features/oof_v03_final.npz,f1_pliegues almacenados == F1 por pliegue del OOF,"[0.79601, 0.794034, 0.77886, 0.738598, 0.779056]","[0.79601, 0.794034, 0.77886, 0.738598, 0.779056]",PASS
+A7,features/oof_v03_final.npz,media(f1_pliegues) vs corrected_cv (convencion: pooled OOF),0.777211,0.777312,INFO
+A8,features/oof_v03_final.npz,corrected_cv == 0.777211 (referencia congelada),0.777211,0.777211,PASS
+A9,features/oof_v03_final.npz,"etiquetas == HS,TR,AG","['HS', 'TR', 'AG']","['HS', 'TR', 'AG']",PASS
+B1,baseline_v03_frozen/oof_v03_historical.npz,F1 a umbral 0.5 (historico),0.7927,0.7927,PASS
+B2,baseline_v03_frozen/oof_v03_historical.npz,F1 a umbrales congelados (historico),0.7989,0.7989,PASS
+C-B0-control-marginales,v6_master_results.csv,cv == 0.777211,0.777211,0.777211,PASS
+C-A0-control,v6_master_results.csv,cv == 0.777211,0.777211,0.777211,PASS
+C-I0-control,v6_master_results.csv,cv == 0.777211,0.777211,0.777211,PASS
+C-C1-0-control,v6_master_results.csv,cv == 0.777211,0.777211,0.777211,PASS
+C-H0-control,v6_master_results.csv,cv == 0.777211,0.777211,0.777211,PASS
+C-F0-control,v6_master_results.csv,cv == 0.777211,0.777211,0.777211,PASS
+C-J0-control,v6_master_results.csv,cv == 0.777211,0.777211,0.777211,PASS
+C-v6_label_factorization-B0-control-marginale,reports/v6_label_factorization.csv,control corrected_cv_frozen == 0.777211,0.777211,0.777211,PASS
+C-v6_ponderacion_grupo-A0-control,reports/v6_ponderacion_grupo.csv,control corrected_cv == 0.777211,0.777211,0.777211,PASS
+C-v6_char_weight-I0-control,reports/v6_char_weight.csv,control corrected_cv == 0.777211,0.777211,0.777211,PASS
+C-v6_skipgrams-C1-0-control,reports/v6_skipgrams.csv,control corrected_cv == 0.777211,0.777211,0.777211,PASS
+C-v6_bagging_grupos-H0-control,reports/v6_bagging_grupos.csv,control corrected_cv == 0.777211,0.777211,0.777211,PASS
+C-v6_ruido_par-F0-control,reports/v6_ruido_par.csv,control corrected_cv == 0.777211,0.777211,0.777211,PASS
+C-v6_aumento-J0-control,reports/v6_aumento.csv,control corrected_cv == 0.777211,0.777211,0.777211,PASS
+E-ref-FIN-01-C-REF-44,final_candidates.csv,delta con referencia 0.7772 difiere de la canonica 0.777211,0.010146,0.010157,INFO
+E-fold-FIN-01-C-REF-44,final_candidates.csv,media(fold_scores) vs corrected_cv (pooled OOF),0.787357,0.787454,PASS
+E-ref-FIN-02-C-EMO,final_candidates.csv,delta con referencia 0.7772 difiere de la canonica 0.777211,0.00373,0.003741,INFO
+E-fold-FIN-02-C-EMO,final_candidates.csv,media(fold_scores) vs corrected_cv (pooled OOF),0.780941,0.780946,PASS
+E-ref-FIN-03-C-EMO-margenes,final_candidates.csv,delta con referencia 0.7772 difiere de la canonica 0.777211,0.002577,0.002588,INFO
+E-fold-FIN-03-C-EMO-margenes,final_candidates.csv,media(fold_scores) vs corrected_cv (pooled OOF),0.779788,0.779856,PASS
+E-ref-FIN-04-C-EMO-SYN,final_candidates.csv,delta con referencia 0.7772 difiere de la canonica 0.777211,0.00245,0.002461,INFO
+E-fold-FIN-04-C-EMO-SYN,final_candidates.csv,media(fold_scores) vs corrected_cv (pooled OOF),0.779661,0.779437,INFO
+E-ref-FIN-05-C-SYN,final_candidates.csv,delta con referencia 0.7772 difiere de la canonica 0.777211,0.002102,0.002113,INFO
+E-fold-FIN-05-C-SYN,final_candidates.csv,media(fold_scores) vs corrected_cv (pooled OOF),0.779313,0.779172,INFO
+E-ref-FIN-06-C-REF-44-CH,final_candidates.csv,delta con referencia 0.7772 difiere de la canonica 0.777211,0.001031,0.001042,INFO
+E-fold-FIN-06-C-REF-44-CH,final_candidates.csv,media(fold_scores) vs corrected_cv (pooled OOF),0.778242,0.778255,PASS
+E-ref-FIN-07-C-EMO-SYN-TGT-CYT,final_candidates.csv,delta con referencia 0.7772 difiere de la canonica 0.777211,0.000523,0.000534,INFO
+E-fold-FIN-07-C-EMO-SYN-TGT-CYT,final_candidates.csv,media(fold_scores) vs corrected_cv (pooled OOF),0.777734,0.77771,PASS
+E-ref-V03,final_candidates.csv,delta con referencia 0.7772 difiere de la canonica 0.777211,-1.1e-05,0.0,INFO
+E-ref-META-BASES-RIDGE,final_candidates.csv,delta con referencia 0.7772 difiere de la canonica 0.777211,0.010189,0.0102,INFO
+E-fold-META-BASES-RIDGE,final_candidates.csv,media(fold_scores) vs corrected_cv (pooled OOF),0.7874,0.787462,PASS
+G-HS,v7_umbral_anidado.json,mediana(HS) == dispersion.mediana,0.41,0.41,PASS
+G-disp-HS,v7_umbral_anidado.json,dispersion(HS).valores,"[0.41, 0.47, 0.43, 0.38, 0.37]","[0.41, 0.47, 0.43, 0.38, 0.37]",PASS
+G-TR,v7_umbral_anidado.json,mediana(TR) == dispersion.mediana,0.45,0.45,PASS
+G-disp-TR,v7_umbral_anidado.json,dispersion(TR).valores,"[0.45, 0.5, 0.45, 0.45, 0.6]","[0.45, 0.5, 0.45, 0.45, 0.6]",PASS
+G-AG,v7_umbral_anidado.json,mediana(AG) == dispersion.mediana,0.44,0.44,PASS
+G-disp-AG,v7_umbral_anidado.json,dispersion(AG).valores,"[0.49, 0.44, 0.4, 0.54, 0.41]","[0.49, 0.44, 0.4, 0.54, 0.41]",PASS
+G-csv-HS,v7_calibration_analysis.csv,mediana_de_los_cinco == mediana de umbrales_por_pliegue,"[0.41, 0.41, 0.41, 0.41, 0.41]","[0.41, 0.41, 0.41, 0.41, 0.41]",PASS
+G-csv-TR,v7_calibration_analysis.csv,mediana_de_los_cinco == mediana de umbrales_por_pliegue,"[0.45, 0.45, 0.45, 0.45, 0.45]","[0.45, 0.45, 0.45, 0.45, 0.45]",PASS
+G-csv-AG,v7_calibration_analysis.csv,mediana_de_los_cinco == mediana de umbrales_por_pliegue,"[0.44, 0.44, 0.44, 0.44, 0.44]","[0.44, 0.44, 0.44, 0.44, 0.44]",PASS
+G-laxo,v7_umbral_anidado.json,referencia lax (E2-16) == 0.776613,0.776613,0.776613,PASS
+H1,control_pseudo_autores.json,diferencia == f1_con - f1_solo,-0.008834339,-0.008834339,PASS
+H2,control_pseudo_autores.json,f1_con_grupos_fusionados == 0.7838 (D-015),0.7838,0.7838,PASS
+H3,control_pseudo_autores.json,f1_solo_near_duplicados == 0.7927 (D-015),0.7927,0.7927,PASS
+I1,src/evaluation.py,bootstrap reproducible con la misma semilla,"[-0.006663, 0.009122]","[-0.006663, 0.009122]",PASS
+I2,src/evaluation.py,IC95 contiene la diferencia observada,"[-0.006663, 0.009122] contiene 0.001246",0.001246,PASS
+I3,src/evaluation.py,metrica_macro == f1_media_columnas (misma matriz),0.0,0.0,PASS
+J-P7-01-V03,holdout_evaluaciones_v2.csv,P7-01-V03 holdout F1 0.8285 documentado en otro artefacto,documentado,advanced_research_v2.md,PASS
+J-P7-02-META,holdout_evaluaciones_v2.csv,P7-02-META holdout F1 0.8465 documentado en otro artefacto,documentado,advanced_research_v2.md,PASS
+J-FIN-02-C-EMO (corrected_cv 0.7809),holdout_evaluaciones_v2.csv,FIN-02-C-EMO (corrected_cv 0.7809) holdout F1 0.8364 documentado en otro artefacto,documentado,final_candidate_comparison.md,PASS
+J-FIN-04-C-EMO-SYN (corrected_cv 0.7797),holdout_evaluaciones_v2.csv,FIN-04-C-EMO-SYN (corrected_cv 0.7797) holdout F1 0.8336 documentado en otro artefacto,documentado,final_candidate_comparison.md,PASS
+J-P8-C-META36-DOWNWEIGHT (5/5),holdout_evaluaciones_v2.csv,P8-C-META36-DOWNWEIGHT (5/5) holdout F1 0.8163 documentado en otro artefacto,documentado,advanced_research_v4.md,PASS

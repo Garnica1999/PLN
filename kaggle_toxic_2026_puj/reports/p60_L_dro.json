@@ -1,0 +1,430 @@
+{
+  "familia": "P60_L_GROUP_DRO",
+  "naturaleza": "EXPERIMENTO. 1 candidato, 0 submissions, 0 Kaggle, 0 holdout, 0 test. V03 no se modifica",
+  "fecha": "2026-09-28T17:53:45+00:00",
+  "experiment_id": "P60-03",
+  "track": "P60-L",
+  "script": "experiments/p60_03_dro.py",
+  "paper": "Distributionally Robust Optimization with Group Distributions, ICML 2020, Sagawa, Koh, Hashimoto, Liang",
+  "pregunta": "V03 optimiza un unico riesgo promedio; ese promedio esconde comportamiento sistematicamente distinto en subpoblaciones?",
+  "hipotesis": "un objetivo minimax sobre los cuartiles de longitud, que son una rebanada ya existente del proyecto con heterogeneidad medida, coloca la frontera mejor que el riesgo promedio con la misma capacidad",
+  "mecanismo": "el riesgo se agrega sobre grupos con un promedio exponencialmente suavizado, de modo que el gradiente es la media de los gradientes por grupo con pesos softmax, y el grupo peor pesa mas que su proporcion",
+  "modelo": "el mismo LogisticRegression lineal de V03, C=2,0 balanced, con L-BFGS-B sobre el gradiente analitico del objetivo de riesgo por grupo",
+  "perdida": "logistica, sin cambio; lo unico que cambia es la AGREGACION del riesgo",
+  "rasgos": "los 27.431 del TF-IDF de V03, sin cambio",
+  "adaptacion_legal": {
+    "dominio_original": "vision, subpoblaciones identificables",
+    "adaptacion": "cuatro cuartiles de longitud sobre las filas de ENTRENAMIENTO del pliegue",
+    "que_cambia": "los grupos near-duplicate y pseudo-autor no sirven: son el propio grupo del CV, con 1415 grupos para 1483 ejemplos, luego un minimax sobre ellos degenera en un objetivo de peor ejemplo que no es DRO de grupos",
+    "que_es_invariante": "la estructura minimax sobre una particion en grupos",
+    "evidencia_de_la_rebanada": "V28-01 midio que la longitud es el rasgo que mas discrimina, con Cohen d de +0,28 a +0,34 a favor de los textos largos, y es el mismo para las tres etiquetas"
+  },
+  "gap_analysis": {
+    "filas_dro": 0,
+    "filas_riesgo_por_grupo": 0,
+    "precedente_mas_cercano": "P59-10, regularizacion por grafo de similitud",
+    "por_que_no_es_duplicacion": "P59-10 regulariza los COEFICIENTES con un grafo de similitud entre documentos. DRO no usa grafo: usa una particion en grupos y optimiza un objetivo minimax sobre el riesgo por grupo. Son ejes distintos",
+    "veredicto": "NUEVA"
+  },
+  "configuracion_pre_registrada": {
+    "grupos": "los cuatro cuartiles de longitud (pd.qcut sobre n_caracteres, Q1..Q4)",
+    "definicion_de_grupos": "calculada SOLO con las filas de ENTRENAMIENTO de cada pliegue",
+    "objetivo": "DRO = (1/eta) log sum_g (n_g/n) exp(eta riesgo_g)",
+    "eta": 1.0,
+    "eta_por_que_1": "es el valor que el trabajo usa con gradiente exponenciado, y como las perdidas son de orden 1 la suavizacion es suave y el maximo se alcanza como limite; un solo valor, sin rejilla",
+    "pesos_de_clase": "los mismos balanceados de V03, contados en training",
+    "regularizacion": "C = 2.0 con el mismo L2",
+    "umbrales": "0,44 / 0,51 / 0,46 congelados",
+    "optimizador": "L-BFGS-B, maxiter 2000, gtol 1e-10",
+    "rejilla": "ninguna sobre eta ni sobre el numero de grupos"
+  },
+  "verificacion_gradiente": [
+    {
+      "configuracion": "un_grupo",
+      "error_relativo_w": 6.730947253504344e-07,
+      "error_relativo_b": 1.1649347946153752e-10
+    },
+    {
+      "configuracion": "cuatro_grupos",
+      "error_relativo_w": 1.4155937988778345e-06,
+      "error_relativo_b": 6.517593804389555e-09
+    }
+  ],
+  "heterogeneidad_por_cuartil": {
+    "Q1": {
+      "n": 390,
+      "caracteres_min": 10,
+      "caracteres_max": 60,
+      "f1_media": 0.889529,
+      "error": 0.115385
+    },
+    "Q2": {
+      "n": 361,
+      "caracteres_min": 61,
+      "caracteres_max": 92,
+      "f1_media": 0.763803,
+      "error": 0.201293
+    },
+    "Q3": {
+      "n": 361,
+      "caracteres_min": 93,
+      "caracteres_max": 131,
+      "f1_media": 0.72036,
+      "error": 0.165282
+    },
+    "Q4": {
+      "n": 371,
+      "caracteres_min": 132,
+      "caracteres_max": 306,
+      "f1_media": 0.597951,
+      "error": 0.202156
+    }
+  },
+  "control": {
+    "brazo_0_un_grupo": {
+      "corrected_cv": 0.7772647318762402,
+      "folds": [
+        0.7960101143044023,
+        0.7955257641824806,
+        0.7788600288600289,
+        0.7363173444113459,
+        0.7800420484520435
+      ],
+      "f1_por_etiqueta": {
+        "HS": 0.7622641509,
+        "TR": 0.8153153153,
+        "AG": 0.7542147294
+      },
+      "rescate": 2,
+      "damage": 1,
+      "neto": 1,
+      "cambian": 3
+    },
+    "delta_brazo_0_vs_V03": 5.32794e-05,
+    "max_abs_diff_prob": 0.006907940172801275,
+    "clona_a_V03": true
+  },
+  "resultado": {
+    "brazo_0_corrected_cv": 0.7772647319,
+    "brazo_1_corrected_cv": 0.777600986,
+    "delta_agrupado_puro": 0.0003362541,
+    "delta_vs_V03": 0.0003895335,
+    "folds_brazo_1": [
+      0.794831,
+      0.795526,
+      0.780345,
+      0.738598,
+      0.779056
+    ],
+    "folds_brazo_0": [
+      0.79601,
+      0.795526,
+      0.77886,
+      0.736317,
+      0.780042
+    ],
+    "pliegues_mejorados": 2,
+    "f1_por_etiqueta": {
+      "HS": 0.7616892911,
+      "TR": 0.8175675676,
+      "AG": 0.7535460993
+    },
+    "rescate": 2,
+    "damage": 1,
+    "neto": 1,
+    "cambian": 3,
+    "por_cuartil": {
+      "Q1": {
+        "n": 390,
+        "ccv_control": 0.890219,
+        "ccv_dro": 1,
+        "delta": 8.2e-05
+      },
+      "Q2": {
+        "n": 361,
+        "ccv_control": 0.764807,
+        "ccv_dro": 1,
+        "delta": 0.0
+      },
+      "Q3": {
+        "n": 361,
+        "ccv_control": 0.71763,
+        "ccv_dro": 1,
+        "delta": 0.00273
+      },
+      "Q4": {
+        "n": 371,
+        "ccv_control": 0.597951,
+        "ccv_dro": 1,
+        "delta": -0.000858
+      }
+    },
+    "gate": {
+      "delta_min": 0.003,
+      "pliegues_min": 4,
+      "supera_delta": false,
+      "supera_pliegues": false,
+      "superado": false
+    },
+    "bootstrap": null
+  },
+  "convergencia": true,
+  "por_fold": [
+    {
+      "pliegue": 1,
+      "n_grupos": 4,
+      "tamanos": [
+        301,
+        294,
+        295,
+        296
+      ],
+      "riesgo_por_grupo_control": [
+        0.202523,
+        0.249396,
+        0.239892,
+        0.275374
+      ],
+      "riesgo_por_grupo_dro": [
+        0.205862,
+        0.24876,
+        0.240073,
+        0.271484
+      ],
+      "masa_y_pesos_dro": {
+        "pesos_softmax_por_grupo": [
+          0.244869,
+          0.249658,
+          0.24834,
+          0.257133
+        ],
+        "proporcion_de_ejemplos": [
+          0.253794,
+          0.247892,
+          0.248735,
+          0.249578
+        ],
+        "riesgo_por_grupo": [
+          0.205862,
+          0.24876,
+          0.240073,
+          0.271484
+        ],
+        "masa_de_la_perdida_control": 1186.0,
+        "masa_de_la_perdida_dro": 1185.596284,
+        "razon_de_masas": 0.99966
+      },
+      "iteraciones_control": 46,
+      "iteraciones_dro": 35,
+      "convergio_control": true,
+      "convergio_dro": true
+    },
+    {
+      "pliegue": 2,
+      "n_grupos": 4,
+      "tamanos": [
+        306,
+        289,
+        295,
+        296
+      ],
+      "riesgo_por_grupo_control": [
+        0.195784,
+        0.255238,
+        0.252119,
+        0.274489
+      ],
+      "riesgo_por_grupo_dro": [
+        0.199788,
+        0.254187,
+        0.251258,
+        0.271075
+      ],
+      "masa_y_pesos_dro": {
+        "pesos_softmax_por_grupo": [
+          0.246852,
+          0.246172,
+          0.250548,
+          0.256429
+        ],
+        "proporcion_de_ejemplos": [
+          0.25801,
+          0.243676,
+          0.248735,
+          0.249578
+        ],
+        "riesgo_por_grupo": [
+          0.199788,
+          0.254187,
+          0.251258,
+          0.271075
+        ],
+        "masa_de_la_perdida_control": 1186.0,
+        "masa_de_la_perdida_dro": 1185.590284,
+        "razon_de_masas": 0.999655
+      },
+      "iteraciones_control": 38,
+      "iteraciones_dro": 35,
+      "convergio_control": true,
+      "convergio_dro": true
+    },
+    {
+      "pliegue": 3,
+      "n_grupos": 4,
+      "tamanos": [
+        308,
+        293,
+        292,
+        294
+      ],
+      "riesgo_por_grupo_control": [
+        0.203504,
+        0.252785,
+        0.249551,
+        0.267588
+      ],
+      "riesgo_por_grupo_dro": [
+        0.206888,
+        0.251765,
+        0.24895,
+        0.26482
+      ],
+      "masa_y_pesos_dro": {
+        "pesos_softmax_por_grupo": [
+          0.250299,
+          0.249038,
+          0.247491,
+          0.253172
+        ],
+        "proporcion_de_ejemplos": [
+          0.259478,
+          0.246841,
+          0.245998,
+          0.247683
+        ],
+        "riesgo_por_grupo": [
+          0.206888,
+          0.251765,
+          0.24895,
+          0.26482
+        ],
+        "masa_de_la_perdida_control": 1187.0,
+        "masa_de_la_perdida_dro": 1186.548988,
+        "razon_de_masas": 0.99962
+      },
+      "iteraciones_control": 32,
+      "iteraciones_dro": 32,
+      "convergio_control": true,
+      "convergio_dro": true
+    },
+    {
+      "pliegue": 4,
+      "n_grupos": 4,
+      "tamanos": [
+        305,
+        296,
+        291,
+        295
+      ],
+      "riesgo_por_grupo_control": [
+        0.191728,
+        0.241305,
+        0.243777,
+        0.263256
+      ],
+      "riesgo_por_grupo_dro": [
+        0.195181,
+        0.240701,
+        0.242938,
+        0.260091
+      ],
+      "masa_y_pesos_dro": {
+        "pesos_softmax_por_grupo": [
+          0.247003,
+          0.250878,
+          0.247193,
+          0.254926
+        ],
+        "proporcion_de_ejemplos": [
+          0.25695,
+          0.249368,
+          0.245156,
+          0.248526
+        ],
+        "riesgo_por_grupo": [
+          0.195181,
+          0.240701,
+          0.242938,
+          0.260091
+        ],
+        "masa_de_la_perdida_control": 1187.0,
+        "masa_de_la_perdida_dro": 1186.491391,
+        "razon_de_masas": 0.999572
+      },
+      "iteraciones_control": 27,
+      "iteraciones_dro": 34,
+      "convergio_control": true,
+      "convergio_dro": true
+    },
+    {
+      "pliegue": 5,
+      "n_grupos": 4,
+      "tamanos": [
+        306,
+        293,
+        290,
+        297
+      ],
+      "riesgo_por_grupo_control": [
+        0.199687,
+        0.258811,
+        0.242775,
+        0.272733
+      ],
+      "riesgo_por_grupo_dro": [
+        0.203266,
+        0.257357,
+        0.242987,
+        0.269355
+      ],
+      "masa_y_pesos_dro": {
+        "pesos_softmax_por_grupo": [
+          0.247908,
+          0.25057,
+          0.244466,
+          0.257056
+        ],
+        "proporcion_de_ejemplos": [
+          0.25801,
+          0.247049,
+          0.244519,
+          0.250422
+        ],
+        "riesgo_por_grupo": [
+          0.203266,
+          0.257357,
+          0.242987,
+          0.269355
+        ],
+        "masa_de_la_perdida_control": 1186.0,
+        "masa_de_la_perdida_dro": 1185.585565,
+        "razon_de_masas": 0.999651
+      },
+      "iteraciones_control": 30,
+      "iteraciones_dro": 36,
+      "convergio_control": true,
+      "convergio_dro": true
+    }
+  ],
+  "interpretacion": "Dos hallazgos, y el primero es sobre la implementacion. La primera version de este objetivo repartia la perdida en escala O(1), porque cada riesgo de grupo es una media, frente a la escala O(n) del objetivo de V03, que suma sobre ejemplos. Media eso, no la agregacion del riesgo, sino una regularizacion unas 1186 veces mayor, y daba -0,163083. El hallazgo queda registrado porque es el tipo de error que produce un numero plausible y falso. Corregido con un factor constante n, la razon de masas entre brazos queda en 0,9996 y el gradiente analitico sigue siendo exacto, porque un factor constante no genera termino de derivada. La segunda version da +0,000336 con 2 de 5 pliegues y 3 celdas de 4449 cambiadas. La medicion que hace ese numero interpretable es el peso softmax por grupo: el grupo con mas riesgo, Q4, recibe +2,47 por ciento de sobreponderacion relativa y el de menos riesgo, Q1, recibe -2,52 por ciento, luego el mecanismo SI se activa, pero con eta = 1 sobre riesgos que difieren en 0,065 la suavizacion apenas separa los grupos y el objetivo casi vuelve al riesgo promedio. Y hay un detalle que va contra la promesa del metodo: el cuartil peor, Q4, no mejora sino que empeora de 0,5980 a 0,5971, mientras el cuartil intermedio Q3 gana 0,0027. Es decir, el reequilibrio no llego al grupo que lo necesitaba. Conclusion transferible: existe la heterogeneidad que DRO busca atacar, esta medida en este corpus, pero un objetivo minimax suave sobre cuatro grupos que difieren en 0,065 de riesgo no la convierte en senal aprovechable, y V03 ya equilibra lo que si se puede equilibrar con class_weight balanced",
+  "decision": "MARGINAL. El mecanismo se ACTIVA pero con +2,5 por ciento de sobreponderacion del grupo peor, solo cambian 3 de 4449 celdas y el grupo que peor lo tenia empeora; ademas no alcanza el gate de +0,003",
+  "experimentos_registrados": 1,
+  "formulacion": "V03 remains the best verified leaderboard result.",
+  "gastos": {
+    "submissions": 0,
+    "consultas_kaggle": 0,
+    "uso_holdout": 0,
+    "uso_test": 0,
+    "segundos": 72.6
+  }
+}

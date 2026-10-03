@@ -1,0 +1,15 @@
+{
+  "name": "v03_submission",
+  "script": "experiments/04_refit_submissions_v02_v03.py",
+  "exit": 0,
+  "duracion_s": 3.4,
+  "tracked_changed": [
+    "kaggle_toxic_2026_puj/experiments.csv",
+    "kaggle_toxic_2026_puj/reports/contexto.md",
+    "kaggle_toxic_2026_puj/reports/fase13a_refit_umbral_metricas.json",
+    "kaggle_toxic_2026_puj/submissions/leaderboard_log.csv"
+  ],
+  "features_changed": [
+    "oof_mod03b.npz"
+  ]
+}

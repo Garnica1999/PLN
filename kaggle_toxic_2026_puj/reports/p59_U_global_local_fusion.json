@@ -1,0 +1,120 @@
+{
+  "familia": "P59_U_GLOBAL_LOCAL_FUSION",
+  "naturaleza": "EXPERIMENTO. 1 candidato, 0 submissions, 0 Kaggle, 0 holdout, 0 test. V03 no se modifica",
+  "fecha": "2026-09-28T14:27:27+00:00",
+  "experiment_id": "P59-09",
+  "track": "P59-U",
+  "dependencia": "B1, de la que hereda el score local crudo",
+  "U1_gap_check": {
+    "veredicto": "BASE NUEVA, MECANISMO YA EXPLORADO",
+    "base_nueva": "ninguna fusion previa uso un score calculado sobre una UNIDAD DE REPRESENTACION distinta. ENS-01..04 combinan cuatro bases globales; V4-H01 y S08 usan un meta de 36 rasgos; FIN-08/09/10 son candidatos de meta",
+    "mecanismo_previo": "ENS-01 voto suave igual, ENS-02 rejilla de pesos del simplex, ENS-03 stacking por etiqueta, ENS-04 mejor par o trio anidado; ENS-02 dio +0,0023 y no supera el gate",
+    "por_que_U_no_esta_cerrada_como_T": "una reparametrizacion monotona no cambia el ranking, y por eso T cae en el cierre de V8-09. La fusion si cambia el ranking siempre que los dos scores discrepen, luego escapa a ese cierre",
+    "riesgo": "la familia tiene seis o mas fracasos y tres sondas enviadas al leaderboard que quedaron por debajo de V03, luego la priori de U es baja"
+  },
+  "configuracion_pre_registrada": {
+    "p_global": "V03, el OOF canonico",
+    "p_local": "B1 crudo, el max sobre ventanas",
+    "fusion": "p = (1 - alpha) * p_global + alpha * p_local, por etiqueta",
+    "alpha": "UN solo valor compartido por las tres etiquetas",
+    "regla_de_seleccion": "maximizar el macro-F1 del score fusionado a los umbrales congelados de V03, sobre las predicciones inner-OOF del TRAINING FOLD EXTERIOR. Ni una vez se toca validation, holdout, test ni leaderboard",
+    "rejilla_alpha": "0.00 a 1.00 en pasos de 0.05, 21 valores, fijada antes",
+    "nulo": "alpha = 0 esta en la rejilla, luego la regla puede volver siempre a V03",
+    "inner": "4 pliegues agrupados con StratifiedGroupKFold, semilla 20260928",
+    "umbrales": "0,44 / 0,51 / 0,46 congelados, no reajustados"
+  },
+  "control": {
+    "corrected_cv_V03": "0.7772114525165721",
+    "reproduce_exacto": true,
+    "corrected_cv_B1_crudo": 0.7765868373
+  },
+  "resultado": {
+    "corrected_cv_U": 0.77869146,
+    "delta_vs_V03": 0.0014800075,
+    "folds_U": [
+      0.794156,
+      0.79692,
+      0.77505,
+      0.738598,
+      0.789724
+    ],
+    "folds_V03": [
+      0.79601,
+      0.794034,
+      0.77886,
+      0.738598,
+      0.779056
+    ],
+    "pliegues_mejorados": 2,
+    "alphas_por_pliegue": [
+      0.3,
+      0.45,
+      0.55,
+      0.0,
+      0.75
+    ],
+    "f1_por_etiqueta": {
+      "HS": {
+        "f1": 0.7665662651,
+        "f1_ref": 0.7616892911,
+        "rescate": 9,
+        "damage": 3
+      },
+      "TR": {
+        "f1": 0.8157303371,
+        "f1_ref": 0.8157303371,
+        "rescate": 2,
+        "damage": 2
+      },
+      "AG": {
+        "f1": 0.7537777778,
+        "f1_ref": 0.7542147294,
+        "rescate": 6,
+        "damage": 6
+      }
+    },
+    "rescate": 17,
+    "damage": 11,
+    "neto": 6,
+    "cambian": 28,
+    "acierto_en_las_que_cambian": 0.6071,
+    "complementariedad_por_estrato": {
+      "multi_ventana": {
+        "n_tweets": 122,
+        "rescate": 3,
+        "damage": 0,
+        "neto": 3
+      },
+      "una_sola_ventana": {
+        "n_tweets": 1361,
+        "rescate": 14,
+        "damage": 11,
+        "neto": 3
+      }
+    },
+    "gate": {
+      "delta_min": 0.003,
+      "pliegues_min": 4,
+      "supera_delta": false,
+      "supera_pliegues": false,
+      "superado": false
+    },
+    "bootstrap": null
+  },
+  "oracle_diagnostico": {
+    "nota": "NO es un candidato y nunca se puntua como tal. Mide si hay senal complementaria en principio, que es una pregunta que la regla anidada no puede responder",
+    "alpha_oracle": 0.65,
+    "corrected_cv_oracle": 0.7778556033,
+    "delta_oracle": 0.0006441507
+  },
+  "decision": "MARGINAL. La fusion mejora la metrica pero no alcanza el gate delta >= +0,003. NO se demuestra. Bootstrap NO ejecutado",
+  "experimentos_registrados": 1,
+  "formulacion": "V03 remains the best verified leaderboard result.",
+  "gastos": {
+    "submissions": 0,
+    "consultas_kaggle": 0,
+    "uso_holdout": 0,
+    "uso_test": 0,
+    "segundos": 14.1
+  }
+}

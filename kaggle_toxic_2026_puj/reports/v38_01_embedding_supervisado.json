@@ -1,0 +1,246 @@
+{
+  "familia": "SUPERVISED_EMBEDDINGS_FROM_SCRATCH",
+  "experimento": "V38-01 (embedding supervisado por factorizacion termino x etiqueta)",
+  "fecha": "2026-09-27T20:44:34+00:00",
+  "estado": "OOF_EVALUATED",
+  "pregunta": "una representacion distribuida entrenada directamente con las etiquetas HS/TR/AG puede capturar relaciones utiles entre terminos que el TF-IDF explicito de V03 no captura, sin caer en memorization con solo ~1483 ejemplos",
+  "alcance": "factorizacion termino x etiqueta de baja capacidad. No es una red neuronal completa: es una representacion distribuida derivada de asociaciones termino-etiqueta",
+  "metodo": "matriz termino x etiqueta (conteos de co-ocurrencia con cada etiqueta), normalizada con BM25 por fila, factorizada con SVD truncado de baja dimension",
+  "dimension": 16,
+  "k1": 1.2,
+  "b": 0.75,
+  "vocabulario_y_parametros": {
+    "1": {
+      "vocabulario": 5899,
+      "dimension": 2,
+      "varianza_explicada": 0.9024739111703761,
+      "parametros_del_embedding": 11798
+    },
+    "2": {
+      "vocabulario": 6012,
+      "dimension": 2,
+      "varianza_explicada": 0.9012023476371163,
+      "parametros_del_embedding": 12024
+    },
+    "3": {
+      "vocabulario": 5967,
+      "dimension": 2,
+      "varianza_explicada": 0.90065731918555,
+      "parametros_del_embedding": 11934
+    },
+    "4": {
+      "vocabulario": 6022,
+      "dimension": 2,
+      "varianza_explicada": 0.9001105663375147,
+      "parametros_del_embedding": 12044
+    },
+    "5": {
+      "vocabulario": 6022,
+      "dimension": 2,
+      "varianza_explicada": 0.9031974650004498,
+      "parametros_del_embedding": 12044
+    }
+  },
+  "objetivo": "mean pooling de embeddings de terminos + LogisticRegression, el mismo clasificador que V03",
+  "regularizacion": "ninguna adicional: la baja dimension y el mean pooling son la regularizacion",
+  "control": {
+    "corrected_cv": 0.7772114525165721,
+    "f1_por_etiqueta": {
+      "HS": 0.7616892911010558,
+      "TR": 0.8157303370786517,
+      "AG": 0.7542147293700089
+    },
+    "train_f1": 0.970864604949201,
+    "gap_train_oof": 0.19365315243262893,
+    "metricas_por_pliegue": [
+      {
+        "f1_media_columnas": 0.7960101143044023,
+        "f1_macro6": 0.8355934550524347,
+        "f1_micro": 0.7926829268292683,
+        "f1_samples": 0.3383838383838384,
+        "exact_match": 0.734006734006734,
+        "f1_por_etiqueta": {
+          "HS": 0.7786259541984732,
+          "TR": 0.8275862068965517,
+          "AG": 0.7818181818181819
+        },
+        "pliegue": 1
+      },
+      {
+        "f1_media_columnas": 0.7940339497874405,
+        "f1_macro6": 0.8299584761236635,
+        "f1_micro": 0.7912408759124088,
+        "f1_samples": 0.3489337822671156,
+        "exact_match": 0.7104377104377104,
+        "f1_por_etiqueta": {
+          "HS": 0.7835820895522388,
+          "TR": 0.8279569892473119,
+          "AG": 0.7705627705627706
+        },
+        "pliegue": 2
+      },
+      {
+        "f1_media_columnas": 0.7788600288600289,
+        "f1_macro6": 0.815470061805838,
+        "f1_micro": 0.7756874095513748,
+        "f1_samples": 0.3466216216216216,
+        "exact_match": 0.6993243243243243,
+        "f1_por_etiqueta": {
+          "HS": 0.7681159420289855,
+          "TR": 0.8152173913043478,
+          "AG": 0.7532467532467533
+        },
+        "pliegue": 3
+      },
+      {
+        "f1_media_columnas": 0.738598013128522,
+        "f1_macro6": 0.7854431411794273,
+        "f1_micro": 0.7348148148148148,
+        "f1_samples": 0.3233108108108108,
+        "exact_match": 0.6587837837837838,
+        "f1_por_etiqueta": {
+          "HS": 0.7293233082706767,
+          "TR": 0.7821229050279329,
+          "AG": 0.7043478260869566
+        },
+        "pliegue": 4
+      },
+      {
+        "f1_media_columnas": 0.7790564997088775,
+        "f1_macro6": 0.8244089783905003,
+        "f1_micro": 0.7735849056603774,
+        "f1_samples": 0.31470258136924806,
+        "exact_match": 0.7104377104377104,
+        "f1_por_etiqueta": {
+          "HS": 0.7480314960629921,
+          "TR": 0.8263473053892215,
+          "AG": 0.7627906976744186
+        },
+        "pliegue": 5
+      }
+    ]
+  },
+  "embedding": {
+    "corrected_cv": 0.595465571156856,
+    "delta_vs_v03": -0.18174588135971603,
+    "f1_por_etiqueta": {
+      "HS": 0.6148936170212767,
+      "TR": 0.6113615870153292,
+      "AG": 0.5601415094339622
+    },
+    "train_f1": 0.9142861902059896,
+    "gap_train_oof": 0.3188206190491335,
+    "metricas_por_pliegue": [
+      {
+        "f1_media_columnas": 0.6174603033508447,
+        "f1_macro6": 0.5678161643398344,
+        "f1_micro": 0.614240170031881,
+        "f1_samples": 0.3803591470258137,
+        "exact_match": 0.4006734006734007,
+        "f1_por_etiqueta": {
+          "HS": 0.6282722513089005,
+          "TR": 0.6451612903225806,
+          "AG": 0.5789473684210527
+        },
+        "pliegue": 1
+      },
+      {
+        "f1_media_columnas": 0.5931112177266024,
+        "f1_macro6": 0.5483107074909831,
+        "f1_micro": 0.5903743315508021,
+        "f1_samples": 0.36105499438832767,
+        "exact_match": 0.39057239057239057,
+        "f1_por_etiqueta": {
+          "HS": 0.6133333333333333,
+          "TR": 0.6216216216216216,
+          "AG": 0.5443786982248521
+        },
+        "pliegue": 2
+      },
+      {
+        "f1_media_columnas": 0.5868818635783823,
+        "f1_macro6": 0.5401844301483064,
+        "f1_micro": 0.584051724137931,
+        "f1_samples": 0.35867117117117114,
+        "exact_match": 0.3716216216216216,
+        "f1_por_etiqueta": {
+          "HS": 0.5957446808510638,
+          "TR": 0.6103286384976526,
+          "AG": 0.5545722713864307
+        },
+        "pliegue": 3
+      },
+      {
+        "f1_media_columnas": 0.6024240144055507,
+        "f1_macro6": 0.5535617992500314,
+        "f1_micro": 0.6027397260273972,
+        "f1_samples": 0.3748873873873874,
+        "exact_match": 0.4222972972972973,
+        "f1_por_etiqueta": {
+          "HS": 0.6329787234042553,
+          "TR": 0.6086956521739131,
+          "AG": 0.565597667638484
+        },
+        "pliegue": 4
+      },
+      {
+        "f1_media_columnas": 0.5777823457067246,
+        "f1_macro6": 0.5401030442775968,
+        "f1_micro": 0.5793991416309013,
+        "f1_samples": 0.35319865319865323,
+        "exact_match": 0.39057239057239057,
+        "f1_por_etiqueta": {
+          "HS": 0.6037735849056604,
+          "TR": 0.5726872246696035,
+          "AG": 0.5568862275449101
+        },
+        "pliegue": 5
+      }
+    ]
+  },
+  "complementariedad": {
+    "rescates": 321,
+    "danios": 1465,
+    "neto": -1144,
+    "celdas_modificadas": 1786,
+    "correlacion_de_decisiones": 0.5985614744886492,
+    "por_label": {
+      "HS": {
+        "rescates": 146,
+        "danios": 554,
+        "neto": -408,
+        "celdas_modificadas": 700
+      },
+      "TR": {
+        "rescates": 49,
+        "danios": 316,
+        "neto": -267,
+        "celdas_modificadas": 365
+      },
+      "AG": {
+        "rescates": 126,
+        "danios": 595,
+        "neto": -469,
+        "celdas_modificadas": 721
+      }
+    }
+  },
+  "memorization": {
+    "umbral_raro_df": 5,
+    "n_terminos_raros": 6681,
+    "proporcion_de_terminos_raros": 0.9408534009294466,
+    "correlacion_proporcion_rara_y_error": -0.03938418643957044,
+    "train_f1": 0.9142861902059896,
+    "oof_f1": 0.595465571156856,
+    "gap": 0.3188206190491335,
+    "depende_de_terminos_raros": false
+  },
+  "evidencia_historica": "los embeddings probados en EBD-01 a EBD-25 fueron NO supervisados (FastText, word2vec). No existe ninguna implementacion donde la capa embedding sea entrenada con las etiquetas HS/TR/AG. La familia esta abierta",
+  "decision": "OVERFIT",
+  "gastos": {
+    "submissions": 0,
+    "modelos_entrenados": 3,
+    "memoria_pico_mb": 229.2,
+    "segundos": 9.8
+  }
+}

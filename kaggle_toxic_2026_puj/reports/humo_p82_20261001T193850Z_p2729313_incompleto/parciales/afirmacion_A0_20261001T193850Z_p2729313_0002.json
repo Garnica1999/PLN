@@ -1,0 +1,70 @@
+{
+  "marca_corrida": "20261001T193850Z_p2729313",
+  "resultado": {
+    "bloque": 0,
+    "coste_segundos": 0.03613,
+    "descripcion": "sha256 del congelado, tamano y mtime antes y despues",
+    "detalle": {
+      "dispositivo": [
+        true,
+        {
+          "comprobaciones": {
+            "el_dispositivo_declarado_no_esta_vacio": true,
+            "generador_de_permutaciones_en_cpu": true,
+            "matriz_de_embeddings_en_el_dispositivo_declarado": true,
+            "todos_los_parametros_en_el_dispositivo_declarado": true
+          },
+          "dispositivo": {
+            "device_de_la_matriz_de_embeddings": "cuda:0",
+            "device_declarado": "cuda:0",
+            "devices_de_los_parametros": [
+              "cuda:0"
+            ],
+            "embeddings_en_el_declarado": true,
+            "todos_en_el_declarado": true
+          },
+          "generador_de_permutaciones": "cpu",
+          "informacion_publicada": {
+            "consecuencia_declarada": "los valores absolutos de los cinco brazos y las deltas pareadas son los de este dispositivo y no deben compararse con los de una corrida en otro. El pareamiento DENTRO de la corrida se conserva porque los cinco brazos se ejecutan en el mismo dispositivo",
+            "coste_de_la_transferencia_del_indice": {
+              "microsegundos_medidos": "medicion del revisor de P82: 500 indexaciones en 0.0164 s",
+              "microsegundos_por_lote": 33.0,
+              "milisegundos_por_ajuste_a_30_epocas": 500.0,
+              "milisegundos_por_epoca": 16.0,
+              "minutos_para_1000_ajustes": 8.0,
+              "por_que_se_acepta": "es deliberado y lo exige la enmienda 2: el generador se queda en CPU para que el hash de A9 sea estable entre dispositivos. Pagar unos 0.5 s por ajuste a cambio de que A9 siga siendo una invariante auditable es el intercambio correcto, y se publica en vez de omitirse",
+              "que_pasa": "la permutacion de lotes nace con torch.randperm SIN device, luego vive en CPU, y se usa como indice sobre tensores que estan en el dispositivo. PyTorch lo acepta y paga una indexacion GPU por lote"
+            },
+            "cuda_disponible": true,
+            "dispositivo": "cuda",
+            "enmienda_2": "docs/p82_enmienda_2.md",
+            "enmienda_2_sha256": "af731b8966de8f6a6461bba182926763aa2bdb3405c8dad58fad165bd7bdd696",
+            "generador_de_permutaciones_en": "cpu",
+            "hilos_fijados": 16,
+            "medicion_del_coste_por_ajuste_en_segundos": {
+              "cpu_16_hilos": 2.43,
+              "cpu_30_hilos": 3.22,
+              "gpu_rocm": 1.24
+            },
+            "motivo_de_los_hilos": "16 por medicion, no por conveniencia: con 30 hilos un ajuste tarda 3.22 s frente a 2.43 s con 16, un 32 por ciento mas, por sobrecarga de planificacion con tensores pequenos. La GPU con ROCm tarda 1.24 s por ajuste",
+            "motivo_de_no_usar_precision_mixta": "no se usa autocast, ni GradScaler, ni float16, ni bfloat16. En un diseno cuyo nucleo es el pareamiento entre brazos, una via que cambia la precision introduce variabilidad numerica y seria el tipo de cosa que este proyecto ha pagado dos veces. Todo el calculo va en float32",
+            "motivo_del_generador_en_cpu": "el generador de permutaciones se queda en CPU a proposito: A9 hashea la secuencia de lotes, y ese hash tiene que ser estable y auditable aunque los datos esten en GPU. Si el generador fuera a GPU el hash dependeria del dispositivo y A9 perderia sentido como invariante de emparejamiento",
+            "nombre_del_dispositivo": "AMD Radeon RX 9070 XT",
+            "precision_mixta": "NO USADA"
+          }
+        }
+      ],
+      "mtime_ns": 1790744455825458351,
+      "ruta": "modelos/twitter_domain/w2v_twitter_100d.npz",
+      "sha256": "302c994d13b75f8f5fbd440eea2c4f4113997e2581524021923b92f8244d705a",
+      "size": 29478868
+    },
+    "estado": "CONFIRMADO",
+    "exito": true,
+    "id": "A0",
+    "naturaleza": "CONFIRMAR",
+    "stop": true,
+    "tolerancia": "coincidencia del sha256, del size y del mtime_ns, y el dispositivo real",
+    "traza": ""
+  }
+}

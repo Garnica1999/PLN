@@ -1,0 +1,71 @@
+{
+  "optimismo_dev": {
+    "f1_congelado": 0.777211,
+    "umbrales_lax": {
+      "HS": 0.41,
+      "TR": 0.48,
+      "AG": 0.45
+    },
+    "f1_lax_mismo_oof": 0.78084,
+    "optimismo_mismo_oof": 0.003629,
+    "f1_nested_reutilizando_otros_pliegues": 0.778137,
+    "optimismo_residual_tras_anidar": 0.000925,
+    "referencia_e2_16_citada": 0.776613,
+    "referencia_v7_estricta_citada": 0.767228
+  },
+  "optimismo_historico": {
+    "umbrales_optimos_recomputados": {
+      "HS": 0.44,
+      "TR": 0.51,
+      "AG": 0.46
+    },
+    "umbrales_documentados": {
+      "HS": 0.44,
+      "TR": 0.51,
+      "AG": 0.46
+    },
+    "f1_optimo_recomputado": 0.798933,
+    "f1_con_umbrales_documentados_sobre_mismo_oof": 0.798933,
+    "ganancia_sobre_umbral_0_5": 0.006274,
+    "coincide_seleccion": true
+  },
+  "scan_corpus": {
+    "n_patrones": 2118,
+    "n_textos_test_elegibles": 1087,
+    "n_textos_test_totales": 1154,
+    "archivos_txt_escaneados": 32,
+    "coincidencias": [],
+    "coincidencias_total": 0
+  },
+  "features_parquet": {
+    "columnas": 125,
+    "filas": 2885,
+    "id_col": "id",
+    "ids_subconjunto_de_train": false,
+    "ids_fuera_de_train": 1154,
+    "cubre_holdout": true
+  },
+  "corpus_fuentes": [
+    [
+      "wikipedia_es",
+      "https://dumps.wikimedia.org/eswiki/latest/"
+    ],
+    [
+      "m_c4_es",
+      "https://huggingface.co/datasets/allenai/c4"
+    ],
+    [
+      "oscar_es",
+      "https://huggingface.co/datasets/oscar-corpus/OSCAR-2301"
+    ],
+    [
+      "hplt_es",
+      "https://huggingface.co/datasets/HPLT/HPLT2.0_cleaned"
+    ],
+    [
+      "cereal_es",
+      "https://github.com/lang-uk/cereal"
+    ]
+  ],
+  "verificacion_hashes_corpus": []
+}

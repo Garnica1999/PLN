@@ -1,0 +1,141 @@
+{
+  "marca_corrida": "20261002T104743Z_p289246",
+  "resultado": {
+    "bloque": 2,
+    "coste_segundos": 0.027409,
+    "descripcion": "tabla de limite de deteccion recalculada con la sd medida",
+    "detalle": {
+      "gap_leido_de_p78": 0.11745,
+      "mde_con_sd_medida": 0.14814,
+      "n_semillas": 10,
+      "prueba_de_la_aritmetica": {
+        "diferencia_maxima": 1.000000000001e-06,
+        "intervalo_calculado": [
+          -0.028735,
+          0.078521
+        ],
+        "intervalo_publicado_por_p78": [
+          -0.028736,
+          0.078522
+        ],
+        "porque_esa_tolerancia": "la seccion 3.1 del pre-registro declara la diferencia de la ultima cifra y considera que el ancla reproduce el intervalo publicado",
+        "tolerancia": 1.5e-06
+      },
+      "sd_medida": 0.14873429294696155,
+      "sensibilidad_con_sd_medida": [
+        {
+          "factor": 1.0,
+          "mde_a_n_10": 0.14814,
+          "mde_sobre_gap": 1.26,
+          "potencia_en_el_ancla": 0.0762,
+          "sd_supuesta": 0.148734
+        },
+        {
+          "factor": 1.5,
+          "mde_a_n_10": 0.222209,
+          "mde_sobre_gap": 1.89,
+          "potencia_en_el_ancla": 0.0616,
+          "sd_supuesta": 0.223101
+        },
+        {
+          "factor": 2.0,
+          "mde_a_n_10": 0.296279,
+          "mde_sobre_gap": 2.52,
+          "potencia_en_el_ancla": 0.0565,
+          "sd_supuesta": 0.297469
+        },
+        {
+          "factor": 3.0,
+          "mde_a_n_10": 0.444419,
+          "mde_sobre_gap": 3.78,
+          "potencia_en_el_ancla": 0.0529,
+          "sd_supuesta": 0.446203
+        }
+      ],
+      "tabla_del_preregistro": {
+        "filas": [
+          {
+            "coincide": true,
+            "diferencia": 0.0,
+            "mde_publicado": 0.070464,
+            "mde_recalculado": 0.070464,
+            "n": 3,
+            "potencia_en_el_ancla": 0.2179,
+            "semiancho_ic95": 0.053628
+          },
+          {
+            "coincide": true,
+            "diferencia": 0.0,
+            "mde_publicado": 0.036311,
+            "mde_recalculado": 0.036311,
+            "n": 5,
+            "potencia_en_el_ancla": 0.5,
+            "semiancho_ic95": 0.026805
+          },
+          {
+            "coincide": true,
+            "diferencia": 0.0,
+            "mde_publicado": 0.024956,
+            "mde_recalculado": 0.024956,
+            "n": 8,
+            "potencia_en_el_ancla": 0.798,
+            "semiancho_ic95": 0.018048
+          },
+          {
+            "coincide": true,
+            "diferencia": 0.0,
+            "mde_publicado": 0.021502,
+            "mde_recalculado": 0.021502,
+            "n": 10,
+            "potencia_en_el_ancla": 0.8993,
+            "semiancho_ic95": 0.015443
+          },
+          {
+            "coincide": true,
+            "diferencia": 0.0,
+            "mde_publicado": 0.019184,
+            "mde_recalculado": 0.019184,
+            "n": 12,
+            "potencia_en_el_ancla": 0.9522,
+            "semiancho_ic95": 0.013716
+          },
+          {
+            "coincide": true,
+            "diferencia": 0.0,
+            "mde_publicado": 0.014258,
+            "mde_recalculado": 0.014258,
+            "n": 20,
+            "potencia_en_el_ancla": 0.9983,
+            "semiancho_ic95": 0.010103
+          },
+          {
+            "coincide": true,
+            "diferencia": 0.0,
+            "mde_publicado": 0.011425,
+            "mde_recalculado": 0.011425,
+            "n": 30,
+            "potencia_en_el_ancla": 1.0,
+            "semiancho_ic95": 0.008061
+          },
+          {
+            "coincide": true,
+            "diferencia": 0.0,
+            "mde_publicado": 0.008726,
+            "mde_recalculado": 0.008726,
+            "n": 50,
+            "potencia_en_el_ancla": 1.0,
+            "semiancho_ic95": 0.006135
+          }
+        ],
+        "sd_usada": 0.021588
+      }
+    },
+    "estado": "CONFIRMADO",
+    "exito": true,
+    "id": "A10",
+    "naturaleza": "CONFIRMAR",
+    "stop": true,
+    "tolerancia": "las formulas se aplican tal cual, sin ajustar ningun parametro",
+    "traza": ""
+  }
+}

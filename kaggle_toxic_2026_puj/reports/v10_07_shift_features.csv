@@ -1,0 +1,41 @@
+lado,puesto,caracteristica,coeficiente,log_razon_de_odds,vez_que_mas_probable_prueba_que_entrenamiento
+mas_probables_de_ser_prueba,1,mereca estar,-0.14849,1.904991,6.7193
+mas_probables_de_ser_prueba,2,miln,-0.027437,1.826179,6.2101
+mas_probables_de_ser_prueba,3,lstima,0.05708,1.816283,6.149
+mas_probables_de_ser_prueba,4,necesitas,-0.194822,1.690866,5.4242
+mas_probables_de_ser_prueba,5,morena,-0.315102,1.637326,5.1414
+mas_probables_de_ser_prueba,6,pablo,0.395669,1.6001,4.9535
+mas_probables_de_ser_prueba,7,por ensear,0.062157,1.590247,4.905
+mas_probables_de_ser_prueba,8,muro,-0.080188,1.576339,4.8372
+mas_probables_de_ser_prueba,9,los jubilados,-0.166772,1.56451,4.7803
+mas_probables_de_ser_prueba,10,nuestra,-0.239873,1.558321,4.7508
+mas_probables_de_ser_prueba,11,parece,0.233773,1.546469,4.6949
+mas_probables_de_ser_prueba,12,mujer son,-0.268193,1.539553,4.6625
+mas_probables_de_ser_prueba,13,pedazo de,-0.383281,1.539096,4.6604
+mas_probables_de_ser_prueba,14,no https,0.090045,1.538082,4.6557
+mas_probables_de_ser_prueba,15,paola5navarro,-0.129601,1.533498,4.6344
+mas_probables_de_ser_prueba,16,la comunidad,-0.163605,1.499288,4.4785
+mas_probables_de_ser_prueba,17,llor,-0.154903,1.492974,4.4503
+mas_probables_de_ser_prueba,18,las fotos,-0.236316,1.485109,4.4154
+mas_probables_de_ser_prueba,19,no pueden,0.077809,1.485109,4.4154
+mas_probables_de_ser_prueba,20,mil,0.37074,1.485109,4.4154
+mas_probables_de_ser_entrenamiento,1,el pais,-0.048172,-1.818465,0.1623
+mas_probables_de_ser_entrenamiento,2,culo es,-0.089428,-1.78978,0.167
+mas_probables_de_ser_entrenamiento,3,el da,0.00196,-1.764576,0.1713
+mas_probables_de_ser_entrenamiento,4,invasores,-0.171226,-1.762756,0.1716
+mas_probables_de_ser_entrenamiento,5,eres puta,0.537536,-1.753333,0.1732
+mas_probables_de_ser_entrenamiento,6,haces,-0.381598,-1.735611,0.1763
+mas_probables_de_ser_entrenamiento,7,deja,0.590594,-1.704241,0.1819
+mas_probables_de_ser_entrenamiento,8,enseando un,-0.23413,-1.627396,0.1964
+mas_probables_de_ser_entrenamiento,9,de ellos,-0.24688,-1.577502,0.2065
+mas_probables_de_ser_entrenamiento,10,datos,0.03528,-1.5589,0.2104
+mas_probables_de_ser_entrenamiento,11,en los,0.147444,-1.52773,0.217
+mas_probables_de_ser_entrenamiento,12,heridos,-0.007081,-1.523596,0.2179
+mas_probables_de_ser_entrenamiento,13,at,-0.246832,-1.522302,0.2182
+mas_probables_de_ser_entrenamiento,14,algo para,-0.195888,-1.518821,0.219
+mas_probables_de_ser_entrenamiento,15,frijolero pinche,-0.070868,-1.50595,0.2218
+mas_probables_de_ser_entrenamiento,16,algn,0.217676,-1.496739,0.2239
+mas_probables_de_ser_entrenamiento,17,esperando,0.112816,-1.481662,0.2273
+mas_probables_de_ser_entrenamiento,18,chile https,-0.170867,-1.469823,0.23
+mas_probables_de_ser_entrenamiento,19,en rabe,-0.248338,-1.468542,0.2303
+mas_probables_de_ser_entrenamiento,20,debe,-0.066656,-1.460031,0.2322

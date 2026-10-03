@@ -1,0 +1,314 @@
+{
+  "familia": "P72_TWITTER_WORD2VEC_DIM",
+  "experiment_id": "P72-02",
+  "fase": "P1 downstream de las dimensiones",
+  "fecha": "2026-09-30T05:36:37+00:00",
+  "naturaleza": "EXPERIMENTO. 3 dimensiones, mean pooling en las tres",
+  "v03_referencia": 0.7772114525,
+  "v03_reproducido": true,
+  "resultados": {
+    "100": {
+      "vocabulario": 77657,
+      "dim": 100,
+      "cobertura_tokens": 0.686361,
+      "tokens_por_fila": 18.2,
+      "tokens_cubiertos": 12.49,
+      "filas_sin_token": 70,
+      "embedding_only_cv": 0.5947288906,
+      "embedding_only_delta": -0.1824825619,
+      "variantes": {
+        "fusion_0.05": {
+          "cv": 0.7762006547,
+          "delta": -0.0010107978,
+          "f1_pliegues": [
+            0.796861,
+            0.790734,
+            0.780345,
+            0.735699,
+            0.777879
+          ]
+        },
+        "fusion_0.20": {
+          "cv": 0.7745045444,
+          "delta": -0.0027069081,
+          "f1_pliegues": [
+            0.789432,
+            0.794516,
+            0.781695,
+            0.727738,
+            0.779398
+          ]
+        }
+      },
+      "mejor_variante": "fusion_0.05",
+      "por_rebanada": {
+        "CORTA": {
+          "filas": 137,
+          "v03": 0.960721,
+          "embedding_only": 0.847948,
+          "fusion": 0.960721,
+          "delta_fusion": 0.0
+        },
+        "MEDIA": {
+          "filas": 563,
+          "v03": 0.804837,
+          "embedding_only": 0.620593,
+          "fusion": 0.804986,
+          "delta_fusion": 0.000149
+        },
+        "LARGA": {
+          "filas": 603,
+          "v03": 0.689387,
+          "embedding_only": 0.485645,
+          "fusion": 0.685873,
+          "delta_fusion": -0.003514
+        },
+        "MUY_LARGA": {
+          "filas": 180,
+          "v03": 0.546478,
+          "embedding_only": 0.333482,
+          "fusion": 0.546478,
+          "delta_fusion": 0.0
+        }
+      },
+      "f1_pliegues_embedding": [
+        0.79601,
+        0.794034,
+        0.77886,
+        0.738598,
+        0.779056
+      ]
+    },
+    "200": {
+      "vocabulario": 77657,
+      "dim": 200,
+      "cobertura_tokens": 0.686361,
+      "tokens_por_fila": 18.2,
+      "tokens_cubiertos": 12.49,
+      "filas_sin_token": 70,
+      "embedding_only_cv": 0.5979857407,
+      "embedding_only_delta": -0.1792257119,
+      "variantes": {
+        "fusion_0.05": {
+          "cv": 0.776423007,
+          "delta": -0.0007884455,
+          "f1_pliegues": [
+            0.796861,
+            0.790734,
+            0.780345,
+            0.735699,
+            0.779056
+          ]
+        },
+        "fusion_0.20": {
+          "cv": 0.7727440994,
+          "delta": -0.0044673531,
+          "f1_pliegues": [
+            0.789148,
+            0.792577,
+            0.778338,
+            0.727468,
+            0.776325
+          ]
+        }
+      },
+      "mejor_variante": "fusion_0.05",
+      "por_rebanada": {
+        "CORTA": {
+          "filas": 137,
+          "v03": 0.960721,
+          "embedding_only": 0.828932,
+          "fusion": 0.960721,
+          "delta_fusion": 0.0
+        },
+        "MEDIA": {
+          "filas": 563,
+          "v03": 0.804837,
+          "embedding_only": 0.626904,
+          "fusion": 0.804986,
+          "delta_fusion": 0.000149
+        },
+        "LARGA": {
+          "filas": 603,
+          "v03": 0.689387,
+          "embedding_only": 0.494092,
+          "fusion": 0.68649,
+          "delta_fusion": -0.002897
+        },
+        "MUY_LARGA": {
+          "filas": 180,
+          "v03": 0.546478,
+          "embedding_only": 0.356844,
+          "fusion": 0.546478,
+          "delta_fusion": 0.0
+        }
+      },
+      "f1_pliegues_embedding": [
+        0.79601,
+        0.794034,
+        0.77886,
+        0.738598,
+        0.779056
+      ]
+    },
+    "300": {
+      "vocabulario": 77657,
+      "dim": 300,
+      "cobertura_tokens": 0.686361,
+      "tokens_por_fila": 18.2,
+      "tokens_cubiertos": 12.49,
+      "filas_sin_token": 70,
+      "embedding_only_cv": 0.5944156311,
+      "embedding_only_delta": -0.1827958214,
+      "variantes": {
+        "fusion_0.05": {
+          "cv": 0.776423007,
+          "delta": -0.0007884455,
+          "f1_pliegues": [
+            0.796861,
+            0.790734,
+            0.780345,
+            0.735699,
+            0.779056
+          ]
+        },
+        "fusion_0.20": {
+          "cv": 0.7736232362,
+          "delta": -0.0035882163,
+          "f1_pliegues": [
+            0.791951,
+            0.795972,
+            0.779819,
+            0.725145,
+            0.775158
+          ]
+        }
+      },
+      "mejor_variante": "fusion_0.05",
+      "por_rebanada": {
+        "CORTA": {
+          "filas": 137,
+          "v03": 0.960721,
+          "embedding_only": 0.854946,
+          "fusion": 0.960721,
+          "delta_fusion": 0.0
+        },
+        "MEDIA": {
+          "filas": 563,
+          "v03": 0.804837,
+          "embedding_only": 0.616107,
+          "fusion": 0.804986,
+          "delta_fusion": 0.000149
+        },
+        "LARGA": {
+          "filas": 603,
+          "v03": 0.689387,
+          "embedding_only": 0.480221,
+          "fusion": 0.68649,
+          "delta_fusion": -0.002897
+        },
+        "MUY_LARGA": {
+          "filas": 180,
+          "v03": 0.546478,
+          "embedding_only": 0.356969,
+          "fusion": 0.546478,
+          "delta_fusion": 0.0
+        }
+      },
+      "f1_pliegues_embedding": [
+        0.79601,
+        0.794034,
+        0.77886,
+        0.738598,
+        0.779056
+      ]
+    }
+  },
+  "complementariedad": {
+    "100": {
+      "rescue": 2,
+      "damage": 6,
+      "net": -4,
+      "por_etiqueta": {
+        "HS": {
+          "V03_ok_cand_ko": 2,
+          "V03_ko_cand_ok": 0,
+          "ambos_ok": 1165,
+          "ambos_ko": 316
+        },
+        "TR": {
+          "V03_ok_cand_ko": 0,
+          "V03_ko_cand_ok": 1,
+          "ambos_ok": 1319,
+          "ambos_ko": 163
+        },
+        "AG": {
+          "V03_ok_cand_ko": 4,
+          "V03_ko_cand_ok": 1,
+          "ambos_ok": 1202,
+          "ambos_ko": 276
+        }
+      }
+    },
+    "200": {
+      "rescue": 2,
+      "damage": 5,
+      "net": -3,
+      "por_etiqueta": {
+        "HS": {
+          "V03_ok_cand_ko": 2,
+          "V03_ko_cand_ok": 0,
+          "ambos_ok": 1165,
+          "ambos_ko": 316
+        },
+        "TR": {
+          "V03_ok_cand_ko": 0,
+          "V03_ko_cand_ok": 1,
+          "ambos_ok": 1319,
+          "ambos_ko": 163
+        },
+        "AG": {
+          "V03_ok_cand_ko": 3,
+          "V03_ko_cand_ok": 1,
+          "ambos_ok": 1203,
+          "ambos_ko": 276
+        }
+      }
+    },
+    "300": {
+      "rescue": 2,
+      "damage": 5,
+      "net": -3,
+      "por_etiqueta": {
+        "HS": {
+          "V03_ok_cand_ko": 2,
+          "V03_ko_cand_ok": 0,
+          "ambos_ok": 1165,
+          "ambos_ko": 316
+        },
+        "TR": {
+          "V03_ok_cand_ko": 0,
+          "V03_ko_cand_ok": 1,
+          "ambos_ok": 1319,
+          "ambos_ko": 163
+        },
+        "AG": {
+          "V03_ok_cand_ko": 3,
+          "V03_ko_cand_ok": 1,
+          "ambos_ok": 1203,
+          "ambos_ko": 276
+        }
+      }
+    }
+  },
+  "dispersion_embedding_only": 0.0035701096,
+  "dispersion_mejor_fusion": 0.0002223523,
+  "mejor_delta_fusion": -0.0007884455,
+  "veredicto": "DIMENSION_NO_LIMITANTE",
+  "reproducibilidad": {
+    "nivel": "R2",
+    "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "corrected_cv_v03": 0.7772114525165721
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

@@ -1,0 +1,9 @@
+Fase,Claim,Base,Clasificacion
+v6,techo de la interseccion de errores +0.0027,cota empirica del OOF (no prueba matematica),BOUNDED
+v6,techo empirico de la linea mas barata,medicion sobre aciertos/errores OOF,OBSERVED
+v6,D (TextCNN) y E (kNN): techo teorico del canal,cota derivada de interseccion de errores,BOUNDED
+v7,umbrales debilmente identificados (holgura ~0.002-0.003),medicion de dispersion por pliegue,OBSERVED
+v4,el shift no explica el error; vecindad con techo nulo,mediciones de shift y propagacion,OBSERVED
+v5.1,el techo no es la representacion (curva plana 5M-50M),curva de escala medida,OBSERVED
+v8,"el limite esta en el externo (LB), no en el modelo",P1: identidad de pipeline + sondas,OBSERVED
+v8,la mejora local era el promediado (D-067),"ensemble de 5 modelos: +0.005066 OOF con IC95 [-0.0037,+0.0141]",PARTIALLY (no transfiere al LB)

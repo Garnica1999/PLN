@@ -1,0 +1,192 @@
+{
+  "experimento": "V26-01 (geometria del kernel: test predictivo de la via no lineal)",
+  "fecha": "2026-09-27T08:41:16+00:00",
+  "pregunta": "la mediana de similitud del vecino mas cercano con el kernel RBF exacto supera 0.60, de modo que la via no lineal esta cerrada por teoria, o baja de 0.30 y la via se reabre",
+  "controles": {
+    "identidad_de_distancias": {
+      "n_filas": 60,
+      "error_maximo": 7.105427357601002e-15,
+      "coincide": true
+    },
+    "gram_simetrico_y_diagonal_1": {
+      "0.25": {
+        "max_abs_diagonal_menos_1": 3.1086244689504383e-15,
+        "max_abs_asimetria": 0.0,
+        "coincide": true
+      },
+      "0.5": {
+        "max_abs_diagonal_menos_1": 6.217248937900877e-15,
+        "max_abs_asimetria": 0.0,
+        "coincide": true
+      },
+      "1.0": {
+        "max_abs_diagonal_menos_1": 1.2434497875801753e-14,
+        "max_abs_asimetria": 0.0,
+        "coincide": true
+      },
+      "2.0": {
+        "max_abs_diagonal_menos_1": 2.4868995751603507e-14,
+        "max_abs_asimetria": 0.0,
+        "coincide": true
+      },
+      "4.0": {
+        "max_abs_diagonal_menos_1": 4.973799150320701e-14,
+        "max_abs_asimetria": 0.0,
+        "coincide": true
+      }
+    },
+    "support_vectors_rbf_exacto": {
+      "gamma": 0.25,
+      "n_support": 1232,
+      "n_entrenamiento": 1483,
+      "proporcion": 0.8307484828051247
+    },
+    "dato_de_v23_para_comparar": "60-76 % de vectores de soporte con SVD(300)",
+    "gamma_svd": "0.5"
+  },
+  "resultados": {
+    "rbf_exacto": {
+      "0.25": {
+        "mediana": 0.6973753273859382,
+        "percentil_10": 0.6693122427352233,
+        "percentil_25": 0.6800359769819222,
+        "percentil_75": 0.7246434050485429,
+        "percentil_90": 0.7646303984359962,
+        "maximo": 0.9521788769676074,
+        "minimo": 0.6519014904758154,
+        "fraccion_sobre_0_60": 1.0,
+        "fraccion_sobre_0_80": 0.037086985839514496,
+        "fraccion_sobre_0_90": 0.0033715441672285905,
+        "segundos": 0.09
+      },
+      "0.5": {
+        "mediana": 0.4863323472466446,
+        "percentil_10": 0.44797887841917045,
+        "percentil_25": 0.46244892998975745,
+        "percentil_75": 0.5251080702683908,
+        "percentil_90": 0.5846596541052435,
+        "maximo": 0.906644613743294,
+        "minimo": 0.42497555328458964,
+        "fraccion_sobre_0_60": 0.07484828051247472,
+        "fraccion_sobre_0_80": 0.004720161834120027,
+        "fraccion_sobre_0_90": 0.0013486176668914363,
+        "segundos": 0.09
+      },
+      "1.0": {
+        "mediana": 0.23651915197843087,
+        "percentil_10": 0.2006850757675903,
+        "percentil_25": 0.2138590128486716,
+        "percentil_75": 0.275738497618388,
+        "percentil_90": 0.34182692959377703,
+        "maximo": 0.8220044556297268,
+        "minimo": 0.1806042208895431,
+        "fraccion_sobre_0_60": 0.006068779501011463,
+        "fraccion_sobre_0_80": 0.0013486176668914363,
+        "fraccion_sobre_0_90": 0.0,
+        "segundos": 0.09
+      },
+      "2.0": {
+        "mediana": 0.05594130925259608,
+        "percentil_10": 0.04027449984287522,
+        "percentil_25": 0.04573567737660829,
+        "percentil_75": 0.07603173247789238,
+        "percentil_90": 0.1168456750208069,
+        "maximo": 0.6756913250751234,
+        "minimo": 0.032617884603118874,
+        "fraccion_sobre_0_60": 0.0013486176668914363,
+        "fraccion_sobre_0_80": 0.0,
+        "fraccion_sobre_0_90": 0.0,
+        "segundos": 0.09
+      },
+      "4.0": {
+        "mediana": 0.0031294300808945917,
+        "percentil_10": 0.0016220353709497466,
+        "percentil_25": 0.002091752185097199,
+        "percentil_75": 0.005780828421641253,
+        "percentil_90": 0.013652923552717754,
+        "maximo": 0.45655876678177615,
+        "minimo": 0.001063926395982379,
+        "fraccion_sobre_0_60": 0.0,
+        "fraccion_sobre_0_80": 0.0,
+        "fraccion_sobre_0_90": 0.0,
+        "segundos": 0.09
+      }
+    },
+    "rbf_sobre_svd_300": {
+      "varianza_explicada": 0.5113768298460765,
+      "primera_componente": 0.002695901844819603,
+      "por_gamma": {
+        "0.25": {
+          "mediana": 0.858374274246768,
+          "percentil_10": 0.823413090007542,
+          "percentil_25": 0.8375281979860033,
+          "percentil_75": 0.8915499385169325,
+          "percentil_90": 0.9247078189516065,
+          "maximo": 0.998327944543276,
+          "minimo": 0.7803562820026919,
+          "fraccion_sobre_0_60": 1.0,
+          "fraccion_sobre_0_80": 0.9959541469993257,
+          "fraccion_sobre_0_90": 0.19487525286581253,
+          "gamma": 0.25,
+          "escala_de_distancia": 0.7869558852762251,
+          "maximo_del_gram": 1.0
+        },
+        "0.5": {
+          "mediana": 0.7368063946886657,
+          "percentil_10": 0.6780091168593325,
+          "percentil_25": 0.7014534827313055,
+          "percentil_75": 0.7948612928878114,
+          "percentil_90": 0.855084550430237,
+          "maximo": 0.9966586848560025,
+          "minimo": 0.6089559268610649,
+          "fraccion_sobre_0_60": 1.0,
+          "fraccion_sobre_0_80": 0.22454484153742413,
+          "fraccion_sobre_0_90": 0.048550236008091704,
+          "gamma": 0.5,
+          "escala_de_distancia": 0.7869558852762251,
+          "maximo_del_gram": 1.0
+        },
+        "1.0": {
+          "mediana": 0.5428836632541097,
+          "percentil_10": 0.4596963627167622,
+          "percentil_25": 0.49203698930462403,
+          "percentil_75": 0.6318044749893562,
+          "percentil_90": 0.7311695883844804,
+          "maximo": 0.9933285340988964,
+          "minimo": 0.3708273208592186,
+          "fraccion_sobre_0_60": 0.32434254888739045,
+          "fraccion_sobre_0_80": 0.055967633175994604,
+          "fraccion_sobre_0_90": 0.026972353337828724,
+          "gamma": 1.0,
+          "escala_de_distancia": 0.7869558852762251,
+          "maximo_del_gram": 1.0
+        }
+      }
+    },
+    "spectrum_caracteres": {
+      "mediana": 0.3900119595344699,
+      "percentil_10": 0.271894275402261,
+      "percentil_25": 0.3245232327698804,
+      "percentil_75": 0.4726263253602,
+      "percentil_90": 0.5405262941789183,
+      "maximo": 0.9091952763387227,
+      "minimo": 0.16316901280465182,
+      "fraccion_sobre_0_60": 0.033715441672285906,
+      "fraccion_sobre_0_80": 0.004720161834120027,
+      "fraccion_sobre_0_90": 0.0013486176668914363,
+      "segundos": 0.1
+    }
+  },
+  "veredicto": "MEMORIZACION_CONFIRMADA",
+  "umbral_memORIZacion": 0.6,
+  "umbral_premisa_cae": 0.3,
+  "medianas": {
+    "rbf_exacto": 0.6973753273859382,
+    "rbf_sobre_svd_300": 0.7368063946886657,
+    "spectrum_caracteres": 0.3900119595344699
+  },
+  "gastos": {
+    "submissions": 0,
+    "segundos": 4.9
+  }
+}

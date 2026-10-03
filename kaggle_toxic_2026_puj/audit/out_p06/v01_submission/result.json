@@ -1,0 +1,11 @@
+{
+  "name": "v01_submission",
+  "script": "experiments/02_baseline_tfidf_lr.py",
+  "exit": 0,
+  "duracion_s": 1.5,
+  "tracked_changed": [
+    "kaggle_toxic_2026_puj/experiments.csv",
+    "kaggle_toxic_2026_puj/reports/baseline_b1_metricas.json"
+  ],
+  "features_changed": []
+}

@@ -1,0 +1,132 @@
+{
+  "familia": "P68_ENRUTADO",
+  "experiment_id": "P68-01",
+  "hipotesis": "P68-H1",
+  "fecha": "2026-09-29T17:18:53+00:00",
+  "naturaleza": "EXPERIMENTO. 1 principal, 2 controles y 1 ablacion. 0 submissions, 0 Kaggle, 0 test, 0 holdout",
+  "mecanismo": "descomposicion de la decision por enrutado sobre estructura del ejemplo",
+  "features_del_enrutador": 123,
+  "features_derivadas_del_score": 0,
+  "resultado": {
+    "corrected_cv": 0.7753122224,
+    "delta_vs_V03": -0.0018992302,
+    "pliegues_mejorados": 1,
+    "delta_por_fold": [
+      -0.0054044262,
+      -0.0027527746,
+      -0.0028894375,
+      0.0040762641,
+      -0.0028180822
+    ],
+    "celdas_delegadas": 423,
+    "aciertos_entre_delegadas": 323,
+    "errores_entre_delegadas": 100,
+    "neto": 223
+  },
+  "techo_teorico": {
+    "corrected_cv": 0.8162985861,
+    "delta": 0.0390871336,
+    "celdas_delegables": 139
+  },
+  "controles": {
+    "objetivo_barajado": {
+      "corrected_cv": 0.7763249636,
+      "delta": -0.0008864889
+    },
+    "delegacion_aleatoria": {
+      "corrected_cv": 0.7764776157,
+      "delta": -0.0007338368
+    },
+    "enrutado_con_el_margen_de_V03": {
+      "corrected_cv": 0.7742814291,
+      "delta": -0.0029300234
+    }
+  },
+  "diagnostico": {
+    "auc_por_etiqueta": [
+      {
+        "etiqueta": "HS",
+        "auc_a_quien_delegar": 0.5365,
+        "auc_a_quien_delegar_folds": [
+          0.4439,
+          0.5441,
+          0.5279,
+          0.6003,
+          0.5664
+        ],
+        "auc_donde_V03_falla": 0.564,
+        "auc_donde_V03_falla_folds": [
+          0.5907,
+          0.4802,
+          0.5727,
+          0.5987,
+          0.5777
+        ]
+      },
+      {
+        "etiqueta": "TR",
+        "auc_a_quien_delegar": 0.5398,
+        "auc_a_quien_delegar_folds": [
+          0.3677,
+          0.574,
+          0.5434,
+          0.6753,
+          0.5384
+        ],
+        "auc_donde_V03_falla": 0.6514,
+        "auc_donde_V03_falla_folds": [
+          0.6865,
+          0.6509,
+          0.5969,
+          0.6468,
+          0.6756
+        ]
+      },
+      {
+        "etiqueta": "AG",
+        "auc_a_quien_delegar": 0.571,
+        "auc_a_quien_delegar_folds": [
+          0.6907,
+          0.4317,
+          0.5098,
+          0.5082,
+          0.7145
+        ],
+        "auc_donde_V03_falla": 0.6085,
+        "auc_donde_V03_falla_folds": [
+          0.655,
+          0.5622,
+          0.5853,
+          0.6218,
+          0.6184
+        ]
+      }
+    ],
+    "media_auc_a_quien_delegar": 0.5491,
+    "media_auc_donde_V03_falla": 0.608,
+    "disociacion_confirmada": true,
+    "lectura": "la estructura del texto predice la DIFICULTAD mejor que el ganador. El enrutador aprende la cosa equivocada, no es que no aprenda nada"
+  },
+  "gates": {
+    "delta": false,
+    "pliegues": false,
+    "control": false
+  },
+  "veredicto": "INVALIDATED",
+  "razon": "delta -0.0018992302, 1 de 5 pliegues. El enrutado NO bate a sus controles (barajado -0.0008864889, aleatorio -0.0007338368). La estructura del ejemplo no permite decidir a quien delegar",
+  "protocolo": {
+    "nested": true,
+    "inner": 3,
+    "outer": 5,
+    "seleccion_en": "validacion interna",
+    "aislamiento": "solo la particion dev"
+  },
+  "reproducibilidad": {
+    "nivel": "R2",
+    "git_commit": "ed7855c",
+    "seed": 42,
+    "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "corrected_cv_v03": 0.7772114525165721
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

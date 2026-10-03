@@ -1,0 +1,283 @@
+{
+  "familia": "P64_TOPIC_MIXTURE",
+  "naturaleza": "EXPERIMENTO. 2 candidatos y 2 controles, 0 submissions, 0 Kaggle, 0 holdout, 0 test",
+  "fecha": "2026-09-29T14:29:15+00:00",
+  "experiment_id": "P64-08",
+  "track": "P14-mezcla-de-temas",
+  "script": "experiments/p64_08_lda.py",
+  "pregunta": "la composicion tematica de un documento aporta algo que sus palabras y su confianza no llevan ya",
+  "auditoria_previa": {
+    "DL-01": "TF-IDF -> TruncatedSVD(300) -> MLP, proyeccion neutral",
+    "V9-05": "SVD(6) frente a compresion supervisada, sin adopcion",
+    "V25-01": "interaccion de segundo orden de bajo rango sobre V03, cerrada",
+    "V38-01": "matriz termino por etiqueta factorizada con SVD, invalida por rango 3",
+    "V40-01": "PLSRegression(8) sobre V03, sobreajusta, cerrada y no reabierta por V42-01 ni V44-02",
+    "por_que_esta_se_abre_aun": "las cinco anteriores usaron la proyeccion para REEMPLAZAR la representacion y clasificar desde ella. Esta usa la mezcla como DESCRIPTOR de composicion, que es lo que P63 mostro que tiene senal en su analogo morfologico: los ratios de composicion batieron a un control aleatorio en 0,1055 aislados y anadieron 0,00835 de margen, y aun asi no mejoraron V03"
+  },
+  "configuracion": {
+    "lda": {
+      "n_components": 8,
+      "learning_method": "batch",
+      "random_state": 42,
+      "max_iter": 20,
+      "doc_topic_prior": 0.1,
+      "topic_word_prior": 0.01
+    },
+    "count_vectorizer": {
+      "min_df": 3,
+      "max_features": 3000,
+      "lowercase": true
+    },
+    "busqueda_de_numero_de_temas": "ninguna, por regla del encargo"
+  },
+  "vocabulario_por_pliegue": {
+    "1": 753,
+    "2": 768,
+    "3": 775,
+    "4": 774,
+    "5": 776
+  },
+  "segundos_de_ajuste_por_pliegue": {
+    "1": 2.135,
+    "2": 2.17,
+    "3": 2.152,
+    "4": 2.082,
+    "5": 2.094
+  },
+  "rasgos": [
+    "dominante",
+    "entropia",
+    "concentracion",
+    "segundo",
+    "dispersion"
+  ],
+  "perfil_por_estrato": [
+    {
+      "estrato": "todas",
+      "n": 1483,
+      "dominante": 0.592904,
+      "entropia": 0.497775,
+      "concentracion": 0.592904,
+      "segundo": 0.243651,
+      "dispersion": 0.203749
+    },
+    {
+      "estrato": "V03 correcto",
+      "n": 1042,
+      "dominante": 0.595956,
+      "entropia": 0.496599,
+      "concentracion": 0.595956,
+      "segundo": 0.243063,
+      "dispersion": 0.204839
+    },
+    {
+      "estrato": "V03 incorrecto",
+      "n": 441,
+      "dominante": 0.585694,
+      "entropia": 0.500552,
+      "concentracion": 0.585694,
+      "segundo": 0.24504,
+      "dispersion": 0.201172
+    },
+    {
+      "estrato": "error de alta confianza",
+      "n": 295,
+      "dominante": 0.579748,
+      "entropia": 0.505396,
+      "concentracion": 0.579748,
+      "segundo": 0.248056,
+      "dispersion": 0.199337
+    },
+    {
+      "estrato": "CORTA",
+      "n": 167,
+      "dominante": 0.683541,
+      "entropia": 0.498181,
+      "concentracion": 0.683541,
+      "segundo": 0.147589,
+      "dispersion": 0.223889
+    },
+    {
+      "estrato": "MEDIA",
+      "n": 602,
+      "dominante": 0.618707,
+      "entropia": 0.47681,
+      "concentracion": 0.618707,
+      "segundo": 0.243333,
+      "dispersion": 0.212603
+    },
+    {
+      "estrato": "LARGA",
+      "n": 547,
+      "dominante": 0.566859,
+      "entropia": 0.500683,
+      "concentracion": 0.566859,
+      "segundo": 0.265433,
+      "dispersion": 0.197001
+    },
+    {
+      "estrato": "MUY_LARGA",
+      "n": 167,
+      "dominante": 0.494566,
+      "entropia": 0.563418,
+      "concentracion": 0.494566,
+      "segundo": 0.269511,
+      "dispersion": 0.173794
+    }
+  ],
+  "resultados": {
+    "V03_lda": {
+      "corrected_cv": 0.7726501696675799,
+      "folds": [
+        0.7872863650699924,
+        0.7813207339505822,
+        0.7719845372019285,
+        0.7456472607836419,
+        0.7778530334336078
+      ],
+      "por_bin": {
+        "CORTA": {
+          "n": 167,
+          "F1": 0.948404,
+          "F1_de_V03": 0.947956
+        },
+        "MEDIA": {
+          "n": 602,
+          "F1": 0.789729,
+          "F1_de_V03": 0.796405
+        },
+        "LARGA": {
+          "n": 547,
+          "F1": 0.682009,
+          "F1_de_V03": 0.68335
+        },
+        "MUY_LARGA": {
+          "n": 167,
+          "F1": 0.544624,
+          "F1_de_V03": 0.560571
+        }
+      },
+      "rescate": 59,
+      "damage": 80
+    },
+    "V03_lda_completo": {
+      "corrected_cv": 0.7525751215636213,
+      "folds": [
+        0.7374587492558972,
+        0.7835200232133683,
+        0.7705685618729098,
+        0.7260419619711654,
+        0.742627470568647
+      ],
+      "por_bin": {
+        "CORTA": {
+          "n": 167,
+          "F1": 0.937268,
+          "F1_de_V03": 0.947956
+        },
+        "MEDIA": {
+          "n": 602,
+          "F1": 0.772682,
+          "F1_de_V03": 0.796405
+        },
+        "LARGA": {
+          "n": 547,
+          "F1": 0.655031,
+          "F1_de_V03": 0.68335
+        },
+        "MUY_LARGA": {
+          "n": 167,
+          "F1": 0.510662,
+          "F1_de_V03": 0.560571
+        }
+      },
+      "rescate": 75,
+      "damage": 162
+    },
+    "V03_random": {
+      "corrected_cv": 0.7747691669437904,
+      "folds": [
+        0.790237955428795,
+        0.7897635215179791,
+        0.7795217379234044,
+        0.7459618344609268,
+        0.7683040196436836
+      ],
+      "por_bin": {
+        "CORTA": {
+          "n": 167,
+          "F1": 0.94008,
+          "F1_de_V03": 0.947956
+        },
+        "MEDIA": {
+          "n": 602,
+          "F1": 0.803282,
+          "F1_de_V03": 0.796405
+        },
+        "LARGA": {
+          "n": 547,
+          "F1": 0.670435,
+          "F1_de_V03": 0.68335
+        },
+        "MUY_LARGA": {
+          "n": 167,
+          "F1": 0.554066,
+          "F1_de_V03": 0.560571
+        }
+      },
+      "rescate": 83,
+      "damage": 93
+    },
+    "V03_margen": {
+      "corrected_cv": 0.7661312520165589,
+      "folds": [
+        0.7688570389043375,
+        0.7832395247029393,
+        0.762560125060125,
+        0.749561403508772,
+        0.7663992177260909
+      ],
+      "por_bin": {
+        "CORTA": {
+          "n": 167,
+          "F1": 0.9379,
+          "F1_de_V03": 0.947956
+        },
+        "MEDIA": {
+          "n": 602,
+          "F1": 0.782453,
+          "F1_de_V03": 0.796405
+        },
+        "LARGA": {
+          "n": 547,
+          "F1": 0.680556,
+          "F1_de_V03": 0.68335
+        },
+        "MUY_LARGA": {
+          "n": 167,
+          "F1": 0.559525,
+          "F1_de_V03": 0.560571
+        }
+      },
+      "rescate": 78,
+      "damage": 168
+    }
+  },
+  "brechas": {
+    "perfil_contra_anchura": -0.0021189973,
+    "perfil_contra_margen": 0.0065189177,
+    "mezcla_completa_contra_anchura": -0.0221940454
+  },
+  "lectura": "CERRADA",
+  "veredicto": "la sexta factoriazacion latente no aporta: -0.0021189973 contra el control de anchura y +0.0065189177 contra el margen. Y con esto quedan SEIS factorizaciones distintas medidas y cerradas, que es la mayor evidencia que puede tener una familia cerrada en este repositorio",
+  "decision": "CLOSED",
+  "experimentos_registrados": 1,
+  "reproducibilidad": {
+    "nivel": "R2",
+    "git_commit": "1c9c738",
+    "seed": 42,
+    "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "corrected_cv": 0.7772114525165721
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

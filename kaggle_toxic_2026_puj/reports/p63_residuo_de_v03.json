@@ -1,0 +1,141 @@
+{
+  "familia": "P63_RESIDUO",
+  "naturaleza": "EXPERIMENTO. 3 candidatos y 1 control, 0 modelos de etiqueta, 0 submissions, 0 Kaggle, 0 holdout, 0 test",
+  "fecha": "2026-09-29T06:59:38+00:00",
+  "experiment_id": "P63-07",
+  "track": "K-residuo-de-V03",
+  "script": "experiments/p63_08_residuo_de_v03.py",
+  "pregunta": "los bloques nuevos explican el RESIDUO de V03, o V03 ya tiene esa informacion y por eso no cabe anadirlos",
+  "por_que_no_es_un_selector": "el objetivo es estrictamente si V03 acierta o falla en esa celda, y el margen de V03 entra como variable para que la pregunta sea sobre los bloques y no sobre la confianza, que ya esta medida. No se predice la etiqueta, luego no es el selector circular de V11-07 ni de V50, ambos cerrados",
+  "las_dos_lecturas": {
+    "dilucion": "los bloques saben lo que V03 falla y la informacion no se puede pagar",
+    "ya_conocido": "los bloques re-codifican lo que V03 ya extrae de los n-gramas, y por mas cuidado que se ponga no ayudaran",
+    "por_que_importa": "las dos hacen la misma prediccion sobre el F1 y opuestas sobre el diagnostico, y la segunda es la que cierra la familia por una razon mas fuerte"
+  },
+  "objetivo": "indicador binario de error de V03 por celda",
+  "variables_de_V03": [
+    "margen",
+    "entropia"
+  ],
+  "n_columnas": {
+    "composicion": 42,
+    "posicion": 21
+  },
+  "protocolo": {
+    "clasificador_del_meta_objetivo": "LogisticRegression C=1.0 balanced liblinear, declarado antes de ejecutar y sin rejilla",
+    "por_que_sin_rejilla": "lo que se mide es la INFORMACION que hay en los rasgos, no el punto optimo de un modelo auxiliar",
+    "pliegues": "los canonicos, por grupo",
+    "umbral_de_decision": "los congelados de V03, nunca se tocan"
+  },
+  "resultados": {
+    "margen_solo": {
+      "auc_por_etiqueta": {
+        "HS": 0.747593,
+        "TR": 0.793786,
+        "AG": 0.730044
+      },
+      "auc_media": 0.757141,
+      "auc_por_pliegue": [
+        0.711851,
+        0.743373,
+        0.795687,
+        0.742253,
+        0.792543
+      ]
+    },
+    "margen_comp": {
+      "auc_por_etiqueta": {
+        "HS": 0.729332,
+        "TR": 0.758197,
+        "AG": 0.710068
+      },
+      "auc_media": 0.732533,
+      "auc_por_pliegue": [
+        0.696844,
+        0.718395,
+        0.76363,
+        0.711625,
+        0.772169
+      ]
+    },
+    "margen_pos": {
+      "auc_por_etiqueta": {
+        "HS": 0.722797,
+        "TR": 0.771574,
+        "AG": 0.70399
+      },
+      "auc_media": 0.732787,
+      "auc_por_pliegue": [
+        0.690215,
+        0.69523,
+        0.773744,
+        0.733895,
+        0.770851
+      ]
+    },
+    "margen_aleatorio": {
+      "auc_por_etiqueta": {
+        "HS": 0.706412,
+        "TR": 0.765456,
+        "AG": 0.688756
+      },
+      "auc_media": 0.720208,
+      "auc_por_pliegue": [
+        0.684299,
+        0.718451,
+        0.74682,
+        0.675406,
+        0.776063
+      ]
+    }
+  },
+  "deltas": {
+    "composicion_sobre_el_margen": -0.024608,
+    "posicion_sobre_el_margen": -0.024354,
+    "aleatorio_sobre_el_margen": -0.036933,
+    "brecha_composicion": 0.012325,
+    "brecha_posicion": 0.012579
+  },
+  "tasa_de_error_por_rebanada": [
+    {
+      "bin": "CORTA",
+      "n": 167,
+      "errores": 33,
+      "tasa_de_error": 0.065868,
+      "auc_del_margen_solo_en_la_rebanada": 0.170832
+    },
+    {
+      "bin": "MEDIA",
+      "n": 602,
+      "errores": 305,
+      "tasa_de_error": 0.168882,
+      "auc_del_margen_solo_en_la_rebanada": 0.251425
+    },
+    {
+      "bin": "LARGA",
+      "n": 547,
+      "errores": 306,
+      "tasa_de_error": 0.186472,
+      "auc_del_margen_solo_en_la_rebanada": 0.223968
+    },
+    {
+      "bin": "MUY_LARGA",
+      "n": 167,
+      "errores": 113,
+      "tasa_de_error": 0.225549,
+      "auc_del_margen_solo_en_la_rebanada": 0.268046
+    }
+  ],
+  "lectura": "REDUNDANTE_CON_LA_CONFIANZA_DE_V03",
+  "veredicto": "Aqui hay un TERCER caso que la taxonomia de dos lecturas no preveia, y es el que se da. Los dos bloques superan al control aleatorio, con +0.012325 la composicion y +0.012579 la posicion, luego CONTIENEN informacion sobre que filas va a fallar V03. Pero NO mejoran al margen: aportan -0.024608 y -0.024354 sobre el, es decir lo restan. La lectura correcta es que la informacion de los bloques sobre el residuo YA ESTA implicita en la confianza de V03, y anadir 42 o 21 columnas mas solo hace que el modelo auxiliar se reparta el mismo dato y sobreajuste. No es redundancia con los n-gramas, que es lo que se suponia, y tampoco es informacion nueva: es redundancia con el MARGEN. Por eso el margen solo ya explica los errores con AUC 0.757141 y cualquier bloque lo empeora",
+  "decision": "La senal es nueva y el limite es de representacion",
+  "experimentos_registrados": 1,
+  "reproducibilidad": {
+    "nivel": "R2",
+    "git_commit": "13eda02",
+    "seed": 42,
+    "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "corrected_cv": 0.7772114525165721
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

@@ -1,0 +1,181 @@
+{
+  "marca_corrida": "completo_dea5d4",
+  "resultado": {
+    "bloque": 4,
+    "coste_segundos": 0.000343,
+    "descripcion": "la seleccion de variables se hace solo sobre el inner_train",
+    "detalle": {
+      "comprobaciones": {
+        "el_conjunto_permitido_no_esta_vacio": true,
+        "hubo_al_menos_una_llamada_al_selector": true,
+        "la_comprobacion_sabe_fallar_por_mutacion": true,
+        "ninguna_llamada_recibio_filas_fuera_del_inner_train": true
+      },
+      "llamadas": [
+        {
+          "filas_fuera_de_lo_permitido": 0,
+          "n_columnas": 653,
+          "n_filas": 836,
+          "umbral": 3.0
+        },
+        {
+          "filas_fuera_de_lo_permitido": 0,
+          "n_columnas": 605,
+          "n_filas": 815,
+          "umbral": 3.0
+        },
+        {
+          "filas_fuera_de_lo_permitido": 0,
+          "n_columnas": 618,
+          "n_filas": 818,
+          "umbral": 3.0
+        },
+        {
+          "filas_fuera_de_lo_permitido": 0,
+          "n_columnas": 615,
+          "n_filas": 827,
+          "umbral": 3.0
+        },
+        {
+          "filas_fuera_de_lo_permitido": 0,
+          "n_columnas": 611,
+          "n_filas": 817,
+          "umbral": 3.0
+        },
+        {
+          "filas_fuera_de_lo_permitido": 0,
+          "n_columnas": 636,
+          "n_filas": 831,
+          "umbral": 3.0
+        },
+        {
+          "filas_fuera_de_lo_permitido": 0,
+          "n_columnas": 643,
+          "n_filas": 835,
+          "umbral": 3.0
+        },
+        {
+          "filas_fuera_de_lo_permitido": 0,
+          "n_columnas": 628,
+          "n_filas": 835,
+          "umbral": 3.0
+        },
+        {
+          "filas_fuera_de_lo_permitido": 0,
+          "n_columnas": 637,
+          "n_filas": 835,
+          "umbral": 3.0
+        },
+        {
+          "filas_fuera_de_lo_permitido": 0,
+          "n_columnas": 629,
+          "n_filas": 838,
+          "umbral": 3.0
+        },
+        {
+          "filas_fuera_de_lo_permitido": 0,
+          "n_columnas": 639,
+          "n_filas": 838,
+          "umbral": 3.0
+        },
+        {
+          "filas_fuera_de_lo_permitido": 0,
+          "n_columnas": 638,
+          "n_filas": 826,
+          "umbral": 3.0
+        },
+        {
+          "filas_fuera_de_lo_permitido": 0,
+          "n_columnas": 629,
+          "n_filas": 822,
+          "umbral": 3.0
+        },
+        {
+          "filas_fuera_de_lo_permitido": 0,
+          "n_columnas": 618,
+          "n_filas": 825,
+          "umbral": 3.0
+        },
+        {
+          "filas_fuera_de_lo_permitido": 0,
+          "n_columnas": 643,
+          "n_filas": 831,
+          "umbral": 3.0
+        },
+        {
+          "filas_fuera_de_lo_permitido": 0,
+          "n_columnas": 633,
+          "n_filas": 839,
+          "umbral": 3.0
+        },
+        {
+          "filas_fuera_de_lo_permitido": 0,
+          "n_columnas": 633,
+          "n_filas": 823,
+          "umbral": 3.0
+        },
+        {
+          "filas_fuera_de_lo_permitido": 0,
+          "n_columnas": 635,
+          "n_filas": 837,
+          "umbral": 3.0
+        },
+        {
+          "filas_fuera_de_lo_permitido": 0,
+          "n_columnas": 620,
+          "n_filas": 821,
+          "umbral": 3.0
+        },
+        {
+          "filas_fuera_de_lo_permitido": 0,
+          "n_columnas": 611,
+          "n_filas": 827,
+          "umbral": 3.0
+        },
+        {
+          "filas_fuera_de_lo_permitido": 0,
+          "n_columnas": 604,
+          "n_filas": 836,
+          "umbral": 3.0
+        },
+        {
+          "filas_fuera_de_lo_permitido": 0,
+          "n_columnas": 625,
+          "n_filas": 829,
+          "umbral": 3.0
+        },
+        {
+          "filas_fuera_de_lo_permitido": 0,
+          "n_columnas": 624,
+          "n_filas": 832,
+          "umbral": 3.0
+        },
+        {
+          "filas_fuera_de_lo_permitido": 0,
+          "n_columnas": 603,
+          "n_filas": 826,
+          "umbral": 3.0
+        },
+        {
+          "filas_fuera_de_lo_permitido": 0,
+          "n_columnas": 626,
+          "n_filas": 828,
+          "umbral": 3.0
+        }
+      ],
+      "llamadas_con_fugas": [],
+      "motivo_de_parada": "la seleccion de variables se ha hecho fuera del inner_train y hay contamination en los dos bloques",
+      "mutacion": "se ejecuta una vez la comprobacion con una seleccion hecha sobre el outer_train completo y tiene que detectar la fuga",
+      "mutacion_detectada": true,
+      "n_filas_del_inner_train": 1483,
+      "n_llamadas_registradas": 25
+    },
+    "estado": "CONFIRMADO",
+    "exito": true,
+    "id": "A4",
+    "naturaleza": "CONFIRMAR",
+    "stop": true,
+    "tolerancia": "cero filas fuera del inner_train en ninguna llamada al selector",
+    "traza": ""
+  }
+}

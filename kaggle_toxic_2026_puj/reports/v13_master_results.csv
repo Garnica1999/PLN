@@ -1,0 +1,3 @@
+experimento,mecanismo,delta_macro,delta_hs_f1,delta_tr_f1,delta_ag_f1,hs_rescatados,hs_danados,hs_cambiados,supera_gate_exploratorio,supera_gate_candidato,estado
+V13-01,B_solo_TR_AG,-0.007541,-0.022624,0.0,0.0,31,41,174,False,False,RECHAZADA
+V13-01,C_propio_mas_TR_AG,0.000534,0.001603,0.0,0.0,20,1,51,False,False,MARGINAL

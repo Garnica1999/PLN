@@ -1,0 +1,360 @@
+{
+  "experimento": "V7-00 (P0, analisis)",
+  "fecha": "2026-09-26T02:01:28+00:00",
+  "nota": "Evidencia cruda de cada comprobacion. 'presente' significa que el mecanismo ya esta implementado en el codigo del proyecto y por tanto el track es una duplicacion; 'ausente' significa que no existe y el track es genuinamente nuevo.",
+  "comprobaciones": {
+    "P0_1_umbral_anidado": {
+      "etiqueta": "Estimacion de umbral anidada por pliegue",
+      "patron": "global_anidado|prediccion_global|umbrales_por_pliegue|nested_threshold",
+      "resultado": {
+        "presente": true,
+        "n_ficheros": 3,
+        "ficheros": [
+          {
+            "fichero": "21_backlog_restante_v2.py",
+            "ocurrencias": 19
+          },
+          {
+            "fichero": "05_ensembles.py",
+            "ocurrencias": 13
+          },
+          {
+            "fichero": "07_submission_v04_ens04.py",
+            "ocurrencias": 7
+          }
+        ]
+      },
+      "cifra_real": "0.776613 (umbral global anidado, es decir, leave-one-fold-out)",
+      "descripcion_de_la_cifra": "umbral global anidado, es decir, leave-one-fold-out"
+    },
+    "P0_2_umbral_por_rebanada": {
+      "etiqueta": "Umbral propio por rebanada con shrinkage",
+      "patron": "umbrales_locales|shrinkage|SHRINK-M|rebanada",
+      "resultado": {
+        "presente": true,
+        "n_ficheros": 21,
+        "ficheros": [
+          {
+            "fichero": "21_backlog_restante_v2.py",
+            "ocurrencias": 196
+          },
+          {
+            "fichero": "06_error_analysis.py",
+            "ocurrencias": 139
+          },
+          {
+            "fichero": "08_features_densas_h11_h12.py",
+            "ocurrencias": 64
+          },
+          {
+            "fichero": "17_stacking_v2.py",
+            "ocurrencias": 43
+          },
+          {
+            "fichero": "embedding_03_fusion_complementariedad_v5.py",
+            "ocurrencias": 40
+          }
+        ]
+      },
+      "cifra_real": "0.774954 (mejor de las cuatro variantes de umbral por rebanada)",
+      "descripcion_de_la_cifra": "mejor de las cuatro variantes de umbral por rebanada"
+    },
+    "P0_3_estimador_robusto": {
+      "etiqueta": "Mediana, media recortada o mediana bootstrap de umbrales",
+      "patron": "trimmed_mean|media_recortada|bootstrap_median|mediana_bootstrap|umbral_consenso",
+      "resultado": {
+        "presente": true,
+        "n_ficheros": 2,
+        "ficheros": [
+          {
+            "fichero": "embedding_02_fasttext_baseline_v5.py",
+            "ocurrencias": 1
+          },
+          {
+            "fichero": "evaluation.py",
+            "ocurrencias": 1
+          }
+        ]
+      },
+      "cifra_real": "sin artefacto asociado",
+      "descripcion_de_la_cifra": ""
+    },
+    "P0_4_calibracion": {
+      "etiqueta": "Calibracion de probabilidades (sigmoid o isotonica)",
+      "patron": "CalibratedClassifierCV|isotonic|sigmoid_calibration|calibracion",
+      "resultado": {
+        "presente": true,
+        "n_ficheros": 9,
+        "ficheros": [
+          {
+            "fichero": "21_backlog_restante_v2.py",
+            "ocurrencias": 91
+          },
+          {
+            "fichero": "06_error_analysis.py",
+            "ocurrencias": 4
+          },
+          {
+            "fichero": "10_sondas_robustez.py",
+            "ocurrencias": 2
+          },
+          {
+            "fichero": "32_meta_shift_v4.py",
+            "ocurrencias": 2
+          },
+          {
+            "fichero": "05_ensembles.py",
+            "ocurrencias": 1
+          }
+        ]
+      },
+      "cifra_real": "0.001831 (mejora de la calibracion frente a no calibrar, que se cerro)",
+      "descripcion_de_la_cifra": "mejora de la calibracion frente a no calibrar, que se cerro"
+    },
+    "P1_1_oof_por_pliegue": {
+      "etiqueta": "OOF ya construido por pliegue con la regla de no autoinclusion",
+      "patron": "pliegues|guardar_oof_v03_final",
+      "resultado": {
+        "presente": true,
+        "n_ficheros": 53,
+        "ficheros": [
+          {
+            "fichero": "21_backlog_restante_v2.py",
+            "ocurrencias": 224
+          },
+          {
+            "fichero": "09_optuna_tfidf_lr.py",
+            "ocurrencias": 119
+          },
+          {
+            "fichero": "20_emocion_nbsvm_ortografia_v2.py",
+            "ocurrencias": 102
+          },
+          {
+            "fichero": "05_ensembles.py",
+            "ocurrencias": 101
+          },
+          {
+            "fichero": "17_stacking_v2.py",
+            "ocurrencias": 95
+          }
+        ]
+      },
+      "cifra_real": "1483 (el artefacto canonico ya lleva el pliegue de cada fila)",
+      "descripcion_de_la_cifra": "el artefacto canonico ya lleva el pliegue de cada fila"
+    },
+    "P2_1_linearsvc": {
+      "etiqueta": "Maquina de margen maximo sobre la union de V03",
+      "patron": "LinearSVC",
+      "resultado": {
+        "presente": true,
+        "n_ficheros": 18,
+        "ficheros": [
+          {
+            "fichero": "07_submission_v04_ens04.py",
+            "ocurrencias": 10
+          },
+          {
+            "fichero": "20_emocion_nbsvm_ortografia_v2.py",
+            "ocurrencias": 9
+          },
+          {
+            "fichero": "05_ensembles.py",
+            "ocurrencias": 7
+          },
+          {
+            "fichero": "17_stacking_v2.py",
+            "ocurrencias": 7
+          },
+          {
+            "fichero": "03_variantes_representaciones.py",
+            "ocurrencias": 4
+          }
+        ]
+      },
+      "cifra_real": "10 (filas que la maquina de margen acierta y V03 falla, sobre 1483)",
+      "descripcion_de_la_cifra": "filas que la maquina de margen acierta y V03 falla, sobre 1483"
+    },
+    "P2_3_generativo": {
+      "etiqueta": "Modelo generativo de Naive Bayes",
+      "patron": "MultinomialNB|ComplementNB|BernoulliNB|nbsvm|NB-SVM",
+      "resultado": {
+        "presente": true,
+        "n_ficheros": 10,
+        "ficheros": [
+          {
+            "fichero": "20_emocion_nbsvm_ortografia_v2.py",
+            "ocurrencias": 37
+          },
+          {
+            "fichero": "22_artefactos_auditoria_v2.py",
+            "ocurrencias": 28
+          },
+          {
+            "fichero": "03_variantes_representaciones.py",
+            "ocurrencias": 5
+          },
+          {
+            "fichero": "24_informe_final_candidatos.py",
+            "ocurrencias": 4
+          },
+          {
+            "fichero": "23_candidatos_finales.py",
+            "ocurrencias": 2
+          }
+        ]
+      },
+      "cifra_real": "0.761203 (log-count ratio sobre la union de V03)",
+      "descripcion_de_la_cifra": "log-count ratio sobre la union de V03"
+    },
+    "P3_1_cnn_caracteres": {
+      "etiqueta": "Red convolucional de caracteres entrenada desde cero",
+      "patron": "Conv1d|CharCNN|cnn_caracteres|clase CNN",
+      "resultado": {
+        "presente": true,
+        "n_ficheros": 2,
+        "ficheros": [
+          {
+            "fichero": "11_dl_desde_cero.py",
+            "ocurrencias": 12
+          },
+          {
+            "fichero": "v6_00_gap_analysis.py",
+            "ocurrencias": 5
+          }
+        ]
+      },
+      "cifra_real": "0.741036 (convolutional de caracteres entrenada desde cero)",
+      "descripcion_de_la_cifra": "convolutional de caracteres entrenada desde cero"
+    },
+    "P4_1_vista_duplicada": {
+      "etiqueta": "Segunda vista ortografica junto a la vista original",
+      "patron": "ORT-A|ORT_ABCD|canal_ortograf|mascara_ofusc|ortografia",
+      "resultado": {
+        "presente": true,
+        "n_ficheros": 9,
+        "ficheros": [
+          {
+            "fichero": "20_emocion_nbsvm_ortografia_v2.py",
+            "ocurrencias": 42
+          },
+          {
+            "fichero": "22_artefactos_auditoria_v2.py",
+            "ocurrencias": 35
+          },
+          {
+            "fichero": "24_informe_final_candidatos.py",
+            "ocurrencias": 4
+          },
+          {
+            "fichero": "v6_00_gap_analysis.py",
+            "ocurrencias": 4
+          },
+          {
+            "fichero": "23_candidatos_finales.py",
+            "ocurrencias": 2
+          }
+        ]
+      },
+      "cifra_real": "-0.023836 (canal original mas canal normalizado)",
+      "descripcion_de_la_cifra": "canal original mas canal normalizado"
+    },
+    "P5_1_alcance_negacion": {
+      "etiqueta": "Alcance de negacion con tokens modificados",
+      "patron": "NEG|negacion|NO_|nunca|alcance_neg",
+      "resultado": {
+        "presente": true,
+        "n_ficheros": 70,
+        "ficheros": [
+          {
+            "fichero": "19_sintaxis_cita_negacion_v2.py",
+            "ocurrencias": 203
+          },
+          {
+            "fichero": "22_artefactos_auditoria_v2.py",
+            "ocurrencias": 106
+          },
+          {
+            "fichero": "06_error_analysis.py",
+            "ocurrencias": 59
+          },
+          {
+            "fichero": "16_targeting_v2.py",
+            "ocurrencias": 52
+          },
+          {
+            "fichero": "01_eda_linguistico.py",
+            "ocurrencias": 51
+          }
+        ]
+      },
+      "cifra_real": "-0.250519 (canal de negacion)",
+      "descripcion_de_la_cifra": "canal de negacion"
+    },
+    "P7_1_especialistas": {
+      "etiqueta": "Modelo propio por rebanada o especialista por region",
+      "patron": "especialistas|modelo_por_rebanada|gate|selector_por_rebanada",
+      "resultado": {
+        "presente": true,
+        "n_ficheros": 32,
+        "ficheros": [
+          {
+            "fichero": "21_backlog_restante_v2.py",
+            "ocurrencias": 101
+          },
+          {
+            "fichero": "v6_09_entregables.py",
+            "ocurrencias": 49
+          },
+          {
+            "fichero": "v6_02_label_factorization.py",
+            "ocurrencias": 27
+          },
+          {
+            "fichero": "v6_04_char_weight.py",
+            "ocurrencias": 27
+          },
+          {
+            "fichero": "v6_03_ponderacion_grupo.py",
+            "ocurrencias": 23
+          }
+        ]
+      },
+      "cifra_real": "-0.002292 (modelo propio por rebanada)",
+      "descripcion_de_la_cifra": "modelo propio por rebanada"
+    },
+    "P8_1_prior_grupo": {
+      "etiqueta": "Prior de etiqueta del grupo como caracteristica",
+      "patron": "prior_grupo|group_label_prior|prior_pseudoautor|prior_del_grupo",
+      "resultado": {
+        "presente": false,
+        "n_ficheros": 0,
+        "ficheros": []
+      },
+      "cifra_real": "sin artefacto asociado",
+      "descripcion_de_la_cifra": ""
+    },
+    "P9_1_perdida_f1": {
+      "etiqueta": "Perdida orientada a la F1 o focal",
+      "patron": "focal|FocalLoss|soft_f1|surrogate_f1|F1Loss|fbeta",
+      "resultado": {
+        "presente": false,
+        "n_ficheros": 0,
+        "ficheros": []
+      },
+      "cifra_real": "sin artefacto asociado",
+      "descripcion_de_la_cifra": ""
+    },
+    "P10_1_consenso_umbral": {
+      "etiqueta": "Consenso de umbrales entre pliegues",
+      "patron": "consenso_umbral|umbral_consenso|voto_umbral|mediana_umbral",
+      "resultado": {
+        "presente": false,
+        "n_ficheros": 0,
+        "ficheros": []
+      },
+      "cifra_real": "sin artefacto asociado",
+      "descripcion_de_la_cifra": ""
+    }
+  }
+}

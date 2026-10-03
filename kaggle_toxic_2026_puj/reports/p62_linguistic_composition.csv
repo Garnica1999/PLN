@@ -1,0 +1,208 @@
+bloque,etiqueta,categoria,valor
+6_pos,HS,ADJ,1.021605
+6_pos,HS,ADP,1.71142
+6_pos,HS,ADV,0.617284
+6_pos,HS,AUX,0.762346
+6_pos,HS,CCONJ,0.561728
+6_pos,HS,DET,1.753086
+6_pos,HS,INTJ,0.023148
+6_pos,HS,NOUN,2.660494
+6_pos,HS,NUM,0.037037
+6_pos,HS,PART,0.0
+6_pos,HS,PRON,1.191358
+6_pos,HS,PROPN,2.114198
+6_pos,HS,PUNCT,0.003086
+6_pos,HS,SCONJ,0.552469
+6_pos,HS,SYM,0.0
+6_pos,HS,VERB,1.800926
+6_pos,HS,X,0.001543
+6_pos,TR,ADJ,0.817978
+6_pos,TR,ADP,1.040449
+6_pos,TR,ADV,0.516854
+6_pos,TR,AUX,0.721348
+6_pos,TR,CCONJ,0.442697
+6_pos,TR,DET,1.260674
+6_pos,TR,INTJ,0.022472
+6_pos,TR,NOUN,1.970787
+6_pos,TR,NUM,0.026966
+6_pos,TR,PART,0.0
+6_pos,TR,PRON,1.042697
+6_pos,TR,PROPN,2.191011
+6_pos,TR,PUNCT,0.004494
+6_pos,TR,SCONJ,0.467416
+6_pos,TR,SYM,0.0
+6_pos,TR,VERB,1.422472
+6_pos,TR,X,0.0
+6_pos,AG,ADJ,1.022928
+6_pos,AG,ADP,1.59612
+6_pos,AG,ADV,0.590829
+6_pos,AG,AUX,0.737213
+6_pos,AG,CCONJ,0.537919
+6_pos,AG,DET,1.638448
+6_pos,AG,INTJ,0.0194
+6_pos,AG,NOUN,2.502646
+6_pos,AG,NUM,0.031746
+6_pos,AG,PART,0.0
+6_pos,AG,PRON,1.134039
+6_pos,AG,PROPN,2.262787
+6_pos,AG,PUNCT,0.005291
+6_pos,AG,SCONJ,0.52381
+6_pos,AG,SYM,0.001764
+6_pos,AG,VERB,1.751323
+6_pos,AG,X,0.001764
+7_VERB,HS,venir,"{""lema"": ""venir"", ""n_pos"": 16, ""n_neg"": 8, ""log_enr"": 1.005}"
+7_VERB,HS,callatir,"{""lema"": ""callatir"", ""n_pos"": 25, ""n_neg"": 14, ""log_enr"": 0.919}"
+7_VERB,HS,llamar,"{""lema"": ""llamar"", ""n_pos"": 9, ""n_neg"": 8, ""log_enr"": 0.4744}"
+7_VERB,HS,ver,"{""lema"": ""ver"", ""n_pos"": 37, ""n_neg"": 36, ""log_enr"": 0.3957}"
+7_VERB,HS,querer,"{""lema"": ""querer"", ""n_pos"": 27, ""n_neg"": 31, ""log_enr"": 0.2355}"
+7_VERB,HS,dar,"{""lema"": ""dar"", ""n_pos"": 23, ""n_neg"": 28, ""log_enr"": 0.1798}"
+7_VERB,HS,pasar,"{""lema"": ""pasar"", ""n_pos"": 16, ""n_neg"": 20, ""log_enr"": 0.1577}"
+7_VERB,HS,saber,"{""lema"": ""saber"", ""n_pos"": 13, ""n_neg"": 17, ""log_enr"": 0.1177}"
+7_VERB,HS,hacer,"{""lema"": ""hacer"", ""n_pos"": 38, ""n_neg"": 51, ""log_enr"": 0.0813}"
+7_VERB,HS,ir,"{""lema"": ""ir"", ""n_pos"": 22, ""n_neg"": 31, ""log_enr"": 0.0388}"
+7_VERB,HS,tener,"{""lema"": ""tener"", ""n_pos"": 41, ""n_neg"": 62, ""log_enr"": -0.0365}"
+7_VERB,HS,mereces,"{""lema"": ""mereces"", ""n_pos"": 9, ""n_neg"": 15, ""log_enr"": -0.101}"
+7_VERB,HS,merecer,"{""lema"": ""merecer"", ""n_pos"": 9, ""n_neg"": 15, ""log_enr"": -0.101}"
+7_VERB,HS,pensar,"{""lema"": ""pensar"", ""n_pos"": 8, ""n_neg"": 15, ""log_enr"": -0.2064}"
+7_VERB,HS,poner,"{""lema"": ""poner"", ""n_pos"": 9, ""n_neg"": 17, ""log_enr"": -0.2188}"
+7_ADJ,HS,ilegal,"{""lema"": ""ilegal"", ""n_pos"": 17, ""n_neg"": 6, ""log_enr"": 1.3135}"
+7_ADJ,HS,negro,"{""lema"": ""negro"", ""n_pos"": 9, ""n_neg"": 5, ""log_enr"": 0.8798}"
+7_ADJ,HS,puto,"{""lema"": ""puto"", ""n_pos"": 24, ""n_neg"": 17, ""log_enr"": 0.6975}"
+7_ADJ,HS,cllate,"{""lema"": ""cllate"", ""n_pos"": 12, ""n_neg"": 17, ""log_enr"": 0.0436}"
+7_ADJ,HS,er,"{""lema"": ""er"", ""n_pos"": 8, ""n_neg"": 13, ""log_enr"": -0.0728}"
+7_ADJ,HS,mejor,"{""lema"": ""mejor"", ""n_pos"": 9, ""n_neg"": 16, ""log_enr"": -0.1616}"
+7_ADJ,HS,indocumentado,"{""lema"": ""indocumentado"", ""n_pos"": 9, ""n_neg"": 17, ""log_enr"": -0.2188}"
+7_NOUN,HS,zorra,"{""lema"": ""zorra"", ""n_pos"": 46, ""n_neg"": 5, ""log_enr"": 2.4274}"
+7_NOUN,HS,mantero,"{""lema"": ""mantero"", ""n_pos"": 10, ""n_neg"": 1, ""log_enr"": 2.0738}"
+7_NOUN,HS,novia,"{""lema"": ""novia"", ""n_pos"": 19, ""n_neg"": 4, ""log_enr"": 1.7553}"
+7_NOUN,HS,subsahariano,"{""lema"": ""subsahariano"", ""n_pos"": 13, ""n_neg"": 3, ""log_enr"": 1.6218}"
+7_NOUN,HS,perra,"{""lema"": ""perra"", ""n_pos"": 44, ""n_neg"": 16, ""log_enr"": 1.3425}"
+7_NOUN,HS,puto,"{""lema"": ""puto"", ""n_pos"": 9, ""n_neg"": 3, ""log_enr"": 1.2853}"
+7_NOUN,HS,guarra,"{""lema"": ""guarra"", ""n_pos"": 9, ""n_neg"": 3, ""log_enr"": 1.2853}"
+7_NOUN,HS,casa,"{""lema"": ""casa"", ""n_pos"": 8, ""n_neg"": 3, ""log_enr"": 1.1799}"
+7_NOUN,HS,hija,"{""lema"": ""hija"", ""n_pos"": 11, ""n_neg"": 7, ""log_enr"": 0.7745}"
+7_NOUN,HS,papel,"{""lema"": ""papel"", ""n_pos"": 8, ""n_neg"": 5, ""log_enr"": 0.7745}"
+7_NOUN,HS,refugiado,"{""lema"": ""refugiado"", ""n_pos"": 9, ""n_neg"": 8, ""log_enr"": 0.4744}"
+7_NOUN,HS,mujer,"{""lema"": ""mujer"", ""n_pos"": 37, ""n_neg"": 37, ""log_enr"": 0.369}"
+7_NOUN,HS,culo,"{""lema"": ""culo"", ""n_pos"": 10, ""n_neg"": 10, ""log_enr"": 0.369}"
+7_NOUN,HS,inmigracin,"{""lema"": ""inmigracin"", ""n_pos"": 9, ""n_neg"": 9, ""log_enr"": 0.369}"
+7_NOUN,HS,m,"{""lema"": ""m"", ""n_pos"": 9, ""n_neg"": 10, ""log_enr"": 0.2737}"
+7_PROPN,HS,zorra,"{""lema"": ""zorra"", ""n_pos"": 39, ""n_neg"": 7, ""log_enr"": 1.9784}"
+7_PROPN,HS,perra,"{""lema"": ""perra"", ""n_pos"": 117, ""n_neg"": 27, ""log_enr"": 1.8075}"
+7_PROPN,HS,cllate,"{""lema"": ""cllate"", ""n_pos"": 61, ""n_neg"": 14, ""log_enr"": 1.7881}"
+7_PROPN,HS,guarra,"{""lema"": ""guarra"", ""n_pos"": 10, ""n_neg"": 4, ""log_enr"": 1.1575}"
+7_PROPN,HS,pinche,"{""lema"": ""pinche"", ""n_pos"": 11, ""n_neg"": 5, ""log_enr"": 1.0622}"
+7_PROPN,HS,tu,"{""lema"": ""tu"", ""n_pos"": 33, ""n_neg"": 18, ""log_enr"": 0.9509}"
+7_PROPN,HS,puta,"{""lema"": ""puta"", ""n_pos"": 29, ""n_neg"": 17, ""log_enr"": 0.8798}"
+7_PROPN,HS,t,"{""lema"": ""t"", ""n_pos"": 23, ""n_neg"": 15, ""log_enr"": 0.7745}"
+7_PROPN,HS,callate,"{""lema"": ""callate"", ""n_pos"": 73, ""n_neg"": 57, ""log_enr"": 0.6126}"
+7_PROPN,HS,eres,"{""lema"": ""eres"", ""n_pos"": 13, ""n_neg"": 10, ""log_enr"": 0.6102}"
+7_PROPN,HS,d,"{""lema"": ""d"", ""n_pos"": 9, ""n_neg"": 7, ""log_enr"": 0.5921}"
+7_PROPN,HS,mierda,"{""lema"": ""mierda"", ""n_pos"": 10, ""n_neg"": 10, ""log_enr"": 0.369}"
+7_PROPN,HS,vos,"{""lema"": ""vos"", ""n_pos"": 10, ""n_neg"": 12, ""log_enr"": 0.2019}"
+7_PROPN,HS,espaa,"{""lema"": ""espaa"", ""n_pos"": 15, ""n_neg"": 18, ""log_enr"": 0.1972}"
+7_PROPN,HS,qu,"{""lema"": ""qu"", ""n_pos"": 9, ""n_neg"": 14, ""log_enr"": -0.0365}"
+7_VERB,TR,callatir,"{""lema"": ""callatir"", ""n_pos"": 25, ""n_neg"": 14, ""log_enr"": 1.7811}"
+7_VERB,TR,mereces,"{""lema"": ""mereces"", ""n_pos"": 9, ""n_neg"": 15, ""log_enr"": 0.7611}"
+7_VERB,TR,merecer,"{""lema"": ""merecer"", ""n_pos"": 9, ""n_neg"": 15, ""log_enr"": 0.7611}"
+7_VERB,TR,querer,"{""lema"": ""querer"", ""n_pos"": 21, ""n_neg"": 37, ""log_enr"": 0.6845}"
+7_VERB,TR,tener,"{""lema"": ""tener"", ""n_pos"": 29, ""n_neg"": 74, ""log_enr"": 0.3148}"
+7_VERB,TR,saber,"{""lema"": ""saber"", ""n_pos"": 8, ""n_neg"": 22, ""log_enr"": 0.2928}"
+7_VERB,TR,ver,"{""lema"": ""ver"", ""n_pos"": 20, ""n_neg"": 53, ""log_enr"": 0.2866}"
+7_VERB,TR,decir,"{""lema"": ""decir"", ""n_pos"": 22, ""n_neg"": 64, ""log_enr"": 0.1922}"
+7_VERB,TR,ensear,"{""lema"": ""ensear"", ""n_pos"": 13, ""n_neg"": 42, ""log_enr"": 0.109}"
+7_VERB,TR,dar,"{""lema"": ""dar"", ""n_pos"": 12, ""n_neg"": 39, ""log_enr"": 0.1072}"
+7_VERB,TR,hacer,"{""lema"": ""hacer"", ""n_pos"": 19, ""n_neg"": 70, ""log_enr"": -0.0359}"
+7_VERB,TR,ir,"{""lema"": ""ir"", ""n_pos"": 10, ""n_neg"": 43, ""log_enr"": -0.1552}"
+7_ADJ,TR,puto,"{""lema"": ""puto"", ""n_pos"": 24, ""n_neg"": 17, ""log_enr"": 1.5596}"
+7_ADJ,TR,cllate,"{""lema"": ""cllate"", ""n_pos"": 12, ""n_neg"": 17, ""log_enr"": 0.9057}"
+7_ADJ,TR,er,"{""lema"": ""er"", ""n_pos"": 8, ""n_neg"": 13, ""log_enr"": 0.7893}"
+7_ADJ,TR,mejor,"{""lema"": ""mejor"", ""n_pos"": 9, ""n_neg"": 16, ""log_enr"": 0.7005}"
+7_NOUN,TR,zorra,"{""lema"": ""zorra"", ""n_pos"": 46, ""n_neg"": 5, ""log_enr"": 3.2895}"
+7_NOUN,TR,novia,"{""lema"": ""novia"", ""n_pos"": 18, ""n_neg"": 5, ""log_enr"": 2.3838}"
+7_NOUN,TR,perra,"{""lema"": ""perra"", ""n_pos"": 42, ""n_neg"": 18, ""log_enr"": 2.0479}"
+7_NOUN,TR,guarra,"{""lema"": ""guarra"", ""n_pos"": 8, ""n_neg"": 4, ""log_enr"": 1.8189}"
+7_NOUN,TR,hija,"{""lema"": ""hija"", ""n_pos"": 11, ""n_neg"": 7, ""log_enr"": 1.6366}"
+7_NOUN,TR,puta,"{""lema"": ""puta"", ""n_pos"": 129, ""n_neg"": 279, ""log_enr"": 0.4638}"
+7_NOUN,TR,q,"{""lema"": ""q"", ""n_pos"": 9, ""n_neg"": 23, ""log_enr"": 0.3556}"
+7_NOUN,TR,mierda,"{""lema"": ""mierda"", ""n_pos"": 10, ""n_neg"": 27, ""log_enr"": 0.2968}"
+7_NOUN,TR,cara,"{""lema"": ""cara"", ""n_pos"": 10, ""n_neg"": 32, ""log_enr"": 0.1325}"
+7_NOUN,TR,mujer,"{""lema"": ""mujer"", ""n_pos"": 8, ""n_neg"": 66, ""log_enr"": -0.7764}"
+7_PROPN,TR,zorra,"{""lema"": ""zorra"", ""n_pos"": 39, ""n_neg"": 7, ""log_enr"": 2.8405}"
+7_PROPN,TR,cllate,"{""lema"": ""cllate"", ""n_pos"": 61, ""n_neg"": 14, ""log_enr"": 2.6502}"
+7_PROPN,TR,perra,"{""lema"": ""perra"", ""n_pos"": 116, ""n_neg"": 28, ""log_enr"": 2.626}"
+7_PROPN,TR,tu,"{""lema"": ""tu"", ""n_pos"": 33, ""n_neg"": 18, ""log_enr"": 1.813}"
+7_PROPN,TR,puta,"{""lema"": ""puta"", ""n_pos"": 29, ""n_neg"": 17, ""log_enr"": 1.7419}"
+7_PROPN,TR,guarra,"{""lema"": ""guarra"", ""n_pos"": 9, ""n_neg"": 5, ""log_enr"": 1.7419}"
+7_PROPN,TR,callate,"{""lema"": ""callate"", ""n_pos"": 73, ""n_neg"": 57, ""log_enr"": 1.4747}"
+7_PROPN,TR,eres,"{""lema"": ""eres"", ""n_pos"": 13, ""n_neg"": 10, ""log_enr"": 1.4723}"
+7_PROPN,TR,pinche,"{""lema"": ""pinche"", ""n_pos"": 9, ""n_neg"": 7, ""log_enr"": 1.4542}"
+7_PROPN,TR,t,"{""lema"": ""t"", ""n_pos"": 20, ""n_neg"": 18, ""log_enr"": 1.3312}"
+7_PROPN,TR,vos,"{""lema"": ""vos"", ""n_pos"": 10, ""n_neg"": 12, ""log_enr"": 1.064}"
+7_VERB,AG,callatir,"{""lema"": ""callatir"", ""n_pos"": 25, ""n_neg"": 14, ""log_enr"": 1.1456}"
+7_VERB,AG,llegar,"{""lema"": ""llegar"", ""n_pos"": 9, ""n_neg"": 7, ""log_enr"": 0.8187}"
+7_VERB,AG,venir,"{""lema"": ""venir"", ""n_pos"": 13, ""n_neg"": 11, ""log_enr"": 0.7497}"
+7_VERB,AG,llamar,"{""lema"": ""llamar"", ""n_pos"": 8, ""n_neg"": 9, ""log_enr"": 0.4902}"
+7_VERB,AG,ver,"{""lema"": ""ver"", ""n_pos"": 29, ""n_neg"": 44, ""log_enr"": 0.19}"
+7_VERB,AG,mereces,"{""lema"": ""mereces"", ""n_pos"": 9, ""n_neg"": 15, ""log_enr"": 0.1255}"
+7_VERB,AG,querer,"{""lema"": ""querer"", ""n_pos"": 22, ""n_neg"": 36, ""log_enr"": 0.1201}"
+7_VERB,AG,ir,"{""lema"": ""ir"", ""n_pos"": 19, ""n_neg"": 34, ""log_enr"": 0.0359}"
+7_VERB,AG,dar,"{""lema"": ""dar"", ""n_pos"": 18, ""n_neg"": 33, ""log_enr"": 0.0136}"
+7_VERB,AG,poner,"{""lema"": ""poner"", ""n_pos"": 9, ""n_neg"": 17, ""log_enr"": 0.0077}"
+7_VERB,AG,merecer,"{""lema"": ""merecer"", ""n_pos"": 8, ""n_neg"": 16, ""log_enr"": -0.0405}"
+7_VERB,AG,decir,"{""lema"": ""decir"", ""n_pos"": 29, ""n_neg"": 57, ""log_enr"": -0.0637}"
+7_VERB,AG,tener,"{""lema"": ""tener"", ""n_pos"": 33, ""n_neg"": 70, ""log_enr"": -0.1408}"
+7_VERB,AG,hacer,"{""lema"": ""hacer"", ""n_pos"": 28, ""n_neg"": 61, ""log_enr"": -0.1643}"
+7_VERB,AG,saber,"{""lema"": ""saber"", ""n_pos"": 9, ""n_neg"": 21, ""log_enr"": -0.1929}"
+7_ADJ,AG,negro,"{""lema"": ""negro"", ""n_pos"": 9, ""n_neg"": 5, ""log_enr"": 1.1063}"
+7_ADJ,AG,puto,"{""lema"": ""puto"", ""n_pos"": 23, ""n_neg"": 18, ""log_enr"": 0.8291}"
+7_ADJ,AG,ilegal,"{""lema"": ""ilegal"", ""n_pos"": 11, ""n_neg"": 12, ""log_enr"": 0.5155}"
+7_ADJ,AG,cllate,"{""lema"": ""cllate"", ""n_pos"": 12, ""n_neg"": 17, ""log_enr"": 0.2701}"
+7_ADJ,AG,mejor,"{""lema"": ""mejor"", ""n_pos"": 10, ""n_neg"": 15, ""log_enr"": 0.2208}"
+7_ADJ,AG,indocumentado,"{""lema"": ""indocumentado"", ""n_pos"": 8, ""n_neg"": 18, ""log_enr"": -0.1517}"
+7_NOUN,AG,zorra,"{""lema"": ""zorra"", ""n_pos"": 44, ""n_neg"": 7, ""log_enr"": 2.3227}"
+7_NOUN,AG,novia,"{""lema"": ""novia"", ""n_pos"": 18, ""n_neg"": 5, ""log_enr"": 1.7482}"
+7_NOUN,AG,puto,"{""lema"": ""puto"", ""n_pos"": 9, ""n_neg"": 3, ""log_enr"": 1.5118}"
+7_NOUN,AG,guarra,"{""lema"": ""guarra"", ""n_pos"": 9, ""n_neg"": 3, ""log_enr"": 1.5118}"
+7_NOUN,AG,perra,"{""lema"": ""perra"", ""n_pos"": 42, ""n_neg"": 18, ""log_enr"": 1.4123}"
+7_NOUN,AG,mantero,"{""lema"": ""mantero"", ""n_pos"": 8, ""n_neg"": 3, ""log_enr"": 1.4064}"
+7_NOUN,AG,casa,"{""lema"": ""casa"", ""n_pos"": 8, ""n_neg"": 3, ""log_enr"": 1.4064}"
+7_NOUN,AG,hija,"{""lema"": ""hija"", ""n_pos"": 11, ""n_neg"": 7, ""log_enr"": 1.001}"
+7_NOUN,AG,m,"{""lema"": ""m"", ""n_pos"": 8, ""n_neg"": 11, ""log_enr"": 0.3078}"
+7_NOUN,AG,culo,"{""lema"": ""culo"", ""n_pos"": 8, ""n_neg"": 12, ""log_enr"": 0.2278}"
+7_NOUN,AG,inmigrante,"{""lema"": ""inmigrante"", ""n_pos"": 23, ""n_neg"": 36, ""log_enr"": 0.1626}"
+7_NOUN,AG,pas,"{""lema"": ""pas"", ""n_pos"": 8, ""n_neg"": 13, ""log_enr"": 0.1537}"
+7_NOUN,AG,mierda,"{""lema"": ""mierda"", ""n_pos"": 12, ""n_neg"": 25, ""log_enr"": -0.0976}"
+7_NOUN,AG,puta,"{""lema"": ""puta"", ""n_pos"": 133, ""n_neg"": 275, ""log_enr"": -0.127}"
+7_NOUN,AG,cara,"{""lema"": ""cara"", ""n_pos"": 13, ""n_neg"": 29, ""log_enr"": -0.1666}"
+7_PROPN,AG,zorra,"{""lema"": ""zorra"", ""n_pos"": 39, ""n_neg"": 7, ""log_enr"": 2.2049}"
+7_PROPN,AG,cllate,"{""lema"": ""cllate"", ""n_pos"": 61, ""n_neg"": 14, ""log_enr"": 2.0146}"
+7_PROPN,AG,perra,"{""lema"": ""perra"", ""n_pos"": 113, ""n_neg"": 31, ""log_enr"": 1.866}"
+7_PROPN,AG,pinche,"{""lema"": ""pinche"", ""n_pos"": 11, ""n_neg"": 5, ""log_enr"": 1.2887}"
+7_PROPN,AG,tu,"{""lema"": ""tu"", ""n_pos"": 33, ""n_neg"": 18, ""log_enr"": 1.1774}"
+7_PROPN,AG,guarra,"{""lema"": ""guarra"", ""n_pos"": 9, ""n_neg"": 5, ""log_enr"": 1.1063}"
+7_PROPN,AG,puta,"{""lema"": ""puta"", ""n_pos"": 29, ""n_neg"": 17, ""log_enr"": 1.1063}"
+7_PROPN,AG,eres,"{""lema"": ""eres"", ""n_pos"": 13, ""n_neg"": 10, ""log_enr"": 0.8367}"
+7_PROPN,AG,callate,"{""lema"": ""callate"", ""n_pos"": 72, ""n_neg"": 58, ""log_enr"": 0.8084}"
+7_PROPN,AG,t,"{""lema"": ""t"", ""n_pos"": 21, ""n_neg"": 17, ""log_enr"": 0.7962}"
+7_PROPN,AG,mierda,"{""lema"": ""mierda"", ""n_pos"": 10, ""n_neg"": 10, ""log_enr"": 0.5955}"
+7_PROPN,AG,d,"{""lema"": ""d"", ""n_pos"": 8, ""n_neg"": 8, ""log_enr"": 0.5955}"
+7_PROPN,AG,vos,"{""lema"": ""vos"", ""n_pos"": 10, ""n_neg"": 12, ""log_enr"": 0.4285}"
+7_PROPN,AG,espaa,"{""lema"": ""espaa"", ""n_pos"": 14, ""n_neg"": 19, ""log_enr"": 0.3078}"
+7_PROPN,AG,q,"{""lema"": ""q"", ""n_pos"": 9, ""n_neg"": 22, ""log_enr"": -0.2374}"
+21_frec_vs_enr,HS,NOUN,"{""correlacion"": -0.057191, ""n_soporte"": 71}"
+10_pronombres,todas,perfil,"{""HS"": {""primera_singular"": {""media"": 0.0203, ""mediana"": 0.0, ""proporcion_con_alguno"": 0.213}, ""segunda"": {""media"": 0.0394, ""mediana"": 0.0, ""proporcion_con_alguno"": 0.3673}, ""tercera"": {""media"": 0.0443, ""mediana"": 0.0, ""proporcion_con_alguno"": 0.4738}, ""primera_plural"": {""media"": 0.0021, ""mediana"": 0.0, ""proporcion_con_alguno"": 0.0309}}, ""TR"": {""primera_singular"": {""media"": 0.0258, ""mediana"": 0.0, ""proporcion_con_alguno"": 0.2494}, ""segunda"": {""media"": 0.0529, ""mediana"": 0.0, ""proporcion_con_alguno"": 0.4427}, ""tercera"": {""media"": 0.0405, ""mediana"": 0.0, ""proporcion_con_alguno"": 0.4135}, ""primera_plural"": {""media"": 0.0013, ""mediana"": 0.0, ""proporcion_con_alguno"": 0.0112}}, ""AG"": {""primera_singular"": {""media"": 0.0213, ""mediana"": 0.0, ""proporcion_con_alguno"": 0.224}, ""segunda"": {""media"": 0.0424, ""mediana"": 0.0, ""proporcion_con_alguno"": 0.3845}, ""tercera"": {""media"": 0.044, ""mediana"": 0.0, ""proporcion_con_alguno"": 0.4656}, ""primera_plural"": {""media"": 0.0021, ""mediana"": 0.0, ""proporcion_con_alguno"": 0.0317}}}"
+11_funcionales,negadores,media,"{""HS"": 0.0168, ""TR"": 0.0164, ""AG"": 0.0159}"
+11_funcionales,modales,media,"{""HS"": 0.0027, ""TR"": 0.0024, ""AG"": 0.0025}"
+11_funcionales,discursivos,media,"{""HS"": 0.0481, ""TR"": 0.0469, ""AG"": 0.0465}"
+11_funcionales,determinantes,media,"{""HS"": 0.0892, ""TR"": 0.0847, ""AG"": 0.0839}"
+11_funcionales,preposiciones,media,"{""HS"": 0.0692, ""TR"": 0.0497, ""AG"": 0.064}"
+11_funcionales,conjunciones,media,"{""HS"": 0.0618, ""TR"": 0.0594, ""AG"": 0.06}"
+12_secuencias,HS,pos_seq,"[{""seq"": ""DET_NOUN"", ""n"": 793}, {""seq"": ""PROPN_PROPN"", ""n"": 407}, {""seq"": ""NOUN_ADP"", ""n"": 404}, {""seq"": ""PRON_VERB"", ""n"": 368}, {""seq"": ""ADP_DET"", ""n"": 353}, {""seq"": ""ADP_NOUN"", ""n"": 285}, {""seq"": ""ADP_DET_NOUN"", ""n"": 248}, {""seq"": ""VERB_ADP"", ""n"": 235}, {""seq"": ""NOUN_ADJ"", ""n"": 227}, {""seq"": ""VERB_DET"", ""n"": 223}, {""seq"": ""DET_NOUN_ADP"", ""n"": 188}, {""seq"": ""ADP_PROPN"", ""n"": 187}, {""seq"": ""VERB_DET_NOUN"", ""n"": 178}, {""seq"": ""AUX_DET"", ""n"": 144}, {""seq"": ""ADP_VERB"", ""n"": 139}, {""seq"": ""VERB_NOUN"", ""n"": 139}, {""seq"": ""NOUN_PRON"", ""n"": 138}, {""seq"": ""NOUN_PROPN"", ""n"": 129}, {""seq"": ""PRON_PRON"", ""n"": 128}, {""seq"": ""NOUN_CCONJ"", ""n"": 128}]"
+13_dependencias,HS,dep_pat,"[{""patron"": ""DET__det__NOUN"", ""n"": 835}, {""patron"": ""el__det"", ""n"": 552}, {""patron"": ""ADP__case__NOUN"", ""n"": 542}, {""patron"": ""NOUN__obj__VERB"", ""n"": 396}, {""patron"": ""VERB__ROOT__VERB"", ""n"": 391}, {""patron"": ""PROPN__flat__PROPN"", ""n"": 385}, {""patron"": ""de__case"", ""n"": 316}, {""patron"": ""ADJ__amod__NOUN"", ""n"": 298}, {""patron"": ""ser__cop"", ""n"": 238}, {""patron"": ""y__cc"", ""n"": 237}, {""patron"": ""ADP__case__PROPN"", ""n"": 228}, {""patron"": ""uno__det"", ""n"": 210}, {""patron"": ""NOUN__nmod__NOUN"", ""n"": 198}, {""patron"": ""ADV__advmod__VERB"", ""n"": 189}, {""patron"": ""SCONJ__mark__VERB"", ""n"": 188}, {""patron"": ""PRON__obj__VERB"", ""n"": 186}, {""patron"": ""que__mark"", ""n"": 173}, {""patron"": ""NOUN__ROOT__NOUN"", ""n"": 173}, {""patron"": ""a__case"", ""n"": 172}, {""patron"": ""ADP__mark__VERB"", ""n"": 162}]"
+12_secuencias,TR,pos_seq,"[{""seq"": ""DET_NOUN"", ""n"": 364}, {""seq"": ""PROPN_PROPN"", ""n"": 331}, {""seq"": ""PRON_VERB"", ""n"": 221}, {""seq"": ""NOUN_ADP"", ""n"": 168}, {""seq"": ""ADP_DET"", ""n"": 135}, {""seq"": ""ADP_NOUN"", ""n"": 117}, {""seq"": ""AUX_DET"", ""n"": 106}, {""seq"": ""VERB_DET"", ""n"": 106}, {""seq"": ""PROPN_PROPN_PROPN"", ""n"": 102}, {""seq"": ""VERB_ADP"", ""n"": 101}, {""seq"": ""NOUN_ADJ"", ""n"": 95}, {""seq"": ""ADP_DET_NOUN"", ""n"": 94}, {""seq"": ""ADP_PROPN"", ""n"": 93}, {""seq"": ""NOUN_PROPN"", ""n"": 86}, {""seq"": ""VERB_NOUN"", ""n"": 86}, {""seq"": ""PRON_PRON"", ""n"": 83}, {""seq"": ""VERB_DET_NOUN"", ""n"": 81}, {""seq"": ""AUX_DET_NOUN"", ""n"": 81}, {""seq"": ""NOUN_PRON"", ""n"": 79}, {""seq"": ""ADJ_NOUN"", ""n"": 75}]"
+13_dependencias,TR,dep_pat,"[{""patron"": ""DET__det__NOUN"", ""n"": 387}, {""patron"": ""PROPN__flat__PROPN"", ""n"": 300}, {""patron"": ""el__det"", ""n"": 225}, {""patron"": ""ADP__case__NOUN"", ""n"": 217}, {""patron"": ""VERB__ROOT__VERB"", ""n"": 208}, {""patron"": ""NOUN__obj__VERB"", ""n"": 188}, {""patron"": ""ser__cop"", ""n"": 154}, {""patron"": ""de__case"", ""n"": 146}, {""patron"": ""ADJ__amod__NOUN"", ""n"": 129}, {""patron"": ""y__cc"", ""n"": 118}, {""patron"": ""que__mark"", ""n"": 113}, {""patron"": ""AUX__cop__NOUN"", ""n"": 113}, {""patron"": ""SCONJ__mark__VERB"", ""n"": 112}, {""patron"": ""uno__det"", ""n"": 110}, {""patron"": ""NOUN__ROOT__NOUN"", ""n"": 109}, {""patron"": ""ADP__case__PROPN"", ""n"": 108}, {""patron"": ""ADV__advmod__VERB"", ""n"": 108}, {""patron"": ""PRON__obj__VERB"", ""n"": 103}, {""patron"": ""PRON__iobj__VERB"", ""n"": 92}, {""patron"": ""NOUN__nmod__NOUN"", ""n"": 90}]"
+12_secuencias,AG,pos_seq,"[{""seq"": ""DET_NOUN"", ""n"": 628}, {""seq"": ""PROPN_PROPN"", ""n"": 395}, {""seq"": ""NOUN_ADP"", ""n"": 321}, {""seq"": ""PRON_VERB"", ""n"": 316}, {""seq"": ""ADP_DET"", ""n"": 280}, {""seq"": ""ADP_NOUN"", ""n"": 223}, {""seq"": ""VERB_ADP"", ""n"": 204}, {""seq"": ""NOUN_ADJ"", ""n"": 196}, {""seq"": ""ADP_DET_NOUN"", ""n"": 192}, {""seq"": ""VERB_DET"", ""n"": 182}, {""seq"": ""ADP_PROPN"", ""n"": 167}, {""seq"": ""DET_NOUN_ADP"", ""n"": 148}, {""seq"": ""VERB_DET_NOUN"", ""n"": 139}, {""seq"": ""PROPN_PROPN_PROPN"", ""n"": 128}, {""seq"": ""AUX_DET"", ""n"": 126}, {""seq"": ""ADP_VERB"", ""n"": 122}, {""seq"": ""NOUN_PROPN"", ""n"": 122}, {""seq"": ""VERB_NOUN"", ""n"": 121}, {""seq"": ""DET_PROPN"", ""n"": 114}, {""seq"": ""PROPN_VERB"", ""n"": 112}]"
+13_dependencias,AG,dep_pat,"[{""patron"": ""DET__det__NOUN"", ""n"": 662}, {""patron"": ""el__det"", ""n"": 456}, {""patron"": ""ADP__case__NOUN"", ""n"": 429}, {""patron"": ""PROPN__flat__PROPN"", ""n"": 375}, {""patron"": ""VERB__ROOT__VERB"", ""n"": 333}, {""patron"": ""NOUN__obj__VERB"", ""n"": 316}, {""patron"": ""de__case"", ""n"": 266}, {""patron"": ""ADJ__amod__NOUN"", ""n"": 257}, {""patron"": ""ADP__case__PROPN"", ""n"": 208}, {""patron"": ""ser__cop"", ""n"": 204}, {""patron"": ""y__cc"", ""n"": 193}, {""patron"": ""ADV__advmod__VERB"", ""n"": 161}, {""patron"": ""NOUN__nmod__NOUN"", ""n"": 159}, {""patron"": ""SCONJ__mark__VERB"", ""n"": 157}, {""patron"": ""PRON__obj__VERB"", ""n"": 154}, {""patron"": ""uno__det"", ""n"": 152}, {""patron"": ""que__mark"", ""n"": 150}, {""patron"": ""NOUN__ROOT__NOUN"", ""n"": 147}, {""patron"": ""AUX__cop__NOUN"", ""n"": 142}, {""patron"": ""VERB__advcl__VERB"", ""n"": 142}]"
+19_clausula,todas,estructura,"{""n_oraciones"": {""HS"": 1.6389, ""TR"": 1.4966, ""AG"": 1.5926}, ""n_tokens"": {""HS"": 17.7253, ""TR"": 14.2674, ""AG"": 17.6102}, ""coordina"": {""HS"": 0.5293, ""TR"": 0.4, ""AG"": 0.4991}, ""subordina"": {""HS"": 1.2515, ""TR"": 1.0202, ""AG"": 1.2081}, ""imperativo"": {""HS"": 0.7114, ""TR"": 0.573, ""AG"": 0.6949}}"
+24_pregunta,todas,descomposicion,"{""solo_palabra"": 0.377334, ""solo_categoria"": 0.009517, ""palabra_mas_categoria"": 0.452548, ""sinergia_por_etiqueta"": {""HS"": 0.023999, ""TR"": 0.106748, ""AG"": 0.066344}, ""sinergia"": 0.065697, ""sinergia_sobre_palabra"": 0.174108, ""palabra_por_tweet"": 0.154932}"

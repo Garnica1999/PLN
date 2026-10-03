@@ -1,0 +1,18 @@
+magnitud,valor
+brazo_0_corrected_cv,0.7446595197012505
+brazo_1_corrected_cv,0.44975224572664124
+delta_contraste_puro,-0.2949072739746093
+delta_vs_V03,-0.32745920678993085
+corrected_cv_V03,0.7772114525165721
+pliegues_mejorados,0
+folds_brazo_1,0.451622 0.457689 0.448620 0.440184 0.451078
+folds_brazo_0,0.744135 0.772149 0.747017 0.703033 0.756370
+rescate,278
+damage,868
+neto,-590
+cambian,1146
+convergio,True
+gate_delta_superado,False
+gate_pliegues_superado,False
+gate_superado,False
+decision,CLOSED. El termino contrastivo no aporta sobre el control de misma arquitectura y capacidad

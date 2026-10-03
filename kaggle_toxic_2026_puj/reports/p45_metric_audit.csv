@@ -1,0 +1,33 @@
+seccion,elemento,valor,nota
+reproduccion,corrected_cv_calculado,0.7772114525165721,objetivo 0.7772114525165721
+reproduccion,diferencia,0.000e+00,tolerancia 1e-12
+reproduccion,f1_HS,0.7616892911,
+reproduccion,f1_TR,0.8157303371,
+reproduccion,f1_AG,0.7542147294,
+agregacion,media_de_pliegues,0.7773117212,
+agregacion,global_oof,0.7772114525,
+agregacion,pliegue_1,0.7960101143,n=297
+agregacion,pliegue_2,0.7940339498,n=297
+agregacion,pliegue_3,0.7788600289,n=296
+agregacion,pliegue_4,0.7385980131,n=296
+agregacion,pliegue_5,0.7790564997,n=297
+identidad,f1_score_macro,0.7772114525165721,
+identidad,f1_media_columnas,0.7772114525165721,
+identidad,discrepancias_aleatorios,0,casos 600
+hipotesis,macro_3,0.7772114525,candidato del parametro average
+hipotesis,micro,0.7735566856,candidato del parametro average
+hipotesis,samples,0.3343897505,candidato del parametro average
+hipotesis,weighted,0.7736231399,candidato del parametro average
+diagnostica,macro_6_clases,0.8182213363,no es candidata del host
+diagnostica,muestra_por_fila_exact_match,0.7026298045,no es candidata del host
+impacto,spearman_macro3_vs_micro,0.983591,misma_mejor_config=False,mismo_top10=False
+impacto,spearman_macro3_vs_samples,0.489635,misma_mejor_config=False,mismo_top10=False
+impacto,spearman_macro3_vs_weighted,0.992105,misma_mejor_config=True,mismo_top10=False
+discriminante,pearson_local_vs_kaggle,0.487565,n=19
+discriminante,kaggle_f1_v03,0.78306,
+discriminante,muestra_oof_v03,0.33439,
+discriminante,brecha_samples,+0.44867,
+discriminante,samples_excluido,True,
+veredicto,LOCAL_METRIC_REPRODUCED,True,
+veredicto,KAGGLE_SCORER_DIRECTLY_VERIFIED,False,
+veredicto,METRIC_MATCH,True,

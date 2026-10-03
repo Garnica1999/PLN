@@ -1,0 +1,25 @@
+{
+  "marca_corrida": "20261001T080906Z_p1362206",
+  "resultado": {
+    "bloque": 1,
+    "coste_segundos": 9.9e-05,
+    "descripcion": "determinismo, dos pasadas misma semilla, variacion cero",
+    "detalle": {
+      "perdidas": [
+        0.5629572868347168,
+        0.5629572868347168
+      ],
+      "probabilidades_identicas": true,
+      "tolerancia": "cero exacto",
+      "variacion_maxima_probabilidades": "nan",
+      "variacion_perdida": 0.0
+    },
+    "estado": "CONFIRMADO",
+    "exito": true,
+    "id": "A7",
+    "naturaleza": "CONFIRMAR",
+    "stop": true,
+    "tolerancia": "variacion exactamente CERO en la perdida interna y en las probabilidades",
+    "traza": ""
+  }
+}

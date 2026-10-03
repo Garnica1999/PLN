@@ -1,0 +1,185 @@
+{
+  "familia": "P68_H2_AUDITORIA",
+  "experiment_id": "P68-02",
+  "hipotesis": "P68-H2",
+  "fecha": "2026-09-29T17:26:55+00:00",
+  "clasificacion": "DUPLICATE",
+  "ejecutada": false,
+  "coste_en_experimentos": 0,
+  "razon": "el mecanismo (sample weighting) esta medido nueve veces en el registro. La unica novedad es la fuente del indicador, y el indicador propuesto es un subconjunto estricto del de V4-B03, en la direccion que salio mal",
+  "auditoria": [
+    {
+      "experimento": "V4-B03",
+      "anio": "v4",
+      "variantes": "mild_up, medium_up, medium_down, clipped_extremos, down_violacion",
+      "fuente": "propio",
+      "indicador": "dureza OOF de V03: margen y violacion del umbral",
+      "resultado": "upweighting de la dureza EMPEORA: medium_up -0,0096. Solo mejora down_violacion, que BAJA el peso de los que mas violan",
+      "estado": "CLOSED",
+      "veredicto": "la familia de reweighting se cierra sin adopcion"
+    },
+    {
+      "experimento": "V4-B04",
+      "anio": "v4",
+      "variantes": "dureza por etiqueta frente a global",
+      "fuente": "propio",
+      "indicador": "dureza de la propia etiqueta",
+      "resultado": "0,7686 frente a 0,7772: empeora",
+      "estado": "CLOSED",
+      "veredicto": "la ponderacion independiente por etiqueta empeora"
+    },
+    {
+      "experimento": "V4-B05",
+      "anio": "v4",
+      "variantes": "downweight 0,3 y remove de ejemplos con contradiccion textual",
+      "fuente": "propio",
+      "indicador": "contradiccion textual del ejemplo",
+      "resultado": "downweight +0,0005 y remove -0,0004: nada",
+      "estado": "CLOSED",
+      "veredicto": "las dos estrategias de contradiccion no mueven la metrica"
+    },
+    {
+      "experimento": "V4-C01..C05",
+      "anio": "v4",
+      "variantes": "combo:downweight_violacion_x_clase",
+      "fuente": "propio",
+      "indicador": "violacion del umbral combinada con el peso de clase",
+      "resultado": "EL UNICO CASO QUE FUNCIONA: 0,785416, +0,008205, 5 de 5 pliegues. Pero falla el criterio 6 (artefacto) del gate de V4-X01 y no tiene veredicto externo",
+      "estado": "NO ADOPTADO",
+      "veredicto": "no pasa el gate de artefacto aunque gane en CV"
+    },
+    {
+      "experimento": "V6-03",
+      "anio": "v6",
+      "variantes": "ponderacion por tamano de grupo",
+      "fuente": "propio",
+      "indicador": "repeticiones del ejemplo",
+      "resultado": "la ponderacion por tamano de grupo no corrige el problema",
+      "estado": "CLOSED",
+      "veredicto": "V03 no sobrepondera de la forma que se suponia"
+    },
+    {
+      "experimento": "V6-07 / V30-00",
+      "anio": "v6, v30",
+      "variantes": "sample_weight = 1 - lambda * sospecha",
+      "fuente": "propio",
+      "indicador": "inconsistencia del par instancia-etiqueta detectada en el propio modelo",
+      "resultado": "el entrenamiento robusto OOF no reduce el impacto de forma utilizable",
+      "estado": "CLOSED",
+      "veredicto": "el ruido textual no explica el error (D-026)"
+    },
+    {
+      "experimento": "P60-07 (P60_I)",
+      "anio": "p60",
+      "variantes": "meta-reweighting por alineacion de gradiente",
+      "fuente": "propio",
+      "indicador": "eps_i = <g_i, G>/<G, G>, alineacion del gradiente del ejemplo con el de un objetivo meta",
+      "resultado": "-0,3011 frente a V03, con pesos casi degenerados",
+      "estado": "CLOSED",
+      "veredicto": "el ponderado por alineacion de gradiente no mejora"
+    },
+    {
+      "experimento": "P60-08",
+      "anio": "p60",
+      "variantes": "polinomio en el error con coeficientes independientes",
+      "fuente": "propio",
+      "indicador": "region de error, modulada por la perdida y NO por un sample_weight",
+      "resultado": "reformula el reparto del gradiente entre regiones de error",
+      "estado": "CLOSED",
+      "veredicto": "se declara explicitamente 'sin recurrir a ponderar ejemplos': el propio proyecto considero esta via equivalente y la cerro"
+    },
+    {
+      "experimento": "V8-07",
+      "anio": "v8",
+      "variantes": "multiplicador del peso de clase por etiqueta",
+      "fuente": "propio",
+      "indicador": "peso de clase elegido con validacion anidada",
+      "resultado": "no mejora sobre balanced",
+      "estado": "CLOSED",
+      "veredicto": "el multiplicador por etiqueta no aporta"
+    },
+    {
+      "experimento": "V51-01 / V51-02",
+      "anio": "v51",
+      "variantes": "selector por utilidad esperada sobre el mapa de rescates de los canales",
+      "fuente": "ajeno",
+      "indicador": "P(canal acierta) estimado por canal y celda: es el unico antecedente que mira a OTRO modelo",
+      "resultado": "-0,0101586431, con 121 rescates y 183 danos, neto -62",
+      "estado": "INVALIDATED",
+      "veredicto": "el mapa de rescates de otros modelos SE CONSTRUYO y NO se pudo explotar en decision. P50 midio el techo del oracle en +0,2098 y el selector no lo alcanzo"
+    },
+    {
+      "experimento": "P68-H2 (propuesta)",
+      "anio": "p68",
+      "variantes": "w = 2 en los pares rescatables, w = 1 en el resto",
+      "fuente": "ajeno",
+      "indicador": "R_i = (pred_V03 != y) AND (pred_OTRO == y)",
+      "resultado": "no ejecutado",
+      "estado": "DUPLICATE",
+      "veredicto": "es el indicador de V4-B03 INTERSECADO con la correccion de otro modelo. El primer termino ya se midio solo, y el segundo solo QUITA filas"
+    }
+  ],
+  "rescates_exclusivos": {
+    "MI_arbol": 77,
+    "negacion": 14,
+    "word_1_3": 4,
+    "cohesion": 6,
+    "huecos_1_2": 16,
+    "contraste": 0,
+    "huecos_6_10": 5
+  },
+  "total_rescates_exclusivos": 122,
+  "fraccion_de_errores_que_el_mapa_cubre": 0.284016,
+  "celdas_de_error_que_el_mapa_excluye": 542,
+  "ejes_recorridos": [
+    {
+      "eje": "estructura de los ejemplos",
+      "experimentos": "P68-H1",
+      "resultado": "INVALIDATED: la estructura predice dificultad (AUC 0,608), no ganador (0,549)"
+    },
+    {
+      "eje": "estructura local",
+      "experimentos": "P59-02, P59-10, V29-03, V29-04",
+      "resultado": "la geometria local predice el error con AUC 0,725 pero no es accionable; los vecinos puros no corrigen nada"
+    },
+    {
+      "eje": "geometria de representacion",
+      "experimentos": "V25, V27, V26, V43",
+      "resultado": "FM, kernel de espectro, Tsetlin y PLS: los cuatro cerrados"
+    },
+    {
+      "eje": "distribucion del entrenamiento",
+      "experimentos": "V6-03, P60-06, P60-04",
+      "resultado": "transporte, peso de clase y tamano de grupo: los tres cerrados"
+    },
+    {
+      "eje": "descomposicion de decisiones",
+      "experimentos": "P68-H1, P50, P51",
+      "resultado": "enrutado por estructura INVALIDATED, y el gating por canal con mapa de rescates INVALIDATED con -0,0102 sobre un techo de +0,2098"
+    },
+    {
+      "eje": "estructura especifica de los errores",
+      "experimentos": "V4-B, V4-C, P60-08, V28",
+      "resultado": "dureza, violacion, contradiccion y region: los cuatro cerrados"
+    },
+    {
+      "eje": "transferencia al entrenamiento",
+      "experimentos": "V30-00, V6-07, P59-10",
+      "resultado": "peso robusto, deteccion de par inconsistente y regularizacion por vecindad: los tres cerrados"
+    },
+    {
+      "eje": "ponderacion por correccion ajena",
+      "experimentos": "P68-H2",
+      "resultado": "DUPLICATE: subconjunto estricto del indicador de error ya medido"
+    }
+  ],
+  "ejes_sin_cita_historica": 0,
+  "condicion_de_cierre_cumplida": true,
+  "reproducibilidad": {
+    "nivel": "R2",
+    "git_commit": "0c9cb8c",
+    "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "corrected_cv": 0.7772114525165721
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

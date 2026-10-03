@@ -1,0 +1,129 @@
+{
+  "experiment_id": "P84-04",
+  "fecha": "2026-10-02",
+  "semilla": 20261016,
+  "brazo": "R",
+  "agregacion": "no_entrena",
+  "estado": "completo",
+  "modo_humo": false,
+  "firma": {
+    "hash_corpus": "00b839da6fbc377ee5375acc9a236e831e46ecf92cc544188b81aef1a826e871",
+    "dim": 200,
+    "ventana": 5,
+    "min_count": 3,
+    "negativos": 10,
+    "submuestreo": 0.0001,
+    "epocas": 5,
+    "lote": 256,
+    "lr0_por_ejemplo": 0.025,
+    "humo": false,
+    "version_script": 2,
+    "sha256_script": "26ca470f0ee00c4b0d2d16039182fd52b1bdb04a402941859fc5b99ac66e5975"
+  },
+  "entrenamiento": null,
+  "downstream": {
+    "f1_congelada": 0.6165188141,
+    "f1_anidada": 0.6085611651,
+    "umbrales_anidados": [
+      [
+        0.36,
+        0.41,
+        0.48
+      ],
+      [
+        0.23,
+        0.28,
+        0.36
+      ],
+      [
+        0.21,
+        0.54,
+        0.24
+      ],
+      [
+        0.21,
+        0.21,
+        0.49
+      ],
+      [
+        0.29,
+        0.43,
+        0.21
+      ]
+    ],
+    "cobertura_interna": [
+      {
+        "pliegue": 1,
+        "filas_outer_train": 1186,
+        "filas_cubiertas": 574,
+        "fraccion_cubierta": 0.48398
+      },
+      {
+        "pliegue": 2,
+        "filas_outer_train": 1186,
+        "filas_cubiertas": 579,
+        "fraccion_cubierta": 0.488196
+      },
+      {
+        "pliegue": 3,
+        "filas_outer_train": 1187,
+        "filas_cubiertas": 573,
+        "fraccion_cubierta": 0.48273
+      },
+      {
+        "pliegue": 4,
+        "filas_outer_train": 1187,
+        "filas_cubiertas": 575,
+        "fraccion_cubierta": 0.484414
+      },
+      {
+        "pliegue": 5,
+        "filas_outer_train": 1186,
+        "filas_cubiertas": 564,
+        "fraccion_cubierta": 0.475548
+      }
+    ],
+    "f1_train_05_por_pliegue": [
+      0.7559383985,
+      0.7414555889,
+      0.7488917437,
+      0.7537531291,
+      0.7717159885
+    ],
+    "f1_val_05_por_pliegue": [
+      0.6057586583,
+      0.6418325906,
+      0.6461722268,
+      0.6070261957,
+      0.580211247
+    ],
+    "brecha_por_pliegue": [
+      0.1501797402,
+      0.0996229983,
+      0.1027195169,
+      0.1467269334,
+      0.1915047415
+    ],
+    "brecha_media": 0.1381507861
+  },
+  "cobertura": {
+    "tokens_por_fila_media": 18.2,
+    "tokens_cubiertos_media": 11.99,
+    "fraccion_cubierta": 0.658542,
+    "filas_sin_ningun_token": 72
+  },
+  "versiones": {
+    "python": "3.14.7",
+    "numpy": "1.26.4",
+    "pandas": "2.3.3",
+    "sklearn": "1.8.0",
+    "scipy": "1.17.1",
+    "torch": "2.14.0+rocm7.2",
+    "device": "cuda (AMD Radeon RX 9070 XT)"
+  },
+  "embedding": {
+    "ruta": "modelos/p84/emb_20261016_R.npz",
+    "sha256": "16e2cca8eb73805dcd257fc2d18798079413a852294b2752117830eade3bd89e"
+  },
+  "npz": "reports/p84_04_parciales/p84_04_parcial_20261016_R.npz"
+}

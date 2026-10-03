@@ -1,0 +1,457 @@
+{
+  "experimento": "V12-01 (H1, regularizacion por etiqueta y por grupo)",
+  "fecha": "2026-09-26T22:53:50+00:00",
+  "referencia_v03": 0.7772114525165721,
+  "identidad_control": {
+    "metrica": 0.7772114525165721,
+    "diferencia_con_referencia": 0.0,
+    "reproduce_oof_canonico": true
+  },
+  "mecanismo": "Escalar el bloque de caracter por s multiplica su peso de penalizacion L2 efectivo por s al cuadrado, y renormalizar por la norma de Frobenius fija la constante global. Con esa renormalizacion el mecanismo tiene un solo grado de libertad identificable, el cociente entre los dos bloques, y no dos constantes por etiqueta.",
+  "espacio_de_busqueda": {
+    "cocientes": [
+      0.6,
+      1.0,
+      1.6667
+    ],
+    "constantes": [
+      0.5,
+      1.0,
+      2.0,
+      4.0
+    ],
+    "cociente_neutro": 1.0,
+    "pliegues_internos": 3,
+    "comentario": "tres cocientes y cuatro constantes, con el cociente neutro que reproduce el control. No es una rejilla."
+  },
+  "brazos": [
+    {
+      "brazo": "A",
+      "descripcion": "V03 exacto, constante 2.0 y sin escalado. Control de identidad",
+      "metrica": 0.7772114525165721,
+      "delta": 0.0,
+      "f1_por_etiqueta": [
+        0.7616892911010558,
+        0.8157303370786517,
+        0.7542147293700089
+      ],
+      "tasa_positivos": [
+        0.4571813890761969,
+        0.3000674308833446,
+        0.37761294672960216
+      ],
+      "celdas_modificadas": 0
+    },
+    {
+      "brazo": "B",
+      "descripcion": "constante distinta por etiqueta, sin escalado. Es el mecanismo de V8-06 y sirve de control para no atribuir a la estructura de grupo lo que sea del ajuste por etiqueta",
+      "metrica": 0.7776282514550349,
+      "delta": 0.00041679893846280347,
+      "f1_por_etiqueta": [
+        0.7626224566691786,
+        0.8198198198198198,
+        0.7504424778761062
+      ],
+      "tasa_positivos": [
+        0.4578556979096426,
+        0.29871881321645316,
+        0.3796358732299393
+      ],
+      "celdas_modificadas": 30
+    },
+    {
+      "brazo": "C",
+      "descripcion": "constante por etiqueta y cociente entre bloques por etiqueta. La variante",
+      "metrica": 0.7799489534703158,
+      "delta": 0.002737500953743699,
+      "f1_por_etiqueta": [
+        0.7619047619047619,
+        0.8179775280898877,
+        0.7599645704162976
+      ],
+      "tasa_positivos": [
+        0.46931894807821983,
+        0.3000674308833446,
+        0.3789615643964936
+      ],
+      "celdas_modificadas": 102
+    },
+    {
+      "brazo": "D",
+      "descripcion": "constante por etiqueta y un unico cociente compartido por las tres. Diagnostico: si C y D coinciden, la parte por etiqueta no aporta nada",
+      "metrica": 0.77784746087959,
+      "delta": 0.0006360083630179147,
+      "f1_por_etiqueta": [
+        0.7640949554896143,
+        0.8201117318435754,
+        0.7493356953055802
+      ],
+      "tasa_positivos": [
+        0.4720161834120027,
+        0.30343897505057316,
+        0.3789615643964936
+      ],
+      "celdas_modificadas": 111
+    }
+  ],
+  "descripciones": {
+    "A": "V03 exacto, constante 2.0 y sin escalado. Control de identidad",
+    "B": "constante distinta por etiqueta, sin escalado. Es el mecanismo de V8-06 y sirve de control para no atribuir a la estructura de grupo lo que sea del ajuste por etiqueta",
+    "C": "constante por etiqueta y cociente entre bloques por etiqueta. La variante",
+    "D": "constante por etiqueta y un unico cociente compartido por las tres. Diagnostico: si C y D coinciden, la parte por etiqueta no aporta nada"
+  },
+  "selecciones": {
+    "B": {
+      "constantes_por_pliegue": [
+        [
+          2.0,
+          2.0,
+          4.0
+        ],
+        [
+          1.0,
+          4.0,
+          2.0
+        ],
+        [
+          2.0,
+          4.0,
+          1.0
+        ],
+        [
+          4.0,
+          2.0,
+          2.0
+        ],
+        [
+          2.0,
+          2.0,
+          4.0
+        ]
+      ],
+      "cocientes_por_pliegue": [
+        [
+          1.0,
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0,
+          1.0
+        ]
+      ]
+    },
+    "C": {
+      "constantes_por_pliegue": [
+        [
+          1.0,
+          4.0,
+          4.0
+        ],
+        [
+          1.0,
+          1.0,
+          4.0
+        ],
+        [
+          2.0,
+          4.0,
+          2.0
+        ],
+        [
+          2.0,
+          2.0,
+          4.0
+        ],
+        [
+          2.0,
+          2.0,
+          4.0
+        ]
+      ],
+      "cocientes_por_pliegue": [
+        [
+          1.6667,
+          1.6667,
+          1.6667
+        ],
+        [
+          1.0,
+          0.6,
+          1.6667
+        ],
+        [
+          1.6667,
+          0.6,
+          1.6667
+        ],
+        [
+          0.6,
+          0.6,
+          1.6667
+        ],
+        [
+          1.6667,
+          1.0,
+          1.0
+        ]
+      ]
+    },
+    "D": {
+      "constantes_por_pliegue": [
+        [
+          1.0,
+          4.0,
+          4.0
+        ],
+        [
+          1.0,
+          1.0,
+          4.0
+        ],
+        [
+          2.0,
+          4.0,
+          2.0
+        ],
+        [
+          2.0,
+          2.0,
+          4.0
+        ],
+        [
+          2.0,
+          2.0,
+          4.0
+        ]
+      ],
+      "cocientes_por_pliegue": [
+        [
+          1.6667,
+          1.6667,
+          1.6667
+        ],
+        [
+          0.6,
+          0.6,
+          0.6
+        ],
+        [
+          1.6667,
+          1.6667,
+          1.6667
+        ],
+        [
+          0.6,
+          0.6,
+          0.6
+        ],
+        [
+          1.0,
+          1.0,
+          1.0
+        ]
+      ]
+    }
+  },
+  "identidad_interna": {
+    "pliegues_con_cociente_neutro_en_C": 0,
+    "explicacion": "con cociente 1.0 la renormalizacion es la identidad, luego en esos pliegues C tiene que igualar a B"
+  },
+  "deltas_por_pliegue": {
+    "B": [
+      -0.002348,
+      0.002146,
+      0.001468,
+      0.002103,
+      -0.001927
+    ],
+    "C": [
+      -0.000974,
+      0.000212,
+      0.003226,
+      0.012705,
+      -0.001927
+    ],
+    "D": [
+      -0.000974,
+      0.001423,
+      0.00673,
+      -0.00267,
+      -0.001927
+    ]
+  },
+  "umbral_deteccion": 0.5166,
+  "veredictos": {
+    "B": {
+      "delta": 0.000417,
+      "pliegues_a_favor": "3/5",
+      "ic95_inferior": -0.002604,
+      "ic95_superior": 0.00352,
+      "ic95_excluye_cero": false,
+      "celdas_modificadas": 30,
+      "deteccion": 0.5,
+      "supera_deteccion": false,
+      "gate_exploratorio": false,
+      "gate_candidato": false
+    },
+    "C": {
+      "delta": 0.002738,
+      "pliegues_a_favor": "3/5",
+      "ic95_inferior": -0.00342,
+      "ic95_superior": 0.008848,
+      "ic95_excluye_cero": false,
+      "celdas_modificadas": 102,
+      "deteccion": 0.5196,
+      "supera_deteccion": true,
+      "gate_exploratorio": false,
+      "gate_candidato": false
+    },
+    "D": {
+      "delta": 0.000636,
+      "pliegues_a_favor": "2/5",
+      "ic95_inferior": -0.006456,
+      "ic95_superior": 0.007424,
+      "ic95_excluye_cero": false,
+      "celdas_modificadas": 111,
+      "deteccion": 0.4775,
+      "supera_deteccion": false,
+      "gate_exploratorio": false,
+      "gate_candidato": false
+    }
+  },
+  "candidata": null,
+  "curva_diagnostica": {
+    "cocientes": [
+      0.4,
+      0.6,
+      0.8,
+      1.0,
+      1.25,
+      1.6667,
+      2.5
+    ],
+    "metrica": [
+      0.764842,
+      0.771666,
+      0.774484,
+      0.777211,
+      0.777217,
+      0.774676,
+      0.764932
+    ],
+    "delta_frente_al_neutro": [
+      -0.01237,
+      -0.005546,
+      -0.002727,
+      0.0,
+      6e-06,
+      -0.002536,
+      -0.012279
+    ],
+    "maximo_cociente": 1.25,
+    "delta_del_maximo": 6e-06,
+    "recorrido": 0.012375,
+    "cocientes_que_baten_al_neutro": 1,
+    "fichero_de_filas": [
+      {
+        "cociente": 0.4,
+        "metrica": 0.7648418654152832,
+        "f1_por_etiqueta": [
+          0.7546330615270571,
+          0.8139013452914798,
+          0.7259911894273128
+        ],
+        "delta_frente_al_neutro": -0.012369587101288881
+      },
+      {
+        "cociente": 0.6,
+        "metrica": 0.7716655930761144,
+        "f1_por_etiqueta": [
+          0.762825278810409,
+          0.8188976377952756,
+          0.7332738626226584
+        ],
+        "delta_frente_al_neutro": -0.005545859440457712
+      },
+      {
+        "cociente": 0.8,
+        "metrica": 0.7744843198407191,
+        "f1_por_etiqueta": [
+          0.7636909227306826,
+          0.8175675675675675,
+          0.7421944692239072
+        ],
+        "delta_frente_al_neutro": -0.0027271326758530057
+      },
+      {
+        "cociente": 1.0,
+        "metrica": 0.7772114525165721,
+        "f1_por_etiqueta": [
+          0.7616892911010558,
+          0.8157303370786517,
+          0.7542147293700089
+        ],
+        "delta_frente_al_neutro": 0.0
+      },
+      {
+        "cociente": 1.25,
+        "metrica": 0.7772173128868998,
+        "f1_por_etiqueta": [
+          0.7647058823529411,
+          0.8080808080808081,
+          0.7588652482269503
+        ],
+        "delta_frente_al_neutro": 5.860370327681608e-06
+      },
+      {
+        "cociente": 1.6667,
+        "metrica": 0.7746757318893711,
+        "f1_por_etiqueta": [
+          0.7625468164794007,
+          0.8013392857142857,
+          0.7601410934744268
+        ],
+        "delta_frente_al_neutro": -0.002535720627200977
+      },
+      {
+        "cociente": 2.5,
+        "metrica": 0.764932307610858,
+        "f1_por_etiqueta": [
+          0.755056179775281,
+          0.7901785714285714,
+          0.7495621716287215
+        ],
+        "delta_frente_al_neutro": -0.012279144905714134
+      }
+    ],
+    "aviso": "El maximo de esta curva NO es adoptable: se ha calculado mirando los pliegues exteriores. Se reporta unicamente como diagnostico del motivo por el que falla el gate."
+  },
+  "salud_del_modelo": {
+    "iteraciones_maximas": 6,
+    "limite_iteraciones": 2000,
+    "advertencias": 0,
+    "diagnostico": "ajuste sano: ninguna advertencia y ninguna convergencia al limite"
+  },
+  "gates": {
+    "delta_minimo_exploratorio": 0.002,
+    "delta_minimo_candidato": 0.003,
+    "pliegues_minimos": 4
+  }
+}

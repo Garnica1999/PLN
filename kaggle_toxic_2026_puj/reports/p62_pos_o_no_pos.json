@@ -1,0 +1,190 @@
+{
+  "familia": "P62_POS_O_NO_POS",
+  "naturaleza": "EXPERIMENTO. 2 brazos reales y un control, 0 submissions, 0 Kaggle, 0 holdout, 0 test. V03 no se modifica",
+  "fecha": "2026-09-29T05:39:16+00:00",
+  "experiment_id": "P62-04",
+  "track": "redundancia-del-canal-POS",
+  "script": "experiments/p62_08_pos_o_no_pos.py",
+  "pregunta": "el canal con sufijo de categoria anade informacion, o duplica lemas que el TF-IDF de V03 ya lleva",
+  "diseno": "los dos brazos reales son identicos salvo en el sufijo: mismos pliegues, mismo clasificador, mismos umbrales, mismo ranking fold-safe por enriquecimiento y mismos presupuestos. La unica diferencia es si el token es el lema o el lema seguido de su categoria",
+  "curva": [
+    {
+      "K": 16,
+      "solo_lema": 0.7756324411003125,
+      "delta_lema": -0.0015790114162596014,
+      "con_pos": 0.7762373578028859,
+      "delta_pos": -0.0009740947136861466,
+      "ventaja_del_POS": 0.0006049167025734548
+    },
+    {
+      "K": 32,
+      "solo_lema": 0.7756400762262773,
+      "delta_lema": -0.0015713762902948014,
+      "con_pos": 0.7759254393960756,
+      "delta_pos": -0.0012860131204964764,
+      "ventaja_del_POS": 0.000285363169798325
+    },
+    {
+      "K": 64,
+      "solo_lema": 0.7689589178057642,
+      "delta_lema": -0.00825253471080789,
+      "con_pos": 0.7758402454133583,
+      "delta_pos": -0.0013712071032138118,
+      "ventaja_del_POS": 0.006881327607594079
+    },
+    {
+      "K": 128,
+      "solo_lema": 0.7694259306649762,
+      "delta_lema": -0.007785521851595867,
+      "con_pos": 0.7704657699886162,
+      "delta_pos": -0.006745682527955932,
+      "ventaja_del_POS": 0.001039839323639935
+    },
+    {
+      "K": 256,
+      "solo_lema": 0.7702214414851066,
+      "delta_lema": -0.0069900110314654595,
+      "con_pos": 0.7682919453038153,
+      "delta_pos": -0.008919507212756805,
+      "ventaja_del_POS": -0.0019294961812913458
+    },
+    {
+      "K": 512,
+      "solo_lema": 0.7688754290336829,
+      "delta_lema": -0.008336023482889199,
+      "con_pos": 0.7696138821534918,
+      "delta_pos": -0.007597570363080286,
+      "ventaja_del_POS": 0.0007384531198089128
+    },
+    {
+      "K": 1024,
+      "solo_lema": 0.7687730479454978,
+      "delta_lema": -0.008438404571074254,
+      "con_pos": 0.767892536615299,
+      "delta_pos": -0.009318915901273095,
+      "ventaja_del_POS": -0.000880511330198841
+    },
+    {
+      "K": 2048,
+      "solo_lema": 0.7683961013128956,
+      "delta_lema": -0.008815351203676491,
+      "con_pos": 0.7694654803975604,
+      "delta_pos": -0.007745972119011735,
+      "ventaja_del_POS": 0.0010693790846647566
+    }
+  ],
+  "presupuestos_en_que_el_POS_ayuda": 6,
+  "presupuestos_ambos_negativos": 8,
+  "redundancia": {
+    "media": 0.520898,
+    "por_pliegue": [
+      {
+        "pliegue": 1,
+        "top_2048_tokens_con_pos": 2048,
+        "top_2048_lemas": 2048,
+        "tokens_con_pos_que_son_lemas_del_top": 941,
+        "lemas_distintos_tras_quitar_el_POS": 981,
+        "fraccion_de_redundancia": 0.520996
+      },
+      {
+        "pliegue": 2,
+        "top_2048_tokens_con_pos": 2048,
+        "top_2048_lemas": 2048,
+        "tokens_con_pos_que_son_lemas_del_top": 967,
+        "lemas_distintos_tras_quitar_el_POS": 983,
+        "fraccion_de_redundancia": 0.52002
+      },
+      {
+        "pliegue": 3,
+        "top_2048_tokens_con_pos": 2048,
+        "top_2048_lemas": 2048,
+        "tokens_con_pos_que_son_lemas_del_top": 976,
+        "lemas_distintos_tras_quitar_el_POS": 981,
+        "fraccion_de_redundancia": 0.520996
+      },
+      {
+        "pliegue": 4,
+        "top_2048_tokens_con_pos": 2048,
+        "top_2048_lemas": 2048,
+        "tokens_con_pos_que_son_lemas_del_top": 954,
+        "lemas_distintos_tras_quitar_el_POS": 987,
+        "fraccion_de_redundancia": 0.518066
+      },
+      {
+        "pliegue": 5,
+        "top_2048_tokens_con_pos": 2048,
+        "top_2048_lemas": 2048,
+        "tokens_con_pos_que_son_lemas_del_top": 971,
+        "lemas_distintos_tras_quitar_el_POS": 974,
+        "fraccion_de_redundancia": 0.524414
+      }
+    ],
+    "definicion": "fraccion de los 2048 tokens_POS seleccionados cuyo lema ya estaba en la lista de 2048 lemas mas enriquecidos"
+  },
+  "cobertura_de_V03": {
+    "media": 0.398273,
+    "por_pliegue": [
+      {
+        "pliegue": 1,
+        "lemas_del_top_que_V03_ya_tiene": 386,
+        "sobre_total_lemas": 981,
+        "cobertura_de_V03": 0.393476,
+        "norma_media_de_TFIDF_de_esos_lemas": 0.593282,
+        "norma_media_global_del_canal_de_palabras": 0.591717
+      },
+      {
+        "pliegue": 2,
+        "lemas_del_top_que_V03_ya_tiene": 390,
+        "sobre_total_lemas": 983,
+        "cobertura_de_V03": 0.396745,
+        "norma_media_de_TFIDF_de_esos_lemas": 0.580222,
+        "norma_media_global_del_canal_de_palabras": 0.582308
+      },
+      {
+        "pliegue": 3,
+        "lemas_del_top_que_V03_ya_tiene": 391,
+        "sobre_total_lemas": 981,
+        "cobertura_de_V03": 0.398573,
+        "norma_media_de_TFIDF_de_esos_lemas": 0.573408,
+        "norma_media_global_del_canal_de_palabras": 0.584549
+      },
+      {
+        "pliegue": 4,
+        "lemas_del_top_que_V03_ya_tiene": 402,
+        "sobre_total_lemas": 987,
+        "cobertura_de_V03": 0.407295,
+        "norma_media_de_TFIDF_de_esos_lemas": 0.564312,
+        "norma_media_global_del_canal_de_palabras": 0.580099
+      },
+      {
+        "pliegue": 5,
+        "lemas_del_top_que_V03_ya_tiene": 385,
+        "sobre_total_lemas": 974,
+        "cobertura_de_V03": 0.395277,
+        "norma_media_de_TFIDF_de_esos_lemas": 0.569588,
+        "norma_media_global_del_canal_de_palabras": 0.584083
+      }
+    ],
+    "definicion": "fraccion de esos mismos lemas que ya tienen columna en el canal de palabras de V03"
+  },
+  "gate": {
+    "delta_min": 0.003,
+    "pliegues_min": 4,
+    "K": 64,
+    "delta": -0.0013712071,
+    "pliegues_mejorados": 1,
+    "superado": false
+  },
+  "veredicto": "el sufijo de POS ayuda en 6 de 8 presupuestos con una redundancia de 0.5209 y cobertura de V03 de 0.3983; la condicion para llamarlo redundancia no se cumple y el resultado queda abierto",
+  "decision": "CLOSED. El sufijo de categoria no aporta informacion que V03 no tenga ya",
+  "experimentos_registrados": 1,
+  "reproducibilidad": {
+    "nivel": "R2",
+    "git_commit": "e1acc44",
+    "seed": 42,
+    "min_df": 5,
+    "alfa": 1.0,
+    "tagger": "spaCy es_core_news_md 3.8.0, exclude=['ner'], D-003"
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

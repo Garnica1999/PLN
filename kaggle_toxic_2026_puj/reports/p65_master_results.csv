@@ -1,0 +1,6 @@
+ID,Track,Experimento,Mecanismo,Corrected_CV,Decision
+P65-00,auditoria y gap analysis,0,clasificacion funcional de 16 familias contra el codigo,,"6 abiertas, 10 cerradas"
+P65-01,P02-P04 n-gramas de orden superior,1,"word (1,3) anadido a V03 con el bloque char intacto",0.7732593837466633,COMPLEMENTARY
+P65-02,P05-P08 huecos lejanos y contraste,1,"pares a 1-2, 3-5 y 6-10 tokens, y alcance de contraste",0.7761598617006266,CLOSED
+P65-03,P14-P15 cohesion documental,1,"coseno, jaccard y repeticion cruzada dentro del documento",0.774502446353145,COMPLEMENTARY
+P65-04,P19 especialista de tweets largos,1,V03 ajustado en LARGA y MUY_LARGA con puerta heredada de P63,0.76915179526095,CLOSED

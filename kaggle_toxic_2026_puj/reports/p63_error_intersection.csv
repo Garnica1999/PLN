@@ -1,0 +1,13 @@
+bin,etiqueta,n,errores_de_V03,errores_cerca_del_borde,errores_de_alta_confianza,rescatados_por_el_bloque,danados_por_el_bloque
+CORTA,HS,167,13,4,9,4,15
+CORTA,TR,167,6,1,5,1,6
+CORTA,AG,167,14,3,11,3,13
+MEDIA,HS,602,127,52,75,22,31
+MEDIA,TR,602,77,28,49,17,35
+MEDIA,AG,602,101,41,60,22,42
+LARGA,HS,547,128,51,77,16,39
+LARGA,TR,547,63,20,43,8,18
+LARGA,AG,547,115,53,62,25,37
+MUY_LARGA,HS,167,48,20,28,13,10
+MUY_LARGA,TR,167,18,4,14,2,0
+MUY_LARGA,AG,167,47,14,33,7,4

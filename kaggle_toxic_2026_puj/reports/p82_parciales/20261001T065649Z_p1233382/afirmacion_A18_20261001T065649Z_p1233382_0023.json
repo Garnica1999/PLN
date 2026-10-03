@@ -1,0 +1,27 @@
+{
+  "marca_corrida": "20261001T065649Z_p1233382",
+  "resultado": {
+    "bloque": 4,
+    "coste_segundos": 0.000153,
+    "descripcion": "la formulacion literal esta escrita y no sustituida",
+    "detalle": {
+      "comprobaciones": {
+        "la_negacion_existe_y_no_se_afirma_lo_contrario": true,
+        "literal_v03_en_el_texto": true,
+        "literal_v03_en_la_carga": true,
+        "marca_de_no_word2vec_en_el_texto": true,
+        "marca_de_no_word2vec_en_la_carga": true
+      },
+      "formulacion": "V03 remains the best verified leaderboard result.",
+      "leido_de": "construir_markdown(carga de la corrida)",
+      "n_caracteres": 7579
+    },
+    "estado": "CONFIRMADO",
+    "exito": true,
+    "id": "A18",
+    "naturaleza": "CONFIRMAR",
+    "stop": true,
+    "tolerancia": "coincidencia exacta, cero margen",
+    "traza": ""
+  }
+}

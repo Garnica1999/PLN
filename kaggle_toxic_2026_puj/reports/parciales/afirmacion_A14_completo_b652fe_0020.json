@@ -1,0 +1,19 @@
+{
+  "marca_corrida": "completo_b652fe",
+  "resultado": {
+    "bloque": 14,
+    "coste_segundos": 0.007983,
+    "descripcion": "el calibrador se ajusta en internal, verificado por contadores",
+    "detalle": {
+      "error_mensaje": "A14: comprobaciones falsas ['cero_ajustes_que_toquen_filas_de_evaluacion', 'cero_ajustes_sobre_el_oof_completo', 'las_filas_internas_y_externas_no_se_solapan']",
+      "error_tipo": "AssertionError"
+    },
+    "estado": "ERROR",
+    "exito": false,
+    "id": "A14",
+    "naturaleza": "CONFIRMAR",
+    "stop": true,
+    "tolerancia": "un ajuste del calibrador por combinacion de pliegue y semilla, solo interno",
+    "traza": "AssertionError: A14: comprobaciones falsas ['cero_ajustes_que_toquen_filas_de_evaluacion', 'cero_ajustes_sobre_el_oof_completo', 'las_filas_internas_y_externas_no_se_solapan'] @ evaluar:1370 | <lambda>:7389 | afirmacion_a14:3661 | todo_verdadero:1252"
+  }
+}

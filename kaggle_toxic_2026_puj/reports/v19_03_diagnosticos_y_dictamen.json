@@ -1,0 +1,71 @@
+{
+  "experimento": "V19-03 (P8 diagnosticos de test, P9 curva historica score-LB e informe final)",
+  "fecha": "2026-09-27T03:26:15+00:00",
+  "estado": "NO VALID SCORE IMPROVEMENT",
+  "champion": {
+    "version": "V03",
+    "lb": 0.78306,
+    "delta_lb": 0.0
+  },
+  "submissions_realizadas": 0,
+  "submissions_conservadas": 5,
+  "por_que_no_hay_mejora": [
+    "la funcion objetivo no tiene terminos cruzados entre etiquetas, luego la decision se separa en tres problemas de umbral y el optimo es un umbral por etiqueta. Toda la maquinaria de decision conjunta se queda sin justificacion",
+    "el unico hecho de estructura real es que TR implica HS, y la regla que de ahi sale es genuinamente distinta de un umbral, pero aporta -3 cambios netos de celda frente a los 27 que haria falta para mover el leaderboard, y solo mejora 3 de 5 pliegues",
+    "el valor de una correccion no es uniforme, pero eso no abre ninguna palanca nueva: solo decide que correccion merece la pena, y la decision sigue siendo un umbral",
+    "V16 cerro umbrales, tasa y capacidad; V17 cerro los ensembles historicos; V18 cerro la correccion selectiva. Ninguna de esas lineas se reabre"
+  ],
+  "lo_que_sigue_en_pie": "V03 es el mejor score observado bajo los experimentos competitivos realizados. Eso no es una afirmacion de que 0.78306 sea el optimo matematico, y no se sostendria sin haber explorado la funcion objetivo entera, que es continua y tiene muchos puntos locales",
+  "que_haria_falta_para_otra_fase": "una fuente de informacion nueva, o un mecanismo con una diferencia algebraica identificable. La unica palanca que este analisis deja sin explorar del todo es la estructura de etiquetas, y de ella solo se ha encontrado una restriccion, que ya se ha probado y descartado. Una interaccion multiplicativa entre scores sigue sin ejecutar, pero la separacion del objetivo muestra que sin terminos cruzados no puede mejorar a un umbral por etiqueta, asi que solo tendria sentido si atacase informacion que el score de HS no contiene y que el score de TR si",
+  "metric_verificada": {
+    "contrastes_celda_a_celda_contra_sklearn": 980,
+    "discrepancias": 0,
+    "corrected_cv_reproducido": 0.7772114525165721
+  },
+  "estructura": {
+    "estados_conjuntos_observados": 6,
+    "valores_distintos_de_ganancia": 12
+  },
+  "test_diagnostico": [
+    {
+      "magnitud": "tasa positiva predicha en HS",
+      "oof": 0.4571813890761969,
+      "test": 0.43847487001733104,
+      "diferencia": -0.018706519058865834
+    },
+    {
+      "magnitud": "tasa positiva predicha en TR",
+      "oof": 0.3000674308833446,
+      "test": 0.28942807625649913,
+      "diferencia": -0.010639354626845454
+    },
+    {
+      "magnitud": "tasa positiva predicha en AG",
+      "oof": 0.37761294672960216,
+      "test": 0.36568457538994803,
+      "diferencia": -0.011928371339654131
+    },
+    {
+      "magnitud": "media de la tasa positiva sobre las tres",
+      "oof": 0.3782872555630479,
+      "test": 0.3645291738879261,
+      "diferencia": -0.01375808167512177
+    }
+  ],
+  "correlaciones_historicas": {
+    "local_f1": {
+      "correlacion": 0.48730151108896214,
+      "n": 17
+    },
+    "diferencia": {
+      "correlacion": 0.129706414819406,
+      "n": 19
+    }
+  },
+  "gastos": {
+    "submissions": 0,
+    "modelos_entrenados": 0,
+    "meta_modelos": 0
+  },
+  "minutos": 0.0
+}

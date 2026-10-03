@@ -1,0 +1,150 @@
+{
+  "familia": "P51_UTILITY_AWARE_CONTEXTUAL_GATING",
+  "experimento": "V51-02 (S2-U, accion directa con utilidad esperada)",
+  "fecha": "2026-09-28T01:45:48+00:00",
+  "por_que_se_ejecuta": "S1-U demostro senal observable (AUC medio 0,8091) con delta negativo, que es la condicion que la directiva fija para autorizar S2-U",
+  "regla": "E[u(i,j)] = P_j(x) * g_dir - (1 - P_j(x)) * h_dir, elegir argmax y cambiar solo si es mayor que cero. Sin umbral, luego sin grid",
+  "auc_por_canal": {
+    "min": 0.550736,
+    "max": 0.924883,
+    "media": 0.809114
+  },
+  "resultado": {
+    "corrected_cv": 0.7670528094,
+    "delta_vs_v03": -0.0101586431,
+    "celdas_cambiadas": 304,
+    "abstencion_rate": 0.93167,
+    "rescate": 121,
+    "damage": 183,
+    "net": -62,
+    "por_etiqueta": {
+      "HS": 0.7514792899,
+      "TR": 0.8120300752,
+      "AG": 0.737649063
+    }
+  },
+  "pliegues": [
+    {
+      "pliegue": 0,
+      "f1_v03": 0.7960101143,
+      "f1_selector": 0.7651145315,
+      "delta": -0.0308955828
+    },
+    {
+      "pliegue": 1,
+      "f1_v03": 0.7940339498,
+      "f1_selector": 0.7709025496,
+      "delta": -0.0231314002
+    },
+    {
+      "pliegue": 2,
+      "f1_v03": 0.7788600289,
+      "f1_selector": 0.7780568277,
+      "delta": -0.0008032012
+    },
+    {
+      "pliegue": 3,
+      "f1_v03": 0.7385980131,
+      "f1_selector": 0.7567896316,
+      "delta": 0.0181916185
+    },
+    {
+      "pliegue": 4,
+      "f1_v03": 0.7790564997,
+      "f1_selector": 0.763260646,
+      "delta": -0.0157958537
+    }
+  ],
+  "pliegues_positivos": 1,
+  "interseccion_de_errores": {
+    "ambos_correctos": 3509,
+    "ambos_incorrectos": 636,
+    "v03_mal_selector_bien": 121,
+    "v03_bien_selector_mal": 183
+  },
+  "por_margen": [
+    {
+      "bin": "[0,0.10)",
+      "cambiadas": 222,
+      "rescate": 99,
+      "damage": 123,
+      "net": -24
+    },
+    {
+      "bin": "[0.10,0.20)",
+      "cambiadas": 70,
+      "rescate": 19,
+      "damage": 51,
+      "net": -32
+    },
+    {
+      "bin": "[0.20,1]",
+      "cambiadas": 12,
+      "rescate": 3,
+      "damage": 9,
+      "net": -6
+    }
+  ],
+  "por_direccion": [
+    {
+      "direccion": "sube_0_a_1",
+      "n": 209,
+      "rescate": 71,
+      "damage": 138,
+      "net": -67
+    },
+    {
+      "direccion": "baja_1_to_0",
+      "n": 95,
+      "rescate": 50,
+      "damage": 45,
+      "net": 5
+    }
+  ],
+  "permutacion_del_net": {
+    "net_observado": -62,
+    "nula_mediana": -115.0,
+    "nula_ic95_bajo": -136.0,
+    "nula_ic95_alto": -93.0,
+    "p_valor_una_cola": 0.0,
+    "net_observado_dentro_de_la_nula": false,
+    "celdas_mejor_que_el_azar": 53,
+    "n_replicas": 2000,
+    "nota": "el gate no pasa, luego la directiva no pide bootstrap. Un bootstrap sobre las celdas cambiadas seria degenerado porque al reasignar la prediccion del selector a la celda muestreada el valor no cambia y el intervalo sale de ancho cero. La permutacion si responde a la pregunta util: si el net de celdas se distingue de cero"
+  },
+  "variante_solo_direccion_bajada": {
+    "corrected_cv": 0.7722071668,
+    "delta_vs_v03": -0.0050042857,
+    "celdas_cambiadas": 95,
+    "rescate": 50,
+    "damage": 45,
+    "net": 5,
+    "nota": "consecuencia directa del reparto por direccion medido, no un grid: la direccion 1->0 sale neta positiva y la 0->1 muy negativa"
+  },
+  "gap_de_calibracion": {
+    "utilidad_esperada_acumulada": 0.05661789,
+    "utilidad_realizada_en_macro_f1": -0.01015864,
+    "nota": "el modelo espera que sus cambios valgan y salen a perder, luego sus probabilidades estan sobreestimadas. Es el diagnostico de por que una senal con AUC 0,81 no se traduce en mejora"
+  },
+  "gate": {
+    "delta_minimo": 0.003,
+    "delta_obtenido": -0.0101586431,
+    "pliegues_positivos": 1,
+    "pasado": false
+  },
+  "comparacion": {
+    "V03": 0.7772114525,
+    "P50_S1": 0.7657442265,
+    "P51_S1U": 0.0294622851,
+    "P51_S2U": 0.7670528094,
+    "oracle": 0.9870178614236713
+  },
+  "caso": "A",
+  "gastos": {
+    "submissions": 0,
+    "consultas_kaggle": 0,
+    "uso_holdout": 0,
+    "uso_test": 0,
+    "segundos": 0.3
+  }
+}

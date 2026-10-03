@@ -1,0 +1,5 @@
+variante,nota,corrected_cv,delta_real_vs_V03,filas_totales,ambas_correctas,salvage,damage,correccion_neta,fraccion_de_filas,ninguna_correcta
+B0-200,baseline 200d/w5/min3/sub3-6/neg10,0.781766,0.004555,1483,335,8,5,3,0.002023,1135
+WS-3,mejor delta de fusion de v5.1,0.782959,0.005748,1483,338,8,2,6,0.004046,1135
+VS-100,mejor delta tras el baseline,0.782257,0.005046,1483,336,7,4,3,0.002023,1136
+NEG-5,mejor embedding aislado (0.6664),0.781125,0.003914,1483,334,8,6,2,0.001349,1135

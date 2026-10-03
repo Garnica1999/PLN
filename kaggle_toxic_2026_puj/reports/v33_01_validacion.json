@@ -1,0 +1,263 @@
+{
+  "familia": "STRUCTURAL_TEXT_FEATURES",
+  "experimento": "V33-01 (validacion completa de V32-05 antes de la submission)",
+  "fecha": "2026-09-27T12:32:28+00:00",
+  "estado": "VALIDATED",
+  "pregunta": "la mejora de V32-05 es reproducible, los bins son limpios y holdout2 la confirma",
+  "alcance": "fases 1 a 8 de la directiva V33. No se genera submission en este script",
+  "fase_1_reproducibilidad": {
+    "corrected_cv": 0.7817210521640771,
+    "delta_vs_v03": 0.004509599647504969,
+    "rescates": 77,
+    "danios": 59,
+    "neto": 18,
+    "celdas_modificadas": 136,
+    "hash_predicciones": "c0624458e7cedc344e1122c3be66df812213747d7ca6c159cbc4d748012fccb2",
+    "hash_segunda_corrida": "c0624458e7cedc344e1122c3be66df812213747d7ca6c159cbc4d748012fccb2",
+    "identico_en_el_mismo_proceso": true,
+    "semillas": [
+      "0",
+      "12345"
+    ],
+    "hashes_por_semilla": [
+      "c0624458e7cedc344e1122c3be66df812213747d7ca6c159cbc4d748012fccb2",
+      "c0624458e7cedc344e1122c3be66df812213747d7ca6c159cbc4d748012fccb2"
+    ],
+    "identico_con_semillas_distintas": true
+  },
+  "fase_2_fold4": {
+    "1": {
+      "n_filas": 297,
+      "positivos": {
+        "HS": 129,
+        "TR": 88,
+        "AG": 114
+      },
+      "tokens_media": 18.22222222222222,
+      "con_url": 90,
+      "con_query": 0,
+      "url_corta": 0,
+      "tramos": {
+        "corto": 76,
+        "medio": 102,
+        "largo": 119
+      },
+      "interacciones": {
+        "url_x_b0": 19,
+        "url_x_b1": 25,
+        "url_x_b2": 46,
+        "url_query_x_largo": 0,
+        "url_corta_x_corto": 0
+      },
+      "rescates": 14,
+      "danios": 11,
+      "neto": 3,
+      "celdas_modificadas": 25
+    },
+    "2": {
+      "n_filas": 297,
+      "positivos": {
+        "HS": 130,
+        "TR": 90,
+        "AG": 114
+      },
+      "tokens_media": 16.88888888888889,
+      "con_url": 87,
+      "con_query": 0,
+      "url_corta": 0,
+      "tramos": {
+        "corto": 99,
+        "medio": 102,
+        "largo": 96
+      },
+      "interacciones": {
+        "url_x_b0": 28,
+        "url_x_b1": 33,
+        "url_x_b2": 26,
+        "url_query_x_largo": 0,
+        "url_corta_x_corto": 0
+      },
+      "rescates": 13,
+      "danios": 21,
+      "neto": -8,
+      "celdas_modificadas": 34
+    },
+    "3": {
+      "n_filas": 296,
+      "positivos": {
+        "HS": 129,
+        "TR": 89,
+        "AG": 112
+      },
+      "tokens_media": 17.304054054054053,
+      "con_url": 91,
+      "con_query": 0,
+      "url_corta": 0,
+      "tramos": {
+        "corto": 92,
+        "medio": 104,
+        "largo": 100
+      },
+      "interacciones": {
+        "url_x_b0": 29,
+        "url_x_b1": 23,
+        "url_x_b2": 39,
+        "url_query_x_largo": 0,
+        "url_corta_x_corto": 0
+      },
+      "rescates": 16,
+      "danios": 8,
+      "neto": 8,
+      "celdas_modificadas": 24
+    },
+    "4": {
+      "n_filas": 296,
+      "positivos": {
+        "HS": 130,
+        "TR": 89,
+        "AG": 113
+      },
+      "tokens_media": 17.01689189189189,
+      "con_url": 87,
+      "con_query": 0,
+      "url_corta": 0,
+      "tramos": {
+        "corto": 87,
+        "medio": 106,
+        "largo": 103
+      },
+      "interacciones": {
+        "url_x_b0": 21,
+        "url_x_b1": 28,
+        "url_x_b2": 38,
+        "url_query_x_largo": 0,
+        "url_corta_x_corto": 0
+      },
+      "rescates": 19,
+      "danios": 10,
+      "neto": 9,
+      "celdas_modificadas": 29
+    },
+    "5": {
+      "n_filas": 297,
+      "positivos": {
+        "HS": 130,
+        "TR": 89,
+        "AG": 114
+      },
+      "tokens_media": 16.606060606060606,
+      "con_url": 103,
+      "con_query": 0,
+      "url_corta": 0,
+      "tramos": {
+        "corto": 93,
+        "medio": 113,
+        "largo": 91
+      },
+      "interacciones": {
+        "url_x_b0": 21,
+        "url_x_b1": 46,
+        "url_x_b2": 36,
+        "url_query_x_largo": 0,
+        "url_corta_x_corto": 0
+      },
+      "rescates": 15,
+      "danios": 9,
+      "neto": 6,
+      "celdas_modificadas": 24
+    }
+  },
+  "fase_3_descomposicion": {
+    "V03_a_URL_aditivo": 0.00020851298400748064,
+    "URL_aditivo_a_URL_mas_interacciones": 0.003958023329897031,
+    "V03_a_URL_mas_interacciones": 0.004166536313904512,
+    "V03_a_V32_05_tres_bins": 0.004509599647504969,
+    "V32_05_menos_V32_C": 0.0003430633336004574
+  },
+  "fase_4_bins": {
+    "limites_por_pliegue": {
+      "1": [
+        11.0,
+        19.0
+      ],
+      "2": [
+        11.0,
+        20.0
+      ],
+      "3": [
+        11.0,
+        20.0
+      ],
+      "4": [
+        11.0,
+        19.70620000000008
+      ],
+      "5": [
+        11.0,
+        20.0
+      ]
+    },
+    "regla": "cuartiles del training fold, nunca de validacion ni de test"
+  },
+  "fase_5_holdout2": {
+    "n_filas": 248,
+    "independiente": true,
+    "evidencia": "los scripts de V31 y V32 solo leen la particion dev de holdout_v2_ids.csv; las 248 filas de holdout nunca se usaron para seleccionar modelos, interacciones ni bins",
+    "v03_macro_f1": 0.8284684313523535,
+    "v32_05_macro_f1": 0.8279491147252713,
+    "delta": -0.0005193166270821559,
+    "f1_por_etiqueta_v03": {
+      "HS": 0.8571428571428571,
+      "TR": 0.8493150684931506,
+      "AG": 0.7789473684210526
+    },
+    "f1_por_etiqueta_v32_05": {
+      "HS": 0.847926267281106,
+      "TR": 0.8551724137931035,
+      "AG": 0.7807486631016043
+    },
+    "rescates": 14,
+    "danios": 13,
+    "neto": 1,
+    "celdas_modificadas": 27
+  },
+  "fase_6_v32_04_vs_v32_05": {
+    "filas_distintas": 76,
+    "rescates": 43,
+    "danios": 42,
+    "neto": 1
+  },
+  "fase_7_v32_05_vs_v03": {
+    "rescates": 77,
+    "danios": 59,
+    "neto": 18,
+    "celdas_modificadas": 136,
+    "cobertura_celdas": 0.03056866711620589,
+    "por_label": {
+      "HS": {
+        "rescates": 29,
+        "danios": 22,
+        "neto": 7,
+        "celdas_modificadas": 51
+      },
+      "TR": {
+        "rescates": 6,
+        "danios": 9,
+        "neto": -3,
+        "celdas_modificadas": 15
+      },
+      "AG": {
+        "rescates": 42,
+        "danios": 28,
+        "neto": 14,
+        "celdas_modificadas": 70
+      }
+    }
+  },
+  "gastos": {
+    "submissions": 0,
+    "modelos_entrenados": 6,
+    "memoria_pico_mb": 229.2,
+    "segundos": 28.0
+  }
+}

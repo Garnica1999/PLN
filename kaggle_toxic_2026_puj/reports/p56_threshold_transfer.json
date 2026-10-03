@@ -1,0 +1,265 @@
+{
+  "familia": "P56_CORRECTED_THRESHOLD_TRANSFER",
+  "experimento": "V56-00 (transferencia de umbrales con anidamiento completo)",
+  "fecha": "2026-09-28T03:01:13+00:00",
+  "pregunta": "el sesgo de transferencia de umbrales de P55 es un mecanismo real y reproducible que merece formar parte del pipeline final?",
+  "P55_CORRECTED_RESULT_REPRODUCED": true,
+  "P55_valor_reproducido": 0.77813677,
+  "P55_valor_registrado": 0.77813677,
+  "procedimiento": {
+    "outer": "5 pliegues canonicos de TOXIC, grupos near-dup UNION pseudo-autor",
+    "inner": "4 pliegues agrupados dentro de cada outer train, con vectorizador y LogisticRegression re-ajustados",
+    "rejilla": "0,20 a 0,80 paso 0,01, la misma rejilla historica",
+    "agregacion": "mediana de las cinco estimaciones. Una sola regla",
+    "outer_validation_participa": "en nada del ajuste"
+  },
+  "umbrales_por_outer_fold": [
+    {
+      "outer_fold": 0,
+      "n_outer_train": 1186,
+      "n_outer_val": 297,
+      "n_inner": 4,
+      "inner_threshold_HS": 0.4,
+      "inner_threshold_TR": 0.47,
+      "inner_threshold_AG": 0.4,
+      "V03_HS": 0.44,
+      "V03_TR": 0.51,
+      "V03_AG": 0.46
+    },
+    {
+      "outer_fold": 1,
+      "n_outer_train": 1186,
+      "n_outer_val": 297,
+      "n_inner": 4,
+      "inner_threshold_HS": 0.41,
+      "inner_threshold_TR": 0.46,
+      "inner_threshold_AG": 0.48,
+      "V03_HS": 0.44,
+      "V03_TR": 0.51,
+      "V03_AG": 0.46
+    },
+    {
+      "outer_fold": 2,
+      "n_outer_train": 1187,
+      "n_outer_val": 296,
+      "n_inner": 4,
+      "inner_threshold_HS": 0.42,
+      "inner_threshold_TR": 0.46,
+      "inner_threshold_AG": 0.43,
+      "V03_HS": 0.44,
+      "V03_TR": 0.51,
+      "V03_AG": 0.46
+    },
+    {
+      "outer_fold": 3,
+      "n_outer_train": 1187,
+      "n_outer_val": 296,
+      "n_inner": 4,
+      "inner_threshold_HS": 0.41,
+      "inner_threshold_TR": 0.51,
+      "inner_threshold_AG": 0.51,
+      "V03_HS": 0.44,
+      "V03_TR": 0.51,
+      "V03_AG": 0.46
+    },
+    {
+      "outer_fold": 4,
+      "n_outer_train": 1186,
+      "n_outer_val": 297,
+      "n_inner": 4,
+      "inner_threshold_HS": 0.45,
+      "inner_threshold_TR": 0.46,
+      "inner_threshold_AG": 0.45,
+      "V03_HS": 0.44,
+      "V03_TR": 0.51,
+      "V03_AG": 0.46
+    }
+  ],
+  "distribucion": [
+    {
+      "label": "HS",
+      "n_estimaciones": 5,
+      "media": 0.418,
+      "mediana": 0.41,
+      "std": 0.019235,
+      "min": 0.4,
+      "max": 0.45,
+      "V03": 0.44,
+      "V03_dentro_del_rango": true,
+      "desviacion_de_la_mediana": -0.03,
+      "estimaciones": "0.40 0.41 0.42 0.41 0.45"
+    },
+    {
+      "label": "TR",
+      "n_estimaciones": 5,
+      "media": 0.472,
+      "mediana": 0.46,
+      "std": 0.021679,
+      "min": 0.46,
+      "max": 0.51,
+      "V03": 0.51,
+      "V03_dentro_del_rango": true,
+      "desviacion_de_la_mediana": -0.05,
+      "estimaciones": "0.47 0.46 0.46 0.51 0.46"
+    },
+    {
+      "label": "AG",
+      "n_estimaciones": 5,
+      "media": 0.454,
+      "mediana": 0.45,
+      "std": 0.042778,
+      "min": 0.4,
+      "max": 0.51,
+      "V03": 0.46,
+      "V03_dentro_del_rango": true,
+      "desviacion_de_la_mediana": -0.01,
+      "estimaciones": "0.40 0.48 0.43 0.51 0.45"
+    }
+  ],
+  "T0_historico": {
+    "umbrales": {
+      "HS": 0.44,
+      "TR": 0.51,
+      "AG": 0.46
+    },
+    "macro_f1": 0.7772114525,
+    "delta_vs_V03": 0.0,
+    "por_etiqueta": {
+      "HS": 0.7616892911,
+      "TR": 0.8157303371,
+      "AG": 0.7542147294
+    },
+    "por_pliegue": [
+      {
+        "pliegue": 0,
+        "macro_f1": 0.7960101143,
+        "delta_vs_V03_global": 0.0187986618
+      },
+      {
+        "pliegue": 1,
+        "macro_f1": 0.7940339498,
+        "delta_vs_V03_global": 0.0168224973
+      },
+      {
+        "pliegue": 2,
+        "macro_f1": 0.7788600289,
+        "delta_vs_V03_global": 0.0016485763
+      },
+      {
+        "pliegue": 3,
+        "macro_f1": 0.7385980131,
+        "delta_vs_V03_global": -0.0386134394
+      },
+      {
+        "pliegue": 4,
+        "macro_f1": 0.7790564997,
+        "delta_vs_V03_global": 0.0018450472
+      }
+    ],
+    "tasa_positiva": {
+      "HS": 0.457181,
+      "TR": 0.300067,
+      "AG": 0.377613
+    }
+  },
+  "T1_mediana": {
+    "umbrales": {
+      "HS": 0.41,
+      "TR": 0.46,
+      "AG": 0.45
+    },
+    "macro_f1": 0.7798514633,
+    "delta_vs_V03": 0.0026400107,
+    "por_etiqueta": {
+      "HS": 0.7675597393,
+      "TR": 0.8156182213,
+      "AG": 0.7563764292
+    },
+    "por_pliegue": [
+      {
+        "pliegue": 0,
+        "macro_f1": 0.7964112611,
+        "delta_vs_V03_global": 0.0191998086
+      },
+      {
+        "pliegue": 1,
+        "macro_f1": 0.7941841599,
+        "delta_vs_V03_global": 0.0169727074
+      },
+      {
+        "pliegue": 2,
+        "macro_f1": 0.7824619463,
+        "delta_vs_V03_global": 0.0052504938
+      },
+      {
+        "pliegue": 3,
+        "macro_f1": 0.7461905211,
+        "delta_vs_V03_global": -0.0310209314
+      },
+      {
+        "pliegue": 4,
+        "macro_f1": 0.7808003406,
+        "delta_vs_V03_global": 0.0035888881
+      }
+    ],
+    "tasa_positiva": {
+      "HS": 0.494268,
+      "TR": 0.321645,
+      "AG": 0.384356
+    }
+  },
+  "nested_por_pliegue_exterior": {
+    "macro_f1": 0.774547873,
+    "delta_vs_V03": -0.0026635795
+  },
+  "P55_simple": {
+    "macro_f1": 0.77813677,
+    "delta_vs_V03": 0.0009253174
+  },
+  "pliegues_positivos": 4,
+  "interseccion_T0_T1": {
+    "ambos_correctos": 3638,
+    "ambos_incorrectos": 714,
+    "T0_mal_T1_bien": 43,
+    "T0_bien_T1_mal": 54
+  },
+  "interseccion_por_label": {
+    "HS": {
+      "rescate": 25,
+      "damage": 30,
+      "net": -5
+    },
+    "TR": {
+      "rescate": 13,
+      "damage": 19,
+      "net": -6
+    },
+    "AG": {
+      "rescate": 5,
+      "damage": 5,
+      "net": 0
+    }
+  },
+  "net": -11,
+  "bootstrap": {
+    "mediana": 0.00255276,
+    "ic95_bajo": -0.00345636,
+    "ic95_alto": 0.00898934,
+    "incluye_cero": true,
+    "n_replicas": 2000
+  },
+  "umbrales_V03_fuera_del_rango_interior": [],
+  "delta_honesto_por_pliegue_exterior": -0.0026635795,
+  "optimismo_de_la_cifra_global_de_T1": 0.0053035902,
+  "nota_decision": "la cifra que decide es la del umbral por pliegue exterior, no la de la mediana aplicada globalmente. La segunda usa datos de todos los pliegues para definir el umbral y por eso esta optimista en mas de 0,005",
+  "THRESHOLD_TRANSFER_BIAS": "NOT_CONFIRMED",
+  "STATUS": "CLOSED",
+  "caso": "B",
+  "gastos": {
+    "submissions": 0,
+    "consultas_kaggle": 0,
+    "uso_holdout": 0,
+    "uso_test": 0,
+    "segundos": 43.1
+  }
+}

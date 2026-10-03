@@ -1,0 +1,5 @@
+Rule,Calibration,Shift,Parameters,Global_MacroF1,HS_F1,TR_F1,AG_F1,Fold_Stability,Simulated_Shift,Holdout2,Decision
+"V03 congelado, sin correccion",isotonica anidada,ninguno,"umbrales [0.44, 0.51, 0.46]",0.760846,,,,,no aplica,no usado,REFERENCIA
+"correccion de odds, factor verdadero 0.94",isotonica anidada,"simulado, pi_destino = 0.94 x pi_origen","desplazamiento constante en logit, umbrales V03 congelados",,,,,delta -0.001032,"IC95 [+0.000000, +0.000000]",no usado,NEGATIVO
+"correccion de odds, factor verdadero 0.96",isotonica anidada,"simulado, pi_destino = 0.96 x pi_origen","desplazamiento constante en logit, umbrales V03 congelados",,,,,delta +0.000000,"IC95 [+0.000000, +0.000000]",no usado,NEGATIVO
+"correccion de odds, factor verdadero 0.94",isotonica anidada,"simulado, pi_destino = 0.94 x pi_origen","desplazamiento constante en logit, umbrales V03 congelados",,,,,delta +0.000154,"IC95 [+0.000000, +0.002385]",no usado,POSITIVO

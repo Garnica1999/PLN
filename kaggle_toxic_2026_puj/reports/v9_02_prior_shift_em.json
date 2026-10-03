@@ -1,0 +1,146 @@
+{
+  "experimento": "V9-02 (H4)",
+  "fecha": "2026-09-26",
+  "referencia_v03": 0.7772114525165721,
+  "em_por_etiqueta": {
+    "HS": {
+      "prevalencia_train": 0.436952,
+      "prevalencia_em_test": 0.409192,
+      "factor_vs_train": 0.9365,
+      "iteraciones": 26
+    },
+    "TR": {
+      "prevalencia_train": 0.300067,
+      "prevalencia_em_test": 0.286452,
+      "factor_vs_train": 0.9546,
+      "iteraciones": 16
+    },
+    "AG": {
+      "prevalencia_train": 0.382333,
+      "prevalencia_em_test": 0.358669,
+      "factor_vs_train": 0.9381,
+      "iteraciones": 24
+    }
+  },
+  "umbrales_congelados": {
+    "HS": 0.44,
+    "TR": 0.51,
+    "AG": 0.46
+  },
+  "umbrales_corregidos_em": {
+    "HS": 0.37,
+    "TR": 0.37,
+    "AG": 0.38
+  },
+  "ganancia_simulada_em": {
+    "HS": 0.004364,
+    "TR": 0.003186,
+    "AG": 0.002286
+  },
+  "simulacion_shifts": [
+    {
+      "factor_simulado": 1.0,
+      "HS": 0.005634,
+      "TR": 0.003653,
+      "AG": 0.002965
+    },
+    {
+      "factor_simulado": 0.95,
+      "HS": 0.004641,
+      "TR": 0.003137,
+      "AG": 0.002421
+    },
+    {
+      "factor_simulado": 0.93,
+      "HS": 0.004229,
+      "TR": 0.002945,
+      "AG": 0.002194
+    },
+    {
+      "factor_simulado": 0.9,
+      "HS": 0.003594,
+      "TR": 0.002753,
+      "AG": 0.002188
+    },
+    {
+      "factor_simulado": 0.85,
+      "HS": 0.003207,
+      "TR": 0.002412,
+      "AG": 0.002177
+    },
+    {
+      "factor_simulado": 0.8,
+      "HS": 0.004158,
+      "TR": 0.002041,
+      "AG": 0.002164
+    },
+    {
+      "factor_simulado": 0.75,
+      "HS": 0.005166,
+      "TR": 0.001638,
+      "AG": 0.003589
+    }
+  ],
+  "detalle_simulacion_0_93": [
+    {
+      "etiqueta": "HS",
+      "w_pos": 0.8821,
+      "f1_fijo": 0.748632,
+      "f1_corregido": 0.752862,
+      "umbral_fijo": 0.44,
+      "umbral_corregido": 0.37
+    },
+    {
+      "etiqueta": "TR",
+      "w_pos": 0.9029,
+      "f1_fijo": 0.807727,
+      "f1_corregido": 0.810672,
+      "umbral_fijo": 0.51,
+      "umbral_corregido": 0.38
+    },
+    {
+      "etiqueta": "AG",
+      "w_pos": 0.8914,
+      "f1_fijo": 0.743364,
+      "f1_corregido": 0.745558,
+      "umbral_fijo": 0.46,
+      "umbral_corregido": 0.4
+    }
+  ],
+  "f1_dev_congelado": 0.777211,
+  "f1_dev_con_umbrales_em": 0.781296,
+  "validacion_anidada": {
+    "HS": {
+      "f1_fijo_ponderado": 0.749901,
+      "f1_nested_ponderado": 0.75274,
+      "ganancia_nested": 0.002839
+    },
+    "TR": {
+      "f1_fijo_ponderado": 0.810658,
+      "f1_nested_ponderado": 0.809817,
+      "ganancia_nested": -0.000841
+    },
+    "AG": {
+      "f1_fijo_ponderado": 0.744686,
+      "f1_nested_ponderado": 0.744412,
+      "ganancia_nested": -0.000275
+    }
+  },
+  "ganancia_nested_media": 0.000574,
+  "veredicto_mecanismo": "GANANCIA NESTED PEQUENA",
+  "nota": "El F1 dev con umbrales EM no es una mejora local comparable: es la decision adaptada al shift estimado; la validacion es la rejilla de simulacion (ganancia bajo shift conocido).",
+  "submission_sonda": "submissions/toxic_submission_v17_prior_shift_em.csv",
+  "celdas_que_cambian_vs_v03": 62,
+  "integridad_submission": {
+    "filas": 1154,
+    "columnas": [
+      "id",
+      "HS",
+      "TR",
+      "AG"
+    ],
+    "ids_iguales": true,
+    "binario": true
+  },
+  "duracion_segundos": 2.26
+}

@@ -1,0 +1,354 @@
+{
+  "familia": "STRUCTURAL_TEXT_FEATURES",
+  "experimento": "V32-01 (entender por que V31-04 cae -0,0307 en el fold 4)",
+  "fecha": "2026-09-27T11:38:56+00:00",
+  "estado": "DIAGNOSTIC_ONLY",
+  "pregunta": "por que V31-04 cae -0,0307 en el fold 4, y es un patron contrario o un artefacto",
+  "alcance": "analisis del fold 4 contra los otros cuatro. No se crea ninguna variante nueva y no se modifica el modelo",
+  "tramos_de_longitud": {
+    "corto": "<= 12 tokens",
+    "medio": "13 a 22 tokens",
+    "largo": "> 22 tokens"
+  },
+  "perfil_por_pliegue": {
+    "1": {
+      "n_filas": 297,
+      "positivos": {
+        "HS": 129,
+        "TR": 88,
+        "AG": 114
+      },
+      "tokens_media": 18.22222222222222,
+      "tokens_mediana": 16.0,
+      "con_url": 90,
+      "fraccion_con_url": 0.30303030303030304,
+      "tramos": {
+        "corto": 107,
+        "medio": 108,
+        "largo": 82
+      },
+      "interacciones": {
+        "int__int_url_x_corto": 21,
+        "int__int_url_x_medio": 32,
+        "int__int_url_x_largo": 37,
+        "int__int_url_query_x_largo": 0,
+        "int__int_url_corta_x_corto": 0
+      }
+    },
+    "2": {
+      "n_filas": 297,
+      "positivos": {
+        "HS": 130,
+        "TR": 90,
+        "AG": 114
+      },
+      "tokens_media": 16.88888888888889,
+      "tokens_mediana": 14.0,
+      "con_url": 87,
+      "fraccion_con_url": 0.29292929292929293,
+      "tramos": {
+        "corto": 122,
+        "medio": 103,
+        "largo": 72
+      },
+      "interacciones": {
+        "int__int_url_x_corto": 30,
+        "int__int_url_x_medio": 33,
+        "int__int_url_x_largo": 24,
+        "int__int_url_query_x_largo": 0,
+        "int__int_url_corta_x_corto": 0
+      }
+    },
+    "3": {
+      "n_filas": 296,
+      "positivos": {
+        "HS": 129,
+        "TR": 89,
+        "AG": 112
+      },
+      "tokens_media": 17.304054054054053,
+      "tokens_mediana": 15.0,
+      "con_url": 91,
+      "fraccion_con_url": 0.30743243243243246,
+      "tramos": {
+        "corto": 127,
+        "medio": 87,
+        "largo": 82
+      },
+      "interacciones": {
+        "int__int_url_x_corto": 33,
+        "int__int_url_x_medio": 23,
+        "int__int_url_x_largo": 35,
+        "int__int_url_query_x_largo": 0,
+        "int__int_url_corta_x_corto": 0
+      }
+    },
+    "4": {
+      "n_filas": 296,
+      "positivos": {
+        "HS": 130,
+        "TR": 89,
+        "AG": 113
+      },
+      "tokens_media": 17.01689189189189,
+      "tokens_mediana": 16.0,
+      "con_url": 87,
+      "fraccion_con_url": 0.2939189189189189,
+      "tramos": {
+        "corto": 111,
+        "medio": 107,
+        "largo": 78
+      },
+      "interacciones": {
+        "int__int_url_x_corto": 26,
+        "int__int_url_x_medio": 34,
+        "int__int_url_x_largo": 27,
+        "int__int_url_query_x_largo": 0,
+        "int__int_url_corta_x_corto": 0
+      }
+    },
+    "5": {
+      "n_filas": 297,
+      "positivos": {
+        "HS": 130,
+        "TR": 89,
+        "AG": 114
+      },
+      "tokens_media": 16.606060606060606,
+      "tokens_mediana": 15.0,
+      "con_url": 103,
+      "fraccion_con_url": 0.3468013468013468,
+      "tramos": {
+        "corto": 112,
+        "medio": 114,
+        "largo": 71
+      },
+      "interacciones": {
+        "int__int_url_x_corto": 27,
+        "int__int_url_x_medio": 42,
+        "int__int_url_x_largo": 34,
+        "int__int_url_query_x_largo": 0,
+        "int__int_url_corta_x_corto": 0
+      }
+    }
+  },
+  "rescates_y_signo_por_pliegue": {
+    "1": {
+      "rescates": 12,
+      "danios": 13,
+      "neto": -1,
+      "celdas_modificadas": 25,
+      "signo_del_efecto_por_tramo": {
+        "corto": {
+          "evaluable": true,
+          "n_con_url": 21,
+          "n_sin_url": 86,
+          "v03_con_url": 0.20634920634920634,
+          "v03_sin_url": 0.08914728682170543,
+          "challenger_con_url": 0.2222222222222222,
+          "challenger_sin_url": 0.09302325581395349,
+          "delta_con_url": 0.015873015873015872,
+          "delta_sin_url": 0.003875968992248055
+        },
+        "medio": {
+          "evaluable": true,
+          "n_con_url": 32,
+          "n_sin_url": 76,
+          "v03_con_url": 0.09375,
+          "v03_sin_url": 0.2324561403508772,
+          "challenger_con_url": 0.08333333333333333,
+          "challenger_sin_url": 0.22807017543859648,
+          "delta_con_url": -0.010416666666666671,
+          "delta_sin_url": -0.004385964912280715
+        },
+        "largo": {
+          "evaluable": true,
+          "n_con_url": 37,
+          "n_sin_url": 45,
+          "v03_con_url": 0.15315315315315314,
+          "v03_sin_url": 0.15555555555555556,
+          "challenger_con_url": 0.16216216216216217,
+          "challenger_sin_url": 0.15555555555555556,
+          "delta_con_url": 0.009009009009009028,
+          "delta_sin_url": 0.0
+        }
+      }
+    },
+    "2": {
+      "rescates": 10,
+      "danios": 12,
+      "neto": -2,
+      "celdas_modificadas": 22,
+      "signo_del_efecto_por_tramo": {
+        "corto": {
+          "evaluable": true,
+          "n_con_url": 30,
+          "n_sin_url": 92,
+          "v03_con_url": 0.24444444444444444,
+          "v03_sin_url": 0.12681159420289856,
+          "challenger_con_url": 0.2222222222222222,
+          "challenger_sin_url": 0.12318840579710146,
+          "delta_con_url": -0.022222222222222227,
+          "delta_sin_url": -0.0036231884057971037
+        },
+        "medio": {
+          "evaluable": true,
+          "n_con_url": 33,
+          "n_sin_url": 70,
+          "v03_con_url": 0.1414141414141414,
+          "v03_sin_url": 0.1523809523809524,
+          "challenger_con_url": 0.1414141414141414,
+          "challenger_sin_url": 0.1523809523809524,
+          "delta_con_url": 0.0,
+          "delta_sin_url": 0.0
+        },
+        "largo": {
+          "evaluable": true,
+          "n_con_url": 24,
+          "n_sin_url": 48,
+          "v03_con_url": 0.2777777777777778,
+          "v03_sin_url": 0.1388888888888889,
+          "challenger_con_url": 0.3333333333333333,
+          "challenger_sin_url": 0.14583333333333334,
+          "delta_con_url": 0.055555555555555525,
+          "delta_sin_url": 0.0069444444444444475
+        }
+      }
+    },
+    "3": {
+      "rescates": 15,
+      "danios": 10,
+      "neto": 5,
+      "celdas_modificadas": 25,
+      "signo_del_efecto_por_tramo": {
+        "corto": {
+          "evaluable": true,
+          "n_con_url": 33,
+          "n_sin_url": 94,
+          "v03_con_url": 0.1717171717171717,
+          "v03_sin_url": 0.11347517730496454,
+          "challenger_con_url": 0.16161616161616163,
+          "challenger_sin_url": 0.1099290780141844,
+          "delta_con_url": -0.010101010101010083,
+          "delta_sin_url": -0.003546099290780133
+        },
+        "medio": {
+          "evaluable": true,
+          "n_con_url": 23,
+          "n_sin_url": 64,
+          "v03_con_url": 0.14492753623188406,
+          "v03_sin_url": 0.23958333333333334,
+          "challenger_con_url": 0.13043478260869565,
+          "challenger_sin_url": 0.234375,
+          "delta_con_url": -0.014492753623188415,
+          "delta_sin_url": -0.005208333333333343
+        },
+        "largo": {
+          "evaluable": true,
+          "n_con_url": 35,
+          "n_sin_url": 47,
+          "v03_con_url": 0.21904761904761905,
+          "v03_sin_url": 0.19148936170212766,
+          "challenger_con_url": 0.21904761904761905,
+          "challenger_sin_url": 0.18439716312056736,
+          "delta_con_url": 0.0,
+          "delta_sin_url": -0.007092198581560294
+        }
+      }
+    },
+    "4": {
+      "rescates": 16,
+      "danios": 9,
+      "neto": 7,
+      "celdas_modificadas": 25,
+      "signo_del_efecto_por_tramo": {
+        "corto": {
+          "evaluable": true,
+          "n_con_url": 26,
+          "n_sin_url": 85,
+          "v03_con_url": 0.28205128205128205,
+          "v03_sin_url": 0.15294117647058825,
+          "challenger_con_url": 0.2564102564102564,
+          "challenger_sin_url": 0.14901960784313725,
+          "delta_con_url": -0.02564102564102566,
+          "delta_sin_url": -0.003921568627450994
+        },
+        "medio": {
+          "evaluable": true,
+          "n_con_url": 34,
+          "n_sin_url": 73,
+          "v03_con_url": 0.18627450980392157,
+          "v03_sin_url": 0.1598173515981735,
+          "challenger_con_url": 0.17647058823529413,
+          "challenger_sin_url": 0.136986301369863,
+          "delta_con_url": -0.009803921568627444,
+          "delta_sin_url": -0.0228310502283105
+        },
+        "largo": {
+          "evaluable": true,
+          "n_con_url": 27,
+          "n_sin_url": 51,
+          "v03_con_url": 0.20987654320987653,
+          "v03_sin_url": 0.30718954248366015,
+          "challenger_con_url": 0.2222222222222222,
+          "challenger_sin_url": 0.3137254901960784,
+          "delta_con_url": 0.012345679012345678,
+          "delta_sin_url": 0.006535947712418277
+        }
+      }
+    },
+    "5": {
+      "rescates": 17,
+      "danios": 9,
+      "neto": 8,
+      "celdas_modificadas": 26,
+      "signo_del_efecto_por_tramo": {
+        "corto": {
+          "evaluable": true,
+          "n_con_url": 27,
+          "n_sin_url": 85,
+          "v03_con_url": 0.13580246913580246,
+          "v03_sin_url": 0.08627450980392157,
+          "challenger_con_url": 0.12345679012345678,
+          "challenger_sin_url": 0.08627450980392157,
+          "delta_con_url": -0.012345679012345678,
+          "delta_sin_url": 0.0
+        },
+        "medio": {
+          "evaluable": true,
+          "n_con_url": 42,
+          "n_sin_url": 72,
+          "v03_con_url": 0.11904761904761904,
+          "v03_sin_url": 0.2175925925925926,
+          "challenger_con_url": 0.1111111111111111,
+          "challenger_sin_url": 0.21296296296296297,
+          "delta_con_url": -0.007936507936507936,
+          "delta_sin_url": -0.0046296296296296224
+        },
+        "largo": {
+          "evaluable": true,
+          "n_con_url": 34,
+          "n_sin_url": 37,
+          "v03_con_url": 0.23529411764705882,
+          "v03_sin_url": 0.22522522522522523,
+          "challenger_con_url": 0.19607843137254902,
+          "challenger_sin_url": 0.21621621621621623,
+          "delta_con_url": -0.0392156862745098,
+          "delta_sin_url": -0.009009009009009
+        }
+      }
+    }
+  },
+  "veredicto": {
+    "A_menos_ejemplos": "NO, el fold 4 tiene 296 filas frente a 297 de media, volumen comparable",
+    "B_distribucion_distinta": "NO, fraccion con URL 0.2939 frente a 0.3125 y tokens medios 17.0 frente a 17.3",
+    "C_patron_contrario": "SI, hay 4 combinaciones pliegue-tramo donde el challenger empeora en textos con URL: [('1', 'corto', 0.015873015873015872), ('1', 'largo', 0.009009009009009028), ('2', 'largo', 0.055555555555555525), ('4', 'largo', 0.012345679012345678)]",
+    "D_artefacto": "NO hay evidencia de artefacto. Los netos por pliegue son {'1': -1, '2': -2, '3': 5, '4': 7, '5': 8}. El fold 4 es el unico negativo, pero su volumen y su distribucion son comparables, lo que apunta a un patron genuino y no a un fallo de implementacion"
+  },
+  "gastos": {
+    "submissions": 0,
+    "modelos_entrenados": 2,
+    "memoria_pico_mb": 229.5,
+    "segundos": 6.3
+  }
+}

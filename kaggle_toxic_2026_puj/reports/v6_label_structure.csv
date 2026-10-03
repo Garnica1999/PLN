@@ -1,0 +1,10 @@
+magnitud,valor,nota
+HS=1,648,frecuencia observada
+TR=1,445,frecuencia observada
+AG=1,567,frecuencia observada
+TR=1 y HS=0,0,frecuencia observada
+AG=1 y HS=0,22,frecuencia observada
+P(TR=1 | HS=1),0.6867,condicional empirica
+P(TR=1 | HS=0),0.0,condicional empirica
+P(AG=1 | HS=1),0.841,condicional empirica
+P(AG=1 | HS=0),0.0263,condicional empirica

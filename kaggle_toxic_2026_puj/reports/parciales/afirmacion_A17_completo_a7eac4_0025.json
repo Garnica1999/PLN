@@ -1,0 +1,145 @@
+{
+  "marca_corrida": "completo_a7eac4",
+  "resultado": {
+    "bloque": 17,
+    "coste_segundos": 5.9e-05,
+    "descripcion": "dimension seleccionada por pliegue, y la salvedad de sesgo",
+    "detalle": {
+      "comprobaciones": {
+        "hay_dimensiones_publicadas": true,
+        "la_comparacion_con_la_l1_esta_publicada": true,
+        "la_dimension_es_menor_que_las_filas_o_la_no_determinacion_esta_declarada": true,
+        "la_salvedad_de_sesgo_esta_declarada": true
+      },
+      "declaracion_de_no_determinacion": "LA_DIMENSION_SELECCIONADA_NO_ES_MENOR_QUE_LAS_FILAS_DEL_INNER_TRAIN_EN_ALGUN_PLIEGUE_Luego_LA_REGRESION_NO_ESTA_DETERMINADA_Y_EL_RESULTADO_HAY_QUE_LEERLO_CON_ESA_SALVEDAD",
+      "dimension_por_pliegue_y_umbral": {
+        "umbral_2.0_pliegue_0": {
+          "n_columnas": 1070,
+          "n_filas_inner_train": 817,
+          "pliegue": 0,
+          "umbral": 2.0
+        },
+        "umbral_2.0_pliegue_1": {
+          "n_columnas": 1069,
+          "n_filas_inner_train": 838,
+          "pliegue": 1,
+          "umbral": 2.0
+        },
+        "umbral_2.0_pliegue_2": {
+          "n_columnas": 1124,
+          "n_filas_inner_train": 831,
+          "pliegue": 2,
+          "umbral": 2.0
+        },
+        "umbral_2.0_pliegue_3": {
+          "n_columnas": 1049,
+          "n_filas_inner_train": 827,
+          "pliegue": 3,
+          "umbral": 2.0
+        },
+        "umbral_2.0_pliegue_4": {
+          "n_columnas": 1090,
+          "n_filas_inner_train": 828,
+          "pliegue": 4,
+          "umbral": 2.0
+        },
+        "umbral_3.0_pliegue_0": {
+          "n_columnas": 611,
+          "n_filas_inner_train": 817,
+          "pliegue": 0,
+          "umbral": 3.0
+        },
+        "umbral_3.0_pliegue_1": {
+          "n_columnas": 629,
+          "n_filas_inner_train": 838,
+          "pliegue": 1,
+          "umbral": 3.0
+        },
+        "umbral_3.0_pliegue_2": {
+          "n_columnas": 643,
+          "n_filas_inner_train": 831,
+          "pliegue": 2,
+          "umbral": 3.0
+        },
+        "umbral_3.0_pliegue_3": {
+          "n_columnas": 611,
+          "n_filas_inner_train": 827,
+          "pliegue": 3,
+          "umbral": 3.0
+        },
+        "umbral_3.0_pliegue_4": {
+          "n_columnas": 626,
+          "n_filas_inner_train": 828,
+          "pliegue": 4,
+          "umbral": 3.0
+        },
+        "umbral_5.0_pliegue_0": {
+          "n_columnas": 300,
+          "n_filas_inner_train": 817,
+          "pliegue": 0,
+          "umbral": 5.0
+        },
+        "umbral_5.0_pliegue_1": {
+          "n_columnas": 299,
+          "n_filas_inner_train": 838,
+          "pliegue": 1,
+          "umbral": 5.0
+        },
+        "umbral_5.0_pliegue_2": {
+          "n_columnas": 291,
+          "n_filas_inner_train": 831,
+          "pliegue": 2,
+          "umbral": 5.0
+        },
+        "umbral_5.0_pliegue_3": {
+          "n_columnas": 301,
+          "n_filas_inner_train": 827,
+          "pliegue": 3,
+          "umbral": 5.0
+        },
+        "umbral_5.0_pliegue_4": {
+          "n_columnas": 298,
+          "n_filas_inner_train": 828,
+          "pliegue": 4,
+          "umbral": 5.0
+        }
+      },
+      "filas_del_inner_train": 828,
+      "maximo": 1124,
+      "media": 667.4,
+      "minimo": 291,
+      "pliegues_no_determinados": [
+        "umbral_2.0_pliegue_0",
+        "umbral_2.0_pliegue_1",
+        "umbral_2.0_pliegue_2",
+        "umbral_2.0_pliegue_3",
+        "umbral_2.0_pliegue_4"
+      ],
+      "referencia_l1_c4": {
+        "f1": 0.783423,
+        "ic_contiene_el_cero": true,
+        "ic_pareado": [
+          -0.0081,
+          0.0202
+        ],
+        "origen": "medida en la corrida con un ajuste L1 C igual a 4.0 sobre el inner_train del pliegue 0",
+        "variables_dejadas_por_las_c4": 1628
+      },
+      "regresion_determinada": false,
+      "salvedad_de_sesgo": "LA_SELECCION_POR_VALOR_ABSOLUTO_PUEDE_FAVORECER_A_LAS_COLUMNAS_LARGASPOR_ESO_UN_BAYESIANO_QUE_DECLARA_MAS_VARIABLES_ACTIVAS_NO_HA_GANADO_POR_GANARSINO_QUE_HA_GANADO_POR_EL_CRITERIO_DE_SELECCION",
+      "umbral_primario": 3.0,
+      "umbrales_de_sensibilidad": [
+        2.0,
+        3.0,
+        5.0
+      ]
+    },
+    "estado": "CONFIRMADO",
+    "exito": true,
+    "id": "A17",
+    "naturaleza": "CONFIRMAR",
+    "stop": false,
+    "tolerancia": "la dimension por pliegue y umbral, medida, contra las filas del inner_train",
+    "traza": ""
+  }
+}

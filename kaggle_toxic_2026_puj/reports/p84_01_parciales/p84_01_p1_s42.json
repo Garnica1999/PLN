@@ -1,0 +1,108 @@
+{
+  "experiment_id": "P84-01",
+  "modo_humo": false,
+  "pliegue": 1,
+  "semilla": 42,
+  "E_j": [
+    2,
+    2,
+    5
+  ],
+  "E_estrella": 2,
+  "dispersion_E_j": 1.414214,
+  "splits_internos": [
+    {
+      "j": 0,
+      "semilla_split": 20261201,
+      "intentos": 1,
+      "equivalencia_particion": {
+        "semilla": 20261201,
+        "intentos_p73": 1,
+        "intentos_local": 1,
+        "equivalentes": true
+      },
+      "prevalencia": {
+        "max_delta_prevalencia": 0.027125046945072395,
+        "tolerancia": 0.07,
+        "cumple": true
+      },
+      "n_inner_train": 957,
+      "n_inner_val": 229,
+      "mejor_epoca": 2,
+      "mejor_f1_val": 0.734129,
+      "f1_train_best": 0.903907,
+      "epocas_ejecutadas": 7,
+      "segundos": 0.24
+    },
+    {
+      "j": 1,
+      "semilla_split": 20261208,
+      "intentos": 1,
+      "equivalencia_particion": {
+        "semilla": 20261208,
+        "intentos_p73": 1,
+        "intentos_local": 1,
+        "equivalentes": true
+      },
+      "prevalencia": {
+        "max_delta_prevalencia": 0.035635808822992665,
+        "tolerancia": 0.07,
+        "cumple": true
+      },
+      "n_inner_train": 955,
+      "n_inner_val": 231,
+      "mejor_epoca": 2,
+      "mejor_f1_val": 0.74436,
+      "f1_train_best": 0.893488,
+      "epocas_ejecutadas": 7,
+      "segundos": 0.24
+    },
+    {
+      "j": 2,
+      "semilla_split": 20261215,
+      "intentos": 1,
+      "equivalencia_particion": {
+        "semilla": 20261215,
+        "intentos_p73": 1,
+        "intentos_local": 1,
+        "equivalentes": true
+      },
+      "prevalencia": {
+        "max_delta_prevalencia": 0.036453886697665194,
+        "tolerancia": 0.07,
+        "cumple": true
+      },
+      "n_inner_train": 947,
+      "n_inner_val": 239,
+      "mejor_epoca": 5,
+      "mejor_f1_val": 0.765825,
+      "f1_train_best": 0.965207,
+      "epocas_ejecutadas": 10,
+      "segundos": 0.34
+    }
+  ],
+  "umbrales_anidados": [
+    0.48,
+    0.53,
+    0.49
+  ],
+  "lecturas_fold": {
+    "primaria_umbral_0_5": 0.75411485,
+    "secundaria_anidada": 0.74618546,
+    "control_congelado_v03": 0.74666013
+  },
+  "f1_train_05": 0.89395062,
+  "f1_val_05": 0.75411485,
+  "brecha": 0.13983577,
+  "contador_prediccion": {
+    "pasadas_oficiales_outer_val": 1,
+    "pasadas_guardia_outer_val": 1,
+    "pasadas_forward_outer_val_totales": 2,
+    "matrices_de_lectura": 1,
+    "lecturas_de_umbral": 3,
+    "nota": "una pasada oficial genera la unica matriz; la guardia torch.equal es una verificacion adicional que no produce lecturas; las tres lecturas de umbral reutilizan la matriz oficial"
+  },
+  "incidencias": [],
+  "ruta_checkpoint": "/home/carlos/Git/PLN-v67/kaggle_toxic_2026_puj/modelos/p84/p84_01_mlp_s42_p1.pt",
+  "segundos": 15.41
+}

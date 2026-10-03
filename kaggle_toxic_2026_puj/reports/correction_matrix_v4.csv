@@ -1,0 +1,6 @@
+candidato,nuevos_aciertos,nuevos_errores,neto_correccion
+A_cost_sensitive_downweight,44,34,10
+B_meta36,55,33,22
+C_meta36_downweight,73,39,34
+D_svd300_rbf,77,47,30
+V03_referencia,0,0,0

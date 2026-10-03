@@ -1,0 +1,31 @@
+{
+  "familia": "P65_FINAL",
+  "fecha": "2026-09-29T14:55:51+00:00",
+  "pregunta": "los errores de los tweets largos son falta de informacion o incapacidad de representar relaciones de largo alcance",
+  "respuesta": "las dos mitades. La informacion de largo alcance existe y es medible, y V03 no la tiene; pero no cabe por concatenacion. Y la longitud del tweet tampoco es el mecanismo, porque el reentrenado sin criterio de longitud reproduce el especialista exactamente",
+  "experimentos": 4,
+  "presupuesto": 25,
+  "reservas_gastadas": 0,
+  "familias_abiertas": 6,
+  "familias_cerradas": 10,
+  "candidatos_que_baten_a_ambos_controles": 5,
+  "candidatos_que_mejoran_a_V03": 0,
+  "control_de_implementacion": {
+    "hueco_1_2": -0.0010515908159455245,
+    "V6_05_registrado": -0.0001,
+    "conclusion": "la implementacion de los pares con hueco es la misma"
+  },
+  "especialista_contra_reentrenado": 0.0,
+  "regla_general": "una adicion por concatenacion no puede introducir informacion verificada en este proyecto: la senal se ve en las brechas contra los dos controles y no aparece en el corrected_cv",
+  "siguiente_paso_que_queda_abierto": "fundir la misma evidencia en el espacio de probabilidad en vez de concatenarla en el de caracteristicas. Es clasico, es falsable por la propia prediccion, y no se ha intentado",
+  "submissions": 0,
+  "kaggle": 0,
+  "holdout": 0,
+  "test": 0,
+  "leaderboard": 0,
+  "cumplimiento": {
+    "comprobaciones": 26,
+    "fallos": 0
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

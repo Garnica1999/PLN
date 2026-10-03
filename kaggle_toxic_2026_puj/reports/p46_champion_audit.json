@@ -1,0 +1,480 @@
+{
+  "familia": "P46_CHAMPION_AUDIT",
+  "experimento": "V46-00 (P0 auditoria del campeon real y reconciliacion del leaderboard)",
+  "fecha": "2026-09-28T00:17:17+00:00",
+  "estado": "AUDIT_ONLY",
+  "jerarquia_de_evidencia": [
+    "1. archivo de submission",
+    "2. registro externo asociado a esa submission",
+    "3. leaderboard log estructurado",
+    "4. metadata de experimento",
+    "5. reports",
+    "6. notebook",
+    "7. CHAMPION.md",
+    "8. texto narrativo"
+  ],
+  "leaderboard_log": {
+    "ruta": "submissions/leaderboard_log.csv",
+    "n_rows": 22,
+    "columnas": [
+      "submission_id",
+      "fecha",
+      "archivo",
+      "local_f1",
+      "kaggle_f1",
+      "diferencia",
+      "features",
+      "modelo",
+      "hiperparametros",
+      "interpretacion",
+      "definicion_diferencia"
+    ],
+    "duplicados": 0,
+    "scores_nulos": 0,
+    "scores_fuera_de_rango": 0,
+    "filas": [
+      {
+        "submission_id": "v00_plantilla",
+        "experiment_id": "E00",
+        "fecha": "2026-09-22",
+        "archivo_log": "submissions/toxic_submission_v00_plantilla.csv",
+        "archivo_resuelto": "submissions/toxic_submission_v00_plantilla.csv",
+        "artefacto_existe": true,
+        "sha256": "0dfb4d07dffc31d3d452f5e53508d259e6ab5c2ec0dcd67bd70e4b03c5016ecc",
+        "local_f1": null,
+        "leaderboard_f1": 0.51494,
+        "diferencia_log": null,
+        "evidencia": "MEDIDO",
+        "fuente": "submissions/leaderboard_log.csv (host Kaggle)"
+      },
+      {
+        "submission_id": "v01_baseline_tfidf_lr",
+        "experiment_id": "B1",
+        "fecha": "2026-09-22",
+        "archivo_log": "submissions/toxic_submission_v01_baseline_tfidf_lr.csv",
+        "archivo_resuelto": "submissions/toxic_submission_v01_baseline_tfidf_lr.csv",
+        "artefacto_existe": true,
+        "sha256": "0c02c8aad81a8458709c908ef80265cb317f4965f8a43b0e57cf96ef021e2ec7",
+        "local_f1": 0.75778,
+        "leaderboard_f1": 0.75677,
+        "diferencia_log": -0.00101,
+        "evidencia": "MEDIDO",
+        "fuente": "submissions/leaderboard_log.csv (host Kaggle)"
+      },
+      {
+        "submission_id": "v02_lr_union",
+        "experiment_id": "MOD-03b_BEST",
+        "fecha": "2026-09-22",
+        "archivo_log": "submissions/toxic_submission_v02_lr_union.csv",
+        "archivo_resuelto": "submissions/toxic_submission_v02_lr_union.csv",
+        "artefacto_existe": true,
+        "sha256": "228068c6ce0475e88662d3459e6945afc2ab20a5f3ecc529ca70ccabb4208043",
+        "local_f1": 0.7927,
+        "leaderboard_f1": 0.77993,
+        "diferencia_log": -0.01277,
+        "evidencia": "MEDIDO",
+        "fuente": "submissions/leaderboard_log.csv (host Kaggle)"
+      },
+      {
+        "submission_id": "v03_lr_union_thr",
+        "experiment_id": "MOD-04 / TH-01",
+        "fecha": "2026-09-22",
+        "archivo_log": "submissions/toxic_submission_v03_lr_union_thr.csv",
+        "archivo_resuelto": "submissions/toxic_submission_v03_lr_union_thr.csv",
+        "artefacto_existe": true,
+        "sha256": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+        "local_f1": 0.7989,
+        "leaderboard_f1": 0.78306,
+        "diferencia_log": -0.01584,
+        "evidencia": "MEDIDO",
+        "fuente": "submissions/leaderboard_log.csv (host Kaggle)"
+      },
+      {
+        "submission_id": "v04_ens04_mediana",
+        "experiment_id": "ENS-03",
+        "fecha": "2026-09-22",
+        "archivo_log": "submissions/toxic_submission_v04_ens04_mediana.csv",
+        "archivo_resuelto": "submissions/toxic_submission_v04_ens04_mediana.csv",
+        "artefacto_existe": true,
+        "sha256": "c37cf1f5f9159b22c5d91200c5cff12c63c89c1ef3f49ac458b8307dc2a9e77e",
+        "local_f1": 0.7985,
+        "leaderboard_f1": 0.7751,
+        "diferencia_log": -0.0234,
+        "evidencia": "MEDIDO",
+        "fuente": "submissions/leaderboard_log.csv (host Kaggle)"
+      },
+      {
+        "submission_id": "v05_optuna",
+        "experiment_id": "OPT-01",
+        "fecha": "2026-09-22",
+        "archivo_log": "submissions/toxic_submission_v05_optuna.csv",
+        "archivo_resuelto": "submissions/toxic_submission_v05_optuna.csv",
+        "artefacto_existe": true,
+        "sha256": "a7f68a8679dadb13966627321116ccb23594eabd55c57c6a689ba262cba10278",
+        "local_f1": 0.8039,
+        "leaderboard_f1": 0.77602,
+        "diferencia_log": -0.02788,
+        "evidencia": "MEDIDO",
+        "fuente": "submissions/leaderboard_log.csv (host Kaggle)"
+      },
+      {
+        "submission_id": "v06_robustez_c1",
+        "experiment_id": "S04",
+        "fecha": "2026-09-23",
+        "archivo_log": "submissions/toxic_submission_v06_robustez_c1.csv",
+        "archivo_resuelto": "submissions/toxic_submission_v06_robustez_c1.csv",
+        "artefacto_existe": true,
+        "sha256": "fc943e688259c89ca74c20499a2ccb025d700eabdf11aec38fe0447069af10fa",
+        "local_f1": 0.7929,
+        "leaderboard_f1": 0.77227,
+        "diferencia_log": -0.02063,
+        "evidencia": "MEDIDO",
+        "fuente": "submissions/leaderboard_log.csv (host Kaggle)"
+      },
+      {
+        "submission_id": "v07_robustez_mindf5",
+        "experiment_id": "S06",
+        "fecha": "2026-09-23",
+        "archivo_log": "submissions/toxic_submission_v07_robustez_mindf5.csv",
+        "archivo_resuelto": "submissions/toxic_submission_v07_robustez_mindf5.csv",
+        "artefacto_existe": true,
+        "sha256": "4ba99f4daa62a9c04bd988b80873a8b9853420803bc8909bad7c1011ccf89e99",
+        "local_f1": 0.7993,
+        "leaderboard_f1": 0.77034,
+        "diferencia_log": -0.02896,
+        "evidencia": "MEDIDO",
+        "fuente": "submissions/leaderboard_log.csv (host Kaggle)"
+      },
+      {
+        "submission_id": "v08_meta_v2",
+        "experiment_id": "E2-02-META",
+        "fecha": "2026-09-25",
+        "archivo_log": "submissions/toxic_submission_v08_meta_v2.csv",
+        "archivo_resuelto": "submissions/toxic_submission_v08_meta_v2.csv",
+        "artefacto_existe": true,
+        "sha256": "b59852f6e71527d9d551156b2d974ac0232359bf3aef3360b5df84e123aa94b2",
+        "local_f1": 0.7874,
+        "leaderboard_f1": 0.78163,
+        "diferencia_log": -0.00577,
+        "evidencia": "MEDIDO",
+        "fuente": "submissions/leaderboard_log.csv (host Kaggle)"
+      },
+      {
+        "submission_id": "v09_candidate_a",
+        "experiment_id": "E2-09",
+        "fecha": "2026-09-25",
+        "archivo_log": "submissions/toxic_submission_v09_candidate_a.csv",
+        "archivo_resuelto": "submissions/toxic_submission_v09_candidate_a.csv",
+        "artefacto_existe": true,
+        "sha256": "8e5a95d3bd6a3e4e59de64f31739cf721a4237136ad92d3b09666e9d442d4927",
+        "local_f1": 0.7809,
+        "leaderboard_f1": 0.77895,
+        "diferencia_log": -0.00199,
+        "evidencia": "MEDIDO",
+        "fuente": "submissions/leaderboard_log.csv (host Kaggle)"
+      },
+      {
+        "submission_id": "v10_candidate_b",
+        "experiment_id": "E2-10",
+        "fecha": "2026-09-25",
+        "archivo_log": "submissions/toxic_submission_v10_candidate_b.csv",
+        "archivo_resuelto": "submissions/toxic_submission_v10_candidate_b.csv",
+        "artefacto_existe": true,
+        "sha256": "92caa41e379f10184c71a3d24775ca10d054297afb4a22f2c84933ec8f43d288",
+        "local_f1": 0.7793,
+        "leaderboard_f1": 0.77978,
+        "diferencia_log": 0.00047,
+        "evidencia": "MEDIDO",
+        "fuente": "submissions/leaderboard_log.csv (host Kaggle)"
+      },
+      {
+        "submission_id": "v11_candidate_c",
+        "experiment_id": "E2-11",
+        "fecha": "2026-09-25",
+        "archivo_log": "submissions/toxic_submission_v11_candidate_c.csv",
+        "archivo_resuelto": "submissions/toxic_submission_v11_candidate_c.csv",
+        "artefacto_existe": true,
+        "sha256": "066d46ca12e95fde01340300a0854768f2de83b65539dca82da1e60be2858a8d",
+        "local_f1": 0.7797,
+        "leaderboard_f1": 0.7815,
+        "diferencia_log": 0.00184,
+        "evidencia": "MEDIDO",
+        "fuente": "submissions/leaderboard_log.csv (host Kaggle)"
+      },
+      {
+        "submission_id": "v08_p1_fold_ensemble",
+        "experiment_id": "V8-04",
+        "fecha": "2026-09-26",
+        "archivo_log": "submissions/toxic_submission_v08_p1_fold_ensemble.csv",
+        "archivo_resuelto": "submissions/toxic_submission_v08_p1_fold_ensemble.csv",
+        "artefacto_existe": true,
+        "sha256": "3bbcc6bb1c7e58caec6a3d88605acebd9298be94a2c3c4c31e51dd5b642820b5",
+        "local_f1": 0.777211,
+        "leaderboard_f1": 0.7747,
+        "diferencia_log": -0.00836,
+        "evidencia": "MEDIDO",
+        "fuente": "submissions/leaderboard_log.csv (host Kaggle)"
+      },
+      {
+        "submission_id": "v09_p5_c_por_etiqueta",
+        "experiment_id": "V9-05",
+        "fecha": "2026-09-26",
+        "archivo_log": "submissions/toxic_submission_v09_p5_c_por_etiqueta.csv",
+        "archivo_resuelto": "submissions/toxic_submission_v09_p5_c_por_etiqueta.csv",
+        "artefacto_existe": true,
+        "sha256": "610abaa16d03c13da0820a859ea7b1d54d4d6dc918b241e3fdcee28a4d089206",
+        "local_f1": 0.777518,
+        "leaderboard_f1": 0.77781,
+        "diferencia_log": -0.00525,
+        "evidencia": "MEDIDO",
+        "fuente": "submissions/leaderboard_log.csv (host Kaggle)"
+      },
+      {
+        "submission_id": "v12_p7_promedio_repeticiones",
+        "experiment_id": "V12-P7",
+        "fecha": "2026-09-26",
+        "archivo_log": "submissions/toxic_submission_v12_p7_promedio_repeticiones.csv",
+        "archivo_resuelto": "submissions/toxic_submission_v12_p7_promedio_repeticiones.csv",
+        "artefacto_existe": true,
+        "sha256": "6157ef15e2da21db69de13773353dd5b49945a0991421849c640b82c138341d4",
+        "local_f1": 0.782277,
+        "leaderboard_f1": 0.77122,
+        "diferencia_log": -0.01184,
+        "evidencia": "MEDIDO",
+        "fuente": "submissions/leaderboard_log.csv (host Kaggle)"
+      },
+      {
+        "submission_id": "56597267",
+        "experiment_id": "V20-01",
+        "fecha": "2026-09-26",
+        "archivo_log": "toxic_submission_v20_01_regla_hs_interaccion.csv",
+        "archivo_resuelto": "submissions/toxic_submission_v20_01_regla_hs_interaccion.csv",
+        "artefacto_existe": true,
+        "sha256": "cbb39d44be341f1d462de40257122184944af88e8f96d90324ddf93a4956873f",
+        "local_f1": 0.777998,
+        "leaderboard_f1": 0.77663,
+        "diferencia_log": -0.00643,
+        "evidencia": "MEDIDO",
+        "fuente": "submissions/leaderboard_log.csv (host Kaggle)"
+      },
+      {
+        "submission_id": "v16_ch5_tasa_optima_absoluta",
+        "experiment_id": "V16-05",
+        "fecha": "2026-09-27",
+        "archivo_log": "submissions/toxic_submission_v16_ch5_tasa_optima_absoluta.csv",
+        "archivo_resuelto": "submissions/toxic_submission_v16_ch5_tasa_optima_absoluta.csv",
+        "artefacto_existe": true,
+        "sha256": "dac0d815465ada1df4b1c554deeb1b4a39d863226e0d8154dd3349d5cd0492d9",
+        "local_f1": null,
+        "leaderboard_f1": 0.77495,
+        "diferencia_log": -0.00811,
+        "evidencia": "MEDIDO",
+        "fuente": "submissions/leaderboard_log.csv (host Kaggle)"
+      },
+      {
+        "submission_id": "v16_ch1_tasa_optima_transportada",
+        "experiment_id": "V16-01",
+        "fecha": "2026-09-27",
+        "archivo_log": "submissions/toxic_submission_v16_ch1_tasa_optima_transportada.csv",
+        "archivo_resuelto": "submissions/toxic_submission_v16_ch1_tasa_optima_transportada.csv",
+        "artefacto_existe": true,
+        "sha256": "a1b91806f7201aa14a16d4b6d95f8032f04bb36812e417cd9e1c481a5a1ac032",
+        "local_f1": null,
+        "leaderboard_f1": 0.77828,
+        "diferencia_log": -0.00478,
+        "evidencia": "MEDIDO",
+        "fuente": "submissions/leaderboard_log.csv (host Kaggle)"
+      },
+      {
+        "submission_id": "v16_ch7_C1p5",
+        "experiment_id": "V16-07",
+        "fecha": "2026-09-27",
+        "archivo_log": "submissions/toxic_submission_v16_ch7_C1p5.csv",
+        "archivo_resuelto": "submissions/toxic_submission_v16_ch7_C1p5.csv",
+        "artefacto_existe": true,
+        "sha256": "197feee3a4b6a64a3def249b0b0265491172da521e98c4b25bbd40e7d9530456",
+        "local_f1": 0.776653,
+        "leaderboard_f1": 0.77296,
+        "diferencia_log": -0.0101,
+        "evidencia": "MEDIDO",
+        "fuente": "submissions/leaderboard_log.csv (host Kaggle)"
+      },
+      {
+        "submission_id": "v16_ch8_C2p5",
+        "experiment_id": "V16-08",
+        "fecha": "2026-09-27",
+        "archivo_log": "submissions/toxic_submission_v16_ch8_C2p5.csv",
+        "archivo_resuelto": "submissions/toxic_submission_v16_ch8_C2p5.csv",
+        "artefacto_existe": true,
+        "sha256": "2a533a442ab0a8a30b4ba46f56b6a32386baf848730da02e0a5a2bc286c3fb90",
+        "local_f1": 0.776752,
+        "leaderboard_f1": 0.77707,
+        "diferencia_log": -0.00599,
+        "evidencia": "MEDIDO",
+        "fuente": "submissions/leaderboard_log.csv (host Kaggle)"
+      },
+      {
+        "submission_id": "v16_ch9_mindf1",
+        "experiment_id": "V16-09",
+        "fecha": "2026-09-27",
+        "archivo_log": "submissions/toxic_submission_v16_ch9_mindf1.csv",
+        "archivo_resuelto": "submissions/toxic_submission_v16_ch9_mindf1.csv",
+        "artefacto_existe": true,
+        "sha256": "827da9e7f695b7b69c6cc03558d796d18670f47227a8916cc663c42eb9b94449",
+        "local_f1": 0.765532,
+        "leaderboard_f1": 0.76978,
+        "diferencia_log": -0.01328,
+        "evidencia": "MEDIDO",
+        "fuente": "submissions/leaderboard_log.csv (host Kaggle)"
+      },
+      {
+        "submission_id": "56599802",
+        "experiment_id": "V23-01",
+        "fecha": "2026-09-27",
+        "archivo_log": "toxic_submission_v23_01_svd_rbf_sigmoid.csv",
+        "archivo_resuelto": "submissions/toxic_submission_v23_01_svd_rbf_sigmoid.csv",
+        "artefacto_existe": true,
+        "sha256": "8f750e910767756c5839f601fa2d13de014fd15b3e5bdae906682b80e1d53e69",
+        "local_f1": 0.79041,
+        "leaderboard_f1": 0.77938,
+        "diferencia_log": -0.00368,
+        "evidencia": "MEDIDO",
+        "fuente": "submissions/leaderboard_log.csv (host Kaggle)"
+      }
+    ]
+  },
+  "afirmaciones_champion_md": [
+    {
+      "valor_afirmado": 0.78535,
+      "clave": "ch1",
+      "linea": 115,
+      "columna": "Tasa | Celdas | LB combinado | sha256",
+      "submission_id": "v16_ch1_tasa_optima_transportada",
+      "leaderboard_medido": 0.77828,
+      "discrepancia": 0.007070000000000021
+    },
+    {
+      "valor_afirmado": 0.7865,
+      "clave": "ch5",
+      "linea": 116,
+      "columna": "Tasa | Celdas | LB combinado | sha256",
+      "submission_id": "v16_ch5_tasa_optima_absoluta",
+      "leaderboard_medido": 0.77495,
+      "discrepancia": 0.01154999999999995
+    },
+    {
+      "valor_afirmado": 0.78418,
+      "clave": "ch2",
+      "linea": 117,
+      "columna": "Tasa | Celdas | LB combinado | sha256",
+      "submission_id": "no encontrada en el log",
+      "leaderboard_medido": null,
+      "discrepancia": null
+    },
+    {
+      "valor_afirmado": 0.78242,
+      "clave": "ch4",
+      "linea": 118,
+      "columna": "Tasa | Celdas | LB combinado | sha256",
+      "submission_id": "no encontrada en el log",
+      "leaderboard_medido": null,
+      "discrepancia": null
+    },
+    {
+      "valor_afirmado": 0.77431,
+      "clave": "ch3",
+      "linea": 119,
+      "columna": "Tasa | Celdas | LB combinado | sha256",
+      "submission_id": "no encontrada en el log",
+      "leaderboard_medido": null,
+      "discrepancia": null
+    }
+  ],
+  "columna_de_score": "Tasa | Celdas | LB combinado | sha256",
+  "formula_declarada": "`LB combinado` = 0.78306 + 0.12011 x delta_tasa + aciertos_netos_oof x 2.804e-05, y para",
+  "reproduccion_de_la_formula": {
+    "coeficientes": {
+      "base": 0.78306,
+      "tasa": 0.12011,
+      "neto": 2.804e-05
+    },
+    "casos": [
+      {
+        "clave": "ch1",
+        "delta_tasa": 0.019,
+        "aciertos_netos_oof": 0,
+        "lb_combinado_recalculado": 0.78534209,
+        "valor_afirmado": 0.78535,
+        "desviacion": 7.909999999999862e-06,
+        "reproduce": true
+      },
+      {
+        "clave": "ch5",
+        "delta_tasa": 0.0335,
+        "aciertos_netos_oof": -21,
+        "lb_combinado_recalculado": 0.786494845,
+        "valor_afirmado": 0.7865,
+        "desviacion": 5.1549999999789264e-06,
+        "reproduce": true
+      }
+    ],
+    "todas_reproducen": true,
+    "conclusion": "Los valores de la tabla de candidatas de CHAMPION.md son predicciones del modelo causal declarado en ese mismo fichero, no puntuaciones medidas por el host"
+  },
+  "contradiccion_interna": [
+    {
+      "clave": "ch1",
+      "valor_en_tabla_de_estado": 0.77828,
+      "estado": "REJECTED",
+      "linea": 226
+    },
+    {
+      "clave": "ch5",
+      "valor_en_tabla_de_estado": 0.77495,
+      "estado": "REJECTED",
+      "linea": 227
+    }
+  ],
+  "magnitudes_separadas": {
+    "mejor_corrected_cv_utilizable": {
+      "valor": 0.7772114525165721,
+      "fuente": "features/oof_v03_final.npz (OOF canonico de 1483 filas, pliegues corregidos)",
+      "nota": "La columna macro_f1 de experiments.csv NO esta en esa base para las filas historicas: MOD-04, TH-01 y S03 registran 0.8322 y 0.8356 sobre el split D-004, supersedido por D-015/D-016. Ordenar esa columna sin clasificar la base produce rankings invalidos"
+    },
+    "mejor_local_del_log": {
+      "submission_id": "v05_optuna",
+      "local_f1": 0.8039,
+      "leaderboard_f1": 0.77602
+    },
+    "mejor_submission_por_LB": {
+      "submission_id": "v03_lr_union_thr",
+      "leaderboard_f1": 0.78306
+    },
+    "mejor_modelo_congelado": {
+      "experiment_id": "V03",
+      "corrected_cv": 0.7772114525165721,
+      "leaderboard_f1": 0.78306,
+      "sha256": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e"
+    }
+  },
+  "veredicto": {
+    "CASE": "B",
+    "leaderboard_max_verified": 0.78306,
+    "leaderboard_max_verified_submission": "v03_lr_union_thr",
+    "champion_ofrecional": "V03",
+    "champion_ofrecional_sha256": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "CHAMPION_STATUS": "INCONSISTENTE_AUTOCORREGIDO",
+    "afirmaciones_sin_evidencia_primaria": [
+      0.78535,
+      0.7865
+    ],
+    "clasificacion": "UNSUPPORTED_CLAIM_PREDICTION: los valores de la tabla de candidatas son el resultado de la formula causal declarada en el propio fichero, no puntuaciones del host. Las mediciones reales de esas mismas submissions son inferiores y estan marcadas REJECTED en el mismo CHAMPION.md",
+    "baseline_operativo": "V03",
+    "gastos": {
+      "submissions": 0,
+      "modelos_entrenados": 0,
+      "consultas_kaggle": 0,
+      "segundos": 0.0
+    }
+  }
+}

@@ -1,0 +1,4 @@
+candidato,correction_cv,delta_vs_V03,pliegues_mejorados,brecha_de_atribucion,IC95_inferior,IC95_superior,rescate_de_alta_confianza,decision
+MI_arbol + residual anidada,0.7798857693,0.0026743167,4,0.0041133588,-0.0044311634,0.0102108745,6,PROMISING
+MI_arbol + residual con score barajado,0.7757724104,-0.0014390421,,,,,,CONTROL
+V03,0.7772114525,0.0,,,,,,BASELINE

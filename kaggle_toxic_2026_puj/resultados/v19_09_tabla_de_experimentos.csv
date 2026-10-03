@@ -1,0 +1,4 @@
+experimento,mecanismo,oof,delta_oof,cambios_netos,lb,delta_lb,estado
+V19-00 metrica verificada,reconstruccion de la metrica y reduccion del average,0.7772114525165721,0.0,0,,,"diagnostico, fija el objetivo de la fase"
+V19-01 valor de cada correccion,formas cerradas del delta de F1 y estructura conjunta,0.7772114525165721,0.0,0,,,"diagnostico, demuestra que la decision se separa"
+V19-02 restriccion TR implica HS,propagar HS=1 donde el score de TR supera el gatillo,0.7778740982449703,0.0006626457283982923,-3,,,REGLA DESCARTADA

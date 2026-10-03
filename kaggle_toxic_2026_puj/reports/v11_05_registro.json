@@ -1,0 +1,73 @@
+{
+  "experimento": "V11-05 (reconstruccion del registro v11)",
+  "fecha": "2026-09-26T21:50:34+00:00",
+  "motivo": "Al commitear v10 en a30a467 y traerla a la v11 por merge, el experiments.csv del worktree de v11 retrocedio a una version anterior y las filas V11 se perdieron del registro. Los informes JSON remained intactos, de modo que las filas se reconstruyen derivandolas de ahi en vez de teclearlas.",
+  "detalle": [
+    {
+      "experiment_id": "V11-00",
+      "claves_extraidas": [
+        "supercadas",
+        "total",
+        "todas_superadas",
+        "v03_coincide_exacto",
+        "sha256_identica",
+        "v03_reconstruido",
+        "v03_diferencia",
+        "registro_filas",
+        "registro_claves_unicas",
+        "holdout2_ids_sin_cambios",
+        "holdout2_grupos_compartidos",
+        "contrastes_informe_registro",
+        "denominador_resuelto_es_el_desarrollo"
+      ],
+      "claves_ausentes": [],
+      "informe": "v11_00_reconciliacion.json"
+    },
+    {
+      "experiment_id": "V11-01",
+      "claves_extraidas": [
+        "diferencias_por_etiqueta",
+        "tolerancia_de_reproduccion",
+        "reproduccion_exacta",
+        "denominador_resuelto_es_el_desarrollo",
+        "prevalencias_que_usa_la_v11"
+      ],
+      "claves_ausentes": [],
+      "informe": "v11_01_reproduccion_v9_02.json"
+    },
+    {
+      "experiment_id": "V11-02",
+      "claves_extraidas": [
+        "todas_las_citas_localizadas",
+        "conteo",
+        "uso_de_la_prueba_para_submission"
+      ],
+      "claves_ausentes": [],
+      "informe": "v11_02_auditoria_legalidad.json"
+    },
+    {
+      "experiment_id": "V11-03",
+      "claves_extraidas": [
+        "conformes",
+        "total",
+        "puntos_seccion_18_estructurales",
+        "puntos_seccion_18_declarados",
+        "todas_conformes"
+      ],
+      "claves_ausentes": [],
+      "informe": "v11_03_auditoria_cumplimiento.json"
+    }
+  ],
+  "filas_reconstruidas": [
+    "V11-00",
+    "V11-01",
+    "V11-02",
+    "V11-03"
+  ],
+  "registro_final": {
+    "filas": 223,
+    "claves_unicas": 223,
+    "campos": 23,
+    "malformadas": 0
+  }
+}

@@ -1,0 +1,124 @@
+{
+  "experiment_id": "V4-00-SCAFFOLD",
+  "fase": "P0 - scaffold y verificacion de la referencia",
+  "fecha": "2026-09-25T18:58:32+00:00",
+  "duracion_s": 0.85,
+  "referencia": {
+    "modelo": "experiments/baseline_v03_frozen/model_v03.joblib",
+    "version": "V03_BASELINE",
+    "umbrales": {
+      "HS": 0.44,
+      "TR": 0.51,
+      "AG": 0.46,
+      "metodo": "rejilla 0.20-0.80 paso 0.01 sobre probabilidades OOF"
+    },
+    "kaggle_lb": 0.78306,
+    "corrected_cv_referencia": 0.7772
+  },
+  "integridad_v03": {
+    "ok": true,
+    "n_artefactos": 5,
+    "detalle": [
+      {
+        "ruta": "experiments/baseline_v03_frozen/model_v03.joblib",
+        "estado": "OK",
+        "hash_esperado": "263ed5bd0fc0de7cabfbaa85e88fca6fa65cf0a1b4e60a6e796b5120e26d13ca",
+        "hash_calculado": "263ed5bd0fc0de7cabfbaa85e88fca6fa65cf0a1b4e60a6e796b5120e26d13ca"
+      },
+      {
+        "ruta": "experiments/baseline_v03_frozen/oof_v03_historical.npz",
+        "estado": "OK",
+        "hash_esperado": "cfb393f03b753dd3a2e750aca4bec3bfe80310055ef89581e6b671e7ea8cc896",
+        "hash_calculado": "cfb393f03b753dd3a2e750aca4bec3bfe80310055ef89581e6b671e7ea8cc896"
+      },
+      {
+        "ruta": "experiments/baseline_v03_frozen/submission_v03.csv",
+        "estado": "OK",
+        "hash_esperado": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+        "hash_calculado": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e"
+      },
+      {
+        "ruta": "models/mod03b_lr_union.joblib",
+        "estado": "OK",
+        "hash_esperado": "263ed5bd0fc0de7cabfbaa85e88fca6fa65cf0a1b4e60a6e796b5120e26d13ca",
+        "hash_calculado": "263ed5bd0fc0de7cabfbaa85e88fca6fa65cf0a1b4e60a6e796b5120e26d13ca"
+      },
+      {
+        "ruta": "submissions/toxic_submission_v03_lr_union_thr.csv",
+        "estado": "OK",
+        "hash_esperado": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+        "hash_calculado": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e"
+      }
+    ]
+  },
+  "metrica_referencia": {
+    "ok": true,
+    "n_dev": 1483,
+    "corrected_cv_almacenada": 0.7772114525165721,
+    "corrected_cv_recalculada": 0.7772114525165721,
+    "diferencia": 0.0,
+    "corrected_cv_umbral_0_5": 0.771778476256122,
+    "corrected_cv_umbrales_frozen": 0.7772114525165721,
+    "umbrales": [
+      0.44,
+      0.51,
+      0.46
+    ],
+    "f1_por_etiqueta": {
+      "HS": 0.7616892911010558,
+      "TR": 0.8157303370786517,
+      "AG": 0.7542147293700089
+    },
+    "f1_por_pliegue": [
+      0.7960101143044023,
+      0.7940339497874405,
+      0.7788600288600289,
+      0.738598013128522,
+      0.7790564997088775
+    ],
+    "std_pliegues": 0.023094672193582515,
+    "fuente_oof": "features/v2_oof_base_corrected.npz, modelo 'M2_union_lr_c2' (fila 2 de 4; mismos ids, grupos y pliegues corregidos v2)"
+  },
+  "protocolo": {
+    "ok": true,
+    "n_train": 1731,
+    "n_dev": 1483,
+    "n_holdout": 248,
+    "n_grupos_train": 1645,
+    "n_pliegues_dev": 5,
+    "grupos_compartidos_dev_holdout": 0,
+    "distribucion_combinaciones_dev": {
+      "000": 813,
+      "001": 22,
+      "100": 79,
+      "101": 124,
+      "110": 24,
+      "111": 421
+    },
+    "distribucion_combinaciones_holdout": {
+      "000": 136,
+      "001": 4,
+      "100": 13,
+      "101": 21,
+      "110": 4,
+      "111": 70
+    },
+    "etiquetas": [
+      "HS",
+      "TR",
+      "AG"
+    ]
+  },
+  "presupuesto": {
+    "ok": true,
+    "holdout_evaluaciones_usadas": 4,
+    "holdout_evaluaciones_maximas": 5,
+    "holdout_evaluaciones_restantes": 1,
+    "sondas_lb_registradas": 12,
+    "mejor_lb": 0.78306,
+    "mejor_lb_submission": "v03_lr_union_thr",
+    "politica_v4": "La ultima evaluacion de holdout se reserva para el unico mejor finalista de v4; el envio al leaderboard queda a decision de Carlos solo si el candidato pasa todos los gates (D-025)."
+  },
+  "uso_del_test": "ninguno: el script no lee data/raw/toxic_test.csv",
+  "veredicto": "OK"
+}

@@ -1,0 +1,8 @@
+{
+  "experimento": "V25-01 (Factorization Machine sobre la representacion exacta de V03)",
+  "estado": "PARADA_EL_CONTROL_NO_REPRODUCE_V03",
+  "control": 0.7756521420693052,
+  "v03_esperado": 0.7772114525165721,
+  "sklearn_en_el_mismo_marco": 0.7772114525165721,
+  "diferencia_maxima_de_probabilidad": 0.13991791892116756
+}

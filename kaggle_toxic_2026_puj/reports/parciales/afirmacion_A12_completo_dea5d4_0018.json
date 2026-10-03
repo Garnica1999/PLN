@@ -1,0 +1,19 @@
+{
+  "marca_corrida": "completo_dea5d4",
+  "resultado": {
+    "bloque": 12,
+    "coste_segundos": 0.000127,
+    "descripcion": "las cuatro medidas de complementariedad contra V03",
+    "detalle": {
+      "error_mensaje": "A12: comprobaciones falsas ['M1_tiene_acuerdo_con_v03', 'M1_tiene_auc_del_error_de_v03', 'M1_tiene_diferencias_por_etiqueta', 'M2_tiene_acuerdo_con_v03', 'M2_tiene_auc_del_error_de_v03', 'M2_tiene_diferencias_por_etiqueta', 'ninguna_medida_falta']",
+      "error_tipo": "AssertionError"
+    },
+    "estado": "ERROR",
+    "exito": false,
+    "id": "A12",
+    "naturaleza": "CONFIRMAR",
+    "stop": false,
+    "tolerancia": "cuatro medidas por brazo, todas no vacias",
+    "traza": "AssertionError: A12: comprobaciones falsas ['M1_tiene_acuerdo_con_v03', 'M1_tiene_auc_del_error_de_v03', 'M1_tiene_diferencias_por_etiqueta', 'M2_tiene_acuerdo_con_v03', 'M2_tiene_auc_del_error_de_v03', 'M2_tiene_diferencias_por_etiqueta', 'ninguna_medida_falta'] @ evaluar:1370 | <lambda>:7401 | afirmacion_a12:3521 | todo_verdadero:1252"
+  }
+}

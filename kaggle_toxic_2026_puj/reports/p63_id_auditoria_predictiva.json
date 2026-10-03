@@ -1,0 +1,93 @@
+{
+  "familia": "P63_ID_AUDITORIA_PREDICTIVA",
+  "naturaleza": "EXPERIMENTO. 2 brazos reales y 2 controles, 0 submissions, 0 Kaggle, 0 holdout, 0 test, 0 leaderboard",
+  "fecha": "2026-09-29T06:17:01+00:00",
+  "experiment_id": "P63-02",
+  "track": "A-id-predictivo",
+  "script": "experiments/p63_03_id_auditoria_predictiva.py",
+  "pregunta": "el indice de coleccion porta senal especifica, o es capacidad y ruido",
+  "por_que_tres_controles": "un modelo que lee el indice seria el positivo mas facil de falsificar del proyecto, y por una razon estructural: si el corpus se assemblo en bloques y las etiquetas derivan entre bloques por motivos que no tienen que ver con el texto, el modelo lee el orden de ensamblado, brilla en validacion cruzada y muere en el leaderboard",
+  "controles": {
+    "capacidad": "21 rasgos aleatorios de la misma dimension y el mismo escalado, generados por pliegue",
+    "permutacion": "20 permutaciones de las etiquetas, que destruyen cualquier relacion id-etiqueta y conservan la distribucion de ids y las tasas marginales",
+    "segunda_particion": "NO se ejecuta. El encargo prohibe usar el holdout durante la exploracion, y esto sigue siendo exploracion. Se reserva para un finalista"
+  },
+  "parametros_del_bloque": {
+    "bins": 10,
+    "modulos": [
+      2,
+      3,
+      5,
+      7,
+      11,
+      13,
+      17,
+      19,
+      23,
+      29
+    ],
+    "n_columnas": 21,
+    "declarados_antes": true
+  },
+  "lo_no_usado": [
+    "el id crudo como categoria",
+    "millones de cubos",
+    "target encoding",
+    "label lookup"
+  ],
+  "resultados": {
+    "id_solo": {
+      "corrected_cv": 0.4191359898217959,
+      "folds": [
+        0.38967055593685657,
+        0.4455487640943753,
+        0.416905830171336,
+        0.42373649000945585,
+        0.42060969153740696
+      ],
+      "n_predichos": 2179
+    },
+    "random_solo": {
+      "corrected_cv": 0.424038300004274,
+      "folds": [
+        0.4117020605572274,
+        0.42881000562883337,
+        0.40820569152346725,
+        0.4127579390390832,
+        0.45996929200825387
+      ],
+      "n_predichos": 2202
+    }
+  },
+  "permutaciones": {
+    "id_solo": {
+      "media": 0.41877046,
+      "min": 0.3919046168,
+      "max": 0.4379545936,
+      "n": 20
+    },
+    "random_solo": {
+      "media": 0.4192740806,
+      "min": 0.4021571286,
+      "max": 0.4328686943,
+      "n": 20
+    }
+  },
+  "brecha_contra_capacidad": -0.0049023102,
+  "exceso_contra_el_maximo_permutado": -0.0188186038,
+  "delta_vs_V03": -0.3580754627,
+  "gate_de_la_fase": 0.0015,
+  "nota_sobre_el_gate": "el id va solo, luego no PUEDE alcanzar el gate de la fase ni aunque fuera perfecto, porque compite contra un modelo que tiene todo el texto. Su valor es diagnnstico: dice si la estructura del indice contiene informacion de etiqueta",
+  "hay_senal_especifica": false,
+  "veredicto": "El control de capacidad iguala o supera al bloque id, con brecha -0.0049023102, luego no hay senal especifica y solo capacidad. el brazo real no supera el maximo de las permutaciones, luego parte de lo que parecio senal era ruido. El id queda CLOSED como predictor: lo que parecia estructura se disuelve en capacidad y permutacion, que es justo lo que se esperaba de un indice de coleccion cuyo unico contenu es la posicion en un ensamblado",
+  "decision": "CLOSED. El indice de coleccion no aporta senal especifica",
+  "experimentos_registrados": 1,
+  "reproducibilidad": {
+    "nivel": "R2",
+    "git_commit": "81d6e58",
+    "seed": 42,
+    "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "corrected_cv": 0.7772114525165721
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

@@ -1,0 +1,30 @@
+{
+  "marca_corrida": "completo_a7eac4",
+  "resultado": {
+    "bloque": 7,
+    "coste_segundos": 1.5e-05,
+    "descripcion": "M2 es exacto y coincide con un segundo camino de calculo",
+    "detalle": {
+      "camino_1": "forma cerrada, log-odds de la diferencia de log-likelihoods y sigmoide",
+      "camino_2": "recuento explicito con bincount sobre los no nulos y normalizacion con logaddexp",
+      "comprobaciones": {
+        "el_control_abarco_filas_reales": true,
+        "el_segundo_camino_se_ejecuto_de_verdad": true,
+        "la_diferencia_maxima_no_supera_1e_12": true
+      },
+      "diferencia_maxima_absoluta": 2.6867397195928788e-14,
+      "motivo_de_parada": "la cuenta cerrada de M2 no se reproduce y no se puede confiar en la aritmetica del brazo de referencia",
+      "n_ejecuciones_del_control": 15,
+      "n_filas_comparadas": 4449,
+      "por_que_una_tolerancia_tan_estrecha_es_razonable": "las dos cuentas son cerradas en aritmetica de punto flotante, luego la diferencia tiene que ser del orden del epsilon de la maquina",
+      "tolerancia": 1e-12
+    },
+    "estado": "CONFIRMADO",
+    "exito": true,
+    "id": "A7",
+    "naturaleza": "CONFIRMAR",
+    "stop": true,
+    "tolerancia": "1e-12 en la mayor diferencia absoluta entre los dos caminos",
+    "traza": ""
+  }
+}

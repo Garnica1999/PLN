@@ -1,0 +1,78 @@
+{
+  "familia": "P71_TWITTER_WORD2VEC",
+  "experiment_id": "P71-04",
+  "fase": "P1b entrenamiento",
+  "fecha": "2026-09-30T01:05:34+00:00",
+  "implementacion": {
+    "que": "skip-gram con negative sampling, implementado desde cero en PyTorch",
+    "por_que_no_gensim": "gensim no compila en Python 3.14: su Cython genera C contra PyDictObject.ma_version_tag, eliminado en esa version. Se intento y fallo",
+    "respaldo_documentado": "la spec de v5 preveia 'PyTorch solo como respaldo/control'",
+    "device": "AMD Radeon RX 9070 XT"
+  },
+  "configuracion": {
+    "vector_size": 200,
+    "window": 5,
+    "min_count": 3,
+    "negative": 10,
+    "sample": 0.0001,
+    "epochs": 5,
+    "sg": 1,
+    "seed": 20261016,
+    "lote": 8192,
+    "lr": 0.025
+  },
+  "corpus_twitter": {
+    "etiqueta": "twitter",
+    "corpus": "data/external/corpora/twitter_domain/corpus_twitter_tokens.txt",
+    "documentos": 361994,
+    "tokens": 10000029,
+    "vocabulario": 77657,
+    "cobertura_tokens": 0.982176,
+    "loss_por_epoca": [
+      1.706327,
+      1.81141,
+      1.841703,
+      1.865799,
+      1.88408
+    ],
+    "segundos": 290.4,
+    "modelo": "modelos/twitter_domain/w2v_twitter.npz",
+    "sha256_modelo": "1d79156f25f26265750a1bf08ab6e21b0a5e763ec20b930759165ae8a1fb1566"
+  },
+  "corpus_general": {
+    "etiqueta": "general",
+    "corpus": "data/external/corpora/twitter_domain/corpus_general_tokens.txt",
+    "documentos": 2847,
+    "tokens": 10002400,
+    "vocabulario": 100097,
+    "cobertura_tokens": 0.978956,
+    "loss_por_epoca": [
+      1.887839,
+      2.068209,
+      2.125895,
+      2.163865,
+      2.189914
+    ],
+    "segundos": 430.2,
+    "modelo": "modelos/twitter_domain/w2v_general.npz",
+    "sha256_modelo": "5679b67d11dcf19221f67da5e5878a2d69c22c133b4daa639989a07327441826"
+  },
+  "cobertura_sobre_toxic": {
+    "twitter": {
+      "cobertura_toxic": 0.682304,
+      "oov": 0.317696,
+      "tipos_cubiertos": 3572
+    },
+    "general": {
+      "cobertura_toxic": 0.654846,
+      "oov": 0.345154,
+      "tipos_cubiertos": 3140
+    }
+  },
+  "reproducibilidad": {
+    "nivel": "R2",
+    "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "corrected_cv_v03": 0.7772114525165721
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

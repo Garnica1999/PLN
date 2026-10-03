@@ -1,0 +1,879 @@
+{
+  "experimento": "V10-09 (correlacion entre caracteristicas y con la etiqueta)",
+  "fecha": "2026-09-26T08:14:40+00:00",
+  "distincion_con_la_fase_v8": "La linea de la fase v8 colapso 20.870 rasgos a 251 por magnitud y redundancia, y concluyo que la seleccion por correlacion estaba descartada de raiz. Eso no permite concluir nada sobre quitar UNA de cada par, que es lo que se mide aqui.",
+  "protocolo": "La estructura de correlacion y el AUC de cada caracteristica se calculan dentro de cada pliegue de entrenamiento, y la eliminacion se aplica a las filas del pliegue de validacion. La matriz de correlacion completa no se materializa: se recorre la triangular superior en bloques de 1024 filas.",
+  "bloque_a_estructura": {
+    "caracteristicas": 20441,
+    "correlacion_maxima_mediana": 0.170424,
+    "correlacion_maxima_p90": 0.335791,
+    "correlacion_maxima_maxima": 1.0,
+    "fraccion_sin_correlacion_alta": 0.997847,
+    "pares_por_umbral": {
+      "0.9": 1203,
+      "0.95": 973,
+      "0.99": 835
+    }
+  },
+  "bloque_b_etiqueta": {
+    "HS": {
+      "auc_mediano": 0.513269,
+      "auc_maximo": 0.671682,
+      "fraccion_fuera_de_045_055": 0.002886
+    },
+    "TR": {
+      "auc_mediano": 0.519806,
+      "auc_maximo": 0.756853,
+      "fraccion_fuera_de_045_055": 0.007974
+    },
+    "AG": {
+      "auc_mediano": 0.514686,
+      "auc_maximo": 0.684399,
+      "fraccion_fuera_de_045_055": 0.003522
+    }
+  },
+  "bloque_c_eliminacion": {
+    "sin_eliminar": {
+      "metrica_media": 0.77591,
+      "metrica_peor": 0.772021,
+      "dispersion": 0.003365,
+      "detalle": [
+        {
+          "semilla": 42,
+          "metrica": 0.777211,
+          "caracteristicas_conservadas": 20441,
+          "f1_por_etiqueta": {
+            "HS": 0.761689,
+            "TR": 0.81573,
+            "AG": 0.754215
+          }
+        },
+        {
+          "semilla": 7,
+          "metrica": 0.772647,
+          "caracteristicas_conservadas": 20441,
+          "f1_por_etiqueta": {
+            "HS": 0.760542,
+            "TR": 0.80452,
+            "AG": 0.752879
+          }
+        },
+        {
+          "semilla": 123,
+          "metrica": 0.772021,
+          "caracteristicas_conservadas": 20441,
+          "f1_por_etiqueta": {
+            "HS": 0.763744,
+            "TR": 0.807564,
+            "AG": 0.744755
+          }
+        },
+        {
+          "semilla": 2024,
+          "metrica": 0.778237,
+          "caracteristicas_conservadas": 20441,
+          "f1_por_etiqueta": {
+            "HS": 0.764095,
+            "TR": 0.817778,
+            "AG": 0.752838
+          }
+        },
+        {
+          "semilla": 5150,
+          "metrica": 0.779432,
+          "caracteristicas_conservadas": 20441,
+          "f1_por_etiqueta": {
+            "HS": 0.760918,
+            "TR": 0.815642,
+            "AG": 0.761736
+          }
+        }
+      ],
+      "reduccion_de_dimension": []
+    },
+    "0.9": {
+      "metrica_media": 0.745284,
+      "metrica_peor": 0.741419,
+      "dispersion": 0.002863,
+      "detalle": [
+        {
+          "semilla": 42,
+          "metrica": 0.745816,
+          "caracteristicas_conservadas": 20158,
+          "f1_por_etiqueta": {
+            "HS": 0.742055,
+            "TR": 0.775604,
+            "AG": 0.71979
+          }
+        },
+        {
+          "semilla": 7,
+          "metrica": 0.746255,
+          "caracteristicas_conservadas": 20322,
+          "f1_por_etiqueta": {
+            "HS": 0.731744,
+            "TR": 0.779429,
+            "AG": 0.727592
+          }
+        },
+        {
+          "semilla": 123,
+          "metrica": 0.749095,
+          "caracteristicas_conservadas": 20753,
+          "f1_por_etiqueta": {
+            "HS": 0.744322,
+            "TR": 0.774266,
+            "AG": 0.728696
+          }
+        },
+        {
+          "semilla": 2024,
+          "metrica": 0.743837,
+          "caracteristicas_conservadas": 20646,
+          "f1_por_etiqueta": {
+            "HS": 0.739385,
+            "TR": 0.769759,
+            "AG": 0.722367
+          }
+        },
+        {
+          "semilla": 5150,
+          "metrica": 0.741419,
+          "caracteristicas_conservadas": 20642,
+          "f1_por_etiqueta": {
+            "HS": 0.734455,
+            "TR": 0.770642,
+            "AG": 0.71916
+          }
+        }
+      ],
+      "reduccion_de_dimension": [
+        {
+          "pliegue_0": 0,
+          "caracteristicas_conservadas": 20158,
+          "caracteristicas_eliminadas": 283,
+          "fraccion_eliminada": 0.013845
+        },
+        {
+          "pliegue_0": 0,
+          "caracteristicas_conservadas": 20322,
+          "caracteristicas_eliminadas": 257,
+          "fraccion_eliminada": 0.012488
+        },
+        {
+          "pliegue_0": 0,
+          "caracteristicas_conservadas": 20753,
+          "caracteristicas_eliminadas": 282,
+          "fraccion_eliminada": 0.013406
+        },
+        {
+          "pliegue_0": 0,
+          "caracteristicas_conservadas": 20646,
+          "caracteristicas_eliminadas": 287,
+          "fraccion_eliminada": 0.01371
+        },
+        {
+          "pliegue_0": 0,
+          "caracteristicas_conservadas": 20642,
+          "caracteristicas_eliminadas": 285,
+          "fraccion_eliminada": 0.013619
+        }
+      ],
+      "delta_por_semilla": {
+        "42": -0.031395,
+        "7": -0.026392,
+        "123": -0.022926,
+        "2024": -0.0344,
+        "5150": -0.038013
+      },
+      "particiones_que_mejoran": 0
+    },
+    "0.95": {
+      "metrica_media": 0.748249,
+      "metrica_peor": 0.742486,
+      "dispersion": 0.003627,
+      "detalle": [
+        {
+          "semilla": 42,
+          "metrica": 0.74968,
+          "caracteristicas_conservadas": 20226,
+          "f1_por_etiqueta": {
+            "HS": 0.740851,
+            "TR": 0.784897,
+            "AG": 0.723292
+          }
+        },
+        {
+          "semilla": 7,
+          "metrica": 0.748587,
+          "caracteristicas_conservadas": 20379,
+          "f1_por_etiqueta": {
+            "HS": 0.737952,
+            "TR": 0.781818,
+            "AG": 0.725991
+          }
+        },
+        {
+          "semilla": 123,
+          "metrica": 0.7524,
+          "caracteristicas_conservadas": 20808,
+          "f1_por_etiqueta": {
+            "HS": 0.747237,
+            "TR": 0.78427,
+            "AG": 0.725694
+          }
+        },
+        {
+          "semilla": 2024,
+          "metrica": 0.742486,
+          "caracteristicas_conservadas": 20726,
+          "f1_por_etiqueta": {
+            "HS": 0.733432,
+            "TR": 0.77639,
+            "AG": 0.717637
+          }
+        },
+        {
+          "semilla": 5150,
+          "metrica": 0.748094,
+          "caracteristicas_conservadas": 20699,
+          "f1_por_etiqueta": {
+            "HS": 0.741606,
+            "TR": 0.775882,
+            "AG": 0.726795
+          }
+        }
+      ],
+      "reduccion_de_dimension": [
+        {
+          "pliegue_0": 0,
+          "caracteristicas_conservadas": 20226,
+          "caracteristicas_eliminadas": 215,
+          "fraccion_eliminada": 0.010518
+        },
+        {
+          "pliegue_0": 0,
+          "caracteristicas_conservadas": 20379,
+          "caracteristicas_eliminadas": 200,
+          "fraccion_eliminada": 0.009719
+        },
+        {
+          "pliegue_0": 0,
+          "caracteristicas_conservadas": 20808,
+          "caracteristicas_eliminadas": 227,
+          "fraccion_eliminada": 0.010792
+        },
+        {
+          "pliegue_0": 0,
+          "caracteristicas_conservadas": 20726,
+          "caracteristicas_eliminadas": 207,
+          "fraccion_eliminada": 0.009889
+        },
+        {
+          "pliegue_0": 0,
+          "caracteristicas_conservadas": 20699,
+          "caracteristicas_eliminadas": 228,
+          "fraccion_eliminada": 0.010895
+        }
+      ],
+      "delta_por_semilla": {
+        "42": -0.027531,
+        "7": -0.02406,
+        "123": -0.019621,
+        "2024": -0.035751,
+        "5150": -0.031338
+      },
+      "particiones_que_mejoran": 0
+    },
+    "0.99": {
+      "metrica_media": 0.748781,
+      "metrica_peor": 0.746166,
+      "dispersion": 0.002522,
+      "detalle": [
+        {
+          "semilla": 42,
+          "metrica": 0.751787,
+          "caracteristicas_conservadas": 20249,
+          "f1_por_etiqueta": {
+            "HS": 0.740134,
+            "TR": 0.785877,
+            "AG": 0.72935
+          }
+        },
+        {
+          "semilla": 7,
+          "metrica": 0.746166,
+          "caracteristicas_conservadas": 20404,
+          "f1_por_etiqueta": {
+            "HS": 0.735184,
+            "TR": 0.777651,
+            "AG": 0.725664
+          }
+        },
+        {
+          "semilla": 123,
+          "metrica": 0.750377,
+          "caracteristicas_conservadas": 20849,
+          "f1_por_etiqueta": {
+            "HS": 0.745387,
+            "TR": 0.782413,
+            "AG": 0.72333
+          }
+        },
+        {
+          "semilla": 2024,
+          "metrica": 0.7462,
+          "caracteristicas_conservadas": 20742,
+          "f1_por_etiqueta": {
+            "HS": 0.73692,
+            "TR": 0.781818,
+            "AG": 0.719861
+          }
+        },
+        {
+          "semilla": 5150,
+          "metrica": 0.749374,
+          "caracteristicas_conservadas": 20740,
+          "f1_por_etiqueta": {
+            "HS": 0.740687,
+            "TR": 0.777778,
+            "AG": 0.729659
+          }
+        }
+      ],
+      "reduccion_de_dimension": [
+        {
+          "pliegue_0": 0,
+          "caracteristicas_conservadas": 20249,
+          "caracteristicas_eliminadas": 192,
+          "fraccion_eliminada": 0.009393
+        },
+        {
+          "pliegue_0": 0,
+          "caracteristicas_conservadas": 20404,
+          "caracteristicas_eliminadas": 175,
+          "fraccion_eliminada": 0.008504
+        },
+        {
+          "pliegue_0": 0,
+          "caracteristicas_conservadas": 20849,
+          "caracteristicas_eliminadas": 186,
+          "fraccion_eliminada": 0.008842
+        },
+        {
+          "pliegue_0": 0,
+          "caracteristicas_conservadas": 20742,
+          "caracteristicas_eliminadas": 191,
+          "fraccion_eliminada": 0.009124
+        },
+        {
+          "pliegue_0": 0,
+          "caracteristicas_conservadas": 20740,
+          "caracteristicas_eliminadas": 187,
+          "fraccion_eliminada": 0.008936
+        }
+      ],
+      "delta_por_semilla": {
+        "42": -0.025424,
+        "7": -0.026481,
+        "123": -0.021644,
+        "2024": -0.032037,
+        "5150": -0.030058
+      },
+      "particiones_que_mejoran": 0
+    }
+  },
+  "deltas_por_umbral": {
+    "0.9": -0.030626,
+    "0.95": -0.027661,
+    "0.99": -0.027129
+  },
+  "gate_c_de_mejora": {
+    "mejor_umbral": "0.99",
+    "delta_medio_al_menos_0.002": false,
+    "al_menos_4_de_5_particiones": false,
+    "superado": false
+  },
+  "top_caracteristicas_por_etiqueta": [
+    {
+      "etiqueta": "HS",
+      "puesto": 1,
+      "caracteristica": "rra",
+      "auc": 0.671682,
+      "fuerza": 0.171682,
+      "correlacion_maxima_con_otra": 0.86459
+    },
+    {
+      "etiqueta": "HS",
+      "puesto": 2,
+      "caracteristica": "rra ",
+      "auc": 0.651894,
+      "fuerza": 0.151894,
+      "correlacion_maxima_con_otra": 0.425895
+    },
+    {
+      "etiqueta": "HS",
+      "puesto": 3,
+      "caracteristica": "ra ",
+      "auc": 0.628853,
+      "fuerza": 0.128853,
+      "correlacion_maxima_con_otra": 0.732452
+    },
+    {
+      "etiqueta": "HS",
+      "puesto": 4,
+      "caracteristica": "erra",
+      "auc": 0.609444,
+      "fuerza": 0.109444,
+      "correlacion_maxima_con_otra": 0.864221
+    },
+    {
+      "etiqueta": "HS",
+      "puesto": 5,
+      "caracteristica": " de",
+      "auc": 0.393318,
+      "fuerza": 0.106682,
+      "correlacion_maxima_con_otra": 0.813524
+    },
+    {
+      "etiqueta": "HS",
+      "puesto": 6,
+      "caracteristica": "perra",
+      "auc": 0.605827,
+      "fuerza": 0.105827,
+      "correlacion_maxima_con_otra": 0.832398
+    },
+    {
+      "etiqueta": "HS",
+      "puesto": 7,
+      "caracteristica": "perra",
+      "auc": 0.604513,
+      "fuerza": 0.104513,
+      "correlacion_maxima_con_otra": 0.713863
+    },
+    {
+      "etiqueta": "HS",
+      "puesto": 8,
+      "caracteristica": "err",
+      "auc": 0.601959,
+      "fuerza": 0.101959,
+      "correlacion_maxima_con_otra": 0.852006
+    },
+    {
+      "etiqueta": "HS",
+      "puesto": 9,
+      "caracteristica": "de",
+      "auc": 0.39857,
+      "fuerza": 0.10143,
+      "correlacion_maxima_con_otra": 1.0
+    },
+    {
+      "etiqueta": "HS",
+      "puesto": 10,
+      "caracteristica": "perr",
+      "auc": 0.601208,
+      "fuerza": 0.101208,
+      "correlacion_maxima_con_otra": 0.863021
+    },
+    {
+      "etiqueta": "HS",
+      "puesto": 11,
+      "caracteristica": " de ",
+      "auc": 0.399,
+      "fuerza": 0.101,
+      "correlacion_maxima_con_otra": 0.868441
+    },
+    {
+      "etiqueta": "HS",
+      "puesto": 12,
+      "caracteristica": " perr",
+      "auc": 0.599287,
+      "fuerza": 0.099287,
+      "correlacion_maxima_con_otra": 0.883861
+    },
+    {
+      "etiqueta": "HS",
+      "puesto": 13,
+      "caracteristica": "de ",
+      "auc": 0.401074,
+      "fuerza": 0.098926,
+      "correlacion_maxima_con_otra": 0.471639
+    },
+    {
+      "etiqueta": "HS",
+      "puesto": 14,
+      "caracteristica": "erra ",
+      "auc": 0.597167,
+      "fuerza": 0.097167,
+      "correlacion_maxima_con_otra": 0.829333
+    },
+    {
+      "etiqueta": "HS",
+      "puesto": 15,
+      "caracteristica": "ate",
+      "auc": 0.596393,
+      "fuerza": 0.096393,
+      "correlacion_maxima_con_otra": 0.879939
+    },
+    {
+      "etiqueta": "HS",
+      "puesto": 16,
+      "caracteristica": " per",
+      "auc": 0.594968,
+      "fuerza": 0.094968,
+      "correlacion_maxima_con_otra": 0.858897
+    },
+    {
+      "etiqueta": "HS",
+      "puesto": 17,
+      "caracteristica": "lat",
+      "auc": 0.593227,
+      "fuerza": 0.093227,
+      "correlacion_maxima_con_otra": 0.90666
+    },
+    {
+      "etiqueta": "HS",
+      "puesto": 18,
+      "caracteristica": " pe",
+      "auc": 0.589786,
+      "fuerza": 0.089786,
+      "correlacion_maxima_con_otra": 0.811367
+    },
+    {
+      "etiqueta": "HS",
+      "puesto": 19,
+      "caracteristica": "per",
+      "auc": 0.589691,
+      "fuerza": 0.089691,
+      "correlacion_maxima_con_otra": 0.752507
+    },
+    {
+      "etiqueta": "HS",
+      "puesto": 20,
+      "caracteristica": "lla",
+      "auc": 0.586834,
+      "fuerza": 0.086834,
+      "correlacion_maxima_con_otra": 0.78455
+    },
+    {
+      "etiqueta": "TR",
+      "puesto": 1,
+      "caracteristica": "rra",
+      "auc": 0.756853,
+      "fuerza": 0.256853,
+      "correlacion_maxima_con_otra": 0.86459
+    },
+    {
+      "etiqueta": "TR",
+      "puesto": 2,
+      "caracteristica": "rra ",
+      "auc": 0.73039,
+      "fuerza": 0.23039,
+      "correlacion_maxima_con_otra": 0.425895
+    },
+    {
+      "etiqueta": "TR",
+      "puesto": 3,
+      "caracteristica": "ra ",
+      "auc": 0.682656,
+      "fuerza": 0.182656,
+      "correlacion_maxima_con_otra": 0.732452
+    },
+    {
+      "etiqueta": "TR",
+      "puesto": 4,
+      "caracteristica": "ate",
+      "auc": 0.680855,
+      "fuerza": 0.180855,
+      "correlacion_maxima_con_otra": 0.879939
+    },
+    {
+      "etiqueta": "TR",
+      "puesto": 5,
+      "caracteristica": "te ",
+      "auc": 0.678003,
+      "fuerza": 0.178003,
+      "correlacion_maxima_con_otra": 0.453317
+    },
+    {
+      "etiqueta": "TR",
+      "puesto": 6,
+      "caracteristica": "lat",
+      "auc": 0.677442,
+      "fuerza": 0.177442,
+      "correlacion_maxima_con_otra": 0.90666
+    },
+    {
+      "etiqueta": "TR",
+      "puesto": 7,
+      "caracteristica": "llate",
+      "auc": 0.675442,
+      "fuerza": 0.175442,
+      "correlacion_maxima_con_otra": 0.737635
+    },
+    {
+      "etiqueta": "TR",
+      "puesto": 8,
+      "caracteristica": "llat",
+      "auc": 0.675442,
+      "fuerza": 0.175442,
+      "correlacion_maxima_con_otra": 0.913322
+    },
+    {
+      "etiqueta": "TR",
+      "puesto": 9,
+      "caracteristica": "late",
+      "auc": 0.675442,
+      "fuerza": 0.175442,
+      "correlacion_maxima_con_otra": 0.913322
+    },
+    {
+      "etiqueta": "TR",
+      "puesto": 10,
+      "caracteristica": "ate ",
+      "auc": 0.675307,
+      "fuerza": 0.175307,
+      "correlacion_maxima_con_otra": 0.892194
+    },
+    {
+      "etiqueta": "TR",
+      "puesto": 11,
+      "caracteristica": "late ",
+      "auc": 0.668066,
+      "fuerza": 0.168066,
+      "correlacion_maxima_con_otra": 0.897962
+    },
+    {
+      "etiqueta": "TR",
+      "puesto": 12,
+      "caracteristica": "lla",
+      "auc": 0.666548,
+      "fuerza": 0.166548,
+      "correlacion_maxima_con_otra": 0.78455
+    },
+    {
+      "etiqueta": "TR",
+      "puesto": 13,
+      "caracteristica": "perra",
+      "auc": 0.664883,
+      "fuerza": 0.164883,
+      "correlacion_maxima_con_otra": 0.832398
+    },
+    {
+      "etiqueta": "TR",
+      "puesto": 14,
+      "caracteristica": "perra",
+      "auc": 0.663193,
+      "fuerza": 0.163193,
+      "correlacion_maxima_con_otra": 0.713863
+    },
+    {
+      "etiqueta": "TR",
+      "puesto": 15,
+      "caracteristica": "perr",
+      "auc": 0.660169,
+      "fuerza": 0.160169,
+      "correlacion_maxima_con_otra": 0.863021
+    },
+    {
+      "etiqueta": "TR",
+      "puesto": 16,
+      "caracteristica": "erra",
+      "auc": 0.658084,
+      "fuerza": 0.158084,
+      "correlacion_maxima_con_otra": 0.864221
+    },
+    {
+      "etiqueta": "TR",
+      "puesto": 17,
+      "caracteristica": " de",
+      "auc": 0.342365,
+      "fuerza": 0.157635,
+      "correlacion_maxima_con_otra": 0.813524
+    },
+    {
+      "etiqueta": "TR",
+      "puesto": 18,
+      "caracteristica": " perr",
+      "auc": 0.657402,
+      "fuerza": 0.157402,
+      "correlacion_maxima_con_otra": 0.883861
+    },
+    {
+      "etiqueta": "TR",
+      "puesto": 19,
+      "caracteristica": "de",
+      "auc": 0.344028,
+      "fuerza": 0.155972,
+      "correlacion_maxima_con_otra": 1.0
+    },
+    {
+      "etiqueta": "TR",
+      "puesto": 20,
+      "caracteristica": "err",
+      "auc": 0.652685,
+      "fuerza": 0.152685,
+      "correlacion_maxima_con_otra": 0.852006
+    },
+    {
+      "etiqueta": "AG",
+      "puesto": 1,
+      "caracteristica": "rra",
+      "auc": 0.684399,
+      "fuerza": 0.184399,
+      "correlacion_maxima_con_otra": 0.86459
+    },
+    {
+      "etiqueta": "AG",
+      "puesto": 2,
+      "caracteristica": "rra ",
+      "auc": 0.662926,
+      "fuerza": 0.162926,
+      "correlacion_maxima_con_otra": 0.425895
+    },
+    {
+      "etiqueta": "AG",
+      "puesto": 3,
+      "caracteristica": "ra ",
+      "auc": 0.639505,
+      "fuerza": 0.139505,
+      "correlacion_maxima_con_otra": 0.732452
+    },
+    {
+      "etiqueta": "AG",
+      "puesto": 4,
+      "caracteristica": "ate",
+      "auc": 0.627898,
+      "fuerza": 0.127898,
+      "correlacion_maxima_con_otra": 0.879939
+    },
+    {
+      "etiqueta": "AG",
+      "puesto": 5,
+      "caracteristica": "lat",
+      "auc": 0.620902,
+      "fuerza": 0.120902,
+      "correlacion_maxima_con_otra": 0.90666
+    },
+    {
+      "etiqueta": "AG",
+      "puesto": 6,
+      "caracteristica": "ate ",
+      "auc": 0.614921,
+      "fuerza": 0.114921,
+      "correlacion_maxima_con_otra": 0.892194
+    },
+    {
+      "etiqueta": "AG",
+      "puesto": 7,
+      "caracteristica": "perra",
+      "auc": 0.613656,
+      "fuerza": 0.113656,
+      "correlacion_maxima_con_otra": 0.832398
+    },
+    {
+      "etiqueta": "AG",
+      "puesto": 8,
+      "caracteristica": "late",
+      "auc": 0.612178,
+      "fuerza": 0.112178,
+      "correlacion_maxima_con_otra": 0.913322
+    },
+    {
+      "etiqueta": "AG",
+      "puesto": 9,
+      "caracteristica": "llat",
+      "auc": 0.612178,
+      "fuerza": 0.112178,
+      "correlacion_maxima_con_otra": 0.913322
+    },
+    {
+      "etiqueta": "AG",
+      "puesto": 10,
+      "caracteristica": "llate",
+      "auc": 0.612178,
+      "fuerza": 0.112178,
+      "correlacion_maxima_con_otra": 0.737635
+    },
+    {
+      "etiqueta": "AG",
+      "puesto": 11,
+      "caracteristica": "perra",
+      "auc": 0.611985,
+      "fuerza": 0.111985,
+      "correlacion_maxima_con_otra": 0.713863
+    },
+    {
+      "etiqueta": "AG",
+      "puesto": 12,
+      "caracteristica": "erra",
+      "auc": 0.611795,
+      "fuerza": 0.111795,
+      "correlacion_maxima_con_otra": 0.864221
+    },
+    {
+      "etiqueta": "AG",
+      "puesto": 13,
+      "caracteristica": "lla",
+      "auc": 0.611054,
+      "fuerza": 0.111054,
+      "correlacion_maxima_con_otra": 0.78455
+    },
+    {
+      "etiqueta": "AG",
+      "puesto": 14,
+      "caracteristica": "te ",
+      "auc": 0.610934,
+      "fuerza": 0.110934,
+      "correlacion_maxima_con_otra": 0.453317
+    },
+    {
+      "etiqueta": "AG",
+      "puesto": 15,
+      "caracteristica": "perr",
+      "auc": 0.609404,
+      "fuerza": 0.109404,
+      "correlacion_maxima_con_otra": 0.863021
+    },
+    {
+      "etiqueta": "AG",
+      "puesto": 16,
+      "caracteristica": " perr",
+      "auc": 0.607209,
+      "fuerza": 0.107209,
+      "correlacion_maxima_con_otra": 0.883861
+    },
+    {
+      "etiqueta": "AG",
+      "puesto": 17,
+      "caracteristica": "late ",
+      "auc": 0.607178,
+      "fuerza": 0.107178,
+      "correlacion_maxima_con_otra": 0.897962
+    },
+    {
+      "etiqueta": "AG",
+      "puesto": 18,
+      "caracteristica": " de",
+      "auc": 0.39614,
+      "fuerza": 0.10386,
+      "correlacion_maxima_con_otra": 0.813524
+    },
+    {
+      "etiqueta": "AG",
+      "puesto": 19,
+      "caracteristica": "err",
+      "auc": 0.603483,
+      "fuerza": 0.103483,
+      "correlacion_maxima_con_otra": 0.852006
+    },
+    {
+      "etiqueta": "AG",
+      "puesto": 20,
+      "caracteristica": "erra ",
+      "auc": 0.601098,
+      "fuerza": 0.101098,
+      "correlacion_maxima_con_otra": 0.829333
+    }
+  ]
+}

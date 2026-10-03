@@ -1,0 +1,12 @@
+{
+  "autorizado_por_una_persona": true,
+  "ejecutar_tramo_2": true,
+  "hito_observado": 3730.334861,
+  "hito_segundos": 2400,
+  "la_condicion_del_reloj_se_cumplio": true,
+  "motivo": "el hito se paso y la condicion del reloj habria saltado el tramo 2, pero una persona lo autorizo explicitamente con la bandera, luego se ejecuta",
+  "nota_tramo2": "TRAMO_2_EJECUTADO_CON_EXCEDENCIA_AUTORIZADA: el presupuesto de 5400 s se supero, el hito observado de 3730.335 s paso el hito de 2400 s, y el tramo 2 SE EJECUTO porque una persona lo autorizo de forma explicita; la excedencia queda declarada y no fue unnoticed",
+  "presupuesto_segundos": 5400,
+  "proyecta_superar_el_presupuesto": true,
+  "se_paso_el_hito": true
+}

@@ -1,0 +1,5 @@
+tipo_de_cambio,celdas,cambio_neto
+FN->TP,9,9
+TN->FP,11,-11
+TP->FN,0,0
+FP->TN,0,0

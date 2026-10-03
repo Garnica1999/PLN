@@ -1,0 +1,804 @@
+{
+  "experiment_id": "E-CORP-01",
+  "fase": "P1 - corpus 10M (Wikipedia ES) y cobertura TOXIC",
+  "fecha": "2026-09-25T21:50:04+00:00",
+  "duracion_s": 51.8,
+  "descarga": {
+    "archivo": "eswiki-latest-pages-articles-multistream1.xml-p1p159400.bz2",
+    "url": "https://dumps.wikimedia.org/eswiki/latest/eswiki-latest-pages-articles-multistream1.xml-p1p159400.bz2",
+    "bytes": 320394578,
+    "sha256": "3248f107590e6a00e458fdce09616bb22726d78fe3f40106f5a1a7b05d50dabc",
+    "descargado_en_esta_ejecucion": false,
+    "fecha_consulta": "2026-09-25"
+  },
+  "corpus": {
+    "documentos": 2847,
+    "tokens": 10002400,
+    "tipos": 271209,
+    "articulos_leidos": 2855,
+    "duplicados": 0,
+    "cortos": 8,
+    "sin_texto_util": 0,
+    "shards": [
+      "data/external/corpora/wikipedia_es/emb_normal/tokens_shard_00.txt",
+      "data/external/corpora/wikipedia_es/emb_normal/tokens_shard_01.txt",
+      "data/external/corpora/wikipedia_es/emb_normal/tokens_shard_02.txt",
+      "data/external/corpora/wikipedia_es/emb_normal/tokens_shard_03.txt",
+      "data/external/corpora/wikipedia_es/emb_normal/tokens_shard_04.txt"
+    ],
+    "ejemplos_titulo": [
+      "Andorra",
+      "Argentina",
+      "Geografía de Andorra",
+      "Demografía de Andorra",
+      "Artes visuales"
+    ],
+    "segundos": 13.8,
+    "vocabulario_path": "data/external/corpora/wikipedia_es/emb_normal/vocabulario.txt"
+  },
+  "fuga": {
+    "n_gramas": 8,
+    "n_gramas_unicos_corpus": 9737490,
+    "textos_con_coincidencia": 0,
+    "detalle": [],
+    "cumple": true
+  },
+  "probe_representation_oov": {
+    "modelo": "/home/carlos/Git/PLN-v5/kaggle_toxic_2026_puj/data/external/corpora/sifts/probe_50d.bin",
+    "sifts": "data/external/corpora/sifts/probe_50d_sift.txt",
+    "vec": "data/external/corpora/sifts/probe_50d.vec",
+    "tipos": 8555
+  },
+  "cobertura": {
+    "train": {
+      "n_types": 6059,
+      "n_tokens": 29646,
+      "type_coverage": 0.7042,
+      "token_coverage": 0.8831,
+      "frequency_weighted_coverage": 0.8831,
+      "oov_rate_types": 0.2958,
+      "oov_rate_tokens": 0.1169,
+      "n_word_oov": 1792,
+      "n_representation_oov": 0,
+      "representation_oov_rate": 0.0,
+      "mediana_norma_probe": 2.972006,
+      "n_word_oov_resolubles_por_ascii": 155,
+      "tasa_oov_por_ascii": 0.0865,
+      "n_word_oov_resolubles_por_esqueleto": 1208,
+      "tasa_oov_por_esqueleto": 0.6741,
+      "type_coverage_proyeccion_ascii": 0.7298,
+      "type_coverage_proyeccion_esqueleto": 0.9036,
+      "ejemplos_oov_resolubles_por_ascii": [
+        {
+          "tipo": "ademas",
+          "ascii": "ademas"
+        },
+        {
+          "tipo": "afirmo",
+          "ascii": "afirmo"
+        },
+        {
+          "tipo": "agarro",
+          "ascii": "agarro"
+        },
+        {
+          "tipo": "agil",
+          "ascii": "agil"
+        },
+        {
+          "tipo": "alfonsin",
+          "ascii": "alfonsin"
+        },
+        {
+          "tipo": "algun",
+          "ascii": "algun"
+        },
+        {
+          "tipo": "apunto",
+          "ascii": "apunto"
+        },
+        {
+          "tipo": "arabe",
+          "ascii": "arabe"
+        },
+        {
+          "tipo": "arabes",
+          "ascii": "arabes"
+        },
+        {
+          "tipo": "arrastrara",
+          "ascii": "arrastrara"
+        },
+        {
+          "tipo": "atencion",
+          "ascii": "atencion"
+        },
+        {
+          "tipo": "atras",
+          "ascii": "atras"
+        },
+        {
+          "tipo": "biologa",
+          "ascii": "biologa"
+        },
+        {
+          "tipo": "cabron",
+          "ascii": "cabron"
+        },
+        {
+          "tipo": "callate",
+          "ascii": "callate"
+        }
+      ],
+      "ejemplos_oov_resolubles_por_esqueleto": [
+        {
+          "tipo": "aadidle",
+          "esqueleto": "ddl"
+        },
+        {
+          "tipo": "ablarme",
+          "esqueleto": "blrm"
+        },
+        {
+          "tipo": "abrazarte",
+          "esqueleto": "brzrt"
+        },
+        {
+          "tipo": "acabarn",
+          "esqueleto": "cbrn"
+        },
+        {
+          "tipo": "acabas",
+          "esqueleto": "cbs"
+        },
+        {
+          "tipo": "acmbaro",
+          "esqueleto": "cmbr"
+        },
+        {
+          "tipo": "acompaada",
+          "esqueleto": "cmpd"
+        },
+        {
+          "tipo": "acordais",
+          "esqueleto": "crds"
+        },
+        {
+          "tipo": "acosos",
+          "esqueleto": "css"
+        },
+        {
+          "tipo": "acostaria",
+          "esqueleto": "cstr"
+        },
+        {
+          "tipo": "acten",
+          "esqueleto": "ctn"
+        },
+        {
+          "tipo": "activist",
+          "esqueleto": "ctvst"
+        },
+        {
+          "tipo": "actuacin",
+          "esqueleto": "ctcn"
+        },
+        {
+          "tipo": "acusacin",
+          "esqueleto": "cscn"
+        },
+        {
+          "tipo": "ademas",
+          "esqueleto": "dms"
+        }
+      ]
+    },
+    "test": {
+      "n_types": 4503,
+      "n_tokens": 19204,
+      "type_coverage": 0.7213,
+      "token_coverage": 0.8837,
+      "frequency_weighted_coverage": 0.8837,
+      "oov_rate_types": 0.2787,
+      "oov_rate_tokens": 0.1163,
+      "n_word_oov": 1255,
+      "n_representation_oov": 0,
+      "representation_oov_rate": 0.0,
+      "mediana_norma_probe": 2.977799,
+      "n_word_oov_resolubles_por_ascii": 109,
+      "tasa_oov_por_ascii": 0.0869,
+      "n_word_oov_resolubles_por_esqueleto": 848,
+      "tasa_oov_por_esqueleto": 0.6757,
+      "type_coverage_proyeccion_ascii": 0.7455,
+      "type_coverage_proyeccion_esqueleto": 0.9096,
+      "ejemplos_oov_resolubles_por_ascii": [
+        {
+          "tipo": "abon",
+          "ascii": "abon"
+        },
+        {
+          "tipo": "aceptalo",
+          "ascii": "aceptalo"
+        },
+        {
+          "tipo": "ademas",
+          "ascii": "ademas"
+        },
+        {
+          "tipo": "aguila",
+          "ascii": "aguila"
+        },
+        {
+          "tipo": "ahi",
+          "ascii": "ahi"
+        },
+        {
+          "tipo": "albondigas",
+          "ascii": "albondigas"
+        },
+        {
+          "tipo": "amig",
+          "ascii": "amig"
+        },
+        {
+          "tipo": "arabe",
+          "ascii": "arabe"
+        },
+        {
+          "tipo": "arabes",
+          "ascii": "arabes"
+        },
+        {
+          "tipo": "baha",
+          "ascii": "baha"
+        },
+        {
+          "tipo": "basicamente",
+          "ascii": "basicamente"
+        },
+        {
+          "tipo": "bida",
+          "ascii": "bida"
+        },
+        {
+          "tipo": "biologa",
+          "ascii": "biologa"
+        },
+        {
+          "tipo": "cabron",
+          "ascii": "cabron"
+        },
+        {
+          "tipo": "callate",
+          "ascii": "callate"
+        }
+      ],
+      "ejemplos_oov_resolubles_por_esqueleto": [
+        {
+          "tipo": "abandononde",
+          "esqueleto": "bndnnd"
+        },
+        {
+          "tipo": "aburre",
+          "esqueleto": "brr"
+        },
+        {
+          "tipo": "aceptalo",
+          "esqueleto": "cptl"
+        },
+        {
+          "tipo": "aceptas",
+          "esqueleto": "cpts"
+        },
+        {
+          "tipo": "aclaren",
+          "esqueleto": "clrn"
+        },
+        {
+          "tipo": "acorralen",
+          "esqueleto": "crrln"
+        },
+        {
+          "tipo": "acosadores",
+          "esqueleto": "csdrs"
+        },
+        {
+          "tipo": "acosos",
+          "esqueleto": "css"
+        },
+        {
+          "tipo": "actuacin",
+          "esqueleto": "ctcn"
+        },
+        {
+          "tipo": "acueste",
+          "esqueleto": "cst"
+        },
+        {
+          "tipo": "ademas",
+          "esqueleto": "dms"
+        },
+        {
+          "tipo": "adems",
+          "esqueleto": "dms"
+        },
+        {
+          "tipo": "administracin",
+          "esqueleto": "dmnstrcn"
+        },
+        {
+          "tipo": "adrede",
+          "esqueleto": "drd"
+        },
+        {
+          "tipo": "agolpados",
+          "esqueleto": "glpds"
+        }
+      ]
+    },
+    "train+test": {
+      "n_types": 8555,
+      "n_tokens": 48850,
+      "type_coverage": 0.6839,
+      "token_coverage": 0.8833,
+      "frequency_weighted_coverage": 0.8833,
+      "oov_rate_types": 0.3161,
+      "oov_rate_tokens": 0.1167,
+      "n_word_oov": 2704,
+      "n_representation_oov": 0,
+      "representation_oov_rate": 0.0,
+      "mediana_norma_probe": 2.967605,
+      "n_word_oov_resolubles_por_ascii": 230,
+      "tasa_oov_por_ascii": 0.0851,
+      "n_word_oov_resolubles_por_esqueleto": 1802,
+      "tasa_oov_por_esqueleto": 0.6664,
+      "type_coverage_proyeccion_ascii": 0.7108,
+      "type_coverage_proyeccion_esqueleto": 0.8946,
+      "ejemplos_oov_resolubles_por_ascii": [
+        {
+          "tipo": "abon",
+          "ascii": "abon"
+        },
+        {
+          "tipo": "aceptalo",
+          "ascii": "aceptalo"
+        },
+        {
+          "tipo": "ademas",
+          "ascii": "ademas"
+        },
+        {
+          "tipo": "afirmo",
+          "ascii": "afirmo"
+        },
+        {
+          "tipo": "agarro",
+          "ascii": "agarro"
+        },
+        {
+          "tipo": "agil",
+          "ascii": "agil"
+        },
+        {
+          "tipo": "aguila",
+          "ascii": "aguila"
+        },
+        {
+          "tipo": "ahi",
+          "ascii": "ahi"
+        },
+        {
+          "tipo": "albondigas",
+          "ascii": "albondigas"
+        },
+        {
+          "tipo": "alfonsin",
+          "ascii": "alfonsin"
+        },
+        {
+          "tipo": "algun",
+          "ascii": "algun"
+        },
+        {
+          "tipo": "amig",
+          "ascii": "amig"
+        },
+        {
+          "tipo": "apunto",
+          "ascii": "apunto"
+        },
+        {
+          "tipo": "arabe",
+          "ascii": "arabe"
+        },
+        {
+          "tipo": "arabes",
+          "ascii": "arabes"
+        }
+      ],
+      "ejemplos_oov_resolubles_por_esqueleto": [
+        {
+          "tipo": "aadidle",
+          "esqueleto": "ddl"
+        },
+        {
+          "tipo": "abandononde",
+          "esqueleto": "bndnnd"
+        },
+        {
+          "tipo": "ablarme",
+          "esqueleto": "blrm"
+        },
+        {
+          "tipo": "abrazarte",
+          "esqueleto": "brzrt"
+        },
+        {
+          "tipo": "aburre",
+          "esqueleto": "brr"
+        },
+        {
+          "tipo": "acabarn",
+          "esqueleto": "cbrn"
+        },
+        {
+          "tipo": "acabas",
+          "esqueleto": "cbs"
+        },
+        {
+          "tipo": "aceptalo",
+          "esqueleto": "cptl"
+        },
+        {
+          "tipo": "aceptas",
+          "esqueleto": "cpts"
+        },
+        {
+          "tipo": "aclaren",
+          "esqueleto": "clrn"
+        },
+        {
+          "tipo": "acmbaro",
+          "esqueleto": "cmbr"
+        },
+        {
+          "tipo": "acompaada",
+          "esqueleto": "cmpd"
+        },
+        {
+          "tipo": "acordais",
+          "esqueleto": "crds"
+        },
+        {
+          "tipo": "acorralen",
+          "esqueleto": "crrln"
+        },
+        {
+          "tipo": "acosadores",
+          "esqueleto": "csdrs"
+        }
+      ]
+    }
+  },
+  "grupos": [
+    {
+      "n_types": 113,
+      "n_tokens": 127,
+      "type_coverage": 0.0354,
+      "token_coverage": 0.0394,
+      "oov_rate": 0.9646,
+      "frecuencia_media_corpus": 2.5,
+      "grupo": "elongaciones",
+      "descripcion": "formas con caracteres repetidos ( elongation ortografica )"
+    },
+    {
+      "n_types": 6518,
+      "n_tokens": 7618,
+      "type_coverage": 0.6359,
+      "token_coverage": 0.6565,
+      "oov_rate": 0.3641,
+      "frecuencia_media_corpus": 185.9,
+      "grupo": "formas_raras",
+      "descripcion": "tipos TOXIC poco frecuentes (frecuencia <= 2) y de 4+ caracteres"
+    },
+    {
+      "n_types": 56,
+      "n_tokens": 461,
+      "type_coverage": 0.2143,
+      "token_coverage": 0.692,
+      "oov_rate": 0.7857,
+      "frecuencia_media_corpus": 463.2,
+      "grupo": "coloquial",
+      "descripcion": "marcadores coloquiales y abreviaturas"
+    },
+    {
+      "n_types": 72,
+      "n_tokens": 2402,
+      "type_coverage": 0.2222,
+      "token_coverage": 0.7777,
+      "oov_rate": 0.7778,
+      "frecuencia_media_corpus": 6.6,
+      "grupo": "insultos",
+      "descripcion": "lexico de insulto explicito y variantes morfologicas"
+    },
+    {
+      "n_types": 11,
+      "n_tokens": 1058,
+      "type_coverage": 0.9091,
+      "token_coverage": 0.9849,
+      "oov_rate": 0.0909,
+      "frecuencia_media_corpus": 7478.0,
+      "grupo": "targeting",
+      "descripcion": "marcas de segunda persona y de destinatario"
+    },
+    {
+      "n_types": 19,
+      "n_tokens": 177,
+      "type_coverage": 0.9474,
+      "token_coverage": 0.9944,
+      "oov_rate": 0.0526,
+      "frecuencia_media_corpus": 476.7,
+      "grupo": "colectivos",
+      "descripcion": "colectivos y gentilicos usados como categoria"
+    },
+    {
+      "n_types": 10,
+      "n_tokens": 1051,
+      "type_coverage": 1.0,
+      "token_coverage": 1.0,
+      "oov_rate": 0.0,
+      "frecuencia_media_corpus": 4805.4,
+      "grupo": "negacion",
+      "descripcion": "operadores de negacion"
+    },
+    {
+      "n_types": 15,
+      "n_tokens": 234,
+      "type_coverage": 1.0,
+      "token_coverage": 1.0,
+      "oov_rate": 0.0,
+      "frecuencia_media_corpus": 1815.2,
+      "grupo": "noticia",
+      "descripcion": "discurso de noticia y politica"
+    },
+    {
+      "n_types": 1,
+      "n_tokens": 522,
+      "type_coverage": 1.0,
+      "token_coverage": 1.0,
+      "oov_rate": 0.0,
+      "frecuencia_media_corpus": 2.0,
+      "grupo": "hashtags",
+      "descripcion": "marcas de hashtag (normalizadas a `hashtag`)"
+    },
+    {
+      "n_types": 1,
+      "n_tokens": 2055,
+      "type_coverage": 1.0,
+      "token_coverage": 1.0,
+      "oov_rate": 0.0,
+      "frecuencia_media_corpus": 783.0,
+      "grupo": "menciones",
+      "descripcion": "marcas de mencion (normalizadas a `usuario`)"
+    },
+    {
+      "n_types": 2,
+      "n_tokens": 1365,
+      "type_coverage": 1.0,
+      "token_coverage": 1.0,
+      "oov_rate": 0.0,
+      "frecuencia_media_corpus": 239807.5,
+      "grupo": "marcadores_web",
+      "descripcion": "marcas de URL (normalizadas a `url`)"
+    }
+  ],
+  "oov_top": [
+    {
+      "tipo": "callate",
+      "freq_toxic": 350,
+      "representable_subwords": true
+    },
+    {
+      "tipo": "cllate",
+      "freq_toxic": 279,
+      "representable_subwords": true
+    },
+    {
+      "tipo": "mereces",
+      "freq_toxic": 135,
+      "representable_subwords": true
+    },
+    {
+      "tipo": "rabes",
+      "freq_toxic": 93,
+      "representable_subwords": true
+    },
+    {
+      "tipo": "arabe",
+      "freq_toxic": 70,
+      "representable_subwords": true
+    },
+    {
+      "tipo": "ensear",
+      "freq_toxic": 69,
+      "representable_subwords": true
+    },
+    {
+      "tipo": "violacin",
+      "freq_toxic": 58,
+      "representable_subwords": true
+    },
+    {
+      "tipo": "espaa",
+      "freq_toxic": 52,
+      "representable_subwords": true
+    },
+    {
+      "tipo": "guarra",
+      "freq_toxic": 47,
+      "representable_subwords": true
+    },
+    {
+      "tipo": "inmigracin",
+      "freq_toxic": 46,
+      "representable_subwords": true
+    },
+    {
+      "tipo": "mereca",
+      "freq_toxic": 37,
+      "representable_subwords": true
+    },
+    {
+      "tipo": "pinche",
+      "freq_toxic": 37,
+      "representable_subwords": true
+    },
+    {
+      "tipo": "estn",
+      "freq_toxic": 33,
+      "representable_subwords": true
+    },
+    {
+      "tipo": "imbcil",
+      "freq_toxic": 31,
+      "representable_subwords": true
+    },
+    {
+      "tipo": "arabes",
+      "freq_toxic": 30,
+      "representable_subwords": true
+    },
+    {
+      "tipo": "jajaja",
+      "freq_toxic": 30,
+      "representable_subwords": true
+    },
+    {
+      "tipo": "aqu",
+      "freq_toxic": 25,
+      "representable_subwords": true
+    },
+    {
+      "tipo": "cmo",
+      "freq_toxic": 25,
+      "representable_subwords": true
+    },
+    {
+      "tipo": "comemela",
+      "freq_toxic": 25,
+      "representable_subwords": true
+    },
+    {
+      "tipo": "tambin",
+      "freq_toxic": 24,
+      "representable_subwords": true
+    },
+    {
+      "tipo": "enseando",
+      "freq_toxic": 24,
+      "representable_subwords": true
+    },
+    {
+      "tipo": "tonteras",
+      "freq_toxic": 23,
+      "representable_subwords": true
+    },
+    {
+      "tipo": "despus",
+      "freq_toxic": 22,
+      "representable_subwords": true
+    },
+    {
+      "tipo": "sudacas",
+      "freq_toxic": 21,
+      "representable_subwords": true
+    },
+    {
+      "tipo": "jajajaja",
+      "freq_toxic": 20,
+      "representable_subwords": true
+    },
+    {
+      "tipo": "geros",
+      "freq_toxic": 19,
+      "representable_subwords": true
+    },
+    {
+      "tipo": "putos",
+      "freq_toxic": 19,
+      "representable_subwords": true
+    },
+    {
+      "tipo": "vdeo",
+      "freq_toxic": 18,
+      "representable_subwords": true
+    },
+    {
+      "tipo": "ensearle",
+      "freq_toxic": 17,
+      "representable_subwords": true
+    },
+    {
+      "tipo": "joder",
+      "freq_toxic": 17,
+      "representable_subwords": true
+    },
+    {
+      "tipo": "imbecil",
+      "freq_toxic": 16,
+      "representable_subwords": true
+    },
+    {
+      "tipo": "slo",
+      "freq_toxic": 16,
+      "representable_subwords": true
+    },
+    {
+      "tipo": "gabacho",
+      "freq_toxic": 16,
+      "representable_subwords": true
+    },
+    {
+      "tipo": "ests",
+      "freq_toxic": 16,
+      "representable_subwords": true
+    },
+    {
+      "tipo": "espaol",
+      "freq_toxic": 16,
+      "representable_subwords": true
+    },
+    {
+      "tipo": "gilipollas",
+      "freq_toxic": 16,
+      "representable_subwords": true
+    },
+    {
+      "tipo": "ahre",
+      "freq_toxic": 15,
+      "representable_subwords": true
+    },
+    {
+      "tipo": "ojal",
+      "freq_toxic": 15,
+      "representable_subwords": true
+    },
+    {
+      "tipo": "nios",
+      "freq_toxic": 15,
+      "representable_subwords": true
+    },
+    {
+      "tipo": "ensearon",
+      "freq_toxic": 15,
+      "representable_subwords": true
+    }
+  ],
+  "figuras": [
+    "reports/figuras/fig_41_distribucion_frecuencias_v5.png",
+    "reports/figuras/fig_42_cobertura_grupos_v5.png"
+  ],
+  "manifiesto": "data/external/corpora/corpus_manifest.json",
+  "referencia_corrected_cv": 0.777211,
+  "decision": "P1 GO: corpus 10M construido y auditado; la cobertura TOXIC queda medida y documentada. La decision de escalar a 50M se toma en P2 con el primer resultado downstream, y exige RATIONALE_FOR_CORPUS_EXPANSION escrito antes de descargar."
+}

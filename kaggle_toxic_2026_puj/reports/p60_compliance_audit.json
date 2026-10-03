@@ -1,0 +1,307 @@
+{
+  "familia": "P60_COMPLIANCE_AUDIT",
+  "fecha": "2026-09-28T18:06:46+00:00",
+  "comprobaciones": [
+    {
+      "comprobacion": "identificadores prohibidos en p60_00_registro_hipotesis.py",
+      "estado": "OK",
+      "detalle": "0 de 33 identificadores prohibidos; 142 identificadores distintos analizados via arbol de sintaxis"
+    },
+    {
+      "comprobacion": "identificadores prohibidos en p60_01_contrastive.py",
+      "estado": "OK",
+      "detalle": "0 de 33 identificadores prohibidos; 289 identificadores distintos analizados via arbol de sintaxis"
+    },
+    {
+      "comprobacion": "identificadores prohibidos en p60_02_asl.py",
+      "estado": "OK",
+      "detalle": "0 de 33 identificadores prohibidos; 286 identificadores distintos analizados via arbol de sintaxis"
+    },
+    {
+      "comprobacion": "identificadores prohibidos en p60_03_dro.py",
+      "estado": "OK",
+      "detalle": "0 de 33 identificadores prohibidos; 311 identificadores distintos analizados via arbol de sintaxis"
+    },
+    {
+      "comprobacion": "identificadores prohibidos en p60_04_distribucion.py",
+      "estado": "OK",
+      "detalle": "0 de 33 identificadores prohibidos; 228 identificadores distintos analizados via arbol de sintaxis"
+    },
+    {
+      "comprobacion": "identificadores prohibidos en p60_05_ruido_por_etiqueta.py",
+      "estado": "OK",
+      "detalle": "0 de 33 identificadores prohibidos; 218 identificadores distintos analizados via arbol de sintaxis"
+    },
+    {
+      "comprobacion": "identificadores prohibidos en p60_06_intervencion_ag.py",
+      "estado": "OK",
+      "detalle": "0 de 33 identificadores prohibidos; 244 identificadores distintos analizados via arbol de sintaxis"
+    },
+    {
+      "comprobacion": "identificadores prohibidos en p60_07_transporte.py",
+      "estado": "OK",
+      "detalle": "0 de 33 identificadores prohibidos; 316 identificadores distintos analizados via arbol de sintaxis"
+    },
+    {
+      "comprobacion": "identificadores prohibidos en p60_09_polyloss.py",
+      "estado": "OK",
+      "detalle": "0 de 33 identificadores prohibidos; 254 identificadores distintos analizados via arbol de sintaxis"
+    },
+    {
+      "comprobacion": "identificadores prohibidos en p60_10_metareweight.py",
+      "estado": "OK",
+      "detalle": "0 de 33 identificadores prohibidos; 239 identificadores distintos analizados via arbol de sintaxis"
+    },
+    {
+      "comprobacion": "identificadores prohibidos en p60_11_cerrar.py",
+      "estado": "OK",
+      "detalle": "0 de 33 identificadores prohibidos; 198 identificadores distintos analizados via arbol de sintaxis"
+    },
+    {
+      "comprobacion": "identificadores prohibidos en p60_12_total.py",
+      "estado": "OK",
+      "detalle": "0 de 33 identificadores prohibidos; 143 identificadores distintos analizados via arbol de sintaxis"
+    },
+    {
+      "comprobacion": "identificadores prohibidos en p60_13_notebook.py",
+      "estado": "OK",
+      "detalle": "0 de 33 identificadores prohibidos; 97 identificadores distintos analizados via arbol de sintaxis"
+    },
+    {
+      "comprobacion": "identificadores prohibidos en p60_14_auditoria.py",
+      "estado": "OK",
+      "detalle": "0 de 33 identificadores prohibidos; 183 identificadores distintos analizados via arbol de sintaxis"
+    },
+    {
+      "comprobacion": "identificadores prohibidos en p60_registrar.py",
+      "estado": "OK",
+      "detalle": "0 de 33 identificadores prohibidos; 89 identificadores distintos analizados via arbol de sintaxis"
+    },
+    {
+      "comprobacion": "patron holdout_como_etiqueta",
+      "estado": "OK",
+      "detalle": "0 coincidencias fuera de prosa que lo declara prohibido"
+    },
+    {
+      "comprobacion": "patron test_como_etiqueta",
+      "estado": "OK",
+      "detalle": "0 coincidencias fuera de prosa que lo declara prohibido"
+    },
+    {
+      "comprobacion": "patron url_de_kaggle",
+      "estado": "OK",
+      "detalle": "0 coincidencias fuera de prosa que lo declara prohibido"
+    },
+    {
+      "comprobacion": "patron api_de_kaggle",
+      "estado": "OK",
+      "detalle": "0 coincidencias fuera de prosa que lo declara prohibido"
+    },
+    {
+      "comprobacion": "patron gold_file",
+      "estado": "OK",
+      "detalle": "0 coincidencias fuera de prosa que lo declara prohibido"
+    },
+    {
+      "comprobacion": "artefactos sin url de Kaggle, test ni holdout",
+      "estado": "OK",
+      "detalle": "0 coincidencias en 12 artefactos JSON; el JSON de esta auditoria queda fuera por autorreferencia"
+    },
+    {
+      "comprobacion": "sha256 de la submission de V03",
+      "estado": "OK",
+      "detalle": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e | coincide con el congelado: True"
+    },
+    {
+      "comprobacion": "corrected_cv del OOF canonico",
+      "estado": "OK",
+      "detalle": "0.7772114525165721 | exacto: True"
+    },
+    {
+      "comprobacion": "grupos canonicos sin partidos entre pliegues",
+      "estado": "OK",
+      "detalle": "1415 grupos, 0 partidos"
+    },
+    {
+      "comprobacion": "submission de V03 sin modificar",
+      "estado": "OK",
+      "detalle": "fichero presente, 13860 bytes, sha256 verificado"
+    },
+    {
+      "comprobacion": "LB de V03 leido de CHAMPION.md, sin transcribir",
+      "estado": "OK",
+      "detalle": "leaderboard_max_verified = 0.78306 | no se ha modificado en P60"
+    },
+    {
+      "comprobacion": "ningun script lee etiquetas de holdout o de test",
+      "estado": "OK",
+      "detalle": "0 scripts usan y_holdout, labels_holdout, y_test o labels_test como variable"
+    },
+    {
+      "comprobacion": "el fichero holdout_v2_ids se usa solo como fuente de grupos",
+      "estado": "OK",
+      "detalle": "10 scripts lo leen, y en todos casos unicamente la columna grupo_near_dup_autor, que es el agrupador canonico del CV"
+    },
+    {
+      "comprobacion": "experiments.csv con ids unicos",
+      "estado": "OK",
+      "detalle": "336 filas, 336 ids unicos"
+    },
+    {
+      "comprobacion": "los 8 experimentos de P60 registrados",
+      "estado": "OK",
+      "detalle": "['P60-01', 'P60-02', 'P60-03', 'P60-04', 'P60-05', 'P60-06', 'P60-07', 'P60-08']"
+    },
+    {
+      "comprobacion": "pistas cerradas sin experimento SIN fila en experiments.csv",
+      "estado": "OK",
+      "detalle": "B, E, F y K no tienen fila, que es lo que deben tener"
+    },
+    {
+      "comprobacion": "ningun bootstrap sin gate superado",
+      "estado": "OK",
+      "detalle": "0 bootstraps, 0 pistas con gate superado"
+    },
+    {
+      "comprobacion": "ningun finalista declarado",
+      "estado": "OK",
+      "detalle": "finalistas: 0"
+    },
+    {
+      "comprobacion": "cero submissions en P60",
+      "estado": "OK",
+      "detalle": "submissiones: 0"
+    },
+    {
+      "comprobacion": "cero consultas a Kaggle",
+      "estado": "OK",
+      "detalle": "consultas: 0"
+    },
+    {
+      "comprobacion": "log de leaderboard sin filas nuevas de P60",
+      "estado": "OK",
+      "detalle": "22 filas historicas, ninguna nueva; 7 mencionan v03"
+    },
+    {
+      "comprobacion": "secciones de P60 presentes en el notebook",
+      "estado": "OK",
+      "detalle": "14 secciones, celdas 264 -> 264"
+    },
+    {
+      "comprobacion": "celdas de codigo del notebook ejecutadas sin fallo",
+      "estado": "OK",
+      "detalle": "14 ejecutadas, 0 fallidas"
+    },
+    {
+      "comprobacion": "integracion idempotente",
+      "estado": "OK",
+      "detalle": "anadidas en la ultima pasada: 0"
+    },
+    {
+      "comprobacion": "ASCII en scripts, artefactos e informes de P60",
+      "estado": "OK",
+      "detalle": "0 bytes no ASCII en 15 scripts, 13 JSON y 12 informes"
+    },
+    {
+      "comprobacion": "rama de trabajo",
+      "estado": "OK",
+      "detalle": "rama: proyecto-kaggle-toxic-2026-p60"
+    },
+    {
+      "comprobacion": "historial de commits",
+      "estado": "OK",
+      "detalle": "194 commits en la rama"
+    },
+    {
+      "comprobacion": "la rama no tiene seguimiento remoto, luego no hay push posible desde aqui",
+      "estado": "OK",
+      "detalle": "la rama proyecto-kaggle-toxic-2026-p60 no declara upstream; el repositorio tiene remoto origin, pero esta rama nunca se ha publicado"
+    },
+    {
+      "comprobacion": "ultimos commits visibles",
+      "estado": "OK",
+      "detalle": "10 commits listados"
+    },
+    {
+      "comprobacion": "diff del arbol ya consolidado",
+      "estado": "OK",
+      "detalle": "cambios pendientes: 13 lineas de diff"
+    }
+  ],
+  "resumen": {
+    "total": 45,
+    "ok": 45,
+    "fallo": 0,
+    "skip": 0
+  },
+  "scripts_analizados": [
+    "p60_00_registro_hipotesis.py",
+    "p60_01_contrastive.py",
+    "p60_02_asl.py",
+    "p60_03_dro.py",
+    "p60_04_distribucion.py",
+    "p60_05_ruido_por_etiqueta.py",
+    "p60_06_intervencion_ag.py",
+    "p60_07_transporte.py",
+    "p60_09_polyloss.py",
+    "p60_10_metareweight.py",
+    "p60_11_cerrar.py",
+    "p60_12_total.py",
+    "p60_13_notebook.py",
+    "p60_14_auditoria.py",
+    "p60_registrar.py"
+  ],
+  "artefactos_analizados": [
+    "p60_A_asl.json",
+    "p60_C3_intervencion_ag.json",
+    "p60_C_ruido_por_etiqueta.json",
+    "p60_D_distribucion.json",
+    "p60_G_contrastive.json",
+    "p60_H_transporte.json",
+    "p60_I_metareweight.json",
+    "p60_J_polyloss.json",
+    "p60_L_dro.json",
+    "p60_compliance_audit.json",
+    "p60_final_summary.json",
+    "p60_literature_review.json",
+    "p60_notebook_integration.json"
+  ],
+  "identificadores_prohibidos_buscados": [
+    "transformers",
+    "AutoModel",
+    "AutoTokenizer",
+    "BertModel",
+    "RobertaModel",
+    "GPT2Model",
+    "T5Model",
+    "sentence_transformers",
+    "SentenceTransformer",
+    "fasttext",
+    "gensim",
+    "word2vec",
+    "glove",
+    "openai",
+    "anthropic",
+    "ollama",
+    "llama",
+    "huggingface_hub",
+    "hf_hub_download",
+    "from_pretrained",
+    "KBLAir",
+    "RWSTopicModel",
+    "spacy",
+    "flair",
+    "textblob",
+    "kaggle",
+    "kagglehub",
+    "apilayer",
+    "learner",
+    "pseudo_label",
+    "pseudoLabel",
+    "self_training",
+    "selfTraining"
+  ],
+  "metodo_de_verificacion": "arbol de sintaxis para identificadores, lectura de artefactos para datos, recomputacion para el baseline",
+  "decision": "P60 = CLOSED; V03 remains final",
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

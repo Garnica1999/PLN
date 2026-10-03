@@ -1,0 +1,27 @@
+capa,clave,valor
+ORIGINAL,corrected_cv,0.7854160387
+ORIGINAL,delta_vs_V03,0.0082045862
+ORIGINAL,deltas_por_pliegue,0.002243|0.001592|0.003378|0.023607|0.010356
+ORIGINAL,pliegues_mejorados,5
+ORIGINAL,veredicto_externo,nunca enviado
+REPRODUCED,corrected_cv,0.7854160387
+REPRODUCED,delta_vs_V03,0.0082045862
+REPRODUCED,nivel,R3
+REPRODUCED,diferencia_absoluta,3.2391977989e-11
+SEGUNDA_PARTICION,delta_vs_su_V03,0.010525313
+SEGUNDA_PARTICION,pliegues_mejorados,5
+SEGUNDA_PARTICION,deltas_por_pliegue,0.026302|0.004643|0.002975|0.020868|0.003209
+BOOTSTRAP,por_filas_ic95_bajo,-0.0002247696
+BOOTSTRAP,por_filas_ic95_alto,0.0116880198
+BOOTSTRAP,por_grupos_ic95_bajo,-0.0006906975
+BOOTSTRAP,por_grupos_ic95_alto,0.0118175641
+BOOTSTRAP,por_grupos_incluye_cero,True
+FINAL_STATUS,estado,MARGINAL
+FINAL_STATUS,razon,"el candidato se reproduce EXACTAMENTE y confirma su direccion en una segunda particion con 5 de 5 pliegues, pero el intervalo de confianza incluye el cero bajo las DOS unidades de remuestreo. Con un limite inferior de -0.000691 por grupos, la mejora no es distinguible del ruido a este tamano de muestra. CASO C del encargo"
+GATES,reproducido_exactamente_R3,True
+GATES,cinco_de_cinco_en_la_canonica,True
+GATES,cinco_de_cinco_en_la_segunda,True
+GATES,misma_direccion_en_la_segunda,True
+GATES,bootstrap_por_filas_compatible_con_mejora,False
+GATES,bootstrap_por_grupos_compatible_con_mejora,False
+GATES,compliance_sin_fallos,True

@@ -87,3 +87,32 @@ Estados: pendiente / en curso / hecho / cerrado (sin mejora) / descartado.
 | P7 | 2026-09-25 | GO en el holdout. Holdout congelado (2/5 evaluaciones): V03 0.8285 vs meta Ridge alpha=3 0.8465 (delta pareado +0.0180, IC [+0.0003,+0.0372]); submission v08 validada (positivos HS 517, TR 375, AG 445 de 1154); auditoria `ml-reviewer` APROBADA (sin fuga en el stacking, submission identica al pipeline). **Sonda de LB: 0.78163** -> no supera a v03 (0.78306) |
 | **CIERRE v2** | 2026-09-25 | **SIN MEJORA TRANSFERIBLE.** 24 lineas evaluadas: cerradas cadenas (E2-01), targeting (E2-05/06), sintaxis (E2-03/04), cita/negacion (E2-07/08), emocion (E2-09), NB-SVM (E2-15), ortografia (E2-10); meta de dependencia y stacking adoptados en local (+0.0081/+0.0102) y confirmados en holdout (+0.0180), pero **no transfirieron al test** (0.78163 vs 0.78306). Modelo final: **V03**. Informe: `reports/advanced_research_v2.md` |
 | P8 | 2026-09-25 | CERRADO (sin mejora). Backlog v2 al 100 % (24/24 lineas). E2-13 encoder de entidades: cobertura informativa 0.005 < 0.20 -> cerrada por sparsity (META-ENT-RIDGE 0.7885). E2-14 calibracion: META-ISOTONIC 0.7857 (delta -0.0017 vs sin calibrar). E2-16 umbrales por rebanada: SHRINK-M100 0.7750 (delta -0.0017 vs global anidado). E2-20 especialistas: 11 celdas significativas tras BH; los especialistas son peores que el global dentro de la rebanada (delta medio de la mezcla -0.0058) -> cerrada sin mejora. E2-21 espacios por etiqueta: 0.7519 (delta -0.0199 vs compartido). Regla D-016 aplicada contra el comparador directo de cada mecanismo: solo el meta calibrado alcanza 0.7857 (5/5 pliegues) por reproducir el meta ya adoptado, sin aportar sobre el meta sin calibrar; ninguna linea aporta +0.005 con 3/5 pliegues ni complementariedad con IC > 0. Evidencia: `experiments/21_backlog_restante_v2.py`, `reports/backlog_restante_v2.{csv,json}`, `reports/figuras/fig_32_backlog_restante_v2.png` |
+
+## P80 - Auditoria del entrenador Word2Vec (Fase 1)
+
+Seccion nueva, anadida al final. No modifica nada de lo anterior.
+Pre-registro: `docs/p80_preregistro_auditoria_w2v.md`. Script previsto:
+`experiments/p80_01_auditoria_w2v.py`. Cero entrenamientos del Word2Vec.
+
+- [hecho] P80.1 Leer el plan maestro `p80_p82_auditoria_w2v_rnn_bayesiano.md` (Fases 0-8), las secciones citadas de `p79_01_auditoria_sgns.py`, `p71_04:182-216`, `p72_01:62-136` y `:152-162`, `reports/p79_auditoria_sgns.json` y `docs/p78_preregistro.md`
+- [hecho] P80.2 Escribir `docs/p80_preregistro_auditoria_w2v.md` con 19 afirmaciones (A1-A19) que cubren H1 a H7, cada una con tolerancia, exito, fallo, marca de STOP y Naturaleza (CONFIRMAR / REFUTAR / NO APLICABLE POR CONSTRUCCION), mas criterio de parada y la frase literal `V03 remains the best verified leaderboard result.`
+- [hecho] P80.3 Verificar ASCII puro byte a byte (0 bytes mayores que 127) y con `tools/verificar_caracteres.py`. Anadir la seccion P80 a `tasks/plan.md` y a este fichero, sin reescribir lo previo
+- [pendiente] P80.4 Gate 1: commit del pre-registro con su sha256 en el mensaje y en `RUNLOG.md`, con `-F fichero` (regla de P78: las comillas internas truncan el mensaje). Sin commit NO se ejecuta
+- [pendiente] P80.5 Implementar `experiments/p80_01_auditoria_w2v.py` con `auditar_semillas_por_ast`, `test1_loss`, `test2_gradientes`, `test3_scheduler`, `test4_identidad_con_signo`, `test5_artefacto`, `test6_bigru`, `test7_fase_dl` y `main` que se detiene en el primer STOP
+- [pendiente] P80.6 Gate 3: revision de `ml-reviewer` con 5 ejes ML, buscando replicacion circular, comparaciones con el signo mal puesto, uso de una matriz que no existe y aserciones que no abortan. Sin dictamen no se ejecuta
+- [pendiente] P80.7 Ejecutar con `/home/carlos/venv/bin/python`. sha256 del congelado `302c994d...d705a` comprobado antes de la primera lectura y despues de la ultima, junto con `st_size` y `st_mtime_ns`; STOP inmediato si cualquiera de los tres cambia
+- [pendiente] P80.8 Emitir `reports/p80_auditoria_w2v.json` y `reports/p80_auditoria_w2v.md` con veredicto por hallazgo en exactamente tres estados: CONFIRMADO, REFUTADO, NO APLICABLE POR CONSTRUCCION. ASCII verificado dos veces
+- [pendiente] P80.9 Corregir en documento NUEVO las tres afirmaciones erroneas de P79: el booleano `semillas_desalineadas`, el signo de `la_identidad_se_cumple`, y el bloque `punto_5_artefacto_congelado`. NO editar P79 ni su JSON
+- [pendiente] P80.10 Dictamenes en paralelo de `dl-specialist`, `nlp-specialist`, `ml-reviewer` y `kaggle-specialist`. Si contradicen a los datos, ganan los datos y se documenta el por que
+- [pendiente] P80.11 Gate 4: actualizar DECISIONS, RUNLOG y PROJECT_STATE con el veredicto por hallazgo
+- [pendiente] P80.12 Decision de la Fase RNN con los datos de P80. Si H5 y H6 invalidan V9-04 y V10-11, la via RNN se cierra con evidencia y no se abre P81. Si son reinterpretables, se pre-registra P81 (early stopping anidado, relleno correcto, sin atencion) y lo decide Carlos
+
+### Notas de frontera para P80
+
+- Prohibido afirmar que Word2Vec sea mejor que V03. Prohibido modificar V03 ni sus
+  umbrales 0.44 / 0.51 / 0.46. Prohibido reentrenar o sobrescribir el artefacto
+  Word2Vec 100d. Prohibido leer test, holdout o leaderboard, o generar submission.
+- De `config/holdout_v2.json` solo se leen `n_tweets_dev` y `n_tweets_holdout`; la
+  lista de ids no se deserializa ni se cruza con ninguna tabla.
+- Los numeros de P73, P74, P77 y P79 se conservan intactos. Si uno esta mal, se
+  corrige la AFIRMACION con un documento nuevo, no el informe viejo.

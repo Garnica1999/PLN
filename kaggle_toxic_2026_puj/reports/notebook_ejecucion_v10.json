@@ -1,0 +1,26 @@
+{
+  "fecha": "2026-09-26",
+  "notebook": "notebooks/10_final_pipeline.ipynb",
+  "celdas_totales": 67,
+  "celdas_codigo": 34,
+  "returncode": 0,
+  "errores": [],
+  "duracion_s": 4.1,
+  "seccion_20": "Fase v10: calibracion, distribucion y gobierno",
+  "cambios_sobre_la_ejecucion_anterior": [
+    "Seccion 20 anadida: unmarked con la sintesis de la fase y celda de verificacion con aserciones sobre las 219 filas, V10-00 a V10-11, la huella de V03, la huella de holdout2, la banda de particion, los dos controles del arnes, el AUC del shift, la brecha entre reglas de conservacion y las tres variantes del BiGRU",
+    "Recuentos del registro actualizados de 207 a 219 en las celdas 38 y 64, porque si no el propio helper verificar del notebook falla y el entregable no seria ejecutable"
+  ],
+  "nota_sobre_el_arnes": "V10-03 es una libreria y no produce informe propio, asi que sus dos controles se leen de la fila del registro y no de un JSON. La primera version de la celda pedia un JSON que no existe, y se corrigio antes de ejecutar.",
+  "salida_de_la_verificacion_de_la_seccion_20": [
+    "Banda de particion de la metrica corregida: recorrido 0.017184, desviacion tipica 0.005302",
+    "Arnes: nulo 0/5, oraculo 5/5, delta del oraculo +0.011781",
+    "Calibracion: ECE de la isotonica 29.94 por ciento mejor que Platt, pero F1 anidada +0.000148",
+    "Shift de features: AUC 0.487717, veredicto CERRADA",
+    "Correlacion: regla fuerte -0.031252 frente a aleatoria -0.028887, brecha 0.002365",
+    "BiGRU: congelado 0.693994, afinado 0.711639, afinando todo 0.699086",
+    "V03 intacto, holdout2 congelado con su huella, 0 submissions enviadas.",
+    "Todas las verificaciones de la fase v10 pasaron."
+  ],
+  "stderr_tail": "[NbConvertApp] Converting notebook notebooks/10_final_pipeline.ipynb to notebook\n[NbConvertApp] Writing 2942877 bytes to /home/carlos/Git/PLN-v10/kaggle_toxic_2026_puj/notebooks/10_final_pipeline.ipynb"
+}

@@ -1,0 +1,34 @@
+{
+  "marca_corrida": "20261001T065649Z_p1233382",
+  "resultado": {
+    "bloque": 3,
+    "coste_segundos": 0.010733,
+    "descripcion": "la permutacion conserva el multiconjunto exacto",
+    "detalle": {
+      "comprobaciones": {
+        "doble_permutacion_reproducible": true,
+        "misma_forma": true,
+        "suma_de_trazas_igual": true,
+        "suma_hashes_de_filas_igual": true
+      },
+      "forma": [
+        3826,
+        100
+      ],
+      "nota_trazas": "suma de las trazas de las FILAS, entendidas como el cuadrado de la norma de cada fila, porque la matriz no es cuadrada",
+      "suma_hashes_original": 616163312548851721,
+      "suma_hashes_permutada": 616163312548851721,
+      "suma_trazas_original": 19068.003208,
+      "suma_trazas_permutada": 19068.003208,
+      "traza_literal_de_la_matriz_original_informativa": -2.60137,
+      "traza_literal_de_la_matriz_permutada_informativa": -1.175781
+    },
+    "estado": "CONFIRMADO",
+    "exito": true,
+    "id": "A14",
+    "naturaleza": "CONFIRMAR",
+    "stop": true,
+    "tolerancia": "las dos sumas coinciden EXACTAMENTE y la doble permutacion da variacion cero",
+    "traza": ""
+  }
+}

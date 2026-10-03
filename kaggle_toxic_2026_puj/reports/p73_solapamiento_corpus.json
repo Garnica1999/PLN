@@ -1,0 +1,494 @@
+{
+  "familia": "P73_TEXTCNN_WORD2VEC_RANDOM",
+  "experiment_id": "P73-01",
+  "fase": "diagnostico de solapamiento corpus externo contra desarrollo",
+  "fecha": "2026-09-30T06:42:42+00:00",
+  "naturaleza": "DIAGNOSTICO. No entrena nada, no evalua ningun modelo",
+  "metodo": {
+    "shingle": "3 palabras",
+    "hash": "crc32",
+    "indice": "invertido de desarrollo, dos pasadas sobre el corpus, poda",
+    "similitud": "Jaccard exacto sobre shingles"
+  },
+  "corpus": {
+    "ruta": "data/external/corpora/twitter_domain/corpus_twitter_tokens.txt",
+    "sha256": "1ef872c189d0f405bc1a3f8281cafe08e6b099958e6b8a3816db1460df91f8b9",
+    "documentos": 361994,
+    "licencia": "CC BY-SA 4.0",
+    "origen": "mmaguero/covid19-spanishtweets-earlylateapril2020",
+    "periodo": "29-mar a 1-may-2020"
+  },
+  "filas_desarrollo": 1483,
+  "resumen": {
+    "n_filas_con_candidato": 76,
+    "jaccard_max_global": 0.142857,
+    "n_jaccard_ge_0_8": 0,
+    "n_jaccard_ge_0_5": 0,
+    "n_jaccard_ge_0_2": 0,
+    "n_jaccard_ge_0_1": 7,
+    "umbral_de_poda_en_shingles": 3
+  },
+  "por_fila": [
+    {
+      "fila_desarrollo": 12,
+      "jaccard_max": 0.071429,
+      "documento_corpus": 30188,
+      "n_candidatos": 1
+    },
+    {
+      "fila_desarrollo": 26,
+      "jaccard_max": 0.088235,
+      "documento_corpus": 30188,
+      "n_candidatos": 1
+    },
+    {
+      "fila_desarrollo": 30,
+      "jaccard_max": 0.044118,
+      "documento_corpus": 171435,
+      "n_candidatos": 10
+    },
+    {
+      "fila_desarrollo": 42,
+      "jaccard_max": 0.0375,
+      "documento_corpus": 320057,
+      "n_candidatos": 1
+    },
+    {
+      "fila_desarrollo": 55,
+      "jaccard_max": 0.05,
+      "documento_corpus": 67231,
+      "n_candidatos": 2
+    },
+    {
+      "fila_desarrollo": 84,
+      "jaccard_max": 0.055556,
+      "documento_corpus": 30188,
+      "n_candidatos": 1
+    },
+    {
+      "fila_desarrollo": 143,
+      "jaccard_max": 0.076923,
+      "documento_corpus": 316428,
+      "n_candidatos": 1
+    },
+    {
+      "fila_desarrollo": 164,
+      "jaccard_max": 0.065217,
+      "documento_corpus": 292804,
+      "n_candidatos": 9
+    },
+    {
+      "fila_desarrollo": 206,
+      "jaccard_max": 0.068182,
+      "documento_corpus": 123759,
+      "n_candidatos": 3
+    },
+    {
+      "fila_desarrollo": 211,
+      "jaccard_max": 0.09375,
+      "documento_corpus": 331242,
+      "n_candidatos": 2
+    },
+    {
+      "fila_desarrollo": 232,
+      "jaccard_max": 0.078431,
+      "documento_corpus": 129299,
+      "n_candidatos": 6
+    },
+    {
+      "fila_desarrollo": 245,
+      "jaccard_max": 0.071429,
+      "documento_corpus": 114013,
+      "n_candidatos": 1
+    },
+    {
+      "fila_desarrollo": 256,
+      "jaccard_max": 0.048193,
+      "documento_corpus": 83130,
+      "n_candidatos": 6
+    },
+    {
+      "fila_desarrollo": 261,
+      "jaccard_max": 0.042857,
+      "documento_corpus": 178736,
+      "n_candidatos": 1
+    },
+    {
+      "fila_desarrollo": 296,
+      "jaccard_max": 0.12,
+      "documento_corpus": 340835,
+      "n_candidatos": 1
+    },
+    {
+      "fila_desarrollo": 307,
+      "jaccard_max": 0.069767,
+      "documento_corpus": 91795,
+      "n_candidatos": 12
+    },
+    {
+      "fila_desarrollo": 315,
+      "jaccard_max": 0.053571,
+      "documento_corpus": 176354,
+      "n_candidatos": 3
+    },
+    {
+      "fila_desarrollo": 327,
+      "jaccard_max": 0.073171,
+      "documento_corpus": 244220,
+      "n_candidatos": 15
+    },
+    {
+      "fila_desarrollo": 328,
+      "jaccard_max": 0.040541,
+      "documento_corpus": 4685,
+      "n_candidatos": 1
+    },
+    {
+      "fila_desarrollo": 340,
+      "jaccard_max": 0.043011,
+      "documento_corpus": 212370,
+      "n_candidatos": 1
+    },
+    {
+      "fila_desarrollo": 345,
+      "jaccard_max": 0.069767,
+      "documento_corpus": 229317,
+      "n_candidatos": 1
+    },
+    {
+      "fila_desarrollo": 348,
+      "jaccard_max": 0.041096,
+      "documento_corpus": 85089,
+      "n_candidatos": 1
+    },
+    {
+      "fila_desarrollo": 368,
+      "jaccard_max": 0.06383,
+      "documento_corpus": 210266,
+      "n_candidatos": 17
+    },
+    {
+      "fila_desarrollo": 396,
+      "jaccard_max": 0.0625,
+      "documento_corpus": 218891,
+      "n_candidatos": 2
+    },
+    {
+      "fila_desarrollo": 398,
+      "jaccard_max": 0.04918,
+      "documento_corpus": 110564,
+      "n_candidatos": 65
+    },
+    {
+      "fila_desarrollo": 408,
+      "jaccard_max": 0.065217,
+      "documento_corpus": 254173,
+      "n_candidatos": 2
+    },
+    {
+      "fila_desarrollo": 422,
+      "jaccard_max": 0.045455,
+      "documento_corpus": 182578,
+      "n_candidatos": 1
+    },
+    {
+      "fila_desarrollo": 438,
+      "jaccard_max": 0.12,
+      "documento_corpus": 316428,
+      "n_candidatos": 1
+    },
+    {
+      "fila_desarrollo": 493,
+      "jaccard_max": 0.068182,
+      "documento_corpus": 149342,
+      "n_candidatos": 1
+    },
+    {
+      "fila_desarrollo": 511,
+      "jaccard_max": 0.042254,
+      "documento_corpus": 39157,
+      "n_candidatos": 2
+    },
+    {
+      "fila_desarrollo": 534,
+      "jaccard_max": 0.085714,
+      "documento_corpus": 315048,
+      "n_candidatos": 1
+    },
+    {
+      "fila_desarrollo": 561,
+      "jaccard_max": 0.06,
+      "documento_corpus": 109483,
+      "n_candidatos": 17
+    },
+    {
+      "fila_desarrollo": 562,
+      "jaccard_max": 0.0625,
+      "documento_corpus": 11126,
+      "n_candidatos": 2
+    },
+    {
+      "fila_desarrollo": 585,
+      "jaccard_max": 0.103448,
+      "documento_corpus": 157941,
+      "n_candidatos": 6
+    },
+    {
+      "fila_desarrollo": 624,
+      "jaccard_max": 0.045455,
+      "documento_corpus": 78392,
+      "n_candidatos": 1
+    },
+    {
+      "fila_desarrollo": 634,
+      "jaccard_max": 0.073171,
+      "documento_corpus": 230876,
+      "n_candidatos": 11
+    },
+    {
+      "fila_desarrollo": 645,
+      "jaccard_max": 0.045455,
+      "documento_corpus": 135622,
+      "n_candidatos": 1
+    },
+    {
+      "fila_desarrollo": 658,
+      "jaccard_max": 0.06383,
+      "documento_corpus": 167991,
+      "n_candidatos": 1
+    },
+    {
+      "fila_desarrollo": 686,
+      "jaccard_max": 0.04,
+      "documento_corpus": 18729,
+      "n_candidatos": 1
+    },
+    {
+      "fila_desarrollo": 698,
+      "jaccard_max": 0.046154,
+      "documento_corpus": 93303,
+      "n_candidatos": 1
+    },
+    {
+      "fila_desarrollo": 701,
+      "jaccard_max": 0.057692,
+      "documento_corpus": 250474,
+      "n_candidatos": 1
+    },
+    {
+      "fila_desarrollo": 711,
+      "jaccard_max": 0.088235,
+      "documento_corpus": 73948,
+      "n_candidatos": 1
+    },
+    {
+      "fila_desarrollo": 727,
+      "jaccard_max": 0.142857,
+      "documento_corpus": 281659,
+      "n_candidatos": 9
+    },
+    {
+      "fila_desarrollo": 770,
+      "jaccard_max": 0.044776,
+      "documento_corpus": 10741,
+      "n_candidatos": 6
+    },
+    {
+      "fila_desarrollo": 792,
+      "jaccard_max": 0.047619,
+      "documento_corpus": 338867,
+      "n_candidatos": 1
+    },
+    {
+      "fila_desarrollo": 795,
+      "jaccard_max": 0.076923,
+      "documento_corpus": 48398,
+      "n_candidatos": 2
+    },
+    {
+      "fila_desarrollo": 857,
+      "jaccard_max": 0.058824,
+      "documento_corpus": 279162,
+      "n_candidatos": 2
+    },
+    {
+      "fila_desarrollo": 871,
+      "jaccard_max": 0.058824,
+      "documento_corpus": 181825,
+      "n_candidatos": 2
+    },
+    {
+      "fila_desarrollo": 882,
+      "jaccard_max": 0.048387,
+      "documento_corpus": 92313,
+      "n_candidatos": 1
+    },
+    {
+      "fila_desarrollo": 901,
+      "jaccard_max": 0.083333,
+      "documento_corpus": 198442,
+      "n_candidatos": 2
+    },
+    {
+      "fila_desarrollo": 911,
+      "jaccard_max": 0.075,
+      "documento_corpus": 80213,
+      "n_candidatos": 1
+    },
+    {
+      "fila_desarrollo": 913,
+      "jaccard_max": 0.065217,
+      "documento_corpus": 6061,
+      "n_candidatos": 1
+    },
+    {
+      "fila_desarrollo": 942,
+      "jaccard_max": 0.076923,
+      "documento_corpus": 127849,
+      "n_candidatos": 3
+    },
+    {
+      "fila_desarrollo": 980,
+      "jaccard_max": 0.039474,
+      "documento_corpus": 170609,
+      "n_candidatos": 1
+    },
+    {
+      "fila_desarrollo": 992,
+      "jaccard_max": 0.046875,
+      "documento_corpus": 78392,
+      "n_candidatos": 1
+    },
+    {
+      "fila_desarrollo": 994,
+      "jaccard_max": 0.046154,
+      "documento_corpus": 217819,
+      "n_candidatos": 1
+    },
+    {
+      "fila_desarrollo": 1014,
+      "jaccard_max": 0.103448,
+      "documento_corpus": 281732,
+      "n_candidatos": 3
+    },
+    {
+      "fila_desarrollo": 1019,
+      "jaccard_max": 0.083333,
+      "documento_corpus": 347792,
+      "n_candidatos": 8
+    },
+    {
+      "fila_desarrollo": 1031,
+      "jaccard_max": 0.058824,
+      "documento_corpus": 302355,
+      "n_candidatos": 2
+    },
+    {
+      "fila_desarrollo": 1063,
+      "jaccard_max": 0.053571,
+      "documento_corpus": 258281,
+      "n_candidatos": 1
+    },
+    {
+      "fila_desarrollo": 1088,
+      "jaccard_max": 0.041667,
+      "documento_corpus": 113159,
+      "n_candidatos": 3
+    },
+    {
+      "fila_desarrollo": 1097,
+      "jaccard_max": 0.041096,
+      "documento_corpus": 223548,
+      "n_candidatos": 3
+    },
+    {
+      "fila_desarrollo": 1109,
+      "jaccard_max": 0.083333,
+      "documento_corpus": 359821,
+      "n_candidatos": 7
+    },
+    {
+      "fila_desarrollo": 1210,
+      "jaccard_max": 0.051724,
+      "documento_corpus": 59841,
+      "n_candidatos": 1
+    },
+    {
+      "fila_desarrollo": 1211,
+      "jaccard_max": 0.06383,
+      "documento_corpus": 112457,
+      "n_candidatos": 3
+    },
+    {
+      "fila_desarrollo": 1231,
+      "jaccard_max": 0.046875,
+      "documento_corpus": 303875,
+      "n_candidatos": 1
+    },
+    {
+      "fila_desarrollo": 1237,
+      "jaccard_max": 0.035294,
+      "documento_corpus": 189652,
+      "n_candidatos": 1
+    },
+    {
+      "fila_desarrollo": 1244,
+      "jaccard_max": 0.043478,
+      "documento_corpus": 316428,
+      "n_candidatos": 2
+    },
+    {
+      "fila_desarrollo": 1245,
+      "jaccard_max": 0.044118,
+      "documento_corpus": 307369,
+      "n_candidatos": 2
+    },
+    {
+      "fila_desarrollo": 1298,
+      "jaccard_max": 0.0625,
+      "documento_corpus": 361883,
+      "n_candidatos": 2
+    },
+    {
+      "fila_desarrollo": 1332,
+      "jaccard_max": 0.050847,
+      "documento_corpus": 261313,
+      "n_candidatos": 4
+    },
+    {
+      "fila_desarrollo": 1337,
+      "jaccard_max": 0.065217,
+      "documento_corpus": 219660,
+      "n_candidatos": 3
+    },
+    {
+      "fila_desarrollo": 1388,
+      "jaccard_max": 0.12,
+      "documento_corpus": 42455,
+      "n_candidatos": 2
+    },
+    {
+      "fila_desarrollo": 1399,
+      "jaccard_max": 0.085714,
+      "documento_corpus": 290866,
+      "n_candidatos": 2
+    },
+    {
+      "fila_desarrollo": 1401,
+      "jaccard_max": 0.111111,
+      "documento_corpus": 38532,
+      "n_candidatos": 3
+    },
+    {
+      "fila_desarrollo": 1474,
+      "jaccard_max": 0.069767,
+      "documento_corpus": 359296,
+      "n_candidatos": 1
+    }
+  ],
+  "veredicto": "SIN_SOLAPAMIENTO",
+  "que_cierra": "si no hay solapamiento >= 0.5, el corpus externo no contiene tuits de desarrollo ni near-duplicados de ellos, y el Word2Vec no pudo ver texto de la competencia",
+  "test_tocado": false,
+  "holdout_tocado": false,
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

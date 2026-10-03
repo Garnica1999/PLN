@@ -1,0 +1,163 @@
+{
+  "familia": "P71_TWITTER_WORD2VEC",
+  "experiment_id": "P71-09",
+  "fase": "P1d downstream con modelos corregidos",
+  "fecha": "2026-09-30T03:50:41+00:00",
+  "naturaleza": "EXPERIMENTO. Modelos con learning rate corregido. 0 test, 0 holdout, 0 leaderboard",
+  "por_que_se_reejecuta": "los embeddings del downstream anterior eran casi aleatorios: el learning rate no estaba escalado por el lote",
+  "fusion_arreglada": "se corre la fusion estandarizada de antes, para comparar, y una fusion normalizada por filas que pone los dos bloques en pie de igualdad",
+  "v03_referencia": 0.7772114525,
+  "resultados": {
+    "v03": 0.7772114525,
+    "twitter": {
+      "vocabulario": 77657,
+      "filas_con_vector": 1413,
+      "embedding_only_cv": 0.5514425602,
+      "embedding_only_delta": -0.2257688924,
+      "variantes": {
+        "fusion_estandarizada": {
+          "cv": 0.6579898386,
+          "f1_pliegues": [
+            0.643809,
+            0.672471,
+            0.685788,
+            0.631185,
+            0.655446
+          ],
+          "delta": -0.1192216139
+        },
+        "fusion_normalizada": {
+          "cv": 0.5797391785,
+          "f1_pliegues": [
+            0.581614,
+            0.592181,
+            0.590122,
+            0.546497,
+            0.587821
+          ],
+          "delta": -0.197472274
+        }
+      },
+      "segundos": 7.1
+    },
+    "general": {
+      "vocabulario": 100097,
+      "filas_con_vector": 1411,
+      "embedding_only_cv": 0.5574677438,
+      "embedding_only_delta": -0.2197437087,
+      "variantes": {
+        "fusion_estandarizada": {
+          "cv": 0.6658165404,
+          "f1_pliegues": [
+            0.672696,
+            0.667641,
+            0.672979,
+            0.641179,
+            0.674741
+          ],
+          "delta": -0.1113949121
+        },
+        "fusion_normalizada": {
+          "cv": 0.5782642824,
+          "f1_pliegues": [
+            0.578353,
+            0.617782,
+            0.566372,
+            0.539286,
+            0.588914
+          ],
+          "delta": -0.1989471701
+        }
+      },
+      "segundos": 6.2
+    }
+  },
+  "control_de_dominio": {
+    "embedding_only": {
+      "twitter": 0.5514425602,
+      "general": 0.5574677438,
+      "delta": -0.0060251836,
+      "ganador": "GENERAL"
+    },
+    "fusion_estandarizada": {
+      "twitter": 0.6579898386,
+      "general": 0.6658165404,
+      "delta": -0.0078267018,
+      "ganador": "GENERAL"
+    },
+    "fusion_normalizada": {
+      "twitter": 0.5797391785,
+      "general": 0.5782642824,
+      "delta": 0.0014748961,
+      "ganador": "TWITTER"
+    }
+  },
+  "complementariedad": {
+    "twitter": {
+      "rescue": 270,
+      "damage": 830,
+      "net": -560,
+      "por_etiqueta": {
+        "HS": {
+          "rescue": 113,
+          "damage": 333
+        },
+        "TR": {
+          "rescue": 63,
+          "damage": 215
+        },
+        "AG": {
+          "rescue": 94,
+          "damage": 282
+        }
+      }
+    },
+    "general": {
+      "rescue": 266,
+      "damage": 820,
+      "net": -554,
+      "por_etiqueta": {
+        "HS": {
+          "rescue": 114,
+          "damage": 332
+        },
+        "TR": {
+          "rescue": 54,
+          "damage": 212
+        },
+        "AG": {
+          "rescue": 98,
+          "damage": 276
+        }
+      }
+    }
+  },
+  "gates": {
+    "twitter": {
+      "delta": -0.197472274,
+      "pliegues_positivos": 0,
+      "neto": -560,
+      "pasa": false
+    },
+    "general": {
+      "delta": -0.1989471701,
+      "pliegues_positivos": 0,
+      "neto": -554,
+      "pasa": false
+    }
+  },
+  "veredicto": "MARGINAL",
+  "decision_del_encargo": {
+    "A_twitter_mejora_claramente": false,
+    "B_mejora_embedding_pero_no_fusion": false,
+    "C_no_mejora_al_general": false,
+    "D_empeora": true,
+    "resultado": "MARGINAL"
+  },
+  "reproducibilidad": {
+    "nivel": "R2",
+    "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "corrected_cv_v03": 0.7772114525165721
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

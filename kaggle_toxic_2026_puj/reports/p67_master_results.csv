@@ -1,0 +1,34 @@
+pista,medida,valor,nota
+reconciliacion,FINAL_VALID_P66_RESULT,0.0026743167,MI_arbol con CORRECCION RESIDUAL anidada
+reconciliacion,delta_blend_prob,0.0033068923,"NON_COMPARABLE, 3 de 5 pliegues, otro mecanismo"
+reconciliacion,brecha_del_blend,0.0093216366,"INVALIDATED, el control es un suelo y no un cero"
+reconciliacion,efecto_en_filas_de_1483,4.01,el efecto real en celdas
+C-A,delta_del_reentreno_anidado_del_umbral,-0.0029731513,"un escalar por etiqueta, sin tocar el modelo"
+C-A,umbrales_reentrenados,0.3850|0.4450|0.5200,congelados 0.44 / 0.51 / 0.46
+C-A,reproduce_el_efecto,False,False: la calibracion NO explica el efecto
+C-B,MI_arbol,0.0026743167,barajado -0.0014390421
+C-B,negacion,0.0011549795,barajado -0.0054335321
+C-B,word_1_3,-0.0001400584,barajado 0.0038763165
+C-B,cohesion,3.25761e-05,barajado -0.0070646241
+C-B,huecos_1_2,0.000350531,barajado -0.0064731429
+C-B,contraste,0.0,barajado -0.001787895
+C-B,huecos_6_10,-0.0028447979,barajado 0.0004009382
+C-B,candidatos_positivos,4,"de 7, luego parte del efecto es de la operacion"
+C-D,HS,0.484994,tasa base 0.401899
+C-D,TR,2.505773,tasa base 0.323171
+C-D,AG,1.024139,tasa base 0.400722
+C-D,enriquecimiento_promedio,1.338302,
+C-E,MI_arbol,0.572628,dentro 0.567424 | fuera 0.579597
+C-E,negacion,0.472985,dentro 0.492127 | fuera 0.465626
+C-E,word_1_3,0.499251,dentro 0.484706 | fuera 0.504894
+C-E,cohesion,0.455979,dentro 0.45134 | fuera 0.452727
+C-E,huecos_1_2,0.516186,dentro 0.524327 | fuera 0.516491
+C-E,contraste,0.437045,dentro 0.457961 | fuera 0.432401
+C-E,huecos_6_10,0.471673,dentro 0.444546 | fuera 0.476209
+veredicto,categoria,MIXED_CON_ATRIBUCION_PARCIAL,"Los cuatro controles NO dicen lo mismo y eso es el hallazgo. El reentreno anidado de UN escalar por etiqueta da -0.0029731513, es DECISIVO: la calibracion NO explica el efecto y V03 no estaba simplemente mal calibrado en esta particion. Y el AUC del residuo de MI_arbol se mantiene fuera de la banda, en 0.579597, lo que un movimiento de frontera no puede producir. PERO la misma correccion da positivo con 4 de los 7 candidatos, luego una parte del efecto pertenece a la OPERACION y no a MI_arbol. El enriquecimiento de los rescates es 1.3383, mayor que uno, luego hay concentracion real en la banda pero no exclusiva"
+omitido,P15 reproduccion independiente completa,SKIPPED - PREREQUISITE NOT MET,solo se justifica para un candidato que pase los gates de atribucion y robustez. Este no los pasa: su IC95 de P66 incluye el cero y el control de sustitucion cruzada muestra que el efecto no es especifico de MI_arbol
+omitido,P16 segunda particion de entrenamiento,SKIPPED - PREREQUISITE NOT MET,identica. Confirmar una segunda particion un efecto de 4 filas de 1483 cuestionaria la particion y no el efecto
+omitido,P08 correccion condicionada por la confianza,SKIPPED - PREREQUISITE NOT MET,"el encargo la condiciona a que P5 o P6 muestren senal residual reproducible. El reentreno del umbral da -0,0029731513 y el enriquecimiento es 1,34, luego no hay base para anadir grados de libertad"
+omitido,P09 correccion dependiente de la longitud,SKIPPED - PREREQUISITE NOT MET,"condicionada a que P3 demuestre relacion reproducible entre el residuo y el numero de tokens. No se ha medido esa relacion y anadirla sin ella seria un grado de libertad mas, no una hipotesis"
+omitido,P10 correccion especifica por etiqueta,SKIPPED - PREREQUISITE NOT MET,el encargo dice conservar el beta compartido si el modelo de tres parametros no lo supera. No hay evidencia de heterogeneidad que lo justifique
+omitido,P11 analisis pairwise de etiquetas,SKIPPED - NO INDEPENDIENTE,"depende de que una pareja muestre senal complementaria, y la unica senal medible es la de MI_arbol sobre las tres etiquetas por separado, que ya esta medida"

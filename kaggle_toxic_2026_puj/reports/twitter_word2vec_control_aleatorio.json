@@ -1,0 +1,343 @@
+{
+  "familia": "P72_TWITTER_WORD2VEC_DIM",
+  "experiment_id": "P72-03",
+  "fase": "control de aleatoriedad",
+  "fecha": "2026-09-30T06:09:49+00:00",
+  "pre_registro": {
+    "documento": "docs/p72_preregistro_control_aleatorio.md",
+    "commit": "7e1aba4",
+    "anterior_a_la_corrida": true
+  },
+  "naturaleza": "CONTROL. 11 corridas downstream, 0 entrenamientos de embeddings",
+  "las_dos_ramas": {
+    "A": "Word2Vec entrenado",
+    "B": "10 nulas con direccion aleatoria y norma por token exacta"
+  },
+  "declaracion_de_vocabulario": "las DIRECCIONES no provienen de datos; el SOPORTE (vocabulario) y las MAGNITUDES por token si vienen del corpus externo. El pipeline de vocabulario y normas NO consulta el dataset de la competencia",
+  "brazo_a": {
+    "cv": 0.6037188662,
+    "f1_pliegues": [
+      0.597449,
+      0.627368,
+      0.612291,
+      0.59192,
+      0.588942
+    ],
+    "tasa_positivos": [
+      0.588672,
+      0.370196,
+      0.476736
+    ],
+    "pr_auc": [
+      0.628666,
+      0.65904,
+      0.602361
+    ],
+    "norma_fila_media": 1.539959,
+    "tokens_por_fila": 18.2,
+    "tokens_cubiertos": 12.49,
+    "filas_sin_token": 70
+  },
+  "referencia_historica": 0.594729,
+  "desviacion_respecto_de_la_referencia": 0.0089898662,
+  "reproduce_dentro_de_tolerancia": false,
+  "nulas": [
+    {
+      "tirada": 1,
+      "semilla": 20261020,
+      "cv": 0.5775866677,
+      "f1_pliegues": [
+        0.559866,
+        0.581528,
+        0.600672,
+        0.556735,
+        0.588681
+      ],
+      "pr_auc": [
+        0.628119,
+        0.646231,
+        0.588455
+      ],
+      "tasa_positivos": [
+        0.592717,
+        0.359407,
+        0.52731
+      ],
+      "matriz_distinta": true,
+      "normas_conservadas": true,
+      "segundos": 0.3
+    },
+    {
+      "tirada": 2,
+      "semilla": 20261021,
+      "cv": 0.6003254896,
+      "f1_pliegues": [
+        0.602398,
+        0.615934,
+        0.592798,
+        0.616885,
+        0.574072
+      ],
+      "pr_auc": [
+        0.633738,
+        0.659207,
+        0.604409
+      ],
+      "tasa_positivos": [
+        0.565745,
+        0.350641,
+        0.489548
+      ],
+      "matriz_distinta": true,
+      "normas_conservadas": true,
+      "segundos": 0.3
+    },
+    {
+      "tirada": 3,
+      "semilla": 20261022,
+      "cv": 0.5973315003,
+      "f1_pliegues": [
+        0.570323,
+        0.619505,
+        0.611874,
+        0.578652,
+        0.60492
+      ],
+      "pr_auc": [
+        0.62443,
+        0.638816,
+        0.587267
+      ],
+      "tasa_positivos": [
+        0.579231,
+        0.363452,
+        0.517869
+      ],
+      "matriz_distinta": true,
+      "normas_conservadas": true,
+      "segundos": 0.3
+    },
+    {
+      "tirada": 4,
+      "semilla": 20261023,
+      "cv": 0.5978387518,
+      "f1_pliegues": [
+        0.563387,
+        0.604984,
+        0.61859,
+        0.607722,
+        0.592208
+      ],
+      "pr_auc": [
+        0.649134,
+        0.659649,
+        0.604063
+      ],
+      "tasa_positivos": [
+        0.571814,
+        0.341875,
+        0.496291
+      ],
+      "matriz_distinta": true,
+      "normas_conservadas": true,
+      "segundos": 0.3
+    },
+    {
+      "tirada": 5,
+      "semilla": 20261024,
+      "cv": 0.598747893,
+      "f1_pliegues": [
+        0.575515,
+        0.63748,
+        0.607637,
+        0.577883,
+        0.595031
+      ],
+      "pr_auc": [
+        0.645915,
+        0.643501,
+        0.597942
+      ],
+      "tasa_positivos": [
+        0.588672,
+        0.366824,
+        0.523264
+      ],
+      "matriz_distinta": true,
+      "normas_conservadas": true,
+      "segundos": 0.3
+    },
+    {
+      "tirada": 6,
+      "semilla": 20261025,
+      "cv": 0.5902030125,
+      "f1_pliegues": [
+        0.610257,
+        0.579422,
+        0.582661,
+        0.591043,
+        0.586887
+      ],
+      "pr_auc": [
+        0.619493,
+        0.622142,
+        0.579671
+      ],
+      "tasa_positivos": [
+        0.586649,
+        0.370196,
+        0.519892
+      ],
+      "matriz_distinta": true,
+      "normas_conservadas": true,
+      "segundos": 0.3
+    },
+    {
+      "tirada": 7,
+      "semilla": 20261026,
+      "cv": 0.6179044898,
+      "f1_pliegues": [
+        0.592319,
+        0.646327,
+        0.588549,
+        0.610235,
+        0.650212
+      ],
+      "pr_auc": [
+        0.652033,
+        0.667472,
+        0.623078
+      ],
+      "tasa_positivos": [
+        0.574511,
+        0.368173,
+        0.504383
+      ],
+      "matriz_distinta": true,
+      "normas_conservadas": true,
+      "segundos": 0.3
+    },
+    {
+      "tirada": 8,
+      "semilla": 20261027,
+      "cv": 0.5797663575,
+      "f1_pliegues": [
+        0.557569,
+        0.584325,
+        0.586683,
+        0.578004,
+        0.589902
+      ],
+      "pr_auc": [
+        0.609622,
+        0.622199,
+        0.559454
+      ],
+      "tasa_positivos": [
+        0.588672,
+        0.354686,
+        0.516521
+      ],
+      "matriz_distinta": true,
+      "normas_conservadas": true,
+      "segundos": 0.3
+    },
+    {
+      "tirada": 9,
+      "semilla": 20261028,
+      "cv": 0.5795882712,
+      "f1_pliegues": [
+        0.570355,
+        0.59046,
+        0.595696,
+        0.586447,
+        0.553938
+      ],
+      "pr_auc": [
+        0.609966,
+        0.641282,
+        0.584672
+      ],
+      "tasa_positivos": [
+        0.5853,
+        0.368847,
+        0.496291
+      ],
+      "matriz_distinta": true,
+      "normas_conservadas": true,
+      "segundos": 0.3
+    },
+    {
+      "tirada": 10,
+      "semilla": 20261029,
+      "cv": 0.593253776,
+      "f1_pliegues": [
+        0.602949,
+        0.60853,
+        0.610013,
+        0.57864,
+        0.564286
+      ],
+      "pr_auc": [
+        0.617197,
+        0.638847,
+        0.59233
+      ],
+      "tasa_positivos": [
+        0.58058,
+        0.368847,
+        0.514498
+      ],
+      "matriz_distinta": true,
+      "normas_conservadas": true,
+      "segundos": 0.3
+    }
+  ],
+  "nula_resumen": {
+    "media": 0.5932546209,
+    "desviacion": 0.0122425664,
+    "minimo": 0.5775866677,
+    "maximo": 0.6179044898
+  },
+  "delta_contra_el_maximo": -0.0141856236,
+  "pliegues_contra_el_maximo": 0,
+  "anclas": {
+    "prevalencia": [
+      0.436952,
+      0.300067,
+      0.382333
+    ],
+    "piso_all_positivo_por_etiqueta": [
+      0.608165,
+      0.461618,
+      0.553171
+    ],
+    "piso_all_positivo_macro": 0.540985,
+    "predicciones_uniformes_macro": 0.421151
+  },
+  "bootstrap_agrupado": {
+    "media": -0.0144390094,
+    "ic95_bajo": -0.0344953938,
+    "ic95_alto": 0.0054118025,
+    "semianchura": 0.0199535982,
+    "grupos": 1415
+  },
+  "aviso_de_potencia": "la semianchura del bootstrap supera 0,015, luego la banda de efecto claro es inalcanzable por construccion. Se declara para no presentar como hallazgo lo que es limite de resolucion",
+  "veredicto": "SENAL_DEBIL",
+  "parrafo_de_alcance": "El control mide la contribucion marginal de las DIRECCIONES APRENDIDAS bajo una unica lectura fija: mismo vocabulario, d=100, mismo mean pooling, misma regresion logistica, mismos umbrales congelados. Las dos ramas pertenecen a la MISMA FAMILIA FUNCIONAL -un clasificador lineal sobre la bolsa de tokens normalizada, con coeficientes en un subespacio de dimension menor o igual que 100- y lo unico que cambia es CUAL subespacio se usa. Un empate acota la conclusion a esta lectura; no prueba ni descarta senal dependiente de orden, composicion o no linealidad",
+  "que_no_se_puede_afirmar": [
+    "Word2Vec no sirve, ni los embeddings no aportan, como afirmaciones generales",
+    "no hay senal semantica en los tuits",
+    "los vectores aleatorios son tan buenos como los entrenados, como conclusion global",
+    "el modelo secuencial funcionara o no funcionara",
+    "los vectores aleatorios no usan datos: falso, el vocabulario y las normas si",
+    "cualquier afirmacion sobre test o leaderboard derivada del control"
+  ],
+  "reproducibilidad": {
+    "nivel": "R2",
+    "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "corrected_cv_v03": 0.7772114525165721,
+    "sha_matriz_entrenada": "594682df4b8458d0ad955cdbe74709cd"
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

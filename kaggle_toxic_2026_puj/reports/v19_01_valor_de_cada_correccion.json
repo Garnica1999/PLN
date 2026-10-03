@@ -1,0 +1,78 @@
+{
+  "experimento": "V19-01 (P1 sensibilidad, P2 valor marginal y P3 estructura conjunta)",
+  "fecha": "2026-09-27T03:16:43+00:00",
+  "base_reproducida": 0.7772114525165721,
+  "valor_marginal_por_etiqueta": {
+    "HS": {
+      "conteos": {
+        "tp": 505,
+        "fp": 173,
+        "fn": 143,
+        "tn": 662
+      },
+      "f1": 0.7616892911010558,
+      "valor_corregir_falso_negativo": 0.0009331655681227914,
+      "valor_corregir_falso_positivo": 0.0005748598423404195,
+      "ratio_fn_sobre_fp": 1.6232923216963746,
+      "delta_macro_de_corregir_fn": 0.0003110551893742638,
+      "delta_macro_de_corregir_fp": 0.0001916199474468065
+    },
+    "TR": {
+      "conteos": {
+        "tp": 363,
+        "fp": 82,
+        "fn": 82,
+        "tn": 956
+      },
+      "f1": 0.8157303370786517,
+      "valor_corregir_falso_negativo": 0.0013291466474987074,
+      "valor_corregir_falso_positivo": 0.0009175819314720491,
+      "ratio_fn_sobre_fp": 1.4485318443077857,
+      "delta_macro_de_corregir_fn": 0.00044304888249956917,
+      "delta_macro_de_corregir_fp": 0.0003058606438240164
+    },
+    "AG": {
+      "conteos": {
+        "tp": 425,
+        "fp": 135,
+        "fn": 142,
+        "tn": 781
+      },
+      "f1": 0.7542147293700089,
+      "valor_corregir_falso_negativo": 0.0011044195661613397,
+      "valor_corregir_falso_positivo": 0.0006698176992628853,
+      "ratio_fn_sobre_fp": 1.6488360450563206,
+      "delta_macro_de_corregir_fn": 0.00036813985538711327,
+      "delta_macro_de_corregir_fp": 0.00022327256642096176
+    }
+  },
+  "valores_distintos_de_ganancia": 12,
+  "ganancia_distinta": [
+    -0.0004430488825,
+    -0.000368139855387,
+    -0.000311055189374,
+    -0.000305860643824,
+    -0.000223272566421,
+    -0.000191619947447,
+    0.000191619947447,
+    0.000223272566421,
+    0.000305860643824,
+    0.000311055189374,
+    0.000368139855387,
+    0.0004430488825
+  ],
+  "estados_conjuntos_observados": 6,
+  "separacion_verificada": [
+    "macro de las tres columnas: 0.7772114525165721 | macro completa: 0.7772114525165721",
+    "son identicas, luego no hay terminos cruzados entre etiquetas",
+    "volteando una celda de HS: F1 de TR antes 0.815730337079 despues 0.815730337079, y la de AG antes 0.754214729370 despues 0.754214729370",
+    "no se mueven, luego el valor de una correccion en HS es independiente de TR y AG",
+    "por tanto, fijados los scores, el problema de decision son tres problemas de F1 independientes, y el optimo de cada uno es un umbral sobre su score",
+    "ninguna matriz de costes entre las tres, ni interaccion, ni regla conjunta puede superar a los tres umbrales, porque la funcion objetivo no tiene terminos cruzados que optimizar"
+  ],
+  "conclusion": "Dos correcciones que cambian una celda valen distinto, luego el valor no es uniforme y cuenta errores no es medir su valor. Y bajo las tres hipotesis de average que sobreviven a P0 la macro se descompone en la media de las tres F1 sin terminos cruzados, luego el problema de decision son tres problemas de umbral independientes y el optimo es un umbral por etiqueta. Eso deja solo dos palancas: donde se pone el umbral, que V16 midio y cerro, y que informacion contienen los scores",
+  "gastos": {
+    "submissions": 0,
+    "modelos_entrenados": 0
+  }
+}

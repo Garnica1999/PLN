@@ -1,0 +1,20 @@
+{
+  "marca_corrida": "20261001T161225Z_p2293418",
+  "resultado": {
+    "bloque": 4,
+    "coste_segundos": 4e-06,
+    "descripcion": "ib se evalua una vez por brazo, semilla y pliegue",
+    "detalle": {
+      "esperado": 150,
+      "n_abortos": 0,
+      "n_evaluaciones_de_ib": 150
+    },
+    "estado": "CONFIRMADO",
+    "exito": true,
+    "id": "A20",
+    "naturaleza": "CONFIRMAR",
+    "stop": true,
+    "tolerancia": "entero exacto derivado del trabajo hecho, y cero abortos",
+    "traza": ""
+  }
+}

@@ -1,0 +1,41 @@
+bloque,model,corrected_cv,partition_2,partition_3,delta,folds_positive,rescue,damage,net,bootstrap,permutation,status
+COMPARACION,V03,0.7772114525,0.7772114525,0.7772114525,0.0,referencia,0,0,0,no aplica,no aplica,FROZEN_REFERENCE
+COMPARACION,A_cost_sensitive_downweight,0.7854160387,0.7779658848,0.7788638872,0.0082045862,"5/5, 5/5, 4/5",99,74,25,"[-0.0006906975, +0.0118175641] incluye 0",p = 0.000999,PROMISING_UNCONFIRMED
+
+bloque,estado,valor,nota
+ESTADOS,ORIGINAL,+0.0082045862,"2026-09-25, nunca enviado, nunca auditado"
+ESTADOS,REPRODUCED,+0.0082045862,"R3, diferencia 3,2e-11"
+ESTADOS,SECOND_PARTITION,+0.0105253130,"5 de 5 pliegues, semilla 20260928"
+ESTADOS,THIRD_PARTITION_CORRECTED,+0.0048825807,"4 de 5 pliegues, semilla 20261001"
+ESTADOS,PERMUTATION,p = 0.000999,0 de 1000 superan al observado
+ESTADOS,FINAL_STATUS,PROMISING_UNCONFIRMED,5 de 6 componentes
+
+bloque,clave,valor
+canonical_result,corrected_cv,0.7854160387
+canonical_result,V03,0.7772114525
+canonical_result,delta,0.0082045862
+canonical_result,pliegues_mejorados,5
+canonical_result,nivel_reproducibilidad,R3
+second_partition,delta,0.010525313
+second_partition,pliegues_mejorados,5
+second_partition,semilla,20260928
+third_partition,delta,0.0048825807
+third_partition,pliegues_mejorados,4
+third_partition,semilla,20261001
+third_partition,nota,corregida tras el defecto de class_weight/sample_weight
+permutation,n,1000
+permutation,semilla,20261002
+permutation,p_empirico,0.000999
+permutation,n_ge_observado,0
+permutation,nulo_media,-0.001320991
+permutation,nulo_maximo,0.004597167
+permutation,que_prueba,la asignacion real de pesos contiene mas informacion que asignaciones equivalentes permutadas
+bootstrap,incluye_cero,True
+compliance,test_development_use,0
+compliance,holdout_use,0
+compliance,leaderboard_tuning,0
+compliance,submissions_nuevas,0
+compliance,verificado_por,"operacion + fichero concreto, no por busqueda textual"
+estado,research_status,EXPERIMENTAL_RESEARCH_CLOSED
+estado,candidate_status,PROMISING_UNCONFIRMED
+estado,governance_status,PENDING

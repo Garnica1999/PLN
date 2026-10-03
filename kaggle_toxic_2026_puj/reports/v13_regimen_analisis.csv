@@ -1,0 +1,5 @@
+regimen,descripcion,HS_verdadero,HS_predicho,filas,TR_aciertos,TR_falsos_positivos,AG_aciertos,AG_falsos_positivos,TR_verdaderas_positivas,AG_verdaderas_positivas
+A,HS real 0 y HS predicho 0,0,0,662,651,11,640,14,0,15
+B,HS real 0 y HS predicho 1,0,1,173,106,67,83,90,0,7
+C,HS real 1 y HS predicho 0,1,0,143,95,0,54,2,57,99
+D,HS real 1 y HS predicho 1,1,1,505,467,4,429,29,388,446

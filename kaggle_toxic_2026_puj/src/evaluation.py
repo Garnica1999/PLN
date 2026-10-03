@@ -123,6 +123,122 @@ def metricas_multietiqueta(
     }
 
 
+def metrica_macro(y_true: ArrayBinario, y_pred: ArrayBinario) -> float:
+    """Calcula la metrica primaria con aritmetica vectorial.
+
+    Es identica a ``metricas_multietiqueta(y_true, y_pred)["f1_media_columnas"]``,
+    pero Pensada para evaluarse miles de veces dentro de un bootstrap. Se usa en
+    la fase v5 para estimar el intervalo de la diferencia entre dos candidatos.
+
+    Nota de trazabilidad: los experimentos 02 y 14 de la fase v2 conservan su
+    propia implementacion historica de la metrica; aqui solo se **anaden**
+    funciones nuevas, sin cambiar ninguna definicion existente.
+
+    Args:
+        y_true: matriz binaria verdadera de forma ``(n_filas, 3)``.
+        y_pred: matriz binaria predicha, con la misma forma.
+
+    Returns:
+        Media column-wise de la F1 binaria de la clase positiva.
+    """
+    columnas = []
+    for indice in range(len(ETIQUETAS)):
+        verdaderos = y_true[:, indice] == 1
+        predichos = y_pred[:, indice] == 1
+        verdaderos_positivos = float(np.sum(verdaderos & predichos))
+        falsos_positivos = float(np.sum(~verdaderos & predichos))
+        falsos_negativos = float(np.sum(verdaderos & ~predichos))
+        denominador = 2 * verdaderos_positivos + falsos_positivos + falsos_negativos
+        columnas.append(2 * verdaderos_positivos / denominador if denominador > 0 else 0.0)
+    return float(np.mean(columnas))
+
+
+def bootstrap_diferencia_pareada(
+    y_true: ArrayBinario,
+    pred_a: ArrayBinario,
+    pred_b: ArrayBinario,
+    repeticiones: int = 10_000,
+    semilla: int = 20260925,
+) -> dict[str, object]:
+    """Estima el intervalo de bootstrap de la diferencia entre dos candidatos.
+
+    El estimando es exactamente la metrica primaria: en cada remuestreo se
+    recalcula ``f1_media_columnas`` de ambos candidatos sobre las mismas filas
+    (bootstrap **pareado**), de modo que la correlacion entre ellos se conserva y
+    el intervalo es mas estrecho que el de dos intervalos independientes.
+
+    Args:
+        y_true: matriz binaria verdadera de forma ``(n_filas, 3)``.
+        pred_a: predicciones del candidato A.
+        pred_b: predicciones de la referencia B.
+        repeticiones: numero de remuestreos.
+        semilla: semilla del generador, para reproducibilidad.
+
+    Returns:
+        Diccionario con la diferencia observada, su IC95, el balance de celdas y
+        el numero de repeticiones.
+
+    Raises:
+        RuntimeError: si la version vectorial no reproduce la metrica oficial.
+    """
+    oficial_a = metricas_multietiqueta(y_true, pred_a)["f1_media_columnas"]
+    oficial_b = metricas_multietiqueta(y_true, pred_b)["f1_media_columnas"]
+    if abs(metrica_macro(y_true, pred_a) - oficial_a) > 1e-12:
+        raise RuntimeError("metrica_macro no reproduce f1_media_columnas")
+    if abs(metrica_macro(y_true, pred_b) - oficial_b) > 1e-12:
+        raise RuntimeError("metrica_macro no reproduce f1_media_columnas")
+    generador = np.random.default_rng(semilla)
+    n = y_true.shape[0]
+    diferencias = np.empty(repeticiones, dtype=float)
+    for repeticion in range(repeticiones):
+        indices = generador.integers(0, n, n)
+        diferencias[repeticion] = metrica_macro(
+            y_true[indices], pred_a[indices]
+        ) - metrica_macro(y_true[indices], pred_b[indices])
+    cuantiles = np.quantile(diferencias, [0.025, 0.5, 0.975])
+    celdas_a = _f1_por_celda(y_true, pred_a)
+    celdas_b = _f1_por_celda(y_true, pred_b)
+    diferencia = celdas_a - celdas_b
+    return {
+        "metrica_a": oficial_a,
+        "metrica_b": oficial_b,
+        "diferencia_observada": round(oficial_a - oficial_b, 6),
+        "ic95": [round(float(cuantiles[0]), 6), round(float(cuantiles[2]), 6)],
+        "mediana_bootstrap": round(float(cuantiles[1]), 6),
+        "celdas_mejoradas": int(np.sum(diferencia > 1e-9)),
+        "celdas_igualadas": int(np.sum(np.abs(diferencia) <= 1e-9)),
+        "celdas_empeoradas": int(np.sum(diferencia < -1e-9)),
+        "repeticiones": repeticiones,
+    }
+
+
+def _f1_por_celda(y_true: ArrayBinario, y_pred: ArrayBinario) -> NDArray[np.float64]:
+    """Calcula la F1 de cada celda (fila, etiqueta).
+
+    Sirve para contar cuantas celdas mejora o rompe un candidato frente a otro; no
+    es la metrica primaria y no se reporta como tal.
+
+    Args:
+        y_true: matriz binaria verdadera.
+        y_pred: matriz binaria predicha.
+
+    Returns:
+        Vector con una F1 por celda.
+    """
+    columnas = []
+    for indice in range(len(ETIQUETAS)):
+        verdaderos = y_true[:, indice] == 1
+        predichos = y_pred[:, indice] == 1
+        verdaderos_positivos = (verdaderos & predichos).astype(float)
+        falsos_positivos = (~verdaderos & predichos).astype(float)
+        falsos_negativos = (verdaderos & ~predichos).astype(float)
+        denominador = 2 * verdaderos_positivos + falsos_positivos + falsos_negativos
+        columnas.append(
+            np.where(denominador > 0, 2 * verdaderos_positivos / np.maximum(denominador, 1e-12), 0.0)
+        )
+    return np.mean(np.column_stack(columnas), axis=1)
+
+
 def aplicar_postproceso_jerarquico(y_pred: ArrayBinario) -> ArrayBinario:
     """Fuerza TR=0 y AG=0 cuando HS=0 (estructura observada en train, D-001).
 

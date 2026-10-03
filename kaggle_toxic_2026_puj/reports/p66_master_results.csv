@@ -1,0 +1,5 @@
+ID,Track,Experimento,Mecanismo,Corrected_CV,Decision
+P66-00,"auditoria, inventario y gap analysis",0,"4 familias nuevas, 4 cerradas o parciales",,AUDITORIA
+P66-01,regeneracion verificada de los scores,0,7 candidatos regenerados y contrastados contra su fase de origen,,"REPRODUCEN 5, NO VERIFICABLE 1, DIFERENCIA NO RESUELTA 1"
+P66-02,cinco mecanismos de fusion en scores,1,"blend de probabilidad, de logit, fusion LR, residual y sensible a la longitud, anidados y con control de score barajado",0.7805183448165721,MARGINAL
+P66-03,"complementariedad, rescate y bootstrap",1,"rescate unico, alta confianza, bootstrap por grupos y gate de finalist",0.7798857692536291,PROMISING

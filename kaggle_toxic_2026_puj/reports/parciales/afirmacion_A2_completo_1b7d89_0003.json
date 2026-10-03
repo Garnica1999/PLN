@@ -1,0 +1,41 @@
+{
+  "marca_corrida": "completo_1b7d89",
+  "resultado": {
+    "bloque": 2,
+    "coste_segundos": 6.7e-05,
+    "descripcion": "umbrales de V03 intactos, V03 no reentrenado, cero reoptimizaciones",
+    "detalle": {
+      "comprobaciones": {
+        "cero_reoptimizaciones_de_umbral": true,
+        "el_artefacto_de_v03_no_cambio": true,
+        "los_tres_umbrales_son_los_declarados": true
+      },
+      "huella_del_artefacto_de_v03": {
+        "mtime_ns": 1790698435936799215,
+        "ruta": "experiments/baseline_v03_frozen/pipeline_v03.json",
+        "sha256": "89ee399ae849296f7a9a76c21d49e15e616a202b6ef8a5b1d87afbf8c528a90b",
+        "tamano": 2222
+      },
+      "motivo_de_parada": "se ha reentrenado V03 o se ha reoptimizado un umbral",
+      "reoptimizaciones_sobre_cualquier_conjunto": 0,
+      "umbrales_congelados": {
+        "AG": 0.46,
+        "HS": 0.44,
+        "TR": 0.51
+      },
+      "umbrales_leidos": {
+        "AG": 0.46,
+        "HS": 0.44,
+        "TR": 0.51
+      },
+      "v03_reentrenado": false
+    },
+    "estado": "CONFIRMADO",
+    "exito": true,
+    "id": "A2",
+    "naturaleza": "CONFIRMAR",
+    "stop": true,
+    "tolerancia": "los tres umbrales leidos son 0.44, 0.51 y 0.46 y cero reoptimizaciones",
+    "traza": ""
+  }
+}

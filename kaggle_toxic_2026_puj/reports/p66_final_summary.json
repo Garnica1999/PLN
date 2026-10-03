@@ -1,0 +1,46 @@
+{
+  "familia": "P66_FINAL",
+  "fecha": "2026-09-29T15:56:16+00:00",
+  "pregunta": "puede una senal que no funciona como feature funcionar como correccion pequena del score de V03",
+  "respuesta": "si, y la mejora es atribuible al candidato y no a la capa de fusion. MI_arbol con correccion residual anidada da +0.0026743167 con 4 de 5 pliegues y una brecha de atribucion de +0.0041133588 frente al score barajado",
+  "matiz": "es sobre todo recalibracion: 6 de 53 rescates son de alta confianza, y el IC95 incluye el cero",
+  "por_que_mi_arbol_y_no_otro": "los siete candidatos correlacionan con z_V03 entre +0,9294 y +0,9988. Cinco de siete tienen el AUC del residuo por debajo de 0,5, luego su parte unica es antisimetrica con el error. MI_arbol es el unico por encima del azar y el unico producido por un modelo NO LINEAL, que es la razon de que quede informacion que una funcion lineal del score de V03 no puede representar",
+  "experimentos": 2,
+  "presupuesto": 16,
+  "reservas_gastadas": 0,
+  "scores_verificados": {
+    "reproducen": 5,
+    "no_verificables": 1,
+    "diferencia_no_resuelta": 1,
+    "difieren_sin_causa": 0
+  },
+  "bootstrap": {
+    "n": 2000,
+    "media": 0.0027270194,
+    "ic95_inferior": -0.004431163444677563,
+    "ic95_superior": 0.010210874472249717,
+    "incluye_el_cero": true
+  },
+  "gate_de_finalista": {
+    "delta_min": 0.003,
+    "delta": 0.002674316737056981,
+    "pliegues_min": 4,
+    "pliegues": 4,
+    "bootstrap_favorable": false,
+    "atribucion": true,
+    "rescate_de_alta_confianza": 6,
+    "superado": false
+  },
+  "segunda_particion": "NO ejecutada: el gate no llego",
+  "regla_general": "anadir columnas a un espacio de veinte mil dimensiones no cabe y corregir un score de tres columnas si, para la MISMA senal. La excepcion requiere que el modelo que produce la senal tenga un error que no sea funcion lineal del error de V03",
+  "submissions": 0,
+  "kaggle": 0,
+  "holdout": 0,
+  "test": 0,
+  "leaderboard": 0,
+  "cumplimiento": {
+    "comprobaciones": 25,
+    "fallos": 0
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

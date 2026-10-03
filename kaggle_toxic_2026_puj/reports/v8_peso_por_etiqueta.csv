@@ -1,0 +1,4 @@
+clave,metrica,diferencia,ic95_0,ic95_1,pliegues_positivos,gate_delta,gate_ic95,gate_pliegues,gate_supera,celdas,tasa_acierto,minimo_requerido,filtro_pasa
+anidado_por_etiqueta,0.771913,-0.005298,-0.012103,0.001907,1,False,False,False,False,148,0.3919,0.5649,False
+control_global,0.770354,-0.006857,-0.018037,0.005671,0,False,False,False,False,325,0.3508,0.5295,False
+sin_equilibrar,0.0,-0.777211,-0.799204,-0.753762,0,False,False,False,False,1683,0.2317,0.5057,False

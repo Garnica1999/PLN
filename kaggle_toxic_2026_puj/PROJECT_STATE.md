@@ -1,299 +1,987 @@
-# PROJECT_STATE - KAGGLE_TOXIC_2026_PUJ
+<!-- P82-CERRADO 2026-10-01, cierre tecnico en D-280, resultado cientifico en D-279 -->
+## P82: CERRADO Y PUBLICADO. Corrida vigente 20261001T194000Z_p2731658. 23 de 23 CONFIRMADO, DETERMINISMO CONFIRMADO, y el resultado es EXPLORATORIO
 
-Ultima actualizacion: 2026-09-25 (fase v2 cerrada + fase final de candidatos).
+```text
+A0..A22 CONFIRMADO   23 CONFIRMADO   0 REFUTADO   0 ERROR   0 STOP   0 sin ejecutar
+corrida vigente 20261001T194000Z_p2731658, la UNICA con el cronometro coherente
+DETERMINISMO: los cinco brazos identicos BIT A BIT con la corrida anterior de 98 minutos
+5918.260188 s reales contra 5400 de presupuesto, excedencia de 518.260188, AUTORIZADA
+experiments/p82_01_rnn_atencion.py   hash NUEVO, el delta es el arreglo
+  72c3c00fc4b235c4c8bd087abf9f4718a2409b1fdbae50049ccfe77d29fa941c   7278 lineas
+  antes b19802dfa44b3b38ce6caf42829944e7320be82953f56ef60fb10a04c69328e6
+reports/p82_rnn_atencion_20261001T194000Z_p2731658.json   98723 B   VIGENTE
+  8c1f613a8d8040815d2a6c3f7f95447861d435d9a75accb25c5a2df394d651db
+reports/p82_rnn_atencion_20261001T194000Z_p2731658.md     13266 B   VIGENTE
+  4e3dc8223cbe92727dc237d391946e55291dc68ec89326137fc611fb9c6ff30e
+```
 
-## Fase actual
+Las otras dos corridas **se conservan** y no se borran, porque son evidencia de la cadena: la de 98
+minutos con el defecto de redaccion del cronometro, y la del tramo 1 con solo tres brazos. Los
+**once parciales** tampoco: seis subdirectorios con marca de corrida mas cinco ficheros sueltos, 179
+ficheros. Y seis directorios de humo de 44 ficheros cada uno.
 
-**FASE v2 (Advanced Research) CONCLUIDA el 2026-09-25 sin mejora transferible.
-BACKLOG v2 AL 100 % (24/24 lineas evaluadas y cerradas, D-021).**
-Modelo final: **V03** (LB **0.78306**), congelado en
-`experiments/baseline_v03_frozen/` y reconstruible byte a byte.
+**El cronometro, coherente por fin.** `situacion_del_presupuesto`
+`EXCEDIDO_Y_TRAMO_2_EJECUTADO_CON_EXCEDENCIA_AUTORIZADA`, `excedio_el_presupuesto` True, y A19 con
+`situacion` igual, `excedido` True, `margen_segundos` -518.240782 y
+`la_nota_corresponde_a_la_situacion_real` True. **El informe ya no dice a la vez que se supero y que
+no se supero**, que es exactamente lo que hacia antes.
 
-Resumen v2 (detalle en `reports/advanced_research_v2.md`): se evaluaron 24 lineas
-de investigacion con un protocolo corregido (grupos near-duplicado UNION
-pseudo-autor, holdout congelado de 248 tweets, bootstrap por tweet). El meta de
-dependencia de etiquetas mejoro en desarrollo (+0.0081) y en el holdout (+0.0180
-pareado) pero **no transfirio**: LB v08 = 0.78163 vs 0.78306 de v03 (dentro del
-error estandar ~0.013). El paquete P8 cerro las cinco lineas restantes
-(calibracion, encoder de entidades por sparsity 0.5 %, umbrales por rebanada,
-especialistas y espacios por etiqueta) sin mejora. Lectura: con 12 sondas,
-0.78306 esta sesgado al alza por seleccion (winner's curse); el nivel esperado de
-la familia es ~0.776-0.780.
+### DETERMINISMO CONFIRMADO
 
-Entregables (actualizados y verificados el 2026-09-25):
-- `notebooks/10_final_pipeline.ipynb`: 42 celdas, 2.4 s, 0 errores, **26 checks
-  [OK] / 0 fallas**, idempotente; 16 secciones con fase 1 + fase v2.
-- `FINAL_REPORT.md`: 26 secciones numeradas + resumen + referencias; seccion 26
-  dedicada a la fase v2 (incluye el cierre del backlog).
-- `reports/advanced_research_v2.md`: informe de cierre de la fase v2.
-- `docs/advanced_research_v2_spec.md` + `reports/spec_compliance_v2.md`: spec
-  maestra archivada y matriz de cumplimiento FASE 0-99 con evidencia, mas
-  `reports/rule_audit_v2.md` (0 violaciones) y
-  `reports/target_encoding_audit_v2.md` (sin leakage de aprendizaje).
+| brazo | corrida 98 min | corrida vigente | |
+|---|---|---|---|
+| B1 GRU sin atencion | 0.639659 sd 0.011615 | 0.639659 sd 0.011615 | identico |
+| B2 GRU con atencion | 0.637554 sd 0.014905 | 0.637554 sd 0.014905 | identico |
+| B3 LSTM sin atencion | 0.615163 sd 0.012924 | 0.615163 sd 0.012924 | identico |
+| B4 LSTM con atencion | 0.617194 sd 0.020434 | 0.617194 sd 0.020434 | identico |
+| B5 GRU con atencion, permutado | 0.560747 sd 0.019137 | 0.560747 sd 0.019137 | identico |
 
-## Fase final de candidatos y submissions (2026-09-25)
+Las cinco comparaciones tambien identicas, **incluidos los dictados de delta por semilla**, que son
+diez numeros por comparacion y no una media: P1 -0.002105 con IC95 [-0.012406, 0.008196] y 4 de 10;
+P2 0.002031 con IC95 [-0.016628, 0.020690] y 7 de 10; P3 0.076807 con IC95 [0.059823, 0.093791] y
+10 de 10; P4 0.078912 con IC95 [0.067144, 0.090680] y 10 de 10; P5 0.024496 con IC95 [0.013551,
+0.035441] y 10 de 10. El criterio estaba escrito de antemano en el informe: si al reejecutar los
+brazos no dan las mismas medias, hay no determinismo y hay que parar antes de publicar. **Se cumplio.
+Que dos corridas independientes den lo mismo bit a bit es lo que hace que estas cifras sean
+evidencia y no una medida que se le parezca.**
 
-- CURRENT BEST LOCAL (corrected_cv): **0.7874** (meta de dependencia,
-  META-BASES-RIDGE; reproducido en `experiments/23_candidatos_finales.py`).
-- CURRENT BEST CORRECTED CV nuevo: **C-EMO 0.7809** (+0.0037 vs V03, 3/5 pliegues).
-- CURRENT BEST HOLDOUT: **0.8465** (meta v08, P7-02, no transferido al LB).
-  Entre los candidatos nuevos: C-EMO 0.8364 (IC95 del delta [-0.0075, +0.0228]).
-- CURRENT BEST SUBMISSION: **V03** (`submissions/toxic_submission_v03_lr_union_thr.csv`,
-  LB **0.78306**, hash congelado `7d7478f2...`).
-- CANDIDATE FILES: `submissions/toxic_submission_v09_candidate_a.csv` (C-EMO),
-  `v10_candidate_b.csv` (C-SYN), `v11_candidate_c.csv` (C-EMO-SYN); manifest en
-  `submissions/submission_manifest.csv`; validacion `reports/submission_validation_v2.md`;
-  hashes `reports/submission_hashes_v2.json` (reproducibilidad verificada).
-- **LB DE LOS CANDIDATOS (2026-09-25)**: v09 **0.77895** | v10 **0.77978** | v11
-  **0.78150**; los tres por debajo de V03 (el mejor, v11, a -0.00156, dentro del
-  error estandar ~0.013); el ranking local no predijo el del LB (D-024).
-- DECISION (spec 39, cerrada): **ningun candidato supero a V03; V03 sigue siendo
-  la referencia y la submission final** (12 sondas registradas; D-024).
-- NEXT ACTION: (1) push de la rama `proyecto-kaggle-toxic-2026-v2`; (2) entrega
-  del curso (deadline 2026-10-19); (3) opcional: presentacion.
+### El resultado, que no cambia y queda confirmado con el determinismo por delante
 
-## Entregables finales
+El efecto de la atencion es indistinguible de cero en LOS DOS NUCLEOS y con **signos opuestos**,
+-0.002105 en GRU y +0.002031 en LSTM, los dos muy por debajo del minimo detectable de 0.014342. El
+pre-registro decia que mismo signo en los dos seria la senal mas fuerte posible, y signos opuestos la
+prueba mas fuerte de que era ruido. **Salio lo segundo. Y esto NO es que la atencion no aporte:** es
+que este diseno, a diez semillas y con potencia 0.8993, no tiene potencia para distinguir el efecto de
+cero, y el limite de deteccion se calculo ANTES de correr. Un resultado negativo **NO** se lee como
+que la atencion no aporta. Lo solido, con diez de diez signos y el intervalo entero por encima de
+cero, es que **la geometria del embedding importa**, 0.076807 y 0.078912 contra la matriz permutada:
+la medicion que nlp-specialist pidio en la Fase 5 y que el proyecto nunca habia hecho. Y el hallazgo
+**no anticipado**: GRU supera a LSTM por **0.024496**, con diez de diez, sin estar en ninguna hipotesis
+del pre-registro. El mejor brazo se queda a **0.137552 de V03**.
 
-| Entregable | Ruta | Estado |
-|---|---|---|
-| Notebook entregable (30 % de la nota) | `notebooks/10_final_pipeline.ipynb` | ejecutado, 0 errores |
-| Informe final | `FINAL_REPORT.md` (27 secciones, 42 citas) | completo |
-| Auditoria final (QA) | `reports/auditoria_final.md` | GO con condiciones cumplidas |
-| Auditoria de rendimiento | informe de `ml-performance-auditor` | P1-P3 documentadas |
-| Modelo final | `models/mod03b_lr_union.joblib` | reconstruye v03 exacto |
-| Submission de respaldo | `submissions/toxic_submission_v03_lr_union_thr.csv` | LB 0.78306 |
-| Memoria | `PROJECT_STATE.md`, `RUNLOG.md`, `DECISIONS.md` (D-001..D-023), `experiments.csv` (128 filas) | al dia |
-| Evidencia | 26 scripts, 32 figuras, 67 tablas CSV, 12 submissions | en disco |
+### El defecto y su arreglo
 
-## Fases 6-8 (features densas) - resultado negativo documentado
+**La causa era un argumento asumido:** la nota definitiva recibia un `False` escrito a mano en vez de
+la comparacion real del reloj contra el presupuesto, y A19 se evaluaba antes de que el reloj llegara
+al presupuesto. Se arreglo de dos maneras, que son la misma idea: `construir_nota_de_tramos` **recibe
+el tiempo real y el presupuesto y calcula la excedencia dentro**, luego no existe forma de pasar un
+booleano por error; y **A19 es ahora la ultima** del pipeline, porque una afirmacion que vigila el
+presupuesto solo se mide al terminar. **El guard antitrunco no se toco ni se relajo:** como el destino
+canonico ya existia, la reejecucion escribio con sufijo de marca y **declaro en el propio informe que
+conserva el anterior**. Ademas se anadio la **auditoria AST** `auditar_booleanos_literales`, que
+detecta literales booleanos en posiciones que deben llegar calculadas, y se prueba **por mutacion**:
+con el `False` a mano el recuento de la puerta del humo **baja de 164 a 162**, que es la prueba de
+que la deteccion discrimina.
 
-B5-DENSE 0.6607 (46 features); hibridos sobre la union: HIB-H12 0.7836
-(-0.0091), HIB-H11 0.7713, HIB-H14 0.7630, HIB-UNION 0.7610 (-0.0316).
-Control con las densas a cero reproduce 0.792659 exacto -> la perdida es de las
-features, no del hstack. H11/H12/H14 no se validan como palanca; quedan como
-evidencia negativa para el informe. Rebanadas: solo mejoran referencia colectiva
-y Q4 con HIB-H12. Artefactos: `reports/features_densas_resultados.csv/.json`,
-`reports/eda/features_densas_slices.csv`, filas B5-DENSE/HIB-* en
-`experiments.csv`.
+**La leccion, y es la segunda vez en este fichero: un argumento asumido, un `True` o un `False`
+escrito a mano donde deberia haber una comparacion.** Ya paso con la tupla anidada que hacia que TODO
+saliera CONFIRMADO. El patron es el mismo y la defensa es la misma: una comprobacion que detecte el
+patron, mas un caso de humo que por mutacion demuestre que la deteccion discrimina. **Un argumento que
+se asume no se verifica nunca, y lo que se verifica solo cuando algo va mal.**
 
-## Sondas de robustez pendientes de envio (D-013, max 2)
+### Cierre de fase
 
-- `submissions/toxic_submission_v06_robustez_c1.csv` (C=1.0, min_df=2):
-  OOF 0.7929, gap +0.1635 -> candidato debil.
-- `submissions/toxic_submission_v07_robustez_mindf5.csv` (C=1.0, min_df=5,
-  10.515 features): OOF 0.7993, gap +0.1272 (la mitad que MOD-03b) -> candidato
-  fuerte si la hipotesis de capacidad es correcta.
-Regla: se adopta la que supere 0.78306 (v03); si ninguna, se mantiene MOD-03b.
+**P82 cierra la via de la RNN con atencion que Carlos autorizo abrir directamente, sobreescribiendo
+la recomendacion propia y la del especialista de competencia. El resultado no la respalda y no la
+refuta de forma concluyente**, porque el efecto es menor que lo que este diseno resuelve. El RNN
+completo se queda a **0.137552 de V03**, luego **no es candidato**. La unica contribucion solida de
+P82 es la medicion de la geometria del embedding contra la matriz permutada, que separa **existe
+geometria** de **esa geometria esta asignada a estos tokens**. Y P82 es la **primera medicion con
+early stopping estrictamente anidado**, luego sus numeros **no son comparables** con `v9_04`
+(0.694343) ni con `v10_11` (0.711639). Sigue vigente el limite permanente de P81: sin anclaje a una
+implementacion externa de SGNS, porque gensim no esta instalado y no compila con Python 3.14.7, luego
+se afirma sobre el objetivo y no sobre la calidad relativa frente a una libreria.
 
-`submissions/toxic_submission_v04_ens04_mediana.csv`: par M2+M3 con umbrales
-medianos (0.44/0.47/0.44), F1 anidado 0.7985. Predice mas positivos que la
-prevalencia de train (HS 46.5 % vs 43.7 %), asi que si el LB decepciona el
-sospechoso es el umbral, no la representacion.
+```text
+V03 remains the best verified leaderboard result.
+```
 
-**RESULTADO (2026-09-23)**: LB 0.77510 -> el ensemble NO se traslada (peor que
-v02 y v03). El sospechoso era el umbral y se confirmo. Descartada.
+---
 
-## Ensembles (Fase 13b) - resultado
+<!-- P81-CERRADO 2026-10-01 -->
+## P81: CERRADO Y PUBLICADO. 20 de 20, 18 CONFIRMADO, 2 REFUTADO, 0 ERROR, salida 0
 
-4 bases OOF con el mismo split: M1 word LR 0.7587, M2 union LR 0.7927,
-M3 union LinearSVC 0.7849, M4 char LR 0.7567. Diversidad real (desacuerdo
-4-11 %, correlacion de errores 0.63-0.84) pero ningun ensemble supera al single
-de forma convincente: ENS-02 0.7949 anidado (+0.0023), ENS-04 con umbrales
-medianos 0.7985 (+0.0058, maximo de 12 estimaciones). Decision: NO se gasta
-envio; se mantienen v02/v03.
+```text
+A0..A5 CONFIRMADO   A6 REFUTADO   A7 REFUTADO   A8..A19 CONFIRMADO
+18 CONFIRMADO   2 REFUTADO   0 ERROR   0 STOP   0 sin ejecutar
+65.4 s con cronometro de subprocess, CODIGO DE SALIDA 0
+sin traceback, sin STOP, sin ERROR
+```
 
-## Analisis de error (Fase 12) - hallazgos accionables
+```text
+experiments/p81_01_cierre_huecos.py
+  1e52280f64635637429e141440cfe5efce773e91419bf9b9010b8e7d0c6de39f
+  6412 lineas. El hash CAMBIO respecto al 4f7f8488ed9b2710 de la corrida anterior, y es lo
+  esperado: ese delta es el arreglo de la serializacion
+reports/p81_cierre_huecos.json  183426 B
+  81a21033a83c8ffc560a5381cfed4d25f93e99c66ebc3976bc3777a65f381d4b
+reports/p81_cierre_huecos.md     15752 B
+  19e32b944db6d2927f4f58d1eb14505ccb2ab90fe9dc454dfe1062eabe7d30c4
+21 parciales: 10 de la corrida 010045, 10 de esta 010636, y el de la corrida rota conservado
+ningun temporal .tmp_p81
+```
 
-Rebanadas mas debiles (F1, n>=40): hashtags 0.586 (-0.213 vs global),
-preguntas 0.633, referencia colectiva 0.639, textos largos Q4 0.645,
-sin mencion 0.697.
-Patrones dominantes: (1) insulto interpersonal en registro de broma/afiliacion
-(40.5 % de los textos con insulto + mencion + sin colectivo son (0,0,0));
-(2) odio implicito contra grupos sin insulto del lexico (45.5 % de los FN de AG
-tiene referencia colectiva vs 13.9 % de los TP); (3) regimen noticia/atribucion
-a terceros con URL.
-Hipotesis nuevas: H11 registro bromista/afectivo, H12 bloque de objetivo
-individual vs colectivo para TR, H13 features de cita/atribucion, H14 lexico de
-deshumanizacion inducido, H15 calibracion por rebanada (se espera sin aporte).
-Detalle en `reports/error_analysis.md`.
+**ASCII byte a byte: los dos finales son ASCII PURO, 0 bytes por encima de 127.** Verificador oficial
+`tools/verificar_caracteres.py`: **salida 0, 0 caracteres no permitidos**.
+**NO_DISPONIBLE en el `.md`: 0**, y 0 en el `.json`. El `.md` tiene 219 lineas y **20 filas de tabla de
+afirmaciones, todas pobladas**. El bug que llenaba el informe de huecos en silencio queda **descartado
+por quinta vez**, ahora con el informe completo publicado.
 
-## Submissions: estado
+El arreglo funciona: el informe publica **solo los NOMBRES** de los modulos, mas una tabla de que
+modulos exige cada afirmacion.
 
-- v00 (sonda E00): LB 0.51494. v01 (B1): 0.75677. v02 (MOD-03b, 0.5): 0.77993.
-  **v03 (MOD-03b + umbrales): 0.78306 = MEJOR ACTUAL.**
-- v04 (ensemble): 0.77510 descartada. v05 (OPT-01 de Optuna): 0.77602 descartada.
-- v06/v07 (sondas de robustez, D-013): pendientes de envio por Carlos.
+```json
+"contexto_de_modulos": {"p81_04": "p71_04", "p72_01": "p72_01", "v10_11": "v10_11", "v9_04": "v9_04"}
+```
 
-## Hallazgos del EDA (Fase 2, resumen)
+**1. El bloque 1 NO apoya a la suma.** A5 **CONFIRMADO** por magnitud, A6 **REFUTADO** por direccion,
+titular **`EL_TEST_NO_APOYA_A_LA_SUMA`**, `apoya_a_la_suma` falso, `direccion` `favor_a_la_media`, y **la
+MEDIA gana por 0.700000**. Reparto **2 a 4**, en zona de no conclusion, curva **no monotona con 2
+cambios de signo**. Las dos lecturas, con umbral 0.99:
 
-- 0 emojis Unicode en el corpus (normalizacion ASCII); 6 bytes no ASCII en test.
-- Senales mas fuertes (V de Cramer, train): `tiene_insulto` (HS/AG 0.355,
-  TR 0.339), `tiene_mencion_inicial` (TR 0.325), `tiene_insulto_dirigido`
-  (TR 0.266), `tiene_referencia_colectiva` (TR 0.215, direccion negativa),
-  `tiene_hashtag` (asociado a HS=0).
-- Dentro de HS=1 (n=756): TR=1 tiene mencion inicial 64.9 % vs 9.7 % (TR=0) y
-  segunda persona/insulto dirigido altos; TR=0 concentra referencias
-  colectivas explicitas (57.0 % vs 10.0 %) y URLs.
-- Desbalanceo maximo 2.34:1: no requiere remuestreo agresivo.
-- Deduplicar por near-duplicado elimina solo 4 filas de train y no cambia el
-  orden ni la magnitud de los efectos.
-- Hipotesis con apoyo inicial: H1 (indirecta), H2 (parcial), H3 (con reservas),
-  H6, H8 y H9. Sin evaluar: H4, H5, H7, H10.
+```text
+por BRAZO, criterio declarado y el del primario
+  MEDIA excluye 0.35, 0.50        mejor 0.7388888888888889 en lr 0.20
+  SUMA  excluye 0.20, 0.35, 0.50  mejor 0.03888888888888889 en lr 0.10
+  diferencia_por_brazo = -0.7000000000000001   GANA LA MEDIA por 0.700000   primario lr 0.1
+por PUNTO, alternativa publicada, no usada: sobran 0.02, 0.05, 0.10
+  MEDIA 0.005555555555555556  SUMA 0.03888888888888889
+  diferencia_por_punto = +0.03333333333333333   GANA LA SUMA por 0.0333
+las_dos_lecturas_coinciden_en_signo = False
+```
 
-## Revision de codigo (Fase C)
+**Las dos lecturas NO coinciden en signo**, y por eso el criterio esta escrito y la alternativa se
+publica. Se publica el REFUTADO sin reinterpretar: tolerancia 0.02, banda muerta 0.005, rejilla,
+criterio y signo intactos.
 
-- `ml-reviewer`: APROBADO CON CAMBIOS MENORES (0 criticos, 1 mayor, 5 menores).
-- HALLAZGO MAYOR a implementar en modelado: los lexicos inducidos con
-  etiquetas de train (`n_insultos`, `tiene_insulto`, `tiene_colectivo_lexico`)
-  estan sesgados in-sample; en los modelos deben inducirse DENTRO de cada fold
-  de `StratifiedGroupKFold` y reportar el efecto out-of-fold.
-- Cambios menores aplicados y re-verificados (ruff + idempotencia).
+**2. La pata EJECUTABLE del anclaje de H1 no apoya la suma**, luego **la base unica que sostiene que
+el objetivo no era SGNS es la pata DOCUMENTAL, el codigo C de word2vec**, sha256
+`df07a1d504c22aa747f9fc40ddc6cfed52e12c3a402861398426829b83d96ef4`, 715 lineas. La reimplementacion
+propia no aporta apoyo ejecutable.
 
-## Decisiones pendientes de Carlos
+**3. Limite permanente.** El anclaje a una implementacion externa queda **SIN HACER** porque gensim no
+esta instalado y no compila con Python 3.14.7: autoriza afirmar sobre el **OBJETIVO**, no sobre la
+calidad relativa del artefacto frente a una libreria. **No se afirma que Word2Vec sea mejor que V03.**
 
-1. **D-005 (semantica de TR)**: revisar
-   `reports/eda/tr_ejemplos_para_revision.csv` (40 TR=1 + 40 TR=0 anotados) y
-   `reports/eda/fase2_tr0_con_referencia_colectiva.csv` (casos limite) para
-   fijar si TR = rango del objetivo (individuo vs grupo) o dirigido vs no
-   dirigido.
-2. **E00 (metrica)**: enviar `submissions/toxic_submission_v00_plantilla.csv`
-   y reportar el score publico para identificar la implementacion de F1.
+**4. El bloque 2, con el tokenizador real de `v9_04`.** Proporcion de posiciones **OOV 0.041249**, de
+**relleno 0.730919**, **OOV sobre los tokens que llegan a la matriz 0.153295**, **2008 tipos fuera de
+vocabulario**. Desglose: posiciones_totales 94912, tokens_que_entran 25539, tokens_cubiertos 21624,
+tokens_oov 3915, posiciones_de_relleno 69373, vocabulario_usado 3439, n_filas_de_dev 1483, max_len 64,
+filas_con_cero_tokens_cubiertos 1, fraccion_de_filas_sin_cubiertos 0.0006743088334457181.
+**El 11.2726 por ciento de antes NO queda reproducido**, porque las tres cifras de la discusion usan
+normalizaciones distintas y MAX_LEN 60 frente a MAX_LEN 64 y `normalizar_emb_normal` de `v9_04`.
+**El reparto relleno contra OOV tiene magnitud: 69373 posiciones de relleno frente a 3915 tokens OOV,
+sobre 94912 posiciones.** El 0.155020 del prototipo no reproduce ninguna de las cuatro.
 
-## Estado del arte (Fase 1, resumen)
+**5. El bloque 5.** El desfase de una epoca del scheduler **es un defecto real de codigo**, plan
+`range(EPOCAS)` frente a entrenamiento `enumerate(..., start=1)`, y **su consecuencia numerica es
+DESPRECIABLE**: diferencia relativa de medias **0.002144** contra umbral **0.005**. A18 y A19 los dos
+CONFIRMADO, con `total_lotes_plan 1395` y `total_lotes_recorridos 1398`.
 
-- 45 referencias verificadas (`reports/estado_arte.md`, `.csv`, `references.bib`).
-- Hallazgo central: MineriaUNAM (Argota Vega et al. 2019, DOI 10.18653/v1/S19-2079)
-  gano la Subtask A en espanol de HatEval SIN transformers ni embeddings
-  preentrenados: SVM lineal + char n-gramas, n-gramas de palabras funcionales
-  2-4, n-gramas de puntuacion 2-4, POS, patrones morfologicos y series de
-  palabras agresivas (macro-F1 0.73 en espanol).
-- Evidencia util: Nina-Alcocer 2019 (TFIDF+EMOTIONS EMR 0.711 vs 0.629 base;
-  TFIDF+STRUCT mejor F1 0.780); contraevidencia: combinar 3 bloques de features
-  degrada y el ensemble por votacion no supera al SVM lineal (SINAI 0.707 vs 0.701).
-- Hipotesis H1-H10 y experimentos E01-E10 en `reports/hipotesis.md`.
-- Regla de decision pre-registrada: una mejora se adopta si es >= +0.005 absoluto
-  en la metrica primaria y en >= 3 de 5 folds.
+**Salvedad de alcance que queda escrita.** A11 es valido como prueba de que la sonda separa las
+celdas, pero **no** como medida del reparto: sus dos canales miden **exactamente 0.0** en las dos
+clases, con `banda_muerta_de_la_diferencia: True`, luego "el OOV es al menos tan grande que el de
+relleno" es una comparacion de **dos ceros**. **La magnitud del reparto es la de A8.**
 
-## Competicion
+**PATRON DE PROCESO, que es informacion cara.** Cinco fallos en la serie P81, todos de **contrato en la
+frontera entre capas**, dos de calculo y el resto de cableado y persistencia, **ninguno cubierto por los
+checks de humo** hasta que se reescribieron los casos de frontera:
 
-- Kaggle `tweet-toxic-2026-puj` (id 167384). Organizacion JarvisLab_PUJ.
-- Metrica oficial: F1 Score. Deadline: 2026-10-19 23:00 UTC. Max 10 envios/dia.
-- Nota: 70 % ranking Kaggle (LB privado) + 30 % calidad del notebook.
-- Restricciones: sin transformers/LLM; sin embeddings preentrenados; todo
-  vectorizador/embedding entrenado desde cero; test nunca para entrenar.
+```text
+1  KeyError de clave literal en A6            calculo, corregido
+2  AttributeError de RE_TOKEN en A18          cableado, corregido
+3  tabla de origenes del chequeo, a medias    cableado, corregido
+4  escritor incremental sobre su nombre final persistencia, corregido
+5  contexto_de_modulos con modulos vivos      persistencia, corregido
+```
 
-## Datos (verificados)
+**La leccion operativa: un modo de humo que ejercita funciones con datos sinteticos NO verifica el
+contrato entre capas.** Los 126 checks pasaban enteros mientras el recorrido real reventaba. **Y hace
+falta comprobar por mutacion que cada comprobacion discrimina**: un caso que nunca puede fallar no es
+una prueba.
 
-- `data/raw/toxic_train.csv` (205.417 B, sha256 3d40e734...): 1.731 filas,
-  sep `;`, UTF-8. HS 756 (43.67 %), TR 519 (29.98 %), AG 662 (38.24 %).
-- `data/raw/toxic_test.csv` (127.006 B, sha256 e91ff825...): 1.154 filas,
-  sep `;`, **cp1252** (6 bytes 0xBF). Solo `id,text`.
-- `data/raw/submission.csv` (13.860 B): plantilla `id,HS,TR,AG` separada por
-  coma, todo 1,1,1. Ids identicos al test.
-- Combinaciones HS x TR x AG: (0,0,0)=949, (1,1,1)=491, (1,0,1)=145,
-  (1,0,0)=92, (1,1,0)=28, (0,0,1)=26. **No existe (0,1,\*)**.
-- Texto ASCII sin tildes/enye (normalizacion de los organizadores).
-- Longitud: 6-306 chars, mediana 91.
+**Fronteras respetadas y comprobadas.**
 
-## Hallazgos de la auditoria (Fase 0)
+```text
+test = 0   holdout = 0 identificadores deserializados   leaderboard = 0   submission = 0
+P71 a P80 sin tocar   V03 sin tocar   umbrales 0.44 / 0.51 / 0.46 sin tocar   modelos/ sin escrituras
+congelado 302c994d13b75f8f5fbd440eea2c4f4113997e2581524021923b92f8244d705a ANTES y DESPUES
+29478868 bytes, abierto en solo lectura, y A0 lo confirma tambien en mtime_ns
+```
 
-- Parser correcto: quoting estandar CSV (el quoting QUOTE_NONE rompe 13 filas).
-  1 fila con comilla anomala resuelta por el parser estandar.
-- **10 textos de test estan en grupos de near-duplicados con train**
-  (umbral 0.85; 4 grupos; 7 filas de train y 10 de test afectadas).
-  Guardado en `data/processed/grupos_near_duplicados.csv`.
-- 5 duplicados exactos dentro de test; 0 entre train y test.
-- `id` no asociado a etiquetas (Spearman p>0.49; chi2 p>0.20): sin fuga por orden.
-- 17 pseudo-autores (primera mencion @usuario) con >=3 tweets, 77 tweets
-  (4.4 %); 9 grupos homogeneos en HS.
-- Riesgo externo: el corpus sigue el esquema HatEval (SemEval-2019 T5 ES);
-  prohibido usar etiquetas/textos externos (D-002).
+```text
+V03 remains the best verified leaderboard result.
+```
 
-## Leaderboard (registro en `submissions/leaderboard_log.csv`)
+<!-- P81-CUARTA-CORRIDA 2026-10-01 -->
+## P81 cuarta corrida: LAS VEINTE medidas, 18 CONFIRMADO y 2 REFUTADO, 0 ERROR. El informe final muere en un modulo
 
-| Envio | Local (OOF) | Kaggle | Gap | Que es |
-|---|---|---|---|---|
-| v00 plantilla | - | 0.51494 | - | sonda E00 (todo 1,1,1) |
-| v01 baseline TF-IDF+LR | 0.75778 | 0.75677 | -0.0010 | B1 word(1,2) |
-| v02 union word+char LR | 0.79270 | 0.77993 | -0.0128 | MOD-03b, umbral 0.5 |
-| **v03 union + umbrales** | 0.79890 | **0.78306** | -0.0158 | **MEJOR / modelo final** |
-| v04 ensemble M2+M3 | 0.79850 | 0.77510 | -0.0234 | descartada |
-| v05 OPT-01 Optuna | 0.80390 | 0.77602 | -0.0279 | descartada |
-| v06 robustez C=1.0 | 0.79290 | 0.77227 | -0.0206 | descartada |
-| v07 robustez min_df=5 | 0.79930 | 0.77034 | -0.0290 | descartada |
+```text
+20 de 20 afirmaciones medidas   0 sin ejecutar
+18 CONFIRMADO   2 REFUTADO (A6 y A7)   0 ERROR   0 STOP
+A0 CONFIRMADO: el congelado intacto en sha256, tamano y mtime_ns antes y despues
+65.1 s con cronometro de subprocess, codigo de salida 1
+```
 
-Conclusiones: metrica = F1 macro sobre 3 columnas (D-009); los umbrales por
-etiqueta aportan +0.0031 pareado (D-012); **plateau de la familia union: el
-rango 0.77034-0.78306 equivale a 0.99 errores estandar (n=1154) -> las
-diferencias entre variantes son ruido** (D-014). La cota local es optimista entre
--0.013 y -0.029; el gap train-OOF NO predice el gap local-LB (D-013 refutada).
+```text
+experiments/p81_01_cierre_huecos.py
+  4f7f8488ed9b27106248d8035e3bb749318b0032788616e745421d2df09adb27
+  6402 lineas, 126 de 126 en --humo con salida 0
+10 parciales propios ESCRITOS, cada uno con marca de corrida y motivo, los 10 ASCII puros
+reports/p81_cierre_huecos.parcial.json  el de la corrida rota, INTACTO y conservado
+reports/p81_cierre_huecos.json           NO EXISTE
+reports/p81_cierre_huecos.md             NO EXISTE
+ningun temporal .tmp_p81, nada vaciado, nada renombrado
+```
 
-## Mejor modelo
+**El arreglo de la persistencia funciona.** Cada escritura parcial va a un fichero PROPIO, luego la
+invariante "nunca sobrescribir un destino existente" es cierta para todos los destinos sin
+excepciones, y un fallo de escritura degrada a AVISO con su causa en el log. Solo una Parada con marca
+STOP aborta. **Los 34 `aviso de contrato` de la corrida anterior desaparecen**: la tabla de origenes
+quedo construida.
 
-**MODELO FINAL (D-014): MOD-03b_BEST - union TF-IDF word(1,2) min_df=2
-sublinear + char_wb(3,5) min_df=2 sublinear + LogisticRegression C=2.0 balanced
-x3, con umbrales por etiqueta 0.44/0.51/0.46.**
-Script `experiments/04_refit_submissions_v02_v03.py`; modelo
-`models/mod03b_lr_union.joblib`; submission
-`submissions/toxic_submission_v03_lr_union_thr.csv` (LB **0.78306**, el mejor).
-OOF 0.7927 (0.5) / 0.7989 (umbrales). Dimension 27.431.
+**Fallo literal, sin arreglar.**
 
-**Plateau documentado (D-014)**: 7 submissions utiles; toda la familia union cae
-en la banda 0.77034-0.78306 del LB, un rango de 0.0127 = **0.99 errores
-estandar** (n=1154). Las diferencias entre variantes son ruido; el unico
-contraste pareado fiable (v02 vs v03, mismo modelo) confirma +0.0031 por los
-umbrales OOF. Se detiene el sondeo del leaderboard.
+```text
+  File ".../experiments/p81_01_cierre_huecos.py", line 6349, in main
+    json.dumps(informe, ensure_ascii=True, indent=2)
+TypeError: Object of type module is not JSON serializable
+when serializing dict item 'p71_04'
+when serializing dict item 'contexto_de_modulos'
+```
 
-Alternativas evaluadas y descartadas con evidencia: ensembles (v04 0.77510),
-Optuna OPT-01 (v05 0.77602), control de capacidad (v06 0.77227, v07 0.77034),
-post-proceso jerarquico (-0.0056 local), features densas H11/H12/H14
-(-0.009 a -0.032 local), todas las variantes de preprocesamiento (parte A).
+La linea 3835 mete `contexto_de_modulos` en el cuerpo del informe, y ese diccionario contiene
+**objetos modulo vivos**: `p71_04`, `p72_01`, `v10_11`, `v9_04`. Un modulo no es serializable. Los
+parciales si serializan porque **su cuerpo no incluye ese campo**; el informe final si.
+**Asimetria entre dos cuerpos del mismo informe.** El campo se anadio para auditar que modulos se
+cargaron, lo cual exige el modulo y por eso mismo no se puede volcar: falta publicar los **nombres**.
+Es la ultima sentencia efectiva de la corrida: las veinte mediciones y los diez parciales ya estaban
+en disco. El guard de la linea 6344, que se niega a sobrescribir el informe, se respeto bien.
 
-## Mejores features
+**Bloque 1, en disco, exactamente lo esperado.**
 
-Pendiente. Hipotesis de partida por validar en Fases 2-8:
-n-gramas de caracter (evasion ortografica), lexico de agresividad,
-2a persona/imperativos (targeting), estilometria, sentimiento/emocion.
+```text
+por BRAZO (criterio declarado, el del primario)
+  MEDIA excluye 0.35, 0.50        mejor 0.7388888888888889 en lr 0.20
+  SUMA  excluye 0.20, 0.35, 0.50  mejor 0.03888888888888889 en lr 0.10
+  diferencia_por_brazo = -0.7000000000000001   GANA LA MEDIA por 0.700000   primario lr 0.1
+por PUNTO (publicada, no usada): sobran 0.02, 0.05, 0.10
+  MEDIA 0.005555555555555556   SUMA 0.03888888888888889
+  diferencia_por_punto = +0.03333333333333333   GANA LA SUMA por 0.0333
+las_dos_lecturas_coinciden_en_signo = False
+```
 
-## Problemas conocidos / riesgos
+**Reparto de victorias: la SUMA 2 de 6, la MEDIA 4 de 6, "2 a 4".** Curva no monotona, 2 cambios de
+signo, `recuento_en_banda_muerta: True`.
+**Titular literal:** `EL_TEST_NO_APOYA_A_LA_SUMA`, `apoya_a_la_suma: False`,
+`direccion: favor_a_la_media` -- "la diferencia entre los dos mejores de la rejilla es -0.700000, de
+magnitud suficiente para discriminar pero con el SIGNO en contra de la SUMA. La MEDIA gana por
+0.700000... el bloque 1 NO apoya al objetivo de la referencia", mas "ZONA DE NO CONCLUSION: el reparto
+de victorias por learning rate queda en 2 a 4 y eso es ruido con tres semillas. El primario NO debe
+leerse como confirmacion". **Sin ajustar nada**: tolerancia 0.02, banda muerta 0.005, rejilla, criterio
+y signo intactos.
 
-1. Metrica exacta ambigua -> sonda E00 con `submission.csv` (todo 1) que envia
-   Carlos; los valores esperados difieren por definicion (0.541 vs 0.543 vs
-   0.270 vs 0.284 con distribucion de train).
-2. Semantica de TR ambigua entre la definicion oficial y HatEval -> Fase 2.
-3. Near-duplicados train-test -> validacion con `StratifiedGroupKFold`
-   (grupos = near-duplicados, estratificado por combinacion).
-4. Corpus sin diacriticos -> no se deben "inventar" tildes; documentar.
-5. Fuga potencial por pseudo-autor -> control de robustez adicional.
+**Bloque 2: LAS CUATRO CIFRAS, que no habian sobrevivido a ninguna corrida.**
 
-## Hipotesis abiertas (a refinar en Fase 1)
+```text
+proporcion_de_posiciones_oov        = 0.04124873567093729    4.124874 % de las posiciones
+proporcion_de_posiciones_de_relleno = 0.7309191672285907     73.091917 % de las posiciones
+oov_sobre_tokens                     = 15.329496 %            sobre los tokens que entran
+numero_de_tipos_distintos_fuera_de_vocabulario = 2008
+posiciones_totales 94912   tokens_que_entran 25539   tokens_cubiertos 21624   tokens_oov 3915
+posiciones_de_relleno 69373   vocabulario_usado 3439   n_filas_de_dev 1483   max_len 64
+filas_con_cero_tokens_cubiertos 1   fraccion_de_filas_sin_cubiertos 0.0006743088334457181
+```
 
-- H1: char n-grams 3-6 capturan evasion ortografica mejor que word n-grams.
-- H2: lexico agresivo + 2a persona separa AG.
-- H3: features de targeting separan TR.
-- H4: word+char > cada representacion sola.
-- H5: sentimiento/emocion aporta informacion complementaria.
-- H6: estilometria ayuda en tweets cortos.
-- H7: lematizacion no aporta en tweets.
-- H8: post-proceso jerarquico HS=0 => TR=0, AG=0 mejora F1.
+**Reparto relleno contra OOV CON MAGNITUD:** de 94912 posiciones, **69373 relleno = 73.091917 %**, y
+**3915 tokens OOV = 4.124874 %**. Sobre los 25539 tokens que llegan a la matriz, el OOV es el
+**15.329496 %**: una orden de magnitud mas pequeno que el relleno en posiciones.
+**El 11.2726 % de la discusion NO queda reproducido**, `variante_que_la_reproduce: null`, porque las tres
+cifras anteriores usan normalizaciones distintas y MAX_LEN 60 frente a MAX_LEN 64 y
+`normalizar_emb_normal` de `v9_04`. **El 0.155020 del prototipo no reproduce ninguna de las cuatro**,
+y ahora eso esta medido y publicado en vez de estimado.
 
-## Proximos experimentos
+**Salvedad sobre A11.** CONFIRMADO, pero sus magnitudes son `canal_de_relleno_c1 = 0.0` y
+`canal_de_oov_c2b_menos_c2 = 0.0` en las dos clases, con distancia `0.0` y
+`banda_muerta_de_la_diferencia: True`. **Los dos canales miden exactamente cero**, luego "el OOV es al
+menos tan grande" es una comparacion de **dos ceros**: cierto y sin informacion. **La magnitud del
+reparto es la de A8, no la de A11.**
 
-- E00: identificacion de la metrica oficial (sonda de submission).
-- E01: char n-grams vs word n-grams (Fase 5/9).
-- Fases 2-4: EDA, textometria, variantes de preprocesamiento.
+**Bloque 5: A18 y A19 los dos CONFIRMADO.** A18: diferencia relativa de las medias 0.002143718728
+contra umbral 0.005, luego **DESPRECIABLE**, con `total_lotes_plan 1395` y
+`total_lotes_recorridos 1398` y el recorte declarado de las primeras 2000 lineas, 53243 tokens, con la
+advertencia de que los recuentos absolutos no son los de la corrida real. A19: la etiqueta coincide con
+la regla de A18, y dice explicitamente que el desfase de una epoca **existe y es un defecto real de
+codigo** y que lo que se cualifica es su consecuencia numerica. **Ninguno quedo en ERROR**, y la
+regla de que A19 emita ERROR si A18 no se ejecuto **no llego a dispararse** porque A18 si corrio.
+**No hay ningun REFUTado que descartar por fallo aguas arriba**: A6 y A7 son del bloque 1.
 
-## Rutas clave
+**ASCII y verificador.** Los **diez** parciales nuevos: **0 bytes por encima de 127 cada uno**. El `.json`
+y el `.md` finales no se pueden verificar porque no existen. Verificador oficial
+`tools/verificar_caracteres.py` sobre el proyecto entero: **salida 0, 0 caracteres no permitidos**.
+**NO_DISPONIBLE en el `.md`: no aplica, no se escribio.** En los diez parciales nuevos **0**, y **0**
+en el parcial viejo. **El bug del informe lleno de huecos no se ha reproducido en cuatro corridas
+seguidas.**
 
-- Datos: `data/raw/`; grupos near-dup: `data/processed/`.
-- Reportes: `reports/` (auditoria, data dictionary, eda/).
-- Memoria: `PROJECT_STATE.md`, `RUNLOG.md`, `DECISIONS.md`, `experiments.csv`.
-- Reglas verbatim: `docs/competition_rules.md`.
-- Codigo: `src/data.py`; auditoria: `experiments/00_auditoria_datos.py`.
+**Cinco fallos en la serie de P81, todos de contrato asumido y no verificado en la frontera**, solo dos
+de calculo: el `KeyError` de clave literal, el modulo equivocado de A18, la tabla de origenes a medio
+construir, el escritor incremental sobre su nombre definitivo, y ahora un objeto modulo dentro del
+informe. **Ninguno lo cubren los 126 checks de humo.** El hueco real de este ultimo es que nadie
+comprueba que **todo lo que se mete en el informe sea serializable**.
 
-## Entorno
+**CONCLUSION.** La pata **EJECUTABLE** del anclaje de H1 **no apoya la suma**: A5 discrimina por
+magnitud, A6 mide la direccion y la encuentra contraria, la MEDIA gana por 0.700000, y el reparto 2 a
+4 con dos cambios de signo deja el primario en zona de no conclusion con tres semillas. Luego **la base
+que sostiene que el objetivo no era SGNS es la pata DOCUMENTAL, el codigo C de word2vec, y queda como
+base unica.**
 
-`/home/carlos/venv` (Python 3.14.7) - sklearn 1.8, lightgbm 4.6, xgboost 3.2,
-catboost 1.2.10, nltk 3.9.4, spacy 3.8.13 + es_core_news_md, torch 2.14+rocm7.2,
-kaggle 2.2.4, emoji 2.16.0, tabulate. GPU RX 9070 XT (ROCm) con protocolo de
-chequeo previo (D-008).
+**Limite permanente.** El anclaje a una implementacion externa de SGNS queda **SIN HACER** porque gensim
+no esta instalado y no compila con Python 3.14.7: autoriza afirmar sobre el **OBJETIVO**, no sobre la
+calidad relativa del artefacto frente a una libreria. **No se afirma que Word2Vec sea mejor que V03.**
+
+**Fronteras respetadas y comprobadas.**
+
+```text
+test = 0   holdout = 0 identificadores deserializados   leaderboard = 0   submission = 0
+P71 a P80 sin tocar   V03 sin tocar   umbrales 0.44 / 0.51 / 0.46 sin tocar   modelos/ sin escrituras
+congelado 302c994d13b75f8f5fbd440eea2c4f4113997e2581524021923b92f8244d705a ANTES y DESPUES
+29478868 bytes, abierto en solo lectura, y A0 lo confirma tambien en mtime_ns
+```
+
+```text
+V03 remains the best verified leaderboard result.
+```
+
+<!-- P81-TERCERA-CORRIDA 2026-10-01 -->
+## P81 tercera corrida: 6 CONFIRMADO, 2 REFUTADO, 0 ERROR, se para en A8. El escritor incremental se come a si mismo
+
+```text
+A1..A5 CONFIRMADO   A6 REFUTADO   A7 REFUTADO   A8 CONFIRMADO
+A0 y A9..A19 sin ejecutar
+6 CONFIRMADO   2 REFUTADO   0 ERROR   0 STOP   12 sin ejecutar
+64.4 s con cronometro de subprocess, codigo de salida 1. El presupuesto era de diez minutos.
+```
+
+```text
+experiments/p81_01_cierre_huecos.py
+  5b5db4b0f2cd514fec1cd667d898c808dd5a6d090f27ae4e9f15c7b7967e9100
+  5973 lineas, 120 de 120 en --humo con salida 0, APROBADO por ml-reviewer
+  nota: el briefing decia 5975 lineas. El sha256 coincide completo, luego es el fichero correcto
+reports/p81_cierre_huecos.parcial.json   24196 B   ESCRIBE, 7 afirmaciones A1 a A7
+reports/p81_cierre_huecos.json            NO EXISTE
+reports/p81_cierre_huecos.md              NO EXISTE
+ningun temporal .tmp_p81, nada vaciado, nada renombrado
+```
+
+**Ninguna afirmacion quedo en ERROR.** El guard de aislamiento por afirmacion nunca actuo,
+`afirmaciones_aisladas_con_fallo` esta vacio. El fallo no ocurrio dentro de una afirmacion, ocurrio en
+la capa de persistencia, entre A8 y la escritura que la iba a registrar. A8 **llego a CONFIRMADO** y
+su veredicto esta en el log, pero **no quedo en disco**.
+
+**Fallo literal, sin arreglar.**
+
+```text
+[P81-01] | JSON parcial escrito en reports/p81_cierre_huecos.parcial.json: 7 afirmaciones, 0 aisladas con fallo
+[P81-01] |    A8: CONFIRMADO | las cuatro cifras estan medidas y publicadas...
+STOP escritura: .../reports/p81_cierre_huecos.parcial.json ya existe y solo se admiten temporales
+               hasta la publicacion atomica
+```
+
+**Dos defectos que se multiplican.** `publicar_parcial` publica el parcial **sobre su nombre
+definitivo** en la linea 3889, luego la primera escritura, al terminar el bloque 1, deja el fichero en
+disco y la segunda, tras A8, choca con el **guard de antitrunco de P80** de la linea 517, que prohibe
+sobrescribir un destino existente. Y ese `SystemExit` no degrada a aviso porque la linea 3895 tiene
+`except SystemExit: raise`, que lo relevanta **antes de que lo vea el `except Exception` de la 3897**,
+que era el que iba a registrar `aviso: no se pudo escribir el JSON parcial`. **La red de seguridad del
+propio escritor no existe para este fallo.**
+
+**La ironia, sin adornos:** la caracteristica que se anadio para que un fallo final no tirase las
+mediciones anteriores es la que tira la corrida, y se come la primera medicion del bloque 2, la que
+pretendia salvar. **Las cuatro cifras de A8 mueren por tercera vez consecutiva, y esta por el
+mecanismo que deberia impedirlas.**
+
+**Bloque 1, por fin en disco, con numeros exactos.**
+
+```text
+umbral de zona betonal 0.99
+por BRAZO, criterio declarado y el del primario
+  MEDIA  excluye 0.35 y 0.50   mejor no betonal 0.7388888888888889 en lr 0.20
+  SUMA   excluye 0.20, 0.35 y 0.50   mejor no betonal 0.03888888888888889 en lr 0.10
+  diferencia_por_brazo = -0.7000000000000001   GANA LA MEDIA por 0.700000   primario en lr 0.1
+por PUNTO, alternativa publicada, no usada
+  sobran 0.02, 0.05 y 0.10   MEDIA 0.005555555555555556   SUMA 0.03888888888888889
+  diferencia_por_punto = +0.03333333333333333   GANA LA SUMA por 0.0333
+las_dos_lecturas_coinciden_en_signo = False
+```
+
+El signo se da la vuelta enteramente segun el criterio de exclusion, y por eso el criterio esta
+escrito y la alternativa se publica.
+
+**Recuento de victorias: la SUMA gana 2 de 6 y la MEDIA 4 de 6, reparto "2 a 4".** Curva no monotona,
+**2 cambios de signo**, `recuento_en_banda_muerta: true`.
+
+**Titular literal, y coincide con lo esperado en las cuatro cosas:**
+
+```text
+etiqueta: EL_TEST_NO_APOYA_A_LA_SUMA   apoya_a_la_suma: False   direccion: favor_a_la_media
+```
+
+```text
+la diferencia entre los dos mejores de la rejilla es -0.700000, de magnitud suficiente para
+discriminar pero con el SIGNO en contra de la SUMA. La MEDIA gana por 0.700000. El test discrimina
+por magnitud, pero su direccion es contraria a la hipotesis de A6, y eso se publica: el bloque 1
+NO apoya al objetivo de la referencia
+```
+
+```text
+ZONA DE NO CONCLUSION: el reparto de victorias por learning rate queda en 2 a 4 y eso es ruido con
+tres semillas. El primario NO debe leerse como confirmacion
+```
+
+**A5 CONFIRMADO por magnitud, A6 REFUTADO por direccion, EL_TEST_NO_APOYA_A_LA_SUMA con la MEDIA
+ganando por 0.700000, y recuento 2 a 4 en zona de no conclusion.** Se publica tal cual. No se movio la
+tolerancia de 0.02, ni la banda muerta de 0.005, ni la rejilla, ni el criterio de zona betonal, ni el
+signo de la direccion.
+
+**Bloque 2: A8 corrio y CONFIRMO, y sus cifras mueren otra vez.** El parcial tiene siete
+afirmaciones, A1 a A7. **Las cuatro cifras de la proporcion de OOV no son recuperables por tercera
+vez**, ni el reparto entre canal de relleno y canal de OOV **con magnitud**. No queda A9, A10, A11 ni
+A12: el veredicto cualitativo de que el canal de OOV es al menos tan grande como el de relleno tampoco
+esta en disco. El 0.155020 del prototipo y las tres cifras anteriores siguen sin reproducirse desde un
+fichero publicado.
+
+**Bloque 5: A18 y A19 NUNCA se ejecutaron.** El recorrido se corta en la primera escritura del bloque
+2. **No tienen veredicto: ni REFUTADO ni ERROR**, no se ejecutaron. **La contingencia de que A19 salga
+REFUTADO por un A18 en ERROR no se materializa**, luego no hay ningun REFUTado que descartar por fallo
+aguas arriba. Los dos REFUTADO reales, A6 y A7, son mediciones del bloque 1 y no dependen de A18. El
+`AttributeError` de `RE_TOKEN` de la segunda corrida **sigue sin corregir**: esta version no llega a A18.
+
+**ASCII y verificador.** Parcial: 24196 bytes, **0 bytes por encima de 127, ASCII puro**. El `.json` y
+el `.md` completos no se pueden verificar porque no existen. Verificador oficial
+`tools/verificar_caracteres.py` sobre el proyecto entero: **salida 0, 0 caracteres no permitidos**.
+
+**NO_DISPONIBLE en el `.md`: no aplica, el `.md` no se escribio.** En el parcial, que es el unico
+informe en disco, son **0**. **El bug que llenaba el informe de huecos en silencio no se ha reproducido
+en tres reventones seguidos**: la defensa de escritura de P80 ha aguantado las tres.
+
+**Avisos de contrato.** Al arrancar salen **34 lineas** `aviso de contrato` sobre A0, A4 a A13, A15, A16,
+A17 y A19: falta el origen declarado `medidas.<parametro>` para casi todos los parametros. **Son avisos,
+no fallos**, y la corrida sigue. Pero el comprobador de contratos **no tiene declarada la procedencia de
+casi todo lo que le pasa**: esa tabla esta a medio construir.
+
+**Cuatro fallos seguidos, los cuatro de contrato asumido y no verificado en la frontera**, y el ultimo
+es el guard antitrunco de P80 el que se enciende: el `KeyError` de clave literal, corregido; el modulo
+equivocado de A18, sin corregir; la tabla de origenes, a medio construir; y el escritor incremental
+publicando sobre su nombre final. **Ninguno lo cubren los 120 checks de humo**, porque el humo verifica
+recuentos y no contratos entre capas. Hace falta un caso que recorra `main` de punta a punta, o una
+asercion de contrato en cada frontera.
+
+**CONCLUSION, con el titular ya en disco.** La pata **EJECUTABLE** del anclaje de H1 **no apoya a la
+suma**: A5 discrimina por magnitud, A6 mide la direccion y la encuentra contraria, la MEDIA gana por
+0.700000, y el reparto 2 a 4 con dos cambios de signo deja el primario en zona de no conclusion con
+tres semillas. Luego **la base que sostiene que el objetivo no era SGNS es la pata DOCUMENTAL, el
+codigo C de word2vec, y queda como base unica.** La reimplementacion propia no aporta apoyo ejecutable.
+
+**Limite permanente.** El anclaje a una implementacion externa de SGNS queda **SIN HACER** porque gensim
+no esta instalado y con Python 3.14.7 no compila: autoriza afirmar sobre el **OBJETIVO**, no sobre la
+calidad relativa del artefacto frente a una libreria. **No se afirma que Word2Vec sea mejor que V03.**
+
+**Fronteras respetadas y comprobadas.**
+
+```text
+test = 0   holdout = 0 identificadores deserializados   leaderboard = 0   submission = 0
+P71 a P80 sin tocar   V03 sin tocar   umbrales 0.44 / 0.51 / 0.46 sin tocar   modelos/ sin escrituras
+congelado 302c994d13b75f8f5fbd440eea2c4f4113997e2581524021923b92f8244d705a ANTES
+congelado 302c994d13b75f8f5fbd440eea2c4f4113997e2581524021923b92f8244d705a DESPUES
+29478868 bytes, abierto en solo lectura
+```
+
+```text
+V03 remains the best verified leaderboard result.
+```
+
+<!-- P81-SEGUNDA-CORRIDA 2026-10-01 -->
+## P81 segunda corrida: 17 de 20 medidas, 15 CONFIRMADO y 2 REFUTADO, se para en A18
+
+```text
+A1..A5 CONFIRMADO   A6 REFUTADO   A7 REFUTADO   A8..A17 CONFIRMADO
+A0, A18 y A19 sin ejecutar
+15 CONFIRMADO   2 REFUTADO   0 NO APLICABLE   0 STOP   3 sin ejecutar
+567 s, codigo de salida 1, parada en A18 y NO en A6
+bloques 2, 3 y 4 completos; el bloque 5 no llego a empezar
+```
+
+```text
+experiments/p81_01_cierre_huecos.py
+  00756ef3432ca2ee29fd2c99987a84f19b3c6f801dc1ea70a34cdd4bc78c966c
+  4930 lineas, 83 de 83 en --humo
+reports/p81_cierre_huecos.json  NO EXISTE
+reports/p81_cierre_huecos.md    NO EXISTE
+ningun temporal .tmp_p81, nada publicado, nada vaciado
+```
+
+**El arreglo de A6 funciona y los candados hacen su trabajo.** La funcion que deriva toda clave de
+brazo a partir del nombre del objetivo elimina el `KeyError`, y el candado
+`ERROR_DE_COHERENCIA_NO_PUBLICABLE` ya no tiene nada que devolver porque la corrida cae del lado
+correcto.
+
+**Fallo literal, sin arreglar.**
+
+```text
+File ".../experiments/p81_01_cierre_huecos.py", line 3331, in afirmacion_a18
+    documentos = leer_primeras_n_lineas(CORPUS_TWITTER, RECRETE["lineas"], modulo_p72)
+File ".../experiments/p81_01_cierre_huecos.py", line 3407, in leer_primeras_n_lineas
+    tokens = modulo_p71.RE_TOKEN.findall(linea)
+AttributeError: module 'p72_01' has no attribute 'RE_TOKEN'
+```
+
+**Cableado de modulos.** El parametro se llama `modulo_p71` y de ahi usa `RE_TOKEN`, pero quien llama
+le pasa `modulo_p72`, que es `p72_01` y no lo tiene. `RE_TOKEN` esta en `p71_04`, que el script ya
+importa y que ya esta en `contexto["modulos"]["p71_04"]`, y `afirmacion_a18` no lo recibe: su unico
+argumento es `p72_01`. Necesita los dos modulos, uno para las constantes del curriculum y otro para el
+tokenizador, y le dieron uno.
+
+**Bloque 1: las dos lecturas de la zona betonal, y no coinciden en signo.**
+
+```text
+lr 0.02  MEDIA 0.0000  SUMA 0.0000   lr 0.20  MEDIA 0.7389  SUMA 1.0000
+lr 0.05  MEDIA 0.0000  SUMA 0.0000   lr 0.35  MEDIA 1.0000  SUMA 1.0000
+lr 0.10  MEDIA 0.0056  SUMA 0.0389   lr 0.50  MEDIA 1.0000  SUMA 1.0000
+```
+
+```text
+por BRAZO, el criterio declarado y el del primario, linea 178
+  MEDIA mejor no betonal 0.7389 en lr 0.20   SUMA mejor no betonal 0.0389 en lr 0.10
+  diferencia = -0.700000   GANA LA MEDIA por 0.700000   primario en lr 0.1
+por PUNTO, el alternativo que se calcula y se publica pero no se usa
+  MEDIA 0.0056   SUMA 0.0389   diferencia = +0.0333   GANA LA SUMA por 0.0333
+```
+
+**El signo se da la vuelta enteramente segun el criterio de exclusion**, y por eso el criterio queda
+escrito y la alternativa se publica: decidir solo con una seria ocultar la otra.
+
+**Recuento de victorias: la SUMA gana 2 de 6 puntos. La curva NO es monotona.** El prototipo no se
+reproduce: en 0.20 daba MEDIA 0.3611 contra SUMA 0.0000 y aqui la SUMA gana 1.0000 contra 0.7389; en
+0.35 daba MEDIA 0.4667 contra SUMA 0.8278 y aqui empatan en 1.0000.
+
+**El titular, literal, y sale como se esperaba.**
+
+```text
+A5: CONFIRMADO [EL_TEST_DISCRIMINA_POR_MAGNITUD]
+A6: REFUTADO   la direccion es CONTRARIA a la hipotesis. La MEDIA gana por 0.700000 en el
+               primario, y el margen exigido es de 0.02 a favor de la SUMA
+A7: REFUTADO   el efecto no se sostiene: ['el conteo de victorias por semilla', 'el control
+               negativo tambien recupera estructura']
+```
+
+**El test NO apoya a la suma, y es un resultado legitimo.** A5 etiqueta solo magnitud. A6 mide la
+direccion y la da contraria. A7 dice que el efecto no aguanta ni en el conteo de victorias por
+semilla ni en el control negativo, que tambien recupera estructura. Con diferencia `-0.700000`,
+`lectura_del_bloque_1` entra por la rama de la linea 1339 y devuelve **`EL_TEST_NO_APOYA_A_LA_SUMA`**
+con `apoya_a_la_suma` falso. **Ese titular no se publico en ningun fichero**, porque el fallo cae
+antes de `construir_json` y `escribir_markdown`: existio solo en memoria.
+
+**Sin retoque.** No se movio la tolerancia de 0.02, ni la banda muerta de 0.005, ni la rejilla, ni el
+criterio de zona betonal, ni el signo de la direccion.
+
+**Bloque 2: ejecutado completo, con las cifras perdidas.** A8 **CONFIRMADO**, las cuatro cifras
+medidas y el 11.2726 por ciento de la discusion de auditoria **no** reproducido con ninguna de las
+tres. A9 **CONFIRMADO**, celdas separadas de verdad. A10 **CONFIRMADO**, las seis magnitudes con al
+menos una cifra distinta de cero por condicion y por clase. A11 **CONFIRMADO**: **el canal de OOV es
+al menos tan grande como el de relleno en las dos clases.** A12 **CONFIRMADO**, variacion
+exactamente cero entre dos pasadas con la misma semilla.
+
+**Las cuatro cifras de la proporcion de OOV NO son recuperables.** Se midieron y se verificaron, y
+murieron en memoria porque el proceso no llego a escribir. Del reparto relleno contra OOV sobrevive
+solo el veredicto cualitativo de A11, sin magnitud. **El 0.155020 del prototipo y las tres cifras
+anteriores siguen sin reproducirse de forma verificable desde un fichero publicado.**
+
+**Lo que no se pudo verificar.** El ASCII byte a byte de los dos informes y el verificador oficial no
+se pueden ejecutar, porque los ficheros no existen. El recuento de `NO_DISPONIBLE` en el `.md` no
+aplica, porque no hay `.md`. **El bug que llenaba el informe de huecos en silencio no se ha
+reproducido**: el fallo es de cableado y ocurre antes de la escritura, y la defensa de escritura de
+P80 aguanta dos reventones seguidos.
+
+**Tres fallos seguidos, los tres de contrato asumido y no verificado en la frontera.** El primero, el
+`KeyError` de clave literal, corregido. Este, el modulo equivocado, sin corregir. Los 83 checks de
+humo pasan enteros en las dos versiones y no cubren ninguno, porque el humo verifica **recuentos** y
+no **contratos de frontera entre modulos**. No se arregla con mas checks de humo: hace falta un caso
+que recorra el camino real de `main`, o una asercion de contrato en la frontera.
+
+**CONCLUSION NUEVA.** La pata EJECUTABLE del anclaje **no apoya a la suma**: A5 discrimina por
+magnitud, A6 mide la direccion y es contraria, A7 no sostiene el efecto. Luego **la pata que sostiene
+que el objetivo no era SGNS es la DOCUMENTAL, la del codigo C de word2vec, y queda como unica
+base.** La reimplementacion propia no aporta apoyo ejecutable, y eso se dice sin rodeos.
+
+**Limite permanente.** El anclaje a una implementacion externa de SGNS queda **SIN HACER** porque
+gensim no esta instalado y con Python 3.14.7 no compila: autoriza afirmar sobre el **OBJETIVO**, no
+sobre la calidad relativa del artefacto frente a una libreria. **No se afirma que Word2Vec sea mejor
+que V03.**
+
+**Fronteras respetadas y comprobadas.**
+
+```text
+test = 0   holdout = 0 identificadores deserializados   leaderboard = 0   submission = 0
+P71 a P80 sin tocar   V03 sin tocar   umbrales 0.44 / 0.51 / 0.46 sin tocar   modelos/ sin escrituras
+congelado 302c994d13b75f8f5fbd440eea2c4f4113997e2581524021923b92f8244d705a ANTES
+congelado 302c994d13b75f8f5fbd440eea2c4f4113997e2581524021923b92f8244d705a DESPUES
+29478868 bytes, abierto en solo lectura
+```
+
+```text
+V03 remains the best verified leaderboard result.
+```
+
+<!-- P81-INCONCLUSO 2026-09-30 -->
+## P81: INCONCLUSO. 5 de 20 afirmaciones medidas, todas CONFIRMADO, se para en A6 con un KeyError
+
+```text
+A1..A5 CONFIRMADO   A0 y A6..A19 sin ejecutar
+5 CONFIRMADO   0 REFUTADO   0 NO APLICABLE   0 STOP   15 sin ejecutar
+codigo de salida 1   62.3 s con cronometro de subprocess, 77 s en la primera corrida
+mismo punto de fallo en las dos, bit a bit
+```
+
+```text
+experiments/p81_01_cierre_huecos.py  212aa786998f682a4ccefca2d91aa77f0cbf510968a0e8d21f1c687083f8e913
+4517 lineas, 67 de 67 en --humo, APROBADO por ml-reviewer
+reports/p81_cierre_huecos.json  NO EXISTE
+reports/p81_cierre_huecos.md    NO EXISTE
+ningun temporal .tmp_p81, ninguna salida publicada, ninguna vaciada
+```
+
+**Fallo literal, sin arreglar.**
+
+```text
+File ".../experiments/p81_01_cierre_huecos.py", line 1846, in afirmacion_a6
+    m1_suma = primario["primarios"]["SUMA"]["m1_media"]
+KeyError: 'm1_media'
+```
+
+`elegir_primario` genera la clave del brazo con `f"m1_{objetivo.lower()}"` en la linea 1265 y la
+escribe en la 1277, luego SUMA guarda `m1_suma`. `afirmacion_a6` busca para SUMA el literal
+`m1_media`, que es la clave del brazo MEDIA. `afirmacion_a5`, linea 1711, lo hace bien. Mismo patron
+de clave literal, bien a una linea y mal a la otra.
+
+**El limite de la suite de humo, aqui y en serio.** El revisor dejo sin cobertura de humo directa el
+fallo de la tupla pasada como clave literal. Este fallo es **de esa misma familia** y **tampoco lo
+cubre el humo**: 67 de 67 pasan y el recorrido real revienta en la sexta afirmacion. Smoke Test
+Driven Development con recuento de comprobaciones no fija el contrato de claves que el resto del
+recorrido da por hecho.
+
+**Bloque 1, que es lo que si se midio.** Curva completa de M1 por learning rate, los dos brazos, seis
+puntos de la enmienda 1 y tres semillas, sobre corpus plantado de 23004 pares con M3 del azar
+0.000042 en 2000 permutaciones:
+
+```text
+lr 0.02  MEDIA 0.0000  SUMA 0.0000   lr 0.20  MEDIA 0.7389  SUMA 1.0000
+lr 0.05  MEDIA 0.0000  SUMA 0.0000   lr 0.35  MEDIA 1.0000  SUMA 1.0000
+lr 0.10  MEDIA 0.0056  SUMA 0.0389   lr 0.50  MEDIA 1.0000  SUMA 1.0000
+```
+
+**La SUMA gana 2 de 6 puntos y la curva NO es monotona.** El prototipo no se reproduce: daba MEDIA
+0.3611 contra SUMA 0.0000 en 0.20, aqui la SUMA gana 1.0000 contra 0.7389; daba MEDIA 0.4667 contra
+SUMA 0.8278 en 0.35, aqui empatan en el techo de 1.0000. Primario declarado en lr 0.1, con la zona
+betonal de la enmienda 1 dejando fuera los 1.0000.
+
+**El titular, con el signo delante.** `A5: CONFIRMADO [EL_TEST_DISCRIMINA]`, diferencia
+`-0.700000`. La comprobacion de la linea 1726 es `abs(diferencia) >= TOL["discriminacion"]`:
+**discrimina por magnitud, no por direccion.** Los dos mejores son 0.0389 de la SUMA en 0.10 y
+0.7389 de la MEDIA en 0.20, y la SUMA **pierde por 0.70**. La afirmacion que iba a medir la
+direccion es A6, y es la que revienta, luego **la direccion preregistrada queda sin medir**.
+
+**Bloque 2: no se ha ejecutado.** El fallo cae antes de la linea 4360. **A8 no corrio.** La
+proporcion de OOV con el tokenizador real de `v9_04` **no se ha obtenido**: ni el 0.155020 del
+prototipo, ni las tres cifras anteriores, ni el reparto entre canal de relleno y canal de OOV. Los
+bloques 3 y 4 tampoco.
+
+**Lo que no se pudo verificar.** El ASCII byte a byte de `reports/p81_cierre_huecos.json` y `.md` y
+el verificador oficial **no se pueden ejecutar**, porque los ficheros no existen. El recuento de
+`NO_DISPONIBLE` en el markdown **no aplica**, porque no hay markdown. El bug que llenaba el `.md` de
+`NO_DISPONIBLE` en silencio no se ha reproducido porque el script no llego a escribir.
+
+**Fronteras respetadas y comprobadas.**
+
+```text
+test = 0   holdout = 0 identificadores deserializados   leaderboard = 0   submission = 0
+P71 a P80 sin tocar   V03 sin tocar   umbrales 0.44 / 0.51 / 0.46 sin tocar   modelos/ sin escrituras
+congelado 302c994d13b75f8f5fbd440eea2c4f4113997e2581524021923b92f8244d705a ANTES
+congelado 302c994d13b75f8f5fbd440eea2c4f4113997e2581524021923b92f8244d705a DESPUES
+29478868 bytes, abierto en solo lectura, misma huella tras las dos corridas
+```
+
+**Limite permanente.** El anclaje a una implementacion externa de SGNS queda **SIN HACER** porque
+gensim no esta instalado y con Python 3.14.7 no compila: autoriza afirmar sobre el **OBJETIVO**, no
+sobre la calidad relativa del artefacto frente a una libreria. Dos salvedades mas: el texto ancla de
+`docs/p81_enmienda_1.md` se commiteo en `5f4faf7` con dos tildes y se corrigio en `c3dee26` sin
+reescribir historia, y el sha256 vinculante es el de `c3dee26`; y el fallo de la tupla pasada como
+clave literal sigue sin caso de humo que lo fije.
+
+```text
+V03 remains the best verified leaderboard result.
+```
+
+<!-- P80-CERRADO 2026-09-30 -->
+## P80: cerrado y publicado. 19 de 19, 7 de 7 CONFIRMADO, informe en JSON y markdown
+
+```text
+A1..A12 CONFIRMADO   A13 NO APLICABLE POR CONSTRUCCION   A14..A19 CONFIRMADO
+18 CONFIRMADO   0 REFUTADO   1 NO APLICABLE   0 STOP   0 sin ejecutar
+H1 H2 H3 H4 H5 H6 H7 = CONFIRMADO
+corrida de 2 s, codigo de salida 0, sin fallos y sin traceback
+```
+
+```text
+reports/p80_auditoria_w2v.json  174656 B  27efa9a37a755464b121581110a333831bfdf5f3acf63f092f8086503f6ad8e6
+reports/p80_auditoria_w2v.md     11657 B  f8bab0dd93dd6eb299a9b04d89083ef380c882d1d382bfd396d7e47c66ce4e8f
+figuras/p80/  3 PNG, firmas verificadas
+publicados por renombrado atomico, asercion ASCII byte a byte sobre script, json y md
+```
+
+**El `.md` no sale vacio.** 19 filas de tabla de afirmaciones y 7 de hallazgos, todas pobladas. El
+bug anterior hacia tablas vacias en silencio, asi que se comprobo el contenido, no la existencia. Un
+unico `no disponible`, en la linea de A12, y es legitimo: `claves_json_recorridas` ya no existe en el
+esquema de A12 tras el arreglo.
+
+**Reproducible.** Las diecinueve medidas son **bit a bit identicas** a las de la segunda corrida, y los
+veredictos por hallazgo tambien. Dos versiones distintas del script, mismas medidas: los arreglos
+tocaron instrumentacion y no calculo.
+
+**H2 CONFIRMADO, y el veredicto de P79 era erroneo.** `p72_01:92-95` planifica con
+`range(m.EPOCAS)` y `SEMILLA + ep`, o sea 20261016 a 20261020; `p72_01:99-103` entrena con
+`enumerate(planes, start=1)` y `SEMILLA + ep`, o sea 20261017 a 20261021. Solo en el plan 20261016,
+solo en el entrenamiento 20261021. 1395 lotes planados frente a 1398 recorridos.
+
+**H4 CONFIRMADO.** El congelado solo guarda `W`, la tabla de entrada. A12 da 0 candidatos sobre 19
+`.npz` por cabecera y 320 `.json`. A13 NO APLICABLE POR CONSTRUCCION: la tabla de salida no existe,
+**no se sustituye por `W`** y **ninguna cifra absoluta sobre el artefacto es evidencia del estado
+final**.
+
+**H5 CONFIRMADO**: la metrica que decide cuando restaurar pesos es la del pliegue externo que despues
+se puntua. **H6 CONFIRMADO**: GRU antes de la mascara, arrastre y no explosion, 0.08399328135684547.
+**H7 CONFIRMADO**: DL-03 con 1731 filas y 1483 + 248 = 1731, luego el holdout v2 estaba en el pool.
+
+**Tres salvedades de alcance, que el informe del script no lleva.** La regla 3 de A19, el desempate
+por nombre, puede clasificar como validacion un argumento que llega como parametro sin vinculacion
+local, por ejemplo `x_val`; es latente, no se activa en los tres ficheros reales y ahi manda el vinculo
+local, pero es una apuesta por nombre. `asignaciones_del_llamante` usa `setdefault`, luego si un
+nombre se asigna dos veces gana la primera sin marcar ambiguedad; falla hacia el lado conservador, da
+REFUTADO y no sobre-detecta, pero la lectura queda parcial sin aviso. Y la sonda de A16 mide una red
+sintetica de 51 por 200, **no los BiGRU reales**, luego su magnitud **no se extrapola**.
+
+**El `.tmp_p80` viejo ya no existe** y no lo borre yo: el script reutiliza esa ruta, la vacio con el
+JSON de esta corrida y la renombro sobre el `.json`. Sigue en la historia, en `c317794`, sha256
+`890bbb1037b3034a893e88634b5db261a2d9f6acad278722d32c6a00007c834f`.
+
+```text
+P80 = CERRADO   V03 = FROZEN   Word2Vec Twitter 100d = FROZEN
+congelado 302c994d... intacto antes y despues      pre-registro 440ab13c... sin cambios en las tres corridas
+Sin escrituras fuera de reports/ y figuras/p80/. Test, holdout, leaderboard y submission en cero.
+P71 a P79, V03, los umbrales 0.44 / 0.51 / 0.46 y modelos/ sin tocar.
+```
+
+```text
+V03 remains the best verified leaderboard result.
+```
+<!-- /P80-CERRADO 2026-09-30 -->
+
+<!-- P80-SEGUNDA-CORRIDA 2026-09-30 -->
+## P80: las 19 afirmaciones pasan. Los 7 hallazgos CONFIRMADO. El informe no se publico
+
+```text
+A1..A12 CONFIRMADO   A13 NO APLICABLE POR CONSTRUCCION   A14..A19 CONFIRMADO
+18 CONFIRMADO   0 REFUTADO   1 NO APLICABLE   0 STOP   0 sin ejecutar
+corrida de 2 s, codigo de salida 1, sin entrenamiento
+```
+
+**Misme en el markdown.** Revienta en `escribir_markdown:4704` con
+`KeyError: 'claves_json_recorridas'`: la correccion de A12 quito esa clave de `medida.cobertura` y el
+redactor la sigue leyendo. Las otras tres claves que lee de A12 si existen, luego es **una sola
+clave**. No se ha tocado el script.
+
+```text
+reports/p80_auditoria_w2v.json            1936 B    el JSON de PARADA anterior, sin tocar
+reports/p80_auditoria_w2v.json.tmp_p80  174103 B    el informe COMPLETO, huerfano
+reports/p80_auditoria_w2v.md             NO EXISTE
+figuras/p80/  3 PNG, firmados en el temporal
+```
+
+El renombrado atomico final no llego a ocurrir, luego no se publico un informe incompleto con
+apariencia de validado. El temporal se commitea como evidencia.
+
+**H2 CONFIRMADO, y el veredicto de P79 era erroneo.** `p72_01:92-95` planifica con
+`range(m.EPOCAS)` y `SEMILLA + ep`, o sea 20261016 a 20261020; `p72_01:99-103` entrena con
+`enumerate(planes, start=1)` y `SEMILLA + ep`, o sea 20261017 a 20261021. Los dos bucles se llaman
+`ep` y P79 los clasifico juntos. Solo en el plan: 20261016. Solo en el entrenamiento: 20261021.
+1395 lotes planados frente a 1398 recorridos.
+
+**H4 CONFIRMADO.** El congelado solo tiene `W`, la tabla de entrada, y una sola matriz. A12 da **0
+candidatos** sobre 19 `.npz` por cabecera y 320 `.json`, con criterio de forma exacta `(77657, 100)`,
+que es el defecto que P80_arranco a corregir. A13 queda NO APLICABLE POR CONSTRUCCION: la tabla de
+salida no existe, no se sustituye por `W` y **P80 no publica ninguna cifra sobre el artefacto**.
+Las cifras absolutas de P79 describen un par `(E, S)` con `E = S = W` que nunca existio y **no son
+evidencia del estado final**.
+
+**H5 CONFIRMADO** en `v9_04` y `v10_11`: la metrica que decide cuando restaurar pesos es la del
+pliegue externo que despues se puntua, sin particion interna. **H6 CONFIRMADO** con sonda
+ejecutada: la GRU corre antes de enmascarar (`v9_04:104-105`, `v10_11:170-171`), el efecto es de
+arrastre y no de explosion, y pesa 0.08399328135684547 en distancia relativa L2.
+**H7 CONFIRMADO**: DL-03 entreno sobre 1731 filas etiquetadas completas, y 1483 + 248 = 1731, luego
+**el holdout v2 estaba dentro del pool** de la validacion cruzada.
+
+**Dos salvedades que el informe del script no lleva.** La regla 3 de A19, el desempate por nombre,
+puede clasificar como validacion un argumento que llega como parametro sin vinculacion local, por
+ejemplo `x_val`; es latente, no se activa en los tres ficheros reales y ahi manda el vinculo local,
+pero es una apuesta por nombre y no una medicion. Y `asignaciones_del_llamante` usa `setdefault`,
+luego si un nombre se asigna dos veces gana la primera sin marcar ambiguedad; se comprobo que falla
+hacia el lado conservador, da REFUTADO y no sobre-detecta.
+
+```text
+H1 H2 H3 H4 H5 H6 H7 = CONFIRMADO
+P80 = MEDIDO Y NO PUBLICADO   (falta una clave, vuelve a ml-coder)
+congelado 302c994d... intacto antes y despues      pre-registro 440ab13c... sin cambios
+```
+
+**Sin escrituras fuera de** `reports/p80_auditoria_w2v.json.tmp_p80` y `figuras/p80/`. P71 a P79,
+V03, los umbrales 0.44 / 0.51 / 0.46 y `modelos/` intactos. Test, holdout, leaderboard y submission
+en cero.
+
+```text
+V03 remains the best verified leaderboard result.
+```
+<!-- /P80-SEGUNDA-CORRIDA 2026-09-30 -->
+
+<!-- P80-PARADA-A12 2026-09-30 -->
+## P80: la auditoria Word2Vec se para en A12. H1 H2 H3 confirmados, H4 a H7 abiertos
+
+```text
+A1  CONFIRMADO   A2  CONFIRMADO   A3  CONFIRMADO   A4  CONFIRMADO   A5  CONFIRMADO
+A6  CONFIRMADO   A7  CONFIRMADO   A8  CONFIRMADO   A9  CONFIRMADO   A10 CONFIRMADO
+A11 CONFIRMADO   A12 PARADA       A13 a A19 sin ejecutar
+
+11 CONFIRMADO   0 REFUTADO   0 NO APLICABLE   1 STOP   7 sin ejecutar
+corrida de menos de 2 segundos, codigo de salida 1, sin entrenamiento y sin GPU
+```
+
+**La parada** la manda el pre-registro, seccion 7, clausula 5. A12 busco una tabla de salida en todos
+los `.npz` de `modelos/` y `features/` y en todas las claves de los `.json` de `reports/`, y salio
+con siete candidatos. Ninguno es una tabla de salida: cuatro son el `W` de **entrada** de otras
+corridas (77657 por 200 o 300) y tres son claves de forma, listas de dos enteros que describen una
+forma y no pesos. El detector empareja por primera dimension `77657` sin mirar la dimension, y
+cuenta cualquier clave `shape` o `forma`. No se corrigio nada. Vuelve a ml-coder.
+
+**H2 queda CONFIRMADO y el veredicto de P79 era erroneo.** El scheduler de `p72_01` planifica con
+`range(5)` y `SEMILLA + ep`, o sea 20261016 a 20261020, y entrena con `enumerate(planes, start=1)` y
+`SEMILLA + ep`, o sea 20261017 a 20261021. Los dos bucles se llaman `ep` y P79 los clasifico juntos.
+El desfase es de una epoca: 20261016 se planifica y no se entrena, 20261021 se entrena y no se
+planifica, y el curriculum de `lr` sale de un total de lotes que no es el real. Lineas `p72_01:92-95`
+contra `p72_01:99-103`, con `SEMILLA` y `EPOCAS` en `p71_04:62-64`.
+
+**H3 queda CONFIRMADO.** La identidad con el signo correcto se cumple con residuo 1.11e-16 y el
+control discriminante da 2.77, luego la asercion de P79 comparaba `pos + neg` contra `-(pos + neg)`
+y fallaba siempre sin informar de nada.
+
+```text
+H1  CONFIRMADO     A1 A2 A3 A4 A5
+H2  CONFIRMADO     A6 A7 A8
+H3  CONFIRMADO     A9 A10
+H4  SIN VEREDICTO  A11 CONFIRMADO, A12 PARADA, A13 sin ejecutar
+H5  SIN VEREDICTO  A14 sin ejecutar
+H6  SIN VEREDICTO  A15 A16 sin ejecutar
+H7  SIN VEREDICTO  A17 A18 A19 sin ejecutar
+
+P80 = INCONCLUSA  (sin informe completo, sin markdown, sin figuras)
+congelado 302c994d... intacto antes y despues      pre-registro 440ab13c... verificado
+```
+
+**Sin escrituras fuera de `reports/p80_auditoria_w2v.json`.** P71 a P79, V03, los umbrales 0.44 /
+0.51 / 0.46 y `modelos/` intactos. Test, holdout, leaderboard y submission siguen en cero.
+
+```text
+V03 remains the best verified leaderboard result.
+```
+<!-- /P80-PARADA-A12 2026-09-30 -->
+
+
+<!-- P78-CONTROL-ANIDADO 2026-09-30 -->
+## P78: el embedding aporta, pero el tokenizer era el cuello de botella
+
+```text
+P78 = RAMA 1 del criterio pre-registado
+
+A Word2Vec  CRUDA        0.592444   sd 0.016930
+B aleatoria  CRUDA        0.569137   sd 0.006724
+C Word2Vec  NORMALIZADA  0.650999   sd 0.017442
+D aleatoria  NORMALIZADA  0.626106   sd 0.005729
+
+P1 = C - D  +0.024893  sd 0.021588  5/5 folds  IC95 boot (0.007902, 0.040645)
+P2 = A - B  +0.023307  sd 0.023590  4/5 folds  IC95 boot (0.006199, 0.039429)
+P3 = C - A  +0.058555  sd 0.015017  5/5 folds  IC95 boot (0.040710, 0.076529)
+P4 = D - B  +0.056969  sd 0.001272  5/5 folds  IC95 boot (0.040363, 0.073252)
+
+el gate pasa, pero es FRAGIL: el bootstrap propaga cero variabilidad de reentrenamiento
+y el delta por semilla de P1 va de +0.0428 a +0.0009. El IC t con n=3 contiene el cero
+
+el efecto de la normalizacion es MAS GRANDE que el del embedding: 65 por ciento del total
+cobertura 68.64 -> 88.73 por ciento, OOV 31.36 -> 11.27, filas totalmente muertas 70 -> 1
+el OOV era 68.3 por ciento ruido de caja, no falta de corpus
+
+control pareado verificado por fuera: normas de fila identicas, y coseno intra-brazo
++0.1598 en Word2Vec frente a -0.0002 en la aleatoria. P1 mide informacion de similitud
+
+P79: el objetivo de p71_04 NO es SGNS, el factor 1/K es exacto. El scheduler SI esta bien
+```
+
+**Reetiquetado**: P73 y P74 pasan de "evidencia reproducible" a **exploratorios, protocolo
+contaminado**: elegian el checkpoint con el pliegue externo de validacion. Sus numeros se conservan.
+
+**Cerrado**: la seccion de corpus. El techo de cobertura es de 88.73 a cerca de 91.3 por ciento y
+la procedencia no lo permite. Lo que procede es `MIN_COUNT` de 3 a 2, que no necesita corpus nuevo.
+
+```text
+V03 = FROZEN      Word2Vec Twitter 100d = FROZEN
+P72 = CLOSED      P73 = EXPLORATORIO      P74 = EXPLORATORIO
+P75 = SIN TRANSFERENCIA      P76 = SIN TRANSFERENCIA      P77 = CASO 1
+P78 = RAMA 1, gate fragil      P79 = OBJETIVO CONFIRMADO
+TEXTCNN = ACTIVA SOLO BAJO EL ALCANCE DEL OPERADOR SELECTIVO
+test = 0   holdout = 0   leaderboard = 0   submission = 0
+```
+<!-- /P78-CONTROL-ANIDADO 2026-09-30 -->
+
+<!-- P77-SELECTIVO 2026-09-30 -->
+## P77: el selector funciona y no alcanza
+
+```text
+P77 = CASO 1  NINGUN_OPERADOR_TRANSFIERE
+
+A V03                    0.7772114525   switches    0
+B CNN sola               0.5838755350   switches 1081
+C determinista nivel 1   0.7579728990   switches  154   delta -0.0192385535   0/5 folds
+D determinista nivel 2   0.7259394272   switches  393   delta -0.0512720253   0/5 folds
+E gate lineal anidado    0.7215155047   switches  543   delta -0.0556959478   0/5 folds
+
+monotono en el numero de conmutaciones. Bootstrap incondicional, los tres IC excluyen cero
+
+el gate SI discrimina: AUC outer 0.61 a 0.74, interno medio 0.7016
+precision del selector 0.3517 frente a una base de 0.2479
+tipo de cambio 0.3296 -> 0.5426, y el macro-F1 necesita mas de 1
+
+la senal del gate es sobre todo la confianza de V03: m_v cambia -0.61, m_c solo +0.16
+TR dana mas que HS y AG, al contrario de lo que sugeria el AUC 0.6045 de P75
+```
+
+**Cerrado**: el operador selectivo de dos niveles con corte por cuantil, y el gate lineal anidado
+de tres features, construidos sobre las salidas de V03 y del CNN. **Sin finalista. La segunda
+particion no se ejecuta.**
+
+**Abierto**: un operador que use informacion distinta del score del CNN, porque el score del CNN es
+justo lo que no tiene poder discriminante suficiente.
+
+```text
+V03 = FROZEN      Word2Vec Twitter 100d = FROZEN
+P72 = CLOSED      P73 = COMPLEMENTARY      P74 = EVIDENCIA REPRODUCIBLE
+P75 = SIN TRANSFERENCIA      P76 = SIN TRANSFERENCIA      P77 = CASO 1
+TEXTCNN = ACTIVA SOLO BAJO EL ALCANCE DEL OPERADOR SELECTIVO
+test = 0   holdout = 0   leaderboard = 0   submission = 0
+```
+<!-- /P77-SELECTIVO 2026-09-30 -->

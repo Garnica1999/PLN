@@ -1,0 +1,11 @@
+comprobacion,resultado,detalle
+corrected_cv reproducible desde el OOF D-016,True,0.7772114525165721
+submission V03 con el sha256 esperado,True,7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e
+vectorizador ajustado dentro de cada pliegue,True,sin leakage de representacion
+umbrales del script de V03 usan grupos D-004,True,near-duplicado solamente
+corrected_cv usa grupos D-016,True,near-dup UNION pseudo-autor
+el OOF D-004 que produjo los umbrales sigue en disco,False,auditoria del umbral impedida
+umbrales anidados dentro del rango de los de V03,True,"HS: anidados [0.4, 0.41, 0.4, 0.41, 0.41] vs V03 0.44; TR: anidados [0.5, 0.48, 0.5, 0.48, 0.48] vs V03 0.51; AG: anidados [0.47, 0.45, 0.45, 0.45, 0.45] vs V03 0.46"
+delta de los umbrales anidados frente a V03,+0.000925,estimacion honesta
+tasa positiva con umbrales V03,"[0.4572, 0.3001, 0.3776]",sobre el OOF
+brecha OOF a LB,+0.00584855,0.25 sigma

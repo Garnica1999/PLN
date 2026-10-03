@@ -1,0 +1,83 @@
+{
+  "experimento": "V7-02 (P8)",
+  "fecha": "2026-09-26T02:13:11+00:00",
+  "referencia_v03": 0.777211,
+  "tolerancia_control": 0.0005,
+  "techo": {
+    "filas_totales": 1483,
+    "grupos_distintos": 1415,
+    "tamaño_maximo": 7,
+    "filas_con_grupo_repetido": 105,
+    "porcentaje_con_evidencia": 7.08,
+    "grupos_etiqueta_uniforme": 80,
+    "grupos_etiqueta_contradictoria": 31,
+    "v03_acierta_en_filas_con_evidencia": 24,
+    "porcentaje_acierto_con_evidencia": 22.9,
+    "porcentaje_acierto_resto": 22.9
+  },
+  "interseccion": {
+    "filas_con_evidencia": 105,
+    "v03_acierta_en_evidencia": 24,
+    "candidato": "P8-1-desviacion",
+    "candidato_acierta_en_evidencia": 24,
+    "v03_falla_y_candidato_acierta_en_evidencia": 0,
+    "salvage_total": 1,
+    "damage_total": 2
+  },
+  "variantes": [
+    {
+      "variante": "P8-0-control",
+      "corrected_cv": 0.777211,
+      "delta": 0.0,
+      "ic95_0": 0.0,
+      "ic95_1": 0.0,
+      "f1_HS": 0.7617,
+      "f1_TR": 0.8157,
+      "f1_AG": 0.7542,
+      "salvage": 0,
+      "damage": 0,
+      "columnas_de_grupo": 0,
+      "nota": "solo las features de V03, debe reproducir la referencia",
+      "referencia": "V03",
+      "control_correcto": true
+    },
+    {
+      "variante": "P8-1-desviacion",
+      "corrected_cv": 0.776145,
+      "delta": -0.001066,
+      "ic95_0": -0.004508,
+      "ic95_1": 0.002149,
+      "f1_HS": 0.7592,
+      "f1_TR": 0.8194,
+      "f1_AG": 0.7498,
+      "salvage": 1,
+      "damage": 2,
+      "columnas_de_grupo": 3,
+      "nota": "tres columnas, una por etiqueta, de desviacion de la prior del grupo",
+      "referencia": "control",
+      "gate_delta": false,
+      "gate_ic95": false,
+      "pliegues_positivos": 1,
+      "gate_supera": false
+    },
+    {
+      "variante": "P8-2-desviacion-soporte",
+      "corrected_cv": 0.77553,
+      "delta": -0.001681,
+      "ic95_0": -0.005144,
+      "ic95_1": 0.001571,
+      "f1_HS": 0.7592,
+      "f1_TR": 0.8176,
+      "f1_AG": 0.7498,
+      "salvage": 1,
+      "damage": 2,
+      "columnas_de_grupo": 4,
+      "nota": "las tres anteriores mas el numero de otras filas del grupo",
+      "referencia": "control",
+      "gate_delta": false,
+      "gate_ic95": false,
+      "pliegues_positivos": 1,
+      "gate_supera": false
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "marca_corrida": "20261001T194000Z_p2731658",
+  "resultado": {
+    "bloque": 1,
+    "coste_segundos": 0.044787,
+    "descripcion": "clip_grad_norm_ en todos los bucles, norma pre-clip publicada",
+    "detalle": {
+      "comprobaciones": {
+        "llamadas_igual_a_pasos": true,
+        "serie_con_al_menos_cinco": true,
+        "serie_no_vacia": true,
+        "umbral_exacto_1p0": true
+      },
+      "llamadas_clip": 353006,
+      "n_normas": 353006,
+      "n_normas_no_nulas": 353006,
+      "pasos_optimizador": 353006,
+      "resumen_norma_preclip": {
+        "maximo": 43.23503112792969,
+        "mediana": 0.23490183800458908,
+        "percentil_95": 0.583976998925209
+      },
+      "umbral": 1.0
+    },
+    "estado": "CONFIRMADO",
+    "exito": true,
+    "id": "A6",
+    "naturaleza": "CONFIRMAR",
+    "stop": true,
+    "tolerancia": "igualdad exacta entre el numero de llamadas y el de pasos; umbral 1.0 exacto",
+    "traza": ""
+  }
+}

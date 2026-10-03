@@ -1,0 +1,47 @@
+{
+  "fecha": "2026-09-26",
+  "experimento": "V10-00",
+  "fase": "P0 verificacion y preparacion",
+  "worktree": "/home/carlos/Git/PLN-v10/kaggle_toxic_2026_puj",
+  "rama": "proyecto-kaggle-toxic-2026-v10",
+  "tip_de_origen": "23aac93",
+  "baseline": {
+    "corrected_cv_reconstruido": 0.7772114525165721,
+    "corrected_cv_esperado": 0.7772114525165721,
+    "coincide_exacto": true,
+    "f1_por_etiqueta": {
+      "HS": 0.761689,
+      "TR": 0.81573,
+      "AG": 0.754215
+    },
+    "umbrales": {
+      "HS": 0.44,
+      "TR": 0.51,
+      "AG": 0.46
+    },
+    "filas_de_desarrollo": 1483
+  },
+  "submission_v03": {
+    "sha256": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "sha256_esperado": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "identica": true,
+    "filas": 1154
+  },
+  "datos": {
+    "filas_train": 1731,
+    "filas_test": 1154,
+    "grupos_fusionados": 1645,
+    "pliegues": 5,
+    "prevalencias_train": {
+      "HS": 0.4367,
+      "TR": 0.2998,
+      "AG": 0.3824
+    }
+  },
+  "registro": {
+    "filas_experiments_csv": 207,
+    "claves_unicas": 207,
+    "sondas_lb": 15
+  },
+  "todo_correcto": true
+}

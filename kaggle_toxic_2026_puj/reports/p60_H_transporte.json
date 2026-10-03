@@ -1,0 +1,147 @@
+{
+  "familia": "P60_H_OPTIMAL_TRANSPORT",
+  "naturaleza": "EXPERIMENTO. 1 candidato, 0 submissions, 0 Kaggle, 0 holdout, 0 test. V03 no se modifica",
+  "fecha": "2026-09-28T16:44:59+00:00",
+  "experiment_id": "P60-06",
+  "track": "P60-H",
+  "script": "experiments/p60_07_transporte.py",
+  "paper": "Robust Text Classification: Analyzing Prototype-Based Networks, Findings of EMNLP 2024, DOI 10.18653/v1/2024.findings-emnlp.745",
+  "pregunta": "clasificar por transporte entre distribuciones aporta algo que comparar con un centroide no aporta, o el transporte se reduce a la distancia al centroide?",
+  "hipotesis": "cuando el objeto de prueba es una DISTRIBUCION sobre las unidades del texto y no un punto, el acoplamiento de masas produce una comparacion que un centroide no puede reproducir",
+  "mecanismo": "cada tweet se convierte en una medida empirica sobre sus propios tokens proyectados al espacio SVD, y la clase en la medida agrupada de sus tweets de training; la comparacion es un acoplamiento de masas, no una distancia entre dos vectores",
+  "modelo": "clasificador de prototipos sobre el espacio SVD de V03, sin pesos entrenados y sin perdida",
+  "perdida": "ninguna: es una regla de puntuacion por divergencia",
+  "rasgos": "los 27.431 del TF-IDF de V03 reducidos a 128 por SVD, mas un TF-IDF a nivel de token para las unidades. Ningun recurso externo",
+  "adaptacion_legal": {
+    "dominio_original": "vision, prototipos aprendidos con encoder grande",
+    "adaptacion": "unidades lexicas internas y un encoder lineal interno (SVD)",
+    "que_cambia": "el encoder; aqui no hay transformer ni embedding preentrenado",
+    "que_es_invariante": "comparar contra una distribucion de clase y no contra un punto"
+  },
+  "gap_analysis": {
+    "filas_transporte_optimo": 0,
+    "precedentes": "V4-G01-G03 likelihood scores, P59-02 geometria Voronoi, y toda la familia de centroides y vecinos",
+    "condicion_de_novedad": "con objeto de Dirac, W1(delta_x, nu) es la media de distancias a las muestras de la clase, es decir la distancia al centroide, luego OT SIEMPRE colapsa a la familia cerrada en ese caso. Solo aporta si el objeto de prueba es una distribucion",
+    "verificacion": {
+      "correlacion_dirac_contra_distribucion": 0.0,
+      "sesgo_de_la_rejilla_de_cuantiles": 0.000157,
+      "diferencia_relativa_dirac_contra_distribucion": 0.435592,
+      "razon_senal_sobre_sesgo": 2842.283333,
+      "filas": [
+        {
+          "etiqueta": "HS",
+          "correlacion_dirac_contra_distribucion": -0.0,
+          "sesgo_de_la_rejilla_de_cuantiles": 0.000126,
+          "diferencia_relativa_dirac_contra_distribucion": 0.448328,
+          "razon_senal_sobre_sesgo": 3547.2118,
+          "n_eval": 120
+        },
+        {
+          "etiqueta": "TR",
+          "correlacion_dirac_contra_distribucion": -0.0,
+          "sesgo_de_la_rejilla_de_cuantiles": 0.000171,
+          "diferencia_relativa_dirac_contra_distribucion": 0.415573,
+          "razon_senal_sobre_sesgo": 2427.4197,
+          "n_eval": 120
+        },
+        {
+          "etiqueta": "AG",
+          "correlacion_dirac_contra_distribucion": NaN,
+          "sesgo_de_la_rejilla_de_cuantiles": 0.000174,
+          "diferencia_relativa_dirac_contra_distribucion": 0.442875,
+          "razon_senal_sobre_sesgo": 2552.2185,
+          "n_eval": 120
+        }
+      ],
+      "lectura": "si la correlacion fuese 1 las dos versiones serian la misma y la pista cerraria sin experimento. No lo es, luego la version distributiva es genuinamente distinta y el experimento mide si esa diferencia sirve"
+    },
+    "veredicto": "NUEVA_CON_RESTAURACION"
+  },
+  "configuracion_pre_registrada": {
+    "svd_rank": 128,
+    "direcciones_seccionadas": 64,
+    "unidades_por_tweet": 32,
+    "submuestreo_de_clase": 2000,
+    "pesos_de_unidad": "1 + log1p(tf sublineal del token), normalizados",
+    "coste_de_suelo": "euclideo en el espacio SVD",
+    "transporte": "Wasserstein 1 seccionado. El coste en cada dimension se integra de forma EXACTA como la integral de la diferencia de las funciones de distribucion, sin interpolar cuantiles",
+    "por_que_seccionado_y_no_sinkhorn": "con soportes de quince y varios miles de puntos, Sinkhorn no es barato ni numericamente seguro con estas proporciones de clase. En una dimension el transporte optimo es la distancia L1 entre cuantiles, que es exacta y no necesita iterar",
+    "rejilla": "ninguna sobre el numero de direcciones ni sobre las unidades"
+  },
+  "control": {
+    "brazo_0_centroide": {
+      "corrected_cv": 0.5409847232116939,
+      "folds": [
+        0.5391737285024013,
+        0.5429200340137,
+        0.5394720312367371,
+        0.5417445126663764,
+        0.5415945731147966
+      ],
+      "f1_por_etiqueta": {
+        "HS": 0.6081651807,
+        "TR": 0.4616182573,
+        "AG": 0.5531707317
+      },
+      "rescate": 367,
+      "damage": 2399,
+      "neto": -2032,
+      "cambian": 2766
+    }
+  },
+  "resultado": {
+    "brazo_0_corrected_cv": 0.5409847232,
+    "brazo_1_corrected_cv": 0.4686780062,
+    "delta_divergencia_puro": -0.072306717,
+    "delta_vs_V03": -0.3085334463,
+    "folds_brazo_1": [
+      0.478309,
+      0.435957,
+      0.486647,
+      0.466306,
+      0.475025
+    ],
+    "folds_brazo_0": [
+      0.539174,
+      0.54292,
+      0.539472,
+      0.541745,
+      0.541595
+    ],
+    "pliegues_mejorados": 0,
+    "f1_por_etiqueta": {
+      "HS": 0.5591397849,
+      "TR": 0.356211004,
+      "AG": 0.4906832298
+    },
+    "f1_por_etiqueta_control": {
+      "HS": 0.6081651807,
+      "TR": 0.4616182573,
+      "AG": 0.5531707317
+    },
+    "rescate": 391,
+    "damage": 2655,
+    "neto": -2264,
+    "cambian": 3046,
+    "gate": {
+      "delta_min": 0.003,
+      "pliegues_min": 4,
+      "supera_delta": false,
+      "supera_pliegues": false,
+      "superado": false
+    },
+    "bootstrap": null
+  },
+  "por_fold": [],
+  "interpretacion": "El hallazgo de esta pista es el gap check, y para que fuera creible hizo falta arreglar dos veces la metrica. La primera version interpolaba 128 puntos de cuantil para el coste en una dimension, y su sesgo resulto ser del 44 por ciento, mayor que la diferencia de 43,6 por ciento que se pretendia medir. El gap check AUTOCALIBRADO, que compara esa diferencia contra el sesgo de la propia metrica, concluyo correctamente que la diferencia estaba dentro del ruido y que no se podia afirmar nada. Ese era un fallo de la METRICA y no del METODO, asi que se sustituyo por la integral exacta de la diferencia de las dos funciones de distribucion, y una segunda referencia erronea, que comparaba contra la media NO ponderada de distancias en lugar de la ponderada por la medida de la clase, se corrigio tambien. Con la metrica exacta el sesgo cae a 0,016 por ciento y la diferencia entre el objeto de Dirac y el objeto distribucional queda en 43,559 por ciento, o sea 2842 veces el ruido. La condicion de novedad de la pista se cumple, y ahora esta MEDIDA y no arguida: con objeto de Dirac el transporte se reduce a la familia cerrada, y con objeto distribucional no. El experimento dice que esa operacion genuinamente distinta es PEOR: -0,072307 contra el control de centroide, 0 de 5 pliegues y 391 rescates contra 2655 danos. Conviene decir que ambos brazos quedan muy por debajo de V03, 0,540985 y 0,468678 frente a 0,777211, y la razon es de capacidad y no de la divergencia: un clasificador de prototipos no supervisado sobre 128 dimensiones de SVD de token no puede competir con un modelo lineal de 27.431 rasgos con regularizacion. Por eso el gate de esta pista es el efecto sobre su propio control de centroide, que si es un experimento controlado. La conclusion transferible es que en TOXIC la condicion para que el transporte optimo sea un metodo NUEVO, que es un objeto de prueba distribucional, se puede satisfacer sin que la condicion para que SIRVA, que es que comparar distribuciones encaje en este problema, y son dos condiciones distintas que conviene no confundir",
+  "decision": "CLOSED_BY_DUPLICACION. El gap check mostro que la version Dirac del transporte es la familia cerrada, y la version distributiva no mejora sobre ella",
+  "experimentos_registrados": 1,
+  "formulacion": "V03 remains the best verified leaderboard result.",
+  "gastos": {
+    "submissions": 0,
+    "consultas_kaggle": 0,
+    "uso_holdout": 0,
+    "uso_test": 0,
+    "segundos": 1411.2
+  }
+}

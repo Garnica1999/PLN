@@ -1,0 +1,14 @@
+{
+  "hash_semilla_a": "d06227978b42db0e8568b367d8a8319dfe9d337653fda8f1b71a269f1e17f494",
+  "hash_semilla_b": "84d5076ce582c5402dcb37d9eecef1315d70dbc480d748a57b567b5fc260d24e",
+  "hashes_de_secuencia_por_epocas": {
+    "1": "d06227978b42db0e8568b367d8a8319dfe9d337653fda8f1b71a269f1e17f494",
+    "3": "d06227978b42db0e8568b367d8a8319dfe9d337653fda8f1b71a269f1e17f494"
+  },
+  "hashes_del_ultimo_lote_por_epocas": {
+    "1": "31e08760c5d67666ada3ab16f7ec9ce350f0608e229262396a8d16714c866229",
+    "3": "fa7f3ffcdb36334c6c28c01dbf2b4f5bbc73b065dabde760e866b3af7feb2701"
+  },
+  "marca_corrida": "20261002T104743Z_p289246",
+  "profundidad": 64
+}

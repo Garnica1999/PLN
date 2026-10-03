@@ -1,0 +1,185 @@
+{
+  "experimento": "V14-01 (informe final de la auditoria partially-label)",
+  "fecha": "2026-09-27T00:10:38+00:00",
+  "experimentos_de_la_fase": 1,
+  "presupuesto": {
+    "principales": 4,
+    "reserva": 2,
+    "usados": 0
+  },
+  "referencia_v03": 0.7772114525165721,
+  "delta_oraculo": 0.046271,
+  "delta_h2_m_registrado": -0.116581,
+  "gate_exploratorio": 0.002,
+  "gate_candidato": 0.003,
+  "identidad_numerica": {
+    "peor_diferencia_de_coeficientes": 0.0,
+    "peor_diferencia_de_probabilidades": 0.0,
+    "identidad_exacta": true
+  },
+  "macro_f1": {
+    "v03": 0.7772114525165721,
+    "h2_m_reconstruido": 0.6606303826082641,
+    "perdida_enmascarada_p1": 0.6606303826082641,
+    "delta_h2_m": -0.11658106990830797,
+    "delta_enmascarada": -0.11658106990830797,
+    "diferencia_entre_deltas": 0.0
+  },
+  "candidatas_adoptables": [],
+  "candidatas_marginales": [],
+  "candidatas_rechazadas": [
+    "perdida enmascarada de P1, equivalente a H2-M"
+  ],
+  "fraccion_del_techo_recuperada": -2.5195277799984432,
+  "respuestas": [
+    {
+      "numero": "1",
+      "pregunta": "Las etiquetas TR y AG de las filas HS=0 deben modelarse como negativos ordinarios o como observaciones parcialmente definidas?",
+      "respuesta": "NO SE PUEDE RESPONDER CON EVIDENCIA, y la fase lo declara en vez de resolverlo por inercia. La razon es que la unica formulacion de la alternativa que puede implementarse con los mecanismos permitidos no es una alternativa: es H2-M. La comparacion que el enunciado quiere establecer, entre negativos ordinarios y observaciones parcialmente definidas, no se ha establecido en ningun experimento, porque las dos ramas disponibles son el mismo estimador",
+      "evidencia": "Perdida enmascarada contra H2-M: 0.000e+00 en coeficientes, 0.000e+00 en probabilidades y 0.000e+00 en el delta del macro-F1",
+      "estado": "ABIERTA, y no por resultado negativo sino por identidad de estimador"
+    },
+    {
+      "numero": "2",
+      "pregunta": "Existe evidencia experimental de que cambiar esa semantica de entrenamiento mejora el macro-F1?",
+      "respuesta": "NO. No se ha ejecutado ningun experimento, porque P0 cumplio la condicion de parada numero 1. Y la unica formulacion implementable produce -0.116581, es decir una perdida de tres puntos porcentuales, no una mejora",
+      "evidencia": "0 de 4 experimentos principales y 0 de 2 de reserva. Delta unico medido: -0.116581",
+      "estado": "CERRADA como via de mejora, y no como via de conocimiento"
+    },
+    {
+      "numero": "3",
+      "pregunta": "Es realmente distinto de H2-M?",
+      "respuesta": "NO, y esta es la pregunta central de la fase. Enmascarar la perdida y eliminar las filas son la misma operacion sobre el estimador, porque una fila con peso cero no aporta gradiente. No es una cuestion de notacion ni de convencion: es que el subconjunto de filas que aporta senal es identico",
+      "evidencia": "Diferencia maxima de coeficientes 0.000e+00 en los cinco pliegues y las dos etiquetas. Diferencia maxima de probabilidades 0.000e+00. El delta reproducido coincide con el registrado en v12 hasta el ultimo decimal",
+      "estado": "RESUELTA, en negativo y con prueba numerica"
+    },
+    {
+      "numero": "4",
+      "pregunta": "Que fraccion del +0.046271 del oraculo se recupera?",
+      "respuesta": "NINGUNA, y el signo es negativo: -0.116581 es -252 por ciento del techo. La fraccion no es pequena, es del lado equivocado",
+      "evidencia": "-0.116581 contra un techo de +0.046271, es decir -2,52 veces el techo disponible",
+      "estado": "CERRADA"
+    },
+    {
+      "numero": "5",
+      "pregunta": "La mejora afecta a los falsos positivos de TR y AG en HS=0?",
+      "respuesta": "NO SE PUEDE MEDIR, porque ningun mecanismo llego a evaluarse. Lo que si consta es que el techo de +0.046271 consiste exactamente en 196 celdas de este tipo, 78 de TR y 118 de AG, y que H2-M no las toca: su efecto es un cambio de escala de la salida, que es el modo de fallo que v12 documento",
+      "evidencia": "El techo borra 196 celdas en las 835 filas con HS verdadero cero. H2-M falla por desplazar la escala, y con umbrales congelados eso se traduce en un delta de -0.116581",
+      "estado": "NO MEDIDA, por no haber mecanismo superviviente"
+    },
+    {
+      "numero": "6",
+      "pregunta": "Existe alguna candidata que supere el gate?",
+      "respuesta": "NO. Ninguna, porque no se ejecuto ningun experimento y el unico resultado medido es negativo",
+      "evidencia": "Mejor delta -0.116581 frente a un gate exploratorio de +0.002 y un gate de candidato de +0.003. 0 candidatas",
+      "estado": "CERRADA"
+    },
+    {
+      "numero": "7",
+      "pregunta": "Si no, queda alguna familia experimental genuinamente no cerrada?",
+      "respuesta": "DENTRO de los mecanismos permitidos, NO. Los cuatro mecanismos que la fase propone como nuevos por su terminologia, partial-label, positive-unlabeled, selective loss y masked BCE, tienen CERO menciones historicas una vez descontada la autorreferencia de la propia consulta. Pero su equivalente operativo, que es enmascarar la perdida de clasificacion, esta cerrado como H2-M. Quedaria abierta una via que aportara una senal distinta de cero y sin etiqueta a las filas HS=0, y esa via cae fuera de la jerarquia: exige datos externos, una representacion nueva o informacion transductiva, los tres prohibidos",
+      "evidencia": "Barrido de los doce mecanismos del enunciado: cuatro con cero menciones historicas y cuatro con mas de cien, ninguno de los cuales condiciona la senal a HS. Sonda estructural: trece llamadas con sample_weight, ninguna definida por la definicion de la etiqueta",
+      "estado": "CERRADA dentro del conjunto permitido"
+    }
+  ],
+  "cumplimiento": {
+    "comprobaciones": [
+      {
+        "restriccion": "Auditoria de novedad ejecutada antes de cualquier experimento",
+        "cumple": true,
+        "evidencia": "V14-00 es el unico experimento y no entrena nada"
+      },
+      {
+        "restriccion": "Matriz de mecanismos obligatoria entregada",
+        "cumple": true,
+        "evidencia": "diez mecanismos con formula, diferencia, resultado y estado"
+      },
+      {
+        "restriccion": "Los doce mecanismos del enunciado barridos",
+        "cumple": true,
+        "evidencia": "con conteo con y sin autorreferencia de la propia consulta"
+      },
+      {
+        "restriccion": "Comparacion algebraica con H2-M realizada",
+        "cumple": true,
+        "evidencia": "diferencia 0.000e+00 en coeficientes, probabilidades y macro-F1"
+      },
+      {
+        "restriccion": "Test no utilizado",
+        "cumple": true,
+        "evidencia": "solo se carga el desarrollo de 1483 filas"
+      },
+      {
+        "restriccion": "Holdout2 no utilizado",
+        "cumple": true,
+        "evidencia": "no se ha cargado en ningun punto"
+      },
+      {
+        "restriccion": "Sin submissions",
+        "cumple": true,
+        "evidencia": "0 ficheros de submission generados"
+      },
+      {
+        "restriccion": "Sin leaderboard",
+        "cumple": true,
+        "evidencia": "ninguna decision usa la puntuacion externa"
+      },
+      {
+        "restriccion": "Segunda particion no ejecutada",
+        "cumple": true,
+        "evidencia": "no hay candidata que la justifique"
+      },
+      {
+        "restriccion": "V03 intacta",
+        "cumple": true,
+        "evidencia": "control de identidad con diferencia exactamente cero"
+      },
+      {
+        "restriccion": "Sin nuevo vectorizador ni representacion",
+        "cumple": true,
+        "evidencia": "solo word(1,2) y char_wb(3,5) de V03"
+      },
+      {
+        "restriccion": "Sin datos externos ni informacion transductiva",
+        "cumple": true,
+        "evidencia": "ninguna fuente ajena al corpus de desarrollo"
+      },
+      {
+        "restriccion": "Sin embeddings nuevos",
+        "cumple": true,
+        "evidencia": "no se ha construido ninguna representacion"
+      },
+      {
+        "restriccion": "Presupuesto respetado",
+        "cumple": true,
+        "evidencia": "0 de 4 principales y 0 de 2 de reserva"
+      },
+      {
+        "restriccion": "Ningun resultado editado a posteriori",
+        "cumple": true,
+        "evidencia": "el unico script se escribio antes de ver sus resultados"
+      }
+    ],
+    "todas_cumplidas": true,
+    "gastos": {
+      "submissions": 0,
+      "evaluaciones_de_holdout2": 0,
+      "consultas_de_leaderboard": 0,
+      "segunda_particion": 0,
+      "experimentos_de_busqueda": 0
+    }
+  },
+  "correccion_propia": {
+    "que": "Mi primera verificacion de la equivalencia uso una sola pliegue y concluyo que la identidad era exacta. Al extenderla a los cinco pliegues aparecieron diferencias de orden 4.5e-01 en los coeficientes",
+    "por_que": "La causa era mia: en la reconstruccion de H2-M pasaba sample_weight nulo, es decir sin pesos de clase, cuando el brazo M real usa class_weight balanced sobre la submuestra de HS=1. Estaba comparando H2-M contra un ajuste sin ponderar, que no es H2-M, y por eso mi H2-M reconstruido daba -0.132999 en lugar de -0.116581",
+    "como_se_detecto": "La comprobacion de que el delta reconstruido coincidiera con el registrado en v12. Sin esa comprobacion, la conclusion erronea habria pasado, porque un numero pequeno no delata un modelo mal puesto",
+    "leccion": "Un veredicto de equivalencia no se sostiene en una sola pliegue. Y reproducir un resultado historico conocido es la comprobacion que detecta un error de montaje"
+  },
+  "decision": {
+    "linea": "entrenamiento partially-label de TR y AG en el regimen HS=0",
+    "estado": "CERRADA",
+    "motivo": "P1 es H2-M con diferencia exactamente cero en coeficientes, probabilidades y macro-F1, y reproduce el -0.116581 ya registrado. Se cumple la condicion de parada numero 1 del enunciado.",
+    "lo_que_no_se_afirma": "Que la semantica de observacion parcialmente definida sea incorrecta. Lo que se mide es que implementada como enmascarar la perdida de clasificacion es el mismo estimador que H2-M. Una formulacion que aportase senal distinta de cero en las filas HS=0 seria otra cosa, y el barrido no deja ninguna via de esa clase dentro de los mecanismos permitidos.",
+    "formulacion_correcta": "El techo del oraculo procede de conocer la condicion semantica HS al evaluar TR y AG, pero mejorar HS por si sola no produce beneficio, y ya esta medido con delta exactamente cero. Las familias historicas de routing, factorizacion, powerset, ranking y meta-combinacion estan cerradas. La unica cuestion residual era si el regimen HS=0 puede modelarse como etiqueta parcialmente definida durante el entrenamiento sin reproducir el fracaso de H2-M, y la respuesta es que enmascarar la perdida no es una forma alternativa de hacerlo: es el mismo estimador"
+  }
+}

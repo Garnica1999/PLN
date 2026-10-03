@@ -1,0 +1,111 @@
+rebanada,variante,n_filas,f1_por_celda
+interpersonal (TR=1),V03-CONGELADO,445,0.9129
+interpersonal (TR=1),EMB-B0-200-LR,445,0.8514
+interpersonal (TR=1),EMB-B0-200-SVC,445,0.8646
+interpersonal (TR=1),FUSION-B0-200,445,0.9199
+interpersonal (TR=1),EMB-WS-3-LR,445,0.8698
+interpersonal (TR=1),EMB-WS-3-SVC,445,0.8817
+interpersonal (TR=1),FUSION-WS-3,445,0.9208
+interpersonal (TR=1),EMB-WS-7-LR,445,0.8534
+interpersonal (TR=1),EMB-WS-7-SVC,445,0.8685
+interpersonal (TR=1),FUSION-WS-7,445,0.9187
+afiliacion (AG=1),V03-CONGELADO,567,0.8846
+afiliacion (AG=1),EMB-B0-200-LR,567,0.8231
+afiliacion (AG=1),EMB-B0-200-SVC,567,0.8427
+afiliacion (AG=1),FUSION-B0-200,567,0.8925
+afiliacion (AG=1),EMB-WS-3-LR,567,0.8413
+afiliacion (AG=1),EMB-WS-3-SVC,567,0.86
+afiliacion (AG=1),FUSION-WS-3,567,0.8932
+afiliacion (AG=1),EMB-WS-7-LR,567,0.822
+afiliacion (AG=1),EMB-WS-7-SVC,567,0.8431
+afiliacion (AG=1),FUSION-WS-7,567,0.8901
+sin_hate_explicito (HS=0),V03-CONGELADO,835,0.0667
+sin_hate_explicito (HS=0),EMB-B0-200-LR,835,0.0175
+sin_hate_explicito (HS=0),EMB-B0-200-SVC,835,0.0152
+sin_hate_explicito (HS=0),FUSION-B0-200,835,0.0657
+sin_hate_explicito (HS=0),EMB-WS-3-LR,835,0.0176
+sin_hate_explicito (HS=0),EMB-WS-3-SVC,835,0.0192
+sin_hate_explicito (HS=0),FUSION-WS-3,835,0.0639
+sin_hate_explicito (HS=0),EMB-WS-7-LR,835,0.0214
+sin_hate_explicito (HS=0),EMB-WS-7-SVC,835,0.0206
+sin_hate_explicito (HS=0),FUSION-WS-7,835,0.0644
+colectivos,V03-CONGELADO,93,0.574
+colectivos,EMB-B0-200-LR,93,0.4791
+colectivos,EMB-B0-200-SVC,93,0.5029
+colectivos,FUSION-B0-200,93,0.589
+colectivos,EMB-WS-3-LR,93,0.5171
+colectivos,EMB-WS-3-SVC,93,0.5663
+colectivos,FUSION-WS-3,93,0.585
+colectivos,EMB-WS-7-LR,93,0.3807
+colectivos,EMB-WS-7-SVC,93,0.4092
+colectivos,FUSION-WS-7,93,0.5833
+insultos,V03-CONGELADO,855,0.8357
+insultos,EMB-B0-200-LR,855,0.7249
+insultos,EMB-B0-200-SVC,855,0.7221
+insultos,FUSION-B0-200,855,0.8389
+insultos,EMB-WS-3-LR,855,0.7421
+insultos,EMB-WS-3-SVC,855,0.7396
+insultos,FUSION-WS-3,855,0.8405
+insultos,EMB-WS-7-LR,855,0.7317
+insultos,EMB-WS-7-SVC,855,0.7307
+insultos,FUSION-WS-7,855,0.8396
+elongaciones,V03-CONGELADO,57,0.6853
+elongaciones,EMB-B0-200-LR,57,0.5545
+elongaciones,EMB-B0-200-SVC,57,0.5992
+elongaciones,FUSION-B0-200,57,0.7221
+elongaciones,EMB-WS-3-LR,57,0.6542
+elongaciones,EMB-WS-3-SVC,57,0.6393
+elongaciones,FUSION-WS-3,57,0.7213
+elongaciones,EMB-WS-7-LR,57,0.628
+elongaciones,EMB-WS-7-SVC,57,0.6161
+elongaciones,FUSION-WS-7,57,0.7221
+coloquial,V03-CONGELADO,214,0.8177
+coloquial,EMB-B0-200-LR,214,0.6368
+coloquial,EMB-B0-200-SVC,214,0.6434
+coloquial,FUSION-B0-200,214,0.823
+coloquial,EMB-WS-3-LR,214,0.7152
+coloquial,EMB-WS-3-SVC,214,0.7072
+coloquial,FUSION-WS-3,214,0.8234
+coloquial,EMB-WS-7-LR,214,0.7108
+coloquial,EMB-WS-7-SVC,214,0.6975
+coloquial,FUSION-WS-7,214,0.8256
+hashtags,V03-CONGELADO,144,0.5311
+hashtags,EMB-B0-200-LR,144,0.3493
+hashtags,EMB-B0-200-SVC,144,0.3616
+hashtags,FUSION-B0-200,144,0.5462
+hashtags,EMB-WS-3-LR,144,0.4493
+hashtags,EMB-WS-3-SVC,144,0.4723
+hashtags,FUSION-WS-3,144,0.531
+hashtags,EMB-WS-7-LR,144,0.426
+hashtags,EMB-WS-7-SVC,144,0.4368
+hashtags,FUSION-WS-7,144,0.5401
+menciones,V03-CONGELADO,702,0.8462
+menciones,EMB-B0-200-LR,702,0.7374
+menciones,EMB-B0-200-SVC,702,0.7375
+menciones,FUSION-B0-200,702,0.8483
+menciones,EMB-WS-3-LR,702,0.7501
+menciones,EMB-WS-3-SVC,702,0.7455
+menciones,FUSION-WS-3,702,0.8504
+menciones,EMB-WS-7-LR,702,0.7365
+menciones,EMB-WS-7-SVC,702,0.7355
+menciones,FUSION-WS-7,702,0.8497
+urls,V03-CONGELADO,458,0.6578
+urls,EMB-B0-200-LR,458,0.5304
+urls,EMB-B0-200-SVC,458,0.5488
+urls,FUSION-B0-200,458,0.6782
+urls,EMB-WS-3-LR,458,0.548
+urls,EMB-WS-3-SVC,458,0.5535
+urls,FUSION-WS-3,458,0.6787
+urls,EMB-WS-7-LR,458,0.5248
+urls,EMB-WS-7-SVC,458,0.5434
+urls,FUSION-WS-7,458,0.6681
+cita,V03-CONGELADO,37,0.8449
+cita,EMB-B0-200-LR,37,0.6343
+cita,EMB-B0-200-SVC,37,0.6674
+cita,FUSION-B0-200,37,0.8393
+cita,EMB-WS-3-LR,37,0.7568
+cita,EMB-WS-3-SVC,37,0.7617
+cita,FUSION-WS-3,37,0.8501
+cita,EMB-WS-7-LR,37,0.5206
+cita,EMB-WS-7-SVC,37,0.5468
+cita,FUSION-WS-7,37,0.8393

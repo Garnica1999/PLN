@@ -1,0 +1,47 @@
+{
+  "marca_corrida": "20261002T132340Z_p563891",
+  "resultado": {
+    "bloque": 2,
+    "coste_segundos": 0.000418,
+    "descripcion": "el intervalo que decide es un t pareado de semillas",
+    "detalle": {
+      "comprobaciones": {
+        "metodo_es_t_pareado": true,
+        "no_es_bootstrap": true,
+        "recalculo_independiente_coincide": true
+      },
+      "intervalo_publicado": {
+        "critico_t": 2.262157162798205,
+        "desviacion": 0.01440007631814541,
+        "error_tipico": 0.004553703964559096,
+        "inferior": -0.012406247175437712,
+        "limite": 0.010301194040689942,
+        "media": -0.0021050531347477698,
+        "n": 10,
+        "pvalor": 0.6548576427239733,
+        "superior": 0.008196140905942173,
+        "t": -0.46227272372800976
+      },
+      "metodo": "t_pareado_sobre_semillas",
+      "recalculo_independiente": {
+        "critico_t": 2.262157162798205,
+        "desviacion": 0.01440007631814541,
+        "error_tipico": 0.004553703964559096,
+        "inferior": -0.012406247175437712,
+        "limite": 0.010301194040689942,
+        "media": -0.0021050531347477698,
+        "n": 10,
+        "pvalor": 0.6548576427239733,
+        "superior": 0.008196140905942173,
+        "t": -0.46227272372800976
+      }
+    },
+    "estado": "CONFIRMADO",
+    "exito": true,
+    "id": "A11",
+    "naturaleza": "CONFIRMAR",
+    "stop": true,
+    "tolerancia": "metodo t pareado de semillas; recalculo independiente coincide dentro de 1e-9",
+    "traza": ""
+  }
+}

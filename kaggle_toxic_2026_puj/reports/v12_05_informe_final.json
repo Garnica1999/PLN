@@ -1,0 +1,20 @@
+{
+  "experimento": "V12-05 (informe final de fase y tabla maestra)",
+  "fecha": "2026-09-26T23:33:05+00:00",
+  "commit": "b7d252b",
+  "referencia_v03": 0.7772114525165721,
+  "lb_v03": 0.78306,
+  "techo_oraculo": 0.046271,
+  "postproceso_duro": -0.004187,
+  "experimentos": 5,
+  "hipotesis": [
+    "H1",
+    "H2a",
+    "H2b",
+    "H3"
+  ],
+  "candidatas": [],
+  "submissions_generadas": 0,
+  "holdout2_gastadas": 0,
+  "pregunta_final": "Queda alguna fuente de senal explotable por modelos permitidos que no se haya probado adecuadamente, o V03 constituye el limite practico bajo las restricciones?"
+}

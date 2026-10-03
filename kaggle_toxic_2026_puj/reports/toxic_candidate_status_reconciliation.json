@@ -1,0 +1,69 @@
+{
+  "familia": "P69_RECONCILIACION_ESTADO",
+  "experiment_id": "P69-09",
+  "fecha": "2026-09-29T20:02:42+00:00",
+  "naturaleza": "RECONCILIACION DOCUMENTAL. 0 experimentos",
+  "resuelto": {
+    "hay_ambiguedad_en_el_registro": true,
+    "donde": [
+      "reports/a_cost_sensitive_downweight_final_evidence.json",
+      "reports/toxic_candidate_cost_sensitive_manifest.json",
+      "DECISIONS.md, D-201 y D-205"
+    ],
+    "que_la_causo": "un unico campo llamado `research_status` haciendo dos trabajos: decir si la busqueda sigue abierta, y decir si el candidato esta adoptado",
+    "etiqueta_anterior": "CANDIDATE_PENDING_GOVERNANCE",
+    "estado_de_la_etiqueta_anterior": "SUPERSEDED, no incorrecta sino subespecificada",
+    "lo_que_significaba": "que el candidato no estaba adoptado y que la decision de gobernanza estaba pendiente. Correcto, pero colapsaba dos ejes en una palabra",
+    "resolucion": [
+      {
+        "eje": "research_status",
+        "valor": "EXPERIMENTAL_RESEARCH_CLOSED",
+        "pregunta": "se siguen buscando mecanismos nuevos?",
+        "respuesta": "no",
+        "desde": "commit bafd6c6"
+      },
+      {
+        "eje": "candidate_status",
+        "valor": "PROMISING_UNCONFIRMED",
+        "pregunta": "el candidato esta adoptado?",
+        "respuesta": "no",
+        "desde": "commit bafd6c6"
+      },
+      {
+        "eje": "governance_status",
+        "valor": "PENDING",
+        "pregunta": "la decision de gobernanza esta tomada?",
+        "respuesta": "no",
+        "desde": "commit bafd6c6"
+      }
+    ],
+    "documentos_historicos_modificados": false,
+    "cifras_historicas_modificadas": false,
+    "nota": "los dos ficheros se dejan como estan. Reescribir un informe ya publicado para corregir su vocabulario es exactamente lo que este proyecto no hace: se preserva el original y se documenta la relacion"
+  },
+  "ejes": [
+    {
+      "eje": "research_status",
+      "valor": "EXPERIMENTAL_RESEARCH_CLOSED",
+      "pregunta": "se siguen buscando mecanismos nuevos?",
+      "respuesta": "no",
+      "desde": "commit bafd6c6"
+    },
+    {
+      "eje": "candidate_status",
+      "valor": "PROMISING_UNCONFIRMED",
+      "pregunta": "el candidato esta adoptado?",
+      "respuesta": "no",
+      "desde": "commit bafd6c6"
+    },
+    {
+      "eje": "governance_status",
+      "valor": "PENDING",
+      "pregunta": "la decision de gobernanza esta tomada?",
+      "respuesta": "no",
+      "desde": "commit bafd6c6"
+    }
+  ],
+  "documentos_historicos_modificados": false,
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

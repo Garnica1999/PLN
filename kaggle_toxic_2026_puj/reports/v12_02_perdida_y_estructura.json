@@ -1,0 +1,613 @@
+{
+  "experimento": "V12-02 (H2, perdida propia y estructura de etiquetas)",
+  "fecha": "2026-09-26T23:14:33+00:00",
+  "referencia_v03": 0.7772114525165721,
+  "identidad_control": {
+    "metrica": 0.7772114525165721,
+    "diferencia_con_referencia": 0.0,
+    "reproduce_oof_canonico": true
+  },
+  "premisa": {
+    "filas": 1483,
+    "filas_sin_hs": 835,
+    "proporcion_sin_hs": 0.563048,
+    "tr_cero_en_las_no_definidas": 835,
+    "negativos_de_tr_no_definidos": 0.804432,
+    "negativos_de_ag_no_definidos": 0.887555,
+    "filas_ag_positivo_sin_hs": 22
+  },
+  "techo": {
+    "oraculo_metrica": 0.8234819830529437,
+    "oraculo_delta": 0.046270530536371646,
+    "oraculo_celdas": 196,
+    "oraculo_aciertos": 182,
+    "oraculo_deteccion": 0.9286,
+    "postproceso_predicho_metrica": 0.7730240460463583,
+    "postproceso_predicho_delta": -0.0041874064702137614,
+    "filas_con_hs_predicho_0_y_verdadero_1": 143,
+    "aviso": "El oraculo usa la etiqueta verdadera de HS y **no es adoptable**. Se reporta como techo de la via y como diagnostico, nunca como candidato."
+  },
+  "perdida": {
+    "familia": "entropia cruzada generalizada L_q = (1 - p_y^q)/q",
+    "valores_q": [
+      0.01,
+      0.2,
+      0.5,
+      0.8
+    ],
+    "nota": "q=1 es exactamente la entropia cruzada y se incluye como control interno",
+    "verificacion_del_gradiente": [
+      {
+        "q": 0.01,
+        "coordenadas_comprobadas": 12,
+        "residuo_maximo": 8.325276836668172e-08,
+        "tolerancia": 1e-06,
+        "correcto": true
+      },
+      {
+        "q": 0.2,
+        "coordenadas_comprobadas": 12,
+        "residuo_maximo": 4.7695242786499614e-08,
+        "tolerancia": 1e-06,
+        "correcto": true
+      },
+      {
+        "q": 0.5,
+        "coordenadas_comprobadas": 12,
+        "residuo_maximo": 6.650711607825155e-08,
+        "tolerancia": 1e-06,
+        "correcto": true
+      },
+      {
+        "q": 0.8,
+        "coordenadas_comprobadas": 12,
+        "residuo_maximo": 7.791590289629724e-08,
+        "tolerancia": 1e-06,
+        "correcto": true
+      },
+      {
+        "q": 0.01,
+        "coordenadas_comprobadas": 12,
+        "residuo_maximo": 8.325276836668172e-08,
+        "tolerancia": 1e-06,
+        "correcto": true
+      },
+      {
+        "q": 0.2,
+        "coordenadas_comprobadas": 12,
+        "residuo_maximo": 4.7695242786499614e-08,
+        "tolerancia": 1e-06,
+        "correcto": true
+      },
+      {
+        "q": 0.5,
+        "coordenadas_comprobadas": 12,
+        "residuo_maximo": 6.650711607825155e-08,
+        "tolerancia": 1e-06,
+        "correcto": true
+      },
+      {
+        "q": 0.8,
+        "coordenadas_comprobadas": 12,
+        "residuo_maximo": 7.791590289629724e-08,
+        "tolerancia": 1e-06,
+        "correcto": true
+      },
+      {
+        "q": 0.01,
+        "coordenadas_comprobadas": 12,
+        "residuo_maximo": 8.325276836668172e-08,
+        "tolerancia": 1e-06,
+        "correcto": true
+      },
+      {
+        "q": 0.2,
+        "coordenadas_comprobadas": 12,
+        "residuo_maximo": 4.7695242786499614e-08,
+        "tolerancia": 1e-06,
+        "correcto": true
+      },
+      {
+        "q": 0.5,
+        "coordenadas_comprobadas": 12,
+        "residuo_maximo": 6.650711607825155e-08,
+        "tolerancia": 1e-06,
+        "correcto": true
+      },
+      {
+        "q": 0.8,
+        "coordenadas_comprobadas": 12,
+        "residuo_maximo": 7.791590289629724e-08,
+        "tolerancia": 1e-06,
+        "correcto": true
+      },
+      {
+        "q": 0.01,
+        "coordenadas_comprobadas": 12,
+        "residuo_maximo": 8.325276836668172e-08,
+        "tolerancia": 1e-06,
+        "correcto": true
+      },
+      {
+        "q": 0.2,
+        "coordenadas_comprobadas": 12,
+        "residuo_maximo": 4.7695242786499614e-08,
+        "tolerancia": 1e-06,
+        "correcto": true
+      },
+      {
+        "q": 0.5,
+        "coordenadas_comprobadas": 12,
+        "residuo_maximo": 6.650711607825155e-08,
+        "tolerancia": 1e-06,
+        "correcto": true
+      },
+      {
+        "q": 0.8,
+        "coordenadas_comprobadas": 12,
+        "residuo_maximo": 7.791590289629724e-08,
+        "tolerancia": 1e-06,
+        "correcto": true
+      }
+    ],
+    "optimizador": "L-BFGS-B con gradiente analitico, sobre el mismo espacio disperso"
+  },
+  "brazos": [
+    {
+      "brazo": "A",
+      "metrica": 0.7772114525165721,
+      "delta": 0.0,
+      "f1_por_etiqueta": [
+        0.7616892911010558,
+        0.8157303370786517,
+        0.7542147293700089
+      ],
+      "tasa_positivos": [
+        0.4571813890761969,
+        0.3000674308833446,
+        0.37761294672960216
+      ],
+      "celdas_modificadas": 0
+    },
+    {
+      "brazo": "G (q=0.01)",
+      "metrica": 0.7773401393628371,
+      "delta": 0.0001286868462649915,
+      "f1_por_etiqueta": [
+        0.7622641509433963,
+        0.8166479190101237,
+        0.7531083481349912
+      ],
+      "tasa_positivos": [
+        0.45650708024275116,
+        0.2993931220498989,
+        0.37693863789615645
+      ],
+      "celdas_modificadas": 3
+    },
+    {
+      "brazo": "G (q=0.2)",
+      "metrica": 0.7788277892236457,
+      "delta": 0.0016163367070736179,
+      "f1_por_etiqueta": [
+        0.7641296156744537,
+        0.8174692049272116,
+        0.7548845470692718
+      ],
+      "tasa_positivos": [
+        0.4578556979096426,
+        0.30209035738368173,
+        0.37693863789615645
+      ],
+      "celdas_modificadas": 15
+    },
+    {
+      "brazo": "G (q=0.5)",
+      "metrica": 0.7739692603205349,
+      "delta": -0.0032421921960371636,
+      "f1_por_etiqueta": [
+        0.7645722937168812,
+        0.8097886540600667,
+        0.7475468331846565
+      ],
+      "tasa_positivos": [
+        0.4538098449089683,
+        0.306136210384356,
+        0.3735670937289278
+      ],
+      "celdas_modificadas": 64
+    },
+    {
+      "brazo": "G (q=0.8)",
+      "metrica": 0.7741651721793882,
+      "delta": -0.0030462803371839042,
+      "f1_por_etiqueta": [
+        0.7609682299546142,
+        0.8106312292358804,
+        0.7508960573476703
+      ],
+      "tasa_positivos": [
+        0.454484153742414,
+        0.3088334457181389,
+        0.37019554956169926
+      ],
+      "celdas_modificadas": 130
+    },
+    {
+      "brazo": "M (solo filas aplicables)",
+      "metrica": 0.6606303826082641,
+      "delta": -0.11658106990830797,
+      "f1_por_etiqueta": [
+        0.7616892911010558,
+        0.6598101265822784,
+        0.5603917301414582
+      ],
+      "tasa_positivos": [
+        0.4571813890761969,
+        0.5522589345920431,
+        0.8570465273095077
+      ],
+      "celdas_modificadas": 1113
+    },
+    {
+      "brazo": "ORACULO con HS verdadero (no adoptable)",
+      "metrica": 0.8234819830529437,
+      "delta": 0.046270530536371646,
+      "f1_por_etiqueta": [
+        0.7616892911010558,
+        0.8940886699507389,
+        0.8146679881070367
+      ],
+      "tasa_positivos": [
+        0.4571813890761969,
+        0.24747134187457856,
+        0.2980445043830074
+      ],
+      "celdas_modificadas": 196
+    },
+    {
+      "brazo": "post-proceso con HS predicho (historico)",
+      "metrica": 0.7730240460463583,
+      "delta": -0.0041874064702137614,
+      "f1_por_etiqueta": [
+        0.7616892911010558,
+        0.8137931034482758,
+        0.7435897435897436
+      ],
+      "tasa_positivos": [
+        0.4571813890761969,
+        0.2865812542144302,
+        0.354012137559002
+      ],
+      "celdas_modificadas": 55
+    }
+  ],
+  "seleccion_de_M": [
+    {
+      "pliegue": 1,
+      "detalle": "HS sobre todas las filas, sin cambio"
+    },
+    {
+      "pliegue": 1,
+      "detalle": "TR sobre 519 filas aplicables en vez de 1186"
+    },
+    {
+      "pliegue": 1,
+      "detalle": "AG sobre 519 filas aplicables en vez de 1186"
+    },
+    {
+      "pliegue": 2,
+      "detalle": "HS sobre todas las filas, sin cambio"
+    },
+    {
+      "pliegue": 2,
+      "detalle": "TR sobre 518 filas aplicables en vez de 1186"
+    },
+    {
+      "pliegue": 2,
+      "detalle": "AG sobre 518 filas aplicables en vez de 1186"
+    },
+    {
+      "pliegue": 3,
+      "detalle": "HS sobre todas las filas, sin cambio"
+    },
+    {
+      "pliegue": 3,
+      "detalle": "TR sobre 519 filas aplicables en vez de 1187"
+    },
+    {
+      "pliegue": 3,
+      "detalle": "AG sobre 519 filas aplicables en vez de 1187"
+    },
+    {
+      "pliegue": 4,
+      "detalle": "HS sobre todas las filas, sin cambio"
+    },
+    {
+      "pliegue": 4,
+      "detalle": "TR sobre 518 filas aplicables en vez de 1187"
+    },
+    {
+      "pliegue": 4,
+      "detalle": "AG sobre 518 filas aplicables en vez de 1187"
+    },
+    {
+      "pliegue": 5,
+      "detalle": "HS sobre todas las filas, sin cambio"
+    },
+    {
+      "pliegue": 5,
+      "detalle": "TR sobre 518 filas aplicables en vez de 1186"
+    },
+    {
+      "pliegue": 5,
+      "detalle": "AG sobre 518 filas aplicables en vez de 1186"
+    }
+  ],
+  "deltas_por_pliegue": {
+    "A": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "G (q=0.01)": [
+      0.0,
+      0.001492,
+      -0.001807,
+      0.0,
+      0.000986
+    ],
+    "G (q=0.2)": [
+      0.000994,
+      0.002886,
+      -0.003276,
+      0.001587,
+      0.006361
+    ],
+    "G (q=0.5)": [
+      -0.007325,
+      -0.003567,
+      -0.004919,
+      0.005036,
+      -0.005677
+    ],
+    "G (q=0.8)": [
+      -0.012299,
+      -0.00362,
+      -0.003976,
+      0.00967,
+      -0.004908
+    ],
+    "M (solo filas aplicables)": [
+      -0.139357,
+      -0.1287,
+      -0.108703,
+      -0.088083,
+      -0.118657
+    ]
+  },
+  "umbral_deteccion": 0.5166,
+  "veredictos": {
+    "A": {
+      "delta": 0.0,
+      "pliegues_a_favor": "0/5",
+      "ic95_inferior": 0.0,
+      "ic95_superior": 0.0,
+      "ic95_excluye_cero": false,
+      "celdas_modificadas": 0,
+      "deteccion": 0.0,
+      "supera_deteccion": false,
+      "gate_exploratorio": false,
+      "gate_candidato": false
+    },
+    "G (q=0.01)": {
+      "delta": 0.000129,
+      "pliegues_a_favor": "2/5",
+      "ic95_inferior": -0.000944,
+      "ic95_superior": 0.001169,
+      "ic95_excluye_cero": false,
+      "celdas_modificadas": 3,
+      "deteccion": 0.6667,
+      "supera_deteccion": true,
+      "gate_exploratorio": false,
+      "gate_candidato": false
+    },
+    "G (q=0.2)": {
+      "delta": 0.001616,
+      "pliegues_a_favor": "4/5",
+      "ic95_inferior": -0.000912,
+      "ic95_superior": 0.004056,
+      "ic95_excluye_cero": false,
+      "celdas_modificadas": 15,
+      "deteccion": 0.6667,
+      "supera_deteccion": true,
+      "gate_exploratorio": false,
+      "gate_candidato": false
+    },
+    "G (q=0.5)": {
+      "delta": -0.003242,
+      "pliegues_a_favor": "1/5",
+      "ic95_inferior": -0.008057,
+      "ic95_superior": 0.001542,
+      "ic95_excluye_cero": false,
+      "celdas_modificadas": 64,
+      "deteccion": 0.4375,
+      "supera_deteccion": false,
+      "gate_exploratorio": false,
+      "gate_candidato": false
+    },
+    "G (q=0.8)": {
+      "delta": -0.003046,
+      "pliegues_a_favor": "1/5",
+      "ic95_inferior": -0.010197,
+      "ic95_superior": 0.004104,
+      "ic95_excluye_cero": false,
+      "celdas_modificadas": 130,
+      "deteccion": 0.4692,
+      "supera_deteccion": false,
+      "gate_exploratorio": false,
+      "gate_candidato": false
+    },
+    "M (solo filas aplicables)": {
+      "delta": -0.116581,
+      "pliegues_a_favor": "0/5",
+      "ic95_inferior": -0.133333,
+      "ic95_superior": -0.099451,
+      "ic95_excluye_cero": true,
+      "celdas_modificadas": 1113,
+      "deteccion": 0.142,
+      "supera_deteccion": false,
+      "gate_exploratorio": false,
+      "gate_candidato": false
+    }
+  },
+  "candidatas_exploratorias": [],
+  "curva_de_q_filas": [
+    {
+      "q": 0.01,
+      "metrica": 0.7773401393628371,
+      "delta": 0.0001286868462649915,
+      "f1_por_etiqueta": [
+        0.7622641509433963,
+        0.8166479190101237,
+        0.7531083481349912
+      ]
+    },
+    {
+      "q": 0.05,
+      "metrica": 0.7767790700370597,
+      "delta": -0.0004323824795123832,
+      "f1_por_etiqueta": [
+        0.7616892911010558,
+        0.8166479190101237,
+        0.752
+      ]
+    },
+    {
+      "q": 0.1,
+      "metrica": 0.7769522478453296,
+      "delta": -0.0002592046712425189,
+      "f1_por_etiqueta": [
+        0.7622641509433963,
+        0.8148148148148148,
+        0.7537777777777778
+      ]
+    },
+    {
+      "q": 0.15,
+      "metrica": 0.7780752105180393,
+      "delta": 0.0008637580014672075,
+      "f1_por_etiqueta": [
+        0.7631975867269984,
+        0.8161434977578476,
+        0.7548845470692718
+      ]
+    },
+    {
+      "q": 0.2,
+      "metrica": 0.7788277892236457,
+      "delta": 0.0016163367070736179,
+      "f1_por_etiqueta": [
+        0.7641296156744537,
+        0.8174692049272116,
+        0.7548845470692718
+      ]
+    },
+    {
+      "q": 0.25,
+      "metrica": 0.7787150797552044,
+      "delta": 0.001503627238632288,
+      "f1_por_etiqueta": [
+        0.7647058823529411,
+        0.8165548098434005,
+        0.7548845470692718
+      ]
+    },
+    {
+      "q": 0.3,
+      "metrica": 0.7777967582773583,
+      "delta": 0.0005853057607861922,
+      "f1_por_etiqueta": [
+        0.7637735849056604,
+        0.8147321428571429,
+        0.7548845470692718
+      ]
+    },
+    {
+      "q": 0.4,
+      "metrica": 0.7748363347327283,
+      "delta": -0.0023751177838438053,
+      "f1_por_etiqueta": [
+        0.762481089258699,
+        0.8129175946547884,
+        0.7491103202846975
+      ]
+    },
+    {
+      "q": 0.6,
+      "metrica": 0.7735472285492605,
+      "delta": -0.003664223967311586,
+      "f1_por_etiqueta": [
+        0.7642153146322972,
+        0.8102108768035516,
+        0.7462154942119323
+      ]
+    }
+  ],
+  "curva_de_q": {
+    "q": [
+      0.01,
+      0.05,
+      0.1,
+      0.15,
+      0.2,
+      0.25,
+      0.3,
+      0.4,
+      0.6
+    ],
+    "metrica": [
+      0.77734,
+      0.776779,
+      0.776952,
+      0.778075,
+      0.778828,
+      0.778715,
+      0.777797,
+      0.774836,
+      0.773547
+    ],
+    "delta": [
+      0.000129,
+      -0.000432,
+      -0.000259,
+      0.000864,
+      0.001616,
+      0.001504,
+      0.000585,
+      -0.002375,
+      -0.003664
+    ],
+    "maximo_q": 0.2,
+    "delta_del_maximo": 0.001616,
+    "recorrido": 0.005281,
+    "puntos_sobre_0.001_en_la_region": 2,
+    "tamano_de_la_region": 6,
+    "aviso": "El maximo de esta curva NO es adoptable: se ha calculado mirando los pliegues exteriores. Se reporta solo como diagnostico del motivo del cierre."
+  },
+  "candidatas": [],
+  "salud_del_modelo": {
+    "iteraciones_maximas_lbfgsb": 39,
+    "evaluaciones_maximas": 46,
+    "limite": 2000,
+    "gradiente_verificado": true,
+    "diagnostico": "todas las perdidas convergen y el gradiente analitico coincide con diferencias finitas por debajo de 1e-6"
+  },
+  "gates": {
+    "delta_minimo_exploratorio": 0.002,
+    "delta_minimo_candidato": 0.003,
+    "pliegues_minimos": 4
+  }
+}

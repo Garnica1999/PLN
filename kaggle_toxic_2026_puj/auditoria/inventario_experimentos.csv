@@ -1,0 +1,484 @@
+id,familia,fecha,scripts,tipo,en_registro,fila_registro_valida,reportes,en_notebook,celdas_notebook,estado,nota
+E00,otras,2026-09-22,,submission,SI,SI,,SI,0;18;21;27;29,solo_notebook,"sin script identificado en la fila ni por asociacion de id; sin evidencia atribuible por id, script o fase"
+B1,otras,2026-09-22,experiments/02_baseline_tfidf_lr.py,experimento,SI,SI,reports/baseline_b1_metricas.json;reports/humo_p82_20261001T161024Z_p2289660_completo/parciales/brazo_B1_20261001T161024Z_p2289660_0008.json;reports/humo_p82_20261001T161024Z_p2289660_completo/parciales/brazo_B1_20261001T161024Z_p2289660_0032.json;reports/humo_p82_20261001T161024Z_p2289660_completo/parciales/brazo_B1_20261001T161024Z_p2289660_0035.json;reports/humo_p82_20261001T161024Z_p2289660_incompleto/parciales/brazo_B1_20261001T161024Z_p2289660_0008.json,SI,15;16;18;21;29,con_evidencia_y_notebook,
+PRE-00,otras,2026-09-22,experiments/03_variantes_representaciones.py,experimento,SI,SI,,SI,15;40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+PRE-01,otras,2026-09-22,experiments/03_variantes_representaciones.py,experimento,SI,SI,,SI,40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+PRE-02,otras,2026-09-22,experiments/03_variantes_representaciones.py,experimento,SI,SI,,SI,40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+PRE-03,otras,2026-09-22,experiments/03_variantes_representaciones.py,experimento,SI,SI,,SI,15;40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+PRE-04,otras,2026-09-22,experiments/03_variantes_representaciones.py,experimento,SI,SI,,SI,40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+PRE-05,otras,2026-09-22,experiments/03_variantes_representaciones.py,experimento,SI,SI,,SI,40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+PRE-06,otras,2026-09-22,experiments/03_variantes_representaciones.py,experimento,SI,SI,,SI,40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+PRE-07,otras,2026-09-22,experiments/03_variantes_representaciones.py,experimento,SI,SI,,SI,40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+PRE-08,otras,2026-09-22,experiments/03_variantes_representaciones.py,experimento,SI,SI,,SI,40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+PRE-09,otras,2026-09-22,experiments/03_variantes_representaciones.py,experimento,SI,SI,,SI,15;39;40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+REP-01,otras,2026-09-22,experiments/03_variantes_representaciones.py,experimento,SI,SI,,SI,15;18;40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+REP-02,otras,2026-09-22,experiments/03_variantes_representaciones.py,experimento,SI,SI,,SI,40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+REP-03,otras,2026-09-22,experiments/03_variantes_representaciones.py,experimento,SI,SI,,SI,15;40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+REP-04,otras,2026-09-22,experiments/03_variantes_representaciones.py,experimento,SI,SI,,SI,40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+REP-05,otras,2026-09-22,experiments/03_variantes_representaciones.py,experimento,SI,SI,,SI,15;40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+REP-06,otras,2026-09-22,experiments/03_variantes_representaciones.py,experimento,SI,SI,,SI,15;18;40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+MOD-01_BEST,otras,2026-09-22,experiments/03_variantes_representaciones.py,experimento,SI,SI,,SI,18;40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+MOD-01_W12,otras,2026-09-22,experiments/03_variantes_representaciones.py,experimento,SI,SI,,SI,40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+MOD-02_BEST,otras,2026-09-22,experiments/03_variantes_representaciones.py,experimento,SI,SI,,SI,18;40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+MOD-02_W12,otras,2026-09-22,experiments/03_variantes_representaciones.py,experimento,SI,SI,,SI,40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+MOD-03a_BEST,otras,2026-09-22,experiments/03_variantes_representaciones.py,experimento,SI,SI,,SI,40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+MOD-03a_W12,otras,2026-09-22,experiments/03_variantes_representaciones.py,experimento,SI,SI,,SI,40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+MOD-03b_BEST,otras,2026-09-22,experiments/03_variantes_representaciones.py,experimento,SI,SI,,SI,15;18;34;40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+MOD-03b_W12,otras,2026-09-22,experiments/03_variantes_representaciones.py,experimento,SI,SI,,SI,40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+MOD-04,otras,2026-09-22,experiments/03_variantes_representaciones.py,experimento,SI,SI,,SI,15;18;39;40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+TH-01,otras,2026-09-22,experiments/04_refit_submissions_v02_v03.py,submission,SI,SI,,SI,34;40;205,solo_notebook,"sin evidencia atribuible por id, script o fase"
+S02,otras,2026-09-22,experiments/04_refit_submissions_v02_v03.py,submission,SI,SI,,SI,34;40;205,solo_notebook,"sin evidencia atribuible por id, script o fase"
+S03,otras,2026-09-22,experiments/04_refit_submissions_v02_v03.py,submission,SI,SI,,SI,34;40;205,solo_notebook,"sin evidencia atribuible por id, script o fase"
+ENS-01,otras,2026-09-22,experiments/05_ensembles.py,experimento,SI,SI,,SI,40;228;285;310,solo_notebook,"sin evidencia atribuible por id, script o fase"
+ENS-02,otras,2026-09-22,experiments/05_ensembles.py,experimento,SI,SI,,SI,40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+ENS-03,otras,2026-09-22,experiments/05_ensembles.py,experimento,SI,SI,,SI,40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+ENS-04,otras,2026-09-22,experiments/05_ensembles.py,experimento,SI,SI,,SI,18;20;29;30;40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+S04,otras,2026-09-22,experiments/07_submission_v04_ens04.py,submission,SI,SI,reports/fase13c_submission_v04_ens04.json,SI,40,con_evidencia_y_notebook,
+HIB-H12,otras,2026-09-22,experiments/08_features_densas_h11_h12.py,experimento,SI,SI,,SI,18;33;40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+HIB-H11,otras,2026-09-22,experiments/08_features_densas_h11_h12.py,experimento,SI,SI,,SI,33;40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+HIB-H14,otras,2026-09-22,experiments/08_features_densas_h11_h12.py,experimento,SI,SI,,SI,33;40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+HIB-UNION,otras,2026-09-22,experiments/08_features_densas_h11_h12.py,experimento,SI,SI,,SI,40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+B5-DENSE,otras,2026-09-22,experiments/08_features_densas_h11_h12.py,experimento,SI,SI,,SI,18;40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+OPT-01,otras,2026-09-22,experiments/09_optuna_tfidf_lr.py,experimento,SI,SI,,SI,18;21;29;30;40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+S05,otras,2026-09-22,experiments/09_optuna_tfidf_lr.py,experimento,SI,SI,,SI,40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+R1-C1,otras,2026-09-23,experiments/10_sondas_robustez.py,experimento,SI,SI,,SI,40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+R2-MINDF5,otras,2026-09-23,experiments/10_sondas_robustez.py,experimento,SI,SI,,SI,40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+S06,otras,2026-09-23,experiments/10_sondas_robustez.py,experimento,SI,SI,,SI,40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+S07,otras,2026-09-23,experiments/10_sondas_robustez.py,experimento,SI,SI,,SI,40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+DL-01,otras,2026-09-23,experiments/11_dl_desde_cero.py,experimento,SI,SI,,SI,18;39;40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+DL-02,otras,2026-09-23,experiments/11_dl_desde_cero.py,experimento,SI,SI,,SI,18;40;224,solo_notebook,"sin evidencia atribuible por id, script o fase"
+DL-03,otras,2026-09-23,experiments/11_dl_desde_cero.py,experimento,SI,SI,,SI,18;40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+DL-01-SEEDS,otras,2026-09-23,experiments/11_dl_desde_cero.py,experimento,SI,SI,,SI,40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+PA-01,otras,2026-09-23,experiments/12_control_pseudo_autores.py,experimento,SI,SI,,SI,22;40;211,solo_notebook,"sin evidencia atribuible por id, script o fase"
+HOLD-01,otras,2026-09-25,experiments/13_holdout_v2.py,experimento,SI,SI,,SI,40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+V2-BASE-M1_word_lr,v2,2026-09-25,experiments/14_oof_corregido_v2.py,experimento,SI,SI,,SI,40;205,solo_notebook,sin evidencia por id/script; hay evidencia a nivel de fase
+V2-BASE-M2_union_lr_c2,v2,2026-09-25,experiments/14_oof_corregido_v2.py,experimento,SI,SI,,SI,40;205,solo_notebook,sin evidencia por id/script; hay evidencia a nivel de fase
+V2-BASE-M3_union_svc,v2,2026-09-25,experiments/14_oof_corregido_v2.py,experimento,SI,SI,,SI,40;205,solo_notebook,sin evidencia por id/script; hay evidencia a nivel de fase
+V2-BASE-M4_char_lr,v2,2026-09-25,experiments/14_oof_corregido_v2.py,experimento,SI,SI,,SI,40;205,solo_notebook,sin evidencia por id/script; hay evidencia a nivel de fase
+E2-01-HS-TR-AG,e2,2026-09-25,experiments/15_cadenas_etiquetas_v2.py,experimento,SI,SI,,SI,40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+E2-01-HS-TR-AG-STD,e2,2026-09-25,experiments/15_cadenas_etiquetas_v2.py,experimento,SI,SI,,SI,40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+E2-01-HS-AG-TR,e2,2026-09-25,experiments/15_cadenas_etiquetas_v2.py,experimento,SI,SI,,SI,40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+E2-01-HS-AG-TR-STD,e2,2026-09-25,experiments/15_cadenas_etiquetas_v2.py,experimento,SI,SI,,SI,40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+E2-01-AG-HS-TR,e2,2026-09-25,experiments/15_cadenas_etiquetas_v2.py,experimento,SI,SI,,SI,40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+E2-01-AG-HS-TR-STD,e2,2026-09-25,experiments/15_cadenas_etiquetas_v2.py,experimento,SI,SI,,SI,40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+E2-02-META,e2,2026-09-25,experiments/15_cadenas_etiquetas_v2.py,experimento,SI,SI,,SI,40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+E2-05-CH-TGT,e2,2026-09-25,experiments/16_targeting_v2.py,experimento,SI,SI,,SI,40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+E2-05-CH-TGT-DIST,e2,2026-09-25,experiments/16_targeting_v2.py,experimento,SI,SI,,SI,40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+E2-06-TXT-CH,e2,2026-09-25,experiments/16_targeting_v2.py,experimento,SI,SI,,SI,40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+E2-06-TXT-TGT-SPARSE,e2,2026-09-25,experiments/16_targeting_v2.py,experimento,SI,SI,,SI,40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+E2-18-META-BASES,e2,2026-09-25,experiments/17_stacking_v2.py,experimento,SI,SI,,SI,40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+E2-18-META+CH,e2,2026-09-25,experiments/17_stacking_v2.py,experimento,SI,SI,,SI,40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+E2-18-META+CH+ESTR,e2,2026-09-25,experiments/17_stacking_v2.py,experimento,SI,SI,,SI,40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+E2-18-META-BASES-RIDGE,e2,2026-09-25,experiments/17_stacking_v2.py,experimento,SI,SI,,SI,40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+E2-18-META+CH+ESTR-RIDGE,e2,2026-09-25,experiments/17_stacking_v2.py,experimento,SI,SI,,SI,40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+E2-18-META+CH+ESTR-SVC,e2,2026-09-25,experiments/17_stacking_v2.py,experimento,SI,SI,,SI,40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+E2-18-META-BASES-ANID,e2,2026-09-25,experiments/17_stacking_v2.py,experimento,SI,SI,,SI,40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+E2-18-META+CH+ESTR-ANID,e2,2026-09-25,experiments/17_stacking_v2.py,experimento,SI,SI,,SI,40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+S08,otras,2026-09-25,experiments/18_p7_holdout_y_submission_v08.py,submission,SI,SI,,SI,40;228,solo_notebook,"sin evidencia atribuible por id, script o fase"
+E2-03-POS,e2,2026-09-25,experiments/19_sintaxis_cita_negacion_v2.py,experimento,SI,SI,,SI,3;40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+E2-03-POS-TXT,e2,2026-09-25,experiments/19_sintaxis_cita_negacion_v2.py,experimento,SI,SI,,SI,3;40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+E2-04-DEPS,e2,2026-09-25,experiments/19_sintaxis_cita_negacion_v2.py,experimento,SI,SI,,SI,3;40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+E2-04-MORPH,e2,2026-09-25,experiments/19_sintaxis_cita_negacion_v2.py,experimento,SI,SI,,SI,3;40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+E2-04-SYN3,e2,2026-09-25,experiments/19_sintaxis_cita_negacion_v2.py,experimento,SI,SI,,SI,3;40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+E2-04-DEPS-TXT,e2,2026-09-25,experiments/19_sintaxis_cita_negacion_v2.py,experimento,SI,SI,,SI,3;40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+E2-04-MORPH-TXT,e2,2026-09-25,experiments/19_sintaxis_cita_negacion_v2.py,experimento,SI,SI,,SI,3;40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+E2-04-SYN3-TXT,e2,2026-09-25,experiments/19_sintaxis_cita_negacion_v2.py,experimento,SI,SI,,SI,3;40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+E2-07-CITA,e2,2026-09-25,experiments/19_sintaxis_cita_negacion_v2.py,experimento,SI,SI,,SI,3;40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+E2-07-CITA-TXT,e2,2026-09-25,experiments/19_sintaxis_cita_negacion_v2.py,experimento,SI,SI,,SI,3;40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+E2-07-CITA-NEG-TXT,e2,2026-09-25,experiments/19_sintaxis_cita_negacion_v2.py,experimento,SI,SI,,SI,3;40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+E2-08-NEG,e2,2026-09-25,experiments/19_sintaxis_cita_negacion_v2.py,experimento,SI,SI,,SI,3;40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+E2-08-NEG-TXT,e2,2026-09-25,experiments/19_sintaxis_cita_negacion_v2.py,experimento,SI,SI,,SI,3;40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+E2-09-EMO-EST,e2,2026-09-25,experiments/20_emocion_nbsvm_ortografia_v2.py,experimento,SI,SI,,SI,40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+E2-09-EMO-LEX,e2,2026-09-25,experiments/20_emocion_nbsvm_ortografia_v2.py,experimento,SI,SI,,SI,40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+E2-09-EMO,e2,2026-09-25,experiments/20_emocion_nbsvm_ortografia_v2.py,experimento,SI,SI,,SI,40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+E2-09-TXT-EMO,e2,2026-09-25,experiments/20_emocion_nbsvm_ortografia_v2.py,experimento,SI,SI,,SI,40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+E2-15-NB-WORD,e2,2026-09-25,experiments/20_emocion_nbsvm_ortografia_v2.py,experimento,SI,SI,,SI,40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+E2-15-NB-CHAR,e2,2026-09-25,experiments/20_emocion_nbsvm_ortografia_v2.py,experimento,SI,SI,,SI,40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+E2-15-NBSVM,e2,2026-09-25,experiments/20_emocion_nbsvm_ortografia_v2.py,experimento,SI,SI,,SI,40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+E2-15-NBSVM-SVC,e2,2026-09-25,experiments/20_emocion_nbsvm_ortografia_v2.py,experimento,SI,SI,,SI,40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+E2-10-ORT-A,e2,2026-09-25,experiments/20_emocion_nbsvm_ortografia_v2.py,experimento,SI,SI,,SI,40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+E2-10-ORT-ABCD,e2,2026-09-25,experiments/20_emocion_nbsvm_ortografia_v2.py,experimento,SI,SI,,SI,40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+E2-10-ORT-AE,e2,2026-09-25,experiments/20_emocion_nbsvm_ortografia_v2.py,experimento,SI,SI,,SI,40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+E2-14-MEJOR-M2,e2,2026-09-25,experiments/21_backlog_restante_v2.py,experimento,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+E2-14-MEJOR-META,e2,2026-09-25,experiments/21_backlog_restante_v2.py,experimento,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+E2-13-META-ENT-RIDGE,e2,2026-09-25,experiments/21_backlog_restante_v2.py,experimento,SI,SI,,SI,209;210;211,solo_notebook,"sin evidencia atribuible por id, script o fase"
+E2-13-META-ENT-LR,e2,2026-09-25,experiments/21_backlog_restante_v2.py,experimento,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+E2-13-ENT-SOLO-LR,e2,2026-09-25,experiments/21_backlog_restante_v2.py,experimento,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+E2-16-LOCAL-SIN-SHRINKAGE,e2,2026-09-25,experiments/21_backlog_restante_v2.py,experimento,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+E2-16-SHRINK-M25,e2,2026-09-25,experiments/21_backlog_restante_v2.py,experimento,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+E2-16-SHRINK-M50,e2,2026-09-25,experiments/21_backlog_restante_v2.py,experimento,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+E2-16-SHRINK-M100,e2,2026-09-25,experiments/21_backlog_restante_v2.py,experimento,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+E2-16-MEJOR,e2,2026-09-25,experiments/21_backlog_restante_v2.py,experimento,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+E2-20-ESPECIALISTAS,e2,2026-09-25,experiments/21_backlog_restante_v2.py,experimento,SI,SI,,SI,230,solo_notebook,"sin evidencia atribuible por id, script o fase"
+E2-21-HS,e2,2026-09-25,experiments/21_backlog_restante_v2.py,experimento,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+E2-21-TR,e2,2026-09-25,experiments/21_backlog_restante_v2.py,experimento,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+E2-21-AG,e2,2026-09-25,experiments/21_backlog_restante_v2.py,experimento,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+E2-21-ESPACIOS,e2,2026-09-25,experiments/21_backlog_restante_v2.py,experimento,SI,SI,,SI,85,solo_notebook,"sin evidencia atribuible por id, script o fase"
+AUD-01,otras,2026-09-25,experiments/22_artefactos_auditoria_v2.py,auditoria,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+AUD-02,otras,2026-09-25,experiments/22_artefactos_auditoria_v2.py,auditoria,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+AUD-03,otras,2026-09-25,experiments/22_artefactos_auditoria_v2.py,auditoria,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+FIN-01-C-REF-44,otras,2026-09-25,experiments/23_candidatos_finales.py,experimento,SI,SI,,SI,211,solo_notebook,"sin evidencia atribuible por id, script o fase"
+FIN-02-C-EMO,otras,2026-09-25,experiments/23_candidatos_finales.py,experimento,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+FIN-03-C-EMO-margenes,otras,2026-09-25,experiments/23_candidatos_finales.py,experimento,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+FIN-04-C-EMO-SYN,otras,2026-09-25,experiments/23_candidatos_finales.py,experimento,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+FIN-05-C-SYN,otras,2026-09-25,experiments/23_candidatos_finales.py,experimento,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+FIN-06-C-REF-44-CH,otras,2026-09-25,experiments/23_candidatos_finales.py,experimento,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+FIN-07-C-EMO-SYN-TGT-CYT,otras,2026-09-25,experiments/23_candidatos_finales.py,experimento,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+FIN-08-C-EMO,otras,2026-09-25,experiments/25_submissions_candidatos.py,submission,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+FIN-09-C-SYN,otras,2026-09-25,experiments/25_submissions_candidatos.py,submission,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+FIN-10-C-EMO-SYN,otras,2026-09-25,experiments/25_submissions_candidatos.py,submission,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+V4-00-SCAFFOLD,v4,2026-09-25,experiments/26_scaffold_v4.py,scaffold,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+V4-A01,v4,2026-09-25,experiments/27_label_consistency_v4.py,experimento,SI,SI,,SI,230;377,solo_notebook,sin evidencia por id/script; hay evidencia a nivel de fase
+V4-A02,v4,2026-09-25,experiments/28_hardness_v4.py,experimento,SI,SI,,SI,117;230;377,solo_notebook,sin evidencia por id/script; hay evidencia a nivel de fase
+V4-B01,v4,2026-09-25,experiments/28_hardness_v4.py,experimento,SI,SI,,SI,116;117;216;217;377,solo_notebook,sin evidencia por id/script; hay evidencia a nivel de fase
+V4-B02,v4,2026-09-25,experiments/28_hardness_v4.py,experimento,SI,SI,,SI,116;117;377,solo_notebook,sin evidencia por id/script; hay evidencia a nivel de fase
+V4-B03,v4,2026-09-25,experiments/29_reweighting_v4.py,experimento,SI,SI,,SI,116;220;371,solo_notebook,sin evidencia por id/script; hay evidencia a nivel de fase
+V4-B04,v4,2026-09-25,experiments/29_reweighting_v4.py,experimento,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+V4-B05,v4,2026-09-25,experiments/29_reweighting_v4.py,experimento,SI,SI,,SI,116,solo_notebook,sin evidencia por id/script; hay evidencia a nivel de fase
+V4-H01,v4,2026-09-25,experiments/32_meta_shift_v4.py,experimento,SI,SI,,SI,226;228,solo_notebook,sin evidencia por id/script; hay evidencia a nivel de fase
+V4-E01-E03,v4,2026-09-25,experiments/31_joint_label_v4.py,experimento,SI,SI,,SI,259,solo_notebook,sin evidencia por id/script; hay evidencia a nivel de fase
+V4-D01-D04,v4,2026-09-25,experiments/34_structural_sparse_v4.py,experimento,SI,SI,,SI,224,solo_notebook,sin evidencia por id/script; hay evidencia a nivel de fase
+V4-G01-G03,v4,2026-09-25,experiments/33_class_conditional_lm_v4.py,experimento,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+V4-F01-F04,v4,2026-09-25,experiments/35_discovery_v4.py,experimento,SI,SI,,SI,214;230,solo_notebook,sin evidencia por id/script; hay evidencia a nivel de fase
+V4-X01,v4,2026-09-25,experiments/36_candidatos_v4.py,experimento,SI,SI,,SI,211;372;377,solo_notebook,sin evidencia por id/script; hay evidencia a nivel de fase
+P8-REFIT-C,p8,2026-09-25,experiments/38_refit_final_v4.py,experimento,SI,SI,,SI,397,solo_notebook,"sin evidencia atribuible por id, script o fase"
+EBD-00-SCAFFOLD,embedding,2026-09-25,experiments/embedding_00_scaffold_v5.py,scaffold,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+E-CORP-01,embedding,2026-09-25,experiments/embedding_01_corpus_wikipedia_v5.py,experimento,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+EBD-01,embedding,2026-09-25,experiments/embedding_02_fasttext_baseline_v5.py,experimento,SI,SI,,SI,63;64,solo_notebook,sin evidencia por id/script; hay evidencia a nivel de fase
+EBD-02,embedding,2026-09-25,experiments/embedding_02_fasttext_baseline_v5.py,experimento,SI,SI,,SI,64,solo_notebook,sin evidencia por id/script; hay evidencia a nivel de fase
+EBD-03,embedding,2026-09-25,experiments/embedding_02_fasttext_baseline_v5.py,experimento,SI,SI,,SI,64,solo_notebook,sin evidencia por id/script; hay evidencia a nivel de fase
+EBD-04,embedding,2026-09-25,experiments/embedding_02_fasttext_baseline_v5.py,experimento,SI,SI,,SI,64,solo_notebook,sin evidencia por id/script; hay evidencia a nivel de fase
+EBD-05,embedding,2026-09-25,experiments/embedding_02_fasttext_baseline_v5.py,experimento,SI,SI,,SI,64,solo_notebook,sin evidencia por id/script; hay evidencia a nivel de fase
+EBD-06,embedding,2026-09-25,experiments/embedding_02_fasttext_baseline_v5.py,experimento,SI,SI,,SI,64,solo_notebook,sin evidencia por id/script; hay evidencia a nivel de fase
+EBD-07,embedding,2026-09-25,experiments/embedding_03_fusion_complementariedad_v5.py,experimento,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+EBD-08,embedding,2026-09-25,experiments/embedding_03_fusion_complementariedad_v5.py,experimento,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+EBD-09,embedding,2026-09-25,experiments/embedding_03_fusion_complementariedad_v5.py,experimento,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+E-CORP-06,embedding,2026-09-25,experiments/embedding_04_corpus_mc4_v5.py,experimento,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+E-CORP-07,embedding,2026-09-25,experiments/embedding_04_corpus_mc4_v5.py,experimento,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+EBD-10,embedding,2026-09-25,experiments/embedding_05_fasttext_web_v5.py,experimento,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+E-CORP-08,embedding,2026-09-25,experiments/embedding_07_corpus_50M_v5.py,experimento,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+EBD-13,embedding,2026-09-25,experiments/embedding_08_fasttext_50M_v5.py,experimento,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+EBD-14,embedding,2026-09-25,experiments/embedding_08_fasttext_50M_v5.py,experimento,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+E-CORP-09,embedding,2026-09-25,experiments/embedding_09_corpus_5M_v5.py,experimento,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+EBD-15,embedding,2026-09-25,experiments/embedding_10_fasttext_5M_v5.py,experimento,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+EBD-16,embedding,2026-09-25,experiments/embedding_10_fasttext_5M_v5.py,experimento,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+EBD-17,embedding,2026-09-25,experiments/embedding_11_auditoria_firmas_v5_1.py,auditoria,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+EBD-18,embedding,2026-09-25,experiments/embedding_12_vector_size_v5_1.py,experimento,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+EBD-19,embedding,2026-09-25,experiments/embedding_13_window_v5_1.py,experimento,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+EBD-20,embedding,2026-09-25,experiments/embedding_14_min_count_v5_1.py,experimento,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+EBD-21,embedding,2026-09-25,experiments/embedding_15_subwords_v5_1.py,experimento,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+EBD-22,embedding,2026-09-25,experiments/embedding_16_negative_v5_1.py,experimento,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+EBD-23,embedding,2026-09-25,experiments/embedding_17_comparacion_final_v5_1.py,experimento,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+EBD-24,embedding,2026-09-25,experiments/embedding_18_complementariedad_v5_1.py,experimento,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+EBD-25,embedding,2026-09-26,experiments/embedding_19_notebook_v5_1.py,integracion_notebook,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+EBD-26,embedding,2026-09-26,experiments/embedding_20_validacion_notebook_v5_1.py,integracion_notebook,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+EBD-27,embedding,2026-09-26,experiments/embedding_21_documentacion_v5_1.py,integracion_notebook,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+V6-00,v6,2026-09-26,experiments/v6_00_gap_analysis.py,experimento,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+V6-01,v6,2026-09-26,experiments/v6_01_estructura_errores.py,experimento,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+V6-02,v6,2026-09-26,experiments/v6_02_label_factorization.py,experimento,SI,SI,reports/v6_label_factorization.csv;reports/v6_label_factorization.json;reports/v6_label_factorization.md,SI,156,con_evidencia_y_notebook,
+V6-03,v6,2026-09-26,experiments/v6_03_ponderacion_grupo.py,experimento,SI,SI,reports/v6_ponderacion_grupo.csv;reports/v6_ponderacion_grupo.json;reports/v6_ponderacion_grupo.md,SI,116;218;373,con_evidencia_y_notebook,
+V6-04,v6,2026-09-26,experiments/v6_04_char_weight.py,experimento,SI,SI,reports/v6_char_weight.csv;reports/v6_char_weight.json;reports/v6_char_weight.md,NO,,con_evidencia_sin_notebook,
+V6-05,v6,2026-09-26,experiments/v6_05_skipgrams.py,experimento,SI,SI,reports/v6_skipgrams.csv;reports/v6_skipgrams.json;reports/v6_skipgrams.md,NO,,con_evidencia_sin_notebook,
+V6-06,v6,2026-09-26,experiments/v6_06_bagging_grupos.py,experimento,SI,SI,reports/v6_bagging_grupos.csv;reports/v6_bagging_grupos.json;reports/v6_bagging_grupos.md,NO,,con_evidencia_sin_notebook,
+V6-07,v6,2026-09-26,experiments/v6_07_ruido_par.py,experimento,SI,SI,reports/v6_ruido_par.csv;reports/v6_ruido_par.json;reports/v6_ruido_par.md,SI,116;214;230;373,con_evidencia_y_notebook,
+V6-08,v6,2026-09-26,experiments/v6_08_aumento.py,experimento,SI,SI,reports/v6_aumento.csv;reports/v6_aumento.json;reports/v6_aumento.md,NO,,con_evidencia_sin_notebook,
+V6-09,v6,2026-09-26,experiments/v6_09_entregables.py,experimento,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+V7-01,v7,2026-09-26,experiments/v7_01_perdida_f1.py,experimento,SI,SI,reports/v7_perdida_f1.csv;reports/v7_perdida_f1.json;reports/v7_perdida_f1.md,SI,240,con_evidencia_y_notebook,
+V7-02,v7,2026-09-26,experiments/v7_02_prior_grupo.py,experimento,SI,SI,reports/v7_prior_grupo.csv;reports/v7_prior_grupo.json;reports/v7_prior_grupo.md,NO,,con_evidencia_sin_notebook,
+V7-03,v7,2026-09-26,experiments/v7_03_umbral_anidado.py,experimento,SI,SI,reports/v7_umbral_anidado.csv;reports/v7_umbral_anidado.json;reports/v7_umbral_anidado.md,NO,,con_evidencia_sin_notebook,
+V7-04,v7,2026-09-26,experiments/v7_04_entregables.py,experimento,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+V8-00,v8,2026-09-26,experiments/v8_00_gap_audit.py,auditoria,SI,SI,reports/v8_gap_audit.csv;reports/v8_gap_audit.md,NO,,con_evidencia_sin_notebook,
+V8-01,v8,2026-09-26,experiments/v8_01_ensamble_folds.py,experimento,SI,SI,reports/v8_ensamble_folds.csv;reports/v8_ensamble_folds.json;reports/v8_ensamble_folds.md,NO,,con_evidencia_sin_notebook,
+V8-02,v8,2026-09-26,experiments/v8_02_resolucion_liderboard.py,experimento,SI,SI,reports/v8_resolucion_liderboard.csv;reports/v8_resolucion_liderboard.json;reports/v8_resolucion_liderboard.md,SI,65,con_evidencia_y_notebook,
+V8-03,v8,2026-09-26,experiments/v8_03_estabilidad_features.py,experimento,SI,SI,reports/v8_estabilidad_features.csv;reports/v8_estabilidad_features.json;reports/v8_estabilidad_features.md,SI,212,con_evidencia_y_notebook,
+V8-04,v8,2026-09-26,experiments/v8_04_log_count_ratio.py,experimento,SI,SI,reports/v8_log_count_ratio.csv;reports/v8_log_count_ratio.json;reports/v8_log_count_ratio.md,SI,232,con_evidencia_y_notebook,
+V8-05,v8,2026-09-26,experiments/v8_05_regularizacion_conjunta.py,experimento,SI,SI,reports/v8_regularizacion_conjunta.csv;reports/v8_regularizacion_conjunta.json;reports/v8_regularizacion_conjunta.md,NO,,con_evidencia_sin_notebook,
+V8-06,v8,2026-09-26,experiments/v8_06_c_por_etiqueta.py,experimento,SI,SI,reports/v8_c_por_etiqueta.csv;reports/v8_c_por_etiqueta.json;reports/v8_c_por_etiqueta.md,SI,85,con_evidencia_y_notebook,
+V8-07,v8,2026-09-26,experiments/v8_07_peso_por_etiqueta.py,experimento,SI,SI,reports/v8_peso_por_etiqueta.csv;reports/v8_peso_por_etiqueta.json;reports/v8_peso_por_etiqueta.md,SI,85;259,con_evidencia_y_notebook,
+V8-08,v8,2026-09-26,experiments/v8_08_corrector_margenes.py,experimento,SI,SI,reports/v8_corrector_margenes.csv;reports/v8_corrector_margenes.json;reports/v8_corrector_margenes.md,SI,116,con_evidencia_y_notebook,
+V8-09,v8,2026-09-26,experiments/v8_09_curva_transferencia.py,experimento,SI,SI,reports/v8_curva_transferencia.csv;reports/v8_curva_transferencia.json;reports/v8_curva_transferencia.md,SI,226;259;271;286;296,con_evidencia_y_notebook,
+V8-10,v8,2026-09-26,experiments/v8_10_ensemble_cinco_modelos.py,experimento,SI,SI,reports/v8_ensemble_cinco_modelos.json;reports/v8_ensemble_cinco_modelos.md,NO,,con_evidencia_sin_notebook,
+V8-11,v8,2026-09-26,experiments/v8_11_complejidad_idiosincrasias.py,experimento,SI,SI,reports/v8_complejidad_idiosincrasias.csv;reports/v8_complejidad_idiosincrasias.json;reports/v8_complejidad_idiosincrasias.md,NO,,con_evidencia_sin_notebook,
+V8-12,v8,2026-09-26,experiments/v8_12_seleccion_por_grupo.py,experimento,SI,SI,reports/v8_seleccion_por_grupo.csv;reports/v8_seleccion_por_grupo.json;reports/v8_seleccion_por_grupo.md,NO,,con_evidencia_sin_notebook,
+V8-13,v8,2026-09-26,experiments/v8_13_clasificadores_alternativos.py,experimento,SI,SI,reports/v8_clasificadores_alternativos.csv;reports/v8_clasificadores_alternativos.json;reports/v8_clasificadores_alternativos.md,NO,,con_evidencia_sin_notebook,
+V9-01,v9,2026-09-26,experiments/v9_01_sensibilidad_fugas.py,experimento,SI,SI,reports/v9_01_sensibilidad_fugas.json;reports/v9_01_sensibilidad_fugas.md,SI,63;64,con_evidencia_y_notebook,
+V9-02,v9,2026-09-26,experiments/v9_02_prior_shift_em.py,experimento,SI,SI,reports/v11_01_reproduccion_v9_02.json;reports/v11_01_reproduccion_v9_02.md;reports/v9_02_prior_shift_em.csv;reports/v9_02_prior_shift_em.json;reports/v9_02_prior_shift_em.md,SI,63;64;65,con_evidencia_y_notebook,
+V9-03,v9,2026-09-26,experiments/v9_03_near_dup_test.py,experimento,SI,SI,reports/v9_03_near_dup_test.csv;reports/v9_03_near_dup_test.json;reports/v9_03_near_dup_test.md,SI,63;64,con_evidencia_y_notebook,
+V9-04,v9,2026-09-26,experiments/v9_04_dl_secuencial_fasttext.py,experimento,SI,SI,reports/v9_04_dl_secuencial_fasttext.json;reports/v9_04_dl_secuencial_fasttext.md,SI,63;64,con_evidencia_y_notebook,
+V9-05,v9,2026-09-26,experiments/v9_05_proyecciones_supervisadas.py,experimento,SI,SI,reports/v9_05_proyecciones_supervisadas.json;reports/v9_05_proyecciones_supervisadas.md,SI,63;64,con_evidencia_y_notebook,
+V10-00,v10,2026-09-26,,submission,SI,SI,reports/v10_00_verificacion.json;reports/v10_00_verificacion.md,SI,64;65;66,con_evidencia_y_notebook,sin script identificado en la fila ni por asociacion de id
+V10-01,v10,2026-09-26,experiments/v10_01_holdout2.py,experimento,SI,SI,reports/v10_01_holdout2.json;reports/v10_01_holdout2.md,NO,,con_evidencia_sin_notebook,
+V10-02,v10,2026-09-26,experiments/v10_02_ruido_particion.py,experimento,SI,SI,reports/v10_02_ruido_particion.json;reports/v10_02_ruido_particion.md,SI,65;66,con_evidencia_y_notebook,
+V10-03,v10,2026-09-26,experiments/v10_03_arnes_evaluacion.py,experimento,SI,SI,,SI,66,solo_notebook,sin evidencia por id/script; hay evidencia a nivel de fase
+V10-04,v10,2026-09-26,experiments/v10_04_calibracion_fuerte.py,experimento,SI,SI,reports/v10_04_calibracion_fuerte.json;reports/v10_04_calibracion_fuerte.md,SI,66;226,con_evidencia_y_notebook,
+V10-05,v10,2026-09-26,experiments/v10_05_regla_f1_optima.py,experimento,SI,SI,reports/v10_05_regla_f1_optima.json;reports/v10_05_regla_f1_optima.md,SI,65,con_evidencia_y_notebook,
+V10-06,v10,2026-09-26,experiments/v10_06_umbrales_estables.py,experimento,SI,SI,reports/v10_06_umbrales_estables.json;reports/v10_06_umbrales_estables.md,SI,65,con_evidencia_y_notebook,
+V10-07,v10,2026-09-26,experiments/v10_07_shift_features.py,experimento,SI,SI,reports/v10_07_shift_features.csv;reports/v10_07_shift_features.json;reports/v10_07_shift_features.md,SI,65;66,con_evidencia_y_notebook,
+V10-08,v10,2026-09-26,experiments/v10_08_confirmacion_dev2.py,experimento,SI,SI,reports/v10_08_confirmacion_dev2.json;reports/v10_08_confirmacion_dev2.md,NO,,con_evidencia_sin_notebook,
+V10-09,v10,2026-09-26,experiments/v10_09_correlacion_eliminacion.py,experimento,SI,SI,reports/v10_09_correlacion_caracteristicas.csv;reports/v10_09_correlacion_eliminacion.json;reports/v10_09_correlacion_eliminacion.md,NO,,con_evidencia_sin_notebook,
+V10-10,v10,2026-09-26,experiments/v10_10_regla_conservacion.py,experimento,SI,SI,reports/v10_10_regla_conservacion.json;reports/v10_10_regla_conservacion.md,SI,66,con_evidencia_y_notebook,
+V10-11,v10,2026-09-26,experiments/v10_11_bigru_finetuning.py,experimento,SI,SI,reports/v10_11_bigru_finetuning.json;reports/v10_11_bigru_finetuning.md,SI,64;65;66,con_evidencia_y_notebook,
+V11-00,v11,2026-09-26,experiments/v10_04_calibracion_fuerte.py;experiments/v10_05_regla_f1_optima.py;experiments/v10_06_umbrales_estables.py;experiments/v10_07_shift_features.py;experiments/v10_10_regla_conservacion.py;experiments/v10_11_bigru_finetuning.py;experiments/v11_00_reconciliacion.py,auditoria,SI,SI,reports/v10_04_calibracion_fuerte.json;reports/v10_04_calibracion_fuerte.md;reports/v10_05_regla_f1_optima.json;reports/v10_05_regla_f1_optima.md;reports/v10_06_umbrales_estables.json,SI,66,con_evidencia_y_notebook,
+V11-01,v11,2026-09-26,experiments/v11_01_reproduccion_v9_02.py,experimento,SI,SI,reports/v11_01_reproduccion_v9_02.json;reports/v11_01_reproduccion_v9_02.md,NO,,con_evidencia_sin_notebook,
+V11-02,v11,2026-09-26,experiments/v11_02_auditoria_legalidad.py,auditoria,SI,SI,reports/v11_02_auditoria_legalidad.json;reports/v11_02_auditoria_legalidad.md,NO,,con_evidencia_sin_notebook,
+V11-03,v11,2026-09-26,experiments/v11_03_auditoria_cumplimiento.py;experiments/v11_ayudas.py,auditoria,SI,SI,reports/v11_03_auditoria_cumplimiento.json;reports/v11_03_auditoria_cumplimiento.md,NO,,con_evidencia_sin_notebook,
+V11-06,v11,2026-09-26,experiments/v11_06_validacion_estimadores.py,experimento,SI,SI,reports/v11_06_validacion_estimadores.json;reports/v11_06_validacion_estimadores.md,NO,,con_evidencia_sin_notebook,
+V11-07,v11,2026-09-26,experiments/v11_07_correccion_prior.py,experimento,SI,SI,reports/v11_07_correccion_prior.json;reports/v11_07_correccion_prior.md,NO,,con_evidencia_sin_notebook,
+V11-05,v11,2026-09-26,experiments/v11_05_registro.py;experiments/v11_ayudas.py,registro,SI,SI,reports/v11_05_registro.json;reports/v11_05_registro.md,NO,,con_evidencia_sin_notebook,
+V11-08,v11,2026-09-26,experiments/v11_08_cierre_y_tabla_maestra.py,cierre,SI,SI,reports/v11_08_cierre.json,NO,,con_evidencia_sin_notebook,
+V11-09,v11,2026-09-26,experiments/v10_04_calibracion_fuerte.py;experiments/v10_06_umbrales_estables.py;experiments/v11_00_reconciliacion.py;experiments/v11_01_reproduccion_v9_02.py;experiments/v11_09_cierre_entregables.py,auditoria,SI,SI,reports/v10_04_calibracion_fuerte.json;reports/v10_04_calibracion_fuerte.md;reports/v10_06_umbrales_estables.json;reports/v10_06_umbrales_estables.md;reports/v11_00_reconciliacion.json,SI,66,con_evidencia_y_notebook,
+V12-00,v12,2026-09-26,experiments/v12_00_auditoria_brecha.py,auditoria,SI,SI,reports/v12_auditoria_brecha.json,NO,,con_evidencia_sin_notebook,
+V12-01,v12,2026-09-26,experiments/v12_01_regularizacion_grupo.py,experimento,SI,SI,reports/v12_01_regularizacion_grupo.json;reports/v12_01_regularizacion_grupo.md,SI,85,con_evidencia_y_notebook,
+V12-02,v12,2026-09-26,experiments/v12_02_perdida_y_estructura.py,experimento,SI,SI,reports/v12_02_perdida_y_estructura.json;reports/v12_02_perdida_y_estructura.md,SI,254,con_evidencia_y_notebook,
+V12-03,v12,2026-09-26,experiments/v12_03_entrenamiento_por_pares.py,experimento,SI,SI,reports/v12_03_entrenamiento_por_pares.json;reports/v12_03_entrenamiento_por_pares.md,NO,,con_evidencia_sin_notebook,
+V12-04,v12,2026-09-26,experiments/v12_04_auditoria_v6b.py;experiments/v6_02_label_factorization.py,auditoria,SI,SI,reports/v12_04_auditoria_v6b.json;reports/v12_04_auditoria_v6b.md;reports/v6_label_factorization.csv;reports/v6_label_factorization.json;reports/v6_label_factorization.md,NO,,con_evidencia_sin_notebook,
+V12-05,v12,2026-09-26,experiments/v12_05_informe_final.py,cierre,SI,SI,reports/v12_05_informe_final.json,NO,,con_evidencia_sin_notebook,
+V13-00,v13,2026-09-26,experiments/v13_00_auditoria_hs.py,auditoria,SI,SI,reports/v13_00_auditoria_hs.json,NO,,con_evidencia_sin_notebook,
+V13-01,v13,2026-09-26,experiments/v13_01_aislamiento_hs.py,experimento,SI,SI,reports/v13_01_aislamiento_hs.json;reports/v13_01_aislamiento_hs.md,NO,,con_evidencia_sin_notebook,
+V13-02,v13,2026-09-26,experiments/v13_02_informe_final.py,cierre,SI,SI,reports/v13_02_informe_final.json,NO,,con_evidencia_sin_notebook,
+V14-00,v14,2026-09-26,experiments/v14_00_auditoria_partial_label.py,auditoria,SI,SI,reports/v14_00_auditoria_partial_label.json,SI,248,con_evidencia_y_notebook,
+V14-01,v14,2026-09-26,experiments/v14_01_informe_final.py,cierre,SI,SI,reports/v14_01_informe_final.json,SI,220,con_evidencia_y_notebook,
+V15-00,v15,2026-09-26,experiments/16_targeting_v2.py;experiments/v15_00_inventario_senal.py,experimento,SI,SI,reports/v15_00_inventario_senal.json;reports/v15_00_inventario_senal.md,SI,40,con_evidencia_y_notebook,
+V15-01,v15,2026-09-26,experiments/v15_01_gap_y_ortogonalidad.py,experimento,SI,SI,reports/v15_01_gap_y_ortogonalidad.json;reports/v15_01_gap_y_ortogonalidad.md,NO,,con_evidencia_sin_notebook,
+V15-02,v15,2026-09-26,experiments/v15_02_informe_cierre.py,cierre,SI,SI,reports/v15_02_informe_cierre.json,NO,,con_evidencia_sin_notebook,
+V25-01,v25,2026-09-27,experiments/v25_01_factorization_machine.py,experimento,SI,SI,reports/v25_01_factorization_machine.json,SI,220,con_evidencia_y_notebook,
+V25-02,v25,2026-09-27,experiments/v25_02_fm_paralela_lambda.py,experimento,SI,SI,reports/v25_02_fm_paralela_lambda.json;reports/v25_02_fm_paralela_lambda.md,NO,,con_evidencia_sin_notebook,
+V26-01,v26,2026-09-27,experiments/v26_01_geometria_kernel.py,experimento,SI,SI,reports/v26_01_dictamen_prioridades.md;reports/v26_01_geometria_kernel.json;reports/v26_01_geometria_kernel.md,SI,67;69;77,con_evidencia_y_notebook,
+V26-02,v26,2026-09-27,experiments/v26_02_tsetlin.py,experimento,SI,SI,reports/v26_02_tsetlin.json;reports/v26_02_tsetlin.md,SI,67;70;75;83,con_evidencia_y_notebook,
+V26-03,v26,2026-09-27,experiments/v26_03_tsetlin_oficial.py,experimento,SI,SI,reports/v26_03_tsetlin_oficial.json;reports/v26_03_tsetlin_oficial.md,SI,67;70;71;72;75,con_evidencia_y_notebook,
+V27-01,v27,2026-09-27,experiments/v27_01_char_spectrum_kernel.py,experimento,SI,SI,reports/v27_01_char_spectrum_kernel.json;reports/v27_01_char_spectrum_kernel.md,SI,79,con_evidencia_y_notebook,
+V28-00,v28,2026-09-27,,submission,SI,SI,,NO,,sin_evidencia,sin script identificado en la fila ni por asociacion de id; sin evidencia por id/script; hay evidencia a nivel de fase
+V28-01,v28,2026-09-27,experiments/v28_01_diagnostico_errores.py,auditoria,SI,SI,reports/v28_01_diagnostico_errores.json;reports/v28_01_diagnostico_errores.md,SI,89;120;125;242;286,con_evidencia_y_notebook,
+V28-03,v28,2026-09-27,experiments/v28_03_ambiguedad_etiquetas.py,experimento,SI,SI,reports/v28_03_ambiguedad_etiquetas.json;reports/v28_03_ambiguedad_etiquetas.md,SI,92;98;99;100;103,con_evidencia_y_notebook,
+V28-04,v28,2026-09-27,experiments/v28_04_integrar_seccion_ambiguedad.py,experimento,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+V29-00,v29,2026-09-27,,submission,SI,SI,,NO,,sin_evidencia,sin script identificado en la fila ni por asociacion de id; sin evidencia por id/script; hay evidencia a nivel de fase
+V29-01,v29,2026-09-27,experiments/v29_01_auditoria_near_duplicate.py,auditoria,SI,SI,reports/v29_01_auditoria_near_duplicate.json;reports/v29_01_auditoria_near_duplicate.md,SI,105;120;125,con_evidencia_y_notebook,
+V29-02,v29,2026-09-27,experiments/v29_02_similitudes_laxas.py,experimento,SI,SI,reports/v29_02_similitudes_laxas.json;reports/v29_02_similitudes_laxas.md,NO,,con_evidencia_sin_notebook,
+V29-03,v29,2026-09-27,experiments/v29_03_vecinos_corrigen_errores.py,experimento,SI,SI,reports/v29_03_vecinos_corrigen_errores.json;reports/v29_03_vecinos_corrigen_errores.md,SI,214;373,con_evidencia_y_notebook,
+V29-04,v29,2026-09-27,experiments/v29_04_transformaciones_contradictorias.py,experimento,SI,SI,reports/v29_04_transformaciones_contradictorias.json;reports/v29_04_transformaciones_contradictorias.md,SI,120;125;373,con_evidencia_y_notebook,
+V29-05,v29,2026-09-27,experiments/v29_05_integrar_notebook.py,integracion_notebook,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+V30-00,v30,2026-09-27,,integracion_notebook,SI,SI,,SI,216;373,solo_notebook,sin script identificado en la fila ni por asociacion de id; sin evidencia por id/script; hay evidencia a nivel de fase
+V30-01,v30,2026-09-27,experiments/28_hardness_v4.py;experiments/v30_01_perfil_error_residual.py,experimento,SI,SI,reports/v30_01_perfil_error_residual.json;reports/v30_01_perfil_error_residual.md,SI,117;122;377,con_evidencia_y_notebook,
+V30-02,v30,2026-09-27,experiments/v30_02_integrar_notebook.py,integracion_notebook,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+V31-00,v31,2026-09-27,,submission,SI,SI,,NO,,sin_evidencia,sin script identificado en la fila ni por asociacion de id; sin evidencia por id/script; hay evidencia a nivel de fase
+V31-01,v31,2026-09-27,experiments/v31_01_url_estructural.py,experimento,SI,SI,reports/v31_01_url_estructural.json;reports/v31_01_url_estructural.md,SI,127;131,con_evidencia_y_notebook,
+V31-02,v31,2026-09-27,experiments/v31_02_mencion_hashtag.py,experimento,SI,SI,reports/v31_02_mencion_hashtag.json;reports/v31_02_mencion_hashtag.md,SI,127;129;131;133,con_evidencia_y_notebook,
+V31-03,v31,2026-09-27,experiments/v31_03_enfasis_ortografico.py,experimento,SI,SI,reports/v31_03_enfasis_ortografico.json;reports/v31_03_enfasis_ortografico.md,SI,127;129;131;133,con_evidencia_y_notebook,
+V31-04,v31,2026-09-27,experiments/v31_04_interacciones_url.py,experimento,SI,SI,reports/v31_04_interacciones_url.json;reports/v31_04_interacciones_url.md,SI,127;131;137;141;145,con_evidencia_y_notebook,
+V31-05,v31,2026-09-27,experiments/v31_05_integrar_notebook.py,integracion_notebook,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+V32-00,v32,2026-09-27,experiments/v32_00_reproducibilidad.py,experimento,SI,SI,reports/v32_00_reproducibilidad.json;reports/v32_00_reproducibilidad.md,SI,136;144,con_evidencia_y_notebook,
+V32-01,v32,2026-09-27,experiments/v32_01_fold4.py,experimento,SI,SI,reports/v32_01_fold4.json;reports/v32_01_fold4.md,NO,,con_evidencia_sin_notebook,
+V32-02,v32,2026-09-27,experiments/v32_02_aislar_fuente.py,experimento,SI,SI,reports/v32_02_aislar_fuente.json;reports/v32_02_aislar_fuente.md,SI,136;144,con_evidencia_y_notebook,
+V32-03,v32,2026-09-27,experiments/v32_03_mencion_longitud.py,experimento,SI,SI,reports/v32_03_mencion_longitud.json;reports/v32_03_mencion_longitud.md,SI,136;144,con_evidencia_y_notebook,
+V32-04,v32,2026-09-27,experiments/v32_04_hashtag_longitud.py,experimento,SI,SI,reports/v32_04_hashtag_longitud.json;reports/v32_04_hashtag_longitud.md,SI,136;144,con_evidencia_y_notebook,
+V32-05,v32,2026-09-27,experiments/v32_05_cuatro_bins.py,experimento,SI,SI,reports/v32_05_cuatro_bins.json;reports/v32_05_cuatro_bins.md,SI,136;144;149;150;151,con_evidencia_y_notebook,
+V32-06,v32,2026-09-27,experiments/v32_06_context_gated.py,experimento,SI,SI,reports/v32_06_context_gated.json;reports/v32_06_context_gated.md,SI,136;144,con_evidencia_y_notebook,
+V32-07,v32,2026-09-27,experiments/v32_07_integrar_notebook.py,integracion_notebook,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+V33-00,v33,2026-09-27,,submission,SI,SI,,NO,,sin_evidencia,sin script identificado en la fila ni por asociacion de id; sin evidencia por id/script; hay evidencia a nivel de fase
+V33-01,v33,2026-09-27,experiments/v33_01_validacion.py,experimento,SI,SI,reports/v33_01_validacion.json;reports/v33_01_validacion.md,SI,446;450,con_evidencia_y_notebook,
+V33-02,v33,2026-09-27,experiments/v33_02_generar_submission.py,submission,SI,SI,reports/v33_02_generar_submission.json;reports/v33_02_generar_submission.md,NO,,con_evidencia_sin_notebook,
+V33-03,v33,2026-09-27,,submission,SI,SI,,SI,209,solo_notebook,sin script identificado en la fila ni por asociacion de id; sin evidencia por id/script; hay evidencia a nivel de fase
+V33-04,v33,2026-09-27,experiments/v33_04_integrar_notebook.py,integracion_notebook,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+V34-01,v34,2026-09-27,experiments/v34_01_frontera.py,experimento,SI,SI,reports/v34_01_frontera.json;reports/v34_01_frontera.md,SI,160;222,con_evidencia_y_notebook,
+V34-02,v34,2026-09-27,experiments/v34_02_integrar_notebook.py,integracion_notebook,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+V35-00,v35,2026-09-27,experiments/33_class_conditional_lm_v4.py,experimento,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+V35-01,v35,2026-09-27,experiments/33_class_conditional_lm_v4.py;experiments/v35_01_sgd.py,experimento,SI,SI,reports/v35_01_sgd.json;reports/v35_01_sgd.md,SI,162;163;222,con_evidencia_y_notebook,
+V35-02,v35,2026-09-27,experiments/v35_02_integrar_notebook.py,integracion_notebook,SI,SI,,SI,162;163,solo_notebook,sin evidencia por id/script; hay evidencia a nivel de fase
+V36-00,v36,2026-09-27,,submission,SI,SI,,NO,,sin_evidencia,sin script identificado en la fila ni por asociacion de id; sin evidencia por id/script; hay evidencia a nivel de fase
+V36-01,v36,2026-09-27,experiments/v36_01_hashing.py,experimento,SI,SI,reports/v36_01_hashing.json;reports/v36_01_hashing.md,NO,,con_evidencia_sin_notebook,
+V36-02,v36,2026-09-27,experiments/v36_02_integrar_notebook.py,integracion_notebook,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+V37-00,v37,2026-09-27,experiments/30_supervised_weighting_v4.py,experimento,SI,SI,,SI,165;377;384,solo_notebook,sin evidencia por id/script; hay evidencia a nivel de fase
+V37-01,v37,2026-09-27,experiments/30_supervised_weighting_v4.py;experiments/v37_01_bm25.py,experimento,SI,SI,reports/v37_01_bm25.json;reports/v37_01_bm25.md,SI,165;166;232;377;384,con_evidencia_y_notebook,
+V37-02,v37,2026-09-27,experiments/v37_02_integrar_notebook.py,integracion_notebook,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+V38-00,v38,2026-09-27,,submission,SI,SI,,NO,,sin_evidencia,sin script identificado en la fila ni por asociacion de id; sin evidencia por id/script; hay evidencia a nivel de fase
+V38-01,v38,2026-09-27,experiments/v38_01_embedding_supervisado.py,experimento,SI,SI,reports/v38_01_embedding_supervisado.json;reports/v38_01_embedding_supervisado.md,SI,169,con_evidencia_y_notebook,
+V38-02,v38,2026-09-27,experiments/v38_02_integrar_notebook.py,integracion_notebook,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+V39-00,v39,2026-09-27,,auditoria,SI,SI,,NO,,sin_evidencia,"sin script identificado en la fila ni por asociacion de id; sin evidencia atribuible por id, script o fase"
+V39-01,v39,2026-09-27,,auditoria,SI,SI,,NO,,sin_evidencia,"sin script identificado en la fila ni por asociacion de id; sin evidencia atribuible por id, script o fase"
+V39-02,v39,2026-09-27,experiments/v39_02_integrar_notebook.py,integracion_notebook,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+V40-00,v40,2026-09-27,,submission,SI,SI,,NO,,sin_evidencia,sin script identificado en la fila ni por asociacion de id; sin evidencia por id/script; hay evidencia a nivel de fase
+V40-01,v40,2026-09-27,experiments/v40_01_pls.py,experimento,SI,SI,reports/v40_01_pls.json;reports/v40_01_pls.md,SI,175,con_evidencia_y_notebook,
+V40-02,v40,2026-09-27,experiments/v40_02_integrar_notebook.py,integracion_notebook,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+V41-00,v41,2026-09-27,,auditoria,SI,SI,,NO,,sin_evidencia,"sin script identificado en la fila ni por asociacion de id; sin evidencia atribuible por id, script o fase"
+V41-01,v41,2026-09-27,experiments/v6_08_aumento.py,experimento,SI,SI,reports/v6_aumento.csv;reports/v6_aumento.json;reports/v6_aumento.md,NO,,con_evidencia_sin_notebook,
+V42-00,v42,2026-09-27,,submission,SI,SI,,NO,,sin_evidencia,sin script identificado en la fila ni por asociacion de id; sin evidencia por id/script; hay evidencia a nivel de fase
+V42-01,v42,2026-09-27,experiments/v42_01_pls_correcto.py,experimento,SI,SI,reports/v42_01_pls_correcto.json;reports/v42_01_pls_correcto.md,NO,,con_evidencia_sin_notebook,
+V43-00,v43,2026-09-27,,auditoria,SI,SI,,NO,,sin_evidencia,"sin script identificado en la fila ni por asociacion de id; sin evidencia atribuible por id, script o fase"
+V43-01,v43,2026-09-27,experiments/v43_01_vw_optimizers.py,experimento,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+V43-02,v43,2026-09-27,experiments/v42_01_pls_correcto.py,experimento,SI,SI,reports/v42_01_pls_correcto.json;reports/v42_01_pls_correcto.md,NO,,con_evidencia_sin_notebook,
+V44-02,v44,2026-09-27,experiments/v44_02_pls_correcto.py,experimento,SI,SI,reports/v44_02_pls_correcto.json;reports/v44_02_pls_correcto.md,NO,,con_evidencia_sin_notebook,
+V44-00,v44,2026-09-27,,submission,SI,SI,,NO,,sin_evidencia,sin script identificado en la fila ni por asociacion de id; sin evidencia por id/script; hay evidencia a nivel de fase
+V44-01,v44,2026-09-27,experiments/v44_01_vw_optimizers.py,experimento,SI,SI,reports/v44_01_vw_optimizers.json;reports/v44_01_vw_optimizers.md,SI,176,con_evidencia_y_notebook,
+V44-03,v44,2026-09-27,experiments/v44_03_integrar_notebook.py,integracion_notebook,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+V45-00,v45,2026-09-27,experiments/v45_00_metrica_audit.py,auditoria,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+V45-01,v45,2026-09-27,experiments/v45_01_joint_label_structure.py,experimento,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+V45-02,v45,2026-09-27,experiments/v45_02_integrar_notebook.py,integracion_notebook,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+V46-00,v46,2026-09-27,experiments/v46_00_champion_audit.py,auditoria,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+V46-01,v46,2026-09-27,experiments/v46_01_integrar_notebook.py,integracion_notebook,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+V47-00,v47,2026-09-27,experiments/00_auditoria_datos.py;experiments/v47_00_auditoria_datos.py,auditoria,SI,SI,,SI,40,solo_notebook,"sin evidencia atribuible por id, script o fase"
+V47-01,v47,2026-09-27,experiments/v47_01_integrar_notebook.py,integracion_notebook,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+V50-01,v50,2026-09-28,experiments/v50_01_selector.py,experimento,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+V50-02,v50,2026-09-28,experiments/v50_02_integrar_notebook.py,integracion_notebook,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+V51-01,v51,2026-09-28,experiments/v51_01_selector_utilidad.py,experimento,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+V51-02,v51,2026-09-28,experiments/v51_02_accion_utilidad_esperada.py,experimento,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+V56-01,v56,2026-09-28,experiments/v56_00_transferencia_umbrales.py,experimento,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+P59-02,p59,2026-09-28,experiments/p59_02_voronoi_bloque.py,experimento,SI,SI,reports/p59_02_voronoi_bloque.json,SI,215;373,con_evidencia_y_notebook,
+P59-06,p59,2026-09-28,experiments/p59_06_robust_loss.py,experimento,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+P59-07,p59,2026-09-28,experiments/p59_07_local_window.py,experimento,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+P59-09,p59,2026-09-28,experiments/p59_09_fusion_local.py,experimento,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+P59-10,p59,2026-09-28,experiments/p59_10_grafo_regularizacion.py,experimento,SI,SI,,SI,373,solo_notebook,sin evidencia por id/script; hay evidencia a nivel de fase
+P60-01,p60,2026-09-28,experiments/p60_01_contrastive.py,experimento,SI,SI,,NO,,sin_evidencia,"scripts asociados por id, no citados literalmente; sin evidencia por id/script; hay evidencia a nivel de fase"
+P60-02,p60,2026-09-28,experiments/p60_02_asl.py,experimento,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+P60-03,p60,2026-09-28,experiments/p60_03_dro.py,experimento,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+P60-04,p60,2026-09-28,experiments/p60_04_distribucion.py,experimento,SI,SI,,SI,373,solo_notebook,sin evidencia por id/script; hay evidencia a nivel de fase
+P60-05,p60,2026-09-28,experiments/p60_06_intervencion_ag.py,experimento,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+P60-06,p60,2026-09-28,experiments/p60_07_transporte.py,experimento,SI,SI,,SI,373,solo_notebook,sin evidencia por id/script; hay evidencia a nivel de fase
+P60-07,p60,2026-09-28,experiments/p60_10_metareweight.py,experimento,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+P60-08,p60,2026-09-28,experiments/p60_09_polyloss.py,experimento,SI,SI,,SI,373,solo_notebook,sin evidencia por id/script; hay evidencia a nivel de fase
+P61-01,p61,2026-09-28,experiments/p61_03_lightgbm.py,experimento,SI,SI,reports/p61_lightgbm_capacidad.json;reports/p61_lightgbm_capacidad.md,SI,266;291,con_evidencia_y_notebook,
+P61-02,p61,2026-09-28,experiments/p61_05_ensemble.py,experimento,SI,SI,reports/p61_ensemble.json;reports/p61_ensemble.md;reports/p61_ensemble_pool_selection.csv;reports/p61_ensemble_results.csv;reports/p61_ensemble_weights.csv,SI,266;291,con_evidencia_y_notebook,
+P61-03,p61,2026-09-28,experiments/p61_08_segunda_particion.py,experimento,SI,SI,reports/p61_segunda_particion.csv;reports/p61_segunda_particion.json;reports/p61_segunda_particion.md,SI,266;291,con_evidencia_y_notebook,
+P62-01,p62,2026-09-29,experiments/p62_03_pista_l.py,experimento,SI,SI,reports/p62_pista_l_word_pos.json;reports/p62_pista_l_word_pos.md,NO,,con_evidencia_sin_notebook,
+P62-02,p62,2026-09-29,experiments/p62_04_pista_m.py,experimento,SI,SI,reports/p62_pista_m_dependencias.json;reports/p62_pista_m_dependencias.md,NO,,con_evidencia_sin_notebook,
+P62-03,p62,2026-09-29,experiments/p62_07_presupuesto_canal.py,experimento,SI,SI,reports/p62_presupuesto_canal.csv;reports/p62_presupuesto_canal.json;reports/p62_presupuesto_canal.md,NO,,con_evidencia_sin_notebook,
+P62-04,p62,2026-09-29,experiments/p62_08_pos_o_no_pos.py,experimento,SI,SI,reports/p62_pos_o_no_pos.csv;reports/p62_pos_o_no_pos.json;reports/p62_pos_o_no_pos.md,NO,,con_evidencia_sin_notebook,
+P62-05,p62,2026-09-29,experiments/p62_09_cobertura.py,experimento,SI,SI,reports/p62_cobertura_vocabulario.csv;reports/p62_cobertura_vocabulario.json;reports/p62_cobertura_vocabulario.md,NO,,con_evidencia_sin_notebook,
+P63-00,p63,2026-09-29,experiments/p63_02_id_forensics.py,experimento,SI,SI,reports/p63_id_forensics.csv;reports/p63_id_forensics.json;reports/p63_id_forensics.md;reports/p63_id_forensics_blocks.csv;reports/p63_id_forensics_ocupacion.csv,NO,,con_evidencia_sin_notebook,
+P63-01,p63,2026-09-29,experiments/08_features_densas_h11_h12.py;experiments/p63_01_gap_analysis.py,experimento,SI,SI,figuras/p63/p63_01_v03_vs_candidatos.png,SI,40,con_evidencia_y_notebook,
+P63-02,p63,2026-09-29,experiments/p63_03_id_auditoria_predictiva.py,auditoria,SI,SI,reports/p63_id_auditoria_predictiva.csv;reports/p63_id_auditoria_predictiva.json;reports/p63_id_auditoria_predictiva.md;figuras/p63/p63_02_delta_vs_v03.png,NO,,con_evidencia_sin_notebook,
+P63-03,p63,2026-09-29,experiments/p63_04_estructura_relacional.py,experimento,SI,SI,reports/p63_estructura_relacional.csv;reports/p63_estructura_relacional.json;reports/p63_estructura_relacional.md;figuras/p63/p63_03_consistencia_pliegues.png,NO,,con_evidencia_sin_notebook,
+P63-04,p63,2026-09-29,experiments/p63_05_composicion_linguistica.py,experimento,SI,SI,reports/p63_composicion_linguistica.csv;reports/p63_composicion_linguistica.json;reports/p63_composicion_linguistica.md;figuras/p63/p63_04_delta_candidatos.png,NO,,con_evidencia_sin_notebook,
+P63-05,p63,2026-09-29,experiments/p63_06_estructura_tweet_largo.py,experimento,SI,SI,reports/p63_estructura_tweet_largo.csv;reports/p63_estructura_tweet_largo.json;reports/p63_estructura_tweet_largo.md;figuras/p63/p63_05_bloques_en_solitario.png,NO,,con_evidencia_sin_notebook,
+P63-06,p63,2026-09-29,experiments/p63_07_integracion_y_techo.py,experimento,SI,SI,reports/p63_integracion_y_techo.csv;reports/p63_integracion_y_techo.json;reports/p63_integracion_y_techo.md;figuras/p63/p63_06_v03_mas_bloques.png,NO,,con_evidencia_sin_notebook,
+P63-07,p63,2026-09-29,experiments/p63_08_residuo_de_v03.py,experimento,SI,SI,reports/p63_residuo_de_v03.csv;reports/p63_residuo_de_v03.json;reports/p63_residuo_de_v03.md;figuras/p63/p63_07_distribucion_id.png,NO,,con_evidencia_sin_notebook,
+P63-04C,p63,2026-09-29,experiments/p63_05_composicion_linguistica.py,experimento,SI,SI,reports/p63_composicion_linguistica.csv;reports/p63_composicion_linguistica.json;reports/p63_composicion_linguistica.md,NO,,con_evidencia_sin_notebook,
+P63-06C,p63,2026-09-29,experiments/p63_07_integracion_y_techo.py,experimento,SI,SI,reports/p63_integracion_y_techo.csv;reports/p63_integracion_y_techo.json;reports/p63_integracion_y_techo.md,NO,,con_evidencia_sin_notebook,
+P64-00,p64,2026-09-29,experiments/p64_01_gap_analysis.py,experimento,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+P64-01,p64,2026-09-29,experiments/p64_02_segmentacion_eda.py,experimento,SI,SI,figuras/p64/p64_01_v03_vs_candidatos.png,NO,,con_evidencia_sin_notebook,
+P64-02,p64,2026-09-29,experiments/p64_03_evidencia_segmental.py,experimento,SI,SI,reports/p64_evidencia_segmental.json;reports/p64_evidencia_segmental.md;figuras/p64/p64_02_delta_vs_v03.png,NO,,con_evidencia_sin_notebook,
+P64-03,p64,2026-09-29,experiments/p64_04_leave_one_out.py,experimento,SI,SI,reports/p64_leave_one_out.json;reports/p64_leave_one_out.md;figuras/p64/p64_03_rendimiento_por_longitud.png,NO,,con_evidencia_sin_notebook,
+P64-04,p64,2026-09-29,experiments/p64_05_especializacion_larga.py,experimento,SI,SI,reports/p64_especializacion_larga.json;reports/p64_especializacion_larga.md;figuras/p64/p64_04_rendimiento_por_segmentos.png,NO,,con_evidencia_sin_notebook,
+P65-00,p65,2026-09-29,experiments/01_eda_linguistico.py;experiments/03_variantes_representaciones.py;experiments/06_error_analysis.py;experiments/11_dl_desde_cero.py;experiments/16_targeting_v2.py;experiments/19_sintaxis_cita_negacion_v2.py;experiments/20_emocion_nbsvm_ortografia_v2.py;experiments/21_backlog_restante_v2.py;experiments/24_informe_final_candidatos.py;experiments/27_label_consistency_v4.py;experiments/embedding_01_corpus_wikipedia_v5.py;experiments/embedding_11_auditoria_firmas_v5_1.py;experiments/embedding_12_vector_size_v5_1.py;experiments/embedding_13_window_v5_1.py;experiments/embedding_19_notebook_v5_1.py;experiments/p59_03_confident_learning.py;experiments/p59_04_influence.py;experiments/p59_07_local_window.py;experiments/p59_10_grafo_regularizacion.py;experiments/p59_12_informe_final.py;experiments/p59_90_integrar_notebook.py;experiments/p60_00_registro_hipotesis.py;experiments/p60_11_cerrar.py;experiments/p60_12_total.py;experiments/p60_13_notebook.py;experiments/p61_03_lightgbm.py;experiments/p61_09_cerrar.py;experiments/p61_10_notebook.py;experiments/p62_00_auditoria_y_gap.py;experiments/p62_01_eda_linguistica.py;experiments/p62_03_pista_l.py;experiments/p62_05_cerrar.py;experiments/p62_09_cobertura.py;experiments/p63_01_gap_analysis.py;experiments/p63_02_id_forensics.py;experiments/p63_10_cerrar.py;experiments/p65_00_audit_gap.py;experiments/v10_07_shift_features.py;experiments/v11_00_reconciliacion.py;experiments/v11_08_cierre_y_tabla_maestra.py;experiments/v11_09_cierre_entregables.py;experiments/v12_00_auditoria_brecha.py;experiments/v12_03_entrenamiento_por_pares.py;experiments/v12_05_informe_final.py;experiments/v12_05_registrar.py;experiments/v19_03_diagnosticos_y_dictamen.py;experiments/v22_02_preprocessing_historic_vs_raw.py;experiments/v22_03_all_but_the_top.py;experiments/v24_03_sonda_knn_predictor.py;experiments/v24_03b_perfil_de_celdas.py;experiments/v28_01_diagnostico_errores.py;experiments/v28_02_integrar_notebook.py;experiments/v29_02_similitudes_laxas.py;experiments/v29_03_vecinos_corrigen_errores.py;experiments/v29_04_transformaciones_contradictorias.py;experiments/v29_05_integrar_notebook.py;experiments/v34_01_frontera.py;experiments/v48_00_eda_traceability.py;experiments/v48_01_residual_atlas.py;experiments/v49_00_rescate_forense.py;experiments/v52_00_auditoria_y_techo.py;experiments/v52_01_integrar_notebook.py;experiments/v53_00_politica_fina.py;experiments/v53_01_integrar_notebook.py;experiments/v6_00_gap_analysis.py;experiments/v6_05_skipgrams.py;experiments/v6_09_entregables.py;experiments/v7_00_gap_audit.py;experiments/v7_01_perdida_f1.py;experiments/v7_02_prior_grupo.py;experiments/v7_04_entregables.py,integracion_notebook,SI,SI,reports/p59_confident_learning.csv;reports/p59_confident_learning.json;reports/p59_confident_learning.md;reports/p59_influence_analysis.csv;reports/p59_influence_analysis.json,SI,3;40;66;89;160,con_evidencia_y_notebook,
+P65-01,p65,2026-09-29,experiments/p65_01_ngrams.py,experimento,SI,SI,reports/p65_ngrams.json;reports/p65_ngrams.md;figuras/p65/p65_01_v03_vs_candidatos.png,NO,,con_evidencia_sin_notebook,
+P65-02,p65,2026-09-29,experiments/p65_02_huecos_contraste.py,experimento,SI,SI,reports/p65_huecos_contraste.json;reports/p65_huecos_contraste.md;figuras/p65/p65_02_delta_vs_v03.png,NO,,con_evidencia_sin_notebook,
+P65-03,p65,2026-09-29,experiments/p65_03_cohesion.py,experimento,SI,SI,reports/p65_cohesion.csv;reports/p65_cohesion.json;reports/p65_cohesion.md;figuras/p65/p65_03_largo_alcance.png,NO,,con_evidencia_sin_notebook,
+P65-04,p65,2026-09-29,experiments/p65_04_especialista.py,experimento,SI,SI,reports/p65_especialista.json;reports/p65_especialista.md;figuras/p65/p65_04_skipgram_vs_cohesion.png,NO,,con_evidencia_sin_notebook,
+P66-00,p66,2026-09-29,experiments/p66_00_audit_gap.py,auditoria,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+P66-01,p66,2026-09-29,experiments/p66_01_regenerar_scores.py,experimento,SI,SI,figuras/p66/p66_01_v03_vs_fusion.png,SI,363,con_evidencia_y_notebook,
+P66-02,p66,2026-09-29,experiments/p66_02_fusion_espacio_scores.py,experimento,SI,SI,figuras/p66/p66_02_delta_por_mecanismo.png,SI,363,con_evidencia_y_notebook,
+P66-03,p66,2026-09-29,experiments/p66_03_complementariedad_bootstrap.py,experimento,SI,SI,figuras/p66/p66_03_rescate_vs_dano.png,NO,,con_evidencia_sin_notebook,
+P67-00,p67,2026-09-29,experiments/p67_00_reconciliacion.py,auditoria,SI,SI,,SI,448,solo_notebook,sin evidencia por id/script; hay evidencia a nivel de fase
+P67-01,p67,2026-09-29,experiments/p67_01_controles_decisivos.py,experimento,SI,SI,reports/p67_controles_decisivos.json;reports/p67_controles_decisivos.md;figuras/p67/p67_01_sustitucion_cruzada.png,NO,,con_evidencia_sin_notebook,
+P67-02,p67,2026-09-29,experiments/p67_02_cerrar.py,cierre,SI,SI,figuras/p67/p67_02_enriquecimiento.png,NO,,con_evidencia_sin_notebook,
+P67-03,p67,2026-09-29,experiments/p67_03_cierre_documental.py,cierre,SI,SI,figuras/p67/p67_03_auc_por_banda.png,NO,,con_evidencia_sin_notebook,
+P67-04,p67,2026-09-29,experiments/p67_04_gap_analysis.py,experimento,SI,SI,reports/post_p67_gap_analysis.csv;reports/post_p67_gap_analysis.json;reports/post_p67_gap_analysis.md;figuras/p67/p67_04_varianza_residuo.png,NO,,con_evidencia_sin_notebook,
+P68-01,p68,2026-09-29,experiments/p68_01_enrutado_por_estructura.py,experimento,SI,SI,reports/p68_enrutado_por_estructura.json;reports/p68_enrutado_por_estructura.md;figuras/p68/p68_01_enrutado_vs_controles.png,NO,,con_evidencia_sin_notebook,
+P68-02,p68,2026-09-29,experiments/p68_02_h2_auditoria.py,auditoria,SI,SI,figuras/p68/p68_02_delta_y_gate.png,NO,,con_evidencia_sin_notebook,
+P69-01,p69,2026-09-29,experiments/p69_01_auditoria_downweight.py,auditoria,SI,SI,,SI,450,solo_notebook,"sin evidencia atribuible por id, script o fase"
+P69-02,p69,2026-09-29,experiments/p69_02_segunda_particion.py,experimento,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+P69-03,p69,2026-09-29,experiments/p69_03_cierre_downweight.py,cierre,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+P69-04,p69,2026-09-29,experiments/p69_04_tercera_particion.py,experimento,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+P69-05,p69,2026-09-29,experiments/p69_05_permutacion.py,experimento,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+P69-06,p69,2026-09-29,experiments/p69_06_particiones_corregidas.py,experimento,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+P69-07,p69,2026-09-29,experiments/p69_07_cierre_final.py,cierre,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+P69-08,p69,2026-09-29,experiments/p69_08_paquete_candidato.py,cierre,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+P69-09,p69,2026-09-29,experiments/p69_09_reconciliar_estado.py,auditoria,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+P69-10,p69,2026-09-29,experiments/p69_10_submission_candidato.py,submission,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+P70-01,p70,2026-09-29,experiments/p70_01_sensibilidad_tamano.py,experimento,SI,SI,figuras/p70/p70_01_cv_vs_tamano.png,NO,,con_evidencia_sin_notebook,
+P70-02,p70,2026-09-29,experiments/p70_02_postmortem.py,cierre,SI,SI,figuras/p70/p70_02_variabilidad_vs_tamano.png,NO,,con_evidencia_sin_notebook,
+P70-03,p70,2026-09-29,experiments/p70_03_correccion_postmortem.py,cierre,SI,SI,figuras/p70/p70_03_pesos_vs_tamano.png,NO,,con_evidencia_sin_notebook,
+P71-00,p71,2026-09-29,experiments/p71_00_auditoria_corpus.py,auditoria,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+P71-01,p71,2026-09-29,experiments/p71_01_auditoria_ampliada.py,auditoria,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+P71-02,p71,2026-09-29,experiments/p71_02_correccion_criterio.py,experimento,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+P71-03,p71,2026-09-29,experiments/p71_03_preparar_corpus.py,experimento,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+P71-04,p71,2026-09-29,experiments/p71_04_entrenar_word2vec.py,experimento,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+P71-05,p71,2026-09-29,experiments/p71_05_downstream.py,experimento,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+P71-06,p71,2026-09-29,experiments/p71_06_word2vec_optimizador.py,experimento,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+P71-07,p71,2026-09-29,experiments/p71_07_invalidar_veredicto.py,experimento,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+P71-08,p71,2026-09-29,experiments/p71_08_word2vec_corregido.py,experimento,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+P71-09,p71,2026-09-29,experiments/p71_09_downstream_lrfix.py,experimento,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+P71-10,p71,2026-09-29,experiments/p71_10_downstream_corregido.py,experimento,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+P72-00,p72,2026-09-29,experiments/p72_00_auditoria_implementacion.py,auditoria,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+P72-01,p72,2026-09-29,experiments/p72_01_dimensiones.py,experimento,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+P72-03,p72,2026-09-30,experiments/p72_03_control_aleatorio.py,experimento,SI,SI,,SI,406;450,solo_notebook,"sin evidencia atribuible por id, script o fase"
+P72-04,p72,2026-09-30,experiments/p72_04_control_aleatorio_normalizado.py,experimento,SI,SI,,SI,406,solo_notebook,"sin evidencia atribuible por id, script o fase"
+P73-01,p73,2026-09-30,experiments/p73_01_solapamiento_corpus.py,experimento,SI,SI,reports/p73_solapamiento_corpus.csv;reports/p73_solapamiento_corpus.json,NO,,con_evidencia_sin_notebook,
+P73-02,p73,2026-09-30,experiments/p73_02_textcnn_vs_random.py,experimento,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+P73-03,p73,2026-09-30,experiments/p73_03_segunda_particion.py,experimento,SI,SI,reports/p73_segunda_particion.csv;reports/p73_segunda_particion.json,NO,,con_evidencia_sin_notebook,
+P74-PRE,p74,2026-09-30,,auditoria,SI,SI,,NO,,sin_evidencia,sin script identificado en la fila ni por asociacion de id; sin evidencia por id/script; hay evidencia a nivel de fase
+P74,p74,2026-09-30,experiments/p74_01_null_replicado.py,experimento,SI,SI,reports/p74_compliance.md;reports/p74_decision.md;reports/p74_null_replicado.json;reports/p74_replicated_random_null.csv;reports/p74_replicated_random_null.md,SI,406;417;418;420;424,con_evidencia_y_notebook,
+P75,p75,2026-09-30,experiments/p75_01_complementariedad_textcnn.py;experiments/p75_02_slices_recuperadas.py,experimento,SI,SI,reports/p75_compliance.md;reports/p75_decision.md;reports/p75_fusion.json;reports/p75_fusion_results.csv;reports/p75_paired_oof.csv,SI,425;431;432;437;439,con_evidencia_y_notebook,"scripts asociados por id, no citados literalmente"
+P76,p76,2026-09-30,experiments/p76_01_calibracion_nested.py,experimento,SI,SI,reports/p76_calibracion.json;reports/p76_compliance.md;reports/p76_decision.md;reports/p76_fusion_calibration.csv;reports/p76_nested_calibration.csv,SI,431;437,con_evidencia_y_notebook,"scripts asociados por id, no citados literalmente"
+P77,p77,2026-09-30,experiments/p77_01_operador_selectivo.py,experimento,SI,SI,reports/p77_compliance.md;reports/p77_decision.md;reports/p77_gate_results.csv;reports/p77_operador.json;reports/p77_preregistro.sha256,SI,437;440;446;448;449,con_evidencia_y_notebook,"scripts asociados por id, no citados literalmente"
+P59-01,p59,2026-09-27,experiments/p59_01_voronoi_local.py,experimento,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+P59-05,p59,2026-09-28,experiments/p59_05_nmf_gap_analysis.py,experimento,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+P59-08,p59,2026-09-28,experiments/p59_08_calibracion_local.py,experimento,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+P59-11,p59,2026-09-28,experiments/p59_11_generativo_ngram.py,experimento,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+P60-05-RUIDO-POR-ETIQUETA,p60,2026-09-28,experiments/p60_05_ruido_por_etiqueta.py,experimento,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+P61-01-EDA-PROBABILIDADES,p61,2026-09-28,experiments/p61_01_eda_probabilidades.py,experimento,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+P61-02-INVENTARIO,p61,2026-09-28,experiments/p61_02_inventario.py,experimento,SI,SI,,NO,,sin_evidencia,sin evidencia por id/script; hay evidencia a nivel de fase
+P62-10,p62,2026-09-29,experiments/p62_10_techo_cortos.py,experimento,SI,SI,reports/p62_techo_cortos.csv;reports/p62_techo_cortos.json;reports/p62_techo_cortos.md,NO,,con_evidencia_sin_notebook,
+P63-09,p63,2026-09-29,experiments/p63_09_dataset_auxiliar.py,experimento,SI,SI,figuras/p63/p63_09_saltos_id.png,NO,,con_evidencia_sin_notebook,
+P64-05,p64,2026-09-29,experiments/p64_05_multiple_instance.py,experimento,SI,SI,reports/p64_multiple_instance.json;reports/p64_multiple_instance.md;figuras/p64/p64_05_distribucion_longitud_segmento.png,NO,,con_evidencia_sin_notebook,
+P64-06,p64,2026-09-29,experiments/p64_06_quote_mention.py,experimento,SI,SI,reports/p64_quote_mention.csv;reports/p64_quote_mention.json;reports/p64_quote_mention.md;figuras/p64/p64_06_confianza_vs_conflicto.png,NO,,con_evidencia_sin_notebook,
+P64-07,p64,2026-09-29,experiments/p64_07_negacion.py,experimento,SI,SI,reports/p64_negacion.csv;reports/p64_negacion.json;reports/p64_negacion.md;figuras/p64/p64_07_concentracion_evidencia.png,NO,,con_evidencia_sin_notebook,
+P64-08,p64,2026-09-29,experiments/p64_08_lda.py,experimento,SI,SI,figuras/p64/p64_08_contribucion_leave_one_out.png,NO,,con_evidencia_sin_notebook,
+P72-02,p72,2026-09-29,experiments/p72_02_dimension_downstream.py,experimento,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+P78,p78,2026-09-30,experiments/p78_01_control_anidado.py,experimento,SI,SI,reports/p78_addendum.md;reports/p78_cobertura.json;reports/p78_control_anidado.json;reports/p78_manifiesto.sha256;reports/p78_pares.csv,SI,446;447;448;450,con_evidencia_y_notebook,
+P82,p82,2026-10-01,experiments/p82_01_rnn_atencion.py,experimento,SI,SI,reports/humo_p82_20261001T161024Z_p2289660_completo/p82_rnn_atencion.json;reports/humo_p82_20261001T161024Z_p2289660_completo/p82_rnn_atencion.md;reports/humo_p82_20261001T161024Z_p2289660_completo/parciales/afirmacion_A0_20261001T161024Z_p2289660_0002.json;reports/humo_p82_20261001T161024Z_p2289660_completo/parciales/afirmacion_A10_20261001T161024Z_p2289660_0023.json;reports/humo_p82_20261001T161024Z_p2289660_completo/parciales/afirmacion_A11_20261001T161024Z_p2289660_0014.json,SI,0;21;29;30;446,con_evidencia_y_notebook,
+P83,p83,2026-10-02,experiments/p83_01_bayesiano.py,experimento,SI,SI,reports/diag_p83/parciales/afirmacion_A0_diag_0001.json;reports/diag_p83/parciales/afirmacion_A1_diag_0002.json;reports/diag_p83/parciales/afirmacion_A2_diag_0003.json;reports/diag_p83/parciales/afirmacion_A3_diag_0004.json;reports/humo_p83_00593c1a/escritura_unica.txt,SI,446;447;448;450;451,con_evidencia_y_notebook,
+V16-00,v16,2026-09-26,experiments/v16_00_prevalencia_y_curva_lb.py,experimento,SI,SI,resultados/v16_00_contrafactual_prevalencia.json;resultados/v16_00_prevalencia_test.json;resultados/v16_00_prevalencia_y_curva_lb.csv;figuras/v16_00_curva_lb_tasa.png,NO,,con_evidencia_sin_notebook,
+V16-02,v16,2026-09-26,experiments/v16_02_promedio_umbrales.py,experimento,SI,SI,reports/v16_02_promedio_umbrales.json;reports/v16_02_promedio_umbrales.md;resultados/v16_02_tabla_umbrales.csv,NO,,con_evidencia_sin_notebook,
+V16-03,v16,2026-09-26,experiments/v16_03_vecinos_de_capacidad.py,experimento,SI,SI,reports/v16_03_vecinos_de_capacidad.json;reports/v16_03_vecinos_de_capacidad.md;resultados/v16_03_tabla_de_sondas.csv,NO,,con_evidencia_sin_notebook,
+V17-00,v17,2026-09-26,experiments/v17_00_inventario_y_complementariedad.py,experimento,SI,SI,reports/v17_00_inventario_complementariedad.json;reports/v17_00_inventario_complementariedad.md,NO,,con_evidencia_sin_notebook,
+V18-01,v18,2026-09-26,experiments/v18_01_cambio_y_senal.py,experimento,SI,SI,reports/v18_01_cambio_y_senal.json;reports/v18_01_cambio_y_senal.md;resultados/v18_01_tabla_de_cambios.csv,SI,194,con_evidencia_y_notebook,
+V19-00,v19,2026-09-26,experiments/v19_00_metrica_verificada.py,experimento,SI,SI,reports/v19_00_metrica_oficial.md;reports/v19_00_metrica_verificada.json;reports/v19_00_metrica_verificada.md,NO,,con_evidencia_sin_notebook,
+V19-01,v19,2026-09-26,experiments/v19_01_valor_de_cada_correccion.py,experimento,SI,SI,reports/v19_01_valor_de_cada_correccion.json;reports/v19_01_valor_de_cada_correccion.md,NO,,con_evidencia_sin_notebook,
+V19-02,v19,2026-09-26,experiments/v19_02_restriccion_tr_implica_hs.py,experimento,SI,SI,reports/v19_02_restriccion_tr_implica_hs.json;reports/v19_02_restriccion_tr_implica_hs.md,NO,,con_evidencia_sin_notebook,
+V20-01,v20,2026-09-26,experiments/v20_01_informacion_incremental.py,experimento,SI,SI,reports/v20_01_informacion_incremental.json;reports/v20_01_informacion_incremental.md,SI,0;21;29;30,con_evidencia_y_notebook,
+V20-02,v20,2026-09-26,experiments/v20_02_inferencia_y_candidata.py,experimento,SI,SI,reports/v20_02_inferencia_y_candidata.json;reports/v20_02_inferencia_y_candidata.md;resultados/v20_02_informacion_incremental.csv,NO,,con_evidencia_sin_notebook,
+V21-01,v21,2026-09-27,experiments/v21_01_triaje_competitivo.py,experimento,SI,SI,reports/v21_01_triaje_competitivo.json;reports/v21_01_triaje_competitivo.md,NO,,con_evidencia_sin_notebook,
+V24-01,v24,2026-09-27,experiments/v24_01_modelo_transferencia_complejidad.py,experimento,SI,SI,reports/v24_01_transferencia_complejidad.json;reports/v24_01_transferencia_complejidad.md,NO,,con_evidencia_sin_notebook,
+V47-01-AJUSTE-PLIEGUES,v47,2026-09-27,experiments/v47_01_ajuste_pliegues.py,experimento,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+V47-01-ESPECIALIZACION,v47,2026-09-27,experiments/v47_01_especializacion.py,experimento,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+V47-01-ESPECIALIZACION-POR-ETIQUETA,v47,2026-09-27,experiments/v47_01_especializacion.py;experiments/v47_01_especializacion_por_etiqueta.py,experimento,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+V50-00,v50,2026-09-27,experiments/v50_00_brecha_y_oracle.py,experimento,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+V51-00,v51,2026-09-27,experiments/v51_00_utilidad_y_asimetria.py,experimento,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+V54-00,v54,2026-09-27,experiments/v54_00_atlas_no_rescatable.py,experimento,SI,SI,,NO,,sin_evidencia,"sin evidencia atribuible por id, script o fase"
+P79,p79,2026-09-30,experiments/p79_01_auditoria_sgns.py,auditoria,SI,SI,reports/p79_auditoria_sgns.json;figuras/p79/p79_01_loss_y_ratio_gradiente.png;figuras/p79/p79_02_curvas_comparadas.png;figuras/p79/p79_03_artefacto_congelado.png,SI,446;447;448,con_evidencia_y_notebook,
+P80,p80,2026-10-01,experiments/p80_01_auditoria_w2v.py,auditoria,SI,SI,reports/p80_auditoria_w2v.json;reports/p80_auditoria_w2v.md;figuras/p80/p80_lr_real_frente_a_ideal.png;figuras/p80/p80_ratio_negativo_y_total.png;figuras/p80/p80_sonda_de_relleno.png,SI,122;446;447;448;450,con_evidencia_y_notebook,
+P81,p81,2026-10-01,experiments/p81_01_cierre_huecos.py,cierre,SI,SI,reports/p81_cierre_huecos.json;reports/p81_cierre_huecos.md;reports/p81_cierre_huecos.parcial.json;reports/p81_cierre_huecos.parcial_20261001T010045_bloque_2_afirmacion_1_de_5_A8.json;reports/p81_cierre_huecos.parcial_20261001T010045_bloque_2_afirmacion_2_de_5_A9.json,SI,446;447;448,con_evidencia_y_notebook,
+P82-02,p82,2026-10-01,experiments/p82_02_submission_rnn.py,submission,SI,SI,reports/p82_submission_rnn.json;reports/p82_submission_rnn.md,SI,0;21;29;30;447,con_evidencia_y_notebook,
+37_auditoria_v4,otras,,experiments/37_auditoria_v4.py,auditoria,NO,NO,,NO,,sin_evidencia,script sin fila en experiments.csv; sin evidencia atribuible
+embedding_06_auditoria_v5,embedding,,experiments/embedding_06_auditoria_v5.py,auditoria,NO,NO,,NO,,sin_evidencia,"script sin fila en experiments.csv; sin evidencia por id/script, hay evidencia a nivel de fase"
+embedding_22_auditoria_final_v5_1,embedding,,experiments/embedding_22_auditoria_final_v5_1.py,auditoria,NO,NO,,NO,,sin_evidencia,"script sin fila en experiments.csv; sin evidencia por id/script, hay evidencia a nivel de fase"
+p59_00_registro_hipotesis,p59,,experiments/p59_00_registro_hipotesis.py,registro,NO,NO,,NO,,sin_evidencia,"script sin fila en experiments.csv; sin evidencia por id/script, hay evidencia a nivel de fase"
+p60_14_auditoria,p60,,experiments/p60_14_auditoria.py,auditoria,NO,NO,,NO,,sin_evidencia,"script sin fila en experiments.csv; sin evidencia por id/script, hay evidencia a nivel de fase"
+p60_registrar,p60,,experiments/p60_registrar.py,registro,NO,NO,,NO,,sin_evidencia,"script sin fila en experiments.csv; sin evidencia por id/script, hay evidencia a nivel de fase"
+p61_00_reconciliacion,p61,,experiments/p61_00_reconciliacion.py,auditoria,NO,NO,,NO,,sin_evidencia,"script sin fila en experiments.csv; sin evidencia por id/script, hay evidencia a nivel de fase"
+p62_06_notebook,p62,,experiments/p62_06_notebook.py,integracion_notebook,NO,NO,reports/p62_notebook_integration.json,NO,,con_evidencia_sin_notebook,script sin fila en experiments.csv; alta directa desde experiments/
+p62_11_cerrar,p62,,experiments/p62_11_cerrar.py,cierre,NO,NO,,NO,,sin_evidencia,"script sin fila en experiments.csv; sin evidencia por id/script, hay evidencia a nivel de fase"
+p64_06_cerrar,p64,,experiments/p64_06_cerrar.py,cierre,NO,NO,,NO,,sin_evidencia,"script sin fila en experiments.csv; sin evidencia por id/script, hay evidencia a nivel de fase"
+p65_05_cerrar,p65,,experiments/p65_05_cerrar.py,cierre,NO,NO,,NO,,sin_evidencia,"script sin fila en experiments.csv; sin evidencia por id/script, hay evidencia a nivel de fase"
+p66_04_cerrar,p66,,experiments/p66_04_cerrar.py,cierre,NO,NO,,NO,,sin_evidencia,"script sin fila en experiments.csv; sin evidencia por id/script, hay evidencia a nivel de fase"
+p73_04_auditoria_cierre,p73,,experiments/p73_04_auditoria_cierre.py,auditoria,NO,NO,reports/p73_auditoria_cierre.csv;reports/p73_auditoria_cierre.json,SI,416;417,con_evidencia_y_notebook,script sin fila en experiments.csv; alta directa desde experiments/
+v16_01_generar_submissions,v16,,experiments/v16_01_generar_submissions.py,submission,NO,NO,,NO,,sin_evidencia,"script sin fila en experiments.csv; sin evidencia por id/script, hay evidencia a nivel de fase"
+v17_01_informe_final,v17,,experiments/v17_01_informe_final.py,cierre,NO,NO,reports/v17_01_informe_final.json,NO,,con_evidencia_sin_notebook,script sin fila en experiments.csv; alta directa desde experiments/
+v22_01_auditoria_preprocessing,v22,,experiments/v22_01_auditoria_preprocessing.py,auditoria,NO,NO,reports/v22_01_auditoria_preprocessing.json;reports/v22_01_auditoria_preprocessing.md,NO,,con_evidencia_sin_notebook,script sin fila en experiments.csv; alta directa desde experiments/
+v23_01_auditoria_rbf_svc,v23,,experiments/v23_01_auditoria_rbf_svc.py,auditoria,NO,NO,reports/v23_01_auditoria_rbf_svc.json;reports/v23_01_auditoria_rbf_svc.md,NO,,con_evidencia_sin_notebook,script sin fila en experiments.csv; alta directa desde experiments/
+v23_02_submission_rbf_sigmoid,v23,,experiments/v23_02_submission_rbf_sigmoid.py,submission,NO,NO,reports/v23_02_submission_rbf_sigmoid.json,NO,,con_evidencia_sin_notebook,script sin fila en experiments.csv; alta directa desde experiments/
+v26_04_integrar_notebook,v26,,experiments/v26_04_integrar_notebook.py,integracion_notebook,NO,NO,,NO,,sin_evidencia,"script sin fila en experiments.csv; sin evidencia por id/script, hay evidencia a nivel de fase"
+v27_02_integrar_notebook,v27,,experiments/v27_02_integrar_notebook.py,integracion_notebook,NO,NO,,NO,,sin_evidencia,"script sin fila en experiments.csv; sin evidencia por id/script, hay evidencia a nivel de fase"
+v38_03_integrar_v39,v38,,experiments/v38_03_integrar_v39.py,integracion_notebook,NO,NO,,NO,,sin_evidencia,"script sin fila en experiments.csv; sin evidencia por id/script, hay evidencia a nivel de fase"
+v42_02_integrar_notebook,v42,,experiments/v42_02_integrar_notebook.py,integracion_notebook,NO,NO,,NO,,sin_evidencia,"script sin fila en experiments.csv; sin evidencia por id/script, hay evidencia a nivel de fase"
+v48_02_integrar_notebook,v48,,experiments/v48_02_integrar_notebook.py,integracion_notebook,NO,NO,,NO,,sin_evidencia,script sin fila en experiments.csv; sin evidencia atribuible
+v49_01_integrar_notebook,v49,,experiments/v49_01_integrar_notebook.py,integracion_notebook,NO,NO,,NO,,sin_evidencia,script sin fila en experiments.csv; sin evidencia atribuible
+v51_03_integrar_notebook,v51,,experiments/v51_03_integrar_notebook.py,integracion_notebook,NO,NO,,NO,,sin_evidencia,script sin fila en experiments.csv; sin evidencia atribuible
+v54_01_integrar_notebook,v54,,experiments/v54_01_integrar_notebook.py,integracion_notebook,NO,NO,,NO,,sin_evidencia,script sin fila en experiments.csv; sin evidencia atribuible
+v55_00_auditoria_pipeline,v55,,experiments/v55_00_auditoria_pipeline.py,auditoria,NO,NO,,NO,,sin_evidencia,script sin fila en experiments.csv; sin evidencia atribuible
+v55_01_integrar_notebook,v55,,experiments/v55_01_integrar_notebook.py,integracion_notebook,NO,NO,,NO,,sin_evidencia,script sin fila en experiments.csv; sin evidencia atribuible
+v56_01_integrar_notebook,v56,,experiments/v56_01_integrar_notebook.py,integracion_notebook,NO,NO,,NO,,sin_evidencia,script sin fila en experiments.csv; sin evidencia atribuible
+v57_00_sintesis_estrategica,v57,,experiments/v57_00_sintesis_estrategica.py,cierre,NO,NO,,NO,,sin_evidencia,script sin fila en experiments.csv; sin evidencia atribuible
+v57_01_integrar_notebook,v57,,experiments/v57_01_integrar_notebook.py,integracion_notebook,NO,NO,,NO,,sin_evidencia,script sin fila en experiments.csv; sin evidencia atribuible
+v58_00_auditoria_candidatos,v58,,experiments/v58_00_auditoria_candidatos.py,auditoria,NO,NO,,NO,,sin_evidencia,script sin fila en experiments.csv; sin evidencia atribuible
+v58_01_integrar_notebook,v58,,experiments/v58_01_integrar_notebook.py,integracion_notebook,NO,NO,,NO,,sin_evidencia,script sin fila en experiments.csv; sin evidencia atribuible

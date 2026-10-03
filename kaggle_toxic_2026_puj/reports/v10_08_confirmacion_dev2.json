@@ -1,0 +1,76 @@
+{
+  "experimento": "V10-08 (P3, confirmacion e integridad)",
+  "fecha": "2026-09-26T08:02:00+00:00",
+  "integridad_de_holdout2": {
+    "sha256_config_actual": "f71ad8ac4959dbdcccc7da23827a36924acd74f344522b81f219a9122d95b3c1",
+    "sha256_ids_actual": "f6c6ed958abf728b8210d15c26ec43fbd71659a0918d36089a9c6d6cef1639dc",
+    "sha256_ids_esperada": "f6c6ed958abf728b8210d15c26ec43fbd71659a0918d36089a9c6d6cef1639dc",
+    "ids_sin_cambios": true
+  },
+  "limpieza_de_la_particion": {
+    "filas_holdout2_localizadas": 247,
+    "solape_de_filas": 0,
+    "grupos_compartidos": 0,
+    "particion_limpia": true
+  },
+  "regla_de_uso_de_holdout2": {
+    "maximo_evaluaciones": 3,
+    "solo_para": "decisiones de adopcion pre-registradas",
+    "prohibido": "optimizar nada sobre holdout2, y usarlo mas de tres veces"
+  },
+  "evaluaciones_gastadas": 0,
+  "evaluaciones_disponibles": 3,
+  "candidatas_evaluables": 0,
+  "criterios_de_mejora_aplicados": {
+    "delta_medio_minimo": 0.002,
+    "particiones_que_mejoran_minimas": 4,
+    "nota": "Un delta positivo por si solo NO cuenta como mejora. Con la banda de ruido de 0.0053 que midio V10-02, el +0.000131 de V10-06 es una fraccion del ruido, y por eso el criterio exige las dos cosas a la vez."
+  },
+  "filtro_de_detectabilidad": {
+    "aciertos_netos_resolubles": 19.2,
+    "filas_del_externo": 1154,
+    "regla": "una candidata que cambia C celdas solo es resoluble si su tasa de acierto supera 0,5 + 19,2 / C",
+    "detalle": [
+      {
+        "nombre": "V10-04 calibracion isotonica recortada",
+        "celdas_promedio": 0.0,
+        "delta_medio_anidado": 0.000148,
+        "particiones_que_mejoran": 3,
+        "cumple_delta_minimo": false,
+        "cumple_particiones_minimas": false,
+        "tasa_de_acierto_minima_para_ser_resoluble": null,
+        "seria_resoluble_por_el_externo": false,
+        "mejora_la_metrica_segun_el_addendum": false,
+        "enviable": false,
+        "nota": "la isotonica fue la de mejor ECE pero su delta anidado mas alto era el de Platt"
+      },
+      {
+        "nombre": "V10-05 regla F1 optima con prior simulado",
+        "celdas_promedio": 134.0,
+        "delta_medio_anidado": -0.003921,
+        "particiones_que_mejoran": 1,
+        "cumple_delta_minimo": false,
+        "cumple_particiones_minimas": false,
+        "tasa_de_acierto_minima_para_ser_resoluble": 0.6433,
+        "seria_resoluble_por_el_externo": true,
+        "mejora_la_metrica_segun_el_addendum": false,
+        "enviable": false,
+        "nota": "cambio 134 celdas y empeoro"
+      },
+      {
+        "nombre": "V10-06 tres umbrales libres re-estimados por pliegue",
+        "celdas_promedio": 124.0,
+        "delta_medio_anidado": 0.000131,
+        "particiones_que_mejoran": 3,
+        "cumple_delta_minimo": false,
+        "cumple_particiones_minimas": false,
+        "tasa_de_acierto_minima_para_ser_resoluble": 0.6548,
+        "seria_resoluble_por_el_externo": true,
+        "mejora_la_metrica_segun_el_addendum": false,
+        "enviable": false,
+        "nota": "cambio 124 celdas y no mejoro de forma apreciable"
+      }
+    ]
+  },
+  "veredicto": "ninguna candidata de la via A es enviable: las tres fallan sus gates de metrica, y ademas dos de ellas no serian resolubles por el externo ni aunque lo fueran"
+}

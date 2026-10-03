@@ -1,0 +1,7 @@
+objetivo,n,auc,ic95_bajo,ic95_alto,nota
+s_conf: error de alta confianza,36,0.983647,0.97846,0.98839,el rival mas fuerte: muestra las celdas C de alta confianza frente al resto
+s_joint: error de alta confianza,36,0.562004,0.472483,0.651126,el rival mas fuerte: muestra las celdas C de alta confianza frente al resto
+s_resid: error de alta confianza,36,0.982715,0.977171,0.987939,el rival mas fuerte: muestra las celdas C de alta confianza frente al resto
+s_conf: no rescatable entre los 757 errores,42,0.974143,0.965286,0.982804,"el objetivo del parrafo 62, medido sobre la poblacion de errores"
+s_joint: no rescatable entre los 757 errores,42,0.582366,0.49455,0.664342,"el objetivo del parrafo 62, medido sobre la poblacion de errores"
+s_resid: no rescatable entre los 757 errores,42,0.973019,0.963748,0.982216,"el objetivo del parrafo 62, medido sobre la poblacion de errores"

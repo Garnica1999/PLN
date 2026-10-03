@@ -1,0 +1,319 @@
+{
+  "familia": "P69_SUBMISSION_EXPERIMENTAL",
+  "experiment_id": "P69-10",
+  "autorizacion": "explicita y separada de la investigacion. Transfiere candidate_status de PROMISING_UNCONFIRMED a APPROVED_FOR_EXPERIMENTAL_SUBMISSION",
+  "proposito": "verificar transferencia al conjunto de test",
+  "submission_path": "submissions/toxic_submission_cost_sensitive_candidate.csv",
+  "submission_sha256": "6fc7c171a8af08b9ac80c744baae2aceb65f2c1488e5eda15382b5914930898f",
+  "git_commit": "b50eb00",
+  "training_data_hash": {
+    "toxic_train_csv": "3d40e7345b588860cf4744914be88ddc094e4f03591516c8176ab40b7f76d42f",
+    "oof_canonico": "559265816ce4f6312c87f008f90324f0eec70a74d1e6247364c162793338feab",
+    "n_filas_entrenamiento": 1483,
+    "n_filas_holdout_excluidas": 248
+  },
+  "test_data_hash": {
+    "toxic_test_csv": "e91ff8258dadbbcd57593273ff1babd805f00074ae755507d64fa00942785e83",
+    "n_filas": 1154
+  },
+  "model_artifact_hash": {
+    "coeficientes_por_etiqueta": [
+      "08843a92ca37bc0b65c6cc5d981e3133",
+      "c35fab8ce95bf636aea2b6970ec56d40",
+      "7dc8176bc330e9c96a3a1d60ebd6fbb1"
+    ]
+  },
+  "vectorizer_hash": {
+    "vocabulario_word": 3435,
+    "dimension_union": 24646
+  },
+  "weight_rule": {
+    "margen_favor": "(p_V03 - umbral) * (2*y - 1)",
+    "error_score": "mean(clip(-margen_favor, 0, None)) por ejemplo",
+    "z": "(error_score - mediana) / IQR",
+    "peso": "clip(1 - 0.5*z, 0.5, 1.5)",
+    "fuente_del_error_score": "OOF canonico exclusivamente",
+    "n_con_peso_menor_1": 441,
+    "n_con_peso_mayor_1": 0
+  },
+  "thresholds": {
+    "HS": 0.44,
+    "TR": 0.51,
+    "AG": 0.46,
+    "origen": "congelados de V03, los mismos que midieron el corrected_cv"
+  },
+  "classifier_config": {
+    "tipo": "LogisticRegression",
+    "C": 2.0,
+    "max_iter": 1000,
+    "solver": "liblinear",
+    "random_state": 42,
+    "class_weight": "explicito con multiplicador, mediana del barrido por pliegue",
+    "multiplicadores_por_fold": [
+      [
+        1.0,
+        1.5,
+        1.2
+      ],
+      [
+        1.0,
+        1.5,
+        1.5
+      ],
+      [
+        1.5,
+        1.2,
+        0.8
+      ],
+      [
+        1.2,
+        1.5,
+        1.2
+      ],
+      [
+        1.5,
+        1.2,
+        0.8
+      ]
+    ],
+    "multiplicadores_mediana": [
+      1.2,
+      1.5,
+      1.2
+    ],
+    "sample_weight": "el de la regla congelada"
+  },
+  "candidate_cv": {
+    "corrected_cv": 0.7854160387,
+    "V03": 0.7772114525165721,
+    "nivel": "R3"
+  },
+  "candidate_second_partition": {
+    "delta": 0.010525313,
+    "pliegues_mejorados": 5
+  },
+  "candidate_third_partition": {
+    "delta": 0.0048825807,
+    "pliegues_mejorados": 4
+  },
+  "permutation_p": 0.000999,
+  "bootstrap_ci": [
+    -0.0006906975,
+    0.0118175641
+  ],
+  "timestamp": "2026-09-29T20:14:03+00:00",
+  "checks": [
+    {
+      "check": "V03 sha256 congelado",
+      "pasa": true,
+      "valor": "7d7478f271e6edfd51afff85bad3eaa0"
+    },
+    {
+      "check": "V03 corrected_cv",
+      "pasa": true,
+      "valor": 0.7772114525165721
+    },
+    {
+      "check": "candidato reproducido en la tolerancia",
+      "pasa": true,
+      "valor": 0.785416038667608
+    },
+    {
+      "check": "se entrena solo con el desarrollo",
+      "pasa": true,
+      "valor": 1483
+    },
+    {
+      "check": "el holdout no entra en el entrenamiento",
+      "pasa": true,
+      "valor": 0
+    },
+    {
+      "check": "test leido",
+      "pasa": true,
+      "valor": 1154
+    },
+    {
+      "check": "misma regla: la mediana es 0 y no se sube ningun peso",
+      "pasa": true,
+      "valor": "mediana 0.0, >1: 0"
+    },
+    {
+      "check": "n de pesos < 1 coincide con el canonico",
+      "pasa": true,
+      "valor": 441
+    },
+    {
+      "check": "fraccion de peso retirada coincide",
+      "pasa": true,
+      "valor": 0.13663
+    },
+    {
+      "check": "los multiplicadores son la mediana pre-registrada",
+      "pasa": true,
+      "valor": [
+        1.2,
+        1.5,
+        1.2
+      ]
+    },
+    {
+      "check": "vectorizadores ajustados SOLO con el entrenamiento",
+      "pasa": true,
+      "valor": "dim train 24646"
+    },
+    {
+      "check": "test transformado con los vectorizadores del train",
+      "pasa": true,
+      "valor": 24646
+    },
+    {
+      "check": "tres cabezas entrenadas, una por etiqueta",
+      "pasa": true,
+      "valor": 3
+    },
+    {
+      "check": "columnas exactas",
+      "pasa": true,
+      "valor": [
+        "id",
+        "HS",
+        "TR",
+        "AG"
+      ]
+    },
+    {
+      "check": "numero de filas = filas del test",
+      "pasa": true,
+      "valor": "1154 vs 1154"
+    },
+    {
+      "check": "ids unicos",
+      "pasa": true,
+      "valor": 1154
+    },
+    {
+      "check": "mismo conjunto de ids que el test",
+      "pasa": true,
+      "valor": 1154
+    },
+    {
+      "check": "mismo orden de ids que el test",
+      "pasa": true,
+      "valor": "coincide"
+    },
+    {
+      "check": "mismo orden de ids que la plantilla oficial",
+      "pasa": true,
+      "valor": "coincide"
+    },
+    {
+      "check": "ningun id adicional",
+      "pasa": true,
+      "valor": 0
+    },
+    {
+      "check": "ningun id perdido",
+      "pasa": true,
+      "valor": 0
+    },
+    {
+      "check": "la columna de id es identica a la de V03",
+      "pasa": true,
+      "valor": "identica"
+    },
+    {
+      "check": "el id es entero como el de V03",
+      "pasa": true,
+      "valor": "int64"
+    },
+    {
+      "check": "valores binarios validos",
+      "pasa": true,
+      "valor": "0/1"
+    },
+    {
+      "check": "sin NaN",
+      "pasa": true,
+      "valor": 0
+    },
+    {
+      "check": "sin columnas auxiliares",
+      "pasa": true,
+      "valor": 4
+    },
+    {
+      "check": "dtypes enteros",
+      "pasa": true,
+      "valor": "int"
+    },
+    {
+      "check": "el vocabulario del test NO entra en el fitting",
+      "pasa": true,
+      "valor": "3435 <= 24246"
+    },
+    {
+      "check": "los pesos se calculan solo con el train",
+      "pasa": true,
+      "valor": 1483
+    },
+    {
+      "check": "los umbrales son los congelados",
+      "pasa": true,
+      "valor": "congelados"
+    },
+    {
+      "check": "el holdout no aparece en ninguna matriz",
+      "pasa": true,
+      "valor": 1483
+    },
+    {
+      "check": "el test solo tiene id y text",
+      "pasa": true,
+      "valor": [
+        "id",
+        "text"
+      ]
+    },
+    {
+      "check": "no existe ninguna etiqueta de test en el dataframe",
+      "pasa": true,
+      "valor": [
+        "id",
+        "text"
+      ]
+    },
+    {
+      "check": "no se lee el leaderboard",
+      "pasa": true,
+      "valor": "no se consulta"
+    },
+    {
+      "check": "no se lee el holdout",
+      "pasa": true,
+      "valor": "no se usa"
+    },
+    {
+      "check": "ninguna submission previa se lee como entrada",
+      "pasa": true,
+      "valor": "no aplica"
+    },
+    {
+      "check": "la submission se ha escrito",
+      "pasa": true,
+      "valor": "6fc7c171a8af08b9ac80c744baae2aceb65f2c1488e5eda15382b5914930898f"
+    },
+    {
+      "check": "0 bytes > 127 en la submission",
+      "pasa": true,
+      "valor": 0
+    }
+  ],
+  "checks_fallos": 0,
+  "subido_a_kaggle": false,
+  "leaderboard_consultado": false,
+  "test_labels_usadas": false,
+  "holdout_usado": false,
+  "no_se_generaron_variantes": true,
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

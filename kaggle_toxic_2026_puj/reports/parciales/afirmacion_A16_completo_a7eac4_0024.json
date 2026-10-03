@@ -1,0 +1,281 @@
+{
+  "marca_corrida": "completo_a7eac4",
+  "resultado": {
+    "bloque": 16,
+    "coste_segundos": 1.3e-05,
+    "descripcion": "la rejilla de alpha_0 y la sensibilidad de umbral, publicadas",
+    "detalle": {
+      "comprobaciones": {
+        "el_texto_del_metodo_no_contamina_el_recuento": true,
+        "la_rejilla_de_alpha_0_tiene_tres_valores": true,
+        "la_rejilla_de_umbral_tiene_tres_valores": true,
+        "las_dos_rejillas_estan_publicadas": true,
+        "las_magnitudes_de_alpha_0_estan_medidas": true,
+        "las_magnitudes_del_umbral_estan_medidas": true,
+        "ningun_valor_se_publica_como_el_mejor": true
+      },
+      "ningun_valor_elegido": true,
+      "por_que_no_se_elige": "elegir el mejor valor de la rejilla sobre el OOF seria seleccion sobre el OOF, que es la contamination que A14 prohibe",
+      "rejillas": {
+        "alpha_0": {
+          "0.50": {
+            "brier_macro": 0.1426228452614681,
+            "log_loss_macro": 0.4457108871115057,
+            "n_activas_total": 6.0,
+            "n_efectivos_total": 456.7722281544299,
+            "n_filas_medidas": 1483,
+            "por_etiqueta": {
+              "AG": 446.42991281314335,
+              "HS": 443.99171319117136,
+              "TR": 479.8950584589751
+            }
+          },
+          "1.00": {
+            "brier_macro": 0.14167180615398664,
+            "log_loss_macro": 0.4432757507690348,
+            "n_activas_total": 13.0,
+            "n_efectivos_total": 418.89253397720495,
+            "n_filas_medidas": 1483,
+            "por_etiqueta": {
+              "AG": 407.4401559201983,
+              "HS": 402.308485641683,
+              "TR": 446.92896036973366
+            }
+          },
+          "2.00": {
+            "brier_macro": 0.1399489997350212,
+            "log_loss_macro": 0.4377755699139304,
+            "n_activas_total": 45.0,
+            "n_efectivos_total": 370.1679464134697,
+            "n_filas_medidas": 1483,
+            "por_etiqueta": {
+              "AG": 358.79367229203217,
+              "HS": 350.0706270031783,
+              "TR": 401.6395399451984
+            }
+          }
+        },
+        "texto_efectivos_metodo": "EL_NUMERO_DE_PARAMETROS_EFECTIVOS_QUE_PRODUCE_ESTE_METODO_ES_UN_PARAMETRO_DEL_METODOY_ESTA_DETERMINADO_POR_LA_ESCALA_DE_LA_PRIOR_ALPHA_0_Y_POR_LA_VARIANZA_POSTERIORNO_ES_UN_NUMERO_DE_MUESTRAS_EFECTIVAS_DEL_CONJUNTO_DE_DATOS",
+        "umbral": {
+          "2.0": {
+            "brier_macro": 0.13958415286845396,
+            "dimension_maxima": 1124,
+            "dimension_media": 852.2,
+            "dimension_minima": 611,
+            "log_loss_macro": 0.4378698408799649,
+            "n_columnas_por_pliegue": {
+              "umbral_2.0_pliegue_0": {
+                "n_columnas": 1070,
+                "n_filas_inner_train": 817,
+                "pliegue": 0,
+                "umbral": 2.0
+              },
+              "umbral_2.0_pliegue_1": {
+                "n_columnas": 1069,
+                "n_filas_inner_train": 838,
+                "pliegue": 1,
+                "umbral": 2.0
+              },
+              "umbral_2.0_pliegue_2": {
+                "n_columnas": 1124,
+                "n_filas_inner_train": 831,
+                "pliegue": 2,
+                "umbral": 2.0
+              },
+              "umbral_2.0_pliegue_3": {
+                "n_columnas": 1049,
+                "n_filas_inner_train": 827,
+                "pliegue": 3,
+                "umbral": 2.0
+              },
+              "umbral_2.0_pliegue_4": {
+                "n_columnas": 1090,
+                "n_filas_inner_train": 828,
+                "pliegue": 4,
+                "umbral": 2.0
+              },
+              "umbral_3.0_pliegue_0": {
+                "n_columnas": 611,
+                "n_filas_inner_train": 817,
+                "pliegue": 0,
+                "umbral": 3.0
+              },
+              "umbral_3.0_pliegue_1": {
+                "n_columnas": 629,
+                "n_filas_inner_train": 838,
+                "pliegue": 1,
+                "umbral": 3.0
+              },
+              "umbral_3.0_pliegue_2": {
+                "n_columnas": 643,
+                "n_filas_inner_train": 831,
+                "pliegue": 2,
+                "umbral": 3.0
+              },
+              "umbral_3.0_pliegue_3": {
+                "n_columnas": 611,
+                "n_filas_inner_train": 827,
+                "pliegue": 3,
+                "umbral": 3.0
+              },
+              "umbral_3.0_pliegue_4": {
+                "n_columnas": 626,
+                "n_filas_inner_train": 828,
+                "pliegue": 4,
+                "umbral": 3.0
+              }
+            }
+          },
+          "3.0": {
+            "brier_macro": 0.14167180615398664,
+            "dimension_maxima": 643,
+            "dimension_media": 624.0,
+            "dimension_minima": 611,
+            "log_loss_macro": 0.4432757507690348,
+            "n_columnas_por_pliegue": {
+              "umbral_3.0_pliegue_0": {
+                "n_columnas": 611,
+                "n_filas_inner_train": 817,
+                "pliegue": 0,
+                "umbral": 3.0
+              },
+              "umbral_3.0_pliegue_1": {
+                "n_columnas": 629,
+                "n_filas_inner_train": 838,
+                "pliegue": 1,
+                "umbral": 3.0
+              },
+              "umbral_3.0_pliegue_2": {
+                "n_columnas": 643,
+                "n_filas_inner_train": 831,
+                "pliegue": 2,
+                "umbral": 3.0
+              },
+              "umbral_3.0_pliegue_3": {
+                "n_columnas": 611,
+                "n_filas_inner_train": 827,
+                "pliegue": 3,
+                "umbral": 3.0
+              },
+              "umbral_3.0_pliegue_4": {
+                "n_columnas": 626,
+                "n_filas_inner_train": 828,
+                "pliegue": 4,
+                "umbral": 3.0
+              }
+            }
+          },
+          "5.0": {
+            "brier_macro": 0.15153415152521896,
+            "dimension_maxima": 1124,
+            "dimension_media": 667.4,
+            "dimension_minima": 291,
+            "log_loss_macro": 0.4669643255121672,
+            "n_columnas_por_pliegue": {
+              "umbral_2.0_pliegue_0": {
+                "n_columnas": 1070,
+                "n_filas_inner_train": 817,
+                "pliegue": 0,
+                "umbral": 2.0
+              },
+              "umbral_2.0_pliegue_1": {
+                "n_columnas": 1069,
+                "n_filas_inner_train": 838,
+                "pliegue": 1,
+                "umbral": 2.0
+              },
+              "umbral_2.0_pliegue_2": {
+                "n_columnas": 1124,
+                "n_filas_inner_train": 831,
+                "pliegue": 2,
+                "umbral": 2.0
+              },
+              "umbral_2.0_pliegue_3": {
+                "n_columnas": 1049,
+                "n_filas_inner_train": 827,
+                "pliegue": 3,
+                "umbral": 2.0
+              },
+              "umbral_2.0_pliegue_4": {
+                "n_columnas": 1090,
+                "n_filas_inner_train": 828,
+                "pliegue": 4,
+                "umbral": 2.0
+              },
+              "umbral_3.0_pliegue_0": {
+                "n_columnas": 611,
+                "n_filas_inner_train": 817,
+                "pliegue": 0,
+                "umbral": 3.0
+              },
+              "umbral_3.0_pliegue_1": {
+                "n_columnas": 629,
+                "n_filas_inner_train": 838,
+                "pliegue": 1,
+                "umbral": 3.0
+              },
+              "umbral_3.0_pliegue_2": {
+                "n_columnas": 643,
+                "n_filas_inner_train": 831,
+                "pliegue": 2,
+                "umbral": 3.0
+              },
+              "umbral_3.0_pliegue_3": {
+                "n_columnas": 611,
+                "n_filas_inner_train": 827,
+                "pliegue": 3,
+                "umbral": 3.0
+              },
+              "umbral_3.0_pliegue_4": {
+                "n_columnas": 626,
+                "n_filas_inner_train": 828,
+                "pliegue": 4,
+                "umbral": 3.0
+              },
+              "umbral_5.0_pliegue_0": {
+                "n_columnas": 300,
+                "n_filas_inner_train": 817,
+                "pliegue": 0,
+                "umbral": 5.0
+              },
+              "umbral_5.0_pliegue_1": {
+                "n_columnas": 299,
+                "n_filas_inner_train": 838,
+                "pliegue": 1,
+                "umbral": 5.0
+              },
+              "umbral_5.0_pliegue_2": {
+                "n_columnas": 291,
+                "n_filas_inner_train": 831,
+                "pliegue": 2,
+                "umbral": 5.0
+              },
+              "umbral_5.0_pliegue_3": {
+                "n_columnas": 301,
+                "n_filas_inner_train": 827,
+                "pliegue": 3,
+                "umbral": 5.0
+              },
+              "umbral_5.0_pliegue_4": {
+                "n_columnas": 298,
+                "n_filas_inner_train": 828,
+                "pliegue": 4,
+                "umbral": 5.0
+              }
+            }
+          }
+        },
+        "valores_elegidos": []
+      },
+      "tolerancia": "seis decimales",
+      "valores_elegidos": []
+    },
+    "estado": "CONFIRMADO",
+    "exito": true,
+    "id": "A16",
+    "naturaleza": "CONFIRMAR",
+    "stop": false,
+    "tolerancia": "las dos rejillas publicadas, medidas, y ningun valor elegido",
+    "traza": ""
+  }
+}

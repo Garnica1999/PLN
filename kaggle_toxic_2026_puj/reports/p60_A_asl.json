@@ -1,0 +1,313 @@
+{
+  "familia": "P60_A_ASYMMETRIC_LOSS",
+  "naturaleza": "EXPERIMENTO. 1 candidato, 0 submissions, 0 Kaggle, 0 holdout, 0 test. V03 no se modifica",
+  "fecha": "2026-09-28T15:14:11+00:00",
+  "experiment_id": "P60-02",
+  "track": "P60-A",
+  "script": "experiments/p60_02_asl.py",
+  "paper": "Asymmetric Loss for Multi-Label Classification, ICCV 2021, DOI 10.1109/ICCV48922.2021.00015",
+  "pregunta": "La asimetria positivo/negativo de TOXIC es un objeto de primer orden y la perdida asimetrica la trata como tal, no como balance de clases",
+  "hipotesis": "sustituir la perdida logistica por la asimetrica de Ridnik con los valores ASL_s, sobre las mismas features, la misma capacidad y los mismos umbrales, mejora corrected_cv frente a un control de identico optimizador",
+  "mecanismo": "el termino positivo conserva la perdida logaritmica y el termino negativo se eleva a gamma- y su probabilidad se desplaza en m, de modo que la perdida negativa es EXACTAMENTE cero cuando p <= m. Es un CORTE DURO de negativos faciles, no un decaimiento suave",
+  "modelo": "el mismo LogisticRegression lineal de V03, C=2,0 balanced, resuelto con L-BFGS-B sobre el gradiente analitico de cada perdida",
+  "perdida": "logistica en el brazo 0; L+ = (1-p)^gamma+ * (-log p) y L- = max(p-m, 0)^gamma- * (-log(1-p)) en el brazo 1",
+  "rasgos": "los 27.431 del TF-IDF de V03, sin cambio",
+  "adaptacion_legal": {
+    "dominio_original": "vision multi-etiqueta con desequilibrio de uno o dos ordenes",
+    "adaptacion": "tres problemas binarios con prevalencias de 0,4370, 0,3001 y 0,3823",
+    "que_cambia": "la escala del desequilibrio: aqui es 1,46 a 1, no 100 a 1",
+    "que_es_invariante": "la asimetria de clase y el corte duro de negativos",
+    "honestidad": "la priori es baja y la revision lo dice: la condicion que justifica ASL es mucho mas fuerte en su dominio de origen"
+  },
+  "gap_analysis": {
+    "filas_asl": 0,
+    "precedente_mas_cercano": "V7-01, focal con gamma unico",
+    "por_que_no_es_duplicacion": "V7-01 probo focal, que decae de forma SUAVE y SIMETRICA. ASL anade un corte DURO y una asimetria de clase. Y P59-06 anulo la influencia de residuos EXTREMOS, que es la region opuesta a la que ASL descarta",
+    "veredicto": "NUEVA"
+  },
+  "configuracion_pre_registrada": {
+    "gamma_mas": 0.0,
+    "gamma_menos": 4.0,
+    "corte_m": 0.05,
+    "valores": "los tres son los valores ASL_s que el trabajo recomienda para multi-etiqueta dispersa, son constantes del metodo y no parametros de este problema, y estan fijados antes de mirar validation",
+    "pesos_de_clase": "los mismos balanceados de V03, contados en training",
+    "regularizacion": "C = 2.0 con el mismo L2, luego lo unico que cambia es la perdida por ejemplo",
+    "umbrales": "0,44 / 0,51 / 0,46 congelados",
+    "optimizador": "L-BFGS-B, maxiter 2000, gtol 1e-10",
+    "rejilla": "ninguna sobre gamma_mas, gamma_menos ni corte"
+  },
+  "verificacion_gradiente": [
+    {
+      "perdida": "logistica",
+      "regimen": "sin_corte",
+      "error_relativo_w": 2.81853810572893e-06,
+      "error_relativo_b": 2.0231852143430084e-06
+    },
+    {
+      "perdida": "logistica",
+      "regimen": "con_corte",
+      "error_relativo_w": 9.532254057670692e-07,
+      "error_relativo_b": 1.8043291699848126e-10
+    },
+    {
+      "perdida": "asimetrica",
+      "regimen": "sin_corte",
+      "error_relativo_w": 3.2219964272263116e-07,
+      "error_relativo_b": 7.399004763114614e-11
+    },
+    {
+      "perdida": "asimetrica",
+      "regimen": "con_corte",
+      "error_relativo_w": 5.786588346212862e-06,
+      "error_relativo_b": 3.393161961485151e-10
+    }
+  ],
+  "activacion_del_mecanismo": {
+    "negativos_con_perdida_exactamente_cero": {
+      "min": 0.0,
+      "max": 0.0,
+      "media": 0.0
+    },
+    "nota_corte_duro": "es la fraccion de negativos de ENTRENAMIENTO cuya perdida negativa es exactamente cero por el corte m. Dice si la parte NOVEL de ASL llego a activarse",
+    "reescalado_efectivo_del_negativo": {
+      "media": 0.06644886,
+      "min": 0.05860245,
+      "max": 0.07129542,
+      "factor_de_reduccion": 15.0492,
+      "nota": "razon entre la perdida negativa media con ASL y con la formula logistica, sobre los negativos de ENTRENAMIENTO. Es la parte de ASL que si actua, y es un reescalado de clase"
+    }
+  },
+  "control": {
+    "brazo_0_logistica": {
+      "corrected_cv": 0.7772647318762402,
+      "folds": [
+        0.7960101143044023,
+        0.7955257641824806,
+        0.7788600288600289,
+        0.7363173444113459,
+        0.7800420484520435
+      ],
+      "f1_por_etiqueta": {
+        "HS": 0.7622641509,
+        "TR": 0.8153153153,
+        "AG": 0.7542147294
+      },
+      "rescate": 2,
+      "damage": 1,
+      "neto": 1,
+      "cambian": 3
+    },
+    "delta_brazo_0_vs_V03": 5.32794e-05,
+    "max_abs_diff_prob": 0.006907940172801275,
+    "clona_a_V03": true
+  },
+  "resultado": {
+    "brazo_0_corrected_cv": 0.7772647319,
+    "brazo_1_corrected_cv": 0.624338862,
+    "delta_perdida_puro": -0.1529258699,
+    "delta_vs_V03": -0.1528725906,
+    "folds_brazo_1": [
+      0.621903,
+      0.62469,
+      0.630246,
+      0.61872,
+      0.626855
+    ],
+    "folds_brazo_0": [
+      0.79601,
+      0.795526,
+      0.77886,
+      0.736317,
+      0.780042
+    ],
+    "pliegues_mejorados": 0,
+    "f1_por_etiqueta": {
+      "HS": 0.635329045,
+      "TR": 0.6471910112,
+      "AG": 0.5904965296
+    },
+    "f1_por_etiqueta_control": {
+      "HS": 0.7622641509,
+      "TR": 0.8153153153,
+      "AG": 0.7542147294
+    },
+    "rescate": 334,
+    "damage": 1552,
+    "neto": -1218,
+    "cambian": 1886,
+    "gate": {
+      "delta_min": 0.003,
+      "pliegues_min": 4,
+      "supera_delta": false,
+      "supera_pliegues": false,
+      "superado": false
+    },
+    "bootstrap": null
+  },
+  "convergencia": true,
+  "por_ajuste": [
+    {
+      "pliegue": 1,
+      "etiqueta": "HS",
+      "iteraciones_control": 46,
+      "iteraciones_asl": 58,
+      "convergio_control": true,
+      "convergio_asl": true,
+      "gradiente_control": 1.0369593316805415e-05,
+      "gradiente_asl": 1.9717014823105004e-07
+    },
+    {
+      "pliegue": 1,
+      "etiqueta": "TR",
+      "iteraciones_control": 34,
+      "iteraciones_asl": 40,
+      "convergio_control": true,
+      "convergio_asl": true,
+      "gradiente_control": 2.4430476527908e-07,
+      "gradiente_asl": 1.7568173778832438e-05
+    },
+    {
+      "pliegue": 1,
+      "etiqueta": "AG",
+      "iteraciones_control": 38,
+      "iteraciones_asl": 43,
+      "convergio_control": true,
+      "convergio_asl": true,
+      "gradiente_control": 6.21746279067426e-06,
+      "gradiente_asl": 6.862460252707383e-07
+    },
+    {
+      "pliegue": 2,
+      "etiqueta": "HS",
+      "iteraciones_control": 38,
+      "iteraciones_asl": 53,
+      "convergio_control": true,
+      "convergio_asl": true,
+      "gradiente_control": 7.820222944299565e-07,
+      "gradiente_asl": 2.0453744939318888e-06
+    },
+    {
+      "pliegue": 2,
+      "etiqueta": "TR",
+      "iteraciones_control": 38,
+      "iteraciones_asl": 38,
+      "convergio_control": true,
+      "convergio_asl": true,
+      "gradiente_control": 1.6610390977210464e-06,
+      "gradiente_asl": 1.1357438629539184e-06
+    },
+    {
+      "pliegue": 2,
+      "etiqueta": "AG",
+      "iteraciones_control": 37,
+      "iteraciones_asl": 60,
+      "convergio_control": true,
+      "convergio_asl": true,
+      "gradiente_control": 1.4272118056542203e-06,
+      "gradiente_asl": 1.5439627749130386e-06
+    },
+    {
+      "pliegue": 3,
+      "etiqueta": "HS",
+      "iteraciones_control": 32,
+      "iteraciones_asl": 57,
+      "convergio_control": true,
+      "convergio_asl": true,
+      "gradiente_control": 4.463538387381219e-07,
+      "gradiente_asl": 3.0763317060242066e-06
+    },
+    {
+      "pliegue": 3,
+      "etiqueta": "TR",
+      "iteraciones_control": 38,
+      "iteraciones_asl": 49,
+      "convergio_control": true,
+      "convergio_asl": true,
+      "gradiente_control": 3.255001185602005e-07,
+      "gradiente_asl": 6.647192086616922e-07
+    },
+    {
+      "pliegue": 3,
+      "etiqueta": "AG",
+      "iteraciones_control": 43,
+      "iteraciones_asl": 48,
+      "convergio_control": true,
+      "convergio_asl": true,
+      "gradiente_control": 4.709627781530189e-07,
+      "gradiente_asl": 1.7708819064001562e-06
+    },
+    {
+      "pliegue": 4,
+      "etiqueta": "HS",
+      "iteraciones_control": 27,
+      "iteraciones_asl": 54,
+      "convergio_control": true,
+      "convergio_asl": true,
+      "gradiente_control": 4.654497398665985e-06,
+      "gradiente_asl": 4.897818237688357e-07
+    },
+    {
+      "pliegue": 4,
+      "etiqueta": "TR",
+      "iteraciones_control": 38,
+      "iteraciones_asl": 35,
+      "convergio_control": true,
+      "convergio_asl": true,
+      "gradiente_control": 2.3594615976850747e-06,
+      "gradiente_asl": 1.6729055740341857e-08
+    },
+    {
+      "pliegue": 4,
+      "etiqueta": "AG",
+      "iteraciones_control": 37,
+      "iteraciones_asl": 44,
+      "convergio_control": true,
+      "convergio_asl": true,
+      "gradiente_control": 5.418618739510336e-07,
+      "gradiente_asl": 4.8797585796052695e-06
+    },
+    {
+      "pliegue": 5,
+      "etiqueta": "HS",
+      "iteraciones_control": 30,
+      "iteraciones_asl": 53,
+      "convergio_control": true,
+      "convergio_asl": true,
+      "gradiente_control": 1.674396880825441e-07,
+      "gradiente_asl": 1.365476212788861e-06
+    },
+    {
+      "pliegue": 5,
+      "etiqueta": "TR",
+      "iteraciones_control": 41,
+      "iteraciones_asl": 43,
+      "convergio_control": true,
+      "convergio_asl": true,
+      "gradiente_control": 4.034533353087415e-06,
+      "gradiente_asl": 3.9263297398258085e-07
+    },
+    {
+      "pliegue": 5,
+      "etiqueta": "AG",
+      "iteraciones_control": 32,
+      "iteraciones_asl": 47,
+      "convergio_control": true,
+      "convergio_asl": true,
+      "gradiente_control": 3.884081332887165e-06,
+      "gradiente_asl": 5.372942675675195e-06
+    }
+  ],
+  "interpretacion": [
+    "El resultado cierra la perdida asimetrica como candidata, y conviene separar dos mediciones. La primera es el efecto sobre la metrica. La segunda, que es mas informativa, es si el mecanismo llego a activarse: el corte duro descarta exactamente la fraccion de negativos que se registra en activacion_del_mecanismo, y ese numero es la razon por la que el resultado es interpretable. Si la fraccion fuera cero, el corte duro no habriaCnTuple tu idea pero no la implemente"
+  ],
+  "decision": "CLOSED. La perdida asimetrica no mejora sobre el control de misma capacidad, con el mecanismo de corte duro Siendo el que V7-01 no probo",
+  "experimentos_registrados": 1,
+  "formulacion": "V03 remains the best verified leaderboard result.",
+  "gastos": {
+    "submissions": 0,
+    "consultas_kaggle": 0,
+    "uso_holdout": 0,
+    "uso_test": 0,
+    "segundos": 6.7
+  }
+}

@@ -1,0 +1,3 @@
+variante,corrected_cv,delta_vs_V03,ic95_0,ic95_1,f1_HS,f1_TR,f1_AG,salvage,damage,pliegues_positivos,gate_1_supera
+H0-control,0.777211,0.0,0.0,0.0,0.7617,0.8157,0.7542,0,0,0,False
+H1-bagging5,0.766688,-0.010523,-0.018318,-0.003035,0.7519,0.8005,0.7477,1,11,0,False

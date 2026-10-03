@@ -1,0 +1,53 @@
+{
+  "familia": "STRUCTURAL_TEXT_FEATURES",
+  "experimento": "V32-00 (reproducibilidad de V31-04 y control del nondeterminismo)",
+  "fecha": "2026-09-27T12:12:08+00:00",
+  "estado": "REPRODUCIBILITY_CONFIRMED",
+  "pregunta": "el +0,004167 de V31-04 es reproducible, y el resultado no depende de la semilla",
+  "alcance": "reproduccion exacta de V31-04 y control del nondeterminismo. No se prueba ninguna variante nueva",
+  "referencia_v31_04": {
+    "corrected_cv": 0.7813779888304766,
+    "rescates": 70,
+    "danios": 53,
+    "neto": 17,
+    "celdas_modificadas": 123
+  },
+  "reproduccion": {
+    "corrected_cv": 0.7813779888304766,
+    "delta_vs_referencia": 0.0,
+    "dentro_de_tolerancia": true,
+    "rescates": 70,
+    "danios": 53,
+    "neto": 17,
+    "celdas_modificadas": 123,
+    "delta_por_pliegue": [
+      0.01750608302288137,
+      0.013847515353989981,
+      0.008500173543078637,
+      -0.03073200244029195,
+      0.012197536454146118
+    ]
+  },
+  "semillas": {
+    "valores_probados": [
+      "0",
+      "999"
+    ],
+    "hashes": [
+      "1375a9f490b8c7eb264452f6a065b9794ad5f148cd2bc97b602979e2240a1588",
+      "1375a9f490b8c7eb264452f6a065b9794ad5f148cd2bc97b602979e2240a1588"
+    ],
+    "identicos": true
+  },
+  "fuentes_de_nondeterminismo_descartadas": [
+    "orden de iteracion de set con PYTHONHASHSEED variable",
+    "dos corridas en el mismo proceso",
+    "el vectorizador TF-IDF se ajusta dentro de cada pliegue, como en V03"
+  ],
+  "gastos": {
+    "submissions": 0,
+    "modelos_entrenados": 2,
+    "memoria_pico_mb": 227.7,
+    "segundos": 17.3
+  }
+}

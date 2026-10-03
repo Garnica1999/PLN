@@ -1,0 +1,29 @@
+{
+  "experimento": "V9-04 (H1)",
+  "fecha": "2026-09-26",
+  "dispositivo": "cuda",
+  "embedding": {
+    "archivo": "fasttext_baseline.vec",
+    "dim": 200,
+    "vocabulario_usado": 3439
+  },
+  "hiperparametros": {
+    "max_len": 64,
+    "epocas": 12,
+    "paciencia": 3,
+    "batch": 64,
+    "lr": 0.001,
+    "weight_decay": 0.0001,
+    "dim_gru": 64,
+    "embeddings": "congelados"
+  },
+  "gru_umbrales_v03": 0.6943432465535336,
+  "gru_umbral_0_5": 0.6829350502187271,
+  "media_lr_umbrales_v03": 0.663595699045307,
+  "media_lr_umbral_0_5": 0.6615759519818374,
+  "referencia_v03": 0.7772114525165721,
+  "delta_gru_vs_media": 0.030748,
+  "delta_gru_vs_v03": -0.082868,
+  "veredicto": "SECUENCIAL SUPERA A LA MEDIA; comparar contra V03",
+  "duracion_segundos": 25.59
+}

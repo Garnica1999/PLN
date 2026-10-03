@@ -1,0 +1,304 @@
+{
+  "marca_corrida": "completo_dea5d4",
+  "resultado": {
+    "bloque": 9,
+    "coste_segundos": 0.000103,
+    "descripcion": "la curva de calibracion completa, con bins poblados",
+    "detalle": {
+      "banda_muerta_bin": 1e-09,
+      "comprobaciones": {
+        "M1_AG_no_tiene_mas_de_la_mitad_de_bins_vacios": true,
+        "M1_AG_no_tiene_nan": true,
+        "M1_AG_tiene_10_bins": true,
+        "M1_AG_tiene_un_bin_con_20_unidades": true,
+        "M1_HS_no_tiene_mas_de_la_mitad_de_bins_vacios": true,
+        "M1_HS_no_tiene_nan": true,
+        "M1_HS_tiene_10_bins": true,
+        "M1_HS_tiene_un_bin_con_20_unidades": true,
+        "M1_TR_no_tiene_mas_de_la_mitad_de_bins_vacios": true,
+        "M1_TR_no_tiene_nan": true,
+        "M1_TR_tiene_10_bins": true,
+        "M1_TR_tiene_un_bin_con_20_unidades": true
+      },
+      "curvas": {
+        "M1_AG": {
+          "area_entre_curva_y_diagonal": 0.029292194232864294,
+          "bins": [
+            {
+              "bin": 0,
+              "frecuencia_observada": 0.06666666666666667,
+              "inferior": 0.0,
+              "media_predicha": 0.05350320799556235,
+              "n": 195,
+              "superior": 0.1
+            },
+            {
+              "bin": 1,
+              "frecuencia_observada": 0.12393162393162394,
+              "inferior": 0.1,
+              "media_predicha": 0.1502859825002197,
+              "n": 234,
+              "superior": 0.2
+            },
+            {
+              "bin": 2,
+              "frecuencia_observada": 0.23411371237458195,
+              "inferior": 0.2,
+              "media_predicha": 0.2513317514453222,
+              "n": 299,
+              "superior": 0.30000000000000004
+            },
+            {
+              "bin": 3,
+              "frecuencia_observada": 0.2923076923076923,
+              "inferior": 0.30000000000000004,
+              "media_predicha": 0.34243571683789686,
+              "n": 195,
+              "superior": 0.4
+            },
+            {
+              "bin": 4,
+              "frecuencia_observada": 0.4621212121212121,
+              "inferior": 0.4,
+              "media_predicha": 0.44446172690164776,
+              "n": 132,
+              "superior": 0.5
+            },
+            {
+              "bin": 5,
+              "frecuencia_observada": 0.6464646464646465,
+              "inferior": 0.5,
+              "media_predicha": 0.5508129191205039,
+              "n": 99,
+              "superior": 0.6000000000000001
+            },
+            {
+              "bin": 6,
+              "frecuencia_observada": 0.6857142857142857,
+              "inferior": 0.6000000000000001,
+              "media_predicha": 0.6465605785468697,
+              "n": 70,
+              "superior": 0.7000000000000001
+            },
+            {
+              "bin": 7,
+              "frecuencia_observada": 0.75,
+              "inferior": 0.7000000000000001,
+              "media_predicha": 0.7502800635512138,
+              "n": 56,
+              "superior": 0.8
+            },
+            {
+              "bin": 8,
+              "frecuencia_observada": 0.8571428571428571,
+              "inferior": 0.8,
+              "media_predicha": 0.8530658300150427,
+              "n": 63,
+              "superior": 0.9
+            },
+            {
+              "bin": 9,
+              "frecuencia_observada": 0.9214285714285714,
+              "inferior": 0.9,
+              "media_predicha": 0.9569250172156267,
+              "n": 140,
+              "superior": 1.0
+            }
+          ],
+          "n": 1483,
+          "n_bins": 10,
+          "n_bins_con_al_menos_20_unidades": 10,
+          "n_vacios": 0
+        },
+        "M1_HS": {
+          "area_entre_curva_y_diagonal": 0.03397634386719374,
+          "bins": [
+            {
+              "bin": 0,
+              "frecuencia_observada": 0.05970149253731343,
+              "inferior": 0.0,
+              "media_predicha": 0.046441431582866,
+              "n": 134,
+              "superior": 0.1
+            },
+            {
+              "bin": 1,
+              "frecuencia_observada": 0.11538461538461539,
+              "inferior": 0.1,
+              "media_predicha": 0.15051946470787597,
+              "n": 156,
+              "superior": 0.2
+            },
+            {
+              "bin": 2,
+              "frecuencia_observada": 0.20192307692307693,
+              "inferior": 0.2,
+              "media_predicha": 0.25232498939237524,
+              "n": 208,
+              "superior": 0.30000000000000004
+            },
+            {
+              "bin": 3,
+              "frecuencia_observada": 0.3021276595744681,
+              "inferior": 0.30000000000000004,
+              "media_predicha": 0.350437506007888,
+              "n": 235,
+              "superior": 0.4
+            },
+            {
+              "bin": 4,
+              "frecuencia_observada": 0.4523809523809524,
+              "inferior": 0.4,
+              "media_predicha": 0.44753821827884865,
+              "n": 210,
+              "superior": 0.5
+            },
+            {
+              "bin": 5,
+              "frecuencia_observada": 0.625,
+              "inferior": 0.5,
+              "media_predicha": 0.5475215718506726,
+              "n": 144,
+              "superior": 0.6000000000000001
+            },
+            {
+              "bin": 6,
+              "frecuencia_observada": 0.6526315789473685,
+              "inferior": 0.6000000000000001,
+              "media_predicha": 0.6496770772509476,
+              "n": 95,
+              "superior": 0.7000000000000001
+            },
+            {
+              "bin": 7,
+              "frecuencia_observada": 0.7837837837837838,
+              "inferior": 0.7000000000000001,
+              "media_predicha": 0.7471356480450371,
+              "n": 74,
+              "superior": 0.8
+            },
+            {
+              "bin": 8,
+              "frecuencia_observada": 0.8059701492537313,
+              "inferior": 0.8,
+              "media_predicha": 0.8502406212953124,
+              "n": 67,
+              "superior": 0.9
+            },
+            {
+              "bin": 9,
+              "frecuencia_observada": 0.9375,
+              "inferior": 0.9,
+              "media_predicha": 0.9572499527481119,
+              "n": 160,
+              "superior": 1.0
+            }
+          ],
+          "n": 1483,
+          "n_bins": 10,
+          "n_bins_con_al_menos_20_unidades": 10,
+          "n_vacios": 0
+        },
+        "M1_TR": {
+          "area_entre_curva_y_diagonal": 0.03170821750882132,
+          "bins": [
+            {
+              "bin": 0,
+              "frecuencia_observada": 0.03669724770642202,
+              "inferior": 0.0,
+              "media_predicha": 0.039704080936022915,
+              "n": 654,
+              "superior": 0.1
+            },
+            {
+              "bin": 1,
+              "frecuencia_observada": 0.1319796954314721,
+              "inferior": 0.1,
+              "media_predicha": 0.14431753765842345,
+              "n": 197,
+              "superior": 0.2
+            },
+            {
+              "bin": 2,
+              "frecuencia_observada": 0.19327731092436976,
+              "inferior": 0.2,
+              "media_predicha": 0.24659992220040486,
+              "n": 119,
+              "superior": 0.30000000000000004
+            },
+            {
+              "bin": 3,
+              "frecuencia_observada": 0.37333333333333335,
+              "inferior": 0.30000000000000004,
+              "media_predicha": 0.34995708617028937,
+              "n": 75,
+              "superior": 0.4
+            },
+            {
+              "bin": 4,
+              "frecuencia_observada": 0.5692307692307692,
+              "inferior": 0.4,
+              "media_predicha": 0.4465416080343863,
+              "n": 65,
+              "superior": 0.5
+            },
+            {
+              "bin": 5,
+              "frecuencia_observada": 0.6101694915254238,
+              "inferior": 0.5,
+              "media_predicha": 0.5488438263410852,
+              "n": 59,
+              "superior": 0.6000000000000001
+            },
+            {
+              "bin": 6,
+              "frecuencia_observada": 0.8222222222222222,
+              "inferior": 0.6000000000000001,
+              "media_predicha": 0.6453770494969238,
+              "n": 45,
+              "superior": 0.7000000000000001
+            },
+            {
+              "bin": 7,
+              "frecuencia_observada": 0.8,
+              "inferior": 0.7000000000000001,
+              "media_predicha": 0.7434765755514919,
+              "n": 40,
+              "superior": 0.8
+            },
+            {
+              "bin": 8,
+              "frecuencia_observada": 0.746031746031746,
+              "inferior": 0.8,
+              "media_predicha": 0.8525550442378493,
+              "n": 63,
+              "superior": 0.9
+            },
+            {
+              "bin": 9,
+              "frecuencia_observada": 0.9337349397590361,
+              "inferior": 0.9,
+              "media_predicha": 0.9699078685206808,
+              "n": 166,
+              "superior": 1.0
+            }
+          ],
+          "n": 1483,
+          "n_bins": 10,
+          "n_bins_con_al_menos_20_unidades": 10,
+          "n_vacios": 0
+        }
+      },
+      "minimo_unidades_por_bin": 20,
+      "n_bins": 10,
+      "problemas": []
+    },
+    "estado": "CONFIRMADO",
+    "exito": true,
+    "id": "A9",
+    "naturaleza": "CONFIRMAR",
+    "stop": true,
+    "tolerancia": "10 bins con al menos uno de 20 unidades",
+    "traza": ""
+  }
+}

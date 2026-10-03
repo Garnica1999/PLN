@@ -4,10 +4,37 @@ __pycache__/
 .ruff_cache/
 .ipynb_checkpoints/
 
-# Datos oficiales de la competencia (no redistribuir)
+# Datos oficiales de la competencia (no redistribuir).
+# El patron lleva barra solo para directorios, asi que el enlace simbolico que
+# conecta el worktree de v7 con la copia unica de los datos quedaria sin cubrir
+# y aparecia como fichero sin versionar. Se repite sin barra a proposito.
 data/
+data
 
 # Artefactos derivados pesados
 features/
 models/
 experiments/*.log
+
+# Codigo y binarios de terceros usados en la fase v5.
+# Se documentan por commit y sha256 en data/external/corpora/corpus_manifest.json.
+# El patron es tools/* y no tools/ a proposito: git no vuelve a incluir un fichero
+# cuyo directorio padre esta excluido, de modo que con tools/ la excepcion de mas
+# abajo nunca habria efecto.
+tools/*
+
+# Excepcion deliberada: la puerta de verificacion de caracteres es codigo propio
+# y forma parte de la auditoria de cumplimiento, asi que debe viajar versionada.
+# En v6 se anunciaba en el commit pero se perdia aqui, porque todo tools/ estaba
+# ignorado y el fichero nunca llego al repositorio.
+!tools/verificar_*.py
+
+models
+
+# Embeddings entrenados: 133 MB, y reproducibles con semilla fija.
+# Su SHA256 queda registrado en reports/twitter_word2vec_training.json.
+modelos/twitter_domain/*.npz
+experimentos/*.pid
+
+# Embeddings y checkpoints de P84: reproducibles con semilla fija; los npz pesan ~75 MB.
+modelos/p84/*

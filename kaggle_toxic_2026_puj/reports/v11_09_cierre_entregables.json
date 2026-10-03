@@ -1,0 +1,38 @@
+{
+  "experimento": "V11-09 (cierre de entregables)",
+  "fecha": "2026-09-26T22:09:00+00:00",
+  "entregables_esperados": 11,
+  "entregables_ausentes": [],
+  "detalle": [
+    {
+      "artefacto": "v11_gap_audit.md",
+      "tipo": "documento",
+      "linea": "P0",
+      "motivo": "La auditoria de brechas SI se ejecuto: es V11-00, con 25 de 25 comprobaciones superadas. Este documento es un puntero a su informe canonico, no una copia, porque dos copias de la misma observacion divergen",
+      "donde_esta": "reports/v11_00_reconciliacion.md, secciones 2 a 6"
+    },
+    {
+      "artefacto": "v11_calibration.csv",
+      "tipo": "tabla",
+      "linea": "P4",
+      "motivo": "La linea de calibracion ya estaba medida y cerrada en v10 con V10-04, que dio NO ACCIONABLE porque la calibracion mejora el ECE de 0.0583 a 0.0174 y no la F1. En v11 no se ejecuto ningun experimento de calibracion, luego no hay cifras nuevas",
+      "donde_esta": "reports/v10_04_calibracion_fuerte.md y reports/v10_04_calibracion_fuerte.json"
+    },
+    {
+      "artefacto": "v11_threshold_stability.csv",
+      "tipo": "tabla",
+      "linea": "P8",
+      "motivo": "La parametrizacion estable de umbrales ya estaba medida y cerrada en v10 con V10-06, que no supero su gate: no hay parametrizacion a la vez igual de buena y mas estable. Sin experimento propio, no hay cifras",
+      "donde_esta": "reports/v10_06_umbrales_estables.md y reports/v10_06_umbrales_estables.json"
+    },
+    {
+      "artefacto": "v11_error_intersection.csv",
+      "tipo": "tabla",
+      "linea": "transversal",
+      "motivo": "La interseccion de errores es una medida entre DOS o mas candidatos, y en v11 solo hay uno vivo, V03. La interseccion de un conjunto consigo mismo es el propio conjunto, luego la tabla seria trivial y sin contenido informativo",
+      "donde_esta": "no aplica, no hay segundo candidato con el que intersectar"
+    }
+  ],
+  "regla_aplicada": "Un entregable ausente se confunde con uno olvidado. Se escribe con una fila que documenta el motivo del vacio, porque documentar una decision es mas honesto que callarla.",
+  "lo_que_no_se_hizo": "No se copiaron cifras de v10 a tablas de v11. Seria inventar trazabilidad: el lector veria resultados de v10 etiquetados como de v11, sin forma de distinguirlo al abrir el fichero."
+}

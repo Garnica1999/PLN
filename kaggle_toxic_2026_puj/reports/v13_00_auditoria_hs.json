@@ -1,0 +1,208 @@
+{
+  "experimento": "V13-00 (P0, auditoria historica de la estimacion de HS)",
+  "fecha": "2026-09-26T23:48:36+00:00",
+  "referencia_v03": 0.7772114525165721,
+  "lb_v03": 0.78306,
+  "lb_del_meta": 0.78163,
+  "techo_oraculo": 0.046271,
+  "estados_observados": {
+    "000": 813,
+    "111": 421,
+    "100": 79,
+    "101": 124,
+    "001": 22,
+    "110": 24
+  },
+  "numero_de_estados": 6,
+  "violaciones_de_la_invariante_tr": 0,
+  "violaciones_de_la_invariante_ag": 22,
+  "observacion_sobre_la_invariante": "La invariante TR=1 implica HS=1 NO es dura: hay estados observados que la rompen. V6-01 la reporto como determinista y el recuento de hoy, sobre el desarrollo, muestra que hay excepciones. Es la razon por la que P4 no puede imponer la regla a mano.",
+  "matriz": [
+    {
+      "mecanismo": "Clasificacion conjunta sobre el espacio de combinaciones (label powerset)",
+      "historico": "V4-E, experiments/31_joint_label_v4.py, filas V4-E01 a V4-E03",
+      "exactamente_que_hizo": "Un multinomial sobre las combinaciones observadas de (HS, TR, AG), marginalizado de vuelta a P(HS), P(TR) y P(AG). Siete variantes: 6 combinaciones, 4 frecuentes con mapeo de Hamming, 4 frecuentes excluyendo las raras, con y sin peso de clase invertido, y dos constantes. Estados derivados del tren de cada fold, igual que propone P1",
+      "equivalente_a_hipotesis": "SI, es literalmente P1",
+      "hipotesis_de_la_fase": "P1",
+      "resultado_historico": "Mejor 0,771289 con umbrales de V03 y 0,777199 con umbral 0,5, frente a 0,777211 de V03. Ninguna variante lo supera. Match exacto de la combinacion entre 0,62 y 0,72. Cerrado como NO_SIGNAL",
+      "cerrado": "si, con evidencia y con protocolo valido",
+      "se_ejecuta_en_v13": "NO",
+      "como_se_verifico": "Docstring y funciones a_combinacion y marginalizar del guion, y la tabla de reports/joint_label_v4.csv"
+    },
+    {
+      "mecanismo": "Meta-modelo sobre scores OOF de varias bases, con dependencia entre etiquetas",
+      "historico": "E2-02 en experiments/15_cadenas_etiquetas_v2.py, y E2-18 en experiments/17_stacking_v2.py",
+      "exactamente_que_hizo": "Regresion logistica POR ETIQUETA sobre 12 probabilidades OOF de 4 bases, mas 12 margenes, 12 entropias y 8 rasgos estructurales. Es decir, predecir HS usa tambien las probabilidades y los margenes de TR y AG. Anadida la variante Ridge, que fue la mejor",
+      "equivalente_a_hipotesis": "SI, es P2 y tambien P3, y con un conjunto de features MAS RICO que el que P2 propone",
+      "hipotesis_de_la_fase": "P2 y P3",
+      "resultado_historico": "E2-02 dio 0,7853 y fue ADOPTADA en su gate. E2-18-META-BASES-RIDGE dio 0,7874 y fue ADOPTADO en el gate P6. Es decir +0,0081 y +0,0102 sobre V03. Y a pesar de eso no se adopto como submission, porque el leaderboard dio 0,78163 frente a 0,78306 de V03",
+      "cerrado": "SI como mecanismo, y con un motivo que la fase nueva debe respetar: fallo de transferencia medido, no fallo de metrica local",
+      "se_ejecuta_en_v13": "NO como mecanismo. El mecanismo esta agotado y su riesgo de transferencia esta medido. Lo unico que se hace es la aislacion que nunca se hizo, que se explica en el informe",
+      "como_se_verifico": "Docstring de 15_cadenas_etiquetas_v2.py linea 34, que detalla las features del meta, y el registro con las filas E2-02-META y E2-18-META-BASES-RIDGE"
+    },
+    {
+      "mecanismo": "Factorizacion condicional suave con producto de probabilidades",
+      "historico": "V6-B, experiments/v6_02_label_factorization.py",
+      "exactamente_que_hizo": "p(TR|X) = p(HS|X) * p(TR|HS=1, X) con el condicional entrenado solo en su dominio, y p(AG|X) como mezcla de dos ramas con la probabilidad de HS. El encabezado declara explicitamente sin routing duro",
+      "equivalente_a_hipotesis": "SI, es la formulacion que el enunciado prohibe repetir",
+      "hipotesis_de_la_fase": "prohibida por el enunciado",
+      "resultado_historico": "B1 -0,0107 con IC95 que excluye cero, 1 de 5 pliegues, 1 fila rescatada frente a 35 rotas. B2 -0,0008 con IC95 que incluye el cero. B3 -0,0115. Ninguno supera ningun gate",
+      "cerrado": "si, con mecanismo de fallo identificado",
+      "se_ejecuta_en_v13": "NO",
+      "como_se_verifico": "Analisis estructural del arbol de V6-02 en V12-04, con 5 operaciones de producto y 0 condicionales cuya condicion menciona HS"
+    },
+    {
+      "mecanismo": "Routing duro sobre HS predicho",
+      "historico": "Post-proceso jerarquico en 02_baseline_tfidf_lr.py, y V12-02 que lo remidio",
+      "exactamente_que_hizo": "Si HS predicho es 0, poner TR y AG a 0",
+      "equivalente_a_hipotesis": "SI",
+      "hipotesis_de_la_fase": "prohibida por el enunciado",
+      "resultado_historico": "-0,004187. La mascara con HS VERDADERO da +0,046271, y la diferencia es lo que cuesta usar la prediccion como llave, porque el HS predicho falla 143 filas de 1483",
+      "cerrado": "si, y con la causa medida",
+      "se_ejecuta_en_v13": "NO",
+      "como_se_verifico": "reports/v12_02_perdida_y_estructura.json, seccion de techo"
+    },
+    {
+      "mecanismo": "Corrector o combinacion de margenes en inferencia",
+      "historico": "V8-08, experiments/v8_08_corrector_margenes.py",
+      "exactamente_que_hizo": "Un segundo modelo de cuatro variables de entrada sobre los margenes de V03 y el desacuerdo entre los cinco modelos de pliegue",
+      "equivalente_a_hipotesis": "SI para la parte de P3 que combina scores en inferencia",
+      "hipotesis_de_la_fase": "P3",
+      "resultado_historico": "192 de 3462 celdas cambian, en 161 filas. Su techo lo acotan el apilamiento con 44 columnas, que dio 0,78163 en el externo, y la fusion tardia de v09 a v11, que tampoco superaron la referencia",
+      "cerrado": "si",
+      "se_ejecuta_en_v13": "NO",
+      "como_se_verifico": "Docstring del guion y reports/v8_corrector_margenes.md"
+    },
+    {
+      "mecanismo": "Perdida que acopla las etiquetas por pares o por margen",
+      "historico": "V12-03, experiments/v12_03_entrenamiento_por_pares.py",
+      "exactamente_que_hizo": "Tres clasificadores entrenados jointemente con un termino de margen por pares que expresa el orden entre las tres etiquetas, sin llave en la prediccion",
+      "equivalente_a_hipotesis": "SI para la parte de P4 que acopla el objetivo",
+      "hipotesis_de_la_fase": "P4",
+      "resultado_historico": "Mejor -0,002469 con deteccion 0,4915, es decir peores que el azar. La curva es monotona decreciente con maximo en lambda=0",
+      "cerrado": "si",
+      "se_ejecuta_en_v13": "NO",
+      "como_se_verifico": "reports/v12_03_entrenamiento_por_pares.json"
+    },
+    {
+      "mecanismo": "Regularizacion conjunta entre etiquetas",
+      "historico": "V8-05, experiments/v8_05_regularizacion_conjunta.py",
+      "exactamente_que_hizo": "Un termino que acerca las tres cabeceras de V03 a su media compartida, sin imponer reglas de decision",
+      "equivalente_a_hipotesis": "Parcialmente, en el eje del objetivo compartido",
+      "hipotesis_de_la_fase": "P4",
+      "resultado_historico": "Negativo, cerrado sin variante",
+      "cerrado": "si",
+      "se_ejecuta_en_v13": "NO",
+      "como_se_verifico": "Registro, fila V8-05"
+    },
+    {
+      "mecanismo": "Cadenas de etiquetas con score previo como feature",
+      "historico": "E2-01, experiments/15_cadenas_etiquetas_v2.py",
+      "exactamente_que_hizo": "Seis ordenes de encadenamiento, con el score y el margen de la etiqueta previa como feature de la siguiente, generados por CV interna para no filtrar",
+      "equivalente_a_hipotesis": "Parcialmente, eninyectar scores de otras etiquetas",
+      "hipotesis_de_la_fase": "P3",
+      "resultado_historico": "Negativo en los seis ordenes",
+      "cerrado": "si",
+      "se_ejecuta_en_v13": "NO",
+      "como_se_verifico": "Docstring del guion, seccion de cadenas"
+    },
+    {
+      "mecanismo": "AISLAR si TR y AG llevan informacion sobre los errores de HS",
+      "historico": "NINGUNO. No existe equivalente",
+      "exactamente_que_hizo": "Nada. E2-02 predice cada etiqueta con un conjunto que incluye el score propio de la etiqueta, de modo que nunca se puede atribuir a TR y AG la contribucion a HS",
+      "equivalente_a_hipotesis": "NO",
+      "hipotesis_de_la_fase": "es la pregunta central de la fase, y es nueva",
+      "resultado_historico": "nunca medido",
+      "cerrado": "no, esta genuinamente sin probar",
+      "se_ejecuta_en_v13": "SI, con controles",
+      "como_se_verifico": "Revision de las features del meta en 15_cadenas_etiquetas_v2.py: las 12 probabilidades OOF son 4 bases por 3 etiquetas, luego el score propio de HS esta siempre presente"
+    },
+    {
+      "mecanismo": "Descomposicion de los errores de HS por regimen, y rescate y dano por correccion",
+      "historico": "NINGUNO. No existe equivalente",
+      "exactamente_que_hizo": "Nada. E2-02 y E2-18 se evaluaron sobre la metrica agregada, y ningun informe descompone los errores de HS en regimenos de verdad y predicha ni cuenta como una correccion de HS rescata o dana filas de TR y AG",
+      "equivalente_a_hipotesis": "NO",
+      "hipotesis_de_la_fase": "son los diagnosticos obligatorios de la fase, y son nuevos",
+      "resultado_historico": "nunca medido",
+      "cerrado": "no",
+      "se_ejecuta_en_v13": "SI, y es el entregable principal de la fase",
+      "como_se_verifico": "Revision de los informes de E2-02, E2-18 y V8-08: todos reportan metricas agregadas y ninguno descompone por el par de verdad y predicha de HS"
+    },
+    {
+      "mecanismo": "Fraccion del techo del oraculo que recupera cada mecanismo",
+      "historico": "NINGUNO. No existe equivalente",
+      "exactamente_que_hizo": "Nada. El techo de +0,046271 se midio en v12, y no hay ninguna tabla que lo compare mecanismo por mecanismo",
+      "equivalente_a_hipotesis": "NO",
+      "hipotesis_de_la_fase": "es el techo de informacion de la fase, y es nuevo",
+      "resultado_historico": "nunca medido",
+      "cerrado": "no",
+      "se_ejecuta_en_v13": "SI",
+      "como_se_verifico": "Revision de reports/v12_02_perdida_y_estructura.md y de los demas informes"
+    }
+  ],
+  "mecanismos_ya_cerrados": 8,
+  "mecanismos_a_ejecutar": 3,
+  "productos_de_probabilidad_que_mezclan_hs": [
+    {
+      "fichero": "01_eda_linguistico.py",
+      "linea": 2913,
+      "expresion": "conclusion['proporcion_tr1_en_hs1'] * 100"
+    },
+    {
+      "fichero": "v12_03_entrenamiento_por_pares.py",
+      "linea": 281,
+      "expresion": "factor * arriba_hs * (sigma_tr + sigma_ag)"
+    },
+    {
+      "fichero": "v12_03_entrenamiento_por_pares.py",
+      "linea": 282,
+      "expresion": "factor * arriba_hs * sigma_tr"
+    },
+    {
+      "fichero": "v12_03_entrenamiento_por_pares.py",
+      "linea": 283,
+      "expresion": "factor * arriba_hs * sigma_ag"
+    },
+    {
+      "fichero": "v6_02_label_factorization.py",
+      "linea": 188,
+      "expresion": "proba_hs[validacion] * cond_tr_hs1[validacion]"
+    },
+    {
+      "fichero": "v6_02_label_factorization.py",
+      "linea": 208,
+      "expresion": "proba_hs[validacion] * cond_ag_hs1[validacion]"
+    },
+    {
+      "fichero": "v6_02_label_factorization.py",
+      "linea": 209,
+      "expresion": "(1 - proba_hs[validacion]) * cond_ag_hs0[validacion]"
+    }
+  ],
+  "historicos": {
+    "V4-E01-E03": {
+      "f1": "0.7713",
+      "decision": "TRACK E cerrado como NO_SIGNAL (V4-E01, V4-E02 y V4-E03); se confirma que la dependencia entre etiquetas ya esta capturada por el meta (V4-H01) y no por un modelo conjunto"
+    },
+    "E2-02-META": {
+      "f1": "0.7853",
+      "decision": "ADOPTADA (Gate P1)"
+    },
+    "E2-18-META-BASES-RIDGE": {
+      "f1": "0.7874",
+      "decision": "ADOPTADO (Gate P6)"
+    },
+    "V6-02": {
+      "f1": "",
+      "decision": "**Track B cerrado por resultado negativo (seccion 54). Sin ampliar rejilla.** La factorizacion condicional no se adopta para V03. Queda registrado que contra una referencia que violara la invariante mas, o con umbral TR "
+    },
+    "V8-08": {
+      "f1": "",
+      "decision": "**Se generan las dos submissions y la del ensemble de repeticiones es la que tiene merits propio para enviar**: es la mayor mejora local de la fase, gana 4 de 5 pliegues y su tasa de acierto es la unica por encima de 0,5"
+    },
+    "V12-03": {
+      "f1": "0.777265",
+      "decision": "**CERRADA.** Ningun valor de lambda supera ningun gate, y la curva tiene su maximo en el punto neutro. No se genera submission ni se ejecuta segunda particion, porque no hay candidata. Es la tercera hipotesis cerrada sob"
+    }
+  }
+}

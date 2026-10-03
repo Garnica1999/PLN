@@ -1,0 +1,80 @@
+{
+  "familia": "P59_F_GENERATIVE_NGRAM",
+  "naturaleza": "CIERRE POR DUPLICACION FUNCIONAL. 0 experimentos, 0 modelos, 0 scores, 0 submissions, 0 Kaggle, 0 holdout, 0 test. V03 no se modifica",
+  "fecha": "2026-09-28T14:35:17+00:00",
+  "track": "P59-F",
+  "estado": "CLOSED_BY_DUPLICATION",
+  "experimentos_consumidos": 0,
+  "dependencia": "ninguna. Solo gap analysis, novedad funcional y presupuesto",
+  "control": {
+    "corrected_cv_V03": "0.7772114525165721",
+    "reproduce_exacto": true
+  },
+  "F1_gap_check": {
+    "veredicto": "EXISTE EQUIVALENCIA FUNCIONAL",
+    "pierna_1_algebraica": {
+      "colapso": "sobre una representacion de n-gramas fija, TODO modelo generativo condicional de clase colapsa a log P(c|x) = log P(c) + sum_f theta_{f,c}",
+      "consecuencia": "esa es la forma de naive Bayes y de log-odds. El unico parametro libre es el estimador de theta, y todo estimador de theta es una estrategia de suavizado: Laplace, backoff de Witten, priors de Dirichlet, o el complemento de ComplementNB",
+      "por_que_eso_mata_F": "una formulacion generativa nueva con una estrategia de suavizado nueva es, por construccion, una variante de suavizado de un modelo ya cerrado. La representacion no salva nada, porque el colapso vale para cualquier base"
+    },
+    "pierna_2_familia_ya_ejecutada": [
+      {
+        "id": "MOD-02_BEST",
+        "que_hizo": "ComplementNB(alpha=1,0) x3 sobre la union TF-IDF de V03",
+        "resultado": "0,6888 de F1 media por columna frente a 0,7587 del lineal, -0,069949 y 0 de 5 pliegues",
+        "cierre": "descartada"
+      },
+      {
+        "id": "E2-15-NB-WORD",
+        "que_hizo": "ratio log-count NB-SVM fold-local sobre word(1,2) hacia la misma LR",
+        "resultado": "-0,0234 con 0 de 5 pliegues, ganancia de ensemble -0,0057 y correlacion de residuales con V03 de 0,9243",
+        "cierre": "NO adoptada"
+      },
+      {
+        "id": "E2-15-NB-CHAR",
+        "que_hizo": "lo mismo sobre char",
+        "resultado": "-0,0392 con 0 de 5 pliegues",
+        "cierre": "NO adoptada"
+      },
+      {
+        "id": "V37-01",
+        "que_hizo": "ponderacion BM25 en word con el clasificador de V03, k1 1,2 y b 0,75, idf log(1 + (N - df + 0,5)/(df + 0,5)), longitud de documento y avgdl fold-local",
+        "resultado": "-0,0027860149, 25 rescates contra 31 danios, neto -6, correlacion 0,9874, y su propia lectura: BM25 no aporta una fuente de senal nueva",
+        "cierre": "BM25 = CLOSED. No se prueba BM25 sobre char"
+      },
+      {
+        "id": "V4-G01-G03",
+        "que_hizo": "LR sobre puntuaciones de verosimilitud",
+        "resultado": "candidato D con evidencia fragil, IC95 del delta toca cero"
+      },
+      {
+        "id": "V26-03",
+        "que_hizo": "Tsetlin Machine, otra regla discriminativa sobre el mismo alfabeto",
+        "resultado": "REJECTED, familia cerrada"
+      },
+      {
+        "id": "HIB-H11/H12/H14/UNION",
+        "que_hizo": "bloques de log-odds y mezclas de ratio",
+        "resultado": "descartadas, deltas negativos"
+      }
+    ],
+    "filas_que_describen_un_modelo_generativo": 0,
+    "nombre_por_el_que_existe_la_familia": "solo como ComplementNB, NB-SVM, BM25/Okapi, log-odds y likelihood scores",
+    "pierna_3_el_unico_grado_de_libertad_esta_prohibido": {
+      "por_que_es_legislativa": "el unico parametro libre de un modelo generativo de n-gramas sobre representacion fija es el suavizado, y F esta especificado exactamente como un unico orden y una unica estrategia de suavizado",
+      "V8_04_lo_medijo": "el ratio log-count por etiqueta sobre la TF-IDF de V03 da -0,058496 con suavizado 1e-6 y +0,004745 con 1e-3, un salto de +0,063241 entre dos valores que solo difieren en esa constante. Su interpretacion: el suavizado sostiene el metodo entero",
+      "cierre_pre_registrado": "V8-04: no se barre el suavizado para buscar un valor mejor, porque seria el rescate por hiperparametro que las reglas prohiben desde la fase v6",
+      "estado_del_mejor_punto": "la variante de 1e-3 queda a tres milesimas de superar su filtro de detectabilidad, con IC95 que incluye el cero y 3 de 5 pliegues"
+    }
+  },
+  "decision": "CLOSED_BY_DUPLICATION. 0 experimentos consumidos. No es que el modelo generativo de n-gramas falle en este corpus: es que no es un experimento. Sobre una representacion fija colapsa a la forma de naive Bayes, y su unico grado de libertad, el suavizado, esta pre-registrado como barrido prohibido desde V8-04, donde ademas se midio que sostiene el metodo entero. Sin orden sweep, sin suavizado sweep, sin backoff sweep, sin submission. V03 remains the best verified leaderboard result.",
+  "formulacion": "V03 remains the best verified leaderboard result.",
+  "gastos": {
+    "submissions": 0,
+    "consultas_kaggle": 0,
+    "uso_holdout": 0,
+    "uso_test": 0,
+    "entrenamientos": 0,
+    "segundos": 0.1
+  }
+}

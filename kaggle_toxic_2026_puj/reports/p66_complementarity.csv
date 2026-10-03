@@ -1,0 +1,17 @@
+tipo,clave,valor,valor2
+principal,corrected_cv_fusion,0.7798857693,0.002674316737056981
+principal,corrected_cv_barajado,0.7757724104,-0.0014390421
+atribucion,brecha,0.0041133588
+bootstrap,IC95_inferior,-0.004431163444677563,-0.0044311634
+bootstrap,IC95_superior,0.010210874472249717,0.0102108745
+bootstrap,incluye_el_cero,True
+bootstrap,media,0.0027270194
+gate,pliegues_mejorados,4,"de 5, se exigen 4"
+
+rescate_unico,candidato,unico_sobre_MI_arbol,autorizado
+rescate_unico,negacion,83,True
+rescate_unico,word_1_3,67,True
+rescate_unico,cohesion,75,True
+rescate_unico,huecos_1_2,98,True
+rescate_unico,contraste,53,True
+rescate_unico,huecos_6_10,74,True

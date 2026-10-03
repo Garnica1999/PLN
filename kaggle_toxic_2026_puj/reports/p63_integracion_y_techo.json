@@ -1,0 +1,435 @@
+{
+  "familia": "P63_INTEGRACION",
+  "naturaleza": "EXPERIMENTO. 3 candidatos y 1 control de igual ancho total, 0 submissions, 0 Kaggle, 0 holdout, 0 test",
+  "fecha": "2026-09-29T06:35:57+00:00",
+  "experiment_id": "P63-06",
+  "track": "H-integracion-y-techo",
+  "script": "experiments/p63_07_integracion_y_techo.py",
+  "pregunta": "los bloques nuevos se ayudan entre si, y queda algo que ninguna representacion de este tipo puede alcanzar",
+  "por_que_esta_pregunta_y_no_otra": "cuatro tracks con el mismo patron: la composicion gana +0,1055015148 en solitario y +0,0083528268 frente al control al anadirse, la posicion gana +0,0712736720 en solitario y pierde -0,0025020526 al anadirse. Como los bloques son densos y pequenos, 42 y 21 columnas contra 21044, la explicacion de dilucion de P62 es aqui mas debil, y la pregunta honesta deja de ser si cada bloque ayuda y pasa a ser si se ayudan ENTRE SI",
+  "brazos": {
+    "V03_todo": "composicion mas posicion, 63 columnas",
+    "V03_comp": "solo composicion, 42 columnas",
+    "V03_pos": "solo posicion, 21 columnas",
+    "V03_random": "control de capacidad de 63 columnas, el ANCHO TOTAL del conjunto, que es lo que hace comparable la pregunta"
+  },
+  "protocolo": {
+    "frecuencia_de_documento": "ajustada SOLO con las filas de entrenamiento",
+    "normalizacion": "el bloque denso se normaliza a norma media de fila uno antes de concatenarse, con la misma funcion para todos los brazos",
+    "clasificador": "IDENTICO a V03 en los cuatro brazos",
+    "pliegues": "los canonicos, por grupo",
+    "umbrales": "0,44 / 0,51 / 0,46",
+    "bins_de_longitud": [
+      {
+        "nombre": "CORTA",
+        "desde": 0,
+        "hasta": 6
+      },
+      {
+        "nombre": "MEDIA",
+        "desde": 7,
+        "hasta": 15
+      },
+      {
+        "nombre": "LARGA",
+        "desde": 16,
+        "hasta": 30
+      },
+      {
+        "nombre": "MUY_LARGA",
+        "desde": 31,
+        "hasta": 1000000000
+      }
+    ]
+  },
+  "resultados": {
+    "V03_todo": {
+      "corrected_cv": 0.7534060877581737,
+      "folds": [
+        0.7484572677438895,
+        0.7584851384216881,
+        0.7593916341233937,
+        0.7231361029406259,
+        0.7799824998614632
+      ],
+      "por_bin": {
+        "CORTA": {
+          "n": 167,
+          "F1": 0.912786,
+          "F1_de_V03": 0.947956,
+          "delta_vs_V03": -0.03517
+        },
+        "MEDIA": {
+          "n": 602,
+          "F1": 0.771596,
+          "F1_de_V03": 0.796405,
+          "delta_vs_V03": -0.024809
+        },
+        "LARGA": {
+          "n": 547,
+          "F1": 0.647752,
+          "F1_de_V03": 0.68335,
+          "delta_vs_V03": -0.035598
+        },
+        "MUY_LARGA": {
+          "n": 167,
+          "F1": 0.597217,
+          "F1_de_V03": 0.560571,
+          "delta_vs_V03": 0.036646
+        }
+      },
+      "rescate": 140,
+      "damage": 250
+    },
+    "V03_comp": {
+      "corrected_cv": 0.7669427506352032,
+      "folds": [
+        0.7594839371155161,
+        0.7718161677023888,
+        0.775,
+        0.7394984419133412,
+        0.7907587727481804
+      ],
+      "por_bin": {
+        "CORTA": {
+          "n": 167,
+          "F1": 0.918112,
+          "F1_de_V03": 0.947956,
+          "delta_vs_V03": -0.029844
+        },
+        "MEDIA": {
+          "n": 602,
+          "F1": 0.793873,
+          "F1_de_V03": 0.796405,
+          "delta_vs_V03": -0.002532
+        },
+        "LARGA": {
+          "n": 547,
+          "F1": 0.667511,
+          "F1_de_V03": 0.68335,
+          "delta_vs_V03": -0.015839
+        },
+        "MUY_LARGA": {
+          "n": 167,
+          "F1": 0.563706,
+          "F1_de_V03": 0.560571,
+          "delta_vs_V03": 0.003135
+        }
+      },
+      "rescate": 129,
+      "damage": 190
+    },
+    "V03_pos": {
+      "corrected_cv": 0.7671031903596547,
+      "folds": [
+        0.7816780475160586,
+        0.7775007761370669,
+        0.770521670324669,
+        0.7375933304067733,
+        0.7684529920445414
+      ],
+      "por_bin": {
+        "CORTA": {
+          "n": 167,
+          "F1": 0.937002,
+          "F1_de_V03": 0.947956,
+          "delta_vs_V03": -0.010955
+        },
+        "MEDIA": {
+          "n": 602,
+          "F1": 0.789023,
+          "F1_de_V03": 0.796405,
+          "delta_vs_V03": -0.007382
+        },
+        "LARGA": {
+          "n": 547,
+          "F1": 0.669812,
+          "F1_de_V03": 0.68335,
+          "delta_vs_V03": -0.013538
+        },
+        "MUY_LARGA": {
+          "n": 167,
+          "F1": 0.547955,
+          "F1_de_V03": 0.560571,
+          "delta_vs_V03": -0.012615
+        }
+      },
+      "rescate": 83,
+      "damage": 114
+    },
+    "V03_random": {
+      "corrected_cv": 0.7448169477990262,
+      "folds": [
+        0.7640898952173462,
+        0.7477836811170144,
+        0.7614867832259137,
+        0.7135028998561923,
+        0.7364149902084961
+      ],
+      "por_bin": {
+        "CORTA": {
+          "n": 167,
+          "F1": 0.933793,
+          "F1_de_V03": 0.947956,
+          "delta_vs_V03": -0.014164
+        },
+        "MEDIA": {
+          "n": 602,
+          "F1": 0.764505,
+          "F1_de_V03": 0.796405,
+          "delta_vs_V03": -0.0319
+        },
+        "LARGA": {
+          "n": 547,
+          "F1": 0.640863,
+          "F1_de_V03": 0.68335,
+          "delta_vs_V03": -0.042487
+        },
+        "MUY_LARGA": {
+          "n": 167,
+          "F1": 0.512983,
+          "F1_de_V03": 0.560571,
+          "delta_vs_V03": -0.047588
+        }
+      },
+      "rescate": 101,
+      "damage": 215
+    }
+  },
+  "brecha_global": 0.00858914,
+  "brecha_composicion": 0.0221258028,
+  "techo_por_rebanada": [
+    {
+      "bin": "CORTA",
+      "n": 167,
+      "tokens": "0-6",
+      "F1_de_V03": 0.947956,
+      "techo_moviendo_el_corte": 0.947956,
+      "margen": 0.0,
+      "cortes_optimos": [
+        0.500441,
+        0.587133,
+        0.49894
+      ],
+      "f1_por_etiqueta_con_V03": [
+        0.941176,
+        0.97,
+        0.932692
+      ],
+      "f1_por_etiqueta_optima": [
+        0.941176,
+        0.97,
+        0.932692
+      ]
+    },
+    {
+      "bin": "MEDIA",
+      "n": 602,
+      "tokens": "7-15",
+      "F1_de_V03": 0.796405,
+      "techo_moviendo_el_corte": 0.805704,
+      "margen": 0.009299,
+      "cortes_optimos": [
+        0.463342,
+        0.475937,
+        0.512235
+      ],
+      "f1_por_etiqueta_con_V03": [
+        0.772809,
+        0.823799,
+        0.792608
+      ],
+      "f1_por_etiqueta_optima": [
+        0.783088,
+        0.828829,
+        0.805195
+      ]
+    },
+    {
+      "bin": "LARGA",
+      "n": 547,
+      "tokens": "16-30",
+      "F1_de_V03": 0.68335,
+      "techo_moviendo_el_corte": 0.705079,
+      "margen": 0.021729,
+      "cortes_optimos": [
+        0.414852,
+        0.448615,
+        0.358994
+      ],
+      "f1_por_etiqueta_con_V03": [
+        0.687805,
+        0.709677,
+        0.652568
+      ],
+      "f1_por_etiqueta_optima": [
+        0.697892,
+        0.734177,
+        0.683168
+      ]
+    },
+    {
+      "bin": "MUY_LARGA",
+      "n": 167,
+      "tokens": "31-+",
+      "F1_de_V03": 0.560571,
+      "techo_moviendo_el_corte": 0.649536,
+      "margen": 0.088966,
+      "cortes_optimos": [
+        0.332644,
+        0.235224,
+        0.295014
+      ],
+      "f1_por_etiqueta_con_V03": [
+        0.647059,
+        0.5,
+        0.534653
+      ],
+      "f1_por_etiqueta_optima": [
+        0.719512,
+        0.576923,
+        0.652174
+      ]
+    }
+  ],
+  "interseccion_de_errores": [
+    {
+      "bin": "CORTA",
+      "etiqueta": "HS",
+      "n": 167,
+      "errores_de_V03": 13,
+      "errores_cerca_del_borde": 4,
+      "errores_de_alta_confianza": 9,
+      "rescatados_por_el_bloque": 4,
+      "danados_por_el_bloque": 15
+    },
+    {
+      "bin": "CORTA",
+      "etiqueta": "TR",
+      "n": 167,
+      "errores_de_V03": 6,
+      "errores_cerca_del_borde": 1,
+      "errores_de_alta_confianza": 5,
+      "rescatados_por_el_bloque": 1,
+      "danados_por_el_bloque": 6
+    },
+    {
+      "bin": "CORTA",
+      "etiqueta": "AG",
+      "n": 167,
+      "errores_de_V03": 14,
+      "errores_cerca_del_borde": 3,
+      "errores_de_alta_confianza": 11,
+      "rescatados_por_el_bloque": 3,
+      "danados_por_el_bloque": 13
+    },
+    {
+      "bin": "MEDIA",
+      "etiqueta": "HS",
+      "n": 602,
+      "errores_de_V03": 127,
+      "errores_cerca_del_borde": 52,
+      "errores_de_alta_confianza": 75,
+      "rescatados_por_el_bloque": 22,
+      "danados_por_el_bloque": 31
+    },
+    {
+      "bin": "MEDIA",
+      "etiqueta": "TR",
+      "n": 602,
+      "errores_de_V03": 77,
+      "errores_cerca_del_borde": 28,
+      "errores_de_alta_confianza": 49,
+      "rescatados_por_el_bloque": 17,
+      "danados_por_el_bloque": 35
+    },
+    {
+      "bin": "MEDIA",
+      "etiqueta": "AG",
+      "n": 602,
+      "errores_de_V03": 101,
+      "errores_cerca_del_borde": 41,
+      "errores_de_alta_confianza": 60,
+      "rescatados_por_el_bloque": 22,
+      "danados_por_el_bloque": 42
+    },
+    {
+      "bin": "LARGA",
+      "etiqueta": "HS",
+      "n": 547,
+      "errores_de_V03": 128,
+      "errores_cerca_del_borde": 51,
+      "errores_de_alta_confianza": 77,
+      "rescatados_por_el_bloque": 16,
+      "danados_por_el_bloque": 39
+    },
+    {
+      "bin": "LARGA",
+      "etiqueta": "TR",
+      "n": 547,
+      "errores_de_V03": 63,
+      "errores_cerca_del_borde": 20,
+      "errores_de_alta_confianza": 43,
+      "rescatados_por_el_bloque": 8,
+      "danados_por_el_bloque": 18
+    },
+    {
+      "bin": "LARGA",
+      "etiqueta": "AG",
+      "n": 547,
+      "errores_de_V03": 115,
+      "errores_cerca_del_borde": 53,
+      "errores_de_alta_confianza": 62,
+      "rescatados_por_el_bloque": 25,
+      "danados_por_el_bloque": 37
+    },
+    {
+      "bin": "MUY_LARGA",
+      "etiqueta": "HS",
+      "n": 167,
+      "errores_de_V03": 48,
+      "errores_cerca_del_borde": 20,
+      "errores_de_alta_confianza": 28,
+      "rescatados_por_el_bloque": 13,
+      "danados_por_el_bloque": 10
+    },
+    {
+      "bin": "MUY_LARGA",
+      "etiqueta": "TR",
+      "n": 167,
+      "errores_de_V03": 18,
+      "errores_cerca_del_borde": 4,
+      "errores_de_alta_confianza": 14,
+      "rescatados_por_el_bloque": 2,
+      "danados_por_el_bloque": 0
+    },
+    {
+      "bin": "MUY_LARGA",
+      "etiqueta": "AG",
+      "n": 167,
+      "errores_de_V03": 47,
+      "errores_cerca_del_borde": 14,
+      "errores_de_alta_confianza": 33,
+      "rescatados_por_el_bloque": 7,
+      "danados_por_el_bloque": 4
+    }
+  ],
+  "gate": {
+    "delta_min": 0.0015,
+    "pliegues_min": 4,
+    "delta": -0.0238053648,
+    "pliegues_mejorados": 1,
+    "superado": false
+  },
+  "veredicto": "el conjunto de los dos bloques vale -0.0238053648 frente a V03 con 1/5 pliegues, y el control de capacidad del mismo ancho total vale -0.0323945047, luego la BRECHA especifica es +0.0085891400. Hay una senal especifica que sobrevive al control, pero no llega al gate de la fase",
+  "decision": "MARGINAL",
+  "experimentos_registrados": 1,
+  "reproducibilidad": {
+    "nivel": "R2",
+    "git_commit": "8dc4c70",
+    "seed": 42,
+    "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+    "corrected_cv": 0.7772114525165721
+  },
+  "formulacion": "V03 remains the best verified leaderboard result."
+}

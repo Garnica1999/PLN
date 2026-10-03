@@ -1,0 +1,6 @@
+bin,n_celdas,cambiadas,rescate,damage,net,tipo,clave,direccion,n
+"[0,0.10)",650.0,445.0,207,238,-31,margen,"[0,0.10)",,
+"[0.10,0.20)",748.0,281.0,88,193,-105,margen,"[0.10,0.20)",,
+"[0.20,1]",3051.0,1018.0,119,899,-780,margen,"[0.20,1]",,
+,,,24,37,-13,direccion,sube_0_a_1,sube_0_a_1,61.0
+,,,390,1293,-903,direccion,baja_1_a_0,baja_1_a_0,1683.0

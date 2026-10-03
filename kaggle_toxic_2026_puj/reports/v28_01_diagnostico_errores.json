@@ -1,0 +1,540 @@
+{
+  "familia": "ERROR_DIAGNOSTIC",
+  "experimento": "V28-01 (diagnostico de errores de V03 por etiqueta, condicionado por rasgos del texto)",
+  "fecha": "2026-09-27T10:02:01+00:00",
+  "estado": "DIAGNOSTIC_ONLY",
+  "pregunta": "donde falla V03, si hay heterogeneidad entre HS, TR y AG, y si existe un subconjunto distinguible donde un modelo distinto tendria sentido",
+  "alcance": "no se entrena ningun modelo. Los rasgos se usan solo para DESCRIBIR los errores, no como features de un clasificador",
+  "rasgos": [
+    "alfabeticos",
+    "caracteres",
+    "caracteres_repetidos",
+    "densidad_lexica",
+    "digitos",
+    "es_largo",
+    "es_muy_corto",
+    "frac_alfabeticos",
+    "frac_mayus_completas",
+    "frac_mayusculas",
+    "frac_puntuacion",
+    "hashtags",
+    "longitud_media_token",
+    "mayusculas",
+    "menciones",
+    "pos_primera_hashtag",
+    "pos_primera_mencion",
+    "puntuacion",
+    "tiene_hashtag",
+    "tiene_mencion",
+    "tiene_url",
+    "tokens",
+    "urls"
+  ],
+  "estructura_del_error": {
+    "HS": {
+      "f1_v03": 0.7616892911010558,
+      "n_positivos_reales": 648,
+      "n_positivos_predichos": 678,
+      "tp": 505,
+      "fp": 173,
+      "fn": 143,
+      "tn": 662,
+      "n_errores": 316,
+      "tasa_de_error": 0.21308159136884694,
+      "error_entre_positivos": 0.22067901234567902,
+      "error_entre_negativos": 0.20718562874251498
+    },
+    "TR": {
+      "f1_v03": 0.8157303370786517,
+      "n_positivos_reales": 445,
+      "n_positivos_predichos": 445,
+      "tp": 363,
+      "fp": 82,
+      "fn": 82,
+      "tn": 956,
+      "n_errores": 164,
+      "tasa_de_error": 0.11058664868509778,
+      "error_entre_positivos": 0.1842696629213483,
+      "error_entre_negativos": 0.0789980732177264
+    },
+    "AG": {
+      "f1_v03": 0.7542147293700089,
+      "n_positivos_reales": 567,
+      "n_positivos_predichos": 560,
+      "tp": 425,
+      "fp": 135,
+      "fn": 142,
+      "tn": 781,
+      "n_errores": 277,
+      "tasa_de_error": 0.1867835468644639,
+      "error_entre_positivos": 0.25044091710758376,
+      "error_entre_negativos": 0.14737991266375547
+    },
+    "interseccion_de_errores": {
+      "ninguna_etiqueta": 1042,
+      "exactamente_una": 223,
+      "exactamente_dos": 120,
+      "las_tres": 98,
+      "fractions": {
+        "ninguna_etiqueta": 0.7026298044504383,
+        "exactamente_una": 0.15037086985839515,
+        "exactamente_dos": 0.08091706001348618,
+        "las_tres": 0.06608226567768037
+      },
+      "solapamiento_de_errores_entre_etiquetas": {
+        "HS_TR": {
+          "ambos": 115,
+          "esperado_bajo_independencia": 34.945380984490896,
+          "razon_de_coincidencia": 3.290849799320778
+        },
+        "HS_AG": {
+          "ambos": 179,
+          "esperado_bajo_independencia": 59.0236008091706,
+          "razon_de_coincidencia": 3.032685189416442
+        },
+        "TR_AG": {
+          "ambos": 120,
+          "esperado_bajo_independencia": 30.632501685772084,
+          "razon_de_coincidencia": 3.917407766135423
+        }
+      }
+    },
+    "subconjuntos": [
+      {
+        "nombre": "densidad lexica alta (> 0.90)",
+        "n_filas": 1087,
+        "fraccion": 0.7329737019554956,
+        "tasa_error": {
+          "HS": 0.19135234590616376,
+          "TR": 0.10395584176632934,
+          "AG": 0.1609935602575897
+        },
+        "tasa_error_media": 0.15210058264336093,
+        "suficientemente_grande": true
+      },
+      {
+        "nombre": "con mencion",
+        "n_filas": 702,
+        "fraccion": 0.4733648010788941,
+        "tasa_error": {
+          "HS": 0.1752136752136752,
+          "TR": 0.11823361823361823,
+          "AG": 0.15242165242165243
+        },
+        "tasa_error_media": 0.1486229819563153,
+        "suficientemente_grande": true
+      },
+      {
+        "nombre": "con @ en el primer tercio",
+        "n_filas": 639,
+        "fraccion": 0.4308833445718139,
+        "tasa_error": {
+          "HS": 0.1674491392801252,
+          "TR": 0.1267605633802817,
+          "AG": 0.1486697965571205
+        },
+        "tasa_error_media": 0.14762649973917583,
+        "suficientemente_grande": true
+      },
+      {
+        "nombre": "con URL",
+        "n_filas": 458,
+        "fraccion": 0.3088334457181389,
+        "tasa_error": {
+          "HS": 0.2445414847161572,
+          "TR": 0.0851528384279476,
+          "AG": 0.22270742358078602
+        },
+        "tasa_error_media": 0.1841339155749636,
+        "suficientemente_grande": true
+      },
+      {
+        "nombre": "sin ninguna marca (@, #, URL)",
+        "n_filas": 390,
+        "fraccion": 0.26298044504383006,
+        "tasa_error": {
+          "HS": 0.24102564102564103,
+          "TR": 0.11794871794871795,
+          "AG": 0.20512820512820512
+        },
+        "tasa_error_media": 0.18803418803418803,
+        "suficientemente_grande": true
+      },
+      {
+        "nombre": "tweets largos (>= 25 tokens)",
+        "n_filas": 301,
+        "fraccion": 0.20296695886716115,
+        "tasa_error": {
+          "HS": 0.24916943521594684,
+          "TR": 0.09634551495016612,
+          "AG": 0.24584717607973422
+        },
+        "tasa_error_media": 0.19712070874861573,
+        "suficientemente_grande": true
+      },
+      {
+        "nombre": "con hashtag",
+        "n_filas": 144,
+        "fraccion": 0.09710047201618341,
+        "tasa_error": {
+          "HS": 0.2569444444444444,
+          "TR": 0.08333333333333333,
+          "AG": 0.20833333333333334
+        },
+        "tasa_error_media": 0.18287037037037035,
+        "suficientemente_grande": true
+      },
+      {
+        "nombre": "alta puntuacion (> 0.10 por caracter)",
+        "n_filas": 96,
+        "fraccion": 0.06473364801078894,
+        "tasa_error": {
+          "HS": 0.19791666666666666,
+          "TR": 0.08333333333333333,
+          "AG": 0.14583333333333334
+        },
+        "tasa_error_media": 0.14236111111111113,
+        "suficientemente_grande": true
+      },
+      {
+        "nombre": "casi todos mayusculas (frac > 0.7)",
+        "n_filas": 72,
+        "fraccion": 0.048550236008091704,
+        "tasa_error": {
+          "HS": 0.19444444444444445,
+          "TR": 0.125,
+          "AG": 0.19444444444444445
+        },
+        "tasa_error_media": 0.17129629629629628,
+        "suficientemente_grande": false
+      },
+      {
+        "nombre": "tweets muy cortos (<= 4 tokens)",
+        "n_filas": 58,
+        "fraccion": 0.03910991233985165,
+        "tasa_error": {
+          "HS": 0.034482758620689655,
+          "TR": 0.0,
+          "AG": 0.034482758620689655
+        },
+        "tasa_error_media": 0.022988505747126436,
+        "suficientemente_grande": false
+      }
+    ]
+  },
+  "heterogeneidad_entre_etiquetas": {
+    "HS_TR": {
+      "correlacion_phi": 0.4203434214645516,
+      "n_ambos_error": 115,
+      "esperado_si_independientes": 34.945380984490896,
+      "exceso_sobre_lo_esperado": 80.0546190155091,
+      "jaccard": 0.3150684931506849
+    },
+    "HS_AG": {
+      "correlacion_phi": 0.5069258834803805,
+      "n_ambos_error": 179,
+      "esperado_si_independientes": 59.0236008091706,
+      "exceso_sobre_lo_esperado": 119.9763991908294,
+      "jaccard": 0.4323671497584541
+    },
+    "TR_AG": {
+      "correlacion_phi": 0.49301813169768,
+      "n_ambos_error": 120,
+      "esperado_si_independientes": 30.632501685772084,
+      "exceso_sobre_lo_esperado": 89.36749831422792,
+      "jaccard": 0.37383177570093457
+    }
+  },
+  "discriminacion_por_rasgo": {
+    "HS": {
+      "rasgos_ordenados_por_efecto": [
+        [
+          "tokens",
+          {
+            "media_error": 19.474683544303797,
+            "media_correcto": 16.59383033419023,
+            "diferencia": 2.8808532101135675,
+            "d_cohen": 0.27481807059452623,
+            "correlacion_punto_biserial": 0.1155918159324906,
+            "p_mannwhitney": 1.9998211217572614e-05
+          }
+        ],
+        [
+          "es_muy_corto",
+          {
+            "media_error": 0.006329113924050633,
+            "media_correcto": 0.04798628963153385,
+            "diferencia": -0.041657175707483216,
+            "d_cohen": -0.2582678611989843,
+            "correlacion_punto_biserial": -0.08799284558295328,
+            "p_mannwhitney": 0.0007060517204285223
+          }
+        ],
+        [
+          "caracteres",
+          {
+            "media_error": 117.06962025316456,
+            "media_correcto": 101.35561268209084,
+            "diferencia": 15.714007571073722,
+            "d_cohen": 0.25700667678244044,
+            "correlacion_punto_biserial": 0.10739573971969177,
+            "p_mannwhitney": 2.5528084397443414e-05
+          }
+        ],
+        [
+          "alfabeticos",
+          {
+            "media_error": 92.17088607594937,
+            "media_correcto": 80.10111396743787,
+            "diferencia": 12.0697721085115,
+            "d_cohen": 0.2493233281846605,
+            "correlacion_punto_biserial": 0.10425263622256291,
+            "p_mannwhitney": 4.8596448497029066e-05
+          }
+        ],
+        [
+          "densidad_lexica",
+          {
+            "media_error": 0.9270052092329836,
+            "media_correcto": 0.9453988222575223,
+            "diferencia": -0.01839361302453868,
+            "d_cohen": -0.2476731746220364,
+            "correlacion_punto_biserial": -0.1037694071762645,
+            "p_mannwhitney": 3.542041263548432e-05
+          }
+        ],
+        [
+          "tiene_mencion",
+          {
+            "media_error": 0.38924050632911394,
+            "media_correcto": 0.4961439588688946,
+            "diferencia": -0.10690345253978067,
+            "d_cohen": -0.21626763379289102,
+            "correlacion_punto_biserial": -0.08767517222877821,
+            "p_mannwhitney": 0.0007378247991313764
+          }
+        ],
+        [
+          "puntuacion",
+          {
+            "media_error": 4.3164556962025316,
+            "media_correcto": 3.466152527849186,
+            "diferencia": 0.8503031683533457,
+            "d_cohen": 0.1911152020301197,
+            "correlacion_punto_biserial": 0.07827682698190469,
+            "p_mannwhitney": 3.5745216783513664e-05
+          }
+        ],
+        [
+          "pos_primera_mencion",
+          {
+            "media_error": -0.5698036598769655,
+            "media_correcto": -0.4706232940545293,
+            "diferencia": -0.09918036582243617,
+            "d_cohen": -0.17737684531286046,
+            "correlacion_punto_biserial": -0.07288326713670541,
+            "p_mannwhitney": 0.0033872683447596016
+          }
+        ]
+      ],
+      "n_rasgos_con_p_menor_005": 12
+    },
+    "TR": {
+      "rasgos_ordenados_por_efecto": [
+        [
+          "es_muy_corto",
+          {
+            "media_error": 0.0,
+            "media_correcto": 0.04397270659590599,
+            "diferencia": -0.04397270659590599,
+            "d_cohen": -0.30318433526049776,
+            "correlacion_punto_biserial": -0.07113872724117294,
+            "p_mannwhitney": 0.006175355930742101
+          }
+        ],
+        [
+          "longitud_media_token",
+          {
+            "media_error": 5.996716616215225,
+            "media_correcto": 6.420481029847009,
+            "diferencia": -0.4237644136317842,
+            "d_cohen": -0.28481896885628016,
+            "correlacion_punto_biserial": -0.08502652506585832,
+            "p_mannwhitney": 0.00014942295519450787
+          }
+        ],
+        [
+          "urls",
+          {
+            "media_error": 0.24390243902439024,
+            "media_correcto": 0.3434420015163002,
+            "diferencia": -0.09953956249190998,
+            "d_cohen": -0.20423596317705855,
+            "correlacion_punto_biserial": -0.06017598624111963,
+            "p_mannwhitney": 0.02883475436064642
+          }
+        ],
+        [
+          "tiene_url",
+          {
+            "media_error": 0.23780487804878048,
+            "media_correcto": 0.31766489764973466,
+            "diferencia": -0.07986001960095418,
+            "d_cohen": -0.17873245379439595,
+            "correlacion_punto_biserial": -0.05420995696983789,
+            "p_mannwhitney": 0.0369074357788848
+          }
+        ],
+        [
+          "puntuacion",
+          {
+            "media_error": 3.048780487804878,
+            "media_correcto": 3.721758908263836,
+            "diferencia": -0.672978420458958,
+            "d_cohen": -0.15656508491861656,
+            "correlacion_punto_biserial": -0.0474488735343415,
+            "p_mannwhitney": 0.2756834584372799
+          }
+        ],
+        [
+          "hashtags",
+          {
+            "media_error": 0.0975609756097561,
+            "media_correcto": 0.18119787717968158,
+            "diferencia": -0.08363690156992548,
+            "d_cohen": -0.13046537673383493,
+            "correlacion_punto_biserial": -0.03346385816289001,
+            "p_mannwhitney": 0.26243495532156136
+          }
+        ],
+        [
+          "frac_alfabeticos",
+          {
+            "media_error": 0.7878852226021505,
+            "media_correcto": 0.7920604692890448,
+            "diferencia": -0.004175246686894285,
+            "d_cohen": -0.10435260398553076,
+            "correlacion_punto_biserial": -0.03131393520213151,
+            "p_mannwhitney": 0.04440570465171402
+          }
+        ],
+        [
+          "caracteres_repetidos",
+          {
+            "media_error": 0.21951219512195122,
+            "media_correcto": 0.2926459438968916,
+            "diferencia": -0.07313374877494036,
+            "d_cohen": -0.10278432052275366,
+            "correlacion_punto_biserial": -0.03158722142036246,
+            "p_mannwhitney": 0.15275017365648474
+          }
+        ]
+      ],
+      "n_rasgos_con_p_menor_005": 1
+    },
+    "AG": {
+      "rasgos_ordenados_por_efecto": [
+        [
+          "tokens",
+          {
+            "media_error": 20.12274368231047,
+            "media_correcto": 16.538142620232172,
+            "diferencia": 3.584601062078299,
+            "d_cohen": 0.33721445806427014,
+            "correlacion_punto_biserial": 0.13689303581757348,
+            "p_mannwhitney": 1.0318020931158382e-06
+          }
+        ],
+        [
+          "alfabeticos",
+          {
+            "media_error": 95.66787003610108,
+            "media_correcto": 79.6882255389718,
+            "diferencia": 15.979644497129271,
+            "d_cohen": 0.3217988486224526,
+            "correlacion_punto_biserial": 0.13136802111315635,
+            "p_mannwhitney": 5.308584682643158e-06
+          }
+        ],
+        [
+          "caracteres",
+          {
+            "media_error": 120.88808664259928,
+            "media_correcto": 100.98673300165838,
+            "diferencia": 19.901353640940897,
+            "d_cohen": 0.3196998890853494,
+            "correlacion_punto_biserial": 0.1294545387899059,
+            "p_mannwhitney": 3.2905703955026376e-06
+          }
+        ],
+        [
+          "es_muy_corto",
+          {
+            "media_error": 0.007220216606498195,
+            "media_correcto": 0.04643449419568822,
+            "diferencia": -0.03921427758919003,
+            "d_cohen": -0.2443526723798286,
+            "correlacion_punto_biserial": -0.07883813250159387,
+            "p_mannwhitney": 0.002407108495497123
+          }
+        ],
+        [
+          "densidad_lexica",
+          {
+            "media_error": 0.9269169734696854,
+            "media_correcto": 0.944824270349128,
+            "diferencia": -0.01790729687944259,
+            "d_cohen": -0.24370852458691564,
+            "correlacion_punto_biserial": -0.09615389762095453,
+            "p_mannwhitney": 3.4915838024873786e-05
+          }
+        ],
+        [
+          "tiene_mencion",
+          {
+            "media_error": 0.3862815884476534,
+            "media_correcto": 0.49336650082918737,
+            "diferencia": -0.10708491238153395,
+            "d_cohen": -0.21676697078398952,
+            "correlacion_punto_biserial": -0.08358873466607226,
+            "p_mannwhitney": 0.001291756387414491
+          }
+        ],
+        [
+          "menciones",
+          {
+            "media_error": 0.5595667870036101,
+            "media_correcto": 0.7678275290215588,
+            "diferencia": -0.20826074201794875,
+            "d_cohen": -0.2043607889654096,
+            "correlacion_punto_biserial": -0.07469709384230427,
+            "p_mannwhitney": 0.0006504256782315281
+          }
+        ],
+        [
+          "pos_primera_mencion",
+          {
+            "media_error": -0.5782231717994349,
+            "media_correcto": -0.4718967844894802,
+            "diferencia": -0.10632638730995475,
+            "d_cohen": -0.19152620387046904,
+            "correlacion_punto_biserial": -0.07436657046013892,
+            "p_mannwhitney": 0.003981835141202694
+          }
+        ]
+      ],
+      "n_rasgos_con_p_menor_005": 10
+    }
+  },
+  "informe": {
+    "experimento": "V28-01 (diagnostico de errores de V03 por etiqueta, condicionado por rasgos del texto)",
+    "fecha": "2026-09-27T10:02:01+00:00",
+    "v03_corrected_cv": 0.7772114525165721
+  },
+  "gastos": {
+    "submissions": 0,
+    "modelos_entrenados": 0,
+    "memoria_pico_mb": 184.6,
+    "segundos": 0.2
+  }
+}

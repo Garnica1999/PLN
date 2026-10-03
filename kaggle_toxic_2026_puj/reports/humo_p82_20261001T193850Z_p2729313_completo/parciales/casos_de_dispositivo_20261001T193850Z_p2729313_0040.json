@@ -1,0 +1,26 @@
+{
+  "dispositivo": "cuda",
+  "generador_real_del_entrenamiento": "cpu",
+  "hilos": 16,
+  "hilos_efectivos": 16,
+  "marca_corrida": "20261001T193850Z_p2729313",
+  "modelo_en_su_lugar": {
+    "device_de_la_matriz_de_embeddings": "cuda:0",
+    "device_declarado": "cuda:0",
+    "devices_de_los_parametros": [
+      "cuda:0"
+    ],
+    "embeddings_en_el_declarado": true,
+    "todos_en_el_declarado": true
+  },
+  "modelo_forzado_a_cpu": {
+    "device_de_la_matriz_de_embeddings": "cpu",
+    "device_declarado": "cuda:0",
+    "devices_de_los_parametros": [
+      "cpu"
+    ],
+    "embeddings_en_el_declarado": false,
+    "todos_en_el_declarado": false
+  },
+  "nombre": "AMD Radeon RX 9070 XT"
+}

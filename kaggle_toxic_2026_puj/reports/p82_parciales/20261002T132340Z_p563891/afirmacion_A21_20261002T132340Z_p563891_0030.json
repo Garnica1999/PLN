@@ -1,0 +1,33 @@
+{
+  "marca_corrida": "20261002T132340Z_p563891",
+  "resultado": {
+    "bloque": 4,
+    "coste_segundos": 2e-05,
+    "descripcion": "los 10 deltas por semilla del primario, con su signo",
+    "detalle": {
+      "conteo_signos_positivos": 4,
+      "deltas_por_semilla": {
+        "20261401": -0.0023435298717113806,
+        "20261402": -0.008669179706972119,
+        "20261403": 0.022223319094477834,
+        "20261404": -0.0018919129183280203,
+        "20261405": -0.017371204297148557,
+        "20261406": 0.015008644069631316,
+        "20261407": -0.024978154010735554,
+        "20261408": 0.0003047020878096385,
+        "20261409": -0.011044664549485939,
+        "20261410": 0.007711448754985084
+      },
+      "desviacion": 0.01440007631814541,
+      "media": -0.0021050531347477698,
+      "n": 10
+    },
+    "estado": "CONFIRMADO",
+    "exito": true,
+    "id": "A21",
+    "naturaleza": "CONFIRMAR",
+    "stop": false,
+    "tolerancia": "seis decimales, los diez valores presentes y el conteo de signos",
+    "traza": ""
+  }
+}

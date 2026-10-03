@@ -1,0 +1,251 @@
+00_auditoria_datos.py:223 matriz_train = vectorizador.fit_transform(textos_train)
+00_auditoria_datos.py:304 matriz = vectorizador.fit_transform(textos)
+02_baseline_tfidf_lr.py:200 matriz_entrenamiento = vectorizador.fit_transform(
+02_baseline_tfidf_lr.py:206 modelo.fit(
+02_baseline_tfidf_lr.py:257 matriz = vectorizador.fit_transform(train["text"])
+02_baseline_tfidf_lr.py:261 modelo.fit(matriz, train[etiqueta])
+03_variantes_representaciones.py:976 matriz_entrenamiento = vectorizador.fit_transform(textos.iloc[entrenamiento])
+03_variantes_representaciones.py:980 modelo.fit(matriz_entrenamiento, estado.etiquetas[entrenamiento, indice])
+03_variantes_representaciones.py:985 construir_vectorizador(espec_representacion).fit_transform(textos).shape[1]
+04_refit_submissions_v02_v03.py:314 matriz_entrenamiento = vectorizador.fit_transform(train["text"].iloc[entrenamiento])
+04_refit_submissions_v02_v03.py:318 modelo.fit(matriz_entrenamiento, train[etiqueta].iloc[entrenamiento])
+04_refit_submissions_v02_v03.py:596 matriz = vectorizador.fit_transform(train["text"])
+04_refit_submissions_v02_v03.py:600 modelo.fit(matriz, train[etiqueta])
+05_ensembles.py:668 vectorizador.fit_transform(train["text"].iloc[entrenamiento]),
+05_ensembles.py:675 modelo.fit(
+05_ensembles.py:823 dimension = int(vectorizador.fit_transform(train["text"]).shape[1])
+05_ensembles.py:1079 meta.fit(proba[:, :, indice], y_true[:, indice])
+05_ensembles.py:1645 matrices[clave] = vectorizador.fit_transform(train["text"])
+05_ensembles.py:1651 modelo.fit(matrices[espec.representacion], train[etiqueta])
+07_submission_v04_ens04.py:506 matriz_entrenamiento = vectorizador.fit_transform(train["text"].iloc[entrenamiento])
+07_submission_v04_ens04.py:511 modelo.fit(matriz_entrenamiento, train[etiqueta].iloc[entrenamiento])
+07_submission_v04_ens04.py:870 matriz = vectorizador.fit_transform(train["text"])
+07_submission_v04_ens04.py:876 modelo.fit(matriz, train[etiqueta])
+08_features_densas_h11_h12.py:1259 escalador = StandardScaler().fit(denso[columnas].iloc[entrenamiento])
+08_features_densas_h11_h12.py:1267 matriz_train = vectorizador.fit_transform(textos.iloc[entrenamiento])
+08_features_densas_h11_h12.py:1283 modelo.fit(matriz_train, etiquetas_entrenamiento[:, indice])
+08_features_densas_h11_h12.py:1300 dimension_tfidf = int(construir_vectorizador_rep05().fit_transform(textos).shape[1])
+09_optuna_tfidf_lr.py:668 matriz_entrenamiento = vectorizador.fit_transform(
+09_optuna_tfidf_lr.py:675 modelo.fit(matriz_entrenamiento, y_true[entrenamiento, indice])
+09_optuna_tfidf_lr.py:696 int(construir_vectorizador(params).fit_transform(train["text"]).shape[1])
+09_optuna_tfidf_lr.py:1153 matriz = vectorizador.fit_transform(train["text"])
+09_optuna_tfidf_lr.py:1157 modelo.fit(matriz, train[etiqueta])
+10_sondas_robustez.py:470 matriz_entrenamiento = vectorizador.fit_transform(textos.iloc[entrenamiento])
+10_sondas_robustez.py:474 modelo.fit(matriz_entrenamiento, y_true[entrenamiento, indice])
+10_sondas_robustez.py:487 dimension = int(construir_vectorizador(variante).fit_transform(textos).shape[1])
+10_sondas_robustez.py:863 matriz = vectorizador.fit_transform(train["text"])
+10_sondas_robustez.py:867 modelo.fit(matriz, train[etiqueta])
+11_dl_desde_cero.py:887 matriz_entrenamiento = vectorizador.fit_transform(
+11_dl_desde_cero.py:894 denso_entrenamiento = svd.fit_transform(matriz_entrenamiento)
+11_dl_desde_cero.py:897 denso_entrenamiento = escalador.fit_transform(denso_entrenamiento)
+12_control_pseudo_autores.py:191 word.fit_transform(train["text"].iloc[idx_entrenamiento]),
+12_control_pseudo_autores.py:192 char.fit_transform(train["text"].iloc[idx_entrenamiento]),
+12_control_pseudo_autores.py:203 modelo.fit(matriz_entrenamiento, train[etiqueta].iloc[idx_entrenamiento])
+14_oof_corregido_v2.py:109 vectorizador.fit_transform(textos_entrenamiento),
+14_oof_corregido_v2.py:115 vectorizador.fit_transform(textos_entrenamiento),
+14_oof_corregido_v2.py:122 word.fit_transform(textos_entrenamiento),
+14_oof_corregido_v2.py:123 char.fit_transform(textos_entrenamiento),
+14_oof_corregido_v2.py:157 [VAL] modelo.fit(matriz_entrenamiento, train_dev[etiqueta].iloc[idx_entrenamiento])
+14_oof_corregido_v2.py:161 [VAL] modelo.fit(matriz_entrenamiento, train_dev[etiqueta].iloc[idx_entrenamiento])
+15_cadenas_etiquetas_v2.py:391 escalador = StandardScaler().fit(denso)
+15_cadenas_etiquetas_v2.py:428 modelo = LogisticRegression(**LR_PARAMS).fit(matriz_ajustada, y_entrenamiento[idx_int_ent])
+15_cadenas_etiquetas_v2.py:435 modelo = LogisticRegression(**LR_PARAMS).fit(matriz_ajustada, y_entrenamiento)
+15_cadenas_etiquetas_v2.py:575 escalador = StandardScaler().fit(features[idx_entrenamiento])
+15_cadenas_etiquetas_v2.py:586 modelo.fit(x_entrenamiento, y_verdadera[idx_entrenamiento, posicion])
+15_cadenas_etiquetas_v2.py:697 modelo = LogisticRegression(**especificacion["params"]).fit(x_entrenamiento, y_entrenamiento)
+15_cadenas_etiquetas_v2.py:699 modelo = LinearSVC(**especificacion["params"]).fit(x_entrenamiento, y_entrenamiento)
+15_cadenas_etiquetas_v2.py:772 escalador = StandardScaler().fit(features_entrenamiento)
+15_cadenas_etiquetas_v2.py:787 modelo.fit(x_entrenamiento_meta, y_entrenamiento[:, posicion])
+16_targeting_v2.py:1401 modelo.fit(x_entrenamiento, etiquetas_entrenamiento)
+16_targeting_v2.py:1449 escalador = StandardScaler().fit(numericas_entrenamiento)
+16_targeting_v2.py:1460 m_sim_ent = vectorizador_simbolico.fit_transform(
+17_stacking_v2.py:569 modelo.fit(x_entrenamiento, y_entrenamiento)
+17_stacking_v2.py:573 modelo_ridge.fit(x_entrenamiento, y_entrenamiento)
+17_stacking_v2.py:582 modelo_svc.fit(x_entrenamiento, y_entrenamiento)
+17_stacking_v2.py:613 escalador = StandardScaler().fit(x_entrenamiento)
+17_stacking_v2.py:742 modelo = LogisticRegression(**especificacion["params"]).fit(x_entrenamiento, y_entrenamiento)
+17_stacking_v2.py:744 modelo = LinearSVC(**especificacion["params"]).fit(x_entrenamiento, y_entrenamiento)
+17_stacking_v2.py:1412 escalador = StandardScaler().fit(features)
+17_stacking_v2.py:1428 modelo.fit(features_escaladas, y_verdadera[:, posicion])
+18_p7_holdout_y_submission_v08.py:340 return {"word": TfidfVectorizer(**modulo_14.PARAMS_WORD).fit(textos)}
+18_p7_holdout_y_submission_v08.py:342 return {"char": TfidfVectorizer(**modulo_14.PARAMS_CHAR).fit(textos)}
+18_p7_holdout_y_submission_v08.py:344 "word": TfidfVectorizer(**modulo_14.PARAMS_WORD).fit(textos),
+18_p7_holdout_y_submission_v08.py:345 "char": TfidfVectorizer(**modulo_14.PARAMS_CHAR).fit(textos),
+18_p7_holdout_y_submission_v08.py:396 modelo.fit(matriz, y[:, posicion])
+18_p7_holdout_y_submission_v08.py:502 [VAL] escalador = StandardScaler().fit(matriz_dev)
+18_p7_holdout_y_submission_v08.py:507 [VAL] modelo.fit(matriz_escalada, y_dev[:, posicion])
+19_sintaxis_cita_negacion_v2.py:891 vectorizador.fit_transform(textos_entrenamiento).tocsr(),
+19_sintaxis_cita_negacion_v2.py:908 escalador = StandardScaler().fit(numericos_entrenamiento)
+19_sintaxis_cita_negacion_v2.py:1122 modelo.fit(x_entrenamiento, y_entrenamiento)
+19_sintaxis_cita_negacion_v2.py:1426 vectorizador = TfidfVectorizer(**{**params, "min_df": 1}).fit(textos)
+20_emocion_nbsvm_ortografia_v2.py:557 modelo.fit(x_entrenamiento, etiquetas_entrenamiento)
+20_emocion_nbsvm_ortografia_v2.py:579 modelo.fit(x_entrenamiento, etiquetas_entrenamiento)
+20_emocion_nbsvm_ortografia_v2.py:1265 escalador = StandardScaler().fit(crudos_entrenamiento[variante])
+20_emocion_nbsvm_ortografia_v2.py:1366 vectorizador.fit_transform(textos_entrenamiento).tocsr(),
+20_emocion_nbsvm_ortografia_v2.py:1372 vectorizador.fit_transform(textos_entrenamiento).tocsr(),
+20_emocion_nbsvm_ortografia_v2.py:1379 [word.fit_transform(textos_entrenamiento), char.fit_transform(textos_entrenamiento)],
+20_emocion_nbsvm_ortografia_v2.py:1564 vectorizador.fit_transform(serie.iloc[idx_entrenamiento]).tocsr(),
+21_backlog_restante_v2.py:881 modelo.fit(
+21_backlog_restante_v2.py:889 modelo.fit(proba[ajuste, posicion], y_verdadera[ajuste, posicion])
+21_backlog_restante_v2.py:1373 estimador.fit(x_entrenamiento, y_entrenamiento)
+21_backlog_restante_v2.py:1383 estimador.fit(x_entrenamiento, y_entrenamiento)
+21_backlog_restante_v2.py:1466 escalador = StandardScaler().fit(x_meta_entrenamiento)
+21_backlog_restante_v2.py:1469 escalador_ent = StandardScaler().fit(features_ent_interno)
+21_backlog_restante_v2.py:1919 modelo.fit(matriz_entrenamiento, y_verdadera[idx_ent_rebanada, posicion])
+21_backlog_restante_v2.py:1935 modelo_interno.fit(matriz_int_ent, y_verdadera[idx_ent_rebanada, posicion][idx_int_ent])
+21_backlog_restante_v2.py:2257 [word.fit_transform(textos_entrenamiento), char.fit_transform(textos_entrenamiento)]
+21_backlog_restante_v2.py:2303 modelo.fit(matriz_entrenamiento, y_verdadera[idx_entrenamiento, posicion])
+23_candidatos_finales.py:876 [VAL] escalador = StandardScaler().fit(matriz_dev)
+25_submissions_candidatos.py:653 [VAL] escalador = StandardScaler().fit(matriz_dev)
+27_label_consistency_v4.py:226 matriz_word = vectorizador_word.fit_transform(textos)
+27_label_consistency_v4.py:227 matriz_char = vectorizador_char.fit_transform(textos)
+29_reweighting_v4.py:112 matriz_word = vectorizador_word.fit_transform(sub_entrenar)
+29_reweighting_v4.py:113 matriz_char = vectorizador_char.fit_transform(sub_entrenar)
+29_reweighting_v4.py:377 modelo.fit(
+29_reweighting_v4.py:493 clon.fit(matriz, y_true[:, posicion])
+29_reweighting_v4.py:495 clon.fit(matriz, y_true[:, posicion], sample_weight=sample_weight)
+30_supervised_weighting_v4.py:108 [palabra.fit_transform(textos_entrenar), caracter.fit_transform(textos_entrenar)],
+30_supervised_weighting_v4.py:141 matriz_entrenar = conteo.fit_transform(textos_entrenar)
+30_supervised_weighting_v4.py:310 modelo.fit(matriz_entrenar, y_entrenar[:, posicion])
+30_supervised_weighting_v4.py:312 modelo.fit(
+30_supervised_weighting_v4.py:618 modelo.fit(
+30_supervised_weighting_v4.py:646 modelo.fit(
+31_joint_label_v4.py:307 [palabra.fit_transform(textos.iloc[entrenar]), caracter.fit_transform(textos.iloc[entrenar])],
+31_joint_label_v4.py:363 modelo.fit(cache[indice_fold][0][posiciones], etiquetas)
+32_meta_shift_v4.py:131 palabra_entrenar = palabra.fit_transform(textos_entrenar)
+32_meta_shift_v4.py:133 caracter_entrenar = caracter.fit_transform(textos_entrenar)
+32_meta_shift_v4.py:174 estimador.fit(matriz_entrenar, y_entrenar[:, posicion])
+32_meta_shift_v4.py:260 calibrador.fit(x_meta[:, columna].reshape(-1, 1), y_meta[:, etiqueta])
+32_meta_shift_v4.py:428 meta.fit(features_entrenamiento, y_entrenar)
+33_class_conditional_lm_v4.py:367 [palabra.fit_transform(textos_entrenar), caracter.fit_transform(textos_entrenar)],
+33_class_conditional_lm_v4.py:385 [VAL] modelo.fit(features_lm[entrenar], y_dev[entrenar, posicion])
+33_class_conditional_lm_v4.py:400 [VAL] meta.fit(matriz[entrenar], y_dev[entrenar])
+33_class_conditional_lm_v4.py:422 [VAL] modelo.fit(izquierda, y_dev[entrenar, posicion])
+33_class_conditional_lm_v4.py:435 reducido_entrenar = svd.fit_transform(izquierda)
+33_class_conditional_lm_v4.py:448 [VAL] modelo.fit(reducido_entrenar, y_dev[entrenar, posicion])
+34_structural_sparse_v4.py:446 matriz_canal = vectorizador_canal.fit_transform(cadena_entrenar)
+34_structural_sparse_v4.py:452 [palabra.fit_transform(textos_entrenar), caracter.fit_transform(textos_entrenar)],
+34_structural_sparse_v4.py:463 [VAL] modelo.fit(union, y_dev[entrenar, posicion])
+34_structural_sparse_v4.py:466 [VAL] modelo_solo.fit(matriz_canal, y_dev[entrenar, posicion])
+35_discovery_v4.py:439 [VAL] meta.fit(matriz[entrada], y_dev[entrada])
+36_candidatos_v4.py:164 palabra_entrenar = palabra.fit_transform(textos_entrenar)
+36_candidatos_v4.py:166 caracter_entrenar = caracter.fit_transform(textos_entrenar)
+36_candidatos_v4.py:199 estimador.fit(
+36_candidatos_v4.py:430 meta.fit(features_entrenamiento, y_entrenar)
+36_candidatos_v4.py:461 [palabra.fit_transform(textos_entrenar), caracter.fit_transform(textos_entrenar)],
+36_candidatos_v4.py:475 modelo.fit(izquierda, y_entrenar[:, posicion], sample_weight=sample_weight)
+38_refit_final_v4.py:205 palabra_entrenar = palabra.fit_transform(textos_entrenar)
+38_refit_final_v4.py:207 caracter_entrenar = caracter.fit_transform(textos_entrenar)
+38_refit_final_v4.py:234 estimador.fit(
+38_refit_final_v4.py:326 [VAL] meta.fit(features_oof, y_dev)
+embedding_02_fasttext_baseline_v5.py:318 vectorizador.fit(textos)
+embedding_02_fasttext_baseline_v5.py:476 escalador_local = StandardScaler().fit(matriz[indices_entrenamiento])
+embedding_02_fasttext_baseline_v5.py:489 modelo.fit(bloque, objetivo)
+embedding_02_fasttext_baseline_v5.py:497 modelo.fit(bloque, objetivo)
+embedding_03_fusion_complementariedad_v5.py:188 [word.fit_transform(textos_entrenamiento), char.fit_transform(textos_entrenamiento)]
+embedding_03_fusion_complementariedad_v5.py:211 modelo.fit(matriz, objetivo)
+embedding_03_fusion_complementariedad_v5.py:214 modelo.fit(matriz, objetivo)
+embedding_03_fusion_complementariedad_v5.py:270 escalador = StandardScaler().fit(embeddings[indices])
+embedding_03_fusion_complementariedad_v5.py:321 escalador = StandardScaler().fit(bloque_entrenamiento)
+embedding_03_fusion_complementariedad_v5.py:415 escalador = StandardScaler().fit(embeddings[indices][interno_train])
+embedding_03_fusion_complementariedad_v5.py:433 escalador = StandardScaler().fit(embeddings[indices])
+embedding_03_fusion_complementariedad_v5.py:452 meta.fit(caracteristicas_internas, y[indices])
+v6_01_estructura_errores.py:251 matriz = vectorizador.fit_transform(textos.iloc[entrenamiento])
+v6_01_estructura_errores.py:255 matriz = vectorizador.fit_transform(textos.iloc[entrenamiento])
+v6_01_estructura_errores.py:262 vectorizador_word.fit_transform(textos.iloc[entrenamiento]),
+v6_01_estructura_errores.py:263 vectorizador_char.fit_transform(textos.iloc[entrenamiento]),
+v6_01_estructura_errores.py:276 estimador.fit(matriz, objetivo)
+v6_01_estructura_errores.py:282 estimador.fit(matriz, objetivo)
+v6_02_label_factorization.py:155 vectorizador_word.fit_transform(textos.iloc[entrenamiento]),
+v6_02_label_factorization.py:156 vectorizador_char.fit_transform(textos.iloc[entrenamiento]),
+v6_02_label_factorization.py:169 modelo_hs.fit(matriz, y_entrenamiento[:, 0])
+v6_02_label_factorization.py:175 modelo.fit(matriz, y_entrenamiento[:, indice])
+v6_02_label_factorization.py:186 modelo_tr.fit(matriz[mascara], y_entrenamiento[mascara, 1])
+v6_02_label_factorization.py:205 modelo_ag.fit(matriz[rama], y_entrenamiento[rama, 2])
+v6_03_ponderacion_grupo.py:165 vectorizador_word.fit_transform(textos.iloc[entrenamiento]),
+v6_03_ponderacion_grupo.py:166 vectorizador_char.fit_transform(textos.iloc[entrenamiento]),
+v6_03_ponderacion_grupo.py:184 estimador.fit(matriz, y[entrenamiento, etiqueta], sample_weight=peso)
+v6_04_char_weight.py:118 bloque_word = vectorizador_word.fit_transform(textos.iloc[entrenamiento])
+v6_04_char_weight.py:119 bloque_char = vectorizador_char.fit_transform(textos.iloc[entrenamiento])
+v6_04_char_weight.py:132 estimador.fit(matriz, y[entrenamiento, etiqueta])
+v6_05_skipgrams.py:192 bloque_palabras = vectorizador_palabras_ajuste.fit_transform(
+v6_05_skipgrams.py:195 bloque_char = vectorizador_char.fit_transform(textos.iloc[entrenamiento])
+v6_05_skipgrams.py:205 estimador.fit(matriz, y[entrenamiento, etiqueta])
+v6_06_bagging_grupos.py:165 vectorizador_word.fit_transform(textos.iloc[entrenamiento]),
+v6_06_bagging_grupos.py:166 vectorizador_char.fit_transform(textos.iloc[entrenamiento]),
+v6_06_bagging_grupos.py:188 estimador.fit(base[indices], y[entrenamiento[indices], etiqueta])
+v6_07_ruido_par.py:158 [vectorizador_word.fit_transform(textos), vectorizador_char.fit_transform(textos)]
+v6_07_ruido_par.py:162 vecinos.fit(matriz)
+v6_07_ruido_par.py:233 vectorizador_word.fit_transform(textos.iloc[entrenamiento]),
+v6_07_ruido_par.py:234 vectorizador_char.fit_transform(textos.iloc[entrenamiento]),
+v6_07_ruido_par.py:250 estimador.fit(matriz, y[entrenamiento, etiqueta], sample_weight=peso)
+v6_08_aumento.py:202 vectorizador_word.fit_transform(textos_tr),
+v6_08_aumento.py:203 vectorizador_char.fit_transform(textos_tr),
+v6_08_aumento.py:214 estimador.fit(matriz, y_tr[:, etiqueta])
+v7_01_perdida_f1.py:289 vectorizador_word.fit_transform(textos.iloc[entrenamiento]),
+v7_01_perdida_f1.py:290 vectorizador_char.fit_transform(textos.iloc[entrenamiento]),
+v7_02_prior_grupo.py:268 vectorizador_word.fit_transform(textos.iloc[entrenamiento]),
+v7_02_prior_grupo.py:269 vectorizador_char.fit_transform(textos.iloc[entrenamiento]),
+v7_02_prior_grupo.py:289 estimador.fit(matriz, y[entrenamiento, etiqueta])
+v7_03_umbral_anidado.py:203 estimador.fit(matriz, objetivo)
+v7_03_umbral_anidado.py:294 vectorizador_ref_word.fit_transform(textos.iloc[entrenamiento]),
+v7_03_umbral_anidado.py:295 vectorizador_ref_char.fit_transform(textos.iloc[entrenamiento]),
+v7_03_umbral_anidado.py:312 vectorizador_word.fit_transform(textos.iloc[ajuste]),
+v7_03_umbral_anidado.py:313 vectorizador_char.fit_transform(textos.iloc[ajuste]),
+v8_01_ensamble_folds.py:155 vectorizador_word.fit_transform(textos_entrenamiento.iloc[indices_entrenamiento]),
+v8_01_ensamble_folds.py:156 vectorizador_char.fit_transform(textos_entrenamiento.iloc[indices_entrenamiento]),
+v8_01_ensamble_folds.py:173 estimador.fit(matriz, y[indices_entrenamiento, etiqueta])
+v8_03_estabilidad_features.py:164 vectorizador_word.fit_transform(textos.iloc[indices]),
+v8_03_estabilidad_features.py:165 vectorizador_char.fit_transform(textos.iloc[indices]),
+v8_03_estabilidad_features.py:207 estimador.fit(submatriz, destino)
+v8_03_estabilidad_features.py:278 estimador.fit(submatriz, y[entrenamiento, etiqueta])
+v8_04_log_count_ratio.py:214 v_word.fit_transform(textos_entrenamiento),
+v8_04_log_count_ratio.py:215 v_char.fit_transform(textos_entrenamiento),
+v8_04_log_count_ratio.py:225 c_word.fit_transform(textos_entrenamiento),
+v8_04_log_count_ratio.py:226 c_char.fit_transform(textos_entrenamiento),
+v8_04_log_count_ratio.py:294 estimador.fit(ponderada, destino)
+v8_04_log_count_ratio.py:471 estimador.fit(tf_ent, y[entrenamiento, etiqueta])
+v8_05_regularizacion_conjunta.py:308 vectorizador_word.fit_transform(textos.iloc[entrenamiento]),
+v8_05_regularizacion_conjunta.py:309 vectorizador_char.fit_transform(textos.iloc[entrenamiento]),
+v8_05_regularizacion_conjunta.py:526 v_word.fit_transform(textos.iloc[entrenamiento]),
+v8_05_regularizacion_conjunta.py:527 v_char.fit_transform(textos.iloc[entrenamiento]),
+v8_05_regularizacion_conjunta.py:570 estimador.fit(matriz, y[entrenamiento, etiqueta])
+v8_05_regularizacion_conjunta.py:615 v_word.fit_transform(textos.iloc[entrenamiento]),
+v8_05_regularizacion_conjunta.py:616 v_char.fit_transform(textos.iloc[entrenamiento]),
+v8_06_c_por_etiqueta.py:132 vectorizador_word.fit_transform(textos_entrenamiento),
+v8_06_c_por_etiqueta.py:133 vectorizador_char.fit_transform(textos_entrenamiento),
+v8_06_c_por_etiqueta.py:170 estimador.fit(matriz, destino)
+v8_07_peso_por_etiqueta.py:135 vectorizador_word.fit_transform(textos_entrenamiento),
+v8_07_peso_por_etiqueta.py:136 vectorizador_char.fit_transform(textos_entrenamiento),
+v8_07_peso_por_etiqueta.py:190 estimador.fit(matriz, destino, sample_weight=pesos_por_clase(matriz.shape[0], destino, multiplicador))
+v8_08_corrector_margenes.py:142 vectorizador_word.fit_transform(textos_entrenamiento),
+v8_08_corrector_margenes.py:143 vectorizador_char.fit_transform(textos_entrenamiento),
+v8_08_corrector_margenes.py:230 estimador.fit(matriz, y[entrenamiento, etiqueta])
+v8_08_corrector_margenes.py:285 estimador.fit(
+v8_08_corrector_margenes.py:300 estimador.fit(diseno[entrenamiento][:, [etiqueta]], y[entrenamiento, etiqueta])
+v8_08_corrector_margenes.py:406 estimador.fit(
+v8_08_corrector_margenes.py:419 estimador.fit(diseno_margen[:, [etiqueta]], y[:, etiqueta])
+v8_08_corrector_margenes.py:451 estimador.fit(matriz_repe, y[entrenamiento, etiqueta])
+v8_10_ensemble_cinco_modelos.py:133 vectorizador_word.fit_transform(textos_entrenamiento),
+v8_10_ensemble_cinco_modelos.py:134 vectorizador_char.fit_transform(textos_entrenamiento),
+v8_10_ensemble_cinco_modelos.py:179 estimador.fit(matriz, y[entrenamiento, etiqueta])
+v8_10_ensemble_cinco_modelos.py:224 estimador.fit(matriz, y[entrenamiento, etiqueta])
+v8_11_complejidad_idiosincrasias.py:174 matriz = vectorizador.fit_transform(textos_entrenamiento)
+v8_11_complejidad_idiosincrasias.py:215 vectorizador_word.fit_transform(textos_entrenamiento),
+v8_11_complejidad_idiosincrasias.py:216 vectorizador_char.fit_transform(textos_entrenamiento),
+v8_11_complejidad_idiosincrasias.py:303 base.fit(matriz, destino)
+v8_11_complejidad_idiosincrasias.py:311 con_idio.fit(sparse.hstack([matriz, diseno_entrenamiento]), destino)
+v8_11_complejidad_idiosincrasias.py:403 estimador.fit(
+v8_12_seleccion_por_grupo.py:132 palabra = vectorizador_word.fit_transform(textos_entrenamiento)
+v8_12_seleccion_por_grupo.py:134 [palabra, vectorizador_char.fit_transform(textos_entrenamiento)], format="csr"
+v8_12_seleccion_por_grupo.py:267 estimador.fit(matriz[:, columnas], destino)
+v8_12_seleccion_por_grupo.py:351 estimador.fit(matriz[:, columnas], y[entrenamiento, etiqueta])
+v8_13_clasificadores_alternativos.py:131 vectorizador_word.fit_transform(textos_entrenamiento),
+v8_13_clasificadores_alternativos.py:132 vectorizador_char.fit_transform(textos_entrenamiento),
+v8_13_clasificadores_alternativos.py:245 base.fit(matriz, destino)
+v8_13_clasificadores_alternativos.py:253 arbol.fit(sub_entrenamiento, destino)
+v8_13_clasificadores_alternativos.py:262 bosque.fit(sub_entrenamiento, destino)
+v8_13_clasificadores_alternativos.py:286 estimador.fit(matriz[:, columnas].toarray(), destino)
+v8_13_clasificadores_alternativos.py:357 estimador.fit(matriz[:, columnas].toarray(), destino)
+v8_13_clasificadores_alternativos.py:369 estimador.fit(matriz[:, columnas], destino)
+v8_13_clasificadores_alternativos.py:382 estimador.fit(matriz[:, columnas], destino)

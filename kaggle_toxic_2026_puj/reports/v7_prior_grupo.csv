@@ -1,0 +1,4 @@
+variante,columnas_de_grupo,nota,referencia,corrected_cv,delta,ic95_0,ic95_1,f1_HS,f1_TR,f1_AG,salvage,damage,pliegues_positivos,gate_supera
+P8-0-control,0,"solo las features de V03, debe reproducir la referencia",V03,0.777211,0.0,0.0,0.0,0.7617,0.8157,0.7542,0,0,,
+P8-1-desviacion,3,"tres columnas, una por etiqueta, de desviacion de la prior del grupo",control,0.776145,-0.001066,-0.004508,0.002149,0.7592,0.8194,0.7498,1,2,1,False
+P8-2-desviacion-soporte,4,las tres anteriores mas el numero de otras filas del grupo,control,0.77553,-0.001681,-0.005144,0.001571,0.7592,0.8176,0.7498,1,2,1,False

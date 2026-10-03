@@ -1,0 +1,19 @@
+{
+  "marca_corrida": "completo_e36bf1",
+  "resultado": {
+    "bloque": 6,
+    "coste_segundos": 0.000232,
+    "descripcion": "el numero efectivo es un parametro del metodo y se mueve con alpha_0",
+    "detalle": {
+      "error_mensaje": "'HS'",
+      "error_tipo": "KeyError"
+    },
+    "estado": "ERROR",
+    "exito": false,
+    "id": "A6",
+    "naturaleza": "CONFIRMAR",
+    "stop": true,
+    "tolerancia": "diferencia relativa mayor que 0.05 entre los extremos de la rejilla de alpha_0",
+    "traza": "KeyError: 'HS' @ evaluar:1370 | <lambda>:7280 | afirmacion_a6:3228"
+  }
+}

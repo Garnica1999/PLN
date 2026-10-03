@@ -1,0 +1,73 @@
+{
+  "marca_corrida": "20261001T172443Z_p2425748",
+  "resultado": {
+    "bloque": 4,
+    "coste_segundos": 0.003138,
+    "descripcion": "interseccion y rescue damage net contra V03 sobre OOF",
+    "detalle": {
+      "cifras": {
+        "AG": {
+          "aciertos_comunes": 28,
+          "auc_probabilidad_brazo_como_predictor_de_error_de_v03": 0.5357142857142857,
+          "dano": 15,
+          "neto": 1,
+          "rescate": 16,
+          "tasa_dano": 0.5357142857142857,
+          "tasa_rescate": 0.5714285714285714
+        },
+        "HS": {
+          "aciertos_comunes": 29,
+          "auc_probabilidad_brazo_como_predictor_de_error_de_v03": 0.5828698553948832,
+          "dano": 15,
+          "neto": 0,
+          "rescate": 15,
+          "tasa_dano": 0.5172413793103449,
+          "tasa_rescate": 0.5172413793103449
+        },
+        "TR": {
+          "aciertos_comunes": 31,
+          "auc_probabilidad_brazo_como_predictor_de_error_de_v03": 0.7586206896551724,
+          "dano": 13,
+          "neto": 1,
+          "rescate": 14,
+          "tasa_dano": 0.41935483870967744,
+          "tasa_rescate": 0.45161290322580644
+        },
+        "naturaleza": "DESCRIPTIVO_NO_COMPARABLE_CON_CORRECTED_CV",
+        "unidades_tweet_etiqueta": 180
+      },
+      "comprobaciones": {
+        "el_neto_por_etiqueta_es_un_entero_que_puede_ser_negativo": true,
+        "la_lectura_del_signo_del_neto_queda_publicada": true,
+        "las_tres_etiquetas_publicadas": true,
+        "los_tres_recuentos_por_etiqueta_son_enteros_y_no_negativos": true,
+        "ninguna_cifra_ausente": true,
+        "unidades_declaradas": true
+      },
+      "faltan": [],
+      "signo_del_neto": {
+        "branco_detracta": false,
+        "el_neto_es_negativo_por_etiqueta": {
+          "AG": false,
+          "HS": false,
+          "TR": false
+        },
+        "el_neto_negativo_en": [],
+        "el_signo_del_neto_por_etiqueta": {
+          "AG": 1,
+          "HS": 0,
+          "TR": 1
+        },
+        "lectura": "un neto negativo significa que el brazo hace MAS DANO que rescate frente a V03, es decir que detracta en vez de aportar; no es un error de las cifras",
+        "suma_de_netos": 2
+      }
+    },
+    "estado": "CONFIRMADO",
+    "exito": true,
+    "id": "A17",
+    "naturaleza": "CONFIRMAR",
+    "stop": false,
+    "tolerancia": "enteros exactos para los recuentos, seis decimales para los AUC",
+    "traza": ""
+  }
+}

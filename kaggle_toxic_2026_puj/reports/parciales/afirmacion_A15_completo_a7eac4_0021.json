@@ -1,0 +1,55 @@
+{
+  "marca_corrida": "completo_a7eac4",
+  "resultado": {
+    "bloque": 15,
+    "coste_segundos": 1.5e-05,
+    "descripcion": "el limite de 5.5 verificado: anclaje externo presente o ausente",
+    "detalle": {
+      "comprobaciones": {
+        "el_estado_del_limite_esta_declarado": true,
+        "la_comprobacion_se_ejecuto_en_la_corrida": true,
+        "la_lista_de_nombres_comprobados_esta_publicada": true
+      },
+      "consecuencia": "no hay ninguna libreria de inferencia bayesiana en el venv, luego el limite de 5.5 se mantiene y P83 autoriza afirmar sobre el COMPORTAMIENTO del modelo que este proyecto implemento y sobre la COMPARACION entre M1 y M2, y no sobre la correccion de la inferencia variacional frente a una posterior exacta",
+      "encontradas": [],
+      "estado_del_limite": "SIN_HACER",
+      "librerias_comprobadas": [
+        "aesara",
+        "cmdstanpy",
+        "edward",
+        "numpyro",
+        "pymc",
+        "pymc3",
+        "pyro",
+        "pyro-ppl",
+        "pystan",
+        "stan",
+        "tensorflow_probability",
+        "theano"
+      ],
+      "lo_que_p83_autoriza": "afirmar sobre el comportamiento del modelo que este proyecto implemento y sobre la comparacion entre M1 y M2",
+      "lo_que_p83_no_autoriza": "decir que la inferencia variacional de M1 es correcta, ni que su posterior aproximada se acerca a la exacta",
+      "presentes": {
+        "aesara": false,
+        "cmdstanpy": false,
+        "edward": false,
+        "numpyro": false,
+        "pymc": false,
+        "pymc3": false,
+        "pyro": false,
+        "pyro-ppl": false,
+        "pystan": false,
+        "stan": false,
+        "tensorflow_probability": false,
+        "theano": false
+      }
+    },
+    "estado": "CONFIRMADO",
+    "exito": true,
+    "id": "A15",
+    "naturaleza": "CONFIRMAR",
+    "stop": false,
+    "tolerancia": "las doce libreras comprobadas una por una",
+    "traza": ""
+  }
+}

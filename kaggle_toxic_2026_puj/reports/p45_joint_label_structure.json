@@ -1,0 +1,1185 @@
+{
+  "familia": "P45_METRIC_AUDIT",
+  "experimento": "V45-01 (P1 estructura conjunta HS x TR x AG y error de V03)",
+  "fecha": "2026-09-27T23:52:51+00:00",
+  "estado": "AUDIT_ONLY",
+  "pregunta": "Hay evidencia de que los errores de V03 dependan de la combinacion conjunta de etiquetas de una forma que no capturen sus tres decisiones binarias independientes?",
+  "nota_de_alcance": "El holdout no se usa para ninguna decision. Las cifras de train global son descriptivas; todas las decisiones se toman sobre dev y el OOF canonico.",
+  "distribucion": {
+    "train_global": [
+      {
+        "estado": 0,
+        "HS": 0,
+        "TR": 0,
+        "AG": 0,
+        "n": 949,
+        "porcentaje": 54.82380127094165
+      },
+      {
+        "estado": 1,
+        "HS": 0,
+        "TR": 0,
+        "AG": 1,
+        "n": 26,
+        "porcentaje": 1.5020219526285383
+      },
+      {
+        "estado": 2,
+        "HS": 0,
+        "TR": 1,
+        "AG": 0,
+        "n": 0,
+        "porcentaje": 0.0
+      },
+      {
+        "estado": 3,
+        "HS": 0,
+        "TR": 1,
+        "AG": 1,
+        "n": 0,
+        "porcentaje": 0.0
+      },
+      {
+        "estado": 4,
+        "HS": 1,
+        "TR": 0,
+        "AG": 0,
+        "n": 92,
+        "porcentaje": 5.314846909300982
+      },
+      {
+        "estado": 5,
+        "HS": 1,
+        "TR": 0,
+        "AG": 1,
+        "n": 145,
+        "porcentaje": 8.376660889659156
+      },
+      {
+        "estado": 6,
+        "HS": 1,
+        "TR": 1,
+        "AG": 0,
+        "n": 28,
+        "porcentaje": 1.6175621028307337
+      },
+      {
+        "estado": 7,
+        "HS": 1,
+        "TR": 1,
+        "AG": 1,
+        "n": 491,
+        "porcentaje": 28.365106874638936
+      }
+    ],
+    "dev": [
+      {
+        "estado": 0,
+        "HS": 0,
+        "TR": 0,
+        "AG": 0,
+        "n": 813,
+        "porcentaje": 54.82130815913688
+      },
+      {
+        "estado": 1,
+        "HS": 0,
+        "TR": 0,
+        "AG": 1,
+        "n": 22,
+        "porcentaje": 1.4834794335805799
+      },
+      {
+        "estado": 2,
+        "HS": 0,
+        "TR": 1,
+        "AG": 0,
+        "n": 0,
+        "porcentaje": 0.0
+      },
+      {
+        "estado": 3,
+        "HS": 0,
+        "TR": 1,
+        "AG": 1,
+        "n": 0,
+        "porcentaje": 0.0
+      },
+      {
+        "estado": 4,
+        "HS": 1,
+        "TR": 0,
+        "AG": 0,
+        "n": 79,
+        "porcentaje": 5.327039784221173
+      },
+      {
+        "estado": 5,
+        "HS": 1,
+        "TR": 0,
+        "AG": 1,
+        "n": 124,
+        "porcentaje": 8.361429534726906
+      },
+      {
+        "estado": 6,
+        "HS": 1,
+        "TR": 1,
+        "AG": 0,
+        "n": 24,
+        "porcentaje": 1.6183412002697235
+      },
+      {
+        "estado": 7,
+        "HS": 1,
+        "TR": 1,
+        "AG": 1,
+        "n": 421,
+        "porcentaje": 28.388401888064735
+      }
+    ],
+    "por_pliegue": [
+      {
+        "pliegue": 1,
+        "n": 297,
+        "distribucion": [
+          {
+            "estado": 0,
+            "HS": 0,
+            "TR": 0,
+            "AG": 0,
+            "n": 163,
+            "porcentaje": 54.88215488215488
+          },
+          {
+            "estado": 1,
+            "HS": 0,
+            "TR": 0,
+            "AG": 1,
+            "n": 5,
+            "porcentaje": 1.6835016835016836
+          },
+          {
+            "estado": 2,
+            "HS": 0,
+            "TR": 1,
+            "AG": 0,
+            "n": 0,
+            "porcentaje": 0.0
+          },
+          {
+            "estado": 3,
+            "HS": 0,
+            "TR": 1,
+            "AG": 1,
+            "n": 0,
+            "porcentaje": 0.0
+          },
+          {
+            "estado": 4,
+            "HS": 1,
+            "TR": 0,
+            "AG": 0,
+            "n": 16,
+            "porcentaje": 5.3872053872053876
+          },
+          {
+            "estado": 5,
+            "HS": 1,
+            "TR": 0,
+            "AG": 1,
+            "n": 25,
+            "porcentaje": 8.417508417508417
+          },
+          {
+            "estado": 6,
+            "HS": 1,
+            "TR": 1,
+            "AG": 0,
+            "n": 4,
+            "porcentaje": 1.3468013468013469
+          },
+          {
+            "estado": 7,
+            "HS": 1,
+            "TR": 1,
+            "AG": 1,
+            "n": 84,
+            "porcentaje": 28.282828282828284
+          }
+        ]
+      },
+      {
+        "pliegue": 2,
+        "n": 297,
+        "distribucion": [
+          {
+            "estado": 0,
+            "HS": 0,
+            "TR": 0,
+            "AG": 0,
+            "n": 163,
+            "porcentaje": 54.88215488215488
+          },
+          {
+            "estado": 1,
+            "HS": 0,
+            "TR": 0,
+            "AG": 1,
+            "n": 4,
+            "porcentaje": 1.3468013468013469
+          },
+          {
+            "estado": 2,
+            "HS": 0,
+            "TR": 1,
+            "AG": 0,
+            "n": 0,
+            "porcentaje": 0.0
+          },
+          {
+            "estado": 3,
+            "HS": 0,
+            "TR": 1,
+            "AG": 1,
+            "n": 0,
+            "porcentaje": 0.0
+          },
+          {
+            "estado": 4,
+            "HS": 1,
+            "TR": 0,
+            "AG": 0,
+            "n": 15,
+            "porcentaje": 5.05050505050505
+          },
+          {
+            "estado": 5,
+            "HS": 1,
+            "TR": 0,
+            "AG": 1,
+            "n": 25,
+            "porcentaje": 8.417508417508417
+          },
+          {
+            "estado": 6,
+            "HS": 1,
+            "TR": 1,
+            "AG": 0,
+            "n": 5,
+            "porcentaje": 1.6835016835016836
+          },
+          {
+            "estado": 7,
+            "HS": 1,
+            "TR": 1,
+            "AG": 1,
+            "n": 85,
+            "porcentaje": 28.61952861952862
+          }
+        ]
+      },
+      {
+        "pliegue": 3,
+        "n": 296,
+        "distribucion": [
+          {
+            "estado": 0,
+            "HS": 0,
+            "TR": 0,
+            "AG": 0,
+            "n": 163,
+            "porcentaje": 55.067567567567565
+          },
+          {
+            "estado": 1,
+            "HS": 0,
+            "TR": 0,
+            "AG": 1,
+            "n": 4,
+            "porcentaje": 1.3513513513513513
+          },
+          {
+            "estado": 2,
+            "HS": 0,
+            "TR": 1,
+            "AG": 0,
+            "n": 0,
+            "porcentaje": 0.0
+          },
+          {
+            "estado": 3,
+            "HS": 0,
+            "TR": 1,
+            "AG": 1,
+            "n": 0,
+            "porcentaje": 0.0
+          },
+          {
+            "estado": 4,
+            "HS": 1,
+            "TR": 0,
+            "AG": 0,
+            "n": 16,
+            "porcentaje": 5.405405405405405
+          },
+          {
+            "estado": 5,
+            "HS": 1,
+            "TR": 0,
+            "AG": 1,
+            "n": 24,
+            "porcentaje": 8.108108108108109
+          },
+          {
+            "estado": 6,
+            "HS": 1,
+            "TR": 1,
+            "AG": 0,
+            "n": 5,
+            "porcentaje": 1.6891891891891893
+          },
+          {
+            "estado": 7,
+            "HS": 1,
+            "TR": 1,
+            "AG": 1,
+            "n": 84,
+            "porcentaje": 28.37837837837838
+          }
+        ]
+      },
+      {
+        "pliegue": 4,
+        "n": 296,
+        "distribucion": [
+          {
+            "estado": 0,
+            "HS": 0,
+            "TR": 0,
+            "AG": 0,
+            "n": 162,
+            "porcentaje": 54.729729729729726
+          },
+          {
+            "estado": 1,
+            "HS": 0,
+            "TR": 0,
+            "AG": 1,
+            "n": 4,
+            "porcentaje": 1.3513513513513513
+          },
+          {
+            "estado": 2,
+            "HS": 0,
+            "TR": 1,
+            "AG": 0,
+            "n": 0,
+            "porcentaje": 0.0
+          },
+          {
+            "estado": 3,
+            "HS": 0,
+            "TR": 1,
+            "AG": 1,
+            "n": 0,
+            "porcentaje": 0.0
+          },
+          {
+            "estado": 4,
+            "HS": 1,
+            "TR": 0,
+            "AG": 0,
+            "n": 16,
+            "porcentaje": 5.405405405405405
+          },
+          {
+            "estado": 5,
+            "HS": 1,
+            "TR": 0,
+            "AG": 1,
+            "n": 25,
+            "porcentaje": 8.445945945945946
+          },
+          {
+            "estado": 6,
+            "HS": 1,
+            "TR": 1,
+            "AG": 0,
+            "n": 5,
+            "porcentaje": 1.6891891891891893
+          },
+          {
+            "estado": 7,
+            "HS": 1,
+            "TR": 1,
+            "AG": 1,
+            "n": 84,
+            "porcentaje": 28.37837837837838
+          }
+        ]
+      },
+      {
+        "pliegue": 5,
+        "n": 297,
+        "distribucion": [
+          {
+            "estado": 0,
+            "HS": 0,
+            "TR": 0,
+            "AG": 0,
+            "n": 162,
+            "porcentaje": 54.54545454545455
+          },
+          {
+            "estado": 1,
+            "HS": 0,
+            "TR": 0,
+            "AG": 1,
+            "n": 5,
+            "porcentaje": 1.6835016835016836
+          },
+          {
+            "estado": 2,
+            "HS": 0,
+            "TR": 1,
+            "AG": 0,
+            "n": 0,
+            "porcentaje": 0.0
+          },
+          {
+            "estado": 3,
+            "HS": 0,
+            "TR": 1,
+            "AG": 1,
+            "n": 0,
+            "porcentaje": 0.0
+          },
+          {
+            "estado": 4,
+            "HS": 1,
+            "TR": 0,
+            "AG": 0,
+            "n": 16,
+            "porcentaje": 5.3872053872053876
+          },
+          {
+            "estado": 5,
+            "HS": 1,
+            "TR": 0,
+            "AG": 1,
+            "n": 25,
+            "porcentaje": 8.417508417508417
+          },
+          {
+            "estado": 6,
+            "HS": 1,
+            "TR": 1,
+            "AG": 0,
+            "n": 5,
+            "porcentaje": 1.6835016835016836
+          },
+          {
+            "estado": 7,
+            "HS": 1,
+            "TR": 1,
+            "AG": 1,
+            "n": 84,
+            "porcentaje": 28.282828282828284
+          }
+        ]
+      }
+    ],
+    "estados_observados_train": [
+      0,
+      1,
+      4,
+      5,
+      6,
+      7
+    ],
+    "estados_no_observados_train": [
+      2,
+      3
+    ],
+    "casos_TR1_HS0_en_train": 0
+  },
+  "matriz_8x8": {
+    "orden": "filas = estado verdadero, columnas = estado predicho",
+    "etiquetas": [
+      "000",
+      "001",
+      "010",
+      "011",
+      "100",
+      "101",
+      "110",
+      "111"
+    ],
+    "matriz": [
+      [
+        627,
+        9,
+        6,
+        5,
+        66,
+        34,
+        10,
+        56
+      ],
+      [
+        8,
+        7,
+        0,
+        0,
+        0,
+        6,
+        0,
+        1
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        36,
+        0,
+        0,
+        0,
+        27,
+        15,
+        0,
+        1
+      ],
+      [
+        45,
+        5,
+        0,
+        0,
+        31,
+        40,
+        0,
+        3
+      ],
+      [
+        5,
+        2,
+        1,
+        0,
+        2,
+        2,
+        1,
+        11
+      ],
+      [
+        40,
+        1,
+        2,
+        6,
+        14,
+        16,
+        2,
+        340
+      ]
+    ],
+    "filas_con_estado_correcto": 1042,
+    "porcentaje_estado_correcto": 70.26298044504384
+  },
+  "categorias_error": {
+    "A_tres_correctas": {
+      "n": 1042,
+      "porcentaje": 70.26298044504384
+    },
+    "B_falla_una": {
+      "n": 223,
+      "porcentaje": 15.037086985839515
+    },
+    "C_falla_dos": {
+      "n": 120,
+      "porcentaje": 8.091706001348618
+    },
+    "D_falla_tres": {
+      "n": 98,
+      "porcentaje": 6.608226567768038
+    }
+  },
+  "por_estado_verdadero": [
+    {
+      "estado": 0,
+      "nombre": "000",
+      "n": 813,
+      "n_HS": 0,
+      "n_TR": 0,
+      "n_AG": 0,
+      "err_HS": 166,
+      "err_TR": 77,
+      "err_AG": 104,
+      "tasa_err_HS": 0.20418204182041821,
+      "tasa_err_TR": 0.09471094710947109,
+      "tasa_err_AG": 0.12792127921279212
+    },
+    {
+      "estado": 1,
+      "nombre": "001",
+      "n": 22,
+      "n_HS": 0,
+      "n_TR": 0,
+      "n_AG": 22,
+      "err_HS": 7,
+      "err_TR": 1,
+      "err_AG": 8,
+      "tasa_err_HS": 0.3181818181818182,
+      "tasa_err_TR": 0.045454545454545456,
+      "tasa_err_AG": 0.36363636363636365
+    },
+    {
+      "estado": 4,
+      "nombre": "100",
+      "n": 79,
+      "n_HS": 79,
+      "n_TR": 0,
+      "n_AG": 0,
+      "err_HS": 36,
+      "err_TR": 1,
+      "err_AG": 16,
+      "tasa_err_HS": 0.45569620253164556,
+      "tasa_err_TR": 0.012658227848101266,
+      "tasa_err_AG": 0.20253164556962025
+    },
+    {
+      "estado": 5,
+      "nombre": "101",
+      "n": 124,
+      "n_HS": 124,
+      "n_TR": 0,
+      "n_AG": 124,
+      "err_HS": 50,
+      "err_TR": 3,
+      "err_AG": 76,
+      "tasa_err_HS": 0.4032258064516129,
+      "tasa_err_TR": 0.024193548387096774,
+      "tasa_err_AG": 0.6129032258064516
+    },
+    {
+      "estado": 6,
+      "nombre": "110",
+      "n": 24,
+      "n_HS": 24,
+      "n_TR": 24,
+      "n_AG": 0,
+      "err_HS": 8,
+      "err_TR": 11,
+      "err_AG": 15,
+      "tasa_err_HS": 0.3333333333333333,
+      "tasa_err_TR": 0.4583333333333333,
+      "tasa_err_AG": 0.625
+    },
+    {
+      "estado": 7,
+      "nombre": "111",
+      "n": 421,
+      "n_HS": 421,
+      "n_TR": 421,
+      "n_AG": 421,
+      "err_HS": 49,
+      "err_TR": 71,
+      "err_AG": 58,
+      "tasa_err_HS": 0.1163895486935867,
+      "tasa_err_TR": 0.16864608076009502,
+      "tasa_err_AG": 0.1377672209026128
+    }
+  ],
+  "contraste_independencia": {
+    "chi2": 343.15628553452103,
+    "gl": 20,
+    "p_valor": 0.0,
+    "significativo": true,
+    "desviacion_maxima_celda": 116.20400000000001,
+    "tabla": [
+      {
+        "estado": 0,
+        "estado_nombre": "000",
+        "n": 813,
+        "patron_error": "000",
+        "observado": 627,
+        "esperado_indep": 510.796
+      },
+      {
+        "estado": 0,
+        "estado_nombre": "000",
+        "n": 813,
+        "patron_error": "001",
+        "observado": 9,
+        "esperado_indep": 74.926
+      },
+      {
+        "estado": 0,
+        "estado_nombre": "000",
+        "n": 813,
+        "patron_error": "010",
+        "observado": 6,
+        "esperado_indep": 53.439
+      },
+      {
+        "estado": 0,
+        "estado_nombre": "000",
+        "n": 813,
+        "patron_error": "011",
+        "observado": 5,
+        "esperado_indep": 7.839
+      },
+      {
+        "estado": 0,
+        "estado_nombre": "000",
+        "n": 813,
+        "patron_error": "100",
+        "observado": 66,
+        "esperado_indep": 131.054
+      },
+      {
+        "estado": 0,
+        "estado_nombre": "000",
+        "n": 813,
+        "patron_error": "101",
+        "observado": 34,
+        "esperado_indep": 19.224
+      },
+      {
+        "estado": 0,
+        "estado_nombre": "000",
+        "n": 813,
+        "patron_error": "110",
+        "observado": 10,
+        "esperado_indep": 13.711
+      },
+      {
+        "estado": 0,
+        "estado_nombre": "000",
+        "n": 813,
+        "patron_error": "111",
+        "observado": 56,
+        "esperado_indep": 2.011
+      },
+      {
+        "estado": 1,
+        "estado_nombre": "001",
+        "n": 22,
+        "patron_error": "000",
+        "observado": 7,
+        "esperado_indep": 9.112
+      },
+      {
+        "estado": 1,
+        "estado_nombre": "001",
+        "n": 22,
+        "patron_error": "001",
+        "observado": 8,
+        "esperado_indep": 5.207
+      },
+      {
+        "estado": 1,
+        "estado_nombre": "001",
+        "n": 22,
+        "patron_error": "010",
+        "observado": 0,
+        "esperado_indep": 0.434
+      },
+      {
+        "estado": 1,
+        "estado_nombre": "001",
+        "n": 22,
+        "patron_error": "011",
+        "observado": 0,
+        "esperado_indep": 0.248
+      },
+      {
+        "estado": 1,
+        "estado_nombre": "001",
+        "n": 22,
+        "patron_error": "100",
+        "observado": 6,
+        "esperado_indep": 4.252
+      },
+      {
+        "estado": 1,
+        "estado_nombre": "001",
+        "n": 22,
+        "patron_error": "101",
+        "observado": 0,
+        "esperado_indep": 2.43
+      },
+      {
+        "estado": 1,
+        "estado_nombre": "001",
+        "n": 22,
+        "patron_error": "110",
+        "observado": 1,
+        "esperado_indep": 0.202
+      },
+      {
+        "estado": 1,
+        "estado_nombre": "001",
+        "n": 22,
+        "patron_error": "111",
+        "observado": 0,
+        "esperado_indep": 0.116
+      },
+      {
+        "estado": 4,
+        "estado_nombre": "100",
+        "n": 79,
+        "patron_error": "000",
+        "observado": 27,
+        "esperado_indep": 33.857
+      },
+      {
+        "estado": 4,
+        "estado_nombre": "100",
+        "n": 79,
+        "patron_error": "001",
+        "observado": 15,
+        "esperado_indep": 8.599
+      },
+      {
+        "estado": 4,
+        "estado_nombre": "100",
+        "n": 79,
+        "patron_error": "010",
+        "observado": 0,
+        "esperado_indep": 0.434
+      },
+      {
+        "estado": 4,
+        "estado_nombre": "100",
+        "n": 79,
+        "patron_error": "011",
+        "observado": 1,
+        "esperado_indep": 0.11
+      },
+      {
+        "estado": 4,
+        "estado_nombre": "100",
+        "n": 79,
+        "patron_error": "100",
+        "observado": 36,
+        "esperado_indep": 28.345
+      },
+      {
+        "estado": 4,
+        "estado_nombre": "100",
+        "n": 79,
+        "patron_error": "101",
+        "observado": 0,
+        "esperado_indep": 7.199
+      },
+      {
+        "estado": 4,
+        "estado_nombre": "100",
+        "n": 79,
+        "patron_error": "110",
+        "observado": 0,
+        "esperado_indep": 0.363
+      },
+      {
+        "estado": 4,
+        "estado_nombre": "100",
+        "n": 79,
+        "patron_error": "111",
+        "observado": 0,
+        "esperado_indep": 0.092
+      },
+      {
+        "estado": 5,
+        "estado_nombre": "101",
+        "n": 124,
+        "patron_error": "000",
+        "observado": 40,
+        "esperado_indep": 27.952
+      },
+      {
+        "estado": 5,
+        "estado_nombre": "101",
+        "n": 124,
+        "patron_error": "001",
+        "observado": 31,
+        "esperado_indep": 44.258
+      },
+      {
+        "estado": 5,
+        "estado_nombre": "101",
+        "n": 124,
+        "patron_error": "010",
+        "observado": 3,
+        "esperado_indep": 0.693
+      },
+      {
+        "estado": 5,
+        "estado_nombre": "101",
+        "n": 124,
+        "patron_error": "011",
+        "observado": 0,
+        "esperado_indep": 1.097
+      },
+      {
+        "estado": 5,
+        "estado_nombre": "101",
+        "n": 124,
+        "patron_error": "100",
+        "observado": 5,
+        "esperado_indep": 18.887
+      },
+      {
+        "estado": 5,
+        "estado_nombre": "101",
+        "n": 124,
+        "patron_error": "101",
+        "observado": 45,
+        "esperado_indep": 29.904
+      },
+      {
+        "estado": 5,
+        "estado_nombre": "101",
+        "n": 124,
+        "patron_error": "110",
+        "observado": 0,
+        "esperado_indep": 0.468
+      },
+      {
+        "estado": 5,
+        "estado_nombre": "101",
+        "n": 124,
+        "patron_error": "111",
+        "observado": 0,
+        "esperado_indep": 0.741
+      },
+      {
+        "estado": 6,
+        "estado_nombre": "110",
+        "n": 24,
+        "patron_error": "000",
+        "observado": 1,
+        "esperado_indep": 3.25
+      },
+      {
+        "estado": 6,
+        "estado_nombre": "110",
+        "n": 24,
+        "patron_error": "001",
+        "observado": 11,
+        "esperado_indep": 5.417
+      },
+      {
+        "estado": 6,
+        "estado_nombre": "110",
+        "n": 24,
+        "patron_error": "010",
+        "observado": 2,
+        "esperado_indep": 2.75
+      },
+      {
+        "estado": 6,
+        "estado_nombre": "110",
+        "n": 24,
+        "patron_error": "011",
+        "observado": 2,
+        "esperado_indep": 4.583
+      },
+      {
+        "estado": 6,
+        "estado_nombre": "110",
+        "n": 24,
+        "patron_error": "100",
+        "observado": 1,
+        "esperado_indep": 1.625
+      },
+      {
+        "estado": 6,
+        "estado_nombre": "110",
+        "n": 24,
+        "patron_error": "101",
+        "observado": 0,
+        "esperado_indep": 2.708
+      },
+      {
+        "estado": 6,
+        "estado_nombre": "110",
+        "n": 24,
+        "patron_error": "110",
+        "observado": 5,
+        "esperado_indep": 1.375
+      },
+      {
+        "estado": 6,
+        "estado_nombre": "110",
+        "n": 24,
+        "patron_error": "111",
+        "observado": 2,
+        "esperado_indep": 2.292
+      },
+      {
+        "estado": 7,
+        "estado_nombre": "111",
+        "n": 421,
+        "patron_error": "000",
+        "observado": 340,
+        "esperado_indep": 266.657
+      },
+      {
+        "estado": 7,
+        "estado_nombre": "111",
+        "n": 421,
+        "patron_error": "001",
+        "observado": 2,
+        "esperado_indep": 42.606
+      },
+      {
+        "estado": 7,
+        "estado_nombre": "111",
+        "n": 421,
+        "patron_error": "010",
+        "observado": 16,
+        "esperado_indep": 54.093
+      },
+      {
+        "estado": 7,
+        "estado_nombre": "111",
+        "n": 421,
+        "patron_error": "011",
+        "observado": 14,
+        "esperado_indep": 8.643
+      },
+      {
+        "estado": 7,
+        "estado_nombre": "111",
+        "n": 421,
+        "patron_error": "100",
+        "observado": 6,
+        "esperado_indep": 35.124
+      },
+      {
+        "estado": 7,
+        "estado_nombre": "111",
+        "n": 421,
+        "patron_error": "101",
+        "observado": 2,
+        "esperado_indep": 5.612
+      },
+      {
+        "estado": 7,
+        "estado_nombre": "111",
+        "n": 421,
+        "patron_error": "110",
+        "observado": 1,
+        "esperado_indep": 7.125
+      },
+      {
+        "estado": 7,
+        "estado_nombre": "111",
+        "n": 421,
+        "patron_error": "111",
+        "observado": 40,
+        "esperado_indep": 1.138
+      }
+    ]
+  },
+  "inventario_mecanismos": [
+    {
+      "mecanismo": "Label Powerset",
+      "experimento": "V4-E01-E03",
+      "formulacion": "multinomial sobre combinaciones de etiqueta",
+      "resultado": "12 variantes, todas por debajo de V03: mejor lr4_mapeo_bal_C2.0 = 0.7713; lr6_bal_C2.0 = 0.7674; lr4_excluir_bal_C2.0 = ",
+      "decision": "TRACK E cerrado como NO_SIGNAL (V4-E01, V4-E02 y V4-E03); se confirma que la dependencia e",
+      "equivalente_a_familia_previa": true
+    },
+    {
+      "mecanismo": "Classifier chain HS->TR->AG",
+      "experimento": "E2-01-HS-TR-AG",
+      "formulacion": "cadena anidada de scores",
+      "resultado": "{\"corrected_cv\": 0.773674137845373, \"f1_por_etiqueta\": {\"HS\": 0.7532051282051282, \"TR\": 0.8165038002171553, \"AG\": 0.7513",
+      "decision": "No adoptada (no supera la regla D-016)",
+      "equivalente_a_familia_previa": true
+    },
+    {
+      "mecanismo": "Classifier chain HS->AG->TR",
+      "experimento": "E2-01-HS-AG-TR",
+      "formulacion": "cadena anidada de scores",
+      "resultado": "{\"corrected_cv\": 0.7744289228692115, \"f1_por_etiqueta\": {\"HS\": 0.7532051282051282, \"TR\": 0.8187772925764192, \"AG\": 0.751",
+      "decision": "No adoptada (no supera la regla D-016)",
+      "equivalente_a_familia_previa": true
+    },
+    {
+      "mecanismo": "Cadena con espacios normalizados",
+      "experimento": "E2-01-HS-TR-AG-STD",
+      "formulacion": "cadena anidada",
+      "resultado": "{\"corrected_cv\": 0.7711106652986519, \"f1_por_etiqueta\": {\"HS\": 0.7532051282051282, \"TR\": 0.8103448275862069, \"AG\": 0.749",
+      "decision": "No adoptada (no supera la regla D-016)",
+      "equivalente_a_familia_previa": true
+    },
+    {
+      "mecanismo": "Espacio separado por etiqueta",
+      "experimento": "E2-21-ESPACIOS",
+      "formulacion": "espacio propio por etiqueta",
+      "resultado": "{\"delta_vs_m2_05\": -0.01991206394117173, \"delta_vs_v03\": -0.025312063941171692, \"f1_pliegues\": [0.7663704544022186, 0.76",
+      "decision": "CERRADA sin mejora",
+      "equivalente_a_familia_previa": true
+    },
+    {
+      "mecanismo": "Acoplamiento suave entre cabeceras",
+      "experimento": "V8-05",
+      "formulacion": "penalizacion hacia la media",
+      "resultado": "**Negativo y monotono.** El control interno con peso conjunto cero da 0,775652, frente a los 0,777211 de V03, diferencia",
+      "decision": "**P4 cerrado como negativo, sin submission y sin variante.** El mecanismo esta descartado:",
+      "equivalente_a_familia_previa": true
+    },
+    {
+      "mecanismo": "Meta-modelo sobre scores OOF",
+      "experimento": "E2-02-META",
+      "formulacion": "meta-modelo de dependencia",
+      "resultado": "{\"corrected_cv_no_anidado\": 0.7850085565795801, \"corrected_cv_anidado\": 0.7853201709584162, \"por_C_no_anidado\": {\"0.1\": ",
+      "decision": "ADOPTADA (Gate P1)",
+      "equivalente_a_familia_previa": true
+    },
+    {
+      "mecanismo": "Meta-modelo con canales",
+      "experimento": "E2-18-META-BASES",
+      "formulacion": "meta-modelo de dependencia",
+      "resultado": "{\"corrected_cv\": 0.7850085565795801, \"f1_por_etiqueta\": {\"HS\": 0.7757575757575758, \"TR\": 0.8176100628930818, \"AG\": 0.761",
+      "decision": "No adoptado / diagnostico",
+      "equivalente_a_familia_previa": true
+    },
+    {
+      "mecanismo": "Correccion estructural dura",
+      "experimento": "P45-01 (esta fase)",
+      "formulacion": "regla dura TR/AG=0 si HS=0",
+      "resultado": "medido en esta fase: TR=0 si HS=0 da -0.0006457445, AG=0 si HS=0 da -0.0035416619",
+      "decision": "NEGATIVA en ambos casos",
+      "equivalente_a_familia_previa": true
+    }
+  ],
+  "correccion_estructural_dura": {
+    "control_v03": 0.7772114525165721,
+    "forzar_TR0_si_HS0": 0.7765657079731135,
+    "forzar_AG0_si_HS0": 0.773669790589817
+  },
+  "gastos": {
+    "submissions": 0,
+    "modelos_entrenados": 0,
+    "segundos": 0.4
+  }
+}
