@@ -5092,3 +5092,10 @@ V03 remains the best verified leaderboard result.
 ## 2026-10-02 (P84-03 - reejecucion por bug de conteo, Enmienda 3bis)
 - 19:06 | P84 | Reejecucion completa CPU en 20.2 s tras Enmienda 3bis (sha256 2a837416...; log /tmp/opencode/p84_03_run2.log) | bug corregido: rescate/dano usan pred_ref; recuentos corregidos B1 61=32/29, B2 446=207/239, B3 63=34/29 sobre 4449; identidad A=V03 exacta (max|delta proba| 0.0); informe y fila CSV regenerados (P84-03 una sola vez, 455 filas de datos, 23 columnas en todas).
 - Equivalencia B1-A: max|delta proba| 7.188e-02 (NO PASA, tol 1e-3) y |delta F1| congelado 0.000266 (pasa, tol 0.001) -> REFUTACION PARCIAL con etiqueta CLOSED BY EQUIVALENCE; deltas congelados vs A=V03: B1 +0.000266 IC95 [-0.004077,+0.004838] 3/5; B2 -0.044992 IC95 [-0.062517,-0.028327] 0/5; B3 +0.000210 IC95 [-0.004257,+0.004751] 3/5; C_efectivo y decision sin cambios; sin holdout/test/submissions.
+
+## 2026-10-03 (Notebook consolidado: autocontenido, completo y limpio)
+- 00:11 | Notebook | `experiments/p84_06_notebook_completo.py` regenera `notebooks/10_final_pipeline.ipynb`: 452 -> 457 celdas; cobertura 488/488 identificadores (455 del registro mas 33 ayudantes del inventario); `tools/verificar_caracteres.py` en 0 errores; todas las celdas de codigo compilan.
+- Autocontenido: las funciones de `src/data.py`, `src/evaluation.py` y `src/embedding_utils.py` quedan embebidas en la celda de definiciones; sin imports de `src` ni inserciones en `sys.path` (verificado).
+- Completo: seccion 127 (fase P84 con sus cinco experimentos y EXP-06), anexo A (seccion 128) con la lista completa y verificacion de completitud (seccion 129).
+- Limpieza: simbolos no ASCII fuera de la ortografia espanola sustituidos (guion largo, signo menos, comillas angulares, simbolo de seccion, alpha, etc.).
+- Smoke test: configuracion, definiciones embebidas, datos, metricas, reproducibilidad y las dos verificaciones ejecutadas sin errores; la ejecucion end-to-end completa sigue pendiente por coste.
