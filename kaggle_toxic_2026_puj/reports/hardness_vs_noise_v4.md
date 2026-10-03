@@ -1,6 +1,6 @@
 # Dureza de ejemplos frente a ruido de etiqueta (v4, TRACK B)
 
-Generado por `experiments/28_hardness_v4.py` el 2026-09-25. Todas las señales son **out-of-fold**: la probabilidad de V03 para un ejemplo procede de un modelo que no lo vio en entrenamiento (§9).
+Generado por `experiments/28_hardness_v4.py` el 2026-10-02. Todas las señales son **out-of-fold**: la probabilidad de V03 para un ejemplo procede de un modelo que no lo vio en entrenamiento (§9).
 
 ## 1. Variables calculadas
 

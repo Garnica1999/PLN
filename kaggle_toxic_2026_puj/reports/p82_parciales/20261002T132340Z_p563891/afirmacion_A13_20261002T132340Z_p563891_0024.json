@@ -1,0 +1,34 @@
+{
+  "marca_corrida": "20261002T132340Z_p563891",
+  "resultado": {
+    "bloque": 3,
+    "coste_segundos": 3.3e-05,
+    "descripcion": "existe brazo sin atencion de la MISMA corrida y es el control",
+    "detalle": {
+      "bloque_leido": {
+        "con_tra_manode": "B1",
+        "control_literal": "B1",
+        "control_sin_atencion": "B1",
+        "corrida": "P82",
+        "definicion": "B2 - B1",
+        "experimento_contraste": "NINGUNO",
+        "id": "P1"
+      },
+      "comprobaciones": {
+        "control_canonico_es_B1": true,
+        "control_literal_del_preregistro_es_B1": true,
+        "corrida_es_P82": true,
+        "experimento_contraste_es_NINGUNO": true
+      },
+      "control_literal": "B1",
+      "leido_de": "el diccionario de carga que la corrida produce"
+    },
+    "estado": "CONFIRMADO",
+    "exito": true,
+    "id": "A13",
+    "naturaleza": "CONFIRMAR",
+    "stop": true,
+    "tolerancia": "igualdad exacta de cadenas leida del diccionario de carga",
+    "traza": ""
+  }
+}

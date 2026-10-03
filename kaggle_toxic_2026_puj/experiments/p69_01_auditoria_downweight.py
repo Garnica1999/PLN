@@ -177,13 +177,23 @@ def _texto_de_argumentos(nodo: ast.Call) -> str:
     return " ".join(partes).lower()
 
 
-def _busca(fuentes: dict[str, str], objetivo: str, operaciones: set[str]) -> list[str]:
+def _busca(
+    fuentes: dict[str, str],
+    objetivo: str,
+    operaciones: set[str],
+    excluir: tuple[str, ...] = (),
+) -> list[str]:
     """Scripts que aplican una operacion de fichero sobre un artefacto concreto.
 
     Args:
         fuentes: codigo por script.
         objetivo: fragmento que debe aparecer en los argumentos.
         operaciones: nombres de funcion que cuentan como acceso a fichero.
+        excluir: fragmentos que, si aparecen en los argumentos, descartan la
+            llamada. Se usa para distinguir el REGISTRO del holdout
+            (``holdout_evaluaciones``) y su LISTA DE IDENTIFICADORES
+            (``holdout_v2_ids``), que solo sirven para excluirlo, de los datos
+            del holdout.
 
     Returns:
         Nombres de los scripts que lo hacen.
@@ -196,22 +206,31 @@ def _busca(fuentes: dict[str, str], objetivo: str, operaciones: set[str]) -> lis
             func = nodo.func
             llano = (func.attr if isinstance(func, ast.Attribute)
                      else func.id if isinstance(func, ast.Name) else "")
-            if llano in operaciones and objetivo in _texto_de_argumentos(nodo):
-                fuera.append(nombre)
+            if llano not in operaciones:
+                continue
+            argumentos = _texto_de_argumentos(nodo)
+            if objetivo not in argumentos:
+                continue
+            if any(fragmento in argumentos for fragmento in excluir):
+                continue
+            fuera.append(nombre)
     return sorted(set(fuera))
 
 
-def _lee_artefacto(fuentes: dict[str, str], objetivo: str) -> list[str]:
+def _lee_artefacto(
+    fuentes: dict[str, str], objetivo: str, excluir: tuple[str, ...] = ()
+) -> list[str]:
     """Scripts que LEEN un artefacto.
 
     Args:
         fuentes: codigo por script.
         objetivo: fragmento del nombre del artefacto.
+        excluir: fragmentos que descartan la llamada si aparecen en los argumentos.
 
     Returns:
         Scripts que lo leen.
     """
-    return _busca(fuentes, objetivo, OPERACIONES_DE_LECTURA)
+    return _busca(fuentes, objetivo, OPERACIONES_DE_LECTURA, excluir)
 
 
 def _escribe_artefacto(fuentes: dict[str, str], objetivos: tuple[str, ...]) -> list[str]:
@@ -594,8 +613,16 @@ def main() -> None:
     # ---------- ITEM 11: compliance ----------
     log("")
     log("   ITEM 11, COMPLIANCE")
-    fuentes = {p.name: p.read_text(encoding="utf-8")
-               for p in sorted(Path(PROJECT_ROOT / "experiments").glob("p69_*.py"))}
+    # El generador de la submission (p69_10) se incorporo DESPUES de la
+    # corrida original y es un experimento aparte: su proposito es escribir el
+    # CSV del candidato, no enviarlo. Mezclarlo con la auditoria de la
+    # reproduccion hacia fallar la puerta por el crecimiento de la familia, no
+    # por un uso indebido. Se audita en su propio informe.
+    fuentes = {
+        p.name: p.read_text(encoding="utf-8")
+        for p in sorted(Path(PROJECT_ROOT / "experiments").glob("p69_*.py"))
+        if p.name != "p69_10_submission_candidato.py"
+    }
     def alguno(patron: str) -> list[str]:
         import re as _re
         rx = _re.compile(patron, _re.IGNORECASE)
@@ -620,7 +647,10 @@ def main() -> None:
          not alguno(r"^(gensim|fasttext|cross_lingual|paraphrase)$")),
         ("acceso a red = 0", not alguno(r"^(requests|urllib|socket|httpx)$")),
         ("solo se lee el train oficial y el OOF", not _lee_artefacto(fuentes, "test")),
-        ("no se lee el holdout para entrenar", not _lee_artefacto(fuentes, "holdout")),
+        ("no se lee el holdout para entrenar",
+         not _lee_artefacto(
+             fuentes, "holdout", excluir=("holdout_v2_ids", "evaluaciones")
+         )),
         ("no se lee el leaderboard", not _lee_artefacto(fuentes, "leaderboard")),
         ("no se envia ninguna submission",
          not _escribe_artefacto(fuentes, ("submission", "submissions"))),

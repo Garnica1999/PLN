@@ -1,7 +1,7 @@
 {
   "familia": "P69_AUDITORIA_DOWNWEIGHT",
   "experiment_id": "P69-01",
-  "fecha": "2026-09-29T17:48:42+00:00",
+  "fecha": "2026-10-02T10:52:31+00:00",
   "naturaleza": "AUDITORIA + REPRODUCCION. 0 tecnicas nuevas, 0 grid, 0 submissions, 0 test, 0 holdout, 0 leaderboard",
   "pregunta": "existe evidencia reproducible y auditable de que A_cost_sensitive_downweight mejora V03",
   "procedencia": {
@@ -193,53 +193,12 @@
   "resolucion": "MARGINAL",
   "reproducibilidad": {
     "nivel": "R3",
-    "git_commit": "16d443b",
+    "git_commit": "c8eea22",
     "seed": 42,
     "hash_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
     "corrected_cv_v03": 0.7772114525165721,
     "artefacto": "oof_weighting_v4.npz",
     "sha256_artefacto": "92f2ef7ee9563eaa97ca64ece7b0a7b3b9f5e94a1cd47272d33e279c6b08da73"
   },
-  "formulacion": "V03 remains the best verified leaderboard result.",
-  "CIERRE": {
-    "ORIGINAL": {
-      "corrected_cv": 0.7854160387,
-      "delta": 0.0082045862,
-      "pliegues": 5,
-      "externo": "nunca enviado"
-    },
-    "REPRODUCED": {
-      "corrected_cv": 0.7854160387,
-      "delta": 0.0082045862,
-      "nivel": "R3",
-      "diferencia": 3.2391977989e-11
-    },
-    "SEGUNDA_PARTICION": {
-      "delta": 0.010525313,
-      "pliegues": 5,
-      "semilla": 20260928
-    },
-    "BOOTSTRAP": {
-      "por_filas": [
-        -0.0002247696,
-        0.0116880198
-      ],
-      "por_grupos": [
-        -0.0006906975,
-        0.0118175641
-      ],
-      "por_grupos_incluye_cero": true
-    },
-    "gates": {
-      "reproducido_exactamente_R3": true,
-      "cinco_de_cinco_en_la_canonica": true,
-      "cinco_de_cinco_en_la_segunda": true,
-      "misma_direccion_en_la_segunda": true,
-      "bootstrap_por_filas_compatible_con_mejora": false,
-      "bootstrap_por_grupos_compatible_con_mejora": false,
-      "compliance_sin_fallos": true
-    },
-    "FINAL_STATUS": "MARGINAL",
-    "razon": "el candidato se reproduce EXACTAMENTE y confirma su direccion en una segunda particion con 5 de 5 pliegues, pero el intervalo de confianza incluye el cero bajo las DOS unidades de remuestreo. Con un limite inferior de -0.000691 por grupos, la mejora no es distinguible del ruido a este tamano de muestra. CASO C del encargo"
-  }
+  "formulacion": "V03 remains the best verified leaderboard result."
 }

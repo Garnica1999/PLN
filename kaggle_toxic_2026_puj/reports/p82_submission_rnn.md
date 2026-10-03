@@ -42,3 +42,15 @@ se espera de forma explicita que esta sonda NO supere a V03, y no es un fallo de
 - No se ha promediado ninguna prediccion de varias semillas.
 
 V03 remains the best verified leaderboard result.
+
+---
+
+## FE DE ERRATAS (auditoria integral, 2026-10-02)
+
+El parrafo de la seccion 5 que afirma "No se ha consultado el leaderboard ni
+se ha enviado nada a Kaggle" es incorrecto: la sonda SI se envio y su
+resultado esta registrado en `submissions/leaderboard_log.csv` como
+`p82_sonda_rnn_b1`, con LB 0.68150 y delta LB-local +0.041841. Manda el
+registro. La sonda no supera a V03 y asi se declara.
+
+Evidencia: `auditoria/revision_p82.md` (hallazgo H4).

@@ -6,15 +6,15 @@ Generado por `auditoria/generar_inventario.py` el 2026-10-02 a partir de `experi
 
 | Concepto | Total |
 | --- | ---: |
-| Filas de datos en `experiments.csv` | 411 |
-| Filas bien formadas (23 columnas) | 368 |
-| Filas malformadas (ancho distinto de 23, desde P67) | 43 |
+| Filas de datos en `experiments.csv` | 450 |
+| Filas bien formadas (23 columnas) | 450 |
+| Filas malformadas (ancho distinto de 23, desde P67) | 0 |
 | Scripts `.py` en `experiments/` | 376 |
-| Scripts con fila o asociación de registro | 304 |
-| Scripts sin fila de registro | 72 |
+| Scripts con fila o asociación de registro | 343 |
+| Scripts sin fila de registro | 33 |
 | Experimentos en el inventario | 483 |
-| Experimentos con evidencia atribuida por id o script | 174 |
-| Experimentos con evidencia solo a nivel de fase | 124 |
+| Experimentos con evidencia atribuida por id o script | 179 |
+| Experimentos con evidencia solo a nivel de fase | 119 |
 | Experimentos sin evidencia atribuible | 185 |
 
 ## 2. Scripts por tipo
@@ -34,14 +34,14 @@ Generado por `auditoria/generar_inventario.py` el 2026-10-02 a partir de `experi
 
 | Estado | Experimentos |
 | --- | ---: |
-| con_evidencia_y_notebook | 74 |
-| con_evidencia_sin_notebook | 100 |
-| sin_evidencia | 177 |
-| solo_notebook | 132 |
+| con_evidencia_y_notebook | 83 |
+| con_evidencia_sin_notebook | 96 |
+| sin_evidencia | 170 |
+| solo_notebook | 134 |
 
 Criterio de evidencia: una ruta de `reports/`, `resultados/` o `figuras/` cuenta si su nombre contiene el id (variantes `-`/`_`) o alguna variante del basename del script sin `.py` (stem completo o stem sin el índice numérico). La evidencia que solo coincide con el token de fase (`v44`, `p60`, `embedding`) no se cuenta en `estado`: se informa aparte para no atribuir a un sub-experimento artefactos de toda la fase.
 
-## 4. Experimentos sin documentar en el notebook (277)
+## 4. Experimentos sin documentar en el notebook (266)
 
 Ids sin ninguna mención en el notebook (se listan como máximo 80, en orden de registro):
 
@@ -127,9 +127,9 @@ V11-05	v11	registro
 V11-08	v11	cierre
 V12-00	v12	auditoria
 ```
-Lista truncada: se muestran 80 de 277 experimentos sin notebook.
+Lista truncada: se muestran 80 de 266 experimentos sin notebook.
 
-## 5. Scripts sin fila de registro (72)
+## 5. Scripts sin fila de registro (33)
 
 | Script | Familia | Tipo | Evidencia | Notebook |
 | --- | --- | --- | --- | --- |
@@ -137,66 +137,27 @@ Lista truncada: se muestran 80 de 277 experimentos sin notebook.
 | `experiments/embedding_06_auditoria_v5.py` | embedding | auditoria | NO | NO |
 | `experiments/embedding_22_auditoria_final_v5_1.py` | embedding | auditoria | NO | NO |
 | `experiments/p59_00_registro_hipotesis.py` | p59 | registro | NO | NO |
-| `experiments/p59_01_voronoi_local.py` | p59 | experimento | NO | NO |
-| `experiments/p59_05_nmf_gap_analysis.py` | p59 | experimento | NO | NO |
-| `experiments/p59_08_calibracion_local.py` | p59 | experimento | NO | NO |
-| `experiments/p59_11_generativo_ngram.py` | p59 | experimento | NO | NO |
-| `experiments/p60_05_ruido_por_etiqueta.py` | p60 | experimento | NO | NO |
 | `experiments/p60_14_auditoria.py` | p60 | auditoria | NO | NO |
 | `experiments/p60_registrar.py` | p60 | registro | NO | NO |
 | `experiments/p61_00_reconciliacion.py` | p61 | auditoria | NO | NO |
-| `experiments/p61_01_eda_probabilidades.py` | p61 | experimento | NO | NO |
-| `experiments/p61_02_inventario.py` | p61 | experimento | NO | NO |
 | `experiments/p62_06_notebook.py` | p62 | integracion_notebook | SI | NO |
-| `experiments/p62_10_techo_cortos.py` | p62 | experimento | SI | NO |
 | `experiments/p62_11_cerrar.py` | p62 | cierre | NO | NO |
-| `experiments/p63_09_dataset_auxiliar.py` | p63 | experimento | NO | NO |
-| `experiments/p64_05_multiple_instance.py` | p64 | experimento | SI | NO |
 | `experiments/p64_06_cerrar.py` | p64 | cierre | NO | NO |
-| `experiments/p64_06_quote_mention.py` | p64 | experimento | SI | NO |
-| `experiments/p64_07_negacion.py` | p64 | experimento | SI | NO |
-| `experiments/p64_08_lda.py` | p64 | experimento | NO | NO |
 | `experiments/p65_05_cerrar.py` | p65 | cierre | NO | NO |
 | `experiments/p66_04_cerrar.py` | p66 | cierre | NO | NO |
-| `experiments/p72_02_dimension_downstream.py` | p72 | experimento | NO | NO |
 | `experiments/p73_04_auditoria_cierre.py` | p73 | auditoria | SI | NO |
-| `experiments/p78_01_control_anidado.py` | p78 | experimento | SI | NO |
-| `experiments/p79_01_auditoria_sgns.py` | p79 | auditoria | SI | NO |
-| `experiments/p80_01_auditoria_w2v.py` | p80 | auditoria | SI | NO |
-| `experiments/p81_01_cierre_huecos.py` | p81 | cierre | SI | NO |
-| `experiments/p82_01_rnn_atencion.py` | p82 | experimento | SI | NO |
-| `experiments/p82_02_submission_rnn.py` | p82 | submission | SI | NO |
-| `experiments/p83_01_bayesiano.py` | p83 | experimento | NO | NO |
-| `experiments/v16_00_prevalencia_y_curva_lb.py` | v16 | experimento | SI | NO |
 | `experiments/v16_01_generar_submissions.py` | v16 | submission | NO | NO |
-| `experiments/v16_02_promedio_umbrales.py` | v16 | experimento | SI | NO |
-| `experiments/v16_03_vecinos_de_capacidad.py` | v16 | experimento | SI | NO |
-| `experiments/v17_00_inventario_y_complementariedad.py` | v17 | experimento | NO | NO |
 | `experiments/v17_01_informe_final.py` | v17 | cierre | SI | NO |
-| `experiments/v18_01_cambio_y_senal.py` | v18 | experimento | SI | NO |
-| `experiments/v19_00_metrica_verificada.py` | v19 | experimento | SI | NO |
-| `experiments/v19_01_valor_de_cada_correccion.py` | v19 | experimento | SI | NO |
-| `experiments/v19_02_restriccion_tr_implica_hs.py` | v19 | experimento | SI | NO |
-| `experiments/v20_01_informacion_incremental.py` | v20 | experimento | SI | NO |
-| `experiments/v20_02_inferencia_y_candidata.py` | v20 | experimento | SI | NO |
-| `experiments/v21_01_triaje_competitivo.py` | v21 | experimento | SI | NO |
 | `experiments/v22_01_auditoria_preprocessing.py` | v22 | auditoria | SI | NO |
 | `experiments/v23_01_auditoria_rbf_svc.py` | v23 | auditoria | SI | NO |
 | `experiments/v23_02_submission_rbf_sigmoid.py` | v23 | submission | SI | NO |
-| `experiments/v24_01_modelo_transferencia_complejidad.py` | v24 | experimento | NO | NO |
 | `experiments/v26_04_integrar_notebook.py` | v26 | integracion_notebook | NO | NO |
 | `experiments/v27_02_integrar_notebook.py` | v27 | integracion_notebook | NO | NO |
 | `experiments/v38_03_integrar_v39.py` | v38 | integracion_notebook | NO | NO |
 | `experiments/v42_02_integrar_notebook.py` | v42 | integracion_notebook | NO | NO |
-| `experiments/v47_01_ajuste_pliegues.py` | v47 | experimento | NO | NO |
-| `experiments/v47_01_especializacion.py` | v47 | experimento | NO | NO |
-| `experiments/v47_01_especializacion_por_etiqueta.py` | v47 | experimento | NO | NO |
 | `experiments/v48_02_integrar_notebook.py` | v48 | integracion_notebook | NO | NO |
 | `experiments/v49_01_integrar_notebook.py` | v49 | integracion_notebook | NO | NO |
-| `experiments/v50_00_brecha_y_oracle.py` | v50 | experimento | NO | NO |
-| `experiments/v51_00_utilidad_y_asimetria.py` | v51 | experimento | NO | NO |
 | `experiments/v51_03_integrar_notebook.py` | v51 | integracion_notebook | NO | NO |
-| `experiments/v54_00_atlas_no_rescatable.py` | v54 | experimento | NO | NO |
 | `experiments/v54_01_integrar_notebook.py` | v54 | integracion_notebook | NO | NO |
 | `experiments/v55_00_auditoria_pipeline.py` | v55 | auditoria | NO | NO |
 | `experiments/v55_01_integrar_notebook.py` | v55 | integracion_notebook | NO | NO |
@@ -206,7 +167,7 @@ Lista truncada: se muestran 80 de 277 experimentos sin notebook.
 | `experiments/v58_00_auditoria_candidatos.py` | v58 | auditoria | NO | NO |
 | `experiments/v58_01_integrar_notebook.py` | v58 | integracion_notebook | NO | NO |
 
-Scripts sin ninguna cita en `reports/`, `resultados/` o `figuras/`: 215 de 376. La divergencia de nombres entre scripts (`p60_02_asl.py`) y artefactos (`p60_A_asl.json`) explica la mayor parte de las citas no encontradas.
+Scripts sin ninguna cita en `reports/`, `resultados/` o `figuras/`: 214 de 376. La divergencia de nombres entre scripts (`p60_02_asl.py`) y artefactos (`p60_A_asl.json`) explica la mayor parte de las citas no encontradas.
 
 ## 6. Secciones del notebook sin registro
 
@@ -226,7 +187,7 @@ Secciones de nivel 2 cuyo token de fase (`P45`, `V03`, ...) no existe en `experi
 | 47 | 196 | P51 - Utility-Aware Contextual Gating (2026-09-28) | P51 | P51->V51 |
 | 48 | 198 | P52 - Policy Oracle and Channel Complementarity (2026-09-28) | P52 |  |
 | 49 | 200 | P53 - Fine-Grained Observable Policy Audit (2026-09-28) | P53 |  |
-| 50 | 202 | P54 - Auditoria semantica de los errores no rescatables (2026-09-28) | P54 |  |
+| 50 | 202 | P54 - Auditoria semantica de los errores no rescatables (2026-09-28) | P54 | P54->V54 |
 | 51 | 204 | P55 - Auditoria estrategica del pipeline final de V03 (2026-09-28) | P55, V03 |  |
 | 52 | 206 | P56 - Transferencia de umbrales corregida (2026-09-28) | P56 | P56->V56 |
 | 53 | 208 | P57 - Cierre estrategico y plan final (2026-09-28) | P57 |  |
@@ -261,11 +222,6 @@ La columna Celda usa \u00edndice base 0 del notebook. Los tokens `V03` correspon
 
 | Fase | Scripts |
 | --- | ---: |
-| P78 | 1 |
-| P79 | 1 |
-| P81 | 1 |
-| P82 | 2 |
-| P83 | 1 |
 | V13 | 3 |
 | V21 | 1 |
 | V22 | 3 |
@@ -276,60 +232,17 @@ La columna Celda usa \u00edndice base 0 del notebook. Los tokens `V03` correspon
 Las 43 filas malformadas usan un formato de barras (`id|fecha|...`) con comas sin comillas en el payload; `csv.reader` las parte en 1 a 12 campos. Su línea cruda se conserva intacta en la fuente y se usó para extraer id, fecha y scripts. Líneas afectadas:
 
 ```
-370	P67-00	ancho=3
-371	P67-01	ancho=5
-372	P67-02	ancho=5
-373	P67-03	ancho=5
-374	P67-04	ancho=5
-375	P68-01	ancho=4
-376	P68-02	ancho=4
-377	P69-01	ancho=4
-378	P69-02	ancho=2
-379	P69-03	ancho=5
-380	P69-04	ancho=2
-381	P69-05	ancho=5
-382	P69-06	ancho=1
-383	P69-07	ancho=4
-384	P69-08	ancho=3
-385	P69-09	ancho=2
-386	P69-10	ancho=5
-387	P70-01	ancho=3
-388	P70-02	ancho=2
-389	P70-03	ancho=1
-390	P71-00	ancho=3
-391	P71-01	ancho=3
-392	P71-02	ancho=1
-393	P71-03	ancho=2
-394	P71-04	ancho=2
-395	P71-05	ancho=3
-396	P71-06	ancho=2
-397	P71-07	ancho=1
-398	P71-08	ancho=5
-399	P71-09	ancho=1
-400	P71-10	ancho=2
-401	P72-00	ancho=1
-402	P72-01	ancho=1
-403	P72-03	ancho=2
-404	P72-04	ancho=3
-405	P73-01	ancho=2
-406	P73-02	ancho=2
-407	P73-03	ancho=7
-408	P74-PRE	ancho=3
-409	P74	ancho=12
-410	P75	ancho=2
-411	P76	ancho=8
-412	P77	ancho=10
 ```
 
 ## 8. Huecos principales detectados
 
-- El registro deja de ser CSV tabular en P67: 43 filas en formato de barras con comas sin comillas (anchos de 1 a 12), de modo que un lector estricto de CSV pierde 43 experimentos.
-- Scripts sin fila de registro: 72 de 376; por familia destacan p59(5), p64(5), v16(4), p60(3), p61(3), p62(3).
-- Fases con scripts en `experiments/` y ninguna mención en el notebook: P78, P79, P81, P82, P83, V13, V21, V22, V36.
+- El registro deja de ser CSV tabular en P67: 0 filas en formato de barras con comas sin comillas (anchos de 1 a 12), de modo que un lector estricto de CSV pierde 43 experimentos.
+- Scripts sin fila de registro: 33 de 376; por familia destacan embedding(2), p60(2), p62(2), v23(2), v55(2), v57(2).
+- Fases con scripts en `experiments/` y ninguna mención en el notebook: V13, V21, V22, V36.
 - El notebook no tiene sección propia para P78, P79, P80, P81, P82 ni P83; el único `p80` del notebook es el percentil `umbral_de_dureza_p80`, no la fase P80.
 - Números de sección ausentes en la numeración de nivel 2: 32, 38.
 - Secciones numeradas repetidas: 81, 82, 83, 84, 85, 86, 87, 88 (el bloque P61, secciones 81-88, aparece dos veces: celdas 265-286 y 290-311).
-- Experimentos solo en notebook, sin evidencia: 132; experimentos sin evidencia ni menci\u00f3n en el notebook: 177.
+- Experimentos solo en notebook, sin evidencia: 134; experimentos sin evidencia ni menci\u00f3n en el notebook: 170.
 - Nomenclatura divergente: el registro usa ids V45-xx a V58-xx mientras el notebook titula esas fases P45 a P58 (ver sección 6).
 - La evidencia se nombra por fase o por letra y no por el índice del script (por ejemplo `p60_02_asl.py` frente a `p60_A_asl.json`), lo que impide atribuirla automáticamente sin revisión manual.
 

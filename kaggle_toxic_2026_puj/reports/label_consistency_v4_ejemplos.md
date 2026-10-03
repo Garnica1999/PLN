@@ -1,6 +1,6 @@
 # Clusters contradictorios (revision manual de ambiguedad)
 
-Generado por `experiments/27_label_consistency_v4.py` el 2026-09-25. Se listan hasta 25 clusters ordenados por desacuerdo y tamano; el objetivo es que la ambiguedad de anotacion sea auditable, no automatizada (§8).
+Generado por `experiments/27_label_consistency_v4.py` el 2026-10-02. Se listan hasta 25 clusters ordenados por desacuerdo y tamano; el objetivo es que la ambiguedad de anotacion sea auditable, no automatizada (§8).
 
 Total de clusters con 2+ miembros: **15**; clusters con etiquetas contradictorias: **2**.
 

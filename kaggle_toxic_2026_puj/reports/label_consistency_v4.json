@@ -1,7 +1,7 @@
 {
   "experiment_id": "V4-A01",
-  "fecha": "2026-09-25T19:03:29+00:00",
-  "duracion_s": 1.88,
+  "fecha": "2026-10-02T10:49:10+00:00",
+  "duracion_s": 1.46,
   "n_train": 1731,
   "umbrales": {
     "jaccard": 0.8,

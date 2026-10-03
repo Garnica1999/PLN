@@ -205,3 +205,13 @@ descriptivos, sin lectura inferencial y sin jerarquizacion.
 > de reentrenamiento. El efecto de mayor tamano fue el de alinear la normalizacion del texto de
 > entrada con la del corpus: +0.056969 en el brazo aleatorio, con desviacion entre semillas de
 > 0.001272, y 65 por ciento de la ganancia total. V03 remains the best verified leaderboard result.
+
+---
+
+## FE DE ERRATAS (auditoria integral, 2026-10-02)
+
+El rango declarado de E* (10 a 17) es impreciso: el registro real da 8 a 17,
+con 12 casos por debajo de 10. Ademas, `lr_de` esta disenado para 40 epocas y
+E* difiere por brazo (C 12-17, D 8-13), de modo que la trayectoria efectiva
+del learning rate no es identica entre brazos aunque la funcion sea la misma.
+No sesga el delta pareado por construccion, pero anade varianza.

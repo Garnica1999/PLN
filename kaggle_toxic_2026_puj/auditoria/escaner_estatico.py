@@ -114,6 +114,11 @@ NOMBRES_ENTRADA = frozenset({"main", "principal"})
 GANCHOS_DE_METODO = frozenset(
     {"forward", "setUp", "tearDown", "setUpClass", "tearDownClass"}
 )
+# El patron visitante de ast.NodeVisitor despacha visit_* y generic_visit por
+# nombre en tiempo de ejecucion: su llamador es el framework y no una llamada
+# sintactica. Sin esta exclusion el escaner se denuncia a si mismo y marca como
+# desconectados los visitantes que el propio codigo usa.
+PATRON_VISITANTE = re.compile(r"^(visit_\w+|generic_visit)$")
 PATRON_MENCION_TEST = re.compile(r"toxic_test\.csv|holdout_v2|holdout", re.IGNORECASE)
 PATRON_ARTEFACTO_UMBRAL = re.compile(r"leer_umbrales|np\.load\s*\([^\n)]*umbral", re.IGNORECASE)
 NOMBRES_FIT_O_TRAIN = frozenset(
@@ -453,6 +458,8 @@ def excluir_de_d1(funcion: Funcion) -> bool:
     if any("fixture" in decorador.lower() for decorador in funcion.decoradores):
         return True
     if funcion.en_clase and nombre in GANCHOS_DE_METODO:
+        return True
+    if funcion.en_clase and PATRON_VISITANTE.match(nombre):
         return True
     return bool(PATRON_AUXILIAR_HUMO.search(nombre))
 

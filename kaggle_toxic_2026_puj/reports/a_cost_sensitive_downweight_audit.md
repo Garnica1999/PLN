@@ -1,6 +1,6 @@
 # Auditoria de A_cost_sensitive_downweight
 
-Generado por `experiments/p69_01_auditoria_downweight.py`. Fecha 2026-09-29T17:48:42+00:00.
+Generado por `experiments/p69_01_auditoria_downweight.py`. Fecha 2026-10-02T10:52:31+00:00.
 
 ## La pregunta de este ciclo, y ninguna otra
 

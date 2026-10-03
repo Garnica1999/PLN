@@ -48,6 +48,7 @@ Bitácora viva: este documento se actualiza al cerrar cada fase.
 | F5 | Notebook consolidado con cada experimento documentado | COMPLETADA | commit `82aa067` y `2a94bb8`: 451 celdas, secciones 122-125 |
 | F6 | Sugerencias hacia 0.80 con literatura publicada | COMPLETADA | `auditoria/sugerencias_080.md`, 476 lineas |
 | F7 | Verificacion final GO/NO-GO y cierre | COMPLETADA | verificador 0 errores, notebook 451 celdas sin errores, P83 20/20 |
+| F8 | Correcciones aplicadas y reejecuciones (sin commit, a revision de Carlos) | COMPLETADA | registro de 450 filas; P69 reverificado con reentrenamiento; P82 reejecutado: 23/23 y A7 verificado |
 
 ## 4. Criterios de exito
 

@@ -2976,22 +2976,47 @@ def verificar_determinismo(
         Tupla con el exito y el detalle.
     """
     distintas = len({float(v) for v in perdidas}) != 1
-    iguales = bool(predicciones) and all(
-        np.array_equal(np.asarray(a, dtype=float), np.asarray(b, dtype=float), equal_nan=True)
-        for a, b in zip(predicciones, predicciones[1:])
-    )
-    maximo = 0.0
-    if len(predicciones) >= 2:
-        maximo = float(
-            np.abs(np.asarray(predicciones[0]) - np.asarray(predicciones[1])).max()
-        )
-    return (not distintas and iguales), {
+    matrices = [np.asarray(p, dtype=float) for p in predicciones]
+    detalle: dict[str, Any] = {
         "perdidas": [float(v) for v in perdidas],
         "variacion_perdida": 0.0 if not distintas else 1.0,
-        "probabilidades_identicas": iguales,
-        "variacion_maxima_probabilidades": maximo,
         "tolerancia": "cero exacto",
     }
+    if len(matrices) < 2:
+        detalle.update(
+            {
+                "probabilidades_identicas": False,
+                "variacion_maxima_probabilidades": None,
+                "n_filas_comparadas": 0,
+                "n_filas_con_nan_en_alguna_pasada": 0,
+                "patron_de_nan_identico": False,
+                "razon": "hacen falta dos pasadas para comparar",
+            }
+        )
+        return False, detalle
+    a, b = matrices[0], matrices[1]
+    nan_a = np.isnan(a)
+    nan_b = np.isnan(b)
+    patron_igual = bool(np.array_equal(nan_a, nan_b))
+    comparables = ~(nan_a | nan_b)
+    n_comparadas = int(comparables.sum())
+    n_nan = int((nan_a | nan_b).sum())
+    if n_comparadas == 0:
+        maximo: float | None = None
+        iguales = False
+    else:
+        maximo = float(np.abs(a[comparables] - b[comparables]).max())
+        iguales = bool(maximo == 0.0)
+    detalle.update(
+        {
+            "probabilidades_identicas": bool(iguales and patron_igual),
+            "variacion_maxima_probabilidades": maximo,
+            "n_filas_comparadas": n_comparadas,
+            "n_filas_con_nan_en_alguna_pasada": n_nan,
+            "patron_de_nan_identico": patron_igual,
+        }
+    )
+    return (not distintas and iguales and patron_igual), detalle
 
 
 def medir_cobertura(

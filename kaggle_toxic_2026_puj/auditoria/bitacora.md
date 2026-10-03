@@ -78,3 +78,30 @@ el lider al cerrar cada pieza y cada subagente deja aquí su resumen (maximo
   sin errores de sintaxis; P83 con 20 de 20 CONFIRMADO en 193,8 s; inventario
   483 experimentos y 376 scripts; unica pieza sin commitear era la hoja de
   ruta, ya commiteada. GO documental.
+
+- F8 COMPLETADA (sin commit): correcciones de la auditoria aplicadas.
+  Registro experiments.csv reparado (43 malformadas a 0; 450 filas; 35 filas
+  nuevas con P78/P82/P83 curadas y P79/P80/P81/P82-02); etiquetas P69 y P72
+  corregidas; sexto uso del holdout registrado (6 de 5) con nota en config;
+  leaderboard_log.csv convertido a UTF-8 y seis celdas del notebook pasadas a
+  utf-8-sig; fes de erratas en los dos informes de P82; notebook con 122 y 124
+  actualizadas, 125 reescrita como correcciones aplicadas y 126 nueva de
+  erratas y limites (452 celdas, sin errores de sintaxis); documento
+  auditoria/correcciones_aplicadas.md. Sin commit, a revision de Carlos.
+
+- Reejecuciones del 2026-10-02 (sin commit): la cadena v4 de P69 se
+  reentreno completa (27, 28 y 29) y los tres artefactos quedaron byte a byte
+  identicos; p69_01 pasa 10 de 10 con nivel R3 tras corregir su puerta de
+  cumplimiento (excluye el registro y la lista de identificadores del holdout,
+  y el generador de submission p69_10, posterior a la corrida original).
+  Errata anadida al addendum de P78 (E* real 8-17). El A7 de P82 se corrigio
+  para comparar solo posiciones finitas y su corrida completa esta en curso.
+  Escaner estatico e inventario re-ejecutados sobre el codigo corregido.
+
+- P82 reejecutado y verificado (2026-10-02): corrida completa con el A7
+  corregido, marca `20261002T132340Z_p563891`, EXIT 0 en ~96 minutos. 23 de 23
+  CONFIRMADO; A7 compara 891 posiciones finitas con variacion 0.0 y patron de
+  NaN identico; las medias de los cinco brazos coinciden con las almacenadas
+  (determinismo entre corridas contrastado). Informe vigente publicado y el
+  anterior conservado con fe de erratas. Registro, notebook y documento de
+  correcciones actualizados. Sin commit.

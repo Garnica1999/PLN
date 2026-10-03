@@ -6,18 +6,18 @@ Fecha de referencia: 2026-10-02 (fijada en CONFIG para que la salida sea determi
 
 - Archivos `.py` barridos: **376** (`experiments/**/*.py`, sin `__pycache__`).
 - Archivos con error de sintaxis: **0**.
-- Hallazgos totales: **2165**.
+- Hallazgos totales: **2158**.
 
 ## Conteo por detector
 
 | Detector | ALTA | MEDIA | BAJA | INFO | Total |
 | --- | --- | --- | --- | --- | --- |
-| D1_funciones_probadas_sin_llamador | 54 | 100 | 0 | 0 | 154 |
+| D1_funciones_probadas_sin_llamador | 50 | 96 | 0 | 0 | 146 |
 | D2_asercion_vacia | 0 | 0 | 0 | 0 | 0 |
 | D3_rama_muerta | 0 | 3 | 0 | 0 | 3 |
-| D4_break_en_medicion | 0 | 1 | 0 | 0 | 1 |
+| D4_break_en_medicion | 0 | 0 | 0 | 0 | 0 |
 | D5_umbral_congelado_hardcodeado | 0 | 0 | 188 | 2 | 190 |
-| D6_toca_test_o_holdout | 0 | 215 | 0 | 1448 | 1663 |
+| D6_toca_test_o_holdout | 0 | 215 | 0 | 1450 | 1665 |
 | D7_semilla_ausente | 0 | 0 | 154 | 0 | 154 |
 | D8_except_desnudo | 0 | 0 | 0 | 0 | 0 |
 
@@ -28,11 +28,11 @@ Fecha de referencia: 2026-10-02 (fijada en CONFIG para que la salida sea determi
 | experiments/38_refit_final_v4.py | 0 | 32 | 32 |
 | experiments/p81_01_cierre_huecos.py | 5 | 20 | 25 |
 | experiments/p80_01_auditoria_w2v.py | 5 | 16 | 21 |
-| experiments/p83_01_bayesiano.py | 5 | 16 | 21 |
 | experiments/23_candidatos_finales.py | 0 | 21 | 21 |
 | experiments/p82_01_rnn_atencion.py | 0 | 15 | 15 |
 | experiments/p82_02_submission_rnn.py | 0 | 15 | 15 |
 | experiments/p69_10_submission_candidato.py | 0 | 14 | 14 |
+| experiments/p83_01_bayesiano.py | 1 | 11 | 12 |
 | experiments/p77_01_operador_selectivo.py | 1 | 6 | 7 |
 | experiments/v33_01_validacion.py | 0 | 7 | 7 |
 
@@ -71,11 +71,7 @@ Formato `archivo:línea:nombre`. Incluye las funciones sin ningún consumidor y 
 - `experiments/p81_01_cierre_huecos.py:4197:contrato_de_la_afirmacion`
 - `experiments/p81_01_cierre_huecos.py:4211:_sin_valor`
 - `experiments/p81_01_cierre_huecos.py:4316:normalizar_emb_normal`
-- `experiments/p83_01_bayesiano.py:1203:con_extra`
-- `experiments/p83_01_bayesiano.py:1332:avisar`
-- `experiments/p83_01_bayesiano.py:1820:comprobar`
-- `experiments/p83_01_bayesiano.py:2856:reoptimizar_umbral`
-- `experiments/p83_01_bayesiano.py:2905:reproducir_liston`
+- `experiments/p83_01_bayesiano.py:3099:reoptimizar_umbral`
 - `experiments/v10_03_arnes_evaluacion.py:115:mejora`
 - `experiments/v10_03_arnes_evaluacion.py:158:resumen`
 - `experiments/v10_03_arnes_evaluacion.py:172:a_dict`
@@ -155,12 +151,12 @@ Formato `archivo:línea:nombre`. Incluye las funciones sin ningún consumidor y 
 - `experiments/p82_01_rnn_atencion.py:1718:suma_hashes`
 - `experiments/p82_01_rnn_atencion.py:1729:suma_de_trazas_de_filas`
 - `experiments/p82_01_rnn_atencion.py:2034:construir_ajustes`
-- `experiments/p82_01_rnn_atencion.py:4078:datos_sinteticos`
-- `experiments/p82_01_rnn_atencion.py:4129:construir_contexto_sintetico`
-- `experiments/p82_01_rnn_atencion.py:4262:stub`
-- `experiments/p82_01_rnn_atencion.py:4285:stub_malo`
-- `experiments/p82_01_rnn_atencion.py:4803:_cifras_de_interseccion`
-- `experiments/p82_01_rnn_atencion.py:5316:verificar_mutaciones`
+- `experiments/p82_01_rnn_atencion.py:4103:datos_sinteticos`
+- `experiments/p82_01_rnn_atencion.py:4154:construir_contexto_sintetico`
+- `experiments/p82_01_rnn_atencion.py:4287:stub`
+- `experiments/p82_01_rnn_atencion.py:4310:stub_malo`
+- `experiments/p82_01_rnn_atencion.py:4828:_cifras_de_interseccion`
+- `experiments/p82_01_rnn_atencion.py:5341:verificar_mutaciones`
 - `experiments/p82_02_submission_rnn.py:191:sha256_de_bytes`
 - `experiments/p82_02_submission_rnn.py:225:verificar_identificadores`
 - `experiments/p82_02_submission_rnn.py:261:verificar_no_degenerada`
@@ -175,19 +171,15 @@ Formato `archivo:línea:nombre`. Incluye las funciones sin ningún consumidor y 
 - `experiments/p82_02_submission_rnn.py:1008:_ascii_rechazado`
 - `experiments/p83_01_bayesiano.py:387:tabla_contratos`
 - `experiments/p83_01_bayesiano.py:461:verificar_contratos`
-- `experiments/p83_01_bayesiano.py:707:auditar_propio_script`
-- `experiments/p83_01_bayesiano.py:729:codigo_sin_afirmacion`
-- `experiments/p83_01_bayesiano.py:764:afirmar_evaluadas_en_completo`
-- `experiments/p83_01_bayesiano.py:831:identificadores_de_llamadas`
-- `experiments/p83_01_bayesiano.py:3926:comparar_contra_el_liston`
-- `experiments/p83_01_bayesiano.py:3990:comprobar_presupuesto`
-- `experiments/p83_01_bayesiano.py:4178:codigo_salida`
-- `experiments/p83_01_bayesiano.py:4823:contexto_de_ejemplo`
-- `experiments/p83_01_bayesiano.py:4847:_cifras_de_pregunta_1`
-- `experiments/p83_01_bayesiano.py:4867:_medidas_de_pregunta_2`
-- `experiments/p83_01_bayesiano.py:5002:_copia_sintetica_de_control`
-- `experiments/p83_01_bayesiano.py:5045:_copia_mutada`
-- `experiments/p83_01_bayesiano.py:5132:_falla_a3`
+- `experiments/p83_01_bayesiano.py:926:auditar_propio_script`
+- `experiments/p83_01_bayesiano.py:957:codigo_sin_afirmacion`
+- `experiments/p83_01_bayesiano.py:992:afirmar_evaluadas_en_completo`
+- `experiments/p83_01_bayesiano.py:1059:identificadores_de_llamadas`
+- `experiments/p83_01_bayesiano.py:5039:codigo_salida`
+- `experiments/p83_01_bayesiano.py:5712:contexto_de_ejemplo`
+- `experiments/p83_01_bayesiano.py:5883:_copia_sintetica_de_control`
+- `experiments/p83_01_bayesiano.py:5926:_copia_mutada`
+- `experiments/p83_01_bayesiano.py:6013:_falla_a3`
 - `experiments/v25_01_factorization_machine.py:332:valor_en`
 - `experiments/v6_00_gap_analysis.py:213:_codigo`
 - `experiments/v6_00_gap_analysis.py:224:_artefactos`

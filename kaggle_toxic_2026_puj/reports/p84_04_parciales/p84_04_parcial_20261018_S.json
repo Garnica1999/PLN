@@ -1,0 +1,159 @@
+{
+  "experiment_id": "P84-04",
+  "fecha": "2026-10-02",
+  "semilla": 20261018,
+  "brazo": "S",
+  "agregacion": "suma",
+  "estado": "completo",
+  "modo_humo": false,
+  "firma": {
+    "hash_corpus": "00b839da6fbc377ee5375acc9a236e831e46ecf92cc544188b81aef1a826e871",
+    "dim": 200,
+    "ventana": 5,
+    "min_count": 3,
+    "negativos": 10,
+    "submuestreo": 0.0001,
+    "epocas": 5,
+    "lote": 256,
+    "lr0_por_ejemplo": 0.025,
+    "humo": false,
+    "version_script": 2,
+    "sha256_script": "26ca470f0ee00c4b0d2d16039182fd52b1bdb04a402941859fc5b99ac66e5975"
+  },
+  "entrenamiento": {
+    "agregacion": "suma",
+    "loss_por_epoca": [
+      3.104864,
+      2.713812,
+      2.622026,
+      2.564919,
+      2.527289
+    ],
+    "grad_norma_media_por_epoca": [
+      0.20701318,
+      0.240927,
+      0.25227446,
+      0.2577354,
+      0.25980257
+    ],
+    "grad_norma_max_por_epoca": [
+      0.57057488,
+      0.30494913,
+      0.28203374,
+      0.42029163,
+      0.67327714
+    ],
+    "lr_inicial": 6.4,
+    "lr_final": 0.001,
+    "pasos": 643305,
+    "segundos": 5189.5,
+    "hash_pares_epoca1": "65ee53e8de7650c8643570bba186623b8547da81dd70c799ff9dea71e6ae2023",
+    "hash_negativos_lote1": "0761a8a45219db6f32e70321218b432f61931cf9eb832e892bc8f5f93d81acfe",
+    "nota": "loss y normas de gradiente son diagnosticos del brazo; loss_suma y loss_media no son comparables entre si"
+  },
+  "downstream": {
+    "f1_congelada": 0.6136210142,
+    "f1_anidada": 0.626084544,
+    "umbrales_anidados": [
+      [
+        0.35,
+        0.45,
+        0.32
+      ],
+      [
+        0.3,
+        0.59,
+        0.3
+      ],
+      [
+        0.27,
+        0.55,
+        0.39
+      ],
+      [
+        0.23,
+        0.62,
+        0.24
+      ],
+      [
+        0.32,
+        0.55,
+        0.24
+      ]
+    ],
+    "cobertura_interna": [
+      {
+        "pliegue": 1,
+        "filas_outer_train": 1186,
+        "filas_cubiertas": 574,
+        "fraccion_cubierta": 0.48398
+      },
+      {
+        "pliegue": 2,
+        "filas_outer_train": 1186,
+        "filas_cubiertas": 579,
+        "fraccion_cubierta": 0.488196
+      },
+      {
+        "pliegue": 3,
+        "filas_outer_train": 1187,
+        "filas_cubiertas": 573,
+        "fraccion_cubierta": 0.48273
+      },
+      {
+        "pliegue": 4,
+        "filas_outer_train": 1187,
+        "filas_cubiertas": 575,
+        "fraccion_cubierta": 0.484414
+      },
+      {
+        "pliegue": 5,
+        "filas_outer_train": 1186,
+        "filas_cubiertas": 564,
+        "fraccion_cubierta": 0.475548
+      }
+    ],
+    "f1_train_05_por_pliegue": [
+      0.7536905183,
+      0.7454599943,
+      0.7426581917,
+      0.746286379,
+      0.7529250413
+    ],
+    "f1_val_05_por_pliegue": [
+      0.6006514825,
+      0.619202162,
+      0.5976618001,
+      0.6128669634,
+      0.6003732305
+    ],
+    "brecha_por_pliegue": [
+      0.1530390358,
+      0.1262578323,
+      0.1449963916,
+      0.1334194156,
+      0.1525518108
+    ],
+    "brecha_media": 0.1420528972
+  },
+  "cobertura": {
+    "tokens_por_fila_media": 18.2,
+    "tokens_cubiertos_media": 11.99,
+    "fraccion_cubierta": 0.658542,
+    "filas_sin_ningun_token": 72
+  },
+  "versiones": {
+    "python": "3.14.7",
+    "numpy": "1.26.4",
+    "pandas": "2.3.3",
+    "sklearn": "1.8.0",
+    "scipy": "1.17.1",
+    "torch": "2.14.0+rocm7.2",
+    "device": "cuda (AMD Radeon RX 9070 XT)"
+  },
+  "embedding": {
+    "ruta": "modelos/p84/emb_20261018_S.npz",
+    "sha256": "1021efb3db868dd4225f19e5c77528f6f1197fffe8cb5792290b12851b4ab8b3"
+  },
+  "npz": "reports/p84_04_parciales/p84_04_parcial_20261018_S.npz"
+}

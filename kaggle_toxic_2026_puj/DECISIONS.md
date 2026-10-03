@@ -10040,3 +10040,120 @@ con `tools/verificar_caracteres.py`, salida 0.
 ```text
 V03 remains the best verified leaderboard result.
 ```
+
+## D-281: P84 abre la exploracion dirigida y cierra DL-01 como artefacto de protocolo
+
+- **Contexto**: auditoria cerrada; plan P84 aprobado por Carlos (2026-10-02) para buscar una
+  mejora sustancial sobre V03 con evidencia publicada y candidatos permitidos.
+- **Gate 0**: hashes congelados en `docs/p84_preregistro.md`; desarrollo 1483, holdout 248
+  (agotado, no se usa), test intocable; identidad V03 exacta 0.7772114525165721; fastText
+  oficial reconstruido (`tools/fastText/build/fasttext`).
+- **EXP-01 (P84-01)**: DL-01 re-medido con pool de 1483 y epoca elegida en particion
+  interna (3 splits, mediana E*) y reajuste fijo. Resultado en GPU, 248.33 s, 5 pliegues x
+  3 semillas: F1@0.5 0.758301 (delta -0.018910, IC95 [-0.033910, -0.004150], 1/5 pliegues);
+  anidada 0.756968; con umbrales congelados 0.761659. Reproducibilidad entre corridas
+  identica (max|delta proba| = 0.0).
+- **Decision**: CERRAR DL-01 COMO ARTEFACTO DE PROTOCOLO. El 0.7949 historico no es
+  comparable (pool 1731 + epoca sobre el pliegue puntuado) y no debe citarse como base. El
+  candidato no pasa Gate 1 ni el umbral efectivo D-057 (+0.010 con mas capacidad).
+- **Consecuencia**: EXP-02 (fastText supervisado) pasa a ser la siguiente linea; ninguna
+  ruta promete 0.80.
+- **Evidencia**: `reports/p84_01_dl01.json/.md`, `features/p84_01_oof_mlp.npz`,
+  `modelos/p84/`, fila P84-01 de `experiments.csv`, RUNLOG.
+
+## D-282: P84-02 cierra fastText supervisado con un brazo principal degenerado
+
+- **Contexto**: EXP-02 medía si un clasificador fastText supervisado desde cero, fold-local
+  y sin recursos externos, aportaba algo sobre V03.
+- **Resultado**: corrida CPU 206.4 s, 5 pliegues, 3 etiquetas, 2 brazos. Gate 0 exacto y
+  determinismo 0.0. Brazo principal (subwords 3-6, lr 0.1, E* 5): F1 anidada 0.583398,
+  delta -0.193813 (IC95 [-0.217172, -0.171220], 0/5); el modelo degenera (loss ~ ln 2,
+  probabilidades ~0.5) con los flags preregistrados, reproducido en diagnostico aislado.
+  Control sin subwords (E* 20): F1 anidada 0.737771, delta -0.039441
+  (IC95 [-0.054696, -0.024475], 0/5).
+- **Decision**: CERRAR fastText supervisado sin rejilla nueva (la pre-registracion lo
+  fijaba). No elegible para EXP-06. La conclusion es sobre ESTA configuracion: ni el brazo
+  con subwords (degenerado) ni el control (por debajo de V03 en 0/5 pliegues) aportan.
+- **Evidencia**: `reports/p84_02_fasttext.json/.md`, `features/p84_02_oof_fasttext.npz`,
+  fila P84-02 de `experiments.csv`, RUNLOG.
+
+## D-283: P84-03 cierra ROS por equivalencia con reweighting
+
+- **Contexto**: el plan pedia medir ROS contra class_weight; la spec lo rediseno como
+  micro-verificacion de equivalencia porque con liblinear L2 duplicar filas es reasignar
+  pesos (familias V4-C04/V4-B03, cerradas).
+- **Resultado**: 17.48 s, 5 pliegues, 4 brazos. A=V03 exacto. B1 (r=1, masa n, C=2):
+  refutacion parcial de la equivalencia estricta en probabilidad (max|delta proba|
+  7.19e-2) con |delta F1| 2.66e-4 y predicciones binarias identicas; causa: redondeo
+  entero de las copias (desviacion de peso hasta 0.556; solver <= 5 iteraciones). Deltas
+  congelados: B1 +0.000266 (3/5, IC incluye 0), B2 -0.044992 (0/5), B3 +0.000210 (3/5,
+  C_efectivo 2.25-2.80).
+- **Decision**: ROS CERRADO POR EQUIVALENCIA (CLOSED BY EQUIVALENCE); no promovible;
+  ningun brazo a Gate 2 ni a EXP-06. La micro-verificacion deja el artefacto algebraico y
+  numerico.
+- **Evidencia**: `reports/p84_03_ros.json/.md`, `features/p84_03_oof_ros.npz`, fila
+  P84-03, RUNLOG.
+
+## D-284: P84-05 cierra la familia EM/threshold en simulacion OOF
+
+- **Contexto**: el plan dejo una ultima variante de la familia de shift de prevalencia: EM
+  con shrinkage y decision robusta sobre un intervalo, solo por simulacion OOF.
+- **Resultado**: 1.0 s numpy, 5 pliegues LOFO, rho {0.85..1.05}. Delta medio -0.008394
+  (IC95 con pesos [-0.015763, -0.001231]), 2/5 pliegues LOFO positivos. La componente EM es
+  positiva (+0.020019, IC95 [+0.008198, +0.032761]) pero la reubicacion del umbral destruye
+  mas valor (-0.028414); la sanidad a rho=1 es negativa (-0.005043) y el guardarrail de
+  tasa falla en AG (-0.014835).
+- **Decision**: CERRAR LA FAMILIA EM/threshold (CLOSED). No hay Gate 2 ni elegibilidad para
+  EXP-06. Ninguna lectura de test; todo simulado sobre el OOF.
+- **Evidencia**: `reports/p84_05_em.json/.md`, parciales p1..p5, fila P84-05, RUNLOG.
+
+## D-285: P84-04 cierra SGNS corregido con ancla lograda
+
+- **Contexto**: EXP-04 media si corregir el termino negativo de SGNS (suma vs media 1/K)
+  cambia el downstream, con ancla a la implementacion oficial de fastText.
+- **Resultado**: 15.511 s GPU, 3 semillas, corpus wikipedia_es 10M EXTERNAL-ONLY. Ancla
+  LOGRADA (algebra 1.3e-16; gradiente 4.4e-08; pureza oficial 1.0 = nuestra 1.0). F1
+  congelada promedio: S 0.626091, M 0.622888, R (aleatoria) 0.651825, V03 0.777211.
+  S vs M +0.003204 (3/5, IC95 [-0.012606, +0.018844]); S vs R -0.025734 (1/5); S vs V03
+  -0.151120 (0/5); ensemble_gain -0.049004.
+- **Decision**: CERRAR la linea SGNS corregido sin rejilla nueva; no elegible para EXP-06.
+  La matriz aleatoria supera a los embeddings entrenados: el corpus externo no aporta a
+  este downstream. La correccion del objetivo queda implementada, anclada y medida.
+- **Evidencia**: `reports/p84_04_sgns.json/.md`, `reports/p84_04_ancla.json`,
+  `features/p84_04_oof_emb.npz`, `modelos/p84/emb_*.npz`, fila P84-04, RUNLOG.
+
+## D-286: P84-06 se cierra sin ejecucion y la fase no supera a V03
+
+- **Contexto**: la puerta de combinacion EXP-06 solo se abre si algun candidato pasa
+  Gate 1 o demuestra complementariedad con IC > 0.
+- **Resultado**: los cinco candidatos quedaron cerrados (P84-01/02/04/05 negativos;
+  P84-03 no promovible por equivalencia con reweighting). Ningun `ensemble_gain` positivo.
+- **Decision**: EXP-06 NO SE EJECUTA; se registra la puerta cerrada. Conclusion de la
+  fase P84: ningun candidato nuevo supera a V03; V03 remains the best verified leaderboard
+  result. No hay submissions nuevas.
+- **Evidencia**: plan P84 con bitacora EXP-01..06; `reports/p84_04_sgns.md`;
+  `reports/p84_qa_parcial.md`; `experiments.csv` filas P84-01..05.
+
+## D-287: Correcciones de redaccion tras la refutacion adversarial final de P84
+
+La refutacion (`reports/p84_refutacion_final.md`) encontro un bug real de conteo en P84-03
+(corregido y reejecutado, Enmienda 3bis) y varios matices de redaccion. Se registran aqui
+sin reescribir las decisiones originales:
+
+- D-283 (ROS): los recuentos "0/0 celdas" eran un bug (`pred` en vez de `pred_ref`);
+  corregidos: B1 61 celdas (32/29), B2 446 (207/239), B3 63 (34/29). La decision CLOSED BY
+  EQUIVALENCE no cambia.
+- D-285 (SGNS): "la matriz aleatoria supera a los embeddings" es un artefacto del promedio
+  de probabilidades entre semillas; por semilla S vs R es empate (-0.0032/-0.0035/+0.0062;
+  media -0.00015). La decision de cierre no cambia.
+- D-281 (DL-01): "artefacto de protocolo" se matiza: la medicion corregida es valida y el
+  0.7949 no es comparable; la descomposicion causal del desplome no se aisló (el protocolo
+  limpio tambien cambia E*).
+- D-282 (fastText): la pregunta de subwords queda sin responder (brazo principal colapsado,
+  E* 5, frente a control E* 20); no se cita un efecto sublexico.
+- D-284 (EM): la componente EM positiva no es evidencia end-to-end; la sanidad rho=1 es
+  negativa (-0.005043).
+- Errata de unidades: "15.511 s" en la bitacora es 15511 s.
+- Limitaciones declaradas: N=1483; holdout agotado (6/5); ruido del LB publico ~0.0146-0.0182
+  (70/30) y privado ~0.0223-0.0278; conclusiones 100% locales (ninguna sonda nueva);
+  fastText sin rejilla; R solo ensemble.

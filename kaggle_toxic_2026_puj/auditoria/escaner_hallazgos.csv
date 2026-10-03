@@ -28,11 +28,7 @@ experiments/p81_01_cierre_huecos.py,768,D1_funciones_probadas_sin_llamador,ALTA,
 experiments/p81_01_cierre_huecos.py,4197,D1_funciones_probadas_sin_llamador,ALTA,funcion=contrato_de_la_afirmacion; llamadores_reales=0; llamadores_de_humo=0; unico_de_humo=no; invocadores=[]
 experiments/p81_01_cierre_huecos.py,4211,D1_funciones_probadas_sin_llamador,ALTA,funcion=_sin_valor; llamadores_reales=0; llamadores_de_humo=0; unico_de_humo=no; invocadores=[]
 experiments/p81_01_cierre_huecos.py,4316,D1_funciones_probadas_sin_llamador,ALTA,funcion=normalizar_emb_normal; llamadores_reales=0; llamadores_de_humo=0; unico_de_humo=no; invocadores=[]
-experiments/p83_01_bayesiano.py,1203,D1_funciones_probadas_sin_llamador,ALTA,funcion=con_extra; llamadores_reales=0; llamadores_de_humo=0; unico_de_humo=no; invocadores=[]
-experiments/p83_01_bayesiano.py,1332,D1_funciones_probadas_sin_llamador,ALTA,funcion=avisar; llamadores_reales=0; llamadores_de_humo=0; unico_de_humo=no; invocadores=[]
-experiments/p83_01_bayesiano.py,1820,D1_funciones_probadas_sin_llamador,ALTA,funcion=comprobar; llamadores_reales=0; llamadores_de_humo=0; unico_de_humo=no; invocadores=[]
-experiments/p83_01_bayesiano.py,2856,D1_funciones_probadas_sin_llamador,ALTA,funcion=reoptimizar_umbral; llamadores_reales=0; llamadores_de_humo=0; unico_de_humo=no; invocadores=[]
-experiments/p83_01_bayesiano.py,2905,D1_funciones_probadas_sin_llamador,ALTA,funcion=reproducir_liston; llamadores_reales=0; llamadores_de_humo=0; unico_de_humo=no; invocadores=[]
+experiments/p83_01_bayesiano.py,3099,D1_funciones_probadas_sin_llamador,ALTA,funcion=reoptimizar_umbral; llamadores_reales=0; llamadores_de_humo=0; unico_de_humo=no; invocadores=[]
 experiments/v10_03_arnes_evaluacion.py,115,D1_funciones_probadas_sin_llamador,ALTA,funcion=mejora; llamadores_reales=0; llamadores_de_humo=0; unico_de_humo=no; invocadores=[]
 experiments/v10_03_arnes_evaluacion.py,158,D1_funciones_probadas_sin_llamador,ALTA,funcion=resumen; llamadores_reales=0; llamadores_de_humo=0; unico_de_humo=no; invocadores=[]
 experiments/v10_03_arnes_evaluacion.py,172,D1_funciones_probadas_sin_llamador,ALTA,funcion=a_dict; llamadores_reales=0; llamadores_de_humo=0; unico_de_humo=no; invocadores=[]
@@ -289,12 +285,12 @@ experiments/p82_01_rnn_atencion.py,1544,D1_funciones_probadas_sin_llamador,MEDIA
 experiments/p82_01_rnn_atencion.py,1718,D1_funciones_probadas_sin_llamador,MEDIA,funcion=suma_hashes; llamadores_reales=0; llamadores_de_humo=1; unico_de_humo=si; invocadores=['verificar_multiconjunto']
 experiments/p82_01_rnn_atencion.py,1729,D1_funciones_probadas_sin_llamador,MEDIA,funcion=suma_de_trazas_de_filas; llamadores_reales=0; llamadores_de_humo=1; unico_de_humo=si; invocadores=['verificar_multiconjunto']
 experiments/p82_01_rnn_atencion.py,2034,D1_funciones_probadas_sin_llamador,MEDIA,funcion=construir_ajustes; llamadores_reales=0; llamadores_de_humo=1; unico_de_humo=si; invocadores=['verificar_mutaciones']
-experiments/p82_01_rnn_atencion.py,4078,D1_funciones_probadas_sin_llamador,MEDIA,"funcion=datos_sinteticos; llamadores_reales=0; llamadores_de_humo=2; unico_de_humo=no; invocadores=['pipeline_humo', 'verificar_mutaciones']"
-experiments/p82_01_rnn_atencion.py,4129,D1_funciones_probadas_sin_llamador,MEDIA,"funcion=construir_contexto_sintetico; llamadores_reales=0; llamadores_de_humo=2; unico_de_humo=no; invocadores=['pipeline_humo', 'verificar_mutaciones']"
-experiments/p82_01_rnn_atencion.py,4262,D1_funciones_probadas_sin_llamador,MEDIA,funcion=stub; llamadores_reales=0; llamadores_de_humo=1; unico_de_humo=si; invocadores=['caso_contrato_parametro_renombrado']
-experiments/p82_01_rnn_atencion.py,4285,D1_funciones_probadas_sin_llamador,MEDIA,funcion=stub_malo; llamadores_reales=0; llamadores_de_humo=1; unico_de_humo=si; invocadores=['caso_contrato_devuelve_mal']
-experiments/p82_01_rnn_atencion.py,4803,D1_funciones_probadas_sin_llamador,MEDIA,funcion=_cifras_de_interseccion; llamadores_reales=0; llamadores_de_humo=1; unico_de_humo=si; invocadores=['ejecutar_casos_de_neto']
-experiments/p82_01_rnn_atencion.py,5316,D1_funciones_probadas_sin_llamador,MEDIA,funcion=verificar_mutaciones; llamadores_reales=0; llamadores_de_humo=1; unico_de_humo=si; invocadores=['pipeline_humo']
+experiments/p82_01_rnn_atencion.py,4103,D1_funciones_probadas_sin_llamador,MEDIA,"funcion=datos_sinteticos; llamadores_reales=0; llamadores_de_humo=2; unico_de_humo=no; invocadores=['pipeline_humo', 'verificar_mutaciones']"
+experiments/p82_01_rnn_atencion.py,4154,D1_funciones_probadas_sin_llamador,MEDIA,"funcion=construir_contexto_sintetico; llamadores_reales=0; llamadores_de_humo=2; unico_de_humo=no; invocadores=['pipeline_humo', 'verificar_mutaciones']"
+experiments/p82_01_rnn_atencion.py,4287,D1_funciones_probadas_sin_llamador,MEDIA,funcion=stub; llamadores_reales=0; llamadores_de_humo=1; unico_de_humo=si; invocadores=['caso_contrato_parametro_renombrado']
+experiments/p82_01_rnn_atencion.py,4310,D1_funciones_probadas_sin_llamador,MEDIA,funcion=stub_malo; llamadores_reales=0; llamadores_de_humo=1; unico_de_humo=si; invocadores=['caso_contrato_devuelve_mal']
+experiments/p82_01_rnn_atencion.py,4828,D1_funciones_probadas_sin_llamador,MEDIA,funcion=_cifras_de_interseccion; llamadores_reales=0; llamadores_de_humo=1; unico_de_humo=si; invocadores=['ejecutar_casos_de_neto']
+experiments/p82_01_rnn_atencion.py,5341,D1_funciones_probadas_sin_llamador,MEDIA,funcion=verificar_mutaciones; llamadores_reales=0; llamadores_de_humo=1; unico_de_humo=si; invocadores=['pipeline_humo']
 experiments/p82_02_submission_rnn.py,191,D1_funciones_probadas_sin_llamador,MEDIA,"funcion=sha256_de_bytes; llamadores_reales=0; llamadores_de_humo=2; unico_de_humo=no; invocadores=['ejecutar_humo', 'escribir_y_verificar_csv']"
 experiments/p82_02_submission_rnn.py,225,D1_funciones_probadas_sin_llamador,MEDIA,"funcion=verificar_identificadores; llamadores_reales=0; llamadores_de_humo=2; unico_de_humo=no; invocadores=['ejecutar_humo', 'escribir_y_verificar_csv']"
 experiments/p82_02_submission_rnn.py,261,D1_funciones_probadas_sin_llamador,MEDIA,"funcion=verificar_no_degenerada; llamadores_reales=0; llamadores_de_humo=2; unico_de_humo=no; invocadores=['ejecutar_humo', 'escribir_y_verificar_csv']"
@@ -312,20 +308,15 @@ experiments/p82_02_submission_rnn.py,1066,D6_toca_test_o_holdout,MEDIA,"mencion:
 experiments/p82_02_submission_rnn.py,1076,D6_toca_test_o_holdout,MEDIA,"mencion: (""5. holdout de 248 excluido y no usado para nada"", f""descartadas {traza['guarda_lectura']['filas_holdout_descartadas']}, usadas 0"", traza[""guarda_lectura""][""filas_holdout_descartadas""] == N_FILAS_HOLDOUT and traza[""guarda_lectura""][""n_indices_holdout""] == N_FILAS_HOLDOUT and traza[""guarda_lectura""][""filas_de_desarrollo_usadas""] == N_FILAS_DEV),; funcion=ejecutar_completo; fit_o_train=si"
 experiments/p83_01_bayesiano.py,387,D1_funciones_probadas_sin_llamador,MEDIA,"funcion=tabla_contratos; llamadores_reales=0; llamadores_de_humo=2; unico_de_humo=no; invocadores=['casos_de_frontera_contrato', 'verificar_contratos']"
 experiments/p83_01_bayesiano.py,461,D1_funciones_probadas_sin_llamador,MEDIA,funcion=verificar_contratos; llamadores_reales=0; llamadores_de_humo=1; unico_de_humo=si; invocadores=['casos_de_frontera_contrato']
-experiments/p83_01_bayesiano.py,707,D1_funciones_probadas_sin_llamador,MEDIA,funcion=auditar_propio_script; llamadores_reales=0; llamadores_de_humo=1; unico_de_humo=si; invocadores=['casos_de_frontera_ast']
-experiments/p83_01_bayesiano.py,729,D1_funciones_probadas_sin_llamador,MEDIA,funcion=codigo_sin_afirmacion; llamadores_reales=0; llamadores_de_humo=1; unico_de_humo=si; invocadores=['casos_de_frontera_contrato']
-experiments/p83_01_bayesiano.py,764,D1_funciones_probadas_sin_llamador,MEDIA,funcion=afirmar_evaluadas_en_completo; llamadores_reales=0; llamadores_de_humo=1; unico_de_humo=si; invocadores=['casos_de_frontera_contrato']
-experiments/p83_01_bayesiano.py,831,D1_funciones_probadas_sin_llamador,MEDIA,funcion=identificadores_de_llamadas; llamadores_reales=0; llamadores_de_humo=1; unico_de_humo=si; invocadores=['afirmar_evaluadas_en_el_humo']
-experiments/p83_01_bayesiano.py,3926,D1_funciones_probadas_sin_llamador,MEDIA,funcion=comparar_contra_el_liston; llamadores_reales=0; llamadores_de_humo=1; unico_de_humo=si; invocadores=['casos_de_los_margenes']
-experiments/p83_01_bayesiano.py,3990,D1_funciones_probadas_sin_llamador,MEDIA,funcion=comprobar_presupuesto; llamadores_reales=0; llamadores_de_humo=1; unico_de_humo=si; invocadores=['casos_de_frontera_lectura']
-experiments/p83_01_bayesiano.py,4178,D1_funciones_probadas_sin_llamador,MEDIA,"funcion=codigo_salida; llamadores_reales=0; llamadores_de_humo=2; unico_de_humo=no; invocadores=['casos_de_frontera_puerta', 'modo_humo']"
-experiments/p83_01_bayesiano.py,4823,D1_funciones_probadas_sin_llamador,MEDIA,"funcion=contexto_de_ejemplo; llamadores_reales=0; llamadores_de_humo=3; unico_de_humo=no; invocadores=['casos_de_afirmaciones', 'casos_del_limite_5_5', 'modo_humo']"
-experiments/p83_01_bayesiano.py,4847,D1_funciones_probadas_sin_llamador,MEDIA,funcion=_cifras_de_pregunta_1; llamadores_reales=0; llamadores_de_humo=1; unico_de_humo=si; invocadores=['casos_de_afirmaciones']
-experiments/p83_01_bayesiano.py,4867,D1_funciones_probadas_sin_llamador,MEDIA,funcion=_medidas_de_pregunta_2; llamadores_reales=0; llamadores_de_humo=1; unico_de_humo=si; invocadores=['casos_de_afirmaciones']
-experiments/p83_01_bayesiano.py,5002,D1_funciones_probadas_sin_llamador,MEDIA,funcion=_copia_sintetica_de_control; llamadores_reales=0; llamadores_de_humo=1; unico_de_humo=si; invocadores=['casos_de_frontera_ast']
-experiments/p83_01_bayesiano.py,5045,D1_funciones_probadas_sin_llamador,MEDIA,"funcion=_copia_mutada; llamadores_reales=0; llamadores_de_humo=2; unico_de_humo=no; invocadores=['casos_de_frontera_ast', 'casos_de_frontera_contrato']"
-experiments/p83_01_bayesiano.py,5132,D1_funciones_probadas_sin_llamador,MEDIA,funcion=_falla_a3; llamadores_reales=0; llamadores_de_humo=1; unico_de_humo=si; invocadores=['casos_de_afirmaciones']
-experiments/p83_01_bayesiano.py,7330,D4_break_en_medicion,MEDIA,"break incondicional en for de medicion: for brazo in (brazo_m1, brazo_m2):"
+experiments/p83_01_bayesiano.py,926,D1_funciones_probadas_sin_llamador,MEDIA,funcion=auditar_propio_script; llamadores_reales=0; llamadores_de_humo=1; unico_de_humo=si; invocadores=['casos_de_frontera_ast']
+experiments/p83_01_bayesiano.py,957,D1_funciones_probadas_sin_llamador,MEDIA,funcion=codigo_sin_afirmacion; llamadores_reales=0; llamadores_de_humo=1; unico_de_humo=si; invocadores=['casos_de_frontera_contrato']
+experiments/p83_01_bayesiano.py,992,D1_funciones_probadas_sin_llamador,MEDIA,funcion=afirmar_evaluadas_en_completo; llamadores_reales=0; llamadores_de_humo=1; unico_de_humo=si; invocadores=['casos_de_frontera_contrato']
+experiments/p83_01_bayesiano.py,1059,D1_funciones_probadas_sin_llamador,MEDIA,funcion=identificadores_de_llamadas; llamadores_reales=0; llamadores_de_humo=1; unico_de_humo=si; invocadores=['afirmar_evaluadas_en_el_humo']
+experiments/p83_01_bayesiano.py,5039,D1_funciones_probadas_sin_llamador,MEDIA,"funcion=codigo_salida; llamadores_reales=0; llamadores_de_humo=2; unico_de_humo=no; invocadores=['casos_de_frontera_puerta', 'modo_humo']"
+experiments/p83_01_bayesiano.py,5712,D1_funciones_probadas_sin_llamador,MEDIA,"funcion=contexto_de_ejemplo; llamadores_reales=0; llamadores_de_humo=3; unico_de_humo=no; invocadores=['casos_de_afirmaciones', 'casos_del_limite_5_5', 'modo_humo']"
+experiments/p83_01_bayesiano.py,5883,D1_funciones_probadas_sin_llamador,MEDIA,funcion=_copia_sintetica_de_control; llamadores_reales=0; llamadores_de_humo=1; unico_de_humo=si; invocadores=['casos_de_frontera_ast']
+experiments/p83_01_bayesiano.py,5926,D1_funciones_probadas_sin_llamador,MEDIA,"funcion=_copia_mutada; llamadores_reales=0; llamadores_de_humo=2; unico_de_humo=no; invocadores=['casos_de_frontera_ast', 'casos_de_frontera_contrato']"
+experiments/p83_01_bayesiano.py,6013,D1_funciones_probadas_sin_llamador,MEDIA,funcion=_falla_a3; llamadores_reales=0; llamadores_de_humo=1; unico_de_humo=si; invocadores=['casos_de_afirmaciones']
 experiments/v10_01_holdout2.py,171,D6_toca_test_o_holdout,MEDIA,"mencion: n_splits=PLIEGUES_DEV2, shuffle=True, random_state=SEMILLA_HOLDOUT2; funcion=calcular_referencia_dev2; fit_o_train=si"
 experiments/v10_05_regla_f1_optima.py,226,D6_toca_test_o_holdout,MEDIA,"mencion: indices_dev, _ = holdout_v2(train, grupos_completos); funcion=main; fit_o_train=si"
 experiments/v10_11_bigru_finetuning.py,305,D6_toca_test_o_holdout,MEDIA,"mencion: indices_dev, _ = holdout_v2(train, grupos); funcion=main; fit_o_train=si"
@@ -528,8 +519,8 @@ experiments/p68_01_enrutado_por_estructura.py,77,D5_umbral_congelado_hardcodeado
 experiments/p68_01_enrutado_por_estructura.py,173,D7_semilla_ausente,BAJA,"sin llamada a seed en el archivo; usos en lineas [173, 186, 324, 393, 401] (total 5)"
 experiments/p68_02_h2_auditoria.py,77,D5_umbral_congelado_hardcodeado,BAJA,"umbral 0.44 en asignacion: V03_UMBRALES = np.array([0.44, 0.51, 0.46])"
 experiments/p69_01_auditoria_downweight.py,78,D5_umbral_congelado_hardcodeado,BAJA,"umbral 0.44 en asignacion: UMBRALES_V03 = np.array([0.44, 0.51, 0.46])"
-experiments/p69_01_auditoria_downweight.py,250,D7_semilla_ausente,BAJA,sin llamada a seed en el archivo; usos en lineas [250] (total 1)
-experiments/p69_01_auditoria_downweight.py,317,D5_umbral_congelado_hardcodeado,BAJA,"umbral 0.44 en asignacion: ""thresholds"": [0.44, 0.51, 0.46],"
+experiments/p69_01_auditoria_downweight.py,269,D7_semilla_ausente,BAJA,sin llamada a seed en el archivo; usos en lineas [269] (total 1)
+experiments/p69_01_auditoria_downweight.py,336,D5_umbral_congelado_hardcodeado,BAJA,"umbral 0.44 en asignacion: ""thresholds"": [0.44, 0.51, 0.46],"
 experiments/p69_02_segunda_particion.py,69,D5_umbral_congelado_hardcodeado,BAJA,"umbral 0.44 en asignacion: UMBRALES_V03 = np.array([0.44, 0.51, 0.46])"
 experiments/p69_02_segunda_particion.py,151,D7_semilla_ausente,BAJA,"sin llamada a seed en el archivo; usos en lineas [151, 266] (total 2)"
 experiments/p69_02_segunda_particion.py,404,D5_umbral_congelado_hardcodeado,BAJA,"umbral 0.44 en asignacion: ""umbrales"": [0.44, 0.51, 0.46],"
@@ -568,7 +559,7 @@ experiments/p77_01_operador_selectivo.py,140,D7_semilla_ausente,BAJA,"sin llamad
 experiments/p80_01_auditoria_w2v.py,118,D5_umbral_congelado_hardcodeado,BAJA,"umbral 0.44 en asignacion: UMBRALES_V03 = {""HS"": 0.44, ""TR"": 0.51, ""AG"": 0.46}"
 experiments/p81_01_cierre_huecos.py,308,D5_umbral_congelado_hardcodeado,BAJA,"umbral 0.44 en asignacion: UMBRALES_V03 = {""HS"": 0.44, ""TR"": 0.51, ""AG"": 0.46}"
 experiments/p82_02_submission_rnn.py,81,D5_umbral_congelado_hardcodeado,BAJA,"umbral 0.44 en asignacion: ""umbrales"": {""HS"": 0.44, ""TR"": 0.51, ""AG"": 0.46},"
-experiments/p83_01_bayesiano.py,1632,D7_semilla_ausente,BAJA,"sin llamada a seed en el archivo; usos en lineas [1632, 2187, 4080, 4453, 4926] (total 8)"
+experiments/p83_01_bayesiano.py,1864,D7_semilla_ausente,BAJA,"sin llamada a seed en el archivo; usos en lineas [1864, 2424, 4941, 5332, 5740] (total 9)"
 experiments/v10_01_holdout2.py,84,D5_umbral_congelado_hardcodeado,BAJA,"umbral 0.44 en asignacion: UMBRALES_V03 = np.array([0.44, 0.51, 0.46])"
 experiments/v10_01_holdout2.py,170,D7_semilla_ausente,BAJA,"sin llamada a seed en el archivo; usos en lineas [170, 181, 219, 224] (total 4)"
 experiments/v10_01_holdout2.py,332,D5_umbral_congelado_hardcodeado,BAJA,"umbral 0.44 en asignacion: ""umbrales"": {""HS"": 0.44, ""TR"": 0.51, ""AG"": 0.46},"
@@ -1388,10 +1379,12 @@ experiments/p68_02_h2_auditoria.py,1,D6_toca_test_o_holdout,INFO,"mencion: """""
 experiments/p68_02_h2_auditoria.py,535,D6_toca_test_o_holdout,INFO,"mencion: W(""no se toca el test, ni el holdout, ni el leaderboard""); funcion=main"
 experiments/p69_01_auditoria_downweight.py,1,D6_toca_test_o_holdout,INFO,"mencion: """"""Audit and exact reproduction of A_cost_sensitive_downweight."
 experiments/p69_01_auditoria_downweight.py,63,D6_toca_test_o_holdout,INFO,"mencion: holdout_v2,"
-experiments/p69_01_auditoria_downweight.py,460,D6_toca_test_o_holdout,INFO,"mencion: indices_dev, _ = holdout_v2(train, grupos); funcion=main"
-experiments/p69_01_auditoria_downweight.py,623,D6_toca_test_o_holdout,INFO,"mencion: (""no se lee el holdout para entrenar"", not _lee_artefacto(fuentes, ""holdout"")),; funcion=main"
-experiments/p69_01_auditoria_downweight.py,671,D6_toca_test_o_holdout,INFO,"mencion: ""0 test, 0 holdout, 0 leaderboard""),; funcion=main"
-experiments/p69_01_auditoria_downweight.py,715,D6_toca_test_o_holdout,INFO,"mencion: W(""test, ni el holdout, ni el leaderboard. No se usa este resultado para elegir""); funcion=main"
+experiments/p69_01_auditoria_downweight.py,186,D6_toca_test_o_holdout,INFO,"mencion: """"""Scripts que aplican una operacion de fichero sobre un artefacto concreto.; funcion=_busca"
+experiments/p69_01_auditoria_downweight.py,479,D6_toca_test_o_holdout,INFO,"mencion: indices_dev, _ = holdout_v2(train, grupos); funcion=main"
+experiments/p69_01_auditoria_downweight.py,650,D6_toca_test_o_holdout,INFO,"mencion: (""no se lee el holdout para entrenar"",; funcion=main"
+experiments/p69_01_auditoria_downweight.py,652,D6_toca_test_o_holdout,INFO,"mencion: fuentes, ""holdout"", excluir=(""holdout_v2_ids"", ""evaluaciones""); funcion=main"
+experiments/p69_01_auditoria_downweight.py,701,D6_toca_test_o_holdout,INFO,"mencion: ""0 test, 0 holdout, 0 leaderboard""),; funcion=main"
+experiments/p69_01_auditoria_downweight.py,745,D6_toca_test_o_holdout,INFO,"mencion: W(""test, ni el holdout, ni el leaderboard. No se usa este resultado para elegir""); funcion=main"
 experiments/p69_02_segunda_particion.py,200,D6_toca_test_o_holdout,INFO,"mencion: grupos = pd.read_csv(PROJECT_ROOT / ""data"" / ""processed"" / ""holdout_v2_ids.csv"") \; funcion=main"
 experiments/p69_02_segunda_particion.py,399,D6_toca_test_o_holdout,INFO,"mencion: ""0 grid, 0 submissions, 0 test, 0 holdout, 0 leaderboard""),; funcion=main"
 experiments/p69_03_cierre_downweight.py,128,D6_toca_test_o_holdout,INFO,"mencion: g = pd.read_csv(PROJECT_ROOT / ""data"" / ""processed"" / ""holdout_v2_ids.csv"") \; funcion=main"
@@ -1596,24 +1589,24 @@ experiments/p82_01_rnn_atencion.py,1481,D6_toca_test_o_holdout,INFO,"mencion: ""
 experiments/p82_01_rnn_atencion.py,1493,D6_toca_test_o_holdout,INFO,mencion: if self.indices_holdout.size:; funcion=marcador
 experiments/p82_01_rnn_atencion.py,1494,D6_toca_test_o_holdout,INFO,mencion: prohibidos = set(self.indices_holdout.tolist()); funcion=marcador
 experiments/p82_01_rnn_atencion.py,1496,D6_toca_test_o_holdout,INFO,"mencion: raise RuntimeError(""se ha intentado leer una fila del holdout""); funcion=marcador"
-experiments/p82_01_rnn_atencion.py,3776,D6_toca_test_o_holdout,INFO,"mencion: """"""Carga las filas de desarrollo sin tocar test ni holdout.; funcion=cargar_datos_de_desarrollo"
-experiments/p82_01_rnn_atencion.py,3789,D6_toca_test_o_holdout,INFO,"mencion: indices_dev, indices_holdout = holdout_v2(marco, grupos_completos); funcion=cargar_datos_de_desarrollo"
-experiments/p82_01_rnn_atencion.py,3790,D6_toca_test_o_holdout,INFO,"mencion: progreso.contar(""filas_holdout_descartadas"", int(indices_holdout.size)); funcion=cargar_datos_de_desarrollo"
-experiments/p82_01_rnn_atencion.py,3794,D6_toca_test_o_holdout,INFO,"mencion: filas_holdout_descartadas=int(indices_holdout.size),; funcion=cargar_datos_de_desarrollo"
-experiments/p82_01_rnn_atencion.py,3795,D6_toca_test_o_holdout,INFO,"mencion: indices_holdout=np.asarray(indices_holdout, dtype=np.int64),; funcion=cargar_datos_de_desarrollo"
-experiments/p82_01_rnn_atencion.py,3820,D6_toca_test_o_holdout,INFO,"mencion: origen=""read_train menos el holdout"",; funcion=cargar_datos_de_desarrollo"
-experiments/p82_01_rnn_atencion.py,4290,D6_toca_test_o_holdout,INFO,"mencion: puerta.registrar(""contrato_devuelve_mal_detectado"", (not bien) and callable(holdout_v2)); funcion=caso_contrato_devuelve_mal"
-experiments/p82_01_rnn_atencion.py,5925,D6_toca_test_o_holdout,INFO,mencion: and contexto.guarda.filas_holdout_descartadas == 0; funcion=pipeline_humo
-experiments/p82_01_rnn_atencion.py,5930,D6_toca_test_o_holdout,INFO,"mencion: ""filas_holdout_leidas"": contexto.guarda.filas_holdout_descartadas,; funcion=pipeline_humo"
-experiments/p82_01_rnn_atencion.py,5934,D6_toca_test_o_holdout,INFO,"mencion: ""enteros exactos; test leido igual a 0 y holdout leido igual a 0"",; funcion=pipeline_humo"
-experiments/p82_01_rnn_atencion.py,5937,D5_umbral_congelado_hardcodeado,INFO,"umbral 0.44 en asignacion: esperado = np.array([0.44, 0.51, 0.46], dtype=float); informativo: el archivo lee umbrales de un artefacto"
-experiments/p82_01_rnn_atencion.py,6373,D6_toca_test_o_holdout,INFO,"mencion: ""filas_holdout_leidas"": contexto.guarda.filas_holdout_descartadas,; funcion=pipeline_humo"
-experiments/p82_01_rnn_atencion.py,6679,D6_toca_test_o_holdout,INFO,mencion: contexto.guarda.filas_read_train - contexto.guarda.filas_holdout_descartadas; funcion=ejecutar_p82_completo
-experiments/p82_01_rnn_atencion.py,6682,D6_toca_test_o_holdout,INFO,"mencion: and contexto.guarda.filas_holdout_descartadas == CONFIG[""n_filas_holdout""],; funcion=ejecutar_p82_completo"
-experiments/p82_01_rnn_atencion.py,6685,D6_toca_test_o_holdout,INFO,"mencion: ""filas_holdout_descartadas"": contexto.guarda.filas_holdout_descartadas,; funcion=ejecutar_p82_completo"
-experiments/p82_01_rnn_atencion.py,6690,D6_toca_test_o_holdout,INFO,"mencion: ""enteros exactos; 1483 de desarrollo, 0 de test y 0 de holdout"",; funcion=ejecutar_p82_completo"
-experiments/p82_01_rnn_atencion.py,7112,D6_toca_test_o_holdout,INFO,"mencion: ""filas_holdout_leidas"": 0,; funcion=ejecutar_p82_completo"
-experiments/p82_01_rnn_atencion.py,7113,D6_toca_test_o_holdout,INFO,"mencion: ""filas_holdout_descartadas"": contexto.guarda.filas_holdout_descartadas,; funcion=ejecutar_p82_completo"
+experiments/p82_01_rnn_atencion.py,3801,D6_toca_test_o_holdout,INFO,"mencion: """"""Carga las filas de desarrollo sin tocar test ni holdout.; funcion=cargar_datos_de_desarrollo"
+experiments/p82_01_rnn_atencion.py,3814,D6_toca_test_o_holdout,INFO,"mencion: indices_dev, indices_holdout = holdout_v2(marco, grupos_completos); funcion=cargar_datos_de_desarrollo"
+experiments/p82_01_rnn_atencion.py,3815,D6_toca_test_o_holdout,INFO,"mencion: progreso.contar(""filas_holdout_descartadas"", int(indices_holdout.size)); funcion=cargar_datos_de_desarrollo"
+experiments/p82_01_rnn_atencion.py,3819,D6_toca_test_o_holdout,INFO,"mencion: filas_holdout_descartadas=int(indices_holdout.size),; funcion=cargar_datos_de_desarrollo"
+experiments/p82_01_rnn_atencion.py,3820,D6_toca_test_o_holdout,INFO,"mencion: indices_holdout=np.asarray(indices_holdout, dtype=np.int64),; funcion=cargar_datos_de_desarrollo"
+experiments/p82_01_rnn_atencion.py,3845,D6_toca_test_o_holdout,INFO,"mencion: origen=""read_train menos el holdout"",; funcion=cargar_datos_de_desarrollo"
+experiments/p82_01_rnn_atencion.py,4315,D6_toca_test_o_holdout,INFO,"mencion: puerta.registrar(""contrato_devuelve_mal_detectado"", (not bien) and callable(holdout_v2)); funcion=caso_contrato_devuelve_mal"
+experiments/p82_01_rnn_atencion.py,5950,D6_toca_test_o_holdout,INFO,mencion: and contexto.guarda.filas_holdout_descartadas == 0; funcion=pipeline_humo
+experiments/p82_01_rnn_atencion.py,5955,D6_toca_test_o_holdout,INFO,"mencion: ""filas_holdout_leidas"": contexto.guarda.filas_holdout_descartadas,; funcion=pipeline_humo"
+experiments/p82_01_rnn_atencion.py,5959,D6_toca_test_o_holdout,INFO,"mencion: ""enteros exactos; test leido igual a 0 y holdout leido igual a 0"",; funcion=pipeline_humo"
+experiments/p82_01_rnn_atencion.py,5962,D5_umbral_congelado_hardcodeado,INFO,"umbral 0.44 en asignacion: esperado = np.array([0.44, 0.51, 0.46], dtype=float); informativo: el archivo lee umbrales de un artefacto"
+experiments/p82_01_rnn_atencion.py,6398,D6_toca_test_o_holdout,INFO,"mencion: ""filas_holdout_leidas"": contexto.guarda.filas_holdout_descartadas,; funcion=pipeline_humo"
+experiments/p82_01_rnn_atencion.py,6704,D6_toca_test_o_holdout,INFO,mencion: contexto.guarda.filas_read_train - contexto.guarda.filas_holdout_descartadas; funcion=ejecutar_p82_completo
+experiments/p82_01_rnn_atencion.py,6707,D6_toca_test_o_holdout,INFO,"mencion: and contexto.guarda.filas_holdout_descartadas == CONFIG[""n_filas_holdout""],; funcion=ejecutar_p82_completo"
+experiments/p82_01_rnn_atencion.py,6710,D6_toca_test_o_holdout,INFO,"mencion: ""filas_holdout_descartadas"": contexto.guarda.filas_holdout_descartadas,; funcion=ejecutar_p82_completo"
+experiments/p82_01_rnn_atencion.py,6715,D6_toca_test_o_holdout,INFO,"mencion: ""enteros exactos; 1483 de desarrollo, 0 de test y 0 de holdout"",; funcion=ejecutar_p82_completo"
+experiments/p82_01_rnn_atencion.py,7137,D6_toca_test_o_holdout,INFO,"mencion: ""filas_holdout_leidas"": 0,; funcion=ejecutar_p82_completo"
+experiments/p82_01_rnn_atencion.py,7138,D6_toca_test_o_holdout,INFO,"mencion: ""filas_holdout_descartadas"": contexto.guarda.filas_holdout_descartadas,; funcion=ejecutar_p82_completo"
 experiments/p82_02_submission_rnn.py,1,D6_toca_test_o_holdout,INFO,"mencion: """"""p82_02_submission_rnn.py"
 experiments/p82_02_submission_rnn.py,91,D6_toca_test_o_holdout,INFO,"mencion: TEST_RAW: Final[Path] = PROJECT_ROOT / ""data"" / ""raw"" / ""toxic_test.csv"""
 experiments/p82_02_submission_rnn.py,101,D6_toca_test_o_holdout,INFO,mencion: N_FILAS_HOLDOUT: Final[int] = 248
@@ -1634,43 +1627,43 @@ experiments/p83_01_bayesiano.py,64,D6_toca_test_o_holdout,INFO,"mencion: from sr
 experiments/p83_01_bayesiano.py,79,D6_toca_test_o_holdout,INFO,"mencion: ""n_filas_holdout"": 248,"
 experiments/p83_01_bayesiano.py,147,D5_umbral_congelado_hardcodeado,INFO,"umbral 0.44 en asignacion: UMBRALES_V03_CONGELADOS: Final[tuple[float, float, float]] = (0.44, 0.51, 0.46); informativo: el archivo lee umbrales de un artefacto"
 experiments/p83_01_bayesiano.py,400,D6_toca_test_o_holdout,INFO,"mencion: FilaContrato(""holdout_v2"", holdout_v2, (""train"", ""grupos""), ""src/splits.py""),; funcion=tabla_contratos"
-experiments/p83_01_bayesiano.py,1078,D6_toca_test_o_holdout,INFO,"mencion: ""A1"": (1, ""solo se leen las fuentes declaradas, cero test y cero holdout""),"
-experiments/p83_01_bayesiano.py,1800,D6_toca_test_o_holdout,INFO,"mencion: """"""Guarda que cuenta filas leidas y prohibe tocar test y holdout."""""""
-experiments/p83_01_bayesiano.py,1804,D6_toca_test_o_holdout,INFO,mencion: self.filas_holdout_leidas = 0; funcion=__init__
-experiments/p83_01_bayesiano.py,1805,D6_toca_test_o_holdout,INFO,mencion: self.evaluaciones_del_holdout = 0; funcion=__init__
-experiments/p83_01_bayesiano.py,1858,D6_toca_test_o_holdout,INFO,"mencion: """"""Carga las filas de desarrollo sin tocar test ni holdout.; funcion=cargar_datos_de_desarrollo"
-experiments/p83_01_bayesiano.py,1872,D6_toca_test_o_holdout,INFO,"mencion: indices_dev, indices_holdout = holdout_v2(marco, grupos_completos); funcion=cargar_datos_de_desarrollo"
-experiments/p83_01_bayesiano.py,1873,D6_toca_test_o_holdout,INFO,"mencion: progreso.contar(""filas_holdout_descartadas"", int(indices_holdout.size)); funcion=cargar_datos_de_desarrollo"
-experiments/p83_01_bayesiano.py,1875,D6_toca_test_o_holdout,INFO,"mencion: if len(marco) != CONFIG[""n_filas_desarrollo""] + CONFIG[""n_filas_holdout""]:; funcion=cargar_datos_de_desarrollo"
-experiments/p83_01_bayesiano.py,1878,D6_toca_test_o_holdout,INFO,"mencion: f""{CONFIG['n_filas_desarrollo'] + CONFIG['n_filas_holdout']}""; funcion=cargar_datos_de_desarrollo"
-experiments/p83_01_bayesiano.py,1893,D6_toca_test_o_holdout,INFO,"mencion: origen=""read_train menos el holdout"",; funcion=cargar_datos_de_desarrollo"
-experiments/p83_01_bayesiano.py,2983,D6_toca_test_o_holdout,INFO,"mencion: esperado_holdout: int,; funcion=afirmacion_a1"
-experiments/p83_01_bayesiano.py,2986,D6_toca_test_o_holdout,INFO,"mencion: """"""A1. Solo las fuentes declaradas, y el holdout intacto.; funcion=afirmacion_a1"
-experiments/p83_01_bayesiano.py,3006,D6_toca_test_o_holdout,INFO,"mencion: ""las_filas_de_holdout_son_las_esperadas"": guarda.filas_holdout_leidas == int(esperado_holdout),; funcion=afirmacion_a1"
-experiments/p83_01_bayesiano.py,3007,D6_toca_test_o_holdout,INFO,"mencion: ""las_evaluaciones_del_holdout_son_las_esperadas"": guarda.evaluaciones_del_holdout; funcion=afirmacion_a1"
-experiments/p83_01_bayesiano.py,3009,D6_toca_test_o_holdout,INFO,"mencion: ""el_presupuesto_de_evaluaciones_no_se_ha_tocado"": guarda.evaluaciones_del_holdout; funcion=afirmacion_a1"
-experiments/p83_01_bayesiano.py,3017,D6_toca_test_o_holdout,INFO,"mencion: ""filas_de_holdout_leidas"": int(guarda.filas_holdout_leidas),; funcion=afirmacion_a1"
-experiments/p83_01_bayesiano.py,3018,D6_toca_test_o_holdout,INFO,"mencion: ""filas_de_holdout_esperadas"": int(esperado_holdout),; funcion=afirmacion_a1"
-experiments/p83_01_bayesiano.py,3019,D6_toca_test_o_holdout,INFO,"mencion: ""evaluaciones_del_holdout_gastadas"": int(guarda.evaluaciones_del_holdout),; funcion=afirmacion_a1"
-experiments/p83_01_bayesiano.py,3020,D6_toca_test_o_holdout,INFO,"mencion: ""evaluaciones_del_holdout_esperadas"": int(esperado_evaluaciones),; funcion=afirmacion_a1"
-experiments/p83_01_bayesiano.py,3021,D6_toca_test_o_holdout,INFO,"mencion: ""presupuesto_de_evaluaciones_del_holdout_del_proyecto"": 5,; funcion=afirmacion_a1"
-experiments/p83_01_bayesiano.py,3022,D6_toca_test_o_holdout,INFO,"mencion: ""evaluaciones_del_holdout_gastadas_por_p83"": 0,; funcion=afirmacion_a1"
-experiments/p83_01_bayesiano.py,3024,D6_toca_test_o_holdout,INFO,"mencion: ""motivo_de_parada"": ""se ha leido test o el holdout, o se ha gastado una evaluacion del holdout"",; funcion=afirmacion_a1"
-experiments/p83_01_bayesiano.py,6123,D6_toca_test_o_holdout,INFO,"mencion: # A1: solo lectura, cero test y cero holdout.; funcion=casos_de_afirmaciones"
-experiments/p83_01_bayesiano.py,6133,D6_toca_test_o_holdout,INFO,"mencion: guarda_con_fuga.filas_holdout_leidas = CONFIG[""n_filas_holdout""]; funcion=casos_de_afirmaciones"
-experiments/p83_01_bayesiano.py,6136,D6_toca_test_o_holdout,INFO,"mencion: ""A1_detecta_holdout"",; funcion=casos_de_afirmaciones"
-experiments/p83_01_bayesiano.py,6138,D6_toca_test_o_holdout,INFO,"mencion: ""con 248 filas de holdout leidas, A1 tiene que rechazarlo"",; funcion=casos_de_afirmaciones"
-experiments/p83_01_bayesiano.py,6149,D6_toca_test_o_holdout,INFO,mencion: guarda_con_evaluaciones.evaluaciones_del_holdout = 1; funcion=casos_de_afirmaciones
-experiments/p83_01_bayesiano.py,6152,D6_toca_test_o_holdout,INFO,"mencion: ""A1_detecta_una_evaluacion_del_holdout"",; funcion=casos_de_afirmaciones"
-experiments/p83_01_bayesiano.py,6154,D6_toca_test_o_holdout,INFO,"mencion: ""con una evaluacion del holdout gastada, A1 tiene que rechazarlo"",; funcion=casos_de_afirmaciones"
-experiments/p83_01_bayesiano.py,6760,D6_toca_test_o_holdout,INFO,"mencion: ""a6_datos_reales_sin_holdout"",; funcion=caso_de_a6_medido"
-experiments/p83_01_bayesiano.py,6761,D6_toca_test_o_holdout,INFO,"mencion: progreso.contadores.get(""filas_holdout_descartadas"", 0) == CONFIG[""n_filas_holdout""]; funcion=caso_de_a6_medido"
-experiments/p83_01_bayesiano.py,6763,D6_toca_test_o_holdout,INFO,"mencion: f""holdout descartado={progreso.contadores.get('filas_holdout_descartadas')} ""; funcion=caso_de_a6_medido"
-experiments/p83_01_bayesiano.py,7087,D6_toca_test_o_holdout,INFO,"mencion: ""filas_holdout_leidas"": contexto.guarda.filas_holdout_leidas,; funcion=construir_carga"
-experiments/p83_01_bayesiano.py,7088,D6_toca_test_o_holdout,INFO,"mencion: ""evaluaciones_del_holdout"": contexto.guarda.evaluaciones_del_holdout,; funcion=construir_carga"
-experiments/p83_01_bayesiano.py,7132,D6_toca_test_o_holdout,INFO,"mencion: ""no_se_lee_el_holdout"": True,; funcion=construir_carga"
-experiments/p83_01_bayesiano.py,7174,D6_toca_test_o_holdout,INFO,"mencion: # A1: solo las fuentes declaradas, y el holdout nunca leido.; funcion=ejecutar_p83_completo"
-experiments/p83_01_bayesiano.py,7185,D6_toca_test_o_holdout,INFO,"mencion: ""cero filas de test, cero de holdout y cero evaluaciones del holdout"",; funcion=ejecutar_p83_completo"
+experiments/p83_01_bayesiano.py,1306,D6_toca_test_o_holdout,INFO,"mencion: ""A1"": (1, ""solo se leen las fuentes declaradas, cero test y cero holdout""),"
+experiments/p83_01_bayesiano.py,2032,D6_toca_test_o_holdout,INFO,"mencion: """"""Guarda que cuenta filas leidas y prohibe tocar test y holdout."""""""
+experiments/p83_01_bayesiano.py,2036,D6_toca_test_o_holdout,INFO,mencion: self.filas_holdout_leidas = 0; funcion=__init__
+experiments/p83_01_bayesiano.py,2037,D6_toca_test_o_holdout,INFO,mencion: self.evaluaciones_del_holdout = 0; funcion=__init__
+experiments/p83_01_bayesiano.py,2090,D6_toca_test_o_holdout,INFO,"mencion: """"""Carga las filas de desarrollo sin tocar test ni holdout.; funcion=cargar_datos_de_desarrollo"
+experiments/p83_01_bayesiano.py,2104,D6_toca_test_o_holdout,INFO,"mencion: indices_dev, indices_holdout = holdout_v2(marco, grupos_completos); funcion=cargar_datos_de_desarrollo"
+experiments/p83_01_bayesiano.py,2105,D6_toca_test_o_holdout,INFO,"mencion: progreso.contar(""filas_holdout_descartadas"", int(indices_holdout.size)); funcion=cargar_datos_de_desarrollo"
+experiments/p83_01_bayesiano.py,2107,D6_toca_test_o_holdout,INFO,"mencion: if len(marco) != CONFIG[""n_filas_desarrollo""] + CONFIG[""n_filas_holdout""]:; funcion=cargar_datos_de_desarrollo"
+experiments/p83_01_bayesiano.py,2110,D6_toca_test_o_holdout,INFO,"mencion: f""{CONFIG['n_filas_desarrollo'] + CONFIG['n_filas_holdout']}""; funcion=cargar_datos_de_desarrollo"
+experiments/p83_01_bayesiano.py,2130,D6_toca_test_o_holdout,INFO,"mencion: origen=""read_train menos el holdout"",; funcion=cargar_datos_de_desarrollo"
+experiments/p83_01_bayesiano.py,3249,D6_toca_test_o_holdout,INFO,"mencion: esperado_holdout: int,; funcion=afirmacion_a1"
+experiments/p83_01_bayesiano.py,3252,D6_toca_test_o_holdout,INFO,"mencion: """"""A1. Solo las fuentes declaradas, y el holdout intacto.; funcion=afirmacion_a1"
+experiments/p83_01_bayesiano.py,3272,D6_toca_test_o_holdout,INFO,"mencion: ""las_filas_de_holdout_son_las_esperadas"": guarda.filas_holdout_leidas == int(esperado_holdout),; funcion=afirmacion_a1"
+experiments/p83_01_bayesiano.py,3273,D6_toca_test_o_holdout,INFO,"mencion: ""las_evaluaciones_del_holdout_son_las_esperadas"": guarda.evaluaciones_del_holdout; funcion=afirmacion_a1"
+experiments/p83_01_bayesiano.py,3275,D6_toca_test_o_holdout,INFO,"mencion: ""el_presupuesto_de_evaluaciones_no_se_ha_tocado"": guarda.evaluaciones_del_holdout; funcion=afirmacion_a1"
+experiments/p83_01_bayesiano.py,3283,D6_toca_test_o_holdout,INFO,"mencion: ""filas_de_holdout_leidas"": int(guarda.filas_holdout_leidas),; funcion=afirmacion_a1"
+experiments/p83_01_bayesiano.py,3284,D6_toca_test_o_holdout,INFO,"mencion: ""filas_de_holdout_esperadas"": int(esperado_holdout),; funcion=afirmacion_a1"
+experiments/p83_01_bayesiano.py,3285,D6_toca_test_o_holdout,INFO,"mencion: ""evaluaciones_del_holdout_gastadas"": int(guarda.evaluaciones_del_holdout),; funcion=afirmacion_a1"
+experiments/p83_01_bayesiano.py,3286,D6_toca_test_o_holdout,INFO,"mencion: ""evaluaciones_del_holdout_esperadas"": int(esperado_evaluaciones),; funcion=afirmacion_a1"
+experiments/p83_01_bayesiano.py,3287,D6_toca_test_o_holdout,INFO,"mencion: ""presupuesto_de_evaluaciones_del_holdout_del_proyecto"": 5,; funcion=afirmacion_a1"
+experiments/p83_01_bayesiano.py,3288,D6_toca_test_o_holdout,INFO,"mencion: ""evaluaciones_del_holdout_gastadas_por_p83"": 0,; funcion=afirmacion_a1"
+experiments/p83_01_bayesiano.py,3290,D6_toca_test_o_holdout,INFO,"mencion: ""motivo_de_parada"": ""se ha leido test o el holdout, o se ha gastado una evaluacion del holdout"",; funcion=afirmacion_a1"
+experiments/p83_01_bayesiano.py,7075,D6_toca_test_o_holdout,INFO,"mencion: # A1: solo lectura, cero test y cero holdout.; funcion=casos_de_afirmaciones"
+experiments/p83_01_bayesiano.py,7085,D6_toca_test_o_holdout,INFO,"mencion: guarda_con_fuga.filas_holdout_leidas = CONFIG[""n_filas_holdout""]; funcion=casos_de_afirmaciones"
+experiments/p83_01_bayesiano.py,7088,D6_toca_test_o_holdout,INFO,"mencion: ""A1_detecta_holdout"",; funcion=casos_de_afirmaciones"
+experiments/p83_01_bayesiano.py,7090,D6_toca_test_o_holdout,INFO,"mencion: ""con 248 filas de holdout leidas, A1 tiene que rechazarlo"",; funcion=casos_de_afirmaciones"
+experiments/p83_01_bayesiano.py,7101,D6_toca_test_o_holdout,INFO,mencion: guarda_con_evaluaciones.evaluaciones_del_holdout = 1; funcion=casos_de_afirmaciones
+experiments/p83_01_bayesiano.py,7104,D6_toca_test_o_holdout,INFO,"mencion: ""A1_detecta_una_evaluacion_del_holdout"",; funcion=casos_de_afirmaciones"
+experiments/p83_01_bayesiano.py,7106,D6_toca_test_o_holdout,INFO,"mencion: ""con una evaluacion del holdout gastada, A1 tiene que rechazarlo"",; funcion=casos_de_afirmaciones"
+experiments/p83_01_bayesiano.py,7989,D6_toca_test_o_holdout,INFO,"mencion: ""a6_datos_reales_sin_holdout"",; funcion=caso_de_a6_medido"
+experiments/p83_01_bayesiano.py,7990,D6_toca_test_o_holdout,INFO,"mencion: progreso.contadores.get(""filas_holdout_descartadas"", 0) == CONFIG[""n_filas_holdout""]; funcion=caso_de_a6_medido"
+experiments/p83_01_bayesiano.py,7992,D6_toca_test_o_holdout,INFO,"mencion: f""holdout descartado={progreso.contadores.get('filas_holdout_descartadas')} ""; funcion=caso_de_a6_medido"
+experiments/p83_01_bayesiano.py,8323,D6_toca_test_o_holdout,INFO,"mencion: ""filas_holdout_leidas"": contexto.guarda.filas_holdout_leidas,; funcion=construir_carga"
+experiments/p83_01_bayesiano.py,8324,D6_toca_test_o_holdout,INFO,"mencion: ""evaluaciones_del_holdout"": contexto.guarda.evaluaciones_del_holdout,; funcion=construir_carga"
+experiments/p83_01_bayesiano.py,8368,D6_toca_test_o_holdout,INFO,"mencion: ""no_se_lee_el_holdout"": True,; funcion=construir_carga"
+experiments/p83_01_bayesiano.py,8410,D6_toca_test_o_holdout,INFO,"mencion: # A1: solo las fuentes declaradas, y el holdout nunca leido.; funcion=ejecutar_p83_completo"
+experiments/p83_01_bayesiano.py,8421,D6_toca_test_o_holdout,INFO,"mencion: ""cero filas de test, cero de holdout y cero evaluaciones del holdout"",; funcion=ejecutar_p83_completo"
 experiments/v10_01_holdout2.py,1,D6_toca_test_o_holdout,INFO,"mencion: """"""P0b de la fase v10 (V10-01): holdout2 congelado y recalculo de la referencia en dev2."
 experiments/v10_01_holdout2.py,72,D6_toca_test_o_holdout,INFO,"mencion: holdout_v2,"
 experiments/v10_01_holdout2.py,75,D6_toca_test_o_holdout,INFO,"mencion: EXPERIMENTO = ""V10-01 (P0b, holdout2)"""
