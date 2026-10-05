@@ -12,3 +12,7 @@ nohup.out
 .sparkStaging/
 derby.log
 metastore_db/
+
+# Artefactos pesados regenerables (ciclo v3)
+*.npz
+*.zip

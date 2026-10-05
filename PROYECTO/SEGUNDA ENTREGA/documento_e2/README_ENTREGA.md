@@ -155,3 +155,60 @@ python scripts/checks_qa_final.py
 - Trazabilidad por fases en `plan/contexto.md` (entradas "Ciclo v2" a "Fase X"); decisiones en ADR-11 a ADR-15.
 - Zip del ciclo: `PROYECTO/juris_pln_e2_entrega_v2.zip`; el zip v1 (`juris_pln_e2_entrega.zip`) se conserva.
 - Rollback: los artefactos v1 no se modificaron; para volver a la v1 basta restaurar los componentes desde el zip v1.
+
+---
+
+## 10. Ciclo v3 (2026-10-05)
+
+El ciclo v3 ("recuperación robusta") se documenta en `plan/PLAN_v3_recuperacion_robusta.md` y en el informe `documento_e2/informe_final_ciclo_v3.md`. Resumen: Sprint A sin adopciones (ADR-17); Sprint B con modelos de dominio B1+B2 -> producto v2.2 (ADR-18); B3 gold-LLM; C3 corpus 2022-2026; C2 LLM (negativo); Fase 1 (auditoría M4, H1/H2/H2b, O1); QA v2.2 GO.
+
+**Producto v2.2 (ADR-18).** La ruta `--rerank` usa B2 (`modelos/b2_retriever`) + B1 (`modelos/b1_reranker`) + prior de hubs α=1,5; el modo default (BM25 + α=0,75) no cambia y los fallbacks a E5/bge quedan documentados con warning. Cifras v13 (90 casos, silver): nDCG@10 0,6926/0,6907 (sin/con hubs), F1@5 0,478, MRR 0,950; Δ pareado vs v12 (B1+E5): +0,0673/+0,0617 (IC>0). Control graduado gold-LLM (B3): 0,783 [0,733;0,829]. QA v2.2 **GO** (10/10 E2E, equivalencia producto↔v13 3/3 exacta, checks v3 10/10). Rollback: zip v2 (`juris_pln_e2_entrega_v2.zip`).
+
+**C3 — corpus 2022-2026.** `data/corpus_2022_2026/`: 2.382 providencias listadas (474/584/530/520/274 por año), 2.330 documentos preparados (NER con cobertura CP 99,96 %, etiquetado 99,96 %, lemas). Evaluación temporal de la ruta v13 sobre 100 casos nuevos (20/año): nDCG@10 0,747 [0,719;0,777] vs 0,691 histórico (delta descriptivo, no pareado) -> sin deriva temporal.
+
+**C2 — LLM ALIA zero-shot (negativo).** Query understanding Δ −0,198 y rerank listwise Δ −0,217 (nDCG@10 frente a v13); sin adopción; opción futura: LoRA con datos propios. Artefactos en `resultados/c2_llm/` y figuras `c2_query_llm.png` / `c2_rerank_llm.png`.
+
+**B3/O1 — packs de anotación (estado).** B3: `resultados/gold_mini/` (50 casos/820 decisiones, pre-anotación LLM + check inter-LLM κ=0,651); falta el spot-check humano. O1: `resultados/validacion_m4/` (200 documentos, 2 proxies LLM 0,415/0,299); falta la anotación humana. **Terminología:** silver = referencia automática (citas NER); gold = anotación humana; las pre-anotaciones LLM son proxies, NO gold.
+
+**Scripts nuevos (16-31).** 16 anotador gold; 17 auditoría de etiquetas; 18 H1 ruido; 19 H2 objetivo suave; 20 H2b post-proceso; 21 pack validación M4; 22 pre-anotación LLM M4; 23 pares B1; 24 entrenamiento B1; 25 retriever B2; 26 descarga C3; 27 pre-anotación gold LLM; 28 preparación C3; 29 evaluación temporal C3; 30/31 LLM C2; `checks_qa_final_v3.py` (QA v2.2).
+
+**Cómo reproducir las evaluaciones nuevas** (desde `SEGUNDA ENTREGA/` con el venv activado):
+
+```bash
+# Sprint A (diagnóstico, modelos legales ES, fusiones, clasificador)
+python scripts/12_evaluar_vinculo_cp_v2.py --diagnostico
+python scripts/12_evaluar_vinculo_cp_v2.py --a3 --rerank
+python scripts/12_evaluar_vinculo_cp_v2.py --a4 --rerank
+python scripts/06_baseline_clasico.py --fase-a5
+
+# Sprint B (B1/B2 + evaluaciones v12/v13)
+python scripts/23_b1_pares_reranker.py
+python scripts/24_b1_entrenar_reranker.py
+python scripts/12_evaluar_vinculo_cp_v2.py --b1 --rerank
+python scripts/25_b2_retriever_denso.py
+python scripts/12_evaluar_vinculo_cp_v2.py --b2 --rerank
+
+# B3 (pre-anotación proxy + evaluación graduada; anotación humana con --anotar)
+python scripts/27_preanotacion_gold_llm.py
+python scripts/16_anotador_gold.py --evaluar
+
+# C3 (corpus 2022-2026 + deriva temporal)
+python scripts/26_c3_descarga_2022_2026.py --descargar
+python scripts/28_c3_preparar_corpus.py
+python scripts/29_c3_eval_temporal.py
+
+# C2 (LLM local; requiere ollama con alia-legal)
+python scripts/30_c2_llm_query.py
+python scripts/31_c2_llm_rerank.py
+
+# Fase 1 (auditoría M4 y packs O1)
+python scripts/17_auditoria_etiquetas_m4.py --modo todo
+python scripts/21_pack_validacion_m4.py --resumen
+python scripts/22_preanotacion_llm_m4.py
+
+# QA de regresión v2.2
+python scripts/checks_qa_final_v3.py
+```
+
+- Trazabilidad: `plan/REGISTRO_EXPERIMENTOS.md` y `resultados/metricas.json` (secciones `ciclo_v3`, `b1_reranker`, `b2_retriever`, `b3_gold_llm`, `b3_check_llm`, `c2_query_llm`, `c2_rerank_llm`, `c3_deriva_temporal`, `qa_v2_2`, `o1_validacion_llm_multi`, `auditoria_etiquetas_m4`, `h1_ruido_m4`, `h2_objetivo_suave`, `h2b_postproceso`); decisiones en ADR-17 y ADR-18.
+- La v2 permanece congelada (ADR-11/16): los artefactos v3 usan sufijos (`_v9+`, `c3_*`) y el zip de entrega se regenera en el cierre documental (C5).

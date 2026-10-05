@@ -42,7 +42,7 @@ Stratificación: 8 providencias positivas (2-3 por periodo 1992-2001/2002-2011/2
 
 ## Riesgos residuales (documentados)
 
-1. **Caso 6251**: los arts 21/209 (gold NER) siguen fuera del top-10 incluso en modo
+1. **Caso 6251**: los arts 21/209 (silver NER) siguen fuera del top-10 incluso en modo
    rerank (posición 220/305 en BM25 de 1ª etapa; el híbrido no los sube al top-50).
    Limitación de recall de primera etapa documentada en v6/v8; el reranker solo
    reordena candidatos existentes. Candidato a iteración futura (gold estándar).

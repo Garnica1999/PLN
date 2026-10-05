@@ -1,0 +1,5 @@
+representacion,vocab_tipos,ratio_vs_tokens,compresion_pct
+tokens,224468,1.0,100.0
+lemas,195959,0.873,87.3
+stems,121696,0.5422,54.22
+stems_vs_lemas,121696,0.621,62.1

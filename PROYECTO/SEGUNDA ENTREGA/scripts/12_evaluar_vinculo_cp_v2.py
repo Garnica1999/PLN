@@ -405,6 +405,94 @@ Descripcion: Recalibracion (Fase K-2) del benchmark M7 del vinculo
           c3_a3_rerankers.json). Con --limite N todo va a /tmp/opencode
           con sufijo _smoke.
 
+    ciclo v3 - Sprint B1 (2026-10-03, plan/PLAN_v3_recuperacion_robusta.md):
+    evaluacion del RERANKER DE DOMINIO fine-tuneado por
+    scripts/24_b1_entrenar_reranker.py (pares chunk->pasaje citado con
+    hard negatives BM25/co-citados; el modelo se guarda con
+    save_pretrained en modelos/b1_reranker/). Adiciones:
+    (B1.1) flag --b1 (default OFF; requiere --rerank): puntua la ruta
+          GANADORA del producto con rerank (hibrido_rerank_chunks_top50
+          + prior de hubs alpha=1.5 + salida k=10, la misma de A4/v8)
+          con el reranker B1 sobre los MISMOS candidatos top-50 del
+          hibrido 0.5/0.5 y los MISMOS pares (chunk, pasaje) que la
+          referencia bge; la estrategia nueva se llama
+          hibrido_rerank_chunks_top50_b1 y entra al marco de metricas
+          sin cambiar ningun protocolo;
+    (B1.2) el modelo por defecto es la ruta local modelos/b1_reranker
+          resuelta contra ROOT; si el directorio no existe el script
+          falla ANTES de ejecutar con un error claro que indica
+          entrenar primero con scripts/24_b1_entrenar_reranker.py. El
+          flag --reranker-model HF_ID lo sobreescribe SOLO para pruebas
+          de fontaneria (acepta un alias del catalogo de
+          scripts/lib/reranker_bge.py, p. ej. bge, una ruta local o un
+          HF id);
+    (B1.3) seccion comparacion_b1 con metricas globales y por caso
+          (nDCG@10, F1@10) en contextos alpha=0/1.5 y el IC 95%
+          bootstrap PAREADO (1000 remuestreos, seed 42) de delta = B1 -
+          referencia bge del MISMO run (mismos casos, candidatos y
+          pares; el delta primario usa la ruta ganadora con_hubs
+          alpha=1.5). Si los artefactos congelados v8/v10 existen, se
+          reconstruye de su top10_por_caso la serie por caso de la
+          referencia bge en el contexto alpha=0 y se anaden (1) la
+          verificacion de equivalencia referencia_run vs externa y (2)
+          un bootstrap pareado adicional de B1 vs la referencia
+          congelada; si no existen, el JSON documenta el fallback
+          (referencia bge del run);
+    (B1.4) salidas NUEVAS v12 (ADR-16: v2..v11 NUNCA se sobrescriben):
+          resultados/vinculo_cp_benchmark_v12.json (version
+          "v12-ciclo3-sprintB1" con la seccion comparacion_b1),
+          resultados/vinculo_cp_por_ano_v12.csv,
+          figuras/deriva_retrieval_v12.png,
+          figuras/contaminacion_transitorios_v12.png y el derivado
+          trazable resultados/c3_b1_reranker.json (seccion
+          comparacion_b1 + origen con archivo/version/md5, patron de
+          c3_a4_fusion_profundidad.json). Con --limite N todo va a
+          /tmp/opencode con sufijo _smoke (run de fontaneria).
+
+    ciclo v3 - Sprint B2 (2026-10-04, plan/PLAN_v3_recuperacion_robusta.md):
+    evaluacion del RETRIEVER DENSO de dominio fine-tuneado por
+    scripts/25_b2_retriever_denso.py (bi-encoder contrastivo entrenado
+    con los pares de B1; el mejor modelo se guarda con save_pretrained en
+    modelos/b2_retriever/). Adiciones:
+    (B2.1) flag --b2 (default OFF; requiere --rerank y es excluyente con
+          --b1, --a3, --a4 y con los disparadores de la matriz A2
+          --k-candidatos-hybrid / --embedding-model multiple): evalua la
+          ruta NUEVA hibrido_b2_rerank_chunks_top50_b1, es decir, el
+          hibrido pre-registrado 0.5*bm25 + 0.5*B2 sobre los MISMOS
+          top-50 candidatos y pares (chunk, pasaje) que la ruta B1,
+          rerank por chunks con el reranker B1 (modelos/b1_reranker) y
+          prior de hubs alpha=1.5; contextos sin_hubs (0.0) y con_hubs
+          (1.5), salida k=10. El denso se carga con el plumbing de A2
+          (SentenceTransformer + cache data/cache_emb_cp/<slug>.joblib;
+          slug b2_retriever);
+    (B2.2) el modelo denso por defecto es la ruta local
+          modelos/b2_retriever resuelta contra ROOT; si el directorio no
+          existe el script falla ANTES de ejecutar con un error claro
+          que indica entrenar primero con
+          scripts/25_b2_retriever_denso.py --entrenar. El flag
+          --embedding-model (un solo valor) sobreescribe el denso SOLO
+          para pruebas de fontaneria y --reranker-model sobreescribe el
+          reranker B1 de la ruta (default modelos/b1_reranker);
+    (B2.3) seccion comparacion_b2 con metricas globales y por caso
+          (nDCG@10, F1@10) de la estrategia B2 en contextos alpha=0/1.5 y
+          el IC 95% bootstrap PAREADO (1000 remuestreos, seed 42) de
+          delta = B2 - referencia v12 (la ruta B1 con hibrido E5
+          congelada: per-case de comparacion_b1.metricas_por_caso; si
+          falta, top10_por_caso en el contexto sin_hubs; si no hay
+          fuente, fallback documentado sin pareado primario) y la
+          verificacion externa vs A2/ALIA@100 (per-case de v9
+          comparacion_a2.metricas_por_caso) cuando esta disponible;
+    (B2.4) salidas NUEVAS v13 (ADR-16: v2..v12 NUNCA se sobrescriben):
+          resultados/vinculo_cp_benchmark_v13.json (version
+          "v13-ciclo3-sprintB2" con la seccion comparacion_b2),
+          resultados/vinculo_cp_por_ano_v13.csv,
+          figuras/deriva_retrieval_v13.png,
+          figuras/contaminacion_transitorios_v13.png y el derivado
+          trazable resultados/c3_b2_retriever.json (seccion
+          comparacion_b2 + origen con archivo/version/md5, patron de
+          c3_b1_reranker.json). Con --limite N todo va a /tmp/opencode
+          con sufijo _smoke (run de fontaneria).
+
     Estado del arte aplicado: BM25 por pasajes con agregacion max, max-pooling
     de chunks de query (cobertura completa), hibrido lexico-denso con
     normalizacion min-max por consulta (pre-registrado 0.5/0.5), E5
@@ -420,7 +508,13 @@ Descripcion: Recalibracion (Fase K-2) del benchmark M7 del vinculo
     et al. 2009, k=60; Sprint A3 del ciclo v3), fusion lineal de scores
     de 1a etapa con pesos BM25/denso y RRF de rangos a nivel de 1a etapa
     con barrido de profundidad de candidatos (Sprint A4 del ciclo v3) y
-    bootstrap pareado de la diferencia para el gate de adopcion (ADR-16).
+    bootstrap pareado de la diferencia para el gate de adopcion (ADR-16);
+    fine-tune de cross-encoder de dominio con hard negatives BM25/
+    co-citados sobre bge-reranker-v2-m3 (Nogueira y Cho 2019; Karpukhin
+    et al. 2020; Sprint B1 del ciclo v3) y recuperacion densa contrastiva
+    de dominio con bi-encoder fine-tuneado (DPR/InfoNCE con negativos
+    in-batch + hard negatives; Karpukhin et al. 2020, Gao et al. 2021;
+    Sprint B2 del ciclo v3).
 """
 
 import argparse
@@ -883,6 +977,111 @@ CONFIG = {
         "(1000 remuestreos, seed 42) de la diferencia contra w05@100. "
         "Salidas NUEVAS v11; v2..v10 quedan intactas (ADR-16)."
     ),
+    # --- ciclo v3 - Sprint B1: reranker de dominio fine-tuneado ---
+    # La evaluacion B1 es ADITIVA: sin --b1 nada cambia. Puntua la ruta
+    # ganadora del producto con rerank (hibrido top-50 + prior de hubs
+    # alpha=1.5 + k=10, la misma de A4/v8) con el cross-encoder
+    # fine-tuneado por scripts/24_b1_entrenar_reranker.py, guardado con
+    # save_pretrained en modelos/b1_reranker/; la ruta local se resuelve
+    # contra ROOT y --reranker-model la sobreescribe SOLO para pruebas
+    # (alias del catalogo del lib, ruta local o HF id). La referencia es
+    # la MISMA ruta con bge-reranker-v2-m3 (mismos casos, candidatos y
+    # pares), con bootstrap pareado del delta (ADR-16). Salidas NUEVAS
+    # v12; v2..v11 quedan intactas.
+    "b1": {
+        "activa": False,
+        "ruta_modelo": "modelos/b1_reranker",
+        "modelo": None,
+        "estrategia": "hibrido_rerank_chunks_top50_b1",
+        "estrategia_referencia": "hibrido_rerank_chunks_top50",
+        "candidatos_k": 50,
+        "k": 10,
+        "contextos": {"sin_hubs": 0.0, "con_hubs": 1.5},
+        "contexto_ganador": "con_hubs",
+    },
+    "b1_bootstrap": 1000,
+    "b1_seed_pareado": 42,
+    "version_salida_v12": "v12-ciclo3-sprintB1",
+    "ruta_benchmark_v12": "resultados/vinculo_cp_benchmark_v12.json",
+    "ruta_por_ano_v12": "resultados/vinculo_cp_por_ano_v12.csv",
+    "ruta_figura_v12": "figuras/deriva_retrieval_v12.png",
+    "ruta_figura_contaminacion_v12": "figuras/contaminacion_transitorios_v12.png",
+    "ruta_b1_reranker": "resultados/c3_b1_reranker.json",
+    "nota_v12": (
+        "Ciclo v3 - Sprint B1: evaluacion del reranker de dominio "
+        "fine-tuneado con los pares de scripts/23_b1_pares_reranker.py y "
+        "entrenado por scripts/24_b1_entrenar_reranker.py (modelos/"
+        "b1_reranker/). La estrategia evaluada es la ruta ganadora del "
+        "producto con rerank: hibrido_rerank_chunks_top50 (top-50 del "
+        "hibrido 0.5*bm25 + 0.5*e5) con prior de hubs alpha=1.5 y salida "
+        "k=10, puntuada con el reranker B1 sobre los MISMOS candidatos y "
+        "pares (chunk, pasaje) que la referencia bge-reranker-v2-m3. La "
+        "seccion comparacion_b1 reporta nDCG@10/F1@10 por contexto "
+        "(alpha=0/1.5) y el IC 95% bootstrap PAREADO (1000 remuestreos, "
+        "seed 42) de delta = B1 - bge del mismo run, mas la verificacion "
+        "externa de la referencia y el pareado adicional contra los "
+        "top-10 por caso congelados en v8/v10 (contexto alpha=0) cuando "
+        "estan disponibles; si no, se documenta el fallback. Salidas "
+        "NUEVAS v12 y derivado c3_b1_reranker.json; v2..v11 quedan "
+        "intactas (ADR-16)."
+    ),
+    # --- ciclo v3 - Sprint B2: retriever denso de dominio fine-tuneado ---
+    # La evaluacion B2 es ADITIVA: sin --b2 nada cambia. Evalua la ruta
+    # hibrido_b2_rerank_chunks_top50_b1: el hibrido pre-registrado
+    # 0.5*bm25 + 0.5*B2 (retriever denso fine-tuneado por el script 25,
+    # guardado en modelos/b2_retriever/) sobre los MISMOS top-50
+    # candidatos y pares (chunk, pasaje) que la ruta B1, con el reranker
+    # B1 (modelos/b1_reranker) y prior de hubs alpha=1.5. El denso se
+    # carga con el plumbing de A2 (carga generica + cache por slug). La
+    # referencia primaria es la ruta B1 con hibrido E5 congelada en v12
+    # (comparacion_b1.metricas_por_caso / top10_por_caso) y la
+    # verificacion externa es ALIA@100 del v9 (comparacion_a2). Salidas
+    # NUEVAS v13; v2..v12 quedan intactas (ADR-16).
+    "b2": {
+        "activa": False,
+        "ruta_modelo": "modelos/b2_retriever",
+        "modelo": None,
+        "slug": None,
+        "clave_hibrido": None,
+        "estrategia": "hibrido_b2_rerank_chunks_top50_b1",
+        "estrategia_referencia_v12": "hibrido_rerank_chunks_top50_b1",
+        "referencia_externa": {
+            "estrategia": "hibrido_alia_rerank_chunks_top100",
+            "slug": "alia",
+            "k": 100,
+        },
+        "modelo_reranker_por_defecto": "modelos/b1_reranker",
+        "modelo_reranker": None,
+        "candidatos_k": 50,
+        "k": 10,
+        "contextos": {"sin_hubs": 0.0, "con_hubs": 1.5},
+        "contexto_ganador": "con_hubs",
+    },
+    "b2_bootstrap": 1000,
+    "b2_seed_pareado": 42,
+    "version_salida_v13": "v13-ciclo3-sprintB2",
+    "ruta_benchmark_v13": "resultados/vinculo_cp_benchmark_v13.json",
+    "ruta_por_ano_v13": "resultados/vinculo_cp_por_ano_v13.csv",
+    "ruta_figura_v13": "figuras/deriva_retrieval_v13.png",
+    "ruta_figura_contaminacion_v13": "figuras/contaminacion_transitorios_v13.png",
+    "ruta_b2_retriever": "resultados/c3_b2_retriever.json",
+    "nota_v13": (
+        "Ciclo v3 - Sprint B2: evaluacion del retriever denso de dominio "
+        "fine-tuneado por scripts/25_b2_retriever_denso.py (modelos/"
+        "b2_retriever/) en la 1a etapa del hibrido pre-registrado "
+        "0.5*bm25 + 0.5*B2 (top-50 candidatos) con el reranker B1 "
+        "(modelos/b1_reranker) sobre los MISMOS pares (chunk, pasaje) "
+        "que la ruta B1 del producto; la ruta de producto es con_hubs "
+        "alpha=1.5 con salida k=10. La seccion comparacion_b2 reporta "
+        "nDCG@10/F1@10 por contexto (alpha=0/1.5) y el IC 95% bootstrap "
+        "PAREADO (1000 remuestreos, seed 42) de delta = B2 - referencia "
+        "v12 (la ruta B1 con hibrido E5 congelada: comparacion_b1."
+        "metricas_por_caso; fallback top10_por_caso en sin_hubs; fallback "
+        "final documentado), mas la verificacion externa vs A2/ALIA@100 "
+        "de v9 (comparacion_a2.metricas_por_caso) cuando esta disponible. "
+        "Salidas NUEVAS v13 y derivado c3_b2_retriever.json; v2..v12 "
+        "quedan intactas (ADR-16)."
+    ),
 }
 
 # El hf_id de E5 en el catalogo A2 es el mismo del pipeline legacy
@@ -1086,6 +1285,22 @@ RUTAS_RELATIVAS = (
     "ruta_figura_contaminacion_v11",
     "ruta_figura_a4_fusion_profundidad",
     "ruta_a4_fusion_profundidad",
+    # ciclo v3 - Sprint B1: salidas v12 y derivado trazable del reranker
+    # de dominio (la ruta local del modelo se resuelve aparte en
+    # resolver_modelo_b1).
+    "ruta_benchmark_v12",
+    "ruta_por_ano_v12",
+    "ruta_figura_v12",
+    "ruta_figura_contaminacion_v12",
+    "ruta_b1_reranker",
+    # ciclo v3 - Sprint B2: salidas v13 y derivado trazable del retriever
+    # denso de dominio (la ruta local del modelo se resuelve aparte en
+    # resolver_modelo_b2).
+    "ruta_benchmark_v13",
+    "ruta_por_ano_v13",
+    "ruta_figura_v13",
+    "ruta_figura_contaminacion_v13",
+    "ruta_b2_retriever",
 )
 
 
@@ -5456,6 +5671,930 @@ def aplicar_modo_a4(
         )
 
 
+# ===== SECCION 8g: reranker de dominio B1 (ciclo v3 - Sprint B1) =====
+# La evaluacion B1 es ADITIVA: sin --b1 nada cambia. Con --b1 se puntua
+# la ruta ganadora del producto con rerank (hibrido_rerank_chunks_top50
+# + prior de hubs alpha=1.5 + k=10, la misma de A4/v8) con el
+# cross-encoder fine-tuneado por scripts/24_b1_entrenar_reranker.py
+# (modelos/b1_reranker/) y se compara contra la MISMA ruta con el
+# bge-reranker-v2-m3 de referencia mediante bootstrap PAREADO de casos
+# (1000 remuestreos, seed 42; ADR-16). Salidas NUEVAS v12 y derivado
+# c3_b1_reranker.json; v2..v11 quedan intactas.
+def resolver_modelo_b1(modelo: str | None) -> str:
+    """Resuelve el modelo del reranker B1 (ruta local, alias o HF id).
+
+    Sin --reranker-model el modelo es la ruta local
+    CONFIG['b1']['ruta_modelo'] (modelos/b1_reranker) resuelta contra
+    ROOT; si el directorio no existe se lanza FileNotFoundError con la
+    instruccion de entrenar primero con
+    scripts/24_b1_entrenar_reranker.py (fail-fast antes de ejecutar el
+    benchmark). Con --reranker-model se acepta (1) un alias del catalogo
+    de scripts/lib/reranker_bge.py (p. ej. "bge" para la prueba de
+    fontaneria del cableado), (2) una ruta local relativa a ROOT o
+    absoluta y (3) cualquier HF id (se devuelve tal cual).
+
+    Args:
+        modelo: Valor de --reranker-model (None en el run real).
+
+    Returns:
+        Identificador del modelo listo para RerankerBGE(modelo_id=...).
+
+    Raises:
+        FileNotFoundError: Si no hay override y la ruta local del
+            reranker B1 no existe (hay que entrenarlo con el script 24).
+    """
+    if modelo is None:
+        ruta = Path(CONFIG["b1"]["ruta_modelo"])
+        if not ruta.is_absolute():
+            ruta = ROOT / ruta
+        if not ruta.is_dir():
+            raise FileNotFoundError(
+                f"no existe el reranker B1 en {ruta}: entrena primero con "
+                "'/home/carlos/venv/bin/python "
+                "scripts/24_b1_entrenar_reranker.py --entrenar' (o pasa "
+                "--reranker-model para una prueba de fontaneria del "
+                "cableado)"
+            )
+        return str(ruta)
+    from lib.reranker_bge import RERANKERS_DISPONIBLES
+
+    if modelo in RERANKERS_DISPONIBLES:
+        return RERANKERS_DISPONIBLES[modelo]
+    ruta = Path(modelo)
+    if not ruta.is_absolute() and (ROOT / ruta).exists():
+        return str(ROOT / ruta)
+    return modelo
+
+
+def cargar_referencia_bge_externa(casos: list[dict]) -> dict | None:
+    """Carga la referencia bge por caso desde los JSON congelados v8/v10.
+
+    El delta pareado primario de B1 usa la referencia bge calculada en el
+    MISMO run (mismos casos, candidatos y pares; protocolo identico).
+    Como verificacion externa trazable, esta funcion reconstruye la
+    medida por caso de la referencia (hibrido_rerank_chunks_top50 con
+    bge) desde el campo top10_por_caso de los artefactos congelados
+    v8/v10 cuando el archivo existe y cubre TODOS los casos de la
+    muestra; los top-10 almacenados bastan para calcular nDCG@10 y
+    F1@10 exactos (las medidas de la comparacion dependen solo del
+    top-10). Esos artefactos se generaron con el prior en alpha=0, por
+    lo que la serie externa corresponde al contexto sin_hubs. Si ningun
+    archivo sirve, devuelve None y el JSON de B1 documenta el fallback.
+
+    Args:
+        casos: Casos del run actual (id y arts).
+
+    Returns:
+        Dict con archivo, version, md5, hubs_alpha, estrategia,
+        contexto y medidas_por_caso (nDCG@10/F1@10), o None si no hay
+        fuente valida.
+    """
+    estrategia = CONFIG["b1"]["estrategia_referencia"]
+    for clave in ("ruta_benchmark_v8", "ruta_benchmark_v10"):
+        ruta = Path(CONFIG[clave])
+        if not ruta.exists():
+            continue
+        try:
+            with ruta.open("r", encoding="utf-8") as manejador:
+                datos = json.load(manejador)
+        except (OSError, json.JSONDecodeError):
+            continue
+        top10 = datos.get("top10_por_caso") or {}
+        if not all(
+            str(caso["id"]) in top10
+            and estrategia in top10[str(caso["id"])]
+            for caso in casos
+        ):
+            continue
+        ndcg: list[float] = []
+        f1_10: list[float] = []
+        for caso in casos:
+            ranking = [
+                entrada["id"]
+                for entrada in top10[str(caso["id"])][estrategia]
+            ]
+            fila = metricas_diagnostico_caso(caso["arts"], ranking)
+            ndcg.append(fila["ndcg_at_10"])
+            f1_10.append(fila["f1_at_10"])
+        return {
+            "archivo": str(ruta),
+            "version": datos.get("version"),
+            "md5": hashlib.md5(ruta.read_bytes()).hexdigest(),
+            "hubs_alpha": datos.get("hubs_alpha"),
+            "contexto": "sin_hubs (alpha del artefacto congelado)",
+            "estrategia": estrategia,
+            "n_casos": len(casos),
+            "medidas_por_caso": {
+                "ndcg_at_10": ndcg,
+                "f1_at_10": f1_10,
+            },
+        }
+    return None
+
+
+def construir_comparacion_b1(
+    casos: list[dict],
+    prior: dict,
+    canones: list[str],
+) -> dict:
+    """Comparacion B1: reranker de dominio vs bge en la ruta ganadora.
+
+    Evalua la ruta ganadora del producto con rerank
+    (hibrido_rerank_chunks_top50 con prior de hubs alpha=1.5 y salida
+    top-10) con dos rerankers: bge-reranker-v2-m3 (referencia) y el
+    cross-encoder fine-tuneado en modelos/b1_reranker (script 24). Los
+    dos comparten casos, candidatos (top-50 del hibrido 0.5/0.5), pares
+    (chunk, pasaje) y protocolo; el delta se estima con bootstrap
+    PAREADO de casos (1000 remuestreos, seed 42; criterio "gana":
+    extremo inferior del IC > 0, ADR-16). El delta primario usa la
+    referencia bge del MISMO run; si los artefactos congelados v8/v10
+    estan disponibles, se anade la verificacion de equivalencia de la
+    referencia del run contra la externa y un bootstrap pareado
+    adicional de B1 contra la referencia congelada en el contexto
+    alpha=0 (los unicos top-10 por caso publicados); si no, la seccion
+    documenta el fallback.
+
+    Args:
+        casos: Casos con arts, rankings y scores base (incluye
+            scores_hibrido_rerank_chunks_top50 y los scores de la
+            estrategia B1).
+        prior: Dict {canon: valor} del prior de hubs.
+        canones: Canones alineados con los vectores de scores.
+
+    Returns:
+        Dict serializable con version "c3-b1", config de la comparativa,
+        metricas por caso/globales por contexto, pareado primario vs la
+        referencia del run, referencia externa (o None + fallback) y el
+        pareado adicional contra la referencia congelada.
+    """
+    referencia = CONFIG["b1"]["estrategia_referencia"]
+    estrategia_b1 = CONFIG["b1"]["estrategia"]
+    contextos = dict(CONFIG["b1"]["contextos"])
+    n_bootstrap = CONFIG["b1_bootstrap"]
+    semilla = CONFIG["b1_seed_pareado"]
+    comparacion = comparar_variantes_rerank(
+        casos,
+        prior,
+        canones,
+        [referencia, estrategia_b1],
+        contextos,
+        referencia,
+        n_bootstrap,
+        semilla,
+    )
+    externa = cargar_referencia_bge_externa(casos)
+    verificacion_externa = None
+    pareado_externa = None
+    if externa is not None:
+        medidas_ext = externa["medidas_por_caso"]
+        verificacion_externa = {
+            medida: bootstrap_ic_pareado(
+                np.asarray(
+                    comparacion["metricas_por_caso"]["sin_hubs"][
+                        referencia
+                    ][medida],
+                    dtype=np.float64,
+                ),
+                np.asarray(medidas_ext[medida], dtype=np.float64),
+                n_bootstrap,
+                semilla,
+            )
+            for medida in MEDIDAS_A2
+        }
+        pareado_externa = {
+            "contexto": "sin_hubs",
+            "estrategia": estrategia_b1,
+            "medidas": {
+                medida: bootstrap_ic_pareado(
+                    np.asarray(
+                        comparacion["metricas_por_caso"]["sin_hubs"][
+                            estrategia_b1
+                        ][medida],
+                        dtype=np.float64,
+                    ),
+                    np.asarray(medidas_ext[medida], dtype=np.float64),
+                    n_bootstrap,
+                    semilla,
+                )
+                for medida in MEDIDAS_A2
+            },
+        }
+    return {
+        "version": "c3-b1",
+        "n_casos": len(casos),
+        "estrategia_b1": estrategia_b1,
+        "estrategia_referencia": referencia,
+        "reranker_b1": CONFIG["b1"]["modelo"],
+        "ruta_modelo_b1_por_defecto": CONFIG["b1"]["ruta_modelo"],
+        "candidatos": CONFIG["b1"]["candidatos_k"],
+        "k_salida": CONFIG["b1"]["k"],
+        "contexto_ganador": CONFIG["b1"]["contexto_ganador"],
+        "contextos": contextos,
+        "n_remuestreos_bootstrap": n_bootstrap,
+        "semilla_bootstrap": semilla,
+        "fuente_referencia_delta_primario": (
+            "run (misma corrida, mismo protocolo)"
+            if externa is None
+            else "run + verificacion externa v8/v10"
+        ),
+        "referencia_externa": externa,
+        "verificacion_referencia_externa": verificacion_externa,
+        "pareado_vs_referencia": comparacion["pareado_vs_referencia"],
+        "pareado_vs_referencia_externa": pareado_externa,
+        "metricas_por_caso": comparacion["metricas_por_caso"],
+        "metricas_globales": comparacion["metricas_globales"],
+        "nota": (
+            "Sprint B1: la estrategia "
+            f"{estrategia_b1} reutiliza los candidatos top-"
+            f"{CONFIG['b1']['candidatos_k']} del hibrido 0.5*bm25 + "
+            "0.5*e5 y los MISMOS pares (chunk, pasaje) que la referencia "
+            f"{referencia} (bge-reranker-v2-m3); el unico cambio es el "
+            "cross-encoder (modelos/b1_reranker, fine-tune del script "
+            "24). El delta primario es pareado contra la referencia bge "
+            "del mismo run en los contextos alpha=0/1.5; la ruta "
+            "ganadora del producto es con_hubs alpha=1.5 con salida "
+            "top-10. Si v8/v10 existen, su top10_por_caso reconstruye la "
+            "referencia congelada (contexto alpha=0) para verificar la "
+            "equivalencia de protocolo y para un pareado adicional; si "
+            "no, la referencia del run es el unico origen (fallback "
+            "documentado)."
+        ),
+        "nota_pareado": (
+            "Bootstrap PAREADO de delta = B1 - referencia: las dos series "
+            "comparten el orden de casos y el generador "
+            f"(seed {semilla}, {n_bootstrap} remuestreos) produce la "
+            "misma matriz de indices, por lo que el IC es el de la "
+            "diferencia por caso. 'gana' exige el extremo inferior del "
+            "IC > 0 (criterio de ruido del gate ADR-16)."
+        ),
+    }
+
+
+def volcar_comparacion_b1(comparacion: dict) -> None:
+    """Vuelca la seccion comparacion_b1 a un JSON derivado trazable.
+
+    El derivado resultados/c3_b1_reranker.json sigue el patron de
+    c3_a4_fusion_profundidad.json (A4): version, fecha, experimento,
+    origen con archivo/version/md5/seccion y todo el contenido de la
+    comparacion. Con --limite la ruta ya esta redirigida a /tmp/opencode
+    (sufijo _smoke).
+
+    Args:
+        comparacion: Dict de construir_comparacion_b1.
+    """
+    ruta_origen = Path(CONFIG["ruta_benchmark"])
+    try:
+        archivo = str(ruta_origen.relative_to(ROOT))
+    except ValueError:
+        archivo = str(ruta_origen)
+    contenido = {
+        "version": comparacion["version"],
+        "fecha": datetime.now(timezone.utc).isoformat(),
+        "experimento": (
+            "Ciclo v3 - Sprint B1: reranker de dominio fine-tuneado "
+            "(modelos/b1_reranker) vs bge-reranker-v2-m3 en la ruta "
+            "ganadora hibrido_rerank_chunks_top50 + hubs alpha=1.5 "
+            f"({comparacion.get('n_casos', 0)} casos)"
+        ),
+        "origen": {
+            "archivo": archivo,
+            "version": CONFIG["version_salida"],
+            "md5": hashlib.md5(ruta_origen.read_bytes()).hexdigest(),
+            "seccion": "comparacion_b1",
+        },
+        **comparacion,
+    }
+    guardar_json(CONFIG["ruta_b1_reranker"], contenido)
+
+
+def aplicar_modo_b1(limite: int | None, modelo: str | None) -> None:
+    """Activa la evaluacion del reranker B1 (ciclo v3 - Sprint B1).
+
+    Registra la estrategia nueva hibrido_rerank_chunks_top50_b1 (top-50
+    del hibrido 0.5/0.5 puntuados con el cross-encoder B1) en
+    CONFIG['estrategias'], FUENTE_SCORES, ESTRATEGIAS_RANKEABLES y
+    ESTRATEGIAS_RERANK (listas mutables) y redirige las salidas a los
+    archivos v12 (ADR-16: v2..v11 nunca se sobrescriben). Con --limite
+    todo va a /tmp/opencode con sufijo _smoke.
+
+    Args:
+        limite: Valor de --limite (None en el run final).
+        modelo: Modelo resuelto por resolver_modelo_b1 (ruta local del
+            B1 o el override de --reranker-model).
+    """
+    CONFIG["b1"]["activa"] = True
+    CONFIG["b1"]["modelo"] = modelo
+    estrategia = CONFIG["b1"]["estrategia"]
+    if estrategia not in CONFIG["estrategias"]:
+        CONFIG["estrategias"].append(estrategia)
+    FUENTE_SCORES[estrategia] = f"scores_{estrategia}"
+    if estrategia not in ESTRATEGIAS_RANKEABLES:
+        ESTRATEGIAS_RANKEABLES.append(estrategia)
+    if estrategia not in ESTRATEGIAS_RERANK:
+        ESTRATEGIAS_RERANK.append(estrategia)
+    CONFIG["version_salida"] = CONFIG["version_salida_v12"]
+    CONFIG["ruta_benchmark"] = CONFIG["ruta_benchmark_v12"]
+    CONFIG["ruta_por_ano"] = CONFIG["ruta_por_ano_v12"]
+    CONFIG["ruta_figura"] = CONFIG["ruta_figura_v12"]
+    CONFIG["ruta_figura_contaminacion"] = CONFIG[
+        "ruta_figura_contaminacion_v12"
+    ]
+    if limite is not None:
+        redirigir_rutas_a_tmp(
+            (
+                "ruta_benchmark",
+                "ruta_por_ano",
+                "ruta_figura",
+                "ruta_figura_contaminacion",
+                "ruta_b1_reranker",
+            ),
+            "_smoke",
+        )
+
+
+# ===== SECCION 8h: retriever denso de dominio B2 (ciclo v3 - Sprint B2) =====
+# La evaluacion B2 es ADITIVA: sin --b2 nada cambia. Con --b2 se evalua
+# la ruta hibrido_b2_rerank_chunks_top50_b1: el hibrido pre-registrado
+# 0.5*bm25 + 0.5*B2 (retriever denso fine-tuneado por
+# scripts/25_b2_retriever_denso.py, modelos/b2_retriever/) sobre los
+# MISMOS top-50 candidatos y pares (chunk, pasaje) que la ruta B1, con el
+# reranker B1 (modelos/b1_reranker) y prior de hubs alpha=1.5. El delta
+# primario es pareado contra la ruta B1 con hibrido E5 congelada en v12
+# (comparacion_b1.metricas_por_caso / top10_por_caso) y la verificacion
+# externa es ALIA@100 del v9 (comparacion_a2.metricas_por_caso);
+# bootstrap pareado de casos (1000 remuestreos, seed 42; ADR-16). Salidas
+# NUEVAS v13 y derivado c3_b2_retriever.json; v2..v12 quedan intactas.
+def resolver_modelo_b2(modelo: str | None) -> str:
+    """Resuelve el retriever denso B2 (ruta local u override de fontaneria).
+
+    Sin --embedding-model el modelo es la ruta local
+    CONFIG['b2']['ruta_modelo'] (modelos/b2_retriever) resuelta contra
+    ROOT; si el directorio no existe se lanza FileNotFoundError con la
+    instruccion de entrenar primero con
+    scripts/25_b2_retriever_denso.py --entrenar (fail-fast antes de
+    ejecutar el benchmark). Con --embedding-model se acepta (1) un slug
+    del catalogo de embeddings de A2 (e5/alia/bgem3/modernbert), (2) una
+    ruta local relativa a ROOT o absoluta y (3) cualquier HF id; ese
+    override es SOLO para pruebas de fontaneria del cableado.
+
+    Args:
+        modelo: Valor de --embedding-model (None en el run real).
+
+    Returns:
+        Identificador del modelo listo para config_modelo_embedding.
+
+    Raises:
+        FileNotFoundError: Si no hay override y la ruta local del
+            retriever denso B2 no existe (hay que entrenarlo con el
+            script 25).
+    """
+    if modelo is None:
+        ruta = Path(CONFIG["b2"]["ruta_modelo"])
+        if not ruta.is_absolute():
+            ruta = ROOT / ruta
+        if not ruta.is_dir():
+            raise FileNotFoundError(
+                f"no existe el retriever denso B2 en {ruta}: entrena "
+                "primero con '/home/carlos/venv/bin/python "
+                "scripts/25_b2_retriever_denso.py --entrenar' (o pasa "
+                "--embedding-model para una prueba de fontaneria del "
+                "cableado)"
+            )
+        return str(ruta)
+    ruta = Path(modelo)
+    if not ruta.is_absolute() and (ROOT / ruta).exists():
+        return str(ROOT / ruta)
+    return modelo
+
+
+def _indices_por_id_muestra(datos: dict, casos: list[dict]) -> list[int] | None:
+    """Alinea los casos del run con la muestra de un benchmark congelado.
+
+    Los benchmarks v9/v12 guardan el campo muestra con el id de cada caso
+    en el orden de sus arrays de metricas_por_caso; esta funcion localiza
+    la posicion de cada caso del run actual en ese orden (soporta runs
+    recortados con --limite y cambios de orden). Devuelve None si el
+    archivo no tiene muestra o si algun caso no aparece en ella (en ese
+    caso la fuente no sirve como referencia y se documenta el fallback).
+
+    Args:
+        datos: JSON del benchmark congelado (debe incluir muestra).
+        casos: Casos del run actual (id).
+
+    Returns:
+        Lista de posiciones (una por caso, en el orden del run) en la
+        muestra del archivo, o None si no hay alineacion completa.
+    """
+    muestra = datos.get("muestra")
+    if not isinstance(muestra, list):
+        return None
+    posicion = {
+        str(fila.get("id")): indice
+        for indice, fila in enumerate(muestra)
+        if isinstance(fila, dict)
+    }
+    indices = [posicion.get(str(caso["id"])) for caso in casos]
+    if any(indice is None for indice in indices):
+        return None
+    return [int(indice) for indice in indices]
+
+
+def _medidas_alineadas(
+    metricas_por_caso: dict,
+    contexto: str,
+    estrategia: str,
+    indices: list[int],
+) -> dict | None:
+    """Extrae las medidas por caso de una estrategia alineadas por muestra.
+
+    Args:
+        metricas_por_caso: Seccion metricas_por_caso del benchmark
+            congelado ({contexto: {estrategia: {medida: [valores]}}}).
+        contexto: Nombre del contexto (sin_hubs/con_hubs).
+        estrategia: Estrategia de la que se extraen las medidas.
+        indices: Posiciones de los casos del run en el archivo.
+
+    Returns:
+        Dict {medida: [valores por caso]} (MEDIDAS_A2) o None si el
+        contexto/estrategia/medida no existe o el indice desborda.
+    """
+    valores = (metricas_por_caso.get(contexto) or {}).get(estrategia)
+    if not valores:
+        return None
+    try:
+        return {
+            medida: [float(valores[medida][i]) for i in indices]
+            for medida in MEDIDAS_A2
+        }
+    except (KeyError, IndexError, TypeError):
+        return None
+
+
+def cargar_referencia_b2_v12(casos: list[dict]) -> dict | None:
+    """Carga la referencia B1 del v12 por caso (delta primario de B2).
+
+    La referencia primaria de B2 es la ruta B1 con hibrido E5 congelada
+    en v12 (hibrido_rerank_chunks_top50_b1). Se reconstruye por caso
+    desde el campo comparacion_b1.metricas_por_caso del v12 (contextos
+    alpha=0/1.5, alineado por el campo muestra). Si esa seccion no
+    estuviera disponible, se usa el fallback de top10_por_caso (ranking
+    crudo: solo contexto sin_hubs). Si ninguna fuente cubre TODOS los
+    casos del run, devuelve None y la comparacion documenta el fallback
+    (sin pareado primario).
+
+    Args:
+        casos: Casos del run actual (id y arts).
+
+    Returns:
+        Dict con archivo, version, indice, md5, estrategia, contextos,
+        origen_datos, n_casos y medidas_por_caso ({contexto: {medida:
+        [valores]}}), o None si no hay fuente valida.
+    """
+    ruta = Path(CONFIG["ruta_benchmark_v12"])
+    if not ruta.exists():
+        return None
+    try:
+        with ruta.open("r", encoding="utf-8") as manejador:
+            datos = json.load(manejador)
+    except (OSError, json.JSONDecodeError):
+        return None
+    indices = _indices_por_id_muestra(datos, casos)
+    if indices is None:
+        return None
+    estrategia = CONFIG["b2"]["estrategia_referencia_v12"]
+    comparacion = datos.get("comparacion_b1") or {}
+    metricas_por_caso = comparacion.get("metricas_por_caso") or {}
+    medidas_por_caso: dict = {}
+    for contexto in CONFIG["b2"]["contextos"]:
+        medidas = _medidas_alineadas(
+            metricas_por_caso, contexto, estrategia, indices
+        )
+        if medidas is not None:
+            medidas_por_caso[contexto] = medidas
+    if medidas_por_caso:
+        return {
+            "archivo": str(ruta),
+            "version": datos.get("version"),
+            "indice": datos.get("indice"),
+            "md5": hashlib.md5(ruta.read_bytes()).hexdigest(),
+            "estrategia": estrategia,
+            "contextos": list(medidas_por_caso.keys()),
+            "origen_datos": (
+                "comparacion_b1.metricas_por_caso (alineado por muestra)"
+            ),
+            "n_casos": len(casos),
+            "medidas_por_caso": medidas_por_caso,
+        }
+    top10 = datos.get("top10_por_caso") or {}
+    if all(
+        str(caso["id"]) in top10 and estrategia in top10[str(caso["id"])]
+        for caso in casos
+    ):
+        ndcg: list[float] = []
+        f1_10: list[float] = []
+        for caso in casos:
+            ranking = [
+                entrada["id"]
+                for entrada in top10[str(caso["id"])][estrategia]
+            ]
+            fila = metricas_diagnostico_caso(caso["arts"], ranking)
+            ndcg.append(fila["ndcg_at_10"])
+            f1_10.append(fila["f1_at_10"])
+        return {
+            "archivo": str(ruta),
+            "version": datos.get("version"),
+            "indice": datos.get("indice"),
+            "md5": hashlib.md5(ruta.read_bytes()).hexdigest(),
+            "estrategia": estrategia,
+            "contextos": [CONTEXTO_SIN_HUBS],
+            "origen_datos": (
+                "top10_por_caso (contexto sin_hubs, ranking crudo)"
+            ),
+            "n_casos": len(casos),
+            "medidas_por_caso": {
+                CONTEXTO_SIN_HUBS: {
+                    "ndcg_at_10": ndcg,
+                    "f1_at_10": f1_10,
+                }
+            },
+        }
+    return None
+
+
+def cargar_referencia_externa_b2(casos: list[dict]) -> dict | None:
+    """Carga la referencia externa A2/ALIA (v9) por caso de B2.
+
+    Verificacion externa de B2: la ruta ALIA@100 con bge rerank
+    (hibrido_alia_rerank_chunks_top100) congelada en v9, reconstruida por
+    caso desde comparacion_a2.metricas_por_caso (contextos alpha=0/1.5,
+    alineada por el campo muestra). Si el v9 no existe, no tiene la
+    seccion o no cubre TODOS los casos del run, devuelve None y la
+    comparacion documenta el fallback (sin verificacion externa).
+
+    Args:
+        casos: Casos del run actual (id).
+
+    Returns:
+        Dict con archivo, version, indice, md5, estrategia, slug y k del
+        embedding, contextos, origen_datos, n_casos y medidas_por_caso,
+        o None si no hay fuente valida.
+    """
+    ruta = Path(CONFIG["ruta_benchmark_v9"])
+    if not ruta.exists():
+        return None
+    try:
+        with ruta.open("r", encoding="utf-8") as manejador:
+            datos = json.load(manejador)
+    except (OSError, json.JSONDecodeError):
+        return None
+    indices = _indices_por_id_muestra(datos, casos)
+    if indices is None:
+        return None
+    externa = CONFIG["b2"]["referencia_externa"]
+    estrategia = externa["estrategia"]
+    comparacion = datos.get("comparacion_a2") or {}
+    metricas_por_caso = comparacion.get("metricas_por_caso") or {}
+    medidas_por_caso: dict = {}
+    for contexto in CONFIG["b2"]["contextos"]:
+        medidas = _medidas_alineadas(
+            metricas_por_caso, contexto, estrategia, indices
+        )
+        if medidas is not None:
+            medidas_por_caso[contexto] = medidas
+    if not medidas_por_caso:
+        return None
+    return {
+        "archivo": str(ruta),
+        "version": datos.get("version"),
+        "indice": datos.get("indice"),
+        "md5": hashlib.md5(ruta.read_bytes()).hexdigest(),
+        "estrategia": estrategia,
+        "slug_embedding": externa["slug"],
+        "k_candidatos": externa["k"],
+        "contextos": list(medidas_por_caso.keys()),
+        "origen_datos": (
+            "comparacion_a2.metricas_por_caso (alineado por muestra)"
+        ),
+        "n_casos": len(casos),
+        "medidas_por_caso": medidas_por_caso,
+    }
+
+
+def construir_comparacion_b2(
+    casos: list[dict],
+    prior: dict,
+    canones: list[str],
+) -> dict:
+    """Comparacion B2: retriever denso de dominio en la ruta B1.
+
+    Evalua la estrategia hibrido_b2_rerank_chunks_top50_b1 (hibrido
+    0.5*bm25 + 0.5*B2 sobre top-50 candidatos con el reranker B1 y prior
+    de hubs) en los contextos alpha=0/1.5 con metricas por caso/globales
+    (comparar_variantes_rerank) y calcula el IC 95% bootstrap PAREADO
+    (1000 remuestreos, seed 42; criterio "gana": extremo inferior del
+    IC > 0, ADR-16) de delta = B2 - referencia v12 (ruta B1 con hibrido
+    E5 congelada, per-case de comparacion_b1.metricas_por_caso; fallback
+    top10_por_caso en sin_hubs; fallback final documentado) y de la
+    verificacion externa vs A2/ALIA@100 (v9 comparacion_a2) cuando esta
+    disponible.
+
+    Args:
+        casos: Casos con arts, rankings y scores base (incluye
+            scores_hibrido_b2_* y los scores de la estrategia B2).
+        prior: Dict {canon: valor} del prior de hubs.
+        canones: Canones alineados con los vectores de scores.
+
+    Returns:
+        Dict serializable con version "c3-b2", config de la comparativa,
+        metricas por caso/globales por contexto, referencia v12 (o None +
+        fallback) con el pareado primario, y referencia externa A2/ALIA
+        (o None + fallback) con su pareado.
+    """
+    estrategia = CONFIG["b2"]["estrategia"]
+    contextos = dict(CONFIG["b2"]["contextos"])
+    n_bootstrap = CONFIG["b2_bootstrap"]
+    semilla = CONFIG["b2_seed_pareado"]
+    comparacion = comparar_variantes_rerank(
+        casos,
+        prior,
+        canones,
+        [estrategia],
+        contextos,
+        None,
+        n_bootstrap,
+        semilla,
+    )
+    referencia_v12 = cargar_referencia_b2_v12(casos)
+    pareado_v12 = None
+    if referencia_v12 is not None:
+        pareado_v12 = {
+            contexto: {
+                medida: bootstrap_ic_pareado(
+                    np.asarray(
+                        comparacion["metricas_por_caso"][contexto][
+                            estrategia
+                        ][medida],
+                        dtype=np.float64,
+                    ),
+                    np.asarray(medidas[medida], dtype=np.float64),
+                    n_bootstrap,
+                    semilla,
+                )
+                for medida in MEDIDAS_A2
+            }
+            for contexto, medidas in referencia_v12[
+                "medidas_por_caso"
+            ].items()
+        }
+    referencia_externa = cargar_referencia_externa_b2(casos)
+    pareado_externa = None
+    if referencia_externa is not None:
+        pareado_externa = {
+            contexto: {
+                medida: bootstrap_ic_pareado(
+                    np.asarray(
+                        comparacion["metricas_por_caso"][contexto][
+                            estrategia
+                        ][medida],
+                        dtype=np.float64,
+                    ),
+                    np.asarray(medidas[medida], dtype=np.float64),
+                    n_bootstrap,
+                    semilla,
+                )
+                for medida in MEDIDAS_A2
+            }
+            for contexto, medidas in referencia_externa[
+                "medidas_por_caso"
+            ].items()
+        }
+    return {
+        "version": "c3-b2",
+        "n_casos": len(casos),
+        "estrategia_b2": estrategia,
+        "estrategia_referencia_v12": CONFIG["b2"][
+            "estrategia_referencia_v12"
+        ],
+        "retriever_b2": CONFIG["b2"]["modelo"],
+        "slug_b2": CONFIG["b2"]["slug"],
+        "ruta_modelo_b2_por_defecto": CONFIG["b2"]["ruta_modelo"],
+        "reranker_b2": CONFIG["b2"]["modelo_reranker"],
+        "candidatos": CONFIG["b2"]["candidatos_k"],
+        "k_salida": CONFIG["b2"]["k"],
+        "contexto_ganador": CONFIG["b2"]["contexto_ganador"],
+        "contextos": contextos,
+        "n_remuestreos_bootstrap": n_bootstrap,
+        "semilla_bootstrap": semilla,
+        "fuente_referencia_delta_primario": (
+            "v12 (comparacion_b1 congelada)"
+            if referencia_v12 is not None
+            else "no disponible (fallback: sin pareado primario)"
+        ),
+        "referencia_v12": referencia_v12,
+        "pareado_vs_referencia_v12": pareado_v12,
+        "referencia_externa_a2": referencia_externa,
+        "pareado_vs_referencia_externa_a2": pareado_externa,
+        "metricas_por_caso": comparacion["metricas_por_caso"],
+        "metricas_globales": comparacion["metricas_globales"],
+        "nota": (
+            "Sprint B2: la estrategia "
+            f"{estrategia} usa el retriever denso de dominio "
+            "(modelos/b2_retriever, fine-tune del script 25) como "
+            "componente denso del hibrido pre-registrado 0.5*bm25 + "
+            "0.5*B2 (top-50 candidatos) y el reranker B1 "
+            "(modelos/b1_reranker) sobre los MISMOS pares (chunk, "
+            "pasaje) que la ruta B1 del producto (mejor pasaje BM25 + "
+            "top-3 chunks + max-pooling); la ruta de producto es "
+            "con_hubs alpha=1.5 con salida top-10. El delta primario es "
+            "pareado contra la ruta B1 con hibrido E5 congelada en v12 "
+            "(comparacion_b1.metricas_por_caso; si falta, top10_por_caso "
+            "en el contexto sin_hubs; si no hay fuente, fallback "
+            "documentado sin pareado primario). La verificacion externa "
+            "compara ademas contra A2/ALIA@100 (v9 comparacion_a2."
+            "metricas_por_caso) cuando esta disponible."
+        ),
+        "nota_pareado": (
+            "Bootstrap PAREADO de delta = B2 - referencia: las dos "
+            "series comparten el orden de casos y el generador "
+            f"(seed {semilla}, {n_bootstrap} remuestreos) produce la "
+            "misma matriz de indices, por lo que el IC es el de la "
+            "diferencia por caso. 'gana' exige el extremo inferior del "
+            "IC > 0 (criterio de ruido del gate ADR-16)."
+        ),
+    }
+
+
+def volcar_comparacion_b2(comparacion: dict) -> None:
+    """Vuelca la seccion comparacion_b2 a un JSON derivado trazable.
+
+    El derivado resultados/c3_b2_retriever.json sigue el patron de
+    c3_b1_reranker.json (B1): version, fecha, experimento, origen con
+    archivo/version/md5/seccion y todo el contenido de la comparacion.
+    Con --limite la ruta ya esta redirigida a /tmp/opencode (sufijo
+    _smoke).
+
+    Args:
+        comparacion: Dict de construir_comparacion_b2.
+    """
+    ruta_origen = Path(CONFIG["ruta_benchmark"])
+    try:
+        archivo = str(ruta_origen.relative_to(ROOT))
+    except ValueError:
+        archivo = str(ruta_origen)
+    contenido = {
+        "version": comparacion["version"],
+        "fecha": datetime.now(timezone.utc).isoformat(),
+        "experimento": (
+            "Ciclo v3 - Sprint B2: retriever denso de dominio "
+            "(modelos/b2_retriever, script 25) en la 1a etapa del "
+            "hibrido 0.5/0.5 top-50 con el reranker B1 (modelos/"
+            "b1_reranker) y hubs alpha=1.5 "
+            f"({comparacion.get('n_casos', 0)} casos)"
+        ),
+        "origen": {
+            "archivo": archivo,
+            "version": CONFIG["version_salida"],
+            "md5": hashlib.md5(ruta_origen.read_bytes()).hexdigest(),
+            "seccion": "comparacion_b2",
+        },
+        **comparacion,
+    }
+    guardar_json(CONFIG["ruta_b2_retriever"], contenido)
+
+
+def calcular_denso_b2(
+    casos: list[dict],
+    pasajes: pd.DataFrame,
+    canones: list[str],
+    grupos_indices: list[np.ndarray],
+    dispositivo: str,
+) -> dict:
+    """Calcula los scores densos del retriever B2 y su hibrido con BM25.
+
+    Reutiliza el plumbing de A2: carga generica SentenceTransformer
+    (config_modelo_embedding), matriz de pasajes con cache por slug en
+    data/cache_emb_cp/<slug>.joblib (cargar_o_calcular_matriz_pasajes) y
+    score denso por articulo con max-pooling (calcular_scores_embedding);
+    materializa ademas el hibrido pre-registrado 0.5*bm25 + 0.5*B2 en
+    caso[scores_hibrido_<slug>], que es la base de candidatos del rerank
+    B2. El modelo se libera al terminar (la matriz queda cacheada).
+
+    Args:
+        casos: Casos con scores_bm25 y ventana.
+        pasajes: DataFrame de pasajes del indice activo.
+        canones: Canones alineados con los vectores de scores.
+        grupos_indices: Arrays de posiciones de pasajes por articulo.
+        dispositivo: "cuda"/"cpu" elegido por elegir_dispositivo.
+
+    Returns:
+        Dict de stats del embedding (hf_id, slug, prefijos, dim,
+        n_pasajes, origen de la cache de pasajes, chunks y tiempos) para
+        el JSON del benchmark.
+    """
+    configuracion = config_modelo_embedding(CONFIG["b2"]["modelo"])
+    modelo, tokenizer = cargar_modelo_embedding(configuracion, dispositivo)
+    matriz, stats_pasajes = cargar_o_calcular_matriz_pasajes(
+        modelo, tokenizer, configuracion, pasajes, canones
+    )
+    stats_query = calcular_scores_embedding(
+        modelo,
+        tokenizer,
+        configuracion,
+        casos,
+        matriz,
+        grupos_indices,
+    )
+    slug = configuracion["slug"]
+    for caso in casos:
+        caso[f"scores_hibrido_{slug}"] = scores_hibridos(
+            caso["scores_bm25"], caso[f"scores_emb_{slug}"]
+        )
+    print(
+        f"Embedding B2 {slug}: dim={matriz.shape[1]} | pasajes "
+        f"{stats_pasajes['origen']} | {stats_query['n_chunks_query']} "
+        f"chunks de query en {stats_query['segundos']} s ({dispositivo})"
+    )
+    del modelo
+    if dispositivo == "cuda":
+        torch.cuda.empty_cache()
+    return {
+        "hf_id": configuracion["hf_id"],
+        "slug": slug,
+        "prefijo_query": configuracion["prefijo_query"],
+        "prefijo_pasaje": configuracion["prefijo_pasaje"],
+        "dim": int(matriz.shape[1]),
+        "n_pasajes": int(matriz.shape[0]),
+        "origen_pasajes": stats_pasajes["origen"],
+        "n_chunks_pasajes": stats_pasajes["n_chunks"],
+        "segundos_pasajes": stats_pasajes["segundos"],
+        "n_chunks_query": stats_query["n_chunks_query"],
+        "media_chunks_query": stats_query["media_chunks_query"],
+        "segundos_query": stats_query["segundos"],
+    }
+
+
+def aplicar_modo_b2(
+    limite: int | None, modelo_denso: str, modelo_reranker: str
+) -> None:
+    """Activa la evaluacion del retriever denso B2 (ciclo v3 - Sprint B2).
+
+    Registra la estrategia nueva hibrido_b2_rerank_chunks_top50_b1
+    (hibrido 0.5/0.5 con el denso B2, top-50 candidatos, rerank por
+    chunks con el reranker B1) en CONFIG['estrategias'], FUENTE_SCORES,
+    ESTRATEGIAS_RANKEABLES y ESTRATEGIAS_RERANK (listas mutables) y
+    redirige las salidas a los archivos v13 (ADR-16: v2..v12 nunca se
+    sobrescriben). Con --limite todo va a /tmp/opencode con sufijo
+    _smoke; sin --limite la figura de calibracion de hubs v8 se redirige
+    de forma defensiva (solo se usaria con --calibrar-hubs) para no
+    tocar artefactos previos.
+
+    Args:
+        limite: Valor de --limite (None en el run final).
+        modelo_denso: Retriever denso resuelto por resolver_modelo_b2
+            (ruta local de modelos/b2_retriever o el override de
+            --embedding-model).
+        modelo_reranker: Reranker B1 resuelto por resolver_modelo_b1
+            (ruta local modelos/b1_reranker o el override de
+            --reranker-model).
+    """
+    CONFIG["b2"]["activa"] = True
+    CONFIG["b2"]["modelo"] = modelo_denso
+    CONFIG["b2"]["modelo_reranker"] = modelo_reranker
+    configuracion = config_modelo_embedding(modelo_denso)
+    CONFIG["b2"]["slug"] = configuracion["slug"]
+    CONFIG["b2"]["clave_hibrido"] = (
+        f"scores_hibrido_{configuracion['slug']}"
+    )
+    estrategia = CONFIG["b2"]["estrategia"]
+    if estrategia not in CONFIG["estrategias"]:
+        CONFIG["estrategias"].append(estrategia)
+    FUENTE_SCORES[estrategia] = f"scores_{estrategia}"
+    if estrategia not in ESTRATEGIAS_RANKEABLES:
+        ESTRATEGIAS_RANKEABLES.append(estrategia)
+    if estrategia not in ESTRATEGIAS_RERANK:
+        ESTRATEGIAS_RERANK.append(estrategia)
+    CONFIG["version_salida"] = CONFIG["version_salida_v13"]
+    CONFIG["ruta_benchmark"] = CONFIG["ruta_benchmark_v13"]
+    CONFIG["ruta_por_ano"] = CONFIG["ruta_por_ano_v13"]
+    CONFIG["ruta_figura"] = CONFIG["ruta_figura_v13"]
+    CONFIG["ruta_figura_contaminacion"] = CONFIG[
+        "ruta_figura_contaminacion_v13"
+    ]
+    if limite is not None:
+        redirigir_rutas_a_tmp(
+            (
+                "ruta_benchmark",
+                "ruta_por_ano",
+                "ruta_figura",
+                "ruta_figura_contaminacion",
+                "ruta_b2_retriever",
+            ),
+            "_smoke",
+        )
+    else:
+        redirigir_rutas_a_tmp(("ruta_figura_hubs_v8",), "_b2")
+
+
 # ===== SECCION 9: guardado =====
 def guardar_json(ruta: str, contenido: dict) -> None:
     """Guarda un dict como JSON UTF-8 con indentacion.
@@ -5515,18 +6654,43 @@ def parsear_args() -> argparse.Namespace:
     profundidad 50/100/200 de la fusion elegida (--a4-fusion, default
     w05); salidas v11 + figura c3_a4_fusion_profundidad + derivado
     c3_a4_fusion_profundidad.json. Requiere --rerank.
+    ciclo v3 - Sprint B1: --b1 (default OFF) evalua el reranker de
+    dominio fine-tuneado (modelos/b1_reranker, entrenado por el script
+    24) en la ruta ganadora del producto (hibrido_rerank_chunks_top50 +
+    hubs alpha=1.5 + k=10) contra la referencia bge del mismo run;
+    salidas v12 + derivado c3_b1_reranker.json. Requiere --rerank.
+    --reranker-model HF_ID sobreescribe el modelo B1 SOLO para pruebas
+    de fontaneria (alias del catalogo del lib, ruta local o HF id) y
+    requiere --b1. Sin override y sin modelos/b1_reranker el parser
+    falla con la instruccion de entrenar primero con el script 24.
+    ciclo v3 - Sprint B2: --b2 (default OFF) evalua el retriever denso
+    de dominio fine-tuneado (modelos/b2_retriever, entrenado por el
+    script 25) en la 1a etapa del hibrido 0.5/0.5 top-50 con el reranker
+    B1 (modelos/b1_reranker) y hubs alpha=1.5; salidas v13 + derivado
+    c3_b2_retriever.json. Requiere --rerank y es excluyente con --b1,
+    --a3, --a4 y con los disparadores de la matriz A2. --embedding-model
+    (un solo valor) sobreescribe el denso B2 SOLO para pruebas de
+    fontaneria y --reranker-model sobreescribe el reranker B1 de la
+    ruta. Sin override y sin modelos/b2_retriever el parser falla con la
+    instruccion de entrenar primero con el script 25.
 
     Returns:
         Namespace con indice ("permanentes"/"completo"), rerank (bool),
         limite (int | None), hubs_alpha (float), calibrar_hubs (bool),
         generar_prior (bool), diagnostico (bool), embedding_model
         (list[str] | None), k_candidatos_hybrid (int), a3 (bool), a4
-        (bool) y a4_fusion (str | None).
+        (bool), a4_fusion (str | None), b1 (bool), b2 (bool) y
+        reranker_model (str | None, resuelto cuando --b1 o --b2 estan
+        activos).
 
     Raises:
         SystemExit: Si --hubs-alpha es negativo, --k-candidatos-hybrid
-            es menor que 1, --a3/--a4 se usan con --no-rerank o
-            --a4-fusion se usa sin --a4 (parser.error).
+            es menor que 1, --a3/--a4/--b1/--b2 se usan con --no-rerank,
+            --a4-fusion se usa sin --a4, --reranker-model se usa sin
+            --b1 ni --b2, --b1 y --b2 se combinan, --b2 se combina con
+            --a3/--a4/--k-candidatos-hybrid o con varios
+            --embedding-model, o los modelos locales B1/B2 no existen
+            sin override (parser.error).
     """
     parser = argparse.ArgumentParser(
         description=(
@@ -5654,7 +6818,9 @@ def parsear_args() -> argparse.Namespace:
             "calcula SIEMPRE como referencia del IC pareado; este flag "
             "anade modelos. Requiere --rerank (default ON) y activa las "
             "salidas v9 + figuras/c3_a2_embeddings.png. Sin el flag (y "
-            "con k=50) el comportamiento es identico al actual."
+            "con k=50) el comportamiento es identico al actual. Con --b2 "
+            "(un solo valor) sobreescribe el retriever denso de la ruta "
+            "B2 SOLO para pruebas de fontaneria."
         ),
     )
     parser.add_argument(
@@ -5723,6 +6889,68 @@ def parsear_args() -> argparse.Namespace:
             "Las 4 fusiones se reportan a @100 de todos modos."
         ),
     )
+    parser.add_argument(
+        "--b1",
+        action="store_true",
+        help=(
+            "Evalua el reranker de dominio B1 (ciclo v3 - Sprint B1; "
+            "default OFF, requiere --rerank). Puntua la ruta ganadora "
+            "del producto con rerank (hibrido_rerank_chunks_top50 + "
+            "prior de hubs alpha=1.5 + salida k=10) con el cross-encoder "
+            "fine-tuneado en modelos/b1_reranker (script 24) sobre los "
+            "MISMOS candidatos y pares que la referencia bge y reporta "
+            "el IC 95%% bootstrap pareado de la diferencia vs bge del "
+            "mismo run. Salidas NUEVAS: vinculo_cp_benchmark_v12.json "
+            "(version v12-ciclo3-sprintB1 con la seccion comparacion_b1), "
+            "vinculo_cp_por_ano_v12.csv, deriva_retrieval_v12.png y el "
+            "derivado c3_b1_reranker.json; con --limite N todo va a "
+            "/tmp/opencode. Si modelos/b1_reranker no existe, el script "
+            "falla ANTES de ejecutar con la instruccion de entrenar "
+            "primero con scripts/24_b1_entrenar_reranker.py."
+        ),
+    )
+    parser.add_argument(
+        "--b2",
+        action="store_true",
+        help=(
+            "Evalua el retriever denso de dominio B2 (ciclo v3 - Sprint "
+            "B2; default OFF, requiere --rerank; excluyente con --b1, "
+            "--a3, --a4 y con los disparadores de la matriz A2). Evalua "
+            "la ruta hibrido_b2_rerank_chunks_top50_b1: hibrido "
+            "0.5*bm25 + 0.5*B2 (retriever fine-tuneado en "
+            "modelos/b2_retriever, script 25) sobre los MISMOS top-50 "
+            "candidatos y pares (chunk, pasaje) que la ruta B1, rerank "
+            "por chunks con el reranker B1 (modelos/b1_reranker) y "
+            "prior de hubs alpha=1.5. Reporta el IC 95%% bootstrap "
+            "pareado de la diferencia vs la referencia v12 (ruta B1 con "
+            "hibrido E5: comparacion_b1.metricas_por_caso; fallback "
+            "top10_por_caso) y la verificacion externa vs A2/ALIA@100 "
+            "de v9. Salidas NUEVAS: vinculo_cp_benchmark_v13.json "
+            "(version v13-ciclo3-sprintB2 con la seccion comparacion_b2), "
+            "vinculo_cp_por_ano_v13.csv, deriva_retrieval_v13.png y el "
+            "derivado c3_b2_retriever.json; con --limite N todo va a "
+            "/tmp/opencode. Si modelos/b2_retriever no existe, el script "
+            "falla ANTES de ejecutar con la instruccion de entrenar "
+            "primero con scripts/25_b2_retriever_denso.py --entrenar; "
+            "--embedding-model (un solo valor) sobreescribe el denso "
+            "SOLO para pruebas de fontaneria."
+        ),
+    )
+    parser.add_argument(
+        "--reranker-model",
+        dest="reranker_model",
+        default=None,
+        metavar="HF_ID",
+        help=(
+            "Override del modelo del reranker B1 (requiere --b1 o --b2; "
+            "SOLO para pruebas de fontaneria del cableado). Acepta un "
+            "alias del catalogo de scripts/lib/reranker_bge.py (p. ej. "
+            "bge para usar el reranker de referencia), una ruta local "
+            "relativa a la raiz del proyecto o un HF id. Sin este flag "
+            "el reranker es la ruta local modelos/b1_reranker (tanto en "
+            "la ruta B1 como en la ruta B2)."
+        ),
+    )
     args = parser.parse_args()
     if args.hubs_alpha < 0:
         parser.error("--hubs-alpha debe ser >= 0")
@@ -5734,6 +6962,66 @@ def parsear_args() -> argparse.Namespace:
         parser.error("--a4 requiere --rerank (default ON) para puntuar los pares")
     if args.a4_fusion is not None and not args.a4:
         parser.error("--a4-fusion requiere --a4")
+    if args.b1 and not args.rerank:
+        parser.error(
+            "--b1 requiere --rerank (default ON) para puntuar los pares "
+            "con el reranker de dominio"
+        )
+    if args.b2 and not args.rerank:
+        parser.error(
+            "--b2 requiere --rerank (default ON) para puntuar los pares "
+            "con el reranker B1 y el retriever denso de dominio"
+        )
+    if args.b1 and args.b2:
+        parser.error(
+            "--b1 y --b2 son mutuamente excluyentes: son dos evaluaciones "
+            "de dominio distintas (reranker B1 vs retriever denso B2)"
+        )
+    if args.b2 and args.a3:
+        parser.error(
+            "--b2 no se combina con --a3 (comparativa de rerankers): "
+            "ejecuta cada sprint por separado"
+        )
+    if args.b2 and args.a4:
+        parser.error(
+            "--b2 no se combina con --a4 (fusion de 1a etapa): ejecuta "
+            "cada sprint por separado"
+        )
+    if (
+        args.b2
+        and args.k_candidatos_hybrid != CONFIG["k_candidatos_hybrid"]
+    ):
+        parser.error(
+            "--b2 no se combina con --k-candidatos-hybrid (matriz A2): "
+            "el retriever B2 usa top-50 fijo"
+        )
+    if (
+        args.b2
+        and args.embedding_model is not None
+        and len(args.embedding_model) != 1
+    ):
+        parser.error(
+            "--b2 acepta como maximo un --embedding-model (override del "
+            "retriever denso B2 para pruebas de fontaneria)"
+        )
+    if args.reranker_model is not None and not (args.b1 or args.b2):
+        parser.error("--reranker-model requiere --b1 o --b2")
+    if args.b1:
+        try:
+            args.reranker_model = resolver_modelo_b1(args.reranker_model)
+        except FileNotFoundError as exc:
+            parser.error(str(exc))
+    if args.b2:
+        try:
+            args.reranker_model = resolver_modelo_b1(args.reranker_model)
+            modelo_denso = (
+                args.embedding_model[0]
+                if args.embedding_model is not None
+                else None
+            )
+            args.embedding_model = [resolver_modelo_b2(modelo_denso)]
+        except FileNotFoundError as exc:
+            parser.error(str(exc))
     return args
 
 
@@ -5931,7 +7219,7 @@ def aplicar_modo_diagnostico(activo: bool, limite: int | None) -> None:
 
 
 def main() -> None:
-    """Orquesta el benchmark M7 v3 (Fase T iter3 + W-a iter2 + A1/A2/A3/A4)."""
+    """Orquesta el benchmark M7 v3 (Fase T iter3 + W-a iter2 + A1..A4/B1/B2)."""
     inicio_total = time.time()
     args = parsear_args()
     incluir_transitorios = aplicar_modo_indice(args.indice)
@@ -5940,9 +7228,14 @@ def main() -> None:
     aplicar_modo_diagnostico(args.diagnostico, args.limite)
     # ciclo v3 - Sprint A2: la matriz de embeddings se activa con
     # --embedding-model o con una profundidad distinta de la default
-    # (50). Requiere reranking: sin el, se ignora con aviso.
+    # (50). Requiere reranking: sin el, se ignora con aviso. En modo B2
+    # el flag --embedding-model es el override del retriever denso y NO
+    # activa la matriz A2 (los combos se validan en parsear_args).
     modelos_a2: list[dict] = []
-    if args.embedding_model or args.k_candidatos_hybrid != CONFIG["k_candidatos_hybrid"]:
+    if not args.b2 and (
+        args.embedding_model
+        or args.k_candidatos_hybrid != CONFIG["k_candidatos_hybrid"]
+    ):
         if not args.rerank:
             print(
                 "[aviso] la matriz A2 requiere --rerank (default ON): se "
@@ -5963,6 +7256,18 @@ def main() -> None:
     # homonimas (w05@100 sobre ALIA) si ya se calcularon.
     if args.a4:
         aplicar_modo_a4(args.limite, args.a4_fusion)
+    # ciclo v3 - Sprint B1: evaluacion del reranker de dominio. Se
+    # activa DESPUES de A2/A3/A4 para que las salidas v12 manden sobre
+    # las v9/v10/v11 si se combinan flags.
+    if args.b1:
+        aplicar_modo_b1(args.limite, args.reranker_model)
+    # ciclo v3 - Sprint B2: evaluacion del retriever denso de dominio.
+    # Excluyente con B1/A2/A3/A4 (validado en parsear_args); se activa
+    # al final para que las salidas v13 manden sobre v9/v10/v11.
+    if args.b2:
+        aplicar_modo_b2(
+            args.limite, args.embedding_model[0], args.reranker_model
+        )
     resolver_rutas()
     if args.generar_prior:
         generar_prior_hubs()
@@ -6018,6 +7323,30 @@ def main() -> None:
             f"{Path(CONFIG['ruta_benchmark']).name} | figura "
             f"{Path(CONFIG['ruta_figura_a4_fusion_profundidad']).name}"
         )
+    if CONFIG["b1"]["activa"]:
+        print(
+            "Evaluacion B1 activa: reranker="
+            f"{CONFIG['b1']['modelo']} | ruta por defecto="
+            f"{CONFIG['b1']['ruta_modelo']} | estrategia="
+            f"{CONFIG['b1']['estrategia']} (candidatos top-"
+            f"{CONFIG['b1']['candidatos_k']} del hibrido 0.5/0.5) | "
+            f"contextos={dict(CONFIG['b1']['contextos'])} | salida "
+            f"{Path(CONFIG['ruta_benchmark']).name} | derivado "
+            f"{Path(CONFIG['ruta_b1_reranker']).name}"
+        )
+    if CONFIG["b2"]["activa"]:
+        print(
+            "Evaluacion B2 activa: retriever denso="
+            f"{CONFIG['b2']['modelo']} | slug="
+            f"{CONFIG['b2']['slug']} | reranker="
+            f"{CONFIG['b2']['modelo_reranker']} | estrategia="
+            f"{CONFIG['b2']['estrategia']} (candidatos top-"
+            f"{CONFIG['b2']['candidatos_k']} del hibrido 0.5*bm25 + "
+            "0.5*B2) | contextos="
+            f"{dict(CONFIG['b2']['contextos'])} | salida "
+            f"{Path(CONFIG['ruta_benchmark']).name} | derivado "
+            f"{Path(CONFIG['ruta_b2_retriever']).name}"
+        )
 
     # --- ciclo v2 - Fase W-a: prior de hubs (se carga o construye una vez) ---
     # ciclo v3 - Sprint A1: --diagnostico tambien necesita el prior (contexto
@@ -6026,6 +7355,10 @@ def main() -> None:
     # contexto con_hubs (alpha=1.5) aunque no se aplique al benchmark.
     # ciclo v3 - Sprint A3: idem para las variantes de reranker en los
     # contextos alpha=0/1.5.
+    # ciclo v3 - Sprint B1: idem para la comparacion del reranker de
+    # dominio (contexto ganador alpha=1.5).
+    # ciclo v3 - Sprint B2: idem para la comparacion del retriever denso
+    # de dominio (contextos alpha=0/1.5).
     prior_hubs = None
     if (
         CONFIG["modo_hubs_activo"]
@@ -6033,6 +7366,8 @@ def main() -> None:
         or CONFIG["a2"]["activa"]
         or CONFIG["a3"]["activa"]
         or CONFIG["a4"]["activa"]
+        or CONFIG["b1"]["activa"]
+        or CONFIG["b2"]["activa"]
     ):
         prior_hubs = cargar_o_construir_prior_hubs()
         print(
@@ -6337,6 +7672,17 @@ def main() -> None:
         del modelo_alia
         if dispositivo == "cuda":
             torch.cuda.empty_cache()
+
+    # --- ciclo v3 - Sprint B2: retriever denso de dominio (1a etapa) ---
+    # El denso B2 se carga con el plumbing de A2 (carga generica + cache
+    # por slug) y se materializa su hibrido 0.5/0.5 con BM25; el rerank
+    # con el reranker B1 se hace despues, sobre los mismos top-50
+    # candidatos y pares (chunk, pasaje) que la ruta B1.
+    stats_emb_b2: dict = {}
+    if CONFIG["b2"]["activa"]:
+        stats_emb_b2 = calcular_denso_b2(
+            casos, pasajes, canones, grupos_indices, dispositivo
+        )
 
     # --- ciclo v3 - Sprint A4: vectores de fusion de 1a etapa (ALIA) ---
     # w05 reutiliza scores_hibrido_alia (0.5/0.5, materializado por el
@@ -6654,6 +8000,116 @@ def main() -> None:
             )
         )
 
+    # --- ciclo v3 - Sprint B1: reranker de dominio fine-tuneado ---
+    # Los pares (chunk, pasaje) se derivan con la MISMA logica de v5/A2/
+    # A3/A4 (mejor pasaje BM25 + top-3 chunks) a partir de los mismos
+    # candidatos top-50 del hibrido 0.5/0.5 que la referencia bge, de
+    # modo que el unico cambio del par (B1 vs referencia) es el
+    # cross-encoder.
+    stats_rerank_b1: dict = {}
+    if CONFIG["b1"]["activa"]:
+        from lib.reranker_bge import RerankerBGE
+
+        if reranker is None:
+            reranker = RerankerBGE()
+        reranker_b1 = RerankerBGE(modelo_id=CONFIG["b1"]["modelo"])
+        estrategia_b1 = CONFIG["b1"]["estrategia"]
+        clave_b1 = FUENTE_SCORES[estrategia_b1]
+        max_tokens_b1: list[int] = []
+        inicio_rerank_b1 = time.time()
+        for caso in casos:
+            ranking, scores_rerank, max_tokens = ranking_rerank_chunks(
+                reranker_b1,
+                caso["scores_hibrido"],
+                caso["matriz_bm25"],
+                caso["chunks_bm25"],
+                canones,
+                pasajes,
+                grupos_indices,
+                CONFIG["b1"]["candidatos_k"],
+            )
+            caso[clave_b1] = scores_rerank
+            caso["rankings"][estrategia_b1] = ranking
+            max_tokens_b1.append(max_tokens)
+        stats_rerank_b1 = {
+            "nota": (
+                "Sprint B1: mismos candidatos top-50 del hibrido 0.5/0.5 "
+                "y mismos pares (chunk, pasaje) que la referencia bge; el "
+                "unico cambio es el cross-encoder del modelo B1."
+            ),
+            "modelo": CONFIG["b1"]["modelo"],
+            "pares_por_caso": (
+                CONFIG["b1"]["candidatos_k"] * CONFIG["k_chunks_rerank"]
+            ),
+            "max_tokens_par": int(max(max_tokens_b1)),
+            "segundos": round(time.time() - inicio_rerank_b1, 1),
+        }
+        print(
+            f"Rerank B1 ({CONFIG['b1']['modelo']}): {len(casos)} casos x "
+            f"{stats_rerank_b1['pares_por_caso']} pares en "
+            f"{stats_rerank_b1['segundos']} s | max tokens par: "
+            f"{stats_rerank_b1['max_tokens_par']}"
+        )
+        del reranker_b1
+        if dispositivo == "cuda":
+            torch.cuda.empty_cache()
+
+    # --- ciclo v3 - Sprint B2: reranker B1 sobre la 1a etapa densa B2 ---
+    # Los pares (chunk, pasaje) se derivan con la MISMA logica de v5/A2/
+    # A3/A4 (mejor pasaje BM25 + top-3 chunks) a partir de los top-50
+    # candidatos del hibrido 0.5*bm25 + 0.5*B2, de modo que el unico
+    # cambio frente a la ruta B1 (hibrido E5) es el denso de la 1a
+    # etapa; el cross-encoder es el MISMO B1.
+    stats_rerank_b2: dict = {}
+    if CONFIG["b2"]["activa"]:
+        from lib.reranker_bge import RerankerBGE
+
+        reranker_b2 = RerankerBGE(modelo_id=CONFIG["b2"]["modelo_reranker"])
+        estrategia_b2 = CONFIG["b2"]["estrategia"]
+        clave_b2 = FUENTE_SCORES[estrategia_b2]
+        max_tokens_b2: list[int] = []
+        inicio_rerank_b2 = time.time()
+        for caso in casos:
+            ranking, scores_rerank, max_tokens = ranking_rerank_chunks(
+                reranker_b2,
+                caso[CONFIG["b2"]["clave_hibrido"]],
+                caso["matriz_bm25"],
+                caso["chunks_bm25"],
+                canones,
+                pasajes,
+                grupos_indices,
+                CONFIG["b2"]["candidatos_k"],
+            )
+            caso[clave_b2] = scores_rerank
+            caso["rankings"][estrategia_b2] = ranking
+            max_tokens_b2.append(max_tokens)
+        stats_rerank_b2 = {
+            "nota": (
+                "Sprint B2: la 1a etapa es el hibrido 0.5*bm25 + 0.5*B2 "
+                f"(slug {CONFIG['b2']['slug']}) con top-50 candidatos; "
+                "los pares (chunk, pasaje) y el cross-encoder son los "
+                "MISMOS de la ruta B1, por lo que el unico cambio es el "
+                "denso de la 1a etapa."
+            ),
+            "modelo": CONFIG["b2"]["modelo"],
+            "reranker": CONFIG["b2"]["modelo_reranker"],
+            "pares_por_caso": (
+                CONFIG["b2"]["candidatos_k"] * CONFIG["k_chunks_rerank"]
+            ),
+            "max_tokens_par": int(max(max_tokens_b2)),
+            "segundos": round(time.time() - inicio_rerank_b2, 1),
+        }
+        print(
+            f"Rerank B2 ({CONFIG['b2']['modelo_reranker']} sobre denso "
+            f"{CONFIG['b2']['slug']}): {len(casos)} casos x "
+            f"{stats_rerank_b2['pares_por_caso']} pares en "
+            f"{stats_rerank_b2['segundos']} s | max tokens par: "
+            f"{stats_rerank_b2['max_tokens_par']}"
+        )
+        del reranker_b2
+        if dispositivo == "cuda":
+            torch.cuda.empty_cache()
+
     # --- ciclo v3 - Sprint A1: diagnostico honesto (reutiliza scores base) ---
     # Se ejecuta ANTES de aplicar el alpha efectivo a los casos para leer
     # siempre los scores base intactos (el diagnostico reconstruye sus
@@ -6824,6 +8280,113 @@ def main() -> None:
             )
         )
 
+    # --- ciclo v3 - Sprint B1: comparacion del reranker de dominio ---
+    # Igual que A2/A3/A4, se ejecuta ANTES de aplicar el alpha efectivo
+    # del benchmark (los contextos usan alphas fijos 0.0/1.5 y no deben
+    # leer scores mutados).
+    comparacion_b1 = None
+    if CONFIG["b1"]["activa"]:
+        inicio_comparacion_b1 = time.time()
+        comparacion_b1 = construir_comparacion_b1(casos, prior_hubs, canones)
+        print(
+            f"Comparacion B1: {len(casos)} casos, estrategia "
+            f"{CONFIG['b1']['estrategia']} vs "
+            f"{CONFIG['b1']['estrategia_referencia']} en "
+            f"{time.time() - inicio_comparacion_b1:.1f} s | referencia "
+            f"externa: "
+            f"{(comparacion_b1['referencia_externa'] or {}).get('archivo', 'no disponible (fallback: run)')}"
+        )
+        for contexto in comparacion_b1["contextos"]:
+            for etiqueta, estrategia in (
+                ("bge", CONFIG["b1"]["estrategia_referencia"]),
+                ("b1", CONFIG["b1"]["estrategia"]),
+            ):
+                datos = comparacion_b1["metricas_globales"][contexto][
+                    estrategia
+                ]
+                print(
+                    f"  B1 {contexto:8s} {etiqueta:3s} "
+                    f"nDCG@10={datos['ndcg_at_10']['media']:.3f} "
+                    f"[{datos['ndcg_at_10']['p2_5']:.3f}, "
+                    f"{datos['ndcg_at_10']['p97_5']:.3f}] | "
+                    f"F1@10={datos['f1_at_10']['media']:.3f} "
+                    f"[{datos['f1_at_10']['p2_5']:.3f}, "
+                    f"{datos['f1_at_10']['p97_5']:.3f}]"
+                )
+        for contexto, por_estrategia in comparacion_b1[
+            "pareado_vs_referencia"
+        ].items():
+            for estrategia, medidas in por_estrategia.items():
+                delta = medidas["ndcg_at_10"]
+                print(
+                    f"  pareado {contexto:8s} {estrategia:38s} "
+                    f"d_nDCG@10={delta['media_delta']:+.3f} "
+                    f"[{delta['p2_5']:+.3f}, {delta['p97_5']:+.3f}] "
+                    f"prob_mejora={delta['prob_mejora']:.3f} "
+                    f"{'gana' if delta['gana'] else 'no concluyente'}"
+                )
+        if comparacion_b1["pareado_vs_referencia_externa"] is not None:
+            externo = comparacion_b1["pareado_vs_referencia_externa"]
+            for medida, delta in externo["medidas"].items():
+                print(
+                    f"  pareado externo {externo['contexto']:8s} "
+                    f"{medida:10s} d={delta['media_delta']:+.3f} "
+                    f"[{delta['p2_5']:+.3f}, {delta['p97_5']:+.3f}] "
+                    f"prob_mejora={delta['prob_mejora']:.3f}"
+                )
+
+    # --- ciclo v3 - Sprint B2: comparacion del retriever denso ---
+    # Igual que A2/A3/A4/B1, se ejecuta ANTES de aplicar el alpha
+    # efectivo del benchmark (los contextos usan alphas fijos 0.0/1.5 y
+    # no deben leer scores mutados).
+    comparacion_b2 = None
+    if CONFIG["b2"]["activa"]:
+        inicio_comparacion_b2 = time.time()
+        comparacion_b2 = construir_comparacion_b2(casos, prior_hubs, canones)
+        referencia_v12 = comparacion_b2["referencia_v12"] or {}
+        print(
+            f"Comparacion B2: {len(casos)} casos, estrategia "
+            f"{CONFIG['b2']['estrategia']} (denso "
+            f"{CONFIG['b2']['slug']}) en "
+            f"{time.time() - inicio_comparacion_b2:.1f} s | referencia "
+            "v12: "
+            f"{referencia_v12.get('origen_datos', 'no disponible (fallback)')}"
+        )
+        for contexto in comparacion_b2["contextos"]:
+            datos = comparacion_b2["metricas_globales"][contexto][
+                CONFIG["b2"]["estrategia"]
+            ]
+            print(
+                f"  B2 {contexto:8s} "
+                f"nDCG@10={datos['ndcg_at_10']['media']:.3f} "
+                f"[{datos['ndcg_at_10']['p2_5']:.3f}, "
+                f"{datos['ndcg_at_10']['p97_5']:.3f}] | "
+                f"F1@10={datos['f1_at_10']['media']:.3f} "
+                f"[{datos['f1_at_10']['p2_5']:.3f}, "
+                f"{datos['f1_at_10']['p97_5']:.3f}]"
+            )
+        pareado_v12 = comparacion_b2["pareado_vs_referencia_v12"] or {}
+        for contexto, medidas in pareado_v12.items():
+            delta = medidas["ndcg_at_10"]
+            print(
+                f"  pareado v12 {contexto:8s} d_nDCG@10="
+                f"{delta['media_delta']:+.3f} "
+                f"[{delta['p2_5']:+.3f}, {delta['p97_5']:+.3f}] "
+                f"prob_mejora={delta['prob_mejora']:.3f} "
+                f"{'gana' if delta['gana'] else 'no concluyente'}"
+            )
+        pareado_a2 = (
+            comparacion_b2["pareado_vs_referencia_externa_a2"] or {}
+        )
+        for contexto, medidas in pareado_a2.items():
+            delta = medidas["ndcg_at_10"]
+            print(
+                f"  pareado externo A2 {contexto:8s} d_nDCG@10="
+                f"{delta['media_delta']:+.3f} "
+                f"[{delta['p2_5']:+.3f}, {delta['p97_5']:+.3f}] "
+                f"prob_mejora={delta['prob_mejora']:.3f}"
+            )
+
     # --- evaluacion base (alpha=0) de referencia (solo en modo hubs) ---
     globales_alpha0 = None
     if CONFIG["modo_hubs_activo"]:
@@ -6893,18 +8456,30 @@ def main() -> None:
         "indice": CONFIG["version_indice"],
         "reranker": CONFIG["reranker"] if args.rerank else None,
         "nota": (
-            CONFIG["nota_v11"]
-            if CONFIG["a4"]["activa"]
+            CONFIG["nota_v13"]
+            if CONFIG["b2"]["activa"]
             else (
-                CONFIG["nota_v10"]
-                if CONFIG["a3"]["activa"]
+                CONFIG["nota_v12"]
+                if CONFIG["b1"]["activa"]
                 else (
-                    CONFIG["nota_v9"]
-                    if CONFIG["a2"]["activa"]
+                    CONFIG["nota_v11"]
+                    if CONFIG["a4"]["activa"]
                     else (
-                        CONFIG["nota_v8"]
-                        if CONFIG["modo_hubs_activo"]
-                        else (CONFIG["nota_v6"] if args.rerank else None)
+                        CONFIG["nota_v10"]
+                        if CONFIG["a3"]["activa"]
+                        else (
+                            CONFIG["nota_v9"]
+                            if CONFIG["a2"]["activa"]
+                            else (
+                                CONFIG["nota_v8"]
+                                if CONFIG["modo_hubs_activo"]
+                                else (
+                                    CONFIG["nota_v6"]
+                                    if args.rerank
+                                    else None
+                                )
+                            )
+                        )
                     )
                 )
             )
@@ -7014,6 +8589,30 @@ def main() -> None:
                 }
                 for entrada in CONFIG["a4"]["estrategias"]
             ],
+            "b1_modelo": CONFIG["b1"]["modelo"],
+            "b1_ruta_modelo": CONFIG["b1"]["ruta_modelo"],
+            "b1_estrategia": CONFIG["b1"]["estrategia"],
+            "b1_estrategia_referencia": CONFIG["b1"]["estrategia_referencia"],
+            "b1_candidatos": CONFIG["b1"]["candidatos_k"],
+            "b1_k_salida": CONFIG["b1"]["k"],
+            "b1_contextos": dict(CONFIG["b1"]["contextos"]),
+            "b1_contexto_ganador": CONFIG["b1"]["contexto_ganador"],
+            "b1_bootstrap": CONFIG["b1_bootstrap"],
+            "b1_seed_pareado": CONFIG["b1_seed_pareado"],
+            "b2_modelo": CONFIG["b2"]["modelo"],
+            "b2_slug": CONFIG["b2"]["slug"],
+            "b2_ruta_modelo": CONFIG["b2"]["ruta_modelo"],
+            "b2_reranker": CONFIG["b2"]["modelo_reranker"],
+            "b2_estrategia": CONFIG["b2"]["estrategia"],
+            "b2_estrategia_referencia_v12": CONFIG["b2"][
+                "estrategia_referencia_v12"
+            ],
+            "b2_candidatos": CONFIG["b2"]["candidatos_k"],
+            "b2_k_salida": CONFIG["b2"]["k"],
+            "b2_contextos": dict(CONFIG["b2"]["contextos"]),
+            "b2_contexto_ganador": CONFIG["b2"]["contexto_ganador"],
+            "b2_bootstrap": CONFIG["b2_bootstrap"],
+            "b2_seed_pareado": CONFIG["b2_seed_pareado"],
             "limite_casos": args.limite,
             "nota_gold": (
                 "El gold (arts_cp de M2) se valida contra el parquet "
@@ -7111,6 +8710,9 @@ def main() -> None:
             ),
             "rerank_a3": stats_rerank_a3.get("segundos"),
             "rerank_a4": stats_rerank_a4.get("segundos"),
+            "rerank_b1": stats_rerank_b1.get("segundos"),
+            "embeddings_b2": stats_emb_b2 or None,
+            "rerank_b2": stats_rerank_b2.get("segundos"),
             "calibracion_hubs": (
                 round(time.time() - inicio_calibracion, 1)
                 if args.calibrar_hubs
@@ -7216,6 +8818,34 @@ def main() -> None:
             "bootstrap pareado de la diferencia vs w05@100; detalle en "
             "comparacion_a4 y rerank_chunks_stats.a4."
         )
+    # ciclo v3 - Sprint B1: reranker de dominio fine-tuneado.
+    if comparacion_b1 is not None:
+        benchmark["comparacion_b1"] = comparacion_b1
+        benchmark["rerank_chunks_stats"]["b1"] = stats_rerank_b1
+        benchmark["descripcion"] += (
+            " Sprint B1: evaluacion del reranker de dominio fine-tuneado "
+            "(modelos/b1_reranker, script 24) en la ruta ganadora del "
+            "producto (hibrido_rerank_chunks_top50 + hubs alpha=1.5 + "
+            "k=10) contra la referencia bge del mismo run, con IC "
+            "bootstrap pareado de la diferencia y verificacion externa "
+            "de la referencia congelada v8/v10 cuando esta disponible; "
+            "detalle en comparacion_b1 y rerank_chunks_stats.b1."
+        )
+    # ciclo v3 - Sprint B2: retriever denso de dominio fine-tuneado.
+    if comparacion_b2 is not None:
+        benchmark["comparacion_b2"] = comparacion_b2
+        benchmark["embeddings_b2"] = stats_emb_b2 or None
+        benchmark["rerank_chunks_stats"]["b2"] = stats_rerank_b2
+        benchmark["descripcion"] += (
+            " Sprint B2: evaluacion del retriever denso de dominio "
+            "fine-tuneado (modelos/b2_retriever, script 25) en la 1a "
+            "etapa del hibrido 0.5*bm25 + 0.5*B2 (top-50 candidatos) con "
+            "el reranker B1 (modelos/b1_reranker) y hubs alpha=1.5, con "
+            "IC bootstrap pareado de la diferencia vs la referencia v12 "
+            "(ruta B1 con hibrido E5 congelada) y verificacion externa "
+            "vs A2/ALIA@100 (v9) cuando esta disponible; detalle en "
+            "comparacion_b2, embeddings_b2 y rerank_chunks_stats.b2."
+        )
     guardar_json(CONFIG["ruta_benchmark"], benchmark)
 
     por_caso[["id", "ano", "estrategia", "n_relevantes", *MEDIDAS]].to_csv(
@@ -7230,6 +8860,10 @@ def main() -> None:
     if comparacion_a4 is not None:
         volcar_comparacion_a4(comparacion_a4)
         graficar_a4_fusion_profundidad(comparacion_a4)
+    if comparacion_b1 is not None:
+        volcar_comparacion_b1(comparacion_b1)
+    if comparacion_b2 is not None:
+        volcar_comparacion_b2(comparacion_b2)
 
     # --- resumen final ---
     print(
@@ -7386,6 +9020,71 @@ def main() -> None:
                 f"profundidad {contexto:8s} "
                 f"({comparacion_a4['fusion_barrido']}): {resumen_prof}"
             )
+    if comparacion_b1 is not None:
+        print(
+            "\n=== Sprint B1: reranker de dominio vs bge en la ruta "
+            "ganadora (nDCG@10 [IC 95%]) ==="
+        )
+        for contexto in comparacion_b1["contextos"]:
+            for etiqueta, estrategia in (
+                ("bge", CONFIG["b1"]["estrategia_referencia"]),
+                ("b1", CONFIG["b1"]["estrategia"]),
+            ):
+                datos = comparacion_b1["metricas_globales"][contexto][
+                    estrategia
+                ]["ndcg_at_10"]
+                print(
+                    f"{contexto:8s} {etiqueta:3s} "
+                    f"nDCG@10={datos['media']:.3f} "
+                    f"[{datos['p2_5']:.3f}, {datos['p97_5']:.3f}]"
+                )
+        contexto_ganador = CONFIG["b1"]["contexto_ganador"]
+        delta = comparacion_b1["pareado_vs_referencia"][contexto_ganador][
+            CONFIG["b1"]["estrategia"]
+        ]["ndcg_at_10"]
+        print(
+            f"pareado {contexto_ganador} B1-bge: "
+            f"d_nDCG@10={delta['media_delta']:+.3f} "
+            f"[{delta['p2_5']:+.3f}, {delta['p97_5']:+.3f}] "
+            f"prob_mejora={delta['prob_mejora']:.3f} | "
+            f"{'gana' if delta['gana'] else 'no concluyente'}"
+        )
+    if comparacion_b2 is not None:
+        print(
+            "\n=== Sprint B2: retriever denso de dominio en la ruta B1 "
+            "(nDCG@10 [IC 95%]) ==="
+        )
+        for contexto in comparacion_b2["contextos"]:
+            datos = comparacion_b2["metricas_globales"][contexto][
+                CONFIG["b2"]["estrategia"]
+            ]["ndcg_at_10"]
+            print(
+                f"{contexto:8s} B2 "
+                f"nDCG@10={datos['media']:.3f} "
+                f"[{datos['p2_5']:.3f}, {datos['p97_5']:.3f}]"
+            )
+        for etiqueta, por_contexto in (
+            (
+                "v12 (B1 con hibrido E5)",
+                comparacion_b2["pareado_vs_referencia_v12"],
+            ),
+            (
+                "externo A2/ALIA@100",
+                comparacion_b2["pareado_vs_referencia_externa_a2"],
+            ),
+        ):
+            if not por_contexto:
+                print(f"pareado {etiqueta}: no disponible (fallback)")
+                continue
+            for contexto, medidas in por_contexto.items():
+                delta = medidas["ndcg_at_10"]
+                print(
+                    f"pareado {etiqueta} {contexto:8s} "
+                    f"d_nDCG@10={delta['media_delta']:+.3f} "
+                    f"[{delta['p2_5']:+.3f}, {delta['p97_5']:+.3f}] "
+                    f"prob_mejora={delta['prob_mejora']:.3f} | "
+                    f"{'gana' if delta['gana'] else 'no concluyente'}"
+                )
     salidas = (
         f"{CONFIG['ruta_benchmark']}, {CONFIG['ruta_por_ano']}, "
         f"{CONFIG['ruta_figura']}, {CONFIG['ruta_figura_contaminacion']}"
@@ -7404,6 +9103,10 @@ def main() -> None:
             f", {CONFIG['ruta_figura_a4_fusion_profundidad']}, "
             f"{CONFIG['ruta_a4_fusion_profundidad']}"
         )
+    if comparacion_b1 is not None:
+        salidas += f", {CONFIG['ruta_b1_reranker']}"
+    if comparacion_b2 is not None:
+        salidas += f", {CONFIG['ruta_b2_retriever']}"
     print(
         f"tiempo total: {time.time() - inicio_total:.1f} s | "
         f"salidas: {salidas}"

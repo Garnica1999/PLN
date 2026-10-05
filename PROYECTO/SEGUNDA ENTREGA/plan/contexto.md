@@ -93,7 +93,7 @@
 ## Fase T iter2 (ml-trainer, 2026-09-10) — COMPLETADA (v5: reranking por chunks, resultado POSITIVO)
 - Run final v5: 90 casos, GPU RX 9070 XT fp16, 255.9 s (rerank 70.5 s), setsid nohup sin incidentes. Salida: vinculo_cp_benchmark_v5.json (v5-ciclo2-faseT-iter2, max_tokens_par 405<=512 verificado).
 - bm25_rerank_chunks: F1@5 0.285 / P@5 0.456 / MRR 0.850 / nDCG@10 0.438 / F1@10 0.249 — MEJOR estrategia no-circular; vs bm25 +22% F1@5/+11% MRR, vs híbrido +8% F1@5/+13% MRR, vs bm25_rerank v4 +61% F1@5 (hipótesis truncamiento CONFIRMADA).
-- METAS Fase T: 2/3 cumplidas (P@5 0.456>=0.45 OK, MRR 0.850>=0.80 OK, F1@10 0.249<0.30 FALLA — techo: recall@20 de 1a etapa BM25 + gold multietiqueta).
+- METAS Fase T: 2/3 cumplidas (P@5 0.456>=0.45 OK, MRR 0.850>=0.80 OK, F1@10 0.249<0.30 FALLA — techo: recall@20 de 1a etapa BM25 + silver multietiqueta).
 - Por periodo: gana a bm25 en los 3 (+28%/+36%/+6% F1@5); vs híbrido gana 1992-2001 (+34%) y 2002-2011 (+6%), pierde 2012-2021 (-9.5%).
 - md5s v2/v3/v3_limpio/v4 INTACTOS. metricas.json: añadida subsección ciclo_v2.v5_faseT_iter2. 0 transitorios en top-k (esperado).
 - Recomendación: ADOPTAR bm25_rerank_chunks en el producto (mejor P@5/MRR/nDCG@10; F1@10 requiere subir recall 1a etapa: top-50 o híbrido como candidato).
@@ -178,7 +178,7 @@
 - Techo reranker = recall candidatos top-50: híbrido 0,509 vs bm25 0,413 → ampliar a top-100 (recall 0,619 híbrido) es la palanca de A2/A4.
 - Mejor estrategia (con_hubs, alpha adoptados): híbrido+rerank nDCG@10 0,620 IC [0,586;0,652] / MRR 0,950 / F1@5 0,424 / F1@10 0,379 (IC [0,355;0,402]) — reproduce v8.
 - Sin hubs: híbrido+rerank nDCG@10 0,512 IC [0,470;0,554] vs bm25 0,380; los hubs aportan +0,108. Por periodo híbrido+rerank sin hubs: 0,559/0,474/0,505 (sin caídas); por longitud: 0,520/0,469/0,548 (mejor en largos).
-- Techo gold NER: F1@5 ≤0,649 / F1@10 ≤0,742, n_gold medio 11,4 → la meta 0,70 nDCG exige gold graduado (Sprint B/C), no solo mejoras de modelo.
+- Techo silver NER: F1@5 ≤0,649 / F1@10 ≤0,742, n_gold medio 11,4 → la meta 0,70 nDCG exige gold graduado (Sprint B/C), no solo mejoras de modelo.
 - Registro: `metricas.json` → `ciclo_v3.a1_diagnostico`; fila A1 en REGISTRO_EXPERIMENTOS; checkbox A1 marcado.
 - Siguiente: A2 embeddings legales ES (E5 ref vs ALIA-MrBERT vs BGE-M3-Legal vs modernbert-legal), candidatos top-50 → top-100 según A1.
 

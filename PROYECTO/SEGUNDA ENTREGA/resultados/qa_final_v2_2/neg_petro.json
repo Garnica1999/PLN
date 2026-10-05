@@ -1,0 +1,17 @@
+{
+  "es_sentencia": false,
+  "score_validacion": 0.0,
+  "id_detectado": null,
+  "ponente": null,
+  "area": null,
+  "articulos_cp": {
+    "extraidos": [],
+    "recuperados_bm25": [],
+    "reranker_usado": false,
+    "hubs_usado": false,
+    "alpha_hubs": 0.0
+  },
+  "sentencias_citadas": [],
+  "resumen": "El texto no cumple la heuristica de providencia de la Corte Constitucional (menos de 2/3 reglas); no se ejecutaron los componentes de analisis.",
+  "tiempo_segundos": 0.89
+}

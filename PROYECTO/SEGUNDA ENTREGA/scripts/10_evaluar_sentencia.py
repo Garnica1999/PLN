@@ -43,6 +43,20 @@ ciclo v2 - Fase X (producto v2, 2026-09-11, plan/PLAN_v2_ciclo_mejora.md):
     articulos_cp.hubs_usado (bool) y articulos_cp.alpha_hubs (float
     efectivo), conserva reranker_usado y el resto de campos, y el resumen
     menciona el prior cuando se aplico.
+
+ciclo v2.2 (producto v2.2, 2026-10-04, plan/PLAN_v2.2_adopcion.md): el
+    flag --rerank usa los componentes del Sprint B (adopcion preparada,
+    sujeta al gate B3 y a ADR de adopcion): el denso del hibrido pasa de
+    E5 a B2 (modelos/b2_retriever) y el cross-encoder pasa de
+    BAAI/bge-reranker-v2-m3 a B1 (modelos/b1_reranker); el hibrido, los
+    top-50 candidatos, los chunks por candidato, el prior alpha=1.5 y
+    k=10 no cambian. FALLBACK documentado a E5/bge con WARNING si faltan
+    los modelos B1/B2 (error claro con estricto_b2_b1=True). Sin --rerank
+    el comportamiento es EXACTAMENTE el de v2 (BM25 + hubs alpha=0.75) y
+    el JSON conserva la estructura identica (sin campos nuevos). El
+    resumen del modo rerank nombra los componentes efectivos de v2.2
+    ("recuperados por hibrido BM25+B2+reranker (B1)"); el modo default
+    conserva su texto de v2 intacto ("recuperados por BM25").
 """
 
 import argparse
@@ -253,7 +267,8 @@ def construir_resumen(
         recuperados: Articulos CP recuperados (M7; rerankeados y/o
             priorizados segun los flags de las Fases T/X).
         citadas: Sentencias citadas resueltas por M5.
-        usar_reranker: Si True el resumen menciona el reranker (Fase T).
+        usar_reranker: Si True el resumen nombra la ruta rerank de v2.2
+            (hibrido BM25+B2+reranker B1); False conserva el texto de v2.
         usar_hubs: Si True el resumen menciona el prior de hubs (Fase X).
         alpha_hubs: Peso efectivo del prior de hubs (Fase X).
 
@@ -273,8 +288,12 @@ def construir_resumen(
         else "sin area"
     )
     n_resueltas = sum(1 for c in citadas if c["resuelta"])
+    # ciclo v2.2: el modo rerank nombra los componentes efectivos de la
+    # ruta adoptada (denso B2 + cross-encoder B1); el default conserva el
+    # texto de v2 sin cambios. El fallback E5/bge queda documentado en el
+    # WARNING del log de VinculoCP (la estructura del JSON no cambia).
     via_recuperacion = (
-        "recuperados por hibrido BM25/E5+reranker"
+        "recuperados por hibrido BM25+B2+reranker (B1)"
         if usar_reranker
         else "recuperados por BM25"
     )
@@ -299,9 +318,10 @@ def inicializar_componentes(usar_reranker: bool = False) -> dict:
 
     Args:
         usar_reranker: Si True el VinculoCP se crea en modo reranker
-            (Fase X: top-50 del hibrido BM25/E5 -> rerank por chunks con
-            bge-reranker-v2-m3 -> prior alpha=1.5 -> top-10); la carga de
-            E5 y del cross-encoder es lazy dentro de VinculoCP.
+            (ciclo v2.2: top-50 del hibrido BM25/B2 -> rerank por chunks
+            con el cross-encoder de dominio B1 -> prior alpha=1.5 ->
+            top-10; fallback E5/bge con aviso si faltan B2/B1); la carga
+            del denso y del cross-encoder es lazy dentro de VinculoCP.
 
     Returns:
         Dict con validador, extractor, clasificador, vinculo y contexto.
@@ -348,11 +368,13 @@ def parsear_args() -> argparse.Namespace:
         action="store_true",
         default=False,
         help=(
-            "Activa la ruta reranker ganadora del ciclo v2 (Fase X): "
-            "candidatos top-50 del hibrido BM25/E5 -> rerank por chunks "
-            "con el cross-encoder BAAI/bge-reranker-v2-m3 -> prior de "
-            "hubs alpha=1.5 -> top-10. Sin el flag se usa la ruta BM25 "
-            "con prior de hubs alpha=0.75."
+            "Activa la ruta reranker del producto v2.2 (ciclo v2.2): "
+            "candidatos top-50 del hibrido BM25/B2 -> rerank por chunks "
+            "con el cross-encoder de dominio B1 (modelos/b1_reranker) -> "
+            "prior de hubs alpha=1.5 -> top-10. Si faltan modelos/"
+            "b2_retriever o modelos/b1_reranker se usa el fallback E5/bge "
+            "con aviso. Sin el flag se usa la ruta BM25 con prior de hubs "
+            "alpha=0.75 (intacta)."
         ),
     )
     return parser.parse_args()

@@ -1,0 +1,558 @@
+{
+  "es_sentencia": true,
+  "score_validacion": 1.0,
+  "id_detectado": "20178",
+  "ponente": "Jorge Ignacio Pretelt Chaljub",
+  "area": {
+    "top3": [
+      {
+        "area": "principios_fundamentales",
+        "prob": 0.9101
+      },
+      {
+        "area": "derechos_fundamentales",
+        "prob": 0.0656
+      },
+      {
+        "area": "derechos_sociales_economicos_culturales",
+        "prob": 0.0203
+      }
+    ],
+    "via": "clasificador_m4_logreg_enmascarado"
+  },
+  "articulos_cp": {
+    "extraidos": [
+      {
+        "numero": "125",
+        "texto_150chars": "Los empleos en los órganos y entidades del Estado son de carrera. Se exceptúan los de elección popular, los de libre nombramiento y remoción, los de t",
+        "bloque": "organizacion_estado"
+      },
+      {
+        "numero": "209",
+        "texto_150chars": "La función administrativa está al servicio de los intereses generales y se desarrolla con fundamento en los principios de igualdad, moralidad, eficaci",
+        "bloque": "rama_ejecutiva"
+      },
+      {
+        "numero": "7",
+        "texto_150chars": "El Estado reconoce y protege la diversidad étnica y cultural de la Nación colombiana",
+        "bloque": "principios_fundamentales"
+      },
+      {
+        "numero": "29",
+        "texto_150chars": "El debido proceso se aplicará a toda clase de actuaciones judiciales y administrativas Nadie podrá ser juzgado sino conforme a leyes preexistentes al ",
+        "bloque": "derechos_fundamentales"
+      },
+      {
+        "numero": "53",
+        "texto_150chars": "El Congreso expedirá el estatuto del trabajo. La ley correspondiente tendrá en cuenta por lo menos los siguientes principios mínimos fundamentales: Ig",
+        "bloque": "derechos_sociales_economicos_culturales"
+      },
+      {
+        "numero": "130",
+        "texto_150chars": "Habrá una Comisión Nacional del Servicio Civil responsable de la administración y vigilancia de las carreras de los servidores públicos, excepción hec",
+        "bloque": "organizacion_estado"
+      },
+      {
+        "numero": "217",
+        "texto_150chars": "<Inciso modificado por el artículo 1 del Acto Legislativo 2 de 2023. El nuevo texto es el siguiente:> La Nación tendrá para su defensa unas Fuerzas Mi",
+        "bloque": "rama_ejecutiva"
+      },
+      {
+        "numero": "218",
+        "texto_150chars": "La ley organizará el cuerpo de Policía La Policía Nacional es un cuerpo armado permanente de naturaleza civil, a cargo de la Nación, cuyo fin primordi",
+        "bloque": "rama_ejecutiva"
+      },
+      {
+        "numero": "253",
+        "texto_150chars": "La ley determinará lo relativo a la estructura y funcionamiento de la Fiscalía General de la Nación, al ingreso por carrera y al retiro del servicio, ",
+        "bloque": "rama_judicial"
+      },
+      {
+        "numero": "256",
+        "texto_150chars": "<El artículo 17 del Acto Legislativo 2 de 2015 que derogó este artículo fue declarado INEXEQUIBLE por la Corte Constitucional mediante Sentencia C-285",
+        "bloque": "rama_judicial"
+      },
+      {
+        "numero": "268",
+        "texto_150chars": "<Artículo modificado por el artículo 2 del Acto Legislativo 4 de 2019. El nuevo texto es el siguiente:> El Contralor General de la República tendrá la",
+        "bloque": "organismos_control"
+      },
+      {
+        "numero": "10",
+        "texto_150chars": "El castellano es el idioma oficial de Colombia. Las lenguas y dialectos de los grupos étnicos son también oficiales en sus territorios. La enseñanza q",
+        "bloque": "principios_fundamentales"
+      },
+      {
+        "numero": "279",
+        "texto_150chars": "La ley determinará lo relativo a la estructura y al funcionamiento de la Procuraduría General de la Nación, regulará lo atinente al ingreso y concurso",
+        "bloque": "organismos_control"
+      },
+      {
+        "numero": "69",
+        "texto_150chars": "Se garantiza la autonomía universitaria. Las universidades podrán darse sus directivas y regirse por sus propios estatutos, de acuerdo con la ley La l",
+        "bloque": "derechos_sociales_economicos_culturales"
+      },
+      {
+        "numero": "58",
+        "texto_150chars": "<Artículo modificado por el artículo 1 o. del Acto Legislativo 1 de 1999. El nuevo texto es el siguiente:> Se garantizan la propiedad privada y los de",
+        "bloque": "derechos_sociales_economicos_culturales"
+      },
+      {
+        "numero": "241",
+        "texto_150chars": "A la Corte Constitucional se le confía la guarda de la integridad y supremacía de la Constitución, en los estrictos y precisos términos de este artícu",
+        "bloque": "rama_judicial"
+      },
+      {
+        "numero": "1",
+        "texto_150chars": "Colombia es un Estado social de derecho, organizado en forma de República unitaria, descentralizada, con autonomía de sus entidades territoriales, dem",
+        "bloque": "principios_fundamentales"
+      },
+      {
+        "numero": "2",
+        "texto_150chars": "Son fines esenciales del Estado: servir a la comunidad, promover la prosperidad general y garantizar la efectividad de los principios, derechos y debe",
+        "bloque": "principios_fundamentales"
+      },
+      {
+        "numero": "40",
+        "texto_150chars": "Todo ciudadano tiene derecho a participar en la conformación, ejercicio y control del poder político. Para hacer efectivo este derecho puede: 1. Elegi",
+        "bloque": "derechos_fundamentales"
+      },
+      {
+        "numero": "8",
+        "texto_150chars": "Es obligación del Estado y de las personas proteger las riquezas culturales y naturales de la Nación",
+        "bloque": "principios_fundamentales"
+      },
+      {
+        "numero": "150",
+        "texto_150chars": "Corresponde al Congreso hacer las leyes. Por medio de ellas ejerce las siguientes funciones: 1. Interpretar, reformar y derogar las leyes. 2. Expedir ",
+        "bloque": "rama_legislativa"
+      },
+      {
+        "numero": "16",
+        "texto_150chars": "Todas las personas tienen derecho al libre desarrollo de su personalidad sin más limitaciones que las que imponen los derechos de los demás y el orden",
+        "bloque": "derechos_fundamentales"
+      },
+      {
+        "numero": "18",
+        "texto_150chars": "Se garantiza la libertad de conciencia. Nadie será molestado por razón de sus convicciones o creencias ni compelido a revelarlas ni obligado a actuar ",
+        "bloque": "derechos_fundamentales"
+      },
+      {
+        "numero": "93",
+        "texto_150chars": "Los tratados y convenios internacionales ratificados por el Congreso, que reconocen los derechos humanos y que prohíben su limitación en los estados d",
+        "bloque": "proteccion_aplicacion_derechos"
+      },
+      {
+        "numero": "55",
+        "texto_150chars": "Se garantiza el derecho de negociación colectiva para regular las relaciones laborales, con las excepciones que señale la ley Es deber del Estado prom",
+        "bloque": "derechos_sociales_economicos_culturales"
+      }
+    ],
+    "recuperados_bm25": [
+      {
+        "numero": "241",
+        "score": 2.3429
+      },
+      {
+        "numero": "150",
+        "score": 1.1941
+      },
+      {
+        "numero": "53",
+        "score": 1.1912
+      },
+      {
+        "numero": "58",
+        "score": 1.0682
+      },
+      {
+        "numero": "2",
+        "score": 1.0497
+      },
+      {
+        "numero": "125",
+        "score": 1.0259
+      },
+      {
+        "numero": "253",
+        "score": 1.0085
+      },
+      {
+        "numero": "209",
+        "score": 0.9937
+      },
+      {
+        "numero": "279",
+        "score": 0.9889
+      },
+      {
+        "numero": "217",
+        "score": 0.9865
+      }
+    ],
+    "reranker_usado": true,
+    "hubs_usado": true,
+    "alpha_hubs": 1.5
+  },
+  "sentencias_citadas": [
+    {
+      "id": "20178",
+      "resuelta": true,
+      "ano": 2013,
+      "pagerank": 2e-05,
+      "area": "principios_fundamentales"
+    },
+    {
+      "id": "12081",
+      "resuelta": true,
+      "ano": 2008,
+      "pagerank": 5e-05,
+      "area": "principios_fundamentales"
+    },
+    {
+      "id": "23746",
+      "resuelta": true,
+      "ano": 2011,
+      "pagerank": 4.6e-05,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "14954",
+      "resuelta": true,
+      "ano": 2009,
+      "pagerank": 0.000141,
+      "area": "principios_fundamentales"
+    },
+    {
+      "id": "649",
+      "resuelta": true,
+      "ano": 1995,
+      "pagerank": 0.000952,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "15030",
+      "resuelta": true,
+      "ano": 2009,
+      "pagerank": 0.000104,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "T-375-2002",
+      "resuelta": false,
+      "ano": 2002,
+      "pagerank": null,
+      "area": null
+    },
+    {
+      "id": "9116",
+      "resuelta": true,
+      "ano": 2003,
+      "pagerank": 5.4e-05,
+      "area": "rama_legislativa"
+    },
+    {
+      "id": "14993",
+      "resuelta": true,
+      "ano": 2009,
+      "pagerank": 3.4e-05,
+      "area": "principios_fundamentales"
+    },
+    {
+      "id": "715",
+      "resuelta": true,
+      "ano": 1995,
+      "pagerank": 0.000234,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "2514",
+      "resuelta": true,
+      "ano": 1997,
+      "pagerank": 0.000316,
+      "area": "organizacion_estado"
+    },
+    {
+      "id": "8010",
+      "resuelta": true,
+      "ano": 2002,
+      "pagerank": 7e-05,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "10953",
+      "resuelta": true,
+      "ano": 2004,
+      "pagerank": 7.1e-05,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "10945",
+      "resuelta": true,
+      "ano": 2004,
+      "pagerank": 5.3e-05,
+      "area": "organizacion_estado"
+    },
+    {
+      "id": "11063",
+      "resuelta": true,
+      "ano": 2004,
+      "pagerank": 2.1e-05,
+      "area": "derechos_sociales_economicos_culturales"
+    },
+    {
+      "id": "10957",
+      "resuelta": true,
+      "ano": 2004,
+      "pagerank": 9.7e-05,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "11022",
+      "resuelta": true,
+      "ano": 2004,
+      "pagerank": 2.1e-05,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "9989",
+      "resuelta": true,
+      "ano": 2005,
+      "pagerank": 5.7e-05,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "23686",
+      "resuelta": true,
+      "ano": 2011,
+      "pagerank": 9.7e-05,
+      "area": "principios_fundamentales"
+    },
+    {
+      "id": "7123",
+      "resuelta": true,
+      "ano": 2001,
+      "pagerank": 0.000296,
+      "area": "rama_judicial"
+    },
+    {
+      "id": "7924",
+      "resuelta": true,
+      "ano": 2002,
+      "pagerank": 0.000249,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "23732",
+      "resuelta": true,
+      "ano": 2011,
+      "pagerank": 1.7e-05,
+      "area": "principios_fundamentales"
+    },
+    {
+      "id": "12948",
+      "resuelta": true,
+      "ano": 2007,
+      "pagerank": 2.9e-05,
+      "area": "principios_fundamentales"
+    },
+    {
+      "id": "6100",
+      "resuelta": true,
+      "ano": 1999,
+      "pagerank": 7.8e-05,
+      "area": "organizacion_estado"
+    },
+    {
+      "id": "4324",
+      "resuelta": true,
+      "ano": 2000,
+      "pagerank": 8.8e-05,
+      "area": "principios_fundamentales"
+    },
+    {
+      "id": "8035",
+      "resuelta": true,
+      "ano": 2002,
+      "pagerank": 6.4e-05,
+      "area": "rama_judicial"
+    },
+    {
+      "id": "C-1230-2005",
+      "resuelta": false,
+      "ano": 2005,
+      "pagerank": null,
+      "area": null
+    },
+    {
+      "id": "1410",
+      "resuelta": true,
+      "ano": 1993,
+      "pagerank": 0.000218,
+      "area": "principios_fundamentales"
+    },
+    {
+      "id": "1959",
+      "resuelta": true,
+      "ano": 1994,
+      "pagerank": 0.000313,
+      "area": "principios_fundamentales"
+    },
+    {
+      "id": "9141",
+      "resuelta": true,
+      "ano": 2003,
+      "pagerank": 3.2e-05,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "12955",
+      "resuelta": true,
+      "ano": 2007,
+      "pagerank": 3.8e-05,
+      "area": "principios_fundamentales"
+    },
+    {
+      "id": "12961",
+      "resuelta": true,
+      "ano": 2007,
+      "pagerank": 4e-05,
+      "area": "organizacion_estado"
+    },
+    {
+      "id": "13031",
+      "resuelta": true,
+      "ano": 2007,
+      "pagerank": 2.1e-05,
+      "area": "principios_fundamentales"
+    },
+    {
+      "id": "C-1052-2001",
+      "resuelta": false,
+      "ano": 2001,
+      "pagerank": null,
+      "area": null
+    },
+    {
+      "id": "10113",
+      "resuelta": true,
+      "ano": 2005,
+      "pagerank": 0.000111,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "C-1009-2008",
+      "resuelta": false,
+      "ano": 2008,
+      "pagerank": null,
+      "area": null
+    },
+    {
+      "id": "16011",
+      "resuelta": true,
+      "ano": 2010,
+      "pagerank": 9.3e-05,
+      "area": "rama_judicial"
+    },
+    {
+      "id": "1897",
+      "resuelta": true,
+      "ano": 1994,
+      "pagerank": 0.001541,
+      "area": "derechos_sociales_economicos_culturales"
+    },
+    {
+      "id": "15908",
+      "resuelta": true,
+      "ano": 2010,
+      "pagerank": 2e-05,
+      "area": "derechos_sociales_economicos_culturales"
+    },
+    {
+      "id": "7987",
+      "resuelta": true,
+      "ano": 2002,
+      "pagerank": 3.4e-05,
+      "area": "principios_fundamentales"
+    },
+    {
+      "id": "C-1076-2002",
+      "resuelta": false,
+      "ano": 2002,
+      "pagerank": null,
+      "area": null
+    },
+    {
+      "id": "C-1037-2003",
+      "resuelta": false,
+      "ano": 2003,
+      "pagerank": null,
+      "area": null
+    },
+    {
+      "id": "10982",
+      "resuelta": true,
+      "ano": 2004,
+      "pagerank": 4.7e-05,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "8979",
+      "resuelta": true,
+      "ano": 2003,
+      "pagerank": 3e-05,
+      "area": "principios_fundamentales"
+    },
+    {
+      "id": "C-1173-2005",
+      "resuelta": false,
+      "ano": 2005,
+      "pagerank": null,
+      "area": null
+    },
+    {
+      "id": "2029",
+      "resuelta": true,
+      "ano": 1994,
+      "pagerank": 0.000659,
+      "area": "principios_fundamentales"
+    },
+    {
+      "id": "216",
+      "resuelta": true,
+      "ano": 1992,
+      "pagerank": 0.001656,
+      "area": "derechos_sociales_economicos_culturales"
+    },
+    {
+      "id": "1310",
+      "resuelta": true,
+      "ano": 1993,
+      "pagerank": 0.000546,
+      "area": "derechos_sociales_economicos_culturales"
+    },
+    {
+      "id": "1935",
+      "resuelta": true,
+      "ano": 1994,
+      "pagerank": 0.000142,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "11585",
+      "resuelta": true,
+      "ano": 2008,
+      "pagerank": 3.1e-05,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "12051",
+      "resuelta": true,
+      "ano": 2008,
+      "pagerank": 2.8e-05,
+      "area": "organizacion_estado"
+    }
+  ],
+  "resumen": "Providencia valida de la Corte Constitucional; area tematica principios_fundamentales (prob 0.9101); 25 articulos CP extraidos y 10 recuperados por hibrido BM25+B2+reranker (B1) con prior de hubs (alpha=1.5); 44 de 51 sentencias citadas resueltas al corpus.",
+  "tiempo_segundos": 23.03
+}

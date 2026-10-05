@@ -1,0 +1,81 @@
+{
+  "generado_utc": "2026-10-05T01:03:40Z",
+  "listado": {
+    "reutilizado": false,
+    "endpoint": "https://www.datos.gov.co/resource/v2k4-2t8s.json",
+    "where": "fecha_sentencia > '2021-12-31'",
+    "n_api": 2382,
+    "n_normalizados": 2382,
+    "n_duplicados": 0,
+    "ids_duplicados": [],
+    "n_descartados_tipo": 0,
+    "n_descartados_formato": 0,
+    "n_inconsistencias_tipo": 0,
+    "n_por_tipo": {
+      "C": 579,
+      "SU": 188,
+      "T": 1615
+    },
+    "n_por_anio": {
+      "2022": 474,
+      "2023": 584,
+      "2024": 530,
+      "2025": 520,
+      "2026": 274
+    },
+    "fecha_min": "2022-01-12",
+    "fecha_max": "2026-08-31",
+    "ruta_metadatos": "/home/carlos/Git/PLN/PROYECTO/SEGUNDA ENTREGA/data/corpus_2022_2026/metadatos.jsonl",
+    "tiempo_seg": 1.39,
+    "timestamp_utc": "2026-10-05T00:13:14Z"
+  },
+  "descarga": {
+    "run": {
+      "intentados": 2382,
+      "ok": 2334,
+      "stub": 48,
+      "error": 0,
+      "omitidos": 0,
+      "reintentos_red": 0,
+      "stubs_reintentados": 48,
+      "reintento_final_ok": 0,
+      "bytes_descargados": 1048294521,
+      "delay_seg": 1.0,
+      "tiempo_seg": 2830.94
+    },
+    "acumulado": {
+      "n_registros": 2382,
+      "n_html_validos": 2334,
+      "n_stub": 48,
+      "n_error": 0,
+      "n_pendientes": 0,
+      "bytes_html_en_disco": 1048294521
+    },
+    "timestamp_utc": "2026-10-05T01:00:25Z"
+  },
+  "texto": {
+    "run": {
+      "procesados": 2382,
+      "nuevos_ok": 2330,
+      "texto_corto": 4,
+      "reusados": 0,
+      "stub": 48,
+      "error": 0,
+      "limpiador": "importado_00_csv_a_parquet",
+      "tiempo_seg": 194.04
+    },
+    "acumulado": {
+      "n_docs": 2382,
+      "n_ok": 2330,
+      "n_texto_corto": 4,
+      "n_stub": 48,
+      "n_error": 0,
+      "n_chars_total": 346744149,
+      "n_palabras_total": 55538658,
+      "n_docs_mas_1000_chars": 2330,
+      "media_chars_ok": 148817.2
+    },
+    "ruta_parquet": "/home/carlos/Git/PLN/PROYECTO/SEGUNDA ENTREGA/data/corpus_2022_2026/corpus_2022_2026.parquet",
+    "timestamp_utc": "2026-10-05T01:03:40Z"
+  }
+}

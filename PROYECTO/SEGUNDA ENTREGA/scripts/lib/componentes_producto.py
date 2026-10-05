@@ -80,6 +80,27 @@ ciclo v2 - Fase X (producto v2, 2026-09-11, plan/PLAN_v2_ciclo_mejora.md):
         WARNING) y el resto del pipeline no cambia.
     ClasificadorArea (M4) queda SIN cambios (gates de Fase U/V no
     cumplidos): LogReg v1 + TF-IDF de lemas enmascarados del joblib.
+
+ciclo v2.2 (producto v2.2, 2026-10-04, plan/PLAN_v2.2_adopcion.md): la
+    ruta reranker adopta los componentes del Sprint B del ciclo v3
+    (adopcion preparada, sujeta al gate B3 y a ADR de adopcion): el denso
+    del hibrido pasa de E5 (intfloat/multilingual-e5-base) a B2
+    (modelos/b2_retriever; retriever denso de dominio fine-tuneado por
+    scripts/25_b2_retriever_denso.py sobre ALIA-MrBERT legal, 150M, dim
+    768, mean pooling, prompts VACIOS y max_seq_length 512) y el
+    cross-encoder pasa de BAAI/bge-reranker-v2-m3 a B1
+    (modelos/b1_reranker; fine-tune de dominio de bge-reranker-v2-m3,
+    568M, 1 logit de relevancia, entrenado por
+    scripts/24_b1_entrenar_reranker.py). La mecanica NO cambia: hibrido
+    0.5*BM25 + 0.5*denso (top-50 candidatos), rerank por chunks (mejor
+    pasaje BM25 + top-3 chunks -> 3 pares -> max-pooling), prior de hubs
+    alpha=1.5 y k=10. El modo default (BM25 + hubs alpha=0.75, sin
+    rerank) queda INTACTO. FALLBACK documentado: si falta
+    modelos/b2_retriever o modelos/b1_reranker se usan E5/bge con WARNING
+    (estricto_b2_b1=True convierte la falta en error claro); si el denso
+    falla en runtime, los candidatos pasan a ser el top-50 BM25
+    (WARNING). Version interna del producto: v2.2 (constante
+    VERSION_PRODUCTO; sin cambios en el esquema JSON).
 """
 
 import importlib.util
@@ -136,9 +157,26 @@ CONFIG = {
     "vram_minima_gb_e5": 2.0,
     "dir_cache_e5": "data/cache_e5_cp",
     "archivo_cache_e5": "pasajes_e5_base.joblib",
+    # --- ciclo v2.2 (producto v2.2): B2 denso + B1 reranker en rerank ---
+    # Rutas locales de los componentes del Sprint B y flags de la ruta:
+    # usar_b2_b1_en_rerank=True prefiere B2/B1 con fallback documentado a
+    # E5/bge si faltan; estricto_b2_b1=True convierte esa falta en error
+    # claro (fail-fast). La cache de pasajes de B2 es NUEVA y no toca la
+    # cache E5 congelada de v2.
+    "ruta_embedding_b2": "modelos/b2_retriever",
+    "ruta_reranker_b1": "modelos/b1_reranker",
+    "usar_b2_b1_en_rerank": True,
+    "estricto_b2_b1": False,
+    "dir_cache_b2": "data/cache_b2_cp",
+    "archivo_cache_b2": "pasajes_b2_retriever.joblib",
 }
 
 ROOT = Path(__file__).resolve().parent.parent.parent
+
+# Version interna del producto (ciclo v2.2). Trazabilidad en docstrings y
+# registro del proyecto; NO se expone en el JSON para conservar el esquema
+# de v2 (ADR-16).
+VERSION_PRODUCTO = "v2.2"
 
 # Stopwords juridicas (port de 12_evaluar_vinculo_cp_v2.py): terminos
 # procesales presentes en casi todas las sentencias que no discriminan entre
@@ -601,6 +639,18 @@ class VinculoCP:
         E5 y reranker se cargan LAZY (solo con usar_reranker=True).
         FALLBACK: si E5 falla o no esta disponible, los candidatos pasan a
         ser el top-50 BM25 con WARNING documentado.
+
+    ciclo v2.2 (producto v2.2): en la ruta reranker (usar_reranker=True)
+    los modelos pasan a ser B2 (modelos/b2_retriever) como denso del
+    hibrido y B1 (modelos/b1_reranker) como cross-encoder; la mecanica
+    (hibrido 0.5/0.5, top-50 candidatos, 3 chunks por candidato,
+    max-pooling, prior alpha=1.5, k=10) es IDENTICA. B2 se carga como
+    SentenceTransformer estandar del repositorio local (prompts vacios,
+    max_seq_length 512) y B1 con RerankerBGE(modelo_id=ruta local). Si
+    falta cualquiera de los dos modelos, se conserva E5/bge con WARNING
+    (fallback documentado en plan/PLAN_v2.2_adopcion.md); con
+    estricto_b2_b1=True la falta lanza RuntimeError. El modo default no
+    cambia.
     """
 
     def __init__(
@@ -611,6 +661,8 @@ class VinculoCP:
         usar_hubs: bool = True,
         alpha_hubs_base: float = 0.75,
         alpha_hubs_rerank: float = 1.5,
+        usar_b2_b1_en_rerank: bool = True,
+        estricto_b2_b1: bool = False,
     ) -> None:
         """Carga el indice BM25 desde cache o lo construye y persiste.
 
@@ -623,23 +675,47 @@ class VinculoCP:
                 casos que citan disposiciones transitorias legitimas.
             usar_reranker: Si False (default) recuperar() es la ruta BM25
                 por defecto; si True (Fase X) se activa la estrategia
-                ganadora del v8 (top-50 hibrido BM25/E5 -> rerank por
+                ganadora del v8 (top-50 hibrido BM25/denso -> rerank por
                 chunks -> prior alpha=alpha_hubs_rerank -> top-10). La
-                carga de E5 y del reranker es lazy (no penaliza este init).
+                carga del denso y del reranker es lazy (no penaliza este
+                init).
             usar_hubs: Si True (default) aplica el prior de hubs CP a los
                 scores base (Fase W-a iter2); si False, ranking sin prior.
             alpha_hubs_base: Peso del prior en la ruta BM25 default
                 (default 0.75, optimo full-90 del benchmark v8).
             alpha_hubs_rerank: Peso del prior en la ruta reranker
                 (default 1.5, optimo full-90 del benchmark v8).
+            usar_b2_b1_en_rerank: Si True (default, ciclo v2.2) la ruta
+                rerank usa B2 (modelos/b2_retriever) y B1
+                (modelos/b1_reranker); si faltan, cae a E5/bge con
+                WARNING. Si False se usa E5/bge (comportamiento v2). Solo
+                aplica con usar_reranker=True.
+            estricto_b2_b1: Si True (default False, ciclo v2.2) y
+                usar_b2_b1_en_rerank=True, la falta de modelos/b2_retriever
+                o modelos/b1_reranker lanza RuntimeError (fail-fast) en vez
+                del fallback con WARNING.
+
+        Raises:
+            RuntimeError: Si estricto_b2_b1=True y falta B2 o B1 en la
+                ruta reranker (ver usar_b2_b1_en_rerank).
         """
         self._usar_cache = usar_cache
         self._incluir_transitorios = incluir_transitorios
         self._usar_reranker = usar_reranker
         self._alpha_hubs_base = float(alpha_hubs_base)
         self._alpha_hubs_rerank = float(alpha_hubs_rerank)
+        self._ruta_embedding_b2 = ROOT / CONFIG["ruta_embedding_b2"]
+        self._ruta_reranker_b1 = ROOT / CONFIG["ruta_reranker_b1"]
+        self._b2_b1_efectivo = self._resolver_ruta_rerank(
+            bool(usar_b2_b1_en_rerank), bool(estricto_b2_b1)
+        )
+        self._etiqueta_denso = "B2" if self._b2_b1_efectivo else "E5"
+        self._etiqueta_reranker = "B1" if self._b2_b1_efectivo else "bge"
+        self._prefijo_query = CONFIG["prefijo_query"]
+        self._prefijo_pasaje = CONFIG["prefijo_pasaje"]
+        self._clave_cache_denso: str | None = None
         self._reranker = None
-        self._e5: tuple | None = None
+        self._denso: tuple | None = None
         self._prior_hubs = self._cargar_prior_hubs() if usar_hubs else None
         self._usar_hubs = self._prior_hubs is not None
         datos = self._cargar_o_construir()
@@ -822,6 +898,17 @@ class VinculoCP:
             else self._alpha_hubs_base
         )
 
+    @property
+    def _e5(self) -> tuple | None:
+        """Alias de compatibilidad del denso activo (checks_qa_final v2).
+
+        ciclo v2.2: el atributo interno paso a llamarse _denso porque el
+        denso puede ser E5 o B2; este alias de solo lectura mantiene
+        operativo el check de carga lazy de scripts/checks_qa_final.py (QA
+        v2 congelado) hasta que el QA v2.2 lo sustituya.
+        """
+        return self._denso
+
     def _cargar_prior_hubs(self) -> dict[str, float] | None:
         """Carga el prior de hubs CP desde CONFIG['ruta_prior_hubs'].
 
@@ -845,11 +932,69 @@ class VinculoCP:
             crudo = json.load(manejador)
         return {str(canon): float(valor) for canon, valor in crudo.items()}
 
-    def _cargar_reranker(self) -> object:
-        """Carga el cross-encoder bge-reranker-v2-m3 (lazy, Fase X).
+    def _resolver_ruta_rerank(
+        self, usar_b2_b1: bool, estricto: bool
+    ) -> bool:
+        """Decide si la ruta rerank usa B2/B1 o el fallback E5/bge.
 
-        Solo se invoca cuando usar_reranker=True y una sola vez por
-        instancia; la ruta BM25 por defecto nunca paga este costo.
+        ciclo v2.2 (producto v2.2): la ruta rerank prefiere B2/B1 cuando
+        ambos directorios existen (modelos/b2_retriever y
+        modelos/b1_reranker). Si falta cualquiera, se documenta un WARNING
+        y se usa E5/bge (fallback); con estricto=True la falta lanza
+        RuntimeError (fail-fast) en vez de degradar. Fuera de la ruta
+        rerank (usar_reranker=False) o con usar_b2_b1=False la decision es
+        silenciosa: el modo default nunca toca estos modelos.
+
+        Args:
+            usar_b2_b1: Valor efectivo de usar_b2_b1_en_rerank.
+            estricto: Si True la falta de B2/B1 es error (no fallback).
+
+        Returns:
+            True si la ruta rerank usara B2 como denso y B1 como reranker;
+            False para el fallback E5/bge.
+
+        Raises:
+            RuntimeError: Si estricto=True, la ruta rerank esta activa y
+                falta modelos/b2_retriever o modelos/b1_reranker.
+        """
+        if not (self._usar_reranker and usar_b2_b1):
+            return False
+        faltantes = [
+            etiqueta
+            for etiqueta, ruta in (
+                (CONFIG["ruta_embedding_b2"], self._ruta_embedding_b2),
+                (CONFIG["ruta_reranker_b1"], self._ruta_reranker_b1),
+            )
+            if not ruta.is_dir()
+        ]
+        if not faltantes:
+            return True
+        if estricto:
+            raise RuntimeError(
+                "modo estricto B2/B1 (estricto_b2_b1=True) pero falta "
+                f"{' y '.join(faltantes)}: entrena con "
+                "'/home/carlos/venv/bin/python "
+                "scripts/25_b2_retriever_denso.py --entrenar' y "
+                "'/home/carlos/venv/bin/python "
+                "scripts/24_b1_entrenar_reranker.py --entrenar', o "
+                "desactiva estricto_b2_b1/usar_b2_b1_en_rerank"
+            )
+        print(
+            "[aviso] modo rerank v2.2: falta "
+            f"{' y '.join(faltantes)}; se usa el fallback E5+bge "
+            "(documentado en plan/PLAN_v2.2_adopcion.md)"
+        )
+        return False
+
+    def _cargar_reranker(self) -> object:
+        """Carga el cross-encoder del rerank (lazy, Fases X y v2.2).
+
+        ciclo v2.2 (producto v2.2): con la ruta B2/B1 efectiva se carga B1
+        (modelos/b1_reranker, fine-tune de dominio de bge-reranker-v2-m3)
+        via RerankerBGE(modelo_id=ruta local); si no, se conserva el
+        BAAI/bge-reranker-v2-m3 de v2. Solo se invoca cuando
+        usar_reranker=True y una sola vez por instancia; la ruta BM25 por
+        defecto nunca paga este costo.
 
         Returns:
             RerankerBGE ya cargado (scripts/lib/reranker_bge.py) en el
@@ -858,7 +1003,12 @@ class VinculoCP:
         if self._reranker is None:
             from lib.reranker_bge import RerankerBGE
 
-            self._reranker = RerankerBGE()
+            if self._b2_b1_efectivo:
+                self._reranker = RerankerBGE(
+                    modelo_id=str(self._ruta_reranker_b1)
+                )
+            else:
+                self._reranker = RerankerBGE()
         return self._reranker
 
     # --- ciclo v2 - Fase X: scores BM25 por pasajes y matriz del caso ---
@@ -916,16 +1066,19 @@ class VinculoCP:
         return (scores - minimo) / (maximo - minimo)
 
     def _scores_hibridos(
-        self, scores_bm25: np.ndarray, scores_e5: np.ndarray
+        self, scores_bm25: np.ndarray, scores_denso: np.ndarray
     ) -> np.ndarray:
-        """Combina BM25 y E5 con pesos 0.5/0.5 (min-max por caso).
+        """Combina BM25 y el denso con pesos 0.5/0.5 (min-max por caso).
 
         Port de scores_hibridos de 12_evaluar_vinculo_cp_v2.py (pesos
-        pre-registrados CONFIG['pesos_hibrido']).
+        pre-registrados CONFIG['pesos_hibrido']). La clave "e5" del dict
+        de pesos es el nombre historico del score denso (benchmark v8) y
+        NO se renombra: con la adopcion v2.2 ese score puede venir de B2
+        (normal) o de E5 (fallback) con la misma mecanica.
 
         Args:
             scores_bm25: Scores BM25 del caso (n_articulos,).
-            scores_e5: Scores E5 del caso (n_articulos,).
+            scores_denso: Scores del denso activo (B2 o E5), (n_articulos,).
 
         Returns:
             Array (n_articulos,) de scores hibridos.
@@ -933,7 +1086,7 @@ class VinculoCP:
         pesos = CONFIG["pesos_hibrido"]
         return pesos["bm25"] * self._normalizar_min_max(
             scores_bm25
-        ) + pesos["e5"] * self._normalizar_min_max(scores_e5)
+        ) + pesos["e5"] * self._normalizar_min_max(scores_denso)
 
     @staticmethod
     def _chunkear_texto(texto: str, tokenizer: object) -> list[str]:
@@ -966,9 +1119,14 @@ class VinculoCP:
             inicio = fin - solape
         return chunks
 
-    @staticmethod
-    def _codificar_con_fallback(modelo: object, textos: list[str]) -> np.ndarray:
-        """Codifica textos con E5 reintentando con batch menor ante OOM.
+    def _codificar_con_fallback(
+        self, modelo: object, textos: list[str]
+    ) -> np.ndarray:
+        """Codifica textos con el denso reintentando con batch menor ante OOM.
+
+        ciclo v2.2: el mensaje usa la etiqueta del denso activo (B2 o E5);
+        la mecanica de encode (batch, normalizacion, numpy) es identica a
+        la de v2.
 
         Args:
             modelo: SentenceTransformer cargado en el dispositivo elegido.
@@ -989,8 +1147,8 @@ class VinculoCP:
             )
         except RuntimeError:
             print(
-                "[aviso] OOM en E5: se re-codifica con batch "
-                f"{CONFIG['batch_embedding_oom']} (documentado)"
+                f"[aviso] OOM en {self._etiqueta_denso}: se re-codifica con "
+                f"batch {CONFIG['batch_embedding_oom']} (documentado)"
             )
             return np.asarray(
                 modelo.encode(
@@ -1026,15 +1184,17 @@ class VinculoCP:
         return np.vstack(vectores)
 
     @staticmethod
-    def _scores_e5_caso(
+    def _scores_denso_caso(
         vectores_query: np.ndarray,
         matriz_pasajes: np.ndarray,
         grupos_indices: list[np.ndarray],
     ) -> np.ndarray:
-        """Scores E5 por articulo: max coseno entre chunks de query y pasajes.
+        """Scores del denso por articulo: max coseno entre chunks y pasajes.
 
         Port de scores_e5_caso de 12_evaluar_vinculo_cp_v2.py: max-pooling
-        doble (entre chunks de query y entre pasajes del articulo).
+        doble (entre chunks de query y entre pasajes del articulo). ciclo
+        v2.2: aplica igual a B2 (normal) y a E5 (fallback); la funcion es
+        agnostica al modelo porque solo combina embeddings normalizados.
 
         Args:
             vectores_query: Matriz (n_chunks, dim) de embeddings unitarios.
@@ -1051,11 +1211,11 @@ class VinculoCP:
             scores[i] = maximos_pasajes[indices].max()
         return scores
 
-    @staticmethod
-    def _elegir_dispositivo_e5() -> str:
-        """Elige GPU para E5 solo si hay VRAM libre suficiente (>= 2 GiB).
+    def _elegir_dispositivo_denso(self) -> str:
+        """Elige GPU para el denso si hay VRAM libre suficiente (>= 2 GiB).
 
-        Port de elegir_dispositivo de 12_evaluar_vinculo_cp_v2.py: si CUDA
+        Port de elegir_dispositivo de 12_evaluar_vinculo_cp_v2.py aplicado
+        al denso activo (B2 en la ruta v2.2, E5 en el fallback): si CUDA
         no esta disponible o la VRAM libre es menor que
         CONFIG['vram_minima_gb_e5'] se degrada a CPU con WARNING
         documentado (no bloquea la ejecucion).
@@ -1067,15 +1227,15 @@ class VinculoCP:
 
         if not torch.cuda.is_available():
             print(
-                "[aviso] E5: CUDA no disponible; se codifica en CPU "
-                "(documentado)"
+                f"[aviso] {self._etiqueta_denso}: CUDA no disponible; se "
+                "codifica en CPU (documentado)"
             )
             return "cpu"
         libre, _ = torch.cuda.mem_get_info()
         minimo = int(CONFIG["vram_minima_gb_e5"] * 1024**3)
         if libre < minimo:
             print(
-                "[aviso] E5: VRAM libre insuficiente "
+                f"[aviso] {self._etiqueta_denso}: VRAM libre insuficiente "
                 f"({libre / 1024**3:.1f} GiB < "
                 f"{CONFIG['vram_minima_gb_e5']} GiB); se codifica en CPU "
                 "(documentado)"
@@ -1083,63 +1243,95 @@ class VinculoCP:
             return "cpu"
         return "cuda"
 
-    def _cargar_e5(self) -> tuple:
-        """Carga E5 y la matriz de pasajes de la CP (lazy, Fase X).
+    def _cargar_denso(self) -> tuple:
+        """Carga el denso del hibrido y la matriz de pasajes (lazy).
 
-        Port del pipeline E5 de 12_evaluar_vinculo_cp_v2.py: backbone
-        intfloat/multilingual-e5-base con max_seq_length=512 y pooling
-        mean; los pasajes de la CP se trocean/agregan una sola vez y se
-        cachean en data/cache_e5_cp/ (nueva cache de la Fase X). Solo se
-        invoca con usar_reranker=True.
+        ciclo v2.2 (producto v2.2): con la ruta B2/B1 efectiva el denso es
+        B2 (SentenceTransformer estandar del repositorio local
+        modelos/b2_retriever, max_seq_length=512, prompts VACIOS porque la
+        card de ALIA los declara vacios: paridad con la carga de
+        scripts/12_evaluar_vinculo_cp_v2.py). Si no, se conserva el
+        pipeline E5 legacy de v2 (backbone intfloat/multilingual-e5-base +
+        mean pooling + prefijos "query: "/"passage: "). La mecanica de
+        chunks, agregacion chunk-mean y scoring es identica en ambas rutas.
+        Los pasajes de la CP se agregan una sola vez y se cachean (B2 en
+        data/cache_b2_cp/, E5 en data/cache_e5_cp/). Solo se invoca con
+        usar_reranker=True.
 
         Returns:
             Tupla (modelo SentenceTransformer, tokenizer, matriz_pasajes).
         """
-        if self._e5 is None:
-            dispositivo = self._elegir_dispositivo_e5()
+        if self._denso is None:
+            dispositivo = self._elegir_dispositivo_denso()
             from sentence_transformers import SentenceTransformer
-            from sentence_transformers import models as st_models
 
-            backbone = st_models.Transformer(
-                CONFIG["modelo_e5"], max_seq_length=CONFIG["tamano_chunk"]
-            )
-            pooling = st_models.Pooling(
-                backbone.get_embedding_dimension(), pooling_mode="mean"
-            )
-            modelo = SentenceTransformer(
-                modules=[backbone, pooling], device=dispositivo
-            )
+            if self._b2_b1_efectivo:
+                modelo = SentenceTransformer(
+                    str(self._ruta_embedding_b2), device=dispositivo
+                )
+                modelo.max_seq_length = CONFIG["tamano_chunk"]
+                modelo.eval()
+                self._prefijo_query = ""
+                self._prefijo_pasaje = ""
+                self._clave_cache_denso = CONFIG["ruta_embedding_b2"]
+            else:
+                from sentence_transformers import models as st_models
+
+                backbone = st_models.Transformer(
+                    CONFIG["modelo_e5"], max_seq_length=CONFIG["tamano_chunk"]
+                )
+                pooling = st_models.Pooling(
+                    backbone.get_embedding_dimension(), pooling_mode="mean"
+                )
+                modelo = SentenceTransformer(
+                    modules=[backbone, pooling], device=dispositivo
+                )
+                self._prefijo_query = CONFIG["prefijo_query"]
+                self._prefijo_pasaje = CONFIG["prefijo_pasaje"]
+                self._clave_cache_denso = CONFIG["modelo_e5"]
             tokenizer = modelo.tokenizer
-            matriz_pasajes = self._matriz_pasajes_e5(modelo, tokenizer)
-            self._e5 = (modelo, tokenizer, matriz_pasajes)
+            matriz_pasajes = self._matriz_pasajes_denso(modelo, tokenizer)
+            self._denso = (modelo, tokenizer, matriz_pasajes)
             print(
-                f"[info] E5 {CONFIG['modelo_e5']} cargado en {dispositivo} "
+                f"[info] denso {self._etiqueta_denso} "
+                f"({self._clave_cache_denso}) cargado en {dispositivo} "
                 f"(pasajes {matriz_pasajes.shape})"
             )
-        return self._e5
+        return self._denso
 
-    def _ruta_cache_e5(self) -> Path:
-        """Devuelve la ruta absoluta de la cache de embeddings de pasajes."""
+    def _ruta_cache_denso(self) -> Path:
+        """Ruta de la cache de embeddings de pasajes del denso activo.
+
+        B2 usa data/cache_b2_cp/pasajes_b2_retriever.joblib (cache NUEVA de
+        v2.2: no toca la cache E5 congelada de v2); E5 conserva
+        data/cache_e5_cp/pasajes_e5_base.joblib.
+        """
+        if self._b2_b1_efectivo:
+            return ROOT / CONFIG["dir_cache_b2"] / CONFIG["archivo_cache_b2"]
         return ROOT / CONFIG["dir_cache_e5"] / CONFIG["archivo_cache_e5"]
 
-    def _matriz_pasajes_e5(
+    def _matriz_pasajes_denso(
         self, modelo: object, tokenizer: object
     ) -> np.ndarray:
-        """Carga o construye la matriz de embeddings E5 de los pasajes.
+        """Carga o construye la matriz de embeddings del denso (pasajes).
 
         La cache guarda la matriz AGREGADA (un vector por pasaje, media de
         sus chunks renormalizada) junto con la configuracion que la valida
-        (modelo, chunking y numero de pasajes). El orden de filas es el de
+        (modelo, chunking y numero de pasajes). ciclo v2.2: la clave
+        "modelo" de validacion es la del denso activo (ruta local de B2 o
+        hf id de E5) y la cache vive en el archivo de la ruta activa
+        (data/cache_b2_cp/ o data/cache_e5_cp/), de modo que B2 y E5 nunca
+        comparten ni sobrescriben matrices. El orden de filas es el de
         self._textos_pasajes (identico al del indice BM25).
 
         Args:
             modelo: SentenceTransformer cargado.
-            tokenizer: Tokenizer del modelo E5.
+            tokenizer: Tokenizer del denso activo.
 
         Returns:
             Matriz (n_pasajes, dim) de embeddings unitarios por pasaje.
         """
-        ruta = self._ruta_cache_e5()
+        ruta = self._ruta_cache_denso()
         if self._usar_cache and ruta.is_file():
             try:
                 datos = joblib.load(ruta)
@@ -1147,20 +1339,23 @@ class VinculoCP:
                 datos = None
             if (
                 datos is not None
-                and datos.get("modelo") == CONFIG["modelo_e5"]
+                and datos.get("modelo") == self._clave_cache_denso
                 and datos.get("tamano_chunk") == CONFIG["tamano_chunk"]
                 and datos.get("solape_chunk") == CONFIG["solape_chunk"]
                 and datos.get("n_pasajes") == len(self._textos_pasajes)
                 and np.asarray(datos["matriz"]).shape[0]
                 == len(self._textos_pasajes)
             ):
-                print(f"[info] E5 pasajes: cache cargada de {ruta}")
+                print(
+                    f"[info] {self._etiqueta_denso} pasajes: cache cargada "
+                    f"de {ruta}"
+                )
                 return np.asarray(datos["matriz"])
         matriz = self._construir_matriz_pasajes(modelo, tokenizer)
         ruta.parent.mkdir(parents=True, exist_ok=True)
         joblib.dump(
             {
-                "modelo": CONFIG["modelo_e5"],
+                "modelo": self._clave_cache_denso,
                 "tamano_chunk": CONFIG["tamano_chunk"],
                 "solape_chunk": CONFIG["solape_chunk"],
                 "n_pasajes": len(self._textos_pasajes),
@@ -1168,7 +1363,10 @@ class VinculoCP:
             },
             ruta,
         )
-        print(f"[info] E5 pasajes: cache nueva escrita en {ruta}")
+        print(
+            f"[info] {self._etiqueta_denso} pasajes: cache nueva escrita en "
+            f"{ruta}"
+        )
         return matriz
 
     def _construir_matriz_pasajes(
@@ -1178,7 +1376,7 @@ class VinculoCP:
 
         Args:
             modelo: SentenceTransformer cargado.
-            tokenizer: Tokenizer del modelo E5.
+            tokenizer: Tokenizer del denso activo.
 
         Returns:
             Matriz (n_pasajes, dim) de embeddings unitarios por pasaje.
@@ -1189,15 +1387,18 @@ class VinculoCP:
         ]
         longitudes = [len(grupo) for grupo in grupos]
         textos = [
-            CONFIG["prefijo_pasaje"] + chunk
+            self._prefijo_pasaje + chunk
             for grupo in grupos
             for chunk in grupo
         ]
         embeddings = self._codificar_con_fallback(modelo, textos)
         return self._media_por_grupos(embeddings, longitudes)
 
-    def _scores_query_e5(self, texto: str) -> np.ndarray:
-        """Codifica los chunks de la query y devuelve los scores E5.
+    def _scores_query_denso(self, texto: str) -> np.ndarray:
+        """Codifica los chunks de la query y devuelve los scores del denso.
+
+        ciclo v2.2: el denso activo es B2 (o E5 en el fallback) y los
+        prefijos de query son los de su ruta (vacios en B2).
 
         Args:
             texto: Texto de la sentencia (texto_limpio del corpus).
@@ -1206,39 +1407,43 @@ class VinculoCP:
             Array (n_articulos,) de similitudes maximas por articulo.
 
         Raises:
-            Exception: Propaga el fallo de E5 para que el llamador active
-                el fallback documentado a BM25.
+            Exception: Propaga el fallo del denso para que el llamador
+                active el fallback documentado a BM25.
         """
-        modelo, tokenizer, matriz_pasajes = self._cargar_e5()
+        modelo, tokenizer, matriz_pasajes = self._cargar_denso()
         grupos = self._chunkear_texto(texto, tokenizer) or [""]
-        textos = [CONFIG["prefijo_query"] + chunk for chunk in grupos]
+        textos = [self._prefijo_query + chunk for chunk in grupos]
         embeddings = self._codificar_con_fallback(modelo, textos)
-        return self._scores_e5_caso(embeddings, matriz_pasajes, self._grupos)
+        return self._scores_denso_caso(
+            embeddings, matriz_pasajes, self._grupos
+        )
 
     def _scores_candidatos_rerank(
         self, scores_bm25: np.ndarray, texto: str
     ) -> np.ndarray:
         """Scores de la primera etapa de la ruta reranker (hibrido 0.5/0.5).
 
-        Intenta el hibrido BM25/E5 (ganadora v8); si E5 falla o no esta
-        disponible activa el FALLBACK documentado: candidatos = top-50
-        BM25, con WARNING (el resto del pipeline no cambia).
+        Intenta el hibrido BM25/denso de la ruta activa (B2 con la
+        adopcion v2.2; E5 en el fallback, con la misma mecanica ganadora
+        del v8); si el denso falla o no esta disponible activa el FALLBACK
+        documentado: candidatos = top-50 BM25, con WARNING (el resto del
+        pipeline no cambia).
 
         Args:
             scores_bm25: Scores BM25 del caso (n_articulos,).
-            texto: Texto de la sentencia (query de E5).
+            texto: Texto de la sentencia (query del denso activo).
 
         Returns:
             Array (n_articulos,) que ordena a los candidatos del rerank.
         """
         try:
-            scores_e5 = self._scores_query_e5(texto)
-            return self._scores_hibridos(scores_bm25, scores_e5)
+            scores_denso = self._scores_query_denso(texto)
+            return self._scores_hibridos(scores_bm25, scores_denso)
         except Exception as exc:  # noqa: BLE001 - fallback documentado
             print(
-                f"[aviso] E5 no disponible ({exc}); fallback a candidatos "
-                "top-50 BM25 + reranker con prior alpha="
-                f"{self._alpha_hubs_rerank} (documentado)"
+                f"[aviso] denso {self._etiqueta_denso} no disponible "
+                f"({exc}); fallback a candidatos top-50 BM25 + reranker "
+                f"con prior alpha={self._alpha_hubs_rerank} (documentado)"
             )
             return scores_bm25.copy()
 
@@ -1262,7 +1467,7 @@ class VinculoCP:
 
         Args:
             scores_candidatos: Scores que ordenan a los candidatos
-                (hibrido BM25/E5 o BM25 en el fallback), alineados con
+                (hibrido BM25/denso o BM25 en el fallback), alineados con
                 self._canones.
             matriz_bm25: Matriz (n_chunks, n_pasajes) del caso.
             chunks: Chunks de la ventana de query (filas de la matriz).
@@ -1363,9 +1568,12 @@ class VinculoCP:
         - default (usar_reranker=False): BM25 por pasajes -> prior
           alpha=CONFIG['alpha_hubs_base'] (0.75) -> top-k;
         - reranker (usar_reranker=True): candidatos top-50 del hibrido
-          BM25/E5 -> rerank por chunks con bge-reranker-v2-m3 -> prior
-          alpha=CONFIG['alpha_hubs_rerank'] (1.5) -> top-k. Los scores
-          devueltos son los finales (priorizados).
+          BM25/denso -> rerank por chunks -> prior
+          alpha=CONFIG['alpha_hubs_rerank'] (1.5) -> top-k. ciclo v2.2: el
+          denso es B2 (modelos/b2_retriever) y el cross-encoder es B1
+          (modelos/b1_reranker); si faltan se usa E5/bge con WARNING
+          (fallback documentado). Los scores devueltos son los finales
+          (priorizados).
 
         Args:
             texto: Texto de la sentencia (texto_limpio del corpus cuando

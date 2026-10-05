@@ -15,7 +15,7 @@ El retrieval pasó de F1@5 0.218 (inicio del ciclo) a **F1@5 0.425 / MRR 0.950 /
 La v1 cerró con QA GO sobre 10 casos, pero ese QA verificaba estructura (campos, tipos, tiempos), no la calidad del ranking. El diagnóstico v2 encontró tres problemas:
 
 1. **Índice de la CP contaminado.** El índice BM25 incluía los 112 transitorios y 45 identificadores malformados del tipo "Transitorio ACL01016-N" (códigos del Acto Legislativo 1 de 2016 en la fuente del Senado, no numeración canónica). En la Fase R, el 24,4 % del top-5 eran transitorios (65 de 90 casos) y aparecían 152 identificadores ACL malformados en el top-10.
-2. **Techo de la primera etapa.** Con k=5 y una única etapa de scoring, el recall@5 sobre ~10,7 artículos de gold por sentencia queda estructuralmente capado (0.183).
+2. **Techo de la primera etapa.** Con k=5 y una única etapa de scoring, el recall@5 sobre ~10,7 artículos de silver por sentencia queda estructuralmente capado (0.183).
 3. **Métricas de IR incompletas.** El benchmark v1 no reportaba nDCG@10 (referencia BEIR) ni guardaba el top-10 por caso, lo que impedía auditar reranking y contaminación.
 
 Quedaba una hipótesis de la v1: BETO perdió contra LogReg (0.2042 vs 0.2870) por truncar a 512 tokens (ADR-10); el ciclo probó el remedio de la literatura (chunk-mean).

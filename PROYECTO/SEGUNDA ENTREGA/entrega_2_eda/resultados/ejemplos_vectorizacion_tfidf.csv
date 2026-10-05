@@ -1,0 +1,46 @@
+documento,rank,termino,peso_tfidf
+C-022/2021 (id 14),1,cdpd,0.0498
+C-022/2021 (id 14),2,pg,0.0479
+C-022/2021 (id 14),3,persona titular,0.0478
+C-022/2021 (id 14),4,capacidad legal,0.0468
+C-022/2021 (id 14),5,el cdpd,0.046
+C-022/2021 (id 14),6,top,0.0403
+C-022/2021 (id 14),7,capacidad jurídico,0.0401
+C-022/2021 (id 14),8,sv,0.0378
+C-022/2021 (id 14),9,correa spv,0.0375
+C-022/2021 (id 14),10,como apoyo,0.0373
+C-022/2021 (id 14),11,con discapacidad,0.0366
+C-022/2021 (id 14),12,preferencia de,0.0357
+C-022/2021 (id 14),13,inhabilitación,0.0351
+C-022/2021 (id 14),14,personalidad jurídico,0.0348
+C-022/2021 (id 14),15,ley estatutario,0.0347
+SU-016/2021 (id 19),1,el copey,0.0536
+SU-016/2021 (id 19),2,copey,0.0527
+SU-016/2021 (id 19),3,eci,0.0414
+SU-016/2021 (id 19),4,de desalojo,0.0381
+SU-016/2021 (id 19),5,desalojo,0.0355
+SU-016/2021 (id 19),6,albergue temporal,0.0345
+SU-016/2021 (id 19),7,no reportar,0.0344
+SU-016/2021 (id 19),8,el uariv,0.0337
+SU-016/2021 (id 19),9,el ocupante,0.0336
+SU-016/2021 (id 19),10,uariv,0.0331
+SU-016/2021 (id 19),11,venezolano,0.033
+SU-016/2021 (id 19),12,desalojo en,0.0329
+SU-016/2021 (id 19),13,ocupante,0.0328
+SU-016/2021 (id 19),14,vivienda gratuito,0.0328
+SU-016/2021 (id 19),15,albergue,0.0325
+T-001/2021 (id 0),1,capital salud,0.0652
+T-001/2021 (id 0),2,valero,0.0561
+T-001/2021 (id 0),3,de calle,0.052
+T-001/2021 (id 0),4,salud mental,0.0494
+T-001/2021 (id 0),5,folio historia,0.0463
+T-001/2021 (id 0),6,sustancia psicoactiva,0.046
+T-001/2021 (id 0),7,jhon,0.0459
+T-001/2021 (id 0),8,psicoactiva,0.0458
+T-001/2021 (id 0),9,trastorno mental,0.0457
+T-001/2021 (id 0),10,úlcera,0.0452
+T-001/2021 (id 0),11,pañal,0.0446
+T-001/2021 (id 0),12,pañal desechabl,0.0444
+T-001/2021 (id 0),13,habilitación rehabilitación,0.0436
+T-001/2021 (id 0),14,desechabl,0.0432
+T-001/2021 (id 0),15,el pañal,0.0416

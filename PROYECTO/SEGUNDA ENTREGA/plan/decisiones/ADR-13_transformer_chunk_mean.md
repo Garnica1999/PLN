@@ -37,3 +37,10 @@
     features TF-IDF de documento completo.
   - (-) El incidente de Python 3.14 + DataLoader queda documentado (evidencia en
     `experimentos/*faulthandler_evidencia.log` y crash `*crash_epoch2*`).
+
+---
+
+**ERRATA (2026-10-03, auditoría Fase 1):** la frase de la decisión "v1, con calibración C de
+Fase U" es INCORRECTA. El producto carga LogReg v1 **sin calibrar**
+(`modelos/m4_baseline/logreg_enmascarado.joblib`; `lib/componentes_producto.py:113-114,510-511`),
+coherente con ADR-14 y el QA v2. C no fue adoptada (su IC95 pareado vs v1 cruza 0).
