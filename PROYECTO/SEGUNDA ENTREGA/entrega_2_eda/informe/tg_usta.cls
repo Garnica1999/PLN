@@ -215,7 +215,7 @@
     \includegraphics[scale=0.07]{logo_javeriana.png}\hfill
     \begin{footnotesize}
 	\renewcommand{\tabcolsep}{0pt}
-	\begin{tabular}[b]{c} {\bf Facultad de Ingenier\'ia}\\Maestr\'ia en Inteligencia Artificial \\ Taller 1 - NLP\\ \\[-3ex]\end{tabular}
+	\begin{tabular}[b]{c} {\bf Facultad de Ingenier\'ia}\\Maestr\'ia en Inteligencia Artificial \\ Avance de proyecto 2 - NLP\\ \\[-3ex]\end{tabular}
     \end{footnotesize}  
     \end{center}
     \noindent\\[-2.5em]\rule{\textwidth}{1.5pt}\\[-3.5ex]
@@ -403,8 +403,8 @@
 
 
 \def\ps@mypagehead{        
-      \def\@oddfoot{\hfil\footnotesize\bf{\bf Facultad de Ingenier\'ia}\\ Taller  - NLP\\}%
-      \def\@evenfoot{\hfil\footnotesize\bf {\bf Facultad de Ingenier\'ia}\\ Taller  - NLP\\}%
+      \def\@oddfoot{\hfil\footnotesize\bf{\bf Facultad de Ingenier\'ia}\\ Avance de proyecto 2 - NLP\\}%
+      \def\@evenfoot{\hfil\footnotesize\bf {\bf Facultad de Ingenier\'ia}\\ Avance de proyecto 2 - NLP\\}%
       \def\@evenhead{\bf\thepage\hfil{\footnotesize\leftmark}}%
       \def\@oddhead{\bf{\footnotesize\rightmark}\hfil\thepage}%
       \let\@mkboth\markboth

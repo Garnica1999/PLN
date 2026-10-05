@@ -8,14 +8,18 @@ resultado conserva exactamente su plantilla: fuentes, tamanos, colores,
 geometrias, vinetas y fondos. El deck original de la Entrega 1 NUNCA se
 modifica (solo se lee).
 
-Estructura final (15 diapositivas):
+Estructura final (18 diapositivas):
   01 Portada (Entrega 2)                         -> slide original editada
   02 Contenido (agenda)                          -> slide original editada
-  03-04 Resumen de la Entrega 1 (2)              -> clones de "Depuracion" y
+  03 Objetivo del proyecto                       -> clon de "Estado del arte"
+  04-05 Resumen de la Entrega 1 (2)              -> clones de "Depuracion" y
                                                     "Dimension del corpus"
-  05-06 Estado del arte (2)                      -> clones de "Estado del arte"
-  07-14 Trabajo de la Entrega 2 (8)              -> clones editados + figuras
-  15 Conclusiones y trabajo futuro               -> clon de "Conclusiones"
+  06-07 Estado del arte (2)                      -> clones de "Estado del arte"
+  08 Metodología de trabajo                      -> clon de "Estado del arte"
+                                                    + barra de flujo
+  09-16 Trabajo de la Entrega 2 (8)              -> clones editados + figuras
+  17 Trabajos futuros                            -> clon de "Estado del arte"
+  18 Conclusiones y trabajo futuro               -> clon de "Conclusiones"
 
 Tecnica (misma que scripts/fusionar_deck.py de la Entrega 1):
 - clone_slide: deepcopy del spTree + remapeo de relaciones de imagen.
@@ -25,9 +29,9 @@ Tecnica (misma que scripts/fusionar_deck.py de la Entrega 1):
   figuras originales (sin deformar), con notas y barra de "hallazgo" del
   propio deck.
 
-Contenido: solo cifras verificadas del informe de la Entrega 2
-(informe/main.tex; resultados/metricas_entrega_ii.json); alcance 1992-2021;
-sin resultados de modelos; sin emojis; sin simbolo de seccion.
+Contenido: solo cifras verificadas del informe y los resultados de la
+Entrega 2; alcance 1992-2021; sin resultados de modelos; sin emojis; sin
+simbolo de seccion.
 
 Uso:
     /home/carlos/venv/bin/python presentacion/generar_presentacion.py
@@ -70,6 +74,8 @@ FIG_LEMMA_STEM = FIG_DIR / "fig_lemma_vs_stem.png"
 FIG_LOGODDS = FIG_DIR / "fig_logodds_periodos.png"
 FIG_TFIDF = FIG_DIR / "fig_representacion_tfidf.png"
 FIG_EMBEDDINGS = FIG_DIR / "fig_embeddings_ejemplo.png"
+FIG_ESPECTRO = FIG_DIR / "fig_espectro_frecuencias.png"
+FIG_VENTANA = FIG_DIR / "fig_longitud_vs_ventana.png"
 
 # Indices (0-based) de las slides del deck E1 usadas como plantilla
 IDX_PORTADA = 0
@@ -481,6 +487,35 @@ def add_hallazgo(slide, src_el, texto, top_in=6.45, left_in=0.86, width_in=11.57
     return bar
 
 
+def add_flujo_bar(slide, src_el, linea1, linea2, top_in=6.45, left_in=0.86,
+                  width_in=11.57, height_in=0.86, name="E2-Flujo"):
+    """Clona la barra RESULTADO del deck y escribe el flujo en dos lineas.
+
+    Mantiene el estilo de la barra (rotulo + flechas en el mismo run) y usa un
+    salto a:br explicito para que las dos lineas queden balanceadas.
+    """
+    bar = copy.deepcopy(src_el)
+    set_shape_geom_el(bar, left_in, top_in, width_in, height_in)
+    cnv = bar.find(qn("p:nvSpPr")).find(qn("p:cNvPr"))
+    cnv.set("name", name)
+    txBody = bar.find(qn("p:txBody"))
+    p = txBody.findall(qn("a:p"))[0]
+    runs = p.findall(qn("a:r"))
+    t0 = runs[0].find(qn("a:t"))
+    t0.text = linea1
+    run2 = copy.deepcopy(runs[0])
+    t2 = run2.find(qn("a:t"))
+    t2.text = linea2
+    br = etree.Element(qn("a:br"))
+    rpr = runs[0].find(qn("a:rPr"))
+    if rpr is not None:
+        br.append(copy.deepcopy(rpr))
+    runs[0].addnext(br)
+    br.addnext(run2)
+    slide.shapes._spTree.append(bar)
+    return bar
+
+
 def set_slide_notes(slide, texto):
     """Notas del orador de la diapositiva."""
     slide.notes_slide.notes_text_frame.text = texto
@@ -549,16 +584,46 @@ def set_fila_texto(fila, num, nombre, detalle, rango):
         t.text = rango
 
 
-def update_agenda(slide_agenda):
-    """Reescribe las 5 filas de la agenda con la ruta de la Entrega 2."""
+def update_agenda(slide_agenda, id_base):
+    """Reescribe la agenda con 7 filas (objetivo, resumen, arte, metodo,
+    corpus/EDA, representacion y cierre).
+
+    Las filas 6 y 7 se clonan de la quinta (mismo estilo) y las siete se
+    reposicionan con un paso compacto para que quepan en la diapositiva.
+    """
     filas = agenda_rows(slide_agenda)
     assert len(filas) == 5, "Agenda con {} filas, se esperaban 5".format(len(filas))
+    next_id = id_base
+    while len(filas) < 8:
+        n = len(filas) + 1
+        nueva = [copy.deepcopy(el) for el in filas[-1]]
+        for el in nueva:
+            cnv = el.find(qn("p:nvSpPr")).find(qn("p:cNvPr"))
+            cnv.set("name", cnv.get("name").replace(
+                "Fila{}".format(n - 1), "Fila{}".format(n)))
+            cnv.set("id", str(next_id))
+            next_id += 1
+            slide_agenda.shapes._spTree.append(el)
+        filas.append(nueva)
+    alturas = [0.56, 0.46, 0.54, 0.44]  # rect, num, nombre, rango
+    y0, paso = 2.44, 0.62
+    for i, fila in enumerate(filas):
+        y = y0 + i * paso
+        for el, alto in zip(fila, alturas):
+            xfrm = el.find(qn("p:spPr")).find(qn("a:xfrm"))
+            off = xfrm.find(qn("a:off"))
+            ext = xfrm.find(qn("a:ext"))
+            off.set("y", str(int((y + (alturas[0] - alto) / 2.0) * EMU_IN)))
+            ext.set("cy", str(int(alto * EMU_IN)))
     specs = [
-        ("01", "Resumen de la Entrega 1", "Corpus, limpieza y textometría básica", "03–04"),
-        ("02", "Estado del arte", "Antecedentes y representación", "05–06"),
-        ("03", "Corpus medido y EDA avanzado", "Dataset, n-gramas, diversidad y diacronía", "07–12"),
-        ("04", "Representación y metodología", "TF-IDF, embeddings y propuesta de modelado", "13–14"),
-        ("05", "Conclusiones", "Hallazgos y trabajo futuro", "15"),
+        ("01", "Objetivo del proyecto", "General y objetivos específicos", "03"),
+        ("02", "Resumen de la Entrega 1", "Corpus, limpieza y textometría básica", "04–05"),
+        ("03", "Estado del arte", "Antecedentes y representación", "06–07"),
+        ("04", "Metodología de trabajo", "Fases, reproducibilidad y control de calidad", "08"),
+        ("05", "Corpus medido y EDA avanzado", "Dataset, n-gramas, diversidad y diacronía", "09–14"),
+        ("06", "Representación y metodología", "TF-IDF, embeddings y propuesta de modelado", "15–16"),
+        ("07", "Trabajos futuros", "Validación, modelado y aplicaciones", "17"),
+        ("08", "Conclusiones", "Hallazgos principales", "18"),
     ]
     for fila, (num, nombre, detalle, rango) in zip(filas, specs):
         set_fila_texto(fila, num, nombre, detalle, rango)
@@ -568,11 +633,27 @@ def update_agenda(slide_agenda):
 # Construccion del deck
 # =========================================================================
 def editar_portada(slide):
-    """Portada: agrega la linea de la Entrega 2 y la universidad."""
+    """Portada: titulo del proyecto (con salto antes del periodo), linea de la
+    Entrega 2 y universidad."""
     ph = find_shapes(slide, name_prefix="Google Shape;90")[0]
     txBody = ph._element.find(qn("p:txBody"))
     p0 = txBody.findall(qn("a:p"))[0]
+    r_titulo = p0.findall(qn("a:r"))[0]
+    rpr_titulo = r_titulo.find(qn("a:rPr"))
+    if rpr_titulo is not None:
+        rpr_titulo.set("sz", "4000")
+    t_titulo = r_titulo.find(qn("a:t"))
+    t_titulo.text = ("Análisis y clasificación automática de sentencias de la "
+                     "Corte Constitucional de Colombia")
     nuevo = copy.deepcopy(p0)
+    r_anio = copy.deepcopy(r_titulo)
+    r_anio.find(qn("a:t")).text = "(1992-2021)"
+    br = etree.Element(qn("a:br"))
+    rpr_br = r_titulo.find(qn("a:rPr"))
+    if rpr_br is not None:
+        br.append(copy.deepcopy(rpr_br))
+    r_titulo.addnext(br)
+    br.addnext(r_anio)
     r = nuevo.findall(qn("a:r"))[0]
     rpr = r.find(qn("a:rPr"))
     if rpr is not None:
@@ -606,6 +687,9 @@ def construir():
     # Barra HALLAZGO del deck (se clona en las slides de figuras)
     hallazgo_src = find_shapes(prs.slides[IDX_DIMENSION],
                                name="Rectángulo: esquinas redondeadas 12")[0]._element
+    # Barra RESULTADO del deck (se clona en la slide de metodologia)
+    flujo_src = find_shapes(prs.slides[IDX_DEPURACION],
+                            name="Rectángulo: esquinas redondeadas 12")[0]._element
 
     sid = max_shape_id(prs) + 1
 
@@ -623,9 +707,55 @@ def construir():
     t_rep = clone_slide(prs, IDX_FIG2, sid + 600)            # Representacion
     t_pro = clone_slide(prs, IDX_ARTE, sid + 660)            # Propuesta metodologica
     t_fin = clone_slide(prs, IDX_FINAL, sid + 720)           # Conclusiones
+    t_met = clone_slide(prs, IDX_ARTE, sid + 780)            # Metodologia de trabajo
+    t_obj = clone_slide(prs, IDX_ARTE, sid + 840)            # Objetivo del proyecto
+    t_fut = clone_slide(prs, IDX_ARTE, sid + 900)            # Trabajos futuros
 
     # ---------------------------------------------------------------------
-    # 03. Resumen de la Entrega 1: corpus y depuracion (flujo de tarjetas)
+    # 03. Objetivo del proyecto (bullets)
+    # ---------------------------------------------------------------------
+    replace_band_title(t_obj, "Objetivo del proyecto")
+    replace_subtitle(t_obj, "General y objetivos específicos")
+    cuerpo_obj = find_shapes(t_obj, name="Fusion-D2-Cuerpo")[0]
+    cuerpo_obj.name = "E2-Obj-Cuerpo"
+    objetivos = [
+        ("Objetivo general: ",
+         "desarrollar un sistema de PLN que apoye el análisis y la consulta de "
+         "las sentencias de la Corte Constitucional de Colombia (1992-2021), con "
+         "cuatro componentes: validar la providencia, clasificar su área temática "
+         "constitucional, identificar los artículos de la Constitución que la "
+         "sustentan y situarla en su contexto jurisprudencial."),
+        ("Caracterizar el corpus: ",
+         "textometría, morfología, diversidad léxica y evolución temporal."),
+        ("Construir un conjunto de datos medido: ",
+         "23.742 sentencias con métricas por documento, reproducible y "
+         "documentado."),
+        ("Definir y justificar la representación: ",
+         "TF-IDF sobre lemas como representación principal; embeddings como "
+         "línea comparativa."),
+        ("Proponer la metodología: ",
+         "clasificación por área temática y tipo de providencia como primera "
+         "etapa del sistema, con criterios de evaluación y anti-leakage; el "
+         "vínculo con los artículos de la Constitución y el contexto "
+         "jurisprudencial se abordan como trabajo futuro."),
+    ]
+    replace_body_with_bullets(
+        cuerpo_obj._element.find(qn("p:txBody")),
+        [[{"text": a, "bold": True}, {"text": b}] for a, b in objetivos])
+    fit_body(cuerpo_obj, 0.75, 2.694, 11.42)
+    set_slide_notes(t_obj,
+                    "El objetivo general del proyecto es un sistema de apoyo al "
+                    "analisis y la consulta de la jurisprudencia constitucional, "
+                    "con cuatro componentes: validar la providencia, clasificar su "
+                    "area tematica, identificar los articulos de la Constitucion "
+                    "que la sustentan y situarla en su contexto jurisprudencial. "
+                    "Esta entrega avanza en el corpus caracterizado y medido, la "
+                    "representacion y la metodologia de clasificacion; el vinculo "
+                    "con los articulos y el contexto jurisprudencial se plantean "
+                    "como trabajo futuro.")
+
+    # ---------------------------------------------------------------------
+    # 04. Resumen de la Entrega 1: corpus y depuracion (flujo de tarjetas)
     # ---------------------------------------------------------------------
     replace_band_title(t_e1a, "Resumen de la Entrega 1")
     replace_subtitle(t_e1a, "Corpus: del dato crudo al analizable")
@@ -637,7 +767,7 @@ def construir():
                     "documentos para inspeccion.")
 
     # ---------------------------------------------------------------------
-    # 04. Resumen de la Entrega 1: limpieza y textometria (tarjetas)
+    # 05. Resumen de la Entrega 1: limpieza y textometria (tarjetas)
     # ---------------------------------------------------------------------
     replace_band_title(t_e1b, "Resumen de la Entrega 1")
     replace_subtitle(t_e1b, "Limpieza y textometría básica")
@@ -650,7 +780,7 @@ def construir():
                     "muy extensos y formulaicos.")
 
     # ---------------------------------------------------------------------
-    # 05-06. Estado del arte (2 slides)
+    # 06-07. Estado del arte (2 slides)
     # ---------------------------------------------------------------------
     replace_band_title(t_art1, "Estado del arte")
     replace_subtitle(t_art1, "PLN legal en español y preprocesamiento")
@@ -728,7 +858,49 @@ def construir():
                     "en espanol y de dominio legal.")
 
     # ---------------------------------------------------------------------
-    # 07. Correcciones y modificaciones respecto a la E1
+    # 08. Metodologia de trabajo (bullets + mini-flujo)
+    # ---------------------------------------------------------------------
+    replace_band_title(t_met, "Metodología de trabajo")
+    replace_subtitle(t_met, "Fases, reproducibilidad y control de calidad")
+    cuerpo_met = find_shapes(t_met, name="Fusion-D2-Cuerpo")[0]
+    cuerpo_met.name = "E2-Met-Cuerpo"
+    metod = [
+        ("Proceso por fases con puertas de calidad: ",
+         "comprensión de datos → preparación → análisis → representación; el "
+         "modelado es la siguiente fase."),
+        ("Reproducibilidad y trazabilidad: ",
+         "limpieza documentada por etapas; semilla fija (42); análisis ejecutado "
+         "de punta a punta y sellado (huella digital); cada cifra trazable a su "
+         "fuente."),
+        ("Decisiones con evidencia: ",
+         "criterios pre-registrados (p. ej., granularidad), validación manual de "
+         "colocaciones y alternativas evaluadas y registradas."),
+        ("Control de calidad: ",
+         "revisión de código independiente y auditorías que recomputan las cifras "
+         "desde los datos."),
+        ("Herramientas: ",
+         "Python (pandas, NumPy, spaCy, scikit-learn, pyarrow, NLTK, matplotlib), "
+         "Jupyter y LaTeX."),
+    ]
+    replace_body_with_bullets(
+        cuerpo_met._element.find(qn("p:txBody")),
+        [[{"text": a, "bold": True}, {"text": b}] for a, b in metod])
+    fit_body(cuerpo_met, 0.75, 2.694, 11.42, max_bottom_in=6.3)
+    add_flujo_bar(
+        t_met, flujo_src,
+        "FLUJO  →  Corpus (23.742 sentencias)  →  Limpieza  →  Dataset medido",
+        "→  EDA avanzado  →  Representación  →  Modelado (siguiente fase)")
+    set_slide_notes(t_met,
+                    "Además de los resultados, la entrega documenta el método de "
+                    "trabajo: un proceso por fases con puertas de calidad "
+                    "(comprensión de datos, preparación, análisis y representación), "
+                    "reproducibilidad de punta a punta (limpieza por etapas, semilla "
+                    "fija 42 y análisis ejecutado y sellado) y control de calidad "
+                    "con revisiones y auditorías que recomputan las cifras. El "
+                    "modelado es la siguiente fase.")
+
+    # ---------------------------------------------------------------------
+    # 09. Correcciones y modificaciones respecto a la E1
     # ---------------------------------------------------------------------
     replace_band_title(t_corr, "Trabajo de la Entrega 2")
     replace_subtitle(t_corr, "Correcciones respecto a la Entrega 1")
@@ -736,7 +908,7 @@ def construir():
     cuerpo_corr.name = "E2-Correcciones-Cuerpo"
     cambios = [
         ("Dataset medido: ",
-         "parquet de 23.742 filas × 12 columnas con texto, texto limpio y métricas "
+         "23.742 filas × 12 columnas con texto, texto limpio y métricas "
          "por documento."),
         ("EDA extendido: ",
          "n-gramas, colocaciones, lemas/stems/POS, MTLD, granularidad y recursos "
@@ -767,14 +939,14 @@ def construir():
                     "con la propuesta metodologica.")
 
     # ---------------------------------------------------------------------
-    # 08. Corpus medido (tarjetas de estadisticas)
+    # 10. Corpus medido (tarjetas de estadisticas)
     # ---------------------------------------------------------------------
     replace_band_title(t_cm, "Corpus medido")
     replace_subtitle(t_cm, "Conjunto de datos y verificación")
     cards_cm = {
         "Rectángulo: esquinas redondeadas 1": ["23.742", "FILAS VERIFICADAS"],
         "Rectángulo: esquinas redondeadas 2": ["12", "COLUMNAS"],
-        "Rectángulo: esquinas redondeadas 5": ["1.544,7 MB", "TAMAÑO DEL PARQUET"],
+        "Rectángulo: esquinas redondeadas 5": ["1.544,7 MB", "TAMAÑO DEL CONJUNTO"],
         "Rectángulo: esquinas redondeadas 7": [
             "260.988.316", "PALABRAS CRUDAS",
             "Suma verificada sobre las 23.742 filas"],
@@ -799,49 +971,55 @@ def construir():
         "muestra de 100 filas + diccionario de datos."]])
     hallazgo_cm.name = "E2-CM-Hallazgo"
     set_slide_notes(t_cm,
-                    "El requisito 3 se cumple con un parquet de 23.742 filas por 12 "
-                    "columnas, verificado con aserciones duras: sin nulos, ids unicos "
-                    "y sumas reconciliadas con las cifras canonicas. Se adjuntan "
-                    "muestra estratificada, diccionario de datos y lemas por documento.")
+                    "El requisito 3 se cumple con un conjunto de datos medido de "
+                    "23.742 filas por 12 columnas, verificado con aserciones duras: "
+                    "sin nulos, ids unicos y sumas reconciliadas con las cifras "
+                    "canonicas. Se adjuntan muestra estratificada, diccionario de "
+                    "datos y lemas por documento.")
 
     # ---------------------------------------------------------------------
-    # 09. N-gramas y colocaciones (2 figuras)
+    # 11. N-gramas y espectro de frecuencias (2 figuras)
     # ---------------------------------------------------------------------
     replace_band_title(t_ngr, "EDA avanzado")
-    replace_subtitle(t_ngr, "N-gramas y colocaciones")
+    replace_subtitle(t_ngr, "N-gramas y espectro de frecuencias")
     for shp in list(t_ngr.shapes):
         if shp.shape_type == 13 and shp.width / EMU_IN > 4.0 and shp.height / EMU_IN > 3.0:
             remove_shape(t_ngr, shp)
-    add_fitted_picture(t_ngr, FIG_NGRAMAS, 0.79, 2.9, 5.51, 2.45, "E2-Fig-Ngramas")
-    add_fitted_picture(t_ngr, FIG_COLOCACIONES, 7.09, 2.9, 5.51, 2.45, "E2-Fig-Colocaciones")
+    add_fitted_picture(t_ngr, FIG_NGRAMAS, 0.55, 2.9, 6.05, 2.6, "E2-Fig-Ngramas")
+    add_fitted_picture(t_ngr, FIG_ESPECTRO, 6.73, 2.9, 6.05, 2.6, "E2-Fig-Espectro")
     add_nota(t_ngr, "Top-15 de bigramas y trigramas más frecuentes.",
-             0.79, 5.42, 5.51)
-    add_nota(t_ngr, "Colocaciones por LLR (top-10): LLR 75 % vs frecuencia 55 % y PMI 0 %.",
-             7.09, 5.42, 5.51)
+             0.55, 5.55, 6.05)
+    add_nota(t_ngr, "Espectro de frecuencias: 33,0 % de hápax; el 4,4 % de los "
+                    "tipos concentra el 93,5 % de los tokens.",
+             6.73, 5.55, 6.05)
     add_hallazgo(t_ngr, hallazgo_src,
                  "accion de tutela (344.893) es el trigrama más frecuente; el 82,7 % "
                  "de los trigramas guardados responde al patrón con palabra intermedia "
                  "vacía.", top_in=6.35)
     set_slide_notes(t_ngr,
-                    "El corpus es fuertemente formulaico: accion de tutela domina y la "
-                    "validacion manual de 20 colocaciones da 75 por ciento de formulas "
-                    "validas con la razon de verosimilitud, frente a 55 por ciento de "
-                    "la frecuencia y 0 por ciento del PMI.")
+                    "El corpus es fuertemente formulaico: accion de tutela domina y "
+                    "el 82,7 por ciento de los trigramas guardados son formulas; la "
+                    "validacion manual de 20 colocaciones favorecio la razon de "
+                    "verosimilitud (75 por ciento de formulas validas frente a 55 por "
+                    "ciento de la frecuencia y 0 por ciento del PMI). El espectro de "
+                    "frecuencias confirma la concentracion del vocabulario: un tercio "
+                    "de los tipos son hapax y el 4,4 por ciento de los tipos concentra "
+                    "el 93,5 por ciento de los tokens.")
 
     # ---------------------------------------------------------------------
-    # 10. Diversidad lexica y morfologia (2 figuras)
+    # 12. Diversidad lexica y morfologia (2 figuras)
     # ---------------------------------------------------------------------
     replace_band_title(t_mtl, "EDA avanzado")
     replace_subtitle(t_mtl, "Diversidad léxica y morfología")
     for shp in list(t_mtl.shapes):
         if shp.shape_type == 13 and shp.width / EMU_IN > 4.0 and shp.height / EMU_IN > 3.0:
             remove_shape(t_mtl, shp)
-    add_fitted_picture(t_mtl, FIG_MTLD, 0.79, 2.95, 5.51, 2.35, "E2-Fig-MTLD")
-    add_fitted_picture(t_mtl, FIG_LEMMA_STEM, 7.09, 2.95, 5.51, 2.35, "E2-Fig-LemmaStem")
+    add_fitted_picture(t_mtl, FIG_MTLD, 0.55, 2.9, 6.05, 2.6, "E2-Fig-MTLD")
+    add_fitted_picture(t_mtl, FIG_LEMMA_STEM, 6.73, 2.9, 6.05, 2.6, "E2-Fig-LemmaStem")
     add_nota(t_mtl, "MTLD por tipo de providencia y evolución anual.",
-             0.79, 5.42, 5.51)
+             0.55, 5.55, 6.05)
     add_nota(t_mtl, "Compresión del vocabulario: formas, lemas y stems.",
-             7.09, 5.42, 5.51)
+             6.73, 5.55, 6.05)
     add_hallazgo(t_mtl, hallazgo_src,
                  "MTLD 61,03 (T 61,63 > C 59,54 > SU 58,88); descenso sostenido de "
                  "64,32 a 58,53 entre periodos; lemas 87,3 % y stems 54,2 % del "
@@ -852,7 +1030,7 @@ def construir():
                     "legibilidad: es la base de la representacion TF-IDF.")
 
     # ---------------------------------------------------------------------
-    # 11. Evolucion lexica por periodos (figura ancha)
+    # 13. Evolucion lexica por periodos (figura ancha)
     # ---------------------------------------------------------------------
     replace_band_title(t_log, "EDA avanzado")
     replace_subtitle(t_log, "Evolución léxica por periodos")
@@ -875,7 +1053,7 @@ def construir():
                     "metodo es fiel a la referencia interna y se reporta el limite.")
 
     # ---------------------------------------------------------------------
-    # 12. Recursos lexicos y ontologias (bullets)
+    # 14. Recursos lexicos y ontologias (bullets)
     # ---------------------------------------------------------------------
     replace_band_title(t_rec, "EDA avanzado")
     replace_subtitle(t_rec, "Recursos léxicos y ontologías")
@@ -914,31 +1092,33 @@ def construir():
                     "una taxonomia ligera de la propia Constitucion Politica.")
 
     # ---------------------------------------------------------------------
-    # 13. Representacion: TF-IDF y embeddings (2 figuras)
+    # 15. Representacion: TF-IDF y ventana contextual (2 figuras)
     # ---------------------------------------------------------------------
     replace_band_title(t_rep, "Representación")
-    replace_subtitle(t_rep, "TF-IDF sobre lemas y embeddings")
+    replace_subtitle(t_rep, "TF-IDF sobre lemas y ventana de 512 tokens")
     for shp in list(t_rep.shapes):
         if shp.shape_type == 13 and shp.width / EMU_IN > 4.0 and shp.height / EMU_IN > 3.0:
             remove_shape(t_rep, shp)
-    add_fitted_picture(t_rep, FIG_TFIDF, 0.79, 2.9, 5.51, 2.5, "E2-Fig-TFIDF")
-    add_fitted_picture(t_rep, FIG_EMBEDDINGS, 7.09, 2.9, 5.51, 2.5, "E2-Fig-Embeddings")
+    add_fitted_picture(t_rep, FIG_TFIDF, 0.55, 2.9, 6.05, 2.6, "E2-Fig-TFIDF")
+    add_fitted_picture(t_rep, FIG_VENTANA, 6.73, 2.9, 6.05, 2.6, "E2-Fig-Ventana")
     add_nota(t_rep, "TF-IDF: cola larga del vocabulario y top-15 rasgos de "
-                    "T-001/2021.", 0.79, 5.5, 5.51)
-    add_nota(t_rep, "e5-base: similitud coseno entre cinco documentos (768 "
-                    "dimensiones).", 7.09, 5.5, 5.51)
+                    "T-001/2021.", 0.55, 5.55, 6.05)
+    add_nota(t_rep, "Ventana de 512 tokens: 99,95 % de los documentos la excede "
+                    "(T 99,94 · C 99,95 · SU 100).", 6.73, 5.55, 6.05)
     add_hallazgo(t_rep, hallazgo_src,
-                 "TF-IDF sobre lemas: 23.742 × 100.000, 95,66 % de esparsidad, ajuste "
-                 "en ≈ 212 s; embeddings e5: similitud media 0,899 (0,91-0,92 entre "
-                 "los documentos representativos).", top_in=6.35)
+                 "TF-IDF sobre lemas: 23.742 × 100.000, 95,66 % de esparsidad "
+                 "(ajuste en ≈ 200 s); el 99,95 % de los documentos excede la ventana "
+                 "de 512 tokens de los modelos contextuales.", top_in=6.35)
     set_slide_notes(t_rep,
                     "La representacion principal es TF-IDF sobre lemas: "
                     "interpretable, de bajo costo y con 95,66 por ciento de "
-                    "esparsidad. Los embeddings contextuales se evaluaron como "
-                    "comparacion: capturan cercania semantica con mayor costo.")
+                    "esparsidad. Casi todos los documentos (99,95 por ciento) "
+                    "exceden la ventana de 512 tokens de los modelos contextuales, "
+                    "que exigiran segmentacion; TF-IDF, que representa el documento "
+                    "completo, queda como base de la fase de modelado.")
 
     # ---------------------------------------------------------------------
-    # 14. Propuesta metodologica (bullets)
+    # 16. Propuesta metodologica (bullets)
     # ---------------------------------------------------------------------
     replace_band_title(t_pro, "Propuesta metodológica")
     replace_subtitle(t_pro, "Modelos y criterios de evaluación")
@@ -976,7 +1156,82 @@ def construir():
                     "propuesta metodologica.")
 
     # ---------------------------------------------------------------------
-    # 15. Conclusiones y trabajo futuro (tarjetas)
+    # 17. Trabajos futuros (bullets)
+    # ---------------------------------------------------------------------
+    replace_band_title(t_fut, "Trabajos futuros")
+    replace_subtitle(t_fut, "Del corpus medido a las aplicaciones")
+    cuerpo_fut = find_shapes(t_fut, name="Fusion-D2-Cuerpo")[0]
+    cuerpo_fut.name = "E2-Fut-Cuerpo"
+    futuros = [
+        ("Etiquetas de referencia: ",
+         "validación humana progresiva de las etiquetas automáticas mediante "
+         "anotación experta, hasta consolidar un estándar de referencia.",
+         "Herramientas: etiquetado débil por citas a la Constitución y EuroVoc; "
+         "auditoría con cleanlab; preanotación con ALIA-7B-Instruct."),
+        ("Modelado supervisado: ",
+         "modelos lineales frente a transformer con segmentación por fragmentos, "
+         "calibración de umbrales y análisis de errores por periodo y tipo.",
+         "Herramientas: TF-IDF con regresión logística y SVM lineal (scikit-learn), "
+         "LightGBM; ajuste eficiente con LoRA/PEFT."),
+        ("Recuperación con modelos de lenguaje: ",
+         "búsqueda híbrida (léxica y densa) y reordenamiento de candidatos para "
+         "vincular sentencia y artículos de la Constitución; evaluación con "
+         "referencia graduada.",
+         "Herramientas: híbrida BM25 + embeddings E5, reranker cross-encoder y "
+         "ALIA-7B-Instruct; grafo de citas como señal."),
+        ("Representaciones contextuales: ",
+         "embeddings de dominio legal y agregación por fragmentos como "
+         "complemento de TF-IDF.",
+         "Herramientas: multilingual-e5-base, BETO por documento y por fragmentos; "
+         "variantes legales (ALIA-MrBERT, BGE-M3, ModernBERT legal)."),
+        ("Aplicaciones: ",
+         "resumen de sentencias extensas, contexto jurisprudencial (red de "
+         "precedentes) y análisis diacrónico del vocabulario.",
+         "Herramientas: resumen y consulta con ALIA-7B-Instruct; contexto "
+         "jurisprudencial con retrieval y grafo de citas; diacronía con "
+         "embeddings."),
+    ]
+    txBody_fut = cuerpo_fut._element.find(qn("p:txBody"))
+    clear_paragraphs(txBody_fut)
+    for titulo, descripcion, herramientas in futuros:
+        txBody_fut.append(make_para(
+            [{"text": titulo, "bold": True}, {"text": descripcion}],
+            marL=742950, lvl=1, indent=-285750, bullet=True))
+        txBody_fut.append(make_para(
+            [{"text": herramientas, "italic": True, "sz": 1100, "color": GRIS_TEXTO}],
+            marL=1028700, lvl=1))
+    fit_body(cuerpo_fut, 0.75, 2.694, 11.42)
+    add_nota(t_fut,
+             "Nota: varias de estas herramientas ya están implementadas en el avance "
+             "del proyecto.",
+             0.86, 7.10, 11.57, size=10)
+    set_slide_notes(t_fut,
+                    "El trabajo posterior se plantea como continuidad de lo "
+                    "construido, con herramientas concretas por etapa. Etiquetas: "
+                    "etiquetado debil por citas a la Constitucion y tesauro "
+                    "EuroVoc, auditoria de ruido con cleanlab, preanotacion con "
+                    "ALIA-7B-Instruct y validacion humana progresiva. Modelado "
+                    "supervisado: TF-IDF con regresion logistica y SVM lineal "
+                    "(scikit-learn), LightGBM y ajuste eficiente con LoRA/PEFT. "
+                    "Recuperacion: busqueda hibrida BM25 mas embeddings E5, "
+                    "reranker cross-encoder y ALIA-7B-Instruct, con el grafo de "
+                    "citas como senal. Representaciones contextuales: "
+                    "multilingual-e5-base, BETO por documento y por fragmentos, y "
+                    "variantes legales evaluadas (ALIA-MrBERT, BGE-M3, ModernBERT "
+                    "legal). Aplicaciones: resumen y consulta con ALIA-7B-Instruct, "
+                    "contexto jurisprudencial con retrieval y grafo de citas, y "
+                    "diacronia con embeddings alineados. Varias de estas "
+                    "herramientas ya estan implementadas en el avance del "
+                    "proyecto, de modo que cada frente continua sobre componentes "
+                    "ya probados; no se reportan cifras de rendimiento: es trabajo "
+                    "en curso. El sustento es doble: el estado del arte respalda "
+                    "cada frente y los datos del corpus los justifican (99,95 por "
+                    "ciento de los documentos excede los 512 tokens; T concentra "
+                    "el 72,02 por ciento; el 97,17 por ciento de las sentencias "
+                    "tiene marcador tematico).")
+
+    # ---------------------------------------------------------------------
+    # 18. Conclusiones y trabajo futuro (tarjetas)
     # ---------------------------------------------------------------------
     rotulo_fin = find_shapes(t_fin, name="CuadroTexto 1")[0]
     rewrite_paragraphs(rotulo_fin, [["RESULTADOS DE LA SEGUNDA ENTREGA"]])
@@ -1021,15 +1276,16 @@ def construir():
     # Portada y agenda (slides originales conservadas)
     # ---------------------------------------------------------------------
     editar_portada(portada)
-    update_agenda(agenda)
+    update_agenda(agenda, max_shape_id(prs) + 1)
     set_slide_notes(portada,
                     "Presentamos la Entrega 2: EDA avanzado, representacion de "
                     "textos y propuesta metodologica del proyecto de PLN sobre "
                     "jurisprudencia constitucional colombiana.")
     set_slide_notes(agenda,
-                    "La ruta de la presentacion: resumen de la Entrega 1, estado del "
-                    "arte, el trabajo de la Entrega 2 y las conclusiones con el "
-                    "trabajo futuro.")
+                    "La ruta de la presentacion: objetivo del proyecto, resumen de "
+                    "la Entrega 1, estado del arte, la metodologia de trabajo, el "
+                    "trabajo de la Entrega 2, los trabajos futuros y las "
+                    "conclusiones.")
 
     # ---------------------------------------------------------------------
     # Borrar las slides originales que no se conservan y reordenar
@@ -1038,9 +1294,10 @@ def construir():
     for s in originales:
         if s not in conservadas:
             delete_slide(prs, s)
-    orden = [portada, agenda, t_e1a, t_e1b, t_art1, t_art2,
-             t_corr, t_cm, t_ngr, t_mtl, t_log, t_rec, t_rep, t_pro, t_fin]
-    assert len(orden) == 15, "Orden final con {} slides".format(len(orden))
+    orden = [portada, agenda, t_obj, t_e1a, t_e1b, t_art1, t_art2, t_met,
+             t_corr, t_cm, t_ngr, t_mtl, t_log, t_rec, t_rep, t_pro, t_fut,
+             t_fin]
+    assert len(orden) == 18, "Orden final con {} slides".format(len(orden))
     reorder_slides(prs, orden)
 
     prs.save(str(OUT_FILE))
@@ -1055,7 +1312,7 @@ def verificar():
     """Reabre el deck: conteos, imagenes y avisos de desborde de cajas E2-*."""
     prs = Presentation(str(OUT_FILE))
     n = len(prs.slides)
-    assert n == 15, "Se esperaban 15 slides, hay {}".format(n)
+    assert n == 18, "Se esperaban 18 slides, hay {}".format(n)
     print("\nVERIFICACION: {} slides".format(n))
     total_pics = 0
     problemas = []
@@ -1098,7 +1355,13 @@ def verificar():
     for clave in ["Dataset medido verificado",
                   "Suma verificada sobre las 23.742 filas",
                   "01  Validar etiquetas temáticas con expertos",
-                  "06  Documentar y publicar el corpus medido"]:
+                  "06  Documentar y publicar el corpus medido",
+                  "Metodología de trabajo",
+                  "Modelado (siguiente fase)",
+                  "Objetivo del proyecto",
+                  "contexto jurisprudencial",
+                  "Trabajos futuros",
+                  "segmentación por fragmentos"]:
         assert clave in todo, "Falta texto esperado en el deck: {!r}".format(clave)
     print("  aserciones de contenido: OK")
     return n, total_pics, problemas
