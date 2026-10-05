@@ -14,7 +14,7 @@
 - **Evidencia (todos los JSON en `resultados/`, registro completo en `REGISTRO_EXPERIMENTOS.md`):**
   | Exp | Hipótesis | Resultado 90 casos | Gate |
   |---|---|---|---|
-  | A1 | El diagnóstico con IC/recall revela techos | Recall candidatos@100 0.723; techo gold F1@5 ≤0.649; hubs aportan ~0.11 nDCG | Evidencia (sin adopción) |
+  | A1 | El diagnóstico con IC/recall revela techos | Recall candidatos@100 0.723; techo silver F1@5 ≤0.649; hubs aportan ~0.11 nDCG | Evidencia (sin adopción) |
   | A2 | Embeddings legales ES superan a E5 | ALIA: F1@10 +0.017 [+0.001,+0.031] ✓ / nDCG@10 +0.009 [−0.007,+0.024] ✗; modernbert solo sin hubs; BGE-M3 empata | **No** (norte no significativa) |
   | A3 | Reranker legal ES o RRF mejoran a bge | SINAI: −0.055 nDCG@10 (con hubs, p<0.01) ✗; RRF de rangos −0.020 ✗ | **No** (negativo) |
   | A4 | Otra fusión o más profundidad mejoran | w03/w07/rrf1a empatan con w05 (IC cruza 0); top-200 pierde; top-50 gana sin hubs pero empata con hubs (ya era default) | **No** (w05/top-50 se mantienen) |

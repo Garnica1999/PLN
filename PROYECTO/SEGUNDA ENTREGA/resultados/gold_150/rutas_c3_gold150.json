@@ -1,0 +1,4633 @@
+{
+  "meta": {
+    "fecha": "2026-10-05T05:21:55",
+    "script": "scripts/32_pack_gold_150.py",
+    "descripcion": "top-10 de la ruta del producto v2.2 por caso C3 (evaluacion futura)",
+    "componentes": "VinculoCP(usar_reranker=True): hibrido 0.5*BM25+0.5*B2, rerank B1 por chunks, prior de hubs alpha=1.5, k=10; numeros normalizados",
+    "k": 10,
+    "semilla": 42,
+    "n_casos": 110
+  },
+  "por_id": {
+    "C-158/22": [
+      {
+        "numero": "241",
+        "score": 2.3307
+      },
+      {
+        "numero": "48",
+        "score": 1.2102
+      },
+      {
+        "numero": "9",
+        "score": 1.1404
+      },
+      {
+        "numero": "243",
+        "score": 1.1062
+      },
+      {
+        "numero": "2",
+        "score": 1.036
+      },
+      {
+        "numero": "1",
+        "score": 1.0139
+      },
+      {
+        "numero": "4",
+        "score": 0.7909
+      },
+      {
+        "numero": "35",
+        "score": 0.7075
+      },
+      {
+        "numero": "150",
+        "score": 0.6664
+      },
+      {
+        "numero": "359",
+        "score": 0.6182
+      }
+    ],
+    "C-161/22": [
+      {
+        "numero": "241",
+        "score": 2.3372
+      },
+      {
+        "numero": "243",
+        "score": 1.1062
+      },
+      {
+        "numero": "158",
+        "score": 1.0111
+      },
+      {
+        "numero": "338",
+        "score": 0.9933
+      },
+      {
+        "numero": "200",
+        "score": 0.9831
+      },
+      {
+        "numero": "359",
+        "score": 0.9647
+      },
+      {
+        "numero": "229",
+        "score": 0.9404
+      },
+      {
+        "numero": "4",
+        "score": 0.7992
+      },
+      {
+        "numero": "346",
+        "score": 0.687
+      },
+      {
+        "numero": "95",
+        "score": 0.5249
+      }
+    ],
+    "C-164/22": [
+      {
+        "numero": "241",
+        "score": 2.3399
+      },
+      {
+        "numero": "1",
+        "score": 1.3343
+      },
+      {
+        "numero": "16",
+        "score": 1.1517
+      },
+      {
+        "numero": "95",
+        "score": 1.0941
+      },
+      {
+        "numero": "243",
+        "score": 1.0905
+      },
+      {
+        "numero": "2",
+        "score": 1.0638
+      },
+      {
+        "numero": "11",
+        "score": 0.9141
+      },
+      {
+        "numero": "4",
+        "score": 0.809
+      },
+      {
+        "numero": "35",
+        "score": 0.7302
+      },
+      {
+        "numero": "49",
+        "score": 0.6875
+      }
+    ],
+    "C-259/22": [
+      {
+        "numero": "241",
+        "score": 2.4219
+      },
+      {
+        "numero": "53",
+        "score": 1.2358
+      },
+      {
+        "numero": "9",
+        "score": 1.1766
+      },
+      {
+        "numero": "48",
+        "score": 1.0482
+      },
+      {
+        "numero": "1",
+        "score": 1.0364
+      },
+      {
+        "numero": "244",
+        "score": 1.0248
+      },
+      {
+        "numero": "363",
+        "score": 0.8878
+      },
+      {
+        "numero": "4",
+        "score": 0.8108
+      },
+      {
+        "numero": "35",
+        "score": 0.7282
+      },
+      {
+        "numero": "49",
+        "score": 0.6967
+      }
+    ],
+    "C-367/22": [
+      {
+        "numero": "241",
+        "score": 2.3978
+      },
+      {
+        "numero": "29",
+        "score": 1.3935
+      },
+      {
+        "numero": "2",
+        "score": 1.1881
+      },
+      {
+        "numero": "9",
+        "score": 1.1813
+      },
+      {
+        "numero": "8",
+        "score": 0.9693
+      },
+      {
+        "numero": "80",
+        "score": 0.9658
+      },
+      {
+        "numero": "79",
+        "score": 0.9138
+      },
+      {
+        "numero": "95",
+        "score": 0.9088
+      },
+      {
+        "numero": "4",
+        "score": 0.829
+      },
+      {
+        "numero": "35",
+        "score": 0.7506
+      }
+    ],
+    "T-015/22": [
+      {
+        "numero": "241",
+        "score": 2.3202
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "1",
+        "score": 1.5459
+      },
+      {
+        "numero": "2",
+        "score": 1.3809
+      },
+      {
+        "numero": "9",
+        "score": 1.1342
+      },
+      {
+        "numero": "29",
+        "score": 0.8111
+      },
+      {
+        "numero": "4",
+        "score": 0.7895
+      },
+      {
+        "numero": "35",
+        "score": 0.7066
+      },
+      {
+        "numero": "87",
+        "score": 0.6336
+      },
+      {
+        "numero": "3",
+        "score": 0.623
+      }
+    ],
+    "T-051/22": [
+      {
+        "numero": "241",
+        "score": 2.3309
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "44",
+        "score": 1.1633
+      },
+      {
+        "numero": "2",
+        "score": 1.0687
+      },
+      {
+        "numero": "29",
+        "score": 0.9048
+      },
+      {
+        "numero": "95",
+        "score": 0.89
+      },
+      {
+        "numero": "4",
+        "score": 0.8016
+      },
+      {
+        "numero": "5",
+        "score": 0.6949
+      },
+      {
+        "numero": "6",
+        "score": 0.6749
+      },
+      {
+        "numero": "113",
+        "score": 0.6706
+      }
+    ],
+    "T-053/22": [
+      {
+        "numero": "241",
+        "score": 2.3593
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "2",
+        "score": 1.353
+      },
+      {
+        "numero": "9",
+        "score": 1.1785
+      },
+      {
+        "numero": "366",
+        "score": 1.0295
+      },
+      {
+        "numero": "1",
+        "score": 1.0281
+      },
+      {
+        "numero": "63",
+        "score": 0.9817
+      },
+      {
+        "numero": "48",
+        "score": 0.9772
+      },
+      {
+        "numero": "4",
+        "score": 0.8212
+      },
+      {
+        "numero": "49",
+        "score": 0.8168
+      }
+    ],
+    "T-073/22": [
+      {
+        "numero": "241",
+        "score": 2.3069
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "1",
+        "score": 1.0168
+      },
+      {
+        "numero": "82",
+        "score": 0.9638
+      },
+      {
+        "numero": "53",
+        "score": 0.8008
+      },
+      {
+        "numero": "83",
+        "score": 0.6222
+      },
+      {
+        "numero": "3",
+        "score": 0.5648
+      },
+      {
+        "numero": "63",
+        "score": 0.5519
+      },
+      {
+        "numero": "333",
+        "score": 0.5155
+      },
+      {
+        "numero": "49",
+        "score": 0.4921
+      }
+    ],
+    "T-127/22": [
+      {
+        "numero": "241",
+        "score": 2.3757
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "13",
+        "score": 1.5768
+      },
+      {
+        "numero": "44",
+        "score": 1.1905
+      },
+      {
+        "numero": "9",
+        "score": 1.1477
+      },
+      {
+        "numero": "2",
+        "score": 1.0077
+      },
+      {
+        "numero": "49",
+        "score": 0.9971
+      },
+      {
+        "numero": "48",
+        "score": 0.8445
+      },
+      {
+        "numero": "50",
+        "score": 0.7335
+      },
+      {
+        "numero": "35",
+        "score": 0.6977
+      }
+    ],
+    "T-131/22": [
+      {
+        "numero": "241",
+        "score": 2.3019
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "29",
+        "score": 1.131
+      },
+      {
+        "numero": "229",
+        "score": 0.9406
+      },
+      {
+        "numero": "230",
+        "score": 0.7952
+      },
+      {
+        "numero": "6",
+        "score": 0.6619
+      },
+      {
+        "numero": "243",
+        "score": 0.5937
+      },
+      {
+        "numero": "23",
+        "score": 0.527
+      },
+      {
+        "numero": "32",
+        "score": 0.5069
+      },
+      {
+        "numero": "48",
+        "score": 0.4614
+      }
+    ],
+    "T-139/22": [
+      {
+        "numero": "241",
+        "score": 2.3246
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "13",
+        "score": 1.1332
+      },
+      {
+        "numero": "2",
+        "score": 1.0357
+      },
+      {
+        "numero": "1",
+        "score": 1.0266
+      },
+      {
+        "numero": "42",
+        "score": 0.9857
+      },
+      {
+        "numero": "67",
+        "score": 0.9421
+      },
+      {
+        "numero": "95",
+        "score": 0.902
+      },
+      {
+        "numero": "44",
+        "score": 0.793
+      },
+      {
+        "numero": "64",
+        "score": 0.735
+      }
+    ],
+    "T-228/22": [
+      {
+        "numero": "241",
+        "score": 2.3397
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "9",
+        "score": 1.1511
+      },
+      {
+        "numero": "53",
+        "score": 0.8835
+      },
+      {
+        "numero": "48",
+        "score": 0.81
+      },
+      {
+        "numero": "35",
+        "score": 0.7096
+      },
+      {
+        "numero": "5",
+        "score": 0.6895
+      },
+      {
+        "numero": "25",
+        "score": 0.6481
+      },
+      {
+        "numero": "49",
+        "score": 0.5884
+      },
+      {
+        "numero": "42",
+        "score": 0.5522
+      }
+    ],
+    "T-249/22": [
+      {
+        "numero": "241",
+        "score": 2.3073
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "13",
+        "score": 1.5694
+      },
+      {
+        "numero": "29",
+        "score": 1.2576
+      },
+      {
+        "numero": "9",
+        "score": 1.1447
+      },
+      {
+        "numero": "2",
+        "score": 1.0517
+      },
+      {
+        "numero": "46",
+        "score": 1.0505
+      },
+      {
+        "numero": "1",
+        "score": 1.0067
+      },
+      {
+        "numero": "48",
+        "score": 0.9501
+      },
+      {
+        "numero": "44",
+        "score": 0.8302
+      }
+    ],
+    "T-274/22": [
+      {
+        "numero": "241",
+        "score": 2.3709
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "9",
+        "score": 1.1637
+      },
+      {
+        "numero": "1",
+        "score": 1.0125
+      },
+      {
+        "numero": "48",
+        "score": 0.9233
+      },
+      {
+        "numero": "53",
+        "score": 0.8196
+      },
+      {
+        "numero": "35",
+        "score": 0.7279
+      },
+      {
+        "numero": "49",
+        "score": 0.5637
+      },
+      {
+        "numero": "32",
+        "score": 0.4962
+      },
+      {
+        "numero": "93",
+        "score": 0.485
+      }
+    ],
+    "T-282/22": [
+      {
+        "numero": "241",
+        "score": 2.342
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "44",
+        "score": 0.9412
+      },
+      {
+        "numero": "35",
+        "score": 0.7146
+      },
+      {
+        "numero": "50",
+        "score": 0.6706
+      },
+      {
+        "numero": "49",
+        "score": 0.6055
+      },
+      {
+        "numero": "42",
+        "score": 0.5686
+      },
+      {
+        "numero": "95",
+        "score": 0.5115
+      },
+      {
+        "numero": "32",
+        "score": 0.5079
+      },
+      {
+        "numero": "48",
+        "score": 0.485
+      }
+    ],
+    "T-293/22": [
+      {
+        "numero": "241",
+        "score": 2.3458
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "13",
+        "score": 1.3168
+      },
+      {
+        "numero": "9",
+        "score": 1.1462
+      },
+      {
+        "numero": "2",
+        "score": 1.037
+      },
+      {
+        "numero": "1",
+        "score": 1.0089
+      },
+      {
+        "numero": "53",
+        "score": 0.8746
+      },
+      {
+        "numero": "44",
+        "score": 0.8521
+      },
+      {
+        "numero": "95",
+        "score": 0.8332
+      },
+      {
+        "numero": "25",
+        "score": 0.8323
+      }
+    ],
+    "T-300/22": [
+      {
+        "numero": "241",
+        "score": 2.3122
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "13",
+        "score": 1.5618
+      },
+      {
+        "numero": "9",
+        "score": 1.5028
+      },
+      {
+        "numero": "4",
+        "score": 1.254
+      },
+      {
+        "numero": "48",
+        "score": 1.2002
+      },
+      {
+        "numero": "49",
+        "score": 1.1834
+      },
+      {
+        "numero": "2",
+        "score": 1.0823
+      },
+      {
+        "numero": "100",
+        "score": 1.0148
+      },
+      {
+        "numero": "93",
+        "score": 0.8951
+      }
+    ],
+    "T-319/22": [
+      {
+        "numero": "241",
+        "score": 2.3096
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "53",
+        "score": 0.8801
+      },
+      {
+        "numero": "48",
+        "score": 0.8606
+      },
+      {
+        "numero": "25",
+        "score": 0.763
+      },
+      {
+        "numero": "35",
+        "score": 0.7057
+      },
+      {
+        "numero": "49",
+        "score": 0.6011
+      },
+      {
+        "numero": "44",
+        "score": 0.5553
+      },
+      {
+        "numero": "42",
+        "score": 0.5489
+      },
+      {
+        "numero": "23",
+        "score": 0.5234
+      }
+    ],
+    "T-361/22": [
+      {
+        "numero": "241",
+        "score": 2.3914
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "13",
+        "score": 1.5847
+      },
+      {
+        "numero": "4",
+        "score": 1.2318
+      },
+      {
+        "numero": "9",
+        "score": 1.2041
+      },
+      {
+        "numero": "2",
+        "score": 1.0454
+      },
+      {
+        "numero": "100",
+        "score": 0.9612
+      },
+      {
+        "numero": "49",
+        "score": 0.7364
+      },
+      {
+        "numero": "35",
+        "score": 0.6991
+      },
+      {
+        "numero": "96",
+        "score": 0.5526
+      }
+    ],
+    "T-363/22": [
+      {
+        "numero": "241",
+        "score": 2.3186
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "9",
+        "score": 1.1369
+      },
+      {
+        "numero": "44",
+        "score": 1.0373
+      },
+      {
+        "numero": "150",
+        "score": 0.6118
+      },
+      {
+        "numero": "42",
+        "score": 0.5589
+      },
+      {
+        "numero": "40",
+        "score": 0.5577
+      },
+      {
+        "numero": "48",
+        "score": 0.5482
+      },
+      {
+        "numero": "250",
+        "score": 0.5229
+      },
+      {
+        "numero": "95",
+        "score": 0.5144
+      }
+    ],
+    "T-450/22": [
+      {
+        "numero": "241",
+        "score": 2.3288
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "9",
+        "score": 1.139
+      },
+      {
+        "numero": "15",
+        "score": 1.0538
+      },
+      {
+        "numero": "248",
+        "score": 0.9845
+      },
+      {
+        "numero": "150",
+        "score": 0.6593
+      },
+      {
+        "numero": "232",
+        "score": 0.6189
+      },
+      {
+        "numero": "42",
+        "score": 0.5522
+      },
+      {
+        "numero": "93",
+        "score": 0.543
+      },
+      {
+        "numero": "250",
+        "score": 0.5171
+      }
+    ],
+    "C-108/23": [
+      {
+        "numero": "241",
+        "score": 2.3172
+      },
+      {
+        "numero": "13",
+        "score": 1.6474
+      },
+      {
+        "numero": "9",
+        "score": 1.1461
+      },
+      {
+        "numero": "2",
+        "score": 1.0593
+      },
+      {
+        "numero": "47",
+        "score": 1.0566
+      },
+      {
+        "numero": "1",
+        "score": 1.0268
+      },
+      {
+        "numero": "4",
+        "score": 0.7945
+      },
+      {
+        "numero": "5",
+        "score": 0.676
+      },
+      {
+        "numero": "93",
+        "score": 0.619
+      },
+      {
+        "numero": "243",
+        "score": 0.6064
+      }
+    ],
+    "C-137/23": [
+      {
+        "numero": "241",
+        "score": 2.5
+      },
+      {
+        "numero": "4",
+        "score": 0.8962
+      },
+      {
+        "numero": "35",
+        "score": 0.8391
+      },
+      {
+        "numero": "333",
+        "score": 0.8222
+      },
+      {
+        "numero": "150",
+        "score": 0.7893
+      },
+      {
+        "numero": "93",
+        "score": 0.7645
+      },
+      {
+        "numero": "38",
+        "score": 0.694
+      },
+      {
+        "numero": "48",
+        "score": 0.5808
+      },
+      {
+        "numero": "20",
+        "score": 0.5658
+      },
+      {
+        "numero": "365",
+        "score": 0.5636
+      }
+    ],
+    "C-363/23": [
+      {
+        "numero": "241",
+        "score": 2.3249
+      },
+      {
+        "numero": "13",
+        "score": 1.6139
+      },
+      {
+        "numero": "2",
+        "score": 1.4469
+      },
+      {
+        "numero": "338",
+        "score": 1.0458
+      },
+      {
+        "numero": "287",
+        "score": 1.0001
+      },
+      {
+        "numero": "315",
+        "score": 0.9794
+      },
+      {
+        "numero": "359",
+        "score": 0.9263
+      },
+      {
+        "numero": "4",
+        "score": 0.8335
+      },
+      {
+        "numero": "363",
+        "score": 0.8007
+      },
+      {
+        "numero": "95",
+        "score": 0.6593
+      }
+    ],
+    "C-435/23": [
+      {
+        "numero": "241",
+        "score": 2.3739
+      },
+      {
+        "numero": "161",
+        "score": 1.024
+      },
+      {
+        "numero": "333",
+        "score": 0.8735
+      },
+      {
+        "numero": "147",
+        "score": 0.6946
+      },
+      {
+        "numero": "40",
+        "score": 0.6645
+      },
+      {
+        "numero": "157",
+        "score": 0.6073
+      },
+      {
+        "numero": "95",
+        "score": 0.5793
+      },
+      {
+        "numero": "158",
+        "score": 0.5715
+      },
+      {
+        "numero": "48",
+        "score": 0.5493
+      },
+      {
+        "numero": "146",
+        "score": 0.5313
+      }
+    ],
+    "T-002/23": [
+      {
+        "numero": "241",
+        "score": 2.3316
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "2",
+        "score": 1.503
+      },
+      {
+        "numero": "29",
+        "score": 0.9248
+      },
+      {
+        "numero": "6",
+        "score": 0.6705
+      },
+      {
+        "numero": "49",
+        "score": 0.5639
+      },
+      {
+        "numero": "44",
+        "score": 0.5358
+      },
+      {
+        "numero": "15",
+        "score": 0.5267
+      },
+      {
+        "numero": "95",
+        "score": 0.5249
+      },
+      {
+        "numero": "93",
+        "score": 0.5242
+      }
+    ],
+    "T-018/23": [
+      {
+        "numero": "241",
+        "score": 2.3541
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "230",
+        "score": 1.03
+      },
+      {
+        "numero": "29",
+        "score": 1.0094
+      },
+      {
+        "numero": "83",
+        "score": 0.7847
+      },
+      {
+        "numero": "35",
+        "score": 0.7289
+      },
+      {
+        "numero": "150",
+        "score": 0.6113
+      },
+      {
+        "numero": "229",
+        "score": 0.577
+      },
+      {
+        "numero": "93",
+        "score": 0.5403
+      },
+      {
+        "numero": "122",
+        "score": 0.4816
+      }
+    ],
+    "T-026/23": [
+      {
+        "numero": "241",
+        "score": 2.3075
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "2",
+        "score": 1.0392
+      },
+      {
+        "numero": "1",
+        "score": 1.0046
+      },
+      {
+        "numero": "53",
+        "score": 0.8346
+      },
+      {
+        "numero": "15",
+        "score": 0.7484
+      },
+      {
+        "numero": "35",
+        "score": 0.7091
+      },
+      {
+        "numero": "5",
+        "score": 0.675
+      },
+      {
+        "numero": "46",
+        "score": 0.5654
+      },
+      {
+        "numero": "95",
+        "score": 0.5564
+      }
+    ],
+    "T-073/23": [
+      {
+        "numero": "241",
+        "score": 2.3512
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "33",
+        "score": 0.9845
+      },
+      {
+        "numero": "35",
+        "score": 0.7218
+      },
+      {
+        "numero": "150",
+        "score": 0.6401
+      },
+      {
+        "numero": "93",
+        "score": 0.5724
+      },
+      {
+        "numero": "122",
+        "score": 0.4839
+      },
+      {
+        "numero": "62",
+        "score": 0.4334
+      },
+      {
+        "numero": "116",
+        "score": 0.4127
+      },
+      {
+        "numero": "313",
+        "score": 0.3659
+      }
+    ],
+    "T-089/23": [
+      {
+        "numero": "241",
+        "score": 2.3289
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "13",
+        "score": 1.3239
+      },
+      {
+        "numero": "48",
+        "score": 1.1845
+      },
+      {
+        "numero": "2",
+        "score": 1.0303
+      },
+      {
+        "numero": "1",
+        "score": 1.0031
+      },
+      {
+        "numero": "53",
+        "score": 0.8186
+      },
+      {
+        "numero": "25",
+        "score": 0.7476
+      },
+      {
+        "numero": "44",
+        "score": 0.7251
+      },
+      {
+        "numero": "5",
+        "score": 0.6675
+      }
+    ],
+    "T-115/23": [
+      {
+        "numero": "241",
+        "score": 2.3472
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "9",
+        "score": 1.1424
+      },
+      {
+        "numero": "366",
+        "score": 0.9587
+      },
+      {
+        "numero": "88",
+        "score": 0.7821
+      },
+      {
+        "numero": "49",
+        "score": 0.7643
+      },
+      {
+        "numero": "44",
+        "score": 0.5447
+      },
+      {
+        "numero": "150",
+        "score": 0.5267
+      },
+      {
+        "numero": "93",
+        "score": 0.5264
+      },
+      {
+        "numero": "95",
+        "score": 0.5129
+      }
+    ],
+    "T-144/23": [
+      {
+        "numero": "241",
+        "score": 2.3305
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "9",
+        "score": 1.1501
+      },
+      {
+        "numero": "44",
+        "score": 1.0752
+      },
+      {
+        "numero": "13",
+        "score": 1.0549
+      },
+      {
+        "numero": "2",
+        "score": 1.0417
+      },
+      {
+        "numero": "1",
+        "score": 1.0074
+      },
+      {
+        "numero": "42",
+        "score": 0.9458
+      },
+      {
+        "numero": "29",
+        "score": 0.9021
+      },
+      {
+        "numero": "15",
+        "score": 0.8232
+      }
+    ],
+    "T-187/23": [
+      {
+        "numero": "241",
+        "score": 2.3678
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "9",
+        "score": 1.1491
+      },
+      {
+        "numero": "48",
+        "score": 0.8728
+      },
+      {
+        "numero": "53",
+        "score": 0.8052
+      },
+      {
+        "numero": "4",
+        "score": 0.783
+      },
+      {
+        "numero": "35",
+        "score": 0.7163
+      },
+      {
+        "numero": "5",
+        "score": 0.6751
+      },
+      {
+        "numero": "46",
+        "score": 0.6263
+      },
+      {
+        "numero": "243",
+        "score": 0.5434
+      }
+    ],
+    "T-283/23": [
+      {
+        "numero": "241",
+        "score": 2.3566
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "44",
+        "score": 1.1517
+      },
+      {
+        "numero": "5",
+        "score": 1.1288
+      },
+      {
+        "numero": "2",
+        "score": 1.0533
+      },
+      {
+        "numero": "14",
+        "score": 1.0375
+      },
+      {
+        "numero": "16",
+        "score": 0.9807
+      },
+      {
+        "numero": "150",
+        "score": 0.5861
+      },
+      {
+        "numero": "95",
+        "score": 0.5646
+      },
+      {
+        "numero": "40",
+        "score": 0.5416
+      }
+    ],
+    "T-294/23": [
+      {
+        "numero": "241",
+        "score": 2.348
+      },
+      {
+        "numero": "86",
+        "score": 2.2105
+      },
+      {
+        "numero": "2",
+        "score": 1.4146
+      },
+      {
+        "numero": "209",
+        "score": 1.1535
+      },
+      {
+        "numero": "23",
+        "score": 1.1469
+      },
+      {
+        "numero": "15",
+        "score": 1.1269
+      },
+      {
+        "numero": "267",
+        "score": 1.0135
+      },
+      {
+        "numero": "272",
+        "score": 0.8957
+      },
+      {
+        "numero": "73",
+        "score": 0.6977
+      },
+      {
+        "numero": "20",
+        "score": 0.5881
+      }
+    ],
+    "T-348/23": [
+      {
+        "numero": "241",
+        "score": 2.3663
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "13",
+        "score": 1.5533
+      },
+      {
+        "numero": "44",
+        "score": 1.1843
+      },
+      {
+        "numero": "9",
+        "score": 1.141
+      },
+      {
+        "numero": "2",
+        "score": 1.0297
+      },
+      {
+        "numero": "5",
+        "score": 0.9228
+      },
+      {
+        "numero": "48",
+        "score": 0.825
+      },
+      {
+        "numero": "50",
+        "score": 0.776
+      },
+      {
+        "numero": "49",
+        "score": 0.7657
+      }
+    ],
+    "T-353/23": [
+      {
+        "numero": "241",
+        "score": 2.3807
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "13",
+        "score": 1.3283
+      },
+      {
+        "numero": "9",
+        "score": 1.1502
+      },
+      {
+        "numero": "49",
+        "score": 1.1489
+      },
+      {
+        "numero": "48",
+        "score": 1.1395
+      },
+      {
+        "numero": "35",
+        "score": 0.6945
+      },
+      {
+        "numero": "95",
+        "score": 0.5384
+      },
+      {
+        "numero": "42",
+        "score": 0.4993
+      },
+      {
+        "numero": "365",
+        "score": 0.4349
+      }
+    ],
+    "T-367/23": [
+      {
+        "numero": "241",
+        "score": 2.3633
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "2",
+        "score": 1.0772
+      },
+      {
+        "numero": "53",
+        "score": 0.7992
+      },
+      {
+        "numero": "36",
+        "score": 0.7813
+      },
+      {
+        "numero": "35",
+        "score": 0.7181
+      },
+      {
+        "numero": "46",
+        "score": 0.6674
+      },
+      {
+        "numero": "6",
+        "score": 0.666
+      },
+      {
+        "numero": "42",
+        "score": 0.6042
+      },
+      {
+        "numero": "48",
+        "score": 0.5731
+      }
+    ],
+    "T-479/23": [
+      {
+        "numero": "241",
+        "score": 2.311
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "13",
+        "score": 1.0577
+      },
+      {
+        "numero": "48",
+        "score": 0.8943
+      },
+      {
+        "numero": "34",
+        "score": 0.7483
+      },
+      {
+        "numero": "35",
+        "score": 0.7102
+      },
+      {
+        "numero": "6",
+        "score": 0.6593
+      },
+      {
+        "numero": "23",
+        "score": 0.552
+      },
+      {
+        "numero": "42",
+        "score": 0.5455
+      },
+      {
+        "numero": "32",
+        "score": 0.5237
+      }
+    ],
+    "T-529/23": [
+      {
+        "numero": "241",
+        "score": 2.3509
+      },
+      {
+        "numero": "86",
+        "score": 2.202
+      },
+      {
+        "numero": "2",
+        "score": 1.3472
+      },
+      {
+        "numero": "13",
+        "score": 1.2372
+      },
+      {
+        "numero": "44",
+        "score": 1.2128
+      },
+      {
+        "numero": "40",
+        "score": 1.07
+      },
+      {
+        "numero": "12",
+        "score": 1.0502
+      },
+      {
+        "numero": "1",
+        "score": 1.0106
+      },
+      {
+        "numero": "43",
+        "score": 0.9178
+      },
+      {
+        "numero": "4",
+        "score": 0.7896
+      }
+    ],
+    "T-552/23": [
+      {
+        "numero": "241",
+        "score": 2.3658
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "9",
+        "score": 1.1503
+      },
+      {
+        "numero": "4",
+        "score": 1.0797
+      },
+      {
+        "numero": "2",
+        "score": 1.0418
+      },
+      {
+        "numero": "100",
+        "score": 0.9265
+      },
+      {
+        "numero": "49",
+        "score": 0.7117
+      },
+      {
+        "numero": "35",
+        "score": 0.6962
+      },
+      {
+        "numero": "10",
+        "score": 0.5785
+      },
+      {
+        "numero": "93",
+        "score": 0.5618
+      }
+    ],
+    "T-568/23": [
+      {
+        "numero": "241",
+        "score": 2.3677
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "29",
+        "score": 0.7302
+      },
+      {
+        "numero": "35",
+        "score": 0.7206
+      },
+      {
+        "numero": "42",
+        "score": 0.7154
+      },
+      {
+        "numero": "46",
+        "score": 0.6379
+      },
+      {
+        "numero": "48",
+        "score": 0.6198
+      },
+      {
+        "numero": "87",
+        "score": 0.5943
+      },
+      {
+        "numero": "40",
+        "score": 0.5375
+      },
+      {
+        "numero": "32",
+        "score": 0.4876
+      }
+    ],
+    "T-585/23": [
+      {
+        "numero": "241",
+        "score": 2.3302
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "9",
+        "score": 1.1516
+      },
+      {
+        "numero": "2",
+        "score": 1.0422
+      },
+      {
+        "numero": "29",
+        "score": 0.8665
+      },
+      {
+        "numero": "53",
+        "score": 0.7697
+      },
+      {
+        "numero": "35",
+        "score": 0.7136
+      },
+      {
+        "numero": "48",
+        "score": 0.6831
+      },
+      {
+        "numero": "24",
+        "score": 0.4986
+      },
+      {
+        "numero": "46",
+        "score": 0.4808
+      }
+    ],
+    "C-027/24": [
+      {
+        "numero": "241",
+        "score": 2.4252
+      },
+      {
+        "numero": "48",
+        "score": 1.2801
+      },
+      {
+        "numero": "53",
+        "score": 1.2632
+      },
+      {
+        "numero": "13",
+        "score": 1.2219
+      },
+      {
+        "numero": "9",
+        "score": 1.2106
+      },
+      {
+        "numero": "25",
+        "score": 1.0783
+      },
+      {
+        "numero": "1",
+        "score": 1.0638
+      },
+      {
+        "numero": "333",
+        "score": 0.9452
+      },
+      {
+        "numero": "93",
+        "score": 0.7988
+      },
+      {
+        "numero": "42",
+        "score": 0.6915
+      }
+    ],
+    "C-214/24": [
+      {
+        "numero": "241",
+        "score": 2.4057
+      },
+      {
+        "numero": "9",
+        "score": 1.1967
+      },
+      {
+        "numero": "25",
+        "score": 1.1546
+      },
+      {
+        "numero": "2",
+        "score": 1.0831
+      },
+      {
+        "numero": "1",
+        "score": 1.0539
+      },
+      {
+        "numero": "277",
+        "score": 1.0251
+      },
+      {
+        "numero": "118",
+        "score": 1.0187
+      },
+      {
+        "numero": "280",
+        "score": 0.9988
+      },
+      {
+        "numero": "244",
+        "score": 0.966
+      },
+      {
+        "numero": "282",
+        "score": 0.9256
+      }
+    ],
+    "C-395/24": [
+      {
+        "numero": "241",
+        "score": 2.3141
+      },
+      {
+        "numero": "243",
+        "score": 1.1062
+      },
+      {
+        "numero": "317",
+        "score": 0.8531
+      },
+      {
+        "numero": "4",
+        "score": 0.8089
+      },
+      {
+        "numero": "363",
+        "score": 0.6429
+      },
+      {
+        "numero": "150",
+        "score": 0.6047
+      },
+      {
+        "numero": "93",
+        "score": 0.574
+      },
+      {
+        "numero": "40",
+        "score": 0.5709
+      },
+      {
+        "numero": "48",
+        "score": 0.543
+      },
+      {
+        "numero": "362",
+        "score": 0.5037
+      }
+    ],
+    "SU-029/24": [
+      {
+        "numero": "241",
+        "score": 2.3301
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "150",
+        "score": 1.1633
+      },
+      {
+        "numero": "29",
+        "score": 1.1416
+      },
+      {
+        "numero": "90",
+        "score": 0.9833
+      },
+      {
+        "numero": "250",
+        "score": 0.6565
+      },
+      {
+        "numero": "230",
+        "score": 0.6516
+      },
+      {
+        "numero": "93",
+        "score": 0.5421
+      },
+      {
+        "numero": "221",
+        "score": 0.5349
+      },
+      {
+        "numero": "32",
+        "score": 0.515
+      }
+    ],
+    "SU-304/24": [
+      {
+        "numero": "241",
+        "score": 2.2779
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "13",
+        "score": 1.0583
+      },
+      {
+        "numero": "2",
+        "score": 1.0387
+      },
+      {
+        "numero": "53",
+        "score": 0.8893
+      },
+      {
+        "numero": "29",
+        "score": 0.8861
+      },
+      {
+        "numero": "229",
+        "score": 0.8172
+      },
+      {
+        "numero": "4",
+        "score": 0.7846
+      },
+      {
+        "numero": "48",
+        "score": 0.5662
+      },
+      {
+        "numero": "95",
+        "score": 0.5497
+      }
+    ],
+    "T-002/24": [
+      {
+        "numero": "241",
+        "score": 2.3234
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "48",
+        "score": 0.776
+      },
+      {
+        "numero": "49",
+        "score": 0.7618
+      },
+      {
+        "numero": "35",
+        "score": 0.7091
+      },
+      {
+        "numero": "29",
+        "score": 0.6184
+      },
+      {
+        "numero": "243",
+        "score": 0.6094
+      },
+      {
+        "numero": "44",
+        "score": 0.5607
+      },
+      {
+        "numero": "32",
+        "score": 0.5569
+      },
+      {
+        "numero": "90",
+        "score": 0.5435
+      }
+    ],
+    "T-012/24": [
+      {
+        "numero": "241",
+        "score": 2.3507
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "9",
+        "score": 1.1601
+      },
+      {
+        "numero": "13",
+        "score": 1.138
+      },
+      {
+        "numero": "2",
+        "score": 1.039
+      },
+      {
+        "numero": "1",
+        "score": 1.0345
+      },
+      {
+        "numero": "48",
+        "score": 0.8885
+      },
+      {
+        "numero": "49",
+        "score": 0.7524
+      },
+      {
+        "numero": "44",
+        "score": 0.7135
+      },
+      {
+        "numero": "93",
+        "score": 0.5449
+      }
+    ],
+    "T-085/24": [
+      {
+        "numero": "241",
+        "score": 2.3107
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "29",
+        "score": 0.8718
+      },
+      {
+        "numero": "42",
+        "score": 0.6911
+      },
+      {
+        "numero": "243",
+        "score": 0.6542
+      },
+      {
+        "numero": "53",
+        "score": 0.5782
+      },
+      {
+        "numero": "95",
+        "score": 0.555
+      },
+      {
+        "numero": "44",
+        "score": 0.5195
+      },
+      {
+        "numero": "32",
+        "score": 0.5018
+      },
+      {
+        "numero": "49",
+        "score": 0.4909
+      }
+    ],
+    "T-123/24": [
+      {
+        "numero": "241",
+        "score": 2.356
+      },
+      {
+        "numero": "86",
+        "score": 2.2088
+      },
+      {
+        "numero": "2",
+        "score": 1.4078
+      },
+      {
+        "numero": "9",
+        "score": 1.1662
+      },
+      {
+        "numero": "13",
+        "score": 1.0866
+      },
+      {
+        "numero": "64",
+        "score": 1.0352
+      },
+      {
+        "numero": "4",
+        "score": 0.8172
+      },
+      {
+        "numero": "42",
+        "score": 0.6412
+      },
+      {
+        "numero": "20",
+        "score": 0.6345
+      },
+      {
+        "numero": "93",
+        "score": 0.6026
+      }
+    ],
+    "T-259/24": [
+      {
+        "numero": "241",
+        "score": 2.3199
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "13",
+        "score": 1.1894
+      },
+      {
+        "numero": "9",
+        "score": 1.1427
+      },
+      {
+        "numero": "44",
+        "score": 1.0937
+      },
+      {
+        "numero": "2",
+        "score": 1.0387
+      },
+      {
+        "numero": "1",
+        "score": 1.0325
+      },
+      {
+        "numero": "53",
+        "score": 0.9712
+      },
+      {
+        "numero": "33",
+        "score": 0.9703
+      },
+      {
+        "numero": "43",
+        "score": 0.8129
+      }
+    ],
+    "T-286/24": [
+      {
+        "numero": "241",
+        "score": 2.2984
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "2",
+        "score": 1.1295
+      },
+      {
+        "numero": "79",
+        "score": 1.0142
+      },
+      {
+        "numero": "8",
+        "score": 0.9974
+      },
+      {
+        "numero": "80",
+        "score": 0.9967
+      },
+      {
+        "numero": "330",
+        "score": 0.9835
+      },
+      {
+        "numero": "334",
+        "score": 0.9678
+      },
+      {
+        "numero": "63",
+        "score": 0.8962
+      },
+      {
+        "numero": "88",
+        "score": 0.8766
+      }
+    ],
+    "T-290/24": [
+      {
+        "numero": "241",
+        "score": 2.3586
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "365",
+        "score": 1.0085
+      },
+      {
+        "numero": "370",
+        "score": 0.9619
+      },
+      {
+        "numero": "49",
+        "score": 0.9438
+      },
+      {
+        "numero": "366",
+        "score": 0.9
+      },
+      {
+        "numero": "51",
+        "score": 0.7648
+      },
+      {
+        "numero": "88",
+        "score": 0.7357
+      },
+      {
+        "numero": "367",
+        "score": 0.6876
+      },
+      {
+        "numero": "80",
+        "score": 0.5814
+      }
+    ],
+    "T-341/24": [
+      {
+        "numero": "241",
+        "score": 2.3065
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "44",
+        "score": 1.1375
+      },
+      {
+        "numero": "5",
+        "score": 1.0963
+      },
+      {
+        "numero": "13",
+        "score": 1.0603
+      },
+      {
+        "numero": "2",
+        "score": 1.0478
+      },
+      {
+        "numero": "23",
+        "score": 1.007
+      },
+      {
+        "numero": "15",
+        "score": 0.8356
+      },
+      {
+        "numero": "42",
+        "score": 0.7659
+      },
+      {
+        "numero": "35",
+        "score": 0.7262
+      }
+    ],
+    "T-368/24": [
+      {
+        "numero": "241",
+        "score": 2.3276
+      },
+      {
+        "numero": "86",
+        "score": 2.211
+      },
+      {
+        "numero": "49",
+        "score": 1.1882
+      },
+      {
+        "numero": "48",
+        "score": 1.1823
+      },
+      {
+        "numero": "13",
+        "score": 1.1731
+      },
+      {
+        "numero": "9",
+        "score": 1.1443
+      },
+      {
+        "numero": "2",
+        "score": 1.0614
+      },
+      {
+        "numero": "47",
+        "score": 1.0134
+      },
+      {
+        "numero": "217",
+        "score": 1.0025
+      },
+      {
+        "numero": "54",
+        "score": 0.9829
+      }
+    ],
+    "T-371/24": [
+      {
+        "numero": "241",
+        "score": 2.3107
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "209",
+        "score": 0.9817
+      },
+      {
+        "numero": "40",
+        "score": 0.905
+      },
+      {
+        "numero": "179",
+        "score": 0.7253
+      },
+      {
+        "numero": "120",
+        "score": 0.6886
+      },
+      {
+        "numero": "243",
+        "score": 0.5931
+      },
+      {
+        "numero": "87",
+        "score": 0.5664
+      },
+      {
+        "numero": "265",
+        "score": 0.5601
+      },
+      {
+        "numero": "32",
+        "score": 0.5178
+      }
+    ],
+    "T-373/24": [
+      {
+        "numero": "241",
+        "score": 2.3453
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "13",
+        "score": 1.6156
+      },
+      {
+        "numero": "9",
+        "score": 1.1321
+      },
+      {
+        "numero": "47",
+        "score": 1.0454
+      },
+      {
+        "numero": "2",
+        "score": 1.0367
+      },
+      {
+        "numero": "1",
+        "score": 1.0045
+      },
+      {
+        "numero": "29",
+        "score": 0.9675
+      },
+      {
+        "numero": "217",
+        "score": 0.9239
+      },
+      {
+        "numero": "53",
+        "score": 0.909
+      }
+    ],
+    "T-377/24": [
+      {
+        "numero": "241",
+        "score": 2.3603
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "13",
+        "score": 1.176
+      },
+      {
+        "numero": "9",
+        "score": 1.1579
+      },
+      {
+        "numero": "49",
+        "score": 1.0657
+      },
+      {
+        "numero": "46",
+        "score": 1.049
+      },
+      {
+        "numero": "2",
+        "score": 1.0335
+      },
+      {
+        "numero": "116",
+        "score": 0.9556
+      },
+      {
+        "numero": "118",
+        "score": 0.8752
+      },
+      {
+        "numero": "282",
+        "score": 0.7778
+      }
+    ],
+    "T-380/24": [
+      {
+        "numero": "241",
+        "score": 2.3519
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "9",
+        "score": 1.149
+      },
+      {
+        "numero": "2",
+        "score": 1.0231
+      },
+      {
+        "numero": "49",
+        "score": 0.9358
+      },
+      {
+        "numero": "11",
+        "score": 0.813
+      },
+      {
+        "numero": "35",
+        "score": 0.717
+      },
+      {
+        "numero": "29",
+        "score": 0.6542
+      },
+      {
+        "numero": "6",
+        "score": 0.6284
+      },
+      {
+        "numero": "83",
+        "score": 0.5214
+      }
+    ],
+    "T-387/24": [
+      {
+        "numero": "241",
+        "score": 2.3568
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "44",
+        "score": 1.1221
+      },
+      {
+        "numero": "67",
+        "score": 1.0108
+      },
+      {
+        "numero": "70",
+        "score": 0.7839
+      },
+      {
+        "numero": "35",
+        "score": 0.7193
+      },
+      {
+        "numero": "68",
+        "score": 0.581
+      },
+      {
+        "numero": "150",
+        "score": 0.5703
+      },
+      {
+        "numero": "27",
+        "score": 0.5127
+      },
+      {
+        "numero": "93",
+        "score": 0.5115
+      }
+    ],
+    "T-394/24": [
+      {
+        "numero": "241",
+        "score": 2.3086
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "2",
+        "score": 1.4474
+      },
+      {
+        "numero": "13",
+        "score": 1.1827
+      },
+      {
+        "numero": "40",
+        "score": 0.9726
+      },
+      {
+        "numero": "16",
+        "score": 0.8742
+      },
+      {
+        "numero": "20",
+        "score": 0.8582
+      },
+      {
+        "numero": "68",
+        "score": 0.8259
+      },
+      {
+        "numero": "29",
+        "score": 0.8032
+      },
+      {
+        "numero": "15",
+        "score": 0.7356
+      }
+    ],
+    "T-402/24": [
+      {
+        "numero": "241",
+        "score": 2.3489
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "9",
+        "score": 1.142
+      },
+      {
+        "numero": "15",
+        "score": 1.0914
+      },
+      {
+        "numero": "2",
+        "score": 1.0527
+      },
+      {
+        "numero": "1",
+        "score": 1.0139
+      },
+      {
+        "numero": "44",
+        "score": 0.8655
+      },
+      {
+        "numero": "35",
+        "score": 0.7148
+      },
+      {
+        "numero": "20",
+        "score": 0.5843
+      },
+      {
+        "numero": "93",
+        "score": 0.5772
+      }
+    ],
+    "T-443/24": [
+      {
+        "numero": "241",
+        "score": 2.349
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "1",
+        "score": 1.0138
+      },
+      {
+        "numero": "53",
+        "score": 0.8144
+      },
+      {
+        "numero": "15",
+        "score": 0.742
+      },
+      {
+        "numero": "25",
+        "score": 0.7068
+      },
+      {
+        "numero": "35",
+        "score": 0.6924
+      },
+      {
+        "numero": "68",
+        "score": 0.5973
+      },
+      {
+        "numero": "10",
+        "score": 0.5893
+      },
+      {
+        "numero": "42",
+        "score": 0.5316
+      }
+    ],
+    "C-086/25": [
+      {
+        "numero": "241",
+        "score": 2.3297
+      },
+      {
+        "numero": "9",
+        "score": 1.1461
+      },
+      {
+        "numero": "1",
+        "score": 1.0506
+      },
+      {
+        "numero": "150",
+        "score": 1.0224
+      },
+      {
+        "numero": "287",
+        "score": 1.0077
+      },
+      {
+        "numero": "296",
+        "score": 1.003
+      },
+      {
+        "numero": "209",
+        "score": 1.0026
+      },
+      {
+        "numero": "288",
+        "score": 0.964
+      },
+      {
+        "numero": "311",
+        "score": 0.946
+      },
+      {
+        "numero": "339",
+        "score": 0.9045
+      }
+    ],
+    "C-098/25": [
+      {
+        "numero": "241",
+        "score": 2.5
+      },
+      {
+        "numero": "13",
+        "score": 1.3721
+      },
+      {
+        "numero": "2",
+        "score": 1.1508
+      },
+      {
+        "numero": "1",
+        "score": 1.0978
+      },
+      {
+        "numero": "16",
+        "score": 1.0583
+      },
+      {
+        "numero": "54",
+        "score": 0.9908
+      },
+      {
+        "numero": "242",
+        "score": 0.8092
+      },
+      {
+        "numero": "47",
+        "score": 0.7618
+      },
+      {
+        "numero": "20",
+        "score": 0.6703
+      },
+      {
+        "numero": "93",
+        "score": 0.6042
+      }
+    ],
+    "C-148/25": [
+      {
+        "numero": "241",
+        "score": 2.3298
+      },
+      {
+        "numero": "213",
+        "score": 1.031
+      },
+      {
+        "numero": "189",
+        "score": 1.0144
+      },
+      {
+        "numero": "93",
+        "score": 1.0124
+      },
+      {
+        "numero": "212",
+        "score": 0.732
+      },
+      {
+        "numero": "373",
+        "score": 0.684
+      },
+      {
+        "numero": "150",
+        "score": 0.6282
+      },
+      {
+        "numero": "217",
+        "score": 0.6233
+      },
+      {
+        "numero": "64",
+        "score": 0.6161
+      },
+      {
+        "numero": "65",
+        "score": 0.581
+      }
+    ],
+    "C-218/25": [
+      {
+        "numero": "241",
+        "score": 2.361
+      },
+      {
+        "numero": "44",
+        "score": 1.2128
+      },
+      {
+        "numero": "2",
+        "score": 1.1519
+      },
+      {
+        "numero": "67",
+        "score": 1.0533
+      },
+      {
+        "numero": "69",
+        "score": 1.0178
+      },
+      {
+        "numero": "213",
+        "score": 1.0072
+      },
+      {
+        "numero": "93",
+        "score": 1.0032
+      },
+      {
+        "numero": "252",
+        "score": 0.904
+      },
+      {
+        "numero": "214",
+        "score": 0.8272
+      },
+      {
+        "numero": "244",
+        "score": 0.7715
+      }
+    ],
+    "C-477/25": [
+      {
+        "numero": "241",
+        "score": 2.3664
+      },
+      {
+        "numero": "1",
+        "score": 1.57
+      },
+      {
+        "numero": "2",
+        "score": 1.1853
+      },
+      {
+        "numero": "9",
+        "score": 1.1743
+      },
+      {
+        "numero": "330",
+        "score": 1.0016
+      },
+      {
+        "numero": "287",
+        "score": 0.9984
+      },
+      {
+        "numero": "329",
+        "score": 0.9853
+      },
+      {
+        "numero": "7",
+        "score": 0.9832
+      },
+      {
+        "numero": "356",
+        "score": 0.9021
+      },
+      {
+        "numero": "286",
+        "score": 0.9003
+      }
+    ],
+    "SU-056/25": [
+      {
+        "numero": "241",
+        "score": 2.5
+      },
+      {
+        "numero": "33",
+        "score": 1.1178
+      },
+      {
+        "numero": "29",
+        "score": 1.0902
+      },
+      {
+        "numero": "48",
+        "score": 0.9247
+      },
+      {
+        "numero": "11",
+        "score": 0.7123
+      },
+      {
+        "numero": "32",
+        "score": 0.6246
+      },
+      {
+        "numero": "122",
+        "score": 0.571
+      },
+      {
+        "numero": "116",
+        "score": 0.548
+      },
+      {
+        "numero": "230",
+        "score": 0.5445
+      },
+      {
+        "numero": "62",
+        "score": 0.4922
+      }
+    ],
+    "SU-297/25": [
+      {
+        "numero": "241",
+        "score": 2.3633
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "7",
+        "score": 1.0789
+      },
+      {
+        "numero": "13",
+        "score": 1.0642
+      },
+      {
+        "numero": "2",
+        "score": 1.0341
+      },
+      {
+        "numero": "1",
+        "score": 1.0124
+      },
+      {
+        "numero": "246",
+        "score": 0.996
+      },
+      {
+        "numero": "49",
+        "score": 0.9765
+      },
+      {
+        "numero": "44",
+        "score": 0.915
+      },
+      {
+        "numero": "43",
+        "score": 0.8058
+      }
+    ],
+    "SU-466/25": [
+      {
+        "numero": "241",
+        "score": 2.3619
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "2",
+        "score": 1.0581
+      },
+      {
+        "numero": "1",
+        "score": 1.0554
+      },
+      {
+        "numero": "42",
+        "score": 0.9854
+      },
+      {
+        "numero": "288",
+        "score": 0.9841
+      },
+      {
+        "numero": "44",
+        "score": 0.9739
+      },
+      {
+        "numero": "243",
+        "score": 0.9085
+      },
+      {
+        "numero": "5",
+        "score": 0.754
+      },
+      {
+        "numero": "46",
+        "score": 0.5991
+      }
+    ],
+    "T-022/25": [
+      {
+        "numero": "241",
+        "score": 2.3354
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "13",
+        "score": 1.0679
+      },
+      {
+        "numero": "29",
+        "score": 0.7836
+      },
+      {
+        "numero": "48",
+        "score": 0.7492
+      },
+      {
+        "numero": "35",
+        "score": 0.7202
+      },
+      {
+        "numero": "53",
+        "score": 0.5853
+      },
+      {
+        "numero": "32",
+        "score": 0.5634
+      },
+      {
+        "numero": "42",
+        "score": 0.5539
+      },
+      {
+        "numero": "23",
+        "score": 0.5448
+      }
+    ],
+    "T-066/25": [
+      {
+        "numero": "241",
+        "score": 2.3424
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "13",
+        "score": 1.5938
+      },
+      {
+        "numero": "9",
+        "score": 1.1515
+      },
+      {
+        "numero": "2",
+        "score": 1.0461
+      },
+      {
+        "numero": "14",
+        "score": 1.028
+      },
+      {
+        "numero": "29",
+        "score": 1.022
+      },
+      {
+        "numero": "16",
+        "score": 1.007
+      },
+      {
+        "numero": "250",
+        "score": 0.8419
+      },
+      {
+        "numero": "35",
+        "score": 0.7107
+      }
+    ],
+    "T-089/25": [
+      {
+        "numero": "241",
+        "score": 2.3638
+      },
+      {
+        "numero": "86",
+        "score": 2.2031
+      },
+      {
+        "numero": "90",
+        "score": 1.0435
+      },
+      {
+        "numero": "125",
+        "score": 0.8969
+      },
+      {
+        "numero": "230",
+        "score": 0.694
+      },
+      {
+        "numero": "93",
+        "score": 0.5423
+      },
+      {
+        "numero": "124",
+        "score": 0.5345
+      },
+      {
+        "numero": "87",
+        "score": 0.5219
+      },
+      {
+        "numero": "122",
+        "score": 0.5177
+      },
+      {
+        "numero": "58",
+        "score": 0.464
+      }
+    ],
+    "T-166/25": [
+      {
+        "numero": "241",
+        "score": 2.3343
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "13",
+        "score": 1.4506
+      },
+      {
+        "numero": "43",
+        "score": 1.058
+      },
+      {
+        "numero": "33",
+        "score": 0.9701
+      },
+      {
+        "numero": "53",
+        "score": 0.9065
+      },
+      {
+        "numero": "5",
+        "score": 0.7298
+      },
+      {
+        "numero": "150",
+        "score": 0.61
+      },
+      {
+        "numero": "42",
+        "score": 0.5894
+      },
+      {
+        "numero": "93",
+        "score": 0.58
+      }
+    ],
+    "T-170/25": [
+      {
+        "numero": "241",
+        "score": 2.3113
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "15",
+        "score": 1.0554
+      },
+      {
+        "numero": "1",
+        "score": 1.0114
+      },
+      {
+        "numero": "18",
+        "score": 0.9943
+      },
+      {
+        "numero": "20",
+        "score": 0.8279
+      },
+      {
+        "numero": "69",
+        "score": 0.8207
+      },
+      {
+        "numero": "39",
+        "score": 0.6083
+      },
+      {
+        "numero": "10",
+        "score": 0.5837
+      },
+      {
+        "numero": "68",
+        "score": 0.5521
+      }
+    ],
+    "T-171/25": [
+      {
+        "numero": "241",
+        "score": 2.3566
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "2",
+        "score": 1.0529
+      },
+      {
+        "numero": "44",
+        "score": 0.9793
+      },
+      {
+        "numero": "54",
+        "score": 0.8058
+      },
+      {
+        "numero": "67",
+        "score": 0.7431
+      },
+      {
+        "numero": "35",
+        "score": 0.7134
+      },
+      {
+        "numero": "16",
+        "score": 0.6059
+      },
+      {
+        "numero": "49",
+        "score": 0.5877
+      },
+      {
+        "numero": "68",
+        "score": 0.571
+      }
+    ],
+    "T-212/25": [
+      {
+        "numero": "241",
+        "score": 2.3723
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "9",
+        "score": 1.1921
+      },
+      {
+        "numero": "2",
+        "score": 1.0768
+      },
+      {
+        "numero": "1",
+        "score": 1.0487
+      },
+      {
+        "numero": "53",
+        "score": 0.8208
+      },
+      {
+        "numero": "35",
+        "score": 0.7542
+      },
+      {
+        "numero": "29",
+        "score": 0.7453
+      },
+      {
+        "numero": "48",
+        "score": 0.6401
+      },
+      {
+        "numero": "42",
+        "score": 0.5892
+      }
+    ],
+    "T-236/25": [
+      {
+        "numero": "241",
+        "score": 2.3296
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "23",
+        "score": 1.1608
+      },
+      {
+        "numero": "9",
+        "score": 1.1532
+      },
+      {
+        "numero": "40",
+        "score": 1.0766
+      },
+      {
+        "numero": "15",
+        "score": 1.0637
+      },
+      {
+        "numero": "20",
+        "score": 1.0404
+      },
+      {
+        "numero": "265",
+        "score": 0.6464
+      },
+      {
+        "numero": "19",
+        "score": 0.601
+      },
+      {
+        "numero": "243",
+        "score": 0.5951
+      }
+    ],
+    "T-358/25": [
+      {
+        "numero": "241",
+        "score": 2.3351
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "44",
+        "score": 1.1353
+      },
+      {
+        "numero": "2",
+        "score": 1.0304
+      },
+      {
+        "numero": "35",
+        "score": 0.7277
+      },
+      {
+        "numero": "5",
+        "score": 0.6805
+      },
+      {
+        "numero": "68",
+        "score": 0.6044
+      },
+      {
+        "numero": "67",
+        "score": 0.546
+      },
+      {
+        "numero": "42",
+        "score": 0.5428
+      },
+      {
+        "numero": "93",
+        "score": 0.5349
+      }
+    ],
+    "T-395/25": [
+      {
+        "numero": "241",
+        "score": 2.2951
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "13",
+        "score": 1.6403
+      },
+      {
+        "numero": "1",
+        "score": 1.4844
+      },
+      {
+        "numero": "42",
+        "score": 1.0792
+      },
+      {
+        "numero": "44",
+        "score": 1.0722
+      },
+      {
+        "numero": "2",
+        "score": 1.0657
+      },
+      {
+        "numero": "51",
+        "score": 0.8578
+      },
+      {
+        "numero": "5",
+        "score": 0.7869
+      },
+      {
+        "numero": "95",
+        "score": 0.5814
+      }
+    ],
+    "T-416/25": [
+      {
+        "numero": "241",
+        "score": 2.3085
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "29",
+        "score": 0.9875
+      },
+      {
+        "numero": "250",
+        "score": 0.8787
+      },
+      {
+        "numero": "277",
+        "score": 0.705
+      },
+      {
+        "numero": "243",
+        "score": 0.5815
+      },
+      {
+        "numero": "95",
+        "score": 0.5691
+      },
+      {
+        "numero": "88",
+        "score": 0.5474
+      },
+      {
+        "numero": "229",
+        "score": 0.5438
+      },
+      {
+        "numero": "230",
+        "score": 0.535
+      }
+    ],
+    "T-422/25": [
+      {
+        "numero": "241",
+        "score": 2.3452
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "29",
+        "score": 1.0801
+      },
+      {
+        "numero": "1",
+        "score": 1.0101
+      },
+      {
+        "numero": "5",
+        "score": 0.6702
+      },
+      {
+        "numero": "6",
+        "score": 0.662
+      },
+      {
+        "numero": "44",
+        "score": 0.5979
+      },
+      {
+        "numero": "90",
+        "score": 0.5724
+      },
+      {
+        "numero": "42",
+        "score": 0.5492
+      },
+      {
+        "numero": "49",
+        "score": 0.5447
+      }
+    ],
+    "T-511/25": [
+      {
+        "numero": "241",
+        "score": 2.3451
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "9",
+        "score": 1.1386
+      },
+      {
+        "numero": "29",
+        "score": 1.0878
+      },
+      {
+        "numero": "35",
+        "score": 0.704
+      },
+      {
+        "numero": "93",
+        "score": 0.6827
+      },
+      {
+        "numero": "32",
+        "score": 0.5885
+      },
+      {
+        "numero": "10",
+        "score": 0.5707
+      },
+      {
+        "numero": "87",
+        "score": 0.5355
+      },
+      {
+        "numero": "24",
+        "score": 0.5182
+      }
+    ],
+    "T-520/25": [
+      {
+        "numero": "241",
+        "score": 2.3241
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "13",
+        "score": 1.5622
+      },
+      {
+        "numero": "20",
+        "score": 1.0926
+      },
+      {
+        "numero": "15",
+        "score": 1.0539
+      },
+      {
+        "numero": "43",
+        "score": 1.0272
+      },
+      {
+        "numero": "21",
+        "score": 0.9505
+      },
+      {
+        "numero": "42",
+        "score": 0.7149
+      },
+      {
+        "numero": "40",
+        "score": 0.6753
+      },
+      {
+        "numero": "19",
+        "score": 0.6403
+      }
+    ],
+    "C-121/26": [
+      {
+        "numero": "241",
+        "score": 2.4751
+      },
+      {
+        "numero": "363",
+        "score": 1.0319
+      },
+      {
+        "numero": "40",
+        "score": 0.9627
+      },
+      {
+        "numero": "4",
+        "score": 0.8651
+      },
+      {
+        "numero": "29",
+        "score": 0.7949
+      },
+      {
+        "numero": "338",
+        "score": 0.7517
+      },
+      {
+        "numero": "150",
+        "score": 0.6893
+      },
+      {
+        "numero": "48",
+        "score": 0.561
+      },
+      {
+        "numero": "189",
+        "score": 0.5386
+      },
+      {
+        "numero": "242",
+        "score": 0.375
+      }
+    ],
+    "C-165/26": [
+      {
+        "numero": "241",
+        "score": 2.4913
+      },
+      {
+        "numero": "158",
+        "score": 1.0617
+      },
+      {
+        "numero": "51",
+        "score": 0.7995
+      },
+      {
+        "numero": "160",
+        "score": 0.7521
+      },
+      {
+        "numero": "157",
+        "score": 0.6259
+      },
+      {
+        "numero": "150",
+        "score": 0.6188
+      },
+      {
+        "numero": "278",
+        "score": 0.5967
+      },
+      {
+        "numero": "189",
+        "score": 0.5261
+      },
+      {
+        "numero": "151",
+        "score": 0.4111
+      },
+      {
+        "numero": "154",
+        "score": 0.4051
+      }
+    ],
+    "C-194/26": [
+      {
+        "numero": "241",
+        "score": 2.3781
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "209",
+        "score": 1.1254
+      },
+      {
+        "numero": "333",
+        "score": 1.0124
+      },
+      {
+        "numero": "4",
+        "score": 0.8315
+      },
+      {
+        "numero": "150",
+        "score": 0.5874
+      },
+      {
+        "numero": "93",
+        "score": 0.5766
+      },
+      {
+        "numero": "189",
+        "score": 0.4791
+      },
+      {
+        "numero": "94",
+        "score": 0.4573
+      },
+      {
+        "numero": "75",
+        "score": 0.402
+      }
+    ],
+    "SU-143/26": [
+      {
+        "numero": "241",
+        "score": 2.3456
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "13",
+        "score": 1.57
+      },
+      {
+        "numero": "4",
+        "score": 1.1983
+      },
+      {
+        "numero": "44",
+        "score": 1.1938
+      },
+      {
+        "numero": "228",
+        "score": 1.0941
+      },
+      {
+        "numero": "2",
+        "score": 1.0372
+      },
+      {
+        "numero": "43",
+        "score": 1.0009
+      },
+      {
+        "numero": "229",
+        "score": 0.8709
+      },
+      {
+        "numero": "5",
+        "score": 0.7649
+      }
+    ],
+    "T-014/26": [
+      {
+        "numero": "241",
+        "score": 2.3453
+      },
+      {
+        "numero": "86",
+        "score": 2.2043
+      },
+      {
+        "numero": "13",
+        "score": 1.4884
+      },
+      {
+        "numero": "44",
+        "score": 1.1297
+      },
+      {
+        "numero": "43",
+        "score": 1.1016
+      },
+      {
+        "numero": "53",
+        "score": 1.086
+      },
+      {
+        "numero": "2",
+        "score": 1.0448
+      },
+      {
+        "numero": "5",
+        "score": 0.9079
+      },
+      {
+        "numero": "42",
+        "score": 0.9019
+      },
+      {
+        "numero": "25",
+        "score": 0.8468
+      }
+    ],
+    "T-053/26": [
+      {
+        "numero": "241",
+        "score": 2.3671
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "44",
+        "score": 1.2013
+      },
+      {
+        "numero": "2",
+        "score": 1.0404
+      },
+      {
+        "numero": "67",
+        "score": 1.0062
+      },
+      {
+        "numero": "118",
+        "score": 0.8834
+      },
+      {
+        "numero": "5",
+        "score": 0.7889
+      },
+      {
+        "numero": "35",
+        "score": 0.7176
+      },
+      {
+        "numero": "42",
+        "score": 0.5815
+      },
+      {
+        "numero": "278",
+        "score": 0.5731
+      }
+    ],
+    "T-055/26": [
+      {
+        "numero": "241",
+        "score": 2.3569
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "29",
+        "score": 0.8816
+      },
+      {
+        "numero": "53",
+        "score": 0.8455
+      },
+      {
+        "numero": "48",
+        "score": 0.8384
+      },
+      {
+        "numero": "35",
+        "score": 0.713
+      },
+      {
+        "numero": "6",
+        "score": 0.652
+      },
+      {
+        "numero": "23",
+        "score": 0.5556
+      },
+      {
+        "numero": "243",
+        "score": 0.551
+      },
+      {
+        "numero": "95",
+        "score": 0.5081
+      }
+    ],
+    "T-078/26": [
+      {
+        "numero": "241",
+        "score": 2.3809
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "44",
+        "score": 1.1528
+      },
+      {
+        "numero": "2",
+        "score": 1.0424
+      },
+      {
+        "numero": "51",
+        "score": 0.975
+      },
+      {
+        "numero": "311",
+        "score": 0.7454
+      },
+      {
+        "numero": "49",
+        "score": 0.7034
+      },
+      {
+        "numero": "150",
+        "score": 0.6762
+      },
+      {
+        "numero": "5",
+        "score": 0.6701
+      },
+      {
+        "numero": "42",
+        "score": 0.597
+      }
+    ],
+    "T-084/26": [
+      {
+        "numero": "241",
+        "score": 2.3254
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "15",
+        "score": 1.1189
+      },
+      {
+        "numero": "250",
+        "score": 0.9955
+      },
+      {
+        "numero": "74",
+        "score": 0.9875
+      },
+      {
+        "numero": "29",
+        "score": 0.9612
+      },
+      {
+        "numero": "73",
+        "score": 0.921
+      },
+      {
+        "numero": "20",
+        "score": 0.8152
+      },
+      {
+        "numero": "32",
+        "score": 0.5393
+      },
+      {
+        "numero": "87",
+        "score": 0.5199
+      }
+    ],
+    "T-094/26": [
+      {
+        "numero": "241",
+        "score": 2.3187
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "13",
+        "score": 1.645
+      },
+      {
+        "numero": "2",
+        "score": 1.0875
+      },
+      {
+        "numero": "47",
+        "score": 1.07
+      },
+      {
+        "numero": "1",
+        "score": 1.0252
+      },
+      {
+        "numero": "52",
+        "score": 0.967
+      },
+      {
+        "numero": "44",
+        "score": 0.9221
+      },
+      {
+        "numero": "250",
+        "score": 0.7701
+      },
+      {
+        "numero": "16",
+        "score": 0.7693
+      }
+    ],
+    "T-095/26": [
+      {
+        "numero": "241",
+        "score": 2.365
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "13",
+        "score": 1.2929
+      },
+      {
+        "numero": "44",
+        "score": 1.1864
+      },
+      {
+        "numero": "9",
+        "score": 1.151
+      },
+      {
+        "numero": "2",
+        "score": 1.0262
+      },
+      {
+        "numero": "50",
+        "score": 0.8538
+      },
+      {
+        "numero": "49",
+        "score": 0.7908
+      },
+      {
+        "numero": "35",
+        "score": 0.6986
+      },
+      {
+        "numero": "5",
+        "score": 0.6549
+      }
+    ],
+    "T-141/26": [
+      {
+        "numero": "241",
+        "score": 2.2921
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "1",
+        "score": 1.5121
+      },
+      {
+        "numero": "13",
+        "score": 1.299
+      },
+      {
+        "numero": "2",
+        "score": 1.0779
+      },
+      {
+        "numero": "40",
+        "score": 1.0189
+      },
+      {
+        "numero": "108",
+        "score": 0.9158
+      },
+      {
+        "numero": "118",
+        "score": 0.7977
+      },
+      {
+        "numero": "262",
+        "score": 0.7045
+      },
+      {
+        "numero": "15",
+        "score": 0.5656
+      }
+    ],
+    "T-148/26": [
+      {
+        "numero": "241",
+        "score": 2.3421
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "23",
+        "score": 1.0918
+      },
+      {
+        "numero": "189",
+        "score": 1.0482
+      },
+      {
+        "numero": "29",
+        "score": 1.0375
+      },
+      {
+        "numero": "365",
+        "score": 0.7651
+      },
+      {
+        "numero": "35",
+        "score": 0.7224
+      },
+      {
+        "numero": "42",
+        "score": 0.5588
+      },
+      {
+        "numero": "40",
+        "score": 0.5525
+      },
+      {
+        "numero": "95",
+        "score": 0.5273
+      }
+    ],
+    "T-152/26": [
+      {
+        "numero": "241",
+        "score": 2.3325
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "9",
+        "score": 1.1458
+      },
+      {
+        "numero": "334",
+        "score": 1.0418
+      },
+      {
+        "numero": "1",
+        "score": 0.9994
+      },
+      {
+        "numero": "49",
+        "score": 0.9291
+      },
+      {
+        "numero": "48",
+        "score": 0.8631
+      },
+      {
+        "numero": "15",
+        "score": 0.7109
+      },
+      {
+        "numero": "35",
+        "score": 0.7027
+      },
+      {
+        "numero": "44",
+        "score": 0.5653
+      }
+    ],
+    "T-156/26": [
+      {
+        "numero": "241",
+        "score": 2.3808
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "29",
+        "score": 1.1088
+      },
+      {
+        "numero": "13",
+        "score": 1.0742
+      },
+      {
+        "numero": "2",
+        "score": 1.0723
+      },
+      {
+        "numero": "87",
+        "score": 0.7876
+      },
+      {
+        "numero": "5",
+        "score": 0.6866
+      },
+      {
+        "numero": "243",
+        "score": 0.6086
+      },
+      {
+        "numero": "48",
+        "score": 0.5775
+      },
+      {
+        "numero": "42",
+        "score": 0.5694
+      }
+    ],
+    "T-157/26": [
+      {
+        "numero": "241",
+        "score": 2.3624
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "29",
+        "score": 1.2734
+      },
+      {
+        "numero": "7",
+        "score": 1.0722
+      },
+      {
+        "numero": "246",
+        "score": 0.9831
+      },
+      {
+        "numero": "63",
+        "score": 0.9825
+      },
+      {
+        "numero": "282",
+        "score": 0.9527
+      },
+      {
+        "numero": "329",
+        "score": 0.7957
+      },
+      {
+        "numero": "72",
+        "score": 0.7816
+      },
+      {
+        "numero": "118",
+        "score": 0.7622
+      }
+    ],
+    "T-158/26": [
+      {
+        "numero": "241",
+        "score": 2.3355
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "13",
+        "score": 1.5535
+      },
+      {
+        "numero": "20",
+        "score": 1.0822
+      },
+      {
+        "numero": "15",
+        "score": 1.0117
+      },
+      {
+        "numero": "21",
+        "score": 0.7205
+      },
+      {
+        "numero": "35",
+        "score": 0.7058
+      },
+      {
+        "numero": "5",
+        "score": 0.7016
+      },
+      {
+        "numero": "150",
+        "score": 0.6309
+      },
+      {
+        "numero": "93",
+        "score": 0.5864
+      }
+    ],
+    "T-160/26": [
+      {
+        "numero": "241",
+        "score": 2.3505
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "23",
+        "score": 1.1442
+      },
+      {
+        "numero": "243",
+        "score": 0.9903
+      },
+      {
+        "numero": "29",
+        "score": 0.8986
+      },
+      {
+        "numero": "278",
+        "score": 0.5689
+      },
+      {
+        "numero": "32",
+        "score": 0.5113
+      },
+      {
+        "numero": "95",
+        "score": 0.5087
+      },
+      {
+        "numero": "122",
+        "score": 0.4643
+      },
+      {
+        "numero": "30",
+        "score": 0.405
+      }
+    ],
+    "T-175/26": [
+      {
+        "numero": "241",
+        "score": 2.3512
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "44",
+        "score": 1.0978
+      },
+      {
+        "numero": "2",
+        "score": 1.0463
+      },
+      {
+        "numero": "67",
+        "score": 0.9185
+      },
+      {
+        "numero": "68",
+        "score": 0.7633
+      },
+      {
+        "numero": "366",
+        "score": 0.7596
+      },
+      {
+        "numero": "69",
+        "score": 0.7471
+      },
+      {
+        "numero": "288",
+        "score": 0.5297
+      },
+      {
+        "numero": "49",
+        "score": 0.4651
+      }
+    ],
+    "T-222/26": [
+      {
+        "numero": "241",
+        "score": 2.3766
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "29",
+        "score": 1.3761
+      },
+      {
+        "numero": "4",
+        "score": 1.2892
+      },
+      {
+        "numero": "246",
+        "score": 0.9988
+      },
+      {
+        "numero": "329",
+        "score": 0.6607
+      },
+      {
+        "numero": "330",
+        "score": 0.6551
+      },
+      {
+        "numero": "93",
+        "score": 0.5854
+      },
+      {
+        "numero": "40",
+        "score": 0.5477
+      },
+      {
+        "numero": "68",
+        "score": 0.4836
+      }
+    ],
+    "T-232/26": [
+      {
+        "numero": "241",
+        "score": 2.3574
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "44",
+        "score": 1.1965
+      },
+      {
+        "numero": "48",
+        "score": 1.1428
+      },
+      {
+        "numero": "2",
+        "score": 1.0368
+      },
+      {
+        "numero": "1",
+        "score": 0.9942
+      },
+      {
+        "numero": "49",
+        "score": 0.9481
+      },
+      {
+        "numero": "36",
+        "score": 0.7871
+      },
+      {
+        "numero": "35",
+        "score": 0.6893
+      },
+      {
+        "numero": "50",
+        "score": 0.6636
+      }
+    ],
+    "T-247/26": [
+      {
+        "numero": "241",
+        "score": 2.3324
+      },
+      {
+        "numero": "86",
+        "score": 2.2128
+      },
+      {
+        "numero": "1",
+        "score": 1.2372
+      },
+      {
+        "numero": "2",
+        "score": 1.1931
+      },
+      {
+        "numero": "23",
+        "score": 1.078
+      },
+      {
+        "numero": "40",
+        "score": 1.0605
+      },
+      {
+        "numero": "19",
+        "score": 1.0006
+      },
+      {
+        "numero": "311",
+        "score": 0.9843
+      },
+      {
+        "numero": "29",
+        "score": 0.912
+      },
+      {
+        "numero": "18",
+        "score": 0.8037
+      }
+    ]
+  }
+}

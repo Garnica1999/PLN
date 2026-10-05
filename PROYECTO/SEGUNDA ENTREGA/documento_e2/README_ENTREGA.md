@@ -155,3 +155,101 @@ python scripts/checks_qa_final.py
 - Trazabilidad por fases en `plan/contexto.md` (entradas "Ciclo v2" a "Fase X"); decisiones en ADR-11 a ADR-15.
 - Zip del ciclo: `PROYECTO/juris_pln_e2_entrega_v2.zip`; el zip v1 (`juris_pln_e2_entrega.zip`) se conserva.
 - Rollback: los artefactos v1 no se modificaron; para volver a la v1 basta restaurar los componentes desde el zip v1.
+
+---
+
+## 10. Ciclo v3 (2026-10-05)
+
+El ciclo v3 ("recuperación robusta") se documenta en `plan/PLAN_v3_recuperacion_robusta.md` y en el informe `documento_e2/informe_final_ciclo_v3.md`. Resumen: Sprint A sin adopciones (ADR-17); Sprint B con modelos de dominio B1+B2 -> producto v2.2 (ADR-18); B3 gold-LLM; C3 corpus 2022-2026; C2 LLM (negativo); Fase 1 (auditoría M4, H1/H2/H2b, O1); QA v2.2 GO.
+
+**Producto v2.2 (ADR-18).** La ruta `--rerank` usa B2 (`modelos/b2_retriever`) + B1 (`modelos/b1_reranker`) + prior de hubs α=1,5; el modo default (BM25 + α=0,75) no cambia y los fallbacks a E5/bge quedan documentados con warning. Cifras v13 (90 casos, silver): nDCG@10 0,6926/0,6907 (sin/con hubs), F1@5 0,478, MRR 0,950; Δ pareado vs v12 (B1+E5): +0,0673/+0,0617 (IC>0). Control graduado gold-LLM (B3): 0,783 [0,733;0,829]. QA v2.2 **GO** (10/10 E2E, equivalencia producto↔v13 3/3 exacta, checks v3 10/10). Rollback: zip v2 (`juris_pln_e2_entrega_v2.zip`).
+
+**C3 — corpus 2022-2026.** `data/corpus_2022_2026/`: 2.382 providencias listadas (474/584/530/520/274 por año), 2.330 documentos preparados (NER con cobertura CP 99,96 %, etiquetado 99,96 %, lemas). Evaluación temporal de la ruta v13 sobre 100 casos nuevos (20/año): nDCG@10 0,747 [0,719;0,777] vs 0,691 histórico (delta descriptivo, no pareado) -> sin deriva temporal.
+
+**C2 — LLM ALIA zero-shot (negativo).** Query understanding Δ −0,198 y rerank listwise Δ −0,217 (nDCG@10 frente a v13); sin adopción; opción futura: LoRA con datos propios. Artefactos en `resultados/c2_llm/` y figuras `c2_query_llm.png` / `c2_rerank_llm.png`.
+
+**B3/O1 — packs de anotación (estado).** B3: **completado (2026-10-05)** — Carlos anotó los 820/820 candidatos (50/50 casos); gold humano: B2 nDCG@10 0,7852 [0,745;0,826] vs B1 0,6903 (Δ +0,0948; prob 1,0) -> el gate humano **CONFIRMA v2.2/ADR-18** (meta ≥ 0,70 cumplida); artefactos `resultados/gold_mini/respuestas_carlos.jsonl`, `acuerdo_gold_mini.json` (κ carlos|llm 0,345; Fleiss 0,445) y `evaluacion_gold_mini.json`; las salidas solo-LLM quedaron en `backup/`. O1: **completado (2026-10-05)** — Carlos anotó los 200/200 documentos (lote ciego); acuerdo humano–silver exactitud 23,5 % (κ 0,153 "leve"; n=200) -> el silver M4 no es un gold fiable (**ADR-19**; M4 queda como diagnóstico con caveats); artefactos `resultados/validacion_m4/` (`respuestas_carlos.jsonl`, `acuerdo_v1.json` con proxies 41,5 %/29,9 %, CSV; respaldo solo-LLM en `backup/`). **Terminología:** silver = referencia automática (citas NER); gold = anotación humana; las pre-anotaciones LLM son proxies, NO gold.
+
+**Scripts nuevos (16-31).** 16 anotador gold; 17 auditoría de etiquetas; 18 H1 ruido; 19 H2 objetivo suave; 20 H2b post-proceso; 21 pack validación M4; 22 pre-anotación LLM M4; 23 pares B1; 24 entrenamiento B1; 25 retriever B2; 26 descarga C3; 27 pre-anotación gold LLM; 28 preparación C3; 29 evaluación temporal C3; 30/31 LLM C2; `checks_qa_final_v3.py` (QA v2.2).
+
+**Cómo reproducir las evaluaciones nuevas** (desde `SEGUNDA ENTREGA/` con el venv activado):
+
+```bash
+# Sprint A (diagnóstico, modelos legales ES, fusiones, clasificador)
+python scripts/12_evaluar_vinculo_cp_v2.py --diagnostico
+python scripts/12_evaluar_vinculo_cp_v2.py --a3 --rerank
+python scripts/12_evaluar_vinculo_cp_v2.py --a4 --rerank
+python scripts/06_baseline_clasico.py --fase-a5
+
+# Sprint B (B1/B2 + evaluaciones v12/v13)
+python scripts/23_b1_pares_reranker.py
+python scripts/24_b1_entrenar_reranker.py
+python scripts/12_evaluar_vinculo_cp_v2.py --b1 --rerank
+python scripts/25_b2_retriever_denso.py
+python scripts/12_evaluar_vinculo_cp_v2.py --b2 --rerank
+
+# B3 (pre-anotación proxy + evaluación graduada; anotación humana con --anotar)
+python scripts/27_preanotacion_gold_llm.py
+python scripts/16_anotador_gold.py --evaluar
+
+# C3 (corpus 2022-2026 + deriva temporal)
+python scripts/26_c3_descarga_2022_2026.py --descargar
+python scripts/28_c3_preparar_corpus.py
+python scripts/29_c3_eval_temporal.py
+
+# C2 (LLM local; requiere ollama con alia-legal)
+python scripts/30_c2_llm_query.py
+python scripts/31_c2_llm_rerank.py
+
+# Fase 1 (auditoría M4 y packs O1)
+python scripts/17_auditoria_etiquetas_m4.py --modo todo
+python scripts/21_pack_validacion_m4.py --resumen
+python scripts/22_preanotacion_llm_m4.py
+
+# QA de regresión v2.2
+python scripts/checks_qa_final_v3.py
+```
+
+- Trazabilidad: `plan/REGISTRO_EXPERIMENTOS.md` y `resultados/metricas.json` (secciones `ciclo_v3`, `b1_reranker`, `b2_retriever`, `b3_gold_llm`, `b3_check_llm`, `c2_query_llm`, `c2_rerank_llm`, `c3_deriva_temporal`, `qa_v2_2`, `o1_validacion_llm_multi`, `auditoria_etiquetas_m4`, `h1_ruido_m4`, `h2_objetivo_suave`, `h2b_postproceso`); decisiones en ADR-17 y ADR-18.
+- La v2 permanece congelada (ADR-11/16): los artefactos v3 usan sufijos (`_v9+`, `c3_*`) y el zip de entrega del cierre (C5) es `PROYECTO/juris_pln_e2_entrega_v3.zip` (267 entradas; espejo del v2 + artefactos v3).
+
+## 11. Demo interactiva (Streamlit)
+
+```bash
+/home/carlos/venv/bin/python -m streamlit run scripts/demo_streamlit.py
+```
+
+Reutiliza el pipeline del CLI (`10_evaluar_sentencia.py`) sin duplicar lógica:
+acepta texto pegado o un id del corpus y muestra el JSON del producto, con un
+toggle para la ruta `--rerank` de v2.2 (B2 + B1). Corre en CPU; la primera
+evaluación inicializa los componentes (decenas de segundos). Verificada con el
+AppTest de Streamlit (UI → producto → JSON).
+
+---
+
+## 12. Oleada post-v3 (2026-10-05)
+
+Tres frentes abiertos tras el cierre v3 se resolvieron en una oleada final (diseño en ADR-20; veredicto en ADR-21; detalle en la adenda 3 del informe `informe_final_ciclo_v3.md`):
+
+- **(a) 2ª época de B2 — sin adopción.** Continuación del retriever denso desde el checkpoint de ep1 (lr 1e-5, 1 época; `modelos/b2_retriever_ep2`); benchmark v14 (90 casos, silver): nDCG@10 0,6939 sin hubs / 0,6840 con hubs vs v13 0,6926/0,6907; pareado Δ +0,0013 [−0,0093;+0,0119] / −0,0067 [−0,0195;+0,0066] (IC cruza 0) → el producto mantiene ep1. Artefactos: `resultados/b2_entrenamiento_ep2.json`, `vinculo_cp_benchmark_v14_ep2.json`, `figuras/deriva_retrieval_v14_ep2.png`.
+- **(b) Pack C1 (gold estándar M7) — listo para anotación.** `resultados/gold_150/`: 150 casos (40 restantes del benchmark + 110 del corpus C3 2022-2026), 2.740 candidatos, todos fuera del entrenamiento de B1/B2 (sin contaminación); guía y modo lote. La evaluación contra este gold queda pendiente de la anotación humana.
+- **(c) C2-LoRA — adaptación GO, adopción NO (ADR-21).** LoRA sobre ALIA-7B (r16/α32/qkvo, 20k pares de B1, 1 época, VRAM pico 15,0 GiB, AUC val 0,848): nivel 1 acc 0,769/AUC 0,847 vs base 0,503/0,647; nivel 2 (gold humano B3) AUC(≥1) 0,654/Spearman 0,297 (la referencia LLM zero-shot puntúa 0,727); nivel 3 top-50 0,6842 vs v13 0,6907 (ns) y +0,0518 vs base (criterio ≥+0,05 → GO); fusiones 0,6909–0,6923 (ns) con p95 45,6 s > 30 s → sin adopción; el frente LLM C2 queda cerrado. Artefactos: `resultados/c2_lora/`, `modelos/c2_lora/adapter_v1/`, scripts 33/34.
+
+**Comandos nuevos:**
+
+```bash
+# (a) 2ª época de B2 (continuación desde ep1) y evaluación de la variante
+python scripts/25_b2_retriever_denso.py --entrenar --inicializar-desde modelos/b2_retriever --variante ep2 --lr 1e-5
+python scripts/12_evaluar_vinculo_cp_v2.py --b2 --rerank --b2-variante ep2
+
+# (b) Pack C1 (gold estándar 150; anotación humana con modo lote)
+python scripts/32_pack_gold_150.py
+python scripts/16_anotador_gold.py --pack gold_150 --anotar --anotador carlos
+
+# (c) C2-LoRA (entrenamiento y evaluación en 3 niveles)
+python scripts/33_c2_lora_train.py --entrenar
+python scripts/34_c2_lora_eval.py --recomputar-top50
+```
+
+- Incidente documentado: falso stop en el paso 1000 por un bug de padding derecho en la evaluación interna del script 33 (evidencia en `resultados/c2_lora/entrenamiento_v1_falso_stop.json`); corregido y verificado antes de reanudar hasta completar la época.
+- Trazabilidad: `plan/REGISTRO_EXPERIMENTOS.md` (fila `B2-ep2`) y ADRs 20-21; pendiente de registro la fila `C2-LoRA` y la sección `c2_lora_eval` en `metricas.json` (las cifras de esta sección se auditaron contra `resultados/c2_lora/eval_c2_lora_v1*.json`).

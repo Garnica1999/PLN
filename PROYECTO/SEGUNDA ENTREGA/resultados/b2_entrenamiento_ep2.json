@@ -1,0 +1,647 @@
+{
+ "version": "b2-retriever-denso-v1",
+ "ciclo": "v3",
+ "sprint": "B2",
+ "fecha": "2026-10-05 05:07:59",
+ "smoke": false,
+ "modelo_base": "modelos/b2_retriever",
+ "hiperparametros": {
+  "lr": 1e-05,
+  "epochs": 1,
+  "batch": 64,
+  "val_frac": 0.05,
+  "max_tripletas": 200000,
+  "warmup_ratio": 0.1,
+  "weight_decay": 0.01,
+  "max_grad_norm": 1.0,
+  "amp": true,
+  "gradient_checkpointing": true,
+  "semilla": 42,
+  "log_cada": 50,
+  "max_seq_length": 512,
+  "max_filas": 0,
+  "max_pasos": 0
+ },
+ "datos": {
+  "dir_pares": "data/pares_b1",
+  "esquema_shards": {
+   "huella": "696002518e19e6e19d434c9ab565fdf1",
+   "version": "b1-pares-reranker-v1",
+   "n_shards": 23
+  },
+  "filas_leidas": 299999,
+  "positivos": 150000,
+  "negativos": 149999,
+  "docs": 22994,
+  "docs_train": 21844,
+  "docs_val": 1150,
+  "tripletas_train_antes_cap": 143004,
+  "tripletas_train": 143004,
+  "tripletas_val": 7970,
+  "pares_train": 96328,
+  "pares_val": 5038,
+  "cap_tripletas_aplicado": false,
+  "enlace_hard_negatives": {
+   "claves_negativas": 113389,
+   "claves_negativas_enlazadas": 29461,
+   "tasa_claves_enlazadas": 0.2598,
+   "filas_negativas": 149999,
+   "filas_negativas_enlazadas": 55912,
+   "tasa_filas_enlazadas": 0.3727,
+   "nota": "enlace exacto por (doc_id, huella(texto_chunk)); el resto de positivos entrena como pares (MNRL con negativos in-batch)"
+  },
+  "negativos_por_fuente_total": {
+   "aleatorio_sin_bm25": 49079,
+   "aleatorio": 30120,
+   "cocitado": 44799,
+   "bm25": 26001
+  },
+  "fuentes_negativo_en_tripletas": {
+   "cocitado": 41072,
+   "aleatorio_sin_bm25": 12492,
+   "bm25": 61931,
+   "aleatorio": 27509
+  },
+  "md5_shards": {
+   "por_shard": {
+    "pares_reranker_b1_shard0000.parquet": "a33bb2aaa560805f58b4b037b1b15a56",
+    "pares_reranker_b1_shard0001.parquet": "1ef0bb277723630af9c408f7406b7a7a",
+    "pares_reranker_b1_shard0002.parquet": "6a6541650cf0d154095130bf05e00d6c",
+    "pares_reranker_b1_shard0003.parquet": "e43bf7cb80073159dea0fd2418c6472a",
+    "pares_reranker_b1_shard0004.parquet": "5b5595882302b9482881b185d161c16c",
+    "pares_reranker_b1_shard0005.parquet": "5400a322bd26ad11a52045471a20d2bd",
+    "pares_reranker_b1_shard0006.parquet": "534d26b32f9b8a2eedadda1dde7aef77",
+    "pares_reranker_b1_shard0007.parquet": "17054484c222685af34a05517ad6e021",
+    "pares_reranker_b1_shard0008.parquet": "6c3de09369c903092cce1005c8f777b9",
+    "pares_reranker_b1_shard0009.parquet": "8f5b856f0b2edc4e090e13f28a02ab10",
+    "pares_reranker_b1_shard0010.parquet": "32a52f99f3c4c9485af216ba269e536a",
+    "pares_reranker_b1_shard0011.parquet": "ae58c52a60373d642f93c10a93de08f5",
+    "pares_reranker_b1_shard0012.parquet": "005b4588294a0b51d2a12f3738b8ca33",
+    "pares_reranker_b1_shard0013.parquet": "646ba72ae090c773a6ccefa824f78cf3",
+    "pares_reranker_b1_shard0014.parquet": "80ac6865bc5a8b69db09b64323346edf",
+    "pares_reranker_b1_shard0015.parquet": "c15b3a4a6deff2e5c09f10a494da8e5b",
+    "pares_reranker_b1_shard0016.parquet": "98a66e94008a8b3c4f1aa1eaa7298682",
+    "pares_reranker_b1_shard0017.parquet": "b0515cc81e9fbc83085172df820d2b89",
+    "pares_reranker_b1_shard0018.parquet": "820d5c5f439f333c7c23899cfc9c02b8",
+    "pares_reranker_b1_shard0019.parquet": "0216d9e2d502412e4566d3fc7519bbdf",
+    "pares_reranker_b1_shard0020.parquet": "9104bd56439ee2cd4f6900979d3f2d1a",
+    "pares_reranker_b1_shard0021.parquet": "88f227286959a839c3f99ee52804a382",
+    "pares_reranker_b1_shard0022.parquet": "19498602012ace82fb63bf807157e6b4"
+   },
+   "combinado": "079c815a85b02e5c0eeec0511f9f813e",
+   "n_shards": 23
+  }
+ },
+ "exclusion_benchmark": {
+  "n_ids": 90,
+  "fuente_primaria": "/home/carlos/Git/PLN/PROYECTO/SEGUNDA ENTREGA/resultados/vinculo_cp_benchmark_v2.json",
+  "fuente_cruzada": "/home/carlos/Git/PLN/PROYECTO/SEGUNDA ENTREGA/resultados/vinculo_cp_benchmark_v8.json",
+  "md5_v2": "d8cf0cbde15eff34d6f57b702fb89868",
+  "md5_v8": "746621a797fe109335e2a43367717a77",
+  "huella_exclusion": "3bc0f1680c9868194352c98c2271781f",
+  "filas_benchmark_en_shards": 0,
+  "docs_benchmark_en_shards": 0,
+  "verificado": true
+ },
+ "entrenamiento": {
+  "pasos_por_epoca": 3762,
+  "pasos_totales": 3762,
+  "pasos_ejecutados": 3762,
+  "ejemplos_entrenados": 239332,
+  "reanudado": false,
+  "curva_loss": [
+   {
+    "epoca": 1,
+    "paso": 50,
+    "perdida": 3.425341091156006,
+    "lr": 1.3297872340425533e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 100,
+    "perdida": 3.232445421218872,
+    "lr": 2.6595744680851065e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 150,
+    "perdida": 3.165989248752594,
+    "lr": 3.98936170212766e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 200,
+    "perdida": 3.1493449115753176,
+    "lr": 5.319148936170213e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 250,
+    "perdida": 2.987630457878113,
+    "lr": 6.648936170212767e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 300,
+    "perdida": 2.8739437866210937,
+    "lr": 7.97872340425532e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 350,
+    "perdida": 2.860343518257141,
+    "lr": 9.308510638297872e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 400,
+    "perdida": 2.9908126306533815,
+    "lr": 9.929119905493208e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 450,
+    "perdida": 3.091226005554199,
+    "lr": 9.78145304193739e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 500,
+    "perdida": 2.9802594232559203,
+    "lr": 9.633786178381572e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 550,
+    "perdida": 2.8005523014068605,
+    "lr": 9.486119314825754e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 600,
+    "perdida": 2.6925119853019712,
+    "lr": 9.338452451269936e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 650,
+    "perdida": 2.898412368297577,
+    "lr": 9.190785587714118e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 700,
+    "perdida": 2.780402307510376,
+    "lr": 9.0431187241583e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 750,
+    "perdida": 2.7293210020661354,
+    "lr": 8.895451860602482e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 800,
+    "perdida": 2.6769835710525514,
+    "lr": 8.747784997046664e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 850,
+    "perdida": 2.5381450843811035,
+    "lr": 8.600118133490846e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 900,
+    "perdida": 2.476301083564758,
+    "lr": 8.452451269935026e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 950,
+    "perdida": 2.4317994284629822,
+    "lr": 8.30478440637921e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 1000,
+    "perdida": 2.5299794483184814,
+    "lr": 8.15711754282339e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 1050,
+    "perdida": 2.660211308002472,
+    "lr": 8.009450679267572e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 1100,
+    "perdida": 2.788568711280823,
+    "lr": 7.861783815711756e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 1150,
+    "perdida": 2.7186802423000334,
+    "lr": 7.714116952155936e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 1200,
+    "perdida": 2.8634056425094605,
+    "lr": 7.566450088600119e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 1250,
+    "perdida": 2.6676676273345947,
+    "lr": 7.4187832250443e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 1300,
+    "perdida": 2.764511625766754,
+    "lr": 7.271116361488483e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 1350,
+    "perdida": 2.6491381084918975,
+    "lr": 7.123449497932664e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 1400,
+    "perdida": 2.7909152364730834,
+    "lr": 6.975782634376846e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 1450,
+    "perdida": 2.597083148956299,
+    "lr": 6.828115770821029e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 1500,
+    "perdida": 2.5638438510894774,
+    "lr": 6.68044890726521e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 1550,
+    "perdida": 2.465056211948395,
+    "lr": 6.532782043709392e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 1600,
+    "perdida": 2.394717978835106,
+    "lr": 6.3851151801535735e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 1650,
+    "perdida": 2.67115186214447,
+    "lr": 6.237448316597756e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 1700,
+    "perdida": 2.531906180381775,
+    "lr": 6.0897814530419375e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 1750,
+    "perdida": 2.4349222803115844,
+    "lr": 5.9421145894861195e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 1800,
+    "perdida": 2.641955791711807,
+    "lr": 5.794447725930302e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 1850,
+    "perdida": 2.594197714328766,
+    "lr": 5.6467808623744836e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 1900,
+    "perdida": 2.6423745346069336,
+    "lr": 5.4991139988186656e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 1950,
+    "perdida": 2.591006598472595,
+    "lr": 5.3514471352628476e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 2000,
+    "perdida": 2.452731306552887,
+    "lr": 5.2037802717070296e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 2050,
+    "perdida": 2.4360273385047915,
+    "lr": 5.056113408151211e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 2100,
+    "perdida": 2.538123159408569,
+    "lr": 4.908446544595394e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 2150,
+    "perdida": 2.6771297526359557,
+    "lr": 4.760779681039575e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 2200,
+    "perdida": 2.8865911388397216,
+    "lr": 4.613112817483757e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 2250,
+    "perdida": 2.839339778423309,
+    "lr": 4.465445953927939e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 2300,
+    "perdida": 2.703560883998871,
+    "lr": 4.317779090372121e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 2350,
+    "perdida": 2.550435235500336,
+    "lr": 4.170112226816303e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 2400,
+    "perdida": 2.489949789047241,
+    "lr": 4.022445363260485e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 2450,
+    "perdida": 2.5191383218765258,
+    "lr": 3.874778499704667e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 2500,
+    "perdida": 2.648704323768616,
+    "lr": 3.7271116361488484e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 2550,
+    "perdida": 2.5868754458427428,
+    "lr": 3.5794447725930304e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 2600,
+    "perdida": 3.0485774850845337,
+    "lr": 3.431777909037212e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 2650,
+    "perdida": 2.9291594505310057,
+    "lr": 3.284111045481394e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 2700,
+    "perdida": 2.808050663471222,
+    "lr": 3.1364441819255764e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 2750,
+    "perdida": 2.6505842328071596,
+    "lr": 2.9887773183697584e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 2800,
+    "perdida": 2.9966859817504883,
+    "lr": 2.84111045481394e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 2850,
+    "perdida": 2.8823502588272096,
+    "lr": 2.693443591258122e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 2900,
+    "perdida": 3.124019799232483,
+    "lr": 2.5457767277023036e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 2950,
+    "perdida": 3.0481497192382814,
+    "lr": 2.3981098641464856e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 3000,
+    "perdida": 2.9373880100250243,
+    "lr": 2.2504430005906676e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 3050,
+    "perdida": 2.8214436054229735,
+    "lr": 2.1027761370348496e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 3100,
+    "perdida": 3.029960608482361,
+    "lr": 1.9551092734790312e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 3150,
+    "perdida": 2.9779785299301147,
+    "lr": 1.8074424099232134e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 3200,
+    "perdida": 2.935594548434019,
+    "lr": 1.6597755463673955e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 3250,
+    "perdida": 2.98361129283905,
+    "lr": 1.5121086828115772e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 3300,
+    "perdida": 2.985901916027069,
+    "lr": 1.364441819255759e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 3350,
+    "perdida": 3.072889943122864,
+    "lr": 1.216774955699941e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 3400,
+    "perdida": 3.2868168354034424,
+    "lr": 1.069108092144123e-06
+   },
+   {
+    "epoca": 1,
+    "paso": 3450,
+    "perdida": 3.206385097503662,
+    "lr": 9.214412285883049e-07
+   },
+   {
+    "epoca": 1,
+    "paso": 3500,
+    "perdida": 3.144459147453308,
+    "lr": 7.737743650324868e-07
+   },
+   {
+    "epoca": 1,
+    "paso": 3550,
+    "perdida": 3.2767004108428956,
+    "lr": 6.261075014766687e-07
+   },
+   {
+    "epoca": 1,
+    "paso": 3600,
+    "perdida": 3.193339328765869,
+    "lr": 4.784406379208506e-07
+   },
+   {
+    "epoca": 1,
+    "paso": 3650,
+    "perdida": 3.144206929206848,
+    "lr": 3.307737743650325e-07
+   },
+   {
+    "epoca": 1,
+    "paso": 3700,
+    "perdida": 3.5015313494205476,
+    "lr": 1.8310691080921443e-07
+   },
+   {
+    "epoca": 1,
+    "paso": 3750,
+    "perdida": 3.941273045539856,
+    "lr": 3.544004725339634e-08
+   },
+   {
+    "epoca": 1,
+    "paso": 3762,
+    "perdida": 3.919661204020182,
+    "lr": 0.0
+   }
+  ],
+  "val_por_epoca": [
+   {
+    "epoca": 1,
+    "n_tripletas": 7970,
+    "n_pares": 5038,
+    "n_anclas": 6072,
+    "n_pasajes": 572,
+    "accuracy_tripletas": 0.6870765370138018,
+    "recall@1": 0.1677429274292743,
+    "recall@5": 0.30050738007380073,
+    "recall@10": 0.37038745387453875,
+    "mrr": 0.2388207429277635,
+    "accuracy_seleccion": 0.6870765370138018,
+    "segundos": 105.3,
+    "mejor": true
+   }
+  ],
+  "mejor_epoca": 1,
+  "mejor_metrica": 0.6870765370138018,
+  "tiempos": {
+   "total_s": 3744.3,
+   "entrenamiento_s": 3637.7,
+   "evaluacion_s": 105.3,
+   "por_epoca_s": [
+    3637.7
+   ],
+   "ejemplos_por_s": 65.79
+  },
+  "vram_pico_gb": 5.97,
+  "vram_inicial": {
+   "gpu": "AMD Radeon RX 9070 XT",
+   "vram_libre_gb": 16.99,
+   "vram_total_gb": 17.1
+  }
+ },
+ "mejor": {
+  "epoca": 1,
+  "n_tripletas": 7970,
+  "n_pares": 5038,
+  "n_anclas": 6072,
+  "n_pasajes": 572,
+  "accuracy_tripletas": 0.6870765370138018,
+  "recall@1": 0.1677429274292743,
+  "recall@5": 0.30050738007380073,
+  "recall@10": 0.37038745387453875,
+  "mrr": 0.2388207429277635,
+  "accuracy_seleccion": 0.6870765370138018,
+  "segundos": 105.3,
+  "mejor": true
+ },
+ "entorno": {
+  "python": "3.14.7",
+  "plataforma": "Linux-7.2.8-1-cachyos-x86_64-with-glibc2.44",
+  "torch": "2.14.0+rocm7.2",
+  "transformers": "5.16.1",
+  "sentence_transformers": "6.0.1",
+  "numpy": "1.26.4",
+  "pandas": "2.3.3",
+  "pyarrow": null,
+  "hip": "7.2.53211",
+  "cuda_disponible": true,
+  "gpu": "AMD Radeon RX 9070 XT"
+ },
+ "artefactos": {
+  "modelo": "/home/carlos/Git/PLN/PROYECTO/SEGUNDA ENTREGA/modelos/b2_retriever_ep2",
+  "checkpoints": "/home/carlos/Git/PLN/PROYECTO/SEGUNDA ENTREGA/modelos/b2_retriever_ep2/checkpoints",
+  "json": "/home/carlos/Git/PLN/PROYECTO/SEGUNDA ENTREGA/resultados/b2_entrenamiento_ep2.json",
+  "log": "/home/carlos/Git/PLN/PROYECTO/SEGUNDA ENTREGA/experimentos/25_b2_entrenar_ep2.log",
+  "figura": "/home/carlos/Git/PLN/PROYECTO/SEGUNDA ENTREGA/figuras/fig_b2_entrenamiento_ep2.png"
+ },
+ "notas": [
+  "Anti-leakage: los pares de B1 ya excluyen las 90 sentencias del benchmark; se reverifico por re-escaneo de shards.",
+  "Enlace de hard negatives parcial por construccion de B1; las claves sin enlace entrenan como pares.",
+  "Recall@k de val es un proxy con candidatos = pasajes unicos de val (no el indice completo de la CP).",
+  "Gradient checkpointing en el encoder (ver hiperparametros)."
+ ],
+ "tiempos_totales_s": 3748.1
+}

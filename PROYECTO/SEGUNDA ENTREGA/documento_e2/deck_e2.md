@@ -187,7 +187,7 @@ Entrada: sentencia T-293/97 (`10_evaluar_sentencia.py --id`), salida JSON en ~9 
 ## Slide 16 — Ciclo v2: por qué y qué se midió
 
 - El QA v1 validaba estructura, no calidad caso a caso: T-6251/01 recuperaba 0/2 artículos con el top-5 contaminado por transitorios
-- Diagnóstico: 45 IDs malformados ("Transitorio ACL01016-N"), 112 transitorios en el índice (24,4 % del top-5 en v3) y techo de recall con k=5 (gold de ~10,7 arts/sentencia)
+- Diagnóstico: 45 IDs malformados ("Transitorio ACL01016-N"), 112 transitorios en el índice (24,4 % del top-5 en v3) y techo de recall con k=5 (silver de ~10,7 arts/sentencia)
 - Faltaban nDCG@10 (estándar BEIR) y el top-10 por caso para auditar reranking
 - Hipótesis pendiente: BETO v1 perdió por truncamiento (ADR-10) -> probar chunk-mean (Chalkidis 2022)
 - ADR-11: v1 congelada; resultados nuevos con sufijo v3...v8, nunca sobrescribir
@@ -254,3 +254,134 @@ Entrada: sentencia T-293/97 (`10_evaluar_sentencia.py --id`), salida JSON en ~9 
 - 26 referencias verificadas (6 nuevas del ciclo) y 15 ADRs documentados
 - Artefactos: benchmarks v3-v8, m4_* v2, qa_final_v2/, informe `informe_final_ciclo_v2.md`, zip `juris_pln_e2_entrega_v2.zip`
 - Reproducir: scripts 06/07/12/14 + `checks_qa_final.py` (v2)
+
+---
+
+# Sección Ciclo v3 (recuperación robusta)
+
+## Slide 24 — Ciclo v3: por qué y método
+
+- Auditoría Fase 1: objetivo disperso (silver sin protocolo único), M4 estancada (macro-F1 0,2870) y ruido del silver sin cuantificar
+- Plan: Sprints A (diagnóstico + modelos legales ES) y B (modelos de dominio) + frentes C2 (LLM), C3 (corpus 2022-2026), Fase 1 (M4/O1)
+- Gates pre-registrados (ADR-16): Δ con IC 95 % bootstrap pareado + consistencia A/B; smokes n=10 NO deciden; negativos documentados
+- Anti-leakage: entrenamientos de dominio excluyen las 90 sentencias del benchmark; holdout M4 sellado
+- Terminología estricta: silver = referencia automática (NER); gold = anotación humana (pendiente)
+
+## Slide 25 — Sprint A: sin adopciones (ADR-17)
+
+- A1 diagnóstico: recall candidatos top-50 híbrido 0,509; techo silver F1@5 ≤ 0,649; hubs +0,108 al reranker genérico
+- A2 embeddings legales ES: ALIA mejor recall @100 (0,723 vs 0,619 E5) y F1@10 +0,017 con hubs; nDCG sin IC -> no adopción
+- A3 reranker SINAI: −0,055 (con hubs) / −0,143 (sin hubs); RRF −0,020 -> bge se mantiene
+- A4 fusiones w03/w07/rrf1a empatan con w05; top-50 confirmado (top-200 rechazado)
+- A5 clasificador: C 0,2980 vs v1 0,2870 (Δ +0,011, IC cruza 0); ensamble y class weights no superan -> v1 se mantiene
+- Lección: los smokes n=10 engañaron en 2/3 de las veces; solo n=90 + IC decide
+
+## Slide 26 — Sprint B1: reranker de dominio
+
+- Fine-tune de bge-reranker-v2-m3 con 299.999 pares de citas propias (150.000 pos / 149.999 neg: aleatorios 52,8 %, co-citados 29,9 %, BM25 17,3 %)
+- Excluye las 90 del benchmark; mejor checkpoint en el paso 10.000: val AUC 0,8513
+- v12 sin hubs: B1 nDCG@10 0,625 vs bge 0,512 (Δ +0,113 IC>0; F1@10 +0,071)
+- Con hubs: 0,629 vs 0,620 (Δ +0,009, no concluyente): los hubs compensaban al reranker genérico
+- Gate del Sprint B no cumplido con B1 solo (0,629 < 0,66); F1@5 0,446 (mejor no circular hasta entonces)
+
+## Slide 27 — Sprint B2: retriever denso -> v13 (gate superado)
+
+| Métrica (90 casos, silver) | v13 sin hubs | v13 con hubs | Δ pareado vs v12 |
+|---|---|---|---|
+| nDCG@10 | **0,6926** [0,657;0,725] | **0,6907** [0,654;0,725] | +0,0673 / +0,0617 (IC>0) |
+| F1@10 | 0,447 [0,420;0,473] | 0,464 [0,436;0,493] | +0,0610 / +0,0681 |
+| F1@5 / MRR | **0,478** / **0,950** | — | — |
+
+- Fine-tune contrastivo de ALIA-MrBERT (143.004 tripletas + 96.328 pares; val acc 0,6864)
+- Ruta: híbrido BM25+B2 -> rerank B1 -> hubs α=1,5; sin caídas por periodo (0,499/0,485/0,450)
+- Umbral ≥ 0,66 superado en ambos contextos; vs A2/ALIA@100 también gana con IC
+
+## Slide 28 — Producto v2.2 adoptado (ADR-18) + QA GO
+
+- `--rerank`: B2 (`modelos/b2_retriever`) + B1 (`modelos/b1_reranker`) + hubs α=1,5; default BM25+α=0,75 intacto; fallbacks E5/bge con warning
+- QA v2.2: GO — 10/10 E2E, integridad md5 (5 canónicos + 8 B2/B1), equivalencia producto<->v13 3/3 exacta
+- Latencias (runs limpios): default 4,64-5,51 s / rerank 13,90-14,51 s (límites ≤10/≤30); `checks_qa_final_v3.py` 10/10
+- Controles negativos discriminan (v2: 8 fallos; v1: 92); rollback desde el zip v2
+- Caveat: sin control humano B3 (check LLM κ=0,651); riesgos: barrido md5 y `TOP10_ESPERADO` hard-coded
+
+## Slide 29 — B3: mini-gold graduado con LLM (proxy)
+
+- 50 casos / 820 candidatos pre-anotados a ciegas (qwen3.8; grados 2/1/0: 164/146/510)
+- nDCG@10 graduado: B2 0,783 [0,733;0,829] > B1 0,685 (pool 0,707) > v8 0,566 > cita-exacta 0,644
+- Pareado B2 vs B1: Δ +0,098 [0,069;0,128]
+- Segundo anotador LLM (gemma4, 12 casos/174 ítems): kappa 0,651 "sustancial"
+- Caveat: verificación automática, NO humana; spot-check humano pendiente (10-15 casos)
+
+## Slide 30 — C3: corpus 2022-2026 sin deriva temporal
+
+- Descarga: 2.382 providencias (474/584/530/520/274 por año); 2.334 HTML + 48 stubs; 2.330 documentos preparados (4 texto corto)
+- Pipeline replicado: NER cobertura CP 99,96 %, etiquetado 99,96 %, lemas 55,2 M tokens
+- Evaluación v13 sobre 100 casos nuevos (20/año, silver): nDCG@10 **0,747 [0,719;0,777]** vs 0,691 histórico
+- Por año: 0,748/0,755/0,745/0,724/0,764 — estable; delta descriptivo (no pareado)
+- Conclusión: sin degradación temporal de la ruta v2.2 en datos post-2021
+
+## Slide 31 — C2: LLM ALIA zero-shot, negativo documentado
+
+- C2(a) query understanding: nDCG@10 0,493 vs 0,691 de v13 (Δ −0,198 [−0,238;−0,158]); 86/90 consultas
+- C2(b) rerank listwise top-20: nDCG@10 0,473 vs 0,691 (Δ −0,217 [−0,258;−0,175]); 90/90, latencia media 7,1 s (gate ≤30 s OK)
+- Interpretación: ALIA (administrativo español) produce consultas cortas/genéricas fuera del dominio constitucional colombiano
+- Sin adopción; vía futura: LoRA con datos propios (pares de citas B1 + casos)
+
+## Slide 32 — M4: ruido del silver y Fase 1
+
+- Auditoría cleanlab: 31,81 % de issues OOF en train (5.266/16.557); 31,09 % test out-of-sample; baseline mayoría 0,0374
+- Reproducción v1 exacta: 0,287008 (espacio fijo 0,2691); clases más ruidosas: rama_ejecutiva 0,767, derechos_sociales 0,434
+- H1 (robusto al ruido): v1r 0,2658 val; test dev 0,2464 < v1 0,2691 -> no adopción
+- H2 (objetivo suave): W2 +0,0344 IC [−0,0051;+0,0749]; H2b (P1): +0,1716 val pero degrada en temporal -> no adopción
+- O1 (proxies LLM, 200 docs): exactitud 0,415 (gemma4) / 0,299 (qwen); kappa inter-LLM 0,230; anotación humana pendiente
+
+## Slide 33 — Cierre del ciclo v3
+
+| Dimensión | v1 | v2 | v3 (v2.2) |
+|---|---|---|---|
+| F1@5 vínculo CP | 0,218 | 0,425 | **0,478** |
+| MRR | 0,717 | 0,950 | **0,950** |
+| nDCG@10 | no medido | 0,620 | **0,693** |
+| M4 macro-F1 test | 0,2870 | 0,2870 | 0,2870 (ruido 31,8 % auditado) |
+| QA | GO | GO | **GO v2.2** |
+
+- Adopciones: v2.2 (ADR-18); negativos: Sprint A (ADR-17), C2, H1/H2/H2b
+- Trabajo futuro: gold humano (spot-check B3, O1, C1-150), LoRA, 2ª época de B2, calibración del producto, holdout sellado
+- Artefactos: benchmarks v9-v13, `c3_*`, `c2_llm/`, `gold_mini/`, `validacion_m4/`, `qa_final_v2_2/`; informe `informe_final_ciclo_v3.md`
+
+## Slide 34 — Gate B3 — gold humano confirma v2.2
+
+- Carlos anotó 820/820 candidatos (50/50 casos, 2026-10-05); grados 2/1/0: 189/267/364 (humano) vs 164/146/510 (LLM)
+- Acuerdo ítem a ítem moderado: carlos|llm κ 0,345 (po 0,594; n=820); carlos|gemma4 0,370; Fleiss (3 evaluadores, 174 ítems) 0,445
+- Evaluación con gold humano (nDCG@10): B2 0,7852 [0,745;0,826] > B1 0,6903 [0,645;0,739] > v8 0,5700; cita-exacta 0,6812
+- Pareadas: B2 vs B1 Δ +0,0948 [+0,0668;+0,1239] prob 1,0; B2 vs v8 +0,2152; B1 vs v8 +0,1204 (pool +0,0869)
+- Convergencia agregada con el proxy LLM: B2 0,7852 vs 0,7831; B1 0,6903 vs 0,6850 (mismo ranking)
+- Veredicto: el gate humano CONFIRMA la adopción v2.2 (ADR-18); meta del ciclo cumplida (nDCG@10 ≥ 0,70 con gold humano)
+
+## Slide 35 — O1 — el silver M4 no es fiable
+
+- Carlos anotó 200/200 documentos (muestra estratificada por clase, lote ciego, 2026-10-05)
+- Acuerdo humano–silver: exactitud 23,5 % (κ 0,153 "leve"; 0 ambiguo/ninguno) vs proxies LLM ciegos: gemma4 41,5 % / qwen 29,9 %
+- Inter-anotador: carlos|gemma4 κ 0,249; carlos|llm κ 0,268; gemma4|llm κ 0,230; Fleiss 0,208 (leve)
+- Divergencia sistemática: silver fundamentales -> DESC 29/57; principios 0/39 (empates 1-1-1 por artículo menor); proteccion -> DESC 6/11
+- Tutelas de salud/pensión reciben silver de bloques genéricos citados (spot-check: T-853/02, T-231/20, T-235/20)
+- Caveat: muestra estratificada (no proporcional al corpus) -> exactitud a nivel de muestra
+- Veredicto (ADR-19): el silver de M4 no es un gold fiable; M4 queda como diagnóstico con caveats; no invertir más sobre este target sin gold tipo C1 o redefinición de tarea
+
+## Slide 36 — B2 2ª época — sin adopción
+
+- Continuación desde el mejor checkpoint de ep1 (lr 1e-5, 1 época, 3.762 pasos; `modelos/b2_retriever_ep2`)
+- Val marginal: acc. de tripletas 0,6871 vs 0,6864 (ep1)
+- Benchmark v14 (90 casos, silver): nDCG@10 0,6939 sin hubs / 0,6840 con hubs vs v13 0,6926/0,6907
+- Pareado v14 vs v13: Δ +0,0013 [−0,0093;+0,0119] prob 0,609 / −0,0067 [−0,0195;+0,0066] prob 0,180 → IC cruza 0
+- Sin adopción: el producto v2.2 mantiene el retriever ep1; el script 12 incorpora `--b2-variante` para futuras variantes
+
+## Slide 37 — C2-LoRA — adaptación GO, adopción NO
+
+- LoRA sobre ALIA-7B (r16/α32/qkvo, 20k pares de B1, 1 época; VRAM pico 15,0 GiB; AUC val 0,848)
+- Nivel 1 (juicio punto a punto): acc 0,769 / AUC 0,847 vs base 0,503/0,647 (Δacc +0,265 [0,24;0,29])
+- Nivel 2 (gold humano B3, 820 ítems): AUC(≥1) 0,654 / Spearman 0,297 vs base 0,597/0,200; la referencia LLM zero-shot puntúa mejor (0,727)
+- Nivel 3 (top-50 recomputado, 90 casos): 0,6842 vs v13 0,6907 (Δ −0,0065 ns); +0,0518 vs base → criterio de adaptación ≥+0,05 cumplido (GO)
+- Fusiones 0,6909–0,6923 vs v13 (+0,0002/+0,0015/+0,0016, ns) con p95 45,6 s > 30 s → ninguna supera a v13
+- Veredicto (ADR-21): sin adopción; el frente LLM C2 queda cerrado; el producto conserva B2 + B1
+- Incidente: falso stop en el paso 1000 por un bug de padding derecho (evaluación interna del script 33), corregido y verificado; reanudado hasta completar

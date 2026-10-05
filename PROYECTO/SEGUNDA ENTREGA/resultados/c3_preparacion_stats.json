@@ -1,0 +1,418 @@
+{
+  "script": "28_c3_preparar_corpus.py",
+  "fecha": "2026-10-05T02:39:31Z",
+  "modo": "real",
+  "smoke": false,
+  "docs_corpus": 2382,
+  "docs_ok": 2330,
+  "docs_procesados": 2330,
+  "excluidos_por_estado": {
+    "ok": 2330,
+    "stub": 48,
+    "texto_corto": 4
+  },
+  "limite": null,
+  "texto_crudo_ner_lemas": {
+    "docs": 2330,
+    "docs_html": 2330,
+    "docs_fallback_limpio": 0,
+    "ids_fallback": [],
+    "segundos": 130.89,
+    "chars_crudos_total": 372022042
+  },
+  "tiempos_seg": {
+    "ner": 54.52,
+    "etiquetas": 0.65,
+    "lemas": 2488.13
+  },
+  "ner": {
+    "fecha": "2026-10-05T01:58:02Z",
+    "reusado": false,
+    "segundos": 54.37,
+    "n_docs": 2330,
+    "n_canones_resolucion": 26061,
+    "cobertura_pct": {
+      "cp": 99.96,
+      "norma": 100.0,
+      "sent": 100.0,
+      "ponente": 46.57
+    },
+    "por_tipo_pct": {
+      "C": {
+        "n": 537,
+        "cp": 100.0,
+        "norma": 100.0,
+        "sent": 100.0,
+        "ponente": 49.53
+      },
+      "SU": {
+        "n": 182,
+        "cp": 100.0,
+        "norma": 100.0,
+        "sent": 100.0,
+        "ponente": 51.65
+      },
+      "T": {
+        "n": 1611,
+        "cp": 99.94,
+        "norma": 100.0,
+        "sent": 100.0,
+        "ponente": 45.0
+      }
+    },
+    "por_anio_pct": {
+      "2022": {
+        "n": 473,
+        "cp": 99.79,
+        "sent": 100.0,
+        "ponente": 41.44
+      },
+      "2023": {
+        "n": 581,
+        "cp": 100.0,
+        "sent": 100.0,
+        "ponente": 45.44
+      },
+      "2024": {
+        "n": 530,
+        "cp": 100.0,
+        "sent": 100.0,
+        "ponente": 42.26
+      },
+      "2025": {
+        "n": 516,
+        "cp": 100.0,
+        "sent": 100.0,
+        "ponente": 49.03
+      },
+      "2026": {
+        "n": 230,
+        "cp": 100.0,
+        "sent": 100.0,
+        "ponente": 64.35
+      }
+    },
+    "n_aristas": 144175,
+    "n_aristas_sin_self": 141867,
+    "menciones_unicas_por_doc": 144175,
+    "menciones_con_duplicados": 268610,
+    "pct_menciones_resuelven_corpus": 88.02,
+    "docs_autocita": 2308,
+    "docs_autocita_2plus": 0,
+    "top_arts_docs": [
+      [
+        "241",
+        2254
+      ],
+      [
+        "86",
+        1813
+      ],
+      [
+        "9",
+        1347
+      ],
+      [
+        "1",
+        1257
+      ],
+      [
+        "13",
+        1152
+      ],
+      [
+        "2",
+        1047
+      ],
+      [
+        "4",
+        823
+      ],
+      [
+        "6",
+        775
+      ],
+      [
+        "5",
+        755
+      ],
+      [
+        "10",
+        719
+      ],
+      [
+        "29",
+        703
+      ],
+      [
+        "33",
+        622
+      ],
+      [
+        "36",
+        607
+      ],
+      [
+        "3",
+        556
+      ],
+      [
+        "31",
+        543
+      ],
+      [
+        "44",
+        466
+      ],
+      [
+        "42",
+        460
+      ],
+      [
+        "8",
+        442
+      ],
+      [
+        "7",
+        414
+      ],
+      [
+        "48",
+        407
+      ]
+    ],
+    "ponente_nulos": 1245,
+    "descartes": {
+      "decreto_legislativo_mencion": 2657,
+      "menciones_sent_total": 268610,
+      "norma_ano_fuera_rango": 24,
+      "sent_ano_fuera_rango": 87,
+      "sent_ano_invalido": 151
+    }
+  },
+  "etiquetas": {
+    "fecha": "2026-10-05T01:58:03Z",
+    "reusado": false,
+    "segundos": 0.64,
+    "n_docs": 2330,
+    "vias_docs": {
+      "cita_cp": 2329,
+      "sin_area": 1
+    },
+    "via_cita_pct": 99.96,
+    "via_fallback_pct": 0.0,
+    "via_sin_area_pct": 0.04,
+    "asignadas_pct": 99.96,
+    "criterio_95_asignadas": true,
+    "areas_docs": [
+      [
+        "principios_fundamentales",
+        1047
+      ],
+      [
+        "derechos_fundamentales",
+        756
+      ],
+      [
+        "derechos_sociales_economicos_culturales",
+        256
+      ],
+      [
+        "rama_legislativa",
+        73
+      ],
+      [
+        "rama_judicial",
+        71
+      ],
+      [
+        "regimen_economico",
+        39
+      ],
+      [
+        "proteccion_aplicacion_derechos",
+        31
+      ],
+      [
+        "organizacion_territorial",
+        24
+      ],
+      [
+        "rama_ejecutiva",
+        15
+      ],
+      [
+        "organismos_control",
+        8
+      ],
+      [
+        "organizacion_estado",
+        8
+      ],
+      [
+        "participacion_democratica",
+        1
+      ],
+      [
+        "sin_area_definida",
+        1
+      ]
+    ],
+    "n_citas_cp_media": 15.647,
+    "por_tipo_pct": {
+      "C": {
+        "n": 537,
+        "cita_pct": 100.0,
+        "fallback_pct": 0.0,
+        "sin_area_pct": 0.0
+      },
+      "SU": {
+        "n": 182,
+        "cita_pct": 100.0,
+        "fallback_pct": 0.0,
+        "sin_area_pct": 0.0
+      },
+      "T": {
+        "n": 1611,
+        "cita_pct": 99.94,
+        "fallback_pct": 0.0,
+        "sin_area_pct": 0.06
+      }
+    },
+    "por_anio_pct": {
+      "2022": {
+        "n": 473,
+        "cita_pct": 99.79,
+        "fallback_pct": 0.0,
+        "sin_area_pct": 0.21
+      },
+      "2023": {
+        "n": 581,
+        "cita_pct": 100.0,
+        "fallback_pct": 0.0,
+        "sin_area_pct": 0.0
+      },
+      "2024": {
+        "n": 530,
+        "cita_pct": 100.0,
+        "fallback_pct": 0.0,
+        "sin_area_pct": 0.0
+      },
+      "2025": {
+        "n": 516,
+        "cita_pct": 100.0,
+        "fallback_pct": 0.0,
+        "sin_area_pct": 0.0
+      },
+      "2026": {
+        "n": 230,
+        "cita_pct": 100.0,
+        "fallback_pct": 0.0,
+        "sin_area_pct": 0.0
+      }
+    },
+    "diagnostico_normalizacion": {
+      "ignoradas_fuera_rango": 0,
+      "n_fallback": 0,
+      "n_sin_area": 1,
+      "normalizadas_base": 55,
+      "normalizadas_exactas": 36403
+    }
+  },
+  "lemas": {
+    "fecha": "2026-10-05T02:39:31Z",
+    "reusado": false,
+    "segundos": 2483.23,
+    "n_docs": 2330,
+    "total_lemas": 55201767,
+    "media_lemas_doc": 23691.7,
+    "nulos_lemas_texto": 0,
+    "n_tipos_lemas": 94168,
+    "n_tipos_con_espacio": 2454,
+    "top_lemas": [
+      [
+        "el",
+        6544857
+      ],
+      [
+        "de",
+        5195723
+      ],
+      [
+        "en",
+        1638107
+      ],
+      [
+        "que",
+        1610461
+      ],
+      [
+        "y",
+        1415648
+      ],
+      [
+        "él",
+        1156680
+      ],
+      [
+        "a",
+        1064234
+      ],
+      [
+        "del",
+        983067
+      ],
+      [
+        "uno",
+        699206
+      ],
+      [
+        "por",
+        676766
+      ],
+      [
+        "ser",
+        568432
+      ],
+      [
+        "su",
+        478290
+      ],
+      [
+        "no",
+        472792
+      ],
+      [
+        "para",
+        462012
+      ],
+      [
+        "con",
+        452739
+      ],
+      [
+        "este",
+        381872
+      ],
+      [
+        "al",
+        379864
+      ],
+      [
+        "o",
+        296500
+      ],
+      [
+        "derecho",
+        291961
+      ],
+      [
+        "como",
+        235781
+      ]
+    ],
+    "integridad_contador_secuencias": true,
+    "spacy_n_process": 3,
+    "spacy_batch_size": 6
+  }
+}

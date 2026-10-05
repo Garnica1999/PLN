@@ -12,17 +12,17 @@ Mantenimiento: este archivo se actualiza paso a paso (checkboxes y secciones de 
    y las premisas bajo las que se eligieron (workstream transversal + cierre).
 
 ## Definición de éxito ("robusto")
-- nDCG@10 >= 0.70 con gold humano (hoy 0.620 con gold NER) y F1@10 >= 0.42 (hoy 0.379).
+- nDCG@10 >= 0.70 con gold humano (hoy 0.620 con silver NER) y F1@10 >= 0.42 (hoy 0.379).
 - nDCG@10 >= 0.60 en CADA periodo (1992-2001 / 2002-2011 / 2012-2021), sin caídas.
 - Cada adopción supera el IC 95% bootstrap y es consistente en las mitades A/B (anti-sobreajuste).
-- Validación contra gold anotado (no solo gold NER).
+- Validación contra gold anotado (no solo silver NER).
 - Producto: latencia <= 10 s default / <= 30 s con rerank/LLM; QA v3 GO.
 
 ## Estado de partida (ciclo v2 congelado)
 - Retrieval v8: `hibrido_rerank_chunks_top50` + hubs alpha=1.5 = F1@5 0.425 / MRR 0.950 / nDCG@10 0.620 / F1@10 0.379;
   default BM25+hubs alpha=0.75 = F1@5 0.396 / MRR 0.901 / nDCG@10 0.601.
 - Limitantes: recall de 1a etapa (caso 6251: art. 21 en pos. 220/305), reranker genérico (no de dominio),
-  gold débil (NER), F1@5 topado ~0.65 por diseno (~10.7 artículos gold/caso).
+  silver (débil) (NER), F1@5 topado ~0.65 por diseno (~10.7 artículos silver/caso).
 - Clasificación: LogReg v1 0.2870; Fase U C 0.2980 (disponible, no adoptada); BETO chunk-mean 0.2433/0.2363.
 - Infra: cache chunks BETO (1,3 GB), caches BM25 v3 + E5, benchmark 90 casos (3/año seed 42),
   splits canónicos (16.557/3.549/3.548), producto v2 + QA v2 GO.
@@ -113,7 +113,7 @@ Mantenimiento: este archivo se actualiza paso a paso (checkboxes y secciones de 
 - [ ] B2 Retriever denso de dominio: contrastive (MultipleNegativesRankingLoss) del mejor embedding de A2.
       Salida `vinculo_cp_benchmark_v11.json`.
 - [ ] B3 Mini-gold 40-60 casos (Carlos, herramienta `16_anotador_gold.py`) + análisis de errores
-      categorizado (recall 1a etapa / reranker / gold ruidoso / NER). Salidas `gold_mini.json` +
+      categorizado (recall 1a etapa / reranker / silver ruidoso / NER). Salidas `gold_mini.json` +
       `c3_analisis_errores.md`.
 - [ ] B4 BETO chunk-mean++ (opcional: más épocas / max_chunks 96).
 - Gate B: nDCG@10 >= 0.66 y recall@50 +5 pp, con gold_mini como control cruzado; adopción v2.2 + QA.

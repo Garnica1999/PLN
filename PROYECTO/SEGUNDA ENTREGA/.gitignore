@@ -12,3 +12,11 @@ nohup.out
 .sparkStaging/
 derby.log
 metastore_db/
+
+# Artefactos pesados regenerables (ciclo v3)
+*.npz
+*.zip
+
+# Caches regenerables (oleada post-v3)
+*.pkl
+resultados/c2_lora/cache_scores*.jsonl

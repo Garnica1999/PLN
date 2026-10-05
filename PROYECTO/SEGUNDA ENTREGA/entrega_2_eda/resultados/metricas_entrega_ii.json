@@ -1,0 +1,822 @@
+{
+  "fecha": "2026-10-05",
+  "entrega": "Entrega 2 - EDA avanzado, representacion y propuesta metodologica",
+  "dataset": "Manuel/sentencias-corte-cons-colombia-1992-2021",
+  "fuente_datos": "datos/corpus_medido.parquet (conjunto medido de esta entrega)",
+  "n_docs_total_fuente": 23742,
+  "n_docs_parseados": 23742,
+  "n_docs_excluidos": 0,
+  "distribucion_tipos": {
+    "T": 17099,
+    "C": 6246,
+    "SU": 397
+  },
+  "rango_anios": [
+    "1992",
+    "2021"
+  ],
+  "docs_por_anio": {
+    "1992": 234,
+    "1993": 596,
+    "1994": 577,
+    "1995": 621,
+    "1996": 711,
+    "1997": 681,
+    "1998": 802,
+    "1999": 967,
+    "2000": 989,
+    "2001": 988,
+    "2002": 992,
+    "2003": 979,
+    "2004": 974,
+    "2005": 989,
+    "2006": 984,
+    "2007": 991,
+    "2008": 974,
+    "2009": 957,
+    "2010": 982,
+    "2011": 957,
+    "2012": 974,
+    "2013": 941,
+    "2014": 960,
+    "2015": 763,
+    "2016": 722,
+    "2017": 732,
+    "2018": 564,
+    "2019": 616,
+    "2020": 505,
+    "2021": 20
+  },
+  "total_palabras_raw": 260988316,
+  "total_palabras_clean": 250012101,
+  "total_stopwords": 121205437,
+  "total_palabras_sin_stopwords": 128806664,
+  "promedio_palabras_raw_por_doc": 10992.68,
+  "promedio_palabras_clean_por_doc": 10530.37,
+  "top20_con_stopwords": [
+    [
+      "de",
+      22543375
+    ],
+    [
+      "la",
+      14299738
+    ],
+    [
+      "el",
+      8225551
+    ],
+    [
+      "que",
+      7505218
+    ],
+    [
+      "en",
+      7208184
+    ],
+    [
+      "y",
+      5815750
+    ],
+    [
+      "a",
+      5124736
+    ],
+    [
+      "del",
+      4670179
+    ],
+    [
+      "los",
+      4196533
+    ],
+    [
+      "se",
+      3485410
+    ],
+    [
+      "por",
+      3315608
+    ],
+    [
+      "las",
+      3088387
+    ],
+    [
+      "no",
+      2267665
+    ],
+    [
+      "para",
+      2101076
+    ],
+    [
+      "con",
+      1880905
+    ],
+    [
+      "al",
+      1856725
+    ],
+    [
+      "su",
+      1577454
+    ],
+    [
+      "un",
+      1463000
+    ],
+    [
+      "o",
+      1451831
+    ],
+    [
+      "una",
+      1415694
+    ]
+  ],
+  "top20_sin_stopwords": [
+    [
+      "articulo",
+      947616
+    ],
+    [
+      "derecho",
+      898926
+    ],
+    [
+      "ley",
+      809313
+    ],
+    [
+      "corte",
+      760197
+    ],
+    [
+      "sentencia",
+      736326
+    ],
+    [
+      "derechos",
+      718194
+    ],
+    [
+      "constitucional",
+      689709
+    ],
+    [
+      "tutela",
+      649302
+    ],
+    [
+      "accion",
+      524583
+    ],
+    [
+      "caso",
+      473150
+    ],
+    [
+      "ser",
+      441058
+    ],
+    [
+      "proceso",
+      422881
+    ],
+    [
+      "sala",
+      416435
+    ],
+    [
+      "salud",
+      400039
+    ],
+    [
+      "constitucion",
+      390038
+    ],
+    [
+      "parte",
+      387012
+    ],
+    [
+      "asi",
+      360624
+    ],
+    [
+      "debe",
+      358726
+    ],
+    [
+      "proteccion",
+      337215
+    ],
+    [
+      "puede",
+      335875
+    ]
+  ],
+  "tiempo_procesamiento_seg": 171.5,
+  "nucleo_ejecucion": "venv local (/home/carlos/venv)",
+  "nota": "Cifras base (secciones 0-8) del notebook de la Entrega 2; las secciones 10-13 amplian este mismo archivo. No reemplaza PRIMERA ENTREGA/resultados/metricas.json.",
+  "espectro_frecuencias": {
+    "tipos_totales": 224202,
+    "tokens_totales": 128806664,
+    "hapax": 74069,
+    "hapax_pct": 33.04,
+    "estratos": [
+      {
+        "rango": "1",
+        "pct_tipos": 33.04,
+        "pct_tokens": 0.06
+      },
+      {
+        "rango": "2-5",
+        "pct_tipos": 25.75,
+        "pct_tokens": 0.13
+      },
+      {
+        "rango": "6-20",
+        "pct_tipos": 16.27,
+        "pct_tokens": 0.31
+      },
+      {
+        "rango": "21-100",
+        "pct_tipos": 12.01,
+        "pct_tokens": 0.98
+      },
+      {
+        "rango": "101-1k",
+        "pct_tipos": 8.53,
+        "pct_tokens": 4.99
+      },
+      {
+        "rango": ">1k",
+        "pct_tipos": 4.41,
+        "pct_tokens": 93.53
+      }
+    ]
+  },
+  "vocabulario_por_anio": {
+    "nota": "2021 es un anio parcial (20 documentos) y no es comparable",
+    "por_anio": {
+      "1992": {
+        "tipos": 30390,
+        "tokens": 848060,
+        "tipos_por_100k": 3583.5
+      },
+      "1993": {
+        "tipos": 39563,
+        "tokens": 1756379,
+        "tipos_por_100k": 2252.5
+      },
+      "1994": {
+        "tipos": 40685,
+        "tokens": 1807812,
+        "tipos_por_100k": 2250.5
+      },
+      "1995": {
+        "tipos": 38928,
+        "tokens": 1755138,
+        "tipos_por_100k": 2217.9
+      },
+      "1996": {
+        "tipos": 39042,
+        "tokens": 2014523,
+        "tipos_por_100k": 1938.0
+      },
+      "1997": {
+        "tipos": 39546,
+        "tokens": 1905391,
+        "tipos_por_100k": 2075.5
+      },
+      "1998": {
+        "tipos": 41126,
+        "tokens": 2132565,
+        "tipos_por_100k": 1928.5
+      },
+      "1999": {
+        "tipos": 43212,
+        "tokens": 2439581,
+        "tipos_por_100k": 1771.3
+      },
+      "2000": {
+        "tipos": 38552,
+        "tokens": 2107598,
+        "tipos_por_100k": 1829.2
+      },
+      "2001": {
+        "tipos": 43709,
+        "tokens": 2767922,
+        "tipos_por_100k": 1579.1
+      },
+      "2002": {
+        "tipos": 51643,
+        "tokens": 3497378,
+        "tipos_por_100k": 1476.6
+      },
+      "2003": {
+        "tipos": 51230,
+        "tokens": 3914080,
+        "tipos_por_100k": 1308.9
+      },
+      "2004": {
+        "tipos": 52045,
+        "tokens": 3964266,
+        "tipos_por_100k": 1312.9
+      },
+      "2005": {
+        "tipos": 50159,
+        "tokens": 3959260,
+        "tipos_por_100k": 1266.9
+      },
+      "2006": {
+        "tipos": 55953,
+        "tokens": 5139892,
+        "tipos_por_100k": 1088.6
+      },
+      "2007": {
+        "tipos": 53691,
+        "tokens": 4941288,
+        "tipos_por_100k": 1086.6
+      },
+      "2008": {
+        "tipos": 52935,
+        "tokens": 4802091,
+        "tipos_por_100k": 1102.3
+      },
+      "2009": {
+        "tipos": 57392,
+        "tokens": 5178159,
+        "tipos_por_100k": 1108.3
+      },
+      "2010": {
+        "tipos": 59509,
+        "tokens": 5922613,
+        "tipos_por_100k": 1004.8
+      },
+      "2011": {
+        "tipos": 61110,
+        "tokens": 6416232,
+        "tipos_por_100k": 952.4
+      },
+      "2012": {
+        "tipos": 62679,
+        "tokens": 6585514,
+        "tipos_por_100k": 951.8
+      },
+      "2013": {
+        "tipos": 64306,
+        "tokens": 6982249,
+        "tipos_por_100k": 921.0
+      },
+      "2014": {
+        "tipos": 67706,
+        "tokens": 7491092,
+        "tipos_por_100k": 903.8
+      },
+      "2015": {
+        "tipos": 66261,
+        "tokens": 6930858,
+        "tipos_por_100k": 956.0
+      },
+      "2016": {
+        "tipos": 67556,
+        "tokens": 7495440,
+        "tipos_por_100k": 901.3
+      },
+      "2017": {
+        "tipos": 69822,
+        "tokens": 7701064,
+        "tipos_por_100k": 906.7
+      },
+      "2018": {
+        "tipos": 61673,
+        "tokens": 6017358,
+        "tipos_por_100k": 1024.9
+      },
+      "2019": {
+        "tipos": 64926,
+        "tokens": 6120415,
+        "tipos_por_100k": 1060.8
+      },
+      "2020": {
+        "tipos": 59672,
+        "tokens": 5924261,
+        "tipos_por_100k": 1007.2
+      },
+      "2021": {
+        "tipos": 17287,
+        "tokens": 288185,
+        "tipos_por_100k": 5998.6
+      }
+    }
+  },
+  "zipf_unigramas": {
+    "n_terminos": 20000,
+    "pendiente": -1.4676,
+    "intercepto": 8.839,
+    "r2": 0.9717,
+    "top5": [
+      {
+        "termino": "de",
+        "frecuencia": 22543375
+      },
+      {
+        "termino": "la",
+        "frecuencia": 14299738
+      },
+      {
+        "termino": "el",
+        "frecuencia": 8225551
+      },
+      {
+        "termino": "que",
+        "frecuencia": 7505218
+      },
+      {
+        "termino": "en",
+        "frecuencia": 7208184
+      }
+    ]
+  },
+  "mtld_vs_longitud": {
+    "spearman_rho": -0.2628,
+    "n_docs": 23742,
+    "bins": 21,
+    "rango_tokens": [
+      314,
+      449822
+    ]
+  },
+  "ventana_512_tokens": {
+    "ventana": 512,
+    "pct_excede": 99.95,
+    "n_docs": 23742,
+    "pct_por_tipo": {
+      "T": 99.94,
+      "C": 99.95,
+      "SU": 100.0
+    },
+    "mediana_palabras_clean": 7158,
+    "nota": "n_palabras_clean es cota inferior de los tokens subword"
+  },
+  "representacion_tfidf": {
+    "vectorizador": "TfidfVectorizer sobre lemas normalizados",
+    "parametros": {
+      "min_df": 3,
+      "max_features": 100000,
+      "ngram_range": [
+        1,
+        2
+      ],
+      "sublinear_tf": true,
+      "norm": "l2",
+      "dtype": "float32"
+    },
+    "shape": [
+      23742,
+      100000
+    ],
+    "nnz": 103045759,
+    "esparsidad": 0.956598,
+    "vocabulario": 100000,
+    "tiempo_ajuste_seg": 201.5,
+    "top15_df": [
+      {
+        "termino": "él",
+        "documentos": 23742,
+        "porcentaje_docs": 100.0
+      },
+      {
+        "termino": "por",
+        "documentos": 23742,
+        "porcentaje_docs": 100.0
+      },
+      {
+        "termino": "de",
+        "documentos": 23742,
+        "porcentaje_docs": 100.0
+      },
+      {
+        "termino": "sentencia",
+        "documentos": 23742,
+        "porcentaje_docs": 100.0
+      },
+      {
+        "termino": "de el",
+        "documentos": 23742,
+        "porcentaje_docs": 100.0
+      },
+      {
+        "termino": "en",
+        "documentos": 23742,
+        "porcentaje_docs": 100.0
+      },
+      {
+        "termino": "del",
+        "documentos": 23742,
+        "porcentaje_docs": 100.0
+      },
+      {
+        "termino": "en el",
+        "documentos": 23742,
+        "porcentaje_docs": 100.0
+      },
+      {
+        "termino": "que",
+        "documentos": 23742,
+        "porcentaje_docs": 100.0
+      },
+      {
+        "termino": "el",
+        "documentos": 23742,
+        "porcentaje_docs": 100.0
+      },
+      {
+        "termino": "ser",
+        "documentos": 23741,
+        "porcentaje_docs": 100.0
+      },
+      {
+        "termino": "constitucional",
+        "documentos": 23741,
+        "porcentaje_docs": 100.0
+      },
+      {
+        "termino": "corte",
+        "documentos": 23741,
+        "porcentaje_docs": 100.0
+      },
+      {
+        "termino": "por el",
+        "documentos": 23741,
+        "porcentaje_docs": 100.0
+      },
+      {
+        "termino": "el corte",
+        "documentos": 23741,
+        "porcentaje_docs": 100.0
+      }
+    ]
+  },
+  "cobertura_vocabulario": {
+    "total_tokens": 250012101,
+    "cobertura_top_k": {
+      "1000": 77.9,
+      "5000": 92.96,
+      "10000": 96.64,
+      "20000": 98.66
+    },
+    "fuente": "resultados/eda_extendido/ngramas_1.csv"
+  },
+  "embeddings_e5_demo": {
+    "modelo": "intfloat/multilingual-e5-base",
+    "dimension": 768,
+    "n_documentos": 5,
+    "tokens_por_documento": 512,
+    "prefijo": "query: (similitud simetrica)",
+    "dispositivo": "cuda",
+    "similitud_media": 0.8994
+  },
+  "diacronia_logodds": {
+    "periodos": [
+      "1992-2001",
+      "2002-2011",
+      "2012-2021"
+    ],
+    "min_frecuencia_lema": 50,
+    "docs_por_periodo": {
+      "2012-2021": 6797,
+      "1992-2001": 7166,
+      "2002-2011": 9779
+    },
+    "lemas_por_periodo": {
+      "2012-2021": 62545530,
+      "1992-2001": 19950956,
+      "2002-2011": 48671763
+    },
+    "transiciones": {
+      "1992-2001->2002-2011": {
+        "top_sube": [
+          {
+            "lema": "incoder",
+            "log_odds": 7.053053711030568
+          },
+          {
+            "lema": "rupd",
+            "log_odds": 6.933449024589883
+          },
+          {
+            "lema": "chaljub",
+            "log_odds": 6.697574723221068
+          },
+          {
+            "lema": "fonvivienda",
+            "log_odds": 6.596489892761472
+          },
+          {
+            "lema": "cisa",
+            "log_odds": 6.395069440332573
+          },
+          {
+            "lema": "bariatrico",
+            "log_odds": 6.375718168764664
+          },
+          {
+            "lema": "colmedica",
+            "log_odds": 6.3373060639853644
+          },
+          {
+            "lema": "indiciado",
+            "log_odds": 6.289783473329445
+          },
+          {
+            "lema": "afrodescendient",
+            "log_odds": 6.212334614948144
+          },
+          {
+            "lema": "humanavivir",
+            "log_odds": 6.0129390318594975
+          }
+        ],
+        "top_baja": [
+          {
+            "lema": "juzg",
+            "log_odds": -8.533438590531578
+          },
+          {
+            "lema": "trasladante",
+            "log_odds": -6.735375008168894
+          },
+          {
+            "lema": "sgpc",
+            "log_odds": -6.316777651346117
+          },
+          {
+            "lema": "indalpe",
+            "log_odds": -6.205033011428354
+          },
+          {
+            "lema": "dcho",
+            "log_odds": -6.185131756864735
+          },
+          {
+            "lema": "obtentor",
+            "log_odds": -6.1648263904576766
+          },
+          {
+            "lema": "croydon",
+            "log_odds": -5.997771553947485
+          },
+          {
+            "lema": "cuo",
+            "log_odds": -5.854670158952686
+          },
+          {
+            "lema": "mecanizados",
+            "log_odds": -5.854670158952686
+          },
+          {
+            "lema": "clad",
+            "log_odds": -5.826299361577298
+          }
+        ]
+      },
+      "2002-2011->2012-2021": {
+        "top_sube": [
+          {
+            "lema": "uariv",
+            "log_odds": 9.164459393426863
+          },
+          {
+            "lema": "jep",
+            "log_odds": 9.018369918322643
+          },
+          {
+            "lema": "coronavirus",
+            "log_odds": 8.952297227417217
+          },
+          {
+            "lema": "gnr",
+            "log_odds": 8.136551643096434
+          },
+          {
+            "lema": "arl",
+            "log_odds": 7.854840156847208
+          },
+          {
+            "lema": "zidres",
+            "log_odds": 7.582428387641791
+          },
+          {
+            "lema": "anla",
+            "log_odds": 7.478078264270895
+          },
+          {
+            "lema": "cgp",
+            "log_odds": 7.4630067852102115
+          },
+          {
+            "lema": "unp",
+            "log_odds": 7.454934848608145
+          },
+          {
+            "lema": "cev",
+            "log_odds": 7.313976703281254
+          }
+        ],
+        "top_baja": [
+          {
+            "lema": "nilser",
+            "log_odds": -6.483248957710915
+          },
+          {
+            "lema": "fomin",
+            "log_odds": -6.224609361368124
+          },
+          {
+            "lema": "superview",
+            "log_odds": -6.015990092086577
+          },
+          {
+            "lema": "sarai",
+            "log_odds": -5.97111062208813
+          },
+          {
+            "lema": "guingue",
+            "log_odds": -5.882010360205971
+          },
+          {
+            "lema": "serpvir",
+            "log_odds": -5.845509855257189
+          },
+          {
+            "lema": "capruis",
+            "log_odds": -5.838047113509749
+          },
+          {
+            "lema": "intelsat",
+            "log_odds": -5.768251166661578
+          },
+          {
+            "lema": "commsa",
+            "log_odds": -5.768251166661578
+          },
+          {
+            "lema": "cja",
+            "log_odds": -5.7272617193991575
+          }
+        ]
+      }
+    },
+    "tiempo_conteo_seg": 39.5
+  },
+  "dataset_medido": {
+    "ruta": "/home/carlos/Git/PLN/PROYECTO/SEGUNDA ENTREGA/entrega_2_eda/datos/corpus_medido.parquet",
+    "filas": 23742,
+    "columnas": [
+      "id",
+      "tipo",
+      "numero",
+      "ano",
+      "texto",
+      "texto_limpio",
+      "n_chars_texto",
+      "n_palabras_raw",
+      "n_palabras_clean",
+      "n_stopwords",
+      "n_lemas",
+      "mtld"
+    ],
+    "sumas": {
+      "n_chars_texto": 1640749780,
+      "n_palabras_raw": 260988316,
+      "n_palabras_clean": 250012101,
+      "n_stopwords": 121205437,
+      "n_lemas": 248533344
+    }
+  },
+  "tiempos_ejecucion": {
+    "textometria_seg": 171.5,
+    "tfidf_seg": 201.5,
+    "logodds_conteo_seg": 39.5
+  },
+  "entorno_ejecucion": {
+    "fecha": "2026-10-05",
+    "python": "3.14.7",
+    "paquetes": {
+      "pandas": "2.3.3",
+      "numpy": "1.26.4",
+      "scikit-learn": "1.8.0",
+      "pyarrow": "24.0.0",
+      "nltk": "3.9.4",
+      "matplotlib": "3.10.9",
+      "scipy": "1.17.1",
+      "sentence-transformers": "6.0.1",
+      "torch": "2.14.0+rocm7.2"
+    },
+    "archivo_entorno": "/home/carlos/Git/PLN/PROYECTO/SEGUNDA ENTREGA/entrega_2_eda/resultados/entorno_ejecucion.json"
+  }
+}

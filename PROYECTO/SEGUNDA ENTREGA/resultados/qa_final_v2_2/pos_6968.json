@@ -1,0 +1,363 @@
+{
+  "es_sentencia": true,
+  "score_validacion": 1.0,
+  "id_detectado": "6968",
+  "ponente": "Eduardo Montealegre Lynett",
+  "area": {
+    "top3": [
+      {
+        "area": "derechos_fundamentales",
+        "prob": 0.6462
+      },
+      {
+        "area": "principios_fundamentales",
+        "prob": 0.1967
+      },
+      {
+        "area": "organizacion_territorial",
+        "prob": 0.0607
+      }
+    ],
+    "via": "clasificador_m4_logreg_enmascarado"
+  },
+  "articulos_cp": {
+    "extraidos": [
+      {
+        "numero": "96",
+        "texto_150chars": "< Artículo modificado por el artículo 1 del Acto Legislativo No. 1 de 2002. El nuevo texto es el siguiente:> Son nacionales colombianos: 1. Por nacimi",
+        "bloque": "habitantes_territorio"
+      },
+      {
+        "numero": "175",
+        "texto_150chars": "En los juicios que se sigan ante el Senado, se observarán estas reglas: 1. El acusado queda de hecho suspenso de su empleo, siempre que una acusación ",
+        "bloque": "rama_legislativa"
+      },
+      {
+        "numero": "13",
+        "texto_150chars": "Todas las personas nacen libres e iguales ante la ley, recibirán la misma protección y trato de las autoridades y gozarán de los mismos derechos, libe",
+        "bloque": "derechos_fundamentales"
+      },
+      {
+        "numero": "40",
+        "texto_150chars": "Todo ciudadano tiene derecho a participar en la conformación, ejercicio y control del poder político. Para hacer efectivo este derecho puede: 1. Elegi",
+        "bloque": "derechos_fundamentales"
+      },
+      {
+        "numero": "95",
+        "texto_150chars": "La calidad de colombiano enaltece a todos los miembros de la comunidad nacional. Todos están en el deber de engrandecerla y dignificarla. El ejercicio",
+        "bloque": "deberes"
+      },
+      {
+        "numero": "241",
+        "texto_150chars": "A la Corte Constitucional se le confía la guarda de la integridad y supremacía de la Constitución, en los estrictos y precisos términos de este artícu",
+        "bloque": "rama_judicial"
+      },
+      {
+        "numero": "243",
+        "texto_150chars": "Los fallos que la Corte dicte en ejercicio del control jurisdiccional hacen tránsito a cosa juzgada constitucional Ninguna autoridad podrá reproducir ",
+        "bloque": "rama_judicial"
+      },
+      {
+        "numero": "6",
+        "texto_150chars": "Los particulares sólo son responsables ante las autoridades por infringir la Constitución y las leyes. Los servidores públicos lo son por la misma cau",
+        "bloque": "principios_fundamentales"
+      },
+      {
+        "numero": "7",
+        "texto_150chars": "El Estado reconoce y protege la diversidad étnica y cultural de la Nación colombiana",
+        "bloque": "principios_fundamentales"
+      },
+      {
+        "numero": "118",
+        "texto_150chars": "El Ministerio Público será ejercido por el Procurador General de la Nación, por el Defensor del Pueblo, por los procuradores delegados y los agentes d",
+        "bloque": "organizacion_estado"
+      },
+      {
+        "numero": "314",
+        "texto_150chars": "< Artículo modificado por el artículo 3 del Acto Legislativo No. 2 de 2002. El nuevo texto es el siguiente:> En cada municipio habrá un alcalde, jefe ",
+        "bloque": "organizacion_territorial"
+      },
+      {
+        "numero": "259",
+        "texto_150chars": "Quienes elijan gobernadores y alcaldes, imponen por mandato al elegido el programa que presentó al inscribirse como candidato. La ley reglamentará el ",
+        "bloque": "elecciones"
+      },
+      {
+        "numero": "280",
+        "texto_150chars": "Los agentes del Ministerio Público tendrán las mismas calidades, categoría, remuneración, derechos y prestaciones de los magistrados y jueces de mayor",
+        "bloque": "organismos_control"
+      },
+      {
+        "numero": "266",
+        "texto_150chars": "<Artículo modificado por el Artículo 15 del Acto Legislativo 1 de 2003. El nuevo texto es el siguiente:> El Registrador Nacional del Estado Civil será",
+        "bloque": "elecciones"
+      }
+    ],
+    "recuperados_bm25": [
+      {
+        "numero": "241",
+        "score": 1.6401
+      },
+      {
+        "numero": "86",
+        "score": 1.5275
+      },
+      {
+        "numero": "2",
+        "score": 1.1513
+      },
+      {
+        "numero": "13",
+        "score": 1.1256
+      },
+      {
+        "numero": "9",
+        "score": 1.1251
+      },
+      {
+        "numero": "48",
+        "score": 1.0506
+      },
+      {
+        "numero": "1",
+        "score": 1.0501
+      },
+      {
+        "numero": "242",
+        "score": 1.047
+      },
+      {
+        "numero": "4",
+        "score": 1.0407
+      },
+      {
+        "numero": "243",
+        "score": 1.0375
+      }
+    ],
+    "reranker_usado": false,
+    "hubs_usado": true,
+    "alpha_hubs": 0.75
+  },
+  "sentencias_citadas": [
+    {
+      "id": "2412",
+      "resuelta": true,
+      "ano": 1997,
+      "pagerank": 2.4e-05,
+      "area": "rama_judicial"
+    },
+    {
+      "id": "3338",
+      "resuelta": true,
+      "ano": 1996,
+      "pagerank": 3e-05,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "1865",
+      "resuelta": true,
+      "ano": 1994,
+      "pagerank": 0.000309,
+      "area": "rama_legislativa"
+    },
+    {
+      "id": "4976",
+      "resuelta": true,
+      "ano": 1998,
+      "pagerank": 1.7e-05,
+      "area": "principios_fundamentales"
+    },
+    {
+      "id": "694",
+      "resuelta": true,
+      "ano": 1995,
+      "pagerank": 0.000154,
+      "area": "rama_legislativa"
+    },
+    {
+      "id": "3138",
+      "resuelta": true,
+      "ano": 1996,
+      "pagerank": 4e-05,
+      "area": "organizacion_territorial"
+    },
+    {
+      "id": "2695",
+      "resuelta": true,
+      "ano": 1997,
+      "pagerank": 6.8e-05,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "740",
+      "resuelta": true,
+      "ano": 1995,
+      "pagerank": 8.1e-05,
+      "area": "organizacion_territorial"
+    },
+    {
+      "id": "4248",
+      "resuelta": true,
+      "ano": 2000,
+      "pagerank": 4.3e-05,
+      "area": "organizacion_territorial"
+    },
+    {
+      "id": "2694",
+      "resuelta": true,
+      "ano": 1997,
+      "pagerank": 4.8e-05,
+      "area": "organizacion_territorial"
+    },
+    {
+      "id": "720",
+      "resuelta": true,
+      "ano": 1995,
+      "pagerank": 2e-05,
+      "area": "organizacion_territorial"
+    },
+    {
+      "id": "5133",
+      "resuelta": true,
+      "ano": 1998,
+      "pagerank": 4.1e-05,
+      "area": "rama_legislativa"
+    },
+    {
+      "id": "5203",
+      "resuelta": true,
+      "ano": 1998,
+      "pagerank": 1.9e-05,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "1585",
+      "resuelta": true,
+      "ano": 1994,
+      "pagerank": 3.5e-05,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "2079",
+      "resuelta": true,
+      "ano": 1997,
+      "pagerank": 4.3e-05,
+      "area": "principios_fundamentales"
+    },
+    {
+      "id": "5743",
+      "resuelta": true,
+      "ano": 1999,
+      "pagerank": 7.9e-05,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "5034",
+      "resuelta": true,
+      "ano": 1998,
+      "pagerank": 2.7e-05,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "2500",
+      "resuelta": true,
+      "ano": 1997,
+      "pagerank": 0.000125,
+      "area": "principios_fundamentales"
+    },
+    {
+      "id": "204",
+      "resuelta": true,
+      "ano": 1992,
+      "pagerank": 0.000988,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "1611",
+      "resuelta": true,
+      "ano": 1994,
+      "pagerank": 0.001579,
+      "area": "derechos_sociales_economicos_culturales"
+    },
+    {
+      "id": "1911",
+      "resuelta": true,
+      "ano": 1994,
+      "pagerank": 3.4e-05,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "750",
+      "resuelta": true,
+      "ano": 1995,
+      "pagerank": 0.000273,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "4082",
+      "resuelta": true,
+      "ano": 2000,
+      "pagerank": 6e-05,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "T-1075-2000",
+      "resuelta": false,
+      "ano": 2000,
+      "pagerank": null,
+      "area": null
+    },
+    {
+      "id": "1810",
+      "resuelta": true,
+      "ano": 1994,
+      "pagerank": 4.1e-05,
+      "area": "regimen_economico"
+    },
+    {
+      "id": "2565",
+      "resuelta": true,
+      "ano": 1997,
+      "pagerank": 0.000124,
+      "area": "principios_fundamentales"
+    },
+    {
+      "id": "4713",
+      "resuelta": true,
+      "ano": 1998,
+      "pagerank": 4e-05,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "5808",
+      "resuelta": true,
+      "ano": 1999,
+      "pagerank": 7.3e-05,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "784",
+      "resuelta": true,
+      "ano": 1995,
+      "pagerank": 0.000582,
+      "area": "principios_fundamentales"
+    },
+    {
+      "id": "6080",
+      "resuelta": true,
+      "ano": 1999,
+      "pagerank": 2.4e-05,
+      "area": "derechos_fundamentales"
+    },
+    {
+      "id": "3105",
+      "resuelta": true,
+      "ano": 1996,
+      "pagerank": 0.000594,
+      "area": "derechos_sociales_economicos_culturales"
+    }
+  ],
+  "resumen": "Providencia valida de la Corte Constitucional; area tematica derechos_fundamentales (prob 0.6462); 14 articulos CP extraidos y 10 recuperados por BM25 con prior de hubs (alpha=0.75); 30 de 31 sentencias citadas resueltas al corpus.",
+  "tiempo_segundos": 4.34
+}

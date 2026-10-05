@@ -1,0 +1,21 @@
+{
+  "fecha": "2026-10-05",
+  "hora_local": "2026-10-05T02:24:27",
+  "python": "3.14.7",
+  "plataforma": "Linux-7.2.8-1-cachyos-x86_64-with-glibc2.44",
+  "ruta_base": "/home/carlos/Git/PLN/PROYECTO/SEGUNDA ENTREGA/entrega_2_eda",
+  "cwd": "/home/carlos/Git/PLN/PROYECTO/SEGUNDA ENTREGA/entrega_2_eda/notebook",
+  "fuente_datos": "datos/corpus_medido.parquet (conjunto medido de esta entrega)",
+  "recalcular_morfologia": false,
+  "paquetes": {
+    "pandas": "2.3.3",
+    "numpy": "1.26.4",
+    "scikit-learn": "1.8.0",
+    "pyarrow": "24.0.0",
+    "nltk": "3.9.4",
+    "matplotlib": "3.10.9",
+    "scipy": "1.17.1",
+    "sentence-transformers": "6.0.1",
+    "torch": "2.14.0+rocm7.2"
+  }
+}

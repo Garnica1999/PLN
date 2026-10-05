@@ -108,7 +108,7 @@ El dataset está verificado por su API: `Manuel` (usuario HF), 23.750 sentencias
 
 **Fecha de investigación:** 2026-09-08
 **Métodos de verificación usados:** webfetch sobre arXiv API y páginas abs de arXiv, ACL Anthology, API de Crossref, portal UCM/Dialnet (intento a Semantic Scholar API devolvió 429 por límite de tasa). Las 10 referencias nuevas fueron comprobadas una por una (DOI o URL funcional) el día de la fecha. Ninguna es inventada y ninguna duplica las 10 de E1.
-**Mapa de módulos usado abajo:** M0 validación de sentencia, M1 clasificación de área temática, M2 retrieval de artículos de la CP, M3 NER jurídico, M4 preprocesamiento y análisis morfológico, M5 textometría diacrónica, M6 red de precedentes y jurimetría, M7 embeddings y modelado neuronal.
+**Mapa de módulos usado abajo:** M0 validación de sentencia, M1 clasificación de área temática, M2 retrieval de artículos de la CP, M3 NER jurídico, M4 preprocesamiento y análisis morfológico, M5 textometría diacrónica, M6 red de precedentes y jurimetría, M7 embeddings y modelado neuronal. **Errata (2026-10-03):** este mapa es el de las referencias SOTA y difiere del mapa operativo real del proyecto (`00_intent.md`/`PLAN.md`: M0 validación, M1 lematización, M2 NER, M3 etiquetado de área, M4 clasificación, M5 red de citas, M6 diacronía, M7 vínculo CP). Se conserva por trazabilidad de las referencias; el mapa real está en `PROYECTO/arquitectura.md`.
 
 ### (a) Legal NLP en español (corpus judiciales hispanohablantes, clasificación de sentencias)
 

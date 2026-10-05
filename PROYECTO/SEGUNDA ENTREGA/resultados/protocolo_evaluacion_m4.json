@@ -1,0 +1,165 @@
+{
+  "fecha": "2026-10-03T19:10:29.915843",
+  "script": "scripts/18_h1_ruido_m4.py",
+  "smoke": false,
+  "versiones": {
+    "python": "3.14.7",
+    "plataforma": "Linux-7.2.8-1-cachyos-x86_64-with-glibc2.44",
+    "sklearn": "1.8.0",
+    "scipy": "1.17.1",
+    "numpy": "1.26.4",
+    "pandas": "2.3.3",
+    "joblib": "1.5.3",
+    "cleanlab": "2.9.0",
+    "matplotlib": "3.10.9"
+  },
+  "md5_canonicos": {
+    "splits_m4": "37fdbc6d3baa7c0d89370ede305c11bb",
+    "etiquetas_areas": "d3bbaace6a909d5ab0a5541d448f1b1c"
+  },
+  "regla_temporal": {
+    "regla_final": "train: ano<=2011; val: 2012-2017; test: ano>=2018",
+    "limites_propuestos": {
+      "corte_train": 2011,
+      "corte_val": 2017
+    },
+    "limites_finales": {
+      "corte_train": 2011,
+      "corte_val": 2017
+    },
+    "ajustado_por_minimo": false,
+    "minimo_docs_por_conjunto": 1500,
+    "conteos": {
+      "train": 16858,
+      "val": 5092,
+      "test": 1704
+    },
+    "conteos_por_clase": {
+      "train": {
+        "derechos_fundamentales": 7379,
+        "principios_fundamentales": 4311,
+        "derechos_sociales_economicos_culturales": 1961,
+        "proteccion_aplicacion_derechos": 1056,
+        "rama_judicial": 838,
+        "rama_legislativa": 538,
+        "regimen_economico": 316,
+        "rama_ejecutiva": 154,
+        "organizacion_territorial": 152,
+        "organizacion_estado": 94,
+        "organismos_control": 19,
+        "derechos_colectivos_ambiente": 14,
+        "habitantes_territorio": 10,
+        "participacion_democratica": 7,
+        "reforma_constitucion": 6,
+        "elecciones": 3
+      },
+      "val": {
+        "derechos_fundamentales": 2014,
+        "principios_fundamentales": 1645,
+        "derechos_sociales_economicos_culturales": 713,
+        "rama_judicial": 265,
+        "proteccion_aplicacion_derechos": 169,
+        "rama_legislativa": 128,
+        "regimen_economico": 66,
+        "organizacion_territorial": 32,
+        "rama_ejecutiva": 22,
+        "organizacion_estado": 19,
+        "organismos_control": 10,
+        "derechos_colectivos_ambiente": 5,
+        "reforma_constitucion": 3,
+        "participacion_democratica": 1
+      },
+      "test": {
+        "derechos_fundamentales": 688,
+        "principios_fundamentales": 595,
+        "derechos_sociales_economicos_culturales": 187,
+        "rama_judicial": 64,
+        "rama_legislativa": 46,
+        "regimen_economico": 37,
+        "rama_ejecutiva": 33,
+        "proteccion_aplicacion_derechos": 27,
+        "organizacion_territorial": 17,
+        "organizacion_estado": 7,
+        "derechos_colectivos_ambiente": 3
+      }
+    }
+  },
+  "regla_holdout": {
+    "fraccion_objetivo": 0.15,
+    "semilla": 42,
+    "umbral_excepcion_train": 10,
+    "umbral_colapso_estratos": 5,
+    "clases_excluidas_del_holdout": {
+      "elecciones": 2,
+      "habitantes_territorio": 7,
+      "participacion_democratica": 6,
+      "reforma_constitucion": 6
+    },
+    "estratos_colapsados": [],
+    "n_train_canonico": 16557,
+    "n_holdout": 2481,
+    "n_train_reducido": 14076,
+    "sellado": "solo lectura: ningun variante de H1 evalua ni entrena con el holdout; queda reservado para la evaluacion final",
+    "conteos_por_clase": {
+      "train_canonico": {
+        "derechos_fundamentales": 7056,
+        "principios_fundamentales": 4586,
+        "derechos_sociales_economicos_culturales": 2003,
+        "proteccion_aplicacion_derechos": 876,
+        "rama_judicial": 817,
+        "rama_legislativa": 498,
+        "regimen_economico": 293,
+        "rama_ejecutiva": 146,
+        "organizacion_territorial": 141,
+        "organizacion_estado": 84,
+        "organismos_control": 20,
+        "derechos_colectivos_ambiente": 16,
+        "habitantes_territorio": 7,
+        "participacion_democratica": 6,
+        "reforma_constitucion": 6,
+        "elecciones": 2
+      },
+      "holdout_bloqueado": {
+        "derechos_fundamentales": 1059,
+        "principios_fundamentales": 688,
+        "derechos_sociales_economicos_culturales": 300,
+        "proteccion_aplicacion_derechos": 131,
+        "rama_judicial": 123,
+        "rama_legislativa": 75,
+        "regimen_economico": 44,
+        "rama_ejecutiva": 22,
+        "organizacion_territorial": 21,
+        "organizacion_estado": 13,
+        "organismos_control": 3,
+        "derechos_colectivos_ambiente": 2
+      },
+      "train_reducido": {
+        "derechos_fundamentales": 5997,
+        "principios_fundamentales": 3898,
+        "derechos_sociales_economicos_culturales": 1703,
+        "proteccion_aplicacion_derechos": 745,
+        "rama_judicial": 694,
+        "rama_legislativa": 423,
+        "regimen_economico": 249,
+        "rama_ejecutiva": 124,
+        "organizacion_territorial": 120,
+        "organizacion_estado": 71,
+        "organismos_control": 17,
+        "derechos_colectivos_ambiente": 14,
+        "habitantes_territorio": 7,
+        "participacion_democratica": 6,
+        "reforma_constitucion": 6,
+        "elecciones": 2
+      }
+    }
+  },
+  "md5": {
+    "splits_m4_temporal": "85baf11c22edf4771c3e273af3c33bf3",
+    "holdout_m4_bloqueado": "d3d279a48d6816b6c0a6697ea91f454b"
+  },
+  "archivos": {
+    "splits_m4_temporal": "data/splits_m4_temporal.parquet",
+    "holdout_m4_bloqueado": "data/holdout_m4_bloqueado.parquet"
+  },
+  "nota_sellado": "el holdout es de solo lectura y queda reservado para la evaluacion final; H1 solo lo usa para excluir sus ids del train reducido"
+}

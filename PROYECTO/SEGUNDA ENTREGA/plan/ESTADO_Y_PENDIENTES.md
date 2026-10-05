@@ -1,13 +1,13 @@
 # PLAN MAESTRO E2 "Juris-PLN" — Estado y pendientes
-Actualizado: 2026-09-11 (ciclo v3 en ejecución) · Fuente de verdad: `plan/PLAN.md` (v1 congelada) + `plan/PLAN_v2_ciclo_mejora.md` (ciclo v2) + `plan/PLAN_v3_recuperacion_robusta.md` (ciclo v3).
+Actualizado: 2026-10-05 (ciclo v3 cerrado; gate B3 con gold humano confirmado) · Fuente de verdad: `plan/PLAN.md` (v1 congelada) + `plan/PLAN_v2_ciclo_mejora.md` (ciclo v2) + `plan/PLAN_v3_recuperacion_robusta.md` (ciclo v3) + `plan/REGISTRO_EXPERIMENTOS.md` + `resultados/metricas.json`.
 
-## CICLO v3 — EN EJECUCIÓN (aprobado 2026-09-11) — "Recuperación robusta"
-Meta: nDCG@10 >= 0.70 con gold humano, sin caídas por periodo (>=0.60), adopciones con IC 95% bootstrap.
+## CICLO v3 — CERRADO 2026-10-05 — "Recuperación robusta"
+Meta cumplida: nDCG@10 >= 0.70 con gold humano (0,7852 [0,745;0,826]), sin caídas por periodo (C3 2022-2026: 0,747), adopciones con IC 95 % bootstrap (B2 > B1, Δ +0,0948 IC>0).
 - [ ] Paso 0 — Congelar v2 (git commit local hecho; push/PR requiere credenciales de Carlos) + ADR-16 + `REGISTRO_EXPERIMENTOS.md` (retro-relleno v1/v2 completo).
-- [x] **Sprint A — COMPLETADO 2026-09-11: sin adopciones (gate estadístico, ADR-17)**. A1 diagnóstico (recall@k, IC, techo gold 0.649; hubs +0.11); A2 embeddings legales ES (ALIA F1@10 +1.7pp sig. / nDCG ns; modernbert solo sin hubs); A3 reranker legal ES (SINAI −0.055, negativo) y RRF de rangos (−0.020); A4 fusiones w03/w07/rrf1a empatan con w05, top-50 confirmado (200 pierde); A5 ensamble C+BETO y class-weights no superan a C; C vs v1 ns. Producto v2 intacto. Artefactos: v9/v10/v11 + c3_*.json + m4_clasificador_c3.json.
-- [ ] Sprint B — SIGUIENTE: fine-tune reranker con citas + hard negatives (sin las 90) -> retriever denso de dominio -> mini-gold 40-60 casos (Carlos) + análisis de errores.
-- [ ] Sprint C — Gold estándar 150 -> LLM ALIA-7B (query understanding/rerank, premisas en PLAN_v3) -> corpus 2022-2026 -> producto v3 + QA v3 -> documentación integral + cierre.
-- Documentación integral: `REGISTRO_EXPERIMENTOS.md` (datos de todos los experimentos, premisas) + informes con "Métodos elegidos, premisas y criterios de adopción".
+- [x] **Sprint A — COMPLETADO 2026-09-11: sin adopciones (gate estadístico, ADR-17)**. A1 diagnóstico (recall@k, IC, techo silver 0.649; hubs +0.11); A2 embeddings legales ES (ALIA F1@10 +1.7pp sig. / nDCG ns; modernbert solo sin hubs); A3 reranker legal ES (SINAI −0.055, negativo) y RRF de rangos (−0.020); A4 fusiones w03/w07/rrf1a empatan con w05, top-50 confirmado (200 pierde); A5 ensamble C+BETO y class-weights no superan a C; C vs v1 ns. Producto v2 intacto. Artefactos: v9/v10/v11 + c3_*.json + m4_clasificador_c3.json.
+- [x] **Sprint B — COMPLETADO: adopción v2.2 (ADR-18)**. B1 reranker de dominio (299.999 pares) + B2 retriever denso (v13 nDCG@10 0,6926 silver); **B3 mini-gold humano (Carlos, 50 casos/820 decisiones, 2026-10-05): B2 0,7852 [0,745;0,826] vs B1 0,6903 [0,645;0,739], Δ +0,0948 [+0,0668;+0,1239] prob=1,0 → CONFIRMA v2.2**; acuerdo carlos|llm kappa 0,345 (moderado; métricas agregadas casi idénticas al proxy LLM 0,7831); C3: corpus 2022-2026 (2.330 docs) sin deriva (0,747). QA v2.2 GO.
+- [~] Sprint C — parcial: C2 LLM ALIA zero-shot **negativo** (query Δ −0,198 / rerank Δ −0,217; LoRA como futuro); C3 corpus 2022-2026 **hecho** (2.330 docs, sin deriva); QA v2.2 GO; cierre documental v3 hecho (`informe_final_ciclo_v3.md`, deck, README). **O1 (M4) COMPLETADO 2026-10-05: el silver no es fiable (acuerdo humano 23,5 %, κ 0,15; ADR-19)**. Pendiente: C1 gold estándar 150 (anotación grande).
+- Documentación integral: `REGISTRO_EXPERIMENTOS.md` (datos de todos los experimentos, premisas) + informes con "Métodos elegidos, premisas y criterios de adopción" + `PENDIENTES_Y_FUTURO.md` (memoria de futuros) + cierre v3 (`documento_e2/informe_final_ciclo_v3.md`).
 
 ## CICLO v2 — COMPLETADO 2026-09-11 (fases R→X, QA v2 GO, documentación cerrada)
 Implementación v1 CONGELADA (resultados intocables). Resultados finales del ciclo v2:

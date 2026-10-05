@@ -57,7 +57,7 @@
   1. **Índice CP**: BM25 por defecto SOLO sobre artículos permanentes (384);
      transitorios opcionales vía flag (`incluir_transitorios=True` con cache
      `_full`). IDs canónicos Transitorio 68-112 + columna `acto_legislativo`.
-     El gold del benchmark se valida sobre el parquet completo (497) para no
+     El silver del benchmark se valida sobre el parquet completo (497) para no
      perder transitorios citados legítimamente.
   2. **Reranking**: adoptar `bm25_rerank_chunks` (v5) como estrategia
      recomendada del vínculo CP. En el PRODUCTO queda como modo opcional
