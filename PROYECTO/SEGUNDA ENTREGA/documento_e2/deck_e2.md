@@ -357,3 +357,13 @@ Entrada: sentencia T-293/97 (`10_evaluar_sentencia.py --id`), salida JSON en ~9 
 - Pareadas: B2 vs B1 Δ +0,0948 [+0,0668;+0,1239] prob 1,0; B2 vs v8 +0,2152; B1 vs v8 +0,1204 (pool +0,0869)
 - Convergencia agregada con el proxy LLM: B2 0,7852 vs 0,7831; B1 0,6903 vs 0,6850 (mismo ranking)
 - Veredicto: el gate humano CONFIRMA la adopción v2.2 (ADR-18); meta del ciclo cumplida (nDCG@10 ≥ 0,70 con gold humano)
+
+## Slide 35 — O1 — el silver M4 no es fiable
+
+- Carlos anotó 200/200 documentos (muestra estratificada por clase, lote ciego, 2026-10-05)
+- Acuerdo humano–silver: exactitud 23,5 % (κ 0,153 "leve"; 0 ambiguo/ninguno) vs proxies LLM ciegos: gemma4 41,5 % / qwen 29,9 %
+- Inter-anotador: carlos|gemma4 κ 0,249; carlos|llm κ 0,268; gemma4|llm κ 0,230; Fleiss 0,208 (leve)
+- Divergencia sistemática: silver fundamentales -> DESC 29/57; principios 0/39 (empates 1-1-1 por artículo menor); proteccion -> DESC 6/11
+- Tutelas de salud/pensión reciben silver de bloques genéricos citados (spot-check: T-853/02, T-231/20, T-235/20)
+- Caveat: muestra estratificada (no proporcional al corpus) -> exactitud a nivel de muestra
+- Veredicto (ADR-19): el silver de M4 no es un gold fiable; M4 queda como diagnóstico con caveats; no invertir más sobre este target sin gold tipo C1 o redefinición de tarea

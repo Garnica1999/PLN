@@ -83,7 +83,8 @@ Un script por experimento; semilla 42; gates con IC 95 % + A/B; registro en `met
 ## 9. Límites conocidos
 
 Caso T-6251/01 (arts. 21/209 fuera del top-50 de la 1ª etapa); techo de recall de la 1ª etapa;
-F1@5 topado ~0,65 por diseño; ruido del silver ~32 % (OOF cleanlab); probabilidades sin
+F1@5 topado ~0,65 por diseño; ruido del silver: ~32 % (OOF cleanlab) y acuerdo humano–silver
+23,5 % (κ 0,15; validación humana O1, ADR-19: el silver no se usa como gold); probabilidades sin
 calibrar (interpretar como ranking/confianza relativa, no como probabilidad calibrada);
 resumen no implementado (E1-Q4); referencia de evaluación silver (mini-gold humano B3 de
 50 casos confirma v2.2; gold estándar 150 pendiente); test canónico reutilizado (el holdout

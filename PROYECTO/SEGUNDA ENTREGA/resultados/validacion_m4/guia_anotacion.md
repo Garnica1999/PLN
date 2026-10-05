@@ -1,6 +1,7 @@
 # Guia de anotacion - Validacion humana de etiquetas silver M4
 
 Fecha de generacion: 2026-10-03
+Actualizada: 2026-10-05 (modo lote)
 Script: scripts/21_pack_validacion_m4.py (semilla 42)
 Muestra: muestra_200.jsonl (200 documentos)
 
@@ -44,7 +45,10 @@ tarea es decidir cual es el bloque predominante leyendo el documento.
 
 No consulte el producto, ni anotaciones previas, ni el silver de otros
 documentos antes de decidir. El bloque SILVER se imprime al final del documento
-justamente para facilitar esta regla.
+justamente para facilitar esta regla. En el modo lote (paginas de 10
+documentos) el silver NO se muestra durante la anotacion: se imprime al cerrar
+la pagina, despues de registrar sus respuestas (blinding estricto, comparable
+con la preanotacion LLM).
 
 ## 5. Opciones de respuesta
 
@@ -77,7 +81,9 @@ justamente para facilitar esta regla.
 - baja: decision al limite entre dos o mas bloques.
 
 Enter = media. La confianza no cambia la respuesta, pero permite analisis
-posteriores (por ejemplo, exactitud en el subconjunto de confianza alta).
+posteriores (por ejemplo, exactitud en el subconjunto de confianza alta). En el
+modo lote todas las respuestas se registran con confianza media (use --lote 1
+para el flujo clasico con confianza y nota por documento).
 
 ## 7. Notas
 
@@ -88,7 +94,8 @@ la razon de "ambiguo"/"ninguno". Enter para omitir.
 
 1 a 3 minutos por documento (200 documentos = 3 a 10 horas). Se puede
 anotar en tandas: el progreso se guarda despues de cada respuesta y --anotar
-reanuda automaticamente donde quedo.
+reanuda automaticamente donde quedo. El modo lote (10 documentos por pagina,
+sin confianza ni nota) acelera la sesion.
 
 ## 9. Duplicados
 
@@ -100,12 +107,22 @@ esta razon.
 
     /home/carlos/venv/bin/python scripts/21_pack_validacion_m4.py --resumen
     /home/carlos/venv/bin/python scripts/21_pack_validacion_m4.py --anotar --anotador carlos
+    /home/carlos/venv/bin/python scripts/21_pack_validacion_m4.py --anotar --anotador carlos --lote 5
     /home/carlos/venv/bin/python scripts/21_pack_validacion_m4.py --ver 12345
     /home/carlos/venv/bin/python scripts/21_pack_validacion_m4.py --exportar-csv
     /home/carlos/venv/bin/python scripts/21_pack_validacion_m4.py --calcular-acuerdo
 
-Durante --anotar: numero o alias para responder, 0 = ambiguo, - = ninguno,
-s = saltar el documento (queda pendiente), q = guardar y salir, ? = menu.
+Modo lote (default, --lote 10): se muestran N documentos de una pagina y se
+anotan con UNA linea de bloques separados por espacios, aplicados en el orden
+en que aparecen en pantalla: numero 1-16 o alias, 0 = ambiguo, - = ninguno y
+. = dejar pendiente. Ejemplo para 5 documentos: `5 12 0 - 7`. Tambien se puede
+responder de a uno (una linea por documento). El silver y el top3 se muestran
+al cerrar la pagina. En una linea de lote solo valen numeros/alias, 0, - y .;
+los comandos van solos: s = saltar la pagina, q = guardar y salir, ? = menu.
+
+Modo clasico (--lote 1): un documento por vez, con confianza y nota; numero o
+alias para responder, 0 = ambiguo, - = ninguno, s = saltar el documento (queda
+pendiente), q = guardar y salir, ? = menu.
 
 ## 11. Segundo anotador y acuerdo
 

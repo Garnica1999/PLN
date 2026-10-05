@@ -5974,4 +5974,430 @@
   },
   "estado": "completado"
  }
+,
+ "o1_validacion_humana": {
+  "descripcion": "Validacion humana O1 del silver M4: Carlos anota a ciegas 200 docs estratificados (semilla 42; modo lote ciego; 2026-10-05; 200/200 via cita_cp); acuerdo contra el silver y contra 2 proxies LLM ciegos (gemma4 y preanotacion qwen)",
+  "fecha": "2026-10-05",
+  "script": "scripts/21_pack_validacion_m4.py (--calcular-acuerdo --forzar; --exportar-csv --forzar)",
+  "muestra": {
+   "n": 200,
+   "diseno": "estratificada por clase silver (min 5 por clase o todas si hay menos; resto proporcional por resto mayor Hamilton; semilla 42; orden final barajado)",
+   "via": "cita_cp (200/200)",
+   "cobertura": "200/200",
+   "md5_muestra": "2ca0fa906090eea365190b14663b0245",
+   "caveat": "muestra estratificada (NO proporcional al corpus): la exactitud es a nivel de muestra, no estimacion poblacional del corpus"
+  },
+  "acuerdo": {
+   "carlos": {
+    "n_respondidos": 200,
+    "n_validas": 200,
+    "n_ambiguo": 0,
+    "n_ninguno": 0,
+    "n_otras": 0,
+    "cobertura_muestra": 1.0,
+    "exactitud_validas": 0.235,
+    "exactitud_todas": 0.235,
+    "pct_ambiguo": 0.0,
+    "pct_ninguno": 0.0,
+    "confianza": {
+     "media": 200
+    },
+    "kappa_vs_silver": {
+     "n": 200,
+     "po": 0.235,
+     "pe": 0.09724999999999999,
+     "kappa": 0.1525893104403212,
+     "nivel": "leve"
+    }
+   },
+   "llm_gemma4": {
+    "n_respondidos": 200,
+    "n_validas": 200,
+    "n_ambiguo": 0,
+    "n_ninguno": 0,
+    "n_otras": 0,
+    "cobertura_muestra": 1.0,
+    "exactitud_validas": 0.415,
+    "exactitud_todas": 0.415,
+    "pct_ambiguo": 0.0,
+    "pct_ninguno": 0.0,
+    "confianza": {
+     "alta": 180,
+     "media": 20
+    },
+    "kappa_vs_silver": {
+     "n": 200,
+     "po": 0.415,
+     "pe": 0.199625,
+     "kappa": 0.2690926128377323,
+     "nivel": "aceptable"
+    }
+   },
+   "llm_preanotacion": {
+    "n_respondidos": 200,
+    "n_validas": 194,
+    "n_ambiguo": 5,
+    "n_ninguno": 0,
+    "n_otras": 1,
+    "cobertura_muestra": 1.0,
+    "exactitud_validas": 0.29896907216494845,
+    "exactitud_todas": 0.29,
+    "pct_ambiguo": 0.025,
+    "pct_ninguno": 0.0,
+    "confianza": {
+     "alta": 197,
+     "baja": 1,
+     "media": 2
+    },
+    "kappa_vs_silver": {
+     "n": 194,
+     "po": 0.29896907216494845,
+     "pe": 0.12054947390796045,
+     "kappa": 0.20287621982537238,
+     "nivel": "leve"
+    }
+   },
+   "kappas_pares": {
+    "carlos|llm_gemma4": {
+     "n_comunes": 200,
+     "po": 0.35,
+     "kappa": 0.24864177551728123,
+     "nivel": "aceptable"
+    },
+    "carlos|llm_preanotacion": {
+     "n_comunes": 200,
+     "po": 0.355,
+     "kappa": 0.2676072330882561,
+     "nivel": "aceptable"
+    },
+    "llm_gemma4|llm_preanotacion": {
+     "n_comunes": 200,
+     "po": 0.37,
+     "kappa": 0.2301817626393768,
+     "nivel": "aceptable"
+    }
+   },
+   "fleiss": {
+    "n_items": 200,
+    "n_evaluadores": 3,
+    "p_bar": 0.35833333333333334,
+    "p_e": 0.1901027777777778,
+    "kappa": 0.20771840048291448,
+    "nivel": "leve",
+    "ids_completos": 200
+   }
+  },
+  "exactitud_por_clase_silver": {
+   "derechos_colectivos_ambiente": {
+    "n_respondidos": 5,
+    "n_exactas": 2,
+    "exactitud": 0.4,
+    "n_ambiguo": 0,
+    "n_ninguno": 0
+   },
+   "derechos_fundamentales": {
+    "n_respondidos": 57,
+    "n_exactas": 10,
+    "exactitud": 0.17543859649122806,
+    "n_ambiguo": 0,
+    "n_ninguno": 0
+   },
+   "derechos_sociales_economicos_culturales": {
+    "n_respondidos": 20,
+    "n_exactas": 14,
+    "exactitud": 0.7,
+    "n_ambiguo": 0,
+    "n_ninguno": 0
+   },
+   "elecciones": {
+    "n_respondidos": 3,
+    "n_exactas": 1,
+    "exactitud": 0.3333333333333333,
+    "n_ambiguo": 0,
+    "n_ninguno": 0
+   },
+   "habitantes_territorio": {
+    "n_respondidos": 5,
+    "n_exactas": 1,
+    "exactitud": 0.2,
+    "n_ambiguo": 0,
+    "n_ninguno": 0
+   },
+   "organismos_control": {
+    "n_respondidos": 5,
+    "n_exactas": 3,
+    "exactitud": 0.6,
+    "n_ambiguo": 0,
+    "n_ninguno": 0
+   },
+   "organizacion_estado": {
+    "n_respondidos": 6,
+    "n_exactas": 0,
+    "exactitud": 0.0,
+    "n_ambiguo": 0,
+    "n_ninguno": 0
+   },
+   "organizacion_territorial": {
+    "n_respondidos": 6,
+    "n_exactas": 1,
+    "exactitud": 0.16666666666666666,
+    "n_ambiguo": 0,
+    "n_ninguno": 0
+   },
+   "participacion_democratica": {
+    "n_respondidos": 5,
+    "n_exactas": 0,
+    "exactitud": 0.0,
+    "n_ambiguo": 0,
+    "n_ninguno": 0
+   },
+   "principios_fundamentales": {
+    "n_respondidos": 39,
+    "n_exactas": 0,
+    "exactitud": 0.0,
+    "n_ambiguo": 0,
+    "n_ninguno": 0
+   },
+   "proteccion_aplicacion_derechos": {
+    "n_respondidos": 11,
+    "n_exactas": 1,
+    "exactitud": 0.09090909090909091,
+    "n_ambiguo": 0,
+    "n_ninguno": 0
+   },
+   "rama_ejecutiva": {
+    "n_respondidos": 6,
+    "n_exactas": 4,
+    "exactitud": 0.6666666666666666,
+    "n_ambiguo": 0,
+    "n_ninguno": 0
+   },
+   "rama_judicial": {
+    "n_respondidos": 11,
+    "n_exactas": 2,
+    "exactitud": 0.18181818181818182,
+    "n_ambiguo": 0,
+    "n_ninguno": 0
+   },
+   "rama_legislativa": {
+    "n_respondidos": 9,
+    "n_exactas": 1,
+    "exactitud": 0.1111111111111111,
+    "n_ambiguo": 0,
+    "n_ninguno": 0
+   },
+   "reforma_constitucion": {
+    "n_respondidos": 5,
+    "n_exactas": 3,
+    "exactitud": 0.6,
+    "n_ambiguo": 0,
+    "n_ninguno": 0
+   },
+   "regimen_economico": {
+    "n_respondidos": 7,
+    "n_exactas": 4,
+    "exactitud": 0.5714285714285714,
+    "n_ambiguo": 0,
+    "n_ninguno": 0
+   }
+  },
+  "confusiones_mayores_silver_a_carlos": [
+   {
+    "silver": "derechos_fundamentales",
+    "humano": "derechos_sociales_economicos_culturales",
+    "n": 29,
+    "n_clase_silver": 57
+   },
+   {
+    "silver": "principios_fundamentales",
+    "humano": "derechos_sociales_economicos_culturales",
+    "n": 12,
+    "n_clase_silver": 39
+   },
+   {
+    "silver": "principios_fundamentales",
+    "humano": "proteccion_aplicacion_derechos",
+    "n": 11,
+    "n_clase_silver": 39
+   },
+   {
+    "silver": "principios_fundamentales",
+    "humano": "derechos_fundamentales",
+    "n": 8,
+    "n_clase_silver": 39
+   },
+   {
+    "silver": "proteccion_aplicacion_derechos",
+    "humano": "derechos_sociales_economicos_culturales",
+    "n": 6,
+    "n_clase_silver": 11
+   },
+   {
+    "silver": "rama_judicial",
+    "humano": "proteccion_aplicacion_derechos",
+    "n": 4,
+    "n_clase_silver": 11
+   },
+   {
+    "silver": "derechos_fundamentales",
+    "humano": "proteccion_aplicacion_derechos",
+    "n": 5,
+    "n_clase_silver": 57
+   }
+  ],
+  "matriz_confusion_resumida": {
+   "derechos_colectivos_ambiente": {
+    "derechos_colectivos_ambiente": 2,
+    "derechos_fundamentales": 1,
+    "organismos_control": 1,
+    "rama_ejecutiva": 1
+   },
+   "derechos_fundamentales": {
+    "derechos_fundamentales": 10,
+    "derechos_sociales_economicos_culturales": 29,
+    "organismos_control": 1,
+    "principios_fundamentales": 2,
+    "proteccion_aplicacion_derechos": 5,
+    "rama_ejecutiva": 4,
+    "rama_judicial": 2,
+    "rama_legislativa": 1,
+    "regimen_economico": 3
+   },
+   "derechos_sociales_economicos_culturales": {
+    "derechos_fundamentales": 2,
+    "derechos_sociales_economicos_culturales": 14,
+    "organizacion_territorial": 1,
+    "proteccion_aplicacion_derechos": 1,
+    "rama_ejecutiva": 1,
+    "reforma_constitucion": 1
+   },
+   "elecciones": {
+    "derechos_fundamentales": 1,
+    "elecciones": 1,
+    "reforma_constitucion": 1
+   },
+   "habitantes_territorio": {
+    "derechos_sociales_economicos_culturales": 2,
+    "habitantes_territorio": 1,
+    "proteccion_aplicacion_derechos": 1,
+    "rama_ejecutiva": 1
+   },
+   "organismos_control": {
+    "derechos_sociales_economicos_culturales": 1,
+    "organismos_control": 3,
+    "proteccion_aplicacion_derechos": 1
+   },
+   "organizacion_estado": {
+    "derechos_fundamentales": 1,
+    "proteccion_aplicacion_derechos": 1,
+    "rama_ejecutiva": 2,
+    "rama_judicial": 1,
+    "regimen_economico": 1
+   },
+   "organizacion_territorial": {
+    "derechos_colectivos_ambiente": 1,
+    "derechos_fundamentales": 1,
+    "derechos_sociales_economicos_culturales": 2,
+    "organizacion_territorial": 1,
+    "proteccion_aplicacion_derechos": 1
+   },
+   "participacion_democratica": {
+    "derechos_colectivos_ambiente": 1,
+    "derechos_fundamentales": 1,
+    "rama_legislativa": 1,
+    "regimen_economico": 2
+   },
+   "principios_fundamentales": {
+    "derechos_fundamentales": 8,
+    "derechos_sociales_economicos_culturales": 12,
+    "organismos_control": 1,
+    "proteccion_aplicacion_derechos": 11,
+    "rama_ejecutiva": 4,
+    "rama_legislativa": 1,
+    "reforma_constitucion": 2
+   },
+   "proteccion_aplicacion_derechos": {
+    "derechos_colectivos_ambiente": 1,
+    "derechos_fundamentales": 2,
+    "derechos_sociales_economicos_culturales": 6,
+    "principios_fundamentales": 1,
+    "proteccion_aplicacion_derechos": 1
+   },
+   "rama_ejecutiva": {
+    "derechos_colectivos_ambiente": 1,
+    "derechos_fundamentales": 1,
+    "rama_ejecutiva": 4
+   },
+   "rama_judicial": {
+    "derechos_sociales_economicos_culturales": 2,
+    "organismos_control": 1,
+    "proteccion_aplicacion_derechos": 4,
+    "rama_ejecutiva": 1,
+    "rama_judicial": 2,
+    "regimen_economico": 1
+   },
+   "rama_legislativa": {
+    "derechos_sociales_economicos_culturales": 1,
+    "elecciones": 1,
+    "organismos_control": 1,
+    "organizacion_territorial": 1,
+    "participacion_democratica": 1,
+    "rama_ejecutiva": 3,
+    "rama_legislativa": 1
+   },
+   "reforma_constitucion": {
+    "principios_fundamentales": 1,
+    "proteccion_aplicacion_derechos": 1,
+    "reforma_constitucion": 3
+   },
+   "regimen_economico": {
+    "derechos_colectivos_ambiente": 1,
+    "derechos_sociales_economicos_culturales": 1,
+    "elecciones": 1,
+    "regimen_economico": 4
+   }
+  },
+  "matriz_confusion_completa": "resultados/validacion_m4/acuerdo_v1.json (por_anotador.carlos.matriz_confusion_silver_humano)",
+  "caveats": [
+   "Muestra estratificada por clase silver (min 5/clase; NO proporcional al corpus): la exactitud 0,235 es a nivel de muestra, no estimacion poblacional.",
+   "El silver M4 es senal automatica (bloque mayoritario de citas NER, via cita_cp), no ground truth humano.",
+   "Anotacion en modo lote ciego (el pack no expone id, particion ni metadatos).",
+   "Los proxies LLM (gemma4 y preanotacion qwen) son automaticos, NO anotacion humana.",
+   "Kappa interpretado con Landis y Koch (1977)."
+  ],
+  "spot_check": [
+   {
+    "caso": "T-853/02",
+    "id": "7755",
+    "silver": "principios_fundamentales",
+    "humano": "derechos_sociales_economicos_culturales",
+    "nota": "empate 1-1-1 de bloques resuelto por articulo menor (art. 1) -> silver principios_fundamentales; tema de salud -> humano DESC"
+   },
+   {
+    "caso": "T-231/20",
+    "id": "16103",
+    "silver": "principios_fundamentales",
+    "humano": "derechos_sociales_economicos_culturales",
+    "nota": "tutela de pension -> silver principios_fundamentales vs humano DESC"
+   },
+   {
+    "caso": "T-235/20",
+    "id": "16107",
+    "silver": "derechos_fundamentales",
+    "humano": "derechos_sociales_economicos_culturales",
+    "nota": "tutela de salud contra EPS -> silver derechos_fundamentales vs humano DESC"
+   }
+  ],
+  "veredicto": "El silver M4 NO es un gold fiable para el area tematica: acuerdo humano-silver 23,5 % (kappa 0,153 \"leve\"; n=200) y divergencia sistematica en las clases genericas (fundamentales/principios/proteccion) que el humano reasigna a DESC; consistente con el ruido OOF de Fase 1 (31,8 %) y con el techo de M4 (macro-F1 0,287). Decision: ADR-19; M4 se mantiene como diagnostico con caveats.",
+  "artefactos": {
+   "respuestas_carlos": "resultados/validacion_m4/respuestas_carlos.jsonl (md5 69150b5d3c4f3aa3aebbdb6d17ef94a0; 200 registros)",
+   "acuerdo": "resultados/validacion_m4/acuerdo_v1.json (md5 6b8c3487b83050880bf20a7a11c19b6c)",
+   "export_csv": "resultados/validacion_m4/anotaciones_export.csv (md5 dae83ac71d99e7bf8dc6ba1b34ed6765; 600 filas)",
+   "backup_solo_llm": "resultados/validacion_m4/backup/acuerdo_v1_solo_llm_20261004.json (md5 49072f7fc6b9042629627ca1ee7e5d23)",
+   "muestra": "resultados/validacion_m4/muestra_200.jsonl (md5 2ca0fa906090eea365190b14663b0245)",
+   "guia": "resultados/validacion_m4/guia_anotacion.md",
+   "script": "scripts/21_pack_validacion_m4.py"
+  },
+  "estado": "completado"
+ }
 }

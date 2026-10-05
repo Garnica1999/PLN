@@ -23,7 +23,8 @@ Inteligencia Artificial, Pontificia Universidad Javeriana).
   v2.2** (retriever denso B2 + reranker de dominio B1 + hubs α=1,5; ADR-18) — nDCG@10 0,693
   (silver) / 0,783 (gold-LLM), sin deriva temporal en 2022-2026 (0,747).
 - C3: corpus 2022-2026 descargado y preparado (2.330 docs). C2 (LLM ALIA zero-shot): negativo
-  documentado. Auditoría M4 + packs de validación humana (O1/B3) pendientes de anotación.
+  documentado. Packs de validación humana anotados: **B3 (M7) confirma v2.2** (nDCG@10 0,785) y
+  **O1 (M4): el silver no es fiable** (acuerdo humano 23,5 %; ADR-19).
 - Pendientes y futuro: `SEGUNDA ENTREGA/plan/PENDIENTES_Y_FUTURO.md`.
 
 ## Reproducción y entorno

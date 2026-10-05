@@ -8,12 +8,12 @@ estado: `plan/ESTADO_Y_PENDIENTES.md` + `plan/REGISTRO_EXPERIMENTOS.md` + `resul
 | Ítem | Pack listo | Falta | Cómo |
 |---|---|---|---|
 | **B3 mini-gold (M7) — COMPLETADO 2026-10-05** | Carlos anotó **820/820** decisiones (50 casos) | Gate humano **CONFIRMA v2.2**: B2 0,7852 [0,745;0,826] vs B1 0,6903, Δ +0,0948 IC>0; kappa carlos|llm 0,345 | Resultados: `metricas.json b3_gold_humano` + `resultados/gold_mini/` (respaldos LLM-only en `backup/`) |
-| **O1 (M4)** | `resultados/validacion_m4/` (200 docs) + 2 proxies LLM (0,415 / 0,299) | Anotación humana (3-10 h) → precisión real del silver | `scripts/21_pack_validacion_m4.py --anotar --anotador carlos` → `--calcular-acuerdo` |
+| **O1 (M4) — COMPLETADO 2026-10-05** | Carlos anotó **200/200** docs (modo lote ciego) | **El silver NO es fiable**: acuerdo humano–silver 23,5 % (κ 0,15); proxies LLM 41,5 %/29,9 %; ADR-19 | Resultados: `metricas.json o1_validacion_humana` + `resultados/validacion_m4/` (respaldo solo-LLM en `backup/`) |
 | **C1 gold estándar 150 (M7)** | No iniciado | Anotación grande; la herramienta de B3 sirve de base (extender muestreo a 150) | Por definir |
 
 ## B. Trabajo futuro técnico (documentado para retomar sin contexto)
 
-> Estado 2026-10-05: los ítems 1-4 (LoRA C2, 2ª época de B2, B4, hipótesis M4) requieren decisión de Carlos (costo GPU/tiempo); el resto quedó ejecutado o documentado en esta misma lista.
+> Estado 2026-10-05: los ítems 1-3 (LoRA C2, 2ª época de B2, B4) requieren decisión de Carlos (costo GPU/tiempo); el ítem 4 queda desaconsejado por ADR-19; el resto quedó ejecutado o documentado en esta misma lista.
 
 1. **C2-LoRA**: fine-tuning LoRA de `ALIA-es-legal-administrative-7B-Instruct` con datos propios
    (pares de citas B1 + casos) — única vía restante del frente LLM tras el C2 zero-shot negativo
@@ -25,9 +25,7 @@ estado: `plan/ESTADO_Y_PENDIENTES.md` + `plan/REGISTRO_EXPERIMENTOS.md` + `resul
    `modelos/b2_retriever/checkpoints/epoca_01`. Ganancia esperada incierta.
 3. **B4** — BETO chunk-mean++ (más épocas / max_chunks 96): opcional del plan v3; probable
    retorno bajo (BETO sigue por debajo de LogReg en M4).
-4. **M4 con hipótesis nuevas** (tras O1): H3 agregación aprendida de chunks (GPU), features por
-   secciones/boilerplate (H2-pendiente), clases raras (cRT/aumentación near-distribution). No
-   repetir class weights/calibración/jerárquico/EuroVoc (ya probados).
+4. **M4 con hipótesis nuevas — DESACONSEJADO por ADR-19**: el silver no es un gold fiable (acuerdo humano 23,5 %); no invertir en H3/H2-pendiente/clases raras sobre este target. Solo con una etiqueta mejor (gold humano tipo C1 para M4) o una redefinición de tarea (área = tema, no citas). No repetir class weights/calibración/jerárquico/EuroVoc (ya probados).
 5. **Calibración de probabilidades del producto**: documentado como no calibradas en `arquitectura.md` (§9; interpretar como ranking/confianza relativa); el experimento temperature/isotonic queda como opcional.
 6. **Reintento de los 48 stubs de C3 — HECHO 2026-10-05**: reintentados; siguen sin publicarse como HTML estático (ok=0, stub=48, error=0; corpus sin cambios). Reintentar en el futuro si la relatoría los publica (`scripts/26_c3_descarga_2022_2026.py --descargar`).
 7. **C3 en el corpus principal**: hoy el corpus 2022-2026 vive separado

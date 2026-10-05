@@ -132,6 +132,7 @@ CONFIG = {
     "chars_extracto_pack": 1500,
     "chars_extracto_ver": 3000,
     "lote_lectura_corpus": 64,
+    "tam_lote_anotacion": 10,
     "dir_smoke": "/tmp/opencode/o1_smoke",
     "rutas_datos": {
         "etiquetas": "data/etiquetas_areas.parquet",
@@ -847,7 +848,10 @@ tarea es decidir cual es el bloque predominante leyendo el documento.
 
 No consulte el producto, ni anotaciones previas, ni el silver de otros
 documentos antes de decidir. El bloque SILVER se imprime al final del documento
-justamente para facilitar esta regla.
+justamente para facilitar esta regla. En el modo lote (paginas de 10
+documentos) el silver NO se muestra durante la anotacion: se imprime al cerrar
+la pagina, despues de registrar sus respuestas (blinding estricto, comparable
+con la preanotacion LLM).
 
 ## 5. Opciones de respuesta
 
@@ -865,7 +869,9 @@ justamente para facilitar esta regla.
 - baja: decision al limite entre dos o mas bloques.
 
 Enter = media. La confianza no cambia la respuesta, pero permite analisis
-posteriores (por ejemplo, exactitud en el subconjunto de confianza alta).
+posteriores (por ejemplo, exactitud en el subconjunto de confianza alta). En el
+modo lote todas las respuestas se registran con confianza media (use --lote 1
+para el flujo clasico con confianza y nota por documento).
 
 ## 7. Notas
 
@@ -876,7 +882,8 @@ la razon de "ambiguo"/"ninguno". Enter para omitir.
 
 1 a 3 minutos por documento ({n_muestra} documentos = 3 a 10 horas). Se puede
 anotar en tandas: el progreso se guarda despues de cada respuesta y --anotar
-reanuda automaticamente donde quedo.
+reanuda automaticamente donde quedo. El modo lote (10 documentos por pagina,
+sin confianza ni nota) acelera la sesion.
 
 ## 9. Duplicados
 
@@ -888,12 +895,22 @@ esta razon.
 
     /home/carlos/venv/bin/python scripts/21_pack_validacion_m4.py --resumen
     /home/carlos/venv/bin/python scripts/21_pack_validacion_m4.py --anotar --anotador carlos
+    /home/carlos/venv/bin/python scripts/21_pack_validacion_m4.py --anotar --anotador carlos --lote 5
     /home/carlos/venv/bin/python scripts/21_pack_validacion_m4.py --ver 12345
     /home/carlos/venv/bin/python scripts/21_pack_validacion_m4.py --exportar-csv
     /home/carlos/venv/bin/python scripts/21_pack_validacion_m4.py --calcular-acuerdo
 
-Durante --anotar: numero o alias para responder, 0 = ambiguo, - = ninguno,
-s = saltar el documento (queda pendiente), q = guardar y salir, ? = menu.
+Modo lote (default, --lote 10): se muestran N documentos de una pagina y se
+anotan con UNA linea de bloques separados por espacios, aplicados en el orden
+en que aparecen en pantalla: numero 1-16 o alias, 0 = ambiguo, - = ninguno y
+. = dejar pendiente. Ejemplo para 5 documentos: `5 12 0 - 7`. Tambien se puede
+responder de a uno (una linea por documento). El silver y el top3 se muestran
+al cerrar la pagina. En una linea de lote solo valen numeros/alias, 0, - y .;
+los comandos van solos: s = saltar la pagina, q = guardar y salir, ? = menu.
+
+Modo clasico (--lote 1): un documento por vez, con confianza y nota; numero o
+alias para responder, 0 = ambiguo, - = ninguno, s = saltar el documento (queda
+pendiente), q = guardar y salir, ? = menu.
 
 ## 11. Segundo anotador y acuerdo
 
@@ -940,14 +957,24 @@ def imprimir_menu() -> None:
     print("   0  ambiguo  (varios bloques compiten o no es decidible)")
     print("   -  ninguno  (ningun bloque constitucional predomina)")
     print("   s  saltar este documento | q  guardar y salir | ?  mostrar este menu")
+    print("  lote = varios bloques separados por espacios (p. ej. 5 12 0 - 7); se aplican")
+    print("         a los documentos pendientes en el orden en que aparecen en pantalla;")
+    print("         '.' deja ese documento pendiente (el silver se muestra al cerrar la pagina)")
 
 
 def imprimir_documento(
-    doc: dict, texto: str, n_chars: int, indice: int | None = None, total: int | None = None
+    doc: dict,
+    texto: str,
+    n_chars: int,
+    indice: int | None = None,
+    total: int | None = None,
+    mostrar_referencia: bool = True,
 ) -> None:
     """Imprime un documento para revision: metadata, extracto y bloque silver.
 
-    El bloque SILVER se imprime al final (blinding: primero el texto).
+    El bloque SILVER se imprime al final (blinding: primero el texto). En el
+    modo lote (paginas de N documentos) se oculta con mostrar_referencia=False
+    y se muestra en el cierre de la pagina, despues de responder.
 
     Args:
         doc: Registro del pack (metadata + top3 + area_silver).
@@ -955,6 +982,7 @@ def imprimir_documento(
         n_chars: Caracteres a mostrar.
         indice: Posicion 1..N en la sesion (None en --ver).
         total: Total de documentos de la sesion (None en --ver).
+        mostrar_referencia: True imprime el bloque SILVER + top3; False lo omite.
     """
     cabecera = f"===== DOC {indice}/{total} | id {doc['id']} =====" if indice else f"===== DOC id {doc['id']} ====="
     print()
@@ -972,9 +1000,10 @@ def imprimir_documento(
         print(f"--- extracto ({len(extracto)} chars) ---")
         print(extracto)
         print("--- fin del extracto ---")
-    print("SILVER (para verificacion; decida primero a partir del texto):")
-    print(f"  area_silver: {doc['area_silver']}")
-    print(f"  top3 citas CP: {formatear_top3(doc.get('top3_json', ''))}")
+    if mostrar_referencia:
+        print("SILVER (para verificacion; decida primero a partir del texto):")
+        print(f"  area_silver: {doc['area_silver']}")
+        print(f"  top3 citas CP: {formatear_top3(doc.get('top3_json', ''))}")
 
 
 def interpretar_bloque(entrada: str) -> tuple[str, str | None, str | None]:
@@ -1041,6 +1070,57 @@ def pedir_bloque() -> tuple[str, str | None]:
         return accion, valor
 
 
+def interpretar_lote(entrada: str, n_max: int) -> tuple[str, list[str | None] | None, str | None]:
+    """Interpreta la linea de bloques de una pagina del modo lote.
+
+    Los tokens van separados por espacios o comas y se aplican, en orden, a los
+    documentos pendientes de la pagina tal como aparecen en pantalla: numero
+    1-16 o alias, 0 = ambiguo, - = ninguno y . = dejar pendiente. Los comandos
+    q / s / ? solo valen como token unico.
+
+    Args:
+        entrada: Texto crudo del usuario.
+        n_max: Documentos pendientes en la pagina.
+
+    Returns:
+        Tupla (accion, valores, mensaje) con accion en lote | salir | saltar |
+        ayuda | reintentar. Para accion lote, valores es la lista de respuestas
+        (str) y pendientes (None) en el orden escrito.
+    """
+    texto = " ".join(entrada.replace(",", " ").strip().lower().split())
+    if texto == "":
+        return "reintentar", None, "entrada vacia (use ? para el menu)"
+    tokens = texto.split()
+    if len(tokens) == 1:
+        accion_unica, _valor, _mensaje = interpretar_bloque(tokens[0])
+        if accion_unica in ("salir", "saltar", "ayuda"):
+            return accion_unica, None, None
+    valores: list[str | None] = []
+    invalidos: list[str] = []
+    for token in tokens:
+        if token == ".":
+            valores.append(None)
+            continue
+        accion, valor, _mensaje = interpretar_bloque(token)
+        if accion == "respuesta":
+            valores.append(valor)
+        else:
+            invalidos.append(token)
+    if invalidos:
+        return (
+            "reintentar",
+            None,
+            f"tokens no validos: {', '.join(invalidos)} (use 1-16, 0, - o .)",
+        )
+    if len(valores) > n_max:
+        return (
+            "reintentar",
+            None,
+            f"lote de {len(valores)} bloques, pero solo quedan {n_max} documentos pendientes en la pagina",
+        )
+    return "lote", valores, None
+
+
 def interpretar_confianza(entrada: str) -> str | None:
     """Interpreta el nivel de confianza (Enter = media).
 
@@ -1072,6 +1152,24 @@ def pedir_confianza() -> str:
         if confianza is not None:
             return confianza
         print("Use a, m o b (Enter = media).")
+
+
+def imprimir_cierre_pagina(pagina: list[dict], respuestas: dict[int, dict]) -> None:
+    """Imprime el cierre de una pagina del modo lote (respuesta vs referencia).
+
+    Args:
+        pagina: Documentos de la pagina.
+        respuestas: Indice en la pagina -> registro guardado (ausente si el
+            documento quedo pendiente).
+    """
+    print("  cierre de pagina (referencia NO verdad, solo para verificacion posterior):")
+    for indice, doc in enumerate(pagina):
+        registro = respuestas.get(indice)
+        respuesta = registro["respuesta"] if registro else "pendiente"
+        print(
+            f"    doc {indice + 1:2d} | id {doc['id']} | tu respuesta: {respuesta} | "
+            f"silver: {doc['area_silver']} | top3 CP: {formatear_top3(doc.get('top3_json', ''))}"
+        )
 
 
 def modo_ver(id_doc: str, logger: logging.Logger, rutas: dict) -> None:
@@ -1119,13 +1217,24 @@ def modo_ver(id_doc: str, logger: logging.Logger, rutas: dict) -> None:
     logger.info("--ver id=%s completado en %.2f s", id_doc, time.perf_counter() - t0)
 
 
-def modo_anotar(nombre: str, logger: logging.Logger, rutas: dict) -> None:
+def modo_anotar(
+    nombre: str,
+    logger: logging.Logger,
+    rutas: dict,
+    tam_lote: int = CONFIG["tam_lote_anotacion"],
+) -> None:
     """Recorrido interactivo reanudable de anotacion del pack.
+
+    Modo lote (default, tam_lote >= 2): paginas de N documentos que se anotan
+    con una linea de bloques separados por espacios, en el orden de pantalla;
+    el silver se muestra al cerrar la pagina. Modo clasico (tam_lote = 1): un
+    documento por vez, con confianza y nota.
 
     Args:
         nombre: Nombre del anotador (se normaliza para el archivo).
         logger: Logger activo.
         rutas: Dict de rutas activas.
+        tam_lote: Documentos por pagina en el modo lote (1 = flujo clasico).
 
     Raises:
         FileNotFoundError: Si no existe la muestra (hay que ejecutar --generar).
@@ -1137,11 +1246,12 @@ def modo_anotar(nombre: str, logger: logging.Logger, rutas: dict) -> None:
     respondidos = cargar_respuestas(ruta_respuestas)
     pendientes = [doc for doc in muestra if doc["id"] not in respondidos]
     logger.info(
-        "anotador=%s | respondidos=%d/%d | pendientes=%d | archivo=%s",
+        "anotador=%s | respondidos=%d/%d | pendientes=%d | lote=%d | archivo=%s",
         anotador,
         len(respondidos),
         len(muestra),
         len(pendientes),
+        tam_lote,
         ruta_respuestas,
     )
     if not pendientes:
@@ -1150,45 +1260,133 @@ def modo_anotar(nombre: str, logger: logging.Logger, rutas: dict) -> None:
     imprimir_menu()
     dataset = abrir_corpus(rutas["corpus"])
     nuevos = 0
+    salir = False
     try:
-        for posicion, doc in enumerate(pendientes, 1):
-            textos = leer_textos_por_ids(
-                dataset, [doc["id"]], CONFIG["lote_lectura_corpus"], logger
-            )
-            texto = textos.get(doc["id"]) or doc.get("extracto", "")
-            t_doc = time.perf_counter()
-            imprimir_documento(
-                doc, texto, CONFIG["chars_extracto_ver"], indice=posicion, total=len(pendientes)
-            )
-            accion, respuesta = pedir_bloque()
-            if accion == "salir":
-                break
-            if accion == "saltar":
-                logger.info("documento %s saltado (queda pendiente)", doc["id"])
-                continue
-            confianza = pedir_confianza()
-            nota = input("Nota (Enter para omitir): ").strip()
-            registro = {
-                "anotador": anotador,
-                "id": doc["id"],
-                "indice": int(doc.get("indice", 0)),
-                "respuesta": respuesta,
-                "confianza": confianza,
-                "nota": nota,
-                "fecha": pd.Timestamp.now().isoformat(timespec="seconds"),
-                "tiempo_seg": round(time.perf_counter() - t_doc, 1),
-            }
-            escribir_jsonl_append(ruta_respuestas, registro)
-            nuevos += 1
-            logger.info(
-                "[%d/%d] id=%s -> %s (%s) en %.1f s",
-                len(respondidos) + nuevos,
-                len(muestra),
-                doc["id"],
-                respuesta,
-                confianza,
-                time.perf_counter() - t_doc,
-            )
+        if tam_lote <= 1:
+            for posicion, doc in enumerate(pendientes, 1):
+                textos = leer_textos_por_ids(
+                    dataset, [doc["id"]], CONFIG["lote_lectura_corpus"], logger
+                )
+                texto = textos.get(doc["id"]) or doc.get("extracto", "")
+                t_doc = time.perf_counter()
+                imprimir_documento(
+                    doc, texto, CONFIG["chars_extracto_ver"], indice=posicion, total=len(pendientes)
+                )
+                accion, respuesta = pedir_bloque()
+                if accion == "salir":
+                    break
+                if accion == "saltar":
+                    logger.info("documento %s saltado (queda pendiente)", doc["id"])
+                    continue
+                confianza = pedir_confianza()
+                nota = input("Nota (Enter para omitir): ").strip()
+                registro = {
+                    "anotador": anotador,
+                    "id": doc["id"],
+                    "indice": int(doc.get("indice", 0)),
+                    "respuesta": respuesta,
+                    "confianza": confianza,
+                    "nota": nota,
+                    "fecha": pd.Timestamp.now().isoformat(timespec="seconds"),
+                    "tiempo_seg": round(time.perf_counter() - t_doc, 1),
+                }
+                escribir_jsonl_append(ruta_respuestas, registro)
+                nuevos += 1
+                logger.info(
+                    "[%d/%d] id=%s -> %s (%s) en %.1f s",
+                    len(respondidos) + nuevos,
+                    len(muestra),
+                    doc["id"],
+                    respuesta,
+                    confianza,
+                    time.perf_counter() - t_doc,
+                )
+        else:
+            total_paginas = (len(pendientes) + tam_lote - 1) // tam_lote
+            for numero_pagina, inicio in enumerate(range(0, len(pendientes), tam_lote), 1):
+                pagina = pendientes[inicio : inicio + tam_lote]
+                textos = leer_textos_por_ids(
+                    dataset,
+                    [doc["id"] for doc in pagina],
+                    CONFIG["lote_lectura_corpus"],
+                    logger,
+                )
+                print()
+                print(
+                    f"########## PAGINA {numero_pagina}/{total_paginas} | "
+                    f"docs {inicio + 1}-{inicio + len(pagina)} de {len(pendientes)} pendientes ##########"
+                )
+                for numero, doc in enumerate(pagina, 1):
+                    texto = textos.get(doc["id"]) or doc.get("extracto", "")
+                    imprimir_documento(
+                        doc,
+                        texto,
+                        CONFIG["chars_extracto_ver"],
+                        indice=numero,
+                        total=len(pagina),
+                        mostrar_referencia=False,
+                    )
+                restantes = list(range(len(pagina)))
+                respuestas_pagina: dict[int, dict] = {}
+                saltar_pagina = False
+                while restantes:
+                    t_lote = time.perf_counter()
+                    entrada = input(
+                        f"Bloques ({len(restantes)} docs: {restantes[0] + 1}-{restantes[-1] + 1}, "
+                        "en orden de pantalla; 1-16 / 0=ambiguo / -=ninguno / .=pendiente; "
+                        "?=menu, s=saltar pagina, q=salir): "
+                    )
+                    accion, valores, mensaje = interpretar_lote(entrada, len(restantes))
+                    if mensaje:
+                        print(mensaje)
+                    if accion == "ayuda":
+                        imprimir_menu()
+                        continue
+                    if accion == "reintentar":
+                        continue
+                    if accion == "salir":
+                        salir = True
+                        break
+                    if accion == "saltar":
+                        saltar_pagina = True
+                        break
+                    for desplazamiento, respuesta in enumerate(valores):
+                        indice_doc = restantes[desplazamiento]
+                        if respuesta is None:
+                            continue
+                        doc = pagina[indice_doc]
+                        registro = {
+                            "anotador": anotador,
+                            "id": doc["id"],
+                            "indice": int(doc.get("indice", 0)),
+                            "respuesta": respuesta,
+                            "confianza": "media",
+                            "nota": "",
+                            "fecha": pd.Timestamp.now().isoformat(timespec="seconds"),
+                            "tiempo_seg": round(time.perf_counter() - t_lote, 1),
+                        }
+                        escribir_jsonl_append(ruta_respuestas, registro)
+                        respuestas_pagina[indice_doc] = registro
+                        nuevos += 1
+                        logger.info(
+                            "[%d/%d] id=%s -> %s (lote) en %.1f s",
+                            len(respondidos) + nuevos,
+                            len(muestra),
+                            doc["id"],
+                            respuesta,
+                            time.perf_counter() - t_lote,
+                        )
+                    restantes = restantes[len(valores) :]
+                if salir:
+                    break
+                if saltar_pagina:
+                    logger.info("pagina %d saltada (queda pendiente)", numero_pagina)
+                    continue
+                imprimir_cierre_pagina(pagina, respuestas_pagina)
+                print(
+                    f"  pagina {numero_pagina}: anotados {len(respuestas_pagina)}/{len(pagina)} | "
+                    f"pendientes en la pagina: {len(pagina) - len(respuestas_pagina)}"
+                )
     except EOFError:
         logger.warning("entrada terminada (EOF): se conserva lo respondido")
     except KeyboardInterrupt:
@@ -1674,6 +1872,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     grupo.add_argument("--exportar-csv", action="store_true", dest="exportar_csv", help="CSV plano para revision")
     grupo.add_argument("--calcular-acuerdo", action="store_true", dest="calcular_acuerdo", help="exactitud vs silver, matriz, kappa y Fleiss")
     parser.add_argument("--anotador", default=None, help="nombre del anotador (requerido con --anotar)")
+    parser.add_argument(
+        "--lote",
+        type=int,
+        default=CONFIG["tam_lote_anotacion"],
+        help="documentos por pagina en --anotar (1 = flujo clasico por documento)",
+    )
     parser.add_argument("--smoke", action="store_true", help="30 docs y todo en /tmp/opencode/o1_smoke")
     parser.add_argument("--forzar", action="store_true", help="permite reescribir salidas existentes")
     args = parser.parse_args(argv)
@@ -1731,7 +1935,7 @@ def main(argv: list[str] | None = None) -> None:
     elif args.ver is not None:
         modo_ver(args.ver, logger, rutas)
     elif args.anotar:
-        modo_anotar(args.anotador, logger, rutas)
+        modo_anotar(args.anotador, logger, rutas, args.lote)
     elif args.resumen:
         modo_resumen(logger, rutas)
     elif args.exportar_csv:
