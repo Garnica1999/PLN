@@ -23,6 +23,18 @@ Modos (mutuamente excluyentes):
     --calcular-acuerdo   acuerdo inter-anotador (Cohen por pares y Fleiss)
     --smoke              variante de 10 casos con TODO en /tmp/opencode/gold_mini_smoke/
     --forzar             permite reescribir salidas existentes (no aplica a smoke)
+    --pack               pack de anotacion: gold_mini (default) o gold_150
+
+ciclo v3 - C1 (2026-10-05): nuevo flag --pack {gold_mini,gold_150} (default
+    gold_mini). Con --pack gold_150 los modos --anotar, --resumen,
+    --exportar-csv y --calcular-acuerdo operan sobre el pack de 150 casos (40
+    del benchmark M7 restantes + 110 del corpus C3 2022-2026) que genera
+    scripts/32_pack_gold_150.py en resultados/gold_150/; las respuestas usan
+    el mismo formato respuestas_{anotador}.jsonl. --generar sigue siendo
+    exclusivo de gold_mini y --evaluar falla a proposito con gold_150
+    ("benchmarks v14 pendientes": los rankings C3 quedan en
+    resultados/gold_150/rutas_c3_gold150.json para la evaluacion futura). El
+    modo --smoke no cambia.
 
 Diseno de la muestra:
     50 casos muestreados de los 90 del benchmark v2 con semilla 42, estratificado
@@ -84,6 +96,8 @@ Uso:
     /home/carlos/venv/bin/python scripts/16_anotador_gold.py --evaluar
     /home/carlos/venv/bin/python scripts/16_anotador_gold.py --calcular-acuerdo
     /home/carlos/venv/bin/python scripts/16_anotador_gold.py --smoke --generar
+    /home/carlos/venv/bin/python scripts/16_anotador_gold.py --pack gold_150 --resumen
+    /home/carlos/venv/bin/python scripts/16_anotador_gold.py --pack gold_150 --anotar --anotador carlos
 """
 
 import argparse
@@ -141,6 +155,17 @@ CONFIG = {
         "export_csv": "resultados/gold_mini/anotaciones_gold_export.csv",
         "evaluacion": "resultados/gold_mini/evaluacion_gold_mini.json",
         "acuerdo": "resultados/gold_mini/acuerdo_gold_mini.json",
+    },
+    # ciclo v3 - C1: pack gold_150 generado por scripts/32_pack_gold_150.py;
+    # --generar no aplica y --evaluar queda pendiente de los benchmarks v14.
+    "rutas_salida_gold_150": {
+        "muestra": "resultados/gold_150/muestra_gold.jsonl",
+        "candidatos": "resultados/gold_150/candidatos.jsonl",
+        "guia": "resultados/gold_150/guia_anotacion_gold.md",
+        "respuestas": "resultados/gold_150/respuestas_{anotador}.jsonl",
+        "export_csv": "resultados/gold_150/anotaciones_gold_export.csv",
+        "evaluacion": "resultados/gold_150/evaluacion_gold_150.json",
+        "acuerdo": "resultados/gold_150/acuerdo_gold_150.json",
     },
     "rutas_salida_smoke": {
         "muestra": "/tmp/opencode/gold_mini_smoke/muestra_gold.jsonl",
@@ -526,18 +551,24 @@ def bootstrap_ic_pareado(nuevo: np.ndarray, referencia: np.ndarray, n_remuestreo
     return cargar_modulo_12().bootstrap_ic_pareado(nuevo, referencia, n_remuestreos, semilla)
 
 
-def rutas_activas(smoke: bool) -> dict:
-    """Construye el mapa de rutas de entrada/salida segun el modo smoke.
+def rutas_activas(smoke: bool, pack: str = "gold_mini") -> dict:
+    """Construye el mapa de rutas de entrada/salida segun smoke y pack.
 
     Args:
         smoke: True para usar salidas exclusivamente en /tmp/opencode/gold_mini_smoke.
+        pack: "gold_mini" (default) o "gold_150" (pack C1 en resultados/gold_150/).
 
     Returns:
         Dict combinado de rutas de datos y de salidas.
     """
     rutas = {}
     rutas.update(CONFIG["rutas_datos"])
-    rutas.update(CONFIG["rutas_salida_smoke"] if smoke else CONFIG["rutas_salida"])
+    if smoke:
+        rutas.update(CONFIG["rutas_salida_smoke"])
+    elif pack == "gold_150":
+        rutas.update(CONFIG["rutas_salida_gold_150"])
+    else:
+        rutas.update(CONFIG["rutas_salida"])
     return rutas
 
 
@@ -2269,11 +2300,14 @@ def modo_calcular_acuerdo(forzar: bool, smoke: bool, logger: logging.Logger, rut
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     """Define y parsea los argumentos de linea de comandos.
 
+    ciclo v3 - C1: el flag --pack conmuta el pack de anotacion entre
+    gold_mini (default, B3) y gold_150 (C1, generado por el script 32).
+
     Args:
         argv: Lista de argumentos (None usa sys.argv).
 
     Returns:
-        Namespace con el modo pedido, anotador, smoke y forzar.
+        Namespace con el modo pedido, anotador, pack, smoke y forzar.
     """
     parser = argparse.ArgumentParser(
         description=(
@@ -2294,11 +2328,30 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         "--calcular-acuerdo", action="store_true", dest="calcular_acuerdo", help="acuerdo inter-anotador (Cohen/Fleiss)"
     )
     parser.add_argument("--anotador", default=None, help="nombre del anotador (requerido con --anotar)")
+    parser.add_argument(
+        "--pack",
+        choices=["gold_mini", "gold_150"],
+        default="gold_mini",
+        help=(
+            "pack de anotacion: gold_mini (default, B3, 50 casos benchmark) o gold_150 "
+            "(C1, generado por scripts/32_pack_gold_150.py en resultados/gold_150/)"
+        ),
+    )
     parser.add_argument("--smoke", action="store_true", help="10 casos y todo en /tmp/opencode/gold_mini_smoke")
     parser.add_argument("--forzar", action="store_true", help="permite reescribir salidas existentes")
     args = parser.parse_args(argv)
     if args.anotar and not args.anotador:
         parser.error("--anotar requiere --anotador NOMBRE")
+    if args.pack == "gold_150" and args.generar:
+        parser.error(
+            "--generar es exclusivo del pack gold_mini; el pack gold_150 se genera con "
+            "scripts/32_pack_gold_150.py"
+        )
+    if args.pack == "gold_150" and args.evaluar:
+        parser.error(
+            "--evaluar no esta disponible para --pack gold_150: benchmarks v14 pendientes "
+            "(las rutas C3 quedan en resultados/gold_150/rutas_c3_gold150.json)"
+        )
     return args
 
 
@@ -2336,10 +2389,11 @@ def main(argv: list[str] | None = None) -> None:
     logger = configurar_logger()
     random.seed(CONFIG["semilla"])
     np.random.seed(CONFIG["semilla"])
-    rutas = rutas_activas(args.smoke)
+    rutas = rutas_activas(args.smoke, args.pack)
     logger.info(
-        "=== INICIO anotador gold | modo=%s smoke=%s forzar=%s ===",
+        "=== INICIO anotador gold | modo=%s pack=%s smoke=%s forzar=%s ===",
         nombre_modo(args),
+        args.pack,
         args.smoke,
         args.forzar,
     )

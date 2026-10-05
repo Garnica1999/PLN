@@ -492,6 +492,20 @@ Descripcion: Recalibracion (Fase K-2) del benchmark M7 del vinculo
           comparacion_b2 + origen con archivo/version/md5, patron de
           c3_b1_reranker.json). Con --limite N todo va a /tmp/opencode
           con sufijo _smoke (run de fontaneria).
+    (B2.5) flag --b2-variante SLUG (iteracion v14; requiere --b2):
+          evalua una variante del retriever denso (p. ej. la 2a epoca
+          ep2 -> modelos/b2_retriever_ep2; fail-fast si no existe, sin
+          usar el override --embedding-model) con TODAS las salidas
+          NUEVAS v14 nombradas por slug: version v14-ciclo3-b2-<slug>,
+          resultados/vinculo_cp_benchmark_v14_<slug>.json,
+          resultados/vinculo_cp_por_ano_v14_<slug>.csv,
+          figuras/deriva_retrieval_v14_<slug>.png,
+          figuras/contaminacion_transitorios_v14_<slug>.png y derivado
+          resultados/c3_b2_retriever_<slug>.json (v2..v13 intactas); la
+          nota v14 menciona la variante y el modelo, y las referencias
+          comparativas v12 y ALIA@100 del v9 se mantienen. Con --limite
+          los slugs "smoke*" conservan las rutas v14 (evidencia de
+          fontaneria) y el resto se redirige a /tmp/opencode.
 
     Estado del arte aplicado: BM25 por pasajes con agregacion max, max-pooling
     de chunks de query (cobertura completa), hibrido lexico-denso con
@@ -1039,7 +1053,12 @@ CONFIG = {
     # NUEVAS v13; v2..v12 quedan intactas (ADR-16).
     "b2": {
         "activa": False,
+        "variante": None,
         "ruta_modelo": "modelos/b2_retriever",
+        # ciclo v3 - iteracion v14: convencion de ruta de una variante del
+        # retriever (p. ej. ep2 -> modelos/b2_retriever_ep2); el {slug} se
+        # formatea en resolver_modelo_b2 al activar --b2-variante.
+        "ruta_modelo_variante": "modelos/b2_retriever_{slug}",
         "modelo": None,
         "slug": None,
         "clave_hibrido": None,
@@ -1082,6 +1101,42 @@ CONFIG = {
         "Salidas NUEVAS v13 y derivado c3_b2_retriever.json; v2..v12 "
         "quedan intactas (ADR-16)."
     ),
+    # ciclo v3 - iteracion v14: variante B2 (retriever denso alternativo,
+    # p. ej. la 2a epoca ep2 del script 25). Plantillas con {slug}/{modelo}
+    # formateadas en aplicar_modo_b2 al activar --b2-variante; las rutas
+    # formateadas se asignan a las claves estandar (ruta_benchmark, etc.)
+    # antes de resolver_rutas, por lo que estas plantillas NO entran en
+    # RUTAS_RELATIVAS. La nota activa queda en CONFIG['nota_v14'].
+    "b2_variante_v14": {
+        "version_salida": "v14-ciclo3-b2-{slug}",
+        "ruta_benchmark": "resultados/vinculo_cp_benchmark_v14_{slug}.json",
+        "ruta_por_ano": "resultados/vinculo_cp_por_ano_v14_{slug}.csv",
+        "ruta_figura": "figuras/deriva_retrieval_v14_{slug}.png",
+        "ruta_figura_contaminacion": (
+            "figuras/contaminacion_transitorios_v14_{slug}.png"
+        ),
+        "ruta_b2_retriever": "resultados/c3_b2_retriever_{slug}.json",
+        "nota": (
+            "Ciclo v3 - iteracion v14: evaluacion de la variante B2 "
+            "'{slug}' del retriever denso de dominio ({modelo}) en la 1a "
+            "etapa del hibrido pre-registrado 0.5*bm25 + 0.5*B2 (top-50 "
+            "candidatos) con el reranker B1 (modelos/b1_reranker) sobre "
+            "los MISMOS pares (chunk, pasaje) que la ruta B1 del "
+            "producto; la ruta de producto es con_hubs alpha=1.5 con "
+            "salida k=10. La seccion comparacion_b2 reporta nDCG@10/F1@10 "
+            "por contexto (alpha=0/1.5) y el IC 95% bootstrap PAREADO "
+            "(1000 remuestreos, seed 42) de delta = B2 - referencia v12 "
+            "(la ruta B1 con hibrido E5 congelada: comparacion_b1."
+            "metricas_por_caso; fallback top10_por_caso en sin_hubs; "
+            "fallback final documentado), mas la verificacion externa vs "
+            "A2/ALIA@100 de v9 (comparacion_a2.metricas_por_caso) cuando "
+            "esta disponible. Salidas NUEVAS v14 nombradas por slug "
+            "(vinculo_cp_benchmark_v14_{slug}.json, por_ano/figuras con "
+            "sufijo _{slug} y derivado c3_b2_retriever_{slug}.json); "
+            "v2..v13 quedan intactas (ADR-16)."
+        ),
+    },
+    "nota_v14": None,
 }
 
 # El hf_id de E5 en el catalogo A2 es el mismo del pipeline legacy
@@ -6024,31 +6079,53 @@ def aplicar_modo_b1(limite: int | None, modelo: str | None) -> None:
 # externa es ALIA@100 del v9 (comparacion_a2.metricas_por_caso);
 # bootstrap pareado de casos (1000 remuestreos, seed 42; ADR-16). Salidas
 # NUEVAS v13 y derivado c3_b2_retriever.json; v2..v12 quedan intactas.
-def resolver_modelo_b2(modelo: str | None) -> str:
-    """Resuelve el retriever denso B2 (ruta local u override de fontaneria).
+def resolver_modelo_b2(
+    modelo: str | None, variante: str | None = None
+) -> str:
+    """Resuelve el retriever denso B2 (ruta local, variante u override).
 
     Sin --embedding-model el modelo es la ruta local
     CONFIG['b2']['ruta_modelo'] (modelos/b2_retriever) resuelta contra
-    ROOT; si el directorio no existe se lanza FileNotFoundError con la
-    instruccion de entrenar primero con
+    ROOT; con --b2-variante SLUG el modelo es la ruta de la variante
+    CONFIG['b2']['ruta_modelo_variante'] formateada con el slug
+    (modelos/b2_retriever_<SLUG>, p. ej. modelos/b2_retriever_ep2). En
+    ambos casos, si el directorio no existe se lanza FileNotFoundError
+    con la instruccion de entrenar primero con
     scripts/25_b2_retriever_denso.py --entrenar (fail-fast antes de
     ejecutar el benchmark). Con --embedding-model se acepta (1) un slug
     del catalogo de embeddings de A2 (e5/alia/bgem3/modernbert), (2) una
     ruta local relativa a ROOT o absoluta y (3) cualquier HF id; ese
-    override es SOLO para pruebas de fontaneria del cableado.
+    override es SOLO para pruebas de fontaneria del cableado y no se
+    combina con --b2-variante (validado en parsear_args).
 
     Args:
         modelo: Valor de --embedding-model (None en el run real).
+        variante: Valor de --b2-variante (None sin variante).
 
     Returns:
         Identificador del modelo listo para config_modelo_embedding.
 
     Raises:
         FileNotFoundError: Si no hay override y la ruta local del
-            retriever denso B2 no existe (hay que entrenarlo con el
-            script 25).
+            retriever denso B2 (o de su variante) no existe (hay que
+            entrenarlo con el script 25).
     """
     if modelo is None:
+        if variante is not None:
+            ruta = Path(
+                CONFIG["b2"]["ruta_modelo_variante"].format(slug=variante)
+            )
+            if not ruta.is_absolute():
+                ruta = ROOT / ruta
+            if not ruta.is_dir():
+                raise FileNotFoundError(
+                    f"no existe la variante B2 '{variante}' en {ruta}: "
+                    "entrena el retriever alternativo y guardalo en ese "
+                    "directorio (p. ej. la variante ep2 del script 25) o "
+                    "ejecuta sin --b2-variante para usar "
+                    "modelos/b2_retriever"
+                )
+            return str(ruta)
         ruta = Path(CONFIG["b2"]["ruta_modelo"])
         if not ruta.is_absolute():
             ruta = ROOT / ruta
@@ -6065,6 +6142,25 @@ def resolver_modelo_b2(modelo: str | None) -> str:
     if not ruta.is_absolute() and (ROOT / ruta).exists():
         return str(ROOT / ruta)
     return modelo
+
+
+def nombre_retriever_b2() -> str:
+    """Nombre corto del retriever B2 activo para notas y descripciones.
+
+    Devuelve la ruta del modelo activo relativa a ROOT cuando esta dentro
+    del proyecto (p. ej. "modelos/b2_retriever" o
+    "modelos/b2_retriever_ep2") y la ruta tal cual cuando el override de
+    fontaneria apunta fuera del proyecto. Solo debe llamarse con la
+    evaluacion B2 activa (CONFIG['b2']['modelo'] no nulo).
+
+    Returns:
+        Ruta corta del modelo denso B2 activo.
+    """
+    ruta = Path(CONFIG["b2"]["modelo"])
+    try:
+        return str(ruta.relative_to(ROOT))
+    except ValueError:
+        return str(ruta)
 
 
 def _indices_por_id_muestra(datos: dict, casos: list[dict]) -> list[int] | None:
@@ -6311,6 +6407,10 @@ def construir_comparacion_b2(
         (o None + fallback) con su pareado.
     """
     estrategia = CONFIG["b2"]["estrategia"]
+    variante_b2 = CONFIG["b2"]["variante"]
+    etiqueta_retriever = nombre_retriever_b2() + (
+        f", variante '{variante_b2}'" if variante_b2 is not None else ""
+    )
     contextos = dict(CONFIG["b2"]["contextos"])
     n_bootstrap = CONFIG["b2_bootstrap"]
     semilla = CONFIG["b2_seed_pareado"]
@@ -6377,6 +6477,7 @@ def construir_comparacion_b2(
         ],
         "retriever_b2": CONFIG["b2"]["modelo"],
         "slug_b2": CONFIG["b2"]["slug"],
+        "variante_b2": variante_b2,
         "ruta_modelo_b2_por_defecto": CONFIG["b2"]["ruta_modelo"],
         "reranker_b2": CONFIG["b2"]["modelo_reranker"],
         "candidatos": CONFIG["b2"]["candidatos_k"],
@@ -6399,7 +6500,7 @@ def construir_comparacion_b2(
         "nota": (
             "Sprint B2: la estrategia "
             f"{estrategia} usa el retriever denso de dominio "
-            "(modelos/b2_retriever, fine-tune del script 25) como "
+            f"({etiqueta_retriever}, fine-tune del script 25) como "
             "componente denso del hibrido pre-registrado 0.5*bm25 + "
             "0.5*B2 (top-50 candidatos) y el reranker B1 "
             "(modelos/b1_reranker) sobre los MISMOS pares (chunk, "
@@ -6441,12 +6542,19 @@ def volcar_comparacion_b2(comparacion: dict) -> None:
         archivo = str(ruta_origen.relative_to(ROOT))
     except ValueError:
         archivo = str(ruta_origen)
+    variante_b2 = CONFIG["b2"]["variante"]
     contenido = {
         "version": comparacion["version"],
         "fecha": datetime.now(timezone.utc).isoformat(),
         "experimento": (
             "Ciclo v3 - Sprint B2: retriever denso de dominio "
-            "(modelos/b2_retriever, script 25) en la 1a etapa del "
+            f"({nombre_retriever_b2()}, script 25)"
+            + (
+                f" - variante '{variante_b2}'"
+                if variante_b2 is not None
+                else ""
+            )
+            + " en la 1a etapa del "
             "hibrido 0.5/0.5 top-50 con el reranker B1 (modelos/"
             "b1_reranker) y hubs alpha=1.5 "
             f"({comparacion.get('n_casos', 0)} casos)"
@@ -6534,7 +6642,10 @@ def calcular_denso_b2(
 
 
 def aplicar_modo_b2(
-    limite: int | None, modelo_denso: str, modelo_reranker: str
+    limite: int | None,
+    modelo_denso: str,
+    modelo_reranker: str,
+    variante: str | None = None,
 ) -> None:
     """Activa la evaluacion del retriever denso B2 (ciclo v3 - Sprint B2).
 
@@ -6543,23 +6654,38 @@ def aplicar_modo_b2(
     chunks con el reranker B1) en CONFIG['estrategias'], FUENTE_SCORES,
     ESTRATEGIAS_RANKEABLES y ESTRATEGIAS_RERANK (listas mutables) y
     redirige las salidas a los archivos v13 (ADR-16: v2..v12 nunca se
-    sobrescriben). Con --limite todo va a /tmp/opencode con sufijo
-    _smoke; sin --limite la figura de calibracion de hubs v8 se redirige
-    de forma defensiva (solo se usaria con --calibrar-hubs) para no
-    tocar artefactos previos.
+    sobrescriben).
+
+    Con --b2-variante SLUG (ciclo v3 - iteracion v14) todas las salidas
+    pasan a las plantillas v14 nombradas por slug de
+    CONFIG['b2_variante_v14']: version v14-ciclo3-b2-<slug>, benchmark
+    vinculo_cp_benchmark_v14_<slug>.json, por_ano v14_<slug>.csv,
+    figuras v14_<slug>.png y derivado c3_b2_retriever_<slug>.json, con
+    la nota v14 activa en CONFIG['nota_v14'] (v2..v13 quedan intactas).
+    Con --limite las salidas estandar se redirigen a /tmp/opencode con
+    sufijo _smoke (convencion de smokes); excepcion documentada de la
+    variante: los slugs de fontaneria "smoke*" conservan las rutas v14
+    (evidencia pedida de la fontaneria, sin colision con v2..v13) y el
+    resto de slugs con --limite si se redirigen para no dejar un
+    benchmark parcial en la ruta final de la variante. Sin --limite la
+    figura de calibracion de hubs v8 se redirige de forma defensiva
+    (solo se usaria con --calibrar-hubs) para no tocar artefactos
+    previos.
 
     Args:
         limite: Valor de --limite (None en el run final).
         modelo_denso: Retriever denso resuelto por resolver_modelo_b2
-            (ruta local de modelos/b2_retriever o el override de
-            --embedding-model).
+            (ruta local de modelos/b2_retriever o su variante, o el
+            override de --embedding-model).
         modelo_reranker: Reranker B1 resuelto por resolver_modelo_b1
             (ruta local modelos/b1_reranker o el override de
             --reranker-model).
+        variante: Valor de --b2-variante (None sin variante).
     """
     CONFIG["b2"]["activa"] = True
     CONFIG["b2"]["modelo"] = modelo_denso
     CONFIG["b2"]["modelo_reranker"] = modelo_reranker
+    CONFIG["b2"]["variante"] = variante
     configuracion = config_modelo_embedding(modelo_denso)
     CONFIG["b2"]["slug"] = configuracion["slug"]
     CONFIG["b2"]["clave_hibrido"] = (
@@ -6573,14 +6699,40 @@ def aplicar_modo_b2(
         ESTRATEGIAS_RANKEABLES.append(estrategia)
     if estrategia not in ESTRATEGIAS_RERANK:
         ESTRATEGIAS_RERANK.append(estrategia)
-    CONFIG["version_salida"] = CONFIG["version_salida_v13"]
-    CONFIG["ruta_benchmark"] = CONFIG["ruta_benchmark_v13"]
-    CONFIG["ruta_por_ano"] = CONFIG["ruta_por_ano_v13"]
-    CONFIG["ruta_figura"] = CONFIG["ruta_figura_v13"]
-    CONFIG["ruta_figura_contaminacion"] = CONFIG[
-        "ruta_figura_contaminacion_v13"
-    ]
-    if limite is not None:
+    if variante is not None:
+        plantillas = CONFIG["b2_variante_v14"]
+        CONFIG["version_salida"] = plantillas["version_salida"].format(
+            slug=variante
+        )
+        CONFIG["ruta_benchmark"] = plantillas["ruta_benchmark"].format(
+            slug=variante
+        )
+        CONFIG["ruta_por_ano"] = plantillas["ruta_por_ano"].format(
+            slug=variante
+        )
+        CONFIG["ruta_figura"] = plantillas["ruta_figura"].format(
+            slug=variante
+        )
+        CONFIG["ruta_figura_contaminacion"] = plantillas[
+            "ruta_figura_contaminacion"
+        ].format(slug=variante)
+        CONFIG["ruta_b2_retriever"] = plantillas["ruta_b2_retriever"].format(
+            slug=variante
+        )
+        CONFIG["nota_v14"] = plantillas["nota"].format(
+            slug=variante, modelo=modelo_denso
+        )
+    else:
+        CONFIG["version_salida"] = CONFIG["version_salida_v13"]
+        CONFIG["ruta_benchmark"] = CONFIG["ruta_benchmark_v13"]
+        CONFIG["ruta_por_ano"] = CONFIG["ruta_por_ano_v13"]
+        CONFIG["ruta_figura"] = CONFIG["ruta_figura_v13"]
+        CONFIG["ruta_figura_contaminacion"] = CONFIG[
+            "ruta_figura_contaminacion_v13"
+        ]
+    if limite is not None and not (
+        variante is not None and variante.startswith("smoke")
+    ):
         redirigir_rutas_a_tmp(
             (
                 "ruta_benchmark",
@@ -6592,7 +6744,10 @@ def aplicar_modo_b2(
             "_smoke",
         )
     else:
-        redirigir_rutas_a_tmp(("ruta_figura_hubs_v8",), "_b2")
+        sufijo_defensivo = (
+            f"_b2_{variante}" if variante is not None else "_b2"
+        )
+        redirigir_rutas_a_tmp(("ruta_figura_hubs_v8",), sufijo_defensivo)
 
 
 # ===== SECCION 9: guardado =====
@@ -6673,15 +6828,30 @@ def parsear_args() -> argparse.Namespace:
     fontaneria y --reranker-model sobreescribe el reranker B1 de la
     ruta. Sin override y sin modelos/b2_retriever el parser falla con la
     instruccion de entrenar primero con el script 25.
+    ciclo v3 - iteracion v14: --b2-variante SLUG (default None; requiere
+    --b2) evalua una variante del retriever denso de dominio: el modelo
+    pasa a modelos/b2_retriever_<SLUG> (fail-fast con mensaje claro si
+    no existe; NO se usa el override --embedding-model) y TODAS las
+    salidas se redirigen a v14 nombradas por slug (version
+    v14-ciclo3-b2-<SLUG>, benchmark vinculo_cp_benchmark_v14_<SLUG>.json,
+    por_ano vinculo_cp_por_ano_v14_<SLUG>.csv, figuras
+    deriva_retrieval_v14_<SLUG>.png y
+    contaminacion_transitorios_v14_<SLUG>.png, y derivado
+    c3_b2_retriever_<SLUG>.json) con la nota v14 que menciona la
+    variante y el modelo; las referencias comparativas (v12 y ALIA@100
+    del v9) se mantienen. SLUG debe cumplir [a-z0-9_], no se combina con
+    --embedding-model y con --limite los slugs "smoke*" conservan las
+    rutas v14 (evidencia de fontaneria) mientras el resto se redirige a
+    /tmp/opencode con sufijo _smoke.
 
     Returns:
         Namespace con indice ("permanentes"/"completo"), rerank (bool),
         limite (int | None), hubs_alpha (float), calibrar_hubs (bool),
         generar_prior (bool), diagnostico (bool), embedding_model
         (list[str] | None), k_candidatos_hybrid (int), a3 (bool), a4
-        (bool), a4_fusion (str | None), b1 (bool), b2 (bool) y
-        reranker_model (str | None, resuelto cuando --b1 o --b2 estan
-        activos).
+        (bool), a4_fusion (str | None), b1 (bool), b2 (bool),
+        b2_variante (str | None) y reranker_model (str | None, resuelto
+        cuando --b1 o --b2 estan activos).
 
     Raises:
         SystemExit: Si --hubs-alpha es negativo, --k-candidatos-hybrid
@@ -6689,8 +6859,10 @@ def parsear_args() -> argparse.Namespace:
             --a4-fusion se usa sin --a4, --reranker-model se usa sin
             --b1 ni --b2, --b1 y --b2 se combinan, --b2 se combina con
             --a3/--a4/--k-candidatos-hybrid o con varios
-            --embedding-model, o los modelos locales B1/B2 no existen
-            sin override (parser.error).
+            --embedding-model, --b2-variante se usa sin --b2, con
+            --embedding-model o con un slug fuera de [a-z0-9_], o los
+            modelos locales B1/B2 (o la variante B2) no existen sin
+            override (parser.error).
     """
     parser = argparse.ArgumentParser(
         description=(
@@ -6937,6 +7109,30 @@ def parsear_args() -> argparse.Namespace:
         ),
     )
     parser.add_argument(
+        "--b2-variante",
+        dest="b2_variante",
+        default=None,
+        metavar="SLUG",
+        help=(
+            "Variante del retriever denso B2 (ciclo v3 - iteracion v14; "
+            "default None, requiere --b2). SLUG [a-z0-9_] resuelve el "
+            "denso como modelos/b2_retriever_<SLUG> (p. ej. ep2 -> "
+            "modelos/b2_retriever_ep2) y redirige TODAS las salidas a "
+            "v14 nombradas por slug: version v14-ciclo3-b2-<SLUG>, "
+            "vinculo_cp_benchmark_v14_<SLUG>.json, "
+            "vinculo_cp_por_ano_v14_<SLUG>.csv, "
+            "deriva_retrieval_v14_<SLUG>.png, "
+            "contaminacion_transitorios_v14_<SLUG>.png y derivado "
+            "c3_b2_retriever_<SLUG>.json; las referencias comparativas "
+            "(v12 y ALIA@100 del v9) se mantienen y la nota v14 menciona "
+            "la variante y el modelo. Fail-fast si el directorio de la "
+            "variante no existe. No se combina con --embedding-model "
+            "(la variante resuelve la ruta por convencion). Con --limite "
+            "los slugs 'smoke*' conservan las rutas v14 (fontaneria) y "
+            "el resto se redirige a /tmp/opencode con sufijo _smoke."
+        ),
+    )
+    parser.add_argument(
         "--reranker-model",
         dest="reranker_model",
         default=None,
@@ -7004,6 +7200,20 @@ def parsear_args() -> argparse.Namespace:
             "--b2 acepta como maximo un --embedding-model (override del "
             "retriever denso B2 para pruebas de fontaneria)"
         )
+    if args.b2_variante is not None:
+        if not args.b2:
+            parser.error("--b2-variante requiere --b2")
+        if re.fullmatch(r"[a-z0-9_]+", args.b2_variante) is None:
+            parser.error(
+                "--b2-variante debe ser un slug [a-z0-9_] (p. ej. ep2)"
+            )
+        if args.embedding_model is not None:
+            parser.error(
+                "--b2-variante no se combina con --embedding-model: la "
+                "variante resuelve el denso como modelos/b2_retriever_"
+                "<SLUG> (el override --embedding-model es solo para "
+                "fontaneria sin variante)"
+            )
     if args.reranker_model is not None and not (args.b1 or args.b2):
         parser.error("--reranker-model requiere --b1 o --b2")
     if args.b1:
@@ -7019,7 +7229,9 @@ def parsear_args() -> argparse.Namespace:
                 if args.embedding_model is not None
                 else None
             )
-            args.embedding_model = [resolver_modelo_b2(modelo_denso)]
+            args.embedding_model = [
+                resolver_modelo_b2(modelo_denso, args.b2_variante)
+            ]
         except FileNotFoundError as exc:
             parser.error(str(exc))
     return args
@@ -7266,7 +7478,10 @@ def main() -> None:
     # al final para que las salidas v13 manden sobre v9/v10/v11.
     if args.b2:
         aplicar_modo_b2(
-            args.limite, args.embedding_model[0], args.reranker_model
+            args.limite,
+            args.embedding_model[0],
+            args.reranker_model,
+            args.b2_variante,
         )
     resolver_rutas()
     if args.generar_prior:
@@ -7337,7 +7552,8 @@ def main() -> None:
     if CONFIG["b2"]["activa"]:
         print(
             "Evaluacion B2 activa: retriever denso="
-            f"{CONFIG['b2']['modelo']} | slug="
+            f"{CONFIG['b2']['modelo']} | variante="
+            f"{CONFIG['b2']['variante']} | slug="
             f"{CONFIG['b2']['slug']} | reranker="
             f"{CONFIG['b2']['modelo_reranker']} | estrategia="
             f"{CONFIG['b2']['estrategia']} (candidatos top-"
@@ -8450,40 +8666,32 @@ def main() -> None:
 
     # --- guardado de resultados ---
     ganadora = max(globales, key=lambda e: globales[e]["f1_at_k"])
+    # Nota de la version activa: la variante v14 manda sobre v13; el resto
+    # de la cadena reproduce la seleccion historica de notas.
+    if CONFIG["b2"]["variante"] is not None:
+        nota_salida = CONFIG["nota_v14"]
+    elif CONFIG["b2"]["activa"]:
+        nota_salida = CONFIG["nota_v13"]
+    elif CONFIG["b1"]["activa"]:
+        nota_salida = CONFIG["nota_v12"]
+    elif CONFIG["a4"]["activa"]:
+        nota_salida = CONFIG["nota_v11"]
+    elif CONFIG["a3"]["activa"]:
+        nota_salida = CONFIG["nota_v10"]
+    elif CONFIG["a2"]["activa"]:
+        nota_salida = CONFIG["nota_v9"]
+    elif CONFIG["modo_hubs_activo"]:
+        nota_salida = CONFIG["nota_v8"]
+    elif args.rerank:
+        nota_salida = CONFIG["nota_v6"]
+    else:
+        nota_salida = None
     benchmark = {
         "fecha": datetime.now(timezone.utc).isoformat(),
         "version": CONFIG["version_salida"],
         "indice": CONFIG["version_indice"],
         "reranker": CONFIG["reranker"] if args.rerank else None,
-        "nota": (
-            CONFIG["nota_v13"]
-            if CONFIG["b2"]["activa"]
-            else (
-                CONFIG["nota_v12"]
-                if CONFIG["b1"]["activa"]
-                else (
-                    CONFIG["nota_v11"]
-                    if CONFIG["a4"]["activa"]
-                    else (
-                        CONFIG["nota_v10"]
-                        if CONFIG["a3"]["activa"]
-                        else (
-                            CONFIG["nota_v9"]
-                            if CONFIG["a2"]["activa"]
-                            else (
-                                CONFIG["nota_v8"]
-                                if CONFIG["modo_hubs_activo"]
-                                else (
-                                    CONFIG["nota_v6"]
-                                    if args.rerank
-                                    else None
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        ),
+        "nota": nota_salida,
         "smoke_test": args.limite is not None,
         "descripcion": (
             "Benchmark M7 (ciclo v2, Fase T iter3: ampliacion del recall "
@@ -8601,6 +8809,7 @@ def main() -> None:
             "b1_seed_pareado": CONFIG["b1_seed_pareado"],
             "b2_modelo": CONFIG["b2"]["modelo"],
             "b2_slug": CONFIG["b2"]["slug"],
+            "b2_variante": CONFIG["b2"]["variante"],
             "b2_ruta_modelo": CONFIG["b2"]["ruta_modelo"],
             "b2_reranker": CONFIG["b2"]["modelo_reranker"],
             "b2_estrategia": CONFIG["b2"]["estrategia"],
@@ -8836,9 +9045,14 @@ def main() -> None:
         benchmark["comparacion_b2"] = comparacion_b2
         benchmark["embeddings_b2"] = stats_emb_b2 or None
         benchmark["rerank_chunks_stats"]["b2"] = stats_rerank_b2
+        etiqueta_retriever_b2 = nombre_retriever_b2() + (
+            f" (variante '{CONFIG['b2']['variante']}')"
+            if CONFIG["b2"]["variante"] is not None
+            else ""
+        )
         benchmark["descripcion"] += (
             " Sprint B2: evaluacion del retriever denso de dominio "
-            "fine-tuneado (modelos/b2_retriever, script 25) en la 1a "
+            f"fine-tuneado ({etiqueta_retriever_b2}, script 25) en la 1a "
             "etapa del hibrido 0.5*bm25 + 0.5*B2 (top-50 candidatos) con "
             "el reranker B1 (modelos/b1_reranker) y hubs alpha=1.5, con "
             "IC bootstrap pareado de la diferencia vs la referencia v12 "

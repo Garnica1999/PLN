@@ -9,20 +9,14 @@ estado: `plan/ESTADO_Y_PENDIENTES.md` + `plan/REGISTRO_EXPERIMENTOS.md` + `resul
 |---|---|---|---|
 | **B3 mini-gold (M7) — COMPLETADO 2026-10-05** | Carlos anotó **820/820** decisiones (50 casos) | Gate humano **CONFIRMA v2.2**: B2 0,7852 [0,745;0,826] vs B1 0,6903, Δ +0,0948 IC>0; kappa carlos|llm 0,345 | Resultados: `metricas.json b3_gold_humano` + `resultados/gold_mini/` (respaldos LLM-only en `backup/`) |
 | **O1 (M4) — COMPLETADO 2026-10-05** | Carlos anotó **200/200** docs (modo lote ciego) | **El silver NO es fiable**: acuerdo humano–silver 23,5 % (κ 0,15); proxies LLM 41,5 %/29,9 %; ADR-19 | Resultados: `metricas.json o1_validacion_humana` + `resultados/validacion_m4/` (respaldo solo-LLM en `backup/`) |
-| **C1 gold estándar 150 (M7)** | No iniciado | Anotación grande; la herramienta de B3 sirve de base (extender muestreo a 150) | Por definir |
+| **C1 gold estándar (M7) — PACK LISTO 2026-10-05** | `resultados/gold_150/` (150 casos: 40 benchmark restantes + 110 C3 2022-2026; 2.740 candidatos) | Anotar cuando quieras (modo lote; guía propia; todos los casos sin contaminación para B1/B2) | `scripts/16_anotador_gold.py --anotar --pack gold_150 --anotador carlos` |
 
 ## B. Trabajo futuro técnico (documentado para retomar sin contexto)
 
-> Estado 2026-10-05: los ítems 1-3 (LoRA C2, 2ª época de B2, B4) requieren decisión de Carlos (costo GPU/tiempo); el ítem 4 queda desaconsejado por ADR-19; el resto quedó ejecutado o documentado en esta misma lista.
+> Estado 2026-10-05: ítem 1 (LoRA C2) en curso e ítem 2 (2ª época B2) hecho sin adopción; el ítem 4 queda desaconsejado por ADR-19; quedan B4 y la unificación C3 como opcionales; el resto quedó ejecutado o documentado en esta misma lista.
 
-1. **C2-LoRA**: fine-tuning LoRA de `ALIA-es-legal-administrative-7B-Instruct` con datos propios
-   (pares de citas B1 + casos) — única vía restante del frente LLM tras el C2 zero-shot negativo
-   (query understanding Δ −0,198; rerank listwise Δ −0,217). Modelo base ya descargado (GGUF
-   Q4_K_M en ollama como `alia-legal`); para LoRA se usaría el checkpoint HF
-   `SINAI/ALIA-es-legal-administrative-7B-Instruct`.
-2. **2ª época de B2** (retriever denso): requiere añadir un modo `--continuar` al script 25
-   (hoy exige reanudar con el mismo `--epochs/--batch`); candidato: lr 1e-5 desde el checkpoint
-   `modelos/b2_retriever/checkpoints/epoca_01`. Ganancia esperada incierta.
+1. **C2-LoRA — EN CURSO 2026-10-05**: spec `plan/PLAN_c2_lora.md` + ADR-20 (juicio punto a punto "¿cita el fragmento el artículo N?" Sí/No); ALIA-7B descargado (`modelos/alia_7b_instruct`); `scripts/33_c2_lora_train.py` + dataset (`data/c2_lora/sft_v1/`, 20k/3k/1k, balance 50/50, sin leakage); el smoke ajusta la escalera de VRAM (bf16 all-linear no cabe en 16 GB → `--max-seq 512 --target-modules q_proj,k_proj,v_proj,o_proj`); entrenamiento pendiente de lanzar.
+2. **2ª época de B2 — HECHA 2026-10-05 (sin adopción)**: entrenada con `--variante ep2`/`--inicializar-desde` (lr 1e-5 desde ep1); val marginal (+0,0007 acc) y benchmark v14 **sin mejora significativa** (Δ nDCG@10 +0,0013 ns sin hubs / −0,0067 ns con hubs) → **ep1 se mantiene**. El script 12 gana `--b2-variante` (v14) para futuras variantes del retriever.
 3. **B4** — BETO chunk-mean++ (más épocas / max_chunks 96): opcional del plan v3; probable
    retorno bajo (BETO sigue por debajo de LogReg en M4).
 4. **M4 con hipótesis nuevas — DESACONSEJADO por ADR-19**: el silver no es un gold fiable (acuerdo humano 23,5 %); no invertir en H3/H2-pendiente/clases raras sobre este target. Solo con una etiqueta mejor (gold humano tipo C1 para M4) o una redefinición de tarea (área = tema, no citas). No repetir class weights/calibración/jerárquico/EuroVoc (ya probados).

@@ -87,6 +87,16 @@ negativos in-batch + hard negatives), AMP fp16 y warmup lineal 10 %.
 Uso:
     /home/carlos/venv/bin/python scripts/25_b2_retriever_denso.py --entrenar
     /home/carlos/venv/bin/python scripts/25_b2_retriever_denso.py --entrenar --smoke
+
+ciclo v3 - continuacion de B2 (2026-10-05): --variante SLUG redirige TODAS las
+    salidas reales (modelo, JSON, log, figura y clave de metricas) con el
+    sufijo dado (p. ej. ep2 -> modelos/b2_retriever_ep2,
+    resultados/b2_entrenamiento_ep2.json, clave b2_retriever_ep2) para no
+    tocar los artefactos del run original; y --inicializar-desde RUTA carga
+    los pesos desde esa ruta en vez del modelo base (p. ej.
+    --inicializar-desde modelos/b2_retriever para una 2a epoca con
+    --lr 1e-5). Con --variante, la reanudacion/--forzar operan solo sobre el
+    directorio de la variante.
 """
 
 import argparse
@@ -295,11 +305,13 @@ def configurar_semillas(semilla: int) -> None:
         torch.cuda.manual_seed_all(semilla)
 
 
-def resolver_salidas(smoke: bool) -> dict:
-    """Resuelve las rutas de salida del modo real o del smoke.
+def resolver_salidas(smoke: bool, variante: str | None = None) -> dict:
+    """Resuelve las rutas de salida del modo real, del smoke o de una variante.
 
     Args:
         smoke: True para salidas exclusivamente en /tmp/opencode.
+        variante: Sufijo de variante (p. ej. "ep2") que redirige TODAS las
+            salidas reales para no tocar los artefactos del run original.
 
     Returns:
         Dict con dir_modelo, dir_checkpoints, ruta_json, ruta_log y
@@ -314,6 +326,16 @@ def resolver_salidas(smoke: bool) -> dict:
             "ruta_json": base / "b2_entrenamiento_smoke.json",
             "ruta_log": base / "25_b2_entrenar_smoke.log",
             "ruta_figura": base / "fig_b2_entrenamiento.png",
+        }
+    if variante:
+        dir_modelo = RAIZ / f"modelos/b2_retriever_{variante}"
+        return {
+            "dir_salida": dir_modelo,
+            "dir_modelo": dir_modelo,
+            "dir_checkpoints": dir_modelo / "checkpoints",
+            "ruta_json": RAIZ / f"resultados/b2_entrenamiento_{variante}.json",
+            "ruta_log": RAIZ / f"experimentos/25_b2_entrenar_{variante}.log",
+            "ruta_figura": RAIZ / f"figuras/fig_b2_entrenamiento_{variante}.png",
         }
     dir_modelo = RAIZ / CONFIG["dir_modelo"]
     return {
@@ -1934,7 +1956,9 @@ def construir_resumen(
     }
 
 
-def actualizar_metricas(resumen: dict, logger: logging.Logger) -> None:
+def actualizar_metricas(
+    resumen: dict, logger: logging.Logger, clave_metricas: str | None = None
+) -> None:
     """Agrega una entrada compacta a resultados/metricas.json.
 
     Preserva todo el contenido previo; solo agrega/actualiza la clave del
@@ -1943,7 +1967,10 @@ def actualizar_metricas(resumen: dict, logger: logging.Logger) -> None:
     Args:
         resumen: Resumen del experimento.
         logger: Logger activo.
+        clave_metricas: Clave destino (default: la del run original; las
+            variantes pasan la suya para no sobrescribirla).
     """
+    clave = clave_metricas or CONFIG["clave_metricas"]
     ruta = RAIZ / CONFIG["ruta_metricas"]
     contenido = {}
     if ruta.is_file():
@@ -1992,9 +2019,9 @@ def actualizar_metricas(resumen: dict, logger: logging.Logger) -> None:
             "de este entrenamiento."
         ),
     }
-    contenido[CONFIG["clave_metricas"]] = entrada
+    contenido[clave] = entrada
     escribir_json(ruta, contenido)
-    logger.info("metricas.json actualizado (clave %s)", CONFIG["clave_metricas"])
+    logger.info("metricas.json actualizado (clave %s)", clave)
 
 
 def imprimir_resumen(resumen: dict) -> None:
@@ -2079,6 +2106,23 @@ def parsear_args() -> argparse.Namespace:
         "--val-frac", type=float, default=None, help="fraccion de docs en val (default 0.05)"
     )
     parser.add_argument(
+        "--variante",
+        default=None,
+        help=(
+            "sufijo de variante para las salidas (p. ej. ep2 -> modelos/"
+            "b2_retriever_ep2, resultados/b2_entrenamiento_ep2.json, clave "
+            "b2_retriever_ep2); no toca los artefactos del run original"
+        ),
+    )
+    parser.add_argument(
+        "--inicializar-desde",
+        default=None,
+        help=(
+            "ruta local (o hub) para inicializar los pesos en vez del modelo "
+            "base (p. ej. modelos/b2_retriever para continuar con otra epoca)"
+        ),
+    )
+    parser.add_argument(
         "--vram-minima-gb",
         type=float,
         default=None,
@@ -2123,7 +2167,13 @@ def resolver_config(args: argparse.Namespace, smoke: bool) -> dict:
         valor = getattr(args, clave)
         if valor is not None:
             cfg[clave] = valor
-    cfg["modelo"] = CONFIG["modelo"]
+    if args.variante is not None:
+        _exigir(
+            args.variante[0].isalpha()
+            and all(caracter.isalnum() or caracter == "_" for caracter in args.variante),
+            "--variante solo admite [a-z0-9_] y debe iniciar con letra",
+        )
+    cfg["modelo"] = args.inicializar_desde or CONFIG["modelo"]
     cfg["max_seq_length"] = CONFIG["max_seq_length"]
     cfg["semilla"] = CONFIG["semilla"]
     cfg["version"] = CONFIG["version"]
@@ -2158,7 +2208,7 @@ def main() -> None:
         print("modo unico disponible: --entrenar (use --help para detalles)")
         sys.exit(2)
     smoke = bool(args.smoke)
-    salidas = resolver_salidas(smoke)
+    salidas = resolver_salidas(smoke, args.variante)
     if smoke:
         limpiar_salida_smoke(salidas)
     logger = configurar_logger(salidas["ruta_log"])
@@ -2226,7 +2276,8 @@ def main() -> None:
     escribir_json(salidas["ruta_json"], resumen)
     graficar_entrenamiento(historial, salidas["ruta_figura"], cfg)
     if not smoke:
-        actualizar_metricas(resumen, logger)
+        clave_metricas = f"b2_retriever_{args.variante}" if args.variante else None
+        actualizar_metricas(resumen, logger, clave_metricas)
     logger.info("JSON escrito en %s", salidas["ruta_json"])
     logger.info("figura escrita en %s", salidas["ruta_figura"])
     logger.info(

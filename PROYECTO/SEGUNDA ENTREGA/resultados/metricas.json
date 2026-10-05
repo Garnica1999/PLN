@@ -5284,8 +5284,7 @@
    "scripts/30_c2_llm_query.py"
   ],
   "estado": "completado"
- }
-,
+ },
  "c2_rerank_llm": {
   "experimento": "c2_rerank_llm_v1",
   "nombre": "C2(b) rerank listwise con LLM legal local: alia-legal reordena el top-20 de la 1a etapa con contexto C2(a) vs ruta v13 (negativo)",
@@ -5402,8 +5401,7 @@
    "scripts/31_c2_llm_rerank.py"
   ],
   "estado": "completado"
- }
-,
+ },
  "c3_deriva_temporal": {
   "experimento": "29_c3_eval_temporal.py",
   "fecha": "2026-10-05",
@@ -5569,8 +5567,7 @@
    "total": 553.3
   },
   "estado": "completado"
- }
-,
+ },
  "b3_gold_humano": {
   "experimento": "b3_gold_humano",
   "nombre": "B3: gate con gold humano (Carlos) - 50 casos / 820 grados; acuerdo inter-anotador y evaluacion graduada de rutas",
@@ -5973,8 +5970,7 @@
    ]
   },
   "estado": "completado"
- }
-,
+ },
  "o1_validacion_humana": {
   "descripcion": "Validacion humana O1 del silver M4: Carlos anota a ciegas 200 docs estratificados (semilla 42; modo lote ciego; 2026-10-05; 200/200 via cita_cp); acuerdo contra el silver y contra 2 proxies LLM ciegos (gemma4 y preanotacion qwen)",
   "fecha": "2026-10-05",
@@ -6399,5 +6395,279 @@
    "script": "scripts/21_pack_validacion_m4.py"
   },
   "estado": "completado"
+ },
+ "b2_retriever_ep2": {
+  "experimento": "b2_retriever_denso",
+  "nombre": "Sprint B2: retriever denso de dominio (ALIA-MrBERT legal fine-tuneado con pares/tripletas de B1)",
+  "fecha": "2026-10-05",
+  "modelo_base": "modelos/b2_retriever",
+  "script": "scripts/25_b2_retriever_denso.py",
+  "datos": {
+   "tripletas_train": 143004,
+   "pares_train": 96328,
+   "tripletas_val": 7970,
+   "pares_val": 5038,
+   "tasa_filas_negativas_enlazadas": 0.3727,
+   "exclusion_benchmark": true
+  },
+  "entrenamiento": {
+   "epochs": 1,
+   "batch": 64,
+   "lr": 1e-05,
+   "pasos_ejecutados": 3762,
+   "vram_pico_gb": 5.97,
+   "tiempos": {
+    "total_s": 3744.3,
+    "entrenamiento_s": 3637.7,
+    "evaluacion_s": 105.3,
+    "por_epoca_s": [
+     3637.7
+    ],
+    "ejemplos_por_s": 65.79
+   }
+  },
+  "val": {
+   "mejor_epoca": 1,
+   "mejor_metrica": 0.6870765370138018,
+   "por_epoca": [
+    {
+     "epoca": 1,
+     "n_tripletas": 7970,
+     "n_pares": 5038,
+     "n_anclas": 6072,
+     "n_pasajes": 572,
+     "accuracy_tripletas": 0.6870765370138018,
+     "recall@1": 0.1677429274292743,
+     "recall@5": 0.30050738007380073,
+     "recall@10": 0.37038745387453875,
+     "mrr": 0.2388207429277635,
+     "accuracy_seleccion": 0.6870765370138018,
+     "segundos": 105.3,
+     "mejor": true
+    }
+   ]
+  },
+  "artefactos": {
+   "modelo": "/home/carlos/Git/PLN/PROYECTO/SEGUNDA ENTREGA/modelos/b2_retriever_ep2",
+   "checkpoints": "/home/carlos/Git/PLN/PROYECTO/SEGUNDA ENTREGA/modelos/b2_retriever_ep2/checkpoints",
+   "json": "/home/carlos/Git/PLN/PROYECTO/SEGUNDA ENTREGA/resultados/b2_entrenamiento_ep2.json",
+   "log": "/home/carlos/Git/PLN/PROYECTO/SEGUNDA ENTREGA/experimentos/25_b2_entrenar_ep2.log",
+   "figura": "/home/carlos/Git/PLN/PROYECTO/SEGUNDA ENTREGA/figuras/fig_b2_entrenamiento_ep2.png"
+  },
+  "nota": "Entrada escrita por el propio script; el gate de adopcion de B2 se decide con la evaluacion end-to-end (recall 1a etapa) fuera de este entrenamiento."
+ },
+ "b2_ep2_comparacion": {
+  "experimento": "b2_retriever_ep2_comparacion_vs_ep1",
+  "nombre": "Sprint B2: 2a epoca del retriever denso (variante ep2) - entrenamiento, evaluacion v14 (90 casos) y comparacion pareada v14 vs v13",
+  "fecha": "2026-10-05",
+  "modelo_base": "modelos/b2_retriever",
+  "modelo_ep2": "modelos/b2_retriever_ep2",
+  "script": "scripts/25_b2_retriever_denso.py",
+  "entrenamiento": {
+   "descripcion": "continuacion de 1 epoca desde el mejor checkpoint de ep1 (lr bajo)",
+   "lr": 1e-05,
+   "epochs": 1,
+   "batch": 64,
+   "warmup_ratio": 0.1,
+   "semilla": 42,
+   "pasos_ejecutados": 3762,
+   "ejemplos_entrenados": 239332,
+   "vram_pico_gb": 5.97,
+   "tiempo_total_s": 3748.1,
+   "val_ep2": {
+    "accuracy_tripletas": 0.6870765370138018,
+    "recall@1": 0.1677429274292743,
+    "recall@5": 0.30050738007380073,
+    "recall@10": 0.37038745387453875,
+    "mrr": 0.2388207429277635
+   },
+   "val_ep1": {
+    "accuracy_tripletas": 0.6864491844416563,
+    "recall@1": 0.1671279212792128,
+    "recall@5": 0.29620233702337023,
+    "recall@10": 0.36162361623616235,
+    "mrr": 0.23679613462666896
+   },
+   "delta_val_ep2_vs_ep1": {
+    "accuracy_tripletas": 0.0006273525721455231,
+    "recall@1": 0.0006150061500614923,
+    "recall@5": 0.0043050430504305015,
+    "recall@10": 0.008763837638376404,
+    "mrr": 0.0020246083010945493
+   }
+  },
+  "eval_v14": {
+   "archivo": "resultados/vinculo_cp_benchmark_v14_ep2.json",
+   "version": "v14-ciclo3-b2-ep2",
+   "n_casos": 90,
+   "estrategia": "hibrido_b2_rerank_chunks_top50_b1",
+   "retriever": "modelos/b2_retriever_ep2",
+   "reranker": "modelos/b1_reranker",
+   "contextos": {
+    "sin_hubs": {
+     "ndcg_at_10": 0.6939066456582847,
+     "ic95_ndcg_at_10": [
+      0.6569663770020834,
+      0.7280580493529983
+     ],
+     "f1_at_10": 0.4494035647327868,
+     "ic95_f1_at_10": [
+      0.4219262615454422,
+      0.4751992731931577
+     ]
+    },
+    "con_hubs": {
+     "ndcg_at_10": 0.6840235699082157,
+     "ic95_ndcg_at_10": [
+      0.6464119171470019,
+      0.7197524731804076
+     ],
+     "f1_at_10": 0.4599313421228184,
+     "ic95_f1_at_10": [
+      0.43297097307803184,
+      0.4902434389157927
+     ]
+    }
+   },
+   "pareado_vs_v12": {
+    "sin_hubs": {
+     "ndcg_at_10": 0.06856028888888889,
+     "f1_at_10": 0.06309853333333333
+    },
+    "con_hubs": {
+     "ndcg_at_10": 0.05507883333333334,
+     "f1_at_10": 0.06357644444444444
+    }
+   },
+   "pareado_vs_alia_a2": {
+    "sin_hubs": {
+     "ndcg_at_10": 0.1849702888888889,
+     "f1_at_10": 0.13050646666666668
+    },
+    "con_hubs": {
+     "ndcg_at_10": 0.04590821111111112,
+     "f1_at_10": 0.04267053333333334
+    }
+   }
+  },
+  "comparacion_pareada_v14_vs_v13": {
+   "referencia_v13": {
+    "archivo": "resultados/vinculo_cp_benchmark_v13.json",
+    "version": "v13-ciclo3-sprintB2",
+    "variante": "ep1",
+    "contextos": {
+     "sin_hubs": {
+      "ndcg_at_10": 0.692647584943502,
+      "ic95_ndcg_at_10": [
+       0.6572553419218164,
+       0.7250964965669935
+      ],
+      "f1_at_10": 0.44731992535683585,
+      "ic95_f1_at_10": [
+       0.4202941380267893,
+       0.472576617477739
+      ]
+     },
+     "con_hubs": {
+      "ndcg_at_10": 0.69068513987043,
+      "ic95_ndcg_at_10": [
+       0.6542129823025125,
+       0.7245378916465162
+      ],
+      "f1_at_10": 0.4644712710854992,
+      "ic95_f1_at_10": [
+       0.4360075128738017,
+       0.4926968682874659
+      ]
+     }
+    }
+   },
+   "v14_ep2": {
+    "sin_hubs": {
+     "ndcg_at_10": 0.6939066456582847,
+     "ic95_ndcg_at_10": [
+      0.6569663770020834,
+      0.7280580493529983
+     ],
+     "f1_at_10": 0.4494035647327868,
+     "ic95_f1_at_10": [
+      0.4219262615454422,
+      0.4751992731931577
+     ]
+    },
+    "con_hubs": {
+     "ndcg_at_10": 0.6840235699082157,
+     "ic95_ndcg_at_10": [
+      0.6464119171470019,
+      0.7197524731804076
+     ],
+     "f1_at_10": 0.4599313421228184,
+     "ic95_f1_at_10": [
+      0.43297097307803184,
+      0.4902434389157927
+     ]
+    }
+   },
+   "metodo": "bootstrap PAREADO por caso (1000 remuestreos, seed 42) sobre las 90 series alineadas de comparacion_b2.metricas_por_caso[contexto][estrategia] de ambos JSON; recalculado por ml-trainer (coincide con el reportado)",
+   "sin_hubs": {
+    "ndcg_at_10": {
+     "n": 90,
+     "media_delta": 0.0012590999999999993,
+     "p2_5": -0.009288838888888892,
+     "p97_5": 0.011905823888888886,
+     "prob_mejora": 0.609,
+     "gana": false
+    },
+    "f1_at_10": {
+     "n": 90,
+     "media_delta": 0.0020836666666666677,
+     "p2_5": -0.00891321111111111,
+     "p97_5": 0.012613310277777777,
+     "prob_mejora": 0.668,
+     "gana": false
+    }
+   },
+   "con_hubs": {
+    "ndcg_at_10": {
+     "n": 90,
+     "media_delta": -0.00666155555555555,
+     "p2_5": -0.019461215555555546,
+     "p97_5": 0.0065566458333333345,
+     "prob_mejora": 0.18,
+     "gana": false
+    },
+    "f1_at_10": {
+     "n": 90,
+     "media_delta": -0.0045399333333333335,
+     "p2_5": -0.016250023611111112,
+     "p97_5": 0.008183484166666668,
+     "prob_mejora": 0.245,
+     "gana": false
+    }
+   }
+  },
+  "veredicto": "sin_adopcion",
+  "decision": "Sin adopcion: la 2a epoca (ep2) no mejora el benchmark de forma significativa (todos los IC 95% del delta cruzan 0; con_hubs ligeramente negativa en nDCG@10 y F1@10). El producto v2.2 mantiene el retriever ep1 (modelos/b2_retriever).",
+  "artefactos": [
+   "resultados/b2_entrenamiento_ep2.json",
+   "resultados/vinculo_cp_benchmark_v14_ep2.json",
+   "resultados/c3_b2_retriever_ep2.json",
+   "resultados/vinculo_cp_por_ano_v14_ep2.csv",
+   "modelos/b2_retriever_ep2/",
+   "figuras/deriva_retrieval_v14_ep2.png",
+   "figuras/contaminacion_transitorios_v14_ep2.png",
+   "figuras/fig_b2_entrenamiento_ep2.png",
+   "experimentos/25_b2_entrenar_ep2.log"
+  ],
+  "md5": {
+   "resultados/b2_entrenamiento_ep2.json": "56d62b8b70ab1d83167ff9f29311afa2",
+   "resultados/vinculo_cp_benchmark_v14_ep2.json": "d3ee92b8d564a5d788f5e2426b2c8121",
+   "resultados/c3_b2_retriever_ep2.json": "52988d6f4347e7f9cca1a6443fb761b1",
+   "resultados/vinculo_cp_por_ano_v14_ep2.csv": "63cd5d63859eb6e8fc8c73a6245a1eb5",
+   "modelos/b2_retriever_ep2/model.safetensors": "bfe983faf3b6f62fb501c19afc6a9fbe",
+   "resultados/vinculo_cp_benchmark_v13.json": "edd69ee5d122910495467884de6fd47e",
+   "modelos/b2_retriever/model.safetensors": "bb40f530d1d67166f1e839c1f5a68cd0"
+  },
+  "nota": "ep1 (modelos/b2_retriever) verificado sin cambios: mtime 2026-10-04 17:52, anterior al entrenamiento de ep2 (2026-10-05 04:59-05:07). Residuos del smoke del coder (vinculo_cp_benchmark_v14_smokev14.json, c3_b2_retriever_smokev14.json, figuras *_v14_smokev14.*) son evidencia de fontaneria, no del experimento; no se registran."
  }
 }
