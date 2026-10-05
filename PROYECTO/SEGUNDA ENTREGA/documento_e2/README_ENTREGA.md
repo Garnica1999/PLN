@@ -224,3 +224,32 @@ acepta texto pegado o un id del corpus y muestra el JSON del producto, con un
 toggle para la ruta `--rerank` de v2.2 (B2 + B1). Corre en CPU; la primera
 evaluación inicializa los componentes (decenas de segundos). Verificada con el
 AppTest de Streamlit (UI → producto → JSON).
+
+---
+
+## 12. Oleada post-v3 (2026-10-05)
+
+Tres frentes abiertos tras el cierre v3 se resolvieron en una oleada final (diseño en ADR-20; veredicto en ADR-21; detalle en la adenda 3 del informe `informe_final_ciclo_v3.md`):
+
+- **(a) 2ª época de B2 — sin adopción.** Continuación del retriever denso desde el checkpoint de ep1 (lr 1e-5, 1 época; `modelos/b2_retriever_ep2`); benchmark v14 (90 casos, silver): nDCG@10 0,6939 sin hubs / 0,6840 con hubs vs v13 0,6926/0,6907; pareado Δ +0,0013 [−0,0093;+0,0119] / −0,0067 [−0,0195;+0,0066] (IC cruza 0) → el producto mantiene ep1. Artefactos: `resultados/b2_entrenamiento_ep2.json`, `vinculo_cp_benchmark_v14_ep2.json`, `figuras/deriva_retrieval_v14_ep2.png`.
+- **(b) Pack C1 (gold estándar M7) — listo para anotación.** `resultados/gold_150/`: 150 casos (40 restantes del benchmark + 110 del corpus C3 2022-2026), 2.740 candidatos, todos fuera del entrenamiento de B1/B2 (sin contaminación); guía y modo lote. La evaluación contra este gold queda pendiente de la anotación humana.
+- **(c) C2-LoRA — adaptación GO, adopción NO (ADR-21).** LoRA sobre ALIA-7B (r16/α32/qkvo, 20k pares de B1, 1 época, VRAM pico 15,0 GiB, AUC val 0,848): nivel 1 acc 0,769/AUC 0,847 vs base 0,503/0,647; nivel 2 (gold humano B3) AUC(≥1) 0,654/Spearman 0,297 (la referencia LLM zero-shot puntúa 0,727); nivel 3 top-50 0,6842 vs v13 0,6907 (ns) y +0,0518 vs base (criterio ≥+0,05 → GO); fusiones 0,6909–0,6923 (ns) con p95 45,6 s > 30 s → sin adopción; el frente LLM C2 queda cerrado. Artefactos: `resultados/c2_lora/`, `modelos/c2_lora/adapter_v1/`, scripts 33/34.
+
+**Comandos nuevos:**
+
+```bash
+# (a) 2ª época de B2 (continuación desde ep1) y evaluación de la variante
+python scripts/25_b2_retriever_denso.py --entrenar --inicializar-desde modelos/b2_retriever --variante ep2 --lr 1e-5
+python scripts/12_evaluar_vinculo_cp_v2.py --b2 --rerank --b2-variante ep2
+
+# (b) Pack C1 (gold estándar 150; anotación humana con modo lote)
+python scripts/32_pack_gold_150.py
+python scripts/16_anotador_gold.py --pack gold_150 --anotar --anotador carlos
+
+# (c) C2-LoRA (entrenamiento y evaluación en 3 niveles)
+python scripts/33_c2_lora_train.py --entrenar
+python scripts/34_c2_lora_eval.py --recomputar-top50
+```
+
+- Incidente documentado: falso stop en el paso 1000 por un bug de padding derecho en la evaluación interna del script 33 (evidencia en `resultados/c2_lora/entrenamiento_v1_falso_stop.json`); corregido y verificado antes de reanudar hasta completar la época.
+- Trazabilidad: `plan/REGISTRO_EXPERIMENTOS.md` (fila `B2-ep2`) y ADRs 20-21; pendiente de registro la fila `C2-LoRA` y la sección `c2_lora_eval` en `metricas.json` (las cifras de esta sección se auditaron contra `resultados/c2_lora/eval_c2_lora_v1*.json`).

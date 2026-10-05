@@ -367,3 +367,21 @@ Entrada: sentencia T-293/97 (`10_evaluar_sentencia.py --id`), salida JSON en ~9 
 - Tutelas de salud/pensión reciben silver de bloques genéricos citados (spot-check: T-853/02, T-231/20, T-235/20)
 - Caveat: muestra estratificada (no proporcional al corpus) -> exactitud a nivel de muestra
 - Veredicto (ADR-19): el silver de M4 no es un gold fiable; M4 queda como diagnóstico con caveats; no invertir más sobre este target sin gold tipo C1 o redefinición de tarea
+
+## Slide 36 — B2 2ª época — sin adopción
+
+- Continuación desde el mejor checkpoint de ep1 (lr 1e-5, 1 época, 3.762 pasos; `modelos/b2_retriever_ep2`)
+- Val marginal: acc. de tripletas 0,6871 vs 0,6864 (ep1)
+- Benchmark v14 (90 casos, silver): nDCG@10 0,6939 sin hubs / 0,6840 con hubs vs v13 0,6926/0,6907
+- Pareado v14 vs v13: Δ +0,0013 [−0,0093;+0,0119] prob 0,609 / −0,0067 [−0,0195;+0,0066] prob 0,180 → IC cruza 0
+- Sin adopción: el producto v2.2 mantiene el retriever ep1; el script 12 incorpora `--b2-variante` para futuras variantes
+
+## Slide 37 — C2-LoRA — adaptación GO, adopción NO
+
+- LoRA sobre ALIA-7B (r16/α32/qkvo, 20k pares de B1, 1 época; VRAM pico 15,0 GiB; AUC val 0,848)
+- Nivel 1 (juicio punto a punto): acc 0,769 / AUC 0,847 vs base 0,503/0,647 (Δacc +0,265 [0,24;0,29])
+- Nivel 2 (gold humano B3, 820 ítems): AUC(≥1) 0,654 / Spearman 0,297 vs base 0,597/0,200; la referencia LLM zero-shot puntúa mejor (0,727)
+- Nivel 3 (top-50 recomputado, 90 casos): 0,6842 vs v13 0,6907 (Δ −0,0065 ns); +0,0518 vs base → criterio de adaptación ≥+0,05 cumplido (GO)
+- Fusiones 0,6909–0,6923 vs v13 (+0,0002/+0,0015/+0,0016, ns) con p95 45,6 s > 30 s → ninguna supera a v13
+- Veredicto (ADR-21): sin adopción; el frente LLM C2 queda cerrado; el producto conserva B2 + B1
+- Incidente: falso stop en el paso 1000 por un bug de padding derecho (evaluación interna del script 33), corregido y verificado; reanudado hasta completar

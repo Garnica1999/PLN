@@ -58,6 +58,22 @@ Descripcion: Frente C2 del ciclo v3 - juicio binario punto a punto
     propio render (el JSON del dataset los registra); el script aborta si la
     verificacion falla.
 
+    BUG DE SCORING CORREGIDO (2026-10-05, falso stop del run v1): la
+    evaluacion interna usaba batch 4 con PADDING DERECHO; los logits se
+    recortan con logits_to_keep a las ULTIMAS K posiciones del tensor
+    padeado, de modo que solo la fila mas larga de cada lote tenia su
+    posicion de respuesta dentro de la ventana y las filas cortas se
+    puntuaban en posiciones equivocadas (AUC interno 0,44 con ~97 % "No",
+    mientras la ruta validada del script 34 sobre el mismo adaptador daba
+    AUC 0,80 / acc 0,72). La ruta de ENTRENAMIENTO no estaba afectada
+    (batch 1 sin padding). Fix: padding IZQUIERDO en evaluar (como el script
+    34) + guarda que prohibe padding derecho con filas de distinto largo;
+    la loss completion-only queda alineada en todas las filas. Los evals
+    previos del checkpoint se etiquetan "bug_padding" al reanudar y se
+    reinician mejor_auc/sin_mejora (metricas incompatibles). El modo
+    --evaluar permite re-evaluar cualquier adaptador guardado con la ruta
+    corregida (control base bf16 con --sin-adaptador).
+
     Estado del arte aplicado:
     - LoRA (Hu et al. 2021, arXiv:2106.09685) con r=16/alpha=32/dropout 0,05
       y all-linear, receta de instruct tuning de rango bajo (Biderman et al.
@@ -86,6 +102,8 @@ Uso:
     /home/carlos/venv/bin/python scripts/33_c2_lora_train.py --entrenar --reanudar
     /home/carlos/venv/bin/python scripts/33_c2_lora_train.py --entrenar --max-ejemplos 4000 --max-horas 3
     /home/carlos/venv/bin/python scripts/33_c2_lora_train.py --smoke
+    /home/carlos/venv/bin/python scripts/33_c2_lora_train.py --evaluar --max-items 400
+    /home/carlos/venv/bin/python scripts/33_c2_lora_train.py --evaluar --sin-adaptador
 """
 
 import argparse
@@ -1843,23 +1861,46 @@ def preparar_ejemplos(datos: dict, max_seq: int) -> list[dict]:
     return ejemplos
 
 
-def collar_lote(ejemplos: list[dict], pad_id: int) -> dict:
+def collar_lote(ejemplos: list[dict], pad_id: int, lado: str = "derecha") -> dict:
     """Collator completion-only: targets -100 en el prompt.
 
     Devuelve input_ids/attention_mask con padding y una matriz de targets
     alineada a las ULTIMAS K-1 posiciones (K = max_resp + 1), de modo que
     cada fila aporta exactamente sus tokens de respuesta a la loss.
 
+    CRITICO (bug de scoring corregido 2026-10-05): con batch > 1 el padding
+    debe ser IZQUIERDO. Los logits se recortan con logits_to_keep a las
+    ULTIMAS K posiciones del tensor PADEADO; con padding derecho esas
+    posiciones pertenecen a las filas largas y la loss/score de las filas
+    cortas se leia en posiciones equivocadas (falso stop del run v1:
+    AUC 0,44 interno vs 0,80 con la ruta validada del script 34, que usa
+    padding izquierdo). Con padding izquierdo la respuesta de TODAS las
+    filas queda al final del tensor y las formulas de offset (K - r - 1)
+    son exactas para cada fila. Con batch=1 (sin padding) ambos lados son
+    equivalentes, por lo que la ruta de entrenamiento no cambia.
+
     Args:
         ejemplos: Lista de dicts con prompt_ids/resp_ids/label.
         pad_id: Id de padding (eos).
+        lado: "derecha" (default, batch 1) o "izquierda" (batch > 1).
 
     Returns:
         Dict de tensores: input_ids, attention_mask, targets, resp_lens.
+
+    Raises:
+        RuntimeError: Si hay padding con lado="derecha" (desalinea la
+            loss/score por fila) o si el lado es invalido.
     """
+    _exigir(lado in ("derecha", "izquierda"), f"lado de padding invalido: {lado!r}")
     n = len(ejemplos)
     largos = [len(e["prompt_ids"]) + len(e["resp_ids"]) for e in ejemplos]
     largo_max = max(largos)
+    hay_padding = any(largo < largo_max for largo in largos)
+    _exigir(
+        lado == "izquierda" or not hay_padding,
+        "padding derecho con filas de distinto largo desalinea la loss/score por fila: "
+        "use lado='izquierda' cuando haya padding",
+    )
     k = max(len(e["resp_ids"]) for e in ejemplos) + 1
     input_ids = torch.full((n, largo_max), pad_id, dtype=torch.long)
     attention_mask = torch.zeros((n, largo_max), dtype=torch.long)
@@ -1869,8 +1910,13 @@ def collar_lote(ejemplos: list[dict], pad_id: int) -> dict:
         ids = ejemplo["prompt_ids"] + ejemplo["resp_ids"]
         p = len(ejemplo["prompt_ids"])
         r = len(ejemplo["resp_ids"])
-        input_ids[i, : len(ids)] = torch.tensor(ids, dtype=torch.long)
-        attention_mask[i, : len(ids)] = 1
+        if lado == "izquierda":
+            inicio = largo_max - len(ids)
+            input_ids[i, inicio:] = torch.tensor(ids, dtype=torch.long)
+            attention_mask[i, inicio:] = 1
+        else:
+            input_ids[i, : len(ids)] = torch.tensor(ids, dtype=torch.long)
+            attention_mask[i, : len(ids)] = 1
         resp_lens[i] = r
         desplazamiento = k - r - 1
         for j in range(r):
@@ -2031,7 +2077,12 @@ def evaluar(
         etiquetas: list[int] = []
         lote_tam = cfg["eval_batch"]
         for inicio in range(0, len(ejemplos), lote_tam):
-            lote = collar_lote(ejemplos[inicio : inicio + lote_tam], tokenizer.pad_token_id)
+            # Padding IZQUIERDO (fix del falso stop): con batch > 1 las filas
+            # cortas quedan alineadas a la derecha y la posicion de respuesta
+            # (offset K - r - 1) es exacta para todas.
+            lote = collar_lote(
+                ejemplos[inicio : inicio + lote_tam], tokenizer.pad_token_id, lado="izquierda"
+            )
             perdida, logits = forward_completion(modelo, lote, device)
             objetivos = lote["targets"].to(device)
             n_validos = int((objetivos != -100).sum())
@@ -2040,6 +2091,14 @@ def evaluar(
             k = logits.shape[1]
             desplazamientos = (k - lote["resp_lens"] - 1).to(device)
             filas = torch.arange(logits.shape[0], device=device)
+            # Posicion real en el tensor padeado de la ventana recortada por
+            # logits_to_keep: offset j -> posicion largo_max - k + j.
+            largo_max = lote["input_ids"].shape[1]
+            posiciones = largo_max - k + desplazamientos
+            _exigir(
+                bool(lote["attention_mask"][filas.cpu(), posiciones.cpu()].all()),
+                "posicion de scoring sobre padding: el padding izquierdo no se aplico correctamente",
+            )
             logit_si = logits[filas, desplazamientos, id_si]
             logit_no = logits[filas, desplazamientos, id_no]
             par = torch.softmax(torch.stack([logit_si, logit_no], dim=1).float(), dim=1)[:, 0]
@@ -2080,6 +2139,12 @@ def dibujar_curvas(historial: list[dict], ruta: str | Path) -> None:
     destino.parent.mkdir(parents=True, exist_ok=True)
     pasos = [h["paso"] for h in historial]
     figura, ejes = plt.subplots(1, 3, figsize=(15, 4))
+    # Si el historial mezcla scoring antiguo (bug_padding) y corregido, se
+    # marca el primer paso con metrica corregida (el salto no es del modelo).
+    primeros_corregidos = [h["paso"] for h in historial if h.get("scoring") == "corregido"]
+    if primeros_corregidos and any(h.get("scoring") == "bug_padding" for h in historial):
+        for eje in ejes:
+            eje.axvline(primeros_corregidos[0], color="gray", linestyle=":", linewidth=1)
     ejes[0].plot(pasos, [h["loss_train"] for h in historial], marker="o")
     ejes[0].set_title("Loss de train (media por ventana)")
     ejes[0].set_xlabel("paso")
@@ -2097,6 +2162,246 @@ def dibujar_curvas(historial: list[dict], ruta: str | Path) -> None:
     figura.tight_layout()
     figura.savefig(destino, dpi=130)
     plt.close(figura)
+
+
+def resolver_max_seq_evaluacion(cfg: dict, rutas: dict, args: argparse.Namespace, logger: logging.Logger) -> int:
+    """Alinea max_seq al del entrenamiento registrado (patron del script 34).
+
+    Prioridad: --max-seq explicito > config.max_seq del JSON de entrenamiento
+    > config.max_seq del checkpoint > default del CONFIG. Evita evaluar con
+    un presupuesto de prompt distinto al usado al entrenar.
+
+    Args:
+        cfg: Configuracion efectiva.
+        rutas: Rutas absolutas.
+        args: Namespace de la CLI.
+        logger: Logger activo.
+
+    Returns:
+        max_seq efectivo para la evaluacion.
+    """
+    if args.max_seq is not None:
+        return cfg["max_seq"]
+    ruta_json = Path(rutas["ruta_train_json"])
+    if ruta_json.exists():
+        try:
+            max_seq = int(json.loads(ruta_json.read_text(encoding="utf-8"))["config"]["max_seq"])
+        except (KeyError, ValueError, json.JSONDecodeError):
+            max_seq = None
+        if max_seq is not None:
+            if max_seq != cfg["max_seq"]:
+                logger.info(
+                    "max_seq alineado al del entrenamiento: %d -> %d (use --max-seq para forzarlo)",
+                    cfg["max_seq"],
+                    max_seq,
+                )
+            return max_seq
+    ruta_estado = Path(rutas["dir_checkpoint"]) / "entrenamiento_estado.pt"
+    if ruta_estado.exists():
+        estado = torch.load(ruta_estado, map_location="cpu", weights_only=False)["estado"]
+        max_seq = int(estado["config"]["max_seq"])
+        if max_seq != cfg["max_seq"]:
+            logger.info("max_seq alineado al del checkpoint: %d -> %d", cfg["max_seq"], max_seq)
+        return max_seq
+    return cfg["max_seq"]
+
+
+def cargar_modelo_eval(cfg: dict, rutas: dict, device: str, ruta_adapter: str | None, logger: logging.Logger):
+    """Carga el modelo base bf16 y (opcionalmente) el adaptador para evaluar.
+
+    No activa gradient checkpointing (evaluacion pura en inference_mode) ni
+    envuelve el modelo si ruta_adapter es None (control base bf16).
+
+    Args:
+        cfg: Configuracion efectiva.
+        rutas: Rutas absolutas.
+        device: "cuda".
+        ruta_adapter: Ruta del adaptador o None para el control base.
+        logger: Logger activo.
+
+    Returns:
+        Modelo en modo eval listo para puntuar.
+    """
+    base = AutoModelForCausalLM.from_pretrained(
+        rutas["ruta_modelo"],
+        dtype=torch.bfloat16,
+        attn_implementation=cfg["attn_implementation"],
+    )
+    base.config.use_cache = False
+    if ruta_adapter is not None:
+        modelo = PeftModel.from_pretrained(base, ruta_adapter, is_trainable=False)
+        logger.info("adaptador cargado para evaluacion desde %s (sin merge)", ruta_adapter)
+    else:
+        modelo = base
+        logger.info("control base bf16 sin adaptador (disable_adapter equivalente)")
+    modelo.to(device)
+    modelo.eval()
+    return modelo
+
+
+def evaluar_adaptador(
+    cfg: dict,
+    rutas: dict,
+    tokenizer,
+    args: argparse.Namespace,
+    logger: logging.Logger,
+) -> dict:
+    """Evalua un adaptador guardado con la ruta de scoring CORREGIDA (--evaluar).
+
+    Carga val.parquet (o los primeros --max-items pares), alinea max_seq al
+    del entrenamiento y calcula loss/acc/F1/AUC/matriz con el mismo scoring
+    del bucle de entrenamiento (padding izquierdo). Con --sin-adaptador
+    evalua el modelo base bf16 como control. Escribe un JSON con metricas,
+    md5 del adaptador y la version de scoring; NO toca el JSON de
+    entrenamiento ni el checkpoint.
+
+    Args:
+        cfg: Configuracion efectiva.
+        rutas: Rutas absolutas.
+        tokenizer: Tokenizer de ALIA.
+        args: Namespace de la CLI.
+        logger: Logger activo.
+
+    Returns:
+        Dict de cierre con las metricas.
+
+    Raises:
+        RuntimeError: Si falta val.parquet o la VRAM es insuficiente.
+    """
+    device = "cuda"
+    _verificar_gpu_exclusiva(cfg, logger)
+    cfg["max_seq"] = resolver_max_seq_evaluacion(cfg, rutas, args, logger)
+    ruta_val = Path(rutas["dir_sft"]) / "val.parquet"
+    _exigir(ruta_val.exists(), f"falta {ruta_val} (ejecute --preparar-datos primero)")
+    datos_val = cargar_sft(ruta_val)
+    ejemplos = preparar_ejemplos(datos_val, cfg["max_seq"])
+    if args.max_items is not None:
+        ejemplos = ejemplos[: args.max_items]
+        datos_val = {
+            clave: datos_val[clave][: args.max_items]
+            for clave in ("doc_id", "label")
+        }
+    ids_ctx = ids_respuesta_contexto(tokenizer, cfg, logger)
+    cfg["ids_respuesta"] = ids_ctx
+    ruta_adapter = None if args.sin_adaptador else (args.adapter or rutas["dir_adapter"])
+    if ruta_adapter is not None:
+        _exigir(Path(ruta_adapter).exists(), f"no existe el adaptador {ruta_adapter}")
+    modelo = cargar_modelo_eval(cfg, rutas, device, ruta_adapter, logger)
+    inicio = time.perf_counter()
+    metricas = evaluar(modelo, ejemplos, cfg, tokenizer, device, logger)
+    duracion = time.perf_counter() - inicio
+    logger.info(
+        "evaluacion (%s, n=%d, max_seq=%d): loss=%s acc=%.4f f1_si=%.4f auc=%s matriz=%s [%.1f s]",
+        "adaptador" if ruta_adapter else "base",
+        len(ejemplos),
+        cfg["max_seq"],
+        f"{metricas['loss']:.4f}" if metricas["loss"] is not None else "n/a",
+        metricas["acc"],
+        metricas["f1_si"],
+        f"{metricas['auc']:.4f}" if metricas["auc"] is not None else "n/a",
+        metricas["matriz"],
+        duracion,
+    )
+    cierre = {
+        "version": "c2-lora-eval-interna-v1",
+        "fecha": time.strftime("%Y-%m-%d %H:%M:%S"),
+        "script": "scripts/33_c2_lora_train.py",
+        "modo": "evaluar",
+        "scoring": "corregido (padding izquierdo; ids en contexto verificados)",
+        "dispositivo": torch.cuda.get_device_name(0),
+        "max_seq": cfg["max_seq"],
+        "n_items": len(ejemplos),
+        "n_docs": len({doc for doc in datos_val["doc_id"]}),
+        "val": {
+            "ruta": str(ruta_val),
+            "md5": md5_archivo(ruta_val),
+            "orden": "primeros --max-items pares de val.parquet (mismo criterio que scripts/34)",
+        },
+        "adaptador": {
+            "ruta": ruta_adapter,
+            "md5_modelo": (
+                md5_archivo(Path(ruta_adapter) / "adapter_model.safetensors") if ruta_adapter else None
+            ),
+            "md5_config": md5_archivo(Path(ruta_adapter) / "adapter_config.json") if ruta_adapter else None,
+        },
+        "ids_respuesta": ids_ctx,
+        "metricas": metricas,
+        "tiempos": {"segundos": duracion},
+        "entorno": versiones_entorno(),
+    }
+    ruta_salida = args.salida or str(RAIZ / "resultados/c2_lora/eval_interna_v1.json")
+    destino = verificar_salida_nueva(ruta_salida, args.forzar, cfg["smoke"], logger)
+    destino.parent.mkdir(parents=True, exist_ok=True)
+    with open(destino, "w", encoding="utf-8") as manejador:
+        json.dump(cierre, manejador, ensure_ascii=False, indent=2)
+    logger.info("evaluacion guardada: %s", destino)
+    return cierre
+
+
+def _verificar_gpu_exclusiva(cfg: dict, logger: logging.Logger) -> tuple[float, float]:
+    """Exige GPU disponible con la VRAM libre minima del plan.
+
+    Args:
+        cfg: Configuracion efectiva.
+        logger: Logger activo.
+
+    Returns:
+        Tupla (libre_gib, total_gib).
+
+    Raises:
+        RuntimeError: Si no hay GPU o la VRAM libre es insuficiente.
+    """
+    _exigir(torch.cuda.is_available(), "CUDA/ROCm no disponible: se requiere GPU")
+    libre, total = torch.cuda.mem_get_info()
+    libre_gib = libre / 1024**3
+    logger.info(
+        "GPU %s: %.2f GiB libres de %.2f GiB",
+        torch.cuda.get_device_name(0),
+        libre_gib,
+        total / 1024**3,
+    )
+    _exigir(
+        libre_gib >= cfg["vram_min_gib"],
+        (
+            f"VRAM libre insuficiente: {libre_gib:.2f} GiB < {cfg['vram_min_gib']} GiB. "
+            "El plan exige GPU EXCLUSIVA (cierrese Chrome/navegador y todo job GPU)."
+        ),
+    )
+    return libre_gib, total / 1024**3
+
+
+def migrar_metricas_scoring(estado: dict, logger: logging.Logger) -> dict:
+    """Migra el estado de un checkpoint previo al fix de scoring.
+
+    Los checkpoints anteriores al fix (padding derecho en evaluar) guardaron
+    evals invalidos: se etiquetan "bug_padding" y se reinician
+    mejor_auc/sin_mejora para no comparar metricas incompatibles (el primer
+    eval corregido define el mejor). Idempotente.
+
+    Args:
+        estado: Estado cargado del checkpoint (se modifica in-place).
+        logger: Logger activo.
+
+    Returns:
+        El mismo estado migrado.
+    """
+    if estado.get("scoring_version") == "corregido":
+        return estado
+    entradas = estado.get("historial", [])
+    for entrada in entradas:
+        entrada.setdefault("scoring", "bug_padding")
+    logger.warning(
+        "checkpoint previo al fix de scoring: %d evals marcados 'bug_padding'; "
+        "se reinician mejor_auc (era %s) y sin_mejora (era %d) para la metrica corregida",
+        len(entradas),
+        estado.get("mejor_auc"),
+        estado.get("sin_mejora", 0),
+    )
+    estado["mejor_auc"] = None
+    estado["mejor_paso"] = 0
+    estado["sin_mejora"] = 0
+    estado["scoring_version"] = "corregido"
+    return estado
 
 
 def entrenar(
@@ -2122,22 +2427,7 @@ def entrenar(
         RuntimeError: Si no hay GPU, VRAM insuficiente o dataset faltante.
     """
     device = "cuda"
-    _exigir(torch.cuda.is_available(), "CUDA/ROCm no disponible: el entrenamiento requiere GPU")
-    libre, total = torch.cuda.mem_get_info()
-    libre_gib = libre / 1024**3
-    logger.info(
-        "GPU %s: %.2f GiB libres de %.2f GiB",
-        torch.cuda.get_device_name(0),
-        libre_gib,
-        total / 1024**3,
-    )
-    _exigir(
-        libre_gib >= cfg["vram_min_gib"],
-        (
-            f"VRAM libre insuficiente: {libre_gib:.2f} GiB < {cfg['vram_min_gib']} GiB. "
-            "El plan exige GPU EXCLUSIVA (cierrese Chrome/navegador y todo job GPU)."
-        ),
-    )
+    _, total_gib = _verificar_gpu_exclusiva(cfg, logger)
     info_modelo = verificar_modelo_base(cfg, rutas, logger)
 
     rutas_sft = {
@@ -2190,6 +2480,7 @@ def entrenar(
         "pasos_por_epoca": pasos_por_epoca,
         "tokens": 0,
         "historial": [],
+        "scoring_version": "corregido",
         "config": {
             "lora_r": cfg["lora_r"],
             "lora_alpha": cfg["lora_alpha"],
@@ -2203,10 +2494,12 @@ def entrenar(
     if args.reanudar:
         estado = cargar_checkpoint(modelo, optimizer, rutas, device, logger)
         for clave in ("lora_r", "lora_alpha", "max_seq", "batch", "grad_accum", "target_modules"):
-            _exigir(
-                estado["config"][clave] == cfg[clave],
-                f"config del checkpoint difiere en {clave}: {estado['config'][clave]} != {cfg[clave]}",
-            )
+            guardado = estado["config"].get(clave)
+            if guardado is not None:
+                _exigir(
+                    guardado == cfg[clave],
+                    f"config del checkpoint difiere en {clave}: {guardado} != {cfg[clave]}",
+                )
         if estado["config"]["lr"] != cfg["lr"]:
             logger.warning(
                 "LR del checkpoint (%g) prevalece sobre --lr (%g) para mantener el schedule",
@@ -2214,6 +2507,11 @@ def entrenar(
                 cfg["lr"],
             )
             cfg["lr"] = estado["config"]["lr"]
+        # Migracion de metricas: los checkpoints previos al fix de scoring
+        # (padding derecho) guardaron evals invalidos; se etiquetan como
+        # "bug_padding" y se reinician mejor_auc/sin_mejora para no comparar
+        # metricas incompatibles (el primer eval corregido define el mejor).
+        estado = migrar_metricas_scoring(estado, logger)
         total_steps = estado["total_steps"]
         pasos_por_epoca = estado["pasos_por_epoca"]
     historial = estado["historial"]
@@ -2272,6 +2570,7 @@ def entrenar(
                     "epoca": epoca,
                     "lr": float(lr),
                     "loss_train": float(loss_media),
+                    "scoring": "corregido",
                     **metricas,
                 }
                 historial.append(registro)
@@ -2404,7 +2703,7 @@ def entrenar(
         "entorno": versiones_entorno(),
         "hardware": {
             "gpu": torch.cuda.get_device_name(0),
-            "vram_total_gib": total / 1024**3,
+            "vram_total_gib": total_gib,
             "vram_pico_gib": vram_pico,
         },
         "entrenamiento": {
@@ -2415,6 +2714,7 @@ def entrenar(
             "mejor_auc": estado["mejor_auc"],
             "sin_mejora": estado["sin_mejora"],
             "total_steps_plan": total_steps,
+            "scoring": "corregido (padding izquierdo en evaluar; evals con etiqueta bug_padding en curvas son del scoring antiguo)",
         },
         "curvas": historial,
         "eval_final": metricas_finales,
@@ -2476,6 +2776,29 @@ def parsear_args() -> argparse.Namespace:
         action="store_true",
         help="mini-dataset en /tmp/opencode + 20 pasos (gate de VRAM/throughput)",
     )
+    parser.add_argument(
+        "--evaluar",
+        action="store_true",
+        help="evalua un adaptador guardado en val con la ruta de scoring corregida",
+    )
+    parser.add_argument(
+        "--adapter",
+        type=str,
+        default=None,
+        help="ruta del adaptador para --evaluar (default modelos/c2_lora/adapter_v1)",
+    )
+    parser.add_argument(
+        "--sin-adaptador",
+        action="store_true",
+        help="control de --evaluar: evalua el modelo base bf16 sin adaptador",
+    )
+    parser.add_argument("--max-items", type=int, default=None, help="tope de items de val en --evaluar")
+    parser.add_argument(
+        "--salida",
+        type=str,
+        default=None,
+        help="JSON de salida de --evaluar (default resultados/c2_lora/eval_interna_v1.json)",
+    )
     parser.add_argument("--forzar", action="store_true", help="permite reescribir salidas existentes")
     parser.add_argument("--reanudar", action="store_true", help="reanuda desde el ultimo checkpoint")
     parser.add_argument("--max-ejemplos", type=int, default=None, help="tope de ejemplos de train")
@@ -2494,11 +2817,15 @@ def parsear_args() -> argparse.Namespace:
     parser.add_argument("--eval-cada", type=int, default=None, help="eval periodica cada N pasos")
     parser.add_argument("--checkpoint-cada", type=int, default=None, help="checkpoint cada N pasos")
     args = parser.parse_args()
-    modos = [args.preparar_datos, args.entrenar, args.todo, args.smoke]
+    modos = [args.preparar_datos, args.entrenar, args.todo, args.smoke, args.evaluar]
     if sum(bool(m) for m in modos) != 1:
-        parser.error("se requiere exactamente un modo: --preparar-datos, --entrenar, --todo o --smoke")
+        parser.error(
+            "se requiere exactamente un modo: --preparar-datos, --entrenar, --todo, --smoke o --evaluar"
+        )
     if args.smoke and args.reanudar:
         parser.error("--smoke no admite --reanudar")
+    if args.evaluar and args.reanudar:
+        parser.error("--evaluar no admite --reanudar")
     return args
 
 
@@ -2546,6 +2873,10 @@ def resolver_config(args: argparse.Namespace) -> dict:
         cfg["max_horas"] = args.max_horas
     if args.max_pasos is not None:
         cfg["max_pasos"] = args.max_pasos
+    if args.max_items is not None and args.max_items < 1:
+        raise SystemExit("--max-items debe ser >= 1")
+    if args.evaluar and args.sin_adaptador and args.adapter is not None:
+        raise SystemExit("--evaluar admite --adapter o --sin-adaptador, no ambos")
     if args.smoke:
         base = CONFIG["smoke"]["dir_salida"]
         cfg["epocas"] = CONFIG["smoke"]["epocas"]
@@ -2571,7 +2902,7 @@ def resolver_config(args: argparse.Namespace) -> dict:
 
 
 def main() -> int:
-    """Punto de entrada: despacha los modos preparar-datos/entrenar/smoke.
+    """Punto de entrada: despacha los modos preparar-datos/entrenar/smoke/evaluar.
 
     Returns:
         Codigo de salida (0 si todo va bien).
@@ -2594,6 +2925,8 @@ def main() -> int:
         ids_ctx = ids_respuesta_contexto(tokenizer, cfg, logger)
         cfg["ids_respuesta"] = ids_ctx
         entrenar(cfg, rutas, tokenizer, args, logger)
+    if args.evaluar:
+        evaluar_adaptador(cfg, rutas, tokenizer, args, logger)
     logger.info("fin del script")
     return 0
 

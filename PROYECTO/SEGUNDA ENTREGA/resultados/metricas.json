@@ -6669,5 +6669,575 @@
    "modelos/b2_retriever/model.safetensors": "bb40f530d1d67166f1e839c1f5a68cd0"
   },
   "nota": "ep1 (modelos/b2_retriever) verificado sin cambios: mtime 2026-10-04 17:52, anterior al entrenamiento de ep2 (2026-10-05 04:59-05:07). Residuos del smoke del coder (vinculo_cp_benchmark_v14_smokev14.json, c3_b2_retriever_smokev14.json, figuras *_v14_smokev14.*) son evidencia de fontaneria, no del experimento; no se registran."
+ },
+ "c2_lora_eval": {
+  "experimento": "c2_lora_v1",
+  "nombre": "C2-LoRA: juicio binario punto a punto con bf16-LoRA r16 sobre ALIA-7B (20k pares B1); evaluacion en 3 niveles - adaptacion GO vs zero-shot, sin adopcion vs v13",
+  "fecha": "2026-10-05",
+  "tipo": "lora_sft_clasificacion_punto_a_punto",
+  "fase": "C2 (PLAN_c2_lora.md; rescate del C2 zero-shot negativo)",
+  "scripts": [
+   "scripts/33_c2_lora_train.py",
+   "scripts/34_c2_lora_eval.py"
+  ],
+  "modelo_base": "SINAI/ALIA-es-legal-administrative-7B-Instruct (modelos/alia_7b_instruct)",
+  "adapter_final": "modelos/c2_lora/adapter_v1",
+  "descripcion": "Fine-tuning bf16-LoRA (r=16, alpha=32, dropout=0,05, q/k/v/o) de ALIA-7B-Instruct para juicio binario punto a punto ('el fragmento cita el articulo N') con los pares B1: 20.000 ejemplos (10k/10k), split por documento identico a B1 (21.844/1.150 docs, semilla 42) y exclusion dura de las 90 sentencias del benchmark. Evaluacion en 3 niveles: (1) val de docs B1 (n=3000) contra base bf16 sin adaptador; (2) gold humano B3 (820 items, 50 casos) contra base y contra la referencia LLM zero-shot; (3) benchmark de 90 casos en la ruta v13 con rerank top-50 recomputado y pareado bootstrap 1000/42. Inferencia del juez por P('Si') en un forward (sin generar), fusionable/cascada con B1.",
+  "entrenamiento": {
+   "json_final": "resultados/c2_lora/entrenamiento_v1.json",
+   "config": {
+    "lora_r": 16,
+    "lora_alpha": 32,
+    "lora_dropout": 0.05,
+    "target_modules": [
+     "q_proj",
+     "k_proj",
+     "v_proj",
+     "o_proj"
+    ],
+    "lr": 0.0001,
+    "scheduler": "cosine + warmup 3% (min_lr 10%)",
+    "epocas": 1,
+    "max_seq": 512,
+    "precision": "bf16 (autocast, sin GradScaler)",
+    "batch": 1,
+    "grad_accum": 16,
+    "grad_clip": 1.0,
+    "semilla": 42
+   },
+   "dataset": {
+    "n_train": 20000,
+    "n_val": 3000,
+    "n_val_eval": 1000,
+    "split": "identico a B1 (por documento, semilla 42); exclusion dura de las 90 del benchmark",
+    "md5": {
+     "train": "ab0c50e5203ac8654a7d4229c6982168",
+     "val": "320e265e58a12ff6675ef169cca1b0af",
+     "val_eval": "dd37df7f210285436bf7fce028fb19f8"
+    }
+   },
+   "hardware": {
+    "gpu": "AMD Radeon RX 9070 XT",
+    "vram_pico_gib": 15.013400554656982
+   },
+   "resultado": {
+    "pasos": 1250,
+    "epocas_completadas": 1,
+    "parada": "completado",
+    "mejor_paso": 1250,
+    "mejor_auc": 0.848382,
+    "eval_final_val_n3000": {
+     "loss": 0.24219145932793618,
+     "acc": 0.767,
+     "f1_si": 0.7667667667667668,
+     "f1_macro": 0.766999766999767,
+     "auc": 0.8461482222222222,
+     "matriz": [
+      [
+       1152,
+       348
+      ],
+      [
+       351,
+       1149
+      ]
+     ],
+     "n": 3000
+    },
+    "nota_parada": "early stopping configurado (patience 4, eval cada 250 pasos); 1 epoca completada sin activacion real"
+   },
+   "decision_overfitting": "early_stopping",
+   "tiempos": {
+    "segundos": 913.8958143130003,
+    "horas": 0.25385994842027787,
+    "tokens_procesados": 5778894,
+    "tokens_por_segundo": 6323.36192976674
+   },
+   "incidente_falso_stop": {
+    "json": "resultados/c2_lora/entrenamiento_v1_falso_stop.json",
+    "descripcion": "El run se auto-detuvo en el paso 1000 por un falso positivo de la eval interna (bug de padding derecho: solo la fila mas larga del lote se puntuaba bien); parada 'diagnostico_auc_baja' con mejor_paso 500 y mejor_auc 0.476526; curvas 250-1000 etiquetadas 'bug_padding'.",
+    "correccion": "Padding izquierdo + guardas en la eval interna; verificado con evaluador independiente; reanudado con --reanudar hasta completar los 1250 pasos (mejor AUC val 0,8484 en el paso 1250)."
+   }
+  },
+  "nivel1_val_docs_b1": {
+   "fuente": "resultados/c2_lora/eval_c2_lora_v1.json (nivel1)",
+   "split": "val.parquet (docs de B1)",
+   "n": 3000,
+   "lora": {
+    "acc": 0.7686666666666667,
+    "f1_si": 0.7683578104138852,
+    "f1_macro": 0.7686662554066763,
+    "auc": 0.8466291111111112
+   },
+   "base_bf16": {
+    "acc": 0.5033333333333333,
+    "f1_si": 0.013245033112582781,
+    "f1_macro": 0.34069824038702634,
+    "auc": 0.6465948888888889
+   },
+   "pareado_lora_vs_base": {
+    "acc": {
+     "media_delta": 0.2651,
+     "ic95": [
+      0.2411,
+      0.29
+     ],
+     "prob_mejora": 1.0
+    },
+    "auc": {
+     "media_delta": 0.2004,
+     "ic95": [
+      0.1801,
+      0.2216
+     ],
+     "prob_mejora": 1.0
+    }
+   },
+   "criterios_s2": {
+    "umbrales": {
+     "acc": 0.78,
+     "auc": 0.85,
+     "delta_acc_vs_base": 0.15
+    },
+    "cumple": {
+     "acc": false,
+     "auc": false,
+     "delta_acc_vs_base": true
+    },
+    "resultado": "NO_CUMPLE",
+    "nota": "near-miss: acc 0,7687 vs 0,78 y AUC 0,8466 vs 0,85; el criterio de adaptacion (delta_acc >= 0,15) SI se cumple"
+   },
+   "anti_leakage": {
+    "docs_val_en_benchmark": 0
+   }
+  },
+  "nivel2_gold_humano_b3": {
+   "fuente": "resultados/c2_lora/eval_c2_lora_v1.json (nivel2)",
+   "n_items": 820,
+   "n_casos": 50,
+   "lora": {
+    "auc_ge1": 0.65416847406979,
+    "auc_grado2": 0.670205183675865,
+    "spearman": 0.2972671228086956,
+    "acc_binaria_0_5": 0.6024390243902439,
+    "f1_binaria_0_5": 0.6597077244258872,
+    "ndcg_at_10_graduado": {
+     "n": 50,
+     "media": 0.7630349332472854,
+     "p2_5": 0.7235929624044023,
+     "p97_5": 0.8018707919246228
+    }
+   },
+   "base_bf16": {
+    "auc_ge1": 0.5969430788509735,
+    "spearman": 0.20031904993231378
+   },
+   "pareado_lora_vs_base": {
+    "auc_ge1": {
+     "media_delta": 0.0581,
+     "ic95": [
+      0.0051,
+      0.1155
+     ],
+     "prob_mejora": 0.981
+    },
+    "spearman": {
+     "media_delta": 0.0975,
+     "ic95": [
+      0.008,
+      0.1934
+     ],
+     "prob_mejora": 0.984
+    }
+   },
+   "referencia_llm_zero_shot": {
+    "auc_ge1": 0.7272086466165414,
+    "spearman": 0.5146986177589317,
+    "md5": "e5d7088fd4383e87dcd78c82ea7672dd"
+   },
+   "criterios_s3": {
+    "umbrales": {
+     "auc_ge1": 0.75,
+     "spearman": 0.3,
+     "delta_auc_vs_base": 0.1
+    },
+    "cumple": {
+     "auc_ge1": false,
+     "spearman": false,
+     "delta_auc_vs_base": false
+    },
+    "resultado": "NO_CUMPLE"
+   },
+   "caveat_prompt": {
+    "n_ajustados": 717,
+    "max_chars_fragmento": 1500,
+    "max_chars_pasaje": 800,
+    "nota": "717/820 prompts re-renderizados por presupuesto (fragmento 1500 chars vs <=600 del train) -> evaluacion parcialmente OOD"
+   }
+  },
+  "nivel3_benchmark_90": {
+   "benchmark": {
+    "archivo": "/home/carlos/Git/PLN/PROYECTO/SEGUNDA ENTREGA/resultados/vinculo_cp_benchmark_v13.json",
+    "md5": "edd69ee5d122910495467884de6fd47e",
+    "variante": "v13",
+    "version": "v13-ciclo3-sprintB2",
+    "n_casos": 90,
+    "estrategia": "hibrido_b2_rerank_chunks_top50_b1",
+    "contexto": "con_hubs",
+    "alpha_hubs": 1.5
+   },
+   "fallback_top10": {
+    "fuente": "resultados/c2_lora/eval_c2_lora_v1.json (nivel3)",
+    "limitacion": "Los JSON del benchmark (v13/v14_ep2) solo guardan el top-10 por estrategia (top10_por_caso) y las metricas por caso congeladas; el top-50 de la primera etapa NO es reconstruible desde los artefactos guardados. La ruta por defecto reordena el top-10 con pares (chunk, pasaje) reconstruidos por la maquinaria BM25 del script 12 (identicos a la inferencia B1): mide capacidad de reordenar, no de recuperar articulos fuera del top-10. El top-50 completo (c2_lora_top50, cascada B1 top-20 y fusion sobre 50 candidatos) requiere --recomputar-top50 (GPU: B2 + reranker B1).",
+    "c2_lora_top10": {
+     "ndcg_at_10": 0.6770059777777777,
+     "ic95": [
+      0.6403830927777777,
+      0.7124055311111109
+     ],
+     "n": 90
+    },
+    "vs_v13": {
+     "media_delta": -0.01367915555555555,
+     "ic95": [
+      -0.0227636061111111,
+      -0.0043156197222222175
+     ],
+     "prob_mejora": 0.001,
+     "gana": false,
+     "n": 90
+    },
+    "vs_base_bf16": {
+     "media_delta": -0.002442055555555552,
+     "ic95": [
+      -0.012372363611111114,
+      0.007200059722222221
+     ],
+     "prob_mejora": 0.308,
+     "gana": false,
+     "n": 90
+    },
+    "fusion_b1_a0.5": {
+     "ndcg_at_10": 0.6855460000000001,
+     "ic95": [
+      0.6502129483333333,
+      0.7210640130555555
+     ],
+     "n": 90
+    },
+    "fusion_b1_a0.5_vs_v13": {
+     "media_delta": -0.0051391333333333355,
+     "ic95": [
+      -0.01538699388888889,
+      0.005022029999999992
+     ],
+     "prob_mejora": 0.149,
+     "gana": false,
+     "n": 90
+    },
+    "adopcion": "NO_ADOPCION",
+    "nota": "Corrida inicial limitada al top-10 guardado por el benchmark; el recomputo top-50 es el definitivo."
+   },
+   "definitivo_top50": {
+    "fuente": "resultados/c2_lora/eval_c2_lora_v1_top50.json (nivel 3 recomputado con top-50)",
+    "rutas": {
+     "c2_lora_top50": {
+      "ndcg_at_10": 0.6842232111111111,
+      "ic95": [
+       0.6479394766666667,
+       0.719047311388889
+      ],
+      "n": 90
+     },
+     "c2_lora_cascada_b1_top20": {
+      "ndcg_at_10": 0.6862456333333333,
+      "ic95": [
+       0.6499689063888889,
+       0.7198695924999998
+      ],
+      "n": 90
+     },
+     "base_bf16_top50": {
+      "ndcg_at_10": 0.6324635444444444,
+      "ic95": [
+       0.5943583083333333,
+       0.6669784672222222
+      ],
+      "n": 90
+     },
+     "v13_recalculado": {
+      "ndcg_at_10": 0.6906851333333334,
+      "ic95": [
+       0.6542130069444443,
+       0.7245379233333333
+      ],
+      "n": 90
+     },
+     "fusion_b1_a0.25": {
+      "ndcg_at_10": 0.6909061444444444,
+      "ic95": [
+       0.6538705388888888,
+       0.7260355933333335
+      ],
+      "n": 90
+     },
+     "fusion_b1_a0.5": {
+      "ndcg_at_10": 0.6921669888888888,
+      "ic95": [
+       0.6549156980555556,
+       0.7269652097222222
+      ],
+      "n": 90
+     },
+     "fusion_b1_a0.75": {
+      "ndcg_at_10": 0.692299211111111,
+      "ic95": [
+       0.6563889224999999,
+       0.7258771949999999
+      ],
+      "n": 90
+     }
+    },
+    "pareado": {
+     "top50_vs_v13": {
+      "media_delta": -0.0064619222222222225,
+      "ic95": [
+       -0.016025338888888883,
+       0.0030538316666666615
+      ],
+      "prob_mejora": 0.089,
+      "gana": false,
+      "n": 90
+     },
+     "top50_vs_base_bf16": {
+      "media_delta": 0.05175966666666666,
+      "ic95": [
+       0.03318011916666667,
+       0.07082599
+      ],
+      "prob_mejora": 1.0,
+      "gana": true,
+      "n": 90
+     },
+     "top50_vs_c2_zero_shot": {
+      "media_delta": 0.21092395555555557,
+      "ic95": [
+       0.1695961761111111,
+       0.25204876944444443
+      ],
+      "prob_mejora": 1.0,
+      "gana": true,
+      "n": 90
+     },
+     "cascada_b1_top20_vs_v13": {
+      "media_delta": -0.004439499999999999,
+      "ic95": [
+       -0.012724200277777788,
+       0.0033996858333333437
+      ],
+      "prob_mejora": 0.16,
+      "gana": false,
+      "n": 90
+     },
+     "fusion_b1_a0.25_vs_v13": {
+      "media_delta": 0.0002210111111111141,
+      "ic95": [
+       -0.008222835000000001,
+       0.008490791111111118
+      ],
+      "prob_mejora": 0.548,
+      "gana": false,
+      "n": 90
+     },
+     "fusion_b1_a0.5_vs_v13": {
+      "media_delta": 0.0014818555555555582,
+      "ic95": [
+       -0.005675120277777772,
+       0.00837290611111111
+      ],
+      "prob_mejora": 0.683,
+      "gana": false,
+      "n": 90
+     },
+     "fusion_b1_a0.75_vs_v13": {
+      "media_delta": 0.0016140777777777775,
+      "ic95": [
+       -0.0023529213888888838,
+       0.006229301666666662
+      ],
+      "prob_mejora": 0.752,
+      "gana": false,
+      "n": 90
+     }
+    },
+    "consistencia_v13_recalculado": {
+     "disponible": true,
+     "consistente": true,
+     "max_abs_diff": 0.0,
+     "tolerancia": 0.001
+    },
+    "adopcion": {
+     "c2_lora_cascada_b1_top20": {
+      "resultado": "NO_ADOPCION",
+      "p95_seg": 18.24,
+      "cumple": {
+       "delta_ndcg_vs_v13": false,
+       "ab_consistente": false,
+       "gate_p95": true
+      },
+      "delta_vs_v13": {
+       "media_delta": -0.004439499999999999,
+       "ic95": [
+        -0.012724200277777788,
+        0.0033996858333333437
+       ],
+       "prob_mejora": 0.16
+      }
+     },
+     "c2_lora_fusion_b1_a0.25": {
+      "resultado": "NO_ADOPCION",
+      "p95_seg": 45.6,
+      "cumple": {
+       "delta_ndcg_vs_v13": false,
+       "ab_consistente": false,
+       "gate_p95": false
+      },
+      "delta_vs_v13": {
+       "media_delta": 0.0002210111111111141,
+       "ic95": [
+        -0.008222835000000001,
+        0.008490791111111118
+       ],
+       "prob_mejora": 0.548
+      }
+     },
+     "c2_lora_fusion_b1_a0.5": {
+      "resultado": "NO_ADOPCION",
+      "p95_seg": 45.6,
+      "cumple": {
+       "delta_ndcg_vs_v13": false,
+       "ab_consistente": false,
+       "gate_p95": false
+      },
+      "delta_vs_v13": {
+       "media_delta": 0.0014818555555555582,
+       "ic95": [
+        -0.005675120277777772,
+        0.00837290611111111
+       ],
+       "prob_mejora": 0.683
+      }
+     },
+     "c2_lora_fusion_b1_a0.75": {
+      "resultado": "NO_ADOPCION",
+      "p95_seg": 45.6,
+      "cumple": {
+       "delta_ndcg_vs_v13": false,
+       "ab_consistente": false,
+       "gate_p95": false
+      },
+      "delta_vs_v13": {
+       "media_delta": 0.0016140777777777775,
+       "ic95": [
+        -0.0023529213888888838,
+        0.006229301666666662
+       ],
+       "prob_mejora": 0.752
+      }
+     }
+    },
+    "gate_p95_seg": 30.0,
+    "nota_adopcion": "NO_ADOPCION en todas las variantes: top50/cascada por debajo de v13 con IC95 que cruza 0; fusiones +0,0002/+0,0015/+0,0016 ns (prob 0,548/0,683/0,752) y p95 45,6 s > gate 30 s."
+   },
+   "criterios_s4": {
+    "umbrales": {
+     "delta_ndcg_vs_base": 0.05,
+     "delta_ndcg_adopcion_vs_v13": 0.01,
+     "delta_gold_ndcg_vs_v13_min": -0.005,
+     "gate_p95_seg": 30.0
+    },
+    "adaptacion_funciona": true,
+    "resultado_adaptacion": "GO",
+    "delta_ndcg_vs_base_bf16": {
+     "media_delta": 0.05175966666666666,
+     "ic95": [
+      0.03318011916666667,
+      0.07082599
+     ],
+     "prob_mejora": 1.0,
+     "gana": true,
+     "n": 90
+    }
+   }
+  },
+  "criterios": {
+   "nivel1": {
+    "umbrales": {
+     "acc": 0.78,
+     "auc": 0.85,
+     "delta_acc_vs_base": 0.15
+    },
+    "cumple": {
+     "acc": false,
+     "auc": false,
+     "delta_acc_vs_base": true
+    },
+    "resultado": "NO_CUMPLE"
+   },
+   "nivel2": {
+    "umbrales": {
+     "auc_ge1": 0.75,
+     "spearman": 0.3,
+     "delta_auc_vs_base": 0.1
+    },
+    "cumple": {
+     "auc_ge1": false,
+     "spearman": false,
+     "delta_auc_vs_base": false
+    },
+    "resultado": "NO_CUMPLE"
+   },
+   "nivel3": {
+    "adaptacion": {
+     "umbral": 0.05,
+     "delta": 0.05175966666666666,
+     "resultado": "GO"
+    },
+    "adopcion": {
+     "resultado": "NO_ADOPCION",
+     "detalle": "ninguna variante supera a v13 con IC95; fusiones p95 45,6 s > gate 30 s"
+    }
+   },
+   "nota": "La corrida fallback top-10 (eval_c2_lora_v1.json) marcaba STOP en nivel3 por limitacion de artefactos (el benchmark solo guarda top-10); el recomputo top-50 definitivo (eval_c2_lora_v1_top50.json) establece adaptacion GO."
+  },
+  "veredicto": "Adaptacion GO vs zero-shot (delta nDCG@10 vs base bf16 +0,0518 >= +0,05; vs rerank zero-shot C2 +0,2109); NO_ADOPCION vs v13 (ninguna variante supera a v13 con IC95; fusiones +0,0002/+0,0015/+0,0016 ns y p95 45,6 s > gate 30 s); el frente LLM C2 queda cerrado y el producto conserva B2+B1 (v2.2). Decision registrada en ADR-21.",
+  "artefactos": [
+   "resultados/c2_lora/entrenamiento_v1.json",
+   "resultados/c2_lora/entrenamiento_v1_falso_stop.json",
+   "resultados/c2_lora/eval_c2_lora_v1.json",
+   "resultados/c2_lora/eval_c2_lora_v1_top50.json",
+   "resultados/c2_lora/candidatos_top50_v1.pkl",
+   "modelos/c2_lora/adapter_v1/adapter_config.json",
+   "modelos/c2_lora/adapter_v1/adapter_model.safetensors",
+   "modelos/c2_lora/adapter_v1/mejor.json",
+   "scripts/33_c2_lora_train.py",
+   "scripts/34_c2_lora_eval.py",
+   "plan/PLAN_c2_lora.md",
+   "plan/decisiones/ADR-20_c2_lora_juicio_punto.md"
+  ],
+  "md5": {
+   "resultados/c2_lora/entrenamiento_v1.json": "9446e2dbd9c35cbe16118eb073b57f3f",
+   "resultados/c2_lora/entrenamiento_v1_falso_stop.json": "ff8ec188373fcd6fcb706fe6c119c5d8",
+   "resultados/c2_lora/eval_c2_lora_v1.json": "33242ea4234a4878ceb83ed90b5e9017",
+   "resultados/c2_lora/eval_c2_lora_v1_top50.json": "fbe2b1156b8a5b347265076a0d3a7262",
+   "resultados/c2_lora/candidatos_top50_v1.pkl": "5bd13199b2ee7ff0e725df56cd2d1987",
+   "modelos/c2_lora/adapter_v1/adapter_config.json": "3f1a5af76d754984669ca959e4a4a8a2",
+   "modelos/c2_lora/adapter_v1/adapter_model.safetensors": "ce11b234b6273220738f3b9fae4d279d",
+   "modelos/c2_lora/adapter_v1/mejor.json": "af328f6af38ccf14166ce9d0dc5776de",
+   "scripts/33_c2_lora_train.py": "f6a605f18239a10f8708337e4114d3bb",
+   "scripts/34_c2_lora_eval.py": "bd645cd2c18403a9ad359993b87a1110",
+   "plan/PLAN_c2_lora.md": "2f125d18db805a2b56f6767168857716",
+   "plan/decisiones/ADR-20_c2_lora_juicio_punto.md": "cfd148ca9e8568d0766d52146789d419"
+  }
  }
 }

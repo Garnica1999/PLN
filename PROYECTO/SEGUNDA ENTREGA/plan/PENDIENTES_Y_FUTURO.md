@@ -13,9 +13,9 @@ estado: `plan/ESTADO_Y_PENDIENTES.md` + `plan/REGISTRO_EXPERIMENTOS.md` + `resul
 
 ## B. Trabajo futuro técnico (documentado para retomar sin contexto)
 
-> Estado 2026-10-05: ítem 1 (LoRA C2) en curso e ítem 2 (2ª época B2) hecho sin adopción; el ítem 4 queda desaconsejado por ADR-19; quedan B4 y la unificación C3 como opcionales; el resto quedó ejecutado o documentado en esta misma lista.
+> Estado 2026-10-05: ítems 1 (LoRA C2) y 2 (2ª época B2) hechos, ambos **sin adopción**; el ítem 4 queda desaconsejado por ADR-19; quedan B4 y la unificación C3 como opcionales; el resto quedó ejecutado o documentado en esta misma lista.
 
-1. **C2-LoRA — EN CURSO 2026-10-05**: spec `plan/PLAN_c2_lora.md` + ADR-20 (juicio punto a punto "¿cita el fragmento el artículo N?" Sí/No); ALIA-7B descargado (`modelos/alia_7b_instruct`); `scripts/33_c2_lora_train.py` + dataset (`data/c2_lora/sft_v1/`, 20k/3k/1k, balance 50/50, sin leakage); el smoke ajusta la escalera de VRAM (bf16 all-linear no cabe en 16 GB → `--max-seq 512 --target-modules q_proj,k_proj,v_proj,o_proj`); entrenamiento pendiente de lanzar.
+1. **C2-LoRA — HECHO 2026-10-05 (sin adopción)**: spec `plan/PLAN_c2_lora.md` + ADR-20; entrenado (r16/α32/qkvo, 1 época, 20k pares; VRAM pico 15,0 GiB) y evaluado en 3 niveles (`metricas.json c2_lora_eval`): juicio punto a punto **AUC 0,847 vs base 0,647** (Δacc +0,265); rerank top-50 0,6842 vs v13 0,6907 (Δ −0,0065 ns) y **+0,0518 vs base** (criterio de adaptación GO); fusiones empatan (ns) con p95 45,6 s → **NO_ADOPCIÓN** (ADR-21); incidente del falso stop por bug de padding corregido y reanudado.
 2. **2ª época de B2 — HECHA 2026-10-05 (sin adopción)**: entrenada con `--variante ep2`/`--inicializar-desde` (lr 1e-5 desde ep1); val marginal (+0,0007 acc) y benchmark v14 **sin mejora significativa** (Δ nDCG@10 +0,0013 ns sin hubs / −0,0067 ns con hubs) → **ep1 se mantiene**. El script 12 gana `--b2-variante` (v14) para futuras variantes del retriever.
 3. **B4** — BETO chunk-mean++ (más épocas / max_chunks 96): opcional del plan v3; probable
    retorno bajo (BETO sigue por debajo de LogReg en M4).
