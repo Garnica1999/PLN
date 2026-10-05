@@ -9,7 +9,9 @@ estado: `plan/ESTADO_Y_PENDIENTES.md` + `plan/REGISTRO_EXPERIMENTOS.md` + `resul
 |---|---|---|---|
 | **B3 mini-gold (M7) — COMPLETADO 2026-10-05** | Carlos anotó **820/820** decisiones (50 casos) | Gate humano **CONFIRMA v2.2**: B2 0,7852 [0,745;0,826] vs B1 0,6903, Δ +0,0948 IC>0; kappa carlos|llm 0,345 | Resultados: `metricas.json b3_gold_humano` + `resultados/gold_mini/` (respaldos LLM-only en `backup/`) |
 | **O1 (M4) — COMPLETADO 2026-10-05** | Carlos anotó **200/200** docs (modo lote ciego) | **El silver NO es fiable**: acuerdo humano–silver 23,5 % (κ 0,15); proxies LLM 41,5 %/29,9 %; ADR-19 | Resultados: `metricas.json o1_validacion_humana` + `resultados/validacion_m4/` (respaldo solo-LLM en `backup/`) |
-| **C1 gold estándar (M7) — PACK LISTO 2026-10-05** | `resultados/gold_150/` (150 casos: 40 benchmark restantes + 110 C3 2022-2026; 2.740 candidatos) | Anotar cuando quieras (modo lote; guía propia; todos los casos sin contaminación para B1/B2) | `scripts/16_anotador_gold.py --anotar --pack gold_150 --anotador carlos` |
+| **C1 gold estándar (M7) — PENDIENTE DE ANOTACIÓN** (pack listo 2026-10-05) | `resultados/gold_150/` (150 casos: 40 benchmark restantes + 110 C3 2022-2026; 2.740 candidatos) | Anotar en modo lote (guía propia; todos los casos sin contaminación para B1/B2) | `scripts/16_anotador_gold.py --anotar --pack gold_150 --anotador carlos` |
+
+**Única anotación humana pendiente: C1** (150 casos, `--pack gold_150`). B3 y O1 quedaron completados (2026-10-05).
 
 ## B. Trabajo futuro técnico (documentado para retomar sin contexto)
 
