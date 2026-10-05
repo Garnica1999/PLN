@@ -44,8 +44,11 @@ estado: `plan/ESTADO_Y_PENDIENTES.md` + `plan/REGISTRO_EXPERIMENTOS.md` + `resul
   README (sección 10) y comparativa v1→v2→v3; producto v2.2 consolidado (ADR-18, QA GO).
 - **Gate B3 humano COMPLETADO**: Carlos anotó 820/820; confirma v2.2 (B2 0,7852 vs B1
   0,6903; Δ +0,0948 IC>0); adenda del informe añadida.
-- Git: commit local del ciclo v3 en rama `feature/e2-ciclo-v3` (push/PR pendiente de
-  credenciales; git solo bajo pedido); herramienta 16 con lotes (sin commitear).
+- Git: commits locales + **push + PR #33** en `feature/e2-ciclo-v3` → `main`
+  (https://github.com/Garnica1999/PLN/pull/33; merge pendiente de Carlos); herramienta 16
+  con lotes + demo + gate B3 incluidos.
+- **Zip de entrega v3**: `PROYECTO/juris_pln_e2_entrega_v3.zip` (39,5 MB, 267 entradas;
+  espejo del v2 + artefactos v3; excluye data/, modelos B1/B2, npz y lematización).
 - Reindex de codebase-memory hecho tras el commit.
 
 ## D. Criterios para retomar (reglas vigentes)

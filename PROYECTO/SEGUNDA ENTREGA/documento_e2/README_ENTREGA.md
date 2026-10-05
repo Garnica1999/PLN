@@ -211,7 +211,7 @@ python scripts/checks_qa_final_v3.py
 ```
 
 - Trazabilidad: `plan/REGISTRO_EXPERIMENTOS.md` y `resultados/metricas.json` (secciones `ciclo_v3`, `b1_reranker`, `b2_retriever`, `b3_gold_llm`, `b3_check_llm`, `c2_query_llm`, `c2_rerank_llm`, `c3_deriva_temporal`, `qa_v2_2`, `o1_validacion_llm_multi`, `auditoria_etiquetas_m4`, `h1_ruido_m4`, `h2_objetivo_suave`, `h2b_postproceso`); decisiones en ADR-17 y ADR-18.
-- La v2 permanece congelada (ADR-11/16): los artefactos v3 usan sufijos (`_v9+`, `c3_*`) y el zip de entrega se regenera en el cierre documental (C5).
+- La v2 permanece congelada (ADR-11/16): los artefactos v3 usan sufijos (`_v9+`, `c3_*`) y el zip de entrega del cierre (C5) es `PROYECTO/juris_pln_e2_entrega_v3.zip` (267 entradas; espejo del v2 + artefactos v3).
 
 ## 11. Demo interactiva (Streamlit)
 
