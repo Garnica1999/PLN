@@ -46,7 +46,7 @@ de los experimentos B1/B2.
 
 ## 5. Pasos
 
-1. (Pre) Carlos anota B3 → `16_anotador_gold.py --evaluar` → informe de gate.
+1. (Pre) **HECHO 2026-10-05**: Carlos anotó B3 (820/820, 50 casos) → gate humano CONFIRMA v2.2 (B2 0,7852 vs B1 0,6903; Δ +0,0948 IC>0).
 2. Decisión de adopción (Carlos + evidencia).
 3. ml-coder integra → ml-reviewer revisa → ml-qa-engineer ejecuta QA v2.2 + latencias.
 4. Nuevo ADR de adopción; actualizar README/deck/documentación; registrar en

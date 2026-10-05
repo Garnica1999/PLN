@@ -1169,6 +1169,13 @@ candidato pendiente para otra sesion; s salta el caso completo (queda
 pendiente); q guarda y sale; ? muestra la ayuda. Al reanudar, los candidatos ya
 calificados se muestran marcados y no se vuelven a preguntar.
 
+Cada linea de captura muestra el numero de articulo (por ejemplo
+`[ 6/19] art. 13 | grado ...`) para seguir la lista sin subir. Tambien se puede
+calificar de corrido con un lote: escriba varios grados separados por espacios
+(por ejemplo `0 2 0 0 0 - 1`) y se aplican, en orden, a los candidatos
+pendientes tal como aparecen en pantalla; `-` deja ese candidato pendiente. El
+lote se valida completo: si algun token no es 2, 1, 0 o -, no se aplica nada.
+
 ## 7. Duplicados
 
 La lista de candidatos ya esta deduplicada por numero de articulo y ordenada.
@@ -1282,28 +1289,48 @@ def caso_completo(caso: dict, candidatos_por_id: dict[str, list[dict]], grados: 
     return bool(lista) and all((str(caso["id"]), candidato["articulo"]) in grados for candidato in lista)
 
 
-def interpretar_grado(entrada: str) -> tuple[str, int | None, str | None]:
-    """Interpreta la respuesta de grado del anotador.
+def interpretar_grado(entrada: str) -> tuple[str, int | list[int | None] | None, str | None]:
+    """Interpreta la respuesta de grado del anotador (un grado o un lote).
+
+    Un lote es una secuencia de grados separados por espacios o comas que se
+    aplica, en orden, a los candidatos pendientes tal como aparecen en
+    pantalla; dentro de un lote, "-" deja el candidato pendiente sin calificar.
 
     Args:
         entrada: Texto crudo del usuario.
 
     Returns:
-        Tupla (accion, valor, mensaje) con accion en grado | pendiente |
-        saltar | salir | ayuda | reintentar.
+        Tupla (accion, valor, mensaje) con accion en grado | lote | pendiente |
+        saltar | salir | ayuda | reintentar. Para accion lote, valor es la lista
+        de grados (int) y pendientes (None) en el orden escrito.
     """
-    texto = " ".join(entrada.strip().lower().split())
+    texto = " ".join(entrada.replace(",", " ").strip().lower().split())
     if texto == "":
         return "pendiente", None, None
     if texto in ("2", "1", "0"):
         return "grado", int(texto), None
+    if texto == "-":
+        return "pendiente", None, None
     if texto in ("s", "saltar", "skip"):
         return "saltar", None, None
     if texto in ("q", "salir", "quit"):
         return "salir", None, None
     if texto in ("?", "ayuda", "help", "menu"):
         return "ayuda", None, None
-    return "reintentar", None, f"entrada no reconocida: {entrada!r} (use 2, 1, 0, Enter, s, q o ?)"
+    tokens = texto.split()
+    if len(tokens) > 1:
+        invalidos = [token for token in tokens if token not in ("2", "1", "0", "-")]
+        if invalidos:
+            return (
+                "reintentar",
+                None,
+                (
+                    f"lote no valido: {', '.join(invalidos)} (use grados 2/1/0 y '-' para "
+                    "pendiente, separados por espacios)"
+                ),
+            )
+        return "lote", [None if token == "-" else int(token) for token in tokens], None
+    return "reintentar", None, f"entrada no reconocida: {entrada!r} (use 2, 1, 0, -, Enter, s, q o ?)"
 
 
 def imprimir_ayuda_grado() -> None:
@@ -1313,6 +1340,9 @@ def imprimir_ayuda_grado() -> None:
     print("  1  mencionado  (aparece o se relaciona tangencialmente, sin ser base)")
     print("  0  no relevante (sin relacion con lo que la sentencia decide)")
     print("  Enter = pendiente | s = saltar caso | q = guardar y salir | ? = ayuda")
+    print("  lote = varios grados separados por espacios (p. ej. 0 2 0 0 - 1); se aplican")
+    print("         a los candidatos pendientes en el orden en que aparecen en pantalla;")
+    print("         '-' deja ese candidato pendiente")
 
 
 def imprimir_caso(
@@ -1376,8 +1406,54 @@ def imprimir_resumen_caso(caso: dict, candidatos: list[dict], grados: dict[tuple
     )
 
 
+def registrar_grado(
+    ruta_respuestas: Path,
+    grados: dict[tuple[str, str], dict],
+    anotador: str,
+    caso_id: str,
+    candidato: dict,
+    nota: int,
+    t_inicio: float,
+    logger: logging.Logger,
+    total_candidatos: int,
+) -> None:
+    """Escribe un grado nuevo en el JSONL de respuestas y lo agrega a memoria.
+
+    Args:
+        ruta_respuestas: Ruta del JSONL del anotador.
+        grados: Grados actuales (se actualiza en sitio).
+        anotador: Nombre normalizado del anotador.
+        caso_id: Id del caso.
+        candidato: Candidato calificado (dict del pack).
+        nota: Grado 0, 1 o 2.
+        t_inicio: Marca de tiempo del inicio de la respuesta.
+        logger: Logger activo.
+        total_candidatos: Total de candidatos de la muestra (para el log).
+    """
+    registro = {
+        "anotador": anotador,
+        "id": caso_id,
+        "indice_candidato": int(candidato["indice"]),
+        "articulo": candidato["articulo"],
+        "nota_grado": int(nota),
+        "fecha": ahora_iso(),
+        "tiempo_seg": round(time.perf_counter() - t_inicio, 1),
+    }
+    escribir_jsonl_append(ruta_respuestas, registro)
+    grados[(caso_id, candidato["articulo"])] = registro
+    logger.info(
+        "[%d/%d] caso %s | art. %s -> %d | %.1f s",
+        len(grados),
+        total_candidatos,
+        caso_id,
+        candidato["articulo"],
+        int(nota),
+        time.perf_counter() - t_inicio,
+    )
+
+
 def modo_anotar(nombre: str, logger: logging.Logger, rutas: dict) -> None:
-    """Recorrido interactivo reanudable de anotacion graduada.
+    """Recorrido interactivo reanudable de anotacion graduada (grado individual o lote).
 
     Args:
         nombre: Nombre del anotador (se normaliza para el archivo).
@@ -1415,15 +1491,19 @@ def modo_anotar(nombre: str, logger: logging.Logger, rutas: dict) -> None:
             candidatos = candidatos_por_id.get(str(caso["id"]), [])
             imprimir_caso(caso, candidatos, grados, posicion, len(pendientes))
             saltar_caso = False
-            for candidato in candidatos:
-                clave = (str(caso["id"]), candidato["articulo"])
-                if clave in grados:
-                    continue
+            candidatos_pendientes = [
+                candidato
+                for candidato in candidatos
+                if (str(caso["id"]), candidato["articulo"]) not in grados
+            ]
+            posicion_candidato = 0
+            while posicion_candidato < len(candidatos_pendientes):
+                candidato = candidatos_pendientes[posicion_candidato]
                 t_candidato = time.perf_counter()
                 while True:
                     entrada = input(
-                        f"  [{candidato['indice']:2d}/{len(candidatos)}] grado "
-                        "(2/1/0, Enter=pendiente, s=saltar caso, q=salir, ?=ayuda): "
+                        f"  [{candidato['indice']:2d}/{len(candidatos)}] art. {candidato['articulo']} | "
+                        "grado (2/1/0, lote '2 1 0 ...', Enter=pendiente, s=saltar caso, q=salir, ?=ayuda): "
                     )
                     accion, valor, mensaje = interpretar_grado(entrada)
                     if mensaje:
@@ -1433,6 +1513,12 @@ def modo_anotar(nombre: str, logger: logging.Logger, rutas: dict) -> None:
                         continue
                     if accion == "reintentar":
                         continue
+                    if accion == "lote" and len(valor) > len(candidatos_pendientes) - posicion_candidato:
+                        print(
+                            f"  lote de {len(valor)} grados, pero solo quedan "
+                            f"{len(candidatos_pendientes) - posicion_candidato} candidatos pendientes"
+                        )
+                        continue
                     break
                 if accion == "salir":
                     salir = True
@@ -1440,29 +1526,41 @@ def modo_anotar(nombre: str, logger: logging.Logger, rutas: dict) -> None:
                 if accion == "saltar":
                     saltar_caso = True
                     break
-                if accion == "pendiente":
+                if accion == "lote":
+                    for desplazamiento, nota in enumerate(valor):
+                        objetivo = candidatos_pendientes[posicion_candidato + desplazamiento]
+                        if nota is None:
+                            continue
+                        registrar_grado(
+                            ruta_respuestas,
+                            grados,
+                            anotador,
+                            str(caso["id"]),
+                            objetivo,
+                            int(nota),
+                            t_candidato,
+                            logger,
+                            total_candidatos,
+                        )
+                        nuevos += 1
+                    posicion_candidato += len(valor)
                     continue
-                registro = {
-                    "anotador": anotador,
-                    "id": str(caso["id"]),
-                    "indice_candidato": int(candidato["indice"]),
-                    "articulo": candidato["articulo"],
-                    "nota_grado": int(valor),
-                    "fecha": ahora_iso(),
-                    "tiempo_seg": round(time.perf_counter() - t_candidato, 1),
-                }
-                escribir_jsonl_append(ruta_respuestas, registro)
-                grados[clave] = registro
-                nuevos += 1
-                logger.info(
-                    "[%d/%d] caso %s | art. %s -> %d | %.1f s",
-                    len(grados),
-                    total_candidatos,
-                    caso["id"],
-                    candidato["articulo"],
+                if accion == "pendiente":
+                    posicion_candidato += 1
+                    continue
+                registrar_grado(
+                    ruta_respuestas,
+                    grados,
+                    anotador,
+                    str(caso["id"]),
+                    candidato,
                     int(valor),
-                    time.perf_counter() - t_candidato,
+                    t_candidato,
+                    logger,
+                    total_candidatos,
                 )
+                nuevos += 1
+                posicion_candidato += 1
             if salir:
                 break
             if saltar_caso:

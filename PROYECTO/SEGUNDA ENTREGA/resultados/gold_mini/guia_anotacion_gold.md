@@ -79,6 +79,13 @@ candidato pendiente para otra sesion; s salta el caso completo (queda
 pendiente); q guarda y sale; ? muestra la ayuda. Al reanudar, los candidatos ya
 calificados se muestran marcados y no se vuelven a preguntar.
 
+Cada linea de captura muestra el numero de articulo (por ejemplo
+`[ 6/19] art. 13 | grado ...`) para seguir la lista sin subir. Tambien se puede
+calificar de corrido con un lote: escriba varios grados separados por espacios
+(por ejemplo `0 2 0 0 0 - 1`) y se aplican, en orden, a los candidatos
+pendientes tal como aparecen en pantalla; `-` deja ese candidato pendiente. El
+lote se valida completo: si algun token no es 2, 1, 0 o -, no se aplica nada.
+
 ## 7. Duplicados
 
 La lista de candidatos ya esta deduplicada por numero de articulo y ordenada.

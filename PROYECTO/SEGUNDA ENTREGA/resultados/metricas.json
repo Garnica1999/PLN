@@ -5570,4 +5570,408 @@
   },
   "estado": "completado"
  }
+,
+ "b3_gold_humano": {
+  "experimento": "b3_gold_humano",
+  "nombre": "B3: gate con gold humano (Carlos) - 50 casos / 820 grados; acuerdo inter-anotador y evaluacion graduada de rutas",
+  "fecha": "2026-10-05",
+  "tipo": "gate_gold_humano",
+  "contexto": "Carlos anoto a mano los 820 candidatos (50/50 casos) con la guia del pack B3; scripts/16_anotador_gold.py recalculo acuerdo, evaluacion y export con --forzar. El gate humano formal pendiente de b3_gold_llm/b3_check_llm queda CERRADO con esta anotacion. Las salidas solo-LLM previas quedaron respaldadas en resultados/gold_mini/backup/ y las secciones b3_gold_llm y b3_check_llm de metricas no se modifican.",
+  "anotacion_humana": {
+   "anotador": "carlos",
+   "n_casos": 50,
+   "n_grados": 820,
+   "n_pendientes": 0,
+   "distribucion_grados": {
+    "0": 364,
+    "1": 267,
+    "2": 189
+   },
+   "periodo_anotacion": {
+    "inicio": "2026-10-05T01:22:01",
+    "fin": "2026-10-05T02:03:32"
+   },
+   "artefacto": "resultados/gold_mini/respuestas_carlos.jsonl",
+   "md5": "67ce4f0ae031b658637c536b008f3de1"
+  },
+  "acuerdo": {
+   "kappas_pares": {
+    "carlos|llm": {
+     "n_comunes": 820,
+     "po": 0.5939,
+     "kappa": 0.3448,
+     "nivel": "aceptable"
+    },
+    "carlos|llm_gemma4": {
+     "n_comunes": 174,
+     "po": 0.6437,
+     "kappa": 0.37,
+     "nivel": "aceptable"
+    },
+    "llm|llm_gemma4": {
+     "n_comunes": 174,
+     "po": 0.8391,
+     "kappa": 0.6506,
+     "nivel": "sustancial"
+    }
+   },
+   "fleiss": {
+    "n_items": 174,
+    "n_evaluadores": 3,
+    "p_bar": 0.7088,
+    "p_e": 0.4757,
+    "kappa": 0.4446,
+    "nivel": "moderada"
+   },
+   "distribuciones_grado": {
+    "carlos": {
+     "0": 364,
+     "1": 267,
+     "2": 189
+    },
+    "llm": {
+     "0": 510,
+     "1": 146,
+     "2": 164
+    },
+    "llm_gemma4": {
+     "0": 125,
+     "1": 23,
+     "2": 26
+    }
+   },
+   "lectura": "kappa item-a-item moderado (carlos|llm 0,3448 'aceptable' segun Landis-Koch) y distribucion humana menos extrema (mas grados 1/2) que la LLM (mas 0); pese a ello las metricas agregadas de ranking convergen (ver comparacion_proxy_llm).",
+   "artefacto": "resultados/gold_mini/acuerdo_gold_mini.json",
+   "md5": "63ad1902ab409738879ebf7961c0a888"
+  },
+  "evaluacion_gold_humano": {
+   "script": "scripts/16_anotador_gold.py --evaluar --forzar",
+   "anotador": "carlos",
+   "n_casos": 50,
+   "semilla_bootstrap": 42,
+   "n_remuestreos_bootstrap": 1000,
+   "nota_gold_agrupado": "pooled == carlos (el gold agrupado conserva el ultimo registro por fecha y Carlos califico los 820 items).",
+   "rutas_completo": {
+    "b2_v13": {
+     "n_items_fuera_pool": 0,
+     "ndcg_at_10": {
+      "media": 0.7852,
+      "ic95": [
+       0.7449,
+       0.826
+      ]
+     },
+     "ndcg_at_5": {
+      "media": 0.7674,
+      "ic95": [
+       0.7105,
+       0.8162
+      ]
+     },
+     "p_at_5": 0.796,
+     "p_at_10": 0.598,
+     "r_at_5": 0.5196,
+     "r_at_10": 0.7389,
+     "r_graduado_at_10": 0.7719
+    },
+    "v12_b1": {
+     "n_items_fuera_pool": 184,
+     "ndcg_at_10": {
+      "media": 0.6903,
+      "ic95": [
+       0.6448,
+       0.7391
+      ]
+     },
+     "ndcg_at_5": {
+      "media": 0.7281,
+      "ic95": [
+       0.6672,
+       0.7897
+      ]
+     },
+     "p_at_5": 0.756,
+     "p_at_10": 0.476,
+     "r_at_5": 0.4849,
+     "r_at_10": 0.5836,
+     "r_graduado_at_10": 0.6395
+    },
+    "v8_top50": {
+     "n_items_fuera_pool": 272,
+     "ndcg_at_10": {
+      "media": 0.57,
+      "ic95": [
+       0.5222,
+       0.6197
+      ]
+     },
+     "ndcg_at_5": {
+      "media": 0.5974,
+      "ic95": [
+       0.5398,
+       0.6557
+      ]
+     },
+     "p_at_5": 0.568,
+     "p_at_10": 0.372,
+     "r_at_5": 0.3504,
+     "r_at_10": 0.4447,
+     "r_graduado_at_10": 0.5379
+    },
+    "cita_exacta": {
+     "n_items_fuera_pool": 0,
+     "ndcg_at_10": {
+      "media": 0.6812,
+      "ic95": [
+       0.6289,
+       0.7242
+      ]
+     },
+     "ndcg_at_5": {
+      "media": 0.625,
+      "ic95": [
+       0.5656,
+       0.6801
+      ]
+     },
+     "p_at_5": 0.648,
+     "p_at_10": 0.546,
+     "r_at_5": 0.4115,
+     "r_at_10": 0.6264,
+     "r_graduado_at_10": 0.6749
+    }
+   },
+   "variantes_pool": {
+    "nota": "pool restringe el ranking a los items anotados; items fuera del pool: v12_b1 184, v8_top50 272, b2_v13 y cita_exacta 0.",
+    "v12_b1": {
+     "ndcg_at_10": {
+      "media": 0.7118,
+      "ic95": [
+       0.6668,
+       0.7586
+      ]
+     },
+     "ndcg_at_5": {
+      "media": 0.7649,
+      "ic95": [
+       0.7081,
+       0.8161
+      ]
+     }
+    },
+    "v8_top50": {
+     "ndcg_at_10": {
+      "media": 0.6249,
+      "ic95": [
+       0.577,
+       0.675
+      ]
+     },
+     "ndcg_at_5": {
+      "media": 0.7066,
+      "ic95": [
+       0.6505,
+       0.7646
+      ]
+     }
+    }
+   },
+   "comparaciones_pareadas": {
+    "b2_v13_vs_v12_b1": {
+     "completo": {
+      "ndcg_at_5": {
+       "delta": 0.0393,
+       "ic95": [
+        0.0053,
+        0.0736
+       ],
+       "prob_mejora": 0.988,
+       "gana": true
+      },
+      "ndcg_at_10": {
+       "delta": 0.0948,
+       "ic95": [
+        0.0668,
+        0.1239
+       ],
+       "prob_mejora": 1.0,
+       "gana": true
+      }
+     },
+     "pool": {
+      "ndcg_at_5": {
+       "delta": 0.0025,
+       "ic95": [
+        -0.0244,
+        0.0306
+       ],
+       "prob_mejora": 0.554,
+       "gana": false
+      },
+      "ndcg_at_10": {
+       "delta": 0.0734,
+       "ic95": [
+        0.0472,
+        0.1
+       ],
+       "prob_mejora": 1.0,
+       "gana": true
+      }
+     }
+    },
+    "b2_v13_vs_v8_top50": {
+     "completo": {
+      "ndcg_at_5": {
+       "delta": 0.17,
+       "ic95": [
+        0.12,
+        0.2189
+       ],
+       "prob_mejora": 1.0,
+       "gana": true
+      },
+      "ndcg_at_10": {
+       "delta": 0.2152,
+       "ic95": [
+        0.181,
+        0.2511
+       ],
+       "prob_mejora": 1.0,
+       "gana": true
+      }
+     },
+     "pool": {
+      "ndcg_at_5": {
+       "delta": 0.0609,
+       "ic95": [
+        0.0183,
+        0.1007
+       ],
+       "prob_mejora": 0.999,
+       "gana": true
+      },
+      "ndcg_at_10": {
+       "delta": 0.1603,
+       "ic95": [
+        0.1276,
+        0.1932
+       ],
+       "prob_mejora": 1.0,
+       "gana": true
+      }
+     }
+    },
+    "v12_b1_vs_v8_top50": {
+     "completo": {
+      "ndcg_at_5": {
+       "delta": 0.1307,
+       "ic95": [
+        0.0839,
+        0.1779
+       ],
+       "prob_mejora": 1.0,
+       "gana": true
+      },
+      "ndcg_at_10": {
+       "delta": 0.1204,
+       "ic95": [
+        0.0877,
+        0.1521
+       ],
+       "prob_mejora": 1.0,
+       "gana": true
+      }
+     },
+     "pool": {
+      "ndcg_at_5": {
+       "delta": 0.0584,
+       "ic95": [
+        0.0301,
+        0.0828
+       ],
+       "prob_mejora": 1.0,
+       "gana": true
+      },
+      "ndcg_at_10": {
+       "delta": 0.0869,
+       "ic95": [
+        0.0621,
+        0.1107
+       ],
+       "prob_mejora": 1.0,
+       "gana": true
+      }
+     }
+    }
+   },
+   "artefacto": "resultados/gold_mini/evaluacion_gold_mini.json",
+   "md5": "04124c0551ef33ad2a5b1b0c0050e583"
+  },
+  "comparacion_proxy_llm": {
+   "nota": "mismo pipeline y muestra; gold-LLM (qwen) y b3_check_llm (gemma4) quedan como proxies automaticos, no humanos.",
+   "ndcg_at_10": {
+    "b2_v13": {
+     "llm": 0.7831,
+     "llm_ic95": [
+      0.7331,
+      0.8286
+     ],
+     "carlos": 0.7852,
+     "delta_carlos_menos_llm": 0.0021
+    },
+    "v12_b1": {
+     "llm": 0.685,
+     "llm_ic95": [
+      0.6296,
+      0.7351
+     ],
+     "carlos": 0.6903,
+     "delta_carlos_menos_llm": 0.0053
+    },
+    "v8_top50": {
+     "llm": 0.5658,
+     "llm_ic95": [
+      0.5119,
+      0.6222
+     ],
+     "carlos": 0.57,
+     "delta_carlos_menos_llm": 0.0042
+    },
+    "cita_exacta": {
+     "llm": 0.6437,
+     "llm_ic95": [
+      0.5841,
+      0.7013
+     ],
+     "carlos": 0.6812,
+     "delta_carlos_menos_llm": 0.0375
+    }
+   },
+   "conclusion": "convergencia de las metricas agregadas (deltas <= 0,0375; b2_v13 0,7852 vs 0,7831; v12_b1 0,6903 vs 0,6850; v8_top50 0,5700 vs 0,5658) y mismo ranking de rutas B2 > B1 > v8 pese al kappa item-a-item moderado (0,3448)."
+  },
+  "veredicto_gate_b3_humano": {
+   "veredicto": "CONFIRMA la adopcion v2.2 (B2 retriever + B1 reranker, ADR-18)",
+   "evidencia": "B2 > B1 con IC95 estrictamente positivo en nDCG@10 (delta +0,0948 [+0,0668; +0,1239], prob_mejora 1,0) y en nDCG@5 (delta +0,0393 [+0,0053; +0,0736], prob_mejora 0,988); B2 > v8 y B1 > v8 tambien ganan con IC; la variante pool mantiene el orden (B2>B1 @10 +0,0734 [+0,0472; +0,1000]).",
+   "caveat": "acuerdo item-a-item carlos|llm moderado (kappa 0,3448; po 0,5939); la convergencia agregada con el proxy LLM acota el impacto sobre las decisiones de ranking, pero la varianza del juicio humano por item queda declarada.",
+   "valida_retroactivamente": "evidencia automatica de ADR-18 y gate Sprint B (b2_retriever, b1_reranker); el control humano pendiente de B3 queda cerrado.",
+   "fecha_gate": "2026-10-05"
+  },
+  "artefactos": {
+   "respuestas_carlos": "resultados/gold_mini/respuestas_carlos.jsonl (md5 67ce4f0ae031b658637c536b008f3de1; 820 grados, 50 casos)",
+   "acuerdo": "resultados/gold_mini/acuerdo_gold_mini.json (md5 63ad1902ab409738879ebf7961c0a888)",
+   "evaluacion": "resultados/gold_mini/evaluacion_gold_mini.json (md5 04124c0551ef33ad2a5b1b0c0050e583)",
+   "export_csv": "resultados/gold_mini/anotaciones_gold_export.csv (md5 f11eed0e178969211731235ab32b75e5; 1814 filas)",
+   "respuestas_llm": "resultados/gold_mini/respuestas_llm.jsonl (md5 e5d7088fd4383e87dcd78c82ea7672dd)",
+   "respuestas_llm_gemma4": "resultados/gold_mini/respuestas_llm_gemma4.jsonl (md5 4ad7049ddf3bf886189018c493dd2325)",
+   "backup_solo_llm": {
+    "acuerdo": "resultados/gold_mini/backup/acuerdo_gold_mini_solo_llm_20261004.json (md5 07cbd6abd42e7c8c3b7de758218d671d)",
+    "evaluacion": "resultados/gold_mini/backup/evaluacion_gold_mini_solo_llm_20261004.json (md5 419d3a330437a4859fdb9e88054a3b60)"
+   },
+   "scripts": [
+    "scripts/16_anotador_gold.py",
+    "scripts/27_preanotacion_gold_llm.py"
+   ]
+  },
+  "estado": "completado"
+ }
 }

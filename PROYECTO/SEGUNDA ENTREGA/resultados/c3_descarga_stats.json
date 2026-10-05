@@ -1,5 +1,5 @@
 {
-  "generado_utc": "2026-10-05T01:03:40Z",
+  "generado_utc": "2026-10-05T07:22:40Z",
   "listado": {
     "reutilizado": false,
     "endpoint": "https://www.datos.gov.co/resource/v2k4-2t8s.json",
@@ -31,17 +31,17 @@
   },
   "descarga": {
     "run": {
-      "intentados": 2382,
-      "ok": 2334,
+      "intentados": 48,
+      "ok": 0,
       "stub": 48,
       "error": 0,
-      "omitidos": 0,
+      "omitidos": 2334,
       "reintentos_red": 0,
       "stubs_reintentados": 48,
       "reintento_final_ok": 0,
-      "bytes_descargados": 1048294521,
+      "bytes_descargados": 0,
       "delay_seg": 1.0,
-      "tiempo_seg": 2830.94
+      "tiempo_seg": 98.21
     },
     "acumulado": {
       "n_registros": 2382,
@@ -51,7 +51,7 @@
       "n_pendientes": 0,
       "bytes_html_en_disco": 1048294521
     },
-    "timestamp_utc": "2026-10-05T01:00:25Z"
+    "timestamp_utc": "2026-10-05T07:22:40Z"
   },
   "texto": {
     "run": {

@@ -1,5 +1,14 @@
 {
   "por_anotador": {
+    "carlos": {
+      "n_grados": 820,
+      "n_casos_con_grado": 50,
+      "distribucion_grados": {
+        "0": 364,
+        "1": 267,
+        "2": 189
+      }
+    },
     "llm": {
       "n_grados": 820,
       "n_casos_con_grado": 50,
@@ -20,6 +29,18 @@
     }
   },
   "kappas_pares": {
+    "carlos|llm": {
+      "n_comunes": 820,
+      "po": 0.5939024390243902,
+      "kappa": 0.34483734902179075,
+      "nivel": "aceptable"
+    },
+    "carlos|llm_gemma4": {
+      "n_comunes": 174,
+      "po": 0.6436781609195402,
+      "kappa": 0.3700070077084794,
+      "nivel": "aceptable"
+    },
     "llm|llm_gemma4": {
       "n_comunes": 174,
       "po": 0.8390804597701149,
@@ -29,21 +50,23 @@
   },
   "fleiss": {
     "n_items": 174,
-    "n_evaluadores": 2,
-    "p_bar": 0.8390804597701149,
-    "p_e": 0.5397839873166864,
-    "kappa": 0.6503391107761869,
-    "nivel": "sustancial",
+    "n_evaluadores": 3,
+    "p_bar": 0.7088122605363985,
+    "p_e": 0.4756976556421661,
+    "kappa": 0.44461865830440145,
+    "nivel": "moderada",
     "n_items_completos": 174
   },
   "meta": {
-    "fecha": "2026-10-04T22:14:21",
+    "fecha": "2026-10-05T02:06:24",
     "script": "scripts/16_anotador_gold.py",
     "anotadores": [
+      "carlos",
       "llm",
       "llm_gemma4"
     ],
     "md5_respuestas": {
+      "carlos": "67ce4f0ae031b658637c536b008f3de1",
       "llm": "e5d7088fd4383e87dcd78c82ea7672dd",
       "llm_gemma4": "4ad7049ddf3bf886189018c493dd2325"
     },

@@ -348,3 +348,12 @@ Entrada: sentencia T-293/97 (`10_evaluar_sentencia.py --id`), salida JSON en ~9 
 - Adopciones: v2.2 (ADR-18); negativos: Sprint A (ADR-17), C2, H1/H2/H2b
 - Trabajo futuro: gold humano (spot-check B3, O1, C1-150), LoRA, 2ª época de B2, calibración del producto, holdout sellado
 - Artefactos: benchmarks v9-v13, `c3_*`, `c2_llm/`, `gold_mini/`, `validacion_m4/`, `qa_final_v2_2/`; informe `informe_final_ciclo_v3.md`
+
+## Slide 34 — Gate B3 — gold humano confirma v2.2
+
+- Carlos anotó 820/820 candidatos (50/50 casos, 2026-10-05); grados 2/1/0: 189/267/364 (humano) vs 164/146/510 (LLM)
+- Acuerdo ítem a ítem moderado: carlos|llm κ 0,345 (po 0,594; n=820); carlos|gemma4 0,370; Fleiss (3 evaluadores, 174 ítems) 0,445
+- Evaluación con gold humano (nDCG@10): B2 0,7852 [0,745;0,826] > B1 0,6903 [0,645;0,739] > v8 0,5700; cita-exacta 0,6812
+- Pareadas: B2 vs B1 Δ +0,0948 [+0,0668;+0,1239] prob 1,0; B2 vs v8 +0,2152; B1 vs v8 +0,1204 (pool +0,0869)
+- Convergencia agregada con el proxy LLM: B2 0,7852 vs 0,7831; B1 0,6903 vs 0,6850 (mismo ranking)
+- Veredicto: el gate humano CONFIRMA la adopción v2.2 (ADR-18); meta del ciclo cumplida (nDCG@10 ≥ 0,70 con gold humano)

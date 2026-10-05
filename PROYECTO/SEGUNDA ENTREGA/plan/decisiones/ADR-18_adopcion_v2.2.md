@@ -1,6 +1,6 @@
 # ADR-18: Adopción del producto v2.2 (retriever B2 + reranker B1)
 
-- **Status:** Aceptado (2026-10-04)
+- **Status:** Aceptado (2026-10-04); **confirmado con gold humano (2026-10-05)**
 - **Date:** 2026-10-04
 - **Context:** El ciclo v3 (Sprint B) entrenó dos modelos de dominio con las citas propias del
   corpus: **B1** (reranker cross-encoder fine-tuneado con 299.999 pares; mejor val AUC 0,8513) y
@@ -17,6 +17,11 @@
     circular del proyecto); sin caídas por periodo.
   - Gold-LLM B3 (50 casos, grados 2/1/0): B2 nDCG@10 **0,783 [0,733;0,829]** vs B1 0,685/0,707
     (Δ +0,098 [0,069;0,128]); check inter-LLM kappa **0,651 (sustancial)**.
+  - **Gold humano B3 (Carlos, 50 casos/820 decisiones, 2026-10-05): B2 nDCG@10 0,7852
+    [0,745;0,826] vs B1 0,6903 [0,645;0,739] (Δ +0,0948 [+0,0668;+0,1239], prob=1,000);
+    v8 0,5700; cita_exacta 0,6812. Acuerdo carlos|llm kappa 0,345 (moderado) pese a lo cual
+    las métricas agregadas coinciden con el proxy LLM (0,7852 vs 0,7831). El gate B3 humano
+    CONFIRMA la adopción.**
   - C3 (2022-2026, 100 casos): nDCG@10 **0,747 [0,719;0,777]** vs histórico 0,691 → sin deriva.
   - QA v2.2: **GO** — equivalencia producto↔benchmark exacta (ids+scores), latencias 4,6-5,5 s
     default / 13,9-14,5 s rerank en runs limpios (hasta ~23 s bajo contención de GPU; límite
@@ -27,11 +32,12 @@
   - LLM ALIA zero-shot (C2: query understanding y rerank listwise): **negativo documentado**
     (Δ −0,198 y −0,217); opción futura: LoRA con datos propios.
 - **Consequences:**
-  - (+) Calidad del vínculo CP muy superior (nDCG@10 silver 0,693; gold-LLM 0,783) sin costo de
+  - (+) Calidad del vínculo CP muy superior (nDCG@10 silver 0,693; gold-LLM 0,783; gold
+    humano 0,785) sin costo de
     latencia relevante; caches nuevas (`cache_b2_cp`) separadas de v1/v2.
   - (–) Dependencia de dos modelos locales (≈1,8 GB fp16); riesgo de fallback silencioso
     mitigado con warnings + checks v3 que inspeccionan los logs.
-  - (–) Evidencia humana pendiente: el gate se cerró con **gold-LLM + check inter-LLM**
-    (verificación automática); se recomienda spot-check humano posterior (10-15 casos).
+  - (–) Evidencia humana: **cerrada (2026-10-05)** — el mini-gold humano de B3 (50 casos)
+    confirmó B2 > B1 con IC estrictamente positivo; la adopción provisional quedó validada.
   - (–) Pendiente formal: barrido md5 completo; `TOP10_ESPERADO` hard-coded en checks v3
     (documentado).

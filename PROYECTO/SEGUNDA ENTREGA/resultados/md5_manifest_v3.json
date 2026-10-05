@@ -1,6 +1,6 @@
 {
- "fecha": "2026-10-05T05:19:49.291052+00:00",
- "nota": "Manifest md5 de artefactos congelados y claves del ciclo v3 (2026-10-05). Regenerable; los md5 de artefactos v1/v2 no deben cambiar.",
+ "fecha": "2026-10-05T07:26:02.707530+00:00",
+ "nota": "Manifest md5 de artefactos congelados y claves del ciclo v3 (actualizado 2026-10-05 tras el gate B3 humano). Regenerable; los md5 de artefactos v1/v2 no deben cambiar. No se lista a si mismo.",
  "artefactos": {
   "modelos/m4_baseline/logreg_completo.joblib": "1dd5019baa05b726ab95a5ef38bf054d",
   "modelos/m4_baseline/logreg_enmascarado.joblib": "17b7adddc08160e2a942f8c70192703a",
@@ -29,7 +29,7 @@
   "resultados/vinculo_cp_benchmark_v7.json": "86eacf57c2a45c97ad70d9b574f610a4",
   "resultados/vinculo_cp_benchmark_v8.json": "746621a797fe109335e2a43367717a77",
   "resultados/vinculo_cp_benchmark_v9.json": "2d7bc19962eed50aafdbcfce1abc3219",
-  "resultados/metricas.json": "8e661169d15dab0250c44169cf4d227f",
+  "resultados/metricas.json": "3e6b62a6de2a7d65618829d07738bd83",
   "resultados/m4_baseline.json": "60f8fd1ce4c2edef086d8ee01aaad654",
   "resultados/m4_transformer.json": "566a6ecaff1af97d37f46c21f5e2f133",
   "resultados/m4_transformer_chunks.json": "2a05a95d45440ba85d3c60bd9a056982",
@@ -42,13 +42,15 @@
   "resultados/b1_pares.json": "637f96eb9e4937dafd03eede3957cbd6",
   "resultados/b2_entrenamiento_v1.json": "6324155e2ea8c24f269495bc5c63272e",
   "resultados/c3_eval_temporal.json": "8609286177b6f6ebd155dc1ff6832af9",
-  "resultados/c3_descarga_stats.json": "0060fd2e1e8ac97bf6ff4d975c20fa3e",
+  "resultados/c3_descarga_stats.json": "796eed3bdd66fc028e52ccb5b2674ca5",
   "resultados/c3_preparacion_stats.json": "2cccbe2cd88603f052fd6da232a75e8b",
-  "resultados/gold_mini/evaluacion_gold_mini.json": "419d3a330437a4859fdb9e88054a3b60",
-  "resultados/gold_mini/acuerdo_gold_mini.json": "07cbd6abd42e7c8c3b7de758218d671d",
+  "resultados/gold_mini/evaluacion_gold_mini.json": "04124c0551ef33ad2a5b1b0c0050e583",
+  "resultados/gold_mini/acuerdo_gold_mini.json": "63ad1902ab409738879ebf7961c0a888",
+  "resultados/gold_mini/respuestas_carlos.jsonl": "67ce4f0ae031b658637c536b008f3de1",
+  "resultados/gold_mini/respuestas_llm.jsonl": "e5d7088fd4383e87dcd78c82ea7672dd",
+  "resultados/gold_mini/respuestas_llm_gemma4.jsonl": "4ad7049ddf3bf886189018c493dd2325",
+  "resultados/gold_mini/anotaciones_gold_export.csv": "f11eed0e178969211731235ab32b75e5",
   "resultados/validacion_m4/acuerdo_v1.json": "49072f7fc6b9042629627ca1ee7e5d23"
  },
- "no_existen": [
-  "resultados/md5_manifest_v3.json"
- ]
+ "no_existen": []
 }

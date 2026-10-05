@@ -36,6 +36,7 @@ python scripts/10_evaluar_sentencia.py --id 2195 --salida /tmp/demo.json
 python scripts/checks_qa_final.py                   # QA de regresión v2 (v1: checks_qa_final_v1.py)
 python scripts/checks_perf_producto.py              # perfilado del producto
 python scripts/21_pack_validacion_m4.py --resumen   # pack O1 de validación humana
+python -m streamlit run scripts/demo_streamlit.py   # demo interactiva del producto (requiere streamlit)
 ```
 - Jobs largos con `nohup`/`setsid` y reanudación: `05_lematizacion.py` (~2 h),
   `07_transformer.py` (~6,7 h GPU), `23_b1_pares_reranker.py` (~2 h CPU), entrenamientos GPU.
