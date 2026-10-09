@@ -5135,3 +5135,9 @@ V03 remains the best verified leaderboard result.
 - Decision: LOW_EXPECTED_VALUE (Caso B): no se solicita autorizacion; no se revisa ni corrige; TOXIC permanece cerrado; near-duplicados QUARANTINED.
 - Entregables: `reports/toxic_tr_annotation_governance.md/.csv`; fila P87-00 (458 filas); seccion 133; D-292; `experiments/p87_00_gobernanza_anotacion_tr.py` y `p87_01_integrar_notebook.py`.
 - Controles: escaneo byte a byte 0 en lo generado; verificador oficial 0; bateria del notebook ejecutada.
+
+## 2026-10-09 (P88-00: auditoria de novedad LightGBM - DUPLICATE, sin ejecucion)
+- Auditoria de solo lectura de la propuesta de LightGBM sobre la matriz TF-IDF de V03: el precedente P61-01 (2026-09-28) ya la ejecuto (mismos vectorizadores word(1,2)+char_wb(3,5), hstack CSR, 27431 rasgos; pliegues canonicos; umbrales 0.44/0.51/0.46); brazos -0.0302397191 (por defecto) y -0.0258463023 (Optuna anidado, 450 trials); 2/5 pliegues; neto -28; gate no superado; cierre CLOSED_BY_DUPLICATION y D-143; OPT-01 ya habia cerrado el patron de busqueda por OOF.
+- Decision: DUPLICATE; no se ejecuta nada. 0 entrenamientos, 0 submissions, 0 push.
+- Entregables: `reports/toxic_lgbm_novelty_audit.md/.csv`; fila P88-00 (459 filas); seccion 134; D-293; `experiments/p88_00_auditoria_novedad_lgbm.py` y `p88_01_integrar_notebook.py`.
+- Controles: escaneo byte a byte 0 en lo generado; verificador oficial 0; bateria del notebook ejecutada.

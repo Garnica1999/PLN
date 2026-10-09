@@ -324,8 +324,8 @@ def sha256_de(ruta: Path) -> str:
 CODIGO_VERIF_INVENTARIO = r'''"""Verificacion del inventario y del registro.
 
 Comprueba el estado del 2026-10-09: el inventario de la auditoria conserva 483
-experimentos y 376 scripts clasificados; el registro tiene 458 filas validas y
-unicas (P84-01 a P84-05, P85-01, P86-00 y P87-00 se anadieron tras la auditoria); y no quedan
+experimentos y 376 scripts clasificados; el registro tiene 459 filas validas y
+unicas (P84-01 a P84-05, P85-01, P86-00, P87-00 y P88-00 se anadieron tras la auditoria); y no quedan
 filas malformadas de P67 a P77. La cobertura completa del anexo A se verifica en la
 seccion 129.
 """
@@ -365,12 +365,12 @@ malformadas = inventario_experimentos.loc[
 assert len(malformadas) == 0, f"tras la reparacion no debe haber malformadas, hay {len(malformadas)}"
 
 registro = pd.read_csv(PROJECT_ROOT / "experiments.csv")
-assert len(registro) == 458, f"el registro debe tener 458 filas, tiene {len(registro)}"
+assert len(registro) == 459, f"el registro debe tener 459 filas, tiene {len(registro)}"
 assert registro["experiment_id"].is_unique, "los identificadores del registro deben ser unicos"
 
 print("Inventario y registro (estado 2026-10-09):")
 print(f"  inventario: {len(inventario_experimentos)} experimentos | {len(inventario_scripts)} scripts")
-print(f"  registro experiments.csv: {len(registro)} filas validas y unicas (458 tras P87-00)")
+print(f"  registro experiments.csv: {len(registro)} filas validas y unicas (459 tras P88-00)")
 print(f"  filas malformadas de P67 a P77: {len(malformadas)}")
 print("Verificacion completada.")
 '''
@@ -465,7 +465,10 @@ def construir_anexo(registro: list[dict], inventario: list[dict]) -> str:
             "p84" if identificador.startswith("P84")
             else (
                 "p85" if identificador.startswith("P85")
-                else ("p86" if identificador.startswith("P86") else ("p87" if identificador.startswith("P87") else "-"))
+                else (
+                    "p86" if identificador.startswith("P86")
+                    else ("p87" if identificador.startswith("P87") else ("p88" if identificador.startswith("P88") else "-"))
+                )
             )
         )
         fecha = (fila.get("date") or "").strip() or "-"
@@ -606,6 +609,12 @@ def main() -> None:
                 "(458 filas de registro, 23 sondas, 39 scripts)",
             )
             asignar_texto(celda, fuente)
+        if "(458 filas de registro, 23 sondas, 39 scripts)" in fuente:
+            fuente = fuente.replace(
+                "(458 filas de registro, 23 sondas, 39 scripts)",
+                "(459 filas de registro, 23 sondas, 39 scripts)",
+            )
+            asignar_texto(celda, fuente)
         if "from src.embedding_utils import sha256_de" in fuente:
             fuente = fuente.replace("from src.embedding_utils import sha256_de\n\n", "")
             asignar_texto(celda, fuente)
@@ -624,15 +633,17 @@ def main() -> None:
     reemplazar_en(
         cells,
         "14. **Reproducibilidad**",
-        "14. **Reproducibilidad**: 39 scripts de experimento (00-38), 457 filas en `experiments.csv`, 23 sondeos en `submissions/leaderboard_log.csv` y las figuras del proyecto.\n"
-        "15. **Actualización del 2026-10-03**: el notebook es autocontenido (las funciones que antes se importaban de `src/` están embebidas), documenta la fase P84 en la sección 127 y lista los 490 identificadores de experimentos en el anexo A (sección 128); la verificación de completitud está en la sección 129.\n"
-        "16. **Actualización del 2026-10-08**: la comprobación documental final explicita la hipótesis Twitter/X (sección 130, D-289) y la reapertura autorizada P85-01 (sección 131) mide SGNS corregido sobre el corpus de Twitter/X frente al control general; entregables en `reports/toxic_twitter_sgns_corrected.md`.\n"
-        "17. **Actualización del 2026-10-09**: la auditoría de novedad P86-00 (sección 132) clasifica como DUPLICATE la Factorization Machine dispersa propuesta sobre la representación de V03: el precedente V25-01/V25-02 ya la ejecutó (control que reproduce V03 bit a bit, k agotado en 4, lambda_v óptimo en 1, mejor +0.005487 con neto -40) y la familia está cerrada; no se ejecuta nada.",
         "14. **Reproducibilidad**: 39 scripts de experimento (00-38), 458 filas en `experiments.csv`, 23 sondeos en `submissions/leaderboard_log.csv` y las figuras del proyecto.\n"
         "15. **Actualización del 2026-10-03**: el notebook es autocontenido (las funciones que antes se importaban de `src/` están embebidas), documenta la fase P84 en la sección 127 y lista los 491 identificadores de experimentos en el anexo A (sección 128); la verificación de completitud está en la sección 129.\n"
         "16. **Actualización del 2026-10-08**: la comprobación documental final explicita la hipótesis Twitter/X (sección 130, D-289) y la reapertura autorizada P85-01 (sección 131) mide SGNS corregido sobre el corpus de Twitter/X frente al control general; entregables en `reports/toxic_twitter_sgns_corrected.md`.\n"
         "17. **Actualización del 2026-10-09**: la auditoría de novedad P86-00 (sección 132) clasifica como DUPLICATE la Factorization Machine dispersa propuesta sobre la representación de V03: el precedente V25-01/V25-02 ya la ejecutó (control que reproduce V03 bit a bit, k agotado en 4, lambda_v óptimo en 1, mejor +0.005487 con neto -40) y la familia está cerrada; no se ejecuta nada.\n"
         "18. **Actualización del 2026-10-09 (segunda)**: la auditoría de gobernanza P87-00 (sección 133) clasifica la revisión humana de anotaciones en TR como LOW_EXPECTED_VALUE: la contradicción demostrable es escasa y no explica el error, el detector de ruido es marginal y el techo de cualquier intervención queda bajo la banda de detección; no se solicita autorización, no se revisa ni corrige nada y TOXIC permanece cerrado.",
+        "14. **Reproducibilidad**: 39 scripts de experimento (00-38), 459 filas en `experiments.csv`, 23 sondeos en `submissions/leaderboard_log.csv` y las figuras del proyecto.\n"
+        "15. **Actualización del 2026-10-03**: el notebook es autocontenido (las funciones que antes se importaban de `src/` están embebidas), documenta la fase P84 en la sección 127 y lista los 492 identificadores de experimentos en el anexo A (sección 128); la verificación de completitud está en la sección 129.\n"
+        "16. **Actualización del 2026-10-08**: la comprobación documental final explicita la hipótesis Twitter/X (sección 130, D-289) y la reapertura autorizada P85-01 (sección 131) mide SGNS corregido sobre el corpus de Twitter/X frente al control general; entregables en `reports/toxic_twitter_sgns_corrected.md`.\n"
+        "17. **Actualización del 2026-10-09**: la auditoría de novedad P86-00 (sección 132) clasifica como DUPLICATE la Factorization Machine dispersa propuesta sobre la representación de V03: el precedente V25-01/V25-02 ya la ejecutó (control que reproduce V03 bit a bit, k agotado en 4, lambda_v óptimo en 1, mejor +0.005487 con neto -40) y la familia está cerrada; no se ejecuta nada.\n"
+        "18. **Actualización del 2026-10-09 (segunda)**: la auditoría de gobernanza P87-00 (sección 133) clasifica la revisión humana de anotaciones en TR como LOW_EXPECTED_VALUE: la contradicción demostrable es escasa y no explica el error, el detector de ruido es marginal y el techo de cualquier intervención queda bajo la banda de detección; no se solicita autorización, no se revisa ni corrige nada y TOXIC permanece cerrado.\n"
+        "19. **Actualización del 2026-10-09 (tercera)**: la auditoría de novedad P88-00 (sección 134) clasifica como DUPLICATE la propuesta de LightGBM sobre la matriz TF-IDF de V03: el precedente P61-01 ya la ejecutó (mismos vectorizadores, pliegues y umbrales; brazos -0.0302 y -0.0258; 2/5 pliegues; neto -28) y la familia está cerrada; no se ejecuta nada.",
     )
     reemplazar_en(
         cells,
@@ -643,26 +654,26 @@ def main() -> None:
     reemplazar_en(
         cells,
         "### F2. Inventario unificado",
-        "(450 filas de registro más 33 ayudantes sin fila tras la corrección; 457 filas de registro y 490 identificadores en total tras P84-01 a P84-05, P85-01 y P86-00, ver anexo A)",
         "(450 filas de registro más 33 ayudantes sin fila tras la corrección; 458 filas de registro y 491 identificadores en total tras P84-01 a P84-05, P85-01, P86-00 y P87-00, ver anexo A)",
+        "(450 filas de registro más 33 ayudantes sin fila tras la corrección; 459 filas de registro y 492 identificadores en total tras P84-01 a P84-05, P85-01, P86-00, P87-00 y P88-00, ver anexo A)",
     )
     reemplazar_en(
         cells,
         "## 124. Inventario y trazabilidad",
-        "el registro tiene 457 filas (450 tras la corrección del 2026-10-02, 5 más con P84-01 a P84-05, 1 más con P85-01 y 1 más con P86-00), todas de 23 columnas y sin identificadores duplicados",
         "el registro tiene 458 filas (450 tras la corrección del 2026-10-02, 5 más con P84-01 a P84-05, 1 más con P85-01, 1 más con P86-00 y 1 más con P87-00), todas de 23 columnas y sin identificadores duplicados",
+        "el registro tiene 459 filas (450 tras la corrección del 2026-10-02, 5 más con P84-01 a P84-05, 1 más con P85-01, 1 más con P86-00, 1 más con P87-00 y 1 más con P88-00), todas de 23 columnas y sin identificadores duplicados",
     )
     reemplazar_en(
         cells,
         "## 124. Inventario y trazabilidad",
-        "**Cobertura completa.** En el momento del inventario, 267 experimentos no aparecían mencionados en este notebook. El anexo A (sección 128) cierra ese hueco: lista los 490 identificadores de la unión (457 del registro y 33 ayudantes sin fila propia), y la verificación de la sección 129 comprueba que no falta ninguno. La columna `en_notebook` del inventario conserva el estado previo al anexo.",
         "**Cobertura completa.** En el momento del inventario, 267 experimentos no aparecían mencionados en este notebook. El anexo A (sección 128) cierra ese hueco: lista los 491 identificadores de la unión (458 del registro y 33 ayudantes sin fila propia), y la verificación de la sección 129 comprueba que no falta ninguno. La columna `en_notebook` del inventario conserva el estado previo al anexo.",
+        "**Cobertura completa.** En el momento del inventario, 267 experimentos no aparecían mencionados en este notebook. El anexo A (sección 128) cierra ese hueco: lista los 492 identificadores de la unión (459 del registro y 33 ayudantes sin fila propia), y la verificación de la sección 129 comprueba que no falta ninguno. La columna `en_notebook` del inventario conserva el estado previo al anexo.",
     )
     reemplazar_en(
         cells,
         "## 125. Correcciones aplicadas",
-        "el registro pasa de 411 a 450 filas (455 tras añadir P84-01 a P84-05, 456 tras P85-01 y 457 tras P86-00), sin malformadas y sin identificadores duplicados.",
         "el registro pasa de 411 a 450 filas (455 tras añadir P84-01 a P84-05, 456 tras P85-01, 457 tras P86-00 y 458 tras P87-00), sin malformadas y sin identificadores duplicados.",
+        "el registro pasa de 411 a 450 filas (455 tras añadir P84-01 a P84-05, 456 tras P85-01, 457 tras P86-00, 458 tras P87-00 y 459 tras P88-00), sin malformadas y sin identificadores duplicados.",
     )
     reemplazar_en(
         cells,

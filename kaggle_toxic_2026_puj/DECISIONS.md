@@ -10312,3 +10312,29 @@ sin reescribir las decisiones originales:
   `experiments.csv` (458 filas); seccion 133 del notebook;
   `experiments/p87_00_gobernanza_anotacion_tr.py`.
 - **Conclusion**: V03 remains the best verified leaderboard result.
+
+## D-293: P88-00 cierra la propuesta de LightGBM sobre la matriz TF-IDF de V03 como DUPLICATE
+
+- **Directiva**: arboles potenciados (LightGBM) directamente sobre la matriz dispersa
+  word+char de V03, tres clasificadores binarios, umbrales congelados; P0 de novedad
+  obligatorio antes de ejecutar.
+- **Auditoria**: el precedente metodologicamente equivalente existe y es **P61-01**
+  (`experiments/p61_03_lightgbm.py`, 2026-09-28): LightGBM de tres clasificadores
+  binarios sobre el TF-IDF exacto de V03 (mismos TfidfVectorizer min_df=2 sublinear,
+  `hstack(...).tocsr()`, 27.431 rasgos), pliegues canonicos del OOF congelado y
+  umbrales [0.44, 0.51, 0.46] aplicados igual a los brazos. Brazos medidos: por
+  defecto 0.7469717334 (-0.0302397191) y con Optuna anidado 0.7513651502
+  (-0.0258463023); 2/5 pliegues con el criterio del precedente (0/5 contra los
+  pliegues canonicos); rescate 225 / dano 253 / neto -28; gate no superado; bootstrap
+  no ejecutado. La configuracion unica de la propuesta seria un subconjunto estricto
+  de lo ya medido.
+- **Cierre historico**: CLOSED_BY_DUPLICATION (p61_lightgbm_capacidad.md) y D-143;
+  el patron de busqueda por OOF ya habia cerrado con OPT-01 (+0.008565 OOF, -0.028 LB).
+  Familias vecinas de arboles, todas cerradas: V8-13 (subespacio discriminante),
+  V4-G01-G03 (SVD-300), MI_arbol de P64-05, HistGB de P66-01 y P68-01.
+- **Decision**: **DUPLICATE; no se ejecuta nada.** No se instala ninguna dependencia
+  ni se abre otra familia; V03 permanece congelado.
+- **Evidencia**: `reports/toxic_lgbm_novelty_audit.md/.csv`; fila P88-00 en
+  `experiments.csv` (459 filas); seccion 134 del notebook;
+  `experiments/p88_00_auditoria_novedad_lgbm.py`.
+- **Conclusion**: V03 remains the best verified leaderboard result.
