@@ -1,0 +1,16 @@
+componente,valor,detalle,fuente
+clasificacion,LOW_EXPECTED_VALUE,no se solicita autorizacion; TOXIC permanece cerrado (Caso B),este informe
+material_preparado,"80 filas (40 TR=1 + 40 TR=0, todas HS=1)","3 columnas humanas vacias en las 80 filas (verificado); origen fase 2, semilla 42",reports/eda/tr_ejemplos_para_revision.csv
+integridad_material,muestra 70 dev + 10 holdout; limite 32 + 8; contradictorios 43 + 7,cualquier revision debe filtrar a dev; el holdout no se toca,data/processed/holdout_v2_ids.csv
+alcance_prioritario_dev,140 filas (union sin duplicados),solapes en dev: muestra/contradictorios 2; limite/contradictorios 0,este informe
+tasa_contradiccion,HS 2.773 % / TR 2.773 % / AG 2.889 % del train,proporcion en clusters de texto casi duplicado con etiquetas inconsistentes; NO es tasa de error,reports/label_consistency_v4.json
+error_tr_dentro_fuera,0.023 dentro vs 0.113 fuera (puntual),los errores de TR no se concentran en las filas contradictorias demostrables,reports/hardness_vs_noise_v4.md
+intervenciones_medidas,downweight +0.0005 / remove -0.0004,techo practico nulo de tocar las filas contradictorias,reports/advanced_research_v4.md
+potencia_del_proxy,7.08 % de dev en grupos 2+; 43 filas informativas,V28-03 declara que no puede responder la pregunta; el proxy near-duplicate no basta,reports/v28_03_ambiguedad_etiquetas.md
+detector_de_ruido,MARGINAL: AUC 0.973019 vs control 0.974143,el ruido no es separable de la dificultad; ponderar no tiene justificacion mecanica,reports/p59_confident_learning.md
+techo_de_intervencion,"42 celdas (0,95 %); oracle ~+0,009 < banda 0,017",ninguna intervencion de etiqueta alcanza la banda de deteccion,reports/p57_open_questions.csv
+reglas,silencio normativo sobre corregir etiquetas de entrenamiento,test no usable para entrenamiento; correccion para reentrenar sin cobertura,docs/competition_rules.md
+autorizacion_requerida,escrita del organizador (correccion + reentrenamiento),la revision como analisis no la requiere; la correccion si; no se contacta a nadie,este informe
+evidencia_nueva_posible,tasa directa de ambiguedad + kappa + cierre de D-005,valor documental; no cambia ninguna decision (familias cerradas y techo bajo),este informe
+near_duplicados,"QUARANTINED; techo nulo / <= 0,002 LB",beneficio esperado inferior al de la revision de anotaciones; sin cambios,reports/toxic_remaining_legal_opportunities.md
+decision_final,no se solicita autorizacion; TOXIC cerrado,"Caso B de la directiva; sin revision, sin correccion, sin submissions, sin push",este informe

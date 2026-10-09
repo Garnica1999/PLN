@@ -10283,3 +10283,32 @@ sin reescribir las decisiones originales:
   `experiments.csv` (457 filas); seccion 132 del notebook;
   `experiments/p86_00_auditoria_novedad_fm.py`.
 - **Conclusion**: V03 remains the best verified leaderboard result.
+
+## D-292: P87-00 cierra la gobernanza de la anotacion en TR como LOW_EXPECTED_VALUE
+
+- **Directiva**: auditar la unica via sin clasificador nuevo (revision humana de
+  posibles ambiguedades de anotacion en TR), disenar el protocolo, preparar la nota
+  de autorizacion y decidir si merece la pena pedirla. Ciclo de gobernanza: no se
+  entrena, no se revisa y no se corrige nada.
+- **Evidencia auditada**: el material preparado (80 filas, 3 columnas humanas
+  vacias) incluye 10 filas del holdout (filtrar a dev: 70 + 32 + 43 = 140
+  prioritarias); el "2,8 por ciento" de V4-A01 es la proporcion del train en
+  clusters de texto casi duplicado con etiquetas inconsistentes (HS/TR 2.773 %,
+  AG 2.889 %), no una tasa de error; el error de TR es menor dentro de esos
+  clusters (0.023 vs 0.113); las intervenciones medidas son +-0.0005; V28-03
+  declara que el proxy no tiene potencia (43 filas informativas); P59-C es
+  MARGINAL (0.9730 vs 0.9741); P57 acota el techo en ~+0,009, por debajo de la
+  banda de particion (0,017).
+- **Protocolo disenado (no ejecutado)**: dev-only; ERROR/AMBIGUO/CORRECTO con la
+  duda resuelta como AMBIGUO; dos revisores ciegos; adjudicacion; confianza y
+  motivo; kappa; trazabilidad; originales inmutables; reglas de parada.
+- **Decision**: **LOW_EXPECTED_VALUE (Caso B)**. La revision podria obtener la
+  primera tasa directa de ambiguedad, el kappa de TR y el cierre documental de
+  D-005, pero ninguna cambia una decision: el camino modelable esta bloqueado por
+  reglas y en familias cerradas, y el techo medido queda bajo la banda. No se
+  solicita autorizacion; no se revisa ni se corrige nada; TOXIC permanece cerrado.
+  Near-duplicados: QUARANTINED, con beneficio esperado inferior.
+- **Evidencia**: `reports/toxic_tr_annotation_governance.md/.csv`; fila P87-00 en
+  `experiments.csv` (458 filas); seccion 133 del notebook;
+  `experiments/p87_00_gobernanza_anotacion_tr.py`.
+- **Conclusion**: V03 remains the best verified leaderboard result.

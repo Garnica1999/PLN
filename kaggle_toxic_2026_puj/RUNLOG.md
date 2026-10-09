@@ -5128,3 +5128,10 @@ V03 remains the best verified leaderboard result.
 - Decision: DUPLICATE; no se ejecuta nada. 0 entrenamientos, 0 submissions, 0 push.
 - Entregables: `reports/toxic_fm_novelty_audit.md/.csv`; fila P86-00 (457 filas); seccion 132; D-291; `experiments/p86_00_auditoria_novedad_fm.py` y `p86_01_integrar_notebook.py`.
 - Controles: escaneo byte a byte 0 en lo generado; verificador oficial 0; bateria del notebook ejecutada.
+
+## 2026-10-09 (P87-00: gobernanza de la anotacion TR - LOW_EXPECTED_VALUE, sin ejecucion)
+- Auditoria de solo lectura de la via de revision humana de TR: material de 80 filas con columnas humanas vacias (10 en holdout: filtrar a dev, 140 prioritarias); "2,8 por ciento" de V4-A01 = inconsistencia textual demostrable, no tasa de error; error de TR menor dentro de los clusters contradictorios (0.023 vs 0.113); intervenciones +-0.0005; V28-03 sin potencia; P59-C MARGINAL; techo P57 ~+0,009 < banda 0,017.
+- Protocolo disenado (no ejecutado) con criterios, doble revisor, adjudicacion, kappa, trazabilidad y originales inmutables; nota de autorizacion preparada y no recomendada.
+- Decision: LOW_EXPECTED_VALUE (Caso B): no se solicita autorizacion; no se revisa ni corrige; TOXIC permanece cerrado; near-duplicados QUARANTINED.
+- Entregables: `reports/toxic_tr_annotation_governance.md/.csv`; fila P87-00 (458 filas); seccion 133; D-292; `experiments/p87_00_gobernanza_anotacion_tr.py` y `p87_01_integrar_notebook.py`.
+- Controles: escaneo byte a byte 0 en lo generado; verificador oficial 0; bateria del notebook ejecutada.
