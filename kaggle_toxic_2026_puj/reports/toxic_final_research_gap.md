@@ -27,6 +27,7 @@ near-duplicados queda `QUARANTINED`.
 | Correccion de etiquetas de TR | Las reglas solo prohiben usar el test para entrenamiento; no dicen nada sobre revisar o corregir etiquetas de entrenamiento, luego la correccion es ambigua | Autorizacion escrita del organizador; protocolo de revision humana ya disenado (seccion 4.3 del informe) |
 | Uso transductivo del test (near-duplicados; EM real) | "El dataset de prueba no debe ser usado para entrenamiento" mas la ambiguedad B de V11-02 | Autorizacion escrita mas procedimiento pre-registrado que separe evaluacion final de desarrollo |
 | Datos etiquetados adicionales | No existe fuente legal adicional (P47) | Una fuente legal nueva de etiquetas del mismo esquema |
+| Corpus Twitter/X de 597M (pysentimiento) | Sin licencia declarada y recoleccion por timelines sin periodo acotado | Licencia explicita y periodo demostrablemente anterior |
 | Transformers, LLM, embeddings preentrenados, etiquetas externas, pseudo-labeling | Prohibicion expresa de las reglas y de D-002/D-030/D-057 | Un cambio de reglas |
 
 ## 3. Lo que queda medido y cerrado
@@ -47,6 +48,12 @@ near-duplicados queda `QUARANTINED`.
   condicion de cierre cumplida.
 - **Candidato downweight.** Congelado: `PROMISING_UNCONFIRMED` / `NEGATIVE`
   (LB externo 0.77522) / `EXPERIMENTAL_RESEARCH_CLOSED` / `PENDING`.
+- **Word2Vec de dominio Twitter/X.** Ejecutada con corpus legal autorizado
+  (mmaguero, CC BY-SA 4.0, periodo cerrado, 10.000.029 tokens, solapamiento cero
+  con train) y cerrada por medicion: P72 sin ventaja, P73/P74 invalidados, P75
+  sin transferencia, P78 sin transferencia util (brecha 0.117450 frente a V03);
+  P84-04 negativo sobre corpus general. El corpus de 597M del encargo original
+  sigue bloqueado.
 
 ## 4. La unica pregunta que sobrevive
 

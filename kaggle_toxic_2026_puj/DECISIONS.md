@@ -10192,3 +10192,40 @@ sin reescribir las decisiones originales:
 - **Experimento**: no aplica (auditoria sin ejecucion; 0 submissions y 0 usos de
   test, holdout o leaderboard).
 - **Conclusion final**: V03 remains the best verified leaderboard result.
+
+## D-289: Correccion documental de la fila Twitter/X en la auditoria de oportunidades
+
+- **Contexto**: la comprobacion documental final (2026-10-08) detecto que la fila de
+  la hipotesis Twitter/X (`reports/toxic_remaining_legal_opportunities.csv`, fila 18)
+  y su resumen la describian solo por su primer P0 (2026-09-29: cuatro candidatos,
+  ALLOWED 0, `CLOSED_AT_P0_BY_CORPUS_UNAVAILABILITY`), omitiendo que la linea se
+  reabrio y se ejecuto.
+- **Reconstruccion verificada**: P0 ampliado (9 candidatos); correccion de criterio
+  (la licencia no era una regla) en `experiments/p71_02_correccion_criterio.py`;
+  autorizacion escrita en `docs/p73_provenance_autorizacion_corpus.md` (resuelve
+  D-246); corpus mmaguero/covid19-spanishtweets (CC BY-SA 4.0, periodo cerrado del
+  29-mar al 1-may-2020, sin etiquetas, 361.994 documentos / 10.000.029 tokens) con
+  solapamiento cero con train (exacto y normalizado; Jaccard maximo 0.142857);
+  embeddings 100d/200d/300d entrenados desde cero.
+- **Resultado**: la clasificacion correcta es `CLOSED` por medicion: P71-09 signos
+  mixtos sin gate; P72 sin ventaja para lector lineal; P73/P74 INVALIDADOS por
+  contaminacion (exploratorios); P75 sin transferencia de complementariedad; P78
+  control anidado limpio con senal fragil frente al azar (t-IC incluye 0;
+  normalizacion = 65 por ciento) y brecha 0.117450 frente a V03; P79/P80 auditan el
+  entrenador (p71_04 no implementaba SGNS); P84-04 mide el objetivo corregido sobre
+  corpus general (-0.151120).
+- **Decision**: mantener `CLOSED` con la evidencia completa; `legal_status` pasa de
+  AMBIGUOUS a PERMITTED para el corpus ejecutado; el corpus de 597M del encargo
+  original queda registrado como bloqueado (sin licencia y con periodo de
+  recoleccion abierto); la combinacion SGNS corregido x corpus Twitter no se
+  ejecuto y un cambio de corpus no reabre la familia (directiva vigente).
+- **Evidencia**: `reports/twitter_word2vec_corpus_audit.json` (decision
+  REOPENED_P1_PROCEDE), `reports/twitter_word2vec_corpus_registry.csv`,
+  `reports/twitter_word2vec_corpus_prep.json`,
+  `reports/twitter_word2vec_dimension_analysis.md`, `reports/p78_addendum.md`,
+  `docs/p73_provenance_autorizacion_corpus.md`, RUNLOG del 2026-09-29/30 y
+  secciones 116 a 118 del notebook; actualizacion en el informe (seccion 6.6), el
+  gap, el CSV y la seccion 130.
+- **Conclusion final**: la hipotesis queda resuelta documentalmente y el reparto de
+  la auditoria no cambia (0 ACTIONABLE, 5 BLOCKED_BY_RULES, 1 DUPLICATE, 14 CLOSED).
+  V03 remains the best verified leaderboard result.

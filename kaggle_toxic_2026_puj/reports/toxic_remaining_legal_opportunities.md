@@ -37,6 +37,8 @@ Las dos vias que el encargo pedia auditar expresamente:
 | A. Frontera de anotacion de TR | D-005; material de revision humana listo y nunca completado; V4-A (2,8 por ciento de contradiccion, el modelo acierta los ambiguos) | `BLOCKED_BY_RULES` (silencio normativo sobre correccion de etiquetas) |
 | B. Propagacion de near-duplicados train -> test | leakage_audit (6 pares >= 0,90 y 10 en 0,80-0,90); V4-F04 (techo medido nulo); sonda v18 (0 celdas) | `QUARANTINED` / `BLOCKED_BY_RULES` (autorizacion del organizador; techo <= 0,002) |
 
+**Hipotesis Twitter/X (Word2Vec de dominio).** La fila 18 del CSV y la seccion 6.6 explicitan su decision: la linea **se ejecuto** con un corpus legal autorizado (mmaguero, CC BY-SA 4.0, periodo cerrado, solapamiento cero con train) y quedo **`CLOSED` por medicion** (P72/P75/P78; P73/P74 invalidados; P84-04 negativo sobre corpus general). El corpus de 597M del encargo original sigue bloqueado (sin licencia y con periodo abierto), y la combinacion SGNS corregido x corpus Twitter no se ejecuto (cambio de corpus: no reabre por directiva).
+
 ## 1. Estado de partida verificado
 
 | elemento | valor | verificacion |
@@ -93,7 +95,7 @@ evaluacion sin test/holdout/leaderboard, coste razonable).
 | Sensibilidad de fugas (H5) | EXECUTED_AND_CLOSED | v9: delta exacto 0,0 |
 | RNN/CNN desde cero y DL | EXECUTED_AND_CLOSED | P75; P82 (atencion indistinguible de cero); P84-01 (delta -0,018910) |
 | Bayesiano disperso | EXECUTED_AND_CLOSED | P83 (20/20 lecturas negativas; M1 0,7155 descriptivo) |
-| Word2Vec de dominio Twitter/X | CLOSED por indisponibilidad | P0: sin licencia y sin poder garantizar la ausencia del test sin compararlo |
+| Word2Vec de dominio Twitter/X | CLOSED (ejecutada y medida) | Corpus legal autorizado (mmaguero, CC BY-SA 4.0, periodo cerrado, 10.000.029 tokens) y solapamiento cero con train; P72 sin ventaja, P73/P74 INVALIDADOS, P75 sin transferencia, P78 sin transferencia util (brecha 0.117450 vs V03); P84-04 negativo sobre corpus general; ver seccion 6.6 |
 | Expansion de datos etiquetados | BLOCKED_BY_RULES | P47: 0 filas legales adicionales; v5.1 senala el tamano etiquetado como unica variable abierta |
 | Transformers, LLM, embeddings preentrenados, etiquetas externas, pseudo-labeling | BLOCKED_BY_RULES | `docs/competition_rules.md`; D-002; D-030; D-057 |
 
@@ -246,6 +248,44 @@ No se admiten como linea: mas ensembles, mas features, mas tuning, mas
 calibracion, mas thresholds, mas modelos clasicos ni otra busqueda de
 embeddings. Cada una equivale a una familia `CLOSED` o `DUPLICATE` del mapa de la
 seccion 3.
+
+### 6.6 Hipotesis Twitter/X (Word2Vec de dominio): decision explicitada
+
+La fila del CSV describia esta hipotesis solo por su primer P0 (cerrado por
+indisponibilidad de corpus). La reconstruccion completa de la linea (RUNLOG del
+2026-09-29/30, `reports/twitter_word2vec_*`, `docs/p73_provenance_autorizacion_corpus.md`
+y secciones 116 a 118 del notebook) fija la decision y sus cinco distinciones:
+
+1. **Corpus generales ya evaluados.** v5/v5.1 (wikipedia, mC4, mixto; escalado
+   cerrado en 10M tokens) y P84-04 (SGNS corregido y anclado sobre wikipedia
+   10M: -0.151120 frente a V03). Esa variante queda `CLOSED` / `DUPLICATE`.
+2. **Corpus genuinamente de Twitter/X.** Si, ejecutado. La linea se reabrio
+   (correccion de criterio: la licencia no era una regla) con el corpus
+   mmaguero/covid19-spanishtweets (CC BY-SA 4.0, periodo cerrado del 29-mar al
+   1-may-2020, sin etiquetas, 361.994 documentos / 10.000.029 tokens) y
+   embeddings 100d/200d/300d entrenados desde cero. Resultado: sin ventaja util
+   (P72), sin transferencia (P75), senal fragil frente al azar y brecha 0.117450
+   frente a V03 (P78). `CLOSED` por medicion.
+3. **Fuente legal, no etiquetada y con procedencia verificable.** La del corpus
+   ejecutado si: licencia explicita, periodo cerrado, autorizacion escrita en
+   `docs/p73_provenance_autorizacion_corpus.md` (resuelve D-246) y solapamiento
+   cero con train. La del encargo original (597M de pysentimiento) no: sin
+   licencia declarada y con recoleccion por timelines sin periodo acotado; ese
+   corpus concreto queda bloqueado.
+4. **Riesgo de contaminacion del test.** Declarado como riesgo residual formal y
+   no demostrable por regla (tres escenarios improbables). Lo verificado: cero
+   solapamiento exacto y normalizado con train, y near-duplicados con Jaccard
+   maximo 0.142857. El test no se inspecciona.
+5. **Diferencia metodologica.** Corpus de dominio frente a corpus generales;
+   corpus pareado Twitter vs general con la misma tokenizacion (EMB-NORMAL-TW,
+   que conserva el contenido del hashtag; v5 lo colapsaba); P78 es el control
+   anidado limpio del embedding de dominio frente a una matriz aleatoria pareada
+   por forma y norma; P84-04 mide el objetivo SGNS corregido sobre el corpus
+   general, no sobre el de dominio.
+
+**Incertidumbre documental conservada.** La combinacion objetivo SGNS corregido
+x corpus de Twitter/X no se ejecuto; por la directiva vigente, un cambio de
+corpus no reabre la familia. No genera linea accionable.
 
 ## 7. Decision final: Caso B
 

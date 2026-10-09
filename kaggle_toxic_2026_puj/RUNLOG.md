@@ -5108,3 +5108,9 @@ V03 remains the best verified leaderboard result.
 - Entregables: `reports/toxic_remaining_legal_opportunities.md/.csv` y `reports/toxic_final_research_gap.md`; seccion 130 del notebook (459 celdas) con celda de verificacion (20 lineas, 0 ACTIONABLE); D-288 en DECISIONS.md.
 - Sin push; el cierre documental se registra en un unico commit local. `tools/verificar_caracteres.py` en 0 errores y escaneo byte a byte de lo generado en 0 bytes > 127.
 - Estado preservado: V03 FROZEN (0.7772114525165721 / LB 0.78306); candidato A_cost_sensitive_downweight intacto (PROMISING_UNCONFIRMED, external_transfer NEGATIVE con 0.77522, governance PENDING, research EXPERIMENTAL_RESEARCH_CLOSED).
+
+## 2026-10-08 (Comprobacion documental: hipotesis Twitter/X explicitada)
+- Comprobacion documental final de la hipotesis "Word2Vec desde cero sobre corpus no etiquetado de Twitter/X": aparece en el CSV (fila 18) y en el informe (seccion 3), pero la fila describia solo el primer P0 (CLOSED_AT_P0_BY_CORPUS_UNAVAILABILITY) y omitia la reapertura y la ejecucion.
+- Reconstruccion verificada: P0 ampliado (9 candidatos) + correccion de criterio + autorizacion escrita (docs/p73_provenance_autorizacion_corpus.md, D-246) -> corpus mmaguero (CC BY-SA 4.0, periodo cerrado, 10.000.029 tokens, solapamiento cero con train); P71-09, P72, P73, P74, P75, P78, P79, P80, P81 y P84-04 ejecutados; P73/P74 invalidados por contaminacion; P78 sin transferencia util (brecha 0.117450 frente a V03); P84-04 negativo sobre corpus general.
+- Clasificacion corregida: CLOSED por medicion (legal_status PERMITTED); el corpus de 597M del encargo original queda bloqueado (sin licencia, periodo abierto); la combinacion SGNS corregido x corpus Twitter no se ejecuto (cambio de corpus: no reabre por directiva).
+- Actualizados: informe (seccion 6.6), CSV, gap, seccion 130 del notebook, nota de errata en la seccion 116, D-289 y este RUNLOG. Sin push.
