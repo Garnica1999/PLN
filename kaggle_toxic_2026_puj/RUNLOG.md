@@ -5122,3 +5122,9 @@ V03 remains the best verified leaderboard result.
 - Entregables: `reports/toxic_twitter_sgns_corrected.md/.csv`; `reports/p85_01_sgns_twitter.json`; `features/p85_01_oof_emb.npz`; `modelos/p85/emb_20261016_S_twitter.npz`; fila P85-01 (456 filas); seccion 131; D-290.
 - Compliance: test 0, holdout 0, leaderboard 0, submissions 0, push 0; escaneo byte a byte de lo generado: 0 bytes > 127; `tools/verificar_caracteres.py` en 0 errores.
 - Errata (2026-10-08): el apendice a `experiments.csv` y el CSV del informe usaban CRLF; corregido a LF y fila P85-01 re-anexada manualmente (registro: 456 filas, diff de una linea); Enmienda 2 del preregistro con el hash corregido.
+
+## 2026-10-09 (P86-00: auditoria de novedad FM - DUPLICATE, sin ejecucion)
+- Auditoria de solo lectura de la propuesta de FM dispersa sobre la representacion de V03: el precedente V25-01/V25-02 (2026-09-27) ya la ejecuto con el mismo protocolo y un control que reproduce V03 bit a bit; k agotado en 4, lambda_v optimo en 1, mejor +0.005487 con neto -40 y dLB esperado -0.0079; cierre CLOSE V25 / CERRAR EL PROYECTO y eje de geometria de representacion cerrado (D-190).
+- Decision: DUPLICATE; no se ejecuta nada. 0 entrenamientos, 0 submissions, 0 push.
+- Entregables: `reports/toxic_fm_novelty_audit.md/.csv`; fila P86-00 (457 filas); seccion 132; D-291; `experiments/p86_00_auditoria_novedad_fm.py` y `p86_01_integrar_notebook.py`.
+- Controles: escaneo byte a byte 0 en lo generado; verificador oficial 0; bateria del notebook ejecutada.

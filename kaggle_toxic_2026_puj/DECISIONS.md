@@ -10257,3 +10257,29 @@ sin reescribir las decisiones originales:
   `modelos/p85/emb_20261016_S_twitter.npz`; fila P85-01 en `experiments.csv` (456 filas);
   seccion 131 del notebook; `docs/p85_preregistro.md`.
 - **Conclusion final**: V03 remains the best verified leaderboard result.
+
+## D-291: P86-00 cierra la propuesta de Factorization Machine como DUPLICATE
+
+- **Directiva**: FM dispersa con interacciones de bajo rango entre caracteristicas
+  lexicas sobre la representacion word+char de V03; P0 obligatorio de novedad.
+- **Auditoria**: el precedente metodologicamente equivalente existe y es V25-01/V25-02
+  (2026-09-27): FM implementada desde cero sobre la representacion exacta de V03
+  (word(1,2) + char_wb(3,5), min_df=2, sublinear_tf), mismos pliegues D-016 y umbrales
+  [0.44, 0.51, 0.46], control que reproduce V03 bit a bit (0.7772114525165721,
+  diferencia 0.0, predicciones identicas). k en {1,4,8,16} con k=8 y k=16 identicos a
+  k=4 (rango agotado en 4); barrido de lambda_v 0.25 a 1e6 con optimo exacto en 1;
+  mejor candidato k=4, lambda_v=1: corrected_cv 0.782699 (+0.005487), 278 celdas
+  cambiadas, 119 rescates / 159 danos, neto -40, dLB esperado -0.0079, 0 ajustes sin
+  converger.
+- **Cierre historico**: NO CANDIDATE JUSTIFIES SUBMISSION - CLOSE V25 (v25_04);
+  CERRAR EL PROYECTO (v25_05); D-190 cerro el eje "geometria de representacion"
+  (V25, V27, V26, V43). El gate del proyecto quedo corregido a dOOF > +0.0376 y neto
+  positivo en la misma configuracion; la FM es el caso que lo motiva.
+- **Decision**: **DUPLICATE; no se ejecuta nada.** El delta +0.005487 supera
+  nominalmente el +0.003 propuesto, pero el neto de celdas negativo y el dLB esperado
+  negativo muestran que la mejora es ruido favorable; re-ejecutar la configuracion
+  unica reproduciria el punto ya medido. No se reabre la familia.
+- **Evidencia**: `reports/toxic_fm_novelty_audit.md/.csv`; fila P86-00 en
+  `experiments.csv` (457 filas); seccion 132 del notebook;
+  `experiments/p86_00_auditoria_novedad_fm.py`.
+- **Conclusion**: V03 remains the best verified leaderboard result.
