@@ -10229,3 +10229,31 @@ sin reescribir las decisiones originales:
 - **Conclusion final**: la hipotesis queda resuelta documentalmente y el reparto de
   la auditoria no cambia (0 ACTIONABLE, 5 BLOCKED_BY_RULES, 1 DUPLICATE, 14 CLOSED).
   V03 remains the best verified leaderboard result.
+
+## D-290: P85-01 cierra la reapertura unica: SGNS corregido sobre Twitter/X no supera al control general (Caso C)
+
+- **Contexto**: reapertura experimental unica y acotada autorizada el 2026-10-08 para
+  comprobar la unica combinacion no ejecutada: SGNS correctamente implementado (suma del
+  termino negativo, implementacion anclada de P84-04) sobre el corpus legal de Twitter/X.
+- **P0 (hallazgos)**: P78 uso la matriz de `p71_04` (promediaba el termino negativo por K;
+  auditoria P79): no prueba el objetivo corregido. El pooling publicado de P84-04 uso texto
+  crudo (cobertura 0.6585); el control general se re-punto con la normalizacion documentada
+  (EMB-NORMAL-TW v1) reutilizando su embedding (semilla 20261016), sin reentrenar. El
+  binario fastText no participa (Enmienda 1 del preregistro).
+- **Diseno**: un entrenamiento nuevo (Twitter, semilla 20261016; dim 200; ventana 5;
+  min_count 3; negativos 10; submuestreo 1e-4; 5 epocas; lote 256; SGD 6.4->1e-3;
+  10.000.029 tokens); normalizacion del dev identica en los dos brazos; pliegues D-016;
+  umbrales congelados de V03 (primaria); bootstrap 10000/20260926.
+- **Resultado**: embedding-only twitter 0.629141 vs general 0.629044; fusion congelada
+  twitter 0.708039 (delta -0.069172) vs general 0.709516 (delta -0.067695); 0/5 pliegues
+  positivos en ambos; bootstrap de la fusion twitter [-0.087269, -0.050543]; ensemble_gain
+  0.5 -0.075858 (general -0.073030); net de la fusion vs V03 -285 (salvage 204 / damage
+  489); C1..C5 todas falsas.
+- **Decision**: **Caso C: CLOSED (no reabrir la familia de embeddings)**. El corpus de
+  dominio no supera al control general y la fusion no mejora a V03. No se declara ADOPTED;
+  sin submission; no se abren mas experimentos tras esta comparacion.
+- **Evidencia**: `reports/toxic_twitter_sgns_corrected.md/.csv`;
+  `reports/p85_01_sgns_twitter.json`; `features/p85_01_oof_emb.npz`;
+  `modelos/p85/emb_20261016_S_twitter.npz`; fila P85-01 en `experiments.csv` (456 filas);
+  seccion 131 del notebook; `docs/p85_preregistro.md`.
+- **Conclusion final**: V03 remains the best verified leaderboard result.

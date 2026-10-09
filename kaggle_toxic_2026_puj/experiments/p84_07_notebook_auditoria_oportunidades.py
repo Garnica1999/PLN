@@ -152,13 +152,17 @@ def main() -> None:
     cells = notebook["cells"]
     celdas_antes = len(cells)
 
-    while any(es_seccion(c) for c in cells):
-        cells.pop(next(i for i, c in enumerate(cells) if es_seccion(c)))
-    while any(MARCA_CODIGO in "".join(c.get("source", [])) for c in cells):
-        cells.pop(next(i for i, c in enumerate(cells) if MARCA_CODIGO in "".join(c.get("source", []))))
+    def es_gestionada(celda: dict) -> bool:
+        fuente = "".join(celda.get("source", []))
+        return es_seccion(celda) or MARCA_CODIGO in fuente
 
-    cells.append(nueva_celda_markdown(SECCION))
-    cells.append(nueva_celda_codigo(CODIGO))
+    posiciones = [i for i, c in enumerate(cells) if es_gestionada(c)]
+    indice_insercion = min(posiciones) if posiciones else len(cells)
+    while any(es_gestionada(c) for c in cells):
+        cells.pop(next(i for i, c in enumerate(cells) if es_gestionada(c)))
+
+    nuevas = [nueva_celda_markdown(SECCION), nueva_celda_codigo(CODIGO)]
+    cells[indice_insercion:indice_insercion] = nuevas
 
     notas = 0
     for celda in cells:
