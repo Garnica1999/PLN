@@ -5148,3 +5148,9 @@ V03 remains the best verified leaderboard result.
 - Cumplimiento AST por operacion y fichero: 12 scripts post-cierre escaneados; cero lecturas de test, cero del leaderboard, cero escrituras de submission, cero imports prohibidos; solo metadatos de particion en P87-00. Submissions: 23 sondas en el log, ultima 2026-10-01; 0 submissions nuevas desde el cierre.
 - Entregables: `reports/toxic_final_consistency_audit.md/.json`; `experiments/p89_00_auditoria_final_consistencia.py` y `p89_01_correccion_duplicado_p61.py`; D-294.
 - Controles: bateria del notebook ejecutada; verificador oficial 0; escaneo byte a byte 0.
+
+## 2026-10-10 (P90-00: casebook de errores de V03 - analisis descriptivo, sin modelos)
+- Inventario completo de errores de V03 sobre el desarrollo: 757 celdas (HS 173 FP/143 FN; TR 82/82; AG 135/142) en 441 tweets (223/120/98 con una/dos/tres etiquetas); taxonomia v4 historica reproducida exacta (13 categorias); 19 slices historicas dentro/fuera; distancia al umbral por intervalos predefinidos + alta confianza historica (delta>=0.10/0.20/0.30); errores conjuntos; 757 controles 1:1; muestra de revision de 100 errores + 185 controles con motivos.
+- Patrones tentativos documentados con casos y contraejemplos (broma/afiliacion en FP; hostilidad contra grupos en FN; registro vulgar en FN triples; TR sin destinatario; errores fronterizos). Sin features, sin causas afirmadas.
+- Entregables: `reports/v03_error_casebook.md/.csv`, `v03_error_cells.csv`, `v03_error_fold_summary.csv`, `v03_error_slice_summary.csv`, `v03_error_confidence_summary.csv`, `v03_error_review_sample.csv`, `v03_error_controls.csv`, `v03_error_provenance.json`; seccion 135; D-295; `experiments/p90_00_casebook_errores_v03.py` y `p90_01_integrar_casebook.py`.
+- Compliance: comprobacion AST del propio script (0 lecturas de test/holdout/leaderboard/submissions); verificador oficial 0; escaneo byte a byte 0; 0 entrenamientos, 0 submissions, 0 push.

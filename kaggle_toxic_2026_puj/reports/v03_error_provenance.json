@@ -1,0 +1,36 @@
+{
+ "ciclo": "P90-00",
+ "fecha": "2026-10-10",
+ "git_commit": "a07e080b8f0b3c89455271139893170898698d62",
+ "oof_artifact": "features/oof_v03_final.npz",
+ "oof_sha256": "559265816ce4f6312c87f008f90324f0eec70a74d1e6247364c162793338feab",
+ "oof_fuente": "features/v2_oof_base_corrected.npz, modelo 'M2_union_lr_c2' (fila 2 de 4; mismos ids, grupos y pliegues corregidos v2)",
+ "oof_nota_mapeo": "proba = v2_oof_base_corrected.npz['proba'][:, posicion_M2, :] reordenada por su clave 'ids'; pred = proba >= [0.44, 0.51, 0.46] en el orden HS, TR, AG",
+ "development_data_hash": "3d40e7345b588860cf4744914be88ddc094e4f03591516c8176ab40b7f76d42f",
+ "source_text_file": "data/raw/toxic_train.csv (filas del desarrollo por id del OOF)",
+ "row_count": 1483,
+ "unique_tweet_ids": 1483,
+ "fold_configuration": "pliegues 1-5 del OOF canonico (StratifiedGroupKFold sobre grupos near-dup, D-016)",
+ "fold_sizes": {
+  "1": 297,
+  "2": 297,
+  "3": 296,
+  "4": 296,
+  "5": 297
+ },
+ "thresholds": {
+  "HS": 0.44,
+  "TR": 0.51,
+  "AG": 0.46
+ },
+ "class_order": [
+  "HS",
+  "TR",
+  "AG"
+ ],
+ "case_selection_seed": 20261010,
+ "corrected_cv": 0.7772114525165721,
+ "error_cells": 757,
+ "error_tweets": 441,
+ "restricciones": "sin entrenamiento, sin test, sin holdout, sin leaderboard, sin submissions, sin push"
+}

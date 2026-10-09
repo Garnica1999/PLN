@@ -10360,3 +10360,33 @@ sin reescribir las decisiones originales:
   0 errores; escaneo byte a byte 0;
   `reports/toxic_final_consistency_audit.md/.json` con 0 discrepancias pendientes.
 - **Conclusion**: V03 remains the best verified leaderboard result.
+
+## D-295: Casebook de errores de V03 (analisis descriptivo, P90-00)
+
+- **Contexto**: la directiva del 2026-10-10 pidio un inventario exhaustivo,
+  reproducible y analizable de los errores de V03 sobre el desarrollo autorizado,
+  sin entrenar y sin reabrir familias.
+- **Fuente**: OOF canonico `features/oof_v03_final.npz` (sha256 `55926581...`),
+  1483 filas, umbrales 0.44/0.51/0.46, pliegues D-016; textos originales por id
+  desde `data/raw/toxic_train.csv`. `corrected_cv` reconstruido y F1 por etiqueta
+  verificados; `pred` reproduce `proba >= umbrales` celda a celda.
+- **Resultado**: 757 celdas tweet-etiqueta erroneas (HS 173 FP + 143 FN; TR 82+82;
+  AG 135+142) en 441 tweets (223 con una etiqueta, 120 con dos, 98 con tres); la
+  taxonomia v4 historica se reproduce exactamente (13 categorias); 19 slices
+  historicas documentadas dentro/fuera; 757 controles emparejados 1:1; muestra de
+  revision determinista de 100 errores + 185 controles.
+- **Patrones cualitativos** (con casos y contraejemplos en el informe): parte de
+  los FP son insultos con marcadores de broma/afiliacion; los FN de AG/HS
+  incluyen hostilidad contra grupos sin lexico de insulto; FN de las tres
+  etiquetas en agresion directa de registro vulgar; el error de TR vive en textos
+  sin destinatario explicito; una parte de los errores esta pegada al umbral.
+  Ninguna observacion se convierte en feature ni se afirma como causa.
+- **Entregables**: `reports/v03_error_casebook.md`, `v03_error_casebook.csv`,
+  `v03_error_cells.csv`, `v03_error_fold_summary.csv`,
+  `v03_error_slice_summary.csv`, `v03_error_confidence_summary.csv`,
+  `v03_error_review_sample.csv`, `v03_error_controls.csv`,
+  `v03_error_provenance.json`; seccion 135 del notebook.
+- **Alcance**: analisis descriptivo; no es un experimento; 0 entrenamientos, 0
+  submissions, 0 test, 0 holdout, 0 push. Ninguna categoria se declara oportunidad
+  accionable sin revision de casos y un mecanismo legal no medido.
+- **Conclusion**: V03 remains the best verified leaderboard result.
