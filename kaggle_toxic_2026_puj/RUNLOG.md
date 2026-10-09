@@ -5099,3 +5099,12 @@ V03 remains the best verified leaderboard result.
 - Completo: seccion 127 (fase P84 con sus cinco experimentos y EXP-06), anexo A (seccion 128) con la lista completa y verificacion de completitud (seccion 129).
 - Limpieza: simbolos no ASCII fuera de la ortografia espanola sustituidos (guion largo, signo menos, comillas angulares, simbolo de seccion, alpha, etc.).
 - Smoke test: configuracion, definiciones embebidas, datos, metricas, reproducibilidad y las dos verificaciones ejecutadas sin errores; la ejecucion end-to-end completa sigue pendiente por coste.
+
+## 2026-10-08 (Auditoria de oportunidades legales restantes: Caso B)
+- Auditoria adversarial sin entrenamiento, sin GPU, sin test, sin holdout, sin leaderboard y sin submissions: 20 lineas auditadas; 0 ACTIONABLE, 5 BLOCKED_BY_RULES, 1 DUPLICATE, 14 CLOSED.
+- Via A (TR): BLOCKED_BY_RULES. Las reglas son silenciosas sobre corregir etiquetas de entrenamiento; el material de revision humana sigue sin completar (80/80 columnas vacias) y el uso modelable cae en familias cerradas; V4-A mide 2,8 por ciento de contradiccion sin explicar el error.
+- Via B (near-duplicados train->test): QUARANTINED. Exige autorizacion del organizador; techo medido nulo (V4-F04; sonda v18 con 0 celdas; <=48 celdas de 3462, bajo la banda de deteccion).
+- Puerta 2 (H1..H5): las cinco ejecutadas y cerradas en v9 y posteriores (H5 delta exacto 0.0; H4 +0.0006 y despues negativo; H2 0 celdas; H1 V9-04/V10-11; H3 SDR/PLS). P57 (5 preguntas abiertas): ninguna cumple el umbral de reapertura.
+- Entregables: `reports/toxic_remaining_legal_opportunities.md/.csv` y `reports/toxic_final_research_gap.md`; seccion 130 del notebook (459 celdas) con celda de verificacion (20 lineas, 0 ACTIONABLE); D-288 en DECISIONS.md.
+- Sin push; el cierre documental se registra en un unico commit local. `tools/verificar_caracteres.py` en 0 errores y escaneo byte a byte de lo generado en 0 bytes > 127.
+- Estado preservado: V03 FROZEN (0.7772114525165721 / LB 0.78306); candidato A_cost_sensitive_downweight intacto (PROMISING_UNCONFIRMED, external_transfer NEGATIVE con 0.77522, governance PENDING, research EXPERIMENTAL_RESEARCH_CLOSED).

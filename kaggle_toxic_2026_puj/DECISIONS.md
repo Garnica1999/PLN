@@ -10157,3 +10157,38 @@ sin reescribir las decisiones originales:
 - Limitaciones declaradas: N=1483; holdout agotado (6/5); ruido del LB publico ~0.0146-0.0182
   (70/30) y privado ~0.0223-0.0278; conclusiones 100% locales (ninguna sonda nueva);
   fastText sin rejilla; R solo ensemble.
+
+## D-288: Auditoria de oportunidades legales restantes: no existe via defendible (Caso B)
+
+- **Contexto**: tras P84 y el cierre experimental, el encargo pidio una auditoria
+  adversarial de las oportunidades legales que siguen realmente abiertas, sin
+  asumir que existe ninguna ni que todo esta agotado.
+- **Metodo**: auditoria documental y de artefactos (sin entrenamiento, sin GPU,
+  sin test, sin holdout, sin leaderboard y sin submissions). Se leyeron
+  `PROJECT_STATE.md`, `DECISIONS.md`, `RUNLOG.md`, `FINAL_REPORT.md`,
+  `experiments.csv` (455 filas), `reports/` (informe completo, auditoria forense,
+  post-P68, P48/P49, v11-02, leakage, Puerta 2, P57, sugerencias 0.80, v5.1,
+  P59-C, V4-A, p66/p67/p68, p84) y `docs/competition_rules.md`.
+- **Resultado**: de 20 lineas auditadas, 0 `ACTIONABLE`, 5 `BLOCKED_BY_RULES`,
+  1 `DUPLICATE` y 14 `CLOSED`. Las dos vias pendientes: TR queda
+  `BLOCKED_BY_RULES` (las reglas son silenciosas sobre corregir etiquetas de
+  entrenamiento; el material de revision humana sigue sin completar, 80/80
+  columnas vacias, y el uso modelable cae en familias cerradas) y la propagacion
+  de near-duplicados queda `QUARANTINED` (autorizacion del organizador; techo
+  medido nulo: V4-F04 y sonda v18 con 0 celdas). Las cinco hipotesis de la
+  Puerta 2 (H1..H5) estan ejecutadas y cerradas (fase v9 y posteriores) y las
+  cinco preguntas abiertas de P57 no cumplen el umbral de reapertura.
+- **Decision**: **Caso B**. No se propone ninguna fase nueva; la investigacion de
+  modelado permanece cerrada y la experimentacion se detiene. El candidato
+  `A_cost_sensitive_downweight` queda intacto (`PROMISING_UNCONFIRMED` /
+  `NEGATIVE` / `EXPERIMENTAL_RESEARCH_CLOSED` / `PENDING`; LB externo 0.77522).
+- **Razon**: ninguna linea cumple las siete condiciones simultaneas; inventar un
+  metodo para evitar el cierre seria el error que la auditoria existe para
+  prevenir.
+- **Evidencia**: `reports/toxic_remaining_legal_opportunities.md` y `.csv`;
+  `reports/toxic_final_research_gap.md`; seccion 130 del notebook; verificacion
+  en 0 errores de `tools/verificar_caracteres.py` y escaneo byte a byte en
+  0 bytes > 127.
+- **Experimento**: no aplica (auditoria sin ejecucion; 0 submissions y 0 usos de
+  test, holdout o leaderboard).
+- **Conclusion final**: V03 remains the best verified leaderboard result.
