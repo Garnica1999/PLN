@@ -5141,3 +5141,10 @@ V03 remains the best verified leaderboard result.
 - Decision: DUPLICATE; no se ejecuta nada. 0 entrenamientos, 0 submissions, 0 push.
 - Entregables: `reports/toxic_lgbm_novelty_audit.md/.csv`; fila P88-00 (459 filas); seccion 134; D-293; `experiments/p88_00_auditoria_novedad_lgbm.py` y `p88_01_integrar_notebook.py`.
 - Controles: escaneo byte a byte 0 en lo generado; verificador oficial 0; bateria del notebook ejecutada.
+
+## 2026-10-09 (P89-00: auditoria final de consistencia - 1 discrepancia corregida, sin ejecucion)
+- Auditoria final: V03 FROZEN verificado (hashes exactos de OOF, submission x2, modelo, train y particion; corrected_cv 0.7772114525165721; umbrales 0.44/0.51/0.46; LB 0.78306); candidato A_cost_sensitive_downweight intacto (PROMISING_UNCONFIRMED / NEGATIVE / EXPERIMENTAL_RESEARCH_CLOSED / PENDING; LB 0.77522); cierres P85-01 (CLOSED, caso C) y P88-00 (DUPLICATE) verificados; auditoria de oportunidades consistente (20 lineas, 0 ACTIONABLE, 5 BLOCKED_BY_RULES / 14 CLOSED / 1 DUPLICATE); D-288 a D-293 presentes.
+- Discrepancia detectada y corregida: el bloque P61 (secciones 81-88) aparecia duplicado en el notebook (copia huerfana de 24 celdas, 2 de ellas con bugs de la primera version); p89_01 elimino la copia huerfana (467 -> 443 celdas; 0 cabeceras duplicadas). D-294.
+- Cumplimiento AST por operacion y fichero: 12 scripts post-cierre escaneados; cero lecturas de test, cero del leaderboard, cero escrituras de submission, cero imports prohibidos; solo metadatos de particion en P87-00. Submissions: 23 sondas en el log, ultima 2026-10-01; 0 submissions nuevas desde el cierre.
+- Entregables: `reports/toxic_final_consistency_audit.md/.json`; `experiments/p89_00_auditoria_final_consistencia.py` y `p89_01_correccion_duplicado_p61.py`; D-294.
+- Controles: bateria del notebook ejecutada; verificador oficial 0; escaneo byte a byte 0.

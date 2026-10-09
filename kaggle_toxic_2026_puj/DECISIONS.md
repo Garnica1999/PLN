@@ -10338,3 +10338,25 @@ sin reescribir las decisiones originales:
   `experiments.csv` (459 filas); seccion 134 del notebook;
   `experiments/p88_00_auditoria_novedad_lgbm.py`.
 - **Conclusion**: V03 remains the best verified leaderboard result.
+
+## D-294: Correccion del bloque P61 duplicado en el notebook consolidado
+
+- **Contexto**: la auditoria final de consistencia P89-00 detecto que el bloque de
+  la fase P61 (secciones 81 a 88, 24 celdas) aparecia DUPLICADO en
+  `notebooks/10_final_pipeline.ipynb`.
+- **Detalle**: la copia huerfana (celdas 265-288) precedia a los marcadores
+  `P61-NOTEBOOK-INICIO/FIN` y contenia la primera version de dos celdas con bugs
+  ya corregidos (el SyntaxError del f-string de la tabla de cuantiles y la clave
+  'pool' inexistente del ensemble); la copia gestionada entre los marcadores
+  tiene las versiones corregidas y es la que regenera `p61_10_notebook.py`.
+- **Correccion**: `experiments/p89_01_correccion_duplicado_p61.py` elimino la
+  copia huerfana (24 celdas: 22 identicas y 2 divergentes verificadas) preservando
+  la copia gestionada. El notebook pasa de 467 a 443 celdas, con 0 cabeceras
+  duplicadas y los marcadores intactos.
+- **Alcance**: solo se corrigio el notebook; ningun otro documento, artefacto ni
+  codigo de experimentos se modifico. Los registros historicos se preservan (la
+  version corregida de las dos celdas permanece en la copia gestionada).
+- **Verificacion**: bateria completa del notebook en verde; verificador oficial en
+  0 errores; escaneo byte a byte 0;
+  `reports/toxic_final_consistency_audit.md/.json` con 0 discrepancias pendientes.
+- **Conclusion**: V03 remains the best verified leaderboard result.

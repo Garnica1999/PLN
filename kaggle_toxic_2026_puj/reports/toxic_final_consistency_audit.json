@@ -1,0 +1,433 @@
+{
+ "hashes": {
+  "oof_v03": "559265816ce4f6312c87f008f90324f0eec70a74d1e6247364c162793338feab",
+  "submission_v03": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+  "submission_v03_frozen": "7d7478f271e6edfd51afff85bad3eaa0e39e6501d42d6346e29ef50ae874520e",
+  "modelo_v03": "263ed5bd0fc0de7cabfbaa85e88fca6fa65cf0a1b4e60a6e796b5120e26d13ca",
+  "train": "3d40e7345b588860cf4744914be88ddc094e4f03591516c8176ab40b7f76d42f",
+  "particion": "e5b62e5f22c4c63a8c43df4019969504d44c0baa5b503c19ba3560032f5ee6cd"
+ },
+ "ccv": 0.7772114525165721,
+ "umbrales": [
+  0.44,
+  0.51,
+  0.46
+ ],
+ "candidato": {
+  "canonica": 0.0082045862,
+  "segunda": 0.010525313,
+  "tercera": 0.0048825807,
+  "permutacion": 0.000999,
+  "bootstrap_incluye_cero": true,
+  "lb": 0.77522,
+  "lineas_submission": 1155
+ },
+ "p85": {
+  "caso": "C",
+  "delta_fusion": -0.0691724132
+ },
+ "p88": {
+  "clasificacion": "DUPLICATE",
+  "precedente": "P61-01"
+ },
+ "oportunidades": {
+  "lineas": 20,
+  "reparto": {
+   "BLOCKED_BY_RULES": 5,
+   "CLOSED": 14,
+   "DUPLICATE": 1
+  }
+ },
+ "notebook": {
+  "celdas": 443,
+  "cabeceras": 132,
+  "duplicadas": 0,
+  "secciones_auditoria": [
+   "130",
+   "131",
+   "132",
+   "133",
+   "134"
+  ]
+ },
+ "scripts": {
+  "p84_06_notebook_completo.py": {
+   "tokens": [],
+   "imports_sensibles": []
+  },
+  "p84_07_notebook_auditoria_oportunidades.py": {
+   "tokens": [],
+   "imports_sensibles": []
+  },
+  "p85_01_sgns_twitter_corregido.py": {
+   "tokens": [
+    [
+     310,
+     "holdout_filas_usadas"
+    ],
+    [
+     312,
+     "toxic_test_abierto"
+    ],
+    [
+     320,
+     "holdout"
+    ],
+    [
+     546,
+     "holdout_usado"
+    ],
+    [
+     548,
+     "toxic_test_abierto"
+    ],
+    [
+     549,
+     "submissions"
+    ],
+    [
+     550,
+     "leaderboard"
+    ]
+   ],
+   "imports_sensibles": []
+  },
+  "p85_02_integrar_resultado.py": {
+   "tokens": [],
+   "imports_sensibles": []
+  },
+  "p86_00_auditoria_novedad_fm.py": {
+   "tokens": [
+    [
+     50,
+     "toxic_submission_v03_lr_union_thr.csv"
+    ],
+    [
+     50,
+     "submissions"
+    ],
+    [
+     211,
+     "submission_v03"
+    ],
+    [
+     606,
+     "submissions"
+    ],
+    [
+     366,
+     "submission_v03"
+    ]
+   ],
+   "imports_sensibles": []
+  },
+  "p86_01_integrar_notebook.py": {
+   "tokens": [],
+   "imports_sensibles": []
+  },
+  "p87_00_gobernanza_anotacion_tr.py": {
+   "tokens": [
+    [
+     36,
+     "holdout_v2_ids.csv"
+    ],
+    [
+     46,
+     "toxic_submission_v03_lr_union_thr.csv"
+    ],
+    [
+     46,
+     "submissions"
+    ],
+    [
+     224,
+     "submission_v03"
+    ],
+    [
+     436,
+     "data/processed/holdout_v2_ids.csv"
+    ],
+    [
+     130,
+     "holdout"
+    ],
+    [
+     566,
+     "submissions"
+    ],
+    [
+     417,
+     "submission_v03"
+    ]
+   ],
+   "imports_sensibles": []
+  },
+  "p87_01_integrar_notebook.py": {
+   "tokens": [],
+   "imports_sensibles": []
+  },
+  "p88_00_auditoria_novedad_lgbm.py": {
+   "tokens": [
+    [
+     47,
+     "toxic_submission_v03_lr_union_thr.csv"
+    ],
+    [
+     47,
+     "submissions"
+    ],
+    [
+     193,
+     "submission_v03"
+    ],
+    [
+     503,
+     "submissions"
+    ],
+    [
+     311,
+     "submission_v03"
+    ]
+   ],
+   "imports_sensibles": []
+  },
+  "p88_01_integrar_notebook.py": {
+   "tokens": [],
+   "imports_sensibles": []
+  },
+  "p89_00_auditoria_final_consistencia.py": {
+   "tokens": [
+    [
+     39,
+     "toxic_submission_v03_lr_union_thr.csv"
+    ],
+    [
+     40,
+     "submission_v03.csv"
+    ],
+    [
+     43,
+     "holdout_v2_ids.csv"
+    ],
+    [
+     58,
+     "leaderboard_log.csv"
+    ],
+    [
+     59,
+     "toxic_submission_cost_sensitive_candidate.csv"
+    ],
+    [
+     86,
+     "toxic_test"
+    ],
+    [
+     86,
+     "test.csv"
+    ],
+    [
+     86,
+     "leaderboard"
+    ],
+    [
+     86,
+     "submissions/"
+    ],
+    [
+     86,
+     "holdout"
+    ],
+    [
+     86,
+     "submission"
+    ],
+    [
+     39,
+     "submissions"
+    ],
+    [
+     58,
+     "submissions"
+    ],
+    [
+     59,
+     "submissions"
+    ],
+    [
+     89,
+     "holdout"
+    ],
+    [
+     89,
+     "holdout_filas_usadas"
+    ],
+    [
+     89,
+     "holdout_usado"
+    ],
+    [
+     89,
+     "toxic_test_abierto"
+    ],
+    [
+     90,
+     "leaderboard"
+    ],
+    [
+     90,
+     "submissions"
+    ],
+    [
+     90,
+     "submission_v03"
+    ],
+    [
+     181,
+     "escrituras_submission"
+    ],
+    [
+     197,
+     "submission_v03"
+    ],
+    [
+     198,
+     "submission_v03_frozen"
+    ],
+    [
+     204,
+     "submission_v03"
+    ],
+    [
+     204,
+     "submission_v03_frozen"
+    ],
+    [
+     350,
+     "submissions"
+    ],
+    [
+     93,
+     "toxic_submission_v03_lr_union_thr.csv"
+    ],
+    [
+     95,
+     "toxic_submission_v03_lr_union_thr.csv"
+    ],
+    [
+     95,
+     "holdout_v2_ids.csv"
+    ],
+    [
+     95,
+     "data/processed/holdout_v2_ids.csv"
+    ],
+    [
+     97,
+     "toxic_submission_v03_lr_union_thr.csv"
+    ],
+    [
+     99,
+     "data/processed/holdout_v2_ids.csv"
+    ],
+    [
+     99,
+     "escrituras_submission"
+    ],
+    [
+     99,
+     "holdout_v2_ids.csv"
+    ],
+    [
+     100,
+     "leaderboard_log.csv"
+    ],
+    [
+     100,
+     "lineas_submission"
+    ],
+    [
+     100,
+     "submission"
+    ],
+    [
+     100,
+     "submission_v03.csv"
+    ],
+    [
+     101,
+     "submission_v03_frozen"
+    ],
+    [
+     101,
+     "submissions/"
+    ],
+    [
+     101,
+     "test.csv"
+    ],
+    [
+     102,
+     "toxic_submission_cost_sensitive_candidate.csv"
+    ],
+    [
+     102,
+     "toxic_submission_v03_lr_union_thr.csv"
+    ],
+    [
+     103,
+     "toxic_test"
+    ],
+    [
+     309,
+     "escrituras_submission"
+    ],
+    [
+     338,
+     "lineas_submission"
+    ],
+    [
+     396,
+     "lineas_submission"
+    ],
+    [
+     528,
+     "submissions"
+    ],
+    [
+     374,
+     "submission_v03"
+    ],
+    [
+     375,
+     "submission_v03_frozen"
+    ],
+    [
+     464,
+     "submissions"
+    ],
+    [
+     464,
+     "submissions"
+    ],
+    [
+     176,
+     "submission"
+    ],
+    [
+     323,
+     "submissions"
+    ]
+   ],
+   "imports_sensibles": []
+  },
+  "p89_01_correccion_duplicado_p61.py": {
+   "tokens": [],
+   "imports_sensibles": []
+  }
+ },
+ "submissions": {
+  "entradas_log": 23,
+  "ultima_fecha": "2026-10-01",
+  "csv_en_disco": 41
+ }
+}
